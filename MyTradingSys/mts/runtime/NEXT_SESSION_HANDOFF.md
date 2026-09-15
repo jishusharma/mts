@@ -1,5 +1,5 @@
-STATUS: A=done B=done C=done | D=active | B2=active
-STATUS_NOTE: Phase A/B/C complete 2026-09-15. Do not re-run. Proceed to Phase B2 (project structure audit, read-only) then Phase D (resume ops).
+STATUS: A=done B=done C=done | D=active | S=active
+STATUS_NOTE: Phase A/B/C complete 2026-09-15. Do not re-run. Proceed to Phase S (project structure audit, read-only) then Phase D (resume ops).
 
 ﻿# NEXT SESSION HANDOFF
 # Written: 2026-09-15 evening
@@ -79,7 +79,7 @@ After A, B, C: normal session flow.
 - L23 — Dumps/kimi_*.md check (2026-09-21)
 - L24 — CLOSED 2026-09-15: mojibake claim did not reproduce. Byte-check of 5 declared files = 0 hits of C3 A2 E2 80 9D. L4 (prior viewer-artifact) stands. See L_ITEMS_MASTER.md L24 row.
 
-### Phase B2 — Full project structure audit (next session)
+### Phase S — Full project structure audit (next session)
 Scope (read-only; produce report for approval before any move):
 1. List every root dir with file count + total bytes.
 2. For each root dir not in the boot list: one-line purpose + reader.
