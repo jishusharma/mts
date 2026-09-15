@@ -90,8 +90,14 @@ if ($java) { [void]$sb.AppendLine(($java | Out-String).Trim()) } else { [void]$s
 
 $block = $sb.ToString()
 Write-Host "generated: $($block.Length) chars"
+
+# Always write the paste file
+$pasteFile = 'Dumps\SESSION_PASTE.txt'
+Set-Content -Path $pasteFile -Value $block -Encoding utf8
+Write-Host "written:   $pasteFile" -ForegroundColor Cyan
+
+# Clipboard is best-effort only
 if (-not $NoClipboard) {
     try { Set-Clipboard -Value $block; Write-Host "[copied to clipboard]" -ForegroundColor Green }
-    catch { Write-Host "[clipboard fail - writing to Dumps\SESSION_PASTE.txt]" -ForegroundColor Yellow
-            Set-Content -Path 'Dumps\SESSION_PASTE.txt' -Value $block -Encoding utf8 }
+    catch { Write-Host "[clipboard unavailable - use $pasteFile]" -ForegroundColor Yellow }
 }

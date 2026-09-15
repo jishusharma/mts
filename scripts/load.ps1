@@ -10,4 +10,7 @@ function lc { & "$ScriptDir\live\lc.ps1" }
 "mts loaded: lx ld lt lf lh la lc"
 function mts-start { & "$ScriptDir\..\session-start.ps1" @args }
 
-
+# git aliases - stripped ceremony
+function gitsnap { git add -A; git commit -m "$args" -q; git tag -f last-snapshot; "committed: " + (git rev-parse --short HEAD) }
+function gitsee  { git log --oneline -5; "dirty: " + (git status --short | Measure-Object -Line).Lines }
+function gitundo  { git reset --hard last-snapshot; "reverted to last-snapshot" }

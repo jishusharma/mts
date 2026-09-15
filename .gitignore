@@ -41,3 +41,14 @@ data/last_alert.json
 data/outcome_labels.json
 data/_prob_label_enriched.json
 data/speed_baselines/*.json
+
+# --- MTS runtime churn (regenerated every cycle, not human-edited) ---
+MyTradingSys/mts/runtime/current_market_state.md
+MyTradingSys/mts/runtime/state_code.json
+MyTradingSys/mts/runtime/session_end_logs.md
+MyTradingSys/system/session_end_logs.md
+data/apparatus_log.txt
+data/alert_counter.txt
+data/last_alert.json
+data/outcome_labels.json
+Dumps/SESSION_PASTE.txt

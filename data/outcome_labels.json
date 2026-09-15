@@ -21749,6 +21749,2801 @@
         "60m": 0.0462,
         "120m": -0.7815
       }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789472896644.json",
+      "ts": "2026-09-15T11:48:15.899214+00:00",
+      "price": 76830.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1475,
+        "60m": 0.155,
+        "120m": -0.6834
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789472955988.json",
+      "ts": "2026-09-15T11:49:15.193770+00:00",
+      "price": 76827.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1242,
+        "60m": 0.1596,
+        "120m": -0.6789
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473016248.json",
+      "ts": "2026-09-15T11:50:15.486381+00:00",
+      "price": 76809.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1549,
+        "60m": 0.2064,
+        "120m": -0.6456
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473076892.json",
+      "ts": "2026-09-15T11:51:15.740716+00:00",
+      "price": 76826.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0867,
+        "60m": 0.2304,
+        "120m": -0.873
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473136298.json",
+      "ts": "2026-09-15T11:52:15.499106+00:00",
+      "price": 76899.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0172,
+        "60m": 0.17,
+        "120m": -0.9639
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473196736.json",
+      "ts": "2026-09-15T11:53:15.815630+00:00",
+      "price": 76895.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0583,
+        "60m": 0.1682,
+        "120m": -0.8648
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473256024.json",
+      "ts": "2026-09-15T11:54:15.245782+00:00",
+      "price": 76896.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0451,
+        "60m": 0.1912,
+        "120m": -0.8666
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473316387.json",
+      "ts": "2026-09-15T11:55:15.659192+00:00",
+      "price": 76864.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0587,
+        "60m": 0.2896,
+        "120m": -0.8743
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473375872.json",
+      "ts": "2026-09-15T11:56:15.131598+00:00",
+      "price": 76887.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0407,
+        "60m": 0.173,
+        "120m": -0.7983
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473436302.json",
+      "ts": "2026-09-15T11:57:15.565947+00:00",
+      "price": 76883.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0503,
+        "60m": 0.1586,
+        "120m": -0.6369
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473496645.json",
+      "ts": "2026-09-15T11:58:15.745008+00:00",
+      "price": 76916.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0074,
+        "60m": -0.0415,
+        "120m": -0.6299
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473556234.json",
+      "ts": "2026-09-15T11:59:15.460971+00:00",
+      "price": 76911.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.0468,
+        "60m": -0.0926,
+        "120m": -0.5948
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473617082.json",
+      "ts": "2026-09-15T12:00:16.311516+00:00",
+      "price": 76899.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0044,
+        "60m": 0.0982,
+        "120m": -0.4415
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473676336.json",
+      "ts": "2026-09-15T12:01:15.591687+00:00",
+      "price": 76933.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.0387,
+        "60m": 0.055,
+        "120m": -0.4844
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473736737.json",
+      "ts": "2026-09-15T12:02:15.822594+00:00",
+      "price": 76888.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.0437,
+        "60m": 0.0972,
+        "120m": -0.5745
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473795953.json",
+      "ts": "2026-09-15T12:03:15.190273+00:00",
+      "price": 76876.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.0359,
+        "60m": 0.1393,
+        "120m": -0.5599
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473856700.json",
+      "ts": "2026-09-15T12:04:15.781106+00:00",
+      "price": 76888.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0375,
+        "60m": 0.1613,
+        "120m": -0.4369
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473916459.json",
+      "ts": "2026-09-15T12:05:15.578058+00:00",
+      "price": 76914.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0035,
+        "60m": 0.1836,
+        "120m": -0.6684
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789473975866.json",
+      "ts": "2026-09-15T12:06:15.103039+00:00",
+      "price": 76867.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0416,
+        "60m": 0.2448,
+        "120m": -0.7112
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474036554.json",
+      "ts": "2026-09-15T12:07:15.651486+00:00",
+      "price": 76868.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0334,
+        "60m": 0.2576,
+        "120m": -0.7245
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474095917.json",
+      "ts": "2026-09-15T12:08:15.151602+00:00",
+      "price": 76879.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0428,
+        "60m": 0.1687,
+        "120m": -0.7379
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474156108.json",
+      "ts": "2026-09-15T12:09:15.330889+00:00",
+      "price": 76879.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0377,
+        "60m": 0.16,
+        "120m": -0.7004
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474216497.json",
+      "ts": "2026-09-15T12:10:15.556541+00:00",
+      "price": 76826.3,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1221,
+        "60m": 0.2176,
+        "120m": -0.4901
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474275995.json",
+      "ts": "2026-09-15T12:11:15.093474+00:00",
+      "price": 76876.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0406,
+        "60m": 0.1534,
+        "120m": -0.6049
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474336220.json",
+      "ts": "2026-09-15T12:12:15.416567+00:00",
+      "price": 76886.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0027,
+        "60m": 0.1587,
+        "120m": -0.6558
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474396946.json",
+      "ts": "2026-09-15T12:13:16.088748+00:00",
+      "price": 76915.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.0176,
+        "60m": 0.1112,
+        "120m": -0.6934
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474457036.json",
+      "ts": "2026-09-15T12:14:15.999001+00:00",
+      "price": 76898.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.0101,
+        "60m": 0.0623,
+        "120m": -0.6256
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474516743.json",
+      "ts": "2026-09-15T12:15:15.768952+00:00",
+      "price": 76892.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0224,
+        "60m": 0.0852,
+        "120m": -0.6665
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474576457.json",
+      "ts": "2026-09-15T12:16:15.575750+00:00",
+      "price": 76882.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0165,
+        "60m": 0.0692,
+        "120m": -0.5421
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474636061.json",
+      "ts": "2026-09-15T12:17:15.135431+00:00",
+      "price": 76932.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.0272,
+        "60m": 0.0422,
+        "120m": -0.7741
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474696959.json",
+      "ts": "2026-09-15T12:18:15.980126+00:00",
+      "price": 76944.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0075,
+        "60m": -0.073,
+        "120m": -0.8258
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474756919.json",
+      "ts": "2026-09-15T12:19:15.921090+00:00",
+      "price": 76922.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0588,
+        "60m": -0.0112,
+        "120m": -0.7307
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474817062.json",
+      "ts": "2026-09-15T12:20:15.967463+00:00",
+      "price": 76928.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0971,
+        "60m": -0.0146,
+        "120m": -0.689
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474876973.json",
+      "ts": "2026-09-15T12:21:16.054029+00:00",
+      "price": 76892.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1436,
+        "60m": 0.0579,
+        "120m": -0.5824
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474937127.json",
+      "ts": "2026-09-15T12:22:16.010580+00:00",
+      "price": 76913.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1528,
+        "60m": -0.0034,
+        "120m": -0.6086
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789474997485.json",
+      "ts": "2026-09-15T12:23:16.541997+00:00",
+      "price": 76939.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1098,
+        "60m": -0.0277,
+        "120m": -0.7726
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475056757.json",
+      "ts": "2026-09-15T12:24:15.365407+00:00",
+      "price": 76931.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.146,
+        "60m": -0.0164,
+        "120m": -0.7613
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475116982.json",
+      "ts": "2026-09-15T12:25:15.997587+00:00",
+      "price": 76909.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.2308,
+        "60m": 0.0144,
+        "120m": -0.6972
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475176525.json",
+      "ts": "2026-09-15T12:26:15.707175+00:00",
+      "price": 76919.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1322,
+        "60m": 0.0014,
+        "120m": -0.7019
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475236183.json",
+      "ts": "2026-09-15T12:27:15.338840+00:00",
+      "price": 76921.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1084,
+        "60m": -0.0359,
+        "120m": -0.6934
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475297048.json",
+      "ts": "2026-09-15T12:28:16.001963+00:00",
+      "price": 76921.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.1062,
+        "60m": 0.0406,
+        "120m": -0.6587
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475356778.json",
+      "ts": "2026-09-15T12:29:15.887518+00:00",
+      "price": 76875.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.0458,
+        "60m": 0.0496,
+        "120m": -0.7316
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475417043.json",
+      "ts": "2026-09-15T12:30:15.953957+00:00",
+      "price": 76911.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0059,
+        "60m": -0.1777,
+        "120m": -0.8831
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475477000.json",
+      "ts": "2026-09-15T12:31:16.081917+00:00",
+      "price": 76903.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0938,
+        "60m": -0.2295,
+        "120m": -0.8743
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475536786.json",
+      "ts": "2026-09-15T12:32:15.856387+00:00",
+      "price": 76854.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1409,
+        "60m": -0.1662,
+        "120m": -0.8787
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475597017.json",
+      "ts": "2026-09-15T12:33:15.984473+00:00",
+      "price": 76849.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.169,
+        "60m": -0.0932,
+        "120m": -0.8578
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475656852.json",
+      "ts": "2026-09-15T12:34:15.766310+00:00",
+      "price": 76850.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.2096,
+        "60m": -0.1373,
+        "120m": -0.9128
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475716843.json",
+      "ts": "2026-09-15T12:35:15.859474+00:00",
+      "price": 76916.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1801,
+        "60m": -0.2975,
+        "120m": -1.0894
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475776936.json",
+      "ts": "2026-09-15T12:36:16.020368+00:00",
+      "price": 76899.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.2181,
+        "60m": -0.4313,
+        "120m": -1.1342
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475836980.json",
+      "ts": "2026-09-15T12:37:16.065704+00:00",
+      "price": 76894.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1488,
+        "60m": -0.5426,
+        "120m": -1.0492
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475897256.json",
+      "ts": "2026-09-15T12:38:16.120411+00:00",
+      "price": 76912.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1181,
+        "60m": -0.7529,
+        "120m": -1.0719
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789475957402.json",
+      "ts": "2026-09-15T12:39:16.526241+00:00",
+      "price": 76908.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.11,
+        "60m": -0.8151,
+        "120m": -1.2533
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476017324.json",
+      "ts": "2026-09-15T12:40:16.407137+00:00",
+      "price": 76920.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0969,
+        "60m": -0.5819,
+        "120m": -1.538
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476077192.json",
+      "ts": "2026-09-15T12:41:16.290756+00:00",
+      "price": 76907.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1312,
+        "60m": -0.6557,
+        "120m": -1.4692
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476137917.json",
+      "ts": "2026-09-15T12:42:17.002685+00:00",
+      "price": 76888.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1463,
+        "60m": -0.7102,
+        "120m": -1.4115
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476197178.json",
+      "ts": "2026-09-15T12:43:16.296079+00:00",
+      "price": 76902.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0567,
+        "60m": -0.7231,
+        "120m": -1.2812
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476257344.json",
+      "ts": "2026-09-15T12:44:16.428197+00:00",
+      "price": 76890.3,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0879,
+        "60m": -0.7075,
+        "120m": -1.3136
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476317234.json",
+      "ts": "2026-09-15T12:45:16.157560+00:00",
+      "price": 76909.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0628,
+        "60m": -0.7732,
+        "120m": -1.3383
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476377103.json",
+      "ts": "2026-09-15T12:46:16.094802+00:00",
+      "price": 76895.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0908,
+        "60m": -0.8062,
+        "120m": -1.4079
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476437286.json",
+      "ts": "2026-09-15T12:47:16.262523+00:00",
+      "price": 76912.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0541,
+        "60m": -0.8273,
+        "120m": -1.4559
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476496594.json",
+      "ts": "2026-09-15T12:48:15.718702+00:00",
+      "price": 76905.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0623,
+        "60m": -0.78,
+        "120m": -1.4479
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476556571.json",
+      "ts": "2026-09-15T12:49:15.681072+00:00",
+      "price": 76950.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.0465,
+        "60m": -0.8372,
+        "120m": -1.5983
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476616766.json",
+      "ts": "2026-09-15T12:50:15.892918+00:00",
+      "price": 76968.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.0659,
+        "60m": -0.8502,
+        "120m": -1.652
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476677001.json",
+      "ts": "2026-09-15T12:51:16.130695+00:00",
+      "price": 77003.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.0856,
+        "60m": -1.0967,
+        "120m": -1.8481
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476737212.json",
+      "ts": "2026-09-15T12:52:16.113511+00:00",
+      "price": 77030.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.1559,
+        "60m": -1.1319,
+        "120m": -1.7511
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476798251.json",
+      "ts": "2026-09-15T12:53:17.404482+00:00",
+      "price": 77024.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.1374,
+        "60m": -1.0312,
+        "120m": -1.6342
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476857353.json",
+      "ts": "2026-09-15T12:54:16.479127+00:00",
+      "price": 77043.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.1956,
+        "60m": -1.0558,
+        "120m": -1.4963
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476917167.json",
+      "ts": "2026-09-15T12:55:16.290021+00:00",
+      "price": 77086.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.2159,
+        "60m": -1.0541,
+        "120m": -1.6357
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789476977086.json",
+      "ts": "2026-09-15T12:56:16.261399+00:00",
+      "price": 77020.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "flat",
+      "fwd_return_pct": {
+        "30m": -0.1649,
+        "60m": -0.8148,
+        "120m": -1.5156
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477036885.json",
+      "ts": "2026-09-15T12:57:16.071645+00:00",
+      "price": 77004.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.1441,
+        "60m": -0.7446,
+        "120m": -1.4951
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477096810.json",
+      "ts": "2026-09-15T12:58:15.911678+00:00",
+      "price": 76884.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": 0.0895,
+        "60m": -0.5887,
+        "120m": -1.2373
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477156968.json",
+      "ts": "2026-09-15T12:59:16.140946+00:00",
+      "price": 76840.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": 0.0954,
+        "60m": -0.5027,
+        "120m": -1.1705
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477217062.json",
+      "ts": "2026-09-15T13:00:16.128228+00:00",
+      "price": 76916.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.1836,
+        "60m": -0.4626,
+        "120m": -1.3119
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477277094.json",
+      "ts": "2026-09-15T13:01:16.221045+00:00",
+      "price": 76975.3,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.323,
+        "60m": -0.6167,
+        "120m": -1.352
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477337619.json",
+      "ts": "2026-09-15T13:02:16.795881+00:00",
+      "price": 76962.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.294,
+        "60m": -0.671,
+        "120m": -1.3696
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477396867.json",
+      "ts": "2026-09-15T13:03:15.800082+00:00",
+      "price": 76983.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.268,
+        "60m": -0.6982,
+        "120m": -1.3005
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477456508.json",
+      "ts": "2026-09-15T13:04:15.660220+00:00",
+      "price": 76979.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.3035,
+        "60m": -0.5546,
+        "120m": -1.2944
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477516389.json",
+      "ts": "2026-09-15T13:05:15.554802+00:00",
+      "price": 77012.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.3462,
+        "60m": -0.7947,
+        "120m": -1.2827
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477576502.json",
+      "ts": "2026-09-15T13:06:15.680332+00:00",
+      "price": 77055.3,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.6332,
+        "60m": -0.9537,
+        "120m": -1.38
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477636540.json",
+      "ts": "2026-09-15T13:07:15.690245+00:00",
+      "price": 77066.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.648,
+        "60m": -0.9795,
+        "120m": -1.3
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477696592.json",
+      "ts": "2026-09-15T13:08:15.544473+00:00",
+      "price": 77008.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.6903,
+        "60m": -0.8668,
+        "120m": -1.2965
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477756877.json",
+      "ts": "2026-09-15T13:09:15.792505+00:00",
+      "price": 77002.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.87,
+        "60m": -0.8591,
+        "120m": -1.2985
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477817109.json",
+      "ts": "2026-09-15T13:10:16.200448+00:00",
+      "price": 76993.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.6767,
+        "60m": -0.7556,
+        "120m": -1.2771
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477877110.json",
+      "ts": "2026-09-15T13:11:16.219934+00:00",
+      "price": 76994.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.7676,
+        "60m": -0.7571,
+        "120m": -1.2785
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477937095.json",
+      "ts": "2026-09-15T13:12:16.219726+00:00",
+      "price": 77008.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.8648,
+        "60m": -0.8132,
+        "120m": -1.3069
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789477997198.json",
+      "ts": "2026-09-15T13:13:16.220700+00:00",
+      "price": 77001.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.8508,
+        "60m": -0.8036,
+        "120m": -1.3076
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478057207.json",
+      "ts": "2026-09-15T13:14:16.145772+00:00",
+      "price": 76946.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.7794,
+        "60m": -0.6875,
+        "120m": -1.2366
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478117053.json",
+      "ts": "2026-09-15T13:15:16.197599+00:00",
+      "price": 76957.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.8355,
+        "60m": -0.7511,
+        "120m": -1.258
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478176978.json",
+      "ts": "2026-09-15T13:16:15.998420+00:00",
+      "price": 76936.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.8584,
+        "60m": -0.7782,
+        "120m": -1.2649
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478236917.json",
+      "ts": "2026-09-15T13:17:16.033573+00:00",
+      "price": 76965.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.8961,
+        "60m": -0.8341,
+        "120m": -1.2282
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478296761.json",
+      "ts": "2026-09-15T13:18:15.859788+00:00",
+      "price": 76953.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.8418,
+        "60m": -0.8379,
+        "120m": -1.2131
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478356440.json",
+      "ts": "2026-09-15T13:19:15.593379+00:00",
+      "price": 76888.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.7572,
+        "60m": -0.7533,
+        "120m": -1.1739
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478416585.json",
+      "ts": "2026-09-15T13:20:15.712986+00:00",
+      "price": 76914.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.7809,
+        "60m": -0.6705,
+        "120m": -1.2076
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478476456.json",
+      "ts": "2026-09-15T13:21:15.636730+00:00",
+      "price": 76917.3,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.9904,
+        "60m": -0.614,
+        "120m": -1.1433
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478536883.json",
+      "ts": "2026-09-15T13:22:15.889173+00:00",
+      "price": 76937.3,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -1.012,
+        "60m": -0.6399,
+        "120m": -1.2181
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478596868.json",
+      "ts": "2026-09-15T13:23:15.825114+00:00",
+      "price": 76910.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.8847,
+        "60m": -0.6857,
+        "120m": -1.0988
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478656714.json",
+      "ts": "2026-09-15T13:24:15.898145+00:00",
+      "price": 76918.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.8951,
+        "60m": -0.7451,
+        "120m": -0.7613
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478716739.json",
+      "ts": "2026-09-15T13:25:15.862697+00:00",
+      "price": 76892.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.8046,
+        "60m": -0.676,
+        "120m": -0.6019
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478777058.json",
+      "ts": "2026-09-15T13:26:16.206415+00:00",
+      "price": 76920.3,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.6851,
+        "60m": -0.6919,
+        "120m": -0.7081
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478837546.json",
+      "ts": "2026-09-15T13:27:16.476594+00:00",
+      "price": 76893.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.6013,
+        "60m": -0.5978,
+        "120m": -0.6603
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478896450.json",
+      "ts": "2026-09-15T13:28:15.548940+00:00",
+      "price": 76885.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.5905,
+        "60m": -0.587,
+        "120m": -0.6494
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789478956482.json",
+      "ts": "2026-09-15T13:29:15.628521+00:00",
+      "price": 76952.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.6487,
+        "60m": -0.8318,
+        "120m": -0.7381
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479016827.json",
+      "ts": "2026-09-15T13:30:15.630807+00:00",
+      "price": 76913.3,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.4224,
+        "60m": -0.7807,
+        "120m": -0.7264
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479076687.json",
+      "ts": "2026-09-15T13:31:15.813561+00:00",
+      "price": 76774.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.2795,
+        "60m": -0.7087,
+        "120m": -0.6025
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479137171.json",
+      "ts": "2026-09-15T13:32:15.910716+00:00",
+      "price": 76726.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.3655,
+        "60m": -0.7137,
+        "120m": -0.5667
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479196496.json",
+      "ts": "2026-09-15T13:33:15.447939+00:00",
+      "price": 76736.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.378,
+        "60m": -0.7263,
+        "120m": -0.5793
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479256364.json",
+      "ts": "2026-09-15T13:34:15.476429+00:00",
+      "price": 76777.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.2936,
+        "60m": -0.8181,
+        "120m": -0.5864
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479316428.json",
+      "ts": "2026-09-15T13:35:15.579276+00:00",
+      "price": 76745.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.4501,
+        "60m": -0.7766,
+        "120m": -0.4701
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479376674.json",
+      "ts": "2026-09-15T13:36:15.654151+00:00",
+      "price": 76688.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.4793,
+        "60m": -0.8621,
+        "120m": -0.4555
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479436668.json",
+      "ts": "2026-09-15T13:37:15.834462+00:00",
+      "price": 76567.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.3337,
+        "60m": -0.6265,
+        "120m": -0.2057
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479496780.json",
+      "ts": "2026-09-15T13:38:15.927961+00:00",
+      "price": 76477.3,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.1777,
+        "60m": -0.5094,
+        "120m": -0.1606
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479557032.json",
+      "ts": "2026-09-15T13:39:15.949824+00:00",
+      "price": 76333.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.011,
+        "60m": -0.5083,
+        "120m": 0.0786
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479616769.json",
+      "ts": "2026-09-15T13:40:15.841299+00:00",
+      "price": 76282.0,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.22,
+        "60m": -0.7143,
+        "120m": 0.1341
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479677065.json",
+      "ts": "2026-09-15T13:41:15.993563+00:00",
+      "price": 76472.5,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.0795,
+        "60m": -0.9082,
+        "120m": -0.1367
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479736976.json",
+      "ts": "2026-09-15T13:42:16.162333+00:00",
+      "price": 76403.6,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.0275,
+        "60m": -0.7853,
+        "120m": -0.036
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479797042.json",
+      "ts": "2026-09-15T13:43:16.181339+00:00",
+      "price": 76342.8,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0521,
+        "60m": -0.5576,
+        "120m": 0.0436
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479857850.json",
+      "ts": "2026-09-15T13:44:17.051159+00:00",
+      "price": 76346.3,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.044,
+        "60m": -0.6104,
+        "120m": 0.0714
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479916923.json",
+      "ts": "2026-09-15T13:45:16.095186+00:00",
+      "price": 76398.2,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.024,
+        "60m": -0.6779,
+        "120m": 0.0034
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789479976670.json",
+      "ts": "2026-09-15T13:46:15.754372+00:00",
+      "price": 76314.9,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1981,
+        "60m": -0.6577,
+        "120m": 0.1448
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480038084.json",
+      "ts": "2026-09-15T13:47:17.265892+00:00",
+      "price": 76275.7,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0625,
+        "60m": -0.6339,
+        "120m": 0.166
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480096510.json",
+      "ts": "2026-09-15T13:48:15.697956+00:00",
+      "price": 76258.8,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0847,
+        "60m": -0.6119,
+        "120m": 0.1882
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480156806.json",
+      "ts": "2026-09-15T13:49:15.781193+00:00",
+      "price": 76305.8,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0719,
+        "60m": -0.7676,
+        "120m": 0.1888
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480217731.json",
+      "ts": "2026-09-15T13:50:16.907562+00:00",
+      "price": 76313.6,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1113,
+        "60m": -0.8086,
+        "120m": 0.3309
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480276890.json",
+      "ts": "2026-09-15T13:51:16.005872+00:00",
+      "price": 76155.5,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.3801,
+        "60m": -0.7556,
+        "120m": 0.5392
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480337287.json",
+      "ts": "2026-09-15T13:52:16.440469+00:00",
+      "price": 76158.7,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.2946,
+        "60m": -0.6263,
+        "120m": 0.4552
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480397141.json",
+      "ts": "2026-09-15T13:53:15.754430+00:00",
+      "price": 76195.0,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.2469,
+        "60m": -0.6737,
+        "120m": 0.4074
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480457609.json",
+      "ts": "2026-09-15T13:54:16.725037+00:00",
+      "price": 76230.1,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1875,
+        "60m": -0.4452,
+        "120m": 0.2468
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480516586.json",
+      "ts": "2026-09-15T13:55:15.707474+00:00",
+      "price": 76192.1,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.2374,
+        "60m": -0.3956,
+        "120m": 0.2967
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480576572.json",
+      "ts": "2026-09-15T13:56:15.692126+00:00",
+      "price": 76274.1,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1379,
+        "60m": -0.5877,
+        "120m": 0.3879
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480636666.json",
+      "ts": "2026-09-15T13:57:15.603769+00:00",
+      "price": 76393.3,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0535,
+        "60m": -0.7065,
+        "120m": 0.167
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480698306.json",
+      "ts": "2026-09-15T13:58:16.950103+00:00",
+      "price": 76431.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.0216,
+        "60m": -0.6423,
+        "120m": 0.0734
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480757728.json",
+      "ts": "2026-09-15T13:59:16.702174+00:00",
+      "price": 76453.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.1843,
+        "60m": -0.7151,
+        "120m": 0.026
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480816953.json",
+      "ts": "2026-09-15T14:00:16.123595+00:00",
+      "price": 76588.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.4648,
+        "60m": -0.8897,
+        "120m": -0.1499
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480876727.json",
+      "ts": "2026-09-15T14:01:15.835336+00:00",
+      "price": 76560.3,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.4304,
+        "60m": -0.8173,
+        "120m": -0.0617
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480936660.json",
+      "ts": "2026-09-15T14:02:15.731152+00:00",
+      "price": 76500.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.4203,
+        "60m": -0.7399,
+        "120m": 0.0163
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789480997515.json",
+      "ts": "2026-09-15T14:03:16.714413+00:00",
+      "price": 76446.3,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.3354,
+        "60m": -0.6066,
+        "120m": 0.0403
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481056842.json",
+      "ts": "2026-09-15T14:04:15.933747+00:00",
+      "price": 76552.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.526,
+        "60m": -0.6896,
+        "120m": -0.098
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481116947.json",
+      "ts": "2026-09-15T14:05:16.075228+00:00",
+      "price": 76400.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.4203,
+        "60m": -0.5342,
+        "120m": 0.0258
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481177598.json",
+      "ts": "2026-09-15T14:06:16.737799+00:00",
+      "price": 76320.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.3846,
+        "60m": -0.3348,
+        "120m": 0.1318
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481236461.json",
+      "ts": "2026-09-15T14:07:15.611281+00:00",
+      "price": 76321.3,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.3061,
+        "60m": -0.3359,
+        "120m": 0.1306
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481296870.json",
+      "ts": "2026-09-15T14:08:15.502729+00:00",
+      "price": 76311.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.2938,
+        "60m": -0.395,
+        "120m": 0.0569
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481357097.json",
+      "ts": "2026-09-15T14:09:16.100378+00:00",
+      "price": 76341.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.5192,
+        "60m": -0.4433,
+        "120m": -0.0608
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481417045.json",
+      "ts": "2026-09-15T14:10:16.150936+00:00",
+      "price": 76449.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.9322,
+        "60m": -0.5844,
+        "120m": -0.1855
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481477401.json",
+      "ts": "2026-09-15T14:11:16.500627+00:00",
+      "price": 76411.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.8293,
+        "60m": -0.4987,
+        "120m": -0.1012
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481536202.json",
+      "ts": "2026-09-15T14:12:15.332243+00:00",
+      "price": 76364.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.7682,
+        "60m": -0.4374,
+        "120m": -0.0395
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481597136.json",
+      "ts": "2026-09-15T14:13:16.329986+00:00",
+      "price": 76382.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.6094,
+        "60m": -0.5081,
+        "120m": -0.1494
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481657244.json",
+      "ts": "2026-09-15T14:14:16.371237+00:00",
+      "price": 76417.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "flat",
+      "fwd_return_pct": {
+        "30m": -0.7023,
+        "60m": -0.559,
+        "120m": -0.1797
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481717117.json",
+      "ts": "2026-09-15T14:15:16.251066+00:00",
+      "price": 76379.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.6541,
+        "60m": -0.5107,
+        "120m": -0.1705
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481776946.json",
+      "ts": "2026-09-15T14:16:15.966010+00:00",
+      "price": 76466.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.8541,
+        "60m": -0.6581,
+        "120m": -0.1998
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481836771.json",
+      "ts": "2026-09-15T14:17:15.859606+00:00",
+      "price": 76337.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.801,
+        "60m": -0.4157,
+        "120m": -0.0316
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481896696.json",
+      "ts": "2026-09-15T14:18:15.797920+00:00",
+      "price": 76323.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.696,
+        "60m": -0.3974,
+        "120m": 0.0778
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789481956641.json",
+      "ts": "2026-09-15T14:19:15.778148+00:00",
+      "price": 76308.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.7715,
+        "60m": -0.4238,
+        "120m": 0.0705
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482016470.json",
+      "ts": "2026-09-15T14:20:15.596115+00:00",
+      "price": 76360.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.8604,
+        "60m": -0.4915,
+        "120m": 0.0025
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482076235.json",
+      "ts": "2026-09-15T14:21:15.415979+00:00",
+      "price": 76398.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.9189,
+        "60m": -0.472,
+        "120m": -0.0212
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482137305.json",
+      "ts": "2026-09-15T14:22:16.259350+00:00",
+      "price": 76445.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.9985,
+        "60m": -0.582,
+        "120m": -0.015
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482197095.json",
+      "ts": "2026-09-15T14:23:16.206759+00:00",
+      "price": 76383.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.8083,
+        "60m": -0.4159,
+        "120m": 0.0587
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482257055.json",
+      "ts": "2026-09-15T14:24:16.090229+00:00",
+      "price": 76345.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "rising",
+      "fwd_return_pct": {
+        "30m": -0.5957,
+        "60m": -0.0164,
+        "120m": 0.1079
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482317418.json",
+      "ts": "2026-09-15T14:25:16.538069+00:00",
+      "price": 76373.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "flat",
+      "fwd_return_pct": {
+        "30m": -0.7165,
+        "60m": 0.0746,
+        "120m": 0.0223
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482376630.json",
+      "ts": "2026-09-15T14:26:15.751942+00:00",
+      "price": 76379.3,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "flat",
+      "fwd_return_pct": {
+        "30m": -0.7247,
+        "60m": 0.0664,
+        "120m": 0.014
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482436396.json",
+      "ts": "2026-09-15T14:27:15.508844+00:00",
+      "price": 76388.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "flat",
+      "fwd_return_pct": {
+        "30m": -0.6997,
+        "60m": -0.0164,
+        "120m": 0.0405
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482496460.json",
+      "ts": "2026-09-15T14:28:15.615905+00:00",
+      "price": 76434.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "flat",
+      "fwd_return_pct": {
+        "30m": -0.656,
+        "60m": -0.0628,
+        "120m": -0.0336
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482556698.json",
+      "ts": "2026-09-15T14:29:15.412106+00:00",
+      "price": 76415.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "flat",
+      "fwd_return_pct": {
+        "30m": -0.6208,
+        "60m": -0.0394,
+        "120m": 0.0698
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482616776.json",
+      "ts": "2026-09-15T14:30:15.850870+00:00",
+      "price": 76312.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "flat",
+      "fwd_return_pct": {
+        "30m": -0.5318,
+        "60m": 0.0548,
+        "120m": 0.1709
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482676772.json",
+      "ts": "2026-09-15T14:31:15.802966+00:00",
+      "price": 76232.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.3906,
+        "60m": 0.1048,
+        "120m": 0.2458
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482736527.json",
+      "ts": "2026-09-15T14:32:15.629403+00:00",
+      "price": 76230.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.3886,
+        "60m": 0.1069,
+        "120m": 0.1826
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482796413.json",
+      "ts": "2026-09-15T14:33:15.491138+00:00",
+      "price": 76179.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.3551,
+        "60m": 0.1481,
+        "120m": 0.2705
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482856365.json",
+      "ts": "2026-09-15T14:34:15.431242+00:00",
+      "price": 76189.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.2721,
+        "60m": 0.1803,
+        "120m": 0.2495
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482916558.json",
+      "ts": "2026-09-15T14:35:15.660366+00:00",
+      "price": 76149.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.2068,
+        "60m": 0.3089,
+        "120m": 0.2415
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789482976363.json",
+      "ts": "2026-09-15T14:36:15.436960+00:00",
+      "price": 76078.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.1144,
+        "60m": 0.3415,
+        "120m": 0.3958
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483036199.json",
+      "ts": "2026-09-15T14:37:15.296226+00:00",
+      "price": 76026.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.05,
+        "60m": 0.5038,
+        "120m": 0.4758
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483097293.json",
+      "ts": "2026-09-15T14:38:16.198442+00:00",
+      "price": 76087.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": -0.1015,
+        "60m": 0.3506,
+        "120m": 0.3449
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483157642.json",
+      "ts": "2026-09-15T14:39:16.747575+00:00",
+      "price": 75945.0,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.0764,
+        "60m": 0.5899,
+        "120m": 0.5201
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483216741.json",
+      "ts": "2026-09-15T14:40:15.769252+00:00",
+      "price": 75834.0,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.2229,
+        "60m": 0.7257,
+        "120m": 0.6672
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483277102.json",
+      "ts": "2026-09-15T14:41:15.982456+00:00",
+      "price": 75737.1,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.3606,
+        "60m": 0.833,
+        "120m": 0.7562
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483337067.json",
+      "ts": "2026-09-15T14:42:15.917553+00:00",
+      "price": 75778.0,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.2961,
+        "60m": 0.7893,
+        "120m": 0.7034
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483396935.json",
+      "ts": "2026-09-15T14:43:16.029389+00:00",
+      "price": 75803.6,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.2623,
+        "60m": 0.7552,
+        "120m": 0.6793
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483456912.json",
+      "ts": "2026-09-15T14:44:15.917466+00:00",
+      "price": 75917.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.102,
+        "60m": 0.6371,
+        "120m": 0.5586
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483517158.json",
+      "ts": "2026-09-15T14:45:16.259184+00:00",
+      "price": 75880.3,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1443,
+        "60m": 0.7184,
+        "120m": 0.6114
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483578933.json",
+      "ts": "2026-09-15T14:46:17.523281+00:00",
+      "price": 75813.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.1977,
+        "60m": 0.8177,
+        "120m": 0.7388
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483637008.json",
+      "ts": "2026-09-15T14:47:16.079740+00:00",
+      "price": 75725.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.3885,
+        "60m": 0.9336,
+        "120m": 0.8547
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483696826.json",
+      "ts": "2026-09-15T14:48:15.875411+00:00",
+      "price": 75792.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.3007,
+        "60m": 0.805,
+        "120m": 0.748
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483756777.json",
+      "ts": "2026-09-15T14:49:15.859395+00:00",
+      "price": 75720.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.3504,
+        "60m": 0.9638,
+        "120m": 0.8439
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483816813.json",
+      "ts": "2026-09-15T14:50:15.818148+00:00",
+      "price": 75703.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.3721,
+        "60m": 0.978,
+        "120m": 0.8712
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483876677.json",
+      "ts": "2026-09-15T14:51:15.663190+00:00",
+      "price": 75696.5,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.451,
+        "60m": 1.1488,
+        "120m": 0.9418
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483936980.json",
+      "ts": "2026-09-15T14:52:15.936160+00:00",
+      "price": 75580.1,
+      "vp_shape": "B",
+      "price_vs_va": "below_val",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.5557,
+        "60m": 1.224,
+        "120m": 1.118
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789483996866.json",
+      "ts": "2026-09-15T14:53:15.998741+00:00",
+      "price": 75681.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.507,
+        "60m": 1.0884,
+        "120m": 0.9696
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484056798.json",
+      "ts": "2026-09-15T14:54:15.877830+00:00",
+      "price": 75765.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.7488,
+        "60m": 0.9977,
+        "120m": 0.8576
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484117071.json",
+      "ts": "2026-09-15T14:55:16.103676+00:00",
+      "price": 75890.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.7106,
+        "60m": 0.6951,
+        "120m": 0.737
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484177020.json",
+      "ts": "2026-09-15T14:56:16.172940+00:00",
+      "price": 75825.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.7251,
+        "60m": 0.9167,
+        "120m": 0.7548
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484237228.json",
+      "ts": "2026-09-15T14:57:16.191552+00:00",
+      "price": 75853.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.7021,
+        "60m": 0.9017,
+        "120m": 0.7203
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484297145.json",
+      "ts": "2026-09-15T14:58:16.249282+00:00",
+      "price": 75932.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.5954,
+        "60m": 0.7965,
+        "120m": 0.6138
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484357137.json",
+      "ts": "2026-09-15T14:59:16.274745+00:00",
+      "price": 75940.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.4891,
+        "60m": 0.7019,
+        "120m": 0.5421
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484417505.json",
+      "ts": "2026-09-15T15:00:16.373248+00:00",
+      "price": 75907.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.5897,
+        "60m": 0.6808,
+        "120m": 0.5866
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484476227.json",
+      "ts": "2026-09-15T15:01:15.398011+00:00",
+      "price": 75824.7,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.6431,
+        "60m": 0.7901,
+        "120m": 0.6788
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484536940.json",
+      "ts": "2026-09-15T15:02:16.029742+00:00",
+      "price": 75934.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.4705,
+        "60m": 0.7618,
+        "120m": 0.4796
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484596770.json",
+      "ts": "2026-09-15T15:03:15.757142+00:00",
+      "price": 75908.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.5049,
+        "60m": 0.8124,
+        "120m": 0.514
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484656669.json",
+      "ts": "2026-09-15T15:04:15.790811+00:00",
+      "price": 75982.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.4537,
+        "60m": 0.6508,
+        "120m": 0.4521
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484716974.json",
+      "ts": "2026-09-15T15:05:15.657598+00:00",
+      "price": 76024.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.4741,
+        "60m": 0.5634,
+        "120m": 0.3186
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484776867.json",
+      "ts": "2026-09-15T15:06:15.779137+00:00",
+      "price": 75991.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.4564,
+        "60m": 0.563,
+        "120m": 0.3454
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484836659.json",
+      "ts": "2026-09-15T15:07:15.725411+00:00",
+      "price": 76064.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.4536,
+        "60m": 0.4682,
+        "120m": 0.2491
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484896499.json",
+      "ts": "2026-09-15T15:08:15.468962+00:00",
+      "price": 76039.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.349,
+        "60m": 0.4158,
+        "120m": 0.2229
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789484956209.json",
+      "ts": "2026-09-15T15:09:15.362025+00:00",
+      "price": 76010.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.4526,
+        "60m": 0.4394,
+        "120m": 0.2309
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789485016981.json",
+      "ts": "2026-09-15T15:10:16.162196+00:00",
+      "price": 76003.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.5017,
+        "60m": 0.4013,
+        "120m": 0.2443
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789485077406.json",
+      "ts": "2026-09-15T15:11:16.373365+00:00",
+      "price": 76010.2,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.4707,
+        "60m": 0.4265,
+        "120m": 0.2183
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789485136973.json",
+      "ts": "2026-09-15T15:12:15.779195+00:00",
+      "price": 76030.6,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.4438,
+        "60m": 0.3996,
+        "120m": 0.1914
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789485197188.json",
+      "ts": "2026-09-15T15:13:16.220489+00:00",
+      "price": 76002.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.4917,
+        "60m": 0.3501,
+        "120m": 0.2825
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789485257171.json",
+      "ts": "2026-09-15T15:14:16.339990+00:00",
+      "price": 75994.5,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.5346,
+        "60m": 0.3753,
+        "120m": 0.3154
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789485317531.json",
+      "ts": "2026-09-15T15:15:16.505805+00:00",
+      "price": 75989.8,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.5732,
+        "60m": 0.4023,
+        "120m": 0.2961
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789485376506.json",
+      "ts": "2026-09-15T15:16:15.617345+00:00",
+      "price": 75915.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.6723,
+        "60m": 0.5012,
+        "120m": 0.3949
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789485436904.json",
+      "ts": "2026-09-15T15:17:15.746637+00:00",
+      "price": 75962.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.6187,
+        "60m": 0.4613,
+        "120m": 0.3878
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789485497446.json",
+      "ts": "2026-09-15T15:18:16.421816+00:00",
+      "price": 76020.1,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.5028,
+        "60m": 0.4997,
+        "120m": 0.268
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789485556267.json",
+      "ts": "2026-09-15T15:19:15.440671+00:00",
+      "price": 76041.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.5365,
+        "60m": 0.4709,
+        "120m": 0.2392
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789485618107.json",
+      "ts": "2026-09-15T15:20:16.882919+00:00",
+      "price": 75985.4,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.7642,
+        "60m": 0.5223,
+        "120m": 0.4152
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789485676822.json",
+      "ts": "2026-09-15T15:21:15.998388+00:00",
+      "price": 76037.9,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.6947,
+        "60m": 0.4529,
+        "120m": 0.3459
+      }
+    },
+    {
+      "file": "BTCUSDT_2026-09-15_1789485736471.json",
+      "ts": "2026-09-15T15:22:15.632165+00:00",
+      "price": 76012.0,
+      "vp_shape": "B",
+      "price_vs_va": "in_va",
+      "cvd_slope": "falling",
+      "fwd_return_pct": {
+        "30m": 0.6488,
+        "60m": 0.5545,
+        "120m": 0.3555
+      }
     }
   ]
 }
