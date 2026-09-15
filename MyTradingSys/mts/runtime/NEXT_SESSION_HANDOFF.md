@@ -1,3 +1,6 @@
+STATUS: A=done B=done C=done | D=active | B2=active
+STATUS_NOTE: Phase A/B/C complete 2026-09-15. Do not re-run. Proceed to Phase B2 (project structure audit, read-only) then Phase D (resume ops).
+
 ﻿# NEXT SESSION HANDOFF
 # Written: 2026-09-15 evening
 # Mission: DEDUPE + CLEANUP + VERSION CONTROL RESET
@@ -21,25 +24,6 @@ Last session ended mid-cleanup. Two threads open:
 - L_ITEMS_MASTER.md is single source for open loops (L4-L23)
 - Root: VERSION, DSA_SESSION_PROMPT.md, USER.md, COMMANDS.md, pom.xml
 - Apparatus: running, java child alive, state_code.json updating
-
-## BOOT
-
-Per SESSION_MANIFEST.json (runtime canonical):
-0. USER.md
-1. Dumps/BUILD_REPORT.md (must be PASS)
-2. DSA_SESSION_PROMPT.md
-3. MyTradingSys/SESSION_ENTRY.md
-4. MyTradingSys/mts/runtime/session_state.json
-5. MyTradingSys/mts/runtime/session_log.json
-6. MyTradingSys/mts/runtime/current_market_state.md
-7. MyTradingSys/mts/runtime/state_code.json
-8. MyTradingSys/mts/runtime/NEXT_SESSION_HANDOFF.md (this file)
-
-Supplemental (read on first pass):
-- MyTradingSys/mts/research/MTS_DICTIONARY.md (field reference)
-- MyTradingSys/mts/research/L_ITEMS_MASTER.md (open loops)
-- MyTradingSys/mts/research/apparatus_fixes.md (fix log)
-- scripts/load.ps1 (dot-source for aliases)
 
 ## MISSION
 

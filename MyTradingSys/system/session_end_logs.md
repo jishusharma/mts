@@ -1170,3 +1170,12 @@ investigate DSA-HYG-002 filter mismatch, build state-code emitter (A/B/C codes),
 2026-09-15T12:56:22.147Z  A>L -> A  bearish=1 bullish=2  trigger=quiet-decay
 2026-09-15T12:58:22.147Z  A -> A>S  bearish=3 bullish=1  trigger=net_delta_1m,last_3_delta,volume_ratio,cvd_slope,price_vs_vwap
 2026-09-15T13:10:22.148Z  A>S -> A  bearish=2 bullish=1  trigger=quiet-decay
+2026-09-15T13:16:22.152Z  A -> A>L  bearish=0 bullish=2  trigger=net_delta_1m,last_3_delta,volume_ratio,cvd_slope,price_vs_vwap
+2026-09-15T13:18:22.151Z  A>L -> A  bearish=1 bullish=2  trigger=quiet-decay
+2026-09-15T13:21:22.149Z  A -> A>L  bearish=0 bullish=2  trigger=net_delta_1m,last_3_delta,volume_ratio,cvd_slope,price_vs_vwap
+2026-09-15T13:23:22.153Z  A>L -> A  bearish=1 bullish=2  trigger=quiet-decay
+2026-09-15T13:27:22.159Z  A -> A>L  bearish=1 bullish=2  trigger=net_delta_1m,last_3_delta,volume_ratio,cvd_slope,price_vs_vwap
+2026-09-15T13:29:22.156Z  A>L -> L  bearish=0 bullish=4  trigger=net_delta_1m,last_3_delta,volume_ratio,cvd_slope,price_vs_vwap
+2026-09-15T13:37:22.164Z  L -> L>S  bearish=4 bullish=0  trigger=net_delta_1m,last_3_delta,volume_ratio,cvd_slope,price_vs_vwap
+2026-09-15T13:39:22.162Z  L>S -> S  bearish=5 bullish=0  trigger=net_delta_1m,last_3_delta,volume_ratio,cvd_slope,price_vs_vwap
+2026-09-15T13:41:22.160Z  S -> A  bearish=2 bullish=2  trigger=quiet-decay

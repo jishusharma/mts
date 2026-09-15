@@ -26,3 +26,18 @@ backup_session/
 # --- Runtime locks (keep .gitkeep) ---
 MyTradingSys/mts/runtime/locks/*
 !MyTradingSys/mts/runtime/locks/.gitkeep
+
+# AV-triggered stubs - do not commit
+Launch_alert.vbs
+launch_alert.vbs
+
+# --- Apparatus runtime churn (regenerated every cycle) ---
+MyTradingSys/mts/runtime/state_code.json
+MyTradingSys/mts/runtime/current_market_state.md
+MyTradingSys/mts/runtime/session_end_logs.md
+data/apparatus_log.txt
+data/alert_counter.txt
+data/last_alert.json
+data/outcome_labels.json
+data/_prob_label_enriched.json
+data/speed_baselines/*.json

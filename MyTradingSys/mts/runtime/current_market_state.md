@@ -12,10 +12,10 @@
 ---
 
 ## META
-updated_utc: 2026-09-15T13:12:16.219726Z
-last_snapshot: BTCUSDT_20260915_131
+updated_utc: 2026-09-15T13:41:15.993563500Z
+last_snapshot: BTCUSDT_20260915_134
 asset: BTCUSDT
-last_price: 77008.8
+last_price: 76472.5
 
 ## WEEKLY
 poc: 77590.41
@@ -26,20 +26,20 @@ prior_week_poc: 77155.43
 two_week_ago_poc: 79892.45
 
 ## DAILY
-poc: 76892.44
-vah: 77617.91
-val: 76687.31
+poc: 76891.26
+vah: 78007.97
+val: 76585.8
 shape: B
 
 ## POST_FUNDING
-poc: 76892.6
-vah: 77032.79
-val: 76802.48
+poc: 76892.21
+vah: 77107.79
+val: 76375.83
 
 ## INTRADAY_4H
-poc: 76904.14
-vah: 76995.35
-val: 76843.34
+poc: 76360.54
+vah: 76631.03
+val: 76065.0
 
 ## PRIOR_DAY
 close: 78153.3
@@ -52,37 +52,37 @@ val: 77415.36
 ## SWING
 1h_high: 79570.9
 1h_low: 76667.3
-1h_stale: false
+1h_stale: true
 15m_high: 77188.0
 15m_low: 76807.2
-15m_stale: false
+15m_stale: true
 5m_high: 77111.9
-5m_low: 76818.0
+5m_low: 76065.0
 5m_stale: false
 
 ## STATE
 classification: B
-position: in_va
+position: below_val
 last_verdict: 
-unchanged_count: 2
+unchanged_count: 0
 
 ## VWAP
-price: 77330.14
+price: 77225.75
 slope: falling
-band_+1s: 77750.56
-band_+2s: 78170.99
-band_-1s: 76909.71
-band_-2s: 76489.29
+band_+1s: 77709.87
+band_+2s: 78194.0
+band_-1s: 76741.62
+band_-2s: 76257.5
 
 ## CVD
-value: 173.364
-slope: rising
+value: -1216.548
+slope: falling
 
 ## TRADE_FLOW
-net_delta_1m: -0.122
+net_delta_1m: 400.449
 
 ## FUNDING
-current_rate: 9.111e-05
+current_rate: 8.719e-05
 extreme: False
 open_interest_direction: rising
 open_interest_change_1h_pct: 0.42

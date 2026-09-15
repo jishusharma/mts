@@ -1,102 +1,93 @@
-﻿{
-    "version":  "1.0.0",
-    "purpose":  "Session boot manifest. DSA reads this first, then reads every path in boot_files + boot_supplemental within one IBC block.",
-    "boot_files":  [
-                       {
-                           "path":  "USER.md",
-                           "role":  "user_preferences",
-                           "required":  true
-                       },
-                       {
-                           "path":  "Dumps/BUILD_REPORT.md",
-                           "role":  "build_status",
-                           "required":  true
-                       },
-                       {
-                           "path":  "DSA_SESSION_PROMPT.md",
-                           "role":  "behavior_source",
-                           "required":  true
-                       },
-                       {
-                           "path":  "MyTradingSys/SESSION_ENTRY.md",
-                           "role":  "state_handoff",
-                           "required":  true
-                       },
-                       {
-                           "path":  "MyTradingSys/mts/runtime/session_state.json",
-                           "role":  "thesis_ssot",
-                           "required":  true
-                       },
-                       {
-                           "path":  "MyTradingSys/mts/runtime/session_log.json",
-                           "role":  "decision_ledger",
-                           "required":  true
-                       },
-                       {
-                           "path":  "MyTradingSys/mts/runtime/current_market_state.md",
-                           "role":  "structural_baseline",
-                           "required":  true
-                       },
-                       {
-                           "path":  "MyTradingSys/mts/runtime/state_code.json",
-                           "role":  "tick_flow_state",
-                           "required":  true
-                       },
-                       {
-                           "path":  "MyTradingSys/mts/runtime/NEXT_SESSION_HANDOFF.md",
-                           "role":  "mission",
-                           "required":  true
-                       }
-                   ],
-    "boot_supplemental":  [
-                              {
-                                  "path":  "MyTradingSys/mts/research/MTS_DICTIONARY.md",
-                                  "role":  "field_reference",
-                                  "required":  false
-                              },
-                              {
-                                  "path":  "MyTradingSys/mts/runtime/RESEARCH_TASK_PREMARKET.md",
-                                  "role":  "mission_research",
-                                  "required":  false
-                              },
-                              {
-                                  "path":  "MyTradingSys/methodology/playbook.md",
-                                  "role":  "research_gate",
-                                  "mode":  "part_I",
-                                  "required":  false
-                              },
-                              {
-                                  "path":  "MyTradingSys/mts/research/apparatus_fixes.md",
-                                  "role":  "open_items",
-                                  "required":  false
-                              },
-                              {
-                                  "path":  "MyTradingSys/mts/runtime/log_decision.py",
-                                  "role":  "decision_logger",
-                                  "required":  true
-                              },
-                              {
-                                  "path":  "data/apparatus_log.txt",
-                                  "mode":  "tail",
-                                  "lines":  60,
-                                  "role":  "recent_cycles",
-                                  "required":  true
-                              },
-                              {
-                                  "path":  "data/snapshots/",
-                                  "mode":  "latest_glob",
-                                  "pattern":  "BTCUSDT_*.json",
-                                  "count":  1,
-                                  "role":  "live_snapshot",
-                                  "required":  true
-                              }
-                          ],
-    "process_check":  [
-                          "java",
-                          "powershell"
-                      ],
-    "handoff_required_fields":  [
-                                    "NEWS_SOURCE",
-                                    "open_loops_with_inline_descriptions"
-                                ]
+{
+  "version": "1.1.0",
+  "purpose": "Boot manifest. DSA reads this first, then reads every boot_files + boot_supplemental path in one IBC block.",
+  "boot_files": [
+    {
+      "path": "USER.md",
+      "role": "user_preferences",
+      "read": "full"
+    },
+    {
+      "path": "Dumps/BUILD_REPORT.md",
+      "role": "build_status",
+      "read": "full"
+    },
+    {
+      "path": "DSA_SESSION_PROMPT.md",
+      "role": "behavior_source",
+      "read": "full"
+    },
+    {
+      "path": "MyTradingSys/SESSION_ENTRY.md",
+      "role": "state_handoff",
+      "read": "full"
+    },
+    {
+      "path": "MyTradingSys/mts/runtime/session_state.json",
+      "role": "thesis_ssot",
+      "read": "full"
+    },
+    {
+      "path": "MyTradingSys/mts/runtime/current_market_state.md",
+      "role": "structural_baseline",
+      "read": "full"
+    },
+    {
+      "path": "MyTradingSys/mts/runtime/state_code.json",
+      "role": "tick_flow_state",
+      "read": "full"
+    },
+    {
+      "path": "MyTradingSys/mts/runtime/NEXT_SESSION_HANDOFF.md",
+      "role": "mission",
+      "read": "full"
+    },
+    {
+      "path": "MyTradingSys/mts/runtime/session_log.json",
+      "role": "decision_ledger",
+      "read": "skip"
+    }
+  ],
+  "boot_supplemental": [
+    {
+      "path": "MyTradingSys/mts/research/L_ITEMS_MASTER.md",
+      "role": "open_loops_ssot",
+      "read": "full"
+    },
+    {
+      "path": "MyTradingSys/mts/research/MTS_DICTIONARY.md",
+      "role": "field_reference",
+      "read": "full"
+    },
+    {
+      "path": "MyTradingSys/mts/research/apparatus_fixes.md",
+      "role": "fix_log",
+      "read": "full"
+    },
+    {
+      "path": "MyTradingSys/methodology/playbook.md",
+      "role": "research_gate",
+      "read": "part_I"
+    },
+    {
+      "path": "data/apparatus_log.txt",
+      "role": "recent_cycles",
+      "read": "tail",
+      "lines": 60
+    },
+    {
+      "path": "data/snapshots/",
+      "role": "live_snapshot",
+      "read": "latest_glob",
+      "pattern": "BTCUSDT_*.json",
+      "count": 1
+    }
+  ],
+  "process_check": [
+    "java"
+  ],
+  "handoff_required_fields": [
+    "STATUS",
+    "STATUS_NOTE"
+  ]
 }

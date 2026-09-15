@@ -8,3 +8,6 @@ function lh { & "$ScriptDir\live\lh.ps1" }
 function la { & "$ScriptDir\live\la.ps1" }
 function lc { & "$ScriptDir\live\lc.ps1" }
 "mts loaded: lx ld lt lf lh la lc"
+function mts-start { & "$ScriptDir\..\session-start.ps1" @args }
+
+
