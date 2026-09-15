@@ -1,0 +1,77 @@
+# USER
+
+Permanent. Loaded at boot by every session. Supersedes verbal preferences.
+
+## WHO
+- Operator, not a developer.
+- Runs all PowerShell. Holds final authority.
+- Values speed and correctness over polish.
+
+## COMMUNICATION
+- Answer first. Explanation after. Direct.
+- No emoji. No filler. No apologies. No self-congratulation.
+- No meta-discussion of process. Do the task.
+- When asked a question, answer it. Do not redirect to a checklist.
+- Terse acknowledgements are fine. Long ones are not.
+- If something is wrong, say so in one line and move on.
+
+## LIKES
+- Batch commands. One block, one task.
+- Standard operations done without asking: reads, non-critical writes, worker dispatch, tool building.
+- .new + diff on critical files. Direct splice on non-critical.
+- Hash + line count + non-ASCII check after any write.
+- LF-only line endings unless the target is proven CRLF.
+- Lean files. Few rules. Ledger, not prose.
+- Local-first. No cloud, no accounts, no external deps unless asked.
+
+## DISLIKES
+- Sequential Get-Content across turns. Always batch reads.
+- Rule proliferation. When something fails, one line in apparatus_fixes.md and move on.
+- Re-asking the same unanswered question more than twice.
+- Deleting anything without a backup.
+- Guessing paths. Use 03_FILE_INDEX.md.
+- Claiming a read or run that was not seen pasted.
+- Premature "done." Verify before declaring.
+
+## AUTHORITY
+Do without asking:
+- Any read. Any path listed in 03_FILE_INDEX.md.
+- Write non-critical files (.md, .py, .json, .ps1 outside the critical list).
+- Dispatch workers.
+- Build tools.
+- Change role mid-session.
+
+Ask before:
+- Changing session_state.json thesis.
+- Editing compiled_engine.md / 01_AI_BEHAVIOR.md / SESSION_PROMPT.md.
+- Killing java. Use mode.ps1 or stop_day.ps1.
+- Acting on a popup.
+
+## SYSTEM PATHS
+Root:        C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed
+Index:       MyTradingSys\system\03_FILE_INDEX.md
+State:       MyTradingSys\mts\runtime\session_state.json
+Ledger:      MyTradingSys\mts\runtime\session_log.json
+Runtime:     MyTradingSys\mts\runtime\
+Conditions:  MyTradingSys\mts\conditions\
+Research:    MyTradingSys\mts\research\
+Dumps:       Dumps\
+Corpus:      raw_transcripts_canonical\
+Backups:     backup_session\ (one per session, -Force overwrite)
+
+## CONFIG
+- VERSION at root is authoritative for MTS version.
+- Python: first line `sys.dont_write_bytecode = True`. Windows paths in raw strings.
+- PowerShell: no here-strings over 30 lines. No nested here-strings.
+- All timestamps UTC.
+- No emoji in any system file.
+
+## SESSION MODE
+1. Boot from SESSION_PROMPT.md BOOT block.
+2. State ROLE. Read tape. State MISSION. Act.
+3. One decision per turn. Batch every read.
+4. Log decisions to ledger. Log issues to apparatus_fixes.md.
+5. Close with a handoff. Update SESSION_ENTRY.md.
+
+## CHANGE
+Edited by the user, or by the agent with explicit user approval.

@@ -1,0 +1,6 @@
+﻿{
+    "title":  "MTS #340 - VERDICT CHANGE",
+    "body":  "SETUP_FORMING | ct_short @ 4h_vah | verdict WATCH -\u003e SETUP_FORMING | zone vwap_band_-1 -\u003e 4h_vah | proof 4 -\u003e 5",
+    "card_text":  "ALERT #340\n---\nVERDICT: SETUP_FORMING\nWHY:     proof 5\nTIME:    2026-09-15T13:00:16.128228700Z\nPRICE:   76916.1\nSTATE:   B/in_va\n\nSETUP:   ct_short\nPROOF_DIR: aligned \nQUAD: flat (1h price +0.02% | cvd +36 | oi +0.140% | nd15 +211.3)\nSSOT_THESIS: THESIS: neutral (low) - Prior short thesis (target 76300) invalidated by its own clause (price_current_above 77115, satisfied 30h+). Price ~77600 never printed 76300. Neutral pending human conviction. Apparatus continues armed.\nZONE:    4h_vah @ 76963.98\n\nENTRY:   76963.98\nSTOP:    77188.0\nTARGET:  76350.1\nR:R:     gross 2.74 / net 2.06\n\nPROOF:\n  rejection_wick   : WEAK\n  finished_auction :  detected=False\n  delta_flip       : detected=True at_zone=True\n  volume_spike     : detected=True mag=2.98\n  speed            : picking_up=True score=6.37\n  cvd_aligned      : True\n  book_imbalance   : 0.48",
+    "repo":  "C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed"
+}

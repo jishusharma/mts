@@ -1,0 +1,28 @@
+﻿# --- Python ---
+__pycache__/
+*.py[cod]
+*.new
+
+# --- IDE ---
+.idea/
+*.iml
+
+# --- Maven ---
+target/
+
+# --- Runtime data (regenerable) ---
+data/snapshots/*.json
+data/snapshots/historical/
+data/apparatus.lock
+
+# --- Dumps (except boot-critical BUILD_REPORT.md) ---
+Dumps/*
+!Dumps/BUILD_REPORT.md
+!Dumps/.gitkeep
+
+# --- Session backups ---
+backup_session/
+
+# --- Runtime locks (keep .gitkeep) ---
+MyTradingSys/mts/runtime/locks/*
+!MyTradingSys/mts/runtime/locks/.gitkeep
