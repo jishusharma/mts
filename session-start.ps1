@@ -3,7 +3,7 @@
 param([switch]$NoClipboard)
 
 $ErrorActionPreference = 'Stop'
-Set-Location (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+Set-Location $PSScriptRoot
 
 $manifestPath = 'MyTradingSys\mts\runtime\SESSION_MANIFEST.json'
 $handoffPath  = 'MyTradingSys\mts\runtime\NEXT_SESSION_HANDOFF.md'
