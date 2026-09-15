@@ -60,14 +60,13 @@ $statusBlock
 Step 4b - Paste-on-demand menu (Dumps/):
   Session must ask user for one dump if the task needs it. Never assume contents.
     DUMP_CODE_JAVA.md   - Java: apparatus + state machine
-    DUMP_CODE_CORE.md   - core system view
+    DUMP_SYSTEM_DOCS.md - system/ folder (docs, status, behavior, capabilities)
     DUMP_CODE_RUNTIME.md- Python math layer
     DUMP_CONDITIONS.md  - MTS rule files
     DUMP_METHODOLOGY.md - Tom methodology
     DUMP_RESEARCH.md    - research notes
     DUMP_CARDS.md       - historical trade cards
     DUMP_DATA.md        - schemas + sample snapshot
-    DUMP_SYSTEM.md      - system support
     DUMP_TESTS.md       - test suite
     DUMP_EXTRACTS.md    - Tom transcripts (788KB)
     alert_audit_Q2.csv / alert_audit_Q3Q4.csv - alert audit data

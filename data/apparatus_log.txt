@@ -9753,3 +9753,13 @@
 2026-09-15 13:44:19 | 2026-09-15T13:44:17 | 76346.30 | B/below_val | WAIT_TRIGGER (price not at zone) | ct_long @ 1h_swing_low 76667.30 | nrr=2.68 | p=5 | pd=aligned
 2026-09-15 13:44:19 | no change
 2026-09-15 13:44:19 | sleep 51s -> next candle close+10s
+2026-09-15 13:45:10 | --- cycle 201 ---
+2026-09-15 13:45:17 | state_updated
+2026-09-15 13:45:18 | 2026-09-15T13:45:16 | 76398.20 | B/below_val | WAIT_TRIGGER (price not at zone) | ct_long @ 1h_swing_low 76667.30 | nrr=2.66 | p=3 | pd=aligned
+2026-09-15 13:45:18 | no change
+2026-09-15 13:45:18 | sleep 52s -> next candle close+10s
+2026-09-15 13:46:10 | --- cycle 202 ---
+2026-09-15 13:46:17 | state_updated
+2026-09-15 13:46:18 | 2026-09-15T13:46:15 | 76314.90 | B/below_val | WAIT_TRIGGER (price not at zone) | ct_long @ 1h_swing_low 76667.30 | nrr=2.65 | p=3 | pd=aligned
+2026-09-15 13:46:18 | no change
+2026-09-15 13:46:18 | sleep 52s -> next candle close+10s
