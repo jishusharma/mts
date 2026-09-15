@@ -1,12 +1,12 @@
 {
-  "timestamp_utc" : "2026-09-15T13:46:22.166Z",
-  "state" : "A",
+  "timestamp_utc" : "2026-09-15T13:47:22.162Z",
+  "state" : "A>S",
   "bearish_count" : 3,
   "bullish_count" : 0,
   "available_signals" : 5,
-  "seconds_in_state" : 60,
-  "last_transition_utc" : "2026-09-15T13:45:22.164Z",
-  "transition_chain_15m" : [ "A>L", "A", "A>S", "A", "A>L", "A", "A>L", "A", "A>L", "L", "L>S", "S", "A", "A>S", "A" ],
+  "seconds_in_state" : 0,
+  "last_transition_utc" : "2026-09-15T13:47:22.162Z",
+  "transition_chain_15m" : [ "A", "A>S", "A", "A>L", "A", "A>L", "A", "A>L", "L", "L>S", "S", "A", "A>S", "A", "A>S" ],
   "weekend" : false,
   "signals" : {
     "net_delta_1m" : "bearish",

@@ -9763,3 +9763,8 @@
 2026-09-15 13:46:18 | 2026-09-15T13:46:15 | 76314.90 | B/below_val | WAIT_TRIGGER (price not at zone) | ct_long @ 1h_swing_low 76667.30 | nrr=2.65 | p=3 | pd=aligned
 2026-09-15 13:46:18 | no change
 2026-09-15 13:46:18 | sleep 52s -> next candle close+10s
+2026-09-15 13:47:10 | --- cycle 203 ---
+2026-09-15 13:47:18 | state_updated
+2026-09-15 13:47:20 | 2026-09-15T13:47:17 | 76275.70 | B/below_val | WAIT_RR (net_rr 1.93 < 2.0) | scalp_long @ vwap_band_-2 76212.39 | nrr=1.93 | p=4 | pd=aligned
+2026-09-15 13:47:20 | no change
+2026-09-15 13:47:20 | sleep 50s -> next candle close+10s

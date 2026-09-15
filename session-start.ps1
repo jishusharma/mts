@@ -1,4 +1,4 @@
-﻿# scripts\core\session-start.ps1 - emits paste-ready session-start block.
+﻿# session-start.ps1 - emits ONE paste-ready block with prompt + all boot content
 [CmdletBinding()]
 param([switch]$NoClipboard)
 
@@ -10,80 +10,88 @@ $handoffPath  = 'MyTradingSys\mts\runtime\NEXT_SESSION_HANDOFF.md'
 $logPath      = 'MyTradingSys\mts\runtime\session_log.json'
 
 $m = Get-Content $manifestPath -Raw | ConvertFrom-Json
-$boot = New-Object System.Collections.Generic.List[string]
 
-$emit = {
+function Get-ReadBody {
     param($f)
+    if (-not (Test-Path $f.path)) { return "MISSING: $($f.path)" }
     switch ($f.read) {
-        'full'        { $boot.Add("Get-Content $($f.path)") }
-        'skip'        { $boot.Add("# skip $($f.path) - see Step 4 context") }
-        'tail'        { $boot.Add("Get-Content $($f.path) -Tail $($f.lines)") }
-        'part_I'      { $boot.Add("(Get-Content $($f.path) -Raw) -split '(?im)^##\s+Part\s+II\b',2 | Select-Object -First 1") }
-        'latest_glob' { $boot.Add("Get-ChildItem $($f.path) -Filter '$($f.pattern)' | Sort-Object LastWriteTime -Descending | Select-Object -First $($f.count) | ForEach-Object { Get-Content `$_.FullName }") }
-        default       { $boot.Add("Get-Content $($f.path)") }
+        'full'        { return (Get-Content $f.path -Raw) }
+        'tail'        { return ((Get-Content $f.path -Tail $f.lines) -join "`n") }
+        'part_I'      { return (((Get-Content $f.path -Raw) -split '(?im)^##\s+Part\s+II\b',2)[0]) }
+        'latest_glob' {
+            $file = Get-ChildItem $f.path -Filter $f.pattern | Sort-Object LastWriteTime -Descending | Select-Object -First $f.count
+            if ($file) { return (Get-Content $file.FullName -Raw) } else { return "(no snapshot)" }
+        }
+        'skip'        { return "(skipped - see session_log context below)" }
+        default       { return (Get-Content $f.path -Raw) }
     }
 }
-$m.boot_files        | ForEach-Object { & $emit $_ }
-$m.boot_supplemental | ForEach-Object { & $emit $_ }
 
-$events   = (Get-Content $logPath -Raw | ConvertFrom-Json).events
-$last     = $events | Select-Object -Last 1
-$lastLine = "{0}  {1}" -f $last.ts, $last.verdict
+$sb = [System.Text.StringBuilder]::new()
 
-# STATUS block = first lines of handoff up to first blank line
-$statusLines = Get-Content $handoffPath -TotalCount 20 |
-    Where-Object { $_ -match '^STATUS' } |
-    ForEach-Object { "  $_" }
-$statusBlock = if ($statusLines) { $statusLines -join "`n" } else { "  STATUS: (missing)" }
+[void]$sb.AppendLine("Resuming MTS. Paste-once session start.")
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("Role: state your role (COORDINATOR or WORKER) per DSA_SESSION_PROMPT.md section 1.")
+[void]$sb.AppendLine("Phases A/B/C done. Do not re-run. Mission per STATUS in handoff below.")
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("If a task needs more context, ask user to paste ONE dump from Dumps/ (menu at end).")
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("=" * 72)
+[void]$sb.AppendLine("BOOT CONTENT (do not ask for these again)")
+[void]$sb.AppendLine("=" * 72)
 
-$sep = "`n    "
-$block = @"
-Resuming MTS.
+foreach ($f in ($m.boot_files + $m.boot_supplemental)) {
+    [void]$sb.AppendLine("")
+    [void]$sb.AppendLine("### $($f.path) [$($f.role)] ###")
+    $body = Get-ReadBody $f
+    [void]$sb.AppendLine($body)
+}
 
-Role: state your role (COORDINATOR or WORKER) per DSA_SESSION_PROMPT.md section 1.
+# Session log context
+$events = (Get-Content $logPath -Raw | ConvertFrom-Json).events
+$last = $events | Select-Object -Last 1
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("### session_log context ###")
+[void]$sb.AppendLine("events: $($events.Count)")
+[void]$sb.AppendLine("last:   $($last.ts)  $($last.verdict)")
 
-Step 1 - Load aliases:
-    . .\scripts\load.ps1
+# Process check
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("### java process ###")
+$java = Get-Process java -ErrorAction SilentlyContinue | Select-Object Id, StartTime, Path
+if ($java) { [void]$sb.AppendLine(($java | Out-String).Trim()) } else { [void]$sb.AppendLine("(none)") }
 
-Step 2 - Boot block (one IBC, one turn):
-    $($boot -join $sep)
+# Dumps menu
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("=" * 72)
+[void]$sb.AppendLine("PASTE-ON-DEMAND DUMPS (ask user for one at a time)")
+[void]$sb.AppendLine("=" * 72)
+@"
+  DUMP_CODE_JAVA.md    - Java: apparatus + state machine
+  DUMP_CODE_RUNTIME.md - Python math layer
+  DUMP_SYSTEM_DOCS.md  - system/ docs (behavior, status, capabilities)
+  DUMP_CONDITIONS.md   - MTS rule files
+  DUMP_METHODOLOGY.md  - Tom methodology + playbook
+  DUMP_RESEARCH.md     - research notes
+  DUMP_CARDS.md        - historical trade cards
+  DUMP_DATA.md         - schemas + sample snapshot
+  DUMP_TESTS.md        - test suite
+  DUMP_EXTRACTS.md     - Tom transcripts (788KB)
+  alert_audit_Q2.csv / Q3Q4.csv - alert audit data
+"@ -split "`n" | ForEach-Object { [void]$sb.AppendLine($_) }
 
-Step 3 - Health check:
-    lh
-    Get-Process java -ErrorAction SilentlyContinue | Select-Object Id, StartTime, Path
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("Constraints:")
+[void]$sb.AppendLine("  - USER.md binds. Terse. Answer first. No emoji.")
+[void]$sb.AppendLine("  - One IBC per task. Batch every read.")
+[void]$sb.AppendLine("  - Rule 51 / 51(d-inline) / 52.")
+[void]$sb.AppendLine("  - No blind java kill. No session_state.json thesis change. Human commits.")
+[void]$sb.AppendLine("  - Read-only first. One decision per turn.")
 
-Step 4 - Context:
-$statusBlock
-  session_log events: $($events.Count)
-  Last event:         $lastLine
-
-Step 4b - Paste-on-demand menu (Dumps/):
-  Session must ask user for one dump if the task needs it. Never assume contents.
-    DUMP_CODE_JAVA.md   - Java: apparatus + state machine
-    DUMP_SYSTEM_DOCS.md - system/ folder (docs, status, behavior, capabilities)
-    DUMP_CODE_RUNTIME.md- Python math layer
-    DUMP_CONDITIONS.md  - MTS rule files
-    DUMP_METHODOLOGY.md - Tom methodology
-    DUMP_RESEARCH.md    - research notes
-    DUMP_CARDS.md       - historical trade cards
-    DUMP_DATA.md        - schemas + sample snapshot
-    DUMP_TESTS.md       - test suite
-    DUMP_EXTRACTS.md    - Tom transcripts (788KB)
-    alert_audit_Q2.csv / alert_audit_Q3Q4.csv - alert audit data
-  Rule: one dump per ask. Wait for paste before proceeding.
-
-Step 5 - Mission: per STATUS above. Skip any phase marked done. Full handoff is in the boot block.
-
-Constraints:
-  - USER.md binds. Terse. Answer first. No emoji.
-  - One IBC per task. Batch every read.
-  - Rule 51 (intent/challenge/execute/outcome). Rule 51(d-inline). Rule 52.
-  - No blind java kill. No session_state.json thesis change. Human commits.
-  - Read-only first. One decision per turn.
-"@
-
-Write-Host $block
+$block = $sb.ToString()
+Write-Host "generated: $($block.Length) chars"
 if (-not $NoClipboard) {
-    try { Set-Clipboard -Value $block; Write-Host "`n[copied]" -ForegroundColor Green }
-    catch { Write-Host "`n[clipboard unavailable]" -ForegroundColor Yellow }
+    try { Set-Clipboard -Value $block; Write-Host "[copied to clipboard]" -ForegroundColor Green }
+    catch { Write-Host "[clipboard fail - writing to Dumps\SESSION_PASTE.txt]" -ForegroundColor Yellow
+            Set-Content -Path 'Dumps\SESSION_PASTE.txt' -Value $block -Encoding utf8 }
 }
