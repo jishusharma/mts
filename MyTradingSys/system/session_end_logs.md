@@ -1179,3 +1179,4 @@ investigate DSA-HYG-002 filter mismatch, build state-code emitter (A/B/C codes),
 2026-09-15T13:37:22.164Z  L -> L>S  bearish=4 bullish=0  trigger=net_delta_1m,last_3_delta,volume_ratio,cvd_slope,price_vs_vwap
 2026-09-15T13:39:22.162Z  L>S -> S  bearish=5 bullish=0  trigger=net_delta_1m,last_3_delta,volume_ratio,cvd_slope,price_vs_vwap
 2026-09-15T13:41:22.160Z  S -> A  bearish=2 bullish=2  trigger=quiet-decay
+2026-09-15T13:43:22.159Z  A -> A>S  bearish=3 bullish=0  trigger=net_delta_1m,last_3_delta,volume_ratio,cvd_slope,price_vs_vwap

@@ -42,9 +42,6 @@ Resuming MTS.
 
 Role: state your role (COORDINATOR or WORKER) per DSA_SESSION_PROMPT.md section 1.
 
-SECOND PASTE: user will paste Dumps/DUMP_CODE_JAVA.md after this block.
-Wait for it before acting.
-
 Step 1 - Load aliases:
     . .\scripts\load.ps1
 

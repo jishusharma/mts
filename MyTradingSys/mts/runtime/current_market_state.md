@@ -12,10 +12,10 @@
 ---
 
 ## META
-updated_utc: 2026-09-15T13:42:16.162333600Z
+updated_utc: 2026-09-15T13:44:17.051159200Z
 last_snapshot: BTCUSDT_20260915_134
 asset: BTCUSDT
-last_price: 76403.6
+last_price: 76346.3
 
 ## WEEKLY
 poc: 77590.41
@@ -27,18 +27,18 @@ two_week_ago_poc: 79892.45
 
 ## DAILY
 poc: 76891.26
-vah: 78017.99
+vah: 78088.09
 val: 76585.8
 shape: B
 
 ## POST_FUNDING
-poc: 76892.21
-vah: 77107.79
-val: 76375.83
+poc: 76365.8
+vah: 76822.02
+val: 76100.09
 
 ## INTRADAY_4H
-poc: 76360.54
-vah: 76626.02
+poc: 76365.55
+vah: 76610.99
 val: 76065.0
 
 ## PRIOR_DAY
@@ -67,28 +67,28 @@ last_verdict:
 unchanged_count: 0
 
 ## VWAP
-price: 77222.34
+price: 77214.23
 slope: falling
-band_+1s: 77708.31
-band_+2s: 78194.28
-band_-1s: 76736.37
-band_-2s: 76250.39
+band_+1s: 77705.14
+band_+2s: 78196.04
+band_-1s: 76723.33
+band_-2s: 76232.42
 
 ## CVD
-value: -1211.522
+value: -1445.079
 slope: falling
 
 ## TRADE_FLOW
-net_delta_1m: 5.026
+net_delta_1m: -2.247
 
 ## FUNDING
-current_rate: 8.719e-05
+current_rate: 8.868e-05
 extreme: False
 open_interest_direction: rising
 open_interest_change_1h_pct: 0.42
 
 ## SPOT_PERP
-basis_pct: 0.02
-direction: premium
+basis_pct: -0.05
+direction: discount
 
 # END
