@@ -76,20 +76,6 @@
                                   "read":  "latest_glob",
                                   "pattern":  "BTCUSDT_*.json",
                                   "count":  1
-                              },
-                              {
-                                  "path":  "MyTradingSys/mts/research/",
-                                  "role":  "session_learnings_latest",
-                                  "read":  "latest_glob",
-                                  "pattern":  "SESSION_LEARNINGS_*.md",
-                                  "count":  1
-                              },
-                              {
-                                  "path":  "MyTradingSys/mts/research/",
-                                  "role":  "rule32_evidence_latest",
-                                  "read":  "latest_glob",
-                                  "pattern":  "EVIDENCE_*.md",
-                                  "count":  1
                               }
                           ],
     "process_check":  [
