@@ -37,6 +37,8 @@
 | L22 | 2026-09-15 | CLOSED | Rule 50 duplicate: market_state_rules.md == proof_requirements_formatted.md (57KB each). Deleted the latter 2026-09-15. Rule 50 gate now satisfied. | L_ITEMS_MASTER.md |
 | L23 | 2026-09-15 | CLOSED 2026-09-16 | Dumps\kimi_*.md renamed to dump_*.md. Stale DUMP_*.md moved to backup. Legacy tool name removed from scripts, prompts, and docs. | 2026-09-16 session |
 | L24 | 2026-09-15 | CLOSED | Mojibake claim in NEXT_SESSION_HANDOFF.md did not reproduce. Byte-level check of 5 declared files: 0 hits of C3 A2 E2 80 9D. L4 (prior viewer-artifact closure) stands. | Phase A A9 2026-09-15 |
+| L27 | 2026-09-16 | OPEN | MTS_DICTIONARY.md Authority column has mojibake (Cyrillic-decoded UTF-8). Cosmetic. Fix by re-encoding source or accepting and moving on. | 2026-09-16 boot paste |
+| L26 | 2026-09-16 | OPEN | state_code.signals.cvd_slope empty while snapshot cvd.slope has value. Java StateCodeEmitter source trace needed. | apparatus_fixes.md O1 |
 | L25 | 2026-09-16 | OPEN | US cash open classifier uses fixed hour 13.5 UTC. Correct for DST (EDT). Wrong for winter (EST opens 14:30 UTC). Fix: compute DST per date or read from a season table. Needs 3-snapshot proof before any code change. | src\main\java\datafeed\MarketDataSnapshot.java line 761 |
 
 ## NO EVIDENCE

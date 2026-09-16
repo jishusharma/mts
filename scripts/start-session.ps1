@@ -135,6 +135,17 @@ foreach ($sf in $scriptFiles) {
 }
 
 [void]$sb.AppendLine("")
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("### MTS_DICTIONARY - CANONICAL FIELDS ###")
+$dictPath = Join-Path $root 'MyTradingSys\mts\research\MTS_DICTIONARY.md'
+if (Test-Path $dictPath) {
+    $dict = Get-Content $dictPath -Raw
+    if ($dict -match '(?s)## CANONICAL FIELDS.*?(?=\r?\n## |\z)') {
+        [void]$sb.AppendLine($Matches[0])
+    }
+}
+
+[void]$sb.AppendLine("")
 [void]$sb.AppendLine("### COMMANDS.md ###")
 $cmdPath = Join-Path $root 'COMMANDS.md'
 if (Test-Path $cmdPath) {
@@ -192,4 +203,4 @@ Write-Host "  Set your chat title to exactly this." -ForegroundColor Yellow
 Write-Host "==========================================================" -ForegroundColor Yellow
 Write-Host ""
 Write-Host "NEXT: open $pasteFile, select all, copy, paste into a fresh chat." -ForegroundColor Cyan
-Write-Host "      shortcuts loaded: quick deltas trend snapshot overview health alerts mts-start gitsnap gitsee gitundo" -ForegroundColor Cyan
+Write-Host "      shortcuts loaded: live quick deltas trend snapshot overview health alerts mts-start gitsnap gitsee gitundo" -ForegroundColor Cyan

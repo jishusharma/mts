@@ -142,4 +142,15 @@ Verified by || session: VVP-002 md5 5AB58C80... prior to patch showed band-downg
 - backup_session purged (clean).
 - SESSION_PASTE.txt generator extended: git state, loop health, scripts inventory, COMMANDS.md inline.
 
+## SESSION 2026-09-16 OPEN FINDINGS
+
+### O1 - state_code.signals.cvd_slope empty
+Observed twice, 10:42Z and 10:49Z. Field is null/"" while snapshot cvd.slope has value ("rising"). Source: Java StateCodeEmitter, cvd_slope reads aggTrades but does not populate. Needs source trace. Documented divergence in MTS_DICTIONARY.
+
+### O2 - AI methodology: endpoint guessing
+Before calling any external endpoint to verify a snapshot field, read MyTradingSys/data/data_schema_v1.2.0.md or MTS_DICTIONARY.md for the field definition first. Wasted two turns calling spot endpoint when snapshot current_price is futures mark.
+
+### O3 - boot paste does not inline field table
+SESSION_PASTE.txt lacks the CANONICAL FIELDS table from MTS_DICTIONARY.md. Cause of O2. Fix: extend scripts/start-session.ps1 to extract and inline that table.
+
 # END
