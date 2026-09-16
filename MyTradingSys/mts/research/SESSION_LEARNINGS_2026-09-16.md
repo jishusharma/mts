@@ -120,3 +120,61 @@ Alerts #391, #392, #394 all printed the state change as same-value:
 Cause: $lastState is updated before the alert fires on the second cycle.
 Fix: add $pendingStateFrom to record the prior state.
 Cosmetic. No verdict impact. But makes state alerts unreadable.
+
+## RESEARCH FINDING - two-phase OI/CVD/price pattern
+
+Question asked to Grok and Claude: does the pattern have a name, a meaning,
+and a documented next move?
+
+Pattern observed 2026-09-16 18:10-18:55 UTC, 1-minute chart:
+Phase 1 (18:10-18:35): price -1400 pts, OI up 1.2K, CVD -2000.
+Phase 2 (18:35-18:55): price +1141 pts, OI still up, CVD -658.
+
+Answers, both models agree:
+1. No named pattern in Tier 1 or Tier 2 literature. No published base rate.
+   No peer-reviewed study conditions BTC 1-3 hour forward returns on this shape.
+2. Phase 1 is documented Tier 3 practitioner standard: new shorts entering.
+3. Phase 2 has no documented meaning at this granularity.
+4. OI is symmetric. Every contract is one long and one short. "Old shorts
+   holding" is a category error. When OI rises both sides added. When OI
+   falls both sides closed.
+5. Resolution requires data MTS does not currently read: funding rate sign,
+   taker buy/sell ratio, and liquidation stream. The first two are in the
+   snapshot. The third (liquidation_clusters) was deprecated 2026-09-12.
+
+Conclusion: this is a curiosity, not a signal. n=1 on one session.
+Do not trade this shape. Track it for three sessions. If it resolves
+predictably three times, it earns a Rule 32 gate.
+
+## BINANCE OI DATA - facts confirmed
+
+- Binance historical OI endpoint (/futures/data/openInterestHist) accepts
+  5-minute minimum. No 1m option. Confirmed from Binance docs.
+- Binance live OI endpoint (/fapi/v1/openInterest) returns current OI on
+  every call. Pollable at any frequency.
+- CoinGlass builds 1-minute OI candles by polling the live endpoint every
+  minute and storing samples. The 1-minute chart is legitimate polled data.
+- The chart at coinglass.com/tv/Binance_BTCUSDT is Binance-only.
+  Not blended. Correction to an earlier note.
+
+## I33 CORRECTION V2 - supersedes the note above
+
+The earlier note said "stall that recovers on restart." That framing was
+wrong. Correct finding:
+
+MTS snapshot OI field returned direction=flat, change_1h_pct=0.0, and
+confidence=HIGH from 17:40 to 17:53 UTC. During the same window, the
+Binance-only OI chart on CoinGlass rose continuously. Same exchange.
+Same source category. Field produced wrong output with a HIGH confidence
+stamp attached.
+
+This is not a source mismatch. Not a stall. It is a defect that returns
+a wrong value and marks it trusted. Root cause not found.
+
+Two builder paths exist in MarketDataSnapshot.java:
+- Line 365: computes the real value from oiChangePct.
+- Line 1134: hardcodes change_1h_pct = 0.0 inside fetchHistoricalSnapshot.
+
+Live loop calls fetchSnapshot (line 35). The historical path (line 913)
+is for backfill. Which path produced the flat/HIGH value during that
+window is not established. Needs repro.
