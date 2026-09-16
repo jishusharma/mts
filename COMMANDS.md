@@ -55,7 +55,8 @@ Monitoring stations:
     gitundo   revert to the snapshot tag
 
 ## WHEN SOMETHING IS BROKEN
-health
+
+    health
     Get-Content .\data\apparatus_log.txt -Encoding UTF8 -Tail 15
     Get-Content .\data\last_alert.json -Raw | ConvertFrom-Json
 
