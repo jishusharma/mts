@@ -1,5 +1,5 @@
-# MTS live: lc - combo - live, snapshot, state, and log together
-# usage:    . .\scripts\load.ps1   then type: lc
+# MTS live: overview - live, snapshot, state, and log together
+# usage:    . .\scripts\load.ps1   then type: overview
 $root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 $k = Invoke-RestMethod "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=5"
 $snap = Get-ChildItem "$root\data\snapshots\BTCUSDT_*.json" | Sort LastWriteTime -Desc | Select -First 1

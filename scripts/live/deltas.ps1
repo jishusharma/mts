@@ -1,5 +1,5 @@
-# MTS live: ld - deltas - last 12 minutes of one-minute bars
-# usage:    . .\scripts\load.ps1   then type: ld
+# MTS live: deltas - last 12 minutes of one-minute bars
+# usage:    . .\scripts\load.ps1   then type: deltas
 $k = Invoke-RestMethod "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=12"
 $k | ForEach-Object {
   [PSCustomObject]@{

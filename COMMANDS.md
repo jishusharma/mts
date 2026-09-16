@@ -15,13 +15,13 @@ If the runtime loop is not running:
 
 ## DURING THE SESSION
 
-    lx      quick read - price, snapshot, CVD, state, last verdict
-    ld      last 12 minutes of one-minute bars
-    lt      last 15 snapshots, side by side
-    lf      one snapshot, all decision fields
-    lc      live, snapshot, state, and log together
-    la      last 10 alerts
-    lh      health - java, state file age, log tail
+    quick     quick read - price, snapshot, CVD, state, last verdict
+    deltas    last 12 minutes of one-minute bars
+    trend     last 15 snapshots, side by side
+    snapshot  one snapshot, all decision fields
+    overview  live, snapshot, state, and log together
+    alerts    last 10 alerts
+    health    java process, state file age, log tail
 
 Monitoring stations:
 
