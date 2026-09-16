@@ -315,6 +315,7 @@ $lastPrice = $null
 $lastProof = $null
 $script:LastAlertMs = 0
 $lastState = $null
+$pendingState = $null
 $cycle = 0
 $exitPhase = "startup"
 
@@ -406,15 +407,20 @@ try {
             }
         }
     
-        if ($AlertProofChange -and $null -ne $lastProof -and $lastProof -ne $v.proof) {
+        if ($AlertProofChange -and $null -ne $lastProof -and (($lastProof -lt 5 -and $v.proof -ge 5) -or ($lastProof -ge 5 -and $v.proof -lt 5))) {
             $changed = $true
             $why += "proof $lastProof -> $($v.proof)"
         }
     
         # State transition (vp_shape or price_vs_va change)
-        if ($null -ne $lastState -and $lastState -ne $v.state) {
+        if ($null -ne $pendingState -and $pendingState -eq $v.state) {
             $changed = $true
             $why += "STATE $lastState -> $($v.state)"
+            $pendingState = $null
+        } elseif ($null -ne $lastState -and $lastState -ne $v.state) {
+            $pendingState = $v.state
+        } else {
+            $pendingState = $null
         }
     
         # state_code staleness check
