@@ -1,93 +1,88 @@
 {
-  "version": "1.1.0",
-  "purpose": "Boot manifest. DSA reads this first, then reads every boot_files + boot_supplemental path in block.",
-  "boot_files": [
-    {
-      "path": "USER.md",
-      "role": "user_preferences",
-      "read": "full"
-    },
-    {
-      "path": "Dumps/BUILD_REPORT.md",
-      "role": "build_status",
-      "read": "full"
-    },
-    {
-      "path": "DSA_SESSION_PROMPT.md",
-      "role": "behavior_source",
-      "read": "full"
-    },
-    {
-      "path": "MyTradingSys/SESSION_ENTRY.md",
-      "role": "state_handoff",
-      "read": "full"
-    },
-    {
-      "path": "MyTradingSys/mts/runtime/session_state.json",
-      "role": "thesis_ssot",
-      "read": "full"
-    },
-    {
-      "path": "MyTradingSys/mts/runtime/current_market_state.md",
-      "role": "structural_baseline",
-      "read": "full"
-    },
-    {
-      "path": "MyTradingSys/mts/runtime/state_code.json",
-      "role": "tick_flow_state",
-      "read": "full"
-    },
-    {
-      "path": "MyTradingSys/mts/runtime/NEXT_SESSION_HANDOFF.md",
-      "role": "mission",
-      "read": "full"
-    },
-    {
-      "path": "MyTradingSys/mts/runtime/session_log.json",
-      "role": "decision_ledger",
-      "read": "skip"
-    }
-  ],
-  "boot_supplemental": [
-    {
-      "path": "MyTradingSys/mts/research/L_ITEMS_MASTER.md",
-      "role": "open_loops_ssot",
-      "read": "full"
-    },
-    {
-      "path": "MyTradingSys/mts/research/MTS_DICTIONARY.md",
-      "role": "field_reference",
-      "read": "full"
-    },
-    {
-      "path": "MyTradingSys/mts/research/apparatus_fixes.md",
-      "role": "fix_log",
-      "read": "full"
-    },
-    {
-      "path": "MyTradingSys/methodology/playbook.md",
-      "role": "research_gate",
-      "read": "part_I"
-    },
-    {
-      "path": "data/apparatus_log.txt",
-      "role": "recent_cycles",
-      "read": "tail",
-      "lines": 60
-    },
-    {
-      "path": "data/snapshots/",
-      "role": "live_snapshot",
-      "read": "latest_glob",
-      "pattern": "BTCUSDT_*.json",
-      "count": 1
-    }
-  ],
-  "process_check": [
-    "java"
-  ],
-  "handoff_required_fields": [
-    "STATUS",
-    "STATUS_NOTE"
-  ]
+    "version":  "1.1.0",
+    "purpose":  "Boot manifest. Session reads this first, then reads boot_files + boot_supplemental in batches with a one-line confirmation between each.",
+    "boot_files":  [
+                       {
+                           "path":  "USER.md",
+                           "role":  "user_preferences",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "Dumps/BUILD_REPORT.md",
+                           "role":  "build_status",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "DSA_SESSION_PROMPT.md",
+                           "role":  "behavior_source",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "MyTradingSys/mts/runtime/session_state.json",
+                           "role":  "thesis_ssot",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "MyTradingSys/mts/runtime/current_market_state.md",
+                           "role":  "structural_baseline",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "MyTradingSys/mts/runtime/state_code.json",
+                           "role":  "tick_flow_state",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "MyTradingSys/mts/runtime/NEXT_SESSION_HANDOFF.md",
+                           "role":  "mission",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "MyTradingSys/mts/runtime/session_log.json",
+                           "role":  "decision_ledger",
+                           "read":  "skip"
+                       }
+                   ],
+    "boot_supplemental":  [
+                              {
+                                  "path":  "MyTradingSys/mts/research/L_ITEMS_MASTER.md",
+                                  "role":  "open_loops_ssot",
+                                  "read":  "full"
+                              },
+                              {
+                                  "path":  "MyTradingSys/mts/research/MTS_DICTIONARY.md",
+                                  "role":  "field_reference",
+                                  "read":  "full"
+                              },
+                              {
+                                  "path":  "MyTradingSys/mts/research/apparatus_fixes.md",
+                                  "role":  "fix_log",
+                                  "read":  "full"
+                              },
+                              {
+                                  "path":  "MyTradingSys/methodology/playbook.md",
+                                  "role":  "research_gate",
+                                  "read":  "part_I"
+                              },
+                              {
+                                  "path":  "data/apparatus_log.txt",
+                                  "role":  "recent_cycles",
+                                  "read":  "tail",
+                                  "lines":  60
+                              },
+                              {
+                                  "path":  "data/snapshots/",
+                                  "role":  "live_snapshot",
+                                  "read":  "latest_glob",
+                                  "pattern":  "BTCUSDT_*.json",
+                                  "count":  1
+                              }
+                          ],
+    "process_check":  [
+                          "java"
+                      ],
+    "handoff_required_fields":  [
+                                    "STATUS",
+                                    "STATUS_NOTE"
+                                ]
 }
