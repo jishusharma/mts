@@ -168,12 +168,12 @@ Before importing any concept from the transcripts:
 
 Update this section at every session close. Keep it to five lines.
 
-Last live read:  2026-09-16T14:31:15Z, 75751.5, in_va, range 69.75%
+Last live read:  2026-09-16T18:43:15Z, 76282.5, above_vah, range 83.0%
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime loop:    running. Wrapper PID 5164, java PID 5384. Restarted ~14:36 UTC.
-Open loops:      L25, L28, L29, L30, L31, I21-I26. L29 blocked by I26 (B definition unresolved). See L_ITEMS_MASTER.md.
+Runtime loop:    running unmonitored. Supervisor OFF since 17:52:52 UTC. Wrapper 3888, java 12712.
+Open loops:      L25, L28, L29, L30, L31, I21-I36. L29 blocked by I26 (B definition unresolved). See L_ITEMS_MASTER.md.
 
 ## 12. SESSION END
 
