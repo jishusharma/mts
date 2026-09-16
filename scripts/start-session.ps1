@@ -92,20 +92,71 @@ $java = Get-Process java -ErrorAction SilentlyContinue | Select-Object Id, Start
 if ($java) { [void]$sb.AppendLine(($java | Out-String).Trim()) } else { [void]$sb.AppendLine("(none)") }
 
 [void]$sb.AppendLine("")
+[void]$sb.AppendLine("### git state ###")
+try {
+    $gHead  = (& git -C $root rev-parse --short HEAD 2>$null)
+    $gDirty = (& git -C $root status --short 2>$null | Measure-Object -Line).Lines
+    $gTag   = (& git -C $root describe --tags --abbrev=0 2>$null)
+    [void]$sb.AppendLine("HEAD:  $gHead")
+    [void]$sb.AppendLine("Tag:   $gTag")
+    [void]$sb.AppendLine("Dirty: $gDirty file(s)")
+} catch {
+    [void]$sb.AppendLine("(git unavailable)")
+}
+
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("### loop health ###")
+$lockPath = Join-Path $root 'data\apparatus.lock'
+if (Test-Path $lockPath) {
+    $lockLine = (Get-Content $lockPath -Raw).Trim()
+    [void]$sb.AppendLine("lock:      $lockLine")
+} else {
+    [void]$sb.AppendLine("lock:      none")
+}
+$newest = Get-ChildItem (Join-Path $root 'data\snapshots\BTCUSDT_*.json') -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+if ($newest) {
+    $ageMin = [math]::Round(((Get-Date) - $newest.LastWriteTime).TotalMinutes, 1)
+    [void]$sb.AppendLine("snapshot:  $($newest.Name)  age=$ageMin min")
+} else {
+    [void]$sb.AppendLine("snapshot:  none")
+}
+$stateFile = Join-Path $root 'MyTradingSys\mts\runtime\state_code.json'
+if (Test-Path $stateFile) {
+    $stAge = [math]::Round(((Get-Date) - (Get-Item $stateFile).LastWriteTime).TotalMinutes, 1)
+    [void]$sb.AppendLine("state_code: age=$stAge min")
+}
+
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("### scripts inventory ###")
+$scriptFiles = Get-ChildItem (Join-Path $root 'scripts') -Recurse -File -Include '*.ps1' -ErrorAction SilentlyContinue | Sort-Object FullName
+foreach ($sf in $scriptFiles) {
+    $rel = $sf.FullName.Replace((Join-Path $root 'scripts') + '\','')
+    [void]$sb.AppendLine("  $rel")
+}
+
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("### COMMANDS.md ###")
+$cmdPath = Join-Path $root 'COMMANDS.md'
+if (Test-Path $cmdPath) {
+    [void]$sb.AppendLine((Get-Content $cmdPath -Raw))
+}
+
+[void]$sb.AppendLine("")
 [void]$sb.AppendLine("=" * 72)
 [void]$sb.AppendLine("PASTE-ON-DEMAND DUMPS (ask for one at a time)")
 [void]$sb.AppendLine("=" * 72)
 @"
-  DUMP_CODE_JAVA.md    - Java: runtime + state machine
-  DUMP_CODE_RUNTIME.md - Python math layer
-  DUMP_SYSTEM_DOCS.md  - system/ docs
-  DUMP_CONDITIONS.md   - MTS rule files
-  DUMP_METHODOLOGY.md  - Tom methodology + playbook
-  DUMP_RESEARCH.md     - research notes
-  DUMP_CARDS.md        - historical trade cards
-  DUMP_DATA.md         - schemas + sample snapshot
-  DUMP_TESTS.md        - test suite
-  DUMP_EXTRACTS.md     - Tom transcripts (788KB)
+  dump_java.md             - Java source
+  dump_runtime.md          - Python math layer + runtime
+  dump_system_support.md   - system/ docs
+  dump_conditions.md       - MTS rule files
+  dump_methodology.md      - Tom methodology + playbook
+  dump_research.md         - research notes
+  dump_cards.md            - historical trade cards
+  dump_data.md             - schemas + sample snapshot
+  dump_tests.md            - test suite
+  dump_extracts.md         - Tom transcripts
+  dump_core.md             - behavior + index
   alert_audit_Q2.csv / Q3Q4.csv - alert audit data
 "@ -split "`n" | ForEach-Object { [void]$sb.AppendLine($_) }
 
@@ -141,4 +192,4 @@ Write-Host "  Set your chat title to exactly this." -ForegroundColor Yellow
 Write-Host "==========================================================" -ForegroundColor Yellow
 Write-Host ""
 Write-Host "NEXT: open $pasteFile, select all, copy, paste into a fresh chat." -ForegroundColor Cyan
-Write-Host "      shortcuts loaded in this window: quick, deltas, trend, snapshot, overview, health, alerts" -ForegroundColor Cyan
+Write-Host "      shortcuts loaded: quick deltas trend snapshot overview health alerts mts-start gitsnap gitsee gitundo" -ForegroundColor Cyan

@@ -256,9 +256,9 @@ This keeps startup to 3 reads + 1 JSON paste.
 | 5 | 03_FILE_INDEX.md | Hierarchical map of ALL project files |
 | 6 | 04_PER_JSON_GUIDE.md | Per-JSON load order + abbreviations |
 | 7 | 05_NORMS.md | Folder conventions, naming rules, archival rules |
-| 18 | **PowerShell interpolation trap** (`kimi_$mod_dump.md`) | Use `${mod}` or `$($mod)` in double-quoted strings. |
+| 18 | **PowerShell interpolation trap** (`dump_$mod.md`) | Use `${mod}` or `$($mod)` in double-quoted strings. |
 | 19 | **Python backslash warnings in strings** | Prefix Windows paths with `r` or use forward slashes. |
-| 20 | **Manual long pastes causing truncation** | Generate modular dumps and paste `kimi_core_dump.md` instead of individual files. |
+| 20 | **Manual long pastes causing truncation** | Generate modular dumps and paste `dump_core.md` instead of individual files. |
 | 21 | **Editing prompts with PowerShell heredocs** | Use Python `open(...).write(...)` instead of PowerShell multi-line strings. |
 
 ---

@@ -103,10 +103,10 @@ if (Test-Path $locksDir) {
 $lines.Add("")
 $lines.Add("Pastes for this session:")
 $lines.Add("  Always:   Dumps/BUILD_REPORT.md")
-$lines.Add("  JSON:     Dumps/kimi_core_dump.md + kimi_runtime_dump.md")
-$lines.Add("  Data:     Dumps/kimi_data_dump.md")
-$lines.Add("  System:   Dumps/kimi_system_support_dump.md")
-$lines.Add("  Extract:  Dumps/kimi_extracts_dump.md (paste sections only)")
+$lines.Add("  JSON:     Dumps/dump_core.md + dump_runtime.md")
+$lines.Add("  Data:     Dumps/dump_data.md")
+$lines.Add("  System:   Dumps/dump_system_support.md")
+$lines.Add("  Extract:  Dumps/dump_extracts.md (paste sections only)")
 $lines.Add("")
 
 # Write

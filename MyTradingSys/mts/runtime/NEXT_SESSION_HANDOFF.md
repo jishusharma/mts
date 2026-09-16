@@ -37,7 +37,7 @@ Last session ended mid-cleanup. Two threads open:
 ### Phase B РІР‚вЂќ Dedupe + cleanup (30 min)
 D1 was done. Complete D3 decisions:
 1. `extracts/processed/tom/` РІР‚вЂќ KEEP (audit trail).
-2. `Dumps/kimi_*.md` РІР‚вЂќ KEEP until 2026-09-21 (L23).
+2. `Dumps/dump_*.md` РІР‚вЂќ RENAMED to dump_*.md on 2026-09-16 (L23 closed).
 3. `MyTradingSys/archive/` + `mts/archive/` РІР‚вЂќ KEEP both.
 4. `runtime/SESSION_PROMPT.md` РІР‚вЂќ KEEP until 2026-09-22 (L21).
 5. `MyTradingSys/archive/cleanup-2026-09-13/*.old` РІР‚вЂќ KEEP.
@@ -76,7 +76,7 @@ After A, B, C: normal session flow.
 - L17 РІР‚вЂќ alert numbering gap #6-12
 - L18 РІР‚вЂќ apparatus silent exit repro
 - L21 РІР‚вЂќ runtime/SESSION_PROMPT.md orphan check (2026-09-22)
-- L23 РІР‚вЂќ Dumps/kimi_*.md check (2026-09-21)
+- L23 РІР‚вЂќ Dumps/dump_*.md check (2026-09-21)
 - L24 РІР‚вЂќ CLOSED 2026-09-15: mojibake claim did not reproduce. Byte-check of 5 declared files = 0 hits of C3 A2 E2 80 9D. L4 (prior viewer-artifact) stands. See L_ITEMS_MASTER.md L24 row.
 
 ### Phase S РІР‚вЂќ Full project structure audit (next session)

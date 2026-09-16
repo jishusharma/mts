@@ -11,7 +11,7 @@
 
 | Task arrives as... | Load | Skip | Reason |
 |--------------------|------|------|--------|
-| JSON snapshot (uploaded/pasted) | `mts/runtime/compiled_engine.md`, `Dumps/kimi_runtime_dump.md`, `Dumps/kimi_data_dump.md` | Everything else | Deterministic engine + math + schema |
+| JSON snapshot (uploaded/pasted) | `mts/runtime/compiled_engine.md`, `Dumps/dump_runtime.md`, `Dumps/dump_data.md` | Everything else | Deterministic engine + math + schema |
 | Screenshot (chart image) | `mts/research/visual_validation_protocol_vvp002.md` | Engine files | Vision spec, no execution path |
 | New transcript (analyst video) | `methodology/extraction.md`, `methodology/playbook.md` Part J | Engine files | Extraction lifecycle + verbatim rules |
 | New rule proposed for engine | `system/01_AI_BEHAVIOR.md` Rules 31-41 | Everything else | Integration gate |

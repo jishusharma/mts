@@ -1,8 +1,8 @@
-BUILD_REPORT - 2026-09-16 13:48:27 UTC
+BUILD_REPORT - 2026-09-16 15:47:36 UTC
 host: JIS-NB
 
-Java compile:  PASS (2.6 s)
-Math tests:    PASS 125/125 (1.1 s)
+Java compile:  PASS (9.7 s)
+Math tests:    PASS 125/125 (1.3 s)
 Doc tests:     PASS 5/5 (1.4 s)
 
 STATUS: PASS
@@ -14,8 +14,8 @@ Active sessions:
 
 Pastes for this session:
   Always:   Dumps/BUILD_REPORT.md
-  JSON:     Dumps/kimi_core_dump.md + kimi_runtime_dump.md
-  Data:     Dumps/kimi_data_dump.md
-  System:   Dumps/kimi_system_support_dump.md
-  Extract:  Dumps/kimi_extracts_dump.md (paste sections only)
+  JSON:     Dumps/dump_core.md + dump_runtime.md
+  Data:     Dumps/dump_data.md
+  System:   Dumps/dump_system_support.md
+  Extract:  Dumps/dump_extracts.md (paste sections only)
 

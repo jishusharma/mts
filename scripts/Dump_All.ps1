@@ -1,4 +1,4 @@
-# Dump_All.ps1 - Generate Java core + all Kimi module dumps in one run
+# Dump_All.ps1 - Generate Java + module dumps in one run
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 
@@ -61,10 +61,10 @@ foreach ($f in $fixedFiles) {
 }
 $javaFiles += Get-ChildItem -Path "src\main\java\datafeed" -Filter *.java -File | Sort-Object Name
 
-Write-MarkdownDump "Java Core Dump ? BinanceDataFeed" $javaFiles (Join-Path $dumpDir "java_core_dump.md")
+Write-MarkdownDump "Java Core Dump ? BinanceDataFeed" $javaFiles (Join-Path $dumpDir "dump_java.md")
 
 # ------------------------------------------------------------
-# 2. KIMI MODULES
+# 2. MODULE DUMPS
 # ------------------------------------------------------------
 $moduleMap = @{
     "core"       = @("system\00_START_HERE.md", "system\01_AI_BEHAVIOR.md", "system\02a_CURRENT_STATUS.md", "system\03_FILE_INDEX.md")
@@ -80,7 +80,7 @@ $moduleMap = @{
 }
 
 foreach ($mod in $moduleMap.Keys | Sort-Object) {
-    Write-Host "`nGenerating Kimi $mod dump..." -ForegroundColor Cyan
+    Write-Host "`nGenerating $mod dump..." -ForegroundColor Cyan
 
     $patterns = $moduleMap[$mod]
     $files = @()
@@ -96,8 +96,8 @@ foreach ($mod in $moduleMap.Keys | Sort-Object) {
     $files = $files | Sort-Object FullName -Unique
 
     if ($files.Count -gt 0) {
-        $outFile = Join-Path $dumpDir "kimi_${mod}_dump.md"
-        Write-MarkdownDump "Kimi AI Dump - Module: $mod" $files $outFile
+        $outFile = Join-Path $dumpDir "dump_${mod}.md"
+        Write-MarkdownDump "Module dump: $mod" $files $outFile
     } else {
         Write-Host "No files found for module '$mod'." -ForegroundColor Yellow
     }

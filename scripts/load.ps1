@@ -8,8 +8,9 @@ function snapshot { & "$ScriptDir\live\snapshot.ps1" }
 function overview { & "$ScriptDir\live\overview.ps1" }
 function health   { & "$ScriptDir\live\health.ps1" }
 function alerts   { & "$ScriptDir\live\alerts.ps1" }
+function live     { & "$ScriptDir\live\live.ps1" }
 
-"mts loaded: quick deltas trend snapshot overview health alerts"
+"mts loaded: live quick deltas trend snapshot overview health alerts"
 
 function mts-start { & "$ScriptDir\start-session.ps1" @args }
 

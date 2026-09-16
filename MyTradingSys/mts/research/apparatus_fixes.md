@@ -1,4 +1,4 @@
-﻿# Apparatus Fixes
+# Apparatus Fixes
 # Started 2026-09-12. Last updated 2026-09-13.
 # Purpose: track issues and fixes for the trading-day apparatus.
 
@@ -122,5 +122,24 @@ Source of truth: flag-only. No auto band downgrade.
 Rationale: Rule 32 - a visual flag cannot modify a verdict without 3-snapshot evidence.
 VVP-002 line 219 updated to match this policy. Footer above was already correct.
 Verified by || session: VVP-002 md5 5AB58C80... prior to patch showed band-downgrade text.
+
+# END
+## SESSION 2026-09-16 AI MISTAKES (for token saving)
+
+1. Flagged "no .git" from a listing made without -Force. Dotfolders hidden. Always use -Force on dotfolder checks.
+2. Piped after a foreach close-brace twice. Parser error both times. Capture in a variable first.
+3. Set anchor count threshold to 2 when occurrences were 1. NEXT_SESSION_HANDOFF missed one turn.
+4. Asked A/B on Dumps when principle ("remove kimi naming") already decided it. Apply stated principle first, ask only if ambiguous.
+5. Split backup-then-purge into two turns when target was regenerable. One turn would have done.
+6. Long prose where USER.md says answer first, terse.
+
+## SESSION 2026-09-16 CLEANUP LANDED
+
+- 10 stale DUMP_*.md moved to backup.
+- 11 files renamed: kimi_*_dump.md -> dump_*.md, java_core_dump.md -> dump_java.md.
+- Dump_All.ps1, Build-Check.ps1, CAPABILITIES.md, 00_START_HERE.md, NEXT_SESSION_HANDOFF.md, L_ITEMS_MASTER.md updated.
+- L23 closed.
+- backup_session purged (clean).
+- SESSION_PASTE.txt generator extended: git state, loop health, scripts inventory, COMMANDS.md inline.
 
 # END
