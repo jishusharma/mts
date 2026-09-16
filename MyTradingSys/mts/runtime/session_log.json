@@ -347,6 +347,24 @@
       "action": "passed",
       "reason": "close 2026-09-16: loop hung 3x, L29 blocked by I26, zone map + I21-I26 logged, 5 alerts all WAIT_RR",
       "ts": "2026-09-16T14:49:28.377015Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "I26 CLOSED. Ruling: B profile = weakness at the extreme (not balance). Five Tom transcripts agree (BVpYGKz9PBU, rFPCtOcfUMI, vk0mkNPuhDc, OUM9LYwL8eA, tS6ZEiHj8gQ). market_state_rules.md L50 was unsourced and contradicted its own cited line at L53. Patched: B=balance line replaced with B=weakness; added citation rFPCtOcfUMI. Hash D965EC32 -> FA70DA88. 332 lines, 57 non-ASCII (unchanged vs backup), BOM false.",
+      "ts": "2026-09-16T20:43:56.679408Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "L29 CLOSED. buildVp 'B' renamed to 'TWOPEAK' (bell heuristic; collided with Tom's B). classifyState rewritten on vwap_slope+cvd_slope+price_vs_va. Rule 32 test 3/3 outside-VA snapshots changed to trend_healthy. mts_math STATE.classification aligned to Java. Docs updated: compiled_engine L30/L322, data_schema L78/L90, trading_card_generator L378. Java BUILD SUCCESS.",
+      "ts": "2026-09-16T20:57:13.857476Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "Session 2026-09-16 evening: I36, I26, L29 closed. DSA_SESSION_PROMPT section 11 updated. NEXT_SESSION_HANDOFF rewritten. SESSION_LEARNINGS appended. Loop running on new jar. Wrapper 5308, state machine 18060, supervisor ON.",
+      "ts": "2026-09-16T21:00:44.140640Z"
     }
   ]
 }

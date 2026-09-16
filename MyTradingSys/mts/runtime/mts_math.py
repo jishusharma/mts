@@ -327,7 +327,24 @@ def update_state(old_state: Dict[str, Any], snapshot: Dict[str, Any], new_verdic
             new_state["SWING"][f"{tf}_stale"] = str(stale).lower()
     vp_shape = _get_snapshot_value(snapshot, "conditions.vp_shape")
     price_vs_va = _get_snapshot_value(snapshot, "conditions.price_vs_va")
-    new_state["STATE"]["classification"] = str(vp_shape or "UNKNOWN")
+    # STATE.classification used to be a raw copy of vp_shape, which
+    # collapsed to a fixed letter. Rewritten 2026-09-17 to match the
+    # Java classifyState logic in SetupCandidatesBuilder.java.
+    _vs = _get_snapshot_value(snapshot, "conditions.vwap_slope")
+    _cs = _get_snapshot_value(snapshot, "conditions.cvd_slope")
+    _pva = _get_snapshot_value(snapshot, "conditions.price_vs_va")
+    if (_vs in ("flat", "sideways")) and _cs == "flat" and _pva == "in_va":
+        _state = "balance"
+    elif _cs == "divergent":
+        _state = "trend_unhealthy"
+    elif _pva in ("above_vah", "below_val"):
+        _state = "trend_healthy"
+    elif _cs == "aligned":
+        _state = "trend_healthy"
+    else:
+        _state = "balance"
+    new_state["STATE"]["classification"] = _state
+    new_state["STATE"]["vp_shape"] = str(vp_shape or "UNKNOWN")
     new_state["STATE"]["position"] = str(price_vs_va or "UNKNOWN")
     vwap_price = _get_snapshot_value(snapshot, "vwap.price")
     vwap_slope = _get_snapshot_value(snapshot, "vwap.slope")

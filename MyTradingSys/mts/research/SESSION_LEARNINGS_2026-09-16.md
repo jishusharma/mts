@@ -250,3 +250,30 @@ source. Both are fixable with one rule each:
 The first rule is now in section 6 of DSA_SESSION_PROMPT.md.
 The second rule is boot rule 5. It was already there. It was not
 followed.
+
+## SESSION 2026-09-16 evening update (20:32Z-21:00Z)
+
+I36 CLOSED. Log "STATE X -> X" fixed. $pendingStateFrom captured before $lastState
+is overwritten at end of cycle.
+
+I26 CLOSED. B profile = weakness at the extreme. Five Tom transcripts agree.
+market_state_rules.md L50 rewritten, citation added. L50 was unsourced and
+contradicted the cited line at L53.
+
+L29 CLOSED. buildVp emitted "B" for any two-peak profile. classifyState read
+"B" and returned balance. Every snapshot collapsed to balance; engine emitted
+scalp_short/long at VWAP in trends. Fix: rename buildVp output to TWOPEAK.
+classifyState rewritten on vwap_slope + cvd_slope + price_vs_va.
+Rule 32 test: 3/3 outside-VA snapshots changed to trend_healthy.
+
+mts_math.py STATE.classification aligned to Java. Was a raw copy of vp_shape.
+
+Tom's B (top-heavy weakness) is now officially NOT computed by any code.
+compiled_engine.md L322 marks it "NOT YET COMPUTED". Future work.
+
+Lesson: field-meaning collision. One letter "B" was carrying two meanings
+(bell shape in buildVp, weakness in Tom). Downstream readers picked different
+meanings. Rule for future: any field whose name comes from a Tom term must be
+checked against Tom's usage before it is emitted.
+
+# END OF EVENING UPDATE

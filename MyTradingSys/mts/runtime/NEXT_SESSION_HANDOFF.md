@@ -1,67 +1,50 @@
-STATUS: Session 2026-09-16 closed. Loop running, supervisor OFF. Six missed counter-trade setups. Operator trade won on intuition.
+STATUS: Session 2026-09-17 open. L29 and I26 landed. Loop restarted on new jar.
 
 # NEXT SESSION HANDOFF
-# Written 2026-09-16 18:50 UTC
+# Written 2026-09-16 21:00 UTC
 
 ## READ FIRST
-1. MyTradingSys/mts/research/SESSION_LEARNINGS_2026-09-16.md (122 lines)
-2. MyTradingSys/mts/research/L_ITEMS_MASTER.md lines 83-91 (I30-I36)
+1. MyTradingSys/mts/research/SESSION_LEARNINGS_2026-09-16.md
+2. MyTradingSys/mts/research/L_ITEMS_MASTER.md (I30-I39)
 3. MyTradingSys/mts/research/zone_map_2026-09-17.md
 
+## WHAT LANDED THIS SESSION (2026-09-16 20:32Z to 21:00Z)
+- I36 CLOSED: start-trading-day.ps1 log "STATE X -> X" fixed with $pendingStateFrom.
+- I26 CLOSED: B profile ruling = weakness at the extreme (Tom). market_state_rules.md L50 rewritten.
+- L29 CLOSED: buildVp "B" renamed to "TWOPEAK". classifyState rewritten on vwap_slope + cvd_slope + price_vs_va. Rule 32 test: 3/3 outside-VA snapshots changed to trend_healthy.
+- mts_math.py STATE.classification aligned to Java. Now emits real state, keeps vp_shape under a new key.
+- Docs updated: compiled_engine.md L30/L322, data_schema_v1.2.0.md L78/L90, trading_card_generator.md L378.
+- Loop restarted on new jar. Supervisor ON.
+
 ## WHAT IS DIFFERENT FROM THIS MORNING
-- start-trading-day.ps1: alert fixes live (proof cross-of-5, two-cycle
-  state debounce). Committed 3aec69a.
-- session_timing_rules.md: SR-004 removed (not from Tom). Committed 97baf3c.
-- SESSION_LEARNINGS_2026-09-16.md created with full record.
-- zone_map_2026-09-17.md prepared for tomorrow.
-- Operator trade recorded (intuition, not MTS).
-- Six missed setups documented as the sweep-entry finding.
+- Engine no longer forces state=balance on every snapshot. Was 2090/2090 before.
+- Snapshot shape field now emits TWOPEAK / D / P. No more collision with Tom's B.
+- Tom's B (top-heavy weakness) is NOT yet computed. That is future work.
 
 ## BIGGEST FINDING
-Six counter-trade setups today printed correct direction and correct zone.
-All six failed the 2.0 net reward-to-risk cap. All six would have cleared
-with sweep wick extreme as entry instead of zone price. Tom enters at the
-sweep. Engine enters at the level. Rule 32 gate. Today is snapshot 1 of 3.
+The classifier was locked. All 2090 snapshots on disk emitted shape=B. The engine
+was in balance state always, and generated scalp_short/long at VWAP bands against
+trending markets. 671 of 2090 snapshots had shape=B while price was outside value
+area. Rule 32 test: proposed classifyState flips 3/3 of those to trend_healthy.
 
 ## MISSION FOR NEXT SESSION
-1. Restart supervisor. It is OFF. Loop is unmonitored.
-2. Read session_timing_rules.md sections 6.3 and 7. May already define
-   sweep-entry. If yes, wire it. If no, draft it.
-3. Fix I36: same-value state log bug. $pendingStateFrom.
-4. Resolve I26: B-profile definition. Blocks L29 classifier.
-5. Investigate I29: dual builder in MarketDataSnapshot.java.
-6. Investigate I33 corrected: OI field stall that recovers on restart.
-7. Collect Rule 32 evidence for sweep entry. Days 2 and 3.
+1. Watch next 20 cycles for candidate mix change. Expect fewer naked scalps at VWAP in trend.
+2. Collect Rule 32 evidence for sweep entry (I34). Days 2 and 3.
+3. Fix I30 (book imbalance instability). Smoothed 5-cycle window or drop from contradiction.
+4. Fix I31 (verdict flicker). Two-cycle persistence like the state debounce.
+5. Resolve I33 (OI field stall). Investigate source after 17:40 UTC.
+6. Investigate I29 (dual builder path in MarketDataSnapshot.java, line ~1065).
+7. Consider drafting Tom's B detector as a new field. Not yet a rule.
 
 ## LOOP STATUS AT CLOSE
-- Wrapper 3888, java 12712, lock 3888.
-- Supervisor OFF since 17:52:52.
-- Last price 76,282.5, above_vah, range 83%.
+- Wrapper 5308, state machine java 18060, supervisor ON.
+- Last price 76,163.10, TWOPEAK/above_vah, nrr 1.61 WAIT_RR.
 
 ## HARD RULES
 - Never bare-kill java. Use stop-day.ps1 or mode.ps1.
 - No double-run of mode.ps1.
 - Boot rules 5 and 6 apply.
-- Interactive paste does not honor ErrorActionPreference = Stop.
 - Write-NoBom requires dot-sourcing shared-functions.ps1 first.
+- Interactive paste does not honor ErrorActionPreference = Stop.
 
 # END
-
-## SUPERVISOR RESTART COMMAND
-
-Current state: supervisor OFF since 17:52:52 UTC. Loop running unmonitored.
-
-Command (observed this session, works):
-
-Start-Process powershell.exe -ArgumentList @(
-    "-NoProfile","-ExecutionPolicy","Bypass",
-    "-File","C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\scripts\core\loop-supervisor.ps1",
-    "-Mode","armed","-IntervalMin","1","-RestartGraceSec","90"
-) -WindowStyle Hidden
-
-Verify:
-Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match "loop-supervisor" } | Select-Object ProcessId, CommandLine
-Get-Content .\data\supervisor_log.txt -Tail 5
-
-Stop cleanly:
-New-Item .\data\supervisor_stop.flag -ItemType File -Force

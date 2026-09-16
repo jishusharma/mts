@@ -375,7 +375,7 @@ If any check returns [WARN], the card flags visual validation required.
 **Output:** [STATE] section
 
 **Sub-steps:**
-1.1 VP Analysis → B profile = balance, P/D profile = trend
+1.1 VP Analysis → TWOPEAK = bell/two-peak (heuristic). Tom's B (weakness at extreme) is NOT computed. P/D profile = trend.
 1.2 VWAP Analysis → Sideways = balance, sloped = trend
 1.3 CVD Analysis → Aligned = no divergence, divergent = possible reversal
 1.4 Higher TF Check → Weekly/daily profile overrides intraday signals

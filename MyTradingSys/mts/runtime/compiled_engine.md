@@ -27,7 +27,7 @@
 
 | Signal | Balance | Trend (healthy) | Trend (unhealthy) | Transition |
 |--------|---------|-----------------|-------------------|------------|
-| VP shape | B | P/D | P/D at extreme | B after strong trend |
+| VP shape | TWOPEAK (bell) | P/D | P/D at extreme | TWOPEAK after trend |
 | VWAP slope | sideways | sloped | steep | shifting |
 | CVD | flat / aligned | aligned | divergent | flat |
 | Price vs VWAP | oscillating | one side | extended | returning |
@@ -319,7 +319,7 @@ Post-breakout pullback depth as continuation signal. Shallow pullback = strong d
 
 | Type | What It Shows | Source In JSON | Weight |
 |------|--------------|----------------|--------|
-| B profile | Weakness at extreme | daily_vp.shape == 'B' | Primary (strongest for CT) |
+| B profile | Weakness at extreme | NOT YET COMPUTED (no rule emits Tom's B; TWOPEAK != B) | Primary (strongest for CT) |
 | No liquidity | Thin volume at extreme | daily_vp.hvns/lvns | Primary |
 | Sellers present | CVD negative / delta flip / trade_flow negative | cvd.slope, last_3_delta, trade_flow.net_delta_1m, cvd_recent.slope_1h | Primary |
 | Buyers present | CVD positive / delta flip / trade_flow positive | cvd.slope, last_3_delta, trade_flow.net_delta, cvd_recent.slope_1h | Primary |

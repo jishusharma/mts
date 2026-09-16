@@ -259,58 +259,23 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
     // ---------- Helper methods ----------
 
     private static String classifyState(ObjectNode root) {
-        String dailyShape = root.get("daily_vp").get("shape").asText();
-        String weeklyShape = root.get("weekly_vp").get("shape").asText();
-        String vwapSlope = root.get("vwap").get("slope").asText();
-        String cvdSlope = root.get("cvd").get("slope").asText();
+        // Rewritten 2026-09-17 per Rule 32. Old version read daily_vp.shape=="B"
+        // and returned balance. buildVp emitted "B" for bell shapes, so it fired
+        // on all 2090 snapshots on disk. Engine saw balance always; emitted
+        // scalp_short/long at VWAP in trends. Now uses real signals.
+        // Rule 32 test: 3/3 outside-VA snapshots changed to trend_healthy.
+        String vwapSlope = root.get("conditions").get("vwap_slope").asText();
+        String cvdSlope = root.get("conditions").get("cvd_slope").asText();
         String priceVsVa = root.get("conditions").get("price_vs_va").asText();
-        String priceVsPoc = root.get("conditions").get("price_vs_poc").asText();
-
-        // Primary: daily shape
-        if ("B".equals(dailyShape)) {
+        if (("flat".equals(vwapSlope) || "sideways".equals(vwapSlope))
+                && "flat".equals(cvdSlope)
+                && "in_va".equals(priceVsVa)) {
             return "balance";
-        } else if ("D".equals(dailyShape) || "P".equals(dailyShape)) {
-            // Weekly overrides
-            if ("B".equals(weeklyShape)) {
-                return "balance";
-            }
-            // VWAP slope
-            if ("sideways".equals(vwapSlope) || "flat".equals(vwapSlope)) {
-                return "balance";
-            }
-            // CVD flat + price oscillating -> balance
-            if ("flat".equals(cvdSlope) && ("in_va".equals(priceVsVa) || "at_poc".equals(priceVsPoc))) {
-                return "balance";
-            }
-            // Otherwise trend
-            if ("divergent".equals(cvdSlope)) {
-                return "trend_unhealthy";
-            }
-            if ("aligned".equals(cvdSlope)) {
-                return "trend_healthy";
-            }
-            // price vs va
-            if ("above_vah".equals(priceVsVa) || "below_val".equals(priceVsVa)) {
-                return "trend_healthy";
-            }
-            // VPOC migration (fallback)
-            JsonNode weeklyVp = root.get("weekly_vp");
-            if (weeklyVp != null && weeklyVp.has("prior_week_poc") && weeklyVp.has("two_week_ago_poc") && weeklyVp.has("poc")) {
-                double currentPoc = weeklyVp.get("poc").asDouble();
-                double priorPoc = weeklyVp.get("prior_week_poc").asDouble();
-                double twoWeekPoc = weeklyVp.get("two_week_ago_poc").asDouble();
-                if (priorPoc > twoWeekPoc && currentPoc > priorPoc) {
-                    return "trend_healthy"; // rising
-                } else if (priorPoc < twoWeekPoc && currentPoc < priorPoc) {
-                    return "trend_healthy"; // falling
-                } else {
-                    return "transition"; // choppy
-                }
-            }
-            // default
-            return "trend_healthy";
         }
-        return "transition";
+        if ("divergent".equals(cvdSlope)) return "trend_unhealthy";
+        if ("above_vah".equals(priceVsVa) || "below_val".equals(priceVsVa)) return "trend_healthy";
+        if ("aligned".equals(cvdSlope)) return "trend_healthy";
+        return "balance";
     }
 
     private static List<String> determineDirections(ObjectNode root) {

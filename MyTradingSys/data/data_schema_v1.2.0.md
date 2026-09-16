@@ -75,7 +75,7 @@
 | val | float | Value Area Low (lower boundary) | 76663.24 | YES — same approximation warning |
 | hvns | array of floats | High Volume Nodes (sub-POC peaks) | [77299.7, 77264.62, 77134.32] | YES |
 | lvns | array of floats | Low Volume Nodes (gaps in profile) | [76768.49, 76999.01, 77014.05] | YES |
-| shape | string enum | Profile shape: B=balanced, D=distribution, etc. | B | YES — shape classification is heuristic |
+| shape | string enum | Profile shape: TWOPEAK=bell/two-peak, D=distribution, P=one-sided. Tom's B (weakness at extreme) is NOT computed by any rule. | TWOPEAK | YES — shape classification is heuristic |
 | confidence | string enum | Data reliability | MEDIUM | — |
 | source | string | Computation method | "Binance 1m OHLCV approximation" | — |
 | approximation_warning | string | Human-readable warning | "True VP requires tick-level L2 data..." | — |
@@ -87,7 +87,7 @@
 
 **Gap:** Tom does not specify bar type, lookback period, or session settings for volume profile. The screener uses Binance 1m OHLCV with an unspecified lookback.
 **Gap:** Tom does not define what counts as "high volume" vs "low volume" numerically. HVN/LVN classification is screener heuristic.
-**Gap:** Tom mentions "B profile" (balanced) and "P profile" in examples but does not give formal shape classification rules.
+**Gap:** Tom mentions "B profile" (top-heavy weakness) and "P profile" in examples but does not give formal shape classification rules. Current shape field emits TWOPEAK, not Tom's B.
 
 ---
 

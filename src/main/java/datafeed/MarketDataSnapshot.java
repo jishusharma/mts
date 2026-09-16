@@ -547,7 +547,10 @@ public class MarketDataSnapshot {
             if (e.getKey() != poc && e.getValue() < maxVol && e.getValue() > secondPeakVol) secondPeakVol = e.getValue();
         }
         String shape;
-        if (secondPeakVol > 0.6 * maxVol) shape = "B";
+        // Heuristic: bell/two-peak shape. NOT Tom's B (top-heavy weakness).
+        // Old code emitted "B" for both meanings; classifyState then forced
+        // every snapshot to balance. Renamed 2026-09-17 to end the collision.
+        if (secondPeakVol > 0.6 * maxVol) shape = "TWOPEAK";
         else {
             double leftVol = 0, rightVol = 0;
             for (Map.Entry<Double,Double> e : profile.entrySet()) {

@@ -316,6 +316,7 @@ $lastProof = $null
 $script:LastAlertMs = 0
 $lastState = $null
 $pendingState = $null
+$pendingStateFrom = $null
 $cycle = 0
 $exitPhase = "startup"
 
@@ -415,9 +416,10 @@ try {
         # State transition (vp_shape or price_vs_va change)
         if ($null -ne $pendingState -and $pendingState -eq $v.state) {
             $changed = $true
-            $why += "STATE $lastState -> $($v.state)"
+            $why += "STATE $pendingStateFrom -> $($v.state)"
             $pendingState = $null
         } elseif ($null -ne $lastState -and $lastState -ne $v.state) {
+            $pendingStateFrom = $lastState
             $pendingState = $v.state
         } else {
             $pendingState = $null

@@ -334,3 +334,57 @@
 2026-09-16 17:51:52 | ok wrapper=18416 snapAge=35s grace=False
 2026-09-16 17:52:22 | ok wrapper=18416 snapAge=6s grace=False
 2026-09-16 17:52:52 | stop flag present, exiting
+2026-09-16 20:35:47 | === SUPERVISOR START mode=armed interval=1m stale=240s grace=90s ===
+2026-09-16 20:35:47 | startup: no lock file, ready now
+2026-09-16 20:35:47 | RESTART reason=wrapper_dead oldPid=0
+2026-09-16 20:35:51 |   started new wrapper PID=18904
+2026-09-16 20:36:21 | ok wrapper=18904 snapAge=4s grace=True
+2026-09-16 20:36:52 | ok wrapper=18904 snapAge=35s grace=True
+2026-09-16 20:37:23 | ok wrapper=18904 snapAge=5s grace=False
+2026-09-16 20:37:53 | ok wrapper=18904 snapAge=35s grace=False
+2026-09-16 20:38:24 | ok wrapper=18904 snapAge=7s grace=False
+2026-09-16 20:38:54 | ok wrapper=18904 snapAge=38s grace=False
+2026-09-16 20:39:25 | ok wrapper=18904 snapAge=10s grace=False
+2026-09-16 20:39:56 | ok wrapper=18904 snapAge=40s grace=False
+2026-09-16 20:40:26 | ok wrapper=18904 snapAge=9s grace=False
+2026-09-16 20:40:57 | ok wrapper=18904 snapAge=40s grace=False
+2026-09-16 20:41:28 | ok wrapper=18904 snapAge=11s grace=False
+2026-09-16 20:41:58 | ok wrapper=18904 snapAge=42s grace=False
+2026-09-16 20:42:29 | ok wrapper=18904 snapAge=12s grace=False
+2026-09-16 20:43:00 | ok wrapper=18904 snapAge=43s grace=False
+2026-09-16 20:43:30 | ok wrapper=18904 snapAge=13s grace=False
+2026-09-16 20:44:01 | ok wrapper=18904 snapAge=44s grace=False
+2026-09-16 20:44:32 | ok wrapper=18904 snapAge=16s grace=False
+2026-09-16 20:45:02 | ok wrapper=18904 snapAge=46s grace=False
+2026-09-16 20:45:33 | ok wrapper=18904 snapAge=16s grace=False
+2026-09-16 20:46:03 | ok wrapper=18904 snapAge=47s grace=False
+2026-09-16 20:46:34 | ok wrapper=18904 snapAge=18s grace=False
+2026-09-16 20:47:05 | ok wrapper=18904 snapAge=49s grace=False
+2026-09-16 20:47:35 | ok wrapper=18904 snapAge=19s grace=False
+2026-09-16 20:48:06 | ok wrapper=18904 snapAge=50s grace=False
+2026-09-16 20:48:36 | ok wrapper=18904 snapAge=20s grace=False
+2026-09-16 20:49:07 | ok wrapper=18904 snapAge=51s grace=False
+2026-09-16 20:49:38 | ok wrapper=18904 snapAge=21s grace=False
+2026-09-16 20:50:08 | ok wrapper=18904 snapAge=52s grace=False
+2026-09-16 20:50:39 | ok wrapper=18904 snapAge=23s grace=False
+2026-09-16 20:51:09 | ok wrapper=18904 snapAge=54s grace=False
+2026-09-16 20:51:40 | ok wrapper=18904 snapAge=24s grace=False
+2026-09-16 20:52:11 | ok wrapper=18904 snapAge=55s grace=False
+2026-09-16 20:52:41 | ok wrapper=18904 snapAge=25s grace=False
+2026-09-16 20:53:12 | ok wrapper=18904 snapAge=56s grace=False
+2026-09-16 20:53:43 | ok wrapper=18904 snapAge=26s grace=False
+2026-09-16 20:54:14 | ok wrapper=18904 snapAge=57s grace=False
+2026-09-16 20:54:44 | ok wrapper=18904 snapAge=28s grace=False
+2026-09-16 20:55:15 | ok wrapper=18904 snapAge=58s grace=False
+2026-09-16 20:55:45 | ok wrapper=18904 snapAge=29s grace=False
+2026-09-16 20:56:16 | ok wrapper=18904 snapAge=0s grace=False
+2026-09-16 20:56:47 | ok wrapper=18904 snapAge=31s grace=False
+2026-09-16 20:57:17 | RESTART reason=wrapper_dead oldPid=0
+2026-09-16 20:57:20 |   started new wrapper PID=5308
+2026-09-16 20:57:51 | ok wrapper=5308 snapAge=95s grace=True
+2026-09-16 20:58:22 | ok wrapper=5308 snapAge=5s grace=True
+2026-09-16 20:58:52 | ok wrapper=5308 snapAge=35s grace=False
+2026-09-16 20:59:23 | ok wrapper=5308 snapAge=6s grace=False
+2026-09-16 20:59:53 | ok wrapper=5308 snapAge=37s grace=False
+2026-09-16 21:00:24 | ok wrapper=5308 snapAge=8s grace=False
+2026-09-16 21:00:55 | ok wrapper=5308 snapAge=39s grace=False

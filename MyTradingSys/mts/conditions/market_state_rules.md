@@ -47,7 +47,9 @@ Tom further subdivides **trend** into three structure types.
 > **Source GPS:** YmygDgtoxO8 | [BEGINNING]
 
 **B. Volume Profile Shape**
-- B profile = balance (bell-shaped, volume concentrated at POC).
+- B profile = weakness at the extreme. Aggressive selling after a run-up; tail on top, body below. First sign of a reversal.
+> "such a B profile is always the first sign for me that there has definitely been strong and aggressive selling here."
+> **Source GPS:** rFPCtOcfUMI | [MIDDLE]
 - P profile = one-sided move, often transitions from or into balance.
 
 > "here is a B profile and that shows me that there is weakness in the market."
