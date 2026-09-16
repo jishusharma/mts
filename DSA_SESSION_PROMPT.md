@@ -26,19 +26,13 @@ Practical rules for this session:
 
 ## 3. BOOT PROCEDURE
 
-Do these in order, one at a time, with a one-line confirmation between each.
+The paste arrives as one file containing all boot content. Read it, then:
 
-1. Read MyTradingSys/mts/runtime/SESSION_MANIFEST.json.
-   Confirm: list the boot files by name.
-2. Read the first batch of boot files.
-   Confirm: what you now have, one line.
-3. Read the next batch.
-   Confirm again.
-4. Continue until every boot file is read.
-5. Run the build check.
+1. Confirm you have the manifest and list the boot files by name.
+2. Run the build check.
    If the status is not PASS, stop and report. Do not proceed.
-6. Read the current-state section of this file.
-7. State your role and mission. Start work.
+3. Read the current-state section of this file.
+4. State your role and mission. Start work.
 
 Never claim a file was read unless you saw it pasted.
 
@@ -124,11 +118,11 @@ Before importing any concept from the transcripts:
 
 Update this section at every session close. Keep it to five lines.
 
-Last live read:  (fill)
-Thesis:          (fill)
-Next trigger:    (fill)
-Invalidates:     (fill)
-Runtime loop:    (running or stopped, with timestamp)
+Last live read:  BTC 75831.80 on 2026-09-15 at 21:18 UTC
+Thesis:          neutral, low confidence. Prior short invalidated.
+Next trigger:    none set.
+Invalidates:     none set.
+Runtime loop:    stopped. Last cycle 654. state_code.json frozen 2026-09-15 21:18 UTC.
 Open loops:      see MyTradingSys/mts/research/L_ITEMS_MASTER.md
 
 ## 11. SESSION END

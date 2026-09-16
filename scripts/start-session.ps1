@@ -56,14 +56,14 @@ $sb = [System.Text.StringBuilder]::new()
 [void]$sb.AppendLine("Resuming MTS. Paste-once session start.")
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("Role: state your role (COORDINATOR or WORKER) per DSA_SESSION_PROMPT.md section 1.")
-[void]$sb.AppendLine("Boot procedure: read SESSION_MANIFEST.json first, then read boot files in batches.")
-[void]$sb.AppendLine("Confirm each batch in one line. Do not read them all at once.")
-[void]$sb.AppendLine("Build check runs before any write. If status is not PASS, stop.")
+[void]$sb.AppendLine("Boot: all content is in this file. Confirm the manifest, run the build check.")
+[void]$sb.AppendLine("If build status is not PASS, stop and report. Do not proceed.")
+[void]$sb.AppendLine("Read the current-state section of the prompt. Then state role and mission.")
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("If a task needs more context, ask for ONE dump from Dumps/ (menu at end).")
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("=" * 72)
-[void]$sb.AppendLine("BOOT CONTENT (read in batches, confirm each batch in one line)")
+[void]$sb.AppendLine("BOOT CONTENT (all files, read the whole block)")
 [void]$sb.AppendLine("=" * 72)
 
 foreach ($f in ($m.boot_files + $m.boot_supplemental)) {
@@ -73,12 +73,12 @@ foreach ($f in ($m.boot_files + $m.boot_supplemental)) {
     [void]$sb.AppendLine($body)
 }
 
-$events = (Get-Content $logPath -Raw | ConvertFrom-Json).events
+$events = (Get-Content $logPath -Raw | ConvertFrom-Json).events | Sort-Object ts
 $last = $events | Select-Object -Last 1
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("### session_log context ###")
 [void]$sb.AppendLine("events: $($events.Count)")
-[void]$sb.AppendLine("last:   $($last.ts)  $($last.verdict)")
+[void]$sb.AppendLine("latest by timestamp: $($last.ts)  $($last.verdict)")
 
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("### java process ###")
