@@ -110,7 +110,7 @@ $block = $sb.ToString()
 Write-Host "generated: $($block.Length) chars"
 
 $pasteFile = 'Dumps\SESSION_PASTE.txt'
-Set-Content -Path $pasteFile -Value $block -Encoding utf8
+Write-PasteFile $pasteFile $block
 Write-Host "written:   $pasteFile" -ForegroundColor Cyan
 
 if (-not $NoClipboard) {
