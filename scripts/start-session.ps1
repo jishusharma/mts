@@ -35,6 +35,9 @@ $logPath      = 'MyTradingSys\mts\runtime\session_log.json'
 
 $m = Get-Content $manifestPath -Raw | ConvertFrom-Json
 
+# Session name for the chat UI. Format: MTS YYYY-MM-DD HH:MM
+$sessionName = 'MTS ' + (Get-Date -Format 'yyyy-MM-dd HH:mm')
+
 function Get-ReadBody {
     param($f)
     if (-not (Test-Path $f.path)) { return "MISSING: $($f.path)" }
@@ -54,6 +57,9 @@ function Get-ReadBody {
 $sb = [System.Text.StringBuilder]::new()
 
 [void]$sb.AppendLine("Resuming MTS. Paste-once session start.")
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("Session name: $sessionName")
+[void]$sb.AppendLine("Set your chat title in the UI to exactly this.")
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("Role: state your role (COORDINATOR or WORKER) per DSA_SESSION_PROMPT.md section 1.")
 [void]$sb.AppendLine("Boot: all content is in this file. Confirm the manifest, run the build check.")
@@ -127,6 +133,12 @@ if (-not $NoLoad) {
     . "$PSScriptRoot\load.ps1"
 }
 
+Write-Host ""
+Write-Host ""
+Write-Host "====================== SESSION NAME ======================" -ForegroundColor Yellow
+Write-Host "  $sessionName" -ForegroundColor Yellow
+Write-Host "  Set your chat title to exactly this." -ForegroundColor Yellow
+Write-Host "==========================================================" -ForegroundColor Yellow
 Write-Host ""
 Write-Host "NEXT: open $pasteFile, select all, copy, paste into a fresh chat." -ForegroundColor Cyan
 Write-Host "      shortcuts loaded in this window: quick, deltas, trend, snapshot, overview, health, alerts" -ForegroundColor Cyan
