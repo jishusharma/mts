@@ -113,7 +113,7 @@ $lines.Add("")
 $outDir = "Dumps"
 if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir -Force | Out-Null }
 $outFile = Join-Path $outDir "BUILD_REPORT.md"
-Write-ReportFile $outFile $lines
+Write-TextNoBom -Path $outFile -Lines $lines
 
 $lines | ForEach-Object { Write-Host $_ }
 Write-Host ""
