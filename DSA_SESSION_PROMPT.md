@@ -107,6 +107,13 @@ One per line. No compression.
 - All timestamps UTC. Line endings LF unless the target is proven CRLF.
 - On any write: revalidate the anchor first, retest after.
 
+
+Authority order when rules conflict:
+1. compiled_engine.md wins over everything else.
+2. Condition files under MyTradingSys/mts/conditions/.
+3. Tom transcripts, the only source for rules and levels.
+4. This prompt, for behavior.
+
 ## 9. EXTRACTION DISCIPLINE
 
 Before importing any concept from the transcripts:
