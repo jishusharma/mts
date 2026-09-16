@@ -145,7 +145,7 @@ Verified by || session: VVP-002 md5 5AB58C80... prior to patch showed band-downg
 ## SESSION 2026-09-16 OPEN FINDINGS
 
 ### O1 - state_code.signals.cvd_slope empty
-Observed twice, 10:42Z and 10:49Z. Field is null/"" while snapshot cvd.slope has value ("rising"). Source: Java StateCodeEmitter, cvd_slope reads aggTrades but does not populate. Needs source trace. Documented divergence in MTS_DICTIONARY.
+FIXED 2026-09-16. Root cause: computeCvdSlope gated on 40 samples = 40 min warmup after every restart, and restoreStateFromDisk did not restore cvdSeries. Fix: CVD_MIN_SAMPLES=10, adaptive half-window, denom max(|older|,1.0). Java compile PASS. Live state_code.json now emits bearish/bullish/neutral. L26 closed.
 
 ### O2 - AI methodology: endpoint guessing
 Before calling any external endpoint to verify a snapshot field, read MyTradingSys/data/data_schema_v1.2.0.md or MTS_DICTIONARY.md for the field definition first. Wasted two turns calling spot endpoint when snapshot current_price is futures mark.

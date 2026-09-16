@@ -48,6 +48,7 @@ public class StateCodeEmitter extends WebSocketClient {
     private static final long TICK_BUFFER_MS = 2L * 60L * 60L * 1000L;
     private static final int  RING_SIZE = 30;
     private static final int  CVD_SAMPLES = 40;
+    private static final int  CVD_MIN_SAMPLES = 10;
     private static final int  MIN_SIGNALS = 3;
     private static final double VOL_RATIO_THRESHOLD = 2.0;
     private static final double VWAP_NEUTRAL_PCT = 0.05;
@@ -336,13 +337,16 @@ public class StateCodeEmitter extends WebSocketClient {
     private Dir computeCvdSlope(double sessionCvdSnap) {
         cvdSeries.addLast(sessionCvdSnap);
         while (cvdSeries.size() > CVD_SAMPLES) cvdSeries.pollFirst();
-        if (cvdSeries.size() < CVD_SAMPLES) return null;
+        if (cvdSeries.size() < CVD_MIN_SAMPLES) return null;
+        int n = cvdSeries.size();
+        int half = n / 2;
         List<Double> lst = new ArrayList<>(cvdSeries);
         double recent = 0, older = 0;
-        for (int i = lst.size() - 20; i < lst.size(); i++) recent += lst.get(i);
-        for (int i = lst.size() - 40; i < lst.size() - 20; i++) older += lst.get(i);
-        recent /= 20.0; older /= 20.0;
-        double change = older != 0 ? (recent - older) / Math.abs(older) : 0.0;
+        for (int i = n - half; i < n; i++) recent += lst.get(i);
+        for (int i = 0; i < half; i++) older += lst.get(i);
+        recent /= half; older /= half;
+        double denom = Math.max(Math.abs(older), 1.0);
+        double change = (recent - older) / denom;
         if (change > 0.02) return Dir.BULLISH;
         if (change < -0.02) return Dir.BEARISH;
         return Dir.NEUTRAL;
