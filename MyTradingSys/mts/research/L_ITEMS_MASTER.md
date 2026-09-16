@@ -17,8 +17,8 @@
 
 | ID | Date | Status | Description | Evidence |
 |---|---|---|---|---|
-| L5 | 2026-09-13 | HELD | [NO EVIDENCE] — referenced in NEXT_SESSION_HANDOFF.md L20 as "held" with no detail. | NEXT_SESSION_HANDOFF.md L20 |
-| L6 | 2026-09-13 | HELD | [NO EVIDENCE] — same as L5. | NEXT_SESSION_HANDOFF.md L20 |
+| L5 | 2026-09-13 | HELD | [NO EVIDENCE] вЂ” referenced in NEXT_SESSION_HANDOFF.md L20 as "held" with no detail. | NEXT_SESSION_HANDOFF.md L20 |
+| L6 | 2026-09-13 | HELD | [NO EVIDENCE] вЂ” same as L5. | NEXT_SESSION_HANDOFF.md L20 |
 | L8 | 2026-09-14 | OPEN | stop_day.ps1 'stopped 2' false success. Needs live repro. | NEXT_SESSION_HANDOFF.md L79 + SESSION_ENTRY.md L37 |
 
 ## NEW (2026-09-15 disk audit)
@@ -37,9 +37,10 @@
 | L22 | 2026-09-15 | CLOSED | Rule 50 duplicate: market_state_rules.md == proof_requirements_formatted.md (57KB each). Deleted the latter 2026-09-15. Rule 50 gate now satisfied. | L_ITEMS_MASTER.md |
 | L23 | 2026-09-15 | OPEN | Dumps\kimi_*.md (14 files, 2.3MB) referenced only by DSA sec3 as one-time session dump. If unreferenced by 2026-09-21, delete. | L_ITEMS_MASTER.md |
 | L24 | 2026-09-15 | CLOSED | Mojibake claim in NEXT_SESSION_HANDOFF.md did not reproduce. Byte-level check of 5 declared files: 0 hits of C3 A2 E2 80 9D. L4 (prior viewer-artifact closure) stands. | Phase A A9 2026-09-15 |
+| L25 | 2026-09-16 | OPEN | US cash open classifier uses fixed hour 13.5 UTC. Correct for DST (EDT). Wrong for winter (EST opens 14:30 UTC). Fix: compute DST per date or read from a season table. Needs 3-snapshot proof before any code change. | src\main\java\datafeed\MarketDataSnapshot.java line 761 |
 
 ## NO EVIDENCE
 
-L1, L2, L3, L12 — referenced nowhere in current disk state. Either never created or deleted. Treat as non-existent.
+L1, L2, L3, L12 вЂ” referenced nowhere in current disk state. Either never created or deleted. Treat as non-existent.
 
 # END

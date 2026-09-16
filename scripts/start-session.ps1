@@ -36,7 +36,7 @@ $logPath      = 'MyTradingSys\mts\runtime\session_log.json'
 $m = Get-Content $manifestPath -Raw | ConvertFrom-Json
 
 # Session name for the chat UI. Format: MTS YYYY-MM-DD HH:MM
-$sessionName = 'MTS ' + (Get-Date -Format 'yyyy-MM-dd HH:mm')
+$sessionName = 'MTS-' + [DateTime]::UtcNow.ToString('yyyy-MM-dd-HHmm') + 'Z'
 
 function Get-ReadBody {
     param($f)

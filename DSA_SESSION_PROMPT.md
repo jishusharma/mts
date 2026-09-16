@@ -104,6 +104,12 @@ Critical files:
 
 ## 8. PATHS
 
+Operator timezone: IST (India Standard Time, UTC+5:30, no DST).
+All file times, log times, and session names use UTC. When the
+operator reads a UTC value, IST is that value plus 5 hours 30 minutes.
+US market open is 13:30 UTC in DST (EDT, summer), 14:30 UTC in
+EST (winter).
+
 Root:        C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed
 Java:        src\main\java\datafeed\
 Python:      MyTradingSys\mts\runtime\

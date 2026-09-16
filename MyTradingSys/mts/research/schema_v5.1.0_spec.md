@@ -36,8 +36,8 @@ and lists seven existing blocks that need corrections.
 The existing anchor is midnight UTC. It is already in the cvd block, called
 session_start_utc. It marks the start of the UTC trading day.
 
-The new anchor is the US cash market open. It is DST-aware. 14:30 UTC in
-summer, 15:30 UTC in winter. It marks the start of the session the engine
+The new anchor is the US cash market open. It is DST-aware. 13:30 UTC in
+summer (EDT, UTC-4), 14:30 UTC in winter (EST, UTC-5). It marks the start of the session the engine
 actually trades.
 
 Existing fields stay on the UTC anchor. New session fields use the US cash
