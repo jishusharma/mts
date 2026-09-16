@@ -12,7 +12,7 @@ def _live_files(extensions):
         if not p.is_file() or p.suffix.lower() not in extensions:
             continue
         rel = str(p.relative_to(MTS))
-        if "archive" in rel or "__pycache__" in rel or ".pytest_cache" in rel:
+        if "archive" in rel or "monitor_" in rel or "__pycache__" in rel or ".pytest_cache" in rel:
             continue
         if p.name.endswith((".old", ".new", ".bak")):
             continue

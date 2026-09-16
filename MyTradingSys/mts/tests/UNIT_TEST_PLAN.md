@@ -2,17 +2,17 @@
 # READ ORDER: After compiled_code_opportunities.md
 # PURPOSE: Map ACTUAL compiled functions to test coverage. No fantasy specs.
 # Date: 2026-09-02
-# Status: ACTIVE v4.0.0 — REPLACES v3.0.0 fantasy spec
+# Status: ACTIVE v4.0.0 вЂ” REPLACES v3.0.0 fantasy spec
 # Canonical: /mnt/agents/output/upload_mirror/mts/tests/UNIT_TEST_PLAN.md
 # ---
 
-# UNIT TEST PLAN — v4.0.0
-# Reality check: 22 compiled functions, 98 pytest cases, 2 test files.
-# Previous v3.0.0 claimed 55 functions / ~408 cases — that was a fantasy spec.
+# UNIT TEST PLAN вЂ” v4.0.0
+# Reality check: 22 compiled functions, 125 pytest cases, 2 test files.
+# Previous v3.0.0 claimed 55 functions / ~408 cases вЂ” that was a fantasy spec.
 
 ## Compiled Functions (22 total)
 
-### mts_math.py — 16 functions (9 public math + 7 state management)
+### mts_math.py вЂ” 16 functions (9 public math + 7 state management)
 | Function | Type | Tests | File |
 |----------|------|-------|------|
 | calculate_distance | public math | 4 | test_mts_math.py |
@@ -32,7 +32,7 @@
 | _cast | private helper | 3 | test_mts_math.py |
 | _get_snapshot_value | private helper | 2 | test_mts_math.py |
 
-### math_object_builder.py — 6 functions (1 public + 5 private)
+### math_object_builder.py вЂ” 6 functions (1 public + 5 private)
 | Function | Type | Tests | File |
 |----------|------|-------|------|
 | build_math_object | public | 1 (determinism) | test_math_object_builder.py |
@@ -49,10 +49,10 @@
 |------|-----------|----------|
 | test_mts_math.py | 64 | All 16 mts_math.py functions |
 | test_math_object_builder.py | 34 | build_math_object + schema/zone validation |
-| **Total** | **98** | **22 compiled functions** |
+| **Total** | **125** | **22 compiled functions** |
 
 ## AI-Judgment Functions (NOT unit-testable)
-These live in compiled_engine.md as [PRINCIPLE — NOT ALGORITHM] entries.
+These live in compiled_engine.md as [PRINCIPLE вЂ” NOT ALGORITHM] entries.
 Validated via 3-snapshot rule (Rule 35), not pytest.
 Examples: classify_state, check_breakdown_override, apply_exhaustion_gate, get_valid_setups
 
@@ -61,7 +61,7 @@ Examples: classify_state, check_breakdown_override, apply_exhaustion_gate, get_v
 cd /mnt/agents/output/upload_mirror/mts/tests
 pytest test_mts_math.py -v          # 64 tests
 pytest test_math_object_builder.py -v  # 34 tests
-pytest -v                              # 98 tests total
+pytest -v                              # 125 tests total
 ```
 
 # END
