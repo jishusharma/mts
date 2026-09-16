@@ -79,3 +79,7 @@ What this closes: no more re-audit of the same question. Both blocks are classif
 What remains open: promotion path. If either block should become a control (a rule that moves a verdict), that is a new task, needs three-snapshot proof per Rule 32, and is not covered by I27 or I28.
 
 I29 remains open. Two builder paths producing contradicting values for the same field is a defect, not a design question.
+
+| I30 | 2026-09-16 | OPEN | Book imbalance instability. Six flips in six cycles: 0.25 -> 1.52 -> 8.14 -> 0.46 -> 1.65 -> 0.44. Hard contradiction gate in the verdict. Every flip flips the verdict. Fix: smooth over 5 cycles or drop from the contradiction rule. Rule 32 gated if wired into verdict. | apparatus_log cycles 20-35; snapshots 17:15-17:29 |
+| I31 | 2026-09-16 | OPEN | Verdict flicker has no debounce. SETUP_FORMING -> WATCH -> SETUP_FORMING in four of eight cycles 17:12-17:19 UTC. Only the 180s cooldown suppresses popup spam. Same class as the state debounce just built. Fix: two-cycle verdict persistence like the state fix. File: scripts/core/start-trading-day.ps1. | apparatus_log cycles 17-24 |
+| I32 | 2026-09-16 | OPEN | Log line "no change" is ambiguous. Prints when nothing changed AND when a change was suppressed by cooldown. Reader cannot distinguish. Fix: add a cooldown-suppressed variant. Cosmetic. | apparatus_log 17:13:20 vs 17:14:21 |

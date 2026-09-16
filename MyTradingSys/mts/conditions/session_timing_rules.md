@@ -198,7 +198,6 @@ This shape is distinct from traditional futures markets (single peak at cash ope
 | **CT (Counter-Trend)** | **PRIORITIZE during After Hours (21:00–00:00 UTC)** | Lower volatility = cleaner mean-reversion. Reduced institutional noise. | [Block Scholes, 2025 — S] |
 | **Scalp** | **AVOID during Asian session (00:00–08:00 UTC)** | Spread widening + thin liquidity = adverse fills. Slippage disproportionately impacts scalp R/R. | [Block Scholes, 2025 — S] |
 | **Scalp** | **PRIORITIZE during US Session Core (15:00–20:00 UTC)** | Tightest spreads, deepest book, best execution. | [SGT Markets, 2025 — B] |
-| **Swing (Directional)** | **Delay entry until after US open range establishes (post-15:00 UTC)** | First 30 minutes are noise. Directional conviction improves after initial balance forms. | [ATAS Platform, 2026 — B] |
 | **Swing (Directional)** | **AVOID initiating new swing positions during After Hours (21:00–00:00 UTC)** | Thin liquidity = poor entry fills. Overnight gaps against position are more likely. | [Block Scholes, 2025 — S] |
 
 ### 7.2 Trigger Hierarchy Insertion Point
@@ -246,7 +245,6 @@ Modified Hierarchy:
 | **SR-001** | Avoid CT entries in first 15 minutes of US open | 14:30–14:45 UTC | CT (Counter-Trend) | **ABORT** — Extreme volatility, false moves, stop-hunting. |
 | **SR-002** | Prioritize BO setups during US–Europe overlap | 14:30–16:30 UTC | BO (Breakout) | **BOOST** — Increase setup score by +1. Highest volume/volatility = breakout fuel. |
 | **SR-003** | Avoid scalps during Asian session | 00:00–08:00 UTC | Scalp | **ABORT** — Thin liquidity, spread widening, adverse fills. |
-| **SR-004** | Wait for US open range to establish before taking directional bets | 14:30–15:00 UTC | Swing, Directional | **HOLD** — Delay entry until 15:00 UTC. First 30 minutes are structural noise. |
 | **SR-005** | Avoid BO entries during Asian session | 00:00–08:00 UTC | BO (Breakout) | **ABORT** — Low volume = false breakouts, lack of follow-through. |
 | **SR-006** | Avoid new swing positions during After Hours | 21:00–00:00 UTC | Swing | **ABORT** — Thin liquidity = poor fills. Overnight gap risk. |
 | **SR-007** | Avoid all entries within 5 minutes of funding reset | 00:00–00:05, 08:00–08:05, 16:00–16:05 UTC | All | **ABORT** — Funding reset volatility spike = unpredictable price action. |
@@ -263,7 +261,6 @@ Each negative rule above is testable via:
 3. **Session-specific metrics:** For each rule, define a pass/fail metric:
    - SR-001: CT win rate during 14:30–14:45 UTC vs. CT win rate during 15:00–16:00 UTC. Abort if win rate < 35%.
    - SR-003: Scalp slippage during 00:00–08:00 UTC vs. 15:00–20:00 UTC. Abort if slippage > 2x baseline.
-   - SR-004: Swing entry drawdown during 14:30–15:00 UTC vs. post-15:00 UTC. Hold if drawdown > 1.5x baseline.
 
 ---
 
