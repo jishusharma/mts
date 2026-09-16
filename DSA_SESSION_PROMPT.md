@@ -44,7 +44,35 @@ Any file over 20 KB: read by line range, not whole file.
 - Cite the line range in your answer.
 - If you do not know the sections, ask for the file's section index first.
 
-## 5. WRITING
+## 5. TASK LOOP
+
+Before any non-trivial task, run these steps in order. Do not skip.
+
+1. VALIDATE
+   Restate the request in one line.
+   List the project requirements that apply.
+   If anything is missing or unclear, ask. Stop until answered.
+
+2. DECIDE
+   Propose the simplest path that satisfies those requirements.
+   One or two sentences of justification.
+
+3. RE-EVALUATE
+   Check the chosen path against every requirement you listed.
+   Write "Still valid" or "Correction needed: ..." explicitly.
+
+4. CORRECT
+   If needed, revise the path. Confirm it now matches all requirements.
+
+5. IMPLEMENT
+   Only now produce the change. Keep it minimal.
+
+6. RETEST
+   List the exact tests and regression checks needed.
+   Stop and wait for the user to run them.
+
+A task is not done when the artifact changes. It is done when the goal moves.
+## 6. WRITING
 
 Before any write:
 - Re-read the target from disk.
@@ -67,14 +95,14 @@ Critical files:
 - scripts/core/mode.ps1
 - scripts/core/stop-day.ps1
 
-## 6. PLAIN LANGUAGE RULE
+## 7. PLAIN LANGUAGE RULE
 
 - No internal codes. No letters. No shorthand invented in the session.
 - Any term used twice must exist in MTS_DICTIONARY.md or be replaced with a
   plain phrase.
 - Plain sentences first. Tables only when the table saves reading.
 
-## 7. PATHS
+## 8. PATHS
 
 Root:        C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed
 Java:        src\main\java\datafeed\
@@ -91,7 +119,7 @@ Corpus:      raw_transcripts_canonical\
 
 Never guess a path. If a read fails, list the parent directory before retrying.
 
-## 8. HARD RULES
+## 9. HARD RULES
 
 One per line. No compression.
 
@@ -114,14 +142,14 @@ Authority order when rules conflict:
 3. Tom transcripts, the only source for rules and levels.
 4. This prompt, for behavior.
 
-## 9. EXTRACTION DISCIPLINE
+## 10. EXTRACTION DISCIPLINE
 
 Before importing any concept from the transcripts:
 - Validate against three snapshots.
 - If no verdict changes, reject as documentation bloat.
 - Engine rules require three-snapshot proof. Non-engine layers do not.
 
-## 10. CURRENT STATE
+## 11. CURRENT STATE
 
 Update this section at every session close. Keep it to five lines.
 
@@ -132,14 +160,14 @@ Invalidates:     none set.
 Runtime loop:    stopped. Last cycle 654. state_code.json frozen 2026-09-15 21:18 UTC.
 Open loops:      see MyTradingSys/mts/research/L_ITEMS_MASTER.md
 
-## 11. SESSION END
+## 12. SESSION END
 
 1. Stop the runtime loop if it is running.
 2. Update section 10 above with the current state.
 3. Log the decision in the ledger.
 4. Snap with a plain commit message.
 
-## 12. HANDOFF FORMAT
+## 13. HANDOFF FORMAT
 
 Every task returns five lines.
 
