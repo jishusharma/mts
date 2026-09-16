@@ -1,4 +1,4 @@
-﻿"""session_state.py - MTS session SSOT helper.
+"""session_state.py - MTS session SSOT helper.
 Two files: session_state.json (AI writes) and session_log.json (append-only).
 Atomic writes. No partial reads. Schema-versioned.
 """

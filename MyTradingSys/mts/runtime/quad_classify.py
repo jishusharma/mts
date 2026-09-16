@@ -1,4 +1,4 @@
-﻿"""quad_classify.py - Price x CVD x OI quadrant classifier.
+"""quad_classify.py - Price x CVD x OI quadrant classifier.
 Reads latest snapshot + nearest ~1h-ago snapshot from data/snapshots/.
 Prints one line: CLASS | price_1h_pct | cvd_delta_1h | oi_change_1h_pct | delta_15m | delta_aligned
 

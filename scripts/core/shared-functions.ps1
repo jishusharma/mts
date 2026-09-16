@@ -16,3 +16,25 @@ function Get-Descendants([int]$rootPid) {
     }
     return $out
 }
+
+
+# BOM-free write helpers. PS 5.1 Set-Content -Encoding UTF8 always
+# writes a BOM. Use these instead. Added 2026-09-16.
+function Write-NoBom {
+    param([string]$Path, [string]$Text)
+    $enc = New-Object System.Text.UTF8Encoding($false)
+    $full = if ([System.IO.Path]::IsPathRooted($Path)) { $Path } else { Join-Path (Get-Location) $Path }
+    [System.IO.File]::WriteAllText($full, $Text, $enc)
+}
+function Write-NoBomLines {
+    param([string]$Path, [string[]]$Lines)
+    $enc = New-Object System.Text.UTF8Encoding($false)
+    $full = if ([System.IO.Path]::IsPathRooted($Path)) { $Path } else { Join-Path (Get-Location) $Path }
+    [System.IO.File]::WriteAllLines($full, $Lines, $enc)
+}
+function Test-HasBom {
+    param([string]$Path)
+    $bytes = [System.IO.File]::ReadAllBytes((Resolve-Path -LiteralPath $Path))
+    if ($bytes.Length -lt 3) { return $false }
+    return ($bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF)
+}

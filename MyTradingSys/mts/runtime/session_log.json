@@ -317,6 +317,12 @@
       "action": "passed",
       "reason": "Task 1 done: session block in MarketDataSnapshot.buildSession. Fifteen of sixteen fields live. day_type UNKNOWN per L29. session_bias deferred to runtime echo. L25 folded: session labels DST-aware. Compile exit 0, live snapshot verified.",
       "ts": "2026-09-16T12:27:06.693985Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "Feature layer wired: context.ps1, regime_classifier.py, kline_archiver.py. BOM fix permanent. Session close.",
+      "ts": "2026-09-16T13:00:19.488456Z"
     }
   ]
 }

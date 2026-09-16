@@ -159,12 +159,12 @@ Before importing any concept from the transcripts:
 
 Update this section at every session close. Keep it to five lines.
 
-Last live read:  BTC 76197.30 on 2026-09-16 at 11:50 UTC
+Last live read:  BTC ~75950 on 2026-09-16 at 12:30 UTC
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime loop:    off since 2026-09-16 11:50:23 UTC. Silent-exit instrumentation verified (phase=sleeping). L18 closed.
-Open loops:      L28 open (orphan java on exit). Session block build queued for next session. See L_ITEMS_MASTER.md.
+Runtime loop:    off. Feature layer live: context.ps1, regime_classifier.py, kline_archiver.py. BOM fix landed.
+Open loops:      L28 orphan java, L29 VP shape classifier, L30 context network dep, L31 regime sibling orphan. See L_ITEMS_MASTER.md.
 
 ## 12. SESSION END
 

@@ -1,4 +1,4 @@
-﻿# start_trading_day.ps1
+# start_trading_day.ps1
 # MTS trading-day apparatus. Repo root. Ctrl+C to stop.
 # Usage: .\start-trading-day.ps1
 #        .\start-trading-day.ps1 -Once
@@ -327,6 +327,13 @@ try {
         $null = python "$R\MyTradingSys\mts\runtime\outcome_labeler.py" 2>&1
     } catch {}
 
+    # Feature layer: kline archive + regime classifier (additive, non-gating)
+    try {
+        $null = python "$R\MyTradingSys\mts\runtime\kline_archiver.py" 2>&1
+    } catch {}
+    try {
+        $null = python "$R\MyTradingSys\mts\runtime\regime_classifier.py" 2>&1
+    } catch {}
     $v = Compute-Verdict -snap $snap -proofDir $pd
         $v | Add-Member -NotePropertyName proof_dir -NotePropertyValue $pd -Force
         $v | Add-Member -NotePropertyName proof_dir_details -NotePropertyValue $pdd -Force

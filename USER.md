@@ -59,6 +59,12 @@ Dumps:       Dumps\
 Corpus:      raw_transcripts_canonical\
 Backups:     backup_session\ (one per session, -Force overwrite)
 
+## FILE WRITES
+- PS 5.1 `Set-Content -Encoding UTF8` writes a BOM. Never use it.
+- Use `Write-NoBom` / `Write-NoBomLines` from scripts\core\shared-functions.ps1.
+- Verify with `Test-HasBom` after any write to .py, .json, or .ps1.
+- BOM breaks Python `json.load`. Byte 0-2 must not be EF BB BF.
+
 ## CONFIG
 - VERSION at root is authoritative for MTS version.
 - Python: first line `sys.dont_write_bytecode = True`. Windows paths in raw strings.

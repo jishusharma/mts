@@ -1,4 +1,4 @@
-﻿"""log_decision.py - one-line decision logger.
+"""log_decision.py - one-line decision logger.
 Usage:
   python log_decision.py passed "reason text" [--verdict V] [--setup S] [--alert N]
   python log_decision.py acted "reason text"

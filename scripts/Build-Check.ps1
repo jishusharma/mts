@@ -101,6 +101,22 @@ if (Test-Path $locksDir) {
 }
 
 $lines.Add("")
+# BOM scan: files that will bite Python json.load
+$bomHits = @()
+$scan = @()
+$scan += Get-ChildItem "MyTradingSys\mts\runtime" -File -Filter "*.py" -ErrorAction SilentlyContinue
+$scan += Get-ChildItem "MyTradingSys\mts\runtime" -File -Filter "*.json" -ErrorAction SilentlyContinue
+$scan += Get-ChildItem "scripts" -Recurse -File -Filter "*.ps1" -ErrorAction SilentlyContinue
+foreach ($f in $scan) { if (-not $f.FullName) { continue }
+  $b = [System.IO.File]::ReadAllBytes($f.FullName)
+  if ($b.Length -ge 3 -and $b[0] -eq 0xEF -and $b[1] -eq 0xBB -and $b[2] -eq 0xBF) {
+    $rel = $f.FullName.Substring((Get-Location).Path.Length + 1)
+    $bomHits += $rel
+  }
+}
+$lines.Add("BOM files: " + $bomHits.Count)
+foreach ($h in $bomHits) { $lines.Add("  - $h") }
+$lines.Add("")
 $lines.Add("Pastes for this session:")
 $lines.Add("  Always:   Dumps/BUILD_REPORT.md")
 $lines.Add("  JSON:     Dumps/dump_core.md + dump_runtime.md")

@@ -1,4 +1,4 @@
-﻿"""outcome_labeler.py - labels each snapshot with forward outcomes.
+"""outcome_labeler.py - labels each snapshot with forward outcomes.
 Reads data/snapshots/BTCUSDT_*.json, writes data/outcome_labels.json.
 For each snapshot >120m old with no label: compute return at +30m/+60m/+120m.
 Idempotent: skips already-labeled snapshots. Run hourly or after each session.

@@ -78,7 +78,7 @@ patch >20 lines.
 ## SESSION NOTES (historical, post-END relocated 2026-09-15)
 
 ## RULE 32 CONFIRMED: trend override (2026-09-13)
-Third evidence collected — cycle 4 of 20:00:30 session:
+Third evidence collected вЂ” cycle 4 of 20:00:30 session:
   price 77123.40 | B/below_val | nrr 2.02 (PASS) | p=5 | pd=aligned
   -> SETUP_FORMING would have fired (nrr + proof both pass)
   -> suppressed to WAIT_RR by broken-value override.
@@ -99,7 +99,7 @@ Exception: edits to compiled_engine.md, 01_AI_BEHAVIOR.md, DSA_SESSION_PROMPT.md
 get their own named dir. Retention: 1 most recent. New session backup overwrites the previous one. Older auto-deleted.
 Incident: 14 backup dirs created in one session, all sequential. Wasteful.
 
-## Backup policy — corrected 2026-09-13
+## Backup policy вЂ” corrected 2026-09-13
 One dir per session, fixed name: backup_session/.
 Created once at session start. Files copied in with -Force on each edit.
 Never create backup_<timestamp>. Never create a second backup dir.
@@ -124,6 +124,19 @@ VVP-002 line 219 updated to match this policy. Footer above was already correct.
 Verified by || session: VVP-002 md5 5AB58C80... prior to patch showed band-downgrade text.
 
 # END
+
+## SESSION 2026-09-16 BOM fix (permanent)
+
+Root cause: PS 5.1 `Set-Content -Encoding UTF8` always writes a BOM.
+BOM breaks Python `json.load`. Recurred many times.
+
+Fix:
+- `Write-NoBom` and `Write-NoBomLines` in scripts\core\shared-functions.ps1.
+- `Test-HasBom` to check any .py, .json, .ps1.
+- Build-Check.ps1 scans runtime *.py, *.json and scripts\*.ps1 for BOM.
+- USER.md FILE WRITES rule added.
+
+Verify: three files clean today (regime_classifier.py, state_code_regime.json, shared-functions.ps1).
 ## SESSION 2026-09-16 AI MISTAKES (for token saving)
 
 1. Flagged "no .git" from a listing made without -Force. Dotfolders hidden. Always use -Force on dotfolder checks.

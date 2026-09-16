@@ -1,4 +1,4 @@
-﻿import sys, json
+import sys, json
 sys.path.insert(0, r"C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\mts\runtime")
 from math_object_builder import build_math_object
 with open(sys.argv[1], "r", encoding="utf-8") as f:

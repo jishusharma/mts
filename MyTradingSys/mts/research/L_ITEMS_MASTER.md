@@ -17,8 +17,8 @@
 
 | ID | Date | Status | Description | Evidence |
 |---|---|---|---|---|
-| L5 | 2026-09-13 | HELD | [NO EVIDENCE] вЂ” referenced in NEXT_SESSION_HANDOFF.md L20 as "held" with no detail. | NEXT_SESSION_HANDOFF.md L20 |
-| L6 | 2026-09-13 | HELD | [NO EVIDENCE] вЂ” same as L5. | NEXT_SESSION_HANDOFF.md L20 |
+| L5 | 2026-09-13 | HELD | [NO EVIDENCE] РІР‚вЂќ referenced in NEXT_SESSION_HANDOFF.md L20 as "held" with no detail. | NEXT_SESSION_HANDOFF.md L20 |
+| L6 | 2026-09-13 | HELD | [NO EVIDENCE] РІР‚вЂќ same as L5. | NEXT_SESSION_HANDOFF.md L20 |
 | L8 | 2026-09-14 | OPEN | stop_day.ps1 'stopped 2' false success. Needs live repro. | NEXT_SESSION_HANDOFF.md L79 + SESSION_ENTRY.md L37 |
 
 ## NEW (2026-09-15 disk audit)
@@ -43,8 +43,12 @@
 | L28 | 2026-09-16 | OPEN | Loop exit orphans mvn/java child. start-trading-day.ps1 finally stops the powershell wrapper PID but not the java child. Repro: Ctrl+C the loop, Get-Process java shows 1. Fix candidate: match CommandLine datafeed.Main statemachine inside finally, stop child before wrapper. Needs its own test, no Rule 32 gate. | apparatus_log.txt 11:41:02 + 13:23:20; live repro 11:50:23 |
 | L29 | 2026-09-16 | OPEN | VP shape classifier returns B on nearly every block. Rule in buildVp: second-peak > 60% of POC peak -> B; else D if left/right volume ratio 0.8-1.2; else P. Thresholds are screener inventions (schema v1.2.0 already says so). Downstream: SetupCandidatesBuilder.classifyState reads daily_vp.shape first; if B, state=balance always. Affects candidate generation, not the trend override. Fix: derive shape from Tom-consistent structure, or remove the balance shortcut from classifyState. Classifier fix not Rule 32 gated; any change wired into state classification is. | src/main/java/datafeed/MarketDataSnapshot.java buildVp; snapshots 2026-09-16 |
 
+| L30 | 2026-09-16 | OPEN | context.ps1 reads Binance REST each call. Durable fix is kline_archiver feeding it locally. | context.ps1 20260916 |
+| L31 | 2026-09-16 | OPEN | state_code_regime.json sibling is not read by StateCodeEmitter.java. Java merge deferred. | regime_classifier.py 20260916 |
+| L32 | 2026-09-16 | CLOSED | BOM from Set-Content -Encoding UTF8. Fixed: Write-NoBom helpers, Build-Check scan, USER.md rule. 9 files cleaned. | apparatus_fixes.md 20260916 |
+
 ## NO EVIDENCE
 
-L1, L2, L3, L12 вЂ” referenced nowhere in current disk state. Either never created or deleted. Treat as non-existent.
+L1, L2, L3, L12 РІР‚вЂќ referenced nowhere in current disk state. Either never created or deleted. Treat as non-existent.
 
 # END
