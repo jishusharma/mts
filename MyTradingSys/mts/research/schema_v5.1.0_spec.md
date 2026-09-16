@@ -23,11 +23,11 @@ and lists seven existing blocks that need corrections.
 | initial_balance_high | float | price | trade_session_utc | Java, first N minutes | snapshot.session.initial_balance_high |
 | initial_balance_low | float | price | trade_session_utc | Java, first N minutes | snapshot.session.initial_balance_low |
 | initial_balance_window_minutes | int | minutes | n/a | config constant | snapshot.session.initial_balance_window_minutes |
-| day_type | string | trend/balance/transition | n/a | Python, from VP shape and VWAP slope | snapshot.session.day_type |
-| day_type_confidence | string | low/medium/high | n/a | Python | snapshot.session.day_type_confidence |
+| day_type | string | trend/balance/transition/UNKNOWN | n/a | DEFERRED 2026-09-16. VP shape classifier returns B near-constantly; not a reliable source. Build a proper classifier as its own task (see L29). Emit UNKNOWN until then. | snapshot.session.day_type |
+| day_type_confidence | string | low/medium/high/none | n/a | DEFERRED with day_type. Emit none until classifier exists. | snapshot.session.day_type_confidence |
 | session_vwap_anchor_utc | string | ISO 8601 UTC | n/a | Java, echoed at session start | snapshot.session.vwap_anchor_utc |
 | open_location | string | above_value/in_value/below_value | trade_session_utc | Python, session open vs value area | snapshot.session.open_location |
-| session_bias | object | {direction, text, committed_at_utc} | n/a | runtime engine, echoed by Python | snapshot.session.bias |
+| session_bias | object | {direction, text, committed_at_utc} | n/a | DEFERRED 2026-09-16. Not a Java-emitted field. Echoed by a future runtime tool that reads session_state.json. The other fifteen fields shipped in MarketDataSnapshot.java buildSession(). | snapshot.session.bias |
 | sweep_flag | bool | true/false | trade_session_utc | Python, price vs prior day high/low | snapshot.session.sweep_flag |
 | liquidity_sweep_direction | string | above/below/none | trade_session_utc | Python | snapshot.session.liquidity_sweep_direction |
 
@@ -86,6 +86,6 @@ removed.
 1. Confirm the two anchors.
 2. Set the initial balance window length.
 3. Confirm sweep flag scope: prior day only, or prior day plus current session.
-4. Confirm day type source: build a classifier, or reuse VP shape.
+4. RESOLVED 2026-09-16: day type source deferred. Do not reuse VP shape. See L29.
 
 ## End

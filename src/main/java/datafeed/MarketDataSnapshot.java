@@ -365,6 +365,7 @@ public class MarketDataSnapshot {
         oi.put("change_1h_pct", Math.round(oiChangePct * 100.0) / 100.0);
         oi.put("confidence", CONFIDENCE_HIGH);
         root.set("open_interest", oi);
+        root.set("session", buildSession(klines1m, priorDayClose, currentPrice, dailyVp.get("vah").asDouble(), dailyVp.get("val").asDouble(), priorDayVp.get("high").asDouble(), priorDayVp.get("low").asDouble()));
         root.set("session_timing", sessionTiming);
         root.set("spot_perp_basis", spotPerpBasis);
         root.set("liquidation_clusters", liquidationClusters);
@@ -713,6 +714,88 @@ public class MarketDataSnapshot {
         return node;
     }
 
+    private ObjectNode buildSession(JsonNode klines1m, double priorDayClose, double currentPrice, double dailyVah, double dailyVal, double priorDayHigh, double priorDayLow) {
+        ObjectNode node = mapper.createObjectNode();
+        ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);
+        ZonedDateTime nyOpen = ZonedDateTime.of(now.toLocalDate(), LocalTime.of(9,30), ZoneId.of("America/New_York"));
+        ZonedDateTime nyOpenUtc = nyOpen.withZoneSameInstant(ZoneOffset.UTC);
+        long openMs = nyOpenUtc.toInstant().toEpochMilli();
+        long ibEndMs = openMs + 30L * 60L * 1000L;
+
+        double openPx = 0.0, highPx = 0.0, lowPx = Double.MAX_VALUE;
+        double ibHigh = 0.0, ibLow = Double.MAX_VALUE;
+        long lastSweepAbove = 0L, lastSweepBelow = 0L;
+        boolean seen = false;
+        if (klines1m != null) {
+            for (JsonNode bar : klines1m) {
+                long t = bar.get(0).asLong();
+                if (t < openMs) continue;
+                double o = bar.get(1).asDouble();
+                double h = bar.get(2).asDouble();
+                double l = bar.get(3).asDouble();
+                if (!seen) { openPx = o; seen = true; }
+                if (h > highPx) highPx = h;
+                if (l < lowPx) lowPx = l;
+                if (t < ibEndMs) {
+                    if (h > ibHigh) ibHigh = h;
+                    if (l < ibLow) ibLow = l;
+                }
+                if (priorDayHigh > 0 && h > priorDayHigh) { lastSweepAbove = t; }
+                if (priorDayLow > 0 && l < priorDayLow) { lastSweepBelow = t; }
+            }
+        }
+        node.put("vwap_anchor_utc", nyOpenUtc.toInstant().toString());
+        node.put("initial_balance_window_minutes", 30);
+        if (!seen) {
+            node.put("open_price", 0.0);
+            node.put("high", 0.0);
+            node.put("low", 0.0);
+            node.put("gap_from_prior_close", 0.0);
+            node.put("initial_balance_high", 0.0);
+            node.put("initial_balance_low", 0.0);
+        } else {
+            node.put("open_price", Math.round(openPx * 100.0) / 100.0);
+            node.put("high", Math.round(highPx * 100.0) / 100.0);
+            node.put("low", lowPx == Double.MAX_VALUE ? 0.0 : Math.round(lowPx * 100.0) / 100.0);
+            node.put("gap_from_prior_close", priorDayClose > 0 ? Math.round((openPx - priorDayClose) * 100.0) / 100.0 : 0.0);
+            node.put("initial_balance_high", ibHigh > 0 ? Math.round(ibHigh * 100.0) / 100.0 : 0.0);
+            node.put("initial_balance_low", ibLow == Double.MAX_VALUE ? 0.0 : Math.round(ibLow * 100.0) / 100.0);
+        }
+        // derived: range_position_pct
+        double rp = 0.0;
+        if (seen && highPx > lowPx) rp = (currentPrice - lowPx) / (highPx - lowPx) * 100.0;
+        node.put("range_position_pct", Math.round(rp * 100.0) / 100.0);
+
+        // derived: gap_direction
+        double gapThresh = priorDayClose > 0 ? priorDayClose * 0.001 : 0.0;
+        double gapVal = seen ? (openPx - priorDayClose) : 0.0;
+        String gapDir = (priorDayClose <= 0 || Math.abs(gapVal) < gapThresh) ? "flat" : (gapVal > 0 ? "up" : "down");
+        node.put("gap_direction", gapDir);
+
+        // derived: open_location vs daily value area
+        String openLoc = "in_value";
+        if (seen && dailyVah > 0 && dailyVal > 0) {
+            if (openPx > dailyVah) openLoc = "above_value";
+            else if (openPx < dailyVal) openLoc = "below_value";
+        }
+        node.put("open_location", openLoc);
+
+        // derived: sweep_flag + liquidity_sweep_direction
+        boolean above = lastSweepAbove > 0;
+        boolean below = lastSweepBelow > 0;
+        boolean sweep = above || below;
+        String sweepDir = "none";
+        if (above && below) sweepDir = (lastSweepAbove >= lastSweepBelow) ? "above" : "below";
+        else if (above) sweepDir = "above";
+        else if (below) sweepDir = "below";
+        node.put("sweep_flag", sweep);
+        node.put("liquidity_sweep_direction", sweepDir);
+
+        node.put("day_type", "UNKNOWN");
+        node.put("day_type_confidence", "none");
+        return node;
+    }
+
     private ObjectNode buildSessionTiming(ZonedDateTime now) {
         ObjectNode node = mapper.createObjectNode();
         LocalDate today = now.toLocalDate();
@@ -753,14 +836,18 @@ public class MarketDataSnapshot {
         int hour = now.getHour();
         // BUG-009 fix (2026-09-10): use decimal hour so us_cash_open can fire.
         double hourDec = hour + now.getMinute() / 60.0;
+        // L25 fix (2026-09-16): session labels DST-aware. US cash open shifts with DST.
+        ZonedDateTime nyOpenRef = ZonedDateTime.of(now.toLocalDate(), LocalTime.of(9,30), ZoneId.of("America/New_York"));
+        ZonedDateTime nyOpenUtcRef = nyOpenRef.withZoneSameInstant(ZoneOffset.UTC);
+        double usOpenHr = nyOpenUtcRef.getHour() + nyOpenUtcRef.getMinute() / 60.0;
         String session;
         if (hourDec >= 0.0 && hourDec < 7.0) session = "asian";
         else if (hourDec >= 7.0 && hourDec < 9.0) session = "asia_europe_overlap";
-        else if (hourDec >= 9.0 && hourDec < 13.0) session = "european";
-        else if (hourDec >= 13.0 && hourDec < 13.5) session = "us_premarket";
-        else if (hourDec >= 13.5 && hourDec < 15.0) session = "us_cash_open";
-        else if (hourDec >= 15.0 && hourDec < 16.5) session = "us_europe_overlap";
-        else if (hourDec >= 16.5 && hourDec < 20.0) session = "us_core";
+        else if (hourDec >= 9.0 && hourDec < usOpenHr - 0.5) session = "european";
+        else if (hourDec >= usOpenHr - 0.5 && hourDec < usOpenHr) session = "us_premarket";
+        else if (hourDec >= usOpenHr && hourDec < usOpenHr + 1.5) session = "us_cash_open";
+        else if (hourDec >= usOpenHr + 1.5 && hourDec < usOpenHr + 3.0) session = "us_europe_overlap";
+        else if (hourDec >= usOpenHr + 3.0 && hourDec < 20.0) session = "us_core";
         else if (hourDec >= 20.0 && hourDec < 21.0) session = "us_close";
         else session = "after_hours";
         node.put("current_session", session);

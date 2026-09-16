@@ -311,6 +311,12 @@
       "action": "passed",
       "reason": "session close: L18 fixed (silent exit instrumented), verify_data.ps1 built, L28 opened (orphan java on exit), anchor resolved (UTC for data, US cash open for session frame)",
       "ts": "2026-09-16T12:09:25.763884Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "Task 1 done: session block in MarketDataSnapshot.buildSession. Fifteen of sixteen fields live. day_type UNKNOWN per L29. session_bias deferred to runtime echo. L25 folded: session labels DST-aware. Compile exit 0, live snapshot verified.",
+      "ts": "2026-09-16T12:27:06.693985Z"
     }
   ]
 }
