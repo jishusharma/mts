@@ -84,12 +84,22 @@ A task is not done when the artifact changes. It is done when the goal moves.
 ## 6. WRITING
 
 Before any write:
+- Detect the line ending of the target from disk. One command:
+    $b = [System.IO.File]::ReadAllBytes((Resolve-Path $path))
+    $crlf=0; $lf=0
+    for ($i=0; $i -lt $b.Length; $i++) { if ($b[$i] -eq 10) { if ($i -gt 0 -and $b[$i-1] -eq 13) { $crlf++ } else { $lf++ } } }
+    "CRLF=$crlf  LF-only=$lf"
+  Compose the anchor with the detected line ending. Never assume.
 - Re-read the target from disk.
 - Verify every anchor verbatim. If an anchor count is not 1, stop and report.
 
 After any write:
 - Verify by a method other than the one used to write.
 - Report line count, byte count, and non-ASCII count.
+
+After creating a new file:
+- Add one row to MyTradingSys/system/03_FILE_INDEX.md.
+- If the file belongs in boot content, add it to SESSION_MANIFEST.json boot_supplemental.
 
 Critical files require a four-step proof:
 hash before, edit via explicit replace, hash after, diff.

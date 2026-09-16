@@ -208,6 +208,15 @@ Files moved from research/ after their findings were integrated or superseded:
 | outcome_labels.json | Forward returns per snapshot |
 | screening_results.csv | Historical screening output |
 
+## SESSION 2026-09-16 OUTPUTS - MTS/RESEARCH/
+
+| File | Size | Purpose |
+|------|------|---------|
+| SESSION_LEARNINGS_2026-09-16.md | ~8KB | Full session record. Trade, sweep finding, OI correction, research finding. |
+| EVIDENCE_2026-09-16.md | ~2KB | Rule 32 snapshot 1 of 3. Six counter-trade setups with levels and ratios. |
+| RESEARCH_2026-09-16_oi_pattern.md | ~3.5KB | Grok and Claude responses on OI/CVD/price pattern. Primary source. |
+| zone_map_2026-09-17.md | ~1.6KB | Prepared zones for next session. Short zones above, long zones below. |
+
 ## QUICK STATS
 
 | Metric | Value |
