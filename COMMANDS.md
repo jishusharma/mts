@@ -1,54 +1,84 @@
 # COMMANDS
-# Read once top-to-bottom. Then jump to your moment.
-# Apparatus is the interface. User runs only what is below.
-# Last updated: 2026-09-16.
 
-## SESSION START
+Read once top to bottom. Then jump to your moment. Last updated: 2026-09-16.
+
+## START THE SESSION
+
     cd C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed
     . .\scripts\load.ps1
     .\session-start.ps1 -NoClipboard
-    # open Dumps\SESSION_PASTE.txt, Ctrl+A, Ctrl+C, paste into fresh chat
+    # open Dumps\SESSION_PASTE.txt, copy all, paste into a fresh chat
 
-## SESSION START - APPARATUS DEAD
+If the runtime loop is not running:
+
     .\scripts\core\mode.ps1 -M armed
 
-## DURING SESSION (aliases, load with load.ps1)
-    lx      quick read (price, snap, CVD, state, last verdict)
-    ld      1m bar deltas
-    lt      15-cycle trend
-    lf      full snapshot fields
-    lc      decision combo
-    la      recent alerts
-    lh      health (java, state_code, log tail)
+## DURING THE SESSION
 
-## MONITORING STATIONS (feed reads for AI)
-    .\scripts\monitor\stations.ps1                     # F1-F5 + health
-    .\scripts\monitor\stations.ps1 -All                # everything
+    lx      quick read - price, snapshot, CVD, state, last verdict
+    ld      last 12 minutes of one-minute bars
+    lt      last 15 snapshots, side by side
+    lf      one snapshot, all decision fields
+    lc      live, snapshot, state, and log together
+    la      last 10 alerts
+    lh      health - java, state file age, log tail
+
+Monitoring stations:
+
+    .\scripts\monitor\stations.ps1
+    .\scripts\monitor\stations.ps1 -All
     .\scripts\monitor\stations.ps1 -Station F2 -Tail 60
 
+## BEFORE ANY WRITE
+
+    python .\MyTradingSys\mts\tests\docs\test_integrity.py -v
+    # read the last line. If not all passed, stop. Do not write.
+
+    .\scripts\Build-Check.ps1
+    # read the STATUS line. If not PASS, stop.
+
 ## DECISION POINT
+
     python .\MyTradingSys\mts\runtime\session_state.py show
     python .\MyTradingSys\mts\runtime\session_state.py log
     python .\MyTradingSys\mts\runtime\log_decision.py passed "reason"
 
-## SESSION END
+## END THE SESSION
+
     .\scripts\core\stop-day.ps1
+    gitsnap "close: one line on what happened"
 
-## GIT SNAPSHOT
-    gitsnap     commit runtime churn
-    gitsee      log
-    gitundo     revert last commit
+## SNAPSHOT COMMANDS
 
-## BROKEN - FIRST RESPONSE
+    gitsnap   commit everything, move the snapshot tag
+    gitsee    last five commits, plus dirty count
+    gitundo   revert to the snapshot tag
+
+## WHEN SOMETHING IS BROKEN
+
     lh
     Get-Content .\data\apparatus_log.txt -Encoding UTF8 -Tail 15
     Get-Content .\data\last_alert.json -Raw | ConvertFrom-Json
 
 ## HARD RULES
-    - never bare-kill java. use stop-day.ps1 or mode.ps1.
-    - never run mode.ps1 twice. it kills + restarts.
-    - critical file edits: hash before / hash after / diff.
-      See DSA_SESSION_PROMPT.md section 10.
-    - no writes to session_state.json thesis without user approval.
+
+One per line. No compression.
+
+- Never bare-kill Java. Use stop-day.ps1 or mode.ps1.
+- Never run mode.ps1 twice in a row. It kills and restarts.
+- Before editing a critical file: hash, edit, hash, diff. Critical list
+  is in DSA_SESSION_PROMPT.md section 5.
+- No writes to the session state thesis without user approval.
+- All timestamps UTC. Line endings LF.
+- The user runs all commands. The AI issues them.
+
+## MAINTENANCE
+
+These run rarely. Not part of the daily flow.
+
+    python -m pytest MyTradingSys/mts/tests -q         # math tests
+    python -m pytest MyTradingSys/mts/tests/docs -q    # doc tests
+    python .\MyTradingSys\mts\runtime\outcome_labeler.py
+    .\scripts\Dump_All.ps1                             # full dump set
 
 # END
