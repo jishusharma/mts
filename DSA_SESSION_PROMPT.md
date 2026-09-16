@@ -168,12 +168,12 @@ Before importing any concept from the transcripts:
 
 Update this section at every session close. Keep it to five lines.
 
-Last live read:  see newest file in data/snapshots (or run quick).
+Last live read:  2026-09-16T14:31:15Z, 75751.5, in_va, range 69.75%
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime loop:    status via scripts/core/mode.ps1. Feature layer live: context.ps1, regime_classifier.py, kline_archiver.py.
-Open loops:      L28 orphan java, L29 VP shape classifier, L30 context network dep, L31 regime sibling orphan. See L_ITEMS_MASTER.md.
+Runtime loop:    running. Wrapper PID 5164, java PID 5384. Restarted ~14:36 UTC.
+Open loops:      L25, L28, L29, L30, L31, I21-I26. L29 blocked by I26 (B definition unresolved). See L_ITEMS_MASTER.md.
 
 ## 12. SESSION END
 

@@ -1,9 +1,9 @@
-BUILD_REPORT - 2026-09-16 18:29:50 UTC
+BUILD_REPORT - 2026-09-16 20:06:06 UTC
 host: JIS-NB
 
 Java compile:  PASS (2.6 s)
 Math tests:    PASS 125/125 (1.1 s)
-Doc tests:     PASS 5/5 (1.4 s)
+Doc tests:     PASS 5/5 (1.6 s)
 
 STATUS: PASS
 
@@ -12,7 +12,8 @@ In-flight .new files: 0
 Active sessions:
   (none)
 
-BOM files: 0
+BOM files: 1
+  - scripts\core\loop-supervisor.ps1
 
 Pastes for this session:
   Always:   Dumps/BUILD_REPORT.md

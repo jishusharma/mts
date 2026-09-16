@@ -52,3 +52,14 @@
 L1, L2, L3, L12 РІР‚вЂќ referenced nowhere in current disk state. Either never created or deleted. Treat as non-existent.
 
 # END
+
+## NEW (2026-09-16 live session)
+
+| ID | Date | Status | Description | Evidence |
+|---|---|---|---|---|
+| I21 | 2026-09-16 | OPEN | Ratio gate has no near-miss record. scalp_short @ vwap 13:48:15 UTC printed net reward-to-risk 1.95, failed 2.0 by 0.05, dropped next cycle. A one-tick miss is invisible in the log. Fix: record candidates with nrr >= 1.75 in the ledger even when suppressed. Rule 32 gated. | apparatus_log 13:48:19; chart 75815 rejection |
+| I22 | 2026-09-16 | OPEN | Zones are not fixed. daily_vp.val moved 75599 -> 75584 -> 75599 -> 75619 -> 75584 across 13 cycles. Engine derives the zone live each cycle, so net reward-to-risk is computed against a moving target. Design question. | apparatus_log cycles 1-20 |
+| I23 | 2026-09-16 | OPEN | Quad versus setup direction mismatch is not read. Alert #373 card reported quad=new_shorts (OI +0.450%, CVD -337, net delta 15m -324.5) while candidate was ct_long. Engine does not compare quad to setup direction. | last_alert.json ALERT #373 |
+| I24 | 2026-09-16 | OPEN | session_timing_rules.md section 2 documents EST open times (US Cash Open 14:30-15:00, Pre-Market 13:00-14:30). Engine anchors DST-aware 13:30 UTC. File wrong half the year. Same class as L25. | session_timing_rules.md L22-46 |
+
+| I26 | 2026-09-16 | OPEN | B-profile definition contradiction. market_state_rules.md L50 says "B = balance (bell-shaped, volume concentrated at POC)." setup_type_rules.md L221 says "B Profile = Weakness at the Extreme" and quotes Tom. entry_timing_triggers.md uses B profile as a proof qualifier at extremes. setup_type_rules.md L549 already documents that Tom did not define B criteria. Rule L50 is the outlier and was likely invented to fill the documented gap. L29 classifier fix is blocked by this. Needs a human ruling: B = weakness at extreme (per Tom) or B = balance (per L50). | L50 vs L221 vs L549; grep 2026-09-16 |

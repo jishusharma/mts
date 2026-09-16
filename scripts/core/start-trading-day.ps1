@@ -67,6 +67,41 @@ function Log-Line {
     Add-Content -LiteralPath $LogFile -Value $line -Encoding UTF8
 }
 
+function Invoke-WithTimeout {
+    param(
+        [Parameter(Mandatory=$true)][string]$File,
+        [Parameter(Mandatory=$false)][string[]]$ArgList = @(),
+        [Parameter(Mandatory=$true)][int]$TimeoutSec,
+        [Parameter(Mandatory=$false)][string]$Tag = "call",
+        [Parameter(Mandatory=$false)][string]$WorkDir = ""
+    )
+    $proc = $null
+    try {
+        $startArgs = @{
+            FilePath     = $File
+            ArgumentList = $ArgList
+            PassThru     = $true
+            NoNewWindow  = $true
+        }
+        if ($WorkDir -ne "") { $startArgs.WorkingDirectory = $WorkDir }
+        $proc = Start-Process @startArgs
+        $exited = $proc.WaitForExit($TimeoutSec * 1000)
+        if (-not $exited) {
+            Log-Line ("TIMEOUT {0} {1}s PID={2}" -f $Tag, $TimeoutSec, $proc.Id)
+            try { & taskkill.exe /T /F /PID $proc.Id 2>&1 | Out-Null } catch {}
+            return -1
+        }
+        return $proc.ExitCode
+    } catch {
+        Log-Line ("SPAWN_FAIL {0} : {1}" -f $Tag, $_)
+        return -2
+    } finally {
+        if ($proc -and -not $proc.HasExited) {
+            try { & taskkill.exe /T /F /PID $proc.Id 2>&1 | Out-Null } catch {}
+        }
+    }
+}
+
 function Beep-Alert {
     param([string]$Msg = "verdict changed", [string]$Title = "MTS ALERT")
     if ($NoBeep) { return }
@@ -280,16 +315,18 @@ try {
         Log-Line "--- cycle $cycle ---"
     
         Write-Host "[apparatus] fetching snapshot..."
-        $null = mvn -q exec:java "-Dexec.mainClass=datafeed.Main" "-Dexec.args=snapshot $Symbol" 2>&1
-        if ($LASTEXITCODE -ne 0) {
-            Log-Line "SNAPSHOT_FAIL exit=$LASTEXITCODE"
+        $mvnCmd = 'mvn -q exec:java "-Dexec.mainClass=datafeed.Main" "-Dexec.args=snapshot ' + $Symbol + '" > NUL 2>&1'
+        $rc = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $mvnCmd) -TimeoutSec 90 -Tag "mvn_snapshot" -WorkDir $R
+        if ($rc -ne 0) {
+            Log-Line ("SNAPSHOT_FAIL exit=" + $rc)
             if ($Once) { break }
             Start-Sleep -Seconds 60; continue
         }
     
-        $null = python "$R\MyTradingSys\mts\runtime\update_market_state.py" 2>&1
-        if ($LASTEXITCODE -ne 0) {
-            Log-Line "STATE_UPDATE_WARN exit=$LASTEXITCODE"
+        $umsCmd = 'python "' + $R + '\MyTradingSys\mts\runtime\update_market_state.py" > NUL 2>&1'
+        $rc = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $umsCmd) -TimeoutSec 30 -Tag "update_market_state" -WorkDir $R
+        if ($rc -ne 0) {
+            Log-Line ("STATE_UPDATE_WARN exit=" + $rc)
         } else {
             Log-Line "state_updated"
         }
@@ -314,7 +351,8 @@ try {
         $pdd = ""
         $moFile = Join-Path $env:TEMP "app_mo.json"
         try {
-            $null = python "$R\MyTradingSys\mts\runtime\build_mo_cli.py" $s.FullName $moFile 2>&1
+            $moCmd = 'python "' + $R + '\MyTradingSys\mts\runtime\build_mo_cli.py" "' + $s.FullName + '" "' + $moFile + '" > NUL 2>&1'
+            $null = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $moCmd) -TimeoutSec 30 -Tag "build_mo_cli" -WorkDir $R
             if ((Test-Path $moFile) -and (Get-Item $moFile).Length -gt 0) {
                 $mo = Get-Content $moFile -Raw -Encoding UTF8 | ConvertFrom-Json
                 if ($mo.proof_direction_status) { $pd = [string]$mo.proof_direction_status }
@@ -324,15 +362,18 @@ try {
         } catch {}
         # Label past snapshots (idempotent, cheap)
     try {
-        $null = python "$R\MyTradingSys\mts\runtime\outcome_labeler.py" 2>&1
+        $olCmd = 'python "' + $R + '\MyTradingSys\mts\runtime\outcome_labeler.py" > NUL 2>&1'
+        $null = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $olCmd) -TimeoutSec 30 -Tag "outcome_labeler" -WorkDir $R
     } catch {}
 
     # Feature layer: kline archive + regime classifier (additive, non-gating)
     try {
-        $null = python "$R\MyTradingSys\mts\runtime\kline_archiver.py" 2>&1
+        $kaCmd = 'python "' + $R + '\MyTradingSys\mts\runtime\kline_archiver.py" > NUL 2>&1'
+        $null = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $kaCmd) -TimeoutSec 30 -Tag "kline_archiver" -WorkDir $R
     } catch {}
     try {
-        $null = python "$R\MyTradingSys\mts\runtime\regime_classifier.py" 2>&1
+        $rccCmd = 'python "' + $R + '\MyTradingSys\mts\runtime\regime_classifier.py" > NUL 2>&1'
+        $null = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $rccCmd) -TimeoutSec 30 -Tag "regime_classifier" -WorkDir $R
     } catch {}
     $v = Compute-Verdict -snap $snap -proofDir $pd
         $v | Add-Member -NotePropertyName proof_dir -NotePropertyValue $pd -Force
