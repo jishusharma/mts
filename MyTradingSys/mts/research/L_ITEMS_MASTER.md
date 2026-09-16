@@ -1,4 +1,4 @@
-﻿# L-ITEMS MASTER
+# L-ITEMS MASTER
 # Purpose: single source of truth for all L-numbered open loops.
 # Built: 2026-09-15 from session_log.json + NEXT_SESSION_HANDOFF.md + SESSION_ENTRY.md + apparatus_fixes.md
 # Rule: any L-number with no supporting detail gets [NO EVIDENCE]. Do not fabricate.
@@ -33,7 +33,7 @@
 | L18 | 2026-09-15 | OPEN | Apparatus silent exit at 13:23:20. finally block ran, no error to log. Needs repro. | apparatus_log.txt |
 | L19 | 2026-09-15 | OPEN | DSA_SESSION_PROMPT.md had duplicate ## 13. Renamed to ## 15 on 2026-09-15. | DSA_SESSION_PROMPT.md |
 | L20 | 2026-09-15 | OPEN | apparatus_fixes.md had # END marker mid-file with post-END appends. Rebuilt 2026-09-15. | apparatus_fixes.md |
-| L21 | 2026-09-15 | CLOSED | runtime SESSION_PROMPT.md orphan resolved. Deleted with two siblings (backup: backup_session/prompt-orphans-20260915-185432). Content merged into DSA_SESSION_PROMPT + USER.md. Generator added: scripts/core/session-start.ps1. Alias mts-start. | 2026-09-15 session |
+| L21 | 2026-09-15 | CLOSED | runtime SESSION_PROMPT.md orphan resolved. Deleted with two siblings (backup: backup_session/prompt-orphans-20260915-185432). Content merged into DSA_SESSION_PROMPT + USER.md. Generator added: scripts/start-session.ps1. Alias mts-start. | 2026-09-15 session |
 | L22 | 2026-09-15 | CLOSED | Rule 50 duplicate: market_state_rules.md == proof_requirements_formatted.md (57KB each). Deleted the latter 2026-09-15. Rule 50 gate now satisfied. | L_ITEMS_MASTER.md |
 | L23 | 2026-09-15 | OPEN | Dumps\kimi_*.md (14 files, 2.3MB) referenced only by DSA sec3 as one-time session dump. If unreferenced by 2026-09-21, delete. | L_ITEMS_MASTER.md |
 | L24 | 2026-09-15 | CLOSED | Mojibake claim in NEXT_SESSION_HANDOFF.md did not reproduce. Byte-level check of 5 declared files: 0 hits of C3 A2 E2 80 9D. L4 (prior viewer-artifact closure) stands. | Phase A A9 2026-09-15 |
