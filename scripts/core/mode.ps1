@@ -1,4 +1,4 @@
-﻿param(
+param(
     [ValidateSet("prep","armed","live")]
     [string]$M = "prep",
     [ValidateSet("short","long","")]
@@ -33,21 +33,7 @@ if (Test-Path $lockFile) {
 }
 
 # scoped kill: only lock-PID descendants + orphan datafeed java
-function Get-Descendants([int]$rootPid) {
-    $out = New-Object System.Collections.Generic.List[int]
-    $queue = New-Object System.Collections.Generic.Queue[int]
-    $queue.Enqueue($rootPid)
-    while ($queue.Count -gt 0) {
-        $parent = $queue.Dequeue()
-        $children = Get-CimInstance Win32_Process -Filter "ParentProcessId=$parent" -ErrorAction SilentlyContinue
-        foreach ($c in $children) {
-            $cid = [int]$c.ProcessId
-            $out.Add($cid)
-            $queue.Enqueue($cid)
-        }
-    }
-    return $out
-}
+
 
 foreach ($rp in $rootPids) {
     $desc = Get-Descendants $rp

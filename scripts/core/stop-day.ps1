@@ -13,21 +13,7 @@ if (Test-Path $lockFile) {
 }
 
 # 2. Descendant walker
-function Get-Descendants([int]$rootPid) {
-    $out = New-Object System.Collections.Generic.List[int]
-    $queue = New-Object System.Collections.Generic.Queue[int]
-    $queue.Enqueue($rootPid)
-    while ($queue.Count -gt 0) {
-        $parent = $queue.Dequeue()
-        $children = Get-CimInstance Win32_Process -Filter "ParentProcessId=$parent" -ErrorAction SilentlyContinue
-        foreach ($c in $children) {
-            $cid = [int]$c.ProcessId
-            $out.Add($cid)
-            $queue.Enqueue($cid)
-        }
-    }
-    return $out
-}
+
 
 # 3. Kill descendants first
 $allPids = @()
