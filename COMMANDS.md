@@ -4,10 +4,11 @@ Read once top to bottom. Then jump to your moment. Last updated: 2026-09-16.
 
 ## START THE SESSION
 
-    cd C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed
-    . .\scripts\load.ps1
-    .\session-start.ps1 -NoClipboard
-    # open Dumps\SESSION_PASTE.txt, copy all, paste into a fresh chat
+    cd C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\scripts
+    .\start-session.ps1
+
+That loads the shortcuts and writes Dumps\SESSION_PASTE.txt.
+Then open that file, copy all, paste into a fresh chat.
 
 If the runtime loop is not running:
 

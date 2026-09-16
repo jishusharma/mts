@@ -1,12 +1,31 @@
-﻿# session-start.ps1 - emits ONE paste-ready block with prompt + all boot content
+# start-session.ps1 - one-command session start.
+#
+# Does three things in one run:
+#   1. Generates Dumps\SESSION_PASTE.txt from the boot manifest.
+#   2. Loads the shortcuts (quick, deltas, trend, snapshot, overview,
+#      health, alerts) into the current PowerShell window.
+#   3. Prints one line telling you what to do next.
+#
+# Usage:
+#   cd scripts
+#   .\start-session.ps1
+#
+# Flags:
+#   -NoClipboard    do not copy the paste to clipboard (file is still written)
+#   -NoLoad         do not load the shortcuts
+
 [CmdletBinding()]
-param([switch]$NoClipboard)
+param(
+  [switch]$NoClipboard,
+  [switch]$NoLoad
+)
 
 $ErrorActionPreference = 'Stop'
-Set-Location $PSScriptRoot
+
+$root = Split-Path -Parent $PSScriptRoot
+Set-Location $root
 
 $manifestPath = 'MyTradingSys\mts\runtime\SESSION_MANIFEST.json'
-$handoffPath  = 'MyTradingSys\mts\runtime\NEXT_SESSION_HANDOFF.md'
 $logPath      = 'MyTradingSys\mts\runtime\session_log.json'
 
 $m = Get-Content $manifestPath -Raw | ConvertFrom-Json
@@ -32,12 +51,14 @@ $sb = [System.Text.StringBuilder]::new()
 [void]$sb.AppendLine("Resuming MTS. Paste-once session start.")
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("Role: state your role (COORDINATOR or WORKER) per DSA_SESSION_PROMPT.md section 1.")
-[void]$sb.AppendLine("Phases A/B/C done. Do not re-run. Mission per STATUS in handoff below.")
+[void]$sb.AppendLine("Boot procedure: read SESSION_MANIFEST.json first, then read boot files in batches.")
+[void]$sb.AppendLine("Confirm each batch in one line. Do not read them all at once.")
+[void]$sb.AppendLine("Build check runs before any write. If status is not PASS, stop.")
 [void]$sb.AppendLine("")
-[void]$sb.AppendLine("If a task needs more context, ask user to paste ONE dump from Dumps/ (menu at end).")
+[void]$sb.AppendLine("If a task needs more context, ask for ONE dump from Dumps/ (menu at end).")
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("=" * 72)
-[void]$sb.AppendLine("BOOT CONTENT (do not ask for these again)")
+[void]$sb.AppendLine("BOOT CONTENT (read in batches, confirm each batch in one line)")
 [void]$sb.AppendLine("=" * 72)
 
 foreach ($f in ($m.boot_files + $m.boot_supplemental)) {
@@ -47,7 +68,6 @@ foreach ($f in ($m.boot_files + $m.boot_supplemental)) {
     [void]$sb.AppendLine($body)
 }
 
-# Session log context
 $events = (Get-Content $logPath -Raw | ConvertFrom-Json).events
 $last = $events | Select-Object -Last 1
 [void]$sb.AppendLine("")
@@ -55,21 +75,19 @@ $last = $events | Select-Object -Last 1
 [void]$sb.AppendLine("events: $($events.Count)")
 [void]$sb.AppendLine("last:   $($last.ts)  $($last.verdict)")
 
-# Process check
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("### java process ###")
 $java = Get-Process java -ErrorAction SilentlyContinue | Select-Object Id, StartTime, Path
 if ($java) { [void]$sb.AppendLine(($java | Out-String).Trim()) } else { [void]$sb.AppendLine("(none)") }
 
-# Dumps menu
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("=" * 72)
-[void]$sb.AppendLine("PASTE-ON-DEMAND DUMPS (ask user for one at a time)")
+[void]$sb.AppendLine("PASTE-ON-DEMAND DUMPS (ask for one at a time)")
 [void]$sb.AppendLine("=" * 72)
 @"
-  DUMP_CODE_JAVA.md    - Java: apparatus + state machine
+  DUMP_CODE_JAVA.md    - Java: runtime + state machine
   DUMP_CODE_RUNTIME.md - Python math layer
-  DUMP_SYSTEM_DOCS.md  - system/ docs (behavior, status, capabilities)
+  DUMP_SYSTEM_DOCS.md  - system/ docs
   DUMP_CONDITIONS.md   - MTS rule files
   DUMP_METHODOLOGY.md  - Tom methodology + playbook
   DUMP_RESEARCH.md     - research notes
@@ -83,21 +101,27 @@ if ($java) { [void]$sb.AppendLine(($java | Out-String).Trim()) } else { [void]$s
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("Constraints:")
 [void]$sb.AppendLine("  - USER.md binds. Terse. Answer first. No emoji.")
-[void]$sb.AppendLine("  - One IBC per task. Batch every read.")
-[void]$sb.AppendLine("  - Rule 51 / 51(d-inline) / 52.")
-[void]$sb.AppendLine("  - No blind java kill. No session_state.json thesis change. Human commits.")
+[void]$sb.AppendLine("  - One block at a time. Long pastes split with a confirmation between each.")
 [void]$sb.AppendLine("  - Read-only first. One decision per turn.")
+[void]$sb.AppendLine("  - No blind java kill. No session_state.json thesis change without approval.")
+[void]$sb.AppendLine("  - Plain language. No codes. No shorthand.")
 
 $block = $sb.ToString()
 Write-Host "generated: $($block.Length) chars"
 
-# Always write the paste file
 $pasteFile = 'Dumps\SESSION_PASTE.txt'
 Set-Content -Path $pasteFile -Value $block -Encoding utf8
 Write-Host "written:   $pasteFile" -ForegroundColor Cyan
 
-# Clipboard is best-effort only
 if (-not $NoClipboard) {
     try { Set-Clipboard -Value $block; Write-Host "[copied to clipboard]" -ForegroundColor Green }
     catch { Write-Host "[clipboard unavailable - use $pasteFile]" -ForegroundColor Yellow }
 }
+
+if (-not $NoLoad) {
+    . "$PSScriptRoot\load.ps1"
+}
+
+Write-Host ""
+Write-Host "NEXT: open $pasteFile, select all, copy, paste into a fresh chat." -ForegroundColor Cyan
+Write-Host "      shortcuts loaded in this window: quick, deltas, trend, snapshot, overview, health, alerts" -ForegroundColor Cyan

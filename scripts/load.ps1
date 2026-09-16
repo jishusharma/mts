@@ -11,7 +11,7 @@ function alerts   { & "$ScriptDir\live\alerts.ps1" }
 
 "mts loaded: quick deltas trend snapshot overview health alerts"
 
-function mts-start { & "$ScriptDir\..\session-start.ps1" @args }
+function mts-start { & "$ScriptDir\start-session.ps1" @args }
 
 # git shortcuts - stripped ceremony
 function gitsnap { git add -A; git commit -m "$args" -q; git tag -f last-snapshot; "committed: " + (git rev-parse --short HEAD) }
