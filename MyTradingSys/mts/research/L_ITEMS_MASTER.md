@@ -63,3 +63,19 @@ L1, L2, L3, L12 РІР‚вЂќ referenced nowhere in current disk state. Either
 | I24 | 2026-09-16 | OPEN | session_timing_rules.md section 2 documents EST open times (US Cash Open 14:30-15:00, Pre-Market 13:00-14:30). Engine anchors DST-aware 13:30 UTC. File wrong half the year. Same class as L25. | session_timing_rules.md L22-46 |
 
 | I26 | 2026-09-16 | OPEN | B-profile definition contradiction. market_state_rules.md L50 says "B = balance (bell-shaped, volume concentrated at POC)." setup_type_rules.md L221 says "B Profile = Weakness at the Extreme" and quotes Tom. entry_timing_triggers.md uses B profile as a proof qualifier at extremes. setup_type_rules.md L549 already documents that Tom did not define B criteria. Rule L50 is the outlier and was likely invented to fill the documented gap. L29 classifier fix is blocked by this. Needs a human ruling: B = weakness at extreme (per Tom) or B = balance (per L50). | L50 vs L221 vs L549; grep 2026-09-16 |
+
+| I27 | 2026-09-16 | OPEN | order_flow block (6 fields: trades_ratio, volume_ratio, speed_state, trades_per_sec, volume_per_sec, baselines) has no consumer. Grep of all scripts, python, java found zero readers. Producer cites DSA_TASK_013. Thresholds "provisional, not Tom-derived" per snapshot note. Fix: wire into a proof or delete. Wire later. | T2 audit 2026-09-16 |
+| I28 | 2026-09-16 | OPEN | session block (15 fields: open, high, low, gap, initial_balance, range_position, day_type, sweep_flag, open_location) has no consumer. Grep found zero readers. Same as I27, same producer. | T2 audit 2026-09-16 |
+| I29 | 2026-09-16 | OPEN | MarketDataSnapshot.java:1065 second builder path sets cvd_trade_flow_aligned = false with comment "live-only, set false." Two snapshot paths produce contradicting values for the same field. Needs repro and dedupe. | T2 audit 2026-09-16 |
+
+## RULING 2026-09-16 on I27 and I28
+
+Both blocks are gauges, not controls. Decision: leave them in production, do not delete.
+
+Reason: the session block and order flow block feed operator readouts and dashboards. They are dead to the engine only. Deleting would invalidate handoff lines that promised the layer and lose the readouts. Cost of keeping is negligible.
+
+What this closes: no more re-audit of the same question. Both blocks are classified.
+
+What remains open: promotion path. If either block should become a control (a rule that moves a verdict), that is a new task, needs three-snapshot proof per Rule 32, and is not covered by I27 or I28.
+
+I29 remains open. Two builder paths producing contradicting values for the same field is a defect, not a design question.

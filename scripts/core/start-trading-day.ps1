@@ -75,16 +75,23 @@ function Invoke-WithTimeout {
         [Parameter(Mandatory=$false)][string]$Tag = "call",
         [Parameter(Mandatory=$false)][string]$WorkDir = ""
     )
-    $proc = $null
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = $File
+    if ($ArgList.Count -eq 1) {
+        $psi.Arguments = $ArgList[0]
+    } elseif ($ArgList.Count -gt 1) {
+        $psi.Arguments = ($ArgList | Select-Object -Skip 1 | ForEach-Object { '"' + $_ + '"' }) -join ' '
+        $psi.Arguments = $ArgList[0] + ' ' + $psi.Arguments
+    }
+    if ($WorkDir -ne "") { $psi.WorkingDirectory = $WorkDir }
+    $psi.UseShellExecute = $false
+    $psi.CreateNoWindow = $true
+    $psi.RedirectStandardOutput = $false
+    $psi.RedirectStandardError = $false
+    $proc = New-Object System.Diagnostics.Process
+    $proc.StartInfo = $psi
     try {
-        $startArgs = @{
-            FilePath     = $File
-            ArgumentList = $ArgList
-            PassThru     = $true
-            NoNewWindow  = $true
-        }
-        if ($WorkDir -ne "") { $startArgs.WorkingDirectory = $WorkDir }
-        $proc = Start-Process @startArgs
+        $null = $proc.Start()
         $exited = $proc.WaitForExit($TimeoutSec * 1000)
         if (-not $exited) {
             Log-Line ("TIMEOUT {0} {1}s PID={2}" -f $Tag, $TimeoutSec, $proc.Id)
@@ -96,9 +103,12 @@ function Invoke-WithTimeout {
         Log-Line ("SPAWN_FAIL {0} : {1}" -f $Tag, $_)
         return -2
     } finally {
-        if ($proc -and -not $proc.HasExited) {
-            try { & taskkill.exe /T /F /PID $proc.Id 2>&1 | Out-Null } catch {}
-        }
+        try {
+            if ($proc -and -not $proc.HasExited) {
+                & taskkill.exe /T /F /PID $proc.Id 2>&1 | Out-Null
+            }
+        } catch {}
+        try { if ($proc) { $proc.Dispose() } } catch {}
     }
 }
 

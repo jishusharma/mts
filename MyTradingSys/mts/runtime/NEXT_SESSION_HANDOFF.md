@@ -1,50 +1,47 @@
-STATUS: Session 2026-09-16 features complete through context.ps1 + regime_classifier.py. Next: verify, then trade cards.
+STATUS: Session 2026-09-16 closed. Loop running. 3 hangs, 0 actionable setups, L29 blocked.
 
 # NEXT SESSION HANDOFF
-# Written: 2026-09-16 13:30 UTC
+# Written: 2026-09-16 20:15 local (14:45 UTC)
 
-## WHAT IS LIVE ON DISK
+## WHAT IS DIFFERENT FROM THIS MORNING
 
-- Session block (MarketDataSnapshot.buildSession). Fifteen fields. Anchor US cash open, DST-aware. Commit ab6f863.
-- context.ps1 (scripts/live/). Rolling per-TF envelope from local kline store. Commit 0414d9a.
-- regime_classifier.py (mts/runtime/). Vote-based per-cycle label. Writes state_code_regime.json. Live label RANGE, HIGH, 24 cycles as of 13:24 UTC.
-- kline_archiver.py (mts/runtime/). Persists 1h/15m/5m bars to MyTradingSys/data/klines/. Feeds context.ps1.
-- Boot rules 5 and 6 in DSA_SESSION_PROMPT section 3. Commit eab0673.
+- scripts/core/loop-supervisor.ps1 exists. Not read this session. Source unknown.
+  Audit before trusting. Confirm it stops the loop cleanly and does not orphan java.
+- DSA_SESSION_PROMPT.md section 11 updated with current state.
+- Zone map at MyTradingSys/mts/research/zone_map_2026-09-17.md.
+- L-items I21-I26 logged. L29 blocked by I26 (B definition contradiction).
+- Ledger has close entry: passed, 2026-09-16.
+
+## WHAT HAPPENED TODAY
+
+- Loop hung three times. After sleep, then twice after state_updated.
+  US cash open 13:30 UTC missed on the first hang.
+- Five alerts. All WAIT_RR. All state-change. Zero actionable.
+- Closest candidate all session: ct_long @ 4h_val, nrr 1.92-1.93.
+  Never crossed 2.0. Cap is 2.0.
+- Biggest directional move (75386 to 75801, 415 points, 11 minutes)
+  produced zero alerts. No gate fires on move size.
 
 ## MISSION FOR NEXT SESSION
 
-### Task 1: Verify feature layers on a live cycle
-- Run verify_data.ps1. Confirm PASS or E-only fail if loop off.
-- Start loop (mode.ps1 -M armed -IntervalMin 1) if not running.
-- Read one cycle: run `live`, `context`, `snapshot`. Confirm session block, 24h envelope, and regime label all print consistent values.
-- Confirm kline_archiver.py is producing fresh bars in MyTradingSys/data/klines/.
+1. Audit loop-supervisor.ps1. Read it fully. Confirm behavior.
+2. Resolve I26: B profile means weakness (per Tom quotes in setup_type_rules
+   L221, L223) or balance (per market_state_rules L50). Human ruling required.
+   L29 classifier fix is blocked until this resolves.
+3. Worker Session 2 tasks T2-T9 still open. See prior session transcript.
+4. Add Replace-Anchor helper to shared-functions.ps1.
+   CRLF anchor misses cost two turns today.
 
-### Task 2: L29 VP shape classifier
-Diagnose buildVp shape rule. Shape fires B near-constantly. Affects SetupCandidatesBuilder.classifyState balance shortcut. Not Rule 32 gated for the fix; wiring into verdict is.
+## DUMP TO REQUEST
 
-### Task 3: Trade cards when actionable
-Watch daily_vah and 4h_vah cluster. A candidate crossing net_rr >= 2.0 is the first actionable event. Card it. Otherwise WAIT_RR stands.
+1. dump_java.md          - for loop-supervisor audit if it is Java-adjacent
+2. dump_runtime.md       - for T2-T9
+3. dump_core.md          - critical file list
 
-### Task 4 (deferred): L28 orphan java on loop exit. session_bias echo tool. RSI 40-60.
+## HARD RULES
 
-## LAYERED ARCHITECTURE (all but 5-7 live)
-
-1. Per-cycle engine fields (LIVE).
-2. Session block (LIVE).
-3. Rolling 24h per-TF envelope (LIVE, context.ps1).
-4. Regime label (LIVE, regime_classifier.py).
-5. RSI read (deferred).
-6. Probability layer (parked).
-7. Analyst verdicts (distant).
-
-## CAUTIONS
-
-- Boot rules 5 and 6 added today: no fabricated values, no invented aliases.
-- Never bare-kill java.
-- Handoffs must be verified against disk. Prior handoff invented an archive that did not exist.
-
-## OPEN LOOPS
-- L8, L13, L16, L17. L28 orphan java. L29 VP shape.
-- L25 CLOSED 2026-09-16.
+- Never bare-kill java. Use stop-day.ps1 or mode.ps1.
+- No double-run of mode.ps1.
+- Boot rules 5 and 6 apply.
 
 # END

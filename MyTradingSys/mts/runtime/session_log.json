@@ -335,6 +335,18 @@
       "action": "passed",
       "reason": "session close: prompt section 11 refreshed; handoff rewritten to reflect parallel-session work (context.ps1, regime_classifier.py, kline_archiver.py already live)",
       "ts": "2026-09-16T13:26:11.589706Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "close 2026-09-16: loop hung 3x, L29 blocked by I26, zone map + I21-I26 logged, 5 alerts all WAIT_RR",
+      "ts": "2026-09-16T14:40:22.373459Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "close 2026-09-16: loop hung 3x, L29 blocked by I26, zone map + I21-I26 logged, 5 alerts all WAIT_RR",
+      "ts": "2026-09-16T14:49:28.377015Z"
     }
   ]
 }

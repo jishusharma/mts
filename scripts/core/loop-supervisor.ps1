@@ -1,11 +1,12 @@
-﻿# loop-supervisor.ps1
-# Watches the loop wrapper. Restarts it if the wrapper dies or hangs.
+# loop-supervisor.ps1
+# Watches the loop wrapper. Restarts on hang or death without orphaning java.
 # Run in its own window: .\scripts\core\loop-supervisor.ps1
 # Stop cleanly: create data\supervisor_stop.flag
 
 param(
     [int]$CheckIntervalSec = 30,
     [int]$SnapshotStaleSec = 240,
+    [int]$RestartGraceSec  = 180,
     [string]$Mode = "armed",
     [int]$IntervalMin = 1
 )
@@ -27,14 +28,62 @@ function SupLog {
 }
 
 function Get-JavaDatafeed {
-    param([string]$Which)
     Get-CimInstance Win32_Process -Filter "Name='java.exe'" -ErrorAction SilentlyContinue |
-        Where-Object {
-            $_.CommandLine -match "datafeed\.Main" -and $_.CommandLine -match $Which
-        }
+        Where-Object { $_.CommandLine -match "datafeed\.Main" }
 }
 
-SupLog "=== SUPERVISOR START mode=$Mode interval=${IntervalMin}m stale=${SnapshotStaleSec}s ==="
+function Get-AllWrappers {
+    # Any powershell running start-trading-day.ps1. Defense in depth against duplicates.
+    Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue |
+        Where-Object { $_.CommandLine -match "start-trading-day\.ps1" }
+}
+
+function Stop-Hard {
+    param([int]$Pid)
+    if ($Pid -le 0) { return }
+    $p = Get-Process -Id $Pid -ErrorAction SilentlyContinue
+    if (-not $p) { return }
+    try { Stop-Process -Id $Pid -Force -ErrorAction SilentlyContinue } catch {}
+    # Poll up to 5s, then taskkill tree.
+    for ($i = 0; $i -lt 10; $i++) {
+        Start-Sleep -Milliseconds 500
+        if (-not (Get-Process -Id $Pid -ErrorAction SilentlyContinue)) { return }
+    }
+    try { & taskkill.exe /T /F /PID $Pid 2>&1 | Out-Null } catch {}
+}
+
+function Stop-WrapperAndChildren {
+    # Kill every wrapper, not just the lock PID. Then all java datafeed.Main.
+    foreach ($w in (Get-AllWrappers)) {
+        SupLog "  killing wrapper PID=$($w.ProcessId)"
+        Stop-Hard -Pid $w.ProcessId
+    }
+    foreach ($j in (Get-JavaDatafeed)) {
+        SupLog "  killing java PID=$($j.ProcessId)"
+        Stop-Hard -Pid $j.ProcessId
+    }
+}
+
+SupLog "=== SUPERVISOR START mode=$Mode interval=${IntervalMin}m stale=${SnapshotStaleSec}s grace=${RestartGraceSec}s ==="
+
+# Startup: only enter grace if a live wrapper is present. Otherwise ready now.
+$lastRestartUtc = [DateTime]::UtcNow.AddSeconds(-$RestartGraceSec - 1)
+if (Test-Path $LockFile) {
+    try {
+        $parts = (Get-Content $LockFile -Raw).Trim() -split "\s+"
+        $p0 = [int]$parts[0]
+        if ($p0 -gt 0 -and (Get-Process -Id $p0 -ErrorAction SilentlyContinue)) {
+            $lastRestartUtc = [DateTime]::UtcNow
+            SupLog "startup: existing wrapper PID=$p0, grace clock starting"
+        } else {
+            SupLog "startup: lock present but PID=$p0 not alive, ready now"
+        }
+    } catch {
+        SupLog "startup: lock unreadable, ready now"
+    }
+} else {
+    SupLog "startup: no lock file, ready now"
+}
 
 while ($true) {
     if (Test-Path $StopFlag) {
@@ -42,15 +91,14 @@ while ($true) {
         exit 0
     }
 
+    $loopPid = 0
     $loopAlive = $false
-    $loopPid   = 0
     if (Test-Path $LockFile) {
         try {
             $parts = (Get-Content $LockFile -Raw).Trim() -split "\s+"
             if ($parts.Length -ge 1) { $loopPid = [int]$parts[0] }
-            if ($loopPid -gt 0) {
-                $p = Get-Process -Id $loopPid -ErrorAction SilentlyContinue
-                if ($p) { $loopAlive = $true }
+            if ($loopPid -gt 0 -and (Get-Process -Id $loopPid -ErrorAction SilentlyContinue)) {
+                $loopAlive = $true
             }
         } catch {}
     }
@@ -60,22 +108,39 @@ while ($true) {
     $snapAge = 99999
     if ($latest) { $snapAge = [int]((Get-Date) - $latest.LastWriteTime).TotalSeconds }
 
-    $hung = ($loopAlive -and $snapAge -gt $SnapshotStaleSec)
+    $sinceRestart = ([DateTime]::UtcNow - $lastRestartUtc).TotalSeconds
+    $inGrace = $sinceRestart -lt $RestartGraceSec
 
-    if (-not $loopAlive -or $hung) {
-        $reason = if (-not $loopAlive) { "wrapper_dead" } else { "wrapper_hung snapAge=${snapAge}s" }
-        SupLog "RESTART reason=$reason oldPid=$loopPid"
+    # Extra wrappers beyond the lock holder = duplicate condition, always restart.
+    $wrapperCount = @(Get-AllWrappers).Count
+    $dupWrappers = $wrapperCount -gt 1
 
-        $targets = @()
-        $targets += Get-JavaDatafeed -Which "statemachine"
-        $targets += Get-JavaDatafeed -Which "snapshot"
-        foreach ($t in $targets) {
-            SupLog "  killing java PID=$($t.ProcessId)"
-            try { Stop-Process -Id $t.ProcessId -Force -ErrorAction SilentlyContinue } catch {}
+    $needRestart = $false
+    $reason = "ok"
+    if ($dupWrappers) {
+        $needRestart = $true
+        $reason = "duplicate_wrappers count=$wrapperCount"
+    } elseif (-not $loopAlive) {
+        if ($inGrace) {
+            SupLog ("grace wrapper_pid=$loopPid missing, ${sinceRestart}s < ${RestartGraceSec}s, waiting")
+        } else {
+            $needRestart = $true
+            $reason = "wrapper_dead oldPid=$loopPid"
         }
+    } elseif (-not $inGrace -and $snapAge -gt $SnapshotStaleSec) {
+        $needRestart = $true
+        $reason = "wrapper_hung snapAge=${snapAge}s oldPid=$loopPid"
+    } else {
+        SupLog "ok wrapper=$loopPid snapAge=${snapAge}s grace=$inGrace"
+    }
 
-        if (Test-Path $LockFile) { Remove-Item $LockFile -ErrorAction SilentlyContinue }
-        Start-Sleep -Seconds 2
+    if ($needRestart) {
+        SupLog "RESTART reason=$reason"
+        Stop-WrapperAndChildren
+        Remove-Item $LockFile -ErrorAction SilentlyContinue
+        # Small wait so the OS releases file handles and the lock is truly gone
+        # before the new wrapper checks it.
+        Start-Sleep -Seconds 3
 
         $loopArgs = @(
             "-NoProfile","-ExecutionPolicy","Bypass",
@@ -85,8 +150,7 @@ while ($true) {
         )
         $new = Start-Process powershell.exe -ArgumentList $loopArgs -PassThru -WindowStyle Hidden
         SupLog "  started new wrapper PID=$($new.Id)"
-    } else {
-        SupLog "ok wrapper=$loopPid snapAge=${snapAge}s"
+        $lastRestartUtc = [DateTime]::UtcNow
     }
 
     Start-Sleep -Seconds $CheckIntervalSec
