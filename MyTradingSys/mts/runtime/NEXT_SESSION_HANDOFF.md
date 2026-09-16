@@ -16,7 +16,7 @@ Last session ended mid-cleanup. Two threads open:
 ## WHAT LANDED LAST SESSION (trust on read; verify only if it blocks)
 
 - Scripts consolidated: scripts/core/, scripts/live/, scripts/tools/, scripts/load.ps1
-- Aliases: lx (quick), ld (deltas), lt (trend), lf (full), lc (combo), lh (health), la (alerts)
+- Aliases: quick, deltas, trend, snapshot, overview, health, alerts
 - DSA Rule 51 added (per-task discipline: intent, challenge, execute, outcome)
 - DSA Rule 51(d-inline) added (verify in same block, independent method)
 - DSA Rule 52 added (pending verify: read MTS_DICTIONARY.md before field questions)
@@ -27,20 +27,20 @@ Last session ended mid-cleanup. Two threads open:
 
 ## MISSION
 
-### Phase A вЂ” Verify what landed last session (10 min)
+### Phase A РІР‚вЂќ Verify what landed last session (10 min)
 1. Confirm scripts/ structure exists with core/, live/, tools/, load.ps1.
 2. Confirm DSA has Rules 51, 51(d-inline), 52 (Select-String on DSA).
 3. Confirm MTS_DICTIONARY.md exists in mts/research/.
 4. Confirm L_ITEMS_MASTER.md has L4-L23.
 5. If any are missing: re-run the relevant block from session_log tail. Do not improvise.
 
-### Phase B вЂ” Dedupe + cleanup (30 min)
+### Phase B РІР‚вЂќ Dedupe + cleanup (30 min)
 D1 was done. Complete D3 decisions:
-1. `extracts/processed/tom/` вЂ” KEEP (audit trail).
-2. `Dumps/kimi_*.md` вЂ” KEEP until 2026-09-21 (L23).
-3. `MyTradingSys/archive/` + `mts/archive/` вЂ” KEEP both.
-4. `runtime/SESSION_PROMPT.md` вЂ” KEEP until 2026-09-22 (L21).
-5. `MyTradingSys/archive/cleanup-2026-09-13/*.old` вЂ” KEEP.
+1. `extracts/processed/tom/` РІР‚вЂќ KEEP (audit trail).
+2. `Dumps/kimi_*.md` РІР‚вЂќ KEEP until 2026-09-21 (L23).
+3. `MyTradingSys/archive/` + `mts/archive/` РІР‚вЂќ KEEP both.
+4. `runtime/SESSION_PROMPT.md` РІР‚вЂќ KEEP until 2026-09-22 (L21).
+5. `MyTradingSys/archive/cleanup-2026-09-13/*.old` РІР‚вЂќ KEEP.
 
 Nothing to delete this session unless new duplicates found. Run the D1 audit again (hash-based):
     Get-ChildItem -Recurse -File | Get-FileHash -Algorithm SHA256 |
@@ -49,7 +49,7 @@ Report but do not auto-delete. User approves each.
 
 Also: mojibake fix (see L24 below).
 
-### Phase C вЂ” version tracking reset (30 min)
+### Phase C РІР‚вЂќ version tracking reset (30 min)
 User directive: start fresh. Do not worry about old history.
 1. Verify no .git exists yet. If exists: preserve but rename (e.g. .git_backup_<ts>).
 2. Initialize the repository at project root.
@@ -62,24 +62,24 @@ User directive: start fresh. Do not worry about old history.
 
 Do NOT push to remote yet. Do NOT init submodules. Do NOT include large binaries.
 
-### Phase D вЂ” Resume MTS ops
+### Phase D РІР‚вЂќ Resume MTS ops
 After A, B, C: normal session flow.
-- Apparatus healthy check: lh (alias) or Get-Process java; state_code.json freshness
+- Runtime loop health check: health (alias) or Get-Process java; state_code.json freshness
 - Worker audit still open (see L_ITEMS_MASTER L16/L18): 42h alert audit
-- L13 (proof-change alert noise) вЂ” design decision still pending user approval
+- L13 (proof-change alert noise) РІР‚вЂќ design decision still pending user approval
 
 ## OPEN LOOPS (see L_ITEMS_MASTER.md for full detail)
 
-- L8  вЂ” stop_day repro (needs live fail)
-- L13 вЂ” proof-change alert noise (start_trading_day.ps1:349)
-- L16 вЂ” snapshot cadence gaps (worker audit scope)
-- L17 вЂ” alert numbering gap #6-12
-- L18 вЂ” apparatus silent exit repro
-- L21 вЂ” runtime/SESSION_PROMPT.md orphan check (2026-09-22)
-- L23 вЂ” Dumps/kimi_*.md check (2026-09-21)
-- L24 вЂ” CLOSED 2026-09-15: mojibake claim did not reproduce. Byte-check of 5 declared files = 0 hits of C3 A2 E2 80 9D. L4 (prior viewer-artifact) stands. See L_ITEMS_MASTER.md L24 row.
+- L8  РІР‚вЂќ stop_day repro (needs live fail)
+- L13 РІР‚вЂќ proof-change alert noise (start_trading_day.ps1:349)
+- L16 РІР‚вЂќ snapshot cadence gaps (worker audit scope)
+- L17 РІР‚вЂќ alert numbering gap #6-12
+- L18 РІР‚вЂќ apparatus silent exit repro
+- L21 РІР‚вЂќ runtime/SESSION_PROMPT.md orphan check (2026-09-22)
+- L23 РІР‚вЂќ Dumps/kimi_*.md check (2026-09-21)
+- L24 РІР‚вЂќ CLOSED 2026-09-15: mojibake claim did not reproduce. Byte-check of 5 declared files = 0 hits of C3 A2 E2 80 9D. L4 (prior viewer-artifact) stands. See L_ITEMS_MASTER.md L24 row.
 
-### Phase S вЂ” Full project structure audit (next session)
+### Phase S РІР‚вЂќ Full project structure audit (next session)
 Scope (read-only; produce report for approval before any move):
 1. List every root dir with file count + total bytes.
 2. For each root dir not in the boot list: one-line purpose + reader.

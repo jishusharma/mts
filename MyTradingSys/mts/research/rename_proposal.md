@@ -73,8 +73,15 @@ Terms that appear in docs, logs, or prompts with no definition anywhere.
 
 ## What still needs your answer
 
-1. Rename lx, ld, lt, lf, lc, lh, la (the seven live shortcuts), or keep them and just document them? They are already documented in the session log as quick / deltas / trend / full / combo / health / alerts. They are used in COMMANDS.md.
+Resolved 2026-09-16 - renamed to plain words (quick, deltas, trend, snapshot, overview, health, alerts).
 2. Do you want the open-loop items (currently L8, L13, and so on) renamed to short plain titles now, or kept as numbers with a title column added?
 3. Folder renames - do you want them this session, or plan only?
 
 ## End
+
+
+## UPDATE 2026-09-16
+
+The seven live aliases were renamed to plain words:
+quick, deltas, trend, snapshot, overview, health, alerts.
+The proposal above is closed. See COMMANDS.md for the current names.
