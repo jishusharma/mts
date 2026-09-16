@@ -168,11 +168,11 @@ Before importing any concept from the transcripts:
 
 Update this section at every session close. Keep it to five lines.
 
-Last live read:  BTC ~75950 on 2026-09-16 at 12:30 UTC
+Last live read:  see newest file in data/snapshots (or run quick).
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime loop:    off. Feature layer live: context.ps1, regime_classifier.py, kline_archiver.py. BOM fix landed.
+Runtime loop:    status via scripts/core/mode.ps1. Feature layer live: context.ps1, regime_classifier.py, kline_archiver.py.
 Open loops:      L28 orphan java, L29 VP shape classifier, L30 context network dep, L31 regime sibling orphan. See L_ITEMS_MASTER.md.
 
 ## 12. SESSION END
