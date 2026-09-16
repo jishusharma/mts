@@ -1,7 +1,5 @@
 param(
 
-# Pull in shared functions, including Get-Descendants.
-. "$PSScriptRoot\shared-functions.ps1"
     [ValidateSet("prep","armed","live")]
     [string]$M = "prep",
     [ValidateSet("short","long","")]
@@ -12,6 +10,10 @@ param(
     [ValidateSet("on","off")]
     [string]$Popups = "on"
 )
+
+# Pull in shared functions, including Get-Descendants.
+. "$PSScriptRoot\shared-functions.ps1"
+
 $R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 Set-Location $R
 
