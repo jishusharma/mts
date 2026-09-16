@@ -329,6 +329,12 @@
       "action": "passed",
       "reason": "DSA_SESSION_PROMPT section 3: added boot rules 5 (no fabricated values) and 6 (no invented aliases). Cause: boot reply invented fields and aliases.",
       "ts": "2026-09-16T13:24:44.167023Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "session close: prompt section 11 refreshed; handoff rewritten to reflect parallel-session work (context.ps1, regime_classifier.py, kline_archiver.py already live)",
+      "ts": "2026-09-16T13:26:11.589706Z"
     }
   ]
 }
