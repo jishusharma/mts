@@ -1,108 +1,68 @@
-STATUS: A=done B=done C=done | D=active | S=active
-STATUS_NOTE: Phase A/B/C complete 2026-09-15. Do not re-run. Proceed to Phase S (project structure audit, read-only) then Phase D (resume ops).
+STATUS: Prior phases A/B/C complete. This session closed the cleanup + fix batch. Three tasks queued.
 
 # NEXT SESSION HANDOFF
-# Written: 2026-09-15 evening
-# Mission: DEDUPE + CLEANUP + version tracking RESET
-# Then: resume normal MTS operations from the cleaned state.
+# Written: 2026-09-16 evening
+# Mission: three open build tasks, in order.
 
-## WHY THIS SESSION EXISTS
+## WHAT LANDED 2026-09-16
 
-Last session ended mid-cleanup. Two threads open:
-1. Dedupe/cleanup partially done (D1 complete, D2 deferred, D3 decisions pending).
-2. version tracking needs a fresh start. User directive: do not worry about
-   historical mismatches. Check stale ones. Clean up. Start fresh.
+- Legacy "kimi" naming removed. 11 files renamed (kimi_*_dump.md -> dump_*.md, java_core_dump.md -> dump_java.md).
+- Stale DUMP_*.md set (10 files) moved to backup, then purged.
+- backup_session purged clean.
+- 47 byte-identical extract dupes moved (old_47, new_selected_10 fresh copies).
+- target/ and .pytest_cache/ moved.
+- scripts/live/live.ps1 added. Alias `live` in load.ps1. Compact per-minute block for chat paste.
+- scripts/live/story.ps1 added. Alias `story`. Last N cycles as tape.
+- start-session.ps1 extended: git state, loop health, scripts inventory, COMMANDS.md, MTS_DICTIONARY canonical fields table, all inlined into SESSION_PASTE.txt.
+- start-trading-day.ps1 SESSION_PASTE generator console NEXT line updated.
+- StateCodeEmitter.java: cvd_slope warmup bug fixed (CVD_MIN_SAMPLES=10, adaptive half-window, denom guard). L26 CLOSED.
+- L23 (kimi naming), L27 (mojibake), O1 (cvd_slope), O2 (endpoint guessing), O3 (boot paste field table) closed.
+- Commits today: 3e7e704, 44afc61, 856e062.
+- Data correctness revalidated end-to-end. Snapshot matches Binance futures. All invariants pass.
 
-## WHAT LANDED LAST SESSION (trust on read; verify only if it blocks)
+## MISSION FOR THIS SESSION (in order)
 
-- Scripts consolidated: scripts/core/, scripts/live/, scripts/tools/, scripts/load.ps1
-- Aliases: quick, deltas, trend, snapshot, overview, health, alerts
-- DSA Rule 51 added (per-task discipline: intent, challenge, execute, outcome)
-- DSA Rule 51(d-inline) added (verify in same block, independent method)
-- DSA Rule 52 added (pending verify: read MTS_DICTIONARY.md before field questions)
-- MTS_DICTIONARY.md created in mts/research/ (points to authority files; does not duplicate)
-- L_ITEMS_MASTER.md is single source for open loops (L4-L23)
-- Root: VERSION, DSA_SESSION_PROMPT.md, USER.md, COMMANDS.md, pom.xml
-- Apparatus: running, java child alive, state_code.json updating
+### Task 1: Fix L18 (apparatus silent exit) — HIGHEST PRIORITY
+Loop parent exits silently. Java orphans survive. Recurred 2026-09-16 11:41:02 (this session).
+- Read scripts/core/start-trading-day.ps1 main loop end + finally block.
+- Find the path where the loop exits without logging.
+- Known facts: finally block runs (logged "APPARATUS END (finally)"). No error line.
+- Test: run loop, watch for exit, capture exit code and $Error.
+- Rule 32 gate: this is a bug fix, not engine change. No 3-snapshot needed for the fix itself, but the fix must be proven by a loop surviving 24h.
 
-## MISSION
+### Task 2: Build scripts/live/context.ps1 — 24h per-timeframe context block
+Purpose: from snapshot archive, compute rolling 24h per timeframe: high, low, range_pct, slope, range_position_pct, regime label.
+- Sources: data/snapshots/*.json (1717 files). Snapshot has structure.1h/15m/5m swings, prior_day high/low. No 24h fields today.
+- Specs exist: TREND_REGIME_DETECTOR_SPEC.md (regime classifier), schema_v5.1.0_spec.md (session_high/low/range_position_pct), compiled_output_audit_20260915.md (ABSENT table).
+- Design: read last 1440 min of BTCUSDT snapshots, bucket by TF, compute. Output block similar to `live`.
+- No Java change. No schema change. No Rule 32 gate.
 
-### Phase A РІР‚вЂќ Verify what landed last session (10 min)
-1. Confirm scripts/ structure exists with core/, live/, tools/, load.ps1.
-2. Confirm DSA has Rules 51, 51(d-inline), 52 (Select-String on DSA).
-3. Confirm MTS_DICTIONARY.md exists in mts/research/.
-4. Confirm L_ITEMS_MASTER.md has L4-L23.
-5. If any are missing: re-run the relevant block from session_log tail. Do not improvise.
+### Task 3: Build scripts/tools/verify_data.ps1 — permanent data check
+Purpose: assert snapshot truth against Binance futures and internal invariants.
+- A: newest snapshot current_price vs futures close for same minute (diff < 5).
+- B: spot_price, mark_price, basis_pct internally consistent.
+- C: price_vs_va matches computed.
+- D: net_delta window monotonicity.
+- E: state_code.json age < 90s.
+- Run at session start. Fail any, stop.
+- Design done in this session's chat. No code yet.
 
-### Phase B РІР‚вЂќ Dedupe + cleanup (30 min)
-D1 was done. Complete D3 decisions:
-1. `extracts/processed/tom/` РІР‚вЂќ KEEP (audit trail).
-2. `Dumps/dump_*.md` РІР‚вЂќ RENAMED to dump_*.md on 2026-09-16 (L23 closed).
-3. `MyTradingSys/archive/` + `mts/archive/` РІР‚вЂќ KEEP both.
-4. `runtime/SESSION_PROMPT.md` РІР‚вЂќ KEEP until 2026-09-22 (L21).
-5. `MyTradingSys/archive/cleanup-2026-09-13/*.old` РІР‚вЂќ KEEP.
-
-Nothing to delete this session unless new duplicates found. Run the D1 audit again (hash-based):
-    Get-ChildItem -Recurse -File | Get-FileHash -Algorithm SHA256 |
-      Group-Object Hash | Where-Object { $_.Count -gt 1 }
-Report but do not auto-delete. User approves each.
-
-Also: mojibake fix (see L24 below).
-
-### Phase C РІР‚вЂќ version tracking reset (30 min)
-User directive: start fresh. Do not worry about old history.
-1. Verify no .git exists yet. If exists: preserve but rename (e.g. .git_backup_<ts>).
-2. Initialize the repository at project root.
-3. Write .gitignore: data/snapshots/*.json, data/snapshots/historical/*.json,
-   backup_session/*, Dumps/*, *.pyc, __pycache__/, .idea/, *.new, data/apparatus.lock,
-   data/snapshots/historical/, MyTradingSys/mts/runtime/locks/*
-4. Stage all and commit with message: "Initial commit: MTS v5.0.0 clean state after 2026-09-15 consolidation"
-5. Tag: git tag v5.0.0-init
-6. Report commit hash + file count.
-
-Do NOT push to remote yet. Do NOT init submodules. Do NOT include large binaries.
-
-### Phase D РІР‚вЂќ Resume MTS ops
-After A, B, C: normal session flow.
-- Runtime loop health check: health (alias) or Get-Process java; state_code.json freshness
-- Worker audit still open (see L_ITEMS_MASTER L16/L18): 42h alert audit
-- L13 (proof-change alert noise) РІР‚вЂќ design decision still pending user approval
-
-## OPEN LOOPS (see L_ITEMS_MASTER.md for full detail)
-
-- L8  РІР‚вЂќ stop_day repro (needs live fail)
-- L13 РІР‚вЂќ proof-change alert noise (start_trading_day.ps1:349)
-- L16 РІР‚вЂќ snapshot cadence gaps (worker audit scope)
-- L17 РІР‚вЂќ alert numbering gap #6-12
-- L18 РІР‚вЂќ apparatus silent exit repro
-- L21 РІР‚вЂќ runtime/SESSION_PROMPT.md orphan check (2026-09-22)
-- L23 РІР‚вЂќ Dumps/dump_*.md check (2026-09-21)
-- L24 РІР‚вЂќ CLOSED 2026-09-15: mojibake claim did not reproduce. Byte-check of 5 declared files = 0 hits of C3 A2 E2 80 9D. L4 (prior viewer-artifact) stands. See L_ITEMS_MASTER.md L24 row.
-
-### Phase S РІР‚вЂќ Full project structure audit (next session)
-Scope (read-only; produce report for approval before any move):
-1. List every root dir with file count + total bytes.
-2. For each root dir not in the boot list: one-line purpose + reader.
-3. Flag duplicates + grouping candidates (root scripts/, prompts/, docs/).
-4. Produce target structure as markdown tree for user approval.
-Do not move anything before audit. Rule 51(b): challenge before execute.
+## OPEN LOOPS (see L_ITEMS_MASTER.md)
+- L5, L6 NO EVIDENCE
+- L8 stop_day repro
+- L13 proof-change alert noise
+- L14, L15, L16, L17, L18, L19, L20, L21, L22, L23, L25, L26, L27
+- L18 is Task 1 this session.
+- L25 US cash open classifier DST bug.
 
 ## CONSTRAINTS
-
 - Rule 5: user runs commands, AI issues.
 - Rule 25: no emoji in system files.
 - Rule 40/41: pre-write revalidation, post-write retest.
-- Rule 51: per-task discipline (intent, challenge, execute, outcome).
-- Rule 51(d-inline): verify in same block, independent method.
-- Rule 52: read MTS_DICTIONARY.md before any field-level question.
-- Read-only on live apparatus. Do not modify session_state.json thesis without approval.
+- Rule 51: per-task discipline.
+- Rule 52: read MTS_DICTIONARY before field questions.
+- Read-only on live apparatus. No session_state.json thesis change without approval.
 - Human commits all writes. No auto-push.
-
-## EXPECTED OUTPUT
-
-1. Phase A report: what landed, what needs re-running.
-2. Phase B report: any new duplicates, mojibake fixed or flagged.
-3. Phase C report: Initialize the repositoryialized, initial commit, tag, file count.
-4. Phase D: back to normal MTS ops.
+- SESSION_PASTE.txt now inlines dictionary fields + git state + scripts + COMMANDS. Use it.
 
 # END
