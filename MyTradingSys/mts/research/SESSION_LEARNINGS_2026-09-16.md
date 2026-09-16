@@ -58,3 +58,65 @@
 - Zone map for 2026-09-17 on disk.
 - All current state committed at 3aec69a.
 # END
+
+## OPERATOR TRADE 2026-09-16 (not from MTS)
+
+Counter-trade short at the 76000-76045 ceiling cluster.
+Source: operator intuition. MTS did not signal it.
+
+Entry: 15 scale-in sell fills, 75525 to 76381, avg 76075.68.
+Exit: 3 close-buy fills, avg 75778.00.
+Size: 0.1953 BTC.
+Gross: 0.000767 BTC. Fees: 0.000105 BTC. Net: 0.000662 BTC.
+About 5.4% of account equity. Hold time 26 minutes.
+
+Why MTS missed it:
+- Loop was OFF during the entry build (stopped 17:52:52, restarted 18:15:33).
+- On restart engine printed ct_short @ 4h_vah 76054.47, nrr 1.77. Same zone,
+  same direction. Below the 2.0 cap. Verdict WAIT_RR.
+- Operator found the same zone independently and won.
+
+What the operator did that the engine does not:
+- 15 scale-ins on strength.
+- No stop placed anywhere.
+- Exit at 75778. Absolute low printed at 75364.
+
+## SWEEP ENTRY FINDING - largest gap of the day
+
+Six counter-trade setups today printed correct direction and correct zone.
+All six failed the 2.0 net reward-to-risk cap. All six would have cleared
+if the entry were the sweep wick extreme instead of the zone price.
+
+Tom enters at the sweep. The engine enters at the level. That is the whole
+difference today.
+
+Evidence:
+1. 13:48 scalp_short @ vwap, nrr 1.95. Missed by 0.05.
+2. 17:12 ct_long @ 4h_val, nrr 2.01. Flickered one cycle.
+3. 17:15 ct_long @ 4h_val, nrr 2.05. Flickered one cycle.
+4. 17:23 ct_long @ 5m_swing_low 75620, nrr 1.94. Bounce ran 100 pts.
+5. 17:45 ct_long @ pf_val, nrr 1.95. Bounce ran 153 pts.
+6. 17:40 sweep low 75386, rally 1100+ pts. Engine printed longs under cap.
+
+Same setup as the operator's winning short:
+18:16 engine printed ct_short @ 4h_vah 76054.47, nrr 1.77. Operator shorted
+the same zone and won.
+
+Action: draft a sweep-entry rule. Zone is reference. Entry is the sweep
+wick extreme. Three snapshots of proof before wiring into the verdict.
+Rule 32 gate. Today is snapshot one. Two more sessions minimum.
+
+## I33 CORRECTION - OI field
+
+Scope narrower than first written. Field stalled 17:40-17:53 (flat / 0.0 /
+HIGH confidence), then recovered on loop restart at 18:16 (rising / 0.21 /
+HIGH). It is a stall that recovers on restart, not a permanent break.
+Still returns wrong value with HIGH confidence. That is the dangerous part.
+
+## LOG MESSAGE BUG - repeated
+
+Alerts #391, #392, #394 all printed the state change as same-value:
+"STATE B/below_val -> B/below_val" and "STATE B/in_va -> B/in_va".
+Cause: $lastState is updated before the alert fires on the second cycle.
+Fix: add $pendingStateFrom to record the prior state.
+Cosmetic. No verdict impact. But makes state alerts unreadable.

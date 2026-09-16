@@ -332,3 +332,5 @@
 2026-09-16 17:50:50 | ok wrapper=18416 snapAge=34s grace=False
 2026-09-16 17:51:21 | ok wrapper=18416 snapAge=5s grace=False
 2026-09-16 17:51:52 | ok wrapper=18416 snapAge=35s grace=False
+2026-09-16 17:52:22 | ok wrapper=18416 snapAge=6s grace=False
+2026-09-16 17:52:52 | stop flag present, exiting
