@@ -1,4 +1,6 @@
-﻿$root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+# MTS live: lx - quick check - live price vs snapshot, one line
+# usage:    . .\scripts\load.ps1   then type: lx
+$root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 $k = Invoke-RestMethod "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=3"
 $snap = Get-ChildItem "$root\data\snapshots\BTCUSDT_*.json" | Sort LastWriteTime -Desc | Select -First 1
 $j = Get-Content $snap.FullName -Raw | ConvertFrom-Json

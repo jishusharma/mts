@@ -1,4 +1,6 @@
-﻿$root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+# MTS live: lt - trend - last 15 snapshots side by side
+# usage:    . .\scripts\load.ps1   then type: lt
+$root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 Get-ChildItem "$root\data\snapshots\BTCUSDT_*.json" | Sort LastWriteTime -Desc | Select -First 15 | Sort LastWriteTime |
 ForEach-Object {
   $jj = Get-Content $_.FullName -Raw | ConvertFrom-Json

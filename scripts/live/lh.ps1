@@ -1,4 +1,6 @@
-﻿$root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+# MTS live: lh - health - java process, state file age, log tail
+# usage:    . .\scripts\load.ps1   then type: lh
+$root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 "JAVA:"
 Get-Process java -ErrorAction SilentlyContinue | Select Id, StartTime, Path | Format-Table -AutoSize
 $sc = "$root\MyTradingSys\mts\runtime\state_code.json"

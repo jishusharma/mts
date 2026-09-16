@@ -1,4 +1,4 @@
-﻿# MTS DICTIONARY
+# MTS DICTIONARY
 # Version: 1.0.0 | Date: 2026-09-15
 # Authority: this file points. Named authority file defines. Do not duplicate.
 # Boot-read: listed in SESSION_MANIFEST.json boot_supplemental.
@@ -50,3 +50,32 @@ When a session resolves a field-level question:
 4. If a field has no authority, set the cell to `[NO EVIDENCE]` and open an L-item.
 
 # END
+
+
+## PLAIN LANGUAGE RULE (added 2026-09-16)
+
+When giving the user an update, or when providing information:
+- No internal codes. No letters, no numbers, no hashes, no byte counts
+  unless the count itself is the point.
+- No shorthand invented in a session. If a thing has a name, use its
+  full name.
+- Plain sentences first. Tables only when the table saves reading.
+- Any term used twice in a session must exist in this dictionary or be
+  replaced with a plain phrase.
+
+## CORE TERMS (added 2026-09-16)
+
+These were undefined before this entry.
+
+| term | plain meaning |
+|---|---|
+| MTS | MyTradingSys, the decision system in this repo |
+| DSA | dropped. Use "session" or "session prompt". |
+| IBC | dropped. Write "one sourced PowerShell session in the project root". |
+| nrr | net reward to risk. Spell it out in logs and cards. |
+| pd | prior day bias. Spell it out in logs and cards. |
+| apparatus | dropped in favor of "the runtime loop". |
+| L-items | dropped in favor of "open loops". |
+| A / B / E | dropped. Name the actual file or folder. |
+
+## END OF ADDITIONS
