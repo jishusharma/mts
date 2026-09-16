@@ -36,6 +36,15 @@ The paste arrives as one file containing all boot content. Read it, then:
 
 Never claim a file was read unless you saw it pasted.
 
+Two more boot rules, added 2026-09-16 after a boot reply invented field values and aliases:
+
+5. No fabricated values. Every number, price, level, field value, and
+   verdict quoted in the boot reply must come from the boot paste. If
+   unsure, do not quote it.
+6. No invented commands or aliases. Only name commands that exist in
+   scripts/load.ps1 or COMMANDS.md, or are shown in the boot paste. If
+   unsure whether an alias exists, do not name it.
+
 ## 4. READING LARGE FILES
 
 Any file over 20 KB: read by line range, not whole file.
