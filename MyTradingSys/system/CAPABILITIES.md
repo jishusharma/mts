@@ -1,7 +1,7 @@
 # CAPABILITIES.md - MTS Trigger Map
 # MTS version: see VERSION
 # Purpose: One router. Tells any AI session which module to load for which task.
-# Load rule: DSA_SESSION_PROMPT.md §3 owns boot order. Everything else
+# Load rule: DSA_SESSION_PROMPT.md В§3 owns boot order. Everything else
 #            loads on trigger.
 # Canonical: MyTradingSys/system/CAPABILITIES.md
 
@@ -17,7 +17,7 @@
 | New rule proposed for engine | `system/01_AI_BEHAVIOR.md` Rules 31-41 | Everything else | Integration gate |
 | Rule validation request | `system/01_AI_BEHAVIOR.md` Rule 32 | Everything else | 3-snapshot proof |
 | Research question | `methodology/playbook.md` Part I | Extraction/engine | Meta-research + source tiers |
-| Coordinator task handoff | `MyTradingSys/SESSION_ENTRY.md`, `mts/runtime/session_log.json` | Engine files | Ledger + active state |
+| Coordinator task handoff | `DSA_SESSION_PROMPT.md`, `mts/runtime/session_log.json` | Engine files | Ledger + active state |
 | Probability layer work | `mts/research/event_probability_layer_DESIGN.md` | Engine files | Parked design (needs 500+ labels) |
 | Engine edit proposed | `mts/runtime/compiled_engine.md`, condition file for the section | Everything else | Runtime authority + canonical doc |
 | Data schema question | `data/data_schema_v1.2.0.md` | Engine files | Field-level contract |
@@ -43,7 +43,7 @@ One primary session coordinates. Workers are spawned for isolated tasks.
 - **Coordinator prompt rule:** every prompt block that references a file
   must contain the real content pasted inline. Run `Get-Content` BEFORE
   writing the prompt. Placeholders (`<paste here>`) cause the worker to
-  block correctly — that is a coordinator bug, not worker failure.
+  block correctly вЂ” that is a coordinator bug, not worker failure.
   See `01_AI_BEHAVIOR.md` Rule 38 + M-033.
 
 ---

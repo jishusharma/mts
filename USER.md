@@ -71,7 +71,7 @@ Backups:     backup_session\ (one per session, -Force overwrite)
 2. State ROLE. Read tape. State MISSION. Act.
 3. One decision per turn. Batch every read.
 4. Log decisions to ledger. Log issues to apparatus_fixes.md.
-5. Close with a handoff. Update SESSION_ENTRY.md.
+5. Close with a handoff. Update the current-state section of DSA_SESSION_PROMPT.md.
 
 ## CHANGE
 Edited by the user, or by the agent with explicit user approval.
