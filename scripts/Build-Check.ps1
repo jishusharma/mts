@@ -3,6 +3,12 @@
 # Does not modify any live file.
 
 $ErrorActionPreference = "Continue"
+
+function Write-TextNoBom {
+    param([string]$Path, $Lines)
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllLines((Join-Path (Get-Location) $Path), $Lines, $utf8NoBom)
+}
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 

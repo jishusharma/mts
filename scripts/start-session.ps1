@@ -2,8 +2,7 @@
 #
 # Does three things in one run:
 #   1. Generates Dumps\SESSION_PASTE.txt from the boot manifest.
-#   2. Loads the shortcuts (quick, deltas, trend, snapshot, overview,
-#      health, alerts) into the current PowerShell window.
+#   2. Loads the shortcuts into the current PowerShell window.
 #   3. Prints one line telling you what to do next.
 #
 # Usage:
@@ -11,7 +10,7 @@
 #   .\start-session.ps1
 #
 # Flags:
-#   -NoClipboard    do not copy the paste to clipboard (file is still written)
+#   -NoClipboard    do not copy to clipboard (file is still written)
 #   -NoLoad         do not load the shortcuts
 
 [CmdletBinding()]
@@ -21,6 +20,12 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+
+function Write-TextNoBom {
+    param([string]$Path, [string]$Text)
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText((Join-Path (Get-Location) $Path), $Text, $utf8NoBom)
+}
 
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
@@ -110,7 +115,7 @@ $block = $sb.ToString()
 Write-Host "generated: $($block.Length) chars"
 
 $pasteFile = 'Dumps\SESSION_PASTE.txt'
-Write-PasteFile $pasteFile $block
+Write-TextNoBom -Path $pasteFile -Text $block
 Write-Host "written:   $pasteFile" -ForegroundColor Cyan
 
 if (-not $NoClipboard) {
