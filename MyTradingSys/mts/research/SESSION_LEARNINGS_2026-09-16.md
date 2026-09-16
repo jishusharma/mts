@@ -178,3 +178,75 @@ Two builder paths exist in MarketDataSnapshot.java:
 Live loop calls fetchSnapshot (line 35). The historical path (line 913)
 is for backfill. Which path produced the flat/HIGH value during that
 window is not established. Needs repro.
+
+## SESSION MISTAKES - 2026-09-16
+
+Mechanical failures that cost turns. Each one should have been
+caught before the write.
+
+1. LINE-ENDING ANCHOR MISS. Three times. DSA_SESSION_PROMPT section 11
+   (CRLF file, LF anchor). start-trading-day.ps1 LF-only guard (LF file,
+   assumed CRLF). SESSION_MANIFEST.json (LF file, CRLF anchor). Cause:
+   never checked the file's actual line ending before composing the
+   anchor. Fix: mandatory detection step in section 6. Committed 74165b5.
+
+2. RESOLVE-PATH ON MISSING FILE. Playbook archive write. Resolve-Path
+   cannot resolve a path that does not exist. WriteAllText got null and
+   aborted that line. The next line ran anyway and trimmed the working
+   file. Partial execution. Fix: use literal paths for new files, or
+   New-Item -Force first.
+
+3. INTERACTIVE PASTE DOES NOT STOP ON THROW. Every block that uses
+   $ErrorActionPreference = 'Stop' assumes it halts execution. It does
+   not. Each line runs independently. Throws print and continue. This
+   is why the LF guard threw 634 times but the write still executed.
+
+4. LF-ONLY GUARD ADDED WITHOUT PROVING LINE ENDING. Added a guard that
+   aborts on LF-only. The file was already LF-only. The guard was
+   meaningless. Cost: one cleanup pass to normalize mixed endings.
+
+## FABRICATIONS AND UNCHECKED CLAIMS - 2026-09-16
+
+Wrong statements made in chat and corrected verbally. None were written
+to disk as lessons until now.
+
+5. "BOTH-SIDES TRAP." Labeled a candle pattern with confident language
+   and no source. Not from MTS. Not from Tom. From training data. Called
+   it "the most unreliable signals to trade." Operator caught it.
+   Correction: only assert what can be sourced from MTS files.
+
+6. REPEATED CLAUDE'S 5-MINUTE OI CLAIM WITHOUT CHECKING. Binance's
+   historical endpoint is 5-minute minimum. The live endpoint polls at
+   any frequency. CoinGlass builds 1-minute candles from live polls.
+   Operator caught it. Correction: check the endpoint before repeating
+   a claim about it.
+
+7. "COINGLASS BLENDS EXCHANGES." Wrong for this chart.
+   coinglass.com/tv/Binance_BTCUSDT is Binance-only. Different URL per
+   exchange. Operator caught it. Correction: verify the URL before
+   claiming the source.
+
+8. CALLED A 1-MINUTE CHART A 5-MINUTE CHART. Description error. Operator
+   corrected. Same pattern: describe without verifying.
+
+9. READ OI MAGNITUDES OFF A CHART AXIS. Quoted 107.5K to 106.4K from
+   eyeballs. Wrong scale. Real field showed flat. Correction: field for
+   trend, chart for shape. Never quote a field value from a chart.
+
+10. ADDED FILES TO BOOT WITHOUT MEASURING. SESSION_LEARNINGS and
+    EVIDENCE added to boot_supplemental. Neither belongs in boot. Both
+    reverted. Cost: one turn. Correction: measure paste size before and
+    after any boot change.
+
+## META-PATTERN
+
+The mechanical errors share one cause: no verification step before
+action. The fabrication errors share another: asserting without a
+source. Both are fixable with one rule each:
+
+- Before any write: detect, measure, verify. Then act.
+- Before any claim: name the source. If none, do not assert.
+
+The first rule is now in section 6 of DSA_SESSION_PROMPT.md.
+The second rule is boot rule 5. It was already there. It was not
+followed.
