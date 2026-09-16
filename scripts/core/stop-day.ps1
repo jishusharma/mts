@@ -1,4 +1,7 @@
 # stop_day.ps1 - kill MTS apparatus processes (scoped)
+
+# Pull in shared functions, including Get-Descendants.
+. "$PSScriptRoot\shared-functions.ps1"
 $R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 $killed = 0
 $rootPids = @()

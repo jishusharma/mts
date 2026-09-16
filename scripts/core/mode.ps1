@@ -1,4 +1,7 @@
 param(
+
+# Pull in shared functions, including Get-Descendants.
+. "$PSScriptRoot\shared-functions.ps1"
     [ValidateSet("prep","armed","live")]
     [string]$M = "prep",
     [ValidateSet("short","long","")]
