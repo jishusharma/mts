@@ -1,4 +1,4 @@
-﻿# MTS SESSION ENTRY — READ FIRST
+# MTS SESSION ENTRY — READ FIRST
 # MTS version: see VERSION
 # Purpose: Single doc that tells any fresh AI session what to read,
 # what is running, and what state we are in.
@@ -42,7 +42,7 @@ Scripts moved to scripts/ on 2026-09-15 (previously at root).
 
 ## 4. HARD RULES
 
-**Shorthand:** IBC = Issue Bulk Command. Send many commands in one block.
+**Shorthand:** Send many commands in one block.
 
 Read-before-write, no blind java kill, and write pattern: see DSA §8, §11, Rules 40-41.
 

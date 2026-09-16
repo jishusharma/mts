@@ -46,7 +46,7 @@ These appeared in the original task package with no definition.
 
 | token | plain replacement |
 |---|---|
-| IBC | write "one sourced PowerShell session in the project root" |
+| | write "one sourced PowerShell session in the project root" |
 | A | name the file - compiled_engine.md |
 | B | name the folder - conditions\*.md |
 | E | name the file - CONSOLIDATED_RULES.md |
@@ -69,7 +69,7 @@ MyTradingSys, the decision system in this repo.
 
 | step | action | status |
 |---|---|---|
-| 1 | IBC, A, B, E, D, H in the task package | package no longer used |
+| 1 |, A, B, E, D, H in the task package | package no longer used |
 | 2 | add "mts" to the dictionary | done |
 | 3 | add header to each live script | done |
 | 4 | rename lx..la | not needed, documented instead |

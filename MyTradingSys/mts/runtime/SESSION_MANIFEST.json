@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "purpose": "Boot manifest. DSA reads this first, then reads every boot_files + boot_supplemental path in one IBC block.",
+  "purpose": "Boot manifest. DSA reads this first, then reads every boot_files + boot_supplemental path in block.",
   "boot_files": [
     {
       "path": "USER.md",

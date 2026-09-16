@@ -54,7 +54,7 @@ Terms that appear in docs, logs, or prompts with no definition anywhere.
 
 | term | where it appears | proposed replacement |
 |---|---|---|
-| IBC | session boot instructions | "one sourced PowerShell session in the project root" |
+| | session boot instructions | "one sourced PowerShell session in the project root" |
 | A / B / E | worker instructions | name the actual file or folder |
 | D / H | worker instructions | name the actual file or folder |
 | L8, L13, L16, L17, L18, L23 | open-loop tracking | give each loop a short plain title (see open-loops.md) |
