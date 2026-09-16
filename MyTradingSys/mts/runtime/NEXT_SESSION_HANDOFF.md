@@ -1,68 +1,64 @@
-STATUS: Prior phases A/B/C complete. This session closed the cleanup + fix batch. Three tasks queued.
+STATUS: Session 2026-09-16 AM complete. Next session builds the session block.
 
 # NEXT SESSION HANDOFF
-# Written: 2026-09-16 evening
-# Mission: three open build tasks, in order.
+# Written: 2026-09-16 12:00 UTC
+# Mission: session block (schema_v5.1.0_spec.md, sixteen fields). Vision doc step 3.
 
-## WHAT LANDED 2026-09-16
+## WHAT LANDED 2026-09-16 AM
 
-- Legacy "kimi" naming removed. 11 files renamed (kimi_*_dump.md -> dump_*.md, java_core_dump.md -> dump_java.md).
-- Stale DUMP_*.md set (10 files) moved to backup, then purged.
-- backup_session purged clean.
-- 47 byte-identical extract dupes moved (old_47, new_selected_10 fresh copies).
-- target/ and .pytest_cache/ moved.
-- scripts/live/live.ps1 added. Alias `live` in load.ps1. Compact per-minute block for chat paste.
-- scripts/live/story.ps1 added. Alias `story`. Last N cycles as tape.
-- start-session.ps1 extended: git state, loop health, scripts inventory, COMMANDS.md, MTS_DICTIONARY canonical fields table, all inlined into SESSION_PASTE.txt.
-- start-trading-day.ps1 SESSION_PASTE generator console NEXT line updated.
-- StateCodeEmitter.java: cvd_slope warmup bug fixed (CVD_MIN_SAMPLES=10, adaptive half-window, denom guard). L26 CLOSED.
-- L23 (kimi naming), L27 (mojibake), O1 (cvd_slope), O2 (endpoint guessing), O3 (boot paste field table) closed.
-- Commits today: 3e7e704, 44afc61, 856e062.
-- Data correctness revalidated end-to-end. Snapshot matches Binance futures. All invariants pass.
+- L18 CLOSED. start-trading-day.ps1 silent-exit instrumentation: exit phase tracking, catch, and phase in finally log line. Verified: Ctrl+C mid-sleep logged "APPARATUS END (finally) phase=sleeping".
+- verify_data.ps1 built at scripts/tools/. Checks A (snapshot price vs Binance 1m close, same minute), B (spot/perp basis internal), C (price_vs_va vs any VP), E (state_code age under 90s). Passed live.
+- Alias verify added to load.ps1. COMMANDS.md updated under BEFORE ANY WRITE.
+- L28 OPENED. Loop exit orphans mvn/java child. Repro: Ctrl+C, Get-Process java shows 1. Fix candidate: match CommandLine datafeed.Main statemachine inside finally.
+- PROJECT_VISION.md anchor blocker RESOLVED. Two anchors: UTC 00:00 for raw data calculation; US cash open (DST-aware) for session frame.
 
-## MISSION FOR THIS SESSION (in order)
+## MISSION FOR NEXT SESSION
 
-### Task 1: Fix L18 (apparatus silent exit) — HIGHEST PRIORITY
-Loop parent exits silently. Java orphans survive. Recurred 2026-09-16 11:41:02 (this session).
-- Read scripts/core/start-trading-day.ps1 main loop end + finally block.
-- Find the path where the loop exits without logging.
-- Known facts: finally block runs (logged "APPARATUS END (finally)"). No error line.
-- Test: run loop, watch for exit, capture exit code and $Error.
-- Rule 32 gate: this is a bug fix, not engine change. No 3-snapshot needed for the fix itself, but the fix must be proven by a loop surviving 24h.
+### Task 1: Session block (schema_v5.1.0_spec.md, sixteen fields)
+Outer frame. Vision doc says build first.
+- Java side: session_open_price, session_high, session_low, gap_from_prior_close, session_vwap_anchor_utc, initial_balance_high, initial_balance_low. MarketDataSnapshot.java.
+- Python side: range_position_pct, day_type, day_type_confidence, open_location, sweep_flag, liquidity_sweep_direction, gap_direction. mts_math.py.
+- Config constant: initial_balance_window_minutes.
+- Anchor: US cash open (13:30 UTC summer, 14:30 UTC winter, DST-aware).
+- Output: snapshot.session object. Backward compatible.
+- Close these before coding: initial balance window length; sweep flag scope (prior day only or prior day plus current session); day type source (build classifier or reuse VP shape).
 
-### Task 2: Build scripts/live/context.ps1 — 24h per-timeframe context block
-Purpose: from snapshot archive, compute rolling 24h per timeframe: high, low, range_pct, slope, range_position_pct, regime label.
-- Sources: data/snapshots/*.json (1717 files). Snapshot has structure.1h/15m/5m swings, prior_day high/low. No 24h fields today.
-- Specs exist: TREND_REGIME_DETECTOR_SPEC.md (regime classifier), schema_v5.1.0_spec.md (session_high/low/range_position_pct), compiled_output_audit_20260915.md (ABSENT table).
-- Design: read last 1440 min of BTCUSDT snapshots, bucket by TF, compute. Output block similar to `live`.
-- No Java change. No schema change. No Rule 32 gate.
+### Task 2: context.ps1 (rolling 24h per-TF envelope)
+After session block. Pure archive read. No schema change.
+- Windows: 1h timeframe to 24h, 15m to 6h, 5m to 2h. Fixed 24-bar lookback.
+- Fields per window: high, low, range_pct, slope_pct_per_hour, range_position_pct, slope_word (rising/falling/sideways).
+- Output style like live.ps1.
+- No regime label. Regime is a separate layer (TREND_REGIME_DETECTOR_SPEC.md).
 
-### Task 3: Build scripts/tools/verify_data.ps1 — permanent data check
-Purpose: assert snapshot truth against Binance futures and internal invariants.
-- A: newest snapshot current_price vs futures close for same minute (diff < 5).
-- B: spot_price, mark_price, basis_pct internally consistent.
-- C: price_vs_va matches computed.
-- D: net_delta window monotonicity.
-- E: state_code.json age < 90s.
-- Run at session start. Fail any, stop.
-- Design done in this session's chat. No code yet.
+### Task 3: regime_classifier.py (TREND_REGIME_DETECTOR_SPEC.md)
+After context.ps1. Vote-based, per-cycle, session-tagged. Standalone. Writes JSON sub-object into state_code.json. No verdict consumption.
 
-## OPEN LOOPS (see L_ITEMS_MASTER.md)
-- L5, L6 NO EVIDENCE
-- L8 stop_day repro
-- L13 proof-change alert noise
-- L14, L15, L16, L17, L18, L19, L20, L21, L22, L23, L25, L26, L27
-- L18 is Task 1 this session.
-- L25 US cash open classifier DST bug.
+### Task 4 (deferred): RSI 40-60 (MalkanView) external read.
+
+## LAYERED ARCHITECTURE (working order)
+
+1. Per-cycle engine fields (LIVE).
+2. Rolling 24h per-TF envelope (context.ps1, Task 2).
+3. Session block (schema v5.1.0, Task 1).
+4. Regime label (regime_classifier.py, Task 3).
+5. RSI read (external, isolated).
+6. Probability layer (parked, labels ~154 of 500).
+7. Analyst verdicts (distant).
+
+Rule 32 does not gate layers 2-4. It gates wiring when a layer changes a verdict.
+
+## OPEN LOOPS
+- L5, L6 NO EVIDENCE.
+- L8 stop_day repro.
+- L13 proof-change alert noise.
+- L14-L28 in L_ITEMS_MASTER.md. L28 is this session's new one.
+- L25 US cash open classifier DST bug. MarketDataSnapshot.java line 761. Fold into Task 1 since the session-open classifier is the same code path.
 
 ## CONSTRAINTS
-- Rule 5: user runs commands, AI issues.
-- Rule 25: no emoji in system files.
-- Rule 40/41: pre-write revalidation, post-write retest.
-- Rule 51: per-task discipline.
-- Rule 52: read MTS_DICTIONARY before field questions.
-- Read-only on live apparatus. No session_state.json thesis change without approval.
-- Human commits all writes. No auto-push.
-- SESSION_PASTE.txt now inlines dictionary fields + git state + scripts + COMMANDS. Use it.
+- User runs commands, AI issues.
+- No emoji in system files.
+- Hash plus line count plus non-ASCII after any write.
+- Read-only on live apparatus.
+- Human commits all writes.
 
 # END

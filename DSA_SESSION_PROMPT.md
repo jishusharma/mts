@@ -159,12 +159,12 @@ Before importing any concept from the transcripts:
 
 Update this section at every session close. Keep it to five lines.
 
-Last live read:  BTC 75948.60 on 2026-09-16 at 11:31 UTC
+Last live read:  BTC 76197.30 on 2026-09-16 at 11:50 UTC
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime loop:    armed, running since 2026-09-16 11:41:13 UTC. cvd_slope bug fixed.
-Open loops:      see MyTradingSys/mts/research/L_ITEMS_MASTER.md. Three tasks queued in handoff.
+Runtime loop:    off since 2026-09-16 11:50:23 UTC. Silent-exit instrumentation verified (phase=sleeping). L18 closed.
+Open loops:      L28 open (orphan java on exit). Session block build queued for next session. See L_ITEMS_MASTER.md.
 
 ## 12. SESSION END
 

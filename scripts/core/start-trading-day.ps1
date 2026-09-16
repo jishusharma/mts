@@ -271,10 +271,12 @@ $lastProof = $null
 $script:LastAlertMs = 0
 $lastState = $null
 $cycle = 0
+$exitPhase = "startup"
 
 try {
     while ($true) {
         $cycle++
+        $exitPhase = "cycle_body"
         Log-Line "--- cycle $cycle ---"
     
         Write-Host "[apparatus] fetching snapshot..."
@@ -553,12 +555,15 @@ print("logged")
         $sleepSec = $nextBoundary - $secOfDay + 10
         if ($sleepSec -lt 15) { $sleepSec += $cycleSec }
         Log-Line ("sleep {0}s -> next candle close+10s" -f $sleepSec)
+        $exitPhase = "sleeping"
         Start-Sleep -Seconds $sleepSec
     }
+} catch {
+    Log-Line "APPARATUS ERROR phase=$exitPhase : $_"
 } finally {
     if ($StateMachinePID) { try { Stop-Process -Id $StateMachinePID -Force -ErrorAction SilentlyContinue } catch {} }
     Remove-Item (Join-Path $LogDir "apparatus.lock") -ErrorAction SilentlyContinue
-    Log-Line "=== APPARATUS END (finally) ==="
+    Log-Line "=== APPARATUS END (finally) phase=$exitPhase ==="
 }
 
 if ($script:NotifyIcon) { try { $script:NotifyIcon.Dispose() } catch {} }

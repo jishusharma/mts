@@ -32,6 +32,9 @@ Monitoring stations:
 
 ## BEFORE ANY WRITE
 
+    .\scripts\tools\verify_data.ps1
+    # read the STATUS line. If FAIL, stop. Do not write.
+
     python .\MyTradingSys\mts\tests\docs\test_integrity.py -v
     # read the last line. If not all passed, stop. Do not write.
 

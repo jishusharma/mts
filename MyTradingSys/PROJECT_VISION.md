@@ -1,4 +1,4 @@
-# PROJECT VISION / DIRECTION
+﻿# PROJECT VISION / DIRECTION
 # Saved: 2026-09-15
 # Purpose: Direction to keep in mind before developing anything new.
 # Maintained. Update as the project evolves.
@@ -39,7 +39,7 @@ Note that we will integrate RSI - so it is momentum and it comes from a differen
 
 ## OPEN QUESTIONS
 
-- Session anchor: UTC 00:00 / US cash open / both. (Blocker.)
+- Session anchor: RESOLVED 2026-09-16. Two anchors, two jobs. UTC 00:00 anchors raw data calculation (existing CVD block and session aggregates). US cash open (13:30 UTC summer / 14:30 UTC winter, DST-aware) anchors the session-aware frame: session high/low/open, range position, day type, initial balance, session bias. The sixteen new session fields use the US cash open anchor. No existing UTC-anchored field is renamed or moved.
 - How does each integration surface its read? Snapshot field, separate file, sidecar process? (Undefined.)
 - Interface between MTS core and read layers? (Undefined.)
 - When a read conflicts with MTS, which wins? (Undefined. Must be decided before integration.)

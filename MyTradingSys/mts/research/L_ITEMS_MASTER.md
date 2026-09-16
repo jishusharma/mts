@@ -40,6 +40,7 @@
 | L27 | 2026-09-16 | OPEN | MTS_DICTIONARY.md Authority column has mojibake (Cyrillic-decoded UTF-8). Cosmetic. Fix by re-encoding source or accepting and moving on. | 2026-09-16 boot paste |
 | L26 | 2026-09-16 | CLOSED 2026-09-16 | Root cause: computeCvdSlope gated on 40 samples (40 min warmup) and did not restore series from disk. Fixed: CVD_MIN_SAMPLES=10 with adaptive half-window, plus denom guard. Verified live. | StateCodeEmitter.java 20260916 |
 | L25 | 2026-09-16 | OPEN | US cash open classifier uses fixed hour 13.5 UTC. Correct for DST (EDT). Wrong for winter (EST opens 14:30 UTC). Fix: compute DST per date or read from a season table. Needs 3-snapshot proof before any code change. | src\main\java\datafeed\MarketDataSnapshot.java line 761 |
+| L28 | 2026-09-16 | OPEN | Loop exit orphans mvn/java child. start-trading-day.ps1 finally stops the powershell wrapper PID but not the java child. Repro: Ctrl+C the loop, Get-Process java shows 1. Fix candidate: match CommandLine datafeed.Main statemachine inside finally, stop child before wrapper. Needs its own test, no Rule 32 gate. | apparatus_log.txt 11:41:02 + 13:23:20; live repro 11:50:23 |
 
 ## NO EVIDENCE
 
