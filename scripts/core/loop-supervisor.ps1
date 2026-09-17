@@ -35,7 +35,7 @@ function Get-JavaDatafeed {
 function Get-AllWrappers {
     # Any powershell running start-trading-day.ps1. Defense in depth against duplicates.
     Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue |
-        Where-Object { $_.CommandLine -match "start-trading-day\.ps1" }
+        Where-Object { $_.CommandLine -match "start-trading-day\.ps1|mode\.ps1" }
 }
 
 function Stop-Hard {
