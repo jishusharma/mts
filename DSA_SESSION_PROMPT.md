@@ -178,12 +178,12 @@ Before importing any concept from the transcripts:
 
 Update this section at every session close. Keep it to five lines.
 
-Last live read:  2026-09-17T15:12Z, session MTS-2026-09-17-1503Z closing, Build-Check PASS at boot and close.
+Last live read:  2026-09-17T16:25Z, session MTS-2026-09-17-1514Z closing, Build-Check PASS at boot and close.
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime loop:    running. Supervisor 32, wrapper 16708, java 13144, lock PID 16708. Loop left running at close.
-Open loops:      BUGS.md is SSOT. Four HIGH open: B018, B024, B027, B034. New this session: SESSION_PASTE.txt trimmed 116KB to 71KB, Build-Check UTC label fixed, Active sessions section flagged dead code.
+Runtime loop:    running. Supervisor 8200, wrapper 17792, java 596, lock PID 17792. B034 loaded. Loop left running at close.
+Open loops:      BUGS.md is SSOT. HIGH open: B018, B024. Closed this session: B027 (false alarm, OI hourly not per-minute). Fixed this session: B034 CVD ring, B026 log, B011 trim, B043 supervisor matcher, Build-Check UTC parse, start-session tail default.
 
 ## 12. SESSION END
 
