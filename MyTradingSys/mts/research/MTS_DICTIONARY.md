@@ -78,3 +78,52 @@ These were undefined before this entry.
 | A / B / E | dropped. Name the actual file or folder. |
 
 ## END OF ADDITIONS
+
+## LIVE FEED NAMES (added 2026-09-17)
+
+Canonical naming scheme for the live-mode console feed. Applies to
+commands (typed by the operator) and blocks (printed by the feed).
+A name used in a session must resolve to one of these.
+
+### Commands
+
+| Name | What it does |
+|---|---|
+| mts-live | Start the live feed. Default cadence 30 seconds. |
+| mts-live-fast | Same, 10-second cadence for fast tape. |
+| mts-live-stop | Stop the feed cleanly. |
+| mts-live-log | Tail the last 40 lines of the feed log. |
+| mts-tape | Start the sidecar divergence classifier. |
+
+### Blocks (feed output, prefix MTS-)
+
+| Prefix | Meaning |
+|---|---|
+| MTS-PROC | java / supervisor / wrapper / lock chain |
+| MTS-SNAP | latest snapshot header |
+| MTS-VWAP | vwap price and bands |
+| MTS-SESS | session open/high/low/gap/sweep |
+| MTS-COND | conditions block |
+| MTS-SET | top setup candidates (up to 3) |
+| MTS-STATE | state_code state letter |
+| MTS-SIG | state_code signal votes |
+| MTS-FLOW | cvd, net_delta, oi, funding, basis |
+| MTS-HSTOP | compiled hard stops (4 booleans) |
+| MTS-PROOF | compiled proof direction |
+| MTS-CAND | compiled rank-1 candidate |
+| MTS-DELTA | change vs prior snapshot |
+| MTS-CYCLES | apparatus verdict string tail |
+| MTS-TAPE | sidecar classifier one-liner |
+| MTS-SLOW | current_market_state.md tail |
+
+### Modes
+
+| Mode | Meaning |
+|---|---|
+| MTS-Live | Loop running, feed running. Reads and extends the feed. |
+| MTS-Static | Loop not running. Disk reads only. |
+| MTS-Replay | Past snapshots. No live data. |
+
+Every live session runs mts-live. Every live session adds at least
+one block or field to the feed. Version and changelog live in the
+header of scripts/live/mts-watch.ps1.

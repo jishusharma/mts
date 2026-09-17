@@ -150,6 +150,7 @@ One per line. No compression.
 
 - No fabrication. No invented price levels. No emoji.
 - compiled_engine.md is runtime authority. Never modify without approval.
+- Live mode runs mts-live (scripts\live\mts-watch.ps1). Extend it each live session.
 - Tom transcripts are the only source for rules and levels.
 - The user runs all commands. The AI issues them. Never claim to have run
   anything.
@@ -178,13 +179,11 @@ Before importing any concept from the transcripts:
 
 Update this section at every session close. Keep it to five lines.
 
-Last live read:  2026-09-17T16:25Z, session MTS-2026-09-17-1514Z closing, Build-Check PASS at boot and close.
+Last live read:  2026-09-17T17:45Z, session MTS-2026-09-17-1624Z closing. Build-Check PASS at boot. Live feed mts-live (mts-watch.ps1 v1.1.0).
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime loop:    running. Supervisor 8200, wrapper 17792, java 596, lock PID 17792. B034 loaded. Loop left running at close.
-Open loops:      BUGS.md is SSOT. HIGH open: B018, B024. Closed this session: B027 (false alarm, OI hourly not per-minute). Fixed this session: B034 CVD ring, B026 log, B011 trim, B043 supervisor matcher, Build-Check UTC parse, start-session tail default.
-
+Runtime + loops: supervisor 8200, wrapper via mode.ps1, java 596, lock 17792. B034 loaded. Loop left running. BUGS.md is SSOT. HIGH open: B018, B024. Added this session: B044, B045. Landed this session: mts-watch v1.1.0 + 4 compiled blocks + MTS- naming scheme + load.ps1 aliases.
 ## 12. SESSION END
 
 1. Stop the runtime loop if it is running.

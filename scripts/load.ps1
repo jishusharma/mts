@@ -17,6 +17,13 @@ function regime   { python "$ScriptDir\..\MyTradingSys\mts\runtime\regime_classi
 
 function mts-start { & "$ScriptDir\start-session.ps1" @args }
 
+# live feed (canonical) - see MTS_DICTIONARY.md LIVE FEED NAMES
+function mts-live      { & "$ScriptDir\live\mts-watch.ps1" @args }
+function mts-live-fast { & "$ScriptDir\live\mts-watch.ps1" -IntervalSec 10 }
+function mts-live-stop { New-Item "$ScriptDir\..\data\mts_watch_stop.flag" -ItemType File -Force | Out-Null; "stop flag written" }
+function mts-live-log  { Get-Content "$ScriptDir\..\data\mts-watch.log" -Tail 40 }
+function mts-tape      { & "$ScriptDir\live\tape-watch.ps1" @args }
+
 # git shortcuts - stripped ceremony
 function gitsnap { git add -A; git commit -m "$args" -q; git tag -f last-snapshot; "committed: " + (git rev-parse --short HEAD) }
 function gitsee  { git log --oneline -5; "dirty: " + (git status --short | Measure-Object -Line).Lines }

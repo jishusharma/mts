@@ -142,4 +142,9 @@ Seven waste classes seen today. Each has a fix. Each fix is a rule.
    seconds, so a polling wait burns up to 45 seconds. One direct kill
    is 1 second and does the same thing.
 
+10. Live mode runs mts-live. Every live session reads the feed and
+    extends it with at least one block or field. The naming scheme
+    is in MTS_DICTIONARY.md under LIVE FEED NAMES. Version and
+    changelog live in the header of scripts/live/mts-watch.ps1.
+
 # END
