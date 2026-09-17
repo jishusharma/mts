@@ -1,8 +1,8 @@
 # FILE: 03_FILE_INDEX.md
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
-# LAST UPDATED: 2026-09-13
-# SIZE: ~10.6KB
+# LAST UPDATED: 2026-09-17
+# SIZE: ~12.3KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---

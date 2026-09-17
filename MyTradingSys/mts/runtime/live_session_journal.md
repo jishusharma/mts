@@ -118,3 +118,16 @@ READ:    Engine short-biased the whole move, did not fire. No session frame unti
 [LANDED] 2026-09-17T14:56:18Z Workers closed: W1_verify_context, W2_live_tracking, W3_liquidation_verify, W4_liquidation_decision. Each folder holds its prompt/material and a worker_reply.md. No open worker sessions.
 [LANDED] 2026-09-17T15:01:01Z Session MTS-2026-09-17-1357Z close. Liquidation decision B logged. Workers W3/W4 closed. PROCESS SPEED RULES added to live_session_protocol.md (7 rules). Loop left running for data collection.
 # END
+
+## CLOSE - 2026-09-17T15:12Z
+
+[DECISION] Session MTS-2026-09-17-1503Z closed.
+[LANDED] SESSION_PASTE.txt trimmed 116KB to 71KB via five cuts.
+[LANDED] start-session.ps1: new head_to_end read mode, audit tracker sliced from ## AUDIT SUMMARY, SESSION_RESUME dropped from manifest, journal tail 150->60, duplicate CANONICAL FIELDS block removed.
+[LANDED] apparatus_fixes.md: added # END before the historical SESSION NOTES block so head_to_end cuts there.
+[LANDED] Build-Check.ps1 line 15: Get-Date replaced with [DateTime]::UtcNow. Label had claimed UTC while writing local. Off by 5h30m.
+[LANDED] 03_FILE_INDEX.md: SIZE 10.6KB -> 12.3KB, LAST UPDATED 2026-09-13 -> 2026-09-17.
+[OBS] Build-Check.ps1 Active sessions section is dead code: no writer to runtime\locks, only Build-Check reads it. Real lock at data\apparatus.lock.
+[OBS] Dormant UTC parse bug at Build-Check.ps1:89. Same class as the fixed line 15.
+[OBS] apparatus_fixes.md now has two # END markers. B011 class.
+[NOTE] Loop left running at close. No stop-day, no mode.ps1.

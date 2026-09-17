@@ -50,6 +50,12 @@ function Get-ReadBody {
             if ($file) { return (Get-Content $file.FullName -Raw) } else { return "(no snapshot)" }
         }
         'skip'        { return "(skipped - see session_log context below)" }
+        'head_to_end' {
+            $content = Get-Content $f.path -Raw
+            $idx = $content.IndexOf("`n# END")
+            if ($idx -ge 0) { return $content.Substring(0, $idx).TrimEnd() }
+            return $content
+        }
         default       { return (Get-Content $f.path -Raw) }
     }
 }
@@ -84,7 +90,10 @@ $auditPath = Join-Path $root 'MyTradingSys\mts\research\AUDIT_2026-09-17_TRACKER
 if (Test-Path $auditPath) {
     [void]$sb.AppendLine("")
     [void]$sb.AppendLine("### MyTradingSys/mts/research/AUDIT_2026-09-17_TRACKER.md [active_audit] ###")
-    [void]$sb.AppendLine((Get-Content $auditPath -Raw))
+    $auditRaw = Get-Content $auditPath -Raw
+    $idx = $auditRaw.IndexOf("## AUDIT SUMMARY")
+    if ($idx -ge 0) { [void]$sb.AppendLine($auditRaw.Substring($idx)) }
+    else { [void]$sb.AppendLine($auditRaw) }
 }
 $events = (Get-Content $logPath -Raw | ConvertFrom-Json).events | Sort-Object ts
 $last = $events | Select-Object -Last 1
@@ -139,17 +148,6 @@ $scriptFiles = Get-ChildItem (Join-Path $root 'scripts') -Recurse -File -Include
 foreach ($sf in $scriptFiles) {
     $rel = $sf.FullName.Replace((Join-Path $root 'scripts') + '\','')
     [void]$sb.AppendLine("  $rel")
-}
-
-[void]$sb.AppendLine("")
-[void]$sb.AppendLine("")
-[void]$sb.AppendLine("### MTS_DICTIONARY - CANONICAL FIELDS ###")
-$dictPath = Join-Path $root 'MyTradingSys\mts\research\MTS_DICTIONARY.md'
-if (Test-Path $dictPath) {
-    $dict = Get-Content $dictPath -Raw
-    if ($dict -match '(?s)## CANONICAL FIELDS.*?(?=\r?\n## |\z)') {
-        [void]$sb.AppendLine($Matches[0])
-    }
 }
 
 [void]$sb.AppendLine("")

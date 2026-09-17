@@ -12,7 +12,7 @@ function Write-TextNoBom {
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 
-$start = Get-Date
+$start = [DateTime]::UtcNow
 $lines = [System.Collections.Generic.List[string]]::new()
 $lines.Add("BUILD_REPORT - $($start.ToString('yyyy-MM-dd HH:mm:ss')) UTC")
 $lines.Add("host: $env:COMPUTERNAME")

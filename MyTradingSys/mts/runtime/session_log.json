@@ -425,6 +425,18 @@
       "action": "passed",
       "reason": "live_session_journal.md created (115 lines, SHA 4BDB59E2). Retrofit 2026-09-17 session: 17 quotes, 10 requirements, 12 observations, 5 decisions, 9 landed items, 4 market reads copied from retired log. live_session_log.md retired, backup in backup_session/. Manifest swapped to journal read tail 150. Index updated.",
       "ts": "2026-09-17T14:26:32.302740Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "SESSION_PASTE.txt trim: 116KB to 71KB. New read modes head_to_end and audit-summary slice in start-session.ps1. Five cuts landed. Build PASS.",
+      "ts": "2026-09-17T15:10:17.126915Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "Build-Check Active sessions section is dead code: no writer to runtime\\locks, only Build-Check.ps1 reads it. Real lock at data\\apparatus.lock. Dormant UTC parse bug at Build-Check.ps1:89 noted, not fixed. Leave section for now.",
+      "ts": "2026-09-17T15:13:11.172801Z"
     }
   ]
 }

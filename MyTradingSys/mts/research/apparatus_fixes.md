@@ -74,6 +74,8 @@ patch >20 lines.
   new session. Verify by comparing state_code.json.mtime to apparatus_log
   restart line. No code change. Documentation note only.
 
+# END
+
 ## SESSION NOTES 2026-09-12/13
 
 - DSA reads closed bars only (Rule 37: restores intended behavior).

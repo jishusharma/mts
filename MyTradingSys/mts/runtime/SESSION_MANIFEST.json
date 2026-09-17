@@ -62,7 +62,7 @@
                               {
                                   "path":  "MyTradingSys/mts/research/apparatus_fixes.md",
                                   "role":  "fix_log",
-                                  "read":  "full"
+                                  "read":  "head_to_end"
                               },
                               {
                                   "path":  "MyTradingSys/methodology/playbook.md",
@@ -83,11 +83,6 @@
                                   "count":  1
                               },
                               {
-                                  "path":  "MyTradingSys/mts/runtime/SESSION_RESUME.md",
-                                  "role":  "session_resume",
-                                  "read":  "full"
-                              },
-                              {
                                   "path":  "MyTradingSys/methodology/live_session_protocol.md",
                                   "role":  "ai_checks",
                                   "read":  "full"
@@ -96,7 +91,7 @@
                                   "path":  "MyTradingSys/mts/runtime/live_session_journal.md",
                                   "role":  "session_journal",
                                   "read":  "tail",
-                                  "lines":  150
+                                  "lines":  60
                               }
                           ],
     "process_check":  [
