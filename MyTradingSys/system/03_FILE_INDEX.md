@@ -242,3 +242,9 @@ Files moved from research/ after their findings were integrated or superseded:
 
 | MyTradingSys/mts/research/TOM_VERBATIM_INDEX.md | research | Verbatim Tom quote index. Points to corpus. Rules in conditions/ carry [TOM-NNN] or [SCREENER]. |
 | scripts/tools/verify_rule_citations.ps1 | tool | Checks rule tags resolve to index quotes. |
+| MyTradingSys/mts/research/PROCESS_MANAGEMENT_AUDIT_2026-09-17.md | Process audit: supervisor singleton gap, grace race, lock TOCTOU | MTS-2026-09-17-1142Z | 2026-09-17 |
+| MyTradingSys/mts/runtime/live_session_log.md | runtime | RETIRED 2026-09-17. Superseded by live_session_journal.md. Backup: backup_session/live_session_log.md.retired-20260917. | MTS-2026-09-17-1241Z | 2026-09-17 |
+| MyTradingSys/mts/runtime/live_session_journal.md | runtime | Append-only session journal. QUOTE / REQ / OBS / DECISION / LANDED / READ. Everything no other file holds. | MTS-2026-09-17-1241Z | 2026-09-17 |
+| scripts/live/tape-watch.ps1 | tool | Sidecar watcher. Divergence classifier every 30s. Reads snapshot + state_code. Read-only on loop. | MTS-2026-09-17-1241Z | 2026-09-17 |
+| scripts/live/mts-watch.ps1 | tool | Read-only console feed. One block per 30s: process chain, snapshot, session, conditions, top 3 setups, state_code, flow, recent cycles, tape, slow state. | MTS-2026-09-17-1241Z | 2026-09-17 |
+| MyTradingSys/methodology/live_session_protocol.md | methodology | AI-side checks before any live tape claim. Mistake ledger 2026-09-17. Read at session boot. | MTS-2026-09-17-1241Z | 2026-09-17 |

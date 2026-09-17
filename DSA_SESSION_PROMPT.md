@@ -178,12 +178,12 @@ Before importing any concept from the transcripts:
 
 Update this section at every session close. Keep it to five lines.
 
-Last live read:  2026-09-17T17:08:48Z, session MTS-2026-09-17-1037Z closed, Build-Check PASS.
+Last live read:  2026-09-17T14:27Z, session MTS-2026-09-17-1241Z closing, Build-Check PASS at boot.
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime loop:    not running. Lock file holds stale PID 5308.
-Open loops:      BUGS.md is SSOT (41 rows, 5 HIGH open: B018, B024, B027, B034, B035). L_ITEMS_MASTER.md and apparatus_fixes.md frozen 2026-09-17.
+Runtime loop:    running. Supervisor 32, wrapper 16708, java 13144, lock PID 16708.
+Open loops:      BUGS.md is SSOT. Four HIGH open: B018, B024, B027, B034. New this session: live_session_journal.md, live_session_protocol.md, SESSION_RESUME.md, tape-watch.ps1, mts-watch.ps1. live_session_log.md retired.
 
 ## 12. SESSION END
 

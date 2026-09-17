@@ -44,4 +44,11 @@ data/_prob_label_enriched.json
 data/speed_baselines/*.json
 Dumps/SESSION_PASTE.txt
 
+data/live_tape.md
+data/last_tape_alert.json
+data/mts-watch.log
+data/mts-watch.out.txt
+data/mts-watch.err.txt
+data/tape-watch.out.txt
+data/tape-watch.err.txt
 # END

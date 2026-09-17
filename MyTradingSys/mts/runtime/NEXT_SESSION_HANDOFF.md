@@ -8,8 +8,9 @@ Anchor 2026-09-17T13:30:00Z. Pre-anchor snapshots show session block zeros.
 ## READ FIRST
 1. MyTradingSys/mts/research/BUGS.md - defect SSOT.
 2. MyTradingSys/mts/research/AUDIT_2026-09-17_TRACKER.md - full audit + W1/W2.
-3. Dumps/workers/W1_verify_context/worker_reply.md
-4. Dumps/workers/W2_live_tracking/worker_reply.md
+3. MyTradingSys/mts/research/PROCESS_MANAGEMENT_AUDIT_2026-09-17.md - process gaps
+4. Dumps/workers/W1_verify_context/worker_reply.md
+5. Dumps/workers/W2_live_tracking/worker_reply.md
 
 ## WHAT LANDED THIS SESSION
 1. Build-Check extended to scan MyTradingSys/mts/conditions/*.md.

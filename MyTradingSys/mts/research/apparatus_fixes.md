@@ -54,6 +54,15 @@ patch >20 lines.
 - Trend override: 2 of 3 Rule 32 snapshots collected. Third pending.
 - Event probability layer: parked until outcome labels >= 500.
   Current: 154. See event_probability_layer_DESIGN.md.
+- start-session.ps1 manifest entry without lines (2026-09-17): any `read: tail`
+  entry missing a `lines` field crashes the script with a cryptic Tail binding
+  error. Should default to 60 or warn. One-line guard.
+
+- Pre-open playbook gap (2026-09-17): London-NY handoff on 09-17 produced a
+  474-point ramp (12:11-12:31 UTC) then a 510-point fade (12:31-13:24).
+  Engine stayed short-biased, net reward to risk 1.75-2.15, and did not fire.
+  No condition-file rule names the pattern. No session frame available until
+  13:30 UTC anchor. Decide next session: build a rule or mark permanently manual.
 
 - L9 (2026-09-14): State-machine counters survive restart.
   state_code.json persists state, transition_chain_15m, seconds_in_state, and
