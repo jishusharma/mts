@@ -224,7 +224,12 @@ Two classes of file corruption are now detected at every boot by Build-Check.ps1
 
 2. CP1251-decoded mojibake. Source: copy-paste through a misdecoded console.
    Signature: any codepoint in U+0400-U+04FF. This repo has no legitimate Cyrillic.
-   Permitted non-ASCII: U+00A7 (section sign), U+2014 (em-dash).
+   Permitted non-ASCII: typographic characters that are not Cyrillic.
+   The Build-Check Non-ASCII line counts Cyrillic (U+0400-U+04FF) only.
+   Permitted today, seen in repo: U+00A7 section sign, U+2014 em-dash,
+   U+2013 en-dash, U+2192 right arrow, U+00D7 multiplication sign,
+   U+2260 not-equal, U+2713 check mark, U+00B1 plus-minus, U+2248 approx,
+   U+00B2 squared, U+2212 minus. Do not chase these in build reports.
    Fix at write time: never write pasted text back without running Build-Check first.
 
 Rule for every session that writes any file under the scanned roots:

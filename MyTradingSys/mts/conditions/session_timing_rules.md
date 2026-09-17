@@ -21,6 +21,11 @@
 
 ## 2. Session Definitions
 
+> Timezone note (2026-09-17, B020): all times below are EST (winter).
+> During EDT (summer, roughly March to November) subtract 1 hour.
+> The engine anchors at 13:30 UTC in EDT and 14:30 UTC in EST.
+
+
 | Window | UTC Time | Rationale & Evidence |
 |--------|----------|----------------------|
 | **Asian Session** | 00:00 – 08:00 | Tokyo, Seoul, Singapore active. Lowest volatility window of the 24h cycle. Funding reset at 00:00 UTC introduces periodic volatility at the boundary, but core hours (01:00–07:00) are structurally quiet. [Block Scholes, 2025 — S] |

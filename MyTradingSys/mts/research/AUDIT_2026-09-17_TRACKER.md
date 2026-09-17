@@ -477,3 +477,37 @@ I21, I22, I24, I25, I27, I28, I32, I33, I34, I35-I38, I40. Plus L28, L30.
 - TOM_VERBATIM_INDEX.md: new.
 - verify_rule_citations.ps1: new.
 - 03_FILE_INDEX.md: 2 rows added.
+
+## SESSION MTS-2026-09-17-1142Z APPEND - 2026-09-17 12:30 UTC
+
+Two workers dispatched. Replies saved under Dumps/workers/.
+
+### W1_verify_context
+Verified the 2026-09-16 context note. 5 of 7 findings accepted.
+- Rejected: Assumption 1 (13:30 UTC is correct today; condition file shows 14:30 because it documents EST year-round; BUGS.md B020).
+- Rejected: Defect 2 (vp_shape). Live snapshot emits TWOPEAK. L29 closed 2026-09-17.
+- Accepted: Defect 1 (day_type UNKNOWN, still open). Defect 3 (opening range not wired, still open). Assumption 2 (unvalidated). Assumption 3 (refuted, no consumer). Assumption 4 (unvalidated).
+Files: Dumps/workers/W1_verify_context/WORKER_READY_1.md, WORKER_READY_2.md, worker_reply.md.
+
+### W2_live_tracking
+Live engine + multi-week context brief. Accepted.
+- POC migration three weeks: 79892.45 -> 77155.43 -> 75719.66. Down drift.
+- Price at 76920.7, inside intraday_4h VA near VAH.
+- Digest 48 snapshots: 32 trigger_ready, 16 conditional, 0 below, 0 none.
+- Alerts #401 12:14:20Z, #402 12:21:21Z.
+- Anchor 2026-09-17T13:30:00Z, session block zeros pre-anchor, expected to populate after.
+- Book imbalance live 2.58, digest min 0.48. B035 evidence.
+Files: Dumps/workers/W2_live_tracking/WORKER_READY_1.md, WORKER_READY_2.md, WORKER_READY_3.md, worker_reply.md.
+
+### Apparatus change this session
+Build-Check.ps1 extended to scan MyTradingSys/mts/conditions/*.md.
+apparatus_fixes.md PERMANENT SAFEGUARDS updated with permitted non-ASCII note.
+Build-Check verified PASS at 17:29:49 UTC.
+
+### Pending
+- Verify session block populated after 13:30 UTC anchor.
+- B035 (book imbalance threshold 0.4-0.6 inverted) still open.
+- B020 (session_timing_rules.md EST year-round) still open.
+- Defects 1 and 3 still open.
+
+# END SESSION APPEND

@@ -39,7 +39,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B017 | 2026-09-16 | OPEN | MED | Ratio gate has no near-miss record | L_ITEMS I21 | - |
 | B018 | 2026-09-16 | OPEN | HIGH | Zones move per cycle nrr against moving target | L_ITEMS I22 | - |
 | B019 | 2026-09-16 | OPEN | MED | Quad vs setup direction mismatch not read | L_ITEMS I23 | - |
-| B020 | 2026-09-16 | OPEN | MED | session_timing_rules.md documents EST all year | L_ITEMS I24 | - |
+| B020 | 2026-09-16 | CLOSED | MED | session_timing_rules.md documents EST all year | L_ITEMS I24 | doc-only: timezone note added session_timing_rules.md L24-26 2026-09-17 |
 | B021 | 2026-09-16 | OPEN | LOW | order_flow block has no consumer | L_ITEMS I27 (ruled gauges) | - |
 | B022 | 2026-09-16 | OPEN | LOW | session block has no consumer | L_ITEMS I28 (ruled gauges) | - |
 | B023 | 2026-09-16 | OPEN | MED | Two builder paths contradict cvd_trade_flow_aligned | L_ITEMS I29; MarketDataSnapshot.java:1068 | - |
@@ -54,12 +54,13 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B032 | 2026-09-16 | OPEN | COSMETIC | session_end_logs.md wrong writer | L_ITEMS I39; StateCodeEmitter.java:441-452 | - |
 | B033 | 2026-09-17 | OPEN | MED | Profile shape taxonomy does not match Tom | L_ITEMS I40 | - |
 | B034 | 2026-09-17 | OPEN | HIGH | CVD ring not cleared at UTC rollover | AUDIT StateCodeEmitter row 1 | - |
-| B035 | 2026-09-17 | OPEN | HIGH | Book imbalance threshold 0.4-0.6 treats balanced as extreme | AUDIT SetupCandidatesBuilder L541 | - |
+| B035 | 2026-09-17 | CLOSED | HIGH | Book imbalance threshold 0.4-0.6 treats balanced as extreme | AUDIT SetupCandidatesBuilder L541 | SetupCandidatesBuilder.java L541 now 0.67/1.5; hash 3ED13909->C30EB08F; 2026-09-17 |
 | B036 | 2026-09-17 | OPEN | MED | setup_candidates and last_3_delta read from snapshot not normalized | AUDIT math_object_builder L357 L388 | - |
 | B037 | 2026-09-17 | OPEN | MED | isinstance accepts booleans spurious contradiction | AUDIT math_object_builder L393 L400 | - |
 | B038 | 2026-09-17 | OPEN | LOW | diff_state compares disjoint value spaces | AUDIT mts_math L204 | - |
 | B039 | 2026-09-17 | OPEN | MED | ExtraSetupBuilder momentum has no RR gate | AUDIT ExtraSetupBuilder L103-135 | - |
 | B040 | 2026-09-16 | CLOSED | LOW | Log prints STATE X to X with same value | L_ITEMS I36 | start-trading-day.ps1 L319 L419 L422 pendingStateFrom |
 | B041 | 2026-09-17 | CLOSED | MED | Stale test asserted classification == B | test_mts_math.py:477 | test_mts_math.py:477 now trend_healthy; 130/130 pass |
+| B042 | 2026-09-17 | OPEN | LOW | day_type derived with provisional thresholds, no 3-snapshot evidence | MTS-2026-09-17-1142Z | - |
 
 # END

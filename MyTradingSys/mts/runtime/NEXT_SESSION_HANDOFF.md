@@ -1,53 +1,66 @@
-STATUS: Session 2026-09-17 open. Prior session closed clean at ee895ba. Audit pending.
-
 # NEXT SESSION HANDOFF
-# Rewritten 2026-09-17 05:50 UTC
+# Rewritten 2026-09-17 12:40 UTC by MTS-2026-09-17-1142Z.
+
+STATUS: Session MTS-2026-09-17-1142Z open. Loop running, single chain.
+Supervisor 32 -> start-trading-day 16708 -> mvn 7296 -> java 13144.
+Anchor 2026-09-17T13:30:00Z. Pre-anchor snapshots show session block zeros.
 
 ## READ FIRST
-1. MyTradingSys/mts/research/AUDIT_2026-09-17_TRACKER.md — audit plan, step list, tracker.
-2. MyTradingSys/mts/research/L_ITEMS_MASTER.md — open loops I21-I40.
-3. MyTradingSys/mts/research/apparatus_fixes.md — SESSION 2026-09-17 AI MISTAKES section.
+1. MyTradingSys/mts/research/BUGS.md - defect SSOT.
+2. MyTradingSys/mts/research/AUDIT_2026-09-17_TRACKER.md - full audit + W1/W2.
+3. Dumps/workers/W1_verify_context/worker_reply.md
+4. Dumps/workers/W2_live_tracking/worker_reply.md
 
-## WHAT LANDED LAST SESSION (2026-09-16 evening)
-- I36 CLOSED: start-trading-day.ps1 log "STATE X -> X" fixed with $pendingStateFrom.
-- I26 CLOSED: B profile = weakness at the extreme (Tom). market_state_rules.md L50 rewritten.
-- L29 CLOSED: buildVp "B" renamed to TWOPEAK. classifyState rewritten on vwap_slope + cvd_slope + price_vs_va.
-- mts_math.py STATE.classification aligned to Java.
-- Docs updated: compiled_engine L30/L322, data_schema L78/L90, trading_card_generator L378.
-- Loop restarted on new code. Live snapshot emits TWOPEAK.
+## WHAT LANDED THIS SESSION
+1. Build-Check extended to scan MyTradingSys/mts/conditions/*.md.
+   apparatus_fixes.md updated with permitted non-ASCII note. PASS.
+2. Worker folder layout at Dumps/workers/. W1 and W2 replies saved.
+3. B035 CLOSED. SetupCandidatesBuilder.java L541 threshold changed
+   from (0.4, 0.6) to (0.67, 1.5). Live evidence: 2.58 read as balanced.
+   hash 3ED13909 -> C30EB08F.
+4. B020 CLOSED. Timezone note added at session_timing_rules.md L24-26.
+   Explains EST year-round vs EDT. Doc-only.
+5. Defect 1 fix in MarketDataSnapshot.java L797-817. day_type now
+   derived from IB width / prior day range. Provisional thresholds.
+   hash 99938454 -> 7627EBA9.
+6. B042 OPEN. day_type provisional thresholds need 3-snapshot evidence.
 
-## SESSION 2026-09-17 FIRST TASK
-Independent audit of extracted code and tests. Plan on disk. Worker session needed.
-Worker prompt, method, and scope are in AUDIT_2026-09-17_TRACKER.md.
+## FIRST ACTION NEXT SESSION
+Confirm day_type populates after 13:30 UTC anchor.
+  $s = Get-ChildItem data\snapshots -Filter 'BTCUSDT_*.json' |
+       Sort-Object LastWriteTime -Descending | Select-Object -First 1
+  $j = Get-Content $s.FullName -Raw | ConvertFrom-Json
+  $j.session.day_type
+  $j.session.day_type_confidence
+Expected: trend_up / trend_down / range / balance. If still UNKNOWN
+after 13:30, read MarketDataSnapshot.java L797-817 and check whether
+`seen`, `ibHigh`, `ibLow`, `priorDayHigh`, `priorDayLow` are all
+populated for the current cycle.
 
-## SECONDARY FINDINGS FROM 2026-09-17 REVALIDATION
-- I40 OPEN: profile shape taxonomy does not match Tom. D has zero corpus hits.
-  TWOPEAK is a rename, not a Tom term. Decision needed, not yet acted on.
+## STILL OPEN
+- Defect 3: opening range rule not wired. No Tom threshold exists in
+  any condition file. Decision needed: set screener-provisional
+  threshold (like B042) or mark permanently manual.
+- B042: day_type provisional thresholds, no 3-snapshot evidence.
+- Audit post-fix queue from AUDIT_2026-09-17_TRACKER.md.
 
-## MISSION QUEUE (from prior session, still open)
-1. Run the independent audit.
-2. Collect Rule 32 evidence for sweep entry (I34). Days 2 and 3.
-3. Fix I30 (book imbalance instability).
-4. Fix I31 (verdict flicker).
-5. Resolve I33 (OI field stall).
-6. Investigate I29 (dual builder path in MarketDataSnapshot.java).
+## OPERATOR NOTE - mode.ps1 vs supervisor
+Do not run mode.ps1 while the supervisor is up. Supervisor spawns a
+second loop inside its restart window, racing the same lock and files.
+Clean sequence:
+  1. Write data\supervisor_stop.flag.
+  2. Poll until supervisor process is gone.
+  3. Delete the flag.
+  4. Run stop-day.ps1.
+  5. Poll until no java datafeed.Main remains.
+  6. Clear orphan data\apparatus.lock if any.
+  7. Start supervisor only. It starts the loop.
 
 ## HARD RULES
 - Never bare-kill java. Use stop-day.ps1 or mode.ps1.
-- No double-run of mode.ps1.
-- Boot rules 5 and 6 apply: no fabricated values, no invented commands.
-- Worker has no shell. Operator runs all commands. Worker analyzes pasted output.
-- Write-NoBom requires dot-sourcing shared-functions.ps1 first.
+- Never run mode.ps1 while supervisor is up.
+- Worker has no shell. Operator runs all commands.
+- Worker folder layout: Dumps/workers/<name>/. Reply saved by
+  coordinator, not worker.
 
 # END
-
-## SUPERVISOR RESTART COMMAND
-
-Start-Process powershell.exe -ArgumentList @(
-    "-NoProfile","-ExecutionPolicy","Bypass",
-    "-File","C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\scripts\core\loop-supervisor.ps1",
-    "-Mode","armed","-IntervalMin","1","-RestartGraceSec","90"
-) -WindowStyle Hidden
-
-Verify: Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match "loop-supervisor" } | Select-Object ProcessId, CommandLine
-Stop:   New-Item .\data\supervisor_stop.flag -ItemType File -Force

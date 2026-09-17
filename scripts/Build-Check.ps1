@@ -106,6 +106,7 @@ $scan = @()
 $scan += Get-ChildItem "MyTradingSys\mts\runtime" -File -Filter "*.py" -ErrorAction SilentlyContinue
 $scan += Get-ChildItem "MyTradingSys\mts\runtime" -File -Filter "*.json" -ErrorAction SilentlyContinue
 $scan += Get-ChildItem "MyTradingSys\mts\research" -File -Filter "*.md" -ErrorAction SilentlyContinue
+$scan += Get-ChildItem "MyTradingSys\mts\conditions" -File -Filter "*.md" -ErrorAction SilentlyContinue
 $scan += Get-ChildItem "MyTradingSys\system" -File -Filter "*.md" -ErrorAction SilentlyContinue
 $scan += Get-ChildItem "scripts" -Recurse -File -Filter "*.ps1" -ErrorAction SilentlyContinue
 foreach ($f in $scan) { if (-not $f.FullName) { continue }

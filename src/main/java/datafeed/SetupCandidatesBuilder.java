@@ -538,7 +538,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
             if (volumeSpikeDetected && volumeSpikeAtLevel) count++;
             if (speedPickingUp) count++;
             if (cvdAligned) count++;
-            if (bookImbalance != 0.0 && (bookImbalance < 0.4 || bookImbalance > 0.6)) count++;
+            if (bookImbalance != 0.0 && (bookImbalance < 0.67 || bookImbalance > 1.5)) count++;
             return count;
         }
 

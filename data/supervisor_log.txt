@@ -389,3 +389,78 @@
 2026-09-16 21:00:24 | ok wrapper=5308 snapAge=8s grace=False
 2026-09-16 21:00:55 | ok wrapper=5308 snapAge=39s grace=False
 2026-09-16 21:01:25 | ok wrapper=5308 snapAge=10s grace=False
+2026-09-17 12:11:03 | === SUPERVISOR START mode=armed interval=1m stale=240s grace=90s ===
+2026-09-17 12:11:03 | startup: no lock file, ready now
+2026-09-17 12:11:04 | RESTART reason=wrapper_dead oldPid=0
+2026-09-17 12:11:07 |   started new wrapper PID=2844
+2026-09-17 12:11:37 | ok wrapper=5332 snapAge=54622s grace=True
+2026-09-17 12:12:08 | ok wrapper=5332 snapAge=54653s grace=True
+2026-09-17 12:12:39 | ok wrapper=5332 snapAge=16s grace=False
+2026-09-17 12:13:09 | ok wrapper=5332 snapAge=47s grace=False
+2026-09-17 12:13:40 | ok wrapper=5332 snapAge=25s grace=False
+2026-09-17 12:14:11 | ok wrapper=5332 snapAge=55s grace=False
+2026-09-17 12:14:41 | ok wrapper=5332 snapAge=25s grace=False
+2026-09-17 12:15:12 | ok wrapper=5332 snapAge=56s grace=False
+2026-09-17 12:15:42 | ok wrapper=5332 snapAge=26s grace=False
+2026-09-17 12:16:12 | stop flag present, exiting
+2026-09-17 12:16:27 | === SUPERVISOR START mode=armed interval=1m stale=240s grace=90s ===
+2026-09-17 12:16:28 | startup: existing wrapper PID=5332, grace clock starting
+2026-09-17 12:16:28 | ok wrapper=5332 snapAge=12s grace=True
+2026-09-17 12:16:59 | ok wrapper=5332 snapAge=43s grace=True
+2026-09-17 12:17:29 | ok wrapper=5332 snapAge=14s grace=True
+2026-09-17 12:18:00 | ok wrapper=5332 snapAge=44s grace=False
+2026-09-17 12:18:31 | ok wrapper=5332 snapAge=15s grace=False
+2026-09-17 12:19:01 | ok wrapper=5332 snapAge=46s grace=False
+2026-09-17 12:19:32 | ok wrapper=5332 snapAge=16s grace=False
+2026-09-17 12:20:02 | ok wrapper=5332 snapAge=46s grace=False
+2026-09-17 12:20:33 | ok wrapper=5332 snapAge=17s grace=False
+2026-09-17 12:21:04 | ok wrapper=5332 snapAge=47s grace=False
+2026-09-17 12:21:34 | ok wrapper=5332 snapAge=18s grace=False
+2026-09-17 12:22:05 | ok wrapper=5332 snapAge=48s grace=False
+2026-09-17 12:22:36 | RESTART reason=wrapper_dead oldPid=5332
+2026-09-17 12:22:36 |   killing java PID=16900
+2026-09-17 12:22:39 |   started new wrapper PID=8736
+2026-09-17 12:23:09 | ok wrapper=8736 snapAge=53s grace=True
+2026-09-17 12:23:40 | ok wrapper=8736 snapAge=21s grace=True
+2026-09-17 12:24:11 | ok wrapper=8736 snapAge=52s grace=False
+2026-09-17 12:24:41 | ok wrapper=8736 snapAge=26s grace=False
+2026-09-17 12:25:12 | ok wrapper=8736 snapAge=56s grace=False
+2026-09-17 12:25:43 | ok wrapper=8736 snapAge=27s grace=False
+2026-09-17 12:26:13 | ok wrapper=8736 snapAge=57s grace=False
+2026-09-17 12:26:44 | ok wrapper=8736 snapAge=29s grace=False
+2026-09-17 12:27:15 | ok wrapper=8736 snapAge=59s grace=False
+2026-09-17 12:27:45 | ok wrapper=8736 snapAge=29s grace=False
+2026-09-17 12:28:16 | ok wrapper=8736 snapAge=60s grace=False
+2026-09-17 12:28:46 | ok wrapper=8736 snapAge=30s grace=False
+2026-09-17 12:29:17 | ok wrapper=8736 snapAge=1s grace=False
+2026-09-17 12:29:48 | ok wrapper=8736 snapAge=31s grace=False
+2026-09-17 12:30:18 | ok wrapper=8736 snapAge=3s grace=False
+2026-09-17 12:30:49 | ok wrapper=8736 snapAge=33s grace=False
+2026-09-17 12:31:20 | ok wrapper=8736 snapAge=3s grace=False
+2026-09-17 12:31:50 | ok wrapper=8736 snapAge=34s grace=False
+2026-09-17 12:32:21 | ok wrapper=8736 snapAge=6s grace=False
+2026-09-17 12:32:52 | RESTART reason=wrapper_dead oldPid=0
+2026-09-17 12:32:55 |   started new wrapper PID=14992
+2026-09-17 12:33:25 | ok wrapper=14992 snapAge=6s grace=True
+2026-09-17 12:33:56 | ok wrapper=14992 snapAge=37s grace=True
+2026-09-17 12:34:26 | stop flag present, exiting
+2026-09-17 12:35:01 | === SUPERVISOR START mode=armed interval=1m stale=240s grace=90s ===
+2026-09-17 12:35:02 | startup: no lock file, ready now
+2026-09-17 12:35:02 | RESTART reason=wrapper_dead oldPid=0
+2026-09-17 12:35:05 |   started new wrapper PID=16512
+2026-09-17 12:35:36 | ok wrapper=16512 snapAge=21s grace=True
+2026-09-17 12:36:06 | stop flag present, exiting
+2026-09-17 12:36:10 | === SUPERVISOR START mode=armed interval=1m stale=240s grace=90s ===
+2026-09-17 12:36:10 | startup: no lock file, ready now
+2026-09-17 12:36:11 | RESTART reason=wrapper_dead oldPid=0
+2026-09-17 12:36:14 |   started new wrapper PID=16708
+2026-09-17 12:36:45 | ok wrapper=16708 snapAge=90s grace=True
+2026-09-17 12:37:15 | ok wrapper=16708 snapAge=120s grace=True
+2026-09-17 12:37:46 | ok wrapper=16708 snapAge=29s grace=False
+2026-09-17 12:38:17 | ok wrapper=16708 snapAge=60s grace=False
+2026-09-17 12:38:47 | ok wrapper=16708 snapAge=31s grace=False
+2026-09-17 12:39:18 | ok wrapper=16708 snapAge=2s grace=False
+2026-09-17 12:39:49 | ok wrapper=16708 snapAge=33s grace=False
+2026-09-17 12:40:19 | ok wrapper=16708 snapAge=3s grace=False
+2026-09-17 12:40:50 | ok wrapper=16708 snapAge=34s grace=False
+2026-09-17 12:41:21 | ok wrapper=16708 snapAge=4s grace=False

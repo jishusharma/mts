@@ -794,8 +794,27 @@ public class MarketDataSnapshot {
         node.put("sweep_flag", sweep);
         node.put("liquidity_sweep_direction", sweepDir);
 
-        node.put("day_type", "UNKNOWN");
-        node.put("day_type_confidence", "none");
+        // derived: day_type (screener-provisional, not Tom-derived)
+        // Ratio of initial balance width to prior day range classifies opening.
+        // No Tom threshold exists. Provisional until 3-snapshot evidence.
+        String dayType = "UNKNOWN";
+        String dayTypeConf = "none";
+        if (seen && ibHigh > 0 && ibLow > 0 && ibHigh > ibLow
+                && priorDayHigh > 0 && priorDayLow > 0 && priorDayHigh > priorDayLow) {
+            double ibWidth = ibHigh - ibLow;
+            double priorRange = priorDayHigh - priorDayLow;
+            double ibRatio = ibWidth / priorRange;
+            double extAbove = (highPx - ibHigh) / ibWidth;
+            double extBelow = (ibLow - lowPx) / ibWidth;
+            boolean trendUp = ibRatio < 0.5 && extAbove > 1.0;
+            boolean trendDown = ibRatio < 0.5 && extBelow > 1.0;
+            if (trendUp) { dayType = "trend_up"; dayTypeConf = "provisional"; }
+            else if (trendDown) { dayType = "trend_down"; dayTypeConf = "provisional"; }
+            else if (ibRatio > 0.7) { dayType = "range"; dayTypeConf = "provisional"; }
+            else { dayType = "balance"; dayTypeConf = "provisional"; }
+        }
+        node.put("day_type", dayType);
+        node.put("day_type_confidence", dayTypeConf);
         return node;
     }
 
