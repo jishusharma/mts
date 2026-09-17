@@ -128,4 +128,20 @@ Seven waste classes seen today. Each has a fix. Each fix is a rule.
    goes stale within minutes. Regenerate at close from loop health,
    BUGS.md, and the last journal entry.
 
+8. Never call mode.ps1 or start-trading-day.ps1 with the call operator
+   (ampersand) from a script that needs to keep running. Both block
+   forever because they enter the trading loop. Use Start-Process with
+   -WindowStyle Hidden and no -Wait. Same rule applies to any wrapper
+   around them. Verified 2026-09-17: restart-with-b034.ps1 hung at the
+   mode.ps1 call; Ctrl+C killed the wrapper and the supervisor had to
+   recover.
+
+8. Never call mode.ps1 or start-trading-day.ps1 with the call operator
+   (ampersand) from a script that needs to keep running. Both block
+   forever because they enter the trading loop. Use Start-Process with
+   -WindowStyle Hidden and no -Wait. Same rule applies to any wrapper
+   around them. Verified 2026-09-17: restart-with-b034.ps1 hung at the
+   mode.ps1 call; Ctrl+C killed the wrapper and the supervisor had to
+   recover.
+
 # END
