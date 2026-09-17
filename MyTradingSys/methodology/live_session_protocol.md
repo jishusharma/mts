@@ -93,4 +93,39 @@ When the operator says "false" or "wrong":
 - Not a rule for Tom-derived conditions. Those live in conditions/.
 - Not prose. Add a row to the ledger, do not write an essay.
 
+## PROCESS SPEED RULES (added 2026-09-17 after MTS-2026-09-17-1357Z)
+
+Seven waste classes seen today. Each has a fix. Each fix is a rule.
+
+1. Note-file round trip. Do not require a helper file on disk for a
+   one-shot dispatch. Inline the material with a here-string under 30
+   lines, or `Get-Content -Raw` a real source file and inject it. No
+   hand-authored note file.
+
+2. Interactive `return` does not abort a pasted block. In an
+   interactive PowerShell session, `return` at top level only exits
+   the current pipeline stage. Use `throw` or wrap the whole block in
+   `if (guard) { ...work... } else { "ABORT: reason" }`.
+
+3. Worker scope. A worker has no shell and no disk. A file-level
+   claim (line numbers, greps, hashes) is coordinator work, done here
+   with disk commands. A worker interprets pasted text. Do not assign
+   a disk-verification task to a worker.
+
+4. One DISPATCH file per worker. `DISPATCH.md` = prompt + attached
+   source excerpts, concatenated. No separate WORKER_READY_1.md. No
+   multi-part handshake. W1/W2 keep their old layout as history.
+
+5. Reply save in the same block as the paste. Assign `$reply` via
+   here-string in one block, write, verify bytes in that block. Never
+   carry `$reply` across turns. An unset variable writes an empty file.
+
+6. One-block dispatch build. mkdir, write DISPATCH, verify bytes +
+   lines + BOM + non-ASCII. Same template every worker. If a step
+   fails, the block prints and stops; do not paste a second block.
+
+7. Boot section 11 must not be hand-edited during a live session. It
+   goes stale within minutes. Regenerate at close from loop health,
+   BUGS.md, and the last journal entry.
+
 # END

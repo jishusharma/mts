@@ -112,4 +112,9 @@ READ:    Engine short-biased the whole move, did not fire. No session frame unti
       tape-watch duplicate line, liquidation layer decision, multi-day ladder /
       CVD anchor / OI trajectory.
 
+[REF] 2026-09-17T14:37:07Z Session MTS-2026-09-17-1357Z: liquidation layer re-evaluation task logged from NOTE - LIQUIDATION MAGNETS IN MTS (VALIDATED).txt. Decision pending: wire adapter (three-line change), mark manual (Tom has no liquidation language), or retire BinanceLiquidationAccumulator.java. No code without three-snapshot proof. B031 candidate: 75975 flush 13:39-13:40Z.
+
+[DECISION] 2026-09-17T14:55:05Z Liquidation layer: Option B, leave permanently manual. No wire, no retire. Rationale: Tom extracts zero liquidation language (TOM_VERBATIM_INDEX TOM-001..010), crypto_adaptations L48 UNVALIDATED, Section 10 blocks engine rule without three-snapshot proof. W3 verified four breaks on disk. W4 recommended B. Adapter file stays on disk as dormant. Reversible by later decision.
+[LANDED] 2026-09-17T14:56:18Z Workers closed: W1_verify_context, W2_live_tracking, W3_liquidation_verify, W4_liquidation_decision. Each folder holds its prompt/material and a worker_reply.md. No open worker sessions.
+[LANDED] 2026-09-17T15:01:01Z Session MTS-2026-09-17-1357Z close. Liquidation decision B logged. Workers W3/W4 closed. PROCESS SPEED RULES added to live_session_protocol.md (7 rules). Loop left running for data collection.
 # END
