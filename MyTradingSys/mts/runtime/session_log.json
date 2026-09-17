@@ -4,6 +4,12 @@
     {
       "type": "decision",
       "action": "passed",
+      "reason": "session close: MTS-2026-09-17-1624Z. mts-watch v1.1.0 compiled blocks, MTS- naming scheme, load aliases, prompt 9+11, BUGS B044 B045, WRAP matcher fix.",
+      "ts": "2026-09-17T17:53:00.2618588Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
       "alert_id": 14,
       "verdict": "WATCH",
       "setup": "ct_short @ daily_vah",
