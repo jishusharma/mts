@@ -43,7 +43,7 @@ function Get-ReadBody {
     if (-not (Test-Path $f.path)) { return "MISSING: $($f.path)" }
     switch ($f.read) {
         'full'        { return (Get-Content $f.path -Raw) }
-        'tail'        { return ((Get-Content $f.path -Tail $f.lines) -join "`n") }
+        'tail'        { $n = if ($f.lines) { [int]$f.lines } else { 60 }; return ((Get-Content $f.path -Tail $n) -join "`n") }
         'part_I'      { return (((Get-Content $f.path -Raw) -split '(?im)^##\s+Part\s+II\b',2)[0]) }
         'latest_glob' {
             $file = Get-ChildItem $f.path -Filter $f.pattern | Sort-Object LastWriteTime -Descending | Select-Object -First $f.count

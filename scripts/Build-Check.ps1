@@ -86,7 +86,7 @@ if (Test-Path $locksDir) {
         foreach ($l in $locks) {
             try {
                 $d = Get-Content $l.FullName -Raw | ConvertFrom-Json
-                $age = [int]((Get-Date) - [datetime]$d.start_utc).TotalMinutes
+                $age = [int]([DateTime]::UtcNow - ([datetime]$d.start_utc).ToUniversalTime()).TotalMinutes
                 $lines.Add("  - $($d.id) / $($d.host) / started $($d.start_utc) (age ${age}m) / focus: $($d.focus)")
             } catch {
                 $lines.Add("  - $($l.Name) (unreadable)")

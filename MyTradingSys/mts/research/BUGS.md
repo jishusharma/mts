@@ -46,14 +46,14 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B024 | 2026-09-16 | OPEN | HIGH | Book imbalance instability flips verdict | L_ITEMS I30 | - |
 | B025 | 2026-09-16 | OPEN | MED | Verdict flicker has no debounce | L_ITEMS I31 | - |
 | B026 | 2026-09-16 | OPEN | COSMETIC | Log line no-change ambiguous | L_ITEMS I32 | - |
-| B027 | 2026-09-16 | OPEN | HIGH | OI field dead from 17:40 UTC | L_ITEMS I33 | - |
+| B027 | 2026-09-16 | CLOSED | HIGH | OI field dead from 17:40 UTC | L_ITEMS I33 | false alarm: OI updates hourly not per-minute. 200-snapshot history shows 4 distinct buckets changing on the hour. Direct endpoint matches snapshot -0.24 exactly. Verified 2026-09-17 |
 | B028 | 2026-09-16 | OPEN | MED | Sweep-entry rule missing | L_ITEMS I34 | - |
 | B029 | 2026-09-16 | OPEN | MED | Supervisor not running after manual restart | L_ITEMS I35 | - |
 | B030 | 2026-09-16 | OPEN | LOW | Binance OI data path reconciliation | L_ITEMS I37 | - |
 | B031 | 2026-09-16 | OPEN | LOW | Two-phase OI/CVD pattern unnamed | L_ITEMS I38 | - |
 | B032 | 2026-09-16 | OPEN | COSMETIC | session_end_logs.md wrong writer | L_ITEMS I39; StateCodeEmitter.java:441-452 | - |
 | B033 | 2026-09-17 | OPEN | MED | Profile shape taxonomy does not match Tom | L_ITEMS I40 | - |
-| B034 | 2026-09-17 | OPEN | HIGH | CVD ring not cleared at UTC rollover | AUDIT StateCodeEmitter row 1 | - |
+| B034 | 2026-09-17 | IN-FIX | HIGH | CVD ring not cleared at UTC rollover | AUDIT StateCodeEmitter row 1 | fix applied 2026-09-17T16:15Z: cvdSeries.clear() on day-change in computeCvdSlope; compile OK; pending loop restart to take effect |
 | B035 | 2026-09-17 | CLOSED | HIGH | Book imbalance threshold 0.4-0.6 treats balanced as extreme | AUDIT SetupCandidatesBuilder L541 | SetupCandidatesBuilder.java L541 now 0.67/1.5; hash 3ED13909->C30EB08F; 2026-09-17 |
 | B036 | 2026-09-17 | OPEN | MED | setup_candidates and last_3_delta read from snapshot not normalized | AUDIT math_object_builder L357 L388 | - |
 | B037 | 2026-09-17 | OPEN | MED | isinstance accepts booleans spurious contradiction | AUDIT math_object_builder L393 L400 | - |

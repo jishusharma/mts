@@ -71,6 +71,7 @@ public class StateCodeEmitter extends WebSocketClient {
     private double sessionCumVol = 0.0;
 
     private final Deque<Double> cvdSeries = new ArrayDeque<>();
+    private long cvdRingDayStartMs = -1L;
 
     private String currentState = "A";
     private String pendingState = null;
@@ -335,6 +336,8 @@ public class StateCodeEmitter extends WebSocketClient {
     }
 
     private Dir computeCvdSlope(double sessionCvdSnap) {
+        long ringDay = utcDayStart(System.currentTimeMillis());
+        if (cvdRingDayStartMs != ringDay) { cvdSeries.clear(); cvdRingDayStartMs = ringDay; }
         cvdSeries.addLast(sessionCvdSnap);
         while (cvdSeries.size() > CVD_SAMPLES) cvdSeries.pollFirst();
         if (cvdSeries.size() < CVD_MIN_SAMPLES) return null;

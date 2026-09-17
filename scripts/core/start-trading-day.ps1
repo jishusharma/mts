@@ -602,7 +602,7 @@ print("logged")
             }
             Beep-Alert -Msg "" -Title $popTitle
         } else {
-            Log-Line "no change"
+            Log-Line ("no change: " + $v.verdict)
         }
     
         $lastVerdict = $v.verdict

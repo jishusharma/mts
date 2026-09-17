@@ -131,3 +131,12 @@ READ:    Engine short-biased the whole move, did not fire. No session frame unti
 [OBS] Dormant UTC parse bug at Build-Check.ps1:89. Same class as the fixed line 15.
 [OBS] apparatus_fixes.md now has two # END markers. B011 class.
 [NOTE] Loop left running at close. No stop-day, no mode.ps1.
+## MTS-2026-09-17-1514Z QUICK WINS - 2026-09-17T16:09:23Z
+
+[LANDED] start-trading-day.ps1 no-change log now prints verdict (B026).
+[LANDED] Build-Check.ps1 line 89 UTC parse fix.
+[LANDED] start-session.ps1 tail read default lines=60 (manifest guard).
+[LANDED] apparatus_fixes.md truncated to first # END. Historical tail at backup_session/apparatus_fixes_historical_20260917.md. B011 fixed.
+[CLOSED] B027 false alarm. OI updates hourly. Live snapshot matches direct endpoint.
+[IN-FIX] B034 CVD ring clear on UTC day rollover. StateCodeEmitter.java. Compile OK. Pending loop restart.
+[REF] B032 deferred. session_end_logs.md writer is StateCodeEmitter.java:442-443, path MyTradingSys/system. Not a defect.
