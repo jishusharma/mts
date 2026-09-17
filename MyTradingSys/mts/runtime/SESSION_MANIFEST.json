@@ -45,9 +45,14 @@
                    ],
     "boot_supplemental":  [
                               {
-                                  "path":  "MyTradingSys/mts/research/L_ITEMS_MASTER.md",
-                                  "role":  "open_loops_ssot",
+                                  "path":  "MyTradingSys/mts/research/BUGS.md",
+                                  "role":  "bug_list",
                                   "read":  "full"
+                              },
+                              {
+                                  "path":  "MyTradingSys/mts/research/L_ITEMS_MASTER.md",
+                                  "role":  "history_frozen",
+                                  "read":  "skip"
                               },
                               {
                                   "path":  "MyTradingSys/mts/research/MTS_DICTIONARY.md",

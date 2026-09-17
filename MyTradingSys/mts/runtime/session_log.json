@@ -16,7 +16,7 @@
                        "alert_id":  15,
                        "verdict":  "SETUP_FORMING",
                        "setup":  "ct_long @ 4h_val",
-                       "reason":  "Aligned long forming. Thesis is short. Conflict РІР‚вЂќ did not enter.",
+                       "reason":  "Aligned long forming. Thesis is short. Conflict — did not enter.",
                        "ts":  "2026-09-12T19:39:54.780603Z"
                    },
                    {
@@ -103,7 +103,7 @@
                    {
                        "type":  "worker_task",
                        "worker":  "session_A_market_context",
-                       "task":  "Market context briefing РІР‚вЂќ verify prepended BTC claims, run meta-research on liquidation heatmap methodology, establish research gate",
+                       "task":  "Market context briefing — verify prepended BTC claims, run meta-research on liquidation heatmap methodology, establish research gate",
                        "status":  "reported",
                        "result":  "PARTIAL. Core price/liquidation/macro verified. 2 [SINGLE-SOURCE] flags: LTH 539K, OME $8.94B. Awaiting heatmap_field_map citation check.",
                        "ts":  "2026-09-13T18:57:43.007323Z"
@@ -111,7 +111,7 @@
                    {
                        "type":  "worker_task",
                        "worker":  "session_B_probability",
-                       "task":  "Probability layer design continuation РІР‚вЂќ label count, feature_vector placement, MVP scope under Rule 32",
+                       "task":  "Probability layer design continuation — label count, feature_vector placement, MVP scope under Rule 32",
                        "status":  "assigned",
                        "result":  "",
                        "ts":  "2026-09-13T18:57:43.007323Z"
@@ -121,7 +121,7 @@
                        "worker":  "session_A_market_context",
                        "task":  "heatmap_field_map citation + gap check",
                        "status":  "accepted",
-                       "result":  "Cited Р’В§1 + Р’В§4. Gap confirmed in Р’В§1. One-line methodology note added and committed. Briefing stands. [SINGLE-SOURCE] flags remain for LTH 539K and OME $8.94B.",
+                       "result":  "Cited §1 + §4. Gap confirmed in §1. One-line methodology note added and committed. Briefing stands. [SINGLE-SOURCE] flags remain for LTH 539K and OME $8.94B.",
                        "ts":  "2026-09-13T19:01:23.194294Z"
                    },
                    {
@@ -135,7 +135,7 @@
                    {
                        "type":  "worker_task",
                        "worker":  "session_A_market_context",
-                       "task":  "Coordinator caveat РІР‚вЂќ liquidation numbers scope",
+                       "task":  "Coordinator caveat — liquidation numbers scope",
                        "status":  "note",
                        "result":  "Liquidation cluster levels in Session A briefing are external CoinGlass visual reads, NOT DSA pipeline output. DSA liquidation_clusters.* is DEPRECATED (0.0/false). Do not promote heatmap levels to session_state.json as target/invalidation. Context role only.",
                        "ts":  "2026-09-13T19:04:33.411706Z"
@@ -157,7 +157,7 @@
                    {
                        "type":  "decision",
                        "action":  "passed",
-                       "reason":  "Alert 261 SETUP_FORMING (3 min after #260 WATCH) РІР‚вЂќ proof_dir flipped contradiction-\u003ealigned, finished_auction BUY-\u003eSELL, book_imbalance 1.86-\u003e1.22. Same zone, same R:R. Churn signature. VWAP slope=falling still blocks scalp. FOMC 36h. No action.",
+                       "reason":  "Alert 261 SETUP_FORMING (3 min after #260 WATCH) — proof_dir flipped contradiction-\u003ealigned, finished_auction BUY-\u003eSELL, book_imbalance 1.86-\u003e1.22. Same zone, same R:R. Churn signature. VWAP slope=falling still blocks scalp. FOMC 36h. No action.",
                        "alert_id":  261,
                        "verdict":  "SETUP_FORMING",
                        "setup":  "scalp_short @ vwap_band_+1",
@@ -229,7 +229,7 @@
                    {
                        "type":  "note",
                        "action":  "n/a",
-                       "reason":  "L7 note + L11 note appended. SESSION_ENTRY.md Р’В§3 refreshed to neutral state via .new pattern (user commits). L4/L7/L10/L11 closed.",
+                       "reason":  "L7 note + L11 note appended. SESSION_ENTRY.md §3 refreshed to neutral state via .new pattern (user commits). L4/L7/L10/L11 closed.",
                        "ts":  "2026-09-14T09:29:58.391928Z"
                    },
                    {
@@ -250,7 +250,7 @@
                        "type":  "decision",
                        "action":  "commit",
                        "verdict":  "MTS_CLEANUP_2026_09_15",
-                       "reason":  "Disk audit + cleanup. L13 confirmed at start_trading_day.ps1:349 (proof oscillation fires alerts; 6 of 13 alerts in 17:00 hour on proof count change alone). Runtime manifest behavior_source patched from SESSION_PROMPT.md (4044b) to DSA_SESSION_PROMPT.md (10128b) РІР‚вЂќ boot would have missed Rules 42-50. Root SESSION_MANIFEST.json orphan deleted. apparatus_fixes.md # END relocated to end of file (post-END content grouped). DSA duplicate ## 13 renamed to ## 15. L_ITEMS_MASTER.md created: 5 closed, 3 held, 7 new (L13-L20), 4 no-evidence (L1-L3, L12). Mojibake claim retracted РІР‚вЂќ L4 correctly closed, disk clean.",
+                       "reason":  "Disk audit + cleanup. L13 confirmed at start_trading_day.ps1:349 (proof oscillation fires alerts; 6 of 13 alerts in 17:00 hour on proof count change alone). Runtime manifest behavior_source patched from SESSION_PROMPT.md (4044b) to DSA_SESSION_PROMPT.md (10128b) — boot would have missed Rules 42-50. Root SESSION_MANIFEST.json orphan deleted. apparatus_fixes.md # END relocated to end of file (post-END content grouped). DSA duplicate ## 13 renamed to ## 15. L_ITEMS_MASTER.md created: 5 closed, 3 held, 7 new (L13-L20), 4 no-evidence (L1-L3, L12). Mojibake claim retracted — L4 correctly closed, disk clean.",
                        "ts":  "2026-09-15T15:48:03.820111Z"
                    },
                    {
@@ -371,6 +371,12 @@
                        "verdict":  "session close",
                        "reason":  "Audit step 1 complete. 11 files inventoried, ~100 findings, 6 material defects. TOM_VERBATIM_INDEX.md and verify_rule_citations.ps1 built. Claims 2 and 4 resolved, 1 and 5 supported, 3 asserted.",
                        "session":  "MTS-2026-09-17-0553Z"
+                   },
+                   {
+                       "ts":  "2026-09-17T11:41:12.733729Z",
+                       "verdict":  "session close",
+                       "reason":  "Bug tracking system live: BUGS.md SSOT, validator in Build-Check, wired to manifest and file index. L_ITEMS_MASTER and apparatus_fixes frozen. Mojibake cleared across 8 files. Stale test fixed. Build-Check PASS.",
+                       "session":  "MTS-2026-09-17-1037Z"
                    }
                ]
 }

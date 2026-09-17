@@ -474,7 +474,7 @@ def test_update_state_basic():
     assert new_state["META"]["asset"] == "BTCUSDT"
     assert new_state["META"]["last_price"] == "78410.0"
     assert new_state["WEEKLY"]["poc"] == "77922.02"
-    assert new_state["STATE"]["classification"] == "B"
+    assert new_state["STATE"]["classification"] == "trend_healthy"
     assert new_state["STATE"]["position"] == "above_vah"
     # last_verdict preserved
     assert new_state["STATE"]["last_verdict"] == "C+ CT Short"

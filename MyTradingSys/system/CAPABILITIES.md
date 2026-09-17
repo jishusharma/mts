@@ -1,7 +1,7 @@
 # CAPABILITIES.md - MTS Trigger Map
 # MTS version: see VERSION
 # Purpose: One router. Tells any AI session which module to load for which task.
-# Load rule: DSA_SESSION_PROMPT.md В§3 owns boot order. Everything else
+# Load rule: DSA_SESSION_PROMPT.md §3 owns boot order. Everything else
 #            loads on trigger.
 # Canonical: MyTradingSys/system/CAPABILITIES.md
 
@@ -43,7 +43,7 @@ One primary session coordinates. Workers are spawned for isolated tasks.
 - **Coordinator prompt rule:** every prompt block that references a file
   must contain the real content pasted inline. Run `Get-Content` BEFORE
   writing the prompt. Placeholders (`<paste here>`) cause the worker to
-  block correctly вЂ” that is a coordinator bug, not worker failure.
+  block correctly — that is a coordinator bug, not worker failure.
   See `01_AI_BEHAVIOR.md` Rule 38 + M-033.
 
 ---

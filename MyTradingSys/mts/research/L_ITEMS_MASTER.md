@@ -1,4 +1,5 @@
 # L-ITEMS MASTER
+# FROZEN 2026-09-17. Live bug list is BUGS.md. This file is history.
 # Purpose: single source of truth for all L-numbered open loops.
 # Built: 2026-09-15 from session_log.json + NEXT_SESSION_HANDOFF.md + SESSION_ENTRY.md + apparatus_fixes.md
 # Rule: any L-number with no supporting detail gets [NO EVIDENCE]. Do not fabricate.
@@ -17,8 +18,8 @@
 
 | ID | Date | Status | Description | Evidence |
 |---|---|---|---|---|
-| L5 | 2026-09-13 | HELD | [NO EVIDENCE] РІР‚вЂќ referenced in NEXT_SESSION_HANDOFF.md L20 as "held" with no detail. | NEXT_SESSION_HANDOFF.md L20 |
-| L6 | 2026-09-13 | HELD | [NO EVIDENCE] РІР‚вЂќ same as L5. | NEXT_SESSION_HANDOFF.md L20 |
+| L5 | 2026-09-13 | HELD | [NO EVIDENCE] - referenced in NEXT_SESSION_HANDOFF.md L20 as "held" with no detail. | NEXT_SESSION_HANDOFF.md L20 |
+| L6 | 2026-09-13 | HELD | [NO EVIDENCE] - same as L5. | NEXT_SESSION_HANDOFF.md L20 |
 | L8 | 2026-09-14 | OPEN | stop_day.ps1 'stopped 2' false success. Needs live repro. | NEXT_SESSION_HANDOFF.md L79 + SESSION_ENTRY.md L37 |
 
 ## NEW (2026-09-15 disk audit)
@@ -37,7 +38,7 @@
 | L22 | 2026-09-15 | CLOSED | Rule 50 duplicate: market_state_rules.md == proof_requirements_formatted.md (57KB each). Deleted the latter 2026-09-15. Rule 50 gate now satisfied. | L_ITEMS_MASTER.md |
 | L23 | 2026-09-15 | CLOSED 2026-09-16 | Dumps\kimi_*.md renamed to dump_*.md. Stale DUMP_*.md moved to backup. Legacy tool name removed from scripts, prompts, and docs. | 2026-09-16 session |
 | L24 | 2026-09-15 | CLOSED | Mojibake claim in NEXT_SESSION_HANDOFF.md did not reproduce. Byte-level check of 5 declared files: 0 hits of C3 A2 E2 80 9D. L4 (prior viewer-artifact closure) stands. | Phase A A9 2026-09-15 |
-| L27 | 2026-09-16 | OPEN | MTS_DICTIONARY.md Authority column has mojibake (Cyrillic-decoded UTF-8). Cosmetic. Fix by re-encoding source or accepting and moving on. | 2026-09-16 boot paste |
+| L27 | 2026-09-16 | OPEN | MTS_DICTIONARY.md Authority column has mojibake (Cyrillic-decoded UTF-8). Now detected by Build-Check.ps1 non-ASCII scan (added 2026-09-17). Fix pending. | 2026-09-16 boot paste; Build-Check 2026-09-17 |
 | L26 | 2026-09-16 | CLOSED 2026-09-16 | Root cause: computeCvdSlope gated on 40 samples (40 min warmup) and did not restore series from disk. Fixed: CVD_MIN_SAMPLES=10 with adaptive half-window, plus denom guard. Verified live. | StateCodeEmitter.java 20260916 |
 | L25 | 2026-09-16 | OPEN | US cash open classifier uses fixed hour 13.5 UTC. Correct for DST (EDT). Wrong for winter (EST opens 14:30 UTC). Fix: compute DST per date or read from a season table. Needs 3-snapshot proof before any code change. | src\main\java\datafeed\MarketDataSnapshot.java line 761 |
 | L28 | 2026-09-16 | OPEN | Loop exit orphans mvn/java child. start-trading-day.ps1 finally stops the powershell wrapper PID but not the java child. Repro: Ctrl+C the loop, Get-Process java shows 1. Fix candidate: match CommandLine datafeed.Main statemachine inside finally, stop child before wrapper. Needs its own test, no Rule 32 gate. | apparatus_log.txt 11:41:02 + 13:23:20; live repro 11:50:23 |
@@ -51,7 +52,7 @@
 
 ## NO EVIDENCE
 
-L1, L2, L3, L12 РІР‚вЂќ referenced nowhere in current disk state. Either never created or deleted. Treat as non-existent.
+L1, L2, L3, L12 - referenced nowhere in current disk state. Either never created or deleted. Treat as non-existent.
 
 # END
 
@@ -90,7 +91,7 @@ I29 remains open. Two builder paths producing contradicting values for the same 
 
 | I34 | 2026-09-16 | OPEN | Sweep-entry rule missing. Counter-trade candidates use zone price as entry. Six setups today failed the 2.0 cap. All would clear with sweep wick extreme as entry. Tom method: enter at the sweep, not the level. Rule 32 gated. Today is snapshot 1 of 3. | apparatus_log 13:48-18:16 |
 | I35 | 2026-09-16 | OPEN | Supervisor not running after manual restart. Exited 17:52:52 on stop flag. Loop restarted 18:15:33 without supervisor. Loop unmonitored overnight. | supervisor_log 17:52:52; apparatus_log 18:15:33 |
-| I36 | 2026-09-16 | OPEN | Log prints "STATE X -> X" with same value on confirmed state alerts. Alerts #391, #392, #394. Cause: $lastState updated before alert fires on cycle 2. Fix: add $pendingStateFrom. Cosmetic. | apparatus_log 17:39, 18:24, 18:40 |
+| I36 | 2026-09-16 | CLOSED 2026-09-17 | Log prints "STATE X -> X" with same value on confirmed state alerts. Alerts #391, #392, #394. Cause: $lastState updated before alert fires on cycle 2. Fix: add $pendingStateFrom. Cosmetic. | apparatus_log 17:39, 18:24, 18:40 |
 
 | I37 | 2026-09-16 | OPEN | Binance OI data path. Historical endpoint accepts 5-min minimum. Live endpoint pollable at 1-min. CoinGlass builds 1-min candles from live polls. MTS reads snapshot aggregate. Reconciliation: poll /fapi/v1/openInterest each cycle, store samples, build own 1-min series. Would match CoinGlass and likely fix I33. | Binance docs; CoinGlass Binance_BTCUSDT chart 2026-09-16 |
 | I38 | 2026-09-16 | OPEN | Two-phase OI/CVD/price pattern has no named form in Tier 1 or Tier 2 literature. No base rate. OI is symmetric. Resolution requires funding rate sign + taker buy/sell ratio + liquidation stream. First two are in the snapshot. Third deprecated 2026-09-12. Track 3 sessions before any rule. Rule 32 gate. | Grok + Claude research 2026-09-16 |

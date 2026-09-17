@@ -78,7 +78,7 @@ patch >20 lines.
 ## SESSION NOTES (historical, post-END relocated 2026-09-15)
 
 ## RULE 32 CONFIRMED: trend override (2026-09-13)
-Third evidence collected вЂ” cycle 4 of 20:00:30 session:
+Third evidence collected — cycle 4 of 20:00:30 session:
   price 77123.40 | B/below_val | nrr 2.02 (PASS) | p=5 | pd=aligned
   -> SETUP_FORMING would have fired (nrr + proof both pass)
   -> suppressed to WAIT_RR by broken-value override.
@@ -99,7 +99,7 @@ Exception: edits to compiled_engine.md, 01_AI_BEHAVIOR.md, DSA_SESSION_PROMPT.md
 get their own named dir. Retention: 1 most recent. New session backup overwrites the previous one. Older auto-deleted.
 Incident: 14 backup dirs created in one session, all sequential. Wasteful.
 
-## Backup policy вЂ” corrected 2026-09-13
+## Backup policy — corrected 2026-09-13
 One dir per session, fixed name: backup_session/.
 Created once at session start. Files copied in with -Force on each edit.
 Never create backup_<timestamp>. Never create a second backup dir.
@@ -196,3 +196,44 @@ All six were stated by the AI, not inferred by the operator. Each was corrected
 in the same session it was made, except #1 and #2 which required a stop.
 
 # END OF SESSION 2026-09-17 MISTAKES
+
+## SESSION 2026-09-17 COORDINATOR WORK (MTS-2026-09-17-1037Z)
+
+1. I36 status corrected to CLOSED 2026-09-17 in L_ITEMS_MASTER.md.
+   Code fix confirmed in start-trading-day.ps1 (pendingStateFrom at L319, L419, L422).
+2. L_ITEMS_MASTER.md had 3 mojibake sequences, replaced with plain hyphen. File now 0 non-ASCII.
+3. Build-Check.ps1 extended: scans runtime *.py, runtime *.json, research *.md, scripts *.ps1.
+   Flags BOM and the CP1251-decoded mojibake signature. STATUS FAIL on either hit.
+4. Stale math test corrected: test_mts_math.py:477 asserted classification == "B", now "trend_healthy".
+   Test predates the 2026-09-17 classifyState rewrite.
+5. Build-Check math line reports 125 tests; direct pytest reports 130. Build-Check uses
+   --ignore for docs; the direct run did not. Discrepancy flagged, not resolved.
+
+Remaining mojibake flagged by new Build-Check: session_log.json (53), apparatus_fixes.md (4),
+MTS_DICTIONARY.md (89). Not fixed this turn.
+
+# END OF SESSION 2026-09-17 COORDINATOR WORK
+
+# PERMANENT SAFEGUARDS (added 2026-09-17)
+
+Two classes of file corruption are now detected at every boot by Build-Check.ps1:
+
+1. UTF-8 BOM at file start. Breaks Python json.load.
+   Scan covers: MyTradingSys\mts\runtime\*.py, runtime\*.json, research\*.md, scripts\*.ps1.
+   Fix at write time: use Write-NoBom / Write-NoBomLines from scripts\core\shared-functions.ps1.
+
+2. CP1251-decoded mojibake. Source: copy-paste through a misdecoded console.
+   Signature: any codepoint in U+0400-U+04FF. This repo has no legitimate Cyrillic.
+   Permitted non-ASCII: U+00A7 (section sign), U+2014 (em-dash).
+   Fix at write time: never write pasted text back without running Build-Check first.
+
+Rule for every session that writes any file under the scanned roots:
+  After the write, run .\scripts\Build-Check.ps1. If STATUS is FAIL, fix before commit.
+
+Third class: stale test assertions after a behavior change.
+  When a code change alters a return value or field meaning, update the matching test
+  in the same turn. Example: classifyState rewrite on 2026-09-17 changed the return
+  space to balance/trend_unhealthy/trend_healthy; test_mts_math.py:477 still asserted
+  "B" and failed at next boot. Fixed 2026-09-17.
+
+# END OF PERMANENT SAFEGUARDS

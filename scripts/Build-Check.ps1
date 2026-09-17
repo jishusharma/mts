@@ -63,8 +63,6 @@ if (Test-Path $docsDir) {
 }
 
 $lines.Add("")
-if ($overallFail) { $lines.Add("STATUS: FAIL") } else { $lines.Add("STATUS: PASS") }
-$lines.Add("")
 
 # In-flight .new files (parallel work visibility)
 $inFlight = @(Get-ChildItem "MyTradingSys" -Recurse -File -Filter "*.new" -ErrorAction SilentlyContinue |
@@ -101,21 +99,75 @@ if (Test-Path $locksDir) {
 }
 
 $lines.Add("")
-# BOM scan: files that will bite Python json.load
+# BOM + non-ASCII scan: files that will bite Python json.load or carry corrupted text
 $bomHits = @()
+$nonAsciiHits = @()
 $scan = @()
 $scan += Get-ChildItem "MyTradingSys\mts\runtime" -File -Filter "*.py" -ErrorAction SilentlyContinue
 $scan += Get-ChildItem "MyTradingSys\mts\runtime" -File -Filter "*.json" -ErrorAction SilentlyContinue
+$scan += Get-ChildItem "MyTradingSys\mts\research" -File -Filter "*.md" -ErrorAction SilentlyContinue
+$scan += Get-ChildItem "MyTradingSys\system" -File -Filter "*.md" -ErrorAction SilentlyContinue
 $scan += Get-ChildItem "scripts" -Recurse -File -Filter "*.ps1" -ErrorAction SilentlyContinue
 foreach ($f in $scan) { if (-not $f.FullName) { continue }
   $b = [System.IO.File]::ReadAllBytes($f.FullName)
-  if ($b.Length -ge 3 -and $b[0] -eq 0xEF -and $b[1] -eq 0xBB -and $b[2] -eq 0xBF) {
-    $rel = $f.FullName.Substring((Get-Location).Path.Length + 1)
+  $rel = $f.FullName.Substring((Get-Location).Path.Length + 1)
+  $ext = [System.IO.Path]::GetExtension($f.FullName).ToLower()
+  if (($ext -eq ".py" -or $ext -eq ".json" -or $ext -eq ".ps1") -and $b.Length -ge 3 -and $b[0] -eq 0xEF -and $b[1] -eq 0xBB -and $b[2] -eq 0xBF) {
     $bomHits += $rel
   }
+  $txt = [System.Text.Encoding]::UTF8.GetString($b)
+  $na = 0
+  foreach ($ch in $txt.ToCharArray()) {
+    $ci = [int]$ch
+    if ($ci -ge 0x0400 -and $ci -le 0x04FF) { $na++ }
+  }
+  if ($na -gt 0) { $nonAsciiHits += ("{0} ({1})" -f $rel, $na) }
 }
 $lines.Add("BOM files: " + $bomHits.Count)
 foreach ($h in $bomHits) { $lines.Add("  - $h") }
+$lines.Add("Non-ASCII files: " + $nonAsciiHits.Count)
+foreach ($h in $nonAsciiHits) { $lines.Add("  - $h") }
+$lines.Add("")
+# Bug list validation
+$bugsPath = "MyTradingSys\mts\research\BUGS.md"
+$bugFail = @()
+$bugRows = 0
+if (Test-Path $bugsPath) {
+  $validStatus = @("OPEN","IN-FIX","BLOCKED","CLOSED","WONTFIX")
+  $validSeverity = @("HIGH","MED","LOW","COSMETIC")
+  $seenIds = @{}
+  $bugLines = [System.IO.File]::ReadAllLines((Resolve-Path $bugsPath), [System.Text.Encoding]::UTF8)
+  foreach ($bl in $bugLines) {
+    if ($bl -match '^\|\s*B\d+\s*\|') {
+      $cells = $bl.Split('|') | ForEach-Object { $_.Trim() }
+      if ($cells.Count -lt 9) { $bugFail += "malformed row: $bl"; continue }
+      $bid = $cells[1]; $bopened = $cells[2]; $bstatus = $cells[3]; $bsev = $cells[4]; $breceipt = $cells[7]
+      $bugRows++
+      if ($seenIds.ContainsKey($bid)) { $bugFail += "duplicate ID: $bid" } else { $seenIds[$bid] = 1 }
+      if ($validStatus -notcontains $bstatus) { $bugFail += "$bid bad status: $bstatus" }
+      if ($validSeverity -notcontains $bsev) { $bugFail += "$bid bad severity: $bsev" }
+      if ($bstatus -eq "CLOSED" -and ($breceipt -eq "-" -or $breceipt -eq "")) { $bugFail += "$bid CLOSED with no receipt" }
+      if ($bstatus -eq "IN-FIX") {
+        try {
+          $od = [datetime]::ParseExact($bopened, "yyyy-MM-dd", $null)
+          if (((Get-Date) - $od).TotalDays -gt 14) { $bugFail += "$bid IN-FIX older than 14 days" }
+        } catch { $bugFail += "$bid bad Opened date: $bopened" }
+      }
+    }
+  }
+  if ($bugFail.Count -gt 0) {
+    $lines.Add("Bugs: FAIL (" + $bugFail.Count + " issues)")
+    foreach ($bf in $bugFail) { $lines.Add("  - $bf") }
+    $overallFail = $true
+  } else {
+    $lines.Add("Bugs: OK (" + $bugRows + " rows)")
+  }
+} else {
+  $lines.Add("Bugs: file missing ($bugsPath)")
+}
+$lines.Add("")
+if ($bomHits.Count -gt 0 -or $nonAsciiHits.Count -gt 0) { $overallFail = $true }
+if ($overallFail) { $lines.Add("STATUS: FAIL") } else { $lines.Add("STATUS: PASS") }
 $lines.Add("")
 $lines.Add("Pastes for this session:")
 $lines.Add("  Always:   Dumps/BUILD_REPORT.md")
