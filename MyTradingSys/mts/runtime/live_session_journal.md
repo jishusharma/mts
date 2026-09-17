@@ -312,3 +312,88 @@ ADDITIONS
 [REMAINING] session_log.json not written this session. Ledger has no entry for MTS-2026-09-17-1757Z. Journal carries the detail. Ledger write is a one-liner for next session.
 
 [SESSION CLOSE FINAL] MTS-2026-09-17-1757Z. Close time 2026-09-17T19:53Z. No trade taken. No session_state thesis change. Loop running: sup 8200, wrap 17792, java 596, lock 17792. Build-Check PASS at boot. Commit b92051d at 19:38Z. Journal appends this close: dashboard build 32 lines, close addendum 26 lines, proof audit 40 lines, this fix log. FIRE bug: found, fixed, verified live. Next session first action: update DSA_SESSION_PROMPT.md section 11, write session_log.json entry, add verdict taxonomy to MTS_DICTIONARY.md.
+
+## MTS-2026-09-17-1757Z OPEN ITEMS MASTER - 2026-09-17T20:15Z
+
+This entry consolidates every open item from the session not already logged elsewhere in the journal. Every claim carries a file reference and line number where verified. Unverified items are marked [UNVERIFIED]. Reference format: path:line.
+
+=== CATEGORY A - FIXES NEEDED (no investigation required) ===
+
+A1. mts-live-stop flag not auto-cleared. Proof: scripts\load.ps1 line 21 mts-live-stop writes data\mts_watch_stop.flag. mts-live (line 20) does not remove it. Observed live at 19:09Z: mts-live printed "mts-watch: stop flag, exiting". One-line fix. Non-critical.
+
+A2. DIRECTION column on dashboard TRADES table. Proof: scripts\live\mts-dashboard.ps1 TRADES table render, no $c.direction column. Snapshot field exists: data\snapshots\BTCUSDT_*.json setup_candidates[n].direction (values "long" or "short" observed in the 18:46Z field audit). One column, two lines. Non-critical.
+
+A3. Verdict word taxonomy into MTS_DICTIONARY.md. Proof: five words observed live in data\apparatus_log.txt this session: WATCH (20:01-20:05Z cycles 198-203), SETUP_FORMING (19:32Z, 19:35Z), SETUP_CONFIRMED (never observed this session), WAIT_RR (18:41-19:59Z), WAIT_TRIGGER (17:56Z, 20:06Z). None appear in MyTradingSys\mts\research\MTS_DICTIONARY.md. Non-critical.
+
+A4. session_log.json entry for MTS-2026-09-17-1757Z. Proof: MyTradingSys\mts\runtime\session_log.json not written this session. Journal carries detail. One line. Non-critical.
+
+A5. DSA_SESSION_PROMPT.md section 11 update. Proof: DSA_SESSION_PROMPT.md section 11 still reads "Last live read: 2026-09-17T17:45Z, session MTS-2026-09-17-1624Z closing". Critical file per section 6. Four-step proof required. Deferred.
+
+A6. mts-watch.ps1 header version. Proof: scripts\live\mts-watch.ps1 line 2 reads "# Version: v1.1.1" after the 19:38Z bump. Plain-word render happened at 18:57Z under version v1.1.0. The bump to v1.1.1 was for the render. Claim corrected: this item is DONE, not open. [CORRECTION to prior entry].
+
+A7. Rank-1-only gate design. Proof: MyTradingSys\mts\runtime\math_object_builder.py lines 357-370, top_candidate_rr_fail reads setup_candidates[0] only. Observed live at 19:59:15Z: rank 1 nrr 1.86 below gate while rank 3 nrr 2.01 above gate, engine did not fire. Design question. Decision needed: keep rank-1-only or scan all candidates.
+
+=== CATEGORY B - INVESTIGATIONS NEEDED (read code or docs, no change yet) ===
+
+B1. Possible sign error in proof direction check. Proof: src\main\java\datafeed\SetupCandidatesBuilder.java line 703 sets finishedAuctionDirection = deltas[i] < 0 ? "sell" : "buy", the EXTREME candle direction. MyTradingSys\mts\runtime\math_object_builder.py lines 393-395 flags finished_auction=SELL as a contradiction for a LONG setup. If a seller-exhaustion extreme at a low followed by reversal up is bullish, the check has the sign backwards. Observed live 20:02-20:05Z: five straight WATCH cycles with this contradiction. Investigation: read BUG-008 design doc, read Tom source for finished auction. Material if wrong.
+
+B2. Exact fire condition. Proof: MTS-HSTOP block exposes 4 booleans. Observed 20:02-20:05Z: nrr 3.04-3.13, at zone True, gate pass True, chase False, verdict WATCH. The missing condition is proof_direction_status == aligned (MyTradingSys\mts\runtime\math_object_builder.py lines 388-406). Also 20:01:15Z cycle: proof_direction aligned, nrr 3.19, at zone, but proof count only 3, still WATCH. Possible proof floor of ~5. Investigation: read scripts\core\start-trading-day.ps1 verdict logic. Correct the journal entries that say "fire = rank-1 nrr above 2.0 and proofs 2+".
+
+B3. Engine confidence grade meaning. Proof: setup_candidates[n].score.confidence values observed this session: A (never), B (common), C, C+. Source of grade not yet read. Investigation: grep "confidence" in src\main\java\datafeed\SetupCandidatesBuilder.java. One read.
+
+B4. cms_age=-1s anomaly. Proof: MTS-SLOW line at 2026-09-17T20:02:15.7175828Z showed "cms_age=-1s". Negative file age impossible under one clock. Investigation: compare MyTradingSys\mts\runtime\current_market_state.md mtime to system clock next session. Low priority.
+
+B5. Verdict parse fragility. Proof: scripts\live\mts-dashboard.ps1 verdict block reads data\apparatus_log.txt last cycle line, splits by " | ", takes field 5. If Java changes the log format string, the dashboard silently falls to UNKNOWN. Design decision: harden parse vs structured last_verdict.json written by the loop. Deferred.
+
+B6. MTS-CAND gate pass word collision. Proof: scripts\live\mts-dashboard.ps1 MTS-CAND render line prints "gate pass" from $top.math.net_rr_sanity (nrr >= 2.0). Dashboard TRADES table GATE column prints the engine verdict word. Same word, two meanings. Rename one. Non-critical.
+
+B7. Proof count direction-aware options. Proof: src\main\java\datafeed\SetupCandidatesBuilder.java lines 528-539 countSignals increments on presence only, no direction check. Only rejection_wick (lines 627-640) has a direction check inside the detector. Logged fully in PROOF DETECTOR AUDIT entry. Options A direction-aware count, B separate direction_fit field, C accept raw count. Decision needed.
+
+B8. Fire condition documentation mismatch. Proof: scripts\live\mts-dashboard.ps1 PREPARE header reads "requires net R:R above 2.0 and proofs 2 or more". Actual condition per B2 includes proof direction aligned and possibly proof floor 5. Correct wording after B2 resolved.
+
+=== CATEGORY C - DATA OBSERVATIONS (informational) ===
+
+C1. Book instability B024. Proof: MTS-FLOW book field across 19:09-19:16Z 12-frame window: 0.12, 1.34, 0.53, 2.14, 2.17, 0.26, 1.14 (7 distinct values). Also 0.17 at 20:03:15Z and 2.9 at 20:05:15Z. B024 HIGH open in MyTradingSys\mts\research\BUGS.md.
+
+C2. FVG count oscillation. Proof: MTS-COND fvg field 20:02-20:04Z: 0, 0, 0, 0, 1, 2. Oscillates within minutes. B036 (reads snapshot not normalized) and B018 (zones move) related.
+
+C3. OI direction flipped. Proof: MTS-FLOW oi field 19:59Z falling -0.18%, 20:02Z onward flat -0.09%. Live data. Not a defect.
+
+C4. State vote layer jitter. Proof: MTS-STATE state field 19:57-20:06Z: A>L, A, A>L, A, A>L, A, A. Rank-1 setup stable (ct_long @ 4h_val). Vote layer faster than setup layer.
+
+C5. MTS-TAPE sidecar disagrees with engine. Proof: MTS-TAPE at 20:02:15Z read "confirm_up_long" while MTS-CYCLES verdict was WATCH. Sidecar advisory.
+
+C6. mts-dashboard version history. Proof: scripts\live\mts-dashboard.ps1 header shows v1.2.0. Versions v1.0.0, v1.1.0, v1.2.0 created this session. Only v1.2.0 on disk.
+
+=== CATEGORY D - COMMIT AND REPO STATE ===
+
+D1. CRLF warnings on commit. Proof: gitsnap output flagged MyTradingSys\mts\runtime\state_code_regime.json and data\supervisor_log.txt. Runtime files. Not source. Informational.
+
+D2. mts-dashboard.ps1 LF normalization. Proof: pre-fix read 19:53Z showed CRLF=231 LF=0. Post-fix read 19:54Z showed CRLF=0 LF=231. Commit ce8cda1. Resolved.
+
+D3. Commits this session. Proof: gitsee output. b92051d dashboard v1.2.0, 5cbba14 close plus FIRE fix, ce8cda1 LF normalization. Tag last-snapshot at ce8cda1. Dirty=2 at 19:56Z (runtime files).
+
+=== CATEGORY E - ITEMS ALREADY LOGGED (for completeness) ===
+
+E1. FIRE bug. Proof: fix verified 19:52:03Z, dashboard banner shows SETUP_FORMING not FIRE. Logged in FIRE BUG FIXED entry.
+E2. Verdict word taxonomy. Logged. Still needs MTS_DICTIONARY.md write (same as A3).
+E3. DIRECTION request. Logged. Still needs dashboard column (same as A2).
+E4. DSA_SESSION_PROMPT.md section 11. Logged as [REMAINING] (same as A5).
+E5. session_log.json. Logged as [REMAINING] (same as A4).
+E6. Proof detector audit. Proof: java file references in PROOF DETECTOR AUDIT entry. SetupCandidatesBuilder.java lines 615-620 delta source, 623-666 rejection_wick, 670-692 absorption, 695-706 finished_auction, 712-735 delta_flip, 742-753 volume_spike, 755-777 speed, 778-792 cvd_aligned, 795 book_imbalance, 528-539 countSignals.
+E7. Five open comparison questions. Logged in DASHBOARD BUILD AND OPEN QUESTIONS entry (journal lines 226-234).
+
+=== PRIORITY ORDER FOR NEXT SESSION ===
+
+1. B2 exact fire condition. scripts\core\start-trading-day.ps1 verdict block. Highest value.
+2. B1 finished_auction sign. math_object_builder.py lines 393-395 vs SetupCandidatesBuilder.java line 703. Material if wrong.
+3. B7 proof count options. SetupCandidatesBuilder.java lines 528-539. Decision.
+4. A5 DSA_SESSION_PROMPT.md section 11. Critical file.
+5. A3 verdict taxonomy to MTS_DICTIONARY.md.
+6. A1 mts-live-stop flag fix. scripts\load.ps1.
+7. A4 session_log.json entry.
+8. A2 DIRECTION column. scripts\live\mts-dashboard.ps1.
+9. B6 MTS-CAND word collision. scripts\live\mts-dashboard.ps1.
+10. B5 verdict parse fragility. Design.
+
+[END OPEN ITEMS MASTER]
