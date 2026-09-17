@@ -3,7 +3,7 @@
 # Worker = fresh chat instance. Coordinator = this session.
 
 ## PROTOCOL
-- Worker runs a block, pastes output.
+- Operator runs each block, pastes output to worker chat. Worker analyzes only.
 - Coordinator verifies the output, updates this file, issues next block.
 - Each finding needs two receipts. Unconfirmed findings are dropped.
 - No writes to runtime state by worker. Coordinator writes this tracker only.

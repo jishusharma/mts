@@ -183,7 +183,7 @@ Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
 Runtime loop:    see data/apparatus_log.txt for current wrapper PID. Last known good run: 2026-09-16 evening.
-Open loops:      L25, L28, L30, L31, I21-I25, I27, I28, I30-I40. L29 and I26 CLOSED 2026-09-17.
+Open loops:      L25, L28, L30, L31, I21-I25, I27, I28, I29, I30-I40. L29 and I26 CLOSED 2026-09-17.
 
 ## 12. SESSION END
 

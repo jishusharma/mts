@@ -40,3 +40,14 @@ Worker prompt, method, and scope are in AUDIT_2026-09-17_TRACKER.md.
 - Write-NoBom requires dot-sourcing shared-functions.ps1 first.
 
 # END
+
+## SUPERVISOR RESTART COMMAND
+
+Start-Process powershell.exe -ArgumentList @(
+    "-NoProfile","-ExecutionPolicy","Bypass",
+    "-File","C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\scripts\core\loop-supervisor.ps1",
+    "-Mode","armed","-IntervalMin","1","-RestartGraceSec","90"
+) -WindowStyle Hidden
+
+Verify: Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match "loop-supervisor" } | Select-Object ProcessId, CommandLine
+Stop:   New-Item .\data\supervisor_stop.flag -ItemType File -Force
