@@ -47,6 +47,8 @@
 | L31 | 2026-09-16 | OPEN | state_code_regime.json sibling is not read by StateCodeEmitter.java. Java merge deferred. | regime_classifier.py 20260916 |
 | L32 | 2026-09-16 | CLOSED | BOM from Set-Content -Encoding UTF8. Fixed: Write-NoBom helpers, Build-Check scan, USER.md rule. 9 files cleaned. | apparatus_fixes.md 20260916 |
 
+| I40 | 2026-09-17 | OPEN | Profile shape taxonomy does not match Tom. buildVp emits TWOPEAK / D / P. TWOPEAK is a rename of the old B, not a Tom term. D has zero hits in the entire corpus (no Tom transcript uses "D profile"). P appears in Tom as a directional move (UOBgXV20yCM, yWO8hVpRXeY, OUM9LYwL8eA) but is defined by price action, not by left/right volume ratio as the code does. Tom's actual vocabulary: balance profile, normal profile, bell curve, trend profile, normal variation profile, double distribution day, aggressive trend profile. Decision needed: rename to Tom's terms, or accept the current letters and mark them as screener proxies. Naming only. Not Rule 32 gated until the field is read by a verdict rule. | Revalidation 2026-09-17: grep "D profile" corpus zero hits; grep "distribution" only in double-distribution context; extract UOBgXV20yCM L331-338, yWO8hVpRXeY L38-45, yWO8hVpRXeY L476-482, OUM9LYwL8eA L140-145 |
+
 ## NO EVIDENCE
 
 L1, L2, L3, L12 РІР‚вЂќ referenced nowhere in current disk state. Either never created or deleted. Treat as non-existent.
