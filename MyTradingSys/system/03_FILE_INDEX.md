@@ -238,3 +238,6 @@ Files moved from research/ after their findings were integrated or superseded:
 
 ---
 # END
+
+| MyTradingSys/mts/research/TOM_VERBATIM_INDEX.md | research | Verbatim Tom quote index. Points to corpus. Rules in conditions/ carry [TOM-NNN] or [SCREENER]. |
+| scripts/tools/verify_rule_citations.ps1 | tool | Checks rule tags resolve to index quotes. |

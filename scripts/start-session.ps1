@@ -79,6 +79,13 @@ foreach ($f in ($m.boot_files + $m.boot_supplemental)) {
     [void]$sb.AppendLine($body)
 }
 
+# Audit tracker, inlined when present (active audit sessions only)
+$auditPath = Join-Path $root 'MyTradingSys\mts\research\AUDIT_2026-09-17_TRACKER.md'
+if (Test-Path $auditPath) {
+    [void]$sb.AppendLine("")
+    [void]$sb.AppendLine("### MyTradingSys/mts/research/AUDIT_2026-09-17_TRACKER.md [active_audit] ###")
+    [void]$sb.AppendLine((Get-Content $auditPath -Raw))
+}
 $events = (Get-Content $logPath -Raw | ConvertFrom-Json).events | Sort-Object ts
 $last = $events | Select-Object -Last 1
 [void]$sb.AppendLine("")

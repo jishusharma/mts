@@ -178,12 +178,12 @@ Before importing any concept from the transcripts:
 
 Update this section at every session close. Keep it to five lines.
 
-Last live read:  2026-09-17T05:47:52Z, session opened. Prior session closed at ee895ba.
+Last live read:  2026-09-17T13:30:00Z, session MTS-2026-09-17-0553Z closed. Audit step 1 complete, 11 files inventoried.
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
 Runtime loop:    see data/apparatus_log.txt for current wrapper PID. Last known good run: 2026-09-16 evening.
-Open loops:      L25, L28, L30, L31, I21-I25, I27, I28, I29, I30-I40. L29 and I26 CLOSED 2026-09-17.
+Open loops:      L25, L28, L30, L31, I21-I25, I27, I28, I29, I30-I40. Audit produced 6 material defects; see AUDIT_2026-09-17_TRACKER.md AUDIT SUMMARY.
 
 ## 12. SESSION END
 

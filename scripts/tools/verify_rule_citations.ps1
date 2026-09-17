@@ -1,0 +1,45 @@
+# verify_rule_citations.ps1
+# Checks that every rule tag in conditions/ resolves to a quote in TOM_VERBATIM_INDEX.md.
+# And that every TOM-NNN in the index is referenced by at least one rule.
+
+$ErrorActionPreference = 'Stop'
+$root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+$condDir = Join-Path $root 'MyTradingSys\mts\conditions'
+$indexPath = Join-Path $root 'MyTradingSys\mts\research\TOM_VERBATIM_INDEX.md'
+
+if (-not (Test-Path $indexPath)) { Write-Host 'FAIL: index missing'; exit 1 }
+
+$indexText = Get-Content $indexPath -Raw
+$definedIds = [regex]::Matches($indexText, 'TOM-\d{3}') | ForEach-Object { $_.Value } | Sort-Object -Unique
+
+$untagged = @()
+$unknownTags = @()
+$usedIds = @{}
+
+Get-ChildItem -Path (Join-Path $condDir '*.md') | ForEach-Object {
+  $file = $_
+  $lines = Get-Content $file.FullName
+  $n = 0
+  foreach ($line in $lines) {
+    $n++
+    if ($line -match '^##\s' -or $line -match '^#\s' -or $line.Trim() -eq '') { continue }
+    if ($line -match '\[TOM-\d{3}\]' -or $line -match '\[SCREENER\]') {
+      [regex]::Matches($line, 'TOM-\d{3}') | ForEach-Object {
+        $id = $_.Value
+        $usedIds[$id] = $true
+        if ($definedIds -notcontains $id) { $unknownTags += "$($file.Name):$n  unknown $id" }
+      }
+    }
+  }
+}
+
+$unusedIds = $definedIds | Where-Object { -not $usedIds.ContainsKey($_) }
+
+Write-Host "Index ids defined: $($definedIds.Count)"
+Write-Host "Index ids referenced: $($usedIds.Count)"
+Write-Host "Unknown tags in conditions: $($unknownTags.Count)"
+$unknownTags | ForEach-Object { Write-Host "  $_" }
+Write-Host "Index ids not referenced: $($unusedIds.Count)"
+$unusedIds | ForEach-Object { Write-Host "  $_" }
+
+if ($unknownTags.Count -eq 0) { Write-Host 'STATUS: PASS (no unknown tags)' } else { Write-Host 'STATUS: FAIL' }
