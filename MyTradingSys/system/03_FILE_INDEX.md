@@ -248,3 +248,4 @@ Files moved from research/ after their findings were integrated or superseded:
 | scripts/live/tape-watch.ps1 | tool | Sidecar watcher. Divergence classifier every 30s. Reads snapshot + state_code. Read-only on loop. | MTS-2026-09-17-1241Z | 2026-09-17 |
 | scripts/live/mts-watch.ps1 | tool | CANONICAL live feed (mts-live). v1.1.0. Compiled-layer blocks: MTS-HSTOP, MTS-PROOF, MTS-CAND, MTS-DELTA + state, flow, cycles, slow. See MTS_DICTIONARY.md LIVE FEED NAMES. | MTS-2026-09-17-1241Z | 2026-09-17 |
 | MyTradingSys/methodology/live_session_protocol.md | methodology | AI-side checks before any live tape claim. Mistake ledger 2026-09-17. Read at session boot. | MTS-2026-09-17-1241Z | 2026-09-17 |
+scripts\live\mts-dashboard.ps1 | dashboard command, one-shot and -Watch | new 2026-09-17

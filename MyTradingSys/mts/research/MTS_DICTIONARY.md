@@ -94,6 +94,8 @@ A name used in a session must resolve to one of these.
 | mts-live-stop | Stop the feed cleanly. |
 | mts-live-log | Tail the last 40 lines of the feed log. |
 | mts-tape | Start the sidecar divergence classifier. |
+| mts-dashboard | One-shot dashboard. Reads snapshot, state_code, apparatus_log, compiled math object. |
+| mts-dashboard -Watch | Same, loops with Clear-Host every 30s. Ctrl-C to exit. |
 
 ### Blocks (feed output, prefix MTS-)
 

@@ -196,3 +196,39 @@ READ:    Engine short-biased the whole move, did not fire. No session frame unti
 [OBS] WRAP COUNT=0 anomaly closed: matcher extended to mode.ps1 (B043 class).
 [NOTE] Loop left running. Supervisor 8200, java 596, lock 17792. No stop-day, no mode.ps1.
 
+## MTS-2026-09-17-1757Z JAVA COUNT=2 RESOLVED - 2026-09-17T18:08Z
+
+[OBS] JAVA COUNT=2 resolved. Second java is the Maven snapshot child (exec.args=snapshot BTCUSDT). Not a duplicate state machine. Not a defect.
+[EVIDENCE] Poll caught PID 6472 at 2026-09-17T18:08:12Z. Creation 18:08:10Z. Same classworlds launcher as PID 596. exec.args snapshot BTCUSDT vs statemachine BTCUSDT. Self-clears on snapshot write.
+
+## MTS-2026-09-17-1757Z DASHBOARD BUILD AND OPEN QUESTIONS - 2026-09-17T19:30Z
+
+[LANDED] mts-dashboard.ps1 v1.2.0. One-shot command. Reads latest snapshot, state_code.json, apparatus_log.txt, and the compiled math object (via build_mo_cli.py). Prints SUMMARY / TRADES table / MARKET-FLOW-LEVELS-WATCH grid / PREPARE / legend. Fixed 132-char frame. ASCII tables. Color on data only: labels gray, values white, deltas green or red by sign, engine WAIT red. No new logic, no new I/O, no engine touch.
+
+[LANDED] mts-dashboard -Watch. Same script, loops with Clear-Host, 30s interval, Ctrl-C to exit. One-shot default unchanged.
+
+[LANDED] load.ps1 alias mts-dashboard. Loaded message now reads live quick deltas trend snapshot overview health alerts context regime dashboard.
+
+[LANDED] mts-watch.ps1 plain-word render. MTS-HSTOP now reads: at a trigger-ready zone / any zone gross reward-to-risk below 1.5 / top candidate net reward-to-risk below 2.0 / price chasing. MTS-PROOF: proof direction. MTS-CAND: rank-1 setup at zone, distance, tier, substate, net reward-to-risk, gate pass, proofs, confidence, stop, target, gross reward-to-risk. MTS-DELTA: price / cvd / book. Values unchanged.
+
+[VERIFIED] Field audit at 18:46Z. 29 of 29 snapshot fields match dashboard. All setup_candidates match. State fields match. Engine health matches. Zero fabrication.
+
+[VERIFIED] Engine-gate alignment. Dashboard GATE column reads the engine verdict from apparatus_log, not per-candidate net_rr_sanity. Rank 1 shows WAIT when engine waits. Lower ranks show dash. Summary line reads from the log verdict, not a counter.
+
+[OBS] B024 book instability live and loud. Book flipped 7 distinct values in 7 minutes: 0.12, 1.34, 0.53, 2.14, 2.17, 0.26, 1.14. Do not weight book-heavy proof flags.
+
+[OBS] State vote layer and setup layer diverge. In the 12-frame window 19:09 to 19:16, state was S for ten frames then A for two. One transition, at 19:14:15. Rank-1 setup (scalp_long at VWAP) stayed stable the whole window.
+
+[OBS] Java count anomaly fully diagnosed. Second java is the Maven snapshot child (exec.args=snapshot BTCUSDT). Self-clearing. Not a duplicate state machine. Not a defect. Sightings this session: PID 17644, 956, 6472, 6280, 7068, 17584.
+
+[PROCESS] Interactive PowerShell throw does not abort the current paste. PS 5.1 continues to the next line after a thrown exception in a multi-line scripted block. Live confirmation of PROCESS SPEED RULE 2 in live_session_protocol.md. Correct pattern: compute all anchors first, set a flag, wrap the write in a single if. Atomic check-then-write.
+
+[OPEN] CVD anchor mismatch. DSA CVD anchors at 00:00 UTC. CoinGlass CVD anchors at the leftmost visible bar. Values are not comparable. Question: change DSA to a rolling window, keep session-anchored and add a rolling-window field, or accept and document. No engine consumer needs the change today. This is a comparison problem, not a decision problem.
+
+[OPEN] OI panel magnitude vs direction. Dashboard shows direction falling with change_1h_pct. CoinGlass OI panel shows absolute K value. Direction agrees. Magnitude comparison is not built. Question: add a rolling-window OI delta field to the snapshot, or accept direction-only and document the CoinGlass panel as chart-read only.
+
+[OPEN] Net Delta positioning vs flow. Dashboard trade_flow.net_delta_* is FLOW per MTS_DICTIONARY. CoinGlass Net Delta panel is POSITIONING (longs minus shorts). Never cross-validate by sign or magnitude. Question: expose a positioning field on the dashboard, or keep flow-only and document CoinGlass positioning as chart-read only.
+
+[OPEN] What we trade on. The engine trades on rank-1 net_rr_sanity plus the setup_candidate structure. It does not read CoinGlass panels. CoinGlass is a visual cross-check, not an input. Question: confirm this stays true, or name a CoinGlass field that should be wired as a cross-check input. Owner: operator.
+
+[OPEN] Pre-open playbook gap. Carried from prior session. London-NY handoff on 09-17 produced a 474-point ramp then a 510-point fade. Engine stayed short-biased and did not fire. No condition-file rule names the pattern. Decision pending: build a rule or mark permanently manual.

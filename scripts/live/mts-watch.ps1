@@ -1,5 +1,5 @@
 # mts-watch.ps1
-# Version: v1.1.0
+# Version: v1.1.1
 # Canonical: scripts\live\mts-watch.ps1
 # Invoked by: mts-live (see scripts\load.ps1). See MTS_DICTIONARY.md LIVE FEED NAMES.
 # 2026-09-17 v1.1.0 - added compiled blocks MTS-HSTOP, MTS-PROOF, MTS-CAND, MTS-DELTA.
@@ -91,8 +91,9 @@ while ($true) {
             if ((Test-Path $moFile) -and (Get-Item $moFile).Length -gt 0) {
                 $mo = Get-Content $moFile -Raw -Encoding UTF8 | ConvertFrom-Json
                 $hs = $mo.hard_stops_compiled
-                Emit "MTS-HSTOP   atZone=$(-not $hs.price_not_at_zone) anyZoneRRfail=$($hs.any_zone_rr_below_threshold) topCandRRfail=$($hs.top_candidate_rr_below_threshold) chase=$($hs.chasing_price)"
-                Emit "MTS-PROOF $($mo.proof_direction_status)"
+                Emit "MTS-HSTOP   at a trigger-ready zone: $(-not $hs.price_not_at_zone)"
+                Emit "        any zone gross reward-to-risk below 1.5: $($hs.any_zone_rr_below_threshold) | top candidate net reward-to-risk below 2.0: $($hs.top_candidate_rr_below_threshold) | price chasing (all zones ignored): $($hs.chasing_price)"
+                Emit "MTS-PROOF   proof direction: $($mo.proof_direction_status)"
                 if ($mo.proof_direction_details) { $mo.proof_direction_details | ForEach-Object { Emit "        $_" } }
             }
             Remove-Item $moFile -ErrorAction SilentlyContinue
@@ -101,9 +102,9 @@ while ($true) {
         # --- COMPILED: rank-1 candidate ---
         if ($j.setup_candidates -and $j.setup_candidates.Count -gt 0) {
             $top = $j.setup_candidates[0]
-            Emit "MTS-CAND    r1 $($top.setup_type) $($top.direction) @ $($top.zone.name) $($top.zone.price)"
-            Emit "        dist=$($top.math.distance_pct)% tier=$($top.math.tier) sub=$($top.math.substate) nrr=$($top.math.net_rr) gate=$($top.math.net_rr_sanity) p=$($top.score.proof_count) conf=$($top.score.confidence)"
-            Emit "        stop=$($top.math.stop) target=$($top.math.target) gross=$($top.math.gross_rr)"
+            Emit "MTS-CAND    rank-1 $($top.setup_type) $($top.direction) at $($top.zone.name) $($top.zone.price)"
+            Emit "        distance $($top.math.distance_pct)% | tier $($top.math.tier) | substate $($top.math.substate) | net reward-to-risk $($top.math.net_rr) | gate pass $($top.math.net_rr_sanity) | proofs $($top.score.proof_count) | confidence $($top.score.confidence)"
+            Emit "        stop $($top.math.stop) | target $($top.math.target) | gross reward-to-risk $($top.math.gross_rr)"
         }
 
         # --- DELTA vs prior snapshot ---
@@ -114,7 +115,7 @@ while ($true) {
                 $dpx = $j.current_price - $j2.current_price
                 $dcvd = $j.cvd.value - $j2.cvd.value
                 $dbk = $j.order_book_depth.bid_ask_ratio - $j2.order_book_depth.bid_ask_ratio
-                Emit ("MTS-DELTA   px {0:+0.00;-0.00} cvd {1:+0.000;-0.000} book {2:+0.00;-0.00}" -f $dpx, $dcvd, $dbk)
+                Emit ("MTS-DELTA   price {0:+0.00;-0.00} | cvd {1:+0.000;-0.000} | book {2:+0.00;-0.00}" -f $dpx, $dcvd, $dbk)
             }
         } catch { Emit "DELTA failed: $_" }
 
