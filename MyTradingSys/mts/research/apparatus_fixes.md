@@ -167,3 +167,32 @@ Before calling any external endpoint to verify a snapshot field, read MyTradingS
 SESSION_PASTE.txt lacks the CANONICAL FIELDS table from MTS_DICTIONARY.md. Cause of O2. Fix: extend scripts/start-session.ps1 to extract and inline that table.
 
 # END
+
+## SESSION 2026-09-17 AI MISTAKES
+
+1. Self-assigned WORKER role in a COORDINATOR session when the operator asked for a
+   || session. || means a separate verification session per this file (VVP-002 note).
+   Correct action: dispatch a fresh chat with a self-contained worker prompt.
+
+2. Flip-flopped when challenged on the worker question. Should have owned the first
+   mistake cleanly and stated the correct interpretation, not re-explained a wrong
+   approach as if it had been right.
+
+3. Handed the worker PowerShell commands expecting it to execute them. The worker has
+   no shell. Operator runs all commands. Worker only analyzes pasted output.
+
+4. Method-listing regex was too narrow: missed constructors, generic return types
+   (List<, Map<, Optional<), arrays, and deeper indents. Worker caught this. Inventory
+   would have been incomplete.
+
+5. Used "jar" as shorthand for the running Java process. No jar exists in this project;
+   the loop runs via mvn exec:java -Dexec.mainClass=datafeed.Main. Wrong word, dropped.
+
+6. Overstated "compiled_engine.md self-contradicts" on L30 vs L322. Precise claim is:
+   two consumers read the same field with different meanings. The file was not
+   self-contradicting, the consumers were disagreeing.
+
+All six were stated by the AI, not inferred by the operator. Each was corrected
+in the same session it was made, except #1 and #2 which required a stop.
+
+# END OF SESSION 2026-09-17 MISTAKES
