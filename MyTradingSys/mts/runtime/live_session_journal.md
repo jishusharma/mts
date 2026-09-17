@@ -232,3 +232,83 @@ READ:    Engine short-biased the whole move, did not fire. No session frame unti
 [OPEN] What we trade on. The engine trades on rank-1 net_rr_sanity plus the setup_candidate structure. It does not read CoinGlass panels. CoinGlass is a visual cross-check, not an input. Question: confirm this stays true, or name a CoinGlass field that should be wired as a cross-check input. Owner: operator.
 
 [OPEN] Pre-open playbook gap. Carried from prior session. London-NY handoff on 09-17 produced a 474-point ramp then a 510-point fade. Engine stayed short-biased and did not fire. No condition-file rule names the pattern. Decision pending: build a rule or mark permanently manual.
+
+## MTS-2026-09-17-1757Z CLOSE ADDENDUM - 2026-09-17T19:40Z
+
+CORRECTIONS TO PRIOR HANDOFF
+
+- Prior handoff NOT YET DONE section is stale. All four items completed at 19:38Z: gitsnap commit b92051d tag last-snapshot moved dirty=0; 03_FILE_INDEX.md row for scripts\live\mts-dashboard.ps1 added; MTS_DICTIONARY.md entries for mts-dashboard and -Watch added; mts-watch.ps1 version bumped v1.1.0 to v1.1.1.
+- Prior handoff does not record mts-dashboard version evolution: v1.0.0 plain dashboard, v1.1.0 tables plus colors, v1.2.0 fixed frame plus engine-gate alignment plus full state header. Only v1.2.0 exists on disk.
+- Prior handoff does not mention mts-live-stop flag is not cleared by mts-live on launch. After a stop, remove data\mts_watch_stop.flag before running mts-live again. Small usability gap. One-line fix candidate in load.ps1.
+
+ADDITIONS
+
+1. Backup files created this session under backup_session\: live_session_journal_before_java2_*.md, live_session_journal_before_dash_*.md, live_session_journal_before_addendum_*.md, load_before_dashboard_*.ps1, mts-watch_before_plainwords_*.ps1, mts-watch_before_ver_*.ps1, mts-dashboard_before_tables_*.ps1, mts-dashboard_before_colors_*.ps1, mts-dashboard_before_layout_*.ps1, mts-dashboard_before_fix5_*.ps1, mts-dashboard_before_cleanup_*.ps1, mts-dashboard_before_watch_*.ps1, mts-dashboard_before_enginegate_*.ps1, 03_FILE_INDEX_before_dash_*.md, MTS_DICTIONARY_before_dash_*.md.
+
+2. Historical pre-open playbook gap references in journal: line 81 OBS 13:53Z, line 103 LANDED 13:29Z, line 169 ACTIONS A5, line 234 OPEN new. Four total references. Open item 5 context.
+
+3. Git CRLF warnings on commit b92051d. Files flagged: state_code_regime.json, supervisor_log.txt, mts-watch.ps1, load.ps1, mts-dashboard.ps1. Git will normalize to LF on next touch. mts-watch.ps1 and load.ps1 were written LF this session, so the working-copy CRLF is unexpected. Verify next session.
+
+4. Book flips values in the 7-minute window 19:09 to 19:16: 0.12, 1.34, 0.53, 2.14, 2.17, 0.26, 1.14. Seven distinct. B024 evidence.
+
+5. State vote layer observation: in the 12-frame -Watch window, state was S for ten frames then A for two. One transition at 19:14:15. Rank-1 setup unchanged the whole window. Vote layer jittery, setup layer stable.
+
+6. Session timings: session start name MTS-2026-09-17-1757Z. Session close time 19:40Z. Duration about 1h45m wall clock.
+
+7. Self-corrections made live this session: wrong state cycle claim (S to A to S to A) corrected to S-then-A one transition; wrong line count 16 corrected to 32; wrong OPEN count six corrected to five; unverified line 169 content then verified as ACTIONS A5.
+
+8. Audit format directive for next session: every response carries a per-claim audit with source, check, arithmetic, reason, confidence (confirmed / inferred / unverified), and corrections to prior statements. User requested this running behavior.
+
+## MTS-2026-09-17-1757Z PROOF DETECTOR AUDIT AND OPEN DESIGN QUESTION - 2026-09-17T19:52Z
+
+[VERIFIED] delta source. SetupCandidatesBuilder.java lines 615-620. deltas[i] = 2 * takerBuy - volumes[i], reading kline index 9 (taker buy base asset volume). Expands to takerBuy minus takerSell. This is the kline taker-buy proxy, consistent with B044. Not aggTrade.
+
+[VERIFIED] rejection_wick. Lines 623-666. Scan last 20 candles. For a short setup, wick high must be >= zone and close < zone. For a long setup, wick low must be <= zone and close > zone. Quality by wickPct = 1 - body/range and bodyPct = body/range: STRONG wickPct>0.8 bodyPct<0.2; MODERATE wickPct>0.5 bodyPct<0.5; else WEAK. Actual level is the wick tip price. The ONLY proof with an explicit setup-direction check inside the detector.
+
+[VERIFIED] absorption. Lines 670-692. Scan last 10 candles within 0.1% of zone. All three must hold: volume > 2.0x avgVol20; range < 0.3x ATR14; delta sign opposite to candle color. Strength by maxVolRatio: strong if > 5.0, else moderate. No direction field.
+
+[VERIFIED] finished_auction. Lines 695-706. Scan last 20 candles. Condition: abs(delta[i]) > 3.0x avgAbsDelta20. Reversal: extreme candle direction opposite to close move next candle. No-follow: abs(delta[i+1]) < 0.5x abs(delta[i]). Direction stored as buy or sell (the extreme candle direction). follow_through hardcoded false. No setup-direction check in count.
+
+[VERIFIED] delta_flip. Lines 712-735. Scan last 20 candles. Condition: sign change between deltas[i-1] and deltas[i]. Proximity gate 0.1% of zone. Nearest-zone attribution: reject if another zone is closer. from_negative stored. actual_level is close at flip candle. No setup-direction check in count.
+
+[VERIFIED] volume_spike. Lines 742-753. Baseline = 240-minute average volume. magnitude = current volume / 240-min average. detected = magnitude > 2.0. at_level = last close within 0.1% of zone. Both must be true to count. No direction field.
+
+[VERIFIED] speed. Lines 755-777. atrRatio = ATR14 current / ATR14 prior window. maxConsec = longest run of last 10 candles with range > 1.5x avgRange20. speedScore = min(10, atrRatio * 3 + maxConsec * 2). picking_up = score > 5. direction = VWAP slope direction, NOT setup direction. Count uses only picking_up.
+
+[VERIFIED] cvd_aligned. Lines 778-792. Internal consistency: cvd.slope and trade_flow.net_delta_1m point the same way. Flat main slope falls back to cvd_recent.slope_1h. Not a setup-direction check. A long setup with falling CVD and negative netDelta would still get cvd_aligned=true.
+
+[VERIFIED] book_imbalance. Line 795 reads order_book_depth.bid_ask_ratio. Count condition (line 537): != 0.0 AND (< 0.67 OR > 1.5). Any extreme counts, either side. Bid-heavy and ask-heavy both count the same for any setup direction.
+
+[FINDING] 7 of 8 proof detectors have no setup-direction check. Only rejection_wick does. The countSignals block at lines 528-539 increments every proof that fires, regardless of direction fit. Consequence: a long setup at a low can count a buy-direction finished_auction as supporting proof, which is directionally a contradiction (buying climax at a low, not selling exhaustion). Same for cvd_aligned falling on a long, book ask-heavy on a long, speed direction down on a long.
+
+[EXAMPLE] Alert at 19:35:16Z. SETUP_FORMING, proof 5, ct_long @ 4h_val 76513.85. Five counted proofs: rejection_wick MODERATE at 76505.3; finished_auction buy extreme +57.75; delta_flip from_negative at zone; speed picking_up vwap rising; book_imbalance 2.76. Directionally fitting a long: 4 of 5. The finished_auction buy is a buying climax, a contradiction counted as support.
+
+[CONSEQUENCE] The proof count overstates directional support. Operators and the engine confidence grading read the count as if all proofs point the same way. They do not. Counts will drop across the board if the count is made direction-aware.
+
+[OPEN QUESTION - PRIMARY] What is the right approach? Three options. Option A: direction-aware counting. For a long, only count finished_auction if direction=sell, only count cvd_aligned if cvd.slope=rising, only count book_imbalance if >1.5, only count speed if direction=up. Mirror for short. Java change in SetupCandidatesBuilder.java lines 528-539. Consequence: proof counts drop, confidence grades drop, history comparison breaks. Option B: keep the raw count but add a separate direction_fit field that shows how many proofs point the setup way. Engine still counts raw, dashboard and alerts show both. Non-breaking. Option C: do nothing. Accept that the count is a signal count, not a conviction score. Update documentation to say so.
+
+[OPEN QUESTION] Related: what does the engine confidence grade (A, B, C, C+) actually mean? If it is derived from proof count, the direction-blind count propagates into confidence. Verify in a future session.
+
+[OPEN QUESTION] Related: does the alert reader (operator or AI) need a separate contradiction line? The current alert card shows the raw proof detail. A compact summary like "4 supportive, 1 contradicting" would make the direction fit visible without engine change.
+
+[CORRECTIONS] Three claims made earlier in the session that this code read corrected. (1) "3 of 8 proofs have no direction check" is wrong. Actual is 7 of 8. (2) rejection_wick was implicitly treated as having no check. It is the only one that does. (3) delta source was "likely kline proxy" inferred. Confirmed as kline index 9 taker-buy proxy.
+
+[BUGS SUGGESTION - NOT FILED] Potential B046: OPEN, HIGH, "7 of 8 proof detectors lack setup-direction check; count overstates directional support". Evidence SetupCandidatesBuilder.java lines 528-539 countSignals vs lines 627-640 rejection_wick. Not filed. Do not file until the approach is decided.
+
+[SESSION CLOSE] MTS-2026-09-17-1757Z. Close time 2026-09-17T19:52Z. Duration about 1h55m. No trade taken. No session_state thesis change. Loop left running: supervisor 8200, wrapper 17792, java 596, lock 17792 held. Build-Check PASS at boot. Commit b92051d at 19:38Z. Journal appends this close: dashboard build block 32 lines, close addendum 26 lines, this proof audit append.
+
+[FIRST ACTION NEXT SESSION] Read this journal tail 60 lines. Run mts-dashboard to confirm render. Review the three OPEN questions on proof counting. Do not file BUGS.md B046 until the approach is decided. Investigate the right approach: A direction-aware count, B separate direction_fit field, C accept raw count and document. Owner: operator.
+
+## MTS-2026-09-17-1757Z FIRE BUG FIXED AND REMAINING OPEN - 2026-09-17T19:53Z
+
+[FIXED] mts-dashboard FIRE bug. Live defect at 19:32:27Z printed GATE=FIRE and "Engine FIRE" for a SETUP_FORMING verdict. Cause: binary not-WAIT test in GATE cell and summary line. Fix: read verdict word verbatim from apparatus_log field 5, split by pipe, strip parenthetical. Verdict word printed as-is. SETUP_CONFIRMED is the only fire word. Four anchors, atomic check, all count 1. Verified 19:52:03Z: banner SETUP_FORMING, GATE SETUP_FORMING, summary "Engine says: SETUP_FORMING. setup forming". No false FIRE.
+
+[LOGGED] Verdict word taxonomy observed this session: WATCH (setup being watched), SETUP_FORMING (structure building), SETUP_CONFIRMED (entry condition met, not seen today), WAIT_RR (at zone, ratio below gate), WAIT_TRIGGER (ratio ok, price not at zone). Not yet in MTS_DICTIONARY.md. Add next session.
+
+[LOGGED] DIRECTION request open. Alert card and dashboard TRADES table do not print LONG or SHORT as a word. Direction is embedded in the setup_type suffix (_long or _short). Snapshot has a direction field per candidate. Fix: add DIRECTION column to dashboard TRADES table, reading $c.direction. One column, two lines. Non-critical.
+
+[REMAINING] DSA_SESSION_PROMPT.md section 11 not updated this session. Critical file. Four-step proof required: hash before, edit, hash after, diff. Defer to next session. Section 11 currently reads state from MTS-2026-09-17-1624Z close.
+
+[REMAINING] session_log.json not written this session. Ledger has no entry for MTS-2026-09-17-1757Z. Journal carries the detail. Ledger write is a one-liner for next session.
+
+[SESSION CLOSE FINAL] MTS-2026-09-17-1757Z. Close time 2026-09-17T19:53Z. No trade taken. No session_state thesis change. Loop running: sup 8200, wrap 17792, java 596, lock 17792. Build-Check PASS at boot. Commit b92051d at 19:38Z. Journal appends this close: dashboard build 32 lines, close addendum 26 lines, proof audit 40 lines, this fix log. FIRE bug: found, fixed, verified live. Next session first action: update DSA_SESSION_PROMPT.md section 11, write session_log.json entry, add verdict taxonomy to MTS_DICTIONARY.md.

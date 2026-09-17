@@ -65,13 +65,21 @@ Write-Host ("=" * $W) -ForegroundColor $C_SECT
 
 # DECISION
 $top = $j.setup_candidates[0]
-$verdict = "UNKNOWN"; $reason = ""; $waitKind = "OTHER"
-if     ($lastCycle -match 'WAIT_RR \(net_rr ([\d\.]+) < 2\.0\)') { $verdict="WAIT"; $reason = "net reward to risk " + $matches[1] + " below the 2.0 gate"; $waitKind = "RR" }
-elseif ($lastCycle -match 'WAIT_TRIGGER \(price not at zone\)')          { $verdict="WAIT"; $reason = "price not at zone"; $waitKind = "TRIGGER" }
-elseif ($lastCycle -match 'WAIT')                                        { $verdict="WAIT"; $reason = $lastCycle; $waitKind = "OTHER" }
-Write-Host "  [ " -NoNewline -ForegroundColor $C_WARN
-Write-Host $verdict -NoNewline -ForegroundColor $C_WARN
-Write-Host " ]  " -NoNewline -ForegroundColor $C_WARN
+$verdictWord = "UNKNOWN"; $reason = ""; $waitKind = "OTHER"
+$vparts = $lastCycle -split ' \| '
+if ($vparts.Count -ge 5) { $verdictWord = ($vparts[4] -replace '\s*\(.*$', '').Trim() }
+if ($verdictWord -eq "") { $verdictWord = "UNKNOWN" }
+if ($lastCycle -match 'WAIT_RR \(net_rr ([\d\.]+) < 2\.0\)') { $reason = "net reward to risk " + $matches[1] + " below the 2.0 gate"; $waitKind = "RR" }
+elseif ($lastCycle -match 'WAIT_TRIGGER \(price not at zone\)') { $reason = "price not at zone"; $waitKind = "TRIGGER" }
+elseif ($verdictWord -eq "WATCH") { $reason = "setup being watched"; $waitKind = "WATCH" }
+elseif ($verdictWord -eq "SETUP_FORMING") { $reason = "setup forming"; $waitKind = "FORMING" }
+elseif ($verdictWord -eq "SETUP_CONFIRMED") { $reason = "setup confirmed"; $waitKind = "CONFIRMED" }
+else { $reason = $lastCycle; $waitKind = "OTHER" }
+$bannerColor = $C_WARN
+if ($verdictWord -eq "SETUP_CONFIRMED") { $bannerColor = $C_OK }
+Write-Host "  [ " -NoNewline -ForegroundColor $bannerColor
+Write-Host $verdictWord -NoNewline -ForegroundColor $bannerColor
+Write-Host " ]  " -NoNewline -ForegroundColor $bannerColor
 Write-Host $reason -ForegroundColor $C_VALUE
 
 $distAbs = [math]::Abs([math]::Round([double]$j.current_price - [double]$top.zone.price, 1))
@@ -107,8 +115,8 @@ foreach ($c in ($j.setup_candidates | Select-Object -First 5)) {
     $gt = "-"
     $gc = $C_LABEL
     if ($isRank1) {
-        $waiting = ($lastCycle -match 'WAIT')
-        if ($waiting) { $gt = "WAIT"; $gc = $C_BAD } else { $gt = "FIRE"; $gc = $C_OK }
+        $gt = $verdictWord
+        if ($verdictWord -eq "SETUP_CONFIRMED") { $gc = $C_OK } else { $gc = $C_WARN }
     }
     Write-Host "  | " -NoNewline -ForegroundColor $C_LABEL
     Write-Host $rk -NoNewline -ForegroundColor $C_VALUE
@@ -127,8 +135,7 @@ foreach ($c in ($j.setup_candidates | Select-Object -First 5)) {
     Write-Host " |" -ForegroundColor $C_LABEL
 }
 Write-Host "  +------+-------------+-----------------------+-------+---------+--------+------+" -ForegroundColor $C_LABEL
-if ($lastCycle -match 'WAIT') { Write-Host "  Engine waiting on rank-1. No trade." -ForegroundColor $C_WARN }
-else { Write-Host "  Engine FIRE. Check before acting." -ForegroundColor $C_OK }
+Write-Host ("  Engine says: " + $verdictWord + ". " + $reason) -ForegroundColor $C_WARN
 Write-Host ""
 
 # 4-COLUMN GRID
