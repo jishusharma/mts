@@ -136,12 +136,10 @@ Seven waste classes seen today. Each has a fix. Each fix is a rule.
    mode.ps1 call; Ctrl+C killed the wrapper and the supervisor had to
    recover.
 
-8. Never call mode.ps1 or start-trading-day.ps1 with the call operator
-   (ampersand) from a script that needs to keep running. Both block
-   forever because they enter the trading loop. Use Start-Process with
-   -WindowStyle Hidden and no -Wait. Same rule applies to any wrapper
-   around them. Verified 2026-09-17: restart-with-b034.ps1 hung at the
-   mode.ps1 call; Ctrl+C killed the wrapper and the supervisor had to
-   recover.
+9. To stop a supervisor, kill the process directly by matching its
+   command line for loop-supervisor. Do not use the stop flag plus a
+   polling wait. The supervisor only checks the flag once every 30
+   seconds, so a polling wait burns up to 45 seconds. One direct kill
+   is 1 second and does the same thing.
 
 # END

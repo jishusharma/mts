@@ -140,3 +140,17 @@ READ:    Engine short-biased the whole move, did not fire. No session frame unti
 [CLOSED] B027 false alarm. OI updates hourly. Live snapshot matches direct endpoint.
 [IN-FIX] B034 CVD ring clear on UTC day rollover. StateCodeEmitter.java. Compile OK. Pending loop restart.
 [REF] B032 deferred. session_end_logs.md writer is StateCodeEmitter.java:442-443, path MyTradingSys/system. Not a defect.
+## MTS-2026-09-17-1514Z POST-RESTART - 2026-09-17T16:20:38Z
+
+[LANDED] B034 live. StateCodeEmitter.class recompiled 16:09Z, java 596 started 16:19Z, class loaded.
+[LANDED] B043 partial: PROCESS SPEED RULE 8 added -- never call mode.ps1 or start-trading-day.ps1 with & from a script that needs to continue. Verified by failure: restart-with-b034.ps1 hung at mode.ps1 call.
+[OBS] B043 root cause: supervisor matcher keys on 'start-trading-day' in command line. When mode.ps1 launches the wrapper, cmd line says 'mode.ps1' not 'start-trading-day'. Supervisor misses it. Second supervisor started twice during recovery.
+[OBS] Supervisor 18264, wrapper 17792, java 596. Single of each. Lock 17792. Clean.
+## MTS-2026-09-17-1514Z CLOSE - 2026-09-17T16:22:23Z
+
+[LANDED] B027 CLOSED. B034, B026, B011 fixed. Build-Check UTC fixed. start-session tail default.
+[LANDED] B043 fixed. Supervisor matcher extended to mode.ps1.
+[LANDED] PROCESS SPEED RULES 8 (no ampersand on mode.ps1) and 9 (direct-kill supervisors) added.
+[LANDED] Commits: 73b7d9f, 78da5bc, f50abc1.
+[OBS] Recovery lesson: restart utility that calls mode.ps1 with & hangs forever. Ctrl+C killed the wrapper. Supervisor auto-recovered but spawned duplicate during grace.
+[NOTE] Loop left running. Supervisor 8200, wrapper 17792, java 596. B034 loaded.
