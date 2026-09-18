@@ -37,7 +37,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B014 | 2026-09-16 | WONTFIX | MED | Loop exit orphans mvn/java child | L_ITEMS L28 | 2026-09-18: Invoke-WithTimeout calls taskkill /T /F at L98,L108; process tree killed. No orphan path in code. |
 | B015 | 2026-09-16 | WONTFIX | LOW | context.ps1 reads Binance REST each call | L_ITEMS L30 | 2026-09-18: duplicate of T029 |
 | B016 | 2026-09-16 | WONTFIX | LOW | state_code_regime.json not read by Java | L_ITEMS L31 | 2026-09-18: regime is display-only; T018 WONTFIX. No consumer intended. |
-| B017 | 2026-09-16 | OPEN | MED | Ratio gate has no near-miss record | L_ITEMS I21 | - |
+| B017 | 2026-09-16 | WONTFIX | MED | Ratio gate has no near-miss record | L_ITEMS I21 | 2026-09-18: distance-tier cutoff at SetupCandidatesBuilder L71; near-miss record is observability only, no consumer. Reopen if needed. |
 | B018 | 2026-09-16 | OPEN | HIGH | Zones move per cycle nrr against moving target | L_ITEMS I22 | - |
 | B019 | 2026-09-16 | WONTFIX | MED | Quad vs setup direction mismatch not read | L_ITEMS I23 | 2026-09-18: quad_classify is display-only; no engine consumer intended. |
 | B020 | 2026-09-16 | CLOSED | MED | session_timing_rules.md documents EST all year | L_ITEMS I24 | doc-only: timezone note added session_timing_rules.md L24-26 2026-09-17 |
@@ -48,7 +48,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B025 | 2026-09-16 | CLOSED | MED | Verdict flicker has no debounce | L_ITEMS I31 | 2026-09-18: 2-cycle persistence added to start-trading-day.ps1 verdict-change block |
 | B026 | 2026-09-16 | WONTFIX | COSMETIC | Log line no-change ambiguous | L_ITEMS I32 | Cosmetic; "no change:" prefix disambiguates. |
 | B027 | 2026-09-16 | CLOSED | HIGH | OI field dead from 17:40 UTC | L_ITEMS I33 | false alarm: OI updates hourly not per-minute. 200-snapshot history shows 4 distinct buckets changing on the hour. Direct endpoint matches snapshot -0.24 exactly. Verified 2026-09-17 |
-| B028 | 2026-09-16 | OPEN | MED | Sweep-entry rule missing | L_ITEMS I34 | - |
+| B028 | 2026-09-16 | OPEN | MED | Sweep-entry rule missing | L_ITEMS I34 | Rule 32 proof (3 snapshots) not gathered this session. Carry. |
 | B029 | 2026-09-16 | WONTFIX | MED | Supervisor not running after manual restart | L_ITEMS I35 | 2026-09-18: B043 closed; matcher covers mode.ps1. Operator-start, not defect. |
 | B030 | 2026-09-16 | WONTFIX | LOW | Binance OI data path reconciliation | L_ITEMS I37 | 2026-09-18: L220-223 reads openInterestHist 1h x2, direction correct. |
 | B031 | 2026-09-16 | WONTFIX | LOW | Two-phase OI/CVD pattern unnamed | L_ITEMS I38 | 2026-09-18: naming; no engine consumer. |
@@ -56,7 +56,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B033 | 2026-09-17 | WONTFIX | MED | Profile shape taxonomy does not match Tom | L_ITEMS I40 | 2026-09-18: L550-551 comment documents "NOT Tom s B"; screener taxonomy accepted. |
 | B034 | 2026-09-17 | CLOSED | HIGH | CVD ring not cleared at UTC rollover | AUDIT StateCodeEmitter row 1 | code receipt: StateCodeEmitter.java L340 cvdSeries.clear() on day-change; loop restarted 2026-09-18T17:48Z; runtime verify at next 00:00 UTC rollover tracked by T028 |
 | B035 | 2026-09-17 | CLOSED | HIGH | Book imbalance threshold 0.4-0.6 treats balanced as extreme | AUDIT SetupCandidatesBuilder L541 | SetupCandidatesBuilder.java L541 now 0.67/1.5; hash 3ED13909->C30EB08F; 2026-09-17 |
-| B036 | 2026-09-17 | OPEN | MED | setup_candidates and last_3_delta read from snapshot not normalized | AUDIT math_object_builder L357 L388 | - |
+| B036 | 2026-09-17 | CLOSED | MED | setup_candidates and last_3_delta read from snapshot not normalized | AUDIT math_object_builder L357 L388 | 2026-09-18: normalized now carries setup_candidates + cvd; call sites read from normalized |
 | B037 | 2026-09-17 | CLOSED | MED | isinstance accepts booleans spurious contradiction | AUDIT math_object_builder L393 L400 | 2026-09-18: added not isinstance(_book, bool) at both branches |
 | B038 | 2026-09-17 | WONTFIX | LOW | diff_state compares disjoint value spaces | AUDIT mts_math L204 | 2026-09-18: STATE.classification vs conditions.vp_shape; only print consumer. Cosmetic. |
 | B039 | 2026-09-17 | CLOSED | MED | ExtraSetupBuilder momentum has no RR gate | AUDIT ExtraSetupBuilder L103-135 | 2026-09-18: candidate rejected when net RR < 2.0 |
