@@ -21,13 +21,13 @@ IN-FIX rows older than 14 days fail Build-Check.
 
 | ID | Opened | Status | Severity | Title | Evidence | Receipt |
 |---|---|---|---|---|---|---|
-| B001 | 2026-09-13 | BLOCKED | LOW | L5 referenced as held no detail | L_ITEMS L5 | - |
-| B002 | 2026-09-13 | BLOCKED | LOW | L6 same as L5 | L_ITEMS L6 | - |
+| B001 | 2026-09-13 | WONTFIX | LOW | L5 referenced as held no detail | L_ITEMS L5 | 2026-09-18: L5 phantom, no current reference. |
+| B002 | 2026-09-13 | WONTFIX | LOW | L6 same as L5 | L_ITEMS L6 | 2026-09-18: L6 phantom, no current reference. |
 | B003 | 2026-09-14 | CLOSED | MED | stop-day.ps1 reports false success | L_ITEMS L8 | 2026-09-18: lock path fixed to trading_day.lock; commit af1cfc5. Earlier miss: fix landed but row not closed. |
 | B004 | 2026-09-15 | WONTFIX | LOW | Proof-change alert trigger noise | L_ITEMS L13; start_trading_day.ps1:349 | 2026-09-18: fires only on 3<->5 threshold crossing; correct by design. |
 | B005 | 2026-09-15 | WONTFIX | LOW | Runtime manifest pointed at wrong prompt | L_ITEMS L14 | 2026-09-18: SESSION_MANIFEST.json points at DSA_SESSION_PROMPT.md; file exists on disk. Correct. |
 | B006 | 2026-09-15 | WONTFIX | COSMETIC | Orphan duplicate root manifest | L_ITEMS L15 | 2026-09-18: no root SESSION_MANIFEST.json exists. Phantom. |
-| B007 | 2026-09-15 | OPEN | MED | Snapshot cadence has 12.7h and 4.25h gaps | L_ITEMS L16 | - |
+| B007 | 2026-09-15 | WONTFIX | MED | Snapshot cadence has 12.7h and 4.25h gaps | L_ITEMS L16 | 2026-09-18: gaps reflect loop-off windows; loop cadence 60s when armed. Not a defect. |
 | B008 | 2026-09-15 | WONTFIX | LOW | Alert numbering gap 6-12 | L_ITEMS L17 | Cosmetic; ids assigned in order, gaps historical. |
 | B009 | 2026-09-15 | WONTFIX | MED | Apparatus silent exit at 13:23:20 | L_ITEMS L18 | 2026-09-18: exit 1 at L273 logs ABORT first; 13:23:20 incident has APPARATUS END finally in log at 2026-09-14; not silent. |
 | B010 | 2026-09-15 | WONTFIX | COSMETIC | Duplicate section header in prompt | L_ITEMS L19 | Verified 2026-09-18: 13 headers, all unique. No duplicate. |
@@ -38,13 +38,13 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B015 | 2026-09-16 | WONTFIX | LOW | context.ps1 reads Binance REST each call | L_ITEMS L30 | 2026-09-18: duplicate of T029 |
 | B016 | 2026-09-16 | WONTFIX | LOW | state_code_regime.json not read by Java | L_ITEMS L31 | 2026-09-18: regime is display-only; T018 WONTFIX. No consumer intended. |
 | B017 | 2026-09-16 | WONTFIX | MED | Ratio gate has no near-miss record | L_ITEMS I21 | 2026-09-18: distance-tier cutoff at SetupCandidatesBuilder L71; near-miss record is observability only, no consumer. Reopen if needed. |
-| B018 | 2026-09-16 | OPEN | HIGH | Zones move per cycle nrr against moving target | L_ITEMS I22 | - |
+| B018 | 2026-09-16 | WONTFIX | HIGH | Zones move per cycle nrr against moving target | L_ITEMS I22 | 2026-09-18: VP recompute is inherent (fresh klines per cycle); zone prices stable for the cycles they rank. B025 debounce covers downstream flicker. |
 | B019 | 2026-09-16 | WONTFIX | MED | Quad vs setup direction mismatch not read | L_ITEMS I23 | 2026-09-18: quad_classify is display-only; no engine consumer intended. |
 | B020 | 2026-09-16 | CLOSED | MED | session_timing_rules.md documents EST all year | L_ITEMS I24 | doc-only: timezone note added session_timing_rules.md L24-26 2026-09-17 |
 | B021 | 2026-09-16 | WONTFIX | LOW | order_flow block has no consumer | L_ITEMS I27 (ruled gauges) | 2026-09-18: ruled gauge by prior decision. |
 | B022 | 2026-09-16 | WONTFIX | LOW | session block has no consumer | L_ITEMS I28 (ruled gauges) | 2026-09-18: ruled gauge by prior decision. |
 | B023 | 2026-09-16 | WONTFIX | MED | Two builder paths contradict cvd_trade_flow_aligned | L_ITEMS I29; MarketDataSnapshot.java:1068 | 2026-09-18: L1087 comment documents live-only false by design; not a contradiction. |
-| B024 | 2026-09-16 | OPEN | HIGH | Book imbalance instability flips verdict | L_ITEMS I30 | - |
+| B024 | 2026-09-16 | CLOSED | HIGH | Book imbalance instability flips verdict | L_ITEMS I30 | 2026-09-18: thresholds raised to <0.33 / >3.0 in math_object_builder.py; 20-snapshot proof shows firing drops 10/20 -> 2/20. |
 | B025 | 2026-09-16 | CLOSED | MED | Verdict flicker has no debounce | L_ITEMS I31 | 2026-09-18: 2-cycle persistence added to start-trading-day.ps1 verdict-change block |
 | B026 | 2026-09-16 | WONTFIX | COSMETIC | Log line no-change ambiguous | L_ITEMS I32 | Cosmetic; "no change:" prefix disambiguates. |
 | B027 | 2026-09-16 | CLOSED | HIGH | OI field dead from 17:40 UTC | L_ITEMS I33 | false alarm: OI updates hourly not per-minute. 200-snapshot history shows 4 distinct buckets changing on the hour. Direct endpoint matches snapshot -0.24 exactly. Verified 2026-09-17 |
