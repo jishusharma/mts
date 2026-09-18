@@ -311,6 +311,8 @@ Log-Line "state_machine PID=$($sm.Id)"
 $StateMachinePID = $sm.Id
 
 $lastVerdict = $null
+$pendingVerdict = $null
+$pendingVerdictFrom = $null
 $lastZone = $null
 $lastPrice = $null
 $lastProof = $null
@@ -401,8 +403,14 @@ try {
     
         $changed = $false
         $why = @()
-        if ($null -ne $lastVerdict -and $lastVerdict -ne $v.verdict) {
-            $changed = $true; $why += "verdict $lastVerdict -> $($v.verdict)"
+        if ($null -ne $pendingVerdict -and $pendingVerdict -eq $v.verdict) {
+            $changed = $true; $why += "verdict $pendingVerdictFrom -> $($v.verdict)"
+            $pendingVerdict = $null
+        } elseif ($null -ne $lastVerdict -and $lastVerdict -ne $v.verdict) {
+            $pendingVerdictFrom = $lastVerdict
+            $pendingVerdict = $v.verdict
+        } else {
+            $pendingVerdict = $null
         }
         if ($null -ne $lastZone -and $lastZone -ne $v.zone) {
             $changed = $true; $why += "zone $lastZone -> $($v.zone)"

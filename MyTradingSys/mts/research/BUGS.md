@@ -45,7 +45,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B022 | 2026-09-16 | WONTFIX | LOW | session block has no consumer | L_ITEMS I28 (ruled gauges) | 2026-09-18: ruled gauge by prior decision. |
 | B023 | 2026-09-16 | WONTFIX | MED | Two builder paths contradict cvd_trade_flow_aligned | L_ITEMS I29; MarketDataSnapshot.java:1068 | 2026-09-18: L1087 comment documents live-only false by design; not a contradiction. |
 | B024 | 2026-09-16 | OPEN | HIGH | Book imbalance instability flips verdict | L_ITEMS I30 | - |
-| B025 | 2026-09-16 | OPEN | MED | Verdict flicker has no debounce | L_ITEMS I31 | - |
+| B025 | 2026-09-16 | CLOSED | MED | Verdict flicker has no debounce | L_ITEMS I31 | 2026-09-18: 2-cycle persistence added to start-trading-day.ps1 verdict-change block |
 | B026 | 2026-09-16 | WONTFIX | COSMETIC | Log line no-change ambiguous | L_ITEMS I32 | Cosmetic; "no change:" prefix disambiguates. |
 | B027 | 2026-09-16 | CLOSED | HIGH | OI field dead from 17:40 UTC | L_ITEMS I33 | false alarm: OI updates hourly not per-minute. 200-snapshot history shows 4 distinct buckets changing on the hour. Direct endpoint matches snapshot -0.24 exactly. Verified 2026-09-17 |
 | B028 | 2026-09-16 | OPEN | MED | Sweep-entry rule missing | L_ITEMS I34 | - |
@@ -59,7 +59,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B036 | 2026-09-17 | OPEN | MED | setup_candidates and last_3_delta read from snapshot not normalized | AUDIT math_object_builder L357 L388 | - |
 | B037 | 2026-09-17 | CLOSED | MED | isinstance accepts booleans spurious contradiction | AUDIT math_object_builder L393 L400 | 2026-09-18: added not isinstance(_book, bool) at both branches |
 | B038 | 2026-09-17 | WONTFIX | LOW | diff_state compares disjoint value spaces | AUDIT mts_math L204 | 2026-09-18: STATE.classification vs conditions.vp_shape; only print consumer. Cosmetic. |
-| B039 | 2026-09-17 | OPEN | MED | ExtraSetupBuilder momentum has no RR gate | AUDIT ExtraSetupBuilder L103-135 | - |
+| B039 | 2026-09-17 | CLOSED | MED | ExtraSetupBuilder momentum has no RR gate | AUDIT ExtraSetupBuilder L103-135 | 2026-09-18: candidate rejected when net RR < 2.0 |
 | B040 | 2026-09-16 | CLOSED | LOW | Log prints STATE X to X with same value | L_ITEMS I36 | start-trading-day.ps1 L319 L419 L422 pendingStateFrom |
 | B041 | 2026-09-17 | CLOSED | MED | Stale test asserted classification == B | test_mts_math.py:477 | test_mts_math.py:477 now trend_healthy; 130/130 pass |
 | B042 | 2026-09-17 | WONTFIX | LOW | day_type derived with provisional thresholds, no 3-snapshot evidence | MTS-2026-09-17-1142Z | 2026-09-18: provisional confidence already in snapshot; doc-only. |
