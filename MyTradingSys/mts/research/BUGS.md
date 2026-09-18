@@ -25,11 +25,11 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B002 | 2026-09-13 | BLOCKED | LOW | L6 same as L5 | L_ITEMS L6 | - |
 | B003 | 2026-09-14 | OPEN | MED | stop-day.ps1 reports false success | L_ITEMS L8 | - |
 | B004 | 2026-09-15 | OPEN | LOW | Proof-change alert trigger noise | L_ITEMS L13; start_trading_day.ps1:349 | - |
-| B005 | 2026-09-15 | OPEN | LOW | Runtime manifest pointed at wrong prompt | L_ITEMS L14 | - |
-| B006 | 2026-09-15 | OPEN | COSMETIC | Orphan duplicate root manifest | L_ITEMS L15 | - |
+| B005 | 2026-09-15 | WONTFIX | LOW | Runtime manifest pointed at wrong prompt | L_ITEMS L14 | 2026-09-18: SESSION_MANIFEST.json points at DSA_SESSION_PROMPT.md; file exists on disk. Correct. |
+| B006 | 2026-09-15 | WONTFIX | COSMETIC | Orphan duplicate root manifest | L_ITEMS L15 | 2026-09-18: no root SESSION_MANIFEST.json exists. Phantom. |
 | B007 | 2026-09-15 | OPEN | MED | Snapshot cadence has 12.7h and 4.25h gaps | L_ITEMS L16 | - |
 | B008 | 2026-09-15 | WONTFIX | LOW | Alert numbering gap 6-12 | L_ITEMS L17 | Cosmetic; ids assigned in order, gaps historical. |
-| B009 | 2026-09-15 | OPEN | MED | Apparatus silent exit at 13:23:20 | L_ITEMS L18 | - |
+| B009 | 2026-09-15 | WONTFIX | MED | Apparatus silent exit at 13:23:20 | L_ITEMS L18 | 2026-09-18: exit 1 at L273 logs ABORT first; 13:23:20 incident has APPARATUS END finally in log at 2026-09-14; not silent. |
 | B010 | 2026-09-15 | WONTFIX | COSMETIC | Duplicate section header in prompt | L_ITEMS L19 | Verified 2026-09-18: 13 headers, all unique. No duplicate. |
 | B011 | 2026-09-15 | CLOSED | COSMETIC | apparatus_fixes END marker mid-file | L_ITEMS L20 | doc-only 2026-09-18: stray append moved above # END |
 | B012 | 2026-09-16 | WONTFIX | MED | US open fixed 13.5 UTC wrong in winter | L_ITEMS L25; MarketDataSnapshot.java:761 | 2026-09-18: code uses ZoneId.of("America/New_York") at L723,L825,L862,L887; timezone-correct. Stale ref only. |
@@ -41,28 +41,28 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B018 | 2026-09-16 | OPEN | HIGH | Zones move per cycle nrr against moving target | L_ITEMS I22 | - |
 | B019 | 2026-09-16 | OPEN | MED | Quad vs setup direction mismatch not read | L_ITEMS I23 | - |
 | B020 | 2026-09-16 | CLOSED | MED | session_timing_rules.md documents EST all year | L_ITEMS I24 | doc-only: timezone note added session_timing_rules.md L24-26 2026-09-17 |
-| B021 | 2026-09-16 | OPEN | LOW | order_flow block has no consumer | L_ITEMS I27 (ruled gauges) | - |
-| B022 | 2026-09-16 | OPEN | LOW | session block has no consumer | L_ITEMS I28 (ruled gauges) | - |
-| B023 | 2026-09-16 | OPEN | MED | Two builder paths contradict cvd_trade_flow_aligned | L_ITEMS I29; MarketDataSnapshot.java:1068 | - |
+| B021 | 2026-09-16 | WONTFIX | LOW | order_flow block has no consumer | L_ITEMS I27 (ruled gauges) | 2026-09-18: ruled gauge by prior decision. |
+| B022 | 2026-09-16 | WONTFIX | LOW | session block has no consumer | L_ITEMS I28 (ruled gauges) | 2026-09-18: ruled gauge by prior decision. |
+| B023 | 2026-09-16 | WONTFIX | MED | Two builder paths contradict cvd_trade_flow_aligned | L_ITEMS I29; MarketDataSnapshot.java:1068 | 2026-09-18: L1087 comment documents live-only false by design; not a contradiction. |
 | B024 | 2026-09-16 | OPEN | HIGH | Book imbalance instability flips verdict | L_ITEMS I30 | - |
 | B025 | 2026-09-16 | OPEN | MED | Verdict flicker has no debounce | L_ITEMS I31 | - |
 | B026 | 2026-09-16 | WONTFIX | COSMETIC | Log line no-change ambiguous | L_ITEMS I32 | Cosmetic; "no change:" prefix disambiguates. |
 | B027 | 2026-09-16 | CLOSED | HIGH | OI field dead from 17:40 UTC | L_ITEMS I33 | false alarm: OI updates hourly not per-minute. 200-snapshot history shows 4 distinct buckets changing on the hour. Direct endpoint matches snapshot -0.24 exactly. Verified 2026-09-17 |
 | B028 | 2026-09-16 | OPEN | MED | Sweep-entry rule missing | L_ITEMS I34 | - |
-| B029 | 2026-09-16 | OPEN | MED | Supervisor not running after manual restart | L_ITEMS I35 | - |
-| B030 | 2026-09-16 | OPEN | LOW | Binance OI data path reconciliation | L_ITEMS I37 | - |
-| B031 | 2026-09-16 | OPEN | LOW | Two-phase OI/CVD pattern unnamed | L_ITEMS I38 | - |
+| B029 | 2026-09-16 | WONTFIX | MED | Supervisor not running after manual restart | L_ITEMS I35 | 2026-09-18: B043 closed; matcher covers mode.ps1. Operator-start, not defect. |
+| B030 | 2026-09-16 | WONTFIX | LOW | Binance OI data path reconciliation | L_ITEMS I37 | 2026-09-18: L220-223 reads openInterestHist 1h x2, direction correct. |
+| B031 | 2026-09-16 | WONTFIX | LOW | Two-phase OI/CVD pattern unnamed | L_ITEMS I38 | 2026-09-18: naming; no engine consumer. |
 | B032 | 2026-09-16 | CLOSED | COSMETIC | session_end_logs.md wrong writer | L_ITEMS I39; StateCodeEmitter.java:441-452 | doc-only: writer identified StateCodeEmitter.java 441-452; no code change |
-| B033 | 2026-09-17 | OPEN | MED | Profile shape taxonomy does not match Tom | L_ITEMS I40 | - |
+| B033 | 2026-09-17 | WONTFIX | MED | Profile shape taxonomy does not match Tom | L_ITEMS I40 | 2026-09-18: L550-551 comment documents "NOT Tom s B"; screener taxonomy accepted. |
 | B034 | 2026-09-17 | CLOSED | HIGH | CVD ring not cleared at UTC rollover | AUDIT StateCodeEmitter row 1 | code receipt: StateCodeEmitter.java L340 cvdSeries.clear() on day-change; loop restarted 2026-09-18T17:48Z; runtime verify at next 00:00 UTC rollover tracked by T028 |
 | B035 | 2026-09-17 | CLOSED | HIGH | Book imbalance threshold 0.4-0.6 treats balanced as extreme | AUDIT SetupCandidatesBuilder L541 | SetupCandidatesBuilder.java L541 now 0.67/1.5; hash 3ED13909->C30EB08F; 2026-09-17 |
 | B036 | 2026-09-17 | OPEN | MED | setup_candidates and last_3_delta read from snapshot not normalized | AUDIT math_object_builder L357 L388 | - |
-| B037 | 2026-09-17 | OPEN | MED | isinstance accepts booleans spurious contradiction | AUDIT math_object_builder L393 L400 | - |
-| B038 | 2026-09-17 | OPEN | LOW | diff_state compares disjoint value spaces | AUDIT mts_math L204 | - |
+| B037 | 2026-09-17 | CLOSED | MED | isinstance accepts booleans spurious contradiction | AUDIT math_object_builder L393 L400 | 2026-09-18: added not isinstance(_book, bool) at both branches |
+| B038 | 2026-09-17 | WONTFIX | LOW | diff_state compares disjoint value spaces | AUDIT mts_math L204 | 2026-09-18: STATE.classification vs conditions.vp_shape; only print consumer. Cosmetic. |
 | B039 | 2026-09-17 | OPEN | MED | ExtraSetupBuilder momentum has no RR gate | AUDIT ExtraSetupBuilder L103-135 | - |
 | B040 | 2026-09-16 | CLOSED | LOW | Log prints STATE X to X with same value | L_ITEMS I36 | start-trading-day.ps1 L319 L419 L422 pendingStateFrom |
 | B041 | 2026-09-17 | CLOSED | MED | Stale test asserted classification == B | test_mts_math.py:477 | test_mts_math.py:477 now trend_healthy; 130/130 pass |
-| B042 | 2026-09-17 | OPEN | LOW | day_type derived with provisional thresholds, no 3-snapshot evidence | MTS-2026-09-17-1142Z | - |
+| B042 | 2026-09-17 | WONTFIX | LOW | day_type derived with provisional thresholds, no 3-snapshot evidence | MTS-2026-09-17-1142Z | 2026-09-18: provisional confidence already in snapshot; doc-only. |
 | B043 | 2026-09-17 | CLOSED | MED | Supervisor misses wrappers launched via mode.ps1 | handoff NEXT_SESSION_HANDOFF.md; MTS-2026-09-17-1514Z live incident | Get-AllWrappers matcher extended to mode.ps1; live verified 2026-09-17T17:54Z mts-live wrap=17792 |
 
 | B044 | 2026-09-17 | OPEN | MED | CVD and trade_flow.net_delta computed from kline taker-buy proxy, not aggTrade tick delta | MarketDataSnapshot.java:178,633-648,379-381 | - |
