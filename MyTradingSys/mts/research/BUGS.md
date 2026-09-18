@@ -96,7 +96,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T018 | 2026-09-18 | WONTFIX | MED | Frame-view regime label has no verdict-block consumer | FYI-03 | WONTFIX 2026-09-18: superseded by 04_final_report. Frame is display only by design; real defect is determineSetupType |
 | T019 | 2026-09-18 | CLOSED | MED | RSI documentation conflict VVP-001 vs COMPILED_DECISIONS | journal; FYI-02 | doc-only 2026-09-18: E4 in COMPILED_DECISIONS.md marked SUPERSEDED; VVP-001 Tier 3 wins; RSI not Tom-validated |
 | T020 | 2026-09-18 | WONTFIX | COSMETIC | Rank-1 GATE cell not padded, runs into pipe on WAIT_TRIGGER | dashboard render 2026-09-18T11:31Z | superseded: GATE renamed to rr_gate (T007); value is boolean now, no padding needed |
-| T021 | 2026-09-18 | CLOSED | COSMETIC | tape-watch emits duplicate line when snapshot unchanged between ticks | journal L85 2026-09-17 | tape-watch.ps1 skip-on-same-snapshot 2026-09-18 |
+| T021 | 2026-09-18 | CLOSED | COSMETIC | tape-watch emits duplicate line when snapshot unchanged between ticks | journal L85 2026-09-17 | tape-watch.ps1 skip-on-same-snapshot 2026-09-18; receipt commit follows |
 | T022 | 2026-09-18 | OPEN | MED | Loop writes last_verdict.json for dashboard (needs critical-file approval) | journal B5; T012 | - |
 | T023 | 2026-09-18 | CLOSED | HIGH | Enforce CT state gate: no ct_short at VAH/VAL when state is trend_healthy | 04_final_report Step 1 | merged into B049; 6816cc0 |
 | T024 | 2026-09-18 | CLOSED | HIGH | Add TC long path: determineDirections above_vah must emit long; determineSetupType needs tc_long at VWAP for trend_healthy | 04_final_report Step 2 | 6816cc0; VerifyScbEdits.java 12/12 PASS 2026-09-18 |

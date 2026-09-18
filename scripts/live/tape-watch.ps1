@@ -17,11 +17,17 @@ if (-not (Test-Path $out)) {
 $prev = $null
 $popAt = @{}
 $tickN = 0
+$lastSnap = $null
 while ($true) {
     if (Test-Path $stop) { "tape-watch: stop"; break }
     try {
         $s = Get-ChildItem "$R\data\snapshots\BTCUSDT_*.json" -ErrorAction Stop |
              Sort-Object LastWriteTime -Descending | Select-Object -First 1
+        if ($lastSnap -and $s.FullName -eq $lastSnap) {
+            Start-Sleep -Seconds $IntervalSec
+            continue
+        }
+        $lastSnap = $s.FullName
         $j = Get-Content $s.FullName -Raw | ConvertFrom-Json
         $sc = Get-Content "$R\MyTradingSys\mts\runtime\state_code.json" -Raw | ConvertFrom-Json
         $top = $j.setup_candidates | Select-Object -First 1
