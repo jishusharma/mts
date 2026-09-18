@@ -105,5 +105,5 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T027 | 2026-09-18 | CLOSED | LOW | Write regime label into verdict log line (Stage 1 annotation, no engine change) | reply to 1600Z | start-trading-day.ps1 loads state_code_regime.json, adds rg= to Format-VerdictLine 2026-09-18 |
 | T028 | 2026-09-18 | OPEN | LOW | Verify B034 cvdSeries.clear fix at 00:00 UTC rollover | B034 code receipt | - |
 | T029 | 2026-09-18 | OPEN | LOW | context.ps1 makes 3 Binance REST calls per invocation; cache to disk | scripts\live\context.ps1 | - |
-| T030 | 2026-09-18 | OPEN | MED | T017 scope: only session_timing_rules.md carries | **ID** | rule rows; other 5 condition files use unnumbered headings | conditions/*.md tally 2026-09-18 | - |
+| T030 | 2026-09-18 | OPEN | MED | T017 scope: only session_timing_rules.md carries ID-row rule format; other 5 condition files use unnumbered headings | conditions/*.md tally 2026-09-18 | - |
 # END
