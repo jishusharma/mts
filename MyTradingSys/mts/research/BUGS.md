@@ -92,9 +92,12 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T015 | 2026-09-18 | OPEN | MED | Proof count direction-blind; Options A/B/C pending | journal B7 | - |
 | T016 | 2026-09-18 | OPEN | LOW | Five open comparison questions CVD anchor OI magnitude Net Delta what we trade on pre-open | journal E7 | - |
 | T017 | 2026-09-18 | IN-FIX | MED | Extraction chain 0 TOM-NNN refs in condition files (verify first) | FYI-03 | verified 0 refs; verifier now FAILs on unreferenced ids |
-| T018 | 2026-09-18 | OPEN | MED | Frame-view regime label has no verdict-block consumer | FYI-03 | - |
+| T018 | 2026-09-18 | WONTFIX | MED | Frame-view regime label has no verdict-block consumer | FYI-03 | WONTFIX 2026-09-18: superseded by 04_final_report. Frame is display only by design; real defect is determineSetupType |
 | T019 | 2026-09-18 | OPEN | MED | RSI documentation conflict VVP-001 vs COMPILED_DECISIONS | journal; FYI-02 | - |
 | T020 | 2026-09-18 | OPEN | COSMETIC | Rank-1 GATE cell not padded, runs into pipe on WAIT_TRIGGER | dashboard render 2026-09-18T11:31Z | - |
 | T021 | 2026-09-18 | OPEN | COSMETIC | tape-watch emits duplicate line when snapshot unchanged between ticks | journal L85 2026-09-17 | - |
 | T022 | 2026-09-18 | OPEN | MED | Loop writes last_verdict.json for dashboard (needs critical-file approval) | journal B5; T012 | - |
+| T023 | 2026-09-18 | OPEN | HIGH | Enforce CT state gate: no ct_short at VAH/VAL when state is trend_healthy | 04_final_report Step 1; SetupCandidatesBuilder.java L432-437 | - |
+| T024 | 2026-09-18 | OPEN | HIGH | Add TC long path: determineDirections above_vah must emit long; determineSetupType needs tc_long at VWAP for trend_healthy | 04_final_report Step 2; SetupCandidatesBuilder.java L285-286, L445-451 | - |
+| T025 | 2026-09-18 | OPEN | HIGH | T023+T024 must land in one commit; T023 alone silences engine on 38 pct of day (257 of 673 snapshots) | disk: today state distribution | - |
 # END
