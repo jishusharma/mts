@@ -23,7 +23,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 |---|---|---|---|---|---|---|
 | B001 | 2026-09-13 | WONTFIX | LOW | L5 referenced as held no detail | L_ITEMS L5 | 2026-09-18: L5 phantom, no current reference. |
 | B002 | 2026-09-13 | WONTFIX | LOW | L6 same as L5 | L_ITEMS L6 | 2026-09-18: L6 phantom, no current reference. |
-| B003 | 2026-09-14 | OPEN | MED | stop-day.ps1 reports false success | L_ITEMS L8 | 2026-09-19: prior fix (af1cfc5) was wrong — changed lock path to trading_day.lock, but wrapper writes apparatus.lock. Reverted. Real defect: stop-day walks descendants of lock PID but miss java 2764 (orphan) 2026-09-18T17:47Z even with L5 java fallback. Reroot cause unfixed. |
+| B003 | 2026-09-14 | OPEN | MED | stop-day.ps1 reports false success | L_ITEMS L8 | 2026-09-19: verified on disk - lock path apparatus.lock correct; Get-Descendants 16624 includes java 6648; fallback matcher matches datafeed\. Current code works. Historical miss 2026-09-18T17:47Z: stop-day killed 4 but java 2764 survived; wrapper caught it. Mechanism not reproduced. Keep OPEN pending repro. |
 | B004 | 2026-09-15 | WONTFIX | LOW | Proof-change alert trigger noise | L_ITEMS L13; start_trading_day.ps1:349 | 2026-09-18: fires only on 3<->5 threshold crossing; correct by design. |
 | B005 | 2026-09-15 | WONTFIX | LOW | Runtime manifest pointed at wrong prompt | L_ITEMS L14 | 2026-09-18: SESSION_MANIFEST.json points at DSA_SESSION_PROMPT.md; file exists on disk. Correct. |
 | B006 | 2026-09-15 | WONTFIX | COSMETIC | Orphan duplicate root manifest | L_ITEMS L15 | 2026-09-18: no root SESSION_MANIFEST.json exists. Phantom. |
