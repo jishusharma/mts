@@ -179,11 +179,11 @@ Before importing any concept from the transcripts:
 
 Update this section at every session close. Keep it to five lines.
 
-Last live read:  2026-09-18T17:06Z, session MTS-2026-09-18-1600Z closing. Build-Check PASS at boot and at close. Live feed mts-live with MTS-FRAME and STALE-flagged MTS-TAPE.
+Last live read:  2026-09-18T18:38Z, session MTS-2026-09-18-1726Z. Build-Check PASS. Live feed mts-live.
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: wrapper 16208, java 14444, lock 16208. No supervisor (SUP COUNT=0). BUGS.md is BUGS AND TASKS. B049 T023 T024 CLOSED (state gate + tc_long, VerifyScbEdits.java 12/12). New tasks: T026 T027. B047 HIGH OPEN (finished_auction sign), next session. Build-Check PASS. SIZE header drift caught by doc test 4.
+Runtime + loops: wrapper 16624, java 6648, lock 16624, supervisor 8976. Session cleared 45 items to 6. Code: B003 B024 B025 B036 B037 B039 B047 T021 T027. Remaining: B028 B044 T017 T022 T028 T030. Build-Check PASS.
 ## 12. SESSION END
 
 1. Stop the runtime loop if it is running.

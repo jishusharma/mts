@@ -540,3 +540,22 @@ SESSION_MANIFEST.json: chart_read_protocol.md added to boot_supplemental. It now
 03_FILE_INDEX.md: SESSION_MANIFEST.json row added (was missing).
 NEXT_SESSION_HANDOFF.md: pointer to 04_final_report added under FIRST ACTION.
 04_final_report not in manifest: 15KB would push boot paste past the 80KB caution. Read on demand.
+
+## SESSION MTS-2026-09-18-1726Z - CLOSE - 2026-09-19T00:09:31Z
+
+Boot: B047 (finished_auction sign) inherited from prior session as top task.
+Landed code (commits e1cb154..47b8a3c):
+  B047 T009: Python inverted finished_auction check. 17/30 snapshots proof + Tom source. Java correct, not changed.
+  B003: stop-day.ps1 lock path data\apparatus.lock -> data\trading_day.lock. Root cause of orphan java.
+  B024: book_imbalance threshold 0.4/1.5 -> 0.33/3.0 (20-snapshot proof).
+  B025: 2-cycle verdict debounce in Compute-Verdict.
+  B036: normalized dict now carries setup_candidates + cvd; read from normalized.
+  B037: exclude bool from isinstance check at both book branches.
+  B039: momentum candidate rejected on net RR < 2.0.
+  T021: tape-watch.ps1 skip-on-same-snapshot.
+  T027: regime label in verdict log line (rg= column).
+Closed 39 items total. WONTFIX reasons documented per row.
+Loop restart: wrapper 16624, java 6648, supervisor 8976. Live feed healthy.
+Retest: 130 math tests, 5 doc tests, Build PASS.
+
+Remaining: B028 (sweep entry Rule 32), B044 (taker proxy), T017+T030 (Tom citation), T022 (critical approval), T028 (00:00 rollover verify).

@@ -66,7 +66,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B043 | 2026-09-17 | CLOSED | MED | Supervisor misses wrappers launched via mode.ps1 | handoff NEXT_SESSION_HANDOFF.md; MTS-2026-09-17-1514Z live incident | Get-AllWrappers matcher extended to mode.ps1; live verified 2026-09-17T17:54Z mts-live wrap=17792 |
 
 | B044 | 2026-09-17 | OPEN | MED | CVD and trade_flow.net_delta computed from kline taker-buy proxy, not aggTrade tick delta | MarketDataSnapshot.java:178,633-648,379-381 | - |
-| B045 | 2026-09-17 | OPEN | MED | WebSocket migration roadmap not started; archive doc 2026-09-05 unrealized | MyTradingSys/mts/archive/binance_api_integration_recommendations.md 1107 lines sections 1-11 | - |
+| B045 | 2026-09-17 | WONTFIX | MED | WebSocket migration roadmap not started; archive doc 2026-09-05 unrealized | MyTradingSys/mts/archive/binance_api_integration_recommendations.md 1107 lines sections 1-11 | 2026-09-18: snapshot cadence is 60s REST; WebSocket only worth it for sub-second. Not in scope. |
 | B046 | 2026-09-18 | CLOSED | MED | DSA section 11 and handoff claimed rewritten in ledger; both unchanged on disk | this session; ledger 2026-09-18T10:16:12Z | 832f1ec; both files rewritten and verified |
 | B047 | 2026-09-18 | CLOSED | HIGH | finished_auction contradiction sign inverted in math_object_builder.py | math_object_builder.py L391,L398 vs SetupCandidatesBuilder.java L703; T009 | 2026-09-18; Python inverted, Java correct (Tom source oa8kxSLLkAo + VxN5IxTwpbE); 17/30 snapshots proof |
 | B048 | 2026-09-18 | CLOSED | MED | verify_rule_citations.ps1 printed PASS despite 0 refs; header comment promised unreferenced-id check | scripts/tools/verify_rule_citations.ps1 L44 | 2026-09-18; verifier now fails on unused ids |
@@ -89,9 +89,9 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T011 | 2026-09-18 | CLOSED | LOW | cms_age=-1s anomaly | journal B4 | clamp applied 2026-09-18; race between $now and Get-Item |
 | T012 | 2026-09-18 | CLOSED | MED | Verdict parse fragility in dashboard | journal B5 | 14cfd60; known-word list applied; T022 tracks structured writer |
 | T013 | 2026-09-18 | CLOSED | MED | MTS-TAPE sidecar baseline stale since 2026-09-17T20:11Z | live tape; journal O4 | 7ccd0e1; live STALE 70573s 2026-09-18T15:47Z |
-| T014 | 2026-09-18 | OPEN | MED | Rank-1-only gate vs scan all candidates | journal A7 | - |
-| T015 | 2026-09-18 | OPEN | MED | Proof count direction-blind; Options A/B/C pending | journal B7 | - |
-| T016 | 2026-09-18 | OPEN | LOW | Five open comparison questions CVD anchor OI magnitude Net Delta what we trade on pre-open | journal E7 | - |
+| T014 | 2026-09-18 | WONTFIX | MED | Rank-1-only gate vs scan all candidates | journal A7 | 2026-09-18: rank-1-only is by design; confluence bonus already surfaces co-located zones. No change. |
+| T015 | 2026-09-18 | WONTFIX | MED | Proof count direction-blind; Options A/B/C pending | journal B7 | 2026-09-18: proof_direction_status carries direction; B047 fix removed the false contradiction. Proof count stays direction-blind by design. |
+| T016 | 2026-09-18 | WONTFIX | LOW | Five open comparison questions CVD anchor OI magnitude Net Delta what we trade on pre-open | journal E7 | 2026-09-18: all five covered in MTS_DICTIONARY cross-category warnings. No action. |
 | T017 | 2026-09-18 | IN-FIX | MED | Extraction chain 0 TOM-NNN refs in condition files (verify first) | FYI-03 | verifier now FAILs on unreferenced ids; content pass pending |
 | T018 | 2026-09-18 | WONTFIX | MED | Frame-view regime label has no verdict-block consumer | FYI-03 | WONTFIX 2026-09-18: superseded by 04_final_report. Frame is display only by design; real defect is determineSetupType |
 | T019 | 2026-09-18 | CLOSED | MED | RSI documentation conflict VVP-001 vs COMPILED_DECISIONS | journal; FYI-02 | doc-only 2026-09-18: E4 in COMPILED_DECISIONS.md marked SUPERSEDED; VVP-001 Tier 3 wins; RSI not Tom-validated |
