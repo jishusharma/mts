@@ -1,6 +1,6 @@
-# BUGS
+# BUGS AND TASKS
 
-Single source of truth for defects. Supersedes L_ITEMS_MASTER.md (frozen 2026-09-17) and
+Single source of truth for defects and open tasks. Supersedes L_ITEMS_MASTER.md (frozen 2026-09-17) and
 the OPEN section of apparatus_fixes.md. AUDIT_2026-09-17_TRACKER.md material defects folded in.
 
 ## RULES
@@ -9,14 +9,15 @@ the OPEN section of apparatus_fixes.md. AUDIT_2026-09-17_TRACKER.md material def
 2. Change status by replacing the Status cell. If the new status is CLOSED, add a Receipt.
 3. Add a bug by appending one row at the end.
 4. Never delete a row. Use WONTFIX.
-5. The table is the file. No prose outside this rules block and the table.
+5. The tables are the file. No prose outside this rules block and the two tables.
+6. Tasks are numbered T-NNN. Same columns, same rules as bugs. Bugs stay B-NNN.
 
 Status values (exact): OPEN, IN-FIX, BLOCKED, CLOSED, WONTFIX.
 Severity values (exact): HIGH, MED, LOW, COSMETIC.
 Receipt required when Status = CLOSED. Format: hash, test name, commit, or doc-only.
 IN-FIX rows older than 14 days fail Build-Check.
 
-## TABLE
+## BUGS
 
 | ID | Opened | Status | Severity | Title | Evidence | Receipt |
 |---|---|---|---|---|---|---|
@@ -66,4 +67,29 @@ IN-FIX rows older than 14 days fail Build-Check.
 
 | B044 | 2026-09-17 | OPEN | MED | CVD and trade_flow.net_delta computed from kline taker-buy proxy, not aggTrade tick delta | MarketDataSnapshot.java:178,633-648,379-381 | - |
 | B045 | 2026-09-17 | OPEN | MED | WebSocket migration roadmap not started; archive doc 2026-09-05 unrealized | MyTradingSys/mts/archive/binance_api_integration_recommendations.md 1107 lines sections 1-11 | - |
+| B046 | 2026-09-18 | OPEN | MED | DSA section 11 and handoff claimed rewritten in ledger; both unchanged on disk | this session; ledger 2026-09-18T10:16:12Z | - |
+
+## TASKS
+
+| ID | Opened | Status | Severity | Title | Evidence | Receipt |
+|---|---|---|---|---|---|---|
+| T001 | 2026-09-18 | OPEN | MED | DSA_SESSION_PROMPT.md section 11 rewrite (v1.1.1 + current state) | B046 | - |
+| T002 | 2026-09-18 | OPEN | MED | NEXT_SESSION_HANDOFF.md rewrite with current runtime | B046 | - |
+| T003 | 2026-09-18 | OPEN | LOW | session_log correction entry for false close entries | B046 | - |
+| T004 | 2026-09-18 | OPEN | LOW | mts-live-stop flag not auto-cleared on mts-live start | journal A1 | - |
+| T005 | 2026-09-18 | OPEN | LOW | DIRECTION column missing on dashboard TRADES | journal A2 | - |
+| T006 | 2026-09-18 | OPEN | LOW | Five verdict words not in MTS_DICTIONARY | journal A3 | - |
+| T007 | 2026-09-18 | OPEN | COSMETIC | MTS-CAND gate pass collision with GATE column | journal B6 | - |
+| T008 | 2026-09-18 | OPEN | COSMETIC | mts-dashboard index row format mismatch | FYI-01 M3 | - |
+| T009 | 2026-09-18 | OPEN | MED | finished_auction sign possible error | journal B1 | - |
+| T010 | 2026-09-18 | OPEN | LOW | Engine confidence grade meaning undocumented | journal B3 | - |
+| T011 | 2026-09-18 | OPEN | LOW | cms_age=-1s anomaly | journal B4 | - |
+| T012 | 2026-09-18 | OPEN | MED | Verdict parse fragility in dashboard | journal B5 | - |
+| T013 | 2026-09-18 | OPEN | MED | MTS-TAPE sidecar baseline stale since 2026-09-17T20:11Z | live tape; journal O4 | - |
+| T014 | 2026-09-18 | OPEN | MED | Rank-1-only gate vs scan all candidates | journal A7 | - |
+| T015 | 2026-09-18 | OPEN | MED | Proof count direction-blind; Options A/B/C pending | journal B7 | - |
+| T016 | 2026-09-18 | OPEN | LOW | Five open comparison questions CVD anchor OI magnitude Net Delta what we trade on pre-open | journal E7 | - |
+| T017 | 2026-09-18 | OPEN | MED | Extraction chain 0 TOM-NNN refs in condition files (verify first) | FYI-03 | - |
+| T018 | 2026-09-18 | OPEN | MED | Frame-view regime label has no verdict-block consumer | FYI-03 | - |
+| T019 | 2026-09-18 | OPEN | MED | RSI documentation conflict VVP-001 vs COMPILED_DECISIONS | journal; FYI-02 | - |
 # END

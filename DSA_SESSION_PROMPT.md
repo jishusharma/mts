@@ -179,11 +179,11 @@ Before importing any concept from the transcripts:
 
 Update this section at every session close. Keep it to five lines.
 
-Last live read:  2026-09-17T17:45Z, session MTS-2026-09-17-1624Z closing. Build-Check PASS at boot. Live feed mts-live (mts-watch.ps1 v1.1.0).
+Last live read:  2026-09-18T10:16Z, session MTS-2026-09-18-0848Z. Build-Check PASS at boot. Live feed mts-live (mts-watch.ps1 v1.1.1) with MTS-FRAME block.
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: supervisor 8200, wrapper via mode.ps1, java 596, lock 17792. B034 loaded. Loop left running. BUGS.md is SSOT. HIGH open: B018, B024. Added this session: B044, B045. Landed this session: mts-watch v1.1.0 + 4 compiled blocks + MTS- naming scheme + load.ps1 aliases.
+Runtime + loops: wrapper 15424, java 7280, lock 15424. No supervisor (SUP COUNT=0). B034 loaded. B043 CLOSED. MTS-TAPE baseline stale 2026-09-17T20:11Z. HIGH open: B018, B024. New: B046. Tasks T001-T019 filed. Landed: B043 close, mts-watch v1.1.1 sync, MTS-FRAME block, chart_read_protocol.md, anchor C decision, FYI archive.
 ## 12. SESSION END
 
 1. Stop the runtime loop if it is running.

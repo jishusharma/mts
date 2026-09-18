@@ -455,6 +455,12 @@
       "action": "passed",
       "reason": "session close: MTS-2026-09-18-0848Z. B043 CLOSED. mts-watch v1.1.1 synced four files (changelog, 03_FILE_INDEX, NEXT_SESSION_HANDOFF, DSA_SESSION_PROMPT). chart_read_protocol.md new. Anchor decision Option C (both layers). Three FYI docs archived word-for-word. Two commits: 9f05f16, 97b8fc6.",
       "ts": "2026-09-18T10:16:12.799596Z"
+    },
+    {
+      "type": "decision",
+      "action": "note",
+      "reason": "B046: earlier two 'session close' entries claimed DSA_SESSION_PROMPT.md section 11 and NEXT_SESSION_HANDOFF.md were rewritten. They were not. Both are now rewritten. BUGS.md extended to BUGS AND TASKS. T001-T019 filed. Correction ledger entry for MTS-2026-09-18-0848Z.",
+      "ts": "2026-09-18T11:22:12.304004Z"
     }
   ]
 }
