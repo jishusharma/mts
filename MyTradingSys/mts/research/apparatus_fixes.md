@@ -74,5 +74,6 @@ patch >20 lines.
   new session. Verify by comparing state_code.json.mtime to apparatus_log
   restart line. No code change. Documentation note only.
 
-# END
+
 - 2026-09-18T17:47Z wrapper died after cycle 39 (17:02Z). No lock, no supervisor. Java orphaned (14444, 2764). Restarted.
+# END

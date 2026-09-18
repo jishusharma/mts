@@ -30,8 +30,8 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B007 | 2026-09-15 | OPEN | MED | Snapshot cadence has 12.7h and 4.25h gaps | L_ITEMS L16 | - |
 | B008 | 2026-09-15 | WONTFIX | LOW | Alert numbering gap 6-12 | L_ITEMS L17 | Cosmetic; ids assigned in order, gaps historical. |
 | B009 | 2026-09-15 | OPEN | MED | Apparatus silent exit at 13:23:20 | L_ITEMS L18 | - |
-| B010 | 2026-09-15 | OPEN | COSMETIC | Duplicate section header in prompt | L_ITEMS L19 | - |
-| B011 | 2026-09-15 | OPEN | COSMETIC | apparatus_fixes END marker mid-file | L_ITEMS L20 | - |
+| B010 | 2026-09-15 | WONTFIX | COSMETIC | Duplicate section header in prompt | L_ITEMS L19 | Verified 2026-09-18: 13 headers, all unique. No duplicate. |
+| B011 | 2026-09-15 | CLOSED | COSMETIC | apparatus_fixes END marker mid-file | L_ITEMS L20 | doc-only 2026-09-18: stray append moved above # END |
 | B012 | 2026-09-16 | OPEN | MED | US open fixed 13.5 UTC wrong in winter | L_ITEMS L25; MarketDataSnapshot.java:761 | - |
 | B013 | 2026-09-16 | CLOSED | COSMETIC | MTS_DICTIONARY Authority column mojibake | L_ITEMS L27 | hash 5CE01AA2->F05D3E0A; 30 sequences replaced |
 | B014 | 2026-09-16 | OPEN | MED | Loop exit orphans mvn/java child | L_ITEMS L28 | - |
@@ -95,8 +95,8 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T017 | 2026-09-18 | IN-FIX | MED | Extraction chain 0 TOM-NNN refs in condition files (verify first) | FYI-03 | verifier now FAILs on unreferenced ids; content pass pending |
 | T018 | 2026-09-18 | WONTFIX | MED | Frame-view regime label has no verdict-block consumer | FYI-03 | WONTFIX 2026-09-18: superseded by 04_final_report. Frame is display only by design; real defect is determineSetupType |
 | T019 | 2026-09-18 | CLOSED | MED | RSI documentation conflict VVP-001 vs COMPILED_DECISIONS | journal; FYI-02 | doc-only 2026-09-18: E4 in COMPILED_DECISIONS.md marked SUPERSEDED; VVP-001 Tier 3 wins; RSI not Tom-validated |
-| T020 | 2026-09-18 | OPEN | COSMETIC | Rank-1 GATE cell not padded, runs into pipe on WAIT_TRIGGER | dashboard render 2026-09-18T11:31Z | - |
-| T021 | 2026-09-18 | OPEN | COSMETIC | tape-watch emits duplicate line when snapshot unchanged between ticks | journal L85 2026-09-17 | - |
+| T020 | 2026-09-18 | WONTFIX | COSMETIC | Rank-1 GATE cell not padded, runs into pipe on WAIT_TRIGGER | dashboard render 2026-09-18T11:31Z | superseded: GATE renamed to rr_gate (T007); value is boolean now, no padding needed |
+| T021 | 2026-09-18 | CLOSED | COSMETIC | tape-watch emits duplicate line when snapshot unchanged between ticks | journal L85 2026-09-17 | tape-watch.ps1 skip-on-same-snapshot 2026-09-18 |
 | T022 | 2026-09-18 | OPEN | MED | Loop writes last_verdict.json for dashboard (needs critical-file approval) | journal B5; T012 | - |
 | T023 | 2026-09-18 | CLOSED | HIGH | Enforce CT state gate: no ct_short at VAH/VAL when state is trend_healthy | 04_final_report Step 1 | merged into B049; 6816cc0 |
 | T024 | 2026-09-18 | CLOSED | HIGH | Add TC long path: determineDirections above_vah must emit long; determineSetupType needs tc_long at VWAP for trend_healthy | 04_final_report Step 2 | 6816cc0; VerifyScbEdits.java 12/12 PASS 2026-09-18 |
