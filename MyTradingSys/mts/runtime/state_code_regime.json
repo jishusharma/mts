@@ -1,11 +1,11 @@
 {
   "label": "RANGE",
   "confidence": "HIGH",
-  "consecutive_cycles": 19,
+  "consecutive_cycles": 26,
   "entered_at_utc": "2026-09-18T18:31:21.966071Z",
   "candidate": "RANGE",
-  "cycles_in_candidate_state": 21,
-  "votes_up": 2,
-  "votes_down": 0,
-  "last_updated_utc": "2026-09-18T18:49:22.258977Z"
+  "cycles_in_candidate_state": 28,
+  "votes_up": 1,
+  "votes_down": 1,
+  "last_updated_utc": "2026-09-18T18:56:21.611219Z"
 }
