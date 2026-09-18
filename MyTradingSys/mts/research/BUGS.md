@@ -24,7 +24,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B001 | 2026-09-13 | BLOCKED | LOW | L5 referenced as held no detail | L_ITEMS L5 | - |
 | B002 | 2026-09-13 | BLOCKED | LOW | L6 same as L5 | L_ITEMS L6 | - |
 | B003 | 2026-09-14 | CLOSED | MED | stop-day.ps1 reports false success | L_ITEMS L8 | 2026-09-18: lock path fixed to trading_day.lock; commit af1cfc5. Earlier miss: fix landed but row not closed. |
-| B004 | 2026-09-15 | OPEN | LOW | Proof-change alert trigger noise | L_ITEMS L13; start_trading_day.ps1:349 | - |
+| B004 | 2026-09-15 | WONTFIX | LOW | Proof-change alert trigger noise | L_ITEMS L13; start_trading_day.ps1:349 | 2026-09-18: fires only on 3<->5 threshold crossing; correct by design. |
 | B005 | 2026-09-15 | WONTFIX | LOW | Runtime manifest pointed at wrong prompt | L_ITEMS L14 | 2026-09-18: SESSION_MANIFEST.json points at DSA_SESSION_PROMPT.md; file exists on disk. Correct. |
 | B006 | 2026-09-15 | WONTFIX | COSMETIC | Orphan duplicate root manifest | L_ITEMS L15 | 2026-09-18: no root SESSION_MANIFEST.json exists. Phantom. |
 | B007 | 2026-09-15 | OPEN | MED | Snapshot cadence has 12.7h and 4.25h gaps | L_ITEMS L16 | - |
@@ -56,7 +56,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B033 | 2026-09-17 | WONTFIX | MED | Profile shape taxonomy does not match Tom | L_ITEMS I40 | 2026-09-18: L550-551 comment documents "NOT Tom s B"; screener taxonomy accepted. |
 | B034 | 2026-09-17 | CLOSED | HIGH | CVD ring not cleared at UTC rollover | AUDIT StateCodeEmitter row 1 | code receipt: StateCodeEmitter.java L340 cvdSeries.clear() on day-change; loop restarted 2026-09-18T17:48Z; runtime verify at next 00:00 UTC rollover tracked by T028 |
 | B035 | 2026-09-17 | CLOSED | HIGH | Book imbalance threshold 0.4-0.6 treats balanced as extreme | AUDIT SetupCandidatesBuilder L541 | SetupCandidatesBuilder.java L541 now 0.67/1.5; hash 3ED13909->C30EB08F; 2026-09-17 |
-| B036 | 2026-09-17 | CLOSED | MED | setup_candidates and last_3_delta read from snapshot not normalized | AUDIT math_object_builder L357 L388 | 2026-09-18: normalized now carries setup_candidates + cvd; call sites read from normalized |
+| B036 | 2026-09-17 | CLOSED | MED | setup_candidates and last_3_delta read from snapshot not normalized | AUDIT math_object_builder L357 L388 | 2026-09-18: normalized carries setup_candidates + cvd; call site reads normalized. First pass was incomplete; fixed on retry. |
 | B037 | 2026-09-17 | CLOSED | MED | isinstance accepts booleans spurious contradiction | AUDIT math_object_builder L393 L400 | 2026-09-18: added not isinstance(_book, bool) at both branches |
 | B038 | 2026-09-17 | WONTFIX | LOW | diff_state compares disjoint value spaces | AUDIT mts_math L204 | 2026-09-18: STATE.classification vs conditions.vp_shape; only print consumer. Cosmetic. |
 | B039 | 2026-09-17 | CLOSED | MED | ExtraSetupBuilder momentum has no RR gate | AUDIT ExtraSetupBuilder L103-135 | 2026-09-18: candidate rejected when net RR < 2.0 |
@@ -101,9 +101,9 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T023 | 2026-09-18 | CLOSED | HIGH | Enforce CT state gate: no ct_short at VAH/VAL when state is trend_healthy | 04_final_report Step 1 | merged into B049; 6816cc0 |
 | T024 | 2026-09-18 | CLOSED | HIGH | Add TC long path: determineDirections above_vah must emit long; determineSetupType needs tc_long at VWAP for trend_healthy | 04_final_report Step 2 | 6816cc0; VerifyScbEdits.java 12/12 PASS 2026-09-18 |
 | T025 | 2026-09-18 | CLOSED | HIGH | T023+T024 must land in one commit; T023 alone silences engine on 38 pct of day | disk: today state distribution | bundled in commit with T023+T024 |
-| T026 | 2026-09-18 | OPEN | LOW | Frame Stage 2 wiring (regime into verdict path). Deferred until B049 is live | reply to 1600Z | - |
+| T026 | 2026-09-18 | WONTFIX | LOW | Frame Stage 2 wiring (regime into verdict path). Deferred until B049 is live | reply to 1600Z | 2026-09-18: T027 shipped regime label to verdict line. Stage 2 wiring has no rule basis. Superseded. |
 | T027 | 2026-09-18 | CLOSED | LOW | Write regime label into verdict log line (Stage 1 annotation, no engine change) | reply to 1600Z | start-trading-day.ps1 loads state_code_regime.json, adds rg= to Format-VerdictLine 2026-09-18 |
 | T028 | 2026-09-18 | OPEN | LOW | Verify B034 cvdSeries.clear fix at 00:00 UTC rollover | B034 code receipt | - |
-| T029 | 2026-09-18 | OPEN | LOW | context.ps1 makes 3 Binance REST calls per invocation; cache to disk | scripts\live\context.ps1 | - |
+| T029 | 2026-09-18 | CLOSED | LOW | context.ps1 makes 3 Binance REST calls per invocation; cache to disk | scripts\live\context.ps1 | duplicate of B015 (WONTFIX 2026-09-18); no consumer needs caching. |
 | T030 | 2026-09-18 | OPEN | MED | T017 scope: only session_timing_rules.md carries ID-row rule format; other 5 condition files use unnumbered headings | conditions/*.md tally 2026-09-18 | - |
 # END

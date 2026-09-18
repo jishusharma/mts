@@ -1,4 +1,4 @@
-# math_object_builder.py — Build math_object from DSA snapshot
+# math_object_builder.py - Build math_object from DSA snapshot
 # Canonical: C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\mts\runtime\math_object_builder.py
 #
 # SCHEMA COMPATIBILITY: Handles old (wrapped "data"), new (flat v1.2.0), and v1.3.2 (setup_candidates) DSA JSON.
@@ -74,11 +74,11 @@ def _normalize_snapshot(snapshot: Dict[str, Any]) -> Dict[str, Any]:
             "order_book_depth": data.get("order_book_depth", {}),
             "naked_poc": data.get("naked_poc", {}),
         }
-        # Old structure is flat — map to 1h
+        # Old structure is flat - map to 1h
         old_struct = data.get("structure", {})
         if old_struct:
             normalized["structure"]["1h"] = old_struct
-        # Old FVG is an array — pick first unfilled as nearest_unfilled
+        # Old FVG is an array - pick first unfilled as nearest_unfilled
         old_fvgs = data.get("fvg", [])
         for fvg in old_fvgs:
             if not fvg.get("filled", True):
@@ -86,7 +86,7 @@ def _normalize_snapshot(snapshot: Dict[str, Any]) -> Dict[str, Any]:
                 break
         return normalized
     else:
-        # New v1.2.0 schema — mostly flat, just ensure all keys exist
+        # New v1.2.0 schema - mostly flat, just ensure all keys exist
         return {
             "current_price": snapshot.get("current_price", 0.0),
             "daily_vp": snapshot.get("daily_vp", {}),
@@ -100,6 +100,8 @@ def _normalize_snapshot(snapshot: Dict[str, Any]) -> Dict[str, Any]:
             "trade_flow": snapshot.get("trade_flow", {}),
             "order_book_depth": snapshot.get("order_book_depth", {}),
             "naked_poc": snapshot.get("naked_poc", {}),
+            "setup_candidates": snapshot.get("setup_candidates", []),
+            "cvd": snapshot.get("cvd", {}),
         }
 
 
@@ -239,15 +241,15 @@ def _pick_stop_target(
     # STOP selection
     stop = None
     if is_above:
-        # Short setup — stop above zone
+        # Short setup - stop above zone
         if swing_high is not None and swing_high > zone_price:
             stop = swing_high
     else:
-        # Long setup — stop below zone
+        # Long setup - stop below zone
         if swing_low is not None and swing_low < zone_price:
             stop = swing_low
 
-    # TARGET selection — nearest POC or VWAP in trade direction
+    # TARGET selection - nearest POC or VWAP in trade direction
     target = None
     if is_above:
         # Short target = lower levels
@@ -305,7 +307,7 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
         trigger_bo = check_trigger_validity(substate, "bo_long")
         trigger_scalp = check_trigger_validity(substate, "scalp")
 
-        # R:R — only for zones within cap
+        # R:R - only for zones within cap
         gross_rr = None
         net_rr = None
         rr_sanity = None
@@ -374,7 +376,7 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     }
 
     # v1.3.2: Add setup_candidates if present (preferred by judgment layer)
-    candidates = snapshot.get("setup_candidates")
+    candidates = normalized.get("setup_candidates")
     if candidates and isinstance(candidates, list) and len(candidates) > 0:
         result["setup_candidate"] = candidates[0]
 
