@@ -67,7 +67,11 @@ Write-Host ("=" * $W) -ForegroundColor $C_SECT
 $top = $j.setup_candidates[0]
 $verdictWord = "UNKNOWN"; $reason = ""; $waitKind = "OTHER"
 $vparts = $lastCycle -split ' \| '
-if ($vparts.Count -ge 5) { $verdictWord = ($vparts[4] -replace '\s*\(.*$', '').Trim() }
+$validWords = @("WATCH","WAIT_RR","WAIT_TRIGGER","WAIT_PROOF","WAIT_FAR","SETUP_FORMING","SETUP_CONFIRMED")
+if ($vparts.Count -ge 5) {
+    $candidate = ($vparts[4] -replace '\s*\(.*$', '').Trim()
+    if ($validWords -contains $candidate) { $verdictWord = $candidate } else { $verdictWord = "UNKNOWN"; $reason = "parse mismatch: " + $vparts[4] }
+}
 if ($verdictWord -eq "") { $verdictWord = "UNKNOWN" }
 if ($lastCycle -match 'WAIT_RR \(net_rr ([\d\.]+) < 2\.0\)') { $reason = "net reward to risk " + $matches[1] + " below the 2.0 gate"; $waitKind = "RR" }
 elseif ($lastCycle -match 'WAIT_TRIGGER \(price not at zone\)') { $reason = "price not at zone"; $waitKind = "TRIGGER" }

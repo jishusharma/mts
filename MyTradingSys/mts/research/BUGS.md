@@ -84,8 +84,8 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T008 | 2026-09-18 | IN-FIX | COSMETIC | mts-dashboard index row format mismatch | FYI-01 M3 | row normalized to 5 columns |
 | T009 | 2026-09-18 | BLOCKED | MED | finished_auction sign confirmed inverted | journal B1; code read | confirmed 2026-09-18; engine fix needs three-snapshot proof (B047) |
 | T010 | 2026-09-18 | CLOSED | LOW | Engine confidence grade meaning undocumented | journal B3 | doc-only: confidence grade table added to MTS_DICTIONARY.md 2026-09-18 |
-| T011 | 2026-09-18 | OPEN | LOW | cms_age=-1s anomaly | journal B4 | - |
-| T012 | 2026-09-18 | OPEN | MED | Verdict parse fragility in dashboard | journal B5 | - |
+| T011 | 2026-09-18 | CLOSED | LOW | cms_age=-1s anomaly | journal B4 | clamp applied 2026-09-18; race between $now and Get-Item |
+| T012 | 2026-09-18 | IN-FIX | MED | Verdict parse fragility in dashboard | journal B5 | known-word validation added; structured writer pending as T022 |
 | T013 | 2026-09-18 | IN-FIX | MED | MTS-TAPE sidecar baseline stale since 2026-09-17T20:11Z | live tape; journal O4 | mts-watch flags STALE over 120s |
 | T014 | 2026-09-18 | OPEN | MED | Rank-1-only gate vs scan all candidates | journal A7 | - |
 | T015 | 2026-09-18 | OPEN | MED | Proof count direction-blind; Options A/B/C pending | journal B7 | - |

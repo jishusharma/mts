@@ -140,7 +140,7 @@ while ($true) {
             if ($tapeAge -gt 120) { Emit "MTS-TAPE    STALE ${tapeAge}s | $t" } else { Emit "MTS-TAPE    age=${tapeAge}s | $t" }
         } else { Emit "MTS-TAPE    no data" }
 
-        $cmsAge = [int](($now - (Get-Item $cmsPath).LastWriteTimeUtc).TotalSeconds)
+        $cmsAge = [Math]::Max(0, [int](($now - (Get-Item $cmsPath).LastWriteTimeUtc).TotalSeconds))
         $cmsLines = Get-Content $cmsPath
         $wPoc = ($cmsLines | Select-String '^poc:' | Select-Object -First 1).Line
         $dPoc = ($cmsLines | Select-String '^poc:' | Select-Object -Skip 1 -First 1).Line
