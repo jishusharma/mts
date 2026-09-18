@@ -92,6 +92,11 @@
                                   "role":  "session_journal",
                                   "read":  "tail",
                                   "lines":  60
+                              },
+                              {
+                                  "path":  "MyTradingSys/methodology/chart_read_protocol.md",
+                                  "role":  "chart_read_method",
+                                  "read":  "full"
                               }
                           ],
     "process_check":  [

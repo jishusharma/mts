@@ -13,6 +13,9 @@ In another window, read in one batch:
   Get-ChildItem .\data\snapshots -Filter 'BTCUSDT_*.json' | Sort LastWriteTime -Desc | Select -First 1
   Get-Content .\MyTradingSys\mts\research\BUGS.md
 
+If the corrected diagnosis is needed:
+  Get-Content .\MyTradingSys\mts\research\fyi_archive\2026-09-18\04_final_report_corrected_diagnosis.md
+
 ## LANDED THIS SESSION (MTS-2026-09-18-1600Z)
 1. B046, T001-T008, T012, T013 closed (stale rows).
 2. B048 CLOSED: verify_rule_citations.ps1 now fails on unreferenced ids.

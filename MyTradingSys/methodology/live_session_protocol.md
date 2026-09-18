@@ -152,4 +152,17 @@ Seven waste classes seen today. Each has a fix. Each fix is a rule.
     is in MTS_DICTIONARY.md under LIVE FEED NAMES. Version and
     changelog live in the header of scripts/live/mts-watch.ps1.
 
+## RULES 12-14 (added 2026-09-18, from the FRAME GATING / B046 mistake ledger)
+
+12. Code claims require code reads. If a claim is about Java or Python
+    behavior, Get-Content the range. Inference from a function name or a
+    prior report does not count.
+
+13. Prior-session claims are hypotheses. Handoffs, journals, and ledgers
+    are read as suggestions, not facts. Verify on disk before acting.
+    Same rule for the boot paste and for the manifest.
+
+14. Boot paste is read line by line, not skimmed. If a correction exists
+    in the paste, it supersedes any prior-session framing.
+
 # END
