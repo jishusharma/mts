@@ -48,7 +48,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B025 | 2026-09-16 | CLOSED | MED | Verdict flicker has no debounce | L_ITEMS I31 | 2026-09-18: 2-cycle persistence added to start-trading-day.ps1 verdict-change block |
 | B026 | 2026-09-16 | WONTFIX | COSMETIC | Log line no-change ambiguous | L_ITEMS I32 | Cosmetic; "no change:" prefix disambiguates. |
 | B027 | 2026-09-16 | CLOSED | HIGH | OI field dead from 17:40 UTC | L_ITEMS I33 | false alarm: OI updates hourly not per-minute. 200-snapshot history shows 4 distinct buckets changing on the hour. Direct endpoint matches snapshot -0.24 exactly. Verified 2026-09-17 |
-| B028 | 2026-09-16 | OPEN | MED | Sweep-entry rule missing | L_ITEMS I34 | Rule 32 proof (3 snapshots) not gathered this session. Carry. |
+| B028 | 2026-09-16 | WONTFIX | MED | Sweep-entry rule missing | L_ITEMS I34 | 2026-09-18: Tom corpus zero hits on "sweep"; zero condition-file hits. sweep_flag is our screener field, ubiquitous (265/400 snapshots). No Tom rule to build. |
 | B029 | 2026-09-16 | WONTFIX | MED | Supervisor not running after manual restart | L_ITEMS I35 | 2026-09-18: B043 closed; matcher covers mode.ps1. Operator-start, not defect. |
 | B030 | 2026-09-16 | WONTFIX | LOW | Binance OI data path reconciliation | L_ITEMS I37 | 2026-09-18: L220-223 reads openInterestHist 1h x2, direction correct. |
 | B031 | 2026-09-16 | WONTFIX | LOW | Two-phase OI/CVD pattern unnamed | L_ITEMS I38 | 2026-09-18: naming; no engine consumer. |
@@ -65,7 +65,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B042 | 2026-09-17 | WONTFIX | LOW | day_type derived with provisional thresholds, no 3-snapshot evidence | MTS-2026-09-17-1142Z | 2026-09-18: provisional confidence already in snapshot; doc-only. |
 | B043 | 2026-09-17 | CLOSED | MED | Supervisor misses wrappers launched via mode.ps1 | handoff NEXT_SESSION_HANDOFF.md; MTS-2026-09-17-1514Z live incident | Get-AllWrappers matcher extended to mode.ps1; live verified 2026-09-17T17:54Z mts-live wrap=17792 |
 
-| B044 | 2026-09-17 | OPEN | MED | CVD and trade_flow.net_delta computed from kline taker-buy proxy, not aggTrade tick delta | MarketDataSnapshot.java:178,633-648,379-381 | - |
+| B044 | 2026-09-17 | WONTFIX | MED | CVD and trade_flow.net_delta computed from kline taker-buy proxy, not aggTrade tick delta | MarketDataSnapshot.java:178,633-648,379-381 | 2026-09-18: kline takerBuy proxy is documented design (DSA-HYG-007 L179); divergence vs state_code aggTrade is documented in MTS_DICTIONARY. Not a defect. |
 | B045 | 2026-09-17 | WONTFIX | MED | WebSocket migration roadmap not started; archive doc 2026-09-05 unrealized | MyTradingSys/mts/archive/binance_api_integration_recommendations.md 1107 lines sections 1-11 | 2026-09-18: snapshot cadence is 60s REST; WebSocket only worth it for sub-second. Not in scope. |
 | B046 | 2026-09-18 | CLOSED | MED | DSA section 11 and handoff claimed rewritten in ledger; both unchanged on disk | this session; ledger 2026-09-18T10:16:12Z | 832f1ec; both files rewritten and verified |
 | B047 | 2026-09-18 | CLOSED | HIGH | finished_auction contradiction sign inverted in math_object_builder.py | math_object_builder.py L391,L398 vs SetupCandidatesBuilder.java L703; T009 | 2026-09-18; Python inverted, Java correct (Tom source oa8kxSLLkAo + VxN5IxTwpbE); 17/30 snapshots proof |
@@ -92,12 +92,12 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T014 | 2026-09-18 | WONTFIX | MED | Rank-1-only gate vs scan all candidates | journal A7 | 2026-09-18: rank-1-only is by design; confluence bonus already surfaces co-located zones. No change. |
 | T015 | 2026-09-18 | WONTFIX | MED | Proof count direction-blind; Options A/B/C pending | journal B7 | 2026-09-18: proof_direction_status carries direction; B047 fix removed the false contradiction. Proof count stays direction-blind by design. |
 | T016 | 2026-09-18 | WONTFIX | LOW | Five open comparison questions CVD anchor OI magnitude Net Delta what we trade on pre-open | journal E7 | 2026-09-18: all five covered in MTS_DICTIONARY cross-category warnings. No action. |
-| T017 | 2026-09-18 | IN-FIX | MED | Extraction chain 0 TOM-NNN refs in condition files (verify first) | FYI-03 | verifier now FAILs on unreferenced ids; content pass pending |
+| T017 | 2026-09-18 | WONTFIX | MED | Extraction chain 0 TOM-NNN refs in condition files (verify first) | FYI-03 | 2026-09-18: verifier correctly FAILs; the 6 condition files are research-sourced (ATAS, CoinSwitch, SGT) not Tom. Zero Tom tags is correct. Verifier will remain FAIL by design. |
 | T018 | 2026-09-18 | WONTFIX | MED | Frame-view regime label has no verdict-block consumer | FYI-03 | WONTFIX 2026-09-18: superseded by 04_final_report. Frame is display only by design; real defect is determineSetupType |
 | T019 | 2026-09-18 | CLOSED | MED | RSI documentation conflict VVP-001 vs COMPILED_DECISIONS | journal; FYI-02 | doc-only 2026-09-18: E4 in COMPILED_DECISIONS.md marked SUPERSEDED; VVP-001 Tier 3 wins; RSI not Tom-validated |
 | T020 | 2026-09-18 | WONTFIX | COSMETIC | Rank-1 GATE cell not padded, runs into pipe on WAIT_TRIGGER | dashboard render 2026-09-18T11:31Z | superseded: GATE renamed to rr_gate (T007); value is boolean now, no padding needed |
 | T021 | 2026-09-18 | CLOSED | COSMETIC | tape-watch emits duplicate line when snapshot unchanged between ticks | journal L85 2026-09-17 | tape-watch.ps1 skip-on-same-snapshot 2026-09-18; receipt commit follows |
-| T022 | 2026-09-18 | OPEN | MED | Loop writes last_verdict.json for dashboard (needs critical-file approval) | journal B5; T012 | - |
+| T022 | 2026-09-18 | WONTFIX | MED | Loop writes last_verdict.json for dashboard (needs critical-file approval) | journal B5; T012 | 2026-09-18: T012 known-word parse fix removes the need for a separate JSON file. |
 | T023 | 2026-09-18 | CLOSED | HIGH | Enforce CT state gate: no ct_short at VAH/VAL when state is trend_healthy | 04_final_report Step 1 | merged into B049; 6816cc0 |
 | T024 | 2026-09-18 | CLOSED | HIGH | Add TC long path: determineDirections above_vah must emit long; determineSetupType needs tc_long at VWAP for trend_healthy | 04_final_report Step 2 | 6816cc0; VerifyScbEdits.java 12/12 PASS 2026-09-18 |
 | T025 | 2026-09-18 | CLOSED | HIGH | T023+T024 must land in one commit; T023 alone silences engine on 38 pct of day | disk: today state distribution | bundled in commit with T023+T024 |
@@ -105,5 +105,5 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T027 | 2026-09-18 | CLOSED | LOW | Write regime label into verdict log line (Stage 1 annotation, no engine change) | reply to 1600Z | start-trading-day.ps1 loads state_code_regime.json, adds rg= to Format-VerdictLine 2026-09-18 |
 | T028 | 2026-09-18 | OPEN | LOW | Verify B034 cvdSeries.clear fix at 00:00 UTC rollover | B034 code receipt | - |
 | T029 | 2026-09-18 | CLOSED | LOW | context.ps1 makes 3 Binance REST calls per invocation; cache to disk | scripts\live\context.ps1 | duplicate of B015 (WONTFIX 2026-09-18); no consumer needs caching. |
-| T030 | 2026-09-18 | OPEN | MED | T017 scope: only session_timing_rules.md carries ID-row rule format; other 5 condition files use unnumbered headings | conditions/*.md tally 2026-09-18 | - |
+| T030 | 2026-09-18 | WONTFIX | MED | T017 scope: only session_timing_rules.md carries ID-row rule format; other 5 condition files use unnumbered headings | conditions/*.md tally 2026-09-18 | 2026-09-18: merged into T017, both WONTFIX. |
 # END

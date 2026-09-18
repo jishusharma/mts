@@ -559,3 +559,13 @@ Loop restart: wrapper 16624, java 6648, supervisor 8976. Live feed healthy.
 Retest: 130 math tests, 5 doc tests, Build PASS.
 
 Remaining: B028 (sweep entry Rule 32), B044 (taker proxy), T017+T030 (Tom citation), T022 (critical approval), T028 (00:00 rollover verify).
+
+## B047 VERIFIED LIVE - 2026-09-19T00:13:48Z
+
+Real snapshot 2026-09-18T18:41:15Z: rank-1 ct_short, finished_auction.direction=sell.
+build_mo_cli.py returns pd=contradiction, detail "finished_auction=SELL vs SHORT".
+Post-fix logic: SHORT + SELL = contradiction. Correct.
+Pre-fix logic would have been: SHORT + SELL = aligned (wrong).
+Fix is live. Synthetic test was incorrectly rejected by BOM (PS 5.1 Set-Content -Encoding UTF8 writes BOM). Not a code issue.
+
+Cycle 53 (18:41:23) log: WATCH (proof 4) pd=contradiction - correct.
