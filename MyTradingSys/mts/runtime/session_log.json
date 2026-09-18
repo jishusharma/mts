@@ -461,6 +461,12 @@
       "action": "note",
       "reason": "B046: earlier two 'session close' entries claimed DSA_SESSION_PROMPT.md section 11 and NEXT_SESSION_HANDOFF.md were rewritten. They were not. Both are now rewritten. BUGS.md extended to BUGS AND TASKS. T001-T019 filed. Correction ledger entry for MTS-2026-09-18-0848Z.",
       "ts": "2026-09-18T11:22:12.304004Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "session close: MTS-2026-09-18-0848Z. BUGS.md extended to BUGS AND TASKS. B046 B047 filed. T001-T022 filed. T004-T013 T020-T022 landed. DSP section 11 and handoff rewritten. Nine commits: 97b8fc6 675f68a 2eed7b5 f9bf889 186f483 7ccd0e1 323d082 14cfd60 3dadb7b. B047 engine fix BLOCKED pending three-snapshot proof.",
+      "ts": "2026-09-18T15:55:05.482295Z"
     }
   ]
 }

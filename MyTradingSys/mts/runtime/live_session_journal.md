@@ -465,3 +465,29 @@ Contents: fire-condition four-gate verification, extraction chain audit (major f
 frame-view gap root cause, TWOPEAK correction, RSI documentation conflict, pending decisions.
 Indexed in 03_FILE_INDEX.md.
 
+
+## SESSION MTS-2026-09-18-0848Z - CLOSE - 2026-09-18T15:55:04Z
+
+Phase 1 - close from prior session:
+  B043 CLOSED. mts-watch v1.1.1 synced 4 files. chart_read_protocol.md new. Anchor C decided.
+  DSP section 11 and handoff rewrite landed late. Ledger earlier claimed they were done; they were not. B046.
+  Three FYI docs archived word-for-word under MyTradingSys/mts/research/fyi_archive/2026-09-18/.
+
+Phase 2 - BUGS.md extended to BUGS AND TASKS:
+  B046 filed. T001-T022 filed. Build-Check parser unchanged; T-rows invisible.
+
+Phase 3 - fixes landed:
+  T004 mts-live clears stop flag (load.ps1).
+  T005 DIRECTION column added to dashboard TRADES.
+  T006 verdict words added to MTS_DICTIONARY.
+  T007 gate pass -> rr_gate rename in mts-watch.
+  T008 mts-dashboard index row normalized to 5 columns.
+  T009 finished_auction sign confirmed inverted. B047 filed. Engine fix BLOCKED pending three-snapshot proof.
+  T010 confidence grades documented (B/C+/C/D, no A).
+  T011 cms_age clamped. Race between \ and Get-Item.
+  T012 verdict parse validated against known-word list.
+  T013 MTS-TAPE flags STALE over 120s. tape-watch never auto-restarts.
+  T020, T021, T022 filed.
+
+Commits this session: 97b8fc6, 675f68a, 2eed7b5, f9bf889, 186f483, 7ccd0e1, 323d082, 14cfd60, 3dadb7b.
+Runtime at close: wrapper 15424, java 7280, lock 15424. No supervisor.

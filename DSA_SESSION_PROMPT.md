@@ -179,11 +179,11 @@ Before importing any concept from the transcripts:
 
 Update this section at every session close. Keep it to five lines.
 
-Last live read:  2026-09-18T10:16Z, session MTS-2026-09-18-0848Z. Build-Check PASS at boot. Live feed mts-live (mts-watch.ps1 v1.1.1) with MTS-FRAME block.
+Last live read:  2026-09-18T15:54Z, session MTS-2026-09-18-0848Z. Build-Check PASS at boot. Live feed mts-live (mts-watch.ps1) with MTS-FRAME and STALE-flagged MTS-TAPE.
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: wrapper 15424, java 7280, lock 15424. No supervisor (SUP COUNT=0). B034 loaded. B043 CLOSED. MTS-TAPE baseline stale 2026-09-17T20:11Z. HIGH open: B018, B024. New: B046. Tasks T001-T019 filed. Landed: B043 close, mts-watch v1.1.1 sync, MTS-FRAME block, chart_read_protocol.md, anchor C decision, FYI archive.
+Runtime + loops: wrapper 15424, java 7280, lock 15424. No supervisor (SUP COUNT=0). BUGS.md is BUGS AND TASKS. New: B046, B047, T001-T022. T-fixes landed: T004-T013, T020-T022. B047 BLOCKED pending three-snapshot proof. MTS-TAPE is manual sidecar, flags STALE when idle.
 ## 12. SESSION END
 
 1. Stop the runtime loop if it is running.
