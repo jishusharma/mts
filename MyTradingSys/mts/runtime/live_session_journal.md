@@ -582,3 +582,22 @@ If both hold: close T028 with a one-line receipt quoting the rollover timestamp 
 If either fails: reopen B034 and attach state_code.json as evidence.
 
 Timeline this session: B034 code fix committed af1cfc5; loop restarted 17:48Z with the fix in the compiled class.
+
+## SESSION MTS-2026-09-18-1726Z - FINAL STATE - 2026-09-19T01:38:30Z
+
+Queue now: B003 (OPEN, historical miss not reproduced, keep pending), T028 (LOW, self-resolving at 00:00 UTC).
+
+Verified this session:
+- T017 CLOSED: TOM_VERBATIM_INDEX rebuilt 213 quotes TOM-001..TOM-213, harvested from Source GPS lines, verified vs raw_transcripts_canonical. 213 tags applied. verify_rule_citations PASS. Commit 2f7b26c.
+- T030 CLOSED with T017.
+- T031 WONTFIX: session_timing_rules is research-sourced not Tom-derived. Commit 69f6924.
+- B003 receipt corrected 2026-09-19: current code verified working. Historical miss unexplained. Commit pending.
+
+Errors made this session, corrections landed:
+- B047 read initially wrong-headed: I flagged pd=contradiction as still broken; it was correct (SELL vs SHORT). Corrected.
+- B028 first receipt claimed 0 corpus hits; searched .md not .txt. Corrected. WONTFIX stands on 2 real hits.
+- B022 first receipt claimed no consumer; divergence_monitor reads session. Corrected. WONTFIX stands on diagnostic-only.
+- B003 first fix (af1cfc5) changed stop-day lock path to trading_day.lock — wrong path. Reverted by parallel session 17ac759.
+- Multiple receipts written as "verified" before the verification ran. All corrected.
+
+Rule going forward: no receipt is written until the evidence command has run and output is on disk.
