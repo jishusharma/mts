@@ -85,7 +85,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T010 | 2026-09-18 | OPEN | LOW | Engine confidence grade meaning undocumented | journal B3 | - |
 | T011 | 2026-09-18 | OPEN | LOW | cms_age=-1s anomaly | journal B4 | - |
 | T012 | 2026-09-18 | OPEN | MED | Verdict parse fragility in dashboard | journal B5 | - |
-| T013 | 2026-09-18 | OPEN | MED | MTS-TAPE sidecar baseline stale since 2026-09-17T20:11Z | live tape; journal O4 | - |
+| T013 | 2026-09-18 | IN-FIX | MED | MTS-TAPE sidecar baseline stale since 2026-09-17T20:11Z | live tape; journal O4 | mts-watch flags STALE over 120s |
 | T014 | 2026-09-18 | OPEN | MED | Rank-1-only gate vs scan all candidates | journal A7 | - |
 | T015 | 2026-09-18 | OPEN | MED | Proof count direction-blind; Options A/B/C pending | journal B7 | - |
 | T016 | 2026-09-18 | OPEN | LOW | Five open comparison questions CVD anchor OI magnitude Net Delta what we trade on pre-open | journal E7 | - |

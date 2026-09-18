@@ -133,8 +133,12 @@ while ($true) {
         Emit "MTS-CYCLES"
         $cycles | Select-Object -Last 3 | ForEach-Object { Emit "        $_" }
 
+        $tapeAge = -1
+        if (Test-Path $tapeLog) { $tapeAge = [int]((Get-Date).ToUniversalTime() - (Get-Item $tapeLog).LastWriteTimeUtc).TotalSeconds }
         $t = Get-Content $tapeLog -Tail 1 -ErrorAction SilentlyContinue
-        if ($t) { Emit "MTS-TAPE    $t" }
+        if ($t) {
+            if ($tapeAge -gt 120) { Emit "MTS-TAPE    STALE ${tapeAge}s | $t" } else { Emit "MTS-TAPE    age=${tapeAge}s | $t" }
+        } else { Emit "MTS-TAPE    no data" }
 
         $cmsAge = [int](($now - (Get-Item $cmsPath).LastWriteTimeUtc).TotalSeconds)
         $cmsLines = Get-Content $cmsPath
