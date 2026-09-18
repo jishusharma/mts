@@ -32,9 +32,9 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B009 | 2026-09-15 | OPEN | MED | Apparatus silent exit at 13:23:20 | L_ITEMS L18 | - |
 | B010 | 2026-09-15 | WONTFIX | COSMETIC | Duplicate section header in prompt | L_ITEMS L19 | Verified 2026-09-18: 13 headers, all unique. No duplicate. |
 | B011 | 2026-09-15 | CLOSED | COSMETIC | apparatus_fixes END marker mid-file | L_ITEMS L20 | doc-only 2026-09-18: stray append moved above # END |
-| B012 | 2026-09-16 | OPEN | MED | US open fixed 13.5 UTC wrong in winter | L_ITEMS L25; MarketDataSnapshot.java:761 | - |
+| B012 | 2026-09-16 | WONTFIX | MED | US open fixed 13.5 UTC wrong in winter | L_ITEMS L25; MarketDataSnapshot.java:761 | 2026-09-18: code uses ZoneId.of("America/New_York") at L723,L825,L862,L887; timezone-correct. Stale ref only. |
 | B013 | 2026-09-16 | CLOSED | COSMETIC | MTS_DICTIONARY Authority column mojibake | L_ITEMS L27 | hash 5CE01AA2->F05D3E0A; 30 sequences replaced |
-| B014 | 2026-09-16 | OPEN | MED | Loop exit orphans mvn/java child | L_ITEMS L28 | - |
+| B014 | 2026-09-16 | WONTFIX | MED | Loop exit orphans mvn/java child | L_ITEMS L28 | 2026-09-18: Invoke-WithTimeout calls taskkill /T /F at L98,L108; process tree killed. No orphan path in code. |
 | B015 | 2026-09-16 | OPEN | LOW | context.ps1 reads Binance REST each call | L_ITEMS L30 | - |
 | B016 | 2026-09-16 | OPEN | LOW | state_code_regime.json not read by Java | L_ITEMS L31 | - |
 | B017 | 2026-09-16 | OPEN | MED | Ratio gate has no near-miss record | L_ITEMS I21 | - |
@@ -102,6 +102,8 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T024 | 2026-09-18 | CLOSED | HIGH | Add TC long path: determineDirections above_vah must emit long; determineSetupType needs tc_long at VWAP for trend_healthy | 04_final_report Step 2 | 6816cc0; VerifyScbEdits.java 12/12 PASS 2026-09-18 |
 | T025 | 2026-09-18 | CLOSED | HIGH | T023+T024 must land in one commit; T023 alone silences engine on 38 pct of day | disk: today state distribution | bundled in commit with T023+T024 |
 | T026 | 2026-09-18 | OPEN | LOW | Frame Stage 2 wiring (regime into verdict path). Deferred until B049 is live | reply to 1600Z | - |
-| T027 | 2026-09-18 | OPEN | LOW | Write regime label into verdict log line (Stage 1 annotation, no engine change) | reply to 1600Z | - |
+| T027 | 2026-09-18 | CLOSED | LOW | Write regime label into verdict log line (Stage 1 annotation, no engine change) | reply to 1600Z | start-trading-day.ps1 loads state_code_regime.json, adds rg= to Format-VerdictLine 2026-09-18 |
 | T028 | 2026-09-18 | OPEN | LOW | Verify B034 cvdSeries.clear fix at 00:00 UTC rollover | B034 code receipt | - |
+| T029 | 2026-09-18 | OPEN | LOW | context.ps1 makes 3 Binance REST calls per invocation; cache to disk | scripts\live\context.ps1 | - |
+| T030 | 2026-09-18 | OPEN | MED | T017 scope: only session_timing_rules.md carries | **ID** | rule rows; other 5 condition files use unnumbered headings | conditions/*.md tally 2026-09-18 | - |
 # END

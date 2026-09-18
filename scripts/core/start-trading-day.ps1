@@ -195,9 +195,10 @@ function Format-VerdictLine {
     param($v)
     $tshort = if ($v.ts.Length -ge 19) { $v.ts.Substring(0, 19) } else { $v.ts }
     $pdstr = if ($v.proof_dir) { $v.proof_dir } else { "-" }
-    return ("{0} | {1:F2} | {2} | {3} ({4}) | {5} @ {6} {7:F2} | nrr={8:N2} | p={9} | pd={10}" -f `
+    $rgstr = if ($v.regime) { $v.regime } else { "-" }
+    return ("{0} | {1:F2} | {2} | {3} ({4}) | {5} @ {6} {7:F2} | nrr={8:N2} | p={9} | pd={10} | rg={11}" -f `
         $tshort, $v.price, $v.state, $v.verdict, $v.reason,
-        $v.setup, $v.zone, $v.zone_price, $v.net_rr, $v.proof, $pdstr)
+        $v.setup, $v.zone, $v.zone_price, $v.net_rr, $v.proof, $pdstr, $rgstr)
 }
 
 function Build-Card {
@@ -389,6 +390,12 @@ try {
     } catch {}
     $v = Compute-Verdict -snap $snap -proofDir $pd
         $v | Add-Member -NotePropertyName proof_dir -NotePropertyValue $pd -Force
+        $regime = "-"
+        try {
+            $rg = Get-Content (Join-Path $R "MyTradingSys\mts\runtime\state_code_regime.json") -Raw -Encoding UTF8 | ConvertFrom-Json
+            if ($rg.label) { $regime = [string]$rg.label }
+        } catch {}
+        $v | Add-Member -NotePropertyName regime -NotePropertyValue $regime -Force
         $v | Add-Member -NotePropertyName proof_dir_details -NotePropertyValue $pdd -Force
         Log-Line (Format-VerdictLine $v)
     
