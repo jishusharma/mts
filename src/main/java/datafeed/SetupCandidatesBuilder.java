@@ -284,6 +284,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         List<String> dirs = new ArrayList<>();
         if ("above_vah".equals(priceVsVa)) {
             dirs.add("short");
+            dirs.add("long");
         } else if ("below_val".equals(priceVsVa)) {
             dirs.add("long");
         } else { // in_va
@@ -430,6 +431,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         if ("transition".equals(state)) return null;
         // CT setups
         if (zoneType.contains("vah") || zoneType.contains("swing_high") || zoneType.equals("prior_day_vah")) {
+            if ("trend_healthy".equals(state)) return null;
             return isShort ? "ct_short" : null;
         }
         if (zoneType.contains("val") || zoneType.contains("swing_low") || zoneType.equals("prior_day_val")) {
@@ -447,6 +449,8 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
             if ("balance".equals(state) || "sideways".equals(state)) {
                 return isShort ? "scalp_short" : "scalp_long";
             }
+            // TC long: pullback to VWAP in a healthy uptrend
+            if ("trend_healthy".equals(state) && !isShort) return "tc_long";
             return null;
         }
         if (zoneType.equals("fvg")) {
