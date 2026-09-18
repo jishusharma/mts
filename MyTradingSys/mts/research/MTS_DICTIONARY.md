@@ -109,6 +109,7 @@ A name used in a session must resolve to one of these.
 | MTS-SET | top setup candidates (up to 3) |
 | MTS-STATE | state_code state letter |
 | MTS-SIG | state_code signal votes |
+| MTS-FRAME | regime label, confidence, cycles in state, entry time |
 | MTS-FLOW | cvd, net_delta, oi, funding, basis |
 | MTS-HSTOP | compiled hard stops (4 booleans) |
 | MTS-PROOF | compiled proof direction |
