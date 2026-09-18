@@ -388,15 +388,15 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
         _last3 = snapshot.get("cvd", {}).get("last_3_delta", [])
         _contradictions = []
         if _dir == "short":
-            if _fa_dir == "buy":
-                _contradictions.append("finished_auction=BUY vs SHORT")
+            if _fa_dir == "sell":
+                _contradictions.append("finished_auction=SELL vs SHORT")
             if isinstance(_book, (int, float)) and _book > 1.5:
                 _contradictions.append(f"book_imbalance={_book} bid-heavy vs SHORT")
             if isinstance(_last3, list) and len(_last3) == 3 and all(x == "positive" for x in _last3):
                 _contradictions.append("last_3_delta=pos,pos,pos vs SHORT")
         elif _dir == "long":
-            if _fa_dir == "sell":
-                _contradictions.append("finished_auction=SELL vs LONG")
+            if _fa_dir == "buy":
+                _contradictions.append("finished_auction=BUY vs LONG")
             if isinstance(_book, (int, float)) and _book < 0.4:
                 _contradictions.append(f"book_imbalance={_book} ask-heavy vs LONG")
             if isinstance(_last3, list) and len(_last3) == 3 and all(x == "negative" for x in _last3):

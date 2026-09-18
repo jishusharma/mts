@@ -68,7 +68,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B044 | 2026-09-17 | OPEN | MED | CVD and trade_flow.net_delta computed from kline taker-buy proxy, not aggTrade tick delta | MarketDataSnapshot.java:178,633-648,379-381 | - |
 | B045 | 2026-09-17 | OPEN | MED | WebSocket migration roadmap not started; archive doc 2026-09-05 unrealized | MyTradingSys/mts/archive/binance_api_integration_recommendations.md 1107 lines sections 1-11 | - |
 | B046 | 2026-09-18 | CLOSED | MED | DSA section 11 and handoff claimed rewritten in ledger; both unchanged on disk | this session; ledger 2026-09-18T10:16:12Z | 832f1ec; both files rewritten and verified |
-| B047 | 2026-09-18 | OPEN | HIGH | finished_auction contradiction sign inverted in math_object_builder.py | math_object_builder.py L391,L398 vs SetupCandidatesBuilder.java L703; T009 | - |
+| B047 | 2026-09-18 | CLOSED | HIGH | finished_auction contradiction sign inverted in math_object_builder.py | math_object_builder.py L391,L398 vs SetupCandidatesBuilder.java L703; T009 | 2026-09-18; Python inverted, Java correct (Tom source oa8kxSLLkAo + VxN5IxTwpbE); 17/30 snapshots proof |
 | B048 | 2026-09-18 | CLOSED | MED | verify_rule_citations.ps1 printed PASS despite 0 refs; header comment promised unreferenced-id check | scripts/tools/verify_rule_citations.ps1 L44 | 2026-09-18; verifier now fails on unused ids |
 | B049 | 2026-09-18 | CLOSED | HIGH | determineSetupType skips state check on VAH/VAL/swing zones; violates compiled engine rule 3 | SetupCandidatesBuilder.java L432-437 | 6816cc0; VerifyScbEdits.java 12/12 PASS 2026-09-18 |
 
@@ -84,7 +84,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T006 | 2026-09-18 | CLOSED | LOW | Five verdict words not in MTS_DICTIONARY | journal A3 | 186f483; VERDICT WORDS section in MTS_DICTIONARY.md |
 | T007 | 2026-09-18 | CLOSED | COSMETIC | MTS-CAND gate pass collision with GATE column | journal B6 | 186f483; renamed to rr_gate in mts-watch.ps1 L116 |
 | T008 | 2026-09-18 | CLOSED | COSMETIC | mts-dashboard index row format mismatch | FYI-01 M3 | 186f483; 03_FILE_INDEX.md 5-col row |
-| T009 | 2026-09-18 | BLOCKED | MED | finished_auction sign confirmed inverted | journal B1; code read | confirmed 2026-09-18; engine fix needs three-snapshot proof (B047) |
+| T009 | 2026-09-18 | CLOSED | MED | finished_auction sign confirmed inverted | journal B1; code read | closed with B047 2026-09-18; Tom source + 17/30 snapshots |
 | T010 | 2026-09-18 | CLOSED | LOW | Engine confidence grade meaning undocumented | journal B3 | doc-only: confidence grade table added to MTS_DICTIONARY.md 2026-09-18 |
 | T011 | 2026-09-18 | CLOSED | LOW | cms_age=-1s anomaly | journal B4 | clamp applied 2026-09-18; race between $now and Get-Item |
 | T012 | 2026-09-18 | CLOSED | MED | Verdict parse fragility in dashboard | journal B5 | 14cfd60; known-word list applied; T022 tracks structured writer |

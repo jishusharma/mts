@@ -1,11 +1,12 @@
-BUILD_REPORT - 2026-09-18 17:26:09 UTC
+BUILD_REPORT - 2026-09-18 17:39:11 UTC
 host: JIS-NB
 
-Java compile:  PASS (2.6 s)
-Math tests:    PASS 125/125 (1.1 s)
-Doc tests:     PASS 5/5 (1.5 s)
+Java compile:  PASS (3.6 s)
+Math tests:    PASS 125/125 (1.4 s)
+Doc tests:     PASS 5/5 (1.9 s)
 
-In-flight .new files: 0
+In-flight .new files: 1
+  - mts\runtime\math_object_builder.py.new (age 3m)
 
 Active sessions:
   (none)
