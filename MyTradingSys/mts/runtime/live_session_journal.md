@@ -569,3 +569,16 @@ Pre-fix logic would have been: SHORT + SELL = aligned (wrong).
 Fix is live. Synthetic test was incorrectly rejected by BOM (PS 5.1 Set-Content -Encoding UTF8 writes BOM). Not a code issue.
 
 Cycle 53 (18:41:23) log: WATCH (proof 4) pd=contradiction - correct.
+
+## T028 - NEXT SESSION CHECK - 2026-09-19T01:15:59Z
+
+After 2026-09-19T00:00:00Z, verify B034 fix (cvdSeries.clear at UTC rollover).
+
+Read: MyTradingSys/mts/runtime/state_code.json
+Check 1: transition_chain_15m contains no pre-rollover letters (chain should have no carryover from 23:xx UTC).
+Check 2: signals.cvd_slope is not spuriously "bearish" from stale pre-rollover CVD samples.
+
+If both hold: close T028 with a one-line receipt quoting the rollover timestamp and the chain head.
+If either fails: reopen B034 and attach state_code.json as evidence.
+
+Timeline this session: B034 code fix committed af1cfc5; loop restarted 17:48Z with the fix in the compiled class.

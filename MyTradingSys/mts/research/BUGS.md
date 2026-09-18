@@ -106,5 +106,5 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T028 | 2026-09-18 | OPEN | LOW | Verify B034 cvdSeries.clear fix at 00:00 UTC rollover | B034 code receipt | - |
 | T029 | 2026-09-18 | CLOSED | LOW | context.ps1 makes 3 Binance REST calls per invocation; cache to disk | scripts\live\context.ps1 | duplicate of B015 (WONTFIX 2026-09-18); no consumer needs caching. |
 | T030 | 2026-09-18 | CLOSED | MED | T017 scope: only session_timing_rules.md carries ID-row rule format; other 5 condition files use unnumbered headings | conditions/*.md tally 2026-09-18 | 2026-09-19: closed with T017. Tag pass ran on all 6 files; only session_timing_rules produced 0 tags. See T031. |
-| T031 | 2026-09-19 | OPEN | LOW | session_timing_rules.md has 0 TOM-NNN tags; its Tom refs use T-001..T-005 inline format | session_timing_rules.md L301-309 | - |
+| T031 | 2026-09-19 | WONTFIX | LOW | session_timing_rules.md has 0 TOM-NNN tags; its Tom refs use T-001..T-005 inline format | session_timing_rules.md L301-309 | 2026-09-19: file is research-sourced (ATAS, CoinSwitch, SGT, Block Scholes B-001..B-005). Nine SR rules not Tom-derived. L301-309 is a background table, not rule source; T-002 and T-003 marked (implied). Zero tags correct. |
 # END
