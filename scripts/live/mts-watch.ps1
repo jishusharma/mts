@@ -2,6 +2,7 @@
 # Version: v1.1.1
 # Canonical: scripts\live\mts-watch.ps1
 # Invoked by: mts-live (see scripts\load.ps1). See MTS_DICTIONARY.md LIVE FEED NAMES.
+# 2026-09-17 v1.1.1 - display text reword.
 # 2026-09-17 v1.1.0 - added compiled blocks MTS-HSTOP, MTS-PROOF, MTS-CAND, MTS-DELTA.
 # 2026-09-17 v1.0.0 - initial console feed.
 # Read-only console feed. One block per tick. Also appends to data\mts-watch.log

@@ -17,7 +17,7 @@ In another window, read in one batch:
 2. mts-watch.ps1 extended: compiled blocks MTS-HSTOP, MTS-PROOF, MTS-CAND, MTS-DELTA.
 3. Live feed naming scheme (mts- prefix commands, MTS- prefix blocks) in MTS_DICTIONARY.md.
 4. Aliases mts-live, mts-live-fast, mts-live-stop, mts-live-log, mts-tape in load.ps1.
-5. mts-watch.ps1 version header v1.1.0.
+5. mts-watch.ps1 version header v1.1.1.
 
 ## OPEN - CARRIED
 - WRAP COUNT=0 anomaly. Wrapper matcher not finding wrapper. Lock held. Not urgent.

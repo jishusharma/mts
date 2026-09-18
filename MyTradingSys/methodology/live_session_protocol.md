@@ -52,6 +52,11 @@ No essay. No re-diagnosis. No defending the original read.
 Before answering a field-level question, check the boot paste or the live feed.
 Do not answer from conversation memory. The paste supersedes.
 
+### 11. Evidence attached to every claim
+Any observation, bug, note, or design claim cites the specific field values
+from the paste or snapshot that drove it. Quote the field name and value
+inline. No claim without its evidence, when the evidence is available.
+
 ## MISTAKE LEDGER - 2026-09-17
 
 Format: Said | True | Class

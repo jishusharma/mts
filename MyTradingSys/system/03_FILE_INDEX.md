@@ -1,7 +1,7 @@
 # FILE: 03_FILE_INDEX.md
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
-# LAST UPDATED: 2026-09-17
+# LAST UPDATED: 2026-09-18
 # SIZE: ~12.3KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
@@ -118,6 +118,7 @@
 | validation_prompt_gpt.md | ~8KB | GPT validation prompt template |
 | validation_prompt_grok.md | ~7KB | Grok validation prompt template |
 | whale_positioning_evidence_2026-09-12.md | ~3KB | 4-AI whale research |
+| session_anchor_options_note.md | ~5KB | Session anchor options A/B/C + evidence + constraints (2026-09-18) |
 
 ## MTS/TESTS/ — Test System (9 files)
 
@@ -246,6 +247,6 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/mts/runtime/live_session_log.md | runtime | RETIRED 2026-09-17. Superseded by live_session_journal.md. Backup: backup_session/live_session_log.md.retired-20260917. | MTS-2026-09-17-1241Z | 2026-09-17 |
 | MyTradingSys/mts/runtime/live_session_journal.md | runtime | Append-only session journal. QUOTE / REQ / OBS / DECISION / LANDED / READ. Everything no other file holds. | MTS-2026-09-17-1241Z | 2026-09-17 |
 | scripts/live/tape-watch.ps1 | tool | Sidecar watcher. Divergence classifier every 30s. Reads snapshot + state_code. Read-only on loop. | MTS-2026-09-17-1241Z | 2026-09-17 |
-| scripts/live/mts-watch.ps1 | tool | CANONICAL live feed (mts-live). v1.1.0. Compiled-layer blocks: MTS-HSTOP, MTS-PROOF, MTS-CAND, MTS-DELTA + state, flow, cycles, slow. See MTS_DICTIONARY.md LIVE FEED NAMES. | MTS-2026-09-17-1241Z | 2026-09-17 |
+| scripts/live/mts-watch.ps1 | tool | CANONICAL live feed (mts-live). v1.1.1. Compiled-layer blocks: MTS-HSTOP, MTS-PROOF, MTS-CAND, MTS-DELTA + state, flow, cycles, slow. See MTS_DICTIONARY.md LIVE FEED NAMES. | MTS-2026-09-17-1241Z | 2026-09-17 |
 | MyTradingSys/methodology/live_session_protocol.md | methodology | AI-side checks before any live tape claim. Mistake ledger 2026-09-17. Read at session boot. | MTS-2026-09-17-1241Z | 2026-09-17 |
 scripts\live\mts-dashboard.ps1 | dashboard command, one-shot and -Watch | new 2026-09-17

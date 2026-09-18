@@ -62,7 +62,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B040 | 2026-09-16 | CLOSED | LOW | Log prints STATE X to X with same value | L_ITEMS I36 | start-trading-day.ps1 L319 L419 L422 pendingStateFrom |
 | B041 | 2026-09-17 | CLOSED | MED | Stale test asserted classification == B | test_mts_math.py:477 | test_mts_math.py:477 now trend_healthy; 130/130 pass |
 | B042 | 2026-09-17 | OPEN | LOW | day_type derived with provisional thresholds, no 3-snapshot evidence | MTS-2026-09-17-1142Z | - |
-| B043 | 2026-09-17 | IN-FIX | MED | Supervisor misses wrappers launched via mode.ps1 | handoff NEXT_SESSION_HANDOFF.md; MTS-2026-09-17-1514Z live incident | Get-AllWrappers matcher extended to mode.ps1; supervisor restart pending |
+| B043 | 2026-09-17 | CLOSED | MED | Supervisor misses wrappers launched via mode.ps1 | handoff NEXT_SESSION_HANDOFF.md; MTS-2026-09-17-1514Z live incident | Get-AllWrappers matcher extended to mode.ps1; live verified 2026-09-17T17:54Z mts-live wrap=17792 |
 
 | B044 | 2026-09-17 | OPEN | MED | CVD and trade_flow.net_delta computed from kline taker-buy proxy, not aggTrade tick delta | MarketDataSnapshot.java:178,633-648,379-381 | - |
 | B045 | 2026-09-17 | OPEN | MED | WebSocket migration roadmap not started; archive doc 2026-09-05 unrealized | MyTradingSys/mts/archive/binance_api_integration_recommendations.md 1107 lines sections 1-11 | - |

@@ -397,3 +397,40 @@ E7. Five open comparison questions. Logged in DASHBOARD BUILD AND OPEN QUESTIONS
 10. B5 verdict parse fragility. Design.
 
 [END OPEN ITEMS MASTER]
+
+## SESSION MTS-2026-09-18-0456Z - 2026-09-18
+
+### LOOP RESTART
+Loop dead at boot. Last cycle 233 at 2026-09-17T20:11:20Z. PC shut down overnight. Lock apparatus.lock stale 2026-09-17T16:18Z. Restarted via mode.ps1 -M armed. Cycle 6 at 05:04:20Z.
+
+### FIRST TAPE 05:04:45Z
+Price 77488.80. Prior close 76591.30. Overnight rally +897.5, no engine record.
+Rank-1: ct_short @ daily_vah 77604.61, nrr 2.30, proof 4, conditional, substate below.
+Proof direction contradiction: finished_auction=BUY, book_imbalance=1.71 bid-heavy.
+Top-gate pass True. Session block zeros, day UNKNOWN, pre-anchor (US 13:30Z).
+State A. bear=3 bull=0. cvd=1511.032 rising.
+
+### OBSERVATIONS
+O1. Overnight gap unreported. No cycles between 233 and 1.
+O2. Book imbalance 1.71 now vs 0.43 prior close. B024 evidence.
+O3. Rank-1 short contradicted by BUY finished-auction and bid-heavy book. Verdict stays WATCH. Proof direction working as designed.
+O4. MTS-TAPE baseline still 2026-09-17T20:11Z. Sidecar stale.
+O5. MTS-SET 3 scalp_short @ vwap_band_+1 tier=trigger_ready, nrr 2.25. Same contradiction applies.
+
+### BUGS SEEN
+BN1. Supervisor not running. MTS-PROC SUP COUNT=0. Launched via mode.ps1 only.
+BN2. Non-IntelliJ java query empty at 05:05Z while log advanced. Confirm spawn-per-cycle behavior next check.
+## SESSION MTS-2026-09-18-0456Z - WRITES
+
+W1. Wrote MyTradingSys\mts\research\session_anchor_options_note.md.
+    6619 bytes, no BOM, no non-ASCII. Contains options A (UTC anchor only),
+    B (per-session anchors only), C (both). Evidence attached:
+    snapshot 2026-09-17T20:11:15Z session block populated (anchor 13:30Z
+    passed); snapshot 2026-09-18T05:04:15Z MTS-SESS all zeros (Asian
+    session, anchor not reached). Awaiting user decision on option.
+
+W2. Wrote Rule 11 to MyTradingSys\methodology\live_session_protocol.md.
+    7499 bytes, no BOM, no non-ASCII, LF-only. Text: any observation, bug,
+    note, or design claim cites the specific field values that drove it.
+
+# END
