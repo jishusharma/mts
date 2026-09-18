@@ -91,7 +91,7 @@ Tom's framing:
 > 'First, yes, there are indeed more sellers present in the market. Second,
 > what this does is it provides me with clear proof that all of the buyers
 > who entered during the pre-session... have already been traded below.'
-> **Source GPS:** l8RZrBfzvp4 | [MIDDLE]
+> **Source GPS:** l8RZrBfzvp4 | [MIDDLE] [TOM-001]
 
 **Tier:** T1 — Tom's example.
 
@@ -114,7 +114,7 @@ immediately upon proof — he waits for a specific price action event.
 > 'this is always the most pleasant scenario happens when the price action
 > unfolds like this. And there's a pullback to my setup because I waited
 > patiently. That approach is even more effective for me.'
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-002]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -135,7 +135,7 @@ Entry on the retest hold.
 > that weakness can occur, then I have a great combination and that means
 > at this point at the latest, it is by far the best spot for people who
 > like to enter the market on a pullback.'
-> **Source GPS:** l8RZrBfzvp4 | [MIDDLE]
+> **Source GPS:** l8RZrBfzvp4 | [MIDDLE] [TOM-003]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -146,7 +146,7 @@ break or on the first retest of the broken level.
 
 > 'I have the opportunity to trade the market for myself either through a
 > breakin or a breakout.'
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-004]
 
 **Tier:** T1 — Tom's example.
 
@@ -158,7 +158,7 @@ touch alone.
 
 > 'For me, that means a great opportunity to place a limit order here, and
 > then initially enter a short trade accordingly.'
-> **Source GPS:** oa8kxSLLkAo | [MIDDLE]
+> **Source GPS:** oa8kxSLLkAo | [MIDDLE] [TOM-005]
 
 **Tier:** T1 — Tom's example.
 
@@ -181,7 +181,7 @@ returning to the zone.
 > 'this is always the most pleasant scenario happens when the price action
 > unfolds like this. And there's a pullback to my setup because I waited
 > patiently.'
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-006]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -197,11 +197,11 @@ returning to the zone.
 Tom uses both:
 
 > 'For me, that means a great opportunity to place a limit order here'
-> **Source GPS:** oa8kxSLLkAo | [MIDDLE] | Limit order at zone
+> **Source GPS:** oa8kxSLLkAo | [MIDDLE] | Limit order at zone [TOM-007]
 
 > 'if I can trade dynamically, I have the opportunity up here to enter the
 > market with a setup'
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE] | Dynamic (market) entry
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] | Dynamic (market) entry [TOM-008]
 
 **Tier:** T1 — Tom's examples.
 
@@ -209,7 +209,7 @@ Tom uses both:
 
 > 'Such a finished auction. So, a completed auction, this gives you the
 > overview that the market was done here.'
-> **Source GPS:** oa8kxSLLkAo | [MIDDLE]
+> **Source GPS:** oa8kxSLLkAo | [MIDDLE] [TOM-009]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -229,7 +229,7 @@ followed by a delta flip on the next candle. The delta flip is the trigger.
 > 'The market showed me that there is rejection up here. And the market
 > also showed me that the speed with which it rejected this is promising
 > for me.'
-> **Source GPS:** k0zm5NYn0IQ | [MIDDLE]
+> **Source GPS:** k0zm5NYn0IQ | [MIDDLE] [TOM-010]
 
 **Tier:** T1 — Tom's example.
 
@@ -256,7 +256,7 @@ ended and the trend is resuming.
 > 'The market opened lower, then crashed down, came back in, formed
 > acceptance, then made a nice pull back to the business zone. And here it
 > confirmed it again and showed us that there are aggressive buyers.'
-> **Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE]
+> **Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE] [TOM-011]
 
 **Tier:** T1 — Tom's example.
 
@@ -272,7 +272,7 @@ ended and the trend is resuming.
 
 > 'Now you have options to enter here via pullback or to enter here again
 > via pullback.'
-> **Source GPS:** qLnQan0KGmQ | [MIDDLE]
+> **Source GPS:** qLnQan0KGmQ | [MIDDLE] [TOM-012]
 
 **Tier:** T1 — Tom's example.
 
@@ -288,7 +288,7 @@ break above the high of the mitigation candle). This is NOT Tom's rule.
 > completely finished with so-called unfinished auctions, do you have the
 > opportunity to recognize that a sustainable top formation may really be
 > present here.'
-> **Source GPS:** oa8kxSLLkAo | [MIDDLE]
+> **Source GPS:** oa8kxSLLkAo | [MIDDLE] [TOM-013]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -307,7 +307,7 @@ in trend direction = strongest TC trigger. Delta flip at zone = abort.
 > 'And now it's really time to be careful because up here we absolutely
 > need to get a closing price now. then I'll keep the position. Otherwise,
 > I'd just close out one contract right away'
-> **Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE]
+> **Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE] [TOM-014]
 
 **Tier:** T1 — Tom's example.
 
@@ -323,7 +323,7 @@ in trend direction = strongest TC trigger. Delta flip at zone = abort.
 > 'I see here that the last time there was significant trading volume on
 > the 5-minut chart was at 603. And if it drops below that, things will
 > break down'
-> **Source GPS:** 4MoNjEQ2Dd8 | [END]
+> **Source GPS:** 4MoNjEQ2Dd8 | [END] [TOM-015]
 
 **Tier:** T1 — Tom's example.
 
@@ -341,7 +341,7 @@ trigger must confirm that the breakout is genuine, not a fake-out.
 > 'And now look at the speed. This is crucial. Now, how is the market
 > speed developing now?' / 'The speed is picking up. Look at what's being
 > bought here. And now comes the breakout.'
-> **Source GPS:** 4MoNjEQ2Dd8 | [END]
+> **Source GPS:** 4MoNjEQ2Dd8 | [END] [TOM-016]
 
 **Tier:** T1 — Tom's example.
 
@@ -355,7 +355,7 @@ trigger must confirm that the breakout is genuine, not a fake-out.
 **Execution:** Tom uses both market and stop orders:
 
 > 'I'll add to the position again at the breakout.'
-> **Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE]
+> **Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE] [TOM-017]
 
 **Tier:** T1 — Tom's example.
 
@@ -367,7 +367,7 @@ beyond the level with volume > 1.5x the 20-period average. This filters
 
 > 'if it accepts new prices, then it looks for the next high volume price
 > and that is your target.'
-> **Source GPS:** qLnQan0KGmQ | [END]
+> **Source GPS:** qLnQan0KGmQ | [END] [TOM-018]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -382,7 +382,7 @@ beyond the level with volume > 1.5x the 20-period average. This filters
 **Key distinction:**
 
 > 'Not with quick spikes but with real acceptance.'
-> **Source GPS:** qLnQan0KGmQ | [MIDDLE]
+> **Source GPS:** qLnQan0KGmQ | [MIDDLE] [TOM-019]
 
 **Tier:** T5 — Tom's command.
 
@@ -399,7 +399,7 @@ Tom's rule but aligns with his 'acceptance' concept.
 > being strongly supported, so not being strongly bought. For me, it's very
 > clear that the probability of the range breaking to the downside is high
 > now.'
-> **Source GPS:** y67l86cSqb8 | [MIDDLE]
+> **Source GPS:** y67l86cSqb8 | [MIDDLE] [TOM-020]
 
 **Tier:** T1 — Tom's example.
 
@@ -419,7 +419,7 @@ trigger must be immediate and high-probability due to small targets.
 
 > 'You can define so-called price ranges from the VWAP where you expect a
 > reaction.'
-> **Source GPS:** 43JaKHRvxHk | [MIDDLE]
+> **Source GPS:** 43JaKHRvxHk | [MIDDLE] [TOM-021]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -437,7 +437,7 @@ balance markets. Band width is [CRYPTO HACK] untested for crypto.
 
 > 'I can't assume a maximally brutal breakout now or a trend day from the
 > market open'
-> **Source GPS:** 43JaKHRvxHk | [MIDDLE]
+> **Source GPS:** 43JaKHRvxHk | [MIDDLE] [TOM-022]
 
 **Tier:** T5 — Tom's command.
 
@@ -452,7 +452,7 @@ balance markets. Band width is [CRYPTO HACK] untested for crypto.
 > 'if you need verifiable numbers, then you need And if I were to only
 > ever take the trade up to the VWAP, I can already see those are very
 > modest profit targets.'
-> **Source GPS:** 43JaKHRvxHk | [MIDDLE]
+> **Source GPS:** 43JaKHRvxHk | [MIDDLE] [TOM-023]
 
 **Tier:** T1 — Tom's example.
 
@@ -485,7 +485,7 @@ Tom's structural triggers:
 
 > 'if it comes back to this particular price area right here, and I get
 > another valid setup or signal here, then I will enter into another trade'
-> **Source GPS:** wPMiyJXL0zU | [END]
+> **Source GPS:** wPMiyJXL0zU | [END] [TOM-024]
 
 **Tier:** T1 — Tom's example.
 
@@ -505,13 +505,13 @@ Tom's order-flow triggers:
 
 > 'It means that there is a very large buyer here who is absorbing
 > everything that's being sold.'
-> **Source GPS:** y67l86cSqb8 | [MIDDLE]
+> **Source GPS:** y67l86cSqb8 | [MIDDLE] [TOM-025]
 
 **Tier:** T4 — Tom's recommendation.
 
 > 'And here it confirmed it again and showed us that there are aggressive
 > buyers.'
-> **Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE]
+> **Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE] [TOM-026]
 
 **Tier:** T1 — Tom's example.
 
@@ -530,7 +530,7 @@ Tom's momentum triggers:
 
 > 'The speed is picking up. Look at what's being bought here. And now
 > comes the breakout.'
-> **Source GPS:** 4MoNjEQ2Dd8 | [END]
+> **Source GPS:** 4MoNjEQ2Dd8 | [END] [TOM-027]
 
 **Tier:** T1 — Tom's example.
 
@@ -556,13 +556,13 @@ Tom's time triggers:
 
 > 'we absolutely need to get a closing price now. then I'll keep the
 > position. Otherwise, I'd just close out one contract right away'
-> **Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE]
+> **Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE] [TOM-028]
 
 **Tier:** T1 — Tom's example.
 
 > 'if you take a look at the time here, you'll see it's midday. And during
 > lunchtime, there's usually relatively little volume in the market.'
-> **Source GPS:** wPMiyJXL0zU | [MIDDLE]
+> **Source GPS:** wPMiyJXL0zU | [MIDDLE] [TOM-029]
 
 **Tier:** T1 — Tom's example.
 

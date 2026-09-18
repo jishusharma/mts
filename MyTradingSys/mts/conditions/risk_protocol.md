@@ -18,12 +18,12 @@ just a guess.
 
 > "You always need two things, the idea and the proof. Once you have both,
 > you'll be able to establish a risk reward ratio. And you have to stick to that."
-> **Source GPS:** qLnQan0KGmQ | [END]
+> **Source GPS:** qLnQan0KGmQ | [END] [TOM-067]
 
 > "First, you have an idea. Second, you have proof that it's really time now
 > to implement the idea. And third, you have a really clean risk management
 > so that the math is on your side."
-> **Source GPS:** zQTbdEweG3c | [BEGINNING]
+> **Source GPS:** zQTbdEweG3c | [BEGINNING] [TOM-068]
 
 **Tier:** T5 — Tom's command.
 
@@ -42,14 +42,14 @@ Source GPS. Every gap is flagged. No thresholds are invented.
 > it quite perfectly and then we get taken out of the market. But letting the
 > trades that are running continue to run, that is a great art and almost
 > impossible for many traders."
-> **Source GPS:** kXhIAug0Gh8 | [BEGINNING]
+> **Source GPS:** kXhIAug0Gh8 | [BEGINNING] [TOM-069]
 
 **Tier:** T5 — Tom's command.
 
 ### 1.2 Math Is the All-Decisive Factor
 
 > "exactly the math behind it is the all decisive factor."
-> **Source GPS:** kXhIAug0Gh8 | [BEGINNING]
+> **Source GPS:** kXhIAug0Gh8 | [BEGINNING] [TOM-070]
 
 **Tier:** T5 — Tom's command.
 
@@ -57,7 +57,7 @@ Source GPS. Every gap is flagged. No thresholds are invented.
 
 > "And then you still feel reasonably comfortable despite everything even if
 > the session wasn't perfect."
-> **Source GPS:** kXhIAug0Gh8 | [BEGINNING]
+> **Source GPS:** kXhIAug0Gh8 | [BEGINNING] [TOM-071]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -68,28 +68,28 @@ Source GPS. Every gap is flagged. No thresholds are invented.
 ### 2.1 Stop Belongs Below the Last Liquidity
 
 > "my stop loss belongs below the last liquidity."
-> **Source GPS:** 3o1VVsfBmmU | [MIDDLE]
+> **Source GPS:** 3o1VVsfBmmU | [MIDDLE] [TOM-072]
 
 **Tier:** T4 — Tom's recommendation.
 
 ### 2.2 Stop Below Last Swing Low (Re-entry Rule)
 
 > "And I then placed my stop loss below the last swing low again."
-> **Source GPS:** kXhIAug0Gh8 | [MIDDLE]
+> **Source GPS:** kXhIAug0Gh8 | [MIDDLE] [TOM-073]
 
 **Tier:** T4 — Tom's recommendation.
 
 ### 2.3 Stop Below Last Low (General Rule)
 
 > "The stop loss goes below the last low here"
-> **Source GPS:** 4MoNjEQ2Dd8 | [BEGINNING]
+> **Source GPS:** 4MoNjEQ2Dd8 | [BEGINNING] [TOM-074]
 
 **Tier:** T4 — Tom's recommendation.
 
 ### 2.4 Stop Does NOT Belong Above the High
 
 > "It doesn't belong above the high."
-> **Source GPS:** yRvMW6lgN1o | [MIDDLE]
+> **Source GPS:** yRvMW6lgN1o | [MIDDLE] [TOM-075]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -98,7 +98,7 @@ Source GPS. Every gap is flagged. No thresholds are invented.
 > "we like to use footprint charts. for example, so we can easily identify
 > the perfect level where we should abandon our trading idea because the
 > probability is simply high that the market will shoot straight up."
-> **Source GPS:** yRvMW6lgN1o | [MIDDLE]
+> **Source GPS:** yRvMW6lgN1o | [MIDDLE] [TOM-076]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -107,14 +107,14 @@ Source GPS. Every gap is flagged. No thresholds are invented.
 > "if the market were to go back above here then my stop loss would be at
 > 3005 for example... if we move back above this level then I have a problem
 > with my short position"
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-077]
 
 **Tier:** T1 — Tom's example (one specific trade).
 
 ### 2.7 Stop Can Be Much Tighter Depending on Setup
 
 > "can be set much tighter depending on the setup"
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-078]
 
 **Tier:** T1 — Tom's example.
 
@@ -123,7 +123,7 @@ Source GPS. Every gap is flagged. No thresholds are invented.
 > "I moved the stop loss to a price range where I simply expect the opposite
 > of my long position. And before that, it doesn't make sense to move the
 > stop-loss."
-> **Source GPS:** 4MoNjEQ2Dd8 | [END]
+> **Source GPS:** 4MoNjEQ2Dd8 | [END] [TOM-079]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -132,14 +132,14 @@ Source GPS. Every gap is flagged. No thresholds are invented.
 > "But if it drops below that, then it's game over. Then we should definitely
 > exit the market because then there will be a longer pullback to the downside
 > and that's just not necessary."
-> **Source GPS:** 4MoNjEQ2Dd8 | [END]
+> **Source GPS:** 4MoNjEQ2Dd8 | [END] [TOM-080]
 
 **Tier:** T5 — Tom's command.
 
 ### 2.10 Don't Move Stop Prematurely
 
 > "And before that, it doesn't make sense to move the stop-loss."
-> **Source GPS:** 4MoNjEQ2Dd8 | [END]
+> **Source GPS:** 4MoNjEQ2Dd8 | [END] [TOM-081]
 
 **Tier:** T5 — Tom's command.
 
@@ -148,7 +148,7 @@ Source GPS. Every gap is flagged. No thresholds are invented.
 > "I see here that the last time there was significant trading volume on the
 > 5-minut chart was at 603. And if it drops below that, things will break
 > down, of course. That means we don't want to go below 603 anymore."
-> **Source GPS:** 4MoNjEQ2Dd8 | [END]
+> **Source GPS:** 4MoNjEQ2Dd8 | [END] [TOM-082]
 
 **Tier:** T1 — Tom's example.
 
@@ -157,7 +157,7 @@ Source GPS. Every gap is flagged. No thresholds are invented.
 > "But you always have to stay honest with yourself. That wasn't the actual
 > risk. The actual risk was a bit higher and therefore always consult the math
 > of the first trade for the whole thing."
-> **Source GPS:** kXhIAug0Gh8 | [MIDDLE]
+> **Source GPS:** kXhIAug0Gh8 | [MIDDLE] [TOM-083]
 
 **Tier:** T5 — Tom's command — track actual risk separately from theoretical
 risk after trailing.
@@ -166,13 +166,13 @@ risk after trailing.
 
 > "I definitely placed my stop loss in a price range that was not smart at
 > the time."
-> **Source GPS:** kXhIAug0Gh8 | [MIDDLE]
+> **Source GPS:** kXhIAug0Gh8 | [MIDDLE] [TOM-084]
 
 **Tier:** T5 — Tom's command — own your mistakes; analyze whether it was your
 error or market structure.
 
 > "Specifically two ticks lower than where my stop loss had been set."
-> **Source GPS:** kXhIAug0Gh8 | [MIDDLE]
+> **Source GPS:** kXhIAug0Gh8 | [MIDDLE] [TOM-085]
 
 **Tier:** T1 — Tom's example (one specific stop hunt).
 
@@ -192,21 +192,21 @@ universal formula — he shows specific numbers for specific trades.
 
 > "In today's video, I want to show you how you too can achieve really good
 > profits with manageable risk, even with a small account."
-> **Source GPS:** yRvMW6lgN1o | [BEGINNING]
+> **Source GPS:** yRvMW6lgN1o | [BEGINNING] [TOM-086]
 
 **Tier:** T4 — Tom's recommendation.
 
 > "with such an absolutely small risk, you don't have to worry if it goes
 > wrong. Then you have the opportunity, if you get another signal, to play
 > the whole thing again."
-> **Source GPS:** zQTbdEweG3c | [MIDDLE]
+> **Source GPS:** zQTbdEweG3c | [MIDDLE] [TOM-087]
 
 **Tier:** T4 — Tom's recommendation.
 
 ### 3.2 Points-Based Risk (Counter-Trade Example)
 
 > "my risk is 45 points" / "my stop loss is suddenly only 20 points wide"
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-090]
 
 **Tier:** T1 — Tom's example.
 
@@ -240,26 +240,26 @@ preset percentage rule.
 ### 4.1 Know R:R Before Entry
 
 > "You have to know the risk of reward ratio very good."
-> **Source GPS:** qLnQan0KGmQ | [BEGINNING]
+> **Source GPS:** qLnQan0KGmQ | [BEGINNING] [TOM-088]
 
 **Tier:** T5 — Tom's command.
 
 > "You have to plan your trades very good and deep."
-> **Source GPS:** qLnQan0KGmQ | [BEGINNING]
+> **Source GPS:** qLnQan0KGmQ | [BEGINNING] [TOM-089]
 
 **Tier:** T5 — Tom's command.
 
 ### 4.2 Counter-Trade R:R Math
 
 > "With counter trades, I always have to rely on the math."
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-091]
 
 **Tier:** T5 — Tom's command.
 
 > "even with a hit rate of 30 to 40% you have an average riskreward ratio
 > of greater than three and you will be incredibly successful mathematically
 > with this approach"
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-092]
 
 **Tier:** T3 — Tom's stated statistic. Not independently verified.
 
@@ -268,7 +268,7 @@ preset percentage rule.
 > "if I secure my initial profits at a riskreward ratio of precisely 3:1
 > then I quite clearly have 20 units then 40 units then 60 units and
 > continuing in that progression and so on."
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-101]
 
 **Tier:** T1 — Tom's example (one specific trade scenario).
 
@@ -277,7 +277,7 @@ preset percentage rule.
 > "you have to know your hit rate, and then through your hit rate and the
 > minimum usable risk-reward ratio, you can know, 'I have to trade at least
 > up to here, otherwise the whole thing makes no sense.'"
-> **Source GPS:** 43JaKHRvxHk | [MIDDLE]
+> **Source GPS:** 43JaKHRvxHk | [MIDDLE] [TOM-093]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -286,34 +286,34 @@ preset percentage rule.
 > "my stop loss in this case let's say is 10 ticks and my profit run in this
 > case let's say is 70 ticks. That makes a riskreward ratio of seven.
 > That's obviously huge."
-> **Source GPS:** 3o1VVsfBmmU | [MIDDLE]
+> **Source GPS:** 3o1VVsfBmmU | [MIDDLE] [TOM-094]
 
 **Tier:** T3 — Tom's calculation (one specific scenario).
 
 > "with a riskreward ratio of 1:7, you can have a hit rate of less than 20%
 > and still make money. Of course, you just have to be able to handle that."
-> **Source GPS:** 3o1VVsfBmmU | [MIDDLE]
+> **Source GPS:** 3o1VVsfBmmU | [MIDDLE] [TOM-095]
 
 **Tier:** T3 — Tom's calculation.
 
 ### 4.6 R:R of 4 Example (S&P)
 
 > "It was at around four to one."
-> **Source GPS:** kXhIAug0Gh8 | [MIDDLE]
+> **Source GPS:** kXhIAug0Gh8 | [MIDDLE] [TOM-096]
 
 **Tier:** T3 — Tom's calculation (one specific trade).
 
 ### 4.7 R:R of 8 Example (Nasdaq)
 
 > "I had a risk reward ratio of eight here. Gigantically cool"
-> **Source GPS:** kXhIAug0Gh8 | [MIDDLE]
+> **Source GPS:** kXhIAug0Gh8 | [MIDDLE] [TOM-097]
 
 **Tier:** T3 — Tom's calculation (one specific trade).
 
 ### 4.8 R:R of ~16.7 Example (DAX Counter-Trend)
 
 > "how you earn almost 5,000 euros with the risk of just 300 euros"
-> **Source GPS:** zQTbdEweG3c | [BEGINNING]
+> **Source GPS:** zQTbdEweG3c | [BEGINNING] [TOM-098]
 
 **Tier:** T3 — Implied R:R from stated numbers. Not spoken as ratio.
 
@@ -337,13 +337,13 @@ preset percentage rule.
 
 > "The stop loss belonged right here. And you can already see here the risk
 > reward ratio is gigantic."
-> **Source GPS:** qLnQan0KGmQ | [MIDDLE]
+> **Source GPS:** qLnQan0KGmQ | [MIDDLE] [TOM-099]
 
 **Tier:** T1 — Tom's example.
 
 > "Even if we're only right every second or third time with such a trade, we
 > have a huge risk reward ratio and that's all that matters in trading."
-> **Source GPS:** qLnQan0KGmQ | [END]
+> **Source GPS:** qLnQan0KGmQ | [END] [TOM-100]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -368,7 +368,7 @@ preset percentage rule.
 **Tier:** T1 — Tom's example.
 
 > "In theory, I can plan the next leg up to the next high volume area."
-> **Source GPS:** qLnQan0KGmQ | [MIDDLE]
+> **Source GPS:** qLnQan0KGmQ | [MIDDLE] [TOM-102]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -378,7 +378,7 @@ preset percentage rule.
 > trader, we can look at whether the VWAP is very steep, for example, and if
 > the price is running extremely high, then we can define the VWAP as a
 > profit target."
-> **Source GPS:** 43JaKHRvxHk | [MIDDLE]
+> **Source GPS:** 43JaKHRvxHk | [MIDDLE] [TOM-103]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -396,21 +396,21 @@ preset percentage rule.
 > "So, let's close out a position. We're happy with that. We'll leave the
 > stop loss down here for because I just saw that there's too much rotation
 > up there."
-> **Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE]
+> **Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE] [TOM-104]
 
 **Tier:** T1 — Tom's example.
 
 ### 5.5 "What You've Got, You've Got"
 
 > "what you've got, you've got."
-> **Source GPS:** 4MoNjEQ2Dd8 | [END]
+> **Source GPS:** 4MoNjEQ2Dd8 | [END] [TOM-105]
 
 **Tier:** T4 — Tom's recommendation — profit-protection mentality.
 
 ### 5.6 Target Above Highs
 
 > "my take-profit is set above the highs"
-> **Source GPS:** 4MoNjEQ2Dd8 | [BEGINNING]
+> **Source GPS:** 4MoNjEQ2Dd8 | [BEGINNING] [TOM-106]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -423,7 +423,7 @@ preset percentage rule.
 > "So I then started a re-entry. Why did I do that? Because I saw that down
 > here after I was stopped out, the market was incredibly stable and started
 > moving in my favor again."
-> **Source GPS:** kXhIAug0Gh8 | [MIDDLE]
+> **Source GPS:** kXhIAug0Gh8 | [MIDDLE] [TOM-107]
 
 **Tier:** T1 — Tom's example.
 
@@ -433,7 +433,7 @@ preset percentage rule.
 > a case of me jumping back in because I feel like I have to be part of it
 > again? Or else I also have real proof from dynamic buyers that it makes
 > sense there."
-> **Source GPS:** kXhIAug0Gh8 | [END]
+> **Source GPS:** kXhIAug0Gh8 | [END] [TOM-108]
 
 **Tier:** T5 — Tom's command — re-entry must have "real proof," not emotional
 reaction.
@@ -442,7 +442,7 @@ reaction.
 
 > "And I hope some of you can relate to this and above all has the courage
 > to make re-entries immediately when the market does it at the right spot."
-> **Source GPS:** kXhIAug0Gh8 | [END]
+> **Source GPS:** kXhIAug0Gh8 | [END] [TOM-109]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -455,7 +455,7 @@ reaction.
 > "these are situations that always happen. When you're either over leveraged
 > or when you're invested in products where you don't even know what all can
 > happen."
-> **Source GPS:** dh-ysRR8f-M | [BEGINNING]
+> **Source GPS:** dh-ysRR8f-M | [BEGINNING] [TOM-110]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -463,7 +463,7 @@ reaction.
 
 > "I realized that this overnight risk can be many times greater in leveraged
 > products than I could have ever imagined."
-> **Source GPS:** dh-ysRR8f-M | [BEGINNING]
+> **Source GPS:** dh-ysRR8f-M | [BEGINNING] [TOM-111]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -471,7 +471,7 @@ reaction.
 
 > "stability in day trading and also in the investment sector is the absolute
 > key."
-> **Source GPS:** dh-ysRR8f-M | [END]
+> **Source GPS:** dh-ysRR8f-M | [END] [TOM-112]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -480,14 +480,14 @@ reaction.
 > "we should always try to earn a little bit of money day by day in an orderly
 > fashion. And not think about these special situations that we're going to
 > make the monster move now."
-> **Source GPS:** dh-ysRR8f-M | [END]
+> **Source GPS:** dh-ysRR8f-M | [END] [TOM-113]
 
 **Tier:** T4 — Tom's recommendation.
 
 ### 7.5 Cluster Risk Is Real
 
 > "And yes, you then have a cluster risk."
-> **Source GPS:** kXhIAug0Gh8 | [MIDDLE]
+> **Source GPS:** kXhIAug0Gh8 | [MIDDLE] [TOM-114]
 
 **Tier:** T5 — Tom's statement — taking multiple correlated trades creates
 cluster risk.
@@ -497,7 +497,7 @@ cluster risk.
 > "And if you have many contracts, you really start sweating because you might
 > be used to working with small stops and calculating your position size based
 > on that. And that's where I pulled the plug"
-> **Source GPS:** dh-ysRR8f-M | [MIDDLE]
+> **Source GPS:** dh-ysRR8f-M | [MIDDLE] [TOM-115]
 
 **Tier:** T1 — Tom's example.
 
@@ -505,7 +505,7 @@ cluster risk.
 
 > "But that's predictability and predictability is incredibly important. So
 > you definitely need to know your key figures."
-> **Source GPS:** kXhIAug0Gh8 | [END]
+> **Source GPS:** kXhIAug0Gh8 | [END] [TOM-116]
 
 **Tier:** T5 — Tom's command.
 
@@ -526,7 +526,7 @@ cluster risk.
 
 > "if it drops below that, then it's game over. Then we should definitely
 > exit the market"
-> **Source GPS:** 4MoNjEQ2Dd8 | [END]
+> **Source GPS:** 4MoNjEQ2Dd8 | [END] [TOM-117]
 
 **Tier:** T5 — Tom's command.
 
@@ -534,7 +534,7 @@ cluster risk.
 
 > "If we start trading actively above this level again the probability
 > increases that supply and demand will shift back upwards."
-> **Source GPS:** yRvMW6lgN1o | [MIDDLE]
+> **Source GPS:** yRvMW6lgN1o | [MIDDLE] [TOM-118]
 
 **Tier:** T1 — Tom's example.
 
@@ -546,7 +546,7 @@ cluster risk.
 
 > "Both were done with limit orders. So you could have basically ignored the
 > market and the market just did what it was supposed to do..."
-> **Source GPS:** yRvMW6lgN1o | [END]
+> **Source GPS:** yRvMW6lgN1o | [END] [TOM-119]
 
 **Tier:** T1 — Tom's example.
 
@@ -566,7 +566,7 @@ when evaluating Tom's R:R thresholds.
 > "if you're a very impatient person, then you tend to react far too quickly.
 > And if you become more rational simply because you've gained a lot of
 > experience then you wait."
-> **Source GPS:** 4MoNjEQ2Dd8 | [END]
+> **Source GPS:** 4MoNjEQ2Dd8 | [END] [TOM-120]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -574,7 +574,7 @@ when evaluating Tom's R:R thresholds.
 
 > "When things look like a massive opportunity, be mindful and investigate
 > first before you jump blindly into the market."
-> **Source GPS:** dh-ysRR8f-M | [END]
+> **Source GPS:** dh-ysRR8f-M | [END] [TOM-121]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -583,7 +583,7 @@ when evaluating Tom's R:R thresholds.
 > "is your head in the right place? Do you feel good? Do you feel comfortable?
 > Are you cool with yourself? Then you will definitely be able to make great
 > money in the capital markets with a method like this."
-> **Source GPS:** 3o1VVsfBmmU | [END]
+> **Source GPS:** 3o1VVsfBmmU | [END] [TOM-122]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -591,7 +591,7 @@ when evaluating Tom's R:R thresholds.
 
 > "Does the math work? So is your risk management for the corresponding
 > strategies really set up in such a way that it leads to consistent wins?"
-> **Source GPS:** 3o1VVsfBmmU | [END]
+> **Source GPS:** 3o1VVsfBmmU | [END] [TOM-123]
 
 **Tier:** T4 — Tom's recommendation.
 

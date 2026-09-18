@@ -37,18 +37,18 @@ are either mentioned without actionable rules or not mentioned at all.
 > and often this is a price area with a very large range. The market has executed
 > the most trades."
 
-**Source GPS:** YmygDgtoxO8 | [MIDDLE] | POC definition
+**Source GPS:** YmygDgtoxO8 | [MIDDLE] | POC definition [TOM-180]
 
 > "Somewhere here you have the VPC. That is the point of control. That's the point
 > with the highest trading volume."
 
-**Source GPS:** VumVuGnCcFM | [MIDDLE] | VPC definition
+**Source GPS:** VumVuGnCcFM | [MIDDLE] | VPC definition [TOM-181]
 
 ### 2.2 POC as Reaction Zone
 
 > "where high volume occurs, we often see a reaction when a market returns there."
 
-**Source GPS:** NkQeOVDTAec | [BEGINNING] | High volume = reaction zone
+**Source GPS:** NkQeOVDTAec | [BEGINNING] | High volume = reaction zone [TOM-182]
 
 ### 2.3 VPOC Trend = Global Money Flow Direction
 
@@ -60,7 +60,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > that you can immediately see if a market is flattening out in terms of global
 > money flow or not."
 
-**Source GPS:** Ld1dhjGdTCA | [MIDDLE] | VPOC trend = global money flow
+**Source GPS:** Ld1dhjGdTCA | [MIDDLE] | VPOC trend = global money flow [TOM-196]
 
 ### 2.4 POC as Decisive Entry Moment
 
@@ -97,12 +97,12 @@ are either mentioned without actionable rules or not mentioned at all.
 > over here, everything above the value area high and below the value area low is
 > considered an unfair price area."
 
-**Source GPS:** YmygDgtoxO8 | [MIDDLE] | VAH definition
+**Source GPS:** YmygDgtoxO8 | [MIDDLE] | VAH definition [TOM-183]
 
 > "here we have the value area low which is the price range where the market then
 > moves below into unfair price areas."
 
-**Source GPS:** YmygDgtoxO8 | [MIDDLE] | VAL definition
+**Source GPS:** YmygDgtoxO8 | [MIDDLE] | VAL definition [TOM-184]
 
 ### 3.2 Fair vs Unfair Price Areas
 
@@ -110,7 +110,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > price area and in this price area within the corresponding time frame, the market
 > simply did not feel comfortable."
 
-**Source GPS:** YmygDgtoxO8 | [MIDDLE] | Fair vs unfair areas
+**Source GPS:** YmygDgtoxO8 | [MIDDLE] | Fair vs unfair areas [TOM-185]
 
 ### 3.3 Break Below VAH/VAL = Acceleration
 
@@ -119,7 +119,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > that level because they had speculated that the market would continue to move back
 > and forth."
 
-**Source GPS:** YmygDgtoxO8 | [MIDDLE] | Break below = acceleration
+**Source GPS:** YmygDgtoxO8 | [MIDDLE] | Break below = acceleration [TOM-186]
 
 ### 3.4 Prior Day VAL as Counter-Trade Zone
 
@@ -128,7 +128,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > definitely try a short trade. Why? Because we are in this price segment here and
 > I know that the market is currently moving back and forth in balance."
 
-**Source GPS:** BVpYGKz9PBU | [MIDDLE] | Prior day VAL = counter-trade zone
+**Source GPS:** BVpYGKz9PBU | [MIDDLE] | Prior day VAL = counter-trade zone [TOM-187]
 
 ### 3.5 Prior Day VA as Roadmap
 
@@ -138,7 +138,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > us that no, it's not going back into unfair price areas. So the logical
 > consequence is that it wants to trade the entire price range of the previous day."
 
-**Source GPS:** YmygDgtoxO8 | [MIDDLE] | Prior day VA as roadmap
+**Source GPS:** YmygDgtoxO8 | [MIDDLE] | Prior day VA as roadmap [TOM-188]
 
 ---
 
@@ -150,14 +150,14 @@ are either mentioned without actionable rules or not mentioned at all.
 > That means with the VWAP, I'm able to see where I am right now relative to the
 > average volume of today."
 
-**Source GPS:** 43JaKHRvxHk | [BEGINNING] | VWAP definition
+**Source GPS:** 43JaKHRvxHk | [BEGINNING] | VWAP definition [TOM-189]
 
 > "The VWAP is nothing more than a volume weighted moving average that is
 > calculated based on time and volume which of course gives you the opportunity to
 > see where the average price of the trades for the specific period you are
 > looking at is because you need to know the VWOP is time weighted."
 
-**Source GPS:** VumVuGnCcFM | [MIDDLE] | VWAP = volume weighted moving average
+**Source GPS:** VumVuGnCcFM | [MIDDLE] | VWAP = volume weighted moving average [TOM-190]
 
 ### 4.2 VWAP Resets Daily
 
@@ -165,7 +165,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > when one day is over, there's the next one. And then it starts again essentially
 > at zero, right?"
 
-**Source GPS:** 43JaKHRvxHk | [BEGINNING] | VWAP resets daily
+**Source GPS:** 43JaKHRvxHk | [BEGINNING] | VWAP resets daily [TOM-191]
 
 > "VWAP is session based; resets at new session start."
 
@@ -181,13 +181,13 @@ are either mentioned without actionable rules or not mentioned at all.
 > "So the first important piece of information for us is that the VWAP is always
 > interesting to observe when a market is moving in balance phases."
 
-**Source GPS:** VumVuGnCcFM | [MIDDLE] | VWAP interesting in balance phases
+**Source GPS:** VumVuGnCcFM | [MIDDLE] | VWAP interesting in balance phases [TOM-192]
 
 > "The moment a market starts trending, the probability is simply at first that the
 > market does not immediately return to the volume weighted average of the period
 > being considered."
 
-**Source GPS:** VumVuGnCcFM | [MIDDLE] | Trending = no immediate VWAP return
+**Source GPS:** VumVuGnCcFM | [MIDDLE] | Trending = no immediate VWAP return [TOM-193]
 
 ### 4.4 VWAP as Directional Bias
 
@@ -210,7 +210,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > profits under the assumption that the market always likes to return to its
 > equilibrium price."
 
-**Source GPS:** 43JaKHRvxHk | [MIDDLE] | VWAP as counter-trade profit target
+**Source GPS:** 43JaKHRvxHk | [MIDDLE] | VWAP as counter-trade profit target [TOM-194]
 
 ### 4.6 VWAP as Trend Continuation Entry
 
@@ -236,7 +236,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > "You can define so-called price ranges from the VWAP where you expect a
 > reaction."
 
-**Source GPS:** 43JaKHRvxHk | [MIDDLE] | Price ranges around VWAP
+**Source GPS:** 43JaKHRvxHk | [MIDDLE] | Price ranges around VWAP [TOM-195]
 
 ### 4.9 VWAP Shifts Dynamically
 
@@ -266,7 +266,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > "How do I derive them from the corresponding value areas in combination with
 > other possibilities that show me who dominated the market where and when."
 
-**Source GPS:** Ld1dhjGdTCA | [MIDDLE] | Business zones from value areas
+**Source GPS:** Ld1dhjGdTCA | [MIDDLE] | Business zones from value areas [TOM-200]
 
 ### 5.2 Business Zone Construction (Live Example)
 
@@ -275,7 +275,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > to the business zone. And here it confirmed it again and showed us that there
 > are aggressive buyers."
 
-**Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE] | Business zone construction
+**Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE] | Business zone construction [TOM-197]
 
 ### 5.3 Intraday Profiles Establish Business Zones
 
@@ -283,7 +283,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > intraday profiles. Yes. Where was the market in balance? Where was there
 > imbalance? Are there old single print areas that need to be repaired?"
 
-**Source GPS:** -dMWA_bbm3o | [MIDDLE] | Intraday profiles = business zones
+**Source GPS:** -dMWA_bbm3o | [MIDDLE] | Intraday profiles = business zones [TOM-198]
 
 ### 5.4 Transfer S/R to Smaller Charts
 
@@ -291,7 +291,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > that way I don't have so much information that I have to use all at once. That
 > also helps me with timing."
 
-**Source GPS:** -dMWA_bbm3o | [MIDDLE] | Transfer S/R to smaller charts
+**Source GPS:** -dMWA_bbm3o | [MIDDLE] | Transfer S/R to smaller charts [TOM-199]
 
 ### 5.5 Plan A to B from Business Zones
 
@@ -299,7 +299,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > a certain direction. I can clearly plan where I want to trade at all and which
 > direction is dominant for me."
 
-**Source GPS:** Ld1dhjGdTCA | [MIDDLE] | Plan A to B from business zones
+**Source GPS:** Ld1dhjGdTCA | [MIDDLE] | Plan A to B from business zones [TOM-212]
 
 ---
 
@@ -311,14 +311,14 @@ are either mentioned without actionable rules or not mentioned at all.
 > move in a quick accelerated trend. These are price areas where the market hasn't
 > made any pullbacks."
 
-**Source GPS:** 3JqMyzE8jIQ | [BEGINNING] | FVG definition
+**Source GPS:** 3JqMyzE8jIQ | [BEGINNING] | FVG definition [TOM-201]
 
 > "we have these so-called single print areas here. These single print areas are in
 > reality nothing more than specific price ranges where the market never actually
 > retraced within this particular move, at least when viewed from a 30-minute
 > chart. So, in the end, it's really almost the same thing."
 
-**Source GPS:** Fj4FDZQxw0I | [MIDDLE] | Single prints = FVG equivalent
+**Source GPS:** Fj4FDZQxw0I | [MIDDLE] | Single prints = FVG equivalent [TOM-202]
 
 ### 6.2 FVGs Are Exit/Target Areas, NOT Entry Zones
 
@@ -329,14 +329,14 @@ are either mentioned without actionable rules or not mentioned at all.
 > carried out when a market returns to a single print area is quite high. But do
 > they also tell you that you should enter there? No."
 
-**Source GPS:** Fj4FDZQxw0I | [MIDDLE] | FVGs = exit areas, not entry
+**Source GPS:** Fj4FDZQxw0I | [MIDDLE] | FVGs = exit areas, not entry [TOM-203]
 
 ### 6.3 FVGs Only Work With Trend Stability
 
 > "fair value gaps are great support resistance levels. They are, but only if
 > the market has trend stability."
 
-**Source GPS:** Fj4FDZQxw0I | [END] | FVGs only with trend stability
+**Source GPS:** Fj4FDZQxw0I | [END] | FVGs only with trend stability [TOM-204]
 
 ### 6.4 First Retest Holds, Second Retest Breaks
 
@@ -348,21 +348,21 @@ are either mentioned without actionable rules or not mentioned at all.
 > through now. So, don't use it repeatedly to try and find a trend continuation
 > trade here."
 
-**Source GPS:** Fj4FDZQxw0I | [END] | First test holds, second breaks
+**Source GPS:** Fj4FDZQxw0I | [END] | First test holds, second breaks [TOM-205]
 
 ### 6.5 FVG Needs Confluence With Another Structure
 
 > "if there's a combination with another structure, for example, a value area or
 > something like that, which underlies the whole thing."
 
-**Source GPS:** Fj4FDZQxw0I | [MIDDLE] | FVG needs confluence
+**Source GPS:** Fj4FDZQxw0I | [MIDDLE] | FVG needs confluence [TOM-206]
 
 ### 6.6 Open Range Size Affects FVG Validity
 
 > "Open range, meaning the opening range. If it's very large, it likely won't
 > hold. If it's very small, it likely will."
 
-**Source GPS:** Fj4FDZQxw0I | [END] | Open range size = FVG validity
+**Source GPS:** Fj4FDZQxw0I | [END] | Open range size = FVG validity [TOM-207]
 
 ### 6.7 Single Print at End of Session = Not Fair Value
 
@@ -371,7 +371,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > not quite the fair value because we can clearly see here the fair prices were
 > up above."
 
-**Source GPS:** BVpYGKz9PBU | [MIDDLE] | End-of-session single print ≠ fair value
+**Source GPS:** BVpYGKz9PBU | [MIDDLE] | End-of-session single print ≠ fair value [TOM-208]
 
 ### 6.8 FVG in Sideways Phase = Traded Through
 
@@ -379,7 +379,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > sideways phase. And if liquidity up here isn't high, then there's a good chance
 > it'll just be traded through."
 
-**Source GPS:** Fj4FDZQxw0I | [END] | FVG in sideways = traded through
+**Source GPS:** Fj4FDZQxw0I | [END] | FVG in sideways = traded through [TOM-209]
 
 ---
 
@@ -393,7 +393,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > bounces off these areas. And the simple reason for this is that it likes to
 > move down here, bounce off, and return to equilibrium."
 
-**Source GPS:** YmygDgtoxO8 | [MIDDLE] | LVN definition
+**Source GPS:** YmygDgtoxO8 | [MIDDLE] | LVN definition [TOM-210]
 
 ### 7.2 LVN as Transition Zone
 
@@ -401,7 +401,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > "we're in the low volume area. That means it's doing nothing other than filling
 > this empty price area with liquidity now."
 
-**Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE] and [END] | LVN = liquidity fill zone
+**Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE] and [END] | LVN = liquidity fill zone [TOM-211]
 
 ### 7.3 Volume Node to Volume Node Planning
 
@@ -455,7 +455,7 @@ are either mentioned without actionable rules or not mentioned at all.
 > probability that the market will break out explosively above this level is very
 > high."
 
-**Source GPS:** YmygDgtoxO8 | [MIDDLE] | Overlaps = key levels
+**Source GPS:** YmygDgtoxO8 | [MIDDLE] | Overlaps = key levels [TOM-213]
 
 ### 9.2 Why Breakouts Happen at Overlaps
 

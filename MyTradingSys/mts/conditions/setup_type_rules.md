@@ -18,13 +18,13 @@ selected based on market state, zone, and trader DNA — not pre-declared
 categories.
 
 > "you absolutely have to divide your setups that are suitable for short trades into counter trend continuation or breakout. And this is exactly where the wheat is separated from the chaff."
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-142]
 
 > "Whether it's trend or balance because I have to use different setups there and that is absolutely crucial."
-> **Source GPS:** Ld1dhjGdTCA | [MIDDLE]
+> **Source GPS:** Ld1dhjGdTCA | [MIDDLE] [TOM-124]
 
 > "You have a setup that works great in some market phases and not in others. And with this, you're able to use this matrix to know exactly which setups to use where."
-> **Source GPS:** Ld1dhjGdTCA | [MIDDLE]
+> **Source GPS:** Ld1dhjGdTCA | [MIDDLE] [TOM-125]
 
 **[FLAGGED]** The old architecture (CT/TC/BO/SC as discrete files) was a
 working hypothesis. This document replaces it with Tom's actual decision
@@ -40,7 +40,7 @@ structure: state + zone + proof → execution mode.
 > **Source GPS:** Ld1dhjGdTCA | [MIDDLE]
 
 > "Only point eight is the point where you can use your setups for yourself. And it doesn't matter if they're dynamic, if they're from the order flow, if they're from the footprint chart, or if they're PBD structures. What matters is where you use setups."
-> **Source GPS:** Ld1dhjGdTCA | [END]
+> **Source GPS:** Ld1dhjGdTCA | [END] [TOM-126]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -51,31 +51,31 @@ determine WHETHER any setup is valid and WHICH mode fits.
 ### 1.2 What Is a Setup?
 
 > "what is a setup? A setup is nothing more than a formation of price or volume or a footprint or whatever that gives me an advantage in keeping my risk smaller."
-> **Source GPS:** NkQeOVDTAec | [BEGINNING]
+> **Source GPS:** NkQeOVDTAec | [BEGINNING] [TOM-127]
 
 **Tier:** T4 — Tom's recommendation.
 
 > "only now does a corresponding setup become useful for us. And now the question is always, which setup do we want to use there?"
-> **Source GPS:** NkQeOVDTAec | [BEGINNING]
+> **Source GPS:** NkQeOVDTAec | [BEGINNING] [TOM-128]
 
 **Tier:** T4 — Tom's recommendation.
 
 ### 1.3 Not Always the Same Setup
 
 > "And now there are many who always say, we always use the same setup. And that is, of course, nonsense."
-> **Source GPS:** NkQeOVDTAec | [BEGINNING]
+> **Source GPS:** NkQeOVDTAec | [BEGINNING] [TOM-129]
 
 **Tier:** T4 — Tom's recommendation.
 
 > "Of course, I can also use other setups like a trend continuation setup here, for example. I can clearly track all kinds of setups for myself, but you have to do that."
-> **Source GPS:** NkQeOVDTAec | [BEGINNING]
+> **Source GPS:** NkQeOVDTAec | [BEGINNING] [TOM-130]
 
 **Tier:** T1 — Tom's example.
 
 ### 1.4 Without Setup = Flying Blind
 
 > "And if you don't do that, trading is always like flying blind."
-> **Source GPS:** NkQeOVDTAec | [BEGINNING]
+> **Source GPS:** NkQeOVDTAec | [BEGINNING] [TOM-131]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -89,17 +89,17 @@ any one setup — it is the universal entry gate.
 ### 2.1 Idea = Volume Node to Volume Node
 
 > "we need an idea. We've now created that idea in a very simplified way. And in the second step, we need proof that at this price level, where we have an idea, a corresponding reaction from the players also occurs. So, always an idea and proof that the idea is working out."
-> **Source GPS:** NkQeOVDTAec | [BEGINNING]
+> **Source GPS:** NkQeOVDTAec | [BEGINNING] [TOM-132]
 
 **Tier:** T4 — Tom's recommendation.
 
 > "we can plan, for example, that there are other price levels where we can simply localize. Should the market reach that point, we can initially expect a reaction. That's all we can do. We can only ever expect that something will happen there. That doesn't mean exactly what we plan will happen, only that something could happen."
-> **Source GPS:** NkQeOVDTAec | [BEGINNING]
+> **Source GPS:** NkQeOVDTAec | [BEGINNING] [TOM-133]
 
 **Tier:** T4 — Tom's recommendation.
 
 > "I'm just going to assume now that we're moving up here to some price area with high trading volumes. And what do I expect there? I expect a reaction first. And a reaction is usually a counter at first. In this case, that means a price retracement. And that's how I can now plan something from one level to the next. For example, from here to the next major volume here."
-> **Source GPS:** NkQeOVDTAec | [BEGINNING]
+> **Source GPS:** NkQeOVDTAec | [BEGINNING] [TOM-134]
 
 **Tier:** T1 — Tom's example.
 
@@ -111,19 +111,19 @@ any one setup — it is the universal entry gate.
 **Tier:** T4 — Tom's recommendation.
 
 > "I always need both and that's very important for me to tell you again. I need an idea for a route plan and I need proof that this idea should be put into action right now. The proof is always the setup that I expect to see there."
-> **Source GPS:** NkQeOVDTAec | [MIDDLE]
+> **Source GPS:** NkQeOVDTAec | [MIDDLE] [TOM-135]
 
 **Tier:** T4 — Tom's recommendation.
 
 ### 2.3 Idea + Proof + Risk Management = Complete Trade
 
 > "You always need two things, the idea and the proof. Once you have both, you'll be able to establish a risk reward ratio. And you have to stick to that."
-> **Source GPS:** qLnQan0KGmQ | [END]
+> **Source GPS:** qLnQan0KGmQ | [END] [TOM-160]
 
 **Tier:** T5 — Tom's command.
 
 > "First, you have an idea. Second, you have proof that it's really time now to implement the idea. And third, you have a really clean risk management so that the math is on your side."
-> **Source GPS:** zQTbdEweG3c | [BEGINNING]
+> **Source GPS:** zQTbdEweG3c | [BEGINNING] [TOM-139]
 
 **Tier:** T4 — Tom's recommendation.
 
@@ -148,19 +148,19 @@ single table.
 Supporting quotes:
 
 > "I can definitely look for short trades up here and long trades down here. And I'll keep doing that until either the big player here or the big players here decide that the market will continue to go long."
-> **Source GPS:** BVpYGKz9PBU | [BEGINNING] | Counter-trade in balance
+> **Source GPS:** BVpYGKz9PBU | [BEGINNING] | Counter-trade in balance [TOM-136]
 
 > "if you're a scalper, for example, you can brilliantly search for short trades here in these price ranges. And you can search for long trades down"
-> **Source GPS:** 43JaKHRvxHk | [MIDDLE] | Scalp in balance
+> **Source GPS:** 43JaKHRvxHk | [MIDDLE] | Scalp in balance [TOM-141]
 
 > "You should then definitely only look for a trend continuation setup here."
-> **Source GPS:** 43JaKHRvxHk | [MIDDLE] | Trend-continuation in trend
+> **Source GPS:** 43JaKHRvxHk | [MIDDLE] | Trend-continuation in trend [TOM-152]
 
 > "first rule, very important, the VWAP must be based on a trend. Only then can I see if I might enter my trade based on counter trades on this VWAP."
 > **Source GPS:** 43JaKHRvxHk | [BEGINNING] | Counter-trade in trend requires trend context
 
 > "when such a balance profile comes after a strong trend, then it means the market is starting to sort itself out. That doesn't mean it's going short yet. It can just as easily continue long."
-> **Source GPS:** zQTbdEweG3c | [MIDDLE] | Transition = wait
+> **Source GPS:** zQTbdEweG3c | [MIDDLE] | Transition = wait [TOM-143]
 
 ---
 
@@ -172,17 +172,17 @@ Fade the local move at a structural zone, expecting a return to equilibrium.
 Primary mode in balance markets.
 
 > "Counter trading, my lovely strategy, but most people are not confident with it because they have not the calm to wait for the perfect entry and they would like to have big hit rates. With counter trading, you have to choose the numbers."
-> **Source GPS:** BVpYGKz9PBU | [BEGINNING]
+> **Source GPS:** BVpYGKz9PBU | [BEGINNING] [TOM-138]
 
 > "Are you someone who prefers to buy at the bottom, meaning you do counter trading"
-> **Source GPS:** 3o1VVsfBmmU | [MIDDLE]
+> **Source GPS:** 3o1VVsfBmmU | [MIDDLE] [TOM-137]
 
 ### 4.2 When Valid
 
 **A. Primary: Balance Market**
 
 > "Sideways means that supply and demand are in balance. And when supply and demand are balanced, the market will always try to return to that equilibrium."
-> **Source GPS:** BVpYGKz9PBU | [BEGINNING]
+> **Source GPS:** BVpYGKz9PBU | [BEGINNING] [TOM-164]
 
 > "I can definitely look for short trades up here and long trades down here."
 > **Source GPS:** BVpYGKz9PBU | [BEGINNING]
@@ -193,10 +193,10 @@ Primary mode in balance markets.
 > **Source GPS:** zQTbdEweG3c | [BEGINNING]
 
 > "the idea was that this trend isn't entirely healthy. Why? Because there was simply no liquidity left here and the liquidity was down here. That means low volume."
-> **Source GPS:** zQTbdEweG3c | [END]
+> **Source GPS:** zQTbdEweG3c | [END] [TOM-140]
 
 > "If I'm someone here, for example, who prefers counter trading, so the first one is the counter trader, and I'm looking for a trade for the VWAP, well, then I have to wait until the market shows me no more liquidity in some way, for example, up here."
-> **Source GPS:** 43JaKHRvxHk | [MIDDLE]
+> **Source GPS:** 43JaKHRvxHk | [MIDDLE] [TOM-153]
 
 ### 4.3 Zone Requirements
 
@@ -205,13 +205,13 @@ Primary mode in balance markets.
 - VPOC from underlying timeframe as equilibrium target
 
 > "look here is yesterday's value area low and maybe that's where the VPOC is. First in terms of price range if I see that the market is below that then I can definitely try a short trade."
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-145]
 
 > "this was the profile that encouraged me to see what happens here now when the market goes to the POC. And exactly, that was the decisive moment where I said, 'All right, here the market is really giving me a signal now that shows me I could look for a short trade here.'"
-> **Source GPS:** zQTbdEweG3c | [MIDDLE]
+> **Source GPS:** zQTbdEweG3c | [MIDDLE] [TOM-144]
 
 > "Here we have the so-called VPOC from the underlying time frame. That means this is the price range where the market was in equilibrium and where I then simply expect a reaction could occur."
-> **Source GPS:** zQTbdEweG3c | [MIDDLE]
+> **Source GPS:** zQTbdEweG3c | [MIDDLE] [TOM-155]
 
 ### 4.4 Proof Requirements
 
@@ -221,34 +221,34 @@ against the local move.
 **A. B Profile = Weakness at the Extreme**
 
 > "here is a B profile and that shows me that there is weakness in the market. So first I have the information that this is where I need to look for a counter trading setup and secondly I'm now also being given the setup itself."
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-146]
 
 **B. Liquidity Leaving + Volume In = Sellers/Buyers Present**
 
 > "the liquidity is leaving. Take a look at the volumes down here. You can already see there's nothing going on. During this entire market phase, not much was happening now. The sellers have come in and suddenly volume is coming in. You can already see who's currently moving the market that it's definitely the sellers."
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-148]
 
 **C. Proof of Selling / Buying in Smaller Timeframe**
 
 > "Here the market has already looked below the opening trade price and now comes the logical consequence. First, yes, there are indeed more sellers present in the market. Second, what this does is it provides me with clear proof that all of the buyers who entered during the pre-session... have already been traded below."
-> **Source GPS:** l8RZrBfzvp4 | [MIDDLE]
+> **Source GPS:** l8RZrBfzvp4 | [MIDDLE] [TOM-147]
 
 **D. Lower Balance After Rejection = PBD Logic**
 
 > "It gets sold off again and we get a lower balance. That means from the PBD logic, we now have an opportunity here to enter the market."
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-149]
 
 ### 4.5 Entry Variants
 
 **Variant A: Dynamic Entry at Zone (Lower Hit Rate, Better R:R)**
 
 > "if I can trade dynamically, I have the opportunity up here to enter the market with a setup... Even if I take the entry at 260, I have a much higher hit rate than if I take it here because I have proof that the market tends toward weakness."
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-150]
 
 **Variant B: Pullback Entry After Proof (Higher Hit Rate)**
 
 > "this is always the most pleasant scenario happens when the price action unfolds like this. And there's a pullback to my setup because I waited patiently. That approach is even more effective for me."
-> **Source GPS:** BVpYGKz9PBU | [MIDDLE]
+> **Source GPS:** BVpYGKz9PBU | [MIDDLE] [TOM-151]
 
 > "If the market had such a zone and has already provided me with proof that weakness can occur, then I have a great combination and that means at this point at the latest, it is by far the best spot for people who like to enter the market on a pullback."
 > **Source GPS:** l8RZrBfzvp4 | [MIDDLE]
@@ -259,7 +259,7 @@ against the local move.
 > **Source GPS:** BVpYGKz9PBU | [MIDDLE]
 
 > "If we want to use the volume weighted average price or VWAP as a counter trader, we can look at whether the VWAP is very steep, for example, and if the price is running extremely high, then we can define the VWAP as a profit target."
-> **Source GPS:** 43JaKHRvxHk | [MIDDLE]
+> **Source GPS:** 43JaKHRvxHk | [MIDDLE] [TOM-154]
 
 ### 4.7 Stop Placement
 
@@ -299,10 +299,10 @@ Wait for a pullback to a fair zone after proof of trend stability, then enter in
 the direction of the trend.
 
 > "If I see the whole thing as a trend following trader, I have to wait for a long trend and can wait until the VWAP gives me a pullback."
-> **Source GPS:** 43JaKHRvxHk | [MIDDLE]
+> **Source GPS:** 43JaKHRvxHk | [MIDDLE] [TOM-171]
 
 > "On the first side, we can use the VWAP for trend following trading if we And the open variant is also suitable for a trend. Then we use the VWAP for trend continuation scenarios and can plan accordingly with a trend following setup using this VWAP as an indicator, as a guide."
-> **Source GPS:** 43JaKHRvxHk | [MIDDLE]
+> **Source GPS:** 43JaKHRvxHk | [MIDDLE] [TOM-172]
 
 ### 5.2 When Valid
 
@@ -322,7 +322,7 @@ the direction of the trend.
 > **Source GPS:** zQTbdEweG3c | [MIDDLE]
 
 > "In theory, I can plan the next leg up to the next high volume area. Especially when the market shows me once again that it's working with power and it accepts these price ranges."
-> **Source GPS:** qLnQan0KGmQ | [MIDDLE]
+> **Source GPS:** qLnQan0KGmQ | [MIDDLE] [TOM-156]
 
 ### 5.3 Zone Requirements
 
@@ -331,17 +331,17 @@ the direction of the trend.
 - Business zone with confirmation
 
 > "But if that's the case, and maybe just as a final point, you have the opportunity to look for a trade at the VWOP in order to continue in the direction of the trend."
-> **Source GPS:** VumVuGnCcFM | [END]
+> **Source GPS:** VumVuGnCcFM | [END] [TOM-157]
 
 > "Therefore we could plan this trend continuation perfectly right here."
-> **Source GPS:** qLnQan0KGmQ | [MIDDLE]
+> **Source GPS:** qLnQan0KGmQ | [MIDDLE] [TOM-158]
 
 ### 5.4 Proof Requirements
 
 **A. Market Shows Power and Acceptance**
 
 > "if the market shows me once again that it's working with power and it accepts these price ranges."
-> **Source GPS:** qLnQan0KGmQ | [MIDDLE]
+> **Source GPS:** qLnQan0KGmQ | [MIDDLE] [TOM-159]
 
 **B. Previous Reaction Was in Trend Direction**
 
@@ -353,20 +353,20 @@ the direction of the trend.
 **C. Real Acceptance, Not Quick Spikes**
 
 > "Not with quick spikes but with real acceptance."
-> **Source GPS:** qLnQan0KGmQ | [MIDDLE]
+> **Source GPS:** qLnQan0KGmQ | [MIDDLE] [TOM-161]
 
 ### 5.5 Entry: Pullback to Fair Zone
 
 > "Sure, the very brave ones just buy here, but you can also wait until the proof arrives."
-> **Source GPS:** qLnQan0KGmQ | [MIDDLE]
+> **Source GPS:** qLnQan0KGmQ | [MIDDLE] [TOM-162]
 
 > "Now you have options to enter here via pullback or to enter here again via pullback."
-> **Source GPS:** qLnQan0KGmQ | [MIDDLE]
+> **Source GPS:** qLnQan0KGmQ | [MIDDLE] [TOM-163]
 
 ### 5.6 Target: Next High Volume Area
 
 > "When I tell you markets strive for liquidity, well, what do I simply look at? I look, where was the last highest liquidity in terms of the reference ratio?"
-> **Source GPS:** qLnQan0KGmQ | [MIDDLE]
+> **Source GPS:** qLnQan0KGmQ | [MIDDLE] [TOM-168]
 
 > "In theory, I can plan the next leg up to the next high volume area."
 > **Source GPS:** qLnQan0KGmQ | [MIDDLE]
@@ -397,7 +397,7 @@ Enter when balance resolves or trend accelerates, with volume confirmation.
 **B. Trend Acceleration**
 
 > "should the VWAP suddenly start to go lower and lower, and thus the price, the average price of the day, shifts downwards, then the probability increases that a trend continuation downwards will occur here again, or even a breakout."
-> **Source GPS:** 43JaKHRvxHk | [END]
+> **Source GPS:** 43JaKHRvxHk | [END] [TOM-165]
 
 **C. After Acceptance of New Prices**
 
@@ -411,10 +411,10 @@ Enter when balance resolves or trend accelerates, with volume confirmation.
 - Ledge (liquidity pool above prior highs)
 
 > "overlaps are for example volume nodes value highs or also several PC's within a price range. These are interesting overlap levels. And when the market on a given day moves back into such a price area like here where we clearly know the probability that the market will break out explosively above this level is very high."
-> **Source GPS:** YmygDgtoxO8 | [MIDDLE]
+> **Source GPS:** YmygDgtoxO8 | [MIDDLE] [TOM-166]
 
 > "Because up here, we've formed a beautiful ledge and I expect the market will take those out."
-> **Source GPS:** 4MoNjEQ2Dd8 | [BEGINNING]
+> **Source GPS:** 4MoNjEQ2Dd8 | [BEGINNING] [TOM-167]
 
 ### 6.4 Proof Requirements
 
@@ -426,7 +426,7 @@ Enter when balance resolves or trend accelerates, with volume confirmation.
 **B. Market Speed Picking Up**
 
 > "And now look at the speed. This is crucial. Now, how is the market speed developing now?" / "The speed is picking up. Look at what's being bought here. And now comes the breakout."
-> **Source GPS:** 4MoNjEQ2Dd8 | [END]
+> **Source GPS:** 4MoNjEQ2Dd8 | [END] [TOM-169]
 
 **C. Acceptance, Not Just a Spike**
 
@@ -439,7 +439,7 @@ Enter when balance resolves or trend accelerates, with volume confirmation.
 > **Source GPS:** BVpYGKz9PBU | [MIDDLE]
 
 > "I'll add to the position again at the breakout."
-> **Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE]
+> **Source GPS:** 4MoNjEQ2Dd8 | [MIDDLE] [TOM-173]
 
 ---
 
@@ -450,7 +450,7 @@ Enter when balance resolves or trend accelerates, with volume confirmation.
 Trade short-term oscillations around VWAP/POC in a balanced, liquid market.
 
 > "if you're someone who does very dynamic scalping, then the VWAP can be very sideways oriented. And from the opening trade variant, the market should also be more sideways weighted, for example, non-trend or something like that. Then you have the opportunity to keep looking for shorts at the top and keep looking for longs at the bottom until a reversal of the market environment eventually occurs."
-> **Source GPS:** 43JaKHRvxHk | [END]
+> **Source GPS:** 43JaKHRvxHk | [END] [TOM-170]
 
 ### 7.2 When Valid
 
@@ -496,22 +496,22 @@ Tom explicitly links execution mode to trader psychology. The system must NOT
 recommend a mode that conflicts with the trader's personality.
 
 > "use potential analyses and see which trader avatar is actually effective for you. Are you more of a relaxed and patient swing trader or a fast-paced and highly active day trader."
-> **Source GPS:** 3o1VVsfBmmU | [MIDDLE]
+> **Source GPS:** 3o1VVsfBmmU | [MIDDLE] [TOM-174]
 
 > "Are you someone who prefers to buy at the bottom, meaning you do counter trading, or are you someone who trades following the trend?"
-> **Source GPS:** 3o1VVsfBmmU | [MIDDLE]
+> **Source GPS:** 3o1VVsfBmmU | [MIDDLE] [TOM-175]
 
 > "You have to choose different models for different psychologies."
-> **Source GPS:** Ld1dhjGdTCA | [BEGINNING]
+> **Source GPS:** Ld1dhjGdTCA | [BEGINNING] [TOM-176]
 
 > "What kind of trader, what trading personality are you?"
-> **Source GPS:** 4MoNjEQ2Dd8 | [END]
+> **Source GPS:** 4MoNjEQ2Dd8 | [END] [TOM-177]
 
 > "Depending on which avatar you bring, many roads lead to Rome. And everyone can evaluate for themselves which trading style they prefer."
-> **Source GPS:** l8RZrBfzvp4 | [END]
+> **Source GPS:** l8RZrBfzvp4 | [END] [TOM-178]
 
 > "The best thing is, of course, if you can trade all three variants."
-> **Source GPS:** l8RZrBfzvp4 | [END]
+> **Source GPS:** l8RZrBfzvp4 | [END] [TOM-179]
 
 **[FLAGGED]** The MTS system does not yet have a "trader DNA" input. This is a
 gap: the system can identify valid execution modes, but JISHU must select the
