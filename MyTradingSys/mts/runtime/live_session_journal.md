@@ -491,3 +491,11 @@ Phase 3 - fixes landed:
 
 Commits this session: 97b8fc6, 675f68a, 2eed7b5, f9bf889, 186f483, 7ccd0e1, 323d082, 14cfd60, 3dadb7b.
 Runtime at close: wrapper 15424, java 7280, lock 15424. No supervisor.
+
+### MTS-FRAME - ADDED 2026-09-18T16:26:20Z
+
+mts-watch.ps1 gained MTS-FRAME block reading state_code_regime.json.
+Dictionary row added: MTS_DICTIONARY.md L112.
+regime_classifier.py still the only writer. Display only; no consumer in the verdict path.
+T018 WONTFIX. T026 (frame Stage 2 wiring) and T027 (annotation) track future wiring.
+
