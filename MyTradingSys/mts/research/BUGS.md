@@ -68,6 +68,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B044 | 2026-09-17 | OPEN | MED | CVD and trade_flow.net_delta computed from kline taker-buy proxy, not aggTrade tick delta | MarketDataSnapshot.java:178,633-648,379-381 | - |
 | B045 | 2026-09-17 | OPEN | MED | WebSocket migration roadmap not started; archive doc 2026-09-05 unrealized | MyTradingSys/mts/archive/binance_api_integration_recommendations.md 1107 lines sections 1-11 | - |
 | B046 | 2026-09-18 | OPEN | MED | DSA section 11 and handoff claimed rewritten in ledger; both unchanged on disk | this session; ledger 2026-09-18T10:16:12Z | - |
+| B047 | 2026-09-18 | OPEN | HIGH | finished_auction contradiction sign inverted in math_object_builder.py | math_object_builder.py L391,L398 vs SetupCandidatesBuilder.java L703; T009 | - |
 
 ## TASKS
 
@@ -81,8 +82,8 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T006 | 2026-09-18 | IN-FIX | LOW | Five verdict words not in MTS_DICTIONARY | journal A3 | VERDICT WORDS section appended; pending verify |
 | T007 | 2026-09-18 | IN-FIX | COSMETIC | MTS-CAND gate pass collision with GATE column | journal B6 | renamed gate pass to rr_gate in mts-watch.ps1 |
 | T008 | 2026-09-18 | IN-FIX | COSMETIC | mts-dashboard index row format mismatch | FYI-01 M3 | row normalized to 5 columns |
-| T009 | 2026-09-18 | OPEN | MED | finished_auction sign possible error | journal B1 | - |
-| T010 | 2026-09-18 | OPEN | LOW | Engine confidence grade meaning undocumented | journal B3 | - |
+| T009 | 2026-09-18 | BLOCKED | MED | finished_auction sign confirmed inverted | journal B1; code read | confirmed 2026-09-18; engine fix needs three-snapshot proof (B047) |
+| T010 | 2026-09-18 | CLOSED | LOW | Engine confidence grade meaning undocumented | journal B3 | doc-only: confidence grade table added to MTS_DICTIONARY.md 2026-09-18 |
 | T011 | 2026-09-18 | OPEN | LOW | cms_age=-1s anomaly | journal B4 | - |
 | T012 | 2026-09-18 | OPEN | MED | Verdict parse fragility in dashboard | journal B5 | - |
 | T013 | 2026-09-18 | IN-FIX | MED | MTS-TAPE sidecar baseline stale since 2026-09-17T20:11Z | live tape; journal O4 | mts-watch flags STALE over 120s |

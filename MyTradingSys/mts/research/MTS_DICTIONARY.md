@@ -145,3 +145,15 @@ Written by scripts/core/start-trading-day.ps1 verdict block.
 | SETUP_FORMING | All four gates: net_rr >= 2.0, tier trigger_ready, proof >= 5, proofDir != contradiction. |
 | SETUP_CONFIRMED | Never written by the verdict function. Downstream check only. |
 
+
+## CONFIDENCE GRADES (added 2026-09-18)
+
+Set by src/main/java/datafeed/SetupCandidatesBuilder.java. Raw score bucket. No A tier exists.
+
+| Grade | Raw score |
+|---|---|
+| B | >= 70 |
+| C+ | >= 55 |
+| C | >= 40 |
+| D | < 40 |
+
