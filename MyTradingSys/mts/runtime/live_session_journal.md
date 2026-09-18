@@ -499,3 +499,36 @@ Dictionary row added: MTS_DICTIONARY.md L112.
 regime_classifier.py still the only writer. Display only; no consumer in the verdict path.
 T018 WONTFIX. T026 (frame Stage 2 wiring) and T027 (annotation) track future wiring.
 
+
+## SESSION MTS-2026-09-18-1600Z - CLOSE - 2026-09-18T17:08:59Z
+
+Started as resume of 0848Z. Two phases:
+
+Phase 1 - bookkeeping and cleanup:
+  Closed 11 stale rows (B046, T001-T008, T012, T013). Commit 134c086.
+  T017 verifier fix: verify_rule_citations.ps1 fails on unreferenced ids. B048 filed. Commit 4d401cf.
+  P0: T018 WONTFIX, T023/T024/T025 filed. Commit 18458e0.
+  Saved 04_final_report_corrected_diagnosis.md to fyi_archive, indexed (a1d8b25 added row).
+
+Phase 2 - engine fix from FINAL REPORT Steps 1+2 bundled:
+  SetupCandidatesBuilder.java: 4 lines added.
+    determineDirections: above_vah now returns short AND long.
+    determineSetupType VAH branch: state gate returns null when trend_healthy.
+    determineSetupType VWAP branch: tc_long when trend_healthy and direction is long.
+  B049 filed (bug, not task). T023 merged into B049. Commit 6816cc0.
+
+Verification of the fix:
+  Loop restarted (lock 16208). Market in_va all evening; state=balance; CT still allowed; correct.
+  Unit test VerifyScbEdits.java written (reflection over private determineSetupType, determineDirections).
+  12/12 PASS. Covers: state gate VAH/VAL, tc_long path, direction emission, scalp unchanged.
+  Test copied to scripts/tools/VerifyScbEdits.java, indexed, committed at 87cc085.
+  B049, T023, T024 CLOSED with 87cc085 + VerifyScbEdits.java 12/12 receipt.
+
+Build-Check saga:
+  Commit 87cc085 landed with doc test FAIL (SIZE header drift, not my change).
+  Diagnosed: 03_FILE_INDEX.md SIZE header was 12.3KB, actual 13.6KB. Test limit 1KB.
+  Fixed header to ~13.6KB. Build-Check PASS restored. Commit a1d8b25.
+
+Commits this session: 134c086, 4d401cf, 18458e0, 6816cc0, e100c52, 87cc085, a1d8b25.
+Runtime at close: wrapper 16208, java 11668, lock 16208. No supervisor.
+Next: B047 finished_auction sign. Report Step 3. Tom-source read needed first.
