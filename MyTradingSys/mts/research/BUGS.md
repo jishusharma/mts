@@ -28,7 +28,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B005 | 2026-09-15 | OPEN | LOW | Runtime manifest pointed at wrong prompt | L_ITEMS L14 | - |
 | B006 | 2026-09-15 | OPEN | COSMETIC | Orphan duplicate root manifest | L_ITEMS L15 | - |
 | B007 | 2026-09-15 | OPEN | MED | Snapshot cadence has 12.7h and 4.25h gaps | L_ITEMS L16 | - |
-| B008 | 2026-09-15 | OPEN | LOW | Alert numbering gap 6-12 | L_ITEMS L17 | - |
+| B008 | 2026-09-15 | WONTFIX | LOW | Alert numbering gap 6-12 | L_ITEMS L17 | Cosmetic; ids assigned in order, gaps historical. |
 | B009 | 2026-09-15 | OPEN | MED | Apparatus silent exit at 13:23:20 | L_ITEMS L18 | - |
 | B010 | 2026-09-15 | OPEN | COSMETIC | Duplicate section header in prompt | L_ITEMS L19 | - |
 | B011 | 2026-09-15 | OPEN | COSMETIC | apparatus_fixes END marker mid-file | L_ITEMS L20 | - |
@@ -46,13 +46,13 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B023 | 2026-09-16 | OPEN | MED | Two builder paths contradict cvd_trade_flow_aligned | L_ITEMS I29; MarketDataSnapshot.java:1068 | - |
 | B024 | 2026-09-16 | OPEN | HIGH | Book imbalance instability flips verdict | L_ITEMS I30 | - |
 | B025 | 2026-09-16 | OPEN | MED | Verdict flicker has no debounce | L_ITEMS I31 | - |
-| B026 | 2026-09-16 | OPEN | COSMETIC | Log line no-change ambiguous | L_ITEMS I32 | - |
+| B026 | 2026-09-16 | WONTFIX | COSMETIC | Log line no-change ambiguous | L_ITEMS I32 | Cosmetic; "no change:" prefix disambiguates. |
 | B027 | 2026-09-16 | CLOSED | HIGH | OI field dead from 17:40 UTC | L_ITEMS I33 | false alarm: OI updates hourly not per-minute. 200-snapshot history shows 4 distinct buckets changing on the hour. Direct endpoint matches snapshot -0.24 exactly. Verified 2026-09-17 |
 | B028 | 2026-09-16 | OPEN | MED | Sweep-entry rule missing | L_ITEMS I34 | - |
 | B029 | 2026-09-16 | OPEN | MED | Supervisor not running after manual restart | L_ITEMS I35 | - |
 | B030 | 2026-09-16 | OPEN | LOW | Binance OI data path reconciliation | L_ITEMS I37 | - |
 | B031 | 2026-09-16 | OPEN | LOW | Two-phase OI/CVD pattern unnamed | L_ITEMS I38 | - |
-| B032 | 2026-09-16 | OPEN | COSMETIC | session_end_logs.md wrong writer | L_ITEMS I39; StateCodeEmitter.java:441-452 | - |
+| B032 | 2026-09-16 | CLOSED | COSMETIC | session_end_logs.md wrong writer | L_ITEMS I39; StateCodeEmitter.java:441-452 | doc-only: writer identified StateCodeEmitter.java 441-452; no code change |
 | B033 | 2026-09-17 | OPEN | MED | Profile shape taxonomy does not match Tom | L_ITEMS I40 | - |
 | B034 | 2026-09-17 | CLOSED | HIGH | CVD ring not cleared at UTC rollover | AUDIT StateCodeEmitter row 1 | code receipt: StateCodeEmitter.java L340 cvdSeries.clear() on day-change; loop restarted 2026-09-18T17:48Z; runtime verify at next 00:00 UTC rollover tracked by T028 |
 | B035 | 2026-09-17 | CLOSED | HIGH | Book imbalance threshold 0.4-0.6 treats balanced as extreme | AUDIT SetupCandidatesBuilder L541 | SetupCandidatesBuilder.java L541 now 0.67/1.5; hash 3ED13909->C30EB08F; 2026-09-17 |
@@ -94,7 +94,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T016 | 2026-09-18 | OPEN | LOW | Five open comparison questions CVD anchor OI magnitude Net Delta what we trade on pre-open | journal E7 | - |
 | T017 | 2026-09-18 | IN-FIX | MED | Extraction chain 0 TOM-NNN refs in condition files (verify first) | FYI-03 | verifier now FAILs on unreferenced ids; content pass pending |
 | T018 | 2026-09-18 | WONTFIX | MED | Frame-view regime label has no verdict-block consumer | FYI-03 | WONTFIX 2026-09-18: superseded by 04_final_report. Frame is display only by design; real defect is determineSetupType |
-| T019 | 2026-09-18 | OPEN | MED | RSI documentation conflict VVP-001 vs COMPILED_DECISIONS | journal; FYI-02 | - |
+| T019 | 2026-09-18 | CLOSED | MED | RSI documentation conflict VVP-001 vs COMPILED_DECISIONS | journal; FYI-02 | doc-only 2026-09-18: E4 in COMPILED_DECISIONS.md marked SUPERSEDED; VVP-001 Tier 3 wins; RSI not Tom-validated |
 | T020 | 2026-09-18 | OPEN | COSMETIC | Rank-1 GATE cell not padded, runs into pipe on WAIT_TRIGGER | dashboard render 2026-09-18T11:31Z | - |
 | T021 | 2026-09-18 | OPEN | COSMETIC | tape-watch emits duplicate line when snapshot unchanged between ticks | journal L85 2026-09-17 | - |
 | T022 | 2026-09-18 | OPEN | MED | Loop writes last_verdict.json for dashboard (needs critical-file approval) | journal B5; T012 | - |

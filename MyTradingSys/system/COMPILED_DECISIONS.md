@@ -37,7 +37,7 @@
 | E1 | 2026-08-28 | **ENGINE_OPT_001: 5 patches deployed** | Multi-TF zone priority, CVD contradiction resolution, zone sub-states, screenshot TF guidance, OI trend confirmation. | LIVE |
 | E2 | 2026-08-28 | **ENGINE_OPT_002: v4.2.0 optimization** | Directional filter + per-zone distance cap + confluence scoring + R:R pre-filter + single best output + C+ verdict band (55-69). | LIVE |
 | E3 | 2026-08-28 | **HTF_PATCH_001: 6 patches** | Single Print = Target, VPOC Migration, Double Distribution, Exhaustion Gate, Prior Day Close, Acceleration on VAL break. | LIVE |
-| E4 | 2026-08-29 | **Malkans RSI 40/60 integrated** | White line = price RSI, blue = SMA. 60 = overbought, 40 = oversold. Cross-referenced with Tom. | LIVE |
+| E4 | 2026-08-29 | **Malkans RSI 40/60 integrated** | White line = price RSI, blue = SMA. 60 = overbought, 40 = oversold. Cross-referenced with Tom. | SUPERSEDED 2026-09-18: VVP-001 Tier 3 demoted RSI; removed from default layout. RSI is not Tom-validated. |
 | E5 | 2026-08-31 | **BUG #4 fix: CVD/flow resolution** | "recent_shift" principle — when cvd_recent aligns with trade_flow, cumulative CVD demoted to context. Proof table updated. | LIVE |
 | E6 | 2026-08-31 | **Post-entry management (Section 12)** | 10 subsections: evidence-based management, timeframe, both sides, level performance, time expiry, acceptance = failure, dead zone, dynamic R:R, profit taking, BE stop skepticism. | LIVE |
 | E7 | 2026-08-31 | **Cross-trader integration** | 16 NEW entries integrated: 3 conflict resolutions + 10 P0 post-entry + 6 P1 pre-trade. Traceability matrix 18 rows. | LIVE |
