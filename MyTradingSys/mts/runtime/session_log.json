@@ -443,6 +443,18 @@
       "action": "passed",
       "reason": "Build-Check Active sessions section is dead code: no writer to runtime\\locks, only Build-Check.ps1 reads it. Real lock at data\\apparatus.lock. Dormant UTC parse bug at Build-Check.ps1:89 noted, not fixed. Leave section for now.",
       "ts": "2026-09-17T15:13:11.172801Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "session close: MTS-2026-09-18-0456Z. Loop restarted after overnight shutdown. Anchor options note written. Rule 11 added to live_session_protocol.md. Journal appends. Nine uncommitted files cleared by 0848Z.",
+      "ts": "2026-09-18T10:16:12.458622Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "session close: MTS-2026-09-18-0848Z. B043 CLOSED. mts-watch v1.1.1 synced four files (changelog, 03_FILE_INDEX, NEXT_SESSION_HANDOFF, DSA_SESSION_PROMPT). chart_read_protocol.md new. Anchor decision Option C (both layers). Three FYI docs archived word-for-word. Two commits: 9f05f16, 97b8fc6.",
+      "ts": "2026-09-18T10:16:12.799596Z"
     }
   ]
 }

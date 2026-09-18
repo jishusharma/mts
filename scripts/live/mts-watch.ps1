@@ -79,6 +79,15 @@ while ($true) {
         Emit "        chain=$($sc.transition_chain_15m -join ',')"
         Emit "MTS-SIG     nd1m=$($sg.net_delta_1m) l3=$($sg.last_3_delta) vol=$($sg.volume_ratio) cvd=$($sg.cvd_slope) pxVwap=$($sg.price_vs_vwap)"
 
+        # MTS-FRAME: regime label from regime_classifier.py. Added 2026-09-18.
+        $rgPath = Join-Path $R "MyTradingSys\mts\runtime\state_code_regime.json"
+        if (Test-Path $rgPath) {
+            try {
+                $rg = Get-Content $rgPath -Raw -Encoding UTF8 | ConvertFrom-Json
+                Emit "MTS-FRAME   label=$($rg.label) conf=$($rg.confidence) cycles=$($rg.consecutive_cycles) entered=$($rg.entered_at_utc)"
+            } catch { Emit "MTS-FRAME   read failed: $_" }
+        } else { Emit "MTS-FRAME   file missing" }
+
         $tf = $j.trade_flow
         Emit "MTS-FLOW    cvd=$($j.cvd.value)/$($j.cvd.slope) | ND1m=$($tf.net_delta_1m) ND5m=$($tf.net_delta_5m) ND15m=$($tf.net_delta_15m) ND1h=$($tf.net_delta_1h)"
         Emit "        oi=$($j.open_interest.direction) $($j.open_interest.change_1h_pct)% | fund=$($j.funding.current_rate) | basis=$($j.spot_perp_basis.basis_pct)/$($j.spot_perp_basis.direction)"
