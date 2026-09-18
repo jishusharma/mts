@@ -7,7 +7,7 @@ $killed = 0
 $rootPids = @()
 
 # 1. Read lock PID
-$lockFile = Join-Path $R "data\apparatus.lock"
+$lockFile = Join-Path $R "data\trading_day.lock"
 if (Test-Path $lockFile) {
     $parts = (Get-Content $lockFile -Raw).Trim() -split "\s+"
     if ($parts.Length -ge 1) {

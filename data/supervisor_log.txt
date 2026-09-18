@@ -1359,3 +1359,13 @@
 2026-09-17 20:10:51 | ok wrapper=17792 snapAge=35s grace=False
 2026-09-17 20:11:22 | ok wrapper=17792 snapAge=6s grace=False
 2026-09-17 20:11:53 | ok wrapper=17792 snapAge=37s grace=False
+2026-09-18 17:48:22 | === SUPERVISOR START mode=armed interval=1m stale=240s grace=90s ===
+2026-09-18 17:48:22 | startup: existing wrapper PID=16624, grace clock starting
+2026-09-18 17:48:24 | ok wrapper=16624 snapAge=2768s grace=True
+2026-09-18 17:48:55 | ok wrapper=16624 snapAge=2799s grace=True
+2026-09-18 17:49:26 | ok wrapper=16624 snapAge=4s grace=True
+2026-09-18 17:49:58 | ok wrapper=16624 snapAge=35s grace=False
+2026-09-18 17:50:29 | ok wrapper=16624 snapAge=11s grace=False
+2026-09-18 17:51:00 | ok wrapper=16624 snapAge=42s grace=False
+2026-09-18 17:51:31 | ok wrapper=16624 snapAge=14s grace=False
+2026-09-18 17:52:02 | ok wrapper=16624 snapAge=46s grace=False

@@ -54,7 +54,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B031 | 2026-09-16 | OPEN | LOW | Two-phase OI/CVD pattern unnamed | L_ITEMS I38 | - |
 | B032 | 2026-09-16 | OPEN | COSMETIC | session_end_logs.md wrong writer | L_ITEMS I39; StateCodeEmitter.java:441-452 | - |
 | B033 | 2026-09-17 | OPEN | MED | Profile shape taxonomy does not match Tom | L_ITEMS I40 | - |
-| B034 | 2026-09-17 | IN-FIX | HIGH | CVD ring not cleared at UTC rollover | AUDIT StateCodeEmitter row 1 | fix applied 2026-09-17T16:15Z: cvdSeries.clear() on day-change in computeCvdSlope; compile OK; pending loop restart to take effect |
+| B034 | 2026-09-17 | CLOSED | HIGH | CVD ring not cleared at UTC rollover | AUDIT StateCodeEmitter row 1 | code receipt: StateCodeEmitter.java L340 cvdSeries.clear() on day-change; loop restarted 2026-09-18T17:48Z; runtime verify at next 00:00 UTC rollover tracked by T028 |
 | B035 | 2026-09-17 | CLOSED | HIGH | Book imbalance threshold 0.4-0.6 treats balanced as extreme | AUDIT SetupCandidatesBuilder L541 | SetupCandidatesBuilder.java L541 now 0.67/1.5; hash 3ED13909->C30EB08F; 2026-09-17 |
 | B036 | 2026-09-17 | OPEN | MED | setup_candidates and last_3_delta read from snapshot not normalized | AUDIT math_object_builder L357 L388 | - |
 | B037 | 2026-09-17 | OPEN | MED | isinstance accepts booleans spurious contradiction | AUDIT math_object_builder L393 L400 | - |
@@ -103,4 +103,5 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T025 | 2026-09-18 | CLOSED | HIGH | T023+T024 must land in one commit; T023 alone silences engine on 38 pct of day | disk: today state distribution | bundled in commit with T023+T024 |
 | T026 | 2026-09-18 | OPEN | LOW | Frame Stage 2 wiring (regime into verdict path). Deferred until B049 is live | reply to 1600Z | - |
 | T027 | 2026-09-18 | OPEN | LOW | Write regime label into verdict log line (Stage 1 annotation, no engine change) | reply to 1600Z | - |
+| T028 | 2026-09-18 | OPEN | LOW | Verify B034 cvdSeries.clear fix at 00:00 UTC rollover | B034 code receipt | - |
 # END
