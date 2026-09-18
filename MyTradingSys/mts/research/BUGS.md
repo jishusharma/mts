@@ -23,7 +23,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 |---|---|---|---|---|---|---|
 | B001 | 2026-09-13 | BLOCKED | LOW | L5 referenced as held no detail | L_ITEMS L5 | - |
 | B002 | 2026-09-13 | BLOCKED | LOW | L6 same as L5 | L_ITEMS L6 | - |
-| B003 | 2026-09-14 | OPEN | MED | stop-day.ps1 reports false success | L_ITEMS L8 | - |
+| B003 | 2026-09-14 | CLOSED | MED | stop-day.ps1 reports false success | L_ITEMS L8 | 2026-09-18: lock path fixed to trading_day.lock; commit af1cfc5. Earlier miss: fix landed but row not closed. |
 | B004 | 2026-09-15 | OPEN | LOW | Proof-change alert trigger noise | L_ITEMS L13; start_trading_day.ps1:349 | - |
 | B005 | 2026-09-15 | WONTFIX | LOW | Runtime manifest pointed at wrong prompt | L_ITEMS L14 | 2026-09-18: SESSION_MANIFEST.json points at DSA_SESSION_PROMPT.md; file exists on disk. Correct. |
 | B006 | 2026-09-15 | WONTFIX | COSMETIC | Orphan duplicate root manifest | L_ITEMS L15 | 2026-09-18: no root SESSION_MANIFEST.json exists. Phantom. |
@@ -35,11 +35,11 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B012 | 2026-09-16 | WONTFIX | MED | US open fixed 13.5 UTC wrong in winter | L_ITEMS L25; MarketDataSnapshot.java:761 | 2026-09-18: code uses ZoneId.of("America/New_York") at L723,L825,L862,L887; timezone-correct. Stale ref only. |
 | B013 | 2026-09-16 | CLOSED | COSMETIC | MTS_DICTIONARY Authority column mojibake | L_ITEMS L27 | hash 5CE01AA2->F05D3E0A; 30 sequences replaced |
 | B014 | 2026-09-16 | WONTFIX | MED | Loop exit orphans mvn/java child | L_ITEMS L28 | 2026-09-18: Invoke-WithTimeout calls taskkill /T /F at L98,L108; process tree killed. No orphan path in code. |
-| B015 | 2026-09-16 | OPEN | LOW | context.ps1 reads Binance REST each call | L_ITEMS L30 | - |
-| B016 | 2026-09-16 | OPEN | LOW | state_code_regime.json not read by Java | L_ITEMS L31 | - |
+| B015 | 2026-09-16 | WONTFIX | LOW | context.ps1 reads Binance REST each call | L_ITEMS L30 | 2026-09-18: duplicate of T029 |
+| B016 | 2026-09-16 | WONTFIX | LOW | state_code_regime.json not read by Java | L_ITEMS L31 | 2026-09-18: regime is display-only; T018 WONTFIX. No consumer intended. |
 | B017 | 2026-09-16 | OPEN | MED | Ratio gate has no near-miss record | L_ITEMS I21 | - |
 | B018 | 2026-09-16 | OPEN | HIGH | Zones move per cycle nrr against moving target | L_ITEMS I22 | - |
-| B019 | 2026-09-16 | OPEN | MED | Quad vs setup direction mismatch not read | L_ITEMS I23 | - |
+| B019 | 2026-09-16 | WONTFIX | MED | Quad vs setup direction mismatch not read | L_ITEMS I23 | 2026-09-18: quad_classify is display-only; no engine consumer intended. |
 | B020 | 2026-09-16 | CLOSED | MED | session_timing_rules.md documents EST all year | L_ITEMS I24 | doc-only: timezone note added session_timing_rules.md L24-26 2026-09-17 |
 | B021 | 2026-09-16 | WONTFIX | LOW | order_flow block has no consumer | L_ITEMS I27 (ruled gauges) | 2026-09-18: ruled gauge by prior decision. |
 | B022 | 2026-09-16 | WONTFIX | LOW | session block has no consumer | L_ITEMS I28 (ruled gauges) | 2026-09-18: ruled gauge by prior decision. |
