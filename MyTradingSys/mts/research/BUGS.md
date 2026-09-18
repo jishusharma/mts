@@ -70,7 +70,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B046 | 2026-09-18 | CLOSED | MED | DSA section 11 and handoff claimed rewritten in ledger; both unchanged on disk | this session; ledger 2026-09-18T10:16:12Z | 832f1ec; both files rewritten and verified |
 | B047 | 2026-09-18 | OPEN | HIGH | finished_auction contradiction sign inverted in math_object_builder.py | math_object_builder.py L391,L398 vs SetupCandidatesBuilder.java L703; T009 | - |
 | B048 | 2026-09-18 | CLOSED | MED | verify_rule_citations.ps1 printed PASS despite 0 refs; header comment promised unreferenced-id check | scripts/tools/verify_rule_citations.ps1 L44 | 2026-09-18; verifier now fails on unused ids |
-| B049 | 2026-09-18 | IN-FIX | HIGH | determineSetupType skips state check on VAH/VAL/swing zones; violates compiled engine rule 3 | SetupCandidatesBuilder.java L432-437 | edit applied 2026-09-18; pending loop restart |
+| B049 | 2026-09-18 | CLOSED | HIGH | determineSetupType skips state check on VAH/VAL/swing zones; violates compiled engine rule 3 | SetupCandidatesBuilder.java L432-437 | 6816cc0; VerifyScbEdits.java 12/12 PASS 2026-09-18 |
 
 ## TASKS
 
@@ -98,8 +98,8 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T020 | 2026-09-18 | OPEN | COSMETIC | Rank-1 GATE cell not padded, runs into pipe on WAIT_TRIGGER | dashboard render 2026-09-18T11:31Z | - |
 | T021 | 2026-09-18 | OPEN | COSMETIC | tape-watch emits duplicate line when snapshot unchanged between ticks | journal L85 2026-09-17 | - |
 | T022 | 2026-09-18 | OPEN | MED | Loop writes last_verdict.json for dashboard (needs critical-file approval) | journal B5; T012 | - |
-| T023 | 2026-09-18 | IN-FIX | HIGH | Enforce CT state gate: no ct_short at VAH/VAL when state is trend_healthy | 04_final_report Step 1 | edit applied; pending loop restart to verify |
-| T024 | 2026-09-18 | IN-FIX | HIGH | Add TC long path: determineDirections above_vah must emit long; determineSetupType needs tc_long at VWAP for trend_healthy | 04_final_report Step 2 | edit applied; pending loop restart to verify |
+| T023 | 2026-09-18 | CLOSED | HIGH | Enforce CT state gate: no ct_short at VAH/VAL when state is trend_healthy | 04_final_report Step 1 | merged into B049; 6816cc0 |
+| T024 | 2026-09-18 | CLOSED | HIGH | Add TC long path: determineDirections above_vah must emit long; determineSetupType needs tc_long at VWAP for trend_healthy | 04_final_report Step 2 | 6816cc0; VerifyScbEdits.java 12/12 PASS 2026-09-18 |
 | T025 | 2026-09-18 | CLOSED | HIGH | T023+T024 must land in one commit; T023 alone silences engine on 38 pct of day | disk: today state distribution | bundled in commit with T023+T024 |
 | T026 | 2026-09-18 | OPEN | LOW | Frame Stage 2 wiring (regime into verdict path). Deferred until B049 is live | reply to 1600Z | - |
 | T027 | 2026-09-18 | OPEN | LOW | Write regime label into verdict log line (Stage 1 annotation, no engine change) | reply to 1600Z | - |
