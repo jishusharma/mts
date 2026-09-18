@@ -42,4 +42,7 @@ $unknownTags | ForEach-Object { Write-Host "  $_" }
 Write-Host "Index ids not referenced: $($unusedIds.Count)"
 $unusedIds | ForEach-Object { Write-Host "  $_" }
 
-if ($unknownTags.Count -eq 0) { Write-Host 'STATUS: PASS (no unknown tags)' } else { Write-Host 'STATUS: FAIL' }
+if ($unknownTags.Count -gt 0) { Write-Host 'STATUS: FAIL (unknown tags)'; exit 1 }
+if ($definedIds.Count -gt 0 -and $usedIds.Count -eq 0) { Write-Host 'STATUS: FAIL (no ids referenced)'; exit 1 }
+if ($unusedIds.Count -gt 0) { Write-Host "STATUS: FAIL ($($unusedIds.Count) ids unreferenced)"; exit 1 }
+Write-Host 'STATUS: PASS'
