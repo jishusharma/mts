@@ -1,11 +1,11 @@
 {
   "label": "TREND_UP",
   "confidence": "HIGH",
-  "consecutive_cycles": 21,
+  "consecutive_cycles": 27,
   "entered_at_utc": "2026-09-18T18:01:21.460563Z",
   "candidate": "TREND_UP",
-  "cycles_in_candidate_state": 16,
+  "cycles_in_candidate_state": 22,
   "votes_up": 3,
   "votes_down": 0,
-  "last_updated_utc": "2026-09-18T18:21:23.680773Z"
+  "last_updated_utc": "2026-09-18T18:27:23.824635Z"
 }
