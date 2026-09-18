@@ -67,26 +67,26 @@ IN-FIX rows older than 14 days fail Build-Check.
 
 | B044 | 2026-09-17 | OPEN | MED | CVD and trade_flow.net_delta computed from kline taker-buy proxy, not aggTrade tick delta | MarketDataSnapshot.java:178,633-648,379-381 | - |
 | B045 | 2026-09-17 | OPEN | MED | WebSocket migration roadmap not started; archive doc 2026-09-05 unrealized | MyTradingSys/mts/archive/binance_api_integration_recommendations.md 1107 lines sections 1-11 | - |
-| B046 | 2026-09-18 | OPEN | MED | DSA section 11 and handoff claimed rewritten in ledger; both unchanged on disk | this session; ledger 2026-09-18T10:16:12Z | - |
+| B046 | 2026-09-18 | CLOSED | MED | DSA section 11 and handoff claimed rewritten in ledger; both unchanged on disk | this session; ledger 2026-09-18T10:16:12Z | 832f1ec; both files rewritten and verified |
 | B047 | 2026-09-18 | OPEN | HIGH | finished_auction contradiction sign inverted in math_object_builder.py | math_object_builder.py L391,L398 vs SetupCandidatesBuilder.java L703; T009 | - |
 
 ## TASKS
 
 | ID | Opened | Status | Severity | Title | Evidence | Receipt |
 |---|---|---|---|---|---|---|
-| T001 | 2026-09-18 | OPEN | MED | DSA_SESSION_PROMPT.md section 11 rewrite (v1.1.1 + current state) | B046 | - |
-| T002 | 2026-09-18 | OPEN | MED | NEXT_SESSION_HANDOFF.md rewrite with current runtime | B046 | - |
-| T003 | 2026-09-18 | OPEN | LOW | session_log correction entry for false close entries | B046 | - |
-| T004 | 2026-09-18 | IN-FIX | LOW | mts-live-stop flag not auto-cleared on mts-live start | journal A1 | fix applied 2026-09-18; pending live verify |
-| T005 | 2026-09-18 | IN-FIX | LOW | DIRECTION column missing on dashboard TRADES | journal A2 | DIRECTION column added to TRADES table; pending live verify |
-| T006 | 2026-09-18 | IN-FIX | LOW | Five verdict words not in MTS_DICTIONARY | journal A3 | VERDICT WORDS section appended; pending verify |
-| T007 | 2026-09-18 | IN-FIX | COSMETIC | MTS-CAND gate pass collision with GATE column | journal B6 | renamed gate pass to rr_gate in mts-watch.ps1 |
-| T008 | 2026-09-18 | IN-FIX | COSMETIC | mts-dashboard index row format mismatch | FYI-01 M3 | row normalized to 5 columns |
+| T001 | 2026-09-18 | CLOSED | MED | DSA_SESSION_PROMPT.md section 11 rewrite (v1.1.1 + current state) | B046 | 832f1ec; hash F4599EDA -> DD2CB93D |
+| T002 | 2026-09-18 | CLOSED | MED | NEXT_SESSION_HANDOFF.md rewrite with current runtime | B046 | 832f1ec |
+| T003 | 2026-09-18 | CLOSED | LOW | session_log correction entry for false close entries | B046 | ledger entry logged 2026-09-18T10:16Z |
+| T004 | 2026-09-18 | CLOSED | LOW | mts-live-stop flag not auto-cleared on mts-live start | journal A1 | 186f483; load.ps1 L20 clears stop flag on mts-live |
+| T005 | 2026-09-18 | CLOSED | LOW | DIRECTION column missing on dashboard TRADES | journal A2 | 186f483; live render 2026-09-18T15:52Z shows DIRECTION col |
+| T006 | 2026-09-18 | CLOSED | LOW | Five verdict words not in MTS_DICTIONARY | journal A3 | 186f483; VERDICT WORDS section in MTS_DICTIONARY.md |
+| T007 | 2026-09-18 | CLOSED | COSMETIC | MTS-CAND gate pass collision with GATE column | journal B6 | 186f483; renamed to rr_gate in mts-watch.ps1 L116 |
+| T008 | 2026-09-18 | CLOSED | COSMETIC | mts-dashboard index row format mismatch | FYI-01 M3 | 186f483; 03_FILE_INDEX.md 5-col row |
 | T009 | 2026-09-18 | BLOCKED | MED | finished_auction sign confirmed inverted | journal B1; code read | confirmed 2026-09-18; engine fix needs three-snapshot proof (B047) |
 | T010 | 2026-09-18 | CLOSED | LOW | Engine confidence grade meaning undocumented | journal B3 | doc-only: confidence grade table added to MTS_DICTIONARY.md 2026-09-18 |
 | T011 | 2026-09-18 | CLOSED | LOW | cms_age=-1s anomaly | journal B4 | clamp applied 2026-09-18; race between $now and Get-Item |
-| T012 | 2026-09-18 | IN-FIX | MED | Verdict parse fragility in dashboard | journal B5 | known-word validation added; structured writer pending as T022 |
-| T013 | 2026-09-18 | IN-FIX | MED | MTS-TAPE sidecar baseline stale since 2026-09-17T20:11Z | live tape; journal O4 | mts-watch flags STALE over 120s |
+| T012 | 2026-09-18 | CLOSED | MED | Verdict parse fragility in dashboard | journal B5 | 14cfd60; known-word list applied; T022 tracks structured writer |
+| T013 | 2026-09-18 | CLOSED | MED | MTS-TAPE sidecar baseline stale since 2026-09-17T20:11Z | live tape; journal O4 | 7ccd0e1; live STALE 70573s 2026-09-18T15:47Z |
 | T014 | 2026-09-18 | OPEN | MED | Rank-1-only gate vs scan all candidates | journal A7 | - |
 | T015 | 2026-09-18 | OPEN | MED | Proof count direction-blind; Options A/B/C pending | journal B7 | - |
 | T016 | 2026-09-18 | OPEN | LOW | Five open comparison questions CVD anchor OI magnitude Net Delta what we trade on pre-open | journal E7 | - |
