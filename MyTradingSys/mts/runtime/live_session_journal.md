@@ -434,3 +434,34 @@ W2. Wrote Rule 11 to MyTradingSys\methodology\live_session_protocol.md.
     note, or design claim cites the specific field values that drove it.
 
 # END
+### OBSERVATIONS - APPEND 2026-09-18T09:37:16Z
+
+RSI documentation conflict.
+  visual_validation_protocol_vvp001.md Tier 4: RSI removed, not Tom-validated.
+  COMPILED_DECISIONS.md E4: Malkans RSI 40/60 integrated.
+  Two files disagree. One is wrong. No engine consumer.
+  Action: reconcile in a future session.
+
+Liquidation consensus levels (chart reads, not system fields).
+  Short-liq peak: 78000-79700 (three-read overlap).
+  Long-liq peak: 74800-75500 (four-read consensus).
+  liquidation_clusters is DEPRECATED per MTS_DICTIONARY.md.
+
+FIRE condition verified from code, start-trading-day.ps1 L153-168.
+  Four gates: net_rr >= 2.0, tier = trigger_ready, proof >= 5, proofDir != contradiction.
+  Highest verdict written by this function: SETUP_FORMING.
+  Four near-fires today: 06:26:16Z, 06:31:15Z, 08:01:16Z, 08:03:15Z.
+  Each blocked on one gate. All four never held simultaneously.
+
+
+### FYI ARCHIVE - APPEND 2026-09-18T09:51:19Z
+
+Three FYI documents from sessions MTS-2026-09-18-0456Z and MTS-2026-09-18-0848Z archived word-for-word:
+  MyTradingSys/mts/research/fyi_archive/2026-09-18/01_report_1040Z_from_1624Z.md
+  MyTradingSys/mts/research/fyi_archive/2026-09-18/02_consolidated_handoff_0456Z_0848Z.md
+  MyTradingSys/mts/research/fyi_archive/2026-09-18/03_session_handoff_report_0456Z_0848Z.md
+
+Contents: fire-condition four-gate verification, extraction chain audit (major finding),
+frame-view gap root cause, TWOPEAK correction, RSI documentation conflict, pending decisions.
+Indexed in 03_FILE_INDEX.md.
+

@@ -163,3 +163,11 @@ changed. Before 13:30 UTC: zeros. After 13:30 UTC: real session range.
 The gap is the defect this note documents.
 
 # END
+## DECISION - 2026-09-18T09:43:33Z
+
+Option C. Both anchors, applied as layers in different contexts.
+- Session anchor (US open, 13:30 UTC): intraday decision context.
+- UTC anchor (00:00): structural VWAP and CVD baseline.
+Consumers pick the anchor for their scope. Do not cross-compare anchored values without explicit conversion.
+Decided by user, MTS-2026-09-18-0848Z.
+

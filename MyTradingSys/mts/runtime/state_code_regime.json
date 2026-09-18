@@ -1,11 +1,11 @@
 {
-  "label": "TREND_UP",
+  "label": "RANGE",
   "confidence": "HIGH",
-  "consecutive_cycles": 109,
-  "entered_at_utc": "2026-09-18T07:31:21.921110Z",
-  "candidate": "TREND_UP",
-  "cycles_in_candidate_state": 111,
-  "votes_up": 3,
-  "votes_down": 0,
-  "last_updated_utc": "2026-09-18T09:19:21.847902Z"
+  "consecutive_cycles": 17,
+  "entered_at_utc": "2026-09-18T09:34:21.727735Z",
+  "candidate": "RANGE",
+  "cycles_in_candidate_state": 19,
+  "votes_up": 2,
+  "votes_down": 1,
+  "last_updated_utc": "2026-09-18T09:50:21.560942Z"
 }

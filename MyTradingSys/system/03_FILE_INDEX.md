@@ -248,5 +248,9 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/mts/runtime/live_session_journal.md | runtime | Append-only session journal. QUOTE / REQ / OBS / DECISION / LANDED / READ. Everything no other file holds. | MTS-2026-09-17-1241Z | 2026-09-17 |
 | scripts/live/tape-watch.ps1 | tool | Sidecar watcher. Divergence classifier every 30s. Reads snapshot + state_code. Read-only on loop. | MTS-2026-09-17-1241Z | 2026-09-17 |
 | scripts/live/mts-watch.ps1 | tool | CANONICAL live feed (mts-live). v1.1.1. Compiled-layer blocks: MTS-HSTOP, MTS-PROOF, MTS-CAND, MTS-DELTA + state, flow, cycles, slow. See MTS_DICTIONARY.md LIVE FEED NAMES. | MTS-2026-09-17-1241Z | 2026-09-17 |
+| MyTradingSys/methodology/chart_read_protocol.md | methodology | Six-layer chart read method. Catches single-pass errors. | MTS-2026-09-18-0848Z | 2026-09-18 |
+| MyTradingSys/mts/research/fyi_archive/2026-09-18/01_report_1040Z_from_1624Z.md | archive | FYI report from 1624Z session. H1-H4, M1-M4, L1-L2. | MTS-2026-09-18-0848Z | 2026-09-18 |
+| MyTradingSys/mts/research/fyi_archive/2026-09-18/02_consolidated_handoff_0456Z_0848Z.md | archive | Consolidated handoff. Nine blocks, pending decisions, verify list. | MTS-2026-09-18-0848Z | 2026-09-18 |
+| MyTradingSys/mts/research/fyi_archive/2026-09-18/03_session_handoff_report_0456Z_0848Z.md | archive | Session handoff report. Fire condition, extraction audit, frame-view gap. | MTS-2026-09-18-0848Z | 2026-09-18 |
 | MyTradingSys/methodology/live_session_protocol.md | methodology | AI-side checks before any live tape claim. Mistake ledger 2026-09-17. Read at session boot. | MTS-2026-09-17-1241Z | 2026-09-17 |
 scripts\live\mts-dashboard.ps1 | dashboard command, one-shot and -Watch | new 2026-09-17
