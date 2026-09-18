@@ -130,3 +130,18 @@ A name used in a session must resolve to one of these.
 Every live session runs mts-live. Every live session adds at least
 one block or field to the feed. Version and changelog live in the
 header of scripts/live/mts-watch.ps1.
+
+## VERDICT WORDS (added 2026-09-18)
+
+Written by scripts/core/start-trading-day.ps1 verdict block.
+
+| Word | Meaning |
+|---|---|
+| WATCH | Setup observed, not at trigger. Proof 3-4, or direction contradicts. |
+| WAIT_TRIGGER | Price not at zone. Tier conditional. |
+| WAIT_RR | Net reward-to-risk below 2.0, or broken-value override fired. |
+| WAIT_PROOF | Proof count below 3. |
+| WAIT_FAR | Tier ignore. |
+| SETUP_FORMING | All four gates: net_rr >= 2.0, tier trigger_ready, proof >= 5, proofDir != contradiction. |
+| SETUP_CONFIRMED | Never written by the verdict function. Downstream check only. |
+

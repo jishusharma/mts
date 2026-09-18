@@ -113,7 +113,7 @@ while ($true) {
         if ($j.setup_candidates -and $j.setup_candidates.Count -gt 0) {
             $top = $j.setup_candidates[0]
             Emit "MTS-CAND    rank-1 $($top.setup_type) $($top.direction) at $($top.zone.name) $($top.zone.price)"
-            Emit "        distance $($top.math.distance_pct)% | tier $($top.math.tier) | substate $($top.math.substate) | net reward-to-risk $($top.math.net_rr) | gate pass $($top.math.net_rr_sanity) | proofs $($top.score.proof_count) | confidence $($top.score.confidence)"
+            Emit "        distance $($top.math.distance_pct)% | tier $($top.math.tier) | substate $($top.math.substate) | net reward-to-risk $($top.math.net_rr) | rr_gate $($top.math.net_rr_sanity) | proofs $($top.score.proof_count) | confidence $($top.score.confidence)"
             Emit "        stop $($top.math.stop) | target $($top.math.target) | gross reward-to-risk $($top.math.gross_rr)"
         }
 

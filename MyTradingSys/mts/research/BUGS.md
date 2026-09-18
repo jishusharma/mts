@@ -76,11 +76,11 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T001 | 2026-09-18 | OPEN | MED | DSA_SESSION_PROMPT.md section 11 rewrite (v1.1.1 + current state) | B046 | - |
 | T002 | 2026-09-18 | OPEN | MED | NEXT_SESSION_HANDOFF.md rewrite with current runtime | B046 | - |
 | T003 | 2026-09-18 | OPEN | LOW | session_log correction entry for false close entries | B046 | - |
-| T004 | 2026-09-18 | OPEN | LOW | mts-live-stop flag not auto-cleared on mts-live start | journal A1 | - |
-| T005 | 2026-09-18 | OPEN | LOW | DIRECTION column missing on dashboard TRADES | journal A2 | - |
-| T006 | 2026-09-18 | OPEN | LOW | Five verdict words not in MTS_DICTIONARY | journal A3 | - |
-| T007 | 2026-09-18 | OPEN | COSMETIC | MTS-CAND gate pass collision with GATE column | journal B6 | - |
-| T008 | 2026-09-18 | OPEN | COSMETIC | mts-dashboard index row format mismatch | FYI-01 M3 | - |
+| T004 | 2026-09-18 | IN-FIX | LOW | mts-live-stop flag not auto-cleared on mts-live start | journal A1 | fix applied 2026-09-18; pending live verify |
+| T005 | 2026-09-18 | IN-FIX | LOW | DIRECTION column missing on dashboard TRADES | journal A2 | DIRECTION column added to TRADES table; pending live verify |
+| T006 | 2026-09-18 | IN-FIX | LOW | Five verdict words not in MTS_DICTIONARY | journal A3 | VERDICT WORDS section appended; pending verify |
+| T007 | 2026-09-18 | IN-FIX | COSMETIC | MTS-CAND gate pass collision with GATE column | journal B6 | renamed gate pass to rr_gate in mts-watch.ps1 |
+| T008 | 2026-09-18 | IN-FIX | COSMETIC | mts-dashboard index row format mismatch | FYI-01 M3 | row normalized to 5 columns |
 | T009 | 2026-09-18 | OPEN | MED | finished_auction sign possible error | journal B1 | - |
 | T010 | 2026-09-18 | OPEN | LOW | Engine confidence grade meaning undocumented | journal B3 | - |
 | T011 | 2026-09-18 | OPEN | LOW | cms_age=-1s anomaly | journal B4 | - |
@@ -92,4 +92,5 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T017 | 2026-09-18 | OPEN | MED | Extraction chain 0 TOM-NNN refs in condition files (verify first) | FYI-03 | - |
 | T018 | 2026-09-18 | OPEN | MED | Frame-view regime label has no verdict-block consumer | FYI-03 | - |
 | T019 | 2026-09-18 | OPEN | MED | RSI documentation conflict VVP-001 vs COMPILED_DECISIONS | journal; FYI-02 | - |
+| T020 | 2026-09-18 | OPEN | COSMETIC | Rank-1 GATE cell not padded, runs into pipe on WAIT_TRIGGER | dashboard render 2026-09-18T11:31Z | - |
 # END

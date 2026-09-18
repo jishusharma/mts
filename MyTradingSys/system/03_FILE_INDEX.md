@@ -253,4 +253,4 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/mts/research/fyi_archive/2026-09-18/02_consolidated_handoff_0456Z_0848Z.md | archive | Consolidated handoff. Nine blocks, pending decisions, verify list. | MTS-2026-09-18-0848Z | 2026-09-18 |
 | MyTradingSys/mts/research/fyi_archive/2026-09-18/03_session_handoff_report_0456Z_0848Z.md | archive | Session handoff report. Fire condition, extraction audit, frame-view gap. | MTS-2026-09-18-0848Z | 2026-09-18 |
 | MyTradingSys/methodology/live_session_protocol.md | methodology | AI-side checks before any live tape claim. Mistake ledger 2026-09-17. Read at session boot. | MTS-2026-09-17-1241Z | 2026-09-17 |
-scripts\live\mts-dashboard.ps1 | dashboard command, one-shot and -Watch | new 2026-09-17
+| scripts/live/mts-dashboard.ps1 | tool | dashboard command, one-shot and -Watch | MTS-2026-09-17-1757Z | 2026-09-17 |

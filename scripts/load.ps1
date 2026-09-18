@@ -18,7 +18,7 @@ function regime   { python "$ScriptDir\..\MyTradingSys\mts\runtime\regime_classi
 function mts-start { & "$ScriptDir\start-session.ps1" @args }
 
 # live feed (canonical) - see MTS_DICTIONARY.md LIVE FEED NAMES
-function mts-live      { & "$ScriptDir\live\mts-watch.ps1" @args }
+function mts-live      { Remove-Item "$ScriptDir\..\data\mts_watch_stop.flag" -ErrorAction SilentlyContinue | Out-Null; & "$ScriptDir\live\mts-watch.ps1" @args }
 function mts-live-fast { & "$ScriptDir\live\mts-watch.ps1" -IntervalSec 10 }
 function mts-live-stop { New-Item "$ScriptDir\..\data\mts_watch_stop.flag" -ItemType File -Force | Out-Null; "stop flag written" }
 function mts-live-log  { Get-Content "$ScriptDir\..\data\mts-watch.log" -Tail 40 }

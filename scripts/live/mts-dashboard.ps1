@@ -99,9 +99,9 @@ Write-Host ""
 
 # TRADES
 SecHead "TRADES IN ORDER OF BEST TO WORST"
-Write-Host "  +------+-------------+-----------------------+-------+---------+--------+------+" -ForegroundColor $C_LABEL
-Write-Host "  | RANK | SETUP       | ZONE                  | DIST  | NET R:R | PROOFS | GATE |" -ForegroundColor $C_LABEL
-Write-Host "  +------+-------------+-----------------------+-------+---------+--------+------+" -ForegroundColor $C_LABEL
+Write-Host "  +------+-------------+-----------------------+-------+---------+--------+------+-----------+" -ForegroundColor $C_LABEL
+Write-Host "  | RANK | SETUP       | ZONE                  | DIST  | NET R:R | PROOFS | GATE | DIRECTION |" -ForegroundColor $C_LABEL
+Write-Host "  +------+-------------+-----------------------+-------+---------+--------+------+-----------+" -ForegroundColor $C_LABEL
 $i = 0
 foreach ($c in ($j.setup_candidates | Select-Object -First 5)) {
     $i++
@@ -111,6 +111,7 @@ foreach ($c in ($j.setup_candidates | Select-Object -First 5)) {
     $dp = (([string]$c.math.distance_pct) + "%").PadRight(6)
     $nr = ([string]$c.math.net_rr).PadRight(8)
     $pf = ([string]$c.score.proof_count).PadRight(7)
+    $dr = ([string]$c.direction).PadRight(9)
     $isRank1 = ($i -eq 1)
     $gt = "-"
     $gc = $C_LABEL
@@ -132,9 +133,11 @@ foreach ($c in ($j.setup_candidates | Select-Object -First 5)) {
     Write-Host $pf -NoNewline -ForegroundColor $C_VALUE
     Write-Host "| " -NoNewline -ForegroundColor $C_LABEL
     Write-Host $gt -NoNewline -ForegroundColor $gc
+    Write-Host "| " -NoNewline -ForegroundColor $C_LABEL
+    Write-Host $dr -NoNewline -ForegroundColor $C_VALUE
     Write-Host " |" -ForegroundColor $C_LABEL
 }
-Write-Host "  +------+-------------+-----------------------+-------+---------+--------+------+" -ForegroundColor $C_LABEL
+Write-Host "  +------+-------------+-----------------------+-------+---------+--------+------+-----------+" -ForegroundColor $C_LABEL
 Write-Host ("  Engine says: " + $verdictWord + ". " + $reason) -ForegroundColor $C_WARN
 Write-Host ""
 
