@@ -530,5 +530,5 @@ Build-Check saga:
   Fixed header to ~13.6KB. Build-Check PASS restored. Commit a1d8b25.
 
 Commits this session: 134c086, 4d401cf, 18458e0, 6816cc0, e100c52, 87cc085, a1d8b25.
-Runtime at close: wrapper 16208, java 14444, lock 16208. State machine (powershell) 11668.. No supervisor.
+Runtime at close: wrapper 16208, java 14444, lock 16208. State machine (powershell) 11668. No supervisor.
 Next: B047 finished_auction sign. Report Step 3. Tom-source read needed first.
