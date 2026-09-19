@@ -51,7 +51,7 @@ COORDINATOR. Same mission: live oversight, gap capture, code readiness.
 ## TRIAGE 2026-09-19
 
 Every item from SESSION_RESUME OPEN CODE ITEMS and OPEN DESIGN ITEMS.
-Verified against BUGS.md, apparatus_fixes.md, source, and git log.
+Verified against BUGS.md, apparatus_fixes.md, source, and repository history.
 
 | Item | Verdict | Evidence |
 |---|---|---|
