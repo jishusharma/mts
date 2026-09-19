@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-19
-# SIZE: ~14.8KB
+# SIZE: ~15KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -246,6 +246,7 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/mts/research/INDICATOR_IMPLEMENTATION_HANDOFF.md | research | Nine CoinGlass derivative indicator panels. Five-phase implementation plan. Source doc for T032-T035. | MTS-2026-09-18-0848Z | 2026-09-19 |
 | scripts/tools/verify_rule_citations.ps1 | tool | Checks rule tags resolve to index quotes. |
 | scripts/tools/VerifyScbEdits.java | tool | Unit verifier for SetupCandidatesBuilder state gate and tc_long path. 12 checks. | MTS-2026-09-18-1600Z | 2026-09-18 |
+| scripts/tools/VerifyStateCodeCvd.java | tool | Reflection verifier for StateCodeEmitter CVD ring day-change reset. 4 checks. Closes T028. | MTS-2026-09-19-0507Z | 2026-09-19 |
 | MyTradingSys/mts/research/PROCESS_MANAGEMENT_AUDIT_2026-09-17.md | Process audit: supervisor singleton gap, grace race, lock TOCTOU | MTS-2026-09-17-1142Z | 2026-09-17 |
 | MyTradingSys/mts/runtime/live_session_log.md | runtime | RETIRED 2026-09-17. Superseded by live_session_journal.md. Backup: backup_session/live_session_log.md.retired-20260917. | MTS-2026-09-17-1241Z | 2026-09-17 |
 | MyTradingSys/mts/runtime/live_session_journal.md | runtime | Append-only session journal. QUOTE / REQ / OBS / DECISION / LANDED / READ. Everything no other file holds. | MTS-2026-09-17-1241Z | 2026-09-17 |

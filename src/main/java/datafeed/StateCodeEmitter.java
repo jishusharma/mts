@@ -73,6 +73,15 @@ public class StateCodeEmitter extends WebSocketClient {
     private final Deque<Double> cvdSeries = new ArrayDeque<>();
     private long cvdRingDayStartMs = -1L;
 
+    // T028 test seam: package-private override for CVD-ring day check.
+    // Real runtime leaves this at -1 (uses System.currentTimeMillis).
+    volatile long nowMsOverride = -1L;
+
+    long nowMs() {
+        long o = nowMsOverride;
+        return o >= 0 ? o : System.currentTimeMillis();
+    }
+
     private String currentState = "A";
     private String pendingState = null;
     private int pendingCount = 0;
@@ -336,7 +345,7 @@ public class StateCodeEmitter extends WebSocketClient {
     }
 
     private Dir computeCvdSlope(double sessionCvdSnap) {
-        long ringDay = utcDayStart(System.currentTimeMillis());
+        long ringDay = utcDayStart(nowMs());
         if (cvdRingDayStartMs != ringDay) { cvdSeries.clear(); cvdRingDayStartMs = ringDay; }
         cvdSeries.addLast(sessionCvdSnap);
         while (cvdSeries.size() > CVD_SAMPLES) cvdSeries.pollFirst();
