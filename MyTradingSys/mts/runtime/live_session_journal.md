@@ -739,3 +739,16 @@ Runtime at close: lock 15296, java 5928. No supervisor.
 Build PASS. No BOM. No in-flight.
 
 # END SESSION
+
+## SESSION MTS-2026-09-19-1237Z - CLOSED - 
+2026-09-19T12:41:15Z
+
+Landed:
+  T037 OPEN: engine test coverage gap (8 files untested).
+  Build-Check bugs count is B-row only. Confirmed by code read at Build-Check.ps1 L143.
+  T rows are excluded by design. 51 is the correct count.
+
+Runtime at close: lock 15296, java 5928. No supervisor.
+Build PASS. No BOM. No in-flight.
+
+# END SESSION

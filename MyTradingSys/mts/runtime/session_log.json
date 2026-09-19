@@ -491,6 +491,12 @@
       "action": "passed",
       "reason": "Session MTS-2026-09-19-1141Z close: paste fence wrapping for one-click copy; 17 blocks",
       "ts": "2026-09-19T12:36:39.030003Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "Session MTS-2026-09-19-1237Z close: T037 coverage gap filed; Build-Check bug count is B-row only",
+      "ts": "2026-09-19T12:41:16.152895Z"
     }
   ]
 }
