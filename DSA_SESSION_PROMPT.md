@@ -178,12 +178,13 @@ Before importing any concept from the transcripts:
 ## 11. CURRENT STATE
 
 Update this section at every session close. Keep it to five lines.
+Queue is not listed here. Single source: MyTradingSys/mts/research/BUGS.md.
 
-Last live read:  2026-09-18T20:49Z, session MTS-2026-09-18-1726Z closing. Build-Check PASS. Live feed mts-live.
+Last live read:  2026-09-19T05:52Z, session MTS-2026-09-19-0552Z boot. Build-Check PASS. Live feed mts-live.
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: wrapper 16624, java 6648, lock 16624, supervisor 8976. Queue 7: B003 (historic, no repro), B044 (reopened, dead code exists), T028 (rollover verify, 00:00-00:20 UTC window), T032-T035 (indicator phases 1,2,3,5). TOM_VERBATIM_INDEX rebuilt 213 quotes. Build-Check PASS.
+Runtime + loops: lock 14180, java 2456. No supervisor. Build-Check PASS.
 ## 12. SESSION END
 
 1. Stop the runtime loop if it is running.
