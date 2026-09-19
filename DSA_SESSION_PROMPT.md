@@ -180,11 +180,11 @@ Before importing any concept from the transcripts:
 Update this section at every session close. Keep it to five lines.
 Queue is not listed here. Single source: MyTradingSys/mts/research/BUGS.md.
 
-Last live read:  2026-09-19T14:42Z, session MTS-2026-09-19-1405Z close. Build-Check PASS.
-Thesis:          neutral, low confidence. No fresh human conviction.
+Last live read:  2026-09-19T17:21Z, alert #564, session MTS-2026-09-19-1716Z close. Build-Check PASS at boot 17:16Z.
+Thesis:          neutral, low confidence. No fresh human conviction. Unchanged from prior.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop running, lock 6372, supervisor 14500. Stage 3 done: loop reads data\loop_stop.flag each cycle and removes it in finally; stop-day.ps1 writes flag and polls for lock release, no kill; loop finally uses taskkill /F /T so mvn java is not orphaned. B003 and B014 CLOSED. B056 open: supervisor does not check loop_stop.flag; storm risk on crash. Next: loop lifecycle stage 4 (mode.ps1 retires or refuses when supervisor present).
+Runtime + loops: loop running lock 6372; supervisor 14500 is the pre-fix process. B056 fix written to loop-supervisor.ps1 (58A1FE06 -> 868C6F76, 112 -> 119 lines, PARSE OK) but not deployed; supervisor restart needed. B051 WONTFIX confirmed per BUGS.md; NEXT_SESSION_HANDOFF corrected. vp_shape taxonomy dissolved: pre-2026-09-16T20:54Z labels carry B as a constant, not a shape family. Next: deploy B056 on next supervisor restart; loop lifecycle stage 4.
 
 ## 12. SESSION END
 

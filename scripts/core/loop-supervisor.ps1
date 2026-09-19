@@ -19,6 +19,7 @@ Set-Location $R
 $SupLog   = Join-Path $R "data\supervisor_log.txt"
 $LockFile = Join-Path $R "data\apparatus.lock"
 $StopFlag = Join-Path $R "data\supervisor_stop.flag"
+$LoopStopFlag = Join-Path $R "data\loop_stop.flag"
 
 function SupLog {
     param([string]$msg)
@@ -54,6 +55,12 @@ while ($true) {
     if (Test-Path $StopFlag) {
         SupLog "stop flag present, exiting"
         exit 0
+    }
+
+    if (Test-Path $LoopStopFlag) {
+        SupLog "loop_stop flag present, holding restart"
+        Start-Sleep -Seconds $CheckIntervalSec
+        continue
     }
 
     $loopPid = 0

@@ -210,4 +210,14 @@ Seven waste classes seen today. Each has a fix. Each fix is a rule.
 14. Boot paste is read line by line, not skimmed. If a correction exists
     in the paste, it supersedes any prior-session framing.
 
+## RULE 15 (added 2026-09-19)
+
+15. No new layer without a named decision-function reader and a
+    sensitivity test. A layer is wired only when a named decision
+    function reads its value, and two fixtures differing only in that
+    layer produce a different verdict or reason string. A layer
+    without a reader is exempt with a tracked reason and a review
+    date, not "done". Supersedes "gauge by design" as a closing
+    argument.
+
 # END

@@ -30,7 +30,7 @@ WORKER PROTOCOL W1-W5 added (evidence channel, receipt tags, no Confirmed).
 EXTRACTION_TO_ALERT_AUDIT_2026-09-19.md: Phase 4 engine doc only, no code trace.
 MTS_DICTIONARY source tag scheme (7 families).
 B050 OPEN: buildStructure pivot dead code (swing zones never tighter than window).
-B051 OPEN: state_code letter S not reconciled against long setups.
+B051 WONTFIX (see BUGS.md): state_code letter S; no rule requires letter-vs-direction match.
 SESSION_RESUME triage: 3 RESOLVED, 1 FILED, 1 PHANTOM, 1 REFERRED, 1 PENDING, 1 OPEN-NEW, 2 DECISION.
 LOOP_LIFECYCLE_DESIGN_2026-09-19.md: 4-stage plan for one-owner loop control.
 
