@@ -485,6 +485,12 @@
       "action": "passed",
       "reason": "Session MTS-2026-09-19-1120Z close: paste trim 99->78.7KB, read modes, DSA close gate",
       "ts": "2026-09-19T11:41:00.383742Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "Session MTS-2026-09-19-1141Z close: paste fence wrapping for one-click copy; 17 blocks",
+      "ts": "2026-09-19T12:36:39.030003Z"
     }
   ]
 }
