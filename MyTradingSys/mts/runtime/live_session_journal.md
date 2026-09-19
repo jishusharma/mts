@@ -626,3 +626,40 @@ Runtime at close: wrapper 16624, java 6648, lock 16624, supervisor 8976.
 Build PASS. Non-ASCII 0. No BOM. No in-flight.
 
 # END SESSION
+
+## SESSION MTS-2026-09-19-0552Z - CLOSED - 2026-09-19T13:24:14Z
+
+Queue consolidation:
+  DSA section 11 no longer lists the queue. Single source: BUGS.md.
+  NEXT_SESSION_HANDOFF.md rewritten to point at BUGS.md, no mirror.
+  Commit 7cd5976.
+
+Evidence reads performed (no code changed):
+  4259 verdict lines parsed from apparatus_log.
+  4028 labels joined from outcome_labels.json.
+  Direction-adjusted forward-return table by verdict.
+  SETUP_FORMING: n=139, +30m win 64.7%, avg +0.107%; +60m win 74.1%, avg +0.183%.
+  WAIT_RR baseline: n=2283, +30m win 52.0%.
+  WAIT_PROOF: n=81, +30m win 25.9%, avg -0.264%.
+  All-labels baseline +30m positive 51.1%.
+  Edge is real; verdict tiers separate.
+
+Card change landed (commit dc1a239):
+  Build-Card now prints SESSION: and US_OPEN: from snapshot.session_timing.
+  Fields: current_session, us_equity_open_in_minutes.
+  Critical-file four-step proof: hash 6423B0CF -> EA8457. Parse OK.
+  Loop restarted at 07:48:30Z (lock 15296) so running code carries the change.
+
+Errors this session, corrected on disk:
+  First Build-Card write: anchor used 8-space indent, actual is 4. Commit 6a8dad5 landed with a message
+  claiming the change but no code change. Corrected by dc1a239. Journal records the false message.
+  outcome_labels parsing: wrong structure assumption (object, not array). Fixed.
+  apparatus_log parsing: wrong field indices. Fixed.
+  Measure-Object -Property {scriptblock}: invalid, returned 0. Fixed.
+
+Rule strengthened: no receipt until the evidence command output is on disk.
+
+Runtime at close: lock 15296, java 5928. No supervisor.
+Build PASS. Non-ASCII 0. No BOM. No in-flight.
+
+# END SESSION
