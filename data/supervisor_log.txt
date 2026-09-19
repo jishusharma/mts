@@ -1753,3 +1753,25 @@
 2026-09-19 13:49:51 |   reader-only restart: prior wrapper PID=0 not killed
 2026-09-19 13:49:54 |   started new wrapper PID=9672
 2026-09-19 13:50:24 | stop flag present, exiting
+2026-09-19 13:52:35 | === SUPERVISOR START mode=armed interval=1m stale=240s grace=90s ===
+2026-09-19 13:52:35 | startup: existing wrapper PID=9672, grace clock starting
+2026-09-19 13:52:36 | ok wrapper=9672 snapAge=19s grace=True
+2026-09-19 13:53:07 | ok wrapper=9672 snapAge=50s grace=True
+2026-09-19 13:53:38 | ok wrapper=9672 snapAge=22s grace=True
+2026-09-19 13:54:09 | ok wrapper=9672 snapAge=53s grace=False
+2026-09-19 13:54:40 | ok wrapper=9672 snapAge=24s grace=False
+2026-09-19 13:55:12 | ok wrapper=9672 snapAge=56s grace=False
+2026-09-19 13:55:43 | ok wrapper=9672 snapAge=26s grace=False
+2026-09-19 13:56:14 | ok wrapper=9672 snapAge=58s grace=False
+2026-09-19 13:56:45 | ok wrapper=9672 snapAge=29s grace=False
+2026-09-19 13:57:16 | ok wrapper=9672 snapAge=60s grace=False
+2026-09-19 13:57:47 | ok wrapper=9672 snapAge=32s grace=False
+2026-09-19 13:58:18 | ok wrapper=9672 snapAge=2s grace=False
+2026-09-19 13:58:49 | ok wrapper=9672 snapAge=33s grace=False
+2026-09-19 13:59:21 | ok wrapper=9672 snapAge=4s grace=False
+2026-09-19 13:59:52 | ok wrapper=9672 snapAge=35s grace=False
+2026-09-19 14:00:23 | ok wrapper=9672 snapAge=7s grace=False
+2026-09-19 14:00:54 | ok wrapper=9672 snapAge=38s grace=False
+2026-09-19 14:01:25 | ok wrapper=9672 snapAge=9s grace=False
+2026-09-19 14:01:56 | ok wrapper=9672 snapAge=40s grace=False
+2026-09-19 14:02:26 | stop flag present, exiting
