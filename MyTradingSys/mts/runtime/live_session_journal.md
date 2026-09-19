@@ -771,3 +771,16 @@ Runtime at close: lock 15296, java 5928. No supervisor.
 Build PASS. No BOM. No in-flight.
 
 # END SESSION
+
+## SESSION MTS-2026-09-19-1247Z - CLOSED - 
+2026-09-19T12:50:24Z
+
+Landed:
+  B052 CLOSED: gitsnap aborts on add/commit failure; no false "committed:" line; tag not moved on failure.
+  Positive test: f5eb21a committed, tag moved.
+  Negative test: gitsnap "" aborts, tag stays at f5eb21a.
+
+Runtime at close: lock 15296, java 5928. No supervisor.
+Build PASS. No BOM. No in-flight.
+
+# END SESSION

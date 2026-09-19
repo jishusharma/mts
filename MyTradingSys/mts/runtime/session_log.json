@@ -503,6 +503,12 @@
       "action": "passed",
       "reason": "Session MTS-2026-09-19-1243Z close: loop lifecycle stage 1 done (supervisor reader-only)",
       "ts": "2026-09-19T12:47:49.761136Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "Session MTS-2026-09-19-1247Z close: B052 CLOSED (gitsnap false-success guard)",
+      "ts": "2026-09-19T12:50:25.026442Z"
     }
   ]
 }
