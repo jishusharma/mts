@@ -223,6 +223,13 @@ function Build-Card {
     if ($thesisLine) { $lines += "SSOT_THESIS: $thesisLine" }
     if ($triggerLine) { $lines += "SSOT_TRIGGER: $triggerLine" }
     $lines += "ZONE:    $($v.zone) @ $($v.zone_price)"
+    $st = $snap.session_timing
+    if ($st) {
+        $sessName = if ($st.current_session) { [string]$st.current_session } else { "-" }
+        $usOpen   = if ($null -ne $st.us_equity_open_in_minutes) { [string]$st.us_equity_open_in_minutes } else { "-" }
+        $lines += "SESSION: $sessName"
+        $lines += "US_OPEN: $usOpen min"
+    }
     $lines += ""
     $cands = @($snap.setup_candidates)
     if ($cands.Length -gt 0 -and $cands[0]) {
