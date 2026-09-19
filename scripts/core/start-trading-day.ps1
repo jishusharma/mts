@@ -283,8 +283,21 @@ if (Test-Path $lockFile) {
     Remove-Item $lockFile -ErrorAction SilentlyContinue
 }
 $nowEpoch = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
-Set-Content -LiteralPath $lockFile -Value "$PID $nowEpoch" -Encoding ASCII
-Log-Line "lock acquired PID=$PID"
+# Atomic lock create (stage 2). CreateNew fails if the file already exists,
+# so a race between two wrappers cannot both acquire. Format unchanged: "<pid> <epoch>".
+try {
+    $fs = [System.IO.File]::Open($lockFile, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
+    try {
+        $bytes = [System.Text.Encoding]::ASCII.GetBytes("$PID $nowEpoch")
+        $fs.Write($bytes, 0, $bytes.Length)
+    } finally {
+        $fs.Close()
+    }
+} catch [System.IO.IOException] {
+    Log-Line "ABORT: lock create raced, another wrapper won"
+    exit 1
+}
+Log-Line "lock acquired PID=$PID (atomic)"
 Log-Line "Mode=$Mode Popups=$Popups IntervalMin=$IntervalMin Symbol=$Symbol Once=$Once Direction=$Direction Entry=$Entry Stop=$Stop Target=$Target"
 
 # Warmup: wait for next candle close + 10s before cycle 1
