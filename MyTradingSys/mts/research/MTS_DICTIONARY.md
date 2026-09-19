@@ -158,3 +158,29 @@ Set by src/main/java/datafeed/SetupCandidatesBuilder.java. Raw score bucket. No 
 | C | >= 40 |
 | D | < 40 |
 
+## SOURCE TAGS (added 2026-09-19)
+
+Every rule, field, or layer claim carries a source tag. Tag identifies origin.
+This is the discovery-phase scheme. Add families; do not rename existing ones.
+
+| Family | Tag | Source authority | Status |
+|---|---|---|---|
+| Tom core | [TOM-NNN] | raw_transcripts_canonical. 213 ids in TOM_VERBATIM_INDEX.md. | Live |
+| Cross-trader rules | [CT-NNN] | Other analyst extracts (Flow Horse, CryptoCred, CrypNuevo). 19 ids in compiled_engine.md. | Live |
+| Verdict tracking | [VERDICT-NNN] | Future analyst opinion pipeline (PROJECT_VISION layer 3). | Planned |
+| MalkanView RSI | [MALKAN-NNN] | RSI 40-60 layer (PROJECT_VISION layer 1). | Planned |
+| Event probability | [PROB-NNN] | Probability distribution layer (PROJECT_VISION layer 2). | Parked |
+| Session frame | [SESSION-NNN] | Session-aware frame (PROJECT_VISION layer 4). | Design |
+| Our invention | [SCREENER] | None. Must not be presented as sourced. | Live |
+
+Rules:
+1. No tag, no claim. If a rule has no source tag, treat it as SCREENER until proven.
+2. [SCREENER] is a label of honesty, not a defect. Many fields are gauges by design.
+3. Layer tags stay empty until the layer produces its first read. Do not pre-number.
+4. Verifier: scripts/tools/verify_rule_citations.ps1 checks [TOM-NNN] resolve. Other families add to the verifier when they go live.
+5. Source of layer names: MyTradingSys/PROJECT_VISION.md INTEGRATIONS TRACKED.
+
+Corpus vocabulary note (2026-09-19): Tom speaks flow, absorption, aggression.
+Hit counts: aggressive 53, absorption 17, order flow 18, footprint 45, buying 38, selling 33.
+Zero or low: aggressor 0, open interest 0, OI 0, cumulative volume delta 0, net long 0, net short 0, taker 4, liquidation 1.
+Consequence: OI, positioning, and net-long/short families have no Tom basis. They belong to no current layer.
