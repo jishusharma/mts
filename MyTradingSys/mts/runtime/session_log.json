@@ -527,6 +527,24 @@
       "action": "note",
       "reason": "session close MTS-2026-09-19-1405Z: stage 3a landed (loop reads loop_stop.flag, removes in finally). Test PASS.",
       "ts": "2026-09-19T14:33:46.865180Z"
+    },
+    {
+      "type": "decision",
+      "action": "note",
+      "reason": "session close MTS-2026-09-19-1405Z stage 3b: stop-day flag write no kill; loop finally taskkill /F /T. B003 B014 CLOSED. Test PASS.",
+      "ts": "2026-09-19T14:43:15.128689Z"
+    },
+    {
+      "type": "decision",
+      "action": "note",
+      "reason": "session close MTS-2026-09-19-1405Z stage 3b: stop-day flag write no kill; loop finally taskkill /F /T. B003 B014 CLOSED. Test PASS.",
+      "ts": "2026-09-19T14:45:24.689531Z"
+    },
+    {
+      "type": "decision",
+      "action": "note",
+      "reason": "session close MTS-2026-09-19-1405Z stage 3b: stop-day flag write no kill; loop finally taskkill /F /T. B003 B014 CLOSED. Test PASS.",
+      "ts": "2026-09-19T14:46:26.587138Z"
     }
   ]
 }

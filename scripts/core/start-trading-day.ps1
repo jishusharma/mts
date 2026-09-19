@@ -666,7 +666,7 @@ print("logged")
 } catch {
     Log-Line "APPARATUS ERROR phase=$exitPhase : $_"
 } finally {
-    if ($StateMachinePID) { try { Stop-Process -Id $StateMachinePID -Force -ErrorAction SilentlyContinue } catch {} }
+    if ($StateMachinePID) { try { & taskkill.exe /F /T /PID $StateMachinePID 2>&1 | Out-Null } catch {} }
     Remove-Item (Join-Path $R "data\loop_stop.flag") -ErrorAction SilentlyContinue
     Remove-Item (Join-Path $LogDir "apparatus.lock") -ErrorAction SilentlyContinue
     Log-Line "=== APPARATUS END (finally) phase=$exitPhase ==="
@@ -676,7 +676,7 @@ if ($script:NotifyIcon) { try { $script:NotifyIcon.Dispose() } catch {} }
 if ($StateMachinePID) {
     try {
         $p = Get-Process -Id $StateMachinePID -ErrorAction SilentlyContinue
-        if ($p) { Stop-Process -Id $StateMachinePID -Force }
+        if ($p) { & taskkill.exe /F /T /PID $StateMachinePID 2>&1 | Out-Null }
         Log-Line "state_machine PID=$($StateMachinePID) stopped"
     } catch {}
 }

@@ -23,7 +23,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 |---|---|---|---|---|---|---|
 | B001 | 2026-09-13 | WONTFIX | LOW | L5 referenced as held no detail | L_ITEMS L5 | 2026-09-18: L5 phantom, no current reference. |
 | B002 | 2026-09-13 | WONTFIX | LOW | L6 same as L5 | L_ITEMS L6 | 2026-09-18: L6 phantom, no current reference. |
-| B003 | 2026-09-14 | OPEN | MED | stop-day.ps1 reports false success | L_ITEMS L8 | 2026-09-19: verified on disk - lock path apparatus.lock correct; Get-Descendants 16624 includes java 6648; fallback matcher matches datafeed\. Current code works. Historical miss 2026-09-18T17:47Z: stop-day killed 4 but java 2764 survived; wrapper caught it. Mechanism not reproduced. Keep OPEN pending repro. |
+| B003 | 2026-09-14 | CLOSED | MED | stop-day.ps1 reports false success | L_ITEMS L8 | 2026-09-19: fixed by stage 3b. stop-day no longer kills or reports a process count; it writes data\loop_stop.flag and polls for lock release, exits 0 on success or 1 on timeout. False-success class eliminated by removing the count. Hash 67DEE1FC -> C2F414BF. |
 | B004 | 2026-09-15 | WONTFIX | LOW | Proof-change alert trigger noise | L_ITEMS L13; start_trading_day.ps1:349 | 2026-09-18: fires only on 3<->5 threshold crossing; correct by design. |
 | B005 | 2026-09-15 | WONTFIX | LOW | Runtime manifest pointed at wrong prompt | L_ITEMS L14 | 2026-09-18: SESSION_MANIFEST.json points at DSA_SESSION_PROMPT.md; file exists on disk. Correct. |
 | B006 | 2026-09-15 | WONTFIX | COSMETIC | Orphan duplicate root manifest | L_ITEMS L15 | 2026-09-18: no root SESSION_MANIFEST.json exists. Phantom. |
@@ -34,7 +34,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B011 | 2026-09-15 | CLOSED | COSMETIC | apparatus_fixes END marker mid-file | L_ITEMS L20 | doc-only 2026-09-18: stray append moved above # END |
 | B012 | 2026-09-16 | WONTFIX | MED | US open fixed 13.5 UTC wrong in winter | L_ITEMS L25; MarketDataSnapshot.java:761 | 2026-09-18: code uses ZoneId.of("America/New_York") at L723,L825,L862,L887; timezone-correct. Stale ref only. |
 | B013 | 2026-09-16 | CLOSED | COSMETIC | MTS_DICTIONARY Authority column mojibake | L_ITEMS L27 | hash 5CE01AA2->F05D3E0A; 30 sequences replaced |
-| B014 | 2026-09-16 | WONTFIX | MED | Loop exit orphans mvn/java child | L_ITEMS L28 | 2026-09-18: Invoke-WithTimeout calls taskkill /T /F at L98,L108; process tree killed. No orphan path in code. |
+| B014 | 2026-09-16 | CLOSED | MED | Loop exit orphans mvn/java child | L_ITEMS L28 | 2026-09-19: prior receipt wrong. Loop finally used Stop-Process on the intermediate powershell, no tree-kill; mvn java child orphaned. Observed java 13928 alive after clean flag exit. Fixed stage 3b: both finally sites use taskkill /F /T. Test PASS 2026-09-19T14:42Z: java before 13824, java after empty, settled empty. Hash 1050E5D4 -> 5A124BDE. |
 | B015 | 2026-09-16 | WONTFIX | LOW | context.ps1 reads Binance REST each call | L_ITEMS L30 | 2026-09-18: duplicate of T029 |
 | B016 | 2026-09-16 | WONTFIX | LOW | state_code_regime.json not read by Java | L_ITEMS L31 | 2026-09-18: regime is display-only; T018 WONTFIX. No consumer intended. |
 | B017 | 2026-09-16 | WONTFIX | MED | Ratio gate has no near-miss record | L_ITEMS I21 | 2026-09-18: distance-tier cutoff at SetupCandidatesBuilder L71; near-miss record is observability only, no consumer. Reopen if needed. |

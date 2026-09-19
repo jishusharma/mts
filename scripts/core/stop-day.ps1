@@ -1,59 +1,37 @@
-# stop_day.ps1 - kill MTS apparatus processes (scoped)
+# stop_day.ps1 - request clean loop shutdown via flag; wait for lock release.
+# Stage 3b of LOOP_LIFECYCLE_DESIGN_2026-09-19.md. No kill.
 
-# Pull in shared functions, including Get-Descendants.
-. "$PSScriptRoot\shared-functions.ps1"
 $R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
-$killed = 0
-$rootPids = @()
+$LockFile = Join-Path $R "data\apparatus.lock"
+$FlagFile = Join-Path $R "data\loop_stop.flag"
+$TimeoutSec = 60
 
-# 1. Read lock PID
-$lockFile = Join-Path $R "data\apparatus.lock"
-if (Test-Path $lockFile) {
-    $parts = (Get-Content $lockFile -Raw).Trim() -split "\s+"
-    if ($parts.Length -ge 1) {
-        try { $rootPids += [int]$parts[0] } catch {}
-    }
+# 1. Write stop flag. Loop reads at next cycle top, breaks, runs finally,
+#    removes flag then lock.
+New-Item -Path $FlagFile -ItemType File -Force | Out-Null
+Write-Host "stop flag written: $FlagFile"
+
+# 2. Poll for lock release.
+$t0 = Get-Date
+while (((Get-Date) - $t0).TotalSeconds -lt $TimeoutSec) {
+    if (-not (Test-Path $LockFile)) { break }
+    Start-Sleep -Seconds 2
 }
 
-# 2. Descendant walker
-
-
-# 3. Kill descendants first
-$allPids = @()
-foreach ($rp in $rootPids) { $allPids += (Get-Descendants $rp) }
-$allPids = $allPids | Sort-Object -Unique
-foreach ($p in $allPids) {
-    $proc = Get-Process -Id $p -ErrorAction SilentlyContinue
-    if ($proc) {
-        Write-Host "  killing descendant $p ($($proc.ProcessName))"
-        Stop-Process -Id $p -Force -ErrorAction SilentlyContinue
-        $killed++
-    }
+# 3. Remove flag (idempotent; loop already did it in finally on clean exit).
+#    On timeout this still removes the flag, so supervisor restart is not
+#    immediately re-triggered by a stale flag (see B056).
+if (Test-Path $FlagFile) {
+    Remove-Item $FlagFile -ErrorAction SilentlyContinue
+    Write-Host "flag removed"
 }
 
-# 4. Kill lock PID itself
-foreach ($rp in $rootPids) {
-    $proc = Get-Process -Id $rp -ErrorAction SilentlyContinue
-    if ($proc) {
-        Write-Host "  killing lock PID $rp ($($proc.ProcessName))"
-        Stop-Process -Id $rp -Force -ErrorAction SilentlyContinue
-        $killed++
-    }
+# 4. Report.
+if (Test-Path $LockFile) {
+    $lock = (Get-Content $LockFile -Raw).Trim()
+    Write-Host "TIMEOUT: lock still present after ${TimeoutSec}s: $lock"
+    exit 1
+} else {
+    Write-Host "stopped: lock released"
+    exit 0
 }
-
-# 5. Fallback: orphan java with datafeed cmdline
-Get-CimInstance Win32_Process -Filter "Name='java.exe'" -ErrorAction SilentlyContinue | ForEach-Object {
-    $cmd = $_.CommandLine
-    if ($cmd -and ($cmd -match 'BinanceDataFeed' -or $cmd -match 'datafeed\.' -or $cmd -match 'statemachine')) {
-        Write-Host "  killing orphan java $($_.ProcessId)"
-        Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue
-        $killed++
-    }
-}
-
-# 6. Remove lock
-if (Test-Path $lockFile) {
-    Remove-Item $lockFile -ErrorAction SilentlyContinue
-}
-
-Write-Host "stopped $killed process(es)"

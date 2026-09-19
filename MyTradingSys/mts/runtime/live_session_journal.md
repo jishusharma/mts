@@ -832,3 +832,48 @@ Runtime at close: loop running lock 3356, supervisor 14500, java 7876.
 Build PASS. No BOM. No in-flight.
 
 # END SESSION
+
+## SESSION MTS-2026-09-19-1405Z - STAGE 3B - CLOSED -
+2026-09-19T14:45Z
+
+Landed:
+  Stage 3b. stop-day.ps1 rewritten: writes data\loop_stop.flag, polls for lock release (60s), exits 0 on success / 1 on timeout, removes flag. No Stop-Process calls remain. Hash 67DEE1FC -> C2F414BF, 59 -> 37 lines.
+  start-trading-day.ps1: both finally sites now use taskkill /F /T on the state-machine powershell, so mvn java child is tree-killed. Hash 1050E5D4 -> 5A124BDE, 684 lines. Two-line diff.
+  B014 root cause confirmed. Prior receipt (2026-09-18 WONTFIX) was wrong: Stop-Process does not tree-kill.
+  B003 and B014 CLOSED with corrected receipts.
+  Behavior test PASS 2026-09-19T14:42Z: java before 13824, java after empty, settled empty. Flag cleared, lock cleared, no storm, single restart, cycle 1 reached.
+
+Runtime at close: loop running lock 6372, supervisor 14500, warmup.
+Build PASS. No BOM. No in-flight.
+
+# END SESSION
+
+## SESSION MTS-2026-09-19-1405Z - STAGE 3B - CLOSED -
+2026-09-19T14:45Z
+
+Landed:
+  Stage 3b. stop-day.ps1 rewritten: writes data\loop_stop.flag, polls for lock release (60s), exits 0 on success / 1 on timeout, removes flag. No Stop-Process calls remain. Hash 67DEE1FC -> C2F414BF, 59 -> 37 lines.
+  start-trading-day.ps1: both finally sites now use taskkill /F /T on the state-machine powershell, so mvn java child is tree-killed. Hash 1050E5D4 -> 5A124BDE, 684 lines. Two-line diff.
+  B014 root cause confirmed. Prior receipt (2026-09-18 WONTFIX) was wrong: Stop-Process does not tree-kill.
+  B003 and B014 CLOSED with corrected receipts.
+  Behavior test PASS 2026-09-19T14:42Z: java before 13824, java after empty, settled empty. Flag cleared, lock cleared, no storm, single restart, cycle 1 reached.
+
+Runtime at close: loop running lock 6372, supervisor 14500, warmup.
+Build PASS. No BOM. No in-flight.
+
+# END SESSION
+
+## SESSION MTS-2026-09-19-1405Z - STAGE 3B - CLOSED -
+2026-09-19T14:45Z
+
+Landed:
+  Stage 3b. stop-day.ps1 rewritten: writes data\loop_stop.flag, polls for lock release (60s), exits 0 on success / 1 on timeout, removes flag. No Stop-Process calls remain. Hash 67DEE1FC -> C2F414BF, 59 -> 37 lines.
+  start-trading-day.ps1: both finally sites now use taskkill /F /T on the state-machine powershell, so mvn java child is tree-killed. Hash 1050E5D4 -> 5A124BDE, 684 lines. Two-line diff.
+  B014 root cause confirmed. Prior receipt (2026-09-18 WONTFIX) was wrong: Stop-Process does not tree-kill.
+  B003 and B014 CLOSED with corrected receipts.
+  Behavior test PASS 2026-09-19T14:42Z: java before 13824, java after empty, settled empty. Flag cleared, lock cleared, no storm, single restart, cycle 1 reached.
+
+Runtime at close: loop running lock 6372, supervisor 14500, warmup.
+Build PASS. No BOM. No in-flight.
+
+# END SESSION

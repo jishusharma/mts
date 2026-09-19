@@ -1837,3 +1837,46 @@
 2026-09-19 14:32:43 | ok wrapper=3356 snapAge=27s grace=False
 2026-09-19 14:33:14 | ok wrapper=3356 snapAge=58s grace=False
 2026-09-19 14:33:45 | ok wrapper=3356 snapAge=29s grace=False
+2026-09-19 14:34:16 | ok wrapper=3356 snapAge=60s grace=False
+2026-09-19 14:34:47 | ok wrapper=3356 snapAge=31s grace=False
+2026-09-19 14:35:18 | ok wrapper=3356 snapAge=2s grace=False
+2026-09-19 14:35:49 | ok wrapper=3356 snapAge=33s grace=False
+2026-09-19 14:36:20 | ok wrapper=3356 snapAge=4s grace=False
+2026-09-19 14:36:52 | ok wrapper=3356 snapAge=35s grace=False
+2026-09-19 14:37:23 | ok wrapper=3356 snapAge=7s grace=False
+2026-09-19 14:37:54 | ok wrapper=3356 snapAge=38s grace=False
+2026-09-19 14:38:25 | RESTART reason=wrapper_dead oldPid=0
+2026-09-19 14:38:25 |   reader-only restart: prior wrapper PID=0 not killed
+2026-09-19 14:38:28 |   started new wrapper PID=14468
+2026-09-19 14:38:59 | ok wrapper=14468 snapAge=103s grace=True
+2026-09-19 14:39:30 | ok wrapper=14468 snapAge=10s grace=True
+2026-09-19 14:40:01 | ok wrapper=14468 snapAge=41s grace=False
+2026-09-19 14:40:32 | ok wrapper=14468 snapAge=16s grace=False
+2026-09-19 14:41:03 | ok wrapper=14468 snapAge=47s grace=False
+2026-09-19 14:41:34 | ok wrapper=14468 snapAge=18s grace=False
+2026-09-19 14:42:05 | ok wrapper=14468 snapAge=49s grace=False
+2026-09-19 14:42:36 | RESTART reason=wrapper_dead oldPid=0
+2026-09-19 14:42:36 |   reader-only restart: prior wrapper PID=0 not killed
+2026-09-19 14:42:39 |   started new wrapper PID=6372
+2026-09-19 14:43:10 | ok wrapper=6372 snapAge=114s grace=True
+2026-09-19 14:43:41 | ok wrapper=6372 snapAge=23s grace=True
+2026-09-19 14:44:12 | ok wrapper=6372 snapAge=55s grace=False
+2026-09-19 14:44:43 | ok wrapper=6372 snapAge=27s grace=False
+2026-09-19 14:45:14 | ok wrapper=6372 snapAge=59s grace=False
+2026-09-19 14:45:46 | ok wrapper=6372 snapAge=29s grace=False
+2026-09-19 14:46:17 | ok wrapper=6372 snapAge=61s grace=False
+2026-09-19 14:46:48 | ok wrapper=6372 snapAge=32s grace=False
+2026-09-19 14:47:19 | ok wrapper=6372 snapAge=2s grace=False
+2026-09-19 14:47:50 | ok wrapper=6372 snapAge=33s grace=False
+2026-09-19 14:48:21 | ok wrapper=6372 snapAge=6s grace=False
+2026-09-19 14:48:52 | ok wrapper=6372 snapAge=37s grace=False
+2026-09-19 14:49:23 | ok wrapper=6372 snapAge=7s grace=False
+2026-09-19 14:49:54 | ok wrapper=6372 snapAge=38s grace=False
+2026-09-19 14:50:25 | ok wrapper=6372 snapAge=9s grace=False
+2026-09-19 14:50:56 | ok wrapper=6372 snapAge=40s grace=False
+2026-09-19 14:51:27 | ok wrapper=6372 snapAge=10s grace=False
+2026-09-19 14:51:58 | ok wrapper=6372 snapAge=41s grace=False
+2026-09-19 14:52:29 | ok wrapper=6372 snapAge=13s grace=False
+2026-09-19 14:53:00 | ok wrapper=6372 snapAge=44s grace=False
+2026-09-19 14:53:31 | ok wrapper=6372 snapAge=15s grace=False
+2026-09-19 14:54:02 | ok wrapper=6372 snapAge=47s grace=False
