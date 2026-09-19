@@ -47,7 +47,6 @@ COORDINATOR. Same mission: live oversight, gap capture, code readiness.
 - Do not run mode.ps1 while supervisor 32 is alive.
 - Do not bare-kill java.
 
-# END
 
 ## TRIAGE 2026-09-19
 
@@ -64,9 +63,9 @@ Verified against BUGS.md, apparatus_fixes.md, source, and git log.
 | SR-6 tape-watch duplicate line | RESOLVED | BUGS.md T021 CLOSED 2026-09-18 |
 | SR-7 attempt-number / retest counter | PHANTOM | 0 hits in BUGS.md, apparatus_fixes.md, Java, scripts. No receipt |
 | SR-8 swing ladder / CVD anchor / OI trajectory | REFERRED | schema_v5.1.0_spec.md Open decisions is the tracking home |
-| SR-9 day_type evidence 1/3 | RESOLVED | Snapshot session.day_type present 2026-09-19 |
-| SR-10 I23 state S vs long setups | DUPLICATE | BUGS.md B019 WONTFIX 2026-09-18 (same I23, display-only) |
+| SR-9 day_type evidence 1/3 | PENDING | Field exists in snapshot but reads UNKNOWN / confidence none pre-13:30Z anchor. Original task was evidence collection (1/3 snapshots). Not closed. |
+| SR-10 I23 state S vs long setups | OPEN-NEW | Different subsystem from B019/I23. B019 covers quad_classify direction vs setup. SR-10 covers state_code letter S vs long setups. No engine reconciliation found. File as B051. |
 
 This file is now historical. Live queue is MyTradingSys/mts/research/BUGS.md.
 
-# END TRIAGE
+# END
