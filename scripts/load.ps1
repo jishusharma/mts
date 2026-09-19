@@ -26,7 +26,7 @@ function mts-tape      { & "$ScriptDir\live\tape-watch.ps1" @args }
 function mts-dashboard { & "$ScriptDir\live\mts-dashboard.ps1" @args }
 
 # git shortcuts - stripped ceremony
-function gitsnap { git add -A; git commit -m "$args" -q; git tag -f last-snapshot; "committed: " + (git rev-parse --short HEAD) }
+function gitsnap { git add -A; if ($LASTEXITCODE -ne 0) { "ABORT: git add failed"; return }; git commit -m "$args" -q; if ($LASTEXITCODE -ne 0) { "ABORT: git commit failed (nothing to commit or hook rejected); tag NOT moved"; return }; git tag -f last-snapshot; "committed: " + (git rev-parse --short HEAD) }
 function gitsee  { git log --oneline -5; "dirty: " + (git status --short | Measure-Object -Line).Lines }
 function gitundo { git reset --hard last-snapshot; "reverted to last-snapshot" }
 
