@@ -57,6 +57,39 @@ function Get-ReadBody {
             if ($file) { return (Get-Content $file.FullName -Raw) } else { return "(no snapshot)" }
         }
         'skip'        { return "(skipped - see session_log context below)" }
+        'open_only'   {
+            $src = Get-Content $f.path -Raw
+            $kept = New-Object System.Collections.Generic.List[string]
+            $kept.Add('(CLOSED and WONTFIX rows omitted; full file at ' + $f.path + ')')
+            foreach ($ln in ($src -split "`n")) {
+                if ($ln -match '^\| [BT]\d{3} ') {
+                    $parts = $ln -split '\|'
+                    if ($parts.Count -ge 5) {
+                        $status = $parts[3].Trim()
+                        if ($status -eq 'CLOSED' -or $status -eq 'WONTFIX') { continue }
+                    }
+                }
+                $kept.Add($ln)
+            }
+            return ($kept -join "`n")
+        }
+        'sections'    {
+            $src = Get-Content $f.path -Raw
+            $names = @($f.sections)
+            $kept = New-Object System.Collections.Generic.List[string]
+            $emit = $false
+            foreach ($ln in ($src -split "`n")) {
+                if ($ln -match '^## ') {
+                    $title = $ln.Substring(3).Trim()
+                    $emit = $false
+                    foreach ($n in $names) {
+                        if ($title -like ($n + '*')) { $emit = $true; break }
+                    }
+                }
+                if ($emit) { $kept.Add($ln) }
+            }
+            return ($kept -join "`n")
+        }
         'head_to_end' {
             $content = Get-Content $f.path -Raw
             $idx = $content.IndexOf("`n# END")

@@ -1,5 +1,5 @@
 {
-    "version":  "1.1.0",
+    "version":  "1.2.0",
     "purpose":  "Boot manifest. Session reads this first, then reads boot_files + boot_supplemental in batches with a one-line confirmation between each.",
     "boot_files":  [
                        {
@@ -47,7 +47,7 @@
                               {
                                   "path":  "MyTradingSys/mts/research/BUGS.md",
                                   "role":  "bug_list",
-                                  "read":  "full"
+                                  "read":  "open_only"
                               },
                               {
                                   "path":  "MyTradingSys/mts/research/L_ITEMS_MASTER.md",
@@ -57,7 +57,16 @@
                               {
                                   "path":  "MyTradingSys/mts/research/MTS_DICTIONARY.md",
                                   "role":  "field_reference",
-                                  "read":  "full"
+                                  "read":  "sections",
+                                  "sections":  [
+                                                   "CROSS-CATEGORY WARNINGS",
+                                                   "PLAIN LANGUAGE RULE",
+                                                   "CORE TERMS",
+                                                   "LIVE FEED NAMES",
+                                                   "VERDICT WORDS",
+                                                   "CONFIDENCE GRADES",
+                                                   "SOURCE TAGS"
+                                               ]
                               },
                               {
                                   "path":  "MyTradingSys/mts/research/apparatus_fixes.md",
@@ -85,7 +94,12 @@
                               {
                                   "path":  "MyTradingSys/methodology/live_session_protocol.md",
                                   "role":  "ai_checks",
-                                  "read":  "full"
+                                  "read":  "sections",
+                                  "sections":  [
+                                                   "OPERATIONAL CHECKS",
+                                                   "PROCESS SPEED RULES",
+                                                   "RULES 12-14"
+                                               ]
                               },
                               {
                                   "path":  "MyTradingSys/mts/runtime/live_session_journal.md",

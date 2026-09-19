@@ -188,9 +188,10 @@ Runtime + loops: lock 15296, java 5928. No supervisor. Build-Check PASS. Next ac
 ## 12. SESSION END
 
 1. Stop the runtime loop if it is running.
-2. Update section 10 above with the current state.
+2. Update section 11 above with the current state.
 3. Log the decision in the ledger.
-4. Snap with a plain commit message.
+4. Run scripts/Build-Check.ps1. If STATUS is not PASS, stop and fix. Do not close on FAIL.
+5. Snap with a plain commit message.
 
 ## 13. HANDOFF FORMAT
 
