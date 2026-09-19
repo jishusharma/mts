@@ -30,6 +30,13 @@ function Write-TextNoBom {
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 
+# Fresh build check before assembling paste.
+try {
+    & (Join-Path $root 'scripts\Build-Check.ps1')
+} catch {
+    Write-Host "Build-Check failed: $_" -ForegroundColor Yellow
+}
+
 $manifestPath = 'MyTradingSys\mts\runtime\SESSION_MANIFEST.json'
 $logPath      = 'MyTradingSys\mts\runtime\session_log.json'
 
@@ -85,6 +92,11 @@ foreach ($f in ($m.boot_files + $m.boot_supplemental)) {
     [void]$sb.AppendLine($body)
 }
 
+# SESSION_MANIFEST.json raw (boot rule 3.1)
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("### SESSION_MANIFEST.json [manifest_raw] ###")
+[void]$sb.AppendLine((Get-Content $manifestPath -Raw))
+
 # Audit tracker, inlined when present (active audit sessions only)
 $auditPath = Join-Path $root 'MyTradingSys\mts\research\AUDIT_2026-09-17_TRACKER.md'
 if (Test-Path $auditPath) {
@@ -101,6 +113,10 @@ $last = $events | Select-Object -Last 1
 [void]$sb.AppendLine("### session_log context ###")
 [void]$sb.AppendLine("events: $($events.Count)")
 [void]$sb.AppendLine("latest by timestamp: $($last.ts)  $($last.verdict)")
+[void]$sb.AppendLine("last 5 entries:")
+foreach ($e in ($events | Select-Object -Last 5)) {
+    [void]$sb.AppendLine("  $($e.ts)  $($e.verdict)  $($e.reason)")
+}
 
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("### java process ###")
@@ -116,6 +132,10 @@ try {
     [void]$sb.AppendLine("HEAD:  $gHead")
     [void]$sb.AppendLine("Tag:   $gTag")
     [void]$sb.AppendLine("Dirty: $gDirty file(s)")
+    if ($gDirty -gt 0) {
+        [void]$sb.AppendLine("Dirty files:")
+        (& git -C $root status --short 2>$null) | ForEach-Object { [void]$sb.AppendLine("  $_") }
+    }
 } catch {
     [void]$sb.AppendLine("(git unavailable)")
 }
