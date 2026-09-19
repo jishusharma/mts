@@ -479,6 +479,12 @@
       "action": "passed",
       "reason": "Session MTS-2026-09-19-0823Z close: T032/B044 WONTFIX, T036 CLOSED, B050/B051 filed, protocol fixes, loop lifecycle plan",
       "ts": "2026-09-19T10:39:55.757761Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "Session MTS-2026-09-19-1120Z close: paste trim 99->78.7KB, read modes, DSA close gate",
+      "ts": "2026-09-19T11:41:00.383742Z"
     }
   ]
 }

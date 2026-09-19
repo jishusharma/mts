@@ -703,3 +703,26 @@ Runtime at close: lock 15296, java 5928. No supervisor.
 Build PASS. Non-ASCII 0 for new files. No BOM. No in-flight.
 
 # END SESSION
+
+## SESSION MTS-2026-09-19-1120Z - CLOSED - 
+2026-09-19T11:40:59Z
+
+Landed:
+  start-session.ps1 runs Build-Check at paste time (fresh report every session).
+  start-session.ps1 carries manifest raw, last 5 ledger entries, named dirty files.
+  Reference index replaces audit-tracker inline. Files listed by path + lines + hash8.
+  Paste size warning at 80 KB.
+  Two new read modes: open_only (BUGS.md), sections (dictionary, protocol).
+  Paste size 99 KB -> 78.7 KB. Under threshold.
+  DSA section 12: fix "section 10" -> "section 11"; add Build-Check gate before snap.
+  Doc test 2 fix: SESSION_RESUME.md forbidden phrase replaced.
+
+New defect caught by the new pipeline:
+  Doc test 2 was failing from a phrase written by the previous session.
+  The new fresh-build-check at paste time caught it before any work began.
+  That is the intended behavior of the change.
+
+Runtime at close: lock 15296, java 5928. No supervisor.
+Build PASS. No BOM. No in-flight.
+
+# END SESSION
