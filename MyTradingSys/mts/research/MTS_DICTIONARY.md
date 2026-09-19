@@ -23,6 +23,7 @@
 | Net Delta (CoinGlass) | CoinGlass Net Delta panel | heatmap_field_map.md §2b | POSITIONING family, not flow. Best proxy: Net Longs — Net Shorts (T3). Do NOT cross-validate with DSA CVD by sign |
 | Open Interest | DSA `open_interest.direction`, `.change_1h_pct` | data_schema_v1.2.0.md §"DATA BLOCK — open_interest"; heatmap_field_map.md §2 | Direction from DSA; magnitude CoinGlass context |
 | OI breakdown (retail/whale L/S) | DSA `oi_breakdown.retail.long_short_ratio`, `oi_breakdown.whale.long_short_ratio` | data_schema_v1.2.0.md §"oi_breakdown" | Proxy — account/position ratio, not absolute OI |
+| OI breakdown (top trader accounts) | DSA `oi_breakdown.topAccounts.long_short_ratio` | data_schema_v1.2.0.md section "oi_breakdown" | Top trader account ratio (topLongShortAccountRatio). Sibling of retail/whale. No verdict consumer as of 2026-09-19. Gauge by design (matches B021/B022). |
 | Funding rate | DSA `funding.current_rate`, `funding.extreme` | data_schema_v1.2.0.md §"funding" | Extreme = crowded side |
 | Spot/perp basis | DSA `spot_perp_basis.basis_pct`, `.direction` | data_schema_v1.2.0.md §"spot_perp_basis" | Premium = longs pay |
 | Book imbalance | DSA `conditions.book_imbalance`, `order_book_depth.bid_ask_ratio` | data_schema_v1.2.0.md §"order_book_depth" | bid_ask_ratio |
