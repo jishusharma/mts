@@ -663,3 +663,16 @@ Runtime at close: lock 15296, java 5928. No supervisor.
 Build PASS. Non-ASCII 0. No BOM. No in-flight.
 
 # END SESSION
+
+## CORRECTION - 2026-09-19T08:00Z
+
+Two journal close headers used local IST time with a literal Z suffix, not UTC:
+  "SESSION MTS-2026-09-18-1726Z - FINAL STATE - 2026-09-19T01:38:30Z"  (actual close ~2026-09-18T20:08Z)
+  "SESSION MTS-2026-09-18-1726Z - CLOSED - 2026-09-19T10:37:30Z"      (actual close ~2026-09-18T20:08Z)
+  "SESSION MTS-2026-09-19-0552Z - CLOSED - 2026-09-19T13:24:14Z"      (actual close 2026-09-19T07:54:22Z)
+
+Cause: '...' returns local time. Appending literal Z made it look like UTC.
+Fix: use (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ') going forward.
+Journal entries are append-only; original text kept, this note is the record.
+
+# END CORRECTION
