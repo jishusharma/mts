@@ -135,6 +135,33 @@ Seven waste classes seen today. Each has a fix. Each fix is a rule.
    with disk commands. A worker interprets pasted text. Do not assign
    a disk-verification task to a worker.
 
+   WORKER PROTOCOL 2026-09-19. Five rules. Added after a B044
+   dispatch failure where a worker labeled invented check outputs
+   as "Confirmed".
+
+   W1. Worker never claims to run a command. Worker requests evidence
+       by naming file and line range. Coordinator runs it and pastes
+       the output back. Two rounds minimum for any task that needs
+       disk facts.
+
+   W2. Every worker dispatch includes a PATHS AND COMMANDS section:
+       repo-relative paths to relevant files, and the exact commands
+       the coordinator can run on the worker request.
+
+   W3. Every worker dispatch includes an EVIDENCE ALREADY PROVIDED
+       section listing each excerpt the worker has and, explicitly,
+       what it does not have.
+
+   W4. Worker output cannot include a "checks executed" section.
+       That section is coordinator-only. Worker output is derived,
+       not empirical.
+
+   W5. Worker output must tag every disk-derived claim with its
+       receipt: "per dispatch excerpt N", "per coordinator paste
+       titled X", or "unverified". The word "Confirmed" is reserved
+       for the coordinator own re-execution and never appears in
+       worker output.
+
 4. One DISPATCH file per worker. `DISPATCH.md` = prompt + attached
    source excerpts, concatenated. No separate WORKER_READY_1.md. No
    multi-part handshake. W1/W2 keep their old layout as history.
