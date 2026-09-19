@@ -112,6 +112,24 @@ Seven waste classes seen today. Each has a fix. Each fix is a rule.
    the current pipeline stage. Use `throw` or wrap the whole block in
    `if (guard) { ...work... } else { "ABORT: reason" }`.
 
+   CORRECTION 2026-09-19: the first sentence above is wrong. In an
+   interactive paste, each line is a separate statement. A top-level
+   `throw` prints an error and the next line still runs. Verified this
+   session: a top-level `throw` was followed by more statements that
+   ran, including a file write. The fix is to wrap the whole block in
+   `& { ... }`. `throw` inside `& { }` aborts the block. The
+   `if (guard) { } else { }` form is also correct, but only when the
+   entire block is inside the same brace group. Bare top-level
+   statements are never protected by either form.
+
+   FOLLOW-ON RULE 2026-09-19: before composing any write, READ the
+   exact target line from disk in the same turn. Do not compose an
+   anchor from memory or from a prior paste. This session wrote a
+   correction block targeting apparatus_fixes.md when the rule lived
+   in live_session_protocol.md. The anchor never existed, the write
+   was a silent no-op, and the commit message lied. Reading the
+   target line first would have caught it before the write.
+
 3. Worker scope. A worker has no shell and no disk. A file-level
    claim (line numbers, greps, hashes) is coordinator work, done here
    with disk commands. A worker interprets pasted text. Do not assign
