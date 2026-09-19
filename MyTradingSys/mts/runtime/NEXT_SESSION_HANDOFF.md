@@ -1,5 +1,5 @@
 # NEXT SESSION HANDOFF
-# Rewritten 2026-09-19T12:47Z by MTS-2026-09-19-1243Z.
+# Rewritten 2026-09-19T13:15Z by MTS-2026-09-19-1310Z.
 
 STATUS: Loop running. Lock 15296, java 5928. No supervisor. Build PASS.
 
@@ -37,7 +37,7 @@ LOOP_LIFECYCLE_DESIGN_2026-09-19.md: 4-stage plan for one-owner loop control.
 ## LOOP LIFECYCLE
 
 Stage 1 DONE 2026-09-19 (commit 4eff3de). Supervisor is reader-only.
-Stage 2 next. Do not run mode.ps1 during stages 1-3.
+Stage 2 DONE 2026-09-19 (commit b3eec33). Stage 3 next. Do not run mode.ps1 during stages 1-3.
 
 ## PENDING DECISIONS
 

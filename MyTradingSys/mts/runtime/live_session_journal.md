@@ -797,3 +797,19 @@ Runtime at close: lock 15296, java 5928. No supervisor.
 Build PASS. No BOM. No in-flight.
 
 # END SESSION
+
+## SESSION MTS-2026-09-19-1310Z - CLOSED - 
+2026-09-19T13:16:25Z
+
+Landed:
+  Loop lifecycle stage 2. Atomic lock create in start-trading-day.ps1.
+  Old: Test-Path then Set-Content. Race window between check and write.
+  New: [System.IO.File]::Open with FileMode::CreateNew. Fails on race; loser exits 1.
+  Lock format unchanged: "<pid> <epoch>". Supervisor read path unchanged.
+  Live restart test skipped per design risk note. No mode.ps1 during stages 1-3.
+  File 666 -> 679 lines. PARSE OK. Build PASS.
+
+Runtime at close: lock 15296, java 5928. No supervisor.
+Build PASS. No BOM. No in-flight.
+
+# END SESSION
