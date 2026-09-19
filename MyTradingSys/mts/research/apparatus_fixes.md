@@ -57,6 +57,7 @@ patch >20 lines.
 - start-session.ps1 manifest entry without lines (2026-09-17): any `read: tail`
   entry missing a `lines` field crashes the script with a cryptic Tail binding
   error. Should default to 60 or warn. One-line guard.
+- start-session.ps1 guard CLOSED 2026-09-19: verified present at start-session.ps1 L46: $n = if ($f.lines) { [int]$f.lines } else { 60 }. Entry was phantom.
 
 - Pre-open playbook gap (2026-09-17): London-NY handoff on 09-17 produced a
   474-point ramp (12:11-12:31 UTC) then a 510-point fade (12:31-13:24).
