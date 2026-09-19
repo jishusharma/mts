@@ -71,6 +71,7 @@ IN-FIX rows older than 14 days fail Build-Check.
 | B047 | 2026-09-18 | CLOSED | HIGH | finished_auction contradiction sign inverted in math_object_builder.py | math_object_builder.py L391,L398 vs SetupCandidatesBuilder.java L703; T009 | 2026-09-18; Python inverted, Java correct (Tom source oa8kxSLLkAo + VxN5IxTwpbE); 17/30 snapshots proof |
 | B048 | 2026-09-18 | CLOSED | MED | verify_rule_citations.ps1 printed PASS despite 0 refs; header comment promised unreferenced-id check | scripts/tools/verify_rule_citations.ps1 L44 | 2026-09-18; verifier now fails on unused ids |
 | B049 | 2026-09-18 | CLOSED | HIGH | determineSetupType skips state check on VAH/VAL/swing zones; violates compiled engine rule 3 | SetupCandidatesBuilder.java L432-437 | 6816cc0; VerifyScbEdits.java 12/12 PASS 2026-09-18 |
+| B050 | 2026-09-19 | OPEN | MED | buildStructure pivot detection dead code; swing zones always equal raw window extremes | MarketDataSnapshot.java L701-712 | 2026-09-19: L701 sets swingHigh=window high, swingLow=window low; loop attempts pivot-close refinement; L711-712 clamp results back to window extremes, erasing any pivot the loop found. Consumers: SetupCandidatesBuilder.java L103-104, L333-338 (swing zones); math_object_builder.py L161-164 (zone map), L227-250 (stop placement). Impact: swing zones never tighter than window extremes. Filed from SESSION_RESUME SR-5. |
 
 ## TASKS
 

@@ -48,3 +48,25 @@ COORDINATOR. Same mission: live oversight, gap capture, code readiness.
 - Do not bare-kill java.
 
 # END
+
+## TRIAGE 2026-09-19
+
+Every item from SESSION_RESUME OPEN CODE ITEMS and OPEN DESIGN ITEMS.
+Verified against BUGS.md, apparatus_fixes.md, source, and git log.
+
+| Item | Verdict | Evidence |
+|---|---|---|
+| SR-1 supervisor double-start / B043 | RESOLVED | BUGS.md B043 CLOSED 2026-09-17 |
+| SR-2 supervisor singleton lock | RESOLVED | loop-supervisor.ps1 L71-86 startup lock; L114-117 duplicate wrapper detection |
+| SR-3 mode.ps1 refuse when supervisor | DECISION NEEDED | mode.ps1 reads lock only (L20-38). No supervisor check. Design choice, not defect |
+| SR-4 lock creation atomic (TOCTOU) | DECISION NEEDED | 0 hits. Supervisor duplicate detection may cover the race |
+| SR-5 buildStructure pivot dead code | FILED B050 | MarketDataSnapshot.java L701-712; consumers confirmed |
+| SR-6 tape-watch duplicate line | RESOLVED | BUGS.md T021 CLOSED 2026-09-18 |
+| SR-7 attempt-number / retest counter | PHANTOM | 0 hits in BUGS.md, apparatus_fixes.md, Java, scripts. No receipt |
+| SR-8 swing ladder / CVD anchor / OI trajectory | REFERRED | schema_v5.1.0_spec.md Open decisions is the tracking home |
+| SR-9 day_type evidence 1/3 | RESOLVED | Snapshot session.day_type present 2026-09-19 |
+| SR-10 I23 state S vs long setups | DUPLICATE | BUGS.md B019 WONTFIX 2026-09-18 (same I23, display-only) |
+
+This file is now historical. Live queue is MyTradingSys/mts/research/BUGS.md.
+
+# END TRIAGE
