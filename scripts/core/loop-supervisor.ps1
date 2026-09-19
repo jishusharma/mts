@@ -30,6 +30,22 @@ function SupLog {
 }
 
 
+$SupLockFile = Join-Path $R "data\supervisor.lock"
+try {
+    $fs = [System.IO.File]::Open($SupLockFile, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
+    $sw = New-Object System.IO.StreamWriter($fs)
+    $sw.WriteLine("$PID " + [DateTime]::UtcNow.ToString("o"))
+    $sw.Flush(); $sw.Close(); $fs.Close()
+} catch [System.IO.IOException] {
+    $ex = Get-Content $SupLockFile -Raw -ErrorAction SilentlyContinue
+    $ep = 0
+    if ($ex) { $ep = [int](($ex.Trim() -split "\s+")[0]) }
+    if ($ep -gt 0 -and (Get-Process -Id $ep -ErrorAction SilentlyContinue)) {
+        Write-Host "supervisor already running PID=$ep, exiting"
+        exit 0
+    }
+    [System.IO.File]::WriteAllText($SupLockFile, "$PID " + [DateTime]::UtcNow.ToString("o"))
+}
 SupLog "=== SUPERVISOR START mode=$Mode interval=${IntervalMin}m stale=${SnapshotStaleSec}s grace=${RestartGraceSec}s ==="
 
 # Startup: only enter grace if a live wrapper is present. Otherwise ready now.
@@ -54,6 +70,7 @@ if (Test-Path $LockFile) {
 while ($true) {
     if (Test-Path $StopFlag) {
         SupLog "stop flag present, exiting"
+        Remove-Item $SupLockFile -ErrorAction SilentlyContinue
         exit 0
     }
 

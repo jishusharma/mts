@@ -877,3 +877,30 @@ Runtime at close: loop running lock 6372, supervisor 14500, warmup.
 Build PASS. No BOM. No in-flight.
 
 # END SESSION
+
+## SESSION MTS-2026-09-19-1811Z - SUPERVISOR HARDENING - CLOSED -
+2026-09-20T00:05Z
+
+Landed:
+  B056 CLOSED. loop-supervisor.ps1 now checks loop_stop.flag. Deployed 18:14Z supervisor PID 1628. Hash 868C6F76, 119 lines.
+  B053 CLOSED. Atomic supervisor singleton lock at data\supervisor.lock. Second launch test PASS (detected PID 8248, exited). Hash 9956BD01, 136 lines.
+  B055 WONTFIX. PID ancestry shows the "orphan" java is the per-cycle snapshot spawn; cadence 60s, exits in ~6s. Not orphan.
+
+Runtime at close: loop running lock 6372, supervisor 8248, java 11180 (state-machine).
+Build PASS at boot. No BOM. No in-flight.
+
+# END SESSION
+## SESSION MTS-2026-09-19-1811Z - SUPERVISOR + B050 - CLOSED -
+2026-09-20T01:06Z
+
+Landed:
+  B056 CLOSED. loop-supervisor.ps1 checks loop_stop.flag. Hash 868C6F76.
+  B053 CLOSED. Atomic supervisor singleton lock data\supervisor.lock. Hash 9956BD01, 136 lines. Singleton test PASS.
+  B055 WONTFIX. Snapshot spawn is per-cycle, not orphan.
+  B050 CLOSED. MarketDataSnapshot.java L711-712 clamp removed; inverted-pair swap guard added. Hash CCD204C1 -> 3006E87F, 1422 lines. Retest PASS: pivot values now survive.
+  Wrapper restarted via supervisor (java 10604) to load B050. Fix verified live.
+
+Runtime at close: loop lock 2900, supervisor 8248, java 10604.
+Build PASS at boot. No BOM. No in-flight.
+
+# END SESSION

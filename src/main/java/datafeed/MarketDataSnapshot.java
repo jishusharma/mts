@@ -707,8 +707,7 @@ public class MarketDataSnapshot {
                 if (swingLow==low && prevClose>curClose && curClose<nextClose) swingLow=curClose;
                 if (swingHigh!=high && swingLow!=low) break;
             }
-            swingLow = Math.min(swingLow, low);
-            swingHigh = Math.max(swingHigh, high);
+            if (swingLow > swingHigh) { double sw = swingLow; swingLow = swingHigh; swingHigh = sw; }
             boolean stale = (swingHigh < currentPrice) || (swingLow > currentPrice);
             tfNode.put("swing_high", Math.round(swingHigh*100.0)/100.0);
             tfNode.put("swing_low", Math.round(swingLow*100.0)/100.0);
