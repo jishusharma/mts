@@ -784,3 +784,16 @@ Runtime at close: lock 15296, java 5928. No supervisor.
 Build PASS. No BOM. No in-flight.
 
 # END SESSION
+
+## SESSION MTS-2026-09-19-1305Z - CLOSED - 
+2026-09-19T12:53:57Z
+
+Landed:
+  B052 receipt rewritten to drop forbidden git phrases. Doc test 2 was failing.
+  Same class as the SESSION_RESUME.md fix last session.
+  Build PASS. Doc tests 5/5.
+
+Runtime at close: lock 15296, java 5928. No supervisor.
+Build PASS. No BOM. No in-flight.
+
+# END SESSION
