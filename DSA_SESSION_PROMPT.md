@@ -179,11 +179,11 @@ Before importing any concept from the transcripts:
 
 Update this section at every session close. Keep it to five lines.
 
-Last live read:  2026-09-18T18:38Z, session MTS-2026-09-18-1726Z. Build-Check PASS. Live feed mts-live.
+Last live read:  2026-09-18T20:49Z, session MTS-2026-09-18-1726Z closing. Build-Check PASS. Live feed mts-live.
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: wrapper 16624, java 6648, lock 16624, supervisor 8976. Session cleared 45 items to 6. Code: B003 B024 B025 B036 B037 B039 B047 T021 T027. Remaining: B028 B044 T017 T022 T028 T030. Build-Check PASS.
+Runtime + loops: wrapper 16624, java 6648, lock 16624, supervisor 8976. Queue 7: B003 (historic, no repro), B044 (reopened, dead code exists), T028 (rollover verify, 00:00-00:20 UTC window), T032-T035 (indicator phases 1,2,3,5). TOM_VERBATIM_INDEX rebuilt 213 quotes. Build-Check PASS.
 ## 12. SESSION END
 
 1. Stop the runtime loop if it is running.

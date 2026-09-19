@@ -601,3 +601,28 @@ Errors made this session, corrections landed:
 - Multiple receipts written as "verified" before the verification ran. All corrected.
 
 Rule going forward: no receipt is written until the evidence command has run and output is on disk.
+
+## SESSION MTS-2026-09-18-1726Z - CLOSED - 2026-09-19T10:37:30Z
+
+Queue at close: 7 items.
+  B003 MED (historic, no repro)
+  B044 MED (dead code exists, superseded by T032)
+  T028 LOW (00:00-00:20 UTC window)
+  T032-T035 indicator phases 1,2,3,5
+
+Code landed: B047, B024, B025, B036, B037, B039, T021, T027.
+Doc landed: T017+T030 CLOSED (213-quote index, 213 tags), T031 WONTFIX, INDICATOR_IMPLEMENTATION_HANDOFF saved, B044 reopened.
+
+Errors this session, all corrected on disk:
+  B047 first read wrong (pd=contradiction was correct, not a bug).
+  B028 first receipt claimed 0 corpus hits; searched .md not .txt.
+  B022 first receipt claimed no consumer; divergence_monitor reads session.
+  B003 first fix wrote wrong lock path; reverted.
+  Multiple receipts written before verification; all corrected.
+
+Rule going forward: no receipt until the evidence command has run and output is on disk.
+
+Runtime at close: wrapper 16624, java 6648, lock 16624, supervisor 8976.
+Build PASS. Non-ASCII 0. No BOM. No in-flight.
+
+# END SESSION
