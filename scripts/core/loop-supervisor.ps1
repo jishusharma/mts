@@ -1,5 +1,6 @@
 # loop-supervisor.ps1
-# Watches the loop wrapper. Restarts on hang or death without orphaning java.
+# Watches the loop wrapper. Restarts on death only. Never kills.
+# See LOOP_LIFECYCLE_DESIGN_2026-09-19.md stage 1.
 # Run in its own window: .\scripts\core\loop-supervisor.ps1
 # Stop cleanly: create data\supervisor_stop.flag
 
@@ -27,42 +28,6 @@ function SupLog {
     Add-Content -LiteralPath $SupLog -Value $line -Encoding UTF8
 }
 
-function Get-JavaDatafeed {
-    Get-CimInstance Win32_Process -Filter "Name='java.exe'" -ErrorAction SilentlyContinue |
-        Where-Object { $_.CommandLine -match "datafeed\.Main" }
-}
-
-function Get-AllWrappers {
-    # Any powershell running start-trading-day.ps1. Defense in depth against duplicates.
-    Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue |
-        Where-Object { $_.CommandLine -match "start-trading-day\.ps1|mode\.ps1" }
-}
-
-function Stop-Hard {
-    param([int]$Pid)
-    if ($Pid -le 0) { return }
-    $p = Get-Process -Id $Pid -ErrorAction SilentlyContinue
-    if (-not $p) { return }
-    try { Stop-Process -Id $Pid -Force -ErrorAction SilentlyContinue } catch {}
-    # Poll up to 5s, then taskkill tree.
-    for ($i = 0; $i -lt 10; $i++) {
-        Start-Sleep -Milliseconds 500
-        if (-not (Get-Process -Id $Pid -ErrorAction SilentlyContinue)) { return }
-    }
-    try { & taskkill.exe /T /F /PID $Pid 2>&1 | Out-Null } catch {}
-}
-
-function Stop-WrapperAndChildren {
-    # Kill every wrapper, not just the lock PID. Then all java datafeed.Main.
-    foreach ($w in (Get-AllWrappers)) {
-        SupLog "  killing wrapper PID=$($w.ProcessId)"
-        Stop-Hard -Pid $w.ProcessId
-    }
-    foreach ($j in (Get-JavaDatafeed)) {
-        SupLog "  killing java PID=$($j.ProcessId)"
-        Stop-Hard -Pid $j.ProcessId
-    }
-}
 
 SupLog "=== SUPERVISOR START mode=$Mode interval=${IntervalMin}m stale=${SnapshotStaleSec}s grace=${RestartGraceSec}s ==="
 
@@ -111,32 +76,22 @@ while ($true) {
     $sinceRestart = ([DateTime]::UtcNow - $lastRestartUtc).TotalSeconds
     $inGrace = $sinceRestart -lt $RestartGraceSec
 
-    # Extra wrappers beyond the lock holder = duplicate condition, always restart.
-    $wrapperCount = @(Get-AllWrappers).Count
-    $dupWrappers = $wrapperCount -gt 1
-
     $needRestart = $false
     $reason = "ok"
-    if ($dupWrappers) {
-        $needRestart = $true
-        $reason = "duplicate_wrappers count=$wrapperCount"
-    } elseif (-not $loopAlive) {
+    if (-not $loopAlive) {
         if ($inGrace) {
             SupLog ("grace wrapper_pid=$loopPid missing, ${sinceRestart}s < ${RestartGraceSec}s, waiting")
         } else {
             $needRestart = $true
             $reason = "wrapper_dead oldPid=$loopPid"
         }
-    } elseif (-not $inGrace -and $snapAge -gt $SnapshotStaleSec) {
-        $needRestart = $true
-        $reason = "wrapper_hung snapAge=${snapAge}s oldPid=$loopPid"
     } else {
         SupLog "ok wrapper=$loopPid snapAge=${snapAge}s grace=$inGrace"
     }
 
     if ($needRestart) {
         SupLog "RESTART reason=$reason"
-        Stop-WrapperAndChildren
+        SupLog "  reader-only restart: prior wrapper PID=$loopPid not killed"
         Remove-Item $LockFile -ErrorAction SilentlyContinue
         # Small wait so the OS releases file handles and the lock is truly gone
         # before the new wrapper checks it.
