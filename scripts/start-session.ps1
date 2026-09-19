@@ -97,16 +97,42 @@ foreach ($f in ($m.boot_files + $m.boot_supplemental)) {
 [void]$sb.AppendLine("### SESSION_MANIFEST.json [manifest_raw] ###")
 [void]$sb.AppendLine((Get-Content $manifestPath -Raw))
 
-# Audit tracker, inlined when present (active audit sessions only)
-$auditPath = Join-Path $root 'MyTradingSys\mts\research\AUDIT_2026-09-17_TRACKER.md'
-if (Test-Path $auditPath) {
-    [void]$sb.AppendLine("")
-    [void]$sb.AppendLine("### MyTradingSys/mts/research/AUDIT_2026-09-17_TRACKER.md [active_audit] ###")
-    $auditRaw = Get-Content $auditPath -Raw
-    $idx = $auditRaw.IndexOf("## AUDIT SUMMARY")
-    if ($idx -ge 0) { [void]$sb.AppendLine($auditRaw.Substring($idx)) }
-    else { [void]$sb.AppendLine($auditRaw) }
+# Reference index. Files on disk not pasted. Request by path + line range.
+$refPaths = @(
+    @{ path='MyTradingSys/mts/research/AUDIT_2026-09-17_TRACKER.md'; role='audit_work' },
+    @{ path='MyTradingSys/mts/research/LOOP_LIFECYCLE_DESIGN_2026-09-19.md'; role='plan' },
+    @{ path='MyTradingSys/mts/research/EXTRACTION_TO_ALERT_AUDIT_2026-09-19.md'; role='audit' },
+    @{ path='MyTradingSys/mts/runtime/SESSION_RESUME.md'; role='historical' },
+    @{ path='MyTradingSys/mts/research/L_ITEMS_MASTER.md'; role='frozen' },
+    @{ path='MyTradingSys/mts/research/INDICATOR_IMPLEMENTATION_HANDOFF.md'; role='research' },
+    @{ path='MyTradingSys/PROJECT_VISION.md'; role='direction' },
+    @{ path='MyTradingSys/mts/research/TOM_VERBATIM_INDEX.md'; role='citation_index' },
+    @{ path='MyTradingSys/mts/research/schema_v5.1.0_spec.md'; role='schema' },
+    @{ path='MyTradingSys/mts/research/open_loops_status.md'; role='stale_loops' },
+    @{ path='MyTradingSys/mts/research/compiled_output_audit_20260915.md'; role='audit' }
+)
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("### REFERENCE INDEX (not pasted; request by path + line range) ###")
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("| Path | Lines | Hash8 | mtime | Role |")
+[void]$sb.AppendLine("|---|---|---|---|---|")
+foreach ($r in $refPaths) {
+    $fp = Join-Path $root $r.path
+    if (Test-Path $fp) {
+        $lineCount = (Get-Content $fp -ErrorAction SilentlyContinue | Measure-Object -Line).Lines
+        $hash8 = (Get-FileHash $fp -Algorithm SHA256).Hash.Substring(0,8)
+        $mt = (Get-Item $fp).LastWriteTimeUtc.ToString('yyyy-MM-dd')
+        [void]$sb.AppendLine("| $($r.path) | $lineCount | $hash8 | $mt | $($r.role) |")
+    } else {
+        [void]$sb.AppendLine("| $($r.path) | MISSING | - | - | $($r.role) |")
+    }
 }
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("Directories:")
+[void]$sb.AppendLine("  MyTradingSys/mts/conditions/  - MTS rule files")
+[void]$sb.AppendLine("  MyTradingSys/extracts/        - analyst extracts")
+[void]$sb.AppendLine("  raw_transcripts_canonical/    - Tom transcripts")
+[void]$sb.AppendLine("  Dumps/workers/                - worker dispatches and replies")
 $events = (Get-Content $logPath -Raw | ConvertFrom-Json).events | Sort-Object ts
 $last = $events | Select-Object -Last 1
 [void]$sb.AppendLine("")
@@ -206,6 +232,20 @@ if (Test-Path $cmdPath) {
 
 $block = $sb.ToString()
 Write-Host "generated: $($block.Length) chars"
+
+$sizeKb = [math]::Round($block.Length / 1024, 1)
+Write-Host "paste size: $sizeKb KB"
+if ($sizeKb -gt 80) {
+    Write-Host "WARNING: paste over 80 KB (DSA section 2 threshold)" -ForegroundColor Yellow
+    $contrib = @()
+    foreach ($f in ($m.boot_files + $m.boot_supplemental)) {
+        $body = Get-ReadBody $f
+        $contrib += [PSCustomObject]@{ path=$f.path; size=$body.Length }
+    }
+    $contrib | Sort-Object size -Descending | Select-Object -First 3 | ForEach-Object {
+        Write-Host ("  {0}  {1} KB" -f $_.path, [math]::Round($_.size/1024,1))
+    }
+}
 
 $pasteFile = 'Dumps\SESSION_PASTE.txt'
 Write-TextNoBom -Path $pasteFile -Text $block
