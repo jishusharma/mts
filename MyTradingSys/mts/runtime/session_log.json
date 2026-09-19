@@ -473,6 +473,12 @@
       "action": "passed",
       "reason": "session close: MTS-2026-09-18-1600Z. B049 T023 T024 CLOSED (state gate + tc_long, VerifyScbEdits.java 12/12 PASS). B048 T018 T025 and 11 stale rows CLOSED. T026 T027 filed. 04_final_report saved and indexed. 7 commits: 134c086 4d401cf 18458e0 6816cc0 e100c52 87cc085 a1d8b25. Next: B047 finished_auction sign, Tom source read.",
       "ts": "2026-09-18T17:09:01.076607Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "Session MTS-2026-09-19-0823Z close: T032/B044 WONTFIX, T036 CLOSED, B050/B051 filed, protocol fixes, loop lifecycle plan",
+      "ts": "2026-09-19T10:39:55.757761Z"
     }
   ]
 }

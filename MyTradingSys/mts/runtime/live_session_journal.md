@@ -676,3 +676,30 @@ Fix: use (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ') going for
 Journal entries are append-only; original text kept, this note is the record.
 
 # END CORRECTION
+
+## SESSION MTS-2026-09-19-0823Z - CLOSED - 
+2026-09-19T10:39:54Z
+
+Landed:
+  T032 WONTFIX (stale title). T036 CLOSED (accountRatio -> oi_breakdown.topAccounts).
+  B044 WONTFIX via 4-model validation + coordinator fact-check.
+  Protocol fixes: rule 2 corrected; read-anchor-before-compose added; WORKER PROTOCOL W1-W5.
+  Source tag scheme (7 families) in MTS_DICTIONARY.
+  EXTRACTION_TO_ALERT_AUDIT_2026-09-19.md.
+  SESSION_RESUME triage: 3 RESOLVED, 1 FILED, 1 PHANTOM, 1 REFERRED, 1 PENDING, 1 OPEN-NEW, 2 DECISION.
+  B050 OPEN: buildStructure pivot dead code.
+  B051 OPEN: state_code letter S not reconciled against long setups.
+  LOOP_LIFECYCLE_DESIGN_2026-09-19.md: 4-stage one-owner plan.
+
+Errors this session, corrected on disk:
+  Two false commit messages (apparatus_fixes correction did not land; T036 dictionary row no-op on first try).
+  Three worker provenance fabrications (B044 worker claimed checks it never ran).
+  Rule 2 in live_session_protocol was wrong about throw; corrected.
+  Triage mislabels SR-9 (RESOLVED vs PENDING) and SR-10 (DUPLICATE vs OPEN-NEW); corrected.
+
+Rule strengthened: read the target line from disk before composing any write.
+
+Runtime at close: lock 15296, java 5928. No supervisor.
+Build PASS. Non-ASCII 0 for new files. No BOM. No in-flight.
+
+# END SESSION
