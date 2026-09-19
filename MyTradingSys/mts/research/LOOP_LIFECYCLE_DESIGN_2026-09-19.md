@@ -48,7 +48,7 @@ reversible.
 
 | Stage | Change | File | Critical? | Closes |
 |---|---|---|---|---|
-| 1 | Supervisor becomes reader-only. Remove L56-59 kill-all and L114-117 duplicate detection. Keep restart-on-dead-lock. | scripts/core/loop-supervisor.ps1 | No | SR-3 (partly) |
+| 1 DONE 2026-09-19 4eff3de | Supervisor becomes reader-only. Remove L56-59 kill-all and L114-117 duplicate detection. Keep restart-on-dead-lock. | scripts/core/loop-supervisor.ps1 | No | SR-3 (partly) |
 | 2 | Atomic lock create in start-trading-day.ps1. One anchor. Four-step proof. | scripts/core/start-trading-day.ps1 | Yes | SR-4 |
 | 3 | stop-day.ps1 becomes stop-flag + wait, no kill. Four-step proof. | scripts/core/stop-day.ps1 | Yes | B003, B014 |
 | 4 | mode.ps1 becomes pointer or retires. Four-step proof. | scripts/core/mode.ps1 | Yes | SR-3 (rest) |
@@ -80,5 +80,10 @@ stages 1-3. Note this in the stage-1 handoff.
 
 Adopted 2026-09-19 by operator. Stages execute one session each, in order.
 Stage 1 is next session first action if no higher-priority defect is open.
+
+## PROGRESS
+
+Stage 1 DONE 2026-09-19 (commit 4eff3de). Supervisor is reader-only.
+Stages 2, 3, 4 pending. Do not run mode.ps1 until stage 3.
 
 # END

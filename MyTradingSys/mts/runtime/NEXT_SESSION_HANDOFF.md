@@ -1,5 +1,5 @@
 # NEXT SESSION HANDOFF
-# Rewritten 2026-09-19T08:40Z by MTS-2026-09-19-0823Z.
+# Rewritten 2026-09-19T12:47Z by MTS-2026-09-19-1243Z.
 
 STATUS: Loop running. Lock 15296, java 5928. No supervisor. Build PASS.
 
@@ -33,6 +33,11 @@ B050 OPEN: buildStructure pivot dead code (swing zones never tighter than window
 B051 OPEN: state_code letter S not reconciled against long setups.
 SESSION_RESUME triage: 3 RESOLVED, 1 FILED, 1 PHANTOM, 1 REFERRED, 1 PENDING, 1 OPEN-NEW, 2 DECISION.
 LOOP_LIFECYCLE_DESIGN_2026-09-19.md: 4-stage plan for one-owner loop control.
+
+## LOOP LIFECYCLE
+
+Stage 1 DONE 2026-09-19 (commit 4eff3de). Supervisor is reader-only.
+Stage 2 next. Do not run mode.ps1 during stages 1-3.
 
 ## PENDING DECISIONS
 

@@ -752,3 +752,22 @@ Runtime at close: lock 15296, java 5928. No supervisor.
 Build PASS. No BOM. No in-flight.
 
 # END SESSION
+
+## SESSION MTS-2026-09-19-1243Z - CLOSED - 
+2026-09-19T12:47:49Z
+
+Landed:
+  Loop lifecycle stage 1. Supervisor reader-only.
+  Removed 4 helper functions: Get-JavaDatafeed, Get-AllWrappers, Stop-Hard, Stop-WrapperAndChildren.
+  Removed duplicate-wrapper detection and hung-wrapper trigger.
+  Added reader-only restart trace line.
+  File 157 -> 112 lines. PARSE OK. Build PASS.
+  Design doc: stage 1 marked done.
+
+Open loops at close:
+  Stages 2, 3, 4 pending. Do not run mode.ps1 until stage 3 removes its kill path.
+
+Runtime at close: lock 15296, java 5928. No supervisor.
+Build PASS. No BOM. No in-flight.
+
+# END SESSION
