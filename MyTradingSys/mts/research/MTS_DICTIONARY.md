@@ -184,3 +184,11 @@ Corpus vocabulary note (2026-09-19): Tom speaks flow, absorption, aggression.
 Hit counts: aggressive 53, absorption 17, order flow 18, footprint 45, buying 38, selling 33.
 Zero or low: aggressor 0, open interest 0, OI 0, cumulative volume delta 0, net long 0, net short 0, taker 4, liquidation 1.
 Consequence: OI, positioning, and net-long/short families have no Tom basis. They belong to no current layer.
+## FLAGS (added 2026-09-19)
+
+Files in data\ that a process reads as a stop signal. Distinct paths, distinct readers.
+
+| Flag | Written by | Read by | Meaning |
+|---|---|---|---|
+| supervisor_stop.flag | Operator (manual) | loop-supervisor.ps1 each 30s check | Supervisor exits cleanly |
+| loop_stop.flag | Operator or stop-day.ps1 | start-trading-day.ps1 each cycle top; removed in loop finally block | Loop exits cleanly, state-machine java shut down, lock released |

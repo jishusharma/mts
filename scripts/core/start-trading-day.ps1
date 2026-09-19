@@ -345,6 +345,10 @@ $exitPhase = "startup"
 
 try {
     while ($true) {
+        if (Test-Path (Join-Path $R "data\loop_stop.flag")) {
+            Log-Line "STOP FLAG present, exiting loop cleanly"
+            break
+        }
         $cycle++
         $exitPhase = "cycle_body"
         Log-Line "--- cycle $cycle ---"
@@ -663,6 +667,7 @@ print("logged")
     Log-Line "APPARATUS ERROR phase=$exitPhase : $_"
 } finally {
     if ($StateMachinePID) { try { Stop-Process -Id $StateMachinePID -Force -ErrorAction SilentlyContinue } catch {} }
+    Remove-Item (Join-Path $R "data\loop_stop.flag") -ErrorAction SilentlyContinue
     Remove-Item (Join-Path $LogDir "apparatus.lock") -ErrorAction SilentlyContinue
     Log-Line "=== APPARATUS END (finally) phase=$exitPhase ==="
 }

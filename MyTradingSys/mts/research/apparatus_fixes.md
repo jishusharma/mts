@@ -77,4 +77,5 @@ patch >20 lines.
 
 
 - 2026-09-18T17:47Z wrapper died after cycle 39 (17:02Z). No lock, no supervisor. Java orphaned (14444, 2764). Restarted.
+- 2026-09-19 stage 3a: loop flag exit does not tree-kill state-machine java. Stop-Process on the intermediate powershell (StateMachinePID) leaves the mvn java child orphaned. Observed java 13928 alive after clean flag exit. Same class as B014. 3b must tree-kill (taskkill /F /T /PID) or the java orphan survives every stop.
 # END

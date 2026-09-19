@@ -1775,3 +1775,65 @@
 2026-09-19 14:01:25 | ok wrapper=9672 snapAge=9s grace=False
 2026-09-19 14:01:56 | ok wrapper=9672 snapAge=40s grace=False
 2026-09-19 14:02:26 | stop flag present, exiting
+2026-09-19 14:06:58 | === SUPERVISOR START mode=armed interval=1m stale=240s grace=90s ===
+2026-09-19 14:06:58 | startup: no lock file, ready now
+2026-09-19 14:06:59 | RESTART reason=wrapper_dead oldPid=0
+2026-09-19 14:06:59 |   reader-only restart: prior wrapper PID=0 not killed
+2026-09-19 14:07:02 |   started new wrapper PID=7136
+2026-09-19 14:07:33 | ok wrapper=7136 snapAge=317s grace=True
+2026-09-19 14:08:04 | ok wrapper=7136 snapAge=348s grace=True
+2026-09-19 14:08:35 | ok wrapper=7136 snapAge=19s grace=False
+2026-09-19 14:09:06 | ok wrapper=7136 snapAge=50s grace=False
+2026-09-19 14:09:37 | ok wrapper=7136 snapAge=21s grace=False
+2026-09-19 14:10:08 | ok wrapper=7136 snapAge=52s grace=False
+2026-09-19 14:10:40 | ok wrapper=7136 snapAge=23s grace=False
+2026-09-19 14:11:11 | ok wrapper=7136 snapAge=54s grace=False
+2026-09-19 14:11:42 | ok wrapper=7136 snapAge=25s grace=False
+2026-09-19 14:12:13 | ok wrapper=7136 snapAge=56s grace=False
+2026-09-19 14:12:44 | ok wrapper=7136 snapAge=28s grace=False
+2026-09-19 14:13:15 | ok wrapper=7136 snapAge=59s grace=False
+2026-09-19 14:13:46 | ok wrapper=7136 snapAge=31s grace=False
+2026-09-19 14:14:17 | ok wrapper=7136 snapAge=1s grace=False
+2026-09-19 14:14:48 | ok wrapper=7136 snapAge=32s grace=False
+2026-09-19 14:15:20 | ok wrapper=7136 snapAge=4s grace=False
+2026-09-19 14:15:51 | ok wrapper=7136 snapAge=34s grace=False
+2026-09-19 14:16:22 | ok wrapper=7136 snapAge=6s grace=False
+2026-09-19 14:16:53 | ok wrapper=7136 snapAge=37s grace=False
+2026-09-19 14:17:24 | RESTART reason=wrapper_dead oldPid=0
+2026-09-19 14:17:24 |   reader-only restart: prior wrapper PID=0 not killed
+2026-09-19 14:17:27 |   started new wrapper PID=9080
+2026-09-19 14:17:58 | ok wrapper=9080 snapAge=102s grace=True
+2026-09-19 14:18:29 | grace wrapper_pid=0 missing, 62.1606536s < 90s, waiting
+2026-09-19 14:19:00 | RESTART reason=wrapper_dead oldPid=0
+2026-09-19 14:19:00 |   reader-only restart: prior wrapper PID=0 not killed
+2026-09-19 14:19:03 |   started new wrapper PID=496
+2026-09-19 14:19:34 | ok wrapper=496 snapAge=198s grace=True
+2026-09-19 14:20:05 | ok wrapper=496 snapAge=229s grace=True
+2026-09-19 14:20:36 | ok wrapper=496 snapAge=19s grace=False
+2026-09-19 14:21:06 | stop flag present, exiting
+2026-09-19 14:23:47 | === SUPERVISOR START mode=armed interval=1m stale=240s grace=90s ===
+2026-09-19 14:23:47 | startup: no lock file, ready now
+2026-09-19 14:23:49 | RESTART reason=wrapper_dead oldPid=0
+2026-09-19 14:23:49 |   reader-only restart: prior wrapper PID=0 not killed
+2026-09-19 14:23:52 |   started new wrapper PID=11796
+2026-09-19 14:24:23 | ok wrapper=11796 snapAge=3s grace=True
+2026-09-19 14:24:54 | ok wrapper=11796 snapAge=34s grace=True
+2026-09-19 14:25:25 | RESTART reason=wrapper_dead oldPid=0
+2026-09-19 14:25:25 |   reader-only restart: prior wrapper PID=0 not killed
+2026-09-19 14:25:28 |   started new wrapper PID=3356
+2026-09-19 14:25:59 | ok wrapper=3356 snapAge=99s grace=True
+2026-09-19 14:26:30 | ok wrapper=3356 snapAge=11s grace=True
+2026-09-19 14:27:01 | ok wrapper=3356 snapAge=42s grace=False
+2026-09-19 14:27:32 | ok wrapper=3356 snapAge=16s grace=False
+2026-09-19 14:28:03 | ok wrapper=3356 snapAge=47s grace=False
+2026-09-19 14:28:34 | ok wrapper=3356 snapAge=18s grace=False
+2026-09-19 14:29:05 | ok wrapper=3356 snapAge=49s grace=False
+2026-09-19 14:29:36 | ok wrapper=3356 snapAge=20s grace=False
+2026-09-19 14:30:07 | ok wrapper=3356 snapAge=51s grace=False
+2026-09-19 14:30:38 | ok wrapper=3356 snapAge=22s grace=False
+2026-09-19 14:31:09 | ok wrapper=3356 snapAge=53s grace=False
+2026-09-19 14:31:40 | ok wrapper=3356 snapAge=24s grace=False
+2026-09-19 14:32:12 | ok wrapper=3356 snapAge=55s grace=False
+2026-09-19 14:32:43 | ok wrapper=3356 snapAge=27s grace=False
+2026-09-19 14:33:14 | ok wrapper=3356 snapAge=58s grace=False
+2026-09-19 14:33:45 | ok wrapper=3356 snapAge=29s grace=False

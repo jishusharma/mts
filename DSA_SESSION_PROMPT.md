@@ -180,11 +180,11 @@ Before importing any concept from the transcripts:
 Update this section at every session close. Keep it to five lines.
 Queue is not listed here. Single source: MyTradingSys/mts/research/BUGS.md.
 
-Last live read:  2026-09-19T14:01Z, session MTS-2026-09-19-1323Z close. Build-Check PASS.
+Last live read:  2026-09-19T14:30Z, session MTS-2026-09-19-1405Z close. Build-Check PASS.
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: all stopped. lock cleared. supervisor stopped. Build PASS. Next action: loop lifecycle stage 3. Do not run mode.ps1 until stage 3 done. Edge: 4418 labels, no measurable edge in engine fire bucket (in_va). See T038.
+Runtime + loops: loop running, lock 3356, supervisor 14500, java 7876. Stage 3a landed: loop reads data\loop_stop.flag each cycle, removes it in finally. Stage 3b next: stop-day.ps1 becomes flag write plus wait, kill path removed; also fix java tree-kill in loop finally (same class as B014). Do not run mode.ps1 until stage 3 done. B056 filed: supervisor does not check loop_stop.flag; storm risk on crash.
 
 ## 12. SESSION END
 

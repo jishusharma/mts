@@ -813,3 +813,22 @@ Runtime at close: lock 15296, java 5928. No supervisor.
 Build PASS. No BOM. No in-flight.
 
 # END SESSION
+
+## SESSION MTS-2026-09-19-1405Z - CLOSED -
+2026-09-19T14:35Z
+
+Landed:
+  Loop lifecycle stage 3a. Loop reads data\loop_stop.flag at top of each cycle; exits cleanly, runs finally, removes flag.
+  File 679 to 684 lines. PARSE OK. Hash 3E8178E6 to 1050E5D4.
+  Behavior test PASS: flag created 14:24:14Z; loop exited 14:25:10Z; lock gone; flag gone; single supervisor restart; new cycle 1 reached; no storm.
+  B056 filed: supervisor does not check loop_stop.flag; restart storm if wrapper crashes before finally.
+  apparatus_fixes.md: java tree-kill gap on loop finally, class of B014.
+  MTS_DICTIONARY.md: FLAGS section added.
+
+Open at close:
+  Stage 3b: stop-day.ps1 flag write plus wait, kill path removed. Also java tree-kill in loop finally.
+
+Runtime at close: loop running lock 3356, supervisor 14500, java 7876.
+Build PASS. No BOM. No in-flight.
+
+# END SESSION
