@@ -180,11 +180,12 @@ Before importing any concept from the transcripts:
 Update this section at every session close. Keep it to five lines.
 Queue is not listed here. Single source: MyTradingSys/mts/research/BUGS.md.
 
-Last live read:  2026-09-19T13:15Z, session MTS-2026-09-19-1310Z close. Build-Check PASS. Live feed mts-live.
+Last live read:  2026-09-19T13:45Z, session MTS-2026-09-19-1323Z close. Build-Check PASS. Live feed mts-live.
 Thesis:          neutral, low confidence. No fresh human conviction.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: lock 15296, java 5928. No supervisor. Build-Check PASS. Next action: loop lifecycle stage 3. Do not run mode.ps1 until stage 3 is done.
+Runtime + loops: all stopped. lock cleared, java 5928 stopped, supervisor stopped. Build-Check PASS. Next action: loop lifecycle stage 3. Do not run mode.ps1 until stage 3 is done.
+
 ## 12. SESSION END
 
 1. Stop the runtime loop if it is running.
