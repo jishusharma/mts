@@ -111,5 +111,5 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T033 | 2026-09-19 | OPEN | MED | Add OI delta four-state classifier (Aggressive Long, Aggressive Short, Rekt Long, Rekt Short) | MarketDataSnapshot.java buildOI block; INDICATOR_IMPLEMENTATION_HANDOFF.md Phase 2 | - |
 | T034 | 2026-09-19 | OPEN | MED | Add Net Longs / Net Shorts / (New) positioning states from OI + CVD cross | MarketDataSnapshot.java new positioning block; INDICATOR_IMPLEMENTATION_HANDOFF.md Phase 3 | - |
 | T035 | 2026-09-19 | OPEN | LOW | Aggregated multi-venue CVD (Bybit, OKX) | new feed module; INDICATOR_IMPLEMENTATION_HANDOFF.md Phase 5 | - |
-| T036 | 2026-09-19 | OPEN | MED | Wire topLongShortAccountRatio into oi_breakdown.retail | BinanceClient.java L71 (0 callers); MarketDataSnapshot.java buildOiBreakdown L1366 already calls topLongShortPositionRatio | - |
+| T036 | 2026-09-19 | CLOSED | MED | Wire topLongShortAccountRatio into oi_breakdown.retail | BinanceClient.java L71 (0 callers); MarketDataSnapshot.java buildOiBreakdown L1366 already calls topLongShortPositionRatio | hash 7627EBA9->CCD204C1; landed as sibling key topAccounts, not inside retail (different population: top traders vs all accounts); Build-Check PASS 08:37:50Z; no verdict consumer (gauge-class, matches B021/B022); title unchanged per rule 2 |
 # END

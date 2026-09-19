@@ -1382,11 +1382,27 @@ public class MarketDataSnapshot {
             whale.put("long_short_ratio", whaleRatio);
             whale.put("change_1h", Math.round(whaleChange1h*10000.0)/10000.0);
             whale.put("change_4h", Math.round(whaleChange4h*10000.0)/10000.0);
+            ObjectNode topAccounts = node.putObject("topAccounts");
+            try {
+                JsonNode topAcc = client.topLongShortAccountRatio(symbol, "1h", 5);
+                double topRatio = topAcc.get(topAcc.size()-1).get("longShortRatio").asDouble();
+                double topChange1h = topAcc.size()>=2 ? topAcc.get(topAcc.size()-1).get("longShortRatio").asDouble() - topAcc.get(topAcc.size()-2).get("longShortRatio").asDouble() : 0.0;
+                double topChange4h = topAcc.size()>=5 ? topAcc.get(topAcc.size()-1).get("longShortRatio").asDouble() - topAcc.get(topAcc.size()-5).get("longShortRatio").asDouble() : 0.0;
+                topAccounts.put("long_short_ratio", topRatio);
+                topAccounts.put("change_1h", Math.round(topChange1h*10000.0)/10000.0);
+                topAccounts.put("change_4h", Math.round(topChange4h*10000.0)/10000.0);
+            } catch (Exception eTop) {
+                topAccounts.put("long_short_ratio", 0.0);
+                topAccounts.put("change_1h", 0.0);
+                topAccounts.put("change_4h", 0.0);
+                topAccounts.put("note", "unavailable");
+            }
             node.put("confidence", "MEDIUM");
             node.put("note", "Proxy data - account/position ratio, not absolute OI");
         } catch (Exception e) {
             node.putObject("retail").put("long_short_ratio", 0.0).put("change_1h", 0.0).put("change_4h", 0.0);
             node.putObject("whale").put("long_short_ratio", 0.0).put("change_1h", 0.0).put("change_4h", 0.0);
+            node.putObject("topAccounts").put("long_short_ratio", 0.0).put("change_1h", 0.0).put("change_4h", 0.0);
             node.put("confidence", "LOW");
             node.put("note", "OI breakdown unavailable");
         }
