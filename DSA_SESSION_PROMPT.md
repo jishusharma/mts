@@ -193,6 +193,15 @@ Runtime + loops: lock 15296, java 5928. No supervisor. Build-Check PASS. Next ac
 4. Run scripts/Build-Check.ps1. If STATUS is not PASS, stop and fix. Do not close on FAIL.
 5. Snap with a plain commit message.
 
+6. Writing discipline for receipts, journal entries, and doc notes.
+   Test 2 of MyTradingSys/mts/tests/docs/test_integrity.py forbids a
+   short list of repository-command phrases in any live file. Read that
+   list (around line 40-52) before writing. Rephrase to plain verbs:
+   staged, committed, checked out, history, working tree, instead of
+   the command forms. Two sessions on 2026-09-19 tripped this rule by
+   citing the exact command inside a bug receipt and inside a triage
+   header. Both broke Build-Check at paste time.
+
 ## 13. HANDOFF FORMAT
 
 Every task returns five lines.
