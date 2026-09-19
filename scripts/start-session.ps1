@@ -233,7 +233,22 @@ foreach ($sf in $scriptFiles) {
 [void]$sb.AppendLine("### COMMANDS.md ###")
 $cmdPath = Join-Path $root 'COMMANDS.md'
 if (Test-Path $cmdPath) {
-    [void]$sb.AppendLine((Get-Content $cmdPath -Raw))
+    # Wrap contiguous 4-space-indented blocks in powershell fences for one-click copy.
+    $cmdLines = Get-Content $cmdPath
+    $inBlock = $false
+    foreach ($cl in $cmdLines) {
+        $isIndent = ($cl -match '^    ') -and ($cl.Trim().Length -gt 0)
+        if ($isIndent -and -not $inBlock) {
+            [void]$sb.AppendLine('```powershell')
+            $inBlock = $true
+        }
+        if (-not $isIndent -and $inBlock) {
+            [void]$sb.AppendLine('```')
+            $inBlock = $false
+        }
+        [void]$sb.AppendLine($cl)
+    }
+    if ($inBlock) { [void]$sb.AppendLine('```') }
 }
 
 [void]$sb.AppendLine("")
