@@ -263,3 +263,4 @@ Files moved from research/ after their findings were integrated or superseded:
 | scripts/tools/harvest_tom_quotes.py | tool | Harvests Tom quotes from Source GPS lines in condition files. Writes Dumps/tom_harvest.json. Part of T017 pipeline. | MTS-2026-09-18-1726Z | 2026-09-19 |
 | scripts/tools/verify_harvest_vs_corpus.py | tool | Verifies harvested quotes against raw_transcripts_canonical/*.txt. Drops untraceable quotes. Writes tom_harvest_verified.json. | MTS-2026-09-18-1726Z | 2026-09-19 |
 | scripts/tools/rebuild_tom_index_and_tag.py | tool | Rebuilds TOM_VERBATIM_INDEX.md from verified harvest and applies [TOM-NNN] tags to 6 condition files. Closes T017. | MTS-2026-09-18-1726Z | 2026-09-19 |
+| MyTradingSys/mts/research/JISHU_METHOD_2026-09-20.md | 30 | 8E2AB6E6 | 2026-09-20 | jishu_method |
