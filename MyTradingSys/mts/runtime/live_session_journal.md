@@ -903,4 +903,6 @@ Landed:
 Runtime at close: loop lock 2900, supervisor 8248, java 10604.
 Build PASS at boot. No BOM. No in-flight.
 
+
+Addendum (2026-09-20T02:15Z): B057 filed OPEN (StateCodeEmitter accumulator persistence gap). Tape sidecar PID 9844 started and verified. OPEN LONG at 81417.3 entered during session; mark at close ~81119.5, -298 points, no exit rule exists in engine. Range 81000-81200 unresolved at close.
 # END SESSION

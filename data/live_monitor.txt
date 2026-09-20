@@ -7365,3 +7365,185 @@ vdt
     2026-09-20 05:24:23 | 2026-09-20T05:24:15 | 80457.90 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=3 | pd=aligned | rg=RANGE
     2026-09-20 05:25:22 | 2026-09-20T05:25:15 | 80419.70 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=4 | pd=contradiction | rg=RANGE
 
+=== 05:26:16Z snapAge=0s px=80432.0 ===
+va  wk 75104.52/78636.79 | dy 80251.43/80582.56 poc=80311.64 | 4h 80303.0/80533.0 | pf 80095.9/81322.9 | pd 81127.97/81703.64 poc=81458.35
+vw  80590.93/falling -1s=80286.82 +1s=80895.03 -2s=79982.72
+fl  cvd=-2247.299/rising last3=[negative,negative,negative] 1h_s=falling 4h_s=falling
+nd  1m=-7.885 5m=-100.906 15m=28.734 1h=-6.838
+oi  flat/0.06% fund=0.0001 basis=-0.05/discount book=2.91
+sp  tps=31.03 speed=accelerating ratio=4.62 hist=3.65
+oib retail=0.9172 whale=2.1419 top=1.0695
+str 1h 80310.0/80467.8 | 15m 80358.5/80467.8 | 5m 80411.9/80563.1
+sig S b=1/3 inState=240s | nd1m=bullish l3=neutral vol=bullish cvd=bullish pxVwap=bearish
+rg  RANGE conf=HIGH cyc=32
+set
+    r1 ct_short@daily_vah 80582.56 tier=conditional sub=below nrr=1.54 p=4 stop=80743.73 tgt=80251.43
+    r2 ct_short@4h_vah 80533.0 tier=conditional sub=below nrr=2.04 p=4 stop=80694.07 tgt=80095.9
+    r3 ct_short@1h_swing_high 80467.8 tier=trigger_ready sub=at_zone nrr=1.73 p=4 stop=80628.74 tgt=80095.9
+vdt
+    2026-09-20 05:23:23 | 2026-09-20T05:23:15 | 80475.60 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=4 | pd=aligned | rg=RANGE
+    2026-09-20 05:24:23 | 2026-09-20T05:24:15 | 80457.90 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=3 | pd=aligned | rg=RANGE
+    2026-09-20 05:25:22 | 2026-09-20T05:25:15 | 80419.70 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=4 | pd=contradiction | rg=RANGE
+
+=== 05:27:19Z snapAge=2s px=80475.2 ===
+va  wk 75104.52/78636.79 | dy 80251.43/80582.56 poc=80311.64 | 4h 80303.0/80533.0 | pf 80095.9/81322.9 | pd 81127.97/81703.64 poc=81458.35
+vw  80590.6/falling -1s=80286.81 +1s=80894.39 -2s=79983.03
+fl  cvd=-2234.721/rising last3=[negative,negative,positive] 1h_s=falling 4h_s=falling
+nd  1m=12.578 5m=-90.744 15m=-171.78 1h=-2.9
+oi  flat/0.06% fund=0.0001 basis=-0.05/discount book=2.87
+sp  tps=13.71 speed=maintaining ratio=1.59 hist=1.61
+oib retail=0.9172 whale=2.1419 top=1.0695
+str 1h 80310.0/80467.8 | 15m 80358.5/80467.8 | 5m 80411.9/80563.1
+sig S b=2/1 inState=300s | nd1m=bearish l3=neutral vol=neutral cvd=bullish pxVwap=bearish
+rg  RANGE conf=HIGH cyc=33
+set
+    r1 ct_short@daily_vah 80582.56 tier=conditional sub=below nrr=1.54 p=5 stop=80743.73 tgt=80251.43
+    r2 ct_short@4h_vah 80533.0 tier=trigger_ready sub=at_zone nrr=2.04 p=5 stop=80694.07 tgt=80095.9
+    r3 ct_short@1h_swing_high 80467.8 tier=trigger_ready sub=at_zone nrr=1.73 p=5 stop=80628.74 tgt=80095.9
+    r11 fvg_short@fvg_top 80564.4 tier=conditional sub=below nrr=2.43 p=0 stop=80644.96439999998 tgt=80303.0
+vdt
+    2026-09-20 05:24:23 | 2026-09-20T05:24:15 | 80457.90 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=3 | pd=aligned | rg=RANGE
+    2026-09-20 05:25:22 | 2026-09-20T05:25:15 | 80419.70 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=4 | pd=contradiction | rg=RANGE
+    2026-09-20 05:26:23 | 2026-09-20T05:26:15 | 80432.00 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=4 | pd=aligned | rg=RANGE
+
+=== 05:28:22Z snapAge=5s px=80500.0 ===
+va  wk 75104.52/78636.79 | dy 80251.43/80582.56 poc=80311.64 | 4h 80303.0/80528.0 | pf 80095.9/81322.9 | pd 81127.97/81703.64 poc=81458.35
+vw  80590.49/falling -1s=80286.86 +1s=80894.11 -2s=79983.24
+fl  cvd=-2249.581/rising last3=[negative,positive,negative] 1h_s=rising 4h_s=falling
+nd  1m=-14.86 5m=-85.232 15m=-189.907 1h=-16.796
+oi  flat/0.06% fund=0.0001 basis=-0.05/discount book=0.4
+sp  tps=8.65 speed=maintaining ratio=1.01 hist=1.0
+oib retail=0.9172 whale=2.1419 top=1.0695
+str 1h 80310.0/80467.8 | 15m 80358.5/80467.8 | 5m 80411.9/80563.1
+sig A b=2/1 inState=0s | nd1m=bearish l3=neutral vol=neutral cvd=bullish pxVwap=bearish
+rg  RANGE conf=HIGH cyc=34
+set
+    r1 ct_short@daily_vah 80582.56 tier=conditional sub=below nrr=1.54 p=4 stop=80743.73 tgt=80251.43
+    r2 ct_short@4h_vah 80528.0 tier=trigger_ready sub=at_zone nrr=2.01 p=4 stop=80689.06 tgt=80095.9
+    r3 ct_short@1h_swing_high 80467.8 tier=trigger_ready sub=at_zone nrr=1.73 p=4 stop=80628.74 tgt=80095.9
+    r11 fvg_short@fvg_top 80564.4 tier=trigger_ready sub=below nrr=2.43 p=0 stop=80644.96439999998 tgt=80303.0
+vdt
+    2026-09-20 05:25:22 | 2026-09-20T05:25:15 | 80419.70 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=4 | pd=contradiction | rg=RANGE
+    2026-09-20 05:26:23 | 2026-09-20T05:26:15 | 80432.00 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=4 | pd=aligned | rg=RANGE
+    2026-09-20 05:27:23 | 2026-09-20T05:27:15 | 80475.20 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=5 | pd=aligned | rg=RANGE
+
+=== 05:29:24Z snapAge=8s px=80496.8 ===
+va  wk 75104.52/78636.79 | dy 80251.43/80582.56 poc=80311.64 | 4h 80303.0/80528.0 | pf 80095.9/81322.9 | pd 81127.97/81703.64 poc=81458.35
+vw  80590.37/falling -1s=80286.92 +1s=80893.83 -2s=79983.46
+fl  cvd=-2252.604/rising last3=[positive,negative,negative] 1h_s=rising 4h_s=falling
+nd  1m=-3.023 5m=-69.266 15m=-183.689 1h=51.237
+oi  flat/0.06% fund=0.0001 basis=-0.05/discount book=1.56
+sp  tps=7.49 speed=maintaining ratio=0.99 hist=0.88
+oib retail=0.9172 whale=2.1419 top=1.0695
+str 1h 80310.0/80467.8 | 15m 80358.5/80467.8 | 5m 80411.9/80563.1
+sig A b=3/1 inState=60s | nd1m=bearish l3=bearish vol=neutral cvd=bullish pxVwap=bearish
+rg  RANGE conf=HIGH cyc=36
+set
+    r1 ct_short@daily_vah 80582.56 tier=conditional sub=below nrr=1.54 p=3 stop=80743.73 tgt=80251.43
+    r2 ct_short@4h_vah 80528.0 tier=trigger_ready sub=at_zone nrr=2.01 p=3 stop=80689.06 tgt=80095.9
+    r3 ct_short@1h_swing_high 80467.8 tier=trigger_ready sub=at_zone nrr=1.73 p=3 stop=80628.74 tgt=80095.9
+vdt
+    2026-09-20 05:26:23 | 2026-09-20T05:26:15 | 80432.00 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=4 | pd=aligned | rg=RANGE
+    2026-09-20 05:27:23 | 2026-09-20T05:27:15 | 80475.20 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=5 | pd=aligned | rg=RANGE
+    2026-09-20 05:29:23 | 2026-09-20T05:29:15 | 80496.80 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=3 | pd=aligned | rg=RANGE
+
+=== 05:30:27Z snapAge=11s px=80511.4 ===
+va  wk 75104.52/78636.79 | dy 80251.43/80582.56 poc=80311.64 | 4h 80303.0/80528.0 | pf 80095.9/81322.9 | pd 81127.97/81703.64 poc=81458.35
+vw  80590.3/falling -1s=80286.96 +1s=80893.65 -2s=79983.62
+fl  cvd=-2265.122/rising last3=[negative,negative,negative] 1h_s=rising 4h_s=falling
+nd  1m=-12.518 5m=-25.708 15m=-185.818 1h=37.192
+oi  flat/0.06% fund=0.0001 basis=-0.05/discount book=1.13
+sp  tps=6.01 speed=decelerating ratio=0.5 hist=0.73
+oib retail=0.9172 whale=2.1419 top=1.0695
+str 1h 80310.0/80467.8 | 15m 80358.5/80563.1 | 5m 80419.7/80563.1
+sig A>S b=3/1 inState=0s | nd1m=bearish l3=bearish vol=neutral cvd=bullish pxVwap=bearish
+rg  RANGE conf=HIGH cyc=37
+set
+    r1 ct_short@daily_vah 80582.56 tier=trigger_ready sub=at_zone nrr=1.54 p=2 stop=80743.73 tgt=80251.43
+    r2 ct_short@4h_vah 80528.0 tier=trigger_ready sub=at_zone nrr=2.01 p=2 stop=80689.06 tgt=80095.9
+    r3 ct_short@1h_swing_high 80467.8 tier=trigger_ready sub=at_zone nrr=1.73 p=2 stop=80628.74 tgt=80095.9
+vdt
+    2026-09-20 05:27:23 | 2026-09-20T05:27:15 | 80475.20 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=5 | pd=aligned | rg=RANGE
+    2026-09-20 05:29:23 | 2026-09-20T05:29:15 | 80496.80 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=3 | pd=aligned | rg=RANGE
+    2026-09-20 05:30:23 | 2026-09-20T05:30:15 | 80511.40 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=2 | pd=aligned | rg=RANGE
+
+=== 05:31:19Z snapAge=3s px=80511.3 ===
+va  wk 75104.52/78636.79 | dy 80251.43/80582.56 poc=80311.64 | 4h 80303.0/80528.0 | pf 80095.9/81322.9 | pd 81127.97/81703.64 poc=81458.35
+vw  80590.24/falling -1s=80287.01 +1s=80893.47 -2s=79983.78
+fl  cvd=-2279.23/rising last3=[negative,negative,negative] 1h_s=rising 4h_s=falling
+nd  1m=-14.108 5m=-31.931 15m=-150.621 1h=23.729
+oi  flat/0.06% fund=0.0001 basis=-0.05/discount book=4.84
+sp  tps=5.14 speed=decelerating ratio=0.16 hist=0.64
+oib retail=0.9172 whale=2.1419 top=1.0695
+str 1h 80310.0/80467.8 | 15m 80358.5/80563.1 | 5m 80419.7/80563.1
+sig A>S b=3/1 inState=60s | nd1m=bearish l3=bearish vol=neutral cvd=bullish pxVwap=bearish
+rg  RANGE conf=HIGH cyc=37
+set
+    r1 ct_short@daily_vah 80582.56 tier=trigger_ready sub=at_zone nrr=1.54 p=3 stop=80743.73 tgt=80251.43
+    r2 ct_short@4h_vah 80528.0 tier=trigger_ready sub=at_zone nrr=2.01 p=3 stop=80689.06 tgt=80095.9
+    r3 ct_short@1h_swing_high 80467.8 tier=trigger_ready sub=at_zone nrr=1.73 p=3 stop=80628.74 tgt=80095.9
+vdt
+    2026-09-20 05:27:23 | 2026-09-20T05:27:15 | 80475.20 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=5 | pd=aligned | rg=RANGE
+    2026-09-20 05:29:23 | 2026-09-20T05:29:15 | 80496.80 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=3 | pd=aligned | rg=RANGE
+    2026-09-20 05:30:23 | 2026-09-20T05:30:15 | 80511.40 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=2 | pd=aligned | rg=RANGE
+
+=== 05:32:22Z snapAge=6s px=80527.8 ===
+va  wk 75104.52/78636.79 | dy 80251.43/80582.56 poc=80311.64 | 4h 80303.0/80528.0 | pf 80095.9/81322.9 | pd 81127.97/81703.64 poc=81458.35
+vw  80590.17/falling -1s=80287.09 +1s=80893.26 -2s=79984.0
+fl  cvd=-2286.06/rising last3=[negative,negative,negative] 1h_s=rising 4h_s=falling
+nd  1m=-6.83 5m=-51.339 15m=-148.702 1h=7.774
+oi  flat/0.06% fund=0.0001 basis=-0.06/discount book=2.38
+sp  tps=5.72 speed=decelerating ratio=0.3 hist=0.71
+oib retail=0.9172 whale=2.1419 top=1.0695
+str 1h 80310.0/80467.8 | 15m 80358.5/80563.1 | 5m 80419.7/80563.1
+sig A>S b=2/1 inState=120s | nd1m=bearish l3=bearish vol=neutral cvd=bullish pxVwap=neutral
+rg  RANGE conf=HIGH cyc=39
+set
+    r1 ct_short@4h_vah 80528.0 tier=trigger_ready sub=at_zone nrr=2.01 p=4 stop=80689.06 tgt=80095.9
+    r2 ct_short@1h_swing_high 80467.8 tier=trigger_ready sub=at_zone nrr=1.73 p=4 stop=80628.74 tgt=80095.9
+    r3 ct_short@15m_swing_high 80563.1 tier=trigger_ready sub=at_zone nrr=2.17 p=4 stop=80724.23 tgt=80095.9
+vdt
+    2026-09-20 05:30:23 | 2026-09-20T05:30:15 | 80511.40 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=2 | pd=aligned | rg=RANGE
+    2026-09-20 05:31:24 | 2026-09-20T05:31:15 | 80511.30 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=3 | pd=contradiction | rg=RANGE
+    2026-09-20 05:32:23 | 2026-09-20T05:32:15 | 80527.80 | TWOPEAK/in_va | WATCH (proof 4) | ct_short @ 4h_vah 80528.00 | nrr=2.01 | p=4 | pd=contradiction | rg=RANGE
+
+=== 05:33:25Z snapAge=9s px=80585.1 ===
+va  wk 75104.52/78636.79 | dy 80251.43/80582.56 poc=80311.64 | 4h 80303.0/80538.0 | pf 80095.9/81317.89 | pd 81127.97/81703.64 poc=81458.35
+vw  80590.11/falling -1s=80287.46 +1s=80892.76 -2s=79984.82
+fl  cvd=-2252.309/rising last3=[negative,negative,positive] 1h_s=rising 4h_s=falling
+nd  1m=33.751 5m=-2.728 15m=-98.242 1h=50.031
+oi  flat/0.06% fund=0.0001 basis=-0.05/discount book=0.5
+sp  tps=11.94 speed=maintaining ratio=1.87 hist=1.48
+oib retail=0.9172 whale=2.1419 top=1.0695
+str 1h 80310.0/80467.8 | 15m 80358.5/80563.1 | 5m 80419.7/80563.1
+sig A b=0/2 inState=0s | nd1m=bullish l3=neutral vol=neutral cvd=bullish pxVwap=neutral
+rg  RANGE conf=HIGH cyc=40
+set
+    r1 ct_long@5m_swing_low 80419.7 tier=conditional sub=above nrr=4.19 p=4 stop=80258.86 tgt=81317.89
+    r2 ct_long@4h_val 80303.0 tier=conditional sub=above nrr=4.74 p=3 stop=80142.39 tgt=81317.89
+    r3 tc_long@vwap 80590.11 tier=trigger_ready sub=at_zone nrr=3.2 p=3 stop=80419.7 tgt=81317.89
+vdt
+    2026-09-20 05:31:24 | 2026-09-20T05:31:15 | 80511.30 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=3 | pd=contradiction | rg=RANGE
+    2026-09-20 05:32:23 | 2026-09-20T05:32:15 | 80527.80 | TWOPEAK/in_va | WATCH (proof 4) | ct_short @ 4h_vah 80528.00 | nrr=2.01 | p=4 | pd=contradiction | rg=RANGE
+    2026-09-20 05:33:23 | 2026-09-20T05:33:15 | 80585.10 | TWOPEAK/above_vah | WAIT_TRIGGER (price not at zone) | ct_long @ 5m_swing_low 80419.70 | nrr=4.19 | p=4 | pd=aligned | rg=RANGE
+
+=== 05:34:16Z snapAge=0s px=80557.9 ===
+va  wk 75104.52/78636.79 | dy 80251.43/80582.56 poc=80311.64 | 4h 80303.0/80538.0 | pf 80095.9/81317.89 | pd 81127.97/81703.64 poc=81458.35
+vw  80590.08/falling -1s=80287.61 +1s=80892.54 -2s=79985.15
+fl  cvd=-2266.123/rising last3=[negative,positive,negative] 1h_s=rising 4h_s=falling
+nd  1m=-13.814 5m=-13.519 15m=-142.678 1h=38.255
+oi  flat/0.06% fund=0.0001 basis=-0.05/discount book=0.79
+sp  tps=8.96 speed=maintaining ratio=1.01 hist=1.11
+oib retail=0.9172 whale=2.1419 top=1.0695
+str 1h 80310.0/80467.8 | 15m 80358.5/80563.1 | 5m 80419.7/80563.1
+sig A b=1/1 inState=60s | nd1m=bearish l3=neutral vol=neutral cvd=bullish pxVwap=neutral
+rg  RANGE conf=HIGH cyc=40
+set
+    r1 ct_short@daily_vah 80582.56 tier=trigger_ready sub=at_zone nrr=1.54 p=3 stop=80743.73 tgt=80251.43
+    r2 ct_short@4h_vah 80538.0 tier=trigger_ready sub=at_zone nrr=2.06 p=3 stop=80699.08 tgt=80095.9
+    r3 ct_short@1h_swing_high 80467.8 tier=conditional sub=above nrr=1.73 p=3 stop=80628.74 tgt=80095.9
+vdt
+    2026-09-20 05:31:24 | 2026-09-20T05:31:15 | 80511.30 | TWOPEAK/in_va | WAIT_RR (net_rr 1.54 < 2.0) | ct_short @ daily_vah 80582.56 | nrr=1.54 | p=3 | pd=contradiction | rg=RANGE
+    2026-09-20 05:32:23 | 2026-09-20T05:32:15 | 80527.80 | TWOPEAK/in_va | WATCH (proof 4) | ct_short @ 4h_vah 80528.00 | nrr=2.01 | p=4 | pd=contradiction | rg=RANGE
+    2026-09-20 05:33:23 | 2026-09-20T05:33:15 | 80585.10 | TWOPEAK/above_vah | WAIT_TRIGGER (price not at zone) | ct_long @ 5m_swing_low 80419.70 | nrr=4.19 | p=4 | pd=aligned | rg=RANGE
+
