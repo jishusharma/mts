@@ -890,7 +890,7 @@ Runtime at close: loop running lock 6372, supervisor 8248, java 11180 (state-mac
 Build PASS at boot. No BOM. No in-flight.
 
 # END SESSION
-## SESSION MTS-2026-09-19-1811Z - SUPERVISOR + B050 - CLOSED -
+## SESSION MTS-2026-09-19-1811Z - SUPERVISOR + B050 + POSITION - CLOSED -
 2026-09-20T01:06Z
 
 Landed:
