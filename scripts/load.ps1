@@ -31,3 +31,8 @@ function gitsee  { git log --oneline -5; "dirty: " + (git status --short | Measu
 function gitundo { git reset --hard last-snapshot; "reverted to last-snapshot" }
 
 
+
+# mts-paste - continuous live snapshot writer. See PENDING_MTS_PASTE.
+function mts-paste      { Remove-Item "$ScriptDir\..\data\live_paste_stop.flag" -ErrorAction SilentlyContinue | Out-Null; & "$ScriptDir\live\mts-paste.ps1" @args }
+function mts-paste-now  { & "$ScriptDir\live\mts-paste.ps1" -Once; Get-Content "$ScriptDir\..\Dumps\LIVE_PASTE.txt" -Raw }
+function mts-paste-stop { New-Item "$ScriptDir\..\data\live_paste_stop.flag" -ItemType File -Force | Out-Null; "stop flag written" }

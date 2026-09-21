@@ -196,12 +196,12 @@ Before importing any concept from the transcripts:
 Update this section at every session close. Keep it to five lines.
 Queue is not listed here. Single source: MyTradingSys/mts/research/BUGS.md.
 
-Last live read:  2026-09-21T12:35Z. Session MTS-2026-09-21-0729Z close. Build PASS at boot 07:29Z.
+Last live read:  2026-09-21T18:31Z. Session MTS-2026-09-21-1328Z close. Build PASS 18:24Z, loop stopped 18:32Z.
 Thesis:          neutral, low confidence. Unchanged.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: live. Wrapper 4828, supervisor 13412, java 11404. Lock 4828. No position. start-trading-day.ps1 352EFC9A.
-Findings:        B058 C live-observed once (11:25:23Z). B058 D, B062 suppression, EXIT_HINT pending live observation. B059 deferred. MODEL_ALIGNMENT delivered. Backtest audit carried to next session (PENDING_BACKTEST_AUDIT.md). Rule 15 no-inferred-levels added.
+Runtime + loops: stopped. No wrapper, no supervisor, no java. Locks cleared. start-trading-day.ps1 352EFC9A.
+Findings:        BACKTEST_METHOD, DIVERGENCE_AUDIT_AND_RESEARCH, GOLAS_CD_WEB landed (3 files, 3 index rows). mts-paste built and wired (script + 3 aliases + index + dictionary + COMMANDS). B056 recurred 18:29:53Z: supervisor restarted wrapper after stop-day because tracked PID was 0. Carry into queue.
 ## 12. SESSION END
 
 1. Stop the runtime loop if it is running.

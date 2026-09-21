@@ -962,3 +962,19 @@ Retracted from prior close note: DSA section 11 claims on supervisor identity ha
 Note on inferred exit, 2026-09-21: prior-day POC was used to exit a long and price ran 3000 points. No engine rule names prior-day POC as an exit. Rule 15 in live_session_protocol now forbids inferred levels.
 
 # END SESSION
+## SESSION MTS-2026-09-21-1328Z - DIVERGENCE + BACKTEST RESEARCH - CLOSED -
+2026-09-21T18:25Z
+
+Landed:
+  BACKTEST_METHOD_2026-09-21.md - worker reply, 67 lines, SHA 8D29A4A6. Seven sections. Chosen method: replay Compute-Verdict over snapshots, join to labels.
+  DIVERGENCE_AUDIT_AND_RESEARCH.md - worker reply, 118 lines, SHA FAF66528. Five sections A-E. Zero forbidden words.
+  GOLAS_CD_WEB_2026-09-21.md - coordinator web research, 62 lines, SHA F0C1D37C. GOLAS-C all T3 or lower. GOLAS-D T1 backed.
+  03_FILE_INDEX.md +3 rows. 271 lines.
+
+Findings:
+  Divergence handling is fragmented. Live alerts do not fire on divergence. tape-watch.ps1 L59-60 uses a two-term rule on adjacent snapshots. divergence_monitor.py uses three thresholds. SetupScreener.java takes a boolean cvdDivergence parameter, caller not shown. SetupCandidatesBuilder.java L276 uses cvdSlope == "divergent" for regime. mtf_flow_alignment_design is inert, no consumer.
+  Alert stream (excerpt 1, ALERT #747-#776) fires on verdict change, proof crossing, zone change, STATE change. No divergence alert appears.
+  9-day snapshot window is a hard cap on any backtest claim.
+
+Runtime: loop live throughout. Wrapper 6544, supervisor 13412, java 3340, lock 6544.
+# END SESSION

@@ -111,3 +111,6 @@ Wait 35 seconds. The supervisor exits on its next check. Then remove the flag:
 The supervisor log is at data\supervisor_log.txt.
 
 # END
+    mts-paste        continuous live snapshot to Dumps/LIVE_PASTE.txt, 30s cadence
+    mts-paste-now    one-shot grab and print
+    mts-paste-stop   stop the loop

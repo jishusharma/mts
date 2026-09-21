@@ -192,3 +192,7 @@ Files in data\ that a process reads as a stop signal. Distinct paths, distinct r
 |---|---|---|---|
 | supervisor_stop.flag | Operator (manual) | loop-supervisor.ps1 each 30s check | Supervisor exits cleanly |
 | loop_stop.flag | Operator or stop-day.ps1 | start-trading-day.ps1 each cycle top; removed in loop finally block | Loop exits cleanly, state-machine java shut down, lock released |
+
+| mts-paste | Continuous live snapshot writer. Writes Dumps/LIVE_PASTE.txt every 30s. |
+| mts-paste-now | One-shot write and print LIVE_PASTE.txt to console. |
+| mts-paste-stop | Stop the mts-paste loop. |

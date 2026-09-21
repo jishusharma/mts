@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-19
-# SIZE: ~15KB
+# SIZE: ~16.2KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -266,3 +266,7 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/mts/research/JISHU_METHOD_2026-09-20.md | 30 | 8E2AB6E6 | 2026-09-20 | jishu_method |
 
 | MyTradingSys/mts/research/MODEL_ALIGNMENT_2026-09-21.md | research | Model alignment carry-forward. Five issues + pre-committed chain. DISK vs UNVERIFIED-WEB tags. | MTS-2026-09-21-0721Z | 2026-09-21 |
+| MyTradingSys/mts/research/DIVERGENCE_AUDIT_AND_RESEARCH.md | research | Divergence audit of MTS handling + GOLAS A-D research. Five sections. UNVERIFIED-WEB tags for external claims. | MTS-2026-09-21-1328Z | 2026-09-21 |
+| MyTradingSys/mts/research/BACKTEST_METHOD_2026-09-21.md | research | Backtest planning doc. Seven sections. Chosen method is replay of Compute-Verdict over snapshots joined to outcome labels. | MTS-2026-09-21-0729Z | 2026-09-21 |
+| MyTradingSys/mts/research/GOLAS_CD_WEB_2026-09-21.md | research | Web reinforcement for GOLAS-C and GOLAS-D. T1/T3 tier tags. States 9-day data cap. | MTS-2026-09-21-1328Z | 2026-09-21 |
+| scripts/live/mts-paste.ps1 | tool | Continuous live snapshot writer. Reads log, lock, state_code, regime, latest snapshot, tape, position. Writes Dumps/LIVE_PASTE.txt atomic. LF, no BOM. Stops on data/live_paste_stop.flag. | MTS-2026-09-21-1328Z | 2026-09-21 |
