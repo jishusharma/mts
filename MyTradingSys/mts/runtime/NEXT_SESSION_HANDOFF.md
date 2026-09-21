@@ -18,6 +18,7 @@ Do not mirror the queue here. Single source:
      Get-Content .\MyTradingSys\mts\research\BUGS.md -Tail 40
 3. Read the queue from BUGS.md. Pick work.
 4. Read MyTradingSys/mts/research/MODEL_ALIGNMENT_2026-09-21.md (delivered 2026-09-21).
+5. Dispatch one worker for the backtest audit. Deliverable: MyTradingSys/mts/research/BACKTEST_METHOD_2026-09-21.md. See MyTradingSys/mts/research/PENDING_BACKTEST_AUDIT.md. After that doc lands, enter live mode (mts-live).
 
 ## LANDED THIS SESSION (MTS-2026-09-21-0729Z)
 

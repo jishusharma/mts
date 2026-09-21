@@ -201,7 +201,7 @@ Thesis:          neutral, low confidence. Unchanged.
 Next trigger:    none set.
 Invalidates:     none set.
 Runtime + loops: live. Wrapper 4828, supervisor 13412, java 11404. Lock 4828. No position. start-trading-day.ps1 352EFC9A.
-Findings:        B058 C live-observed once (11:25:23Z). B058 D, B062 suppression, EXIT_HINT pending live observation. B059 deferred. MODEL_ALIGNMENT delivered. T037 untouched. Rule 15 no-inferred-levels added.
+Findings:        B058 C live-observed once (11:25:23Z). B058 D, B062 suppression, EXIT_HINT pending live observation. B059 deferred. MODEL_ALIGNMENT delivered. Backtest audit carried to next session (PENDING_BACKTEST_AUDIT.md). Rule 15 no-inferred-levels added.
 ## 12. SESSION END
 
 1. Stop the runtime loop if it is running.

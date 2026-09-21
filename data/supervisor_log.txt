@@ -5913,3 +5913,14 @@
 2026-09-21 12:31:09 |   reader-only restart: prior wrapper PID=4828 not killed
 2026-09-21 12:31:12 |   started new wrapper PID=6544
 2026-09-21 12:31:44 | ok wrapper=6544 snapAge=87s grace=True
+2026-09-21 12:32:17 | ok wrapper=6544 snapAge=121s grace=True
+2026-09-21 12:32:49 | ok wrapper=6544 snapAge=30s grace=False
+2026-09-21 12:33:20 | ok wrapper=6544 snapAge=4s grace=False
+2026-09-21 12:33:52 | ok wrapper=6544 snapAge=35s grace=False
+2026-09-21 12:34:23 | ok wrapper=6544 snapAge=7s grace=False
+2026-09-21 12:34:55 | ok wrapper=6544 snapAge=39s grace=False
+2026-09-21 12:35:26 | ok wrapper=6544 snapAge=10s grace=False
+2026-09-21 12:35:58 | ok wrapper=6544 snapAge=41s grace=False
+2026-09-21 12:36:29 | ok wrapper=6544 snapAge=14s grace=False
+2026-09-21 12:37:01 | ok wrapper=6544 snapAge=45s grace=False
+2026-09-21 12:37:33 | ok wrapper=6544 snapAge=17s grace=False
