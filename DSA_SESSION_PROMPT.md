@@ -196,15 +196,17 @@ Before importing any concept from the transcripts:
 Update this section at every session close. Keep it to five lines.
 Queue is not listed here. Single source: MyTradingSys/mts/research/BUGS.md.
 
-Last live read:  2026-09-21T18:31Z. Session MTS-2026-09-21-1328Z close. Build PASS 18:24Z, loop stopped 18:32Z.
+Last live read:  2026-09-21T21:31Z. Session MTS-2026-09-21-1905Z close. Build PASS 21:26Z.
 Thesis:          neutral, low confidence. Unchanged.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: stopped. No wrapper, no supervisor, no java. Locks cleared. start-trading-day.ps1 352EFC9A.
-Findings:        BACKTEST_METHOD, DIVERGENCE_AUDIT_AND_RESEARCH, GOLAS_CD_WEB landed (3 files, 3 index rows). mts-paste built and wired (script + 3 aliases + index + dictionary + COMMANDS). B056 recurred 18:29:53Z: supervisor restarted wrapper after stop-day because tracked PID was 0. Carry into queue.
+Runtime + loops: live. Wrapper 10456, java 2284, lock 10456. start-trading-day.ps1 352EFC9A.
+Findings:        T033 closed: open_interest.delta_state (volume-delta school, nd1h) + delta_state_price (price school, close delta over 60 1m bars). backtest_oi_delta_4state.py + OI_DELTA_4STATE_BACKTEST_2026-09-21.md landed. Both schools near-identical on 6362 rows / 8-9 days; no state survives day-clustered SE. First live disagreement observed 21:31Z: rekt_short vs rekt_long.
 ## 12. SESSION END
 
-1. Stop the runtime loop if it is running.
+1. Do NOT stop the runtime loop at close. The loop runs across sessions.
+   Stop it only when a task requires it, and say so in the journal.
+   The operator runs stop-day.ps1 himself before powering off.
 2. Update section 11 above with the current state.
 3. Log the decision in the ledger.
 4. Run scripts/Build-Check.ps1. If STATUS is not PASS, stop and fix. Do not close on FAIL.

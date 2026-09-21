@@ -978,3 +978,122 @@ Findings:
 
 Runtime: loop live throughout. Wrapper 6544, supervisor 13412, java 3340, lock 6544.
 # END SESSION
+## T033 LANDED - 2026-09-21T19:58Z
+
+MarketDataSnapshot.java adds open_interest.delta_state: aggressive_long / aggressive_short / rekt_long / rekt_short / neutral.
+Inputs: oiDirection (rising|falling) + sign of trade_flow.net_delta_1h. Mapping matches HANDOFF Phase 2 L55-57.
+Live path L366; historical fallback L1157 = neutral; helper classifyOiDeltaState L1367.
+Hash 3006E87F -> 3B4E6325. Lines 1315 -> 1326. CRLF preserved. Build-Check PASS 19:58:35Z.
+Gauge-class: no verdict consumer. T037 test-coverage gap remains open. Running loop keeps old class in memory; key appears next restart.
+
+## T033 CORRECTION + SIBLING - 2026-09-21T21:17Z
+
+Research (coordinator web search, HANDOFF re-read) showed the four-state OI classifier is a volume-delta construction, not price. HANDOFF L53 literal reading ("bar-to-bar change in OI") is unsupported by any professional source; the named states Aggressive/Rekt come from the volume-delta school (BackQuant, AghaInvst, Publish0x, GoCharting).
+T033 field delta_state: input is trade_flow.net_delta_1h (1h window matches change_1h_pct). Family per dictionary: net_delta_* maps to CoinGlass Volume Delta (flow). Comment added L1368-1374 naming the school and B044.
+Sibling field delta_state_price added L373: same classifier, input = close at bar[now] minus close at bar[now-60], i.e. 1h price change. Historical fallback L1165 = neutral.
+Hash chain: 3B4E6325 (T033 initial) -> 2C0C2064 (comment) -> 5B2270A4 (price sibling). Build PASS 21:17:14Z. Lines 1326 -> 1342.
+Backtest both fields side by side to pick a winner. Spec next.
+Retracting earlier B059 claim: "does not reproduce" from one cycle is not evidence. Queue note only.
+
+## SESSION MTS-2026-09-21-1905Z - T033 + BACKTEST - CLOSED -
+2026-09-21T21:30Z
+
+Landed:
+  T033 open_interest.delta_state (volume-delta school, nd1h input) L366. Helper L1375 with 8-line comment.
+  T033 sibling open_interest.delta_state_price (price school, close delta over 60 1m bars) L373.
+  Historical fallbacks L1164-1165 = neutral.
+  backtest_oi_delta_4state.py new (136 lines, 5604 bytes, PARSE OK).
+  OI_DELTA_4STATE_BACKTEST_2026-09-21.md report.
+
+Findings:
+  Both schools near-identical on 6362 rows, 8-9 days. Max |mean| = 0.52 pct at 120m.
+  Volume-delta school: aggressive_long 120m +0.3060, rekt_long 120m -0.0778.
+  Price school: aggressive_long 120m +0.4572, rekt_long 120m -0.0830.
+  aggressive_short positive at all horizons in both schools - contradicts spec.
+  rekt_short near zero at all horizons in both schools - contradicts spec.
+  se(day) 0.03-0.33. Most means within 1-2 se of zero. No state survives a significance bar.
+  Day count 8-9. Hard cap.
+
+Retracted:
+  B059 "does not reproduce" - one cycle is not evidence.
+
+Runtime at close: see NEXT_SESSION_HANDOFF.md.
+
+## SESSION MTS-2026-09-21-1905Z - T033 + BACKTEST - CLOSED -
+2026-09-21T21:30Z
+
+Landed:
+  T033 open_interest.delta_state (volume-delta school, nd1h input) L366. Helper L1375 with 8-line comment.
+  T033 sibling open_interest.delta_state_price (price school, close delta over 60 1m bars) L373.
+  Historical fallbacks L1164-1165 = neutral.
+  backtest_oi_delta_4state.py new (136 lines, 5604 bytes, PARSE OK).
+  OI_DELTA_4STATE_BACKTEST_2026-09-21.md report.
+
+Findings:
+  Both schools near-identical on 6362 rows, 8-9 days. Max |mean| = 0.52 pct at 120m.
+  Volume-delta school: aggressive_long 120m +0.3060, rekt_long 120m -0.0778.
+  Price school: aggressive_long 120m +0.4572, rekt_long 120m -0.0830.
+  aggressive_short positive at all horizons in both schools - contradicts spec.
+  rekt_short near zero at all horizons in both schools - contradicts spec.
+  se(day) 0.03-0.33. Most means within 1-2 se of zero. No state survives a significance bar.
+  Day count 8-9. Hard cap.
+
+Retracted:
+  B059 "does not reproduce" - one cycle is not evidence.
+
+Runtime at close: see NEXT_SESSION_HANDOFF.md.
+
+## SESSION MTS-2026-09-21-1905Z - T033 + BACKTEST - CLOSED -
+2026-09-21T21:30Z
+
+Landed:
+  T033 open_interest.delta_state (volume-delta school, nd1h input) L366. Helper L1375 with 8-line comment.
+  T033 sibling open_interest.delta_state_price (price school, close delta over 60 1m bars) L373.
+  Historical fallbacks L1164-1165 = neutral.
+  backtest_oi_delta_4state.py new (136 lines, 5604 bytes, PARSE OK).
+  OI_DELTA_4STATE_BACKTEST_2026-09-21.md report.
+
+Findings:
+  Both schools near-identical on 6362 rows, 8-9 days. Max |mean| = 0.52 pct at 120m.
+  Volume-delta school: aggressive_long 120m +0.3060, rekt_long 120m -0.0778.
+  Price school: aggressive_long 120m +0.4572, rekt_long 120m -0.0830.
+  aggressive_short positive at all horizons in both schools - contradicts spec.
+  rekt_short near zero at all horizons in both schools - contradicts spec.
+  se(day) 0.03-0.33. Most means within 1-2 se of zero. No state survives a significance bar.
+  Day count 8-9. Hard cap.
+
+Retracted:
+  B059 "does not reproduce" - one cycle is not evidence.
+
+Runtime at close: see NEXT_SESSION_HANDOFF.md.
+
+## SESSION MTS-2026-09-21-1905Z - T033 + BACKTEST - CLOSED -
+2026-09-21T21:35Z
+
+Landed:
+  T033 open_interest.delta_state (volume-delta school, nd1h input) L366. Helper L1375 with 8-line comment.
+  T033 sibling open_interest.delta_state_price (price school, close delta over 60 1m bars) L373.
+  Historical fallbacks L1164-1165 = neutral.
+  backtest_oi_delta_4state.py new (136 lines, 5604 bytes, PARSE OK).
+  OI_DELTA_4STATE_BACKTEST_2026-09-21.md report.
+
+Findings:
+  Both schools near-identical on 6362 rows, 8-9 days. Max |mean| = 0.52 pct at 120m.
+  Volume-delta school: aggressive_long 120m +0.3060, rekt_long 120m -0.0778.
+  Price school: aggressive_long 120m +0.4572, rekt_long 120m -0.0830.
+  aggressive_short positive at all horizons in both schools - contradicts spec.
+  rekt_short near zero at all horizons in both schools - contradicts spec.
+  se(day) 0.03-0.33. Most means within 1-2 se of zero. No state survives a significance bar.
+  Day count 8-9. Hard cap.
+
+Retracted:
+  B059 "does not reproduce" - one cycle is not evidence.
+
+Runtime: loop left running per revised close rule.
+
+## CLOSE NOTE 2026-09-21T21:33Z
+
+Four close entries appear for this session (L998, 1022, 1046, 1070) because the close block ran twice. No deletes per rule. This line records the fact.
+Loop restarted 21:30:21Z, wrapper 10456, java 2284, cycle 1 landed 21:31:17Z.
+First live snapshot with both new fields: BTCUSDT_2026-09-22_1790026277952.json.
+delta_state=rekt_short (volume-delta school), delta_state_price=rekt_long (price school). First observed disagreement between the two schools.

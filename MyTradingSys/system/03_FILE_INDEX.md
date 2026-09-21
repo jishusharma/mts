@@ -270,3 +270,5 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/mts/research/BACKTEST_METHOD_2026-09-21.md | research | Backtest planning doc. Seven sections. Chosen method is replay of Compute-Verdict over snapshots joined to outcome labels. | MTS-2026-09-21-0729Z | 2026-09-21 |
 | MyTradingSys/mts/research/GOLAS_CD_WEB_2026-09-21.md | research | Web reinforcement for GOLAS-C and GOLAS-D. T1/T3 tier tags. States 9-day data cap. | MTS-2026-09-21-1328Z | 2026-09-21 |
 | scripts/live/mts-paste.ps1 | tool | Continuous live snapshot writer. Reads log, lock, state_code, regime, latest snapshot, tape, position. Writes Dumps/LIVE_PASTE.txt atomic. LF, no BOM. Stops on data/live_paste_stop.flag. | MTS-2026-09-21-1328Z | 2026-09-21 |
+| MyTradingSys/mts/runtime/backtest_oi_delta_4state.py | 136 | - | 2026-09-21 | backtest |
+| MyTradingSys/mts/research/OI_DELTA_4STATE_BACKTEST_2026-09-21.md | - | - | 2026-09-21 | research |

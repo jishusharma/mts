@@ -363,6 +363,14 @@ public class MarketDataSnapshot {
         ObjectNode oi = mapper.createObjectNode();
         oi.put("direction", oiDirection);
         oi.put("change_1h_pct", Math.round(oiChangePct * 100.0) / 100.0);
+        oi.put("delta_state", classifyOiDeltaState(oiDirection, nd1h));
+        double priceDelta1h = 0.0;
+        if (klines1m != null && klines1m.size() >= 61) {
+            double nowClose = klines1m.get(klines1m.size() - 1).get(4).asDouble();
+            double agoClose = klines1m.get(klines1m.size() - 61).get(4).asDouble();
+            priceDelta1h = nowClose - agoClose;
+        }
+        oi.put("delta_state_price", classifyOiDeltaState(oiDirection, priceDelta1h));
         oi.put("confidence", CONFIDENCE_HIGH);
         root.set("open_interest", oi);
         root.set("session", buildSession(klines1m, priorDayClose, currentPrice, dailyVp.get("vah").asDouble(), dailyVp.get("val").asDouble(), priorDayVp.get("high").asDouble(), priorDayVp.get("low").asDouble()));
@@ -1153,6 +1161,8 @@ public class MarketDataSnapshot {
         ObjectNode oi = mapper.createObjectNode();
         oi.put("direction", "flat");
         oi.put("change_1h_pct", 0.0);
+        oi.put("delta_state", "neutral");
+        oi.put("delta_state_price", "neutral");
         oi.put("confidence", "LOW");
         root.set("open_interest", oi);
         ObjectNode sessionTiming = buildSessionTiming(now);
@@ -1362,7 +1372,24 @@ public class MarketDataSnapshot {
         return node;
     }
 
-    private ObjectNode buildOiBreakdown(String symbol) {
+        // OI delta 4-state classifier per INDICATOR_IMPLEMENTATION_HANDOFF.md Phase 2.
+    // Input: volume delta (trade_flow.net_delta_1h), sign only. Family per dictionary:
+    // net_delta_* maps to CoinGlass "Volume Delta" (flow), not positioning.
+    // Mapping: rising OI + pos delta = aggressive_long; rising + neg = aggressive_short;
+    //          falling + neg = rekt_long; falling + pos = rekt_short.
+    // Window (1h) matches open_interest.change_1h_pct. Bar-to-bar at 5m is the
+    // professional standard (BackQuant, GoCharting); B044 tracks the delta source swap.
+    // Sibling field delta_state_price will be emitted for backtest comparison of both schools.
+    private static String classifyOiDeltaState(String oiDirection, double netDelta1h) {
+        boolean rising = "rising".equals(oiDirection);
+        boolean falling = "falling".equals(oiDirection);
+        if (rising && netDelta1h > 0) return "aggressive_long";
+        if (rising && netDelta1h < 0) return "aggressive_short";
+        if (falling && netDelta1h < 0) return "rekt_long";
+        if (falling && netDelta1h > 0) return "rekt_short";
+        return "neutral";
+    }
+private ObjectNode buildOiBreakdown(String symbol) {
         ObjectNode node = mapper.createObjectNode();
         try {
             JsonNode retailAcc = client.longShortRatio(symbol, "1h", 5);
