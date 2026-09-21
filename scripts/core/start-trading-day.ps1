@@ -150,7 +150,32 @@ function Compute-Verdict {
     $zone   = [string]$top.zone.name
     $zprice = [double]$top.zone.price
 
-    if (-not $net_ok) {
+    # B058 mode classifier. floor_reaction and ceiling_reaction suspend the
+    # net_rr gate when price is within 0.15 pct of a known floor or ceiling.
+    $mode = "normal"
+    $setupDir2 = ""
+    if ($null -ne $top.direction) { $setupDir2 = [string]$top.direction }
+    try {
+        $prox = 0.0015
+        $val  = [double]$snap.daily_vp.val
+        $vah  = [double]$snap.daily_vp.vah
+        $sl1h = [double]$snap.structure.'1h'.swing_low
+        $sh1h = [double]$snap.structure.'1h'.swing_high
+        $sl15 = [double]$snap.structure.'15m'.swing_low
+        $sh15 = [double]$snap.structure.'15m'.swing_high
+        $nf = $false; $nc = $false
+        if ($val  -gt 0 -and ([math]::Abs($price - $val ) / $price) -lt $prox) { $nf = $true }
+        if ($sl1h -gt 0 -and ([math]::Abs($price - $sl1h) / $price) -lt $prox) { $nf = $true }
+        if ($sl15 -gt 0 -and ([math]::Abs($price - $sl15) / $price) -lt $prox) { $nf = $true }
+        if ($vah  -gt 0 -and ([math]::Abs($price - $vah ) / $price) -lt $prox) { $nc = $true }
+        if ($sh1h -gt 0 -and ([math]::Abs($price - $sh1h) / $price) -lt $prox) { $nc = $true }
+        if ($sh15 -gt 0 -and ([math]::Abs($price - $sh15) / $price) -lt $prox) { $nc = $true }
+        if ($setupDir2 -eq "long"  -and $nf) { $mode = "floor_reaction" }
+        if ($setupDir2 -eq "short" -and $nc) { $mode = "ceiling_reaction" }
+    } catch {}
+
+    $suspend_rr = ($mode -eq "floor_reaction" -or $mode -eq "ceiling_reaction")
+    if (-not $net_ok -and -not $suspend_rr) {
         $v = "WAIT_RR"; $reason = ("net_rr {0:N2} < 2.0" -f $net_rr)
     } elseif ($tier -eq "ignore") {
         $v = "WAIT_FAR"; $reason = "tier=ignore"
@@ -188,6 +213,7 @@ function Compute-Verdict {
         setup = $setup; zone = $zone; zone_price = $zprice
         net_rr = $net_rr; proof = $proof
         price = $price; ts = $ts; state = $state
+        mode = $mode
     }
 }
 
@@ -508,7 +534,7 @@ try {
             $cooldownBlock = $true
         }
         # gate — only fire popup if verdict is actionable OR state changed
-        $actionableVerdicts = @("SETUP_FORMING","SETUP_CONFIRMED","WATCH")
+        $actionableVerdicts = @("SETUP_FORMING","SETUP_CONFIRMED")
         $firePopup = $false
         if ($Popups -ne "off" -and $changed -and -not $cooldownBlock) {
             if ($v.verdict -in $actionableVerdicts) { $firePopup = $true }

@@ -428,6 +428,12 @@ public class StateCodeEmitter extends WebSocketClient {
         int i = 0;
         for (String s : transitionChain) if (i++ >= start) chain.add(s);
         root.put("weekend", isWeekend(nowMs));
+        // B057: persist session accumulators so mid-day restarts do not
+        // silently shrink the cvd_slope and price_vs_vwap windows.
+        root.put("session_day_start_ms", sessionDayStartMs);
+        root.put("session_cvd",           sessionCvd);
+        root.put("session_cum_pv",        sessionCumPV);
+        root.put("session_cum_vol",       sessionCumVol);
 
         ObjectNode sig = root.putObject("signals");
         String[] names = {"net_delta_1m", "last_3_delta", "volume_ratio", "cvd_slope", "price_vs_vwap"};
@@ -483,6 +489,11 @@ public class StateCodeEmitter extends WebSocketClient {
                 try { stateSinceMs = Instant.parse(root.get("timestamp_utc").asText()).toEpochMilli(); }
                 catch (Exception ignored) { stateSinceMs = System.currentTimeMillis(); }
             }
+            // B057: restore accumulators
+            if (root.has("session_day_start_ms")) sessionDayStartMs = root.get("session_day_start_ms").asLong();
+            if (root.has("session_cvd"))           sessionCvd         = root.get("session_cvd").asDouble();
+            if (root.has("session_cum_pv"))        sessionCumPV       = root.get("session_cum_pv").asDouble();
+            if (root.has("session_cum_vol"))       sessionCumVol      = root.get("session_cum_vol").asDouble();
             System.out.println("[StateCode] Restored state from disk: " + currentState);
         } catch (Exception e) {
             System.err.println("[StateCode] restore failed: " + e.getMessage());

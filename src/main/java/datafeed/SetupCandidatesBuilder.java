@@ -147,13 +147,14 @@ public class SetupCandidatesBuilder {
 
             double targetRisk = Math.abs(zonePrice - c.stop);
             double minTargetDistance = 2.0 * targetRisk;
+            double maxTargetDistance = 3.5 * targetRisk;
             double bestTarget = 0;
             if ("short".equals(c.direction)) {
                 double nearest = Double.MIN_VALUE;
                 for (double p : targets) {
                     if (p < zonePrice) {
                         double distance = zonePrice - p;
-                        if (distance >= minTargetDistance && p > nearest) nearest = p;
+                        if (distance >= minTargetDistance && distance <= maxTargetDistance && p > nearest) nearest = p;
                     }
                 }
                 if (nearest != Double.MIN_VALUE) bestTarget = nearest;
@@ -162,7 +163,7 @@ public class SetupCandidatesBuilder {
                 for (double p : targets) {
                     if (p > zonePrice) {
                         double distance = p - zonePrice;
-                        if (distance >= minTargetDistance && p < nearest) nearest = p;
+                        if (distance >= minTargetDistance && distance <= maxTargetDistance && p < nearest) nearest = p;
                     }
                 }
                 if (nearest != Double.MAX_VALUE) bestTarget = nearest;

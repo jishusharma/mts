@@ -81,6 +81,22 @@ Before any non-trivial task, run these steps in order. Do not skip.
    Stop and wait for the user to run them.
 
 A task is not done when the artifact changes. It is done when the goal moves.
+
+## 5b. VERIFY LOOP
+
+This surface runs V4.1 Flash. It does not reliably detect its own missed
+items. A first-person "nothing missed" is not evidence.
+
+Every verify step is one of three kinds:
+- mechanical: count, hash, grep, line number. Show the number.
+- routed: hand the check to a reasoning surface. State what to check.
+- unverifiable on this surface: say so. Do not claim otherwise.
+
+Before "done", print four lines:
+TASK / DONE / VERIFIED / MISSED.
+VERIFIED names which kind. MISSED names anything dropped, or "none".
+Skipping this block is a defect.
+
 ## 6. WRITING
 
 Before any write:
@@ -180,12 +196,12 @@ Before importing any concept from the transcripts:
 Update this section at every session close. Keep it to five lines.
 Queue is not listed here. Single source: MyTradingSys/mts/research/BUGS.md.
 
-Last live read:  2026-09-20T17:56Z. Session MTS-2026-09-20-0541Z close. Build PASS at boot 05:41Z.
-Thesis:          neutral, low confidence. Unchanged from prior.
+Last live read:  2026-09-21T07:22Z. Session MTS-2026-09-21-0444Z close. Build PASS at boot 04:44Z.
+Thesis:          neutral, low confidence. Unchanged.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop stopped cleanly. Supervisor 8248, java 10604 at close. No position.
-Findings:        B058-B062 open. JISHU method 8E2AB6E6. D1/D3 composed not spliced. Session +0.00400314 BTC.
+Runtime + loops: live. Wrapper 12940, supervisor 13412, java 12712. Lock 12940. No position.
+Findings:        B058 parts C+D open. B059, B062 deferred (no spec). B060, B061, B057 CLOSED. Wiring map gaps: dual cvd.slope method, layer isolation. Probability layer MVP gate met (6233 labels). DSA section 5b uncommitted.
 ## 12. SESSION END
 
 1. Stop the runtime loop if it is running.

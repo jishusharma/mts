@@ -906,3 +906,27 @@ Build PASS at boot. No BOM. No in-flight.
 
 Addendum (2026-09-20T02:15Z): B057 filed OPEN (StateCodeEmitter accumulator persistence gap). Tape sidecar PID 9844 started and verified. OPEN LONG at 81417.3 entered during session; mark at close ~81119.5, -298 points, no exit rule exists in engine. Range 81000-81200 unresolved at close.
 # END SESSION
+# END SESSION
+
+## SESSION MTS-2026-09-21-0444Z - VERDICT + RUNTIME HARDENING - CLOSED -
+2026-09-21T07:22Z
+
+Landed:
+  B060 CLOSED. SetupCandidatesBuilder.java L150 maxTargetDistance = 3.5 * targetRisk added; L157 and L166 bounded. Hash C4FFA20F -> 9107FE96. Build PASS 06:10:54Z.
+  B061 CLOSED. start-trading-day.ps1 L511 actionableVerdicts reduced to SETUP_FORMING, SETUP_CONFIRMED. Hash 5A124BDE -> A3140FD5.
+  B058 parts A+B landed (still OPEN, parts C+D pending). Verdict function gains mode classifier normal/floor_reaction/ceiling_reaction; net_rr gate suspended within 0.15 pct of daily VAL, VAH, 1h swing low/high, 15m swing low/high. Hash A3140FD5 -> D32180A4.
+  B057 CLOSED. StateCodeEmitter.java persists session_day_start_ms, session_cvd, session_cum_pv, session_cum_vol; restoreStateFromDisk reads them back. Hash 136F719A -> D55A8CF8. RESTORE PASS 07:16Z: day preserved, cvd -1219.65 -> -1069.12, vol 4172.98 -> 4450.15 across mid-day restart.
+
+Deferred:
+  B059 (pf_vah drift) - not reproducible on today's tape. Revisit if it reappears.
+  B062 (position-aware alerts) - no position.json exists, no contract defined. Blocked on spec.
+
+Notes:
+  Baseline dump at Dumps\BASELINE_2026-09-21\ (20 snapshots, apparatus log, working-tree diff, open bugs).
+  Round 1 wiring map found 3 gaps: fields produced not consumed (oi_breakdown, order_flow, hvns/lvns, session_timing); cvd.slope dual-method mismatch (2pct relative vs 0.001 absolute); layer isolation.
+  DSA section 5b (VERIFY LOOP) is uncommitted on disk; added by an earlier session. Recommend commit at close.
+  outcome_labels.json 6233 labels; event_probability_layer_DESIGN.md MVP gate met.
+  Pre-committed chain blocks collapsed 12-turn splices to 1 turn. Two clipboard re-entries caught by anchor-count checks.
+
+Runtime at close pending below.
+# END SESSION
