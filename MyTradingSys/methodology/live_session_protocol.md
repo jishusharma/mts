@@ -221,3 +221,6 @@ Seven waste classes seen today. Each has a fix. Each fix is a rule.
     argument.
 
 # END
+
+15. No inferred levels. Any price level offered as actionable must carry a source tag from MTS_DICTIONARY. [SCREENER] levels are not signals. Prior-day POC, prior-day VAH/VAL, and any level not in conditions/ are SCREENER unless a rule names them.
+15. No inferred levels. Any price level offered as actionable must carry a source tag from MTS_DICTIONARY. [SCREENER] levels are not signals. Prior-day POC, prior-day VAH/VAL, and any level not in conditions/ are SCREENER unless a rule names them.

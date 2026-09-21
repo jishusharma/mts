@@ -208,12 +208,19 @@ function Compute-Verdict {
         }
     }
 
+    # B058 part C - flow contradiction suppression.
+    if ($v -in @("WATCH","SETUP_FORMING")) {
+        if ($setupDir -eq "long"  -and $cvdSlope -eq "falling") { $v = "WAIT_PROOF"; $reason = "flow contradiction" }
+        if ($setupDir -eq "short" -and $cvdSlope -eq "rising")  { $v = "WAIT_PROOF"; $reason = "flow contradiction" }
+    }
+
     return [PSCustomObject]@{
         verdict = $v; reason = $reason
         setup = $setup; zone = $zone; zone_price = $zprice
         net_rr = $net_rr; proof = $proof
         price = $price; ts = $ts; state = $state
         mode = $mode
+        direction = $setupDir
     }
 }
 
@@ -222,9 +229,10 @@ function Format-VerdictLine {
     $tshort = if ($v.ts.Length -ge 19) { $v.ts.Substring(0, 19) } else { $v.ts }
     $pdstr = if ($v.proof_dir) { $v.proof_dir } else { "-" }
     $rgstr = if ($v.regime) { $v.regime } else { "-" }
-    return ("{0} | {1:F2} | {2} | {3} ({4}) | {5} @ {6} {7:F2} | nrr={8:N2} | p={9} | pd={10} | rg={11}" -f `
+    $posstr = if ($v.pos) { $v.pos } else { "none" }
+    return ("{0} | {1:F2} | {2} | {3} ({4}) | {5} @ {6} {7:F2} | nrr={8:N2} | p={9} | pd={10} | rg={11} | pos={12}" -f `
         $tshort, $v.price, $v.state, $v.verdict, $v.reason,
-        $v.setup, $v.zone, $v.zone_price, $v.net_rr, $v.proof, $pdstr, $rgstr)
+        $v.setup, $v.zone, $v.zone_price, $v.net_rr, $v.proof, $pdstr, $rgstr, $posstr)
 }
 
 function Build-Card {
@@ -441,7 +449,36 @@ try {
         $null = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $rccCmd) -TimeoutSec 30 -Tag "regime_classifier" -WorkDir $R
     } catch {}
     $v = Compute-Verdict -snap $snap -proofDir $pd
-        $v | Add-Member -NotePropertyName proof_dir -NotePropertyValue $pd -Force
+            # B062 - read position.json once per cycle.
+    $posDir = "none"
+    $posStop = 0
+    $posTarget = 0
+    $posFile = Join-Path $R "MyTradingSys\mts\runtime\position.json"
+    if (Test-Path $posFile) {
+        try {
+            $pj = Get-Content $posFile -Raw -Encoding UTF8 | ConvertFrom-Json
+            $pdir = [string]$pj.direction
+            $popen = [string]$pj.opened_utc
+            if ($pj.stop)   { $posStop   = [double]$pj.stop }
+            if ($pj.target) { $posTarget = [double]$pj.target }
+            if ($pdir -ne "long" -and $pdir -ne "short") {
+                if (-not $script:posInvalidLogged) { Log-Line "POSITION_INVALID_DIR $pdir"; $script:posInvalidLogged = $true }
+            } elseif ($popen) {
+                $pageSec = ([DateTimeOffset]::UtcNow - [DateTime]::Parse($popen)).TotalSeconds
+                if ($pageSec -gt 86400) {
+                    if (-not $script:posStaleLogged) { Log-Line ("POSITION_STALE age={0}s" -f [int]$pageSec); $script:posStaleLogged = $true }
+                } else { $posDir = $pdir }
+            } else { $posDir = $pdir }
+        } catch {
+            if (-not $script:posParseLogged) { Log-Line "POSITION_PARSE_FAIL"; $script:posParseLogged = $true }
+        }
+    }
+    $v | Add-Member -NotePropertyName pos -NotePropertyValue $posDir -Force
+    # EXIT_HINT - opposing-direction setup in range while a position is open.
+    if ($posDir -ne "none" -and [string]$v.direction -ne $posDir -and [string]$v.verdict -ne "NO_TRADE") {
+        Log-Line ("EXIT_HINT pos=$posDir setup=$($v.setup) zone=$($v.zone) price=$($v.zone_price) nrr=$($v.net_rr)")
+    }
+    $v | Add-Member -NotePropertyName proof_dir -NotePropertyValue $pd -Force
         $regime = "-"
         try {
             $rg = Get-Content (Join-Path $R "MyTradingSys\mts\runtime\state_code_regime.json") -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -505,6 +542,9 @@ try {
             } catch {}
         }
     
+        if ($posDir -ne "none" -and $Direction -eq "") { $Direction = $posDir }
+        if ($posStop -gt 0 -and $Stop -le 0) { $Stop = $posStop }
+        if ($posTarget -gt 0 -and $Target -le 0) { $Target = $posTarget }
         if ($Mode -eq "live" -and $Direction -ne "") {
             try {
                 $scFile = Join-Path $R "MyTradingSys\mts\runtime\state_code.json"
@@ -533,12 +573,25 @@ try {
         if ($script:LastAlertMs -gt 0 -and ($nowEpoch - $script:LastAlertMs) -lt 180) {
             $cooldownBlock = $true
         }
+        # B058 part D - per-zone cooldown, 900s.
+        if ($null -eq $script:ZoneLastAlertMs) { $script:ZoneLastAlertMs = @{} }
+        $zoneKey = "$($v.setup)|$($v.zone)"
+        if ($script:ZoneLastAlertMs.ContainsKey($zoneKey)) {
+            if (($nowEpoch - [int]$script:ZoneLastAlertMs[$zoneKey]) -lt 900) { $cooldownBlock = $true }
+        }
         # gate — only fire popup if verdict is actionable OR state changed
         $actionableVerdicts = @("SETUP_FORMING","SETUP_CONFIRMED")
         $firePopup = $false
         if ($Popups -ne "off" -and $changed -and -not $cooldownBlock) {
             if ($v.verdict -in $actionableVerdicts) { $firePopup = $true }
             elseif ($why -match "STATE |ADVERSE|STOP NEAR|TARGET NEAR") { $firePopup = $true }
+        }
+        # B062 - suppress same-direction SETUP_FORMING when a position is open.
+        if ($firePopup -and $posDir -ne "none" -and $v.verdict -eq "SETUP_FORMING") {
+            if ([string]$v.direction -eq $posDir) {
+                $firePopup = $false
+                Log-Line "POSITION_SUPPRESSED dir=$posDir setup=$($v.setup)"
+            }
         }
         # === Precondition gate (schema v1.1.0, Rule 37 behavior restoration) ===
         if ($firePopup -and $v.setup -match 'scalp') {
@@ -584,6 +637,7 @@ print(json.dumps(result))
         }
         if ($firePopup) {
             $script:LastAlertMs = $nowEpoch
+            if ($script:ZoneLastAlertMs -and $zoneKey) { $script:ZoneLastAlertMs[$zoneKey] = $nowEpoch }
             $script:AlertCount++
             Set-Content -LiteralPath $CounterFile -Value $script:AlertCount -Encoding UTF8
 

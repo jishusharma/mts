@@ -92,4 +92,6 @@ patch >20 lines.
 - 2026-09-20 ALERT CARD FORMAT GAP (found by investigation of #607): the card's WHY line shows the verdict reason (e.g. 'price not at zone'), not the alert trigger reason. When #607 fired at 01:11:23 the trigger was 'STATE TWOPEAK/in_va -> TWOPEAK/below_val', but the card showed WAIT_TRIGGER / 'price not at zone'. Operator saw the popup moments later when price had recovered toward the zone, and the card price was from the detection instant 81143.6. Card is internally consistent but omits the trigger field. Recommendation: add TRIGGER line listing the exact change that fired the alert.
 - 2026-09-20 ALERT RATE HIGH: log shows 16 alerts from 23:54 #589 to 01:16 #608 in 82 minutes. Cooldown 180s. Several are state changes or zone rotations rather than verdict changes. Confirm whether state and zone-change alerts should fire independently, or be batched.
 
+- 2026-09-21: log tail is not a health check. Loop-state claim requires wrapper PID + lock + log mtime in the same read.
+
 # END

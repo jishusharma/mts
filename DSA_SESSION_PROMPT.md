@@ -196,12 +196,12 @@ Before importing any concept from the transcripts:
 Update this section at every session close. Keep it to five lines.
 Queue is not listed here. Single source: MyTradingSys/mts/research/BUGS.md.
 
-Last live read:  2026-09-21T07:22Z. Session MTS-2026-09-21-0444Z close. Build PASS at boot 04:44Z.
+Last live read:  2026-09-21T12:35Z. Session MTS-2026-09-21-0729Z close. Build PASS at boot 07:29Z.
 Thesis:          neutral, low confidence. Unchanged.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: live. Wrapper 12940, supervisor 13412, java 12712. Lock 12940. No position.
-Findings:        B058 parts C+D open. B059, B062 deferred (no spec). B060, B061, B057 CLOSED. Wiring map gaps: dual cvd.slope method, layer isolation. Probability layer MVP gate met (6233 labels). DSA section 5b uncommitted.
+Runtime + loops: live. Wrapper 4828, supervisor 13412, java 11404. Lock 4828. No position. start-trading-day.ps1 352EFC9A.
+Findings:        B058 C live-observed once (11:25:23Z). B058 D, B062 suppression, EXIT_HINT pending live observation. B059 deferred. MODEL_ALIGNMENT delivered. T037 untouched. Rule 15 no-inferred-levels added.
 ## 12. SESSION END
 
 1. Stop the runtime loop if it is running.

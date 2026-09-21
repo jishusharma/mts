@@ -7,18 +7,18 @@
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
 
-# FILE INDEX — MTS Project v4.2.0-p5
+# FILE INDEX - MTS Project v4.2.0-p5
 # Purpose: Authoritative index of live files. Hierarchical structure.
 # NOTE: Files in archive/ and *.old files are EXCLUDED from active counts.
 # See 05_NORMS.md for conventions.
 
 ---
 
-## SYSTEM/ — AI Session Orchestration
+## SYSTEM/ - AI Session Orchestration
 
 | File | Size | Purpose |
 |------|------|---------|
-| 00_START_HERE.md | ~21KB | Methodology reference. Entry point deprecated — see DSA_SESSION_PROMPT.md |
+| 00_START_HERE.md | ~21KB | Methodology reference. Entry point deprecated - see DSA_SESSION_PROMPT.md |
 | 01_AI_BEHAVIOR.md | ~34KB | Behavior rules, mistake history, Section 14 JSON workflow, Rules 31-36 |
 | 02a_CURRENT_STATUS.md | ~42KB | System status, component health, operational parameters |
 | 02b_DECISIONS_LOG.md | ~39KB | Append-only decision history |
@@ -32,17 +32,17 @@
 | session_end_logs.md | ~49KB | Archived session end logs (append-only history) |
 | session_handoff_btcusdt_mts_2026-09-07.md | ~13KB | Session handoff document (historical) |
 
-## METHODOLOGY/ — Research Protocols & Domain Theory
+## METHODOLOGY/ - Research Protocols & Domain Theory
 
 | File | Size | Purpose |
 |------|------|---------|
 | playbook.md | ~27KB | Research gate (Part I), extraction rules (Part J), archive protocol (Part K), architecture (Part L) |
 | extraction.md | ~5.5KB | Extraction lifecycle: 4 phases + Safeguards 2, 3. TRIGGER: new transcript |
 | crypto_adaptations.md | ~5KB | Tom-rule vs crypto-hack classification |
-| grounded_theory_protocol.md | ~9KB | Original 4-phase workflow + 5 Safeguards. SUPERSEDED — kept for provenance |
+| grounded_theory_protocol.md | ~9KB | Original 4-phase workflow + 5 Safeguards. SUPERSEDED - kept for provenance |
 | reflexivity_log.md | ~5.5KB | Reflexive discipline log (Safeguard 4) |
 
-## MTS/CONDITIONS/ — Full Rule Documentation
+## MTS/CONDITIONS/ - Full Rule Documentation
 
 | File | Size | Purpose |
 |------|------|---------|
@@ -54,7 +54,7 @@
 | entry_timing_triggers.md | ~35KB | Trigger taxonomy, 4 modes, 4 tiers, 10 negative rules |
 | session_timing_rules.md | ~26KB | Session-specific timing, volatility rankings |
 
-## MTS/CARDS/ — Trading Cards & Templates (20 files)
+## MTS/CARDS/ - Trading Cards & Templates (20 files)
 
 | File | Size | Purpose |
 |------|------|---------|
@@ -79,7 +79,7 @@
 | sample_pipeline_output.md | ~17KB | Sample output |
 | trading_card_btc_sample.md | ~10KB | Sample card |
 
-## MTS/RUNTIME/ — Decision Engine + State
+## MTS/RUNTIME/ - Decision Engine + State
 
 | File | Size | Purpose |
 |------|------|---------|
@@ -96,9 +96,9 @@
 | quad_classify.py | ~4.3KB | Price x CVD x OI quadrant classifier |
 | build_mo_cli.py | ~0.4KB | Proof-direction helper CLI |
 | state_code.json | ~0.6KB | State machine output (runtime) |
-| v4.2.0_optimization_spec.md | ~11KB | REFERENCE — design doc, not loaded at runtime |
+| v4.2.0_optimization_spec.md | ~11KB | REFERENCE - design doc, not loaded at runtime |
 
-## MTS/RESEARCH/ — Active Research (15 files)
+## MTS/RESEARCH/ - Active Research (15 files)
 
 | File | Size | Purpose |
 |------|------|---------|
@@ -120,7 +120,7 @@
 | whale_positioning_evidence_2026-09-12.md | ~3KB | 4-AI whale research |
 | session_anchor_options_note.md | ~5KB | Session anchor options A/B/C + evidence + constraints (2026-09-18) |
 
-## MTS/TESTS/ — Test System (9 files)
+## MTS/TESTS/ - Test System (9 files)
 
 | File | Size | Purpose |
 |------|------|---------|
@@ -134,7 +134,7 @@
 | regression_log.md | ~1.7KB | Patch smoke test history |
 | state_signal_prototype.py | ~5.4KB | State-code emitter prototype |
 
-## DATA/ — Schemas, Task Specs (MyTradingSys/data/)
+## DATA/ - Schemas, Task Specs (MyTradingSys/data/)
 
 | File | Size | Purpose |
 |------|------|---------|
@@ -145,18 +145,18 @@
 | data_state_document.md | ~11KB | Data inventory + gaps |
 | DIRECTORY_AUDIT.md | ~2.4KB | Data directory audit |
 
-## EXTRACTS/FRESH/ — 50 Tom Transcript Extractions
+## EXTRACTS/FRESH/ - 50 Tom Transcript Extractions
 
 All files: extract_[VIDEOID]_fresh.md. Count: 50.
 
-## MTS/EXTRACTS/ — Cross-Trader Extracts (8 files)
+## MTS/EXTRACTS/ - Cross-Trader Extracts (8 files)
 
 | Folder | Files | Status |
 |--------|-------|--------|
 | cryptocred/extracted/ | 5 extracts | PURE |
 | the_flow_horse/extracted/ | 3 extracts | PURE |
 
-## MTS/ARCHIVE/ — Superseded Research (14 files)
+## MTS/ARCHIVE/ - Superseded Research (14 files)
 
 Files moved from research/ after their findings were integrated or superseded:
 - binance_api_integration_recommendations.md (~53KB)
@@ -174,7 +174,7 @@ Files moved from research/ after their findings were integrated or superseded:
 - vvp_sc_02_3m.png (~231KB)
 - vvp_sc_03_6h.png (~232KB)
 
-## ARCHIVE/ (top-level) — Migration Cleanup
+## ARCHIVE/ (top-level) - Migration Cleanup
 
 | Subfolder | Contents |
 |-----------|----------|
@@ -264,3 +264,5 @@ Files moved from research/ after their findings were integrated or superseded:
 | scripts/tools/verify_harvest_vs_corpus.py | tool | Verifies harvested quotes against raw_transcripts_canonical/*.txt. Drops untraceable quotes. Writes tom_harvest_verified.json. | MTS-2026-09-18-1726Z | 2026-09-19 |
 | scripts/tools/rebuild_tom_index_and_tag.py | tool | Rebuilds TOM_VERBATIM_INDEX.md from verified harvest and applies [TOM-NNN] tags to 6 condition files. Closes T017. | MTS-2026-09-18-1726Z | 2026-09-19 |
 | MyTradingSys/mts/research/JISHU_METHOD_2026-09-20.md | 30 | 8E2AB6E6 | 2026-09-20 | jishu_method |
+
+| MyTradingSys/mts/research/MODEL_ALIGNMENT_2026-09-21.md | research | Model alignment carry-forward. Five issues + pre-committed chain. DISK vs UNVERIFIED-WEB tags. | MTS-2026-09-21-0721Z | 2026-09-21 |

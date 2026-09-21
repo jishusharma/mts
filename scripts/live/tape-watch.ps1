@@ -18,6 +18,13 @@ $prev = $null
 $popAt = @{}
 $tickN = 0
 $lastSnap = $null
+$histN = 40
+if (Test-Path $out) {
+    Write-Host "--- last $histN tape lines (about 40 minutes) ---"
+    Get-Content $out -Tail $histN | ForEach-Object { Write-Host $_ }
+    Write-Host "--- live ---"
+}
+
 while ($true) {
     if (Test-Path $stop) { "tape-watch: stop"; break }
     try {

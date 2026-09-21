@@ -930,3 +930,35 @@ Notes:
 
 Runtime at close pending below.
 # END SESSION
+
+
+## SESSION MTS-2026-09-21-0729Z - VERDICT + POSITION + TAPE - CLOSED -
+2026-09-21T12:35Z
+
+Landed:
+  B058 parts C+D. start-trading-day.ps1 hash 9DD3D2C9 -> 7535A368 region (later superseded, see below). Part C fires on tape 11:25:23Z: WAIT_PROOF (flow contradiction) on ct_short. Part D wired, not yet observed. Rule 32 observation carries.
+  B062 position-aware suppression. Verdict line gains pos=none|long|short. Position read: direction, opened_utc, optional stop, target. Suppression: same-direction SETUP_FORMING blocked when position.json exists. Live verified pos=long at 11:50:24Z on test fixture. Suppression path not observed on real signal. Rule 32 observation carries.
+  EXIT_HINT. When position.json exists and an opposing-direction candidate appears in range, loop logs EXIT_HINT pos=X setup=Y zone=Z price=N nrr=R. No popup, no suppression, read-only. Not yet observed.
+  Stop/target wiring. position.json stop and target feed the existing STOP_NEAR / TARGET_NEAR alerts; launch-time -Stop / -Target win when set. Not yet observed.
+  tape-watch.ps1 history-on-start. Prints last 40 lines on mts-tape start. Hash CB434659 -> 61EC0CE0, 107 lines.
+  apparatus_fixes.md: log tail is not a health check. Loop-state claim requires wrapper PID + lock + log mtime in the same read.
+  live_session_protocol.md rule 15: no inferred levels. SCREENER levels are not signals. Prior-day POC/VAH/VAL not in conditions/ are SCREENER.
+  MyTradingSys/mts/research/MODEL_ALIGNMENT_2026-09-21.md: five model-alignment issues + pre-committed chain. Disk verdicts cited, web claims UNVERIFIED-WEB.
+  MyTradingSys/mts/research/PENDING_MODEL_ALIGNMENT_FYI.md: carry-forward note, resolved.
+  NEXT_SESSION_HANDOFF.md item 4 added: read the PENDING FYI.
+  03_FILE_INDEX.md: MODEL_ALIGNMENT row added; 16 em-dashes normalized to hyphens (pre-existing, cosmetic).
+
+Critical file: scripts\core\start-trading-day.ps1. Final hash 352EFC9A, 764 lines. Build PASS 11:44:38Z.
+
+Runtime at close: loop lock 4828, supervisor 13412, java state-machine 11404. Build PASS. No BOM. No in-flight. Position none.
+
+Rule 32 observations carried to next session:
+  B058 part D per-zone cooldown - needs a same-zone repeat WATCH or SETUP_FORMING to fire.
+  B062 suppression - needs a live SETUP_FORMING whose direction matches an open position.json.
+  EXIT_HINT - needs a position.json + opposing-direction candidate in range.
+
+Retracted from prior close note: DSA section 11 claims on supervisor identity had drifted. Verify on disk each session.
+
+Note on inferred exit, 2026-09-21: prior-day POC was used to exit a long and price ran 3000 points. No engine rule names prior-day POC as an exit. Rule 15 in live_session_protocol now forbids inferred levels.
+
+# END SESSION
