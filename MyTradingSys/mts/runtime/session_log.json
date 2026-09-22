@@ -611,6 +611,12 @@
       "action": "passed",
       "reason": "MTS-2026-09-22-1737Z close: T039 sweep (8 item docs), Build-Check enforcement live (OPEN needs items/), regex B-or-T, 63->103 rows. PS7 7.6.6 side-by-side, five spawn sites migrated to pwsh. Journal correction: five unrecorded 1215Z commits logged.",
       "ts": "2026-09-22T18:45:00Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "MTS-2026-09-22-1737Z final close: R1-R5 relabel, 6 worker dispatches ready, T041 registered (verdict timeframe gap + stale 1h). Journal mojibake fixed. Build-Check 104 rows.",
+      "ts": "2026-09-22T19:00:00Z"
     }
   ]
 }

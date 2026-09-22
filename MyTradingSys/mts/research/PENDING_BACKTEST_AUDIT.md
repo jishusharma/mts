@@ -11,7 +11,7 @@ After the doc lands, the next session enters live mode (mts-live).
 
 ## METHOD
 
-Next session dispatches ONE worker per live_session_protocol W1-W5.
+Next session dispatches ONE worker per live_session_protocol R1-R5.
 
 Worker scope:
 - MTS files: verdict function, snapshot format, outcome_labels.json,

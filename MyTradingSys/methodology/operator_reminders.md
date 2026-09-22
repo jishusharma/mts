@@ -113,7 +113,7 @@ If a web search cannot be run, tag UNVERIFIED-WEB.
 Never blend disk and web in one sentence.
 
 ### D2. WORKER DISPATCH
-Follow live_session_protocol.md W1-W5. Show each rule as it is applied.
+Follow live_session_protocol.md R1-R5. Show each rule as it is applied.
 One DISPATCH.md per worker. Worker has no shell and no disk.
 No checks executed section. No Confirmed. Receipt tags required.
 

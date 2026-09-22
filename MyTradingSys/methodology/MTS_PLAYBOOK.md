@@ -31,7 +31,7 @@
 *   LIVE MONITOR - one feed cycle, report deltas (price, CVD, ND, OI, state), no change if none.
 *   MOMENTUM - CVD slope + OI dir + ND 1m/5m/15m/1h + state. Map to one of six states: trend up / squeeze / distribution / trend down / long-liq / accumulation. State 30-min implication.
 *   IMAGE - 7 layers: panel ID, neutral, cross-view, HTF, bias check, invalidation, disk cross-check. Label chart-reads vs system-reads. liquidation_clusters deprecated.
-*   WORKER - DISPATCH.md, W1-W5, receipt tags, no checks executed, Confirmed coordinator-only.
+*   WORKER - DISPATCH.md, R1-R5, receipt tags, no checks executed, Confirmed coordinator-only.
 *   BUG - confirm from disk, next ID, append before # END, verify tail.
 *   WRAP - ledger + repo state + BUGS tail + log tail, one block, proof inline.
 *   SESSION CLOSE - stop-day, mts-live-stop, section 11, ledger, Build-Check, gitsnap. Do not close on FAIL.

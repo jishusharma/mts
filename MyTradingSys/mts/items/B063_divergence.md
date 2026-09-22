@@ -36,4 +36,4 @@ Next-session worker plan for B063:
 - W4  GOLAS-C. BTC tuning consensus. T1/T2 for any claim presented as working most of the time; T3 must be labeled.
 - W5  GOLAS-D. Backtest design. Data sources, replay method, thresholds, pass/fail criteria. No execution this cycle.
 
-Each dispatch carries the W1-W5 protocol from MyTradingSys/methodology/live_session_protocol.md. Replies land in Dumps/workers/<id>/ and updates append below in this doc.
+Each dispatch carries the R1-R5 protocol from MyTradingSys/methodology/live_session_protocol.md. Replies land in Dumps/workers/<id>/ and updates append below in this doc.

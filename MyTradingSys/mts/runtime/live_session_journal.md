@@ -1172,3 +1172,19 @@ Not done:
 
 Runtime at close:
   Wrapper 9636, java 6996, supervisor 11348. Sidecar restarted.
+
+## SESSION MTS-2026-09-22-1737Z FINAL CLOSE - 2026-09-22T19:00Z
+
+Continued after cd3dd79 close. Work landed in continuation:
+  Protocol rules relabeled R1-R5 (were W1-W5) in live_session_protocol.md, T040 dispatch, B063 item, MTS_PLAYBOOK, operator_reminders, PENDING_BACKTEST_AUDIT. No rule label uses W; folder names keep W# prefix.
+  Six worker dispatches ready: W1_divergence_audit, W2_institutional_definitions, W3_cross_indicator_relationships, W4_btc_tuning_consensus, W5_backtest_design, T040_tick_delta. All carry R1-R5 inline, PATHS AND COMMANDS, EVIDENCE ALREADY PROVIDED, output spec.
+  T041 registered (HIGH, OPEN). Engine verdict has no multi-hour timeframe awareness; 7h leg on 1h klines never read. Also structure.1h.stale=true while 1h klines fresh on disk. Item doc + worker dispatch + BUGS row.
+  T041 dispatch: Dumps/workers/T041_verdict_timeframe_audit/DISPATCH.md (62 lines). Part A audit (disk), Part B research (web), Part C verdict.
+  Journal mojibake on line 600 fixed (Cyrillic mangle of em dash). Build-Check scan widened to runtime/*.md so this file is covered.
+  Build-Check enforcement confirms each OPEN row has items/ file. 104 rows.
+
+Zero worker replies received. All dispatches are ready-to-send; the send is a coordinator step (paste into fresh chat, save reply).
+
+Runtime at close: wrapper 9636, java 6996, supervisor 11348. Loop still 5.1; next natural restart spawns pwsh.
+
+Note: this is the second close for MTS-2026-09-22-1737Z. First close cd3dd79 was premature; work continued. Recorded for ledger honesty.
