@@ -1114,3 +1114,27 @@ Open:
   T034 spec gap: Phase 3 names net_longs, net_longs_new, net_shorts, net_shorts_new but defines no distinction between suffixed and unsuffixed. Parked pending definition.
   MTS-TAPE was stale 4699s; sidecar relaunched PID 4544 at 20:52 local.
 
+## SESSION MTS-2026-09-22-1215Z - LIVE MODE + B063 + T039 + ITEMS CONVENTION
+2026-09-22T17:30Z
+
+Landed:
+  mts-watch.ps1 v1.1.2 (0eef490): wrapper detection falls back to lock PID.
+  mts-watch.ps1 v1.1.3 (c5e4979): MTS-OID block surfaces open_interest.delta_state and delta_state_price; wrapSrc token on MTS-PROC.
+  Journal commit a97cebb - mid-session.
+  B063 opened (98c8821) + fix shape (1849c2f): divergence handling fragmented; no dictionary definition, no condition-file rule, no verdict consumer.
+  items/ convention established (a255c27): one item one doc. MyTradingSys/mts/items/B063_divergence.md carries the verbatim operator ask and chronological updates. Register holds state + pointer.
+  T039 registered HIGH (a255c27, corrected f9bdd06): functionality-doc sweep. Sources to fold: dsa_developer_implementation_tasks.md L365, compiled_output_audit_20260915.md L104, ALERT_REDESIGN_PROPOSAL.md L87, what_is_next.md Stage 3, INDICATOR_IMPLEMENTATION_HANDOFF.md Phase 3.
+  MTS_DICTIONARY.md DIVERGENCE section added. Names the four detector implementations and states that none is authoritative.
+  Two prior research files obsolete-marked: DIVERGENCE_AUDIT_AND_RESEARCH.md and GOLAS_CD_WEB_2026-09-21.md now point at items/B063_divergence.md.
+  Runtime churn untracked (a255c27): klines cache, state_code_regime, supervisor_log now gitignored and removed from index.
+
+Open at close:
+  T034 spec gap. Definition locked this session: net_longs (standing, OI), net_longs_new (entering, CVD), net_shorts (standing, OI), net_shorts_new (entering, CVD). Output type (boolean vs strength vs both, backtest both) still pending operator answer.
+  T039 not yet executed. Build-Check enforcement (every OPEN row has matching items/ file) is a stated plan, not written.
+  B058, B059, B062 OPEN.
+  Build-Check row count discrepancy: boot 62, now 63, expected 64 after two adds. Cause unknown. Not a parse failure.
+
+Runtime at close:
+  Wrapper 9636, java 6996, supervisor 11348, sidecar 4544, mts-live v1.1.3 running.
+  Supervisor restarted wrapper 14:02:39Z after old 1800 died.
+

@@ -23,3 +23,17 @@ Detectors on disk: tape-watch.ps1 L59-60 (two-term price/CVD, one snapshot). div
 
 ## UPDATES (chronological, newest last)
 
+
+### 2026-09-22T17:30Z - coordinator, session MTS-2026-09-22-1215Z
+
+State on open: wiring not started. Prior worker outputs obsolete-marked; retained for history.
+
+Next-session worker plan for B063:
+
+- W1  Audit pass. Verify the divergence alerts actually fire and are correct against the current live detector. Disk only. Output to Dumps/workers/W1_divergence_audit/. Report correctness findings and any alert mismatches.
+- W2  GOLAS-A. Institutional definitions per indicator. Tier-locked T1/T2 only. Reject anything that does not meet the pre-committed tier; do not lower the bar. Attach proof per source.
+- W3  GOLAS-B. Cross-indicator relationships in crypto, setup-type mappings. T2/T3 with sources named.
+- W4  GOLAS-C. BTC tuning consensus. T1/T2 for any claim presented as working most of the time; T3 must be labeled.
+- W5  GOLAS-D. Backtest design. Data sources, replay method, thresholds, pass/fail criteria. No execution this cycle.
+
+Each dispatch carries the W1-W5 protocol from MyTradingSys/methodology/live_session_protocol.md. Replies land in Dumps/workers/<id>/ and updates append below in this doc.
