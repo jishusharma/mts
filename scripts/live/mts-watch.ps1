@@ -1,8 +1,9 @@
 # mts-watch.ps1
-# Version: v1.1.1
+# Version: v1.1.2
 # Canonical: scripts\live\mts-watch.ps1
 # Invoked by: mts-live (see scripts\load.ps1). See MTS_DICTIONARY.md LIVE FEED NAMES.
 # 2026-09-17 v1.1.1 - display text reword.
+# 2026-09-22 v1.1.2 - wrapper detection falls back to lock PID when command line does not match.
 # 2026-09-17 v1.1.0 - added compiled blocks MTS-HSTOP, MTS-PROOF, MTS-CAND, MTS-DELTA.
 # 2026-09-17 v1.0.0 - initial console feed.
 # Read-only console feed. One block per tick. Also appends to data\mts-watch.log
@@ -43,10 +44,11 @@ while ($true) {
         Emit "=== $($now.ToString('o')) | snap_age=${snapAge}s ==="
 
         $sup  = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match 'loop-supervisor' }).ProcessId
-        $wrap = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match 'start-trading-day|mode\.ps1' }).ProcessId
-        $java = @(Get-CimInstance Win32_Process -Filter "Name='java.exe'" | Where-Object { $_.CommandLine -match 'datafeed\.Main' }).ProcessId
         $lockPath = Join-Path $R "data\apparatus.lock"
         $lock = if (Test-Path $lockPath) { (Get-Content $lockPath -Raw).Trim() } else { "none" }
+        $lockPid = if ($lock -match '^(\d+)\s') { [int]$Matches[1] } else { 0 }
+        $wrap = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match 'start-trading-day|mode\.ps1' -or $_.ProcessId -eq $lockPid }).ProcessId
+        $java = @(Get-CimInstance Win32_Process -Filter "Name='java.exe'" | Where-Object { $_.CommandLine -match 'datafeed\.Main' }).ProcessId
         $chain = "sup=$($sup -join '+') wrap=$($wrap -join '+') java=$($java -join '+') lock=$lock"
         if ($java.Count -ne 1) { $chain += "  !!! JAVA COUNT=$($java.Count) !!!" }
         if ($sup.Count -ne 1) { $chain += "  !!! SUP COUNT=$($sup.Count) !!!" }
