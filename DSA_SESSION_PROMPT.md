@@ -196,12 +196,12 @@ Before importing any concept from the transcripts:
 Update this section at every session close. Keep it to five lines.
 Queue is not listed here. Single source: MyTradingSys/mts/research/BUGS.md.
 
-Last live read:  2026-09-21T21:31Z. Session MTS-2026-09-21-1905Z close. Build PASS 21:26Z.
+Last live read:  2026-09-22T14:01Z. Session MTS-2026-09-22-1215Z close. Build PASS 17:24Z.
 Thesis:          neutral, low confidence. Unchanged.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: live. Wrapper 10456, java 2284, lock 10456. start-trading-day.ps1 352EFC9A.
-Findings:        T033 closed: open_interest.delta_state (volume-delta school, nd1h) + delta_state_price (price school, close delta over 60 1m bars). backtest_oi_delta_4state.py + OI_DELTA_4STATE_BACKTEST_2026-09-21.md landed. Both schools near-identical on 6362 rows / 8-9 days; no state survives day-clustered SE. First live disagreement observed 21:31Z: rekt_short vs rekt_long.
+Runtime + loops: JIS-NB runs the loop. Live at close: wrapper 9636, java 6996, supervisor 11348, sidecar 4544, mts-live v1.1.3. Laptop is static.
+Findings:        mts-watch v1.1.2/1.1.3 landed. items/ convention established with B063. T039 registered for sweep. Runtime churn untracked. T034 definition locked; output type pending. Build-Check row count 62->63 (expected 64); cause unknown.
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.
