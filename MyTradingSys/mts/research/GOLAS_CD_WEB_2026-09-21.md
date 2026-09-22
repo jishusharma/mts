@@ -1,3 +1,5 @@
+> Superseded by MyTradingSys/mts/items/B063_divergence.md (2026-09-22). Retained for history.
+
 # GOLAS C and D - WEB RESEARCH
 
 Date: 2026-09-21T18:20Z

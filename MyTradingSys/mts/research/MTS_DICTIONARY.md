@@ -196,3 +196,19 @@ Files in data\ that a process reads as a stop signal. Distinct paths, distinct r
 | mts-paste | Continuous live snapshot writer. Writes Dumps/LIVE_PASTE.txt every 30s. |
 | mts-paste-now | One-shot write and print LIVE_PASTE.txt to console. |
 | mts-paste-stop | Stop the mts-paste loop. |
+
+## DIVERGENCE (added 2026-09-22)
+
+Defined per B063 (see MyTradingSys/mts/items/B063_divergence.md). Current state: fragmented. Canonical definition pending B063.
+
+Four detector implementations exist. No single source is authoritative.
+
+| name | source | meaning |
+|---|---|---|
+| bearish_div | tape-watch.ps1 L59-60 | price up and cumulative volume delta down in one snapshot window. |
+| bullish_div | tape-watch.ps1 L59-60 | price down and cumulative volume delta up in one snapshot window. |
+| cvdDivergence | SetupScreener.java L54 | boolean input. Producer not shown on disk. |
+| threshold rule | divergence_monitor.py | price move over 30 points and cumulative volume delta change over 200 and net delta change over 20 between snapshots at least 10 minutes apart. |
+
+Live alerts do not fire on divergence. No condition-file rule reads any of the four. Reconciliation tracked in B063.
+

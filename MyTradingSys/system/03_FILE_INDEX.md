@@ -272,3 +272,5 @@ Files moved from research/ after their findings were integrated or superseded:
 | scripts/live/mts-paste.ps1 | tool | Continuous live snapshot writer. Reads log, lock, state_code, regime, latest snapshot, tape, position. Writes Dumps/LIVE_PASTE.txt atomic. LF, no BOM. Stops on data/live_paste_stop.flag. | MTS-2026-09-21-1328Z | 2026-09-21 |
 | MyTradingSys/mts/runtime/backtest_oi_delta_4state.py | 136 | - | 2026-09-21 | backtest |
 | MyTradingSys/mts/research/OI_DELTA_4STATE_BACKTEST_2026-09-21.md | - | - | 2026-09-21 | research |
+| MyTradingSys/mts/items/B063_divergence.md | item | Per-item doc for B063. Verbatim ask + chronological updates. | MTS-2026-09-22-1215Z | 2026-09-22 |
+| MyTradingSys/mts/items/ | item_dir | One doc per open item. Named by register ID. | MTS-2026-09-22-1215Z | 2026-09-22 |

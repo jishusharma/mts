@@ -1,3 +1,5 @@
+> Superseded by MyTradingSys/mts/items/B063_divergence.md (2026-09-22). Retained for history.
+
 # DIVERGENCE_AUDIT_AND_RESEARCH
 
 ## A. AUDIT
