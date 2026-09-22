@@ -1,9 +1,10 @@
 # mts-watch.ps1
-# Version: v1.1.2
+# Version: v1.1.3
 # Canonical: scripts\live\mts-watch.ps1
 # Invoked by: mts-live (see scripts\load.ps1). See MTS_DICTIONARY.md LIVE FEED NAMES.
 # 2026-09-17 v1.1.1 - display text reword.
 # 2026-09-22 v1.1.2 - wrapper detection falls back to lock PID when command line does not match.
+# 2026-09-22 v1.1.3 - added MTS-OID block for T033 fields, plus wrapSrc token on MTS-PROC.
 # 2026-09-17 v1.1.0 - added compiled blocks MTS-HSTOP, MTS-PROOF, MTS-CAND, MTS-DELTA.
 # 2026-09-17 v1.0.0 - initial console feed.
 # Read-only console feed. One block per tick. Also appends to data\mts-watch.log
@@ -49,7 +50,8 @@ while ($true) {
         $lockPid = if ($lock -match '^(\d+)\s') { [int]$Matches[1] } else { 0 }
         $wrap = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match 'start-trading-day|mode\.ps1' -or $_.ProcessId -eq $lockPid }).ProcessId
         $java = @(Get-CimInstance Win32_Process -Filter "Name='java.exe'" | Where-Object { $_.CommandLine -match 'datafeed\.Main' }).ProcessId
-        $chain = "sup=$($sup -join '+') wrap=$($wrap -join '+') java=$($java -join '+') lock=$lock"
+        $wrapSrc = if ($wrap -contains $lockPid) { "lock" } elseif ($wrap.Count -gt 0) { "cmdline" } else { "none" }
+        $chain = "sup=$($sup -join '+') wrap=$($wrap -join '+') wrapSrc=$wrapSrc java=$($java -join '+') lock=$lock"
         if ($java.Count -ne 1) { $chain += "  !!! JAVA COUNT=$($java.Count) !!!" }
         if ($sup.Count -ne 1) { $chain += "  !!! SUP COUNT=$($sup.Count) !!!" }
         if ($wrap.Count -ne 1) { $chain += "  !!! WRAP COUNT=$($wrap.Count) !!!" }
@@ -93,6 +95,10 @@ while ($true) {
         $tf = $j.trade_flow
         Emit "MTS-FLOW    cvd=$($j.cvd.value)/$($j.cvd.slope) | ND1m=$($tf.net_delta_1m) ND5m=$($tf.net_delta_5m) ND15m=$($tf.net_delta_15m) ND1h=$($tf.net_delta_1h)"
         Emit "        oi=$($j.open_interest.direction) $($j.open_interest.change_1h_pct)% | fund=$($j.funding.current_rate) | basis=$($j.spot_perp_basis.basis_pct)/$($j.spot_perp_basis.direction)"
+        $oi  = $j.open_interest
+        $ds  = if ($oi.delta_state)       { $oi.delta_state }       else { "n/a" }
+        $dsp = if ($oi.delta_state_price) { $oi.delta_state_price } else { "n/a" }
+        Emit "MTS-OID     delta_state=$ds delta_state_price=$dsp dir=$($oi.direction) chg1h=$($oi.change_1h_pct)%"
 
         # --- COMPILED: hard_stops + proof_direction from build_mo_cli ---
         $moFile = Join-Path $env:TEMP "mts_watch_mo.json"
