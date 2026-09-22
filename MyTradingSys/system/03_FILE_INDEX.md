@@ -274,3 +274,4 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/mts/research/OI_DELTA_4STATE_BACKTEST_2026-09-21.md | - | - | 2026-09-21 | research |
 | MyTradingSys/mts/items/B063_divergence.md | item | Per-item doc for B063. Verbatim ask + chronological updates. | MTS-2026-09-22-1215Z | 2026-09-22 |
 | MyTradingSys/mts/items/ | item_dir | One doc per open item. Named by register ID. | MTS-2026-09-22-1215Z | 2026-09-22 |
+| MyTradingSys/mts/items/T040_tick_delta_layer.md | item | Per-item doc for T040. Verbatim ask + chronological updates. | MTS-2026-09-22-1215Z | 2026-09-22 |
