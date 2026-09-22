@@ -6,6 +6,17 @@ If a step cannot be done, say so.
 
 ---
 
+## 0. MACHINE
+
+Two machines, one repo. WORKSTATION_MODES.md is authority.
+
+- Desktop (JIS-NB): runs the loop. E1 applies. mts-live and mts-tape available.
+- Laptop (DESKTOP-F7IU69N): static. No loop here. E1 does not apply. Do not attempt mode.ps1, stop-day.ps1, or any loop control.
+
+Both machines: sync-pull before work, sync-push before close.
+
+---
+
 ## A. ORIENTATION
 
 ### A1. DISCOVER
@@ -116,7 +127,8 @@ Verify: line count, tail, no BOM, non-ASCII count.
 
 ## E. SYSTEM
 
-### E1. LOOP CONTROL
+### E1. LOOP CONTROL - DESKTOP ONLY
+Desktop only. Not applicable on the laptop.
 Loop control per DSA_SESSION_PROMPT.md section 9.
 Read wrapper PID, lock, log mtime. All three together.
 A log tail alone is not a health check.
@@ -131,8 +143,10 @@ Build-Check must PASS before close. No close on FAIL.
 ## F. COMMANDS
 
 ### F1. OPEN
+Both machines:
 cd scripts
 .\start-session.ps1
+Desktop only:
 mts-live
 mts-tape
 
@@ -147,8 +161,10 @@ Get-CimInstance Win32_Process | Where-Object {
 } | Select ProcessId, Name
 
 ### F4. STOP, RESTART, CLOSE
+Desktop only:
 .\scripts\core\stop-day.ps1
 .\scripts\core\mode.ps1 -M armed
+Both machines:
 .\scripts\Build-Check.ps1
 gitsnap "one line"
 

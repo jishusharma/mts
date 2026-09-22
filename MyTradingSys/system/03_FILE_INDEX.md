@@ -276,4 +276,4 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/mts/items/ | item_dir | One doc per open item. Named by register ID. | MTS-2026-09-22-1215Z | 2026-09-22 |
 | MyTradingSys/mts/items/T040_tick_delta_layer.md | item | Per-item doc for T040. Verbatim ask + chronological updates. | MTS-2026-09-22-1215Z | 2026-09-22 |
 | MyTradingSys/PROJECT_VISION.md | direction | Direction ledger. Updated 2026-09-22: assistant layer, tick-delta layer, three machines. | MTS-2026-09-22-1215Z | 2026-09-22 |
-| MyTradingSys/methodology/operator_reminders.md | methodology | Operator paste-ready reminder card. A-E prompts, F commands. | MTS-2026-09-22-1215Z | 2026-09-22 |
+| MyTradingSys/methodology/operator_reminders.md | methodology | Operator paste-ready reminder card. Machine-aware (desktop vs laptop). A-E prompts, F commands. | MTS-2026-09-22-1215Z | 2026-09-22 |
