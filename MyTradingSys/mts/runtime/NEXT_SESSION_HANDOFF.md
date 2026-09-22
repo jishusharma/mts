@@ -49,6 +49,9 @@ R1-R5 relabel across 7 files; 6 worker dispatches; T041 registered (row + item d
 PS7 Part 2 (loop restart under pwsh) not forced.
 T034 output type decision owed by operator.
 Worker replies: 0 of 7.
+Post-close evidence landed 2026-09-23T01:30Z. Chart read + web cross-check + three-angle revalidation logged to items/T041_verdict_timeframe_gap.md.
+Key facts: short covering confirmed (648M USD short liquidations), options expiry pin Sept 25 at 85K/88K, anchor mismatch warning chart CVD vs system CVD.
+Candidate T042 (schema gap: no 4h/daily/weekly structure, no OI/CVD peak reference, 1h stale while 1h klines fresh) not yet registered. Decide next session.
 
 ## HARD RULES
 
