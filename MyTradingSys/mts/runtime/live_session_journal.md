@@ -1097,3 +1097,20 @@ Four close entries appear for this session (L998, 1022, 1046, 1070) because the 
 Loop restarted 21:30:21Z, wrapper 10456, java 2284, cycle 1 landed 21:31:17Z.
 First live snapshot with both new fields: BTCUSDT_2026-09-22_1790026277952.json.
 delta_state=rekt_short (volume-delta school), delta_state_price=rekt_long (price school). First observed disagreement between the two schools.
+## SESSION MTS-2026-09-22-1215Z - LIVE MODE + FEED v1.1.3
+2026-09-22T15:30Z
+
+Landed:
+  mts-watch.ps1 v1.1.2 (commit 0eef490): wrapper detection falls back to lock PID when the wrapper command line does not match.
+  mts-watch.ps1 v1.1.3: MTS-OID block surfaces open_interest.delta_state + delta_state_price; wrapSrc token on MTS-PROC names lock vs cmdline detection.
+
+Runtime at the time of this entry:
+  Wrapper 9636, java 6996, supervisor 11348, sidecar 4544, mts-live v1.1.3 in its own window.
+  Supervisor restarted wrapper at 14:02:39Z after old wrapper 1800 died (RESTART reason=wrapper_dead).
+
+Section 9 satisfied: this live session added MTS-OID and wrapSrc to the feed.
+
+Open:
+  T034 spec gap: Phase 3 names net_longs, net_longs_new, net_shorts, net_shorts_new but defines no distinction between suffixed and unsuffixed. Parked pending definition.
+  MTS-TAPE was stale 4699s; sidecar relaunched PID 4544 at 20:52 local.
+
