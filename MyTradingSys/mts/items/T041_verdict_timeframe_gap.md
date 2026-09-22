@@ -64,3 +64,43 @@ Three-angle revalidation (operator-requested mechanism):
 
 Candidate new item (not yet registered): T042 - schema gap. Missing 4h/daily/weekly structure, no OI/CVD peak reference, 1h stale while klines fresh.
 
+
+## EVIDENCE - 2026-09-23T01:30Z, post-close continuity
+
+Source: operator pasted CoinGlass 30m and 1h BTCUSDT screenshots.
+Web cross-check run: CNBC TV18, CoinDesk, KuCoin, Glassnode, TradingView (all 2026-09-22).
+
+Chart read (30m CoinGlass, from operator paste):
+  price 86417.9, VWAP 85903.7, price 514 above VWAP
+  OI peak ~112K -> 108.041K now
+  CVD peak ~16K -> 6.44K now (chart shows ~60 pct drop from peak)
+  Net Delta 14.115K flat
+
+Web confirms:
+  648M USD shorts liquidated in 24h of 751M total (KuCoin/CoinGlass).
+  Futures volume +38 pct to 292B USD; OI +1 pct. Volume/OI ratio ~2. Short-squeeze shape (CoinDesk).
+  Funding near 0.01 pct benchmark, neutral. Glassnode: below neutral.
+  CVD negative across BTC/ETH/XRP/SOL on 24h basis (CoinDesk).
+  Options expiry Sept 25: 85K densest buy zone, 88K/90K sell pressure. ~142M buying per 1 pct drop toward 85K (KuCoin/Penguin X).
+  2026 pattern: OI contractions 11-19.5 pct in orderly unwinds (CryptoBriefing).
+
+Web contradicts (timeframe or venue mismatch):
+  Glassnode weekly: spot CVD -97.9M -> +46M (+147 pct). Perp CVD -312.5M -> +323.1M (+203 pct).
+  Resolution: weekly turn vs 24h still negative. Both true at their windows.
+  CoinDesk: BTC OI at 716,000 BTC, most since Aug 25 (rising).
+  Resolution: chart decline is venue-specific; aggregate rising. Binance ~36-37 pct of total OI.
+
+Schema gap observation (operator question, same session):
+  Snapshot structure block records 5m, 15m, 1h only. No 30m, 4h, daily, weekly.
+  1h structure stale=true while klines/BTCUSDT_1h.json is fresh (mtime 2026-09-23T00:31Z).
+  No OI peak reference. No CVD peak reference. Drawdown from peak invisible in snapshot.
+  Consequence: multi-hour range top, OI peak drawdown, CVD peak drawdown are chart-visible but not quotable as system values.
+
+Three-angle revalidation (operator-requested mechanism):
+  Angle A - reread inputs vs outputs. Every output consistent with short covering. One caveat: weekly spot CVD turned positive (+147 pct), seed of real-buying case.
+  Angle B - assume wrong. Two claims require qualification. (1) CVD anchor mismatch, CoinGlass leftmost bar vs session 00:00 UTC, not comparable per MTS_DICTIONARY cross-category warning. (2) OI decline venue-specific, not aggregate.
+  Angle C - model that fails. "Treat chart and snapshot as equivalent" fails on three anchor mismatches (CVD, OI, price drift). "OI down + price up always means X" fails.
+  Count: three angles, one agreement. Core intuition (systematic selling into a covering rally) survives.
+
+Candidate new item (not yet registered): T042 - schema gap. Missing 4h/daily/weekly structure, no OI/CVD peak reference, 1h stale while klines fresh.
+

@@ -1197,3 +1197,12 @@ Anchor mismatch warning restated: chart CVD (CoinGlass leftmost bar) vs system C
 Schema gap observed: no 30m/4h/daily/weekly structure in snapshot. No OI/CVD peak reference. 1h structure stale while 1h klines fresh.
 No engine change. T041 evidence only.
 Candidate T042 (schema gap) noted for next session. Not yet registered.
+
+## POST-CLOSE NOTE 2026-09-23T01:30Z
+
+Operator chart read + web cross-check on current BTCUSDT tape. Logged to items/T041_verdict_timeframe_gap.md as evidence.
+Key facts: short covering confirmed (648M USD short liquidations, volume/OI ratio ~2, funding neutral). Options expiry pin Sept 25 at 85K/88K.
+Anchor mismatch warning restated: chart CVD (CoinGlass leftmost bar) vs system CVD (session 00:00 UTC) not comparable.
+Schema gap observed: no 30m/4h/daily/weekly structure in snapshot. No OI/CVD peak reference. 1h structure stale while 1h klines fresh.
+No engine change. T041 evidence only.
+Candidate T042 (schema gap) noted for next session. Not yet registered.
