@@ -111,6 +111,11 @@
                                   "path":  "MyTradingSys/methodology/chart_read_protocol.md",
                                   "role":  "chart_read_method",
                                   "read":  "full"
+                              },
+                              {
+                                  "path":  "MyTradingSys/methodology/operator_reminders.md",
+                                  "role":  "operator_reminders",
+                                  "read":  "full"
                               }
                           ],
     "process_check":  [

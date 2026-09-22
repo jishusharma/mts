@@ -1138,3 +1138,37 @@ Runtime at close:
   Wrapper 9636, java 6996, supervisor 11348, sidecar 4544, mts-live v1.1.3 running.
   Supervisor restarted wrapper 14:02:39Z after old 1800 died.
 
+
+## CORRECTION 2026-09-22T18:15Z - commits not recorded in the 1215Z entry above
+
+The 1215Z entry listed seven commits. Twelve landed that session. Five were not recorded here.
+Times are IST (UTC+5:30). All five landed after this journal file was last written at 22:54:56 IST.
+
+  c0d4669  22:58:11  T040 register tick-delta layer. Item doc + worker dispatch created.
+  261a181  22:59:15  PROJECT_VISION add 2026-09-22 directive.
+  d431b24  23:02:51  operator_reminders.md created.
+  9d0a4bf  23:06:41  operator_reminders add machine section.
+  0cfc96c  23:07:03  operator_reminders restore C1 line.
+
+All five were made on this desktop, host JIS-NB. Same session, same author. No new work is implied beyond what those commits contain.
+
+## SESSION MTS-2026-09-22-1737Z CLOSE - 2026-09-22T18:45Z
+
+Landed:
+  NEXT_SESSION_HANDOFF.md rebuilt (was stale by one session).
+  SESSION_MANIFEST.json: operator_reminders.md added to boot_supplemental.
+  session_log.json: two entries appended (91->93).
+  DSA section 11 amended.
+  T039 sweep: eight item docs created (B058, B059, B062, T034, T035, T037, T038, T039). 10 items total with B063 and T040.
+  Build-Check enforcement: OPEN/IN-FIX/BLOCKED rows in BUGS.md need matching items/ file. Regex widened B-only to B-or-T. Row count 63->103. First run caught T038.
+  Journal correction appended: five unrecorded commits from 1215Z logged.
+  W1 dispatch file created at Dumps/workers/W1_divergence_audit/DISPATCH.md.
+  Sidecar restarted (mts-tape live).
+  PS7 7.6.6 installed side-by-side. Five spawn sites migrated to pwsh. COMMANDS.md updated. All scripts parse. WinForms, mvn, pytest confirmed OK in pwsh.
+  Build-Check scan widened to runtime/*.md.
+
+Not done:
+  PS7 Part 2 (loop restart under pwsh). Default: next natural restart picks it up.
+
+Runtime at close:
+  Wrapper 9636, java 6996, supervisor 11348. Sidecar restarted.

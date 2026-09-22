@@ -1,0 +1,20 @@
+[33m0cfc96c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m operator_reminders: restore C1 line lost at initial write
+[33m9d0a4bf[m operator_reminders: add machine section, mark E1/F1/F4 as desktop-only
+[33md431b24[m methodology: operator_reminders.md - paste-ready A-E prompts + F commands, decluttered
+[33m261a181[m PROJECT_VISION: add 2026-09-22 directive - local assistant, tick-delta layer, three machines, assistant principles, open questions
+[33mc0d4669[m T040: register tick-delta layer. Item doc + worker dispatch created.
+[33m785f9c4[m journal: session MTS-2026-09-22-1215Z close. B063 doc gains next-session worker plan (W1-W5).
+[33m200324c[m DSA s11: session MTS-2026-09-22-1215Z close state
+[33mf9bdd06[m T039: T039 wording correction - Build-Check enforcement not yet written, stated honestly
+[33ma255c27[m items/: B063 doc, T039 sweep. BUGS holds state+pointer. Dictionary gains divergence entry. Runtime churn untracked.
+[33m1849c2f[m B063: append fix shape to Evidence cell
+[33m98c8821[m BUGS: B063 opened - divergence handling fragmented, no definition, no rule, no verdict consumer
+[33ma97cebb[m journal: session MTS-2026-09-22-1215Z live mode + mts-watch v1.1.3
+[33mc5e4979[m mts-watch v1.1.3: MTS-OID block for T033 fields + wrapSrc token
+[33m0eef490[m mts-watch v1.1.2: wrapper detection falls back to lock PID
+[33m90e1fdd[m[33m ([m[1;33mtag: [m[1;33mlast-snapshot[m[33m)[m close: T033 delta_state + delta_state_price, backtest report, DSA s11/s12 update
+[33mbe626ca[m close MTS-2026-09-21-1328Z: mts-paste built + wired; backtest method, divergence audit, GOLAS-CD web docs landed; B056 recurred at 18:29:53Z
+[33m9e2dcb4[m close MTS-2026-09-21-0729Z addendum: backtest audit carried, worker dispatch instructed for next session
+[33md6cb030[m close MTS-2026-09-21-0729Z: B058 C+D, B062 position-aware, EXIT_HINT, tape history, MODEL_ALIGNMENT docs, rule 15
+[33m0947724[m close MTS-2026-09-21-0444Z: B060 B061 B057 CLOSED, B058 parts A+B landed, baseline captured, DSA 5b committed
+[33md474822[m close: MTS-2026-09-20-0541Z. P&L +0.00400314 BTC. B058-B062 filed. Session close doc + playbook on disk. Section 11 updated.

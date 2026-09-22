@@ -90,7 +90,7 @@ These run rarely. Not part of the daily flow.
 
 The supervisor watches the loop wrapper. Restarts it if it dies. Start it in its own window:
 
-    Start-Process powershell.exe -ArgumentList @(
+    Start-Process pwsh.exe -ArgumentList @(
         "-NoProfile","-ExecutionPolicy","Bypass",
         "-File","$PWD\scripts\core\loop-supervisor.ps1",
         "-Mode","armed","-IntervalMin","1","-RestartGraceSec","90"
@@ -98,7 +98,7 @@ The supervisor watches the loop wrapper. Restarts it if it dies. Start it in its
 
 Verify it is running:
 
-    Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match "loop-supervisor" } | Select-Object ProcessId, CommandLine
+    Get-CimInstance Win32_Process -Filter "Name='powershell.exe' OR Name='pwsh.exe'" | Where-Object { $_.CommandLine -match "loop-supervisor" } | Select-Object ProcessId, CommandLine
 
 Stop it cleanly:
 

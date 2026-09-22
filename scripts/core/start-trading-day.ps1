@@ -360,7 +360,7 @@ $smArgs = @(
     "-Command",
     "cd '$R'; mvn -q exec:java '-Dexec.mainClass=datafeed.Main' '-Dexec.args=statemachine $Symbol'"
 )
-$sm = Start-Process powershell.exe -ArgumentList $smArgs -PassThru -WindowStyle Hidden
+$sm = Start-Process pwsh.exe -ArgumentList $smArgs -PassThru -WindowStyle Hidden
 Log-Line "state_machine PID=$($sm.Id)"
 $StateMachinePID = $sm.Id
 

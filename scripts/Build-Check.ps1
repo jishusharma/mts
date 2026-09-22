@@ -106,6 +106,8 @@ $scan = @()
 $scan += Get-ChildItem "MyTradingSys\mts\runtime" -File -Filter "*.py" -ErrorAction SilentlyContinue
 $scan += Get-ChildItem "MyTradingSys\mts\runtime" -File -Filter "*.json" -ErrorAction SilentlyContinue
 $scan += Get-ChildItem "MyTradingSys\mts\research" -File -Filter "*.md" -ErrorAction SilentlyContinue
+$scan += Get-ChildItem "MyTradingSys\mts\runtime" -File -Filter "*.md" -ErrorAction SilentlyContinue
+$scan += Get-ChildItem "MyTradingSys\mts\runtime" -File -Filter "*.md" -ErrorAction SilentlyContinue
 $scan += Get-ChildItem "MyTradingSys\mts\conditions" -File -Filter "*.md" -ErrorAction SilentlyContinue
 $scan += Get-ChildItem "MyTradingSys\system" -File -Filter "*.md" -ErrorAction SilentlyContinue
 $scan += Get-ChildItem "scripts" -Recurse -File -Filter "*.ps1" -ErrorAction SilentlyContinue
@@ -139,7 +141,7 @@ if (Test-Path $bugsPath) {
   $seenIds = @{}
   $bugLines = [System.IO.File]::ReadAllLines((Resolve-Path $bugsPath), [System.Text.Encoding]::UTF8)
   foreach ($bl in $bugLines) {
-    if ($bl -match '^\|\s*B\d+\s*\|') {
+    if ($bl -match '^\|\s*[BT]\d+\s*\|') {
       $cells = $bl.Split('|') | ForEach-Object { $_.Trim() }
       if ($cells.Count -lt 9) { $bugFail += "malformed row: $bl"; continue }
       $bid = $cells[1]; $bopened = $cells[2]; $bstatus = $cells[3]; $bsev = $cells[4]; $breceipt = $cells[7]
@@ -153,6 +155,11 @@ if (Test-Path $bugsPath) {
           $od = [datetime]::ParseExact($bopened, "yyyy-MM-dd", $null)
           if (((Get-Date) - $od).TotalDays -gt 14) { $bugFail += "$bid IN-FIX older than 14 days" }
         } catch { $bugFail += "$bid bad Opened date: $bopened" }
+      }
+      if ($bstatus -eq "OPEN" -or $bstatus -eq "IN-FIX" -or $bstatus -eq "BLOCKED") {
+        $itemsDir = "MyTradingSys\mts\items"
+        $hasItem = (Test-Path $itemsDir) -and @(Get-ChildItem $itemsDir -Filter "$bid`_*.md" -ErrorAction SilentlyContinue).Count -gt 0
+        if (-not $hasItem) { $bugFail += "$bid $bstatus with no items/ file" }
       }
     }
   }

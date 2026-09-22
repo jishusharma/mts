@@ -86,7 +86,7 @@ while ($true) {
                     $card = $cardLines -join "`n"
                     $obj = [ordered]@{ title = "TAPE #$tickN - $div"; card_text = $card }
                     $obj | ConvertTo-Json -Depth 3 | Set-Content -Path $alertJs -Encoding UTF8
-                    Start-Process powershell.exe -ArgumentList @(
+                    Start-Process pwsh.exe -ArgumentList @(
                         "-NoProfile","-ExecutionPolicy","Bypass",
                         "-File",$alertPs,
                         "-AlertFile",$alertJs

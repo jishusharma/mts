@@ -44,11 +44,11 @@ while ($true) {
 
         Emit "=== $($now.ToString('o')) | snap_age=${snapAge}s ==="
 
-        $sup  = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match 'loop-supervisor' }).ProcessId
+        $sup  = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe' OR Name='pwsh.exe'" | Where-Object { $_.CommandLine -match 'loop-supervisor' }).ProcessId
         $lockPath = Join-Path $R "data\apparatus.lock"
         $lock = if (Test-Path $lockPath) { (Get-Content $lockPath -Raw).Trim() } else { "none" }
         $lockPid = if ($lock -match '^(\d+)\s') { [int]$Matches[1] } else { 0 }
-        $wrap = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match 'start-trading-day|mode\.ps1' -or $_.ProcessId -eq $lockPid }).ProcessId
+        $wrap = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe' OR Name='pwsh.exe'" | Where-Object { $_.CommandLine -match 'start-trading-day|mode\.ps1' -or $_.ProcessId -eq $lockPid }).ProcessId
         $java = @(Get-CimInstance Win32_Process -Filter "Name='java.exe'" | Where-Object { $_.CommandLine -match 'datafeed\.Main' }).ProcessId
         $wrapSrc = if ($wrap -contains $lockPid) { "lock" } elseif ($wrap.Count -gt 0) { "cmdline" } else { "none" }
         $chain = "sup=$($sup -join '+') wrap=$($wrap -join '+') wrapSrc=$wrapSrc java=$($java -join '+') lock=$lock"

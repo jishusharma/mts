@@ -593,6 +593,24 @@
       "action": "passed",
       "reason": "T033 closed: delta_state + delta_state_price. Backtest 6362 rows, no state survives day-clustered SE. Loop left running at close.",
       "ts": "2026-09-21T21:26:45.094201Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "MTS-2026-09-22-1215Z close: mts-watch v1.1.3 landed. MTS-OID block surfaces open_interest delta schools. B063 opened. T039 and T040 registered. items/ convention established.",
+      "ts": "2026-09-22T17:30:00Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "MTS-2026-09-22-1737Z boot: manifest confirmed, build PASS, both OI-delta fields verified live (schools disagree). Rebuilt NEXT_SESSION_HANDOFF.md. Added operator_reminders.md to SESSION_MANIFEST boot_supplemental. Sidecar found stopped.",
+      "ts": "2026-09-22T17:50:00Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "MTS-2026-09-22-1737Z close: T039 sweep (8 item docs), Build-Check enforcement live (OPEN needs items/), regex B-or-T, 63->103 rows. PS7 7.6.6 side-by-side, five spawn sites migrated to pwsh. Journal correction: five unrecorded 1215Z commits logged.",
+      "ts": "2026-09-22T18:45:00Z"
     }
   ]
 }

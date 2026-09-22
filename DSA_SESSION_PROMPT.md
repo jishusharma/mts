@@ -196,12 +196,12 @@ Before importing any concept from the transcripts:
 Update this section at every session close. Keep it to five lines.
 Queue is not listed here. Single source: MyTradingSys/mts/research/BUGS.md.
 
-Last live read:  2026-09-22T14:01Z. Session MTS-2026-09-22-1215Z close. Build PASS 17:24Z.
+Last live read:  2026-09-22T18:45Z. Session MTS-2026-09-22-1737Z close. Build PASS 18:45:30Z.
 Thesis:          neutral, low confidence. Unchanged.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: JIS-NB runs the loop. Live at close: wrapper 9636, java 6996, supervisor 11348, sidecar 4544, mts-live v1.1.3. Laptop is static.
-Findings:        mts-watch v1.1.2/1.1.3 landed. items/ convention established with B063. T039 registered for sweep. Runtime churn untracked. T034 definition locked; output type pending. Build-Check row count 62->63 (expected 64); cause unknown.
+Runtime + loops: JIS-NB runs the loop. Live: wrapper 9636, java 6996, supervisor 11348. Sidecar restarted. Loop still 5.1; next restart picks up pwsh. Laptop is static.
+Findings:        T039 sweep created eight item docs (10 total). Build-Check enforcement live: OPEN rows need items/ file; regex now matches B and T rows; row count 63->103. PS7 7.6.6 side-by-side, five spawn sites migrated to pwsh. Journal correction appended for five unrecorded 1215Z commits.
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.

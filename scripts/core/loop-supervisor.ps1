@@ -127,7 +127,7 @@ while ($true) {
             "-Mode",$Mode,
             "-IntervalMin",$IntervalMin
         )
-        $new = Start-Process powershell.exe -ArgumentList $loopArgs -PassThru -WindowStyle Hidden
+        $new = Start-Process pwsh.exe -ArgumentList $loopArgs -PassThru -WindowStyle Hidden
         SupLog "  started new wrapper PID=$($new.Id)"
         $lastRestartUtc = [DateTime]::UtcNow
     }

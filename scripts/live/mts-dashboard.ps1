@@ -44,8 +44,8 @@ $mo = if (Test-Path $moFile) { Get-Content $moFile -Raw -Encoding UTF8 | Convert
 Remove-Item $moFile -ErrorAction SilentlyContinue
 $hs = if ($mo) { $mo.hard_stops_compiled } else { $null }
 
-$sup  = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match "loop-supervisor" }).ProcessId
-$wrap = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -match "start-trading-day|mode\.ps1" }).ProcessId
+$sup  = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe' OR Name='pwsh.exe'" | Where-Object { $_.CommandLine -match "loop-supervisor" }).ProcessId
+$wrap = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe' OR Name='pwsh.exe'" | Where-Object { $_.CommandLine -match "start-trading-day|mode\.ps1" }).ProcessId
 $java = @(Get-CimInstance Win32_Process -Filter "Name='java.exe'" | Where-Object { $_.CommandLine -match "datafeed\.Main" }).ProcessId
 $lockPath = Join-Path $R "data\apparatus.lock"
 $lock = if (Test-Path $lockPath) { (Get-Content $lockPath -Raw).Trim() } else { "none" }
