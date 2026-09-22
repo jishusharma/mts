@@ -77,7 +77,7 @@ Never ask for what is already in front of you.
 
 ### C1. SCREENSHOT
 Follow chart_read_protocol.md. Show each layer by name.
-If a layer cannot be completed, say so.
+Output the layer name and your work for it. If a layer cannot be completed, say so.
 Label every number chart read or system. Never mix them.
 liquidation_clusters is deprecated. Do not quote it.
 Do not mix the read with a position or a verdict. Give the read.
