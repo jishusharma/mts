@@ -127,7 +127,7 @@ function Beep-Alert {
 function Compute-Verdict {
     param($snap, $proofDir = "aligned")
     $price = [double]$snap.current_price
-    $ts = [string]$snap.timestamp_utc
+    $ts = ([DateTime]$snap.timestamp_utc).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
     $cond = $snap.conditions
     $state = "$($cond.vp_shape)/$($cond.price_vs_va)"
     $cands = @($snap.setup_candidates)
@@ -586,11 +586,28 @@ try {
             if ($v.verdict -in $actionableVerdicts) { $firePopup = $true }
             elseif ($why -match "STATE |ADVERSE|STOP NEAR|TARGET NEAR") { $firePopup = $true }
         }
-        # B062 - suppress same-direction SETUP_FORMING when a position is open.
-        if ($firePopup -and $posDir -ne "none" -and $v.verdict -eq "SETUP_FORMING") {
-            if ([string]$v.direction -eq $posDir) {
-                $firePopup = $false
-                Log-Line "POSITION_SUPPRESSED dir=$posDir setup=$($v.setup)"
+        # B062 - position-aware suppression and elevation.
+        #   suppress WATCH when a position is open (any direction).
+        #   suppress same-direction SETUP_FORMING.
+        #   elevate opposing SETUP_FORMING (force popup).
+        if ($posDir -ne "none") {
+            if ($v.verdict -eq "WATCH") {
+                if ($firePopup) {
+                    $firePopup = $false
+                    Log-Line "POSITION_SUPPRESSED kind=WATCH dir=$posDir setup=$($v.setup)"
+                }
+            } elseif ($v.verdict -eq "SETUP_FORMING") {
+                if ([string]$v.direction -eq $posDir) {
+                    if ($firePopup) {
+                        $firePopup = $false
+                        Log-Line "POSITION_SUPPRESSED kind=SETUP_FORMING dir=$posDir setup=$($v.setup)"
+                    }
+                } else {
+                    if ($Popups -ne "off" -and -not $cooldownBlock) {
+                        $firePopup = $true
+                        Log-Line "POSITION_ELEVATED dir=$posDir setup=$($v.setup) opposing=$([string]$v.direction)"
+                    }
+                }
             }
         }
         # === Precondition gate (schema v1.1.0, Rule 37 behavior restoration) ===

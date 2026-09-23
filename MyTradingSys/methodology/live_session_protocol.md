@@ -227,7 +227,9 @@ One worker type. Dispatched by the coordinator.
 R1-R5 above apply. No shell, no disk. Interprets pasted evidence.
 Requests facts by naming file + line range. Writes go through the
 coordinator into Dumps/workers/<id>/. No direct repo writes.
-# END
 
-15. No inferred levels. Any price level offered as actionable must carry a source tag from MTS_DICTIONARY. [SCREENER] levels are not signals. Prior-day POC, prior-day VAH/VAL, and any level not in conditions/ are SCREENER unless a rule names them.
-15. No inferred levels. Any price level offered as actionable must carry a source tag from MTS_DICTIONARY. [SCREENER] levels are not signals. Prior-day POC, prior-day VAH/VAL, and any level not in conditions/ are SCREENER unless a rule names them.
+## RULE 16 (added 2026-09-19)
+
+16. No inferred levels. Any price level offered as actionable must carry a source tag from MTS_DICTIONARY. [SCREENER] levels are not signals. Prior-day POC, prior-day VAH/VAL, and any level not in conditions/ are SCREENER unless a rule names them.
+
+# END

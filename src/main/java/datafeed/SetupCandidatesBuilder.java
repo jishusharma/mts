@@ -98,10 +98,14 @@ public class SetupCandidatesBuilder {
             String swingTF = getSwingTF(c.zone.type);
             JsonNode structureNode = root.get("structure");
             double swingHigh = 0, swingLow = 0;
+            boolean tfStale = false;
             if (structureNode != null && structureNode.has(swingTF)) {
                 JsonNode tfNode = structureNode.get(swingTF);
-                swingHigh = tfNode.get("swing_high").asDouble();
-                swingLow = tfNode.get("swing_low").asDouble();
+                tfStale = tfNode.path("stale").asBoolean(false);
+                if (!tfStale) {
+                    swingHigh = tfNode.get("swing_high").asDouble();
+                    swingLow = tfNode.get("swing_low").asDouble();
+                }
             }
 
             if ("short".equals(c.direction)) {
@@ -331,12 +335,22 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         // structure swings
         JsonNode structure = root.get("structure");
         if (structure != null) {
-            addZoneIfPresent(structure, "1h", "swing_high", "1h_swing_high", zones, 4);
-            addZoneIfPresent(structure, "1h", "swing_low", "1h_swing_low", zones, 4);
-            addZoneIfPresent(structure, "15m", "swing_high", "15m_swing_high", zones, 3);
-            addZoneIfPresent(structure, "15m", "swing_low", "15m_swing_low", zones, 3);
-            addZoneIfPresent(structure, "5m", "swing_high", "5m_swing_high", zones, 2);
-            addZoneIfPresent(structure, "5m", "swing_low", "5m_swing_low", zones, 2);
+            // B065: skip swing zones whose source tf is flagged stale in the snapshot.
+            boolean stale1h  = structure.path("1h").path("stale").asBoolean(false);
+            boolean stale15m = structure.path("15m").path("stale").asBoolean(false);
+            boolean stale5m  = structure.path("5m").path("stale").asBoolean(false);
+            if (!stale1h) {
+                addZoneIfPresent(structure, "1h", "swing_high", "1h_swing_high", zones, 4);
+                addZoneIfPresent(structure, "1h", "swing_low", "1h_swing_low", zones, 4);
+            }
+            if (!stale15m) {
+                addZoneIfPresent(structure, "15m", "swing_high", "15m_swing_high", zones, 3);
+                addZoneIfPresent(structure, "15m", "swing_low", "15m_swing_low", zones, 3);
+            }
+            if (!stale5m) {
+                addZoneIfPresent(structure, "5m", "swing_high", "5m_swing_high", zones, 2);
+                addZoneIfPresent(structure, "5m", "swing_low", "5m_swing_low", zones, 2);
+            }
         }
         // FVG nearest
         JsonNode fvg = root.get("conditions").get("fvg_nearest_unfilled");

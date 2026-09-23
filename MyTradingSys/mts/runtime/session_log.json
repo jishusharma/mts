@@ -883,6 +883,12 @@
       "action": "passed",
       "reason": "Handoff MTS-2026-09-23-1445Z steps 1-4 complete. Loop healthy. Independent worker type removed from DSA_SESSION_PROMPT.md section 1 and live_session_protocol.md WORKER TYPES. Build-Check.ps1 L131 label corrected to Cyrillic codepoints (0x0400-0x04FF). DSA section 11 regenerated. Mojibake report in handoff 1445Z was wrong; on-disk bytes E2 80 94 clean UTF-8 em dash.",
       "ts": "2026-09-23T19:01:03.898274Z"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "MTS-2026-09-23-1730Z continuation. Landed: protocol cleanup (stray # END, dup rule 15 -> rule 16); B058 C+D confirmed on disk and CLOSED; B062 WATCH suppress + opposing SETUP_FORMING elevation; B065 stale checks wired in extractZones and stop selection; T042 buildStructure emits 1w/1d/4h; B059 attempted then reverted (fix belongs producer-side); T043 WONTFIX; timestamp format fix at start-trading-day.ps1 L130 (was culture-dependent, now ISO). Loop restarted twice: 4356/2428/16160 then 9260/4336/13032.",
+      "ts": "2026-09-23T19:26:16.610477Z"
     }
   ]
 }

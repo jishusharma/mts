@@ -686,8 +686,9 @@ public class MarketDataSnapshot {
 
     private ObjectNode buildStructure(Map<String, JsonNode> mtf, double currentPrice) {
         ObjectNode node = mapper.createObjectNode();
-        String[] tfs = {"1h","15m","5m"};
-        int[] lookbacks = {24,16,12};
+        // T042: emit structure for every tf present in mtf.
+        String[] tfs = {"1w","1d","4h","1h","15m","5m"};
+        int[] lookbacks = {2,7,3,24,16,12};
         for (int t=0; t<tfs.length; t++) {
             JsonNode klines = mtf.get(tfs[t]);
             ObjectNode tfNode = node.putObject(tfs[t]);
