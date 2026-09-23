@@ -1,9 +1,9 @@
-BUILD_REPORT - 2026-09-23 05:58:12 UTC
+BUILD_REPORT - 2026-09-23 06:01:35 UTC
 host: JIS-NB
 
 Java compile:  PASS (3 s)
 Math tests:    PASS 125/125 (1.3 s)
-Doc tests:     PASS 5/5 (1.6 s)
+Doc tests:     PASS 5/5 (1.8 s)
 
 In-flight .new files: 0
 
@@ -13,8 +13,10 @@ Active sessions:
 BOM files: 0
 Non-ASCII files: 0
 
-Bugs: FAIL (1 issues)
-  - B064 OPEN with no items/ file
+Bugs: OK (105 rows)
+
+Dispatches: FAIL (1 issues)
+  - Dumps\workers\B063-W1-divergence-audit\DISPATCH.md references missing path: MyTradingSys\mts\runtime\divergence_monitor.py
 
 STATUS: FAIL
 

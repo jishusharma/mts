@@ -174,6 +174,44 @@ if (Test-Path $bugsPath) {
   $lines.Add("Bugs: file missing ($bugsPath)")
 }
 $lines.Add("")
+# Dispatch checks
+$dispatchFail = @()
+$dispatchDir = "Dumps\workers"
+$dispatchFiles = @()
+if (Test-Path $dispatchDir) {
+  $dispatchFiles = @(Get-ChildItem $dispatchDir -Recurse -File -Filter "DISPATCH.md" -ErrorAction SilentlyContinue |
+    Where-Object { $_.FullName -notmatch "\\_archive\\" })
+}
+foreach ($df in $dispatchFiles) {
+  $rel = $df.FullName.Substring((Get-Location).Path.Length + 1)
+  $body = [System.IO.File]::ReadAllText($df.FullName, [System.Text.Encoding]::UTF8)
+
+  # Check 1: OUTPUT path line
+  if ($body -notmatch "Write reply to Dumps/workers/") {
+    $dispatchFail += "$rel missing 'Write reply to Dumps/workers/' line"
+  }
+
+  # Check 2: referenced repo paths resolve
+  $pathMatches = [regex]::Matches($body, '(?m)^\s+((?:MyTradingSys|scripts|src|data)[\\/][^\s`"]+\.(?:md|py|ps1|java|json))')
+  $seen = @{}
+  foreach ($pm in $pathMatches) {
+    $raw = $pm.Groups[1].Value -replace '/', '\'
+    if ($seen.ContainsKey($raw)) { continue }
+    $seen[$raw] = 1
+    $full = Join-Path (Get-Location) $raw
+    if (-not (Test-Path $full)) {
+      $dispatchFail += "$rel references missing path: $raw"
+    }
+  }
+}
+if ($dispatchFail.Count -gt 0) {
+  $lines.Add("Dispatches: FAIL (" + $dispatchFail.Count + " issues)")
+  foreach ($dd in $dispatchFail) { $lines.Add("  - $dd") }
+  $overallFail = $true
+} else {
+  $lines.Add("Dispatches: OK (" + $dispatchFiles.Count + " files)")
+}
+$lines.Add("")
 if ($bomHits.Count -gt 0 -or $nonAsciiHits.Count -gt 0) { $overallFail = $true }
 if ($overallFail) { $lines.Add("STATUS: FAIL") } else { $lines.Add("STATUS: PASS") }
 $lines.Add("")
