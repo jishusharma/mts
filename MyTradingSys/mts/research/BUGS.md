@@ -135,4 +135,6 @@ IN-FIX rows older than 14 days fail Build-Check.
 | T039 | 2026-09-22 | OPEN | HIGH | Functionality-doc sweep. One item one doc, verbatim ask at top, chronological updates. Register holds state + pointer. Enforcement (Build-Check addition, not yet written): every OPEN row must have a matching items/ file. | Rule set by operator 2026-09-22. Sources to fold: dsa_developer_implementation_tasks.md L365; compiled_output_audit_20260915.md L104; ALERT_REDESIGN_PROPOSAL.md L87; what_is_next.md Stage 3; INDICATOR_IMPLEMENTATION_HANDOFF.md Phase 3. Pattern proven on items/B063_divergence.md. Expiry 2026-10-06 (IN-FIX rule). | - |
 | T041 | 2026-09-22 | OPEN | HIGH | Engine verdict has no multi-hour timeframe awareness; 7h leg on 1h klines never read. Also structure.1h.stale=true while 1h klines fresh on disk. | Per-item doc: MyTradingSys/mts/items/T041_verdict_timeframe_gap.md. Operator obs 2026-09-22. | - |
 
+| B064 | 2026-09-23 | OPEN | MED | Supervisor does not honor supervisor_stop.flag; direct kill required | 2026-09-23T05:48Z: flag written 05:48, supervisor cycled at 05:48:36 / 05:49:11 / 05:49:43 / 05:50:14 / 05:50:46 / 05:51:17 without exiting. Direct Stop-Process needed. | fix: supervisor must check supervisor_stop.flag at each cycle top, before lock read. |
+
 # END

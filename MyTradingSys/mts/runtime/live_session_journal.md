@@ -597,7 +597,7 @@ Errors made this session, corrections landed:
 - B047 read initially wrong-headed: I flagged pd=contradiction as still broken; it was correct (SELL vs SHORT). Corrected.
 - B028 first receipt claimed 0 corpus hits; searched .md not .txt. Corrected. WONTFIX stands on 2 real hits.
 - B022 first receipt claimed no consumer; divergence_monitor reads session. Corrected. WONTFIX stands on diagnostic-only.
-- B003 first fix (af1cfc5) changed stop-day lock path to trading_day.lock — wrong path. Reverted by parallel session 17ac759.
+- B003 first fix (af1cfc5) changed stop-day lock path to trading_day.lock -- wrong path. Reverted by parallel session 17ac759.
 - Multiple receipts written as "verified" before the verification ran. All corrected.
 
 Rule going forward: no receipt is written until the evidence command has run and output is on disk.
@@ -1206,3 +1206,23 @@ Anchor mismatch warning restated: chart CVD (CoinGlass leftmost bar) vs system C
 Schema gap observed: no 30m/4h/daily/weekly structure in snapshot. No OI/CVD peak reference. 1h structure stale while 1h klines fresh.
 No engine change. T041 evidence only.
 Candidate T042 (schema gap) noted for next session. Not yet registered.
+
+## SESSION MTS-2026-09-23-0430Z CLOSE - 2026-09-23T05:52Z
+
+Landed:
+  Loop restarted under pwsh (first time; PS7 Part 2 closed). Supervisor 3184 + wrapper 2736, then wrapper 11988 after supervisor restart.
+  T042 candidate noted; not registered.
+  Seven worker dispatches sent this session: W1, W2, W3 replied. W4-W5, T040, T041 still pending send.
+  Worker folder convention adopted: parent-prefix naming (B063-W1-divergence-audit etc). README index at Dumps/workers/README.md. Archive at Dumps/workers/_archive/.
+  Research-gate fix applied to W2/W3/W4/T041 dispatches (playbook Part I three steps inlined).
+  W1 result: only tape-watch.ps1 fires. divergence_monitor.py dead (scripts/tools/, never invoked). SetupScreener.cvdDivergence dead parameter (no producer, no caller). mtf_flow inert.
+  W2 result: RSI T2, MACD T1, OBV T1. CVD no validated T1/T2 evidence. Volume profile and OI corrected T1->T2 at storage.
+  W3 result: no T1/T2 cross-indicator matrix. Best-effort T3 matrix stored.
+
+Not done:
+  W4, W5, T040, T041 dispatches not sent.
+  T042 not registered (schema gap: no 4h/daily/weekly structure).
+  B064 filed (supervisor does not honor supervisor_stop.flag).
+
+Runtime at close: loop stopped by operator request (powering off). No procs. No locks. Direct kill of supervisor 3184 required.
+

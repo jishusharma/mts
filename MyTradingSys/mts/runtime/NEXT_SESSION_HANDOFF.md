@@ -1,70 +1,75 @@
 # NEXT SESSION HANDOFF
-# Rewritten 2026-09-22T19:00Z by MTS-2026-09-22-1737Z.
+# Rewritten 2026-09-23T05:55Z by MTS-2026-09-23-0430Z.
 
-STATUS: Loop left running. Build PASS 104 rows. Position none. Sidecar live. Loop still 5.1; next natural restart spawns pwsh. Seven worker dispatches ready, zero replies received.
+STATUS: Loop STOPPED by operator request (powering off). No procs, no locks. Build pending. Session MTS-2026-09-23-0430Z.
 
 ## QUEUE
 
 Single source: MyTradingSys/mts/research/BUGS.md
 
-Open: B058 (part D), B059, B062, B063, T034 (output type pending), T035, T037, T038, T039, T040, T041.
+Open: B058 (part D), B059, B062, B063, B064, T034, T035, T037, T038, T039, T040, T041.
 
 ## FIRST ACTION NEXT SESSION
 
-1. Confirm loop is up:
-     Get-ChildItem .\data -Filter "*.lock*"
-     Get-CimInstance Win32_Process -Filter "Name='java.exe' OR Name='pwsh.exe'" | Select-Object ProcessId, Name
-2. Batch reads:
-     Get-Content .\data\apparatus_log.txt -Tail 60
-     Get-Content .\MyTradingSys\mts\runtime\live_session_journal.md -Tail 60
+1. Confirm no stale processes:
+     Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -match "statemachine|start-trading-day|loop-supervisor|tape-watch|mts-watch" } | Select ProcessId, Name
+2. Start the loop (desktop only):
+     .\scripts\core\mode.ps1 -M armed
+     Start-Process pwsh.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-File","$PWD\scripts\core\loop-supervisor.ps1","-Mode","armed","-IntervalMin","1","-RestartGraceSec","90") -WindowStyle Hidden
+3. Batch reads:
+     Get-Content .\data\apparatus_log.txt -Tail 40
+     Get-Content .\MyTradingSys\mts\runtime\live_session_journal.md -Tail 40
      Get-ChildItem .\data\snapshots -Filter "BTCUSDT_*.json" | Sort LastWriteTime -Desc | Select -First 1
-     Get-Content .\MyTradingSys\mts\research\BUGS.md -Tail 40
-3. Build-Check under pwsh:
+4. Build-Check under pwsh:
      pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\Build-Check.ps1
-4. Optional: start next session in pwsh window, not 5.1.
 
-## WORKER DISPATCHES READY (send to worker chats)
+## WORKER DISPATCHES
 
-  Dumps/workers/W1_divergence_audit/DISPATCH.md            (B063 audit)
-  Dumps/workers/W2_institutional_definitions/DISPATCH.md   (B063 GOLAS-A)
-  Dumps/workers/W3_cross_indicator_relationships/DISPATCH.md (B063 GOLAS-B)
-  Dumps/workers/W4_btc_tuning_consensus/DISPATCH.md       (B063 GOLAS-C)
-  Dumps/workers/W5_backtest_design/DISPATCH.md            (B063 GOLAS-D)
-  Dumps/workers/T040_tick_delta/DISPATCH.md               (tick-delta layer design)
-  Dumps/workers/T041_verdict_timeframe_audit/DISPATCH.md  (verdict timeframe gap audit + research)
+Folder convention: <parent_id>-W#-<slug>. Index at Dumps/workers/README.md.
 
-All carry R1-R5 inline. Send = paste into fresh chat with web access where research is required (W2-W5, T041 Part B).
-Save reply to Dumps/workers/<folder>/REPLY.md.
+Replied this session:
+  Dumps/workers/B063-W1-divergence-audit/REPLY.md
+  Dumps/workers/B063-W2-institutional-definitions/REPLY.md
+  Dumps/workers/B063-W3-cross-indicator-relationships/REPLY.md
 
-## LANDED THIS SESSION (MTS-2026-09-22-1737Z, both closes)
+Ready, not sent:
+  Dumps/workers/B063-W4-btc-tuning-consensus/DISPATCH.md
+  Dumps/workers/B063-W5-backtest-design/DISPATCH.md
+  Dumps/workers/T040-W1-tick-delta/DISPATCH.md
+  Dumps/workers/T041-W1-verdict-timeframe-audit/DISPATCH.md
 
-NEXT_SESSION_HANDOFF rebuilt; SESSION_MANIFEST add; session_log events; DSA s11 amended; T039 sweep (8 item docs);
-Build-Check enforcement (OPEN/IN-FIX/BLOCKED require items/), regex B-or-T, 63->103;
-journal correction for five unrecorded 1215Z commits;
-PS7 7.6.6 side-by-side, 5 spawn sites migrated to pwsh, WinForms/mvn/pytest verified, scan widened to runtime/*.md;
-R1-R5 relabel across 7 files; 6 worker dispatches; T041 registered (row + item doc + dispatch); journal mojibake fixed.
+Each carry the full research gate (playbook Part I, three steps) and R1-R5.
+Send pattern: paste DISPATCH.md into fresh chat, then paste the matching
+ROUND1_EVIDENCE.md (B063 item doc) if the dispatch names it. Save reply
+to REPLY.md in the same folder.
+
+## LANDED THIS SESSION (MTS-2026-09-23-0430Z)
+
+Loop restarted under pwsh (PS7 Part 2 closed). Supervisor 3184 + wrapper 2736,
+then wrapper 11988 after supervisor restart. Loop stopped by operator request
+at 05:52Z. Worker folder convention adopted (parent-prefix). README index
+written. Archive at Dumps/workers/_archive/. Research-gate fix applied to
+four dispatches (W2, W3, W4, T041). W1/W2/W3 replies stored. B064 filed
+(supervisor does not honor supervisor_stop.flag).
 
 ## OPEN LOOPS AT CLOSE
 
-PS7 Part 2 (loop restart under pwsh) not forced.
-T034 output type decision owed by operator.
-Worker replies: 0 of 7.
-Post-close evidence landed 2026-09-23T01:30Z. Chart read + web cross-check + three-angle revalidation logged to items/T041_verdict_timeframe_gap.md.
-Key facts: short covering confirmed (648M USD short liquidations), options expiry pin Sept 25 at 85K/88K, anchor mismatch warning chart CVD vs system CVD.
-Candidate T042 (schema gap: no 4h/daily/weekly structure, no OI/CVD peak reference, 1h stale while 1h klines fresh) not yet registered. Decide next session.
-Post-close evidence landed 2026-09-23T01:30Z. Chart read + web cross-check + three-angle revalidation logged to items/T041_verdict_timeframe_gap.md.
-Key facts: short covering confirmed (648M USD short liquidations), options expiry pin Sept 25 at 85K/88K, anchor mismatch warning chart CVD vs system CVD.
-Candidate T042 (schema gap: no 4h/daily/weekly structure, no OI/CVD peak reference, 1h stale while 1h klines fresh) not yet registered. Decide next session.
+B064 fix design owed (supervisor must check supervisor_stop.flag at cycle top).
+W4, W5, T040, T041 dispatches not sent.
+T042 candidate not registered (schema gap: no 4h/daily/weekly structure).
+CVD divergence: no T1/T2 source. Matches MTS_DICTIONARY note that CVD has no
+Tom basis.
+W2 tier corrections at storage: volume profile and open interest corrected
+from T1 to T2 (journals not on playbook T1 list).
 
 ## HARD RULES
 
 - Never bare-kill java. Use stop-day.ps1 or mode.ps1.
 - Never run mode.ps1 twice in a row.
 - Ledger is not truth. Files are truth.
-- Rule 32: verdict-path change needs 3-snapshot proof.
 - No receipt until the evidence command output is on disk.
 - Log tail is not a health check. Read wrapper PID + lock + log mtime together.
 - No inferred levels. No angle-bracket placeholders in pasted blocks.
-- Loop is not stopped at session close. Operator runs stop-day.ps1 before powering off.
+- No here-strings over 30 lines. Use IntelliJ or a temp .py file.
 
 # END
