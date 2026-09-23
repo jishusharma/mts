@@ -1,5 +1,5 @@
 # Build-Check.ps1 - Preflight + routing manifest for DSA sessions.
-# Writes Dumps/BUILD_REPORT.md - paste this first at any session start.
+# Writes MyTradingSys/mts/runtime/BUILD_REPORT.md - paste this first at any session start.
 # Does not modify any live file.
 
 $ErrorActionPreference = "Continue"
@@ -128,7 +128,7 @@ foreach ($f in $scan) { if (-not $f.FullName) { continue }
 }
 $lines.Add("BOM files: " + $bomHits.Count)
 foreach ($h in $bomHits) { $lines.Add("  - $h") }
-$lines.Add("Non-ASCII files: " + $nonAsciiHits.Count)
+$lines.Add("Cyrillic codepoints (0x0400-0x04FF): " + $nonAsciiHits.Count)
 foreach ($h in $nonAsciiHits) { $lines.Add("  - $h") }
 $lines.Add("")
 # Bug list validation
@@ -216,7 +216,7 @@ if ($bomHits.Count -gt 0 -or $nonAsciiHits.Count -gt 0) { $overallFail = $true }
 if ($overallFail) { $lines.Add("STATUS: FAIL") } else { $lines.Add("STATUS: PASS") }
 $lines.Add("")
 $lines.Add("Pastes for this session:")
-$lines.Add("  Always:   Dumps/BUILD_REPORT.md")
+$lines.Add("  Always:   MyTradingSys/mts/runtime/BUILD_REPORT.md")
 $lines.Add("  JSON:     Dumps/dump_core.md + dump_runtime.md")
 $lines.Add("  Data:     Dumps/dump_data.md")
 $lines.Add("  System:   Dumps/dump_system_support.md")
@@ -224,7 +224,7 @@ $lines.Add("  Extract:  Dumps/dump_extracts.md (paste sections only)")
 $lines.Add("")
 
 # Write
-$outDir = "Dumps"
+$outDir = "MyTradingSys/mts/runtime"
 if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir -Force | Out-Null }
 $outFile = Join-Path $outDir "BUILD_REPORT.md"
 Write-TextNoBom -Path $outFile -Lines $lines

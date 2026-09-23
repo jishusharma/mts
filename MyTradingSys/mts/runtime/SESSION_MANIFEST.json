@@ -8,7 +8,7 @@
                            "read":  "full"
                        },
                        {
-                           "path":  "Dumps/BUILD_REPORT.md",
+                           "path":  "MyTradingSys/mts/runtime/BUILD_REPORT.md",
                            "role":  "build_status",
                            "read":  "full"
                        },

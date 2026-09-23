@@ -797,6 +797,92 @@
       "type": "alert",
       "ts": "2026-09-23T14:26:25.621Z",
       "reason": "verdict NO_TRADE -> WAIT_TRIGGER | STATE TWOPEAK/below_val -> TWOPEAK/in_va"
+    },
+    {
+      "ts_utc": "2026-09-23T15:08:40.5538991Z",
+      "session": "MTS-2026-09-23-1445Z",
+      "actor": "COORDINATOR",
+      "kind": "RESTRUCTURE",
+      "subject": "Dumps/workers/",
+      "change": "Adopted one-folder-per-session model. This session moved to Dumps/workers/MTS-2026-09-23-1445Z/. 13 workers renumbered 01-13 (01 main T043-W1). Old worker folders left in place. README.md written as model doc.",
+      "files_new": [
+        "Dumps/workers/README.md",
+        "Dumps/workers/MTS-2026-09-23-1445Z/01-T043-W1/DISPATCH.md",
+        "Dumps/workers/MTS-2026-09-23-1445Z/02-B058-W1/DISPATCH.md",
+        "Dumps/workers/MTS-2026-09-23-1445Z/03-B059-W1/DISPATCH.md",
+        "Dumps/workers/MTS-2026-09-23-1445Z/04-B062-W1/DISPATCH.md",
+        "Dumps/workers/MTS-2026-09-23-1445Z/05-B063-W1/DISPATCH.md",
+        "Dumps/workers/MTS-2026-09-23-1445Z/06-B065-W1/DISPATCH.md",
+        "Dumps/workers/MTS-2026-09-23-1445Z/07-T034-W1/DISPATCH.md",
+        "Dumps/workers/MTS-2026-09-23-1445Z/08-T035-W1/DISPATCH.md",
+        "Dumps/workers/MTS-2026-09-23-1445Z/09-T037-W1/DISPATCH.md",
+        "Dumps/workers/MTS-2026-09-23-1445Z/10-T038-W1/DISPATCH.md",
+        "Dumps/workers/MTS-2026-09-23-1445Z/11-T039-W1/DISPATCH.md",
+        "Dumps/workers/MTS-2026-09-23-1445Z/12-T040-W1/DISPATCH.md",
+        "Dumps/workers/MTS-2026-09-23-1445Z/13-T042-W1/DISPATCH.md"
+      ],
+      "verified": "bytes 857-2061, BOM False x13, non-ASCII 0, reply paths rewritten, old folders intact"
+    },
+    {
+      "ts_utc": "2026-09-23T15:14:31.1499837Z",
+      "session": "MTS-2026-09-23-1445Z",
+      "actor": "COORDINATOR",
+      "kind": "DELETE",
+      "subject": "Dumps/LIVE_PASTE.txt",
+      "change": "Operator confirmed never used. Deleted. Backup at backup_session/MTS-2026-09-23-1445Z/LIVE_PASTE.txt (13087 bytes). No stop flag, no tmp left. mts-paste.ps1 and load.ps1 aliases mts-paste/mts-paste-now/mts-paste-stop left in place; deferred removal to a future session (4-file change: load.ps1, mts-paste.ps1, COMMANDS.md, MTS_DICTIONARY.md).",
+      "verified": "exists after delete: False"
+    },
+    {
+      "ts_utc": "2026-09-23T15:18:47.6630304Z",
+      "session": "MTS-2026-09-23-1445Z",
+      "actor": "COORDINATOR",
+      "kind": "MOVE",
+      "subject": "BUILD_REPORT.md",
+      "change": "Moved Dumps/BUILD_REPORT.md -> MyTradingSys/mts/runtime/BUILD_REPORT.md. Live refs updated: Build-Check.ps1 (3 anchors: header, Always line, outDir), SESSION_MANIFEST.json (boot_files path). Historical refs in archive/, fyi_archive/, L_ITEMS_MASTER, session_log, 02a, 02b left as records. Dumps now holds request-on-demand only.",
+      "hashes": "Build-Check.ps1 6237C0CE -> 417F4308; SESSION_MANIFEST.json 2BB4F780 -> 1C6FC39B",
+      "verified": "Build-Check STATUS PASS, dispatch count 26, BOM False on 3 touched files"
+    },
+    {
+      "verdict": "WAIT_RR",
+      "setup": "ct_long",
+      "alert_id": 826,
+      "action": "monitored",
+      "type": "alert",
+      "ts": "2026-09-23T16:03:26.422Z",
+      "reason": "zone vwap_band_-2 -> - | proof 6 -> 0 | STATE TWOPEAK/below_val -> TWOPEAK/in_va"
+    },
+    {
+      "verdict": "WAIT_RR",
+      "setup": "ct_long",
+      "alert_id": 827,
+      "action": "monitored",
+      "type": "alert",
+      "ts": "2026-09-23T16:07:24.455Z",
+      "reason": "verdict WAIT_PROOF -> WAIT_RR | STATE TWOPEAK/in_va -> TWOPEAK/below_val"
+    },
+    {
+      "verdict": "WAIT_PROOF",
+      "setup": "ct_long",
+      "alert_id": 828,
+      "action": "monitored",
+      "type": "alert",
+      "ts": "2026-09-23T16:51:25.664Z",
+      "reason": "zone weekly_val -> 15m_swing_low | price delta 0.16% | proof 5 -> 4 | STATE TWOPEAK/below_val -> TWOPEAK/in_va"
+    },
+    {
+      "ts_utc": "2026-09-23T17:23:08.0056794Z",
+      "session": "MTS-2026-09-23-1445Z",
+      "actor": "COORDINATOR",
+      "kind": "WORKERS",
+      "subject": "Dumps/workers/MTS-2026-09-23-1445Z/",
+      "change": "13 worker dispatches issued. Outcomes: 02-10,12,13 DONE. 01 FAIL (design-only, reverted). 11 FAIL (fabricated verbatim sources). 13 round 1 FAIL (fabricated buildStructure body), round 2 DONE after real body pasted. Coordinator did T039 source-folds directly after 11 FAIL (3 new items T044/T045/T046, 3 fold appends, 3 BUGS rows).",
+      "verified": "Build-Check PASS at 17:16Z. Bugs 108 -> 111 rows. 13 worker folders 01-13 with DISPATCH.md + REPLY.md each."
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "Handoff MTS-2026-09-23-1445Z steps 1-4 complete. Loop healthy. Independent worker type removed from DSA_SESSION_PROMPT.md section 1 and live_session_protocol.md WORKER TYPES. Build-Check.ps1 L131 label corrected to Cyrillic codepoints (0x0400-0x04FF). DSA section 11 regenerated. Mojibake report in handoff 1445Z was wrong; on-disk bytes E2 80 94 clean UTF-8 em dash.",
+      "ts": "2026-09-23T19:01:03.898274Z"
     }
   ]
 }

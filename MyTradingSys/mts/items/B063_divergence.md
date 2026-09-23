@@ -37,3 +37,14 @@ Next-session worker plan for B063:
 - W5  GOLAS-D. Backtest design. Data sources, replay method, thresholds, pass/fail criteria. No execution this cycle.
 
 Each dispatch carries the R1-R5 protocol from MyTradingSys/methodology/live_session_protocol.md. Replies land in Dumps/workers/<id>/ and updates append below in this doc.
+
+### 2026-09-23T15:30Z - coordinator, session MTS-2026-09-23-1445Z
+
+Source fold. Added from T039 sweep source 2 (compiled_output_audit_20260915.md L104, cvd row of the schema/emitter gap table).
+
+Verbatim action cell (L104):
+> Restore divergence or deprecate in schema.
+
+Context: schema declares value, slope, divergence, last_3_delta, confidence, source. Emitter emits value, slope, last_3_delta, cvd_recent, confidence, scope, session_start_utc. Gap columns: divergence, source. Two unresolved directions: restore divergence or deprecate in schema, and source-string mismatch.
+
+This fold is documentation only. No schema change. Ties to the detector audit already recorded above.

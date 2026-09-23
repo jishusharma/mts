@@ -1,9 +1,9 @@
-BUILD_REPORT - 2026-09-23 14:42:26 UTC
+BUILD_REPORT - 2026-09-23 19:01:38 UTC
 host: JIS-NB
 
-Java compile:  PASS (2.6 s)
+Java compile:  PASS (2.9 s)
 Math tests:    PASS 125/125 (1.2 s)
-Doc tests:     PASS 5/5 (1.6 s)
+Doc tests:     PASS 5/5 (1.7 s)
 
 In-flight .new files: 0
 
@@ -11,16 +11,16 @@ Active sessions:
   (none)
 
 BOM files: 0
-Non-ASCII files: 0
+Cyrillic codepoints (0x0400-0x04FF): 0
 
-Bugs: OK (108 rows)
+Bugs: OK (111 rows)
 
-Dispatches: OK (13 files)
+Dispatches: OK (26 files)
 
 STATUS: PASS
 
 Pastes for this session:
-  Always:   Dumps/BUILD_REPORT.md
+  Always:   MyTradingSys/mts/runtime/BUILD_REPORT.md
   JSON:     Dumps/dump_core.md + dump_runtime.md
   Data:     Dumps/dump_data.md
   System:   Dumps/dump_system_support.md

@@ -220,39 +220,13 @@ Seven waste classes seen today. Each has a fix. Each fix is a rule.
     date, not "done". Supersedes "gauge by design" as a closing
     argument.
 
-## WORKER TYPES (added 2026-09-23)
+## WORKER TYPE (added 2026-09-23)
 
-Two worker types. Dispatched by the coordinator.
-
-### DEPENDENT WORKER
+One worker type. Dispatched by the coordinator.
 
 R1-R5 above apply. No shell, no disk. Interprets pasted evidence.
 Requests facts by naming file + line range. Writes go through the
 coordinator into Dumps/workers/<id>/. No direct repo writes.
-
-### INDEPENDENT WORKER
-
-Runs on its own surface (separate session, local model, or script).
-Read access to the MTS repo. May query MTS and the web.
-
-Rules:
-
-I1. Writes only inside its own Dumps/workers/<id>/ directory. No writes
-    elsewhere in the repo.
-I2. Every repo change it wants is returned as a verbatim PowerShell
-    statement in its report. Operator or coordinator runs it. The worker
-    never claims to have written outside its own directory.
-I3. Web claims follow playbook Part I: meta-research, source-tier
-    commitment, tagged findings. Unverified web tagged UNVERIFIED-WEB.
-I4. Disk-derived claims cite path + line range.
-I5. Report format: FINDINGS / EVIDENCE / WRITE STATEMENTS / NEXT.
-    No "Confirmed" without the value pasted.
-I6. Reads only. Never runs mode.ps1, stop-day.ps1, or any loop control.
-I7. No commit, no tag, no push, no session_state.json, no session_log.json.
-I8. Isolation: if the layer needs a shared-file change (BUGS.md,
-    MTS_DICTIONARY.md, 03_FILE_INDEX.md), the worker returns the exact
-    statement. The coordinator merges. No two workers touch the same
-    shared file directly.
 # END
 
 15. No inferred levels. Any price level offered as actionable must carry a source tag from MTS_DICTIONARY. [SCREENER] levels are not signals. Prior-day POC, prior-day VAH/VAL, and any level not in conditions/ are SCREENER unless a rule names them.

@@ -29,3 +29,28 @@ The claim that 1h klines are fresh on disk is from the journal post-close note, 
 ### 2026-09-23T08:31Z - coordinator, session MTS-2026-09-23-0831Z
 
 Registered. Chose separate row rather than folding into T041: producer vs consumer are separate fix surfaces.
+
+### 2026-09-23T18:00Z - coordinator, session MTS-2026-09-23-1445Z
+
+Worker T042-W1 round 2 accepted. Real producer anchors now known:
+
+MarketDataSnapshot.java:
+  L687 private ObjectNode buildStructure(Map<String, JsonNode> mtf, double currentPrice)
+  L689 String[] tfs = {"1h","15m","5m"};
+  L689 int[] lookbacks = {24,16,12};
+  L691-696 empty branch writes swing_high=0.0, swing_low=0.0, stale=true
+  L716 boolean stale = (swingHigh < currentPrice) || (swingLow > currentPrice);
+
+Second caller (missed by worker 13):
+  L947 Map<String, JsonNode> mtf = fetchMultiTimeframeAsOf(symbol, asOf);
+  L1080 ObjectNode structure = buildStructure(mtf, currentPrice);
+
+Two producer edit sites, not one. The live path (L197) and the historical path (L1080) both call buildStructure. Both must be verified after any tfs[] extension.
+
+Consumer edit points confirmed:
+  mts_math.py L185-193 field-map tuples (9 currently, add 12 for new TFs)
+  mts_math.py L316-327 SWING loop, one-line TF list extension
+
+Schema_version bump proposal 5.1.0 -> 5.2.0 accepted as additive-minor. schema_v5.1.0_spec.md is session-scope only; does NOT define structure or peaks. Net-new spec needed.
+
+Open item at close: buildStructure caller's mtf map is populated by fetchMultiTimeframe / fetchMultiTimeframeAsOf. The kline fetch set must be extended to supply 30m/4h/1d/1w or the new TF branches stay empty.

@@ -9,14 +9,9 @@ State your role before acting.
 
 - COORDINATOR: owns session_state.json and session_log.json. Dispatches workers.
   Commits. Approves writes.
-- WORKER (Dependent): produces output only. No shell, no disk. Interprets
+- WORKER: produces output only. No shell, no disk. Interprets
   pasted evidence. Requests facts by naming file + line range; coordinator
   runs and pastes back. Never commits. Never touches state files.
-- WORKER (Independent): runs on its own surface. Reads the MTS repo. May
-  query MTS and web. Writes only inside its own worker directory. Every
-  repo change it wants is returned as a verbatim PowerShell statement for
-  the operator or coordinator to run. Never commits. Never touches state
-  files directly. Follows playbook Part I for any web claim.
 
 ## 2. WHAT THE MODEL IS
 
@@ -200,12 +195,12 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-09-23T12:37Z. Loop running under pwsh. Supervisor 11680, wrapper 4468, java 10388.
+Last live read:  2026-09-23T17:29Z. Latest snapshot state_code age 1 min at 17:31Z.
 Thesis:          neutral, low confidence. Unchanged.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: JIS-NB loop ALIVE 12:37Z. Locks fresh. Session MTS-2026-09-23-1236Z closed.
-Findings:        Architecture doctrine locked in PROJECT_VISION.md (Tom is core; everything else modular; four gap classes). Two worker types defined: Dependent (R1-R5) and Independent (I1-I8). 19 CT ids confirmed at compiled_engine L790-819. Hard stops slice audit: 9 rules, 3 fully wired, 2 label-principle, 2 wired indirectly, 2 gaps (rule 3 stop-beyond-liquidity no impl; rule 9 labeling).
+Runtime + loops: JIS-NB loop ALIVE 17:31Z. Build PASS at 17:31Z. Supervisor 11680, wrapper 4468, java 10388, state-machine wrapper 4636. Session MTS-2026-09-23-1730Z open.
+Findings:        Independent worker type removed. DSA section 1 names one WORKER role; protocol WORKER TYPES collapsed to one type. Handoff MTS-2026-09-23-1445Z reported mojibake at start-trading-day.ps1 L582 and MTS_DICTIONARY.md L41; on-disk bytes are E2 80 94 (U+2014 EM DASH), clean UTF-8, no mojibake. Real defect was Build-Check.ps1 L131 label overstating scan scope; relabeled Cyrillic codepoints (0x0400-0x04FF). No edits to L582 or L41.
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.
