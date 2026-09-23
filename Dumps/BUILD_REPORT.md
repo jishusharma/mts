@@ -1,9 +1,9 @@
-BUILD_REPORT - 2026-09-23 05:57:35 UTC
+BUILD_REPORT - 2026-09-23 05:58:12 UTC
 host: JIS-NB
 
-Java compile:  PASS (4.7 s)
-Math tests:    PASS 125/125 (1.9 s)
-Doc tests:     PASS 5/5 (3.5 s)
+Java compile:  PASS (3 s)
+Math tests:    PASS 125/125 (1.3 s)
+Doc tests:     PASS 5/5 (1.6 s)
 
 In-flight .new files: 0
 
