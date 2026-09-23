@@ -1,51 +1,87 @@
 # NEXT SESSION HANDOFF
-# Rewritten 2026-09-23T12:55Z by MTS-2026-09-23-1236Z.
+# Rewritten 2026-09-23T19:30Z by MTS-2026-09-23-1730Z.
 
-STATUS: Loop ALIVE. Build PASS at 12:39Z. Architecture doctrine locked in
-MyTradingSys/PROJECT_VISION.md.
+STATUS: Loop ALIVE (wrapper 9260, state-machine 4336, java 13032). Build PASS at 19:26:16Z.
+Commit af7f114. Tag last-snapshot at af7f114.
 
-## MISSION
+## SESSION MTS-2026-09-23-1730Z - WHAT LANDED
 
-Two streams.
+- DSA_SESSION_PROMPT.md section 1: Independent worker role removed. One
+  WORKER type only. 238 -> 233 lines.
+- live_session_protocol.md: WORKER TYPES collapsed to one type; I1-I8
+  removed. Stray # END and duplicate rule 15 cleaned; rule 16 added.
+- Build-Check.ps1 L131 label corrected to "Cyrillic codepoints (0x0400-0x04FF)".
+- B058 CLOSED. Parts C + D already on disk (start-trading-day.ps1 L211-215
+  and L576-580). Receipt filled.
+- B062 CLOSED. Position-aware alert gating landed at start-trading-day.ps1
+  L589-612. Suppress WATCH; suppress same-direction SETUP_FORMING; elevate
+  opposing SETUP_FORMING.
+- B065 CLOSED. Stale-swing checks wired in two consumers:
+  SetupCandidatesBuilder.extractZones L334-350, and stop selection L101-109.
+- T039 CLOSED. Enforcement already on disk at Build-Check.ps1 L159-163.
+- T042 PARTIAL. Producer emits structure.1w/1d/4h now. Row stays OPEN.
+- T043 WONTFIX.
+- B059 reverted. Consumer-side static state was wrong. Fix belongs on the
+  producer side (MarketDataSnapshot.buildStructure), keyed on the funding
+  window, not the session.
+- Timestamp fix: start-trading-day.ps1 L130 renders ISO explicitly now.
+  Was culture-dependent (rendered 09/23/2026 19:14:18 after restart).
 
-Stream 1 - Session work (serial, done here).
-Stream 2 - Independent Worker dispatches (parallel, six layers).
+## CRITICAL NOTE - T042 WIRING GAP
 
-## STREAM 1 - SESSION WORK
+T042 added structure.1w, structure.1d, structure.4h to every snapshot.
+These keys are EMITTED but NOT WIRED. No decision function reads them.
 
-1. Loop health check + Build-Check under pwsh.
-2. Doctrine enforcement (deferred work from 2026-09-23 session):
-   a. compiled_engine.md: add a header note naming which tag families are
-      core vs module. Retag [CT-NNN] and [SCREENER] rules as module
-      candidates, per PROJECT_VISION doctrine section 4.
-   b. MTS_DICTIONARY.md: add [VISUAL FLAG] and a [CORE]/[MODULE]
-      distinction to SOURCE TAGS.
-   c. File T043 Phase 3 gap #3 (stop-beyond-liquidity rule 3 has no impl)
-      as an OPEN bug row.
-3. Log the completed hard stops slice audit result.
+Per live_session_protocol.md rule 15: a layer is wired only when a named
+decision function reads its value and two fixtures differing only in that
+layer produce a different verdict or reason string. Emitted-but-unread is
+exempt with a tracked reason, not done.
 
-## STREAM 2 - INDEPENDENT WORKER DISPATCHES
+Current readers of structure.*:
+- extractZones reads structure.1h, structure.15m, structure.5m only.
+- getSwingTF maps weekly_ -> 1h, daily_/pf_/4h_ -> 15m, vwap/fvg/5m_swing_ -> 5m.
+  It never asks for 1w, 1d, or 4h.
 
-Six dispatch stubs under Dumps/workers/RUN-2026-09-23-<LAYER>/dispatch.md.
-Operator spawns each on its own surface. Workers write only in their own
-directory. Repo changes come back as verbatim PowerShell write statements.
+Options to close T042:
+A. Wire getSwingTF to return 1d for daily_ zones, 1w for weekly_ zones,
+   4h for 4h_ zones. Changes stop selection. Needs evidence that this
+   improves stop quality.
+B. Add a new named consumer for 1w/1d/4h structure (e.g. HTF bias gate).
+C. Document as intentional emission and close T042 producer-only.
 
-Layers: RSI, PROB, ANALYST, SESSION, TICK, ASSIST.
+Also still open on T042: OI peak and CVD peak reference are not emitted.
 
-Full worker rules: MyTradingSys/methodology/live_session_protocol.md,
-section WORKER TYPES.
+## OPEN QUEUE (BUGS.md, open rows only)
 
-## OPEN QUEUE (BUGS.md)
+- B059 : producer-side pf_vp freeze. MarketDataSnapshot.buildStructure.
+- B063 : divergence wiring. Needs operator decision: restore in schema OR
+         deprecate.
+- T034 : blocked on Rule 33 consumer.
+- T035 : T1 web pass pending.
+- T037 : Java tests blocked on pom (no surefire, no JUnit).
+- T038 : self-deferred until ~21000 labels.
+- T040 : new rule surface needs Tom citation.
+- T042 : see CRITICAL NOTE above.
 
-B058 part D, B059, B062, B063, B065, T034, T035, T037, T038, T039, T040,
-T042, T043.
+## NEXT SESSION - FIRST ACTION
+
+1. Loop health + Build-Check.
+   .\scripts\Build-Check.ps1
+   Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -match
+     "statemachine|loop-supervisor|start-trading-day" } |
+     Select ProcessId, Name
+2. T042 wiring decision: option A, B, or C above.
+3. B059 producer-side freeze.
+4. B063 operator decision, then wire.
 
 ## HARD RULES
 
 - Never bare-kill java. Use stop-day.ps1 or mode.ps1.
 - Never run mode.ps1 twice in a row.
-- Ledger is not truth. Files are truth.
-- PowerShell: single-quoted strings for embedded double quotes.
-- One file, one change, verify before next.
+- Critical files: hash, edit, hash, print.
+- Read the target line from disk in the same turn before composing an anchor.
+- Build-Check prints to host, not stdout. Do not capture into a variable.
+- MarketDataSnapshot.java is CRLF. PS source is LF. Match on write.
+- Handoff 1445Z mojibake claim was wrong. Files are clean UTF-8. No fix needed.
 
 # END
