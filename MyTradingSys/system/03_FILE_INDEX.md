@@ -276,7 +276,7 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/mts/items/ | item_dir | One doc per open item. Named by register ID. | MTS-2026-09-22-1215Z | 2026-09-22 |
 | MyTradingSys/mts/items/T040_tick_delta_layer.md | item | Per-item doc for T040. Verbatim ask + chronological updates. | MTS-2026-09-22-1215Z | 2026-09-22 |
 | MyTradingSys/PROJECT_VISION.md | direction | Direction ledger + locked architecture doctrine (2026-09-23): Tom is core, everything else modular; four gap classes. | MTS-2026-09-23-1236Z | 2026-09-23 |
-| MyTradingSys/methodology/operator_reminders.md | methodology | Operator paste-ready reminder card. Machine-aware (desktop vs laptop). A-G prompts, F commands. | MTS-2026-09-23-1236Z | 2026-09-23 |
+| operator_reminders.md | methodology | Operator paste-ready reminder card. Machine-aware (desktop vs laptop). A-G prompts, F commands. At repo root for convenience. | MTS-2026-09-23-1236Z | 2026-09-23 |
 | MyTradingSys/mts/items/T042_schema_gap.md | item | Per-item doc for T042. Schema gap: snapshot has no 4h/daily/weekly structure, no OI/CVD peak reference. | MTS-2026-09-23-0831Z | 2026-09-23 |
 | MyTradingSys/mts/research/PARKED_2026-09-23_T041_TREND_RESEARCH.md | research | Parked T041 trend research + reframe. Resume point: operator intent question. | MTS-2026-09-23-0831Z | 2026-09-23 |
 | MyTradingSys/mts/items/T043_traceability_gap.md | item | Per-item doc for T043. Source-to-code traceability mechanism absent. | MTS-2026-09-23-0831Z | 2026-09-23 |

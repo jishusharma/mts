@@ -761,6 +761,42 @@
       "type": "alert",
       "ts": "2026-09-23T13:04:25.185Z",
       "reason": "zone 15m_swing_low -> pf_val | proof 4 -> 5"
+    },
+    {
+      "verdict": "WAIT_PROOF",
+      "setup": "ct_short",
+      "alert_id": 822,
+      "action": "monitored",
+      "type": "alert",
+      "ts": "2026-09-23T13:26:26.492Z",
+      "reason": "proof 4 -> 5"
+    },
+    {
+      "verdict": "WAIT_RR",
+      "setup": "ct_long",
+      "alert_id": 823,
+      "action": "monitored",
+      "type": "alert",
+      "ts": "2026-09-23T14:15:25.335Z",
+      "reason": "zone 4h_val -> 15m_swing_high | STATE TWOPEAK/below_val -> TWOPEAK/in_va"
+    },
+    {
+      "verdict": "WAIT_TRIGGER",
+      "setup": "ct_long",
+      "alert_id": 824,
+      "action": "monitored",
+      "type": "alert",
+      "ts": "2026-09-23T14:22:25.311Z",
+      "reason": "verdict WAIT_PROOF -> WAIT_RR | price delta 0.18% | STATE TWOPEAK/below_val -> TWOPEAK/in_va"
+    },
+    {
+      "verdict": "NO_TRADE",
+      "setup": "-",
+      "alert_id": 825,
+      "action": "monitored",
+      "type": "alert",
+      "ts": "2026-09-23T14:26:25.621Z",
+      "reason": "verdict NO_TRADE -> WAIT_TRIGGER | STATE TWOPEAK/below_val -> TWOPEAK/in_va"
     }
   ]
 }
