@@ -1284,3 +1284,20 @@ Landed:
   D2: rewritten for two worker types (Dependent R1-R5, Independent I1-I8).
   New section G: HANDOFF FOR NEXT SESSION (G1-G6), printed as one fenced
   code block, mandatory DO-NOT-MISS, shape template, section-11 regen rule.
+## SESSION MTS-2026-09-23-1730Z CLOSE - 2026-09-24T01:45Z
+
+Loop stopped by operator request. stop-day.ps1 clean exit at 19:43:11 UTC (apparatus_log).
+Supervisor 11680 killed directly (B064: stop flag not honored).
+stale supervisor.lock removed.
+
+Landed: DSA sec 1 Independent removed; protocol rule 15 dedup + rule 16 added; Build-Check
+label Cyrillic scope; apparatus_fixes mojibake row; B058 closed; B062 closed (position-aware
+alert gating); B065 closed (stale-swing rejection in extractZones + stop selection);
+T039 closed (enforcement already on disk); T042 producer landed (structure.1w/1d/4h);
+T043 WONTFIX; B059 reverted to producer-side fix; timestamp ISO fix at start-trading-day.ps1
+L130; NEXT_SESSION_HANDOFF rewritten with T042 wiring gap note.
+
+Not done: T042 wiring (new keys emitted, no consumer). B059 producer-side freeze.
+B063 operator decision. Open queue: B059, B063, T034, T035, T037, T038, T040, T042, T044, T045, T046.
+
+Runtime at close: loop stopped clean. No java. No wrapper. Supervisor killed. supervisor.lock removed.
