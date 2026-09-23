@@ -1247,3 +1247,29 @@ Not done:
   Cross-check noted: EXTRACTION_TO_ALERT_AUDIT_2026-09-19 claims 19 CT ids in compiled_engine L772-849. This session counted 0. Discrepancy for next session.
 
 Runtime at close: loop ALIVE. Supervisor 11680, wrapper 4468, java 10388, both locks fresh.
+
+## SESSION MTS-2026-09-23-1236Z CLOSE - 2026-09-23T12:55Z
+
+Landed:
+  Architecture doctrine locked in MyTradingSys/PROJECT_VISION.md.
+  Verbatim blocks preserved: 2026-09-15 directive, 2026-09-22 directive,
+  operator statement 2026-09-23 (Tom is core), four gap classes 2026-09-23.
+  PROJECT_VISION.md: 92 -> 155 lines, sha E4A55CF2 -> 9459DC50.
+  Two worker types defined in DSA_SESSION_PROMPT.md (section 1) and in
+  live_session_protocol.md (new section WORKER TYPES, rules I1-I8).
+  DSA: 231 -> 238 lines, sha 3B93B8C8 -> after section 11 update (see hash
+  in receipt). Protocol: 226 -> 259 lines.
+  Hard stops slice audit (T043 Phase 3): 9 rules mapped to impl site.
+  3 fully wired, 2 label-principle, 2 wired indirectly, 2 gaps.
+  CT-id reconciliation: 19 ids confirmed at compiled_engine L790-819.
+  Prior session count of 0 was wrong.
+  Six Independent Worker dispatch stubs written under Dumps/workers/
+  RUN-2026-09-23-<LAYER>/dispatch.md: RSI, PROB, ANALYST, SESSION, TICK,
+  ASSIST.
+
+Not done:
+  compiled_engine.md retag of CT/SCREENER to module candidate (deferred).
+  MTS_DICTIONARY [VISUAL FLAG] + [CORE]/[MODULE] families not yet added.
+  T043 Phase 3 gap #3 not filed as BUGS row.
+
+Runtime at close: loop ALIVE. Supervisor 11680, wrapper 4468, java 10388.

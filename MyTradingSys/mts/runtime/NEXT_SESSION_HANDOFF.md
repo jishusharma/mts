@@ -1,49 +1,51 @@
 # NEXT SESSION HANDOFF
-# Rewritten 2026-09-23T11:30Z by MTS-2026-09-23-0831Z.
+# Rewritten 2026-09-23T12:55Z by MTS-2026-09-23-1236Z.
 
-STATUS: Loop ALIVE. Build pending at close. Session MTS-2026-09-23-0831Z.
+STATUS: Loop ALIVE. Build PASS at 12:39Z. Architecture doctrine locked in
+MyTradingSys/PROJECT_VISION.md.
 
-## QUEUE
+## MISSION
 
-Single source: MyTradingSys/mts/research/BUGS.md
+Two streams.
 
-Open: B058 (part D), B059, B062, B063, B065, T034, T035, T037, T038, T039, T040, T042, T043.
+Stream 1 - Session work (serial, done here).
+Stream 2 - Independent Worker dispatches (parallel, six layers).
 
-## FIRST ACTION NEXT SESSION
+## STREAM 1 - SESSION WORK
 
-1. Loop health check (supervisor PID, wrapper PID, lock, snapshot).
-2. Build-Check under pwsh.
-3. T043 Phase 3: hard stops slice audit (9 rows, audit source -> impl -> data -> test).
-4. Cross-check: EXTRACTION_TO_ALERT_AUDIT_2026-09-19 claims 19 CT ids in compiled_engine L772-849. This session counted 0.
+1. Loop health check + Build-Check under pwsh.
+2. Doctrine enforcement (deferred work from 2026-09-23 session):
+   a. compiled_engine.md: add a header note naming which tag families are
+      core vs module. Retag [CT-NNN] and [SCREENER] rules as module
+      candidates, per PROJECT_VISION doctrine section 4.
+   b. MTS_DICTIONARY.md: add [VISUAL FLAG] and a [CORE]/[MODULE]
+      distinction to SOURCE TAGS.
+   c. File T043 Phase 3 gap #3 (stop-beyond-liquidity rule 3 has no impl)
+      as an OPEN bug row.
+3. Log the completed hard stops slice audit result.
 
-## LANDED THIS SESSION (MTS-2026-09-23-0831Z)
+## STREAM 2 - INDEPENDENT WORKER DISPATCHES
 
-- B064 CLOSED (not reproducible; controlled test passed).
-- T041 CLOSED (reframed: no HTF layer by design; engine was fading, not blind).
-- B065 filed (stale swing flag has no consumer).
-- T042 filed (snapshot schema gap).
-- T043 filed (source-to-code traceability absent).
-- T043 Phase 1 done: compiled_engine is merge point, not generated artifact.
-- T043 Phase 2 done: 13 SYSTEM, 73 PRINCIPLE, 2 VISUAL FLAG, 9 hard stops.
-- Four worker dispatches replied and stored: W4, W5, T040, T041 (3 rounds).
-- Tom corpus scan: HTF terms near-zero; auction vocabulary dominant.
-- Parked research: PARKED_2026-09-23_T041_TREND_RESEARCH.md.
-- Apparatus fix: PowerShell escaping rule logged.
+Six dispatch stubs under Dumps/workers/RUN-2026-09-23-<LAYER>/dispatch.md.
+Operator spawns each on its own surface. Workers write only in their own
+directory. Repo changes come back as verbatim PowerShell write statements.
 
-## OPEN LOOPS AT CLOSE
+Layers: RSI, PROB, ANALYST, SESSION, TICK, ASSIST.
 
-- T043 Phase 3 not started.
-- B058 part D, B059, B062, B063 W4/W5 replies not yet actioned.
-- T040 design reply outstanding.
-- T039 functionality-doc sweep expiry 2026-10-06.
-- CT-id count discrepancy in compiled_engine (0 vs 19 claimed).
+Full worker rules: MyTradingSys/methodology/live_session_protocol.md,
+section WORKER TYPES.
+
+## OPEN QUEUE (BUGS.md)
+
+B058 part D, B059, B062, B063, B065, T034, T035, T037, T038, T039, T040,
+T042, T043.
 
 ## HARD RULES
 
 - Never bare-kill java. Use stop-day.ps1 or mode.ps1.
 - Never run mode.ps1 twice in a row.
 - Ledger is not truth. Files are truth.
-- PowerShell: use single-quoted strings for embedded double quotes. Backslash does not escape.
-- Long doc bodies: create empty file, open in Notepad, paste.
+- PowerShell: single-quoted strings for embedded double quotes.
+- One file, one change, verify before next.
 
 # END

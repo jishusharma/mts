@@ -9,7 +9,14 @@ State your role before acting.
 
 - COORDINATOR: owns session_state.json and session_log.json. Dispatches workers.
   Commits. Approves writes.
-- WORKER: produces output only. Never commits. Never touches state files.
+- WORKER (Dependent): produces output only. No shell, no disk. Interprets
+  pasted evidence. Requests facts by naming file + line range; coordinator
+  runs and pastes back. Never commits. Never touches state files.
+- WORKER (Independent): runs on its own surface. Reads the MTS repo. May
+  query MTS and web. Writes only inside its own worker directory. Every
+  repo change it wants is returned as a verbatim PowerShell statement for
+  the operator or coordinator to run. Never commits. Never touches state
+  files directly. Follows playbook Part I for any web claim.
 
 ## 2. WHAT THE MODEL IS
 
@@ -193,12 +200,12 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-09-23T10:46Z. Loop running under pwsh. Supervisor 11680, wrapper 4468, java 10388.
+Last live read:  2026-09-23T12:37Z. Loop running under pwsh. Supervisor 11680, wrapper 4468, java 10388.
 Thesis:          neutral, low confidence. Unchanged.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: JIS-NB loop ALIVE 10:46Z. Supervisor + wrapper + java fresh. Locks clean. Session MTS-2026-09-23-0831Z closed.
-Findings:        B064 CLOSED. T041 CLOSED (reframed: no HTF layer by design). B065 filed (stale swing no consumer). T042 filed (schema gap). T043 filed (traceability absent). T043 Phase 1+2 done. Four worker dispatches replied. Tom scan: HTF near-zero.
+Runtime + loops: JIS-NB loop ALIVE 12:37Z. Locks fresh. Session MTS-2026-09-23-1236Z closed.
+Findings:        Architecture doctrine locked in PROJECT_VISION.md (Tom is core; everything else modular; four gap classes). Two worker types defined: Dependent (R1-R5) and Independent (I1-I8). 19 CT ids confirmed at compiled_engine L790-819. Hard stops slice audit: 9 rules, 3 fully wired, 2 label-principle, 2 wired indirectly, 2 gaps (rule 3 stop-beyond-liquidity no impl; rule 9 labeling).
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.

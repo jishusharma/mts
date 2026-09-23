@@ -96,3 +96,5 @@ patch >20 lines.
 
 # END
 - 2026-09-23 MTS-2026-09-23-0831Z: PowerShell does not escape quotes with backslash. A double-quoted string with \" parses as literal backslash then unescaped quote and breaks the whole block. Use single-quoted strings for lines containing embedded double quotes, or the create-empty-file-plus-Notepad pattern for doc bodies. Three consecutive write attempts failed on this in one session.
+
+- 2026-09-23 verify method: PowerShell $str.Split($q) splits on every char of $q, not the substring. Verbatim checks must use [regex]::Matches($new, [regex]::Escape($q)).Count. First run of this check reported counts of 9000+ and was discarded.

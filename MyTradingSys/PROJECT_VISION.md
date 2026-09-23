@@ -1,9 +1,70 @@
 # PROJECT VISION / DIRECTION
-# Saved: 2026-09-15  |  Updated: 2026-09-22 (assistant + tick-delta + machines added)
-# Purpose: Direction to keep in mind before developing anything new.
-# Maintained. Update as the project evolves.
+# Saved: 2026-09-15  |  Rewritten: 2026-09-23 (architecture doctrine locked)
+# Purpose: direction ledger + locked architecture doctrine. Read before any new build.
 # Rule 52: this is a pointer for direction, not a spec.
+# Change rule: verbatim sections change only by operator edit. No agent rewrite.
 
+
+## ARCHITECTURE DOCTRINE (locked 2026-09-23)
+
+### OPERATOR STATEMENT (verbatim, 2026-09-23)
+
+"We use Tom's core ideas - It is the core layer. Everything else sits on top of it and must be an independent module that could be switched on and off for computation/integration purposes and or displayed along side as complimentary readings. Understand that we will keep adding Tom's rules as we extract more transcripts. And not just from him - also from different analysts. We will then decide what gets into the core engine later as the project evolves and we back test!"
+
+### INTERPRETATION (not verbatim)
+
+1. TOM IS CORE. Tom's rules are the core layer. Non-negotiable. Sourced from transcripts, cited per [TOM-NNN].
+2. EVERYTHING ELSE IS A MODULE. Modules are switchable: on for computation and/or integration, off for baseline operation. Or displayed alongside as complementary reading. Modules never gate core behavior.
+3. CORE GROWS. New Tom transcripts extend the core. Other analysts' rules may enter the core later, by the same admission gate.
+4. ADMISSION IS DEFERRED. New rules wait at the module layer until project maturity and backtesting justify promotion. No rule enters the core engine without that gate.
+
+### RELATION TO DSA SECTION 9
+
+DSA_SESSION_PROMPT.md section 9 lists the authority order for behavior in a
+session: compiled_engine first, condition files second, Tom transcripts third.
+That order governs how a live session resolves conflicts. This doctrine governs
+what should be in the engine over time: Tom's rules, extended by extraction,
+with non-Tom layers kept modular. The two are compatible. Where they appear to
+conflict, DSA governs the session; this file governs direction.
+
+### CURRENT TAG FAMILIES IN compiled_engine.md
+
+Inline rule tags as of 2026-09-23 (grep of compiled_engine.md):
+
+| Tag | Count | Role |
+|-----|-------|------|
+| [PRINCIPLE] | 21 | reading aids, display-only |
+| [SYSTEM] | 11 | mechanism, math, plumbing |
+| [VISUAL FLAG] | 2 | screenshot-only, no runtime consumer |
+| [SSOT] | 1 | single-source marker |
+
+[TOM-NNN] and [CT-NNN] are source ids in traceability matrices, not inline
+rule tags. Under this doctrine, inline tags will be extended to [CORE] or
+[MODULE] over time. That extension is deferred; the doctrine locks the intent,
+not a code change.
+
+## THE FOUR GAP CLASSES (locked 2026-09-23)
+
+### OPERATOR STATEMENT (verbatim, 2026-09-23)
+
+"1. It can be that we did not extract all rules so far!
+2. We extracted rules incorrectly or partially
+3. Extracted rules are implemented incorrectly or partially or missed compleletly
+4. Rules could be wired incorrectly or not wored at all."
+
+(Spelling preserved verbatim: "compleletly", "wored".)
+
+### PLAIN FORM
+
+| # | Gap | Where it lives | Guard |
+|---|-----|----------------|-------|
+| 1 | Rule not yet extracted | Transcript to extract | Extraction coverage audit |
+| 2 | Rule extracted incorrectly or partially | Extract file | DSA section 10 discipline (three snapshots) |
+| 3 | Rule implemented incorrectly, partially, or missed | Code | Source-to-code traceability (T043) |
+| 4 | Rule wired incorrectly or not wired | Runtime | Runtime verification, not just compile/test |
+
+Gaps 1 and 2 sit upstream of the engine. Gaps 3 and 4 sit inside it.
+T043 currently covers 3 and 4 only. Gaps 1 and 2 have no mechanism yet.
 ## USER DIRECTIVE (verbatim, 2026-09-15)
 
 "Instead of thinking like this - think -> that we will create this capability that is session-aware and use it an as in add on to our existing system. We do not need to change any existing trade logic right now. let this evolve. First let us see how the outer frame will look like.
@@ -30,6 +91,8 @@ Note that we will integrate RSI - so it is momentum and it comes from a differen
 
 ## PRINCIPLES
 
+- Tom is core. Everything else is a module. Modules never gate core behavior.
+- Modules are switchable: on for computation/integration, off for baseline. Or displayed alongside.
 - Add, do not modify. Core MTS logic not rewritten.
 - Isolate first. Combine only after each read is independently validated.
 - Independent reads before confluences.
