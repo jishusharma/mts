@@ -34,6 +34,15 @@ Priority: same as B056. Do not wait for a stop flag plus polling. Check each cyc
 
 ## STATUS
 
-OPEN. Fix design only. Not landed. Fix is one block edit to scripts/core/loop-supervisor.ps1.
+CLOSED 2026-09-23T10:34Z. Not reproducible. Check already present at loop-supervisor.ps1 L71. Controlled test passed. See update below.
+
+### 2026-09-23T10:34Z - coordinator, session MTS-2026-09-23-0831Z
+
+Reproduction attempt failed.
+- Code read: loop-supervisor.ps1 line 71 already contains the exact fix shape (Test-Path StopFlag -> log -> exit 0).
+- File mtime 2026-09-23 00:13 IST (2026-09-22 18:43Z), before the 05:48Z observation. No working-tree diff. Last commit touching the file is cd3dd79.
+- Controlled test: started fresh supervisor PID 16480 at 10:34:01Z. Wrote data/supervisor_stop.flag at 10:34:10Z. PID exited within one cycle. Log: '2026-09-23 10:34:33 | stop flag present, exiting'.
+
+Action: B064 CLOSED as non-reproducible against current code. If the cycle-ignores-flag behavior recurs, refile with timestamped log evidence.
 
 # END

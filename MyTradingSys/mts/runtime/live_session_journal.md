@@ -1226,3 +1226,24 @@ Not done:
 
 Runtime at close: loop stopped by operator request (powering off). No procs. No locks. Direct kill of supervisor 3184 required.
 
+## SESSION MTS-2026-09-23-0831Z CLOSE - 2026-09-23T11:35Z
+
+Landed:
+  B064 CLOSED. Not reproducible. Controlled test: supervisor 16480 wrote flag at 10:34:10Z, exited within one cycle. Check already present at loop-supervisor.ps1 L71.
+  T041 CLOSED. Reframed: no HTF direction layer exists or was claimed. Worker rounds 1-3 established engine was fading the leg, not missing it. HTF principle remains [PRINCIPLE - NOT ALGORITHM] in compiled_engine.md.
+  B065 filed. structure.{tf}.stale computed at MarketDataSnapshot.java L719-722, propagated by mts_math.py L321-327, no consumer in extractZones or getSwingTF.
+  T042 filed. Snapshot schema lacks 4h/daily/weekly structure and OI/CVD peak reference.
+  T043 filed. Source-to-code traceability mechanism absent. Prior audits (2026-08-30, 2026-09-19) found the same gap; no gate followed.
+  T043 Phase 1 done: compiled_engine is merge point, not generated artifact.
+  T043 Phase 2 done: 13 SYSTEM, 73 PRINCIPLE, 2 VISUAL FLAG, 9 hard stops.
+  Four worker dispatches replied and stored: B063-W4, B063-W5, T040-W1, T041-W1 (3 rounds). README rows flipped.
+  Tom corpus scan: HTF terms near-zero. Auction vocabulary dominant.
+  Parked research: PARKED_2026-09-23_T041_TREND_RESEARCH.md.
+  Apparatus fix: PowerShell escaping rule appended.
+
+Not done:
+  T043 Phase 3 (hard stops slice audit). B058 part D. B059. B062. T039 expiry 2026-10-06.
+  T041 Part B web research (dropped; design question closed by A+C evidence).
+  Cross-check noted: EXTRACTION_TO_ALERT_AUDIT_2026-09-19 claims 19 CT ids in compiled_engine L772-849. This session counted 0. Discrepancy for next session.
+
+Runtime at close: loop ALIVE. Supervisor 11680, wrapper 4468, java 10388, both locks fresh.

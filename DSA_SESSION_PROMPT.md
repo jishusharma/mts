@@ -193,15 +193,12 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Update this section at every session close. Keep it to five lines.
-Queue is not listed here. Single source: MyTradingSys/mts/research/BUGS.md.
-
-Last live read:  2026-09-23T05:53Z. Session MTS-2026-09-23-0430Z close. Loop stopped by operator request (powering off).
+Last live read:  2026-09-23T10:46Z. Loop running under pwsh. Supervisor 11680, wrapper 4468, java 10388.
 Thesis:          neutral, low confidence. Unchanged.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: JIS-NB loop STOPPED 05:52Z by operator. No procs, no locks. Supervisor did not honor supervisor_stop.flag; direct kill required; B064 filed. Laptop static.
-Findings:        Loop first ran under pwsh (PS7 Part 2 closed). Worker folder convention adopted (parent-prefix, README index). W1/W2/W3 replies stored. W4/W5/T040/T041 not sent. Research-gate fix on four dispatches. B064 filed. T042 candidate not registered.
+Runtime + loops: JIS-NB loop ALIVE 10:46Z. Supervisor + wrapper + java fresh. Locks clean. Session MTS-2026-09-23-0831Z closed.
+Findings:        B064 CLOSED. T041 CLOSED (reframed: no HTF layer by design). B065 filed (stale swing no consumer). T042 filed (schema gap). T043 filed (traceability absent). T043 Phase 1+2 done. Four worker dispatches replied. Tom scan: HTF near-zero.
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.

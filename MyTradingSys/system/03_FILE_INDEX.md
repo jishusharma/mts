@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-19
-# SIZE: ~16.2KB
+# SIZE: ~17.9KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -277,3 +277,7 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/mts/items/T040_tick_delta_layer.md | item | Per-item doc for T040. Verbatim ask + chronological updates. | MTS-2026-09-22-1215Z | 2026-09-22 |
 | MyTradingSys/PROJECT_VISION.md | direction | Direction ledger. Updated 2026-09-22: assistant layer, tick-delta layer, three machines. | MTS-2026-09-22-1215Z | 2026-09-22 |
 | MyTradingSys/methodology/operator_reminders.md | methodology | Operator paste-ready reminder card. Machine-aware (desktop vs laptop). A-E prompts, F commands. | MTS-2026-09-22-1215Z | 2026-09-22 |
+| MyTradingSys/mts/items/T042_schema_gap.md | item | Per-item doc for T042. Schema gap: snapshot has no 4h/daily/weekly structure, no OI/CVD peak reference. | MTS-2026-09-23-0831Z | 2026-09-23 |
+| MyTradingSys/mts/research/PARKED_2026-09-23_T041_TREND_RESEARCH.md | research | Parked T041 trend research + reframe. Resume point: operator intent question. | MTS-2026-09-23-0831Z | 2026-09-23 |
+| MyTradingSys/mts/items/T043_traceability_gap.md | item | Per-item doc for T043. Source-to-code traceability mechanism absent. | MTS-2026-09-23-0831Z | 2026-09-23 |
+| MyTradingSys/mts/items/B065_stale_swing_consumer.md | item | Per-item doc for B065. Stale swing flag has no consumer; zones built from invalidated swings. | MTS-2026-09-23-0831Z | 2026-09-23 |

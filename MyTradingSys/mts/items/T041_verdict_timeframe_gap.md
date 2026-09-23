@@ -104,3 +104,15 @@ Three-angle revalidation (operator-requested mechanism):
 
 Candidate new item (not yet registered): T042 - schema gap. Missing 4h/daily/weekly structure, no OI/CVD peak reference, 1h stale while klines fresh.
 
+### 2026-09-23T11:00Z - coordinator close-out, session MTS-2026-09-23-0831Z
+
+Reframe: the original observation (engine missed a 7h leg) was a misframe. Worker rounds 1-3 established:
+- No HTF direction layer exists in the engine (determineDirections reads price_vs_va and price_vs_poc only).
+- During 2026-09-22T10:00-17:00Z the engine printed repeated ct_short setups against the recovery; it was actively fading, not blind.
+- The HTF principle is present in compiled_engine.md as [PRINCIPLE - NOT ALGORITHM] (L38, L64, L128, L189, L388). Documented principle, not coded algorithm. That is a convention, not a defect.
+
+Status: CLOSED. Not a defect. If operator wants an HTF direction layer as a feature, file separately as a task, not this bug.
+
+Companion: B065 filed for the stale-swing consumer gap, which is the one real defect the T041 investigation surfaced.
+
+# END

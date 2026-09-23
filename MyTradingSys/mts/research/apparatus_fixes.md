@@ -95,3 +95,4 @@ patch >20 lines.
 - 2026-09-21: log tail is not a health check. Loop-state claim requires wrapper PID + lock + log mtime in the same read.
 
 # END
+- 2026-09-23 MTS-2026-09-23-0831Z: PowerShell does not escape quotes with backslash. A double-quoted string with \" parses as literal backslash then unescaped quote and breaks the whole block. Use single-quoted strings for lines containing embedded double quotes, or the create-empty-file-plus-Notepad pattern for doc bodies. Three consecutive write attempts failed on this in one session.
