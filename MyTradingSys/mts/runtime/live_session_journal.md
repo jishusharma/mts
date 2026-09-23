@@ -1273,3 +1273,14 @@ Not done:
   T043 Phase 3 gap #3 not filed as BUGS row.
 
 Runtime at close: loop ALIVE. Supervisor 11680, wrapper 4468, java 10388.
+## SESSION MTS-2026-09-23-1236Z - operator_reminders.md update - 2026-09-23T13:35Z
+
+Landed:
+  operator_reminders.md (boot-loaded): 173 -> 242 lines, sha 8EA92693 -> 4A5D91C0.
+  Header range fixed A-E -> A-G.
+  B1: added regex-vs-Split verbatim-check line.
+  B2: added "verify by other method than the one used to write".
+  B7: added "new file vs amend - prefer amending" line.
+  D2: rewritten for two worker types (Dependent R1-R5, Independent I1-I8).
+  New section G: HANDOFF FOR NEXT SESSION (G1-G6), printed as one fenced
+  code block, mandatory DO-NOT-MISS, shape template, section-11 regen rule.

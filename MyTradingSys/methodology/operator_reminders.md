@@ -1,6 +1,6 @@
 # OPERATOR REMINDERS
 
-Paste a section into chat to steer the AI. A-E are prompts. F is terminal commands.
+Paste a section into chat to steer the AI. A-G are prompts. F is terminal commands.
 Every protocol step must be cited and evidenced. A step is not skipped silently.
 If a step cannot be done, say so.
 
@@ -37,12 +37,14 @@ Before using new, broke, failed, rejected, confirmed, held, flipped: compare cur
 Every claim carries the field name and value that drove it.
 Now, current, at this moment: give the paste timestamp.
 Corrections are one line. No essay.
+Verbatim / substring check: [regex]::Matches($text,[regex]::Escape($q)).Count. Not $text.Split($q) - it splits on every character.
 
 ### B2. DONE
 Print the four lines from DSA section 5b: TASK / DONE / VERIFIED / MISSED.
 Show the numbers: hash, line count, non-ASCII count.
 Nothing missed is not evidence. A count is.
 A worker reply is not verification. Re-execute.
+Verify by a method other than the one used to write.
 
 ### B3. BATCH
 Think the whole task through first.
@@ -70,6 +72,7 @@ Truly ambiguous: stop, ask one question.
 Answer findable from disk or the paste: read it, do not ask.
 Never proceed on an assumption.
 Never ask for what is already in front of you.
+New file vs amend: prefer amending an existing file. Ask before naming a new file or artifact.
 
 ---
 
@@ -113,8 +116,14 @@ If a web search cannot be run, tag UNVERIFIED-WEB.
 Never blend disk and web in one sentence.
 
 ### D2. WORKER DISPATCH
-Follow live_session_protocol.md R1-R5. Show each rule as it is applied.
-One DISPATCH.md per worker. Worker has no shell and no disk.
+Two types. See live_session_protocol.md WORKER TYPES.
+Dependent: no shell, no disk. Interprets pasted evidence. R1-R5 apply.
+  Writes go through the coordinator.
+Independent: reads repo, may query MTS and web. Writes only in its own
+  Dumps/workers/<id>/. Every repo change it wants comes back as a verbatim
+  PowerShell statement. Rules I1-I8 apply.
+One DISPATCH.md per worker (uppercase). Reply-path line required:
+  Write reply to Dumps/workers/<id>/REPLY.md
 No checks executed section. No Confirmed. Receipt tags required.
 
 ### D3. FILE A BUG
@@ -137,6 +146,66 @@ A log tail alone is not a health check.
 Close per DSA_SESSION_PROMPT.md section 12.
 Show each numbered step and its result.
 Build-Check must PASS before close. No close on FAIL.
+
+---
+
+## G. HANDOFF FOR NEXT SESSION
+
+### G1. WHEN
+On request, or at session close. Print the handoff as ONE fenced code block.
+Nothing outside the block. One click copies it whole. No commentary.
+Never claim a handoff was printed if it was not.
+
+### G2. WHAT TO INCLUDE
+Session name and UTC stamp.
+Loop / Build / Thesis state - one line each.
+Landed this session: receipts only (hashes, line counts, commit id).
+Open queue: from BUGS.md, not from memory.
+First action next session: numbered, batched into blocks.
+Do-not-miss: the two or three things most likely to be missed.
+Hard rules: only the ones that matter for the next session.
+
+### G3. WHAT NOT TO INCLUDE
+Prose. Backstory. Self-congratulation. Anything not on disk this session.
+Rules already in DSA or protocol - point, do not restate.
+
+### G4. DO-NOT-MISS SECTION (mandatory)
+Name the specific near-misses seen this session. A handoff without this
+section is incomplete. Real examples:
+  - Prior session counted 0 CT ids. Actual: 19. Wrong counts persist.
+  - .Split() used as substring check. Use [regex]::Matches.
+  - Lowercase dispatch.md fails Build-Check. Use DISPATCH.md.
+
+### G5. SHAPE
+
+    === MTS HANDOFF - <session name> ===
+    NEXT SESSION TITLE: <exact string for UI>
+
+    STATUS
+      Loop:    <PIDs, lock, snapshot age>
+      Build:   <PASS/FAIL, dispatch count, bug rows>
+      Thesis:  <direction, confidence, changed or not>
+
+    LANDED
+      - <item> : <receipt>
+
+    OPEN QUEUE
+      - <id> <one line>  (from BUGS.md)
+
+    NEXT SESSION - FIRST ACTION
+      1. <step>
+      2. <step>
+
+    DO NOT MISS
+      - <specific>
+
+    HARD RULES (only the ones carried)
+      - <rule>
+
+    === END ===
+
+### G6. SECTION 11
+Never hand-edit section 11 of DSA from memory. Regenerate from this handoff.
 
 ---
 
