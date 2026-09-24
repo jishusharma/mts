@@ -28,9 +28,29 @@ if (Test-Path $lockFile) {
     if ($rootPids.Count -gt 0) {
         $existing = Get-Process -Id $rootPids[0] -ErrorAction SilentlyContinue
         if ($existing -and ($existing.ProcessName -eq "powershell" -or $existing.ProcessName -eq "pwsh")) {
-            Write-Host "APPARATUS ALREADY RUNNING PID=$($rootPids[0])"
-            Write-Host "Use .\scripts\core\stop-day.ps1 first, then retry."
-            exit 1
+            # Gap 6: validate lock content, not just PID liveness. Confirms the
+            # process is a loop wrapper and the lock epoch matches its start
+            # time, guarding against PID reuse.
+            $ci = Get-CimInstance Win32_Process -Filter "ProcessId=$($rootPids[0])" -ErrorAction SilentlyContinue
+            $cmdOk = $false
+            if ($ci -and $ci.CommandLine) {
+                $cmdOk = ($ci.CommandLine -match 'start-trading-day\.ps1') -or ($ci.CommandLine -match 'mode\.ps1')
+            }
+            $epochOk = $false
+            if ($parts.Length -ge 2) {
+                try {
+                    $epoch = [long]$parts[1]
+                    $startUnix = [long]([DateTimeOffset]$existing.StartTime.ToUniversalTime()).ToUnixTimeSeconds()
+                    $epochOk = ($startUnix -ge ($epoch - 10)) -and ($startUnix -le ($epoch + 120))
+                } catch {}
+            }
+            if ($cmdOk -and $epochOk) {
+                Write-Host "APPARATUS ALREADY RUNNING PID=$($rootPids[0])"
+                Write-Host "Use .\scripts\core\stop-day.ps1 first, then retry."
+                exit 1
+            } else {
+                Write-Host "lock PID=$($rootPids[0]) alive but not this loop (cmdOk=$cmdOk epochOk=$epochOk); clearing stale lock"
+            }
         }
     }
     Write-Host "stale lock - clearing"
@@ -50,10 +70,15 @@ foreach ($rp in $rootPids) {
     if ($proc) { Stop-Process -Id $rp -Force -ErrorAction SilentlyContinue }
 }
 
-# fallback: orphan java whose cmdline references this project
-Get-CimInstance Win32_Process -Filter "Name='java.exe'" -ErrorAction SilentlyContinue | ForEach-Object {
+# fallback: orphan processes matching this project's loop, even if the lock
+# PID was dead and descendants could not be walked. Excludes this process.
+$selfId = $PID
+Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | ForEach-Object {
+    if ($_.ProcessId -eq $selfId) { return }
     $cmd = $_.CommandLine
-    if ($cmd -and ($cmd -match 'BinanceDataFeed' -or $cmd -match 'datafeed\.' -or $cmd -match 'statemachine')) {
+    if (-not $cmd) { return }
+    $isLoop = ($cmd -match 'start-trading-day\.ps1') -or ($cmd -match 'datafeed\.Main') -or ($cmd -match 'statemachine') -or ($cmd -match 'mvn\.cmd.*exec:java')
+    if ($isLoop -and ($cmd -match 'BinanceDataFeed|datafeed\.|statemachine')) {
         Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue
     }
 }

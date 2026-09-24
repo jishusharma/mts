@@ -222,6 +222,12 @@ if (Test-Path $stateFile) {
     $stAgeMin = [math]::Round(((Get-Date) - (Get-Item $stateFile).LastWriteTime).TotalMinutes, 1)
     [void]$sb.AppendLine("state_code: age=$stAgeMin min")
 }
+$supLogFile = Join-Path $root 'data\supervisor_log.txt'
+$supAgeSec = $null
+if (Test-Path $supLogFile) {
+    $supAgeSec = [int]((Get-Date) - (Get-Item $supLogFile).LastWriteTime).TotalSeconds
+    [void]$sb.AppendLine("supervisor_heartbeat: age=$supAgeSec sec")
+}
 $javaProc = Get-CimInstance Win32_Process -Filter "Name='java.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'datafeed|statemachine|mts|BinanceDataFeed' }
 $supProc = Get-CimInstance Win32_Process -Filter "Name='pwsh.exe' OR Name='powershell.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'loop-supervisor' }
 [void]$sb.AppendLine("java:      $(if ($javaProc) { 'present' } else { 'absent' })")
@@ -231,6 +237,7 @@ if (-not $javaProc) { $healthReasons += 'java_absent' }
 if (-not $supProc)  { $healthReasons += 'supervisor_absent' }
 if ($null -eq $snapAgeMin -or $snapAgeMin -gt 5) { $healthReasons += "snapshot_age=$(if ($null -eq $snapAgeMin) { 'missing' } else { $snapAgeMin })" }
 if ($null -eq $stAgeMin -or $stAgeMin -gt 5)     { $healthReasons += "state_code_age=$(if ($null -eq $stAgeMin) { 'missing' } else { $stAgeMin })" }
+if ($null -eq $supAgeSec -or $supAgeSec -gt 90) { $healthReasons += "supervisor_age=$(if ($null -eq $supAgeSec) { 'missing' } else { $supAgeSec })" }
 if ($healthReasons.Count -eq 0) {
     [void]$sb.AppendLine("loop health: PASS")
     Write-Host "loop health: PASS" -ForegroundColor Green
