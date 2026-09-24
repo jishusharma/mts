@@ -143,7 +143,7 @@ function Beep-Alert {
         [console]::beep(1000, 200); Start-Sleep -Milliseconds 80
         [console]::beep(1200, 300)
     } catch {}
-    # Balloon disabled вЂ” custom popup (show_alert.ps1) handles the visible alert.
+    # Balloon disabled - custom popup (show_alert.ps1) handles the visible alert.
 
 }
 
@@ -602,7 +602,7 @@ try {
         if ($script:ZoneLastAlertMs.ContainsKey($zoneKey)) {
             if (($nowEpoch - [int]$script:ZoneLastAlertMs[$zoneKey]) -lt 900) { $cooldownBlock = $true }
         }
-        # gate вЂ” only fire popup if verdict is actionable OR state changed
+        # gate - only fire popup if verdict is actionable OR state changed
         $actionableVerdicts = @("SETUP_FORMING","SETUP_CONFIRMED")
         $firePopup = $false
         if ($Popups -ne "off" -and $changed -and -not $cooldownBlock) {
