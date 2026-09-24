@@ -61,5 +61,6 @@ data/supervisor_log.txt
 data/supervisor.lock
 data/loop_stop.flag
 data/supervisor_stop.flag
+data/loop_state.json
 
 # END

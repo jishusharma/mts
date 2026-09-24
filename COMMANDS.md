@@ -118,11 +118,11 @@ Verify it is running:
 
 Stop it cleanly:
 
-    New-Item .\data\supervisor_stop.flag -ItemType File -Force
+    mts-loop stop
 
-Wait 35 seconds. The supervisor exits on its next check. Then remove the flag:
-
-    Remove-Item .\data\supervisor_stop.flag
+Writes data\loop_stop.flag once. Wrapper exits at next cycle top, then the
+supervisor exits on its next 30s check. stop-day.ps1 waits for both locks
+to clear. supervisor_stop.flag is retired.
 
 The supervisor log is at data\supervisor_log.txt.
 
