@@ -25,4 +25,5 @@ T045 | CLOSED  | T045_marginal_new_high_materiality.md | materiality is consumer
 T046 | OPEN    | T046_stage3_pending_decisions.md | 5 pending decisions; bundle
 
 B067 | OPEN    | B067_crypto_module_audit.md | crypto-hack fields may gate verdict; post_funding_vp demoted, rest owed
+B069 | OPEN    | B069_update_market_state_wrapper.md | wrapper STATE_UPDATE_WARN exit=1; stderr hidden | LOW
 # END

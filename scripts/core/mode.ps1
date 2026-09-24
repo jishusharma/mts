@@ -84,6 +84,25 @@ Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | ForEach-Object {
 }
 
 Start-Sleep -Seconds 2
+
+# Ensure supervisor is running (guarded). Mirrors mts-up in load.ps1.
+# Reads supervisor.lock, launches detached only if no live supervisor.
+$supLock = Join-Path $R "runtime_data\supervisor.lock"
+$supRunning = $false
+if (Test-Path $supLock) {
+    try {
+        $sp = [int]((Get-Content $supLock -Raw).Trim() -split "\s+")[0]
+        if ($sp -gt 0 -and (Get-Process -Id $sp -ErrorAction SilentlyContinue)) { $supRunning = $true }
+    } catch {}
+}
+if (-not $supRunning) {
+    Start-Process pwsh.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-File","$R\scripts\core\loop-supervisor.ps1","-Mode",$M,"-IntervalMin","1","-RestartGraceSec","180") -WindowStyle Hidden
+    Start-Sleep -Seconds 1
+    Write-Host "supervisor launched"
+} else {
+    Write-Host "supervisor already running PID=$sp"
+}
+
 $splat = @{ Mode = $M; Popups = $Popups }
 if ($Dir) { $splat.Direction = $Dir }
 if ($E -gt 0) { $splat.Entry = $E }

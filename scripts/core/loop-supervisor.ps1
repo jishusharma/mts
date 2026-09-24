@@ -87,24 +87,10 @@ try {
 
 SupLog "=== SUPERVISOR START mode=$Mode interval=${IntervalMin}m stale=${SnapshotStaleSec}s grace=${RestartGraceSec}s debounce=${StaleDebounce}x breaker=${CircuitBreakerRestarts}/${CircuitBreakerWindowMin}m ==="
 
-# Startup grace: only enter grace if a live wrapper is present.
-$lastRestartUtc = [DateTime]::UtcNow.AddSeconds(-$RestartGraceSec - 1)
-if (Test-Path $LockFile) {
-    try {
-        $parts = (Get-Content $LockFile -Raw).Trim() -split "\s+"
-        $p0 = [int]$parts[0]
-        if ($p0 -gt 0 -and (Get-Process -Id $p0 -ErrorAction SilentlyContinue)) {
-            $lastRestartUtc = [DateTime]::UtcNow
-            SupLog "startup: existing wrapper PID=$p0, grace clock starting"
-        } else {
-            SupLog "startup: lock present but PID=$p0 not alive, ready now"
-        }
-    } catch {
-        SupLog "startup: lock unreadable, ready now"
-    }
-} else {
-    SupLog "startup: no lock file, ready now"
-}
+# Startup grace: always wait RestartGraceSec before any restart.
+# Prevents race when mode.ps1 or mts-up launches supervisor and wrapper together.
+$lastRestartUtc = [DateTime]::UtcNow
+SupLog "startup: grace clock set, ${RestartGraceSec}s grace before any restart"
 
 $restartTimes = New-Object System.Collections.Generic.List[datetime]
 $staleStrikes = 0
@@ -170,7 +156,11 @@ while ($true) {
         }
     } else {
         if ($smPid -eq 0) {
-            if ($breakerTripped) {
+            if ($inGrace) {
+                $action = "grace"
+                $reason = "sm_dead_in_grace wrapper=$loopPid"
+                SupLog "$reason ${sinceRestart}s/${RestartGraceSec}s"
+            } elseif ($breakerTripped) {
                 $action = "breaker"
                 $reason = "sm_dead_breaker_open wrapper=$loopPid"
                 SupLog "CIRCUIT BREAKER: $reason"
@@ -184,7 +174,12 @@ while ($true) {
         } else {
         $snapStale = $snapAge -gt $SnapshotStaleSec
         $scStale = $scAge -gt $SnapshotStaleSec
-        if ($snapStale -or $scStale) {
+        if ($inGrace) {
+            if ($staleStrikes -gt 0) { SupLog "in grace, strikes reset" }
+            $staleStrikes = 0
+            $reason = "ok_in_grace wrapper=$loopPid sm=$smPid java=$javaPid snapAge=${snapAge}s scAge=${scAge}s grace=$inGrace"
+            SupLog $reason
+        } elseif ($snapStale -or $scStale) {
             $staleStrikes++
             SupLog "stale strike $staleStrikes/$StaleDebounce snapAge=${snapAge}s scAge=${scAge}s"
             if ($staleStrikes -ge $StaleDebounce) {
