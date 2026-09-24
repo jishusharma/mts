@@ -904,6 +904,15 @@
       "action": "passed",
       "reason": "MTS-2026-09-23-1730Z addendum 2. Loop hardening: PATH prepend (system32+Maven), absolute cmd.exe/taskkill.exe, +5s warmup/cycle, mojibake fix (14->0 non-ASCII), mts-up lock poll, mode.ps1 Gap 6 lock validation + 7b orphan sweep extension, start-session.ps1 supervisor heartbeat age. Claude-reviewed architecture: kill-only on stale. Deferred: single stop flag, stale detection, loop_state.json, mts-loop CLI.",
       "ts": "2026-09-24T06:35:24.095880Z"
+    },
+    {
+      "verdict": "WAIT_TRIGGER",
+      "setup": "ct_short",
+      "action": "monitored",
+      "alert_id": 830,
+      "reason": "STATE TWOPEAK/above_vah -> TWOPEAK/in_va",
+      "ts": "2026-09-24T07:27:19.829Z",
+      "type": "alert"
     }
   ]
 }

@@ -281,3 +281,4 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/mts/research/PARKED_2026-09-23_T041_TREND_RESEARCH.md | research | Parked T041 trend research + reframe. Resume point: operator intent question. | MTS-2026-09-23-0831Z | 2026-09-23 |
 | MyTradingSys/mts/items/T043_traceability_gap.md | item | Per-item doc for T043. Source-to-code traceability mechanism absent. | MTS-2026-09-23-0831Z | 2026-09-23 |
 | MyTradingSys/mts/items/B065_stale_swing_consumer.md | item | Per-item doc for B065. Stale swing flag has no consumer; zones built from invalidated swings. | MTS-2026-09-23-0831Z | 2026-09-23 |
+| MyTradingSys/mts/items/INDEX.md | index | Boot-loaded one-line-per-item index. Item id, status, filename, state. Read full item doc only when its row is the active task. | MTS-2026-09-24-0639Z | 2026-09-24 |

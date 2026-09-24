@@ -116,6 +116,11 @@
                                   "path":  "operator_reminders.md",
                                   "role":  "operator_reminders",
                                   "read":  "full"
+                              },
+                              {
+                                  "path":  "MyTradingSys/mts/items/INDEX.md",
+                                  "role":  "items_index",
+                                  "read":  "full"
                               }
                           ],
     "process_check":  [
