@@ -79,7 +79,7 @@ Every new session MUST read this block. These errors corrupt files.
 | Log a system decision | `system/02b_DECISIONS_LOG.md` (append to TOP) | No |
 | Update what's working now | `system/02a_CURRENT_STATUS.md` | No |
 | Add new trading rule | `mts/conditions/[name]_rules.md` | Yes — `03_FILE_INDEX.md` + `02a` |
-| Record DSA bug | `data/data_schema_v1.0.md` (update schema doc) | Yes — `03_FILE_INDEX.md` |
+| Record DSA bug | `runtime_data/data_schema_v1.0.md` (update schema doc) | Yes — `03_FILE_INDEX.md` |
 | End session notes | `system/00_START_HERE.md` (update date + next focus) | No |
 | Research finding | `mts/research/[topic]_evidence.md` or `_recommendations.md` | Yes — `03_FILE_INDEX.md` |
 | Archive superseded file | `mts/archive/[name]_ARCHIVED.md` | Yes — `03_FILE_INDEX.md` + `02b` |

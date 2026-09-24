@@ -4,8 +4,8 @@
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$condDir = Join-Path $root 'MyTradingSys\mts\conditions'
-$indexPath = Join-Path $root 'MyTradingSys\mts\research\TOM_VERBATIM_INDEX.md'
+$condDir = Join-Path $root 'MyTradingSys\conditions'
+$indexPath = Join-Path $root 'MyTradingSys\research\TOM_VERBATIM_INDEX.md'
 
 if (-not (Test-Path $indexPath)) { Write-Host 'FAIL: index missing'; exit 1 }
 

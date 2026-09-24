@@ -1,8 +1,8 @@
 # loop-supervisor.ps1
 # Watches the loop wrapper. Restarts on death. Kills tree on stale.
-# Single stop flag: data\loop_stop.flag, honored by wrapper, supervisor,
+# Single stop flag: runtime_data\loop_stop.flag, honored by wrapper, supervisor,
 # and stop-day.ps1.
-# Writes data\loop_state.json on every decision.
+# Writes runtime_data\loop_state.json on every decision.
 # Stale = snapshot or state_code mtime older than SnapshotStaleSec for
 # StaleDebounce consecutive ticks.
 # Circuit breaker trips after CircuitBreakerRestarts in
@@ -23,13 +23,13 @@ $ErrorActionPreference = "Continue"
 $R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 Set-Location $R
 
-$SupLog        = Join-Path $R "data\supervisor_log.txt"
-$LockFile      = Join-Path $R "data\apparatus.lock"
-$StopFlag      = Join-Path $R "data\loop_stop.flag"
-$StateFile     = Join-Path $R "data\loop_state.json"
-$SupLockFile   = Join-Path $R "data\supervisor.lock"
-$StateCodeFile = Join-Path $R "MyTradingSys\mts\runtime\state_code.json"
-$SnapGlob      = Join-Path $R "data\snapshots\BTCUSDT_*.json"
+$SupLog        = Join-Path $R "runtime_data\supervisor_log.txt"
+$LockFile      = Join-Path $R "runtime_data\apparatus.lock"
+$StopFlag      = Join-Path $R "runtime_data\loop_stop.flag"
+$StateFile     = Join-Path $R "runtime_data\loop_state.json"
+$SupLockFile   = Join-Path $R "runtime_data\supervisor.lock"
+$StateCodeFile = Join-Path $R "MyTradingSys\runtime\state_code.json"
+$SnapGlob      = Join-Path $R "runtime_data\snapshots\BTCUSDT_*.json"
 
 function SupLog {
     param([string]$msg)

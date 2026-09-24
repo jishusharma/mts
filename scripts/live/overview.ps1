@@ -2,9 +2,9 @@
 # usage:    . .\scripts\load.ps1   then type: overview
 $root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 $k = Invoke-RestMethod "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=5"
-$snap = Get-ChildItem "$root\data\snapshots\BTCUSDT_*.json" | Sort LastWriteTime -Desc | Select -First 1
+$snap = Get-ChildItem "$root\runtime_data\snapshots\BTCUSDT_*.json" | Sort LastWriteTime -Desc | Select -First 1
 $j = Get-Content $snap.FullName -Raw | ConvertFrom-Json
-$sc = Get-Content "$root\MyTradingSys\mts\runtime\state_code.json" -Raw | ConvertFrom-Json
+$sc = Get-Content "$root\MyTradingSys\runtime\state_code.json" -Raw | ConvertFrom-Json
 "===== DECIDE $(Get-Date -Format 'HH:mm:ss') ====="
 "LIVE   $([double]$k[-1][4])   SNAP $($j.current_price) @ $($j.timestamp_utc.Substring(11,8))"
 "VWAP   $($j.vwap.price) $($j.vwap.slope)"
@@ -13,7 +13,7 @@ $sc = Get-Content "$root\MyTradingSys\mts\runtime\state_code.json" -Raw | Conver
 "OI     $($j.open_interest.direction)  book $($j.conditions.book_imbalance)"
 "STATE  $($sc.state)  B=$($sc.bearish_count)  Bull=$($sc.bullish_count)"
 "---- last 3 cycles ----"
-Get-Content "$root\data\apparatus_log.txt" -Tail 6 | Where-Object { $_ -match "\|" }
+Get-Content "$root\runtime_data\apparatus_log.txt" -Tail 6 | Where-Object { $_ -match "\|" }
 "---- last 5 1m bars ----"
 $k | ForEach-Object {
   "{0}  C={1}  V={2}  D={3}" -f `

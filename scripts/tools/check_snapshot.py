@@ -1,9 +1,9 @@
-﻿import sys, json, glob, os
+import sys, json, glob, os
 
-sys.path.insert(0, r".\MyTradingSys\mts\runtime")
+sys.path.insert(0, r".\MyTradingSys\runtime")
 from math_object_builder import build_math_object
 
-files = sorted(glob.glob(r".\data\snapshots\BTCUSDT_*.json"), key=os.path.getmtime)
+files = sorted(glob.glob(r".\runtime_data\snapshots\BTCUSDT_*.json"), key=os.path.getmtime)
 path = files[-1]
 print("FILE:", path)
 print()

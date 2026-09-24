@@ -74,7 +74,7 @@ $btnLog.Width = 110
 $btnLog.Height = 30
 $btnLog.FlatStyle = "Flat"
 $btnLog.Add_Click({
-    Start-Process notepad.exe -ArgumentList (Join-Path $alert.repo "data\apparatus_log.txt")
+    Start-Process notepad.exe -ArgumentList (Join-Path $alert.repo "runtime_data\apparatus_log.txt")
 })
 $form.Controls.Add($btnLog)
 

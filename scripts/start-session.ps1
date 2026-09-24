@@ -37,8 +37,8 @@ try {
     Write-Host "Build-Check failed: $_" -ForegroundColor Yellow
 }
 
-$manifestPath = 'MyTradingSys\mts\runtime\SESSION_MANIFEST.json'
-$logPath      = 'MyTradingSys\mts\runtime\session_log.json'
+$manifestPath = 'MyTradingSys\runtime\SESSION_MANIFEST.json'
+$logPath      = 'MyTradingSys\runtime\session_log.json'
 
 $m = Get-Content $manifestPath -Raw | ConvertFrom-Json
 
@@ -131,17 +131,17 @@ foreach ($f in ($m.boot_files + $m.boot_supplemental)) {
 
 # Reference index. Files on disk not pasted. Request by path + line range.
 $refPaths = @(
-    @{ path='MyTradingSys/mts/research/AUDIT_2026-09-17_TRACKER.md'; role='audit_work' },
-    @{ path='MyTradingSys/mts/research/LOOP_LIFECYCLE_DESIGN_2026-09-19.md'; role='plan' },
-    @{ path='MyTradingSys/mts/research/EXTRACTION_TO_ALERT_AUDIT_2026-09-19.md'; role='audit' },
-    @{ path='MyTradingSys/mts/runtime/SESSION_RESUME.md'; role='historical' },
-    @{ path='MyTradingSys/mts/research/L_ITEMS_MASTER.md'; role='frozen' },
-    @{ path='MyTradingSys/mts/research/INDICATOR_IMPLEMENTATION_HANDOFF.md'; role='research' },
+    @{ path='MyTradingSys/research/AUDIT_2026-09-17_TRACKER.md'; role='audit_work' },
+    @{ path='MyTradingSys/research/LOOP_LIFECYCLE_DESIGN_2026-09-19.md'; role='plan' },
+    @{ path='MyTradingSys/research/EXTRACTION_TO_ALERT_AUDIT_2026-09-19.md'; role='audit' },
+    @{ path='MyTradingSys/runtime/SESSION_RESUME.md'; role='historical' },
+    @{ path='MyTradingSys/research/L_ITEMS_MASTER.md'; role='frozen' },
+    @{ path='MyTradingSys/research/INDICATOR_IMPLEMENTATION_HANDOFF.md'; role='research' },
     @{ path='MyTradingSys/PROJECT_VISION.md'; role='direction' },
-    @{ path='MyTradingSys/mts/research/TOM_VERBATIM_INDEX.md'; role='citation_index' },
-    @{ path='MyTradingSys/mts/research/schema_v5.1.0_spec.md'; role='schema' },
-    @{ path='MyTradingSys/mts/research/open_loops_status.md'; role='stale_loops' },
-    @{ path='MyTradingSys/mts/research/compiled_output_audit_20260915.md'; role='audit' }
+    @{ path='MyTradingSys/research/TOM_VERBATIM_INDEX.md'; role='citation_index' },
+    @{ path='MyTradingSys/research/schema_v5.1.0_spec.md'; role='schema' },
+    @{ path='MyTradingSys/research/open_loops_status.md'; role='stale_loops' },
+    @{ path='MyTradingSys/research/compiled_output_audit_20260915.md'; role='audit' }
 )
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("### REFERENCE INDEX (not pasted; request by path + line range) ###")
@@ -161,7 +161,7 @@ foreach ($r in $refPaths) {
 }
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("Directories:")
-[void]$sb.AppendLine("  MyTradingSys/mts/conditions/  - MTS rule files")
+[void]$sb.AppendLine("  MyTradingSys/conditions/  - MTS rule files")
 [void]$sb.AppendLine("  MyTradingSys/extracts/        - analyst extracts")
 [void]$sb.AppendLine("  raw_transcripts_canonical/    - Tom transcripts")
 [void]$sb.AppendLine("  Dumps/workers/                - worker dispatches and replies")
@@ -200,14 +200,14 @@ try {
 
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("### loop health ###")
-$lockPath = Join-Path $root 'data\apparatus.lock'
+$lockPath = Join-Path $root 'runtime_data\apparatus.lock'
 if (Test-Path $lockPath) {
     $lockLine = (Get-Content $lockPath -Raw).Trim()
     [void]$sb.AppendLine("lock:      $lockLine")
 } else {
     [void]$sb.AppendLine("lock:      none")
 }
-$newest = Get-ChildItem (Join-Path $root 'data\snapshots\BTCUSDT_*.json') -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+$newest = Get-ChildItem (Join-Path $root 'runtime_data\snapshots\BTCUSDT_*.json') -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 $snapAgeMin = $null
 if ($newest) {
     $snapAgeMin = [math]::Round(((Get-Date) - $newest.LastWriteTime).TotalMinutes, 1)
@@ -215,13 +215,13 @@ if ($newest) {
 } else {
     [void]$sb.AppendLine("snapshot:  none")
 }
-$stateFile = Join-Path $root 'MyTradingSys\mts\runtime\state_code.json'
+$stateFile = Join-Path $root 'MyTradingSys\runtime\state_code.json'
 $stAgeMin = $null
 if (Test-Path $stateFile) {
     $stAgeMin = [math]::Round(((Get-Date) - (Get-Item $stateFile).LastWriteTime).TotalMinutes, 1)
     [void]$sb.AppendLine("state_code: age=$stAgeMin min")
 }
-$supLogFile = Join-Path $root 'data\supervisor_log.txt'
+$supLogFile = Join-Path $root 'runtime_data\supervisor_log.txt'
 $supAgeSec = $null
 if (Test-Path $supLogFile) {
     $supAgeSec = [int]((Get-Date) - (Get-Item $supLogFile).LastWriteTime).TotalSeconds

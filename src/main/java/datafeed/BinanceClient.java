@@ -40,15 +40,15 @@ public class BinanceClient {
     }
 
     public JsonNode openInterestHist(String symbol, String period, int limit) throws IOException {
-        return get(BASE + "/futures/data/openInterestHist?symbol=" + symbol + "&period=" + period + "&limit=" + limit);
+        return get(BASE + "/futures/runtime_data/openInterestHist?symbol=" + symbol + "&period=" + period + "&limit=" + limit);
     }
 
     public JsonNode longShortRatio(String symbol, String period, int limit) throws IOException {
-        return get(BASE + "/futures/data/globalLongShortAccountRatio?symbol=" + symbol + "&period=" + period + "&limit=" + limit);
+        return get(BASE + "/futures/runtime_data/globalLongShortAccountRatio?symbol=" + symbol + "&period=" + period + "&limit=" + limit);
     }
 
     public JsonNode takerBuySellVol(String symbol, String period, int limit) throws IOException {
-        return get(BASE + "/futures/data/takerBuySellVol?symbol=" + symbol + "&period=" + period + "&limit=" + limit);
+        return get(BASE + "/futures/runtime_data/takerBuySellVol?symbol=" + symbol + "&period=" + period + "&limit=" + limit);
     }
     /** Recent aggregate trades (limit max 1000). */
     public JsonNode aggTrades(String symbol, int limit) throws IOException {
@@ -63,12 +63,12 @@ public class BinanceClient {
 
     /** Top trader long/short position ratio (whale positions). */
     public JsonNode topLongShortPositionRatio(String symbol, String period, int limit) throws IOException {
-        return get(BASE + "/futures/data/topLongShortPositionRatio?symbol=" + symbol + "&period=" + period + "&limit=" + limit);
+        return get(BASE + "/futures/runtime_data/topLongShortPositionRatio?symbol=" + symbol + "&period=" + period + "&limit=" + limit);
     }
 
     /** Top trader long/short account ratio (retail accounts). */
     public JsonNode topLongShortAccountRatio(String symbol, String period, int limit) throws IOException {
-        return get(BASE + "/futures/data/topLongShortAccountRatio?symbol=" + symbol + "&period=" + period + "&limit=" + limit);
+        return get(BASE + "/futures/runtime_data/topLongShortAccountRatio?symbol=" + symbol + "&period=" + period + "&limit=" + limit);
     }
     /** Order book depth for S05 thick/thin analysis. limit can be 5, 10, 20, 50, 100, 500, 1000 */
     public JsonNode orderBookDepth(String symbol, int limit) throws IOException {

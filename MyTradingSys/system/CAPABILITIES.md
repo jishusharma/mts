@@ -20,7 +20,7 @@
 | Coordinator task handoff | `DSA_SESSION_PROMPT.md`, `mts/runtime/session_log.json` | Engine files | Ledger + active state |
 | Probability layer work | `mts/research/event_probability_layer_DESIGN.md` | Engine files | Parked design (needs 500+ labels) |
 | Engine edit proposed | `mts/runtime/compiled_engine.md`, condition file for the section | Everything else | Runtime authority + canonical doc |
-| Data schema question | `data/data_schema_v1.2.0.md` | Engine files | Field-level contract |
+| Data schema question | `runtime_data/data_schema_v1.2.0.md` | Engine files | Field-level contract |
 | Cross-trader integration | `mts/research/cross_trader_integration_plan.md` | Everything else | 4-phase workflow |
 | Session state update | `mts/runtime/session_state.json`, `mts/runtime/session_log.json` | Engine files | SSOT |
 | Task list / status review | `system/02a_CURRENT_STATUS.md`, `system/COMPILED_DECISIONS.md` | Everything else | Status + decisions reference |

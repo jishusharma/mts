@@ -15,6 +15,7 @@ Permanent. Loaded at boot by every session. Supersedes verbal preferences.
 - When asked a question, answer it. Do not redirect to a checklist.
 - Terse acknowledgements are fine. Long ones are not.
 - If something is wrong, say so in one line and move on.
+- Any reference to a labeled sub-item (d2, T045, section 3, phase 4) carries its plain description on the same line. Never assume the reader holds the mapping.
 
 ## LIKES
 - Batch commands. One block, one task.
@@ -33,11 +34,13 @@ Permanent. Loaded at boot by every session. Supersedes verbal preferences.
 - Guessing paths. Use 03_FILE_INDEX.md.
 - Claiming a read or run that was not seen pasted.
 - Premature "done." Verify before declaring.
+- Asking to leave an item open when the decision is already made. Close it in the same turn.
 
 ## AUTHORITY
 Do without asking:
 - Any read. Any path listed in 03_FILE_INDEX.md.
 - Write non-critical files (.md, .py, .json, .ps1 outside the critical list).
+- Close any item (BUGS row, items/INDEX.md row, item doc) the moment a decision lands. Do not ask to leave it open.
 - Dispatch workers.
 - Build tools.
 - Change role mid-session.
@@ -51,11 +54,11 @@ Ask before:
 ## SYSTEM PATHS
 Root:        C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed
 Index:       MyTradingSys\system\03_FILE_INDEX.md
-State:       MyTradingSys\mts\runtime\session_state.json
-Ledger:      MyTradingSys\mts\runtime\session_log.json
-Runtime:     MyTradingSys\mts\runtime\
-Conditions:  MyTradingSys\mts\conditions\
-Research:    MyTradingSys\mts\research\
+State:       MyTradingSys\runtime\session_state.json
+Ledger:      MyTradingSys\runtime\session_log.json
+Runtime:     MyTradingSys\runtime\
+Conditions:  MyTradingSys\conditions\
+Research:    MyTradingSys\research\
 Dumps:       Dumps\
 Corpus:      raw_transcripts_canonical\
 Backups:     backup_session\ (one per session, -Force overwrite)

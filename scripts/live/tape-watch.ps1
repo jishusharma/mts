@@ -5,9 +5,9 @@ param([int]$IntervalSec = 30, [int]$PopCooldownSec = 180)
 $ErrorActionPreference = "Continue"
 $R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 Set-Location $R
-$out     = Join-Path $R "data\live_tape.md"
-$stop    = Join-Path $R "data\tape_stop.flag"
-$alertJs = Join-Path $R "data\last_tape_alert.json"
+$out     = Join-Path $R "runtime_data\live_tape.md"
+$stop    = Join-Path $R "runtime_data\tape_stop.flag"
+$alertJs = Join-Path $R "runtime_data\last_tape_alert.json"
 $alertPs = Join-Path $R "scripts\core\show-alert.ps1"
 if (-not (Test-Path $out)) {
     "# LIVE TAPE" | Set-Content -Path $out -Encoding ASCII
@@ -28,7 +28,7 @@ if (Test-Path $out) {
 while ($true) {
     if (Test-Path $stop) { "tape-watch: stop"; break }
     try {
-        $s = Get-ChildItem "$R\data\snapshots\BTCUSDT_*.json" -ErrorAction Stop |
+        $s = Get-ChildItem "$R\runtime_data\snapshots\BTCUSDT_*.json" -ErrorAction Stop |
              Sort-Object LastWriteTime -Descending | Select-Object -First 1
         if ($lastSnap -and $s.FullName -eq $lastSnap) {
             Start-Sleep -Seconds $IntervalSec
@@ -36,7 +36,7 @@ while ($true) {
         }
         $lastSnap = $s.FullName
         $j = Get-Content $s.FullName -Raw | ConvertFrom-Json
-        $sc = Get-Content "$R\MyTradingSys\mts\runtime\state_code.json" -Raw | ConvertFrom-Json
+        $sc = Get-Content "$R\MyTradingSys\runtime\state_code.json" -Raw | ConvertFrom-Json
         $top = $j.setup_candidates | Select-Object -First 1
         $row = [ordered]@{
             ts = $j.timestamp_utc

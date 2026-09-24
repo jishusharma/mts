@@ -1,8 +1,8 @@
 # verify_data.ps1 - data integrity check. Read-only.
 # Run: .\scripts\tools\verify_data.ps1
 $root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
-$sd = "$root\data\snapshots"
-$sc = "$root\MyTradingSys\mts\runtime\state_code.json"
+$sd = "$root\runtime_data\snapshots"
+$sc = "$root\MyTradingSys\runtime\state_code.json"
 $fail = @()
 $sf = Get-ChildItem "$sd\BTCUSDT_*.json" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 $snap = Get-Content $sf.FullName -Raw -Encoding UTF8 | ConvertFrom-Json

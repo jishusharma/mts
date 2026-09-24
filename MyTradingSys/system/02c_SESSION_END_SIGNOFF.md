@@ -4,9 +4,9 @@
 | Field | Value |
 |-------|-------|
 | **Session** | 2026-09-02 |
-| **Files created** | `mts/cards/BTCUSDT_2026-09-02_1032.md`, `data/data_state_document.md`, `data/dsa_enhancement_spec_v1.3.0.md`, `data/DIRECTORY_AUDIT.md`, `mts/tests/compiled_decisions_validation_2026-09-02.md` |
-| **Files modified** | `system/02a_CURRENT_STATUS.md` (test count 70→98), `system/00_START_HERE.md` (test count 70→98), `system/COMPILED_DECISIONS.md` (test count 87→98), `system/03_FILE_INDEX.md` (data section updated), `data/data_schema_v1.0.md` → `v1.2.0.md`, `data/sample_btc_snapshot.json` (replaced v1.0 with v1.2.0) |
-| **Files deleted** | `dsa_task_007.md`, `dsa_task_008.md`, `dsa_task_009.md`, `sample_btc_snapshot_v1.0.json` (all from data/ directory) |
+| **Files created** | `mts/cards/BTCUSDT_2026-09-02_1032.md`, `runtime_data/data_state_document.md`, `runtime_data/dsa_enhancement_spec_v1.3.0.md`, `runtime_data/DIRECTORY_AUDIT.md`, `mts/tests/compiled_decisions_validation_2026-09-02.md` |
+| **Files modified** | `system/02a_CURRENT_STATUS.md` (test count 70→98), `system/00_START_HERE.md` (test count 70→98), `system/COMPILED_DECISIONS.md` (test count 87→98), `system/03_FILE_INDEX.md` (data section updated), `runtime_data/data_schema_v1.0.md` → `v1.2.0.md`, `runtime_data/sample_btc_snapshot.json` (replaced v1.0 with v1.2.0) |
+| **Files deleted** | `dsa_task_007.md`, `dsa_task_008.md`, `dsa_task_009.md`, `sample_btc_snapshot_v1.0.json` (all from runtime_data/ directory) |
 | **Verdict generated** | C+ CT Long at 4H/PF VAL 76,490-76,515 (58/100) — Trigger UNCONFIRMED |
 | **Tests passed** | 98/98 math layer tests |
 | **Tests failed** | None (0 system failures; 5 test plan pattern mismatches, documentation-only) |

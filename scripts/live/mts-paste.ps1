@@ -1,20 +1,20 @@
 # mts-paste.ps1 - writes one live snapshot of the system to Dumps\LIVE_PASTE.txt
 # Read-only observer. Does not touch the loop, does not modify state.
 # Cadence default 30s. -IntervalSec overrides. -Once writes one cycle and exits.
-# Stops on data\live_paste_stop.flag.
+# Stops on runtime_data\live_paste_stop.flag.
 param([int]$IntervalSec = 30, [switch]$Once)
 
 $ErrorActionPreference = "Continue"
 $Root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 $Out      = Join-Path $Root "Dumps\LIVE_PASTE.txt"
-$StopFlag = Join-Path $Root "data\live_paste_stop.flag"
-$Log      = Join-Path $Root "data\apparatus_log.txt"
-$Tape     = Join-Path $Root "data\live_tape.md"
-$StateCode= Join-Path $Root "MyTradingSys\mts\runtime\state_code.json"
-$Regime   = Join-Path $Root "MyTradingSys\mts\runtime\state_code_regime.json"
-$Pos      = Join-Path $Root "MyTradingSys\mts\runtime\position.json"
-$SnapDir  = Join-Path $Root "data\snapshots"
-$Lock     = Join-Path $Root "data\apparatus.lock"
+$StopFlag = Join-Path $Root "runtime_data\live_paste_stop.flag"
+$Log      = Join-Path $Root "runtime_data\apparatus_log.txt"
+$Tape     = Join-Path $Root "runtime_data\live_tape.md"
+$StateCode= Join-Path $Root "MyTradingSys\runtime\state_code.json"
+$Regime   = Join-Path $Root "MyTradingSys\runtime\state_code_regime.json"
+$Pos      = Join-Path $Root "MyTradingSys\runtime\position.json"
+$SnapDir  = Join-Path $Root "runtime_data\snapshots"
+$Lock     = Join-Path $Root "runtime_data\apparatus.lock"
 $MaxBytes = 102400
 function Get-FileTailLines {
   param([string]$Path, [int]$N)

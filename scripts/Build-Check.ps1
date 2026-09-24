@@ -1,5 +1,5 @@
 # Build-Check.ps1 - Preflight + routing manifest for DSA sessions.
-# Writes MyTradingSys/mts/runtime/BUILD_REPORT.md - paste this first at any session start.
+# Writes MyTradingSys/runtime/BUILD_REPORT.md - paste this first at any session start.
 # Does not modify any live file.
 
 $ErrorActionPreference = "Continue"
@@ -33,7 +33,7 @@ if ($LASTEXITCODE -eq 0) {
 
 # 2. Math tests
 $t0 = Get-Date
-$mtestOut = (& python -m pytest MyTradingSys/mts/tests --ignore=MyTradingSys/mts/tests/docs -q 2>&1 | Out-String)
+$mtestOut = (& python -m pytest MyTradingSys/tests --ignore=MyTradingSys/tests/docs -q 2>&1 | Out-String)
 $dur = [math]::Round(((Get-Date) - $t0).TotalSeconds, 1)
 $m = [regex]::Match($mtestOut, "(\d+) passed")
 if ($LASTEXITCODE -eq 0 -and $m.Success) {
@@ -44,7 +44,7 @@ if ($LASTEXITCODE -eq 0 -and $m.Success) {
 }
 
 # 3. Doc tests
-$docsDir = "MyTradingSys/mts/tests/docs"
+$docsDir = "MyTradingSys/tests/docs"
 if (Test-Path $docsDir) {
     $t0 = Get-Date
     $dtestOut = (& python -m pytest $docsDir -q 2>&1 | Out-String)
@@ -77,7 +77,7 @@ $lines.Add("")
 
 # Active sessions
 $lines.Add("Active sessions:")
-$locksDir = "MyTradingSys/mts/runtime/locks"
+$locksDir = "MyTradingSys/runtime/locks"
 if (Test-Path $locksDir) {
     $locks = @(Get-ChildItem $locksDir -Filter "session_*.lock" -ErrorAction SilentlyContinue)
     if ($locks.Count -eq 0) {
@@ -103,12 +103,12 @@ $lines.Add("")
 $bomHits = @()
 $nonAsciiHits = @()
 $scan = @()
-$scan += Get-ChildItem "MyTradingSys\mts\runtime" -File -Filter "*.py" -ErrorAction SilentlyContinue
-$scan += Get-ChildItem "MyTradingSys\mts\runtime" -File -Filter "*.json" -ErrorAction SilentlyContinue
-$scan += Get-ChildItem "MyTradingSys\mts\research" -File -Filter "*.md" -ErrorAction SilentlyContinue
-$scan += Get-ChildItem "MyTradingSys\mts\runtime" -File -Filter "*.md" -ErrorAction SilentlyContinue
-$scan += Get-ChildItem "MyTradingSys\mts\runtime" -File -Filter "*.md" -ErrorAction SilentlyContinue
-$scan += Get-ChildItem "MyTradingSys\mts\conditions" -File -Filter "*.md" -ErrorAction SilentlyContinue
+$scan += Get-ChildItem "MyTradingSys\runtime" -File -Filter "*.py" -ErrorAction SilentlyContinue
+$scan += Get-ChildItem "MyTradingSys\runtime" -File -Filter "*.json" -ErrorAction SilentlyContinue
+$scan += Get-ChildItem "MyTradingSys\research" -File -Filter "*.md" -ErrorAction SilentlyContinue
+$scan += Get-ChildItem "MyTradingSys\runtime" -File -Filter "*.md" -ErrorAction SilentlyContinue
+$scan += Get-ChildItem "MyTradingSys\runtime" -File -Filter "*.md" -ErrorAction SilentlyContinue
+$scan += Get-ChildItem "MyTradingSys\conditions" -File -Filter "*.md" -ErrorAction SilentlyContinue
 $scan += Get-ChildItem "MyTradingSys\system" -File -Filter "*.md" -ErrorAction SilentlyContinue
 $scan += Get-ChildItem "scripts" -Recurse -File -Filter "*.ps1" -ErrorAction SilentlyContinue
 foreach ($f in $scan) { if (-not $f.FullName) { continue }
@@ -132,7 +132,7 @@ $lines.Add("Cyrillic codepoints (0x0400-0x04FF): " + $nonAsciiHits.Count)
 foreach ($h in $nonAsciiHits) { $lines.Add("  - $h") }
 $lines.Add("")
 # Bug list validation
-$bugsPath = "MyTradingSys\mts\research\BUGS.md"
+$bugsPath = "MyTradingSys\research\BUGS.md"
 $bugFail = @()
 $bugRows = 0
 if (Test-Path $bugsPath) {
@@ -159,7 +159,7 @@ if (Test-Path $bugsPath) {
         } catch { $bugFail += "$bid bad Opened date: $bopened" }
       }
       if ($bstatus -eq "OPEN" -or $bstatus -eq "IN-FIX" -or $bstatus -eq "BLOCKED") {
-        $itemsDir = "MyTradingSys\mts\items"
+        $itemsDir = "MyTradingSys\items"
         $hasItem = (Test-Path $itemsDir) -and @(Get-ChildItem $itemsDir -Filter "$bid`_*.md" -ErrorAction SilentlyContinue).Count -gt 0
         if (-not $hasItem) { $bugFail += "$bid $bstatus with no items/ file" }
       }
@@ -173,7 +173,7 @@ if (Test-Path $bugsPath) {
     $lines.Add("Bugs: OK (" + $bugRows + " rows)")
   }
   # items/INDEX.md mechanical check (Claude ask 2026-09-24)
-  $idxPath = "MyTradingSys\mts\items\INDEX.md"
+  $idxPath = "MyTradingSys\items\INDEX.md"
   if (Test-Path $idxPath) {
     $idxTxt = [System.IO.File]::ReadAllText((Resolve-Path $idxPath))
     $idxMiss = @()
@@ -238,7 +238,7 @@ if ($bomHits.Count -gt 0 -or $nonAsciiHits.Count -gt 0) { $overallFail = $true }
 if ($overallFail) { $lines.Add("STATUS: FAIL") } else { $lines.Add("STATUS: PASS") }
 $lines.Add("")
 $lines.Add("Pastes for this session:")
-$lines.Add("  Always:   MyTradingSys/mts/runtime/BUILD_REPORT.md")
+$lines.Add("  Always:   MyTradingSys/runtime/BUILD_REPORT.md")
 $lines.Add("  JSON:     Dumps/dump_core.md + dump_runtime.md")
 $lines.Add("  Data:     Dumps/dump_data.md")
 $lines.Add("  System:   Dumps/dump_system_support.md")
@@ -246,7 +246,7 @@ $lines.Add("  Extract:  Dumps/dump_extracts.md (paste sections only)")
 $lines.Add("")
 
 # Write
-$outDir = "MyTradingSys/mts/runtime"
+$outDir = "MyTradingSys/runtime"
 if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir -Force | Out-Null }
 $outFile = Join-Path $outDir "BUILD_REPORT.md"
 Write-TextNoBom -Path $outFile -Lines $lines

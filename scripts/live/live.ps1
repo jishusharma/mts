@@ -10,7 +10,7 @@ function Dlt($a, $b, $d) {
   return ("{0}{1}" -f $s, [math]::Round($v, $d))
 }
 
-$snaps = Get-ChildItem "$root\data\snapshots\BTCUSDT_*.json" |
+$snaps = Get-ChildItem "$root\runtime_data\snapshots\BTCUSDT_*.json" |
   Sort-Object LastWriteTime -Descending | Select-Object -First 2
 
 if (-not $snaps) { "no snapshots"; return }
@@ -18,8 +18,8 @@ if (-not $snaps) { "no snapshots"; return }
 $new = Get-Content $snaps[0].FullName -Raw | ConvertFrom-Json
 $old = if ($snaps.Count -gt 1) { Get-Content $snaps[1].FullName -Raw | ConvertFrom-Json } else { $null }
 
-$sc  = Get-Content "$root\MyTradingSys\mts\runtime\state_code.json" -Raw | ConvertFrom-Json
-$log = Get-Content "$root\data\apparatus_log.txt" -Tail 30 |
+$sc  = Get-Content "$root\MyTradingSys\runtime\state_code.json" -Raw | ConvertFrom-Json
+$log = Get-Content "$root\runtime_data\apparatus_log.txt" -Tail 30 |
   Where-Object { $_ -match "\| \d{4}-\d{2}-\d{2}T" } | Select-Object -Last 1
 
 $tNew = $new.timestamp_utc.Substring(11,8)

@@ -31,7 +31,7 @@ public class NakedPocTracker {
     public NakedPocTracker(String symbol) {
         this.symbol = symbol;
         this.mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-        this.filePath = Paths.get("data", "naked_pocs", symbol + "_naked_pocs.json");
+        this.filePath = Paths.get("runtime_data", "naked_pocs", symbol + "_naked_pocs.json");
     }
 
     public static class PocEntry {

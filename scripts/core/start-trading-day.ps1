@@ -50,7 +50,7 @@ foreach ($rp in $requiredPaths) {
 }
 Set-Location $R
 
-$LogDir = Join-Path $R "data"
+$LogDir = Join-Path $R "runtime_data"
 New-Item -ItemType Directory -Path $LogDir -Force | Out-Null
 $LogFile = Join-Path $LogDir "apparatus_log.txt"
 $CounterFile = Join-Path $LogDir "alert_counter.txt"
@@ -273,7 +273,7 @@ function Build-Card {
     if ($v.proof_dir) { $lines += "PROOF_DIR: $($v.proof_dir) $($v.proof_dir_details)" }
     $quadLine = ""
     try {
-        $qScript = Join-Path $R "MyTradingSys\mts\runtime\quad_classify.py"
+        $qScript = Join-Path $R "MyTradingSys\runtime\quad_classify.py"
         $quadLine = (python $qScript 2>&1 | Out-String).Trim()
     } catch {}
     if ($quadLine) { $lines += $quadLine }
@@ -402,7 +402,7 @@ $exitPhase = "startup"
 
 try {
     while ($true) {
-        if (Test-Path (Join-Path $R "data\loop_stop.flag")) {
+        if (Test-Path (Join-Path $R "runtime_data\loop_stop.flag")) {
             Log-Line "STOP FLAG present, exiting loop cleanly"
             break
         }
@@ -419,7 +419,7 @@ try {
             Start-Sleep -Seconds 60; continue
         }
     
-        $umsCmd = 'python "' + $R + '\MyTradingSys\mts\runtime\update_market_state.py" > NUL 2>&1'
+        $umsCmd = 'python "' + $R + '\MyTradingSys\runtime\update_market_state.py" > NUL 2>&1'
         $rc = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $umsCmd) -TimeoutSec 30 -Tag "update_market_state" -WorkDir $R
         if ($rc -ne 0) {
             Log-Line ("STATE_UPDATE_WARN exit=" + $rc)
@@ -427,7 +427,7 @@ try {
             Log-Line "state_updated"
         }
     
-        $s = Get-ChildItem "$R\data\snapshots\${Symbol}_*.json" |
+        $s = Get-ChildItem "$R\runtime_data\snapshots\${Symbol}_*.json" |
             Sort-Object LastWriteTime -Descending | Select-Object -First 1
         if (-not $s) {
             Log-Line "NO_SNAPSHOT_FILE"
@@ -447,7 +447,7 @@ try {
         $pdd = ""
         $moFile = Join-Path $env:TEMP "app_mo.json"
         try {
-            $moCmd = 'python "' + $R + '\MyTradingSys\mts\runtime\build_mo_cli.py" "' + $s.FullName + '" "' + $moFile + '" > NUL 2>&1'
+            $moCmd = 'python "' + $R + '\MyTradingSys\runtime\build_mo_cli.py" "' + $s.FullName + '" "' + $moFile + '" > NUL 2>&1'
             $null = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $moCmd) -TimeoutSec 30 -Tag "build_mo_cli" -WorkDir $R
             if ((Test-Path $moFile) -and (Get-Item $moFile).Length -gt 0) {
                 $mo = Get-Content $moFile -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -458,17 +458,17 @@ try {
         } catch {}
         # Label past snapshots (idempotent, cheap)
     try {
-        $olCmd = 'python "' + $R + '\MyTradingSys\mts\runtime\outcome_labeler.py" > NUL 2>&1'
+        $olCmd = 'python "' + $R + '\MyTradingSys\runtime\outcome_labeler.py" > NUL 2>&1'
         $null = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $olCmd) -TimeoutSec 30 -Tag "outcome_labeler" -WorkDir $R
     } catch {}
 
     # Feature layer: kline archive + regime classifier (additive, non-gating)
     try {
-        $kaCmd = 'python "' + $R + '\MyTradingSys\mts\runtime\kline_archiver.py" > NUL 2>&1'
+        $kaCmd = 'python "' + $R + '\MyTradingSys\runtime\kline_archiver.py" > NUL 2>&1'
         $null = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $kaCmd) -TimeoutSec 30 -Tag "kline_archiver" -WorkDir $R
     } catch {}
     try {
-        $rccCmd = 'python "' + $R + '\MyTradingSys\mts\runtime\regime_classifier.py" > NUL 2>&1'
+        $rccCmd = 'python "' + $R + '\MyTradingSys\runtime\regime_classifier.py" > NUL 2>&1'
         $null = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $rccCmd) -TimeoutSec 30 -Tag "regime_classifier" -WorkDir $R
     } catch {}
     $v = Compute-Verdict -snap $snap -proofDir $pd
@@ -476,7 +476,7 @@ try {
     $posDir = "none"
     $posStop = 0
     $posTarget = 0
-    $posFile = Join-Path $R "MyTradingSys\mts\runtime\position.json"
+    $posFile = Join-Path $R "MyTradingSys\runtime\position.json"
     if (Test-Path $posFile) {
         try {
             $pj = Get-Content $posFile -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -504,7 +504,7 @@ try {
     $v | Add-Member -NotePropertyName proof_dir -NotePropertyValue $pd -Force
         $regime = "-"
         try {
-            $rg = Get-Content (Join-Path $R "MyTradingSys\mts\runtime\state_code_regime.json") -Raw -Encoding UTF8 | ConvertFrom-Json
+            $rg = Get-Content (Join-Path $R "MyTradingSys\runtime\state_code_regime.json") -Raw -Encoding UTF8 | ConvertFrom-Json
             if ($rg.label) { $regime = [string]$rg.label }
         } catch {}
         $v | Add-Member -NotePropertyName regime -NotePropertyValue $regime -Force
@@ -553,7 +553,7 @@ try {
         # state_code staleness check
         if ($Mode -eq "live") {
             try {
-                $scFile = Join-Path $R "MyTradingSys\mts\runtime\state_code.json"
+                $scFile = Join-Path $R "MyTradingSys\runtime\state_code.json"
                 if (Test-Path $scFile) {
                     $scCheck = Get-Content $scFile -Raw -Encoding UTF8 | ConvertFrom-Json
                     $scAge = ([DateTimeOffset]::UtcNow - [DateTime]::Parse($scCheck.timestamp_utc)).TotalSeconds
@@ -570,7 +570,7 @@ try {
         if ($posTarget -gt 0 -and $Target -le 0) { $Target = $posTarget }
         if ($Mode -eq "live" -and $Direction -ne "") {
             try {
-                $scFile = Join-Path $R "MyTradingSys\mts\runtime\state_code.json"
+                $scFile = Join-Path $R "MyTradingSys\runtime\state_code.json"
                 if (Test-Path $scFile) {
                     $sc = Get-Content $scFile -Raw -Encoding UTF8 | ConvertFrom-Json
                     if ($Direction -eq "short" -and $sc.state -match "^L") {
@@ -641,13 +641,13 @@ try {
             $preScript = @"
 import sys, json
 sys.dont_write_bytecode = True
-sys.path.insert(0, r'$($R)\MyTradingSys\mts\runtime')
+sys.path.insert(0, r'$($R)\MyTradingSys\runtime')
 from mts_math import check_scalp_preconditions, check_invalidation
 with open(r'$($preSnap)', 'r', encoding='utf-8') as f:
     snap = json.load(f)
 result = {"scalp": check_scalp_preconditions(snap)}
 try:
-    with open(r'$($R)\MyTradingSys\mts\runtime\session_state.json', 'r', encoding='utf-8') as f:
+    with open(r'$($R)\MyTradingSys\runtime\session_state.json', 'r', encoding='utf-8') as f:
         st = json.load(f)
     clauses = (st.get('invalidates') or {}).get('clauses') or {}
     if clauses:
@@ -692,13 +692,13 @@ print(json.dumps(result))
                 action = "monitored"
                 reason = $reason
             } | ConvertTo-Json -Compress
-            $logScript = Join-Path $R "MyTradingSys\mts\runtime\session_state.py"
+            $logScript = Join-Path $R "MyTradingSys\runtime\session_state.py"
             $logPy = Join-Path $env:TEMP ("sst_append_" + [Guid]::NewGuid().ToString() + ".py")
             $evtFile = Join-Path $env:TEMP ("sst_evt_" + [Guid]::NewGuid().ToString() + ".json")
             Set-Content -LiteralPath $evtFile -Value $evt -Encoding UTF8
             $py = @"
 import sys, json
-sys.path.insert(0, r'C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\mts\runtime')
+sys.path.insert(0, r'C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\runtime')
 sys.dont_write_bytecode = True
 import session_state as ss
 with open(r'$($evtFile.Replace("\", "/"))', 'r', encoding='utf-8') as f:
@@ -723,7 +723,7 @@ print("logged")
         $thesisLine = ""
         $triggerLine = ""
         try {
-            $stateScript = Join-Path $R "MyTradingSys\mts\runtime\session_state.py"
+            $stateScript = Join-Path $R "MyTradingSys\runtime\session_state.py"
             $stateRead = python $stateScript show 2>&1 | Out-String
             $stateObj = $stateRead | ConvertFrom-Json
             if ($stateObj.thesis) {
@@ -787,7 +787,7 @@ print("logged")
     Log-Line "APPARATUS ERROR phase=$exitPhase : $_"
 } finally {
     if ($StateMachinePID) { try { & taskkill.exe /F /T /PID $StateMachinePID 2>&1 | Out-Null } catch {} }
-    Remove-Item (Join-Path $R "data\loop_stop.flag") -ErrorAction SilentlyContinue
+    Remove-Item (Join-Path $R "runtime_data\loop_stop.flag") -ErrorAction SilentlyContinue
     Remove-Item (Join-Path $LogDir "apparatus.lock") -ErrorAction SilentlyContinue
     Log-Line "=== APPARATUS END (finally) phase=$exitPhase ==="
 }

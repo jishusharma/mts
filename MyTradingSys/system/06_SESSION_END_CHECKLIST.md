@@ -70,7 +70,7 @@ For ANY architectural decision, phase change, or significant finding:
 For ANY DSA_TASK_XXX or SYS_AI_TASK_XXX you reference:
 
 ```
-[ ] Run: ls C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\data/dsa_task_* 
+[ ] Run: ls C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\market_data/dsa_task_* 
           (or relevant task directory)
 [ ] Confirm the file exists
 [ ] If it doesn't exist → either create it or remove the reference
@@ -78,7 +78,7 @@ For ANY DSA_TASK_XXX or SYS_AI_TASK_XXX you reference:
 
 **What caught:** DSA_TASK_011 was referenced but no file existed.
 
-**Updated 2026-09-03:** Full DSA task audit revealed 10 of 11 task numbers have no file. See `data/DSA_TASK_INDEX.md`. Rule strengthened: no new DSA_TASK_XXX without adding to index FIRST. Also: `03_FILE_INDEX.md` falsely claimed 3 DSA task files were archived — they never existed. Always verify archive claims against actual directory contents.
+**Updated 2026-09-03:** Full DSA task audit revealed 10 of 11 task numbers have no file. See `runtime_data/DSA_TASK_INDEX.md`. Rule strengthened: no new DSA_TASK_XXX without adding to index FIRST. Also: `03_FILE_INDEX.md` falsely claimed 3 DSA task files were archived — they never existed. Always verify archive claims against actual directory contents.
 
 ---
 
@@ -148,10 +148,10 @@ errors = []
 
 # Check 1: Dirs claimed in session exist
 claimed_dirs = [
-    "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\mts/extracts/cryptocred/raw",
-    "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\mts/extracts/cryptocred/extracted",
-    "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\mts/extracts/crypnuevo/raw",
-    "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\mts/extracts/crypnuevo/extracted",
+    "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys/extracts/cryptocred/raw",
+    "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys/extracts/cryptocred/extracted",
+    "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys/extracts/crypnuevo/raw",
+    "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys/extracts/crypnuevo/extracted",
 ]
 for d in claimed_dirs:
     if not os.path.isdir(d):
@@ -159,7 +159,7 @@ for d in claimed_dirs:
 
 # Check 2: DSA task files referenced exist
 task_refs = []  # Fill in any DSA_TASK_XXX you referenced
-task_dir = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\data"
+task_dir = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\market_data"
 for task in task_refs:
     if not os.path.exists(os.path.join(task_dir, task)):
         errors.append(f"MISSING TASK FILE: {task}")

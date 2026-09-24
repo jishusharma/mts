@@ -26,7 +26,7 @@
 | mts/integration/ | DEPRECATED — integration files corrupted, content merged into 01_AI_BEHAVIOR.md Section 14 | sys_AI only |
 | mts/research/ | Research findings, validation reports, cross-session artifacts | sys_AI only |
 | mts/runtime/ | Canonical decision engine and optimization specs | sys_AI only |
-| data/ | JSON schemas, DSA tasks, screener samples | sys_AI only |
+| runtime_data/ | JSON schemas, DSA tasks, screener samples | sys_AI only |
 | extracts/fresh/ | FRESH transcript extractions (50 videos) | sys_AI only |
 | mts/extracts/ | Cross-trader extract files | sys_AI only |
 | _scratch/ | Session checkpoints, transient artifacts | sys_AI only |

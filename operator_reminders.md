@@ -88,11 +88,11 @@ Do not mix the read with a position or a verdict. Give the read.
 ### C2. TRADE ENTRY
 Read direction, entry, stop, target. Label each chart read.
 Ask once for anything missing.
-Write MyTradingSys\mts\runtime\position.json. Echo the file in one line.
+Write MyTradingSys\runtime\position.json. Echo the file in one line.
 stop=0 disables the stop-proximity alert. Same for target.
 
 ### C3. TRADE EXIT
-Delete MyTradingSys\mts\runtime\position.json.
+Delete MyTradingSys\runtime\position.json.
 Confirm removal in one line.
 If the file is left in place, the loop ignores it after 24 hours.
 
@@ -129,8 +129,8 @@ Follow the rules block at the top of BUGS.md.
 Confirm the defect from disk first. Cite path and line range.
 Append one row before the LAST line that is exactly `# END`.
 Verify anchor match count is 1 before writing (-ne 1, never -lt 1).
-Then add a row to MyTradingSys/mts/items/INDEX.md and an item doc at
-MyTradingSys/mts/items/<id>_*.md, or Build-Check will fail.
+Then add a row to MyTradingSys/items/INDEX.md and an item doc at
+MyTradingSys/items/<id>_*.md, or Build-Check will fail.
 Verify: line count, tail, no BOM, non-ASCII count.
 
 ---
@@ -142,8 +142,8 @@ Desktop only. Not applicable on the laptop.
 Loop control per DSA_SESSION_PROMPT.md section 9.
 Read all of: wrapper PID, supervisor PID, java PID, lock, snapshot age,
 state_code age, log mtime. Together. A log tail alone is not a health check.
-Read data\loop_state.json for the supervisor view.
-Single stop flag: data\loop_stop.flag. Both wrapper and supervisor honor it.
+Read runtime_data\loop_state.json for the supervisor view.
+Single stop flag: runtime_data\loop_stop.flag. Both wrapper and supervisor honor it.
 
 ### E2. SESSION CLOSE
 Close per DSA_SESSION_PROMPT.md section 12.
@@ -223,9 +223,9 @@ mts-live
 mts-tape
 
 ### F2. READ THE TAPE NOW
-Get-Content .\data\apparatus_log.txt -Tail 30
-Get-Content .\MyTradingSys\mts\runtime\current_market_state.md -Tail 40
-Get-Content .\data\live_tape.md -Tail 40
+Get-Content .\runtime_data\apparatus_log.txt -Tail 30
+Get-Content .\MyTradingSys\runtime\current_market_state.md -Tail 40
+Get-Content .\runtime_data\live_tape.md -Tail 40
 
 ### F3. PROCESS CHECK
 Get-CimInstance Win32_Process | Where-Object {
@@ -236,7 +236,7 @@ Get-CimInstance Win32_Process | Where-Object {
 Desktop only:
 mts-loop stop          # single flag stops wrapper AND supervisor
 mts-loop start         # start-session.ps1 + mts-up
-mts-loop status        # read data\loop_state.json
+mts-loop status        # read runtime_data\loop_state.json
 .\scripts\core\stop-day.ps1
 .\scripts\core\mode.ps1 -M armed
 Both machines:

@@ -35,7 +35,7 @@ Copy that file into a fresh chat to bring the AI up to speed.
 
     src/              Java source (screener, state machine)
 
-    data/             snapshots and runtime logs
+    runtime_data/             snapshots and runtime logs
     Dumps/            boot paste and one-time dumps
     extracts/         cleaned transcript work
     raw_transcripts_canonical/   source transcripts
@@ -54,7 +54,7 @@ Copy that file into a fresh chat to bring the AI up to speed.
 When rules conflict:
 
 1. compiled_engine.md wins.
-2. Condition files under MyTradingSys/mts/conditions/.
+2. Condition files under MyTradingSys/conditions/.
 3. Tom transcripts, the only source for rules and levels.
 4. DSA_SESSION_PROMPT.md, for behavior.
 

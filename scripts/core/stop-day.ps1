@@ -2,8 +2,8 @@
 # Stage 3b of LOOP_LIFECYCLE_DESIGN_2026-09-19.md. No kill.
 
 $R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
-$LockFile = Join-Path $R "data\apparatus.lock"
-$FlagFile = Join-Path $R "data\loop_stop.flag"
+$LockFile = Join-Path $R "runtime_data\apparatus.lock"
+$FlagFile = Join-Path $R "runtime_data\loop_stop.flag"
 $TimeoutSec = 60
 
 # 1. Write stop flag. Loop reads at next cycle top, breaks, runs finally,
@@ -12,7 +12,7 @@ New-Item -Path $FlagFile -ItemType File -Force | Out-Null
 Write-Host "stop flag written: $FlagFile"
 
 # 2. Poll for lock release AND supervisor exit.
-$SupLock = Join-Path $R "data\supervisor.lock"
+$SupLock = Join-Path $R "runtime_data\supervisor.lock"
 $t0 = Get-Date
 while (((Get-Date) - $t0).TotalSeconds -lt $TimeoutSec) {
     if ((-not (Test-Path $LockFile)) -and (-not (Test-Path $SupLock))) { break }

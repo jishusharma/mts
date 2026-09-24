@@ -72,9 +72,9 @@
     alerts
 
     # PULSE (any time)
-    Get-Content .\data\apparatus_log.txt -Tail 30
-    Get-Content .\MyTradingSys\mts\runtime\current_market_state.md -Tail 40
-    Get-Content .\MyTradingSys\mts\research\BUGS.md -Tail 30
+    Get-Content .\runtime_data\apparatus_log.txt -Tail 30
+    Get-Content .\MyTradingSys\runtime\current_market_state.md -Tail 40
+    Get-Content .\MyTradingSys\research\BUGS.md -Tail 30
 
     # BEFORE WRITE
     .\scripts\Build-Check.ps1

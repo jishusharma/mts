@@ -7,21 +7,21 @@
 # 2026-09-22 v1.1.3 - added MTS-OID block for T033 fields, plus wrapSrc token on MTS-PROC.
 # 2026-09-17 v1.1.0 - added compiled blocks MTS-HSTOP, MTS-PROOF, MTS-CAND, MTS-DELTA.
 # 2026-09-17 v1.0.0 - initial console feed.
-# Read-only console feed. One block per tick. Also appends to data\mts-watch.log
+# Read-only console feed. One block per tick. Also appends to runtime_data\mts-watch.log
 # so the operator can paste without a visible window.
-# Stop: create data\mts_watch_stop.flag, or Ctrl-C.
+# Stop: create runtime_data\mts_watch_stop.flag, or Ctrl-C.
 
 param([int]$IntervalSec = 30)
 $ErrorActionPreference = "Continue"
 $R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 Set-Location $R
-$stop = Join-Path $R "data\mts_watch_stop.flag"
-$log  = Join-Path $R "data\mts-watch.log"
-$snapDir = Join-Path $R "data\snapshots"
-$appLog  = Join-Path $R "data\apparatus_log.txt"
-$tapeLog = Join-Path $R "data\live_tape.md"
-$scPath  = Join-Path $R "MyTradingSys\mts\runtime\state_code.json"
-$cmsPath = Join-Path $R "MyTradingSys\mts\runtime\current_market_state.md"
+$stop = Join-Path $R "runtime_data\mts_watch_stop.flag"
+$log  = Join-Path $R "runtime_data\mts-watch.log"
+$snapDir = Join-Path $R "runtime_data\snapshots"
+$appLog  = Join-Path $R "runtime_data\apparatus_log.txt"
+$tapeLog = Join-Path $R "runtime_data\live_tape.md"
+$scPath  = Join-Path $R "MyTradingSys\runtime\state_code.json"
+$cmsPath = Join-Path $R "MyTradingSys\runtime\current_market_state.md"
 
 function Emit {
     param([string]$text)
@@ -45,7 +45,7 @@ while ($true) {
         Emit "=== $($now.ToString('o')) | snap_age=${snapAge}s ==="
 
         $sup  = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe' OR Name='pwsh.exe'" | Where-Object { $_.CommandLine -match 'loop-supervisor' }).ProcessId
-        $lockPath = Join-Path $R "data\apparatus.lock"
+        $lockPath = Join-Path $R "runtime_data\apparatus.lock"
         $lock = if (Test-Path $lockPath) { (Get-Content $lockPath -Raw).Trim() } else { "none" }
         $lockPid = if ($lock -match '^(\d+)\s') { [int]$Matches[1] } else { 0 }
         $wrap = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe' OR Name='pwsh.exe'" | Where-Object { $_.CommandLine -match 'start-trading-day|mode\.ps1' -or $_.ProcessId -eq $lockPid }).ProcessId
@@ -84,7 +84,7 @@ while ($true) {
         Emit "MTS-SIG     nd1m=$($sg.net_delta_1m) l3=$($sg.last_3_delta) vol=$($sg.volume_ratio) cvd=$($sg.cvd_slope) pxVwap=$($sg.price_vs_vwap)"
 
         # MTS-FRAME: regime label from regime_classifier.py. Added 2026-09-18.
-        $rgPath = Join-Path $R "MyTradingSys\mts\runtime\state_code_regime.json"
+        $rgPath = Join-Path $R "MyTradingSys\runtime\state_code_regime.json"
         if (Test-Path $rgPath) {
             try {
                 $rg = Get-Content $rgPath -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -103,8 +103,8 @@ while ($true) {
         # --- COMPILED: hard_stops + proof_direction from build_mo_cli ---
         $moFile = Join-Path $env:TEMP "mts_watch_mo.json"
         try {
-            $snapFile = Get-ChildItem (Join-Path $R 'data\snapshots') -Filter 'BTCUSDT_*.json' | Sort LastWriteTime -Desc | Select -First 1
-            $moCmd = 'python "' + $R + '\MyTradingSys\mts\runtime\build_mo_cli.py" "' + $snapFile.FullName + '" "' + $moFile + '" > NUL 2>&1'
+            $snapFile = Get-ChildItem (Join-Path $R 'runtime_data\snapshots') -Filter 'BTCUSDT_*.json' | Sort LastWriteTime -Desc | Select -First 1
+            $moCmd = 'python "' + $R + '\MyTradingSys\runtime\build_mo_cli.py" "' + $snapFile.FullName + '" "' + $moFile + '" > NUL 2>&1'
             $null = & cmd.exe /c $moCmd
             if ((Test-Path $moFile) -and (Get-Item $moFile).Length -gt 0) {
                 $mo = Get-Content $moFile -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -127,7 +127,7 @@ while ($true) {
 
         # --- DELTA vs prior snapshot ---
         try {
-            $s2 = Get-ChildItem (Join-Path $R 'data\snapshots') -Filter 'BTCUSDT_*.json' | Sort LastWriteTime -Desc | Select -Skip 1 -First 1
+            $s2 = Get-ChildItem (Join-Path $R 'runtime_data\snapshots') -Filter 'BTCUSDT_*.json' | Sort LastWriteTime -Desc | Select -Skip 1 -First 1
             if ($s2) {
                 $j2 = Get-Content $s2.FullName -Raw -Encoding UTF8 | ConvertFrom-Json
                 $dpx = $j.current_price - $j2.current_price

@@ -16,7 +16,7 @@ quotes.sort(key=lambda q: (q["file"], q["line"]))
 header = """# TOM VERBATIM INDEX
 # Purpose: single source of verbatim Tom quotes for rule citations.
 # Authority: raw_transcripts_canonical/*.txt are canonical. This file points. Does not duplicate.
-# Rule: every derived rule in MyTradingSys/mts/conditions/ carries [TOM-NNN] or [SCREENER].
+# Rule: every derived rule in MyTradingSys/conditions/ carries [TOM-NNN] or [SCREENER].
 # Rule: SCREENER means "our invention". Must not be presented as Tom.
 # Verifier: scripts/tools/verify_rule_citations.ps1
 # Rebuilt 2026-09-19 (T017). IDs TOM-001..TOM-213 mapped 1:1 to Source GPS

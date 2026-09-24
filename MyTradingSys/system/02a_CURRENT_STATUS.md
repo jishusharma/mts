@@ -66,11 +66,11 @@
 ### DATA / DSA TASKS (4 files)
 | # | File | Size | Status | Purpose |
 |---|------|------|--------|---------|
-| 20 | data/data_schema_v1.0.md | ~12KB | ACTIVE v1.2.0 | DSA JSON schema — all fields documented |
-| 21 | data/dsa_task_007_htf_alignment.md | ~4KB | COMPLETE | HTF structure schema alignment task |
-| 22 | data/dsa_task_008_lean_request.md | ~4KB | CANCELLED | Gap concept rejected after research |
-| 23 | data/dsa_task_009_liquidation_investigation.md | ~4KB | REVISED | Visual validation protocol (no DSA changes) |
-| 24 | data/dsa_task_012_setup_candidates.md | ~15KB | ACTIVE | Pre-computed setup_candidates module. APPROVED 2026-09-04. ~14h dev. v1.3.0.
+| 20 | runtime_data/data_schema_v1.0.md | ~12KB | ACTIVE v1.2.0 | DSA JSON schema — all fields documented |
+| 21 | runtime_data/dsa_task_007_htf_alignment.md | ~4KB | COMPLETE | HTF structure schema alignment task |
+| 22 | runtime_data/dsa_task_008_lean_request.md | ~4KB | CANCELLED | Gap concept rejected after research |
+| 23 | runtime_data/dsa_task_009_liquidation_investigation.md | ~4KB | REVISED | Visual validation protocol (no DSA changes) |
+| 24 | runtime_data/dsa_task_012_setup_candidates.md | ~15KB | ACTIVE | Pre-computed setup_candidates module. APPROVED 2026-09-04. ~14h dev. v1.3.0.
 
 ### TEST FILES (6 files) |
 
@@ -331,7 +331,7 @@
 **Method:** Phase 1: Pure extraction. Phase 2: Consolidation. Phase 3: Integration Planning. Phase 4: Integration with 3-snapshot validation. See cross_trader_integration_plan.md.
 **Remaining:** 5 GAP entries RESOLVED via DSA_TASK_008 (4 PERMANENTLY BLOCKED, 1 DEFERRED). 11 REJECT entries documented. 28 CONFIRMED entries validate existing engine logic.
 **Next action:** New transcript extraction OR live trading card generation. No pending DSA tasks.
-**DSA_TASK_008 result:** Zero new fields approved. All 5 GAP entries resolved with documented justification. See `data/dsa_task_008_gap_fields.md`.
+**DSA_TASK_008 result:** Zero new fields approved. All 5 GAP entries resolved with documented justification. See `runtime_data/dsa_task_008_gap_fields.md`.
 **Parallel sessions:** DSA_TASK_008 COMPLETE. BUG #4 CLOSED 2026-08-31. BUG #5 RECLASSIFIED 2026-09-03. DSA task audit COMPLETE 2026-09-03: 10 of 11 task numbers were ghosts. Cleaned up 2026-09-04. Only active task: DSA_TASK_012 (pre-computed setup_candidates module, APPROVED).
 **NOTE:** Workflow corrected 2026-08-30. Previous premature tagging approach discarded. All 4 existing extracts reprocessed.
 **Fixes validated:**
@@ -344,7 +344,7 @@
 | 5 | Funding reset contradiction resolved | entry_timing_triggers.md | PASS — informational only, not hard stop |
 | 6 | Schema updated to DSA 1.2.0+ | data_schema_v1.0.md | PASS — all fields documented |
 **Patches activated:** VPOC Migration + Exhaustion Gate now LIVE
-**Output:** `data/test_snapshot_v4.2.0-p2_validation.json` (regression test data)
+**Output:** `runtime_data/test_snapshot_v4.2.0-p2_validation.json` (regression test data)
 **Archived:** `mts/tests/validation_run_2026-08-29.md` → `mts/archive/validation_run_2026-08-29_ARCHIVED.md` (violates "no new docs" rule — learnings embedded in compiled_engine.md + 00_START_HERE.md instead)
 
 ---
@@ -395,7 +395,7 @@ Six gaps identified during the speed concept research. Documentation-only; no en
 | ID | Action | Prerequisite |
 |---|---|---|
 | DSA_TASK_013 | Emit order-book tick rate | **COMPLETE 2026-09-10.** `order_flow` block added to MarketDataSnapshot. Fields: trades_per_sec, volume_per_sec, baseline_trades_per_sec, baseline_volume_per_sec, trades_ratio, volume_ratio, speed_state, confidence. Three states: accelerating/maintaining/decelerating. Thresholds provisional. Engine does NOT yet read this field (Rule 32 validation required before integration). |
-| DSA_TASK_014 | Emit per-instrument speed baseline | **COMPLETE 2026-09-10.** Persisted to `data/speed_baselines/{symbol}_speed_baseline.json`. Rolling 30d window, max 100 samples, median-based. Fields: historical_baseline_trades_per_sec, historical_baseline_volume_per_sec, historical_baseline_samples, historical_baseline_confidence (HIGH>=20/MEDIUM>=5/LOW<5), speed_vs_historical. First sample: 1 (LOW confidence expected). |
+| DSA_TASK_014 | Emit per-instrument speed baseline | **COMPLETE 2026-09-10.** Persisted to `runtime_data/speed_baselines/{symbol}_speed_baseline.json`. Rolling 30d window, max 100 samples, median-based. Fields: historical_baseline_trades_per_sec, historical_baseline_volume_per_sec, historical_baseline_samples, historical_baseline_confidence (HIGH>=20/MEDIUM>=5/LOW<5), speed_vs_historical. First sample: 1 (LOW confidence expected). |
 
 ## DSA HYGIENE - SETUP_CANDIDATES (added 2026-09-10)
 
@@ -447,7 +447,7 @@ Engine status: NOT YET READ by compiled_engine.md. Any rule that consumes `order
 | — | src/main/java/datafeed/MarketDataSnapshot.java | order_flow block + computeFlowStats + updateAndApplyHistoricalBaseline + median |
 | — | mts/runtime/math_object_builder.py | BUG-007 split flags |
 | — | mts/tests/test_math_object_builder.py | 4 new tests + legacy test update |
-| — | data/data_schema_v1.2.0.md | order_flow section |
+| — | runtime_data/data_schema_v1.2.0.md | order_flow section |
 
 **Tests:** 102/102 PASS (up from 98; +4 BUG-007 tests).
 
@@ -561,7 +561,7 @@ create sync problems. One producer, one consumer, filesystem as the contract.
 ### Snapshot workflow (two commands, order matters)
 
   1. mvn -q exec:java "-Dexec.mainClass=datafeed.Main" "-Dexec.args=snapshot BTCUSDT"
-  2. python .\MyTradingSys\mts\runtime\update_market_state.py
+  2. python .\MyTradingSys\runtime\update_market_state.py
 
 Updater reads the newest snapshot file. Run snapshot first, updater second.
 No alias, no hook - manual two-command pattern is intentional.

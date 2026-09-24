@@ -11,7 +11,7 @@ function alerts   { & "$ScriptDir\live\alerts.ps1" }
 function live     { & "$ScriptDir\live\live.ps1" }
 function verify   { & "$ScriptDir\tools\verify_data.ps1" }
 function context  { & "$ScriptDir\live\context.ps1" }
-function regime   { python "$ScriptDir\..\MyTradingSys\mts\runtime\regime_classifier.py" }
+function regime   { python "$ScriptDir\..\MyTradingSys\runtime\regime_classifier.py" }
 
 "mts loaded: live quick deltas trend snapshot overview health alerts context regime dashboard"
 
@@ -42,7 +42,7 @@ function mts-up {
     Start-Process pwsh.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-File","$ScriptDir\core\mode.ps1","-M","armed") -WindowStyle Hidden
     # Poll for wrapper lock acquisition (up to 30s). Lock is written at wrapper start.
     $deadline = (Get-Date).AddSeconds(30)
-    while ((Get-Date) -lt $deadline -and -not (Test-Path "$ScriptDir\..\data\apparatus.lock")) {
+    while ((Get-Date) -lt $deadline -and -not (Test-Path "$ScriptDir\..\runtime_data\apparatus.lock")) {
         Start-Sleep -Milliseconds 500
     }
     Start-Process pwsh.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-File","$ScriptDir\core\loop-supervisor.ps1","-Mode","armed","-IntervalMin","1","-RestartGraceSec","90") -WindowStyle Hidden
@@ -68,7 +68,7 @@ function mts-loop {
         'start'  { & "$ScriptDir\start-session.ps1"; mts-up }
         'stop'   { & "$ScriptDir\core\stop-day.ps1" }
         'status' {
-            $st = Join-Path $ScriptDir "..\data\loop_state.json"
+            $st = Join-Path $ScriptDir "..\runtime_data\loop_state.json"
             if (Test-Path $st) { Get-Content $st -Raw }
             else { "loop_state.json not present" }
         }
@@ -76,10 +76,10 @@ function mts-loop {
 }
 
 # live feed (canonical) - see MTS_DICTIONARY.md LIVE FEED NAMES
-function mts-live      { Remove-Item "$ScriptDir\..\data\mts_watch_stop.flag" -ErrorAction SilentlyContinue | Out-Null; & "$ScriptDir\live\mts-watch.ps1" @args }
+function mts-live      { Remove-Item "$ScriptDir\..\runtime_data\mts_watch_stop.flag" -ErrorAction SilentlyContinue | Out-Null; & "$ScriptDir\live\mts-watch.ps1" @args }
 function mts-live-fast { & "$ScriptDir\live\mts-watch.ps1" -IntervalSec 10 }
-function mts-live-stop { New-Item "$ScriptDir\..\data\mts_watch_stop.flag" -ItemType File -Force | Out-Null; "stop flag written" }
-function mts-live-log  { Get-Content "$ScriptDir\..\data\mts-watch.log" -Tail 40 }
+function mts-live-stop { New-Item "$ScriptDir\..\runtime_data\mts_watch_stop.flag" -ItemType File -Force | Out-Null; "stop flag written" }
+function mts-live-log  { Get-Content "$ScriptDir\..\runtime_data\mts-watch.log" -Tail 40 }
 function mts-tape      { & "$ScriptDir\live\tape-watch.ps1" @args }
 function mts-dashboard { & "$ScriptDir\live\mts-dashboard.ps1" @args }
 
@@ -91,6 +91,6 @@ function gitundo { git reset --hard last-snapshot; "reverted to last-snapshot" }
 
 
 # mts-paste - continuous live snapshot writer. See PENDING_MTS_PASTE.
-function mts-paste      { Remove-Item "$ScriptDir\..\data\live_paste_stop.flag" -ErrorAction SilentlyContinue | Out-Null; & "$ScriptDir\live\mts-paste.ps1" @args }
+function mts-paste      { Remove-Item "$ScriptDir\..\runtime_data\live_paste_stop.flag" -ErrorAction SilentlyContinue | Out-Null; & "$ScriptDir\live\mts-paste.ps1" @args }
 function mts-paste-now  { & "$ScriptDir\live\mts-paste.ps1" -Once; Get-Content "$ScriptDir\..\Dumps\LIVE_PASTE.txt" -Raw }
-function mts-paste-stop { New-Item "$ScriptDir\..\data\live_paste_stop.flag" -ItemType File -Force | Out-Null; "stop flag written" }
+function mts-paste-stop { New-Item "$ScriptDir\..\runtime_data\live_paste_stop.flag" -ItemType File -Force | Out-Null; "stop flag written" }

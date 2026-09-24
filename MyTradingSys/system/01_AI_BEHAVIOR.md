@@ -457,7 +457,7 @@ For EACH JSON snapshot:
 - Task: Run `update_state(old_state, snapshot)` → `format_state(new_state)` → persist via shell
 - Write updated state to `mts/runtime/current_market_state.md` using shell tool:
   ```
-  cat > C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\mts/runtime/current_market_state.md << 'EOF'
+  cat > C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys/runtime/current_market_state.md << 'EOF'
   [content from format_state]
   EOF
   ```

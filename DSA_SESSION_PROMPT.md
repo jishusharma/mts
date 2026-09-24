@@ -31,7 +31,7 @@ Practical rules for this session:
 The paste arrives as one file containing all boot content. Read it, then:
 
 1. Confirm you have the manifest and list the boot files by name.
-2. Run the build check.
+2. Confirm the build result from the boot paste.
    If the status is not PASS, stop and report. Do not proceed.
 3. Read the current-state section of this file.
 4. State your role and mission. Start work.
@@ -117,20 +117,21 @@ After any write:
 
 After creating a new file:
 - Add one row to MyTradingSys/system/03_FILE_INDEX.md.
-- If the file belongs in boot content, add it to SESSION_MANIFEST.json boot_supplemental.
+- If the file belongs in boot content, add it to SESSION_MANIFEST.json boot_files (positioned) or boot_supplemental (reference), as the role dictates.
 
 Critical files require a four-step proof:
 hash before, edit via explicit replace, hash after, diff.
 
 Critical files:
-- MyTradingSys/mts/runtime/compiled_engine.md
+- MyTradingSys/runtime/compiled_engine.md
 - DSA_SESSION_PROMPT.md (this file)
 - MyTradingSys/system/01_AI_BEHAVIOR.md
-- MyTradingSys/mts/runtime/mts_math.py
-- MyTradingSys/mts/runtime/math_object_builder.py
+- MyTradingSys/runtime/mts_math.py
+- MyTradingSys/runtime/math_object_builder.py
 - scripts/core/start-trading-day.ps1
 - scripts/core/mode.ps1
 - scripts/core/stop-day.ps1
+- MyTradingSys/PROJECT_VISION.md
 
 ## 7. PLAIN LANGUAGE RULE
 
@@ -149,14 +150,14 @@ EST (winter).
 
 Root:        C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed
 Java:        src\main\java\datafeed\
-Python:      MyTradingSys\mts\runtime\
-Conditions:  MyTradingSys\mts\conditions\
-Research:    MyTradingSys\mts\research\
-Runtime log: data\apparatus_log.txt
-Manifest:    MyTradingSys\mts\runtime\SESSION_MANIFEST.json
-State:       MyTradingSys\mts\runtime\session_state.json
-Ledger:      MyTradingSys\mts\runtime\session_log.json
-Dictionary:  MyTradingSys\mts\research\MTS_DICTIONARY.md
+Python:      MyTradingSys\runtime\
+Conditions:  MyTradingSys\conditions\
+Research:    MyTradingSys\research\
+Runtime log: runtime_data\apparatus_log.txt
+Manifest:    MyTradingSys\runtime\SESSION_MANIFEST.json
+State:       MyTradingSys\runtime\session_state.json
+Ledger:      MyTradingSys\runtime\session_log.json
+Dictionary:  MyTradingSys\research\MTS_DICTIONARY.md
 Dumps:       Dumps\
 Corpus:      raw_transcripts_canonical\
 
@@ -182,9 +183,10 @@ One per line. No compression.
 
 Authority order when rules conflict:
 1. compiled_engine.md wins over everything else.
-2. Condition files under MyTradingSys/mts/conditions/.
+2. Condition files under MyTradingSys/conditions/.
 3. Tom transcripts, the only source for rules and levels.
 4. This prompt, for behavior.
+5. PROJECT_VISION.md, for what should enter the engine over time.
 
 ## 10. EXTRACTION DISCIPLINE
 
@@ -195,12 +197,12 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-09-24T10:00Z. Snapshot age under 1 min. Loop ALIVE.
+Last live read:  2026-09-24T14:00Z. Snapshot age under 1 min. Loop ALIVE.
 Thesis:          neutral, low confidence. Unchanged.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: JIS-NB loop ALIVE 10:00Z. Build PASS at 10:00Z. Supervisor 6552, wrapper 10872, state-machine 2672, cmd 4476, java 13260. Session MTS-2026-09-24-0639Z closed.
-Findings:        T047 CLOSED. loop-supervisor.ps1 rewritten 136 to 250 lines: single stop flag loop_stop.flag, stale detection snapshot and state_code mtime over 150s for 2 ticks then tree-kill and restart, circuit breaker 5 restarts in 15 min, loop_state.json written per tick, mts-loop CLI, java-dead detection via smPid. stop-day.ps1 dual-lock wait. items/INDEX.md created, boot-loaded, Build-Check enforced. B059 fixed: pf_vp bin edges snapped to 10-USD grid. Prior framing wrong on two counts: target was buildStructure and mechanism was window drift, both wrong. B066 split from B059 as rank-1 distance gate. T040 scope refined as historical rank analysis. Java 13260 still pre-B059 bytecode.
+Runtime + loops: JIS-NB loop ALIVE 14:00Z. Build PASS at 14:00Z. Lock PID 2832. Log writes to runtime_data/. Session MTS-2026-09-24-1100Z closed.
+Findings:        Folder flatten: MyTradingSys/mts/* -> MyTradingSys/*; data/ -> runtime_data/; MyTradingSys/data/ -> MyTradingSys/market_data/; extracts consolidated. 197 files rewritten. PROJECT_VISION.md added to boot_files at position 4. USER.md: close-items-on-decision rule, sub-item labeling rule. T045 CLOSED. T046 d5 confirmed. post_funding_vp demoted to display-only (removed from candidate zone list and target pool in SetupCandidatesBuilder.java and math_object_builder.py). B067 filed (crypto-hack gating audit). B059 live-tape confirmed drift gone; 10.0 bin size still untagged SCREENER.
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.
@@ -212,9 +214,8 @@ Findings:        T047 CLOSED. loop-supervisor.ps1 rewritten 136 to 250 lines: si
 5. Snap with a plain commit message.
 
 6. Writing discipline for receipts, journal entries, and doc notes.
-   Test 2 of MyTradingSys/mts/tests/docs/test_integrity.py forbids a
-   short list of repository-command phrases in any live file. Read that
-   list (around line 40-52) before writing. Rephrase to plain verbs:
+   Test 2 of MyTradingSys/tests/docs/test_integrity.py forbids a
+   short list of repository-command phrases in any live file. See test_2_no_repo_command_phrases in that file for the current list before writing. Rephrase to plain verbs:
    staged, committed, checked out, history, working tree, instead of
    the command forms. Two sessions on 2026-09-19 tripped this rule by
    citing the exact command inside a bug receipt and inside a triage

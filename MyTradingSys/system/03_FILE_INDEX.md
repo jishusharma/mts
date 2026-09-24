@@ -134,7 +134,7 @@
 | regression_log.md | ~1.7KB | Patch smoke test history |
 | state_signal_prototype.py | ~5.4KB | State-code emitter prototype |
 
-## DATA/ - Schemas, Task Specs (MyTradingSys/data/)
+## DATA/ - Schemas, Task Specs (MyTradingSys/market_data/)
 
 | File | Size | Purpose |
 |------|------|---------|
@@ -195,7 +195,7 @@ Files moved from research/ after their findings were integrated or superseded:
 | check_snapshot.py | ~1.5KB | Snapshot check utility |
 | divergence_monitor.py | ~4.3KB | Divergence flagger |
 
-## RUNTIME DATA (BinanceDataFeed/data/)
+## RUNTIME DATA (BinanceDataFeed/runtime_data/)
 
 | Path | Purpose |
 |------|---------|
@@ -231,7 +231,7 @@ Files moved from research/ after their findings were integrated or superseded:
 | mts/runtime/ | 14 |
 | mts/research/ | 15 |
 | mts/tests/ | 9 |
-| data/ | 6 |
+| runtime_data/ | 6 |
 | extracts/fresh/ | 50 |
 | mts/extracts/ | 8 |
 | mts/archive/ | 14 |
@@ -241,44 +241,44 @@ Files moved from research/ after their findings were integrated or superseded:
 ---
 # END
 
-| MyTradingSys/mts/research/TOM_VERBATIM_INDEX.md | research | Verbatim Tom quote index. Points to corpus. Rules in conditions/ carry [TOM-NNN] or [SCREENER]. |
-| MyTradingSys/mts/research/INDICATOR_IMPLEMENTATION_HANDOFF.md | research | Nine CoinGlass derivative indicator panels. Five-phase implementation plan. Source doc for T032-T035. | MTS-2026-09-18-0848Z | 2026-09-19 |
-| MyTradingSys/mts/research/INDICATOR_IMPLEMENTATION_HANDOFF.md | research | Nine CoinGlass derivative indicator panels. Five-phase implementation plan. Source doc for T032-T035. | MTS-2026-09-18-0848Z | 2026-09-19 |
+| MyTradingSys/research/TOM_VERBATIM_INDEX.md | research | Verbatim Tom quote index. Points to corpus. Rules in conditions/ carry [TOM-NNN] or [SCREENER]. |
+| MyTradingSys/research/INDICATOR_IMPLEMENTATION_HANDOFF.md | research | Nine CoinGlass derivative indicator panels. Five-phase implementation plan. Source doc for T032-T035. | MTS-2026-09-18-0848Z | 2026-09-19 |
+| MyTradingSys/research/INDICATOR_IMPLEMENTATION_HANDOFF.md | research | Nine CoinGlass derivative indicator panels. Five-phase implementation plan. Source doc for T032-T035. | MTS-2026-09-18-0848Z | 2026-09-19 |
 | scripts/tools/verify_rule_citations.ps1 | tool | Checks rule tags resolve to index quotes. |
 | scripts/tools/VerifyScbEdits.java | tool | Unit verifier for SetupCandidatesBuilder state gate and tc_long path. 12 checks. | MTS-2026-09-18-1600Z | 2026-09-18 |
 | scripts/tools/VerifyStateCodeCvd.java | tool | Reflection verifier for StateCodeEmitter CVD ring day-change reset. 4 checks. Closes T028. | MTS-2026-09-19-0507Z | 2026-09-19 |
-| MyTradingSys/mts/research/PROCESS_MANAGEMENT_AUDIT_2026-09-17.md | Process audit: supervisor singleton gap, grace race, lock TOCTOU | MTS-2026-09-17-1142Z | 2026-09-17 |
-| MyTradingSys/mts/runtime/live_session_log.md | runtime | RETIRED 2026-09-17. Superseded by live_session_journal.md. Backup: backup_session/live_session_log.md.retired-20260917. | MTS-2026-09-17-1241Z | 2026-09-17 |
-| MyTradingSys/mts/runtime/live_session_journal.md | runtime | Append-only session journal. QUOTE / REQ / OBS / DECISION / LANDED / READ. Everything no other file holds. | MTS-2026-09-17-1241Z | 2026-09-17 |
+| MyTradingSys/research/PROCESS_MANAGEMENT_AUDIT_2026-09-17.md | Process audit: supervisor singleton gap, grace race, lock TOCTOU | MTS-2026-09-17-1142Z | 2026-09-17 |
+| MyTradingSys/runtime/live_session_log.md | runtime | RETIRED 2026-09-17. Superseded by live_session_journal.md. Backup: backup_session/live_session_log.md.retired-20260917. | MTS-2026-09-17-1241Z | 2026-09-17 |
+| MyTradingSys/runtime/live_session_journal.md | runtime | Append-only session journal. QUOTE / REQ / OBS / DECISION / LANDED / READ. Everything no other file holds. | MTS-2026-09-17-1241Z | 2026-09-17 |
 | scripts/live/tape-watch.ps1 | tool | Sidecar watcher. Divergence classifier every 30s. Reads snapshot + state_code. Read-only on loop. | MTS-2026-09-17-1241Z | 2026-09-17 |
 | scripts/live/mts-watch.ps1 | tool | CANONICAL live feed (mts-live). v1.1.1. Compiled-layer blocks: MTS-HSTOP, MTS-PROOF, MTS-CAND, MTS-DELTA + state, flow, cycles, slow. See MTS_DICTIONARY.md LIVE FEED NAMES. | MTS-2026-09-17-1241Z | 2026-09-17 |
 | MyTradingSys/methodology/chart_read_protocol.md | methodology | Six-layer chart read method. Catches single-pass errors. | MTS-2026-09-18-0848Z | 2026-09-18 |
-| MyTradingSys/mts/research/fyi_archive/2026-09-18/01_report_1040Z_from_1624Z.md | archive | FYI report from 1624Z session. H1-H4, M1-M4, L1-L2. | MTS-2026-09-18-0848Z | 2026-09-18 |
-| MyTradingSys/mts/research/fyi_archive/2026-09-18/02_consolidated_handoff_0456Z_0848Z.md | archive | Consolidated handoff. Nine blocks, pending decisions, verify list. | MTS-2026-09-18-0848Z | 2026-09-18 |
-| MyTradingSys/mts/research/fyi_archive/2026-09-18/03_session_handoff_report_0456Z_0848Z.md | archive | Session handoff report. Fire condition, extraction audit, frame-view gap. | MTS-2026-09-18-0848Z | 2026-09-18 |
-| MyTradingSys/mts/research/fyi_archive/2026-09-18/04_final_report_corrected_diagnosis.md | archive | Corrected diagnosis. Supersedes FRAME GATING. determineSetupType defect. Steps 1-6. | MTS-2026-09-18-1600Z | 2026-09-18 |
+| MyTradingSys/research/fyi_archive/2026-09-18/01_report_1040Z_from_1624Z.md | archive | FYI report from 1624Z session. H1-H4, M1-M4, L1-L2. | MTS-2026-09-18-0848Z | 2026-09-18 |
+| MyTradingSys/research/fyi_archive/2026-09-18/02_consolidated_handoff_0456Z_0848Z.md | archive | Consolidated handoff. Nine blocks, pending decisions, verify list. | MTS-2026-09-18-0848Z | 2026-09-18 |
+| MyTradingSys/research/fyi_archive/2026-09-18/03_session_handoff_report_0456Z_0848Z.md | archive | Session handoff report. Fire condition, extraction audit, frame-view gap. | MTS-2026-09-18-0848Z | 2026-09-18 |
+| MyTradingSys/research/fyi_archive/2026-09-18/04_final_report_corrected_diagnosis.md | archive | Corrected diagnosis. Supersedes FRAME GATING. determineSetupType defect. Steps 1-6. | MTS-2026-09-18-1600Z | 2026-09-18 |
 | MyTradingSys/methodology/live_session_protocol.md | methodology | AI-side checks before any live tape claim. Mistake ledger 2026-09-17. Read at session boot. | MTS-2026-09-17-1241Z | 2026-09-17 |
-| MyTradingSys/mts/runtime/SESSION_MANIFEST.json | runtime | Boot manifest. Drives start-session.ps1 SESSION_PASTE.txt generation. | MTS-2026-09-18-1600Z | 2026-09-18 |
+| MyTradingSys/runtime/SESSION_MANIFEST.json | runtime | Boot manifest. Drives start-session.ps1 SESSION_PASTE.txt generation. | MTS-2026-09-18-1600Z | 2026-09-18 |
 | scripts/live/mts-dashboard.ps1 | tool | dashboard command, one-shot and -Watch | MTS-2026-09-17-1757Z | 2026-09-17 |
 | scripts/tools/harvest_tom_quotes.py | tool | Harvests Tom quotes from Source GPS lines in condition files. Writes Dumps/tom_harvest.json. Part of T017 pipeline. | MTS-2026-09-18-1726Z | 2026-09-19 |
 | scripts/tools/verify_harvest_vs_corpus.py | tool | Verifies harvested quotes against raw_transcripts_canonical/*.txt. Drops untraceable quotes. Writes tom_harvest_verified.json. | MTS-2026-09-18-1726Z | 2026-09-19 |
 | scripts/tools/rebuild_tom_index_and_tag.py | tool | Rebuilds TOM_VERBATIM_INDEX.md from verified harvest and applies [TOM-NNN] tags to 6 condition files. Closes T017. | MTS-2026-09-18-1726Z | 2026-09-19 |
-| MyTradingSys/mts/research/JISHU_METHOD_2026-09-20.md | 30 | 8E2AB6E6 | 2026-09-20 | jishu_method |
+| MyTradingSys/research/JISHU_METHOD_2026-09-20.md | 30 | 8E2AB6E6 | 2026-09-20 | jishu_method |
 
-| MyTradingSys/mts/research/MODEL_ALIGNMENT_2026-09-21.md | research | Model alignment carry-forward. Five issues + pre-committed chain. DISK vs UNVERIFIED-WEB tags. | MTS-2026-09-21-0721Z | 2026-09-21 |
-| MyTradingSys/mts/research/DIVERGENCE_AUDIT_AND_RESEARCH.md | research | Divergence audit of MTS handling + GOLAS A-D research. Five sections. UNVERIFIED-WEB tags for external claims. | MTS-2026-09-21-1328Z | 2026-09-21 |
-| MyTradingSys/mts/research/BACKTEST_METHOD_2026-09-21.md | research | Backtest planning doc. Seven sections. Chosen method is replay of Compute-Verdict over snapshots joined to outcome labels. | MTS-2026-09-21-0729Z | 2026-09-21 |
-| MyTradingSys/mts/research/GOLAS_CD_WEB_2026-09-21.md | research | Web reinforcement for GOLAS-C and GOLAS-D. T1/T3 tier tags. States 9-day data cap. | MTS-2026-09-21-1328Z | 2026-09-21 |
-| scripts/live/mts-paste.ps1 | tool | Continuous live snapshot writer. Reads log, lock, state_code, regime, latest snapshot, tape, position. Writes Dumps/LIVE_PASTE.txt atomic. LF, no BOM. Stops on data/live_paste_stop.flag. | MTS-2026-09-21-1328Z | 2026-09-21 |
-| MyTradingSys/mts/runtime/backtest_oi_delta_4state.py | 136 | - | 2026-09-21 | backtest |
-| MyTradingSys/mts/research/OI_DELTA_4STATE_BACKTEST_2026-09-21.md | - | - | 2026-09-21 | research |
-| MyTradingSys/mts/items/B063_divergence.md | item | Per-item doc for B063. Verbatim ask + chronological updates. | MTS-2026-09-22-1215Z | 2026-09-22 |
-| MyTradingSys/mts/items/ | item_dir | One doc per open item. Named by register ID. | MTS-2026-09-22-1215Z | 2026-09-22 |
-| MyTradingSys/mts/items/T040_tick_delta_layer.md | item | Per-item doc for T040. Verbatim ask + chronological updates. | MTS-2026-09-22-1215Z | 2026-09-22 |
+| MyTradingSys/research/MODEL_ALIGNMENT_2026-09-21.md | research | Model alignment carry-forward. Five issues + pre-committed chain. DISK vs UNVERIFIED-WEB tags. | MTS-2026-09-21-0721Z | 2026-09-21 |
+| MyTradingSys/research/DIVERGENCE_AUDIT_AND_RESEARCH.md | research | Divergence audit of MTS handling + GOLAS A-D research. Five sections. UNVERIFIED-WEB tags for external claims. | MTS-2026-09-21-1328Z | 2026-09-21 |
+| MyTradingSys/research/BACKTEST_METHOD_2026-09-21.md | research | Backtest planning doc. Seven sections. Chosen method is replay of Compute-Verdict over snapshots joined to outcome labels. | MTS-2026-09-21-0729Z | 2026-09-21 |
+| MyTradingSys/research/GOLAS_CD_WEB_2026-09-21.md | research | Web reinforcement for GOLAS-C and GOLAS-D. T1/T3 tier tags. States 9-day data cap. | MTS-2026-09-21-1328Z | 2026-09-21 |
+| scripts/live/mts-paste.ps1 | tool | Continuous live snapshot writer. Reads log, lock, state_code, regime, latest snapshot, tape, position. Writes Dumps/LIVE_PASTE.txt atomic. LF, no BOM. Stops on runtime_data/live_paste_stop.flag. | MTS-2026-09-21-1328Z | 2026-09-21 |
+| MyTradingSys/runtime/backtest_oi_delta_4state.py | 136 | - | 2026-09-21 | backtest |
+| MyTradingSys/research/OI_DELTA_4STATE_BACKTEST_2026-09-21.md | - | - | 2026-09-21 | research |
+| MyTradingSys/items/B063_divergence.md | item | Per-item doc for B063. Verbatim ask + chronological updates. | MTS-2026-09-22-1215Z | 2026-09-22 |
+| MyTradingSys/items/ | item_dir | One doc per open item. Named by register ID. | MTS-2026-09-22-1215Z | 2026-09-22 |
+| MyTradingSys/items/T040_tick_delta_layer.md | item | Per-item doc for T040. Verbatim ask + chronological updates. | MTS-2026-09-22-1215Z | 2026-09-22 |
 | MyTradingSys/PROJECT_VISION.md | direction | Direction ledger + locked architecture doctrine (2026-09-23): Tom is core, everything else modular; four gap classes. | MTS-2026-09-23-1236Z | 2026-09-23 |
 | operator_reminders.md | methodology | Operator paste-ready reminder card. Machine-aware (desktop vs laptop). A-G prompts, F commands. At repo root for convenience. | MTS-2026-09-23-1236Z | 2026-09-23 |
-| MyTradingSys/mts/items/T042_schema_gap.md | item | Per-item doc for T042. Schema gap: snapshot has no 4h/daily/weekly structure, no OI/CVD peak reference. | MTS-2026-09-23-0831Z | 2026-09-23 |
-| MyTradingSys/mts/research/PARKED_2026-09-23_T041_TREND_RESEARCH.md | research | Parked T041 trend research + reframe. Resume point: operator intent question. | MTS-2026-09-23-0831Z | 2026-09-23 |
-| MyTradingSys/mts/items/T043_traceability_gap.md | item | Per-item doc for T043. Source-to-code traceability mechanism absent. | MTS-2026-09-23-0831Z | 2026-09-23 |
-| MyTradingSys/mts/items/B065_stale_swing_consumer.md | item | Per-item doc for B065. Stale swing flag has no consumer; zones built from invalidated swings. | MTS-2026-09-23-0831Z | 2026-09-23 |
-| MyTradingSys/mts/items/INDEX.md | index | Boot-loaded one-line-per-item index. Item id, status, filename, state. Read full item doc only when its row is the active task. | MTS-2026-09-24-0639Z | 2026-09-24 |
+| MyTradingSys/items/T042_schema_gap.md | item | Per-item doc for T042. Schema gap: snapshot has no 4h/daily/weekly structure, no OI/CVD peak reference. | MTS-2026-09-23-0831Z | 2026-09-23 |
+| MyTradingSys/research/PARKED_2026-09-23_T041_TREND_RESEARCH.md | research | Parked T041 trend research + reframe. Resume point: operator intent question. | MTS-2026-09-23-0831Z | 2026-09-23 |
+| MyTradingSys/items/T043_traceability_gap.md | item | Per-item doc for T043. Source-to-code traceability mechanism absent. | MTS-2026-09-23-0831Z | 2026-09-23 |
+| MyTradingSys/items/B065_stale_swing_consumer.md | item | Per-item doc for B065. Stale swing flag has no consumer; zones built from invalidated swings. | MTS-2026-09-23-0831Z | 2026-09-23 |
+| MyTradingSys/items/INDEX.md | index | Boot-loaded one-line-per-item index. Item id, status, filename, state. Read full item doc only when its row is the active task. | MTS-2026-09-24-0639Z | 2026-09-24 |

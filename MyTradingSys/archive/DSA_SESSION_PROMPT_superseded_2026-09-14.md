@@ -17,10 +17,10 @@ Input types: JSON snapshot, chart image, short question, worker task.
 
 Root: C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed
 - Java source: src\main\java\datafeed\ (NOT under MyTradingSys)
-- Python runtime: MyTradingSys\mts\runtime\
-- State: MyTradingSys\mts\runtime\current_market_state.md
-- SSOT: MyTradingSys\mts\runtime\session_state.json + session_log.json
-- Cards: MyTradingSys\mts\cards\
+- Python runtime: MyTradingSys\runtime\
+- State: MyTradingSys\runtime\current_market_state.md
+- SSOT: MyTradingSys\runtime\session_state.json + session_log.json
+- Cards: MyTradingSys\cards\
 - Dumps: Dumps\
 
 If a Get-Content fails on a guessed path, list the parent dir before retrying. Never guess twice.
@@ -29,7 +29,7 @@ If a Get-Content fails on a guessed path, list the parent dir before retrying. N
 
 Boot as ONE IBC block. Paste all output in one turn. Do not split across turns.
 
-Boot source: MyTradingSys/mts/runtime/SESSION_MANIFEST.json.
+Boot source: MyTradingSys/runtime/SESSION_MANIFEST.json.
 Read the manifest first, then read every path it lists (boot_files + boot_supplemental)
 in one block. Fallback list applies only if the manifest is absent.
 
@@ -43,15 +43,15 @@ Never claim disk state from paste content. Only Get-FileHash + Get-Item are evid
 0. Dumps\BUILD_REPORT.md
 1. DSA_SESSION_PROMPT.md
 2. MyTradingSys\SESSION_ENTRY.md
-3. MyTradingSys\mts\runtime\session_state.json
-4. MyTradingSys\mts\runtime\session_log.json
-5. MyTradingSys\mts\runtime\current_market_state.md
-6. MyTradingSys\mts\runtime\state_code.json
-7. MyTradingSys\mts\runtime\NEXT_SESSION_HANDOFF.md
-8. MyTradingSys\mts\runtime\RESEARCH_TASK_PREMARKET.md (if present)
+3. MyTradingSys\runtime\session_state.json
+4. MyTradingSys\runtime\session_log.json
+5. MyTradingSys\runtime\current_market_state.md
+6. MyTradingSys\runtime\state_code.json
+7. MyTradingSys\runtime\NEXT_SESSION_HANDOFF.md
+8. MyTradingSys\runtime\RESEARCH_TASK_PREMARKET.md (if present)
 9. MyTradingSys\methodology\playbook.md Part I (if a research task runs)
-10. data\apparatus_log.txt tail 60
-11. Latest data\snapshots\BTCUSDT_*.json
+10. runtime_data\apparatus_log.txt tail 60
+11. Latest runtime_data\snapshots\BTCUSDT_*.json
 12. Get-Process java,powershell
 
 PATH AUDIT (before session close): grep the four session-start docs

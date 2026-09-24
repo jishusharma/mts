@@ -1263,7 +1263,7 @@ public class MarketDataSnapshot {
      */
     public void saveHistoricalSnapshot(String symbol, Instant asOf) throws IOException {
         ObjectNode snapshot = fetchHistoricalSnapshot(symbol, asOf);
-        Path dir = Paths.get("data", "snapshots");
+        Path dir = Paths.get("runtime_data", "snapshots");
         Files.createDirectories(dir);
         String file = symbol + "_historical_" + asOf.toString().replace(":", "").replace("-", "") + ".json";
         Path path = dir.resolve(file);
@@ -1291,7 +1291,7 @@ public class MarketDataSnapshot {
 
     /** DSA_TASK_014 helper: update per-instrument historical baseline and populate order_flow fields. */
     private void updateAndApplyHistoricalBaseline(String symbol, double curTps, double curVps, ObjectNode orderFlow) {
-        Path dir = Paths.get("data", "speed_baselines");
+        Path dir = Paths.get("runtime_data", "speed_baselines");
         Path file = dir.resolve(symbol + "_speed_baseline.json");
         try {
             Files.createDirectories(dir);
@@ -1454,7 +1454,7 @@ private ObjectNode buildOiBreakdown(String symbol) {
     }
     public void saveSnapshot(String symbol, BinanceLiquidationAccumulator liqAccumulator) throws IOException {
         ObjectNode snapshot = fetchSnapshot(symbol, liqAccumulator);
-        Path dir = Paths.get("data", "snapshots");
+        Path dir = Paths.get("runtime_data", "snapshots");
         Files.createDirectories(dir);
         String file = symbol + "_" + java.time.LocalDate.now() + "_" + System.currentTimeMillis() + ".json";
         Path path = dir.resolve(file);

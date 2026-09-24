@@ -35,7 +35,7 @@ Monitoring stations:
     .\scripts\tools\verify_data.ps1
     # read the STATUS line. If FAIL, stop. Do not write.
 
-    python .\MyTradingSys\mts\tests\docs\test_integrity.py -v
+    python .\MyTradingSys\tests\docs\test_integrity.py -v
     # read the last line. If not all passed, stop. Do not write.
 
     .\scripts\Build-Check.ps1
@@ -43,9 +43,9 @@ Monitoring stations:
 
 ## DECISION POINT
 
-    python .\MyTradingSys\mts\runtime\session_state.py show
-    python .\MyTradingSys\mts\runtime\session_state.py log
-    python .\MyTradingSys\mts\runtime\log_decision.py passed "reason"
+    python .\MyTradingSys\runtime\session_state.py show
+    python .\MyTradingSys\runtime\session_state.py log
+    python .\MyTradingSys\runtime\log_decision.py passed "reason"
 
 
 # END THE SESSION
@@ -62,8 +62,8 @@ Monitoring stations:
 ## WHEN SOMETHING IS BROKEN
 
     health
-    Get-Content .\data\apparatus_log.txt -Encoding UTF8 -Tail 15
-    Get-Content .\data\last_alert.json -Raw | ConvertFrom-Json
+    Get-Content .\runtime_data\apparatus_log.txt -Encoding UTF8 -Tail 15
+    Get-Content .\runtime_data\last_alert.json -Raw | ConvertFrom-Json
 
 ## HARD RULES
 
@@ -81,9 +81,9 @@ One per line. No compression.
 
 These run rarely. Not part of the daily flow.
 
-    python -m pytest MyTradingSys/mts/tests -q         # math tests
-    python -m pytest MyTradingSys/mts/tests/docs -q    # doc tests
-    python .\MyTradingSys\mts\runtime\outcome_labeler.py
+    python -m pytest MyTradingSys/tests -q         # math tests
+    python -m pytest MyTradingSys/tests/docs -q    # doc tests
+    python .\MyTradingSys\runtime\outcome_labeler.py
     .\scripts\Dump_All.ps1                             # full dump set
 
 
@@ -105,23 +105,23 @@ Stop it cleanly:
 
     mts-loop stop
 
-Writes data\loop_stop.flag once. Wrapper exits at next cycle top, then the
+Writes runtime_data\loop_stop.flag once. Wrapper exits at next cycle top, then the
 supervisor exits on its next 30s check. stop-day.ps1 waits for both locks
 to clear. supervisor_stop.flag is retired.
 
-The supervisor log is at data\supervisor_log.txt.
+The supervisor log is at runtime_data\supervisor_log.txt.
 
 
 ## LOOP LIFECYCLE (new 2026-09-24)
 
 ```powershell
-    mts-loop status    # read data\loop_state.json
+    mts-loop status    # read runtime_data\loop_state.json
     mts-loop start     # start-session.ps1 + mts-up
     mts-loop stop      # runs stop-day.ps1 (single flag stops wrapper AND supervisor)
 ```
 
-One stop flag: `data\loop_stop.flag`. Honored by wrapper, supervisor, and stop-day.ps1.
-Supervisor writes `data\loop_state.json` every 30s with: action, reason, wrapper_pid,
+One stop flag: `runtime_data\loop_stop.flag`. Honored by wrapper, supervisor, and stop-day.ps1.
+Supervisor writes `runtime_data\loop_state.json` every 30s with: action, reason, wrapper_pid,
 java_pid, snapshot_age_sec, state_code_age_sec, stale_strikes, restart_count_24h.
 Stale detection: snapshot or state_code.json older than 150s for 2 consecutive ticks
 triggers a tree-kill of the wrapper and a restart. Circuit breaker: 5 restarts in

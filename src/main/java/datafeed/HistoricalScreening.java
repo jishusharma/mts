@@ -61,7 +61,7 @@ public class HistoricalScreening {
         }
 
         // Save CSV
-        try (PrintWriter out = new PrintWriter("data/screening_results.csv", "UTF-8")) {
+        try (PrintWriter out = new PrintWriter("runtime_data/screening_results.csv", "UTF-8")) {
             out.print(csv.toString());
         } catch (Exception e) { }
 

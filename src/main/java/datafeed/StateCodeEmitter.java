@@ -443,7 +443,7 @@ public class StateCodeEmitter extends WebSocketClient {
             else sig.put(names[k], ((Dir) o).name().toLowerCase());
         }
 
-        Path dir = Paths.get("MyTradingSys", "mts", "runtime");
+        Path dir = Paths.get("MyTradingSys", "runtime");
         Files.createDirectories(dir);
         Path target = dir.resolve("state_code.json");
         Path tmp = dir.resolve("state_code.json.tmp");
@@ -474,7 +474,7 @@ public class StateCodeEmitter extends WebSocketClient {
     }
 
     private void restoreStateFromDisk() {
-        Path p = Paths.get("MyTradingSys", "mts", "runtime", "state_code.json");
+        Path p = Paths.get("MyTradingSys", "runtime", "state_code.json");
         if (!Files.exists(p)) return;
         try {
             JsonNode root = mapper.readTree(p.toFile());

@@ -1,0 +1,138 @@
+{
+    "version":  "1.2.0",
+    "purpose":  "Boot manifest. Session reads this first, then reads boot_files + boot_supplemental in batches with a one-line confirmation between each.",
+    "boot_files":  [
+                       {
+                           "path":  "USER.md",
+                           "role":  "user_preferences",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "MyTradingSys/runtime/BUILD_REPORT.md",
+                           "role":  "build_status",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "DSA_SESSION_PROMPT.md",
+                           "role":  "behavior_source",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "MyTradingSys/PROJECT_VISION.md",
+                           "role":  "direction_doctrine",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "MyTradingSys/runtime/session_state.json",
+                           "role":  "thesis_ssot",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "MyTradingSys/runtime/current_market_state.md",
+                           "role":  "structural_baseline",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "MyTradingSys/runtime/state_code.json",
+                           "role":  "tick_flow_state",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "MyTradingSys/runtime/NEXT_SESSION_HANDOFF.md",
+                           "role":  "mission",
+                           "read":  "full"
+                       },
+                       {
+                           "path":  "MyTradingSys/runtime/session_log.json",
+                           "role":  "decision_ledger",
+                           "read":  "skip"
+                       }
+                   ],
+    "boot_supplemental":  [
+                              {
+                                  "path":  "MyTradingSys/research/BUGS.md",
+                                  "role":  "bug_list",
+                                  "read":  "open_only"
+                              },
+                              {
+                                  "path":  "MyTradingSys/research/L_ITEMS_MASTER.md",
+                                  "role":  "history_frozen",
+                                  "read":  "skip"
+                              },
+                              {
+                                  "path":  "MyTradingSys/research/MTS_DICTIONARY.md",
+                                  "role":  "field_reference",
+                                  "read":  "sections",
+                                  "sections":  [
+                                                   "CROSS-CATEGORY WARNINGS",
+                                                   "PLAIN LANGUAGE RULE",
+                                                   "CORE TERMS",
+                                                   "LIVE FEED NAMES",
+                                                   "VERDICT WORDS",
+                                                   "CONFIDENCE GRADES",
+                                                   "SOURCE TAGS"
+                                               ]
+                              },
+                              {
+                                  "path":  "MyTradingSys/research/apparatus_fixes.md",
+                                  "role":  "fix_log",
+                                  "read":  "head_to_end"
+                              },
+                              {
+                                  "path":  "MyTradingSys/methodology/playbook.md",
+                                  "role":  "research_gate",
+                                  "read":  "part_I"
+                              },
+                              {
+                                  "path":  "runtime_data/apparatus_log.txt",
+                                  "role":  "recent_cycles",
+                                  "read":  "tail",
+                                  "lines":  60
+                              },
+                              {
+                                  "path":  "runtime_data/snapshots/",
+                                  "role":  "live_snapshot",
+                                  "read":  "latest_glob",
+                                  "pattern":  "BTCUSDT_*.json",
+                                  "count":  1
+                              },
+                              {
+                                  "path":  "MyTradingSys/methodology/live_session_protocol.md",
+                                  "role":  "ai_checks",
+                                  "read":  "sections",
+                                  "sections":  [
+                                                   "OPERATIONAL CHECKS",
+                                                   "PROCESS SPEED RULES",
+                                                   "RULES 12-14"
+                                               ]
+                              },
+                              {
+                                  "path":  "MyTradingSys/runtime/live_session_journal.md",
+                                  "role":  "session_journal",
+                                  "read":  "tail",
+                                  "lines":  60
+                              },
+                              {
+                                  "path":  "MyTradingSys/methodology/chart_read_protocol.md",
+                                  "role":  "chart_read_method",
+                                  "read":  "full"
+                              },
+                              {
+                                  "path":  "operator_reminders.md",
+                                  "role":  "operator_reminders",
+                                  "read":  "full"
+                              },
+                              {
+                                  "path":  "MyTradingSys/items/INDEX.md",
+                                  "role":  "items_index",
+                                  "read":  "full"
+                              }
+                          ],
+    "process_check":  [
+                          "java"
+                      ],
+    "handoff_required_fields":  [
+                                    "STATUS",
+                                    "STATUS_NOTE"
+                                ]
+}

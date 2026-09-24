@@ -127,20 +127,17 @@ public class SetupCandidatesBuilder {
             List<Double> targets = new ArrayList<>();
             addIfPresent(root, "weekly_vp", "poc", targets);
             addIfPresent(root, "daily_vp", "poc", targets);
-            addIfPresent(root, "post_funding_vp", "poc", targets);
             addIfPresent(root, "intraday_4h_vp", "poc", targets);
             addIfPresent(root, "prior_day", "poc", targets);
             if ("short".equals(c.direction)) {
                 addIfPresent(root, "weekly_vp", "val", targets);
                 addIfPresent(root, "daily_vp", "val", targets);
-                addIfPresent(root, "post_funding_vp", "val", targets);
                 addIfPresent(root, "intraday_4h_vp", "val", targets);
                 addIfPresent(root, "prior_day", "val", targets);
                 addIfPresent(root, "prior_day", "low", targets);
             } else {
                 addIfPresent(root, "weekly_vp", "vah", targets);
                 addIfPresent(root, "daily_vp", "vah", targets);
-                addIfPresent(root, "post_funding_vp", "vah", targets);
                 addIfPresent(root, "intraday_4h_vp", "vah", targets);
                 addIfPresent(root, "prior_day", "vah", targets);
                 addIfPresent(root, "prior_day", "high", targets);
@@ -313,9 +310,8 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         addZoneIfPresent(root, "daily_vp", "poc", "daily_poc", zones, 9);
         addZoneIfPresent(root, "daily_vp", "vah", "daily_vah", zones, 9);
         addZoneIfPresent(root, "daily_vp", "val", "daily_val", zones, 9);
-        addZoneIfPresent(root, "post_funding_vp", "poc", "pf_poc", zones, 8);
-        addZoneIfPresent(root, "post_funding_vp", "vah", "pf_vah", zones, 8);
-        addZoneIfPresent(root, "post_funding_vp", "val", "pf_val", zones, 8);
+        // DEMOTED 2026-09-24: pf_poc, pf_vah, pf_val removed from candidate zone list.
+        // Module, not core. PROJECT_VISION.md doctrine; crypto_adaptations.md hack #6.
         addZoneIfPresent(root, "intraday_4h_vp", "poc", "4h_poc", zones, 7);
         addZoneIfPresent(root, "intraday_4h_vp", "vah", "4h_vah", zones, 7);
         addZoneIfPresent(root, "intraday_4h_vp", "val", "4h_val", zones, 7);

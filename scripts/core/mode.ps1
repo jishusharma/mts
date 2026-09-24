@@ -18,7 +18,7 @@ $R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 Set-Location $R
 
 # read lock; clear if stale
-$lockFile = Join-Path $R "data\apparatus.lock"
+$lockFile = Join-Path $R "runtime_data\apparatus.lock"
 $rootPids = @()
 if (Test-Path $lockFile) {
     $parts = (Get-Content $lockFile -Raw).Trim() -split "\s+"

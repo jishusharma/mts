@@ -33,13 +33,13 @@ function Row { param([string]$l,[string]$v,[int]$lw=12,[int]$vw=22,[string]$vc="
     Write-Host ($v.PadRight($vw)) -NoNewline -ForegroundColor $vc
 }
 
-$snapFile = Get-ChildItem (Join-Path $R "data\snapshots") -Filter "BTCUSDT_*.json" | Sort LastWriteTime -Desc | Select -First 1
+$snapFile = Get-ChildItem (Join-Path $R "runtime_data\snapshots") -Filter "BTCUSDT_*.json" | Sort LastWriteTime -Desc | Select -First 1
 $snapAge = [int](($now - $snapFile.LastWriteTimeUtc).TotalSeconds)
 $j = Get-Content $snapFile.FullName -Raw | ConvertFrom-Json
-$sc = Get-Content (Join-Path $R "MyTradingSys\mts\runtime\state_code.json") -Raw | ConvertFrom-Json
+$sc = Get-Content (Join-Path $R "MyTradingSys\runtime\state_code.json") -Raw | ConvertFrom-Json
 
 $moFile = Join-Path $env:TEMP "mts_dash_mo.json"
-$null = & python "$R\MyTradingSys\mts\runtime\build_mo_cli.py" "$($snapFile.FullName)" "$moFile" 2>&1 | Out-Null
+$null = & python "$R\MyTradingSys\runtime\build_mo_cli.py" "$($snapFile.FullName)" "$moFile" 2>&1 | Out-Null
 $mo = if (Test-Path $moFile) { Get-Content $moFile -Raw -Encoding UTF8 | ConvertFrom-Json } else { $null }
 Remove-Item $moFile -ErrorAction SilentlyContinue
 $hs = if ($mo) { $mo.hard_stops_compiled } else { $null }
@@ -47,10 +47,10 @@ $hs = if ($mo) { $mo.hard_stops_compiled } else { $null }
 $sup  = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe' OR Name='pwsh.exe'" | Where-Object { $_.CommandLine -match "loop-supervisor" }).ProcessId
 $wrap = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe' OR Name='pwsh.exe'" | Where-Object { $_.CommandLine -match "start-trading-day|mode\.ps1" }).ProcessId
 $java = @(Get-CimInstance Win32_Process -Filter "Name='java.exe'" | Where-Object { $_.CommandLine -match "datafeed\.Main" }).ProcessId
-$lockPath = Join-Path $R "data\apparatus.lock"
+$lockPath = Join-Path $R "runtime_data\apparatus.lock"
 $lock = if (Test-Path $lockPath) { (Get-Content $lockPath -Raw).Trim() } else { "none" }
 
-$cycAll = Get-Content (Join-Path $R "data\apparatus_log.txt") -Encoding UTF8 -Tail 12 | Where-Object { $_ -match "\| 20" -and $_ -match " \| " }
+$cycAll = Get-Content (Join-Path $R "runtime_data\apparatus_log.txt") -Encoding UTF8 -Tail 12 | Where-Object { $_ -match "\| 20" -and $_ -match " \| " }
 $lastCycle = if ($cycAll) { $cycAll[-1] } else { "" }
 
 # HEADER
