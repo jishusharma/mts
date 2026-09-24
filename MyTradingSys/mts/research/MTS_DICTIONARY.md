@@ -97,6 +97,7 @@ A name used in a session must resolve to one of these.
 | mts-tape | Start the sidecar divergence classifier. |
 | mts-dashboard | One-shot dashboard. Reads snapshot, state_code, apparatus_log, compiled math object. |
 | mts-dashboard -Watch | Same, loops with Clear-Host every 30s. Ctrl-C to exit. |
+| mts-loop | Loop lifecycle dispatcher. Args: start / stop / status. See COMMANDS.md LOOP LIFECYCLE. |
 
 ### Blocks (feed output, prefix MTS-)
 

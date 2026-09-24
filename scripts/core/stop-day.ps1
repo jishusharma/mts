@@ -11,10 +11,11 @@ $TimeoutSec = 60
 New-Item -Path $FlagFile -ItemType File -Force | Out-Null
 Write-Host "stop flag written: $FlagFile"
 
-# 2. Poll for lock release.
+# 2. Poll for lock release AND supervisor exit.
+$SupLock = Join-Path $R "data\supervisor.lock"
 $t0 = Get-Date
 while (((Get-Date) - $t0).TotalSeconds -lt $TimeoutSec) {
-    if (-not (Test-Path $LockFile)) { break }
+    if ((-not (Test-Path $LockFile)) -and (-not (Test-Path $SupLock))) { break }
     Start-Sleep -Seconds 2
 }
 

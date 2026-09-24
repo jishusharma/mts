@@ -61,6 +61,20 @@ function mts-up {
     }
 }
 
+# mts-loop - loop lifecycle dispatcher. start/stop/status.
+function mts-loop {
+    param([ValidateSet('start','stop','status')][string]$Action = 'status')
+    switch ($Action) {
+        'start'  { & "$ScriptDir\start-session.ps1"; mts-up }
+        'stop'   { & "$ScriptDir\core\stop-day.ps1" }
+        'status' {
+            $st = Join-Path $ScriptDir "..\data\loop_state.json"
+            if (Test-Path $st) { Get-Content $st -Raw }
+            else { "loop_state.json not present" }
+        }
+    }
+}
+
 # live feed (canonical) - see MTS_DICTIONARY.md LIVE FEED NAMES
 function mts-live      { Remove-Item "$ScriptDir\..\data\mts_watch_stop.flag" -ErrorAction SilentlyContinue | Out-Null; & "$ScriptDir\live\mts-watch.ps1" @args }
 function mts-live-fast { & "$ScriptDir\live\mts-watch.ps1" -IntervalSec 10 }

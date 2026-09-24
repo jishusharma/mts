@@ -47,7 +47,23 @@ Monitoring stations:
     python .\MyTradingSys\mts\runtime\session_state.py log
     python .\MyTradingSys\mts\runtime\log_decision.py passed "reason"
 
-## END THE SESSION
+#
+## LOOP LIFECYCLE (new 2026-09-24)
+
+```powershell
+    mts-loop status    # read data\loop_state.json
+    mts-loop start     # start-session.ps1 + mts-up
+    mts-loop stop      # runs stop-day.ps1 (single flag stops wrapper AND supervisor)
+```
+
+One stop flag: `data\loop_stop.flag`. Honored by wrapper, supervisor, and stop-day.ps1.
+Supervisor writes `data\loop_state.json` every 30s with: action, reason, wrapper_pid,
+java_pid, snapshot_age_sec, state_code_age_sec, stale_strikes, restart_count_24h.
+Stale detection: snapshot or state_code.json older than 150s for 2 consecutive ticks
+triggers a tree-kill of the wrapper and a restart. Circuit breaker: 5 restarts in
+15 minutes refuses further restarts.
+
+# END THE SESSION
 
     .\scripts\core\stop-day.ps1
     gitsnap "close: one line on what happened"
@@ -109,6 +125,22 @@ Wait 35 seconds. The supervisor exits on its next check. Then remove the flag:
     Remove-Item .\data\supervisor_stop.flag
 
 The supervisor log is at data\supervisor_log.txt.
+
+
+## LOOP LIFECYCLE (new 2026-09-24)
+
+```powershell
+    mts-loop status    # read data\loop_state.json
+    mts-loop start     # start-session.ps1 + mts-up
+    mts-loop stop      # runs stop-day.ps1 (single flag stops wrapper AND supervisor)
+```
+
+One stop flag: `data\loop_stop.flag`. Honored by wrapper, supervisor, and stop-day.ps1.
+Supervisor writes `data\loop_state.json` every 30s with: action, reason, wrapper_pid,
+java_pid, snapshot_age_sec, state_code_age_sec, stale_strikes, restart_count_24h.
+Stale detection: snapshot or state_code.json older than 150s for 2 consecutive ticks
+triggers a tree-kill of the wrapper and a restart. Circuit breaker: 5 restarts in
+15 minutes refuses further restarts.
 
 # END
     mts-paste        continuous live snapshot to Dumps/LIVE_PASTE.txt, 30s cadence

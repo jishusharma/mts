@@ -1328,3 +1328,31 @@ PID-alive detection for state-machine death; state_code.json mtime for hang with
 Loop at close: ALIVE. Supervisor 15896, wrapper 10872, state-machine 2672,
 cmd 4476, java 13260. Snapshot age 0.8 min. Loop is still running pre-fix code;
 mode.ps1 changes take effect on next mts-up start.
+
+## SESSION MTS-2026-09-24-0639Z - loop-supervisor hardening - 2026-09-24T06:58Z
+
+Claude-scope steps 2-4 landed in one pass.
+
+Landed:
+  loop-supervisor.ps1 rewritten 136 -> 235 lines sha256 F60B265D.
+    Single stop flag: data\loop_stop.flag, honored by wrapper, supervisor,
+    and stop-day.ps1. supervisor_stop.flag retired.
+    Stale detection: snapshot OR state_code.json mtime >150s for 2
+    consecutive ticks -> taskkill /F /T on wrapper tree, restart.
+    Circuit breaker: 5 restarts / 15 min -> refuse restart, log breaker.
+    loop_state.json written every tick with action, reason, pids, ages,
+    strikes, restart count.
+    Java PID detected via command line match.
+  stop-day.ps1 sha256 C2F414BF -> BA246AFA. Waits on both apparatus.lock
+    AND supervisor.lock so stop returns only after supervisor exits.
+  load.ps1 L64-76: mts-loop start|stop|status dispatcher.
+  scripts\start-session.ps1 L108: chat-title line removed.
+
+Supervisor restart: old PID 15896 killed directly. New PID 13368 launched.
+Wrapper 10872 and java 13260 untouched. First loop_state.json write
+06:56:33Z: action=ok, snapAge=20s, scAge=17s, strikes=0.
+
+Not done: B059 producer freeze. B063 operator decision. T042 wiring.
+
+Runtime at close: loop ALIVE. Supervisor 13368, wrapper 10872,
+state-machine 2672, java 13260.
