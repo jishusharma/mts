@@ -17,6 +17,50 @@ function regime   { python "$ScriptDir\..\MyTradingSys\mts\runtime\regime_classi
 
 function mts-start { & "$ScriptDir\start-session.ps1" @args }
 
+# mts-up - idempotent loop + supervisor start. Safe to run twice.
+#   both running    -> report, do nothing
+#   wrapper alive   -> start supervisor only
+#   supervisor alive-> report; supervisor restarts wrapper within 90s
+#   both dead       -> start loop, then supervisor
+function mts-up {
+    $sup = @(Get-CimInstance Win32_Process -Filter "Name='pwsh.exe' OR Name='powershell.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'loop-supervisor' })
+    $wrp = @(Get-CimInstance Win32_Process -Filter "Name='pwsh.exe' OR Name='powershell.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'start-trading-day|statemachine' })
+    if ($wrp.Count -gt 0 -and $sup.Count -gt 0) {
+        "mts-up: already running (wrapper=$($wrp[0].ProcessId) supervisor=$($sup[0].ProcessId))"
+        return
+    }
+    if ($wrp.Count -gt 0 -and $sup.Count -eq 0) {
+        Start-Process pwsh.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-File","$ScriptDir\core\loop-supervisor.ps1","-Mode","armed","-IntervalMin","1","-RestartGraceSec","90") -WindowStyle Hidden
+        "mts-up: supervisor started (wrapper=$($wrp[0].ProcessId) already alive)"
+        return
+    }
+    if ($wrp.Count -eq 0 -and $sup.Count -gt 0) {
+        "mts-up: supervisor alive (PID $($sup[0].ProcessId)) but wrapper dead. It restarts within 90s. If stuck, kill it first:"
+        "  Get-CimInstance Win32_Process | Where-Object { `$_.CommandLine -match 'loop-supervisor' } | ForEach-Object { Stop-Process -Id `$_.ProcessId -Force }"
+        return
+    }
+    Start-Process pwsh.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-File","$ScriptDir\core\mode.ps1","-M","armed") -WindowStyle Hidden
+    Start-Sleep -Seconds 3
+    Start-Process pwsh.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-File","$ScriptDir\core\loop-supervisor.ps1","-Mode","armed","-IntervalMin","1","-RestartGraceSec","90") -WindowStyle Hidden
+    $wrp2 = @(); $sup2 = @()
+    $deadline = (Get-Date).AddSeconds(45)
+    while ((Get-Date) -lt $deadline) {
+        Start-Sleep -Seconds 3
+        $wrp2 = @(Get-CimInstance Win32_Process -Filter "Name='pwsh.exe' OR Name='powershell.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'start-trading-day|statemachine' })
+        $sup2 = @(Get-CimInstance Win32_Process -Filter "Name='pwsh.exe' OR Name='powershell.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'loop-supervisor' })
+        if ($wrp2.Count -gt 0 -and $sup2.Count -gt 0) { break }
+    }
+    if ($wrp2.Count -gt 0 -and $sup2.Count -gt 0) {
+        "mts-up: started (wrapper=$($wrp2[0].ProcessId) supervisor=$($sup2[0].ProcessId))"
+    } else {
+        "mts-up: incomplete (wrapper=$($wrp2.Count) supervisor=$($sup2.Count)). Check supervisor_log.txt and apparatus_log.txt."
+    }
+    Start-Sleep -Seconds 4
+    $wrp2 = @(Get-CimInstance Win32_Process -Filter "Name='pwsh.exe' OR Name='powershell.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'start-trading-day|statemachine' })
+    $sup2 = @(Get-CimInstance Win32_Process -Filter "Name='pwsh.exe' OR Name='powershell.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'loop-supervisor' })
+    "mts-up: started (wrapper=$($wrp2[0].ProcessId) supervisor=$($sup2[0].ProcessId))"
+}
+
 # live feed (canonical) - see MTS_DICTIONARY.md LIVE FEED NAMES
 function mts-live      { Remove-Item "$ScriptDir\..\data\mts_watch_stop.flag" -ErrorAction SilentlyContinue | Out-Null; & "$ScriptDir\live\mts-watch.ps1" @args }
 function mts-live-fast { & "$ScriptDir\live\mts-watch.ps1" -IntervalSec 10 }
