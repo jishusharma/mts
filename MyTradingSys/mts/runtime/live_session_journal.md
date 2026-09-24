@@ -1301,3 +1301,30 @@ Not done: T042 wiring (new keys emitted, no consumer). B059 producer-side freeze
 B063 operator decision. Open queue: B059, B063, T034, T035, T037, T038, T040, T042, T044, T045, T046.
 
 Runtime at close: loop stopped clean. No java. No wrapper. Supervisor killed. supervisor.lock removed.
+## SESSION MTS-2026-09-23-1730Z - ADDENDUM 2 (loop hardening) - 2026-09-24T06:26Z
+
+After the initial close, this session continued with loop diagnostics and hardening.
+Root cause of repeated SNAPSHOT_FAIL: pwsh 7 spawned via Start-Process from an IDE
+terminal inherits a PATH missing system32 and Maven bin. Invoke-WithTimeout with
+UseShellExecute=false resolves bare names via PATH only.
+
+Landed:
+  8960218  PATH prepend at start-trading-day.ps1 top (system32 + Maven bin);
+           absolute cmd.exe/taskkill.exe in Invoke-WithTimeout; warmup+cycle +5s
+  e3d028f  mojibake fix on start-trading-day.ps1 (14 -> 0 non-ASCII). Handoff-1445Z
+           claim of mojibake was correct. Earlier session claim of clean UTF-8
+           was wrong; bytes were D0 B2 D0 82 E2 80 9D at two sites.
+  bc70456  load.ps1: mts-up polls lock acquisition up to 30s (not fixed 3s)
+  f7c16ef  mode.ps1 Gap 6 lock validation + 7b orphan sweep extension;
+           start-session.ps1 supervisor heartbeat age in loop health
+
+Deferred to next session: single stop flag, stale detection with kill-tree +
+debounce + circuit breaker, loop_state.json, mts-loop CLI.
+
+Claude architecture review decided: kill-only on stale (not restart-on-stale);
+PID-alive detection for state-machine death; state_code.json mtime for hang with
+150-180s threshold.
+
+Loop at close: ALIVE. Supervisor 15896, wrapper 10872, state-machine 2672,
+cmd 4476, java 13260. Snapshot age 0.8 min. Loop is still running pre-fix code;
+mode.ps1 changes take effect on next mts-up start.

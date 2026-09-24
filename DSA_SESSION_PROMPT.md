@@ -195,12 +195,12 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-09-23T17:29Z. Latest snapshot state_code age 1 min at 17:31Z.
+Last live read:  2026-09-24T06:26Z. Snapshot age 0.8 min. Loop ALIVE.
 Thesis:          neutral, low confidence. Unchanged.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: JIS-NB loop ALIVE 17:31Z. Build PASS at 17:31Z. Supervisor 11680, wrapper 4468, java 10388, state-machine wrapper 4636. Session MTS-2026-09-23-1730Z open.
-Findings:        Independent worker type removed. DSA section 1 names one WORKER role; protocol WORKER TYPES collapsed to one type. Handoff MTS-2026-09-23-1445Z reported mojibake at start-trading-day.ps1 L582 and MTS_DICTIONARY.md L41; on-disk bytes are E2 80 94 (U+2014 EM DASH), clean UTF-8, no mojibake. Real defect was Build-Check.ps1 L131 label overstating scan scope; relabeled Cyrillic codepoints (0x0400-0x04FF). No edits to L582 or L41.
+Runtime + loops: JIS-NB loop ALIVE 06:26Z. Build PASS at 06:25Z. Supervisor 15896, wrapper 10872, state-machine 2672, cmd 4476, java 13260. Session MTS-2026-09-23-1730Z closed.
+Findings:        Loop code hardened after restart failures. PATH prepend for system32+Maven added at start-trading-day.ps1 top; Invoke-WithTimeout resolves bare names via absolute path. Warmup and cycle-align changed +10s -> +5s. mode.ps1 lock validation (Gap 6) rejects PID-only lock hits. Orphan sweep in mode.ps1 now covers pwsh/cmd/mvn, not just java. start-session.ps1 loop health adds supervisor heartbeat age (90s threshold). mts-up polls lock acquisition (30s) not fixed sleep. Real mojibake confirmed and fixed on start-trading-day.ps1 (14 -> 0 non-ASCII). Prior session claim that no mojibake existed was wrong. Design work deferred: single stop flag, stale detection (kill-tree + debounce + circuit breaker), loop_state.json, mts-loop CLI. Claude-reviewed architecture: kill-only on stale, PID-alive for death, mtime for hang.
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.
