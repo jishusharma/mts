@@ -222,7 +222,7 @@ if (Test-Path $stateFile) {
     $stAgeMin = [math]::Round(((Get-Date) - (Get-Item $stateFile).LastWriteTime).TotalMinutes, 1)
     [void]$sb.AppendLine("state_code: age=$stAgeMin min")
 }
-$javaProc = Get-Process java -ErrorAction SilentlyContinue
+$javaProc = Get-CimInstance Win32_Process -Filter "Name='java.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'datafeed|statemachine|mts|BinanceDataFeed' }
 $supProc = Get-CimInstance Win32_Process -Filter "Name='pwsh.exe' OR Name='powershell.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'loop-supervisor' }
 [void]$sb.AppendLine("java:      $(if ($javaProc) { 'present' } else { 'absent' })")
 [void]$sb.AppendLine("supervisor: $(if ($supProc) { 'present' } else { 'absent' })")
