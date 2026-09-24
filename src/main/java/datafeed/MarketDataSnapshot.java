@@ -141,7 +141,7 @@ public class MarketDataSnapshot {
         weeklyVp.put("prior_week_poc", Math.round(priorWeekPoc * 100.0) / 100.0);
         weeklyVp.put("two_week_ago_poc", Math.round(twoWeekAgoPoc * 100.0) / 100.0);
         ObjectNode dailyVp = buildVp(dailyBars, true);
-        ObjectNode postFundingVp = buildVp(postFundingBars, false);
+        ObjectNode postFundingVp = buildVp(postFundingBars, false, 10.0);
         ObjectNode intraday4hVp = buildVp(intraday4hBars, false);
         ObjectNode priorDayVp = buildVp(priorDayBars, false);
         double priorDayClose = 0.0, priorDayHigh = 0.0, priorDayLow = Double.MAX_VALUE;
@@ -484,6 +484,13 @@ public class MarketDataSnapshot {
     }
 
     private ObjectNode buildVp(List<JsonNode> bars, boolean includeHvnsLvns) {
+        return buildVp(bars, includeHvnsLvns, 0.0);
+    }
+
+    // B059 fix (2026-09-24): fixedBinSize > 0 snaps bin edges to a stable
+    // grid so POC/VAH/VAL do not drift when minP/maxP extend. Used for
+    // post_funding_vp only.
+    private ObjectNode buildVp(List<JsonNode> bars, boolean includeHvnsLvns, double fixedBinSize) {
         ObjectNode node = mapper.createObjectNode();
         if (bars.isEmpty()) {
             node.put("poc", 0.0);
@@ -506,12 +513,22 @@ public class MarketDataSnapshot {
             if (high > maxP) maxP = high;
         }
         double range = maxP - minP;
-        int numBins = Math.max(50, (int)(range / 5));
-        double binSize = range / numBins;
+        double binSize;
+        int numBins;
+        double binOrigin;
+        if (fixedBinSize > 0) {
+            binSize = fixedBinSize;
+            binOrigin = Math.floor(minP / binSize) * binSize;
+            numBins = Math.max(50, (int)Math.ceil(range / binSize) + 1);
+        } else {
+            numBins = Math.max(50, (int)(range / 5));
+            binSize = range / numBins;
+            binOrigin = minP;
+        }
         if (binSize <= 0) binSize = 1;
 
         TreeMap<Double, Double> profile = new TreeMap<>();
-        for (int i = 0; i <= numBins; i++) profile.put(minP + i * binSize, 0.0);
+        for (int i = 0; i <= numBins; i++) profile.put(binOrigin + i * binSize, 0.0);
 
         for (JsonNode bar : bars) {
             double high = bar.get(2).asDouble();
@@ -1046,7 +1063,7 @@ public class MarketDataSnapshot {
         weeklyVp.put("prior_week_poc", Math.round(priorWeekPoc * 100.0) / 100.0);
         weeklyVp.put("two_week_ago_poc", Math.round(twoWeekAgoPoc * 100.0) / 100.0);
         ObjectNode dailyVp = buildVp(dailyBars, true);
-        ObjectNode postFundingVp = buildVp(postFundingBars, false);
+        ObjectNode postFundingVp = buildVp(postFundingBars, false, 10.0);
         ObjectNode intraday4hVp = buildVp(intraday4hBars, false);
         ObjectNode priorDayVp = buildVp(priorDayBars, false);
         double priorDayClose = 0.0, priorDayHigh = 0.0, priorDayLow = Double.MAX_VALUE;
@@ -1448,3 +1465,4 @@ private ObjectNode buildOiBreakdown(String symbol) {
 
     public void shutdown() { client.shutdown(); }
 }
+

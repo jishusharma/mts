@@ -1356,3 +1356,25 @@ Not done: B059 producer freeze. B063 operator decision. T042 wiring.
 
 Runtime at close: loop ALIVE. Supervisor 13368, wrapper 10872,
 state-machine 2672, java 13260.
+## SESSION MTS-2026-09-24-0639Z - B059 fix - 2026-09-24T07:11Z
+
+B059 deep-dived and fixed. Prior framing (window drift, fix in
+buildStructure) was wrong on both counts. Corrected from disk:
+  - Anchor MarketDataSnapshot.java L75-77 stable within a UTC day.
+  - Drift mechanism: bin edges at L501-514 anchored to window min/max.
+  - Pf_vp built at L144 and L1066, not in buildStructure.
+
+Fix: new overload buildVp(bars, hvns, fixedBinSize). fixedBinSize=10.0
+for post_funding. Bin edges snap to floor(minP/10)*10 grid. Other VPs
+unchanged (call sites pass 0.0 via the 2-arg wrapper, so grid mode is
+off by default).
+
+sha256 74B14A74 -> 52FF88CF. CRLF preserved (1468), LF-only 0,
+BOM NO. Build-Check PASS 2026-09-24T07:10Z.
+
+Not fixed: rank-1 zone distance gate. B059 evidence also cited a
+150-pt gap between rank-1 pf_vah and price. Separate defect. File
+as own row next session.
+
+Running java 13260 is old bytecode. Fix takes effect on next loop
+start. Not restarting without operator call.
