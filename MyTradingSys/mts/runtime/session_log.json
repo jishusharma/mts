@@ -913,6 +913,33 @@
       "reason": "STATE TWOPEAK/above_vah -> TWOPEAK/in_va",
       "ts": "2026-09-24T07:27:19.829Z",
       "type": "alert"
+    },
+    {
+      "verdict": "WAIT_TRIGGER",
+      "setup": "ct_short",
+      "action": "monitored",
+      "alert_id": 831,
+      "reason": "verdict WATCH -> WAIT_TRIGGER | STATE TWOPEAK/in_va -> TWOPEAK/above_vah",
+      "ts": "2026-09-24T08:32:20.794Z",
+      "type": "alert"
+    },
+    {
+      "verdict": "NO_TRADE",
+      "setup": "-",
+      "action": "monitored",
+      "alert_id": 832,
+      "reason": "zone pf_vah -> daily_vah | STATE TWOPEAK/below_val -> TWOPEAK/in_va",
+      "ts": "2026-09-24T08:46:19.555Z",
+      "type": "alert"
+    },
+    {
+      "verdict": "NO_TRADE",
+      "setup": "-",
+      "action": "monitored",
+      "alert_id": 833,
+      "reason": "verdict WAIT_PROOF -> NO_TRADE | STATE TWOPEAK/in_va -> TWOPEAK/below_val",
+      "ts": "2026-09-24T09:16:20.226Z",
+      "type": "alert"
     }
   ]
 }
