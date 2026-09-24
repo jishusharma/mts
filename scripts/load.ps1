@@ -40,7 +40,11 @@ function mts-up {
         return
     }
     Start-Process pwsh.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-File","$ScriptDir\core\mode.ps1","-M","armed") -WindowStyle Hidden
-    Start-Sleep -Seconds 3
+    # Poll for wrapper lock acquisition (up to 30s). Lock is written at wrapper start.
+    $deadline = (Get-Date).AddSeconds(30)
+    while ((Get-Date) -lt $deadline -and -not (Test-Path "$ScriptDir\..\data\apparatus.lock")) {
+        Start-Sleep -Milliseconds 500
+    }
     Start-Process pwsh.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-File","$ScriptDir\core\loop-supervisor.ps1","-Mode","armed","-IntervalMin","1","-RestartGraceSec","90") -WindowStyle Hidden
     $wrp2 = @(); $sup2 = @()
     $deadline = (Get-Date).AddSeconds(45)
