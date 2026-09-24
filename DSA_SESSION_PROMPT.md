@@ -195,12 +195,12 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-09-24T06:26Z. Snapshot age 0.8 min. Loop ALIVE.
+Last live read:  2026-09-24T10:00Z. Snapshot age under 1 min. Loop ALIVE.
 Thesis:          neutral, low confidence. Unchanged.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: JIS-NB loop ALIVE 06:26Z. Build PASS at 06:25Z. Supervisor 15896, wrapper 10872, state-machine 2672, cmd 4476, java 13260. Session MTS-2026-09-23-1730Z closed.
-Findings:        Loop code hardened after restart failures. PATH prepend for system32+Maven added at start-trading-day.ps1 top; Invoke-WithTimeout resolves bare names via absolute path. Warmup and cycle-align changed +10s -> +5s. mode.ps1 lock validation (Gap 6) rejects PID-only lock hits. Orphan sweep in mode.ps1 now covers pwsh/cmd/mvn, not just java. start-session.ps1 loop health adds supervisor heartbeat age (90s threshold). mts-up polls lock acquisition (30s) not fixed sleep. Real mojibake confirmed and fixed on start-trading-day.ps1 (14 -> 0 non-ASCII). Prior session claim that no mojibake existed was wrong. Design work deferred: single stop flag, stale detection (kill-tree + debounce + circuit breaker), loop_state.json, mts-loop CLI. Claude-reviewed architecture: kill-only on stale, PID-alive for death, mtime for hang.
+Runtime + loops: JIS-NB loop ALIVE 10:00Z. Build PASS at 10:00Z. Supervisor 6552, wrapper 10872, state-machine 2672, cmd 4476, java 13260. Session MTS-2026-09-24-0639Z closed.
+Findings:        T047 CLOSED. loop-supervisor.ps1 rewritten 136 to 250 lines: single stop flag loop_stop.flag, stale detection snapshot and state_code mtime over 150s for 2 ticks then tree-kill and restart, circuit breaker 5 restarts in 15 min, loop_state.json written per tick, mts-loop CLI, java-dead detection via smPid. stop-day.ps1 dual-lock wait. items/INDEX.md created, boot-loaded, Build-Check enforced. B059 fixed: pf_vp bin edges snapped to 10-USD grid. Prior framing wrong on two counts: target was buildStructure and mechanism was window drift, both wrong. B066 split from B059 as rank-1 distance gate. T040 scope refined as historical rank analysis. Java 13260 still pre-B059 bytecode.
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.
