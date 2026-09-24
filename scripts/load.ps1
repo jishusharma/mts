@@ -55,10 +55,6 @@ function mts-up {
     } else {
         "mts-up: incomplete (wrapper=$($wrp2.Count) supervisor=$($sup2.Count)). Check supervisor_log.txt and apparatus_log.txt."
     }
-    Start-Sleep -Seconds 4
-    $wrp2 = @(Get-CimInstance Win32_Process -Filter "Name='pwsh.exe' OR Name='powershell.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'start-trading-day|statemachine' })
-    $sup2 = @(Get-CimInstance Win32_Process -Filter "Name='pwsh.exe' OR Name='powershell.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'loop-supervisor' })
-    "mts-up: started (wrapper=$($wrp2[0].ProcessId) supervisor=$($sup2[0].ProcessId))"
 }
 
 # live feed (canonical) - see MTS_DICTIONARY.md LIVE FEED NAMES
