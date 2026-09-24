@@ -34,6 +34,20 @@ $TargetProxPct = 0.15
 
 $ErrorActionPreference = "Continue"
 $R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
+
+# Ensure required system and tool paths exist regardless of parent shell.
+# pwsh 7 launched via Start-Process from an IDE terminal inherits a PATH
+# missing system32 and Maven. Prepend so bare "cmd.exe", "mvn", and
+# "taskkill.exe" resolve inside the loop and its children.
+$requiredPaths = @(
+    (Join-Path $env:SystemRoot 'system32'),
+    'D:\tools\apache-maven-3.9.14\bin'
+)
+foreach ($rp in $requiredPaths) {
+    if (-not (Test-Path $rp)) { continue }
+    $current = ($env:PATH -split ';')
+    if ($current -notcontains $rp) { $env:PATH = "$rp;$env:PATH" }
+}
 Set-Location $R
 
 $LogDir = Join-Path $R "data"
@@ -76,7 +90,16 @@ function Invoke-WithTimeout {
         [Parameter(Mandatory=$false)][string]$WorkDir = ""
     )
     $psi = New-Object System.Diagnostics.ProcessStartInfo
-    $psi.FileName = $File
+    # Resolve bare command name to absolute path. pwsh 7 spawned via
+    # Start-Process from this 5.1 shell gets a PATH without system32,
+    # so ProcessStartInfo with UseShellExecute=$false cannot find
+    # "cmd.exe" or "taskkill.exe" by bare name. Absolute path fixes it.
+    $resolved = $File
+    if ($File -notmatch '[\\/]') {
+        $cand = Join-Path $env:SystemRoot ("system32\" + $File)
+        if (Test-Path $cand) { $resolved = $cand }
+    }
+    $psi.FileName = $resolved
     if ($ArgList.Count -eq 1) {
         $psi.Arguments = $ArgList[0]
     } elseif ($ArgList.Count -gt 1) {
@@ -95,7 +118,7 @@ function Invoke-WithTimeout {
         $exited = $proc.WaitForExit($TimeoutSec * 1000)
         if (-not $exited) {
             Log-Line ("TIMEOUT {0} {1}s PID={2}" -f $Tag, $TimeoutSec, $proc.Id)
-            try { & taskkill.exe /T /F /PID $proc.Id 2>&1 | Out-Null } catch {}
+            try { & (Join-Path $env:SystemRoot "system32\taskkill.exe") /T /F /PID $proc.Id 2>&1 | Out-Null } catch {}
             return -1
         }
         return $proc.ExitCode
@@ -105,7 +128,7 @@ function Invoke-WithTimeout {
     } finally {
         try {
             if ($proc -and -not $proc.HasExited) {
-                & taskkill.exe /T /F /PID $proc.Id 2>&1 | Out-Null
+                & (Join-Path $env:SystemRoot "system32\taskkill.exe") /T /F /PID $proc.Id 2>&1 | Out-Null
             }
         } catch {}
         try { if ($proc) { $proc.Dispose() } } catch {}
@@ -120,7 +143,7 @@ function Beep-Alert {
         [console]::beep(1000, 200); Start-Sleep -Milliseconds 80
         [console]::beep(1200, 300)
     } catch {}
-    # Balloon disabled — custom popup (show_alert.ps1) handles the visible alert.
+    # Balloon disabled вЂ” custom popup (show_alert.ps1) handles the visible alert.
 
 }
 
@@ -340,9 +363,9 @@ if (-not $Once) {
     $secOfDay = $nowUtc.Hour * 3600 + $nowUtc.Minute * 60 + $nowUtc.Second
     $cycleSec = $IntervalMin * 60
     $nextBoundary = [Math]::Ceiling(($secOfDay + 1) / $cycleSec) * $cycleSec
-    $warmup = $nextBoundary - $secOfDay + 10
+    $warmup = $nextBoundary - $secOfDay + 5
     if ($warmup -lt 15) { $warmup += $cycleSec }
-    Log-Line ("warmup {0}s -> first candle close+10s" -f $warmup)
+    Log-Line ("warmup {0}s -> first candle close+5s" -f $warmup)
     Start-Sleep -Seconds $warmup
 }
 
@@ -579,7 +602,7 @@ try {
         if ($script:ZoneLastAlertMs.ContainsKey($zoneKey)) {
             if (($nowEpoch - [int]$script:ZoneLastAlertMs[$zoneKey]) -lt 900) { $cooldownBlock = $true }
         }
-        # gate — only fire popup if verdict is actionable OR state changed
+        # gate вЂ” only fire popup if verdict is actionable OR state changed
         $actionableVerdicts = @("SETUP_FORMING","SETUP_CONFIRMED")
         $firePopup = $false
         if ($Popups -ne "off" -and $changed -and -not $cooldownBlock) {
@@ -754,9 +777,9 @@ print("logged")
         $secOfDay = $nowUtc.Hour * 3600 + $nowUtc.Minute * 60 + $nowUtc.Second
         $cycleSec = $IntervalMin * 60
         $nextBoundary = [Math]::Ceiling(($secOfDay + 1) / $cycleSec) * $cycleSec
-        $sleepSec = $nextBoundary - $secOfDay + 10
+        $sleepSec = $nextBoundary - $secOfDay + 5
         if ($sleepSec -lt 15) { $sleepSec += $cycleSec }
-        Log-Line ("sleep {0}s -> next candle close+10s" -f $sleepSec)
+        Log-Line ("sleep {0}s -> next candle close+5s" -f $sleepSec)
         $exitPhase = "sleeping"
         Start-Sleep -Seconds $sleepSec
     }
