@@ -10,6 +10,7 @@ B062 | CLOSED  | B062_alert_direction_position.md | position-aware alert gating;
 B063 | OPEN    | B063_divergence.md | decision: restore divergence in schema, or deprecate
 B064 | CLOSED  | B064_supervisor_stop_flag.md | supervisor_stop.flag retired 2026-09-24, loop_stop.flag only
 B065 | CLOSED  | B065_stale_swing_consumer.md | stale-swing rejection in extractZones + stop selection; landed
+B066 | OPEN    | B066_rank1_distance_gate.md | rank-1 shown at trigger_ready while 150 pts from price; split from B059
 T034 | OPEN    | T034_positioning_states.md | 4 positioning flags; blocked on Rule 33 readers + output type
 T035 | OPEN    | T035_multi_venue_cvd.md | multi-venue CVD; LOW; T1 web pass pending
 T037 | OPEN    | T037_test_coverage_gap.md | 8 untested files; blocked on pom (no surefire, no JUnit)

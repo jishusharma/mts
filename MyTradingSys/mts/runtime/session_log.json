@@ -940,6 +940,24 @@
       "reason": "verdict WAIT_PROOF -> NO_TRADE | STATE TWOPEAK/in_va -> TWOPEAK/below_val",
       "ts": "2026-09-24T09:16:20.226Z",
       "type": "alert"
+    },
+    {
+      "verdict": "WAIT_PROOF",
+      "setup": "ct_long",
+      "action": "monitored",
+      "alert_id": 834,
+      "reason": "STATE TWOPEAK/in_va -> TWOPEAK/below_val",
+      "ts": "2026-09-24T09:21:20.906Z",
+      "type": "alert"
+    },
+    {
+      "verdict": "WAIT_TRIGGER",
+      "setup": "fvg_short",
+      "action": "monitored",
+      "alert_id": 835,
+      "reason": "verdict NO_TRADE -> WAIT_PROOF | STATE TWOPEAK/below_val -> TWOPEAK/in_va",
+      "ts": "2026-09-24T09:30:19.748Z",
+      "type": "alert"
     }
   ]
 }

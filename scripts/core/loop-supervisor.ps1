@@ -127,9 +127,10 @@ while ($true) {
         } catch { }
     }
 
-    $javaPid = 0
-    $jp = Get-CimInstance Win32_Process -Filter "Name='java.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'datafeed\.Main|BinanceDataFeed' } | Select-Object -First 1
-    if ($jp) { $javaPid = $jp.ProcessId }
+    $smPid = 0
+    $jp = Get-CimInstance Win32_Process -Filter "Name='java.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'statemachine' } | Select-Object -First 1
+    if ($jp) { $smPid = $jp.ProcessId }
+    $javaPid = $smPid
 
     $latest = Get-ChildItem $SnapGlob -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
     $snapAge = 99999
@@ -168,6 +169,19 @@ while ($true) {
             $needRestart = $true
         }
     } else {
+        if ($smPid -eq 0) {
+            if ($breakerTripped) {
+                $action = "breaker"
+                $reason = "sm_dead_breaker_open wrapper=$loopPid"
+                SupLog "CIRCUIT BREAKER: $reason"
+            } else {
+                $action = "kill_restart"
+                $reason = "sm_dead wrapper=$loopPid"
+                SupLog "state-machine java missing; killing wrapper tree and restarting"
+                $needKill = $true
+                $needRestart = $true
+            }
+        } else {
         $snapStale = $snapAge -gt $SnapshotStaleSec
         $scStale = $scAge -gt $SnapshotStaleSec
         if ($snapStale -or $scStale) {
@@ -192,8 +206,9 @@ while ($true) {
         } else {
             if ($staleStrikes -gt 0) { SupLog "stale recovered, strikes reset" }
             $staleStrikes = 0
-            $reason = "ok wrapper=$loopPid java=$javaPid snapAge=${snapAge}s scAge=${scAge}s grace=$inGrace"
+            $reason = "ok wrapper=$loopPid sm=$smPid java=$javaPid snapAge=${snapAge}s scAge=${scAge}s grace=$inGrace"
             SupLog $reason
+        }
         }
     }
 
