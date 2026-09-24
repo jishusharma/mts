@@ -1378,3 +1378,22 @@ as own row next session.
 
 Running java 13260 is old bytecode. Fix takes effect on next loop
 start. Not restarting without operator call.
+## SESSION MTS-2026-09-24-0639Z CLOSE - 2026-09-24T10:00Z
+
+Landed:
+  loop-supervisor.ps1 sha256 5CC593B1, 250 lines. Added java-dead
+  detection (smPid from statemachine command-line match). Dead ->
+  kill_restart on wrapper tree. Prior check missed because snapshot
+  writer is a separate transient java.
+  Build-Check: items/INDEX.md mechanical check (open-status only).
+  B066 filed: rank-1 distance gate (split from B059).
+  B066 item doc + INDEX.md row.
+  T040 item doc updated with operator-refined scope.
+  Bug dedup: B066 inserted twice via anchor collision. Fixed.
+
+Commits: 9c841f9, 64a6c3a, 0731348, 65694bc, 9be0b09, f093596,
+  b205d1c, 6ca60b7.
+
+Runtime at close: loop ALIVE. Supervisor 6552, wrapper 10872,
+  state-machine 2672/4476, java 13260. Build PASS 2026-09-24T10:00Z.
+  java 13260 still pre-B059 bytecode.
