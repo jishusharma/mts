@@ -116,12 +116,10 @@ If a web search cannot be run, tag UNVERIFIED-WEB.
 Never blend disk and web in one sentence.
 
 ### D2. WORKER DISPATCH
-Two types. See live_session_protocol.md WORKER TYPES.
-Dependent: no shell, no disk. Interprets pasted evidence. R1-R5 apply.
-  Writes go through the coordinator.
-Independent: reads repo, may query MTS and web. Writes only in its own
-  Dumps/workers/<id>/. Every repo change it wants comes back as a verbatim
-  PowerShell statement. Rules I1-I8 apply.
+One type. See live_session_protocol.md WORKER PROTOCOL R1-R5.
+Worker has no shell, no disk. Interprets pasted evidence only.
+Requests disk facts by naming file + line range; coordinator runs and pastes back.
+Never claims to run anything. Never touches state files. Never commits.
 One DISPATCH.md per worker (uppercase). Reply-path line required:
   Write reply to Dumps/workers/<id>/REPLY.md
 No checks executed section. No Confirmed. Receipt tags required.
@@ -129,7 +127,10 @@ No checks executed section. No Confirmed. Receipt tags required.
 ### D3. FILE A BUG
 Follow the rules block at the top of BUGS.md.
 Confirm the defect from disk first. Cite path and line range.
-Append one row before the END marker.
+Append one row before the LAST line that is exactly `# END`.
+Verify anchor match count is 1 before writing (-ne 1, never -lt 1).
+Then add a row to MyTradingSys/mts/items/INDEX.md and an item doc at
+MyTradingSys/mts/items/<id>_*.md, or Build-Check will fail.
 Verify: line count, tail, no BOM, non-ASCII count.
 
 ---
@@ -139,8 +140,10 @@ Verify: line count, tail, no BOM, non-ASCII count.
 ### E1. LOOP CONTROL - DESKTOP ONLY
 Desktop only. Not applicable on the laptop.
 Loop control per DSA_SESSION_PROMPT.md section 9.
-Read wrapper PID, lock, log mtime. All three together.
-A log tail alone is not a health check.
+Read all of: wrapper PID, supervisor PID, java PID, lock, snapshot age,
+state_code age, log mtime. Together. A log tail alone is not a health check.
+Read data\loop_state.json for the supervisor view.
+Single stop flag: data\loop_stop.flag. Both wrapper and supervisor honor it.
 
 ### E2. SESSION CLOSE
 Close per DSA_SESSION_PROMPT.md section 12.
@@ -231,6 +234,9 @@ Get-CimInstance Win32_Process | Where-Object {
 
 ### F4. STOP, RESTART, CLOSE
 Desktop only:
+mts-loop stop          # single flag stops wrapper AND supervisor
+mts-loop start         # start-session.ps1 + mts-up
+mts-loop status        # read data\loop_state.json
 .\scripts\core\stop-day.ps1
 .\scripts\core\mode.ps1 -M armed
 Both machines:
