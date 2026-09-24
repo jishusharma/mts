@@ -209,16 +209,35 @@ if (Test-Path $lockPath) {
     [void]$sb.AppendLine("lock:      none")
 }
 $newest = Get-ChildItem (Join-Path $root 'data\snapshots\BTCUSDT_*.json') -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+$snapAgeMin = $null
 if ($newest) {
-    $ageMin = [math]::Round(((Get-Date) - $newest.LastWriteTime).TotalMinutes, 1)
-    [void]$sb.AppendLine("snapshot:  $($newest.Name)  age=$ageMin min")
+    $snapAgeMin = [math]::Round(((Get-Date) - $newest.LastWriteTime).TotalMinutes, 1)
+    [void]$sb.AppendLine("snapshot:  $($newest.Name)  age=$snapAgeMin min")
 } else {
     [void]$sb.AppendLine("snapshot:  none")
 }
 $stateFile = Join-Path $root 'MyTradingSys\mts\runtime\state_code.json'
+$stAgeMin = $null
 if (Test-Path $stateFile) {
-    $stAge = [math]::Round(((Get-Date) - (Get-Item $stateFile).LastWriteTime).TotalMinutes, 1)
-    [void]$sb.AppendLine("state_code: age=$stAge min")
+    $stAgeMin = [math]::Round(((Get-Date) - (Get-Item $stateFile).LastWriteTime).TotalMinutes, 1)
+    [void]$sb.AppendLine("state_code: age=$stAgeMin min")
+}
+$javaProc = Get-Process java -ErrorAction SilentlyContinue
+$supProc = Get-CimInstance Win32_Process -Filter "Name='pwsh.exe' OR Name='powershell.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'loop-supervisor' }
+[void]$sb.AppendLine("java:      $(if ($javaProc) { 'present' } else { 'absent' })")
+[void]$sb.AppendLine("supervisor: $(if ($supProc) { 'present' } else { 'absent' })")
+$healthReasons = @()
+if (-not $javaProc) { $healthReasons += 'java_absent' }
+if (-not $supProc)  { $healthReasons += 'supervisor_absent' }
+if ($null -eq $snapAgeMin -or $snapAgeMin -gt 5) { $healthReasons += "snapshot_age=$(if ($null -eq $snapAgeMin) { 'missing' } else { $snapAgeMin })" }
+if ($null -eq $stAgeMin -or $stAgeMin -gt 5)     { $healthReasons += "state_code_age=$(if ($null -eq $stAgeMin) { 'missing' } else { $stAgeMin })" }
+if ($healthReasons.Count -eq 0) {
+    [void]$sb.AppendLine("loop health: PASS")
+    Write-Host "loop health: PASS" -ForegroundColor Green
+} else {
+    $reasonStr = ($healthReasons -join ',')
+    [void]$sb.AppendLine("loop health: FAIL reason=$reasonStr")
+    Write-Host "loop health: FAIL reason=$reasonStr" -ForegroundColor Red
 }
 
 [void]$sb.AppendLine("")
