@@ -29,3 +29,29 @@ Verbatim lead-in (L34):
 ### 2026-09-23T15:30Z - coordinator, session MTS-2026-09-23-1445Z
 
 Item doc created from what_is_next.md Stage 3. Verbatim ask captured. Source-folded as part of T039 sweep. Register row added this session.
+### 2026-09-24T10:05Z - coordinator, session MTS-2026-09-24-0639Z
+
+d4 result: Pull duplicate function into shared file.
+
+Search run across scripts/*.ps1 and MyTradingSys/mts/**/*.py.
+
+PowerShell duplicates:
+  Fmt (context.ps1, live.ps1) - identical after whitespace normalization.
+    Fails Claude rule 4 (no tests). Leave separate.
+  Write-TextNoBom (Build-Check.ps1, start-session.ps1) - not identical:
+    Build-Check takes a lines array, start-session takes a text string.
+    Both duplicate existing shared-functions.ps1 entries:
+      Write-TextNoBom (lines)  ==  Write-NoBomLines
+      Write-TextNoBom (text)   ==  Write-NoBom
+    Local copies lack the rooted-path check present in shared.
+    Fails rule 4 (no tests). Leave separate; note for future cleanup.
+
+Python collisions (main x7, classify x3, load x2, parse_ts x2, load_snapshot x2,
+write_state x2, load_labels x2): different implementations under common names.
+Rule 1 fails. Not duplicates.
+
+Decision: no extraction this session. Per Claude 4-rule test rule 4 (coverage)
+fails on both PS candidates. Two-item cross-reference cleanup can be filed
+as a low-severity task if drift is ever observed.
+
+Status: d4 DONE (no extraction, finding recorded).
