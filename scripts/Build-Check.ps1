@@ -139,6 +139,7 @@ if (Test-Path $bugsPath) {
   $validStatus = @("OPEN","IN-FIX","BLOCKED","CLOSED","WONTFIX")
   $validSeverity = @("HIGH","MED","LOW","COSMETIC")
   $seenIds = @{}
+  $openIds = @{}
   $bugLines = [System.IO.File]::ReadAllLines((Resolve-Path $bugsPath), [System.Text.Encoding]::UTF8)
   foreach ($bl in $bugLines) {
     if ($bl -match '^\|\s*[BT]\d+\s*\|') {
@@ -148,6 +149,7 @@ if (Test-Path $bugsPath) {
       $bugRows++
       if ($seenIds.ContainsKey($bid)) { $bugFail += "duplicate ID: $bid" } else { $seenIds[$bid] = 1 }
       if ($validStatus -notcontains $bstatus) { $bugFail += "$bid bad status: $bstatus" }
+      if ($bstatus -eq "OPEN" -or $bstatus -eq "IN-FIX" -or $bstatus -eq "BLOCKED") { $openIds[$bid] = 1 }
       if ($validSeverity -notcontains $bsev) { $bugFail += "$bid bad severity: $bsev" }
       if ($bstatus -eq "CLOSED" -and ($breceipt -eq "-" -or $breceipt -eq "")) { $bugFail += "$bid CLOSED with no receipt" }
       if ($bstatus -eq "IN-FIX") {
@@ -169,6 +171,26 @@ if (Test-Path $bugsPath) {
     $overallFail = $true
   } else {
     $lines.Add("Bugs: OK (" + $bugRows + " rows)")
+  }
+  # items/INDEX.md mechanical check (Claude ask 2026-09-24)
+  $idxPath = "MyTradingSys\mts\items\INDEX.md"
+  if (Test-Path $idxPath) {
+    $idxTxt = [System.IO.File]::ReadAllText((Resolve-Path $idxPath))
+    $idxMiss = @()
+    foreach ($k in $openIds.Keys) {
+      $re = "(?m)^" + [regex]::Escape($k) + "\s*\|"
+      if (([regex]::Matches($idxTxt,$re)).Count -eq 0) { $idxMiss += $k }
+    }
+    if ($idxMiss.Count -gt 0) {
+      $lines.Add("Index: FAIL (" + $idxMiss.Count + " IDs not in INDEX.md)")
+      foreach ($k in $idxMiss) { $lines.Add("  - $k missing from items/INDEX.md") }
+      $overallFail = $true
+    } else {
+      $lines.Add("Index: OK (" + $openIds.Count + " open IDs in items/INDEX.md)")
+    }
+  } else {
+    $lines.Add("Index: file missing ($idxPath)")
+    $overallFail = $true
   }
 } else {
   $lines.Add("Bugs: file missing ($bugsPath)")
