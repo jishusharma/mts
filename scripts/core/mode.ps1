@@ -27,7 +27,7 @@ if (Test-Path $lockFile) {
     }
     if ($rootPids.Count -gt 0) {
         $existing = Get-Process -Id $rootPids[0] -ErrorAction SilentlyContinue
-        if ($existing -and $existing.ProcessName -eq "powershell") {
+        if ($existing -and ($existing.ProcessName -eq "powershell" -or $existing.ProcessName -eq "pwsh")) {
             Write-Host "APPARATUS ALREADY RUNNING PID=$($rootPids[0])"
             Write-Host "Use .\scripts\core\stop-day.ps1 first, then retry."
             exit 1
