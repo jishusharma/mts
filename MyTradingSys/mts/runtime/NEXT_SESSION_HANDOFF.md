@@ -1,87 +1,67 @@
 # NEXT SESSION HANDOFF
-# Rewritten 2026-09-23T19:30Z by MTS-2026-09-23-1730Z.
+# Rewritten 2026-09-24T10:05Z by MTS-2026-09-24-0639Z.
 
-STATUS: Loop ALIVE (wrapper 9260, state-machine 4336, java 13032). Build PASS at 19:26:16Z.
-Commit af7f114. Tag last-snapshot at af7f114.
+STATUS: Loop ALIVE (supervisor 6552, wrapper 10872, sm pwsh 2672 / cmd 4476, java 13260).
+Build PASS 10:00Z. Commit 8daf9b7. Tag last-snapshot at 8daf9b7.
 
-## SESSION MTS-2026-09-23-1730Z - WHAT LANDED
+## SESSION MTS-2026-09-24-0639Z - WHAT LANDED
 
-- DSA_SESSION_PROMPT.md section 1: Independent worker role removed. One
-  WORKER type only. 238 -> 233 lines.
-- live_session_protocol.md: WORKER TYPES collapsed to one type; I1-I8
-  removed. Stray # END and duplicate rule 15 cleaned; rule 16 added.
-- Build-Check.ps1 L131 label corrected to "Cyrillic codepoints (0x0400-0x04FF)".
-- B058 CLOSED. Parts C + D already on disk (start-trading-day.ps1 L211-215
-  and L576-580). Receipt filled.
-- B062 CLOSED. Position-aware alert gating landed at start-trading-day.ps1
-  L589-612. Suppress WATCH; suppress same-direction SETUP_FORMING; elevate
-  opposing SETUP_FORMING.
-- B065 CLOSED. Stale-swing checks wired in two consumers:
-  SetupCandidatesBuilder.extractZones L334-350, and stop selection L101-109.
-- T039 CLOSED. Enforcement already on disk at Build-Check.ps1 L159-163.
-- T042 PARTIAL. Producer emits structure.1w/1d/4h now. Row stays OPEN.
-- T043 WONTFIX.
-- B059 reverted. Consumer-side static state was wrong. Fix belongs on the
-  producer side (MarketDataSnapshot.buildStructure), keyed on the funding
-  window, not the session.
-- Timestamp fix: start-trading-day.ps1 L130 renders ISO explicitly now.
-  Was culture-dependent (rendered 09/23/2026 19:14:18 after restart).
+- T047 CLOSED. loop-supervisor.ps1 rewritten 136 -> 250 lines sha256 5CC593B1.
+  Single stop flag loop_stop.flag, stale detection snapshot+state_code mtime >150s
+  for 2 ticks, tree-kill and restart, circuit breaker 5/15min, loop_state.json
+  per tick, mts-loop CLI, java-dead detection via smPid.
+- stop-day.ps1 dual-lock wait. sha256 C2F414BF -> BA246AFA.
+- B059 fix landed. MarketDataSnapshot.java sha256 74B14A74 -> 52FF88CF.
+  New overload buildVp(bars, hvns, fixedBinSize). Post-funding VP bins snapped
+  to 10-USD grid. Prior framing wrong: target was buildStructure, mechanism was
+  window drift. Actual: buildVp L508-531 bin edges.
+- B066 filed: rank-1 distance gate. Split from B059.
+- items/INDEX.md created, boot-loaded, Build-Check enforced (open-status only).
+- T040 scope refined: historical rank analysis, data-derived tiers.
+- pycache dropped. 2 zero-ref files archived.
+- loop_state.json gitignored + untracked.
+- DSA sec 11 regen.
 
-## CRITICAL NOTE - T042 WIRING GAP
+## CRITICAL NOTES
 
-T042 added structure.1w, structure.1d, structure.4h to every snapshot.
-These keys are EMITTED but NOT WIRED. No decision function reads them.
-
-Per live_session_protocol.md rule 15: a layer is wired only when a named
-decision function reads its value and two fixtures differing only in that
-layer produce a different verdict or reason string. Emitted-but-unread is
-exempt with a tracked reason, not done.
-
-Current readers of structure.*:
-- extractZones reads structure.1h, structure.15m, structure.5m only.
-- getSwingTF maps weekly_ -> 1h, daily_/pf_/4h_ -> 15m, vwap/fvg/5m_swing_ -> 5m.
-  It never asks for 1w, 1d, or 4h.
-
-Options to close T042:
-A. Wire getSwingTF to return 1d for daily_ zones, 1w for weekly_ zones,
-   4h for 4h_ zones. Changes stop selection. Needs evidence that this
-   improves stop quality.
-B. Add a new named consumer for 1w/1d/4h structure (e.g. HTF bias gate).
-C. Document as intentional emission and close T042 producer-only.
-
-Also still open on T042: OI peak and CVD peak reference are not emitted.
+- java 13260 still pre-B059 bytecode. Fix is on disk, not running.
+  Restart when verdict=WATCH and nothing forming.
+- BUGS.md was structurally broken: T047 row appended into B011 row,
+  stray # END | mid-file. Fixed this session. Anchor # END must always
+  be checked with -ne 1, never -lt 1.
+- COMMANDS.md had duplicate LOOP LIFECYCLE sections. Fixed.
+- NEXT_SESSION_HANDOFF.md was stale. Rewritten.
 
 ## OPEN QUEUE (BUGS.md, open rows only)
 
-- B059 : producer-side pf_vp freeze. MarketDataSnapshot.buildStructure.
-- B063 : divergence wiring. Needs operator decision: restore in schema OR
-         deprecate.
-- T034 : blocked on Rule 33 consumer.
-- T035 : T1 web pass pending.
-- T037 : Java tests blocked on pom (no surefire, no JUnit).
-- T038 : self-deferred until ~21000 labels.
-- T040 : new rule surface needs Tom citation.
-- T042 : see CRITICAL NOTE above.
+- B059  fix landed, live tape pending java restart.
+- B063  divergence. NEEDS OPERATOR: restore or deprecate.
+- B066  rank-1 distance gate. Fix shape undecided.
+- T034  4 positioning flags. Output type + Rule 33 readers.
+- T035  multi-venue CVD. T1 web pass pending.
+- T037  8 untested files. Blocked on pom.
+- T038  deferred to ~21000 labels.
+- T040  tick-delta. Threshold source-tier decision pending.
+- T042  1w/1d/4h structure, no consumer. A/B/C.
+- T044  hybrid REST/WS divergence alert. Not started.
+- T045  marginal new high materiality. NEEDS OPERATOR: yes/no/conditional.
+- T046  d1 done, d2 done, d3 partial, d4 done, d5 A/B/E mapping confirm.
 
 ## NEXT SESSION - FIRST ACTION
 
-1. Loop health + Build-Check.
-   .\scripts\Build-Check.ps1
-   Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -match
-     "statemachine|loop-supervisor|start-trading-day" } |
-     Select ProcessId, Name
-2. T042 wiring decision: option A, B, or C above.
-3. B059 producer-side freeze.
-4. B063 operator decision, then wire.
+1. Read items/INDEX.md + BUGS.md open rows.
+2. Restart loop to load B059 bytecode when verdict=WATCH, nothing forming.
+3. Answer T046 d5, T045, B063, T042, T034.
+4. B066 fix shape decision.
 
 ## HARD RULES
 
 - Never bare-kill java. Use stop-day.ps1 or mode.ps1.
 - Never run mode.ps1 twice in a row.
-- Critical files: hash, edit, hash, print.
-- Read the target line from disk in the same turn before composing an anchor.
+- Critical files: hash, edit, hash, diff.
+- Read target line from disk same turn before composing anchor.
+- Anchor count must be exactly 1. # END appears as substring in many files.
 - Build-Check prints to host, not stdout. Do not capture into a variable.
 - MarketDataSnapshot.java is CRLF. PS source is LF. Match on write.
-- Handoff 1445Z mojibake claim was wrong. Files are clean UTF-8. No fix needed.
 
 # END

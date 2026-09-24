@@ -47,21 +47,6 @@ Monitoring stations:
     python .\MyTradingSys\mts\runtime\session_state.py log
     python .\MyTradingSys\mts\runtime\log_decision.py passed "reason"
 
-#
-## LOOP LIFECYCLE (new 2026-09-24)
-
-```powershell
-    mts-loop status    # read data\loop_state.json
-    mts-loop start     # start-session.ps1 + mts-up
-    mts-loop stop      # runs stop-day.ps1 (single flag stops wrapper AND supervisor)
-```
-
-One stop flag: `data\loop_stop.flag`. Honored by wrapper, supervisor, and stop-day.ps1.
-Supervisor writes `data\loop_state.json` every 30s with: action, reason, wrapper_pid,
-java_pid, snapshot_age_sec, state_code_age_sec, stale_strikes, restart_count_24h.
-Stale detection: snapshot or state_code.json older than 150s for 2 consecutive ticks
-triggers a tree-kill of the wrapper and a restart. Circuit breaker: 5 restarts in
-15 minutes refuses further restarts.
 
 # END THE SESSION
 
@@ -143,6 +128,3 @@ triggers a tree-kill of the wrapper and a restart. Circuit breaker: 5 restarts i
 15 minutes refuses further restarts.
 
 # END
-    mts-paste        continuous live snapshot to Dumps/LIVE_PASTE.txt, 30s cadence
-    mts-paste-now    one-shot grab and print
-    mts-paste-stop   stop the loop

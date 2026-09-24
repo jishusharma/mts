@@ -958,6 +958,15 @@
       "reason": "verdict NO_TRADE -> WAIT_PROOF | STATE TWOPEAK/below_val -> TWOPEAK/in_va",
       "ts": "2026-09-24T09:30:19.748Z",
       "type": "alert"
+    },
+    {
+      "verdict": "SETUP_FORMING",
+      "setup": "ct_long",
+      "action": "monitored",
+      "alert_id": 836,
+      "reason": "verdict WAIT_PROOF -> WAIT_TRIGGER | STATE TWOPEAK/below_val -> TWOPEAK/in_va",
+      "ts": "2026-09-24T10:23:20.369Z",
+      "type": "alert"
     }
   ]
 }
