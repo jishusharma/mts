@@ -200,12 +200,54 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-09-24T14:00Z. Snapshot age under 1 min. Loop ALIVE.
-Thesis:          neutral, low confidence. Unchanged.
+Last live read:  2026-09-26T17:45Z. Loop STOPPED cleanly 2026-09-25T15:35Z.
+Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: JIS-NB loop ALIVE 14:00Z. Build PASS at 14:00Z. Lock PID 2832. Log writes to runtime_data/. Session MTS-2026-09-24-1100Z closed.
-Findings:        Folder flatten: MyTradingSys/mts/* -> MyTradingSys/*; data/ -> runtime_data/; MyTradingSys/data/ -> MyTradingSys/market_data/; extracts consolidated. 197 files rewritten. PROJECT_VISION.md added to boot_files at position 4. USER.md: close-items-on-decision rule, sub-item labeling rule. T045 CLOSED. T046 d5 confirmed. post_funding_vp demoted to display-only (removed from candidate zone list and target pool in SetupCandidatesBuilder.java and math_object_builder.py). B067 filed (crypto-hack gating audit). B059 live-tape confirmed drift gone; 10.0 bin size still untagged SCREENER.
+Runtime + loops: loop_stopped (flag consumed, locks clear, no java).
+                 Last cycle 15:34Z. Build PASS 2026-09-26T17:45Z. HEAD 87e7cef.
+Findings:        Two sessions landed between 09-25 and 09-26.
+
+  Session MTS-2026-09-25-0829Z (coordinator, prior chat):
+    - Rules 15-19 in live_session_protocol.md (anchor preflight,
+      interactive-scope, quote layering).
+    - Windows Process Launch section in apparatus_fixes.md.
+    - DSA sec 3 boot step 4 (stale section 11 check).
+    - B059 closed: 10.0 pf bin tagged SCREENER at MDS L144 + L1066.
+    - B069 fix: wrapper stderr redirected to runtime_data\\ums.log.
+    - Seven workers ran (W1-W7). T035/T038/B067 closed. B070 filed.
+      PROJECT_VISION six open questions resolved (W6).
+    - apparatus_fixes OPEN triaged (W5): 2 fix-now, 5 need-operator,
+      4 already-fixed, 11 learned-facts.
+
+  Session claude-sonnet-2026-09-26 (operator drove outside this chat):
+    - Deribit execution layer scaffolding (MyTradingSys/execution/).
+    - Backtest harness (MyTradingSys/backtest/) against MTS raw verdict.
+    - NUC worker v2 (Dumps/workers/NUC-QUEUE/, scripts/worker/).
+    - DEVICES.md (jis-nb, JIS-NUC, roles).
+    - TOM-214 cite landed in compiled_engine.md (double distribution).
+    - New items: B070, B071, T048, T049, T050, T051.
+    - mode.ps1 +50/-12 (VBS + Register-ScheduledTask launcher).
+    - Build-Check.ps1 +41 (files cross-check, .new age check).
+
+  This chat fixed the claude session close-out: T049 severity MEDIUM -> MED,
+  B071 + T051 rows added to items/INDEX.md, 03_FILE_INDEX size header
+  corrected, superseded .new files archived, garbage files removed.
+
+Open queue (14): B059 (drift clean, 10.0 tagged) pending close-out,
+  B063 (needs operator: divergence restore/deprecate), B066 (rank-1
+  distance gate), B069 (verify on next loop restart), B070 (demote UTC
+  00:00 + 0.75 slippage, needs operator), B071 (fail-open proof, blocks
+  mainnet), T034 (positioning output type), T037 (BLOCKED: pom edit),
+  T040 (tick-delta thresholds), T042 (1w/1d/4h consumer), T044 (hybrid
+  REST/WS alert), T046 (Stage 3 decisions), T048 (satellite framework),
+  T049 (NUC worker v2 phase 5), T050 (Deribit execution layer), T051
+  (PARKED: backtest).
+
+Next session first action: read items/INDEX.md + BUGS.md open rows.
+  Then choose: B063 operator decision, B070 operator decision, T050
+  phase 1 (Deribit read-only testnet), or T037 pom edit.
+
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.
