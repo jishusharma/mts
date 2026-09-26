@@ -232,4 +232,24 @@ coordinator into Dumps/workers/<id>/. No direct repo writes.
 
 16. No inferred levels. Any price level offered as actionable must carry a source tag from MTS_DICTIONARY. [SCREENER] levels are not signals. Prior-day POC, prior-day VAH/VAL, and any level not in conditions/ are SCREENER unless a rule names them.
 
+## RULES 17-19 (added 2026-09-25, from the loop-survival session)
+
+17. Anchor preflight. Before any write block, the same turn must
+    contain a Get-Content of the exact target range, cited by line
+    number. No anchor composed from memory, prior paste, or journal.
+    After composing, count via [regex]::Matches. Count not 1, abort.
+
+18. Interactive-scope declaration. Any block pasted at the operator
+    prompt that references $R, $M, $pwshExe, $splat, or any non-
+    environment variable must open with & { ... } and declare every
+    one of those variables literally. No session-state reliance.
+    Unique variable names within a block. Do not reuse a name for a
+    different type.
+
+19. Quote layering. When a command line must survive three or more
+    quoting layers (PowerShell -> cmd/VBS/schtasks -> target
+    program), build the string once in PowerShell, then double the
+    quote char for each layer: -replace '"','""'. Do not hand-nest.
+    Check operator precedence when mixing + and -f: parenthesize.
+
 # END

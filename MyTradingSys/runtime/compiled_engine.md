@@ -39,7 +39,7 @@
 If weekly profile shows double distribution (two distinct balance areas, two POCs) AND price is rejecting from upper distribution:
 - Bias: Breakdown to lower distribution is likely
 - Setup type: TC Short at retest of broken upper distribution VAL from below
-- Rationale: Tom: "What information does this double distribution give me? I need to know that before the week starts." Upper balance rejected twice = market breaking down from upper balance. VPOC will shift down on acceptance.
+- Rationale: Tom: "What information does this double distribution give me? I need to know that before the week starts." [TOM-214] Upper balance rejected twice = market breaking down from upper balance. VPOC will shift down on acceptance.
 - This is a VISUAL flag — requires screenshot analysis of weekly VP histogram. DSA cannot emit distribution_count without histogram API.
 
 **Single Print Zone Rule [VISUAL FLAG — HTF_PATCH_001]:**

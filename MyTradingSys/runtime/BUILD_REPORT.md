@@ -1,9 +1,9 @@
-BUILD_REPORT - 2026-09-24 19:04:44 UTC
+BUILD_REPORT - 2026-09-26 17:44:33 UTC
 host: JIS-NB
 
-Java compile:  PASS (4.5 s)
-Math tests:    PASS 125/125 (1.7 s)
-Doc tests:     PASS 5/5 (2.7 s)
+Java compile:  PASS (2.8 s)
+Math tests:    PASS 125/125 (1.3 s)
+Doc tests:     PASS 5/5 (1.6 s)
 
 In-flight .new files: 0
 
@@ -13,10 +13,12 @@ Active sessions:
 BOM files: 0
 Cyrillic codepoints (0x0400-0x04FF): 0
 
-Bugs: OK (115 rows)
-Index: OK (13 open IDs in items/INDEX.md)
+Bugs: OK (119 rows)
+Index: OK (14 open IDs in items/INDEX.md)
 
-Dispatches: OK (26 files)
+Index (files cross-check): OK (27 item files, 27 INDEX rows)
+
+Dispatches: OK (33 files)
 
 STATUS: PASS
 

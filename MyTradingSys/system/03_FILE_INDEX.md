@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-19
-# SIZE: ~17.9KB
+# SIZE: ~19.5KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -282,3 +282,11 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/items/T043_traceability_gap.md | item | Per-item doc for T043. Source-to-code traceability mechanism absent. | MTS-2026-09-23-0831Z | 2026-09-23 |
 | MyTradingSys/items/B065_stale_swing_consumer.md | item | Per-item doc for B065. Stale swing flag has no consumer; zones built from invalidated swings. | MTS-2026-09-23-0831Z | 2026-09-23 |
 | MyTradingSys/items/INDEX.md | index | Boot-loaded one-line-per-item index. Item id, status, filename, state. Read full item doc only when its row is the active task. | MTS-2026-09-24-0639Z | 2026-09-24 |
+| scripts/worker/queue_tool.py | tool | NUC queue, desktop side: packs self-contained tasks with sized context, status, mechanical verify, deploy. T049. | MTS-2026-09-25-2100Z | 2026-09-25 |
+| scripts/worker/nuc-worker.ps1 | tool | NUC worker v2: Ollama HTTP with per-task context, outbox, heartbeat, requeue after crash, self-update. T049. | MTS-2026-09-25-2100Z | 2026-09-25 |
+| scripts/worker/nuc-launcher.ps1 | tool | NUC supervisor: installs worker updates from the queue deploy folder, restarts the worker. T049. | MTS-2026-09-25-2100Z | 2026-09-25 |
+| scripts/worker/setup-desktop.ps1 | tool | One-time desktop setup: mtsworker account, queue-only share, retires whole-repository share and Everyone grant (ACL backup first). T049. | MTS-2026-09-25-2100Z | 2026-09-25 |
+| scripts/worker/setup-nuc.ps1 | tool | One-time NUC setup: share credential, local install, scheduled task at sign-in, Ollama and power settings. T049. | MTS-2026-09-25-2100Z | 2026-09-25 |
+| MyTradingSys/items/T049_nuc_worker_v2.md | item | Per-item doc for T049. NUC worker v2 design, decisions, roadmap. | MTS-2026-09-25-2100Z | 2026-09-25 |
+| Dumps/workers/NUC-QUEUE/README.md | protocol | NUC queue protocol, version 2. Spec format, folders, flow, routing rule. T049. | MTS-2026-09-25-2100Z | 2026-09-25 |
+| MyTradingSys/system/DEVICES.md | reference | Hostnames, IPs, roles, shared paths and accounts for every machine in the pipeline. T049. | MTS-2026-09-26-1520Z | 2026-09-26 |

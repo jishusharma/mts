@@ -63,4 +63,8 @@ runtime_data/loop_stop.flag
 runtime_data/supervisor_stop.flag
 runtime_data/loop_state.json
 
+# --- Exchange credentials: never committed ---
+MyTradingSys/execution/.secrets/
+*.secret.json
+
 # END

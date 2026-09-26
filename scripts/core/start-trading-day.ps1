@@ -419,7 +419,7 @@ try {
             Start-Sleep -Seconds 60; continue
         }
     
-        $umsCmd = 'python "' + $R + '\MyTradingSys\runtime\update_market_state.py" > NUL 2>&1'
+        $umsCmd = 'python "' + $R + '\MyTradingSys\runtime\update_market_state.py" > runtime_data\ums.log 2>&1'
         $rc = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $umsCmd) -TimeoutSec 30 -Tag "update_market_state" -WorkDir $R
         if ($rc -ne 0) {
             Log-Line ("STATE_UPDATE_WARN exit=" + $rc)

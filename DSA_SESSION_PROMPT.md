@@ -34,16 +34,19 @@ The paste arrives as one file containing all boot content. Read it, then:
 2. Confirm the build result from the boot paste.
    If the status is not PASS, stop and report. Do not proceed.
 3. Read the current-state section of this file.
-4. State your role and mission. Start work.
+4. Compare section 11 timestamp to the current loop start. If
+   section 11 is older than the newest loop start line in
+   runtime_data/apparatus_log.txt, flag it before any other work.
+5. State your role and mission. Start work.
 
 Never claim a file was read unless you saw it pasted.
 
 Two more boot rules, added 2026-09-16 after a boot reply invented field values and aliases:
 
-5. No fabricated values. Every number, price, level, field value, and
+6. No fabricated values. Every number, price, level, field value, and
    verdict quoted in the boot reply must come from the boot paste. If
    unsure, do not quote it.
-6. No invented commands or aliases. Only name commands that exist in
+7. No invented commands or aliases. Only name commands that exist in
    scripts/load.ps1 or COMMANDS.md, or are shown in the boot paste. If
    unsure whether an alias exists, do not name it.
 

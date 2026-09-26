@@ -196,6 +196,47 @@ if (Test-Path $bugsPath) {
   $lines.Add("Bugs: file missing ($bugsPath)")
 }
 $lines.Add("")
+
+# items/*.md <-> INDEX.md two-way file check (T049 phase 4, 2026-09-26).
+# Independent of BUGS.md: the check above only catches an id already listed
+# there. This catches a missing or stale INDEX.md row directly, for any
+# item file, and the reverse - an INDEX.md row pointing at a file that is
+# not there.
+$idxPath2 = "MyTradingSys\items\INDEX.md"
+$itemsDir2 = "MyTradingSys\items"
+if ((Test-Path $itemsDir2) -and (Test-Path $idxPath2)) {
+    $idxText2 = [System.IO.File]::ReadAllText((Resolve-Path $idxPath2))
+    $idxRows2 = [regex]::Matches($idxText2, '(?m)^([BT]\d+)\s*\|\s*\S+\s*\|\s*([^\|]+?)\s*\|')
+    $idxIds2 = @{}
+    foreach ($m in $idxRows2) { $idxIds2[$m.Groups[1].Value] = $m.Groups[2].Value.Trim() }
+
+    $itemFiles2 = @(Get-ChildItem $itemsDir2 -Filter "*.md" -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -ne "INDEX.md" })
+    $fileMiss2 = @()
+    foreach ($f in $itemFiles2) {
+        if ($f.Name -match '^([BT]\d+)_') {
+            $id2 = $matches[1]
+            if (-not $idxIds2.ContainsKey($id2)) { $fileMiss2 += "$id2 ($($f.Name)) has no row in items/INDEX.md" }
+        }
+    }
+    $rowMiss2 = @()
+    foreach ($id2 in $idxIds2.Keys) {
+        $rowFile2 = $idxIds2[$id2]
+        $rowPath2 = Join-Path $itemsDir2 $rowFile2
+        if (-not (Test-Path $rowPath2)) { $rowMiss2 += "$id2 row in INDEX.md points at missing file: $rowFile2" }
+    }
+
+    $idxFail2 = @($fileMiss2 + $rowMiss2)
+    if ($idxFail2.Count -gt 0) {
+        $lines.Add("Index (files cross-check): FAIL (" + $idxFail2.Count + " issues)")
+        foreach ($x2 in $idxFail2) { $lines.Add("  - $x2") }
+        $overallFail = $true
+    } else {
+        $lines.Add("Index (files cross-check): OK (" + $itemFiles2.Count + " item files, " + $idxIds2.Count + " INDEX rows)")
+    }
+} else {
+    $lines.Add("Index (files cross-check): SKIP (items dir or INDEX.md missing)")
+}
+$lines.Add("")
 # Dispatch checks
 $dispatchFail = @()
 $dispatchDir = "Dumps\workers"

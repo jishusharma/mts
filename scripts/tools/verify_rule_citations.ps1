@@ -5,6 +5,7 @@
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $condDir = Join-Path $root 'MyTradingSys\conditions'
+$engineFile = Join-Path $root 'MyTradingSys\runtime\compiled_engine.md'
 $indexPath = Join-Path $root 'MyTradingSys\research\TOM_VERBATIM_INDEX.md'
 
 if (-not (Test-Path $indexPath)) { Write-Host 'FAIL: index missing'; exit 1 }
@@ -16,8 +17,15 @@ $untagged = @()
 $unknownTags = @()
 $usedIds = @{}
 
-Get-ChildItem -Path (Join-Path $condDir '*.md') | ForEach-Object {
-  $file = $_
+# Scanned files: the six condition files (every derived rule there carries
+# [TOM-NNN] or [SCREENER] by TOM_VERBATIM_INDEX.md's own rule) plus
+# runtime/compiled_engine.md (T049 phase 5, 2026-09-26: rule tagging and
+# source tracing extended to the compiled file, since a citation living
+# only there previously read as unreferenced and failed this check).
+$scanFiles = @(Get-ChildItem -Path (Join-Path $condDir '*.md'))
+if (Test-Path $engineFile) { $scanFiles += Get-Item $engineFile }
+
+foreach ($file in $scanFiles) {
   $lines = Get-Content $file.FullName
   $n = 0
   foreach ($line in $lines) {

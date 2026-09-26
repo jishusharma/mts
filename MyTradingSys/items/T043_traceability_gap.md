@@ -34,6 +34,11 @@ Two layers, different cadences:
 
 ## STATUS
 
-OPEN. Design only. Coordinator work only.
+WONTFIX, closed 2026-09-23-1445Z (BUGS.md receipt: "Gate rejected
+2026-09-23-1445Z; traceability mechanism not implemented as a gate.").
+This item doc was never updated to match at the time - found and synced
+2026-09-26 while checking the 2026-09-25 PROJECT_VISION.md.new layer-freeze
+draft, whose second freeze condition ("until T043 closes") assumed an
+un-synced status. See that draft for the live question this raises.
 
 # END

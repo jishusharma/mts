@@ -17,6 +17,14 @@ param(
 $R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 Set-Location $R
 
+# Resolve pwsh.exe: prefer MSI, fall back to per-user Store AppExecLink.
+$pwshCandidates = @(
+    "$env:ProgramFiles\PowerShell\7\pwsh.exe",
+    "$env:LOCALAPPDATA\Microsoft\WindowsApps\pwsh.exe"
+)
+$pwshExe = $pwshCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+if (-not $pwshExe) { $pwshExe = (Get-Command pwsh.exe).Source }
+
 # read lock; clear if stale
 $lockFile = Join-Path $R "runtime_data\apparatus.lock"
 $rootPids = @()
@@ -28,9 +36,6 @@ if (Test-Path $lockFile) {
     if ($rootPids.Count -gt 0) {
         $existing = Get-Process -Id $rootPids[0] -ErrorAction SilentlyContinue
         if ($existing -and ($existing.ProcessName -eq "powershell" -or $existing.ProcessName -eq "pwsh")) {
-            # Gap 6: validate lock content, not just PID liveness. Confirms the
-            # process is a loop wrapper and the lock epoch matches its start
-            # time, guarding against PID reuse.
             $ci = Get-CimInstance Win32_Process -Filter "ProcessId=$($rootPids[0])" -ErrorAction SilentlyContinue
             $cmdOk = $false
             if ($ci -and $ci.CommandLine) {
@@ -58,8 +63,6 @@ if (Test-Path $lockFile) {
 }
 
 # scoped kill: only lock-PID descendants + orphan datafeed java
-
-
 foreach ($rp in $rootPids) {
     $desc = Get-Descendants $rp
     foreach ($p in $desc) {
@@ -70,8 +73,7 @@ foreach ($rp in $rootPids) {
     if ($proc) { Stop-Process -Id $rp -Force -ErrorAction SilentlyContinue }
 }
 
-# fallback: orphan processes matching this project's loop, even if the lock
-# PID was dead and descendants could not be walked. Excludes this process.
+# fallback: orphan processes matching this project loop, excludes this process.
 $selfId = $PID
 Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | ForEach-Object {
     if ($_.ProcessId -eq $selfId) { return }
@@ -85,8 +87,8 @@ Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | ForEach-Object {
 
 Start-Sleep -Seconds 2
 
-# Ensure supervisor is running (guarded). Mirrors mts-up in load.ps1.
-# Reads supervisor.lock, launches detached only if no live supervisor.
+# Ensure supervisor is running. Launch via VBS + scheduled task.
+# VBS hides the console; scheduled task escapes the IDE terminal job.
 $supLock = Join-Path $R "runtime_data\supervisor.lock"
 $supRunning = $false
 if (Test-Path $supLock) {
@@ -96,9 +98,23 @@ if (Test-Path $supLock) {
     } catch {}
 }
 if (-not $supRunning) {
-    Start-Process pwsh.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-File","$R\scripts\core\loop-supervisor.ps1","-Mode",$M,"-IntervalMin","1","-RestartGraceSec","180") -WindowStyle Hidden
+    $vbsPath   = Join-Path $R "runtime_data\launch-supervisor.vbs"
+    $supScript = Join-Path $R "scripts\core\loop-supervisor.ps1"
+    $supCmd    = '"{0}" -NoProfile -ExecutionPolicy Bypass -File "{1}" -Mode {2} -IntervalMin 1 -RestartGraceSec 180' -f $pwshExe, $supScript, $M
+    $supCmdVbs = $supCmd -replace '"', '""'
+    $vbs = @(
+        'Set sh = CreateObject("WScript.Shell")'
+        ('sh.CurrentDirectory = "{0}"' -f $R)
+        ('sh.Run "{0}", 0, False' -f $supCmdVbs)
+    ) -join "`r`n"
+    $enc = New-Object System.Text.UTF8Encoding $false
+    [System.IO.File]::WriteAllText($vbsPath, $vbs, $enc)
+    $act = New-ScheduledTaskAction -Execute "$env:windir\System32\wscript.exe" -Argument "//nologo ""$vbsPath""" -WorkingDirectory $R
+    $trg = New-ScheduledTaskTrigger -Once -At (Get-Date).AddYears(10)
+    Register-ScheduledTask -TaskName 'MTS-Supervisor' -Action $act -Trigger $trg -Force | Out-Null
+    Start-ScheduledTask -TaskName 'MTS-Supervisor'
     Start-Sleep -Seconds 1
-    Write-Host "supervisor launched"
+    Write-Host 'supervisor launched (hidden via VBS + scheduled task)'
 } else {
     Write-Host "supervisor already running PID=$sp"
 }
@@ -108,4 +124,26 @@ if ($Dir) { $splat.Direction = $Dir }
 if ($E -gt 0) { $splat.Entry = $E }
 if ($S -gt 0) { $splat.Stop = $S }
 if ($T -gt 0) { $splat.Target = $T }
-& "$R\scripts\core\start-trading-day.ps1" @splat
+
+# Launch wrapper via VBS + scheduled task.
+$wrapVbs    = Join-Path $R "runtime_data\launch-wrapper.vbs"
+$wrapScript = Join-Path $R "scripts\core\start-trading-day.ps1"
+$wrapArgs = '-NoProfile -ExecutionPolicy Bypass -File "{0}" -Mode {1} -Popups {2}' -f $wrapScript, $splat.Mode, $splat.Popups
+if ($splat.ContainsKey("Direction")) { $wrapArgs += ' -Direction ' + $splat.Direction }
+if ($splat.ContainsKey("Entry"))     { $wrapArgs += ' -Entry '     + $splat.Entry }
+if ($splat.ContainsKey("Stop"))      { $wrapArgs += ' -Stop '      + $splat.Stop }
+if ($splat.ContainsKey("Target"))    { $wrapArgs += ' -Target '    + $splat.Target }
+$wrapCmd    = '"{0}" {1}' -f $pwshExe, $wrapArgs
+$wrapCmdVbs = $wrapCmd -replace '"', '""'
+$wvbs = @(
+    'Set sh = CreateObject("WScript.Shell")'
+    ('sh.CurrentDirectory = "{0}"' -f $R)
+    ('sh.Run "{0}", 0, False' -f $wrapCmdVbs)
+) -join "`r`n"
+[System.IO.File]::WriteAllText($wrapVbs, $wvbs, $enc)
+$wact = New-ScheduledTaskAction -Execute "$env:windir\System32\wscript.exe" -Argument "//nologo ""$wrapVbs""" -WorkingDirectory $R
+$wtrg = New-ScheduledTaskTrigger -Once -At (Get-Date).AddYears(10)
+Register-ScheduledTask -TaskName 'MTS-Wrapper' -Action $wact -Trigger $wtrg -Force | Out-Null
+Start-ScheduledTask -TaskName 'MTS-Wrapper'
+Write-Host 'wrapper launched (hidden via VBS + scheduled task)'
+Write-Host 'mode.ps1 returning; loop runs detached'

@@ -973,6 +973,105 @@
       "action": "passed",
       "reason": "session 1100Z close: folder flatten, PROJECT_VISION boot, post_funding demoted, DSA five-edit audit, T045 closed",
       "ts": "2026-09-24T13:50:26.395188Z"
+    },
+    {
+      "alert_id": 5,
+      "setup": "ct_short",
+      "action": "monitored",
+      "verdict": "WAIT_TRIGGER",
+      "reason": null,
+      "type": "alert",
+      "ts": "2026-09-25T09:03:19.885Z"
+    },
+    {
+      "alert_id": 6,
+      "setup": "ct_short",
+      "action": "monitored",
+      "verdict": "SETUP_FORMING",
+      "reason": "STATE TWOPEAK/in_va -> TWOPEAK/above_vah",
+      "type": "alert",
+      "ts": "2026-09-25T10:36:19.916Z"
+    },
+    {
+      "alert_id": 7,
+      "setup": "fvg_long",
+      "action": "monitored",
+      "verdict": "WAIT_TRIGGER",
+      "reason": "zone vwap_band_+1 -> 5m_swing_high",
+      "type": "alert",
+      "ts": "2026-09-25T11:08:19.396Z"
+    },
+    {
+      "alert_id": 8,
+      "setup": "tc_long",
+      "action": "monitored",
+      "verdict": "WAIT_RR",
+      "reason": "zone - -> fvg_bottom | STATE TWOPEAK/in_va -> TWOPEAK/above_vah",
+      "type": "alert",
+      "ts": "2026-09-25T11:28:20.299Z"
+    },
+    {
+      "alert_id": 9,
+      "setup": "-",
+      "action": "monitored",
+      "verdict": "NO_TRADE",
+      "reason": "verdict WAIT_PROOF -> WAIT_RR | STATE TWOPEAK/in_va -> TWOPEAK/above_vah",
+      "type": "alert",
+      "ts": "2026-09-25T12:20:20.834Z"
+    },
+    {
+      "alert_id": 10,
+      "setup": "ct_long",
+      "action": "monitored",
+      "verdict": "SETUP_FORMING",
+      "reason": "STATE TWOPEAK/below_val -> TWOPEAK/in_va",
+      "type": "alert",
+      "ts": "2026-09-25T12:49:21.183Z"
+    },
+    {
+      "alert_id": 11,
+      "setup": "-",
+      "action": "monitored",
+      "verdict": "NO_TRADE",
+      "reason": "price delta 0.16% | proof 3 -> 5",
+      "type": "alert",
+      "ts": "2026-09-25T13:32:20.575Z"
+    },
+    {
+      "alert_id": 12,
+      "setup": "ct_long",
+      "action": "monitored",
+      "verdict": "WAIT_TRIGGER",
+      "reason": "verdict WAIT_TRIGGER -> NO_TRADE | STATE TWOPEAK/in_va -> TWOPEAK/below_val",
+      "type": "alert",
+      "ts": "2026-09-25T13:36:20.576Z"
+    },
+    {
+      "alert_id": 13,
+      "setup": "fvg_short",
+      "action": "monitored",
+      "verdict": "WAIT_TRIGGER",
+      "reason": "price delta 0.28% | STATE TWOPEAK/below_val -> TWOPEAK/in_va",
+      "type": "alert",
+      "ts": "2026-09-25T13:48:19.920Z"
+    },
+    {
+      "alert_id": 14,
+      "setup": "-",
+      "action": "monitored",
+      "verdict": "NO_TRADE",
+      "reason": "zone - -> fvg_top | STATE TWOPEAK/in_va -> TWOPEAK/below_val",
+      "type": "alert",
+      "ts": "2026-09-25T14:05:20.206Z"
+    },
+    {
+      "alert_id": 15,
+      "setup": "fvg_long",
+      "action": "monitored",
+      "verdict": "WAIT_PROOF",
+      "reason": "price delta 0.33% | STATE TWOPEAK/in_va -> TWOPEAK/below_val",
+      "type": "alert",
+      "ts": "2026-09-25T14:13:21.223Z"
     }
   ]
 }

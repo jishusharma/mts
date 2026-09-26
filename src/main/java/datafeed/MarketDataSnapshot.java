@@ -141,7 +141,7 @@ public class MarketDataSnapshot {
         weeklyVp.put("prior_week_poc", Math.round(priorWeekPoc * 100.0) / 100.0);
         weeklyVp.put("two_week_ago_poc", Math.round(twoWeekAgoPoc * 100.0) / 100.0);
         ObjectNode dailyVp = buildVp(dailyBars, true);
-        ObjectNode postFundingVp = buildVp(postFundingBars, false, 10.0);
+        ObjectNode postFundingVp = buildVp(postFundingBars, false, 10.0); // [SCREENER] bin=10.0 - B059 untagged, no citation
         ObjectNode intraday4hVp = buildVp(intraday4hBars, false);
         ObjectNode priorDayVp = buildVp(priorDayBars, false);
         double priorDayClose = 0.0, priorDayHigh = 0.0, priorDayLow = Double.MAX_VALUE;
@@ -1063,7 +1063,7 @@ public class MarketDataSnapshot {
         weeklyVp.put("prior_week_poc", Math.round(priorWeekPoc * 100.0) / 100.0);
         weeklyVp.put("two_week_ago_poc", Math.round(twoWeekAgoPoc * 100.0) / 100.0);
         ObjectNode dailyVp = buildVp(dailyBars, true);
-        ObjectNode postFundingVp = buildVp(postFundingBars, false, 10.0);
+        ObjectNode postFundingVp = buildVp(postFundingBars, false, 10.0); // [SCREENER] bin=10.0 - B059 untagged, no citation
         ObjectNode intraday4hVp = buildVp(intraday4hBars, false);
         ObjectNode priorDayVp = buildVp(priorDayBars, false);
         double priorDayClose = 0.0, priorDayHigh = 0.0, priorDayLow = Double.MAX_VALUE;

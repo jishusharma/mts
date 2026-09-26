@@ -225,4 +225,5 @@
 | TOM-212 | Ld1dhjGdTCA | MIDDLE | "if something is very narrow, but liquidity is the same as in the previous days, then the probability at a later point in time is much greater that the market will trend." | zone_identification_rules.md |
 | TOM-213 | YmygDgtoxO8 | MIDDLE | "Because here we have accepted significantly lower prices. The major market participants have shifted their range from above to below. Now for example some news comes out the mar..." | zone_identification_rules.md |
 
+| TOM-214 | -dMWA_bbm3o | MIDDLE | "What information does this double distribution give me? I need to know that before the week starts." | compiled_engine.md |
 # END

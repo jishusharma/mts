@@ -106,6 +106,11 @@ Note that we will integrate RSI - so it is momentum and it comes from a differen
 - How does each integration surface its read? Snapshot field, separate file, sidecar process? (Undefined.)
 - Interface between MTS core and read layers? (Undefined.)
 - When a read conflicts with MTS, which wins? (Undefined. Must be decided before integration.)
+  RESOLVED 2026-09-25 (worker W6, receipt per extract PROJECT_VISION.md L23-L28; L134-L138; L16-L18).
+  Q1 (how each integration surfaces its read): separate read-layer file or sidecar process; read-only; switchable module; never gates core.
+  Q2 (interface between MTS core and read layers): one-way read-only contract over engine-computed state; no writes back; no commands run by the reader.
+  Q3 (conflict priority): MTS core wins for core behavior; read layers may annotate conflict as complementary reading only.
+  Reply: Dumps/workers/CLOSE-2026-09-25/W6-project-vision/REPLY.md
 
 ## USER DIRECTIVE (verbatim, 2026-09-22) - LOCAL AI ASSISTANT + TICK-DELTA LAYER
 
@@ -151,5 +156,34 @@ Decision: GPU purchase for the desktop is not speculative. Test a small quantize
 - Assistant context window shape: rolling N-minute window of recent snapshots, or single latest snapshot only. Undecided.
 - Tick-delta thresholds: which indicators, what numeric thresholds, what cooldown value. All new rule surface; require research-tier process before trust. Tracked in items/T040_tick_delta_layer.md.
 - Assistant input merge: shared file vs separate files for candle and tick streams, ordering and dedup rules. Design item under T040.
+  RESOLVED 2026-09-25 (worker W6, receipt per extract PROJECT_VISION.md L114; L116; L118-L120; L126-L130; L135; L138; L152-L153; per extract MTS_DICTIONARY.md L162-L175).
+  Q4 (assistant model choice): test a 3B-8B quantized model CPU-first on the desktop; buy an RTX 3060-class GPU only if measured latency exceeds tolerance.
+  Q5 (context window shape): rolling N-minute window of recent snapshots, plus alerts and history as needed.
+  Q6 (tick-delta thresholds and input merge): start with price and CVD; documented numeric thresholds; explicit cooldown; separate files for candle and tick streams; one granularity tag per consumed record (source:candle or source:tick). Thresholds are new rule surface and require research-tier before trust. Tick-delta stays module-only: it never vetoes or triggers a core setup.
+  Reply: Dumps/workers/CLOSE-2026-09-25/W6-project-vision/REPLY.md
+
+## DIRECTION DECISION (2026-09-26) - LAYER FREEZE LIFTED FOR T048
+
+Not verbatim. Recorded per this file's own "direction documented here before
+build" principle.
+
+MyTradingSys/PROJECT_VISION.md.new (drafted 2026-09-25 13:21Z, never merged)
+proposed a layer freeze pausing T048 (satellite framework + exchange API
+layer), T040, the local AI assistant, and further NUC-builder build-out,
+until (1) compiled_engine.md's inline tags extend to CORE/MODULE and (2)
+T043 closes. Neither condition was actually met when this was found
+2026-09-26: (1) is undone - zero CORE/MODULE tags exist, the doctrine above
+still calls that extension deferred; (2) T043 closed WONTFIX 2026-09-23 (the
+mechanism was rejected, not built - see items/T043_traceability_gap.md,
+synced 2026-09-26 to match BUGS.md, having drifted since the closure).
+
+Operator directive 2026-09-26: lift the freeze for T048 specifically. The
+NUC-worker rule-tagging/traceability work continues on its own track under
+T049; it is not a precondition for T048 anymore. T040 and the local AI
+assistant are not addressed by this decision and remain as the unmerged
+.new left them unless raised separately.
+
+The unmerged MyTradingSys/PROJECT_VISION.md.new is superseded by this entry
+for T048's purposes and left in place as a dated record, not applied.
 
 # END
