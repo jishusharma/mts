@@ -1,67 +1,53 @@
-# FILE: mts/tests/UNIT_TEST_PLAN.md
+# FILE: MyTradingSys/tests/UNIT_TEST_PLAN.md
 # READ ORDER: After compiled_code_opportunities.md
 # PURPOSE: Map ACTUAL compiled functions to test coverage. No fantasy specs.
-# Date: 2026-09-02
-# Status: ACTIVE v4.0.0 вЂ” REPLACES v3.0.0 fantasy spec
-# Canonical: /mnt/agents/output/upload_mirror/mts/tests/UNIT_TEST_PLAN.md
+# Date: 2026-09-27
+# Status: ACTIVE v5.0.0 - REPLACES v4.0.0 (stale counts, mojibake)
 # ---
 
-# UNIT TEST PLAN вЂ” v4.0.0
-# Reality check: 22 compiled functions, 125 pytest cases, 2 test files.
-# Previous v3.0.0 claimed 55 functions / ~408 cases вЂ” that was a fantasy spec.
-
-## Compiled Functions (22 total)
-
-### mts_math.py вЂ” 16 functions (9 public math + 7 state management)
-| Function | Type | Tests | File |
-|----------|------|-------|------|
-| calculate_distance | public math | 4 | test_mts_math.py |
-| get_zone_substate | public math | 4 | test_mts_math.py |
-| get_distance_cap | public math | 5 | test_mts_math.py |
-| get_tier | public math | 5 | test_mts_math.py |
-| check_trigger_validity | public math | 6 | test_mts_math.py |
-| calculate_gross_rr | public math | 4 | test_mts_math.py |
-| calculate_net_rr | public math | 3 | test_mts_math.py |
-| calculate_rr_sanity | public math | 3 | test_mts_math.py |
-| detect_confluence | public math | 6 | test_mts_math.py |
-| parse_state | public state | 2 | test_mts_math.py |
-| diff_state | public state | 5 | test_mts_math.py |
-| update_state | public state | 3 | test_mts_math.py |
-| format_state | public state | 0* | test_mts_math.py |
-| write_state | public state | 1 | test_mts_math.py |
-| _cast | private helper | 3 | test_mts_math.py |
-| _get_snapshot_value | private helper | 2 | test_mts_math.py |
-
-### math_object_builder.py вЂ” 6 functions (1 public + 5 private)
-| Function | Type | Tests | File |
-|----------|------|-------|------|
-| build_math_object | public | 1 (determinism) | test_math_object_builder.py |
-| _is_old_schema | private | 1 | test_math_object_builder.py |
-| _normalize_snapshot | private | 7 (schema detection) | test_math_object_builder.py |
-| _extract_zones | private | 14 (zone fields, R:R, confluence, hard stops) | test_math_object_builder.py |
-| _swing_tf_for_zone | private | 0* | test_math_object_builder.py |
-| _pick_stop_target | private | 0* | test_math_object_builder.py |
-
-*Functions marked 0* are tested indirectly through build_math_object integration.
+# UNIT TEST PLAN - v5.0.0
+# Reality check (recounted 2026-09-27, task A1 of core_readiness_2026-09-27
+# plan): 130 pytest cases across 4 files, plus 1 new file (test_proof_direction.py,
+# 1 case covering 15 sub-checks) adopted from the core-readiness harness. 131 total.
+# v4.0.0 (2026-09-02) claimed 125 across 2 files; test_session_state.py (8) and
+# tests/docs/test_integrity.py (5) existed on disk but were never folded into
+# the count. This version is the single source of test counts - update it
+# whenever a test file is added or a function count changes, do not let it drift again.
 
 ## Test Summary
 | File | Test Count | Coverage |
 |------|-----------|----------|
-| test_mts_math.py | 64 | All 16 mts_math.py functions |
-| test_math_object_builder.py | 34 | build_math_object + schema/zone validation |
-| **Total** | **125** | **22 compiled functions** |
+| test_mts_math.py | 79 | mts_math.py math + state-management functions |
+| test_math_object_builder.py | 38 | build_math_object + schema/zone validation |
+| test_session_state.py | 8 | session_state.py read/write/log roundtrip |
+| docs/test_integrity.py | 5 | doc integrity checks (see that file for scope) |
+| test_proof_direction.py | 1 | L2 proof-direction check (BUG-008), 14 pinned cases + 1 no-candidates case, adopted from research/core_readiness_2026-09-27/harness/proof_direction_cases.py |
+| **Total** | **131** | |
 
 ## AI-Judgment Functions (NOT unit-testable)
-These live in compiled_engine.md as [PRINCIPLE вЂ” NOT ALGORITHM] entries.
+These live in compiled_engine.md as [PRINCIPLE - NOT ALGORITHM] entries.
 Validated via 3-snapshot rule (Rule 35), not pytest.
 Examples: classify_state, check_breakdown_override, apply_exhaustion_gate, get_valid_setups
 
 ## Running Tests
 ```bash
-cd /mnt/agents/output/upload_mirror/mts/tests
-pytest test_mts_math.py -v          # 64 tests
-pytest test_math_object_builder.py -v  # 34 tests
-pytest -v                              # 125 tests total
+cd MyTradingSys/tests
+pytest -q                                 # 131 tests total
+pytest test_mts_math.py -v                # 79 tests
+pytest test_math_object_builder.py -v     # 38 tests
+pytest test_session_state.py -v           # 8 tests
+pytest docs/test_integrity.py -v          # 5 tests
+pytest test_proof_direction.py -v         # 1 test, 15 sub-checks
 ```
+
+## NOTE ON L1/L2 COVERAGE (2026-09-27)
+Everything above tests mts_math.py (Python zone math) and math_object_builder.py
+(L2 proof-direction/aligned-contradiction). Neither is the live decision path's
+L1: the Java Tom core (SetupCandidatesBuilder.java, ExtraSetupBuilder.java) has
+no pytest coverage (Python cannot import it) and had zero regression tests
+before 2026-09-27. That gap is covered separately by
+research/core_readiness_2026-09-27/harness/java/ReplayScbSteps1to8.java
+(replays L1 from archived snapshots; not part of this pytest suite; see
+core_check.ps1). See CORE_READINESS_PLAN.md for the full layer map.
 
 # END

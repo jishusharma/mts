@@ -10,7 +10,9 @@ Subcommands:
   pack SPEC [SPEC ...]  Build task packages from spec files into incoming/.
   status                One-screen summary of the queue and the worker heartbeat.
   verify [ID ...]       Mechanical checks on finished replies. No ID: every
-                        reply that has no verdict yet.
+                        reply that has no verdict yet. An explicit ID always
+                        re-runs the checks and overwrites that id's verdict.
+  lint SPEC [SPEC ...]  Check only that SCOPE/CREATE lines are bare paths.
   deploy                Copy the worker scripts into deploy/. The NUC launcher
                         installs a changed worker by itself within a minute.
 
@@ -22,6 +24,9 @@ Spec file format (header lines, one blank line, then the task body):
   OUTPUT_TOKENS: optional, default 4096
   EXPECT: optional, repeatable. Exact text the reply must contain.
           Never shown to the model. Used as the acceptance check.
+  CREATE: optional, repeatable, bare path. A file the task is allowed to
+          create that does not exist yet; verify will not flag it as an
+          unknown file name or an out-of-scope proposal.
   OVERRIDE-CRITICAL: approved-by-operator   (only when SCOPE names a critical file)
 
 Every file this tool writes is UTF-8 without BOM, LF line endings, written
@@ -36,6 +41,8 @@ import math
 import os
 import re
 import shutil
+import subprocess
+import tempfile
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
@@ -92,6 +99,8 @@ ID_RE = re.compile(r"^\d{3,}-[A-Za-z0-9][A-Za-z0-9-]*$")
 ANSI_RE = re.compile(r"\x1b\[[0-9;?]*[ -/]*[@-~]")
 PATH_REF_RE = re.compile(r"[A-Za-z0-9_][A-Za-z0-9_./\\-]*\.(?:md|py|ps1|java|json|txt|xml|csv|yml|yaml)\b")
 FILE_BLOCK_RE = re.compile(r"^<<<FILE[ \t]+(.+?)[ \t]*\r?\n(.*?)^>>>END FILE[ \t]*$", re.M | re.S)
+# Every <<<FILE ...>>> header line, whether or not its block closed properly.
+FILE_HEADER_RE = re.compile(r"^<<<FILE[ \t]+(.+?)[ \t]*\r?$", re.M)
 
 
 # ---------- small helpers ----------
@@ -167,9 +176,22 @@ class Refused(Exception):
     pass
 
 
+def check_bare_path_line(key, val):
+    """SCOPE/CREATE entries must be bare comma-separated paths, never prose."""
+    for entry in val.split(","):
+        entry = entry.strip()
+        if not entry:
+            continue
+        if " " in entry or "(" in entry or ")" in entry:
+            raise Refused(
+                f"{key} entry is not a bare path (looks like prose): '{entry}'. "
+                f"Move the explanation into the task body and keep {key} to bare paths only."
+            )
+
+
 def parse_spec(path):
     lines = read_text(path).splitlines()
-    head, expect, i = {}, [], 0
+    head, expect, create, i = {}, [], [], 0
     while i < len(lines) and lines[i].strip():
         m = HEADER_RE.match(lines[i])
         if not m:
@@ -178,11 +200,17 @@ def parse_spec(path):
         if key == "EXPECT":
             if val:
                 expect.append(val)
+        elif key == "CREATE":
+            if val:
+                check_bare_path_line("CREATE", val)
+                create.append(val)
         else:
+            if key == "SCOPE" and val:
+                check_bare_path_line("SCOPE", val)
             head[key] = val
         i += 1
     body = "\n".join(lines[i:]).strip()
-    return head, expect, body
+    return head, expect, create, body
 
 
 def is_text_file(path):
@@ -265,7 +293,7 @@ def build_package(spec_path):
     task_id = spec_path.name[:-3] if spec_path.name.endswith(".md") else spec_path.stem
     if not ID_RE.match(task_id):
         raise Refused(f"spec file name must look like 004-short-name.md, got {spec_path.name}")
-    head, expect, body = parse_spec(spec_path)
+    head, expect, create, body = parse_spec(spec_path)
     for key in ("TASK", "SCOPE"):
         if not head.get(key):
             raise Refused(f"spec has no {key}: line")
@@ -279,6 +307,27 @@ def build_package(spec_path):
 
     picked = resolve_scope(head["SCOPE"])
     override = head.get("OVERRIDE-CRITICAL", "") == "approved-by-operator"
+    create_paths = []
+    for raw in create:
+        for sub in raw.split(","):
+            sub = sub.strip()
+            if not sub:
+                continue
+            rel = norm_rel(sub)
+            if not rel or re.match(r"^[A-Za-z]:", rel):
+                raise Refused(f"CREATE entry must be a path relative to the repository root: {sub}")
+            target = (REPO / rel).resolve()
+            try:
+                target.relative_to(REPO.resolve())
+            except ValueError:
+                raise Refused(f"CREATE entry points outside the repository: {sub}")
+            if rel.lower() in CRITICAL:
+                raise Refused(
+                    f"CREATE names a critical file {rel}; critical files must already "
+                    f"exist and go through SCOPE with OVERRIDE-CRITICAL"
+                )
+            if rel not in create_paths:
+                create_paths.append(rel)
     blocks, scope_meta = [], []
     for path, first, last in picked:
         rel = rel_of(path)
@@ -334,6 +383,7 @@ def build_package(spec_path):
         "est_prompt_tokens": est_tokens,
         "scope": scope_meta,
         "expect": expect,
+        "create": create_paths,
         "spec_file": rel_of(spec_path),
         "prompt": prompt,
     }
@@ -359,6 +409,25 @@ def cmd_pack(args):
             failures += 1
             print(f"REFUSED {spec_path.name}: {exc}")
     return 1 if failures else 0
+
+
+def cmd_lint(args):
+    """Check only that SCOPE/CREATE lines in each spec are bare paths."""
+    ok = True
+    for spec in args.specs:
+        spec_path = Path(spec)
+        if not spec_path.is_absolute():
+            cand = QUEUE / "specs" / spec
+            spec_path = cand if cand.exists() else (Path.cwd() / spec)
+        try:
+            if not spec_path.exists():
+                raise Refused(f"spec not found: {spec}")
+            parse_spec(spec_path)
+            print(f"OK      {spec_path.name}")
+        except Refused as exc:
+            ok = False
+            print(f"REFUSED {spec_path.name}: {exc}")
+    return 0 if ok else 1
 
 
 # ---------- status ----------
@@ -462,21 +531,43 @@ def verify_one(task_id):
     scope_paths = {e["path"] for e in pkg.get("scope", [])}
     scope_names = {p.rsplit("/", 1)[-1] for p in scope_paths}
     scope_dirs = {(REPO / p).parent for p in scope_paths}
+    create_paths = {norm_rel(p) for p in pkg.get("create", [])}
+    create_names = {p.rsplit("/", 1)[-1] for p in create_paths}
+    # Every <<<FILE ...>>> header the model wrote, whether or not its closing
+    # marker matched FILE_BLOCK_RE. These are proposal targets -- the task's
+    # own output -- never an "unknown file name", regardless of whether
+    # section 4 below ends up actually writing them.
+    declared_targets = {norm_rel(m.group(1)) for m in FILE_HEADER_RE.finditer(response)}
+    declared_names = {p.rsplit("/", 1)[-1] for p in declared_targets}
     proposals = list(FILE_BLOCK_RE.finditer(response))
     prose = FILE_BLOCK_RE.sub("", response)
-    unknown = []
+    unknown, warn = [], []
     for ref in sorted(set(PATH_REF_RE.findall(prose))):
         r = norm_rel(ref)
         name = r.rsplit("/", 1)[-1]
-        if r in scope_paths or r in scope_names:
+        known = (
+            r in scope_paths or r in scope_names
+            or r in create_paths or r in create_names
+            or r in declared_targets or name in declared_names
+        )
+        if known:
             continue
         if "/" in r and (REPO / r).exists():
             continue
         if "/" not in r and (name in scope_names or any((d / name).exists() for d in scope_dirs) or (REPO / name).exists()):
             continue
-        unknown.append(r)
+        if "/" in r:
+            # looks like a genuine file path the model invented out of thin air
+            unknown.append(r)
+        else:
+            # a bare name with no directory is very likely a literal used
+            # inside code or test data (a sample CSV name, say) and not a
+            # reference to a real file; note it, do not block on it.
+            warn.append(r)
     for r in unknown:
         fail.append(f"file name not found in scope or repository: {r}")
+    for r in warn:
+        review.append(f"name not found in scope or repository, referenced only in code/text: {r}")
 
     # 3. inputs changed since packing
     for entry in pkg.get("scope", []):
@@ -486,6 +577,7 @@ def verify_one(task_id):
 
     # 4. proposed file changes: written as <target>.new next to the target, plus one diff file
     diff_chunks = []
+    written_py = []
     for m in proposals:
         target_rel = norm_rel(m.group(1))
         body = m.group(2)
@@ -495,7 +587,7 @@ def verify_one(task_id):
         except ValueError:
             fail.append(f"proposal points outside the repository: {target_rel}")
             continue
-        if target_rel not in scope_paths:
+        if target_rel not in scope_paths and target_rel not in create_paths:
             review.append(f"proposal for a file outside the task scope, not written: {target_rel}")
             continue
         old_text = read_text(target) if target.exists() else ""
@@ -514,8 +606,70 @@ def verify_one(task_id):
         crit = "; CRITICAL FILE: four-step proof on apply" if target_rel.lower() in CRITICAL else ""
         review.append(f"proposal {rel_of(new_path)}: +{added} -{removed} lines{crit}")
         diff_chunks.append("".join(diff))
+        if target_rel.endswith(".py"):
+            written_py.append((target_rel, new_path))
     if diff_chunks:
         write_atomic(done / f"{task_id}.diff", "\n".join(diff_chunks))
+
+    # 5. compile/test gate: a claimed DONE that does not even parse must not pass
+    if written_py:
+        by_stem = {Path(t).stem: p for t, p in written_py}
+        syntax_fail = []
+        for target_rel, new_path in written_py:
+            with tempfile.TemporaryDirectory() as td:
+                tmp_py = Path(td) / Path(target_rel).name
+                shutil.copyfile(new_path, tmp_py)
+                try:
+                    r = subprocess.run(
+                        [sys.executable, "-m", "py_compile", str(tmp_py)],
+                        capture_output=True, text=True, timeout=30,
+                    )
+                except subprocess.TimeoutExpired:
+                    syntax_fail.append((target_rel, "py_compile timed out"))
+                    continue
+                if r.returncode != 0:
+                    msg_lines = (r.stderr or r.stdout).strip().splitlines()
+                    syntax_fail.append((target_rel, msg_lines[-1] if msg_lines else "compile error"))
+        if syntax_fail:
+            for target_rel, msg in syntax_fail:
+                fail.append(f"syntax error in proposal {target_rel}: {msg}")
+        else:
+            failing_tests, ran_any, total_n, passed_n = [], False, 0, 0
+            for target_rel, new_path in written_py:
+                stem = Path(target_rel).stem
+                if not stem.startswith("test_"):
+                    continue
+                module_path = by_stem.get(stem[len("test_"):])
+                if module_path is None:
+                    continue
+                ran_any = True
+                with tempfile.TemporaryDirectory() as td:
+                    tdp = Path(td)
+                    shutil.copyfile(module_path, tdp / f"{stem[len('test_'):]}.py")
+                    shutil.copyfile(new_path, tdp / f"{stem}.py")
+                    try:
+                        r = subprocess.run(
+                            [sys.executable, "-m", "unittest", stem],
+                            cwd=str(tdp), capture_output=True, text=True, timeout=120,
+                        )
+                    except subprocess.TimeoutExpired:
+                        failing_tests.append(f"{stem} (timed out)")
+                        continue
+                    out = r.stdout + r.stderr
+                    m = re.search(r"Ran (\d+) tests?", out)
+                    n = int(m.group(1)) if m else 0
+                    total_n += n
+                    if r.returncode == 0:
+                        passed_n += n
+                    else:
+                        names = re.findall(r"^(?:FAIL|ERROR): (\S+)", out, re.M)
+                        failing_tests.extend(names or [f"{stem} (failed)"])
+            if not ran_any:
+                review.append("compile OK (no matching test_*.py proposal to run)")
+            elif failing_tests:
+                review.append(f"tests failing: {', '.join(failing_tests[:10])}")
+            else:
+                review.append(f"compile OK, tests {passed_n}/{total_n}")
 
     tokens_in = reply.get("prompt_eval_count")
     tokens_out = reply.get("eval_count")
@@ -591,6 +745,9 @@ def main(argv=None):
     p = sub.add_parser("pack", help="build task packages from spec files")
     p.add_argument("specs", nargs="+")
     p.set_defaults(func=cmd_pack)
+    l = sub.add_parser("lint", help="check SCOPE/CREATE lines are bare paths, nothing else")
+    l.add_argument("specs", nargs="+")
+    l.set_defaults(func=cmd_lint)
     s = sub.add_parser("status", help="queue and worker summary")
     s.set_defaults(func=cmd_status)
     v = sub.add_parser("verify", help="mechanical checks on replies")

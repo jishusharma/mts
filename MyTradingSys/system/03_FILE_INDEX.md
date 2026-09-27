@@ -98,6 +98,34 @@
 | state_code.json | ~0.6KB | State machine output (runtime) |
 | v4.2.0_optimization_spec.md | ~11KB | REFERENCE - design doc, not loaded at runtime |
 
+## MTS/EXECUTION/ - Deribit Order Execution Layer
+
+| File | Size | Purpose |
+|------|------|---------|
+| README.md | ~1.1KB | Execution layer overview and setup notes |
+| deribit_client.py | ~2.6KB | Low-level Deribit API HTTP/WS client |
+| deribit_orders.py | ~9.6KB | Order placement, amend, cancel wrappers |
+| deribit_read.py | ~4.2KB | Read-only account/position/order-book calls |
+| executor.py | ~9.9KB | Trade-plan executor: places orders, manages protective stop |
+| journal.py | ~3.9KB | Execution journal / trade log writer |
+| plan_compiler.py | ~11.2KB | Compiles a trade plan into concrete order instructions |
+| reconciler.py | ~5.1KB | Reconciles local state against exchange state |
+| trade_plan_schema.json | ~6.3KB | JSON schema for a trade plan |
+| trade_plan_validator.py | ~11.5KB | Validates a trade plan against the schema |
+| examples/ | 8 files, ~3.9KB total | Sample valid/invalid trade plan JSON files (folder) |
+| .secrets/ | - | API credential storage, gitignored (folder) |
+
+## MTS/BACKTEST/ - Replay & Parity Harness
+
+| File | Size | Purpose |
+|------|------|---------|
+| snapshots.py | ~1.4KB | Shared archived-snapshot loader for parity.py and replay.py |
+| verdict.py | ~5.1KB | Python port of Compute-Verdict + proof_dir_of, parity-guarded |
+| parity.py | ~1.7KB | Checks verdict.py against live-logged verdicts |
+| replay.py | ~1.9KB | Replays archived snapshots through verdict.py |
+| sim.py | ~5.3KB | Backtest simulation driver |
+| fetch_bars.py | ~3.2KB | Fetches historical kline bars for backtesting |
+
 ## MTS/RESEARCH/ - Active Research (15 files)
 
 | File | Size | Purpose |
