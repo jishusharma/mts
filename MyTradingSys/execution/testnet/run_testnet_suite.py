@@ -12,10 +12,24 @@ import deribit_orders as do, executor as ex, journal
 from plan_compiler import compile_plan
 
 I = "BTC-PERPETUAL"
+
+# FIX3 H6: a suite never touches the operator's real HALT files. Refuse to
+# start while one exists; fail_closed/flatten_halt (which now write HALT) and
+# the daily-loss case write into a per-run temp dir, cleared between cases.
+import tempfile, position_manager as pm
+for _p in (ex.HALT_PATH, ex.HALT_DAILY_LOSS_PATH):
+    if _p.exists():
+        sys.exit(f"REFUSED: {_p} exists - an operator halt is active; review and clear it first")
+SUITE_TMP = Path(tempfile.mkdtemp(prefix="mts_suite_"))
+ex.HALT_PATH = pm.HALT_PATH = SUITE_TMP / "HALT"
+ex.HALT_DAILY_LOSS_PATH = SUITE_TMP / "HALT_DAILY_LOSS"
+
 tok = do.authenticate()
 results = []
 
 def clean():
+    for _p in (ex.HALT_PATH, ex.HALT_DAILY_LOSS_PATH):
+        _p.unlink(missing_ok=True)
     do._call("private/cancel_all_by_instrument", {"instrument_name": I, "type": "all"}, tok)
     if do.get_position(tok, I).get("size", 0):
         do.close_position(tok, I)
@@ -24,7 +38,7 @@ def clean():
 
 def plan(pid, side="LONG", entry=None, base=100, stop=2.0, targets=None, caps=None, stype="fixed_percent"):
     now = datetime.now(timezone.utc)
-    return {"plan_id": f"{pid}_{uuid.uuid4().hex[:6]}", "account": "main", "instrument": I, "side": side,
+    return {"plan_id": f"{pid[:17]}_{uuid.uuid4().hex[:6]}",  # FIX3 M6: <= 24 chars "account": "main", "instrument": I, "side": side,
             "validity": {"start": (now - timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M:%SZ"),
                          "end": (now + timedelta(minutes=30)).strftime("%Y-%m-%dT%H:%M:%SZ")},
             "entry": entry or {"type": "market"}, "base_unit": base,

@@ -35,6 +35,10 @@ ladder fill), not stop EXISTENCE. Revisit WebSocket only for sub-second
 fill-driven logic (satellites, T048).
 
 Never prints the secret or the access token.
+
+v4 (FIX3, 2026-09-28): transport errors (timeout, reset, URLError, non-JSON
+  body) never escape _call raw. Order-creating calls raise OrderStateUnknown
+  (no retry); reads/cancels retry MAX_RETRIES then raise DeribitError.
 """
 import sys
 sys.dont_write_bytecode = True
@@ -66,6 +70,10 @@ AMBIGUOUS_OUTCOME_CODES = {10050}
 # Non-order calls (reads, cancel, edit) keep retrying on both sets - unchanged
 # from v2 behaviour.
 RETRYABLE_ERROR_CODES = CONFIRMED_PRE_PROCESSING_REJECT_CODES | AMBIGUOUS_OUTCOME_CODES
+# FIX3 C1: timeouts/resets/URL errors (OSError), non-JSON bodies (ValueError)
+# and non-JSON HTTP errors (RuntimeError from _post). Never escape _call raw:
+# order-creating calls -> OrderStateUnknown, everything else -> DeribitError.
+TRANSPORT_ERRORS = (OSError, urllib.error.URLError, ValueError, RuntimeError)
 AUTH_ERROR_CODES = {13009, 13010, 13011}        # token expired / invalid
 MAX_RETRIES = 3
 INITIAL_BACKOFF_SECONDS = 1
@@ -139,12 +147,29 @@ def _call(method: str, params: dict, token: str = None, retry: bool = True,
     processing."""
     attempt, backoff, reauthed = 0, INITIAL_BACKOFF_SECONDS, False
     while True:
-        body = _post(method, params, token)
+        try:
+            body = _post(method, params, token)
+        except TRANSPORT_ERRORS as ex:
+            # FIX3 C1: a lost response on an order-creating call is the
+            # classic ambiguous outcome - never retry, caller must reconcile.
+            if creates_order:
+                raise OrderStateUnknown(method, params_label, f"transport:{ex!r}")
+            if retry and attempt < MAX_RETRIES:
+                attempt += 1
+                time.sleep(backoff)
+                backoff *= 2
+                continue
+            raise DeribitError(method, {"code": None, "message": f"transport error: {ex!r}"})
         if "error" not in body:
             return body["result"]
         code = body["error"].get("code")
         if token and code in AUTH_ERROR_CODES and not reauthed:
-            token = authenticate()
+            try:
+                token = authenticate()
+            except DeribitError:
+                raise
+            except Exception as ex:  # FIX3 C1: never escape raw
+                raise DeribitError(method, {"code": code, "message": f"re-auth failed: {ex!r}"})
             reauthed = True
             continue
         if creates_order and code in AMBIGUOUS_OUTCOME_CODES:

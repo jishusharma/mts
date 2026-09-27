@@ -1,0 +1,175 @@
+"""
+Kill switch for MyTradingSys - cancel all open orders and flatten all positions.
+
+This module provides a standalone kill switch that can be used to immediately
+stop trading activity across an entire account. It's designed to be
+independently testable and not import any exchange-specific modules directly
+(kill_all/format_kill_report take a duck-typed client - deribit_orders is
+only imported below, inside main(), and only when this file is run as a
+script - not at import time, so tests can still import this module with
+zero exchange dependency).
+
+CLI (FT-2, 2026-09-28): one-command, account-wide kill switch for an
+operator to invoke by hand.
+    python kill_switch.py --confirm KILL
+--confirm KILL must match EXACTLY ("KILL", case-sensitive) or the CLI
+refuses and does nothing - no exchange call, no HALT file. On a real
+confirm it authenticates via deribit_orders.authenticate() (the same
+helper executor.py/daily_loss_monitor.py already use - this file does not
+read the secrets file itself), calls kill_all(deribit_orders, token),
+prints the report, and - regardless of whether kill_all fully succeeded -
+writes execution/HALT (the generic manual-halt file executor.py's
+preflight() now checks) so nothing resumes trading until an operator
+deletes it after reviewing the account. Exit code is 0 only when
+kill_all's own result["ok"] is True.
+"""
+import sys
+sys.dont_write_bytecode = True
+
+import argparse
+from pathlib import Path
+from typing import List, Dict, Any, Optional
+
+HALT_PATH = Path(__file__).resolve().parent / "HALT"
+
+
+def kill_all(client, token, currency: str = "BTC", instruments: List[str] = None) -> Dict[str, Any]:
+    """
+    Account-wide kill switch: cancel all open orders and flatten all positions.
+    
+    Args:
+        client: Duck-typed client object with methods:
+            - get_positions(token, currency="BTC", kind="future") -> list of dicts
+            - get_open_orders(token, instrument_name, type_="all") -> list of dicts
+            - cancel(token, order_id) -> dict
+            - close_position(token, instrument_name="BTC-PERPETUAL") -> dict
+        token: Authenticated access token
+        currency: Currency to operate on (default "BTC")
+        instruments: Optional explicit list of instruments to process
+        
+    Returns:
+        Dict with keys:
+        - cancelled_orders: List of order IDs that were cancelled
+        - closed_positions: List of results from close_position calls
+        - errors: List of error dicts for failed operations
+        - ok: Boolean indicating if all operations succeeded
+    """
+    cancelled_orders = []
+    closed_positions = []
+    errors = []
+    
+    # Phase 1: Discover instruments to process
+    if instruments is None:
+        # FIX3 H2: a failed discovery read must not abort the kill - fall back
+        # to BTC-PERPETUAL (added below) and record the error.
+        try:
+            positions = client.get_positions(token, currency=currency, kind="future")
+            instruments = list(set(pos["instrument_name"] for pos in positions if abs(pos.get("size", 0)) > 0))
+        except Exception as e:
+            errors.append({"operation": "get_positions(discover)", "error": repr(e)})
+            instruments = []
+        
+        # If no positions found, fall back to default instrument
+        if not instruments:
+            instruments = ["BTC-PERPETUAL"]
+        else:
+            # Always include BTC-PERPETUAL if not already present
+            if "BTC-PERPETUAL" not in instruments:
+                instruments.append("BTC-PERPETUAL")
+    else:
+        instruments = list(instruments)  # never mutate the caller's list
+        # Ensure BTC-PERPETUAL is included if not already there
+        if "BTC-PERPETUAL" not in instruments:
+            instruments.append("BTC-PERPETUAL")
+    
+    # Phase 2: Cancel all orders on each instrument
+    for instrument in instruments:
+        try:
+            orders = client.get_open_orders(token, instrument_name=instrument, type_="all")
+            for order in orders:
+                order_id = order["order_id"]
+                try:
+                    client.cancel(token, order_id)
+                    cancelled_orders.append(order_id)
+                except Exception as e:
+                    errors.append({"order_id": order_id, "error": repr(e)})
+        except Exception as e:
+            errors.append({"instrument": instrument, "error": repr(e)})
+    
+    # Phase 3: Flatten all positions
+    try:
+        positions = client.get_positions(token, currency=currency, kind="future")
+        for position in positions:
+            size = position.get("size", 0)
+            if abs(size) > 0:
+                instrument_name = position["instrument_name"]
+                try:
+                    result = client.close_position(token, instrument_name=instrument_name)
+                    closed_positions.append({"instrument_name": instrument_name, "result": result})
+                except Exception as e:
+                    errors.append({"instrument_name": instrument_name, "error": repr(e)})
+    except Exception as e:
+        errors.append({"operation": "get_positions", "error": repr(e)})
+    
+    return {
+        "cancelled_orders": cancelled_orders,
+        "closed_positions": closed_positions,
+        "errors": errors,
+        "ok": len(errors) == 0
+    }
+
+
+def format_kill_report(result: dict) -> str:
+    """
+    Format a human-readable summary of kill switch execution.
+    
+    Returns a multi-line string containing the kill switch report.
+    """
+    lines = [
+        "KILL SWITCH REPORT",
+        f"Cancelled orders: {len(result['cancelled_orders'])}",
+        f"Closed positions: {len(result['closed_positions'])}",
+        f"Errors encountered: {len(result['errors'])}"
+    ]
+    
+    if result["errors"]:
+        lines.append("ERRORS DURING KILL")
+
+    return "\n".join(lines)
+
+
+def main(argv=None, halt_path: Path = HALT_PATH) -> int:
+    parser = argparse.ArgumentParser(
+        description="One-command, account-wide kill switch for MTS (TESTNET). Cancels every open "
+                    "order and flattens every position, then writes a HALT file so nothing new "
+                    "trades until an operator deletes it.")
+    parser.add_argument("--confirm", default=None,
+                        help="Must be exactly 'KILL' (case-sensitive) or the CLI refuses and does nothing.")
+    parser.add_argument("--currency", default="BTC")
+    args = parser.parse_args(argv)
+
+    if args.confirm != "KILL":
+        print("REFUSED: --confirm KILL required (exact match, case-sensitive) - nothing was done")
+        return 1
+
+    # FIX3 H2: HALT FIRST - the kill switch is used exactly when the exchange
+    # or network misbehaves, so nothing below may prevent the halt.
+    halt_path.write_text("kill switch invoked from CLI - operator review required before resuming\n",
+                         encoding="utf-8")
+    print(f"HALT file written: {halt_path} - delete it once you have reviewed the account before resuming trading")
+
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import deribit_orders  # noqa: E402 (deferred: real exchange import only at runtime, not at test-collection time)
+        token = deribit_orders.authenticate()
+        result = kill_all(deribit_orders, token, currency=args.currency)
+    except Exception as e:
+        print(f"KILL SWITCH FAILED ({e!r}) - HALT is in place - CHECK THE EXCHANGE UI NOW")
+        return 1
+    print(format_kill_report(result))
+
+    return 0 if result["ok"] else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

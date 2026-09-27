@@ -1,5 +1,6 @@
 """
 MyTradingSys/execution/position_manager.py  (G1, T050 - Opus 5.5, 2026-09-27)
+(S3/S6 follow-up, 2026-09-28 - see comments tagged S3/S6 below)
 
 Post-entry management for a plan that executor.execute_plan() has entered.
 executor v2 guarantees protection up to the moment it returns; this module
@@ -20,10 +21,38 @@ Per poll:
   sign flipped        -> fail-closed flatten + halt (should be impossible with reduce_only).
   |pos| < stop amount -> edit stop amount down to |pos|   (G1: shrink on target fill)
   |pos| > stop amount -> edit stop amount up to cover, then mismatch_halt (someone added size)
-  stop not live       -> re-place stop for |pos| once; if that fails -> flatten + halt
+  stop not live       -> re-place stop for |pos|; see S3 below for how long this is allowed
+                         to keep retrying before flatten_halt fires.
 
 Breakeven / trailing remain refused pre-flight by executor (R4); nothing here moves
 the stop PRICE.
+
+S3 (G-d, 2026-09-28): the old code allowed exactly one re-place attempt per
+manage() call before flattening (a `replaced_once` flag) - an IMPLICIT time
+bound of roughly one poll interval between "stop isn't live" and "still isn't
+live -> halt". That is now an EXPLICIT, named, documented bound: MAX_UNPROTECTED_SECONDS
+and an `unprotected_since` timestamp (see below). It keeps retrying the
+re-place every poll (rather than giving up after exactly one attempt) but
+hard-halts once the position has gone unprotected for longer than the bound,
+regardless of how many re-place attempts happened in between.
+NOTE this bound is per manage() invocation - if position_manager is re-run as
+a fresh short-lived process every poll (see
+research/fast_track_2026-09-27/S3_SUPERVISION.md for how it is actually kept
+alive today), `unprotected_since` resets to None on every new process and
+this bound does not carry over between separate invocations. Deribit-side,
+the stop_market already placed keeps protecting the position even if this
+process is not running at all; what this bound protects against is the
+narrower window where the stop is confirmed NOT live and this process IS
+running but failing to get a new one accepted.
+
+S6 (orphan-stop sweep): flatten_halt already knew every order's LABEL (stop
+and targets, from the journal replay in _plan_orders) as well as its known
+order_id. A stop re-place (above) can raise an OrderStateUnknown-style
+DeribitError after already resting the new order server-side, leaving
+stop["order_id"] None/stale at the moment flatten_halt runs - id-based cancel
+can't reach that order. flatten_halt now also sweeps cancel_by_label for the
+stop and every known target, using the exact same plan-scoped label
+convention executor.py's _xlabel builds (f"{plan_id}:{label}"[:64]).
 
 Run (after executor returned status entry_filled_stop_placed):
   python MyTradingSys/execution/position_manager.py <plan_id> [--max-seconds N] [--once]
@@ -33,6 +62,7 @@ sys.dont_write_bytecode = True
 
 import time
 import argparse
+from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -41,6 +71,15 @@ import journal  # noqa: E402
 
 POLL_INTERVAL_SECONDS = 2
 LIVE_STOP_STATES = {"untriggered", "open"}
+# S3: how long a live position may go with no live server-side stop covering
+# it before position_manager gives up retrying and flattens. Set to match the
+# effective bound the old one-attempt-then-halt logic already gave in the
+# common case: up to one poll interval to notice the stop isn't live, plus
+# one more poll interval before the next check - ~2 x POLL_INTERVAL_SECONDS.
+# Documented here as a named constant instead of left implicit in a retry
+# counter.
+MAX_UNPROTECTED_SECONDS = 2 * POLL_INTERVAL_SECONDS  # 4s
+HALT_PATH = Path(__file__).resolve().parent / "HALT"  # FIX3 M5: same file executor preflight refuses on
 
 
 class ManagerHalted(Exception):
@@ -87,26 +126,59 @@ def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, to
         raise ManagerHalted(f"plan {plan_id}: journal has no entry/stop - nothing to manage")
     is_long = entry_side == "BUY"
     token = token or do.authenticate()
-    replaced_once = False
+    unprotected_since = None  # S3: set when a poll first observes the stop not live
     t_end = time.time() + max_seconds if max_seconds else None
 
     def flatten_halt(reason):
         journal.append_event(plan_id, "mismatch_halt", {"reason": reason, "by": "position_manager"})
+        try:  # FIX3 M5: write the manual HALT first so the halt survives this process
+            HALT_PATH.write_text(f"{datetime.now(timezone.utc).isoformat()} position_manager {plan_id}: "
+                                 f"{reason}\n", encoding="utf-8")
+        except Exception as he:  # noqa: BLE001
+            print(f"WARNING: could not write HALT ({he!r})")
+
+        def _quiet(fn, *a):
+            # FIX3 H1: one failing cancel must never skip the flatten
+            try:
+                fn(*a)
+            except Exception as ce:  # noqa: BLE001
+                journal.append_event(plan_id, "error", {"context": f"manager_flatten:{fn.__name__}",
+                                                        "error": repr(ce)})
+
+        # FIX3 C3 order: targets -> close position -> verify flat -> stop LAST.
+        # S6: sweep by the plan-scoped label as well as by id - a re-place can
+        # rest an order whose id was never recorded.
+        for oid in list(targets):
+            _quiet(do.cancel, token, oid)
+        for tg in targets.values():
+            _quiet(do.cancel_by_label, token, f"{plan_id}:{tg['label']}"[:64])
         try:
-            for oid in list(targets) + [stop["order_id"]]:
+            try:
+                size = _signed(do.get_position(token, instrument).get("size"))
+            except Exception as pe:  # noqa: BLE001 - position unknown: attempt the close anyway
+                journal.append_event(plan_id, "error", {"context": "manager_flatten:get_position",
+                                                        "error": repr(pe)})
+                size = None
+            if size != 0:
                 try:
-                    do.cancel(token, oid)
-                except do.DeribitError:
-                    pass
-            if _signed(do.get_position(token, instrument).get("size")) != 0:
-                c = do.close_position(token, instrument)
-                journal.append_event(plan_id, "order_placed", {"order_id": c["order"]["order_id"],
-                                                               "label": "emergency_close",
-                                                               "side": "SELL" if is_long else "BUY",
-                                                               "amount": c["order"]["filled_amount"]})
+                    c = do.close_position(token, instrument)
+                    journal.append_event(plan_id, "order_placed", {"order_id": c["order"]["order_id"],
+                                                                   "label": "emergency_close",
+                                                                   "side": "SELL" if is_long else "BUY",
+                                                                   "amount": c["order"]["filled_amount"]})
+                except Exception as xe:  # noqa: BLE001 - e.g. OrderStateUnknown: the re-read decides
+                    journal.append_event(plan_id, "error", {"context": "manager_flatten:close_position",
+                                                            "error": repr(xe)})
+                size = _signed(do.get_position(token, instrument).get("size"))
+            if size != 0:
+                raise ManagerHalted(f"position still {size} after close_position - stop left in place")
         except Exception as e:  # noqa: BLE001
             journal.append_event(plan_id, "error", {"context": "manager_flatten", "error": repr(e)})
             raise ManagerHalted(f"FLATTEN ITSELF FAILED ({e}) after: {reason} - CHECK EXCHANGE UI NOW")
+        # flat confirmed: now (and only now) remove the protective stop
+        if stop["order_id"]:
+            _quiet(do.cancel, token, stop["order_id"])
+        _quiet(do.cancel_by_label, token, f"{plan_id}:{stop['label']}"[:64])
         raise ManagerHalted(f"flattened + halted: {reason}")
 
     while True:
@@ -161,10 +233,34 @@ def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, to
             flatten_halt(f"position sign flipped: size {pos} on a {'long' if is_long else 'short'} plan")
 
         size = abs(pos)
-        if stop_state not in LIVE_STOP_STATES:
-            if replaced_once:
-                flatten_halt(f"stop not live again ({stop_state}) with |pos|={size}")
-            replaced_once = True
+        if str(stop_state).startswith("query_failed"):
+            # FIX3 H5: we could not READ the stop - it may well still be live.
+            # Never re-place (that stacks duplicate stops and loses the old
+            # id). Count it as unprotected time; flatten only once
+            # MAX_UNPROTECTED_SECONDS of consecutive failures have passed
+            # (flatten_halt keeps the stop until the close is confirmed).
+            now = time.time()
+            if unprotected_since is None:
+                unprotected_since = now
+            elapsed = now - unprotected_since
+            if elapsed > MAX_UNPROTECTED_SECONDS:
+                flatten_halt(f"stop state unreadable ({stop_state}) for {elapsed:.1f}s > "
+                             f"MAX_UNPROTECTED_SECONDS={MAX_UNPROTECTED_SECONDS}s, |pos|={size}")
+        elif stop_state not in LIVE_STOP_STATES:
+            # S3: explicit, named bound on how long |position| may go
+            # unprotected, replacing the old implicit "one re-place attempt"
+            # counter. unprotected_since is only cleared once a poll actually
+            # OBSERVES the stop live again (the `else` branch below) - a
+            # re-place CALL succeeding here is not proof of that; it is only
+            # confirmed on the next poll's fresh order_state read.
+            now = time.time()
+            if unprotected_since is None:
+                unprotected_since = now
+            elapsed = now - unprotected_since
+            if elapsed > MAX_UNPROTECTED_SECONDS:
+                flatten_halt(f"position unprotected (no live stop, state={stop_state}) for "
+                             f"{elapsed:.1f}s > MAX_UNPROTECTED_SECONDS={MAX_UNPROTECTED_SECONDS}s, "
+                             f"|pos|={size}")
             try:
                 o = do.stop_market(token, instrument, stop["side"], size, stop["trigger"],
                                    f"{plan_id}:{stop['label']}"[:64])
@@ -177,21 +273,23 @@ def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, to
             journal.append_event(plan_id, "order_placed", {"order_id": stop["order_id"], "label": stop["label"],
                                                            "side": stop["side"], "amount": size,
                                                            "trigger_price": stop["trigger"]})
-        elif size != stop["amount"]:
-            grew = size > stop["amount"]
-            try:
-                do.edit(token, stop["order_id"], amount=size, trigger_price=stop["trigger"])
-            except do.DeribitError as e:
-                flatten_halt(f"stop resize {stop['amount']}->{size} failed: {e.error}")
-            journal.append_event(plan_id, "stop_resized", {"order_id": stop["order_id"], "amount": size,
-                                                           "new_stop_price": stop["trigger"],
-                                                           "reason": "position_grew" if grew else "target_fill"})
-            stop["amount"] = size
-            if grew:
-                journal.append_event(plan_id, "mismatch_halt",
-                                     {"reason": f"position grew to {size} outside the plan - stop resized to "
-                                                f"cover, manager halted", "by": "position_manager"})
-                raise ManagerHalted(f"plan {plan_id}: position grew outside plan; stop covers {size}; halted")
+        else:
+            unprotected_since = None
+            if size != stop["amount"]:
+                grew = size > stop["amount"]
+                try:
+                    do.edit(token, stop["order_id"], amount=size, trigger_price=stop["trigger"])
+                except do.DeribitError as e:
+                    flatten_halt(f"stop resize {stop['amount']}->{size} failed: {e.error}")
+                journal.append_event(plan_id, "stop_resized", {"order_id": stop["order_id"], "amount": size,
+                                                               "new_stop_price": stop["trigger"],
+                                                               "reason": "position_grew" if grew else "target_fill"})
+                stop["amount"] = size
+                if grew:
+                    journal.append_event(plan_id, "mismatch_halt",
+                                         {"reason": f"position grew to {size} outside the plan - stop resized to "
+                                                    f"cover, manager halted", "by": "position_manager"})
+                    raise ManagerHalted(f"plan {plan_id}: position grew outside plan; stop covers {size}; halted")
 
         if once or (t_end and time.time() >= t_end):
             return {"plan_id": plan_id, "status": "managing", "position": pos, "stop_amount": stop["amount"],

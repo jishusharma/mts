@@ -163,11 +163,13 @@ class GhExecutorOfflineTests(unittest.TestCase):
         for name in PATCHED_NAMES:
             setattr(do, name, getattr(self.fake, name))
         shutil.rmtree(journal.JOURNAL_DIR, ignore_errors=True)
+        executor.HALT_PATH.unlink(missing_ok=True)  # FIX3 M5: fail_closed now writes HALT (sandbox copy)
 
     def tearDown(self):
         for name, fn in self._orig.items():
             setattr(do, name, fn)
         shutil.rmtree(journal.JOURNAL_DIR, ignore_errors=True)
+        executor.HALT_PATH.unlink(missing_ok=True)  # FIX3 M5: fail_closed now writes HALT (sandbox copy)
 
     # A: market entry create raises OrderStateUnknown but the fake DID fill the position.
     def test_a_market_entry_ambiguous_but_filled_flattens_and_halts(self):
