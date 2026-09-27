@@ -218,8 +218,7 @@ no manual step, MTS-NUC-Worker fired at logon, worker heartbeat read 14 s
 old at 2026-09-26T14:04Z, host JIS-NUC, state idle. BIOS power-on after
 power failure remains deliberately unset (unattended-outage recovery, not
 in scope). Phases 1-3 done; phase 4 done (see UPDATES); phase 5 first slice
-verified PASS and staged as .new, pending the four-step proof (see UPDATES).
+verified PASS, applied, and committed by the 2026-09-26 claude session (see UPDATES).
 Open, not phase-blocking: rotate the mtsworker password (pasted in chat
 2026-09-25); stop using the Z: drive letter on the NUC, UNC path only.
-Next action: review and, if accepted, apply the phase 5 first-slice .new
-via the four-step proof; then continue phase 5 slice by slice.
+Next action: continue phase 5 slice by slice; slice 1 (TOM-214) is live on disk and in the index.

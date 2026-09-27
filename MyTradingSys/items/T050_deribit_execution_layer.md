@@ -83,12 +83,64 @@ Phase 5. Live, single position, operator-gated. Same code path against
 
 ## STATUS
 
-OPEN. Phase 1 scaffolding started 2026-09-26 (see UPDATES). Next action:
-operator generates a testnet key pair and a placeholder max-notional
-number; then phase 2.
+OPEN. Phase 3 (order placement) code written but NOT run against testnet -
+no key exists yet. Trade-plan schema/validator/compiler (phase 3's
+governance-limits and sizing logic) are built and verified with synthetic
+examples, not live orders. Next action: operator generates a testnet key
+pair; then execution/deribit_orders.py's smoke test is the first real
+network call this code has made.
 
 ## UPDATES
 
 2026-09-26: Filed. MyTradingSys/execution/ created. .gitignore updated for
 a credentials path that does not exist yet. Phase 1 public-endpoint script
 written; see repo for result.
+
+2026-09-27: Trade-plan schema (execution/trade_plan_schema.json) and
+validator (execution/trade_plan_validator.py) built and run against 8
+synthetic examples (5 valid, 3 invalid) - all behaved as expected. Plan
+compiler (execution/plan_compiler.py) built and run against all 5 valid
+examples; ladder math hand-verified (4-rung example: avg entry 49900,
+stop 48902 at 2% below, worst-case loss -$1.40, matches manual calc).
+Order-wrapper functions (execution/deribit_orders.py), executor
+(execution/executor.py), journal + reconciler (execution/journal.py,
+execution/reconciler.py) written but syntax-checked only - zero network
+calls have succeeded because no testnet key exists. executor.py has a
+hard refusal guard in main() specifically because it has never touched a
+real order book. Full gap list and four questions for Opus 5.5 in
+MyTradingSys/research/OPUS_REVIEW_REQUEST.md. Known real gaps (not
+cosmetic): trailing_percent and breakeven_after_fills stop types have no
+execution logic yet; reconciler's position-size check doesn't net out
+stop/target fills against entry fills; cancel_all_by_label is a stub
+that cancels ALL orders for the currency (Deribit doesn't filter by
+label server-side). Step 6 (multi-account) deliberately not started -
+its exit criterion needs steps 1-5 proven on testnet first; see
+research/step6_multi_account_design_note.md.
+
+2026-09-27 (parallel operator session, 06:32-06:43Z): Phase 2 crossed.
+Testnet API key created at test.deribit.com (client_id iwOlM5A7, Account=read,
+Trade=read_write, Wallet=none/Custody=none/Block Trade=none/Block RFQ=none,
+no IP whitelist). Secret written directly to execution/.secrets/testnet.secret.json
+by the operator on their machine - never pasted into any session, lengths only
+verified (client_id=8, client_secret=43, env=test).
+Smoke tests, both first-run PASS:
+  python MyTradingSys/execution/deribit_client.py (phase 1, no key):
+    OK: reached Deribit testnet public API. BTC-PERPETUAL mark_price=84496.54,
+    best_bid=84494.0, best_ask=84494.5, state=open, timestamp_ms=1790491372671
+    (~2026-09-27T06:43Z).
+  python MyTradingSys/execution/deribit_orders.py (phase 2, authenticated):
+    AUTH OK. account summary: equity=100.0 available_funds=100.0. open orders: 0.
+Proves: network path to testnet works from the operator's machine; client_credentials
+auth succeeds with the new key; authenticate()'s wallet-scope refusal guard did not
+fire (key scopes correct as generated); account is fresh testnet (100.0 equity,
+0 open orders).
+NOT yet covered: no orders placed (_place_order/edit/cancel/cancel_all_by_label
+unexercised); executor.py, plan_compiler.py, reconciler.py, journal.py not run
+end-to-end; deribit_read.py not run.
+Next: run deribit_read.py (closes phase 2 formally, read-only, zero risk), then
+Phase 3's stated exit criterion - one limit order far from market and one minimal
+market order via deribit_orders.py's buy()/sell()/cancel() directly, NOT through
+executor.py. This does not require B077 or B078 fixed: Phase 3's exit criterion
+has no stop order and no label-scoped cancel in it. B077/B078 remain hard blockers
+for executor.py's automated pipeline specifically (which already has its own
+hard refusal guard in main() for this reason), not for this primitive-level test.

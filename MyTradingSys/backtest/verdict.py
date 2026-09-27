@@ -40,15 +40,26 @@ def _g(obj, *keys):
     return obj
 
 
-def proof_dir_of(snap):
-    """Same source as the live loop (build_mo_cli.py). Replay default on
-    failure is 'aligned' to match live behaviour for parity. An executor must
-    NOT copy this default - it must fail closed (see T050)."""
+VALID_PD = ("aligned", "contradiction")
+
+
+def proof_dir_of(snap, fail_closed=False):
+    """Same source as the live loop (build_mo_cli.py). fail_closed=False
+    (default) replays live's pre-B071 behaviour for parity.py against
+    archived logs. fail_closed=True is the B071 fix (CORE_READINESS_PLAN.md
+    task B1): any non-(aligned|contradiction) result becomes "error", which
+    compute_verdict caps at WAIT_PROOF instead of letting WATCH/SETUP_FORMING
+    through unchecked. An executor must always pass fail_closed=True."""
     try:
         mo = build_math_object(snap)
-        return mo.get("proof_direction_status") or "aligned"
+        pd = mo.get("proof_direction_status")
     except Exception:
+        return "error" if fail_closed else "aligned"
+    if pd in VALID_PD:
+        return pd
+    if pd is None and not (snap.get("setup_candidates") or []):
         return "aligned"
+    return "error" if fail_closed else (pd or "aligned")
 
 
 def compute_verdict(snap, pd="aligned"):
@@ -82,9 +93,12 @@ def compute_verdict(snap, pd="aligned"):
         mode = md
     except Exception:
         pass
-    suspend = mode in ("floor_reaction", "ceiling_reaction")
+    # D1(a) (CORE_READINESS_PLAN.md, operator ruling 2026-09-27): the net_rr
+    # hard stop from compiled_engine.md sec 6 applies always, no floor/ceiling
+    # exception. suspend_rr path removed; mode is still computed and returned
+    # for display/logging only, per the operator's ruling.
 
-    if (not net_ok) and (not suspend):
+    if not net_ok:
         v, r = "WAIT_RR", "net_rr %.2f < 2.0" % net_rr
     elif tier == "ignore":
         v, r = "WAIT_FAR", "tier=ignore"
@@ -98,6 +112,8 @@ def compute_verdict(snap, pd="aligned"):
         v, r = "SETUP_FORMING", "proof %d" % proof
     if str(pd).lower() == "contradiction" and v == "SETUP_FORMING":
         v, r = "WATCH", "proof %d contradicted" % proof
+    if str(pd).lower() not in VALID_PD and v in ("WATCH", "SETUP_FORMING"):
+        v, r = "WAIT_PROOF", "proof_dir error"
 
     pv = str(cond.get("price_vs_va") or "").lower()
     cs = str(cond.get("cvd_slope") or "").lower()

@@ -31,5 +31,14 @@ T048 | OPEN    | T048_satellite_framework.md | exchange API layer active (Deribi
 T049 | OPEN    | T049_nuc_worker_v2.md | NUC worker v2 live, restart-proven; phase 5 first citation staged, pending four-step proof
 T050 | OPEN    | T050_deribit_execution_layer.md | Deribit execution layer, phase 1 (read-only testnet) scaffolded 2026-09-26
 T051 | PARKED  | T051_backtest_parked.md | backtest on MTS raw verdict done; parked by operator 2026-09-26; resumes after T050 ph4 + B071 fixed
-B071 | OPEN    | B071_fail_open_proof_direction.md | fail-open: Python error defaults proof-direction to "aligned"; bad SETUP_FORMING 2026-09-24 18:55; blocks mainnet
+B071 | CLOSED  | B071_fail_open_proof_direction.md | fail-open fix applied live 2026-09-27 (harness-verified, PS execution unconfirmed); was: Python error defaulted proof-direction to "aligned"
+B072 | OPEN    | B072_l2_input_validation.md | L2 input validation absent for current_price "x" or None in build_math_object (F10)
+B073 | OPEN    | B073_net_rr_rounding.md | net_rr rounding inconsistency: output 2dp, sanity check unrounded (F11)
+B074 | OPEN    | B074_rule_order_dependence.md | rule-order dependence: contradiction cap runs before broken-value override (F12)
+B075 | OPEN    | B075_historical_mode_unfit.md | historical mode unfit for backtesting; zeroes flow fields, look-ahead leak (F7)
+B076 | OPEN    | B076_setup_confirmed_unreachable.md | SETUP_CONFIRMED unreachable; Compute-Verdict never emits it (F9)
+B077 | OPEN    | B077_stop_order_wrong_type.md | stop placed as reduce-only LIMIT not stop_market; would fill instantly for a long
+B078 | OPEN    | B078_cancel_all_by_label_overscope.md | cancel_all_by_label cancels all orders for currency, not label-scoped; not yet called
+B079 | OPEN    | B079_caps_check_not_enforced.md | caps_check.within_max_loss computed but never enforced; no within_max_notional check exists
+T052 | OPEN    | T052_setup_confirmed_trigger.md | define a Tom-cited trigger for SETUP_CONFIRMED per operator D6b ruling
 # END

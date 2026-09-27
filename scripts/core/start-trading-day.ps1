@@ -197,8 +197,11 @@ function Compute-Verdict {
         if ($setupDir2 -eq "short" -and $nc) { $mode = "ceiling_reaction" }
     } catch {}
 
-    $suspend_rr = ($mode -eq "floor_reaction" -or $mode -eq "ceiling_reaction")
-    if (-not $net_ok -and -not $suspend_rr) {
+    # D1(a) (CORE_READINESS_PLAN.md, operator ruling 2026-09-27): the net_rr
+    # hard stop from compiled_engine.md sec 6 applies always, no floor/ceiling
+    # exception. suspend_rr path removed; $mode is still computed above and
+    # returned for display/logging only, per the operator's ruling.
+    if (-not $net_ok) {
         $v = "WAIT_RR"; $reason = ("net_rr {0:N2} < 2.0" -f $net_rr)
     } elseif ($tier -eq "ignore") {
         $v = "WAIT_FAR"; $reason = "tier=ignore"
@@ -213,6 +216,11 @@ function Compute-Verdict {
     }
     if ($proofDir -eq "contradiction" -and $v -eq "SETUP_FORMING") {
         $v = "WATCH"; $reason = "proof $proof contradicted"
+    }
+    # B071 fix (CORE_READINESS_PLAN.md task B1): fail closed instead of
+    # silently defaulting to "aligned" when L2 (proof-direction) errored.
+    if ($proofDir -ne "aligned" -and $proofDir -ne "contradiction" -and ($v -eq "WATCH" -or $v -eq "SETUP_FORMING")) {
+        $v = "WAIT_PROOF"; $reason = "proof_dir error"
     }
 
     # broken-value override - suppress CT against confirmed flow direction
@@ -443,19 +451,29 @@ try {
             Start-Sleep -Seconds 60; continue
         }
     
-        $pd = "aligned"
+        # B071 fix (CORE_READINESS_PLAN.md task B1): default to "error", not
+        # "aligned". Only a confirmed rc=0 + a valid aligned/contradiction
+        # value promotes $pd out of "error". Compute-Verdict's proof_dir
+        # error cap (above) then caps WATCH/SETUP_FORMING at WAIT_PROOF
+        # instead of letting an unchecked signal through.
+        $pd = "error"
         $pdd = ""
         $moFile = Join-Path $env:TEMP "app_mo.json"
         try {
             $moCmd = 'python "' + $R + '\MyTradingSys\runtime\build_mo_cli.py" "' + $s.FullName + '" "' + $moFile + '" > NUL 2>&1'
-            $null = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $moCmd) -TimeoutSec 30 -Tag "build_mo_cli" -WorkDir $R
-            if ((Test-Path $moFile) -and (Get-Item $moFile).Length -gt 0) {
+            $moRc = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $moCmd) -TimeoutSec 30 -Tag "build_mo_cli" -WorkDir $R
+            if ($moRc -eq 0 -and (Test-Path $moFile) -and (Get-Item $moFile).Length -gt 0) {
                 $mo = Get-Content $moFile -Raw -Encoding UTF8 | ConvertFrom-Json
-                if ($mo.proof_direction_status) { $pd = [string]$mo.proof_direction_status }
+                $status = [string]$mo.proof_direction_status
+                if ($status -eq "aligned" -or $status -eq "contradiction") { $pd = $status }
+                elseif (-not $status -and -not $snap.setup_candidates) { $pd = "aligned" }
                 if ($mo.proof_direction_details) { $pdd = ($mo.proof_direction_details -join "; ") }
             }
+            if ($pd -eq "error") { Log-Line ("PD_ERROR rc={0}" -f $moRc) }
             Remove-Item $moFile -ErrorAction SilentlyContinue
-        } catch {}
+        } catch {
+            Log-Line ("PD_ERROR exception: {0}" -f $_)
+        }
         # Label past snapshots (idempotent, cheap)
     try {
         $olCmd = 'python "' + $R + '\MyTradingSys\runtime\outcome_labeler.py" > NUL 2>&1'

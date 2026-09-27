@@ -2,7 +2,7 @@
 
 Opened: 2026-09-26 by session claude-sonnet-4-6-2026-09-26.
 Severity: HIGH (silent bad signal; blocks mainnet gate).
-Status: OPEN.
+Status: CLOSED (code fix applied 2026-09-27; live PowerShell execution not yet observed).
 
 ## DESCRIPTION
 
@@ -54,3 +54,10 @@ Fail-closed is the only acceptable behavior. The fix must be verified:
 
 2026-09-26: Filed. Bad SETUP_FORMING on 2026-09-24 18:55 traced to this
 bug. Operator confirmed: must fail closed before any automated executor.
+
+2026-09-27: Fix applied to the live files (start-trading-day.ps1, build_mo_cli.py, verdict.py) - previously staged as .new, Opus-reviewed. Implementation: proof_dir defaults to "error" instead of "aligned"; compute_verdict caps any WATCH/SETUP_FORMING under an error proof_dir at WAIT_PROOF. Verified via fail_closed_spec.py (S1+S2 PASS, 0/9287 real snapshots leak WATCH/SETUP_FORMING under fail_closed) and verdict_golden.py (NO CHANGE vs baseline, 9160 compared). NOT verified: an actual live PowerShell run on a running candle loop - no PowerShell available to any session so far. Also note: the required-fix spec above asked for halt/alert on error; the shipped fix instead caps at WAIT_PROOF with a logged PD_ERROR line (no halt, no popup alert), matching the plan's D7 recommendation - which was still an open, unruled operator decision at the time this landed. If halt/alert behavior is actually required, this needs a follow-up change.
+2026-09-27: D7 ratified by operator (see research/core_readiness_2026-09-27/D1_D7_DECISION_BRIEF.md).
+The shipped WAIT_PROOF-cap-with-log-line behavior is the final, accepted
+fix - no halt+alert being added on top. This closes the gap between the
+original required-fix spec (halt+alert) and what shipped; operator chose
+the shipped behavior deliberately, not by default.
