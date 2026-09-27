@@ -35,6 +35,16 @@
 
 **Rule:** Higher TF wins conflicts. Weekly > Daily > Intraday.
 
+[SYSTEM — CURRENT ENGINE BEHAVIOUR, D5 ruling 2026-09-27, C5]
+The table above is Tom's four-state model. The engine as built (Java classifyState) can only emit
+**balance** and **trend_healthy**. **trend_unhealthy** and **transition** are NOT reachable today: the
+"CVD divergent" column has no Tom-cited operational definition (B063), so no code path produces them.
+Consequences: (1) any rule, alert or verdict that keys on trend_unhealthy/transition is inert;
+(2) "In transition, wait" is NOT enforced by code — the operator applies it by judgment;
+(3) the fix is a research task (Tom-cited divergence / exhaustion definition; Fabio candidates FAB-038/FAB-040
+and CC-2 absorption_cvd are under evaluation per ANALYST_LAYER_FRAMEWORK.md), not a code task.
+Do not describe the engine as classifying unhealthy trend or transition until that definition is cited and wired.
+
 **Double Distribution Breakdown Anticipation [VISUAL FLAG — HTF_PATCH_001]:**
 If weekly profile shows double distribution (two distinct balance areas, two POCs) AND price is rejecting from upper distribution:
 - Bias: Breakdown to lower distribution is likely
@@ -435,6 +445,18 @@ Tom does not use numeric scoring bands. The system uses qualitative verdicts:
 - **SETUP FORMING** — Zone identified, state supports, proof partially present, trigger not yet confirmed — set alert, wait for trigger.
 - **WAIT / WATCH** — No valid setup within proximity, or conditions unclear — set alerts, monitor.
 - **NO TRADE** — Mandatory conditions false (e.g., no proof, bad R:R, wrong state) — do not trade.
+
+[SYSTEM — THRESHOLDS AS IMPLEMENTED, D6a ruling 2026-09-27, C5]
+Tom gives no numeric proof bands. The engine's verdict (Compute-Verdict / backtest verdict.py) uses these
+[SYSTEM] values, not Tom-cited: proof_count < 3 → WAIT_PROOF; 3–4 → WATCH; ≥ 5 → SETUP_FORMING
+(subject to the hard stops in sec 6 and proof direction). Since D4 (C3) proof_count counts only signals that
+favour the trade direction and no longer counts speed, so ≥ 5 is harder to reach than before 2026-09-27.
+
+[SYSTEM — SETUP CONFIRMED STATUS, D6b ruling 2026-09-27]
+**SETUP CONFIRMED is structurally unreachable** in the current engine: no code path emits it. The operator
+ruled (D6b) that it gets a real Tom-cited trigger rather than removal — research item T052 (candidate
+source: Fabio failed-auction confirmation, CC-3). Until T052 lands: no executor, alert or plan compiler may
+key on SETUP_CONFIRMED; the highest actionable engine verdict is SETUP_FORMING.
 
 [FORMATTER LAYER — NOT ALGORITHM] C+ Output Format:
 The card formatter generates prose output. The exact format is a presentation concern, not a trading rule. The formatter receives the math_object + judgment verdict and renders it. No fixed template is required for trading correctness.
