@@ -204,7 +204,7 @@ public class SetupCandidatesBuilder {
         // Step 9: Proof detection using klines1m
         for (Candidate c : candidates) {
             ProofResult proofs = detectProofs(c, klines1m, currentPrice, root, filteredZones);
-            c.proofCount = proofs.countSignals();
+            c.proofCount = proofs.countSignals(c.direction);
             c.proofNode = proofs.toJson(mapper);
         }
 
@@ -544,16 +544,26 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         double volumeSpikeProximityPct = 0.0;
         double volumeSpikeActualLevel = 0.0;
 
-        int countSignals() {
+        int countSignals(String direction) {
             int count = 0;
             if (!"NONE".equals(rejectionWick)) count++;
             if (absorptionDetected) count++;
-            if (finishedAuctionDetected) count++;
+            if (finishedAuctionDetected) {
+                // D4: count only when the exhausted side is opposite the trade direction
+                // (long favours a finished sell-side auction; short favours a finished buy-side auction).
+                boolean favoursTrade = "long".equals(direction) ? "sell".equals(finishedAuctionDirection) : "buy".equals(finishedAuctionDirection);
+                if (favoursTrade) count++;
+            }
             if (deltaFlipDetected && deltaFlipAtZone) count++;
             if (volumeSpikeDetected && volumeSpikeAtLevel) count++;
-            if (speedPickingUp) count++;
+            // D4: speed proxy no longer counted toward proof (still emitted in the proof JSON).
             if (cvdAligned) count++;
-            if (bookImbalance != 0.0 && (bookImbalance < 0.67 || bookImbalance > 1.5)) count++;
+            if (bookImbalance != 0.0) {
+                // D4: count book imbalance only when it favours the trade direction
+                // (long: bid-heavy > 1.5; short: ask-heavy < 0.67).
+                boolean favoursTrade = "long".equals(direction) ? bookImbalance > 1.5 : bookImbalance < 0.67;
+                if (favoursTrade) count++;
+            }
             return count;
         }
 

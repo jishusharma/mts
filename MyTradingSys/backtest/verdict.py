@@ -66,10 +66,19 @@ def compute_verdict(snap, pd="aligned"):
     price = _d(snap.get("current_price"))
     cond = snap.get("conditions") or {}
     cands = snap.get("setup_candidates") or []
-    if len(cands) == 0 or cands[0] is None:
+    # D3 guard (CORE_READINESS_PLAN.md, operator ruling 2026-09-27, task C2): the
+    # Java-side fix moves ExtraSetupBuilder output to module_candidates, but this
+    # guard also protects against any archived/older snapshot where setup_candidates
+    # still mixes SetupCandidatesBuilder ranks 1-3 with ExtraSetupBuilder extras
+    # (rank 11+) - top must always be the first candidate with rank <= 3.
+    top = None
+    for c in cands:
+        if c is not None and int(c.get("rank") or 999) <= 3:
+            top = c
+            break
+    if top is None:
         return dict(verdict="NO_TRADE", reason="no candidates", top=None,
                     mode="normal", direction="", price=price, net_rr=0.0, proof=0)
-    top = cands[0]
     m = top.get("math") or {}
     net_rr = _d(m.get("net_rr"))
     net_ok = bool(m.get("net_rr_sanity"))

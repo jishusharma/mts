@@ -431,7 +431,6 @@ public class MarketDataSnapshot {
         // --- Setup Candidates (v1.3.0) ---
         ArrayNode setupCandidates = SetupCandidatesBuilder.build(mapper, root, mtf, klines1m);
         ArrayNode extraCandidates = ExtraSetupBuilder.build(mapper, root, mtf, klines1m);
-        for (JsonNode extra : extraCandidates) setupCandidates.add(extra);
         double clusterAbovePrice = liquidationClusters.get("nearest_above").get("price").asDouble();
         double clusterBelowPrice = liquidationClusters.get("nearest_below").get("price").asDouble();
         boolean warning = false;
@@ -443,6 +442,7 @@ public class MarketDataSnapshot {
         }
         ((com.fasterxml.jackson.databind.node.ObjectNode)liquidationClusters).put("warning", warning);
         root.set("setup_candidates", setupCandidates);
+        root.set("module_candidates", extraCandidates);
         root.set("liquidation_clusters", liquidationClusters);
         root.set("setup_candidates", setupCandidates);
         return root;
@@ -1200,7 +1200,6 @@ public class MarketDataSnapshot {
         // ── Setup Candidates ──
         ArrayNode setupCandidates = SetupCandidatesBuilder.build(mapper, root, mtf, klines1m);
         ArrayNode extraCandidates = ExtraSetupBuilder.build(mapper, root, mtf, klines1m);
-        for (JsonNode extra : extraCandidates) setupCandidates.add(extra);
         double clusterAbovePrice = liquidationClusters.get("nearest_above").get("price").asDouble();
         double clusterBelowPrice = liquidationClusters.get("nearest_below").get("price").asDouble();
         boolean warning = false;
@@ -1212,6 +1211,7 @@ public class MarketDataSnapshot {
         }
         ((com.fasterxml.jackson.databind.node.ObjectNode)liquidationClusters).put("warning", warning);
         root.set("setup_candidates", setupCandidates);
+        root.set("module_candidates", extraCandidates);
         root.set("liquidation_clusters", liquidationClusters);
         root.set("setup_candidates", setupCandidates);
         return root;
