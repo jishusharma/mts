@@ -98,7 +98,7 @@ SCOPE_RANGE_RE = re.compile(r"^(.*?):(\d+)-(\d+)$")
 ID_RE = re.compile(r"^\d{3,}-[A-Za-z0-9][A-Za-z0-9-]*$")
 ANSI_RE = re.compile(r"\x1b\[[0-9;?]*[ -/]*[@-~]")
 PATH_REF_RE = re.compile(r"[A-Za-z0-9_][A-Za-z0-9_./\\-]*\.(?:md|py|ps1|java|json|txt|xml|csv|yml|yaml)\b")
-FILE_BLOCK_RE = re.compile(r"^<<<FILE[ \t]+(.+?)[ \t]*\r?\n(.*?)^>>>END FILE[ \t]*$", re.M | re.S)
+FILE_BLOCK_RE = re.compile(r"^<<<FILE[ \t]+(.+?)[ \t]*\r?\n(.*?)^>{3,}\s*END\s+FILE\s*$", re.M | re.S)
 # Every <<<FILE ...>>> header line, whether or not its block closed properly.
 FILE_HEADER_RE = re.compile(r"^<<<FILE[ \t]+(.+?)[ \t]*\r?$", re.M)
 
@@ -191,7 +191,7 @@ def check_bare_path_line(key, val):
 
 def parse_spec(path):
     lines = read_text(path).splitlines()
-    head, expect, create, i = {}, [], [], 0
+    head, expect, create, scope, i = {}, [], [], [], 0
     while i < len(lines) and lines[i].strip():
         m = HEADER_RE.match(lines[i])
         if not m:
@@ -204,12 +204,16 @@ def parse_spec(path):
             if val:
                 check_bare_path_line("CREATE", val)
                 create.append(val)
-        else:
-            if key == "SCOPE" and val:
+        elif key == "SCOPE":
+            if val:
                 check_bare_path_line("SCOPE", val)
+                scope.append(val)
+        else:
             head[key] = val
         i += 1
     body = "\n".join(lines[i:]).strip()
+    if scope:
+        head["SCOPE"] = ",".join(scope)
     return head, expect, create, body
 
 

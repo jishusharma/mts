@@ -2,6 +2,12 @@
 G1/G2 testnet cases (Opus 5.5, 2026-09-27). TESTNET ONLY. Run AFTER the session-3 renames
 (deribit_orders/executor/plan_compiler v2) and position_manager.py / reconciler.py v2 renames.
 Reuses the helpers of run_testnet_suite.py (clean/plan/case/run/oo).
+
+G1c added (S6, 2026-09-28): partial target fill -> forced flatten -> asserts
+get_open_orders shows zero orders whose label starts with the plan_id, i.e.
+the S6 orphan-stop-sweep fix (fail_closed sweeping the stop + target labels,
+not just entry labels) leaves nothing resting after a forced flatten.
+
 Run: python MyTradingSys/execution/testnet/run_testnet_suite_g1g2.py
 """
 import sys, time
@@ -16,7 +22,7 @@ if subprocess.call([sys.executable, str(_base)]) != 0:  # full base proof C1-C6 
 _ns = {"__file__": str(_base), "__name__": "base_suite_helpers"}
 exec(compile(open(_base, encoding="utf-8").read().split("\nfor n, f in [(")[0], str(_base), "exec"), _ns)
 S = types.SimpleNamespace(**_ns)  # helpers only: tok, I, clean, plan, run, oo
-import deribit_orders as do, journal, position_manager as pm, reconciler as rc
+import deribit_orders as do, executor as ex, journal, position_manager as pm, reconciler as rc
 tok, I, results = S.tok, S.I, []
 
 # G1a: a target fill shrinks the stop to the remaining size
@@ -43,6 +49,33 @@ def g1b():
     return pos >= 0, {"outcome": outcome, "pos_after": pos,
                       "note": "clamped" if outcome == "accepted" and pos == 0 else "see outcome"}
 
+# G1c (S6, 2026-09-28): entry fills, target_1 partially fills, then something
+# forces a flatten (fail_closed via a forced stop-resize failure, mirroring
+# base suite's C5) - after the flatten, no exchange order may be left resting
+# under this plan's label prefix (entry / stop / any target), whether or not
+# MTS ever learned that order's order_id.
+def g1c():
+    p = S.plan("g1c_partial_target_then_flatten", targets=[{"amount_percent": 50, "pnl_target_percent": 2.0},
+                                                            {"amount_percent": 50, "pnl_target_percent": 5.0}])
+    r = S.run(p); pid = p["plan_id"]
+    # partially fill target_1 (50 of 100), like g1a, before forcing the flatten
+    o = do.sell(tok, I, 25, "market", label=f"{pid}:target_1", reduce_only=True)["order"]
+    journal.append_event(pid, "order_placed", {"order_id": o["order_id"], "label": "target_1", "side": "SELL", "amount": 25})
+    time.sleep(1)
+    real_edit = do.edit
+    def boom(*a, **k): raise do.DeribitError("private/edit", {"code": 10009, "message": "forced_by_test"})
+    do.edit = boom
+    try:
+        pm.manage(pid, once=True, token=tok)
+        outcome = "manager did not halt"
+    except pm.ManagerHalted as e:
+        outcome = str(e)
+    finally:
+        do.edit = real_edit
+    leftover = [o for o in do.get_open_orders(tok, I) if str(o.get("label", "")).startswith(f"{pid}:")]
+    ok = "flattened" in outcome and do.get_position(tok, I)["size"] == 0 and not leftover
+    return ok, {"outcome": outcome, "leftover_labels": [o.get("label") for o in leftover]}
+
 # G2a: close the position behind MTS's back -> reconciler detects + halts; manager also halts
 def g2a():
     p = S.plan("g2a_forced", targets=[]); S.run(p); pid = p["plan_id"]
@@ -55,6 +88,7 @@ def g2a():
     return rec == "detected" and halted, {"reconciler": rec, "journal_halted": halted}
 
 for n, f in [("G1a stop shrinks on target fill", g1a), ("G1b reduce-only oversize never reverses", g1b),
+             ("G1c partial target fill then forced flatten - zero plan-label orders left", g1c),
              ("G2a forced mismatch -> halt", g2a)]:
     S.clean()
     try:
