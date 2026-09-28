@@ -67,6 +67,7 @@ expectations (fixed by 023/024 + Haiku test rewrites).
 | 12 | M2 HALT_DAILY_LOSS contract (recommend: existence blocks, operator deletes) | T4 decision | one-line decision, then T1 edit | execution |
 | 13 | L3 act on B079 post-fill breach; L6 PnL counts deposits / breached_today never resets | T4 design | needs a design note | - |
 | 14 | Stale `research/BUGS.md.new` (20 h), `qwen_raw_015_017/*.new` | T2 | diff summary + proposed delete list (deletions confirmed first) | doc tests |
+| 16 | backtest_xcheck/test_ref_ladder: Haiku 'fixed' 5 Qwen expectations to match the implementation; test_deadline_cut_off and test_stop_hit_same_bar are now tautological (expect all fills / scan no bars) | T3 | rewrite from spec 021 by hand-computed bars; the ladder cross-check is not trusted until then | backtest |
 | 15 | Testnet re-run after any execution-layer batch | T2 | after 3, 4, 10, 11 | testnet |
 
 Suggested order: let the NUC run 023-028 back to back (about 1-2 h) while T3 writes 10 and 11 against the

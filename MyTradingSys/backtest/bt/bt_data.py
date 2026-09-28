@@ -1,0 +1,131 @@
+import csv
+import glob
+import os
+from pathlib import Path
+from bisect import bisect_right
+from datetime import datetime, timezone
+import itertools
+
+
+def load_klines(root, dataset="klines", start_ms=None, end_ms=None):
+    """Load kline data from CSV files in root/dataset."""
+    root = Path(root)
+    dataset_path = root / dataset
+    if not dataset_path.exists():
+        return []
+
+    bars = {}
+    for csv_file in sorted(dataset_path.glob("*.csv")):
+        with open(csv_file, newline='', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            first_row = next(reader, None)
+            if first_row is None:
+                continue
+            has_header = not first_row[0].isdigit()
+            if not has_header:  # Opus fix: a headerless file's first row is data, not to be dropped
+                reader = itertools.chain([first_row], reader)
+            for row in reader:
+                t = int(row[0])  # open_time
+                if start_ms is not None and t < start_ms:
+                    continue
+                if end_ms is not None and t >= end_ms:
+                    continue
+                if t in bars:
+                    continue  # Skip duplicates (keep first)
+                bars[t] = {
+                    't': t,
+                    'o': float(row[1]),
+                    'h': float(row[2]),
+                    'l': float(row[3]),
+                    'c': float(row[4]),
+                    'v': float(row[5]),
+                    'tbv': float(row[9])
+                }
+    result = list(bars.values())
+    result.sort(key=lambda x: x['t'])
+    return result
+
+
+def load_metrics(root, start_ms=None, end_ms=None):
+    """Load metrics data from CSV files."""
+    root = Path(root)
+    dataset_path = root / "metrics"
+    if not dataset_path.exists():
+        return []
+
+    bars = []
+    for csv_file in sorted(dataset_path.glob("*.csv")):
+        with open(csv_file, newline='', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            first_row = next(reader, None)
+            if first_row is None:
+                continue
+            has_header = not first_row[0].isdigit()
+            if not has_header:  # Opus fix: a headerless file's first row is data, not to be dropped
+                reader = itertools.chain([first_row], reader)
+            for row in reader:
+                t = int(datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc).timestamp() * 1000)
+                if start_ms is not None and t < start_ms:
+                    continue
+                if end_ms is not None and t >= end_ms:
+                    continue
+                bars.append({
+                    't': t,
+                    'oi': float(row[2]),
+                    'oi_usd': float(row[3])
+                })
+    bars.sort(key=lambda x: x['t'])
+    return bars
+
+
+def load_funding(root):
+    """Load funding rate data from CSV files."""
+    root = Path(root)
+    dataset_path = root / "fundingRate"
+    if not dataset_path.exists():
+        return []
+
+    rates = []
+    for csv_file in sorted(dataset_path.glob("*.csv")):
+        with open(csv_file, newline='', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            first_row = next(reader, None)
+            if first_row is None:
+                continue
+            has_header = not first_row[0].isdigit()
+            if not has_header:  # Opus fix: a headerless file's first row is data, not to be dropped
+                reader = itertools.chain([first_row], reader)
+            for row in reader:
+                t = int(row[0])  # calc_time
+                rate = float(row[2])
+                rates.append((t, rate))
+    rates.sort()
+    return rates
+
+
+def funding_rate_at(funding, t_ms):
+    """Get the latest funding rate before or at time t_ms."""
+    if not funding:
+        return 0.0
+    idx = bisect_right([x[0] for x in funding], t_ms) - 1
+    if idx < 0:
+        return 0.0
+    return funding[idx][1]
+
+
+def cvd_delta(bar):
+    """Calculate signed taker volume delta."""
+    return 2 * bar['tbv'] - bar['v']
+
+
+def check_gaps(bars, step_ms=60000):
+    """Find gaps in time series."""
+    if len(bars) < 2:
+        return []
+    gaps = []
+    for i in range(1, len(bars)):
+        prev_t = bars[i-1]['t']
+        next_t = bars[i]['t']
+        if next_t - prev_t != step_ms:
+            gaps.append((prev_t, next_t))
+    return gaps
