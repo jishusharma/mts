@@ -38,7 +38,8 @@ def clean():
 
 def plan(pid, side="LONG", entry=None, base=100, stop=2.0, targets=None, caps=None, stype="fixed_percent"):
     now = datetime.now(timezone.utc)
-    return {"plan_id": f"{pid[:17]}_{uuid.uuid4().hex[:6]}",  # FIX3 M6: <= 24 chars "account": "main", "instrument": I, "side": side,
+    return {"plan_id": f"{pid[:17]}_{uuid.uuid4().hex[:6]}",  # FIX3 M6: <= 24 chars
+            "account": "main", "instrument": I, "side": side,
             "validity": {"start": (now - timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M:%SZ"),
                          "end": (now + timedelta(minutes=30)).strftime("%Y-%m-%dT%H:%M:%SZ")},
             "entry": entry or {"type": "market"}, "base_unit": base,

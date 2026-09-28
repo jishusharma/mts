@@ -1,31 +1,26 @@
-BUILD_REPORT - 2026-09-27 15:51:57 UTC
+BUILD_REPORT - 2026-09-28 03:54:14 UTC
 host: JIS-NB
 
-Java compile:  PASS (11.2 s)
-Math tests:    PASS 126/126 (2.6 s)
-Doc tests:     FAIL 2 failed (1.8 s)
+Java compile:  PASS (2.8 s)
+Math tests:    PASS 126/126 (1.2 s)
+Doc tests:     PASS 5/5 (1.6 s)
 
-In-flight .new files: 20
-  - backtest\fetch_binance_archive.py.new (age 514m)
-  - backtest\verdict.py.new (age 51m)
-  - backtest\bt\bt_data.py.new (age 8m)
-  - backtest\bt\bt_engine.py.new (age 17m)
-  - backtest\bt\bt_ladder.py.new (age 4m)
-  - backtest\bt\test_bt_data.py.new (age 8m)
-  - backtest\bt\test_bt_engine.py.new (age 17m)
-  - backtest\bt\test_bt_ladder.py.new (age 4m)
-  - execution\deribit_orders.py.new (age 514m)
-  - execution\executor.py.new (age 514m)
-  - execution\plan_compiler.py.new (age 514m)
-  - execution\position_manager.py.new (age 44m)
-  - execution\reconciler.py.new (age 44m)
-  - execution\testnet\run_testnet_suite.py.new (age 514m)
-  - execution\testnet\run_testnet_suite_g1g2.py.new (age 43m)
-  - execution\testnet\offline\fake_deribit_orders.py.new (age 43m)
-  - execution\testnet\offline\test_g1g2_offline.py.new (age 43m)
-  - items\T052_setup_confirmed_trigger.md.new (age 39m)
-  - research\BUGS.md.new (age 529m)
-  - runtime\compiled_engine.md.new (age 39m)
+In-flight .new files: 15
+  - backtest\bt\bt_data.py.new (age 730m)
+  - backtest\bt\bt_engine.py.new (age 739m)
+  - backtest\bt\bt_ladder.py.new (age 726m)
+  - backtest\bt\bt_stats.py.new (age 714m)
+  - backtest\bt\ref_pbo.py.new (age 356m)
+  - backtest\bt\test_bt_data.py.new (age 730m)
+  - backtest\bt\test_bt_engine.py.new (age 739m)
+  - backtest\bt\test_bt_ladder.py.new (age 726m)
+  - backtest\bt\test_bt_stats.py.new (age 714m)
+  - backtest\bt\test_ref_pbo.py.new (age 356m)
+  - research\BUGS.md.new (age 1251m)
+  - research\fast_track_2026-09-27\qwen_raw_015_017\kill_switch.py.new (age 529m)
+  - research\fast_track_2026-09-27\qwen_raw_015_017\risk_guard.py.new (age 529m)
+  - research\fast_track_2026-09-27\qwen_raw_015_017\test_kill_switch.py.new (age 529m)
+  - research\fast_track_2026-09-27\qwen_raw_015_017\test_risk_guard.py.new (age 529m)
 
 Active sessions:
   (none)
@@ -40,7 +35,7 @@ Index (files cross-check): OK (36 item files, 36 INDEX rows)
 
 Dispatches: OK (33 files)
 
-STATUS: FAIL
+STATUS: PASS
 
 Pastes for this session:
   Always:   MyTradingSys/runtime/BUILD_REPORT.md

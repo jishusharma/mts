@@ -58,9 +58,9 @@ def g1c():
     p = S.plan("g1c_partial_target_then_flatten", targets=[{"amount_percent": 50, "pnl_target_percent": 2.0},
                                                             {"amount_percent": 50, "pnl_target_percent": 5.0}])
     r = S.run(p); pid = p["plan_id"]
-    # partially fill target_1 (50 of 100), like g1a, before forcing the flatten
-    o = do.sell(tok, I, 25, "market", label=f"{pid}:target_1", reduce_only=True)["order"]
-    journal.append_event(pid, "order_placed", {"order_id": o["order_id"], "label": "target_1", "side": "SELL", "amount": 25})
+    # partially fill target_1 (30 of 100), like g1a, before forcing the flatten
+    o = do.sell(tok, I, 30, "market", label=f"{pid}:target_1", reduce_only=True)["order"]
+    journal.append_event(pid, "order_placed", {"order_id": o["order_id"], "label": "target_1", "side": "SELL", "amount": 30})
     time.sleep(1)
     real_edit = do.edit
     def boom(*a, **k): raise do.DeribitError("private/edit", {"code": 10009, "message": "forced_by_test"})

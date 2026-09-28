@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-19
-# SIZE: ~19.5KB
+# SIZE: ~21.0KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---

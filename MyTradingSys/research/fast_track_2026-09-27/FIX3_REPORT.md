@@ -38,6 +38,14 @@ killed**. The FIX3 tests were also run against the pre-FIX3 code: every fix test
 Only the positive/no-regression checks pass on both versions.
 
 ## Gate (run on the staged tree, and again on the promoted tree before each commit)
+**Gap, fixed after verification:** this gate never executed the testnet suite files FIX3 edited
+(`run_testnet_suite.py` plan builder, `run_testnet_suite_g1g2.py`), so D1/D2 below reached testnet.
+The gate now also includes, and must include from here on:
+- `python MyTradingSys/execution/testnet/test_suite_static.py` -> 5 OK. This offline AST check builds
+  every suite plan through the real `plan()` builder and runs the validator structure check and the
+  M6 plan_id rule on each. It also checks that every literal order and journal amount is a multiple
+  of 10. It fails on the pre-D1 and pre-D2 sources.
+- `python -m pytest MyTradingSys/tests/docs -q` -> 5 passed (boot build doc tests).
 - `run_staged_tests ... test_daily_loss_guard ... test_soak_report test_fix3_offline`: **Ran 116 tests, OK**
   (baseline 68 + 48 new; with `MTS_REPO_ROOT` set, 0 skipped)
 - `run_staged_tests ... --script test_g1g2_offline.py --fake ...`: **12/12 PASS**
@@ -75,7 +83,8 @@ The binding evidence is the tests, the 13/13 mutant kills, and repro_ft2.
 ## What the operator runs next (testnet) - FT2_RUNBOOK.md
 The promotion steps (runbook Steps 1-6) are **already done on `fast-track`** by the two commits
 above. Do not rename anything. Check out `fast-track` and start at the verification steps:
-1. Offline gate (runbook Step 7), now with the FIX3 tests added:
+1. Offline gate (runbook Step 7), now with the FIX3 tests added, plus
+   `python MyTradingSys/execution/testnet/test_suite_static.py` (5 OK):
    `python scripts/dev/run_staged_tests.py MyTradingSys/execution MyTradingSys/execution/testnet/offline -- test_gh_retry_offline test_gh_executor_offline test_s6_orphan_offline test_s3_unprotected_offline test_s1_cap_offline test_risk_guard test_kill_switch test_daily_loss_guard test_daily_loss_monitor test_soak_report test_halt_preflight_offline test_fix3_offline`
    -> expect `Ran 116 tests ... OK`. Then the g1g2 offline script -> `12/12 PASS`.
 2. Make sure `execution/HALT` and `execution/HALT_DAILY_LOSS` do **not** exist. The suites now
@@ -96,3 +105,27 @@ Contract changes for the operator:
   review the account and delete it.
 - plan_ids must be <= 24 chars of `[A-Za-z0-9_-]`. Some `examples/*.json` ids are longer
   (e.g. `invalid_ladder_multiplier_mismatch`) and will be refused at preflight.
+
+## Testnet verification result (operator machine, 2026-09-28)
+The "6/6 PASS" lines above are the operator's *expected* results. The code session never ran testnet.
+The actual run:
+| Step | Result |
+|---|---|
+| offline gate / g1g2 offline | 116 OK / 12/12 PASS |
+| probe_account_summary.py | PASS, flat, equity 99.99998156 |
+| run_testnet_suite.py | 6/6 PASS (after D1) |
+| run_testnet_suite_g1g2.py | 6/6 + G1/G2 4/4 (after D2) |
+| run_testnet_suite_ft2.py | 6/6 + G1/G2 4/4 + FT-2 4/4 |
+| kill_switch.py --confirm KILL | HALT printed before the report (H2 verified); HALT removed afterwards |
+
+Defects found (suite files only; no execution-layer code changed):
+- **D1** `run_testnet_suite.py:41`: the FIX3 M6 edit put its comment in front of the rest of the line,
+  so `account`/`instrument`/`side` were commented out, and C1-C4 failed with "missing required field:
+  account". Root cause: a code-session patch error. Fixed by splitting the line.
+- **D2** `run_testnet_suite_g1g2.py:62` (G1c, from the FT-2 staged file): sell 25 is not a multiple of
+  the contract size (Deribit -32602). Fixed to 30, with the comment and journal amount updated to match.
+Both are now caught offline by `test_suite_static.py`. The boot build doc-test FAIL, which predates
+this session, was fixed in the same commit: `research/` runbooks are exempt from the no-git-references
+rule, and the stale SIZE header on `03_FILE_INDEX.md` was corrected. Boot build: compile PASS,
+math 126/126, doc 5/5.
+
