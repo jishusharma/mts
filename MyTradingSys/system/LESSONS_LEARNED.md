@@ -25,6 +25,9 @@ top of the relevant section. Keep each entry to 3 lines.
   (it was HTTP 429), a video ID with its leading '-' stripped, a "compile gate" rewrite that
   regressed (it wrote __pycache__ into repo dirs). RULE: spot-check one concrete claim per report;
   never merge a worker's change without reading its diff.
+- A worker concluded "monthly RSI must wait for next month's data" when downloading OLDER history
+  fixes it (the archive goes back to 2020). RULE: when a worker says "wait" or "blocked", ask whether a
+  cheaper route exists before accepting it; history comes from data.binance.vision (fetch_binance_archive --interval).
 - Qwen reviews confirm; they do not attack (022 restated the diff). RULE: adversarial review stays
   at Sonnet/Opus plus repro scripts.
 - Packing snapshots the scoped files. RULE: never pack a Qwen task on a file that another in-flight
