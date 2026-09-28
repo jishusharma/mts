@@ -34,3 +34,12 @@ TF-B5 native-1d gate needs a real-data test; Malkan rules have no verbatim extra
 research/malkan_rsi_2026-09-28/WEB_RESEARCH.md; NUC 040 reply PARTIAL) - multi-timeframe 5-star
 composition (monthly+weekly gate daily) is a later task.
 Next: Qwen self-validation technique -> pick from research, add to spec template and queue_tool.
+
+Worker research (WORKER_MODEL_RESEARCH.md) -> decisions: keep qwen3-coder:30b; pilot one alternative
+(glm-4.7-flash class MoE) on 2-3 already-verified specs before any switch; Devstral Small 2 24B (dense)
+too slow for this CPU. Worker v3 batch (Sonnet session, T049): (1) EDIT output mode (search/replace
+blocks) for changes to existing files - full rewrites only for new files; (2) execution-feedback retry:
+verify runs the spec's tests, on failure auto-packs NNNr with the failure log, max 2 repairs; (3) sample-
+and-vote (3 candidates) only for execution/risk specs; (4) package options num_thread 6 (physical cores;
+research said 8, llama.cpp guidance is physical cores - measure both), keep_alive long. Operator sets
+OLLAMA_FLASH_ATTENTION=1 and OLLAMA_KV_CACHE_TYPE=q8_0 on the NUC (server env; not reachable from here).
