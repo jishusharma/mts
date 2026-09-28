@@ -75,3 +75,5 @@ e-ngineers@192.168.29.110 status|logs N|ollama-ps|env|restart-worker confirm`; a
 (tested: echo refused). Firewall: port 22 from 192.168.29.188 only; password auth off. restart-ollama needs
 task MTS-Ollama (not created). OLLAMA_FLASH_ATTENTION / KV_CACHE_TYPE still unset (operator via RDP);
 user env has NUM_PARALLEL=1, KEEP_ALIVE=30m. At 11:20Z NUC on 076 (last queued) - queue about to go idle.
+
+Session 1 closed ~11:30Z. Handoff + next-session waves: NEXT_SESSION_PLAN.md.
