@@ -123,6 +123,87 @@ class TestDailyLossMonitor(unittest.TestCase):
         pnl = compute_total_pnl_usd(client, "tok", state)
         self.assertEqual(pnl, round(0.01 * 80000.0, 2))
 
+    def test_rearm_when_halt_file_cleared_by_operator(self):
+        """L6: a genuine re-arm needs BOTH the operator clearing HALT_DAILY_LOSS
+        AND equity back within the cap (e.g. position closed out / market
+        recovered) - clearing the file alone while still breached must not
+        leave the monitor un-halted (see test_rehalt_if_still_breached_after_clear)."""
+        client = FakeClient(equity=1.0, mark_price=85000.0, position_size=50)
+        clock = _clock_at("2026-09-28T00:05:00")
+
+        # First iteration: set baseline
+        run_once(client, "tok", clock=clock, state_path=self.state_path, halt_path=self.halt_path)
+
+        # Trigger breach
+        client.equity = 1.0 - (600.0 / 85000.0)
+        result = run_once(client, "tok", clock=clock, state_path=self.state_path, halt_path=self.halt_path)
+        self.assertFalse(result["ok"])
+        self.assertTrue(self.halt_path.exists())
+        self.assertTrue(result["state"]["breached_today"])
+        self.assertEqual(client.kill_all_calls, 1)
+
+        # Operator clears the HALT file AND equity has recovered back within
+        # cap (position flattened / market moved back) - a genuine re-arm.
+        self.halt_path.unlink()
+        self.assertFalse(self.halt_path.exists())
+        client.equity = 1.0
+
+        # Now run_once should detect breached_today=True and halt_path absent,
+        # re-arm (set breached_today=False), and since equity is back within
+        # cap it must NOT immediately re-halt.
+        result = run_once(client, "tok", clock=clock, state_path=self.state_path, halt_path=self.halt_path)
+        self.assertTrue(result["ok"], "equity is back within cap, monitor must not re-halt")
+        self.assertFalse(result["state"]["breached_today"], "breached_today should be re-armed to False")
+        self.assertFalse(self.halt_path.exists(), "must not rewrite HALT file when not breached")
+        self.assertEqual(client.kill_all_calls, 1, "recovered equity must not trigger another kill")
+
+    def test_rehalt_if_still_breached_after_clear(self):
+        """L6: operator clears HALT_DAILY_LOSS but equity is still below the
+        cap (e.g. position not actually closed) - the monitor must re-arm and
+        then immediately re-detect the breach and halt again. Guards must
+        never leave the account unprotected just because the file was
+        cleared (Lesson B: never stand down the protective halt on a
+        technicality)."""
+        client = FakeClient(equity=1.0, mark_price=85000.0, position_size=50)
+        clock = _clock_at("2026-09-28T00:05:00")
+
+        run_once(client, "tok", clock=clock, state_path=self.state_path, halt_path=self.halt_path)
+
+        client.equity = 1.0 - (600.0 / 85000.0)
+        result = run_once(client, "tok", clock=clock, state_path=self.state_path, halt_path=self.halt_path)
+        self.assertFalse(result["ok"])
+        self.assertEqual(client.kill_all_calls, 1)
+
+        # Operator clears the file, but equity is still breached (e.g. the
+        # position was reopened, or exposure otherwise persists).
+        self.halt_path.unlink()
+        client._position_size = 50
+
+        result = run_once(client, "tok", clock=clock, state_path=self.state_path, halt_path=self.halt_path)
+        self.assertFalse(result["ok"], "still below cap - must re-halt")
+        self.assertTrue(result["state"]["breached_today"])
+        self.assertTrue(self.halt_path.exists(), "HALT file must be rewritten")
+        self.assertEqual(client.kill_all_calls, 2, "must kill again on genuine re-breach")
+
+    def test_no_rearm_while_halt_file_exists(self):
+        """No re-arm when HALT file still exists, even if breached_today=True"""
+        client = FakeClient(equity=1.0, mark_price=85000.0, position_size=50)
+        clock = _clock_at("2026-09-28T00:05:00")
+
+        # First iteration: set baseline
+        run_once(client, "tok", clock=clock, state_path=self.state_path, halt_path=self.halt_path)
+
+        # Trigger breach
+        client.equity = 1.0 - (600.0 / 85000.0)
+        result = run_once(client, "tok", clock=clock, state_path=self.state_path, halt_path=self.halt_path)
+        self.assertTrue(self.halt_path.exists())
+        self.assertTrue(result["state"]["breached_today"])
+
+        # Run_once again while halt file still exists
+        result = run_once(client, "tok", clock=clock, state_path=self.state_path, halt_path=self.halt_path)
+        # breached_today should remain True (no re-arm while file exists)
+        self.assertTrue(result["state"]["breached_today"], "breached_today should not be re-armed while HALT file exists")
+
 
 if __name__ == "__main__":
     unittest.main()

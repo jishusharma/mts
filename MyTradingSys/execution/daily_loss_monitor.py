@@ -159,7 +159,9 @@ def run_once(client, token, clock=_utc_now, currency: str = "BTC",
              state_path: Path = STATE_PATH, halt_path: Path = HALT_PATH) -> dict:
     """Single monitor iteration. Returns the check_daily_loss_cap() result
     dict (plus 'state' for tests). Idempotent: a breach only triggers
-    kill_all/HALT-file/journal once per UTC day (state['breached_today'])."""
+    kill_all/HALT-file/journal once per UTC day (state['breached_today']).
+    
+    Re-arms breached_today flag if HALT_DAILY_LOSS file is cleared by operator."""
     now = clock()
     try:
         state = ensure_day_state(client, token, now, currency=currency, state_path=state_path)
@@ -168,6 +170,15 @@ def run_once(client, token, clock=_utc_now, currency: str = "BTC",
         write_halt(halt_path, _today_str(now), f"daily_loss_monitor state unreadable: {e}", now)
         return {"ok": False, "reason": f"state unreadable - HALT_DAILY_LOSS written: {e}",
                 "total_pnl_usd": None, "state": None}
+
+    # L6 part 1: re-arm breached_today if operator cleared the halt file
+    if state.get("breached_today") and not halt_path.exists():
+        state["breached_today"] = False
+        save_state(state, state_path)
+        journal.append_event(JOURNAL_PLAN_ID, "reconciliation", {
+            "source": "daily_loss_monitor",
+            "result": "re-armed by operator clear"
+        })
 
     total_pnl_usd = compute_total_pnl_usd(client, token, state, currency=currency, instrument=instrument)
     result = check_daily_loss_cap([{"pnl_usd": total_pnl_usd}], 0.0, cap_usd=cap_usd)
