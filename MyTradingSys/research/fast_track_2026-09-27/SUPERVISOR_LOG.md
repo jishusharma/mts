@@ -140,3 +140,9 @@ Also committed: operator tooling 309d115 (mts.ps1, guide, new_plan.py), research
 - Sonnet builder: S5 mainnet flag + mainnet cap + L6 part 2 + guard re-audit + MAINNET_READINESS_CHECKLIST.md. Haiku: Fabio 103/104/105 + R5 repack 082r/083/084. Session cron: supervisor wake every 3 h (:17).
 - Mainnet-ready code PROMOTED but UNCOMMITTED (deribit_orders/executor/position_manager/kill_switch/daily_loss_monitor + tests, 33 pass; backups .pre_mainnet). Commit waits on testnet chain, which needs a flat account (smoke trade L-mkt-0928-2240-2 open). Next wake: if flat and no HALT -> run run_testnet_suite_ft2 -> commit "Mainnet-ready gates:" on 6/6+4/4+4/4 (Step 5b turn_of_candle failure is pre-existing, 0989 gate). G-d manager-liveness sweep still PARTIAL.
 - Haiku: 103 committed 10759e8; 105 HOLD (quote not in transcript); 082 repacked as 085-formula-audit-a (OUTPUT 15000); 104 + 083/084 still to pack.
+- (session 3, ~05:00 IST) Testnet auto-trading live (d77d67c); 9 more layers wired into live runner (4d1bc36); Fabio L1 = NO EDGE
+  anywhere (efa1863; only escalation 1h +0.113% OOS net n=182 but PBO 0.756 -> hypothesis). Auto-trader keeps sampling all
+  layers on testnet (operator: test every layer); Q3 in NEXT_SESSION_PLAN s9 asks whether to disable no-edge layers.
+  COORDINATION with session 4: added execution/AUTO_PAUSE (728f9e1) - pauses only new auto-trades, no HALT - so the
+  testnet chain can run on a flat account; message sent to session 4. Note: session 4's uncommitted execution changes are
+  used by the auto-trader's subprocess calls (working tree).
