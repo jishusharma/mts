@@ -1,0 +1,162 @@
+[0:00] In this video, I will show you how I
+[0:03] personally refine and identify the areas
+[0:06] for the best entry using orderflow.
+[0:09] Specifically, we will see one indicator
+[0:12] that show you the exact area called
+[0:15] delta print. This is not based on some
+[0:17] support and resistance or technical
+[0:20] indicators is based on actual orderflow
+[0:24] data that got executed previously. So
+[0:28] don't expect that this area can be seen
+[0:31] only from candlesticks. Hello everyone
+[0:33] and welcome back to the channel. In this
+[0:36] video I'm showing you two execution that
+[0:38] I took. One in London session and one in
+[0:41] New York session using this orderflow
+[0:43] suite of deep charts based on fixed
+[0:46] profile volume analysis and deep trades
+[0:50] analysis of the momentum of the market.
+[0:52] So we need to start with the profile
+[0:54] shape. The first thing that I was
+[0:57] checking here is that the London session
+[0:59] start with clear
+[1:03] breakout of the previous level a lot of
+[1:06] aggression here and they created a
+[1:09] condition of trend scenario. Why?
+[1:12] Because they accepted after the breakout
+[1:15] below the value area low. So as you can
+[1:18] see in this condition we are seeking new
+[1:21] balance of price and what we can expect
+[1:24] here is direction. So I didn't took the
+[1:27] first movement because it was before the
+[1:29] opening of the London session but the
+[1:32] second movement was so clear. What
+[1:34] happened here? You can see that here
+[1:36] there is this area. Okay. And this area
+[1:39] is based on the profile as you can see
+[1:42] of the previous swing point. This is
+[1:43] dynamic. Okay. So you can measure how
+[1:47] much pressure there was in the market
+[1:50] during this wing point using the delta
+[1:52] profile and using the big trades as you
+[1:55] can see the most important price level
+[1:58] and we don't need discretional analysis
+[2:01] here because you can see is when the
+[2:03] volume got support by these big trades
+[2:05] and this is the reason you see there is
+[2:07] a lot of delta pressure on this area.
+[2:09] Okay. So what we can expect is that if
+[2:12] we want to continue to go short, we will
+[2:16] reload other aggressive short position
+[2:19] from this area. So you can just put an
+[2:21] alert here. It's nice to notice also
+[2:24] that the value area high it's here. So
+[2:26] you have a confluence of value area
+[2:29] high, big trades and delta level. This
+[2:32] one is a super strong area. What
+[2:35] happens? The market tried to approach
+[2:37] this level, but as soon as the market
+[2:39] approaches this level, you see
+[2:41] aggressive sellers really strong here
+[2:44] and I will show you how much it's useful
+[2:46] to see dynamic data entering. Please
+[2:49] take care about this part of the chart
+[2:51] and watch as the price develop. Okay,
+[2:54] bum. You see all this volume? This is
+[2:57] what they did in these big trades. And
+[2:59] now we want to check if buyers can break
+[3:02] this level or they will continue to be
+[3:05] on this one because the pressure of the
+[3:08] seller is super strong. So we trace this
+[3:10] level. We have our area and this one
+[3:12] it's already an execution that you can
+[3:15] make protecting yourself above the area
+[3:19] that we already identified. Okay. Now
+[3:22] what the market does is that it tried to
+[3:24] break these big trades. Okay. But it
+[3:27] collapsed down again. So as you can see
+[3:30] we can expect that in the fractal
+[3:32] analysis we have another strong area
+[3:35] that will be protected by this
+[3:38] aggressive sellers and this is exactly
+[3:40] what's happening. So you can take also a
+[3:42] re-entry here covering above the area
+[3:45] targeting for a swing point. This is a 1
+[3:47] 2 3 1 2 4 1 2 5. It depends on how much
+[3:50] you want to be safe on the stop-loss
+[3:53] placement.
+[3:54] By the way, this is our deep charts
+[3:57] platform [music] that is finally
+[3:59] available at a super discounted price
+[4:02] only for the next few days. So if you
+[4:05] are interested in learning orderflow and
+[4:08] having an actual platform that show you
+[4:10] real data if you want to join with my
+[4:13] link in the description, [music] you
+[4:14] will also get included one month
+[4:17] educational boot camp. Other than this,
+[4:19] we see that the market create again a
+[4:22] new dealing range. So after you go to
+[4:24] take profit on the first one, you have a
+[4:26] condition again of super strong swing
+[4:29] point, super aggression of the market.
+[4:31] Okay, really directional. And if you put
+[4:33] here the fixed profile, you see that the
+[4:36] most relevant area that you have here is
+[4:39] this clear volume ledge. Volume ledge is
+[4:43] where the the volume goes from really
+[4:45] peak point to really low point. Okay? So
+[4:47] from high volume node to low volume node
+[4:50] really fast. And if you want to be
+[4:52] precise, this area is this one. Okay.
+[4:55] But you cannot just execute based on
+[4:57] this. So you need to go to check what's
+[5:00] happening here in details. And if we go
+[5:03] in details to see what is happening
+[5:05] here, we can clearly see that this
+[5:08] battle of the sellers got won by
+[5:10] sellers. Why?
+[5:12] Aggressive orders deep trades in the
+[5:17] body of the candle. So actually
+[5:19] following results and absorption of the
+[5:23] aggressive buyers. What does it mean
+[5:25] that in this battle to create this down
+[5:27] movement buyers try to take control
+[5:30] again but they got absorbed. So all this
+[5:32] from the aggressive sellers to the
+[5:36] absorption of the buyers become our area
+[5:39] and the market like to retrace and go
+[5:41] here. So you can see that here control
+[5:43] of the buyers, control of the of the
+[5:45] buyers, control of the buyers, control
+[5:46] of the buyers, failed buyers. Okay. So
+[5:50] this kind of information is not based on
+[5:52] delayed data. You have this information
+[5:55] in real time and you can use them as a
+[5:58] confirmation to execute your trades.
+[6:01] Okay, this one could have been another
+[6:04] amazing execution with really high
+[6:06] probability following the direction of
+[6:09] the market. Okay. Now, if we go to
+[6:11] analyze what's happening here, we have
+[6:14] absorbed buyers, aggressive sellers that
+[6:17] put a lock on the movement and again
+[6:20] absorbed buyers. Okay. So, after this
+[6:22] candle, the situation is super clear.
+[6:26] So, you can already put a limit order
+[6:28] here. Okay. From here, the market
+[6:30] collapse. This is a really clear
+[6:33] understanding of auction market theory.
+[6:37] Sensitive high probability reversal area
+[6:41] following the direction of the trend and
+[6:43] trigger execution using deep trades that
+[6:46] is based not on some fancy algorithm or
+[6:49] secret source that move the market but
+[6:51] actual execution no conspiracy theory
+[6:55] just visualization of order entering the
+[6:59] market. Remember that the only thing
+[7:01] that move price is volume. You need an
+[7:04] execution, okay, for the market to
+[7:07] auction high or down. I hope you enjoy
+[7:10] this kind of content and I will see you
+[7:12] in the next
