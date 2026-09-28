@@ -41,3 +41,36 @@ internal backtest), H2 (funding+CVD divergence fade, T2 via whale_positioning_ev
 hour order-imbalance 4-12h, T2, corrected citation). T055b top candidates: turn-of-candle (T1), funding-extreme
 reversion (T2), intraday session-momentum (T1), funding carry (T2, regime-flagged), order-flow imbalance scalp
 (T2, low confidence). Next: operator picks <=3 for Qwen specs -> verdict.py backtest, PBO, OOS.
+
+2026-09-29 FAST-TRACK OF C1/C2/C3 (operator-approved; supervisor pick): C1 funding-extreme reversion merged with CVD/price
+divergence fade (T055a H2 + T055b funding-extreme), C2 intraday session momentum (Shen/Urquhart/Wang 2022, T1),
+C3 turn-of-candle (Shanaev et al., T1). Definitions: FORMULAS.md sections 13-16 (backup FORMULAS.md.pre_t055).
+NUC specs (queue ids sort ahead of 101-120): 0985 trade_costs.py (shared fee+slippage+funding), 0986 funding_cvd_fade.py (C1),
+0987 session_momentum.py (C2), 0988 turn_of_candle.py (C3, MODEL gpt-oss:20b pilot). Tests already written next to the target
+modules (layers/positioning/, layers/session/, layers/turn_of_candle/); they fail until the modules land.
+Note: verdict.py is the Tom setup-verdict function and is NOT used for layers; layer candidates are judged by
+layers/runner.forward_return_stats + bt/ref_pbo.ref_pbo_cscv, as in layers/fabio/run_backtest.py.
+
+### Runbook (after 0985-0988 are verified and promoted)
+1. Promote each .new (back up to .pre_t055, rename), then gate:
+   `python scripts/worker/queue_tool.py verify 0985-t055-trade-costs 0986-t055-c1-funding-cvd-fade 0987-t055-c2-session-momentum 0988-t055-c3-turn-of-candle`
+   `python -m unittest MyTradingSys.backtest.layers.positioning.test_trade_costs MyTradingSys.backtest.layers.positioning.test_funding_cvd_fade MyTradingSys.backtest.layers.session.test_session_momentum MyTradingSys.backtest.layers.turn_of_candle.test_turn_of_candle`
+   `python scripts/dev/run_all_tests.py --quick`
+2. Driver (NOT yet written; a Sonnet task, copy the structure of layers/fabio/run_backtest.py): `MyTradingSys/backtest/layers/run_t055.py --candidate c1|c2|c3`.
+   Required behaviour: load klines with bt_data.load_klines (C2/C3: raw_1m_2022 + raw, 2022-2026; C1: raw only, funding starts 2025-09,
+   load_funding), resample via tf_resample (C1 15m/1h with tbv merge as in fabio run_backtest; C2 5m; C3 1m); chronological 70/30 IS/OOS;
+   grid search on IS only (C1: lookback {60,90,180}, n {20,50}, hi/lo {0.90/0.10,0.95/0.05,0.99/0.01}, use_divergence {T,F};
+   C2: first_min {30,60}, entry_min {first_min, session_len-30}, session_start_min {0, 810}, min_abs {0,0.001};
+   C3: lead_minutes {1,2}, side {long,short}); score each event with trade_costs.net_return (fee 10 bps RT + 2 bps slip + funding)
+   at horizons per candidate (C1 4/16/48 bars of 15m, C2 to session end, C3 1/2/5 bars); PBO via ref_pbo_cscv on daily-bucketed IS net returns.
+3. Commands (output to Dumps/backtest/runs/t055_<c>/):
+   `python MyTradingSys/backtest/layers/run_t055.py --candidate c1 --out Dumps/backtest/runs/t055_c1`
+   `python MyTradingSys/backtest/layers/run_t055.py --candidate c2 --out Dumps/backtest/runs/t055_c2`
+   `python MyTradingSys/backtest/layers/run_t055.py --candidate c3 --out Dumps/backtest/runs/t055_c3`
+4. PASS criteria (all must hold, on the IS-chosen params applied to OOS): OOS n_events >= 30; OOS mean NET return per trade > 0 after fees,
+   slippage and funding; OOS net Sharpe (bt_stats) >= 0.3 (T055 kill threshold); PBO < 0.5; sign of the net edge the same in IS and OOS
+   (C2/C3 additionally: positive in >= 2 separate OOS calendar years, per T055b). C1 caveat: only ~12 months of funding, so a single
+   70/30 split; treat a pass as provisional and re-run as data accrues.
+5. On a pass: register the layer in MyTradingSys/backtest/layers/alerts/live_runner_cli.py `build_default_registry`, ALERT-ONLY (no order path,
+   never a Tom filter), gate with run_all_tests, then operator decides on any further use. On a fail: log the numbers in this item and
+   close the candidate; do not tune parameters on OOS.

@@ -1,0 +1,20 @@
+PASS C1 market long :: {'target_2': ('limit', 50.0, 87354.0), 'target_1': ('limit', 50.0, 84858.0), 'stop_order_pending_fill': ('stop_market', 100.0, 81531.0), 'pos': 100.0}
+PASS C2 market short :: {'pos': -100.0, 'stop': 84849.0, 'avg': 83185.5}
+PASS C3 ladder partial + deadline :: {'pos': 10.0, 'open': ['target_2', 'stop_order'], 'stop_trigger': 79935.0}
+PASS C4 preflight refusals :: {'B079_cap': 'refused', 'trailing': 'refused', 'market_est_cap': 'refused', 'R8': 'refused'}
+PASS C5 fail-closed flatten :: {'halt': "flattened + halted: R7 stop could not be placed/resized: private/sell: {'code': 10009, 'message': 'forced_by_t", 'pos': 0.0}
+PASS C6 idempotency :: no_fill
+
+6/6 PASS
+PASS G1a stop shrinks on target fill :: {'stop_amount': 50.0, 'reconcile': 'reconciled_ok'}
+PASS G1b reduce-only oversize never reverses :: {'outcome': 'accepted', 'pos_after': 0.0, 'note': 'clamped'}
+PASS G1c partial target fill then forced flatten - zero plan-label orders left :: {'outcome': "flattened + halted: stop resize 100->70 failed: {'code': 10009, 'message': 'forced_by_test'}", 'leftover_labels': []}
+PASS G2a forced mismatch -> halt :: {'reconciler': 'detected', 'journal_halted': True}
+
+G1/G2: 4/4 PASS
+PASS T-b account cap refused before any order :: {'halt': 'PREFLIGHT REFUSED: S1: account notional would reach 100.0 > cap 50.0', 'nothing_placed': True}
+PASS T-c daily loss breach -> kill + HALT_DAILY_LOSS + next refused :: {'breach': True, 'total_pnl_usd': -0.01, 'halt_written': True, 'next_plan_refusal': 'PREFLIGHT REFUSED: HALT_DAILY_LOSS: daily loss halt active (daily pnl -0.01 breached cap -0.01) - remove HALT_DAILY_LOSS after operator revi'}
+PASS T-d unprotected -> re-placed or flattened, never naked :: {'pos': 0.0, 'stop_amount': None, 'outcome': "halted: flattened + halted: stop state unreadable (query_failed:{'code': 10004, 'message': 'order_not_found'}) for 5.2s > MAX_UNPROTECTED_SE"}
+PASS T-e kill switch -> flat, zero open orders :: {'pos': 0.0, 'open_orders_left': 0, 'kill_ok': True, 'kill_errors': []}
+
+FT-2: 4/4 PASS

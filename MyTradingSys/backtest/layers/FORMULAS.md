@@ -340,6 +340,61 @@ be silently changed to Wilder smoothing by a future worker who assumes "ATR" imp
 (plain average — Wilder recursive smoothing over the same window, for comparison, would instead need a
 seed plus `(prev*(n-1)+TR)/n` recursion and is NOT what MTS core computes).
 
+## 13. T055 shared cost model (`layers/positioning/trade_costs.py`) - added 2026-09-29
+
+Applies to C1, C2, C3 below. Binance USDT-M perp: taker fee 10 bps round trip (0.0010), realistic slippage
+added as `slip_rt` (default 0.0002 = 2 bps RT; source: internal fee floor in T055b "SCALPING FEE FLOOR",
+internal arithmetic). Funding: a position pays `side_sign * rate` (as a fraction of notional, entry notional
+used) for every funding record with `t_in < calc_time <= t_out`; `side_sign` = +1 long, -1 short, so longs
+pay positive rates and shorts receive them (Binance perpetual funding convention).
+`gross = side_sign * (p_out - p_in) / p_in`;
+`net = gross - fee_rt - slip_rt - side_sign * sum(rate over records in (t_in, t_out])`.
+Worked: long 100 -> 101, funding records at t=8h rate 0.0001 and t=16h rate 0.0003, t_in=0, t_out=16h:
+`net = 0.01 - 0.0010 - 0.0002 - 0.0004 = 0.0084`. Short 100 -> 99, same records: gross = 0.01,
+funding term = -1 * 0.0004 = -0.0004, `net = 0.01 - 0.0012 + 0.0004 = 0.0092`.
+
+## 14. T055 C1 - funding-extreme reversion + CVD/price divergence fade (`layers/positioning/funding_cvd_fade.py`)
+
+Sources: funding-extreme reversion T2, Memon 2026 (7y Binance) via `research/whale_positioning_evidence_2026-09-12.md`
+(the percentile threshold is NOT given there: UNDEFINED in source, so it is a grid parameter); mechanism
+He/Manela/Ross/von Wachter arXiv 2212.06888 (T2); CVD/price divergence = same CVD as `bt_data.cvd_delta`
+(section above, `delta = 2*tbv - v`, running sum). Merge decision: supervisor 2026-09-29 (T055a H2 + T055b funding-extreme).
+- Funding percentile: for the k-th funding record (k >= lookback-1), `pct[k] = count(w <= r_k) / lookback`
+  where `w = rates[k-lookback+1 .. k]` (inclusive of the current record, `r_k = rates[k]`).
+- Funding known at bar time: latest record with `calc_time <= bar["t"]` (no look-ahead).
+- Divergence at bar i >= n on closes `c` and `cvd`: bearish if `c[i] > max(c[i-n..i-1])` and
+  `cvd[i] < max(cvd[i-n..i-1])`; bullish if `c[i] < min(c[i-n..i-1])` and `cvd[i] > min(cvd[i-n..i-1])` (strict).
+- Signal: short if bearish AND `pct >= hi`; long if bullish AND `pct <= lo`. Funding-only variant: one event per
+  funding record at the first bar with `t >= calc_time`; short if `pct >= hi`, long if `pct <= lo`.
+- Defaults (all UNDEFINED in source, grid-searched IS only): lookback 90 records, n 20, hi 0.95, lo 0.05.
+- Costs: section 13. Kill (T055a H2 / T055b): OOS Sharpe < 0.3 or too few events. Data: funding exists 2025-09 on only.
+
+## 15. T055 C2 - intraday session momentum (`layers/session/session_momentum.py`)
+
+Source: Shen, Urquhart, Wang, *Financial Review* 57(2), 319-344, 2022, DOI 10.1111/fire.12290 (T1): the first
+half-hour return predicts the last half-hour return (liquidity-provision mechanism). The T055b report words it as
+"first-half-session return biases rest-of-session"; both entries are supported via `entry_min`.
+- Session start `S` = UTC midnight of the bar's day + `session_start_min` minutes. Window end `E = S + first_min` min.
+- `r_first = close(last bar with t + bar_ms <= E) / open(first bar with t >= S) - 1`; needs both bars to exist.
+- Side = long if `r_first > min_abs`, short if `r_first < -min_abs` (else no event). Entry at the close of the
+  bar with `t + bar_ms == S + entry_min` min (event index i = that bar; runner enters at `closes[i]`).
+  `entry_min = first_min` gives "rest of session"; `entry_min = session_len - 30` gives the paper's "last half-hour".
+- Defaults (adaptation to 24/7 BTC, UNDEFINED in source): session_start_min 0 (UTC day), first_min 30, min_abs 0.
+- Costs: section 13. Kill (T055b): effect sign-flips or vanishes post-2023.
+
+## 16. T055 C3 - turn-of-candle (`layers/turn_of_candle/turn_of_candle.py`)
+
+Source: Shanaev, Vasenin, Stepanov, *Heliyon*, PMC10015199 (T1): returns concentrate at the opening of 15-minute
+candles (minutes 0, 15, 30, 45 of the hour). The paper has no cost model.
+- On 1-minute bars: `mq = (t_ms // 60000) % 15` (minute-of-quarter; epoch-aligned, 15 divides 60). Per-bar
+  return `(c - o) / o`. `turn_mean` = mean return of bars with `mq == 0`; `other_mean` = mean of the rest;
+  `by_minute[m]` = mean return of bars with `mq == m`.
+- Event: at bars with `mq == 15 - lead_minutes` (enter at that bar's close, i.e. just before the candle opens),
+  side fixed by parameter (`long`, `short`); direction of the effect is NOT stated in the report, so both are
+  grid-searched IS only, and the sign of `turn_mean` is reported.
+- Costs: section 13. Fee floor 10 bps RT vs a per-minute effect: expected to fail unless gross edge is large.
+  Kill (T055b): net-of-cost edge does not survive on >= 2 OOS years.
+
 ---
 
 ## Verification note (this audit, 2026-09-28)

@@ -1,105 +1,140 @@
-# Next session plan - Opus supervisor, auto mode (written 2026-09-28 ~14:30Z by supervisor session 2)
+# Next session plan - Opus supervisor, auto mode (written 2026-09-29 ~04:30 IST / 23:00Z by supervisor session 3)
 
-Start: "Supervisor: read NEXT_SESSION_PLAN.md". Read this file + STATUS.md only (SUPERVISOR_LOG.md = history).
-Goal: finish the testnet live-readiness gate, then the Fabio backtest. Never mainnet.
+Start a new session (+, Opus, auto or bypass mode) and send: **"Supervisor: read NEXT_SESSION_PLAN.md"**.
+Read this file + STATUS.md only (`python scripts/dev/make_status.py` first). SUPERVISOR_LOG.md = history, don't re-read.
+Previous plan (session 2) is at NEXT_SESSION_PLAN.md.pre_0929 - do not re-read it; everything still open is below.
+Never mainnet. Never read .secrets/.env/keys. Never push/merge/rebase/reset.
 
-## 0. First 3 minutes (T0)
-1. `python scripts/dev/make_status.py` -> read STATUS.md. `git log --oneline -15`.
-2. `python scripts/worker/queue_tool.py status`; `ssh -i ~/.ssh/nuc_gate -o BatchMode=yes e-ngineers@192.168.29.110 status`
-   (+ `logs 10`). Expect 082 done and 083 packed or not (see 3.W2).
-3. Ask the operator for the R3 testnet output if it hasn't been pasted yet.
+## 0. First 5 minutes (T0 - scripts only)
+1. `python scripts/dev/make_status.py` -> STATUS.md; `git log --oneline -15`.
+2. `python scripts/worker/queue_tool.py status`; `ssh -i ~/.ssh/nuc_gate -o BatchMode=yes e-ngineers@192.168.29.110 status`.
+3. Tail `research/fast_track_2026-09-27/HOURLY_CHECK_LOG.md` (3 lines) and `GATE_REPORT_2026-09-29.md` (new rows).
+4. Processes that should be running on the desktop (check with
+   `Get-CimInstance Win32_Process | ? CommandLine -match 'live_runner|loop-supervisor|start-trading-day|statemachine'`):
+   - Tom core loop: `start-trading-day.ps1 -Mode armed` + `loop-supervisor.ps1` + Java `statemachine BTCUSDT`.
+   - Alert runner (started 2026-09-29 03:46 IST, PID 7920, alert-only, public klines, 60 s poll):
+     `python -m MyTradingSys.backtest.layers.alerts.live_runner_cli --poll-seconds 60`,
+     logs Dumps/alerts/runner_logs/live_runner_2026-09-29.{out,err}. If dead, restart it the same way (Start-Process, hidden).
+   - It must be run as a module (`-m`) from the repo root; `python .../live_runner_cli.py` fails with ModuleNotFoundError.
 
-## 1. Operator decisions already made (session 2) - do NOT re-ask
+## 1. Operator decisions already made - do NOT re-ask
 - Live testing = BOTH: Tom core testnet order runs + indicator-layer ALERTS (alert-only, never orders/filters).
-- Core ATR stays a plain SMA of TR (documented in FORMULAS.md section 12).
-- L6 part 2 deferred for testnet (build before mainnet). OPEN_FINDINGS.md: that is the only open item.
-- R1 order-math: side-aware rounding approved and promoted (see 2).
-- Still OPEN for the operator: the Tom-vs-Fabio override ruling (SESSION_4_HANDOFF item 4: proof/absorption/FVG only was
-  recommended); 1-2 named professionals whose params seed the params files.
+- Promotion allowed (option A, 2026-09-29): builders may rename .new -> live and commit on fast-track after gates.
+- **NEW 2026-09-29: "As and when we have new builds - commit changes - launch new tests - test edge cases as well."**
+  Implemented in the hourly check (steps a2/a3, see section 5): every build gets spec-derived edge tests before promotion;
+  any execution/ change re-runs the full testnet chain; alert changes re-run the runner --once. Apply the same rule to
+  any build you gate by hand.
+- Core ATR = plain SMA of TR (FORMULAS.md s12). L6 part 2 deferred for testnet; MUST be built before any mainnet use.
+- C2 session = UTC day (1440 m); (params,horizon) = one PBO variant; Sharpe per trade (T055 driver).
+- WQ_OAdz-PJ8 / zAwEX_tRUfE: "mostly Tom, maybe a guest" -> rules tagged by speaker; guest/unclear are not TOM rules.
+- DSA (chat surface) does extractions by hand when the operator chooses (section 4).
+- Still OPEN for the operator: Tom-vs-Fabio override ruling; T058 decisions (history fetch, hedge timing);
+  moving the project C: -> F: (not started - needs a quiet window: loop, alert runner and NUC share must be stopped);
+  cleanup/deletion list (T057 step 2).
 
-## 2. Readiness gate R1-R6
+## 2. Readiness - where we stand (verified 2026-09-29 ~03:45 IST)
 | # | State | Evidence |
 |---|---|---|
-| R1 exec math tests | DONE | 08f5ea0 + 61e55f3 (T4 reviewed): FORMULAS.md s11; snap_price(price, mode) Decimal floor/ceil (entry never worse, stop/target toward entry); round_size floors and rejects <10 USD; harmonic ladder avg; tests plan_compiler 20, executor_math 2, risk_guard 13 (mutant R3 killed); Java NET_RR_FRICTION + NetRRConstantTest 6 |
-| R2 full gate | DONE | run_all_tests.py (Maven + backtest) ALL PASS after R1 |
-| R3 testnet re-run | DONE 15:10Z (base 6/6, G1/G2 4/4, FT-2 4/4) - was OPERATOR | `python MyTradingSys/execution/testnet/run_testnet_suite_ft2.py` -> expect base 6/6, G1/G2 4/4, FT-2 4/4 (T-c may fail on zero fees - see FT2_RUNBOOK). Plans checked compatible with the new rounding. Haiku reads the output; if green, log it and mark R3 done |
-| R4 L6 | DONE | re-arm in; part 2 deferred |
-| R5 layers | NEARLY | promoted: 070-075, 077 (f0b44fe), 078 13558c0, 079 ae30eda, 080 alert emitter 4f7204e (JSONL only; boundary test 84de108), 081 8ea2f68. OPEN: formula audit 082/083 |
-| R6 backtest baseline | DONE | BACKTEST_L1_REPORT.md (3e99093, c509f3c): only 1h RSI-40 support tol 0.5 has PBO 0.03, and its edge (+0.043% h5) is < fees. CryptoCred: no edge. setup2 bug fixed 54ad393 |
-When R3 is green: Tom testnet order runs are READY. Layer alerts on testnet need a runner that wires bar_closed -> 080 emitter
-(not built yet - next NUC spec, see 3.W3).
+| R1 exec math | DONE | 08f5ea0, 61e55f3 |
+| R2 full gate | DONE (session 2); `--quick` today: all green except Step 5b = test_turn_of_candle (module not built yet) |
+| R3 testnet | **DONE again today**: base 6/6, G1/G2 4/4, FT-2 4/4 (14/14), no HALT left, account flat (size 0, equity ~99.9999) | testnet_runs/ft2_run_2026-09-29_a.log |
+| R4 L6 | DONE (part 2 deferred) | |
+| R5 layers + formula audit | Layers DONE. **Formula audit NOT done**: 082 BLOCKED (verdict FAIL, 2/5 expected, 1 unknown file); 083/084 never packed | Dumps/workers/NUC-QUEUE/done/082-* |
+| R6 backtest baseline | DONE | BACKTEST_L1_REPORT.md: only 1h RSI-40 tol 0.5 robust (PBO 0.03), edge < fees; CryptoCred no edge |
+| Alerts | LIVE (alert-only) | 085/086 promoted 0817968; --once today: 15 alerts, 0 errors |
+**Testnet go-live (Tom orders + layer alerts): GO.** Orders are placed by the operator via `mts plan -> mts check -> mts guard -> mts trade`
+(MTS_USER_GUIDE). The armed loop produces signals; it does not place orders by itself.
 
 ## 3. Work queue (cheapest tier first; agents return <=15 lines; spot-check one claim each)
-OPERATOR (2026-09-28): "keep using Qwen for whatever tasks you can". Default every IMPLEMENTATION to a NUC spec
-(<= ~5k prompt tokens, one module each). Claude agents only write specs + hand-computed tests, verify, promote, run
-backtests. For W4 below: 3 Qwen specs (087 fabio_cvd_absorption, 088 fabio_escalation, 089 fabio_volume_fvg), each
-with its hand-computed test plan inside the spec; then a Sonnet agent verifies, promotes and runs the backtest/report.
-Keep the NUC queue non-empty: when it has < 2 waiting, write the next specs first.
-- W1 Haiku "R3 receipts": read the operator's pasted testnet output, compare it against the expected lines, append to SUPERVISOR_LOG.
-- W2 Sonnet "audit": when 082-formula-audit-a lands: verify it (full slug), promote by RENAME, run formula_audit.py, report
-  its table. 083-formula-audit-b spec is written (Dumps/workers/NUC-QUEUE/specs/083-*.md) but must be packed AFTER 082 is
-  verified (its SCOPE = 082's output). Session 2's auto-pack poller was stopped - pack 083 by hand:
-  `queue_tool.py pack 083-formula-audit-b`. Then the audit covers FORMULAS s11/s12 (execution math, ATR) -> spec 084.
-- W3 Sonnet "feed NUC" (specs <= ~4-7k prompt tokens: 4-7 min each; 15k timed out at 7200 s):
-  084 formula-audit s11-12; 085 live alert runner (poll closed bars per tf -> layers -> 080 emitter -> JSONL; testnet
-  alerts only, no execution import); 086 tighten test_layer_boundaries to also catch bare-name imports (sys.path style).
-- W4 Sonnet "Fabio backtest" - RE-LAUNCH (session 2 stopped it before it wrote any files). The brief is in SUPERVISOR_LOG
-  session 2 "Fabio" entry. Summary: source = extracts/_staged_2026-09-27/extracts/fabio_valentini/extracts/extract_o-w5Gxss6T0.md
-  (FAB-001..009, video "3 Order-flow Trading Tricks"). Testable on 1m klines (taker_buy_volume -> exact 1m CVD):
-  FAB-007/008 CVD absorption (CVD lower low, price holds the prior swing low within tol -> long), FAB-002/003 escalation
-  breakout (record volume W + delta/vol >= k at a defended level -> breakout), FAB-005/006 volume FVG (lowest-volume bin
-  inside the 70% VA of the swing-leg profile; control = random VA bins). All thresholds are UNDEFINED in the video -> grids,
-  70/30 IS/OOS, PBO, vs 0.10% fees. Fabio = a SEPARATE layer (layers/fabio/); the Tom comparison is descriptive only
-  (Tom setups with vs without an agreeing Fabio signal), and only if Tom setups are reproducible in Python - else say so.
-  Output FABIO_L1_REPORT.md. The operator's question: "is core MTS + Fabio producing quality setups?"
-- W5 Haiku "cleanup" (ASK the operator first - deletion): the 13 byte-identical .new leftovers of 070-075 (after 082/083 are
-  verified), move backup_session/ (139 MB) out of the repo, archive superseded handoffs. Audit: clutter medium-high.
-- Later: trace 2 Tom rules extract -> definition -> code (the audit skipped it); worker v3 (streaming .partial.txt output,
-  num_thread 6, `queue_tool.py perf`; deploy only when the queue is idle); verify the 2023-11-10 1m-vs-1d volume outlier (12%).
+- **Q1 (T1 Qwen, running next)** 0989-t055-c3-turn-of-candle-r2 = 0988 repacked (0988 died at 3072 output tokens on
+  gpt-oss, which burns tokens on reasoning) with qwen3-coder:30b, OUTPUT_TOKENS 6144. Spec: nuc_specs/0989-*.md. The worker
+  claims by name, so it runs before 107-111. When it lands, the hourly check gates it (its test already exists:
+  layers/turn_of_candle/test_turn_of_candle.py) -> Step 5b goes green.
+- **Q2 (T3 Sonnet) T055 backtest** once 0989 is promoted: promote run_t055.py.new + test_run_t055.py.new (22 stub tests),
+  ADD FUNDING to C2/C3 net (holds can cross 00/08/16 UTC; data exists 2025-09+) - required before any pass is
+  accepted - then run C1/C2/C3 (commands in T055 runbook; `--tf 1h` = C1 alt). Output T055_BT_c<n>.md. Any passing
+  setup -> ALERT layer only, never a Tom filter.
+- **Q3 (T3 Sonnet) Fabio backtest (W4)**: driver MyTradingSys/backtest/layers/fabio/run_backtest.py is UNTRACKED and has
+  never been run; it needs fabio_escalation (being gated now - see section 6). Gate the driver, run it, write
+  FABIO_L1_REPORT.md. Operator's question: "is core MTS + Fabio producing quality setups?"
+- **Q4 (T2/T3) R5 formula audit**: find why 082 failed (verdict lists 1 unknown file name + 3 missing EXPECT lines), re-split
+  to <=5k prompt tokens, OUTPUT_TOKENS big enough for the whole reply, pack 082r/083/084 on qwen3-coder.
+- **Q5 (T2 Haiku) Fabio extraction holds** - after the quote-checker fix (section 6):
+  - 103 (8CWKfoSJu3c): all 9 quotes are verbatim; 6 have the wrong BEGIN/MIDDLE/END tag. Retag each to the third the
+    checker reports, re-run the check, commit.
+  - 104 (FawPr chunk a): BLOCKED at the output cap -> repack with a bigger OUTPUT_TOKENS on qwen3-coder.
+  - 105 (FawPr chunk b): re-run the check after the fix (1 problem left). Haiku wrote an unscoped file
+    extracts/processed/fabio_valentini/FawPrRUGNpk/extract_FawPrRUGNpk_2of3.md (uncommitted) - review it before use.
+  - 099 PARTIAL (out-of-scope extract not written) - check the verdict and repack if it is worth it.
+- **Q6** T040 tick layer: modules 091-093 are promoted, but the full-history tier table (tiers.json / bounds) has NOT been
+  computed on real data yet -> Sonnet runs tick_extremes on Dumps/backtest/raw_1m_2022 (+ recent months) and the OI metrics,
+  writes the tiers, then 093 flagger can run live (flags = context only, never gate Tom).
+- Later (filed, not started): T054 US session/correlation/news, T053 two-account hedge research, T058 broken extremes
+  (research doc T058_BROKEN_EXTREMES.md done; decisions open), T048 satellite, T057 declutter (inventory -> operator list).
 
-## 4. Gotchas learned in session 2 (also in SUPERVISOR_LOG)
-- "Gate green" is only real if the new test module is IN run_all_tests.py's step lists - ask agents for per-module counts.
-- An agent's staged test file can silently REPLACE an existing tracked test file - diff test counts before promoting.
-- Agents promoted by copy -> byte-identical .new leftovers; instruct "promote by RENAME".
-- queue_tool verify needs the full slug (070-tf-resample), not the bare number.
-- Worker heartbeat stays stale while Ollama generates (stream=false); a stale heartbeat != dead. RequestTimeoutSec=7200.
-- scripts/dev/run_all_tests.py working tree has UNCOMMITTED Step 3b/3c guide-checker lines from another session
-  (check_guide.py untracked) - leave them; commit only your own lines (build the index blob from HEAD).
-- Windows Python can't see bash /tmp - use the scratchpad path.
-- NUC: two worker processes reported (pid 4084, 10368) - operator to check via RDP
-  (Get-CimInstance Win32_Process powershell CommandLine). OLLAMA_FLASH_ATTENTION / KV_CACHE_TYPE q8_0 / power plan:
-  operator via RDP, apply between tasks.
+## 4. DSA pack (operator runs by hand) - Dumps/workers/DSA_PACK_2026-09-29/
+README.md + 4 paste files (instructions + full transcript, 9-24 KB each): Fabio 0KyIEdvVKMQ (replaces NUC 100/101),
+Fabio 0jM5Y31YJak (replaces 102), Tom-channel WQ_OAdz-PJ8 and zAwEX_tRUfE (never extracted; speaker tags).
+The operator saves each reply to the path in the README and runs verify_extract_quotes.py. When one appears: re-run the
+check, then commit (one commit per video). Canonical transcripts for these 4 were added to raw_transcripts_canonical/
+(timestamps stripped). Tom 7BQ/96i/HyS/aud/gWj/hQ8/pgd were ALREADY extracted and committed (01d0eed, all PASS):
+duplicate tasks 112-120 were withdrawn to Dumps/workers/NUC-QUEUE/held/withdrawn_dup_tom_2026-09-29/ (saves ~5 NUC hours).
+Don't re-queue them.
 
-## 5. Auto-mode rules (unchanged)
-Allowed: agents, gates, commits on fast-track, queue pack/verify, ssh gate read commands.
-Ask first: promoting execution code (after T4), any testnet run that places orders, `restart-worker confirm` mid-task, deleting.
-Never mainnet, never read .secrets/.env/keys, never push/merge/rebase/reset.
+## 5. Automation that runs without you
+- Scheduled task `mts-hourly-builder-check` (~:42 each hour; file ~/.claude/scheduled-tasks/mts-hourly-builder-check/SKILL.md):
+  Haiku gates new Qwen replies, promotes + commits passes, HOLDs the rest, logs HOURLY_CHECK_LOG.md.
+  Updated 2026-09-29: (a2) spec-derived edge tests (4-10) before promotion; (a3) execution changes -> HALT check + full
+  testnet chain, commit only on 6/6+4/4+4/4; alert changes -> runner --once, errors>0 = rollback; (b) extraction list =
+  fabio 099-111 only.
+- NUC: qwen3-coder:30b + gpt-oss:20b; FLASH_ATTENTION=1 and KV q8_0 set (machine env, verified via ssh `env`).
+  Queue after tonight: 0989, 107-111 (Fabio). Keep it non-empty: when < 2 waiting, write the next specs (Q4, Q6, T054).
+- Desktop power: display/sleep never, screensaver off, CONSOLELOCK 0 (verified by operator). The Claude app must stay open.
 
-## 6. Session 2 close-out (~15:45Z) - read this first
-- R3 DONE on testnet (e2f5497). Tom testnet order runs READY (mts plan -> mts check -> mts guard -> mts trade).
-- Market loop STARTED 15:31Z (mts start; armed, alerts only). If the state machine was still stale: `mts status`.
-- Committed: operator tooling 309d115, research extracts ba4a396.
-- FABIO: agent STOPPED (tokens). NUC replies 087, 089 delivered, 088 unusable -> 090-fabio-escalation-retry queued/ran.
-  Tests + driver exist UNCOMMITTED in MyTradingSys/backtest/layers/fabio/ (test_fabio_*.py, run_backtest.py).
-  Next: a Sonnet agent verifies 087/089/090 (full slugs), promotes by RENAME, runs run_backtest.py, writes
-  FABIO_L1_REPORT.md. Brief = 3.W4. Passing rules -> ALERTS only; the Tom override ruling is still the operator's.
-- T040 TICK LAYER: operator decided (2026-09-28): (1) full-history rank tiers = the documented exception, usable live
-  as FLAGS (context only, never gate Tom); (2) data 2022-01..now 1m klines + metrics OI (5m -> OI tiers 5/10/15m
-  only); (3) start now via Qwen. Spec agent STOPPED mid-way: check specs/091-093 + layers/tick/ for partial work,
-  finish/pack: 091 tick-extremes (net_delta, cvd_change, volume, price_change_pct x 1/2/3/5/10/15m; rank top/bottom,
-  gap-jump tiers, session+funding tags -> tiers.json), 092 OI extremes, 093 live flagger (public websocket, tier
-  crossing -> JSONL source:"tick", cooldown per indicator/tf/side, replay mode). Append the decisions to
-  items/T040_tick_delta_layer.md.
-- NUC speed: FLASH_ATTENTION=1 + KV q8_0 active since the reboot; 089 ran at ~1.4 tok/s vs ~3 before. If 090 is also
-  slow, remove OLLAMA_KV_CACHE_TYPE first. "2 worker processes" = launcher + worker (normal).
-- 082 formula-audit-a output = exactly 6144 tokens (the cap) -> likely truncated; check before 083.
+## 6. Session 3 close-out (2026-09-29, ~03:40-04:40 IST)
+- Testnet chain 14/14 PASS again (log in testnet_runs/). Account flat. No HALT files.
+- Alert runner started continuously (section 0).
+- Quote checker bug FIXED: verify_extract_quotes.py treated caption markers like "[0:02]" as words, so any quote that
+  crossed a marker was reported MISSING (the cause of the 103/105 "bad quotes" holds; Qwen's quotes were verbatim).
+  New test scripts/dev/test_verify_extract_quotes.py (5 tests; 2 fail on the old code, 5/5 pass on the new).
+  All 7 committed Tom extracts still PASS.
+- Sonnet gate agent (background) on the 5 real stale builds: bt_rsi, prob_table, fabio_escalation, the 2 CryptoCred test updates,
+  extract_nuc_files (+ edge tests each). Results -> GATE_REPORT_2026-09-29.md rows (see section 7 for the outcome).
+- The other ~20 `.new` files listed in STATUS.md are byte-identical leftovers of already-committed builds (gitignored). They
+  are harmless; delete only with operator OK (T057). execution/README.md.new differs from live: review, don't auto-promote.
+- run_t055.py.new / test_run_t055.py.new wait on 0989 (Q2).
 
-## 7. Operator research asks - ON FAST-TRACK (2026-09-28)
-| Item | Ask | Status |
-|---|---|---|
-| T040 | all-time extreme rankings per indicator x tf -> severity tiers -> live anomaly flags | decisions made (s6), specs 091-093 NOT written yet |
-| T054 | anomalies x liquidity runs at the US open; US pre-market alert; US-equity/BTC correlation; news (free sources first) | filed, not started; depends on T040 |
-| T053 | two-account hedge / leveraged scalping (a, b1, b2) - research what works, then backtest | filed, not started |
-| T055 | net/new longs-shorts positioning flow (how pros use it, MTF trend bias, confluence) + most reliable BTC setups per style | filed; web research running (Sonnet) -> T055a/T055b reports |
-| T048 | satellite framework + exchange API layer | OPEN (design); T053 feeds it |
-Order: T040 (Qwen) -> T054 step 2-3 research (Sonnet, Qwen for code) -> T053 research (Sonnet web research, then backtest).
+## 7. Gotchas (new in session 3; older ones are in LESSONS_LEARNED / SUPERVISOR_LOG)
+- Line-based chunking breaks on single-line transcripts: 113/116/119 "-a" chunks held only the 4 header lines. Chunk by
+  characters/words, or send the whole transcript when it fits (<= ~5k tokens).
+- gpt-oss:20b spends output tokens on reasoning; code specs on it need about 2x OUTPUT_TOKENS, or use qwen3-coder.
+- The hourly check's verdicts are only as good as the checker - when many quotes fail at once, test the checker first.
+- `python path/to/live_runner_cli.py` fails; use `python -m ...` from the repo root.
+
+## 8. Operator asks, last 24 h (2026-09-28 03:00Z -> 2026-09-29) - status
+| Ask | Status |
+|---|---|
+| Execute CODE_MODE_BRIEF / FIX3; remove "left for me" steps | DONE - FIX3 verified (116 offline OK, suites green); supervisor now runs testnet suites itself |
+| Cheap-worker roadmap; Qwen-first; token efficiency; Opus-supervisor session model | DONE - WORKER_ROADMAP.md, memory notes, hourly scheduled Haiku gate |
+| Malkan RSI as its own layer + 5-star setup (web first, then videos) | Web research DONE (malkan_rsi_2026-09-28/WEB_RESEARCH.md; 5-Star = Grandfather/Father/Son); malkan_40_60 + malkan_mtf layers committed (079 ae30eda). No video extraction yet |
+| Lessons -> DSA/instructions updated continuously | DONE through 2026-09-28 (LESSONS_LEARNED + CLAUDE.md); session-3 lessons in section 7, to fold in |
+| Backtest everything; Qwen for backtest work; 1m history back to 2022 | 1m 2022-01..2025-08 downloaded (44 files, 210 MB). L1 backtest DONE. Fabio + T055 backtests PENDING (Q2, Q3) |
+| FORMULAS.md for every formula | FORMULAS.md exists (s1-16). The audit of code against it (R5) is NOT done (Q4) |
+| NUC: SSH control, keep-alive, CPU/GPU tuning, new model | DONE - ssh gate, FLASH_ATTENTION + KV q8_0, gpt-oss:20b pulled (weak on code specs, see 7) |
+| MTS User Guide + script automation (less AI-dependent) | DONE - mts.ps1 + MTS_USER_GUIDE + guide checker in gate (309d115) |
+| Android phone -> Code mode (`claude rc`) | `claude` CLI is not on PATH in PowerShell; not resolved in the repo. Use the app's Remote Control badge instead |
+| Tick indicators: all-time extremes of CVD/OI/net delta per 1-15m -> tiers -> live flags (T040) | Code DONE (091-093 promoted); the full-history tier run is NOT done (Q6) |
+| Is the project cluttered / deductive / optimized? (T057) | Filed + plan; T0 inventory tools promoted (094-096); cleanup needs the operator's list approval |
+| Fabio work now + market read | Fabio detectors 087/089 committed, escalation being gated, backtest PENDING (Q3); market read was given in chat 2026-09-28 |
+| "All possible changes to go live" | DONE - testnet GO (section 2) |
+| Research per MTS protocols; discard legacy junk | DONE - research gate v3 (b9d0dcb), T055 research remediated |
+| Regular Qwen audits that feed Claude | DONE - T056 + 094-096 promoted; the hourly check backfills audits when the queue is idle |
+| Use NUC SSD as memory | Advice only (not actionable as RAM); no change made |
+| Move project C: -> F:; restore points | Restore points reduced by operator (15% -> 5%). Move NOT started (section 1) |
+| T053 / T054 / T055 / T058 research items | Filed. T055 research done (T055a/b) + modules 0985-0987 committed, C3 in queue; T058 research doc done; T053/T054 not started |
+| RSI-40 setting for live alerts = backtested one | DONE - runner uses 1h/15m RSI-40 tol 0.5 (0817968) |
+| Permissions: stop asking | settings.local.json allow rules + bypass mode (operator toggled) |
+| Keep the PC awake overnight | DONE (display/sleep never, verified) |
+| 2026-09-29: go live -> launch as many testnet tests as possible | DONE - 14/14 testnet PASS, alert runner live, offline gate green except C3 |
+| 2026-09-29: give DSA pending extractions | DONE - section 4 |
+| 2026-09-29: new builds -> commit, test, edge cases | DONE - hourly check updated; this session's builds gated with edge tests |

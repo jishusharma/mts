@@ -117,3 +117,20 @@ base 6/6, G1/G2 4/4, FT-2 4/4 (T-c breach True at -0.01). Side-aware rounding vi
 84470.28 -> 84470.0 (floor, toward entry). No HALT files left behind. Readiness gate R1-R4, R6 green; R5 = formula
 audit 082 (output hit the 6144 cap - check for truncation) / 083 pending. Tom testnet order runs: READY.
 Also committed: operator tooling 309d115 (mts.ps1, guide, new_plan.py), research extracts ba4a396.
+
+## 2026-09-29 supervisor (Opus)
+- Filed T058 (broken lows/highs by TF: continuation vs sweep; satellite hedge hook). Sonnet research worker -> T058_BROKEN_EXTREMES.md.
+- Sonnet gate worker on 085/086/092-096 -> GATE_REPORT_2026-09-29.md.
+- Hourly scheduled task mts-hourly-builder-check (:42) gates new Qwen replies via Sonnet, logs HOURLY_CHECK_LOG.md; lock file prevents overlap.
+- 0817968: 085/086 alert runner promoted (nonlocal fix), live smoke --once: 13 alerts, 0 errors. Operator chose A (promotion allowed). Hourly check now Haiku gate-runner; guest-speaker tag for WQ_OAdz-PJ8/zAwEX_tRUfE. T058 decisions (history fetch, hedge timing) still open.
+- run_t055.py.new driver staged (22 stub tests pass). Decisions: runbook path fixed to layers/run_t055.py; C2 session=UTC day (1440m) OK; (params,horizon)=grid variant in PBO OK; Sharpe per-trade OK. OPEN: C2/C3 net excludes funding (holds can cross 00/08/16 UTC) - add funding where data exists (2025-09+) before any pass is accepted.
+
+## 2026-09-29 ~03:40-04:40 IST - supervisor session 3 (Opus, bypass mode)
+- Operator: "launch as many testnet tests as we can", "assign DSA pending extractions", "new builds -> commit, test, edge cases", handoff.
+- Testnet chain 14/14 PASS (testnet_runs/ft2_run_2026-09-29_a.log); account flat; no HALT. Alert runner started continuous (PID 7920).
+- 0988 C3 repacked as 0989 (qwen3-coder, OUTPUT_TOKENS 6144). Tom 112-120 withdrawn (duplicates of committed 01d0eed; -a chunks were header-only).
+- DSA pack Dumps/workers/DSA_PACK_2026-09-29 (Fabio 0Ky, 0jM, WQ_OAdz-PJ8, zAwEX_tRUfE) + canonical transcripts for the 4.
+- verify_extract_quotes.py: [m:ss] markers broke verbatim matching (103/105 false "bad quotes"); fixed + test (fails 2/5 on old code).
+- Hourly check SKILL.md: + a2 edge tests, + a3 testnet/alert re-runs; extraction list = fabio 099-111.
+- FORMULAS.md s13-16 (T055 cost model, C1-C3) committed (were uncommitted though 0985-0987 were built from them).
+- Handoff: NEXT_SESSION_PLAN.md rewritten (asks table for the last 24 h in section 8).

@@ -17,6 +17,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 QUOTE = re.compile(r'^>\s*"(.+)"\s*$')
+TIMESTAMP = re.compile(r"\[\d+:\d{2}(?::\d{2})?\]")
 GPS = re.compile(r"Source GPS:\s*([A-Za-z0-9_-]{11})\s*\|\s*(BEGIN|MIDDLE|END)")
 
 
@@ -27,7 +28,8 @@ def norm(s: str) -> str:
 def transcript_body(vid: str) -> str:
     p = ROOT / "raw_transcripts_canonical" / f"{vid}_raw.txt"
     text = p.read_text(encoding="utf-8", errors="replace")
-    return text.split("# ---", 1)[1] if "# ---" in text else text
+    body = text.split("# ---", 1)[1] if "# ---" in text else text
+    return TIMESTAMP.sub(" ", body)  # [m:ss] caption markers split verbatim quotes
 
 
 def check(path: Path) -> int:
