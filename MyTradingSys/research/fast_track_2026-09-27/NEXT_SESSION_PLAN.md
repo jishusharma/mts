@@ -30,6 +30,11 @@ When R3 is green: Tom testnet order runs are READY. Layer alerts on testnet need
 (not built yet - next NUC spec, see 3.W3).
 
 ## 3. Work queue (cheapest tier first; agents return <=15 lines; spot-check one claim each)
+OPERATOR (2026-09-28): "keep using Qwen for whatever tasks you can". Default every IMPLEMENTATION to a NUC spec
+(<= ~5k prompt tokens, one module each). Claude agents only write specs + hand-computed tests, verify, promote, run
+backtests. For W4 below: 3 Qwen specs (087 fabio_cvd_absorption, 088 fabio_escalation, 089 fabio_volume_fvg), each
+with its hand-computed test plan inside the spec; then a Sonnet agent verifies, promotes and runs the backtest/report.
+Keep the NUC queue non-empty: when it has < 2 waiting, write the next specs first.
 - W1 Haiku "R3 receipts": read the operator's pasted testnet output, compare it against the expected lines, append to SUPERVISOR_LOG.
 - W2 Sonnet "audit": when 082-formula-audit-a lands: verify it (full slug), promote by RENAME, run formula_audit.py, report
   its table. 083-formula-audit-b spec is written (Dumps/workers/NUC-QUEUE/specs/083-*.md) but must be packed AFTER 082 is
