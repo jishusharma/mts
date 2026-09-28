@@ -45,7 +45,7 @@ runbook promotes, exactly like FT-1's Step 1.
 ## 1. WHAT THIS BATCH ADDS (context, not steps)
 
 This is the first promotion for six brand-new modules (`risk_guard.py`,
-`daily_loss_guard.py`, `daily_loss_monitor.py`, `kill_switch.py`,
+`daily_loss_guard.py`, `daily_loss_guard.py`, `kill_switch.py`,
 `soak_report.py`, and their offline tests) plus updates to two files already
 live from FT-1 (`executor.py` - S1 account cap + S6 orphan-stop sweep +
 FT-2's HALT-file preflight; `position_manager.py` - S3 explicit
@@ -292,3 +292,29 @@ wrong.
 **Time budget:** offline ~instant; probe ~seconds; base+G1G2+FT-2 testnet
 suites together ~5-8 minutes (FT-2 alone re-runs the other two as its own
 precondition, so most of that time is those, not the four new cases).
+
+### HALT Files (Post-FIX3)
+
+FIX3 introduced significant changes to how HALT files are handled and enforced:
+
+1. **Enforcement Timing:** The preflight check for HALT files now happens only once at the start of `execute_plan()`. However, a new mid-run check (`_halt_check_mid_run()`) is added that re-evaluates both HALT files before every order-creating call (entries, stop create/resize, targets). This prevents a race condition where an operator or kill_switch/daily_loss_monitor writes a HALT file while a plan is in progress.
+
+2. **Kill Switch Integration:** The `kill_switch.py` CLI now explicitly writes the `execution/HALT` file before performing any exchange operations. This ensures that even if the kill switch fails partway through, trading is immediately halted to prevent further activity.
+
+3. **File Contract Clarification:** 
+   - `HALT`: A generic operator-only brake with no content requirements.
+   - `HALT_DAILY_LOSS`: Must be a valid JSON file containing:
+     ```json
+     {"date": "YYYY-MM-DD", "reason": str, "ts_iso": str}
+     ```
+     The file's existence blocks execution regardless of date. A well-formed past-dated file refuses with a clear message indicating the operator must review and delete it.
+
+4. **Operator Workflow:**
+   - If `HALT` exists, no new trades are allowed.
+   - If `HALT_DAILY_LOSS` exists and is dated today, execution is blocked.
+   - If `HALT_DAILY_LOSS` exists but is from a previous day, only a warning is printed (not a refusal).
+   - If `HALT_DAILY_LOSS` cannot be parsed as JSON, it is treated as blocking (fail closed) rather than ignored.
+
+5. **Fail-Closed Behavior:** Any failure after an order has been placed now triggers a fail-closed mechanism that ensures the position is flattened and halted, regardless of whether the HALT file was present at the start or not.
+
+These changes ensure more robust and predictable behavior when HALT files are involved, especially in concurrent or race-condition scenarios.
