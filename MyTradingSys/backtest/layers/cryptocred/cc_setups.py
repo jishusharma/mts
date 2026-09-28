@@ -67,12 +67,19 @@ def setup2_fib_pullback(bars: list, fib_lo: float = 0.618, fib_hi: float = 0.786
     msb_events = classify_msb(bars, swings, **(msb_kwargs or {}))
     signals = []
     for msb_event in msb_events:
-        # Find the preceding swing of the opposite kind
+        # Find the preceding swing of the opposite kind. broken_swing_i is a BAR index
+        # (cc_structure.classify_msb sets it from H_last["i"]/L_last["i"]), not a
+        # position in the `swings` list -- non-swing bars between swings mean the two
+        # can diverge, so first locate the swing whose "i" matches, then walk backward
+        # from its list position.
         broken_swing_i = msb_event["broken_swing_i"]
+        broken_pos = next((idx for idx, s in enumerate(swings) if s["i"] == broken_swing_i), None)
+        if broken_pos is None:
+            continue
         if msb_event["direction"] == "bull":
             # Find the most recent swing low before the high that was broken
             prev_low = None
-            for i in range(broken_swing_i - 1, -1, -1):
+            for i in range(broken_pos - 1, -1, -1):
                 if swings[i]["kind"] == "low":
                     prev_low = swings[i]
                     break
@@ -99,7 +106,7 @@ def setup2_fib_pullback(bars: list, fib_lo: float = 0.618, fib_hi: float = 0.786
         else:  # bear msb_event
             # Find the most recent swing high before the low that was broken
             prev_high = None
-            for i in range(broken_swing_i - 1, -1, -1):
+            for i in range(broken_pos - 1, -1, -1):
                 if swings[i]["kind"] == "high":
                     prev_high = swings[i]
                     break

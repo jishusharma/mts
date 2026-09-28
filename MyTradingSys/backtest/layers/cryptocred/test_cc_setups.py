@@ -110,6 +110,49 @@ class TestSetup2FibPullback(unittest.TestCase, _PatchMixin):
         self.assertEqual(sig["meta"]["msb_i"], 7)
         self.assertEqual(sig["meta"]["target_r"], 1.5)
 
+    def test_u4b_bull_swing_list_index_ne_bar_index(self):
+        # Regression for the bug where broken_swing_i (a BAR index, per cc_structure's
+        # classify_msb) was used directly as an index into the `swings` LIST. Here the
+        # swings occur at bar indices 10-13 (several non-swing bars precede the first
+        # swing), so list position != bar index: swings[3] has i=13, not i=3.
+        #
+        # By TEST_PLAN.md's setup2 definition, prev_low = "most recent swing of the
+        # opposite kind before the broken swing" -> scanning backward from the swing
+        # immediately preceding the broken high (list position 2) we find list
+        # position 1: price=60, kind=low. That is the same impulse leg as U4
+        # (P_low=60 -> H=100), so the expected numbers are identical to U4:
+        #   zone = [100 - 0.786*40, 100 - 0.618*40] = [68.56, 75.28]
+        #   entry_price = 75.28, stop = 68.56*(1-0.001) = 68.49144
+        #   target = 75.28 + 1.5*(75.28-68.49144) = 85.46284
+        #
+        # On the buggy code, broken_swing_i=13 is used as `swings[i]` for
+        # i in range(12, -1, -1) against a 4-element list -> IndexError immediately
+        # at swings[12]. Confirmed: this test raises IndexError on the pre-fix code.
+        swings = [
+            {"i": 10, "t": 10, "price": 10, "kind": "low", "confirmed_i": 10},
+            {"i": 11, "t": 11, "price": 60, "kind": "low", "confirmed_i": 11},
+            {"i": 12, "t": 12, "price": 40, "kind": "high", "confirmed_i": 12},
+            {"i": 13, "t": 13, "price": 100, "kind": "high", "confirmed_i": 13},
+        ]
+        events = [{"direction": "bull", "broken_level": 100, "broken_swing_i": 13, "confirm_i": 15, "i": 20}]
+        self.patch(
+            find_swings=lambda *a, **k: swings,
+            classify_msb=lambda *a, **k: events,
+        )
+        # bars[0..15] filler (index 15 = confirm bar), scan starts at confirm_i+1=16.
+        bars = filler(16) + [bar(16, l=80, c=81), bar(17, l=70, c=71)]
+        got = cs.setup2_fib_pullback(bars, fib_lo=0.618, fib_hi=0.786, stop_buffer_pct=0.001, target_r=1.5)
+        self.assertEqual(len(got), 1)
+        sig = got[0]
+        self.assertEqual(sig["side"], "long")
+        self.assertAlmostEqual(sig["entry_price"], 75.28)
+        self.assertEqual(sig["entry_t"], 17)
+        self.assertAlmostEqual(sig["stop"], 68.49144)
+        self.assertEqual(len(sig["targets"]), 1)
+        self.assertAlmostEqual(sig["targets"][0][0], 85.46284)
+        self.assertEqual(sig["targets"][0][1], 1.0)
+        self.assertEqual(sig["meta"]["msb_i"], 20)
+
 
 class TestSetup3FailedMsbReversal(unittest.TestCase, _PatchMixin):
     def test_u5_bull_msb_fails(self):
