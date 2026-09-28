@@ -56,3 +56,13 @@ Until then, document the limitation in daily_loss_monitor's docstring (no code c
   deposit/transfer types can be subtracted. Until then the limitation stays documented; no deposits or
   transfers happen on this account today.
 - Unverified: the claim that session_* fields reset at ~08:00 UTC settlement (not checked against the docs).
+
+## L6 part 2 - transaction-log probe RESULT and DECISION (2026-09-28, testnet, probe_transaction_log.py, read-only)
+- Today's log: 174 entries, all type=trade, sum(change) = -0.00006600 BTC (P/L incl. fees; the worker's
+  equity "sanity check" was circular - it inferred start equity from the same sum - so it proves nothing).
+- DECISION: daily P/L = sum(change) over today's (00:00 UTC) get_transaction_log entries EXCLUDING only
+  money-movement types (deposit, withdrawal, transfer*). Settlement/delivery/funding entries are trading
+  P/L and are INCLUDED. This replaces the equity delta and removes the deposit/transfer distortion.
+- Implementation: after NUC 032 lands (same file, daily_loss_monitor.py). Test: fake transaction logs with
+  trade + transfer + settlement entries -> only the transfer is excluded. Independent check before trusting it:
+  compare against day_start_equity from a monitor state file written at 00:00 UTC on a quiet day.
