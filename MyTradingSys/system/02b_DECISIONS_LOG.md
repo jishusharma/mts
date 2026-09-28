@@ -375,3 +375,25 @@ MD5 4D4B79CEFAD881EF4E8B686C3BDA8B62, 4718 bytes.
 Backup: backup_20260912_163429.
 
 ---
+
+## 2026-09-28 - T055 citation flagged: EuropePMC ppr602886 - wrong paper attributed
+
+T055a (pre-gate) cited EuropePMC ppr602886 for "opening order imbalance predicts BTC perp
+returns at 4-12h, six Binance perpetual contracts." Opened: ppr602886 is Wen/Bouri/Xu/Zhao 2022,
+"Intraday Return Predictability in the Cryptocurrency Markets: Momentum, Reversal, or Both"
+(SSRN 4080253) - BTC/ETH/LTC/XRP price momentum-reversal on 2013-2020 data, no order-imbalance
+construct, no six-Binance-perp sample. The actual finding belongs to Kim & Hansen, "The
+Quarter-Hour Effect: Periodic Algorithmic Trading and Return Predictability in Cryptocurrency
+Futures", arXiv 2607.09426 (Jul 2026) - verified 2026-09-28, matches on title/authors/abstract.
+Corrected in T055a_POSITIONING_FLOW.md (gate v3.0 rewrite).
+
+## 2026-09-28 - T055 citation flagged: SSRN 7483658 - claim mismatch
+
+T055b (pre-gate) cited SSRN 7483658 (Tangirala, 44 ICT/SMC detectors on S&P 500) for "combining
+HTF liquidity draw + session killzone + 1:2.5 RR transforms it to positive." Opened and verified
+2026-09-28: the paper's stated result is that none of the 44 concepts beats a matched null
+baseline at any of 8 holding horizons, with multiple-testing correction - no combination-rescues
+-it finding is reported. The source itself is real (title/authors/venue match), but the claim
+attributed to it does not. Corrected in T055b_PROVEN_SETUPS.md (gate v3.0 rewrite); claim removed.
+
+---

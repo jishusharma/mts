@@ -100,5 +100,6 @@ Never mainnet, never read .secrets/.env/keys, never push/merge/rebase/reset.
 | T040 | all-time extreme rankings per indicator x tf -> severity tiers -> live anomaly flags | decisions made (s6), specs 091-093 NOT written yet |
 | T054 | anomalies x liquidity runs at the US open; US pre-market alert; US-equity/BTC correlation; news (free sources first) | filed, not started; depends on T040 |
 | T053 | two-account hedge / leveraged scalping (a, b1, b2) - research what works, then backtest | filed, not started |
+| T055 | net/new longs-shorts positioning flow (how pros use it, MTF trend bias, confluence) + most reliable BTC setups per style | filed; web research running (Sonnet) -> T055a/T055b reports |
 | T048 | satellite framework + exchange API layer | OPEN (design); T053 feeds it |
 Order: T040 (Qwen) -> T054 step 2-3 research (Sonnet, Qwen for code) -> T053 research (Sonnet web research, then backtest).
