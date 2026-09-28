@@ -1,10 +1,10 @@
 # TEST_PLAN.md — rsi layer (rsi_core, rsi_ma, rsi_events, malkan_40_60)
 
 Hand-computed / Python-scratch-verified expected values per the specs (Dumps/workers/NUC-QUEUE/specs/
-071/072/073). Values were computed with a standalone Python scratch (Wilder recursion re-implemented
-from `MyTradingSys/backtest/bt/bt_rsi.py.new`'s already-reviewed `rsi_wilder`), NOT by importing the
-future module. A Haiku worker should turn each case into a `unittest` method against the real module
-once built; do not re-derive expected values, use these.
+071/072/073). Values were computed with a standalone Python scratch implementing the definitions in
+`MyTradingSys/backtest/layers/FORMULAS.md` (sections 1-6), NOT by importing or reading `bt_rsi.py.new`
+or any future layer module. A Haiku worker should turn each case into a `unittest` method against the
+real module once built; do not re-derive expected values, use these.
 
 Malkan source: `MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md` is the only Malkan extract
 that exists on disk (the path named in the work order, `extracts/processed/malkan_rsi_2026-09-28`, does
