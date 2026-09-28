@@ -179,7 +179,7 @@ public class SetupCandidatesBuilder {
                 double risk = Math.abs(zonePrice - c.stop);
                 double reward = Math.abs(c.target - zonePrice);
                 c.grossRR = reward / risk;
-                c.netRR = c.grossRR * 0.75;
+                c.netRR = ExecutionMathConstants.netRR(c.grossRR);  // W2: was hardcoded * 0.75, see ExecutionMathConstants
                 c.rrSanity = c.grossRR >= 1.5;
                 c.netRrSanity = c.netRR >= 2.0;
             } else {

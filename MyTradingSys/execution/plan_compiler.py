@@ -7,11 +7,22 @@ exact order list: entry orders (with tick/size rounding), a stop order,
 and target orders. Sends nothing - this is pure computation, no network
 calls, so it is fully testable without a Deribit connection or API key.
 
-Rounding rules (BTC-PERPETUAL, inverse, USD-denominated contracts):
-  - Price snapped to the nearest 0.5 USD tick.
-  - Size (amount) rounded to the nearest $10 contract.
-These are Deribit's actual BTC-PERPETUAL contract conventions and are
-NOT configurable per-plan - they are exchange constants.
+Rounding rules (BTC-PERPETUAL, inverse, USD-denominated contracts) - see
+FORMULAS.md 11.1/11.2 for the full derivation and the Opus-review
+rejection of the earlier round-half-to-even version:
+  - Price snapped to the nearest 0.5 USD tick, DIRECTIONALLY per order
+    purpose + side, never plain round-to-nearest: entry prices snap
+    away from the market (never a worse fill than planned), stop prices
+    snap toward entry (loss can never exceed budget), target prices
+    snap toward entry (more likely to fill at the stated price or better).
+  - Size (amount) FLOORED to the nearest $10 contract, never rounded up
+    and never forced up to the $10 minimum - a size below the minimum
+    means the plan cannot be traded at that risk budget, so
+    compile_plan() refuses it (CompileError) rather than silently
+    trading a larger size than intended.
+These are Deribit's actual BTC-PERPETUAL contract conventions (0.5 USD
+tick, 10 USD minimum trade amount / increment) and are NOT configurable
+per-plan - they are exchange constants.
 
 Run directly against one plan file and print the compiled table:
     python MyTradingSys/execution/plan_compiler.py path/to/plan.json
@@ -24,6 +35,7 @@ sys.dont_write_bytecode = True
 
 import json
 import argparse
+from decimal import Decimal, ROUND_FLOOR, ROUND_CEILING
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -35,21 +47,57 @@ PRICE_TICK = 0.5
 SIZE_INCREMENT = 10
 
 
-def snap_price(price: float) -> float:
-    """Round to the nearest 0.5 USD tick."""
-    return round(price / PRICE_TICK) * PRICE_TICK
+class CompileError(Exception):
+    """Raised when a plan cannot be compiled - e.g. it was never validated,
+    contains a combination the compiler does not yet handle (trailing
+    stops need live price tracking, not a static compile step), or an
+    entry/target size floors below the minimum tradeable size (see
+    round_size below - moved above snap_price/round_size so they can
+    raise it directly)."""
+
+
+def snap_price(price: float, mode: str) -> float:
+    """Snap price to the nearest PRICE_TICK, in the direction given by
+    `mode` ('floor' or 'ceil'). The direction is ALWAYS chosen by the
+    caller from the order's purpose and side (see FORMULAS.md 11.1) -
+    this function never guesses a direction from price alone, and never
+    rounds to the nearest tick (round-half-to-even was rejected in Opus
+    review: it is a definition borrowed from Python's round() rather than
+    from risk direction, and it can snap a stop/target the wrong way).
+
+    Uses Decimal arithmetic (not float + epsilon) so the tick boundary is
+    exact regardless of binary-float representation error, e.g.
+    Decimal("50000.5")/Decimal("0.5") is exactly Decimal("100001"), with
+    no risk of landing on 100000.99999999998 or 100001.00000000002.
+    """
+    if mode not in ("floor", "ceil"):
+        raise ValueError(f"snap_price mode must be 'floor' or 'ceil', got {mode!r}")
+    d_price = Decimal(str(price))
+    d_tick = Decimal(str(PRICE_TICK))
+    rounding = ROUND_FLOOR if mode == "floor" else ROUND_CEILING
+    snapped_units = (d_price / d_tick).to_integral_value(rounding=rounding)
+    return float(snapped_units * d_tick)
 
 
 def round_size(amount: float) -> int:
-    """Round to the nearest $10 contract, minimum 10."""
-    rounded = round(amount / SIZE_INCREMENT) * SIZE_INCREMENT
-    return max(SIZE_INCREMENT, int(rounded))
-
-
-class CompileError(Exception):
-    """Raised when a plan cannot be compiled - e.g. it was never validated,
-    or contains a combination the compiler does not yet handle (trailing
-    stops need live price tracking, not a static compile step)."""
+    """Floor to the nearest SIZE_INCREMENT (10 USD) - never rounds up.
+    Raises CompileError if the floored size is below SIZE_INCREMENT: the
+    old behaviour (`max(SIZE_INCREMENT, floored)`) forced every too-small
+    size up to the 10 USD minimum, which can trade MORE size (and take
+    MORE risk) than the plan's own risk budget calls for - forcing a
+    minimum can exceed the risk budget, so refusing is the safe default.
+    """
+    d_amount = Decimal(str(amount))
+    d_inc = Decimal(str(SIZE_INCREMENT))
+    floored_units = (d_amount / d_inc).to_integral_value(rounding=ROUND_FLOOR)
+    size = int(floored_units * d_inc)
+    if size < SIZE_INCREMENT:
+        raise CompileError(
+            f"amount {amount} floors to {size}, below the {SIZE_INCREMENT} USD minimum tradeable "
+            f"size - refusing rather than forcing it up to {SIZE_INCREMENT} (that would trade more "
+            f"size, and take more risk, than the plan's own risk budget calls for)"
+        )
+    return size
 
 
 def compile_plan(plan: dict) -> dict:
@@ -62,6 +110,11 @@ def compile_plan(plan: dict) -> dict:
     base_unit = plan["base_unit"]
     order_side = "BUY" if side == "LONG" else "SELL"
     opposite_side = "SELL" if side == "LONG" else "BUY"
+
+    # Entry snap direction (FORMULAS.md 11.1): never a worse fill than
+    # planned - a BUY limit/ladder rung snaps DOWN (floor, cheaper or
+    # equal), a SELL snaps UP (ceil, more expensive or equal).
+    entry_mode = "floor" if order_side == "BUY" else "ceil"
 
     entry_orders = []
     if entry["type"] == "market":
@@ -78,7 +131,7 @@ def compile_plan(plan: dict) -> dict:
         avg_entry_estimate = None
 
     elif entry["type"] == "limit":
-        price = snap_price(entry["price"])
+        price = snap_price(entry["price"], entry_mode)
         entry_orders.append({
             "label": "entry_limit",
             "side": order_side,
@@ -108,10 +161,13 @@ def compile_plan(plan: dict) -> dict:
             else:
                 rung_prices = [low + i * step for i in range(rungs)]
 
-        total_weighted_notional = 0.0
+        # FORMULAS.md 11.4: inverse-contract average price across fills is
+        # the harmonic mean weighted by USD size, sum(size)/sum(size/price)
+        # - NOT the notional-weighted arithmetic mean sum(price*size)/sum(size).
+        total_inverse_weighted = 0.0
         total_size = 0
         for i, (price, mult) in enumerate(zip(rung_prices, mults), start=1):
-            snapped_price = snap_price(price)
+            snapped_price = snap_price(price, entry_mode)
             size = round_size(base_unit * mult)
             entry_orders.append({
                 "label": f"entry_rung_{i}",
@@ -120,10 +176,10 @@ def compile_plan(plan: dict) -> dict:
                 "price": snapped_price,
                 "amount": size,
             })
-            total_weighted_notional += snapped_price * size
+            total_inverse_weighted += size / snapped_price
             total_size += size
 
-        avg_entry_estimate = (total_weighted_notional / total_size) if total_size else None
+        avg_entry_estimate = (total_size / total_inverse_weighted) if total_size else None
 
     else:
         raise CompileError(f"unhandled entry.type: {entry['type']!r}")
@@ -139,7 +195,11 @@ def compile_plan(plan: dict) -> dict:
             pct = stop_spec["percent_below_entry"] / 100.0
             stop_price = (avg_entry_estimate * (1 - pct) if side == "LONG"
                           else avg_entry_estimate * (1 + pct))
-            stop_price = snap_price(stop_price)
+            # FORMULAS.md 11.1: stop snaps TOWARD entry so the loss can
+            # never exceed budget - LONG stop (below entry) snaps UP
+            # (ceil), SHORT stop (above entry) snaps DOWN (floor).
+            stop_mode = "ceil" if side == "LONG" else "floor"
+            stop_price = snap_price(stop_price, stop_mode)
             stop_order = {
                 "label": "stop_order",
                 "side": opposite_side,
@@ -149,6 +209,8 @@ def compile_plan(plan: dict) -> dict:
                 "reduce_only": True,
             }
             price_delta = abs(avg_entry_estimate - stop_price)
+            # NOTE (FORMULAS.md 11.6): this is the loss AT the stop price
+            # only - it excludes stop-market trigger slippage and fees.
             worst_case_loss = -round(price_delta * total_entry_size / avg_entry_estimate, 2) if avg_entry_estimate else None
 
         elif stop_spec["type"] == "trailing_percent":
@@ -192,10 +254,15 @@ def compile_plan(plan: dict) -> dict:
     # --- Target orders ---
     target_orders = []
     if avg_entry_estimate is not None:
+        # FORMULAS.md 11.1: target snaps TOWARD entry so it is more likely
+        # to fill at the stated price or better - LONG target (above
+        # entry) snaps DOWN (floor), SHORT target (below entry) snaps UP
+        # (ceil).
+        target_mode = "floor" if side == "LONG" else "ceil"
         for i, t in enumerate(plan.get("targets", []), start=1):
             target_price = (avg_entry_estimate * (1 + t["pnl_target_percent"] / 100.0) if side == "LONG"
                             else avg_entry_estimate * (1 - t["pnl_target_percent"] / 100.0))
-            target_price = snap_price(target_price)
+            target_price = snap_price(target_price, target_mode)
             target_amount = round_size(total_entry_size * t["amount_percent"] / 100.0)
             target_orders.append({
                 "label": f"target_{i}",

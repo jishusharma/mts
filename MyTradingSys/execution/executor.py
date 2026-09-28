@@ -118,7 +118,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import deribit_orders as do  # noqa: E402
 import journal  # noqa: E402
 import risk_guard  # noqa: E402 - S1: account-wide notional cap
-from plan_compiler import compile_plan, snap_price, round_size  # noqa: E402
+from plan_compiler import compile_plan, snap_price, round_size, CompileError  # noqa: E402
 
 POLL_INTERVAL_SECONDS = 2
 DEFAULT_MAX_ENTRY_SECONDS = 600
@@ -292,7 +292,10 @@ def execute_plan(compiled: dict, plan: dict = None, instrument: str = "BTC-PERPE
         if was_market_derived:  # market entry: derive from real fill
             if pct is None:
                 raise ExecutionHalted("market entry needs the raw plan (percent) to place a stop")
-            stop["trigger"] = snap_price(avg_fill * (1 - pct / 100) if is_long else avg_fill * (1 + pct / 100))
+            # FORMULAS.md 11.1: stop snaps TOWARD entry (LONG->ceil, SHORT->floor)
+            # so the realized loss can never exceed the plan's risk budget.
+            stop_mode = "ceil" if is_long else "floor"
+            stop["trigger"] = snap_price(avg_fill * (1 - pct / 100) if is_long else avg_fill * (1 + pct / 100), stop_mode)
         m = do.get_ticker(instrument)["mark_price"]
         if (is_long and m <= stop["trigger"]) or (not is_long and m >= stop["trigger"]):
             raise ExecutionHalted(f"mark {m} already through stop {stop['trigger']}")
@@ -461,14 +464,26 @@ def execute_plan(compiled: dict, plan: dict = None, instrument: str = "BTC-PERPE
         remaining = filled_total
         tgts = plan.get("targets", []) if plan else []
         for i, t in enumerate(tgts, start=1):
-            amt = remaining if i == len(tgts) else min(remaining, round_size(filled_total * t["amount_percent"] / 100.0))
+            if i == len(tgts):
+                amt = remaining
+            else:
+                try:
+                    amt = min(remaining, round_size(filled_total * t["amount_percent"] / 100.0))
+                except CompileError:
+                    # FORMULAS.md 11.2: round_size now refuses (rather than
+                    # forcing up to the 10 USD minimum) a too-small target
+                    # share - skip this target rather than over-size it.
+                    continue
             if amt < 10:
                 continue
             halt_reasons = _halt_check_mid_run()  # FIX4 M4: re-check right before every target create
             if halt_reasons:
                 fail_closed("HALT observed mid-run: " + " | ".join(halt_reasons))
+            # FORMULAS.md 11.1: target snaps TOWARD entry (LONG->floor,
+            # SHORT->ceil) so it is more likely to fill at the stated price or better.
+            target_mode = "floor" if is_long else "ceil"
             px = snap_price(avg_fill * (1 + t["pnl_target_percent"] / 100) if is_long
-                            else avg_fill * (1 - t["pnl_target_percent"] / 100))
+                            else avg_fill * (1 - t["pnl_target_percent"] / 100), target_mode)
             try:
                 o = _place(token, instrument, stop_side, amt, "limit", price=px,
                            label=_xlabel(plan_id, f"target_{i}"), reduce_only=True)

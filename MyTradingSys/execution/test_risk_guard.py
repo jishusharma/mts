@@ -68,5 +68,38 @@ class TestFormatGuardReport(unittest.TestCase):
         self.assertIn("account notional would reach 11000.0 > cap 10000", report)
 
 
+class TestInverseMathFormulasR3(unittest.TestCase):
+    """R2 addition (Opus audit MUTATION_REPORT_FT2.md, mutant R3): dropping
+    the abs() in account_position_notional's mark_price-GIVEN branch
+    SURVIVED the original mutation suite - every existing test above
+    (test_contract_denominated included) uses a non-negative size, so
+    `abs(size)*mark` and `size*mark` agree and never distinguish the
+    mutant. A SHORT position reports a NEGATIVE size from the exchange -
+    this class is the first coverage of that sign on the mark-given
+    branch. Also keeps two extra non-integer hand-computed cases (mark=None
+    and mark-given) for precision beyond the existing suite's round numbers.
+    """
+
+    def test_mark_none_non_integer_size(self):
+        # hand calc: abs(-1234.567) rounded to 2dp = 1234.57
+        self.assertEqual(account_position_notional(-1234.567, None), 1234.57)
+
+    def test_mark_given_non_integer(self):
+        # hand calc: abs(-2.5) * 51234.333 = 128085.8325 -> round 2dp = 128085.83
+        self.assertEqual(account_position_notional(-2.5, 51234.333), round(2.5 * 51234.333, 2))
+
+    def test_r3_short_position_mark_given_stays_positive(self):
+        # R3 killer: a short of size=-4 contracts, mark_price=25000 ->
+        # abs(-4)*25000 = 100000.0. If abs() is dropped, this returns
+        # -100000.0 instead - wrong sign, and a real caller (risk_guard's
+        # own cap check, which never expects a negative notional) would
+        # silently under-count the account's true exposure.
+        self.assertEqual(account_position_notional(-4, 25000), 100000.0)
+
+    def test_r3_short_position_mark_given_non_round(self):
+        # hand calc: abs(-6.25) * 33333.33 = 208333.3125 -> round 2dp = 208333.31
+        self.assertEqual(account_position_notional(-6.25, 33333.33), round(6.25 * 33333.33, 2))
+
+
 if __name__ == "__main__":
     unittest.main()
