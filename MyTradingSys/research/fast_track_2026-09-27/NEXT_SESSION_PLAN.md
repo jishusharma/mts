@@ -48,7 +48,7 @@ Never mainnet. Never read .secrets/.env/keys. Never push/merge/rebase/reset.
 ## 3. Work queue (cheapest tier first; agents return <=15 lines; spot-check one claim each)
 - **Q1 (T1 Qwen, running next)** 0989-t055-c3-turn-of-candle-r2 = 0988 repacked (0988 died at 3072 output tokens on
   gpt-oss, which burns tokens on reasoning) with qwen3-coder:30b, OUTPUT_TOKENS 6144. Spec: nuc_specs/0989-*.md. The worker
-  claims by name, so it runs before 107-111. When it lands, the hourly check gates it (its test already exists:
+  claims by name: 107 was already running at 04:00 IST, so 0989 runs right after it, before 108-111. When it lands, the hourly check gates it (its test already exists:
   layers/turn_of_candle/test_turn_of_candle.py) -> Step 5b goes green.
 - **Q2 (T3 Sonnet) T055 backtest** once 0989 is promoted: promote run_t055.py.new + test_run_t055.py.new (22 stub tests),
   ADD FUNDING to C2/C3 net (holds can cross 00/08/16 UTC; data exists 2025-09+) - required before any pass is
