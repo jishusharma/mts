@@ -40,25 +40,31 @@ PBO (0.79-0.91) and the OOS mean return is near zero or negative despite a posit
 |---|---|---|---|---|---|
 | setup1_sr_flip | 2517 | +0.021% | 46.3% | 500 (capped) | 51.2% |
 | setup3_failed_msb_reversal | 290 | +0.036% | 47.6% | 290 | 33.4% |
+| setup2_fib_pullback | 839 | +0.006% | 52.1% | 500 (capped) | 61.4% |
 
-`setup2_fib_pullback` did not run — see blocker below. No PBO computed for CC setups (task asked
-for PBO on the D3 grid; CC setups aren't a parameter sweep here, just two fixed rule sets).
+No PBO computed for CC setups (task asked for PBO on the D3 grid; CC setups aren't a parameter sweep
+here, just fixed rule sets).
 
-## Blocker found (reported, not patched)
+## Blocker found and fixed
 
 `cc_setups.setup2_fib_pullback` (`MyTradingSys/backtest/layers/cryptocred/cc_setups.py:75-76,102-103`)
-indexes `swings[broken_swing_i]`, treating `broken_swing_i` as a position in the local `swings` list.
+indexed `swings[broken_swing_i]`, treating `broken_swing_i` as a position in the local `swings` list.
 But `cc_structure.classify_msb` sets `broken_swing_i = H_last["i"]` / `L_last["i"]`
 (`cc_structure.py:106,128`), which is a **bars index** (`find_swings` stores each swing's own bar
-position as `"i"`, and swings are sparse — far fewer than bars). On real data this raises
+position as `"i"`, and swings are sparse — far fewer than bars). On real data this raised
 `IndexError: list index out of range` as soon as `broken_swing_i >= len(swings)`. `setup3` uses the
-same field correctly (`bars[swing_i:c+1]`, a bars-index slice) and is unaffected; `setup1` never reads
-the field. The existing `test_cc_setups.py` unit tests pass because their hand-built fixtures were
-crafted so a swing's bars-index happens to equal its swings-list position (see the test file's own
-comment at line 85: "list-index 3, matching broken_swing_i"), which masks the mismatch. This needs a
-design decision (fix `cc_setups` to look up the swing by `s["i"] == broken_swing_i`, or have
-`classify_msb` emit a swings-list index) rather than a one-line patch, so it was left alone and
-`setup2` was skipped for this run.
+same field correctly (`bars[swing_i:c+1]`, a bars-index slice) and was unaffected; `setup1` never reads
+the field. The existing `test_cc_setups.py` unit tests passed because their hand-built fixtures were
+crafted so a swing's bars-index happened to equal its swings-list position (see the test file's own
+comment at line 85: "list-index 3, matching broken_swing_i"), which masked the mismatch.
+
+Fixed (commit `54ad393`, fast-track): `setup2_fib_pullback` now first locates the swings-list position
+whose `s["i"] == broken_swing_i`, then walks backward from that position in both the bull and bear
+branches. `cc_structure`'s field semantics (a bars index) were left unchanged. A regression test
+(`test_u4b_bull_swing_list_index_ne_bar_index` in `test_cc_setups.py`) uses swings at bar indices
+10-13 (list positions 0-3) to catch the list/bar-index mismatch; it raises `IndexError` on the
+pre-fix code. The setup2 row above is from a real-data re-run with the fix applied
+(`setup2_fib_pullback` over the same 1h-resampled BTCUSDT bars as setup1/setup3).
 
 ## Caveats
 
