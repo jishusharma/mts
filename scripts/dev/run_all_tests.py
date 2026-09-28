@@ -111,7 +111,10 @@ def main(argv=None):
     results.append(("Step 3c: Guide in sync", success))
 
     # Step 4: pytest (math + doc tests)
-    cmd4 = [sys.executable, "-m", "pytest", "MyTradingSys/tests", "-q"]
+    cmd4 = [sys.executable, "-m", "pytest", "MyTradingSys/tests", "-q",
+            # function-style tests that unittest-based steps 5b/6 do not collect
+            "MyTradingSys/backtest/bt/test_bt_rsi.py", "MyTradingSys/backtest/bt/test_bt_rsi_edge.py",
+            "MyTradingSys/backtest/test_prob_table.py", "MyTradingSys/backtest/test_prob_table_edge.py"]
     success, output = run_step(4, "Pytest (math + doc tests)", cmd4)
     results.append(("Step 4: Pytest tests", success))
 
