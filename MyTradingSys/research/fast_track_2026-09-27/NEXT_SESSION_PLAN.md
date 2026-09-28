@@ -55,7 +55,7 @@ Never mainnet. Never read .secrets/.env/keys. Never push/merge/rebase/reset.
   accepted - then run C1/C2/C3 (commands in T055 runbook; `--tf 1h` = C1 alt). Output T055_BT_c<n>.md. Any passing
   setup -> ALERT layer only, never a Tom filter.
 - **Q3 (T3 Sonnet) Fabio backtest (W4)**: driver MyTradingSys/backtest/layers/fabio/run_backtest.py is UNTRACKED and has
-  never been run; it needs fabio_escalation (being gated now - see section 6). Gate the driver, run it, write
+  never been run; fabio_escalation is now promoted (a408fa6), so it is unblocked. Gate the driver, run it, write
   FABIO_L1_REPORT.md. Operator's question: "is core MTS + Fabio producing quality setups?"
 - **Q4 (T2/T3) R5 formula audit**: find why 082 failed (verdict lists 1 unknown file name + 3 missing EXPECT lines), re-split
   to <=5k prompt tokens, OUTPUT_TOKENS big enough for the whole reply, pack 082r/083/084 on qwen3-coder.
@@ -98,8 +98,16 @@ Don't re-queue them.
   crossed a marker was reported MISSING (the cause of the 103/105 "bad quotes" holds; Qwen's quotes were verbatim).
   New test scripts/dev/test_verify_extract_quotes.py (5 tests; 2 fail on the old code, 5/5 pass on the new).
   All 7 committed Tom extracts still PASS.
-- Sonnet gate agent (background) on the 5 real stale builds: bt_rsi, prob_table, fabio_escalation, the 2 CryptoCred test updates,
-  extract_nuc_files (+ edge tests each). Results -> GATE_REPORT_2026-09-29.md rows (see section 7 for the outcome).
+- Sonnet gate agent on the 5 real stale builds (edge tests written for each):
+  - bt_rsi PASS d30a57c (13 + 11 edge). Real bug fixed: the seed divided by the count of nonzero moves, not by `period`
+    (FORMULAS s1). Supervisor hand-checked: period 4 on 1,2,1,2,1,2 gives 50.0 then 62.5.
+  - prob_table PASS 8614eaa (12 + 9 edge): skips records with no ts; log-loss averaged over scored records.
+  - fabio_escalation PASS a408fa6 (4 + 10 edge): import fixed; only the FIRST absorption counts (escalation could never fire);
+    empty bars -> ValueError.
+  - cc_retest/cc_structure .new tests NOT promoted: they differ only by a loader for non-existent .new modules; live 20/20 pass.
+  - extract_nuc_files.py.new HOLD: needs a spec-derived test.
+  - run_all_tests.py: Step 4 now pytest-collects the bt_rsi/prob_table tests; new Step 3d = quote checker tests.
+    `--quick` after all of it: every step PASS except 5b (test_turn_of_candle, waits on 0989).
 - The other ~20 `.new` files listed in STATUS.md are byte-identical leftovers of already-committed builds (gitignored). They
   are harmless; delete only with operator OK (T057). execution/README.md.new differs from live: review, don't auto-promote.
 - run_t055.py.new / test_run_t055.py.new wait on 0989 (Q2).
@@ -137,4 +145,4 @@ Don't re-queue them.
 | Keep the PC awake overnight | DONE (display/sleep never, verified) |
 | 2026-09-29: go live -> launch as many testnet tests as possible | DONE - 14/14 testnet PASS, alert runner live, offline gate green except C3 |
 | 2026-09-29: give DSA pending extractions | DONE - section 4 |
-| 2026-09-29: new builds -> commit, test, edge cases | DONE - hourly check updated; this session's builds gated with edge tests |
+| 2026-09-29: new builds -> commit, test, edge cases | DONE - hourly check updated; 3 stale builds promoted with 30 edge tests, which found 3 real bugs (RSI seed, prob_table log-loss, escalation never firing) |

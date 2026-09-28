@@ -109,6 +109,9 @@ def main(argv=None):
     cmd3c = [sys.executable, "scripts/dev/check_guide.py"]
     success, output = run_step("3c", "User guide in sync with mts.ps1", cmd3c)
     results.append(("Step 3c: Guide in sync", success))
+    cmd3d = [sys.executable, "scripts/dev/test_verify_extract_quotes.py"]
+    success, output = run_step("3d", "Extract quote checker tests", cmd3d)
+    results.append(("Step 3d: Quote checker tests", success))
 
     # Step 4: pytest (math + doc tests)
     cmd4 = [sys.executable, "-m", "pytest", "MyTradingSys/tests", "-q",

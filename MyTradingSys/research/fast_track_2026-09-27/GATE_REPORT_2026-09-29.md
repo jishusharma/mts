@@ -11,4 +11,12 @@ task | verdict | test | commit | note
 0988-turn-of-candle | HOLD | N/A | N/A | NUC reply cut off at 3072 tokens, no proposal; needs repack with larger OUTPUT_TOKENS
 101-fabio-0ky-b | HOLD | N/A | N/A | waiting on chunk a (100 BLOCKED); could not verify quotes without full video
 102-fabio-0jm | HOLD | N/A | N/A | BLOCKED: GPS line missing, proposal outside scope; needs repack
+103-fabio-8cwk | HOLD | verify_extract_quotes.py | N/A | quote verification failed: 9 quotes missing/misphrased in transcript (R1,R2,R3,R4,R5,R6,R7,R8,R9)
+104-fabio-faw-a | HOLD | N/A | N/A | BLOCKED: reply cut off at 2048 tokens; needs repack with larger OUTPUT_TOKENS
+105-fabio-faw-b | HOLD | verify_extract_quotes.py | N/A | quote verification failed: 10 quotes missing/misphrased (R1-R10); also awaiting chunks 104+106
 note | run_all_tests --quick: Step 5b fails only on missing turn_of_candle module (.new unpromoted, unrelated to these tasks)
+bt_rsi | PASS (1 fix) | bt/test_bt_rsi.py 13/13 + test_bt_rsi_edge.py 11/11 | d30a57c | seed divided by count of nonzero moves instead of period (FORMULAS.md 1 known bug); 11 edge tests; existing tests did not catch it; Step 4 pytest now collects bt_rsi + prob_table tests
+prob_table | PASS (2 fixes) | backtest/test_prob_table.py 12/12 + test_prob_table_edge.py 9/9 | 8614eaa | build_table now skips records with ts None; evaluate averaged log-loss over len(test) instead of scored records (halved loss when a test record was skipped); 9 edge tests
+fabio_escalation (088) | PASS (2 fixes) | layers/fabio/test_fabio_escalation.py 4/4 + test_fabio_escalation_edge.py 10/10 | a408fa6 | relative import from .cc_structure (wrong package) -> absolute; a later record bar closing under the level was recorded as a second absorption so escalation never fired (now only first absorption recorded); empty bars raises ValueError by codebase convention
+cc_retest / cc_structure test updates | NO PROMOTE | live test_cc_retest + test_cc_structure + test_cc_setups 20/20 | N/A | .new tests differ from live only by a loader header that imports nonexistent cc_*.py.new modules (fail with FileNotFoundError); cc modules already promoted; leave or delete the .new files
+extract_nuc_files | HOLD | N/A | N/A | needs spec-derived test
