@@ -87,3 +87,18 @@ Operator decisions (asked once at start):
 loaded, ctx 22528) but TWO worker processes (pid 4084, 10368) - check for a duplicate worker.
 Wave 1 launched in background: W1 layers (Sonnet), W2 execution math (Sonnet, staged only), W3 replies
 (Haiku), W5 NUC specs 077-081 (Sonnet).
+
+Session 2, ~14:00Z:
+- R1 DONE: 08f5ea0 + 61e55f3 (T4 reviewed; operator approved "fix all, then promote"). T4 rejected tick/size
+  rounding copied from Python round() and replaced it with side-aware floor/ceil and reject <10 USD. Spot-check
+  caught: the new tests were NOT in the run_all_tests step 1 list, and test_risk_guard.py.new would have dropped 9
+  tests. LESSON: "gate green" only counts if the new test module is in the gate's list - ask for per-module counts.
+- R2 DONE: full run_all_tests.py (Maven + backtest) ALL PASS; NetRRConstantTest 6/6 in surefire.
+- R5: layers 070-075 + 077 promoted (tf_realdata_gate: OHLC exact, volume-only diffs, 2023-11-10 at 12%).
+  076 formula-audit TIMED OUT (15k prompt tokens, 7200 s limit) -> re-split as 082/083 (<=7k tokens).
+  Layer boundary test + OPEN_FINDINGS.md (84de108); only L6 part 2 is open (deferred).
+- R6 DONE: BACKTEST_L1_REPORT.md (3e99093). Only 1h RSI-40 support tol 0.5 has PBO<0.05, and its edge is below fees.
+  The cc_setups setup2 bars-index vs swings-list-index bug is being fixed.
+- The run_all_tests.py working tree holds uncommitted Step 3b/3c guide-checker lines from another session (check_guide.py
+  is untracked) - deliberately left out of the commits.
+- Next: operator R3 testnet re-run.
