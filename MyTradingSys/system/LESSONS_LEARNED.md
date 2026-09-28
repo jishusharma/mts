@@ -39,6 +39,9 @@ top of the relevant section. Keep each entry to 3 lines.
   task will change; sequence them.
 - Queue banned terms were a substring match ("DIGIT" tripped "git"); fixed to word-start match.
   "commit" is still banned in task text; say "changeset".
+- OUTPUT_TOKENS must cover the whole expected reply: a full-file rewrite needs about bytes/4 plus
+  headroom. 031 (3500 for a ~4k-token runbook) and the 054 split (2500 each) were packed too small
+  and would truncate. RULE: when splitting a truncated task, never lower OUTPUT_TOKENS; check it vs file size.
 
 ## C. Tokens + time
 - Waiting: one background shell (`until [ -f reply ]; sleep`) per batch, never an agent that polls.
