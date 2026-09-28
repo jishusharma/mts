@@ -36,6 +36,10 @@ Stop and escalate when: verdict FAIL twice; a reply is cut off; the reply invent
 is red after one fix attempt; or the task touches the stop/flatten/HALT paths (goes to T4 review, always).
 
 ## 3. Gates (exact commands, repo root)
+**One command for all offline gates:** `python scripts/dev/run_all_tests.py` (`--quick` skips Maven + backtest).
+Exit 0 = green. As of 2026-09-28 steps 1-5 PASS; step 6 (backtest) fails only on Qwen's own wrong test
+expectations (fixed by 023/024 + Haiku test rewrites).
+
 - **Execution layer**:
   `python scripts/dev/run_staged_tests.py MyTradingSys/execution MyTradingSys/execution/testnet/offline -- test_daily_loss_guard test_daily_loss_monitor test_gh_executor_offline test_gh_retry_offline test_halt_preflight_offline test_kill_switch test_risk_guard test_s1_cap_offline test_s3_unprotected_offline test_s6_orphan_offline test_soak_report test_fix3_offline` -> 116 OK;
   `... --script test_g1g2_offline.py --fake fake_deribit_orders.py=deribit_orders.py` -> 12/12;
