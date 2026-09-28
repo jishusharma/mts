@@ -77,3 +77,13 @@ task MTS-Ollama (not created). OLLAMA_FLASH_ATTENTION / KV_CACHE_TYPE still unse
 user env has NUM_PARALLEL=1, KEEP_ALIVE=30m. At 11:20Z NUC on 076 (last queued) - queue about to go idle.
 
 Session 1 closed ~11:30Z. Handoff + next-session waves: NEXT_SESSION_PLAN.md.
+
+## 2026-09-28 - session 2 (Opus supervisor, auto mode)
+Operator decisions (asked once at start):
+- "Live testing" = BOTH: testnet order runs with Tom core signals + indicator-layer ALERTS (alert-only).
+- Core ATR: KEEP plain average of True Range; document it in FORMULAS.md (no Wilder switch).
+- R4: L6 part 2 DEFERRED for testnet (L6 re-arm suffices); must be built before any mainnet use.
+~13:05Z: queue shows 076 running with a 105-minute-old heartbeat; the SSH gate shows Ollama active (qwen3-coder:30b
+loaded, ctx 22528) but TWO worker processes (pid 4084, 10368) - check for a duplicate worker.
+Wave 1 launched in background: W1 layers (Sonnet), W2 execution math (Sonnet, staged only), W3 replies
+(Haiku), W5 NUC specs 077-081 (Sonnet).
