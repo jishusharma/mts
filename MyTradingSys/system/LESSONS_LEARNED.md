@@ -16,6 +16,9 @@ top of the relevant section. Keep each entry to 3 lines.
   a test that passes on both versions is a regression guard, not proof of the fix.
 
 ## B. Workers (cost + accuracy)
+- 2026-09-28 FIX4: a worker put the mid-run HALT check BEFORE the protective stop, so a HALT after a fill
+  skipped the stop and relied on the flatten alone. RULE: a halt/guard may block risk-ADDING orders, never
+  the protective reduce-only stop; check the halt right after the stop is live. Safety diffs always get T4 review.
 - Qwen (NUC) writes correct implementations but WRONG tests (019, 020, 021: 8 bad expectations).
   RULE: Qwen writes implementations/extractions only; tests are written by Haiku/Sonnet from the spec.
 - Fixing a failing test "to match the implementation" can make it tautological (021 ladder:
