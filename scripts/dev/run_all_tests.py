@@ -73,7 +73,7 @@ def main(argv=None):
         "test_daily_loss_guard", "test_daily_loss_monitor", "test_gh_executor_offline",
         "test_gh_retry_offline", "test_halt_preflight_offline", "test_kill_switch",
         "test_risk_guard", "test_s1_cap_offline", "test_s3_unprotected_offline",
-        "test_s6_orphan_offline", "test_soak_report", "test_fix3_offline",
+        "test_s6_orphan_offline", "test_soak_report", "test_fix3_offline", "test_fix4_offline",
     ]
     success, output = run_step(1, "Execution module tests", cmd1)
     results.append(("Step 1: Execution tests", success))

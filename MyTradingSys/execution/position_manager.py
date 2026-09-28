@@ -54,6 +54,17 @@ can't reach that order. flatten_halt now also sweeps cancel_by_label for the
 stop and every known target, using the exact same plan-scoped label
 convention executor.py's _xlabel builds (f"{plan_id}:{label}"[:64]).
 
+FIX4 L1 (2026-09-28): the pos==0 "explained" check used to compare
+target_filled against the LIVE stop["amount"] - but G1 shrinks that amount
+every time a target fills, so a partial target fill followed by a manual
+close of the (already-shrunk) remainder was wrongly counted as "explained",
+even though it never covered the original entry fill. explained is now
+`stop_fired or target_filled >= entry_filled_total`, where entry_filled_total
+is the ORIGINAL entry fill total reconstructed from the journal's
+order_filled events on entry orders (falling back to the largest amount ever
+seen on the stop - i.e. its first placement, before any shrink - only if no
+entry fill was journaled at all, which should not happen in normal use).
+
 Run (after executor returned status entry_filled_stop_placed):
   python MyTradingSys/execution/position_manager.py <plan_id> [--max-seconds N] [--once]
 """
@@ -87,8 +98,10 @@ class ManagerHalted(Exception):
 
 
 def _plan_orders(plan_id):
-    """From the journal: entry side, stop order (id, label, amount, trigger), target order ids."""
-    stop, targets, entry_side, entry_filled = None, {}, None, 0
+    """From the journal: entry side, stop order (id, label, amount, trigger), target order ids,
+    and (FIX4 L1) the ORIGINAL entry fill total - see the FIX4 L1 docstring note above."""
+    stop, targets, entries, entry_side = None, {}, {}, None
+    max_stop_amount_ever = 0  # FIX4 L1 fallback: the largest amount the stop was EVER journaled at
     for ev in journal.read_events(plan_id):
         d, t = ev["data"], ev["event_type"]
         if t == "order_placed":
@@ -96,21 +109,34 @@ def _plan_orders(plan_id):
             if lab.startswith("stop"):
                 stop = {"order_id": d["order_id"], "label": lab, "amount": d["amount"],
                         "trigger": d.get("trigger_price"), "side": d["side"]}
+                max_stop_amount_ever = max(max_stop_amount_ever, d["amount"])
             elif lab.startswith("target"):
                 targets[d["order_id"]] = {"label": lab, "amount": d["amount"], "filled": 0}
             elif lab.startswith("entry"):
                 entry_side = d["side"]
+                entries[d["order_id"]] = {"label": lab, "filled": 0}
         elif t == "stop_resized" and stop and d.get("order_id") == stop["order_id"]:
             stop["amount"] = d["amount"]
             stop["trigger"] = d.get("new_stop_price", stop["trigger"])
+            max_stop_amount_ever = max(max_stop_amount_ever, d["amount"])
         elif t == "stop_replaced" and stop:
             stop["order_id"] = d["order_id"]
             stop["amount"] = d["amount"]
+            max_stop_amount_ever = max(max_stop_amount_ever, d["amount"])
         elif t == "order_filled" and stop and d.get("order_id") == stop["order_id"]:
             stop["filled"] = d["filled_amount"]
         elif t == "order_filled" and d.get("order_id") in targets:
             targets[d["order_id"]]["filled"] = d["filled_amount"]
-    return stop, targets, entry_side
+        elif t == "order_filled" and d.get("order_id") in entries:
+            entries[d["order_id"]]["filled"] = d["filled_amount"]
+    entry_filled_total = sum(e["filled"] for e in entries.values())
+    if not entry_filled_total:
+        # no entry order_filled event was journaled (should not happen in
+        # normal use - executor always journals the fill that triggers the
+        # first stop placement) - fall back to the stop's largest-ever
+        # amount rather than 0, which would make "explained" trivially False.
+        entry_filled_total = max_stop_amount_ever
+    return stop, targets, entry_side, entry_filled_total
 
 
 def _signed(size):
@@ -121,7 +147,7 @@ def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, to
     belief = journal.reconstruct_belief(plan_id)
     if belief["halted"]:
         raise ManagerHalted(f"plan {plan_id} already halted: {belief['halt_reason']}")
-    stop, targets, entry_side = _plan_orders(plan_id)
+    stop, targets, entry_side, entry_filled_total = _plan_orders(plan_id)
     if stop is None or entry_side is None:
         raise ManagerHalted(f"plan {plan_id}: journal has no entry/stop - nothing to manage")
     is_long = entry_side == "BUY"
@@ -216,7 +242,10 @@ def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, to
                     journal.append_event(plan_id, "order_cancelled", {"order_id": oid, "reason": "position_flat"})
                 except do.DeribitError:
                     pass
-            explained = stop_fired or target_filled >= stop["amount"]
+            # FIX4 L1: compare against the ORIGINAL entry fill total, not the
+            # live stop["amount"] - G1 shrinks that amount on every target
+            # fill, so it under-counts what a manual close needs to explain.
+            explained = stop_fired or target_filled >= entry_filled_total
             if not explained:
                 journal.append_event(plan_id, "mismatch_halt",
                                      {"reason": "position flat but no stop trigger / target fill explains it "

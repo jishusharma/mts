@@ -1,33 +1,46 @@
 """
-Offline TESTS-FIRST for three open findings of
-review/ADVERSARIAL_REVIEW_FT2.md that FIX3/FT-2 did not close: M4, L1, L2.
+Offline tests for five findings of review/ADVERSARIAL_REVIEW_FT2.md /
+research/fast_track_2026-09-27/FIX4_DESIGN.md that FIX3/FT-2 did not close:
+M2, M4, L1, L2, L3.
 
-THESE TESTS ARE EXPECTED TO FAIL until the corresponding M4/L1/L2 fixes land
-in executor.py / position_manager.py. They are written against the CURRENT
-(unfixed) staged behaviour on purpose, to pin down exactly what "fixed" must
-look like:
+THESE TESTS ARE EXPECTED TO PASS against the FIX4-fixed executor.py /
+position_manager.py (they were originally written TESTS-FIRST against the
+unfixed FT-2 staged behaviour for M4/L1/L2, and failed on purpose until the
+fix landed; M2 and L3 tests were added alongside the fix):
 
-  M4 - execute_plan() only checks the HALT files once, in preflight(), before
-       any order is placed. It never re-checks them again for the rest of the
-       run. A HALT (or a same-day HALT_DAILY_LOSS) written mid-run - by an
-       operator, a concurrent kill_all, or daily_loss_monitor - is invisible
-       to every order-creating call after the first (entry rungs 2..N, the
-       stop create/resize, every target). Fix: re-check before EVERY
-       order-creating call; on a hit, fail_closed("HALT observed mid-run").
+  M2 - executor's HALT_DAILY_LOSS check used to let a well-formed PAST-dated
+       file through with a warning (FIX3 M1's "auto-resumes at 00:00 UTC"
+       contract). FIX4 M2: existence blocks, whatever the date - a breach at
+       23:59 UTC must not resume trading a minute later. Fix: _check_halt_
+       files' past-date branch now refuses with "HALT_DAILY_LOSS from <date>
+       still present - operator must review and delete".
+  M4 - execute_plan() only checked the HALT files once, in preflight(),
+       before any order was placed. It never re-checked them again for the
+       rest of the run. A HALT (or a same-day HALT_DAILY_LOSS) written
+       mid-run - by an operator, a concurrent kill_all, or daily_loss_monitor
+       - was invisible to every order-creating call after the first (entry
+       rungs 2..N, the stop create/resize, every target). Fix: re-check
+       before EVERY order-creating call; on a hit, fail_closed("HALT
+       observed mid-run: ...").
   L1 - position_manager's pos==0 "explained" check
-       (`target_filled >= stop["amount"]`) compares against stop["amount"],
+       (`target_filled >= stop["amount"]`) compared against stop["amount"],
        which SHRINKS every time a target fills (G1). So a partial target
-       fill followed by a manual close of the remainder is wrongly counted
-       as "explained" once target_filled clears the already-shrunk amount,
+       fill followed by a manual close of the remainder was wrongly counted
+       as "explained" once target_filled cleared the already-shrunk amount,
        even though it never covered the ORIGINAL entry fill. Fix: compare
-       against the original entry fill total, or require stop_fired.
+       against the original entry fill total (from the journal's entry
+       order_filled events), or require stop_fired.
   L2 - the executor targets loop's `except do.DeribitError: continue` also
-       swallows OrderStateUnknown (a subclass), so a target create that may
-       have actually rested on the exchange (response merely lost) is never
+       swallowed OrderStateUnknown (a subclass), so a target create that may
+       have actually rested on the exchange (response merely lost) was never
        swept by label - only a plain rejection (order never rested) needs no
        sweep. Fix: on OrderStateUnknown specifically, cancel_by_label the
-       target's plan-scoped label; a plain DeribitError keeps today's
-       continue-with-no-sweep behaviour either way.
+       target's plan-scoped label (without reducing `remaining`); a plain
+       DeribitError keeps the continue-with-no-sweep behaviour either way.
+  L3 - a market entry's post-fill worst-case-loss breach (B079) used to be
+       journaled only, never acted on. Fix: once the stop is live (so
+       fail_closed's C3 cancel-order holds), a real post-fill loss beyond
+       caps_check.max_loss_usd calls fail_closed("B079 post-fill: ...").
 
 Run (from repo root):
   python scripts/dev/run_staged_tests.py MyTradingSys/execution MyTradingSys/execution/testnet/offline -- test_fix4_offline
@@ -39,7 +52,11 @@ import sys
 sys.dont_write_bytecode = True
 
 import json
+import shutil
+import tempfile
 import unittest
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from unittest import mock
 
 import deribit_orders as do
@@ -155,7 +172,12 @@ class M4HaltMidRun(_ExchangeCase):
             executor.execute_plan(compiled, plan)
 
         self.assertIn("HALT observed mid-run", str(ctx.exception))
-        target_labels = [o["label"] for o in self.fake.orders.values() if "target" in o["label"]]
+        # NOTE: filter on the label's OWN suffix (after "plan_id:"), not a
+        # bare substring match - the plan_id itself ("m4_targets") contains
+        # "target", which would otherwise false-positive-match entry/stop
+        # labels too.
+        target_labels = [o["label"] for o in self.fake.orders.values()
+                         if o["label"].split(":", 1)[-1].startswith("target")]
         self.assertEqual(target_labels, [], f"no target may be created once HALT_DAILY_LOSS is active: {target_labels}")
         self.assertEqual(self.fake.pos, 0, "the filled entry must be flattened")
 
@@ -264,5 +286,84 @@ class L2TargetsOrderStateUnknown(_ExchangeCase):
         self.assertEqual(len(r["target_order_ids"]), 1)
 
 
+# ==================================================================== M2
+class M2PastDatedHaltDailyLossBlocks(unittest.TestCase):
+    """A well-formed PAST-dated HALT_DAILY_LOSS must still refuse (FIX4 M2:
+    existence blocks, whatever the date) - it must not fall through to the
+    old FIX3 M1 'stale - warn only' branch."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="fix4_m2_"))
+        self.halt = self.tmp / "HALT"
+        self.hdl = self.tmp / "HALT_DAILY_LOSS"
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_M2_past_dated_halt_daily_loss_blocks(self):
+        y = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%d")
+        self.hdl.write_text(json.dumps({"date": y, "reason": "old breach"}), encoding="utf-8")
+
+        reasons = executor._check_halt_files(self.halt, self.hdl)
+
+        self.assertTrue(any(f"HALT_DAILY_LOSS from {y} still present" in r for r in reasons), reasons)
+
+
+# ==================================================================== L3
+class L3MarketFillBeyondCap(_ExchangeCase):
+    """FIX4 L3: once the stop is live, a market entry's real post-fill
+    worst-case loss beyond caps_check.max_loss_usd must fail_closed (flatten
+    + halt), not just journal an error and carry on.
+
+    Preflight's own B079 estimate (executor.preflight, "unknown_until_fill"
+    branch) uses compiled["max_position_size"] to estimate the loss before
+    any fill happens. Here the entry actually fills for MORE than that
+    estimate assumed - the same shape of surprise a mark that moves between
+    preflight and fill would produce - so preflight's estimate passes but the
+    real post-fill loss does not."""
+
+    def test_L3_market_fill_beyond_cap_flattens(self):
+        compiled = {
+            "plan_id": "fx_l3",
+            "stop_order": {"side": "SELL", "label": "stop_order", "price": None},  # None: market-derived trigger
+            "caps_check": {"within_max_loss": "unknown_until_fill", "max_notional_usd": 10_000_000,
+                          "max_loss_usd": -6.0},
+            "max_position_size": 50,   # preflight estimate: -50*10/100 = -5.0 (within cap, passes)
+            "entry_orders": [{"side": "BUY", "amount": 100, "order_type": "market",
+                             "price": None, "label": "entry_1"}],
+        }
+        plan = {"stop": {"type": "fixed_percent", "percent_below_entry": 10}, "targets": []}
+
+        with self.assertRaises(executor.ExecutionHalted) as ctx:
+            executor.execute_plan(compiled, plan)
+
+        self.assertIn("B079 post-fill", str(ctx.exception))
+        self.assertEqual(self.fake.pos, 0, "an over-cap post-fill loss must be flattened, not just journaled")
+        self.assertIn("close_position", self.names())
+        self.assertIn("stop_market", self.names(), "the stop must have gone live before the flatten (C3 order)")
+
+
 if __name__ == "__main__":
     unittest.main()
+
+
+# --- coordinator review 2026-09-28: a HALT must never block the protective stop ---
+from test_fix3_offline import _ExchangeCase as _FX3Case  # noqa: E402
+
+
+class M4StopNeverBlocked(_FX3Case):
+    def test_M4_halt_after_fill_places_stop_then_flattens_and_keeps_stop_if_close_fails(self):
+        real_buy = self.fake.buy
+
+        def buy_then_halt(*a, **k):
+            r = real_buy(*a, **k)  # market entry fills
+            executor.HALT_PATH.write_text("operator brake mid-run\n", encoding="utf-8")
+            return r
+        setattr(do, "buy", self._wrap("buy", buy_then_halt))
+        self.inject["close_position"] = TimeoutError("close lost")
+        with self.assertRaises(executor.ExecutionHalted) as ctx:
+            executor.execute_plan(_compiled("m4_stop"))
+        self.assertIn("HALT observed mid-run", str(ctx.exception))
+        self.assertIn("stop_market", self.names(), "the protective stop must be placed despite the HALT")
+        self.assertEqual(self.fake.pos, 100)
+        self.assertEqual(len(self.live_stops()), 1, "stop must stay live when the flatten fails")

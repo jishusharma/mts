@@ -6,20 +6,19 @@ in executor.py's docstring for the exact contract each file follows).
 Verifies:
   (a) _check_halt_files()/preflight() in isolation, with explicit tmp paths -
       no files -> no HALT reasons; generic HALT present -> refused; today's
-      HALT_DAILY_LOSS -> refused; yesterday's HALT_DAILY_LOSS -> NOT refused
-      but a warning is printed; malformed HALT_DAILY_LOSS JSON -> refused
-      (fail closed on ambiguity).
+      HALT_DAILY_LOSS -> refused; a well-formed PAST-dated HALT_DAILY_LOSS ->
+      ALSO refused (FIX4 M2: existence blocks, whatever the date - see
+      test_daily_loss_halt_past_dated_still_refuses); malformed
+      HALT_DAILY_LOSS JSON -> refused (fail closed on ambiguity).
   (b) execute_plan() end-to-end, using the module's real default HALT_PATH/
       HALT_DAILY_LOSS_PATH (a real file written next to executor.py in the
-      staged-test tmp dir) - a HALT (either kind, dated today) refuses
-      BEFORE any order is placed and leaves no journal (plan_id stays
-      retriable, same rule as the existing B079/R8/S1 refusals).
+      staged-test tmp dir) - a HALT (either kind, any date) refuses BEFORE
+      any order is placed and leaves no journal (plan_id stays retriable,
+      same rule as the existing B079/R8/S1 refusals).
 
 No network. Run:
     python3 -m unittest test_halt_preflight_offline -v
 """
-import contextlib
-import io
 import json
 import shutil
 import tempfile
@@ -173,15 +172,16 @@ class HaltFilesUnitTests(unittest.TestCase):
         reasons = self._reasons()
         self.assertTrue(any("HALT_DAILY_LOSS" in r and "cap breached" in r for r in reasons), reasons)
 
-    def test_daily_loss_halt_stale_does_not_refuse_but_warns(self):
-        self.halt_dl.write_text(json.dumps({"date": _yesterday(), "reason": "cap breached",
+    def test_daily_loss_halt_past_dated_still_refuses(self):
+        # FIX4 M2 supersedes the old "stale date -> warn only" contract:
+        # existence blocks, whatever the date - only an operator deleting the
+        # file resumes trading (was
+        # test_daily_loss_halt_stale_does_not_refuse_but_warns).
+        y = _yesterday()
+        self.halt_dl.write_text(json.dumps({"date": y, "reason": "cap breached",
                                            "ts_iso": "2026-09-27T00:00:00Z"}), encoding="utf-8")
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
-            reasons = self._reasons()
-        self.assertEqual(reasons, [])
-        self.assertIn("WARNING", buf.getvalue())
-        self.assertIn("stale", buf.getvalue().lower())
+        reasons = self._reasons()
+        self.assertTrue(any(f"HALT_DAILY_LOSS from {y} still present" in r for r in reasons), reasons)
 
     def test_daily_loss_halt_malformed_json_fails_closed(self):
         self.halt_dl.write_text("not valid json {{{", encoding="utf-8")
@@ -246,21 +246,23 @@ class HaltFilesExecutePlanTests(unittest.TestCase):
         self.assertEqual(fake.buy_calls, [])
         self.assertEqual(journal.read_events("halt_daily_today"), [])
 
-    def test_daily_loss_halt_stale_does_not_block_execution(self):
+    def test_daily_loss_halt_past_dated_blocks_execution(self):
+        # FIX4 M2 supersedes the old "stale date does not block" contract
+        # (was test_daily_loss_halt_stale_does_not_block_execution).
         shutil.rmtree(journal.JOURNAL_DIR, ignore_errors=True)
+        y = _yesterday()
         executor.HALT_DAILY_LOSS_PATH.write_text(
-            json.dumps({"date": _yesterday(), "reason": "old breach", "ts_iso": "x"}), encoding="utf-8")
+            json.dumps({"date": y, "reason": "old breach", "ts_iso": "x"}), encoding="utf-8")
         fake = FakeExchange()
         self._patch(fake)
-        compiled = _compiled("halt_daily_stale")
+        compiled = _compiled("halt_daily_pastdated")
 
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
-            result = executor.execute_plan(compiled)
+        with self.assertRaises(executor.ExecutionHalted) as ctx:
+            executor.execute_plan(compiled)
 
-        self.assertEqual(result["status"], "entry_filled_stop_placed")
-        self.assertEqual(fake.buy_calls, ["halt_daily_stale:entry_1"])
-        self.assertIn("WARNING", buf.getvalue())
+        self.assertIn(f"HALT_DAILY_LOSS from {y} still present", str(ctx.exception))
+        self.assertEqual(fake.buy_calls, [])
+        self.assertEqual(journal.read_events("halt_daily_pastdated"), [])
 
 
 if __name__ == "__main__":

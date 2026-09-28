@@ -3,6 +3,10 @@ Offline tests for FIX3 (2026-09-28): one test (or more) per fixed finding of
 review/ADVERSARIAL_REVIEW_FT2.md - C1 C2 C3 H1 H2 H3 H4 H5 H6 M1 M3 M5 M6 -
 plus the 13 mutation survivors of review/MUTATION_REPORT_FT2.md (imported
 from test_fix3_mutants_offline).
+FIX4 (2026-09-28) supersedes part of M1: a well-formed PAST-dated
+HALT_DAILY_LOSS used to be non-blocking (M1's own contract); FIX4 M2 makes
+existence block regardless of date - see test_M2_valid_past_date_still_blocks
+below (was test_M1_valid_past_date_does_not_block).
 
 Runs against the STAGED code:
   python scripts/dev/run_staged_tests.py MyTradingSys/execution MyTradingSys/execution/testnet/offline -- test_fix3_offline
@@ -471,10 +475,15 @@ class M1M3HaltDailyLossParsing(unittest.TestCase):
             self.hdl.write_text(body, encoding="utf-8")
             self.assertTrue(self._reasons(), body)
 
-    def test_M1_valid_past_date_does_not_block(self):
+    def test_M2_valid_past_date_still_blocks(self):
+        # FIX4 M2 supersedes the FIX3 M1 contract: existence blocks, whatever
+        # the date - only an operator deleting the file resumes trading.
+        # (was test_M1_valid_past_date_does_not_block, which asserted the
+        # opposite - a well-formed past date used to be non-blocking.)
         y = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%d")
         self.hdl.write_text(json.dumps({"date": y, "reason": "x"}), encoding="utf-8")
-        self.assertEqual(self._reasons(), [])
+        reasons = self._reasons()
+        self.assertTrue(any(f"HALT_DAILY_LOSS from {y} still present" in r for r in reasons), reasons)
 
     def test_M3_utf16_and_bom_are_read_as_active_halt(self):
         body = json.dumps({"date": TODAY, "reason": "cap breached"})

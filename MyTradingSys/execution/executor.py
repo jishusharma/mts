@@ -57,6 +57,12 @@ also sweeps the stop's compiled label and every target label, so an orphaned
 stop or target cannot fill after the position has been flattened and the run
 halted.
 
+M8 (single-plan-only): R8 refuses whenever the instrument already has a
+position or open orders, so the S1 account cap is effectively "this plan <=
+cap" today, and position_manager treats the whole instrument position as this
+plan's position. Running two plans on one instrument concurrently needs
+per-plan position accounting before R8 may be relaxed.
+
 HALT files (FT-2, 2026-09-28): preflight() now refuses BEFORE any order if
 either halt file exists next to this module (same refusal pattern as
 B079/R8/S1 cap above - appended to `reasons`, never journaled, so the
@@ -66,16 +72,33 @@ plan_id stays retriable once the halt is cleared):
     only an operator creates/deletes it by hand.
   - HALT_DAILY_LOSS: written by daily_loss_monitor.py.new on a daily-loss
     breach (see that module's docstring for the exact JSON contract:
-    {"date": "YYYY-MM-DD", "reason": str, "ts_iso": str}). Only a file
-    whose "date" is TODAY (UTC) blocks - a stale file left over from a
-    previous UTC day does NOT block (the halt is a per-day breach, and a
-    new day has not breached yet) but prints a warning so the operator
-    notices it was never cleared. A file that fails to parse as the
-    documented JSON is treated as blocking (fail closed on ambiguity, same
-    stance as R7/S6 above) rather than silently ignored.
+    {"date": "YYYY-MM-DD", "reason": str, "ts_iso": str}). FIX4 M2: its mere
+    EXISTENCE blocks, whatever the date - a breach at 23:59 UTC must not
+    resume trading one minute later at 00:00. A well-formed past-dated file
+    refuses with "HALT_DAILY_LOSS from <date> still present - operator must
+    review and delete"; only an operator deleting the file resumes trading.
+    A file that fails to parse as the documented JSON is treated as blocking
+    (fail closed on ambiguity, same stance as R7/S6 above) rather than
+    silently ignored.
   Neither module ever deletes either file - by design, same as
   daily_loss_monitor's own halt-file contract: only an operator clears a
   hard halt, so it does not auto-resume.
+
+FIX4 (2026-09-28): M4 re-checks both HALT files immediately before every
+order-creating call for the rest of execute_plan's run (entries, stop
+create/resize, targets) - not just once in preflight() - so a HALT/kill_all/
+daily_loss_monitor write racing a still-in-progress run (a ladder, a slow
+poll) is caught before the next order goes out (see _halt_check_mid_run()).
+L1 (position_manager): the pos==0 "explained" check now compares target
+fills against the ORIGINAL entry filled total (from the journal's
+order_filled events on entry orders), not the live stop["amount"] - G1
+shrinks the stop on every target fill, so comparing against it let a manual
+close of a shrunken remainder pass as "explained". L2: the targets loop now
+catches do.OrderStateUnknown separately from a plain do.DeribitError and
+sweeps that target's own label (the create call may have rested the order
+before the ambiguous response), without reducing `remaining`. L3: a market
+entry's post-fill worst-case loss breach (B079, previously journaled only)
+now fails closed once the stop is live, per the C3 cancel-order.
 
 Run:
     python executor.py <plan.json | compiled.json>          # dry run, prints orders
@@ -167,20 +190,33 @@ def _check_halt_files(halt_path: Path, halt_daily_loss_path: Path) -> list:
         except (ValueError, OSError):
             halt_date, halt_reason = None, None
         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        # FIX3 M1: only a well-formed date strictly before today is non-blocking;
-        # today, future, garbage, non-string or missing -> refuse (fail closed).
+        # FIX4 M2: existence blocks, whatever the date - a hard halt does not
+        # auto-resume at 00:00 UTC. Only an operator deleting the file resumes
+        # trading. A well-formed past date still refuses (with a clearer
+        # message that names the date) rather than the FIX3 M1 "stale -
+        # warn only" behaviour.
         valid_past = isinstance(halt_date, str) and bool(_DATE_RE.match(halt_date)) and halt_date < today
         if halt_date == today:
             reasons.append(f"HALT_DAILY_LOSS: daily loss halt active ({halt_reason}) - remove "
                            "HALT_DAILY_LOSS after operator review to resume")
-        elif not valid_past:
+        elif valid_past:
+            reasons.append(f"HALT_DAILY_LOSS from {halt_date} still present - operator must review and delete")
+        else:
             # unparseable contents / bad date: fail closed rather than silently ignore
             reasons.append(f"HALT_DAILY_LOSS: file present but unreadable/malformed (date={halt_date!r}) - "
                            "refused (fail closed) - remove HALT_DAILY_LOSS after operator review to resume")
-        else:
-            print(f"WARNING: stale HALT_DAILY_LOSS from {halt_date} (today is {today}) - not "
-                 "blocking, but it was never cleared by an operator - review before proceeding")
     return reasons
+
+
+def _halt_check_mid_run() -> list:
+    """FIX4 M4: re-read the same two HALT files, globals read at call time
+    (same contract as preflight's _check_halt_files) - executor never checked
+    them again after preflight, so an operator/CLI kill_all/daily_loss_monitor
+    HALT written mid-run was invisible to every order-creating call after the
+    first. Callers re-check this immediately before EVERY order-creating call
+    inside execute_plan: each entry and each target. The protective stop is
+    never blocked: ensure_stop checks the HALT right AFTER the stop is live."""
+    return _check_halt_files(HALT_PATH, HALT_DAILY_LOSS_PATH)
 
 
 def preflight(compiled: dict, plan: dict = None, mark: float = None,
@@ -252,13 +288,11 @@ def execute_plan(compiled: dict, plan: dict = None, instrument: str = "BTC-PERPE
     stop = {"order_id": None, "amount": 0, "trigger": stop_spec.get("price")}
 
     def ensure_stop(filled_total, avg_fill):
-        if stop["trigger"] is None:  # market entry: derive from real fill
+        was_market_derived = stop["trigger"] is None  # L3: only a market entry needs the post-fill check below
+        if was_market_derived:  # market entry: derive from real fill
             if pct is None:
                 raise ExecutionHalted("market entry needs the raw plan (percent) to place a stop")
             stop["trigger"] = snap_price(avg_fill * (1 - pct / 100) if is_long else avg_fill * (1 + pct / 100))
-            loss = -round(filled_total * pct / 100.0, 2)
-            if loss < compiled["caps_check"]["max_loss_usd"]:
-                journal.append_event(plan_id, "error", {"context": "B079_post_fill", "loss": loss})
         m = do.get_ticker(instrument)["mark_price"]
         if (is_long and m <= stop["trigger"]) or (not is_long and m >= stop["trigger"]):
             raise ExecutionHalted(f"mark {m} already through stop {stop['trigger']}")
@@ -274,6 +308,21 @@ def execute_plan(compiled: dict, plan: dict = None, instrument: str = "BTC-PERPE
         journal.append_event(plan_id, "stop_resized", {"order_id": stop["order_id"], "amount": filled_total,
                                                        "new_stop_price": stop["trigger"]})
         stop["amount"] = filled_total
+        # FIX4 M4 (coordinator review): the protective reduce-only stop is NEVER blocked by a
+        # HALT - skipping it would leave a filled position naked if the flatten then failed.
+        # The HALT is checked once the stop is live, and fail_closed flattens with it in place.
+        halt_reasons = _halt_check_mid_run()
+        if halt_reasons:
+            raise ExecutionHalted("HALT observed mid-run: " + " | ".join(halt_reasons))
+        if was_market_derived:
+            # FIX4 L3: the stop is now live, so fail_closed's C3 cancel-order
+            # holds - a market entry's real post-fill worst-case loss breach
+            # is acted on, not just journaled. Flattening costs the spread;
+            # running an over-cap position is worse.
+            loss = -round(filled_total * pct / 100.0, 2)
+            max_loss = compiled["caps_check"]["max_loss_usd"]
+            if loss < max_loss:
+                raise ExecutionHalted(f"B079 post-fill: worst-case loss {loss} exceeds cap {max_loss}")
 
     def fail_closed(reason):
         journal.append_event(plan_id, "mismatch_halt", {"reason": reason})
@@ -339,6 +388,9 @@ def execute_plan(compiled: dict, plan: dict = None, instrument: str = "BTC-PERPE
     try:
         # --- entries ---
         for spec in compiled["entry_orders"]:
+            halt_reasons = _halt_check_mid_run()  # FIX4 M4: re-check right before every entry create
+            if halt_reasons:
+                fail_closed("HALT observed mid-run: " + " | ".join(halt_reasons))
             try:
                 o = _place(token, instrument, spec["side"], spec["amount"], spec["order_type"],
                            price=spec.get("price"), label=_xlabel(plan_id, spec["label"]))
@@ -375,8 +427,13 @@ def execute_plan(compiled: dict, plan: dict = None, instrument: str = "BTC-PERPE
             if filled_total > stop["amount"]:
                 try:
                     ensure_stop(filled_total, avg_fill)
-                except (do.DeribitError, ExecutionHalted) as ex:
+                except do.DeribitError as ex:
                     fail_closed(f"R7 stop could not be placed/resized: {ex}")
+                except ExecutionHalted as ex:
+                    # ensure_stop's own raises (mark-through-stop, FIX4 M4
+                    # mid-run HALT, FIX4 L3 B079 post-fill) already carry the
+                    # exact reason text - pass it through unprefixed.
+                    fail_closed(str(ex))
             if not any_open:
                 break
             if time.time() >= deadline:
@@ -386,6 +443,7 @@ def execute_plan(compiled: dict, plan: dict = None, instrument: str = "BTC-PERPE
                         journal.append_event(plan_id, "order_cancelled", {"order_id": e["order_id"], "reason": "entry_deadline"})
                     except do.DeribitError:
                         pass  # already filled/cancelled
+                time.sleep(POLL_INTERVAL_SECONDS)  # L5: never spin when the cancel keeps failing
                 continue  # one more pass to capture fills that raced the cancel
             time.sleep(POLL_INTERVAL_SECONDS)
 
@@ -406,11 +464,26 @@ def execute_plan(compiled: dict, plan: dict = None, instrument: str = "BTC-PERPE
             amt = remaining if i == len(tgts) else min(remaining, round_size(filled_total * t["amount_percent"] / 100.0))
             if amt < 10:
                 continue
+            halt_reasons = _halt_check_mid_run()  # FIX4 M4: re-check right before every target create
+            if halt_reasons:
+                fail_closed("HALT observed mid-run: " + " | ".join(halt_reasons))
             px = snap_price(avg_fill * (1 + t["pnl_target_percent"] / 100) if is_long
                             else avg_fill * (1 - t["pnl_target_percent"] / 100))
             try:
                 o = _place(token, instrument, stop_side, amt, "limit", price=px,
                            label=_xlabel(plan_id, f"target_{i}"), reduce_only=True)
+            except do.OrderStateUnknown as e:
+                # FIX4 L2: the create call may have already rested the order
+                # before the ambiguous response - sweep its own label so it
+                # cannot fill unmonitored. `remaining` is NOT reduced: the
+                # target's actual fate is unknown, so its share must still be
+                # offered to whatever target comes after it.
+                journal.append_event(plan_id, "order_rejected", {"label": f"target_{i}", "error": str(e.error)})
+                try:
+                    do.cancel_by_label(token, _xlabel(plan_id, f"target_{i}"))
+                except Exception as ce:  # noqa: BLE001 - sweep failure is isolated, not fatal
+                    journal.append_event(plan_id, "error", {"context": "target_ambiguous_sweep", "error": repr(ce)})
+                continue
             except do.DeribitError as e:
                 journal.append_event(plan_id, "order_rejected", {"label": f"target_{i}", "error": str(e.error)})
                 continue  # position is still protected by the stop; a missing target is not a safety issue
