@@ -48,3 +48,7 @@ S5 mainnet flag (4 gates + 50 USD mainnet cap), L6 part 2 PnL source, guard re-a
 auto-trading gathering data 24/7; hourly Haiku gate on NUC builds; Fabio holds + formula audit repacked to the queue.
 Open questions from NEXT_SESSION_PLAN s9 (layer brackets, testnet sub-account per layer family, keep no-edge layers,
 500 USD testnet cap) still use the defaults until Jishu answers.
+New questions (2026-09-29): (1) Mainnet kill switch currently needs the typed confirmation too - supervisor recommends
+allowing it with flag + mainnet secret only (it can only reduce risk); Deribit UI is the fallback. (2) Confirm the
+transaction-log types excluded from daily PnL (deposit, withdrawal, transfer*) against the Deribit docs (DSA can check).
+(3) Build still open: G-d account-wide sweep if a position_manager dies (supervision design).
