@@ -46,3 +46,13 @@ Until then, document the limitation in daily_loss_monitor's docstring (no code c
 - Testnet: probe PASS (flat, equity 99.99992234); base C1-C6 6/6; G1/G2 4/4; FT-2 T-b..T-e 4/4;
   kill_switch --confirm KILL 0 errors, HALT written then removed; final probe flat, no open orders.
 - Still open: L6 part 2 (PnL source; needs the testnet P/L-field probe). NUC 032 (re-arm) is queued.
+
+## L6 part 2 - probe RESULT (2026-09-28, testnet, probe_pl_fields.py, 10 USD round trip)
+- balance and equity each fell 6e-06 BTC per trade (fees). total_pl went 0 -> +1e-08 -> 0 and session_rpl
+  moved only 1e-08: **neither includes fees**, so total_pl is NOT a valid daily-loss measure (it would
+  miss fee bleed). The worker's "use total_pl" recommendation is rejected.
+- Decision: keep equity delta (it counts P/L and fees) and correct it for deposits and transfers. Next
+  probe (T2, testnet): private/get_transaction_log over the day, sum the entries by type, and confirm that
+  deposit/transfer types can be subtracted. Until then the limitation stays documented; no deposits or
+  transfers happen on this account today.
+- Unverified: the claim that session_* fields reset at ~08:00 UTC settlement (not checked against the docs).
