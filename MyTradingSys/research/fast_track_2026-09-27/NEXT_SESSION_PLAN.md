@@ -148,3 +148,26 @@ Don't re-queue them.
 | 2026-09-29: go live -> launch as many testnet tests as possible | DONE - 14/14 testnet PASS, alert runner live, offline gate green except C3 |
 | 2026-09-29: give DSA pending extractions | DONE - section 4 |
 | 2026-09-29: new builds -> commit, test, edge cases | DONE - hourly check updated; 3 stale builds promoted with 30 edge tests, which found 3 real bugs (RSI seed, prob_table log-loss, escalation never firing) |
+
+## 9. TESTNET AUTO-TRADING - LIVE since 2026-09-29 04:12 IST (operator: "trade now with what works; every new layer gets fresh trades")
+- `MyTradingSys/execution/auto_trader.py` (d77d67c): orchestrator only -> new_plan --yes -> executor --go -> position_manager.
+  Tom: SETUP_FORMING/CONFIRMED, net R:R >= 2, alert <= 5 min old, limit at ENTRY with the alert's stop/target, 200 USD / max loss 25.
+  Layers: any alert in MyTradingSys/runtime/alerts/*.jsonl with a side (rsi support/rejection/cross mapped in config; others need a
+  "side" field) -> market, 1% stop, 2% target, 100 USD / max loss 10. One trade at a time; skipped_busy/rejected logged per source.
+  Log: MyTradingSys/execution/auto_trades.jsonl (`mts autolog`); state auto_trader_state.json; manager logs journal/auto_manager_logs/.
+  Config overrides: MyTradingSys/execution/auto_trader_config.json (optional; keys tom/layers/layer_rules/disabled_layers).
+- Running detached (Dumps/alerts/runner_logs/*.out/.err): auto_trader (PID 21908), daily_loss_monitor (PID 7312, 500 USD cap),
+  live_runner_cli (restarted by the wiring agent with more layers - see its commit), Tom core loop (armed).
+  The hourly check (step 3b) restarts any of them that dies (never after HALT_DAILY_LOSS), wires newly promoted layers
+  into the runner via a Sonnet agent, and logs a per-source scoreboard.
+- Smoke trade through the real path: L-mkt-0928-2240-2 long 100 USD filled 83450, stop 83200, target 83700 (manager PID 22584).
+  While it is open, the auto-trader's next attempt is refused by the R8 one-position preflight (logged entry_failed) - expected.
+- Parallel agents launched 04:15 IST: (1) wire fabio_volume_fvg / fabio_escalation / session_momentum / funding_cvd_fade /
+  malkan / cryptocred into live_runner_cli with side fields; (2) Fabio L1 backtest -> FABIO_L1_REPORT.md; (3) T055 C1/C2 backtest
+  with funding -> T055_BT_c1/c2.md. Check their commits (git log) - each ends with a recommendation for live sampling.
+- QUESTIONS FOR THE OPERATOR (noted, not blocking - defaults in use):
+  Q1 Layer bracket 1% stop / 2% target / 100 USD for every layer - or per-layer brackets from the backtests once reports land?
+  Q2 One testnet account = one slot: Tom and layers compete. Use a Deribit testnet SUB-ACCOUNT per layer family so layers never
+     block Tom? (needs new testnet keys from you; executor supports one account today).
+  Q3 Layers with "no edge" in backtests (CryptoCred, RSI cross): keep sampling on testnet or disable (config disabled_layers)?
+  Q4 Daily-loss cap stays 500 USD on testnet?
