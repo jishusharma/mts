@@ -49,6 +49,9 @@ top of the relevant section. Keep each entry to 3 lines.
 - unittest: never name an attribute `self.fail` (it shadows TestCase.fail).
 - `Dumps/workers/` is gitignored (queue specs are not versioned).
 - A stale `.git/index.lock` (0 bytes, hours old, no git process running) is safe to remove.
+- YouTube (2026-09-28): after ~10 caption requests this IP got HTTP 429, and later a sign-in bot check.
+  RULE: fetch at most ~5 videos per session with long gaps; on a bot check STOP (no cookie/IP workarounds)
+  and ask the operator for pasted transcripts or a run from their own network.
 - YouTube captions: `scripts/dev/fetch_captions.py` (captions only, 429 backoff); on HTTP 429, wait, don't transcribe.
 
 ## E. Domain framing
