@@ -28,6 +28,8 @@ top of the relevant section. Keep each entry to 3 lines.
 - A worker concluded "monthly RSI must wait for next month's data" when downloading OLDER history
   fixes it (the archive goes back to 2020). RULE: when a worker says "wait" or "blocked", ask whether a
   cheaper route exists before accepting it; history comes from data.binance.vision (fetch_binance_archive --interval).
+- Qwen 028 returned the file UNCHANGED yet passed both EXPECT lines (the phrases already existed).
+  RULE: EXPECT lines must name text that is NEW in the change; always read verify's `+N -M` count.
 - Qwen reviews confirm; they do not attack (022 restated the diff). RULE: adversarial review stays
   at Sonnet/Opus plus repro scripts.
 - Packing snapshots the scoped files. RULE: never pack a Qwen task on a file that another in-flight
