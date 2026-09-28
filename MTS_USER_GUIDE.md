@@ -1,6 +1,6 @@
 # MTS User Guide
 
-Last reviewed: 2026-09-28  |  Trading: Deribit **testnet** only  |  Instrument: BTC-PERPETUAL
+Last reviewed: 2026-09-29  |  Trading: Deribit **testnet** only  |  Instrument: BTC-PERPETUAL
 
 MTS watches the BTC market, tells you when a setup is forming, and places
 your trades with a stop that is always on the exchange. You decide; MTS executes.
@@ -158,6 +158,24 @@ window then prints `status: closed`.
 python MyTradingSys\execution\new_plan.py --side long --entry market --size 100 --stop 2 --targets 2,5 --max-loss 50 --hours 2 --yes
 ```
 
+### Auto-trading (testnet)
+
+```powershell
+mts auto       # starts the auto-trader in its own window
+mts autolog    # what it did: trades, skips, rejected signals
+```
+
+The auto-trader places trades by itself, through the same plan -> check ->
+trade path as above:
+
+- **Tom setups** (`SETUP_FORMING` / `SETUP_CONFIRMED`, net R:R at least 2):
+  a limit order at the zone, using the alert's own stop and target. Size 200 USD, max loss 25 USD.
+- **Indicator layers** (RSI, Fabio, and any new layer the alert runner emits
+  with a side): a market order, stop 1%, target 2%. Size 100 USD, max loss 10 USD.
+- One trade at a time. Signals that arrive while a trade is open are logged
+  as `skipped_busy`, so every layer still gets counted.
+- The brakes in section 5 apply: `mts pause` stops new auto-trades at once.
+
 ---
 
 ## 5. The three brakes
@@ -220,6 +238,8 @@ Open trades are not affected: their stops live on the exchange. Keep any
 | `mts resume`         | Remove the brakes after you have checked the account      |
 | `mts kill`           | Emergency: cancel all, close all, pause                   |
 | `mts guard`          | Start the daily-loss guard in its own window              |
+| `mts auto`           | Start the testnet auto-trader in its own window           |
+| `mts autolog`        | Last 20 auto-trader decisions                             |
 | `mts test`           | Run the offline tests (no exchange)                       |
 | `mts guide`          | Open this guide                                           |
 | `mts help`           | List every command                                        |

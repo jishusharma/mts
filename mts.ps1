@@ -36,6 +36,8 @@ $Verbs = @(
     @("Safety",      "resume",  "Remove the brakes after you have checked the account"),
     @("Safety",      "kill",    "EMERGENCY: cancel every order, close every position, pause"),
     @("Safety",      "guard",   "Start the daily-loss guard in its own window"),
+    @("Auto",        "auto",    "Start the testnet auto-trader (Tom + layer signals) in its own window"),
+    @("Auto",        "autolog", "Last 20 auto-trader decisions (trades, skips, rejects)"),
     @("Upkeep",      "test",    "Run the offline test suite (no exchange)"),
     @("Upkeep",      "guide",   "Open the user guide"),
     @("Upkeep",      "help",    "This list")
@@ -219,6 +221,23 @@ switch ($Verb.ToLower()) {
         if ((Get-Procs "daily_loss_monitor" "Name='python.exe'").Count) { Ok "daily-loss guard already running"; break }
         Open-Window "MTS daily-loss guard" "python '$Exec\daily_loss_monitor.py'"
         Ok "daily-loss guard started in its own window - leave it open while trading"
+    }
+
+    "auto" {
+        if ((Get-Procs "auto_trader" "Name='python.exe'").Count) { Ok "auto-trader already running"; break }
+        if ((Test-Path $Halt) -or (Test-Path $HaltLoss)) { Show-Brakes; Say "Brakes are set - the auto-trader logs signals but places nothing until: mts resume" Yellow }
+        Open-Window "MTS auto-trader" "python -m MyTradingSys.execution.auto_trader"
+        Ok "auto-trader started in its own window - it trades Tom + layer signals on TESTNET; mts pause stops new trades"
+    }
+
+    "autolog" {
+        $log = Join-Path $Exec "auto_trades.jsonl"
+        if (-not (Test-Path $log)) { Say "no auto-trader decisions yet" Yellow; break }
+        Get-Content $log -Tail 20 | ForEach-Object {
+            $e = $_ | ConvertFrom-Json
+            $why = if ($e.reason) { $e.reason } elseif ($e.outcome) { "$($e.outcome) $($e.plan_id)" } elseif ($e.busy_with) { "busy with $($e.busy_with)" } else { "" }
+            Say ("{0}  {1,-16} {2,-28} {3,-5} {4}" -f $e.ts, $e.event, $e.source, $e.side, $why)
+        }
     }
 
     "test" { Py (Join-Path $Root "scripts\dev\run_all_tests.py") "--quick"; exit $LASTEXITCODE }

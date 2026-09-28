@@ -68,3 +68,6 @@ MyTradingSys/execution/.secrets/
 *.secret.json
 
 # END
+# auto-trader runtime data (2026-09-29)
+MyTradingSys/execution/auto_trades.jsonl
+MyTradingSys/execution/auto_trader_state.json*
