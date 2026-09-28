@@ -85,7 +85,7 @@ Note that we will integrate RSI - so it is momentum and it comes from a differen
 | System | Source | Status | Read produced |
 |---|---|---|---|
 | RSI 40-60 (MalkanView) | external system | planned | momentum, setup timing |
-| Probability distribution | event_probability_layer_DESIGN.md | parked (needs 500+ labels; currently ~154) | forward return probability |
+| Probability distribution | event_probability_layer_DESIGN.md | stage 3 unblocked 2026-09-28 (10,289 labels; 5,000 gate met); frequency-table MVP queued (NUC 033) | forward return probability |
 | Analyst verdicts | extracts/processed/tom/ + future | distant | discretionary opinion |
 | Session-aware frame | new (this project) | design | session bias, day type, initial balance |
 
