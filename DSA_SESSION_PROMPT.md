@@ -102,6 +102,16 @@ TASK / DONE / VERIFIED / MISSED.
 VERIFIED names which kind. MISSED names anything dropped, or "none".
 Skipping this block is a defect.
 
+## 5c. LESSONS
+
+Read MyTradingSys/system/LESSONS_LEARNED.md at boot. At session end, append
+one entry for every mistake that cost a retry, a wrong claim, or a wasted read:
+what happened, the rule that prevents it, where the rule now lives.
+Three rules from it that apply on every surface:
+- Status comes from code and tests, never from a doc alone.
+- Write EXPECT for an expected result and RESULT (date, machine) for an actual one.
+- A check that never executes the changed file is not a gate.
+
 ## 6. WRITING
 
 Before any write:
