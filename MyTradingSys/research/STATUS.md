@@ -1,55 +1,35 @@
 # Development Status
 
-Generated: 2026-09-28 09:40:27
+Generated: 2026-09-28 11:52:06
 
 ## Git Status
 **Branch:** fast-track
 
 **Last 10 commits:**
 ```
-9874498 run_all_tests.py: one offline gate command (execution, g1g2, suite static, pytest, maven, backtest)
-6376961 Worker roadmap: tiered cheap/monitored workers (Qwen tasks 023-028 queued)
-0370687 FIX3 verification: D1/D2 suite fixes, static suite check, doc tests green
-c6bff3d FIX3_REPORT: findings, gate, repro, PBO 019, Qwen 022 review, operator next steps
-03bd840 FT-2 batch promotion: risk_guard, daily_loss_guard, soak_report + tests, g1g2 G1c, queue_tool fix, BT notes
-c4c5507 FIX3: FT-2 adversarial-review fixes (C1-C3, H1-H6, M1, M3, M5, M6) + offline tests
-5e387a1 п»їSession 5: FT-1 execution layer verified on Deribit testnet + session receipts
-329e05b п»їBatch C: compiled_engine.md D5/D6a/D6b [SYSTEM] notes + T052 rewrite
-d90c297 п»їBatch A: D3 module_candidates split + D4 directional proof count
-73eb101 B1 + C1: fail-closed proof direction + net_rr hard stop always applies
+accafe9 Lessons: guards never block the protective stop
+b05c1cf FIX4: M2, M4, L1, L2, L3, L5, M8 in the execution layer (+ tests, gate)
+788124e Lessons: YouTube rate-limit/bot-check handling
+bb62d3d Lessons: EXPECT lines must name new text (Qwen 028 returned the file unchanged)
+879d4af Qwen 025-027 promoted (L7, L4, M7) + backtest cross-check fixed and passing
+ae40eb2 CryptoCred layer: test plan (18 hand-computed cases); Qwen specs 060-062 queued (structure/MSB, retest, setups)
+5eac309 Lessons: challenge 'wait/blocked' worker conclusions
+2195386 PROJECT_VISION: probability layer status (10,289 labels, stage 3 unblocked)
+7279cf8 Layer readiness: 6.7y daily BTCUSDT history fetched (fetch_binance_archive --interval), probability labels 10,289 (stage-3 gate met)
+18264a2 FIX4_DESIGN: decisions for M2 (existence blocks), L3 (post-fill B079 -> fail_closed), L6 (re-arm; PnL source pending testnet probe)
 ```
 
 ## Queue Status
 ```
-WORKER   running task 026-pm-monotonic-l4, heartbeat 41 s ago (host JIS-NUC, worker a36c8de6ac1f)
-QUEUE    waiting 5, oldest waiting 12 min ago; running 1; replies 23; not yet verified 2
-RECENT   021-ref-ladder: PARTIAL
-RECENT   023-pbo-band-test: PARTIAL
-RECENT   024-ref-pbo-test-fix: PARTIAL
+WORKER   running task 032-dlm-rearm-l6, heartbeat 7 min ago (host JIS-NUC, worker a36c8de6ac1f)
+QUEUE    waiting 12, oldest waiting 57 min ago; running 1; replies 29; not yet verified 4
+RECENT   026-pm-monotonic-l4: PARTIAL
+RECENT   027-soak-unresolved-m7: PARTIAL
+RECENT   028-executor-l5-m8: PARTIAL
 ```
 
 ## In-Flight .new Files
-- MyTradingSys\backtest\bt\bt_data.py.new (12.4h)
-- MyTradingSys\backtest\bt\bt_engine.py.new (12.6h)
-- MyTradingSys\backtest\bt\bt_ladder.py.new (12.4h)
-- MyTradingSys\backtest\bt\bt_stats.py.new (12.2h)
-- MyTradingSys\backtest\bt\ref_pbo.py.new (6.2h)
-- MyTradingSys\backtest\bt\test_bt_data.py.new (12.4h)
-- MyTradingSys\backtest\bt\test_bt_engine.py.new (12.6h)
-- MyTradingSys\backtest\bt\test_bt_ladder.py.new (12.4h)
-- MyTradingSys\backtest\bt\test_bt_stats.py.new (0.1h)
-- MyTradingSys\backtest\bt\test_bt_stats.py.new.new (0.1h)
-- MyTradingSys\backtest\bt\test_ref_pbo.py.new (0.1h)
-- MyTradingSys\backtest\bt\test_ref_pbo.py.new.new (0.1h)
-- MyTradingSys\research\BUGS.md.new (21.1h)
-- MyTradingSys\research\fast_track_2026-09-27\backtest_xcheck\ref_ladder.py.new (0.2h)
-- MyTradingSys\research\fast_track_2026-09-27\backtest_xcheck\ref_pbo.py.new (0.2h)
-- MyTradingSys\research\fast_track_2026-09-27\backtest_xcheck\test_ref_ladder.py.new (0.2h)
-- MyTradingSys\research\fast_track_2026-09-27\backtest_xcheck\test_ref_pbo.py.new (0.0h)
-- MyTradingSys\research\fast_track_2026-09-27\qwen_raw_015_017\kill_switch.py.new (9.1h)
-- MyTradingSys\research\fast_track_2026-09-27\qwen_raw_015_017\risk_guard.py.new (9.1h)
-- MyTradingSys\research\fast_track_2026-09-27\qwen_raw_015_017\test_kill_switch.py.new (9.1h)
-- MyTradingSys\research\fast_track_2026-09-27\qwen_raw_015_017\test_risk_guard.py.new (9.1h)
+(none)
 
 ## Recent Reports (last 7 days)
 - MyTradingSys/research\fast_track_2026-09-27\FIX3_REPORT.md (2026-09-28 09:24) # FIX3 report - FT-2 adversarial-review fixes (2026-09-28, code mode)

@@ -40,3 +40,9 @@ Until then, document the limitation in daily_loss_monitor's docstring (no code c
 | L6 part 1 code + test | Qwen draft (T1), Haiku test | 027 applied (soak) - independent file, can go now |
 | L6 part 2 probe | Haiku (T2) on testnet | none |
 | Testnet re-run of all suites | Haiku (T2) | all of the above |
+
+## RESULT (2026-09-28, JIS-NB, Deribit testnet, code at b05c1cf)
+- Offline: staged 127 OK (2 skipped); run_all_tests --quick ALL PASS.
+- Testnet: probe PASS (flat, equity 99.99992234); base C1-C6 6/6; G1/G2 4/4; FT-2 T-b..T-e 4/4;
+  kill_switch --confirm KILL 0 errors, HALT written then removed; final probe flat, no open orders.
+- Still open: L6 part 2 (PnL source; needs the testnet P/L-field probe). NUC 032 (re-arm) is queued.
