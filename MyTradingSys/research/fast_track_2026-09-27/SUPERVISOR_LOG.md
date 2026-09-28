@@ -50,3 +50,20 @@ money-affecting untested formulas get audited first. NUC heartbeat: nuc-worker.p
 at task start and calls Ollama with stream=false (timeout 7200 s), so silence during a long task is
 normal, not a hang. Worker v3 adds: stream + heartbeat every 60 s with tokens so far. HDMI unplug on the
 NUC does not affect CPU inference.
+
+Formula audit (layers) done 248ab9d: FORMULAS.md s1-10, every plan number re-derived, only C1 was wrong.
+RSI flat-series = 50 (TradingView gives 100) kept as a documented deviation. NUC 070-076 released.
+Whole-MTS inventory: FORMULA_INVENTORY.md (priority list at bottom). Pending operator decision: core ATR
+is SMA of TR, not Wilder - keep (Tom's numbers) or switch?
+
+NEXT SESSION BRIEFS (Sonnet, one each):
+A. "Execution formula tests": FORMULA_INVENTORY priority 1+2. Add FORMULAS.md sections for execution
+   math; tests for plan_compiler/executor/risk_guard from definitions (fail on a mutated copy); Java net R:R
+   shared constant + JUnit. Stage as .new; Opus supervisor T4-reviews before promotion.
+B. "Worker v3" (T049): EDIT output mode, test-failure retry (max 2), sample-and-vote for execution specs,
+   streaming + heartbeat every 60 s with tokens so far, options num_thread 6 / keep_alive. Pilot
+   glm-4.7-flash-class model on 2-3 verified specs.
+C. "NUC replies": verify 031/063/064/070-076 as they land; write tests for 070-075 from the committed
+   plans; run formula_audit.py once 070-073 are promoted; then first backtests (RSI tolerance sweep,
+   CryptoCred setups) per RSI_TF_LAYER_DESIGN D3/D5.
+D. Later: Java indicator JUnit tests (priority 3), L6 part 2, make_status stale findings, TF-B5 real-data gate.
