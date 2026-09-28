@@ -239,7 +239,7 @@ def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, to
             # id). Count it as unprotected time; flatten only once
             # MAX_UNPROTECTED_SECONDS of consecutive failures have passed
             # (flatten_halt keeps the stop until the close is confirmed).
-            now = time.time()
+            now = time.monotonic()
             if unprotected_since is None:
                 unprotected_since = now
             elapsed = now - unprotected_since
@@ -253,7 +253,7 @@ def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, to
             # OBSERVES the stop live again (the `else` branch below) - a
             # re-place CALL succeeding here is not proof of that; it is only
             # confirmed on the next poll's fresh order_state read.
-            now = time.time()
+            now = time.monotonic()
             if unprotected_since is None:
                 unprotected_since = now
             elapsed = now - unprotected_since

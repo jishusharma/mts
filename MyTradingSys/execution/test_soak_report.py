@@ -265,5 +265,77 @@ class TestSoakReport(unittest.TestCase):
             self.assertEqual(summaries[0]['first_ts'], 1000)
             self.assertEqual(summaries[0]['last_ts'], 1002)
 
+    def test_unresolved_orders_on_closed_plan_is_problem(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plan_file = os.path.join(tmpdir, "plan.jsonl")
+            with open(plan_file, 'w') as f:
+                f.write(json.dumps({
+                    "ts": 1000,
+                    "ts_iso": "2026-09-27T19:31:32Z",
+                    "plan_id": "plan",
+                    "event_type": "intent",
+                    "data": {"compiled": {"plan_id": "plan"}}
+                }) + "\n")
+                f.write(json.dumps({
+                    "ts": 1001,
+                    "ts_iso": "2026-09-27T19:31:33Z",
+                    "plan_id": "plan",
+                    "event_type": "order_placed",
+                    "data": {"order_id": "a"}
+                }) + "\n")
+                f.write(json.dumps({
+                    "ts": 1002,
+                    "ts_iso": "2026-09-27T19:31:34Z",
+                    "plan_id": "plan",
+                    "event_type": "order_placed",
+                    "data": {"order_id": "b"}
+                }) + "\n")
+                f.write(json.dumps({
+                    "ts": 1003,
+                    "ts_iso": "2026-09-27T19:31:35Z",
+                    "plan_id": "plan",
+                    "event_type": "reconciliation",
+                    "data": {"mismatches": []}
+                }) + "\n")
+            
+            journal_data = load_journal_dir(tmpdir)
+            summaries = [summarize_plan(records) for records in journal_data.values()]
+            verdict = soak_verdict(summaries, ("c5_",))
+            
+            self.assertFalse(verdict["clean"])
+            self.assertIn("ORPHAN ORDERS plan: a,b", verdict["problems"])
+
+    def test_unresolved_orders_on_open_plan_is_fine(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plan_file = os.path.join(tmpdir, "plan.jsonl")
+            with open(plan_file, 'w') as f:
+                f.write(json.dumps({
+                    "ts": 1000,
+                    "ts_iso": "2026-09-27T19:31:32Z",
+                    "plan_id": "plan",
+                    "event_type": "intent",
+                    "data": {"compiled": {"plan_id": "plan"}}
+                }) + "\n")
+                f.write(json.dumps({
+                    "ts": 1001,
+                    "ts_iso": "2026-09-27T19:31:33Z",
+                    "plan_id": "plan",
+                    "event_type": "order_placed",
+                    "data": {"order_id": "a"}
+                }) + "\n")
+                f.write(json.dumps({
+                    "ts": 1002,
+                    "ts_iso": "2026-09-27T19:31:34Z",
+                    "plan_id": "plan",
+                    "event_type": "order_placed",
+                    "data": {"order_id": "b"}
+                }) + "\n")
+            
+            journal_data = load_journal_dir(tmpdir)
+            summaries = [summarize_plan(records) for records in journal_data.values()]
+            verdict = soak_verdict(summaries, ("c5_",))
+            
+            self.assertTrue(verdict["clean"])
+
 if __name__ == '__main__':
     unittest.main()

@@ -16,9 +16,11 @@ class TestDailyLossGuard(unittest.TestCase):
         events = [{"pnl_usd": -100.0}, {"pnl_usd": 50.0}]
         self.assertEqual(daily_pnl(events, -20.0), -70.0)
 
-    def test_daily_pnl_skips_malformed(self):
-        events = [{"pnl_usd": -100.0}, {"other": 1}]
-        self.assertEqual(daily_pnl(events, 0.0), -100.0)
+    def test_daily_pnl_malformed_raises(self):
+        # This test was changed to reflect new contract: missing keys now raise ValueError
+        # Instead of silently skipping, we now expect a ValueError for malformed events
+        with self.assertRaises(ValueError):
+            daily_pnl([{"pnl_usd": -100.0}, {"other": 1}], 0.0)
 
     def test_check_daily_loss_cap_ok_default(self):
         result = check_daily_loss_cap([], 0.0)
@@ -47,6 +49,11 @@ class TestDailyLossGuard(unittest.TestCase):
     def test_check_daily_loss_cap_invalid_positive_cap2(self):
         with self.assertRaises(ValueError):
             check_daily_loss_cap([], 0.0, cap_usd=100)
+
+    def test_missing_pnl_usd_raises(self):
+        # Test that a missing pnl_usd key raises ValueError
+        with self.assertRaises(ValueError):
+            check_daily_loss_cap([{"pnl": -5}], 0.0)
 
     def test_format_breach_report_ok(self):
         result = {"ok": True, "total_pnl_usd": -100.0, "cap_usd": DEFAULT_DAILY_LOSS_CAP_USD, "action": "none", "reason": None}

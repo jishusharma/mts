@@ -3,9 +3,7 @@ Daily loss guard module for computing G-c daily realized+unrealized loss breach 
 Pure computation; no exchange-specific imports or side effects.
 """
 
-from dataclasses import dataclass
 from typing import List, Dict, Any
-from datetime import datetime
 
 DEFAULT_DAILY_LOSS_CAP_USD = -500.0
 
@@ -17,8 +15,12 @@ def daily_pnl(realized_pnl_events: List[Dict[str, Any]], unrealized_pnl_usd: flo
     :param realized_pnl_events: List of dicts with at least "pnl_usd" key.
     :param unrealized_pnl_usd: Current unrealized PnL in USD.
     :return: Total PnL rounded to 2 decimal places.
+    :raises ValueError: If any event lacks the "pnl_usd" key.
     """
-    total = sum(event["pnl_usd"] for event in realized_pnl_events if "pnl_usd" in event)
+    for i, event in enumerate(realized_pnl_events):
+        if "pnl_usd" not in event:  # L7: a caller's typo must fail loudly, never fail open
+            raise ValueError(f"realized_pnl_events[{i}] has no 'pnl_usd' key")
+    total = sum(event["pnl_usd"] for event in realized_pnl_events)
     return round(total + unrealized_pnl_usd, 2)
 
 
@@ -30,7 +32,7 @@ def check_daily_loss_cap(realized_pnl_events: List[Dict[str, Any]], unrealized_p
     :param unrealized_pnl_usd: Current unrealized PnL in USD.
     :param cap_usd: Daily loss cap (must be negative).
     :return: Dict with keys: ok, total_pnl_usd, cap_usd, action, reason.
-    :raises ValueError: If cap_usd is not negative.
+    :raises ValueError: If cap_usd is not negative or if any event lacks pnl_usd key.
     """
     if cap_usd >= 0:
         raise ValueError("cap_usd must be a negative number representing a loss ceiling")

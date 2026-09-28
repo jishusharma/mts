@@ -105,7 +105,7 @@ class S3UnprotectedTimeBoundTests(unittest.TestCase):
             setattr(do, name, getattr(self.fake, name))
         self._orig_time = pm.time
         self.clock = FakeClock()
-        pm.time = types.SimpleNamespace(time=self.clock.time, sleep=self.clock.sleep)
+        pm.time = types.SimpleNamespace(time=self.clock.time, sleep=self.clock.sleep, monotonic=self.clock.time)
         shutil.rmtree(journal.JOURNAL_DIR, ignore_errors=True)
         pm.HALT_PATH.unlink(missing_ok=True)  # FIX3 M5: flatten_halt now writes HALT (sandbox copy)
 

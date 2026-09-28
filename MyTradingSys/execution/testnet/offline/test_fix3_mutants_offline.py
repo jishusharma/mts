@@ -505,7 +505,7 @@ class TestP2(unittest.TestCase):
             setattr(do, name, getattr(self.fake, name))
         self._orig_time = pm.time
         self.clock = FakeClock()
-        pm.time = types.SimpleNamespace(time=self.clock.time, sleep=self.clock.sleep)
+        pm.time = types.SimpleNamespace(time=self.clock.time, sleep=self.clock.sleep, monotonic=self.clock.time)
         shutil.rmtree(journal.JOURNAL_DIR, ignore_errors=True)
 
         self.plan_id = "p2_reset"

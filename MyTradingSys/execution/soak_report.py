@@ -105,6 +105,10 @@ def soak_verdict(summaries, expected_halt_prefixes=("c5_",)):
         if summary['reconciliation_mismatches'] > 0:
             if not any(plan_id.startswith(prefix) for prefix in expected_halt_prefixes):
                 problems.append(f"RECON MISMATCH {plan_id}: {summary['reconciliation_mismatches']}")
+        
+        # Check for unresolved orders in closed/halted plans
+        if (summary['halts'] or summary['reconciliations'] > 0) and summary['unresolved_orders']:
+            problems.append(f"ORPHAN ORDERS {plan_id}: {','.join(summary['unresolved_orders'])}")
     
     return {
         "clean": len(problems) == 0,
