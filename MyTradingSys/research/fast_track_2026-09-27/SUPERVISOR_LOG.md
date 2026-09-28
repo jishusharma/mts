@@ -43,3 +43,10 @@ verify runs the spec's tests, on failure auto-packs NNNr with the failure log, m
 and-vote (3 candidates) only for execution/risk specs; (4) package options num_thread 6 (physical cores;
 research said 8, llama.cpp guidance is physical cores - measure both), keep_alive long. Operator sets
 OLLAMA_FLASH_ATTENTION=1 and OLLAMA_KV_CACHE_TYPE=q8_0 on the NUC (server env; not reachable from here).
+
+Operator 2026-09-28: FORMULAS.md must cover EVERY formula MTS uses (core, execution sizing/fees/P&L,
+indicators, probability, backtest stats), not only the RSI/backtest layers. Inventory agent running;
+money-affecting untested formulas get audited first. NUC heartbeat: nuc-worker.ps1 writes heartbeat only
+at task start and calls Ollama with stream=false (timeout 7200 s), so silence during a long task is
+normal, not a hang. Worker v3 adds: stream + heartbeat every 60 s with tokens so far. HDMI unplug on the
+NUC does not affect CPU inference.
