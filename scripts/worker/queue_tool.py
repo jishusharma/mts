@@ -303,7 +303,8 @@ def build_package(spec_path):
             raise Refused(f"spec has no {key}: line")
     spec_words = (head.get("TASK", "") + "\n" + head.get("OUTPUT", "") + "\n" + body).lower()
     for term in BANNED_TERMS:
-        if term in spec_words:
+        # word-start match: "digit" must not trip "git " (2026-09-28 false positive)
+        if re.search(r"(?<![a-z0-9])" + re.escape(term), spec_words):
             raise Refused(f"task text contains a banned term: '{term.strip()}'")
     for (kind, name) in (("incoming", ".task.json"), ("claimed", ".task.json"), ("done", ".task.json")):
         if (QUEUE / kind / (task_id + name)).exists():
