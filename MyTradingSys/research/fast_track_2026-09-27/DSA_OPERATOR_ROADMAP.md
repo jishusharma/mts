@@ -1,6 +1,6 @@
 # DSA + Jishu roadmap - road to a Deribit MAINNET smoke test (written 2026-09-29 ~04:40 IST, supervisor)
 
-Who does what: **DSA** = Claude chat surface (claude.ai, can run on the laptop). **Jishu** = operator, hands on keys,
+Who does what: **DSA** = the operator's chat model in Chrome (not Claude; can also become a queue worker - DSA_BROWSER_WORKER_PLAN.md). **Jishu** = operator, hands on keys,
 exchange UI, and the laptop. **Code mode** (desktop supervisor + workers) builds and tests; it never touches mainnet,
 keys or .secrets/. Mainnet orders are only ever placed by Jishu typing the confirmation string himself.
 

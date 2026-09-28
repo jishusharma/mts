@@ -146,3 +146,5 @@ Also committed: operator tooling 309d115 (mts.ps1, guide, new_plan.py), research
   COORDINATION with session 4: added execution/AUTO_PAUSE (728f9e1) - pauses only new auto-trades, no HALT - so the
   testnet chain can run on a flat account; message sent to session 4. Note: session 4's uncommitted execution changes are
   used by the auto-trader's subprocess calls (working tree).
+- Peer (session 3) note: before the testnet chain create MyTradingSys/execution/AUTO_PAUSE (blocks new auto-trades, no HALT), wait for open trades to close, run chain, delete AUTO_PAUSE. Auto-trader already uses the promoted mainnet-ready working tree.
+- DSA_BROWSER_WORKER_PLAN.md: DSA as a paced, human-in-the-loop browser queue worker on the desktop (incoming_dsa lane). Sonnet builds steps 1-2.
