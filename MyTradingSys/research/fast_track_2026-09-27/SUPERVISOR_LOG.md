@@ -67,3 +67,11 @@ C. "NUC replies": verify 031/063/064/070-076 as they land; write tests for 070-0
    plans; run formula_audit.py once 070-073 are promoted; then first backtests (RSI tolerance sweep,
    CryptoCred setups) per RSI_TF_LAYER_DESIGN D3/D5.
 D. Later: Java indicator JUnit tests (priority 3), L6 part 2, make_status stale findings, TF-B5 real-data gate.
+
+NUC remote access (2026-09-28, verified): desktop key ~/.ssh/nuc_gate, forced command
+C:\MTS-Worker
+uc-gate.ps1 (source: Dumps/workers/NUC-QUEUE/setup-ssh/). `ssh -i ~/.ssh/nuc_gate
+e-ngineers@192.168.29.110 status|logs N|ollama-ps|env|restart-worker confirm`; anything else refused
+(tested: echo refused). Firewall: port 22 from 192.168.29.188 only; password auth off. restart-ollama needs
+task MTS-Ollama (not created). OLLAMA_FLASH_ATTENTION / KV_CACHE_TYPE still unset (operator via RDP);
+user env has NUM_PARALLEL=1, KEEP_ALIVE=30m. At 11:20Z NUC on 076 (last queued) - queue about to go idle.
