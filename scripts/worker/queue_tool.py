@@ -8,6 +8,7 @@ reads them in full.
 
 Subcommands:
   pack SPEC [SPEC ...]  Build task packages from spec files into incoming/.
+                        --lane dsa writes them to incoming_dsa/ (browser worker lane).
   status                One-screen summary of the queue and the worker heartbeat.
   verify [ID ...]       Mechanical checks on finished replies. No ID: every
                         reply that has no verdict yet. An explicit ID always
@@ -47,7 +48,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 QUEUE = REPO / "Dumps" / "workers" / "NUC-QUEUE"
-QUEUE_DIRS = ("incoming", "claimed", "done", "deploy", "specs")
+QUEUE_DIRS = ("incoming", "claimed", "done", "deploy", "specs", "incoming_dsa", "claimed_dsa")
 DEPLOY_FILES = ("nuc-worker.ps1", "nuc-launcher.ps1", "setup-nuc.ps1")
 
 DEFAULT_MODEL = "qwen3-coder:30b"
@@ -293,7 +294,7 @@ def slice_of(path, first, last):
     return "".join(lines[first - 1:last]), first, last, total
 
 
-def build_package(spec_path):
+def build_package(spec_path, lane="default"):
     task_id = spec_path.name[:-3] if spec_path.name.endswith(".md") else spec_path.stem
     if not ID_RE.match(task_id):
         raise Refused(f"spec file name must look like 004-short-name.md, got {spec_path.name}")
@@ -306,7 +307,8 @@ def build_package(spec_path):
         # word-start match: "digit" must not trip "git " (2026-09-28 false positive)
         if re.search(r"(?<![a-z0-9])" + re.escape(term), spec_words):
             raise Refused(f"task text contains a banned term: '{term.strip()}'")
-    for (kind, name) in (("incoming", ".task.json"), ("claimed", ".task.json"), ("done", ".task.json")):
+    for (kind, name) in (("incoming", ".task.json"), ("claimed", ".task.json"), ("done", ".task.json"),
+                         ("incoming_dsa", ".task.json"), ("claimed_dsa", ".task.json")):
         if (QUEUE / kind / (task_id + name)).exists():
             raise Refused(f"a package with id {task_id} already exists in {kind}/")
 
@@ -377,7 +379,7 @@ def build_package(spec_path):
         )
     num_ctx = max(CTX_MIN, math.ceil(need / 2048) * 2048)
 
-    return {
+    pkg = {
         "schema": 1,
         "id": task_id,
         "created_utc": utc_stamp(),
@@ -392,6 +394,9 @@ def build_package(spec_path):
         "spec_file": rel_of(spec_path),
         "prompt": prompt,
     }
+    if lane != "default":
+        pkg["lane"] = lane
+    return pkg
 
 
 def cmd_pack(args):
@@ -405,8 +410,10 @@ def cmd_pack(args):
         try:
             if not spec_path.exists():
                 raise Refused(f"spec not found: {spec}")
-            pkg = build_package(spec_path)
-            out = QUEUE / "incoming" / f"{pkg['id']}.task.json"
+            lane = getattr(args, "lane", "default")
+            pkg = build_package(spec_path, lane)
+            inbox = "incoming_dsa" if lane == "dsa" else "incoming"
+            out = QUEUE / inbox / f"{pkg['id']}.task.json"
             write_atomic(out, json.dumps(pkg, ensure_ascii=True, indent=1) + "\n")
             print(f"PACKED  {pkg['id']}  files={len(pkg['scope'])}  prompt~{pkg['est_prompt_tokens']} tokens  "
                   f"num_ctx={pkg['num_ctx']}  expect={len(pkg['expect'])}  model={pkg['model']}")
@@ -437,6 +444,26 @@ def cmd_lint(args):
 
 # ---------- status ----------
 
+def print_dsa_status():
+    hb_path = QUEUE / "heartbeat_dsa.json"
+    waiting = len(list((QUEUE / "incoming_dsa").glob("*.task.json")))
+    running = len(list((QUEUE / "claimed_dsa").glob("*.task.json")))
+    if hb_path.exists():
+        try:
+            hb = json.loads(read_text(hb_path))
+            t = parse_utc(hb.get("utc"))
+            task = f" task {hb['task']}" if hb.get("task") else ""
+            note = f" ({hb['note']})" if hb.get("note") else ""
+            print(f"DSA-WORKER {hb.get('state', '?')}{task}{note}, heartbeat {age_text(t)}; "
+                  f"incoming_dsa {waiting}; running {running}")
+            if hb.get("state") == "needs-human":
+                print("WARNING  DSA worker needs the operator (challenge, login or repeated errors)")
+        except (ValueError, OSError) as exc:
+            print(f"DSA-WORKER heartbeat unreadable: {exc}; incoming_dsa {waiting}")
+    else:
+        print(f"DSA-WORKER no heartbeat (not running); incoming_dsa {waiting}; running {running}")
+
+
 def cmd_status(args):
     ensure_dirs()
     hb_path = QUEUE / "heartbeat.json"
@@ -461,6 +488,7 @@ def cmd_status(args):
     if incoming:
         oldest = f", oldest waiting {age_text(dt.datetime.fromtimestamp(incoming[0].stat().st_mtime, dt.timezone.utc))}"
     print(f"QUEUE    waiting {len(incoming)}{oldest}; running {len(claimed)}; replies {len(replies)}; not yet verified {len(unverified)}")
+    print_dsa_status()
     verdicts = sorted((QUEUE / "done").glob("*.verdict.txt"), key=lambda p: p.stat().st_mtime)[-3:]
     for v in verdicts:
         first_two = read_text(v).splitlines()[:2]
@@ -476,7 +504,7 @@ def load_json(path):
 
 
 def find_package(task_id):
-    for kind in ("done", "claimed", "incoming"):
+    for kind in ("done", "claimed", "incoming", "claimed_dsa", "incoming_dsa"):
         p = QUEUE / kind / f"{task_id}.task.json"
         if p.exists():
             return load_json(p)
@@ -522,6 +550,8 @@ def verify_one(task_id):
     if reply.get("worker_status") != "ok":
         fail.append(f"worker error: {reply.get('error', 'unknown')}")
     response = ANSI_RE.sub("", reply.get("response") or "")
+    if reply.get("done_reason") == "timeout":
+        fail.append("reply timed out before the answer was stable; it may be cut off (browser worker)")
     if reply.get("done_reason") == "length":
         fail.append(f"reply cut off at the {pkg.get('num_predict')} token limit; raise OUTPUT_TOKENS or narrow the task")
 
@@ -749,6 +779,8 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("pack", help="build task packages from spec files")
     p.add_argument("specs", nargs="+")
+    p.add_argument("--lane", choices=("default", "dsa"), default="default",
+                   help="dsa: write to incoming_dsa/ for the browser worker")
     p.set_defaults(func=cmd_pack)
     l = sub.add_parser("lint", help="check SCOPE/CREATE lines are bare paths, nothing else")
     l.add_argument("specs", nargs="+")

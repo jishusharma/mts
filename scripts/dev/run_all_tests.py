@@ -112,6 +112,9 @@ def main(argv=None):
     cmd3d = [sys.executable, "scripts/dev/test_verify_extract_quotes.py"]
     success, output = run_step("3d", "Extract quote checker tests", cmd3d)
     results.append(("Step 3d: Quote checker tests", success))
+    cmd3e = [sys.executable, "scripts/worker/test_dsa_worker.py"]
+    success, output = run_step("3e", "DSA browser worker + queue lane tests", cmd3e)
+    results.append(("Step 3e: DSA worker tests", success))
 
     # Step 4: pytest (math + doc tests)
     cmd4 = [sys.executable, "-m", "pytest", "MyTradingSys/tests", "-q",

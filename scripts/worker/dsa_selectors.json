@@ -1,0 +1,18 @@
+{
+  "_comment": "PLACEHOLDERS. Calibrate with: python scripts/worker/dsa_worker.py --calibrate (with the DSA chat open in the worker Chrome). For every MISS: right-click the element > Inspect, copy the outer HTML, give it to DSA and ask for one stable CSS selector, paste it here. Prefer data-testid / aria-label attributes over generated class names.",
+  "chat_url": "https://REPLACE-WITH-DSA-CHAT-URL/new",
+  "_input": "the prompt text box (textarea or contenteditable)",
+  "input": "textarea, div[contenteditable='true']",
+  "_send": "the send button (enabled once text is present)",
+  "send": "button[aria-label*='Send' i], button[data-testid='send-button']",
+  "_stop": "the stop-generating button; it exists ONLY while the model is answering",
+  "stop": "button[aria-label*='Stop' i], button[data-testid='stop-button']",
+  "_last_answer": "the newest assistant message body; the LAST match is used",
+  "last_answer": "[data-message-author-role='assistant'], .assistant-message",
+  "_copy_button": "the copy button of the newest answer; the LAST match is used (keeps markdown/code fences)",
+  "copy_button": "button[aria-label*='Copy' i]",
+  "_challenge": "CSS markers of a login / CAPTCHA / verify-human page. Zero matches is the healthy state; calibrate does not count this as a MISS.",
+  "challenge": "iframe[src*='captcha' i], iframe[src*='challenge' i], input[type='password'], #challenge-form, [id*='captcha' i]",
+  "_challenge_text": "phrases (lowercase) that mean a human check when found in the page text",
+  "challenge_text": ["verify you are human", "are you a robot", "checking your browser", "unusual activity", "log in to continue"]
+}
