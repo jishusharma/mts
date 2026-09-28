@@ -59,6 +59,14 @@ def find_backtest_modules():
     return sorted(modules)
 
 
+def find_layer_modules():
+    """Dotted names of committed test_*.py modules under MyTradingSys/backtest/layers (fast, run in --quick too)."""
+    layers = REPO / "MyTradingSys" / "backtest" / "layers"
+    if not layers.exists():
+        return []
+    return sorted(".".join(f.relative_to(REPO).with_suffix("").parts) for f in layers.rglob("test_*.py"))
+
+
 def main(argv=None):
     args = sys.argv[1:] if argv is None else argv
     quick = "--quick" in args
@@ -123,6 +131,13 @@ def main(argv=None):
     else:
         print("\n[Step 5] Maven Java tests (skipped with --quick)")
         results.append(("Step 5: Maven tests", None))
+
+    # Step 5b: indicator-layer tests (fast; run even with --quick)
+    layer_modules = find_layer_modules()
+    if layer_modules:
+        cmd5b = [sys.executable, "-m", "unittest"] + layer_modules
+        success, output = run_step("5b", f"Layer tests ({len(layer_modules)} modules)", cmd5b)
+        results.append(("Step 5b: Layer tests", success))
 
     # Step 6: backtest (unless --quick)
     if not quick:
