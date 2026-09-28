@@ -84,7 +84,7 @@ Note that we will integrate RSI - so it is momentum and it comes from a differen
 
 | System | Source | Status | Read produced |
 |---|---|---|---|
-| RSI 40-60 (MalkanView) | external system | planned | momentum, setup timing |
+| RSI 40-60 (MalkanView) | external system | design 2026-09-28 (RSI_TF_LAYER_DESIGN.md); sub-layer of the RSI layer | momentum, setup timing |
 | Probability distribution | event_probability_layer_DESIGN.md | stage 3 unblocked 2026-09-28 (10,289 labels; 5,000 gate met); frequency-table MVP queued (NUC 033) | forward return probability |
 | Analyst verdicts | extracts/processed/tom/ + future | distant | discretionary opinion |
 | Session-aware frame | new (this project) | design | session bias, day type, initial balance |
@@ -185,5 +185,22 @@ assistant are not addressed by this decision and remain as the unmerged
 
 The unmerged MyTradingSys/PROJECT_VISION.md.new is superseded by this entry
 for T048's purposes and left in place as a dated record, not applied.
+
+## USER DIRECTIVE (verbatim, 2026-09-28) - RSI LAYER, TIMEFRAME LAYER, BACKTESTING
+
+Preserved verbatim from the operator's message in the Opus supervisor session (code mode). Spelling kept.
+
+1. Back test all and prepare Qwen for all back testing related stuff.
+2. [...] where downloaded - on desktop or NUC? Build must do as much of back-testing as possible under surveillance. This RSI 40-60 must not be used for any other RSI signal that MTS may demand/need/require instead use the usual RSI default readings. Some Things I want to quote here (log as a Verbatim ) -
+
+1. We need smoothed RSI moving average that come with the usual indicator and look for support on these moving avgs on any given time frame. Add this is a separate feature in the RSI module/indicator-layer.
+2. The threshold of slipped from actual numbers like RSI taking support on the 60 line or RSI rejected from the 40 line. So it can reject from 41 0r 42 or 39/38  etc - so we need to see during back-testing that how much slippage we can allow based on actual results. This to be done for all edge cases/scenarios.
+3. RSI modules must be also layered within. A full Malkanview RSo 40-60 system can spit out trades for any timeframe. But we may require things like RSI support or rejecton in 3 mins or 2 mins or 15 mins or 12 ours - whenever it changes - we get an alert for each time frame. We need usual time frames but we also need 1,2,3,10 mins and 2 day, 3 day and 5 day as well! I think we might require a separate timeframe layer that serves each module/later including core? Opus needs to decide.
+4. So once we start testing indicators on test-net - we will fine tune them as per my inputs and expertise and as per professional that are WORTH listening to in the Crypto Space! Remeber about the fine tuning part and make sure our design is flexible and accurate and well aritectured for this trading software we are building.
+
+So you get the idea.. I need evrything rolling efficiently
+
+### INTERPRETATION (not verbatim)
+Design decisions for this directive: MyTradingSys/research/fast_track_2026-09-27/RSI_TF_LAYER_DESIGN.md.
 
 # END
