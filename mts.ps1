@@ -1,0 +1,229 @@
+# mts.ps1 - the one command for running MTS by hand. See MTS_USER_GUIDE.md.
+#
+#   mts <verb> [argument]        e.g.  mts status   mts plan   mts trade L-mkt-0928-1430
+#
+# Every verb wraps an existing script; no trading logic lives here.
+# Exchange verbs talk to Deribit TESTNET only (the Python layer hard-codes it).
+# The verb table below is the source of truth for "mts help" and for
+# scripts/dev/check_guide.py, which fails if the guide misses a verb.
+
+param(
+    [Parameter(Position = 0)][string]$Verb = "help",
+    [Parameter(Position = 1)][string]$Arg = ""
+)
+
+$ErrorActionPreference = "Stop"
+$Root = $PSScriptRoot
+$Exec = Join-Path $Root "MyTradingSys\execution"
+$Plans = Join-Path $Exec "plans"
+$Halt = Join-Path $Exec "HALT"
+$HaltLoss = Join-Path $Exec "HALT_DAILY_LOSS"
+$Guide = Join-Path $Root "MTS_USER_GUIDE.md"
+
+# VERBS-BEGIN  (group | verb | what it does)
+$Verbs = @(
+    @("Market loop", "start",   "Start the market loop and its watchdog"),
+    @("Market loop", "stop",    "Stop the market loop cleanly"),
+    @("Market loop", "status",  "One screen: loop, market state, last alert, brakes"),
+    @("Market loop", "watch",   "Live dashboard (Ctrl+C to leave)"),
+    @("Trading",     "plan",    "Build a trade plan by answering questions"),
+    @("Trading",     "plans",   "List saved plans"),
+    @("Trading",     "check",   "Show the exact orders a plan would place (sends nothing)"),
+    @("Trading",     "trade",   "Place a plan on testnet, then open its manager window"),
+    @("Trading",     "manage",  "Re-open the manager window for a live plan"),
+    @("Trading",     "account", "Testnet balance, positions, open orders (read-only)"),
+    @("Safety",      "pause",   "Block all new trades (creates the HALT file)"),
+    @("Safety",      "resume",  "Remove the brakes after you have checked the account"),
+    @("Safety",      "kill",    "EMERGENCY: cancel every order, close every position, pause"),
+    @("Safety",      "guard",   "Start the daily-loss guard in its own window"),
+    @("Upkeep",      "test",    "Run the offline test suite (no exchange)"),
+    @("Upkeep",      "guide",   "Open the user guide"),
+    @("Upkeep",      "help",    "This list")
+)
+# VERBS-END
+
+function Say([string]$text, [string]$color = "Gray") { Write-Host $text -ForegroundColor $color }
+function Ok([string]$text)   { Say "  OK    $text" Green }
+function Warn([string]$text) { Say "  WARN  $text" Yellow }
+function Bad([string]$text)  { Say "  STOP  $text" Red }
+
+# Python output goes straight to the console (never captured); read $LASTEXITCODE after.
+$env:PYTHONUNBUFFERED = "1"
+function Py { & python @args }
+
+function Resolve-Plan([string]$name) {
+    if (-not $name) { Bad "name a plan, e.g.  mts $Verb L-mkt-0928-1430   (see: mts plans)"; exit 1 }
+    foreach ($p in @($name, (Join-Path $Plans $name), (Join-Path $Plans "$name.json"))) {
+        if (Test-Path $p -PathType Leaf) { return (Resolve-Path $p).Path }
+    }
+    Bad "no plan called '$name'  (see: mts plans)"; exit 1
+}
+
+function Open-Window([string]$title, [string]$command) {
+    $cmd = "`$Host.UI.RawUI.WindowTitle = '$title'; Set-Location '$Root'; $command"
+    Start-Process pwsh.exe -ArgumentList @("-NoExit", "-NoProfile", "-Command", $cmd)
+}
+
+function Get-Procs([string]$pattern, [string]$names = "Name='pwsh.exe' OR Name='powershell.exe'") {
+    @(Get-CimInstance Win32_Process -Filter $names -ErrorAction SilentlyContinue |
+      Where-Object { $_.CommandLine -match $pattern })
+}
+
+function Age([string]$path) {
+    if (-not (Test-Path $path)) { return $null }
+    [int]((Get-Date) - (Get-Item $path).LastWriteTime).TotalSeconds
+}
+
+function Show-Brakes {
+    if (Test-Path $Halt)     { Bad "HALT is set - no new trades. Reason: $((Get-Content $Halt -Raw).Trim())" }
+    if (Test-Path $HaltLoss) { Bad "HALT_DAILY_LOSS is set - daily loss limit hit: $((Get-Content $HaltLoss -Raw).Trim())" }
+    if (-not (Test-Path $Halt) -and -not (Test-Path $HaltLoss)) { Ok "no brakes set - trading allowed" }
+}
+
+function Confirm-Word([string]$word, [string]$question) {
+    Say $question Yellow
+    $typed = Read-Host "  Type $word to continue (anything else cancels)"
+    if ($typed -cne $word) { Say "  cancelled"; return $false }
+    return $true
+}
+
+switch ($Verb.ToLower()) {
+
+    "help" {
+        Say "MTS - type  mts <verb>  (full guide: mts guide)" White
+        $group = ""
+        foreach ($v in $Verbs) {
+            if ($v[0] -ne $group) { $group = $v[0]; Say ""; Say $group Cyan }
+            Say ("  mts {0,-9} {1}" -f $v[1], $v[2])
+        }
+        Say ""
+    }
+
+    "start" {
+        $null = . (Join-Path $Root "scripts\load.ps1")
+        mts-up
+    }
+
+    "stop" { & (Join-Path $Root "scripts\core\stop-day.ps1") }
+
+    "status" {
+        Say "MTS STATUS   $((Get-Date).ToUniversalTime().ToString('yyyy-MM-dd HH:mm')) UTC" White
+        Say ""; Say "Market loop" Cyan
+        $wrap = Get-Procs "start-trading-day|mode\.ps1"
+        $sup  = Get-Procs "loop-supervisor"
+        $java = Get-Procs "datafeed\.Main" "Name='java.exe'"
+        if ($wrap.Count -and $sup.Count -and $java.Count) { Ok "running (loop, watchdog, data feed)" }
+        elseif (-not ($wrap.Count + $sup.Count + $java.Count)) { Warn "not running - start it with: mts start" }
+        else { Warn "partly running (loop=$($wrap.Count) watchdog=$($sup.Count) feed=$($java.Count)) - run: mts start" }
+        $sc = Join-Path $Root "MyTradingSys\runtime\state_code.json"
+        $a = Age $sc
+        if ($null -ne $a) {
+            $s = Get-Content $sc -Raw | ConvertFrom-Json
+            $line = "market state $($s.state)  (bull $($s.bullish_count) / bear $($s.bearish_count))  updated ${a}s ago"
+            if ($a -gt 150) { Warn "$line - STALE" } else { Ok $line }
+        }
+        $log = Join-Path $Root "runtime_data\apparatus_log.txt"
+        if (Test-Path $log) {
+            $last = Get-Content $log -Tail 30 -Encoding UTF8 | Where-Object { ($_ -split ' \| ').Count -ge 6 } | Select-Object -Last 1
+            if ($last) { $f = $last -split ' \| '; Say "  last verdict: $($f[4])   setup: $($f[5])   price $($f[2])" }
+        }
+        $alert = Join-Path $Root "runtime_data\last_alert.json"
+        if (Test-Path $alert) {
+            $j = Get-Content $alert -Raw | ConvertFrom-Json
+            Say "  last alert:   $($j.title)  ($([int]((Age $alert)/60)) min ago)"
+        }
+        Say ""; Say "Brakes" Cyan
+        Show-Brakes
+        $guard = Get-Procs "daily_loss_monitor" "Name='python.exe' OR Name='pythonw.exe'"
+        if ($guard.Count) { Ok "daily-loss guard running" } else { Say "  --    daily-loss guard not running (optional: mts guard)" }
+        Say ""; Say "Trades" Cyan
+        $mgr = Get-Procs "position_manager" "Name='python.exe'"
+        if ($mgr.Count) { foreach ($m in $mgr) { Ok "manager running: $(($m.CommandLine -split '\s+')[-1])" } }
+        else { Say "  --    no plan being managed" }
+        Say ""
+    }
+
+    "watch" { & (Join-Path $Root "scripts\live\mts-dashboard.ps1") }
+
+    "plan" { Py (Join-Path $Exec "new_plan.py"); exit $LASTEXITCODE }
+
+    "plans" {
+        if (-not (Test-Path $Plans) -or -not (Get-ChildItem $Plans -Filter *.json)) { Say "no saved plans - make one with: mts plan"; break }
+        $now = (Get-Date).ToUniversalTime()
+        Get-ChildItem $Plans -Filter *.json | Sort-Object LastWriteTime -Descending | ForEach-Object {
+            $p = Get-Content $_.FullName -Raw | ConvertFrom-Json
+            $e = $p.validity.end   # ConvertFrom-Json may already have turned this into a DateTime
+            $end = if ($e -is [datetime]) { $e.ToUniversalTime() } else { [datetimeoffset]::Parse($e).UtcDateTime }
+            $state = if ($end -lt $now) { "expired" } else { "valid $([int]($end - $now).TotalMinutes) min" }
+            $traded = if (Test-Path (Join-Path $Exec "journal\$($p.plan_id).jsonl")) { "traded" } else { "" }
+            Say ("  {0,-20} {1,-5} {2,-6} {3,6} USD  {4,-16} {5}" -f $p.plan_id, $p.side, $p.entry.type, $p.caps.max_notional_usd, $state, $traded)
+        }
+    }
+
+    "check" {
+        $file = Resolve-Plan $Arg
+        Py (Join-Path $Exec "plan_compiler.py") $file
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        Say "Nothing was sent. To place it:  mts trade $([IO.Path]::GetFileNameWithoutExtension($file))" Green
+    }
+
+    "trade" {
+        $file = Resolve-Plan $Arg
+        $id = (Get-Content $file -Raw | ConvertFrom-Json).plan_id
+        if ((Test-Path $Halt) -or (Test-Path $HaltLoss)) { Show-Brakes; Say "Trading is paused. Check the account, then: mts resume" Yellow; exit 1 }
+        Py (Join-Path $Exec "plan_compiler.py") $file
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        if (-not (Confirm-Word "GO" "Place plan $id on Deribit TESTNET with the orders above?")) { exit 1 }
+        Py (Join-Path $Exec "executor.py") $file "--go"
+        if ($LASTEXITCODE -ne 0) { Bad "entry did not complete - read the message above, then: mts account"; exit 1 }
+        Open-Window "MTS manage $id" "python '$Exec\position_manager.py' $id"
+        Ok "entered. Manager window 'MTS manage $id' is guarding the position - leave it open."
+    }
+
+    "manage" {
+        if (-not $Arg) { Bad "name a plan id, e.g.  mts manage L-mkt-0928-1430"; exit 1 }
+        Open-Window "MTS manage $Arg" "python '$Exec\position_manager.py' $Arg"
+        Ok "manager window opened for $Arg"
+    }
+
+    "account" { Py (Join-Path $Exec "deribit_read.py"); exit $LASTEXITCODE }
+
+    "pause" {
+        if (Test-Path $Halt) { Say "already paused"; Show-Brakes; break }
+        $who = "$((Get-Date).ToUniversalTime().ToString('s'))Z manual pause via mts"
+        [IO.File]::WriteAllText($Halt, "$who`n")
+        Ok "paused - new trades are blocked. Open positions keep their stops. Undo with: mts resume"
+    }
+
+    "resume" {
+        if (-not (Test-Path $Halt) -and -not (Test-Path $HaltLoss)) { Ok "nothing to resume - no brakes set"; break }
+        Show-Brakes
+        if (-not (Confirm-Word "RESUME" "Have you checked the account (mts account) and are you sure trading may restart?")) { exit 1 }
+        $hist = Join-Path $Exec "halt_history"
+        New-Item -ItemType Directory -Force $hist | Out-Null
+        $stamp = (Get-Date).ToUniversalTime().ToString('yyyyMMdd_HHmmss')
+        foreach ($f in @($Halt, $HaltLoss)) {
+            if (Test-Path $f) { Move-Item $f (Join-Path $hist "$(Split-Path $f -Leaf)_$stamp.txt") }
+        }
+        Ok "brakes removed (kept a copy in execution\halt_history)"
+    }
+
+    "kill" {
+        Say "KILL SWITCH - cancels EVERY open order and closes EVERY position on the testnet account," Red
+        Say "then sets HALT so nothing trades until you run: mts resume" Red
+        if (-not (Confirm-Word "KILL" "Are you sure?")) { exit 1 }
+        Py (Join-Path $Exec "kill_switch.py") "--confirm" "KILL"; exit $LASTEXITCODE
+    }
+
+    "guard" {
+        if ((Get-Procs "daily_loss_monitor" "Name='python.exe'").Count) { Ok "daily-loss guard already running"; break }
+        Open-Window "MTS daily-loss guard" "python '$Exec\daily_loss_monitor.py'"
+        Ok "daily-loss guard started in its own window - leave it open while trading"
+    }
+
+    "test" { Py (Join-Path $Root "scripts\dev\run_all_tests.py") "--quick"; exit $LASTEXITCODE }
+
+    "guide" { Invoke-Item $Guide }
+
+    default { Bad "unknown verb '$Verb'"; & $PSCommandPath help; exit 2 }
+}

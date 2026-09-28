@@ -102,6 +102,14 @@ def main(argv=None):
     success, output = run_step(3, "Static test suite", cmd3)
     results.append(("Step 3: Static test suite", success))
 
+    # Step 3b: user guide matches mts.ps1 (commands + paths)
+    cmd3b = [sys.executable, "scripts/dev/test_check_guide.py"]
+    success, output = run_step("3b", "User guide checker tests", cmd3b)
+    results.append(("Step 3b: Guide checker tests", success))
+    cmd3c = [sys.executable, "scripts/dev/check_guide.py"]
+    success, output = run_step("3c", "User guide in sync with mts.ps1", cmd3c)
+    results.append(("Step 3c: Guide in sync", success))
+
     # Step 4: pytest (math + doc tests)
     cmd4 = [sys.executable, "-m", "pytest", "MyTradingSys/tests", "-q"]
     success, output = run_step(4, "Pytest (math + doc tests)", cmd4)

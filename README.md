@@ -1,5 +1,8 @@
 # BinanceDataFeed
 
+**Running MTS by hand: start with [MTS_USER_GUIDE.md](MTS_USER_GUIDE.md).**
+One command (`mts`) and three Desktop shortcuts cover the whole day.
+
 Real-time Bitcoin trading system. Watches BTCUSDT, applies a fixed
 rule set, and alerts when a setup candidate is close to its entry.
 

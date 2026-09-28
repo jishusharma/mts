@@ -1,5 +1,8 @@
 # COMMANDS
 
+For daily operation use MTS_USER_GUIDE.md (the `mts` command). This file keeps the
+older AI-session shortcuts and loop internals.
+
 Read once top to bottom. Then jump to your moment. Last updated: 2026-09-16.
 
 ## START THE SESSION
