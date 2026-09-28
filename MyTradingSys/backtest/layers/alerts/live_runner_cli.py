@@ -116,7 +116,7 @@ def save_state(state: dict, path) -> None:
         json.dump(state, f, sort_keys=True, indent=2)
 
 
-def build_default_registry() -> dict:
+def build_default_registry(fetch_funding=None) -> dict:
     """
     Builds and returns a registry for two registered layers: RSI and FABIO CVD.
     More layers can be added in the same way in future work.
@@ -153,6 +153,20 @@ def build_default_registry() -> dict:
             "params_id": "fabio_cvd_default_2026-09-29"
         }
     ]
+    from MyTradingSys.backtest.layers.alerts import live_layers as ll
+    suffix = "_defaults_2026-09-29"
+    for layer, sub, tf, fn in [
+        ("fabio", "escalation", "1h", ll.escalation_layer),
+        ("fabio", "volume_fvg", "1h", ll.volume_fvg_layer),
+        ("session", "session_momentum", "15m", ll.session_momentum_layer),
+        ("positioning", "funding_cvd_fade", "1h", ll.make_funding_layer(fetch_funding)),
+        ("rsi", "malkan_bull", "1h", ll.malkan_bull_layer),
+        ("rsi", "malkan_bear", "1h", ll.malkan_bear_layer),
+        ("cryptocred", "sr_flip", "1h", ll.cc_sr_flip_layer),
+        ("cryptocred", "fib_pullback", "1h", ll.cc_fib_pullback_layer),
+        ("cryptocred", "failed_msb", "1h", ll.cc_failed_msb_layer),
+    ]:
+        entries.append({"layer": layer, "sub": sub, "tf": tf, "fn": fn, "params_id": sub + suffix})
     
     # Import here to avoid circular dependency
     from MyTradingSys.backtest.layers.alerts.live_runner_core import build_registry

@@ -69,10 +69,8 @@ class TestFetchClosedBars(unittest.TestCase):
 class TestBuildDefaultRegistry(unittest.TestCase):
     def test_three_entries_expected_keys(self):
         registry = cli.build_default_registry()
-        self.assertEqual(
-            set(registry.keys()),
-            {"rsi|rsi_events|1h", "rsi|rsi_events|15m", "fabio|cvd_absorption|1h"},
-        )
+        self.assertTrue(
+            {"rsi|rsi_events|1h", "rsi|rsi_events|15m", "fabio|cvd_absorption|1h"} <= set(registry.keys()))
         for entry in registry.values():
             self.assertTrue(callable(entry["fn"]))
             self.assertIsInstance(entry["params_id"], str)
