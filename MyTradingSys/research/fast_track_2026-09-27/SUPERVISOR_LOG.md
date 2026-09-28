@@ -111,3 +111,9 @@ Session 2, ~14:30Z (closing - operator conserving tokens):
   ruling still pending with the operator).
 - Session 2's W5 auto-pack poller for 083 was stopped with its agent; pack 083 by hand after verifying 082.
 - Handoff: NEXT_SESSION_PLAN.md rewritten for session 3.
+
+Session 2, ~15:10Z: R3 DONE (operator approved the supervisor running it). run_testnet_suite_ft2.py after R1 (08f5ea0):
+base 6/6, G1/G2 4/4, FT-2 4/4 (T-c breach True at -0.01). Side-aware rounding visible live: C2 short stop
+84470.28 -> 84470.0 (floor, toward entry). No HALT files left behind. Readiness gate R1-R4, R6 green; R5 = formula
+audit 082 (output hit the 6144 cap - check for truncation) / 083 pending. Tom testnet order runs: READY.
+Also committed: operator tooling 309d115 (mts.ps1, guide, new_plan.py), research extracts ba4a396.

@@ -22,7 +22,7 @@ Goal: finish the testnet live-readiness gate, then the Fabio backtest. Never mai
 |---|---|---|
 | R1 exec math tests | DONE | 08f5ea0 + 61e55f3 (T4 reviewed): FORMULAS.md s11; snap_price(price, mode) Decimal floor/ceil (entry never worse, stop/target toward entry); round_size floors and rejects <10 USD; harmonic ladder avg; tests plan_compiler 20, executor_math 2, risk_guard 13 (mutant R3 killed); Java NET_RR_FRICTION + NetRRConstantTest 6 |
 | R2 full gate | DONE | run_all_tests.py (Maven + backtest) ALL PASS after R1 |
-| R3 testnet re-run | OPERATOR | `python MyTradingSys/execution/testnet/run_testnet_suite_ft2.py` -> expect base 6/6, G1/G2 4/4, FT-2 4/4 (T-c may fail on zero fees - see FT2_RUNBOOK). Plans checked compatible with the new rounding. Haiku reads the output; if green, log it and mark R3 done |
+| R3 testnet re-run | DONE 15:10Z (base 6/6, G1/G2 4/4, FT-2 4/4) - was OPERATOR | `python MyTradingSys/execution/testnet/run_testnet_suite_ft2.py` -> expect base 6/6, G1/G2 4/4, FT-2 4/4 (T-c may fail on zero fees - see FT2_RUNBOOK). Plans checked compatible with the new rounding. Haiku reads the output; if green, log it and mark R3 done |
 | R4 L6 | DONE | re-arm in; part 2 deferred |
 | R5 layers | NEARLY | promoted: 070-075, 077 (f0b44fe), 078 13558c0, 079 ae30eda, 080 alert emitter 4f7204e (JSONL only; boundary test 84de108), 081 8ea2f68. OPEN: formula audit 082/083 |
 | R6 backtest baseline | DONE | BACKTEST_L1_REPORT.md (3e99093, c509f3c): only 1h RSI-40 support tol 0.5 has PBO 0.03, and its edge (+0.043% h5) is < fees. CryptoCred: no edge. setup2 bug fixed 54ad393 |
