@@ -1,0 +1,148 @@
+{
+ "schema": 1,
+ "targets": [
+  {
+   "id": "A1-rsi-core",
+   "template": "A1",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/rsi_core.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md:10-58"
+   ],
+   "note": "RSI Wilder smoothing formula (FORMULAS.md section 1) vs rsi_core.py.",
+   "last_audited": null
+  },
+  {
+   "id": "A1-tf-resample",
+   "template": "A1",
+   "paths": [
+    "MyTradingSys/backtest/layers/timeframe/tf_resample.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md:151-162"
+   ],
+   "note": "Resample / bucket-anchoring formula (FORMULAS.md section 8) vs tf_resample.py.",
+   "last_audited": null
+  },
+  {
+   "id": "A1-bt-stats-sharpe",
+   "template": "A1",
+   "paths": [
+    "MyTradingSys/backtest/bt/bt_stats.py:40-45",
+    "MyTradingSys/backtest/bt/ref_pbo.py:6-13",
+    "MyTradingSys/backtest/layers/FORMULAS.md:179-193"
+   ],
+   "note": "Sharpe = mean / population stdev (FORMULAS.md section 10) vs both sharpe() implementations. Hand-audited 2026-09-28 as spec 097-audit-a1-bt-stats-sharpe.",
+   "last_audited": "2026-09-28T00:00:00Z"
+  },
+  {
+   "id": "A2-fabio-cvd",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/fabio/fabio_cvd_absorption.py",
+    "MyTradingSys/backtest/layers/fabio/test_fabio_cvd_absorption.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A2-cc-retest",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/cryptocred/cc_retest.py",
+    "MyTradingSys/backtest/layers/cryptocred/test_cc_retest.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A3-spec-089",
+   "template": "A3",
+   "paths": [
+    "Dumps/workers/NUC-QUEUE/specs/089-fabio-volume-fvg.md"
+   ],
+   "note": "Retrospective pre-check: would this spec's own wording have been ambiguous to a worker seeing it fresh, or missing an EXPECT for a claim it makes?",
+   "last_audited": null
+  },
+  {
+   "id": "A3-spec-090",
+   "template": "A3",
+   "paths": [
+    "Dumps/workers/NUC-QUEUE/specs/090-fabio-escalation-retry.md"
+   ],
+   "note": "Retrospective pre-check: would this spec's own wording have been ambiguous to a worker seeing it fresh, or missing an EXPECT for a claim it makes?",
+   "last_audited": null
+  },
+  {
+   "id": "A4-positioning-flow",
+   "template": "A4",
+   "paths": [
+    "MyTradingSys/research/fast_track_2026-09-27/T055a_POSITIONING_FLOW.md"
+   ],
+   "note": "Question: does this report name a specific published formula (a vendor or a paper) for net-long/net-short, or only its own inferred proxy?",
+   "last_audited": null
+  },
+  {
+   "id": "A4-proven-setups",
+   "template": "A4",
+   "paths": [
+    "MyTradingSys/research/fast_track_2026-09-27/T055b_PROVEN_SETUPS.md"
+   ],
+   "note": "Question: which listed setup, if any, has a quoted out-of-sample statistic rather than a backtest-only one?",
+   "last_audited": null
+  },
+  {
+   "id": "A5-fabio-volume-fvg",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom's own internals.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-cc-structure",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/cryptocred/cc_structure.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom's own internals.",
+   "last_audited": null
+  },
+  {
+   "id": "A6-project-vision-layers",
+   "template": "A6",
+   "paths": [
+    "MyTradingSys/PROJECT_VISION.md:8-19",
+    "MyTradingSys/backtest/layers/fabio/fabio_cvd_absorption.py"
+   ],
+   "note": "Does PROJECT_VISION.md's layer-independence doctrine hold for this specific module?",
+   "last_audited": null
+  },
+  {
+   "id": "A6-rsi-test-plan",
+   "template": "A6",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/TEST_PLAN.md",
+    "MyTradingSys/backtest/layers/rsi/rsi_ma.py"
+   ],
+   "note": "Does the current rsi_ma.py behavior still match what TEST_PLAN.md documents?",
+   "last_audited": null
+  },
+  {
+   "id": "A7-risk-guard",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/risk_guard.py"
+   ],
+   "note": "Account-notional cap invariants. Hand-audited 2026-09-28 as spec 098-audit-a7-risk-guard.",
+   "last_audited": "2026-09-28T00:00:00Z"
+  },
+  {
+   "id": "A7-kill-switch",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/kill_switch.py"
+   ],
+   "note": "Confirm-phrase and HALT-file invariants around the account kill switch.",
+   "last_audited": null
+  }
+ ]
+}

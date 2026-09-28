@@ -80,3 +80,4 @@ may not - depends on whether "empirically derived from full history"
 counts as Tom-citation-or-documented-exception. Decide before building.
 
 Status: OPEN. Design refined. Not started.
+- 2026-09-28 s3: 091 reply PARTIAL -> tick_extremes.py.new passes 16/17 Sonnet tests; fails test_shape_and_skips_undersized_timeframes (key "volume" missing from tier table). Next: repair spec with that failure, or 1-line fix + re-gate. 092/093 + audit 094-098 queued.
