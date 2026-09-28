@@ -102,3 +102,12 @@ Session 2, ~14:00Z:
 - The run_all_tests.py working tree holds uncommitted Step 3b/3c guide-checker lines from another session (check_guide.py
   is untracked) - deliberately left out of the commits.
 - Next: operator R3 testnet re-run.
+
+Session 2, ~14:30Z (closing - operator conserving tokens):
+- 078-081 promoted (13558c0, ae30eda, 4f7204e, 8ea2f68; 081 had 2 fixes). 082 running on the NUC; 083 spec written, not packed.
+- Fabio: operator asked "is core MTS + Fabio producing quality setups? identify what Fabio asks in o-w5Gxss6T0 and
+  backtest it". Extract exists (FAB-001..009). Backtest agent launched, then STOPPED for tokens before writing files.
+  Full brief = NEXT_SESSION_PLAN.md 3.W4. Fabio stays a separate layer; the Tom comparison is descriptive only (override
+  ruling still pending with the operator).
+- Session 2's W5 auto-pack poller for 083 was stopped with its agent; pack 083 by hand after verifying 082.
+- Handoff: NEXT_SESSION_PLAN.md rewritten for session 3.
