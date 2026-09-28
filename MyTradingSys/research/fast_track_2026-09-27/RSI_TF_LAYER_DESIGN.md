@@ -77,8 +77,9 @@ All under `MyTradingSys/backtest/layers/rsi/`. Every number comes from a params 
 
 ## D6. Data needed
 
-- 1m history covers ~13 months. The small timeframes (1m-10m) need more: extend 1m back to 2022-01
-  with `fetch_binance_archive.py` (about 1.5 GB). Operator approval needed before downloading.
+- DONE 2026-09-28 (operator approved): 1m BTCUSDT 2022-01..2025-08 in `Dumps/backtest/raw_1m_2022/klines`
+  (44 monthly files, 210 MB; row counts exact, e.g. 2024-02 = 41,760 = 29 x 1440). With
+  `Dumps/backtest/raw/klines` (2025-09 onward) that is continuous 1m from 2022-01 to now.
 
 ## D7. Build order (NUC task ids)
 
