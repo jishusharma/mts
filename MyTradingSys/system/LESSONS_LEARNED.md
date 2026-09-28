@@ -5,6 +5,9 @@ what went wrong, the rule that prevents it, and where that rule now lives. Add n
 top of the relevant section. Keep each entry to 3 lines.
 
 ## A. Verification (accuracy)
+- 2026-09-28: rsi TEST_PLAN C1 expected values were copied from Qwen's bt_rsi.py.new (off vs textbook
+  Wilder, 70.0 vs 77.78), so tests would have blessed the bug. RULE: expected numbers come from the
+  definition in backtest/layers/FORMULAS.md, computed independently; never from repo code. (CLAUDE.md gates)
 - 2026-09-28 D1: a patch appended a comment in the middle of a dict line, which commented out 3 keys.
   The unit gate was green because nothing executed that file. RULE: the gate must EXECUTE every file
   a change touches; if no test does, add a static/AST check first (testnet/test_suite_static.py).

@@ -1,7 +1,7 @@
 # MTS - Claude Code sessions
 
 Read first: `MyTradingSys/research/STATUS.md` (regenerate: `python scripts/dev/make_status.py`),
-then `MyTradingSys/system/LESSONS_LEARNED.md`. Don't re-read handoff docs STATUS.md already summarises.
+then `MyTradingSys/system/LESSONS_LEARNED.md`; supervisor decisions: `research/fast_track_2026-09-27/SUPERVISOR_LOG.md`. Don't re-read handoff docs STATUS.md already summarises.
 Chat-surface (DSA) behaviour lives in `DSA_SESSION_PROMPT.md`; this file is for code mode.
 
 ## Work routing (cheapest tier that can do it; see research/fast_track_2026-09-27/WORKER_ROADMAP.md)
@@ -13,6 +13,8 @@ Chat-surface (DSA) behaviour lives in `DSA_SESSION_PROMPT.md`; this file is for 
 - All offline: `python scripts/dev/run_all_tests.py` (`--quick` skips Maven + backtest).
 - Extractions: `python scripts/dev/verify_extract_quotes.py <extract.md>` (quotes verbatim + GPS position).
 - New tests must fail on the pre-change code at least once.
+- Formulas: expected numbers in test plans come from `MyTradingSys/backtest/layers/FORMULAS.md` (canonical
+  definition + source), computed independently - never from existing code. OUTPUT_TOKENS must fit the whole reply.
 
 ## Hard rules
 - Branch `fast-track`; never commit to master, never push/merge/rebase/reset.

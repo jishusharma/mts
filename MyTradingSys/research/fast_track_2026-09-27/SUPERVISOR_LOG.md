@@ -1,0 +1,36 @@
+# Supervisor log (Opus supervisor sessions)
+
+One entry per supervisor session. Next supervisor: read this plus STATUS.md; nothing else from the chat is needed.
+
+## 2026-09-28 - session 1
+
+Landed: 0bbace1 L6 re-arm (T4 safety review: breach check still runs after re-arm, never blocks the
+protective stop), 3f98dc8 CryptoCred cc_structure/cc_retest/cc_setups + 19 tests (2 Qwen bugs in
+cc_setups caught by plan-derived tests), 01d0eed six Tom extracts (quote-verified), 63383f7 gate step 5b
+(layer tests, also under --quick), 65815f9 lesson OUTPUT_TOKENS, 4f74c20 RSI/timeframe design +
+operator directive verbatim in PROJECT_VISION, 3569ee3 1m history 2022-01..2025-08 fetched.
+
+Operator decisions: bin NUC 019 (done: .rejected_019 + verdict). Download 1m history to 2022 (done).
+RSI 40/60 is private to the MalkanView sub-layer; every other RSI use is standard (14, 70/50/30).
+Wants: smoothed RSI MA + support on it per timeframe; tolerance ("slippage") around 40/60 found by
+backtest for every edge case; alerts per timeframe incl. 1,2,3,10m and 2d,3d,5d; params tunable on
+testnet from operator and trusted-professional input. NUC should do as much backtesting as possible.
+
+Supervisor decisions: RSI_TF_LAYER_DESIGN.md D1-D7 (timeframe layer serves all layers, core later;
+RSI split core/ma/events/malkan_40_60; params files with provenance; backtests on desktop now, NUC
+"RUN" job type later if sweeps exceed ~30 min and Python is on the NUC).
+
+Caught: test plans must come from definitions, not code - rsi TEST_PLAN C1 had been copied from
+bt_rsi.py.new (off vs textbook Wilder: idx5 70.0 vs 77.777778). Fixed; 071 repacked. NUC tasks
+070-075 moved to Dumps/workers/NUC-QUEUE/held/ until the formula audit (FORMULAS.md, re-derivation
+of all plan numbers, Qwen 076 formula_audit.py) repacks them into incoming/.
+Also caught: 031 packed with OUTPUT_TOKENS 3500 and 063/064 with 2500 (both would truncate); raised.
+
+Open: formula audit agent; worker-model research (WORKER_MODEL_RESEARCH.md); NUC 031 was 66+ min
+without a heartbeat at 09:10Z (longest earlier task 57 min) - check the NUC if still silent;
+L6 part 2 (P/L from transaction log, 095ea22) not built; prob_table.py.new and bt_rsi.py.new
+unreviewed (bt_rsi superseded by layers/rsi, do not promote); make_status "Open Findings" stale;
+TF-B5 native-1d gate needs a real-data test; Malkan rules have no verbatim extract yet (only
+research/malkan_rsi_2026-09-28/WEB_RESEARCH.md; NUC 040 reply PARTIAL) - multi-timeframe 5-star
+composition (monthly+weekly gate daily) is a later task.
+Next: Qwen self-validation technique -> pick from research, add to spec template and queue_tool.
