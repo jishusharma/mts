@@ -134,3 +134,7 @@ Also committed: operator tooling 309d115 (mts.ps1, guide, new_plan.py), research
 - Hourly check SKILL.md: + a2 edge tests, + a3 testnet/alert re-runs; extraction list = fabio 099-111.
 - FORMULAS.md s13-16 (T055 cost model, C1-C3) committed (were uncommitted though 0985-0987 were built from them).
 - Handoff: NEXT_SESSION_PLAN.md rewritten (asks table for the last 24 h in section 8).
+
+## 2026-09-29 ~04:40 IST - supervisor session 4 (Opus, auto)
+- Operator offline; goal = ready for a Deribit MAINNET smoke test (operator-typed, <=50 USD). DSA_OPERATOR_ROADMAP.md tracks A-E for DSA + Jishu (laptop as 2nd Ollama worker; subaccount/key setup; go/no-go; smoke trade).
+- Sonnet builder: S5 mainnet flag + mainnet cap + L6 part 2 + guard re-audit + MAINNET_READINESS_CHECKLIST.md. Haiku: Fabio 103/104/105 + R5 repack 082r/083/084. Session cron: supervisor wake every 3 h (:17).
