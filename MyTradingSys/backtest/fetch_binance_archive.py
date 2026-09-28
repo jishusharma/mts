@@ -35,6 +35,7 @@ SYM = "BTCUSDT"
 MONTHLY_OK = {"klines", "aggTrades", "fundingRate", "markPriceKlines", "premiumIndexKlines"}
 DAILY_ONLY = {"metrics", "bookDepth"}
 INTERVAL = {"klines", "markPriceKlines", "premiumIndexKlines"}
+BAR = "1m"  # --interval (1m default; 1d for multi-year layer backtests)
 
 
 def _get(url, retries=3):
@@ -55,8 +56,8 @@ def _get(url, retries=3):
 
 
 def _url(ds, period, stamp):
-    iv = "/1m" if ds in INTERVAL else ""
-    name = f"{SYM}-1m-{stamp}" if ds in INTERVAL else f"{SYM}-{ds}-{stamp}"
+    iv = f"/{BAR}" if ds in INTERVAL else ""
+    name = f"{SYM}-{BAR}-{stamp}" if ds in INTERVAL else f"{SYM}-{ds}-{stamp}"
     return f"{BASE}/{period}/{ds}/{SYM}{iv}/{name}.zip"
 
 
@@ -101,7 +102,10 @@ def main() -> int:
     ap.add_argument("--end", required=True)
     ap.add_argument("--datasets", default="klines,metrics,fundingRate,markPriceKlines,bookDepth")
     ap.add_argument("--out", default=str(ROOT / "Dumps" / "backtest" / "raw"))
+    ap.add_argument("--interval", default="1m", help="kline interval, e.g. 1m, 1h, 1d")
     a = ap.parse_args()
+    global BAR
+    BAR = a.interval
     start, end = date.fromisoformat(a.start), date.fromisoformat(a.end)
     bad = 0
     for ds in a.datasets.split(","):
