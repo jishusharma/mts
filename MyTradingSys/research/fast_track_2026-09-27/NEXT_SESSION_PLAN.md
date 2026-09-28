@@ -93,3 +93,12 @@ Never mainnet, never read .secrets/.env/keys, never push/merge/rebase/reset.
 - NUC speed: FLASH_ATTENTION=1 + KV q8_0 active since the reboot; 089 ran at ~1.4 tok/s vs ~3 before. If 090 is also
   slow, remove OLLAMA_KV_CACHE_TYPE first. "2 worker processes" = launcher + worker (normal).
 - 082 formula-audit-a output = exactly 6144 tokens (the cap) -> likely truncated; check before 083.
+
+## 7. Operator research asks - ON FAST-TRACK (2026-09-28)
+| Item | Ask | Status |
+|---|---|---|
+| T040 | all-time extreme rankings per indicator x tf -> severity tiers -> live anomaly flags | decisions made (s6), specs 091-093 NOT written yet |
+| T054 | anomalies x liquidity runs at the US open; US pre-market alert; US-equity/BTC correlation; news (free sources first) | filed, not started; depends on T040 |
+| T053 | two-account hedge / leveraged scalping (a, b1, b2) - research what works, then backtest | filed, not started |
+| T048 | satellite framework + exchange API layer | OPEN (design); T053 feeds it |
+Order: T040 (Qwen) -> T054 step 2-3 research (Sonnet, Qwen for code) -> T053 research (Sonnet web research, then backtest).
