@@ -74,3 +74,22 @@ Keep the NUC queue non-empty: when it has < 2 waiting, write the next specs firs
 Allowed: agents, gates, commits on fast-track, queue pack/verify, ssh gate read commands.
 Ask first: promoting execution code (after T4), any testnet run that places orders, `restart-worker confirm` mid-task, deleting.
 Never mainnet, never read .secrets/.env/keys, never push/merge/rebase/reset.
+
+## 6. Session 2 close-out (~15:45Z) - read this first
+- R3 DONE on testnet (e2f5497). Tom testnet order runs READY (mts plan -> mts check -> mts guard -> mts trade).
+- Market loop STARTED 15:31Z (mts start; armed, alerts only). If the state machine was still stale: `mts status`.
+- Committed: operator tooling 309d115, research extracts ba4a396.
+- FABIO: agent STOPPED (tokens). NUC replies 087, 089 delivered, 088 unusable -> 090-fabio-escalation-retry queued/ran.
+  Tests + driver exist UNCOMMITTED in MyTradingSys/backtest/layers/fabio/ (test_fabio_*.py, run_backtest.py).
+  Next: a Sonnet agent verifies 087/089/090 (full slugs), promotes by RENAME, runs run_backtest.py, writes
+  FABIO_L1_REPORT.md. Brief = 3.W4. Passing rules -> ALERTS only; the Tom override ruling is still the operator's.
+- T040 TICK LAYER: operator decided (2026-09-28): (1) full-history rank tiers = the documented exception, usable live
+  as FLAGS (context only, never gate Tom); (2) data 2022-01..now 1m klines + metrics OI (5m -> OI tiers 5/10/15m
+  only); (3) start now via Qwen. Spec agent STOPPED mid-way: check specs/091-093 + layers/tick/ for partial work,
+  finish/pack: 091 tick-extremes (net_delta, cvd_change, volume, price_change_pct x 1/2/3/5/10/15m; rank top/bottom,
+  gap-jump tiers, session+funding tags -> tiers.json), 092 OI extremes, 093 live flagger (public websocket, tier
+  crossing -> JSONL source:"tick", cooldown per indicator/tf/side, replay mode). Append the decisions to
+  items/T040_tick_delta_layer.md.
+- NUC speed: FLASH_ATTENTION=1 + KV q8_0 active since the reboot; 089 ran at ~1.4 tok/s vs ~3 before. If 090 is also
+  slow, remove OLLAMA_KV_CACHE_TYPE first. "2 worker processes" = launcher + worker (normal).
+- 082 formula-audit-a output = exactly 6144 tokens (the cap) -> likely truncated; check before 083.
