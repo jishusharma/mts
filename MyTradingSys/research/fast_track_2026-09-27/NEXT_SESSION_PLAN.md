@@ -73,6 +73,8 @@ Never mainnet. Never read .secrets/.env/keys. Never push/merge/rebase/reset.
   (research doc T058_BROKEN_EXTREMES.md done; decisions open), T048 satellite, T057 declutter (inventory -> operator list).
 
 ## 4. DSA pack (operator runs by hand) - Dumps/workers/DSA_PACK_2026-09-29/
+**DONE 2026-09-29: all 4 extracts committed (35 rules, all quotes verbatim; 14 GPS tags retagged to the checker's third).
+3 rules use `Topic: exit`, which is outside the topic list (map it to management/target when consolidating). Next: consolidate FAB-/T- rules (supervisor review; guest-speaker check found none).**
 README.md + 4 paste files (instructions + full transcript, 9-24 KB each): Fabio 0KyIEdvVKMQ (replaces NUC 100/101),
 Fabio 0jM5Y31YJak (replaces 102), Tom-channel WQ_OAdz-PJ8 and zAwEX_tRUfE (never extracted; speaker tags).
 The operator saves each reply to the path in the README and runs verify_extract_quotes.py. When one appears: re-run the
