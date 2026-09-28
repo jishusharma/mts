@@ -19,6 +19,7 @@ layer still gets a signal count for later scoring.
 Every decision is appended to MyTradingSys/execution/auto_trades.jsonl (source, signal, plan_id, outcome).
 Usage (repo root):  python -m MyTradingSys.execution.auto_trader [--once] [--dry-run] [--poll-seconds 20]
 Stop it with Ctrl+C or by creating execution/HALT (mts pause); it then trades nothing until the brake is removed.
+To pause ONLY the auto-trader (e.g. while a testnet suite needs a flat account), create execution/AUTO_PAUSE.
 """
 import argparse
 import json
@@ -33,6 +34,8 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 HALT = HERE / "HALT"
 HALT_DAILY_LOSS = HERE / "HALT_DAILY_LOSS"
+# Auto-trader-only pause: no new auto-trades, but no HALT (so manual trades and the testnet suites still run).
+AUTO_PAUSE = HERE / "AUTO_PAUSE"
 STATE_PATH = HERE / "auto_trader_state.json"
 LOG_PATH = HERE / "auto_trades.jsonl"
 MANAGER_LOG_DIR = HERE / "journal" / "auto_manager_logs"
@@ -268,6 +271,8 @@ def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = N
             log({"event": "signal_rejected", **base, "reason": sig["reject"]})
         elif halted:
             log({"event": "skipped_halt", **base, "brakes": halted})
+        elif AUTO_PAUSE.exists():
+            log({"event": "skipped_auto_pause", **base})
         elif active:
             log({"event": "skipped_busy", **base, "busy_with": active["plan_id"]})
         else:

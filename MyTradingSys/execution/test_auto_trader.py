@@ -144,9 +144,10 @@ class CycleTest(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         d = Path(self.tmp.name)
         self.saved = {k: getattr(at, k) for k in ("TOM_ALERT", "LAYER_ALERT_DIR", "HALT", "HALT_DAILY_LOSS",
-                                                   "LOG_PATH", "place")}
+                                                   "LOG_PATH", "place", "AUTO_PAUSE")}
         at.TOM_ALERT, at.LAYER_ALERT_DIR = d / "last_alert.json", d / "alerts"
         at.HALT, at.HALT_DAILY_LOSS, at.LOG_PATH = d / "HALT", d / "HALT_DAILY_LOSS", d / "log.jsonl"
+        at.AUTO_PAUSE = d / "AUTO_PAUSE"
         at.LAYER_ALERT_DIR.mkdir()
         self.placed = []
 
@@ -191,6 +192,14 @@ class CycleTest(unittest.TestCase):
         at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW)
         self.assertEqual(self.placed, [])
         self.assertEqual(self.events(), ["skipped_halt"])
+
+    def test_auto_pause_blocks_only_new_auto_trades(self):
+        at.AUTO_PAUSE.write_text("", encoding="utf-8")
+        at.TOM_ALERT.write_text(json.dumps(tom_alert()), encoding="utf-8")
+        at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW)
+        self.assertEqual(self.placed, [])
+        self.assertEqual(self.events(), ["skipped_auto_pause"])
+        self.assertFalse(at.HALT.exists())
 
     def test_closed_trade_frees_the_slot(self):
         at.TOM_ALERT.write_text(json.dumps(tom_alert()), encoding="utf-8")
