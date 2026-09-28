@@ -1,0 +1,42 @@
+# FIX4 design decisions (2026-09-28, coordinator)
+
+Scope: findings left open by FIX3 that need a decision before code. Each decision picks the
+fail-safe option; each has a named test that must fail on the current code first.
+Implementation order: after NUC tasks 026/028 land (same files), together with M4/L1/L2
+(tests already in `testnet/offline/test_fix4_offline.py`).
+
+## M2 - HALT_DAILY_LOSS auto-resumes at 00:00 UTC
+Decision: **existence blocks**, whatever the date. Only an operator deleting the file resumes trading.
+A past-dated file refuses with "HALT_DAILY_LOSS from <date> still present - operator must review and delete".
+Why: daily_loss_monitor's own contract says a hard halt does not auto-resume; a breach at 23:59 must
+not resume at 00:00.
+Change: executor `_check_halt_files` (the valid_past branch becomes a refusal). The FIX3 M1 tests for a
+past date flip from "warns" to "refuses"; update them in the same change.
+Test: `test_M2_past_dated_halt_daily_loss_blocks`.
+
+## L3 - market-entry B079 post-fill breach is journaled only
+Decision: after the stop is placed, if the real post-fill worst-case loss is below `max_loss_usd`
+(more negative), **fail_closed("B079 post-fill: worst-case loss X exceeds cap Y")**. Flattening costs the
+spread; running an over-cap position is worse. The stop is already live, so fail_closed's C3 order holds.
+Test: `test_L3_market_fill_beyond_cap_flattens` (mark jumps between preflight and fill).
+
+## L6 - daily PnL counts deposits and transfers; breached_today never re-arms
+Decision part 1 (re-arm): if `breached_today` is true and HALT_DAILY_LOSS is ABSENT (the operator cleared
+it), set `breached_today = False` and journal "re-armed by operator clear". A day still beyond the cap then
+halts again on the next poll. That is intended: resuming on a breached day needs an explicit
+`--cap-usd` override.
+Test: `test_L6_rearms_after_operator_clears_halt`.
+Decision part 2 (PnL source): unresolved until confirmed on testnet. Candidate: Deribit account-summary
+session P/L fields instead of equity delta. They exclude deposits, but they reset at the exchange
+settlement time, not 00:00 UTC. Next step (T2, testnet only): extend `testnet/probe_account_summary.py`
+output with every *pl* field, run a 10 USD round trip, and record which fields moved. Decide after that.
+Until then, document the limitation in daily_loss_monitor's docstring (no code change).
+
+## Routing
+| Item | Tier | Depends on |
+|---|---|---|
+| M2 + L3 code + tests | Sonnet (T3), Opus diff review | 026/028 applied |
+| M4/L1/L2 code (tests exist) | Sonnet (T3), Opus diff review | 026/028 applied |
+| L6 part 1 code + test | Qwen draft (T1), Haiku test | 027 applied (soak) - independent file, can go now |
+| L6 part 2 probe | Haiku (T2) on testnet | none |
+| Testnet re-run of all suites | Haiku (T2) | all of the above |
