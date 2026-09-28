@@ -82,6 +82,7 @@ def main(argv=None):
         "test_gh_retry_offline", "test_halt_preflight_offline", "test_kill_switch",
         "test_risk_guard", "test_s1_cap_offline", "test_s3_unprotected_offline",
         "test_s6_orphan_offline", "test_soak_report", "test_fix3_offline", "test_fix4_offline",
+        "test_plan_compiler", "test_executor_math",  # W2 R2: execution-math tests (FORMULAS.md 11)
     ]
     success, output = run_step(1, "Execution module tests", cmd1)
     results.append(("Step 1: Execution tests", success))
