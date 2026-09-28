@@ -76,16 +76,28 @@ def get_recent_reports():
     return reports
 
 def get_open_findings():
-    """Get 'NOT FIXED' lines from FIX3_REPORT.md."""
+    """Get open findings from OPEN_FINDINGS.md (status == OPEN)."""
     findings = []
-    fix3_path = "MyTradingSys/research/fast_track_2026-09-27/FIX3_REPORT.md"
+    open_findings_path = "MyTradingSys/research/fast_track_2026-09-27/OPEN_FINDINGS.md"
 
-    if os.path.exists(fix3_path):
+    if os.path.exists(open_findings_path):
         try:
-            with open(fix3_path, 'r', encoding='utf-8', errors='ignore') as f:
+            with open(open_findings_path, 'r', encoding='utf-8', errors='ignore') as f:
+                in_table = False
                 for line in f:
-                    if "NOT FIXED" in line:
-                        findings.append(line.rstrip())
+                    # Skip header rows and markdown formatting
+                    if line.startswith("|"):
+                        if "ID" in line or "---" in line:
+                            in_table = True
+                            continue
+                        if in_table and "OPEN" in line:
+                            # Extract the finding ID and relevant info
+                            parts = [p.strip() for p in line.split("|")]
+                            if len(parts) >= 4 and parts[2] == "OPEN":
+                                finding_id = parts[1]
+                                fixed_in = parts[3]
+                                note = parts[4] if len(parts) > 4 else ""
+                                findings.append(f"- {finding_id}: {fixed_in} {note}")
         except:
             pass
 
