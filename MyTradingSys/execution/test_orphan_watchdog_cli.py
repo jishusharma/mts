@@ -126,3 +126,13 @@ class TestMain(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_cli_reads_the_heartbeat_dir_position_manager_writes():
+    """Regression 2026-09-29: CLI read execution/heartbeat/ while position_manager writes pm_heartbeats/
+    -> a live, protected jishu_2 trade was reported as an orphan and HALT was written."""
+    import inspect
+    import orphan_watchdog_cli as cli
+    src = inspect.getsource(cli)
+    assert 'HERE / "heartbeat"' not in src
+    assert "pm_heartbeat.DEFAULT_HB_DIR" in src

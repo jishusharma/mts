@@ -69,7 +69,7 @@ def main(argv=None, get_client=None, hb_dir=None, halt_path=None, log_path=None,
     if log_path is None:
         log_path = LOG_PATH
     if hb_dir is None:
-        hb_dir = HERE / "heartbeat"
+        hb_dir = pm_heartbeat.DEFAULT_HB_DIR  # same dir position_manager writes to
     
     def run_once():
         labels = account_labels(config_path)
