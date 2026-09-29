@@ -1,10 +1,9 @@
 # Jishu - next actions (2026-09-29, minimal). Top to bottom; each line has a DONE check.
 
-## 1. Fabio testnet trades (10 min) - unblocks Fabio fills
-- On test.deribit.com create a subaccount for Fabio + an API key on it (trade + read only, no withdraw).
-- Write `.secrets/testnet_fabio.secret.json` yourself (same format as your testnet secret, env "testnet").
-  Exact steps + restart command: `MyTradingSys/execution/FABIO_TESTNET_SLOT.md`.
-- DONE: `auto_trades.jsonl` shows a `trade_attempt` with source `layer:fabio:*` on the new account.
+## 1. Testnet subaccounts jishu_1..4 (15 min) - 5 parallel trade slots instead of 1
+- Fund each, create a no-withdraw API key on each, write 4 secret files yourself, restart the auto-trader.
+  Exact steps + routing table: `MyTradingSys/execution/TESTNET_SUBACCOUNTS.md`.
+- DONE: `auto_trades.jsonl` shows layer trade_attempts while another trade is open.
 
 ## 2. DSA paste jobs (~1-2 h, any time)
 - `Dumps/workers/DSA_PACK_2026-09-29/`  (Fabio 0Ky, 0jM + 2 Tom transcripts)

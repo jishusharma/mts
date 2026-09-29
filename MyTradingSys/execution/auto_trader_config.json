@@ -1,0 +1,8 @@
+{
+ "accounts": {
+  "layer:fabio:": "jishu_1",
+  "layer:rsi:rsi_events:15m": "jishu_2",
+  "layer:rsi:": "jishu_3",
+  "layer:": "jishu_4"
+ }
+}
