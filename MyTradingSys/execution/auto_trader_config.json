@@ -4,5 +4,22 @@
   "layer:rsi:rsi_events:15m": "jishu_2",
   "layer:rsi:": "jishu_3",
   "layer:": "jishu_4"
+ },
+ "tom": {
+  "size_usd": 10,
+  "max_loss_usd": 5,
+  "min_net_rr": 1.25,
+  "verdicts": [
+   "SETUP_FORMING",
+   "SETUP_CONFIRMED",
+   "WAIT_RR"
+  ],
+  "hours": 1.0
+ },
+ "layers": {
+  "size_usd": 10,
+  "max_loss_usd": 2,
+  "max_age_bars": 2.0,
+  "hours": 1.0
  }
 }
