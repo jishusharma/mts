@@ -195,3 +195,4 @@ Also committed: operator tooling 309d115 (mts.ps1, guide, new_plan.py), research
 - Fix: trade_ledger.record_closed/backfill always write a row ("unresolved": reason) instead of dropping; resolved rows supersede
   unresolved ones; summary ignores unresolved. auto_trader.py ledger_row event now logs account + unresolved.
 - auto_trader NOT restarted (L-mkt-0928-2240-2 has entered without trade_closed); running process keeps old ledger code until restart.
+- ~22:05 IST: ledger fix 1f89ea5 (always writes a row; unresolved reason). Real incident: S-mkt-0929-1501 PM died 15:55Z on transient auth URLError -> auto_trader freed jishu_2 slot while short 10 @83674 still open (stop+target resting). Supervisor re-attached PM (MTS_ACCOUNT=jishu_2, pid 2600; --once showed managing, stop untriggered). Sonnet: PM read/auth retry + rc 3, auto_trader frees slot only on exchange-flat else respawn (max 3), gated by FT-2 chain.
