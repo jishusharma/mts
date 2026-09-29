@@ -23,6 +23,7 @@ Spec file format (header lines, one blank line, then the task body):
   OUTPUT: what the reply must contain
   MODEL: optional, default qwen3-coder:30b
   OUTPUT_TOKENS: optional, default 4096
+  THINK: optional true/false; sent to Ollama as "think" (use false for thinking models)
   EXPECT: optional, repeatable. Exact text the reply must contain.
           Never shown to the model. Used as the acceptance check.
   CREATE: optional, repeatable, bare path. A file the task is allowed to
@@ -393,6 +394,7 @@ def build_package(spec_path, lane="default"):
         "create": create_paths,
         "spec_file": rel_of(spec_path),
         "prompt": prompt,
+        **({"think": str(head["THINK"]).strip().lower() == "true"} if head.get("THINK") else {}),
     }
     if lane != "default":
         pkg["lane"] = lane

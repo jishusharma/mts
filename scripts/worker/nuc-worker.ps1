@@ -113,7 +113,9 @@ function Invoke-TaskPackage([string]$Path, [string]$Id) {
             stream     = $false
             keep_alive = '30m'
             options    = [ordered]@{ num_ctx = [int]$pkg.num_ctx; num_predict = [int]$pkg.num_predict; temperature = 0.2 }
-        } | ConvertTo-Json -Depth 5 -Compress
+        }
+        if ($null -ne $pkg.think) { $body.think = [bool]$pkg.think }
+        $body = $body | ConvertTo-Json -Depth 5 -Compress
         $bytes = [System.Text.Encoding]::UTF8.GetBytes($body)
         $r = Invoke-RestMethod -Uri "$OllamaUrl/api/generate" -Method Post -Body $bytes `
             -ContentType 'application/json; charset=utf-8' -TimeoutSec $RequestTimeoutSec -UseBasicParsing
