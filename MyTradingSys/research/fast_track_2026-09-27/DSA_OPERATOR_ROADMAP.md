@@ -44,6 +44,7 @@ E3. Close (target, stop or manual), confirm flat + no open orders, export the fi
 Abort criteria: any error on placement, stop missing > 10 s, slippage > 0.2 %, any unexpected order -> kill switch.
 
 ## What code mode is doing meanwhile (no operator needed)
+Update 12:47 IST: mainnet PnL tx-type allow-list + orphan watchdog committed (924d7a0, d115b0d; watchdog not yet scheduled). Testnet trade open 5 h in profit; layer trades have no time exit, so data comes slowly - decide Q1 (per-layer bracket/time exit) and Q2 (sub-accounts).
 Update 09:47 IST: mainnet-ready build + stop-out fix committed 2b8b19a (testnet 14/14). Auto-trading resumed; fills are slow because one account = one trade at a time - answer Q2 (testnet sub-accounts) to multiply data. Audit 910 waits for your OVERRIDE (touches PROJECT_VISION).
 Update 06:50 IST: DSA browser worker built (194ee7c; you calibrate it - DSA_BROWSER_WORKER_PLAN steps 3-7). C3 promoted; T055 C1/C2 no edge (3672305). Found + fixing a real bug: a stopped-out trade was reported as 'unexplained flat' and halted - must be fixed before mainnet. Fabio 108-111 Qwen extractions held -> good first jobs for the DSA lane.
 S5 mainnet flag (4 gates + 50 USD mainnet cap), L6 part 2 PnL source, guard re-audit, readiness checklist; testnet
