@@ -69,11 +69,20 @@ class PlaywrightChatPage(ChatPage):
             raise PageError(f"send failed: {exc}")
 
     def challenge_seen(self):
+        # Only VISIBLE challenge elements count. A text-phrase check is
+        # not used: the worker sends the spec (which may inline this very
+        # selectors file) as a prompt, so the phrase list appears in the
+        # page body and would always fire.
         try:
-            if self._count("challenge"):
-                return True
-            body = (self._page.inner_text("body", timeout=3000) or "").lower()
-            return any(p in body for p in self.sel.get("challenge_text", []))
+            loc = self._page.locator(self.sel["challenge"])
+            n = loc.count()
+            for i in range(n):
+                try:
+                    if loc.nth(i).is_visible():
+                        return True
+                except Exception:
+                    continue
+            return False
         except Exception:
             return False
 

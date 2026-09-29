@@ -14,5 +14,5 @@
   "_challenge": "CSS markers of a login / CAPTCHA / verify-human page",
   "challenge": "iframe[src*='captcha' i], iframe[src*='challenge' i], input[type='password'], #challenge-form, [id*='captcha' i]",
   "_challenge_text": "phrases (lowercase) that mean a human check",
-  "challenge_text": ["verify you are human", "are you a robot", "checking your browser", "unusual activity", "log in to continue"]
+  "challenge_text": []
 }
