@@ -11,7 +11,7 @@ auto_trader_config.json (default `{"layer:fabio:": "fabio"}`).
    `testnet.secret.json` (client_id / client_secret), with `"env": "test"`. It is gitignored. A file with
    any other env is refused; named accounts are refused on mainnet.
 4. Restart the auto-trader (the running one keeps the old shared-slot behaviour until restarted):
-   `python MyTradingSys/execution/auto_trader.py`   (same flags as your current run; stop old one with Ctrl+C first)
+   `python -m MyTradingSys.execution.auto_trader`   (same flags as your current run; stop old one with Ctrl+C first)
    If the file is missing the trader logs `fabio_account_missing` once and shares the default slot as before.
 
 ## Verify the first Fabio fill
