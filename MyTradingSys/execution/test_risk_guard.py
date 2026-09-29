@@ -101,5 +101,21 @@ class TestInverseMathFormulasR3(unittest.TestCase):
         self.assertEqual(account_position_notional(-6.25, 33333.33), round(6.25 * 33333.33, 2))
 
 
+
+class TestNanFailClosed(unittest.TestCase):
+    def test_nonfinite_size_is_refused_by_cap(self):
+        import math
+        for bad in (float("nan"), float("inf"), None, "x"):
+            for px in (None, 50000.0):
+                n = account_position_notional(bad, px)
+                self.assertEqual(n, math.inf, repr((bad, px)))
+                self.assertFalse(check_new_plan_against_cap(n, 100.0)["ok"])
+
+    def test_nan_notional_direct_to_cap_is_refused(self):
+        self.assertFalse(check_new_plan_against_cap(float("nan"), 100.0)["ok"])
+        self.assertFalse(check_new_plan_against_cap(0.0, float("nan"))["ok"])
+        self.assertTrue(check_new_plan_against_cap(100.0, 1.0, cap=10000)["ok"])  # sanity: normal still ok
+
+
 if __name__ == "__main__":
     unittest.main()

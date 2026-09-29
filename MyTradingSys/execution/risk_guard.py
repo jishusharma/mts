@@ -15,6 +15,7 @@ What is MISSING is an account-wide ceiling: the exchange's live position size,
 in USD notional, checked BEFORE compiling/entering a NEW plan, so that several
 simultaneously-live plans on the same instrument cannot together exceed one hard ceiling.
 """
+import math
 from dataclasses import dataclass
 from typing import Optional
 
@@ -34,9 +35,17 @@ def account_position_notional(position_size_contracts: float, mark_price: Option
     Concretely: if mark_price is None, return round(abs(position_size_contracts), 2)
     (size already USD notional); else return round(abs(position_size_contracts) * mark_price, 2).
     """
-    if mark_price is None:
-        return round(abs(position_size_contracts), 2)
-    return round(abs(position_size_contracts) * mark_price, 2)
+    # fail closed: an unreadable size/price must make the cap refuse, never pass
+    try:
+        size = abs(float(position_size_contracts))
+        px = None if mark_price is None else float(mark_price)
+    except (TypeError, ValueError):
+        return math.inf
+    if not math.isfinite(size) or (px is not None and not math.isfinite(px)):
+        return math.inf
+    if px is None:
+        return round(size, 2)
+    return round(size * px, 2)
 
 
 def check_new_plan_against_cap(current_position_notional_usd: float, new_plan_max_notional_usd: float, cap: float = None) -> dict:
@@ -63,7 +72,10 @@ def check_new_plan_against_cap(current_position_notional_usd: float, new_plan_ma
     if cap <= 0:
         raise ValueError("cap must be positive")
 
-    projected = round(current_position_notional_usd + new_plan_max_notional_usd, 2)
+    if not (math.isfinite(current_position_notional_usd) and math.isfinite(new_plan_max_notional_usd)):
+        projected = math.inf  # fail closed on NaN/inf inputs
+    else:
+        projected = round(current_position_notional_usd + new_plan_max_notional_usd, 2)
     if projected > cap:
         return {
             "ok": False,

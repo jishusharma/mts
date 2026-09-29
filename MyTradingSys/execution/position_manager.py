@@ -71,6 +71,7 @@ Run (after executor returned status entry_filled_stop_placed):
 import sys
 sys.dont_write_bytecode = True
 
+import os
 import time
 import argparse
 from datetime import datetime, timezone
@@ -79,6 +80,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import deribit_orders as do  # noqa: E402
 import journal  # noqa: E402
+import pm_heartbeat  # noqa: E402
 
 POLL_INTERVAL_SECONDS = 2
 LIVE_STOP_STATES = {"untriggered", "open"}
@@ -161,6 +163,22 @@ def _signed(size):
 
 
 def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, token=None):
+    """Heartbeat wrapper: file exists for exactly the lifetime of the manager
+    (removed in finally on every exit path: return, ManagerHalted, any exception)."""
+    try:  # a heartbeat failure must never stop position protection
+        pm_heartbeat.write_heartbeat(plan_id, account=os.environ.get("MTS_ACCOUNT") or None)
+    except Exception as he:  # noqa: BLE001
+        print(f"WARNING: could not write heartbeat ({he!r})")
+    try:
+        return _manage_impl(plan_id, instrument, max_seconds, once, token)
+    finally:
+        try:
+            pm_heartbeat.remove_heartbeat(plan_id)
+        except Exception as he:  # noqa: BLE001
+            print(f"WARNING: could not remove heartbeat ({he!r})")
+
+
+def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, token=None):
     belief = journal.reconstruct_belief(plan_id)
     if belief["halted"]:
         raise ManagerHalted(f"plan {plan_id} already halted: {belief['halt_reason']}")
