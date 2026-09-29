@@ -238,6 +238,9 @@ def preflight(compiled: dict, plan: dict = None, mark: float = None,
         reasons.append(f"B079: worst_case_loss {compiled.get('worst_case_loss_usd')} exceeds cap {cc.get('max_loss_usd')}")
     if compiled["max_position_size"] > cc.get("max_notional_usd", 0):
         reasons.append(f"size {compiled['max_position_size']} > max_notional_usd {cc.get('max_notional_usd')}")
+    _mn = getattr(do, "mainnet_plan_refusal", None)  # mainnet-ready gates: hard USD cap, always None on testnet
+    if _mn is not None and _mn(compiled["max_position_size"]):
+        reasons.append(_mn(compiled["max_position_size"]))
     if cc.get("within_max_loss") == "unknown_until_fill" and plan and mark:
         est = -round(compiled["max_position_size"] * plan["stop"]["percent_below_entry"] / 100.0, 2)
         if est < cc["max_loss_usd"]:
@@ -528,12 +531,19 @@ def main() -> int:
     ap.add_argument("plan_file")
     ap.add_argument("--go", action="store_true", help="actually place orders on TESTNET")
     ap.add_argument("--max-entry-seconds", type=int, default=DEFAULT_MAX_ENTRY_SECONDS)
+    ap.add_argument("--mainnet", action="store_true", help="MAINNET (typed confirmation; notional hard-capped)")
     args = ap.parse_args()
     compiled, plan = load(Path(args.plan_file))
     if not args.go:
         print(json.dumps(compiled, indent=2))
         print("DRY RUN - add --go to place on testnet")
         return 0
+    try:
+        if args.mainnet:
+            do.select_environment(True)
+    except RuntimeError as e:
+        print(f"REFUSED: {e}")
+        return 1
     try:
         print("OK:", json.dumps(execute_plan(compiled, plan, max_entry_seconds=args.max_entry_seconds)))
         return 0

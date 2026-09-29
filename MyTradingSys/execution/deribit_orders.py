@@ -39,6 +39,17 @@ Never prints the secret or the access token.
 v4 (FIX3, 2026-09-28): transport errors (timeout, reset, URLError, non-JSON
   body) never escape _call raw. Order-creating calls raise OrderStateUnknown
   (no retry); reads/cancels retry MAX_RETRIES then raise DeribitError.
+
+v5 (mainnet-ready gates, 2026-09-29; design MyTradingSys/research/fast_track_2026-09-27/S5_MAINNET_FLAG.md):
+  Default is and stays TESTNET (no flag, no confirmation, same URL, same secret
+  file, same checks). Mainnet is reachable only via select_environment(mainnet=True)
+  (CLI: `deribit_orders.py --mainnet`), which requires ALL of: (1) the explicit
+  flag, (2) .secrets/mainnet.secret.json present with "env": "mainnet" (two-way
+  match: a "test" secret can never be used on mainnet), (3) an interactive
+  input() typed confirmation - never argv/env/config, (4) authenticate() still
+  refuses any key with wallet:read_write (withdraw) scope. On mainnet every
+  new-exposure order above MAINNET_MAX_NOTIONAL_USD is refused offline before
+  any HTTP call. No mainnet call is ever made at import or by a refusal path.
 """
 import sys
 sys.dont_write_bytecode = True
@@ -52,7 +63,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SECRET = ROOT / "MyTradingSys" / "execution" / ".secrets" / "testnet.secret.json"
-BASE = "https://test.deribit.com/api/v2"  # testnet only - deliberately not parameterised
+BASE = "https://test.deribit.com/api/v2"  # DEFAULT environment (testnet); mainnet only via select_environment()
+MAINNET_BASE = "https://www.deribit.com/api/v2"
+MAINNET_SECRET = ROOT / "MyTradingSys" / "execution" / ".secrets" / "mainnet.secret.json"
+DEFAULT_ENV = "test"
+# Typed back at an interactive input() prompt; never accepted from argv/env/config.
+MAINNET_CONFIRMATION = "I understand this places a real order with real money on BTC-PERPETUAL mainnet"
+# Hard per-order / per-plan notional ceiling (USD) while env == mainnet. Read at call time.
+MAINNET_MAX_NOTIONAL_USD = 50.0
+_ACTIVE_ENV = DEFAULT_ENV
 
 # Confirmed by MyTradingSys/research/deribit_api_research.md ("Critical Error
 # Codes & Handling" table) as rejected BEFORE the order reached processing -
@@ -108,13 +127,76 @@ class OrderStateUnknown(DeribitError):
         self.params_label = params_label
 
 
-def _load_secret() -> dict:
-    if not SECRET.exists():
-        raise RuntimeError(f"MISSING: {SECRET} - operator must create it first (see execution/README.md)")
-    cfg = json.loads(SECRET.read_text(encoding="utf-8"))
-    if cfg.get("env") != "test":
-        raise RuntimeError('REFUSED: secret file env must be "test"')
+class MainnetRefused(RuntimeError):
+    """Offline refusal of a mainnet action (gate/cap). Raised BEFORE any HTTP call."""
+
+
+def active_env() -> str:
+    return _ACTIVE_ENV
+
+
+def _base() -> str:
+    return MAINNET_BASE if _ACTIVE_ENV == "mainnet" else BASE
+
+
+def _load_secret(env: str = None) -> dict:
+    env = env or _ACTIVE_ENV
+    if env not in ("test", "mainnet"):
+        raise RuntimeError(f"REFUSED: unknown environment {env!r}")
+    path = MAINNET_SECRET if env == "mainnet" else SECRET
+    if not path.exists():
+        raise RuntimeError(f"MISSING: {path} - operator must create it first (see execution/README.md)")
+    cfg = json.loads(path.read_text(encoding="utf-8"))
+    if cfg.get("env") != env:  # two-way: a "test" secret never authenticates mainnet, and vice versa
+        raise RuntimeError(f'REFUSED: secret file env must be "{env}"')
     return cfg
+
+
+def select_environment(mainnet: bool = False) -> str:
+    """Gate 1 (explicit flag) + gate 2 (secret env match, file read only) +
+    gate 4 (typed confirmation via input()). Gate 3 (withdraw-scope refusal)
+    lives in authenticate(). mainnet=False (default) -> testnet, no prompt.
+    State changes only after every check passed; any refusal leaves/returns
+    the process on testnet and makes no network call."""
+    global _ACTIVE_ENV
+    if not mainnet:
+        _ACTIVE_ENV = DEFAULT_ENV
+        return _ACTIVE_ENV
+    _ACTIVE_ENV = DEFAULT_ENV
+    _load_secret("mainnet")  # missing file / env mismatch -> RuntimeError, no network
+    try:
+        typed = input(f'Type exactly to enable MAINNET: "{MAINNET_CONFIRMATION}"\n> ')
+    except EOFError:
+        raise MainnetRefused("REFUSED: mainnet confirmation needs an interactive prompt")
+    if typed != MAINNET_CONFIRMATION:
+        raise MainnetRefused("REFUSED: mainnet confirmation string mismatch")
+    _ACTIVE_ENV = "mainnet"
+    return _ACTIVE_ENV
+
+
+def _check_mainnet_notional(instrument_name: str, amount, reduce_only: bool = False) -> None:
+    """Mainnet only: refuse a new-exposure order above MAINNET_MAX_NOTIONAL_USD.
+    BTC-PERPETUAL amount is USD notional (repo: executor.py S1 note). Any other
+    instrument has unverified units on this cap, so it is refused on mainnet.
+    reduce_only orders (protective stop, targets) cannot add exposure and are
+    exempt - the entry they protect is already capped, and blocking a stop
+    would leave a position naked."""
+    if _ACTIVE_ENV != "mainnet" or reduce_only:
+        return
+    if instrument_name != "BTC-PERPETUAL":
+        raise MainnetRefused(f"REFUSED: mainnet notional cap only defined for BTC-PERPETUAL, got {instrument_name}")
+    if not isinstance(amount, (int, float)) or amount <= 0 or amount > MAINNET_MAX_NOTIONAL_USD:
+        raise MainnetRefused(f"REFUSED: mainnet order notional {amount} > MAINNET_MAX_NOTIONAL_USD {MAINNET_MAX_NOTIONAL_USD}")
+
+
+def mainnet_plan_refusal(max_position_size) -> str:
+    """Executor preflight hook: reason string if the plan's max size breaks the
+    mainnet cap, else None. Always None on testnet."""
+    if _ACTIVE_ENV != "mainnet":
+        return None
+    if not isinstance(max_position_size, (int, float)) or max_position_size > MAINNET_MAX_NOTIONAL_USD:
+        return f"mainnet plan notional {max_position_size} > MAINNET_MAX_NOTIONAL_USD {MAINNET_MAX_NOTIONAL_USD}"
+    return None
 
 
 def _post(method: str, params: dict, token: str = None) -> dict:
@@ -122,7 +204,7 @@ def _post(method: str, params: dict, token: str = None) -> dict:
     headers = {"User-Agent": "MTS-T050/2.0", "Content-Type": "application/json"}
     if token:
         headers["Authorization"] = "Bearer " + token
-    req = urllib.request.Request(f"{BASE}/{method}", data=payload, headers=headers, method="POST")
+    req = urllib.request.Request(f"{_base()}/{method}", data=payload, headers=headers, method="POST")
     try:
         with urllib.request.urlopen(req, timeout=15) as r:
             return json.loads(r.read().decode("utf-8"))
@@ -183,7 +265,7 @@ def _call(method: str, params: dict, token: str = None, retry: bool = True,
 
 
 def authenticate() -> str:
-    """Fresh access_token. Refuses withdraw-capable keys."""
+    """Fresh access_token. Refuses withdraw-capable keys (testnet and mainnet)."""
     cfg = _load_secret()
     auth = _call("public/auth", {
         "grant_type": "client_credentials",
@@ -199,6 +281,7 @@ def authenticate() -> str:
 
 def _place_order(direction, token, instrument_name, amount, order_type, price=None, label=None,
                  reduce_only=False, trigger_price=None, trigger=None, post_only=False) -> dict:
+    _check_mainnet_notional(instrument_name, amount, reduce_only)  # offline, before any call
     params = {"instrument_name": instrument_name, "amount": amount, "type": order_type}
     if price is not None:
         params["price"] = price
@@ -279,17 +362,64 @@ def get_order_state(token, order_id) -> dict:
     return _call("private/get_order_state", {"order_id": order_id}, token)
 
 
+def get_user_trades_by_instrument_and_time(token, instrument_name: str, start_ms: int, end_ms: int,
+                                           count: int = 100) -> list:
+    """Deribit official private/get_user_trades_by_instrument_and_time (params
+    instrument_name, start_timestamp, end_timestamp, count; result {trades, has_more};
+    each trade carries order_id, label, direction, amount, reduce_only). Follows
+    has_more by moving end_timestamp back (sorting=desc); raises DeribitError past
+    50 pages (fail closed)."""
+    trades = []
+    for _ in range(50):
+        r = _call("private/get_user_trades_by_instrument_and_time",
+                  {"instrument_name": instrument_name, "start_timestamp": start_ms,
+                   "end_timestamp": end_ms, "count": count, "sorting": "desc"}, token)
+        page = r.get("trades", []) if isinstance(r, dict) else (r or [])
+        trades.extend(page)
+        if not (isinstance(r, dict) and r.get("has_more")) or not page:
+            return trades
+        end_ms = min(int(t["timestamp"]) for t in page)
+    raise DeribitError("private/get_user_trades_by_instrument_and_time",
+                       {"code": None, "message": "more than 50 pages"})
+
+
 def get_account_summary(token, currency: str = "BTC") -> dict:
     return _call("private/get_account_summary", {"currency": currency}, token)
+
+
+def get_transaction_log(token, currency: str = "BTC", start_ms: int = 0, end_ms: int = 0,
+                        max_pages: int = 50) -> list:
+    """All private/get_transaction_log entries in [start_ms, end_ms], following
+    `continuation`. Field names (logs, continuation, count, start_timestamp,
+    end_timestamp) as used by the repo's testnet probe_transaction_log.py.
+    More than max_pages pages raises DeribitError (fail closed, never truncate)."""
+    entries, continuation = [], None
+    for _ in range(max_pages):
+        params = {"currency": currency, "start_timestamp": start_ms, "end_timestamp": end_ms, "count": 100}
+        if continuation:
+            params["continuation"] = continuation
+        result = _call("private/get_transaction_log", params, token)
+        if isinstance(result, dict):
+            entries.extend(result.get("logs", []))
+            continuation = result.get("continuation")
+        else:
+            entries.extend(result if isinstance(result, list) else [])
+            continuation = None
+        if not continuation:
+            return entries
+    raise DeribitError("private/get_transaction_log", {"code": None, "message": f"more than {max_pages} pages"})
 
 
 def get_ticker(instrument_name: str = "BTC-PERPETUAL") -> dict:
     return _call("public/ticker", {"instrument_name": instrument_name})
 
 
-def main() -> int:
-    """Smoke test: auth + reads, no orders."""
+def main(argv=None) -> int:
+    """Smoke test: auth + reads, no orders. `--mainnet` runs it against mainnet
+    (after the typed confirmation); without it, testnet exactly as before."""
+    argv = sys.argv[1:] if argv is None else argv
     try:
+        select_environment("--mainnet" in argv)
         token = authenticate()
         s = get_account_summary(token)
         print(f"AUTH OK  equity={s.get('equity')} available_funds={s.get('available_funds')}")

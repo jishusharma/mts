@@ -4,7 +4,7 @@ import unittest
 from datetime import datetime, timezone
 from pathlib import Path
 
-from daily_loss_monitor import run_once, ensure_day_state, compute_total_pnl_usd
+from daily_loss_monitor import run_once, ensure_day_state, compute_total_pnl_usd, transaction_log_pnl_btc
 
 
 class FakeClient:
@@ -203,6 +203,67 @@ class TestDailyLossMonitor(unittest.TestCase):
         result = run_once(client, "tok", clock=clock, state_path=self.state_path, halt_path=self.halt_path)
         # breached_today should remain True (no re-arm while file exists)
         self.assertTrue(result["state"]["breached_today"], "breached_today should not be re-armed while HALT file exists")
+
+
+class TxLogClient(FakeClient):
+    """L6 part 2: mainnet-style client - active_env()=='mainnet' selects the transaction-log source."""
+
+    def __init__(self, logs, **kw):
+        super().__init__(**kw)
+        self.logs = logs
+        self.tx_calls = []
+
+    def active_env(self):
+        return "mainnet"
+
+    def get_transaction_log(self, token, currency="BTC", start_ms=0, end_ms=0):
+        self.tx_calls.append((start_ms, end_ms))
+        return self.logs
+
+
+class TestTransactionLogSource(unittest.TestCase):
+    STATE = {"date": "2026-09-28", "day_start_equity": 1.0}
+
+    def test_excludes_only_money_movement_types(self):
+        logs = [{"type": "trade", "change": -0.001}, {"type": "settlement", "change": -0.0005},
+                {"type": "transfer", "change": 5.0}, {"type": "transfer_out", "change": -2.0},
+                {"type": "deposit", "change": 1.0}, {"type": "withdrawal", "change": -1.0}]
+        self.assertAlmostEqual(transaction_log_pnl_btc(logs), -0.0015)
+
+    def test_mainnet_client_uses_log_not_equity(self):
+        # equity moved +100 BTC (a deposit); the log says only -0.01 BTC of trading P/L
+        c = TxLogClient([{"type": "trade", "change": -0.01}, {"type": "deposit", "change": 100.0}],
+                        equity=101.0, mark_price=80000.0)
+        pnl = compute_total_pnl_usd(c, "tok", self.STATE, now_ms=1_800_000_000_000)
+        self.assertEqual(pnl, -800.0)
+        start_ms = int(datetime(2026, 9, 28, tzinfo=timezone.utc).timestamp() * 1000)
+        self.assertEqual(c.tx_calls, [(start_ms, 1_800_000_000_000)])
+
+    def test_testnet_default_stays_equity(self):
+        c = FakeClient(equity=1.01, mark_price=80000.0)  # no active_env / get_transaction_log
+        self.assertEqual(compute_total_pnl_usd(c, "tok", self.STATE), 800.0)
+
+    def test_missing_change_fails_closed(self):
+        with self.assertRaises(ValueError):
+            transaction_log_pnl_btc([{"type": "trade"}])
+
+    def test_bad_source_rejected(self):
+        with self.assertRaises(ValueError):
+            compute_total_pnl_usd(FakeClient(1.0, 1.0), "tok", self.STATE, pnl_source="bogus")
+
+    def test_deposit_does_not_mask_or_fake_breach_in_run_once(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        sp, hp = Path(tmp.name) / "s.json", Path(tmp.name) / "HALT_DAILY_LOSS"
+        c = TxLogClient([{"type": "trade", "change": -0.001}, {"type": "transfer", "change": -50.0}],
+                        equity=1.0, mark_price=80000.0, position_size=10)
+        r = run_once(c, "tok", clock=_clock_at("2026-09-28T01:00:00"), state_path=sp, halt_path=hp)
+        self.assertTrue(r["ok"])  # -80 USD trading loss; the -50 BTC transfer is ignored
+        c.logs = [{"type": "trade", "change": -0.01}]
+        r = run_once(c, "tok", clock=_clock_at("2026-09-28T01:01:00"), state_path=sp, halt_path=hp)
+        self.assertFalse(r["ok"])
+        self.assertEqual(c.kill_all_calls, 1)
+        self.assertTrue(hp.exists())
 
 
 if __name__ == "__main__":

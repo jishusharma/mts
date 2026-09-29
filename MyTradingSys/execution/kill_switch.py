@@ -146,6 +146,7 @@ def main(argv=None, halt_path: Path = HALT_PATH) -> int:
     parser.add_argument("--confirm", default=None,
                         help="Must be exactly 'KILL' (case-sensitive) or the CLI refuses and does nothing.")
     parser.add_argument("--currency", default="BTC")
+    parser.add_argument("--mainnet", action="store_true", help="MAINNET (typed confirmation required)")
     args = parser.parse_args(argv)
 
     if args.confirm != "KILL":
@@ -161,6 +162,8 @@ def main(argv=None, halt_path: Path = HALT_PATH) -> int:
     try:
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         import deribit_orders  # noqa: E402 (deferred: real exchange import only at runtime, not at test-collection time)
+        if args.mainnet:  # default path untouched (testnet)
+            deribit_orders.select_environment(True)
         token = deribit_orders.authenticate()
         result = kill_all(deribit_orders, token, currency=args.currency)
     except Exception as e:

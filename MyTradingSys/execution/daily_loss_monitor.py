@@ -45,6 +45,21 @@ P&L SOURCE DECISION (read this before changing the math below):
   realized/unrealized split and lets this module reuse daily_loss_guard.py
   UNCHANGED (that module is already staged+tested; do not edit it).
 
+L6 PART 2 (2026-09-29) - PnL SOURCE, decision in research/fast_track_2026-09-27/
+FIX4_DESIGN.md ("transaction-log probe RESULT and DECISION", testnet probe
+testnet/probe_transaction_log.py): pnl_source="transaction_log" =
+  sum(change) [BTC] over today's 00:00-UTC..now private/get_transaction_log
+  entries, EXCLUDING money-movement types (deposit, withdrawal, transfer*),
+  times mark_price. Includes fees/funding/settlement, excludes deposits and
+  transfers (which the equity delta wrongly counted as P/L). Field names
+  (logs, continuation, type, change) are those of the repo's probe; only
+  type="trade" has been observed live (testnet) - the exclusion type names
+  are the FIX4 decision, NOT verified against the official Deribit
+  transaction-log type list (operator open question).
+  Default source: "equity" on testnet (unchanged behaviour, keeps the FT-2
+  testnet suite T-c identical); "transaction_log" whenever the client's
+  active_env() is "mainnet". Override with --pnl-source.
+
 HALT FILE CONTRACT (for executor.py's preflight() - documented here only;
 executor.py is NOT edited by this module or its owner):
   On breach this module writes execution/HALT_DAILY_LOSS, a JSON object:
@@ -82,6 +97,9 @@ import kill_switch  # noqa: E402
 from daily_loss_guard import check_daily_loss_cap, format_breach_report, DEFAULT_DAILY_LOSS_CAP_USD  # noqa: E402
 
 POLL_INTERVAL_SECONDS = 30
+PNL_SOURCES = ("equity", "transaction_log")
+EXCLUDED_TX_TYPES_EXACT = {"deposit", "withdrawal"}
+EXCLUDED_TX_TYPE_PREFIXES = ("transfer",)
 STATE_PATH = Path(__file__).resolve().parent / "daily_loss_monitor_state.json"
 HALT_PATH = Path(__file__).resolve().parent / "HALT_DAILY_LOSS"
 JOURNAL_PLAN_ID = "ACCOUNT_DAILY_LOSS"
@@ -146,8 +164,48 @@ def ensure_day_state(client, token, now, currency: str = "BTC", state_path: Path
     return state
 
 
+def _is_money_movement(tx_type) -> bool:
+    t = str(tx_type or "").lower()
+    return t in EXCLUDED_TX_TYPES_EXACT or t.startswith(EXCLUDED_TX_TYPE_PREFIXES)
+
+
+def _day_start_ms(date_str: str) -> int:
+    d = datetime.strptime(date_str, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+    return int(d.timestamp() * 1000)
+
+
+def transaction_log_pnl_btc(entries) -> float:
+    """sum(change) over entries, minus money-movement types. An entry with no
+    numeric 'change' raises ValueError - never silently skipped (fail closed:
+    the monitor's consecutive-failure path then writes HALT_DAILY_LOSS)."""
+    total = 0.0
+    for i, e in enumerate(entries):
+        if _is_money_movement(e.get("type")):
+            continue
+        ch = e.get("change")
+        if isinstance(ch, bool) or not isinstance(ch, (int, float)):
+            raise ValueError(f"transaction_log entry {i} (type={e.get('type')!r}) has no numeric 'change'")
+        total += ch
+    return total
+
+
+def default_pnl_source(client) -> str:
+    env = getattr(client, "active_env", None)
+    return "transaction_log" if callable(env) and env() == "mainnet" else "equity"
+
+
 def compute_total_pnl_usd(client, token, state: dict, currency: str = "BTC",
-                           instrument: str = "BTC-PERPETUAL") -> float:
+                           instrument: str = "BTC-PERPETUAL", pnl_source: str = None,
+                           now_ms: int = None) -> float:
+    pnl_source = pnl_source or default_pnl_source(client)
+    if pnl_source not in PNL_SOURCES:
+        raise ValueError(f"pnl_source must be one of {PNL_SOURCES}, got {pnl_source!r}")
+    if pnl_source == "transaction_log":
+        end_ms = now_ms if now_ms is not None else int(time.time() * 1000)
+        entries = client.get_transaction_log(token, currency=currency,
+                                             start_ms=_day_start_ms(state["date"]), end_ms=end_ms)
+        ticker = client.get_ticker(instrument_name=instrument)
+        return round(transaction_log_pnl_btc(entries) * ticker["mark_price"], 2)
     summary = client.get_account_summary(token, currency=currency)
     ticker = client.get_ticker(instrument_name=instrument)
     equity_delta = summary["equity"] - state["day_start_equity"]
@@ -156,7 +214,7 @@ def compute_total_pnl_usd(client, token, state: dict, currency: str = "BTC",
 
 def run_once(client, token, clock=_utc_now, currency: str = "BTC",
              instrument: str = "BTC-PERPETUAL", cap_usd: float = DEFAULT_DAILY_LOSS_CAP_USD,
-             state_path: Path = STATE_PATH, halt_path: Path = HALT_PATH) -> dict:
+             state_path: Path = STATE_PATH, halt_path: Path = HALT_PATH, pnl_source: str = None) -> dict:
     """Single monitor iteration. Returns the check_daily_loss_cap() result
     dict (plus 'state' for tests). Idempotent: a breach only triggers
     kill_all/HALT-file/journal once per UTC day (state['breached_today']).
@@ -180,7 +238,8 @@ def run_once(client, token, clock=_utc_now, currency: str = "BTC",
             "result": "re-armed by operator clear"
         })
 
-    total_pnl_usd = compute_total_pnl_usd(client, token, state, currency=currency, instrument=instrument)
+    total_pnl_usd = compute_total_pnl_usd(client, token, state, currency=currency, instrument=instrument,
+                                          pnl_source=pnl_source, now_ms=int(now.timestamp() * 1000))
     result = check_daily_loss_cap([{"pnl_usd": total_pnl_usd}], 0.0, cap_usd=cap_usd)
 
     if not result["ok"] and not state.get("breached_today"):
@@ -216,12 +275,17 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Daily loss monitor loop for MTS.")
     parser.add_argument("--once", action="store_true", help="Run a single iteration and exit (for cron/scheduling).")
     parser.add_argument("--interval", type=float, default=POLL_INTERVAL_SECONDS, help="Seconds between iterations.")
+    parser.add_argument("--mainnet", action="store_true", help="MAINNET (typed confirmation required)")
     parser.add_argument("--currency", default="BTC")
     parser.add_argument("--instrument", default="BTC-PERPETUAL")
+    parser.add_argument("--pnl-source", choices=PNL_SOURCES, default=None,
+                        help="default: equity on testnet, transaction_log on mainnet")
     parser.add_argument("--cap-usd", type=float, default=DEFAULT_DAILY_LOSS_CAP_USD)
     args = parser.parse_args(argv)
 
     import deribit_orders as do  # noqa: E402 (deferred: real exchange import only at runtime, not at test-collection time)
+    if args.mainnet:
+        do.select_environment(True)
     token = do.authenticate()
 
     failures = 0
@@ -230,7 +294,7 @@ def main(argv=None):
         # must not kill the monitor; N consecutive failures -> fail closed.
         try:
             result = run_once(do, token, currency=args.currency, instrument=args.instrument,
-                              cap_usd=args.cap_usd)
+                              cap_usd=args.cap_usd, pnl_source=args.pnl_source)
             failures = 0
             print(format_breach_report(result))
             if args.once:

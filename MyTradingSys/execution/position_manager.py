@@ -139,6 +139,23 @@ def _plan_orders(plan_id):
     return stop, targets, entry_side, entry_filled_total
 
 
+def _reduce_fills(plan_id, instrument, is_long, token):
+    """Total amount of this plan's reduce-side fills, from
+    private/get_user_trades_by_instrument_and_time filtered on the plan label
+    prefix and the exit direction. None if the lookup itself fails (-> halt)."""
+    events = journal.read_events(plan_id)
+    t0 = min((e["ts"] for e in events), default=time.time())
+    exit_dir = "sell" if is_long else "buy"
+    try:
+        trades = do.get_user_trades_by_instrument_and_time(
+            token, instrument, int((t0 - 3600) * 1000), int((time.time() + 60) * 1000))
+    except do.DeribitError:
+        return None
+    return sum(int(t.get("amount") or 0) for t in trades
+               if str(t.get("label") or "").startswith(f"{plan_id}:")
+               and str(t.get("direction")).lower() == exit_dir)
+
+
 def _signed(size):
     return int(size or 0)
 
@@ -245,7 +262,17 @@ def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, to
             # FIX4 L1: compare against the ORIGINAL entry fill total, not the
             # live stop["amount"] - G1 shrinks that amount on every target
             # fill, so it under-counts what a manual close needs to explain.
+            stop_state_out = stop_state
             explained = stop_fired or target_filled >= entry_filled_total
+            if not explained and str(stop_state).startswith("query_failed"):
+                # Deribit archives / re-ids a triggered stop, so get_order_state
+                # answers order_not_found. Fall back to this plan's own reduce-side
+                # fills (trades labelled "<plan_id>:..." opposite to the entry).
+                rf = _reduce_fills(plan_id, instrument, is_long, token)
+                if rf is not None and rf >= entry_filled_total:
+                    explained = True
+                    stop_state_out = "triggered_by_fills"
+                    target_filled = max(target_filled, rf)
             if not explained:
                 journal.append_event(plan_id, "mismatch_halt",
                                      {"reason": "position flat but no stop trigger / target fill explains it "
@@ -253,9 +280,9 @@ def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, to
                                       "stop_state": stop_state, "target_filled": target_filled})
                 raise ManagerHalted(f"plan {plan_id}: unexplained flat (manual close?) - halted")
             journal.append_event(plan_id, "reconciliation", {"result": "position_closed",
-                                                             "stop_state": stop_state,
+                                                             "stop_state": stop_state_out,
                                                              "target_filled": target_filled})
-            return {"plan_id": plan_id, "status": "closed", "stop_state": stop_state,
+            return {"plan_id": plan_id, "status": "closed", "stop_state": stop_state_out,
                     "target_filled": target_filled}
 
         if (pos > 0) != is_long:
@@ -331,7 +358,14 @@ def main() -> int:
     ap.add_argument("plan_id")
     ap.add_argument("--max-seconds", type=int, default=None)
     ap.add_argument("--once", action="store_true")
+    ap.add_argument("--mainnet", action="store_true", help="MAINNET (typed confirmation required)")
     a = ap.parse_args()
+    try:
+        if a.mainnet:
+            do.select_environment(True)
+    except RuntimeError as e:
+        print(f"REFUSED: {e}")
+        return 1
     try:
         print(manage(a.plan_id, max_seconds=a.max_seconds, once=a.once))
         return 0
