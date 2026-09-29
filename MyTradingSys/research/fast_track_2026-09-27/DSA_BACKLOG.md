@@ -13,7 +13,7 @@ except as a .new proposal. Tom is core; every other system is a separate layer, 
 
 ## A. Rulebooks (long-context reading)
 - [x] 998 Fabio rulebook (all Fabio extracts -> FR table, class, data needed, Tom overlap)
-- [ ] Tom master rulebook merge: the 16 new T- rules (extracts/processed/tom/WQ_OAdz-PJ8, zAwEX_tRUfE) into the Tom master list; flag conflicts only (never edit Tom logic)
+- [x] 999 Tom master rulebook merge: the 16 new T- rules (extracts/processed/tom/WQ_OAdz-PJ8, zAwEX_tRUfE) into the Tom master list; flag conflicts only (never edit Tom logic)
 - [ ] Cross-trader rulebook: extracts/processed/cryptocred + flowhorse -> same table format as 998; mark which are already built as layers
 - [ ] T054 research brief: US session / correlation / news effects on BTC - from on-disk research only; list claims needing verified sources (web research is done by a Sonnet worker under playbook Part I, not DSA)
 
