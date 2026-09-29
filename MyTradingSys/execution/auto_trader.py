@@ -47,7 +47,7 @@ TF_SECONDS = {"1m": 60, "5m": 300, "15m": 900, "30m": 1800, "1h": 3600, "4h": 14
 
 DEFAULT_CONFIG = {
     # Tom core: limit at the zone, stop/target from the alert, whole size off at the target.
-    "tom": {"enabled": True, "size_usd": 200, "max_loss_usd": 25, "hours": 1.0, "max_hold_minutes": None, "max_age_seconds": 300,
+    "tom": {"enabled": True, "size_usd": 200, "max_loss_usd": 25, "hours": 1.0, "max_hold_minutes": None, "max_hold_bars": 8, "max_age_seconds": 300,
             "verdicts": ["SETUP_FORMING", "SETUP_CONFIRMED"], "min_net_rr": 2.0},
     # Layers have no stop/target of their own: fixed bracket, market entry, small size.
     "layers": {"enabled": True, "size_usd": 100, "max_loss_usd": 10, "stop_pct": 1.0, "targets": "2",
@@ -94,7 +94,7 @@ def save_json(path: Path, data) -> None:
 
 # ---------------------------------------------------------------- Tom core signal
 
-CARD_FIELD = re.compile(r"^(VERDICT|TIME|SETUP|ENTRY|STOP|TARGET|R:R):\s*(.*)$", re.M)
+CARD_FIELD = re.compile(r"^(VERDICT|TIME|SETUP|ZONE|ENTRY|STOP|TARGET|R:R):\s*(.*)$", re.M)
 ALERT_NO = re.compile(r"#(\d+)")
 
 
@@ -110,7 +110,9 @@ def parse_tom_alert(alert: dict) -> dict:
     setup = fields.get("SETUP", "")
     side = "long" if setup.endswith("_long") else "short" if setup.endswith("_short") else None
     rr = re.search(r"net\s+([0-9.]+)", fields.get("R:R", ""))
+    zm = re.match(r"(\d+[mhd])_", fields.get("ZONE", ""))
     return {"alert_no": int(m.group(1)) if m else None, "verdict": fields.get("VERDICT", ""),
+            "zone_tf": zm.group(1) if zm and zm.group(1) in TF_SECONDS else None,
             "time": fields.get("TIME", ""), "setup": setup, "side": side, "entry": entry, "stop": stop,
             "target": target, "net_rr": float(rr.group(1)) if rr else None}
 
@@ -154,6 +156,9 @@ def tom_signal(alert: dict, state: dict, cfg: dict, now: datetime):
                         "--max-loss", str(c["max_loss_usd"]), "--hours", str(c["hours"])]
     if c.get("max_hold_minutes"):
         sig["plan_args"] += ["--max-hold-minutes", str(c["max_hold_minutes"])]
+    elif c.get("max_hold_bars"):   # time exit = N bars of the alert's zone timeframe (5m/15m/1h); 15m if unknown
+        tf_s = TF_SECONDS[p.get("zone_tf") or "15m"]
+        sig["plan_args"] += ["--max-hold-minutes", f"{c['max_hold_bars'] * tf_s / 60:g}"]
     return sig
 
 
@@ -284,6 +289,19 @@ def place(sig: dict, dry_run: bool, account: str = None) -> dict:
             "output": out.strip()[-300:]}
 
 
+def record_ledger(plan_id: str, source: str, account, manager_rc) -> None:
+    """Outcome ledger row for a closed trade (trade_ledger.py). Never raises: the ledger must not stop the trader."""
+    try:
+        if str(HERE) not in sys.path:
+            sys.path.insert(0, str(HERE))
+        import trade_ledger
+        row = trade_ledger.record_closed(plan_id, source, account, manager_rc)
+        log({"event": "ledger_row", "plan_id": plan_id, "net_pnl_usd": row and row.get("net_pnl_usd"),
+             "exit_reason": row and row.get("exit_reason")})
+    except Exception as e:  # noqa: BLE001
+        log({"event": "ledger_error", "plan_id": plan_id, "error": repr(e)[:200]})
+
+
 def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = None, extra: dict = None) -> dict:
     """One poll. Returns the (possibly new) default-slot trade dict. `active` = {'proc','plan_id','source'} or {}.
     `extra` = {account_label: trade dict}, mutated in place (named-account slots)."""
@@ -294,12 +312,14 @@ def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = N
         if rc is not None:
             log({"event": "trade_closed", "plan_id": extra[lab]["plan_id"], "source": extra[lab]["source"],
                  "manager_rc": rc, "account": lab})
+            record_ledger(extra[lab]["plan_id"], extra[lab]["source"], lab, rc)
             del extra[lab]
     if active:
         rc = active["proc"].poll()
         if rc is not None:
             log({"event": "trade_closed", "plan_id": active["plan_id"], "source": active["source"],
                  "manager_rc": rc})
+            record_ledger(active["plan_id"], active["source"], None, rc)
             active = {}
     signals = []
     s = tom_signal(load_json(TOM_ALERT, {}), state, cfg, now)

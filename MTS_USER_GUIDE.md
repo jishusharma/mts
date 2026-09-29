@@ -163,6 +163,7 @@ python MyTradingSys\execution\new_plan.py --side long --entry market --size 100 
 ```powershell
 mts auto       # starts the auto-trader in its own window
 mts autolog    # what it did: trades, skips, rejected signals
+mts ledger     # closed auto-trades per source: n, win rate, mean net, sum net
 ```
 
 The auto-trader places trades by itself, through the same plan -> check ->
@@ -242,6 +243,7 @@ Open trades are not affected: their stops live on the exchange. Keep any
 | `mts guard`          | Start the daily-loss guard in its own window              |
 | `mts auto`           | Start the testnet auto-trader in its own window           |
 | `mts autolog`        | Last 20 auto-trader decisions                             |
+| `mts ledger`         | Closed auto-trades per source: n, win rate, net P/L       |
 | `mts test`           | Run the offline tests (no exchange)                       |
 | `mts guide`          | Open this guide                                           |
 | `mts help`           | List every command                                        |

@@ -39,6 +39,7 @@ $Verbs = @(
     @("Safety",      "guard",   "Start the daily-loss guard in its own window"),
     @("Auto",        "auto",    "Start the testnet auto-trader (Tom + layer signals) in its own window"),
     @("Auto",        "autolog", "Last 20 auto-trader decisions (trades, skips, rejects)"),
+    @("Auto",        "ledger",  "Closed auto-trades per source: count, win rate, mean and total net P/L"),
     @("Upkeep",      "test",    "Run the offline test suite (no exchange)"),
     @("Upkeep",      "guide",   "Open the user guide"),
     @("Upkeep",      "help",    "This list")
@@ -222,9 +223,9 @@ switch ($Verb.ToLower()) {
     "kill-mainnet" {
         Say "KILL SWITCH - MAINNET (REAL MONEY) - cancels EVERY open order and closes EVERY position on the LIVE account," Red
         Say "then sets HALT so nothing trades until you run: mts resume" Red
-        if (-not (Confirm-Word "KILL" "Are you sure? This acts on the MAINNET account.")) { exit 1 }
+        Say "This acts on the MAINNET account. You will be asked to type: kill  (lowercase; anything else cancels)" Yellow
         Remove-Item Env:MTS_ACCOUNT -ErrorAction SilentlyContinue
-        Py (Join-Path $Exec "kill_switch.py") "--confirm" "KILL" "--mainnet"; exit $LASTEXITCODE
+        Py (Join-Path $Exec "kill_switch.py") "--mainnet"; exit $LASTEXITCODE
     }
 
     "guard" {
@@ -238,6 +239,10 @@ switch ($Verb.ToLower()) {
         if ((Test-Path $Halt) -or (Test-Path $HaltLoss)) { Show-Brakes; Say "Brakes are set - the auto-trader logs signals but places nothing until: mts resume" Yellow }
         Open-Window "MTS auto-trader" "python -m MyTradingSys.execution.auto_trader"
         Ok "auto-trader started in its own window - it trades Tom + layer signals on TESTNET; mts pause stops new trades"
+    }
+
+    "ledger" {
+        Py (Join-Path $Exec "trade_ledger.py") "--summary"; exit $LASTEXITCODE
     }
 
     "autolog" {

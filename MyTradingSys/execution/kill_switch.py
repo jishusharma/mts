@@ -191,12 +191,14 @@ def main(argv=None, halt_path: Path = HALT_PATH) -> int:
     parser.add_argument("--confirm", default=None,
                         help="Must be exactly 'KILL' (case-sensitive) or the CLI refuses and does nothing.")
     parser.add_argument("--currency", default="BTC")
-    parser.add_argument("--mainnet", action="store_true", help="MAINNET (typed confirmation required)")
+    parser.add_argument("--mainnet", action="store_true", help="MAINNET (type the word kill at the prompt)")
     parser.add_argument("--account", default=None,
                         help="named TESTNET account label (sets MTS_ACCOUNT for this run only); refused with --mainnet")
     args = parser.parse_args(argv)
 
-    if args.confirm != "KILL":
+    # Mainnet: the interactive `kill` prompt (select_environment kill_only) is the confirmation; --confirm is optional
+    # there but must still be exactly KILL if given. Testnet: --confirm KILL is required, unchanged.
+    if args.confirm != "KILL" and not (args.mainnet and args.confirm is None):
         print("REFUSED: --confirm KILL required (exact match, case-sensitive) - nothing was done")
         return 1
     if args.account is not None:
@@ -225,7 +227,7 @@ def main(argv=None, halt_path: Path = HALT_PATH) -> int:
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         import deribit_orders  # noqa: E402 (deferred: real exchange import only at runtime, not at test-collection time)
         if args.mainnet:  # default path untouched (testnet)
-            deribit_orders.select_environment(True)
+            deribit_orders.select_environment(True, kill_only=True)  # typed word: kill
         token = deribit_orders.authenticate()
         result = kill_all(deribit_orders, token, currency=args.currency)
     except Exception as e:

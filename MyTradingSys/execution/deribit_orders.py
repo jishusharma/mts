@@ -50,6 +50,11 @@ v5 (mainnet-ready gates, 2026-09-29; design MyTradingSys/research/fast_track_202
   refuses any key with wallet:read_write (withdraw) scope. On mainnet every
   new-exposure order above MAINNET_MAX_NOTIONAL_USD is refused offline before
   any HTTP call. No mainnet call is ever made at import or by a refusal path.
+
+v6 (2026-09-29, operator decision): select_environment(True, kill_only=True) - used ONLY by kill_switch.py
+  --mainnet - replaces the long typed sentence with the single word `kill` (interactive input(), case-sensitive).
+  Rationale: the kill switch can only reduce risk. Gates 1, 2 and 4 (flag, secret env match, interactive prompt)
+  and the withdraw-scope refusal all still apply; every other mainnet path keeps the full sentence.
 """
 import sys
 sys.dont_write_bytecode = True
@@ -71,6 +76,7 @@ MAINNET_SECRET = ROOT / "MyTradingSys" / "execution" / ".secrets" / "mainnet.sec
 DEFAULT_ENV = "test"
 # Typed back at an interactive input() prompt; never accepted from argv/env/config.
 MAINNET_CONFIRMATION = "I understand this places a real order with real money on BTC-PERPETUAL mainnet"
+KILL_CONFIRMATION = "kill"   # typed word for the mainnet KILL SWITCH only (kill_only=True); it can only reduce risk
 # Hard per-order / per-plan notional ceiling (USD) while env == mainnet. Read at call time.
 MAINNET_MAX_NOTIONAL_USD = 50.0
 _ACTIVE_ENV = DEFAULT_ENV
@@ -168,23 +174,26 @@ def _load_secret(env: str = None) -> dict:
     return cfg
 
 
-def select_environment(mainnet: bool = False) -> str:
+def select_environment(mainnet: bool = False, kill_only: bool = False) -> str:
     """Gate 1 (explicit flag) + gate 2 (secret env match, file read only) +
     gate 4 (typed confirmation via input()). Gate 3 (withdraw-scope refusal)
     lives in authenticate(). mainnet=False (default) -> testnet, no prompt.
     State changes only after every check passed; any refusal leaves/returns
-    the process on testnet and makes no network call."""
+    the process on testnet and makes no network call. kill_only=True (kill switch only) accepts the word
+    KILL_CONFIRMATION instead of MAINNET_CONFIRMATION; nothing else changes."""
     global _ACTIVE_ENV
     if not mainnet:
         _ACTIVE_ENV = DEFAULT_ENV
         return _ACTIVE_ENV
     _ACTIVE_ENV = DEFAULT_ENV
     _load_secret("mainnet")  # missing file / env mismatch -> RuntimeError, no network
+    want = KILL_CONFIRMATION if kill_only else MAINNET_CONFIRMATION
     try:
-        typed = input(f'Type exactly to enable MAINNET: "{MAINNET_CONFIRMATION}"\n> ')
+        typed = input(f'Type exactly to enable MAINNET: "{want}"' + chr(10) + '> ' if not kill_only else
+                      f'MAINNET KILL SWITCH - type {want} to cancel every order and close every position' + chr(10) + '> ')
     except EOFError:
         raise MainnetRefused("REFUSED: mainnet confirmation needs an interactive prompt")
-    if typed != MAINNET_CONFIRMATION:
+    if typed != want:
         raise MainnetRefused("REFUSED: mainnet confirmation string mismatch")
     _ACTIVE_ENV = "mainnet"
     return _ACTIVE_ENV

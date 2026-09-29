@@ -70,6 +70,7 @@ MyTradingSys/execution/.secrets/
 # END
 # auto-trader runtime data (2026-09-29)
 MyTradingSys/execution/auto_trades.jsonl
+MyTradingSys/execution/trade_ledger.jsonl
 MyTradingSys/execution/auto_trader_state.json*
 
 # --- Backups / rejected worker output (archive via scripts/dev/declutter_backups.py) ---

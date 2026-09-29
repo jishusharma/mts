@@ -26,14 +26,21 @@ class MtsKillMainnetTests(unittest.TestCase):
         self.assertIsNotNone(b, "no kill-mainnet case in the switch")
         self.assertIn("kill_switch.py", b)
         self.assertIn('"--mainnet"', b)
-        self.assertIn('"--confirm" "KILL"', b)
         self.assertIn("exit $LASTEXITCODE", b)
 
-    def test_block_clears_stale_account_env_and_asks_for_confirmation(self):
+    def test_block_clears_stale_account_env_and_says_what_to_type(self):
         b = block(self.text, "kill-mainnet")
         self.assertIn("Env:MTS_ACCOUNT", b)
-        self.assertIn('Confirm-Word "KILL"', b)
         self.assertIn("MAINNET", b)
+        self.assertRegex(b, r"type:? kill")
+
+    def test_confirmation_is_only_the_word_kill_prompted_once_by_python(self):
+        # operator decision 2026-09-29: kill can only reduce risk -> typed `kill`, not the long S5 sentence.
+        # The prompt lives in kill_switch.py (input()); the verb must not add a second one nor pass the sentence.
+        b = block(self.text, "kill-mainnet")
+        self.assertNotIn("Confirm-Word", b)
+        self.assertNotIn("I understand", b)
+        self.assertNotIn('"--confirm"', b)
 
     def test_block_does_not_pass_an_account(self):
         b = block(self.text, "kill-mainnet")

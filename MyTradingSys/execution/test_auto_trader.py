@@ -91,8 +91,22 @@ class LayerSignalTest(unittest.TestCase):
             s = at.layer_signal({"layer": "rsi", "event": "support", "tf": tf, "t_close": t}, cfg(), NOW)
             self.assertEqual(s["plan_args"][s["plan_args"].index("--max-hold-minutes") + 1], mins)
 
-    def test_tom_has_no_max_hold_by_default(self):
-        s = at.tom_signal(tom_alert(), {"tom_last_alert_no": 43}, cfg(), NOW)
+    def test_tom_max_hold_is_8_bars_of_zone_tf(self):
+        # tom_alert() ZONE is 15m_swing_high: 8 x 15 = 120; 5m -> 40; 1h -> 480; no tf -> 15m fallback
+        for zone, mins in (("15m_swing_high", "120"), ("5m_swing_high", "40"), ("1h_swing_low", "480"), ("weird", "120")):
+            a = tom_alert()
+            a["card_text"] = a["card_text"].replace("15m_swing_high", zone)
+            s = at.tom_signal(a, {"tom_last_alert_no": 43}, cfg(), NOW)
+            self.assertEqual(s["plan_args"][s["plan_args"].index("--max-hold-minutes") + 1], mins, zone)
+
+    def test_tom_explicit_max_hold_minutes_wins_and_bars_can_be_disabled(self):
+        c = cfg()
+        c["tom"]["max_hold_minutes"] = 30
+        s = at.tom_signal(tom_alert(), {"tom_last_alert_no": 43}, c, NOW)
+        self.assertEqual(s["plan_args"][s["plan_args"].index("--max-hold-minutes") + 1], "30")
+        c = cfg()
+        c["tom"]["max_hold_bars"] = None
+        s = at.tom_signal(tom_alert(), {"tom_last_alert_no": 43}, c, NOW)
         self.assertNotIn("--max-hold-minutes", s["plan_args"])
 
     def test_rsi_cross_direction(self):
@@ -154,7 +168,7 @@ class CycleTest(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         d = Path(self.tmp.name)
         self.saved = {k: getattr(at, k) for k in ("TOM_ALERT", "LAYER_ALERT_DIR", "HALT", "HALT_DAILY_LOSS",
-                                                   "LOG_PATH", "place", "AUTO_PAUSE")}
+                                                   "LOG_PATH", "place", "AUTO_PAUSE", "record_ledger")}
         at.TOM_ALERT, at.LAYER_ALERT_DIR = d / "last_alert.json", d / "alerts"
         at.HALT, at.HALT_DAILY_LOSS, at.LOG_PATH = d / "HALT", d / "HALT_DAILY_LOSS", d / "log.jsonl"
         at.AUTO_PAUSE = d / "AUTO_PAUSE"
@@ -174,6 +188,8 @@ class CycleTest(unittest.TestCase):
             self.placed.append(sig)
             return {"outcome": "entered", "plan_id": f"p{len(self.placed)}", "proc": P()}
         at.place = fake_place
+        self.ledger = []
+        at.record_ledger = lambda *a: self.ledger.append(a)
 
     def tearDown(self):
         for k, v in self.saved.items():
@@ -217,6 +233,13 @@ class CycleTest(unittest.TestCase):
         active = at.cycle({"tom_last_alert_no": 43}, cfg(), False, active, NOW)
         self.assertEqual(self.events(), ["trade_closed", "trade_attempt"])
         self.assertEqual(active["plan_id"], "p1")
+        self.assertEqual(self.ledger, [("old", "tom", None, 0)])    # outcome ledger hook
+
+    def test_closed_named_account_trade_writes_ledger_with_account(self):
+        extra = {"jishu_2": {"proc": self.P(rc=1), "plan_id": "px", "source": "layer:rsi:x:15m"}}
+        at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW, extra=extra)
+        self.assertEqual(self.ledger, [("px", "layer:rsi:x:15m", "jishu_2", 1)])
+        self.assertEqual(extra, {})
 
     def test_failed_entry_leaves_slot_free(self):
         at.place = lambda sig, dry: {"outcome": "entry_failed", "plan_id": "x"}

@@ -93,7 +93,8 @@ class MainnetFake(types.ModuleType):
         self.env_seen = []
         self.selected = False
 
-    def select_environment(self, mainnet=False):
+    def select_environment(self, mainnet=False, kill_only=False):
+        self.kill_only = kill_only
         if os.environ.get("MTS_ACCOUNT"):
             raise RuntimeError("REFUSED: named accounts are testnet-only")
         self.selected = True
@@ -134,9 +135,22 @@ class TestB2MainnetIgnoresAccount(unittest.TestCase):
             rc = kill_switch.main(["--confirm", "KILL", "--mainnet"], halt_path=self.tmp / "HALT")
         self.assertEqual(rc, 0)
         self.assertTrue(self.fake.selected)
+        self.assertTrue(self.fake.kill_only)   # kill switch uses the short `kill` confirmation, not the S5 sentence
         self.assertEqual(self.fake.env_seen, [None])
         self.assertIn("WARNING", out.getvalue())
         self.assertEqual(os.environ.get("MTS_ACCOUNT"), "fabio")  # restored for the shell
+
+    def test_mainnet_kill_needs_no_confirm_flag_only_the_typed_word(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            rc = kill_switch.main(["--mainnet"], halt_path=self.tmp / "HALT")
+        self.assertEqual(rc, 0)
+        self.assertTrue(self.fake.kill_only)
+
+    def test_mainnet_kill_wrong_confirm_flag_and_testnet_without_flag_still_refused(self):
+        for argv in (["--mainnet", "--confirm", "kill"], ["--confirm", "kill"], []):
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(kill_switch.main(argv, halt_path=self.tmp / "HALT2"), 1, argv)
+        self.assertFalse(self.fake.selected)
 
 
 class BreachClient:

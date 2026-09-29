@@ -125,6 +125,35 @@ class TestRefusalMatrix(Base):
             self.assertEqual(do.active_env(), "test")
         self.assertEqual(self.rec.urls, [])
 
+    def test_kill_only_accepts_only_the_word_kill(self):
+        self.write(self.main_secret, "mainnet")
+        for typed in ("", "KILL", "Kill", "kill ", " kill", "y", CONFIRM):
+            with mock.patch("builtins.input", return_value=typed):
+                with self.assertRaises(do.MainnetRefused):
+                    do.select_environment(True, kill_only=True)
+            self.assertEqual(do.active_env(), "test")
+        self.assertEqual(self.rec.urls, [])
+        with mock.patch("builtins.input", return_value="kill"):
+            self.assertEqual(do.select_environment(True, kill_only=True), "mainnet")
+        self.assertEqual(self.rec.urls, [])   # selecting stays offline
+
+    def test_kill_word_does_not_open_the_normal_mainnet_path(self):
+        self.write(self.main_secret, "mainnet")
+        with mock.patch("builtins.input", return_value="kill"):
+            with self.assertRaises(do.MainnetRefused):
+                do.select_environment(True)          # trading path still needs the full sentence
+        self.assertEqual(do.active_env(), "test")
+
+    def test_kill_only_still_needs_secret_flag_and_tty(self):
+        with mock.patch("builtins.input", side_effect=AssertionError("must fail before prompt")):
+            with self.assertRaisesRegex(RuntimeError, "MISSING"):
+                do.select_environment(True, kill_only=True)
+        self.write(self.main_secret, "mainnet")
+        with mock.patch("builtins.input", side_effect=EOFError):
+            with self.assertRaises(do.MainnetRefused):
+                do.select_environment(True, kill_only=True)
+        self.assertEqual(do.active_env(), "test")
+
     def test_row5b_no_tty_eof_refused(self):
         self.write(self.main_secret, "mainnet")
         with mock.patch("builtins.input", side_effect=EOFError):

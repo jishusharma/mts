@@ -38,12 +38,12 @@ Not machine-checkable: which Deribit subaccount a key belongs to; whether the ke
 8. One order: a plan with max_notional_usd <= 50 and a stop, then
    `python MyTradingSys/execution/executor.py <plan.json> --go --mainnet`, and in another shell
    `python MyTradingSys/execution/position_manager.py <plan_id> --mainnet`.
-9. Kill switch (any time): `python MyTradingSys/execution/kill_switch.py --confirm KILL --mainnet`
-   (HALT is written first; the mainnet confirmation is still typed). Fallback: Deribit web UI "close all".
+9. Kill switch (any time): `python MyTradingSys/execution/kill_switch.py --mainnet`
+   (HALT is written first; you type only the word `kill` - lowercase, at the prompt - not the long S5 sentence). Fallback: Deribit web UI "close all".
 
 ## C. Abort criteria (kill switch immediately, do not resume without review)
 
-Mainnet kill: `mts kill-mainnet` (fallback: `python MyTradingSys/execution/kill_switch.py --confirm KILL --mainnet`).
+Mainnet kill: `mts kill-mainnet` (fallback: `python MyTradingSys/execution/kill_switch.py --mainnet`); type `kill` when asked.
 
 - Any REFUSED / OrderStateUnknown / "unprotected" / "mismatch_halt" message, or a HALT file appears.
 - Position exists without a live stop for > 4 s, or position size > 50 USD.
@@ -57,7 +57,8 @@ Mainnet kill: `mts kill-mainnet` (fallback: `python MyTradingSys/execution/kill_
 - Transaction-log exclusion types (deposit, withdrawal, transfer*) come from the FIX4 decision; only type=trade
   was observed live (testnet). Verify the type list in Deribit docs before raising the cap.
 - auto_trader.py does not pass `--mainnet`; mainnet is manual (executor + position_manager) only.
-- The kill switch on mainnet still needs the typed confirmation (design: no bypass).
+- The kill switch on mainnet needs one typed word, `kill` (interactive, case-sensitive; operator decision 2026-09-29: kill can only
+  reduce risk, so it does not use the long S5 sentence). Every other mainnet path keeps all 4 gates incl. the full sentence.
 
 ## Audit 2026-09-29 open items
 
