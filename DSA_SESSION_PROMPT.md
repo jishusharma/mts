@@ -25,6 +25,10 @@ Practical rules for this session:
   each part. If a paste feels long, ask the user to split it.
 - If a task needs more context than the boot provides, ask for one section
   at a time. Do not ask for a whole file when a section will do.
+- Extraction and session commentary are separate chat turns. Produce one
+  extract per turn. Do not write more than one extract per reply. When a
+  quote cannot be located in the exact transcript of the current extract,
+  drop the rule; do not substitute a quote from a different video.
 
 ## 3. BOOT PROCEDURE
 
