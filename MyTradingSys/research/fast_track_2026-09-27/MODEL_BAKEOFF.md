@@ -19,3 +19,11 @@ Wall-clock comes from the verify SUMMARY line ("... s on JIS-NUC").
 ## Result 2026-09-29 07:45Z (supervisor)
 - 140 gpt-oss:20b: 1632 s, done_reason=length, eval 7000 tokens, EMPTY response (all reasoning) -> FAIL. Qwen 126: 340 s, 10/10.
 - 142 withdrawn to held/; 141 left to finish (already running). Verdict: gpt-oss:20b is not used for code specs; qwen3-coder:30b stays sole code worker.
+
+## qwen3.6:35b, THINK false (2026-09-29 ~09:30Z)
+| task | wall s | eval tok | result |
+|---|---|---|---|
+| 150 journal env | 167 | 119 | FAIL: empty FILE block |
+| 151 plan check | 128 | 125 | FAIL: empty FILE block |
+| 152 mainnet pnl | 145 | 104 | FAIL: empty FILE block |
+Retry 153 = 151 with THINK true, OUTPUT_TOKENS 12000 (pending).
