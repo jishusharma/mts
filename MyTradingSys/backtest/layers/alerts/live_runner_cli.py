@@ -116,6 +116,13 @@ def save_state(state: dict, path) -> None:
         json.dump(state, f, sort_keys=True, indent=2)
 
 
+# Bars between an event's "t" and the first closed bar on which the detector can report it (measured by
+# replaying 7 days of BTCUSDT 15m/1h through a sliding 99-bar window, 2026-09-29). Every layer's t is its
+# confirmation bar except volume_fvg (its scan stops one bar short of the newest bar, so a touch shows up 1 bar
+# later). live_runner_core allows this lag + 1 bar of slack (0 slack on a fresh state).
+CONFIRM_LAG_BARS = {"volume_fvg": 1}
+
+
 def build_default_registry(fetch_funding=None) -> dict:
     """
     Builds and returns a registry for two registered layers: RSI and FABIO CVD.
@@ -166,7 +173,8 @@ def build_default_registry(fetch_funding=None) -> dict:
         ("cryptocred", "fib_pullback", "1h", ll.cc_fib_pullback_layer),
         ("cryptocred", "failed_msb", "1h", ll.cc_failed_msb_layer),
     ]:
-        entries.append({"layer": layer, "sub": sub, "tf": tf, "fn": fn, "params_id": sub + suffix})
+        entries.append({"layer": layer, "sub": sub, "tf": tf, "fn": fn, "params_id": sub + suffix,
+                        "confirm_lag_bars": CONFIRM_LAG_BARS.get(sub, 0)})
     
     # Import here to avoid circular dependency
     from MyTradingSys.backtest.layers.alerts.live_runner_core import build_registry

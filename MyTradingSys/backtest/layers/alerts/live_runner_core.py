@@ -121,10 +121,15 @@ def run_registry(registry: dict, bars_by_tf: dict, state: dict) -> dict:
             prev_events_list = state.get("prev_events", {}).get(key, [])
             fresh = new_alerts(prev_events_list, events)
             
-            # Only the latest closed bar (or the one before it, for layers that confirm a bar late) is actionable ("t" is the bar open time): older events are
-            # history (first run / restart / window slide) and must never be emitted as live alerts.
+            # Only events at most `confirm_lag_bars` (+1 bar slack) behind the latest closed bar are actionable ("t" is
+            # the bar open time; each layer declares how many bars after its "t" it can first be seen, default 0):
+            # older events are history (first run / restart / window slide) and must never be emitted as live alerts.
+            # On a fresh state (no prev_events for this key) there is no slack beyond the layer's own lag (min 1 bar,
+            # the behaviour since 6ad9fd0): the layer's confirmation bar, never older backlog.
             bar_ms = (bars[-1]["t"] - bars[-2]["t"]) if len(bars) > 1 else 0
-            fresh = [e for e in fresh if e.get("t") is not None and e["t"] >= latest - bar_ms]
+            lag = int(entry.get("confirm_lag_bars", 0))
+            allowed = max(lag, 1) if key not in state.get("prev_events", {}) else lag + 1
+            fresh = [e for e in fresh if e.get("t") is not None and e["t"] >= latest - allowed * bar_ms]
             rsi_v = rsi_ma_v = None
             if fresh:
                 # None only if history is shorter than the RSI warm-up (live runs have ~99 bars).
@@ -141,8 +146,10 @@ def run_registry(registry: dict, bars_by_tf: dict, state: dict) -> dict:
                     continue
                 emitted_set.add(ekey)
                 emitted.append(ekey)
-                alerts.append(format_alert(entry["layer"], entry["sub"], tf, event, entry["params_id"],
-                                           rsi_value=rsi_v, rsi_ma_value=rsi_ma_v))
+                alert = format_alert(entry["layer"], entry["sub"], tf, event, entry["params_id"],
+                                     rsi_value=rsi_v, rsi_ma_value=rsi_ma_v)
+                alert["t_confirm"] = latest  # open time of the latest closed bar when first seen (auto-trader ages from it)
+                alerts.append(alert)
                 
             new_prev_events[key] = events
             new_last_t[tf] = latest

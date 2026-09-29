@@ -209,6 +209,10 @@ def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
             sig["reject"] = "no t_close/tf"
         else:
             # t_close is the bar's open time in ms (Binance kline convention); the bar closes one tf later.
+            # A lagged layer's event is first seen `t_confirm` (latest closed bar) after its own bar: age from that.
+            t_seen = alert.get("t_confirm")
+            if isinstance(t_seen, (int, float)) and t_seen > t_close:
+                t_close = t_seen
             age = now.timestamp() - (t_close / 1000 + bar)
             if age > c["max_age_bars"] * bar:
                 sig["reject"] = f"stale ({int(age)} s after bar close)"
