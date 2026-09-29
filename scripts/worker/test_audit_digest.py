@@ -158,7 +158,7 @@ def test_iter_audit_tasks_yields_valid_pass(tmp_path, monkeypatch):
     _write_task(tmp_path, "098-x", "Audit (A7) -- x", ONE_FINDING_REPLY, "FINDINGS: verdict PASS; x")
     items = list(audit_digest.iter_audit_tasks())
     assert len(items) == 1
-    task_id, response, ts = items[0]
+    task_id, response, ts, template = items[0]
     assert task_id == "098-x"
     assert response == ONE_FINDING_REPLY
     assert ts == "2026-09-28T00:00:00Z"
@@ -217,3 +217,75 @@ def test_run_digest_end_to_end(tmp_path, monkeypatch):
     assert out_path.exists()
     text = out_path.read_text(encoding="utf-8")
     assert "risk_guard.py:21" in text
+
+
+# ---------- real reply-format variants seen in done/9*-audit-*.reply.json ----------
+
+REAL_LONGSEV = (
+    "TASK: Audit (A3)\nSTATUS: DONE\nSUMMARY: s\nFINDINGS: 1 finding\nNEXT: n\n\n"
+    "FINDING 1 | A-001 | MEDIUM | MyTradingSys/x/y.py:28\n"
+    'QUOTE: "Raise whatever `find_swings` raises on empty `bars`."\n'
+    "WHY: ambiguous\nFIX: clarify\n"
+)
+REAL_ONELINE = (
+    "TASK: Audit (A1)\nSTATUS: DONE\nSUMMARY: s\nFINDINGS: 1\nNEXT: n\n\n"
+    "FINDING 1 | A1-001 | severity H | MyTradingSys/backtest/bt/bt_stats.py:42 | return mean / sd | "
+    "uses n-1 not n | use population sd\n\nNO FINDINGS\n"
+)
+REAL_BOLD = (
+    "**FINDING 2** | A1 | severity **L** | a/b.py:3\n\n**QUOTE:** `x = 1`\n\n**WHY:** w\n\n**FIX:** f\n"
+)
+NOFIND_HEADER = "FINDINGS: NO FINDINGS\nNEXT: done\n"
+
+
+def test_parse_long_severity_and_quoted_quote():
+    f = audit_digest.parse_findings("904-x", REAL_LONGSEV, "A3")
+    assert len(f) == 1
+    assert f[0]["severity"] == "M" and f[0]["template"] == "A3"
+    assert f[0]["quote"] == "Raise whatever `find_swings` raises on empty `bars`."
+    assert f[0]["line"] == 28
+
+
+def test_parse_one_line_pipe_form():
+    f = audit_digest.parse_findings("914-x", REAL_ONELINE)
+    assert len(f) == 1
+    assert f[0]["quote"] == "return mean / sd" and f[0]["severity"] == "H"
+    assert f[0]["path"].endswith("bt_stats.py") and f[0]["line"] == 42
+
+
+def test_parse_markdown_bold_blank_lines():
+    f = audit_digest.parse_findings("9-x", REAL_BOLD)
+    assert len(f) == 1 and f[0]["quote"] == "x = 1" and f[0]["severity"] == "L"
+
+
+def test_findings_summary_line_is_not_a_finding():
+    assert audit_digest.parse_findings("9-x", NOFIND_HEADER) == []
+    assert audit_digest.parse_findings_ex("9-x", NOFIND_HEADER) == ([], 0)
+
+
+def test_quote_substring_of_line_and_line_off(tmp_path, monkeypatch):
+    monkeypatch.setattr(audit_digest, "REPO", tmp_path)
+    (tmp_path / "f.py").write_text("a\n" * 30 + "    return mean / sd\n" + "b\n" * 30, encoding="utf-8")
+    assert audit_digest.quote_status("f.py", 31, "return mean / sd") == "ok"
+    assert audit_digest.quote_status("f.py", 5, "return mean / sd") == "line_off"
+    assert audit_digest.quote_status("f.py", 31, "nope") == "quote_not_found"
+    assert audit_digest.quote_status("g.py", 31, "x") == "file_missing"
+
+
+def test_run_digest_reports_drop_reasons_and_sorts_by_severity(tmp_path, monkeypatch):
+    done = tmp_path / "done"
+    done.mkdir()
+    monkeypatch.setattr(audit_digest, "DONE_DIR", done)
+    out = tmp_path / "D.md"
+    monkeypatch.setattr(audit_digest, "OUT_PATH", out)
+    monkeypatch.setattr(audit_digest, "CLOSED_PATH", tmp_path / "c.json")
+    monkeypatch.setattr(audit_digest, "REPO", tmp_path)
+    (tmp_path / "MyTradingSys" / "backtest" / "bt").mkdir(parents=True)
+    (tmp_path / "MyTradingSys/backtest/bt/bt_stats.py").write_text("q\n" * 41 + "    return mean / sd\n", encoding="utf-8")
+    _write_task(done, "914-audit-a1-x", "Audit (A1) -- x", REAL_ONELINE, "FINDINGS: verdict PASS; x")
+    _write_task(done, "915-audit-a1-y", "Audit (A1) -- y", REAL_BOLD, "FINDINGS: verdict PASS; x")
+    _write_task(done, "916-audit-a1-z", "Audit (A1) -- z", NOFIND_HEADER, "FINDINGS: verdict PASS; x")
+    assert audit_digest.run_digest() == 0
+    text = out.read_text(encoding="utf-8")
+    assert "bt_stats.py:42" in text
+    assert "Dropped by reason:" in text and "file_missing=1" in text

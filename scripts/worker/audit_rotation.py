@@ -19,7 +19,7 @@ REGISTRY_PATH = REPO / "scripts" / "worker" / "audit_targets.json"
 QUEUE = REPO / "Dumps" / "workers" / "NUC-QUEUE"
 QUEUE_TOOL = REPO / "scripts" / "worker" / "queue_tool.py"
 SPECS_DIR = QUEUE / "specs"
-BACKFILL_BATCH = 3
+BACKFILL_BATCH = 6
 AUDIT_ID_MIN = 900
 
 TEMPLATE_HINT = {
