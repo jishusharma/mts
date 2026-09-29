@@ -4,10 +4,10 @@ Goal: DSA (the chat model in the operator's own logged-in Chrome session) become
 Qwen. It takes packed tasks from the NUC-QUEUE, pastes the prompt into the chat, waits for the answer, and writes a
 reply.json in the SAME schema as nuc-worker.ps1, so `queue_tool.py verify` and the hourly gate work unchanged.
 
-## Where it runs: DESKTOP (decision)
+## Where it runs: DESKTOP (decision, re-confirmed by operator 2026-09-29; launcher scripts/worker/start-dsa-worker.ps1)
 - The queue lives on the desktop (Dumps/workers/NUC-QUEUE); no share latency, no second copy of the repo.
 - The desktop is awake 24/7 already. The laptop stays free for you (and can still be an Ollama worker, Track A).
-- Uses a SEPARATE Chrome profile (`%LOCALAPPDATA%\mts-dsa-chrome`) started with `--remote-debugging-port=9222`, so it
+- Uses a SEPARATE Chrome profile (`F:\MTS\dsa\chrome-profile`; downloads + logs under F:\MTS\dsa, operator 2026-09-29) started with `--remote-debugging-port=9222`, so it
   never touches your normal Chrome, and you can watch it work in its own window.
 
 ## Ground rules built into the worker
