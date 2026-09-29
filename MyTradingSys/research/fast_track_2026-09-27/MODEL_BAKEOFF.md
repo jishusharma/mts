@@ -15,3 +15,7 @@ Tests run raw (Qwen/gpt-oss output unmodified) in a temp dir; review notes are a
 To fill the pending rows: `python scripts/worker/queue_tool.py verify 140 141 142`, then run each `*_gptoss.py.new.new` (module renamed) against
 `MyTradingSys/execution/test_{journal_env,mainnet_plan_check,mainnet_pnl}.py` (already promoted; use a temp dir copy, do not overwrite).
 Wall-clock comes from the verify SUMMARY line ("... s on JIS-NUC").
+
+## Result 2026-09-29 07:45Z (supervisor)
+- 140 gpt-oss:20b: 1632 s, done_reason=length, eval 7000 tokens, EMPTY response (all reasoning) -> FAIL. Qwen 126: 340 s, 10/10.
+- 142 withdrawn to held/; 141 left to finish (already running). Verdict: gpt-oss:20b is not used for code specs; qwen3-coder:30b stays sole code worker.
