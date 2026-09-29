@@ -95,7 +95,7 @@ top of the relevant section. Keep each entry to 3 lines.
 - Haiku summary dropped a requested item; kill-switch cancel-before-close was missed by every review
   until an Opus audit. RULE: summaries are checked against the request checklist item by item; safety
   paths (kill switch, stop handling, loss guard) get an ordering/failure-mode review, not a diff skim.
-- Recurring pattern (git log: 86 commits say fix/revert; 14 say false halt/stale/fail-open/closed):
+- Recurring pattern (commit history: 86 commits say fix/revert; 14 say false halt/stale/fail-open/closed):
   most incidents were state or accounting assumptions in live code, not strategy. RULE: before editing a
   live path ask "what happens on restart, reset, transfer, partial fill, API error?" and test one of them.
 - `--hours` in new_plan is an entry window, not a time exit: one wide bracket held the single slot 7 h and
