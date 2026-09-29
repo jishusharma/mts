@@ -19,4 +19,12 @@ bt_rsi | PASS (1 fix) | bt/test_bt_rsi.py 13/13 + test_bt_rsi_edge.py 11/11 | d3
 prob_table | PASS (2 fixes) | backtest/test_prob_table.py 12/12 + test_prob_table_edge.py 9/9 | 8614eaa | build_table now skips records with ts None; evaluate averaged log-loss over len(test) instead of scored records (halved loss when a test record was skipped); 9 edge tests
 fabio_escalation (088) | PASS (2 fixes) | layers/fabio/test_fabio_escalation.py 4/4 + test_fabio_escalation_edge.py 10/10 | a408fa6 | relative import from .cc_structure (wrong package) -> absolute; a later record bar closing under the level was recorded as a second absorption so escalation never fired (now only first absorption recorded); empty bars raises ValueError by codebase convention
 cc_retest / cc_structure test updates | NO PROMOTE | live test_cc_retest + test_cc_structure + test_cc_setups 20/20 | N/A | .new tests differ from live only by a loader header that imports nonexistent cc_*.py.new modules (fail with FileNotFoundError); cc modules already promoted; leave or delete the .new files
+0989-turn-of-candle-r2 | PASS | layers/turn_of_candle/test_turn_of_candle.py 7/7 + test_turn_of_candle_edge.py 29/29 | 5392309 | fixed event detection logic (was checking next minute instead of current); 29 edge tests cover empty/single/boundaries/errors
 extract_nuc_files | HOLD | N/A | N/A | needs spec-derived test
+106-fabio-faw-c | HOLD | N/A | N/A | PARTIAL: only proposal was outside scope (extract_FawPrRUGNpk_3of3.md), not written; repack
+108-fabio-lqv-b | HOLD | N/A | N/A | PARTIAL: only proposal outside scope (extract_LQvv5xgy_ik_second-half.md), not written; repack
+109-fabio-sta | HOLD | verify_extract_quotes.py (scratch copy of inline reply) | N/A | NUC said DONE but gave no FILE block; inline extract fails 5/5 NO-TRANSCRIPT (GPS lacks transcript path?); repack or stage by hand
+110-fabio-fzl | HOLD | N/A | N/A | PARTIAL: only proposal outside scope (extract_fZlNGWvd2Ko.md), not written; repack
+111-fabio-jas | HOLD | verify_extract_quotes.py (scratch) | N/A | DONE but no FILE block; all 8 quotes NO-TRANSCRIPT; repack or stage by hand
+formula_audit (audit/formula_audit.py.new) | HOLD | N/A | N/A | needs spec-derived test (no test_formula_audit.py, no NUC spec found)
+bt_stats | HOLD | test_bt_stats.py | N/A | ImportError: cannot import wilson, bootstrap_mean_ci, etc.; .new file incomplete (only sharpe function, 103 bytes vs 3421 live)

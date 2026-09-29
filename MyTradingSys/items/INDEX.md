@@ -41,4 +41,5 @@ B077 | OPEN    | B077_stop_order_wrong_type.md | stop placed as reduce-only LIMI
 B078 | OPEN    | B078_cancel_all_by_label_overscope.md | cancel_all_by_label cancels all orders for currency, not label-scoped; not yet called
 B079 | OPEN    | B079_caps_check_not_enforced.md | caps_check.within_max_loss computed but never enforced; no within_max_notional check exists
 T052 | OPEN    | T052_setup_confirmed_trigger.md | define a Tom-cited trigger for SETUP_CONFIRMED per operator D6b ruling
+T059 | OPEN    | T059_paste_size_guard.md | auto-split SESSION_PASTE at 80 KB; NUC 121 running
 # END

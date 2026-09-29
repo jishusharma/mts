@@ -165,4 +165,5 @@ IN-FIX rows older than 14 days fail Build-Check.
 
 | B079 | 2026-09-27 | OPEN | HIGH | caps_check.within_max_loss computed by plan_compiler.py but never enforced; no within_max_notional check exists at all | executor.py.execute_plan() never references caps_check; a plan can compile with within_max_loss=False and still execute unchanged. Per-item doc: MyTradingSys/items/B079_caps_check_not_enforced.md. | - |
 | T052 | 2026-09-27 | OPEN | MED | Define a Tom-cited trigger for SETUP_CONFIRMED, per operator D6b ruling (not removal) | Per-item doc: MyTradingSys/items/T052_setup_confirmed_trigger.md. Follows B076; D1-D7 decision brief in research/core_readiness_2026-09-27/D1_D7_DECISION_BRIEF.md. | - |
+| T059 | 2026-09-29 | OPEN | LOW | start-session.ps1 writes 132 KB SESSION_PASTE with no split; DSA section-2 80 KB threshold breached every session | 2026-09-29 revalidate: paste mtime 16:09:06, bytes 135540, over 80 KB; launcher warns but does not split | NUC task 121-paste-size-guard queued 2026-09-29T18:25Z |
 # END
