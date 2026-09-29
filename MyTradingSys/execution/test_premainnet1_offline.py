@@ -148,7 +148,7 @@ class BreachClient:
         return self._env
 
     def get_account_summary(self, token, currency="BTC"):
-        return {"equity": 1.0}
+        return {"equity": 1.0, "futures_session_upl": 0.0}
 
     def get_transaction_log(self, token, currency="BTC", start_ms=0, end_ms=0):
         return [{"type": "trade", "change": -0.001}]  # -0.001 BTC * 60000 = -60 USD

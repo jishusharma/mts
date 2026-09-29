@@ -20,7 +20,7 @@ class FakeClient:
 
     # --- daily_loss_monitor reads ---
     def get_account_summary(self, token, currency="BTC"):
-        return {"equity": self.equity}
+        return {"equity": self.equity, "futures_session_upl": 0.0}
 
     def get_ticker(self, instrument_name="BTC-PERPETUAL"):
         return {"mark_price": self.mark_price}

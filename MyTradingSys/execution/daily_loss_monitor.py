@@ -46,16 +46,21 @@ P&L SOURCE DECISION (read this before changing the math below):
   UNCHANGED (that module is already staged+tested; do not edit it).
 
 L6 PART 2 (2026-09-29) - PnL SOURCE, decision in research/fast_track_2026-09-27/
-FIX4_DESIGN.md ("transaction-log probe RESULT and DECISION", testnet probe
-testnet/probe_transaction_log.py): pnl_source="transaction_log" =
-  sum(change) [BTC] over today's 00:00-UTC..now private/get_transaction_log
-  entries, EXCLUDING money-movement types (deposit, withdrawal, transfer*),
-  times mark_price. Includes fees/funding/settlement, excludes deposits and
-  transfers (which the equity delta wrongly counted as P/L). Field names
-  (logs, continuation, type, change) are those of the repo's probe; only
-  type="trade" has been observed live (testnet) - the exclusion type names
-  are the FIX4 decision, NOT verified against the official Deribit
-  transaction-log type list (operator open question).
+FIX4_DESIGN.md; arithmetic and field semantics in mainnet_pnl.py (audit HIGH #3, spec 129):
+pnl_source="transaction_log" = (realized + session unrealized) [BTC] times mark_price, where
+  realized   = sum over today's 00:00-UTC..now private/get_transaction_log entries of type
+               "trade" (allow-list; every other type is ignored) of change, plus cashflow
+               when profit_as_cashflow is true (Deribit: a futures trade's realized session
+               PnL is carried in cashflow until the 08:00 UTC settlement; change holds only
+               the fee);
+  unrealized = account summary futures_session_upl (fallback session_upl).
+  Residual limits (honest): "settlement" entries are excluded (they double count the
+  cashflow already taken from trades); session UPL is "since the last 08:00 UTC
+  settlement", not since 00:00 UTC, so a position carried across the 08:00 settlement has
+  its pre-settlement P/L booked into that settlement entry and NOT counted; funding
+  (interest_pl) is not added. Fine for intraday flat-to-flat trading; revisit before
+  holding overnight. A missing or non-numeric field raises ValueError (fail closed: the
+  consecutive-failure path writes HALT_DAILY_LOSS).
   Default source: "equity" on testnet (unchanged behaviour, keeps the FT-2
   testnet suite T-c identical); "transaction_log" whenever the client's
   active_env() is "mainnet". Override with --pnl-source.
@@ -94,6 +99,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import journal  # noqa: E402
 import kill_switch  # noqa: E402
+import mainnet_pnl  # noqa: E402
 from daily_loss_guard import check_daily_loss_cap, format_breach_report, DEFAULT_DAILY_LOSS_CAP_USD  # noqa: E402
 
 POLL_INTERVAL_SECONDS = 30
@@ -189,7 +195,9 @@ def _day_start_ms(date_str: str) -> int:
 
 
 def transaction_log_pnl_btc(entries) -> float:
-    """sum(change) over entries, minus money-movement types. An entry with no
+    """DEPRECATED (audit HIGH #3): change-only sum, misses cashflow when profit_as_cashflow
+    is true; compute_total_pnl_usd now uses mainnet_pnl.daily_pnl_btc. Kept for existing
+    tests. sum(change) over entries, minus money-movement types. An entry with no
     numeric 'change' raises ValueError - never silently skipped (fail closed:
     the monitor's consecutive-failure path then writes HALT_DAILY_LOSS)."""
     total = 0.0
@@ -219,7 +227,8 @@ def compute_total_pnl_usd(client, token, state: dict, currency: str = "BTC",
         entries = client.get_transaction_log(token, currency=currency,
                                              start_ms=_day_start_ms(state["date"]), end_ms=end_ms)
         ticker = client.get_ticker(instrument_name=instrument)
-        return round(transaction_log_pnl_btc(entries) * ticker["mark_price"], 2)
+        summary = client.get_account_summary(token, currency=currency)
+        return round(mainnet_pnl.daily_pnl_btc(entries, summary) * ticker["mark_price"], 2)
     summary = client.get_account_summary(token, currency=currency)
     ticker = client.get_ticker(instrument_name=instrument)
     equity_delta = summary["equity"] - state["day_start_equity"]
