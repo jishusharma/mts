@@ -40,6 +40,8 @@ AUTO_PAUSE = HERE / "AUTO_PAUSE"
 STATE_PATH = HERE / "auto_trader_state.json"
 LOG_PATH = HERE / "auto_trades.jsonl"
 MANAGER_LOG_DIR = HERE / "journal" / "auto_manager_logs"
+OPERATOR_ALERTS = HERE / "OPERATOR_ALERTS.log"
+MAX_RESPAWNS = 3   # position_manager respawns per plan when it exits while the exchange still shows a position
 TOM_ALERT = REPO / "runtime_data" / "last_alert.json"
 LAYER_ALERT_DIR = REPO / "MyTradingSys" / "runtime" / "alerts"
 
@@ -280,13 +282,84 @@ def place(sig: dict, dry_run: bool, account: str = None) -> dict:
         return {"outcome": "entry_failed", "plan_id": plan_id, "output": out.strip()[-400:]}
     if "no_fill" in out:                     # limit entry that never filled: nothing to manage
         return {"outcome": "no_fill", "plan_id": plan_id, "output": out.strip()[-300:]}
+    proc = spawn_manager(plan_id, account)
+    return {"outcome": "entered", "plan_id": plan_id, "manager_pid": proc.pid, "proc": proc,
+            "output": out.strip()[-300:]}
+
+
+def spawn_manager(plan_id: str, account: str = None):
+    """Start position_manager for plan_id with the account's MTS_ACCOUNT. Returns the Popen."""
     MANAGER_LOG_DIR.mkdir(parents=True, exist_ok=True)
     mlog = open(MANAGER_LOG_DIR / f"{plan_id}.log", "a", encoding="utf-8")
     penv = {**os.environ, "MTS_ACCOUNT": account} if account else {k: v for k, v in os.environ.items() if k != "MTS_ACCOUNT"}
-    proc = subprocess.Popen([py, str(HERE / "position_manager.py"), plan_id], cwd=REPO, stdout=mlog,
+    return subprocess.Popen([sys.executable, str(HERE / "position_manager.py"), plan_id], cwd=REPO, stdout=mlog,
                             stderr=subprocess.STDOUT, env=penv)
-    return {"outcome": "entered", "plan_id": plan_id, "manager_pid": proc.pid, "proc": proc,
-            "output": out.strip()[-300:]}
+
+
+def exchange_flat(account: str = None, instrument: str = "BTC-PERPETUAL"):
+    """Read-only exchange check for one account: True flat, False position open, None could not be read."""
+    prev = os.environ.get("MTS_ACCOUNT")
+    try:
+        if str(HERE) not in sys.path:
+            sys.path.insert(0, str(HERE))
+        import deribit_orders as do
+        if account:
+            os.environ["MTS_ACCOUNT"] = account
+        else:
+            os.environ.pop("MTS_ACCOUNT", None)
+        token = do.authenticate()
+        return int(do.get_position(token, instrument).get("size") or 0) == 0
+    except Exception:  # noqa: BLE001
+        return None
+    finally:
+        if prev is None:
+            os.environ.pop("MTS_ACCOUNT", None)
+        else:
+            os.environ["MTS_ACCOUNT"] = prev
+
+
+def operator_alert(msg: str) -> None:
+    with open(OPERATOR_ALERTS, "a", encoding="utf-8", newline="\n") as f:
+        f.write(f"{now_utc().strftime('%Y-%m-%dT%H:%M:%SZ')} auto_trader {msg}\n")
+
+
+def settle_slot(slot: dict, acct: str = None) -> bool:
+    """True when the slot's trade is closed and the slot may be freed. A manager that exited non-zero frees the slot
+    only if the exchange shows the account flat; otherwise it is respawned (max MAX_RESPAWNS) and the slot stays busy."""
+    rc = slot["proc"].poll()
+    if rc is None:
+        return False
+    if rc != 0:
+        flat = exchange_flat(acct)
+        if flat is None:
+            slot["flat_check_fails"] = slot.get("flat_check_fails", 0) + 1
+            if slot["flat_check_fails"] % 10 == 1:
+                log({"event": "manager_exit_unverified", "plan_id": slot["plan_id"], "manager_rc": rc,
+                     "account": acct, "note": "exchange position unreadable; slot kept busy"})
+            return False
+        if flat is False:
+            n = slot.get("respawns", 0)
+            if n >= MAX_RESPAWNS:
+                if not slot.get("alerted"):
+                    slot["alerted"] = True
+                    log({"event": "manager_lost", "plan_id": slot["plan_id"], "manager_rc": rc, "account": acct,
+                         "respawns": n, "action": "operator_alert_slot_busy"})
+                    operator_alert(f"OPERATOR: position_manager for {slot['plan_id']} (account {acct or 'default'}) "
+                                   f"keeps dying (rc={rc}) and the position is still OPEN; {MAX_RESPAWNS} respawns "
+                                   f"used - manage/close it by hand")
+                return False
+            slot["respawns"] = n + 1
+            log({"event": "manager_lost", "plan_id": slot["plan_id"], "manager_rc": rc, "account": acct,
+                 "respawn": slot["respawns"], "action": "respawn"})
+            try:
+                slot["proc"] = spawn_manager(slot["plan_id"], acct)
+            except Exception as e:  # noqa: BLE001 - the dead proc stays in the slot, next cycle retries
+                log({"event": "respawn_error", "plan_id": slot["plan_id"], "error": repr(e)[:200]})
+            return False
+    log({"event": "trade_closed", "plan_id": slot["plan_id"], "source": slot["source"], "manager_rc": rc,
+         **({"account": acct} if acct else {})})
+    record_ledger(slot["plan_id"], slot["source"], acct, rc)
+    return True
 
 
 def record_ledger(plan_id: str, source: str, account, manager_rc) -> None:
@@ -309,19 +382,10 @@ def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = N
     now = now or now_utc()
     extra = extra if extra is not None else {}
     for lab in list(extra):
-        rc = extra[lab]["proc"].poll()
-        if rc is not None:
-            log({"event": "trade_closed", "plan_id": extra[lab]["plan_id"], "source": extra[lab]["source"],
-                 "manager_rc": rc, "account": lab})
-            record_ledger(extra[lab]["plan_id"], extra[lab]["source"], lab, rc)
+        if settle_slot(extra[lab], lab):
             del extra[lab]
-    if active:
-        rc = active["proc"].poll()
-        if rc is not None:
-            log({"event": "trade_closed", "plan_id": active["plan_id"], "source": active["source"],
-                 "manager_rc": rc})
-            record_ledger(active["plan_id"], active["source"], None, rc)
-            active = {}
+    if active and settle_slot(active, None):
+        active = {}
     signals = []
     s = tom_signal(load_json(TOM_ALERT, {}), state, cfg, now)
     if s:

@@ -65,6 +65,13 @@ order_filled events on entry orders (falling back to the largest amount ever
 seen on the stop - i.e. its first placement, before any shrink - only if no
 entry fill was journaled at all, which should not happen in normal use).
 
+NETRETRY (2026-09-29 incident, S-mkt-0929-1501): a transient auth/read error (URLError, timeout,
+connection reset, HTTP 5xx, retryable Deribit codes) used to escape as a traceback (rc 1) and the
+auto_trader freed the slot while the position was still open. READ and AUTH calls now retry with
+backoff (READ_RETRY_DELAYS, ~62 s) and re-authenticate; exhausted -> ContactLost -> rc 3
+("lost contact, position may be open"). Order-placing calls are never retried here (G-h design).
+The MAX_UNPROTECTED_SECONDS bound applies only to a real "stop not live" state, not to read outages.
+
 Run (after executor returned status entry_filled_stop_placed):
   python MyTradingSys/execution/position_manager.py <plan_id> [--max-seconds N] [--once]
 """
@@ -98,8 +105,54 @@ PLANS_DIR = Path(__file__).resolve().parent / "plans"
 HALT_PATH = Path(__file__).resolve().parent / "HALT"  # FIX3 M5: same file executor preflight refuses on
 
 
+# NETRETRY: sleeps between retries of a failed READ/AUTH call (5 retries, ~62 s total).
+READ_RETRY_DELAYS = (2, 4, 8, 16, 32)
+RC_LOST_CONTACT = 3
+
+
 class ManagerHalted(Exception):
     """Operator attention required."""
+
+
+class ContactLost(Exception):
+    """Reads/auth kept failing beyond the retry budget: the position may still be open (rc 3)."""
+
+
+def _is_transient(e) -> bool:
+    """True for network/auth-transport trouble and retryable Deribit codes; False for a definite API answer."""
+    if isinstance(e, do.DeribitError):
+        msg = str(e).lower()
+        # Coded API answers (incl. 10028/10047/10050) were already retried inside do._call and keep their
+        # existing meaning here (e.g. get_order_state -> query_failed -> the H5 unprotected bound).
+        return e.code is None or "transport" in msg or "re-auth failed" in msg or "http 5" in msg
+    return isinstance(e, OSError)   # URLError / timeout / connection reset
+
+
+def _retry_call(fn, *args, reauth=None):
+    """Run fn(*args); on a transient error back off (READ_RETRY_DELAYS), re-authenticate via reauth()
+    (which may itself fail transiently) and retry. Definite errors propagate unchanged; budget exhausted
+    -> ContactLost. Only for reads/auth: never wrap an order-placing call in this."""
+    last = None
+    for i in range(len(READ_RETRY_DELAYS) + 1):
+        try:
+            return fn(*args)
+        except Exception as e:  # noqa: BLE001
+            if not _is_transient(e):
+                raise
+            last = e
+        if i == len(READ_RETRY_DELAYS):
+            break
+        print(f"WARNING: transient error ({last!r}); retry {i + 1}/{len(READ_RETRY_DELAYS)} in "
+              f"{READ_RETRY_DELAYS[i]}s", flush=True)
+        time.sleep(READ_RETRY_DELAYS[i])
+        if reauth is not None:
+            try:
+                reauth()
+            except Exception as e:  # noqa: BLE001
+                if not _is_transient(e):
+                    raise
+                last = e
+    raise ContactLost(f"reads failed beyond retry budget: {last!r}")
 
 
 def _plan_orders(plan_id):
@@ -216,7 +269,7 @@ def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=Fal
     if stop is None or entry_side is None:
         raise ManagerHalted(f"plan {plan_id}: journal has no entry/stop - nothing to manage")
     is_long = entry_side == "BUY"
-    token = token or do.authenticate()
+    token = token or _retry_call(do.authenticate)
     unprotected_since = None  # S3: set when a poll first observes the stop not live
     t_end = time.time() + max_seconds if max_seconds else None
     max_hold_s = (_plan_max_hold_minutes(plan_id) or 0) * 60 or None
@@ -269,6 +322,14 @@ def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=Fal
                                                          "target_filled": tf})
         return {"plan_id": plan_id, "status": "closed", "stop_state": "time_exit", "target_filled": tf,
                 "reason": "time_exit"}
+
+    def _reauth():
+        nonlocal token
+        token = do.authenticate()
+
+    def rd(fn, *a):
+        """Read call with transient-error retry + re-auth (token always current)."""
+        return _retry_call(lambda *x: fn(token, *x), *a, reauth=_reauth)
 
     def flatten_halt(reason):
         journal.append_event(plan_id, "mismatch_halt", {"reason": reason, "by": "position_manager"})
@@ -323,11 +384,11 @@ def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=Fal
         raise ManagerHalted(f"flattened + halted: {reason}")
 
     while True:
-        pos = _signed(do.get_position(token, instrument).get("size"))
+        pos = _signed(rd(do.get_position, instrument).get("size"))
         # journal target fills we can see (audit only; position is the truth)
         for oid, tg in targets.items():
             try:
-                st = do.get_order_state(token, oid)
+                st = rd(do.get_order_state, oid)
             except do.DeribitError:
                 continue
             fa = int(st.get("filled_amount") or 0)
@@ -337,7 +398,7 @@ def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=Fal
                                                                "order_state": st.get("order_state"),
                                                                "average_price": st.get("average_price")})
         try:
-            sst = do.get_order_state(token, stop["order_id"])
+            sst = rd(do.get_order_state, stop["order_id"])
         except do.DeribitError as e:
             sst = {"order_state": f"query_failed:{e.error}"}
         stop_state = sst.get("order_state")
@@ -479,6 +540,13 @@ def main() -> int:
     except ManagerHalted as e:
         print(f"HALTED: {e}")
         return 1
+    except ContactLost as e:
+        print(f"LOST CONTACT: {e} - position may be open, stop/targets rest on the exchange")
+        try:
+            journal.append_event(a.plan_id, "error", {"context": "manager_lost_contact", "error": repr(e)[:300]})
+        except Exception:  # noqa: BLE001
+            pass
+        return RC_LOST_CONTACT
 
 
 if __name__ == "__main__":

@@ -168,7 +168,8 @@ class CycleTest(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         d = Path(self.tmp.name)
         self.saved = {k: getattr(at, k) for k in ("TOM_ALERT", "LAYER_ALERT_DIR", "HALT", "HALT_DAILY_LOSS",
-                                                   "LOG_PATH", "place", "AUTO_PAUSE", "record_ledger")}
+                                                   "LOG_PATH", "place", "AUTO_PAUSE", "record_ledger",
+                                                   "exchange_flat", "spawn_manager", "OPERATOR_ALERTS")}
         at.TOM_ALERT, at.LAYER_ALERT_DIR = d / "last_alert.json", d / "alerts"
         at.HALT, at.HALT_DAILY_LOSS, at.LOG_PATH = d / "HALT", d / "HALT_DAILY_LOSS", d / "log.jsonl"
         at.AUTO_PAUSE = d / "AUTO_PAUSE"
@@ -190,6 +191,11 @@ class CycleTest(unittest.TestCase):
         at.place = fake_place
         self.ledger = []
         at.record_ledger = lambda *a: self.ledger.append(a)
+        self.flat = True
+        at.exchange_flat = lambda acct=None: self.flat
+        self.spawned = []
+        at.spawn_manager = lambda pid, acct=None: (self.spawned.append((pid, acct)), P(rc=None))[1]
+        at.OPERATOR_ALERTS = d / "alerts.log"
 
     def tearDown(self):
         for k, v in self.saved.items():
@@ -240,6 +246,50 @@ class CycleTest(unittest.TestCase):
         at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW, extra=extra)
         self.assertEqual(self.ledger, [("px", "layer:rsi:x:15m", "jishu_2", 1)])
         self.assertEqual(extra, {})
+
+    def test_manager_exit_with_open_position_respawns_and_keeps_slot(self):
+        self.flat = False
+        extra = {"jishu_2": {"proc": self.P(rc=3), "plan_id": "px", "source": "layer:rsi:x:15m"}}
+        at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW, extra=extra)
+        self.assertIn("jishu_2", extra)
+        self.assertEqual(self.spawned, [("px", "jishu_2")])
+        self.assertIsNone(extra["jishu_2"]["proc"].poll())
+        self.assertEqual(self.ledger, [])
+        self.assertEqual(self.events(), ["manager_lost"])
+
+    def test_default_slot_open_position_respawn_uses_no_account(self):
+        self.flat = False
+        active = {"proc": self.P(rc=1), "plan_id": "old", "source": "tom"}
+        active = at.cycle({"tom_last_alert_no": 43}, cfg(), False, active, NOW)
+        self.assertEqual(active["plan_id"], "old")
+        self.assertEqual(self.spawned, [("old", None)])
+
+    def test_manager_exit_with_flat_account_closes_trade(self):
+        self.flat = True
+        extra = {"jishu_2": {"proc": self.P(rc=1), "plan_id": "px", "source": "s"}}
+        at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW, extra=extra)
+        self.assertEqual(extra, {})
+        self.assertEqual(self.spawned, [])
+        self.assertEqual(self.events(), ["trade_closed"])
+        self.assertEqual(self.ledger, [("px", "s", "jishu_2", 1)])
+
+    def test_respawn_limit_writes_operator_alert_and_keeps_slot_busy(self):
+        self.flat = False
+        extra = {"jishu_2": {"proc": self.P(rc=3), "plan_id": "px", "source": "s", "respawns": at.MAX_RESPAWNS}}
+        for _ in range(2):
+            at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW, extra=extra)
+        self.assertIn("jishu_2", extra)
+        self.assertEqual(self.spawned, [])
+        self.assertEqual(len(at.OPERATOR_ALERTS.read_text(encoding="utf-8").splitlines()), 1)   # alerted once
+        self.assertEqual(self.events(), ["manager_lost"])
+
+    def test_unreadable_exchange_keeps_slot_without_respawn(self):
+        self.flat = None
+        extra = {"jishu_2": {"proc": self.P(rc=3), "plan_id": "px", "source": "s"}}
+        at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW, extra=extra)
+        self.assertIn("jishu_2", extra)
+        self.assertEqual(self.spawned, [])
+        self.assertEqual(self.ledger, [])
 
     def test_failed_entry_leaves_slot_free(self):
         at.place = lambda sig, dry: {"outcome": "entry_failed", "plan_id": "x"}
