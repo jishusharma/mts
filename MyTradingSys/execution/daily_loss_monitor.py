@@ -212,8 +212,13 @@ def transaction_log_pnl_btc(entries) -> float:
 
 
 def default_pnl_source(client) -> str:
+    # XFERFIX 2026-09-29: equity delta counts deposits/withdrawals/subaccount transfers as P/L (a 40 BTC
+    # testnet transfer-out tripped the kill switch). Any client that can read the transaction log uses it
+    # (mainnet AND testnet); the equity fallback remains only for clients without a log.
     env = getattr(client, "active_env", None)
-    return "transaction_log" if callable(env) and env() == "mainnet" else "equity"
+    if callable(env) and env() == "mainnet":
+        return "transaction_log"
+    return "transaction_log" if callable(getattr(client, "get_transaction_log", None)) else "equity"
 
 
 def compute_total_pnl_usd(client, token, state: dict, currency: str = "BTC",

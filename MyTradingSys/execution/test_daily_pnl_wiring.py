@@ -55,10 +55,10 @@ class DailyPnlWiringTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             dlm.compute_total_pnl_usd(c, "tok", STATE, now_ms=1_790_000_000_000)
 
-    def test_testnet_equity_source_unchanged(self):
+    def test_explicit_equity_source_still_available(self):
         c = Client(LOGS, {"equity": 0.999}, env="test")
         # (0.999 - 1.0) * 100000 = -100.0 (float noise rounded to 2 dp)
-        self.assertEqual(dlm.compute_total_pnl_usd(c, "tok", STATE), -100.0)
+        self.assertEqual(dlm.compute_total_pnl_usd(c, "tok", STATE, pnl_source="equity"), -100.0)  # XFERFIX: testnet default is now the log
         self.assertFalse(any(isinstance(x, tuple) for x in c.calls), "equity source must not read the tx log")
 
 
