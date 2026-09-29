@@ -85,6 +85,16 @@ class LayerSignalTest(unittest.TestCase):
         self.assertNotIn("reject", s)
         self.assertEqual(s["plan_args"][s["plan_args"].index("--entry") + 1], "market")
 
+    def test_max_hold_is_8_bars_of_signal_tf(self):
+        for tf, mins in (("15m", "120"), ("1h", "480")):
+            t = self.T15 if tf == "15m" else int(datetime(2026, 9, 28, 23, 0, tzinfo=timezone.utc).timestamp() * 1000)
+            s = at.layer_signal({"layer": "rsi", "event": "support", "tf": tf, "t_close": t}, cfg(), NOW)
+            self.assertEqual(s["plan_args"][s["plan_args"].index("--max-hold-minutes") + 1], mins)
+
+    def test_tom_has_no_max_hold_by_default(self):
+        s = at.tom_signal(tom_alert(), {"tom_last_alert_no": 43}, cfg(), NOW)
+        self.assertNotIn("--max-hold-minutes", s["plan_args"])
+
     def test_rsi_cross_direction(self):
         up = at.layer_signal({"layer": "rsi", "event": "cross", "direction": "up", "tf": "15m",
                               "t_close": self.T15}, cfg(), NOW)

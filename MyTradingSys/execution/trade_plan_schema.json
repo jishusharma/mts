@@ -24,6 +24,11 @@
       "type": "string",
       "enum": ["LONG", "SHORT"]
     },
+    "max_hold_minutes": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Optional time exit: position_manager closes the position (reduce-only market, close first, then cancels stop/targets) once this many minutes have elapsed since the entry fill."
+    },
     "validity": {
       "type": "object",
       "required": ["start", "end"],

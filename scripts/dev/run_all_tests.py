@@ -82,7 +82,7 @@ def main(argv=None):
         "test_gh_retry_offline", "test_halt_preflight_offline", "test_kill_switch", "test_kill_switch_account", "test_premainnet1_offline",
         "test_risk_guard", "test_s1_cap_offline", "test_s3_unprotected_offline",
         "test_s6_orphan_offline", "test_triggered_stop_offline", "test_soak_report", "test_fix3_offline", "test_fix4_offline",
-        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_fabio_slot", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix",  # W2 R2: execution-math tests (FORMULAS.md 11)
+        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_fabio_slot", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline",  # W2 R2: execution-math tests (FORMULAS.md 11)
     ]
     success, output = run_step(1, "Execution module tests", cmd1)
     results.append(("Step 1: Execution tests", success))

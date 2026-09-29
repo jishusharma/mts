@@ -47,11 +47,12 @@ TF_SECONDS = {"1m": 60, "5m": 300, "15m": 900, "30m": 1800, "1h": 3600, "4h": 14
 
 DEFAULT_CONFIG = {
     # Tom core: limit at the zone, stop/target from the alert, whole size off at the target.
-    "tom": {"enabled": True, "size_usd": 200, "max_loss_usd": 25, "hours": 1.0, "max_age_seconds": 300,
+    "tom": {"enabled": True, "size_usd": 200, "max_loss_usd": 25, "hours": 1.0, "max_hold_minutes": None, "max_age_seconds": 300,
             "verdicts": ["SETUP_FORMING", "SETUP_CONFIRMED"], "min_net_rr": 2.0},
     # Layers have no stop/target of their own: fixed bracket, market entry, small size.
     "layers": {"enabled": True, "size_usd": 100, "max_loss_usd": 10, "stop_pct": 1.0, "targets": "2",
-               "hours": 2.0, "max_age_bars": 1.2},
+               "hours": 2.0, "max_age_bars": 1.2,
+               "max_hold_bars": 8},   # time exit = 8 bars of the signal timeframe (minutes derived per alert tf)
     # (layer, event) -> side. "direction" means: up -> long, down -> short. A "side" field on the alert wins.
     "layer_rules": {
         "rsi:support": "long",
@@ -151,6 +152,8 @@ def tom_signal(alert: dict, state: dict, cfg: dict, now: datetime):
     sig["plan_args"] = ["--side", p["side"], "--entry", "limit", "--price", f"{p['entry']}",
                         "--size", str(c["size_usd"]), "--stop", f"{stop_pct}", "--targets", f"{tgt_pct}",
                         "--max-loss", str(c["max_loss_usd"]), "--hours", str(c["hours"])]
+    if c.get("max_hold_minutes"):
+        sig["plan_args"] += ["--max-hold-minutes", str(c["max_hold_minutes"])]
     return sig
 
 
@@ -220,6 +223,8 @@ def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
         sig["plan_args"] = ["--side", side, "--entry", "market", "--size", str(c["size_usd"]),
                             "--stop", str(c["stop_pct"]), "--targets", c["targets"],
                             "--max-loss", str(c["max_loss_usd"]), "--hours", str(c["hours"])]
+        if c.get("max_hold_bars"):
+            sig["plan_args"] += ["--max-hold-minutes", f"{c['max_hold_bars'] * bar / 60:g}"]
     return sig
 
 

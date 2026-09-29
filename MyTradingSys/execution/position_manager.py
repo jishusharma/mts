@@ -92,6 +92,9 @@ LIVE_STOP_STATES = {"untriggered", "open"}
 # Documented here as a named constant instead of left implicit in a retry
 # counter.
 MAX_UNPROTECTED_SECONDS = 2 * POLL_INTERVAL_SECONDS  # 4s
+# Time exit: retry a FAILED time-exit close no more often than this (the stop stays live meanwhile).
+TIME_EXIT_RETRY_SECONDS = 10
+PLANS_DIR = Path(__file__).resolve().parent / "plans"
 HALT_PATH = Path(__file__).resolve().parent / "HALT"  # FIX3 M5: same file executor preflight refuses on
 
 
@@ -158,6 +161,29 @@ def _reduce_fills(plan_id, instrument, is_long, token):
                and str(t.get("direction")).lower() == exit_dir)
 
 
+def _plan_max_hold_minutes(plan_id):
+    """Plan field max_hold_minutes (> 0) or None. Missing / unreadable / invalid -> None (no time exit)."""
+    try:
+        import json
+        v = json.loads((PLANS_DIR / f"{plan_id}.json").read_text(encoding="utf-8")).get("max_hold_minutes")
+        v = float(v)
+        return v if v > 0 else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _entry_fill_ts(plan_id):
+    """Journal timestamp of the first entry-order fill (the moment the hold clock starts), or None."""
+    entries = set()
+    for ev in journal.read_events(plan_id):
+        d = ev["data"]
+        if ev["event_type"] == "order_placed" and str(d.get("label", "")).startswith("entry"):
+            entries.add(d["order_id"])
+        elif ev["event_type"] == "order_filled" and d.get("order_id") in entries and d.get("filled_amount"):
+            return ev["ts"]
+    return None
+
+
 def _signed(size):
     return int(size or 0)
 
@@ -193,6 +219,56 @@ def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=Fal
     token = token or do.authenticate()
     unprotected_since = None  # S3: set when a poll first observes the stop not live
     t_end = time.time() + max_seconds if max_seconds else None
+    max_hold_s = (_plan_max_hold_minutes(plan_id) or 0) * 60 or None
+    entry_ts = _entry_fill_ts(plan_id) if max_hold_s else None
+    time_exit_pending = False   # a time-exit close was attempted: a later flat is explained by it
+    last_te_try = None
+
+    def time_exit(elapsed):
+        """Close-first time exit (same ordering as kill_switch): reduce-only market close, verify flat,
+        and ONLY THEN cancel stop + targets. Returns the result dict, or None if the close did not
+        confirm flat (stop and targets are left untouched; no HALT)."""
+        nonlocal time_exit_pending
+        time_exit_pending = True
+        journal.append_event(plan_id, "time_exit_start", {"elapsed_s": round(elapsed, 1),
+                                                          "max_hold_s": max_hold_s, "by": "position_manager"})
+        try:
+            c = do.close_position(token, instrument)
+            journal.append_event(plan_id, "order_placed", {"order_id": c["order"]["order_id"],
+                                                           "label": "time_exit_close",
+                                                           "side": "SELL" if is_long else "BUY",
+                                                           "amount": c["order"].get("filled_amount")})
+        except Exception as xe:  # noqa: BLE001 - e.g. OrderStateUnknown: the re-read decides
+            journal.append_event(plan_id, "error", {"context": "time_exit:close_position", "error": repr(xe)})
+        try:
+            size = _signed(do.get_position(token, instrument).get("size"))
+        except Exception as pe:  # noqa: BLE001
+            journal.append_event(plan_id, "error", {"context": "time_exit:get_position", "error": repr(pe)})
+            size = None
+        if size != 0:
+            journal.append_event(plan_id, "error", {"context": "time_exit_failed",
+                                                    "error": f"position {size} after time-exit close - STOP KEPT"})
+            print(f"!!! TIME EXIT FAILED for {plan_id}: position {size} not flat - stop + targets left in "
+                  f"place, retrying in {TIME_EXIT_RETRY_SECONDS}s", flush=True)
+            return None
+        # flat confirmed: now (and only now) remove stop + targets
+        for oid in list(targets) + ([stop["order_id"]] if stop["order_id"] else []):
+            try:
+                do.cancel(token, oid)
+                journal.append_event(plan_id, "order_cancelled", {"order_id": oid, "reason": "time_exit"})
+            except Exception:  # noqa: BLE001 - already gone / best effort; position is flat
+                pass
+        for lab in [stop["label"]] + [t["label"] for t in targets.values()]:
+            try:
+                do.cancel_by_label(token, f"{plan_id}:{lab}"[:64])
+            except Exception:  # noqa: BLE001
+                pass
+        tf = sum(t["filled"] for t in targets.values())
+        journal.append_event(plan_id, "time_exit", {"elapsed_s": round(elapsed, 1), "max_hold_s": max_hold_s})
+        journal.append_event(plan_id, "reconciliation", {"result": "position_closed", "stop_state": "time_exit",
+                                                         "target_filled": tf})
+        return {"plan_id": plan_id, "status": "closed", "stop_state": "time_exit", "target_filled": tf,
+                "reason": "time_exit"}
 
     def flatten_halt(reason):
         journal.append_event(plan_id, "mismatch_halt", {"reason": reason, "by": "position_manager"})
@@ -285,7 +361,7 @@ def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=Fal
             # live stop["amount"] - G1 shrinks that amount on every target
             # fill, so it under-counts what a manual close needs to explain.
             stop_state_out = stop_state
-            explained = stop_fired or target_filled >= entry_filled_total
+            explained = stop_fired or target_filled >= entry_filled_total or time_exit_pending
             if not explained and str(stop_state).startswith("query_failed"):
                 # Deribit archives / re-ids a triggered stop, so get_order_state
                 # answers order_not_found. Fall back to this plan's own reduce-side
@@ -309,6 +385,15 @@ def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=Fal
 
         if (pos > 0) != is_long:
             flatten_halt(f"position sign flipped: size {pos} on a {'long' if is_long else 'short'} plan")
+
+        if max_hold_s and entry_ts is not None:
+            elapsed = time.time() - entry_ts
+            if elapsed > max_hold_s and (last_te_try is None or time.time() - last_te_try >= TIME_EXIT_RETRY_SECONDS):
+                last_te_try = time.time()
+                res = time_exit(elapsed)
+                if res is not None:
+                    return res
+                # close not confirmed: fall through - the stop-protection logic below keeps running
 
         size = abs(pos)
         if str(stop_state).startswith("query_failed"):

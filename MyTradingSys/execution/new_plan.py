@@ -89,7 +89,7 @@ def build(a, now):
         total = a.size
     targets = parse_targets(a.targets)
     orders = 1 + (a.rungs if a.entry == "ladder" else 1) + len(targets)
-    return {
+    plan = {
         "plan_id": make_plan_id(side, a.entry, now),
         "account": ACCOUNT,
         "instrument": INSTRUMENT,
@@ -102,6 +102,9 @@ def build(a, now):
         "targets": targets,
         "caps": {"max_notional_usd": total, "max_loss_usd": -abs(a.max_loss), "max_concurrent_orders": orders},
     }
+    if getattr(a, "max_hold_minutes", None):
+        plan["max_hold_minutes"] = a.max_hold_minutes
+    return plan
 
 
 def fill_missing(a):
@@ -148,6 +151,8 @@ def main(argv=None):
     ap.add_argument("--targets", help="'2,5' or '30@2,70@5' or 'none'")
     ap.add_argument("--max-loss", type=float, help="USD, positive number")
     ap.add_argument("--hours", type=float, help="validity window from now")
+    ap.add_argument("--max-hold-minutes", type=float,
+                    help="time exit: close the position this many minutes after the entry fill")
     ap.add_argument("--yes", action="store_true", help="save without asking")
     a = ap.parse_args(argv)
 
