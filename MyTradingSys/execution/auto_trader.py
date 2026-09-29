@@ -376,6 +376,123 @@ def record_ledger(plan_id: str, source: str, account, manager_rc) -> None:
         log({"event": "ledger_error", "plan_id": plan_id, "error": repr(e)[:200]})
 
 
+# ---------------------------------------------------------------- restart recovery (adopt running managers)
+
+ADOPTED_RC = -1   # exit code reported for an adopted manager once it is gone (real rc unknown -> exchange flat check)
+
+
+class PidProc:
+    """Popen-like handle for a manager we did not start: poll() is None while the pid lives, then ADOPTED_RC."""
+
+    def __init__(self, pid: int, alive_fn=None):
+        self.pid = pid
+        self._alive = alive_fn or pid_alive
+
+    def poll(self):
+        return None if self._alive(self.pid) else ADOPTED_RC
+
+
+class DeadProc:
+    """Manager that was not running at restart; settle_slot then applies the exchange flat check / respawn rules."""
+    pid = None
+
+    def poll(self):
+        return ADOPTED_RC
+
+
+def pid_alive(pid: int) -> bool:
+    if os.name == "nt":
+        import ctypes
+        k32 = ctypes.windll.kernel32
+        h = k32.OpenProcess(0x1000, False, int(pid))    # PROCESS_QUERY_LIMITED_INFORMATION
+        if not h:
+            return False
+        try:
+            code = ctypes.c_ulong()
+            return bool(k32.GetExitCodeProcess(h, ctypes.byref(code))) and code.value == 259   # STILL_ACTIVE
+        finally:
+            k32.CloseHandle(h)
+    try:
+        os.kill(int(pid), 0)
+        return True
+    except OSError:
+        return False
+
+
+def list_process_cmdlines() -> list:
+    """[(pid, commandline)] of all processes (Win32_Process). [] when unavailable."""
+    try:
+        r = subprocess.run(["powershell", "-NoProfile", "-Command",
+                            "Get-CimInstance Win32_Process | Select-Object ProcessId,CommandLine | ConvertTo-Json -Compress"],
+                           capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60)
+        rows = json.loads(r.stdout or "[]")
+        rows = [rows] if isinstance(rows, dict) else rows
+        return [(int(x["ProcessId"]), x.get("CommandLine") or "") for x in rows]
+    except Exception:  # noqa: BLE001
+        return []
+
+
+def manager_pids(plan_id: str, procs: list) -> list:
+    """Pids of python processes running `position_manager.py <plan_id>` (exact plan id token)."""
+    pat = re.compile(r'position_manager\.py"?\s+"?' + re.escape(plan_id) + r'"?(\s|$)')
+    return sorted(pid for pid, cl in procs
+                  if pat.search(cl) and "python" in cl.split("position_manager.py")[0].lower())
+
+
+def open_plans_from_log(path: Path = None) -> list:
+    """trade_attempt outcome=entered without a later trade_closed for the same plan_id. Oldest first."""
+    entered, closed = {}, set()
+    try:
+        lines = (path or LOG_PATH).read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return []
+    for line in lines:
+        try:
+            e = json.loads(line)
+        except ValueError:
+            continue
+        pid = e.get("plan_id")
+        if e.get("event") == "trade_attempt" and e.get("outcome") == "entered" and pid:
+            entered[pid] = e
+            closed.discard(pid)
+        elif e.get("event") == "trade_closed" and pid:
+            closed.add(pid)
+    return [e for pid, e in entered.items() if pid not in closed]
+
+
+def recover_slots(log_path: Path = None, procs=None, alive_fn=None) -> tuple:
+    """Rebuild (active, extra) slots at start from the log + live processes. Account comes from the logged attempt.
+    Manager alive -> adopt. Manager dead -> slot with DeadProc: the first cycle's settle_slot does the exchange check
+    (open -> respawn per MAX_RESPAWNS, flat -> trade_closed + ledger row). An older open plan of an account that has a
+    newer one is closed as superseded (one position per account)."""
+    plans = open_plans_from_log(log_path)
+    procs = list_process_cmdlines() if procs is None else procs
+    active, extra = {}, {}
+    for e in reversed(plans):                                  # newest first
+        pid, acct = e["plan_id"], e.get("account") or None
+        taken = (active if not acct else extra.get(acct))
+        pids = manager_pids(pid, procs)
+        if taken:
+            if pids:
+                log({"event": "adopt_skipped", "plan_id": pid, "account": acct, "manager_pids": pids,
+                     "note": f"slot already held by {taken['plan_id']}; alert operator"})
+                operator_alert(f"OPERATOR: two live managers for account {acct or 'default'}: {pid} and "
+                               f"{taken['plan_id']} - check by hand")
+            else:
+                log({"event": "trade_closed", "plan_id": pid, "source": e.get("source"), "manager_rc": ADOPTED_RC,
+                     "note": "superseded_at_restart", **({"account": acct} if acct else {})})
+                record_ledger(pid, e.get("source"), acct, ADOPTED_RC)
+            continue
+        slot = {"proc": PidProc(pids[0], alive_fn) if pids else DeadProc(), "plan_id": pid, "source": e.get("source")}
+        log({"event": "adopted", "plan_id": pid, "source": e.get("source"), "account": acct,
+             "manager_pid": pids[0] if pids else None, "manager": "alive" if pids else "dead_checking_exchange"})
+        if acct:
+            extra[acct] = slot
+        else:
+            active = slot
+    return active, extra
+
+
 def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = None, extra: dict = None) -> dict:
     """One poll. Returns the (possibly new) default-slot trade dict. `active` = {'proc','plan_id','source'} or {}.
     `extra` = {account_label: trade dict}, mutated in place (named-account slots)."""
@@ -433,7 +550,7 @@ def main(argv=None) -> int:
         p = parse_tom_alert(load_json(TOM_ALERT, {}))
         state["tom_last_alert_no"] = p.get("alert_no") or -1
     log({"event": "start", "dry_run": a.dry_run, "brakes": brakes(), "tom_last_alert_no": state["tom_last_alert_no"]})
-    active, extra = {}, {}
+    active, extra = recover_slots()
     try:
         while True:
             active = cycle(state, cfg, a.dry_run, active, extra=extra)

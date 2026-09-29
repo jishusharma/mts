@@ -297,5 +297,75 @@ class CycleTest(unittest.TestCase):
         self.assertEqual(at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW), {})
 
 
+class RecoverTest(CycleTest):
+    """Restart recovery: adopt live managers, respawn dead ones with an open position, close dead+flat ones."""
+
+    def attempt(self, plan_id, account=None, source="layer:rsi:x:15m"):
+        return {"ts": "2026-09-29T18:00:00Z", "event": "trade_attempt", "source": source, "outcome": "entered",
+                "plan_id": plan_id, "account": account}
+
+    def write_log(self, rows):
+        at.LOG_PATH.write_text("".join(json.dumps(r) + chr(10) for r in rows), encoding="utf-8")
+
+    def cmd(self, plan_id, exe="C:/Py/python.exe"):
+        return f"{exe} C:/repo/MyTradingSys/execution/position_manager.py {plan_id}"
+
+    def logged(self):
+        return [json.loads(l) for l in at.LOG_PATH.read_text(encoding="utf-8").splitlines()]
+
+    def test_open_plans_skip_closed_and_non_entered(self):
+        self.write_log([self.attempt("a"), self.attempt("b"), {"event": "trade_closed", "plan_id": "a"},
+                        {"event": "trade_attempt", "outcome": "no_fill", "plan_id": "c"}])
+        self.assertEqual([e["plan_id"] for e in at.open_plans_from_log()], ["b"])
+
+    def test_manager_pids_exact_plan_and_python_only(self):
+        procs = [(1, self.cmd("L-1")), (2, self.cmd("L-10")), (3, 'bash.exe -c "x position_manager.py L-1"'),
+                 (4, self.cmd("L-1").replace("python.exe", "pythonw.exe"))]
+        self.assertEqual(at.manager_pids("L-1", procs), [1, 4])
+
+    def test_alive_manager_is_adopted_named_account_from_log(self):
+        self.write_log([self.attempt("L-9", "jishu_2")])
+        alive = {77: True}
+        self.flat = None     # exchange must not be needed while the manager lives
+        active, extra = at.recover_slots(procs=[(77, self.cmd("L-9"))], alive_fn=lambda pid: alive[pid])
+        self.assertEqual(active, {})
+        self.assertEqual(extra["jishu_2"]["plan_id"], "L-9")
+        self.assertEqual([e["event"] for e in self.logged() if e["event"] == "adopted"], ["adopted"])
+        # busy: a new signal for that account is skipped, then manager exits -> exchange check via settle_slot
+        self.assertFalse(at.settle_slot(extra["jishu_2"], "jishu_2"))
+        alive[77] = False
+        self.flat = True
+        self.assertTrue(at.settle_slot(extra["jishu_2"], "jishu_2"))
+        self.assertEqual(self.ledger, [("L-9", "layer:rsi:x:15m", "jishu_2", at.ADOPTED_RC)])
+
+    def test_dead_manager_open_position_is_respawned(self):
+        self.write_log([self.attempt("L-5")])
+        self.flat = False
+        active, extra = at.recover_slots(procs=[])
+        self.assertEqual(active["plan_id"], "L-5")
+        active = at.cycle({"tom_last_alert_no": 43}, cfg(), False, active, NOW, extra=extra)
+        self.assertEqual(self.spawned, [("L-5", None)])
+        self.assertEqual(active["plan_id"], "L-5")
+        self.assertEqual(self.ledger, [])
+
+    def test_dead_manager_flat_account_is_closed_with_ledger_row(self):
+        self.write_log([self.attempt("L-6", "jishu_3")])
+        self.flat = True
+        active, extra = at.recover_slots(procs=[])
+        at.cycle({"tom_last_alert_no": 43}, cfg(), False, active, NOW, extra=extra)
+        self.assertEqual(extra, {})
+        self.assertEqual(self.spawned, [])
+        self.assertEqual(self.ledger, [("L-6", "layer:rsi:x:15m", "jishu_3", at.ADOPTED_RC)])
+        self.assertIn("trade_closed", [e["event"] for e in self.logged()])
+
+    def test_older_dead_plan_of_same_account_is_superseded(self):
+        self.write_log([self.attempt("old"), self.attempt("new")])
+        active, extra = at.recover_slots(procs=[(5, self.cmd("new"))], alive_fn=lambda p: True)
+        self.assertEqual(active["plan_id"], "new")
+        ev = self.logged()
+        self.assertTrue(any(e.get("plan_id") == "old" and e.get("note") == "superseded_at_restart" for e in ev))
+
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)
