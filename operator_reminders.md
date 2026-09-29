@@ -10,10 +10,10 @@ If a step cannot be done, say so.
 
 Three machines, one repo (on the desktop). WORKSTATION_MODES.md is authority.
 
-- Desktop (JIS-NB): runs the loop, auto-trader, alert runner, loss monitor, testnet suites, polling station,
+- Desktop (JIS-NB): runs the DSA browser worker (working files on F:\MTS\dsa), the loop, auto-trader, alert runner, loss monitor, testnet suites, polling station,
   supervisor session + hourly check. E1 applies. mts-live and mts-tape available. The only place commits happen.
 - NUC (JIS-NUC): Qwen/Ollama builder via the queue share. Control via the ssh gate only.
-- Laptop (DESKTOP-F7IU69N): worker + monitor. DSA browser worker, read-only monitors, Claude CLI for questions.
+- Laptop (DESKTOP-F7IU69N): monitor only. Read-only monitors, Claude CLI for questions.
   No loop control (no mode.ps1, stop-day.ps1), no trading processes, no commits to the desktop repo.
 
 Laptop reaches the queue via \\JIS-NB\MTS-Queue.
