@@ -35,6 +35,7 @@ $Verbs = @(
     @("Safety",      "pause",   "Block all new trades (creates the HALT file)"),
     @("Safety",      "resume",  "Remove the brakes after you have checked the account"),
     @("Safety",      "kill",    "EMERGENCY: cancel every order, close every position, pause"),
+    @("Safety",      "kill-mainnet", "EMERGENCY on MAINNET: cancel every order, close every position, pause"),
     @("Safety",      "guard",   "Start the daily-loss guard in its own window"),
     @("Auto",        "auto",    "Start the testnet auto-trader (Tom + layer signals) in its own window"),
     @("Auto",        "autolog", "Last 20 auto-trader decisions (trades, skips, rejects)"),
@@ -96,7 +97,7 @@ switch ($Verb.ToLower()) {
         $group = ""
         foreach ($v in $Verbs) {
             if ($v[0] -ne $group) { $group = $v[0]; Say ""; Say $group Cyan }
-            Say ("  mts {0,-9} {1}" -f $v[1], $v[2])
+            Say ("  mts {0,-13} {1}" -f $v[1], $v[2])
         }
         Say ""
     }
@@ -213,8 +214,17 @@ switch ($Verb.ToLower()) {
     "kill" {
         Say "KILL SWITCH - cancels EVERY open order and closes EVERY position on the testnet account," Red
         Say "then sets HALT so nothing trades until you run: mts resume" Red
+        Say "For the MAINNET account use: mts kill-mainnet" Yellow
         if (-not (Confirm-Word "KILL" "Are you sure?")) { exit 1 }
         Py (Join-Path $Exec "kill_switch.py") "--confirm" "KILL"; exit $LASTEXITCODE
+    }
+
+    "kill-mainnet" {
+        Say "KILL SWITCH - MAINNET (REAL MONEY) - cancels EVERY open order and closes EVERY position on the LIVE account," Red
+        Say "then sets HALT so nothing trades until you run: mts resume" Red
+        if (-not (Confirm-Word "KILL" "Are you sure? This acts on the MAINNET account.")) { exit 1 }
+        Remove-Item Env:MTS_ACCOUNT -ErrorAction SilentlyContinue
+        Py (Join-Path $Exec "kill_switch.py") "--confirm" "KILL" "--mainnet"; exit $LASTEXITCODE
     }
 
     "guard" {

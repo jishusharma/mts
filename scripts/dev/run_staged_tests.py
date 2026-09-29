@@ -31,7 +31,8 @@ def main(argv):
         shutil.copy(tmp / src, tmp / dst)
     cmd = [sys.executable, script] if script else [sys.executable, "-m", "unittest", "-v", *tests]
     print(f"[run_staged_tests] {tmp}: {' '.join(cmd[1:])}")
-    return subprocess.call(cmd, cwd=tmp)
+    import os
+    return subprocess.call(cmd, cwd=tmp, env={**os.environ, "MTS_REPO_ROOT": str(Path.cwd())})
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))

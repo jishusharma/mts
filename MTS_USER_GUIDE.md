@@ -184,6 +184,7 @@ trade path as above:
 |----------------|-------------|-------------------------------------------------------|
 | Pause          | `mts pause` | No new trades. Open trades keep their stops.          |
 | Kill           | `mts kill`  | Cancels every order, closes every position, then pauses. |
+| Kill (mainnet) | `mts kill-mainnet` | Same, on the LIVE mainnet account. |
 | Daily loss     | `mts guard` | If the day's loss passes 500 USD: closes everything, pauses for the day. |
 
 MTS also pauses itself if something goes wrong during a trade. In every case:
@@ -237,6 +238,7 @@ Open trades are not affected: their stops live on the exchange. Keep any
 | `mts pause`          | Block all new trades                                      |
 | `mts resume`         | Remove the brakes after you have checked the account      |
 | `mts kill`           | Emergency: cancel all, close all, pause                   |
+| `mts kill-mainnet`   | Emergency on MAINNET: cancel all, close all, pause        |
 | `mts guard`          | Start the daily-loss guard in its own window              |
 | `mts auto`           | Start the testnet auto-trader in its own window           |
 | `mts autolog`        | Last 20 auto-trader decisions                             |

@@ -43,6 +43,8 @@ Not machine-checkable: which Deribit subaccount a key belongs to; whether the ke
 
 ## C. Abort criteria (kill switch immediately, do not resume without review)
 
+Mainnet kill: `mts kill-mainnet` (fallback: `python MyTradingSys/execution/kill_switch.py --confirm KILL --mainnet`).
+
 - Any REFUSED / OrderStateUnknown / "unprotected" / "mismatch_halt" message, or a HALT file appears.
 - Position exists without a live stop for > 4 s, or position size > 50 USD.
 - Daily P/L <= -10 USD (monitor cap you passed) or the monitor prints "blind".
@@ -63,7 +65,7 @@ Source: research/fast_track_2026-09-27/review/OPUS_PREMAINNET_AUDIT.md. Fixed al
 mainnet kill ignores MTS_ACCOUNT, per-env daily-loss state/HALT. "Blocks smoke" = must be done or worked around before the 50 USD trade.
 
 - [ ] (HIGH #3) Daily P/L from cashflow (profit_as_cashflow) + unrealized P/L, allow-list of tx types, not `change` only. Does NOT block the 50 USD smoke trade (the stop is the real limit); BLOCKS raising size.
-- [ ] (HIGH #5) `mts kill` is testnet-only: add `mts kill-mainnet` (or env prompt); put the exact mainnet kill command at the top of section C. BLOCKS smoke (operator must use `kill_switch.py --confirm KILL --mainnet` directly until then).
+- [x] (HIGH #5) `mts kill` is testnet-only: add `mts kill-mainnet` (or env prompt); put the exact mainnet kill command at the top of section C. BLOCKS smoke (operator must use `kill_switch.py --confirm KILL --mainnet` directly until then).
 - [ ] (HIGH #6) Journal records env (+account) in the intent event; executor/position_manager/reconciler refuse on env mismatch; add `--mainnet` to reconciler.py. BLOCKS smoke (until then: never run reconciler on a mainnet plan_id, and double-check the plan_id passed to position_manager --mainnet).
 - [ ] (CHECK #7) Pre-compiled plan cap: on mainnet refuse compiled JSON input and assert sum(entry amounts) == max_position_size <= 50. Blocks smoke only if a compiled file is used; use the raw plan.
 - [ ] (CHECK #8) Triggered-stop label check: one testnet stop-trigger run recording get_user_trades labels and the stop's get_order_state. Does not block smoke (worst case is a false "unexplained flat" halt on a flat position).
