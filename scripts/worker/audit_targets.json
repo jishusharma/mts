@@ -9,7 +9,7 @@
     "MyTradingSys/backtest/layers/FORMULAS.md:10-58"
    ],
    "note": "RSI Wilder smoothing formula (FORMULAS.md section 1) vs rsi_core.py.",
-   "last_audited": null
+   "last_audited": "2026-09-29T05:53:39Z"
   },
   {
    "id": "A1-tf-resample",
@@ -19,7 +19,7 @@
     "MyTradingSys/backtest/layers/FORMULAS.md:151-162"
    ],
    "note": "Resample / bucket-anchoring formula (FORMULAS.md section 8) vs tf_resample.py.",
-   "last_audited": null
+   "last_audited": "2026-09-29T01:14:55Z"
   },
   {
    "id": "A1-bt-stats-sharpe",
@@ -30,7 +30,7 @@
     "MyTradingSys/backtest/layers/FORMULAS.md:179-193"
    ],
    "note": "Sharpe = mean / population stdev (FORMULAS.md section 10) vs both sharpe() implementations. Hand-audited 2026-09-28 as spec 097-audit-a1-bt-stats-sharpe.",
-   "last_audited": "2026-09-28T00:00:00Z"
+   "last_audited": "2026-09-29T05:13:43Z"
   },
   {
    "id": "A2-fabio-cvd",
@@ -40,7 +40,7 @@
     "MyTradingSys/backtest/layers/fabio/test_fabio_cvd_absorption.py"
    ],
    "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
-   "last_audited": null
+   "last_audited": "2026-09-29T01:14:56Z"
   },
   {
    "id": "A2-cc-retest",
@@ -50,7 +50,7 @@
     "MyTradingSys/backtest/layers/cryptocred/test_cc_retest.py"
    ],
    "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
-   "last_audited": null
+   "last_audited": "2026-09-29T02:13:51Z"
   },
   {
    "id": "A3-spec-089",
@@ -59,7 +59,7 @@
     "Dumps/workers/NUC-QUEUE/specs/089-fabio-volume-fvg.md"
    ],
    "note": "Retrospective pre-check: would this spec's own wording have been ambiguous to a worker seeing it fresh, or missing an EXPECT for a claim it makes?",
-   "last_audited": null
+   "last_audited": "2026-09-29T02:13:51Z"
   },
   {
    "id": "A3-spec-090",
@@ -68,7 +68,7 @@
     "Dumps/workers/NUC-QUEUE/specs/090-fabio-escalation-retry.md"
    ],
    "note": "Retrospective pre-check: would this spec's own wording have been ambiguous to a worker seeing it fresh, or missing an EXPECT for a claim it makes?",
-   "last_audited": null
+   "last_audited": "2026-09-29T02:13:51Z"
   },
   {
    "id": "A4-positioning-flow",
@@ -77,7 +77,7 @@
     "MyTradingSys/research/fast_track_2026-09-27/T055a_POSITIONING_FLOW.md"
    ],
    "note": "Question: does this report name a specific published formula (a vendor or a paper) for net-long/net-short, or only its own inferred proxy?",
-   "last_audited": null
+   "last_audited": "2026-09-29T03:13:40Z"
   },
   {
    "id": "A4-proven-setups",
@@ -86,7 +86,7 @@
     "MyTradingSys/research/fast_track_2026-09-27/T055b_PROVEN_SETUPS.md"
    ],
    "note": "Question: which listed setup, if any, has a quoted out-of-sample statistic rather than a backtest-only one?",
-   "last_audited": null
+   "last_audited": "2026-09-29T03:13:40Z"
   },
   {
    "id": "A5-fabio-volume-fvg",
@@ -95,7 +95,7 @@
     "MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py"
    ],
    "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom's own internals.",
-   "last_audited": null
+   "last_audited": "2026-09-29T03:13:40Z"
   },
   {
    "id": "A5-cc-structure",
@@ -104,7 +104,7 @@
     "MyTradingSys/backtest/layers/cryptocred/cc_structure.py"
    ],
    "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom's own internals.",
-   "last_audited": null
+   "last_audited": "2026-09-29T04:13:39Z"
   },
   {
    "id": "A6-project-vision-layers",
@@ -124,7 +124,7 @@
     "MyTradingSys/backtest/layers/rsi/rsi_ma.py"
    ],
    "note": "Does the current rsi_ma.py behavior still match what TEST_PLAN.md documents?",
-   "last_audited": null
+   "last_audited": "2026-09-29T04:13:39Z"
   },
   {
    "id": "A7-risk-guard",
@@ -133,7 +133,7 @@
     "MyTradingSys/execution/risk_guard.py"
    ],
    "note": "Account-notional cap invariants. Hand-audited 2026-09-28 as spec 098-audit-a7-risk-guard.",
-   "last_audited": "2026-09-28T00:00:00Z"
+   "last_audited": "2026-09-29T05:53:38Z"
   },
   {
    "id": "A7-kill-switch",
@@ -142,6 +142,764 @@
     "MyTradingSys/execution/kill_switch.py"
    ],
    "note": "Confirm-phrase and HALT-file invariants around the account kill switch.",
+   "last_audited": "2026-09-29T05:13:43Z"
+  },
+  {
+   "id": "A2-alert-emitter",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/alerts/alert_emitter.py",
+    "MyTradingSys/backtest/layers/alerts/test_alert_emitter.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-alert-emitter",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/alerts/alert_emitter.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-live-layers",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/alerts/live_layers.py",
+    "MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-live-layers",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/alerts/live_layers.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-live-runner-cli",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
+    "MyTradingSys/backtest/layers/alerts/test_live_runner_cli.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-live-runner-cli",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/alerts/live_runner_cli.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-live-runner-core",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/alerts/live_runner_core.py",
+    "MyTradingSys/backtest/layers/alerts/test_live_runner_core.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-live-runner-core",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/alerts/live_runner_core.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-cc-bt-adapter",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/cryptocred/cc_bt_adapter.py",
+    "MyTradingSys/backtest/layers/cryptocred/test_cc_bt_adapter.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-cc-bt-adapter",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/cryptocred/cc_bt_adapter.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A1-cc-retest",
+   "template": "A1",
+   "paths": [
+    "MyTradingSys/backtest/layers/cryptocred/cc_retest.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md:163-178"
+   ],
+   "note": "FORMULAS.md section 9 vs cc_retest.py; quote the line that differs from the canonical formula.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-cc-retest",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/cryptocred/cc_retest.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A1-cc-setups",
+   "template": "A1",
+   "paths": [
+    "MyTradingSys/backtest/layers/cryptocred/cc_setups.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md:163-178"
+   ],
+   "note": "FORMULAS.md section 9 vs cc_setups.py; quote the line that differs from the canonical formula.",
+   "last_audited": null
+  },
+  {
+   "id": "A2-cc-setups",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/cryptocred/cc_setups.py",
+    "MyTradingSys/backtest/layers/cryptocred/test_cc_setups.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-cc-setups",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/cryptocred/cc_setups.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A1-cc-structure",
+   "template": "A1",
+   "paths": [
+    "MyTradingSys/backtest/layers/cryptocred/cc_structure.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md:163-178"
+   ],
+   "note": "FORMULAS.md section 9 vs cc_structure.py; quote the line that differs from the canonical formula.",
+   "last_audited": null
+  },
+  {
+   "id": "A2-cc-structure",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/cryptocred/cc_structure.py",
+    "MyTradingSys/backtest/layers/cryptocred/test_cc_structure.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-fabio-cvd-absorption",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/fabio/fabio_cvd_absorption.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-fabio-escalation",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/fabio/fabio_escalation.py",
+    "MyTradingSys/backtest/layers/fabio/test_fabio_escalation.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-fabio-escalation",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/fabio/fabio_escalation.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-fabio-volume-fvg",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py",
+    "MyTradingSys/backtest/layers/fabio/test_fabio_volume_fvg.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A2-run-backtest",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/fabio/run_backtest.py",
+    "MyTradingSys/backtest/layers/fabio/test_run_backtest.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-run-backtest",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/fabio/run_backtest.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A1-funding-cvd-fade",
+   "template": "A1",
+   "paths": [
+    "MyTradingSys/backtest/layers/positioning/funding_cvd_fade.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md:356-371"
+   ],
+   "note": "FORMULAS.md section 14 vs funding_cvd_fade.py; quote the line that differs from the canonical formula.",
+   "last_audited": null
+  },
+  {
+   "id": "A2-funding-cvd-fade",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/positioning/funding_cvd_fade.py",
+    "MyTradingSys/backtest/layers/positioning/test_funding_cvd_fade.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-funding-cvd-fade",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/positioning/funding_cvd_fade.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A1-trade-costs",
+   "template": "A1",
+   "paths": [
+    "MyTradingSys/backtest/layers/positioning/trade_costs.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md:343-355"
+   ],
+   "note": "FORMULAS.md section 13 vs trade_costs.py; quote the line that differs from the canonical formula.",
+   "last_audited": null
+  },
+  {
+   "id": "A2-trade-costs",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/positioning/trade_costs.py",
+    "MyTradingSys/backtest/layers/positioning/test_trade_costs.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-trade-costs",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/positioning/trade_costs.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-malkan-40-60",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/malkan_40_60.py",
+    "MyTradingSys/backtest/layers/rsi/test_malkan_40_60.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-malkan-40-60",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/malkan_40_60.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-malkan-mtf",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/malkan_mtf.py",
+    "MyTradingSys/backtest/layers/rsi/test_malkan_mtf.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-malkan-mtf",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/malkan_mtf.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-rsi-core",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/rsi_core.py",
+    "MyTradingSys/backtest/layers/rsi/test_rsi_core_ma.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-rsi-core",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/rsi_core.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A1-rsi-events",
+   "template": "A1",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/rsi_events.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md:121-132"
+   ],
+   "note": "FORMULAS.md section 6 vs rsi_events.py; quote the line that differs from the canonical formula.",
+   "last_audited": null
+  },
+  {
+   "id": "A2-rsi-events",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/rsi_events.py",
+    "MyTradingSys/backtest/layers/rsi/test_rsi_events.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-rsi-events",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/rsi_events.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A1-rsi-ma",
+   "template": "A1",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/rsi_ma.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md:59-74"
+   ],
+   "note": "FORMULAS.md section 2 vs rsi_ma.py; quote the line that differs from the canonical formula.",
+   "last_audited": null
+  },
+  {
+   "id": "A2-rsi-ma",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/rsi_ma.py",
+    "MyTradingSys/backtest/layers/rsi/test_rsi_ma_events.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-rsi-ma",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/rsi_ma.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A1-rsi-ma-events",
+   "template": "A1",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/rsi_ma_events.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md:59-74"
+   ],
+   "note": "FORMULAS.md section 2 vs rsi_ma_events.py; quote the line that differs from the canonical formula.",
+   "last_audited": null
+  },
+  {
+   "id": "A2-rsi-ma-events",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/rsi_ma_events.py",
+    "MyTradingSys/backtest/layers/rsi/test_rsi_ma_events.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-rsi-ma-events",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/rsi_ma_events.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-tolerance-sweep",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/tolerance_sweep.py",
+    "MyTradingSys/backtest/layers/rsi/test_tolerance_sweep.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-tolerance-sweep",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/rsi/tolerance_sweep.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-run-t055",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/run_t055.py",
+    "MyTradingSys/backtest/layers/test_run_t055.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-run-t055",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/run_t055.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A1-runner",
+   "template": "A1",
+   "paths": [
+    "MyTradingSys/backtest/layers/runner.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md:133-150"
+   ],
+   "note": "FORMULAS.md section 7 vs runner.py; quote the line that differs from the canonical formula.",
+   "last_audited": null
+  },
+  {
+   "id": "A2-runner",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/runner.py",
+    "MyTradingSys/backtest/layers/test_runner.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-runner",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/runner.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A1-session-momentum",
+   "template": "A1",
+   "paths": [
+    "MyTradingSys/backtest/layers/session/session_momentum.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md:372-384"
+   ],
+   "note": "FORMULAS.md section 15 vs session_momentum.py; quote the line that differs from the canonical formula.",
+   "last_audited": null
+  },
+  {
+   "id": "A2-session-momentum",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/session/session_momentum.py",
+    "MyTradingSys/backtest/layers/session/test_session_momentum.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-session-momentum",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/session/session_momentum.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-tick-extremes",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/tick/tick_extremes.py",
+    "MyTradingSys/backtest/layers/tick/test_tick_extremes.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-tick-extremes",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/tick/tick_extremes.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-tick-flagger",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/tick/tick_flagger.py",
+    "MyTradingSys/backtest/layers/tick/test_tick_flagger.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-tick-flagger",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/tick/tick_flagger.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-tick-oi-extremes",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/tick/tick_oi_extremes.py",
+    "MyTradingSys/backtest/layers/tick/test_tick_oi_extremes.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-tick-oi-extremes",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/tick/tick_oi_extremes.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A5-tf-realdata-gate",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/timeframe/tf_realdata_gate.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A2-tf-resample",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/timeframe/tf_resample.py",
+    "MyTradingSys/backtest/layers/timeframe/test_tf_resample.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-tf-resample",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/timeframe/tf_resample.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A1-turn-of-candle",
+   "template": "A1",
+   "paths": [
+    "MyTradingSys/backtest/layers/turn_of_candle/turn_of_candle.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md:385-399"
+   ],
+   "note": "FORMULAS.md section 16 vs turn_of_candle.py; quote the line that differs from the canonical formula.",
+   "last_audited": null
+  },
+  {
+   "id": "A2-turn-of-candle",
+   "template": "A2",
+   "paths": [
+    "MyTradingSys/backtest/layers/turn_of_candle/turn_of_candle.py",
+    "MyTradingSys/backtest/layers/turn_of_candle/test_turn_of_candle.py"
+   ],
+   "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
+   "last_audited": null
+  },
+  {
+   "id": "A5-turn-of-candle",
+   "template": "A5",
+   "paths": [
+    "MyTradingSys/backtest/layers/turn_of_candle/turn_of_candle.py"
+   ],
+   "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
+   "last_audited": null
+  },
+  {
+   "id": "A7-auto-trader",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/auto_trader.py"
+   ],
+   "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
+   "last_audited": null
+  },
+  {
+   "id": "A7-daily-loss-guard",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/daily_loss_guard.py"
+   ],
+   "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
+   "last_audited": null
+  },
+  {
+   "id": "A7-daily-loss-monitor",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/daily_loss_monitor.py"
+   ],
+   "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
+   "last_audited": null
+  },
+  {
+   "id": "A7-deribit-client",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/deribit_client.py"
+   ],
+   "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
+   "last_audited": null
+  },
+  {
+   "id": "A7-deribit-orders",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/deribit_orders.py"
+   ],
+   "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
+   "last_audited": null
+  },
+  {
+   "id": "A7-deribit-read",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/deribit_read.py"
+   ],
+   "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
+   "last_audited": null
+  },
+  {
+   "id": "A7-executor",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/executor.py"
+   ],
+   "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
+   "last_audited": null
+  },
+  {
+   "id": "A7-journal",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/journal.py"
+   ],
+   "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
+   "last_audited": null
+  },
+  {
+   "id": "A7-new-plan",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/new_plan.py"
+   ],
+   "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
+   "last_audited": null
+  },
+  {
+   "id": "A7-plan-compiler",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/plan_compiler.py"
+   ],
+   "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
+   "last_audited": null
+  },
+  {
+   "id": "A7-position-manager",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/position_manager.py"
+   ],
+   "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
+   "last_audited": null
+  },
+  {
+   "id": "A7-reconciler",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/reconciler.py"
+   ],
+   "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
+   "last_audited": null
+  },
+  {
+   "id": "A7-soak-report",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/soak_report.py"
+   ],
+   "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
+   "last_audited": null
+  },
+  {
+   "id": "A7-trade-plan-validator",
+   "template": "A7",
+   "paths": [
+    "MyTradingSys/execution/trade_plan_validator.py"
+   ],
+   "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
    "last_audited": null
   }
  ]
