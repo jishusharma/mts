@@ -148,3 +148,8 @@ Also committed: operator tooling 309d115 (mts.ps1, guide, new_plan.py), research
   used by the auto-trader's subprocess calls (working tree).
 - Peer (session 3) note: before the testnet chain create MyTradingSys/execution/AUTO_PAUSE (blocks new auto-trades, no HALT), wait for open trades to close, run chain, delete AUTO_PAUSE. Auto-trader already uses the promoted mainnet-ready working tree.
 - DSA_BROWSER_WORKER_PLAN.md: DSA as a paced, human-in-the-loop browser queue worker on the desktop (incoming_dsa lane). Sonnet builds steps 1-2.
+- Session 3 stood down (operator). Session 4 = sole supervisor. Its T055 C1/C2 Sonnet agent still running -> will commit "T055 C1/C2 backtest: ..."; pick up verdicts, no duplicate. Watch auto_trader 20676, live_runner 18908, loss monitor 7312, smoke manager 22584.
+- T055 C1/C2 (3672305): no pass. C1 15m no edge (n151, -0.40%, PBO .22); C1 1h insufficient (n43, +0.50%, PBO .46); C2 no edge (n519, -0.30%). Funding negligible. Decision (operator order "trade testnet, gather data"): keep C1/C2 sampling on testnet (Q3 default), never a Tom filter; revisit at >=60 events.
+- 06:50 IST wake: smoke plan stopped out but manager false-HALTED (stop query order_not_found after trigger -> "unexplained flat"). Real bug, mainnet-relevant. Account flat, no HALT file. AUTO_PAUSE set; Sonnet fixing reconciliation + running FT-2 chain + committing mainnet-ready build, then removes AUTO_PAUSE.
+- Queue: 900-902 audits (backfill) running; Fabio 108-111 held (Qwen format: no FILE block / out-of-scope) -> candidates for the DSA lane once calibrated. C3 promoted 5392309.
+- Auto-trades so far: 1 smoke entry, 1 entry_failed (slot held by smoke), 27 stale/WAIT_RR rejects. Unmapped rsi:failure side seen x2.

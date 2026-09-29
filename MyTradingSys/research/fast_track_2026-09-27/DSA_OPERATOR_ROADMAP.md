@@ -44,6 +44,7 @@ E3. Close (target, stop or manual), confirm flat + no open orders, export the fi
 Abort criteria: any error on placement, stop missing > 10 s, slippage > 0.2 %, any unexpected order -> kill switch.
 
 ## What code mode is doing meanwhile (no operator needed)
+Update 06:50 IST: DSA browser worker built (194ee7c; you calibrate it - DSA_BROWSER_WORKER_PLAN steps 3-7). C3 promoted; T055 C1/C2 no edge (3672305). Found + fixing a real bug: a stopped-out trade was reported as 'unexplained flat' and halted - must be fixed before mainnet. Fabio 108-111 Qwen extractions held -> good first jobs for the DSA lane.
 S5 mainnet flag (4 gates + 50 USD mainnet cap), L6 part 2 PnL source, guard re-audit, readiness checklist; testnet
 auto-trading gathering data 24/7; hourly Haiku gate on NUC builds; Fabio holds + formula audit repacked to the queue.
 Open questions from NEXT_SESSION_PLAN s9 (layer brackets, testnet sub-account per layer family, keep no-edge layers,
