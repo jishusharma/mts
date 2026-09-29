@@ -27,3 +27,6 @@ Wall-clock comes from the verify SUMMARY line ("... s on JIS-NUC").
 | 151 plan check | 128 | 125 | FAIL: empty FILE block |
 | 152 mainnet pnl | 145 | 104 | FAIL: empty FILE block |
 Retry 153 = 151 with THINK true, OUTPUT_TOKENS 12000 (pending).
+| 153 plan check, THINK true | 959 | 8015 | PASS 10/10 (Qwen3-coder: 211 s, 10/10) |
+
+**Verdict (supervisor):** qwen3-coder:30b stays primary (4.5x faster, same pass rate). qwen3.6:35b is kept on F: as the RETRY model: when a Qwen reply fails its tests twice, repack once with MODEL: qwen3.6:35b, THINK: true, OUTPUT_TOKENS >= 12000 before handing to Sonnet. Never use qwen3.6 with THINK false (empty files).
