@@ -11,6 +11,8 @@ def _new(side, amount, typ, label, reduce_only, trigger=None, price=None, state=
                            order_state=("untriggered" if typ == "stop_market" else state), filled_amount=0, average_price=0)
     return oid
 def authenticate(): return "tok"
+def active_env(): return "test"
+MAINNET_MAX_NOTIONAL_USD = 50
 def stop_market(t, i, side, amount, trig, label, trigger="mark_price"):
     return {"order": S["orders"][_new(side, amount, "stop_market", label, True, trig)]}
 def edit(t, oid, amount=None, price=None, trigger_price=None):

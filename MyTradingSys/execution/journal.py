@@ -12,6 +12,7 @@ The write path itself (append_event) is trivial and low-risk; what is
 UNVERIFIED is whether the event shapes logged here are actually what
 executor.py and reconciler.py need at 2am when something has gone wrong.
 That only gets proven by a real testnet run.
+Intent events carry env; assert_env is the refusal check.
 """
 import sys
 sys.dont_write_bytecode = True
@@ -19,6 +20,13 @@ sys.dont_write_bytecode = True
 import json
 import time
 from pathlib import Path
+
+VALID_ENVS = ("test", "mainnet")
+
+
+class EnvMismatch(Exception):
+    pass
+
 
 JOURNAL_DIR = Path(__file__).resolve().parent / "journal"
 
@@ -35,6 +43,8 @@ def append_event(plan_id: str, event_type: str, data: dict):
     non-critical path would be wrong here - if the journal can't be
     written, the operator needs to know immediately, not silently lose
     the audit trail."""
+    if event_type == "intent" and data.get("env") not in VALID_ENVS:
+        raise ValueError(f"intent event needs env in {VALID_ENVS}, got {data.get('env')!r}")
     record = {
         "ts": time.time(),
         "ts_iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -58,6 +68,24 @@ def read_events(plan_id: str) -> list:
             if line:
                 events.append(json.loads(line))
     return events
+
+
+def plan_env(plan_id: str) -> str | None:
+    """Returns the environment ('test' or 'mainnet') a plan was journaled in,
+    or None if no intent event exists for this plan."""
+    events = read_events(plan_id)
+    for ev in events:
+        if ev.get("event_type") == "intent":
+            return (ev.get("data") or {}).get("env", "test")
+    return None
+
+
+def assert_env(plan_id: str, active_env: str) -> None:
+    """Raises EnvMismatch if the plan was journaled in a different environment
+    than the one currently active."""
+    pe = plan_env(plan_id)
+    if pe is not None and pe != active_env:
+        raise EnvMismatch(f"plan {plan_id} was journaled on {pe!r} but the active environment is {active_env!r} - refusing")
 
 
 def reconstruct_belief(plan_id: str) -> dict:

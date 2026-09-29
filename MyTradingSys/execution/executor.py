@@ -117,6 +117,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import deribit_orders as do  # noqa: E402
 import journal  # noqa: E402
+import mainnet_plan_check  # noqa: E402 - 128: mainnet refuses compiled input / entry sum != max_position_size
 import risk_guard  # noqa: E402 - S1: account-wide notional cap
 from plan_compiler import compile_plan, snap_price, round_size, CompileError  # noqa: E402
 
@@ -247,6 +248,7 @@ def preflight(compiled: dict, plan: dict = None, mark: float = None,
     _mn = getattr(do, "mainnet_plan_refusal", None)  # mainnet-ready gates: hard USD cap, always None on testnet
     if _mn is not None and _mn(compiled["max_position_size"]):
         reasons.append(_mn(compiled["max_position_size"]))
+    reasons.extend(mainnet_plan_check.plan_refusals(compiled, plan, do.active_env(), do.MAINNET_MAX_NOTIONAL_USD))
     if cc.get("within_max_loss") == "unknown_until_fill" and plan and mark:
         est = -round(compiled["max_position_size"] * plan["stop"]["percent_below_entry"] / 100.0, 2)
         if est < cc["max_loss_usd"]:
@@ -287,7 +289,7 @@ def execute_plan(compiled: dict, plan: dict = None, instrument: str = "BTC-PERPE
         raise ExecutionHalted("PREFLIGHT REFUSED: " + " | ".join(reasons))
 
     journal.append_event(plan_id, "intent", {"compiled": compiled, "mark_at_start": mark,
-                                             "account_cap_check": cap_result})
+                                             "account_cap_check": cap_result, "env": do.active_env()})
     stop_spec = compiled["stop_order"]
     stop_side = stop_spec["side"]
     is_long = stop_side == "SELL"

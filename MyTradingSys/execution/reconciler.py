@@ -19,7 +19,7 @@ v2 changes vs v1:
 Exit test (G2): testnet/run_testnet_suite_g1g2.py case G2a closes the position
 behind MTS's back and asserts this raises ReconciliationMismatch.
 
-Run: python MyTradingSys/execution/reconciler.py <plan_id>
+Run: python MyTradingSys/execution/reconciler.py <plan_id> [--mainnet]
 """
 import sys
 sys.dont_write_bytecode = True
@@ -43,6 +43,7 @@ def _norm(state):
 
 
 def reconcile(plan_id: str, instrument: str = "BTC-PERPETUAL", currency: str = "BTC", token=None) -> dict:
+    journal.assert_env(plan_id, do.active_env())
     belief = journal.reconstruct_belief(plan_id)
     if belief["halted"]:
         return {"status": "already_halted", "reason": belief["halt_reason"]}
@@ -115,16 +116,26 @@ def reconcile(plan_id: str, instrument: str = "BTC-PERPETUAL", currency: str = "
     return {"status": "reconciled_ok", "believed_position": believed_position, "actual_position": actual_position}
 
 
-def main() -> int:
+def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("plan_id")
-    a = ap.parse_args()
+    ap.add_argument("--mainnet", action="store_true", help="MAINNET (typed confirmation required)")
+    a = ap.parse_args(argv)
     try:
+        if a.mainnet:
+            try:
+                do.select_environment(True)
+            except RuntimeError as e:
+                print(f"REFUSED: {e}")
+                return 1
         print(f"OK: {reconcile(a.plan_id)}")
         return 0
     except ReconciliationMismatch as e:
         print(f"MISMATCH - HALTED: {e}")
         return 1
+    except journal.EnvMismatch as e:
+        print(f"REFUSED: {e}")
+        return 2
 
 
 if __name__ == "__main__":

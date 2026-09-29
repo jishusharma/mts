@@ -19,15 +19,16 @@ The operator creates that file. No AI session reads it.
 Never prints the secret or the access token.
 Syntax-checked only on 2026-09-26; first real run is the operator's.
 
-Run: python MyTradingSys/execution/deribit_read.py [--currency BTC|USDC]
+Run: python MyTradingSys/execution/deribit_read.py [--currency BTC|USDC] [--account <label>]
 """
-import json, argparse, urllib.request, urllib.error, urllib.parse
+import json, argparse, urllib.request, urllib.error, urllib.parse, re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SECRET = ROOT / "MyTradingSys" / "execution" / ".secrets" / "testnet.secret.json"
 BASE = "https://test.deribit.com/api/v2"  # testnet only in phase 2 - do not parameterise
 INSTRUMENT = {"BTC": "BTC-PERPETUAL", "USDC": "BTC_USDC-PERPETUAL"}
+ACCOUNT_RE = re.compile(r"[a-z0-9_]{1,32}")
 
 
 def call(method, params, token=None):
@@ -49,13 +50,27 @@ def call(method, params, token=None):
     return body["result"]
 
 
-def main():
+def resolve_secret(account=None) -> Path:
+    if account is None or account == "":
+        return SECRET
+    if not ACCOUNT_RE.fullmatch(account):
+        raise ValueError("bad account label %r" % account)
+    return SECRET.parent / ("testnet_%s.secret.json" % account)
+
+
+def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--currency", choices=["BTC", "USDC"], default="BTC")
-    a = ap.parse_args()
-    if not SECRET.exists():
-        print("MISSING: %s - create it first (see MyTradingSys/execution/README.md)" % SECRET); return 2
-    cfg = json.load(open(SECRET, encoding="utf-8"))
+    ap.add_argument("--account", default=None, help="named TESTNET sub-account label (.secrets/testnet_<label>.secret.json)")
+    a = ap.parse_args(argv)
+    try:
+        path = resolve_secret(a.account)
+    except ValueError as e:
+        print("REFUSED: %s" % e)
+        return 2
+    if not path.exists():
+        print("MISSING: %s - create it first (see MyTradingSys/execution/README.md)" % path); return 2
+    cfg = json.load(open(path, encoding="utf-8"))
     if cfg.get("env") != "test":
         print('REFUSED: secret file env must be "test"'); return 2
 

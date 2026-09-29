@@ -165,6 +165,10 @@ def _signed(size):
 def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, token=None):
     """Heartbeat wrapper: file exists for exactly the lifetime of the manager
     (removed in finally on every exit path: return, ManagerHalted, any exception)."""
+    try:  # a plan journaled in the other environment stays untouched: no journal write, no heartbeat
+        journal.assert_env(plan_id, do.active_env())
+    except journal.EnvMismatch as e:
+        raise ManagerHalted(str(e))
     try:  # a heartbeat failure must never stop position protection
         pm_heartbeat.write_heartbeat(plan_id, account=os.environ.get("MTS_ACCOUNT") or None)
     except Exception as he:  # noqa: BLE001

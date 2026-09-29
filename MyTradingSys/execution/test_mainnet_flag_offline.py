@@ -197,14 +197,16 @@ class TestMainnetNotionalCap(Base):
 
     def test_plan_level_cap_in_executor_preflight(self):
         compiled = {"plan_id": "p1", "max_position_size": 80, "stop_order": {"order_type": "stop_market"},
-                    "caps_check": {"max_notional_usd": 1000, "within_max_loss": True}}
+                    "caps_check": {"max_notional_usd": 1000, "within_max_loss": True},
+                    "entry_orders": [{"amount": 80}]}
         nohalt = Path(self.tmp.name) / "nohalt"
-        self.assertEqual(executor.preflight(compiled, None, None, nohalt, nohalt), [])  # testnet: fine
+        self.assertEqual(executor.preflight(compiled, None, None, nohalt, nohalt), [])  # testnet: fine (compiled file ok)
         self.go_mainnet()
-        reasons = executor.preflight(compiled, None, None, nohalt, nohalt)
+        reasons = executor.preflight(compiled, {}, None, nohalt, nohalt)  # raw plan given (mainnet refuses plan=None, spec 128)
         self.assertTrue(any("MAINNET_MAX_NOTIONAL_USD" in r for r in reasons), reasons)
         compiled["max_position_size"] = 50
-        self.assertEqual(executor.preflight(compiled, None, None, nohalt, nohalt), [])
+        compiled["entry_orders"] = [{"amount": 50}]
+        self.assertEqual(executor.preflight(compiled, {}, None, nohalt, nohalt), [])
 
 
 class TestTransactionLogFetch(Base):
