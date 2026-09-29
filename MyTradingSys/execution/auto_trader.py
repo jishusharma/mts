@@ -23,6 +23,7 @@ To pause ONLY the auto-trader (e.g. while a testnet suite needs a flat account),
 """
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -58,7 +59,12 @@ DEFAULT_CONFIG = {
         "rsi:cross": "direction",
     },
     "disabled_layers": [],
+    # source prefix -> named testnet account (credentials .secrets/testnet_<label>.secret.json).
+    # Missing file -> shared default slot, exactly as before.
+    "accounts": {"layer:fabio:": "fabio"},
 }
+SECRETS_DIR = HERE / ".secrets"
+_warned_missing = set()
 
 
 def now_utc() -> datetime:
@@ -219,40 +225,67 @@ def brakes() -> list:
     return [p.name for p in (HALT, HALT_DAILY_LOSS) if p.exists()]
 
 
-def run(cmd: list, timeout: int = 900) -> tuple:
+def account_secret_path(label: str) -> Path:
+    return SECRETS_DIR / f"testnet_{label}.secret.json"
+
+
+def account_for(source: str, cfg: dict):
+    """Named account for a signal source, or None (default shared slot). Existence check only, never reads the file."""
+    for prefix, label in (cfg.get("accounts") or {}).items():
+        if source.startswith(prefix):
+            if account_secret_path(label).exists():
+                return label
+            if label not in _warned_missing:
+                _warned_missing.add(label)
+                log({"event": f"{label}_account_missing", "path": str(account_secret_path(label))})
+            return None
+    return None
+
+
+def run(cmd: list, timeout: int = 900, account: str = None) -> tuple:
+    env = {**os.environ, "MTS_ACCOUNT": account} if account else {k: v for k, v in os.environ.items() if k != "MTS_ACCOUNT"}
     r = subprocess.run(cmd, cwd=REPO, capture_output=True, text=True, encoding="utf-8", errors="replace",
-                       timeout=timeout)
+                       timeout=timeout, env=env)
     return r.returncode, (r.stdout or "") + (r.stderr or "")
 
 
-def place(sig: dict, dry_run: bool) -> dict:
+def place(sig: dict, dry_run: bool, account: str = None) -> dict:
     """new_plan -> executor --go -> start position_manager. Returns an outcome dict (never raises)."""
     py = sys.executable
-    rc, out = run([py, str(HERE / "new_plan.py"), *sig["plan_args"], "--yes"], timeout=60)
+    rc, out = run([py, str(HERE / "new_plan.py"), *sig["plan_args"], "--yes"], timeout=60, account=account)
     m = re.search(r"SAVED (\S+)", out)
     if rc != 0 or not m:
         return {"outcome": "plan_refused", "output": out.strip()[-400:]}
     plan_id = m.group(1)
     plan_file = HERE / "plans" / f"{plan_id}.json"
     if dry_run:
-        rc, out = run([py, str(HERE / "executor.py"), str(plan_file)], timeout=60)
+        rc, out = run([py, str(HERE / "executor.py"), str(plan_file)], timeout=60, account=account)
         return {"outcome": "dry_run", "plan_id": plan_id, "rc": rc, "output": out.strip()[-300:]}
-    rc, out = run([py, str(HERE / "executor.py"), str(plan_file), "--go"])
+    rc, out = run([py, str(HERE / "executor.py"), str(plan_file), "--go"], account=account)
     if rc != 0:
         return {"outcome": "entry_failed", "plan_id": plan_id, "output": out.strip()[-400:]}
     if "no_fill" in out:                     # limit entry that never filled: nothing to manage
         return {"outcome": "no_fill", "plan_id": plan_id, "output": out.strip()[-300:]}
     MANAGER_LOG_DIR.mkdir(parents=True, exist_ok=True)
     mlog = open(MANAGER_LOG_DIR / f"{plan_id}.log", "a", encoding="utf-8")
+    penv = {**os.environ, "MTS_ACCOUNT": account} if account else {k: v for k, v in os.environ.items() if k != "MTS_ACCOUNT"}
     proc = subprocess.Popen([py, str(HERE / "position_manager.py"), plan_id], cwd=REPO, stdout=mlog,
-                            stderr=subprocess.STDOUT)
+                            stderr=subprocess.STDOUT, env=penv)
     return {"outcome": "entered", "plan_id": plan_id, "manager_pid": proc.pid, "proc": proc,
             "output": out.strip()[-300:]}
 
 
-def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = None) -> dict:
-    """One poll. Returns the (possibly new) active trade dict. `active` = {'proc','plan_id','source'} or {}."""
+def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = None, extra: dict = None) -> dict:
+    """One poll. Returns the (possibly new) default-slot trade dict. `active` = {'proc','plan_id','source'} or {}.
+    `extra` = {account_label: trade dict}, mutated in place (named-account slots)."""
     now = now or now_utc()
+    extra = extra if extra is not None else {}
+    for lab in list(extra):
+        rc = extra[lab]["proc"].poll()
+        if rc is not None:
+            log({"event": "trade_closed", "plan_id": extra[lab]["plan_id"], "source": extra[lab]["source"],
+                 "manager_rc": rc, "account": lab})
+            del extra[lab]
     if active:
         rc = active["proc"].poll()
         if rc is not None:
@@ -273,14 +306,21 @@ def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = N
             log({"event": "skipped_halt", **base, "brakes": halted})
         elif AUTO_PAUSE.exists():
             log({"event": "skipped_auto_pause", **base})
-        elif active:
-            log({"event": "skipped_busy", **base, "busy_with": active["plan_id"]})
         else:
-            res = place(sig, dry_run)
+            acct = account_for(sig["source"], cfg)
+            slot = extra.get(acct) if acct else active
+            if slot:
+                log({"event": "skipped_busy", **base, "busy_with": slot["plan_id"], "account": acct})
+                continue
+            res = place(sig, dry_run, acct) if acct else place(sig, dry_run)
             proc = res.pop("proc", None)
-            log({"event": "trade_attempt", **base, **res})
+            log({"event": "trade_attempt", **base, **res, "account": acct})
             if proc is not None:
-                active = {"proc": proc, "plan_id": res["plan_id"], "source": sig["source"]}
+                new = {"proc": proc, "plan_id": res["plan_id"], "source": sig["source"]}
+                if acct:
+                    extra[acct] = new
+                else:
+                    active = new
     return active
 
 
@@ -299,10 +339,10 @@ def main(argv=None) -> int:
         p = parse_tom_alert(load_json(TOM_ALERT, {}))
         state["tom_last_alert_no"] = p.get("alert_no") or -1
     log({"event": "start", "dry_run": a.dry_run, "brakes": brakes(), "tom_last_alert_no": state["tom_last_alert_no"]})
-    active = {}
+    active, extra = {}, {}
     try:
         while True:
-            active = cycle(state, cfg, a.dry_run, active)
+            active = cycle(state, cfg, a.dry_run, active, extra=extra)
             save_json(STATE_PATH, state)
             if a.once:
                 return 0

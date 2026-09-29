@@ -57,6 +57,8 @@ sys.dont_write_bytecode = True
 import json
 import time
 import itertools
+import os
+import re
 import urllib.request
 import urllib.error
 from pathlib import Path
@@ -139,11 +141,25 @@ def _base() -> str:
     return MAINNET_BASE if _ACTIVE_ENV == "mainnet" else BASE
 
 
+def secret_path_for(env: str, account: str = None) -> Path:
+    """Credentials file. account (env var MTS_ACCOUNT) only selects a named TESTNET subaccount file
+    .secrets/testnet_<account>.secret.json; it is refused on mainnet."""
+    if env == "mainnet":
+        if account:
+            raise RuntimeError("REFUSED: named accounts are testnet-only")
+        return MAINNET_SECRET
+    if not account:
+        return SECRET
+    if not re.fullmatch(r"[a-z0-9_]{1,32}", account):
+        raise RuntimeError(f"REFUSED: bad account label {account!r}")
+    return SECRET.parent / f"testnet_{account}.secret.json"
+
+
 def _load_secret(env: str = None) -> dict:
     env = env or _ACTIVE_ENV
     if env not in ("test", "mainnet"):
         raise RuntimeError(f"REFUSED: unknown environment {env!r}")
-    path = MAINNET_SECRET if env == "mainnet" else SECRET
+    path = secret_path_for(env, os.environ.get("MTS_ACCOUNT") or None)
     if not path.exists():
         raise RuntimeError(f"MISSING: {path} - operator must create it first (see execution/README.md)")
     cfg = json.loads(path.read_text(encoding="utf-8"))
