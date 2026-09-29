@@ -80,14 +80,14 @@ class TestRunRegistry(unittest.TestCase):
 
     def test_call1_first_run_all_new(self):
         registry = self._registry()
-        bars_by_tf = {"1h": [{"t": 1}, {"t": 2}]}
+        bars_by_tf = {"1h": [{"t": 1}, {"t": 2}, {"t": 3}]}
         result = run_registry(registry, bars_by_tf, empty_state())
-        self.assertEqual(len(result["alerts"]), 2)
-        self.assertEqual({a["t_close"] for a in result["alerts"]}, {1, 2})
-        self.assertEqual(result["state"]["last_t"], {"1h": 2})
+        # only events <=1 bar old are emitted; history (t=1) is never emitted on a first run
+        self.assertEqual({a["t_close"] for a in result["alerts"]}, {2, 3})
+        self.assertEqual(result["state"]["last_t"], {"1h": 3})
         self.assertEqual(
             result["state"]["prev_events"]["L|S|1h"],
-            [{"t": 1, "event": "e"}, {"t": 2, "event": "e"}],
+            [{"t": 1, "event": "e"}, {"t": 2, "event": "e"}, {"t": 3, "event": "e"}],
         )
         self.assertEqual(result["errors"], [])
 
@@ -98,7 +98,8 @@ class TestRunRegistry(unittest.TestCase):
         result2 = run_registry(registry, bars_by_tf, state1)
         self.assertEqual(result2["alerts"], [])
         self.assertEqual(result2["errors"], [])
-        self.assertEqual(result2["state"], state1)
+        self.assertEqual(result2["state"]["last_t"], state1["last_t"])
+        self.assertEqual(result2["state"]["prev_events"], state1["prev_events"])
 
     def test_call3_new_bar_only_new_event_alerted(self):
         registry = self._registry()
@@ -117,7 +118,8 @@ class TestRunRegistry(unittest.TestCase):
         result = run_registry(registry, {}, empty_state())
         self.assertEqual(result["alerts"], [])
         self.assertEqual(result["errors"], [])
-        self.assertEqual(result["state"], empty_state())
+        self.assertEqual(result["state"]["last_t"], {})
+        self.assertEqual(result["state"]["prev_events"], {})
 
     def test_empty_bars_list_for_tf_is_skipped(self):
         registry = self._registry()

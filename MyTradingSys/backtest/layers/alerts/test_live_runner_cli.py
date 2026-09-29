@@ -104,7 +104,8 @@ class TestPollOnce(unittest.TestCase):
         raw = [_row(0, 1, 1, 1, 1, 1, 1), _row(60000, 2, 2, 2, 2, 2, 2), _row(120000, 3, 3, 3, 3, 3, 3)]
         fetch = lambda symbol, interval, limit: raw
         result = cli.poll_once(self._stub_registry(), "BTCUSDT", ["1h"], fetch, empty_state())
-        self.assertEqual(len(result["alerts"]), 2)  # bars 0 and 60000 survive fetch_closed_bars' drop
+        # bars 0 and 60000 survive fetch_closed_bars' drop; only the last (60000) is fresh
+        self.assertEqual(len(result["alerts"]), 2)
         self.assertEqual(result["errors"], [])
         self.assertIn("1h", result["state"]["last_t"])
 

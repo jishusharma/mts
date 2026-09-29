@@ -9,6 +9,10 @@ All functions are pure (no side effects) and use only stdlib.
 """
 
 from MyTradingSys.backtest.layers.alerts.alert_emitter import format_alert, new_alerts
+from MyTradingSys.backtest.layers.rsi.rsi_core import rsi_core
+from MyTradingSys.backtest.layers.rsi.rsi_ma import rsi_ma as _rsi_ma
+
+MAX_EMITTED = 2000
 
 
 def latest_closed_t(bars: list) -> int:
@@ -90,6 +94,8 @@ def run_registry(registry: dict, bars_by_tf: dict, state: dict) -> dict:
     """
     new_last_t = dict(state.get("last_t", {}))
     new_prev_events = dict(state.get("prev_events", {}))
+    emitted = list(state.get("emitted", []))
+    emitted_set = set(emitted)
     alerts = []
     errors = []
     
@@ -115,8 +121,28 @@ def run_registry(registry: dict, bars_by_tf: dict, state: dict) -> dict:
             prev_events_list = state.get("prev_events", {}).get(key, [])
             fresh = new_alerts(prev_events_list, events)
             
+            # Only the latest closed bar (or the one before it, for layers that confirm a bar late) is actionable ("t" is the bar open time): older events are
+            # history (first run / restart / window slide) and must never be emitted as live alerts.
+            bar_ms = (bars[-1]["t"] - bars[-2]["t"]) if len(bars) > 1 else 0
+            fresh = [e for e in fresh if e.get("t") is not None and e["t"] >= latest - bar_ms]
+            rsi_v = rsi_ma_v = None
+            if fresh:
+                # None only if history is shorter than the RSI warm-up (live runs have ~99 bars).
+                try:
+                    rs = rsi_core([b["c"] for b in bars], period=14)
+                    rsi_v = rs[-1] if rs else None
+                    ma = _rsi_ma(rs, "SMA", 14)
+                    rsi_ma_v = ma[-1] if ma else None
+                except (KeyError, ValueError, TypeError):
+                    rsi_v = rsi_ma_v = None
             for event in fresh:
-                alerts.append(format_alert(entry["layer"], entry["sub"], tf, event, entry["params_id"]))
+                ekey = f'{key}|{event.get("t")}|{event.get("event")}'
+                if ekey in emitted_set:
+                    continue
+                emitted_set.add(ekey)
+                emitted.append(ekey)
+                alerts.append(format_alert(entry["layer"], entry["sub"], tf, event, entry["params_id"],
+                                           rsi_value=rsi_v, rsi_ma_value=rsi_ma_v))
                 
             new_prev_events[key] = events
             new_last_t[tf] = latest
@@ -125,4 +151,5 @@ def run_registry(registry: dict, bars_by_tf: dict, state: dict) -> dict:
             errors.append({"key": key, "error": str(exc)})
             continue
             
-    return {"alerts": alerts, "state": {"last_t": new_last_t, "prev_events": new_prev_events}, "errors": errors}
+    return {"alerts": alerts, "state": {"last_t": new_last_t, "prev_events": new_prev_events,
+                                                        "emitted": emitted[-MAX_EMITTED:]}, "errors": errors}
