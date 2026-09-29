@@ -1,0 +1,388 @@
+[0:00] In this video, I will show you five of
+[0:01] the best edges and trading models that
+[0:05] you can use as a trader. And I'm not
+[0:07] talking about some vague concepts or
+[0:10] geometric shapes that I cherry-picked
+[0:13] from another charts. I'm talking about
+[0:15] five repetitive and predictable behavior
+[0:19] that are vastly documented by
+[0:22] institutional-level
+[0:23] academical research. And they have
+[0:26] persistently occurred in [music]
+[0:28] financial markets over the last decade.
+[0:32] Five of the so-called structural edges.
+[0:36] [music] We are not talking about a
+[0:37] short-term inefficiency, but five
+[0:40] behavior that are structural because of
+[0:43] how the plumbing of financial markets
+[0:47] [music] works. And that you, as a
+[0:49] trader, could potentially extract
+[0:53] real [music] alpha. Of course, this is
+[0:55] not financial advice. It's only for
+[0:58] educational purpose. Now, I have been
+[1:00] involved in financial markets for
+[1:03] multiple years. Some know me as a
+[1:05] professional scalper, as I won multiple
+[1:08] podiums in the most famous competition,
+[1:11] the Robbins Cup, or in the CME Equity
+[1:14] Cup, or because, unlike many guru, I
+[1:16] traded live countless times. And I have
+[1:19] literally tried every trading strategy
+[1:22] you can name. And I have selected for
+[1:25] you both what allow me to build a
+[1:28] considerable amount of my wealth, but
+[1:31] also the results of years and years and
+[1:34] money invested in [music] extensive
+[1:37] quantitative research and learning
+[1:39] constantly approaches and [music]
+[1:41] strategies from hedge fund managers,
+[1:44] bank floor traders, and other
+[1:46] professionals. Here's the five model
+[1:48] that I will [music] show you. Two
+[1:49] long-term models on the stock market,
+[1:52] one intraday [music] model on the
+[1:54] equities market, one option model,
+[1:57] and one cryptocurrency smart DCA. And
+[2:00] you are probably asking yourself,
+[2:02] [music] why I need five approaches?
+[2:05] Shouldn't I choose only one? Because the
+[2:07] truth is, unlike retail traders that
+[2:10] typically only trust one strategy, one
+[2:13] model, and one guru, and basically
+[2:15] choose a side like at the stadium,
+[2:18] professionals in finance don't choose
+[2:20] side. They just follow the money. And
+[2:23] there is many ways to follow the money.
+[2:26] stops working tomorrow, [music] what
+[2:28] would you do? You may be panic, strategy
+[2:30] hope, revenge trading. If instead you
+[2:34] use many and diversified models, you
+[2:37] will be more independent in changes
+[2:39] [music]
+[2:39] in market regime, and you will get a way
+[2:42] smoother equity line. And you will see
+[2:44] the more you will scale in trading
+[2:47] profession, the more you will realize
+[2:49] how important it is. Just like we are
+[2:52] planning in the hedge fund that we are
+[2:54] in process of building, to think in
+[2:56] terms of alpha, beta, and risk-adjust
+[2:59] [music] return. So, without further ado,
+[3:02] let's meet these five models. Let's dive
+[3:04] deep into my top five favorite
+[3:07] structural edge. Here we will not talk
+[3:09] about guru, no hope trading, no mentor,
+[3:13] just data, okay? And this is my message
+[3:16] to the trading industry, okay? Instead
+[3:18] of trying to replicate the performance
+[3:20] of your favorite guru, or trust blindly,
+[3:25] okay, the strategies that use the work
+[3:28] that you should do, it's called a
+[3:31] research and validation process. And
+[3:34] this apply to everything. If you are an
+[3:35] investor, if you are an intraday trader,
+[3:38] if you want to trade stocks, if you want
+[3:41] to trade crypto, you should research and
+[3:43] you should validate what you are
+[3:44] applying. Also, because market change,
+[3:47] there is one concept called alpha decay.
+[3:49] And as the reason to help you in doing
+[3:51] this, I'm providing for free here five
+[3:54] structural edge that are supported by
+[3:57] extensive academical research, data, and
+[4:01] track record from the biggest
+[4:03] institutions in the world. Let's start
+[4:05] with the first one. The concept of
+[4:06] earning surprise drift. The earning
+[4:09] surprise drift, the PAAD, the behavioral
+[4:13] under reaction anomaly, post quarterly
+[4:16] announcement, is one of the oldest edge
+[4:19] in the stock market, and it's proven by
+[4:22] a lot of test. Now, this edge here works
+[4:25] because there is one concept in the
+[4:27] institutions and in the hedge fund
+[4:29] called alpha execution. So, when you
+[4:33] have a sudden change in information in
+[4:36] the market because maybe one stock beat
+[4:39] the expectations in the earnings by two,
+[4:42] three times, by 40, 50, 60%. Okay? This
+[4:46] information needs time to be priced in
+[4:49] because the market participants are not
+[4:51] willing to suffer a huge amount of
+[4:54] slippage. So, they will fractionalize
+[4:56] their order, and one example of this,
+[4:59] one alpha execution method that I was
+[5:01] also discussing with Freddy, one
+[5:03] ex-market maker, is the VWAP. Okay? So,
+[5:06] they put algorithmic in in the market
+[5:08] where they will buy the stocks they are
+[5:11] interested in because there was a sudden
+[5:13] shift in fundamentals at one specific
+[5:15] price. They will accumulate, okay?
+[5:17] Without rushing and running after the
+[5:20] price where you pay a lot of slippage,
+[5:23] okay? And when you have an average
+[5:24] feeling price that is not so good, okay?
+[5:27] The earning surprise drift represent one
+[5:29] of the oldest, most robust market
+[5:32] anomaly. It's firstly documented by Ball
+[5:35] and Brown in the 1968,
+[5:37] and it shows that stock with high
+[5:40] standardized unanticipated earning
+[5:42] continue to drift upward for up to 60
+[5:45] days, while negative surprise stocks
+[5:48] drift downwards. Investor anchored to
+[5:51] previous estimates suffer from limited
+[5:54] attention during busy earning season,
+[5:56] leading to slow information diffusion
+[5:59] and delayed price adjustment.
+[6:01] Under-reaction is reinforced by
+[6:03] transaction cost, short sale constraint,
+[6:06] negative surprise small gap, and
+[6:08] liquidity limits. These include also
+[6:10] slippage, preventing institutional
+[6:12] traders from instantly correcting the
+[6:15] mispricing. And this is where the edge
+[6:17] for retail works, okay? And this is why
+[6:20] it's present for multiple years. So, you
+[6:22] start with an hypothesis and you build
+[6:25] the structural mechanics. Now, let's go
+[6:27] on this. This is one chart that show the
+[6:29] spread, okay, for a sample of positive
+[6:33] earnings, the good news and the bad
+[6:34] news. And as you can see, the stock
+[6:36] drift in the direction of the earnings
+[6:39] in the next 60 day. This is day one,
+[6:41] this is 60 day, okay? The spread is
+[6:43] relevant, the spread is 4%, okay? And
+[6:46] for 60 days, 4% in a single stock it's a
+[6:49] lot. Specifically, if you also do
+[6:52] statistical analysis on the stock that
+[6:54] you are picking. If you want to check by
+[6:57] yourself, you are a nerd and you want to
+[6:58] read, go to check this verified academic
+[7:01] research from Kaczmarek and Zaremba,
+[7:04] Beyond the Last Surprise, Reviving Post
+[7:07] Earnings Announcement Drift with Machine
+[7:09] Learning. This one is beautiful from
+[7:11] 2025. And the second one from Bernard
+[7:14] and Thomas of the '89, one of the oldest
+[7:17] one, Post Earnings Announcement Drift,
+[7:19] Delayed Price Response. Let's go on the
+[7:22] second edge. The second edge is my
+[7:24] favorite, okay? Everyone knows me for
+[7:26] the IVB. I validated this from an
+[7:28] institutional perspective with multiple
+[7:31] platform also on Python to show that the
+[7:34] stocks have an upside skew and they have
+[7:36] a structural drift of the battle of the
+[7:38] first 30 minutes. We also received a
+[7:41] test and audit from an ex-market maker,
+[7:43] Matteo Conti, that did a super extensive
+[7:47] test on this behavior and validated this
+[7:50] also. By the way, if you want this
+[7:52] flowchart, you can click the link in the
+[7:54] description because I will share it in
+[7:56] the Telegram channel, completely for
+[7:58] free. The core edge, the initial volume
+[8:01] breakout or the initial balance drift,
+[8:03] and there is a huge amount of literature
+[8:05] also without implementing volume of the
+[8:08] opening range breakout, so just using
+[8:10] price. Okay. The initial balance
+[8:12] represent the high and low price
+[8:13] established during the first 30 minutes
+[8:16] of a regular cash trading. Volatility
+[8:18] contraction during this first half hour
+[8:21] often revolves in explosive volume
+[8:24] confirmed directional breakout runs that
+[8:27] hold strong predictive power for the
+[8:30] rest of the session. Now, let's start on
+[8:33] the assumption of without considering
+[8:35] volume, just considering if the Nasdaq
+[8:39] have a structural drift on the upside
+[8:41] and if the opening range of the first 30
+[8:44] minutes hold predicted value over the
+[8:47] coin flip. And we can see that we have a
+[8:49] skew of 13.5%
+[8:52] okay. So, measuring the session after
+[8:55] the breakout that close above this
+[8:58] breakout, it's already blindly without
+[9:02] order flow, without option flow, without
+[9:04] logic of the strategy confirmation 13.5%
+[9:08] okay. So, with the risk to reward okay
+[9:12] of one of one measuring the same amount
+[9:14] okay, we have a skew of 13.5% of being
+[9:17] right just from this valuation okay.
+[9:20] Then I did extensive test also with the
+[9:22] quant, we saw how this edge perform in
+[9:25] the last 5-10 years and how you can take
+[9:28] both side because you can also implement
+[9:30] the short side okay that is more strong
+[9:32] but you should be able to analyze the
+[9:35] gamma regime because in this one option
+[9:37] flow comes really handy. And I gave also
+[9:39] the verified academical literature, the
+[9:41] one of Andrea Barbon, Carlo Zarattini,
+[9:44] Andrew Aziz, profitable day trading
+[9:46] strategy for the US equity markets. The
+[9:49] founder of this, Toby Crabel, that
+[9:51] started with the opening range breakout
+[9:53] without implementing volume, but it's
+[9:54] already profitable with this logic. And
+[9:57] the one of Holberg, assessing the
+[9:59] profitability of intraday opening range
+[10:01] breakout strategy. Consider order flow
+[10:03] for timing, this is what Getting a
+[10:05] direction validated by statistical
+[10:08] research and then timing my entry with
+[10:11] order flow and option flow for
+[10:13] directional pressure. Let's go on the
+[10:14] third edge, asymmetrical information and
+[10:17] regulatory filing. Politician tracking,
+[10:19] okay? Member of Congress frequently
+[10:22] trade stocks in sector directly impacted
+[10:25] by committees they sit on. Speaker
+[10:27] Emerita Nancy Pelosi's family portfolio
+[10:29] has achieved legendary status,
+[10:31] outperforming nearly every hedge fund
+[10:34] with 54% gain in 2024 and a 65% gain in
+[10:38] 2023, primarily through leverage call
+[10:41] options on high growth tech stocks. Now,
+[10:44] the hypothesis, key politician have
+[10:46] access to non-public forward-looking
+[10:49] information regarding federal contract,
+[10:51] regulatory changes, subsidies, and
+[10:53] antitrust decision before they are made
+[10:56] public. Structural mechanics, while the
+[10:58] Stock Act of 2012 mandates trade
+[11:01] disclosure within 45 days. Copy trading
+[11:04] the most active and powerful committee
+[11:05] members create a structural alpha edge.
+[11:08] These politician possess asymmetric
+[11:11] insight into macroeconomic policy policy
+[11:13] shift like the CHIPS Act or the green
+[11:16] energy subsidies. Now, to avoid
+[11:18] cherry-picking the politician, we test
+[11:20] Nancy Pelosi, Brian Higgins, and Mark
+[11:23] Green portfolio. And as you can see, we
+[11:24] compare this with the buy and hold on
+[11:26] S&P 500, and you can see the result of
+[11:29] this equity line comparing Nancy Pelosi,
+[11:33] Brian Hicks, and Mark Green to the S&P
+[11:35] 500 results. You can see that Nancy
+[11:37] Pelosi is the best performer. Okay. And
+[11:39] we can go on the verified academical
+[11:41] literature. This one of 2011, abnormal
+[11:45] return from the common stock investment
+[11:48] of member of the US House. And this is
+[11:51] why in the 2012 they created the STOCK
+[11:54] Act exactly for what this paper was
+[11:56] demonstrating. And the one of Fisher,
+[11:58] talking stocks of democracies, abnormal
+[12:02] returns of high-profile member of
+[12:04] Congress. This is from 2025. So,
+[12:07] remember that the edge are not only
+[12:10] price, volume, okay, or data. They can
+[12:14] also be informational edge in timing.
+[12:18] And this edge can be taken as a
+[12:20] structural alpha even if there is this
+[12:23] delay of 45 days between the release of
+[12:26] the information and the actual result of
+[12:28] the price. Let's go on the next one, the
+[12:30] option premium harvesting. And this is
+[12:33] also another structural edge,
+[12:35] capitalizing on the systematic
+[12:37] volatility risk premium, the VRP.
+[12:41] Abstract, option premium harvesting is
+[12:43] the systematic selling of
+[12:45] out-of-the-money option to capture the
+[12:47] volatility risk premium. The volatility
+[12:49] risk premium exists because implied
+[12:51] volatility, listen closely, implied
+[12:53] volatility, IV, is structurally higher
+[12:56] than ex-post realized volatility, the
+[12:59] RV. Hypothesis,
+[13:01] implied volatility represent a risk
+[13:03] insurance premium that institutional
+[13:06] buyers are willing to overpay to hedge
+[13:09] their downside risk, allowing option
+[13:11] sellers to collect a persistent yield.
+[13:14] The risk premium is a structural
+[13:16] compensation for taking on tail risk
+[13:19] because markets are crash phobic.
+[13:21] Out-of-the-money puts trade at a premium
+[13:24] that significantly exceed their
+[13:26] mathematical probability of expiring in
+[13:29] the money. Here you can see the test,
+[13:31] okay, of the last 12 months of the
+[13:34] difference between implied volatility
+[13:36] and realized volatility. You will see
+[13:38] with your own eyes that realized
+[13:39] volatility it's more often than not
+[13:42] lower than implied volatility. And here
+[13:45] are two papers that I find amazing, the
+[13:47] current rule from 2009 variance risk
+[13:49] premium and the Oleg Bondarenko, why are
+[13:53] put options so expensive?
+[13:56] The last edge, this one is the edge that
+[13:59] gave me the most amount of results
+[14:01] during the years because it was really
+[14:03] early in the blockchain adoption and in
+[14:06] the Bitcoin cycle.
+[14:08] And now there are a lot of papers that
+[14:11] are coming out about the smart DCA on
+[14:14] the crypto space. This is the blockchain
+[14:16] intelligence model. So, optimizing
+[14:18] Bitcoin accumulation using the MVRV zeta
+[14:22] score versus the buy and hold. Now, this
+[14:24] one it's a simplification to make it
+[14:26] quantitative. I have my own model that
+[14:29] have even better performance than this
+[14:31] that is based on multiple set of
+[14:34] mathematical condition before pressing
+[14:37] buy and before selling the Bitcoin. A
+[14:40] standard buy and hold strategy expose
+[14:42] investor to maximum drawdown exceeding
+[14:44] 80% and if you study the retracement
+[14:47] from the all-time high of Bitcoin, you
+[14:49] notice. The blockchain intelligence
+[14:51] model use the market value to realize
+[14:53] value, the MVRV zeta score to identify
+[14:56] macro market cycles and adjust
+[14:58] allocation size dynamically, buying
+[15:00] heavily at capitulation and reducing
+[15:03] risk gradually at euphoria. And if you
+[15:05] study the biggest portfolio in the
+[15:07] market, you will notice that this is
+[15:09] exactly how the big whale of the market
+[15:12] move and you can monitor this by
+[15:14] checking their holding activity. The
+[15:16] hypothesis, public blockchains provide a
+[15:19] transparent, real-time record of
+[15:21] investor cost basis, the realized value.
+[15:23] Standardizing the difference between
+[15:25] market value and realized value reveals
+[15:27] the extreme deviation from fair network
+[15:30] valuation. Structural mechanic, because
+[15:32] Bitcoin lack traditional cash flow
+[15:34] anchors, price cycles are driven
+[15:36] entirely by purely behavioral
+[15:39] reflexivity. The MVRV zeta score
+[15:41] standardized this psychological swing,
+[15:43] flagging absolute capitulation and
+[15:45] extreme euphoria. Empirical equity line,
+[15:48] this is the comparison between the
+[15:50] dynamic the one on the MVRV, the static
+[15:54] DCA, and the buy and hold approach. And
+[15:57] below, we can see the Grobity and Nazman
+[16:00] Sandretto 2026 using on-chain data to
+[16:04] predict Bitcoin cycles, and the Nazman
+[16:07] research paper about using on-chain data
+[16:10] to predict cryptocurrency cycles. I hope
+[16:13] you find a lot of value in this video.
+[16:15] Test these models and let me know if you
+[16:18] find any edge. I hope it helps you to
+[16:21] realize the important of diversification
+[16:23] and the importance of starting with an
+[16:26] hypothesis.
