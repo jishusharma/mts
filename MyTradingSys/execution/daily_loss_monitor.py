@@ -102,6 +102,20 @@ EXCLUDED_TX_TYPES_EXACT = {"deposit", "withdrawal"}
 EXCLUDED_TX_TYPE_PREFIXES = ("transfer",)
 STATE_PATH = Path(__file__).resolve().parent / "daily_loss_monitor_state.json"
 HALT_PATH = Path(__file__).resolve().parent / "HALT_DAILY_LOSS"
+# PREMAINNET1 H1: mainnet has its OWN state + halt marker, so a testnet trip can never mask a mainnet breach
+# (and vice versa). Testnet names are unchanged.
+STATE_PATH_MAINNET = Path(__file__).resolve().parent / "daily_loss_monitor_state_mainnet.json"
+HALT_PATH_MAINNET = Path(__file__).resolve().parent / "HALT_DAILY_LOSS_MAINNET"
+
+
+def _client_env(client) -> str:
+    f = getattr(client, "active_env", None)
+    return "mainnet" if callable(f) and f() == "mainnet" else "test"
+
+
+def paths_for_env(env: str):
+    """(state_path, halt_path) for 'mainnet' or testnet; module globals read at call time."""
+    return (STATE_PATH_MAINNET, HALT_PATH_MAINNET) if env == "mainnet" else (STATE_PATH, HALT_PATH)
 JOURNAL_PLAN_ID = "ACCOUNT_DAILY_LOSS"
 MAX_CONSECUTIVE_FAILURES = 3  # FIX3 H3: then fail closed (write HALT_DAILY_LOSS) instead of dying
 
@@ -214,12 +228,15 @@ def compute_total_pnl_usd(client, token, state: dict, currency: str = "BTC",
 
 def run_once(client, token, clock=_utc_now, currency: str = "BTC",
              instrument: str = "BTC-PERPETUAL", cap_usd: float = DEFAULT_DAILY_LOSS_CAP_USD,
-             state_path: Path = STATE_PATH, halt_path: Path = HALT_PATH, pnl_source: str = None) -> dict:
+             state_path: Path = None, halt_path: Path = None, pnl_source: str = None) -> dict:
     """Single monitor iteration. Returns the check_daily_loss_cap() result
     dict (plus 'state' for tests). Idempotent: a breach only triggers
     kill_all/HALT-file/journal once per UTC day (state['breached_today']).
     
     Re-arms breached_today flag if HALT_DAILY_LOSS file is cleared by operator."""
+    env_state, env_halt = paths_for_env(_client_env(client))
+    state_path = state_path or env_state
+    halt_path = halt_path or env_halt
     now = clock()
     try:
         state = ensure_day_state(client, token, now, currency=currency, state_path=state_path)
@@ -304,9 +321,10 @@ def main(argv=None):
             print(f"daily_loss_monitor iteration failed ({failures}/{MAX_CONSECUTIVE_FAILURES}): {e!r}")
             if failures >= MAX_CONSECUTIVE_FAILURES or args.once:
                 now = _utc_now()
-                write_halt(HALT_PATH, _today_str(now),
+                blind_halt = paths_for_env(_client_env(do))[1]
+                write_halt(blind_halt, _today_str(now),
                            f"daily_loss_monitor blind: {failures} consecutive failures, last {e!r}", now)
-                print(f"HALT_DAILY_LOSS written: {HALT_PATH} - monitor cannot see the account")
+                print(f"{blind_halt.name} written: {blind_halt} - monitor cannot see the account")
                 return 1
             try:
                 token = do.authenticate()

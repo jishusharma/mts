@@ -23,4 +23,6 @@ auto_trader_config.json (default `{"layer:fabio:": "fabio"}`).
 ## Notes
 - Mechanism: env var `MTS_ACCOUNT=fabio` is set for new_plan / executor / position_manager subprocesses;
   `deribit_orders._load_secret` picks `.secrets/testnet_fabio.secret.json`.
-- kill_switch.py and deribit_read.py still use the default account unless run with `MTS_ACCOUNT=fabio` in the environment.
+- kill_switch.py: use `python kill_switch.py --confirm KILL --account fabio` (sets the account for that run only). Do NOT set
+  `$env:MTS_ACCOUNT` in your shell: a stale value breaks mainnet commands (the mainnet kill switch now ignores it with a warning,
+  but executor/position_manager/daily_loss_monitor `--mainnet` still refuse). deribit_read.py still uses the default account.

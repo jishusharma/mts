@@ -27,9 +27,12 @@ import sys
 sys.dont_write_bytecode = True
 
 import argparse
+import os
+import re
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
+ACCOUNT_RE = re.compile(r"[a-z0-9_]{1,32}")  # same rule as deribit_orders.secret_path_for
 HALT_PATH = Path(__file__).resolve().parent / "HALT"
 
 
@@ -82,39 +85,78 @@ def kill_all(client, token, currency: str = "BTC", instruments: List[str] = None
         if "BTC-PERPETUAL" not in instruments:
             instruments.append("BTC-PERPETUAL")
     
-    # Phase 2: Cancel all orders on each instrument
-    for instrument in instruments:
-        try:
-            orders = client.get_open_orders(token, instrument_name=instrument, type_="all")
-            for order in orders:
-                order_id = order["order_id"]
-                try:
-                    client.cancel(token, order_id)
-                    cancelled_orders.append(order_id)
-                except Exception as e:
-                    errors.append({"order_id": order_id, "error": repr(e)})
-        except Exception as e:
-            errors.append({"instrument": instrument, "error": repr(e)})
-    
-    # Phase 3: Flatten all positions
-    try:
-        positions = client.get_positions(token, currency=currency, kind="future")
-        for position in positions:
-            size = position.get("size", 0)
+    # PREMAINNET1 B1: close FIRST, cancel the protective (reduce-only) stop LAST and only once the
+    # position is confirmed flat. If the close fails the stop stays in place and we say so loudly.
+    def _sizes():
+        return {p["instrument_name"]: p.get("size", 0)
+                for p in client.get_positions(token, currency=currency, kind="future")}
+
+    def _close_open_positions():
+        sizes = _sizes()
+        for instrument_name, size in sizes.items():
             if abs(size) > 0:
-                instrument_name = position["instrument_name"]
                 try:
                     result = client.close_position(token, instrument_name=instrument_name)
                     closed_positions.append({"instrument_name": instrument_name, "result": result})
                 except Exception as e:
                     errors.append({"instrument_name": instrument_name, "error": repr(e)})
+
+    # Phase 2: flatten all positions
+    try:
+        _close_open_positions()
     except Exception as e:
         errors.append({"operation": "get_positions", "error": repr(e)})
-    
+
+    # Phase 3: cancel non-protective orders (entries etc.), remember reduce-only ones
+    protective = []
+    for instrument in instruments:
+        try:
+            orders = client.get_open_orders(token, instrument_name=instrument, type_="all")
+        except Exception as e:
+            errors.append({"instrument": instrument, "error": repr(e)})
+            continue
+        for order in orders:
+            order_id = order["order_id"]
+            if order.get("reduce_only"):
+                protective.append((instrument, order_id))
+                continue
+            try:
+                client.cancel(token, order_id)
+                cancelled_orders.append(order_id)
+            except Exception as e:
+                errors.append({"order_id": order_id, "error": repr(e)})
+
+    # Phase 4: re-read the position (retry the close once if something filled meanwhile); only a
+    # CONFIRMED flat account releases the protective stops.
+    flat = False
+    try:
+        sizes = _sizes()
+        if any(abs(v) > 0 for v in sizes.values()):
+            _close_open_positions()
+            sizes = _sizes()
+        flat = not any(abs(v) > 0 for v in sizes.values())
+    except Exception as e:
+        errors.append({"operation": "get_positions(verify flat)", "error": repr(e)})
+
+    kept = []
+    if flat:
+        for instrument, order_id in protective:
+            try:
+                client.cancel(token, order_id)
+                cancelled_orders.append(order_id)
+            except Exception as e:
+                errors.append({"order_id": order_id, "error": repr(e)})
+    else:
+        kept = [oid for _, oid in protective]
+        errors.append({"operation": "position_not_confirmed_flat",
+                       "error": "POSITION NOT CONFIRMED FLAT - protective stop(s) LEFT IN PLACE: "
+                                f"{kept} - CHECK THE EXCHANGE UI NOW"})
+
     return {
         "cancelled_orders": cancelled_orders,
         "closed_positions": closed_positions,
         "errors": errors,
+        "protective_orders_kept": kept,
         "ok": len(errors) == 0
     }
 
@@ -132,8 +174,11 @@ def format_kill_report(result: dict) -> str:
         f"Errors encountered: {len(result['errors'])}"
     ]
     
+    if result.get("protective_orders_kept"):
+        lines.append(f"!!! POSITION NOT FLAT - protective stop(s) kept: {result['protective_orders_kept']} !!!")
     if result["errors"]:
         lines.append("ERRORS DURING KILL")
+        lines.extend(f"  {e}" for e in result["errors"])
 
     return "\n".join(lines)
 
@@ -147,11 +192,20 @@ def main(argv=None, halt_path: Path = HALT_PATH) -> int:
                         help="Must be exactly 'KILL' (case-sensitive) or the CLI refuses and does nothing.")
     parser.add_argument("--currency", default="BTC")
     parser.add_argument("--mainnet", action="store_true", help="MAINNET (typed confirmation required)")
+    parser.add_argument("--account", default=None,
+                        help="named TESTNET account label (sets MTS_ACCOUNT for this run only); refused with --mainnet")
     args = parser.parse_args(argv)
 
     if args.confirm != "KILL":
         print("REFUSED: --confirm KILL required (exact match, case-sensitive) - nothing was done")
         return 1
+    if args.account is not None:
+        if args.mainnet:
+            print("REFUSED: --account is testnet-only - nothing was done")
+            return 2
+        if not ACCOUNT_RE.fullmatch(args.account):
+            print(f"REFUSED: bad account label {args.account!r} - nothing was done")
+            return 2
 
     # FIX3 H2: HALT FIRST - the kill switch is used exactly when the exchange
     # or network misbehaves, so nothing below may prevent the halt.
@@ -159,7 +213,15 @@ def main(argv=None, halt_path: Path = HALT_PATH) -> int:
                          encoding="utf-8")
     print(f"HALT file written: {halt_path} - delete it once you have reviewed the account before resuming trading")
 
+    saved_acct = os.environ.get("MTS_ACCOUNT")
     try:
+        if args.mainnet and saved_acct:
+            # PREMAINNET1 B2: a stale MTS_ACCOUNT must never stop the mainnet kill (select_environment
+            # refuses named accounts on mainnet). Ignore it, loudly.
+            print(f"WARNING: MTS_ACCOUNT={saved_acct!r} is set in this shell - IGNORED for the mainnet kill switch")
+            os.environ.pop("MTS_ACCOUNT", None)
+        elif args.account is not None:
+            os.environ["MTS_ACCOUNT"] = args.account
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         import deribit_orders  # noqa: E402 (deferred: real exchange import only at runtime, not at test-collection time)
         if args.mainnet:  # default path untouched (testnet)
@@ -169,6 +231,11 @@ def main(argv=None, halt_path: Path = HALT_PATH) -> int:
     except Exception as e:
         print(f"KILL SWITCH FAILED ({e!r}) - HALT is in place - CHECK THE EXCHANGE UI NOW")
         return 1
+    finally:
+        if saved_acct is None:
+            os.environ.pop("MTS_ACCOUNT", None)
+        else:
+            os.environ["MTS_ACCOUNT"] = saved_acct
     print(format_kill_report(result))
 
     return 0 if result["ok"] else 1

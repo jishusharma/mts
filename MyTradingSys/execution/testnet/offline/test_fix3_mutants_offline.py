@@ -168,7 +168,7 @@ class OrderedClient:
 
 
 class TestK1K2K4(unittest.TestCase):
-    def test_K1_cancels_precede_close_position_per_instrument(self):
+    def test_K1_close_position_precedes_cancels_per_instrument(self):
         client = OrderedClient({
             "BTC-PERPETUAL": {"size": 10, "orders": ["o1", "o2"]},
             "ETH-PERPETUAL": {"size": 5, "orders": ["o3"]},
@@ -187,8 +187,8 @@ class TestK1K2K4(unittest.TestCase):
         for instrument in ("BTC-PERPETUAL", "ETH-PERPETUAL"):
             self.assertIn(instrument, close_idx, "each instrument must be flattened")
             self.assertTrue(cancel_idx.get(instrument), f"expected cancel(s) recorded for {instrument}")
-            self.assertTrue(all(ci < close_idx[instrument] for ci in cancel_idx[instrument]),
-                            f"every cancel for {instrument} must happen before its close_position "
+            self.assertTrue(all(ci > close_idx[instrument] for ci in cancel_idx[instrument]),
+                            f"every cancel for {instrument} must happen AFTER its close_position (PREMAINNET1 B1: close first) "
                             f"(cancels at {cancel_idx[instrument]}, close at {close_idx[instrument]})")
 
     def test_K2_no_positions_still_queries_btc_perpetual_fallback(self):

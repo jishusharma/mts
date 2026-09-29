@@ -126,6 +126,12 @@ UNSUPPORTED_STOPS = ("trailing_stop_metadata_only", "breakeven_metadata_only", "
                      "breakeven_after_fills")
 HALT_PATH = Path(__file__).resolve().parent / "HALT"
 HALT_DAILY_LOSS_PATH = Path(__file__).resolve().parent / "HALT_DAILY_LOSS"
+HALT_DAILY_LOSS_PATH_MAINNET = Path(__file__).resolve().parent / "HALT_DAILY_LOSS_MAINNET"  # PREMAINNET1 H1
+
+
+def _daily_loss_halt_path() -> Path:
+    """Per-env daily-loss halt marker (globals read at call time): a testnet trip must not halt mainnet."""
+    return HALT_DAILY_LOSS_PATH_MAINNET if do.active_env() == "mainnet" else HALT_DAILY_LOSS_PATH
 PLAN_ID_RE = re.compile(r"^[A-Za-z0-9_-]{1,24}$")  # FIX3 M6: labels never truncate/collide
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
@@ -216,7 +222,7 @@ def _halt_check_mid_run() -> list:
     first. Callers re-check this immediately before EVERY order-creating call
     inside execute_plan: each entry and each target. The protective stop is
     never blocked: ensure_stop checks the HALT right AFTER the stop is live."""
-    return _check_halt_files(HALT_PATH, HALT_DAILY_LOSS_PATH)
+    return _check_halt_files(HALT_PATH, _daily_loss_halt_path())
 
 
 def preflight(compiled: dict, plan: dict = None, mark: float = None,
@@ -225,7 +231,7 @@ def preflight(compiled: dict, plan: dict = None, mark: float = None,
     the two HALT-file reads (see _check_halt_files / this module's HALT
     files docstring note). Paths default to the module globals, read at call
     time (FIX3 H6: a suite can redirect HALT_PATH/HALT_DAILY_LOSS_PATH)."""
-    reasons = _check_halt_files(halt_path or HALT_PATH, halt_daily_loss_path or HALT_DAILY_LOSS_PATH)
+    reasons = _check_halt_files(halt_path or HALT_PATH, halt_daily_loss_path or _daily_loss_halt_path())
     pid = compiled.get("plan_id")
     if not (isinstance(pid, str) and PLAN_ID_RE.match(pid)):
         reasons.append(f"M6: plan_id {pid!r} must match [A-Za-z0-9_-]{{1,24}}")
