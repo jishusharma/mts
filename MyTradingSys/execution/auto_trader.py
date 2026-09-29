@@ -297,7 +297,8 @@ def record_ledger(plan_id: str, source: str, account, manager_rc) -> None:
         import trade_ledger
         row = trade_ledger.record_closed(plan_id, source, account, manager_rc)
         log({"event": "ledger_row", "plan_id": plan_id, "net_pnl_usd": row and row.get("net_pnl_usd"),
-             "exit_reason": row and row.get("exit_reason")})
+             "exit_reason": row and row.get("exit_reason"),
+             "account": account, "unresolved": row and row.get("unresolved")})
     except Exception as e:  # noqa: BLE001
         log({"event": "ledger_error", "plan_id": plan_id, "error": repr(e)[:200]})
 

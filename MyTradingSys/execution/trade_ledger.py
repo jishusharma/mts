@@ -189,7 +189,17 @@ def _plan(plan_id):
 
 
 def existing_plan_ids(path=None):
-    return {r.get("plan_id") for r in _read_jsonl(path or LEDGER_PATH)}
+    """Plan ids with a RESOLVED row. Rows carrying "unresolved" do not count: a later run may supersede them."""
+    return {r.get("plan_id") for r in _read_jsonl(path or LEDGER_PATH) if not r.get("unresolved")}
+
+
+def unresolved_row(attempt, account, reason, manager_rc=None):
+    """A ledger row for a plan whose outcome could not be computed (never drop a trade silently)."""
+    return {"ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "source": attempt.get("source"), "account": account or attempt.get("account"),
+            "alert_key": attempt.get("key"), "alert_ts": attempt.get("ts"), "plan_id": attempt["plan_id"],
+            "side": attempt.get("side"), "exit_reason": None, "net_pnl_usd": None, "manager_rc": manager_rc,
+            "unresolved": reason}
 
 
 def append_row(row, path=None):
@@ -205,8 +215,11 @@ def attempt_for(plan_id, auto_log=None):
 
 
 def record_closed(plan_id, source=None, account=None, manager_rc=None, fetcher=None, ledger_path=None,
-                  auto_log=None, events=None, plan=None, force=True):
-    """Write the ledger row for a closed plan (idempotent per plan_id). Returns the row, or None if skipped."""
+                  auto_log=None, events=None, plan=None, force=True, write_unresolved=True):
+    """Write the ledger row for a closed plan (idempotent per plan_id). Always writes a row: when the outcome cannot
+    be computed (fetch failure, no fills, position not flat) the row carries "unresolved": reason.
+    Returns the row, or None if the plan already has a resolved row. write_unresolved=False (backfill probing)
+    raises fetch errors and returns None instead."""
     ledger_path = ledger_path or LEDGER_PATH
     if plan_id in existing_plan_ids(ledger_path):
         return None
@@ -220,11 +233,22 @@ def record_closed(plan_id, source=None, account=None, manager_rc=None, fetcher=N
             t_from = datetime.strptime(attempt["ts"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc).timestamp()
         except ValueError:
             pass
-    trades, funding = (fetcher or fetch_exchange)(plan_id, account, t_from - 7200)
+    try:
+        trades, funding = (fetcher or fetch_exchange)(plan_id, account, t_from - 7200)
+    except Exception as e:  # noqa: BLE001
+        if not write_unresolved:
+            raise
+        row = unresolved_row(attempt, account, "exchange read failed: " + repr(e)[:160], manager_rc)
+        append_row(row, ledger_path)
+        return row
     row = build_row(attempt, trades, _journal_events(plan_id) if events is None else events,
                     _plan(plan_id) if plan is None else plan, account, manager_rc, funding, force=force)
-    if row:
-        append_row(row, ledger_path)
+    if row is None:
+        if not write_unresolved:
+            return None
+        row = unresolved_row(attempt, account, "no closed round trip found in exchange fills (position may still be "
+                             "open or entry fill missing)", manager_rc)
+    append_row(row, ledger_path)
     return row
 
 
@@ -268,7 +292,7 @@ def backfill(fetcher=None, ledger_path=None, auto_log=None, candidates=None):
         for acct in (candidates or account_candidates)(acct_hint):
             try:
                 row = record_closed(pid, a.get("source"), acct, closed.get("manager_rc"), fetcher, ledger_path,
-                                    auto_log, force=False)
+                                    auto_log, force=False, write_unresolved=False)
             except Exception:  # noqa: BLE001 - wrong account / auth failure: try the next
                 continue
             if row:
@@ -278,6 +302,9 @@ def backfill(fetcher=None, ledger_path=None, auto_log=None, candidates=None):
             added.append(got)
         else:
             unresolved.append(pid)
+            if pid not in {r.get("plan_id") for r in _read_jsonl(ledger_path)}:
+                append_row(unresolved_row(a, acct_hint, "backfill: no closed round trip on any probed account",
+                                          closed.get("manager_rc")), ledger_path)
     return added, unresolved
 
 
@@ -285,6 +312,8 @@ def summarize(rows):
     """{source: {n, wins, win_rate, mean_net, sum_net}}; a win is net P/L > 0."""
     out = {}
     for r in rows:
+        if r.get("unresolved"):
+            continue
         s = out.setdefault(r.get("source") or "?", {"n": 0, "wins": 0, "sum_net": 0.0})
         s["n"] += 1
         s["sum_net"] += r.get("net_pnl_usd") or 0.0

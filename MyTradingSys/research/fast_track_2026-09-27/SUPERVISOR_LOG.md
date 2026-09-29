@@ -186,3 +186,12 @@ Also committed: operator tooling 309d115 (mts.ps1, guide, new_plan.py), research
 - Next wake: if no dispatch after >=1 h of fresh signals -> tom.min_net_rr 1.0 (operator rule). Q1 bracket research job queued (not started).
 - 21:47 IST wake: runners up, no HALT. FIRST SUBACCOUNT TRADE: S-mkt-0929-1501 rsi 15m short on jishu_2, entered 15:01Z, closed 15:55Z (routing proven). Its ledger_row had null P/L and no row was written -> Sonnet fixing (plan account for fill reads; always write a row). min_net_rr stays 1.25 (dispatch happened).
 - turn_of_candle 1m alerts rejected 7x as unmapped (expected: no side, alert-only). NUC idle (hourly backfills audits a7). Journal dir now holds S-mkt-0929-1501.jsonl; earlier L-mkt loss still unexplained.
+
+## 2026-09-29 ~16:20Z - trade_ledger: unresolved rows (T3)
+- Root cause of the missing S-mkt-0929-1501 row: account routing was correct (jishu_2); the ledger returned None silently
+  because the position is STILL OPEN on jishu_2 (short 10 @ 83674, stop+target resting) - its position_manager died at 15:55Z
+  on a transient URLError in public/auth (ConnectionResetError) with no retry, so auto_trader logged trade_closed rc=1.
+  ACTION NEEDED: position_manager has no auth-retry; jishu_2 position is unmanaged (exchange-side stop/target still live).
+- Fix: trade_ledger.record_closed/backfill always write a row ("unresolved": reason) instead of dropping; resolved rows supersede
+  unresolved ones; summary ignores unresolved. auto_trader.py ledger_row event now logs account + unresolved.
+- auto_trader NOT restarted (L-mkt-0928-2240-2 has entered without trade_closed); running process keeps old ledger code until restart.

@@ -121,7 +121,32 @@ class RecordAndBackfillTest(unittest.TestCase):
         self.assertEqual([r["plan_id"] for r in added], ["P1"])
         self.assertEqual(added[0]["account"], "b")
         self.assertEqual(unresolved, ["P2"])                # P3 was never entered: not considered
+        self.assertEqual([(r["plan_id"], bool(r.get("unresolved"))) for r in self.rows()],
+                         [("P1", False), ("P2", True)])     # unresolved plans still get a row
+
+
+class UnresolvedRowTest(RecordAndBackfillTest):
+    def test_named_account_is_used_and_row_carries_it(self):
+        r = tl.record_closed("P1", None, "b", 0, self.fetcher, self.ledger, self.log, events=[], plan={})
+        self.assertEqual(r["account"], "b")
+        self.assertIn(("P1", "b"), self.calls)
+        self.assertNotIn(("P1", None), self.calls)
+
+    def test_unresolved_still_writes_row(self):
+        r = tl.record_closed("P2", None, "b", 1, self.fetcher, self.ledger, self.log, events=[], plan={})
+        self.assertTrue(r["unresolved"])
+        self.assertEqual((r["plan_id"], r["account"], r["manager_rc"]), ("P2", "b", 1))
         self.assertEqual(len(self.rows()), 1)
+
+    def test_fetch_error_still_writes_row_and_resolved_supersedes(self):
+        def boom(plan_id, account, t_from):
+            raise RuntimeError("auth")
+        r = tl.record_closed("P1", None, "b", 1, boom, self.ledger, self.log, events=[], plan={})
+        self.assertIn("auth", r["unresolved"])
+        r2 = tl.record_closed("P1", None, "b", 1, self.fetcher, self.ledger, self.log, events=[], plan={})
+        self.assertIsNone(r2.get("unresolved"))
+        self.assertEqual(tl.summarize(self.rows())["layer:rsi:x:15m"]["n"], 1)
+        self.assertIsNone(tl.record_closed("P1", None, "b", 1, self.fetcher, self.ledger, self.log, events=[], plan={}))
 
 
 if __name__ == "__main__":
