@@ -109,6 +109,9 @@ def main(argv=None):
     cmd3c = [sys.executable, "scripts/dev/check_guide.py"]
     success, output = run_step("3c", "User guide in sync with mts.ps1", cmd3c)
     results.append(("Step 3c: Guide in sync", success))
+    cmd3r = [sys.executable, "scripts/dev/test_alert_rate_check.py"]
+    success, output = run_step("3r", "Alert rate checker tests", cmd3r)
+    results.append(("Step 3r: Alert rate checker tests", success))
     cmd3d = [sys.executable, "scripts/dev/test_verify_extract_quotes.py"]
     success, output = run_step("3d", "Extract quote checker tests", cmd3d)
     results.append(("Step 3d: Quote checker tests", success))

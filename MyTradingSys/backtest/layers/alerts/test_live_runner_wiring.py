@@ -1,0 +1,94 @@
+"""Spec-derived tests: turn_of_candle wiring (FORMULAS.md sec 16), RSI failure side (rsi/TEST_PLAN.md: a failure
+resolves on the side opposite to the run's entry side), per-poll observability line, default tfs."""
+import io
+import tempfile
+import unittest
+from contextlib import redirect_stdout
+from unittest import mock
+
+from MyTradingSys.backtest.layers.alerts import live_layers as ll
+from MyTradingSys.backtest.layers.alerts import live_runner_cli as cli
+from MyTradingSys.backtest.layers.alerts.live_runner_core import run_registry, empty_state
+
+MIN = 60000
+
+
+def bars_1m(n, t0=0):
+    return [{"t": t0 + k * MIN, "o": 100.0, "h": 100.0, "l": 100.0, "c": 100.0, "v": 1.0, "tbv": 0.5}
+            for k in range(n)]
+
+
+class TestTurnOfCandle(unittest.TestCase):
+    def test_layer_events_at_minute_14_no_side(self):
+        # spec hand check: 30 bars t=k*60000 -> lead_minutes=1 events at i=14 and i=29
+        ev = ll.turn_of_candle_layer(bars_1m(30))
+        self.assertEqual([e["t"] for e in ev], [14 * MIN, 29 * MIN])
+        for e in ev:
+            self.assertNotIn("side", e)
+            self.assertIn("event", e)
+
+    def test_registered_on_1m_and_alerts_without_side(self):
+        reg = cli.build_default_registry()
+        self.assertIn("turn_of_candle|turn_of_candle|1m", reg)
+        bars = bars_1m(30)  # last bar (k=29) is minute 14 of the quarter -> fresh
+        res = run_registry({k: v for k, v in reg.items() if v["layer"] == "turn_of_candle"},
+                           {"1m": bars}, empty_state())
+        self.assertEqual(res["errors"], [])
+        self.assertEqual(len(res["alerts"]), 1)
+        self.assertEqual(res["alerts"][0]["tf"], "1m")
+        self.assertNotIn("side", res["alerts"][0])
+
+
+class TestRsiFailureSide(unittest.TestCase):
+    def _run(self, rsi_series):
+        bars = [{"t": i * 1000, "c": 1.0} for i in range(len(rsi_series))]
+        with mock.patch.object(ll, "rsi_core", return_value=rsi_series):
+            return ll.rsi_level_layer(bars)
+
+    def test_support_from_above_fails_below_is_short(self):
+        ev = self._run([45, 45, 40.2, 38, 38])
+        self.assertEqual([(e["event"], e.get("side")) for e in ev], [("failure", "short")])
+
+    def test_resistance_from_below_fails_above_is_long(self):
+        ev = self._run([35, 35, 40.2, 42, 42])
+        self.assertEqual([(e["event"], e.get("side")) for e in ev], [("failure", "long")])
+
+    def test_support_rejection_cross_have_no_side(self):
+        for series in ([45, 40.2, 45], [35, 40.2, 35], [45, 45, 35]):
+            for e in self._run(series):
+                self.assertNotIn("side", e)
+
+    def test_registry_uses_it_for_both_tfs(self):
+        reg = cli.build_default_registry()
+        for k in ("rsi|rsi_events|1h", "rsi|rsi_events|15m"):
+            self.assertIs(reg[k]["fn"], ll.rsi_level_layer)
+
+
+class TestObservability(unittest.TestCase):
+    def test_poll_line_lists_every_layer_with_counts(self):
+        reg = cli.build_default_registry()
+        res = {"alerts": [{"layer": "rsi", "sub": "rsi_events", "tf": "1h"}] * 2, "errors": [{"key": "x"}]}
+        line = cli.format_poll_line(reg, res, now_ms=0)
+        self.assertTrue(line.startswith("poll 1970-01-01T00:00:00Z alerts=2 errors=1"))
+        self.assertIn("rsi|rsi_events|1h=2", line)
+        for k in reg:
+            self.assertIn(k + "=", line)
+        self.assertIn("turn_of_candle|turn_of_candle|1m=0", line)
+
+    def test_once_prints_flushed_poll_line_and_polls_1m(self):
+        seen = {}
+
+        def fake_poll(registry, symbol, tfs, fetch, state, limit=100):
+            seen["tfs"] = tfs
+            return {"alerts": [], "state": state, "errors": []}
+
+        buf = io.StringIO()
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(cli, "poll_once", fake_poll), \
+                redirect_stdout(buf):
+            self.assertEqual(cli.main(["--once", "--state-path", d + "/s.json", "--alerts-dir", d]), 0)
+        self.assertIn("1m", seen["tfs"])
+        self.assertTrue(buf.getvalue().startswith("poll "))
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -15,6 +15,8 @@ import urllib.parse
 import urllib.request
 
 from MyTradingSys.backtest.layers.rsi.rsi_core import rsi_core
+from MyTradingSys.backtest.layers.rsi.rsi_events import rsi_events
+from MyTradingSys.backtest.layers.turn_of_candle.turn_of_candle import turn_of_candle_events
 from MyTradingSys.backtest.layers.rsi.malkan_40_60 import malkan_regime, malkan_setup_bull, malkan_setup_bear
 from MyTradingSys.backtest.layers.fabio.fabio_escalation import escalation_events
 from MyTradingSys.backtest.layers.fabio.fabio_volume_fvg import (
@@ -135,3 +137,37 @@ def _cc_layer(setup_fn, name):
 cc_sr_flip_layer = _cc_layer(setup1_sr_flip, "sr_flip")
 cc_fib_pullback_layer = _cc_layer(setup2_fib_pullback, "fib_pullback")
 cc_failed_msb_layer = _cc_layer(setup3_failed_msb_reversal, "failed_msb")
+
+
+RSI_LEVEL = 40.0
+RSI_TOL = 0.5
+
+
+def rsi_level_layer(bars):
+    """1h/15m RSI(14) level events at 40 +/- 0.5 (unchanged detector: rsi_events). Side only on "failure":
+    a failure is a band run whose resolving bar closed on the OPPOSITE side of the run's entry side
+    (rsi_events.py; rsi/TEST_PLAN.md), so the entry side is the opposite of the resolving bar's side, and that side
+    is readable from the RSI value at the event bar (t = resolving bar; rsi > level+tol / < level-tol always holds
+    there). Resolved below -> the run came from above (support from above failed) -> "short"; resolved above -> came
+    from below (resistance from below failed) -> "long". support / rejection / cross keep NO side (alert-only)."""
+    closes = [b["c"] for b in bars]
+    ts = [b["t"] for b in bars]
+    rsi = rsi_core(closes, period=14)
+    idx = {t: i for i, t in enumerate(ts)}
+    out = []
+    for e in rsi_events(rsi, ts, level=RSI_LEVEL, tolerance=RSI_TOL):
+        if e["event"] == "failure":
+            v = rsi[idx[e["t"]]]
+            if v is not None and v < RSI_LEVEL - RSI_TOL:
+                e = {**e, "side": "short"}
+            elif v is not None and v > RSI_LEVEL + RSI_TOL:
+                e = {**e, "side": "long"}
+        out.append(e)
+    return out
+
+
+def turn_of_candle_layer(bars):
+    """1m bars. Candidate C3 (T055, FORMULAS.md sec 16): one event per quarter hour at minute-of-quarter 14
+    (lead_minutes=1, entry at that bar's close, just before the 15m candle opens). The direction of the effect
+    is NOT established (report: side is a grid parameter) so NO "side" is emitted: alert-only context."""
+    return [{"t": bars[e["i"]]["t"], "event": "toc_m14"} for e in turn_of_candle_events(bars, lead_minutes=1)]

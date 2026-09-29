@@ -165,3 +165,8 @@ Also committed: operator tooling 309d115 (mts.ps1, guide, new_plan.py), research
 - Queue: 946 running, 1 waiting (hourly backfill). 150-152 BLOCKED/153 PARTIAL are bake-off runs, not promotions. No agent this wake.
 - L-mkt-0929-0200 closed via manager flatten+halt (stop unreadable 9.2s > 4s) at 08:55Z = 14:25 IST, same minute as the subaccount-transfer false HALT_DAILY_LOSS (halt_history *_xferfix; fixed 1542151) whose kill switch cancelled the stop. Manager reacted correctly (G-d bound works live). No new bug.
 - 18:47 IST wake: runners up, no HALT. No auto-trade since 10:49Z (tom WAIT_RR; layers quiet). NUC busy on 121-paste-size-guard (qwen3-coder loaded, CPU 67%; heartbeat stale only mid-generation), 2 waiting. Other session landed time-exit max_hold_minutes (e8fec95), per-layer confirmation lag (c3683bf), operator polling station (8043475). No agent this wake.
+
+## 2026-09-29 (T3 builder) live alert runner: wiring + observability
+- Wired turn_of_candle (C3, 1m tf, event toc_m14, NO side: direction of effect not established; ~96 alerts/day, alert-only) into build_default_registry; runner default --tfs now 1h,15m,1m. Tick layer NOT wired: needs tiers.json (absent) and tick net_delta/cvd, not klines.
+- RSI "failure" events now carry side (live_layers.rsi_level_layer): resolved below the level -> short, above -> long (entry side is the opposite of the resolving side, read from the RSI value at the event bar). support/rejection/cross stay side-less. auto_trader will now see failure alerts with a side.
+- Runner prints a flushed per-poll line with per-layer counts; scripts/dev/alert_rate_check.py (DEAD/QUIET/OK). Live runner restarted (old pids 1892/6632 killed) - see runner_logs.

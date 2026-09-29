@@ -128,14 +128,11 @@ def build_default_registry(fetch_funding=None) -> dict:
     Builds and returns a registry for two registered layers: RSI and FABIO CVD.
     More layers can be added in the same way in future work.
     """
-    def _rsi_layer_fn(bars):
-        closes = [b["c"] for b in bars]
-        ts = [b["t"] for b in bars]
-        rsi = rsi_core(closes, period=14)
-        return rsi_events(rsi, ts, level=40.0, tolerance=0.5)
-
     def _fabio_cvd_layer_fn(bars):
         return cvd_absorption_events(bars)
+
+    from MyTradingSys.backtest.layers.alerts import live_layers as ll
+    _rsi_layer_fn = ll.rsi_level_layer
 
     entries = [
         {
@@ -160,7 +157,6 @@ def build_default_registry(fetch_funding=None) -> dict:
             "params_id": "fabio_cvd_default_2026-09-29"
         }
     ]
-    from MyTradingSys.backtest.layers.alerts import live_layers as ll
     suffix = "_defaults_2026-09-29"
     for layer, sub, tf, fn in [
         ("fabio", "escalation", "1h", ll.escalation_layer),
@@ -172,6 +168,7 @@ def build_default_registry(fetch_funding=None) -> dict:
         ("cryptocred", "sr_flip", "1h", ll.cc_sr_flip_layer),
         ("cryptocred", "fib_pullback", "1h", ll.cc_fib_pullback_layer),
         ("cryptocred", "failed_msb", "1h", ll.cc_failed_msb_layer),
+        ("turn_of_candle", "turn_of_candle", "1m", ll.turn_of_candle_layer),
     ]:
         entries.append({"layer": layer, "sub": sub, "tf": tf, "fn": fn, "params_id": sub + suffix,
                         "confirm_lag_bars": CONFIRM_LAG_BARS.get(sub, 0)})
@@ -207,13 +204,27 @@ def poll_once(registry: dict, symbol: str, tfs: list, fetch_fn, state: dict, lim
     }
 
 
+def format_poll_line(registry: dict, result: dict, now_ms: int = None) -> str:
+    """One line per poll: UTC time, totals, then alerts per registered layer key (0 included, so a dead layer
+    is visible), then the error count. Pure."""
+    import datetime
+    now = datetime.datetime.fromtimestamp((now_ms if now_ms is not None else time.time() * 1000) / 1000.0,
+                                          datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    counts = {k: 0 for k in registry}
+    for a in result["alerts"]:
+        k = f'{a["layer"]}|{a["sub"]}|{a["tf"]}'
+        counts[k] = counts.get(k, 0) + 1
+    per = " ".join(f"{k}={n}" for k, n in sorted(counts.items()))
+    return f"poll {now} alerts={len(result['alerts'])} errors={len(result['errors'])} {per}"
+
+
 def main(argv=None) -> int:
     """
     Main entry point for the CLI.
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("--symbol", default="BTCUSDT")
-    parser.add_argument("--tfs", default="1h,15m")
+    parser.add_argument("--tfs", default="1h,15m,1m")
     parser.add_argument("--state-path", default="MyTradingSys/runtime/live_alert_state.json")
     parser.add_argument("--alerts-dir", default="MyTradingSys/runtime/alerts")
     parser.add_argument("--limit", type=int, default=100)
@@ -244,11 +255,11 @@ def main(argv=None) -> int:
         save_state(result["state"], args.state_path)
         state = result["state"]
         
-        print(f"alerts={len(result['alerts'])} errors={len(result['errors'])}")
+        print(format_poll_line(registry, result), flush=True)
         
         # Print errors to stderr
         for error in result["errors"]:
-            print(json.dumps(error), file=sys.stderr)
+            print(json.dumps(error), file=sys.stderr, flush=True)
             
     if args.once:
         loop_body()
@@ -259,7 +270,7 @@ def main(argv=None) -> int:
             loop_body()
             time.sleep(args.poll_seconds)
     except KeyboardInterrupt:
-        print("stopped")
+        print("stopped", flush=True)
         return 0
 
 
