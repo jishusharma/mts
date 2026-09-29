@@ -18,7 +18,8 @@ FINDING_HEADER_RE = re.compile(r"^FINDING\s+\d+\s*\|\s*(A[1-7])\s*\|\s*severity\
 def load_closed_ids() -> set:
     if not CLOSED_PATH.exists():
         return set()
-    return set(json.loads(CLOSED_PATH.read_text(encoding="utf-8")))
+    # entries may be the bare finding hash or the displayed '<task_id>:<hash>' form
+    return {str(x).rsplit(":", 1)[-1] for x in json.loads(CLOSED_PATH.read_text(encoding="utf-8"))}
 
 def iter_audit_tasks():
     if not DONE_DIR.exists():
