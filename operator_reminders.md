@@ -8,12 +8,15 @@ If a step cannot be done, say so.
 
 ## 0. MACHINE
 
-Two machines, one repo. WORKSTATION_MODES.md is authority.
+Three machines, one repo (on the desktop). WORKSTATION_MODES.md is authority.
 
-- Desktop (JIS-NB): runs the loop. E1 applies. mts-live and mts-tape available.
-- Laptop (DESKTOP-F7IU69N): static. No loop here. E1 does not apply. Do not attempt mode.ps1, stop-day.ps1, or any loop control.
+- Desktop (JIS-NB): runs the loop, auto-trader, alert runner, loss monitor, testnet suites, polling station,
+  supervisor session + hourly check. E1 applies. mts-live and mts-tape available. The only place commits happen.
+- NUC (JIS-NUC): Qwen/Ollama builder via the queue share. Control via the ssh gate only.
+- Laptop (DESKTOP-F7IU69N): worker + monitor. DSA browser worker, read-only monitors, Claude CLI for questions.
+  No loop control (no mode.ps1, stop-day.ps1), no trading processes, no commits to the desktop repo.
 
-Both machines: sync-pull before work, sync-push before close.
+Laptop reaches the queue via \JIS-NB\MTS-Queue.
 
 ---
 
