@@ -1,3 +1,6 @@
+> **CORRECTION (operator 2026-09-29):** operator states this file misquotes the 44-concept ICT/SMC study (SSRN 7483658).
+> Verified 2026-09-29 via search-result abstract summary (SSRN page itself returned HTTP 403, full text not opened): Tangirala, "Do Smart Money Concepts Predict Returns? Evidence from 44 Formalised Detectors on S&P 500 Daily Bars, 2010-2026", posted 18 Sep 2026. 496 S&P 500 constituents, 2.20 M events, 17.6 M simulated trades, 8 horizons; against a composition-matched null with Benjamini-Hochberg over 352 concept x horizon hypotheses, "none beats random entry at any horizon" and none is significantly worse; best point estimates 11-12 bp over 10 days (liquidity-sweep detectors), p >= 0.23. So: (1) the pre-gate "combination transforms it to positive" claim is unsupported (body already removes it); (2) NOT VERIFIED: the body's statement that the paper "does not test combinations" (HTF/killzone/RR) - the abstract summary is silent on it, so treat as unknown, not as "not contradicted"; (3) sample is US equity daily bars, not BTC; the null is "no evidence of edge", also not evidence of harm. Body not edited.
+
 # T055b - Proven BTC Setups: Evidence Survey [GATED v3.0]
 
 Scope: T055 part (b) - which BTC setups have verifiable evidence, by style (scalp <15m, intraday,

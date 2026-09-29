@@ -1,3 +1,6 @@
+> **CORRECTION (operator 2026-09-29):** operator states the cited source for opening order imbalance (4-12 h) was the wrong paper and the real source is Kim & Hansen (tier T1 -> T2).
+> Verified 2026-09-29 (arxiv.org/abs/2607.09426): "The Quarter-Hour Effect: Periodic Algorithmic Trading and Return Predictability in Cryptocurrency Futures", Chan Kim and Peter Reinhard Hansen, submitted 10 Jul 2026 (v2 16 Jul 2026). Abstract: "opening order imbalance predicts returns over four to twelve hours". Six Binance perpetuals, trade data. Arxiv preprint, no independent replication: tier T2, not T1. The body below already carries this fix (Step 3a table and evidence table); where any line still grades it T1, read T2. Body not edited.
+
 # T055a - Positioning Flow (Net/New Longs & Shorts) Research [GATED v3.0]
 
 Source item: `MyTradingSys/items/T055_positioning_flow_and_proven_setups.md`, part (a).
