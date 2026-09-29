@@ -172,7 +172,7 @@ class TestRegistry(unittest.TestCase):
     def test_keys_and_tfs(self):
         reg = cli.build_default_registry(fetch_funding=lambda s, n: [])
         self.assertTrue(self.NEW_KEYS <= set(reg))
-        self.assertTrue({e["tf"] for e in reg.values()} <= {"1h", "15m", "1m"})
+        self.assertTrue({e["tf"] for e in reg.values()} <= {"1h", "15m", "5m", "1m"})
 
     def test_registry_entries_fire_with_side_through_run_registry(self):
         funding = TestFundingFade()

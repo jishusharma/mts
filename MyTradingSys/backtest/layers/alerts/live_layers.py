@@ -168,6 +168,22 @@ def rsi_level_layer(bars):
 
 def turn_of_candle_layer(bars):
     """1m bars. Candidate C3 (T055, FORMULAS.md sec 16): one event per quarter hour at minute-of-quarter 14
-    (lead_minutes=1, entry at that bar's close, just before the 15m candle opens). The direction of the effect
-    is NOT established (report: side is a grid parameter) so NO "side" is emitted: alert-only context."""
-    return [{"t": bars[e["i"]]["t"], "event": "toc_m14"} for e in turn_of_candle_events(bars, lead_minutes=1)]
+    (lead_minutes=1, entry at that bar's close, just before the 15m candle opens). Side (operator 2026-09-30,
+    data collection): sign of the opening taker-buy imbalance (2*tbv - v)/v of the SAME quarter's minute-0 bar,
+    as in run_t055_c3_imbalance.py imbalance_events(window=1, direction="mom"): > 0 long, < 0 short, 0 / no volume /
+    missing minute-0 bar -> NO side. "sampling": True marks a no-edge layer traded only to collect fills
+    (T055_BT_c3.md: no gross edge); never a Tom filter."""
+    out = []
+    for e in turn_of_candle_events(bars, lead_minutes=1):
+        i = e["i"]
+        ev = {"t": bars[i]["t"], "event": "toc_m14", "sampling": True}
+        o = i - 14
+        if o >= 0 and bars[i]["t"] - bars[o]["t"] == 14 * 60000 and bars[o]["v"] > 0:
+            imb = (2 * bars[o]["tbv"] - bars[o]["v"]) / bars[o]["v"]
+            ev["imbalance"] = round(imb, 6)
+            if imb > 0:
+                ev["side"] = "long"
+            elif imb < 0:
+                ev["side"] = "short"
+        out.append(ev)
+    return out

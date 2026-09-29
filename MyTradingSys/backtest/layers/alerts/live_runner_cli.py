@@ -150,9 +150,23 @@ def build_default_registry(fetch_funding=None) -> dict:
             "params_id": "rsi_40_tol0.5_L1_2026-09-29"
         },
         {
+            "layer": "rsi",
+            "sub": "rsi_events",
+            "tf": "5m",
+            "fn": _rsi_layer_fn,
+            "params_id": "rsi_40_tol0.5_L1_2026-09-29"
+        },
+        {
             "layer": "fabio",
             "sub": "cvd_absorption",
             "tf": "1h",
+            "fn": _fabio_cvd_layer_fn,
+            "params_id": "fabio_cvd_default_2026-09-29"
+        },
+        {
+            "layer": "fabio",
+            "sub": "cvd_absorption",
+            "tf": "15m",
             "fn": _fabio_cvd_layer_fn,
             "params_id": "fabio_cvd_default_2026-09-29"
         }
@@ -169,6 +183,12 @@ def build_default_registry(fetch_funding=None) -> dict:
         ("cryptocred", "fib_pullback", "1h", ll.cc_fib_pullback_layer),
         ("cryptocred", "failed_msb", "1h", ll.cc_failed_msb_layer),
         ("turn_of_candle", "turn_of_candle", "1m", ll.turn_of_candle_layer),
+        # 2026-09-30 extra timeframes for fill collection (detectors are bar-index based, tf-agnostic)
+        ("fabio", "escalation", "15m", ll.escalation_layer),
+        ("fabio", "volume_fvg", "15m", ll.volume_fvg_layer),
+        ("cryptocred", "sr_flip", "15m", ll.cc_sr_flip_layer),
+        ("cryptocred", "fib_pullback", "15m", ll.cc_fib_pullback_layer),
+        ("cryptocred", "failed_msb", "15m", ll.cc_failed_msb_layer),
     ]:
         entries.append({"layer": layer, "sub": sub, "tf": tf, "fn": fn, "params_id": sub + suffix,
                         "confirm_lag_bars": CONFIRM_LAG_BARS.get(sub, 0)})
@@ -224,7 +244,7 @@ def main(argv=None) -> int:
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("--symbol", default="BTCUSDT")
-    parser.add_argument("--tfs", default="1h,15m,1m")
+    parser.add_argument("--tfs", default="1h,15m,5m,1m")
     parser.add_argument("--state-path", default="MyTradingSys/runtime/live_alert_state.json")
     parser.add_argument("--alerts-dir", default="MyTradingSys/runtime/alerts")
     parser.add_argument("--limit", type=int, default=100)
