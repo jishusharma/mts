@@ -19,6 +19,7 @@ param(
     [string]$OllamaUrl = 'http://127.0.0.1:11434',
     [int]$PollSeconds = 15,
     [int]$RequestTimeoutSec = 7200,
+    [int]$NumThread = 4,          # thermal cap 2026-09-29 (NUC ~98 C at 6 threads); a task's num_thread overrides
     [switch]$Once
 )
 
@@ -115,6 +116,8 @@ function Invoke-TaskPackage([string]$Path, [string]$Id) {
             options    = [ordered]@{ num_ctx = [int]$pkg.num_ctx; num_predict = [int]$pkg.num_predict; temperature = 0.2 }
         }
         if ($null -ne $pkg.think) { $body.think = [bool]$pkg.think }
+        $nt = if ($null -ne $pkg.num_thread) { [int]$pkg.num_thread } else { $NumThread }
+        if ($nt -gt 0) { $body.options.num_thread = $nt }
         $body = $body | ConvertTo-Json -Depth 5 -Compress
         $bytes = [System.Text.Encoding]::UTF8.GetBytes($body)
         $r = Invoke-RestMethod -Uri "$OllamaUrl/api/generate" -Method Post -Body $bytes `
