@@ -69,3 +69,34 @@ top of the relevant section. Keep each entry to 3 lines.
   RULE: read PROJECT_VISION "INTEGRATIONS TRACKED" before framing any indicator work.
 - If an instruction references advice that cannot be found in the repo or memory, ask in the first
   reply; don't carry an unresolved reference through the session.
+
+## F. Live system + supervision (maintainer run 2026-09-29; mistake -> root cause -> RULE)
+- Sonnet builder edited live journal.py/executor.py in place -> next auto-trade would have crashed; AUTO_PAUSE
+  needed. Cause: brief said "fix X" without naming the live-file rule. RULE: every builder brief touching
+  MyTradingSys/execution/ says "stage <file>.new only; never edit a file a running process imports".
+- Testnet daily-loss used equity delta -> subaccount transfer = -3.35M "loss" -> false HALT + kill-switch
+  flatten of a healthy trade (fixed 1542151). Cause: P/L proxy not tested against non-trade balance moves.
+  RULE: any P/L/risk metric gets a test with deposits/transfers/funding; use trade-type transaction logs.
+- Live alert runner re-emitted a 99-bar backlog after state reset -> 43 stale rejections, 0 trades for hours
+  (fixed 6ad9fd0). Cause: "last seen" state doubled as "start from". RULE: on missing/reset state a live
+  emitter starts at NOW (fresh closed bar only); backfill is an explicit, separate command.
+- Supervisor kept asking the operator for a task already done (NUC gate). RULE: check the observable
+  result before re-asking (memory: operator-tasks-verify-yourself).
+- Gate verified with `cut -c1-120` -> truncated output -> wrong conclusion; "53 findings ignored" claimed
+  without reading the format (49 were "NO FINDINGS"). RULE: never truncate output you draw a conclusion
+  from; count by parsing the real format (grep -c on the verdict token), then state the number.
+- Windows OpenSSH kills children on disconnect -> background model pull died; an MTS-Ollama task was
+  assumed but did not exist then (it does now, 2026-09-29). RULE: long NUC work goes through `ps-bg`;
+  confirm a scheduled task with Get-ScheduledTask before relying on it.
+- Qwen wrote `<file>.new.new`; verifier BLOCKED; Qwen pid_alive check was fail-open (fixed in review).
+  RULE: liveness/safety checks fail CLOSED; specs name the exact output path; verifier rejects double suffix.
+- Bake-offs: gpt-oss and qwen3.6 THINK=false returned empty / reasoning-only replies. RULE: qwen3.6 only
+  with THINK=true; treat an empty `response` as a failed run, never as "no findings".
+- Haiku summary dropped a requested item; kill-switch cancel-before-close was missed by every review
+  until an Opus audit. RULE: summaries are checked against the request checklist item by item; safety
+  paths (kill switch, stop handling, loss guard) get an ordering/failure-mode review, not a diff skim.
+- Recurring pattern (git log: 86 commits say fix/revert; 14 say false halt/stale/fail-open/closed):
+  most incidents were state or accounting assumptions in live code, not strategy. RULE: before editing a
+  live path ask "what happens on restart, reset, transfer, partial fill, API error?" and test one of them.
+- `--hours` in new_plan is an entry window, not a time exit: one wide bracket held the single slot 7 h and
+  6 signals were skipped_busy. RULE: read what a parameter does in code before reasoning from its name.

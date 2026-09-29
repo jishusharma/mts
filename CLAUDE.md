@@ -22,3 +22,10 @@ Chat-surface (DSA) behaviour lives in `DSA_SESSION_PROMPT.md`; this file is for 
 - Testnet only (Deribit test); never mainnet; never read `.secrets/`, `.env` or keys.
 - Windows: write files with `newline='\n'`; long patches go in a .py script, not a heredoc.
 - Tom is core; every other indicator system is a separate layer (PROJECT_VISION), never a Tom filter.
+- The working tree runs the live testnet system (auto_trader, position_manager, daily_loss_monitor,
+  live_runner_cli): never edit a file they import in place, never stop/restart them, never touch HALT files
+  or open trades. Every builder brief touching `MyTradingSys/execution/` or `layers/alerts/` repeats this.
+- Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety
+  checks fail closed.
+- Never conclude from truncated output (`cut`, `head`, tail of a log); parse the real format, then count.
+- Backups/rejects: archive with `python scripts/dev/declutter_backups.py --apply` (moves, never deletes).
