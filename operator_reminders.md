@@ -16,7 +16,7 @@ Three machines, one repo (on the desktop). WORKSTATION_MODES.md is authority.
 - Laptop (DESKTOP-F7IU69N): worker + monitor. DSA browser worker, read-only monitors, Claude CLI for questions.
   No loop control (no mode.ps1, stop-day.ps1), no trading processes, no commits to the desktop repo.
 
-Laptop reaches the queue via \JIS-NB\MTS-Queue.
+Laptop reaches the queue via \\JIS-NB\MTS-Queue.
 
 ---
 
