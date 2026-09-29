@@ -43,7 +43,7 @@ def prepare(bars):
     return times, info
 
 
-def collect_events(bars, times, info, flow):
+def collect_events(bars, times, info, flow, lim=False):
     """{(tf,pct,k): [events]} plus state counts. Events carry session name/day, first/last 1m idx, hvns."""
     prof_lv = {}
     for idx in range(len(info)):
@@ -77,11 +77,13 @@ def collect_events(bars, times, info, flow):
             if state == "balance":
                 evs = M.fade_events(tb, avg, levels, lo, hi, k, pct, flow)
             else:
-                evs = M.break_events(tb, avg, levels, lo, hi, 1 if state == "imb_up" else -1, k, pct, flow)
+                fn = M.break_limit_events if lim else M.break_events
+                evs = fn(tb, avg, levels, lo, hi, 1 if state == "imb_up" else -1, k, pct, flow)
             for e in evs:
                 b = tb[e["bi"]]
                 e.update({"session": cur["name"], "state": state, "day": day_of(cur["s"]), "first": b["i1"],
-                          "last": cur["i1"] - 1, "hvns": lv["hvns"], "t": b["t_end"]})
+                          "last": cur["i1"] - 1, "hvns": lv["hvns"], "t": b["t_end"],
+                          "fill_tf": (M.RETEST_BARS if (lim and e["model"] == "imb_break") else M.FILL_TF_BARS)})
                 out.setdefault((tf, pct, k), []).append(e)
     return out, state_counts
 

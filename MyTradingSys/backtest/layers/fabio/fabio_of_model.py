@@ -37,8 +37,11 @@ BIN = 10.0
 STATE_MIN = 15
 RETEST_BARS = 6
 FILL_TF_BARS = 3
-FEE_TAKER = 0.0005
-FEE_MAKER = 0.0002
+# Deribit BTC-PERPETUAL (T055b_PROVEN_SETUPS.md fee floor): taker 7 bps round trip (3.5 bps/side); maker nets -3 bps
+# round trip (-1.5 bps/side rebate). Resting limits fill only if price trades THROUGH the level by 1 tick
+# (BACKTEST_PROTOCOL.md stress rule). Optional slippage (bps) is applied to taker legs by net_at().
+FEE_TAKER = 0.00035
+FEE_MAKER = -0.00015
 SESSIONS = (("asia", 0, 480), ("london", 480, 810), ("ny", 810, 1260))  # UTC minute-of-day [start, end)
 DAY_MS = 86400000
 
@@ -235,6 +238,31 @@ def break_events(tfbars, avg, levels, sess_lo, sess_hi, direction, k, pct, flow)
     return ev
 
 
+def break_limit_events(tfbars, avg, levels, sess_lo, sess_hi, direction, k, pct, flow):
+    """IMBALANCE with-break, LIMIT version (causal): at the aggression bar close, rest a limit at the broken level
+    (fills only if price trades through it by 1 tick within RETEST_BARS tf bars); stop 1 tick beyond the aggression
+    bar extreme or the level, whichever is farther. No 'retest holds' information is used."""
+    ev = []
+    for bi in range(sess_lo, sess_hi):
+        a, av = tfbars[bi], avg[bi]
+        if av is None or av <= 0:
+            continue
+        for kind, p in levels:
+            if direction > 0:
+                agg = a["o"] <= p * (1 + TOL) and a["c"] > p and a["delta"] >= k * av
+            else:
+                agg = a["o"] >= p * (1 - TOL) and a["c"] < p and -a["delta"] >= k * av
+            if not agg or not _big_ok(a, pct, direction, flow):
+                continue
+            if direction > 0:
+                ev.append({"bi": bi, "model": "imb_break", "side": "long", "kind": kind, "level": p,
+                           "stop": min(a["l"], p) - TICK})
+            else:
+                ev.append({"bi": bi, "model": "imb_break", "side": "short", "kind": kind, "level": p,
+                           "stop": max(a["h"], p) + TICK})
+    return ev
+
+
 # ---------------------------------------------------------------- trade simulation
 def simulate_trade(bars, first, last, side, entry_mode, level, stop, hvns, trail, fill_bars, min_risk_frac=0.0):
     """
@@ -254,7 +282,7 @@ def simulate_trade(bars, first, last, side, entry_mode, level, stop, hvns, trail
     if entry_mode == "limit":
         j = None
         for q in range(first, min(first + fill_bars, last + 1)):
-            if (sgn < 0 and bars[q]["h"] >= level) or (sgn > 0 and bars[q]["l"] <= level):
+            if (sgn < 0 and bars[q]["h"] >= level + TICK) or (sgn > 0 and bars[q]["l"] <= level - TICK):
                 j = q
                 break
         if j is None:
@@ -287,7 +315,7 @@ def simulate_trade(bars, first, last, side, entry_mode, level, stop, hvns, trail
                 px = b["o"]
             reason = "trail" if trailing else ("be" if moved_be else "stop")
             return _finish(sgn * (px - entry) / risk, reason, entry, risk, fee_in, first, q)
-        if (b["h"] >= tgt) if sgn > 0 else (b["l"] <= tgt):
+        if (b["h"] >= tgt + TICK) if sgn > 0 else (b["l"] <= tgt - TICK):
             return _finish(sgn * (tgt - entry) / risk, "target", entry, risk, fee_in, first, q)
         ext = max(ext, b["h"]) if sgn > 0 else min(ext, b["l"])
         fav = sgn * (ext - entry) / risk
@@ -302,9 +330,17 @@ def simulate_trade(bars, first, last, side, entry_mode, level, stop, hvns, trail
 
 
 def _finish(gross_r, reason, entry, risk, fee_in, i_in, i_out):
-    fees_r = (fee_in + FEE_TAKER) * entry / risk
+    """Exit fee: a resting target is maker; stops, breakeven/trail stops and the session-end exit are taker."""
+    fee_out = FEE_MAKER if reason == "target" else FEE_TAKER
+    legs = (1 if fee_in == FEE_TAKER else 0) + (0 if reason == "target" else 1)
+    fees_r = (fee_in + fee_out) * entry / risk
     return {"gross_R": gross_r, "net_R": gross_r - fees_r, "reason": reason, "entry": entry, "risk": risk,
-            "n_bars": i_out - i_in + 1, "exit_idx": i_out}
+            "n_bars": i_out - i_in + 1, "exit_idx": i_out, "taker_legs": legs}
+
+
+def net_at(t, slip=0.0):
+    """Net R of a simulated trade with `slip` (fraction of price, e.g. 0.0002 = 2 bps) charged on each taker leg."""
+    return t["net_R"] - t["taker_legs"] * slip * t["entry"] / t["risk"]
 
 
 # ---------------------------------------------------------------- metrics

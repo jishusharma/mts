@@ -132,7 +132,8 @@ class TestSimulate(unittest.TestCase):
         bars = [b1(100, 100.5, 99.5, 100), b1(100, 101.2, 100, 101), b1(101, 101, 99.9, 100)]
         r = self.sim(bars)
         self.assertEqual((r["reason"], r["gross_R"]), ("be", 0.0))
-        self.assertAlmostEqual(r["net_R"], -(0.0005 + 0.0005) * 100 / 1.0)   # -0.1 R
+        self.assertAlmostEqual(r["net_R"], -(0.00035 + 0.00035) * 100 / 1.0)   # taker in + taker BE-stop out = -0.07 R
+        self.assertEqual(r["taker_legs"], 2)
 
     def test_full_stop(self):
         r = self.sim([b1(100, 100.2, 98.9, 99)])
@@ -141,7 +142,8 @@ class TestSimulate(unittest.TestCase):
     def test_target_3R(self):
         r = self.sim([b1(100, 100.5, 99.5, 100), b1(100, 103.2, 100, 103)])
         self.assertEqual((r["reason"], r["gross_R"]), ("target", 3.0))
-        self.assertAlmostEqual(r["net_R"], 2.9)
+        self.assertAlmostEqual(r["net_R"], 3.0 - (0.00035 - 0.00015) * 100)   # taker in, maker target out
+        self.assertEqual(r["taker_legs"], 1)
 
     def test_hvn_target_nearer_than_3R(self):
         r = self.sim([b1(100, 102.2, 100, 102)], hvns=[102.0, 100.4])   # 100.4 is < 1R away -> ignored
@@ -177,8 +179,28 @@ class TestSimulate(unittest.TestCase):
         self.assertEqual(r["entry"], 100.0)
         self.assertEqual(r["risk"], 1.0)
         self.assertEqual(r["reason"], "target")           # bar 2 low 95.0 <= 97 (3R)
-        self.assertAlmostEqual(r["net_R"], 3.0 - (0.0002 + 0.0005) * 100)
+        self.assertAlmostEqual(r["net_R"], 3.0 + 0.0003 * 100)   # maker rebate both legs: -1.5 bps each
+        self.assertEqual(r["taker_legs"], 0)
         self.assertIsNone(M.simulate_trade(bars[:1], 0, 0, "short", "limit", 100.0, 101.0, [], False, 3))
+
+    def test_limit_needs_through_by_one_tick(self):
+        # short limit at 100.0: high 100.05 only touches (< 100.1) -> no fill; high 100.1 trades through -> fill
+        self.assertIsNone(M.simulate_trade([b1(99, 100.05, 98, 99)], 0, 0, "short", "limit", 100.0, 101.0, [], False, 3))
+        self.assertIsNotNone(M.simulate_trade([b1(99, 100.1, 98, 99)], 0, 0, "short", "limit", 100.0, 101.0, [], False, 3))
+        self.assertIsNone(M.simulate_trade([b1(101, 102, 100.05, 101)], 0, 0, "long", "limit", 100.0, 99.0, [], False, 3))
+
+    def test_target_needs_through_by_one_tick(self):
+        bars = [b1(100, 100.5, 99.5, 100), b1(100, 103.05, 100, 102.9), b1(102.9, 103.1, 102, 103)]
+        r = self.sim(bars)
+        self.assertEqual((r["reason"], r["gross_R"]), ("target", 3.0))
+        self.assertEqual(r["n_bars"], 3)   # bar 1 only touched 103.05 (< 103.1): not filled
+
+    def test_net_at_slippage_on_taker_legs_only(self):
+        r = self.sim([b1(100, 100.5, 99.5, 100), b1(100, 103.2, 100, 103)])   # taker in, maker out, R = 1
+        self.assertAlmostEqual(M.net_at(r, 0.0002), r["net_R"] - 1 * 0.0002 * 100)
+        lim = M.simulate_trade([b1(99, 100.1, 98, 99), b1(99, 99, 96, 97)], 0, 1, "short", "limit", 100.0, 101.0, [], False, 3)
+        self.assertEqual(lim["taker_legs"], 0)
+        self.assertEqual(M.net_at(lim, 0.0005), lim["net_R"])
 
     def test_limit_fill_bar_stop(self):
         bars = [b1(99, 101.5, 98.5, 99)]
@@ -196,6 +218,26 @@ class TestSimulate(unittest.TestCase):
 
     def test_invalid_stop_rejected(self):
         self.assertIsNone(self.sim([b1(100, 101, 99, 100)], stop=100.5))
+
+
+class TestBreakLimit(unittest.TestCase):
+    def test_up_limit_at_level_after_aggression_bar(self):
+        agg = tfbar(99.95, 100.6, 99.9, 100.5, 40, (20, 2, 3, 1))
+        ev = M.break_limit_events([agg], [10.0], [("VAH", 100.0)], 0, 1, 1, 2.5, "99", "true")
+        self.assertEqual(len(ev), 1)
+        self.assertEqual((ev[0]["side"], ev[0]["level"], ev[0]["bi"]), ("long", 100.0, 0))
+        self.assertAlmostEqual(ev[0]["stop"], 99.8)          # min(agg low 99.9, level 100) - 0.1
+        agg2 = tfbar(99.95, 100.6, 100.02, 100.5, 40, (20, 2, 3, 1))   # bar entirely above the level: stop below level
+        ev2 = M.break_limit_events([agg2], [10.0], [("VAH", 100.0)], 0, 1, 1, 2.5, "99", "true")
+        self.assertAlmostEqual(ev2[0]["stop"], 99.9)
+
+    def test_down_mirror_and_filters(self):
+        agg = tfbar(100.05, 100.1, 99.4, 99.5, -40, (2, 20, 1, 3))
+        ev = M.break_limit_events([agg], [10.0], [("VAL", 100.0)], 0, 1, -1, 2.5, "99", "true")
+        self.assertEqual(ev[0]["side"], "short")
+        self.assertAlmostEqual(ev[0]["stop"], 100.2)
+        weak = tfbar(100.05, 100.1, 99.4, 99.5, -20, (2, 20, 1, 3))    # 20 < 2.5 * 10
+        self.assertEqual(M.break_limit_events([weak], [10.0], [("VAL", 100.0)], 0, 1, -1, 2.5, "99", "true"), [])
 
 
 class TestStats(unittest.TestCase):

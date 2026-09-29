@@ -40,3 +40,9 @@ supervisor-worker 2026-09-29 04:50 | Task A: 103 PASS commit 10759e8 (GPS retag 
   testnet: 3 runners up, no HALT; since 14:12Z: rsi_events:15m short ENTERED (S-mkt-0929-1501), turn_of_candle 2x signal_rejected 'unmapped toc_m14 (add a layer_rules entry)'
 - 2026-09-29 21:42 | running 1000-audit-a7-journal, waiting 0 | no NEW builds (a7 deribit-orders/deribit-read/executor audits PASS, 0 proposals; deribit-client PARTIAL); no agent | head 3a4d4d2
   testnet: 3 runners up, no HALT; since 15:12Z: rsi_events:15m trade_closed 1 (+ledger row), turn_of_candle 4x signal_rejected 'unmapped toc_m14 (add a layer_rules entry)'
+2026-09-29 22:42 queue 0 waiting/0 running; no NEW tasks (all in GATE_REPORT); ran audit_rotation --backfill (packed audits); watchdog: 3/3 running, no HALT; scoreboard skipped. head 863bae6 Manager survives transient net errors; auto_trader frees slot only when exchange is flat
+- 2026-09-29 23:42 | queue 0 waiting/0 running (5 audit replies unverified, no NEW builds); ran audit_rotation --backfill (packed a2-live-runner-cli) | head 863bae6
+  testnet: 3 runners up, no HALT; since 15:00Z: rsi_events:15m 1 entered/1 closed, turn_of_candle 13x signal_rejected 'unmapped toc_m14 (add a layer_rules entry)'
+2026-09-30 01:42 queue 0 waiting/0 running; QUEUE IDLE - NUC cooling (backfill paused); no NEW verdicts; head b998cd3. Watchdog 3/3 up. Last hr: 4 signal_rejected turn_of_candle (unmapped toc_m14, needs layer_rules), 1 tom skipped_auto_pause.
+2026-09-30T02:38 | dsa-feeder | worker idle | gated 2 (998 PASS, 997 ping PARTIAL) | packed 999-tom-rulebook-merge
+2026-09-30 02:42 queue 0 waiting/0 running; QUEUE IDLE - NUC cooling (backfill paused); no NEW verdicts; head ca073ba. Watchdog 3/3 up, no HALT. Last ~hr: turn_of_candle 3 entered/3 closed/1 signal_rejected, rsi 15m 1 closed.

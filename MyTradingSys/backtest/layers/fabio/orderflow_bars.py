@@ -200,10 +200,15 @@ def log(out_dir, msg):
     print(msg, flush=True)
 
 
-def process_day(day, raw_dir, out_dir):
+def process_day(day, raw_dir, out_dir, hist_only=False):
+    """hist_only: write just the day's qty-histogram sidecar (warm-up for a parallel chunk), no bars."""
     out_dir = Path(out_dir)
     dst = out_dir / f"{day.isoformat()}.csv.gz"
-    if dst.exists():
+    if hist_only:
+        hp = out_dir / "_qhist" / f"{day.isoformat()}.json"
+        if hp.exists():
+            return "skip"
+    elif dst.exists():
         return "skip"
     csv_path = Path(raw_dir) / "aggTrades" / f"BTCUSDT-aggTrades-{day.isoformat()}.csv"
     if not csv_path.exists():
@@ -214,6 +219,11 @@ def process_day(day, raw_dir, out_dir):
             return "nodata " + (r.stdout + r.stderr).strip()[-200:]
     hist_dir = out_dir / "_qhist"
     hist_dir.mkdir(exist_ok=True)
+    if hist_only:
+        h = day_hist(parse_agg_csv(csv_path))
+        (hist_dir / f"{day.isoformat()}.json").write_text(json.dumps(h), encoding="utf-8", newline=chr(10))
+        csv_path.unlink()
+        return "hist_only"
     own = {}
 
     def counted():  # streams the file once, building the day's qty histogram on the way
@@ -249,9 +259,14 @@ def main():
     ap.add_argument("--raw", default=r"F:\MTS\data\binance_raw")
     ap.add_argument("--out", default=r"F:\MTS\data\orderflow_1m")
     ap.add_argument("--min-free-gb", type=float, default=30.0)
+    ap.add_argument("--warm-days", type=int, default=0,
+                    help="first write histogram sidecars for the N days before --start (parallel chunk warm-up)")
     a = ap.parse_args()
     Path(a.out).mkdir(parents=True, exist_ok=True)
     d, end = date.fromisoformat(a.start), date.fromisoformat(a.end)
+    for k in range(a.warm_days, 0, -1):
+        wd = d - timedelta(days=k)
+        log(a.out, f"{wd} warm {process_day(wd, a.raw, a.out, hist_only=True)}")
     while d <= end:
         if free_gb(a.out) < a.min_free_gb:
             log(a.out, f"STOP free space < {a.min_free_gb} GB")

@@ -11,7 +11,7 @@ PowerShell, repo root (Maven must have run once so jars exist in %USERPROFILE%\.
 
     $T = Join-Path $env:TEMP "scb_replay"; Remove-Item $T -Recurse -Force -ErrorAction SilentlyContinue
     New-Item -ItemType Directory "$T\src","$T\out" | Out-Null
-    Copy-Item src\main\java\datafeed\SetupCandidatesBuilder.java,src\main\java\datafeed\ExtraSetupBuilder.java,src\main\java\datafeed\NakedPocTracker.java,src\main\java\datafeed\FvgCalculator.java "$T\src"
+    Copy-Item src\main\java\datafeed\SetupCandidatesBuilder.java,src\main\java\datafeed\ExtraSetupBuilder.java,src\main\java\datafeed\NakedPocTracker.java,src\main\java\datafeed\FvgCalculator.java,src\main\java\datafeed\ExecutionMathConstants.java "$T\src"
     Copy-Item MyTradingSys\research\core_readiness_2026-09-27\harness\java\ReplayScbSteps1to8.java "$T\src"
     (Get-Content "$T\src\SetupCandidatesBuilder.java") -replace 'MAX_CANDIDATES = 3;','MAX_CANDIDATES = 999;' | Set-Content "$T\src\SetupCandidatesBuilder.java"
     $M = "$env:USERPROFILE\.m2\repository\com\fasterxml\jackson\core"
@@ -25,3 +25,11 @@ Run from repo root (NakedPocTracker reads runtime_data\naked_pocs relative to th
 If the file list is too long for one command line, run it in chunks of 200.
 Mutation check (proves the harness can fail): in the COPY change
 "c.netRR = c.grossRR * 0.75;" to "* 0.70;" -> expect RESULT: FAIL with math.net_rr diffs.
+
+# Historical snapshots from the 1m archive (2026-09-30, Session 6)
+Stage the merged klines on F: (copy raw_1m_2022\klines + raw\klines to F:\MTS\data\tom_raw\klines), then build a temp copy of
+src\main\java\datafeed\*.java with these overlays: HistoricalSource/ArchiveHistoricalSource/RestHistoricalSource .java.new and
+MarketDataSnapshot.java.archive_mode.new (as MarketDataSnapshot.java), plus TomSnapshotGen.java / SnapAt.java from this folder.
+Classpath: jackson 2.16.0 (3 jars), okhttp 4.12.0, okio-jvm 3.6.0, kotlin-stdlib 1.8.21, Java-WebSocket 1.5.6, slf4j-api 2.0.9.
+Run from an empty temp cwd (never the repo root): java -Xmx3g -cp out;jars datafeed.TomSnapshotGen F:\MTS\data\tom_raw F:\MTS\data\tom_snapshots 2022-01-20T00:00:00Z 2026-09-27T00:00:00Z 15 <shard> <shards>
+Then: python MyTradingSys/backtest/tom_bt_run.py rows | fabio | report.
