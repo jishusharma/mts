@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-30
-# SIZE: ~25.6KB
+# SIZE: ~26.2KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -336,3 +336,5 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/research/fast_track_2026-09-27/nuc_specs/2201-2203 (3 files) | spec | NUC Qwen specs: fabio_v3_signals.py, fabio_v3_exec.py, fabio_v3.py. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/research/fast_track_2026-09-27/ANGLE_TRADER_SOURCES.md | research | Web angle on Tom/Fabio public methods: 0 sources opened (cloud egress blocked); unopened leads + pages to open from an unrestricted network. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/research/fast_track_2026-09-27/ANGLE_ELICITATION_RESEARCH.md | research | Method angle: expert knowledge elicitation (CDM, RPD, protocol analysis) -> incident-record extraction, hindsight tags, labeled-trade confusion matrix. 0 sources opened (egress blocked); all UNVERIFIED. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/FABIO_LINE_BY_LINE_fZlNGWvd2Ko.md | research | Opus line-by-line reading of Fabio fZlNGWvd2Ko (first long trade read): 30-row decision log vs FABIO_V3_SPEC, extract audit, 10 missing pieces, 8 spec change proposals. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/EXTRACTION_METHOD_V2_FABIO.md | method | Fabio extraction method v2 for weaker models: decision rows, trade/day blocks, 14-item miss checklist, worked example. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
