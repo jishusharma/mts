@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-30
-# SIZE: ~23.3KB
+# SIZE: ~24.2KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -327,3 +327,7 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/research/fast_track_2026-09-27/TOM_RULEBOOK_MERGE_999.md | research | Redo of lost DSA task 999: 16 new Tom T- rules vs conditions/ master; 4 NEW, 12 MATCH, 2 CONFLICT (stop placement R5, re-acceptance exit R8). | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/research/fast_track_2026-09-27/CROSS_TRADER_RULEBOOK.md | research | CryptoCred (47 rows) + Flow Horse (32 rows) rulebook in FABIO_RULEBOOK format with built-as-layer column and trade-sequence gaps. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/research/fast_track_2026-09-27/nuc_specs/2101-2113 (13 files) | spec | DSA-lane trade-reconstruction specs, one per Fabio/Tom video, template MISSING_PIECES 3.2. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_REVIEW_2026-09-30.md | research | Method review of Tom core BT: 17 defects (2 HIGH: live rule undiagnosed/all-short, null not like-for-like). | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/FORMULA_AUDIT_2026-09-30.md | research | FORMULAS.md vs code, 43 rows: 39 MATCH, 2 MISMATCH (MSB, executor loss est.), 2 UNTESTABLE; fee duplicates listed. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py | tool | Backtest driver malkan_40_60 / malkan_mtf / rsi_ma_events: IS/OOS 70/30, PBO, sim.py fees. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/backtest/layers/run_bracket_grid.py | tool | Q1 per-layer bracket grid: 6 stops x 3 targets x 3 time exits, IS/OOS, PBO, frozen bracket or default stands. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
