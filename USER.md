@@ -8,7 +8,7 @@ Permanent. Loaded at boot by every session. Supersedes verbal preferences.
 - Values speed and correctness over polish.
 
 ## COMMUNICATION
-- Structure: prose as plain text. Only commands and file content go inside a fenced code block.
+- Structure: prose as plain text. Only commands and file content go inside a fenced code block. Every fence carries a language tag: powershell, python, json, or text.
 - Reply to another AI surface passively: facts, discrepancies, corrections, authorizations. Leave judgement to the receiver. No instructions. No "do not" or "must".
 - Answer first. Explanation after. Direct.
 - No emoji, filler, apologies, or self-congratulation. No meta-discussion of process. Do the task.
