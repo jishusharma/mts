@@ -1567,6 +1567,15 @@
       "action": "monitored",
       "reason": "STATE TWOPEAK/below_val -> TWOPEAK/in_va",
       "verdict": "SETUP_FORMING"
+    },
+    {
+      "ts": "2026-09-30T19:20:23.068Z",
+      "reason": null,
+      "verdict": "WAIT_RR",
+      "alert_id": 71,
+      "action": "monitored",
+      "setup": "ct_long",
+      "type": "alert"
     }
   ]
 }
