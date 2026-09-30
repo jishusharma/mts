@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-30
-# SIZE: ~25.0KB
+# SIZE: ~25.3KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -334,3 +334,4 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md | spec | Fabio v3 layer spec: S1-S8, models A (LVN pullback) / B (failed-breakout reclaim) / C (IVB), fills, management, sim.py costs, day gates, grid 97-103 trials, tests T01-T50. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/backtest/layers/fabio/pending_test_fabio_v3.py | test | 52 spec-derived tests for Fabio v3 (written before the implementation); rename to test_fabio_v3.py when fabio_v3*.py land. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/research/fast_track_2026-09-27/nuc_specs/2201-2203 (3 files) | spec | NUC Qwen specs: fabio_v3_signals.py, fabio_v3_exec.py, fabio_v3.py. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/ANGLE_TRADER_SOURCES.md | research | Web angle on Tom/Fabio public methods: 0 sources opened (cloud egress blocked); unopened leads + pages to open from an unrestricted network. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
