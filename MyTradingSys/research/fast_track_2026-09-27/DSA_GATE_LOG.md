@@ -12,3 +12,8 @@
 | 2106-dsa-recon-tom-96ipfdpxecu | recon | REVIEW | YES | 3.1 KB reply |
 | 2107-dsa-recon-tom-hyszzsjmxf8 | recon | REVIEW | YES | 4.0 KB reply |
 | 2108-dsa-recon-tom-wq-oadz-pj8 | recon | REVIEW | YES | 4.6 KB reply |
+| 2109-dsa-recon-tom-aursfdvyzuk | recon | REVIEW | YES | DSA lane, worker finished ok |
+| 2110-dsa-recon-tom-gwjhq5umisy | recon | REVIEW | YES | DSA lane, worker finished ok |
+| 2111-dsa-recon-tom-hq8soq67x5o | recon | REVIEW | YES | DSA lane, worker finished ok |
+| 2112-dsa-recon-tom-pgdmklj0hha | recon | REVIEW | YES | DSA lane, worker finished ok |
+| 2113-dsa-recon-tom-zawex-trufe | recon | REVIEW | YES | DSA lane, worker finished ok |
