@@ -38,9 +38,7 @@ Only 74e4aa9 MISSING_PIECES and 304cc13 header fix remain unmerged.
   heading. Usable but verifier flags it.
 - MISSING_PIECES_2026-09-30.md read on desktop: sections 0 and 4 not yet read.
 - Auto-mode rule for cloud: Path B not yet applied. Awaiting operator pick.
-- 4 fee sets in code, not 2. B080 on fee conflict is a different B080. Need
-  to resolve naming or the conflict is invisible. CORRECTION: B080 is the pace
-  bug now. The fee conflict does not yet have an id.
+- Fee source conflict: 4 different fee sets now in code, not 2. No bug id yet. Needs an id and one source of truth before any layer verdict is trusted.
 - classify_msb live cryptocred alert bug: staged as .new, belongs to supervisor.
 - Tom backtest artefact: proof counts top at 5 not 6; all 19 live signals short.
 
