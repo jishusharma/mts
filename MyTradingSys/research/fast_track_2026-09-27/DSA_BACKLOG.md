@@ -30,5 +30,6 @@ except as a .new proposal. Tom is core; every other system is a separate layer, 
 - [x] Review of FABIO_OF_REPORT.md (once it lands): same - done in FABIO_BTC_RESEARCH_2026-09-30.md section 2
 
 ## D. Trade reconstructions (cloud-written specs, 2026-09-30; template MISSING_PIECES_2026-09-30.md 3.2)
+HOLD (operator 2026-09-30): wait for Opus line-by-line readings (EXTRACTION_METHOD_V2); specs get rewritten.
 - [ ] 2101-2104 Fabio recon: 0KyIEdvVKMQ, LQvv5xgy_ik, fZlNGWvd2Ko, FawPrRUGNpk (specs in nuc_specs/)
 - [ ] 2105-2113 Tom recon: 7BQPMJ39WpI, 96iPFDpXEcU, HySZZSjMxF8, WQ_OAdz-PJ8, aursfDVYzUk, gWjHq5UMisY, hQ8sOq67x5o, pgdmKLJ0hhA, zAwEX_tRUfE
