@@ -54,6 +54,20 @@ Two more boot rules, added 2026-09-16 after a boot reply invented field values a
    scripts/load.ps1 or COMMANDS.md, or are shown in the boot paste. If
    unsure whether an alias exists, do not name it.
 
+8. Path prefix. Two trees exist. Repo root holds extracts/, Dumps/,
+   runtime_data/, scripts/, src/, MyTradingSys/. MyTradingSys/extracts/
+   does not exist. Before claiming a file is missing, test both path
+   forms in the same turn. Never state a file is absent from one prefix
+   scan alone.
+
+9. Cross-surface note header is exactly two lines. Line one:
+   "<MTS|CBP> NOTE - from DSA COORDINATOR - <YYYY-MM-DD>". Line two:
+   "To: <MTS Claude|CBP Claude>". Nothing else. No role line, no
+   authority line, no placeholder. If the operator's request leaves
+   the target unnamed, stop and ask. Before naming the target, check
+   the reply's file paths. MyTradingSys/ means MTS. cbp_v2/ or
+   mts_queue/ means CBP.
+
 ## 4. READING LARGE FILES
 
 Any file over 20 KB: read by line range, not whole file.

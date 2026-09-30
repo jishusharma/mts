@@ -1,66 +1,86 @@
 # NEXT SESSION HANDOFF
-# Rewritten 2026-09-24T13:50Z by MTS-2026-09-24-1100Z.
+# Rewritten 2026-09-30T15:05Z by MTS-2026-09-30-1500Z-DSA-COO.
 
-STATUS: Loop ALIVE. lock 2832, snapshot 13:43Z. Build PASS 13:44:24Z.
-Bugs 114 rows. Index 12 open IDs.
+STATUS: Loop FAIL (java absent, supervisor absent, snapshot 967 min old).
+Build PASS 2026-09-30T14:59:38Z. HEAD b46cbdc. Bugs 131 rows.
+Index 25 open IDs. Working tree clean.
 
-## SESSION MTS-2026-09-24-1100Z - WHAT LANDED
+## THIS SESSION - WHAT LANDED
 
-- Folder flatten. MyTradingSys/mts/* -> MyTradingSys/*.
-  data/ -> runtime_data/. MyTradingSys/data/ -> MyTradingSys/market_data/.
-  Three extracts folders consolidated to extracts/. 197 files rewritten.
-  Java StateCodeEmitter L446+L477 path-fixed. start-trading-day.ps1 L53
-  $LogDir fixed. Five Python files path-fixed.
-- PROJECT_VISION.md added to SESSION_MANIFEST.json boot_files at position 4.
-  Full read every session. Closes the layer-provenance gap.
-- USER.md rules added: close items on decision; label sub-item context.
-- T045 CLOSED. Materiality is consumer-layer. Producer emits raw.
-- T046 d1 d3 d4 d5 resolved. d2 open (T-number plain titles).
-- post_funding_vp demoted to display-only. Removed from candidate zone
-  list and target pool in SetupCandidatesBuilder.java and
-  math_object_builder.py. Java 9137C219 -> 9B058AED. Python
-  28659A91 -> BF2E7FE2. Test inverted. 130/130 pass.
-- B067 filed: crypto-hack gating audit. Item doc created. Cryptoadaptations
-  hacks (funding rate, funding reset times, liquidation clusters, OI delta,
-  aggregated CVD, UTC 00:00 daily open, slippage buffer, correlation-adjusted
-  risk) all UNVALIDATED and mostly gating. Only post_funding audited.
-- Loop restarted, log writes to runtime_data/. STATE_UPDATE_WARN gone.
+- USER.md: two reply-format rules added to COMMUNICATION.
+  Every reply inside one fenced code block. Replies to another AI
+  surface passive. COMMUNICATION block tightened. 3828 bytes, 87
+  lines. Commit b46cbdc.
+- items/INDEX.md: rows added for T053-T058. 51 lines. Commit b46cbdc.
+- BUILD_REPORT.md: fresh PASS. Commit b46cbdc.
+- DSA_SESSION_PROMPT.md: rules 8 and 9 added to section 3.
+  Rule 8: path prefix. extracts/ has no MyTradingSys prefix. Test
+  both path forms before claiming a file missing.
+  Rule 9: cross-surface note header is exactly two lines.
+  "<MTS|CBP> NOTE - from DSA COORDINATOR - <date>" then
+  "To: <MTS Claude|CBP Claude>". Nothing else. Check the reply's
+  file paths before naming the target.
+- Two junk files from a mangled PowerShell paste removed from repo root.
 
-## CRITICAL NOTES
+## CLOUD WORK UNMERGED
 
-- 10.0 pf bin size is SCREENER, no citation. Prior B059 session picked it.
-  Still untagged at call sites MarketDataSnapshot.java L144, L1066.
-- pf_vah no longer appears as rank-1. B066 (rank-1 distance gate) premise
-  was based on pf_vah. Re-assess B066 before working it.
-- UTC 00:00 CVD anchor is crypto hack #5. Still gates verdict via
-  state_code.json and mts_math.py session CVD. Next audit candidate.
-- 0.75 slippage multiplier is crypto hack #9. Applied to every net_rr.
-  Verdict-changing. Next audit candidate.
-- claude review of B059 confirmed: "multiples of 10" verifies code path,
-  not drift. Real drift proof is a stable zone across cycles.
+origin/cloud/work at 304cc13, two commits past 357ffd6.
+  74e4aa9 Missing-pieces research: Fabio/Tom applied readings, H1-H3
+    (model only). 34,366 bytes, 446 lines.
+  304cc13 03_FILE_INDEX header fix.
+origin/main still 851218e. Local main b46cbdc, one commit ahead.
+No merge scheduled. Operator decision.
 
-## OPEN QUEUE (BUGS.md, open rows only)
+## TASK 999
 
-- B059  fix landed 2026-09-24, live tape confirmed. 10.0 still untagged.
-- B063  divergence. NEEDS OPERATOR: restore or deprecate.
-- B066  rank-1 distance gate. Premise shifted (pf no longer rank-1).
-- B067  crypto-hack gating audit. UTC 00:00 + 0.75 slippage top of queue.
-- T034  positioning states. Output type (boolean / strength / both).
-- T035  multi-venue CVD. T1 web pass pending.
-- T037  8 untested files. Blocked on pom.
-- T038  deferred to ~21000 labels.
-- T040  tick-delta. Threshold source-tier decision pending.
-- T042  1w/1d/4h structure, no consumer. A/B/C.
-- T044  hybrid REST/WS divergence alert. Not started.
-- T046  d2 only open (T-number plain titles).
+Output lost. Marked [x] in DSA_BACKLOG.md:16, no row in
+DSA_GATE_LOG.md, no CONSOLIDATED_RULES.md file. Re-pack inputs
+present at extracts/processed/tom/new_selected_10/ (extract_WQ_OAdz-PJ8.md,
+extract_zAwEX_tRUfE.md, plus seven others).
+
+## FEE SOURCE CONFLICT
+
+Two incompatible fee constants for the same instrument.
+  MyTradingSys/backtest/sim.py:18-20 - maker 0, taker 0.05%,
+    source "verified 2026-09-26 via public/get_instrument".
+  MyTradingSys/backtest/layers/fabio/fabio_of_model.py:40-44
+    FEE_TAKER=0.00035, FEE_MAKER=-0.00015, source
+    "T055b_PROVEN_SETUPS.md fee floor".
+One source of truth needed before any layer verdict is trusted.
+
+## OPEN QUEUE (from BUGS.md open rows)
+
+T037 (pom), T040 (tick-delta), T042 (1w/1d/4h consumer), T044 (hybrid
+REST/WS alert), T046 (Stage 3), T048 (satellite framework), T049 (NUC
+worker v2), T050 (Deribit phase 3), T051 PARKED, T052 (SETUP_CONFIRMED
+trigger), T053-T058 (new), T059 (paste size guard). B063 divergence
+operator decision, B066 rank-1 distance gate, B069 wrapper stderr,
+B070 UTC 00:00 + 0.75 slippage demote, B072-B079 (input validation,
+net_rr rounding, rule order, historical mode, SETUP_CONFIRMED
+unreachable, stop order type, cancel scope, caps_check enforcement).
+
+DSA_BACKLOG.md sections open: cross-trader rulebook, T054 brief,
+Fabio spec + impl, malkan/rsi_ma drivers, formula audits 083/084,
+TOM_CORE_BT method review, FABIO_OF_REPORT review.
 
 ## NEXT SESSION - FIRST ACTION
 
 1. Read items/INDEX.md + BUGS.md open rows.
-2. Tag 10.0 pf bin size as SCREENER at MarketDataSnapshot.java L144 + L1066.
-   Comment with proof obligation.
-3. Audit UTC 00:00 CVD anchor for gating (B067 top item).
-4. Commit session 1100Z work.
+2. Read DSA_SESSION_PROMPT.md section 3 rules 8 and 9 before any
+   cross-surface reply.
+3. State ROLE (COORDINATOR). State MISSION. Act.
+4. Operator picks one: fee-source conflict, task 999 re-pack, or
+   Cloud MISSING_PIECES review.
+
+## DO NOT MISS
+
+- extracts/ has no MyTradingSys prefix.
+- Cross-surface header is exactly two lines. No role, no authority,
+  no placeholder.
+- Check reply file paths to decide MTS vs CBP destination.
+- DSA_SESSION_PROMPT.md section 14 must not exist. If found, stop.
+- Cloud is bound by CLAUDE.md only, not USER.md. USER.md rules do
+  not reach Cloud.
 
 ## HARD RULES
 
@@ -68,11 +88,8 @@ Bugs 114 rows. Index 12 open IDs.
 - Never run mode.ps1 twice in a row.
 - Critical files: hash, edit, hash, diff.
 - Read target line from disk same turn before composing anchor.
-- Anchor count must be exactly 1. # END appears as substring in many files.
-- Build-Check prints to host, not stdout. Do not capture into a variable.
 - MarketDataSnapshot.java is CRLF. math_object_builder.py is CRLF.
-  SetupCandidatesBuilder.java is LF. Match on write.
-- PROJECT_VISION.md doctrine: modules never gate core. Enforce on every
-  new field or rule.
+  SetupCandidatesBuilder.java is LF.
+- PROJECT_VISION doctrine: modules never gate core.
 
 # END
