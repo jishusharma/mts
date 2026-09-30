@@ -19,7 +19,7 @@ except as a .new proposal. Tom is core; every other system is a separate layer, 
 
 ## B. Specs + code (DSA writes code from a spec; tests come from the feeder)
 - [x] (cloud Opus 2026-09-30: FABIO_V3_SPEC.md, 97-103 trials, T01-T50) (needs 998 + FABIO_OF_REPORT) Fabio trade model spec: location -> context -> trigger -> management from the rulebook's testable core, as a layer module spec with FORMULAS.md-style definitions
-- [ ] (needs spec above) Fabio trade model implementation (backtest module under MyTradingSys/backtest/layers/fabio/, offline only)
+- [ ] (NUC specs 2201-2203 + pending_test_fabio_v3.py written 2026-09-30; awaiting pack) (needs spec above) Fabio trade model implementation (backtest module under MyTradingSys/backtest/layers/fabio/, offline only)
 - [x] (cloud Sonnet 2026-09-30: layers/rsi/run_rsi_backtest.py, 35 tests; desktop runs it) Backtest driver for malkan_40_60 regime-gated setups + malkan_mtf 5-star (Grandfather/Father/Son) - same verdict rule as FABIO_L1 (IS/OOS 70/30, fees 0.10% RT, PBO); never tested historically
 - [x] (same driver, --family rsi_ma_events) Backtest driver for rsi_ma_events (RSI x RSI-MA cross/events), same method
 - [x] (cloud Sonnet 2026-09-30: layers/run_bracket_grid.py, 27 tests, 54-cell grid incl 0.3/0.75% stops; desktop runs it) Q1 per-layer bracket grid driver: for each layer's historical events, grid stop {0.5,1,1.5,2}% x target {1,2,3}R x time exit {4,8,16} bars; IS/OOS + PBO; output the best frozen bracket per layer or "fixed 1%/2% default stands"
