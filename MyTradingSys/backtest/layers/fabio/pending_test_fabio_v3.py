@@ -1,34 +1,44 @@
 """Spec-derived tests for the Fabio v3 layer (written BEFORE the implementation exists).
 
-Spec: MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md (line numbers in the comments refer to it).
+Spec: MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md, v3.1. Comments "spec :N" in T01-T50 and X01-X03 cite
+v3.0 line numbers (git HEAD before v3.1); the test ids (spec section 10) are the stable reference. T51-T64 are v3.1.
 Every expected number below was re-derived by hand from spec sections 2-6; none comes from repo code.
 Tests import ONLY from MyTradingSys.backtest.layers.fabio.fabio_v3 (which re-exports fabio_v3_signals and
 fabio_v3_exec). The module being absent is a hard ImportError, never a skip.
 
-API names, argument names and result keys not fixed by the spec are declared here (see the reply of the task
-that wrote this file) and are the contract the implementation has to meet:
-
+Contract: names, argument names, defaults and result keys the implementation has to meet ("+" = new or changed in v3.1):
   signals : atr(bars,i,N)  build_profile(bars,a,i,bin_size)  value_area(profile,bin_size)
             lvn_levels(profile,bin_size)  select_lvn(lvns,s,X,O,c)  balance(bars,i,N,k_bal,bin_size=)
             pressure(bars,i,N,p,q=0.25,k_bal=,bin_size=)  effort_result(bars,i,L=,z_hi=,r_abs=,r_ctl=)
             volume_tier(today_vol,prior_vols,min_days=10)  big_push(bars,i,m,s,tier="99")
-            breakout(bars,i,N,k_bal,p,m,tier="99",bin_size=)  control_level(bars,ctrl,a,i,s)
-            curve(bars,i,sess_open,bin_size=)  exhaustion(bars,i,trade,k_bal=,tier=,bin_size=,z_hi=)
-            trade = {"s":..., "e_i":..., "lvl":...}
+            breakout(bars,i,N,k_bal,p,m,tier="99",bin_size=)  control_level(bars,ctrl,a,i,s)  curve(bars,i,sess_open,bin_size=)
+          + exhaustion(bars,i,trade,k_bal=,tier=,bin_size=,z_hi=2.5,p=0.10,climax=False)  trade = {"s","e_i","lvl"}
+          + failed_auction(bars,i,N,k_bal,p,m,absorbed,tier="99",bin_size=)->{"s","lvl","edge"}|None
+          + defended_level(bars,absorbed,a,i,s)->price|None
   exec    : FEE_MAKER FEE_TAKER TICK  find_fill(bars,i,s,price,tick=0.1,end_idx=None)->(j,price)|None
             leg_r(s,q,e,x,entry_kind,exit_kind,r_unit,slip_bps=0.0)->{gross_r,fee_r,slip_r,net_r}
             be_update(s,e1,D,stop,ext,be_k=1.0)  trail_update(s,stop,lvl,c,tick=0.1)
-            add_size(s,legs,stop,pa,q1)  add_allowed(s,e1,stop,n_adds,i,open_idx,control,push_ok,curve_state)
-            simulate_trade(bars,fill_idx,s,entry,D,stop,q1=,entry_kind=,be_k=,ctrl=,tick=,end_idx=,target=,slip_bps=)
-  v3      : model_a_trade(bars,k,s,O,lvn,f,dmax,ctrl=None,end_idx=None)
-            model_b(bars,start_idx,balance,absorbed,f,dmax,entry_mode="rest",end_idx=None)
-            model_c(bars,open_idx,ib_len,m,f,dmax,entry_mode="rest",tier="99",gate_open=True,ctrl=None,end_idx=None)
-            -> {"arms","fills","missed_winners","trades":[{entry,D,stop0,stop,exit,reason,gross_r,fee_r,net_r,
-                fill_idx,exit_idx,target?}]}
-            ny_open_utc(date)->aware UTC datetime|None  entry_allowed(i,open_idx)  window_bars(bars,date)->list|None
-            aggregate_day_r(days,trades)  first_leg_allowed(closed_nets,n_first_legs=0)
-            day_gate_open(elapsed,day_range,prior_ranges,g)  day_type(bars)
-            sample_size(sd,delta)  ci_halfwidth(sd,n)
+          + add_size(s,legs,stop,pa,q1,budget=0.0)
+          + add_allowed(s,e1,stop,n_adds,i,open_idx,control,push_ok,curve_state,add_mode="be",s7=True)  (max 2 adds)
+          + opp_stop(s,e1,stop,pb,c,tick=0.1)
+          + simulate_trade(bars,fill_idx,s,entry,D,stop,q1=,entry_kind=,be_k=,ctrl=,tick=,end_idx=,target=,slip_bps=,
+                           mgmt="dist",absorbed=None,s8_kw=None)
+            trade dict: {entry,D,stop0,stop,exit,reason,gross_r,fee_r,net_r,fill_idx,exit_idx,target,moves}
+            moves = [(i, new_stop, kind)], kind in "be" "trail" "opp" "own"; stop-exit reason = kind of the last move
+            ("stop" if none); other reasons "s8" "target" "window_end"; target None when the trade has none
+  v3      : + model_a_trade(bars,k,s,O,lvn,f,dmax,ctrl=None,end_idx=None,mgmt="dist",absorbed=None)
+          + model_b(bars,start_idx,balance,absorbed,f,dmax,entry_mode="rest",end_idx=None,target_mode="edge",ctrl=None,
+                    mgmt="dist")                                                    target_mode "edge" | "trail"
+          + model_c(bars,open_idx,ib_len,m,f,dmax,entry_mode="rest",tier="99",gate_open=True,ctrl=None,end_idx=None,
+                    mgmt="dist",absorbed=None)
+          + model_d_trade(bars,k,s,edge,lvl,f,dmax,entry_mode="rest",ctrl=None,absorbed=None,end_idx=None,mgmt="dist")
+            models -> {"arms","fills","missed_winners","trades":[trade dicts as above]}
+          + ny_open_utc(date)->aware UTC datetime|None (None on weekends and on the spec's US_CLOSED dates)
+          + london_open_utc(date)->aware UTC datetime|None
+            entry_allowed(i,open_idx)  window_bars(bars,date)->list|None
+          + aggregate_day_r(days,trades)  (a day sums risk_u*net_r; risk_u default 1.0)
+          + first_leg_allowed(closed_nets,n_first_legs=0,carry=0.0)  first_leg_risk(closed_nets,n_first_legs=0,carry=0.0)
+            day_gate_open(elapsed,day_range,prior_ranges,g)  day_type(bars)  sample_size(sd,delta)  ci_halfwidth(sd,n)
 """
 import ast
 import datetime as dt
@@ -89,6 +99,36 @@ def calm(n, buy_sell=(1.0, 0.0), b99=(0.0, 0.0)):
     """Flat balance bars: range 1, ATR 1, close at the POC centre of the single profile bin (bin 1.0)."""
     return [mk(i, o=100.5, h=101.0, l=100.0, c=100.5, buy=buy_sell[0], sell=buy_sell[1], fp="100:1.0:0.0",
                b99=b99) for i in range(n)]
+
+
+def alt_bars(n, b99=(1.0, 0.0)):
+    """Alternating bars: even j o 100 c 100.5 buy 1 (d +1, r +0.5); odd j o 100.5 c 100 sell 1 (d -1, r -0.5)."""
+    out = []
+    for j in range(n):
+        if j % 2 == 0:
+            out.append(mk(j, o=100.0, c=100.5, buy=1, b99=b99))
+        else:
+            out.append(mk(j, o=100.5, c=100.0, sell=1, b99=b99))
+    return out
+
+
+def rand_series(seed=12345, n=600):
+    """Same generator as test_T49 (contiguous random bars with footprint and big-trade columns)."""
+    rng = random.Random(seed)
+    bars, px = [], 100.0
+    for i in range(n):
+        o = px
+        c = o + rng.gauss(0.0, 0.5)
+        h = max(o, c) + abs(rng.gauss(0.0, 0.2))
+        l = min(o, c) - abs(rng.gauss(0.0, 0.2))
+        buy, sell = float(rng.randint(0, 10)), float(rng.randint(0, 10))
+        bins = sorted({int(math.floor(o)), int(math.floor(c))})
+        fp = "|".join("%d:%s:%s" % (k, float(rng.randint(0, 5)), float(rng.randint(0, 5))) for k in bins)
+        bars.append(mk(i, o=o, h=h, l=l, c=c, buy=buy, sell=sell, fp=fp,
+                       b99=(float(rng.randint(0, 3)), float(rng.randint(0, 3))),
+                       b999=(float(rng.randint(0, 2)), float(rng.randint(0, 2)))))
+        px = c
+    return bars
 
 
 class TestFabioV3(unittest.TestCase):
@@ -302,11 +342,12 @@ class TestFabioV3(unittest.TestCase):
         self.assertIs(V.exhaustion(series(102.0, 101.0, 102.1, 100.9), 60, trade, **kw), False)
 
     def test_X02_exhaustion_b_redistribution(self):
-        # spec :84 (b): S1(i,60,k_bal) not None AND i-59 > e_i. Calm bars form a balance (R 1, ATR 1, close at
-        # poc centre). Positive big flow every bar keeps (a) false; no S3 control on flat bars keeps (c) false.
+        # v3.1 (spec S8(b), section 10 X02; changed from v3.0, which expected True for e_i = 10): a new balance exits
+        # only if it favours the other side. Calm bars (buy 1 / sell 0) give S2 = +1 over the new balance, which favours
+        # the long -> hold. Positive big flow keeps (a) false; flat bars have no S3 events, so (c) is false.
         bars = calm(81, b99=(1.0, 0.0))
         kw = dict(k_bal=0.8, tier="99", bin_size=1.0)
-        self.assertIs(V.exhaustion(bars, 80, {"s": 1, "e_i": 10, "lvl": 100.0}, **kw), True)    # 21 > 10
+        self.assertIs(V.exhaustion(bars, 80, {"s": 1, "e_i": 10, "lvl": 100.0}, **kw), False)   # balance favours us
         self.assertIs(V.exhaustion(bars, 80, {"s": 1, "e_i": 30, "lvl": 100.0}, **kw), False)   # 21 > 30 no
 
     # ---------------------------------------------------------------- fills
@@ -733,6 +774,272 @@ class TestFabioV3(unittest.TestCase):
         prof = V.build_profile(bars, 0, 5, 50.0)
         self.assertEqual({float(k): v for k, v in prof.items()}, {100.0: 90.0, 150.0: 10.0})
 
+
+    # ---------------------------------------------------------------- v3.1: event management (spec 5.2)
+    def test_T51_opp_stop(self):
+        # spec T51: candidates {e1, pb - s*TICK} that are on the right side of the close; best = max_s; only tightens
+        self.ap(V.opp_stop(+1, 100.0, 99.0, 99.9, 100.6), 100.0)      # 100.0 vs 99.8 -> BE
+        self.ap(V.opp_stop(+1, 100.0, 100.4, 100.8, 101.3), 100.7)    # 100.0 vs 100.7 -> ratchet
+        self.ap(V.opp_stop(+1, 100.0, 99.0, 99.5, 99.8), 99.4)        # e1 100 is above the close 99.8 -> 99.4
+        self.ap(V.opp_stop(+1, 100.0, 100.7, 100.5, 101.0), 100.7)    # best 100.4 would loosen -> unchanged
+        self.ap(V.opp_stop(-1, 100.0, 101.0, 100.3, 99.5), 100.0)     # short: 100.0 vs 100.4 -> min 100.0
+
+    @staticmethod
+    def _t53_bars():
+        rows = [(100.2, 100.6, 99.8, 100.3), (100.3, 100.8, 99.9, 100.6), (100.6, 101.5, 100.5, 101.4),
+                (101.4, 101.6, 101.0, 101.1), (101.1, 101.5, 100.8, 101.3), (101.3, 102.0, 101.2, 101.9),
+                (101.9, 102.1, 101.0, 101.5)]
+        return [mk(i, o=o, h=h, l=l, c=c) for i, (o, h, l, c) in enumerate(rows)]
+
+    def _moves(self, t, want):
+        got = t["moves"]
+        self.assertEqual(len(got), len(want), got)
+        for (gi, gs, gk), (wi, ws, wk) in zip(got, want):
+            self.assertEqual((gi, gk), (wi, wk), got)
+            self.ap(gs, ws)
+
+    def test_T52_defended_level(self):
+        # spec S9 / T52: last j in (a, i] with absorbed[j] == s -> h[j] (long) / l[j] (short)
+        bars = self._t53_bars()
+        absb = [0, 0, 0, 1, -1, 0, 0]
+        self.ap(V.defended_level(bars, absb, 0, 5, +1), 101.6)
+        self.assertIsNone(V.defended_level(bars, absb, 0, 2, +1))
+        self.assertIsNone(V.defended_level(bars, absb, 3, 5, +1))      # a is exclusive
+        self.ap(V.defended_level(bars, absb, 0, 5, -1), 100.8)
+
+    def test_T53_event_management(self):
+        # spec T53: long maker e1 100, D 1, stop 99, fill bar 0.
+        # bar 1 E_opp: pb 99.9 -> 100.0 (opp). bar 2 own control: no move. bar 3 E_own: S6 l[2] 100.5 -> 100.4 (own),
+        # DL 101.6. bar 4 E_opp: a 2, pb min(101.0, 100.8) -> 100.7 (opp). bar 5 c 101.9 > DL: S6 l[5] 101.2 -> 101.1
+        # (trail). bar 6 l 101.0 <= 101.1 -> exit 101.1; gross 1.1, fee 0.0005*100/1 = 0.05, net 1.05
+        bars = self._t53_bars()
+        ctrl = [0, 0, 1, 0, 0, 1, 0]
+        absb = [0, -1, 0, 1, -1, 0, 0]
+        t = V.simulate_trade(bars, 0, +1, 100.0, 1.0, 99.0, q1=1.0, entry_kind="maker", be_k=1.0, ctrl=ctrl,
+                             end_idx=6, mgmt="event", absorbed=absb)
+        self._moves(t, [(1, 100.0, "opp"), (3, 100.4, "own"), (4, 100.7, "opp"), (5, 101.1, "trail")])
+        self.assertEqual(t["exit_idx"], 6)
+        self.ap(t["exit"], 101.1)
+        self.assertEqual(t["reason"], "trail")
+        self.ap(t["gross_r"], 1.1)
+        self.ap(t["fee_r"], 0.05)
+        self.ap(t["net_r"], 1.05)
+        # mgmt dist on the same bars: bar 2 fav 1.5 >= 1 -> BE 100.0, trail 100.4; bar 5 trail 101.1
+        t = V.simulate_trade(bars, 0, +1, 100.0, 1.0, 99.0, q1=1.0, entry_kind="maker", be_k=1.0, ctrl=ctrl,
+                             end_idx=6, mgmt="dist", absorbed=absb)
+        self._moves(t, [(2, 100.0, "be"), (2, 100.4, "trail"), (5, 101.1, "trail")])
+        self.ap(t["exit"], 101.1)
+        self.assertEqual(t["reason"], "trail")
+
+    def test_T54_event_without_events(self):
+        # spec T54: own control bars alone move nothing in event mode -> window end at c[6] 101.5, gross 1.5, net 1.45
+        bars = self._t53_bars()
+        kw = dict(q1=1.0, entry_kind="maker", be_k=1.0, end_idx=6, mgmt="event")
+        for ctrl, absb in (([0, 0, 1, 0, 0, 1, 0], [0] * 7), ([0] * 7, [0, 0, 0, 1, 0, 0, 0])):
+            # second case: own-side absorption at bar 3 with no S6 level: no de-risk, no trail at the DL break, no exit
+            t = V.simulate_trade(bars, 0, +1, 100.0, 1.0, 99.0, ctrl=ctrl, absorbed=absb, **kw)
+            self.assertEqual(t["moves"], [])
+            self.assertEqual(t["reason"], "window_end")
+            self.assertEqual(t["exit_idx"], 6)
+            self.ap(t["exit"], 101.5)
+            self.ap(t["gross_r"], 1.5)
+            self.ap(t["net_r"], 1.45)
+
+    # ---------------------------------------------------------------- v3.1: S8(b), S8(d)
+    def test_T55_exhaustion_b_other_side(self):
+        # spec T55: calm balance (R 1, ATR 1, c = poc 100.5), buy 0 / sell 1 -> P -1, drift 0 -> S2 -1 = -s for a long
+        kw = dict(k_bal=0.8, tier="99", bin_size=1.0, z_hi=2.5, p=0.10)
+        bars = calm(81, buy_sell=(0.0, 1.0), b99=(1.0, 0.0))            # (a): net +15 -> false
+        self.assertIs(V.exhaustion(bars, 80, {"s": 1, "e_i": 10, "lvl": 100.0}, **kw), True)
+        self.assertIs(V.exhaustion(bars, 80, {"s": 1, "e_i": 30, "lvl": 100.0}, **kw), False)   # 21 > 30 no
+        bars = calm(81, buy_sell=(1.0, 0.0), b99=(0.0, 1.0))            # short mirror: S2 +1 = -s; (a) -1*-15 > 0
+        self.assertIs(V.exhaustion(bars, 80, {"s": -1, "e_i": 10, "lvl": 101.0}, **kw), True)
+        # count clause: alternating bars, bar 100 = o c 100 buy 3 -> e 3, res 0 -> absorbed +1 (the only S3 event);
+        # W' [61,120]: R 0.5, c 100.5 = poc, P = 2/62 < 0.10 -> S2 0; n(+1) 1 > n(-1) 0 -> exit for a long
+        bars = alt_bars(121)
+        bars[100] = mk(100, o=100.0, c=100.0, buy=3, b99=(1.0, 0.0))
+        self.assertIs(V.exhaustion(bars, 120, {"s": 1, "e_i": 10, "lvl": 100.0}, **kw), True)
+        # sell 3 instead: absorbed -1 (the other side absorbed), P = -4/62 -> S2 0 -> hold
+        bars[100] = mk(100, o=100.0, c=100.0, sell=3, b99=(1.0, 0.0))
+        self.assertIs(V.exhaustion(bars, 120, {"s": 1, "e_i": 10, "lvl": 100.0}, **kw), False)
+
+    def test_T56_exhaustion_d_climax(self):
+        # spec T56: S3(61) baseline bars 1..60: d sum 0, sd 1 -> e 3; r sum 1.3, mean 0.021667, sd 0.547142 ->
+        # res -0.0396 -> absorbed +1. Bar 60: new trade extreme 102 > 100.5 with net(60;1) = 5.
+        def series(c61=101.8, h61=102.0, b99_60=(5.0, 0.0)):
+            bars = alt_bars(60, b99=(0.0, 0.0))
+            bars.append(mk(60, o=100.0, h=102.0, l=100.0, c=101.8, buy=1, b99=b99_60))
+            bars.append(mk(61, o=101.8, h=h61, l=101.5, c=c61, buy=3))
+            return bars
+        trade = {"s": 1, "e_i": 55, "lvl": 100.0}
+        kw = dict(k_bal=0.8, tier="99", bin_size=1.0, z_hi=2.5, p=0.10)
+        self.assertIs(V.exhaustion(series(), 61, trade, climax=True, **kw), True)
+        self.assertIs(V.exhaustion(series(), 61, trade, climax=False, **kw), False)   # (a) age 6, (b), (c) false
+        # bar 61 c 102.5: r 0.7 -> res 1.2398 -> control +1, not absorbed
+        self.assertIs(V.exhaustion(series(c61=102.5, h61=102.6), 61, trade, climax=True, **kw), False)
+        # no big-trade burst on bar 60
+        self.assertIs(V.exhaustion(series(b99_60=(0.0, 0.0)), 61, trade, climax=True, **kw), False)
+
+    # ---------------------------------------------------------------- v3.1: model D, model B trail
+    def test_T57_failed_auction(self):
+        # spec T57: S1/S2 at bar 4 as T03/T06 (S2 -1: sellers pressed); absorbed[3] = -1 inside W = [1,4];
+        # bar 5 closes 102.5 > H 102 with net +3 -> long, lvl l[3] 99.0, edge 102.0
+        def bars5(c5=102.5, b99=(3.0, 0.0)):
+            bars = f1()
+            bars[5] = mk(5, o=101.0, h=103.0, l=100.8, c=c5, buy=6, sell=4, fp="102:6:4", b99=b99)
+            return bars
+        kw = dict(tier="99", bin_size=1.0)
+        absb = [0, 0, 0, -1, 0, 0]
+        r = V.failed_auction(bars5(), 5, 4, 0.8, 0.10, 1, absb, **kw)
+        self.assertIsNotNone(r)
+        self.assertEqual(r["s"], 1)
+        self.ap(r["lvl"], 99.0)
+        self.ap(r["edge"], 102.0)
+        self.assertEqual(V.breakout(bars5(), 5, 4, 0.8, 0.10, 1, **kw), 0)      # S5 needs the break WITH S2
+        self.assertIsNone(V.failed_auction(bars5(), 5, 4, 0.8, 0.10, 1, [0] * 6, **kw))
+        self.assertIsNone(V.failed_auction(bars5(), 5, 4, 0.8, 0.10, 1, [-1, 0, 0, 0, 0, 0], **kw))   # outside W
+        self.assertIsNone(V.failed_auction(bars5(c5=101.9), 5, 4, 0.8, 0.10, 1, absb, **kw))
+        self.assertIsNone(V.failed_auction(bars5(b99=(0.0, 3.0)), 5, 4, 0.8, 0.10, 1, absb, **kw))
+
+    @staticmethod
+    def _t58_bars(expire=False):
+        rows = [(101.0, 102.8, 100.9, 102.5), (102.5, 102.9, 102.0, 102.6), (102.6, 102.7, 101.9, 102.4),
+                (102.4, 105.2, 102.3, 105.0), (104.0, 104.2, 102.1, 102.5)]
+        if expire:
+            rows[2] = (102.6, 102.7, 102.0, 102.4)
+            rows[4] = (104.0, 104.2, 101.8, 102.5)
+        return [mk(i, o=o, h=h, l=l, c=c) for i, (o, h, l, c) in enumerate(rows)]
+
+    def test_T58_model_d(self):
+        # spec T58: rest buy 102.0 armed at close of bar 0; bar 1 l 102.0 no fill; bar 2 l 101.9 fill;
+        # D = max(0.306, 102-99+0.1 = 3.1), stop0 98.9; bar 3 fav 3.2 -> BE 102.0, trail l[3]-0.1 = 102.2; bar 4 exit
+        ctrl = [0, 0, 0, 1, 0]
+        r = V.model_d_trade(self._t58_bars(), 0, +1, 102.0, 99.0, 0.003, 0.05, entry_mode="rest", ctrl=ctrl, end_idx=4)
+        self.assertEqual((r["arms"], r["fills"]), (1, 1))
+        t = r["trades"][0]
+        self.assertEqual(t["fill_idx"], 2)
+        self.ap(t["entry"], 102.0)
+        self.ap(t["D"], 3.1)
+        self.ap(t["stop0"], 98.9)
+        self.ap(t["exit"], 102.2)
+        self.assertEqual(t["reason"], "trail")
+        self.ap(t["gross_r"], 0.2 / 3.1)                     # 0.064516
+        self.ap(t["fee_r"], 0.0005 * 102.0 / 3.1)            # 0.016452
+        self.ap(t["net_r"], 0.048065)
+        # Dmax 1%: 3.1 > 1.02 -> no arm
+        r = V.model_d_trade(self._t58_bars(), 0, +1, 102.0, 99.0, 0.003, 0.01, entry_mode="rest", ctrl=ctrl, end_idx=4)
+        self.assertEqual(r["arms"], 0)
+        self.assertEqual(r["trades"], [])
+        # valid bars 1..3 only: bar 4 would fill but the order expired; 102 + 2*3.1 = 108.2 never reached
+        r = V.model_d_trade(self._t58_bars(expire=True), 0, +1, 102.0, 99.0, 0.003, 0.05, entry_mode="rest",
+                            ctrl=ctrl, end_idx=4)
+        self.assertEqual((r["arms"], r["fills"], r["missed_winners"]), (1, 0, 0))
+        self.assertEqual(r["trades"], [])
+        # confirm: taker at o[1] 102.5, D = max(0.3075, 3.6) = 3.6, stop0 98.9; bar 3 fav 2.7 < 3.6 (no BE)
+        # -> window end at c[4] 102.5: gross 0, fee 2*0.0005*102.5/3.6 = 0.028472
+        r = V.model_d_trade(self._t58_bars(), 0, +1, 102.0, 99.0, 0.003, 0.05, entry_mode="confirm", ctrl=ctrl, end_idx=4)
+        t = r["trades"][0]
+        self.assertEqual(t["fill_idx"], 1)
+        self.ap(t["entry"], 102.5)
+        self.ap(t["D"], 3.6)
+        self.ap(t["stop0"], 98.9)
+        self.ap(t["exit"], 102.5)
+        self.assertEqual(t["reason"], "window_end")
+        self.ap(t["gross_r"], 0.0)
+        self.ap(t["fee_r"], 0.028472)
+        self.ap(t["net_r"], -0.028472)
+
+    def test_T59_model_b_trail(self):
+        # spec T59: T37 set-up without the fixed target. Bar 8 fav 1.5 < 1.6; bar 9 l 98.8 (fav 2.7) -> BE only;
+        # window end at c[9] 99.0 taker: gross 2.5/1.6 = 1.5625, fee 0.0005*101.5/1.6 = 0.031719, net 1.530781
+        bars, absorbed = self._t37_bars()
+        r = V.model_b(bars, 5, {"H": 102.0, "L": 99.0}, absorbed, 0.003, 0.05, entry_mode="rest", end_idx=9,
+                      target_mode="trail")
+        self.assertEqual((r["arms"], r["fills"]), (1, 1))
+        t = r["trades"][0]
+        self.assertEqual(t["fill_idx"], 7)
+        self.ap(t["entry"], 101.5)
+        self.assertIsNone(t.get("target"))
+        self.ap(t["exit"], 99.0)
+        self.assertEqual(t["reason"], "window_end")
+        self.ap(t["gross_r"], 1.5625)
+        self.ap(t["fee_r"], 0.0005 * 101.5 / 1.6)
+        self.ap(t["net_r"], 1.530781)
+
+    # ---------------------------------------------------------------- v3.1: day budget, adds, calendar
+    def test_T60_day_floor_and_carry(self):
+        # spec T60 (section 6): prefix sums [0, carry, ...]; floor: peak > 0 and C <= 0 blocks; risk = min(1, C) if peak > 0
+        A, R = V.first_leg_allowed, V.first_leg_risk
+        self.assertIs(A([1.0, -1.0]), False)
+        self.assertIs(A([1.0, -0.5]), True)
+        self.ap(R([1.0, -0.5]), 0.5)
+        self.ap(R([2.0]), 1.0)
+        self.assertIs(A([], carry=0.6), True)
+        self.ap(R([], carry=0.6), 0.6)
+        self.assertIs(A([-0.6], carry=0.6), False)
+        self.ap(R([-0.6], carry=0.6), 0.0)
+        self.assertIs(A([], carry=-0.4), True)
+        self.ap(R([], carry=-0.4), 1.0)
+        self.assertIs(A([1.5], carry=-1.2), False)                     # 0, -1.2, 0.3: stop after recovery
+        self.ap(R([-0.5, 0.6]), 0.1)
+        self.ap(R([]), 1.0)
+        self.ap(R([-1.2, -1.2]), 1.0)
+        self.ap(R([-1.2, -1.2, -1.2]), 0.0)
+        self.ap(R([], n_first_legs=10), 0.0)
+
+    def test_T61_day_r_risk_units(self):
+        # spec T61: day R = sum risk_u * net_r -> d1 0.5*2.0 - 1.1 = -0.1; d2 no trade 0
+        out = V.aggregate_day_r(["d1", "d2"], [{"day": "d1", "net_r": 2.0, "risk_u": 0.5},
+                                               {"day": "d1", "net_r": -1.1}])
+        self.assertEqual(len(out), 2)
+        self.ap(out[0], -0.1)
+        self.ap(out[1], 0.0)
+
+    def test_T62_adds_v31(self):
+        # spec T62: q_add = min(q1, (budget + locked) / dist); long e1 100, stop 99 (locked -1), pa 101 (dist 2)
+        legs = [(1.0, 100.0)]
+        self.ap(V.add_size(+1, legs, 99.0, 101.0, 1.0, budget=3.0), 1.0)    # open risk at stop 1 + 2 = 3 = budget
+        self.ap(V.add_size(+1, legs, 99.0, 101.0, 1.0, budget=1.5), 0.25)
+        self.assertEqual(V.add_size(+1, legs, 99.0, 101.0, 1.0, budget=1.0), 0.0)
+        base = dict(s=+1, e1=100.0, stop=102.0, n_adds=0, i=100, open_idx=0, control=+1, push_ok=True,
+                    curve_state="fair")
+        self.assertIs(V.add_allowed(**dict(base, n_adds=2)), False)       # max 2 adds (3 entries)
+        self.assertIs(V.add_allowed(**dict(base, n_adds=1)), True)
+        self.assertIs(V.add_allowed(**dict(base, stop=99.0, add_mode="day")), True)
+        self.assertIs(V.add_allowed(**dict(base, stop=99.0, add_mode="be")), False)
+        self.assertIs(V.add_allowed(**dict(base, curve_state="premium", s7=False)), True)
+
+    def test_T63_calendar(self):
+        # spec T63 (section 2 US_CLOSED, London window)
+        for ymd in ((2024, 12, 25), (2025, 1, 9), (2025, 4, 18), (2025, 7, 3), (2025, 7, 4), (2025, 11, 27),
+                    (2025, 11, 28), (2025, 12, 24), (2026, 4, 3), (2026, 7, 3)):
+            self.assertIsNone(V.ny_open_utc(dt.date(*ymd)), ymd)
+        for ymd, hm in (((2025, 12, 26), (14, 30)), ((2025, 7, 7), (13, 30))):
+            r = V.ny_open_utc(dt.date(*ymd))
+            self.assertEqual((r.hour, r.minute), hm, ymd)
+        for ymd, hm in (((2025, 3, 28), (8, 0)), ((2025, 3, 31), (7, 0)), ((2025, 10, 24), (7, 0)),
+                        ((2025, 10, 27), (8, 0))):
+            r = V.london_open_utc(dt.date(*ymd))
+            self.assertIsNotNone(r, ymd)
+            self.assertEqual((r.hour, r.minute), hm, ymd)
+            self.assertEqual(r.date(), dt.date(*ymd), ymd)
+        self.assertIsNone(V.london_open_utc(dt.date(2025, 3, 29)))          # Saturday
+
+    def test_T64_lookahead_canary_v31(self):
+        # spec T64: S5D, S9 and S8 (climax on) at i must not change when bars > i are deleted
+        bars = rand_series()
+        rng = random.Random(54321)
+
+        def snap(b, i):
+            absb = [V.effort_result(b, j, L=20, z_hi=1.5)["absorbed"] if j >= 20 else 0 for j in range(i + 1)]
+            out = [V.failed_auction(b, i, 20, 3.0, 0.02, 5, absb, tier="99", bin_size=1.0)]
+            for s in (+1, -1):
+                out.append(V.defended_level(b, absb, i - 10, i, s))
+                out.append(V.exhaustion(b, i, {"s": s, "e_i": i - 70, "lvl": b[i - 5]["l"] if s > 0 else b[i - 5]["h"]},
+                                        k_bal=3.0, tier="99", bin_size=1.0, p=0.02, climax=True))
+            return out
+        for i in rng.sample(range(130, 600), 20):
+            self.assertEqual(snap(bars, i), snap(bars[:i + 1], i), "look-ahead at i=%d" % i)
 
 if __name__ == "__main__":
     unittest.main()
