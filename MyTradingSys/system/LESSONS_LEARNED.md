@@ -100,3 +100,31 @@ top of the relevant section. Keep each entry to 3 lines.
   live path ask "what happens on restart, reset, transfer, partial fill, API error?" and test one of them.
 - `--hours` in new_plan is an entry window, not a time exit: one wide bracket held the single slot 7 h and
   6 signals were skipped_busy. RULE: read what a parameter does in code before reasoning from its name.
+
+## G. Live system + supervision (maintainer run 2026-09-30)
+- Watchdog CLI read the old heartbeat dir -> false orphan HALT on the first jishu_2 trade (fixed a9629e8).
+  RULE: a change that adds a state location (per-account heartbeats) greps every reader of the old path in
+  the same change and tests the real on-disk layout.
+- Position manager died on a transient auth URLError; auto_trader read "manager exited" as "trade closed" and
+  freed the slot while short 10 was open (fixed 863bae6 retry + rc 3 + settle only when exchange-flat;
+  9d28118 adopt on restart). RULE: process exit is not position state - the exchange decides flat; network
+  reads retry, then fail closed (slot stays busy + OPERATOR_ALERTS line).
+- Checklist ticked by a stale line number (3a4d4d2). RULE: edit by matching text, never by a line number
+  from an earlier read.
+- Two supervisor sessions edited execution/ at the same time. RULE: one owner per area at a time, claimed in
+  SUPERVISOR_LOG/INBOX before editing; the other session proposes only.
+- Builder died (API 401) after editing auto_trader.py in place and left AUTO_PAUSE on 00:01-01:50 IST ->
+  3 signals skipped (tom#70, fabio 1h, malkan 1h). RULE: builders stage .new too; whoever sets AUTO_PAUSE
+  writes owner + expected end, and each wake clears or escalates a pause past its end.
+- execution/journal/ vanished (cause unknown) and exit reasons were lost. RULE: anything outcome review
+  needs is appended to the ledger at close; wakes check the journal dir holds the open plans' files.
+- NUC hit 98 C under continuous Qwen load; an hourly check ran a backfill after the thermal pause was
+  written into the skill text. RULE: pauses and temperature limits are enforced in the worker code (read
+  before each task), not only in instructions.
+- Adding the 5m timeframe crashed alert_rate_check (TF map lacked 5m; fixed 2026-09-30). RULE: adding a
+  timeframe or family greps every TF/family map (rate check, account routing, audits) in the same change.
+- turn_of_candle got a side and went live 3.5 h after C3 found no edge; 8/8 trades lost about the round-trip
+  fee (1m, 8-min time exit, 10 USD). RULE: mark collection-only families as such in config + log, keep them
+  out of edge claims, and pick a hold where fees do not decide the result.
+- Maintainer brief carried stale routing (fabio -> jishu_1; config now has turn_of_candle there). RULE: read
+  routing from auto_trader_config.json, never from a brief.
