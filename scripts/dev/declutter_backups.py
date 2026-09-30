@@ -95,17 +95,23 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--apply', action='store_true')
     ap.add_argument('--date', default=dt.date.today().isoformat())
+    ap.add_argument('--exclude', action='append', default=[],
+                    help='path prefix to leave alone (repeatable), e.g. an area another session is staging in')
     a = ap.parse_args()
+    excl = tuple(p.replace('\\', '/').rstrip('/') + '/' for p in a.exclude)
     arch = os.path.join(ROOT, 'Dumps', '_archive', a.date)
     rows, pyc = [], set()
     for d, dirs, files in os.walk(ROOT):
         dirs[:] = [x for x in dirs if x not in SKIP_DIRS]
         if os.path.basename(d) == '__pycache__':
-            pyc.add(d)
+            if not (excl and os.path.relpath(d, ROOT).replace('\\', '/').startswith(excl)):
+                pyc.add(d)
             dirs[:] = []
             continue
         for f in files:
             rel = os.path.normpath(os.path.relpath(os.path.join(d, f), ROOT))
+            if excl and rel.replace('\\', '/').startswith(excl):
+                continue
             cls, why = classify(rel)
             if cls:
                 rows.append((rel, cls, why, sha256(os.path.join(ROOT, rel))))

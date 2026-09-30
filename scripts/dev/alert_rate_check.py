@@ -20,7 +20,7 @@ REPO = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
 
 DAY = 86400000
-TF_MIN = {"1m": 1, "15m": 15, "1h": 60}
+TF_MIN = {"1m": 1, "5m": 5, "15m": 15, "1h": 60, "4h": 240}
 
 
 def aggregate(bars, tf_min):

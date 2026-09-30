@@ -2,6 +2,9 @@
 
 Run `tom_core_20260929`, trial registry rows to date: **16** (`bt_runs/TRIAL_REGISTRY.csv`; frozen rules: `bt_runs/tom_core_20260929/FROZEN.md`).
 
+
+**Answer in one paragraph.** Before this run Tom core had never been back-tested on outcomes (only a parity replay existed). Now it has, on 4.7 years of BTCUSDT 1m data through the L1 archive adapter. Live rule (SETUP_FORMING): only 17 filled trades in 4.7 years, because the history has no book-imbalance/funding/OI proofs (max proof 6, SETUP_FORMING needs 5) -> insufficient N, no claim either way. Sensitivity on the weaker gates (proof >= 3, WATCH+SETUP_FORMING episodes, n = 4417 filled): mean gross R -0.07 [-0.11, -0.03], mean net R -0.30 [-0.34, -0.25] (Deribit-style fees; tight stops make fees ~0.23 R per trade); holdout 2026-06-26..: n = 254, net R -0.32 [-0.46, -0.18]. So no edge is shown; gross is at or slightly below zero and fees turn it clearly negative. The random-entry null is at least as good as the real setups. The Tom x Fabio tables below are descriptive only.
+
 ## 1. Data and adapter status
 
 - Adapter: ArchiveHistoricalSource (staged .new) compiled and run in a `%TEMP%` copy only. 1m archive 2022-01-01..2026-09-26, 2491200 bars, zero gaps (load-time continuity check). Historical snapshots every 15 min (asOf), 2022-01-20..2026-09-26: 164257 evaluated, 120892 kept (>= 1 candidate), 0 errors. Rows used: 120892 (2022-01-20 .. 2026-09-27). Snapshots on `F:\MTS\data\tom_snapshots\` (gz JSONL, compact).
@@ -26,7 +29,7 @@ Overall (base fees): n signals 19.
 ### by period
 | group | n signals | n filled | fill | win [Wilson] | mean R gross [95% CI] | mean R net [95% CI] |
 |---|---|---|---|---|---|---|
-| dev_2025-09..2026-06-25 | 5 | 5 (n<30) | 100% | 0% [-0-43] | 0.47 [-0.32, 1.20] | 0.23 [-0.56, 0.95] |
+| dev_2025-09..2026-06-25 | 5 | 5 (n<30) | 100% | 0% [0-43] | 0.47 [-0.32, 1.20] | 0.23 [-0.56, 0.95] |
 | hist_2022-01..2025-08 | 14 | 12 (n<30) | 86% | 8% [1-35] | -0.15 [-0.87, 0.71] | -0.36 [-1.09, 0.52] |
 | ALL | 19 | 17 (n<30) | 89% | 6% [1-27] | 0.04 [-0.53, 0.67] | -0.19 [-0.76, 0.46] |
 
@@ -34,7 +37,7 @@ Overall (base fees): n signals 19.
 ### by setup type
 | group | n signals | n filled | fill | win [Wilson] | mean R gross [95% CI] | mean R net [95% CI] |
 |---|---|---|---|---|---|---|
-| ct_short | 12 | 10 (n<30) | 83% | 0% [-0-28] | -0.13 [-0.79, 0.64] | -0.36 [-1.01, 0.41] |
+| ct_short | 12 | 10 (n<30) | 83% | 0% [0-28] | -0.13 [-0.79, 0.64] | -0.36 [-1.01, 0.41] |
 | scalp_short | 7 | 7 (n<30) | 100% | 14% [3-51] | 0.28 [-0.71, 1.46] | 0.06 [-0.96, 1.32] |
 
 
@@ -78,19 +81,15 @@ Overall (base fees): n signals 19.
 | 2026 | 2 | 2 (n<30) | 100% | 0% [0-66] | 0.92 [0.70, 1.13] | 0.67 [0.45, 0.88] |
 
 
-Exit mix (filled): {'target': 1, 'stop': 9, 'timeout': 7}; ambiguous bars: 0; unfilled reasons: {'ran': 2}.
+Win = target hit (timeouts are not wins). Exit mix (filled): {'target': 1, 'stop': 9, 'timeout': 7}; ambiguous bars: 0; unfilled reasons: {'ran': 2}. Median stop distance 0.200% of price; mean fee 0.22 R (base fees); mean planned gross R:R 3.12.
 
 
 ### stress
 | group | n signals | n filled | fill | win [Wilson] | mean R gross [95% CI] | mean R net [95% CI] |
 |---|---|---|---|---|---|---|
-
 | base | 19 | 17 (n<30) | 89% | 6% [1-27] | 0.04 [-0.53, 0.67] | -0.19 [-0.76, 0.46] |
-
 | all_taker_0.05 | 19 | 17 (n<30) | 89% | 6% [1-27] | 0.04 [-0.53, 0.67] | -0.44 [-1.00, 0.20] |
-
 | slip_5bps | 19 | 17 (n<30) | 89% | 6% [1-27] | -0.19 [-0.76, 0.46] | -0.41 [-1.00, 0.26] |
-
 | target_first | 19 | 17 (n<30) | 89% | 6% [1-27] | 0.04 [-0.53, 0.67] | -0.19 [-0.76, 0.46] |
 
 
@@ -106,7 +105,7 @@ Tag = a Fabio kline detector (L1 frozen params, 5m/15m/1h) fired in the SAME dir
 | cvd_absorption within 12 bars: TAGGED | 6 | 6 (n<30) | 100% | 17% [3-56] | 0.40 [-0.72, 1.76] | 0.19 [-0.96, 1.63] |
 | cvd_absorption within 12 bars: not tagged | 11 | 11 (n<30) | 100% | 0% [0-26] | -0.16 [-0.71, 0.51] | -0.39 [-0.95, 0.28] |
 | escalation within 12 bars: TAGGED | 2 | 2 (n<30) | 100% | 50% [9-91] | 1.07 [-1.00, 3.14] | 1.05 [-1.05, 3.14] |
-| escalation within 12 bars: not tagged | 15 | 15 (n<30) | 100% | 0% [-0-20] | -0.10 [-0.62, 0.49] | -0.35 [-0.87, 0.24] |
+| escalation within 12 bars: not tagged | 15 | 15 (n<30) | 100% | 0% [0-20] | -0.10 [-0.62, 0.49] | -0.35 [-0.87, 0.24] |
 | fvg_bounce within 12 bars: TAGGED | 2 | 2 (n<30) | 100% | 0% [0-66] | -1.00 [-1.00, -1.00] | -1.15 [-1.25, -1.05] |
 | fvg_bounce within 12 bars: not tagged | 15 | 15 (n<30) | 100% | 7% [1-30] | 0.17 [-0.47, 0.87] | -0.06 [-0.72, 0.66] |
 | any within 4 bars: TAGGED | 3 | 3 (n<30) | 100% | 33% [6-79] | 1.79 [0.70, 3.14] | 1.63 [0.45, 3.14] |
@@ -117,6 +116,28 @@ Tag = a Fabio kline detector (L1 frozen params, 5m/15m/1h) fired in the SAME dir
 | escalation within 4 bars: not tagged | 16 | 16 (n<30) | 100% | 0% [0-19] | -0.16 [-0.66, 0.38] | -0.39 [-0.89, 0.14] |
 | fvg_bounce within 4 bars: TAGGED | 0 | 0 | - | - | - | - |
 | fvg_bounce within 4 bars: not tagged | 17 | 17 (n<30) | 100% | 6% [1-27] | 0.04 [-0.53, 0.67] | -0.19 [-0.76, 0.46] |
+
+
+#### tagged minus untagged, mean net R (8 comparisons per variant; the Bonferroni-adjusted interval uses alpha = 0.05/8)
+
+| tag | n tagged / untagged | diff net R [95% CI] | diff [Bonferroni-8 CI] | excludes 0 after Bonferroni |
+|---|---|---|---|---|
+
+| any within 12 bars | 8 / 9 | +0.08 [-1.25, +1.38] | [-1.66, +1.83] | no |
+
+| cvd_absorption within 12 bars | 6 / 11 | +0.58 [-0.78, +2.04] | [-1.14, +2.69] | no |
+
+| escalation/12 | 2 / 15 | n too small | | |
+
+| fvg_bounce/12 | 2 / 15 | n too small | | |
+
+| any/4 | 3 / 14 | n too small | | |
+
+| cvd_absorption/4 | 3 / 14 | n too small | | |
+
+| escalation/4 | 1 / 16 | n too small | | |
+
+| fvg_bounce/4 | 0 / 17 | n too small | | |
 
 
 ## 2.2 Variant `A`
@@ -128,7 +149,7 @@ Overall (base fees): n signals 19.
 ### by period
 | group | n signals | n filled | fill | win [Wilson] | mean R gross [95% CI] | mean R net [95% CI] |
 |---|---|---|---|---|---|---|
-| dev_2025-09..2026-06-25 | 5 | 5 (n<30) | 100% | 0% [-0-43] | 0.47 [-0.32, 1.20] | 0.23 [-0.56, 0.95] |
+| dev_2025-09..2026-06-25 | 5 | 5 (n<30) | 100% | 0% [0-43] | 0.47 [-0.32, 1.20] | 0.23 [-0.56, 0.95] |
 | hist_2022-01..2025-08 | 14 | 12 (n<30) | 86% | 8% [1-35] | -0.15 [-0.87, 0.71] | -0.36 [-1.09, 0.52] |
 | ALL | 19 | 17 (n<30) | 89% | 6% [1-27] | 0.04 [-0.53, 0.67] | -0.19 [-0.76, 0.46] |
 
@@ -136,7 +157,7 @@ Overall (base fees): n signals 19.
 ### by setup type
 | group | n signals | n filled | fill | win [Wilson] | mean R gross [95% CI] | mean R net [95% CI] |
 |---|---|---|---|---|---|---|
-| ct_short | 12 | 10 (n<30) | 83% | 0% [-0-28] | -0.13 [-0.79, 0.64] | -0.36 [-1.01, 0.41] |
+| ct_short | 12 | 10 (n<30) | 83% | 0% [0-28] | -0.13 [-0.79, 0.64] | -0.36 [-1.01, 0.41] |
 | scalp_short | 7 | 7 (n<30) | 100% | 14% [3-51] | 0.28 [-0.71, 1.46] | 0.06 [-0.96, 1.32] |
 
 
@@ -180,19 +201,15 @@ Overall (base fees): n signals 19.
 | 2026 | 2 | 2 (n<30) | 100% | 0% [0-66] | 0.92 [0.70, 1.13] | 0.67 [0.45, 0.88] |
 
 
-Exit mix (filled): {'target': 1, 'stop': 9, 'timeout': 7}; ambiguous bars: 0; unfilled reasons: {'ran': 2}.
+Win = target hit (timeouts are not wins). Exit mix (filled): {'target': 1, 'stop': 9, 'timeout': 7}; ambiguous bars: 0; unfilled reasons: {'ran': 2}. Median stop distance 0.200% of price; mean fee 0.22 R (base fees); mean planned gross R:R 3.12.
 
 
 ### stress
 | group | n signals | n filled | fill | win [Wilson] | mean R gross [95% CI] | mean R net [95% CI] |
 |---|---|---|---|---|---|---|
-
 | base | 19 | 17 (n<30) | 89% | 6% [1-27] | 0.04 [-0.53, 0.67] | -0.19 [-0.76, 0.46] |
-
 | all_taker_0.05 | 19 | 17 (n<30) | 89% | 6% [1-27] | 0.04 [-0.53, 0.67] | -0.44 [-1.00, 0.20] |
-
 | slip_5bps | 19 | 17 (n<30) | 89% | 6% [1-27] | -0.19 [-0.76, 0.46] | -0.41 [-1.00, 0.26] |
-
 | target_first | 19 | 17 (n<30) | 89% | 6% [1-27] | 0.04 [-0.53, 0.67] | -0.19 [-0.76, 0.46] |
 
 
@@ -208,7 +225,7 @@ Tag = a Fabio kline detector (L1 frozen params, 5m/15m/1h) fired in the SAME dir
 | cvd_absorption within 12 bars: TAGGED | 6 | 6 (n<30) | 100% | 17% [3-56] | 0.40 [-0.72, 1.76] | 0.19 [-0.96, 1.63] |
 | cvd_absorption within 12 bars: not tagged | 11 | 11 (n<30) | 100% | 0% [0-26] | -0.16 [-0.71, 0.51] | -0.39 [-0.95, 0.28] |
 | escalation within 12 bars: TAGGED | 2 | 2 (n<30) | 100% | 50% [9-91] | 1.07 [-1.00, 3.14] | 1.05 [-1.05, 3.14] |
-| escalation within 12 bars: not tagged | 15 | 15 (n<30) | 100% | 0% [-0-20] | -0.10 [-0.62, 0.49] | -0.35 [-0.87, 0.24] |
+| escalation within 12 bars: not tagged | 15 | 15 (n<30) | 100% | 0% [0-20] | -0.10 [-0.62, 0.49] | -0.35 [-0.87, 0.24] |
 | fvg_bounce within 12 bars: TAGGED | 2 | 2 (n<30) | 100% | 0% [0-66] | -1.00 [-1.00, -1.00] | -1.15 [-1.25, -1.05] |
 | fvg_bounce within 12 bars: not tagged | 15 | 15 (n<30) | 100% | 7% [1-30] | 0.17 [-0.47, 0.87] | -0.06 [-0.72, 0.66] |
 | any within 4 bars: TAGGED | 3 | 3 (n<30) | 100% | 33% [6-79] | 1.79 [0.70, 3.14] | 1.63 [0.45, 3.14] |
@@ -219,6 +236,28 @@ Tag = a Fabio kline detector (L1 frozen params, 5m/15m/1h) fired in the SAME dir
 | escalation within 4 bars: not tagged | 16 | 16 (n<30) | 100% | 0% [0-19] | -0.16 [-0.66, 0.38] | -0.39 [-0.89, 0.14] |
 | fvg_bounce within 4 bars: TAGGED | 0 | 0 | - | - | - | - |
 | fvg_bounce within 4 bars: not tagged | 17 | 17 (n<30) | 100% | 6% [1-27] | 0.04 [-0.53, 0.67] | -0.19 [-0.76, 0.46] |
+
+
+#### tagged minus untagged, mean net R (8 comparisons per variant; the Bonferroni-adjusted interval uses alpha = 0.05/8)
+
+| tag | n tagged / untagged | diff net R [95% CI] | diff [Bonferroni-8 CI] | excludes 0 after Bonferroni |
+|---|---|---|---|---|
+
+| any within 12 bars | 8 / 9 | +0.08 [-1.25, +1.38] | [-1.66, +1.83] | no |
+
+| cvd_absorption within 12 bars | 6 / 11 | +0.58 [-0.78, +2.04] | [-1.14, +2.69] | no |
+
+| escalation/12 | 2 / 15 | n too small | | |
+
+| fvg_bounce/12 | 2 / 15 | n too small | | |
+
+| any/4 | 3 / 14 | n too small | | |
+
+| cvd_absorption/4 | 3 / 14 | n too small | | |
+
+| escalation/4 | 1 / 16 | n too small | | |
+
+| fvg_bounce/4 | 0 / 17 | n too small | | |
 
 
 ## 2.3 Variant `watch_episode`
@@ -289,23 +328,19 @@ Overall (base fees): n signals 4849.
 | 2026 | 807 | 728 | 90% | 8% [6-10] | -0.08 [-0.17, 0.00] | -0.31 [-0.41, -0.23] |
 
 
-Exit mix (filled): {'target': 464, 'stop': 2459, 'timeout': 1494}; ambiguous bars: 1; unfilled reasons: {'no_fill': 240, 'ran': 192}.
+Win = target hit (timeouts are not wins). Exit mix (filled): {'target': 464, 'stop': 2459, 'timeout': 1494}; ambiguous bars: 1; unfilled reasons: {'no_fill': 240, 'ran': 192}. Median stop distance 0.200% of price; mean fee 0.23 R (base fees); mean planned gross R:R 3.04.
 
 
 ### stress
 | group | n signals | n filled | fill | win [Wilson] | mean R gross [95% CI] | mean R net [95% CI] |
 |---|---|---|---|---|---|---|
-
 | base | 4849 | 4417 | 91% | 11% [10-11] | -0.07 [-0.11, -0.03] | -0.30 [-0.34, -0.25] |
-
 | all_taker_0.05 | 4849 | 4417 | 91% | 11% [10-11] | -0.07 [-0.11, -0.03] | -0.58 [-0.62, -0.54] |
-
 | slip_5bps | 4849 | 4417 | 91% | 11% [10-11] | -0.30 [-0.34, -0.25] | -0.52 [-0.57, -0.48] |
-
 | target_first | 4849 | 4417 | 91% | 11% [10-11] | -0.07 [-0.11, -0.03] | -0.30 [-0.34, -0.25] |
 
 
-Random-entry null (200 draws, same day, same direction and stop/target distance): real mean gross R -0.072, null mean 0.995, p = -0.015.
+Random-entry null (200 draws, same day, same direction and stop/target distance, next-bar-open fill): real mean gross R -0.072, null mean gross R -0.015, one-sided p(null >= real) = 0.995.
 
 
 ### Tom x Fabio confluence - DESCRIPTIVE, NOT A FILTER (operator's Tom-vs-Fabio ruling is still open)
@@ -331,6 +366,28 @@ Tag = a Fabio kline detector (L1 frozen params, 5m/15m/1h) fired in the SAME dir
 | escalation within 4 bars: not tagged | 4234 | 4234 | 100% | 10% [10-11] | -0.08 [-0.12, -0.04] | -0.30 [-0.34, -0.26] |
 | fvg_bounce within 4 bars: TAGGED | 210 | 210 | 100% | 17% [12-22] | 0.20 [0.00, 0.42] | -0.01 [-0.22, 0.23] |
 | fvg_bounce within 4 bars: not tagged | 4207 | 4207 | 100% | 10% [9-11] | -0.09 [-0.13, -0.05] | -0.31 [-0.36, -0.27] |
+
+
+#### tagged minus untagged, mean net R (8 comparisons per variant; the Bonferroni-adjusted interval uses alpha = 0.05/8)
+
+| tag | n tagged / untagged | diff net R [95% CI] | diff [Bonferroni-8 CI] | excludes 0 after Bonferroni |
+|---|---|---|---|---|
+
+| any within 12 bars | 1670 / 2747 | +0.04 [-0.04, +0.13] | [-0.07, +0.16] | no |
+
+| cvd_absorption within 12 bars | 860 / 3557 | +0.01 [-0.09, +0.12] | [-0.13, +0.15] | no |
+
+| escalation within 12 bars | 472 / 3945 | +0.03 [-0.10, +0.17] | [-0.15, +0.23] | no |
+
+| fvg_bounce within 12 bars | 591 / 3826 | +0.13 [+0.01, +0.26] | [-0.04, +0.31] | no |
+
+| any within 4 bars | 720 / 3697 | +0.07 [-0.04, +0.18] | [-0.08, +0.23] | no |
+
+| cvd_absorption within 4 bars | 372 / 4045 | -0.06 [-0.19, +0.08] | [-0.24, +0.13] | no |
+
+| escalation within 4 bars | 183 / 4234 | +0.11 [-0.09, +0.34] | [-0.17, +0.43] | no |
+
+| fvg_bounce within 4 bars | 210 / 4207 | +0.31 [+0.09, +0.54] | [-0.02, +0.62] | no |
 
 
 ## 2.4 Variant `p4_episode`
@@ -401,23 +458,19 @@ Overall (base fees): n signals 983.
 | 2026 | 185 | 164 | 89% | 7% [4-12] | 0.00 [-0.19, 0.21] | -0.23 [-0.43, -0.01] |
 
 
-Exit mix (filled): {'target': 96, 'stop': 483, 'timeout': 323}; ambiguous bars: 0; unfilled reasons: {'ran': 30, 'no_fill': 51}.
+Win = target hit (timeouts are not wins). Exit mix (filled): {'target': 96, 'stop': 483, 'timeout': 323}; ambiguous bars: 0; unfilled reasons: {'ran': 30, 'no_fill': 51}. Median stop distance 0.200% of price; mean fee 0.23 R (base fees); mean planned gross R:R 3.03.
 
 
 ### stress
 | group | n signals | n filled | fill | win [Wilson] | mean R gross [95% CI] | mean R net [95% CI] |
 |---|---|---|---|---|---|---|
-
 | base | 983 | 902 | 92% | 11% [9-13] | -0.01 [-0.10, 0.08] | -0.24 [-0.33, -0.14] |
-
 | all_taker_0.05 | 983 | 902 | 92% | 11% [9-13] | -0.01 [-0.10, 0.08] | -0.52 [-0.61, -0.43] |
-
 | slip_5bps | 983 | 902 | 92% | 11% [9-13] | -0.24 [-0.33, -0.14] | -0.46 [-0.56, -0.36] |
-
 | target_first | 983 | 902 | 92% | 11% [9-13] | -0.01 [-0.10, 0.08] | -0.24 [-0.33, -0.14] |
 
 
-Random-entry null (200 draws, same day, same direction and stop/target distance): real mean gross R -0.011, null mean 0.458, p = -0.012.
+Random-entry null (200 draws, same day, same direction and stop/target distance, next-bar-open fill): real mean gross R -0.011, null mean gross R -0.012, one-sided p(null >= real) = 0.458.
 
 
 ### Tom x Fabio confluence - DESCRIPTIVE, NOT A FILTER (operator's Tom-vs-Fabio ruling is still open)
@@ -443,6 +496,28 @@ Tag = a Fabio kline detector (L1 frozen params, 5m/15m/1h) fired in the SAME dir
 | escalation within 4 bars: not tagged | 865 | 865 | 100% | 11% [9-13] | -0.01 [-0.10, 0.08] | -0.23 [-0.33, -0.14] |
 | fvg_bounce within 4 bars: TAGGED | 47 | 47 | 100% | 17% [9-30] | 0.20 [-0.21, 0.65] | 0.00 [-0.43, 0.48] |
 | fvg_bounce within 4 bars: not tagged | 855 | 855 | 100% | 10% [8-13] | -0.02 [-0.11, 0.07] | -0.25 [-0.35, -0.15] |
+
+
+#### tagged minus untagged, mean net R (8 comparisons per variant; the Bonferroni-adjusted interval uses alpha = 0.05/8)
+
+| tag | n tagged / untagged | diff net R [95% CI] | diff [Bonferroni-8 CI] | excludes 0 after Bonferroni |
+|---|---|---|---|---|
+
+| any within 12 bars | 342 / 560 | -0.00 [-0.19, +0.18] | [-0.26, +0.28] | no |
+
+| cvd_absorption within 12 bars | 181 / 721 | +0.06 [-0.17, +0.29] | [-0.24, +0.38] | no |
+
+| escalation within 12 bars | 99 / 803 | -0.11 [-0.35, +0.17] | [-0.43, +0.27] | no |
+
+| fvg_bounce within 12 bars | 115 / 787 | +0.06 [-0.21, +0.34] | [-0.31, +0.44] | no |
+
+| any within 4 bars | 152 / 750 | +0.06 [-0.18, +0.31] | [-0.25, +0.42] | no |
+
+| cvd_absorption within 4 bars | 81 / 821 | +0.01 [-0.30, +0.33] | [-0.41, +0.49] | no |
+
+| escalation within 4 bars | 37 / 865 | -0.06 [-0.46, +0.39] | [-0.60, +0.57] | no |
+
+| fvg_bounce within 4 bars | 47 / 855 | +0.25 [-0.19, +0.72] | [-0.39, +0.92] | no |
 
 
 ## 3. Verdict per protocol section 6

@@ -17,5 +17,15 @@ class T(unittest.TestCase):
         self.assertEqual([b["t"] for b in out], [0, 900000])  # bucket 30..34 incomplete, dropped
         self.assertEqual((out[0]["o"], out[0]["h"], out[0]["l"], out[0]["c"], out[0]["v"]), (0, 15, -1, 14.5, 15))
 
+    def test_tf_map_covers_live_runner_default_tfs(self):
+        # 2026-09-30: runner gained 5m, TF_MIN did not -> KeyError crash. Read the default as text (no live import).
+        import re
+        src = (pathlib.Path(__file__).resolve().parents[2] / "MyTradingSys/backtest/layers/alerts/live_runner_cli.py"
+               ).read_text(encoding="utf-8")
+        m = re.search(r'"--tfs",\s*default="([^"]+)"', src)
+        self.assertIsNotNone(m)
+        for tf in m.group(1).split(","):
+            self.assertIn(tf, a.TF_MIN)
+
 if __name__ == "__main__":
     unittest.main()

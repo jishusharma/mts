@@ -89,3 +89,11 @@ MyTradingSys/execution/orphan_watchdog.jsonl
 MyTradingSys/runtime/alerts/*.jsonl
 MyTradingSys/runtime/live_alert_state.json
 runtime_data/ums.log
+MyTradingSys/runtime/*.lock
+.claude/settings.local.json
+# --- Runtime state: never committed ---
+MyTradingSys/execution/halt_history/
+MyTradingSys/execution/plans/
+MyTradingSys/research/fast_track_2026-09-27/bt_runs/
+runtime_data/mts-watch.log
+backup_session/

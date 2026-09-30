@@ -22,6 +22,9 @@ Chat-surface (DSA) behaviour lives in `DSA_SESSION_PROMPT.md`; this file is for 
 - Testnet only (Deribit test); never mainnet; never read `.secrets/`, `.env` or keys.
 - Windows: write files with `newline='\n'`; long patches go in a .py script, not a heredoc.
 - Tom is core; every other indicator system is a separate layer (PROJECT_VISION), never a Tom filter.
+- One session owns execution/ or layers/alerts/ at a time (claim it in SUPERVISOR_LOG); others propose only.
+  Whoever sets AUTO_PAUSE logs owner + expected end; each wake clears or escalates an overdue pause.
+- Adding a timeframe or layer family: grep every TF/family map (alert_rate_check, account routing, audits).
 - The working tree runs the live testnet system (auto_trader, position_manager, daily_loss_monitor,
   live_runner_cli): never edit a file they import in place; builders never stop/restart them or touch HALT files
   or open trades (only the supervisor restarts one, after its fix is committed and gated). Every builder brief touching `MyTradingSys/execution/` or `layers/alerts/` repeats this.

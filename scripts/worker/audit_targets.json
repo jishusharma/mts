@@ -9,7 +9,7 @@
     "MyTradingSys/backtest/layers/FORMULAS.md:10-58"
    ],
    "note": "RSI Wilder smoothing formula (FORMULAS.md section 1) vs rsi_core.py.",
-   "last_audited": "2026-09-29T05:53:39Z"
+   "last_audited": "2026-09-29T17:43:12Z"
   },
   {
    "id": "A1-tf-resample",
@@ -19,7 +19,7 @@
     "MyTradingSys/backtest/layers/FORMULAS.md:151-162"
    ],
    "note": "Resample / bucket-anchoring formula (FORMULAS.md section 8) vs tf_resample.py.",
-   "last_audited": "2026-09-29T01:14:55Z"
+   "last_audited": "2026-09-29T16:51:01Z"
   },
   {
    "id": "A1-bt-stats-sharpe",
@@ -30,7 +30,7 @@
     "MyTradingSys/backtest/layers/FORMULAS.md:179-193"
    ],
    "note": "Sharpe = mean / population stdev (FORMULAS.md section 10) vs both sharpe() implementations. Hand-audited 2026-09-28 as spec 097-audit-a1-bt-stats-sharpe.",
-   "last_audited": "2026-09-29T05:13:43Z"
+   "last_audited": "2026-09-29T17:43:11Z"
   },
   {
    "id": "A2-fabio-cvd",
@@ -40,7 +40,7 @@
     "MyTradingSys/backtest/layers/fabio/test_fabio_cvd_absorption.py"
    ],
    "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
-   "last_audited": "2026-09-29T01:14:56Z"
+   "last_audited": "2026-09-29T16:51:02Z"
   },
   {
    "id": "A2-cc-retest",
@@ -50,7 +50,7 @@
     "MyTradingSys/backtest/layers/cryptocred/test_cc_retest.py"
    ],
    "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
-   "last_audited": "2026-09-29T02:13:51Z"
+   "last_audited": "2026-09-29T16:51:02Z"
   },
   {
    "id": "A3-spec-089",
@@ -59,7 +59,7 @@
     "Dumps/workers/NUC-QUEUE/specs/089-fabio-volume-fvg.md"
    ],
    "note": "Retrospective pre-check: would this spec's own wording have been ambiguous to a worker seeing it fresh, or missing an EXPECT for a claim it makes?",
-   "last_audited": "2026-09-29T02:13:51Z"
+   "last_audited": "2026-09-29T16:51:02Z"
   },
   {
    "id": "A3-spec-090",
@@ -68,7 +68,7 @@
     "Dumps/workers/NUC-QUEUE/specs/090-fabio-escalation-retry.md"
    ],
    "note": "Retrospective pre-check: would this spec's own wording have been ambiguous to a worker seeing it fresh, or missing an EXPECT for a claim it makes?",
-   "last_audited": "2026-09-29T02:13:51Z"
+   "last_audited": "2026-09-29T17:12:25Z"
   },
   {
    "id": "A4-positioning-flow",
@@ -77,7 +77,7 @@
     "MyTradingSys/research/fast_track_2026-09-27/T055a_POSITIONING_FLOW.md"
    ],
    "note": "Question: does this report name a specific published formula (a vendor or a paper) for net-long/net-short, or only its own inferred proxy?",
-   "last_audited": "2026-09-29T03:13:40Z"
+   "last_audited": "2026-09-29T17:12:25Z"
   },
   {
    "id": "A4-proven-setups",
@@ -86,7 +86,7 @@
     "MyTradingSys/research/fast_track_2026-09-27/T055b_PROVEN_SETUPS.md"
    ],
    "note": "Question: which listed setup, if any, has a quoted out-of-sample statistic rather than a backtest-only one?",
-   "last_audited": "2026-09-29T03:13:40Z"
+   "last_audited": "2026-09-29T17:12:25Z"
   },
   {
    "id": "A5-fabio-volume-fvg",
@@ -95,7 +95,7 @@
     "MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py"
    ],
    "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom's own internals.",
-   "last_audited": "2026-09-29T03:13:40Z"
+   "last_audited": "2026-09-29T17:12:25Z"
   },
   {
    "id": "A5-cc-structure",
@@ -104,7 +104,7 @@
     "MyTradingSys/backtest/layers/cryptocred/cc_structure.py"
    ],
    "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom's own internals.",
-   "last_audited": "2026-09-29T04:13:39Z"
+   "last_audited": "2026-09-29T17:12:25Z"
   },
   {
    "id": "A6-project-vision-layers",
@@ -124,7 +124,7 @@
     "MyTradingSys/backtest/layers/rsi/rsi_ma.py"
    ],
    "note": "Does the current rsi_ma.py behavior still match what TEST_PLAN.md documents?",
-   "last_audited": "2026-09-29T04:13:39Z"
+   "last_audited": "2026-09-29T17:43:11Z"
   },
   {
    "id": "A7-risk-guard",
@@ -133,7 +133,7 @@
     "MyTradingSys/execution/risk_guard.py"
    ],
    "note": "Account-notional cap invariants. Hand-audited 2026-09-28 as spec 098-audit-a7-risk-guard.",
-   "last_audited": "2026-09-29T05:53:38Z"
+   "last_audited": "2026-09-29T17:43:11Z"
   },
   {
    "id": "A7-kill-switch",
@@ -142,7 +142,7 @@
     "MyTradingSys/execution/kill_switch.py"
    ],
    "note": "Confirm-phrase and HALT-file invariants around the account kill switch.",
-   "last_audited": "2026-09-29T05:13:43Z"
+   "last_audited": "2026-09-29T17:43:11Z"
   },
   {
    "id": "A2-alert-emitter",
@@ -152,7 +152,7 @@
     "MyTradingSys/backtest/layers/alerts/test_alert_emitter.py"
    ],
    "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
-   "last_audited": "2026-09-29T06:53:02Z"
+   "last_audited": "2026-09-29T18:12:27Z"
   },
   {
    "id": "A5-alert-emitter",
@@ -161,7 +161,7 @@
     "MyTradingSys/backtest/layers/alerts/alert_emitter.py"
    ],
    "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
-   "last_audited": "2026-09-29T06:53:02Z"
+   "last_audited": "2026-09-29T18:12:27Z"
   },
   {
    "id": "A2-live-layers",
@@ -171,7 +171,7 @@
     "MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py"
    ],
    "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
-   "last_audited": "2026-09-29T07:06:21Z"
+   "last_audited": "2026-09-29T18:12:27Z"
   },
   {
    "id": "A5-live-layers",
@@ -180,7 +180,7 @@
     "MyTradingSys/backtest/layers/alerts/live_layers.py"
    ],
    "note": "Check for Tom-core logic used as a filter/gate, or an import of Tom internals (layer independence).",
-   "last_audited": "2026-09-29T07:06:21Z"
+   "last_audited": "2026-09-29T18:12:27Z"
   },
   {
    "id": "A2-live-runner-cli",
@@ -190,7 +190,7 @@
     "MyTradingSys/backtest/layers/alerts/test_live_runner_cli.py"
    ],
    "note": "Look for a branch or edge case (empty input, NaN, boundary) with no test.",
-   "last_audited": "2026-09-29T08:06:01Z"
+   "last_audited": "2026-09-29T18:12:27Z"
   },
   {
    "id": "A5-live-runner-cli",
@@ -900,7 +900,7 @@
     "MyTradingSys/execution/trade_plan_validator.py"
    ],
    "note": "Safety invariants: any path that could reach mainnet, skip a guard/HALT, or place orders unintentionally.",
-   "last_audited": null
+   "last_audited": "2026-09-29T16:51:01Z"
   }
  ]
 }
