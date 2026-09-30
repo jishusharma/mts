@@ -64,6 +64,9 @@ top of the relevant section. Keep each entry to 3 lines.
 - YouTube captions: `scripts/dev/fetch_captions.py` (captions only, 429 backoff); on HTTP 429, wait, don't transcribe.
 
 ## E. Domain framing
+- 2026-09-30: Tom's stop floor 0.1%/0.2% fallback, 2-3.5R target window, 25% friction haircut and the TWOPEAK label were
+  engineering choices with no Tom source; they cut his real trades (tight stops, 8R winners). RULE: parameters come only from
+  the trader's own words (CLAUDE.md Provenance); unsourced ones are flagged NO-SOURCE, never tuned. (CLAUDE.md hard rules)
 - Non-Tom systems (MalkanView RSI, CryptoCred, FlowHorse, probability, session frame) are separate
   layers per PROJECT_VISION, extracted and backtested on their own, never as filters on Tom.
   RULE: read PROJECT_VISION "INTEGRATIONS TRACKED" before framing any indicator work.
