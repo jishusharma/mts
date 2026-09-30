@@ -35,3 +35,5 @@ SESSION_MANIFEST.json boot_files entry, 03_FILE_INDEX.md rows. Base commit 85121
 - 2026-09-30 | operator via DSA | fee source: sim.py wins (maker 0, taker 5 bps); fabio constants display-only; B080.
 - 2026-09-30 | this session | add_repo cryptoscrapper denied by the permission guard; not retried; handshake runs on desktop.
 - 2026-09-30 | this session | pushed 74e4aa9 MISSING_PIECES (design doc, not evidence) + 304cc13 index header fix.
+- 2026-09-30 | operator, direct | 'All approved': book 0.0 fix (critical file), merge cloud/work, SAFETY exemption from Provenance, Fabio spec fold-in, classify_msb + B080, testnet summary script.
+- 2026-09-30 | this session (auto mode default) | Fabio spec open items: adds before BE allowed only as a registered variant (open risk <= day profit); S7 discount block kept + variant; US holidays excluded; dealer gamma dropped (no data); Deribit tick/basis verified on desktop before runs.
