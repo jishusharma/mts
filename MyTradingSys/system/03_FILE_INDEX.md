@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-30
-# SIZE: ~26.2KB
+# SIZE: ~26.5KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -338,3 +338,4 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/research/fast_track_2026-09-27/ANGLE_ELICITATION_RESEARCH.md | research | Method angle: expert knowledge elicitation (CDM, RPD, protocol analysis) -> incident-record extraction, hindsight tags, labeled-trade confusion matrix. 0 sources opened (egress blocked); all UNVERIFIED. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/research/fast_track_2026-09-27/FABIO_LINE_BY_LINE_fZlNGWvd2Ko.md | research | Opus line-by-line reading of Fabio fZlNGWvd2Ko (first long trade read): 30-row decision log vs FABIO_V3_SPEC, extract audit, 10 missing pieces, 8 spec change proposals. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/research/fast_track_2026-09-27/EXTRACTION_METHOD_V2_FABIO.md | method | Fabio extraction method v2 for weaker models: decision rows, trade/day blocks, 14-item miss checklist, worked example. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/ANGLE_TRADE_CATALOG.md | research | Ground-truth catalog of trades actually taken in 102 transcripts: 30 (Tom 21: 15 short / 6 long; Fabio 9), 0 on BTC, instruments DAX/NQ/crude/stock; recurring setup vocabulary. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
