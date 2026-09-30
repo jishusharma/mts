@@ -48,4 +48,6 @@ T055 | OPEN    | T055_positioning_flow_and_proven_setups.md | Net/New Longs and 
 T056 | OPEN    | T056_qwen_audit_program.md | Qwen regular auditing program; design at research/fast_track_2026-09-27/QWEN_AUDIT_PROGRAM.md
 T057 | OPEN    | T057_simplify_declutter.md | simplify / optimize / declutter; follows DEV_VELOCITY_AUDIT.md 2026-09-27
 T058 | OPEN    | T058_broken_extremes_sweep_vs_continuation.md | broken lows/highs by timeframe: continuation vs liquidity sweep; filed 2026-09-29
+T060 | OPEN    | T060_low_volatility_btc.md | low-volatility anomaly; test whether trailing realized-vol rank predicts BTC forward return
+T061 | OPEN    | T061_wavetrend_lazybear.md | WaveTrend with Crosses [LazyBear]; integrate as separate indicator layer
 # END
