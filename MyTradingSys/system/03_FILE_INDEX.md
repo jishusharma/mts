@@ -1,8 +1,8 @@
 # FILE: 03_FILE_INDEX.md
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
-# LAST UPDATED: 2026-09-19
-# SIZE: ~21.0KB
+# LAST UPDATED: 2026-09-30
+# SIZE: ~27.8KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -318,3 +318,28 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/items/T049_nuc_worker_v2.md | item | Per-item doc for T049. NUC worker v2 design, decisions, roadmap. | MTS-2026-09-25-2100Z | 2026-09-25 |
 | Dumps/workers/NUC-QUEUE/README.md | protocol | NUC queue protocol, version 2. Spec format, folders, flow, routing rule. T049. | MTS-2026-09-25-2100Z | 2026-09-25 |
 | MyTradingSys/system/DEVICES.md | reference | Hostnames, IPs, roles, shared paths and accounts for every machine in the pipeline. T049. | MTS-2026-09-26-1520Z | 2026-09-26 |
+| MyTradingSys/system/SURFACE_POLICY.md | policy | Surfaces, reach, task ownership, handoff inboxes, budget thresholds, session/branch/lane naming, legacy aliases. Boot file for every surface. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/system/sessions/README.md | registry | Session registry rules + record template. One record file per session; predecessor lookup by -SURF-ROLE. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/system/sessions/MTS-2026-09-30-1005Z-CLD-ANA-connected-system.md | session | First registry record: Cloud analyst session that wrote the connected-system docs. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/system/CLOUD_INBOX.md | inbox | Tasks for Cloud sessions (Cloud sees only pushed git refs). Desktop appends, commits, pushes. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/MISSING_PIECES_2026-09-30.md | research | Opus applied readings (Fabio jasv3L-d8ZE, Tom yRvMW6lgN1o), why rule synthesis fails, H1 wider stop / H2 adverse-add ladders / H3 narrow-window protocol (model results, no market data). | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/T054_US_SESSION_BRIEF.md | research | T054 brief from on-disk research: US session / correlation / news claims on BTC, verified vs unverified, gaps needing sources. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/TOM_RULEBOOK_MERGE_999.md | research | Redo of lost DSA task 999: 16 new Tom T- rules vs conditions/ master; 4 NEW, 12 MATCH, 2 CONFLICT (stop placement R5, re-acceptance exit R8). | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/CROSS_TRADER_RULEBOOK.md | research | CryptoCred (47 rows) + Flow Horse (32 rows) rulebook in FABIO_RULEBOOK format with built-as-layer column and trade-sequence gaps. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/nuc_specs/2101-2113 (13 files) | spec | DSA-lane trade-reconstruction specs, one per Fabio/Tom video, template MISSING_PIECES 3.2. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_REVIEW_2026-09-30.md | research | Method review of Tom core BT: 17 defects (2 HIGH: live rule undiagnosed/all-short, null not like-for-like). | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/FORMULA_AUDIT_2026-09-30.md | research | FORMULAS.md vs code, 43 rows: 39 MATCH, 2 MISMATCH (MSB, executor loss est.), 2 UNTESTABLE; fee duplicates listed. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py | tool | Backtest driver malkan_40_60 / malkan_mtf / rsi_ma_events: IS/OOS 70/30, PBO, sim.py fees. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/backtest/layers/run_bracket_grid.py | tool | Q1 per-layer bracket grid: 6 stops x 3 targets x 3 time exits, IS/OOS, PBO, frozen bracket or default stands. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md | spec | Fabio v3 layer spec: S1-S8, models A (LVN pullback) / B (failed-breakout reclaim) / C (IVB), fills, management, sim.py costs, day gates, grid 97-103 trials, tests T01-T50. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/backtest/layers/fabio/pending_test_fabio_v3.py | test | 52 spec-derived tests for Fabio v3 (written before the implementation); rename to test_fabio_v3.py when fabio_v3*.py land. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/nuc_specs/2201-2203 (3 files) | spec | NUC Qwen specs: fabio_v3_signals.py, fabio_v3_exec.py, fabio_v3.py. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/ANGLE_TRADER_SOURCES.md | research | Web angle on Tom/Fabio public methods: 0 sources opened (cloud egress blocked); unopened leads + pages to open from an unrestricted network. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/ANGLE_ELICITATION_RESEARCH.md | research | Method angle: expert knowledge elicitation (CDM, RPD, protocol analysis) -> incident-record extraction, hindsight tags, labeled-trade confusion matrix. 0 sources opened (egress blocked); all UNVERIFIED. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/FABIO_LINE_BY_LINE_fZlNGWvd2Ko.md | research | Opus line-by-line reading of Fabio fZlNGWvd2Ko (first long trade read): 30-row decision log vs FABIO_V3_SPEC, extract audit, 10 missing pieces, 8 spec change proposals. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/EXTRACTION_METHOD_V2_FABIO.md | method | Fabio extraction method v2 for weaker models: decision rows, trade/day blocks, 14-item miss checklist, worked example. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/ANGLE_TRADE_CATALOG.md | research | Ground-truth catalog of trades actually taken in 102 transcripts: 30 (Tom 21: 15 short / 6 long; Fabio 9), 0 on BTC, instruments DAX/NQ/crude/stock; recurring setup vocabulary. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/ANGLE_HYPOTHESES.md | research | Competing hypotheses with falsifiers + 3 code tests: E-001 book_imbalance 0.0 demotes all longs (confirmed), E-002 TWOPEAK label is a heuristic, E-003 Tom trade cannot pass SetupCandidatesBuilder gates; experiment log format. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/TOM_LINE_BY_LINE_4MoNjEQ2Dd8.md | research | Opus: no-longs code trace (book 0.0 veto; TWOPEAK label always true) + line-by-line reading of Tom live long 4MoNjEQ2Dd8; 5 engine missing pieces. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/EXTRACTION_METHOD_V2.md | method | Extraction method v2 for workers: decision rows in order, trade blocks, before/after-proof entry flag, 15-item miss checklist, long/short symmetry rules; Fabio appendix in EXTRACTION_METHOD_V2_FABIO.md. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| scripts/dev/testnet_status.py | tool | Daily sanitized testnet status (per family x account: alerts, entries, closes, P/L, skips, brakes; 0-trade flags) -> MyTradingSys/research/testnet_status/. Gate step 3s. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |

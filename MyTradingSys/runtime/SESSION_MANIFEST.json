@@ -18,6 +18,11 @@
                            "read":  "full"
                        },
                        {
+                           "path":  "MyTradingSys/system/SURFACE_POLICY.md",
+                           "role":  "surface_policy",
+                           "read":  "full"
+                       },
+                       {
                            "path":  "MyTradingSys/PROJECT_VISION.md",
                            "role":  "direction_doctrine",
                            "read":  "full"
