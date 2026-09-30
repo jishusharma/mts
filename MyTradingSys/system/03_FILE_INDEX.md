@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-30
-# SIZE: ~27.8KB
+# SIZE: ~28.1KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -343,3 +343,4 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/research/fast_track_2026-09-27/TOM_LINE_BY_LINE_4MoNjEQ2Dd8.md | research | Opus: no-longs code trace (book 0.0 veto; TWOPEAK label always true) + line-by-line reading of Tom live long 4MoNjEQ2Dd8; 5 engine missing pieces. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/research/fast_track_2026-09-27/EXTRACTION_METHOD_V2.md | method | Extraction method v2 for workers: decision rows in order, trade blocks, before/after-proof entry flag, 15-item miss checklist, long/short symmetry rules; Fabio appendix in EXTRACTION_METHOD_V2_FABIO.md. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | scripts/dev/testnet_status.py | tool | Daily sanitized testnet status (per family x account: alerts, entries, closes, P/L, skips, brakes; 0-trade flags) -> MyTradingSys/research/testnet_status/. Gate step 3s. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/research/fast_track_2026-09-27/PROVENANCE_AUDIT_TOM.md | research | Provenance audit of the Tom core path (74 rows): 2 TOM-SOURCED, 33 concept-only, 36 NO-SOURCE, 3 plumbing; 2:1 net miscited to qLnQan0KGmQ; safety rules X1-X8 listed unjudged. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
