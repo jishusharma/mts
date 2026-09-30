@@ -16,4 +16,4 @@
 | 2110-dsa-recon-tom-gwjhq5umisy | recon | REVIEW | YES | DSA lane, worker finished ok |
 | 2111-dsa-recon-tom-hq8soq67x5o | recon | REVIEW | YES | DSA lane, worker finished ok |
 | 2112-dsa-recon-tom-pgdmklj0hha | recon | REVIEW | YES | DSA lane, worker finished ok |
-| 2113-dsa-recon-tom-zawex-trufe | recon | REVIEW | YES | DSA lane, worker finished ok |
+| 2113-dsa-recon-tom-zawex-trufe | recon | REVIEW | YES | content complete; template deviation: Portability as bullet, not ## header; verifier FAIL on heading only |

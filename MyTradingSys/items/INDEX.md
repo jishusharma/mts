@@ -50,4 +50,5 @@ T057 | OPEN    | T057_simplify_declutter.md | simplify / optimize / declutter; f
 T058 | OPEN    | T058_broken_extremes_sweep_vs_continuation.md | broken lows/highs by timeframe: continuation vs liquidity sweep; filed 2026-09-29
 T060 | OPEN    | T060_low_volatility_btc.md | low-volatility anomaly; test whether trailing realized-vol rank predicts BTC forward return
 T061 | OPEN    | T061_wavetrend_lazybear.md | WaveTrend with Crosses [LazyBear]; integrate as separate indicator layer
+B080 | OPEN    | B080_dsa_pace_hourly_cap.md | dsa_worker hourly-cap misfires on stale pace entries
 # END
