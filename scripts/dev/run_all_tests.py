@@ -112,6 +112,9 @@ def main(argv=None):
     cmd3r = [sys.executable, "scripts/dev/test_alert_rate_check.py"]
     success, output = run_step("3r", "Alert rate checker tests", cmd3r)
     results.append(("Step 3r: Alert rate checker tests", success))
+    cmd3s = [sys.executable, "scripts/dev/test_testnet_status.py"]
+    success, output = run_step("3s", "Testnet status summary tests", cmd3s)
+    results.append(("Step 3s: Testnet status tests", success))
     cmd3d = [sys.executable, "scripts/dev/test_verify_extract_quotes.py"]
     success, output = run_step("3d", "Extract quote checker tests", cmd3d)
     results.append(("Step 3d: Quote checker tests", success))
