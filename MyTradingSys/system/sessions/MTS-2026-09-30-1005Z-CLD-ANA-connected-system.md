@@ -25,5 +25,13 @@ SESSION_MANIFEST.json boot_files entry, 03_FILE_INDEX.md rows. Base commit 85121
 - BUDGET_HOLD check in the poller, staged as .new.
 
 ## Open operator questions
-- Q1: which Pro account (A/B) runs on which surface.
-- Q7: where usage percentage per account is readable.
+- Q1, Q7: answered 2026-09-30 (see decision log).
+
+## Decision log
+- 2026-09-30 | operator, direct in chat | auto mode on: written to SURFACE_POLICY.md section 0.
+- 2026-09-30 | operator via DSA | Q1: two Pro accounts; A = cloud-enabled, B = no cloud yet. Q7: /usage or chat-header indicator.
+- 2026-09-30 | operator via DSA | CBP owns mts_queue/ + docs/COMMON.md; MTS reads, writes mts_queue/acks/ only.
+- 2026-09-30 | operator via DSA | MTS consumer read-only + ack-only, no live import, no orders; built on desktop.
+- 2026-09-30 | operator via DSA | fee source: sim.py wins (maker 0, taker 5 bps); fabio constants display-only; B080.
+- 2026-09-30 | this session | add_repo cryptoscrapper denied by the permission guard; not retried; handshake runs on desktop.
+- 2026-09-30 | this session | pushed 74e4aa9 MISSING_PIECES (design doc, not evidence) + 304cc13 index header fix.

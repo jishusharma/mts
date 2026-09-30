@@ -2,6 +2,10 @@
 
 Keep under 4 KB (it is in every DSA boot paste). Tiers: CLAUDE.md work routing. Machines: WORKSTATION_MODES.md.
 
+## 0. Mode (operator, direct, 2026-09-30)
+Auto mode: reversible work -> safe default, act, log it in the session record. Irreversible or
+outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -> stop for operator.
+
 ## 1. Surfaces and ownership
 | Surface | Reach | Owns |
 |---|---|---|
@@ -19,16 +23,17 @@ A handoff is a file in the receiver's inbox that names the sender's session ID.
 SUP: research/fast_track_2026-09-27/SUPERVISOR_INBOX.md. Qwen: queue incoming/. DSA worker: incoming_dsa/.
 Poller: Dumps/operator/inbox. Cloud: MyTradingSys/system/CLOUD_INBOX.md (desktop commits and pushes).
 Cloud returns commits on its branch plus its session record; SUP gates, merges, logs in SUPERVISOR_LOG.
+A cloud session sees one repo; cross-repo work (CBP owns mts_queue/, MTS writes acks/ only) runs on the desktop.
 Before starting a task, grep MyTradingSys/system/sessions/ and the inboxes for its slug; skip duplicates.
 
-## 3. Budget (Pro accounts A and B)
-Usage source: TBD (operator Q7). Account-to-surface map: TBD (operator Q1).
->=70%: Opus only for safety diffs; other work to T0, Qwen, DSA, Cloud.
->=85%: no Sonnet builders; supervisor wake cadence halved.
->=95% or cap hit: suspend scheduled tasks and builders; live processes keep running; the other account
-only for safety incidents; Qwen, DSA, Cloud continue (procedure of SUPERVISOR_LOG 2026-09-30 03:50 IST).
-Enforcement in code (BUDGET_HOLD file) is deferred; until then the supervisor applies these by hand.
-Cloud: no routines, triggers or always-on sessions; one session per task; nothing live depends on it.
+## 3. Budget (per account; read /usage or the chat-header usage indicator)
+A: chat, cowork, code, cloud (only cloud account). B: chat, cowork, code; cloud later. Route to the one
+with headroom. Cloud also spends session credits (100 USD pool, expires 2026-11-05).
+>=70% weekly: Opus only for safety diffs; rest to T0, Qwen, DSA, other account.
+>=85%: no Sonnet builders; supervisor wakes halved. Prefer one session reading by range over subagent fan-out.
+>=95% or hit: suspend scheduled tasks and builders; live processes run; Qwen and DSA continue
+(SUPERVISOR_LOG 2026-09-30 03:50 IST). Code enforcement (BUDGET_HOLD) deferred; supervisor applies by hand.
+Cloud: no routines or always-on sessions; one session per task; nothing live depends on it.
 
 ## 4. Naming
 Session ID: MTS-YYYY-MM-DD-HHMMZ-<SURF>-<ROLE>[-<slug>] (UTC start; slug <=20 chars, lowercase kebab).
