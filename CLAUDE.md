@@ -3,6 +3,7 @@
 Read first: `MyTradingSys/research/STATUS.md` (regenerate: `python scripts/dev/make_status.py`),
 then `MyTradingSys/system/LESSONS_LEARNED.md`; supervisor decisions: `research/fast_track_2026-09-27/SUPERVISOR_LOG.md`. Don't re-read handoff docs STATUS.md already summarises.
 Chat-surface (DSA) behaviour lives in `DSA_SESSION_PROMPT.md`; this file is for code mode.
+Surfaces, handoff, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md` (read at boot; register the session in `MyTradingSys/system/sessions/`).
 
 ## Work routing (cheapest tier that can do it; see research/fast_track_2026-09-27/WORKER_ROADMAP.md)
 - T0 script > T1 Qwen on the NUC (`scripts/worker/queue_tool.py pack|verify|status`) > T2 Haiku > T3 Sonnet > T4 Opus.

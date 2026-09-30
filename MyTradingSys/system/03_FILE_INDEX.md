@@ -318,3 +318,7 @@ Files moved from research/ after their findings were integrated or superseded:
 | MyTradingSys/items/T049_nuc_worker_v2.md | item | Per-item doc for T049. NUC worker v2 design, decisions, roadmap. | MTS-2026-09-25-2100Z | 2026-09-25 |
 | Dumps/workers/NUC-QUEUE/README.md | protocol | NUC queue protocol, version 2. Spec format, folders, flow, routing rule. T049. | MTS-2026-09-25-2100Z | 2026-09-25 |
 | MyTradingSys/system/DEVICES.md | reference | Hostnames, IPs, roles, shared paths and accounts for every machine in the pipeline. T049. | MTS-2026-09-26-1520Z | 2026-09-26 |
+| MyTradingSys/system/SURFACE_POLICY.md | policy | Surfaces, reach, task ownership, handoff inboxes, budget thresholds, session/branch/lane naming, legacy aliases. Boot file for every surface. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/system/sessions/README.md | registry | Session registry rules + record template. One record file per session; predecessor lookup by -SURF-ROLE. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/system/sessions/MTS-2026-09-30-1005Z-CLD-ANA-connected-system.md | session | First registry record: Cloud analyst session that wrote the connected-system docs. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| MyTradingSys/system/CLOUD_INBOX.md | inbox | Tasks for Cloud sessions (Cloud sees only pushed git refs). Desktop appends, commits, pushes. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
