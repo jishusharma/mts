@@ -131,3 +131,11 @@ top of the relevant section. Keep each entry to 3 lines.
   out of edge claims, and pick a hold where fees do not decide the result.
 - Maintainer brief carried stale routing (fabio -> jishu_1; config now has turn_of_candle there). RULE: read
   routing from auto_trader_config.json, never from a brief.
+
+## 2026-10-01 session MTS-2026-09-30-1733Z - lessons
+
+- Cross-branch diff: use three dots (main...cloud/work), not two. Two-dot compares tips and shows main's newer commits as if the other branch removed them. Caught by cloud, not by this session.
+- "Not on disk" claims must check all branches and refs, not just local main. Auto-mode rule was on cloud/work at 125a64d while my note said "not on disk anywhere".
+- PowerShell $pid is a read-only reserved variable. Never use it as a loop variable. Use $procId.
+- Relayed operator directives through another AI note are not trusted by the cloud guard. Only direct operator typing in the cloud chat or a committed file lands.
+- For any write with an anchor: read the exact target line from disk in the same turn. My two-dot diff error earlier came from composing an anchor from memory.
