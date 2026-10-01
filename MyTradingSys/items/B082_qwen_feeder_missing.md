@@ -12,7 +12,7 @@ Scheduled task MTS-QwenFeeder is Disabled and returns LastTaskResult=1. It point
 - File absent from disk this session.
 - File absent from origin/main (ls-tree).
 - File absent from origin/cloud/work (ls-tree).
-- File absent from all commit history (git log --all -- "*qwen_feeder*").
+- File absent from all commit history (searched the full ref history).
 - Task State: Disabled. LastRunTime 2026-09-29 23:51. LastTaskResult 1.
 
 ## Consequence
