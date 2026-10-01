@@ -4,7 +4,7 @@ Branch commits: 0fa19cf, 57b6a2e, 4deae5e. Counts marked (~) are approximations 
 ## Step 1 - Tom status
 | Stage | Count | How counted |
 |---|---|---|
-| Extracted | 602 kept sentences from 19 videos (CONSOLIDATED_RULES.md) + 9 new_selected_10 extracts (222 bullets) + 47 fresh extracts | file headers / bullet counts |
+| Extracted | 602 kept sentences from 19 videos (CONSOLIDATED_RULES.md) + 9 new_selected_10 extracts (222 bullets) + 52 files in extracts/fresh | file headers / bullet counts |
 | Consolidated | 602 lines: 31 numeric (5.1%), 143 conditional, 436 narrative (72.4%) | recon figures supplied |
 | Verbatim index | 214 rows, TOM-001..213 | TOM_VERBATIM_INDEX.md |
 | In conditions/ | 213 distinct TOM ids cited (~213 tagged blocks: entry 29, state 37, risk 57, setup 56, zones 34, session timing 0) | grep |
@@ -53,5 +53,5 @@ Closed this session (not in the 10): FVG entries; TOM-048; Python HVN target.
 ## Step 4 - Actions
 1. 0fa19cf ExtraSetupBuilder.java:16-98 FVG entry block removed; ExtraSetupBuilderFvgTest fails on old code (1 entry per direction), passes now; mvn test 22 tests, 0 failures.
 2. 57b6a2e market_state_rules.md:123 and TOM_VERBATIM_INDEX.md:61 now carry the verbatim transcript passage (exact substring check).
-3. 4deae5e math_object_builder.py:226-233 hvns pooled as targets; tests/test_target_hvn.py (2 of 4 fail on old code); pytest on MyTradingSys/tests 136 passed; run_all_tests --quick: only Step 3c fails.
+3. 4deae5e math_object_builder.py:236-240 hvns pooled as targets; tests/test_target_hvn.py (2 of 4 fail on old code); pytest on MyTradingSys/tests 136 passed; run_all_tests --quick: only Step 3c fails.
 Caveats: Step 3c (guide path check, Windows paths) failed before and after, cloud-only. The Python HVN change moves targets nearer, so it can lower R:R for some zones (net effect unmeasured, needs desktop snapshots). The Python path is the judgment-layer builder; the live candidate target is chosen in Java SCB, so commit 4deae5e alone does not change live candidates. This session did not stop or restart anything; the running system picks up changes only after operator merge, a rebuild, and a supervisor restart.
