@@ -102,6 +102,8 @@ What Claude must revalidate:
 Package: deflated-sharpe on PyPI (zero dependencies).
 Cost: one function call per variant, given a correct trial count.
 
+Addendum 2026-10-01 (W2, MTS-2026-10-01-1604Z-CLD-ANA-revalidate-tom-fabio): N = 3 distinct signal sets (episode and A are identical; stress configs are re-pricings), lower bound; registry rows 16 (TOM_CORE_BT.md:3) is the upper bound readable from disk; true N including undocumented design iterations is not on disk. DSR probability < 0.95 for every variant at N = 1, 3, 16, 100 (max 0.55, n=17). Detail: REVALIDATION_ACTIONS_2026-10-01.md W2.
+
 ## R2. Purged K-Fold with Embargo
 
 Gap. Standard k-fold assumes rows are independent. Time-series labels
@@ -231,7 +233,7 @@ Snooping", Econometrica 73(4). Tier T1.
 
 Proof paths on disk:
 - Already referenced in
-  MyTradingSys/research/fast_track_2026-09-27/T055a_POSITIONING_FLOW.md
+  MyTradingSys/research/fast_track_2026-09-27/T055a_POSITIONING_FLOW.md  [CHECKED 2026-10-01: NOT FOUND there; grep -i romano hits only the handoff notes and 03_FILE_INDEX.md]
 
 What Claude must revalidate:
 1. Same universe as R5.
@@ -286,7 +288,7 @@ bootstrap for the same reason.
 
 Proof paths on disk:
 - MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md L284-290
-  (2000 iid draws, percentile)
+  (2000 iid draws, percentile)  [CORRECTED 2026-10-01: wrong file; the bootstrap is MyTradingSys/backtest/tom_bt.py:283-289]
 - MyTradingSys/research/fast_track_2026-09-27/T058_BROKEN_EXTREMES.md L207
   mentions "week-block bootstrap CIs" for overlapping events - adjacent
 
@@ -489,44 +491,47 @@ ruling is falsified.
 
 ## UNVERIFIED-WEB LIST
 
-Every citation below is UNVERIFIED-WEB as of 2026-10-01. None was opened,
+UPDATE 2026-10-01 (MTS-2026-10-01-1604Z-CLD-ANA-revalidate-tom-fabio, ACTIONS W1): per-line status below; all 9 papers remain UNVERIFIED-WEB (egress blocked),
+three packages opened on PyPI, sealedge's "DSR" claim rejected.
+
+Every citation below was UNVERIFIED-WEB as of the first pass. None was opened,
 searched, or matched against an abstract from this surface. Verification
 requires a surface that can reach the source: paste title, authors, venue,
 year, DOI or URL, and abstract match.
 
 Papers:
 1. Bailey & Lopez de Prado (2014), "The Deflated Sharpe Ratio". Journal of
-   Portfolio Management 40(5), 94-107. UNVERIFIED-WEB.
+   Portfolio Management 40(5), 94-107. UNVERIFIED-WEB - cloud egress blocked 2026-10-01, requires desktop.
 2. Bailey, Borwein, Lopez de Prado, Zhu (2013), "The Probability of
-   Backtest Overfitting". Journal of Computational Finance. UNVERIFIED-WEB.
+   Backtest Overfitting". Journal of Computational Finance. UNVERIFIED-WEB - cloud egress blocked 2026-10-01, requires desktop. Year check needed: 2013 may be the SSRN date, not the journal date (recollection only).
 3. Benjamini & Hochberg (1995), "Controlling the False Discovery Rate".
-   JRSS B 57(1), 289-300. UNVERIFIED-WEB.
+   JRSS B 57(1), 289-300. UNVERIFIED-WEB - cloud egress blocked 2026-10-01, requires desktop.
 4. Cohen (1960), "A Coefficient of Agreement for Nominal Scales".
    Educational and Psychological Measurement 20(1), 37-46.
-   UNVERIFIED-WEB.
+   UNVERIFIED-WEB - cloud egress blocked 2026-10-01, requires desktop.
 5. Hansen (2005), "A Test for Superior Predictive Ability". Journal of
-   Business and Economic Statistics 23(4), 365-380. UNVERIFIED-WEB.
+   Business and Economic Statistics 23(4), 365-380. UNVERIFIED-WEB - cloud egress blocked 2026-10-01, requires desktop.
 6. Lopez de Prado (2018), "Advances in Financial Machine Learning". Wiley.
-   UNVERIFIED-WEB.
+   UNVERIFIED-WEB - cloud egress blocked 2026-10-01, requires desktop. Textbook, not a peer-reviewed journal; T1 tag flagged for the operator.
 7. Politis & Romano (1994), "The Stationary Bootstrap". JASA 89(428),
-   1303-1313. UNVERIFIED-WEB.
+   1303-1313. UNVERIFIED-WEB - cloud egress blocked 2026-10-01, requires desktop.
 8. Romano & Wolf (2005), "Stepwise Multiple Testing as Formalized Data
-   Snooping". Econometrica 73(4), 1237-1282. UNVERIFIED-WEB.
+   Snooping". Econometrica 73(4), 1237-1282. UNVERIFIED-WEB - cloud egress blocked 2026-10-01, requires desktop.
 9. White (2000), "A Reality Check for Data Snooping". Econometrica 68(5),
-   1097-1126. UNVERIFIED-WEB.
+   1097-1126. UNVERIFIED-WEB - cloud egress blocked 2026-10-01, requires desktop.
 
 Packages:
-1. purgedcv (PyPI). UNVERIFIED-WEB.
-2. vectorbt.pro (native CPCV splitters). UNVERIFIED-WEB.
-3. skfolio (CPCV). UNVERIFIED-WEB.
-4. deflated-sharpe (PyPI, claimed zero dependencies). UNVERIFIED-WEB.
-5. pbo (CRAN). UNVERIFIED-WEB.
+1. purgedcv (PyPI). VERIFIED 2026-10-01 https://pypi.org/pypi/purgedcv/json (existence, summary, MIT, Alpha, 23 releases in 4.5 months; algorithm not tested). Tag T3 | unknown | M.
+2. vectorbt.pro (native CPCV splitters). UNVERIFIED-WEB - cloud egress blocked 2026-10-01, requires desktop. (PyPI returns 404; consistent with private distribution, recollection only.)
+3. skfolio (CPCV). VERIFIED 2026-10-01 https://pypi.org/pypi/skfolio/json (README lists CombinatorialPurgedCV). Tag T3 | docs only | M.
+4. deflated-sharpe (PyPI, claimed zero dependencies). VERIFIED 2026-10-01 https://pypi.org/pypi/deflated-sharpe/json (v0.1.0, Apache-2.0; scipy is optional, so zero required dependencies holds). DEFECT: docstring says annualized SR but the SE is per-period, README example inflates z to 16.49; use per-period SR only. Tag T3 | formula matches Gaussian DSR | M.
+5. pbo (CRAN). UNVERIFIED-WEB - cloud egress blocked 2026-10-01, requires desktop.
 6. sealedge (PyPI, claimed PSR + DSR + SPA + BH-FDR + stationary bootstrap
-   + HMAC-sealed holdouts). UNVERIFIED-WEB.
+   + HMAC-sealed holdouts). VERIFIED 2026-10-01 https://pypi.org/pypi/sealedge/json (existence only; the claimed "DSR" is REJECTED as unsupported): v0.5.1, first release 2026-07-02, GPL-3.0); README lists PSR, SPA, BH-FDR, stationary bootstrap, HMAC; "DSR" NOT in the README, claim unsupported; Hansen-literal SPA is opt-in, default path lacks the cross-strategy max. Tag T3 | README only | M.
 
 Adjacent references used in R5 and R7 evidence sections (KOSPI200 futures
 application, tickfloor 517-strategy study, KCI cryptocurrency DRL CPCV
-application). All UNVERIFIED-WEB.
+application). REJECT 2026-10-01 as evidence: cannot be opened, no author/venue/date given (tickfloor: 404 on PyPI). Orientation only.
 
 ## REJECT LIST (playbook Part I STEP 3c, listed once, not researched again)
 
