@@ -83,7 +83,7 @@ class T(unittest.TestCase):
 
     def test_dedup_finds_existing_slug(self):
         p = m.paths(self.d); p["sessions"].mkdir(parents=True)
-        (p["sessions"] / "MTS-2026-10-01-0000Z-CLI-BLD-alert-rate.md").write_text("x")
+        (p["sessions"] / "MTS-2026-10-01-0000Z-CLI-BLD-alert-rate.md").write_text("status: open`n")
         self.usage(10); self.assertIn("resume-existing", self.go()); self.assertEqual(self.calls, [])
 
     def test_qwen_staged_not_launched(self):
@@ -94,6 +94,11 @@ class T(unittest.TestCase):
         self.usage(72); s = m.cmd_status(root=self.d, transcripts=self.d)
         self.assertIn("tier: 70", s); self.assertIn("queued: 0", s)
 
+
+    def test_dedup_ignores_closed_record(self):
+        p = m.paths(self.d); p["sessions"].mkdir(parents=True)
+        (p["sessions"] / "MTS-2026-10-01-0000Z-CLI-BLD-alert-rate.md").write_text("status: closed rc=1`n")
+        self.usage(10); self.assertNotIn("resume-existing", self.go())
 
 if __name__ == "__main__":
     unittest.main()

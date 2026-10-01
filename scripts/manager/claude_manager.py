@@ -85,11 +85,18 @@ def _call_haiku(prompt):
 
 # ---- 2. dedup --------------------------------------------------------------------------------
 def dedup(slug, p):
-    """Return path of an existing session record/inbox entry mentioning the slug, else None."""
+    """Return path of an OPEN session record (or inbox entry) mentioning the slug, else None.
+    Closed records are ignored so a failed task can be retried (fix 2026-10-01)."""
     if p["sessions"].is_dir():
         for f in sorted(p["sessions"].glob("*.md")):
+            if not f.name.startswith("MTS-"):
+                continue
             if slug in f.name.lower():
-                return f
+                try:
+                    if "status: open" in f.read_text(encoding="utf-8", errors="ignore"):
+                        return f
+                except OSError:
+                    pass
     for ib in p["inboxes"]:
         files = [ib] if ib.is_file() else (sorted(ib.glob("*")) if ib.is_dir() else [])
         for f in files:
@@ -274,7 +281,7 @@ def cmd_go(task, root=None, haiku=None, runner=None, transcripts=None):
 
 def cmd_status(root=None, transcripts=None):
     p = paths(root); pct = read_pct(p)
-    opens = [f.name for f in sorted(p["sessions"].glob("*.md")) if "status: open" in f.read_text(encoding="utf-8", errors="ignore")] if p["sessions"].is_dir() else []
+    opens = [f.name for f in sorted(p["sessions"].glob("MTS-*.md")) if "status: open" in f.read_text(encoding="utf-8", errors="ignore")] if p["sessions"].is_dir() else []
     q = _rw(p["queue"], [])
     return "open sessions: %s | tokens today: %d | usage: %s | tier: %s | queued: %d" % (
         opens or "none", today_tokens(transcripts), "unknown (enter: usage <pct>)" if pct is None else "%s%%" % pct,
