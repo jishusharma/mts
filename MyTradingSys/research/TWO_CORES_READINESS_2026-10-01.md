@@ -16,7 +16,7 @@ Method: static read of committed files only; no process, gitignored file, LAN or
 | 9 | queue/consumer.py (CBP) | OK (ack-only, by decision) | queue/consumer.py present; no auto_trader import (grep not run on every file: unknown beyond auto_trader.py) |
 | 10 | testnet_status.py | PARTIAL | scripts/dev/testnet_status.py + test; research/testnet_status/TESTNET_STATUS_2026-10-01.md now exists (audit said never run); scheduling unknown |
 | 11 | Handoff cloud -> SUP | BROKEN (unverifiable consumption) | SUPERVISOR_INBOX.md 26 lines; SUPERVISOR_LOG.md last "- inbox" line is 2026-09-29 (SUPERVISOR_LOG:203) |
-Extra, new at HEAD: no consensus writer exists (grep "consensus" in code: none, only docs); TF maps lack 3m and 1d: scripts/dev/alert_rate_check.py:23 TF_MIN has 1m,5m,15m,1h,4h; execution/auto_trader.py:47 TF_SECONDS has 1m..1d but no 3m. Architecture wants RSI keys 1m,3m,15m,1h,4h,1d (ARCHITECTURE_TWO_CORES:36-38 region). Execution/{plans,journal} dirs absent in clone (gate step 3c).
+Extra, new at HEAD: no consensus writer exists (grep "consensus" in code: none, only docs); TF maps lack 3m and 1d: scripts/dev/alert_rate_check.py:23 TF_MIN has 1m,5m,15m,1h,4h; execution/auto_trader.py:47 TF_SECONDS has 1m..1d but no 3m. Architecture wants RSI keys 1m,3m,15m,1h,4h,1d (ARCHITECTURE_TWO_CORES_2026-10-01.md:39). Execution/{plans,journal} dirs absent in clone (gate step 3c).
 
 ## W2. Test gap inventory (BUGS.md:123, T037, 8 engine files)
 | File | Tests that exist | Missing |
