@@ -162,18 +162,33 @@ def session_id(slug, ptype, surf="CLI"):
 
 
 # ---- 6. launch -------------------------------------------------------------------------------
-def launch(model, text, timeout=1800, runner=None):
-    """claude -p, brief on stdin (same pattern as scripts/operator poller). Effort and token ceiling are not CLI flags
-    here (spec open questions 2/3): effort is stated in the brief; ceiling = wall-clock timeout only."""
-    runner = runner or subprocess.run
+def launch(model, text, timeout=1800, runner=None, on_start=None):
+    """claude -p, brief on stdin. Effort stated in the brief; ceiling = wall-clock timeout. on_start(pid) fires
+    the moment the child starts so mstop can find it (2026-10-01 fix)."""
     cmd = ["claude", "-p", "--model", model, "--permission-mode", "acceptEdits"]
+    if runner is not None:
+        if on_start:
+            on_start(None)
+        try:
+            r = runner(cmd, input=text, capture_output=True, text=True, timeout=timeout)
+            return r.returncode, (r.stdout or "")[-2000:]
+        except subprocess.TimeoutExpired:
+            return 124, "timeout"
+        except FileNotFoundError:
+            return 127, "claude CLI not on PATH"
     try:
-        r = runner(cmd, input=text, capture_output=True, text=True, timeout=timeout)
-        return r.returncode, (r.stdout or "")[-2000:]
-    except subprocess.TimeoutExpired:
-        return 124, "timeout"
+        pr = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
     except FileNotFoundError:
         return 127, "claude CLI not on PATH"
+    if on_start:
+        on_start(pr.pid)
+    try:
+        out, _ = pr.communicate(input=text, timeout=timeout)
+        return pr.returncode, (out or "")[-2000:]
+    except subprocess.TimeoutExpired:
+        pr.kill()
+        out, _ = pr.communicate()
+        return 124, "timeout"
 
 
 # ---- 7. close --------------------------------------------------------------------------------
@@ -246,8 +261,10 @@ def cmd_go(task, root=None, haiku=None, runner=None, transcripts=None):
             rc, tail = 0, "staged for Qwen queue: Dumps/manager/handoff/%s.md" % sid
         else:
             run[sid] = {"model": tier, "pid": None}; _w(p["running"], run)
-            rc, tail = launch(tier, text, runner=runner)
-            run.pop(sid, None); _w(p["running"], run)
+            def _on_start(pid, _sid=sid):
+                _r = _rw(p["running"], {}); _r[_sid] = {"model": tier, "pid": pid}; _w(p["running"], _r)
+            rc, tail = launch(tier, text, runner=runner, on_start=_on_start)
+            _r = _rw(p["running"], {}); _r.pop(sid, None); _w(p["running"], _r)
         close_record(p, sid, rc, tail); log_line(p, sid, o["type"], tier, rc)
         out.append("%s %s rc=%s" % (sid, tier, rc))
     if not transcripts == "skip":

@@ -149,6 +149,12 @@ switch ($Verb.ToLower()) {
 
     "watch" { & (Join-Path $Root "scripts\live\mts-dashboard.ps1") }
 
+    "go"      { Py (Join-Path $Root "scripts\manager\claude_manager.py") "go" $Arg; exit $LASTEXITCODE }
+    "mstatus" { Py (Join-Path $Root "scripts\manager\claude_manager.py") "status"; exit $LASTEXITCODE }
+    "mresume" { Py (Join-Path $Root "scripts\manager\claude_manager.py") "resume"; exit $LASTEXITCODE }
+    "mstop"   { Py (Join-Path $Root "scripts\manager\claude_manager.py") "stop" $Arg; exit $LASTEXITCODE }
+    "usage"   { Py (Join-Path $Root "scripts\manager\claude_manager.py") "usage" $Arg; exit $LASTEXITCODE }
+
     "plan" { Py (Join-Path $Exec "new_plan.py"); exit $LASTEXITCODE }
 
     "plans" {
