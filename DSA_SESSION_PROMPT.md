@@ -255,68 +255,60 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-01T14:15Z.
+Last live read:  2026-10-01T14:52Z.
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop STOPPED. java absent, supervisor absent, snapshot stale.
-                 Build PASS 2026-10-01T14:14Z. HEAD 2fd16ad.
+Runtime + loops: loop UP. wrapper=16164 supervisor=16796 sm=java=18124.
+                 snapshot age 13s, state_code age 6s, stale_strikes 0,
+                 restart_count_24h 0. Build PASS 2026-10-01T14:52:44Z.
+                 HEAD d5df1ee. Working tree: 3 modified, 8 untracked.
 
-Landing since 2026-09-26: B081 closed (fees.py single source), B080 closed
-(pacing self-heal), manager built and hardened (mts go / mstatus / mresume /
-mstop / usage), T1 (Java HVN target pool + JUnit test 6/6) and T8 (rule id
-check script) landed, three research notes at MyTradingSys/research/:
-EXTRACTION_PROMPT_RECON, T5_CVD_DEFINITION, T3_STOP_RULING. Manager now
-routes extraction and backtest to Sonnet; Qwen lane is out of scope.
+Landing since 2026-09-30 close: manager tier tracking landed (d5df1ee):
+paths() gains model_log, open_record writes tier: not model:, sibling
+model_log_line() appends Dumps/manager/model_log.jsonl, cmd_status gains
+last: field, test_model_log_records_tier added. claude_manager.py
+277->291 lines, test 88->98 lines. 17/17 tests. Previously landed this
+morning: T1 Java HVN target pool, T8 rule id script, Tom provenance audit
+(36 NO-SOURCE, 33 concept-only, 2 sourced) and Fabio v3.1 spec (8
+findings, 66 tests) merged to main. B081 closed (fees.py single source).
 
-Next (2026-10-02 after 14:30 IST): run DSA T2 (replace NO-SOURCE target
-window 2.0R-3.5R). Then loop restart, watch first testnet trade on the new
-code.
+Next (2026-10-02 after 14:30 IST, Pro weekly pool reset): run DSA T2
+(replace NO-SOURCE target window 2.0R-3.5R) via mts go, then DSA T3
+(stop ruling), T4 (rule ids for the Tom extracts), T5 (find a Tom
+citation). Loop stays up; no restart needed. Watch first testnet trade
+as it comes.
 
 Handshake: CBP queue consumer landed at 2d20a5c. Consumer at
 MyTradingSys\queue\consumer.py, test at MyTradingSys\tests\test_queue_consumer.py.
 Not read this session; verify on next CBP task.
-Findings:        Two sessions landed between 09-25 and 09-26.
 
-  Session MTS-2026-09-25-0829Z (coordinator, prior chat):
-    - Rules 15-19 in live_session_protocol.md (anchor preflight,
-      interactive-scope, quote layering).
-    - Windows Process Launch section in apparatus_fixes.md.
-    - DSA sec 3 boot step 4 (stale section 11 check).
-    - B059 closed: 10.0 pf bin tagged SCREENER at MDS L144 + L1066.
-    - B069 fix: wrapper stderr redirected to runtime_data\\ums.log.
-    - Seven workers ran (W1-W7). T035/T038/B067 closed. B070 filed.
-      PROJECT_VISION six open questions resolved (W6).
-    - apparatus_fixes OPEN triaged (W5): 2 fix-now, 5 need-operator,
-      4 already-fixed, 11 learned-facts.
+Findings: Session MTS-2026-10-01-1431Z-DSA-COO (this session):
+  - Loop started (was stopped at boot). wrapper 16164, supervisor
+    16796, sm/java 18124. Pre-start stale java killed cleanly.
+  - MTS-TAPE stale readout investigated: reader at mts-watch.ps1
+    L144-149 takes tail -1 and tags STALE over 120s. Correct. Sidecar
+    was not running when the feed first read, so the tag was honest.
+    No bug filed. apparatus_fixes L106 carries sidecar supervision.
+  - Manager tier tracking: d5df1ee.
+  - DSA handoff note first written this cycle by MTS-2026-10-01-0557Z-DSA-COO.
+  - Blocked: local CLI (claude -p, mts go) until Fri 2026-10-02 14:30 IST
+    (Pro weekly reset). Cloud and DSA continue.
 
-  Session claude-sonnet-2026-09-26 (operator drove outside this chat):
-    - Deribit execution layer scaffolding (MyTradingSys/execution/).
-    - Backtest harness (MyTradingSys/backtest/) against MTS raw verdict.
-    - NUC worker v2 (Dumps/workers/NUC-QUEUE/, scripts/worker/).
-    - DEVICES.md (jis-nb, JIS-NUC, roles).
-    - TOM-214 cite landed in compiled_engine.md (double distribution).
-    - New items: B070, B071, T048, T049, T050, T051.
-    - mode.ps1 +50/-12 (VBS + Register-ScheduledTask launcher).
-    - Build-Check.ps1 +41 (files cross-check, .new age check).
-
-  This chat fixed the claude session close-out: T049 severity MEDIUM -> MED,
-  B071 + T051 rows added to items/INDEX.md, 03_FILE_INDEX size header
-  corrected, superseded .new files archived, garbage files removed.
-
-Open queue (14): B059 (drift clean, 10.0 tagged) pending close-out,
-  B063 (needs operator: divergence restore/deprecate), B066 (rank-1
-  distance gate), B069 (verify on next loop restart), B070 (demote UTC
-  00:00 + 0.75 slippage, needs operator), B071 (fail-open proof, blocks
-  mainnet), T034 (positioning output type), T037 (BLOCKED: pom edit),
-  T040 (tick-delta thresholds), T042 (1w/1d/4h consumer), T044 (hybrid
-  REST/WS alert), T046 (Stage 3 decisions), T048 (satellite framework),
-  T049 (NUC worker v2 phase 5), T050 (Deribit execution layer), T051
-  (PARKED: backtest).
+Open queue (BUGS.md OPEN rows: 27; items/INDEX.md OPEN rows: 33):
+  Bugs: B059, B063, B066, B069, B070, B072, B073, B074, B075, B076,
+    B077, B078, B079, B080, B082.
+  Tasks: T034, T037 (BLOCKED: pom edit), T040, T042, T044, T046,
+    T048 (HIGH), T049, T050 (HIGH, phases 1+2 PASS), T051 (PARKED:
+    backtest), T052, T053, T054, T055, T056, T057, T058, T059, T060,
+    T061.
 
 Next session first action: read items/INDEX.md + BUGS.md open rows.
-  Then choose: B063 operator decision, B070 operator decision, T050
-  phase 1 (Deribit read-only testnet), or T037 pom edit.
+  Then choose one: B063 (divergence restore/deprecate), B070 (demote
+  UTC 00:00 + 0.75 slippage), T050 phase 3 (Deribit order placement via
+  deribit_orders.py primitives, not executor.py), T060 (low-vol BTC),
+  or T061 (WaveTrend layer). Local CLI pool reopens Fri 14:30 IST for
+  DSA T2-T5.
 
 ## 12. SESSION END
 
