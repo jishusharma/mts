@@ -1,64 +1,70 @@
 # NEXT SESSION HANDOFF
-# Written 2026-10-01T00:30Z by MTS-2026-09-30-1733Z-COORD.
+# Written 2026-10-01T05:56Z by MTS-2026-09-30-1733Z-COORD.
 
-STATUS: Loop UP. Build PASS 2026-09-30T19:25:12Z. HEAD e9251d4. Bugs 134 rows. Index 28 open IDs.
-Working tree clean on main. 13 DSA recon tasks done this session.
+STATUS: Loop UP. Build PASS 2026-10-01T05:55:58Z. HEAD f3e94b0.
+Bugs 136 rows. Index 30 open IDs. Working tree clean on main.
 
-## LANDED THIS SESSION
+## LANDED THIS SESSION (main)
 
-- USER.md line 11: code fence language tag rule. Commits f574b4f.
-- MyTradingSys/queue/consumer.py + test: CBP mts_queue desktop consumer,
-  ack-only, utf-8-sig tolerant. Commit 2d20a5c. Handshake with CBP PASSED.
-- T060 low-volatility anomaly, T061 WaveTrend LazyBear. Commit 6b099b2.
-- DSA backlog section D ticked; 13 recons run; gate log rows added. f658dee,
-  e9251d4.
-- B080 dsa_worker hourly-cap bug filed. e9251d4.
+- USER.md line 11: code fence language tag rule. f574b4f
+- CBP mts_queue desktop consumer + test. Handshake PASS. 2d20a5c
+- T060 low-vol, T061 WaveTrend LazyBear. 6b099b2
+- Merge cloud/work 21 commits: provenance rule, angle research,
+  Fabio v3 spec, RSI + grid runners, testnet status script,
+  Tom line-by-line, MISSING_PIECES. 7fbf178, b8867e4
+- 13 DSA recon outputs promoted from .new to .md. 01e2649
+- B080 pace bug, B081 fee-source conflict, B082 qwen_feeder
+  missing. e9251d4, 0757810, e84e379, f3e94b0
+- MTS testnet status scheduled task registered daily 08:00.
+- LESSONS_LEARNED: 5 rules from this session.
 
-## CBP SIDE
+## CLOUD/WORK
 
-- CBP cloud/work = e3e7a5e handshake ack; 19ea4f6 handshake PASS record.
-- mts_queue/acks/handshake_test_2026-09-30.json written by the desktop consumer.
-- mts_queue and docs/COMMON.md ownership: CBP. MTS read + write to acks only.
-- Consumer is read-only, ack-only, no live import. Wiring to auto-trader NOT
-  authorized. Stays that way until supervisor accepts.
-
-## CLOUD/WORK STILL UNMERGED
-
-origin/cloud/work = e6601af. Two commits past 304cc13. Not merged.
-Content: MISSING_PIECES report, 03_FILE_INDEX header, SURFACE_POLICY, CLOUD_INBOX,
-session registry, Fabio v3 spec, RSI runners, bracket grid, formula audit,
-TOM_CORE_BT review. All merged into main already via selective commits.
-Only 74e4aa9 MISSING_PIECES and 304cc13 header fix remain unmerged.
+origin/cloud/work = 02fc346. 0 commits past main. Fully merged.
+Credits: $42 of $100, expire 2026-11-05. No spend since.
 
 ## OPEN QUEUE (top items)
 
-- B080 dsa_worker pace bug (MED). Stale pace file blocks worker for hours.
-  Workaround: move dsa_pace.json aside, restart worker.
-- 2113 zAwEX_tRUfE recon: content complete, template deviation on ## Portability
-  heading. Usable but verifier flags it.
-- MISSING_PIECES_2026-09-30.md read on desktop: sections 0 and 4 not yet read.
-- Auto-mode rule for cloud: Path B not yet applied. Awaiting operator pick.
-- Fee source conflict: 4 different fee sets now in code, not 2. No bug id yet. Needs an id and one source of truth before any layer verdict is trusted.
-- classify_msb live cryptocred alert bug: staged as .new, belongs to supervisor.
-- Tom backtest artefact: proof counts top at 5 not 6; all 19 live signals short.
+- Tom engine rebuild spec: provenance audit shows 36 of 76
+  parameters have no Tom source. 2:1 net rule miscited. No
+  spend started. Operator to say when.
+- Book-imbalance 0.0 fix: live long-blocking. Approved 22:30Z.
+  Supervisor-owned. Stage .new, four-step proof, restart.
+- classify_msb fix: live cryptocred. Stage .new, supervisor.
+- B081 fee-source: four fee sets. Needs single fees.py module.
+- B080 dsa pace: stale pace file blocks worker. Workaround:
+  move dsa_pace.json aside, restart worker.
+- B082 qwen_feeder.cmd missing: task disabled. Operator
+  decides write vs delete.
+- NUC 2201-2203 (Fabio v3): lint clean, awaiting pack.
+  Fabio spec v3.1 is landed on main.
+- MISSING_PIECES_2026-09-30.md sections 0 and 4 not yet read.
+- 2113 zAwEX_tRUfE recon: template deviation, content usable.
+- Auto-mode rule on disk at SURFACE_POLICY.md sec 0 (125a64d).
+  Not to be re-created.
 
 ## NEXT SESSION FIRST ACTION
 
 1. Read items/INDEX.md + BUGS.md open rows.
-2. Read DSA_SESSION_PROMPT.md section 3 rules 8-9.
-3. State ROLE (COORDINATOR). State MISSION. Act.
-4. Operator picks one: fee-set consolidation, B080 pace fix, MISSING_PIECES read,
-   or the DSA recon .new files triage.
+2. State ROLE (COORDINATOR). State MISSION. Act.
+3. Operator picks one: Tom engine spec spend, B081 fee fix,
+   book-imbalance 0.0 supervisor handoff, or MISSING_PIECES read.
 
 ## DO NOT MISS
 
-- .new files under extracts/ are gitignored (*.new in .gitignore L4).
-  Proposals live on disk, not in repo. Deliberate.
-- DSA worker needs Chrome on 127.0.0.1:9222 with profile F:\MTS\dsa\chrome-profile.
-  Restart order: start-dsa-chrome.ps1, then start-dsa-worker.ps1.
-- Two dsa_pace bugs already seen: file can be blocked by stale entries;
-  restart worker if "paced" for more than min_gap_s + poll_wait_s.
-- $pid is a reserved PowerShell variable. Use $procId.
+- Doc test test_2_no_forbidden_refs forbids these phrases in
+  items/ and system/: git init, git status, git add, git commit,
+  git diff, git log, git checkout, version control. Use plain
+  verbs: staged, committed, checked out, history, working tree.
+- .new files under extracts/ are gitignored (.gitignore L4).
+- PowerShell $pid is reserved. Use $procId.
+- Cross-branch diff uses three dots. Two-dot shows phantom
+  removals.
+- Never commit on Build-Check FAIL.
+- DSA worker needs Chrome on 127.0.0.1:9222, profile
+  F:\MTS\dsa\chrome-profile. Start chrome script, then worker.
+- BUILD_REPORT.md stays dirty between sessions (loop writes).
+  Commit before any merge.
 
 ## HARD RULES (carried)
 
@@ -66,7 +72,12 @@ Only 74e4aa9 MISSING_PIECES and 304cc13 header fix remain unmerged.
 - Never run mode.ps1 twice in a row.
 - Critical files: hash, edit, hash, diff.
 - Read target line from disk same turn before composing anchor.
-- MarketDataSnapshot.java CRLF. math_object_builder.py CRLF. SetupCandidatesBuilder.java LF.
+- MarketDataSnapshot.java CRLF. math_object_builder.py CRLF.
+  SetupCandidatesBuilder.java LF.
 - PROJECT_VISION doctrine: modules never gate core.
+- Every engine/layer parameter comes from the trader's own
+  words (transcript quote + file:line), or it does not exist.
+  Unsourced = NO-SOURCE: flag, remove or replace, never tune.
+  SAFETY limits exempt.
 
 # END
