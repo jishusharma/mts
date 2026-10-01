@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-30
-# SIZE: ~29.3KB
+# SIZE: ~32KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -357,3 +357,6 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/research/W3_KAPPA_FIRST_2026-10-01.csv | data | First reader's 74 verdicts copied from PROVENANCE_AUDIT_TOM section 2-6 (id,verdict). | MTS-2026-10-01-1900Z-CLD-ANA-w3-kappa | 2026-10-01 |
 | MyTradingSys/research/W3_KAPPA_REPORT_2026-10-01.md | report | W3 kappa result: 0.446 (< 0.6), confusion table, 24 disagreeing rows, per-row citations; the 36 NO-SOURCE count is reader-dependent. | MTS-2026-10-01-1900Z-CLD-ANA-w3-kappa | 2026-10-01 |
 | MyTradingSys/system/sessions/MTS-2026-10-01-1900Z-CLD-ANA-w3-kappa.md | session | Session record for the W3 kappa clean-reader cloud session. | MTS-2026-10-01-1900Z-CLD-ANA-w3-kappa | 2026-10-01 |
+| MyTradingSys/research/TWO_CORES_READINESS_2026-10-01.md | review | Two cores readiness: wiring table (11 rows + extras), T037 test-gap inventory, W1-W8 revalidation status, merged priority list, top-5 fix proposals with acceptance checks. | MTS-2026-10-01-1858Z-CLD-BLD-two-cores | 2026-10-01 |
+| MyTradingSys/research/TWO_CORES_SCAFFOLD_2026-10-01.md | spec | Two-core scaffold spec: current state of Tom/Fabio, compiled-core changes, consensus writer, RSI observation block, switchability config, migration order; file:line cited. | MTS-2026-10-01-1858Z-CLD-BLD-two-cores | 2026-10-01 |
+| MyTradingSys/system/sessions/MTS-2026-10-01-1858Z-CLD-BLD-two-cores.md | system | Session record for the cloud two-cores build session (budget 85 assumed, no subagents, fix pass queued). | MTS-2026-10-01-1858Z-CLD-BLD-two-cores | 2026-10-01 |
