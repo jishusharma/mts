@@ -39,10 +39,10 @@ Surface tag: AIBRIDGE. Reads and command execution over loopback only.
 Allowed MTS calls, allowlist on the MTS side:
 - scripts\Build-Check.ps1
 - python -m pytest MyTradingSys/tests/docs -q
-- git log --oneline -N
-- git status -sb
-- git diff --stat
-- git show --stat HEAD
+- repository history: last N commits, short hashes only
+- repository working state: short status, ahead/behind counts
+- change summary: file, insertions, deletions
+- latest commit summary: files touched, insertions, deletions
 - Get-Content <path inside the MTS repo only>
 - mts-loop status
 - Get-Content runtime_data\loop_state.json
