@@ -164,9 +164,18 @@ class DsaWorker:
         write_atomic(self.pace_path, json.dumps(times))
 
     def pacing_block(self, ignore_gap=False):
-        """Return None when a task may start now, else a short reason."""
+        """Return None when a task may start now, else a short reason.
+        B080 fix 2026-10-01: drop stale, future, or non-epoch entries before the
+        window sums, and self-heal the pace file so a corrupted file cannot stall
+        the worker for hours."""
         now = self.clock()
-        times = self._finished_times()
+        raw = self._finished_times()
+        times = [t for t in raw if now - 86400 < t <= now + 60]
+        if len(times) != len(raw):
+            try:
+                write_atomic(self.pace_path, json.dumps(sorted(times)))
+            except OSError:
+                pass
         if not ignore_gap and times and now - max(times) < self.cfg["min_gap_s"]:
             return "min-gap"
         if sum(1 for t in times if t > now - 3600) >= self.cfg["max_per_hour"]:

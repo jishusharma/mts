@@ -210,7 +210,8 @@ def open_record(p, sid, ptype, model, task):
 def close_record(p, sid, rc, tail):
     f = p["sessions"] / (sid + ".md")
     txt = f.read_text(encoding="utf-8") if f.exists() else "# %s\n" % sid
-    txt = txt.replace("status: open", "status: closed rc=%s" % rc)
+    new_status = "status: staged" if rc == "staged" else "status: closed rc=%s" % rc
+    txt = txt.replace("status: open", new_status)
     f.write_text(txt + "ended: %s\nresult: %s\n" % (now().isoformat(timespec="seconds"), tail.strip().replace("\n", " ")[:300]),
                  encoding="utf-8", newline="\n")
 
@@ -265,7 +266,7 @@ def cmd_go(task, root=None, haiku=None, runner=None, transcripts=None):
         if tier == "qwen":  # Qwen NUC lane is packed by the supervisor (queue_tool.py); manager only stages the brief
             p["handoff"].mkdir(parents=True, exist_ok=True)
             (p["handoff"] / (sid + ".md")).write_text(text, encoding="utf-8", newline="\n")
-            rc, tail = 0, "staged for Qwen queue: Dumps/manager/handoff/%s.md" % sid
+            rc, tail = "staged", "staged for Qwen queue: Dumps/manager/handoff/%s.md" % sid
         else:
             run[sid] = {"model": tier, "pid": None}; _w(p["running"], run)
             def _on_start(pid, _sid=sid):
@@ -293,10 +294,16 @@ def cmd_resume(root=None, **kw):
     pct = read_pct(p)
     if pct is None or pct >= 95:
         return "not released: usage %s (need entry today and <95%%); %d still queued" % ("unknown" if pct is None else "%s%%" % pct, len(q))
-    _w(p["queue"], []); res = []
+    _w(p["queue"], [])
+    res, keep = [], []
     for it in q:
-        res.append(cmd_go(it["task"], root=root, **kw))
-    return "released %d: %s" % (len(q), " | ".join(res))
+        out = cmd_go(it["task"], root=root, **kw)
+        res.append(out)
+        if out.startswith("resume-existing") or out.startswith("QUEUED"):
+            keep.append(it)  # do not lose a task that was already open or re-gated
+    if keep:
+        _w(p["queue"], _rw(p["queue"], []) + keep)
+    return "released %d, kept %d: %s" % (len(q) - len(keep), len(keep), " | ".join(res))
 
 
 def cmd_stop(slug, root=None):
