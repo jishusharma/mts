@@ -26,6 +26,7 @@ def paths(root=None):
     r = pathlib.Path(root) if root else ROOT
     d = r / "Dumps" / "manager"
     return dict(root=r, dir=d, usage=d / "usage.json", queue=d / "queue.json", running=d / "running.json",
+                model_log=d / "model_log.jsonl",
                 handoff=d / "handoff", sessions=r / "MyTradingSys" / "system" / "sessions",
                 log=r / "MyTradingSys" / "research" / "fast_track_2026-09-27" / "SUPERVISOR_LOG.md",
                 inboxes=[r / "Dumps" / "operator" / "inbox", r / "MyTradingSys" / "system" / "CLOUD_INBOX.md",
@@ -199,11 +200,11 @@ def launch(model, text, timeout=1800, runner=None, on_start=None):
 
 
 # ---- 7. close --------------------------------------------------------------------------------
-def open_record(p, sid, ptype, model, task):
+def open_record(p, sid, ptype, tier, task):
     p["sessions"].mkdir(parents=True, exist_ok=True)
     f = p["sessions"] / (sid + ".md")
-    f.write_text("# %s\nstatus: open\nstarted: %s\ntype: %s\nmodel: %s\ntask: %s\nowner: mts-manager\n" % (
-        sid, now().isoformat(timespec="seconds"), ptype, model, task.replace("\n", " ")[:200]), encoding="utf-8", newline="\n")
+    f.write_text("# %s\nstatus: open\nstarted: %s\ntype: %s\ntier: %s\ntask: %s\nowner: mts-manager\n" % (
+        sid, now().isoformat(timespec="seconds"), ptype, tier, task.replace("\n", " ")[:200]), encoding="utf-8", newline="\n")
     return f
 
 
@@ -220,6 +221,13 @@ def log_line(p, sid, ptype, model, rc):
     p["log"].parent.mkdir(parents=True, exist_ok=True)
     with open(p["log"], "a", encoding="utf-8", newline="\n") as f:
         f.write("\n## %s mts-manager\n- %s: %s via %s, rc=%s\n" % (now().strftime("%Y-%m-%d %H:%M UTC"), sid, ptype, model, rc))
+
+
+def model_log_line(p, sid, ptype, tier, rc):
+    p["model_log"].parent.mkdir(parents=True, exist_ok=True)
+    rec = {"ts": now().isoformat(timespec="seconds"), "sid": sid, "type": ptype, "tier": tier, "rc": str(rc)}
+    with open(p["model_log"], "a", encoding="utf-8", newline="\n") as f:
+        f.write(json.dumps(rec) + "\n")
 
 
 def refresh_status(p):
@@ -274,7 +282,7 @@ def cmd_go(task, root=None, haiku=None, runner=None, transcripts=None):
                 _r = _rw(p["running"], {}); _r[_sid] = {"model": tier, "pid": pid}; _w(p["running"], _r)
             rc, tail = launch(tier, text, runner=runner, on_start=_on_start)
             _r = _rw(p["running"], {}); _r.pop(sid, None); _w(p["running"], _r)
-        close_record(p, sid, rc, tail); log_line(p, sid, o["type"], tier, rc)
+        close_record(p, sid, rc, tail); log_line(p, sid, o["type"], tier, rc); model_log_line(p, sid, o["type"], tier, rc)
         out.append("%s %s rc=%s" % (sid, tier, rc))
     if not transcripts == "skip":
         refresh_status(p)
@@ -285,9 +293,17 @@ def cmd_status(root=None, transcripts=None):
     p = paths(root); pct = read_pct(p)
     opens = [f.name for f in sorted(p["sessions"].glob("MTS-*.md")) if "status: open" in f.read_text(encoding="utf-8", errors="ignore")] if p["sessions"].is_dir() else []
     q = _rw(p["queue"], [])
-    return "open sessions: %s | tokens today: %d | usage: %s | tier: %s | queued: %d" % (
+    last = "none"
+    if p["model_log"].exists():
+        rows = p["model_log"].read_text(encoding="utf-8").strip().splitlines()
+        if rows:
+            try:
+                r = json.loads(rows[-1]); last = "%s %s" % (r.get("tier"), r.get("sid"))
+            except ValueError:
+                pass
+    return "open sessions: %s | tokens today: %d | usage: %s | tier: %s | queued: %d | last: %s" % (
         opens or "none", today_tokens(transcripts), "unknown (enter: usage <pct>)" if pct is None else "%s%%" % pct,
-        "unknown" if pct is None else tier_of(pct), len(q))
+        "unknown" if pct is None else tier_of(pct), len(q), last)
 
 
 def cmd_resume(root=None, **kw):

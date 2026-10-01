@@ -58,6 +58,22 @@ class T(unittest.TestCase):
         self.assertIn("status: closed rc=0", f.read_text())
         self.assertEqual(m.paths(self.d)["log"].read_text().count("mts-manager"), 1)
 
+    def test_model_log_records_tier(self):
+        self.usage(10)
+        m.cmd_go("fix alert rate", root=self.d, haiku=self.haiku, runner=self.runner, transcripts="skip")
+        fs = list(m.paths(self.d)["sessions"].glob("*.md"))
+        rec = fs[0].read_text()
+        self.assertIn("tier: ", rec)
+        self.assertNotIn("model: ", rec)
+        ml = m.paths(self.d)["model_log"]
+        self.assertTrue(ml.exists())
+        rows = ml.read_text().strip().splitlines()
+        self.assertEqual(len(rows), 1)
+        r = json.loads(rows[0])
+        self.assertTrue(r["tier"])
+        self.assertIn("sid", r)
+        self.assertEqual(r["rc"], "0")
+
     def test_split_rules_and_cap(self):
         o = {"type": "fix", "slug": "x", "split": ["a", "b", "c", "d"]}
         self.assertEqual(len(m.plan_children("t", o, "ok")), 3)
