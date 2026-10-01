@@ -97,6 +97,7 @@ public class SetupCandidatesBuilder {
             double zonePrice = c.zone.price;
             String swingTF = getSwingTF(c.zone.type);
             JsonNode structureNode = root.get("structure");
+            // RULE TOM-074/TOM-073/TOM-072 (stop beyond last swing / last liquidity); 0.2% fallback and 0.1% floor below are NO-SOURCE (A03/A04)
             double swingHigh = 0, swingLow = 0;
             boolean tfStale = false;
             if (structureNode != null && structureNode.has(swingTF)) {
@@ -124,6 +125,7 @@ public class SetupCandidatesBuilder {
             }
 
             // Target selection (v1.3.2: include VAL/VAH + prior_day high/low, with 2x stop filter)
+            // RULE TOM-018/TOM-102 (target = next high volume price/area: POCs, HVNs); VAL/VAH, prior-day and VWAP members and the 2.0-3.5R window are NO-SOURCE (A07-A10)
             List<Double> targets = new ArrayList<>();
             addIfPresent(root, "weekly_vp", "poc", targets);
             addIfPresent(root, "daily_vp", "poc", targets);
@@ -265,6 +267,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
 
     // ---------- Helper methods ----------
 
+    // RULE TOM-030/TOM-031 (balance), TOM-140/TOM-056 (trend_unhealthy); thresholds NO-SOURCE (PROVENANCE_AUDIT_TOM M-rows)
     private static String classifyState(ObjectNode root) {
         // Rewritten 2026-09-17 per Rule 32. Old version read daily_vp.shape=="B"
         // and returned balance. buildVp emitted "B" for bell shapes, so it fired
@@ -285,6 +288,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         return "balance";
     }
 
+    // RULE TOM-142 (price vs yesterday VAL/VPOC decides which side is tradable)
     private static List<String> determineDirections(ObjectNode root) {
         String priceVsVa = root.get("conditions").get("price_vs_va").asText();
         String priceVsPoc = root.get("conditions").get("price_vs_poc").asText();
@@ -307,6 +311,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         return dirs;
     }
 
+    // RULE TOM-166 (overlaps: volume nodes, value highs, POCs), TOM-144 (VPOC as equilibrium level); zone list = A07
     private static List<Zone> extractZones(ObjectNode root, double currentPrice) {
         List<Zone> zones = new ArrayList<>();
         addZoneIfPresent(root, "weekly_vp", "poc", "weekly_poc", zones, 10);
@@ -441,6 +446,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         return 0.4; // default
     }
 
+    // RULE TOM-140 (POC counter-trend only in unhealthy trend), TOM-030 (balance -> scalp at VWAP)
     private static String determineSetupType(Zone zone, String direction, String state) {
         String zoneType = zone.type;
         boolean isShort = "short".equals(direction);

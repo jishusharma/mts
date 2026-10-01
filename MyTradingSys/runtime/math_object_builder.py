@@ -109,6 +109,7 @@ def _normalize_snapshot(snapshot: Dict[str, Any]) -> Dict[str, Any]:
 # ZONE EXTRACTION
 # ============================================================
 
+# RULE TOM-166 (overlaps: volume nodes, value highs, POCs), TOM-144 (VPOC as equilibrium level)
 def _extract_zones(normalized: Dict[str, Any]) -> List[Dict[str, Any]]:
     """Extract all structural zone prices from a NORMALIZED snapshot.
 
@@ -183,6 +184,7 @@ def _extract_zones(normalized: Dict[str, Any]) -> List[Dict[str, Any]]:
 # STOP / TARGET SELECTION
 # ============================================================
 
+# RULE TOM-074/TOM-072 (stop beyond last swing); TF pairing NO-SOURCE (A06)
 def _swing_tf_for_zone(ztype: str) -> str:
     """Map zone type to the appropriate swing TF for stop placement.
 
@@ -227,6 +229,7 @@ def _pick_stop_target(
     swing_low = swing.get("swing_low")
 
     # Collect all VP POCs for target selection
+    # RULE TOM-018/TOM-102 (target = next high volume price/area: POCs and HVNs)
     all_pocs = []
     # DEMOTED 2026-09-24: post_funding_vp removed from target pool. Module, not core.
     for vp_key in ["weekly_vp", "daily_vp", "intraday_4h_vp"]:
@@ -244,6 +247,7 @@ def _pick_stop_target(
         all_pocs.append(pd["poc"])
 
     # STOP selection
+    # RULE TOM-074/TOM-073/TOM-072 (stop below last low / above last high); no fallback by design
     stop = None
     if is_above:
         # Short setup - stop above zone
@@ -255,6 +259,7 @@ def _pick_stop_target(
             stop = swing_low
 
     # TARGET selection - nearest POC or VWAP in trade direction
+    # RULE TOM-018 (next high volume price is the target); VWAP member NO-SOURCE (A07)
     target = None
     if is_above:
         # Short target = lower levels
