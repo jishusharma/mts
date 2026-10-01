@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-30
-# SIZE: ~29.2KB
+# SIZE: ~29.3KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -348,3 +348,4 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/research/AUDIT_REVIEW_2026-10-01.md | review | DSA review of the Tom/Fabio provenance work: 10 sections, verdict tally, impact ranks, method gaps (no pre-registration, single reader, no falsification), backtest-stat defects (H1-H2, M7-M9), six ranked alternatives, scientific-method gap list. | MTS-2026-10-01-1431Z-DSA-COO | 2026-10-01 |
 | MyTradingSys/research/REVALIDATION_REQUEST_2026-10-01.md | review | DSA revalidation request for Claude: 10 scientific methods (DSR, PBO, CPCV, White/Hansen SPA, Romano-Wolf, BH-FDR, stationary bootstrap, kappa, purged CV, pre-registration) with proof paths, source citations, and what to check. | MTS-2026-10-01-1431Z-DSA-COO | 2026-10-01 |
 | MyTradingSys/research/HANDOFF_FOR_CLAUDE_2026-10-01.md | review | Handoff to Claude: 6 second-iteration findings (single-reader count, counterfactual gap, support-not-falsification search, section 10 omissions, no Fabio audit, defective adoption gate) + 8 work items W1-W8 with input/task/output/gate. | MTS-2026-10-01-1431Z-DSA-COO | 2026-10-01 |
+| MyTradingSys/system/AIBRIDGE_LANE.md | system | One-page lane contract: what AIBridge is, allowed MTS calls over loopback, caps, hard limits (no MTS repo writes), how MTS uses it with DSA, tuning surface is MTS-side only. | MTS-2026-10-01-1431Z-DSA-COO | 2026-10-01 |
