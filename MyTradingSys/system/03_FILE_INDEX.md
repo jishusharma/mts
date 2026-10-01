@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-30
-# SIZE: ~32KB
+# SIZE: ~32.2KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -360,3 +360,4 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/research/TWO_CORES_READINESS_2026-10-01.md | review | Two cores readiness: wiring table (11 rows + extras), T037 test-gap inventory, W1-W8 revalidation status, merged priority list, top-5 fix proposals with acceptance checks. | MTS-2026-10-01-1858Z-CLD-BLD-two-cores | 2026-10-01 |
 | MyTradingSys/research/TWO_CORES_SCAFFOLD_2026-10-01.md | spec | Two-core scaffold spec: current state of Tom/Fabio, compiled-core changes, consensus writer, RSI observation block, switchability config, migration order; file:line cited. | MTS-2026-10-01-1858Z-CLD-BLD-two-cores | 2026-10-01 |
 | MyTradingSys/system/sessions/MTS-2026-10-01-1858Z-CLD-BLD-two-cores.md | system | Session record for the cloud two-cores build session (budget 85 assumed, no subagents, fix pass queued). | MTS-2026-10-01-1858Z-CLD-BLD-two-cores | 2026-10-01 |
+| MyTradingSys/research/CLOUD_PROMPT_TWO_CORES_INTEGRATION_2026-10-02.md | prompt | CCR integration: readiness fix pass, Fabio v3 core compile, consensus writer, RSI observation, switchability spec, desktop runbook. | MTS-2026-10-01-1755Z-DSA-COO | 2026-10-02 |
