@@ -233,6 +233,11 @@ def _pick_stop_target(
         vp = normalized.get(vp_key, {})
         if vp.get("poc"):
             all_pocs.append(vp["poc"])
+        # HVNs (MarketDataSnapshot.buildVp "hvns") are target candidates: Tom [TOM-018] "it looks for
+        # the next high volume price and that is your target". Ignore non-numeric / non-positive entries.
+        for hvn in vp.get("hvns") or []:
+            if isinstance(hvn, (int, float)) and not isinstance(hvn, bool) and hvn > 0:
+                all_pocs.append(hvn)
     # Add prior_day POC
     pd = normalized.get("prior_day", {})
     if pd.get("poc"):
