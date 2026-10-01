@@ -11,7 +11,7 @@ lanes: none (no subagents spawned; budget row >=85% assumed, see below)
 started: 2026-10-01 16:04Z
 ended: 2026-10-01 16:33Z
 status: closed
-commits: every commit carrying the trailer MTS-Session: MTS-2026-10-01-1604Z-CLD-ANA-revalidate-tom-fabio
+commits: 51f1242 (deliverables) and the follow-up that records this hash; every commit carries the trailer MTS-Session: MTS-2026-10-01-1604Z-CLD-ANA-revalidate-tom-fabio
 handoff: SUP via SUPERVISOR_INBOX (W7 plan appended); operator cherry-picks. Open items in REVALIDATION_ACTIONS_2026-10-01.md.
 
 ## Budget
