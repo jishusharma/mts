@@ -61,16 +61,9 @@ MAX_PBO = 0.5
 
 
 def load_fees():
-    """(taker, maker) from sim.py's CLI defaults (canonical per B080). Fails closed if not found."""
-    from MyTradingSys.backtest import sim
-    src = inspect.getsource(sim.main)
-    out = []
-    for flag in ("--taker", "--maker"):
-        m = re.search(r'add_argument\("%s",[^)]*default=([0-9.]+)' % flag, src)
-        if not m:
-            raise RuntimeError("cannot read %s default from sim.py; refusing to guess fees" % flag)
-        out.append(float(m.group(1)))
-    return out[0], out[1]
+    """(taker, maker) from MyTradingSys/backtest/fees.py (single source of truth, B081)."""
+    from MyTradingSys.backtest.fees import DERIBIT_TAKER, DERIBIT_MAKER
+    return DERIBIT_TAKER, DERIBIT_MAKER
 
 
 TAKER_FEE, MAKER_FEE = load_fees()

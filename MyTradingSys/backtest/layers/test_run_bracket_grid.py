@@ -31,12 +31,11 @@ def flat(n, step=H4):
 
 
 class TestFees(unittest.TestCase):
-    def test_fee_constants_match_sim_py(self):
-        self.assertEqual(G.TAKER, 0.0005)
-        self.assertEqual(G.MAKER, 0.0)
-        src = (HERE.parent / "sim.py").read_text(encoding="utf-8")
-        self.assertIn('"--taker", type=float, default=0.0005', src)
-        self.assertIn('"--maker", type=float, default=0.0', src)
+    def test_fee_constants_match_fees_py(self):
+        # B081: fees.py is the single source of truth.
+        from MyTradingSys.backtest.fees import DERIBIT_TAKER, DERIBIT_MAKER
+        self.assertEqual(G.TAKER, DERIBIT_TAKER)
+        self.assertEqual(G.MAKER, DERIBIT_MAKER)
 
 
 class TestSimulate(unittest.TestCase):

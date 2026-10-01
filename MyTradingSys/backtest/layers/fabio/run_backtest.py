@@ -38,7 +38,8 @@ from MyTradingSys.backtest.layers.fabio.fabio_volume_fvg import (
 )
 
 REGISTRY_PATH = REPO / "MyTradingSys" / "backtest" / "layers" / "timeframe" / "registry.json"
-FEE_ROUND_TRIP = 0.0010  # 0.10%
+from MyTradingSys.backtest.fees import BINANCE_TAKER as _BT  # B081
+FEE_ROUND_TRIP = 2 * _BT  # taker in + taker out
 HORIZONS = (1, 5, 20)
 
 

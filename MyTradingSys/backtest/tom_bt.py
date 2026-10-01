@@ -148,8 +148,7 @@ def signals(rows, variant):
 
 
 # ---------------------------------------------------------------- simulation
-FEES_DERIBIT = dict(entry=0.0, target=0.0, stop=0.0005, timeout=0.0005)
-FEES_ALL_TAKER = dict(entry=0.0005, target=0.0005, stop=0.0005, timeout=0.0005)
+from MyTradingSys.backtest.fees import FEES_DERIBIT, FEES_ALL_TAKER  # noqa: E402  (single source of truth, B081)
 
 
 def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fees=FEES_DERIBIT,

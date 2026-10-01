@@ -40,8 +40,7 @@ FILL_TF_BARS = 3
 # Deribit BTC-PERPETUAL (T055b_PROVEN_SETUPS.md fee floor): taker 7 bps round trip (3.5 bps/side); maker nets -3 bps
 # round trip (-1.5 bps/side rebate). Resting limits fill only if price trades THROUGH the level by 1 tick
 # (BACKTEST_PROTOCOL.md stress rule). Optional slippage (bps) is applied to taker legs by net_at().
-FEE_TAKER = 0.00035
-FEE_MAKER = -0.00015
+from MyTradingSys.backtest.fees import LEGACY_FABIO_TAKER as FEE_TAKER, LEGACY_FABIO_MAKER as FEE_MAKER  # B081
 SESSIONS = (("asia", 0, 480), ("london", 480, 810), ("ny", 810, 1260))  # UTC minute-of-day [start, end)
 DAY_MS = 86400000
 

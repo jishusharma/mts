@@ -108,8 +108,9 @@ def report(trades, label):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--stops", choices=["observed", "ideal"], default="observed")
-    ap.add_argument("--taker", type=float, default=0.0005)
-    ap.add_argument("--maker", type=float, default=0.0)
+    from MyTradingSys.backtest.fees import DERIBIT_TAKER, DERIBIT_MAKER
+    ap.add_argument("--taker", type=float, default=DERIBIT_TAKER)
+    ap.add_argument("--maker", type=float, default=DERIBIT_MAKER)
     a = ap.parse_args()
     rows = json.load(open(OUT_DIR / "replay_rows.json", encoding="utf-8"))
     for rule in ("A", "B"):
