@@ -45,6 +45,12 @@ The paste arrives as one file containing all boot content. Read it, then:
    runtime_data/apparatus_log.txt, flag it before any other work.
 5. State your role and mission. Start work.
 
+Static-mode note. The paste opens with a MODE line (live or static),
+set by start-session.ps1 from process_check: java present = live,
+java absent = static. In static mode, live_only manifest entries are
+omitted and step 4 does not apply. Do not flag section 11 staleness
+against a stopped loop.
+
 Never claim a file was read unless you saw it pasted.
 
 Two more boot rules, added 2026-09-16 after a boot reply invented field values and aliases:
@@ -255,14 +261,15 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-01T14:52Z.
+Last live read:  2026-10-01T18:00Z (static read at session 1431Z).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper=16164 supervisor=16796 sm=java=18124.
-                 snapshot age 13s, state_code age 6s, stale_strikes 0,
-                 restart_count_24h 0. Build PASS 2026-10-01T14:52:44Z.
-                 HEAD d5df1ee. Working tree: 3 modified, 8 untracked.
+Runtime + loops: loop UP at session 1431Z (wrapper 16164, supervisor 16796,
+                 java 18124). Verify with mts-loop status before any live work.
+                 Build PASS 2026-10-01T17:33:05Z. HEAD 70b0fa4.
+                 Working tree: several untracked session records + modified
+                 SUPERVISOR_LOG.md and BUILD_REPORT.md (manager writes).
 
 Landing since 2026-09-30 close: manager tier tracking landed (d5df1ee):
 paths() gains model_log, open_record writes tier: not model:, sibling

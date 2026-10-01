@@ -117,7 +117,12 @@ $sb = [System.Text.StringBuilder]::new()
 [void]$sb.AppendLine("BOOT CONTENT (all files, read the whole block)")
 [void]$sb.AppendLine("=" * 72)
 
+$bootMode = if (Get-Process -Name java -ErrorAction SilentlyContinue) { "live" } else { "static" }
+[void]$sb.AppendLine("MODE: $bootMode")
+
 foreach ($f in ($m.boot_files + $m.boot_supplemental)) {
+    $fMode = if ($f.mode) { $f.mode } else { "always" }
+    if ($fMode -eq "live_only" -and $bootMode -eq "static") { continue }
     [void]$sb.AppendLine("")
     [void]$sb.AppendLine("### $($f.path) [$($f.role)] ###")
     $body = Get-ReadBody $f
