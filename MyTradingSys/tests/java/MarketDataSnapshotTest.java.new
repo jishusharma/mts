@@ -1,0 +1,183 @@
+package datafeed;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+/**
+ * SKELETON - every test is @Disabled("skeleton") with a TODO body. NO expected values are invented here; each TODO
+ * names where the expected value must come from (a document or a hand computation), never from the code under test.
+ *
+ * Class under test: src/main/java/datafeed/MarketDataSnapshot.java (1468 lines at HEAD 9695b36).
+ * Staged 2026-10-02 (TWO_CORES_FIX_PASS_2026-10-02.md item 5) at MyTradingSys/tests/java/MarketDataSnapshotTest.java.new.
+ * Promotion target: src/test/java/datafeed/MarketDataSnapshotTest.java (same package, JUnit 5: pom.xml:41-42
+ * junit-jupiter 5.10.2, test scope; style mirrors NetRRConstantTest.java and CountSignalsD4Test.java).
+ * Gap record: research/BUGS.md:123 (T037 "8 engine files untested"), research/TWO_CORES_READINESS_2026-10-01.md:29.
+ *
+ * SEAMS the real tests will need (decide before filling in the bodies):
+ *  - The constructor builds its own client: `this.client = new BinanceClient()` (MarketDataSnapshot.java:29-33). There is
+ *    no injection point, so fetchSnapshot / fetchHistoricalSnapshot reach the network. Options: (a) a package-private
+ *    constructor taking BinanceClient (production change, needs approval), (b) set the private field `client` by
+ *    reflection with a stub subclass of BinanceClient, (c) integration-only, outside the offline gate.
+ *  - classifyOiDeltaState is `private static` (MarketDataSnapshot.java:1401): call it by reflection, the approach already
+ *    used by CountSignalsD4Test.java:11-17 (getDeclaredMethod + setAccessible).
+ *
+ * T033 sites at HEAD (research/BUGS.md:119 cites the old lines L366 / L373 / L1164-1165 / L1375; the first two are
+ * unchanged, the last two moved): delta_state :366, delta_state_price :373 (price delta :367-372), historical fallbacks
+ * :1182-1183, helper :1401-1408 (its comment :1393-1400).
+ *
+ * NOT covered by this skeleton (private builders; add when a seam exists): dropFormingBar :453, buildVp :486/:493,
+ * buildVwap :618, buildCvd :658, buildStructure :704, buildSession :745, buildSessionTiming :846,
+ * computeSpeedPickingUp :922, computeRejectionWick :940, computeFlowStats :1277, buildSpotPerpBasis :1370,
+ * buildOiBreakdown :1410.
+ */
+public class MarketDataSnapshotTest {
+
+    // ===================================================================================================
+    // fetchSnapshot (public, MarketDataSnapshot.java:35) - live snapshot field contract
+    // ===================================================================================================
+
+    @Test
+    @Disabled("skeleton")
+    void fetchSnapshot_throwsIOException_whenNo1mKlines() {
+        // Behaviour: MarketDataSnapshot.java:39-43 - missing or empty 1m klines -> IOException("Failed to fetch 1m klines for " + symbol).
+        // TODO: stub the kline fetch to return null / empty for "1m"; assertThrows(IOException.class, ...). Message text per :42.
+    }
+
+    @Test
+    @Disabled("skeleton")
+    void fetchSnapshot_rootFieldContract() {
+        // Behaviour: root keys written at MarketDataSnapshot.java:334-380 (timestamp_utc, asset, current_price, alignment_pass,
+        // weekly_vp, daily_vp, post_funding_vp, intraday_4h_vp, vwap, cvd, trade_flow, structure, order_book_depth, conditions,
+        // prior_day, funding, open_interest, session, session_timing, spot_perp_basis, liquidation_clusters, oi_breakdown),
+        // :429 order_flow, :444-447 setup_candidates, module_candidates.
+        // Observation, not a test: liquidation_clusters is set at :379 and again at :446, setup_candidates at :444 and :447.
+        // TODO: expected key set from market_data/data_schema_v1.2.0.md (schema doc), never from this method's own puts.
+    }
+
+    @Test
+    @Disabled("skeleton")
+    void fetchSnapshot_currentPriceIsLast1mClose_roundedToTwoDecimals() {
+        // Behaviour: :45 currentPrice = close (index 4) of the last 1m kline; :336 emitted as Math.round(price * 100.0) / 100.0.
+        // TODO: hand-built 1m kline list with a known last close that has >2 decimals; expected = that close rounded to 2 dp by hand.
+    }
+
+    @Test
+    @Disabled("skeleton")
+    void fetchSnapshot_openInterestBlockFields() {
+        // Behaviour: open_interest object :366-375 - direction, change_1h_pct (rounded to 2 dp), delta_state, delta_state_price,
+        // confidence "HIGH".
+        // TODO: expected field set and rounding from data_schema_v1.2.0.md (open_interest section) and a hand computation.
+    }
+
+    // ===================================================================================================
+    // T033 - OI delta four-state classifier (research/BUGS.md:119; INDICATOR_IMPLEMENTATION_HANDOFF.md Phase 2, lines 54-58)
+    // ===================================================================================================
+
+    @Test
+    @Disabled("skeleton")
+    void oiDeltaState_volumeSchool_fromNetDelta1h() {
+        // Site :366 - open_interest.delta_state = classifyOiDeltaState(oiDirection, nd1h); nd1h is the 1h net taker delta (:182).
+        // TODO: feed OI direction + net_delta_1h through fetchSnapshot (needs seam) and compare with the four-state table in
+        // INDICATOR_IMPLEMENTATION_HANDOFF.md:54-58 (not with the helper's own comment).
+    }
+
+    @Test
+    @Disabled("skeleton")
+    void oiDeltaState_priceSchool_fromCloseDeltaOver60Bars() {
+        // Site :373 - open_interest.delta_state_price = classifyOiDeltaState(oiDirection, priceDelta1h);
+        // priceDelta1h = close[last] - close[last - 60] on the 1m klines, only when klines1m.size() >= 61 (:367-372).
+        // TODO: 61+ hand-built 1m closes with a known difference; expected state from the same document table.
+        // TODO: separate case for fewer than 61 bars (the delta stays at its initial value; decide the expected state from the table).
+    }
+
+    @Test
+    @Disabled("skeleton")
+    void oiDeltaState_helperMapping_fourStatesAndNeutral() {
+        // Helper :1401-1408 (private static classifyOiDeltaState(String oiDirection, double netDelta1h)); call by reflection.
+        // TODO: one case per cell of the documented table (rising/falling x positive/negative delta) plus the neutral cases
+        // (direction other than rising/falling; zero delta). Expected labels: aggressive_long / aggressive_short / rekt_long /
+        // rekt_short / neutral per INDICATOR_IMPLEMENTATION_HANDOFF.md:54-58 and BUGS.md:119; compute by hand.
+    }
+
+    @Test
+    @Disabled("skeleton")
+    void oiDeltaState_historicalSnapshotFallback_isNeutral() {
+        // Sites :1182-1183 in fetchHistoricalSnapshot: open_interest.direction "flat", change_1h_pct 0.0, delta_state and
+        // delta_state_price both "neutral", confidence "LOW".
+        // TODO: assert the open_interest block of a historical snapshot (needs seam); BUGS.md:119 records the fallback as neutral.
+    }
+
+    // ===================================================================================================
+    // Order-book ratio no-data sentinel (feeds math_object_builder; see TWO_CORES_FIX_PASS_2026-10-02.md item 1)
+    // ===================================================================================================
+
+    @Test
+    @Disabled("skeleton")
+    void bidAskRatio_isZeroWhenDepthFetchFails() {
+        // Behaviour: :200-214 - a depth-fetch exception is swallowed (`catch (Exception e) { /* keep 0 */ }` :213) and
+        // bidAskRatio = askDepth > 0 ? bidDepth / askDepth : 0.0 (:214); published as conditions.book_imbalance :315 and
+        // order_book_depth.bid_ask_ratio :353, both rounded to 2 dp.
+        // TODO: stub client.orderBookDepth to throw; expect 0.0 in both fields. 0.0 means "no order-book data":
+        // market_data/dsa_task_012_setup_candidates.md:514.
+    }
+
+    @Test
+    @Disabled("skeleton")
+    void bidAskRatio_isBidOverAskWithinOnePercentOfPrice() {
+        // Behaviour: :203-212 - bids with price >= 0.99 * price and asks with price <= 1.01 * price, depth = sum(price * qty).
+        // TODO: hand-built depth book (a few levels inside and outside the 1 % band); ratio computed by hand.
+    }
+
+    // ===================================================================================================
+    // fetchHistoricalSnapshot (public, MarketDataSnapshot.java:960)
+    // ===================================================================================================
+
+    @Test
+    @Disabled("skeleton")
+    void fetchHistoricalSnapshot_throwsIOException_whenNo1mKlines() {
+        // Behaviour: :968-970 - IOException("Failed to fetch historical 1m klines for " + symbol + " at " + asOf).
+        // TODO: stub the as-of kline fetch (:1220) to return empty for "1m"; message text per :969.
+    }
+
+    @Test
+    @Disabled("skeleton")
+    void fetchHistoricalSnapshot_timestampIsAsOf() {
+        // Behaviour: :1150 timestamp_utc = asOf.toString() (not "now").
+        // TODO: fixed Instant; expect its ISO-8601 string.
+    }
+
+    @Test
+    @Disabled("skeleton")
+    void fetchHistoricalSnapshot_zeroedFieldContract() {
+        // Behaviour: :1130 conditions.book_imbalance 0.0; :1169 order_book_depth.bid_ask_ratio 0.0; :1182-1186 funding/open_interest
+        // neutral defaults; no "session" or "order_flow" key set in this method (root keys :1150-1216).
+        // Known defect record: research/BUGS.md:160 (B075 historical mode zeroes trade_flow/book_imbalance/funding/OI, omits
+        // session/order_flow, fetches live spot_perp_basis/oi_breakdown). Decide first whether the test pins today's behaviour
+        // or the intended one; do not write the expectation from the code.
+    }
+
+    // ===================================================================================================
+    // Persistence helpers (public)
+    // ===================================================================================================
+
+    @Test
+    @Disabled("skeleton")
+    void saveSnapshot_writesJsonUnderRuntimeDataSnapshots() {
+        // Behaviour: :1455-1464 - creates runtime_data/snapshots, file name symbol_<LocalDate>_<epochMillis>.json, writes the snapshot JSON.
+        // TODO: run with a temp working directory (it uses the relative Paths.get("runtime_data", "snapshots")); never the repo's own.
+    }
+
+    @Test
+    @Disabled("skeleton")
+    void saveHistoricalSnapshot_fileNamePattern() {
+        // Behaviour: :1264-1273 - file name symbol + "_historical_" + asOf with ':' and '-' removed + ".json" in runtime_data/snapshots.
+        // TODO: fixed Instant; expected name by hand (e.g. strip ':' and '-' from the ISO string); temp working directory.
+    }
+
+    @Test
+    @Disabled("skeleton")
+    void shutdown_delegatesToClient() {
+        // Behaviour: :1466 shutdown() calls client.shutdown().
+        // TODO: needs the client seam; verify exactly one shutdown call on the stub.
+    }
+}
