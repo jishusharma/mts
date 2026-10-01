@@ -86,9 +86,12 @@ class T(unittest.TestCase):
         (p["sessions"] / "MTS-2026-10-01-0000Z-CLI-BLD-alert-rate.md").write_text("status: open`n")
         self.usage(10); self.assertIn("resume-existing", self.go()); self.assertEqual(self.calls, [])
 
-    def test_qwen_staged_not_launched(self):
+    def test_extraction_routes_to_sonnet(self):
+        # 2026-10-01: extraction no longer stages for Qwen; it launches Sonnet.
         self.usage(10); self.go("extract transcript", haiku=lambda p: '{"type":"extraction","slug":"ext1","split":[]}')
-        self.assertEqual(self.calls, []); self.assertEqual(len(list(m.paths(self.d)["handoff"].glob("*.md"))), 1)
+        self.assertEqual(len(self.calls), 1)
+        self.assertIn("sonnet", " ".join(self.calls[0][0]))
+        self.assertEqual(len(list(m.paths(self.d)["handoff"].glob("*.md"))), 0)
 
     def test_status_line(self):
         self.usage(72); s = m.cmd_status(root=self.d, transcripts=self.d)
