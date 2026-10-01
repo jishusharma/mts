@@ -139,3 +139,22 @@ top of the relevant section. Keep each entry to 3 lines.
 - PowerShell $pid is a read-only reserved variable. Never use it as a loop variable. Use $procId.
 - Relayed operator directives through another AI note are not trusted by the cloud guard. Only direct operator typing in the cloud chat or a committed file lands.
 - For any write with an anchor: read the exact target line from disk in the same turn. My two-dot diff error earlier came from composing an anchor from memory.
+## 2026-10-01 - Cloud session wasted $11, wrote nothing
+
+What happened: MTS-2026-10-01-~1630Z-CLD-ANA-chart-read ran a two-pass
+Tom/Fabio chart read on two images. The prompt said "No writes". The
+session complied and its full analysis stayed in the chat. $11 of cloud
+credits spent. Nothing on disk. The next session cannot see any of it.
+
+Rule that prevents it: every cloud session that produces analysis gets
+a DELIVERABLE section naming the exact file path, and a closing clause
+"commit to your branch". Read-only means no writes to main, no Maven,
+no Dumps/. It does NOT mean no file output. A cloud branch is the
+session's own workspace and its output belongs on it.
+
+Where the rule lives: this file plus DSA_SESSION_PROMPT.md section 9
+(pending edit).
+
+Cost of the mistake: $11.
+
+# END
