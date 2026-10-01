@@ -225,7 +225,8 @@ def log_line(p, sid, ptype, model, rc):
 def refresh_status(p):
     s = p["root"] / "scripts" / "dev" / "make_status.py"
     if s.exists():
-        subprocess.run([sys.executable, str(s)], cwd=str(p["root"]), capture_output=True, timeout=300)
+        subprocess.run([sys.executable, str(s)], cwd=str(p["root"]), capture_output=True, timeout=300,
+                       encoding="utf-8", errors="replace")
 
 
 # ---- today spend (primary: local transcript totals; tokens only - no price table is sourced) ---
