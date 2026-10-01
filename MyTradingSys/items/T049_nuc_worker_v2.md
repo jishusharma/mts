@@ -212,7 +212,7 @@ the four-step proof and operator sign-off, per compiled_engine.md's
 
 ## STATUS
 
-OPEN. Phase 2 complete 2026-09-26: NUC restarted, automatic sign-in to
+CLOSED 2026-10-01 (Qwen decommissioned; AIBridge on desktop replaces the run-command surface). Phase 2 complete 2026-09-26: NUC restarted, automatic sign-in to
 E-ngineers (the scheduled task's own principal) landed on the desktop with
 no manual step, MTS-NUC-Worker fired at logon, worker heartbeat read 14 s
 old at 2026-09-26T14:04Z, host JIS-NUC, state idle. BIOS power-on after

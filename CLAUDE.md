@@ -6,8 +6,8 @@ Chat-surface (DSA) behaviour lives in `DSA_SESSION_PROMPT.md`; this file is for 
 Surfaces, handoff, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md` (read at boot; register the session in `MyTradingSys/system/sessions/`).
 
 ## Work routing (cheapest tier that can do it; see research/fast_track_2026-09-27/WORKER_ROADMAP.md)
-- T0 script > T1 Qwen on the NUC (`scripts/worker/queue_tool.py pack|verify|status`) > T2 Haiku > T3 Sonnet > T4 Opus.
-- Qwen: implementations and transcript extractions only. Tests come from Haiku/Sonnet, derived from the spec.
+- T0 script > T1 Haiku > T2 Sonnet > T3 Opus. (Qwen NUC lane decommissioned 2026-10-01; AIBridge on desktop is the run-command surface.)
+- Implementations go to Sonnet; tests derived from the spec, from Sonnet.
 - Wait on the queue with one background shell, never a polling agent. Spot-check one claim per worker report.
 
 ## Gates (must pass before any commit touching the area)

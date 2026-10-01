@@ -212,3 +212,27 @@ Also committed: operator tooling 309d115 (mts.ps1, guide, new_plan.py), research
 - 03:50 IST WEEKLY CAP: all token-using workers SUSPENDED - Sonnet agents stopped (WIP committed 5831ead), scheduled tasks mts-hourly-builder-check + mts-dsa-feeder DISABLED, supervisor wake cron deleted. Live testnet processes (auto_trader, live_runner_cli, daily_loss_monitor, position managers) keep running (no tokens). NUC queue idle except whatever is already waiting.
   Resume: re-enable the two scheduled tasks (sidebar > Scheduled), new supervisor session reads FABIO_TRADE_MODEL.md section 4 + TOM_CORE_BT.md.
 - FABIO_TRADE_MODEL.md: applied reading of 0jM5Y31YJak + 8CWKfoSJu3c -> one trade (balance + hidden CVD pressure -> breakout with big trades -> BE fast, add, trail on order-flow control levels, exit on exhaustion). Missing in our approach: the leading pressure-divergence signal, bar-level effort vs result, order-flow levels, management-driven payoff skew, maker-cost execution.
+
+## 2026-10-01 07:24 UTC mts-manager
+- MTS-2026-10-01-0723Z-CLI-BLD-read-mytradingsys-re: fix via sonnet, rc=1
+
+## 2026-10-01 11:53 UTC mts-manager
+- MTS-2026-10-01-1153Z-CLI-ANA-dsa-t2-decide-per-pr: backtest via qwen, rc=staged
+
+## 2026-10-01 11:53 UTC mts-manager
+- MTS-2026-10-01-1153Z-CLI-ANA-dsa-t3-rule-which-si: audit via sonnet, rc=1
+
+## 2026-10-01 11:54 UTC mts-manager
+- MTS-2026-10-01-1154Z-CLI-EXT-dsa-t4-for-ids-tom-0: extraction via qwen, rc=staged
+
+## 2026-10-01 11:54 UTC mts-manager
+- MTS-2026-10-01-1154Z-CLI-BLD-dsa-t1-add-each-prof: build via sonnet, rc=1
+
+## 2026-10-01 11:54 UTC mts-manager
+- MTS-2026-10-01-1154Z-CLI-MON-dsa-t5-find-a-tom-ci: status via haiku, rc=1
+
+## 2026-10-01 14:16 UTC mts-manager
+- MTS-2026-10-01-1416Z-CLI-ANA-dsa-t2-decide-per-pr: backtest via qwen, rc=staged
+
+## 2026-10-01 14:17 UTC mts-manager
+- MTS-2026-10-01-1416Z-CLI-ANA-dsa-t2-rule-which-va: audit via sonnet, rc=1

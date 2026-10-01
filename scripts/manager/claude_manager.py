@@ -272,16 +272,11 @@ def cmd_go(task, root=None, haiku=None, runner=None, transcripts=None):
         slug = o["slug"] if len(kids) == 1 else "%s-%d" % (o["slug"][:17], i + 1)
         sid = session_id(slug, o["type"]); text = brief(sub, o["type"], tier, effort, sid)
         open_record(p, sid, o["type"], tier, sub)
-        if tier == "qwen":  # Qwen NUC lane is packed by the supervisor (queue_tool.py); manager only stages the brief
-            p["handoff"].mkdir(parents=True, exist_ok=True)
-            (p["handoff"] / (sid + ".md")).write_text(text, encoding="utf-8", newline="\n")
-            rc, tail = "staged", "staged for Qwen queue: Dumps/manager/handoff/%s.md" % sid
-        else:
-            run[sid] = {"model": tier, "pid": None}; _w(p["running"], run)
-            def _on_start(pid, _sid=sid):
-                _r = _rw(p["running"], {}); _r[_sid] = {"model": tier, "pid": pid}; _w(p["running"], _r)
-            rc, tail = launch(tier, text, runner=runner, on_start=_on_start)
-            _r = _rw(p["running"], {}); _r.pop(sid, None); _w(p["running"], _r)
+        run[sid] = {"model": tier, "pid": None}; _w(p["running"], run)
+        def _on_start(pid, _sid=sid):
+            _r = _rw(p["running"], {}); _r[_sid] = {"model": tier, "pid": pid}; _w(p["running"], _r)
+        rc, tail = launch(tier, text, runner=runner, on_start=_on_start)
+        _r = _rw(p["running"], {}); _r.pop(sid, None); _w(p["running"], _r)
         close_record(p, sid, rc, tail); log_line(p, sid, o["type"], tier, rc); model_log_line(p, sid, o["type"], tier, rc)
         out.append("%s %s rc=%s" % (sid, tier, rc))
     if not transcripts == "skip":

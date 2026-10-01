@@ -1576,6 +1576,96 @@
       "action": "monitored",
       "setup": "ct_long",
       "type": "alert"
+    },
+    {
+      "action": "monitored",
+      "reason": null,
+      "type": "alert",
+      "alert_id": 72,
+      "setup": "ct_long",
+      "verdict": "WAIT_RR",
+      "ts": "2026-10-01T14:48:21.475Z"
+    },
+    {
+      "action": "monitored",
+      "reason": "verdict NO_TRADE -> WAIT_RR | zone 4h_vah -> 4h_val | STATE TWOPEAK/above_vah -> TWOPEAK/in_va",
+      "type": "alert",
+      "alert_id": 73,
+      "setup": "-",
+      "verdict": "NO_TRADE",
+      "ts": "2026-10-01T15:21:22.625Z"
+    },
+    {
+      "action": "monitored",
+      "reason": "verdict WAIT_RR -> NO_TRADE | STATE TWOPEAK/in_va -> TWOPEAK/above_vah",
+      "type": "alert",
+      "alert_id": 74,
+      "setup": "ct_short",
+      "verdict": "WAIT_RR",
+      "ts": "2026-10-01T15:24:23.093Z"
+    },
+    {
+      "action": "monitored",
+      "reason": "verdict NO_TRADE -> WAIT_RR | STATE TWOPEAK/above_vah -> TWOPEAK/in_va",
+      "type": "alert",
+      "alert_id": 75,
+      "setup": "ct_short",
+      "verdict": "WAIT_RR",
+      "ts": "2026-10-01T15:51:22.445Z"
+    },
+    {
+      "action": "monitored",
+      "reason": "verdict NO_TRADE -> WAIT_RR | STATE TWOPEAK/above_vah -> TWOPEAK/in_va",
+      "type": "alert",
+      "alert_id": 76,
+      "setup": "ct_short",
+      "verdict": "WAIT_RR",
+      "ts": "2026-10-01T16:09:22.547Z"
+    },
+    {
+      "action": "monitored",
+      "reason": "verdict NO_TRADE -> WAIT_RR | STATE TWOPEAK/above_vah -> TWOPEAK/in_va",
+      "type": "alert",
+      "alert_id": 77,
+      "setup": "-",
+      "verdict": "NO_TRADE",
+      "ts": "2026-10-01T16:16:22.381Z"
+    },
+    {
+      "action": "monitored",
+      "reason": "verdict WAIT_RR -> NO_TRADE | STATE TWOPEAK/in_va -> TWOPEAK/above_vah",
+      "type": "alert",
+      "alert_id": 78,
+      "setup": "tc_long",
+      "verdict": "WAIT_PROOF",
+      "ts": "2026-10-01T16:31:22.507Z"
+    },
+    {
+      "action": "monitored",
+      "reason": "zone 4h_val -> vwap_band_+2 | STATE TWOPEAK/in_va -> TWOPEAK/above_vah",
+      "type": "alert",
+      "alert_id": 79,
+      "setup": "ct_short",
+      "verdict": "WAIT_TRIGGER",
+      "ts": "2026-10-01T16:40:21.464Z"
+    },
+    {
+      "action": "monitored",
+      "reason": "zone 15m_swing_high -> 4h_vah | STATE TWOPEAK/above_vah -> TWOPEAK/in_va",
+      "type": "alert",
+      "alert_id": 80,
+      "setup": "ct_long",
+      "verdict": "WAIT_RR",
+      "ts": "2026-10-01T16:45:21.418Z"
+    },
+    {
+      "action": "monitored",
+      "reason": "zone - -> 5m_swing_low | STATE TWOPEAK/in_va -> TWOPEAK/above_vah",
+      "type": "alert",
+      "alert_id": 81,
+      "setup": "ct_short",
+      "verdict": "WAIT_RR",
+      "ts": "2026-10-01T16:50:22.417Z"
     }
   ]
 }

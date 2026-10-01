@@ -1,6 +1,6 @@
 # B082 MTS-QwenFeeder points at a missing script
 
-Opened 2026-10-01. Status OPEN. Severity MED.
+Opened 2026-10-01. Status CLOSED 2026-10-01. Severity MED.
 
 ## Symptom
 
@@ -27,4 +27,4 @@ Nothing dispatches to the NUC Qwen queue from this task. The NUC worker is fed b
 
 ## Decision
 
-Operator. No action taken.
+2026-10-01: task deleted; Qwen decommissioned.

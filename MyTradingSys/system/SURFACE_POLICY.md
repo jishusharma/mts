@@ -9,18 +9,18 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 ## 1. Surfaces and ownership
 | Surface | Reach | Owns |
 |---|---|---|
-| CLI desktop (SUP) | full tree, queue, NUC gate, live processes, testnet, commits | live path, restarts, HALT, promote/merge, commits |
+| CLI desktop (SUP) | full tree, queue, live processes, testnet, commits | live path, restarts, HALT, promote/merge, commits |
 | APP desktop | scheduled tasks (hourly-builder-check, dsa-feeder) | chat supervision, scheduled checks |
 | LAP laptop CLI | read-only monitors, queue share | questions, monitoring |
 | ASK poller | headless claude -p; default haiku, escalation sonnet | status questions |
 | DSA chat (chat.deepseek.com) | pasted text only, no disk | long-context reading, extraction, rulebooks |
 | CLD cloud (free pool) | pushed git refs only; no LAN, no gitignored files | offline research, specs, reviews, docs, backtests on committed data |
-| Qwen NUC | packed files only | implementation and extraction drafts |
+| AIBridge (F:\AIBridge) | allowlisted loopback agent 127.0.0.1:7181, Chrome MV3 extension | PowerShell on desktop, on request from a web AI |
 Builders touching execution/ or layers/alerts/ stage .new only (CLAUDE.md hard rules).
 
 ## 2. Handoff
 A handoff is a file in the receiver's inbox that names the sender's session ID.
-SUP: research/fast_track_2026-09-27/SUPERVISOR_INBOX.md. Qwen: queue incoming/. DSA worker: incoming_dsa/.
+SUP: research/fast_track_2026-09-27/SUPERVISOR_INBOX.md. AIBridge: F:\AIBridge\HANDOFF.md. DSA worker: incoming_dsa/.
 Poller: Dumps/operator/inbox. Cloud: MyTradingSys/system/CLOUD_INBOX.md (desktop commits and pushes).
 Cloud returns commits on its branch plus its session record; SUP gates, merges, logs in SUPERVISOR_LOG.
 A cloud session sees one repo; cross-repo work (CBP owns mts_queue/, MTS writes acks/ only) runs on the desktop.
@@ -29,9 +29,9 @@ Before starting a task, grep MyTradingSys/system/sessions/ and the inboxes for i
 ## 3. Budget (per account; read /usage or the chat-header usage indicator)
 A: chat, cowork, code, cloud (only cloud account). B: chat, cowork, code; cloud later. Route to the one
 with headroom. Cloud also spends session credits (100 USD pool, expires 2026-11-05).
->=70% weekly: Opus only for safety diffs; rest to T0, Qwen, DSA, other account.
+>=70% weekly: Opus only for safety diffs; rest to T0, DSA, other account.
 >=85%: no Sonnet builders; supervisor wakes halved. Prefer one session reading by range over subagent fan-out.
->=95% or hit: suspend scheduled tasks and builders; live processes run; Qwen and DSA continue
+>=95% or hit: suspend scheduled tasks and builders; live processes run; AIBridge and DSA continue
 (SUPERVISOR_LOG 2026-09-30 03:50 IST). Code enforcement (BUDGET_HOLD) deferred; supervisor applies by hand.
 Cloud: no routines or always-on sessions; one session per task; nothing live depends on it.
 
@@ -43,7 +43,7 @@ with the same -<SURF>-<ROLE>, also named in the record.
 Commit trailer: MTS-Session: <ID>.
 Cloud branch: cloud/work; cloud/YYYY-MM-DD-<slug> only for concurrent Cloud sessions. Harness-assigned
 names (claude/...) are recorded as branch_alias, never reused.
-Lanes: qwen-nuc = incoming/; dsaweb-nb = incoming_dsa/; ask-nb = poller. Directories are not renamed.
+Lanes: bridge-nb = F:\AIBridge; dsaweb-nb = incoming_dsa/; ask-nb = poller. Directories are not renamed.
 Subagents: <parent ID>/<tier>-<nn> (e.g. /sonnet-02).
 Renames: chat titles by hand; git refs never renamed or rewritten (new ref at same commit, old deleted
 by the operator after merge); legacy names stay in old logs, mapped below.
