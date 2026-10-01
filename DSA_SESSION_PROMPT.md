@@ -292,8 +292,6 @@ Findings: Session MTS-2026-10-01-1431Z-DSA-COO (this session):
     No bug filed. apparatus_fixes L106 carries sidecar supervision.
   - Manager tier tracking: d5df1ee.
   - DSA handoff note first written this cycle by MTS-2026-10-01-0557Z-DSA-COO.
-  - Blocked: local CLI (claude -p, mts go) until Fri 2026-10-02 14:30 IST
-    (Pro weekly reset). Cloud and DSA continue.
 
 Open queue (BUGS.md OPEN rows: 27; items/INDEX.md OPEN rows: 33):
   Bugs: B059, B063, B066, B069, B070, B072, B073, B074, B075, B076,
@@ -307,8 +305,7 @@ Next session first action: read items/INDEX.md + BUGS.md open rows.
   Then choose one: B063 (divergence restore/deprecate), B070 (demote
   UTC 00:00 + 0.75 slippage), T050 phase 3 (Deribit order placement via
   deribit_orders.py primitives, not executor.py), T060 (low-vol BTC),
-  or T061 (WaveTrend layer). Local CLI pool reopens Fri 14:30 IST for
-  DSA T2-T5.
+  or T061 (WaveTrend layer).
 
 ## 12. SESSION END
 
