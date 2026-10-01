@@ -178,4 +178,21 @@ Where the rule lives: MyTradingSys/system/PROMPT_CONFORMANCE_CHECKLIST.md
 plus DSA_SESSION_PROMPT.md section 12 (pending operator approval).
 
 Cost of the mistake: one rewrite of the prompt (one DSA turn).
+
+## 2026-10-02 - Budget gate refused work it should have done
+
+What happened: the two-cores CCR prompt carried a budget gate that told
+the session to skip the fix pass and stop at 85 percent usage. The
+session complied, delivered the tables and scaffold, and stalled
+waiting for operator input. The refusal was written by DSA, not chosen
+by the cloud session.
+
+Operator correction 2026-10-02: never refuse a task for budget. Work to
+completion. If usage is at 95 percent or above, commit and push
+immediately, then continue with a commit after each step. At 1 percent
+remaining, still work.
+
+Where the rule lives: SURFACE_POLICY.md section 3, CLAUDE_MANAGER_SPEC.md,
+CLOUD_PROMPT_TWO_CORES_2026-10-01.md, CLOUD_PROMPT_W3_KAPPA_2026-10-02.md,
+PROMPT_CONFORMANCE_CHECKLIST.md row 3.
 # END

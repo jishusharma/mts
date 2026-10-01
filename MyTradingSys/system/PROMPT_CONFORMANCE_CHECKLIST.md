@@ -29,7 +29,7 @@ Both conform to CLAUDE_MANAGER_SPEC routing and SURFACE_POLICY s2-s4.
 |---|---|---|
 | 1 | Every file path in the prompt exists on disk | Test-Path per path |
 | 2 | Every script path exists | Test-Path |
-| 3 | Budget-tier branch present (SURFACE_POLICY s3: 85, 95) | quote |
+| 3 | Save-work clause: never refuse work for budget; at 95 percent or above, commit-then-continue | quote |
 | 4 | Model matches CLAUDE_MANAGER_SPEC routing table | quote |
 | 5 | CLAUDE.md gates carried: run_all_tests --quick; new tests fail first; no in-place executor/live_runner edits; .new staging; no mainnet; no keys | quote |
 | 6 | Ownership-claim line for any execution/ or layers/alerts/ .new staging | quote |

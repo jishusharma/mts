@@ -13,14 +13,15 @@ because its brief asked for one commit after all steps.
 Line 1 of your reply: session ID MTS-YYYY-MM-DD-HHMMZ-CLD-BLD-two-cores
 Line 2: usage percent from chat header, or "85 assumed" if unreadable.
 
-## BUDGET GATE (SURFACE_POLICY section 3)
+## BUDGET
 
-Read line 2 first.
-- Below 85 percent: run the full pipeline. Up to 3 subagents total.
-- At 85 percent or above: no subagents. Do the three tables in one
-  parent pass. Write the scaffold. Do NOT run the fix pass. Append a
-  queue note to CLOUD_INBOX for the next session.
-- At 95 percent or above: write nothing. Post the queue note only.
+Never refuse work for budget. Work to completion.
+If usage is at 95 percent or above (5 percent or less remaining), commit
+and push immediately, then continue with a commit after each step. At 1
+percent remaining, still work.
+
+At 85 percent or above: prefer one session reading by range over subagent
+fan-out. Do not stop. Do not skip a wave.
 
 ## BOOT (read by line range)
 

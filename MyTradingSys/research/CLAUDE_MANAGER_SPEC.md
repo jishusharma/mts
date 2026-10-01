@@ -82,7 +82,8 @@ Session:     one task per child. Child exits at task end.
              all day.
 Context:     brief lists files with line ranges. Child reads
              only its brief, nothing else at start.
-Budget:      over 95%, refuse launch and queue the task.
+Budget:      never refuse. At 95% or above, commit-and-continue
+             after each step. 100% hit still writes and saves.
              mts resume releases the queue after reset.
 
 ## CONFIG THE MANAGER MUST KNOW

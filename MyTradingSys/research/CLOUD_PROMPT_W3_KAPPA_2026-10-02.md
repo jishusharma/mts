@@ -8,12 +8,12 @@ You are a cloud Sonnet session. One task. No subagents.
 Line 1: session ID MTS-YYYY-MM-DD-HHMMZ-CLD-ANA-w3-kappa
 Line 2: usage percent from chat header, or '85 assumed'.
 
-## BUDGET GATE (SURFACE_POLICY section 3)
+## BUDGET
 
-Below 85 percent: run the task.
-At 85 percent or above: no subagents; the task is single-pass anyway;
-  proceed but read only the files listed under BLIND READS.
-At 95 percent: write nothing. Post a queue note only.
+Never refuse work for budget. Work to completion.
+If usage is at 95 percent or above, commit and push immediately, then
+continue with a commit after each step. At 1 percent remaining, still
+work.
 
 ## HARD CONDITION: BLINDNESS
 

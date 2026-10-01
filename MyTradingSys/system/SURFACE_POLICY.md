@@ -27,13 +27,22 @@ A cloud session sees one repo; cross-repo work (CBP owns mts_queue/, MTS writes 
 Before starting a task, grep MyTradingSys/system/sessions/ and the inboxes for its slug; skip duplicates.
 
 ## 3. Budget (per account; read /usage or the chat-header usage indicator)
-A: chat, cowork, code, cloud (only cloud account). B: chat, cowork, code; cloud later. Route to the one
-with headroom. Cloud also spends session credits (100 USD pool, expires 2026-11-05).
->=70% weekly: Opus only for safety diffs; rest to T0, DSA, other account.
->=85%: no Sonnet builders; supervisor wakes halved. Prefer one session reading by range over subagent fan-out.
->=95% or hit: suspend scheduled tasks and builders; live processes run; AIBridge and DSA continue
-(SUPERVISOR_LOG 2026-09-30 03:50 IST). Code enforcement (BUDGET_HOLD) deferred; supervisor applies by hand.
-Cloud: no routines or always-on sessions; one session per task; nothing live depends on it.
+
+OPERATOR DIRECTIVE 2026-10-02: never refuse a task for budget. Work to
+completion. If usage is at 95 percent or above (5 percent or less remaining),
+commit and push immediately, then continue with a commit after each step.
+At 1 percent remaining, still work.
+
+A: chat, cowork, code, cloud (only cloud account). B: chat, cowork, code; cloud
+later. Route to the one with headroom. Cloud also spends session credits
+(100 USD pool, expires 2026-11-05).
+
+>=70 percent weekly: Opus only for safety diffs; rest to T0, DSA, other account.
+>=85 percent: prefer one session reading by range over subagent fan-out.
+>=95 percent: write-then-commit each step. Do not stop. Live processes run.
+
+Cloud: no routines or always-on sessions; one session per task; nothing live
+depends on it.
 
 ## 4. Naming
 Session ID: MTS-YYYY-MM-DD-HHMMZ-<SURF>-<ROLE>[-<slug>] (UTC start; slug <=20 chars, lowercase kebab).
