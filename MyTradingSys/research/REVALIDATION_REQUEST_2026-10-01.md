@@ -1,3 +1,52 @@
+## D1 COMPLIANCE HEADER (added 2026-10-01, retroactive)
+
+This section was NOT present when the note was first committed at e2fb528.
+The audit below the line was produced before the playbook Part I gate was
+applied. It is corrected here, not rewritten.
+
+### Method note (playbook Part I STEP 1)
+
+Question. Do standard scientific methods exist to close the seven method
+gaps found in the Tom/Fabio audit review, and does each method map to a
+concrete file and line in this repository where it can be applied?
+
+Evidence that would settle it. Existence of a T1 peer-reviewed method that
+directly addresses a named gap, plus a specific disk artifact the method
+would change (file path, line range, or data file). A method with no
+concrete artifact is listed as unapplied.
+
+### Source-tier commitment (playbook Part I STEP 2, written before search)
+
+Accept: T1 (peer-reviewed journal, NBER/Fed/BIS/central-bank working paper,
+regulated-institution research with disclosed method). Accept T2 (preprints
+with disclosed method, exchange docs, replicated practitioner studies with
+full method). Reject T3 as sole support for core rules (Tom transcripts,
+trader blogs, vendor docs). Reject marketing/affiliate outright.
+
+For this note specifically: T1 only. Every method below carries a T1
+citation. If no T1 exists for a gap, the note records "no T1 found".
+
+### Tier and quality tag (playbook Part I STEP 3b)
+
+Every item below is re-tagged:
+Tier | Method quality (OOS? costs? sample) | Confidence H/M/L
+
+### UNVERIFIED-WEB tag (playbook Part I, D1 item 5)
+
+This session cannot open a web page. Every citation below is UNVERIFIED-WEB
+until a surface that can open the source pastes back title, authors, venue,
+year, and (for paywalled items) an abstract match. See the dedicated
+section at the end of this file.
+
+### No blending disk and web in one sentence
+
+The original R-items mix disk counts (Tom core backtest rows) with method
+citations. This is corrected by the tags below: every sentence carrying a
+citation carries UNVERIFIED-WEB, and every sentence carrying a disk count
+carries file:line.
+
+---
+
 # REVALIDATION REQUEST - scientific methods for the Tom/Fabio audit (2026-10-01)
 
 To: Claude (local CLI or cloud)
@@ -381,3 +430,123 @@ Dumps/workers/incoming_dsa/ or MyTradingSys/system/CLOUD_INBOX.md so the
 next session does not re-request it.
 
 End of note.
+
+---
+
+## R1-R10 RE-TAGGED (Tier | Method quality | Confidence)
+
+R1 DSR. Tier T1 | Method quality: applies to non-normal returns with
+sample skew and kurtosis; OOS-agnostic (it corrects a sample statistic).
+| Confidence H. Backtest-decides: the correct N of trials from
+TOM_CORE_BT.md; without N, DSR is undefined.
+
+R2 Purged K-Fold. Tier T1 | Method quality: preserves temporal order,
+removes overlap leakage, requires label horizon definition. | Confidence H.
+Backtest-decides: whether tom_bt.py already has a CV split; if it does not,
+CPCV is the replacement.
+
+R3 CPCV. Tier T1 | Method quality: N=6, k=2 yields 15 splits and 5 paths
+on 4.7 years of 1m BTCUSDT. | Confidence H. Backtest-decides: whether the
+single holdout 2026-06-26..2026-09-26 is contaminated as M8 says; if so,
+CPCV replaces it.
+
+R4 PBO. Tier T1 | Method quality: requires a return matrix across variants;
+S=16 typical. | Confidence H. Backtest-decides: the overfit probability
+per variant. A PBO above about 0.5 means the in-sample winner is likely
+overfit.
+
+R5 White/Hansen SPA. Tier T1 | Method quality: stationary block bootstrap
+over per-trial loss-differentials; handles correlated strategies. |
+Confidence H. Backtest-decides: whether any of the 7 setup families has
+positive performance under the null that none does.
+
+R6 Romano-Wolf stepwise. Tier T1 | Method quality: more powerful than
+Bonferroni under correlated tests. | Confidence H. Backtest-decides: which
+specific families survive, not just whether any does.
+
+R7 BH-FDR. Tier T1 | Method quality: controls false discovery proportion
+under independence or positive dependence; q=0.10 is the project default
+per GOLAS_CD_WEB_2026-09-21.md L40. | Confidence H. Backtest-decides:
+which subgroup findings survive q=0.10 across the whole table.
+
+R8 Stationary Bootstrap. Tier T1 | Method quality: preserves temporal
+dependence via geometric block lengths; robust to non-stationarity at
+boundaries. | Confidence H. Backtest-decides: whether the wider CI still
+excludes zero; the direction of the verdict is unlikely to flip.
+
+R9 Cohen's Kappa. Tier T1 (Cohen 1960) | Method quality: agreement beyond
+chance; kappa >= 0.6 conventional threshold. | Confidence H.
+Backtest-decides: the second reader's verdict list on the 74 provenance
+rows; kappa < 0.6 means the audit is reader-dependent.
+
+R10 T2 pre-registration. Tier internal (no external source required) |
+Method quality: format exists at ANGLE_HYPOTHESES.md L77-112. |
+Confidence H. Backtest-decides: the pre-declared metric and threshold; if
+the T2 result does not move WAIT_RR below the declared value, the T2
+ruling is falsified.
+
+---
+
+## UNVERIFIED-WEB LIST
+
+Every citation below is UNVERIFIED-WEB as of 2026-10-01. None was opened,
+searched, or matched against an abstract from this surface. Verification
+requires a surface that can reach the source: paste title, authors, venue,
+year, DOI or URL, and abstract match.
+
+Papers:
+1. Bailey & Lopez de Prado (2014), "The Deflated Sharpe Ratio". Journal of
+   Portfolio Management 40(5), 94-107. UNVERIFIED-WEB.
+2. Bailey, Borwein, Lopez de Prado, Zhu (2013), "The Probability of
+   Backtest Overfitting". Journal of Computational Finance. UNVERIFIED-WEB.
+3. Benjamini & Hochberg (1995), "Controlling the False Discovery Rate".
+   JRSS B 57(1), 289-300. UNVERIFIED-WEB.
+4. Cohen (1960), "A Coefficient of Agreement for Nominal Scales".
+   Educational and Psychological Measurement 20(1), 37-46.
+   UNVERIFIED-WEB.
+5. Hansen (2005), "A Test for Superior Predictive Ability". Journal of
+   Business and Economic Statistics 23(4), 365-380. UNVERIFIED-WEB.
+6. Lopez de Prado (2018), "Advances in Financial Machine Learning". Wiley.
+   UNVERIFIED-WEB.
+7. Politis & Romano (1994), "The Stationary Bootstrap". JASA 89(428),
+   1303-1313. UNVERIFIED-WEB.
+8. Romano & Wolf (2005), "Stepwise Multiple Testing as Formalized Data
+   Snooping". Econometrica 73(4), 1237-1282. UNVERIFIED-WEB.
+9. White (2000), "A Reality Check for Data Snooping". Econometrica 68(5),
+   1097-1126. UNVERIFIED-WEB.
+
+Packages:
+1. purgedcv (PyPI). UNVERIFIED-WEB.
+2. vectorbt.pro (native CPCV splitters). UNVERIFIED-WEB.
+3. skfolio (CPCV). UNVERIFIED-WEB.
+4. deflated-sharpe (PyPI, claimed zero dependencies). UNVERIFIED-WEB.
+5. pbo (CRAN). UNVERIFIED-WEB.
+6. sealedge (PyPI, claimed PSR + DSR + SPA + BH-FDR + stationary bootstrap
+   + HMAC-sealed holdouts). UNVERIFIED-WEB.
+
+Adjacent references used in R5 and R7 evidence sections (KOSPI200 futures
+application, tickfloor 517-strategy study, KCI cryptocurrency DRL CPCV
+application). All UNVERIFIED-WEB.
+
+## REJECT LIST (playbook Part I STEP 3c, listed once, not researched again)
+
+- Any application claims attributed to the papers above (KOSPI200 numeric
+  results, tickfloor q-value 0.1196, KCI max-drawdown finding) are
+  UNVERIFIED-WEB. They illustrate the method; they are not evidence for
+  this project. Use for orientation only. Do not cite as proof.
+
+## "OUR BACKTEST DECIDES" (playbook Part I STEP 3e)
+
+For every method in this note, adoption requires a run on this repository's
+own data. None of the ten methods is adopted because a paper names it.
+Adoption is per method, per application, on the artifact named in the
+"Backtest-decides" line of each R-item.
+
+## FORMULAS.md
+
+No formula from this note is committed to backtest/layers/FORMULAS.md yet.
+Canonical definition plus verified source is required first; UNVERIFIED-WEB
+sources do not qualify. DSR and BH-FDR are the two most likely first
+entries once verified.
+
+End of D1 addendum.
