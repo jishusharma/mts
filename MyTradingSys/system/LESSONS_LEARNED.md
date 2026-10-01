@@ -157,4 +157,25 @@ Where the rule lives: this file plus DSA_SESSION_PROMPT.md section 9
 
 Cost of the mistake: $11.
 
+## 2026-10-02 - Prompts delivered without conformance check
+
+What happened: DSA handed the operator a cloud prompt for the two-cores
+work. On review the prompt named live_runner_cli.py at a path that does
+not exist (real path MyTradingSys/backtest/layers/alerts/live_runner_cli.py),
+spawned Sonnet subagents at an assumed 85 percent tier (SURFACE_POLICY
+section 3 forbids Sonnet builders at 85 percent or above), omitted the
+CLAUDE.md 'new tests must fail on pre-change code' gate, omitted the
+ownership claim for execution/ and layers/alerts/ staging, omitted the
+03_FILE_INDEX row requirement, and named the verify block without
+naming its four lines.
+
+Rule that prevents it: before delivering any prompt for a Claude cloud
+or code session, DSA prints the conformance table in
+MyTradingSys/system/PROMPT_CONFORMANCE_CHECKLIST.md with evidence per
+row, and does not deliver until every row is PASS.
+
+Where the rule lives: MyTradingSys/system/PROMPT_CONFORMANCE_CHECKLIST.md
+plus DSA_SESSION_PROMPT.md section 12 (pending operator approval).
+
+Cost of the mistake: one rewrite of the prompt (one DSA turn).
 # END
