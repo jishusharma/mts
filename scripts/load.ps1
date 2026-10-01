@@ -94,3 +94,4 @@ function gitundo { git reset --hard last-snapshot; "reverted to last-snapshot" }
 function mts-paste      { Remove-Item "$ScriptDir\..\runtime_data\live_paste_stop.flag" -ErrorAction SilentlyContinue | Out-Null; & "$ScriptDir\live\mts-paste.ps1" @args }
 function mts-paste-now  { & "$ScriptDir\live\mts-paste.ps1" -Once; Get-Content "$ScriptDir\..\Dumps\LIVE_PASTE.txt" -Raw }
 function mts-paste-stop { New-Item "$ScriptDir\..\runtime_data\live_paste_stop.flag" -ItemType File -Force | Out-Null; "stop flag written" }
+

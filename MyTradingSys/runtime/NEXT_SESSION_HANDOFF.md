@@ -52,10 +52,11 @@ Credits: $42 of $100, expire 2026-11-05. No spend since.
 
 ## DO NOT MISS
 
-- Doc test test_2_no_forbidden_refs forbids these phrases in
-  items/ and system/: git init, git status, git add, git commit,
-  git diff, git log, git checkout, version control. Use plain
-  verbs: staged, committed, checked out, history, working tree.
+- Doc test test_2_no_forbidden_refs forbids eight repository-command
+  phrases in items/ and system/. See test_2_no_forbidden_refs in
+  MyTradingSys/tests/docs/test_integrity.py for the current list.
+  Use plain verbs: staged, committed, checked out, history,
+  working tree.
 - .new files under extracts/ are gitignored (.gitignore L4).
 - PowerShell $pid is reserved. Use $procId.
 - Cross-branch diff uses three dots. Two-dot shows phantom

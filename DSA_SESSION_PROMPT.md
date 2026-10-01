@@ -294,6 +294,9 @@ Next session first action: read items/INDEX.md + BUGS.md open rows.
    citing the exact command inside a bug receipt and inside a triage
    header. Both broke Build-Check at paste time.
 
+7. Write the session handoff note per section 13b. Overwrite
+   Dumps\operator\context\DSA_HANDOFF.md; keep a dated copy beside it.
+
 ## 13. HANDOFF FORMAT
 
 Every task returns five lines.
@@ -304,4 +307,36 @@ SUMMARY:  one line
 FINDINGS: one line
 NEXT:     one line
 
+## 13b. SESSION HANDOFF NOTE
+
+Every session ends by writing one handoff note for the next session.
+Canonical path: Dumps\operator\context\DSA_HANDOFF.md (overwrite each close).
+Dated copy:     Dumps\operator\context\DSA_HANDOFF_<YYYY-MM-DD>-<morning|evening>.md
+Boot:           listed in SESSION_MANIFEST.json boot_supplemental, read full,
+                lands in Dumps\SESSION_PASTE.txt.
+
+Thirteen parts, in this order. Drop a part only when it has nothing.
+
+ 1. Header: date, part of day, session ID that wrote it, save path.
+ 2. Working style: only rules learned or re-learned this session.
+ 3. The surfaces: reach and cannot-reach per surface; update changed rows.
+ 4. The machines: desktop, NUC, laptop, roles; update on change.
+ 5. This repo: live state (local head, remote head, dirty count, build
+    status, loop status, bug rows, open ids), commits landed with ids,
+    named defects carried, open queue from BUGS.md, backlog open.
+ 6. Other repos: same shape, one part per repo.
+ 7. Cloud policy: what cloud can and cannot reach; branch convention.
+ 8. Mistakes this session: what happened, the one-line check missed, the
+    rule that now prevents it. Then prior-session mistakes still carried.
+ 9. Things that worked: short, disk-verified.
+10. Current queues: one block per surface.
+11. Finding your predecessor: session ID format, where records live.
+12. What the operator expects first: numbered likely asks.
+13. Hard rules carried: only what the next session needs.
+
+Rules for the note:
+- Facts from disk, cited. No claim from memory.
+- Do not restate rules already in USER.md, DSA, or the boot paste.
+- Plain verbs for repository actions (section 12.6).
+- No emoji. LF. No BOM.
 ## END

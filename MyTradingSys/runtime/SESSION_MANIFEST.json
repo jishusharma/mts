@@ -131,6 +131,11 @@
                                   "path":  "MyTradingSys/items/INDEX.md",
                                   "role":  "items_index",
                                   "read":  "full"
+                              },
+                              {
+                                  "path":  "Dumps/operator/context/DSA_HANDOFF.md",
+                                  "role":  "session_handoff",
+                                  "read":  "full"
                               }
                           ],
     "process_check":  [
