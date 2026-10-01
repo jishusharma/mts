@@ -58,7 +58,7 @@
 | TOM-045 | BVpYGKz9PBU | BEGINNING | "when a market rises and takes time to do so, it usually also takes more time for the market to turn around again. That's because at the top there isn't an imbalance. It's more o..." | market_state_rules.md |
 | TOM-046 | 43JaKHRvxHk | BEGINNING | "markets are only about 30% truly stably trending. And about 70% they're just not." | market_state_rules.md |
 | TOM-047 | -dMWA_bbm3o | MIDDLE | "Here we had a really fast trend, very often the case that the market goes back there." | market_state_rules.md |
-| TOM-048 | 3JqMyzE8jIQ | BEGINNING | "And that's why we distinguish between fast trends and normal trends. And yes, there are also slow creeping trends. Three different types of trend structures." | market_state_rules.md |
+| TOM-048 | 3JqMyzE8jIQ | BEGINNING | "In the end, they occur during a strong fast move in a quick accelerated trend. These are price areas where the market hasn't made any pullbacks." | market_state_rules.md |
 | TOM-049 | 43JaKHRvxHk | BEGINNING | "many institutional traders look at the VWAP. They say, is that the VWAP and is the price currently above it? Then they're more bullishly inclined. If the price is below it, they..." | market_state_rules.md |
 | TOM-050 | 3JqMyzE8jIQ | BEGINNING | "there are also slow creeping trends. Three different types of trend structures." | market_state_rules.md |
 | TOM-051 | 43JaKHRvxHk | BEGINNING | "if it's not the case that the market is trending right now, then you have situations like this here... Where you can simply see that the market is permanently above the VWAP, be..." | market_state_rules.md |

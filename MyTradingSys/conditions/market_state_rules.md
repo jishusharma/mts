@@ -120,7 +120,7 @@ Tom distinguishes three trend structures. This is critical because each type has
 
 #### A. Fast / Accelerated Trend
 
-> "Fair value gaps are price areas where the market has not made pullbacks during a fast, accelerated trend."
+> "In the end, they occur during a strong fast move in a quick accelerated trend. These are price areas where the market hasn't made any pullbacks."
 > **Source GPS:** 3JqMyzE8jIQ | [BEGINNING] [TOM-048]
 
 > "Here we had a really fast trend, very often the case that the market goes back there."
