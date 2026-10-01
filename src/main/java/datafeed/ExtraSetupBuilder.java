@@ -13,89 +13,10 @@ public class ExtraSetupBuilder {
         ObjectNode cond = (ObjectNode) root.get("conditions");
         ObjectNode structure = (ObjectNode) root.get("structure");
 
-        // FVG setup
-        JsonNode fvgNode = cond.get("fvg_nearest_unfilled");
-        if (fvgNode != null && !fvgNode.isNull()) {
-            String fvgType = fvgNode.get("type").asText();
-            double top = fvgNode.get("top").asDouble();
-            double bottom = fvgNode.get("bottom").asDouble();
-            double distTop = Math.abs(price - top) / price;
-            double distBottom = Math.abs(price - bottom) / price;
-            if (distTop < 0.0015 || distBottom < 0.0015) {
-                // Generate fvg_short if price below top, or fvg_long if price above bottom
-                if ("bearish".equals(fvgType) && price < top) {
-                    double fvgStop = top * 1.001;
-                    double fvgTarget = nearestSupport(root, bottom);
-                    boolean fvgRrSanity = (fvgTarget > 0) && (Math.abs(fvgTarget - top) / Math.abs(top - fvgStop) >= 1.5);
-                    if (fvgRrSanity) {
-                    ObjectNode cand = extra.addObject();
-                    cand.put("rank", 10 + extra.size());
-                    cand.put("setup_type", "fvg_short");
-                    cand.put("direction", "short");
-                    ObjectNode zone = cand.putObject("zone");
-                    zone.put("name", "fvg_top");
-                    zone.put("price", top);
-                    zone.put("type", "fvg");
-                    ObjectNode math = cand.putObject("math");
-                    math.put("distance_pct", Math.round(distTop*10000.0)/100.0);
-                    math.put("tier", distTop < 0.001 ? "trigger_ready" : "conditional");
-                    math.put("substate", "below");
-                    double stop = top * 1.001;
-                    double target = nearestSupport(root, bottom);
-                    math.put("stop", stop);
-                    math.put("target", target);
-                    math.put("gross_rr", target > 0 ? Math.round(Math.abs(target-top)/Math.abs(top-stop)*100.0)/100.0 : 0.0);
-                    math.put("net_rr", target > 0 ? Math.round(Math.abs(target-top)/Math.abs(top-stop)*0.75*100.0)/100.0 : 0.0);
-                    math.put("rr_sanity", (target > 0) && (Math.abs(target-top)/Math.abs(top-stop) >= 1.5));
-                    math.put("net_rr_sanity", (target > 0) && (Math.abs(target-top)/Math.abs(top-stop)*0.75 >= 2.0));
-                    ObjectNode proof = cand.putObject("proof");
-                    proof.put("rejection_wick", "NONE");
-                    proof.put("speed", cond.get("speed_picking_up").asBoolean());
-                    proof.put("cvd_aligned", cond.get("cvd_trade_flow_aligned").asBoolean());
-                    ObjectNode score = cand.putObject("score");
-                    score.put("raw", 50);
-                    score.put("confidence", "C");
-                    score.put("proof_count", 0);
-                    score.put("confluence_bonus", 0);
-                    }
-                } else if ("bullish".equals(fvgType) && price > bottom) {
-                    double fvgStop2 = bottom * 0.999;
-                    double fvgTarget2 = nearestResistance(root, top);
-                    boolean fvgRrSanity2 = (fvgTarget2 > 0) && (Math.abs(fvgTarget2 - bottom) / Math.abs(bottom - fvgStop2) >= 1.5);
-                    if (fvgRrSanity2) {
-                    ObjectNode cand = extra.addObject();
-                    cand.put("rank", 10 + extra.size());
-                    cand.put("setup_type", "fvg_long");
-                    cand.put("direction", "long");
-                    ObjectNode zone = cand.putObject("zone");
-                    zone.put("name", "fvg_bottom");
-                    zone.put("price", bottom);
-                    zone.put("type", "fvg");
-                    ObjectNode math = cand.putObject("math");
-                    math.put("distance_pct", Math.round(distBottom*10000.0)/100.0);
-                    math.put("tier", distBottom < 0.001 ? "trigger_ready" : "conditional");
-                    math.put("substate", "above");
-                    double stop = bottom * 0.999;
-                    double target = nearestResistance(root, top);
-                    math.put("stop", stop);
-                    math.put("target", target);
-                    math.put("gross_rr", target > 0 ? Math.round(Math.abs(target-bottom)/Math.abs(bottom-stop)*100.0)/100.0 : 0.0);
-                    math.put("net_rr", target > 0 ? Math.round(Math.abs(target-bottom)/Math.abs(bottom-stop)*0.75*100.0)/100.0 : 0.0);
-                    math.put("rr_sanity", (target > 0) && (Math.abs(target-bottom)/Math.abs(bottom-stop) >= 1.5));
-                    math.put("net_rr_sanity", (target > 0) && (Math.abs(target-bottom)/Math.abs(bottom-stop)*0.75 >= 2.0));
-                    ObjectNode proof = cand.putObject("proof");
-                    proof.put("rejection_wick", "NONE");
-                    proof.put("speed", cond.get("speed_picking_up").asBoolean());
-                    proof.put("cvd_aligned", cond.get("cvd_trade_flow_aligned").asBoolean());
-                    ObjectNode score = cand.putObject("score");
-                    score.put("raw", 50);
-                    score.put("confidence", "C");
-                    score.put("proof_count", 0);
-                    score.put("confluence_bonus", 0);
-                    }
-                }
-            }
-        }
+        // FVG: EXIT/target area only, never an entry (compiled_engine.md section 2 zone map:
+        // "target areas, not entry"; SetupCandidatesBuilder.setupTypeFor returns null for fvg).
+        // fvg_short/fvg_long entries removed 2026-10-01 (consolidation TOM trace).
+
 
         // Momentum setup
         boolean speedUp = cond.get("speed_picking_up").asBoolean(false);
