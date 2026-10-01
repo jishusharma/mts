@@ -11,9 +11,9 @@ TYPES = ("fix", "audit", "extraction", "backtest", "question", "status", "build"
 # task type -> (tier, effort); spec ROUTING TABLE. fix/audit are not in the table: Sonnet/medium (DEFAULT).
 ROUTE = {
     "question": ("haiku", "low"), "status": ("haiku", "low"),
-    "extraction": ("qwen", "medium"), "docs": ("sonnet", "medium"),
+    "extraction": ("sonnet", "medium"), "docs": ("sonnet", "medium"),
     "build": ("sonnet", "medium"), "safety": ("opus", "high"),
-    "backtest": ("qwen", "medium"), "fix": ("sonnet", "medium"), "audit": ("sonnet", "medium"),
+    "backtest": ("sonnet", "medium"), "fix": ("sonnet", "medium"), "audit": ("sonnet", "medium"),
 }
 KEYWORDS = [("safety", r"safety|halt|kill|stop.?loss|execution/|position_manager"),
             ("extraction", r"extract|transcript"), ("backtest", r"backtest"),
