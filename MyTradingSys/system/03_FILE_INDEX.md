@@ -267,6 +267,7 @@ Files moved from research/ after their findings were integrated or superseded:
 | Canonical path | C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\ |
 
 ---
+CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, front door for all Claude sessions
 # END
 
 | MyTradingSys/research/TOM_VERBATIM_INDEX.md | research | Verbatim Tom quote index. Points to corpus. Rules in conditions/ carry [TOM-NNN] or [SCREENER]. |
