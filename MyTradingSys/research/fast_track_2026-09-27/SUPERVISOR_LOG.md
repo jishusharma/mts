@@ -236,3 +236,6 @@ Also committed: operator tooling 309d115 (mts.ps1, guide, new_plan.py), research
 
 ## 2026-10-01 14:17 UTC mts-manager
 - MTS-2026-10-01-1416Z-CLI-ANA-dsa-t2-rule-which-va: audit via sonnet, rc=1
+
+## 2026-10-01 19:20 UTC MTS-2026-10-01-1916Z-CLD-BLD-two-cores-int
+- OWNERSHIP claim (CLAUDE.md hard rules): MTS-2026-10-01-1916Z-CLD-BLD-two-cores-int stages MyTradingSys/execution/auto_trader.py.new (TF_SECONDS 3m) and MyTradingSys/execution/test_auto_trader.py.new only; stage-only, no in-place edit, no restart; expected end 2026-10-01 23:30 UTC (released when its checkpoint 1 commit is pushed)
