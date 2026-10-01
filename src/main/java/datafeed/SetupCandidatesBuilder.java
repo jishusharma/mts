@@ -129,6 +129,11 @@ public class SetupCandidatesBuilder {
             addIfPresent(root, "daily_vp", "poc", targets);
             addIfPresent(root, "intraday_4h_vp", "poc", targets);
             addIfPresent(root, "prior_day", "poc", targets);
+            // HVNs (MarketDataSnapshot.buildVp "hvns") are target candidates; mirrors math_object_builder.py (4deae5e).
+            // Direction filter is the p < / > zonePrice test in the selection loop below, same as the levels above.
+            addHvns(root, "weekly_vp", targets);
+            addHvns(root, "daily_vp", targets);
+            addHvns(root, "intraday_4h_vp", targets);
             if ("short".equals(c.direction)) {
                 addIfPresent(root, "weekly_vp", "val", targets);
                 addIfPresent(root, "daily_vp", "val", targets);
@@ -487,6 +492,15 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         if (obj != null && obj.has(field) && !obj.get(field).isNull()) {
             double val = obj.get(field).asDouble();
             if (val > 0) list.add(val);
+        }
+    }
+
+    /** Adds numeric, positive entries of root[objName].hvns to list (non-numeric / non-positive ignored). */
+    static void addHvns(ObjectNode root, String objName, List<Double> list) {
+        JsonNode obj = root.get(objName);
+        if (obj == null || !obj.has("hvns") || !obj.get("hvns").isArray()) return;
+        for (JsonNode n : obj.get("hvns")) {
+            if (n.isNumber() && n.asDouble() > 0) list.add(n.asDouble());
         }
     }
 
