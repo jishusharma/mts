@@ -5,7 +5,9 @@ DSA_SESSION_PROMPT.md and SESSION_ENTRY.md. One file, no overlap.
 
 ## 1. ROLE
 
-State your role before acting.
+State your role before acting. DSA is coordinator for two repos: MTS
+(C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed) and CBP (F:\CryptoScrapper).
+State which repo the session covers before the first task.
 
 - COORDINATOR: owns session_state.json and session_log.json. Dispatches workers.
   Commits. Approves writes.
@@ -192,6 +194,15 @@ Dictionary:  MyTradingSys\research\MTS_DICTIONARY.md
 Dumps:       Dumps\
 Corpus:      raw_transcripts_canonical\
 
+CBP root:    F:\CryptoScrapper
+CBP queue:   F:\CryptoScrapper\mts_queue\
+CBP consumer: MyTradingSys\queue\consumer.py (MTS side)
+CBP contract: ack-only, utf-8-sig tolerated (2d20a5c).
+
+Pro pool:    weekly. Resets Fri 09:00 UTC (14:30 IST). Feeds local claude.exe and mts go.
+Cloud pool:  $100 credits, expire 2026-11-05. Feeds Win app cloud sessions.
+Pools are separate. Never assume one buys the other.
+
 Never guess a path. If a read fails, list the parent directory before retrying.
 
 ## 9. HARD RULES
@@ -210,6 +221,22 @@ One per line. No compression.
 - No writes to session_state.json thesis without user approval.
 - All timestamps UTC. Line endings LF unless the target is proven CRLF.
 - On any write: revalidate the anchor first, retest after.
+- Four actor workflow. DSA reads and composes. Cloud Claude (Win app) reads
+  committed repo and writes to its own session branch. Local claude.exe (via
+  mts go) reads and writes disk with Maven. The operator runs every command
+  and is the only courier between surfaces.
+- Cloud Claude pushes to its own session branch (claude/<name>), not cloud/work,
+  no matter what the prompt says. Cherry-pick onto main. Do not fight it.
+- Two cost pools are separate. Pro plan (weekly, resets Fri 09:00 UTC) feeds
+  local claude.exe and mts go. Cloud credits ($100, expire 2026-11-05) feed
+  Win app cloud sessions. Never assume one buys the other.
+- Manager verbs: mts go / mstatus / mresume / mstop / usage. Bare status /
+  resume / stop belong to the market loop.
+- Local Maven: D:\tools\apache-maven-3.9.14. Cloud cannot run Maven. All tests
+  run on desktop.
+- Cloud honesty. Read the reply against disk in the same turn. Cloud has stated
+  wrong branch names, single commits where three were asked, and shallow
+  keyword-matched rule ids. Verify before merge.
 
 
 Authority order when rules conflict:
@@ -228,12 +255,27 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-09-26T17:45Z. Loop STOPPED cleanly 2026-09-25T15:35Z.
+Last live read:  2026-10-01T14:15Z.
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop_stopped (flag consumed, locks clear, no java).
-                 Last cycle 15:34Z. Build PASS 2026-09-26T17:45Z. HEAD 87e7cef.
+Runtime + loops: loop STOPPED. java absent, supervisor absent, snapshot stale.
+                 Build PASS 2026-10-01T14:14Z. HEAD 2fd16ad.
+
+Landing since 2026-09-26: B081 closed (fees.py single source), B080 closed
+(pacing self-heal), manager built and hardened (mts go / mstatus / mresume /
+mstop / usage), T1 (Java HVN target pool + JUnit test 6/6) and T8 (rule id
+check script) landed, three research notes at MyTradingSys/research/:
+EXTRACTION_PROMPT_RECON, T5_CVD_DEFINITION, T3_STOP_RULING. Manager now
+routes extraction and backtest to Sonnet; Qwen lane is out of scope.
+
+Next (2026-10-02 after 14:30 IST): run DSA T2 (replace NO-SOURCE target
+window 2.0R-3.5R). Then loop restart, watch first testnet trade on the new
+code.
+
+Handshake: CBP queue consumer landed at 2d20a5c. Consumer at
+MyTradingSys\queue\consumer.py, test at MyTradingSys\tests\test_queue_consumer.py.
+Not read this session; verify on next CBP task.
 Findings:        Two sessions landed between 09-25 and 09-26.
 
   Session MTS-2026-09-25-0829Z (coordinator, prior chat):
