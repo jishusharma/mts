@@ -51,4 +51,5 @@ T058 | OPEN    | T058_broken_extremes_sweep_vs_continuation.md | broken lows/hig
 T060 | OPEN    | T060_low_volatility_btc.md | low-volatility anomaly; test whether trailing realized-vol rank predicts BTC forward return
 T061 | OPEN    | T061_wavetrend_lazybear.md | WaveTrend with Crosses [LazyBear]; integrate as separate indicator layer
 B080 | OPEN    | B080_dsa_pace_hourly_cap.md | dsa_worker hourly-cap misfires on stale pace entries
+B081 | OPEN    | B081_fee_source_conflict.md | four fee sets for Deribit BTC-PERPETUAL; one source of truth needed
 # END
