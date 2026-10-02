@@ -100,3 +100,11 @@ backup_session/
 
 # Rewritten every 30 min by the scheduled canary task; not a reviewed document
 MyTradingSys/research/testnet_status/CANARY_*.md
+
+# --- Scheduler runtime state (scripts/sched; regenerated every tick) ---
+MyTradingSys/runtime/sched/*
+!MyTradingSys/runtime/sched/locks/
+MyTradingSys/runtime/sched/locks/*
+!MyTradingSys/runtime/sched/locks/.gitkeep
+MyTradingSys/research/sched_reports/tick_*.md
+MyTradingSys/research/sched_reports/worker_*.md
