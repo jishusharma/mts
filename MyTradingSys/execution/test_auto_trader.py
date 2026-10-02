@@ -109,6 +109,36 @@ class LayerSignalTest(unittest.TestCase):
         s = at.tom_signal(tom_alert(), {"tom_last_alert_no": 43}, c, NOW)
         self.assertNotIn("--max-hold-minutes", s["plan_args"])
 
+    # ---- 2026-10-02: 3m in TF_SECONDS ---------------------------------------------------------------------------
+    # Expected numbers by hand: 3 min = 180 s; max-hold minutes = max_hold_bars (8, DEFAULT_CONFIG) * 180 s / 60 = 24;
+    # freshness window = max_age_bars (1.2) * 180 s = 216 s. Before the fix a "3m_" zone fell back to the 15m default
+    # (8 * 900 / 60 = 120) and a 3m layer alert was rejected "no t_close/tf".
+    T3 = int(datetime(2026, 9, 28, 23, 54, tzinfo=timezone.utc).timestamp() * 1000)  # opens 23:54, closes 23:57, NOW = 180 s after close
+
+    def test_tf_seconds_has_3m_and_keeps_1d(self):
+        self.assertEqual(at.TF_SECONDS.get("3m"), 180)
+        self.assertEqual(at.TF_SECONDS.get("1d"), 86400)
+
+    def test_tom_3m_zone_max_hold_is_8_bars_of_3m(self):
+        a = tom_alert()
+        a["card_text"] = a["card_text"].replace("15m_swing_high", "3m_swing_high")
+        s = at.tom_signal(a, {"tom_last_alert_no": 43}, cfg(), NOW)
+        self.assertNotIn("reject", s)
+        self.assertEqual(s["detail"]["zone_tf"], "3m")
+        self.assertEqual(s["plan_args"][s["plan_args"].index("--max-hold-minutes") + 1], "24")
+
+    def test_layer_3m_alert_is_accepted_when_fresh_with_max_hold_8_bars(self):
+        s = at.layer_signal({"layer": "rsi", "sub": "rsi_events", "event": "support", "tf": "3m",
+                             "t_close": self.T3}, cfg(), NOW)
+        self.assertNotIn("reject", s)
+        self.assertEqual(s["plan_args"][s["plan_args"].index("--max-hold-minutes") + 1], "24")
+
+    def test_layer_3m_alert_stale_after_1_2_bars(self):
+        # opens 23:50, closes 23:53, NOW 00:00:00 -> 420 s after close > 216 s
+        t = int(datetime(2026, 9, 28, 23, 50, tzinfo=timezone.utc).timestamp() * 1000)
+        s = at.layer_signal({"layer": "rsi", "sub": "rsi_events", "event": "support", "tf": "3m", "t_close": t}, cfg(), NOW)
+        self.assertIn("stale", s.get("reject", ""))
+
     def test_rsi_cross_direction(self):
         up = at.layer_signal({"layer": "rsi", "event": "cross", "direction": "up", "tf": "15m",
                               "t_close": self.T15}, cfg(), NOW)
