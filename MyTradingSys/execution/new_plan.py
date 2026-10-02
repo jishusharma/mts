@@ -13,6 +13,8 @@ Scripted (no questions):
 
 Only fixed-percent stops are offered: executor refuses trailing and breakeven
 stops pre-flight, so a plan using them could never be traded.
+R2 runner exit (plan field, stop stays fixed_percent): --targets 50@2,50@5 --breakeven-after-first-target
+splits the size over two targets and lets position_manager move the stop to the entry once target 1 fills.
 """
 import sys
 sys.dont_write_bytecode = True
@@ -104,6 +106,8 @@ def build(a, now):
     }
     if getattr(a, "max_hold_minutes", None):
         plan["max_hold_minutes"] = a.max_hold_minutes
+    if getattr(a, "breakeven_after_first_target", False):
+        plan["breakeven_after_first_target"] = True
     return plan
 
 
@@ -153,6 +157,9 @@ def main(argv=None):
     ap.add_argument("--hours", type=float, help="validity window from now")
     ap.add_argument("--max-hold-minutes", type=float,
                     help="time exit: close the position this many minutes after the entry fill")
+    ap.add_argument("--breakeven-after-first-target", action="store_true",
+                    help="R2: position_manager moves the stop to the average entry once the first target is "
+                         "completely filled (needs >= 2 targets, so a runner remains)")
     ap.add_argument("--yes", action="store_true", help="save without asking")
     a = ap.parse_args(argv)
 
