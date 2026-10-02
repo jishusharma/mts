@@ -267,46 +267,47 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-02T10:05Z (static, java absent).
+Last live read:  2026-10-02T14:20Z (live; java present).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop DOWN since 2026-10-01 evening. java absent.
-                 Build PASS 2026-10-02T09:07:53Z. HEAD 50e206f.
-                 Working tree: BUILD_REPORT.md + session_log.json dirty
-                 (manager writes).
+Runtime + loops: loop UP. wrapper 9016, java 9624, supervisor 5280.
+                 snap 52s, state_code 53s, stale_strikes 0.
+                 auto_trader up (2 procs), tom_last_alert_no 70, brakes clear.
+Build PASS 2026-10-02T14:17:42Z. HEAD d84fb83.
+Working tree: BUILD_REPORT.md dirty; tom_bt_diag.py untracked (P2 CL in flight).
 
 Landing since 2026-10-01 close:
-- 2665558 live fix: book_imbalance 0.0 no longer blocks Tom longs.
-- d982802 live fix: TF maps gain 3m and 1d (alert_rate_check + auto_trader).
-- 0dd2311/c8f04df/e6b2aea W3 kappa: 0.446 (<0.6). 36 NO-SOURCE is
-  reader-dependent.
-- cf1ef14 wiring audit: maintenance protocols have no trigger.
-- c453d82 prompt conformance checklist. 2b62c2d budget never-refuse.
-- d63b2a8 nomenclature: CC = Claude Cloud, CL = Claude Local.
-- 5b4a9de Fabio v3 engine.py.new + 50e206f tests: 8 modules + 5 test
-  files, all .new, all unverified.
+- f8e1d83 prompt-delivery gate: SURFACE_POLICY 3b (manager routing, spawn caps,
+  Ultracode incident); USER.md three LIKES rules (prompt-to-screen, no inferred
+  restrictions, same-turn verification); checklist STEP -1/0, THREE QUESTIONS,
+  DELIVERY FORMAT, Verified facts block; SESSION_MANIFEST two boot rows;
+  LESSONS 2026-10-02 entry; DSA section 3 step 10.
+- d84fb83 net_rr floor 2.0 -> 1.25 in start-trading-day.ps1 L169 (testnet collection).
+  Java net_rr_sanity still 2.0 (SetupCandidatesBuilder.java:191, ExtraSetupBuilder:48).
+- 0716aaa mts.ps1:246 full python path (Windows Store alias did not resolve in child pwsh).
+- eddd237 Fabio v3 promoted 14 files, 93 pytest pass. 837b16d direction review + canary
+  (testnet_canary.py 427 lines, 20 tests) + FILE_INDEX SIZE fix.
+- 0aae726/b37c9f7/3d1fe75/5b4a9de/50e206f prompt + Fabio v3 staging chain.
 
-Account B (jishu.awgp) live for CC/CL: collaborator jishu-awgp on
-jishusharma/mts; Claude GitHub App scoped to that repo. $99 of $100
-cloud credits, expires 2026-11-05.
+Live state of the floor fix: 1.25 gate passes; verdict now blocked by proof gate
+(proof >= 5 for SETUP_FORMING). apparatus cycle 29 at 14:19Z. No SETUP_FORMING yet.
+No Tom or Fabio testnet trade has ever fired.
 
-Next (after weekly reset Fri 14:30 IST):
-1. Fabio v3 README.md (CL).
-2. Promote all 8 fabio/v3 .new with four-step proof each.
-3. Gate: run_all_tests --quick + Build-Check.
-4. Wire Fabio into live_runner as peer; route source:fabio-core to
-   fabio testnet account.
-5. Resolve 6 unknown: markers in engine.py.new.
+In-flight: P2 CL session (Tom all-shorts diagnosis) wrote tom_bt_diag.py untracked.
+No report, no session record, no commit. Next session resumes or reports.
 
-Open queues: same as prior close. Bugs 27 OPEN; tasks T034, T037
-BLOCKED, T040, T042, T044, T046, T048, T049, T050, T051 PARKED,
-T052-T061.
+Open queues: 27 OPEN ids in items/INDEX.md; BUGS.md 25 OPEN rows. DIRECTION_REVIEW
+P0-P8 at research/DIRECTION_REVIEW_2026-10-02.md L60-77. Four operator decisions in
+that file section 6 remain pending: (1) approve canary + daily Haiku scheduled tasks,
+(2) reverse D1(a) also in Java ([2.0,3.5]R window), (3) Fabio v3 source-or-shadow,
+(4) E2E plan not yet run.
 
-Prompt rules now binding: see MyTradingSys/system/PROMPT_CONFORMANCE_CHECKLIST.md
-and LESSONS_LEARNED.md 2026-10-02 entry.
+Prompt rules now binding: USER.md (three prompt rules), PROMPT_CONFORMANCE_CHECKLIST.md
+(STEP -1, STEP 0, THREE QUESTIONS, DELIVERY FORMAT), DSA section 3 step 10.
 
-Next session first action: read items/INDEX.md + BUGS.md open rows.
+Next session first action: read items/INDEX.md + BUGS.md open rows; check
+tom_bt_diag.py status (P2 CL in flight).
 
 ## 12. SESSION END
 
