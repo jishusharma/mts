@@ -1690,6 +1690,12 @@
       "action": "note",
       "reason": "P2 CL close: Tom all-shorts root cause = math_object_builder.py book_imbalance 0.0 treated as ask-heavy for longs (archive placeholder). Fix in 13295c8, WIP/unverified, touched a critical file without four-step proof. Cache stale (2026-09-30). Section 11 refresh committed 78d8c3a. Next: regenerate row cache, re-run Tom report, gate 13295c8 fail-first.",
       "ts": "2026-10-02T14:38:14.787054Z"
+    },
+    {
+      "type": "decision",
+      "action": "note",
+      "reason": "DSA session MTS-2026-10-02-1423Z-CLI-... close: P2 done, T050 phase 3 PASS, B077/B078/B079 CLOSED, prompt rules tightened (8b57131, 9df02c6, b8eb479). Three parallel CL sessions A/B/C mid-work at close. Section 11 update deferred (A owns DSA_SESSION_PROMPT.md). Next DSA session applies handoff part 5.",
+      "ts": "2026-10-02T16:46:21.371999Z"
     }
   ]
 }

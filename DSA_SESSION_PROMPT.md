@@ -271,54 +271,94 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-02T14:20Z (live; java present).
+Last live read:  2026-10-02T16:45Z (live; java present).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
 Runtime + loops: loop UP. wrapper 9016, java 9624, supervisor 5280.
-                 snap 52s, state_code 53s, stale_strikes 0.
-                 auto_trader up (2 procs), tom_last_alert_no 70, brakes clear.
-Build PASS 2026-10-02T14:30:49Z. HEAD 34dadab (close commit follows).
-Working tree: BUILD_REPORT.md dirty; 03_FILE_INDEX.md dirty; P2 report + record untracked.
+                 snapAge 7s, state_code_age 9s, stale_strikes 0.
+                 auto_trader up (pid 18668, launched with -m).
+                 tom_last_alert_no 70, alert_counter 83 (13 unconsumed).
+Build PASS 2026-10-02T17:01:16Z. HEAD f99646b.
+Working tree: BUILD_REPORT.md, session_log.json, C record - all dirty.
 
-Landing since 2026-10-01 close:
-- f8e1d83 prompt-delivery gate: SURFACE_POLICY 3b (manager routing, spawn caps,
-  Ultracode incident); USER.md three LIKES rules (prompt-to-screen, no inferred
-  restrictions, same-turn verification); checklist STEP -1/0, THREE QUESTIONS,
-  DELIVERY FORMAT, Verified facts block; SESSION_MANIFEST two boot rows;
-  LESSONS 2026-10-02 entry; DSA section 3 step 10.
-- d84fb83 net_rr floor 2.0 -> 1.25 in start-trading-day.ps1 L169 (testnet collection).
-  Java net_rr_sanity still 2.0 (SetupCandidatesBuilder.java:191, ExtraSetupBuilder:48).
-- 0716aaa mts.ps1:246 full python path (Windows Store alias did not resolve in child pwsh).
-- eddd237 Fabio v3 promoted 14 files, 93 pytest pass. 837b16d direction review + canary
-  (testnet_canary.py 427 lines, 20 tests) + FILE_INDEX SIZE fix.
-- 0aae726/b37c9f7/3d1fe75/5b4a9de/50e206f prompt + Fabio v3 staging chain.
+Commits landed since 2026-10-01 close:
+  f8e1d83 prompt-delivery gate (SURFACE_POLICY 3b, USER.md, checklist,
+          manifest, lessons, DSA step 10).
+  d84fb83 net_rr floor 2.0 -> 1.25 in start-trading-day.ps1 L169.
+  0716aaa mts.ps1:246 full python path (Store alias fix).
+  eddd237 Fabio v3: 14 files promoted, 93 pytest pass.
+  837b16d direction review + testnet canary (testnet_canary.py).
+  34dadab P2 CL close: tom_bt_diag.py + TOM_BT_SHORT_DIAGNOSIS_2026-10-02.md.
+  78d8c3a section 11 refresh: P2 close, book_imbalance 0.0 bug.
+  b8eb479 checklist: mandatory CL prompt lines (spawn, proxy, printing).
+  8b57131 remove invented budget/usage/token lines; Session Manager governs.
+  9df02c6 checklist: no stop between tasks; continuous execution.
+  0c085c5 market analysis 2026-10-02 (Opus CL).
+  2ee3b4b session close Opus CL.
+  da13131 T050 phase 3 PASS on Deribit testnet (first real MTS orders);
+          BUGS B077/B078/B079 CLOSED.
+  59000f6 testnet_canary: detect python roles launched as -m pkg.module.
+  660f7a4 session close MTS-2026-10-02-1500Z-CLI-BLD-testnet-wire.
+  803e705 MON diagnostics 2026-10-02: alert gap, log gap, Tom cache regen
+          plan; notes, Fabio v3 README, STATUS, untrack CANARY. Swept in 11
+          prompt-archive renames A had staged; end state correct.
+  5c5a437 net_rr floor single source net_rr_floor.json read by Python,
+          PowerShell (every cycle) and Java; verdict.py/math_object_builder
+          compare against it, not Java net_rr_sanity; executor staged .new.
+  640ac4f session close MTS-2026-10-02-1700Z-CLI-SUP-verdict-parity.
+  f99646b prompt shape: checklist 233->98 lines, CL prompt section in
+          CLAUDE.md, DSA boot step 11, archive 13 stray prompt files.
 
-Live state of the floor fix: 1.25 gate passes; verdict now blocked by proof gate
-(proof >= 5 for SETUP_FORMING). apparatus cycle 29 at 14:19Z. No SETUP_FORMING yet.
-No Tom or Fabio testnet trade has ever fired.
+Live state:
+- 1.25 floor in effect since wrapper restart 13:07Z. All verdict cycles since
+  restart blocked on WAIT_TRIGGER / WAIT_PROOF / WATCH. No SETUP_FORMING today.
+- 13 Tom alerts unconsumed (counter 83, consumed 70). Canary flags every 30 min.
+- daily_loss_monitor and live_runner_cli not running (supervisor restart owed).
+- MTS testnet canary scheduled task registered (30-min). LastResult=2 (RED).
 
-P2 complete (session MTS-2026-10-02-1422Z-CLI-BLD-tom-diag). Report at
+P2 complete (MTS-2026-10-02-1422Z-CLI-BLD-tom-diag). Report at
 MyTradingSys/research/TOM_BT_SHORT_DIAGNOSIS_2026-10-02.md. Root cause:
 math_object_builder.py treated book_imbalance==0.0 (archive placeholder) as
 ask-heavy, contradicting every proof-5 long. Fix committed as 13295c8 (WIP,
 unverified, in HEAD). PRE-cache replay reproduces the review exactly (320/19/301
-all short). HEAD replay gives 28 SETUP_FORMING (19 short, 9 long). Row cache is
+all short). HEAD replay gives 28 SETUP_FORMING (19 short, 9 long). Row cache
 stale (2026-09-30). Next: regenerate cache, re-run report / supersede
 TOM_CORE_BT.md, gate 13295c8 with a fail-first test. The 13295c8 edit touched
 math_object_builder.py, a critical file, without four-step proof - process gap.
 
-Open queues: 27 OPEN ids in items/INDEX.md; BUGS.md 25 OPEN rows. DIRECTION_REVIEW
-P0-P8 at research/DIRECTION_REVIEW_2026-10-02.md L60-77. Four operator decisions in
-that file section 6 remain pending: (1) approve canary + daily Haiku scheduled tasks,
-(2) reverse D1(a) also in Java ([2.0,3.5]R window), (3) Fabio v3 source-or-shadow,
-(4) E2E plan not yet run.
+T050 phase 3 PASS: first real testnet orders. t050_phase3.py plus
+T050_PHASE3_2026-10-02.md. Limit buy 10 @ 82781.5 placed/cancelled (0 open);
+market sell 10 @ 85349.0 filled; close_position flat. Equity
+59.99985338 -> 59.99985327 BTC (fees only). Canary matcher bug fixed
+(59000f6): now detects python roles launched via -m pkg.module.
 
-Prompt rules now binding: USER.md (three prompt rules), PROMPT_CONFORMANCE_CHECKLIST.md
-(STEP -1, STEP 0, THREE QUESTIONS, DELIVERY FORMAT), DSA section 3 step 10.
+Opus market analysis (0c085c5):
+- 13:40Z blocked short at daily VAH, proof-5, only block was stale 2.0 floor
+  in the wrapper that started 13:02Z (d84fb83 landed 13:47Z, never reloaded).
+  Replay with 1.25 gives SETUP_FORMING. Stop never hit. Target reached ~15 min.
+  First live setup MTS has produced. This is the B session verdict-parity test
+  case.
+- Fabio v3 run BLOCKED: order-flow bars end 2026-09-28, 8 grid params have no
+  defaults. Reported as BLOCKED, not invented.
+- book_imbalance 0.0 appears in 0 of 477 live snapshots. All-shorts bug not on
+  live tape.
 
-Next session first action: read items/INDEX.md + BUGS.md open rows; check
-tom_bt_diag.py status (P2 CL in flight).
+Open queues: 22 OPEN bugs of 136 rows (DSA_HANDOFF part 5). BUILD_REPORT shows
+24 open IDs in items/INDEX.md; the previous section 11 read 27. Three values
+disagree - resolve next session. DIRECTION_REVIEW P0-P8 at
+research/DIRECTION_REVIEW_2026-10-02.md L60-77. Four operator decisions in that
+file section 6 remain pending: (1) approve canary + daily Haiku scheduled
+tasks, (2) reverse D1(a) also in Java ([2.0,3.5]R window), (3) Fabio v3
+source-or-shadow, (4) E2E plan not yet run.
+
+Prompt rules now binding: USER.md (three prompt rules),
+PROMPT_CONFORMANCE_CHECKLIST.md (STEP -1, STEP 0, THREE QUESTIONS, DELIVERY
+FORMAT), DSA section 3 step 10.
+
+Next session first action: resolve the three open-queue counts; check
+daily_loss_monitor and live_runner_cli startup; decide on B 4.1 executor .new
+promotion.
 
 ## 12. SESSION END
 

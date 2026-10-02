@@ -74,6 +74,13 @@ inside. At most one line between the blocks (the operator action). Any FAIL row 
 3. Printing: "== T<n> <name> ==" at task start; "T<n> PASS|FAIL|BLOCKED <result>" at end;
    no wait for the operator between tasks.
 4. Verify block at the end: TASK / DONE / VERIFIED / MISSED.
+5. Parallel CL sessions, one tree, one staging area. Two lines:
+   a. Stage only the exact paths you wrote. Never stage the whole tree.
+   b. Before committing, list the staged paths and compare them to your
+      expected output list. A staged path you did not write means stop;
+      do not commit. On the commit line, name the paths the commit owns,
+      so the commit records only those and leaves the rest of the staging
+      area alone.
 
 ## CONTINUOUS EXECUTION (operator direct, 2026-10-02)
 A DSA-composed prompt never contains "operator confirms or overrides" (unless a genuinely
