@@ -29,7 +29,7 @@ Both conform to CLAUDE_MANAGER_SPEC routing and SURFACE_POLICY s2-s4.
 |---|---|---|
 | 1 | Every file path in the prompt exists on disk | Test-Path per path |
 | 2 | Every script path exists | Test-Path |
-| 3 | Save-work clause: never refuse work for budget; at 95 percent or above, commit-then-continue | quote |
+| 3 | Save-work clause: never refuse work for budget. Commit after each step when Session Manager signals low headroom. | quote |
 | 4 | Model matches CLAUDE_MANAGER_SPEC routing table | quote |
 | 5 | CLAUDE.md gates carried: run_all_tests --quick; new tests fail first; no in-place executor/live_runner edits; .new staging; no mainnet; no keys | quote |
 | 6 | Ownership-claim line for any execution/ or layers/alerts/ .new staging | quote |
@@ -110,11 +110,18 @@ Opus on CL (disk, Maven, code). The session spent its budget for zero artifacts.
 One question would have prevented it.
 
 
+## NEVER INVENT BUDGET
+
+DSA never states a numeric usage percent, budget cap, token cap, or dollar pool in any
+prompt. Session Manager governs usage. Operator supplies a value only when the operator
+chooses to. No default. No "85 assumed". No "operator hint" placeholder. The budget
+row exists in the delivered tables only when the operator supplied a value this session.
+
 ## THREE QUESTIONS (every prompt answers all three, in the prompt itself)
 
 | # | Question | Evidence |
 |---|---|---|
-| 11 | What is the session budget cap, in the unit this account bills in? | % for Pro/CL sessions (e.g. "up to 20% of session"); $ for CC cloud credit sessions |
+| 11 | Operator-supplied budget only. Omit if the operator gave none. DSA never states a cap. | operator words, or omit |
 | 12 | Is the prompt end to end? | yes / no + list of missing pieces |
 | 13 | Does the prompt ask to save files and commit timely? | save cadence + git or no-git instruction |
 
@@ -147,7 +154,7 @@ carries the timestamp of the paste that supplied the facts.
 | Effort | low / medium / high |
 | Ultracode | off / on |
 | Estimated work | ... |
-| Budget cap | operator hint in the account unit (% for Pro, $ for cloud); Session Manager routes |
+| Budget cap | OPERATOR-SUPPLIED only. Omit if none given. Session Manager routes. |
 | Subagent cap | 0..3 |
 | Batch size | 1..3 |
 | Commit cadence | per step / per wave / end / n/a |
@@ -158,7 +165,7 @@ carries the timestamp of the paste that supplied the facts.
 | # | Check | Status | Evidence |
 |---|---|---|---|
 | 1..10 | from BEFORE DELIVERING table | PASS / FAIL | quote |
-| 11 | Session total token cap | | |
+| 11 | Operator-supplied budget (present only if operator provided one) | | |
 | 12 | End to end | | |
 | 13 | Save and commit cadence | | |
 
@@ -199,7 +206,7 @@ Three items appear in every CL prompt. No CL prompt ships without all three.
 ## PROMPT SHAPE
 
 - Line 1: session ID with -CLD- for CC or -CLI- for CL.
-- Line 2: usage percent, or '85 assumed' if unreadable.
+- Line 2: only present when the operator supplied a value this session. Never assume.
 - Budget gate first (SURFACE_POLICY s3).
 - Boot section: files, by line range.
 - One task per prompt. One wave of children. Cap 3.

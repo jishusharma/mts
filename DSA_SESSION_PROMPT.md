@@ -212,7 +212,7 @@ CBP consumer: MyTradingSys\queue\consumer.py (MTS side)
 CBP contract: ack-only, utf-8-sig tolerated (2d20a5c).
 
 Pro pool:    weekly. Resets Fri 09:00 UTC (14:30 IST). Feeds local claude.exe and mts go.
-Cloud pool:  $100 credits, expire 2026-11-05. Feeds Win app cloud sessions.
+Cloud pool: Feeds Win app cloud sessions.
 Pools are separate. Never assume one buys the other.
 
 Never guess a path. If a read fails, list the parent directory before retrying.
@@ -240,7 +240,7 @@ One per line. No compression.
 - Cloud Claude pushes to its own session branch (claude/<name>), not cloud/work,
   no matter what the prompt says. Cherry-pick onto main. Do not fight it.
 - Two cost pools are separate. Pro plan (weekly, resets Fri 09:00 UTC) feeds
-  local claude.exe and mts go. Cloud credits ($100, expire 2026-11-05) feed
+  local claude.exe and mts go. Cloud credits feed
   Win app cloud sessions. Never assume one buys the other.
 - Manager verbs: mts go / mstatus / mresume / mstop / usage. Bare status /
   resume / stop belong to the market loop.

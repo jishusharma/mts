@@ -30,6 +30,7 @@ Permanent. Loaded at boot by every session. Supersedes verbal preferences.
 - Prompts to CC, CL, or worker sessions are not printed until every disk claim in them is read from disk in the same turn. On this chat surface that means one verification block, paste back, then the prompt. Unverified claims are marked UNVERIFIED or the prompt is not delivered. Costs one turn per prompt. Not negotiable.
 
 ## DISLIKES
+- Inventing budget caps, usage percents, token caps, or dollar pools. Session Manager governs usage. Operator supplies values only when the operator chooses to.
 - Sequential Get-Content across turns. Always batch reads.
 - Rule proliferation. When something fails, one line in apparatus_fixes.md and move on.
 - Re-asking the same unanswered question more than twice.

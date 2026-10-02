@@ -26,20 +26,17 @@ Cloud returns commits on its branch plus its session record; SUP gates, merges, 
 A cloud session sees one repo; cross-repo work (CBP owns mts_queue/, MTS writes acks/ only) runs on the desktop.
 Before starting a task, grep MyTradingSys/system/sessions/ and the inboxes for its slug; skip duplicates.
 
-## 3. Budget (per account; read /usage or the chat-header usage indicator)
+## 3. Budget (Session Manager governs; operator supplies values when needed)
 
 OPERATOR DIRECTIVE 2026-10-02: never refuse a task for budget. Work to
-completion. If usage is at 95 percent or above (5 percent or less remaining),
-commit and push immediately, then continue with a commit after each step.
-At 1 percent remaining, still work.
+completion. Commit after each step when Session Manager signals low headroom.
 
-A: chat, cowork, code, cloud (only cloud account). B: chat, cowork, code; cloud
-later. Route to the one with headroom. Cloud also spends session credits
-(100 USD pool, expires 2026-11-05 13:29 GMT+5:30; applied automatically to cloud sessions; not eligible for Projects or Routines; per Claude account, see CLOUD_ACCOUNTS.md).
+DSA never states a numeric usage percent, budget cap, token cap, or dollar pool
+in any prompt, unless the operator supplied that exact number in the same session.
+No default. No placeholder.
 
->=70 percent weekly: Opus only for safety diffs; rest to T0, DSA, other account.
->=85 percent: prefer one session reading by range over subagent fan-out.
->=95 percent: write-then-commit each step. Do not stop. Live processes run.
+Session Manager routes by account and headroom. Routing tiers live in the
+Session Manager, not here. This file does not restate them.
 
 Cloud: no routines or always-on sessions; one session per task; nothing live
 depends on it.
