@@ -1,8 +1,8 @@
 # FILE: 03_FILE_INDEX.md
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
-# LAST UPDATED: 2026-09-30
-# SIZE: ~39.2KB
+# LAST UPDATED: 2026-10-02
+# SIZE: ~39.7KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -387,3 +387,5 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/backtest/layers/fabio/v3/tests/test_manage.py | test | Fabio v3 management tests (15 tests). Promoted from .new 2026-10-02; pytest 93 passed (v3/tests), run_all_tests --quick PASS; not in the gate yet. | MTS-2026-10-02-1035Z-CLI-SUP-plan-promote-v3 | 2026-10-02 |
 | MyTradingSys/backtest/layers/fabio/v3/tests/test_models_engine.py | test | Fabio v3 models A-D and engine run() tests (28 tests). Promoted from .new 2026-10-02; pytest 93 passed (v3/tests), run_all_tests --quick PASS; not in the gate yet. | MTS-2026-10-02-1035Z-CLI-SUP-plan-promote-v3 | 2026-10-02 |
 | MyTradingSys/backtest/layers/fabio/v3/tests/test_signals.py | test | Fabio v3 S1-S9 signal tests (23 tests). Promoted from .new 2026-10-02; pytest 93 passed (v3/tests), run_all_tests --quick PASS; not in the gate yet. | MTS-2026-10-02-1035Z-CLI-SUP-plan-promote-v3 | 2026-10-02 |
+| MyTradingSys/backtest/tom_bt_diag.py | script | Replays the proof>=5 snapshots with verdict reason logged (cache path tom_bt.py:101-105 + stage attribution); writes F:/MTS/data/tom_bt/allshorts.diag.jsonl. Read-only on repo. | MTS-2026-10-02-1422Z-CLI-BLD-tom-diag | 2026-10-02 |
+| MyTradingSys/research/TOM_BT_SHORT_DIAGNOSIS_2026-10-02.md | research | Why all 19 Tom core SETUP_FORMING are short: book_imbalance 0.0 contradicted every proof-5 long (fixed in 13295c8, cache stale); 215:105 proof-5 skew unexplained. | MTS-2026-10-02-1422Z-CLI-BLD-tom-diag | 2026-10-02 |
