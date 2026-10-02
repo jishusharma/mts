@@ -35,7 +35,7 @@ At 1 percent remaining, still work.
 
 A: chat, cowork, code, cloud (only cloud account). B: chat, cowork, code; cloud
 later. Route to the one with headroom. Cloud also spends session credits
-(100 USD pool, expires 2026-11-05).
+(100 USD pool, expires 2026-11-05 13:29 GMT+5:30; applied automatically to cloud sessions; not eligible for Projects or Routines; per Claude account, see CLOUD_ACCOUNTS.md).
 
 >=70 percent weekly: Opus only for safety diffs; rest to T0, DSA, other account.
 >=85 percent: prefer one session reading by range over subagent fan-out.
