@@ -195,4 +195,22 @@ remaining, still work.
 Where the rule lives: SURFACE_POLICY.md section 3, CLAUDE_MANAGER_SPEC.md,
 CLOUD_PROMPT_TWO_CORES_2026-10-01.md, CLOUD_PROMPT_W3_KAPPA_2026-10-02.md,
 PROMPT_CONFORMANCE_CHECKLIST.md row 3.
+
+## 2026-10-02 - Ultracode burned  and lost two waves
+
+What happened: the two-cores integration prompt said 'One Sonnet
+subagent' inside each of four waves. The operator launched in Ultracode
+mode. Ultracode spawned all four subagents in parallel. 85 percent of
+the session cost went to subagents. Session cost .97 out of a 
+cloud pool, in 9 minutes of active work. Waves 3 and 4 landed on the
+branch; Waves 1 and 2 (readiness top-5 fix pass, Fabio v3 core compile)
+died uncommitted when the container was reclaimed.
+
+Rule that prevents it: every launch prompt names the mode explicitly
+(Ultracode on or off), the total subagent cap, the batch size, and the
+rule 'commit and push between batches'. Default is Ultracode off.
+Full table: MyTradingSys/research/CLAUDE_MANAGER_SPEC.md section
+MODE SELECTION.
+
+Cost of the mistake: .97 plus the two lost waves.
 # END

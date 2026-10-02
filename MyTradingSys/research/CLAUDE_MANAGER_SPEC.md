@@ -129,3 +129,46 @@ Dumps/operator/context/CLAUDE_MANAGER_BUILD_PROMPT.md.
 - No child ever reads a file not named in its brief.
 
 ## END
+
+## MODE SELECTION (added 2026-10-02; read before every launch)
+
+Ultracode ON means the surface may spawn parallel subagents. That burns
+budget 3-5x faster than serial. Default is OFF. Turn it on only when
+independent workstreams exist AND every workstream can commit its own
+checkpoint. Every launch prompt states the total subagent cap, the
+batch size (how many run at once), and the rule 'commit and push
+between batches'.
+
+| Task shape | Surface | Model | Effort | Ultracode | Cap | Batch |
+|---|---|---|---|---|---|---|
+| Read, extract, answer, one artifact | DSA chat | n/a | n/a | off | 0 | n/a |
+| Cloud offline, one deliverable | CCR | Sonnet | medium | off | 0 | n/a |
+| Cloud offline, 2-3 independent modules | CCR | Sonnet | medium | on | 3 | 1 |
+| Cloud build wave with checkpoints | CCR | Sonnet | medium | on | 3 | 1 |
+| Local disk fix, live path | CCM | Sonnet | medium | off | 0 | n/a |
+| Local disk fix, four-step proof | CCM | Sonnet | medium | off | 0 | n/a |
+| Safety diff (execution/, HALT, orders) | CCM or CCR | Opus | high | off | 0 | n/a |
+| Question, status | any | Haiku | low | off | 0 | n/a |
+| Extraction | CCR | Sonnet | medium | off | 0 | n/a |
+| Backtest report | CCR | Sonnet | medium | off | 0 | n/a |
+
+Rules:
+
+1. Ultracode off is the default. Turn it on only when the task has 2 or
+   more truly independent workstreams, and each can checkpoint itself.
+2. State the cap in the prompt: 'total subagents <= N, run M at a time,'
+   'commit and push between batches.'
+3. Never more than 3 subagents total in a cloud session. Cloud cost is
+   the limit, not the wall clock.
+4. Waves are sequential unless the prompt says parallel and names the
+   batch. 'One subagent per wave' alone is not enough; Ultracode reads
+   it as run all of them at once.
+5. Any live-path edit: Ultracode off, one writer, four-step proof.
+6. Any safety diff: Opus, high, Ultracode off.
+
+Incident that produced this rule: 2026-10-02 cloud session
+MTS-2026-10-01-1916Z-CLD-BLD-two-cores-int. Prompt said 'One Sonnet
+subagent' per wave; Ultracode spawned four in parallel; .97 of a 
+credit pool spent in 9 minutes of active work; Waves 1 and 2 died
+uncommitted. Waves 3 and 4 landed on the branch.
+
