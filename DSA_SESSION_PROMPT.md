@@ -82,6 +82,10 @@ Two more boot rules, added 2026-09-16 after a boot reply invented field values a
     prompt. No prompt leaves this surface without a same-turn
     verification block pasted back.
 
+11. After boot, run Get-ChildItem MyTradingSys/research/*PROMPT*. If any match,
+    move to MyTradingSys/research/_archive/2026-10-02-prompts/. USER.md forbids
+    saving prompts.
+
 ## 4. READING LARGE FILES
 
 Any file over 20 KB: read by line range, not whole file.
