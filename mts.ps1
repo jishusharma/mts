@@ -239,6 +239,11 @@ switch ($Verb.ToLower()) {
             Open-Window "MTS live-runner-cli" "python -m MyTradingSys.backtest.layers.alerts.live_runner_cli"
             Ok "live-runner-cli started in its own window - leave it open while trading"
         }
+        if ((Get-Procs "orderflow_live" "Name='python.exe'").Count) { Ok "orderflow-live already running" }
+        else {
+            Open-Window "MTS orderflow-live" "python -m MyTradingSys.backtest.layers.fabio.orderflow_live"
+            Ok "orderflow-live started in its own window - leave it open while trading"
+        }
     }
 
     "auto" {
