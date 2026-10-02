@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-30
-# SIZE: ~33.7KB
+# SIZE: ~33.9KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -368,3 +368,4 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | scripts/dev/alert_rate_check.py | tool | Alert-rate check. Updated 2026-10-02: TF_MIN gains 3m and 1d for the RSI observation block. | MTS-2026-10-02-0930Z-CLI-BLD-tfmap | 2026-10-02 |
 | MyTradingSys/execution/auto_trader.py | execution | Layer/tom alert orchestrator. Updated 2026-10-02: TF_SECONDS gains 3m (1d already present). Live-path; loop was down at promotion. | MTS-2026-10-02-0930Z-CLI-BLD-tfmap | 2026-10-02 |
 | MyTradingSys/research/CC_PROMPT_FABIO_V3_CORE_2026-10-02.md | prompt | CC brief: finish Fabio v3 core. Review staged, write engine.py, 7 test files, README. Cap 3 subagents, batch 1, Ultracode off. | MTS-2026-10-01-1755Z-DSA-COO | 2026-10-02 |
+| MyTradingSys/research/CL_PROMPT_FABIO_V3_CORE_2026-10-02.md | prompt | CL brief: Fabio v3 engine.py only. 1 percent budget, no subagents, save-work checkpoints, stop-early rules. | MTS-2026-10-01-1755Z-DSA-COO | 2026-10-02 |
