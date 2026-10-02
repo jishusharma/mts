@@ -12,6 +12,17 @@ Line 2: usage percent, or '1 assumed'.
 1 percent left. No subagents. No file reads outside the list below.
 No exploration. Do the steps, commit, stop.
 
+Commit-as-you-go. Only 1 percent of the weekly budget remains. If the
+session is cut off mid-task, whatever is uncommitted is lost. So:
+- After each numbered step that writes a file, commit that file
+  immediately with a WIP message tagged "partial, unverified". Do not
+  wait for the final step to batch.
+- If the session ends early, the last pushed commit is a valid resume
+  point.
+- Do not amend or squash WIP commits. Leave the trail.
+- If a step cannot be started because credits run out, stop cleanly and
+  push whatever is on disk.
+
 ## BRANCH (operator directive)
 CLAUDE.md says branch fast-track. Operator directive overrides for this
 session: commit to main and push origin main. Reason: this is a single
