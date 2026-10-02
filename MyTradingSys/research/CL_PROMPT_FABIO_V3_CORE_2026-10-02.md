@@ -15,15 +15,14 @@ Line 2: usage percent, or '1 assumed'.
 1. No subagents. No exploration. No file reads outside FILES.
 2. One file to write: engine.py.new. Nothing else.
 3. Do not run pytest. Do not run Build-Check. Do not import the
-   module. The 1 percent does not cover a test run. Gate work happens
-   after weekly reset.
-4. Save-work checkpoints. Commit and push at these points:
-   a. Immediately after engine.py.new is on disk (complete or partial).
-   b. Immediately after each successful edit to engine.py.new.
-   c. Before any read over 200 lines if there is unsaved work.
-5. If a tool call times out or is denied twice in a row: push what is
-   on disk with a WIP tag, print the verify block, stop.
-6. Never refuse work for budget. Never amend a WIP commit.
+   module.
+4. Do NOT run git add, git commit, or git push. The permission
+   classifier on this account blocks them as "Git Destructive" (seen
+   on the TF-map task). Write engine.py.new to disk. The operator's
+   DSA session commits and pushes from the desktop PowerShell.
+5. If a tool call is denied twice in a row or chat shows 0 percent,
+   stop and print the verify block. Whatever is on disk survives.
+6. Never refuse work for budget.
 
 ## FILES (only these)
 
@@ -64,22 +63,19 @@ Spec rules:
 Every decision cites a spec section as a comment at the line. Write
 "unknown: <what>" where the spec is silent, then continue.
 
-## COMMIT-AS-YOU-GO (exact commands)
+## SAVE TO DISK (no git)
 
-After engine.py.new is on disk (complete or partial):
+Write engine.py.new to MyTradingSys/backtest/layers/fabio/v3/. Do not
+run git commands. Do not touch any other file on disk.
 
-  git add -f MyTradingSys/backtest/layers/fabio/v3/engine.py.new
-  git commit -m "fabio v3: engine.py (WIP, unverified)" -m "MTS-Session: <your session ID>"
-  git push origin main
+When the file is on disk, reply with:
+- full path
+- line count
+- first line
+- last line
+- "unknown:" markers you left, if any
 
-If you edit engine.py.new again, repeat the three commands with an
-updated WIP message. Never batch at the end.
-
-After the file is final, one more commit for the bookkeeping:
-
-  MyTradingSys/system/sessions/<session ID>.md  (14 fields, model=see-chat)
-  MyTradingSys/system/03_FILE_INDEX.md          (one row for engine.py.new)
-  MyTradingSys/research/fast_track_2026-09-27/SUPERVISOR_INBOX.md (one entry)
+Then stop. DSA commits from the desktop.
 
 ## STOP EARLY IF
 
