@@ -196,12 +196,28 @@ Three items appear in every CL prompt. No CL prompt ships without all three.
    exists, run it. Do not halt to re-ask an authorized question. A stop that produces
    no artifact is the exact failure this line forbids.
 
-3. Printing. Every CL prompt carries the PRINTING section:
+3. Printing and continuity. Every CL prompt carries the PRINTING section:
    - At the start of each task, print one line: "== T<n> <task short name> ==".
    - After each task, print one line: "T<n> <PASS|FAIL|BLOCKED> <one-line result>".
    - Between tasks, print the next task's name and what it will do, in one line.
-   - One task per reply. Wait for the operator to acknowledge before the next task.
+   - Do NOT wait for operator acknowledgment between tasks. Continue to the next task.
+     An authorized session runs to completion. Stopping to confirm is the exact
+     failure the operator-proxy line forbids.
+   - Stop only on: BLOCKED (needs a fact the session cannot obtain), FAIL (gate),
+     or operator interruption.
    No prompt ships without this section.
+
+## CONTINUOUS EXECUTION (added 2026-10-02, operator direct)
+
+A DSA-composed prompt never contains:
+- "operator confirms or overrides" (except when a genuinely blocking choice exists,
+  named in the prompt as the only stop).
+- "wait for the operator" between tasks.
+- "if you have any questions, stop and ask".
+
+Default is auto mode (SURFACE_POLICY 0): the session acts, logs it, and continues.
+The session stops only on BLOCKED (missing fact it cannot obtain), FAIL (gate), or
+operator interruption. Any prompt that tells it to stop between steps is a defect.
 
 ## PROMPT SHAPE
 
