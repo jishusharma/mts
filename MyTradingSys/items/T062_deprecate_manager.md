@@ -1,8 +1,9 @@
 # T062 - Deprecate the mts-manager
 
-Status: OPEN
+Status: CLOSED
 Opened: 2026-10-02
 Severity: MED
+Receipt: Archived by MTS-2026-10-03-2230Z-CLI-SUP-small-cleanups; paths _archive/mts-manager-2026-10-03/
 
 ## Operator statement (verbatim, 2026-10-02)
 

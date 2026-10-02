@@ -149,12 +149,6 @@ switch ($Verb.ToLower()) {
 
     "watch" { & (Join-Path $Root "scripts\live\mts-dashboard.ps1") }
 
-    "go"      { Py (Join-Path $Root "scripts\manager\claude_manager.py") "go" $Arg; exit $LASTEXITCODE }
-    "mstatus" { Py (Join-Path $Root "scripts\manager\claude_manager.py") "status"; exit $LASTEXITCODE }
-    "mresume" { Py (Join-Path $Root "scripts\manager\claude_manager.py") "resume"; exit $LASTEXITCODE }
-    "mstop"   { Py (Join-Path $Root "scripts\manager\claude_manager.py") "stop" $Arg; exit $LASTEXITCODE }
-    "usage"   { Py (Join-Path $Root "scripts\manager\claude_manager.py") "usage" $Arg; exit $LASTEXITCODE }
-
     "plan" { Py (Join-Path $Exec "new_plan.py"); exit $LASTEXITCODE }
 
     "plans" {
@@ -235,9 +229,16 @@ switch ($Verb.ToLower()) {
     }
 
     "guard" {
-        if ((Get-Procs "daily_loss_monitor" "Name='python.exe'").Count) { Ok "daily-loss guard already running"; break }
-        Open-Window "MTS daily-loss guard" "python '$Exec\daily_loss_monitor.py'"
-        Ok "daily-loss guard started in its own window - leave it open while trading"
+        if ((Get-Procs "daily_loss_monitor" "Name='python.exe'").Count) { Ok "daily-loss guard already running" }
+        else {
+            Open-Window "MTS daily-loss guard" "python '$Exec\daily_loss_monitor.py'"
+            Ok "daily-loss guard started in its own window - leave it open while trading"
+        }
+        if ((Get-Procs "live_runner_cli" "Name='python.exe'").Count) { Ok "live-runner-cli already running" }
+        else {
+            Open-Window "MTS live-runner-cli" "python -m MyTradingSys.backtest.layers.alerts.live_runner_cli"
+            Ok "live-runner-cli started in its own window - leave it open while trading"
+        }
     }
 
     "auto" {

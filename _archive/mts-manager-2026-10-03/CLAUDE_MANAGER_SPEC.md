@@ -1,4 +1,4 @@
-# CLAUDE MANAGER SPEC
+DEPRECATED 2026-10-03 per T062; archived at _archive/mts-manager-2026-10-03/
 # Written 2026-10-01 by MTS-2026-10-01-0557Z-DSA-COO.
 # One script. One front door. You type a task in plain words.
 # It handles model choice, context, budget, spawns, and close.
