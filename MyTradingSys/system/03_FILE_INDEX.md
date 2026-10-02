@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-30
-# SIZE: ~34.2KB
+# SIZE: ~34.4KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -370,3 +370,4 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/research/CC_PROMPT_FABIO_V3_CORE_2026-10-02.md | prompt | CC brief: finish Fabio v3 core. Review staged, write engine.py, 7 test files, README. Cap 3 subagents, batch 1, Ultracode off. | MTS-2026-10-01-1755Z-DSA-COO | 2026-10-02 |
 | MyTradingSys/research/CL_PROMPT_FABIO_V3_CORE_2026-10-02.md | prompt | CL brief: Fabio v3 engine.py only. 1 percent budget, no subagents, save-work checkpoints, stop-early rules. | MTS-2026-10-01-1755Z-DSA-COO | 2026-10-02 |
 | MyTradingSys/backtest/layers/fabio/v3/engine.py.new | staged | Fabio v3 top-level run(bars, config). 165 lines, 6 unknown markers. Unverified; gate pending after weekly reset. | MTS-2026-10-02-0935Z-CLI-BLD-fabio-engine | 2026-10-02 |
+| MyTradingSys/research/CL_PROMPT_FABIO_V3_TESTS_2026-10-02.md | prompt | CL brief: one test file per session (test_signals.py.new). Fail-first proof, one pytest run, no git. | MTS-2026-10-01-1755Z-DSA-COO | 2026-10-02 |
