@@ -36,12 +36,18 @@ LOG_MAX = timedelta(minutes=10)
 TRADES_WARN = timedelta(hours=6)
 ALERT_GAP_MAX = 2
 
-# role, CommandLine substring (None = java rule), required
+def _py(name):
+    """Python role: `name.py` as a script OR `-m pkg.name` as a module (mts.ps1 starts auto_trader with -m).
+    The name must end at whitespace, a quote or end of line, so auto_trader_state.json / auto_trader.log don't match."""
+    return re.compile(r"(?<![\w-])" + re.escape(name) + r"(?:\.py)?(?=[\s\"']|$)")
+
+
+# role, CommandLine substring or compiled regex (None = java rule), required
 ROLES = [
-    ("auto_trader", "auto_trader.py", True),
-    ("position_manager", "position_manager.py", False),
-    ("daily_loss_monitor", "daily_loss_monitor.py", True),
-    ("live_runner_cli", "live_runner_cli.py", True),
+    ("auto_trader", _py("auto_trader"), True),
+    ("position_manager", _py("position_manager"), False),
+    ("daily_loss_monitor", _py("daily_loss_monitor"), True),
+    ("live_runner_cli", _py("live_runner_cli"), True),
     ("loop-supervisor", "loop-supervisor.ps1", True),
     ("start-trading-day", "start-trading-day.ps1", True),
     ("java", None, True),
@@ -160,7 +166,9 @@ def check_processes(res, repo, args):
         cll = cl.lower()
         start = parse_cim_date(pr.get("CreationDate"))
         for role, sub, _req in ROLES:
-            if sub is not None:
+            if isinstance(sub, re.Pattern):
+                hit = bool(sub.search(cll))
+            elif sub is not None:
                 hit = sub.lower() in cll
             else:
                 hit = "java" in cll and ("mytradingsys" in cll or any(r in cll for r in repo_l))

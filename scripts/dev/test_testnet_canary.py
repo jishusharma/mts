@@ -259,3 +259,47 @@ def test_no_ids_or_secrets_in_output(tmp_path, capsys):
     md = (tmp_path / "out" / "CANARY_2026-10-02.md").read_text(encoding="utf-8")
     for s in ("L-mkt-0929-2215", "abcdEFGH12345678xyz"):
         assert s not in out and s not in md
+
+
+# --- module-form launches (mts.ps1:246 starts the trader as `python -m MyTradingSys.execution.auto_trader`)
+MODULE_FORM = {
+    "auto_trader": r'"C:\Python\python.exe" -m MyTradingSys.execution.auto_trader',
+    "daily_loss_monitor": "python -m MyTradingSys.execution.daily_loss_monitor",
+}
+
+
+def procs_with(tmp_path, replace=None, extra=()):
+    rows = json.loads(procs(tmp_path).read_text(encoding="utf-8"))
+    ms = rows[0]["CreationDate"]
+    for r in rows:
+        for role, cmd in (replace or {}).items():
+            if r["CommandLine"] == ROLE_CMDS[role]:
+                r["CommandLine"] = cmd
+    rows += [{"ProcessId": 900 + i, "CreationDate": ms, "CommandLine": c} for i, c in enumerate(extra)]
+    p = tmp_path / "procs2.json"
+    p.write_text(json.dumps(rows), encoding="utf-8")
+    return p
+
+
+def test_module_form_launch_counts_as_running(tmp_path, capsys):
+    repo = make_repo(tmp_path)
+    code, out = run(capsys, repo, tmp_path, proc=procs_with(tmp_path, replace=MODULE_FORM))
+    assert out.splitlines()[0].startswith("CANARY GREEN"), out
+    assert "proc:auto_trader | OK | 1 running" in (tmp_path / "out" / "CANARY_2026-10-02.md").read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize("decoy", [
+    r"cmd /c type MyTradingSys\execution\auto_trader_state.json",
+    "powershell Get-Content MyTradingSys/execution/auto_trader.log -Tail 5",
+    "python scripts/dev/make_auto_trader_report.py",
+    "pwsh -Command $Host.UI.RawUI.WindowTitle = 'MTS auto-trader'",
+])
+def test_non_launch_command_lines_are_not_the_trader(tmp_path, capsys, decoy):
+    repo = make_repo(tmp_path)
+    rows = json.loads(procs(tmp_path, drop=("auto_trader",)).read_text(encoding="utf-8"))
+    rows.append({"ProcessId": 950, "CreationDate": rows[0]["CreationDate"], "CommandLine": decoy})
+    p = tmp_path / "procs3.json"
+    p.write_text(json.dumps(rows), encoding="utf-8")
+    code, out = run(capsys, repo, tmp_path, proc=p)
+    assert code == 2
+    assert "proc:auto_trader | RED | not running" in (tmp_path / "out" / "CANARY_2026-10-02.md").read_text(encoding="utf-8")
