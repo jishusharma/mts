@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-30
-# SIZE: ~32.7KB
+# SIZE: ~33.1KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -363,3 +363,5 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/research/CLOUD_PROMPT_TWO_CORES_INTEGRATION_2026-10-02.md | prompt | CCR integration: readiness fix pass, Fabio v3 core compile, consensus writer, RSI observation, switchability spec, desktop runbook. | MTS-2026-10-01-1755Z-DSA-COO | 2026-10-02 |
 | MyTradingSys/research/CCM_PROMPT_BOOK_IMBALANCE_2026-10-02.md | prompt | CCM one-file brief: promote book_imbalance 0.0 guard in math_object_builder.py. Fail-first + four-step proof + Build-Check. | MTS-2026-10-01-1755Z-DSA-COO | 2026-10-02 |
 | MyTradingSys/system/CLOUD_ACCOUNTS.md | system | Cloud account identity, credits pools, expiry, GitHub wiring options (collaborator vs shared credential). | MTS-2026-10-01-1755Z-DSA-COO | 2026-10-02 |
+| MyTradingSys/tests/test_book_imbalance_nodata.py | test | Fail-first for book_imbalance 0.0 guard: 0.0 (no data) must not fire ask-heavy vs LONG. 11 cases. | MTS-2026-10-02-0910Z-CLI-BLD-bookimbal | 2026-10-02 |
+| MyTradingSys/tests/test_proof_direction.py | test | Proof-direction cases. Updated 2026-10-02: book=0.0 is aligned, not contradiction. | MTS-2026-10-02-0910Z-CLI-BLD-bookimbal | 2026-10-02 |
