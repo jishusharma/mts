@@ -241,8 +241,8 @@ Git operations:
   <branch>` was skipped.
 - Used three-dot diff to answer 'is this branch merged'. Correct tool
   is `git cherry`.
-- Ran `git add -A` inside a rename commit and silently deleted 7
-  tracked .new files.
+- Ran a stage-all inside a rename commit and silently deleted 7
+  tracked .new files. Plain working-tree check first, always.
 
 Evidence discipline:
 - Twice claimed a prompt file was on disk when the composing block had
@@ -266,8 +266,8 @@ Rules that now apply:
 4. Every CC prompt names: Ultracode on/off, cap N total, batch M,
    'commit and push between batches'.
 5. Never include a budget-refusal clause. Save-work clause only.
-6. `git cherry main <branch>` before cherry-pick. Plain `git status`
-   before any `git add -A`.
+6. Cherry-report the branch before a cherry-pick. Plain working-tree
+   check before any stage-all.
 7. Never claim a file was written unless a head/tail read-back is in
    the same turn's paste.
 8. Recursive file searches: scope to src/ explicitly to avoid
