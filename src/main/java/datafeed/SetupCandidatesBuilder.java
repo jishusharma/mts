@@ -56,6 +56,7 @@ public class SetupCandidatesBuilder {
 
         double currentPrice = root.get("current_price").asDouble();
         final double netRrFloor = NetRrFloor.read();  // single source: MyTradingSys/system/net_rr_floor.json; NaN (unreadable) fails every >= below
+        final double runnerMinDistancePct = RunnerMinDistance.read();  // MyTradingSys/system/runner_min_distance.json; NaN -> no runner
 
         // Step 1: State classification
         String state = classifyState(root);
@@ -140,7 +141,7 @@ public class SetupCandidatesBuilder {
             addHvns(root, "weekly_vp", nodes);
             addHvns(root, "daily_vp", nodes);
             addHvns(root, "intraday_4h_vp", nodes);
-            double[] picked = pickTarget(nodes, zonePrice, c.stop, "short".equals(c.direction), netRrFloor);
+            double[] picked = pickTarget(nodes, zonePrice, c.stop, "short".equals(c.direction), netRrFloor, runnerMinDistancePct);
             c.target = picked[0];
             c.runnerTarget = picked[1];
             if (c.target == 0) {
@@ -453,12 +454,20 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         return "15m"; // default
     }
 
+    /** pickTarget with no runner minimum distance (any strictly farther node is the runner). */
+    static double[] pickTarget(List<Double> nodes, double zonePrice, double stop, boolean isShort, double netRrFloor) {
+        return pickTarget(nodes, zonePrice, stop, isShort, netRrFloor, 0.0);
+    }
+
     /**
      * Target pick from volume nodes (POC/HVN). Returns {target, runner_target}; {0,0} when no node lies in the trade
-     * direction. Nearest node first; the first whose netRR >= floor wins, else the farthest node. runner = next node
-     * beyond the target (strictly farther price), 0 if none. NaN floor never qualifies (fail closed -> farthest).
+     * direction. Nearest node first; the first whose netRR >= floor wins, else the farthest node. runner = the next node
+     * beyond the target whose distance from the target is at least runnerMinDistancePct percent of the target price
+     * (nodes closer than that are skipped), 0 if none. NaN floor never qualifies (fail closed -> farthest); NaN
+     * runnerMinDistancePct never qualifies (fail closed -> no runner).
      */
-    static double[] pickTarget(List<Double> nodes, double zonePrice, double stop, boolean isShort, double netRrFloor) {
+    static double[] pickTarget(List<Double> nodes, double zonePrice, double stop, boolean isShort, double netRrFloor,
+                               double runnerMinDistancePct) {
         List<Double> dir = new ArrayList<>();
         for (double p : nodes) {
             if (isShort ? p < zonePrice : p > zonePrice) dir.add(p);
@@ -474,7 +483,8 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         double target = dir.get(idx);
         double runner = 0;
         for (int i = idx + 1; i < dir.size(); i++) {
-            if (Math.abs(dir.get(i) - zonePrice) > Math.abs(target - zonePrice)) { runner = dir.get(i); break; }
+            if (Math.abs(dir.get(i) - zonePrice) > Math.abs(target - zonePrice)
+                    && Math.abs(dir.get(i) - target) / target * 100.0 >= runnerMinDistancePct) { runner = dir.get(i); break; }
         }
         return new double[]{target, runner};
     }

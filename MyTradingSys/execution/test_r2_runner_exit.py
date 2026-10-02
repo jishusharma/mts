@@ -16,6 +16,9 @@ Hermetic: journal / plans / HALT paths are redirected to a temp dir, every excha
 scripts/dev/run_staged_tests.py (run_all_tests.py step 1) so the staged .new modules are the ones imported.
 """
 import json
+import math
+import os
+import sys
 import tempfile
 import unittest
 from datetime import datetime, timezone
@@ -305,6 +308,87 @@ class PlanFieldValidation(unittest.TestCase):
         reasons = executor.preflight(compiled, plan, mark=50000.0, halt_path=Path(tempfile.gettempdir()) / "nohalt1",
                                      halt_daily_loss_path=Path(tempfile.gettempdir()) / "nohalt2")
         self.assertTrue(any("not implemented" in r for r in reasons), reasons)
+
+
+# --- runner minimum distance (session MTS-2026-10-02-2055Z-CLI-SUP-r2-promote, T1/T2) -------------------------------
+# runner = next node beyond the target at least runner_min_distance_pct percent of the TARGET price away; none -> no runner.
+# Values: MyTradingSys/system/runner_min_distance.json (0.25, NO-SOURCE). All expected numbers are hand arithmetic.
+_REPO = Path(os.environ.get("MTS_REPO_ROOT") or Path(__file__).resolve().parents[2])
+sys.path.append(str(_REPO / "MyTradingSys" / "runtime"))   # appended: the staged execution modules keep priority
+import math_object_builder as mob  # noqa: E402
+import runner_min_distance as rmd  # noqa: E402
+
+
+class RunnerMinDistancePick(unittest.TestCase):
+    # LONG zone 1000, stop 990 (risk 10), floor 1.25: node 1020 = 2.0R gross, net 1.5 -> the target.
+    def pick(self, nodes, pct, zone=1000.0, stop=990.0, short=False):
+        return mob.pick_target(nodes, zone, stop, short, 1.25, pct)
+
+    def test_close_node_is_skipped_to_the_next_that_clears(self):
+        # 1022.5: 2.5/1020 = 0.2451 % < 0.25 -> skipped; 1030: 10/1020 = 0.9804 % -> runner
+        self.assertEqual(self.pick([1020.0, 1022.5, 1030.0], 0.25), (1020.0, 1030.0))
+
+    def test_zero_minimum_keeps_the_old_next_node(self):
+        self.assertEqual(self.pick([1020.0, 1022.5, 1030.0], 0.0), (1020.0, 1022.5))
+
+    def test_just_above_the_minimum_qualifies(self):
+        # 1022.6: 2.6/1020 = 0.2549 % >= 0.25
+        self.assertEqual(self.pick([1020.0, 1022.6], 0.25), (1020.0, 1022.6))
+
+    def test_skip_to_none_returns_no_runner_and_keeps_the_target(self):
+        # 1022.0: 0.1961 %, 1022.4: 0.2353 % -> both under 0.25 -> no runner
+        self.assertEqual(self.pick([1020.0, 1022.0, 1022.4], 0.25), (1020.0, None))
+
+    def test_short_side_measures_from_the_target(self):
+        # SHORT zone 1000, stop 1010; 980 = 2.0R -> target. 977.6: 2.4/980 = 0.2449 % skipped; 970: 10/980 = 1.0204 %
+        self.assertEqual(self.pick([980.0, 977.6, 970.0], 0.25, stop=1010.0, short=True), (980.0, 970.0))
+
+    def test_nan_minimum_qualifies_nothing(self):
+        self.assertEqual(self.pick([1020.0, 1030.0], float("nan")), (1020.0, None))
+
+    def test_min_distance_never_changes_the_target(self):
+        for pct in (0.0, 0.25, 5.0, float("nan")):
+            self.assertEqual(self.pick([1010.0, 1020.0, 1030.0], pct)[0], 1020.0)   # 1010 = 1.0R gross, net 0.75 < 1.25
+
+
+class RunnerMinDistanceFile(unittest.TestCase):
+    ZONE = {"name": "daily_vah", "price": 87064.0, "type": "daily_vah"}
+
+    def write(self, text):
+        d = tempfile.mkdtemp(prefix="rmd_")
+        f = Path(d) / "runner_min_distance.json"
+        f.write_text(text, encoding="utf-8")
+        return f
+
+    def norm(self, hvns):   # SHORT: swing high 87238 -> stop, risk 174; 86687 = 377/174 = 2.1667R gross, net 1.625 -> target
+        return {"current_price": 87000.0, "daily_vp": {"poc": 0, "hvns": hvns}, "weekly_vp": {}, "intraday_4h_vp": {},
+                "vwap": {}, "prior_day": {}, "structure": {"15m": {"swing_high": 87238.0, "swing_low": 86000.0}}}
+
+    def run_pick(self, path, hvns):
+        with mock.patch.object(mob, "load_floor", return_value=1.25), mock.patch.object(rmd, "PATH", path):
+            return mob._pick_stop_target_runner(self.ZONE, 87000.0, self.norm(hvns))
+
+    def test_shipped_file_is_valid_and_positive(self):
+        self.assertGreater(rmd.load_runner_min_distance_pct(), 0.0)
+
+    def test_builder_reads_the_file_each_call(self):
+        nodes = [86687.0, 86686.0, 83851.0]   # 86686: 1/86687 = 0.0012 % beyond the target
+        self.assertEqual(self.run_pick(self.write('{"runner_min_distance_pct": 0.25}'), nodes), (87238.0, 86687.0, 83851.0))
+        self.assertEqual(self.run_pick(self.write('{"runner_min_distance_pct": 0}'), nodes), (87238.0, 86687.0, 86686.0))
+
+    def test_unreadable_file_fails_closed_to_no_runner(self):
+        nodes = [86687.0, 83851.0]
+        for bad in ('{"runner_min_distance_pct": "x"}', '{"runner_min_distance_pct": -1}', '{"runner_min_distance_pct": true}',
+                    '{"other": 1}', "not json", "[]"):
+            self.assertEqual(self.run_pick(self.write(bad), nodes), (87238.0, 86687.0, None), bad)
+        self.assertEqual(self.run_pick(Path(tempfile.gettempdir()) / "rmd_missing.json", nodes), (87238.0, 86687.0, None))
+
+    def test_loader_raises_on_bad_values_and_accepts_zero(self):
+        for bad in ('{"runner_min_distance_pct": -0.1}', '{"runner_min_distance_pct": null}', '{"runner_min_distance_pct": 1e999}'):
+            with self.assertRaises(rmd.RunnerMinDistanceError, msg=bad):
+                rmd.load_runner_min_distance_pct(self.write(bad))
+        self.assertEqual(rmd.load_runner_min_distance_pct(self.write('{"runner_min_distance_pct": 0}')), 0.0)
+        self.assertTrue(math.isfinite(rmd.load_runner_min_distance_pct()))
 
 
 if __name__ == "__main__":

@@ -25,6 +25,7 @@ from mts_math import (
     detect_confluence,
 )
 from net_rr_floor import NetRrFloorError, load_floor
+from runner_min_distance import RunnerMinDistanceError, load_runner_min_distance_pct
 
 
 # ============================================================
@@ -265,12 +266,19 @@ def _pick_stop_target_runner(
         floor = load_floor()
     except NetRrFloorError:
         floor = float("nan")   # nothing qualifies -> farthest node (fail closed; the verdict gate decides)
-    target, runner = pick_target(all_pocs, zone_price, stop, is_above, floor)
+    try:
+        runner_min_pct = load_runner_min_distance_pct()
+    except RunnerMinDistanceError:
+        runner_min_pct = float("nan")   # no node qualifies -> no runner (single target; fail closed)
+    target, runner = pick_target(all_pocs, zone_price, stop, is_above, floor, runner_min_pct)
     return stop, target, runner
 
 
-def pick_target(nodes, zone_price, stop, is_short, floor):
-    """(target, runner_target) from volume nodes; (None, None) if no node lies in the trade direction."""
+def pick_target(nodes, zone_price, stop, is_short, floor, runner_min_pct=0.0):
+    """(target, runner_target) from volume nodes; (None, None) if no node lies in the trade direction.
+
+    runner = next node beyond the target at least runner_min_pct percent of the target price away from it (closer
+    nodes are skipped), else None. NaN runner_min_pct qualifies nothing (no runner). Mirrors the Java pickTarget."""
     in_dir = sorted((p for p in nodes if (p < zone_price if is_short else p > zone_price)),
                     key=lambda p: abs(p - zone_price))
     if not in_dir:
@@ -288,7 +296,7 @@ def pick_target(nodes, zone_price, stop, is_short, floor):
     target = in_dir[idx]
     runner = None
     for p in in_dir[idx + 1:]:
-        if abs(p - zone_price) > abs(target - zone_price):
+        if abs(p - zone_price) > abs(target - zone_price) and abs(p - target) / target * 100.0 >= runner_min_pct:
             runner = p
             break
     return target, runner

@@ -1,0 +1,6 @@
+{
+  "runner_min_distance_pct": 0.25,
+  "owner": "NO-SOURCE. operator Ruling 2026-10-03 delegates the value to Claude's judgement on realistic trades; reasoning in system/sessions/MTS-2026-10-02-2055Z-CLI-SUP-r2-promote.md (T1). Re-fit after the first live runner trades.",
+  "unit": "percent of the target price: runner = next node with |node - target| / target * 100 >= this value; none -> runner_target 0",
+  "readers": "MyTradingSys/runtime/runner_min_distance.py (runtime/math_object_builder.py), src/main/java/datafeed/RunnerMinDistance.java (SetupCandidatesBuilder)"
+}
