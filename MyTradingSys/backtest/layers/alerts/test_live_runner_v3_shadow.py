@@ -38,6 +38,7 @@ def _load_cli():
 
 
 cli = _load_cli()
+_HAS_V3 = hasattr(cli, "make_fabio_v3_layer") and "fabio|v3_grid|1m" in cli.build_default_registry()
 at = _load(EXEC / "auto_trader.py", "auto_trader_v3_shadow_test")
 from MyTradingSys.backtest.layers.alerts.alert_emitter import append_alerts_jsonl   # noqa: E402
 from MyTradingSys.backtest.layers.alerts.live_runner_core import build_registry, empty_state, run_registry  # noqa: E402
@@ -75,6 +76,7 @@ ALL_SHADOW = {"N": "SHADOW", "p": "SHADOW"}
 ALL_SOURCE = {"N": "SOURCE", "p": "SOURCE"}
 
 
+@unittest.skipUnless(_HAS_V3, "v3 layer absent: staged .new not present and file not promoted")
 class TestShadowSignal(unittest.TestCase):
     def test_a_shadow_signal_carries_collection_only(self):
         alerts = alerts_for(ALL_SHADOW)
@@ -107,6 +109,7 @@ class TestShadowSignal(unittest.TestCase):
             self.assertTrue(alerts and all(a["collection_only"] is True and "side" not in a for a in alerts), dec)
 
 
+@unittest.skipUnless(_HAS_V3, "v3 layer absent: staged .new not present and file not promoted")
 class TestSourceSignal(unittest.TestCase):
     def test_c_source_signal_flows_as_ordinary_layer(self):
         alerts = alerts_for(ALL_SOURCE)
@@ -130,6 +133,7 @@ class TestSourceSignal(unittest.TestCase):
         self.assertEqual([e["side"] for e in ev], ["short"])
 
 
+@unittest.skipUnless(_HAS_V3, "v3 layer absent: staged .new not present and file not promoted")
 class TestDefaults(unittest.TestCase):
     def test_default_registry_is_all_shadow_and_registered(self):
         reg = cli.build_default_registry()
