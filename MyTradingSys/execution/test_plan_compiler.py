@@ -192,5 +192,52 @@ class TestSizeBelowMinimumRejection(unittest.TestCase):
             compile_plan(plan)
 
 
+class TestR2RunnerPlan(unittest.TestCase):
+    """R2 runner exit (2026-10-03). The compiler already emits one order per plan target, so the 50/50 split needs no
+    compiler change: it comes from the plan's two targets. Hand numbers (FORMULAS.md 11.1/11.2): SHORT limit
+    83537.3 -> entry snaps CEIL 83537.5; 0.661 % -> raw 82985.317 -> CEIL 82985.5; 1.84 % -> raw 82000.41 -> CEIL
+    82000.5; 200 USD at 50/50 -> 100 + 100."""
+
+    def plan(self, **kw):
+        p = {
+            "plan_id": "r2_short", "account": "a", "instrument": "BTC-PERPETUAL", "side": "SHORT",
+            "validity": {"start": "2026-09-27T10:00:00Z", "end": "2026-09-27T14:00:00Z"},
+            "entry": {"type": "limit", "price": 83537.3}, "base_unit": 200,
+            "stop": {"type": "fixed_percent", "percent_below_entry": 0.2},
+            "targets": [{"amount_percent": 50, "pnl_target_percent": 0.661},
+                        {"amount_percent": 50, "pnl_target_percent": 1.84}],
+            "caps": {"max_notional_usd": 1000, "max_loss_usd": -50, "max_concurrent_orders": 4},
+        }
+        p.update(kw)
+        return p
+
+    def test_two_targets_compile_to_two_reduce_only_orders_50_50(self):
+        c = compile_plan(self.plan())
+        self.assertEqual([(o["label"], o["amount"], o["price"]) for o in c["target_orders"]],
+                         [("target_1", 100, 82985.5), ("target_2", 100, 82000.5)])
+        self.assertTrue(all(o["reduce_only"] and o["side"] == "BUY" for o in c["target_orders"]))
+
+    def test_breakeven_flag_changes_no_order(self):
+        base, flagged = compile_plan(self.plan()), compile_plan(self.plan(breakeven_after_first_target=True))
+        self.assertEqual(flagged["target_orders"], base["target_orders"])
+        self.assertEqual(flagged["stop_order"], base["stop_order"])
+        self.assertEqual(flagged["entry_orders"], base["entry_orders"])
+        self.assertEqual(flagged["stop_order"]["order_type"], "stop_market")   # initial stop is the ordinary fixed stop
+
+    def test_breakeven_flag_with_one_target_refuses_to_compile(self):
+        one = [{"amount_percent": 100, "pnl_target_percent": 0.661}]
+        with self.assertRaises(CompileError):
+            compile_plan(self.plan(breakeven_after_first_target=True, targets=one))
+
+    def test_breakeven_flag_must_be_true(self):
+        for bad in (False, "true", 1):
+            with self.assertRaises(CompileError, msg=repr(bad)):
+                compile_plan(self.plan(breakeven_after_first_target=bad))
+
+    def test_a_leg_below_the_minimum_still_refuses_rather_than_forcing_up(self):
+        with self.assertRaises(CompileError):      # 10 USD at 50% = 5 -> floors to 0 < 10
+            compile_plan(self.plan(base_unit=10))
+
+
 if __name__ == "__main__":
     unittest.main()
