@@ -201,22 +201,20 @@ def _swing_tf_for_zone(ztype: str) -> str:
     return "5m"
 
 
-def _pick_stop_target(
+def _pick_stop_target_runner(
     zone: Dict[str, Any],
     price: float,
     normalized: Dict[str, Any]
-) -> Tuple[Optional[float], Optional[float]]:
-    """Return (stop, target) for R:R calculation from normalized snapshot data.
+) -> Tuple[Optional[float], Optional[float], Optional[float]]:
+    """Return (stop, target, runner_target) for R:R calculation from normalized snapshot data.
 
     DATA-DRIVEN selection:
     - Stop = nearest structural level beyond zone (per-TF swing matched to zone type)
-    - Target = nearest volume node in trade direction (POC, VWAP, or opposite VA boundary)
+    - Target = nearest sourced volume node (POC/HVN) in trade direction with netRR >= floor, else the farthest
 
-    Returns (None, None) if insufficient data.
+    Returns target None if no node lies in the trade direction.
     """
     struct = normalized.get("structure", {})
-    vwap = normalized.get("vwap", {})
-    vwap_price = vwap.get("price")
     zone_price = zone["price"]
     zone_type = zone["type"]
 
@@ -259,24 +257,46 @@ def _pick_stop_target(
         if swing_low is not None and swing_low < zone_price:
             stop = swing_low
 
-    # TARGET selection - nearest POC or VWAP in trade direction
-    # RULE TOM-018 (next high volume price is the target); VWAP member NO-SOURCE (A07)
-    target = None
-    if is_above:
-        # Short target = lower levels
-        candidates = [p for p in all_pocs if p < zone_price]
-        if vwap_price is not None and vwap_price < zone_price:
-            candidates.append(vwap_price)
-        if candidates:
-            target = max(candidates)  # nearest lower level
-    else:
-        # Long target = upper levels
-        candidates = [p for p in all_pocs if p > zone_price]
-        if vwap_price is not None and vwap_price > zone_price:
-            candidates.append(vwap_price)
-        if candidates:
-            target = min(candidates)  # nearest upper level
+    # TARGET selection. RULE TOM-018/TOM-102: target = next high volume price/area (POCs, HVNs).
+    # Operator ruling 2026-10-03: VWAP / VAL / VAH / prior-day high-low members and the 2.0R-3.5R window are NO-SOURCE
+    # (A07-A10) and removed. Mirrors SetupCandidatesBuilder.pickTarget (Java): nearest node in direction whose
+    # netRR >= floor (net_rr_floor.json), else the farthest node in direction; runner = next node beyond the target.
+    try:
+        floor = load_floor()
+    except NetRrFloorError:
+        floor = float("nan")   # nothing qualifies -> farthest node (fail closed; the verdict gate decides)
+    target, runner = pick_target(all_pocs, zone_price, stop, is_above, floor)
+    return stop, target, runner
 
+
+def pick_target(nodes, zone_price, stop, is_short, floor):
+    """(target, runner_target) from volume nodes; (None, None) if no node lies in the trade direction."""
+    in_dir = sorted((p for p in nodes if (p < zone_price if is_short else p > zone_price)),
+                    key=lambda p: abs(p - zone_price))
+    if not in_dir:
+        return None, None
+    idx = len(in_dir) - 1   # fallback: farthest
+    if stop is not None and stop != zone_price:
+        risk = abs(zone_price - stop)
+        for i, p in enumerate(in_dir):
+            net = calculate_net_rr(abs(p - zone_price) / risk)
+            if net >= floor:   # NaN floor never qualifies
+                idx = i
+                break
+    else:
+        idx = 0   # no stop -> no R:R; nearest node
+    target = in_dir[idx]
+    runner = None
+    for p in in_dir[idx + 1:]:
+        if abs(p - zone_price) > abs(target - zone_price):
+            runner = p
+            break
+    return target, runner
+
+
+def _pick_stop_target(zone, price, normalized):
+    """(stop, target) - see _pick_stop_target_runner."""
+    stop, target, _runner = _pick_stop_target_runner(zone, price, normalized)
     return stop, target
 
 
@@ -324,9 +344,10 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
         rr_sanity = None
         stop = None
         target = None
+        runner_target = None
 
         if tier_label != "ignore":
-            stop, target = _pick_stop_target(zone, price, normalized)
+            stop, target, runner_target = _pick_stop_target_runner(zone, price, normalized)
             if stop is not None and target is not None:
                 gross_rr = calculate_gross_rr(zprice, target, stop)
                 net_rr = calculate_net_rr(gross_rr)
@@ -347,6 +368,7 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
             "rr_sanity": rr_sanity,
             "stop": stop,
             "target": target,
+            "runner_target": runner_target if runner_target is not None else 0,
         }
 
         confluence_input.append({"name": name, "price": zprice})
