@@ -261,58 +261,46 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-01T18:00Z (static read at session 1431Z).
+Last live read:  2026-10-02T10:05Z (static, java absent).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP at session 1431Z (wrapper 16164, supervisor 16796,
-                 java 18124). Verify with mts-loop status before any live work.
-                 Build PASS 2026-10-01T17:33:05Z. HEAD 70b0fa4.
-                 Working tree: several untracked session records + modified
-                 SUPERVISOR_LOG.md and BUILD_REPORT.md (manager writes).
+Runtime + loops: loop DOWN since 2026-10-01 evening. java absent.
+                 Build PASS 2026-10-02T09:07:53Z. HEAD 50e206f.
+                 Working tree: BUILD_REPORT.md + session_log.json dirty
+                 (manager writes).
 
-Landing since 2026-09-30 close: manager tier tracking landed (d5df1ee):
-paths() gains model_log, open_record writes tier: not model:, sibling
-model_log_line() appends Dumps/manager/model_log.jsonl, cmd_status gains
-last: field, test_model_log_records_tier added. claude_manager.py
-277->291 lines, test 88->98 lines. 17/17 tests. Previously landed this
-morning: T1 Java HVN target pool, T8 rule id script, Tom provenance audit
-(36 NO-SOURCE, 33 concept-only, 2 sourced) and Fabio v3.1 spec (8
-findings, 66 tests) merged to main. B081 closed (fees.py single source).
+Landing since 2026-10-01 close:
+- 2665558 live fix: book_imbalance 0.0 no longer blocks Tom longs.
+- d982802 live fix: TF maps gain 3m and 1d (alert_rate_check + auto_trader).
+- 0dd2311/c8f04df/e6b2aea W3 kappa: 0.446 (<0.6). 36 NO-SOURCE is
+  reader-dependent.
+- cf1ef14 wiring audit: maintenance protocols have no trigger.
+- c453d82 prompt conformance checklist. 2b62c2d budget never-refuse.
+- d63b2a8 nomenclature: CC = Claude Cloud, CL = Claude Local.
+- 5b4a9de Fabio v3 engine.py.new + 50e206f tests: 8 modules + 5 test
+  files, all .new, all unverified.
 
-Next (2026-10-02 after 14:30 IST, Pro weekly pool reset): run DSA T2
-(replace NO-SOURCE target window 2.0R-3.5R) via mts go, then DSA T3
-(stop ruling), T4 (rule ids for the Tom extracts), T5 (find a Tom
-citation). Loop stays up; no restart needed. Watch first testnet trade
-as it comes.
+Account B (jishu.awgp) live for CC/CL: collaborator jishu-awgp on
+jishusharma/mts; Claude GitHub App scoped to that repo. $99 of $100
+cloud credits, expires 2026-11-05.
 
-Handshake: CBP queue consumer landed at 2d20a5c. Consumer at
-MyTradingSys\queue\consumer.py, test at MyTradingSys\tests\test_queue_consumer.py.
-Not read this session; verify on next CBP task.
+Next (after weekly reset Fri 14:30 IST):
+1. Fabio v3 README.md (CL).
+2. Promote all 8 fabio/v3 .new with four-step proof each.
+3. Gate: run_all_tests --quick + Build-Check.
+4. Wire Fabio into live_runner as peer; route source:fabio-core to
+   fabio testnet account.
+5. Resolve 6 unknown: markers in engine.py.new.
 
-Findings: Session MTS-2026-10-01-1431Z-DSA-COO (this session):
-  - Loop started (was stopped at boot). wrapper 16164, supervisor
-    16796, sm/java 18124. Pre-start stale java killed cleanly.
-  - MTS-TAPE stale readout investigated: reader at mts-watch.ps1
-    L144-149 takes tail -1 and tags STALE over 120s. Correct. Sidecar
-    was not running when the feed first read, so the tag was honest.
-    No bug filed. apparatus_fixes L106 carries sidecar supervision.
-  - Manager tier tracking: d5df1ee.
-  - DSA handoff note first written this cycle by MTS-2026-10-01-0557Z-DSA-COO.
+Open queues: same as prior close. Bugs 27 OPEN; tasks T034, T037
+BLOCKED, T040, T042, T044, T046, T048, T049, T050, T051 PARKED,
+T052-T061.
 
-Open queue (BUGS.md OPEN rows: 27; items/INDEX.md OPEN rows: 33):
-  Bugs: B059, B063, B066, B069, B070, B072, B073, B074, B075, B076,
-    B077, B078, B079, B080, B082.
-  Tasks: T034, T037 (BLOCKED: pom edit), T040, T042, T044, T046,
-    T048 (HIGH), T049, T050 (HIGH, phases 1+2 PASS), T051 (PARKED:
-    backtest), T052, T053, T054, T055, T056, T057, T058, T059, T060,
-    T061.
+Prompt rules now binding: see MyTradingSys/system/PROMPT_CONFORMANCE_CHECKLIST.md
+and LESSONS_LEARNED.md 2026-10-02 entry.
 
 Next session first action: read items/INDEX.md + BUGS.md open rows.
-  Then choose one: B063 (divergence restore/deprecate), B070 (demote
-  UTC 00:00 + 0.75 slippage), T050 phase 3 (Deribit order placement via
-  deribit_orders.py primitives, not executor.py), T060 (low-vol BTC),
-  or T061 (WaveTrend layer).
 
 ## 12. SESSION END
 
