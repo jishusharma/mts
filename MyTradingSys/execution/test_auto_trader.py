@@ -19,10 +19,11 @@ def cfg():
 
 
 def tom_alert(no=44, verdict="SETUP_FORMING", setup="ct_short", entry=83537.3, stop=83704.37, target=82985.43,
-              time="2026-09-28T23:58:00Z", rr="gross 3.3 / net 2.48"):
+              time="2026-09-28T23:58:00Z", rr="gross 3.3 / net 2.48", runner=None):
+    runner_line = f"RUNNER_TARGET: {runner}\n" if runner is not None else ""
     card = (f"ALERT #{no}\n---\nVERDICT: {verdict}\nWHY:     proof 5\nTIME:    {time}\nPRICE:   83523.8\n"
             f"SETUP:   {setup}\nZONE:    15m_swing_high @ {entry}\n\nENTRY:   {entry}\nSTOP:    {stop}\n"
-            f"TARGET:  {target}\nR:R:     {rr}\n")
+            f"TARGET:  {target}\n{runner_line}R:R:     {rr}\n")
     return {"title": f"MTS ALERT #{no}", "card_text": card}
 
 
@@ -103,6 +104,66 @@ class TomSignalTest(unittest.TestCase):
     def test_garbage_alert(self):
         self.assertIsNone(at.tom_signal({"title": "x"}, {"tom_last_alert_no": 0}, cfg(), NOW))
         self.assertIsNone(at.tom_signal({}, {}, cfg(), NOW))
+
+
+class TomRunnerTest(unittest.TestCase):
+    """R2 (2026-10-03): RUNNER_TARGET on the card -> 50/50 two-target plan + breakeven flag; absent -> one target.
+    Hand numbers: short entry 83537.3, TARGET 82985.43 -> 0.661 %; RUNNER 82000.0 -> (1537.3/83537.3) = 1.84 %."""
+
+    def sig(self, c=None, **kw):
+        return at.tom_signal(tom_alert(**kw), {"tom_last_alert_no": 43}, c or cfg(), NOW)
+
+    def arg(self, s, flag):
+        return s["plan_args"][s["plan_args"].index(flag) + 1]
+
+    def test_card_with_runner_builds_two_targets_and_breakeven_flag(self):
+        s = self.sig(runner=82000.0)
+        self.assertNotIn("reject", s)
+        self.assertEqual(self.arg(s, "--targets"), "50@0.661,50@1.84")
+        self.assertIn("--breakeven-after-first-target", s["plan_args"])
+        self.assertEqual(self.arg(s, "--size"), "200")                      # same total size, the split adds none
+        self.assertEqual(s["log"], {"runner_target": 82000.0})
+
+    def test_parse_keeps_target_and_reads_runner(self):
+        p = at.parse_tom_alert(tom_alert(runner=82000.0))
+        self.assertEqual((p["target"], p["runner_target"], p["alert_no"]), (82985.43, 82000.0, 44))
+        self.assertIsNone(at.parse_tom_alert(tom_alert())["runner_target"])
+
+    def test_card_without_runner_is_single_target_exactly_as_before(self):
+        s = self.sig()
+        self.assertEqual(self.arg(s, "--targets"), "0.661")
+        self.assertNotIn("--breakeven-after-first-target", s["plan_args"])
+        self.assertEqual(s["log"], {"runner_skipped": "no RUNNER_TARGET"})
+
+    def test_runner_at_or_before_the_target_is_ignored(self):
+        for r in (82985.43, 83100.0, 0, "junk"):
+            s = self.sig(runner=r)
+            self.assertEqual(self.arg(s, "--targets"), "0.661", r)
+            self.assertNotIn("--breakeven-after-first-target", s["plan_args"], r)
+
+    def test_long_runner_must_be_above_target(self):
+        ok = self.sig(setup="tf_long", entry=80000, stop=79600, target=81200, runner=83000)
+        self.assertEqual(self.arg(ok, "--targets"), "50@1.5,50@3.75")
+        bad = self.sig(setup="tf_long", entry=80000, stop=79600, target=81200, runner=81000)
+        self.assertEqual(self.arg(bad, "--targets"), "1.5")
+
+    def test_share_is_config_and_zero_is_off(self):
+        c = cfg()
+        c["tom"]["runner_leg_pct"] = 30                                    # near 70 %, runner 30 %
+        self.assertEqual(self.arg(self.sig(c, runner=82000.0), "--targets"), "70@0.661,30@1.84")
+        c["tom"]["runner_leg_pct"] = 0
+        self.assertEqual(self.arg(self.sig(c, runner=82000.0), "--targets"), "0.661")
+
+    def test_rejected_alert_builds_no_plan_even_with_a_runner(self):
+        s = self.sig(time="2026-09-28T23:50:00Z", runner=82000.0)
+        self.assertIn("stale", s["reject"])
+        self.assertNotIn("plan_args", s)
+
+    def test_runner_does_not_touch_layer_signals(self):
+        s = at.layer_signal({"layer": "rsi", "event": "support", "tf": "15m", "t_close": LayerSignalTest.T15,
+                             "runner_target": 1.0}, cfg(), NOW)
+        self.assertNotIn("--breakeven-after-first-target", s["plan_args"])
+        self.assertEqual(s["plan_args"][s["plan_args"].index("--targets") + 1], "2")
 
 
 class LayerSignalTest(unittest.TestCase):
@@ -277,6 +338,37 @@ class CycleTest(unittest.TestCase):
         self.assertEqual([s["source"] for s in self.placed], ["tom"])
         self.assertEqual(active["plan_id"], "p1")
         self.assertEqual(self.events(), ["trade_attempt", "skipped_busy"])
+
+    def rows_of(self, event):
+        return [r for r in (json.loads(l) for l in at.LOG_PATH.read_text(encoding="utf-8").splitlines())
+                if r["event"] == event]
+
+    def test_trade_attempt_logs_the_runner_target(self):
+        at.TOM_ALERT.write_text(json.dumps(tom_alert(runner=82000.0)), encoding="utf-8")
+        at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW)
+        self.assertIn("--breakeven-after-first-target", self.placed[0]["plan_args"])
+        row = self.rows_of("trade_attempt")[0]
+        self.assertEqual(row["runner_target"], 82000.0)
+        self.assertNotIn("runner_skipped", row)
+
+    def test_trade_attempt_logs_why_it_stayed_single_target(self):
+        at.TOM_ALERT.write_text(json.dumps(tom_alert()), encoding="utf-8")
+        at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW)
+        row = self.rows_of("trade_attempt")[0]
+        self.assertEqual(row["runner_skipped"], "no RUNNER_TARGET")
+        self.assertNotIn("runner_target", row)
+
+    def test_restart_does_not_replay_a_runner_alert(self):
+        at.TOM_ALERT.write_text(json.dumps(tom_alert(runner=82000.0)), encoding="utf-8")
+        st = {"tom_last_alert_no": 43}
+        at.cycle(st, cfg(), False, {}, NOW)
+        self.assertEqual(len(self.placed), 1)
+        st_after_restart = json.loads(json.dumps(st))                 # auto_trader_state.json round trip
+        self.assertEqual(st_after_restart["tom_last_alert_no"], 44)
+        at.cycle(st_after_restart, cfg(), False, {}, NOW)
+        self.assertEqual(len(self.placed), 1)                         # same alert #44 is not traded twice
+        # a first start (no state file) adopts the card's alert number, runner line or not, and trades nothing
+        self.assertEqual(at.parse_tom_alert(at.load_json(at.TOM_ALERT, {}))["alert_no"], 44)
 
     def test_halt_blocks_all_trading(self):
         at.HALT.write_text("x", encoding="utf-8")
