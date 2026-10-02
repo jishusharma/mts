@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-30
-# SIZE: ~35.3KB
+# SIZE: ~39.2KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -344,6 +344,9 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/research/fast_track_2026-09-27/TOM_LINE_BY_LINE_4MoNjEQ2Dd8.md | research | Opus: no-longs code trace (book 0.0 veto; TWOPEAK label always true) + line-by-line reading of Tom live long 4MoNjEQ2Dd8; 5 engine missing pieces. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/research/fast_track_2026-09-27/EXTRACTION_METHOD_V2.md | method | Extraction method v2 for workers: decision rows in order, trade blocks, before/after-proof entry flag, 15-item miss checklist, long/short symmetry rules; Fabio appendix in EXTRACTION_METHOD_V2_FABIO.md. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | scripts/dev/testnet_status.py | tool | Daily sanitized testnet status (per family x account: alerts, entries, closes, P/L, skips, brakes; 0-trade flags) -> MyTradingSys/research/testnet_status/. Gate step 3s. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
+| scripts/dev/testnet_canary.py | tool | Read-only liveness + new-code canary for the testnet stack: processes, loop/log freshness, unconsumed Tom alerts, brake files (existence only), commits on live/Tom/Fabio paths; --run-gates; prints RESTART NEEDED (supervisor only). Exit 0/1/2 = GREEN/WARN/RED -> research/testnet_status/CANARY_<date>.md. Never restarts. | MTS-2026-10-02-1050Z-CLI-SUP-direction | 2026-10-02 |
+| scripts/dev/test_testnet_canary.py | test | 20 pytest cases for testnet_canary (fail-closed proc query, brake files never opened, restart-needed via temp git repo). | MTS-2026-10-02-1050Z-CLI-SUP-direction | 2026-10-02 |
+| MyTradingSys/research/DIRECTION_REVIEW_2026-10-02.md | report | Direction review: testnet down, Tom/Fabio 0 trades, NO-SOURCE gates still live, re-ordered priorities P0-P8, 4 operator decisions. | MTS-2026-10-02-1050Z-CLI-SUP-direction | 2026-10-02 |
 | MyTradingSys/research/fast_track_2026-09-27/PROVENANCE_AUDIT_TOM.md | research | Provenance audit of the Tom core path (74 rows): 2 TOM-SOURCED, 33 concept-only, 36 NO-SOURCE, 3 plumbing; 2:1 net miscited to qLnQan0KGmQ; safety rules X1-X8 listed unjudged. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/research/AUDIT_REVIEW_2026-10-01.md | review | DSA review of the Tom/Fabio provenance work: 10 sections, verdict tally, impact ranks, method gaps (no pre-registration, single reader, no falsification), backtest-stat defects (H1-H2, M7-M9), six ranked alternatives, scientific-method gap list. | MTS-2026-10-01-1431Z-DSA-COO | 2026-10-01 |
 | MyTradingSys/research/REVALIDATION_REQUEST_2026-10-01.md | review | DSA revalidation request for Claude: 10 scientific methods (DSR, PBO, CPCV, White/Hansen SPA, Romano-Wolf, BH-FDR, stationary bootstrap, kappa, purged CV, pre-registration) with proof paths, source citations, and what to check. | MTS-2026-10-01-1431Z-DSA-COO | 2026-10-01 |
