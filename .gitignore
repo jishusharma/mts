@@ -97,3 +97,6 @@ MyTradingSys/execution/plans/
 MyTradingSys/research/fast_track_2026-09-27/bt_runs/
 runtime_data/mts-watch.log
 backup_session/
+
+# Rewritten every 30 min by the scheduled canary task; not a reviewed document
+MyTradingSys/research/testnet_status/CANARY_*.md

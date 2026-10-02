@@ -2,8 +2,7 @@
 
 Layer module: location -> context -> trigger -> management, for the NY 390-minute window on 1m order-flow bars.
 Spec: `MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md` (sections 2-7, test plan section 10).
-Status: STAGED. Every module is still `<name>.py.new`; promote per CLAUDE.md (back up to `.pre_<tag>`, rename, re-gate,
-commit). Nothing here is imported by `execution/` or `layers/alerts/` (spec header, test T50).
+Status: PROMOTED 2026-10-02 (eddd237). v3 tests pass; not yet in the gate.
 
 ## Modules
 | file | spec | contents |

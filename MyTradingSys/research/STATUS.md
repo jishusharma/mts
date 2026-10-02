@@ -1,43 +1,54 @@
 # Development Status
 
-Generated: 2026-10-01 19:47:00
+Generated: 2026-10-02 22:16:36
 
 ## Git Status
-**Branch:** main
+**Branch:** fast-track
 
 **Last 10 commits:**
 ```
-2d1f24d T8: TOM- rule ids at decision points + scripts/dev/check_rule_ids.py
-65c10a7 T1: add vp hvns to Java target pool (mirrors 4deae5e) + JUnit test
-c3291ec TASK 1-3: Read-only research ” extraction prompt, CVD divergent definition, stop rule ruling
-e5803d2 Report: correct fresh-extract count and HVN line ref
-0af1fd5 Consolidation report and DSA task briefs 2026-10-01 (Tom core + Fabio)
-4deae5e math_object_builder: HVNs become target candidates (Tom TOM-018)
-57b6a2e TOM-048: replace non-verbatim FVG quote; index and condition file now agree
-0fa19cf ExtraSetupBuilder: remove FVG entries (fvg_long/fvg_short); FVG is exit-only
-e86aee7 manager: resume keeps queued items; qwen staged not closed. B080: pace-block self-heal on stale entries
-5f4ca41 manager: dedup OPEN-only, mstatus excludes README; regression test for closed record
+660f7a4 session close 2026-10-02: MTS-2026-10-02-1500Z-CLI-BLD-testnet-wire
+59000f6 testnet_canary: detect python roles launched as `-m pkg.module`, not only `name.py`
+da13131 T050 phase 3 PASS on Deribit testnet (first real MTS orders); BUGS B077/B078/B079 CLOSED
+2ee3b4b session close: MTS-2026-10-02-1530Z-CLI-ANA-tom-fabio-session
+0c085c5 market analysis 2026-10-02: tape vs Tom gates and Fabio reports
+9df02c6 checklist: no stop between tasks; continuous execution
+8b57131 remove invented budget/usage/token lines; Session Manager governs (USER, SURFACE_POLICY, checklist, DSA)
+b8eb479 checklist: mandatory CL prompt lines (process spawning, operator proxy, printing)
+78d8c3a section 11: P2 close (Tom all-shorts diagnosis, book_imbalance 0.0 bug); build time + head refresh
+34dadab tom_bt_diag: log verdict reason per proof-5 row; all-shorts diagnosis
 ```
 
 ## Queue Status
 ```
-WORKER   idle, heartbeat 8 h ago (host JIS-NUC, worker 778a6ee4da7e)
+WORKER   idle, heartbeat 25 h ago (host JIS-NUC, worker 778a6ee4da7e)
 WARNING  heartbeat older than 3 min: NUC off, asleep, signed out, or share unreachable
 QUEUE    waiting 0; running 0; replies 234; not yet verified 0
-DSA-WORKER idle, heartbeat 18 h ago; incoming_dsa 0; running 0
+DSA-WORKER idle, heartbeat 44 h ago; incoming_dsa 0; running 0
 RECENT   2111-dsa-recon-tom-hq8soq67x5o: PARTIAL
 RECENT   2112-dsa-recon-tom-pgdmklj0hha: PARTIAL
 RECENT   2113-dsa-recon-tom-zawex-trufe: BLOCKED
 ```
 
 ## In-Flight .new Files
-- MyTradingSys\backtest\bt\bt_stats.py.new (56.1h)
-- MyTradingSys\backtest\layers\audit\formula_audit.py.new (62.1h)
-- MyTradingSys\backtest\layers\cryptocred\test_cc_retest.py.new (78.5h)
-- MyTradingSys\backtest\layers\cryptocred\test_cc_structure.py.new (78.5h)
-- MyTradingSys\execution\README.md.new (79.7h)
+- MyTradingSys\backtest\bt\bt_stats.py.new (82.6h)
+- MyTradingSys\backtest\layers\audit\formula_audit.py.new (88.6h)
+- MyTradingSys\backtest\layers\consensus\test_writer.py.new (8.0h)
+- MyTradingSys\backtest\layers\consensus\writer.py.new (8.0h)
+- MyTradingSys\backtest\layers\cryptocred\test_cc_retest.py.new (105.0h)
+- MyTradingSys\backtest\layers\cryptocred\test_cc_structure.py.new (105.0h)
+- MyTradingSys\backtest\layers\rsi\observation.py.new (8.0h)
+- MyTradingSys\backtest\layers\rsi\test_observation.py.new (8.0h)
+- MyTradingSys\execution\README.md.new (106.2h)
+- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (8.0h)
+- MyTradingSys\runtime\test_quad_classify.py.new (8.0h)
+- MyTradingSys\runtime\test_regime_classifier.py.new (8.0h)
+- MyTradingSys\tests\java\MarketDataSnapshotTest.java.new (8.0h)
 
 ## Recent Reports (last 7 days)
+- MyTradingSys/research\TWO_CORES_INT_HANDOFF_2026-10-01.md (2026-10-02 14:17) # TWO CORES INTEGRATION: HANDOFF (budget stop, 2026-10-01 19:40Z)
+- MyTradingSys/research\W3_KAPPA_REPORT_2026-10-01.md (2026-10-02 00:36) # W3 KAPPA REPORT 2026-10-01 - session MTS-2026-10-01-1900Z-CLD-ANA-w3-kappa
+- MyTradingSys/research\HANDOFF_FOR_CLAUDE_2026-10-01.md (2026-10-01 21:02) # HANDOFF FOR CLAUDE - Tom/Fabio revalidation (2026-10-01)
 - MyTradingSys/research\CONSOLIDATION_REPORT_2026-10-01.md (2026-10-01 17:21) # CONSOLIDATION REPORT 2026-10-01 (cloud session, read-only against main)
 - MyTradingSys/research\fast_track_2026-09-27\T054_US_SESSION_BRIEF.md (2026-10-01 01:00) # T054 Research Brief: US Session / Correlation / News Effects on BTC
 - MyTradingSys/research\fast_track_2026-09-27\MAINTAINER_REPORT_2026-09-30.md (2026-09-30 03:59) # MAINTAINER REPORT 2026-09-30 (second run; covers 0707b59..26a8ad2 = 56 commits)
