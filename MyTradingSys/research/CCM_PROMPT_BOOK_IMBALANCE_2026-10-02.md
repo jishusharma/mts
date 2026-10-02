@@ -12,6 +12,17 @@ Line 2: usage percent, or '1 assumed'.
 1 percent left. No subagents. No file reads outside the list below.
 No exploration. Do the steps, commit, stop.
 
+## BRANCH (operator directive)
+CLAUDE.md says branch fast-track. Operator directive overrides for this
+session: commit to main and push origin main. Reason: this is a single
+small fix, gated by Build-Check, and every session today is on main.
+No fast-track branch.
+
+## OWNERSHIP
+No SUPERVISOR_LOG claim needed. math_object_builder.py is under runtime/,
+not execution/ or layers/alerts/. The runtime loop is down tonight
+(java absent, static mode), so no live process imports it right now.
+
 ## FILES (only these)
 
 - MyTradingSys/runtime/math_object_builder.py (target)
@@ -55,14 +66,27 @@ Two lines added, nothing else changed.
    .\scripts\Build-Check.ps1
    STATUS must be PASS. If FAIL, STOP and report.
 
-8. Commit. Two commands:
-   git add MyTradingSys/runtime/math_object_builder.py MyTradingSys/tests/test_book_imbalance_nodata.py
-   git commit -m "fix: book_imbalance 0.0 is unknown, not ask-heavy vs LONG" -m "MTS-Session: <your session ID>"
-   git push origin main
+8. Session record. Create MyTradingSys/system/sessions/<your session ID>.md
+   using the 14-field template from MyTradingSys/system/sessions/README.md.
+   Fields: surface CLI, host JIS-NB, account A, model as reported,
+   role BLD, branch main, branch_alias none, predecessor none,
+   lanes none, started <now UTC>, ended <now UTC>, status closed,
+   commits <short hash>, handoff none. One short file.
+
+9. Index row. Append one row to MyTradingSys/system/03_FILE_INDEX.md:
+   | MyTradingSys/tests/test_book_imbalance_nodata.py | test | Fail-first
+   for the book_imbalance 0.0 guard. | <your session ID> | <date> |
+   Then update the # SIZE: ~NKB header at the top to match the new
+   byte count (round to 1 decimal).
+
+10. Commit. All files in one commit:
+    git add MyTradingSys/runtime/math_object_builder.py MyTradingSys/tests/test_book_imbalance_nodata.py MyTradingSys/system/sessions/<your session ID>.md MyTradingSys/system/03_FILE_INDEX.md
+    git commit -m "fix: book_imbalance 0.0 is unknown, not ask-heavy vs LONG" -m "MTS-Session: <your session ID>"
+    git push origin main
 
 ## STOP
 
-After step 8, print the four-line verify block and stop. Do not touch
+After step 10, print the four-line verify block and stop. Do not touch
 any other .new file. Do not finish Wave 2. Do not read the switchability
 spec.
 
