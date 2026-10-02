@@ -317,6 +317,10 @@ function Build-Card {
         $lines += "ENTRY:   $($top.zone.price)"
         $lines += "STOP:    $($top.math.stop)"
         $lines += "TARGET:  $($top.math.target)"
+        # R2: the node after TARGET (math.runner_target; 0 = none). Emitted only when present so a card without it
+        # keeps the single-target behaviour in auto_trader.
+        $runnerTarget = $top.math.runner_target
+        if ($null -ne $runnerTarget -and [double]$runnerTarget -gt 0) { $lines += "RUNNER_TARGET: $runnerTarget" }
         $lines += "R:R:     gross $($top.math.gross_rr) / net $($top.math.net_rr)"
         $lines += ""
         $lines += "PROOF:"
