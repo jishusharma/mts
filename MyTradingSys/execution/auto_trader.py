@@ -23,6 +23,7 @@ To pause ONLY the auto-trader (e.g. while a testnet suite needs a flat account),
 """
 import argparse
 import json
+import math
 import os
 import re
 import subprocess
@@ -51,9 +52,14 @@ LAYER_ALERT_DIR = REPO / "MyTradingSys" / "runtime" / "alerts"
 TF_SECONDS = {"1m": 60, "3m": 180, "5m": 300, "15m": 900, "30m": 1800, "1h": 3600, "4h": 14400, "1d": 86400}
 
 DEFAULT_CONFIG = {
-    # Tom core: limit at the zone, stop/target from the alert, whole size off at the target.
+    # Tom core: limit at the zone, stop/target from the alert. Whole size off at the target, or (R2) the
+    # runner_leg_pct share on RUNNER_TARGET when the card carries one.
     "tom": {"enabled": True, "size_usd": 200, "max_loss_usd": 25, "hours": 1.0, "max_hold_minutes": None, "max_hold_bars": 8, "max_age_seconds": 300,
-            "verdicts": ["SETUP_FORMING", "SETUP_CONFIRMED"]},   # net_rr floor is net_rr_floor.json, not a config key
+            "verdicts": ["SETUP_FORMING", "SETUP_CONFIRMED"],   # net_rr floor is net_rr_floor.json, not a config key
+            # R2: share of size on the runner leg (RUNNER_TARGET); the rest exits at TARGET and the stop moves to
+            # breakeven when that first leg fills. NO-SOURCE testnet default (operator Ruling 2, 2026-10-03; BE
+            # concept: Fabio P21 "I put my stop loss to break even"). 0 = off = single target, as before.
+            "runner_leg_pct": 50},
     # Layers have no stop/target of their own: fixed bracket, market entry, small size.
     "layers": {"enabled": True, "size_usd": 100, "max_loss_usd": 10, "stop_pct": 1.0, "targets": "2",
                "hours": 2.0, "max_age_bars": 1.2,
@@ -99,12 +105,22 @@ def save_json(path: Path, data) -> None:
 
 # ---------------------------------------------------------------- Tom core signal
 
-CARD_FIELD = re.compile(r"^(VERDICT|TIME|SETUP|ZONE|ENTRY|STOP|TARGET|R:R):\s*(.*)$", re.M)
+CARD_FIELD = re.compile(r"^(VERDICT|TIME|SETUP|ZONE|ENTRY|STOP|TARGET|RUNNER_TARGET|R:R):\s*(.*)$", re.M)
 ALERT_NO = re.compile(r"#(\d+)")
 
 
+def _runner_from_card(raw):
+    """RUNNER_TARGET field -> positive finite float, or None (absent, 0 = no runner, or unparsable)."""
+    try:
+        v = float(raw)
+    except (TypeError, ValueError):
+        return None
+    return v if math.isfinite(v) and v > 0 else None
+
+
 def parse_tom_alert(alert: dict) -> dict:
-    """Return {'alert_no','verdict','time','setup','side','entry','stop','target','net_rr'} or {} if unusable."""
+    """Return {'alert_no','verdict','time','setup','side','entry','stop','target','runner_target','net_rr'} or {}
+    if unusable. runner_target is None when the card carries no (valid) RUNNER_TARGET line."""
     card = alert.get("card_text") or ""
     fields = {k: v.strip() for k, v in CARD_FIELD.findall(card)}
     m = ALERT_NO.search(alert.get("title") or "")
@@ -119,7 +135,30 @@ def parse_tom_alert(alert: dict) -> dict:
     return {"alert_no": int(m.group(1)) if m else None, "verdict": fields.get("VERDICT", ""),
             "zone_tf": zm.group(1) if zm and zm.group(1) in TF_SECONDS else None,
             "time": fields.get("TIME", ""), "setup": setup, "side": side, "entry": entry, "stop": stop,
-            "target": target, "net_rr": float(rr.group(1)) if rr else None}
+            "target": target, "runner_target": _runner_from_card(fields.get("RUNNER_TARGET")),
+            "net_rr": float(rr.group(1)) if rr else None}
+
+
+def runner_split(p: dict, c: dict):
+    """R2 leg split for a Tom alert -> (targets_arg, None) for 'near@pct,runner@pct', or (None, reason).
+    Share of size sent to the runner leg = c['runner_leg_pct'] (NO-SOURCE testnet default 50, operator Ruling 2;
+    0 disables). Fails closed to the single-target plan: no runner, runner not beyond TARGET, or a leg that
+    would floor below the 10 USD contract minimum."""
+    pct = c.get("runner_leg_pct") or 0
+    if pct <= 0:
+        return None, "runner_leg_pct off"
+    runner = p.get("runner_target")
+    if runner is None:
+        return None, "no RUNNER_TARGET"
+    beyond = runner > p["target"] if p["side"] == "long" else runner < p["target"]
+    if not beyond:
+        return None, f"runner {runner} not beyond target {p['target']}"
+    near = int(c["size_usd"] * (100 - pct) / 100 // 10) * 10
+    if near < 10 or c["size_usd"] - near < 10:
+        return None, f"size {c['size_usd']} too small for a {100 - pct:g}/{pct:g} split"
+    tgt_pct = round(abs(p["target"] - p["entry"]) / p["entry"] * 100, 3)
+    run_pct = round(abs(runner - p["entry"]) / p["entry"] * 100, 3)
+    return f"{100 - pct:g}@{tgt_pct},{pct:g}@{run_pct}", None
 
 
 def net_rr_floor_reject(net_rr: float):
@@ -166,9 +205,13 @@ def tom_signal(alert: dict, state: dict, cfg: dict, now: datetime):
         return sig
     stop_pct = round(abs(p["entry"] - p["stop"]) / p["entry"] * 100, 3)
     tgt_pct = round(abs(p["target"] - p["entry"]) / p["entry"] * 100, 3)
+    legs, why_single = runner_split(p, c)
+    sig["log"] = {"runner_target": p["runner_target"]} if legs else {"runner_skipped": why_single}
     sig["plan_args"] = ["--side", p["side"], "--entry", "limit", "--price", f"{p['entry']}",
-                        "--size", str(c["size_usd"]), "--stop", f"{stop_pct}", "--targets", f"{tgt_pct}",
+                        "--size", str(c["size_usd"]), "--stop", f"{stop_pct}", "--targets", legs or f"{tgt_pct}",
                         "--max-loss", str(c["max_loss_usd"]), "--hours", str(c["hours"])]
+    if legs:                                   # R2: stop to breakeven when the first leg fills (position_manager)
+        sig["plan_args"].append("--breakeven-after-first-target")
     if c.get("max_hold_minutes"):
         sig["plan_args"] += ["--max-hold-minutes", str(c["max_hold_minutes"])]
     elif c.get("max_hold_bars"):   # time exit = N bars of the alert's zone timeframe (5m/15m/1h); 15m if unknown
@@ -523,7 +566,7 @@ def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = N
     signals += [layer_signal(a, cfg, now) for a in read_new_layer_alerts(state)]
     halted = brakes()
     for sig in signals:
-        base = {"source": sig["source"], "key": sig["key"], "side": sig.get("side")}
+        base = {"source": sig["source"], "key": sig["key"], "side": sig.get("side"), **sig.get("log", {})}
         if "reject" in sig:
             log({"event": "signal_rejected", **base, "reason": sig["reject"]})
         elif halted:
