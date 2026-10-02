@@ -1675,6 +1675,21 @@
       "setup": "-",
       "verdict": "NO_TRADE",
       "ts": "2026-10-01T17:04:22.009Z"
+    },
+    {
+      "action": "monitored",
+      "setup": "-",
+      "verdict": "NO_TRADE",
+      "reason": null,
+      "type": "alert",
+      "ts": "2026-10-02T14:31:25.103Z",
+      "alert_id": 83
+    },
+    {
+      "type": "decision",
+      "action": "note",
+      "reason": "P2 CL close: Tom all-shorts root cause = math_object_builder.py book_imbalance 0.0 treated as ask-heavy for longs (archive placeholder). Fix in 13295c8, WIP/unverified, touched a critical file without four-step proof. Cache stale (2026-09-30). Section 11 refresh committed 78d8c3a. Next: regenerate row cache, re-run Tom report, gate 13295c8 fail-first.",
+      "ts": "2026-10-02T14:38:14.787054Z"
     }
   ]
 }

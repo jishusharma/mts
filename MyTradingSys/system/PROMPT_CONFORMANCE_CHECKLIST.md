@@ -171,6 +171,31 @@ to copy whole. No commentary inside the fence. At most one line of
 commentary between the two blocks, stating the operator action.
 
 
+## MANDATORY LINES IN EVERY CL PROMPT (added 2026-10-02, operator direct)
+
+Three items appear in every CL prompt. No CL prompt ships without all three.
+
+1. Process spawning. Add this line to the prompt:
+   "CL on the desktop runs commands as subprocesses (python, PowerShell, git, Maven).
+   Spawn whatever child process the task needs, per Session Manager routing
+   (SURFACE_POLICY 3b). Do not refuse or stall a task because it requires spawning.
+   Spawning is expected; stopping to ask whether spawning is allowed is a defect."
+
+2. Operator proxy, verbatim (operator words, spelling preserved):
+   "Use my proxy when needed - Incase i forget - Claude must not stop and eat up
+   my money without outputting work!"
+   Meaning: the operator's standing authorization covers proxy use and any question
+   the operator has already pre-answered. When the task is authorized and the tool
+   exists, run it. Do not halt to re-ask an authorized question. A stop that produces
+   no artifact is the exact failure this line forbids.
+
+3. Printing. Every CL prompt carries the PRINTING section:
+   - At the start of each task, print one line: "== T<n> <task short name> ==".
+   - After each task, print one line: "T<n> <PASS|FAIL|BLOCKED> <one-line result>".
+   - Between tasks, print the next task's name and what it will do, in one line.
+   - One task per reply. Wait for the operator to acknowledge before the next task.
+   No prompt ships without this section.
+
 ## PROMPT SHAPE
 
 - Line 1: session ID with -CLD- for CC or -CLI- for CL.
