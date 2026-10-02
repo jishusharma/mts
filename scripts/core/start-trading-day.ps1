@@ -166,7 +166,7 @@ function Compute-Verdict {
 
     $top = $cands[0]
     $net_rr = [double]$top.math.net_rr
-    $net_ok = [bool]$top.math.net_rr_sanity
+    $net_ok = [bool]($top.math.net_rr -ge 1.25)   # operator 2026-10-02: 2.0 was D1(a), NO-SOURCE; 1.25 for testnet collection; restore after P4
     $tier   = [string]$top.math.tier
     $proof  = [int]$top.score.proof_count
     $setup  = [string]$top.setup_type

@@ -114,7 +114,7 @@ One question would have prevented it.
 
 | # | Question | Evidence |
 |---|---|---|
-| 11 | What is the session total token cap for this session type? | a number, not "as needed" |
+| 11 | What is the session budget cap, in the unit this account bills in? | % for Pro/CL sessions (e.g. "up to 20% of session"); $ for CC cloud credit sessions |
 | 12 | Is the prompt end to end? | yes / no + list of missing pieces |
 | 13 | Does the prompt ask to save files and commit timely? | save cadence + git or no-git instruction |
 
@@ -147,7 +147,7 @@ carries the timestamp of the paste that supplied the facts.
 | Effort | low / medium / high |
 | Ultracode | off / on |
 | Estimated work | ... |
-| Total token cap | a number |
+| Budget cap | operator hint in the account unit (% for Pro, $ for cloud); Session Manager routes |
 | Subagent cap | 0..3 |
 | Batch size | 1..3 |
 | Commit cadence | per step / per wave / end / n/a |

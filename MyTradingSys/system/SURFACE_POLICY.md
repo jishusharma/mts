@@ -47,6 +47,7 @@ depends on it.
 ## 3b. Manager routing + spawn caps (added 2026-10-02)
 
 Manager: scripts/manager/mts-manager.ps1. Operator verbs: mts go / mstatus
+Budget unit: % of session or weekly pool for Pro/CL sessions. $ for CC cloud credits. Operator hints, Session Manager routes.
 / mresume / mstop / usage. Sessions inherit these rules at boot.
 
 Spawn:
