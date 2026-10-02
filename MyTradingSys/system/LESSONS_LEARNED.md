@@ -278,3 +278,34 @@ Cost of these mistakes: ~$18 cloud burn (Ultracode); 2 lost waves
 prompts; one 1-byte file; one unintended deletion of 7 tracked files.
 
 # END
+
+## 2026-10-02 - prompt delivery failures
+
+Four defects in one day, all on the DSA chat surface, all from
+composing CC/CL/Opus prompts from earlier pastes instead of disk reads.
+
+1. Claimed 13 Fabio v3 files. Disk had 14.
+   Rule: no prompt claim without a same-turn read. Now in USER.md and
+   PROMPT_CONFORMANCE_CHECKLIST.md STEP -1.
+
+2. Invented a 500K/100K session token cap.
+   Rule: any numeric cap is OPERATOR-SET or omitted. Now in
+   PROMPT_CONFORMANCE_CHECKLIST.md STEP -1 tags.
+
+3. Invented four "do not read" restrictions on the Opus session.
+   Rule: every restriction needs the operator's own words. Now in
+   USER.md and PROMPT_CONFORMANCE_CHECKLIST.md STEP 0.
+
+4. Delivered a prompt labelled verified, composed from prior pastes.
+   Rule: verification means same-turn disk read with a pasted receipt.
+   Now in PROMPT_CONFORMANCE_CHECKLIST.md STEP -1 and DELIVERY FORMAT.
+
+Cost: one wasted Opus session on 2026-10-02.
+
+Prevented by: SESSION_MANIFEST now loads the checklist and this file
+at boot; DSA_SESSION_PROMPT.md section 3 step 10 requires the checklist
+run before any prompt leaves the surface.
+
+Structural fix still pending: scripts/dev/prompt_check.ps1, a real gate
+that greps a composed prompt against disk and refuses launch on FAIL.
+Filed for later.

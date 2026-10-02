@@ -76,6 +76,12 @@ Two more boot rules, added 2026-09-16 after a boot reply invented field values a
    the reply's file paths. MyTradingSys/ means MTS. cbp_v2/ or
    mts_queue/ means CBP.
 
+10. Before composing any CC, CL, or worker prompt, read
+    MyTradingSys/system/PROMPT_CONFORMANCE_CHECKLIST.md. Run its
+    STEP -1 and STEP 0. Print the Verified facts block above the
+    prompt. No prompt leaves this surface without a same-turn
+    verification block pasted back.
+
 ## 4. READING LARGE FILES
 
 Any file over 20 KB: read by line range, not whole file.

@@ -11,7 +11,8 @@
                        {"path":"MyTradingSys/runtime/current_market_state.md","role":"structural_baseline","read":"full","mode":"live_only"},
                        {"path":"MyTradingSys/runtime/state_code.json","role":"tick_flow_state","read":"full","mode":"live_only"},
                        {"path":"MyTradingSys/runtime/NEXT_SESSION_HANDOFF.md","role":"mission","read":"full","mode":"always"},
-                       {"path":"MyTradingSys/runtime/session_log.json","role":"decision_ledger","read":"skip","mode":"live_only"}
+                       {"path":"MyTradingSys/runtime/session_log.json","role":"decision_ledger","read":"skip","mode":"live_only"},
+                       {"path":"MyTradingSys/system/PROMPT_CONFORMANCE_CHECKLIST.md","role":"prompt_delivery_gate","read":"full","mode":"always"}
                    ],
     "boot_supplemental":  [
                               {"path":"MyTradingSys/research/BUGS.md","role":"bug_list","read":"open_only","mode":"always"},
@@ -26,7 +27,8 @@
                               {"path":"MyTradingSys/methodology/chart_read_protocol.md","role":"chart_read_method","read":"full","mode":"always"},
                               {"path":"operator_reminders.md","role":"operator_reminders","read":"full","mode":"live_only"},
                               {"path":"MyTradingSys/items/INDEX.md","role":"items_index","read":"full","mode":"always"},
-                              {"path":"Dumps/operator/context/DSA_HANDOFF.md","role":"session_handoff","read":"full","mode":"always"}
+                              {"path":"Dumps/operator/context/DSA_HANDOFF.md","role":"session_handoff","read":"full","mode":"always"},
+                              {"path":"MyTradingSys/system/LESSONS_LEARNED.md","role":"lessons","read":"tail","lines":40,"mode":"always"}
                           ],
     "process_check":  ["java"],
     "handoff_required_fields":  ["STATUS","STATUS_NOTE"]

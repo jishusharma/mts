@@ -56,6 +56,121 @@ Both conform to CLAUDE_MANAGER_SPEC routing and SURFACE_POLICY s2-s4.
   restarts.
 - HALT files and open trades off limits to builders.
 
+## STEP -1 - SAME-TURN VERIFICATION (before Step 0)
+
+No prompt is printed to the operator until every disk claim inside it
+has been read from disk in the same turn that the prompt is written.
+On the DSA chat surface, "same turn" means: run one verification block,
+receive the paste, then compose the prompt. No exceptions for small
+prompts, no exceptions for prompts "mostly the same as last time."
+
+A prompt is not composed from: prior pastes in the session, handoffs,
+ledger entries, or earlier work by other surfaces. Those are read as
+hypotheses. They are not evidence.
+
+Every claim in the prompt carries one of three tags, in the prompt
+itself or in the conformance table above it:
+
+| Tag | Meaning |
+|---|---|
+| VERIFIED <YYYY-MM-DDTHH:MMZ> | read from disk this turn, receipt in the session |
+| OPERATOR-SET | value supplied by the operator, not invented |
+| UNVERIFIED | not read this turn; stated as a limit, not a fact |
+
+A claim with none of the three tags is a defect. Fix before delivery.
+
+Cost of the 2026-10-02 failures (two in one day):
+  - Claimed 13 Fabio v3 files. Disk had 14.
+  - Invented a 500K/100K token cap.
+  - Invented four "do not read" restrictions.
+  - Said a prompt was verified when it was composed from earlier pastes.
+
+The cost of getting it right is one verification block per prompt.
+The cost of getting it wrong is a burned Opus session. The trade is
+not close.
+
+
+## STEP 0 - SURFACE AND PERMISSION (before any other check)
+
+Answer both, in the prompt itself, before composing anything else.
+
+| # | Item | Required | Failure mode |
+|---|---|---|---|
+| 0a | Surface: CC / CL / Opus on CL / Opus on CC / DSA / worker | operator words | inferring the surface |
+| 0b | Permission: may edit code, may run Maven/pytest, may commit, may push | operator words | inventing a restriction |
+
+A restriction that appears in the prompt but not in the operator's words is a defect.
+The words "do not", "never", "must not", "cannot", and any capability limit
+each require a quote from the operator. If either item is unknown, ask one
+question and stop. Do not default to the restrictive option.
+
+Cost of the 2026-10-02 failure: an Opus CL prompt was written as plan-only
+with "You do not edit code. You do not run commands." The operator was running
+Opus on CL (disk, Maven, code). The session spent its budget for zero artifacts.
+One question would have prevented it.
+
+
+## THREE QUESTIONS (every prompt answers all three, in the prompt itself)
+
+| # | Question | Evidence |
+|---|---|---|
+| 11 | What is the session total token cap for this session type? | a number, not "as needed" |
+| 12 | Is the prompt end to end? | yes / no + list of missing pieces |
+| 13 | Does the prompt ask to save files and commit timely? | save cadence + git or no-git instruction |
+
+A prompt missing one of the three is rejected. Do not deliver it.
+
+## DELIVERY FORMAT (prompt printed to screen; format tables may be saved)
+
+Every CC / CL / worker prompt is delivered as two blocks, in order.
+The prompt itself is printed to screen only. Nothing under research/
+or Dumps/ unless the operator says save.
+
+Block 1 - header tables.
+
+### Verified facts (read from disk this turn, YYYY-MM-DDTHH:MMZ)
+
+| # | Fact | Source line or command output |
+|---|---|---|
+
+Above the Session table. Every disk claim in the prompt appears here or is
+tagged UNVERIFIED. No prompt printed without this block filled. The block
+carries the timestamp of the paste that supplied the facts.
+
+
+### Session
+| Field | Value |
+|---|---|
+| Session type | CC / CL / Opus / ... |
+| Account | A / B |
+| Model | ... |
+| Effort | low / medium / high |
+| Ultracode | off / on |
+| Estimated work | ... |
+| Total token cap | a number |
+| Subagent cap | 0..3 |
+| Batch size | 1..3 |
+| Commit cadence | per step / per wave / end / n/a |
+| Deliverable path | ... |
+| Gate | ... |
+
+### Conformance
+| # | Check | Status | Evidence |
+|---|---|---|---|
+| 1..10 | from BEFORE DELIVERING table | PASS / FAIL | quote |
+| 11 | Session total token cap | | |
+| 12 | End to end | | |
+| 13 | Save and commit cadence | | |
+
+### Expected outputs
+| Path | Kind | Lines (est) |
+|---|---|---|
+
+Block 2 - the prompt itself, in a fenced block tagged text, ready
+to copy whole. No commentary inside the fence. At most one line of
+commentary between the two blocks, stating the operator action.
+
+
 ## PROMPT SHAPE
 
 - Line 1: session ID with -CLD- for CC or -CLI- for CL.
