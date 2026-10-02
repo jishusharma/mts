@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-30
-# SIZE: ~34.4KB
+# SIZE: ~35.3KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -371,3 +371,8 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/research/CL_PROMPT_FABIO_V3_CORE_2026-10-02.md | prompt | CL brief: Fabio v3 engine.py only. 1 percent budget, no subagents, save-work checkpoints, stop-early rules. | MTS-2026-10-01-1755Z-DSA-COO | 2026-10-02 |
 | MyTradingSys/backtest/layers/fabio/v3/engine.py.new | staged | Fabio v3 top-level run(bars, config). 165 lines, 6 unknown markers. Unverified; gate pending after weekly reset. | MTS-2026-10-02-0935Z-CLI-BLD-fabio-engine | 2026-10-02 |
 | MyTradingSys/research/CL_PROMPT_FABIO_V3_TESTS_2026-10-02.md | prompt | CL brief: one test file per session (test_signals.py.new). Fail-first proof, one pytest run, no git. | MTS-2026-10-01-1755Z-DSA-COO | 2026-10-02 |
+| MyTradingSys/backtest/layers/fabio/v3/tests/test_signals.py.new | staged | Fabio v3 S1-S9 signal tests. Unverified, gate pending. | MTS-2026-10-02-0955Z-CLI-BLD-fabio-tests | 2026-10-02 |
+| MyTradingSys/backtest/layers/fabio/v3/tests/test_models_engine.py.new | staged | Fabio v3 models A-D + engine run() tests. Unverified. | MTS-2026-10-02-0955Z-CLI-BLD-fabio-tests | 2026-10-02 |
+| MyTradingSys/backtest/layers/fabio/v3/tests/test_manage.py.new | staged | Fabio v3 management rules (BE, trail, exit). Unverified. | MTS-2026-10-02-0955Z-CLI-BLD-fabio-tests | 2026-10-02 |
+| MyTradingSys/backtest/layers/fabio/v3/tests/test_costs_fill.py.new | staged | Fabio v3 costs and fill mechanics. Unverified. | MTS-2026-10-02-0955Z-CLI-BLD-fabio-tests | 2026-10-02 |
+| MyTradingSys/backtest/layers/fabio/v3/tests/test_day_gates.py.new | staged | Fabio v3 day gates (NY window, cutoffs). Unverified. | MTS-2026-10-02-0955Z-CLI-BLD-fabio-tests | 2026-10-02 |
