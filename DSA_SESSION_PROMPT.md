@@ -271,94 +271,63 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-02T16:45Z (live; java present).
+Last live read:  2026-10-03T19:30Z (live; java present).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 9016, java 9624, supervisor 5280.
-                 snapAge 7s, state_code_age 9s, stale_strikes 0.
-                 auto_trader up (pid 18668, launched with -m).
-                 tom_last_alert_no 70, alert_counter 83 (13 unconsumed).
-Build PASS 2026-10-02T17:01:16Z. HEAD f99646b.
-Working tree: BUILD_REPORT.md, session_log.json, C record - all dirty.
+Runtime + loops: loop UP. wrapper 19424, java 9280, supervisor 20912.
+                 snapAge 10s, state_code_age 10s, stale_strikes 0.
+                 auto_trader up (2 pids, 21008/14868).
+                 tom_last_alert_no 70.
+Build PASS 2026-10-02T19:30:16Z. HEAD ffbabc9.
+Working tree: BUILD_REPORT.md dirty; .claude/ untracked; bt_stats.py.stale_fragment_20261003 untracked.
 
-Commits landed since 2026-10-01 close:
-  f8e1d83 prompt-delivery gate (SURFACE_POLICY 3b, USER.md, checklist,
-          manifest, lessons, DSA step 10).
-  d84fb83 net_rr floor 2.0 -> 1.25 in start-trading-day.ps1 L169.
-  0716aaa mts.ps1:246 full python path (Store alias fix).
-  eddd237 Fabio v3: 14 files promoted, 93 pytest pass.
-  837b16d direction review + testnet canary (testnet_canary.py).
-  34dadab P2 CL close: tom_bt_diag.py + TOM_BT_SHORT_DIAGNOSIS_2026-10-02.md.
-  78d8c3a section 11 refresh: P2 close, book_imbalance 0.0 bug.
-  b8eb479 checklist: mandatory CL prompt lines (spawn, proxy, printing).
-  8b57131 remove invented budget/usage/token lines; Session Manager governs.
-  9df02c6 checklist: no stop between tasks; continuous execution.
-  0c085c5 market analysis 2026-10-02 (Opus CL).
-  2ee3b4b session close Opus CL.
-  da13131 T050 phase 3 PASS on Deribit testnet (first real MTS orders);
-          BUGS B077/B078/B079 CLOSED.
-  59000f6 testnet_canary: detect python roles launched as -m pkg.module.
-  660f7a4 session close MTS-2026-10-02-1500Z-CLI-BLD-testnet-wire.
-  803e705 MON diagnostics 2026-10-02: alert gap, log gap, Tom cache regen
-          plan; notes, Fabio v3 README, STATUS, untrack CANARY. Swept in 11
-          prompt-archive renames A had staged; end state correct.
-  5c5a437 net_rr floor single source net_rr_floor.json read by Python,
-          PowerShell (every cycle) and Java; verdict.py/math_object_builder
-          compare against it, not Java net_rr_sanity; executor staged .new.
-  640ac4f session close MTS-2026-10-02-1700Z-CLI-SUP-verdict-parity.
-  f99646b prompt shape: checklist 233->98 lines, CL prompt section in
-          CLAUDE.md, DSA boot step 11, archive 13 stray prompt files.
+Commits landed since section 11 last refreshed (f99646b):
+  c5a883b post A/B/C close: section 11 refresh + checklist item 5 (parallel-session pathspec).
+  20bd296 scheduler plan line-14 fix; T062 deprecate mts-manager filed; scheduler design note.
+  368397b scheduler plan (tier stack, cost model, triggers, locks, cache prefix).
+  45d50a9 fabio v3 shadow test skip guard; closes the d023cc8 red-gate window.
+  c0123f6 Tom target: nearest sourced node (POC/HVN) with netRR >= floor, else farthest; remove
+          NO-SOURCE [2.0,3.5]R window, VAL/VAH/prior-day/VWAP targets, gross 1.5 drop (Java);
+          add runner_target; promote net_rr-floor auto_trader (execution/).
+  ba8dadc Python mirror of c0123f6 + WHY_ENGINE_SILENT_2026-10-03.md + operator Ruling 2.
+  d023cc8 fabio v3 shadow emitter (staged .new): sourcing table, shadow/source routing test.
+  ffbabc9 R2 runner exit (staged .new): 50/50 TARGET/RUNNER_TARGET legs + breakeven after leg 1.
 
-Live state:
-- 1.25 floor in effect since wrapper restart 13:07Z. All verdict cycles since
-  restart blocked on WAIT_TRIGGER / WAIT_PROOF / WATCH. No SETUP_FORMING today.
-- 13 Tom alerts unconsumed (counter 83, consumed 70). Canary flags every 30 min.
-- daily_loss_monitor and live_runner_cli not running (supervisor restart owed).
-- MTS testnet canary scheduled task registered (30-min). LastResult=2 (RED).
+R1 done: NO-SOURCE [2.0,3.5]R window, 1.5R drop, VAH/VAL/prior-day/VWAP targets removed from the
+live Tom path. runner_target field is on the candidate and in the snapshot. Java = c0123f6 build.
 
-P2 complete (MTS-2026-10-02-1422Z-CLI-BLD-tom-diag). Report at
-MyTradingSys/research/TOM_BT_SHORT_DIAGNOSIS_2026-10-02.md. Root cause:
-math_object_builder.py treated book_imbalance==0.0 (archive placeholder) as
-ask-heavy, contradicting every proof-5 long. Fix committed as 13295c8 (WIP,
-unverified, in HEAD). PRE-cache replay reproduces the review exactly (320/19/301
-all short). HEAD replay gives 28 SETUP_FORMING (19 short, 9 long). Row cache
-stale (2026-09-30). Next: regenerate cache, re-run report / supersede
-TOM_CORE_BT.md, gate 13295c8 with a fail-first test. The 13295c8 edit touched
-math_object_builder.py, a critical file, without four-step proof - process gap.
+R2 staged, NOT promoted. Eight .new files under execution/ plus scripts/core/start-trading-day.ps1.new.
+  Session record: MyTradingSys/system/sessions/MTS-2026-10-03-CLI-BLD-r2-runner-exit.md (promotion
+  checklist inside, order matters). Deviations logged: breakeven_after_fills not lifted from
+  UNSUPPORTED_STOPS (inert without redefining the type; alternative used instead); plan_compiler and
+  executor need no change.
 
-T050 phase 3 PASS: first real testnet orders. t050_phase3.py plus
-T050_PHASE3_2026-10-02.md. Limit buy 10 @ 82781.5 placed/cancelled (0 open);
-market sell 10 @ 85349.0 filled; close_position flat. Equity
-59.99985338 -> 59.99985327 BTC (fees only). Canary matcher bug fixed
-(59000f6): now detects python roles launched via -m pkg.module.
+Coupling flag: the eight .new files are tracked (force-added past .gitignore). test_r2_runner_exit
+  and test_r2_breakeven_move fail 29/41 on a checkout without them. Same class as d023cc8. Decide:
+  leave tracked, or untrack and skip when absent.
 
-Opus market analysis (0c085c5):
-- 13:40Z blocked short at daily VAH, proof-5, only block was stale 2.0 floor
-  in the wrapper that started 13:02Z (d84fb83 landed 13:47Z, never reloaded).
-  Replay with 1.25 gives SETUP_FORMING. Stop never hit. Target reached ~15 min.
-  First live setup MTS has produced. This is the B session verdict-parity test
-  case.
-- Fabio v3 run BLOCKED: order-flow bars end 2026-09-28, 8 grid params have no
-  defaults. Reported as BLOCKED, not invented.
-- book_imbalance 0.0 appears in 0 of 477 live snapshots. All-shorts bug not on
-  live tape.
+Live Tom floor: 1.25 in net_rr_floor.json. All cycles since restart WAIT_TRIGGER. No SETUP_FORMING
+  today. No Tom or Fabio testnet trade has ever fired.
 
-Open queues: 22 OPEN bugs of 136 rows (DSA_HANDOFF part 5). BUILD_REPORT shows
-24 open IDs in items/INDEX.md; the previous section 11 read 27. Three values
-disagree - resolve next session. DIRECTION_REVIEW P0-P8 at
-research/DIRECTION_REVIEW_2026-10-02.md L60-77. Four operator decisions in that
-file section 6 remain pending: (1) approve canary + daily Haiku scheduled
-tasks, (2) reverse D1(a) also in Java ([2.0,3.5]R window), (3) Fabio v3
-source-or-shadow, (4) E2E plan not yet run.
+Tom: row cache still stale (2026-09-30). P2 diagnosis done. Regen plan at TOM_ROW_CACHE_REGEN_
+  2026-10-02.md, not run.
 
-Prompt rules now binding: USER.md (three prompt rules),
-PROMPT_CONFORMANCE_CHECKLIST.md (STEP -1, STEP 0, THREE QUESTIONS, DELIVERY
-FORMAT), DSA section 3 step 10.
+Fabio v3: 8 NS-grid parameters all SHADOW (0 SOURCE). Emitter staged as .new; emits nothing until
+  an order-flow bar source exists (roadmap R3).
 
-Next session first action: resolve the three open-queue counts; check
-daily_loss_monitor and live_runner_cli startup; decide on B 4.1 executor .new
-promotion.
+Scheduler plan on disk (SCHEDULER_PLAN_2026-10-02.md). Rulings still pending: R6 canary scheduled
+  tasks (yes/no); shared-credit question resolved by T062 (manager retiring).
+
+T062 (deprecate mts-manager) filed but not executed. scripts/manager/* still on disk.
+
+Open queues: 25 open ids in items/INDEX.md; 137 rows in BUGS.md.
+  DIRECTION_REVIEW section 6: item 1 (restart) done; item 2 (canary scheduled tasks) pending yes/no;
+  item 3 (NO-SOURCE R:R gates) reframed by operator and landed as c0123f6; item 4 (Fabio v3
+  source-or-shadow) done (all shadow).
+
+Next session first action: read ffbabc9 diff; decide the .new tracking question; then either
+  promote R2 or run roadmap R3 (live order-flow bar writer).
 
 ## 12. SESSION END
 

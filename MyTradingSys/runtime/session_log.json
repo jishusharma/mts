@@ -1696,6 +1696,15 @@
       "action": "note",
       "reason": "DSA session MTS-2026-10-02-1423Z-CLI-... close: P2 done, T050 phase 3 PASS, B077/B078/B079 CLOSED, prompt rules tightened (8b57131, 9df02c6, b8eb479). Three parallel CL sessions A/B/C mid-work at close. Section 11 update deferred (A owns DSA_SESSION_PROMPT.md). Next DSA session applies handoff part 5.",
       "ts": "2026-10-02T16:46:21.371999Z"
+    },
+    {
+      "type": "alert",
+      "action": "monitored",
+      "verdict": "SETUP_FORMING",
+      "reason": null,
+      "setup": "ct_long",
+      "alert_id": 84,
+      "ts": "2026-10-02T19:54:23.205Z"
     }
   ]
 }

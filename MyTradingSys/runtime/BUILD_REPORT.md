@@ -1,27 +1,30 @@
-BUILD_REPORT - 2026-10-02 18:04:18 UTC
+BUILD_REPORT - 2026-10-02 20:11:12 UTC
 host: JIS-NB
 
-Java compile:  PASS (3.5 s)
-Math tests:    PASS 155/155 (5.5 s)
-Doc tests:     PASS 5/5 (2.1 s)
+Java compile:  PASS (3 s)
+Math tests:    PASS 161/161 (7.4 s)
+Doc tests:     PASS 5/5 (2.8 s)
 
-In-flight .new files: 16
-  - backtest\bt\bt_stats.py.new (age 5032m)
-  - backtest\layers\audit\formula_audit.py.new (age 5391m)
-  - backtest\layers\consensus\test_writer.py.new (age 557m)
-  - backtest\layers\consensus\writer.py.new (age 557m)
-  - backtest\layers\cryptocred\test_cc_retest.py.new (age 6379m)
-  - backtest\layers\cryptocred\test_cc_structure.py.new (age 6380m)
-  - backtest\layers\rsi\observation.py.new (age 557m)
-  - backtest\layers\rsi\test_observation.py.new (age 557m)
-  - execution\auto_trader.py.new (age 77m)
-  - execution\auto_trader_config.json.new (age 77m)
-  - execution\README.md.new (age 6448m)
-  - execution\test_auto_trader.py.new (age 77m)
-  - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 557m)
-  - runtime\test_quad_classify.py.new (age 557m)
-  - runtime\test_regime_classifier.py.new (age 557m)
-  - tests\java\MarketDataSnapshotTest.java.new (age 557m)
+In-flight .new files: 19
+  - backtest\layers\alerts\live_runner_cli.py.new (age 116m)
+  - backtest\layers\audit\formula_audit.py.new (age 5518m)
+  - backtest\layers\consensus\test_writer.py.new (age 684m)
+  - backtest\layers\consensus\writer.py.new (age 684m)
+  - backtest\layers\cryptocred\test_cc_retest.py.new (age 6506m)
+  - backtest\layers\cryptocred\test_cc_structure.py.new (age 6507m)
+  - backtest\layers\rsi\observation.py.new (age 684m)
+  - backtest\layers\rsi\test_observation.py.new (age 684m)
+  - execution\auto_trader.py.new (age 56m)
+  - execution\new_plan.py.new (age 56m)
+  - execution\position_manager.py.new (age 46m)
+  - execution\test_auto_trader.py.new (age 48m)
+  - execution\test_plan_compiler.py.new (age 48m)
+  - execution\trade_plan_schema.json.new (age 55m)
+  - execution\trade_plan_validator.py.new (age 55m)
+  - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 684m)
+  - runtime\test_quad_classify.py.new (age 684m)
+  - runtime\test_regime_classifier.py.new (age 684m)
+  - tests\java\MarketDataSnapshotTest.java.new (age 684m)
 
 Active sessions:
   (none)
