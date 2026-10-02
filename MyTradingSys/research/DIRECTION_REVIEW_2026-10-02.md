@@ -95,3 +95,18 @@ DSA/Gemini turn on the P5 anchor-convention question and nothing more. Do not us
 3. P3: reverse ruling D1(a) (the net_rr >= 2.0 floor) and the [2.0, 3.5]R window, as NO-SOURCE under your 2026-09-30
    provenance rule. Yes or no.
 4. P7: Fabio v3 NS-grid parameters: source-or-shadow (recommended) vs keep v3 backtest-only.
+
+## 7. Decision log
+
+### A1 - Scheduled tasks for the 12-hour window (2026-10-03)
+
+Operator ruling: leave the system running 12 hours; plan only for that period; frequency as per tasks planned.
+
+Decision (DSA, 2026-10-03):
+- Canary stays at 30-minute cadence. Already installed; leave as-is.
+- Approve Haiku worker in event mode: fires on canary RED only. SCHEDULER_PLAN section 2a.
+- Approve Haiku worker in digest mode at two checkpoints only: +1h after the R2 restart settles, and +12h at the window close. Not the daily 06:00 default.
+- Do not install the permanent daily schedule yet. Revisit at window close.
+- Cost for the window: 2-3 Haiku runs, about $0.05-0.08.
+
+Section 6 item 2 is CLOSED for this window. Permanent schedule deferred to window close.

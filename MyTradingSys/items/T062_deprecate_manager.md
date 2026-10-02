@@ -26,7 +26,7 @@ Three more reasons from the 2026-10-02 read:
 
 ## What replaces it
 
-DSA composes CL prompts to screen. Routing per SURFACE_POLICY 3b. The mandatory lines live in PROMPT_CONFORMANCE_CHECKLIST.md.
+DSA composes CL prompts to screen. Routing per SURFACE_POLICY 3b. The mandatory prompt lines live in CLAUDE.md.
 
 ## What to do when this lands
 

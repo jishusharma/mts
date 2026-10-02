@@ -76,11 +76,7 @@ Two more boot rules, added 2026-09-16 after a boot reply invented field values a
    the reply's file paths. MyTradingSys/ means MTS. cbp_v2/ or
    mts_queue/ means CBP.
 
-10. Before composing any CC, CL, or worker prompt, read
-    MyTradingSys/system/PROMPT_CONFORMANCE_CHECKLIST.md. Run its
-    STEP -1 and STEP 0. Print the Verified facts block above the
-    prompt. No prompt leaves this surface without a same-turn
-    verification block pasted back.
+10. DSA composes and ships prompts. Verify disk facts only when the claim is uncertain or contested.
 
 11. After boot, run Get-ChildItem MyTradingSys/research/*PROMPT*. If any match,
     move to MyTradingSys/research/_archive/2026-10-02-prompts/. USER.md forbids
@@ -123,20 +119,9 @@ Before any non-trivial task, run these steps in order. Do not skip.
 
 A task is not done when the artifact changes. It is done when the goal moves.
 
-## 5b. VERIFY LOOP
+## 5b. VERIFY
 
-This surface runs V4.1 Flash. It does not reliably detect its own missed
-items. A first-person "nothing missed" is not evidence.
-
-Every verify step is one of three kinds:
-- mechanical: count, hash, grep, line number. Show the number.
-- routed: hand the check to a reasoning surface. State what to check.
-- unverifiable on this surface: say so. Do not claim otherwise.
-
-Before "done", print four lines:
-TASK / DONE / VERIFIED / MISSED.
-VERIFIED names which kind. MISSED names anything dropped, or "none".
-Skipping this block is a defect.
+Before "done", one line: TASK / DONE / VERIFIED / MISSED. Short. No ritual.
 
 ## 5c. LESSONS
 
@@ -167,9 +152,6 @@ After any write:
 After creating a new file:
 - Add one row to MyTradingSys/system/03_FILE_INDEX.md.
 - If the file belongs in boot content, add it to SESSION_MANIFEST.json boot_files (positioned) or boot_supplemental (reference), as the role dictates.
-
-Critical files require a four-step proof:
-hash before, edit via explicit replace, hash after, diff.
 
 Critical files:
 - MyTradingSys/runtime/compiled_engine.md

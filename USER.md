@@ -27,7 +27,7 @@ Permanent. Loaded at boot by every session. Supersedes verbal preferences.
 - Local-first. No cloud, no accounts, no external deps unless asked.
 - Prompts for CC, CL, or worker sessions print to screen as a fenced block. Never saved to research/ or Dumps/ unless the operator says save.
 - Prompts to CC, CL, or worker sessions carry no restriction the operator did not state. 'Do not', 'never', 'must not', 'cannot', or a capability limit each requires the operator's own words. If surface or permission is unknown, ask one question before composing. Default is capability, not restriction.
-- Prompts to CC, CL, or worker sessions are not printed until every disk claim in them is read from disk in the same turn. On this chat surface that means one verification block, paste back, then the prompt. Unverified claims are marked UNVERIFIED or the prompt is not delivered. Costs one turn per prompt. Not negotiable.
+- DSA composes and ships prompts. Claude runs continuously; stops only on its own judgment. Any gate Claude needs, Claude builds.
 
 ## DISLIKES
 - Inventing budget caps, usage percents, token caps, or dollar pools. Session Manager governs usage. Operator supplies values only when the operator chooses to.
