@@ -33,6 +33,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
+# Single source of the net_rr floor: MyTradingSys/system/net_rr_floor.json (MTS_REPO_ROOT is set by run_staged_tests.py).
+sys.path.append(str(Path(os.environ.get("MTS_REPO_ROOT") or REPO) / "MyTradingSys" / "runtime"))
+from net_rr_floor import NetRrFloorError, load_floor  # noqa: E402
 HALT = HERE / "HALT"
 HALT_DAILY_LOSS = HERE / "HALT_DAILY_LOSS"
 # Auto-trader-only pause: no new auto-trades, but no HALT (so manual trades and the testnet suites still run).
@@ -50,7 +53,7 @@ TF_SECONDS = {"1m": 60, "3m": 180, "5m": 300, "15m": 900, "30m": 1800, "1h": 360
 DEFAULT_CONFIG = {
     # Tom core: limit at the zone, stop/target from the alert, whole size off at the target.
     "tom": {"enabled": True, "size_usd": 200, "max_loss_usd": 25, "hours": 1.0, "max_hold_minutes": None, "max_hold_bars": 8, "max_age_seconds": 300,
-            "verdicts": ["SETUP_FORMING", "SETUP_CONFIRMED"], "min_net_rr": 2.0},
+            "verdicts": ["SETUP_FORMING", "SETUP_CONFIRMED"]},   # net_rr floor is net_rr_floor.json, not a config key
     # Layers have no stop/target of their own: fixed bracket, market entry, small size.
     "layers": {"enabled": True, "size_usd": 100, "max_loss_usd": 10, "stop_pct": 1.0, "targets": "2",
                "hours": 2.0, "max_age_bars": 1.2,
@@ -119,6 +122,16 @@ def parse_tom_alert(alert: dict) -> dict:
             "target": target, "net_rr": float(rr.group(1)) if rr else None}
 
 
+def net_rr_floor_reject(net_rr: float):
+    """None if net_rr clears the floor, else the reject reason. The file is re-read on every alert, so an edit
+    applies without restarting the trader; unreadable -> reject (fail closed)."""
+    try:
+        floor = load_floor()
+    except NetRrFloorError as e:
+        return f"net_rr floor unreadable: {e}"
+    return None if net_rr >= floor else f"net_rr {net_rr} < {floor}"
+
+
 def tom_signal(alert: dict, state: dict, cfg: dict, now: datetime):
     """New, fresh, actionable Tom alert -> order signal; else None. Marks the alert as seen in state."""
     c = cfg["tom"]
@@ -133,8 +146,8 @@ def tom_signal(alert: dict, state: dict, cfg: dict, now: datetime):
         reject = f"verdict {p['verdict']}"
     elif p["side"] is None:
         reject = f"unknown setup side {p['setup']!r}"
-    elif p["net_rr"] is not None and p["net_rr"] < c["min_net_rr"]:
-        reject = f"net_rr {p['net_rr']} < {c['min_net_rr']}"
+    elif p["net_rr"] is not None and (rr_reject := net_rr_floor_reject(p["net_rr"])):
+        reject = rr_reject
     else:
         try:
             t = datetime.strptime(p["time"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)

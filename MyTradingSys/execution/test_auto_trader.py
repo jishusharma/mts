@@ -5,9 +5,11 @@ import tempfile
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import auto_trader as at  # noqa: E402
+import net_rr_floor as nrf  # noqa: E402  (on sys.path via auto_trader)
 
 NOW = datetime(2026, 9, 29, 0, 0, 0, tzinfo=timezone.utc)
 
@@ -55,9 +57,37 @@ class TomSignalTest(unittest.TestCase):
         s = at.tom_signal(tom_alert(time="2026-09-28T23:50:00Z"), {"tom_last_alert_no": 0}, cfg(), NOW)
         self.assertIn("stale", s["reject"])
 
+    def with_floor(self, content):
+        """Point the shared net_rr floor reader at a temp file (content None = file absent)."""
+        d = Path(tempfile.mkdtemp())
+        f = d / "net_rr_floor.json"
+        if content is not None:
+            f.write_text(content, encoding="utf-8")
+        p = mock.patch.object(nrf, "FLOOR_PATH", f)
+        p.start()
+        self.addCleanup(p.stop)
+
     def test_low_net_rr_rejected(self):
+        self.with_floor('{"net_rr_floor": 2.0}')
         s = at.tom_signal(tom_alert(rr="gross 2.1 / net 1.75"), {"tom_last_alert_no": 0}, cfg(), NOW)
-        self.assertIn("net_rr", s["reject"])
+        self.assertEqual(s["reject"], "net_rr 1.75 < 2.0")
+
+    def test_net_rr_floor_is_the_shared_file_and_is_reread_per_alert(self):
+        # net 1.75: floor 1.25 -> accepted; floor 2.0 -> rejected; floor back to 1.25 -> accepted. Same process, no restart.
+        self.with_floor('{"net_rr_floor": 1.25}')
+        self.assertIsNone(at.tom_signal(tom_alert(no=50, rr="gross 2.1 / net 1.75"), {"tom_last_alert_no": 0}, cfg(), NOW).get("reject"))
+        nrf.FLOOR_PATH.write_text('{"net_rr_floor": 2.0}', encoding="utf-8")
+        self.assertIn("1.75 < 2.0", at.tom_signal(tom_alert(no=51, rr="gross 2.1 / net 1.75"), {"tom_last_alert_no": 0}, cfg(), NOW).get("reject"))
+        nrf.FLOOR_PATH.write_text('{"net_rr_floor": 1.25}', encoding="utf-8")
+        self.assertIsNone(at.tom_signal(tom_alert(no=52, rr="gross 2.1 / net 1.75"), {"tom_last_alert_no": 0}, cfg(), NOW).get("reject"))
+
+    def test_unreadable_net_rr_floor_rejects(self):
+        self.with_floor(None)
+        s = at.tom_signal(tom_alert(rr="gross 9.0 / net 6.75"), {"tom_last_alert_no": 0}, cfg(), NOW)
+        self.assertIn("floor unreadable", s["reject"])
+
+    def test_config_carries_no_floor_key(self):
+        self.assertNotIn("min_net_rr", at.DEFAULT_CONFIG["tom"])
 
     def test_misordered_levels_rejected(self):
         # short with stop BELOW entry is inconsistent -> never trade it

@@ -30,6 +30,8 @@ public class SetupCandidatesBuilder {
         String direction;  // "short" or "long"
         double stop;
         double target;
+        double runnerTarget;  // next node beyond target, 0 if none
+        boolean valid;
         double grossRR;
         double netRR;
         boolean rrSanity;
@@ -125,59 +127,22 @@ public class SetupCandidatesBuilder {
                 c.stop = "short".equals(c.direction) ? zonePrice * 1.002 : zonePrice * 0.998;
             }
 
-            // Target selection (v1.3.2: include VAL/VAH + prior_day high/low, with 2x stop filter)
-            // RULE TOM-018/TOM-102 (target = next high volume price/area: POCs, HVNs); VAL/VAH, prior-day and VWAP members and the 2.0-3.5R window are NO-SOURCE (A07-A10)
-            List<Double> targets = new ArrayList<>();
-            addIfPresent(root, "weekly_vp", "poc", targets);
-            addIfPresent(root, "daily_vp", "poc", targets);
-            addIfPresent(root, "intraday_4h_vp", "poc", targets);
-            addIfPresent(root, "prior_day", "poc", targets);
-            // HVNs (MarketDataSnapshot.buildVp "hvns") are target candidates; mirrors math_object_builder.py (4deae5e).
-            // Direction filter is the p < / > zonePrice test in the selection loop below, same as the levels above.
-            addHvns(root, "weekly_vp", targets);
-            addHvns(root, "daily_vp", targets);
-            addHvns(root, "intraday_4h_vp", targets);
-            if ("short".equals(c.direction)) {
-                addIfPresent(root, "weekly_vp", "val", targets);
-                addIfPresent(root, "daily_vp", "val", targets);
-                addIfPresent(root, "intraday_4h_vp", "val", targets);
-                addIfPresent(root, "prior_day", "val", targets);
-                addIfPresent(root, "prior_day", "low", targets);
-            } else {
-                addIfPresent(root, "weekly_vp", "vah", targets);
-                addIfPresent(root, "daily_vp", "vah", targets);
-                addIfPresent(root, "intraday_4h_vp", "vah", targets);
-                addIfPresent(root, "prior_day", "vah", targets);
-                addIfPresent(root, "prior_day", "high", targets);
-            }
-            double vwap = root.get("vwap").get("price").asDouble();
-            if ("short".equals(c.direction) && vwap < zonePrice) targets.add(vwap);
-            if ("long".equals(c.direction) && vwap > zonePrice) targets.add(vwap);
-
-            double targetRisk = Math.abs(zonePrice - c.stop);
-            double minTargetDistance = 2.0 * targetRisk;
-            double maxTargetDistance = 3.5 * targetRisk;
-            double bestTarget = 0;
-            if ("short".equals(c.direction)) {
-                double nearest = Double.MIN_VALUE;
-                for (double p : targets) {
-                    if (p < zonePrice) {
-                        double distance = zonePrice - p;
-                        if (distance >= minTargetDistance && distance <= maxTargetDistance && p > nearest) nearest = p;
-                    }
-                }
-                if (nearest != Double.MIN_VALUE) bestTarget = nearest;
-            } else {
-                double nearest = Double.MAX_VALUE;
-                for (double p : targets) {
-                    if (p > zonePrice) {
-                        double distance = p - zonePrice;
-                        if (distance >= minTargetDistance && distance <= maxTargetDistance && p < nearest) nearest = p;
-                    }
-                }
-                if (nearest != Double.MAX_VALUE) bestTarget = nearest;
-            }
-            c.target = bestTarget;
+            // Target selection. RULE TOM-018/TOM-102: target = the next high volume price/area (POCs, HVNs).
+            // Operator ruling 2026-10-03: the 2.0R-3.5R window, the VAL/VAH, prior-day high/low and VWAP members and the
+            // gross 1.5 R:R drop were NO-SOURCE (A07-A10) and are removed.
+            // Rule: nearest node in trade direction whose netRR >= NetRrFloor.read(); if none qualifies, the farthest node
+            // in direction (still reported, the verdict net_rr gate decides). No node in direction -> candidate dropped.
+            List<Double> nodes = new ArrayList<>();
+            addIfPresent(root, "weekly_vp", "poc", nodes);
+            addIfPresent(root, "daily_vp", "poc", nodes);
+            addIfPresent(root, "intraday_4h_vp", "poc", nodes);
+            addIfPresent(root, "prior_day", "poc", nodes);
+            addHvns(root, "weekly_vp", nodes);
+            addHvns(root, "daily_vp", nodes);
+            addHvns(root, "intraday_4h_vp", nodes);
+            double[] picked = pickTarget(nodes, zonePrice, c.stop, "short".equals(c.direction), netRrFloor);
+            c.target = picked[0];
+            c.runnerTarget = picked[1];
             if (c.target == 0) {
                 continue;
             }
@@ -188,20 +153,13 @@ public class SetupCandidatesBuilder {
                 double reward = Math.abs(c.target - zonePrice);
                 c.grossRR = reward / risk;
                 c.netRR = ExecutionMathConstants.netRR(c.grossRR);  // W2: was hardcoded * 0.75, see ExecutionMathConstants
-                c.rrSanity = c.grossRR >= 1.5;
+                c.rrSanity = c.grossRR >= 1.5;   // advisory output flag only; no longer drops the candidate
                 c.netRrSanity = c.netRR >= netRrFloor;
-            } else {
-                c.rrSanity = false;
+                c.valid = true;
             }
-
-            if (!c.rrSanity) {
-                // remove candidate
-                continue;
-            }
-            // else keep
         }
-        // Remove invalid candidates
-        candidates.removeIf(c -> !c.rrSanity);
+        // Remove candidates with no usable node / stop (the verdict net_rr gate decides everything else)
+        candidates.removeIf(c -> !c.valid);
 
         // Step 8: Confluence detection
         Map<Zone, Integer> confluenceCount = computeConfluence(candidates);
@@ -252,6 +210,7 @@ public class SetupCandidatesBuilder {
 mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.zone.price ? "above" : "below"));
             mathNode.put("stop", Math.round(c.stop * 100.0) / 100.0);
             mathNode.put("target", Math.round(c.target * 100.0) / 100.0);
+            mathNode.put("runner_target", Math.round(c.runnerTarget * 100.0) / 100.0);
             mathNode.put("gross_rr", Math.round(c.grossRR * 100.0) / 100.0);
             mathNode.put("net_rr", Math.round(c.netRR * 100.0) / 100.0);
             mathNode.put("rr_sanity", c.rrSanity);
@@ -492,6 +451,32 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         if (zoneType.startsWith("15m_swing_")) return "15m";
         if (zoneType.startsWith("1h_swing_")) return "1h";
         return "15m"; // default
+    }
+
+    /**
+     * Target pick from volume nodes (POC/HVN). Returns {target, runner_target}; {0,0} when no node lies in the trade
+     * direction. Nearest node first; the first whose netRR >= floor wins, else the farthest node. runner = next node
+     * beyond the target (strictly farther price), 0 if none. NaN floor never qualifies (fail closed -> farthest).
+     */
+    static double[] pickTarget(List<Double> nodes, double zonePrice, double stop, boolean isShort, double netRrFloor) {
+        List<Double> dir = new ArrayList<>();
+        for (double p : nodes) {
+            if (isShort ? p < zonePrice : p > zonePrice) dir.add(p);
+        }
+        if (dir.isEmpty()) return new double[]{0, 0};
+        dir.sort((x, y) -> Double.compare(Math.abs(x - zonePrice), Math.abs(y - zonePrice)));
+        double risk = Math.abs(zonePrice - stop);
+        int idx = dir.size() - 1;  // fallback: farthest
+        for (int i = 0; i < dir.size(); i++) {
+            double gross = Math.abs(dir.get(i) - zonePrice) / risk;
+            if (ExecutionMathConstants.netRR(gross) >= netRrFloor) { idx = i; break; }
+        }
+        double target = dir.get(idx);
+        double runner = 0;
+        for (int i = idx + 1; i < dir.size(); i++) {
+            if (Math.abs(dir.get(i) - zonePrice) > Math.abs(target - zonePrice)) { runner = dir.get(i); break; }
+        }
+        return new double[]{target, runner};
     }
 
     private static void addIfPresent(ObjectNode root, String objName, String field, List<Double> list) {

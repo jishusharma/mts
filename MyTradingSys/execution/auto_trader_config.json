@@ -9,7 +9,6 @@
  "tom": {
   "size_usd": 10,
   "max_loss_usd": 5,
-  "min_net_rr": 1.25,
   "verdicts": [
    "SETUP_FORMING",
    "SETUP_CONFIRMED",
