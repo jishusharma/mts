@@ -274,8 +274,8 @@ Invalidates:     none set.
 Runtime + loops: loop UP. wrapper 9016, java 9624, supervisor 5280.
                  snap 52s, state_code 53s, stale_strikes 0.
                  auto_trader up (2 procs), tom_last_alert_no 70, brakes clear.
-Build PASS 2026-10-02T14:17:42Z. HEAD d84fb83.
-Working tree: BUILD_REPORT.md dirty; tom_bt_diag.py untracked (P2 CL in flight).
+Build PASS 2026-10-02T14:30:49Z. HEAD 34dadab (close commit follows).
+Working tree: BUILD_REPORT.md dirty; 03_FILE_INDEX.md dirty; P2 report + record untracked.
 
 Landing since 2026-10-01 close:
 - f8e1d83 prompt-delivery gate: SURFACE_POLICY 3b (manager routing, spawn caps,
@@ -294,8 +294,15 @@ Live state of the floor fix: 1.25 gate passes; verdict now blocked by proof gate
 (proof >= 5 for SETUP_FORMING). apparatus cycle 29 at 14:19Z. No SETUP_FORMING yet.
 No Tom or Fabio testnet trade has ever fired.
 
-In-flight: P2 CL session (Tom all-shorts diagnosis) wrote tom_bt_diag.py untracked.
-No report, no session record, no commit. Next session resumes or reports.
+P2 complete (session MTS-2026-10-02-1422Z-CLI-BLD-tom-diag). Report at
+MyTradingSys/research/TOM_BT_SHORT_DIAGNOSIS_2026-10-02.md. Root cause:
+math_object_builder.py treated book_imbalance==0.0 (archive placeholder) as
+ask-heavy, contradicting every proof-5 long. Fix committed as 13295c8 (WIP,
+unverified, in HEAD). PRE-cache replay reproduces the review exactly (320/19/301
+all short). HEAD replay gives 28 SETUP_FORMING (19 short, 9 long). Row cache is
+stale (2026-09-30). Next: regenerate cache, re-run report / supersede
+TOM_CORE_BT.md, gate 13295c8 with a fail-first test. The 13295c8 edit touched
+math_object_builder.py, a critical file, without four-step proof - process gap.
 
 Open queues: 27 OPEN ids in items/INDEX.md; BUGS.md 25 OPEN rows. DIRECTION_REVIEW
 P0-P8 at research/DIRECTION_REVIEW_2026-10-02.md L60-77. Four operator decisions in
