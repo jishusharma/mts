@@ -11,5 +11,5 @@ lanes: none (no subagents, Ultracode off)
 started: 2026-10-02 10:35Z
 ended: 2026-10-02 10:41Z
 status: closed
-commits: see git log --grep "fabio v3: promote 14" (hash added in a follow-up commit)
+commits: eddd237
 handoff: none; plan at MyTradingSys/research/OPUS_PLAN_2026-10-02.md, item 2 prompt in its section 5 awaits operator (token cap placeholder OPERATOR_SET_TOKEN_CAP)
