@@ -1,4 +1,4 @@
-# CCM PROMPT: promote book_imbalance 0.0 fix (one file, one commit)
+# CL PROMPT: promote book_imbalance 0.0 fix (one file, one commit)
 # Written 2026-10-02 by MTS-2026-10-01-1755Z-DSA-COO.
 # Mode: Claude Code Mode (Win app, local disk).
 # Budget: 1 percent weekly left. Lean execution only.

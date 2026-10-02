@@ -7,7 +7,7 @@
 
 ## PROMPT TYPES
 
-CCR - Claude Cloud Repo. Win Claude App, Cloud Mode.
+CC - Claude Cloud Repo. Win Claude App, Cloud Mode.
   Sees: pushed git refs only. No disk. No LAN. No F:\\\\.
   Branch: harness-assigned claude/<name>. Record as branch_alias.
   Commits: to its own branch. Operator cherry-picks.
@@ -15,7 +15,7 @@ CCR - Claude Cloud Repo. Win Claude App, Cloud Mode.
     It does NOT mean no file output. Every analysis session names its
     deliverable path and commits it to the branch.
 
-CCM - Claude Code Mode. Win Claude App, Code Mode.
+CL - Claude Code Mode. Win Claude App, Code Mode.
   Sees: local disk.
   Branch: fast-track per CLAUDE.md; never master.
   Can run Maven locally (D:\\tools\\apache-maven-3.9.14).
@@ -36,9 +36,9 @@ Both conform to CLAUDE_MANAGER_SPEC routing and SURFACE_POLICY s2-s4.
 | 7 | Session record uses the 14-field template (sessions/README.md) | quote |
 | 8 | Verify block names TASK / DONE / VERIFIED / MISSED | quote |
 | 9 | 03_FILE_INDEX row requirement stated for every new file | quote |
-| 10 | LF-only, no BOM; no Dumps/ path (Dumps/ is gitignored; CCR cannot read it) | quote |
+| 10 | LF-only, no BOM; no Dumps/ path (Dumps/ is gitignored; CC cannot read it) | quote |
 
-## CCR-ONLY
+## CC-ONLY
 
 - Deliverable path named. A no-writes prompt wastes the cloud budget.
   Cost 2026-10-01:  lost to a no-writes chart read.
@@ -48,7 +48,7 @@ Both conform to CLAUDE_MANAGER_SPEC routing and SURFACE_POLICY s2-s4.
 - Branch created by harness, recorded as branch_alias. Do not create
   cloud/work.
 
-## CCM-ONLY
+## CL-ONLY
 
 - Branch fast-track. Never master. Never push, merge, rebase, reset.
 - Live-path files (auto_trader, position_manager, daily_loss_monitor,
@@ -58,7 +58,7 @@ Both conform to CLAUDE_MANAGER_SPEC routing and SURFACE_POLICY s2-s4.
 
 ## PROMPT SHAPE
 
-- Line 1: session ID with -CLD- for CCR or -CLI- for CCM.
+- Line 1: session ID with -CLD- for CC or -CLI- for CL.
 - Line 2: usage percent, or '85 assumed' if unreadable.
 - Budget gate first (SURFACE_POLICY s3).
 - Boot section: files, by line range.

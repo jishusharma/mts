@@ -142,15 +142,15 @@ between batches'.
 | Task shape | Surface | Model | Effort | Ultracode | Cap | Batch |
 |---|---|---|---|---|---|---|
 | Read, extract, answer, one artifact | DSA chat | n/a | n/a | off | 0 | n/a |
-| Cloud offline, one deliverable | CCR | Sonnet | medium | off | 0 | n/a |
-| Cloud offline, 2-3 independent modules | CCR | Sonnet | medium | on | 3 | 1 |
-| Cloud build wave with checkpoints | CCR | Sonnet | medium | on | 3 | 1 |
-| Local disk fix, live path | CCM | Sonnet | medium | off | 0 | n/a |
-| Local disk fix, four-step proof | CCM | Sonnet | medium | off | 0 | n/a |
-| Safety diff (execution/, HALT, orders) | CCM or CCR | Opus | high | off | 0 | n/a |
+| Cloud offline, one deliverable | CC | Sonnet | medium | off | 0 | n/a |
+| Cloud offline, 2-3 independent modules | CC | Sonnet | medium | on | 3 | 1 |
+| Cloud build wave with checkpoints | CC | Sonnet | medium | on | 3 | 1 |
+| Local disk fix, live path | CL | Sonnet | medium | off | 0 | n/a |
+| Local disk fix, four-step proof | CL | Sonnet | medium | off | 0 | n/a |
+| Safety diff (execution/, HALT, orders) | CL or CC | Opus | high | off | 0 | n/a |
 | Question, status | any | Haiku | low | off | 0 | n/a |
-| Extraction | CCR | Sonnet | medium | off | 0 | n/a |
-| Backtest report | CCR | Sonnet | medium | off | 0 | n/a |
+| Extraction | CC | Sonnet | medium | off | 0 | n/a |
+| Backtest report | CC | Sonnet | medium | off | 0 | n/a |
 
 Rules:
 

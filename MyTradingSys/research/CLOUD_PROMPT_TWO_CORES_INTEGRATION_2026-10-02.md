@@ -126,7 +126,7 @@ One Sonnet subagent. MyTradingSys/research/TWO_CORES_SWITCHABILITY_2026-10-02.md
 
 Commit checkpoint 4 with trailer. Push.
 
-## STEP 5. DESKTOP RUNBOOK (operator runs; not CCR)
+## STEP 5. DESKTOP RUNBOOK (operator runs; not CC)
 
 Print this section verbatim at the end of the report. It is for the
 operator, not you.

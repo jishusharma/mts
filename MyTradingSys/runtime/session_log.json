@@ -1666,6 +1666,15 @@
       "setup": "ct_short",
       "verdict": "WAIT_RR",
       "ts": "2026-10-01T16:50:22.417Z"
+    },
+    {
+      "action": "monitored",
+      "reason": "STATE TWOPEAK/above_vah -> TWOPEAK/in_va",
+      "type": "alert",
+      "alert_id": 82,
+      "setup": "-",
+      "verdict": "NO_TRADE",
+      "ts": "2026-10-01T17:04:22.009Z"
     }
   ]
 }

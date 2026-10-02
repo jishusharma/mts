@@ -181,7 +181,7 @@ Cost of the mistake: one rewrite of the prompt (one DSA turn).
 
 ## 2026-10-02 - Budget gate refused work it should have done
 
-What happened: the two-cores CCR prompt carried a budget gate that told
+What happened: the two-cores CC prompt carried a budget gate that told
 the session to skip the fix pass and stop at 85 percent usage. The
 session complied, delivered the tables and scaffold, and stalled
 waiting for operator input. The refusal was written by DSA, not chosen

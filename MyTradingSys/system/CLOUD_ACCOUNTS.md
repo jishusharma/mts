@@ -17,9 +17,9 @@ Never duplicate the repo. Never fork for a second account.
 | Pool | Amount | Expires | Applies to |
 |---|---|---|---|
 | Cloud session credits | 100 USD (fresh grant 2026-10-02) | 2026-11-05 13:29 GMT+5:30 | Cloud sessions only |
-| Weekly Pro pool (account B) | resets Fri 14:30 IST | weekly | local claude.exe, mts go, CCM |
+| Weekly Pro pool (account B) | resets Fri 14:30 IST | weekly | local claude.exe, mts go, CL |
 
-Cloud credits apply automatically to cloud sessions (CCR).
+Cloud credits apply automatically to cloud sessions (CC).
 Not eligible for Projects or Routines.
 Two pools are separate. Weekly Pro does not feed Cloud.
 
@@ -47,3 +47,15 @@ B. Shared credential path (not recommended). Log into GitHub as
   account B sessions.
 
 # END
+
+## NOMENCLATURE NOTE (2026-10-02)
+
+CC = Claude Cloud (Claude app, Cloud mode). CL = Claude Local (Claude
+app, Code mode). Both replace the former CCR / CCM.
+
+COLLISION: 'CC' collides with the rule-id prefix 'CCR-NN' in
+MyTradingSys/research/fast_track_2026-09-27/CROSS_TRADER_RULEBOOK.md
+(Crypto Credible rules). Grep for 'CC' is noisy. Grep with word
+boundaries, or use CLD/CLI (SURFACE_POLICY section 1 names) when a
+two-letter token must be searched unambiguously.
+
