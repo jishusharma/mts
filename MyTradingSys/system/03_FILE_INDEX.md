@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-09-30
-# SIZE: ~33.1KB
+# SIZE: ~33.5KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -365,3 +365,5 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/system/CLOUD_ACCOUNTS.md | system | Cloud account identity, credits pools, expiry, GitHub wiring options (collaborator vs shared credential). | MTS-2026-10-01-1755Z-DSA-COO | 2026-10-02 |
 | MyTradingSys/tests/test_book_imbalance_nodata.py | test | Fail-first for book_imbalance 0.0 guard: 0.0 (no data) must not fire ask-heavy vs LONG. 11 cases. | MTS-2026-10-02-0910Z-CLI-BLD-bookimbal | 2026-10-02 |
 | MyTradingSys/tests/test_proof_direction.py | test | Proof-direction cases. Updated 2026-10-02: book=0.0 is aligned, not contradiction. | MTS-2026-10-02-0910Z-CLI-BLD-bookimbal | 2026-10-02 |
+| scripts/dev/alert_rate_check.py | tool | Alert-rate check. Updated 2026-10-02: TF_MIN gains 3m and 1d for the RSI observation block. | MTS-2026-10-02-0930Z-CLI-BLD-tfmap | 2026-10-02 |
+| MyTradingSys/execution/auto_trader.py | execution | Layer/tom alert orchestrator. Updated 2026-10-02: TF_SECONDS gains 3m (1d already present). Live-path; loop was down at promotion. | MTS-2026-10-02-0930Z-CLI-BLD-tfmap | 2026-10-02 |

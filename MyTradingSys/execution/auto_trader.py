@@ -45,7 +45,7 @@ MAX_RESPAWNS = 3   # position_manager respawns per plan when it exits while the 
 TOM_ALERT = REPO / "runtime_data" / "last_alert.json"
 LAYER_ALERT_DIR = REPO / "MyTradingSys" / "runtime" / "alerts"
 
-TF_SECONDS = {"1m": 60, "5m": 300, "15m": 900, "30m": 1800, "1h": 3600, "4h": 14400, "1d": 86400}
+TF_SECONDS = {"1m": 60, "3m": 180, "5m": 300, "15m": 900, "30m": 1800, "1h": 3600, "4h": 14400, "1d": 86400}
 
 DEFAULT_CONFIG = {
     # Tom core: limit at the zone, stop/target from the alert, whole size off at the target.
