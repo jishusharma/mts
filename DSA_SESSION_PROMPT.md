@@ -23,7 +23,7 @@ working capacity at any moment is small.
 
 Practical rules for this session:
 - One block at a time. Never assume parallel calls work.
-- A paste over roughly 80 KB should be split with a confirmation between
+- A paste over roughly 150 KB should be split with a confirmation between
   each part. If a paste feels long, ask the user to split it.
 - If a task needs more context than the boot provides, ask for one section
   at a time. Do not ask for a whole file when a section will do.

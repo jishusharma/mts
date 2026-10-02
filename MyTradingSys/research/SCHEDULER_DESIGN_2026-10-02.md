@@ -70,7 +70,7 @@ UNVERIFIED-WEB.
 | Snapshot freshness | snapshot-age check | on stale |
 | Session records | sessions/*.md scan | on missing/partial |
 | Bug row health | BUGS.md row count | on IN-FIX > 14 days |
-| Paste size | SESSION_PASTE.txt size | on > 80 KB |
+| Paste size | SESSION_PASTE.txt size | on > 150 KB |
 | .new aging | BUILD_REPORT in-flight list | on age > 24h |
 
 All eight are deterministic checks a Python or PowerShell script can

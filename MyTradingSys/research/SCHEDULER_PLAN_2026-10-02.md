@@ -129,9 +129,9 @@ Opus run: same tokens as Sonnet.
 
 ## 4. Note on paste size
 
-`Dumps/SESSION_PASTE.txt` is 150,554 bytes today, above the 80 KB threshold, so its check is RED on the first
+`Dumps/SESSION_PASTE.txt` is 150,554 bytes today, above the 150 KB threshold, so its check is RED on the first
 tick. Handle by the same state-hash debounce (section 5): it enters the digest once, and again only when the
-size band changes (80 KB steps).
+size band changes (150 KB steps).
 
 ## 5. Trigger taxonomy (T5)
 
@@ -146,7 +146,7 @@ only when the hash is new in the last 24 h (digest checks: new since last digest
 | 4 | Snapshot freshness (NEW: `scripts/sched/check_snapshot_age.py`) | newest market snapshot older than threshold (threshold to be sourced from the existing snapshot cadence, not invented here) | Haiku event |
 | 5 | Session records (NEW: `scripts/sched/check_sessions.py`) | a `MyTradingSys/system/sessions/*.md` with `status: open` older than 24 h, or missing required header fields | digest |
 | 6 | Bug rows (NEW: `scripts/sched/check_bug_age.py`) | row IN-FIX for more than 14 days in `MyTradingSys/research/BUGS.md` | digest |
-| 7 | Paste size (NEW: `scripts/sched/check_paste_size.py`) | `Dumps/SESSION_PASTE.txt` over 80 KB | digest |
+| 7 | Paste size (NEW: `scripts/sched/check_paste_size.py`) | `Dumps/SESSION_PASTE.txt` over 150 KB | digest |
 | 8 | .new aging (NEW: `scripts/sched/check_new_aging.py`) | in-flight `.new` older than 24 h (STATUS.md lists 11 of 13 already over) | digest |
 
 Escalation edges: Haiku report `ESCALATE` fires Sonnet (closed reason set, Q4). Sonnet diff touching the

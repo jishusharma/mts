@@ -1,27 +1,27 @@
-BUILD_REPORT - 2026-10-02 17:46:02 UTC
+BUILD_REPORT - 2026-10-02 18:04:18 UTC
 host: JIS-NB
 
-Java compile:  PASS (2.8 s)
-Math tests:    PASS 155/155 (5.9 s)
+Java compile:  PASS (3.5 s)
+Math tests:    PASS 155/155 (5.5 s)
 Doc tests:     PASS 5/5 (2.1 s)
 
 In-flight .new files: 16
-  - backtest\bt\bt_stats.py.new (age 5014m)
-  - backtest\layers\audit\formula_audit.py.new (age 5373m)
-  - backtest\layers\consensus\test_writer.py.new (age 539m)
-  - backtest\layers\consensus\writer.py.new (age 539m)
-  - backtest\layers\cryptocred\test_cc_retest.py.new (age 6361m)
-  - backtest\layers\cryptocred\test_cc_structure.py.new (age 6362m)
-  - backtest\layers\rsi\observation.py.new (age 539m)
-  - backtest\layers\rsi\test_observation.py.new (age 539m)
-  - execution\auto_trader.py.new (age 58m)
-  - execution\auto_trader_config.json.new (age 58m)
-  - execution\README.md.new (age 6430m)
-  - execution\test_auto_trader.py.new (age 58m)
-  - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 539m)
-  - runtime\test_quad_classify.py.new (age 539m)
-  - runtime\test_regime_classifier.py.new (age 539m)
-  - tests\java\MarketDataSnapshotTest.java.new (age 539m)
+  - backtest\bt\bt_stats.py.new (age 5032m)
+  - backtest\layers\audit\formula_audit.py.new (age 5391m)
+  - backtest\layers\consensus\test_writer.py.new (age 557m)
+  - backtest\layers\consensus\writer.py.new (age 557m)
+  - backtest\layers\cryptocred\test_cc_retest.py.new (age 6379m)
+  - backtest\layers\cryptocred\test_cc_structure.py.new (age 6380m)
+  - backtest\layers\rsi\observation.py.new (age 557m)
+  - backtest\layers\rsi\test_observation.py.new (age 557m)
+  - execution\auto_trader.py.new (age 77m)
+  - execution\auto_trader_config.json.new (age 77m)
+  - execution\README.md.new (age 6448m)
+  - execution\test_auto_trader.py.new (age 77m)
+  - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 557m)
+  - runtime\test_quad_classify.py.new (age 557m)
+  - runtime\test_regime_classifier.py.new (age 557m)
+  - tests\java\MarketDataSnapshotTest.java.new (age 557m)
 
 Active sessions:
   (none)
