@@ -24,6 +24,7 @@ from mts_math import (
     calculate_rr_sanity,
     detect_confluence,
 )
+from net_rr_floor import NetRrFloorError, load_floor
 
 
 # ============================================================
@@ -357,10 +358,13 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     # BUG-007 (2026-09-10): split any-zone R:R from top-candidate R:R.
     # BUG-011 (2026-09-12): read net_rr_sanity (>= 2.0 NET per engine Sec 6 row 4),
     #   not rr_sanity (gross >= 1.5). Prior code was a doc-code mismatch.
+    # 2026-10-02: the NET floor is MyTradingSys/system/net_rr_floor.json (single source), compared to the
+    #   candidate's net_rr here; Java's net_rr_sanity flag is no longer read.
     # - any_zone_rr_below_threshold: True if ANY evaluated zone fails rr_sanity (gross).
     #   Advisory only. Does NOT gate trade execution.
     # - top_candidate_rr_below_threshold: True only if the rank-1 setup_candidate
-    #   fails net_rr_sanity (>= 2.0 NET). This is what hard stop #4 reads.
+    #   net_rr is below the floor (unreadable floor -> True, fail closed; a candidate with no net_rr at all, an
+    #   old schema, falls back to its net_rr_sanity flag as before). This is what hard stop #4 reads.
     any_trigger_ready = any(z["tier"] == "trigger_ready" for z in zone_math.values())
     any_zone_rr_fail = any(z["rr_sanity"] is False for z in zone_math.values())
     all_ignore = all(z["tier"] == "ignore" for z in zone_math.values())
@@ -369,7 +373,13 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     _candidates = snapshot.get("setup_candidates")
     if _candidates and isinstance(_candidates, list) and len(_candidates) > 0:
         _top_math = _candidates[0].get("math", {})
-        if isinstance(_top_math, dict) and _top_math.get("net_rr_sanity") is False:
+        try:
+            _net = _top_math.get("net_rr") if isinstance(_top_math, dict) else None
+            if _net is None:
+                top_candidate_rr_fail = _top_math.get("net_rr_sanity") is False if isinstance(_top_math, dict) else False
+            else:
+                top_candidate_rr_fail = float(_net) < load_floor()
+        except (NetRrFloorError, TypeError, ValueError):
             top_candidate_rr_fail = True
 
     result: Dict[str, Any] = {

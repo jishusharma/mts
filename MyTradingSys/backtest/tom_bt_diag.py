@@ -106,7 +106,7 @@ def main():
             print("  %-70s %d" % (k, n))
 
     def rkey(r):  # reason with the numeric tail removed so net_rr values group
-        return re.sub(r"[-\d.]+ < 2\.0", "X < 2.0", r["reason"]) if r["reason"].startswith("net_rr") else r["reason"]
+        return re.sub(r"[-\d.]+ < [\d.]+", "X < floor", r["reason"]) if r["reason"].startswith("net_rr") else r["reason"]
 
     print("\nproof>=5 rows scanned: %d" % len(out))
     tab("verdict x direction (all proof>=5)", lambda r: (r["verdict"], r["direction"]), out)

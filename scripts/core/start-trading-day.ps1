@@ -147,6 +147,19 @@ function Beep-Alert {
 
 }
 
+function Get-NetRrFloor {
+    # Single source of the net_rr floor: MyTradingSys\system\net_rr_floor.json, read on every cycle so an edit
+    # applies without restarting this loop. Unreadable or invalid -> $null and the caller fails closed (no fallback number).
+    try {
+        $j = Get-Content (Join-Path $R "MyTradingSys\system\net_rr_floor.json") -Raw -Encoding UTF8 | ConvertFrom-Json
+        $raw = $j.net_rr_floor
+        if ($raw -is [bool] -or $raw -isnot [ValueType]) { return $null }
+        $f = [double]$raw
+        if ([double]::IsNaN($f) -or [double]::IsInfinity($f) -or $f -le 0) { return $null }
+        return $f
+    } catch { return $null }
+}
+
 function Compute-Verdict {
     param($snap, $proofDir = "aligned")
     $price = [double]$snap.current_price
@@ -166,7 +179,8 @@ function Compute-Verdict {
 
     $top = $cands[0]
     $net_rr = [double]$top.math.net_rr
-    $net_ok = [bool]($top.math.net_rr -ge 1.25)   # operator 2026-10-02: 2.0 was D1(a), NO-SOURCE; 1.25 for testnet collection; restore after P4
+    $floor  = Get-NetRrFloor   # operator 2026-10-02: floor lives only in net_rr_floor.json (was D1(a), NO-SOURCE)
+    $net_ok = ($null -ne $floor) -and [bool]($top.math.net_rr -ge $floor)
     $tier   = [string]$top.math.tier
     $proof  = [int]$top.score.proof_count
     $setup  = [string]$top.setup_type
@@ -202,7 +216,8 @@ function Compute-Verdict {
     # exception. suspend_rr path removed; $mode is still computed above and
     # returned for display/logging only, per the operator's ruling.
     if (-not $net_ok) {
-        $v = "WAIT_RR"; $reason = ("net_rr {0:N2} < 2.0" -f $net_rr)
+        $v = "WAIT_RR"
+        if ($null -eq $floor) { $reason = "net_rr floor unreadable" } else { $reason = ("net_rr {0:N2} < {1:N2}" -f $net_rr, $floor) }
     } elseif ($tier -eq "ignore") {
         $v = "WAIT_FAR"; $reason = "tier=ignore"
     } elseif ($tier -eq "conditional") {

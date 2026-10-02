@@ -53,6 +53,7 @@ public class SetupCandidatesBuilder {
         }
 
         double currentPrice = root.get("current_price").asDouble();
+        final double netRrFloor = NetRrFloor.read();  // single source: MyTradingSys/system/net_rr_floor.json; NaN (unreadable) fails every >= below
 
         // Step 1: State classification
         String state = classifyState(root);
@@ -188,7 +189,7 @@ public class SetupCandidatesBuilder {
                 c.grossRR = reward / risk;
                 c.netRR = ExecutionMathConstants.netRR(c.grossRR);  // W2: was hardcoded * 0.75, see ExecutionMathConstants
                 c.rrSanity = c.grossRR >= 1.5;
-                c.netRrSanity = c.netRR >= 2.0;
+                c.netRrSanity = c.netRR >= netRrFloor;
             } else {
                 c.rrSanity = false;
             }
