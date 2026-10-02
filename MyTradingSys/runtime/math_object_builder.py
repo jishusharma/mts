@@ -409,7 +409,9 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
         elif _dir == "long":
             if _fa_dir == "buy":
                 _contradictions.append("finished_auction=BUY vs LONG")
-            if isinstance(_book, (int, float)) and not isinstance(_book, bool) and _book < 0.33:
+            # 0.0 = no order-book data (Java SetupCandidatesBuilder.java:581 skips 0.0; MarketDataSnapshot.java:213-214),
+            # not ask-heavy. Operator-approved 2026-09-30 (SUPERVISOR_INBOX 22:30Z item 1). None already fails isinstance.
+            if isinstance(_book, (int, float)) and not isinstance(_book, bool) and _book != 0.0 and _book < 0.33:
                 _contradictions.append(f"book_imbalance={_book} ask-heavy vs LONG")
             if isinstance(_last3, list) and len(_last3) == 3 and all(x == "negative" for x in _last3):
                 _contradictions.append("last_3_delta=neg,neg,neg vs LONG")
