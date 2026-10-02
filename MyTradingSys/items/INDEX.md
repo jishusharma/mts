@@ -53,4 +53,5 @@ T061 | OPEN    | T061_wavetrend_lazybear.md | WaveTrend with Crosses [LazyBear];
 B080 | OPEN    | B080_dsa_pace_hourly_cap.md | dsa_worker hourly-cap misfires on stale pace entries
 B081 | CLOSED  | B081_fee_source_conflict.md | fees.py single source; receipt 1ec7d8f, 547 tests pass
 B082 | CLOSED  | B082_qwen_feeder_missing.md | task deleted; Qwen decommissioned 2026-10-01
+T062 | OPEN    | T062_deprecate_manager.md | deprecate mts-manager; superseded by DSA-composed CL prompts
 # END

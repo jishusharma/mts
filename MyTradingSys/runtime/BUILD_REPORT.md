@@ -1,27 +1,27 @@
-BUILD_REPORT - 2026-10-02 17:04:40 UTC
+BUILD_REPORT - 2026-10-02 17:46:02 UTC
 host: JIS-NB
 
-Java compile:  PASS (2.9 s)
-Math tests:    PASS 155/155 (5.1 s)
-Doc tests:     PASS 5/5 (2.4 s)
+Java compile:  PASS (2.8 s)
+Math tests:    PASS 155/155 (5.9 s)
+Doc tests:     PASS 5/5 (2.1 s)
 
 In-flight .new files: 16
-  - backtest\bt\bt_stats.py.new (age 4972m)
-  - backtest\layers\audit\formula_audit.py.new (age 5332m)
-  - backtest\layers\consensus\test_writer.py.new (age 497m)
-  - backtest\layers\consensus\writer.py.new (age 497m)
-  - backtest\layers\cryptocred\test_cc_retest.py.new (age 6320m)
-  - backtest\layers\cryptocred\test_cc_structure.py.new (age 6320m)
-  - backtest\layers\rsi\observation.py.new (age 497m)
-  - backtest\layers\rsi\test_observation.py.new (age 497m)
-  - execution\auto_trader.py.new (age 17m)
-  - execution\auto_trader_config.json.new (age 17m)
-  - execution\README.md.new (age 6388m)
-  - execution\test_auto_trader.py.new (age 17m)
-  - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 497m)
-  - runtime\test_quad_classify.py.new (age 497m)
-  - runtime\test_regime_classifier.py.new (age 497m)
-  - tests\java\MarketDataSnapshotTest.java.new (age 497m)
+  - backtest\bt\bt_stats.py.new (age 5014m)
+  - backtest\layers\audit\formula_audit.py.new (age 5373m)
+  - backtest\layers\consensus\test_writer.py.new (age 539m)
+  - backtest\layers\consensus\writer.py.new (age 539m)
+  - backtest\layers\cryptocred\test_cc_retest.py.new (age 6361m)
+  - backtest\layers\cryptocred\test_cc_structure.py.new (age 6362m)
+  - backtest\layers\rsi\observation.py.new (age 539m)
+  - backtest\layers\rsi\test_observation.py.new (age 539m)
+  - execution\auto_trader.py.new (age 58m)
+  - execution\auto_trader_config.json.new (age 58m)
+  - execution\README.md.new (age 6430m)
+  - execution\test_auto_trader.py.new (age 58m)
+  - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 539m)
+  - runtime\test_quad_classify.py.new (age 539m)
+  - runtime\test_regime_classifier.py.new (age 539m)
+  - tests\java\MarketDataSnapshotTest.java.new (age 539m)
 
 Active sessions:
   (none)
@@ -29,10 +29,10 @@ Active sessions:
 BOM files: 0
 Cyrillic codepoints (0x0400-0x04FF): 0
 
-Bugs: OK (136 rows)
-Index: OK (24 open IDs in items/INDEX.md)
+Bugs: OK (137 rows)
+Index: OK (25 open IDs in items/INDEX.md)
 
-Index (files cross-check): OK (48 item files, 48 INDEX rows)
+Index (files cross-check): OK (49 item files, 49 INDEX rows)
 
 Dispatches: OK (33 files)
 

@@ -23,14 +23,19 @@ A claim with no tag is a defect. Fix before delivery.
 ## STEP 0 - SURFACE AND PERMISSION
 
 Answer both before composing anything else.
-| # | Item | Required | Failure mode |
-|---|---|---|---|
-| 0a | Surface: CC / CL / Opus on CL / Opus on CC / DSA / worker | operator words | inferring the surface |
-| 0b | Permission: may edit code, run Maven/pytest, commit, push | operator words | inventing a restriction |
+| # | Item | Failure mode |
+|---|---|---|
+| 0a | Surface: CC / CL / Opus on CL / Opus on CC / DSA / worker | inferring the surface |
+| 0b | Permission: may edit code, run Maven/pytest, commit, push | inventing a restriction |
 
 A restriction in the prompt that is not in the operator's words is a defect. "do not",
 "never", "must not", "cannot" and any capability limit each need an operator quote.
 If 0a or 0b is unknown, ask one question and stop. Never default to the restrictive option.
+
+No fabrication by the DSA session while writing the prompt (operator direct, 2026-10-02).
+Surface, permission, restriction, file path, line number, hash, count, and claim each come
+from disk this turn, from the operator's words this session, or carry the UNVERIFIED tag.
+A missing answer is left empty or asked; it is not filled with a guess.
 
 ## DELIVERY FORMAT
 
