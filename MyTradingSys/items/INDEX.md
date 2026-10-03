@@ -67,4 +67,5 @@ B092 | OPEN    | B092_dsa_write_batching.md | DSA appends gate+commit to every w
 B093 | OPEN    | B093_parallel_dispatch.md | replace single-slot hold with parallel dispatch; one-writer-per-file-set stays; Claude decides shape
 B094 | OPEN    | B094_headless_scheduler.md | headless mts go; operator enables, auto-disables when running makes no sense; Claude decides sense conditions
 B095 | OPEN    | B095_per_session_cost.md | per-session cost not on disk; session record + prompt composer need a cost field; Claude decides shape
+B097 | OPEN    | B097_kxh_mislabel.md | kXhIAug0Gh8_v2.md:65 says entry before proof; rows 6-7 say proof first
 # END

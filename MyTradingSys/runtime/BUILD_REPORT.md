@@ -1,22 +1,22 @@
-BUILD_REPORT - 2026-10-03 15:41:58 UTC
+BUILD_REPORT - 2026-10-03 16:11:53 UTC
 host: JIS-NB
 
-Java compile:  PASS (3.3 s)
-Math tests:    PASS 219/219 (41.4 s)
-Doc tests:     PASS 5/5 (3.2 s)
+Java compile:  PASS (3.1 s)
+Math tests:    PASS 219/219 (37.8 s)
+Doc tests:     PASS 5/5 (3.5 s)
 
 In-flight .new files: 11
-  - backtest\layers\audit\formula_audit.py.new (age 6690m)
-  - backtest\layers\consensus\test_writer.py.new (age 1855m)
-  - backtest\layers\consensus\writer.py.new (age 1855m)
-  - backtest\layers\cryptocred\test_cc_retest.py.new (age 7677m)
-  - backtest\layers\cryptocred\test_cc_structure.py.new (age 7678m)
-  - backtest\layers\rsi\observation.py.new (age 1855m)
-  - backtest\layers\rsi\test_observation.py.new (age 1855m)
-  - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 1855m)
-  - runtime\test_quad_classify.py.new (age 1855m)
-  - runtime\test_regime_classifier.py.new (age 1855m)
-  - tests\java\MarketDataSnapshotTest.java.new (age 1855m)
+  - backtest\layers\audit\formula_audit.py.new (age 6719m)
+  - backtest\layers\consensus\test_writer.py.new (age 1885m)
+  - backtest\layers\consensus\writer.py.new (age 1885m)
+  - backtest\layers\cryptocred\test_cc_retest.py.new (age 7707m)
+  - backtest\layers\cryptocred\test_cc_structure.py.new (age 7708m)
+  - backtest\layers\rsi\observation.py.new (age 1885m)
+  - backtest\layers\rsi\test_observation.py.new (age 1885m)
+  - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 1885m)
+  - runtime\test_quad_classify.py.new (age 1885m)
+  - runtime\test_regime_classifier.py.new (age 1885m)
+  - tests\java\MarketDataSnapshotTest.java.new (age 1885m)
 
 Active sessions:
   (none)
@@ -24,10 +24,10 @@ Active sessions:
 BOM files: 0
 Cyrillic codepoints (0x0400-0x04FF): 0
 
-Bugs: OK (156 rows)
-Index: OK (37 open IDs in items/INDEX.md)
+Bugs: OK (157 rows)
+Index: OK (38 open IDs in items/INDEX.md)
 
-Index (files cross-check): OK (62 item files, 62 INDEX rows)
+Index (files cross-check): OK (63 item files, 63 INDEX rows)
 
 Dispatches: OK (33 files)
 

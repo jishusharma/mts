@@ -2053,6 +2053,24 @@
       "action": "passed",
       "reason": "B088 CLOSED, B089 CLOSED: one CLI session-id builder, cooldown sourced, picker sweeps BUGS-only OPEN ids. Commit 9b4a844. Session MTS-2026-10-03-1230Z-CLI-BLD-fix-b088-b089",
       "ts": "2026-10-03T15:41:27.575297Z"
+    },
+    {
+      "ts": "2026-10-03T15:46:27.176Z",
+      "type": "alert",
+      "alert_id": 123,
+      "setup": "tc_long",
+      "action": "monitored",
+      "verdict": "SETUP_FORMING",
+      "reason": "verdict WAIT_TRIGGER -> WATCH | zone daily_vah -> 15m_swing_high | STATE TWOPEAK/above_vah -> TWOPEAK/in_va"
+    },
+    {
+      "ts": "2026-10-03T16:04:25.300Z",
+      "type": "alert",
+      "alert_id": 124,
+      "setup": "ct_long",
+      "action": "monitored",
+      "verdict": "SETUP_FORMING",
+      "reason": "proof 4 -> 5"
     }
   ]
 }

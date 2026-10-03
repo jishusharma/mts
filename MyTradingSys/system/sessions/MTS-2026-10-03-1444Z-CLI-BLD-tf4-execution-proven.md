@@ -1,7 +1,7 @@
 # MTS-2026-10-03-1444Z-CLI-BLD-tf4-execution-proven
 surface: App (Claude Win App, Code mode; the ID says CLI because the dispatcher names every picked session CLI-BLD) | host: JIS-NB | account: none | model: claude-sonnet-5-5 as reported by the runtime (the prompt and row 1.6 asked for Opus) | role: BLD | branch: fast-track | branch_alias: none
 predecessor: MTS-2026-10-03-1329Z-CLI-BLD-tf3-fabio-v3-live | lanes: none (no subagents, no workers)
-started: 2026-10-03 (first clock read 15:27Z; the 14:44Z in the ID is the prompt compose time) | ended: 2026-10-03 15:45Z | status: closed | commits: git log --grep "MTS-Session: MTS-2026-10-03-1444Z-CLI-BLD-tf4-execution-proven" (the audit file also sits in 9d43d03, see T5)
+started: 2026-10-03 (first clock read 15:27Z; the 14:44Z in the ID is the prompt compose time) | ended: 2026-10-03 15:45Z | status: closed | commits: the commit history --grep "MTS-Session: MTS-2026-10-03-1444Z-CLI-BLD-tf4-execution-proven" (the audit file also sits in 9d43d03, see T5)
 handoff: supervisor inbox via this record. TF5 (row 1.7) and TF6 (row 1.8) are now pickable (blocker 1.6 LANDED). Before composing TF5: operator Ruling 3 (MEASURED values for CONCEPT-ONLY rows) is still open; the audit flags E1b, E2, E4 as MEASURE.
 
 ## Scope
