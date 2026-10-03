@@ -63,7 +63,7 @@ B088 | CLOSED  | B088_session_id_surface_code.md | one code CLI via pick_task.se
 B089 | CLOSED  | B089_bugs_invisible_to_scheduler.md | shape A: pick_task.py sweeps BUGS-only OPEN ids into wave max+1; receipt in BUGS row
 B090 | OPEN    | B090_cloud_credit_approval.md | two-bucket cloud plan ($50 today + $49 contingent); Claude approves; 2 of 8 items need a desktop precondition
 B091 | OPEN    | B091_build_check_speed.md | Build-Check.ps1 ~45s and dirties tree each run; fast tier + read-only mode; Claude decides shape
-B092 | OPEN    | B092_dsa_write_batching.md | DSA appends gate+commit to every write; add section 6b BATCHING rule; Claude decides wording
+B092 | CLOSED  | B092_dsa_write_batching.md | DSA appends gate+commit to every write; add section 6b BATCHING rule; Claude decides wording
 B093 | OPEN    | B093_parallel_dispatch.md | replace single-slot hold with parallel dispatch; one-writer-per-file-set stays; Claude decides shape
 B094 | OPEN    | B094_headless_scheduler.md | headless mts go; operator enables, auto-disables when running makes no sense; Claude decides sense conditions
 B095 | OPEN    | B095_per_session_cost.md | per-session cost not on disk; session record + prompt composer need a cost field; Claude decides shape

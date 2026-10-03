@@ -138,6 +138,13 @@ Three rules from it that apply on every surface:
 
 ## 6. WRITING
 
+## 6b. BATCHING
+
+Write blocks end with write and verify only. No gate, no commit, no tag.
+Gate + commit run only on: explicit operator word "gate"; session close; a live-path or critical-file change shipping this turn.
+A gate costs ~45s wall and dirties BUILD_REPORT.md and session_log.json every run. Batching amortises that per session.
+When a gate does run: wrap the block in & { }, run Build-Check, abort on STATUS: FAIL, then stage exact paths and commit.
+
 Before any write:
 - Detect the line ending of the target from disk. One command:
     $b = [System.IO.File]::ReadAllBytes((Resolve-Path $path))
