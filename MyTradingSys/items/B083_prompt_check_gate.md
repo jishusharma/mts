@@ -1,6 +1,6 @@
 # B083 - prompt_check.ps1 gate
 
-Status: OPEN. Severity: HIGH. Opened 2026-10-03.
+Status: CLOSED 2026-10-03. Severity: HIGH.
 
 ## Defect
 
@@ -31,7 +31,7 @@ Checks, each writing a PASS/FAIL row:
 Output: a PASS/FAIL table and a final STATUS. FAIL is advisory. The prompt still ships and the operator decides. Warn and log; no stop.
 
 ## Receipt
-
--
-
+2026-10-03: scripts/dev/prompt_check.ps1 and test_prompt_check.ps1 on disk.
+test_prompt_check.ps1 reports TEST STATUS: PASS (4 of 4 fixtures).
+Fixtures cover: fake path, valid paths, untagged clause, absent token.
 # END

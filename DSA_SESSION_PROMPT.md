@@ -253,44 +253,40 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-03T03:25Z (live; java present).
+Last live read:  2026-10-03T12:30Z (loop UP, java present).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 508, java 4120, supervisor 20112 (restarted 03:20:49Z on extended code).
+Runtime + loops: loop UP. wrapper 508, java 4120, supervisor 20112.
                  auto_trader 20016, live_runner_cli 15612, orderflow_live 6728, daily_loss_monitor 18484.
-                 All four aux hidden via runtime_data/launch-*.vbs and watched by the new Watch-Aux block.
-                 snapAge 63s, state_code_age 2s, stale_strikes 0.
-                 orderflow_live writes MyTradingSys/runtime/orderflow_live/2026-10-03.csv, one row per closed minute.
-Build PASS 2026-10-03T03:15:34Z (unchanged this session; no source changed).
-HEAD 1dd5d20.
-Working tree: live_runner_cli.py.new deleted; BUILD_REPORT, session_log, 03_FILE_INDEX, launch-supervisor.vbs, loop-supervisor.ps1 modified; pm_heartbeats + orderflow_live + testnet_status untracked.
+                 snapshot age 56s. Scheduler MTS-Scheduler-Tick Ready, 15-min interval.
+Build PASS 2026-10-03T12:14Z (Java PASS, math 219/219, doc 5/5).
+HEAD 07284d4, tag last-snapshot. origin/fast-track at a8b8fcf (2 local commits unpushed).
 
-Commits landed this session: none (close-only batch pending).
+Commits landed since 2026-10-03T03:15Z:
+  1dd9aca close batch.
+  86313de B075 partial (Java historical path, no live calls).
+  ccd0a0f R4 HTF context writer.
+  684c419 surface-choice rule (App first, CLI fallback).
+  c7802a9 dispatcher v1 + B084-B087 + R4-T2 fix.
+  0256be4 B086/B087 fixes.
+  a8b8fcf B089 filed.
+  9b4a844 B088/B089 fixed (one CLI session-id builder, cooldown 24h, picker sweeps BUGS-only OPEN ids).
+  07284d4 B090 filed (cloud credit approval plan, wave 9).
 
-Session work this session (MTS-2026-10-03-0315Z-DSA-COO):
-  03_FILE_INDEX.md: +4 rows (runner_min_distance.json, runner_min_distance.py, RunnerMinDistance.java, orderflow_live.py).
-  loop-supervisor.ps1: extended with Watch-Aux (SHA 6CE7EB71 -> 08FF65E0, 223 -> 248 lines, PARSE OK). Restarts four aux processes via VBS launchers. Restarted live (pid 2204 -> 20112).
-  live_runner_cli.py.new: deleted (byte-identical to live .py, SHA 40E5B168). Tests fall back to .py.
-  launch-supervisor.vbs: rewritten with new sh.Run line.
-  runtime_data/launch-{auto-trader,live-runner,orderflow-live,daily-loss}.vbs: committed last session, all four active.
+Scheduler state:
+  pick_state.json holds TF1 until 2026-10-04T10:59Z (24h cooldown, B087a). Every tick prints HOLD TF1.
+  B089 shape (A) live: pick_task.py sweeps BUGS.md for OPEN ids with no pipeline row.
+  B084, B085 queue at wave 9 by the sweep. B090 has an explicit wave 9 row.
 
-R1 done. R2 live. R3 live.
-  - R2 runner exit: 50/50 legs + breakeven after leg 1. auto_trader 20016.
-  - R2 runner min-distance: runner_min_distance_pct 0.25, live.
-  - R3 order-flow writer: orderflow_live 6728.
+Cloud (awgp credit, ~, expires 2026-10-03):
+  origin/fast-track at a8b8fcf. No cloud/2026-10-03-* branch yet. Buckets A+B approval plan filed as B090.
 
-Live Tom floor 1.25. All cycles since restart WAIT_TRIGGER or WAIT_PROOF. No SETUP_FORMING this session. tom_last_alert_no 96.
+Registries: BUGS.md 151 rows; items/INDEX.md 33 open; BUILD_PIPELINE.md 137 lines, waves 0-9.
 
-Fabio v3: shadow emitter live in live_runner_cli 15612. Reads orderflow_live CSV. First v3 signal awaits next NY window (13:30 UTC).
+Open DSA work: none. B083 CLOSED 2026-10-03 (test_prompt_check.ps1 PASS 4 of 4).
 
-Scheduler: tick every 15 min. Canary WARN (stale restart flags for auto_trader / live_runner_cli — comparison timezone bug, still unfiled).
-
-R4 (HTF context layer) was composed and shipped to a CL session; it did not land this session. Prompt carries: new file backtest/layers/fabio/htf_context_live.py, daily log research/htf_context/<date>.jsonl, tests, one run.
-
-Open queues: 25 open ids in items/INDEX.md; 137 rows in BUGS.md.
-
-Next session first action: (1) re-ship or verify R4 landed; (2) commit the close batch; (3) R5 (Model B failed-breakout reclaim as shadow) after R4; or T052 (SETUP_CONFIRMED trigger) if R4 stays open.
+Next session first action: (1) push 9b4a844 + 07284d4 to origin; (2) clear pick_state.json to drop the TF1 hold, or wait 24h; (3) run the B090 approval plan and start Bucket A; (4) B088/B089 CL session record for MTS-2026-10-03-1230Z-CLI-BLD-fix-b088-b089 if not present.
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.
