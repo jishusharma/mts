@@ -10,7 +10,8 @@ nothing is started (B086). `--dry` forces the same from anywhere. The operator's
 
 Session name (B087c): no argument -> the Session ID already inside the prompt (next_task.json). A kebab slug
 (<=20 chars, lowercase) -> MTS-YYYY-MM-DD-HHMMZ-CLI-BLD-<slug> from the current UTC (SURFACE_POLICY section 4), and
-the prompt's `Session ID:` line is rewritten to match.
+the prompt's `Session ID:` line is rewritten to match. One builder: pick_task.session_id (B088). An inherited name
+composed before B088 with the off-policy code -CL- is launched as -CLI-, prompt line rewritten to match.
 Exit 0 on launch, dry run or IDLE; 1 when claude cannot be started; 2 on a bad slug.
 Test hooks: MTS_PICK_ROOT replaces the repo root, MTS_CLAUDE_BIN replaces the claude executable.
 Usage (repo root): python scripts/sched/go.py [slug] [--dry]
@@ -23,14 +24,14 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from pick_task import SURF, session_id as session_name
+
 ROOT = Path(os.environ.get("MTS_PICK_ROOT") or Path(__file__).resolve().parents[2])
 QUEUE = ROOT / "MyTradingSys" / "runtime" / "queue"
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 SLUG_MAX = 20
-
-
-def session_name(slug, now):
-    return "MTS-%s-%sZ-CLI-BLD-%s" % (now.strftime("%Y-%m-%d"), now.strftime("%H%M"), slug)
+LEGACY_CL = re.compile(r"^(MTS-\d{4}-\d{2}-\d{2}-\d{4}Z-)CL(-[A-Z]+-)")
 
 
 def main(argv, now=None):
@@ -61,6 +62,9 @@ def main(argv, now=None):
         if not name:
             m = re.search(r"(?m)^Session ID: (\S+)", prompt)
             name = m.group(1) if m else None
+        if name and LEGACY_CL.match(name):
+            name = LEGACY_CL.sub(r"\g<1>" + SURF + r"\g<2>", name)
+            prompt = re.sub(r"(?m)^Session ID: .*$", "Session ID: " + name, prompt, count=1)
     reason = "--dry" if dry else ("running inside Claude Code (CLAUDECODE), one writer per tree" if os.environ.get("CLAUDECODE") else "")
     if reason:
         print("DRY RUN (%s): nothing launched. session name: %s" % (reason, name))

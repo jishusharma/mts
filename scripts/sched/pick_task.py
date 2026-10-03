@@ -7,10 +7,15 @@ One wake, one pick. Reads the pipeline fresh each run, so stale rows drop out. N
 Writes MyTradingSys/runtime/queue/{next_task.txt, next_task.json, pick_log.jsonl, pick_state.json}; a prior next_task.*
 is renamed next_task_<prior_composed_utc>.* first. Prints `PICK <id> wave=<n> slug=<slug> surface=<App|CLI>`,
 `HOLD <id> ...` or `IDLE no pickable row`.
+Bug sweep (B089): an OPEN or IN-FIX id in BUGS.md with no pipeline row in any wave is a candidate too, in one wave
+after the last pipeline wave (file order), so a bug filed without a pipeline row is never invisible. Pipeline rows
+always go first; an id with any pipeline row is governed by that row only.
 Re-pick guard (B087a): pick_state.json records each pick. A picked row that is still pickable is HELD (next_task.*
-left untouched, nothing else offered: one writer at a time) for COOLDOWN_H hours (env MTS_PICK_COOLDOWN_H, default 6).
-After the cooldown it is offered again, so a row whose session died never starves. A row that stops being pickable
-(landed, blocked, status change) drops out of the state at once.
+left untouched, nothing else offered: one writer at a time) for the cooldown (env MTS_PICK_COOLDOWN_H hours; default
+= check_sessions.MAX_OPEN, the window after which an open session counts as stale, SCHEDULER_PLAN_2026-10-02 s5 #5;
+B088). After the cooldown it is offered again, so a row whose session died never starves. A row that stops being
+pickable (landed, blocked, status change) drops out of the state at once.
+Session id (B088): MTS-<UTC>-CLI-BLD-<slug>; CLI is the SURFACE_POLICY section 4 code; go.py builds names here.
 Exit 0 on PICK or IDLE, 1 on disk error (reason on stderr).
 Test hook: env MTS_PICK_ROOT replaces the repo root.
 Usage (repo root): python scripts/sched/pick_task.py
@@ -22,7 +27,10 @@ import subprocess
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-ROOT = Path(os.environ.get("MTS_PICK_ROOT") or Path(__file__).resolve().parents[2])
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from check_sessions import MAX_OPEN as STALE_SESSION  # B088: one definition of a dead session
+
+ROOT =Path(os.environ.get("MTS_PICK_ROOT") or Path(__file__).resolve().parents[2])
 PIPE = ROOT / "MyTradingSys" / "runtime" / "BUILD_PIPELINE.md"
 BUGS = ROOT / "MyTradingSys" / "research" / "BUGS.md"
 ITEMS = ROOT / "MyTradingSys" / "items"
@@ -33,6 +41,7 @@ FILE_RE = re.compile(r"[\w./\\-]+\.(?:md|py|java|ps1|json|csv)\b")
 ROWNUM_RE = re.compile(r"\b\d+\.\d+\b")
 PICKABLE_BUGS = ("OPEN", "IN-FIX")
 SURFACE = "App"
+SURF, ROLE = "CLI", "BLD"  # session-id codes, SURFACE_POLICY section 4
 SLUG_MAX = 20
 STATE_NAME = "pick_state.json"
 
@@ -62,12 +71,31 @@ def parse_pipeline(text):
     return rows
 
 
-def parse_bugs(text):
-    out = {}
+def parse_bug_rows(text):
+    """[(id, status, title)] in file order, both register tables."""
+    out = []
     for line in text.splitlines():
         c = cells(line) if line.startswith("|") else []
         if len(c) >= 4 and BUG_ID.match(c[0]):
-            out[c[0]] = c[2]
+            out.append((c[0], c[2], c[4] if len(c) > 4 else ""))
+    return out
+
+
+def parse_bugs(text):
+    return {rid: status for rid, status, _ in parse_bug_rows(text)}
+
+
+def sweep_rows(rows, bug_rows):
+    """B089: OPEN / IN-FIX register ids with no pipeline row, as QUEUED rows of one wave after the last."""
+    have = {r["id"] for r in rows}
+    wave = max((r["wave"] for r in rows), default=0) + 1
+    out = []
+    for rid, status, title in bug_rows:
+        if status in PICKABLE_BUGS and rid not in have:
+            have.add(rid)
+            out.append({"num": "%d.%d" % (wave, len(out) + 1), "wave": wave, "id": rid, "slug": title or rid,
+                        "status": "QUEUED", "blocker": "-", "next": "MyTradingSys/research/BUGS.md row " + rid,
+                        "source": "bugs"})
     return out
 
 
@@ -120,9 +148,13 @@ def slug_of(r):
 
 def cooldown():
     try:
-        return timedelta(hours=float(os.environ.get("MTS_PICK_COOLDOWN_H", "6")))
-    except ValueError:
-        return timedelta(hours=6)
+        return timedelta(hours=float(os.environ["MTS_PICK_COOLDOWN_H"]))
+    except (KeyError, ValueError):
+        return STALE_SESSION
+
+
+def session_id(slug, now):
+    return "MTS-%s-%sZ-%s-%s-%s" % (now.strftime("%Y-%m-%d"), now.strftime("%H%M"), SURF, ROLE, slug)
 
 
 def load_state():
@@ -152,7 +184,11 @@ def held_row(candidates, state, now):
 def compose(r, now, doc, session_id):
     read_first = [str(doc.relative_to(ROOT)).replace("\\", "/")] if doc else []
     read_first += [f.replace("\\", "/") for f in FILE_RE.findall(r["next"]) if f.replace("\\", "/") not in read_first]
-    read_first += ["MyTradingSys/runtime/BUILD_PIPELINE.md (row %s)" % r["num"]]
+    if r.get("source") == "bugs":
+        read_first += ["MyTradingSys/runtime/BUILD_PIPELINE.md (no row: swept from BUGS.md, B089; on close add a "
+                       "LANDED row for the record)"]
+    else:
+        read_first += ["MyTradingSys/runtime/BUILD_PIPELINE.md (row %s)" % r["num"]]
     rid = r["id"]
     return "\n".join([
         "Session ID: " + session_id,
@@ -240,12 +276,14 @@ def main():
     iso = now.strftime("%Y-%m-%dT%H:%M:%SZ")
     try:
         rows = parse_pipeline(PIPE.read_text(encoding="utf-8"))
-        bugs = parse_bugs(BUGS.read_text(encoding="utf-8")) if BUGS.exists() else {}
+        bug_rows = parse_bug_rows(BUGS.read_text(encoding="utf-8")) if BUGS.exists() else []
     except OSError as e:
         print("pick_task: cannot read inputs: %s" % e, file=sys.stderr)
         return 1
-    by_num = {r["num"]: r for r in rows}
-    ordered = sorted(rows, key=lambda r: (r["wave"], [int(x) for x in r["num"].split(".")]))
+    bugs = {rid: status for rid, status, _ in bug_rows}
+    by_num = {r["num"]: r for r in rows}  # pipeline rows only: a swept row never satisfies or blocks a dependency
+    ordered = sorted(rows + sweep_rows(rows, bug_rows),
+                     key=lambda r: (r["wave"], [int(x) for x in r["num"].split(".")]))
     pickable = [r for r in ordered if skip_reason(r, bugs, by_num) is None]
     state = load_state()
     state = {k: v for k, v in state.items() if k in {r["id"] for r in pickable}}
@@ -267,20 +305,21 @@ def main():
             print("IDLE no pickable row")
             return 0
         slug = slug_of(chosen)
-        session_id = "MTS-%s-%sZ-CL-BLD-%s" % (now.strftime("%Y-%m-%d"), now.strftime("%H%M"), slug)
+        sid = session_id(slug, now)
         doc = item_doc(chosen["id"]) if BUG_ID.match(chosen["id"]) else None
         meta = {"id": chosen["id"], "wave": chosen["wave"], "slug": slug, "surface": SURFACE,
                 "item_doc": str(doc.relative_to(ROOT)).replace("\\", "/") if doc else None, "composed_utc": iso,
-                "session_id": session_id}
-        atomic_write(QUEUE / "next_task.txt", compose(chosen, now, doc, session_id))
+                "session_id": sid, "source": chosen.get("source", "pipeline")}
+        atomic_write(QUEUE / "next_task.txt", compose(chosen, now, doc, sid))
         atomic_write(QUEUE / "next_task.json", json.dumps(meta, indent=1) + "\n")
         state[chosen["id"]] = {"picked_utc": iso, "count": state.get(chosen["id"], {}).get("count", 0) + 1}
         atomic_write(QUEUE / STATE_NAME, json.dumps(state, indent=1, sort_keys=True) + chr(10))
-        log_line({"ts": iso, "result": "PICK", **{k: meta[k] for k in ("id", "wave", "slug", "surface")}})
+        log_line({"ts": iso, "result": "PICK", **{k: meta[k] for k in ("id", "wave", "slug", "surface", "source")}})
     except OSError as e:
         print("pick_task: disk error: %s" % e, file=sys.stderr)
         return 1
-    print("PICK %s wave=%d slug=%s surface=%s" % (chosen["id"], chosen["wave"], slug, SURFACE))
+    print("PICK %s wave=%d slug=%s surface=%s source=%s" % (
+        chosen["id"], chosen["wave"], slug, SURFACE, meta["source"]))
     return 0
 
 

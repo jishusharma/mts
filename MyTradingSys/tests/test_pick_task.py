@@ -1,9 +1,11 @@
-"""Seven fixtures for scripts/sched/pick_task.py. Each runs the script as a subprocess against a temp root
-(MTS_PICK_ROOT), so no live-tree file is read or written."""
+"""Fixtures for scripts/sched/pick_task.py. Each runs the script as a subprocess against a temp root
+(MTS_PICK_ROOT), so no live-tree file is written; tests 21-22 only read the live pipeline and register."""
 import json
 import os
+import re
 import subprocess
 import sys
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
@@ -21,15 +23,17 @@ def make_root(tmp_path, rows=(), bugs=(), items=()):
     (tmp_path / "MyTradingSys" / "items").mkdir(parents=True)
     wave = "## WAVE 4 - ENGINE DEFECTS\n\n" + HEAD + "".join(r + "\n" for r in rows)
     (tmp_path / "MyTradingSys" / "runtime" / "BUILD_PIPELINE.md").write_text("# BUILD PIPELINE\n\n" + wave + "\n# END\n", encoding="utf-8", newline="\n")
-    body = BUGS_HEAD + "".join(f"| {b[0]} | 2026-09-27 | {b[1]} | LOW | t | e | - |\n" for b in bugs)
+    body = BUGS_HEAD + "".join(f"| {b[0]} | 2026-09-27 | {b[1]} | LOW | {b[2] if len(b) > 2 else 't'} | e | - |\n"
+                               for b in bugs)
     (tmp_path / "MyTradingSys" / "research" / "BUGS.md").write_text(body, encoding="utf-8", newline="\n")
     for name in items:
         (tmp_path / "MyTradingSys" / "items" / name).write_text("# item\n\nFix it.\n", encoding="utf-8", newline="\n")
     return tmp_path
 
 
-def run(root):
-    env = dict(os.environ, MTS_PICK_ROOT=str(root))
+def run(root, **extra):
+    env = {k: v for k, v in os.environ.items() if k != "MTS_PICK_COOLDOWN_H"}
+    env.update(MTS_PICK_ROOT=str(root), **extra)
     return subprocess.run([sys.executable, str(SCRIPT)], capture_output=True, text=True, env=env, cwd=REPO)
 
 
@@ -166,3 +170,109 @@ def test_13_session_slug_within_20_chars(tmp_path):
                          encoding="utf-8", newline="\n")
     run(root)
     assert len(json.loads((queue(root) / "next_task.json").read_text(encoding="utf-8"))["slug"]) <= 20
+
+
+# ---- B088: one policy surface code; cooldown default sourced from the stale-session window ----
+
+def policy_surfaces():
+    text = (REPO / "MyTradingSys" / "system" / "SURFACE_POLICY.md").read_text(encoding="utf-8")
+    return re.search(r"(?m)^SURF: ([A-Z ]+)\.", text).group(1).split()
+
+
+def stale_window():
+    sys.path.insert(0, str(SCRIPT.parent))
+    import check_sessions
+    return check_sessions.MAX_OPEN
+
+
+def meta(root):
+    return json.loads((queue(root) / "next_task.json").read_text(encoding="utf-8"))
+
+
+def test_14_session_id_surface_code_is_cli_and_in_policy(tmp_path):
+    root = make_root(tmp_path, [row(1, "B070")], [("B070", "OPEN")], ["B070_x.md"])
+    assert run(root).returncode == 0
+    sid = meta(root)["session_id"]
+    code = re.fullmatch(r"MTS-\d{4}-\d{2}-\d{2}-\d{4}Z-([A-Z]+)-BLD-[a-z0-9-]+", sid).group(1)
+    assert code == "CLI" and code in policy_surfaces(), sid
+    assert ("Session ID: " + sid) in (queue(root) / "next_task.txt").read_text(encoding="utf-8")
+
+
+def test_15_default_cooldown_is_the_stale_session_window(tmp_path):
+    # picked one hour inside the check_sessions.py stale window: still held (the unsourced 6h default re-picked it)
+    root = make_root(tmp_path, [row(1, "B070"), row(2, "B071")], [("B070", "OPEN"), ("B071", "OPEN")],
+                     ["B070_x.md", "B071_y.md"])
+    assert run(root).stdout.startswith("PICK B070")
+    st = state(root)
+    at = datetime.now(timezone.utc) - stale_window() + timedelta(hours=1)
+    st["B070"]["picked_utc"] = at.strftime("%Y-%m-%dT%H:%M:%SZ")
+    (queue(root) / "pick_state.json").write_text(json.dumps(st), encoding="utf-8")
+    p = run(root)
+    assert p.stdout.startswith("HOLD B070"), p.stdout
+    assert "cooldown %sh" % (stale_window().total_seconds() / 3600) in p.stdout
+
+
+def test_16_env_override_still_rules(tmp_path):
+    root = make_root(tmp_path, [row(1, "B070")], [("B070", "OPEN")], ["B070_x.md"])
+    assert run(root).stdout.startswith("PICK B070")
+    st = state(root)
+    st["B070"]["picked_utc"] = (datetime.now(timezone.utc) - timedelta(hours=2)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    (queue(root) / "pick_state.json").write_text(json.dumps(st), encoding="utf-8")
+    assert run(root, MTS_PICK_COOLDOWN_H="1").stdout.startswith("PICK B070")
+    assert state(root)["B070"]["count"] == 2
+
+
+# ---- B089: OPEN / IN-FIX register ids with no pipeline row are swept into one wave after the last ----
+
+def test_17_bugs_only_row_shaped_like_b088_is_picked(tmp_path):
+    # session-start state of B088: OPEN in BUGS.md, item doc present, no pipeline row. Pre-B089: IDLE.
+    root = make_root(tmp_path, [], [("B088", "OPEN", "Session-id surface code split")], ["B088_session_id_surface_code.md"])
+    p = run(root)
+    assert p.stdout.startswith("PICK B088 wave=1"), p.stdout
+    m = meta(root)
+    assert m["source"] == "bugs" and m["slug"].startswith("b088-session-id")
+    text = (queue(root) / "next_task.txt").read_text(encoding="utf-8")
+    assert "MyTradingSys/research/BUGS.md" in text and "B088_session_id_surface_code.md" in text
+
+
+def test_18_pipeline_rows_first_then_swept_row(tmp_path):
+    root = make_root(tmp_path, [row(1, "B070")], [("B070", "OPEN"), ("B088", "OPEN")], ["B070_x.md", "B088_y.md"])
+    assert run(root).stdout.startswith("PICK B070 wave=4")
+    assert meta(root)["source"] == "pipeline"
+    bugs = root / "MyTradingSys" / "research" / "BUGS.md"
+    bugs.write_text(bugs.read_text(encoding="utf-8").replace("B070 | 2026-09-27 | OPEN", "B070 | 2026-09-27 | CLOSED"),
+                    encoding="utf-8", newline="\n")
+    p = run(root)
+    assert p.stdout.startswith("PICK B088 wave=5"), p.stdout
+
+
+def test_19_swept_rows_need_pickable_status_and_item_doc(tmp_path):
+    root = make_root(tmp_path, [], [("B090", "CLOSED"), ("B091", "OPEN"), ("T092", "IN-FIX")],
+                     ["B090_x.md", "T092_z.md"])
+    assert run(root).stdout.startswith("PICK T092"), "B090 closed, B091 has no item doc"
+
+
+def test_20_id_with_a_pipeline_row_is_never_swept(tmp_path):
+    root = make_root(tmp_path, [row(1, "B070", status="BLOCKED")], [("B070", "OPEN")], ["B070_x.md"])
+    assert run(root).stdout.startswith("IDLE"), "the pipeline row governs; BLOCKED stays unpicked"
+
+
+def live_import():
+    sys.path.insert(0, str(SCRIPT.parent))
+    import pick_task
+    pipe = (REPO / "MyTradingSys" / "runtime" / "BUILD_PIPELINE.md").read_text(encoding="utf-8")
+    bugs = (REPO / "MyTradingSys" / "research" / "BUGS.md").read_text(encoding="utf-8")
+    return pick_task, pick_task.parse_pipeline(pipe), pick_task.parse_bug_rows(bugs)
+
+
+def test_21_live_tree_every_open_register_id_is_a_candidate():
+    pt, rows, bug_rows = live_import()
+    cand = {r["id"] for r in rows + pt.sweep_rows(rows, bug_rows)}
+    missing = [i for i, s, _ in bug_rows if s in pt.PICKABLE_BUGS and i not in cand]
+    assert not missing, missing
+
+
+def test_22_live_pipeline_records_b088_b089_landed():
+    _, rows, _ = live_import()
+    got = {r["id"]: r["status"] for r in rows if r["id"] in ("B088", "B089")}
+    assert got == {"B088": "LANDED", "B089": "LANDED"}, got

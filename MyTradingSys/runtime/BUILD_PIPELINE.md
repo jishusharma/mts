@@ -16,6 +16,9 @@
    Live-path items also restart and verify.
 5. Mark LANDED. Move to next row.
 
+An OPEN or IN-FIX id in research/BUGS.md with no row here is still picked: scripts/sched/pick_task.py sweeps it
+into one wave after the last wave below (B089). Add a row only to set its order; on close a LANDED row is the record.
+
 ## STATUS VALUES
 
 QUEUED / IN-FLIGHT / GATED / LANDED / BLOCKED / PARKED
@@ -27,6 +30,8 @@ QUEUED / IN-FLIGHT / GATED / LANDED / BLOCKED / PARKED
 | 0.1 | - | OPERATOR_DIRECTIVE_2026-10-03-historical-testing.md | LANDED | - | - |
 | 0.2 | - | BUILD_PIPELINE.md (this file) | LANDED | - | indexed in 03_FILE_INDEX.md, commit 5a6ec09 |
 | 0.3 | - | 03_FILE_INDEX rows for 0.1 + 0.2 | LANDED | - | rows present, commit 5a6ec09 (wave 0.3) |
+| 0.4 | B088 | session-id surface code CLI + cooldown source | LANDED | - | BUGS + INDEX CLOSED; direct fix, row for the record; session MTS-2026-10-03-1230Z-CLI-BLD-fix-b088-b089 |
+| 0.5 | B089 | pick_task.py sweeps BUGS-only OPEN ids | LANDED | - | BUGS + INDEX CLOSED; direct fix, row for the record; session MTS-2026-10-03-1230Z-CLI-BLD-fix-b088-b089 |
 
 ## WAVE 1 - UNBLOCK
 

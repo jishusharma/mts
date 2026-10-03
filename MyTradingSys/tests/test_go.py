@@ -1,4 +1,4 @@
-"""Fixtures for scripts/sched/go.py (the body of `mts go`): B086 one-writer guard, B087c session naming.
+"""Fixtures for scripts/sched/go.py (the body of `mts go`): B086 one-writer guard, B087c session naming, B088 surface code.
 A fake claude executable records its argv, so no live writer is ever started by these tests."""
 import json
 import os
@@ -9,14 +9,16 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 SCRIPT = REPO / "scripts" / "sched" / "go.py"
-PROMPT = "Session ID: MTS-2026-10-03-1000Z-CL-BLD-b070-demo\nTASK: B070\n"
+PROMPT = "Session ID: MTS-2026-10-03-1000Z-CLI-BLD-b070-demo\nTASK: B070\n"
+LEGACY = "Session ID: MTS-2026-10-03-1000Z-CL-BLD-b070-demo\nTASK: B070\n"
 
 
 def setup(tmp_path, prompt=PROMPT):
+    sid = prompt.splitlines()[0].split(": ", 1)[1] if prompt.startswith("Session ID: ") else None
     q = tmp_path / "MyTradingSys" / "runtime" / "queue"
     q.mkdir(parents=True)
     (q / "next_task.txt").write_text(prompt, encoding="utf-8", newline="\n")
-    (q / "next_task.json").write_text(json.dumps({"id": "B070", "session_id": "MTS-2026-10-03-1000Z-CL-BLD-b070-demo"}),
+    (q / "next_task.json").write_text(json.dumps({"id": "B070", "session_id": sid}),
                                       encoding="utf-8")
     fake = tmp_path / "fake_claude.py"
     fake.write_text("import json, sys\nopen(sys.argv[0] + '.argv', 'w').write(json.dumps(sys.argv[1:]))\n",
@@ -51,7 +53,7 @@ def test_2_operator_terminal_launches_live(tmp_path):
     p = go(tmp_path, wrapper)
     assert p.returncode == 0, p.stderr
     got = json.loads(argv.read_text(encoding="utf-8"))
-    assert got[0] == "--name" and got[1] == "MTS-2026-10-03-1000Z-CL-BLD-b070-demo"
+    assert got[0] == "--name" and got[1] == "MTS-2026-10-03-1000Z-CLI-BLD-b070-demo"
     assert got[2].startswith("Session ID: MTS-2026-10-03-1000Z")  # cmd.exe wrapper keeps line 1 of the prompt only
 
 
@@ -89,3 +91,26 @@ def test_7_mts_go_verb_delegates_to_go_py():
     body = text[text.index('    "go" {'):text.index('    "guide" {')]
     assert "go.py" in body and "& claude" not in body
     assert "[switch]$Dry" in text
+
+
+# ---- B088: one surface code (CLI, SURFACE_POLICY section 4) ----
+
+def test_8_inherited_legacy_cl_name_launches_as_cli(tmp_path):
+    # next_task.* composed before B088 carries -CL-; the launch name and the prompt line are normalised to -CLI-
+    wrapper, argv = setup(tmp_path, LEGACY)
+    p = go(tmp_path, wrapper)
+    assert p.returncode == 0, p.stderr
+    got = json.loads(argv.read_text(encoding="utf-8"))
+    assert got[1] == "MTS-2026-10-03-1000Z-CLI-BLD-b070-demo", got[1]
+    assert got[2] == "Session ID: " + got[1]
+
+
+def test_9_go_and_pick_share_the_policy_surface_code(tmp_path):
+    wrapper, _ = setup(tmp_path)
+    p = go(tmp_path, wrapper, ["demo-slug", "--dry"])
+    code = re.search(r"session name: MTS-\d{4}-\d{2}-\d{2}-\d{4}Z-([A-Z]+)-BLD-demo-slug", p.stdout).group(1)
+    policy = (REPO / "MyTradingSys" / "system" / "SURFACE_POLICY.md").read_text(encoding="utf-8")
+    assert code in re.search(r"(?m)^SURF: ([A-Z ]+)\.", policy).group(1).split()
+    sys.path.insert(0, str(SCRIPT.parent))
+    import pick_task
+    assert pick_task.SURF == code

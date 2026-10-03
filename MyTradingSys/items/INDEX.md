@@ -59,6 +59,6 @@ B084 | OPEN    | B084_book_imbalance_zero_origin.md | origin of 0.0 in Python pr
 B085 | OPEN    | B085_tom_bt_proof5_skew.md | proof-5 pool skew 215 short:105 long unexplained; second contradiction path (last_3_delta) affects longs
 B086 | CLOSED  | B086_dispatcher_second_writer.md | dispatcher demo launched a second CL writer; one-writer-per-file-set violated; Claude decides fix
 B087 | CLOSED  | B087_pick_task_repick.md | pick_task.py re-picks same row each wake; two smaller flags attached; Claude decides fixes
-B088 | OPEN    | B088_session_id_surface_code.md | pick_task.py writes CL, go.py writes CLI; policy lists CLI only; Claude decides fix + cooldown source
-B089 | OPEN    | B089_bugs_invisible_to_scheduler.md | pick_task.py reads pipeline only; BUGS-only bugs never picked; Claude decides fix shape
+B088 | CLOSED  | B088_session_id_surface_code.md | one code CLI via pick_task.session_id; cooldown default = stale-session window; receipt in BUGS row
+B089 | CLOSED  | B089_bugs_invisible_to_scheduler.md | shape A: pick_task.py sweeps BUGS-only OPEN ids into wave max+1; receipt in BUGS row
 # END

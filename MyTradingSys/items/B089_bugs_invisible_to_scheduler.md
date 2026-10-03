@@ -1,6 +1,6 @@
 # B089 - bugs filed only in BUGS.md are invisible to the scheduler
 
-Status: OPEN. Severity: MED. Opened 2026-10-03.
+Status: CLOSED. Severity: MED. Opened 2026-10-03.
 
 ## Defect
 
@@ -40,6 +40,7 @@ pick_task.py at least once.
 
 ## Receipt
 
--
+2026-10-03 CLOSED. Shape (A): automatic on every wake, no human step; (B) and (C) each need a person to act after every filing, which is the step that failed for B086 to B089 and the machine is not on 24/7.
+Shape (A). scripts/sched/pick_task.py:74 parse_bug_rows, :88 sweep_rows (OPEN/IN-FIX register ids with no pipeline row become QUEUED rows of wave max+1, file order, source=bugs), :285 candidates = pipeline rows + swept rows; next_task.json, pick_log and the PICK line carry source; the prompt names BUGS.md instead of a pipeline row. Tests: test_pick_task.py test_17 to test_22 (17, 18, 19, 21, 22 fail on pre-change code). BUILD_PIPELINE rows 0.4 and 0.5 LANDED for the record. Session MTS-2026-10-03-1230Z-CLI-BLD-fix-b088-b089.
 
 # END
