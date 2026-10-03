@@ -122,6 +122,9 @@ def main(argv=None):
     cmd3s = [sys.executable, "scripts/dev/test_testnet_status.py"]
     success, output = run_step("3s", "Testnet status summary tests", cmd3s)
     results.append(("Step 3s: Testnet status tests", success))
+    cmd3f = [sys.executable, "scripts/dev/test_funnel_report.py"]
+    success, output = run_step("3f", "Funnel report tests", cmd3f)
+    results.append(("Step 3f: Funnel report tests", success))
     cmd3d = [sys.executable, "scripts/dev/test_verify_extract_quotes.py"]
     success, output = run_step("3d", "Extract quote checker tests", cmd3d)
     results.append(("Step 3d: Quote checker tests", success))
