@@ -11,6 +11,13 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 
+# Function-style pytest tests that step 5b (unittest) collects only partly: Fabio v3 + live writers (TF1, E7).
+PYTEST_LAYER_PATHS = [
+    "MyTradingSys/backtest/layers/fabio/v3/tests",
+    "MyTradingSys/backtest/layers/fabio/test_orderflow_live.py",
+    "MyTradingSys/backtest/layers/fabio/test_htf_context_live.py",
+]
+
 
 def run_step(step_num, description, cmd, cwd=None):
     """Run a single test step. Return True on success, False on failure."""
@@ -118,6 +125,9 @@ def main(argv=None):
     cmd3d = [sys.executable, "scripts/dev/test_verify_extract_quotes.py"]
     success, output = run_step("3d", "Extract quote checker tests", cmd3d)
     results.append(("Step 3d: Quote checker tests", success))
+    cmd3g = [sys.executable, "scripts/dev/test_run_all_tests.py"]
+    success, output = run_step("3g", "Gate coverage tests (Fabio v3 + live writers)", cmd3g)
+    results.append(("Step 3g: Gate coverage tests", success))
     cmd3e = [sys.executable, "scripts/worker/test_dsa_worker.py"]
     success, output = run_step("3e", "DSA browser worker + queue lane tests", cmd3e)
     results.append(("Step 3e: DSA worker tests", success))
@@ -127,7 +137,7 @@ def main(argv=None):
             # function-style tests that unittest-based steps 5b/6 do not collect
             "MyTradingSys/backtest/bt/test_bt_rsi.py", "MyTradingSys/backtest/bt/test_bt_rsi_edge.py",
             "MyTradingSys/backtest/test_prob_table.py", "MyTradingSys/backtest/test_prob_table_edge.py",
-            "MyTradingSys/backtest/test_tom_bt.py"]
+            "MyTradingSys/backtest/test_tom_bt.py"] + PYTEST_LAYER_PATHS
     success, output = run_step(4, "Pytest (math + doc tests)", cmd4)
     results.append(("Step 4: Pytest tests", success))
 
