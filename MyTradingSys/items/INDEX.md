@@ -37,9 +37,9 @@ B073 | OPEN    | B073_net_rr_rounding.md | net_rr rounding inconsistency: output
 B074 | OPEN    | B074_rule_order_dependence.md | rule-order dependence: contradiction cap runs before broken-value override (F12)
 B075 | OPEN    | B075_historical_mode_unfit.md | historical mode unfit for backtesting; zeroes flow fields, look-ahead leak (F7)
 B076 | OPEN    | B076_setup_confirmed_unreachable.md | SETUP_CONFIRMED unreachable; Compute-Verdict never emits it (F9)
-B077 | OPEN    | B077_stop_order_wrong_type.md | stop placed as reduce-only LIMIT not stop_market; would fill instantly for a long
-B078 | OPEN    | B078_cancel_all_by_label_overscope.md | cancel_all_by_label cancels all orders for currency, not label-scoped; not yet called
-B079 | OPEN    | B079_caps_check_not_enforced.md | caps_check.within_max_loss computed but never enforced; no within_max_notional check exists
+B077 | CLOSED  | B077_stop_order_wrong_type.md | stop_market via deribit_orders.py; closed 5e387a1; receipt in BUGS row
+B078 | CLOSED  | B078_cancel_all_by_label_overscope.md | cancel_by_label is label-scoped server-side; closed 5e387a1; receipt in BUGS row
+B079 | CLOSED  | B079_caps_check_not_enforced.md | caps enforced in executor.py; closed 5e387a1, b05c1cf; receipt in BUGS row
 T052 | OPEN    | T052_setup_confirmed_trigger.md | define a Tom-cited trigger for SETUP_CONFIRMED per operator D6b ruling
 T059 | OPEN    | T059_paste_size_guard.md | auto-split SESSION_PASTE at 80 KB; NUC 121 running
 T053 | OPEN    | T053_two_account_hedge_scalping.md | two-account hedge / leveraged scalping research; ask restated 2026-09-28
@@ -54,4 +54,5 @@ B080 | CLOSED  | B080_dsa_pace_hourly_cap.md | stale/future/non-epoch entries fi
 B081 | CLOSED  | B081_fee_source_conflict.md | fees.py single source; receipt 1ec7d8f, 547 tests pass
 B082 | CLOSED  | B082_qwen_feeder_missing.md | task deleted; Qwen decommissioned 2026-10-01
 T062 | CLOSED  | T062_deprecate_manager.md | deprecate mts-manager; superseded by DSA-composed CL prompts
+B083 | OPEN    | B083_prompt_check_gate.md | prompt_check.ps1 gate; 6 of 8 prompt defects repeat 2026-10-02; pending since 2026-10-02
 # END

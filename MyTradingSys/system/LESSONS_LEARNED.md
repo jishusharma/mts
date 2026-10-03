@@ -277,6 +277,21 @@ Cost of these mistakes: ~$18 cloud burn (Ultracode); 2 lost waves
 (Waves 1+2 of the two-cores session); several DSA turns rewriting
 prompts; one 1-byte file; one unintended deletion of 7 tracked files.
 
+
+## 2026-10-03 - surface choice was CLI-by-default, not task-first
+
+What happened: DSA composed a Tom-and-Fabio fix prompt with surface
+'Claude local CLI on the desktop' as the default. Operator correction
+same day: CLI is fallback, not default. The order is App first
+(Code / Cowork / Chat / Cloud), CLI only when the App cannot reach
+local Maven, local testnet, the live loop, PowerShell-only files,
+repo-importing scripts, or a gitignored path.
+
+Rule: choose the surface by what the task needs, not by what the
+policy lists first. App if it can read, write, run tests, and commit.
+Otherwise CLI, and state the fallback reason in the session record.
+
+Where the rule lives: MyTradingSys/system/SURFACE_POLICY.md section 1b.
 # END
 
 ## 2026-10-02 - prompt delivery failures

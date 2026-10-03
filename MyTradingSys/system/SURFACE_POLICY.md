@@ -18,6 +18,18 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 | AIBridge (F:\AIBridge) | allowlisted loopback agent 127.0.0.1:7181, Chrome MV3 extension | PowerShell on desktop, on request from a web AI |
 Builders edit live. Gate before commit. Stage .new only when the running system imports the file mid-session.
 
+## 1b. Surface choice (operator directive 2026-10-03)
+App first. CLI is fallback, not default. Choose by what the task needs, not by what the policy lists first.
+
+Order:
+1. Claude Win App (Code / Cowork / Chat / Cloud modes) - use whenever it can do the job.
+2. CLI - only when the task needs something the App cannot reach: local Maven, local testnet,
+   the live loop, PowerShell-only files, scripts that import from the repo tree, a disk write
+   to a gitignored path, or anything the App explicitly refuses.
+
+If the App can read the file, write the file, run the tests, and commit - it is the right surface.
+State the fallback reason in the session record when CLI is chosen.
+
 ## 2. Handoff
 A handoff is a file in the receiver's inbox that names the sender's session ID.
 SUP: research/fast_track_2026-09-27/SUPERVISOR_INBOX.md. AIBridge: F:\AIBridge\HANDOFF.md. DSA worker: incoming_dsa/.

@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-10-03
-# SIZE: ~42KB
+# SIZE: ~45KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -268,6 +268,8 @@ Files moved from research/ after their findings were integrated or superseded:
 
 ---
 CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, front door for all Claude sessions
+| MyTradingSys/research/PROMPT_FAILURE_ANALYSIS_2026-10-03.md | report | DSA prompt-composition failure analysis. Eight defects this session; six repeat the 2026-10-02 LESSONS entry. Structural finding: LESSONS_LEARNED.md tail-40 read misses the 2026-10-02 entries. Source for B083. | MTS-2026-10-03-0430Z-DSA-COO | 2026-10-03 |
+| MyTradingSys/items/B083_prompt_check_gate.md | item doc | B083 item doc. prompt_check.ps1 gate warns on disk-verification failures in composed prompts. Warn-only; no stop; operator decides. | MTS-2026-10-03-0430Z-DSA-COO | 2026-10-03 |
 # END
 
 | MyTradingSys/research/TOM_VERBATIM_INDEX.md | research | Verbatim Tom quote index. Points to corpus. Rules in conditions/ carry [TOM-NNN] or [SCREENER]. |
@@ -396,3 +398,11 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/backtest/layers/fabio/orderflow_live.py | code | R3 live order-flow bar writer. Polls Binance USD-M aggTrades by id, writes closed minutes to MyTradingSys/runtime/orderflow_live/YYYY-MM-DD.csv in the offline 27-column schema. Restart-safe (resumes by id). Big-trade thresholds use only prior days. | MTS-2026-10-03-2245Z-CLI-BLD-r3-orderflow-bars | 2026-10-03 |
 | MyTradingSys/research/OPERATOR_DIRECTIVE_2026-10-03-historical-testing.md | directive | Operator directive: historical testing authorized for module-layer parameters; operator-supplied values labeled OPERATOR-EXPERIMENT; all pending tasks move into one continuous build-and-test workflow. Three operator statements verbatim. | MTS-2026-10-03-0328Z-DSA-COO | 2026-10-03 |
 | MyTradingSys/runtime/BUILD_PIPELINE.md | queue | Single queue for all pending work. Waves 0-7. Same T0-T5 contract per item; gate on tests + Build-Check. Status: QUEUED / IN-FLIGHT / GATED / LANDED / BLOCKED / PARKED. | MTS-2026-10-03-0328Z-DSA-COO | 2026-10-03 |
+| MyTradingSys/research/CICD_PIPELINE_2026-10-03.md | research | End-to-end CI/CD design: intake, pre-commit, build, contract, artifact-hash, live-path, release and post-close stages. Names runner and receipt per stage; no stage stops. States what the cloud can and cannot verify. Design only, no code. | MTS-2026-10-03-0500Z-CL-BLD-cicd-pipeline | 2026-10-03 |
+| MyTradingSys/research/WORK_REVIEW_2026-10-03.md | research | Review of every open item across BUGS, INDEX, pipeline, apparatus_fixes and both handoffs: stale, orphan, merge, dead lists, critical three, rank bands. Disk-verified. | MTS-2026-10-03-0500Z-CL-BLD-cicd-pipeline | 2026-10-03 |
+| scripts/dev/cicd_run.py | tool | End-to-end CI/CD runner, stages 2.1-2.9 (intake, pre-commit, build, contract, artifact hash, live-path, release, post-close, failure handling); profiles desktop, precommit, postclose, cloud. Advisory: no stage stops the run; one JSONL row per stage to runtime/cicd_run_<date>.jsonl; exit 0/1/2 is data; --write-baseline seeds critical_files.json. Design: research/CICD_PIPELINE_2026-10-03.md. | MTS-2026-10-03-0600Z-CL-BLD-registry-and-cicd | 2026-10-03 |
+| MyTradingSys/system/critical_files.json | config | Hash baseline for the nine critical files (DSA_SESSION_PROMPT section 6): path, git blob id (hash-object), sha256_8, eol, approved_by. Values OBSERVED 2026-10-03; first approval is the operator's. Read by cicd_run stage 2.5. | MTS-2026-10-03-0600Z-CL-BLD-registry-and-cicd | 2026-10-03 |
+| MyTradingSys/tests/test_cicd_run.py | test | 25 pytest cases for cicd_run: one per stage 2.1-2.9 plus runner mechanics (CRASH row, exit code, unwritable receipt) and baseline shape. Temp repos, faked mvn, no live-tree write. | MTS-2026-10-03-0600Z-CL-BLD-registry-and-cicd | 2026-10-03 |
+| scripts/dev/prompt_check.ps1 | tool | B083 advisory prompt check: paths resolve, file:line is a real line, UPPER_SNAKE tokens present in the cited file, do-not/never/cap clauses tagged OPERATOR-SET, no invented capability limit. PASS/FAIL table and STATUS line; exit 0 always; one row per check to runtime/prompt_check_log.jsonl. | MTS-2026-10-03-0600Z-CL-BLD-registry-and-cicd | 2026-10-03 |
+| scripts/dev/test_prompt_check.ps1 | test | Four fixtures for prompt_check.ps1 (fake path, clean prompt, untagged do-not, absent token) plus a tagged-clause control, in a temp dir. | MTS-2026-10-03-0600Z-CL-BLD-registry-and-cicd | 2026-10-03 |
+| MyTradingSys/system/sessions/MTS-2026-10-03-0600Z-CL-BLD-registry-and-cicd.md | session | Session record: registry repair (T062, B075 receipt, T053-T058 rows, B077-B079 INDEX), CI/CD runner build, prompt_check build; receipts and T0-T5. | MTS-2026-10-03-0600Z-CL-BLD-registry-and-cicd | 2026-10-03 |
