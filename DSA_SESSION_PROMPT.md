@@ -98,6 +98,8 @@ Before any non-trivial task, run these steps in order. Do not skip.
    Restate the request in one line.
    List the project requirements that apply.
    If anything is missing or unclear, ask. Stop until answered.
+   Read the target row's blocker cell, not the row number. Row order is not dependency order. The pipeline picker reads the cell.
+   Before saying a row is blocked, name its blocker cell and the blocker's current status from BUILD_PIPELINE.md.
 
 2. DECIDE
    Propose the simplest path that satisfies those requirements.

@@ -387,3 +387,15 @@ Rule that now prevents it: every CLI prompt DSA prints opens with the mts go lau
 Where the rule lives: USER.md LIKES (prompt-fence bullet) and DSA_SESSION_PROMPT.md section 9 HARD RULES.
 
 Receipt: operator 2026-10-03.
+
+## 2026-10-03 - Row order is not dependency order; read the blocker cell
+
+What happened: DSA told the operator TF6 could not run until TF5's promote landed. TF6's blocker cell reads only 1.6 (TF4). TF4 was LANDED. TF6 was pickable the whole time. The picker proved it: mts go launched MTS-2026-10-03-1659Z-CLI-BLD-tf6-tom-golden-scena on the next tick.
+
+Cause: DSA read the row number (1.8 follows 1.7) instead of the blocker cell (1.8 blocker = 1.6). Pipeline row order is not dependency order.
+
+Rule that now prevents it: before saying a pipeline row is blocked, name its blocker cell and the blocker's current status, read from BUILD_PIPELINE.md in the same turn. The picker reads the blocker cell; DSA reads the same cell.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 5 TASK LOOP step 1 VALIDATE.
+
+Receipt: operator 2026-10-03.
