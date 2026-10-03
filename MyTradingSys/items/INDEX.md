@@ -50,7 +50,7 @@ T057 | OPEN    | T057_simplify_declutter.md | simplify / optimize / declutter; f
 T058 | OPEN    | T058_broken_extremes_sweep_vs_continuation.md | broken lows/highs by timeframe: continuation vs liquidity sweep; filed 2026-09-29
 T060 | OPEN    | T060_low_volatility_btc.md | low-volatility anomaly; test whether trailing realized-vol rank predicts BTC forward return
 T061 | OPEN    | T061_wavetrend_lazybear.md | WaveTrend with Crosses [LazyBear]; integrate as separate indicator layer
-B080 | OPEN    | B080_dsa_pace_hourly_cap.md | dsa_worker hourly-cap misfires on stale pace entries
+B080 | CLOSED  | B080_dsa_pace_hourly_cap.md | stale/future/non-epoch entries filter + self-heal in pacing_block; regression tests
 B081 | CLOSED  | B081_fee_source_conflict.md | fees.py single source; receipt 1ec7d8f, 547 tests pass
 B082 | CLOSED  | B082_qwen_feeder_missing.md | task deleted; Qwen decommissioned 2026-10-01
 T062 | CLOSED  | T062_deprecate_manager.md | deprecate mts-manager; superseded by DSA-composed CL prompts

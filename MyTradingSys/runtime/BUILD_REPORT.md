@@ -1,22 +1,22 @@
-BUILD_REPORT - 2026-10-03 04:12:18 UTC
+BUILD_REPORT - 2026-10-03 04:14:39 UTC
 host: JIS-NB
 
-Java compile:  PASS (2.9 s)
-Math tests:    PASS 161/161 (5.2 s)
+Java compile:  PASS (2.6 s)
+Math tests:    PASS 161/161 (5 s)
 Doc tests:     PASS 5/5 (1.9 s)
 
 In-flight .new files: 11
-  - backtest\layers\audit\formula_audit.py.new (age 5999m)
-  - backtest\layers\consensus\test_writer.py.new (age 1165m)
-  - backtest\layers\consensus\writer.py.new (age 1165m)
-  - backtest\layers\cryptocred\test_cc_retest.py.new (age 6987m)
-  - backtest\layers\cryptocred\test_cc_structure.py.new (age 6988m)
-  - backtest\layers\rsi\observation.py.new (age 1165m)
-  - backtest\layers\rsi\test_observation.py.new (age 1165m)
-  - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 1165m)
-  - runtime\test_quad_classify.py.new (age 1165m)
-  - runtime\test_regime_classifier.py.new (age 1165m)
-  - tests\java\MarketDataSnapshotTest.java.new (age 1165m)
+  - backtest\layers\audit\formula_audit.py.new (age 6002m)
+  - backtest\layers\consensus\test_writer.py.new (age 1167m)
+  - backtest\layers\consensus\writer.py.new (age 1167m)
+  - backtest\layers\cryptocred\test_cc_retest.py.new (age 6989m)
+  - backtest\layers\cryptocred\test_cc_structure.py.new (age 6990m)
+  - backtest\layers\rsi\observation.py.new (age 1167m)
+  - backtest\layers\rsi\test_observation.py.new (age 1167m)
+  - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 1167m)
+  - runtime\test_quad_classify.py.new (age 1167m)
+  - runtime\test_regime_classifier.py.new (age 1167m)
+  - tests\java\MarketDataSnapshotTest.java.new (age 1167m)
 
 Active sessions:
   (none)
@@ -25,7 +25,7 @@ BOM files: 0
 Cyrillic codepoints (0x0400-0x04FF): 0
 
 Bugs: OK (137 rows)
-Index: OK (25 open IDs in items/INDEX.md)
+Index: OK (24 open IDs in items/INDEX.md)
 
 Index (files cross-check): OK (49 item files, 49 INDEX rows)
 
