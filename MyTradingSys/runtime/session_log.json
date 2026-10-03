@@ -2047,6 +2047,12 @@
       "action": "monitored",
       "verdict": "WATCH",
       "reason": "verdict WATCH -> WAIT_PROOF | zone 4h_val -> vwap_band_+1 | STATE TWOPEAK/in_va -> TWOPEAK/above_vah"
+    },
+    {
+      "type": "decision",
+      "action": "passed",
+      "reason": "B088 CLOSED, B089 CLOSED: one CLI session-id builder, cooldown sourced, picker sweeps BUGS-only OPEN ids. Commit 9b4a844. Session MTS-2026-10-03-1230Z-CLI-BLD-fix-b088-b089",
+      "ts": "2026-10-03T15:41:27.575297Z"
     }
   ]
 }
