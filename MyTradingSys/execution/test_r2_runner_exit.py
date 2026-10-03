@@ -360,7 +360,7 @@ class RunnerMinDistanceFile(unittest.TestCase):
         f.write_text(text, encoding="utf-8")
         return f
 
-    def norm(self, hvns):   # SHORT: swing high 87238 -> stop, risk 174; 86687 = 377/174 = 2.1667R gross, net 1.625 -> target
+    def norm(self, hvns):   # SHORT: swing high 87238 -> stop, risk 174; 86600 = 464/174 = 2.667R gross, fee-model net (464 - 87.064) / 261.064 = 1.444 -> target
         return {"current_price": 87000.0, "daily_vp": {"poc": 0, "hvns": hvns}, "weekly_vp": {}, "intraday_4h_vp": {},
                 "vwap": {}, "prior_day": {}, "structure": {"15m": {"swing_high": 87238.0, "swing_low": 86000.0}}}
 
@@ -372,16 +372,16 @@ class RunnerMinDistanceFile(unittest.TestCase):
         self.assertGreater(rmd.load_runner_min_distance_pct(), 0.0)
 
     def test_builder_reads_the_file_each_call(self):
-        nodes = [86687.0, 86686.0, 83851.0]   # 86686: 1/86687 = 0.0012 % beyond the target
-        self.assertEqual(self.run_pick(self.write('{"runner_min_distance_pct": 0.25}'), nodes), (87238.0, 86687.0, 83851.0))
-        self.assertEqual(self.run_pick(self.write('{"runner_min_distance_pct": 0}'), nodes), (87238.0, 86687.0, 86686.0))
+        nodes = [86600.0, 86599.0, 83851.0]   # 86599: 1/86600 = 0.0012 % beyond the target
+        self.assertEqual(self.run_pick(self.write('{"runner_min_distance_pct": 0.25}'), nodes), (87238.0, 86600.0, 83851.0))
+        self.assertEqual(self.run_pick(self.write('{"runner_min_distance_pct": 0}'), nodes), (87238.0, 86600.0, 86599.0))
 
     def test_unreadable_file_fails_closed_to_no_runner(self):
-        nodes = [86687.0, 83851.0]
+        nodes = [86600.0, 83851.0]
         for bad in ('{"runner_min_distance_pct": "x"}', '{"runner_min_distance_pct": -1}', '{"runner_min_distance_pct": true}',
                     '{"other": 1}', "not json", "[]"):
-            self.assertEqual(self.run_pick(self.write(bad), nodes), (87238.0, 86687.0, None), bad)
-        self.assertEqual(self.run_pick(Path(tempfile.gettempdir()) / "rmd_missing.json", nodes), (87238.0, 86687.0, None))
+            self.assertEqual(self.run_pick(self.write(bad), nodes), (87238.0, 86600.0, None), bad)
+        self.assertEqual(self.run_pick(Path(tempfile.gettempdir()) / "rmd_missing.json", nodes), (87238.0, 86600.0, None))
 
     def test_loader_raises_on_bad_values_and_accepts_zero(self):
         for bad in ('{"runner_min_distance_pct": -0.1}', '{"runner_min_distance_pct": null}', '{"runner_min_distance_pct": 1e999}'):

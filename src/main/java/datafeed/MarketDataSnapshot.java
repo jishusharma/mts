@@ -171,8 +171,9 @@ public class MarketDataSnapshot {
         // This caused JSON CVD to mismatch CoinGlass (which resets at 00:00 UTC).
         ArrayNode dailyBarsForCvd1 = mapper.createArrayNode();
         for (JsonNode bar : dailyBars) dailyBarsForCvd1.add(bar);
-        ObjectNode cvdNode = buildCvd(dailyBarsForCvd1);
+        ObjectNode cvdNode = buildCvd(dailyBarsForCvd1, klines1m);
         cvdNode.put("scope", "session");
+        cvdNode.put("gating_window", "rolling_1m");  // B070: slope/last_3_delta/cvd_recent are not anchored to 00:00 UTC
         cvdNode.put("session_start_utc", now.truncatedTo(ChronoUnit.DAYS).toInstant().toString());
 
         // ── Trade flow net delta (multi-window from klines1m) ──
@@ -655,7 +656,23 @@ public class MarketDataSnapshot {
         return node;
     }
 
-    private ObjectNode buildCvd(JsonNode klines) {
+    /**
+     * B070: the UTC 00:00 session anchor is display-only. "value" is the session CVD (bars since 00:00 UTC, matches
+     * CoinGlass). Everything a verdict reads (slope, last_3_delta, cvd_recent) comes from the rolling 1m window, so it
+     * never changes at the UTC rollover.
+     */
+    private ObjectNode buildCvd(JsonNode sessionBars, JsonNode rollingBars) {
+        ObjectNode node = buildCvdRolling(rollingBars);
+        double session = 0;
+        for (JsonNode bar : sessionBars) {
+            double vol = bar.get(5).asDouble(), buy = bar.get(9).asDouble();
+            session += (buy - (vol-buy));
+        }
+        node.put("value", Math.round(session*1000.0)/1000.0);
+        return node;
+    }
+
+    private ObjectNode buildCvdRolling(JsonNode klines) {
         ObjectNode node = mapper.createObjectNode();
         int size = klines.size();
         if (size == 0) {
@@ -1090,8 +1107,9 @@ public class MarketDataSnapshot {
         // Wrap dailyBars (List<JsonNode>) in ArrayNode since buildCvd takes JsonNode.
         ArrayNode dailyBarsForCvd = mapper.createArrayNode();
         for (JsonNode bar : dailyBars) dailyBarsForCvd.add(bar);
-        ObjectNode cvdNode = buildCvd(dailyBarsForCvd);
+        ObjectNode cvdNode = buildCvd(dailyBarsForCvd, klines1m);
         cvdNode.put("scope", "session");
+        cvdNode.put("gating_window", "rolling_1m");  // B070: slope/last_3_delta/cvd_recent are not anchored to 00:00 UTC
         cvdNode.put("session_start_utc", now.truncatedTo(ChronoUnit.DAYS).toInstant().toString());
 
         // ── Structure ──

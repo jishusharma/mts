@@ -19,8 +19,8 @@ def _norm(daily_vp, price=100.0):
 
 
 def test_long_target_is_nearest_hvn_above_zone_when_closer_than_poc():
-    # long at zone 98, stop 97 (risk 1): HVN 101.0 = 3R gross, net 2.25 (passes any floor up to 2.25) and nearer than POC 105
-    # (7R). Old nearest-by-price-only code would also pick 101; 99.0 (1R, net 0.75) would now be skipped by the floor.
+    # long at zone 98, stop 97 (risk 1): HVN 101.0 = 3R gross, fee-model net ~2.64 and nearer than POC 105
+    # (7R). Old nearest-by-price-only code would also pick 101; 99.0 (1R, fee-model net ~0.82) would now be skipped by the floor.
     n = _norm({"poc": 105.0, "hvns": [101.0, 110.0]})
     zone = {"name": "daily_val", "price": 98.0, "type": "daily_val"}
     stop, target = _pick_stop_target(zone, 100.0, n)
@@ -28,7 +28,7 @@ def test_long_target_is_nearest_hvn_above_zone_when_closer_than_poc():
 
 
 def test_short_target_is_nearest_hvn_below_zone():
-    # short at zone 102, stop 103 (risk 1): POC 90, HVN 99.0 = 3R gross, net 2.25, nearer below zone than 90 / 85
+    # short at zone 102, stop 103 (risk 1): POC 90, HVN 99.0 = 3R gross, fee-model net ~2.64, nearer below zone than 90 / 85
     n = _norm({"poc": 90.0, "hvns": [99.0, 85.0]})
     zone = {"name": "daily_vah", "price": 102.0, "type": "daily_vah"}
     stop, target = _pick_stop_target(zone, 100.0, n)

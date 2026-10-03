@@ -153,7 +153,7 @@ public class SetupCandidatesBuilder {
                 double risk = Math.abs(zonePrice - c.stop);
                 double reward = Math.abs(c.target - zonePrice);
                 c.grossRR = reward / risk;
-                c.netRR = ExecutionMathConstants.netRR(c.grossRR);  // W2: was hardcoded * 0.75, see ExecutionMathConstants
+                c.netRR = ExecutionMathConstants.netRR(zonePrice, c.target, c.stop);  // B070: fee model, was gross * 0.75
                 c.rrSanity = c.grossRR >= 1.5;   // advisory output flag only; no longer drops the candidate
                 c.netRrSanity = c.netRR >= netRrFloor;
                 c.valid = true;
@@ -474,11 +474,9 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         }
         if (dir.isEmpty()) return new double[]{0, 0};
         dir.sort((x, y) -> Double.compare(Math.abs(x - zonePrice), Math.abs(y - zonePrice)));
-        double risk = Math.abs(zonePrice - stop);
         int idx = dir.size() - 1;  // fallback: farthest
         for (int i = 0; i < dir.size(); i++) {
-            double gross = Math.abs(dir.get(i) - zonePrice) / risk;
-            if (ExecutionMathConstants.netRR(gross) >= netRrFloor) { idx = i; break; }
+            if (ExecutionMathConstants.netRR(zonePrice, dir.get(i), stop) >= netRrFloor) { idx = i; break; }
         }
         double target = dir.get(idx);
         double runner = 0;

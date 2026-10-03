@@ -162,12 +162,13 @@ def test_rr_sanity_matches_gross():
             )
 
 
-def test_net_rr_is_75pct_of_gross():
-    """net_rr = gross_rr * 0.75 (default friction)."""
+def test_net_rr_uses_fee_model():
+    """B070: net_rr = (reward - 2*taker*entry) / (risk + 2*taker*entry), not gross * 0.75."""
     m = build_math_object(load_snapshot())
     for name, z in m["zones"].items():
         if z["gross_rr"] is not None:
-            expected = round(z["gross_rr"] * 0.75, 4)
+            cost = 2.0 * 0.0005 * z["price"]
+            expected = round((abs(z["target"] - z["price"]) - cost) / (abs(z["price"] - z["stop"]) + cost), 4)
             assert abs(z["net_rr"] - expected) < 0.0001, (
                 f"Zone {name}: net_rr={z['net_rr']}, expected={expected}"
             )

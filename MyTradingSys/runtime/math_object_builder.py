@@ -287,7 +287,7 @@ def pick_target(nodes, zone_price, stop, is_short, floor, runner_min_pct=0.0):
     if stop is not None and stop != zone_price:
         risk = abs(zone_price - stop)
         for i, p in enumerate(in_dir):
-            net = calculate_net_rr(abs(p - zone_price) / risk)
+            net = calculate_net_rr(zone_price, p, stop)
             if net >= floor:   # NaN floor never qualifies
                 idx = i
                 break
@@ -358,7 +358,7 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
             stop, target, runner_target = _pick_stop_target_runner(zone, price, normalized)
             if stop is not None and target is not None:
                 gross_rr = calculate_gross_rr(zprice, target, stop)
-                net_rr = calculate_net_rr(gross_rr)
+                net_rr = calculate_net_rr(zprice, target, stop)
                 rr_sanity = calculate_rr_sanity(gross_rr)
 
         zone_math[name] = {

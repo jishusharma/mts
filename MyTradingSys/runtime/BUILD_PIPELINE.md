@@ -68,7 +68,7 @@ QUEUED / IN-FLIGHT / GATED / LANDED / BLOCKED / PARKED
 
 | # | ID | Slug | Status | Blocker | Next |
 |---|---|---|---|---|---|
-| 4.1 | B070 | demote UTC 00:00 anchor + 0.75 slippage from gating | QUEUED | - | audit + demote |
+| 4.1 | B070 | demote UTC 00:00 anchor + 0.75 slippage from gating | LANDED | - | CLOSED: fee model (fees.py) replaces 0.75 in mts_math.py, math_object_builder.py, ExecutionMathConstants/SetupCandidatesBuilder/ExtraSetupBuilder.java; MarketDataSnapshot.java cvd slope rolling, UTC anchor value-only; supervisor: rebuild jar + restart Java feed |
 | 4.2 | B076 | SETUP_CONFIRMED unreachable | QUEUED | - | trace verdict path |
 | 4.3 | T052 | Tom-cited SETUP_CONFIRMED trigger | QUEUED | 4.2 | cite or reject |
 | 4.4 | B059 | pf_vp bin-edge drift live verify | QUEUED | - | live tape confirm |
