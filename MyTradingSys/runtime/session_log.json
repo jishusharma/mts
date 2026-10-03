@@ -1831,6 +1831,42 @@
       "action": "monitored",
       "verdict": "WAIT_TRIGGER",
       "reason": "proof 5 -> 4 | STATE TWOPEAK/below_val -> TWOPEAK/in_va"
+    },
+    {
+      "ts": "2026-10-03T04:21:26.202Z",
+      "type": "alert",
+      "alert_id": 99,
+      "setup": "ct_long",
+      "action": "monitored",
+      "verdict": "WAIT_PROOF",
+      "reason": "verdict WAIT_PROOF -> WAIT_TRIGGER | STATE TWOPEAK/in_va -> TWOPEAK/above_vah"
+    },
+    {
+      "ts": "2026-10-03T04:48:23.530Z",
+      "type": "alert",
+      "alert_id": 100,
+      "setup": "ct_long",
+      "action": "monitored",
+      "verdict": "WAIT_PROOF",
+      "reason": "STATE TWOPEAK/in_va -> TWOPEAK/below_val"
+    },
+    {
+      "ts": "2026-10-03T04:54:23.764Z",
+      "type": "alert",
+      "alert_id": 101,
+      "setup": "scalp_long",
+      "action": "monitored",
+      "verdict": "WAIT_PROOF",
+      "reason": "zone vwap_band_-1 -> daily_val | STATE TWOPEAK/below_val -> TWOPEAK/in_va"
+    },
+    {
+      "ts": "2026-10-03T05:02:24.241Z",
+      "type": "alert",
+      "alert_id": 102,
+      "setup": "tc_long",
+      "action": "monitored",
+      "verdict": "WAIT_PROOF",
+      "reason": "verdict WAIT_RR -> WAIT_PROOF | zone daily_val -> vwap_band_-1 | STATE TWOPEAK/below_val -> TWOPEAK/in_va"
     }
   ]
 }
