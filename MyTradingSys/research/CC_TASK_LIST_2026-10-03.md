@@ -39,7 +39,7 @@ Batches group rows by file set; one batch = one CC session. No numeric cap (SURF
 | # | file:line | current state | proposed change | gate | independence |
 |---|---|---|---|---|---|
 | 4.1 | scripts/dev/funnel_report.py (TF2); execution/auto_trades.jsonl trade_attempt rows | funnel has no basis, venue_entry or deribit_mark column; TF5 writes them (AT.new:261-262) | add the three fields to the Tom funnel rows and a fill-rate line split pre/post TF5 (baseline: 7 of 9 no_fill, EXEC_PROVENANCE_AUDIT.md B.1) | test_funnel_report.py new case, fails before; --quick | can be built now; data only after 1.1 |
-| 4.2 | AT.new:57-62 (max_hold_minutes 120, max_entry_seconds 600, flagged MEASURE) | values kept at what the live path already did; Ruling 3 pending (OPERATOR_RULINGS_2026-10-02.md:40) | write PRE_REG for both values (metric, n, decision rule) before any change; inputs: funnel 4.1, trade_ledger.jsonl | doc gate: Build-Check | after 4.1; not R7 (7.1 re-runs the BT target rule, not the live wait/hold) |
+| 4.2 | AT.new:57-62 (max_hold_minutes 120, max_entry_seconds 600, flagged MEASURE) | values kept at what the live path already did; Ruling 3 accepted 2026-10-04 (OPERATOR_RULINGS_2026-10-02.md, MEASURED, testnet only) | write PRE_REG for both values (metric, n, decision rule) before any change; inputs: funnel 4.1, trade_ledger.jsonl | doc gate: Build-Check | after 4.1; not R7 (7.1 re-runs the BT target rule, not the live wait/hold) |
 
 ## Batch 5 - H5 items 4-6 that have no queue row (App docs; CLD can do 5.1-5.2 on committed files)
 
