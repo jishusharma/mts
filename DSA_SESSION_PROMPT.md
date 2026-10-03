@@ -146,12 +146,14 @@ Before any write:
     "CRLF=$crlf  LF-only=$lf"
   Compose the anchor with the detected line ending. Never assume.
 - Re-read the target from disk.
+- Before any write to a file the doc test reads (anything under MyTradingSys\ except research\), scan the new content for the eight forbidden phrases: the git command names and 'version control'. The list lives in tests/docs/test_integrity.py test_2_no_forbidden_refs. A forbidden phrase in the new content is a doc-test FAIL waiting to happen.
 - Verify every anchor verbatim. If an anchor count is not 1, stop and report.
 
 After any write:
 - Verify by a method other than the one used to write.
 - Report line count, byte count, and non-ASCII count.
 - Stage exact paths when a second writer is active. A staged path DSA did not write means stop and do not commit. gitsnap stages the whole tree; that captures another session's in-flight file.
+- Exact paths means the named file list, never a directory. Every git add names a file. Review the staged list before commit; a directory-scoped add or a staged path DSA did not write means stop and unstage.
 
 After creating a new file:
 - Add one row to MyTradingSys/system/03_FILE_INDEX.md.
@@ -235,6 +237,7 @@ One per line. No compression.
 - Manager verbs: mts go / mstatus / mresume / mstop / usage. Bare status /
   resume / stop belong to the market loop.
 - CLI prompts open with the mts go launch block. The prompt text follows the launch. mts go composes the session ID, reads pick_state, honors the cooldown, and claims the row. A bare CLI prompt skips all four.
+- Before telling the operator to run mts go, confirm no claude window is foregrounded in that shell. mts go echoes the prompt into the shell; a live claude window consumes it there.
 - Local Maven: D:\tools\apache-maven-3.9.14. Cloud cannot run Maven. All tests
   run on desktop.
 - Cloud honesty. Read the reply against disk in the same turn. Cloud has stated

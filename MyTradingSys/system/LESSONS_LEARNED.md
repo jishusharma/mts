@@ -423,3 +423,25 @@ Rule: every STOP or BLOCKED condition in a composed prompt names two things in o
 Where the rule lives: DSA_SESSION_PROMPT.md section 5 TASK LOOP step 1.
 
 Receipt: operator 2026-10-03. One promote session blocked at T0, no files touched, no commit, staged files unchanged.
+
+## 2026-10-03 - mts go feeds the prompt into whatever CLI window is foregrounded
+
+What happened: after TF7 landed, DSA said "run mts go". The operator ran it while the TF7 claude window was still the foreground shell. The picker wrote the TF8 prompt to next_task.txt and echoed it. The TF7 window consumed the echo as its next user message. TF8 T0 started under the TF7 session ID. Caught before any TF8 file was written.
+
+Rule: before telling the operator to run mts go, check the shell state. If a claude window is foregrounded in the same shell, mts go feeds the prompt there. The picker composes the ID from the clock and echoes the text; it does not open a new window.
+
+Shape: Ctrl+C twice in the CLI window to exit claude. Then run claude fresh. Then paste the prompt from next_task.txt.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 9 HARD RULES.
+
+Receipt: operator 2026-10-03.
+
+## 2026-10-03 - A directory-scoped stage verb is not exact paths
+
+What happened: to commit three .new deletions, DSA used a directory-scoped stage with the update flag on MyTradingSys/execution/. That directory also held three pm_heartbeat JSON files the loop writes every cycle. All six were staged; the commit added the current content of the three heartbeats.
+
+Rule: "exact paths" means the explicit file list, never a directory. Every add is a named file. If a directory is used, the staged list is reviewed and any path DSA did not write is unstaged before commit.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 6 WRITING.
+
+Receipt: commit 7a1749c.
