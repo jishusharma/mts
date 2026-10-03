@@ -324,3 +324,42 @@ run before any prompt leaves the surface.
 Structural fix still pending: scripts/dev/prompt_check.ps1, a real gate
 that greps a composed prompt against disk and refuses launch on FAIL.
 Filed for later.
+
+## 2026-10-03 - DSA pacing: batch reads at boot, one block per phase
+
+Cost: roughly ten turns burned in MTS-2026-10-03-1444Z-DSA-COO-tf4-compose
+on context gathering that fits in two.
+
+What happened.
+1. Reads split across five turns (git state, queue state, execution
+   inventory, three audits, five extracts, OPERATOR_RULINGS, CLAUDE.md,
+   BUILD_PIPELINE) when one batch would have returned all of it.
+2. Two reads used wrong path prefixes (.\runtime\queue, .\execution).
+   The files live under MyTradingSys\runtime\queue and
+   MyTradingSys\execution. Both returned empty; two turns lost.
+3. The writer-check (index.lock, reflog tail, session-record mtime)
+   ran after the operator asked, not inside the compose step.
+4. A process-list grep matched Claude Desktop Electron helpers and
+   long-lived Code sessions. I reported "two Opus sessions running"
+   when the count was three and the idle state was unverified.
+
+Rules that now prevent it.
+- At boot, issue ONE command block that returns: git log -3 and
+  status --porcelain; .git\index.lock; queue pick_state + pick_log tail;
+  session-record mtimes; execution/ file list; the day's audit inputs.
+  No follow-up read unless the paste shows a missing path.
+- Every path is MyTradingSys\... . Never .\runtime\... or .\execution\...
+  from the repo root.
+- The writer-check is part of compose, not a response to a challenge.
+  Run it inside the same block as the boot batch, before any prompt prints.
+- Process check filters to Name='claude.exe' AND CommandLine matches
+  'claude-code'. Electron helper PIDs (renderer, gpu, crashpad, network)
+  are not writers.
+
+Where the rule lives: this entry is the record until
+DSA_SESSION_PROMPT.md section 5 TASK LOOP step 1 and section 3 boot
+procedure carry the batch-read rule. Section 3 step 11 (prompt archive)
+and section 8 (paths, test both prefixes) already cover parts of it.
+
+Receipt: cost measured against MTS-2026-10-03-1444Z-DSA-COO-tf4-compose;
+commit c9319e9.
