@@ -60,7 +60,17 @@ Operator-side cost, stated in the section:
   sits on disk across the power-off.
 
 ## Receipt
+## Guard shape (operator 2026-10-03)
 
--
+Every gate+commit block is guarded. Run Build-Check, then:
 
+    if (Select-String -Path MyTradingSys\runtime\BUILD_REPORT.md -Pattern "STATUS: FAIL" -Quiet) {
+      "ABORT: Build-Check FAIL"; return
+    }
+    gitsnap "..."
+
+Observed 2026-10-03 13:08Z: a commit landed while STATUS was FAIL
+because the block had no guard. The guard is the shape of the gate.
+Applies to combined prompts too: any block that gates and then
+commits must abort on FAIL before the commit line runs.
 # END
