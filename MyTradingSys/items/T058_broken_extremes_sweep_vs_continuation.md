@@ -24,3 +24,10 @@ Plan (supervisor):
  Q  Qwen specs for the event detector + event-study script (after D is accepted).
  S  Satellite hook: which outcome class could trigger/size a T048 hedge - written as a proposal only.
 2026-09-29 R+D+S DONE (Sonnet builder): research/fast_track_2026-09-27/T058_BROKEN_EXTREMES.md. No validated evidence on per-TF sweep vs hold; only T1 mechanism (Osler stop/limit clustering) and T1 equity momentum context. Event-study plan + hedge proposal written; formulas are candidates only. Awaiting supervisor review; data gaps: OI/funding only 2025-09+, no liquidations/aggTrades.
+2026-10-04 SESSION-BOUNDARY SLICE DONE (MTS-2026-10-03-2051Z-APP-ANA-btc-session-sweeps; operator ask 2026-10-03 verbatim in
+T054): research/fast_track_2026-09-27/BTC_SESSION_SWEEPS_2026-10-04.md F3/F3b/F4/F6. Sweep-and-back vs break-and-hold of the
+Asia range, previous-day H/L and the pre-US range at the London/NY opens: no directional difference (P(up) ~46-53%,
+per-year sign flips). Post-hoc control finding F6 (n=59): at NY open+180 min a new day low that holds 30 min -> up next
+6.5 h 73% [60, 83], all 5 years positive = candidate for H3 (fade) family; must be pre-registered and tested on untouched
+2019-09..2021-12 before any use. Corpus: Tom rejects stop hunting as intent (RwQBdF9TSvc:13); Fabio's "book sweeping" at NY
+session highs (FawPrRUGNpk:249-260) is order-flow based -> Fabio v3 S5D failed_auction is the sourced test (rerun after B099).
