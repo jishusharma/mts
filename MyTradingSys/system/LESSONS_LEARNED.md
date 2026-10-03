@@ -411,3 +411,15 @@ Rule: when a second writer is active, stage exact paths and commit by hand. Conf
 Where the rule lives: DSA_SESSION_PROMPT.md section 6 WRITING.
 
 Receipt: two incidents, both self-reported by the swept session.
+
+## 2026-10-03 - Stop conditions must name the harm and the mechanism
+
+What happened: the TF5 promote prompt (MTS-2026-10-03-1700Z-CLI-SUP-tf5-promote) carried a T0 rule reading "if a trade is open, STOP and report". The session read three position_manager processes as "trade open", stopped at T0, and touched nothing. The promote is still pending.
+
+Cause: the rule was written without naming the harm it prevents or the mechanism by which the promote would cause that harm. The promote touches auto_trader.py, auto_trader_config.json, and test_auto_trader.py. position_manager.py is a separate process; it loads its own plan file at start and does not reload the auto_trader config. Promoting auto_trader does not affect a running position manager.
+
+Rule: every STOP or BLOCKED condition in a composed prompt names two things in one line - the harm it prevents, and the mechanism by which the target change would cause that harm. A condition that fires on an unrelated process or file is over-broad. The check is a dependency check, not a process check: name the file or field the target change touches and the code that reads it.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 5 TASK LOOP step 1.
+
+Receipt: operator 2026-10-03. One promote session blocked at T0, no files touched, no commit, staged files unchanged.
