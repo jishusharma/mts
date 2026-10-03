@@ -15,6 +15,7 @@ REPO = Path(__file__).resolve().parents[2]
 PYTEST_LAYER_PATHS = [
     "MyTradingSys/backtest/layers/fabio/v3/tests",
     "MyTradingSys/backtest/layers/fabio/test_orderflow_live.py",
+    "MyTradingSys/backtest/layers/fabio/test_of_backfill.py",
     "MyTradingSys/backtest/layers/fabio/test_htf_context_live.py",
 ]
 
