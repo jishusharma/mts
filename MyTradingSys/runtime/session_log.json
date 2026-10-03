@@ -1813,6 +1813,15 @@
       "action": "monitored",
       "verdict": "WAIT_PROOF",
       "reason": "verdict WAIT_TRIGGER -> WAIT_PROOF | STATE TWOPEAK/above_vah -> TWOPEAK/in_va"
+    },
+    {
+      "ts": "2026-10-03T03:18:24.752Z",
+      "type": "alert",
+      "alert_id": 97,
+      "setup": "ct_long",
+      "action": "monitored",
+      "verdict": "WAIT_TRIGGER",
+      "reason": "STATE TWOPEAK/in_va -> TWOPEAK/below_val"
     }
   ]
 }

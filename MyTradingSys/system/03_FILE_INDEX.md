@@ -1,8 +1,8 @@
 # FILE: 03_FILE_INDEX.md
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
-# LAST UPDATED: 2026-10-02
-# SIZE: ~39.7KB
+# LAST UPDATED: 2026-10-03
+# SIZE: ~41.5KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -390,3 +390,7 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/backtest/tom_bt_diag.py | script | Replays the proof>=5 snapshots with verdict reason logged (cache path tom_bt.py:101-105 + stage attribution); writes F:/MTS/data/tom_bt/allshorts.diag.jsonl. Read-only on repo. | MTS-2026-10-02-1422Z-CLI-BLD-tom-diag | 2026-10-02 |
 | MyTradingSys/research/TOM_BT_SHORT_DIAGNOSIS_2026-10-02.md | research | Why all 19 Tom core SETUP_FORMING are short: book_imbalance 0.0 contradicted every proof-5 long (fixed in 13295c8, cache stale); 215:105 proof-5 skew unexplained. | MTS-2026-10-02-1422Z-CLI-BLD-tom-diag | 2026-10-02 |
 | MyTradingSys/research/MARKET_ANALYSIS_2026-10-02.md | research | Independent tape analysis 2026-10-01T13:30Z..2026-10-02T15:50Z vs Tom verdict gates and Fabio reports: 1 SETUP_FORMING (10-01 short, scalp-suppressed), 0 on 10-02; net_rr 2.0 floor blocked the proof-5 daily-VAH short at the day high; v3 not runnable (no OF bars, NS-grid). | MTS-2026-10-02-1530Z-CLI-ANA-tom-fabio-session | 2026-10-02 |
+| MyTradingSys/system/runner_min_distance.json | config | Runner min-distance config. Key runner_min_distance_pct = 0.25 (percent of target). NO-SOURCE, operator Ruling 2026-10-03 delegates value to judgment. Read by RunnerMinDistance.java and runtime/runner_min_distance.py. | MTS-2026-10-02-2055Z-CLI-SUP-r2-promote | 2026-10-03 |
+| MyTradingSys/runtime/runner_min_distance.py | code | Single Python reader of runner_min_distance.json. Fail-closed on missing/unparsable/negative value. Used by math_object_builder.pick_target via runner_min_pct parameter. | MTS-2026-10-02-2055Z-CLI-SUP-r2-promote | 2026-10-03 |
+| src/main/java/datafeed/RunnerMinDistance.java | code | Single Java reader of runner_min_distance.json. NaN on bad file. Used by SetupCandidatesBuilder.pickTarget 6-arg overload; 5-arg overload keeps min 0. | MTS-2026-10-02-2055Z-CLI-SUP-r2-promote | 2026-10-03 |
+| MyTradingSys/backtest/layers/fabio/orderflow_live.py | code | R3 live order-flow bar writer. Polls Binance USD-M aggTrades by id, writes closed minutes to MyTradingSys/runtime/orderflow_live/YYYY-MM-DD.csv in the offline 27-column schema. Restart-safe (resumes by id). Big-trade thresholds use only prior days. | MTS-2026-10-03-2245Z-CLI-BLD-r3-orderflow-bars | 2026-10-03 |

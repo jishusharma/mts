@@ -253,46 +253,44 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-03T03:12Z (live; java present).
+Last live read:  2026-10-03T03:25Z (live; java present).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 508, java 4120, supervisor 2204. java started 02:59:06Z.
-                 snapAge 27s, state_code_age 25s, stale_strikes 0.
-                 auto_trader 20016 (R2+R3 code, started 03:03:56Z).
-                 live_runner_cli 15612 (R3 code, started 03:03:58Z).
-                 orderflow_live 6728 (R3 writer, started 03:04:00Z).
-                 daily_loss_monitor 18484 (started 03:04:02Z).
-                 All four hidden via runtime_data/launch-*.vbs.
-                 tom_last_alert_no 96.
-                 Scheduler MTS-Scheduler-Tick Ready, 15-min tick. Latest exit 1 (WARN).
-                 orderflow_live writes runtime/orderflow_live/2026-10-03.csv, one row/closed minute.
-Build PASS 2026-10-02T21:34:30Z. HEAD d168f3c.
-Working tree: session_log.json dirty; four VBS launchers, orderflow_live runtime files, pm_heartbeats, testnet_status untracked.
+Runtime + loops: loop UP. wrapper 508, java 4120, supervisor 20112 (restarted 03:20:49Z on extended code).
+                 auto_trader 20016, live_runner_cli 15612, orderflow_live 6728, daily_loss_monitor 18484.
+                 All four aux hidden via runtime_data/launch-*.vbs and watched by the new Watch-Aux block.
+                 snapAge 63s, state_code_age 2s, stale_strikes 0.
+                 orderflow_live writes MyTradingSys/runtime/orderflow_live/2026-10-03.csv, one row per closed minute.
+Build PASS 2026-10-03T03:15:34Z (unchanged this session; no source changed).
+HEAD 1dd5d20.
+Working tree: live_runner_cli.py.new deleted; BUILD_REPORT, session_log, 03_FILE_INDEX, launch-supervisor.vbs, loop-supervisor.ps1 modified; pm_heartbeats + orderflow_live + testnet_status untracked.
 
-Commits landed since section 11 last refreshed (f99646b):
-  5c8f83b purge: remove DSA prompt-conformance gate and builder .new-only restriction.
-  7dd617b scheduler stack: 5 detectors, tick.py, run_worker.py, worker_prefix.md, prefix-hash test.
-  4575d8f T062 archive mts-manager; SURFACE_POLICY 3b; mts.ps1 live-runner-cli launch.
-  5bc9e0e R3 live order-flow bar writer + v3 emitter file reader (staged).
-  d168f3c R3 promote live_runner_cli; archive test_claude_manager; mts guard starts orderflow-live.
-  (R2 promotion commits before that: f9ee46c runner min-distance; 59f7785 082a733 7e1b4b1 35f8a8c d225c80 fba6fcd e8214e4 097b31d; 9dae9a3 close.)
+Commits landed this session: none (close-only batch pending).
 
-R1 done. R2 promoted and LIVE. R3 promoted and LIVE.
-  - R2 runner exit: 50/50 TARGET/RUNNER_TARGET legs, breakeven after leg 1. Live in auto_trader 20016.
-  - R2 runner min-distance: runner_min_distance_pct 0.25 (NO-SOURCE, operator ruling). Live.
-  - R3 order-flow writer: orderflow_live 6728, one CSV row per closed minute.
+Session work this session (MTS-2026-10-03-0315Z-DSA-COO):
+  03_FILE_INDEX.md: +4 rows (runner_min_distance.json, runner_min_distance.py, RunnerMinDistance.java, orderflow_live.py).
+  loop-supervisor.ps1: extended with Watch-Aux (SHA 6CE7EB71 -> 08FF65E0, 223 -> 248 lines, PARSE OK). Restarts four aux processes via VBS launchers. Restarted live (pid 2204 -> 20112).
+  live_runner_cli.py.new: deleted (byte-identical to live .py, SHA 40E5B168). Tests fall back to .py.
+  launch-supervisor.vbs: rewritten with new sh.Run line.
+  runtime_data/launch-{auto-trader,live-runner,orderflow-live,daily-loss}.vbs: committed last session, all four active.
 
-Live Tom floor 1.25. All cycles since restart WAIT_TRIGGER or WAIT_PROOF. Alert #96 rejected verdict WAIT_PROOF. No SETUP_FORMING today.
+R1 done. R2 live. R3 live.
+  - R2 runner exit: 50/50 legs + breakeven after leg 1. auto_trader 20016.
+  - R2 runner min-distance: runner_min_distance_pct 0.25, live.
+  - R3 order-flow writer: orderflow_live 6728.
+
+Live Tom floor 1.25. All cycles since restart WAIT_TRIGGER or WAIT_PROOF. No SETUP_FORMING this session. tom_last_alert_no 96.
 
 Fabio v3: shadow emitter live in live_runner_cli 15612. Reads orderflow_live CSV. First v3 signal awaits next NY window (13:30 UTC).
 
-Scheduler: tick every 15 min, exit 0/1/2. Canary WARN -- restart-needed flags for auto_trader and live_runner_cli are stale (both started 03:03Z, after R3 promote commit d168f3c). Canary comparison likely has a timezone bug; file it.
-  Haiku event worker ran once ($0.0887) on the earlier canary RED. Prefix 2585 bytes, under cache minimum.
+Scheduler: tick every 15 min. Canary WARN (stale restart flags for auto_trader / live_runner_cli — comparison timezone bug, still unfiled).
+
+R4 (HTF context layer) was composed and shipped to a CL session; it did not land this session. Prompt carries: new file backtest/layers/fabio/htf_context_live.py, daily log research/htf_context/<date>.jsonl, tests, one run.
 
 Open queues: 25 open ids in items/INDEX.md; 137 rows in BUGS.md.
 
-Next session first action: (1) add 03_FILE_INDEX rows for runner_min_distance.json, runner_min_distance.py, RunnerMinDistance.java, orderflow_live.py; (2) extend loop-supervisor.ps1 to watch the four launchable processes; (3) R3 vs R4 decision.
+Next session first action: (1) re-ship or verify R4 landed; (2) commit the close batch; (3) R5 (Model B failed-breakout reclaim as shadow) after R4; or T052 (SETUP_CONFIRMED trigger) if R4 stays open.
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.
