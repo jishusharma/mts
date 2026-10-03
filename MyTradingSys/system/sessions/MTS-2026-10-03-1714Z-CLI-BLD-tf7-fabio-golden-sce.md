@@ -29,7 +29,7 @@ MyTradingSys/backtest/layers/fabio/v3). No live process imports it; no .new need
 decision helpers only, README) and g19 (D18/M3: S8(b) exits on S2 == -s although the sellers are the absorbed side).
 Fixtures are our reconstruction in normalised units (no trader trade has a BTC date). Expected numbers hand-derived in comments.
 Fail-first: file absent = collection error; 4 source mutants (opp_stop best, S4 in S5, model-D structural stop, S8(a)) each
-turned a named test red, sources restored (git status clean for them).
+turned a named test red, sources restored (diff against HEAD empty for them).
 Gate: python scripts/dev/run_all_tests.py --quick = ALL TESTS PASSED.
 
 ## T5 deviations
