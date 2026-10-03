@@ -37,3 +37,5 @@ Code under test: backtest/layers/fabio/v3 at the commit that carries this file (
 
 ## Result block
 Appended after the run by the same session, below this line. Nothing has been run at the time of this commit.
+
+Result block (appended 2026-10-04, session MTS-2026-10-03-1759Z-CLI-BLD-tf8-fabio-v3-histori): NO RESULT. The OOS pass hung (B099) and was killed; no OOS figure, DSR, PBO or CI exists. The IS grid completed and the IS-best cells were frozen in selection.json before any OOS window ran (A N60/p0.05/f0.003/rest/g0.8, B N60/z2/f0.003/rest, C m5/f0.005/rest/g0.8, D N240/p0.05/f0.003/rest). Verdict: not evaluated. A re-run after the B099 fix is a new trial row; the registered cells, split and thresholds above are unchanged.

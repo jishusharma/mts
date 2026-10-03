@@ -69,4 +69,5 @@ B094 | OPEN    | B094_headless_scheduler.md | headless mts go; operator enables,
 B095 | OPEN    | B095_per_session_cost.md | per-session cost not on disk; session record + prompt composer need a cost field; Claude decides shape
 B097 | OPEN    | B097_kxh_mislabel.md | kXhIAug0Gh8_v2.md:65 says entry before proof; rows 6-7 say proof first
 B098 | WONTFIX | B098_python_cpu_spin.md | CPU spike was TF8 backtest pool; closed
+B099 | OPEN    | B099_v3_l3_pool_hang.md | run_v3_l3 OOS pass hung in ProcessPoolExecutor; no timeout / fail-closed path; blocks TF8
 # END
