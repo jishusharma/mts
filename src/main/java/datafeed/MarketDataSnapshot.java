@@ -1127,7 +1127,7 @@ public class MarketDataSnapshot {
         cond.put("fvg_unfilled_count", unfilledCount);
         if (nearestUnfilled != null) cond.set("fvg_nearest_unfilled", nearestUnfilled);
         else cond.putNull("fvg_nearest_unfilled");
-        cond.put("book_imbalance", 0.0);
+        cond.putNull("book_imbalance");
         cond.put("funding_extreme", false);
         cond.put("oi_trend", "flat");
         cond.put("speed_picking_up", computeSpeedPickingUp(klines1m));
@@ -1137,7 +1137,11 @@ public class MarketDataSnapshot {
         cond.put("volume_spike_at_level", false);
 
         // ── Spot-perp basis ──
-        ObjectNode spotPerpBasis = buildSpotPerpBasis(symbol);
+        ObjectNode spotPerpBasis = unavailableNode("historical snapshot: no live spot/mark data");
+        spotPerpBasis.putNull("spot_price");
+        spotPerpBasis.putNull("mark_price");
+        spotPerpBasis.putNull("basis_pct");
+        spotPerpBasis.put("direction", "unknown");
 
         // ── Liquidation clusters ──
         ObjectNode liquidationClusters = mapper.createObjectNode();
@@ -1158,11 +1162,11 @@ public class MarketDataSnapshot {
         root.set("vwap", vwapNode);
         root.set("cvd", cvdNode);
         ObjectNode tradeFlow = mapper.createObjectNode();
-        tradeFlow.put("net_delta_1m", 0.0);
-        tradeFlow.put("net_delta_5m", 0.0);
-        tradeFlow.put("net_delta_15m", 0.0);
-        tradeFlow.put("net_delta_1h", 0.0);
-        tradeFlow.put("confidence", "LOW");
+        tradeFlow.putNull("net_delta_1m");
+        tradeFlow.putNull("net_delta_5m");
+        tradeFlow.putNull("net_delta_15m");
+        tradeFlow.putNull("net_delta_1h");
+        tradeFlow.put("confidence", "UNAVAILABLE");
         root.set("trade_flow", tradeFlow);
         root.set("structure", structure);
         ObjectNode ob = mapper.createObjectNode();
@@ -1172,9 +1176,9 @@ public class MarketDataSnapshot {
         root.set("conditions", cond);
         root.set("prior_day", priorDayVp);
         ObjectNode fund = mapper.createObjectNode();
-        fund.put("current_rate", 0.0);
+        fund.putNull("current_rate");
         fund.put("extreme", false);
-        fund.put("confidence", "LOW");
+        fund.put("confidence", "UNAVAILABLE");
         root.set("funding", fund);
         ObjectNode oi = mapper.createObjectNode();
         oi.put("direction", "flat");
@@ -1187,11 +1191,25 @@ public class MarketDataSnapshot {
         root.set("session_timing", sessionTiming);
         root.set("spot_perp_basis", spotPerpBasis);
         root.set("liquidation_clusters", liquidationClusters);
-        root.set("oi_breakdown", buildOiBreakdown(symbol));
+        ObjectNode oiBreakdown = unavailableNode("historical snapshot: no live long/short ratio data");
+        oiBreakdown.putNull("retail");
+        oiBreakdown.putNull("whale");
+        oiBreakdown.putNull("topAccounts");
+        root.set("oi_breakdown", oiBreakdown);
         ObjectNode liquidationWarning = mapper.createObjectNode();
         liquidationWarning.put("status", "none");
         liquidationWarning.putNull("nearest_cluster_distance_pct");
         liquidationWarning.put("note", "Historical snapshot; liquidation data not available.");
+        root.set("liquidation_warning", liquidationWarning);
+        root.set("session", buildSession(klines1m, priorDayClose, currentPrice, dailyVp.get("vah").asDouble(), dailyVp.get("val").asDouble(), priorDayVp.get("high").asDouble(), priorDayVp.get("low").asDouble()));
+        ObjectNode dataQuality = mapper.createObjectNode();
+        ArrayNode unavailableFields = dataQuality.putArray("unavailable_fields");
+        for (String f : new String[]{"spot_perp_basis", "oi_breakdown", "trade_flow.net_delta_1m", "trade_flow.net_delta_5m",
+                "trade_flow.net_delta_15m", "trade_flow.net_delta_1h", "conditions.book_imbalance", "funding.current_rate"}) {
+            unavailableFields.add(f);
+        }
+        dataQuality.put("reason", "historical reconstruction from klines only; live-only inputs are null/UNAVAILABLE, never 0.0");
+        root.set("data_quality", dataQuality);
 
         // ── Spot-perp basis ──
 
@@ -1215,6 +1233,13 @@ public class MarketDataSnapshot {
         root.set("liquidation_clusters", liquidationClusters);
         root.set("setup_candidates", setupCandidates);
         return root;
+    }
+
+    private ObjectNode unavailableNode(String reason) {
+        ObjectNode node = mapper.createObjectNode();
+        node.put("confidence", "UNAVAILABLE");
+        node.put("reason", reason);
+        return node;
     }
 
     private Map<String, JsonNode> fetchMultiTimeframeAsOf(String symbol, Instant asOf) {
