@@ -1,22 +1,22 @@
-BUILD_REPORT - 2026-10-03 04:14:39 UTC
+BUILD_REPORT - 2026-10-03 04:16:23 UTC
 host: JIS-NB
 
-Java compile:  PASS (2.6 s)
+Java compile:  PASS (3 s)
 Math tests:    PASS 161/161 (5 s)
-Doc tests:     PASS 5/5 (1.9 s)
+Doc tests:     PASS 5/5 (2.4 s)
 
 In-flight .new files: 11
-  - backtest\layers\audit\formula_audit.py.new (age 6002m)
-  - backtest\layers\consensus\test_writer.py.new (age 1167m)
-  - backtest\layers\consensus\writer.py.new (age 1167m)
-  - backtest\layers\cryptocred\test_cc_retest.py.new (age 6989m)
-  - backtest\layers\cryptocred\test_cc_structure.py.new (age 6990m)
-  - backtest\layers\rsi\observation.py.new (age 1167m)
-  - backtest\layers\rsi\test_observation.py.new (age 1167m)
-  - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 1167m)
-  - runtime\test_quad_classify.py.new (age 1167m)
-  - runtime\test_regime_classifier.py.new (age 1167m)
-  - tests\java\MarketDataSnapshotTest.java.new (age 1167m)
+  - backtest\layers\audit\formula_audit.py.new (age 6003m)
+  - backtest\layers\consensus\test_writer.py.new (age 1169m)
+  - backtest\layers\consensus\writer.py.new (age 1169m)
+  - backtest\layers\cryptocred\test_cc_retest.py.new (age 6991m)
+  - backtest\layers\cryptocred\test_cc_structure.py.new (age 6992m)
+  - backtest\layers\rsi\observation.py.new (age 1169m)
+  - backtest\layers\rsi\test_observation.py.new (age 1169m)
+  - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 1169m)
+  - runtime\test_quad_classify.py.new (age 1169m)
+  - runtime\test_regime_classifier.py.new (age 1169m)
+  - tests\java\MarketDataSnapshotTest.java.new (age 1169m)
 
 Active sessions:
   (none)

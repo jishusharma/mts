@@ -14,7 +14,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import dsa_worker  # noqa: E402
 import queue_tool  # noqa: E402
-from dsa_worker import ChatPage, DsaWorker, PageError  # noqa: E402
+from dsa_worker import ChatPage, DsaWorker, PageError, write_atomic  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[2]
 REPLY_KEYS = {"schema", "id", "worker", "host", "model", "response", "done_reason",
@@ -228,6 +228,27 @@ class TestPacing(Base):
         self.assertTrue((self.done / "052-b.reply.json").exists())
 
 
+    def test_stale_entries_dropped_and_pace_self_heals(self):
+        """B080: entries older than 24h must not count and must be dropped from the file."""
+        now = 1_800_000_000.0
+        self.w.clock = lambda: now
+        stale = [now - 86400 * 2, now - 86400 * 5, now - 86400 * 30]
+        write_atomic(self.w.pace_path, json.dumps(stale))
+        self.assertIsNone(self.w.pacing_block())
+        kept = json.loads(self.w.pace_path.read_text())
+        self.assertEqual(kept, [], "stale entries should be pruned from the pace file")
+
+    def test_future_and_non_numeric_entries_dropped(self):
+        """B080: future (>+60s) and non-numeric entries must not count toward any window."""
+        now = 1_800_000_000.0
+        self.w.clock = lambda: now
+        write_atomic(self.w.pace_path, json.dumps([now + 600, now + 86400]))
+        self.assertIsNone(self.w.pacing_block())
+        self.assertEqual(json.loads(self.w.pace_path.read_text()), [],
+                         "future entries should be pruned")
+        # non-numeric in the file must not raise; load returns [] via the except branch
+        self.w.pace_path.write_text(json.dumps(["x", None, 1.5]))
+        self.assertIsNone(self.w.pacing_block())
     def test_stale_entries_dropped_and_pace_self_heals(self):
         """B080: entries older than 24h must not count and must be dropped from the file."""
         now = 1_800_000_000.0
