@@ -1822,6 +1822,15 @@
       "action": "monitored",
       "verdict": "WAIT_TRIGGER",
       "reason": "STATE TWOPEAK/in_va -> TWOPEAK/below_val"
+    },
+    {
+      "ts": "2026-10-03T04:05:25.196Z",
+      "type": "alert",
+      "alert_id": 98,
+      "setup": "ct_short",
+      "action": "monitored",
+      "verdict": "WAIT_TRIGGER",
+      "reason": "proof 5 -> 4 | STATE TWOPEAK/below_val -> TWOPEAK/in_va"
     }
   ]
 }

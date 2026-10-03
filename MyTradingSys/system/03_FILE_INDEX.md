@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-10-03
-# SIZE: ~41.5KB
+# SIZE: ~42KB
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -394,3 +394,5 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/runtime/runner_min_distance.py | code | Single Python reader of runner_min_distance.json. Fail-closed on missing/unparsable/negative value. Used by math_object_builder.pick_target via runner_min_pct parameter. | MTS-2026-10-02-2055Z-CLI-SUP-r2-promote | 2026-10-03 |
 | src/main/java/datafeed/RunnerMinDistance.java | code | Single Java reader of runner_min_distance.json. NaN on bad file. Used by SetupCandidatesBuilder.pickTarget 6-arg overload; 5-arg overload keeps min 0. | MTS-2026-10-02-2055Z-CLI-SUP-r2-promote | 2026-10-03 |
 | MyTradingSys/backtest/layers/fabio/orderflow_live.py | code | R3 live order-flow bar writer. Polls Binance USD-M aggTrades by id, writes closed minutes to MyTradingSys/runtime/orderflow_live/YYYY-MM-DD.csv in the offline 27-column schema. Restart-safe (resumes by id). Big-trade thresholds use only prior days. | MTS-2026-10-03-2245Z-CLI-BLD-r3-orderflow-bars | 2026-10-03 |
+| MyTradingSys/research/OPERATOR_DIRECTIVE_2026-10-03-historical-testing.md | directive | Operator directive: historical testing authorized for module-layer parameters; operator-supplied values labeled OPERATOR-EXPERIMENT; all pending tasks move into one continuous build-and-test workflow. Three operator statements verbatim. | MTS-2026-10-03-0328Z-DSA-COO | 2026-10-03 |
+| MyTradingSys/runtime/BUILD_PIPELINE.md | queue | Single queue for all pending work. Waves 0-7. Same T0-T5 contract per item; gate on tests + Build-Check. Status: QUEUED / IN-FLIGHT / GATED / LANDED / BLOCKED / PARKED. | MTS-2026-10-03-0328Z-DSA-COO | 2026-10-03 |
