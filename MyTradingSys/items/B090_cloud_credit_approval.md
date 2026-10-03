@@ -82,7 +82,8 @@ and push between batches. Bucket B stays reserved until its
 precondition is met.
 
 ## Receipt
-
--
-
+2026-10-03 12:35Z: expiry claim corrected. Cloud session credits 99 of 100 USD,
+Expires 1:29 PM GMT+5:30, November 5. Roadmap header 'expires today' was
+wrong. Pro weekly pool resets Sun 22:30, session limit 0%. Urgency removed;
+Bucket A and B can be sequenced over the next 33 days.
 # END
