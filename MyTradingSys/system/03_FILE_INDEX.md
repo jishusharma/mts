@@ -2,7 +2,7 @@
 # READ ORDER: 6 of 8
 # PURPOSE: Hierarchical index of all active files in MyTradingSys/
 # LAST UPDATED: 2026-10-03
-# SIZE: ~46KB
+# SIZE: computed (never hand-edited; test_4 enforces a ceiling)
 # NEXT FILE: 04_PER_JSON_GUIDE.md
 # PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
@@ -274,6 +274,7 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/items/B085_tom_bt_proof5_skew.md | item doc | B085 item doc. Proof-5 pool skew 215 short : 105 long unexplained; second contradiction path (last_3_delta) affects longs. | MTS-2026-10-03-0430Z-DSA-COO | 2026-10-03 |
 | MyTradingSys/items/B086_dispatcher_second_writer.md | item doc | B086 item doc. Dispatcher smoke test launched a second CL writer; one-writer-per-file-set violated. Claude decides fix. | MTS-2026-10-03-0430Z-DSA-COO | 2026-10-03 |
 | MyTradingSys/items/B087_pick_task_repick.md | item doc | B087 item doc. pick_task re-picks same row each wake; plus size-header edit and mts go naming. Claude decides fixes. | MTS-2026-10-03-0430Z-DSA-COO | 2026-10-03 |
+| MyTradingSys/research/CLOUD_CREDIT_ROADMAP_2026-10-03.md | plan | Cloud credit split plan for awgp account. Boundary is file set, not account. C1-C8 cloud queue. Local lane today: fix-dispatcher prompt, then push. Never touches gitignored files, live trees, restarts, HALT. | MTS-2026-10-03-1120Z-CL-BLD-fix-dispatcher | 2026-10-03 |
 # END
 
 | MyTradingSys/research/TOM_VERBATIM_INDEX.md | research | Verbatim Tom quote index. Points to corpus. Rules in conditions/ carry [TOM-NNN] or [SCREENER]. |
@@ -411,5 +412,8 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | scripts/dev/test_prompt_check.ps1 | test | Four fixtures for prompt_check.ps1 (fake path, clean prompt, untagged do-not, absent token) plus a tagged-clause control, in a temp dir. | MTS-2026-10-03-0600Z-CL-BLD-registry-and-cicd | 2026-10-03 |
 | MyTradingSys/system/sessions/MTS-2026-10-03-0600Z-CL-BLD-registry-and-cicd.md | session | Session record: registry repair (T062, B075 receipt, T053-T058 rows, B077-B079 INDEX), CI/CD runner build, prompt_check build; receipts and T0-T5. | MTS-2026-10-03-0600Z-CL-BLD-registry-and-cicd | 2026-10-03 |
 | scripts/sched/pick_task.py | tool | Queue dispatcher: reads BUILD_PIPELINE.md, picks the first pickable QUEUED row (wave order), writes next_task.txt/.json and pick_log.jsonl under runtime/queue; archives the prior pick; prints PICK or IDLE. | MTS-2026-10-03-1300Z-CL-BLD-queue-dispatcher | 2026-10-03 |
-| MyTradingSys/tests/test_pick_task.py | test | Seven pytest fixtures for pick_task.py (empty, one row, BLOCKED, operator blocker, BUGS CLOSED, wave-only slug without file, prior pick renamed) against temp roots. | MTS-2026-10-03-1300Z-CL-BLD-queue-dispatcher | 2026-10-03 |
+| MyTradingSys/tests/test_pick_task.py | test | Thirteen pytest fixtures for pick_task.py (empty, one row, BLOCKED, operator blocker, BUGS CLOSED, wave-only slug without file, prior pick renamed; B087 hold, cooldown expiry, landed drop, corrupt state, recompose, slug cap) against temp roots. | MTS-2026-10-03-1300Z-CL-BLD-queue-dispatcher | 2026-10-03 |
 | MyTradingSys/system/sessions/MTS-2026-10-03-1300Z-CL-BLD-queue-dispatcher.md | session | Session record: queue dispatcher build, T0 contract quotes, fail-before proof, live runs, deviations. | MTS-2026-10-03-1300Z-CL-BLD-queue-dispatcher | 2026-10-03 |
+| scripts/sched/go.py | tool | Body of mts go: dry run inside a Claude Code session or with --dry, live launch from the operator terminal; derives the session name from a kebab slug. B086, B087c. | MTS-2026-10-03-1145Z-CL-BLD-fix-dispatcher | 2026-10-03 |
+| MyTradingSys/tests/test_go.py | test | Seven fixtures for go.py with a fake claude executable: dry guard, live launch, slug naming, bad slug, IDLE, mts.ps1 delegation. | MTS-2026-10-03-1145Z-CL-BLD-fix-dispatcher | 2026-10-03 |
+| MyTradingSys/system/sessions/MTS-2026-10-03-1145Z-CL-BLD-fix-dispatcher.md | session | Session record: B086 and B087 closed (dispatcher one-writer guard, re-pick hold, computed SIZE header, slug session names). | MTS-2026-10-03-1145Z-CL-BLD-fix-dispatcher | 2026-10-03 |

@@ -1,6 +1,6 @@
 # B087 - pick_task re-picks the same row; two smaller flags
 
-Status: OPEN. Severity: MED. Opened 2026-10-03.
+Status: CLOSED. Severity: MED. Opened 2026-10-03.
 
 ## Defect
 
@@ -43,6 +43,6 @@ Claude to choose and document each.
 
 ## Receipt
 
--
+(a) scripts/sched/pick_task.py:128 load_state, :137 held_row, :225 current_pick_id, main HOLD branch: pick_state.json, 6h cooldown (env MTS_PICK_COOLDOWN_H), one row offered at a time, state entry dropped when row stops being pickable. Tests: test_pick_task.py test_8_second_wake_holds_same_row, test_9_cooldown_expiry_repicks_never_starves, test_10_landed_row_leaves_state_and_next_row_is_offered, test_11_corrupt_state_never_blocks_a_pick, test_12_held_row_with_missing_prompt_is_recomposed. (b) 03_FILE_INDEX.md SIZE header now reads computed; MyTradingSys/tests/docs/test_integrity.py test_4_file_index_size_claim rejects a hand-kept KB figure and enforces a 100KB ceiling. (c) scripts/sched/go.py:23-34 slug derives MTS-<UTC>-CLI-BLD-<slug> per SURFACE_POLICY s4; tests test_go.py test_4_slug_derives_policy_session_id_and_rewrites_prompt, test_5_bad_slug_rejected_nothing_launched; pick_task slug capped at 20 chars (test_13_session_slug_within_20_chars).
 
 # END

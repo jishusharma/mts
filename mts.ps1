@@ -9,7 +9,8 @@
 
 param(
     [Parameter(Position = 0)][string]$Verb = "help",
-    [Parameter(Position = 1)][string]$Arg = ""
+    [Parameter(Position = 1)][string]$Arg = "",
+    [switch]$Dry
 )
 
 $ErrorActionPreference = "Stop"
@@ -40,7 +41,7 @@ $Verbs = @(
     @("Auto",        "auto",    "Start the testnet auto-trader (Tom + layer signals) in its own window"),
     @("Auto",        "autolog", "Last 20 auto-trader decisions (trades, skips, rejects)"),
     @("Auto",        "ledger",  "Closed auto-trades per source: count, win rate, mean and total net P/L"),
-    @("Upkeep",      "go",      "Launch the next queued build task in claude (mts go [session-id])"),
+    @("Upkeep",      "go",      "Launch the next queued build task in claude (mts go [slug] [-Dry])"),
     @("Upkeep",      "test",    "Run the offline test suite (no exchange)"),
     @("Upkeep",      "guide",   "Open the user guide"),
     @("Upkeep",      "help",    "This list")
@@ -271,13 +272,10 @@ switch ($Verb.ToLower()) {
     "test" { Py (Join-Path $Root "scripts\dev\run_all_tests.py") "--quick"; exit $LASTEXITCODE }
 
     "go" {
-        $task = Join-Path $Root "MyTradingSys\runtime\queue\next_task.txt"
-        if (-not (Test-Path $task)) { Say "IDLE: queue empty"; break }
-        $prompt = (Get-Content $task -Raw).Trim()
-        if ($prompt -match '^IDLE') { Say "IDLE: queue empty"; break }
+        # Launch logic lives in scripts/sched/go.py: dry inside a Claude Code session (one writer per tree), live here.
+        $goArgs = @(); if ($Arg) { $goArgs += $Arg }; if ($Dry) { $goArgs += "--dry" }
         Set-Location $Root
-        if ($Arg) { & claude --name $Arg $prompt } else { & claude $prompt }
-        exit $LASTEXITCODE
+        Py (Join-Path $Root "scripts\sched\go.py") @goArgs; exit $LASTEXITCODE
     }
 
     "guide" { Invoke-Item $Guide }

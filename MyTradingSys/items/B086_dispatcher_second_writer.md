@@ -1,6 +1,6 @@
 # B086 - dispatcher demo launched a second CL writer
 
-Status: OPEN. Severity: HIGH. Opened 2026-10-03.
+Status: CLOSED. Severity: HIGH. Opened 2026-10-03.
 
 ## Defect
 
@@ -37,6 +37,6 @@ Claude to choose the simplest one that holds the one-writer rule.
 
 ## Receipt
 
--
+scripts/sched/go.py:64 dry run when env CLAUDECODE is set or --dry given (a Claude Code session never starts a second writer); operator terminal has no CLAUDECODE so mts go launches live (go.py:70-76); mts.ps1:274-278 go verb delegates to go.py, adds -Dry switch (:13). Tests: MyTradingSys/tests/test_go.py test_1_inside_claude_code_is_dry_no_launch, test_2_operator_terminal_launches_live, test_3_dry_flag_forces_no_launch, test_7_mts_go_verb_delegates_to_go_py.
 
 # END

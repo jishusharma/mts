@@ -4,8 +4,13 @@ sys.dont_write_bytecode = True
 """Queue dispatcher: pick the next QUEUED row of BUILD_PIPELINE.md and write a ready-to-run CL prompt.
 
 One wake, one pick. Reads the pipeline fresh each run, so stale rows drop out. No Claude call, no network.
-Writes MyTradingSys/runtime/queue/{next_task.txt, next_task.json, pick_log.jsonl}; a prior next_task.* is renamed
-next_task_<prior_composed_utc>.* first. Prints `PICK <id> wave=<n> slug=<slug> surface=<App|CLI>` or `IDLE no pickable row`.
+Writes MyTradingSys/runtime/queue/{next_task.txt, next_task.json, pick_log.jsonl, pick_state.json}; a prior next_task.*
+is renamed next_task_<prior_composed_utc>.* first. Prints `PICK <id> wave=<n> slug=<slug> surface=<App|CLI>`,
+`HOLD <id> ...` or `IDLE no pickable row`.
+Re-pick guard (B087a): pick_state.json records each pick. A picked row that is still pickable is HELD (next_task.*
+left untouched, nothing else offered: one writer at a time) for COOLDOWN_H hours (env MTS_PICK_COOLDOWN_H, default 6).
+After the cooldown it is offered again, so a row whose session died never starves. A row that stops being pickable
+(landed, blocked, status change) drops out of the state at once.
 Exit 0 on PICK or IDLE, 1 on disk error (reason on stderr).
 Test hook: env MTS_PICK_ROOT replaces the repo root.
 Usage (repo root): python scripts/sched/pick_task.py
@@ -14,7 +19,7 @@ import json
 import os
 import re
 import subprocess
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(os.environ.get("MTS_PICK_ROOT") or Path(__file__).resolve().parents[2])
@@ -28,6 +33,8 @@ FILE_RE = re.compile(r"[\w./\\-]+\.(?:md|py|java|ps1|json|csv)\b")
 ROWNUM_RE = re.compile(r"\b\d+\.\d+\b")
 PICKABLE_BUGS = ("OPEN", "IN-FIX")
 SURFACE = "App"
+SLUG_MAX = 20
+STATE_NAME = "pick_state.json"
 
 SIGNATURE = '"P.S : All Access, Change Repo/Device/All that you need!"'
 DIRECTIVE = ('"I need all pending tasks to be in the continuous build and test workflow."\n'
@@ -108,7 +115,38 @@ def skip_reason(r, bugs, by_num):
 
 def slug_of(r):
     words = re.sub(r"[^a-z0-9]+", " ", r["slug"].lower()).split()[:3]
-    return "-".join([re.sub(r"[^a-z0-9]+", "", r["id"].lower())] + words)
+    return "-".join([re.sub(r"[^a-z0-9]+", "", r["id"].lower())] + words)[:SLUG_MAX].rstrip("-")
+
+
+def cooldown():
+    try:
+        return timedelta(hours=float(os.environ.get("MTS_PICK_COOLDOWN_H", "6")))
+    except ValueError:
+        return timedelta(hours=6)
+
+
+def load_state():
+    """{id: {"picked_utc": iso, "count": n}}; missing or corrupt file means no history (a pick is never blocked by it)."""
+    try:
+        d = json.loads((QUEUE / STATE_NAME).read_text(encoding="utf-8"))
+        return {k: v for k, v in d.items() if isinstance(v, dict) and isinstance(v.get("picked_utc"), str)}
+    except (OSError, ValueError, AttributeError):
+        return {}
+
+
+def held_row(candidates, state, now):
+    """First pickable row picked within the cooldown, else None. Unparseable stamps count as expired."""
+    for r in candidates:
+        e = state.get(r["id"])
+        if not e:
+            continue
+        try:
+            at = datetime.strptime(e["picked_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+        except ValueError:
+            continue
+        if timedelta(0) <= now - at < cooldown():
+            return r
+    return None
 
 
 def compose(r, now, doc, session_id):
@@ -184,6 +222,14 @@ def archive_prior(now):
             p.replace(dest)
 
 
+def current_pick_id():
+    """Id in next_task.json, or None when there is no live prompt (IDLE, missing, unreadable)."""
+    try:
+        return json.loads((QUEUE / "next_task.json").read_text(encoding="utf-8")).get("id")
+    except (OSError, ValueError, AttributeError):
+        return None
+
+
 def log_line(entry):
     with open(QUEUE / "pick_log.jsonl", "a", encoding="utf-8", newline="\n") as f:
         f.write(json.dumps(entry, sort_keys=True) + "\n")
@@ -199,13 +245,24 @@ def main():
         print("pick_task: cannot read inputs: %s" % e, file=sys.stderr)
         return 1
     by_num = {r["num"]: r for r in rows}
-    chosen = next((r for r in sorted(rows, key=lambda r: (r["wave"], [int(x) for x in r["num"].split(".")]))
-                   if skip_reason(r, bugs, by_num) is None), None)
+    ordered = sorted(rows, key=lambda r: (r["wave"], [int(x) for x in r["num"].split(".")]))
+    pickable = [r for r in ordered if skip_reason(r, bugs, by_num) is None]
+    state = load_state()
+    state = {k: v for k, v in state.items() if k in {r["id"] for r in pickable}}
+    held = held_row(pickable, state, now)
+    chosen = held or (pickable[0] if pickable else None)
     try:
         QUEUE.mkdir(parents=True, exist_ok=True)
+        if held and current_pick_id() == held["id"]:
+            atomic_write(QUEUE / STATE_NAME, json.dumps(state, indent=1, sort_keys=True) + chr(10))
+            log_line({"ts": iso, "result": "HOLD", "id": held["id"]})
+            print("HOLD %s picked %s, cooldown %sh; next_task.* unchanged" % (
+                held["id"], state[held["id"]]["picked_utc"], cooldown().total_seconds() / 3600))
+            return 0
         archive_prior(now)
         if chosen is None:
-            atomic_write(QUEUE / "next_task.txt", "IDLE no pickable row\n")
+            atomic_write(QUEUE / STATE_NAME, "{}" + chr(10))
+            atomic_write(QUEUE / "next_task.txt", "IDLE no pickable row" + chr(10))
             log_line({"ts": iso, "result": "IDLE"})
             print("IDLE no pickable row")
             return 0
@@ -217,6 +274,8 @@ def main():
                 "session_id": session_id}
         atomic_write(QUEUE / "next_task.txt", compose(chosen, now, doc, session_id))
         atomic_write(QUEUE / "next_task.json", json.dumps(meta, indent=1) + "\n")
+        state[chosen["id"]] = {"picked_utc": iso, "count": state.get(chosen["id"], {}).get("count", 0) + 1}
+        atomic_write(QUEUE / STATE_NAME, json.dumps(state, indent=1, sort_keys=True) + chr(10))
         log_line({"ts": iso, "result": "PICK", **{k: meta[k] for k in ("id", "wave", "slug", "surface")}})
     except OSError as e:
         print("pick_task: disk error: %s" % e, file=sys.stderr)
