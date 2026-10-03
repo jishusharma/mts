@@ -344,8 +344,8 @@ What happened.
    when the count was three and the idle state was unverified.
 
 Rules that now prevent it.
-- At boot, issue ONE command block that returns: git log -3 and
-  status --porcelain; .git\index.lock; queue pick_state + pick_log tail;
+- At boot, issue ONE command block that returns: the last three commits and
+  the working-tree state; .git\index.lock; queue pick_state + pick_log tail;
   session-record mtimes; execution/ file list; the day's audit inputs.
   No follow-up read unless the paste shows a missing path.
 - Every path is MyTradingSys\... . Never .\runtime\... or .\execution\...
@@ -363,3 +363,17 @@ and section 8 (paths, test both prefixes) already cover parts of it.
 
 Receipt: cost measured against MTS-2026-10-03-1444Z-DSA-COO-tf4-compose;
 commit c9319e9.
+
+## 2026-10-03 - Gate guard failed; commit landed on FAIL
+
+What happened: the guarded gate block ran, printed ABORT: build FAIL,
+and gitsnap still ran. Commit bb9d73c landed on a failing doc test.
+
+Cause: in an interactive paste, return at top level does not abort the
+remaining statements. Same rule already in live_session_protocol.md
+PROCESS SPEED RULES #2, dated 2026-09-19.
+
+Fix: every gate+commit block is wrapped in & { ... }. return inside
+& { } aborts the block. Confirmed 2026-10-03.
+
+Cost: one FAIL commit on fast-track, one fix commit to follow.
