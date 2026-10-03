@@ -445,3 +445,23 @@ Rule: "exact paths" means the explicit file list, never a directory. Every add i
 Where the rule lives: DSA_SESSION_PROMPT.md section 6 WRITING.
 
 Receipt: commit 7a1749c.
+
+## 2026-10-03 - Quoted the 30-line cap, then broke it in the same session
+
+What happened: DSA composed a TF4 prompt at roughly 60 lines. CLAUDE.md says "Prompt <= 30 lines." DSA had quoted that line two turns earlier, then composed over it. Caught during the operator challenge pass, corrected to 28 lines before the prompt shipped.
+
+Rule: the 30-line cap is read from CLAUDE.md at compose time, not from memory. Count the prompt lines before printing. If a prompt carries inherited hard rules or restated state, that is a defect: CLAUDE.md already has them.
+
+Where the rule lives: CLAUDE.md "What a CL prompt carries"; DSA_SESSION_PROMPT.md section 9.
+
+Receipt: operator 2026-10-03.
+
+## 2026-10-03 - SUPERVISOR_LOG entry attributed a promote to a session that did not exist
+
+What happened: DSA wrote a SUPERVISOR_LOG entry for the TF5 promote with "from: MTS-2026-10-03-1725Z-CLI-SUP-tf5-promote". That session ID was invented. The promote was performed by a PowerShell block from DSA chat, not by a CLI session. The CLI promote session that was launched stopped at T0 and wrote nothing.
+
+Rule: the "from:" field in a SUPERVISOR_LOG entry names an actor from disk, not an actor DSA thinks should exist. If a promote is done by a PowerShell block, the field reads the operator block description, not a session ID. If a session ID is named, the session record must exist on disk before the entry is written.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 6 WRITING.
+
+Receipt: commit b31b7bf corrected the entry.
