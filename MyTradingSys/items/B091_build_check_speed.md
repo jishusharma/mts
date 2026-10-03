@@ -1,6 +1,6 @@
 # B091 - Build-Check cycle cost for fix-test loops
 
-Status: OPEN. Severity: MED. Opened 2026-10-03.
+Status: CLOSED 2026-10-04. Severity: MED. Opened 2026-10-03.
 
 ## Defect
 
@@ -43,6 +43,6 @@ Build-Check.ps1 at least once.
 
 ## Receipt
 
--
+B091 CLOSED 2026-10-04 (MTS-2026-10-04-0200Z-CLI-BLD-b091-buildcheck-speed): scripts/Build-Check.ps1 gains -Quick (math tests skipped, STATUS names QUICK) and -ReadOnly (BUILD_REPORT.md not rewritten; Build-Check never wrote session_log.json); cicd_run.py stage 2.3 build-check step now passes both. MyTradingSys/tests/test_b091_build_check_tiers.py: 3 FAIL on scripts/Build-Check.ps1.pre_b091, 3 PASS on new; quick tier 21s incl. compile vs ~45s full. Commit: git log --grep 'B091:'
 
 # END

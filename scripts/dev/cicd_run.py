@@ -437,7 +437,7 @@ def stage_build(ctx):
         ("build/pytest-docs", [py, "-m", "pytest", "MyTradingSys/tests/docs", "-q", "-p", "no:cacheprovider"], "pytest", "MyTradingSys/tests/docs"),
         ("build/run-all-tests", [py, "scripts/dev/run_all_tests.py"] + (["--quick"] if (ctx.quick or not mvn or cloud) else []), "runall", "scripts/dev/run_all_tests.py"),
         ("build/pytest-root", [py, "-m", "pytest", "tests", "-q", "-p", "no:cacheprovider"], "pytest", "tests"),
-        ("build/build-check", [ps, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/Build-Check.ps1"] if ps else None, "buildcheck", "scripts/Build-Check.ps1"),
+        ("build/build-check", [ps, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/Build-Check.ps1", "-Quick", "-ReadOnly"] if ps else None, "buildcheck", "scripts/Build-Check.ps1"),
     ]
     for name, cmd, kind, target in steps:
         if kind in ("mvn", "buildcheck") and cloud:

@@ -1,6 +1,13 @@
 # Build-Check.ps1 - Preflight + routing manifest for DSA sessions.
 # Writes MyTradingSys/runtime/BUILD_REPORT.md - paste this first at any session start.
 # Does not modify any live file.
+# Tiers (B091):
+#   (default)   full: compile + math tests + doc tests + registry checks; writes BUILD_REPORT.md.
+#   -Quick      fast pre-commit tier: math tests skipped (the release gate runs them); STATUS says QUICK.
+#   -ReadOnly   print the report only; BUILD_REPORT.md is not rewritten, so the tree stays clean.
+# Build-Check never writes session_log.json; -ReadOnly removes its only tree write.
+
+param([switch]$Quick, [switch]$ReadOnly)
 
 $ErrorActionPreference = "Continue"
 
@@ -33,6 +40,9 @@ if ($LASTEXITCODE -eq 0) {
 
 # 2. Math tests
 $t0 = Get-Date
+if ($Quick) {
+    $lines.Add("Math tests:    SKIP (quick tier; full pass is the release gate)")
+} else {
 $mtestOut = (& python -m pytest MyTradingSys/tests --ignore=MyTradingSys/tests/docs -q 2>&1 | Out-String)
 $dur = [math]::Round(((Get-Date) - $t0).TotalSeconds, 1)
 $m = [regex]::Match($mtestOut, "(\d+) passed")
@@ -41,6 +51,7 @@ if ($LASTEXITCODE -eq 0 -and $m.Success) {
 } else {
     $lines.Add("Math tests:    FAIL ($dur s)")
     $overallFail = $true
+}
 }
 
 # 3. Doc tests
@@ -276,7 +287,8 @@ if ($dispatchFail.Count -gt 0) {
 }
 $lines.Add("")
 if ($bomHits.Count -gt 0 -or $nonAsciiHits.Count -gt 0) { $overallFail = $true }
-if ($overallFail) { $lines.Add("STATUS: FAIL") } else { $lines.Add("STATUS: PASS") }
+$tier = if ($Quick) { " (QUICK: math tests not run)" } else { "" }
+if ($overallFail) { $lines.Add("STATUS: FAIL$tier") } else { $lines.Add("STATUS: PASS$tier") }
 $lines.Add("")
 $lines.Add("Pastes for this session:")
 $lines.Add("  Always:   MyTradingSys/runtime/BUILD_REPORT.md")
@@ -287,11 +299,15 @@ $lines.Add("  Extract:  Dumps/dump_extracts.md (paste sections only)")
 $lines.Add("")
 
 # Write
-$outDir = "MyTradingSys/runtime"
-if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir -Force | Out-Null }
-$outFile = Join-Path $outDir "BUILD_REPORT.md"
-Write-TextNoBom -Path $outFile -Lines $lines
-
 $lines | ForEach-Object { Write-Host $_ }
 Write-Host ""
-Write-Host "Report: $((Resolve-Path $outFile).Path)"
+if ($ReadOnly) {
+    Write-Host "Report: not written (-ReadOnly)"
+} else {
+    $outDir = "MyTradingSys/runtime"
+    if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir -Force | Out-Null }
+    $outFile = Join-Path $outDir "BUILD_REPORT.md"
+    Write-TextNoBom -Path $outFile -Lines $lines
+    Write-Host "Report: $((Resolve-Path $outFile).Path)"
+}
+if ($overallFail) { exit 1 }
