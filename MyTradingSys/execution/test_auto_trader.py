@@ -1,5 +1,6 @@
 """Offline tests for auto_trader.py (no exchange, no subprocess). Run: python MyTradingSys/execution/test_auto_trader.py"""
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -182,21 +183,21 @@ class LayerSignalTest(unittest.TestCase):
             s = at.layer_signal({"layer": "rsi", "event": "support", "tf": tf, "t_close": t}, cfg(), NOW)
             self.assertEqual(s["plan_args"][s["plan_args"].index("--max-hold-minutes") + 1], mins)
 
-    def test_tom_max_hold_is_8_bars_of_zone_tf(self):
-        # tom_alert() ZONE is 15m_swing_high: 8 x 15 = 120; 5m -> 40; 1h -> 480; no tf -> 15m fallback
-        for zone, mins in (("15m_swing_high", "120"), ("5m_swing_high", "40"), ("1h_swing_low", "480"), ("weird", "120")):
+    def test_tom_max_hold_is_flat_whatever_the_zone_tf(self):
+        # TF5 E2: the zone name no longer scales the time exit (before: 5m -> 40, 1h -> 480, 4h -> 1920 min).
+        for zone in ("15m_swing_high", "5m_swing_high", "1h_swing_low", "4h_val", "weird"):
             a = tom_alert()
             a["card_text"] = a["card_text"].replace("15m_swing_high", zone)
             s = at.tom_signal(a, {"tom_last_alert_no": 43}, cfg(), NOW)
-            self.assertEqual(s["plan_args"][s["plan_args"].index("--max-hold-minutes") + 1], mins, zone)
+            self.assertEqual(s["plan_args"][s["plan_args"].index("--max-hold-minutes") + 1], "120", zone)
 
-    def test_tom_explicit_max_hold_minutes_wins_and_bars_can_be_disabled(self):
+    def test_tom_explicit_max_hold_minutes_wins_and_none_disables(self):
         c = cfg()
         c["tom"]["max_hold_minutes"] = 30
         s = at.tom_signal(tom_alert(), {"tom_last_alert_no": 43}, c, NOW)
         self.assertEqual(s["plan_args"][s["plan_args"].index("--max-hold-minutes") + 1], "30")
         c = cfg()
-        c["tom"]["max_hold_bars"] = None
+        c["tom"]["max_hold_minutes"] = None
         s = at.tom_signal(tom_alert(), {"tom_last_alert_no": 43}, c, NOW)
         self.assertNotIn("--max-hold-minutes", s["plan_args"])
 
@@ -210,13 +211,14 @@ class LayerSignalTest(unittest.TestCase):
         self.assertEqual(at.TF_SECONDS.get("3m"), 180)
         self.assertEqual(at.TF_SECONDS.get("1d"), 86400)
 
-    def test_tom_3m_zone_max_hold_is_8_bars_of_3m(self):
+    def test_tom_3m_zone_max_hold_is_the_flat_value(self):
+        # TF5 E2: was 8 x 3m = 24 min; now the flat tom.max_hold_minutes (120) and no zone_tf field.
         a = tom_alert()
         a["card_text"] = a["card_text"].replace("15m_swing_high", "3m_swing_high")
         s = at.tom_signal(a, {"tom_last_alert_no": 43}, cfg(), NOW)
         self.assertNotIn("reject", s)
-        self.assertEqual(s["detail"]["zone_tf"], "3m")
-        self.assertEqual(s["plan_args"][s["plan_args"].index("--max-hold-minutes") + 1], "24")
+        self.assertNotIn("zone_tf", s["detail"])
+        self.assertEqual(s["plan_args"][s["plan_args"].index("--max-hold-minutes") + 1], "120")
 
     def test_layer_3m_alert_is_accepted_when_fresh_with_max_hold_8_bars(self):
         s = at.layer_signal({"layer": "rsi", "sub": "rsi_events", "event": "support", "tf": "3m",
@@ -290,7 +292,8 @@ class CycleTest(unittest.TestCase):
         d = Path(self.tmp.name)
         self.saved = {k: getattr(at, k) for k in ("TOM_ALERT", "LAYER_ALERT_DIR", "HALT", "HALT_DAILY_LOSS",
                                                    "LOG_PATH", "place", "AUTO_PAUSE", "record_ledger",
-                                                   "exchange_flat", "spawn_manager", "OPERATOR_ALERTS")}
+                                                   "exchange_flat", "spawn_manager", "OPERATOR_ALERTS",
+                                                   "deribit_mark")}
         at.TOM_ALERT, at.LAYER_ALERT_DIR = d / "last_alert.json", d / "alerts"
         at.HALT, at.HALT_DAILY_LOSS, at.LOG_PATH = d / "HALT", d / "HALT_DAILY_LOSS", d / "log.jsonl"
         at.AUTO_PAUSE = d / "AUTO_PAUSE"
@@ -317,6 +320,8 @@ class CycleTest(unittest.TestCase):
         self.spawned = []
         at.spawn_manager = lambda pid, acct=None: (self.spawned.append((pid, acct)), P(rc=None))[1]
         at.OPERATOR_ALERTS = d / "alerts.log"
+        self.mark = 83523.8                  # = tom_alert() PRICE: basis 0
+        at.deribit_mark = lambda instrument="BTC-PERPETUAL": self.mark
 
     def tearDown(self):
         for k, v in self.saved.items():
@@ -517,6 +522,239 @@ class RecoverTest(CycleTest):
         ev = self.logged()
         self.assertTrue(any(e.get("plan_id") == "old" and e.get("note") == "superseded_at_restart" for e in ev))
 
+
+
+# ---------------------------------------------------------------- TF5 (pipeline row 1.7, EXEC_PROVENANCE_AUDIT H5 1-3)
+# Hand numbers (not from the code):
+#   E1a short: card ENTRY 83537.3, PRICE 83523.8, mark 83543.8 -> basis +20.0 -> venue limit 83557.3.
+#   E1a long:  ENTRY 80000, PRICE 80010.0, mark 80025.5 -> basis +15.5 -> venue limit 80015.5.
+#   E1a negative basis: PRICE 83523.8, mark 83500.3 -> basis -23.5 -> short limit 83513.8.
+#   Stop / target % are taken from the CARD levels, so they do not change with the basis: 0.2 and 0.661 (see above).
+#   E3: 50/50 legs are floor10(size/2) each: 20 -> 10+10 = 20 ok; 30 -> 10+10 = 20 != 30 refused; 10 -> 0 refused;
+#       30/70 at 40 -> near floor10(28) = 20, runner floor10(12) = 10, 30 != 40 refused; 30/70 at 100 -> 70+30 ok.
+
+REPO_ROOT = Path(os.environ.get("MTS_REPO_ROOT") or Path(__file__).resolve().parents[2])
+LIVE_CFG = REPO_ROOT / "MyTradingSys" / "execution" / "auto_trader_config.json"
+
+
+def staged_config_path() -> Path:
+    """The staged config while TF5 is unpromoted, the live one after the promote."""
+    new = LIVE_CFG.with_name(LIVE_CFG.name + ".new")
+    return new if new.exists() else LIVE_CFG
+
+
+class TF5VenuePriceTest(unittest.TestCase):
+    def sig(self, mark, **kw):
+        s = at.tom_signal(tom_alert(**kw), {"tom_last_alert_no": 0}, cfg(), NOW)
+        self.assertNotIn("reject", s)
+        return s, at.apply_venue_price(s, mark_fn=lambda: mark)
+
+    def arg(self, s, flag):
+        return s["plan_args"][s["plan_args"].index(flag) + 1]
+
+    def test_card_price_is_parsed(self):
+        self.assertEqual(at.parse_tom_alert(tom_alert())["price"], 83523.8)
+
+    def test_short_limit_moves_by_the_basis(self):
+        s, why = self.sig(83543.8)
+        self.assertIsNone(why)
+        self.assertEqual(float(self.arg(s, "--price")), 83557.3)
+        self.assertAlmostEqual(float(self.arg(s, "--stop")), 0.2, places=3)      # % from the card levels
+        self.assertEqual(self.arg(s, "--targets"), "0.661")
+        self.assertEqual(s["log"]["basis"], 20.0)
+        self.assertEqual((s["log"]["card_entry"], s["log"]["venue_entry"]), (83537.3, 83557.3))
+
+    def test_long_limit_moves_by_the_basis(self):
+        s = at.tom_signal(tom_alert(setup="tf_long", entry=80000, stop=79600, target=81200).copy(),
+                          {"tom_last_alert_no": 0}, cfg(), NOW)
+        s["detail"]["price"] = 80010.0
+        self.assertIsNone(at.apply_venue_price(s, mark_fn=lambda: 80025.5))
+        self.assertEqual(float(self.arg(s, "--price")), 80015.5)
+
+    def test_negative_basis_moves_the_limit_down(self):
+        s, why = self.sig(83500.3)
+        self.assertIsNone(why)
+        self.assertEqual(float(self.arg(s, "--price")), 83513.8)
+
+    def test_unreadable_or_invalid_mark_refuses_the_entry(self):
+        def boom(exc):
+            def f():
+                raise exc
+            return f
+        for fn in (boom(OSError("timeout")), boom(KeyError("mark_price")), boom(ValueError("non-JSON")),
+                   boom(RuntimeError("deribit error")), lambda: float("nan"), lambda: 0, lambda: -5.0,
+                   lambda: None, lambda: "junk", lambda: float("inf")):
+            s = at.tom_signal(tom_alert(), {"tom_last_alert_no": 0}, cfg(), NOW)
+            before = list(s["plan_args"])
+            why = at.apply_venue_price(s, mark_fn=fn)
+            self.assertTrue(why and why.startswith("deribit mark"), why)
+            self.assertEqual(s["plan_args"], before)                         # price left untouched
+
+    def test_card_without_price_refuses_the_entry(self):
+        a = tom_alert()
+        a["card_text"] = a["card_text"].replace("PRICE:   83523.8\n", "")
+        s = at.tom_signal(a, {"tom_last_alert_no": 0}, cfg(), NOW)
+        self.assertIsNone(s["detail"]["price"])
+        self.assertEqual(at.apply_venue_price(s, mark_fn=lambda: 83543.8), "no card PRICE: venue basis unknown")
+
+    def test_mark_reader_uses_only_the_public_ticker(self):
+        # A non-trade balance move (funding, transfer) or a dead auth path cannot change or block the price read:
+        # the reader never authenticates and never reads the account.
+        import deribit_orders as do
+        with mock.patch.object(do, "get_ticker", return_value={"mark_price": 84000.5}) as tk, \
+                mock.patch.object(do, "authenticate", side_effect=AssertionError("auth")), \
+                mock.patch.object(do, "get_account_summary", side_effect=AssertionError("account")):
+            self.assertEqual(at.deribit_mark(), 84000.5)
+        tk.assert_called_once_with("BTC-PERPETUAL")
+
+    def test_layer_signals_are_not_venue_priced(self):
+        s = at.layer_signal({"layer": "rsi", "event": "support", "tf": "15m", "t_close": LayerSignalTest.T15},
+                            cfg(), NOW)
+        self.assertNotIn("venue_price", s)
+        self.assertNotIn("executor_args", s)
+
+
+class TF5CycleTest(unittest.TestCase):
+    """Live path through cycle(): fail closed, no retry after a refusal, restart/reset state."""
+    setUp, tearDown, rows_of, events = CycleTest.setUp, CycleTest.tearDown, CycleTest.rows_of, CycleTest.events
+
+    def test_mark_api_error_places_nothing_and_logs_the_reason(self):
+        at.TOM_ALERT.write_text(json.dumps(tom_alert()), encoding="utf-8")
+
+        def down(instrument="BTC-PERPETUAL"):
+            raise OSError("connection reset")
+        at.deribit_mark = down
+        st = {"tom_last_alert_no": 43}
+        active = at.cycle(st, cfg(), False, {}, NOW)
+        self.assertEqual((self.placed, active), ([], {}))
+        row = self.rows_of("signal_rejected")[0]
+        self.assertIn("deribit mark unreadable: OSError", row["reason"])
+        # the alert is consumed: once the ticker is back, the same alert is NOT traded late
+        at.deribit_mark = lambda instrument="BTC-PERPETUAL": 83543.8
+        at.cycle(st, cfg(), False, {}, NOW)
+        self.assertEqual(self.placed, [])
+
+    def test_entered_trade_logs_the_basis_and_venue_price(self):
+        self.mark = 83543.8
+        at.TOM_ALERT.write_text(json.dumps(tom_alert()), encoding="utf-8")
+        at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW)
+        a = self.placed[0]["plan_args"]
+        self.assertEqual(float(a[a.index("--price") + 1]), 83557.3)
+        row = self.rows_of("trade_attempt")[0]
+        self.assertEqual((row["basis"], row["venue_entry"], row["deribit_mark"]), (20.0, 83557.3, 83543.8))
+
+    def test_busy_slot_does_not_read_the_mark(self):
+        calls = []
+        at.deribit_mark = lambda instrument="BTC-PERPETUAL": calls.append(1) or 83523.8
+        at.TOM_ALERT.write_text(json.dumps(tom_alert()), encoding="utf-8")
+        busy = {"proc": self.P(rc=None), "plan_id": "busy", "source": "tom"}
+        at.cycle({"tom_last_alert_no": 43}, cfg(), False, busy, NOW)
+        self.assertEqual((calls, self.placed), ([], []))
+
+    def test_halt_does_not_read_the_mark(self):
+        calls = []
+        at.deribit_mark = lambda instrument="BTC-PERPETUAL": calls.append(1) or 83523.8
+        at.HALT.write_text("x", encoding="utf-8")
+        at.TOM_ALERT.write_text(json.dumps(tom_alert()), encoding="utf-8")
+        at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW)
+        self.assertEqual((calls, self.placed), ([], []))
+
+    def test_restart_loads_tf5_config_and_does_not_replay(self):
+        # main() = a restart: DEFAULT_CONFIG merged with the (staged) config file, state from disk.
+        d = Path(self.tmp.name)
+        saved = (at.STATE_PATH, at.recover_slots)
+        at.STATE_PATH = d / "state.json"
+        at.recover_slots = lambda: ({}, {})
+        self.addCleanup(lambda: (setattr(at, "STATE_PATH", saved[0]), setattr(at, "recover_slots", saved[1])))
+        at.STATE_PATH.write_text(json.dumps({"tom_last_alert_no": 43}), encoding="utf-8")
+        alert = tom_alert(time=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), runner=82000.0)
+        at.TOM_ALERT.write_text(json.dumps(alert), encoding="utf-8")
+        self.assertEqual(at.main(["--once", "--config", str(staged_config_path())]), 0)
+        self.assertEqual(len(self.placed), 1)
+        a = self.placed[0]["plan_args"]
+        self.assertEqual(a[a.index("--size") + 1], "20")                         # E3 CFG 10 -> 20
+        self.assertEqual(a[a.index("--targets") + 1], "50@0.661,50@1.84")       # so the 50/50 split now forms
+        self.assertEqual(a[a.index("--max-hold-minutes") + 1], "120")           # E2 flat
+        self.assertEqual(self.placed[0]["executor_args"], ["--max-entry-seconds", "600"])   # E1b
+        self.assertEqual(json.loads(at.STATE_PATH.read_text(encoding="utf-8"))["tom_last_alert_no"], 44)
+        at.main(["--once", "--config", str(staged_config_path())])              # second restart: same alert
+        self.assertEqual(len(self.placed), 1)
+
+    def test_reset_state_never_trades_the_alert_already_on_disk(self):
+        # state file deleted (reset): first start marks the current alert as seen and trades nothing.
+        d = Path(self.tmp.name)
+        saved = (at.STATE_PATH, at.recover_slots)
+        at.STATE_PATH = d / "missing_state.json"
+        at.recover_slots = lambda: ({}, {})
+        self.addCleanup(lambda: (setattr(at, "STATE_PATH", saved[0]), setattr(at, "recover_slots", saved[1])))
+        alert = tom_alert(time=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
+        at.TOM_ALERT.write_text(json.dumps(alert), encoding="utf-8")
+        at.main(["--once", "--config", str(staged_config_path())])
+        self.assertEqual(self.placed, [])
+
+
+class TF5EntryWaitTest(unittest.TestCase):
+    def test_wait_is_a_config_key_passed_to_the_executor(self):
+        s = at.tom_signal(tom_alert(), {"tom_last_alert_no": 0}, cfg(), NOW)
+        self.assertEqual(s["executor_args"], ["--max-entry-seconds", "600"])
+        c = cfg()
+        c["tom"]["max_entry_seconds"] = 240
+        s = at.tom_signal(tom_alert(), {"tom_last_alert_no": 0}, c, NOW)
+        self.assertEqual(s["executor_args"], ["--max-entry-seconds", "240"])
+
+    def test_bad_wait_value_refuses_the_entry(self):
+        for bad in (0, -1, "600", 1.5, True, None):
+            c = cfg()
+            c["tom"]["max_entry_seconds"] = bad
+            s = at.tom_signal(tom_alert(), {"tom_last_alert_no": 0}, c, NOW)
+            self.assertIn("max_entry_seconds", s.get("reject", ""), bad)
+            self.assertNotIn("plan_args", s)
+
+    def test_place_passes_the_wait_to_executor_go_only(self):
+        cmds = []
+
+        def fake_run(cmd, timeout=900, account=None):
+            cmds.append(cmd)
+            if cmd[1].endswith("new_plan.py"):
+                return 0, "SAVED S-lim-test"
+            return 0, "OK: no_fill"
+        saved = at.run
+        at.run = fake_run
+        self.addCleanup(lambda: setattr(at, "run", saved))
+        s = at.tom_signal(tom_alert(), {"tom_last_alert_no": 0}, cfg(), NOW)
+        self.assertEqual(at.place(s, dry_run=False)["outcome"], "no_fill")
+        go = [c for c in cmds if "--go" in c][0]
+        self.assertEqual(go[go.index("--max-entry-seconds") + 1], "600")
+        self.assertNotIn("--max-entry-seconds", cmds[0])                       # not a new_plan argument
+
+
+class TF5SizeAndSplitTest(unittest.TestCase):
+    P = {"side": "short", "entry": 83537.3, "target": 82985.43, "runner_target": 82000.0}
+
+    def split(self, size, pct=50):
+        return at.runner_split(self.P, {"size_usd": size, "runner_leg_pct": pct})
+
+    def test_size_20_splits_50_50(self):
+        self.assertEqual(self.split(20), ("50@0.661,50@1.84", None))
+
+    def test_legs_that_do_not_sum_to_the_size_are_refused(self):
+        legs, why = self.split(30)
+        self.assertIsNone(legs)
+        self.assertEqual(why, "legs 10+10 do not sum to size 30")
+        legs, why = self.split(40, pct=30)
+        self.assertEqual((legs, why), (None, "legs 20+10 do not sum to size 40"))
+        self.assertEqual(self.split(100, pct=30)[0], "70@0.661,30@1.84")
+
+    def test_size_10_still_too_small(self):
+        self.assertIn("too small", self.split(10)[1])
+
+    def test_staged_config_values(self):
+        c = json.loads(staged_config_path().read_text(encoding="utf-8"))["tom"]
+        self.assertEqual((c["size_usd"], c["max_hold_minutes"], c["max_entry_seconds"]), (20, 120, 600))
+
+    def test_no_zone_tf_scaling_left_in_the_tom_path(self):
+        self.assertNotIn("max_hold_bars", at.DEFAULT_CONFIG["tom"])
+        self.assertNotIn("zone_tf", at.parse_tom_alert(tom_alert()))
 
 
 if __name__ == "__main__":

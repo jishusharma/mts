@@ -54,7 +54,12 @@ TF_SECONDS = {"1m": 60, "3m": 180, "5m": 300, "15m": 900, "30m": 1800, "1h": 360
 DEFAULT_CONFIG = {
     # Tom core: limit at the zone, stop/target from the alert. Whole size off at the target, or (R2) the
     # runner_leg_pct share on RUNNER_TARGET when the card carries one.
-    "tom": {"enabled": True, "size_usd": 200, "max_loss_usd": 25, "hours": 1.0, "max_hold_minutes": None, "max_hold_bars": 8, "max_age_seconds": 300,
+    # TF5 (EXEC_PROVENANCE_AUDIT H5 E1b, E2): max_hold_minutes is one flat time exit (no zone-TF scaling; None = no
+    # time exit) and max_entry_seconds is the limit wait passed to executor --max-entry-seconds. Both NO-SOURCE testnet
+    # defaults kept at the values the live path already used (120 = the old 15m fallback, 600 = executor default);
+    # MEASURE (operator Ruling 3, pending).
+    "tom": {"enabled": True, "size_usd": 200, "max_loss_usd": 25, "hours": 1.0, "max_hold_minutes": 120,
+            "max_entry_seconds": 600, "max_age_seconds": 300,
             "verdicts": ["SETUP_FORMING", "SETUP_CONFIRMED"],   # net_rr floor is net_rr_floor.json, not a config key
             # R2: share of size on the runner leg (RUNNER_TARGET); the rest exits at TARGET and the stop moves to
             # breakeven when that first leg fills. NO-SOURCE testnet default (operator Ruling 2, 2026-10-03; BE
@@ -105,12 +110,12 @@ def save_json(path: Path, data) -> None:
 
 # ---------------------------------------------------------------- Tom core signal
 
-CARD_FIELD = re.compile(r"^(VERDICT|TIME|SETUP|ZONE|ENTRY|STOP|TARGET|RUNNER_TARGET|R:R):\s*(.*)$", re.M)
+CARD_FIELD = re.compile(r"^(VERDICT|TIME|PRICE|SETUP|ZONE|ENTRY|STOP|TARGET|RUNNER_TARGET|R:R):\s*(.*)$", re.M)
 ALERT_NO = re.compile(r"#(\d+)")
 
 
-def _runner_from_card(raw):
-    """RUNNER_TARGET field -> positive finite float, or None (absent, 0 = no runner, or unparsable)."""
+def _positive_float(raw):
+    """Card field (RUNNER_TARGET, PRICE) -> positive finite float, or None (absent, 0 = none, or unparsable)."""
     try:
         v = float(raw)
     except (TypeError, ValueError):
@@ -119,8 +124,9 @@ def _runner_from_card(raw):
 
 
 def parse_tom_alert(alert: dict) -> dict:
-    """Return {'alert_no','verdict','time','setup','side','entry','stop','target','runner_target','net_rr'} or {}
-    if unusable. runner_target is None when the card carries no (valid) RUNNER_TARGET line."""
+    """Return {'alert_no','verdict','time','price','setup','side','entry','stop','target','runner_target','net_rr'}
+    or {} if unusable. runner_target is None when the card carries no (valid) RUNNER_TARGET line; price (the
+    engine's market read, card PRICE line, PS1 Build-Card) is None when absent or unparsable."""
     card = alert.get("card_text") or ""
     fields = {k: v.strip() for k, v in CARD_FIELD.findall(card)}
     m = ALERT_NO.search(alert.get("title") or "")
@@ -131,19 +137,19 @@ def parse_tom_alert(alert: dict) -> dict:
     setup = fields.get("SETUP", "")
     side = "long" if setup.endswith("_long") else "short" if setup.endswith("_short") else None
     rr = re.search(r"net\s+([0-9.]+)", fields.get("R:R", ""))
-    zm = re.match(r"(\d+[mhd])_", fields.get("ZONE", ""))
     return {"alert_no": int(m.group(1)) if m else None, "verdict": fields.get("VERDICT", ""),
-            "zone_tf": zm.group(1) if zm and zm.group(1) in TF_SECONDS else None,
-            "time": fields.get("TIME", ""), "setup": setup, "side": side, "entry": entry, "stop": stop,
-            "target": target, "runner_target": _runner_from_card(fields.get("RUNNER_TARGET")),
+            "time": fields.get("TIME", ""), "price": _positive_float(fields.get("PRICE")),
+            "setup": setup, "side": side, "entry": entry, "stop": stop,
+            "target": target, "runner_target": _positive_float(fields.get("RUNNER_TARGET")),
             "net_rr": float(rr.group(1)) if rr else None}
 
 
 def runner_split(p: dict, c: dict):
     """R2 leg split for a Tom alert -> (targets_arg, None) for 'near@pct,runner@pct', or (None, reason).
     Share of size sent to the runner leg = c['runner_leg_pct'] (NO-SOURCE testnet default 50, operator Ruling 2;
-    0 disables). Fails closed to the single-target plan: no runner, runner not beyond TARGET, or a leg that
-    would floor below the 10 USD contract minimum."""
+    0 disables). Fails closed to the single-target plan: no runner, runner not beyond TARGET, a leg that
+    would floor below the 10 USD contract minimum, or legs that do not sum to the size (TF5 E3: the compiler floors
+    each leg to 10 USD on its own, PC:266, so size 30 at 50/50 would leave 10 USD with no target)."""
     pct = c.get("runner_leg_pct") or 0
     if pct <= 0:
         return None, "runner_leg_pct off"
@@ -153,9 +159,13 @@ def runner_split(p: dict, c: dict):
     beyond = runner > p["target"] if p["side"] == "long" else runner < p["target"]
     if not beyond:
         return None, f"runner {runner} not beyond target {p['target']}"
-    near = int(c["size_usd"] * (100 - pct) / 100 // 10) * 10
-    if near < 10 or c["size_usd"] - near < 10:
-        return None, f"size {c['size_usd']} too small for a {100 - pct:g}/{pct:g} split"
+    size = c["size_usd"]
+    near = int(size * (100 - pct) / 100 // 10) * 10       # each leg floored to 10 USD exactly as PC round_size does
+    far = int(size * pct / 100 // 10) * 10
+    if near < 10 or far < 10:
+        return None, f"size {size} too small for a {100 - pct:g}/{pct:g} split"
+    if near + far != size:
+        return None, f"legs {near}+{far} do not sum to size {size}"
     tgt_pct = round(abs(p["target"] - p["entry"]) / p["entry"] * 100, 3)
     run_pct = round(abs(runner - p["entry"]) / p["entry"] * 100, 3)
     return f"{100 - pct:g}@{tgt_pct},{pct:g}@{run_pct}", None
@@ -199,6 +209,9 @@ def tom_signal(alert: dict, state: dict, cfg: dict, now: datetime):
                      (p["side"] == "short" and not (p["target"] < p["entry"] < p["stop"]))
         if wrong_side:
             reject = "entry/stop/target not ordered for the side"
+    wait = c.get("max_entry_seconds")
+    if not reject and not (isinstance(wait, int) and not isinstance(wait, bool) and wait > 0):
+        reject = f"bad tom.max_entry_seconds {wait!r}"     # config error: no order rather than a guessed wait
     sig = {"source": "tom", "key": f"tom#{p['alert_no']}", "side": p["side"], "detail": p}
     if reject:
         sig["reject"] = reject
@@ -212,12 +225,42 @@ def tom_signal(alert: dict, state: dict, cfg: dict, now: datetime):
                         "--max-loss", str(c["max_loss_usd"]), "--hours", str(c["hours"])]
     if legs:                                   # R2: stop to breakeven when the first leg fills (position_manager)
         sig["plan_args"].append("--breakeven-after-first-target")
-    if c.get("max_hold_minutes"):
+    if c.get("max_hold_minutes"):              # TF5 E2: one flat time exit; the zone name no longer scales it
         sig["plan_args"] += ["--max-hold-minutes", str(c["max_hold_minutes"])]
-    elif c.get("max_hold_bars"):   # time exit = N bars of the alert's zone timeframe (5m/15m/1h); 15m if unknown
-        tf_s = TF_SECONDS[p.get("zone_tf") or "15m"]
-        sig["plan_args"] += ["--max-hold-minutes", f"{c['max_hold_bars'] * tf_s / 60:g}"]
+    sig["executor_args"] = ["--max-entry-seconds", str(c["max_entry_seconds"])]   # TF5 E1b
+    sig["venue_price"] = True                  # TF5 E1a: cycle() moves --price onto Deribit before place()
     return sig
+
+
+def deribit_mark(instrument: str = "BTC-PERPETUAL") -> float:
+    """Deribit mark price (public/ticker, no credentials, testnet base by default). Raises on any failure."""
+    if str(HERE) not in sys.path:
+        sys.path.insert(0, str(HERE))
+    import deribit_orders as do
+    return do.get_ticker(instrument)["mark_price"]
+
+
+def apply_venue_price(sig: dict, mark_fn=None):
+    """TF5 E1a: the card's zone ENTRY is a Binance-derived price; Deribit trades at a basis to it. Move the limit to
+    zone + (Deribit mark - card PRICE). Stop and target stay percentages of the entry, so they move with it.
+    Returns None when --price was rewritten (and sig['log'] carries the numbers), else the reject reason.
+    Fails closed: no usable card PRICE or an unreadable/invalid mark -> no order."""
+    p = sig["detail"]
+    if p.get("price") is None:
+        return "no card PRICE: venue basis unknown"
+    try:
+        mark = float((mark_fn or deribit_mark)())
+    except Exception as e:  # noqa: BLE001 - any ticker failure refuses the entry
+        return f"deribit mark unreadable: {type(e).__name__}: {str(e)[:120]}"
+    if not math.isfinite(mark) or mark <= 0:
+        return f"deribit mark invalid: {mark!r}"
+    basis = mark - p["price"]
+    venue_entry = round(p["entry"] + basis, 1)
+    a = sig["plan_args"]
+    a[a.index("--price") + 1] = f"{venue_entry}"
+    sig.setdefault("log", {}).update({"card_entry": p["entry"], "card_price": p["price"], "deribit_mark": mark,
+                                      "basis": round(basis, 2), "venue_entry": venue_entry})
+    return None
 
 
 # ---------------------------------------------------------------- layer signals
@@ -333,7 +376,8 @@ def place(sig: dict, dry_run: bool, account: str = None) -> dict:
     if dry_run:
         rc, out = run([py, str(HERE / "executor.py"), str(plan_file)], timeout=60, account=account)
         return {"outcome": "dry_run", "plan_id": plan_id, "rc": rc, "output": out.strip()[-300:]}
-    rc, out = run([py, str(HERE / "executor.py"), str(plan_file), "--go"], account=account)
+    rc, out = run([py, str(HERE / "executor.py"), str(plan_file), "--go", *sig.get("executor_args", [])],
+                  account=account)
     if rc != 0:
         return {"outcome": "entry_failed", "plan_id": plan_id, "output": out.strip()[-400:]}
     if "no_fill" in out:                     # limit entry that never filled: nothing to manage
@@ -579,6 +623,12 @@ def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = N
             if slot:
                 log({"event": "skipped_busy", **base, "busy_with": slot["plan_id"], "account": acct})
                 continue
+            if sig.get("venue_price"):           # read the mark only when the order is about to go out
+                why = apply_venue_price(sig)
+                if why:
+                    log({"event": "signal_rejected", **base, "reason": why})
+                    continue
+                base.update(sig["log"])
             res = place(sig, dry_run, acct) if acct else place(sig, dry_run)
             proc = res.pop("proc", None)
             log({"event": "trade_attempt", **base, **res, "account": acct})

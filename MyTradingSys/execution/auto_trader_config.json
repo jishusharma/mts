@@ -7,14 +7,16 @@
   "layer:": "jishu_4"
  },
  "tom": {
-  "size_usd": 10,
+  "size_usd": 20,
   "max_loss_usd": 5,
   "verdicts": [
    "SETUP_FORMING",
    "SETUP_CONFIRMED",
    "WAIT_RR"
   ],
-  "hours": 1.0
+  "hours": 1.0,
+  "max_hold_minutes": 120,
+  "max_entry_seconds": 600
  },
  "layers": {
   "size_usd": 10,
