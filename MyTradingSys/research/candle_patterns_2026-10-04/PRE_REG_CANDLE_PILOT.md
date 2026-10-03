@@ -27,6 +27,17 @@ entry open(day) to close(last day), 2000 permutations, seed 12345); "always flat
 Reported per variant: n trades, win rate with Wilson 95 percent CI, mean net log return per trade with bootstrap 95 percent CI (10000 resamples), median hold, time in market,
 daily-resolution Sharpe (365-day), max drawdown, compounded return vs buy-and-hold, random-null p-value, funding share of cost.
 
+### Addendum A (2026-10-04, still before any run; supersedes the variant list above)
+BTC trades 24/7, so open(E+1) equals close(E) to within a tick; P0b would repeat P0a and carries no information. Replaced. Final P0 variants (10 trials):
+- P0a long, intraday touch entry (reading R), exit fill at close(E).
+- P0c long, close-confirmed entry: enter at close(D) when close(D) > open(D-1) and flat; exit rule evaluated from D+1.
+- P0s short mirror of P0a.
+- P0e entry ablation: enter at open(D) whenever flat (no level condition), same exit rule. Tests whether the level carries anything beyond the exit rule plus market drift.
+- P0anchor x6: P0a on 1m-built "days" starting at 00,04,08,12,16,20 UTC (DEV 2022-01..2024-06).
+Daily-bar conventions: a stop-buy entry time is unknown inside the day, so funding for it assumes entry at open+12h; an entry at the open uses open; an exit at close(E) is at t_E+24h-1ms.
+Cost per round trip = 2*(5 bps fee + 2 bps slip) = 14 bps, plus realised funding. Per-trade net = sign*ln(exit/entry) - 14 bps - sign*funding.
+Null statistic is GROSS mean log return per trade (costs are identical on both sides): real trade = ln(exit/entry); null block = ln(close(last day)/open(first day)), sign-adjusted.
+
 ## 4. P1 - classical pattern scan (definitions are fixed here; thresholds are not tuned)
 Notation per bar: body=|c-o|, rng=h-l, up=h-max(o,c), lo=min(o,c)-l, green=c>o, red=c<o. Bars with rng=0 never signal. Signal known at close of bar i; entry open(i+1); exit open(i+1+h).
 Trend context where required: down = close(i-1) < close(i-4); up = close(i-1) > close(i-4).
