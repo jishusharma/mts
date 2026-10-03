@@ -2029,6 +2029,15 @@
       "action": "monitored",
       "verdict": "WAIT_TRIGGER",
       "reason": "verdict WATCH -> WAIT_PROOF | STATE TWOPEAK/above_vah -> TWOPEAK/in_va"
+    },
+    {
+      "ts": "2026-10-03T15:10:26.034Z",
+      "type": "alert",
+      "alert_id": 121,
+      "setup": "tc_long",
+      "action": "monitored",
+      "verdict": "WAIT_PROOF",
+      "reason": "verdict WAIT_PROOF -> WAIT_TRIGGER | zone prior_day_close -> 1h_swing_low | STATE TWOPEAK/in_va -> TWOPEAK/above_vah"
     }
   ]
 }

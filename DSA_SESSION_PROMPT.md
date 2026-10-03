@@ -253,40 +253,37 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-03T14:44Z (loop UP, java present).
+Last live read:  2026-10-03T14:55Z (loop UP, java present).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 508, java 4120, supervisor 20112. snapshot age 34s.
-Build PASS at last gate (2026-10-03T14:37Z; math 219/219, doc 5/5).
-HEAD 15f1fc6, tag last-snapshot. origin/fast-track at 21957ff (TF3 not yet pushed).
+Runtime + loops: loop UP. wrapper 508, java 4120, supervisor 20112. snapshot age ~35s.
+Build PASS at last gate (2026-10-03T14:55:07Z; math 219/219, doc 5/5).
+HEAD e1e3153, tag last-snapshot. origin/fast-track at e1e3153.
 
 Commits landed this session (order):
-  1dd9aca close batch; 86313de B075 partial; ccd0a0f R4 HTF writer;
-  684c419 surface-choice rule; c7802a9 dispatcher v1 + B084-B087 + R4-T2;
-  0256be4 B086/B087 fixes; a8b8fcf B089 filed; 9b4a844 B088/B089 fixed;
-  07284d4 B090 filed; e74503a B091 filed; 6d472ef B090 corrected + B091-B094;
-  873ac0f session record fix; 32e886c B090-B095 filed; 21957ff B092 guard;
-  e1d5eac TF1 (gate coverage); bf658bf TF2 (funnel_report.py);
-  15f1fc6 TF3 (of_backfill.py; Fabio silence = Saturday + no prior_vols).
+  e1e3153 close: section 11 refreshed; TF3 pushed; execution plan handed off;
+  15f1fc6 TF3; bf658bf TF2; e1d5eac TF1; 21957ff B092 guard amendment;
+  32e886c B090-B095 filed; 873ac0f session record fix; 6d472ef B090 corrected + B091-B094;
+  e74503a B091 filed; 07284d4 B090 filed; 9b4a844 B088/B089 fixed; a8b8fcf B089 filed;
+  0256be4 B086/B087 fixes; c7802a9 dispatcher v1 + B084-B087 + R4-T2 fix; 684c419 surface-choice rule;
+  ccd0a0f R4 HTF writer; 86313de B075 partial; 1dd9aca close batch.
 
-Scheduler: pick_state holds TF4 (execution provenance audit) picked 14:44:09Z.
-  TF1, TF2, TF3 landed. TF4-TF8 and R7 blocked on TF4 / Ruling 3.
-  B089 shape A live: OPEN BUGS ids with no pipeline row queue at wave 9.
+Scheduler: pick_state holds TF4 (execution provenance audit), picked 14:44:09Z, hold until 2026-10-04T10:59Z.
+  TF4 prompt printed this session (28 lines, App Code Opus). TF1-TF3 landed.
+  TF5-TF8 and R7 blocked on TF4 / Ruling 3. B089 shape A live.
 
 Registries: BUGS.md ~194 rows; items/INDEX.md ~70 open; BUILD_PIPELINE waves 0-9.
 
 Open DSA work: none. B083 CLOSED (prompt_check.ps1 PASS 4/4).
-B090-B095 OPEN: cloud approval, Build-Check speed, batching, parallel
-  dispatch, headless scheduler, per-session cost.
+B090-B095 OPEN: cloud approval, Build-Check speed, batching, parallel dispatch, headless scheduler, per-session cost.
 
-Two operator decisions pending and blocking 3 sessions:
+One operator decision still pending and blocking 3 sessions:
   Ruling 3 (MEASURED numbers for CONCEPT-ONLY, testnet only): yes/no.
-  Surface for TF4/LY1 (Opus rows): CLI default or App model picker.
+  Surface for TF4/LY1 resolved this session: CL App, Code mode, Opus.
 
-Next session first action: read the execution plan handed off this
-  session (Phases 1-5, 14 sessions, TF4 is critical-path head).
-  Get Ruling 3. Get surface choice. Read TF4 inputs. Ship TF4.
+Next session first action: confirm TF4 landed (session record + EXEC_PROVENANCE_AUDIT.md),
+  read the ranked fix list, scope TF5, get Ruling 3 before composing the TF5 prompt.
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.
