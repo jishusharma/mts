@@ -37,6 +37,25 @@ test-net! Do not be afraid!"
 Consequence: [2.0, 3.5]R window and gross 1.5R drop removed; defaults D1-D5 and roadmap in
 research/WHY_ENGINE_SILENT_2026-10-03.md, each flagged for override.
 
-## Ruling 3 - pending
+## Ruling 3 - MEASURED numbers for CONCEPT-ONLY parameters (accepted 2026-10-04)
+
+Authority: Ruling 2 above, operator words verbatim, 2026-10-03:
+  "all blocked stuff must be just resolved. Do not wait for me - apply deafaults from your judgements and flag/highlight those! We are now in test-net! Do not be afraid!"
+
+Ruling:
+- A CONCEPT-ONLY parameter (the trader names the idea, the number is ours) may take a value from a pre-registered historical measurement.
+- The value carries the label MEASURED wherever it appears: code comment, config key, audit row, condition file.
+- Scope is TESTNET ONLY. No MEASURED value may gate a mainnet trade. Promotion to mainnet requires a Tom or Fabio quote, or removal.
+- NO-SOURCE parameters are excluded. They have no trader idea behind them; the rule is to remove or shadow them, never measure them.
+
+Applied immediately to the values flagged MEASURE in MyTradingSys/research/EXEC_PROVENANCE_AUDIT.md and referenced by BUILD_PIPELINE row 1.7:
+- E1b: Tom limit wait before cancel (tom.max_entry_seconds, AT:57, AT:336)
+- E2: Tom time exit (tom.max_hold_minutes, AT:215-219)
+- E4/E5: runner share and runner minimum distance (already MEASURED per Ruling 2 and RMD:3, unchanged)
+
+Every existing and future MEASURED value is overridable by the operator at any time. Overrides land in the same file the value lives in, with the label UPDATE.
+
+Status: OPEN until operator marks CLOSED. Effective now.
+
 
 # END
