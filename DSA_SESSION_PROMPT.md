@@ -253,64 +253,46 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-03T19:30Z (live; java present).
+Last live read:  2026-10-03T03:12Z (live; java present).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 19424, java 9280, supervisor 20912.
-                 snapAge 10s, state_code_age 10s, stale_strikes 0.
-                 auto_trader up (2 pids, 21008/14868).
-                 tom_last_alert_no 70.
-Build PASS 2026-10-02T19:30:16Z. HEAD ffbabc9.
-Working tree: BUILD_REPORT.md dirty; .claude/ untracked; bt_stats.py.stale_fragment_20261003 untracked.
+Runtime + loops: loop UP. wrapper 508, java 4120, supervisor 2204. java started 02:59:06Z.
+                 snapAge 27s, state_code_age 25s, stale_strikes 0.
+                 auto_trader 20016 (R2+R3 code, started 03:03:56Z).
+                 live_runner_cli 15612 (R3 code, started 03:03:58Z).
+                 orderflow_live 6728 (R3 writer, started 03:04:00Z).
+                 daily_loss_monitor 18484 (started 03:04:02Z).
+                 All four hidden via runtime_data/launch-*.vbs.
+                 tom_last_alert_no 96.
+                 Scheduler MTS-Scheduler-Tick Ready, 15-min tick. Latest exit 1 (WARN).
+                 orderflow_live writes runtime/orderflow_live/2026-10-03.csv, one row/closed minute.
+Build PASS 2026-10-02T21:34:30Z. HEAD d168f3c.
+Working tree: session_log.json dirty; four VBS launchers, orderflow_live runtime files, pm_heartbeats, testnet_status untracked.
 
 Commits landed since section 11 last refreshed (f99646b):
-  c5a883b post A/B/C close: section 11 refresh + checklist item 5 (parallel-session pathspec).
-  20bd296 scheduler plan line-14 fix; T062 deprecate mts-manager filed; scheduler design note.
-  368397b scheduler plan (tier stack, cost model, triggers, locks, cache prefix).
-  45d50a9 fabio v3 shadow test skip guard; closes the d023cc8 red-gate window.
-  c0123f6 Tom target: nearest sourced node (POC/HVN) with netRR >= floor, else farthest; remove
-          NO-SOURCE [2.0,3.5]R window, VAL/VAH/prior-day/VWAP targets, gross 1.5 drop (Java);
-          add runner_target; promote net_rr-floor auto_trader (execution/).
-  ba8dadc Python mirror of c0123f6 + WHY_ENGINE_SILENT_2026-10-03.md + operator Ruling 2.
-  d023cc8 fabio v3 shadow emitter (staged .new): sourcing table, shadow/source routing test.
-  ffbabc9 R2 runner exit (staged .new): 50/50 TARGET/RUNNER_TARGET legs + breakeven after leg 1.
+  5c8f83b purge: remove DSA prompt-conformance gate and builder .new-only restriction.
+  7dd617b scheduler stack: 5 detectors, tick.py, run_worker.py, worker_prefix.md, prefix-hash test.
+  4575d8f T062 archive mts-manager; SURFACE_POLICY 3b; mts.ps1 live-runner-cli launch.
+  5bc9e0e R3 live order-flow bar writer + v3 emitter file reader (staged).
+  d168f3c R3 promote live_runner_cli; archive test_claude_manager; mts guard starts orderflow-live.
+  (R2 promotion commits before that: f9ee46c runner min-distance; 59f7785 082a733 7e1b4b1 35f8a8c d225c80 fba6fcd e8214e4 097b31d; 9dae9a3 close.)
 
-R1 done: NO-SOURCE [2.0,3.5]R window, 1.5R drop, VAH/VAL/prior-day/VWAP targets removed from the
-live Tom path. runner_target field is on the candidate and in the snapshot. Java = c0123f6 build.
+R1 done. R2 promoted and LIVE. R3 promoted and LIVE.
+  - R2 runner exit: 50/50 TARGET/RUNNER_TARGET legs, breakeven after leg 1. Live in auto_trader 20016.
+  - R2 runner min-distance: runner_min_distance_pct 0.25 (NO-SOURCE, operator ruling). Live.
+  - R3 order-flow writer: orderflow_live 6728, one CSV row per closed minute.
 
-R2 staged, NOT promoted. Eight .new files under execution/ plus scripts/core/start-trading-day.ps1.new.
-  Session record: MyTradingSys/system/sessions/MTS-2026-10-03-CLI-BLD-r2-runner-exit.md (promotion
-  checklist inside, order matters). Deviations logged: breakeven_after_fills not lifted from
-  UNSUPPORTED_STOPS (inert without redefining the type; alternative used instead); plan_compiler and
-  executor need no change.
+Live Tom floor 1.25. All cycles since restart WAIT_TRIGGER or WAIT_PROOF. Alert #96 rejected verdict WAIT_PROOF. No SETUP_FORMING today.
 
-Coupling flag: the eight .new files are tracked (force-added past .gitignore). test_r2_runner_exit
-  and test_r2_breakeven_move fail 29/41 on a checkout without them. Same class as d023cc8. Decide:
-  leave tracked, or untrack and skip when absent.
+Fabio v3: shadow emitter live in live_runner_cli 15612. Reads orderflow_live CSV. First v3 signal awaits next NY window (13:30 UTC).
 
-Live Tom floor: 1.25 in net_rr_floor.json. All cycles since restart WAIT_TRIGGER. No SETUP_FORMING
-  today. No Tom or Fabio testnet trade has ever fired.
-
-Tom: row cache still stale (2026-09-30). P2 diagnosis done. Regen plan at TOM_ROW_CACHE_REGEN_
-  2026-10-02.md, not run.
-
-Fabio v3: 8 NS-grid parameters all SHADOW (0 SOURCE). Emitter staged as .new; emits nothing until
-  an order-flow bar source exists (roadmap R3).
-
-Scheduler plan on disk (SCHEDULER_PLAN_2026-10-02.md). Rulings still pending: R6 canary scheduled
-  tasks (yes/no); shared-credit question resolved by T062 (manager retiring).
-
-T062 (deprecate mts-manager) filed but not executed. scripts/manager/* still on disk.
+Scheduler: tick every 15 min, exit 0/1/2. Canary WARN -- restart-needed flags for auto_trader and live_runner_cli are stale (both started 03:03Z, after R3 promote commit d168f3c). Canary comparison likely has a timezone bug; file it.
+  Haiku event worker ran once ($0.0887) on the earlier canary RED. Prefix 2585 bytes, under cache minimum.
 
 Open queues: 25 open ids in items/INDEX.md; 137 rows in BUGS.md.
-  DIRECTION_REVIEW section 6: item 1 (restart) done; item 2 (canary scheduled tasks) pending yes/no;
-  item 3 (NO-SOURCE R:R gates) reframed by operator and landed as c0123f6; item 4 (Fabio v3
-  source-or-shadow) done (all shadow).
 
-Next session first action: read ffbabc9 diff; decide the .new tracking question; then either
-  promote R2 or run roadmap R3 (live order-flow bar writer).
-
+Next session first action: (1) add 03_FILE_INDEX rows for runner_min_distance.json, runner_min_distance.py, RunnerMinDistance.java, orderflow_live.py; (2) extend loop-supervisor.ps1 to watch the four launchable processes; (3) R3 vs R4 decision.
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.
