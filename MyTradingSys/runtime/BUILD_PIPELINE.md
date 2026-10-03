@@ -40,7 +40,7 @@ QUEUED / IN-FLIGHT / GATED / LANDED / BLOCKED / PARKED
 | # | ID | Slug | Status | Blocker | Next |
 |---|---|---|---|---|---|
 | 2.1 | R4-T1 | provenance read: K_BAL 0.8 / BAL_POC_BAND 0.25 / B_PROF 50 | LANDED | - | answered in FABIO_PROVENANCE_AUDIT_2026-10-01.md:59 (P02 k_bal 0.8 + POC band 0.25 = NS-fixed, CONCEPT-ONLY) and :98 (P41 B_prof bundle = SIM, DATA-PLUMBING); feeds R4-D |
-| 2.2 | R4-T2 | false-vs-null collapse in failed_breakout | QUEUED | - | htf_context_live.py:88-89 and :103 return False for unknown; return None there, keep False for a computed negative; add test |
+| 2.2 | R4-T2 | false-vs-null collapse in failed_breakout | LANDED | - | failed_breakout returns None when no previous 4H balance (htf_context_live.py:87-90, :105); False kept for computed negative; 2 new tests + 1 updated in test_htf_context_live.py, all fail on pre-change code; session MTS-2026-10-03-1009Z-CL-BLD-r4t2-false-vs-null |
 | 2.3 | R4-T3 | historical backtest of balance() parameters, OPERATOR-EXPERIMENT sweep | QUEUED | 1.2 | sweep ranges from operator |
 | 2.4 | R4-D | parameter decision (accept / remove / replace-via-backtest) | BLOCKED | 2.1, 2.3 | operator |
 

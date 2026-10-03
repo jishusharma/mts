@@ -114,3 +114,6 @@ MyTradingSys/runtime/cicd_run_*.jsonl
 MyTradingSys/runtime/cicd_run_*.out.txt
 MyTradingSys/runtime/cicd_warn.jsonl
 MyTradingSys/runtime/prompt_check_log.jsonl
+
+# Queue dispatcher output (scripts/sched/pick_task.py); regenerated every tick
+MyTradingSys/runtime/queue/

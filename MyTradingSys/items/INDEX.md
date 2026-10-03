@@ -55,4 +55,8 @@ B081 | CLOSED  | B081_fee_source_conflict.md | fees.py single source; receipt 1e
 B082 | CLOSED  | B082_qwen_feeder_missing.md | task deleted; Qwen decommissioned 2026-10-01
 T062 | CLOSED  | T062_deprecate_manager.md | deprecate mts-manager; superseded by DSA-composed CL prompts
 B083 | OPEN    | B083_prompt_check_gate.md | prompt_check.ps1 gate; 6 of 8 prompt defects repeat 2026-10-02; pending since 2026-10-02
+B084 | OPEN    | B084_book_imbalance_zero_origin.md | origin of 0.0 in Python proof block unverified; 13295c8 WIP-unverified load-bearing
+B085 | OPEN    | B085_tom_bt_proof5_skew.md | proof-5 pool skew 215 short:105 long unexplained; second contradiction path (last_3_delta) affects longs
+B086 | OPEN    | B086_dispatcher_second_writer.md | dispatcher demo launched a second CL writer; one-writer-per-file-set violated; Claude decides fix
+B087 | OPEN    | B087_pick_task_repick.md | pick_task.py re-picks same row each wake; two smaller flags attached; Claude decides fixes
 # END

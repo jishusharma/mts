@@ -114,13 +114,28 @@ class RowTests(unittest.TestCase):
         self.assertEqual(list(d.iterdir()), [])               # no row, no summary
 
     def test_first_day_no_prior_data(self):
-        # exchange history starts 100 minutes before the close: no balance is computable, flag stays False
+        # exchange history starts 100 minutes before the close: no balance is computable, flag is unknown (null)
         res, d = self.run_once(B + MIN, feed(first_t=B - 100 * MIN))
         r = json.loads((d / "2026-10-03.jsonl").read_text())
         self.assertIsNone(r["bal_4h"])
         self.assertIsNone(r["bal_1d"])
-        self.assertIs(r["failed_breakout"], False)
+        self.assertIsNone(r["failed_breakout"])
         self.assertEqual(r["oi_delta_1h_pct"], 0.5)
+
+    def test_failed_breakout_null_when_previous_window_not_balanced(self):
+        # a 179-point bar in the previous 4H window (R > 0.8*sqrt(240)*ATR ~ 108) leaves no balance to probe: unknown, not False
+        ov = {B - 7 * 3600000: (84525.0, 84700.0, 84521.0, 84525.0)}
+        for k in (3, 2):                                      # closes beyond any edge would be a probe if a balance existed
+            ov[B - k * 3600000] = (84525.0, 84575.0, 84521.0, 84570.0)
+        res, d = self.run_once(B + MIN, feed(ov))
+        r = json.loads((d / "2026-10-03.jsonl").read_text())
+        self.assertIsNotNone(r["bal_4h"])                     # the current window is still balanced
+        self.assertIsNone(r["failed_breakout"])
+
+    def test_failed_breakout_function_none_vs_false(self):
+        bars = [{"c": 84525.0}] * hc.N_4H
+        self.assertIsNone(hc.failed_breakout(bars, hc.N_4H - 1, None))
+        self.assertIs(hc.failed_breakout(bars, hc.N_4H - 1, {"H": 84560.0, "L": 84490.0}), False)
 
     def test_no_bars_at_all_no_row(self):
         res, d = self.run_once(B + MIN, lambda s, e: [])

@@ -5,7 +5,7 @@ Debounce state: MyTradingSys/runtime/sched/tick_state.json
   event_seen    {hash: last_fired_utc}   event check fires only if hash unseen within 24 h
   digest_included [hash]                 hashes in the last completed digest (run_worker digest mode sets it);
                                          a digest item is new if its hash is not in that list
-Output: MyTradingSys/research/sched_reports/tick_<utc>.md ; also prints a one-line summary.
+Output: MyTradingSys/research/sched_reports/tick_<utc>.md (ends with a "## Pick" section from pick_task.py) ; also prints a one-line summary.
 Usage (repo root): python scripts/sched/tick.py [--now ISO] [--only name,name]
 """
 import argparse
@@ -67,6 +67,18 @@ def run_check(name, argv):
     return code, first, hash_line
 
 
+def run_pick():
+    try:
+        p = subprocess.run([PY, "scripts/sched/pick_task.py"], cwd=REPO, capture_output=True, text=True, timeout=60)
+    except subprocess.TimeoutExpired:
+        return "ERROR: pick_task timeout 60s"
+    except OSError as e:
+        return f"ERROR: {e}"
+    if p.returncode:
+        return f"ERROR: exit {p.returncode}: {(p.stderr.strip() or p.stdout.strip())[:200]}"
+    return (p.stdout.strip().splitlines() or ["ERROR: no output"])[0]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--now")
@@ -112,6 +124,8 @@ def main():
     md += [f"| {n} | {k} | {c} | {a} | {h[:12]} |" for n, k, c, a, h, _ in rows]
     md += ["", "## Lines", ""] + [f"- {first}" for *_, first in rows]
     out.write_text("\n".join(md) + "\n", encoding="utf-8", newline="\n")
+    with open(out, "a", encoding="utf-8", newline="\n") as f:  # Pick section; a failure here never stops the tick
+        f.write("\n## Pick\n\n" + run_pick() + "\n")
     print(f"TICK worst={worst} fires={len(fires)} digest_new={len(digest)} report={out.name}")
     return worst
 

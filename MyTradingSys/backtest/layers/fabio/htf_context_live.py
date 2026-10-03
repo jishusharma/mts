@@ -1,6 +1,6 @@
 """R4 HTF context writer (collection-only; WHY_ENGINE_SILENT_2026-10-03.md:47). One JSONL row per 4H close:
   {"timestamp", "bal_4h", "bal_1d", "failed_breakout", "oi_delta_1h_pct"}
-plus a per-day summary file {date, open, close, high, low}. A separate layer: nothing here gates Tom, no orders, no
+(failed_breakout is true / false when computed, null when no previous 4H balance exists) plus a per-day summary file {date, open, close, high, low}. A separate layer: nothing here gates Tom, no orders, no
 execution imports, no keys; public USD-M market data only (klines + openInterestHist).
 
 Definitions (see the session record for deviations):
@@ -85,8 +85,9 @@ def fetch_oi(end_ms):
 
 
 def failed_breakout(bars, i, prev_bal):
+    """True / False for a computed answer; None when there is no previous 4H balance to probe (unknown, not False)."""
     if prev_bal is None:
-        return False
+        return None
     H, L = prev_bal["H"], prev_bal["L"]
     win = bars[i - N_4H + 1:i + 1]
     probed = any(b["c"] > H or b["c"] < L for b in win)
@@ -100,7 +101,7 @@ def build_row(bars, close_ms, oi_pct):
     i = len(bars) - 1
     prev = balance(bars, i - N_4H, N_4H) if i - N_4H >= 0 else None
     return {"timestamp": _iso(close_ms), "bal_4h": balance(bars, i, N_4H), "bal_1d": balance(bars, i, N_1D),
-            "failed_breakout": failed_breakout(bars, i, prev) if i >= N_4H else False, "oi_delta_1h_pct": oi_pct}
+            "failed_breakout": failed_breakout(bars, i, prev) if i >= N_4H else None, "oi_delta_1h_pct": oi_pct}
 
 
 def _write(path, text, mode):
