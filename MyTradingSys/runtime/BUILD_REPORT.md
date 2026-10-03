@@ -1,25 +1,25 @@
-BUILD_REPORT - 2026-10-03 17:05:29 UTC
+BUILD_REPORT - 2026-10-03 17:13:50 UTC
 host: JIS-NB
 
-Java compile:  PASS (4.3 s)
-Math tests:    PASS 227/227 (43.6 s)
-Doc tests:     PASS 5/5 (3.4 s)
+Java compile:  PASS (3.8 s)
+Math tests:    PASS 227/227 (43 s)
+Doc tests:     PASS 5/5 (2.2 s)
 
 In-flight .new files: 14
-  - backtest\layers\audit\formula_audit.py.new (age 6773m)
-  - backtest\layers\consensus\test_writer.py.new (age 1939m)
-  - backtest\layers\consensus\writer.py.new (age 1939m)
-  - backtest\layers\cryptocred\test_cc_retest.py.new (age 7761m)
-  - backtest\layers\cryptocred\test_cc_structure.py.new (age 7762m)
-  - backtest\layers\rsi\observation.py.new (age 1939m)
-  - backtest\layers\rsi\test_observation.py.new (age 1939m)
-  - execution\auto_trader_config.json.new (age 27m)
-  - execution\auto_trader.py.new (age 27m)
-  - execution\test_auto_trader.py.new (age 25m)
-  - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 1939m)
-  - runtime\test_quad_classify.py.new (age 1939m)
-  - runtime\test_regime_classifier.py.new (age 1939m)
-  - tests\java\MarketDataSnapshotTest.java.new (age 1939m)
+  - backtest\layers\audit\formula_audit.py.new (age 6781m)
+  - backtest\layers\consensus\test_writer.py.new (age 1947m)
+  - backtest\layers\consensus\writer.py.new (age 1947m)
+  - backtest\layers\cryptocred\test_cc_retest.py.new (age 7769m)
+  - backtest\layers\cryptocred\test_cc_structure.py.new (age 7770m)
+  - backtest\layers\rsi\observation.py.new (age 1947m)
+  - backtest\layers\rsi\test_observation.py.new (age 1947m)
+  - execution\auto_trader_config.json.new (age 35m)
+  - execution\auto_trader.py.new (age 35m)
+  - execution\test_auto_trader.py.new (age 34m)
+  - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 1947m)
+  - runtime\test_quad_classify.py.new (age 1947m)
+  - runtime\test_regime_classifier.py.new (age 1947m)
+  - tests\java\MarketDataSnapshotTest.java.new (age 1947m)
 
 Active sessions:
   (none)

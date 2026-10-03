@@ -399,3 +399,15 @@ Rule that now prevents it: before saying a pipeline row is blocked, name its blo
 Where the rule lives: DSA_SESSION_PROMPT.md section 5 TASK LOOP step 1 VALIDATE.
 
 Receipt: operator 2026-10-03.
+
+## 2026-10-03 - gitsnap stages the whole tree and swept another writer's file
+
+What happened: two DSA commits swept a live session's in-flight file into DSA's commit. 9d43d03 captured TF4's EXEC_PROVENANCE_AUDIT.md mid-work. 91c2d0a captured TF6's test_tom_golden.py mid-work. Both sessions reported the sweep in their own T5 MISSED.
+
+Cause: gitsnap stages the entire working tree. With a second writer active, the stage captures whatever is on disk, including another session's stage.
+
+Rule: when a second writer is active, stage exact paths and commit by hand. Confirm the stage list equals the files DSA wrote before commit.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 6 WRITING.
+
+Receipt: two incidents, both self-reported by the swept session.

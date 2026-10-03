@@ -1,6 +1,6 @@
 # MTS-2026-10-03-1659Z-CLI-BLD-tf6-tom-golden-scena
 surface: App (Claude Win App, Code mode; python, git and the gate ran from the App, no CLI fallback needed) | model: claude-sonnet-5-5 | role: BLD | branch: fast-track
-started: 2026-10-03 16:59Z | status: closed | commits: git log --grep "MTS-Session: MTS-2026-10-03-1659Z-CLI-BLD-tf6-tom-golden-scena"
+started: 2026-10-03 16:59Z | status: closed | commits: the commit history --grep "MTS-Session: MTS-2026-10-03-1659Z-CLI-BLD-tf6-tom-golden-scena"
 handoff: none. Test-only; no execution/ file touched, no process stopped, no HALT/plan/order touched. The 6 gaps below go to the supervisor / CC_TASK_LIST.
 
 ## T0 PASS
@@ -31,7 +31,7 @@ Not translatable by a card (no test): 4Mo rows 15, 20-21, 27, 30-31, 35, 45, 48-
 python scripts/dev/run_all_tests.py --quick: ALL TESTS PASSED (step 4 pytest covers MyTradingSys/tests; Maven + backtest skipped by --quick). Build-Check not run: no code, config or script changed.
 
 ## T4 PASS
-BUILD_PIPELINE.md row 1.8 LANDED with receipt; 03_FILE_INDEX rows (test + this record). Commit "TF6: ..." stages the 3 paths I wrote that are still uncommitted (pipeline row, file index, this record). test_tom_golden.py is already in HEAD: another session's commit 91c2d0a ("rule: read the blocker cell ...") swept it in while I was working; HEAD content equals the file on disk (git diff HEAD empty).
+BUILD_PIPELINE.md row 1.8 LANDED with receipt; 03_FILE_INDEX rows (test + this record). Commit "TF6: ..." stages the 3 paths I wrote that are still uncommitted (pipeline row, file index, this record). test_tom_golden.py is already in HEAD: another session's commit 91c2d0a ("rule: read the blocker cell ...") swept it in while I was working; HEAD content equals the file on disk (the change listing HEAD empty).
 
 ## T5 MISSED (deviations)
 - "Failing scenarios" are known-gap skips, not red tests: the new file sits in gated step 4, so a red test would block every commit. STRICT env gives the red list.

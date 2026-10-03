@@ -150,6 +150,7 @@ Before any write:
 After any write:
 - Verify by a method other than the one used to write.
 - Report line count, byte count, and non-ASCII count.
+- Stage exact paths when a second writer is active. A staged path DSA did not write means stop and do not commit. gitsnap stages the whole tree; that captures another session's in-flight file.
 
 After creating a new file:
 - Add one row to MyTradingSys/system/03_FILE_INDEX.md.
