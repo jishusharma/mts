@@ -61,4 +61,5 @@ B086 | CLOSED  | B086_dispatcher_second_writer.md | dispatcher demo launched a s
 B087 | CLOSED  | B087_pick_task_repick.md | pick_task.py re-picks same row each wake; two smaller flags attached; Claude decides fixes
 B088 | CLOSED  | B088_session_id_surface_code.md | one code CLI via pick_task.session_id; cooldown default = stale-session window; receipt in BUGS row
 B089 | CLOSED  | B089_bugs_invisible_to_scheduler.md | shape A: pick_task.py sweeps BUGS-only OPEN ids into wave max+1; receipt in BUGS row
+B090 | OPEN    | B090_cloud_credit_approval.md | two-bucket cloud plan ($50 today + $49 contingent); Claude approves; 2 of 8 items need a desktop precondition
 # END

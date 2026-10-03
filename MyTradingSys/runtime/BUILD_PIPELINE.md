@@ -128,4 +128,10 @@ QUEUED / IN-FLIGHT / GATED / LANDED / BLOCKED / PARKED
 | 8.4 | LY4 | one pre-registered historical driver for all layers | QUEUED | 8.1 | generalise run_backtest.py pattern; drivers from MyTradingSys/research/fast_track_2026-09-27/DSA_BACKLOG.md (malkan_40_60, malkan_mtf, rsi_ma_events); PRE_REG per layer |
 | 8.5 | LY5 | finish rsi observation + consensus writer (staged) | QUEUED | 8.2 | MyTradingSys/backtest/layers/rsi/observation.py.new, MyTradingSys/backtest/layers/consensus/writer.py.new and their tests |
 
+
+## WAVE 9 - CLOUD CREDIT / APPROVAL
+
+| # | ID | Slug | Status | Blocker | Next |
+|---|---|---|---|---|---|
+| 9.1 | B090 | cloud credit approval plan (two buckets) | QUEUED | - | Claude approves; operator runs Bucket A today (C1, C8, C4, C7); Bucket B contingent on one desktop step each. See MyTradingSys/items/B090_cloud_credit_approval.md |
 # END
