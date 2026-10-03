@@ -1,16 +1,16 @@
-BUILD_REPORT - 2026-10-03 20:34:04 UTC
+BUILD_REPORT - 2026-10-03 20:34:27 UTC
 host: JIS-NB
 
-Java compile:  PASS (3.1 s)
-Math tests:    PASS 237/237 (51 s)
-Doc tests:     PASS 5/5 (3 s)
+Java compile:  PASS (4.8 s)
+Math tests:    PASS 237/237 (50.2 s)
+Doc tests:     PASS 5/5 (6 s)
 
 In-flight .new files: 11
   - backtest\layers\audit\formula_audit.py.new (age 6982m)
   - backtest\layers\consensus\test_writer.py.new (age 2148m)
   - backtest\layers\consensus\writer.py.new (age 2148m)
   - backtest\layers\cryptocred\test_cc_retest.py.new (age 7970m)
-  - backtest\layers\cryptocred\test_cc_structure.py.new (age 7970m)
+  - backtest\layers\cryptocred\test_cc_structure.py.new (age 7971m)
   - backtest\layers\rsi\observation.py.new (age 2148m)
   - backtest\layers\rsi\test_observation.py.new (age 2148m)
   - research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (age 2148m)
