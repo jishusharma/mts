@@ -268,37 +268,30 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-03T14:55Z (loop UP, java present).
+Last live read:  2026-10-03T20:30Z (loop UP on new jar, fresh cycle).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 508, java 4120, supervisor 20112. snapshot age ~35s.
-Build PASS at last gate (2026-10-03T14:55:07Z; math 219/219, doc 5/5).
-HEAD e1e3153, tag last-snapshot. origin/fast-track at e1e3153.
+Runtime + loops: loop UP after B070 restart. java 15268, wrapper 12548, supervisor 10012, 21636. auto_trader 5320.
+Build PASS at last gate (2026-10-03T19:54:03Z).
+HEAD c8d36b8 on fast-track, tag last-snapshot moves per commit.
 
-Commits landed this session (order):
-  e1e3153 close: section 11 refreshed; TF3 pushed; execution plan handed off;
-  15f1fc6 TF3; bf658bf TF2; e1d5eac TF1; 21957ff B092 guard amendment;
-  32e886c B090-B095 filed; 873ac0f session record fix; 6d472ef B090 corrected + B091-B094;
-  e74503a B091 filed; 07284d4 B090 filed; 9b4a844 B088/B089 fixed; a8b8fcf B089 filed;
-  0256be4 B086/B087 fixes; c7802a9 dispatcher v1 + B084-B087 + R4-T2 fix; 684c419 surface-choice rule;
-  ccd0a0f R4 HTF writer; 86313de B075 partial; 1dd9aca close batch.
+Landed this session: 26 commits (see session record MTS-2026-10-03-2030Z-DSA-COO-close.md).
+Key: TF4 audit, TF5 promoted, TF7 golden, TF8 L3-FAIL, B070 fee model + UTC anchor,
+B088/B089, B095 receipt, B097 filed, B099 fixed, B100 filed, Ruling 3 accepted,
+TRIAL_REGISTRY un-ignored, DSA 6b BATCHING + B092 CLOSED.
 
-Scheduler: pick_state holds TF4 (execution provenance audit), picked 14:44:09Z, hold until 2026-10-04T10:59Z.
-  TF4 prompt printed this session (28 lines, App Code Opus). TF1-TF3 landed.
-  TF5-TF8 and R7 blocked on TF4 / Ruling 3. B089 shape A live.
+Pipeline: 1.6 TF4 LANDED; 1.7 TF5 LANDED; 1.8 TF6 LANDED; 1.9 TF7 LANDED;
+1.10 TF8 LANDED (L3-FAIL); 1.11 B091 QUEUED (this commit carries the row);
+4.1 B070 LANDED; 4.6 B072 QUEUED; 4.7 B073 QUEUED; 4.2 B076 QUEUED.
+R7 (7.1) blockers now B072 + B073 only.
 
-Registries: BUGS.md ~194 rows; items/INDEX.md ~70 open; BUILD_PIPELINE waves 0-9.
+Registries: BUGS.md 160 rows; items/INDEX.md 39 open IDs; 66 item files.
 
-Open DSA work: none. B083 CLOSED (prompt_check.ps1 PASS 4/4).
-B090-B095 OPEN: cloud approval, Build-Check speed, batching, parallel dispatch, headless scheduler, per-session cost.
+Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
 
-One operator decision still pending and blocking 3 sessions:
-  Ruling 3 (MEASURED numbers for CONCEPT-ONLY, testnet only): yes/no.
-  Surface for TF4/LY1 resolved this session: CL App, Code mode, Opus.
-
-Next session first action: confirm TF4 landed (session record + EXEC_PROVENANCE_AUDIT.md),
-  read the ranked fix list, scope TF5, get Ruling 3 before composing the TF5 prompt.
+Next session first action: pick B091 with the CL prompt printed at close, or
+run mts go for wave 1 row 1.11. Then B072+B073 bundle (math_object_builder.py).
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.
