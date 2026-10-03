@@ -55,3 +55,37 @@ def test_run_day_counts_no_setup_as_zero_r():
     cfg = r.grid()["C|m5|f0.003|rest|goff"][1]
     out = r._run_day((bars, [], [("k", "C", cfg, 2.0)]))
     assert out["k"][0] == 0.0
+
+
+class _NeverPool:
+    """Pool whose futures never complete: the B099 stall."""
+    def submit(self, fn, arg):
+        from concurrent.futures import Future
+        return Future()
+
+
+class _DeadPool:
+    """Pool whose worker died: the B099 broken pool."""
+    def submit(self, fn, arg):
+        from concurrent.futures import Future
+        from concurrent.futures.process import BrokenProcessPool
+        f = Future()
+        f.set_exception(BrokenProcessPool("worker died"))
+        return f
+
+
+def _one_window():
+    return [{"date": dt.date(2026, 1, 5), "bars": [], "prior": []}]
+
+
+def test_b099_stalled_phase_fails_closed(monkeypatch):
+    import pytest
+    monkeypatch.setattr(r, "TASK_TIMEOUT", 0.05)
+    with pytest.raises(r.RunFailed, match="oos_grid.*2026-01-05"):
+        r.run_cells(_NeverPool(), _one_window(), {"k": ("C", {})}, 2.0, "oos_grid")
+
+
+def test_b099_dead_worker_fails_closed():
+    import pytest
+    with pytest.raises(r.RunFailed, match="BrokenProcessPool"):
+        r.run_cells(_DeadPool(), _one_window(), {"k": ("C", {})}, 2.0, "oos_grid")

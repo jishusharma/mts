@@ -13,7 +13,10 @@ import os
 import random
 import statistics
 import sys
+import time
 from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import TimeoutError as FutTimeout
+from concurrent.futures.process import BrokenProcessPool
 from pathlib import Path
 
 from MyTradingSys.backtest.bt import bt_stats
@@ -27,6 +30,9 @@ OOS_RANGE = (dt.date(2026, 1, 1), dt.date(2026, 6, 25))         # spec 8; holdou
 N_DECLARED = 139                                                # spec 7.2 NY total
 SLIP_SEL = 2.0                                                  # spec 8: selection at 2 bps
 PRIOR_DAYS = 20                                                 # spec 6 day gate
+TASK_TIMEOUT = 900                                              # B099: seconds one day-task may take before the run fails closed
+SLOW_TASK = 120                                                 # B099: a day-task slower than this is logged by name
+_OUT = None                                                     # output dir, set by main(); log() and the phase cache use it
 
 
 # ------------------------------------------------------------------ grid (spec 7.2)
@@ -87,7 +93,7 @@ def build_windows(first, last):
 # ------------------------------------------------------------------ one day, many cells
 def _run_day(args):
     bars, prior, jobs = args          # jobs: list of (key, model, cfg, slip)
-    out = {}
+    out, t0 = {}, time.time()
     pr = (lambda el: [r[el] for r in prior if el < len(r)]) if len(prior) >= PRIOR_DAYS else (lambda el: [])
     for key, model, cfg, slip in jobs:
         c = dict(cfg, models=(model,), slip_bps=slip, prior_ranges=pr)
@@ -103,17 +109,54 @@ def _run_day(args):
             out[key] = (0.0, "unmanaged")
         else:
             out[key] = (0.0, "none")
+    out["__elapsed__"] = (time.time() - t0, "elapsed")
     return out
 
 
-def run_cells(pool, wins, cells, slip):
-    """cells: {key: (model, cfg)} -> {key: {'r': [dayR per window], 'tag': {tag: n}}}"""
+class RunFailed(RuntimeError):
+    """B099: a phase stalled or a worker died. The run stops with a FAILED marker; no partial result is read."""
+
+
+def log(msg):
+    line = "%s %s" % (dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), msg)
+    print(line, flush=True)
+    if _OUT is not None:
+        with open(_OUT / "run.log", "a", encoding="utf-8", newline="\n") as f:
+            f.write(line + "\n")
+
+
+def run_cells(pool, wins, cells, slip, name):
+    """cells: {key: (model, cfg)} -> {key: {'r': [dayR per window], 'tag': {tag: n}}}.
+    B099: per-day futures with a timeout, progress lines, and a per-phase disk cache so a re-run resumes."""
+    cache = _OUT / ("phase_%s.json" % name) if _OUT is not None else None
+    if cache is not None and cache.exists():
+        got = json.loads(cache.read_text(encoding="utf-8"))
+        if got.get("n") == len(wins) and set(got["res"]) == set(cells):
+            log("phase %s: loaded from cache" % name)
+            return got["res"]
     jobs = [(k, m, c, slip) for k, (m, c) in cells.items()]
     res = {k: {"r": [], "tag": {}} for k in cells}
-    for day in pool.map(_run_day, [(w["bars"], w["prior"], jobs) for w in wins], chunksize=2):
-        for k, (r, tag) in day.items():
-            res[k]["r"].append(r)
-            res[k]["tag"][tag] = res[k]["tag"].get(tag, 0) + 1
+    futs = [pool.submit(_run_day, (w["bars"], w["prior"], jobs)) for w in wins]
+    log("phase %s: %d windows x %d cells submitted" % (name, len(wins), len(cells)))
+    i = 0
+    try:
+        for i, (w, fu) in enumerate(zip(wins, futs)):
+            day = fu.result(timeout=TASK_TIMEOUT)
+            el = day.pop("__elapsed__")[0]
+            if el > SLOW_TASK:
+                log("phase %s: slow window %s took %.0fs" % (name, w["date"], el))
+            for k, (r, tag) in day.items():
+                res[k]["r"].append(r)
+                res[k]["tag"][tag] = res[k]["tag"].get(tag, 0) + 1
+            if (i + 1) % 20 == 0 or i + 1 == len(wins):
+                log("phase %s: %d/%d windows" % (name, i + 1, len(wins)))
+    except (FutTimeout, BrokenProcessPool) as e:
+        for fu in futs:
+            fu.cancel()
+        raise RunFailed("phase %s stalled or a worker died at window %s (index %d): %s" % (
+            name, wins[i]["date"], i, type(e).__name__))
+    if cache is not None:
+        cache.write_text(json.dumps({"n": len(wins), "res": res}), encoding="utf-8", newline="\n")
     return res
 
 
@@ -149,20 +192,24 @@ def main():
     ap.add_argument("--out", default="F:/MTS/data/fabio_v3_bt")
     ap.add_argument("--days-limit", type=int, default=0, help="smoke test: first N IS windows and N OOS windows only")
     a = ap.parse_args()
+    global _OUT
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
+    _OUT = out
+    (out / "FAILED").unlink(missing_ok=True)
     wins, skipped = build_windows(IS_RANGE[0], OOS_RANGE[1])
     is_w = [w for w in wins if IS_RANGE[0] <= w["date"] <= IS_RANGE[1]]
     oos_w = [w for w in wins if OOS_RANGE[0] <= w["date"] <= OOS_RANGE[1]]
     if a.days_limit:
         is_w, oos_w = is_w[:a.days_limit], oos_w[:a.days_limit]
-    print("IS windows %d, OOS windows %d, skipped %s" % (len(is_w), len(oos_w), skipped), flush=True)
+    log("IS windows %d, OOS windows %d, skipped %s" % (len(is_w), len(oos_w), skipped))
     cells = grid()
     assert len(cells) == 112, len(cells)
     res = {"n_declared": N_DECLARED, "skipped": skipped, "n_is": len(is_w), "n_oos": len(oos_w), "models": {}}
-    with ProcessPoolExecutor(max_workers=max(1, (os.cpu_count() or 2) - 1)) as pool:
+    pool = ProcessPoolExecutor(max_workers=max(1, (os.cpu_count() or 2) - 1))
+    try:
         # phase 1: IS grid at 2 bps; selection frozen to disk BEFORE any OOS window is run
-        is_res = run_cells(pool, is_w, cells, SLIP_SEL)
+        is_res = run_cells(pool, is_w, cells, SLIP_SEL, "is_grid")
         chosen = {}
         for m in "ABCD":
             ks = [k for k in cells if cells[k][0] == m]
@@ -172,17 +219,30 @@ def main():
         for m, k in chosen.items():
             for vn, vc in variants(m, cells[k][1]).items():
                 is_var[m][vn] = vc
-        vres_is = {m: run_cells(pool, is_w, {vn: (m, vc) for vn, vc in is_var[m].items()}, SLIP_SEL) for m in "ABCD"}
+        vres_is = {m: run_cells(pool, is_w, {vn: (m, vc) for vn, vc in is_var[m].items()}, SLIP_SEL, "is_var_" + m) for m in "ABCD"}
         sel = {"chosen": chosen, "is_mean": {k: statistics.fmean(is_res[k]["r"]) for k in cells},
                "variants_is_mean": {m: {vn: statistics.fmean(v["r"]) for vn, v in vres_is[m].items()} for m in "ABCD"}}
-        (out / "selection.json").write_text(json.dumps(sel, indent=1), encoding="utf-8", newline="\n")
-        print("selection frozen:", chosen, flush=True)
+        frozen = out / "selection.json"
+        if frozen.exists():            # B099 re-run: the first run's selection is the registered one; IS must reproduce it
+            was = json.loads(frozen.read_text(encoding="utf-8"))["chosen"]
+            if was != chosen:
+                raise RunFailed("IS selection differs from the frozen selection.json: %s vs %s" % (chosen, was))
+            log("selection reproduced the frozen selection.json: %s" % chosen)
+        else:
+            frozen.write_text(json.dumps(sel, indent=1), encoding="utf-8", newline="\n")
+            log("selection frozen: %s" % chosen)
         # phase 2: OOS for the whole main grid (PBO matrix) and the variants
-        oos_res = run_cells(pool, oos_w, cells, SLIP_SEL)
-        vres_oos = {m: run_cells(pool, oos_w, {vn: (m, vc) for vn, vc in is_var[m].items()}, SLIP_SEL) for m in "ABCD"}
+        oos_res = run_cells(pool, oos_w, cells, SLIP_SEL, "oos_grid")
+        vres_oos = {m: run_cells(pool, oos_w, {vn: (m, vc) for vn, vc in is_var[m].items()}, SLIP_SEL, "oos_var_" + m) for m in "ABCD"}
         # phase 3: stress on the chosen cells (OOS)
-        stress = {m: {s: run_cells(pool, oos_w, {chosen[m]: cells[chosen[m]]}, s)[chosen[m]] for s in (0.0, 5.0)}
+        stress = {m: {s: run_cells(pool, oos_w, {chosen[m]: cells[chosen[m]]}, s, "stress_%s_%g" % (m, s))[chosen[m]] for s in (0.0, 5.0)}
                   for m in "ABCD"}
+    except RunFailed as e:         # B099: fail closed, name the phase, leave no results file
+        pool.shutdown(wait=False, cancel_futures=True)
+        (out / "FAILED").write_text(str(e) + "\n", encoding="utf-8", newline="\n")
+        log("FAILED: %s" % e)
+        raise SystemExit(1)
+    pool.shutdown()
     all_is = [statistics.fmean(is_res[k]["r"]) for k in cells] + \
              [statistics.fmean(v["r"]) for m in "ABCD" for v in vres_is[m].values()]
     sr_cells = [bt_stats.sharpe(is_res[k]["r"] + oos_res[k]["r"]) for k in cells if any(is_res[k]["r"] + oos_res[k]["r"])]

@@ -7,8 +7,8 @@ branch: fast-track
 lanes: none (no subagents)
 started: 2026-10-03 17:59Z
 ended: 2026-10-04
-status: closed (row BLOCKED)
-commits: 8ca8403 (PRE_REG) and the close commit with prefix "TF8: "
+status: closed (row LANDED, result L3-FAIL)
+commits: 8ca8403 (PRE_REG), 9e2427e (BLOCKED close), and the commit with prefix "TF8: " after it
 
 ## Scope
 BUILD_PIPELINE row 1.10 (TF8): Fabio v3 historical backtest (L3), pre-registered. No live-imported file touched; nothing promoted; no process stopped by this session.
@@ -25,3 +25,9 @@ BUILD_PIPELINE row 1.10 (TF8): Fabio v3 historical backtest (L3), pre-registered
 - Standing pre-reg gaps for the re-run: S4 tier fixed "99"; stage 1, null permutation, stop-first/funding stress, regime rule and 12 variants without an engine key are not executed.
 - The runner had no per-phase progress output, so the stall was invisible to my background waiters (B099 fix item 1). A launcher-shell completion notice was not run completion; I checked.
 - No re-run, no loop restart (operator instruction).
+
+## Update 2026-10-04 (operator: fix B099 and re-run OOS)
+- B099 fixed in run_v3_l3.py (timeout, RunFailed, FAILED marker, progress log, phase cache, selection must reproduce); 2 new tests, 10 pass.
+- Re-run completed in 13 min, selection reproduced, no slow window, no FAILED. Original hang cause still unknown.
+- Result: L3-FAIL. C: OOS -0.1038 R/day (CI95 -0.2087..-0.0053), 79 trade days. A, B, D: 0 OOS trades, not evaluable. Row 1.10 LANDED; B099 FIXED.
+- Deviation: the re-run is a new trial row (TRIAL_REGISTRY.csv rows fabio_v3_l3_20261004). Follow-up owed: why A, B, D almost never fire.

@@ -1,6 +1,6 @@
 # B099 - run_v3_l3.py OOS pass hangs in ProcessPoolExecutor, no fail-closed path to the parent
 
-Status: OPEN | Severity: MEDIUM (blocks row 1.10 / TF8) | Opened 2026-10-04 | Found by: MTS-2026-10-03-1759Z-CLI-BLD-tf8-fabio-v3-histori
+Status: FIXED (stall handling); original cause UNKNOWN | Severity: MEDIUM | Opened 2026-10-04 | Found by: MTS-2026-10-03-1759Z-CLI-BLD-tf8-fabio-v3-histori
 
 ## Observed
 - `python -m MyTradingSys.backtest.layers.fabio.run_v3_l3` (parent PID 18840, 7 workers = `os.cpu_count() - 1`, run_v3_l3.py:163) wrote two lines to
@@ -26,3 +26,10 @@ Status: OPEN | Severity: MEDIUM (blocks row 1.10 / TF8) | Opened 2026-10-04 | Fo
 3. Write each phase day-R to disk as it completes so a re-run resumes from the frozen selection.
 4. Find the cause of the stall first (one OOS day serial, then `--days-limit`, then a pool).
 A re-run is a new trial row (PRE_REG_FABIO_V3.md stop rule). `selection.json` stays frozen; no OOS number exists.
+
+## Fix applied 2026-10-04 (run_v3_l3.py, tests test_b099_*)
+- run_cells: per-day futures, TASK_TIMEOUT 900 s, RunFailed on timeout or BrokenProcessPool, FAILED marker + non-zero exit, progress every 20 windows,
+  slow-window lines (> 120 s), per-phase disk cache (phase_*.json), IS must reproduce the frozen selection.json.
+- 2 tests (stalled pool, dead pool) fail closed; they did not exist before (RunFailed absent).
+- Re-run 18:37Z-18:50Z: all phases completed, no slow window, no FAILED, selection reproduced. results.json written.
+- The original hang did NOT recur and its cause is still unknown (no slow-window or error line to point at). If it recurs, FAILED and run.log name the phase and window.
