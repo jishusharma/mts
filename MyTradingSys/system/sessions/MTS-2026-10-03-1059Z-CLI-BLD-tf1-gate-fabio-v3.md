@@ -1,7 +1,7 @@
 # MTS-2026-10-03-1059Z-CLI-BLD-tf1-gate-fabio-v3
 surface: CLI | host: JIS-NB | account: none | model: claude-sonnet-5-5 | role: BLD | branch: fast-track | branch_alias: none
 predecessor: none | lanes: none (no subagents, no workers)
-started: 2026-10-03 | ended: 2026-10-03 | status: closed | commits: TF1 (see git log)
+started: 2026-10-03 | ended: 2026-10-03 | status: closed | commits: e1d5eac
 handoff: row 1.3 LANDED; unblocks 1.9 (TF7) and 1.10 (TF8).
 
 ## Scope
