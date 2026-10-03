@@ -230,6 +230,7 @@ One per line. No compression.
   Win app cloud sessions. Never assume one buys the other.
 - Manager verbs: mts go / mstatus / mresume / mstop / usage. Bare status /
   resume / stop belong to the market loop.
+- CLI prompts open with the mts go launch block. The prompt text follows the launch. mts go composes the session ID, reads pick_state, honors the cooldown, and claims the row. A bare CLI prompt skips all four.
 - Local Maven: D:\tools\apache-maven-3.9.14. Cloud cannot run Maven. All tests
   run on desktop.
 - Cloud honesty. Read the reply against disk in the same turn. Cloud has stated

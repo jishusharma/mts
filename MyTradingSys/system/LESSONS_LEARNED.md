@@ -377,3 +377,13 @@ Fix: every gate+commit block is wrapped in & { ... }. return inside
 & { } aborts the block. Confirmed 2026-10-03.
 
 Cost: one FAIL commit on fast-track, one fix commit to follow.
+
+## 2026-10-03 - CLI prompts must open with mts go
+
+What happened: the TF5 promote prompt (session MTS-2026-10-03-1700Z-CLI-SUP-tf5-promote) was printed as bare text with no mts go launch block. DSA dropped the launch and handed the operator a naked prompt.
+
+Rule that now prevents it: every CLI prompt DSA prints opens with the mts go launch block. The prompt text follows the launch. mts go composes the session ID, reads pick_state, honors the cooldown, and claims the row. A bare CLI prompt skips all four.
+
+Where the rule lives: USER.md LIKES (prompt-fence bullet) and DSA_SESSION_PROMPT.md section 9 HARD RULES.
+
+Receipt: operator 2026-10-03.
