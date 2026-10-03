@@ -70,4 +70,5 @@ B095 | OPEN    | B095_per_session_cost.md | per-session cost not on disk; sessio
 B097 | OPEN    | B097_kxh_mislabel.md | kXhIAug0Gh8_v2.md:65 says entry before proof; rows 6-7 say proof first
 B098 | OPEN    | B098_python_cpu_spin.md | CPU spike was TF8 backtest pool; closed
 B099 | CLOSED  | B099_v3_l3_pool_hang.md | run_v3_l3 pool stall now fails closed + resumable; re-run completed; original cause unknown
+B100 | OPEN    | B100_audit_verdict_mismatch.md | E1b/E2 labelled NO-SOURCE but carry Tom quotes; should be CONCEPT-ONLY per audit's own rules
 # END
