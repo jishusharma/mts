@@ -253,40 +253,40 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-03T12:30Z (loop UP, java present).
+Last live read:  2026-10-03T14:44Z (loop UP, java present).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 508, java 4120, supervisor 20112.
-                 auto_trader 20016, live_runner_cli 15612, orderflow_live 6728, daily_loss_monitor 18484.
-                 snapshot age 56s. Scheduler MTS-Scheduler-Tick Ready, 15-min interval.
-Build PASS 2026-10-03T12:14Z (Java PASS, math 219/219, doc 5/5).
-HEAD 07284d4, tag last-snapshot. origin/fast-track at a8b8fcf (2 local commits unpushed).
+Runtime + loops: loop UP. wrapper 508, java 4120, supervisor 20112. snapshot age 34s.
+Build PASS at last gate (2026-10-03T14:37Z; math 219/219, doc 5/5).
+HEAD 15f1fc6, tag last-snapshot. origin/fast-track at 21957ff (TF3 not yet pushed).
 
-Commits landed since 2026-10-03T03:15Z:
-  1dd9aca close batch.
-  86313de B075 partial (Java historical path, no live calls).
-  ccd0a0f R4 HTF context writer.
-  684c419 surface-choice rule (App first, CLI fallback).
-  c7802a9 dispatcher v1 + B084-B087 + R4-T2 fix.
-  0256be4 B086/B087 fixes.
-  a8b8fcf B089 filed.
-  9b4a844 B088/B089 fixed (one CLI session-id builder, cooldown 24h, picker sweeps BUGS-only OPEN ids).
-  07284d4 B090 filed (cloud credit approval plan, wave 9).
+Commits landed this session (order):
+  1dd9aca close batch; 86313de B075 partial; ccd0a0f R4 HTF writer;
+  684c419 surface-choice rule; c7802a9 dispatcher v1 + B084-B087 + R4-T2;
+  0256be4 B086/B087 fixes; a8b8fcf B089 filed; 9b4a844 B088/B089 fixed;
+  07284d4 B090 filed; e74503a B091 filed; 6d472ef B090 corrected + B091-B094;
+  873ac0f session record fix; 32e886c B090-B095 filed; 21957ff B092 guard;
+  e1d5eac TF1 (gate coverage); bf658bf TF2 (funnel_report.py);
+  15f1fc6 TF3 (of_backfill.py; Fabio silence = Saturday + no prior_vols).
 
-Scheduler state:
-  pick_state.json holds TF1 until 2026-10-04T10:59Z (24h cooldown, B087a). Every tick prints HOLD TF1.
-  B089 shape (A) live: pick_task.py sweeps BUGS.md for OPEN ids with no pipeline row.
-  B084, B085 queue at wave 9 by the sweep. B090 has an explicit wave 9 row.
+Scheduler: pick_state holds TF4 (execution provenance audit) picked 14:44:09Z.
+  TF1, TF2, TF3 landed. TF4-TF8 and R7 blocked on TF4 / Ruling 3.
+  B089 shape A live: OPEN BUGS ids with no pipeline row queue at wave 9.
 
-Cloud (awgp credit, ~, expires 2026-10-03):
-  origin/fast-track at a8b8fcf. No cloud/2026-10-03-* branch yet. Buckets A+B approval plan filed as B090.
+Registries: BUGS.md ~194 rows; items/INDEX.md ~70 open; BUILD_PIPELINE waves 0-9.
 
-Registries: BUGS.md 151 rows; items/INDEX.md 33 open; BUILD_PIPELINE.md 137 lines, waves 0-9.
+Open DSA work: none. B083 CLOSED (prompt_check.ps1 PASS 4/4).
+B090-B095 OPEN: cloud approval, Build-Check speed, batching, parallel
+  dispatch, headless scheduler, per-session cost.
 
-Open DSA work: none. B083 CLOSED 2026-10-03 (test_prompt_check.ps1 PASS 4 of 4).
+Two operator decisions pending and blocking 3 sessions:
+  Ruling 3 (MEASURED numbers for CONCEPT-ONLY, testnet only): yes/no.
+  Surface for TF4/LY1 (Opus rows): CLI default or App model picker.
 
-Next session first action: (1) push 9b4a844 + 07284d4 to origin; (2) clear pick_state.json to drop the TF1 hold, or wait 24h; (3) run the B090 approval plan and start Bucket A; (4) B088/B089 CL session record for MTS-2026-10-03-1230Z-CLI-BLD-fix-b088-b089 if not present.
+Next session first action: read the execution plan handed off this
+  session (Phases 1-5, 14 sessions, TF4 is critical-path head).
+  Get Ruling 3. Get surface choice. Read TF4 inputs. Ship TF4.
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.

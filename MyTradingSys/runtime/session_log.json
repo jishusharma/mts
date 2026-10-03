@@ -2020,6 +2020,15 @@
       "action": "monitored",
       "verdict": "WAIT_PROOF",
       "reason": "verdict WATCH -> WAIT_PROOF | STATE TWOPEAK/in_va -> TWOPEAK/above_vah"
+    },
+    {
+      "ts": "2026-10-03T14:50:29.787Z",
+      "type": "alert",
+      "alert_id": 120,
+      "setup": "ct_long",
+      "action": "monitored",
+      "verdict": "WAIT_TRIGGER",
+      "reason": "verdict WATCH -> WAIT_PROOF | STATE TWOPEAK/above_vah -> TWOPEAK/in_va"
     }
   ]
 }
