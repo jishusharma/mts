@@ -34,6 +34,14 @@ QUEUED / IN-FLIGHT / GATED / LANDED / BLOCKED / PARKED
 |---|---|---|---|---|---|
 | 1.1 | B080 | dsa_worker hourly-cap misfires on stale pace entries | LANDED | - | BUGS + INDEX CLOSED; commits f97a441, 17d74f7 |
 | 1.2 | B075 | historical mode unfit for backtesting | QUEUED | - | partial at 86313de (no live calls, flow fields null + UNAVAILABLE, session attached). Residual: candidates still emit book_imbalance 0.0 and read net_delta via asDouble (SetupCandidatesBuilder.java:552,635,822). Registry stays OPEN |
+| 1.3 | TF1 | gate: Fabio v3 + orderflow_live + htf_context tests into run_all_tests | QUEUED | - | add MyTradingSys/backtest/layers/fabio/v3/tests, test_orderflow_live.py, test_htf_context_live.py to scripts/dev/run_all_tests.py (119 pass today, 0 gated); MyTradingSys/research/TOM_FABIO_REVIEW_2026-10-03.md E7 |
+| 1.4 | TF2 | per-source live funnel report (alert to exit) | QUEUED | - | new read-only scripts/dev/funnel_report.py over execution/auto_trades.jsonl, execution/trade_ledger.jsonl, runtime/alerts; daily table per source; MyTradingSys/research/TOM_FABIO_REVIEW_2026-10-03.md section 2 L4 |
+| 1.5 | TF3 | Fabio v3 live silence: diagnose + OF backfill | QUEUED | - | 0 v3 rows in runtime/alerts while OF bars are written; check volume_tier 10-day warm-up (v3/signals.py:277-284); backfill runtime/orderflow_live from Binance aggTrades history 2026-09-28 to live start, collection-only, no live process touched; MyTradingSys/research/TOM_FABIO_REVIEW_2026-10-03.md E6 |
+| 1.6 | TF4 | execution provenance audit Tom + Fabio (read-only) | QUEUED | - | Opus. Rows: entry order type, time exit, size, 50/50 runner, runner min distance, max_age_bars, BE rule, stop placement; quote + file:line or NO-SOURCE, testnet default FLAG per row; check entry-before-proof (EXTRACTION_ROUND2 A1) across the 5 Tom v2 extracts; output MyTradingSys/research/EXEC_PROVENANCE_AUDIT.md; MyTradingSys/research/TOM_FABIO_REVIEW_2026-10-03.md E1-E5 |
+| 1.7 | TF5 | Tom execution fixes from TF4 (fills, time exit, runner size) | QUEUED | 1.6 | staged .new in execution/ only, live-path tests (restart/reset, API error, fail closed), never restart or touch HALT/trades; supervisor promotes; testnet size 20 FLAG (Ruling 1); MyTradingSys/research/TOM_FABIO_REVIEW_2026-10-03.md E1-E3 |
+| 1.8 | TF6 | Tom golden-scenario translation tests (L2) | QUEUED | 1.6 | new MyTradingSys/tests/test_tom_golden.py from 4MoNjEQ2Dd8 v2 + ANGLE_TRADE_CATALOG.md setups; failing scenarios listed in the report, not fixed here; MyTradingSys/research/TOM_FABIO_REVIEW_2026-10-03.md section 2 L2 |
+| 1.9 | TF7 | Fabio golden-scenario translation tests (L2) on v3 | QUEUED | 1.3 | new v3/tests/test_fabio_golden.py from FABIO_LINE_BY_LINE_fZlNGWvd2Ko.md, FABIO_TRADE_MODEL.md (0jM5Y31YJak, 8CWKfoSJu3c); MyTradingSys/research/TOM_FABIO_REVIEW_2026-10-03.md section 2 L2 |
+| 1.10 | TF8 | Fabio v3 historical backtest, pre-registered (L3) | QUEUED | 1.3 | write PRE_REG_FABIO_V3.md first (metric, threshold, stop rule, N = grid cells for DSR), then run v3 over F:/MTS/data/orderflow_1m walk-forward with backtest/fees.py; MyTradingSys/research/TOM_FABIO_REVIEW_2026-10-03.md section 2 L3 |
 
 ## WAVE 2 - R4 FINISH
 
@@ -103,6 +111,16 @@ QUEUED / IN-FLIGHT / GATED / LANDED / BLOCKED / PARKED
 
 | # | ID | Slug | Status | Blocker | Next |
 |---|---|---|---|---|---|
-| 7.1 | R7 | Tom BT re-run on D1 target rule | BLOCKED | Wave 4 | old-vs-new R distribution |
+| 7.1 | R7 | Tom BT re-run on D1 target rule | QUEUED | 4.1, 4.6, 4.7, 1.7 | write PRE_REG_R7.md first; regenerate the row cache with the R1 target rule and TF5 execution; old-vs-new R distribution; MyTradingSys/research/TOM_FABIO_REVIEW_2026-10-03.md section 2 L3 |
+
+## WAVE 8 - OTHER LAYERS
+
+| # | ID | Slug | Status | Blocker | Next |
+|---|---|---|---|---|---|
+| 8.1 | LY1 | layer provenance audit, all non-core families (read-only) | QUEUED | - | Opus. rsi, cryptocred, positioning, session, turn_of_candle, tick, consensus: every parameter -> trader quote + file:line or NO-SOURCE; output MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md; MyTradingSys/research/TOM_FABIO_REVIEW_2026-10-03.md section 4 |
+| 8.2 | LY2 | staged .new sweep (11 files, 25-123 h) | QUEUED | - | per file: gate and promote, or archive with scripts/dev/declutter_backups.py; list in MyTradingSys/research/STATUS.md In-Flight |
+| 8.3 | LY3 | turn_of_candle: trade or alert-only decision | QUEUED | 1.4 | 58 testnet trades gross +0.017 USD net -0.56; default FLAG alert-only via staged execution/auto_trader_config.json.new, supervisor promotes; MyTradingSys/research/TOM_FABIO_REVIEW_2026-10-03.md section 4 |
+| 8.4 | LY4 | one pre-registered historical driver for all layers | QUEUED | 8.1 | generalise run_backtest.py pattern; drivers from MyTradingSys/research/fast_track_2026-09-27/DSA_BACKLOG.md (malkan_40_60, malkan_mtf, rsi_ma_events); PRE_REG per layer |
+| 8.5 | LY5 | finish rsi observation + consensus writer (staged) | QUEUED | 8.2 | MyTradingSys/backtest/layers/rsi/observation.py.new, MyTradingSys/backtest/layers/consensus/writer.py.new and their tests |
 
 # END

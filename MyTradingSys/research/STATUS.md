@@ -1,49 +1,47 @@
 # Development Status
 
-Generated: 2026-10-02 22:16:36
+Generated: 2026-10-03 16:09:51
 
 ## Git Status
 **Branch:** fast-track
 
 **Last 10 commits:**
 ```
-660f7a4 session close 2026-10-02: MTS-2026-10-02-1500Z-CLI-BLD-testnet-wire
-59000f6 testnet_canary: detect python roles launched as `-m pkg.module`, not only `name.py`
-da13131 T050 phase 3 PASS on Deribit testnet (first real MTS orders); BUGS B077/B078/B079 CLOSED
-2ee3b4b session close: MTS-2026-10-02-1530Z-CLI-ANA-tom-fabio-session
-0c085c5 market analysis 2026-10-02: tape vs Tom gates and Fabio reports
-9df02c6 checklist: no stop between tasks; continuous execution
-8b57131 remove invented budget/usage/token lines; Session Manager governs (USER, SURFACE_POLICY, checklist, DSA)
-b8eb479 checklist: mandatory CL prompt lines (process spawning, operator proxy, printing)
-78d8c3a section 11: P2 close (Tom all-shorts diagnosis, book_imbalance 0.0 bug); build time + head refresh
-34dadab tom_bt_diag: log verdict reason per proof-5 row; all-shorts diagnosis
+c7802a9 session batch: B084-B087 filed; queue dispatcher built (pick_task.py, tick.py ext, mts go, guide row, gitignore); R4-T2 fix from dispatcher smoke test; file-index rows
+684c419 surface choice rule: App first, CLI fallback (operator 2026-10-03)
+1dd9aca close: MTS-2026-10-03-0430Z-DSA-COO - CL prompt shipped for backlog review + CI/CD design
+86313de b075: historical snapshot path makes no live calls; flow fields null/UNAVAILABLE, session+liquidation_warning+data_quality attached. Paths: src/main/java/datafeed/MarketDataSnapshot.java, src/test/java/datafeed/HistoricalSnapshotNoLiveCallsTest.java, MyTradingSys/tests/test_b075_book_none_short.py, MyTradingSys/system/sessions/MTS-2026-10-03-0430Z-CLI-BLD-b075-historical.md
+17d74f7 b080: close dsa_worker pacing bug - regression tests for stale/future/non-epoch self-heal
+f97a441 b080: close dsa_worker pacing bug - regression tests for stale/future/non-epoch self-heal
+5a6ec09 wave 0.3: index OPERATOR_DIRECTIVE_2026-10-03-historical-testing.md + BUILD_PIPELINE.md
+ccd0a0f R4 HTF context writer (collection-only): 4H/1D balance, failed-breakout flag, OI delta. Paths: layers/fabio/htf_context_live.py, layers/fabio/test_htf_context_live.py, research/htf_context/*, session record
+ee9ecd2 close: MTS-2026-10-03-0315Z-DSA-COO - supervisor watches aux processes; file-index rows; .new delete
+1dd5d20 close: MTS-2026-10-02-2023Z-DSA-COO - R2+R3 live, scheduler live, purge + T062 archived
 ```
 
 ## Queue Status
 ```
-WORKER   idle, heartbeat 25 h ago (host JIS-NUC, worker 778a6ee4da7e)
+WORKER   idle, heartbeat 3 h ago (host JIS-NUC, worker 778a6ee4da7e)
 WARNING  heartbeat older than 3 min: NUC off, asleep, signed out, or share unreachable
 QUEUE    waiting 0; running 0; replies 234; not yet verified 0
-DSA-WORKER idle, heartbeat 44 h ago; incoming_dsa 0; running 0
+DSA-WORKER idle, heartbeat 62 h ago; incoming_dsa 0; running 0
 RECENT   2111-dsa-recon-tom-hq8soq67x5o: PARTIAL
 RECENT   2112-dsa-recon-tom-pgdmklj0hha: PARTIAL
 RECENT   2113-dsa-recon-tom-zawex-trufe: BLOCKED
 ```
 
 ## In-Flight .new Files
-- MyTradingSys\backtest\bt\bt_stats.py.new (82.6h)
-- MyTradingSys\backtest\layers\audit\formula_audit.py.new (88.6h)
-- MyTradingSys\backtest\layers\consensus\test_writer.py.new (8.0h)
-- MyTradingSys\backtest\layers\consensus\writer.py.new (8.0h)
-- MyTradingSys\backtest\layers\cryptocred\test_cc_retest.py.new (105.0h)
-- MyTradingSys\backtest\layers\cryptocred\test_cc_structure.py.new (105.0h)
-- MyTradingSys\backtest\layers\rsi\observation.py.new (8.0h)
-- MyTradingSys\backtest\layers\rsi\test_observation.py.new (8.0h)
-- MyTradingSys\execution\README.md.new (106.2h)
-- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (8.0h)
-- MyTradingSys\runtime\test_quad_classify.py.new (8.0h)
-- MyTradingSys\runtime\test_regime_classifier.py.new (8.0h)
-- MyTradingSys\tests\java\MarketDataSnapshotTest.java.new (8.0h)
+- MyTradingSys\backtest\layers\audit\formula_audit.py.new (106.4h)
+- MyTradingSys\backtest\layers\consensus\test_writer.py.new (25.9h)
+- MyTradingSys\backtest\layers\consensus\writer.py.new (25.9h)
+- MyTradingSys\backtest\layers\cryptocred\test_cc_retest.py.new (122.9h)
+- MyTradingSys\backtest\layers\cryptocred\test_cc_structure.py.new (122.9h)
+- MyTradingSys\backtest\layers\rsi\observation.py.new (25.9h)
+- MyTradingSys\backtest\layers\rsi\test_observation.py.new (25.9h)
+- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (25.9h)
+- MyTradingSys\runtime\test_quad_classify.py.new (25.9h)
+- MyTradingSys\runtime\test_regime_classifier.py.new (25.9h)
+- MyTradingSys\tests\java\MarketDataSnapshotTest.java.new (25.9h)
 
 ## Recent Reports (last 7 days)
 - MyTradingSys/research\TWO_CORES_INT_HANDOFF_2026-10-01.md (2026-10-02 14:17) # TWO CORES INTEGRATION: HANDOFF (budget stop, 2026-10-01 19:40Z)

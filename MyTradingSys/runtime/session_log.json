@@ -1921,6 +1921,33 @@
       "action": "monitored",
       "verdict": "WAIT_PROOF",
       "reason": "verdict WAIT_PROOF -> WAIT_TRIGGER | STATE TWOPEAK/in_va -> TWOPEAK/above_vah"
+    },
+    {
+      "ts": "2026-10-03T11:12:24.839Z",
+      "type": "alert",
+      "alert_id": 109,
+      "setup": "ct_short",
+      "action": "monitored",
+      "verdict": "WAIT_PROOF",
+      "reason": "verdict WAIT_TRIGGER -> WAIT_PROOF | zone daily_vah -> vwap_band_+1 | STATE TWOPEAK/above_vah -> TWOPEAK/in_va"
+    },
+    {
+      "ts": "2026-10-03T11:15:24.630Z",
+      "type": "alert",
+      "alert_id": 110,
+      "setup": "ct_short",
+      "action": "monitored",
+      "verdict": "WAIT_PROOF",
+      "reason": "verdict WAIT_TRIGGER -> WAIT_PROOF | STATE TWOPEAK/above_vah -> TWOPEAK/in_va"
+    },
+    {
+      "ts": "2026-10-03T11:20:26.256Z",
+      "type": "alert",
+      "alert_id": 111,
+      "setup": "ct_long",
+      "action": "monitored",
+      "verdict": "WATCH",
+      "reason": "verdict WAIT_TRIGGER -> WAIT_PROOF | zone 5m_swing_low -> 4h_vah | STATE TWOPEAK/above_vah -> TWOPEAK/in_va"
     }
   ]
 }
