@@ -388,3 +388,51 @@ def test_bug_007_no_candidates_defaults_false():
     snap = {k: v for k, v in LIVE_V120.items() if k != "setup_candidates"}
     m = build_math_object(snap)
     assert m["hard_stops_compiled"]["top_candidate_rr_below_threshold"] is False
+
+
+# ============================================================
+# B072 - current_price input validation (fail closed)
+# ============================================================
+
+import math as _math
+import pytest
+
+
+@pytest.mark.parametrize("bad", ["x", None, 0, -5.0, float("nan"), float("inf"), True])
+def test_b072_bad_current_price_raises_flat_schema(bad):
+    snap = dict(LIVE_V120)
+    snap["current_price"] = bad
+    with pytest.raises(ValueError, match="current_price"):
+        build_math_object(snap)
+
+
+@pytest.mark.parametrize("bad", ["x", None])
+def test_b072_bad_current_price_raises_old_schema(bad):
+    snap = load_snapshot()
+    snap["data"]["current_price"] = bad
+    with pytest.raises(ValueError, match="current_price"):
+        build_math_object(snap)
+
+
+def test_b072_missing_current_price_raises():
+    snap = {k: v for k, v in LIVE_V120.items() if k != "current_price"}
+    with pytest.raises(ValueError, match="current_price"):
+        build_math_object(snap)
+
+
+# ============================================================
+# B073 - emitted rr values and rr_sanity agree (round, then sanity)
+# ============================================================
+
+def test_b073_sanity_matches_emitted_gross_rr(monkeypatch):
+    import math_object_builder as mob
+    # 1.49996 rounds to 1.5 on output; the sanity flag must be computed on that same rounded value (>= 1.5).
+    monkeypatch.setattr(mob, "calculate_gross_rr", lambda e, t, s: 1.49996)
+    monkeypatch.setattr(mob, "calculate_net_rr", lambda e, t, s, *a, **k: 1.996)
+    m = mob.build_math_object(dict(LIVE_V120))
+    rows = [z for z in m["zones"].values() if z["gross_rr"] is not None]
+    assert rows, "need at least one evaluated zone"
+    for z in rows:
+        assert z["gross_rr"] == 1.5
+        assert z["net_rr"] == 1.996
+        assert z["rr_sanity"] is (z["gross_rr"] >= 1.5), "rr_sanity disagrees with the emitted gross_rr"

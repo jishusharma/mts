@@ -12,6 +12,7 @@
 #
 # All zone price levels come from the snapshot. No AI-invented prices.
 
+import math
 from typing import List, Dict, Any, Optional, Tuple
 from mts_math import (
     calculate_distance,
@@ -323,6 +324,9 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     """
     normalized = _normalize_snapshot(snapshot)
     price = normalized["current_price"]
+    # B072: fail closed on a missing / non-numeric / non-finite / non-positive price (was passed through -> "aligned").
+    if isinstance(price, bool) or not isinstance(price, (int, float)) or not math.isfinite(price) or price <= 0:
+        raise ValueError("invalid current_price: %r (need a finite number > 0)" % (price,))
     speed = normalized.get("conditions", {}).get("speed_picking_up", False)
 
     zones = _extract_zones(normalized)
@@ -359,6 +363,9 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
             if stop is not None and target is not None:
                 gross_rr = calculate_gross_rr(zprice, target, stop)
                 net_rr = calculate_net_rr(zprice, target, stop)
+                # B073: round first (the emitted precision), then run the sanity check on that same value.
+                gross_rr = round(gross_rr, 4)
+                net_rr = round(net_rr, 4)
                 rr_sanity = calculate_rr_sanity(gross_rr)
 
         zone_math[name] = {

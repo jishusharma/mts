@@ -2,7 +2,7 @@
 
 Opened: 2026-09-27 by session Claude Sonnet 5 (via NUC worker task 008, reviewed by coordinator).
 Severity: LOW (rounding inconsistency; display only, not a defect).
-Status: OPEN.
+Status: CLOSED.
 
 ## DESCRIPTION
 
@@ -19,3 +19,5 @@ section 2, finding F11.
 ## UPDATES
 
 2026-09-27: Filed per CORE_READINESS_PLAN.md F11.
+
+B073 closed 2026-10-04 (MTS-2026-10-04-0538Z-CLI-BLD-b072-b073-math-object): round, then sanity; see research/BUGS.md B073.

@@ -74,8 +74,8 @@ QUEUED / IN-FLIGHT / GATED / LANDED / BLOCKED / PARKED
 | 4.3 | T052 | Tom-cited SETUP_CONFIRMED trigger | QUEUED | 4.2 | cite or reject |
 | 4.4 | B059 | pf_vp bin-edge drift live verify | QUEUED | - | live tape confirm |
 | 4.5 | T042 | OI/CVD peak reference still not emitted | QUEUED | - | add producer |
-| 4.6 | B072 | L2 input validation for current_price | QUEUED | - | guard in build_math_object |
-| 4.7 | B073 | net_rr rounding inconsistency | QUEUED | - | round-then-sanity |
+| 4.6 | B072 | L2 input validation for current_price | LANDED | - | CLOSED: ValueError on non-finite / non-positive / non-numeric current_price in build_math_object; 10 new tests fail on .pre_b072_b073, pass on new; session MTS-2026-10-04-0538Z-CLI-BLD-b072-b073-math-object |
+| 4.7 | B073 | net_rr rounding inconsistency | LANDED | - | CLOSED: round to 4 dp, then rr_sanity on the rounded gross_rr; test fails on .pre_b072_b073; Java 2 dp rounding upstream is a residual; session MTS-2026-10-04-0538Z-CLI-BLD-b072-b073-math-object |
 | 4.8 | B074 | rule-order: contradiction cap before broken-value | QUEUED | - | reorder |
 | 4.9 | B066 | rank-1 shown at trigger_ready 150 pts away | PARKED | premise gone | SetupCandidatesBuilder.java:75,:209 gate trigger_ready at distance_pct <= 0.1; BUGS close with receipt pending |
 | 4.10 | B063 | divergence: restore in schema or deprecate | QUEUED | - | decide |
