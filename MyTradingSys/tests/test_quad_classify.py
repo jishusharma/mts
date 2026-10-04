@@ -1,8 +1,7 @@
 """test_quad_classify.py - offline tests for runtime/quad_classify.py (price x CVD x OI quadrant classifier).
 
-Staged as .new 2026-10-02 (TWO_CORES_FIX_PASS_2026-10-02.md item 4). Promotion target: MyTradingSys/runtime/test_quad_classify.py.
-NOTE: run_all_tests.py does not collect MyTradingSys/runtime/test_*.py (step 4 = MyTradingSys/tests, step 5b =
-backtest/layers) - a gate decision is needed after promotion. Run directly:  python MyTradingSys/runtime/test_quad_classify.py
+Staged as .new 2026-10-02 (TWO_CORES_FIX_PASS_2026-10-02.md item 4). Promoted 2026-10-04 (T037) to MyTradingSys/tests/test_quad_classify.py (collected by run_all_tests step 4).
+Run directly:  python MyTradingSys/tests/test_quad_classify.py
 
 Expected values come from DOCUMENTS, never from the code under test:
   [Q1] MyTradingSys/archive/mts_historical/SESSION_CLOSE_2026-09-20-0541Z.md:74-80, "6-STATE MOMENTUM (canonical)":
@@ -37,7 +36,7 @@ import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))   # same pattern as MyTradingSys/tests/*.py (path to runtime/)
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "runtime"))   # runtime/ modules
 sys.dont_write_bytecode = True
 
 import quad_classify as qc  # noqa: E402

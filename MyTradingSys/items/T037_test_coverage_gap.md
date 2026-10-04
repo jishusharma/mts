@@ -13,10 +13,14 @@ Evidence: AUDIT_2026-09-17_TRACKER.md, "5 Java files + 3 Python files have ZERO 
 
 ## STATE
 
-2026-09-22 OPEN. No work started.
+2026-10-04 OPEN. Tests written for all 8 files; Build-Check full tier runs mvn -q test; MarketDataSnapshot body tests still skeleton.
 
 ## UPDATES (chronological, newest last)
 
 ### 2026-09-22T18:00Z - coordinator, session MTS-2026-09-22-1737Z
 
 Item doc created during T039 functionality-doc sweep.
+
+### 2026-10-04 - MTS-2026-10-04-1045Z-APP-BLD-t037-test-coverage
+
+2026-10-04 MTS-2026-10-04-1045Z-APP-BLD-t037-test-coverage: 5 Java + 3 Python engine files now tested (mvn -q test 108 run/15 skipped skeleton, pytest 54 new/promoted); Build-Check full tier runs mvn -q test; 14/14 mutants killed in scratch copy; MarketDataSnapshot body tests still skeleton (BinanceClient seam needed). pom.xml already had junit-jupiter + surefire (no pom edit owed; the BLOCKED cell was stale).

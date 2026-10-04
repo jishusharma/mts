@@ -1,8 +1,7 @@
 """test_regime_classifier.py - offline tests for runtime/regime_classifier.py (per-cycle trend regime detector).
 
-Staged as .new 2026-10-02 (TWO_CORES_FIX_PASS_2026-10-02.md item 4). Promotion target: MyTradingSys/runtime/test_regime_classifier.py.
-NOTE: run_all_tests.py does not collect MyTradingSys/runtime/test_*.py (step 4 = MyTradingSys/tests, step 5b =
-backtest/layers) - a gate decision is needed after promotion. Run directly:  python MyTradingSys/runtime/test_regime_classifier.py
+Staged as .new 2026-10-02 (TWO_CORES_FIX_PASS_2026-10-02.md item 4). Promoted 2026-10-04 (T037) to MyTradingSys/tests/test_regime_classifier.py (collected by run_all_tests step 4).
+Run directly:  python MyTradingSys/tests/test_regime_classifier.py
 
 Expected values come from ONE document, never from the code under test:
   [R] MyTradingSys/research/TREND_REGIME_DETECTOR_SPEC.md
@@ -39,7 +38,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))   # same pattern as MyTradingSys/tests/*.py (path to runtime/)
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "runtime"))   # runtime/ modules
 sys.dont_write_bytecode = True
 
 import regime_classifier as rc  # noqa: E402

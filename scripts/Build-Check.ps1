@@ -2,8 +2,9 @@
 # Writes MyTradingSys/runtime/BUILD_REPORT.md - paste this first at any session start.
 # Does not modify any live file.
 # Tiers (B091):
-#   (default)   full: compile + math tests + doc tests + registry checks; writes BUILD_REPORT.md.
-#   -Quick      fast pre-commit tier: math tests skipped (the release gate runs them); STATUS says QUICK.
+#   (default)   full: compile + Java tests (mvn -q test) + math tests + doc tests + registry checks; writes BUILD_REPORT.md.
+#   -Quick      fast pre-commit tier: Java compile only; math tests and Java tests (mvn -q test) skipped
+#               (the release gate runs them); STATUS says QUICK.
 #   -ReadOnly   print the report only; BUILD_REPORT.md is not rewritten, so the tree stays clean.
 # Build-Check never writes session_log.json; -ReadOnly removes its only tree write.
 
@@ -36,6 +37,30 @@ if ($LASTEXITCODE -eq 0) {
 } else {
     $lines.Add("Java compile:  FAIL ($dur s)")
     $overallFail = $true
+}
+
+# 1b. Java tests (T037): full tier runs mvn -q test; -Quick stays compile-only
+if ($Quick) {
+    $lines.Add("Java tests:    SKIP (quick tier; compile only; full pass is the release gate)")
+} else {
+    $t0 = Get-Date
+    $jtestOut = (& mvn -q test 2>&1 | Out-String)
+    $jtestRc = $LASTEXITCODE
+    $dur = [math]::Round(((Get-Date) - $t0).TotalSeconds, 1)
+    $jrun = 0; $jskip = 0
+    if (Test-Path "target/surefire-reports") {
+        foreach ($rf in (Get-ChildItem "target/surefire-reports" -Filter "*.txt" | Where-Object { $_.LastWriteTime -ge $t0 })) {
+            $jm = [regex]::Match((Get-Content $rf.FullName -Raw), "Tests run: (\d+), Failures: \d+, Errors: \d+, Skipped: (\d+)")
+            if ($jm.Success) { $jrun += [int]$jm.Groups[1].Value; $jskip += [int]$jm.Groups[2].Value }
+        }
+    }
+    if ($jtestRc -eq 0 -and $jrun -gt 0) {
+        $lines.Add("Java tests:    PASS $($jrun - $jskip)/$jrun run, $jskip skipped ($dur s)")
+    } else {
+        $lines.Add("Java tests:    FAIL ($dur s)")
+        foreach ($jl in ($jtestOut -split "`n" | Where-Object { $_ -match "FAIL|ERROR|Tests run:.*(Failures|Errors): [1-9]" } | Select-Object -First 5)) { $lines.Add("  - " + $jl.Trim()) }
+        $overallFail = $true
+    }
 }
 
 # 2. Math tests
@@ -287,7 +312,7 @@ if ($dispatchFail.Count -gt 0) {
 }
 $lines.Add("")
 if ($bomHits.Count -gt 0 -or $nonAsciiHits.Count -gt 0) { $overallFail = $true }
-$tier = if ($Quick) { " (QUICK: math tests not run)" } else { "" }
+$tier = if ($Quick) { " (QUICK: math tests and Java tests not run)" } else { "" }
 if ($overallFail) { $lines.Add("STATUS: FAIL$tier") } else { $lines.Add("STATUS: PASS$tier") }
 $lines.Add("")
 $lines.Add("Pastes for this session:")

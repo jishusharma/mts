@@ -3,8 +3,13 @@ package datafeed;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Method;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
- * SKELETON - every test is @Disabled("skeleton") with a TODO body. NO expected values are invented here; each TODO
+ * PARTIAL (T037): the T033 helper-mapping test is live; the rest are still @Disabled("skeleton") with a TODO body (they need a
+ * BinanceClient seam). NO expected values are invented here; each TODO
  * names where the expected value must come from (a document or a hand computation), never from the code under test.
  *
  * Class under test: src/main/java/datafeed/MarketDataSnapshot.java (1468 lines at HEAD 9695b36).
@@ -91,12 +96,26 @@ public class MarketDataSnapshotTest {
     }
 
     @Test
-    @Disabled("skeleton")
-    void oiDeltaState_helperMapping_fourStatesAndNeutral() {
-        // Helper :1401-1408 (private static classifyOiDeltaState(String oiDirection, double netDelta1h)); call by reflection.
-        // TODO: one case per cell of the documented table (rising/falling x positive/negative delta) plus the neutral cases
-        // (direction other than rising/falling; zero delta). Expected labels: aggressive_long / aggressive_short / rekt_long /
-        // rekt_short / neutral per INDICATOR_IMPLEMENTATION_HANDOFF.md:54-58 and BUGS.md:119; compute by hand.
+    void oiDeltaState_helperMapping_fourStatesAndNeutral() throws Exception {
+        // Expected labels from the four-state table in INDICATOR_IMPLEMENTATION_HANDOFF.md:54-58:
+        // +delta & OI up = Aggressive Longs; -delta & OI up = Aggressive Shorts;
+        // -delta & OI down = Rekt Longs; +delta & OI down = Rekt Shorts.
+        assertEquals("aggressive_long", classify("rising", 5.0));
+        assertEquals("aggressive_short", classify("rising", -5.0));
+        assertEquals("rekt_long", classify("falling", -5.0));
+        assertEquals("rekt_short", classify("falling", 5.0));
+        // not in the table: zero delta, flat / unknown / null direction
+        assertEquals("neutral", classify("rising", 0.0));
+        assertEquals("neutral", classify("falling", 0.0));
+        assertEquals("neutral", classify("flat", 5.0));
+        assertEquals("neutral", classify("flat", -5.0));
+        assertEquals("neutral", classify(null, 5.0));
+    }
+
+    private static String classify(String direction, double delta) throws Exception {
+        Method m = MarketDataSnapshot.class.getDeclaredMethod("classifyOiDeltaState", String.class, double.class);
+        m.setAccessible(true);
+        return (String) m.invoke(null, direction, delta);
     }
 
     @Test
