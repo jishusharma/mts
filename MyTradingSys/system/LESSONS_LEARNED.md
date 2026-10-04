@@ -536,3 +536,20 @@ Where the rule lives: DSA_SESSION_PROMPT.md section 9 HARD RULES, near the mts g
 
 Receipt: B104 (60f3250).
 
+
+## 2026-10-04 - Applied a CLI-only rule to App prompts
+
+What happened: USER.md LIKES and DSA_SESSION_PROMPT.md section 9 both scope
+the mts go launch block to CLI prompts. This session printed three App prompts
+(B093, T037, B133) each opening with the block. Operator: "from where do you
+read mts go? why it is here?" Same defect twice this session, and once earlier
+in the week (B104 break #6).
+
+Rule: the mts go launch block belongs to CLI prompts only. App prompts open
+with Session ID, Mode line, repo root, then the task brief. Before printing
+any prompt, read the surface line and pick the opening that matches.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 9 (line to add);
+prompt_check.ps1 check 12 (code gate); B133 item doc.
+
+Receipt: B133 filed df5059e.

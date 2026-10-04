@@ -74,3 +74,33 @@ before this filing.
 - B101 (OPEN), ask-side only.
 
 # END
+
+## Root causes (2026-10-04, operator request)
+
+Three causes, one on disk, one on the composer, one on the format.
+
+1. Rule text is ambiguous. USER.md LIKES reads "Every CLI prompt DSA
+   prints opens with the mts go launch block." DSA_SESSION_PROMPT.md
+   section 9 reads "CLI prompts open with the mts go launch block." Both
+   are scoped to CLI. Both are correct. Neither names the App prompt. No
+   line on disk says what an App prompt opens with, so the CLI form is the
+   only opening the composer has.
+
+2. Composer read the block as a prefix, not a surface marker. The row for
+   this bug was read, quoted, and ignored two turns later when the B093
+   prompt was composed. The rule and the violation were held in the same
+   working set.
+
+3. Mechanical: the surface line sits below the block. A reader who scans
+   top-down sees the block first and never notices the surface mismatch.
+   The format enforced the error.
+
+## Fix (three parts)
+
+1. Code: prompt_check.ps1 gains check 12 (a body carrying the mts go
+   line with surface marker App fails) and check 13 (exactly one surface
+   marker line required). Dispatched as B133 prompt.
+2. Doc: DSA_SESSION_PROMPT.md section 9 gains one line. App prompts open
+   with Session ID, Mode line, repo root, then the task brief. The mts go
+   launch block belongs to CLI prompts only.
+3. Lesson: LESSONS_LEARNED.md entry logged 2026-10-04.
