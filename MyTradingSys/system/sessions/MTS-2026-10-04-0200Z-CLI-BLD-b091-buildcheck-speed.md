@@ -11,7 +11,7 @@ lanes: none
 started: 2026-10-04 02:00Z
 ended: 2026-10-04 02:40Z
 status: closed
-commits: see git log --grep 'B091:'
+commits: the one tagged B091
 handoff: none
 ## Notes
 - Chosen fix: (A) -Quick and (B) -ReadOnly, plus (D) cicd_run.py build-check step passes both (stage 2.3 already runs math tests itself).

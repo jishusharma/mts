@@ -73,4 +73,6 @@ B099 | CLOSED  | B099_v3_l3_pool_hang.md | run_v3_l3 pool stall now fails closed
 B100 | OPEN    | B100_audit_verdict_mismatch.md | E1b/E2 labelled NO-SOURCE but carry Tom quotes; should be CONCEPT-ONLY per audit's own rules
 B101 | OPEN    | B101_dsa_context_ask.md | DSA asks for CLAUDE.md and mts go launch block before composing a CL prompt; both are one-liners
 B104 | OPEN    | B104_rules_vs_gates.md | rules exist for prompt hygiene; check is advisory, not blocking; nine breaks in one session
+B102 | OPEN    | B102_dst_session_anchors.md | fixed-UTC session anchors in offline models; wrong 1h on ~40% of days
+B103 | OPEN    | B103_funding_coverage.md | funding cost silently 0 outside loaded range; archive has funding from 2020-01
 # END

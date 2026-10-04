@@ -11,7 +11,7 @@ lanes: subagents /sonnet-01, /sonnet-02, /sonnet-03 (web research); none live
 started: 2026-10-03 20:53Z
 ended: 2026-10-03 ~21:30Z (operator: session limit approaching)
 status: handed-off
-commits: see git log for "MTS-Session: MTS-2026-10-03-2053Z-APP-ANA-btc-moving-averages"
+commits: records named MTS-Session: MTS-2026-10-03-2053Z-APP-ANA-btc-moving-averages
 handoff: next APP-ANA session (this record). Resume steps below.
 
 ## Done
