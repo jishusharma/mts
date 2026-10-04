@@ -314,46 +314,40 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-04T12:20Z.
+Last live read:  2026-10-04T13:02Z.
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
 Runtime + loops: loop UP. wrapper 23824, java 23440, supervisor 20788.
-Build PASS at last gate (2026-10-04T12:51:37Z). Math 317/317, Doc 5/5, Java 108/123 (15 skipped).
-HEAD 3956b67 on fast-track. origin/fast-track = 3956b67.
+Build PASS at last gate (2026-10-04T18:51:37Z). Math 317/317, Doc 5/5, Java 108/123 (15 skipped).
+HEAD 1c81d81 on fast-track. origin/fast-track = 5132444 (1c81d81 local-only until the next push).
 
-LANDED this DSA session (27 commits, in order):
-  5831779 section 11; d9b295f B074/B069; 15f3c0b B129+B074 receipts; 87b2063 INDEX B129;
-  d36ec97 SURFACE_POLICY 1b; f088b52 T050 p3 primitives; 18ed141 B129 AST; b9b0405 B059 verify;
-  7563de7 T037 tests + Build-Check mvn test; 5da10b0 B129 CLOSED; ae12ed2 B130 filed;
-  60f3250 B104 blocking; 29079ea B100 E1b reclass; 94310a3 E2-T revert; a20f602 audit counts;
-  d417595 LESSONS 7; 91fd8b6 section 11; 6a1b3e5 T050 CLOSED (phase 3 live PASS);
-  010f2c2 B085 refuted + B131 filed; b796edb B104 (C) check 11;
-  38f75d8 B102 DST + B103 funding fail-closed; 9b76e71 LY1 layer provenance audit;
-  a7b85b1 B132 + section 5d; 41dc5f3 B104 CLOSED + section 11;
-  3956b67 B130 CLOSED + B131 direction receipt.
+LANDED this DSA session (5 commits, in order):
+  df5059e B133 filed; fce0551 B131 item-doc mechanism append;
+  ed0e3c1 B133 tags + root causes + LESSONS; 5132444 B133 LOGGER backfill;
+  1c81d81 B093 parallel dispatch by file set (shape B, 3 slots) [returned from a CLI session].
 
-CLOSED this session: B074, B069, B075, B084, B072, B073, B076, B100, B104, B129, B059,
-  B085, B102, B103, B130, T037, T050.
-OPENED: B129 (closed same), B130 (closed same), B131, B132.
+CLOSED this DSA session: none.
+OPENED this DSA session: B133.
+REOPENED this DSA session: B093 (pick side landed at 1c81d81; launcher side remains).
 
 Pipeline:
-  Wave 1-2 LANDED. Wave 4: 4.8 B074 partial, 4.12 T037 LANDED, 4.16 B069 partial,
-  4.4 B059 verified. 5.1 T050 CLOSED. 8.1 LY1 LANDED.
-  7.1 R7 dispatched to an App session this close.
-  B131 OPEN (upstream pool skew; direction path read symmetric; next stage proof detectors).
-  B132 OPEN (policy in section 5d, enforcement running).
+  B093 REOPENED: go.py --id <rid> launcher side not delivered; prerequisite for B094.
+  B131 OPEN: mechanism identified (book_imbalance count gate at
+  SetupCandidatesBuilder.java L575-580); fix shape A composed, not dispatched.
+  B133 OPEN: prompt_check checks 12-13 composed as an App dispatch.
+  T037 OPEN: MarketDataSnapshot body tests + BinanceClient seam composed as an App dispatch.
+  R7: no PRE_REG_R7.md and no R7_RESULTS on disk; awaiting the operator paste.
 
 Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
 
 Next session first action:
-  1. Read R7 result; verify against PRE_REG_R7.md.
-  2. B131 proof detector read (SetupCandidatesBuilder.java computeProof L531-620;
-     math_object_builder.py proof block).
-  3. Scheduler layer: B093 (pick_state hold), B094 (headless mts go), B095 (per-session cost).
+  1. Read the B133/T037 App replies; verify against the dispatch prompts.
+  2. B131 fix shape A: dispatch (already composed).
+  3. B093 launcher side: go.py --id; mts.ps1 go verb pass-through.
+  4. B094 headless mts go, B095 per-session cost.
 
-Section 5d (DSA DOES THIS DIRECTLY) in force per B132: registry flips, section 11,
-item-doc receipts, 03_FILE_INDEX rows run in DSA's own turn.
+Section 5d in force per B132.
 
 ## 12. SESSION END
 

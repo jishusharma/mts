@@ -67,3 +67,24 @@ move to slots/released/. Tests 23-30 in test_pick_task.py; 8 fail on the pre-cha
 Gate: run_all_tests.py --quick PASS.
 
 # END
+
+## 2026-10-04T18:30Z - REOPENED: launcher side not delivered
+
+Pick-side landed at 1c81d81 (shape B by file set, up to 3 active slots in
+queue/slots/<id>.txt|json). test_pick_task.py tests 23-30 added; 8 fail on
+pre-change pick_task.py; 30 pass post-change; run_all_tests --quick PASS.
+
+T5 self-report: go.py reads only queue/next_task.json, which mirrors the
+first active slot. Slots 2 and 3 exist on disk with no launcher. So the
+fix delivers "queue offers multiple rows", not "multiple rows run".
+
+Residual fix shape (for Claude):
+  go.py --id <rid> reads queue/slots/<rid>.json, composes the session ID
+  from its session name, launches. Default (no flag) reads next_task.json.
+  mts.ps1 go verb passes --id through. Tests: test_go.py new case fails on
+  pre-change go.py; --dry on the operator terminal stays live for a single
+  slot launch.
+
+Not folded into B094. B094 is "launch without the operator"; this is
+"launch a specific slot", a prerequisite for it. Same file set (go.py,
+mts.ps1), so ordering is: B093 launcher side, then B094.
