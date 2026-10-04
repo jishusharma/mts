@@ -74,3 +74,83 @@ candidate pool is balanced. Read the proof detector code in
 SetupCandidatesBuilder.java and math_object_builder.py.
 
 B131 stays OPEN. Next fix shape is a reading pass over the proof detectors.
+
+## 2026-10-04T13:20Z - mechanism identified (DSA read)
+
+Base rate from allshorts.diag.stdout.txt, top-candidate direction by
+proof count, all 120892 rows in the 57-month cache:
+
+    proof 0: long=6004  short=4827
+    proof 1: long=11045 short=9328
+    proof 2: long=20105 short=19000
+    proof 3: long=19668 short=19828
+    proof 4: long=5231  short=5536      (balanced)
+    proof 5: long=105   short=215       (2:1 short)
+
+The pool is balanced through proof 4. The skew enters at the 4 to 5
+transition. One signal contributes asymmetrically at the marginal
+step.
+
+The signal is book_imbalance, counted in SetupCandidatesBuilder.java
+L575-580:
+
+    if (bookImbalance != null && bookImbalance != 0.0) {
+        boolean favoursTrade = "long".equals(direction)
+            ? bookImbalance > 1.5
+            : bookImbalance < 0.67;
+        if (favoursTrade) count++;
+    }
+
+Short: bid_ask_ratio < 0.67 (ask-heavy) counts.
+Long:  bid_ask_ratio > 1.5 (bid-heavy) counts.
+In the 57-month sample the ask-heavy side is far more common. Every
+short candidate receives one count; every long receives zero on that
+slot. Longs must score 5 of the remaining 6; shorts must score 4 of
+the remaining 6. At a 5-of-7 threshold that produces the observed
+2:1 pattern at proof 5 and the balance below it.
+
+The other direction-relevant detectors are symmetric:
+
+- rejection_wick (L663-700): short branch checks high >= zone and
+  close < zone; long branch checks low <= zone and close > zone.
+  Quality buckets identical. No proximity threshold either side.
+- finished_auction (L736-750): direction-neutral detection; direction
+  gate in countSignals L565-570, by design.
+- delta_flip (L753-780): direction-neutral.
+- cvd_aligned (L819-835): reads cvd.slope and net_delta_1m.
+  Regime-driven, not structurally biased.
+
+The math_object_builder proof-direction guard (L440-476) runs after
+Java emits direction. It cannot be the source. B085 hypothesis is
+refuted by the base rate data above.
+
+Sample-version note: allshorts.diag.prefix.jsonl flags all 105 longs
+with book_imbalance ask-heavy in pd_details; allshorts.diag.jsonl
+(mtime 2026-10-02 14:21:45Z, three seconds earlier) does not. The
+two runs reflect pre-fix and post-fix states. Which is which is not
+proven from this read. The 13295c8 guard exact effect on this diag
+pair is a separate check.
+
+Evidence-cell correction: B131 own evidence cell says survivors in
+the HEAD run are 19 short, 9 long. allshorts.diag.prefix.stdout.txt
+shows survivors n=19, all short, zero long. The 9 long figure is
+not supported by the diag output.
+
+## Fix shape (revised)
+
+Book_imbalance is the asymmetry. Three shapes:
+
+A. Remove book_imbalance from the proof count entirely. It becomes
+   display-only in the proof JSON. Consistent with PROJECT_VISION:
+   book imbalance has no Tom source per MTS_DICTIONARY (corpus
+   vocabulary hit count 0).
+B. Symmetrise the gate: longs count only when bid-heavy > 1.5,
+   shorts count only when ask-heavy < 0.67. Same as current, but
+   explicit that the absence of an opposing signal is not proof.
+C. Cap countSignals at 6 non-book signals. Book_imbalance stays in
+   JSON, never counts.
+
+Shape A matches the doctrine that non-Tom signals do not gate core.
+The edit is one conditional at SetupCandidatesBuilder.java L575-580.
+Needs a test that proves a balanced input pool yields a balanced
+proof-5 output.
