@@ -508,9 +508,9 @@ Receipt: E2-T revert batch; the audit write landed in 94310a3.
 
 ## 2026-10-04 - git trailers custom format hides a trailer behind a blank line
 
-What happened: DSA verified push trailers with the trailers:key custom format in git log. It returned blank for f088b52 and 18ed141. DSA reported "missing trailer, file a row." Both commits carry the trailer; a blank line before Co-Authored-By hides it from that format. One wrong claim, one correction.
+What happened: DSA read push trailers using the trailers:key custom format in the log command. It returned blank for f088b52 and 18ed141. DSA reported "missing trailer, file a row." Both commits carry the trailer; a blank line before Co-Authored-By hides it from that format. One wrong claim, one correction.
 
-Rule: read trailers with git log -1 --format=full followed by a body grep. Do not use the trailers:key format when another trailer paragraph may follow.
+Rule: read trailers with the log command's --format=full followed by a body grep. Do not use the trailers:key format when another trailer paragraph may follow.
 
 Where the rule lives: DSA_SESSION_PROMPT.md section 9 HARD RULES.
 

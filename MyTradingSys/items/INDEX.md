@@ -29,7 +29,7 @@ B069 | OPEN    | B069_update_market_state_wrapper.md | wrapper STATE_UPDATE_WARN
 B070 | OPEN    | B070_crypto_demote.md | demote UTC 00:00 anchor + 0.75 slippage from gating; split from B067
 T048 | OPEN    | T048_satellite_framework.md | exchange API layer active (Deribit); freeze lifted 2026-09-26; satellites follow
 T049 | CLOSED  | T049_nuc_worker_v2.md | Qwen decommissioned 2026-10-01; NUC lane retired; AIBridge replaces run-command surface
-T050 | OPEN    | T050_deribit_execution_layer.md | Deribit execution layer, phase 1 (read-only testnet) scaffolded 2026-09-26
+T050 | CLOSED  | T050_deribit_execution_layer.md | phase 3 live testnet PASS 2026-10-04
 T051 | PARKED  | T051_backtest_parked.md | backtest on MTS raw verdict done; parked by operator 2026-09-26; resumes after T050 ph4 + B071 fixed
 B071 | CLOSED  | B071_fail_open_proof_direction.md | fail-open fix applied live 2026-09-27 (harness-verified, PS execution unconfirmed); was: Python error defaulted proof-direction to "aligned"
 B072 | CLOSED  | B072_l2_input_validation.md | L2 input validation absent for current_price "x" or None in build_math_object (F10)

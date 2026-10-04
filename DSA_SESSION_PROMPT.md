@@ -268,41 +268,36 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-04T10:59Z (snapshot price 85230.3, TWOPEAK/above_vah, rank-1 ct_long @ 4h_val 85122.95).
+Last live read:  2026-10-04T11:46Z (cycle 2, price 85233.8, WAIT_RR ct_long @ 5m_swing_low 85223.0).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 19404, java 4864, supervisor 19656.
-                 Restarted 09:08:43Z after 11h50m down. start-trading-day.ps1 edited at
-                 ~16:06 IST (d9b295f); next restart picks up the new verdict order.
+Runtime + loops: loop UP. wrapper 23824, java 23440, supervisor 20788. Restarted 11:43Z
+                 after the T050 phase-3 stop window; picks up the B074 verdict-order fix
+                 (d9b295f). Snapshot age 31s, state_code 32s.
 Build PASS at last gate (2026-10-04T09:33:50Z). Math 255/255. Doc 5/5.
-HEAD d417595 on fast-track. origin/fast-track = d417595.
+HEAD 91fd8b6 on fast-track. origin/fast-track = 91fd8b6.
 
-Landed this session (18 commits):
-  5831779 section 11 refresh; d9b295f B074/B069 override-first + wrapper log;
-  15f3c0b B129 filed + B074/B069 partial receipts; 87b2063 INDEX B129 row;
-  d36ec97 SURFACE_POLICY 1b App covers every reach; f088b52 T050 phase 3 primitives;
-  18ed141 B129 AST extraction fix; b9b0405 B059 live verify (fix holds);
-  7563de7 T037 tests for 8 engine files + Build-Check mvn test;
-  5da10b0 B129 CLOSED + T050 session record fix; ae12ed2 B130 filed;
-  60f3250 B104 prompt_check.ps1 blocking + checks 6-10;
-  29079ea B100 verdict reclass (E1b correct); 94310a3 E2-T revert + B104 session record;
-  a20f602 audit counts resynced; d417595 LESSONS 7 entries.
+T050 CLOSED 2026-10-04: phase 3 live exit criterion met on test.deribit.com
+  default account. T1a buy limit 82724.5 (~3% under mark) placed / listed /
+  cancelled, zero open orders after. T1b sell market 10 filled at 85280.5,
+  position -10, close_position filled at 85276.5, position 0. Transcript:
+  MyTradingSys/research/testnet_status/T050_PHASE3_2026-10-04.md.
 
-Rows closed or partly closed this session:
-  B075, B084 (proof null fix); B074, B069 (override-first + wrapper log, partial);
-  B072, B073 (L2 input validation + rounding); B076 (unreachable, no emitter added);
-  B100 (E1b CONCEPT-ONLY, E2 NO-SOURCE); B129 (AST extraction); B059 (live verify).
-
-Rows filed this session:
-  B129 (closed same session); B130 (OPEN, execution/tests not collected by run_all_tests.py).
+Landed earlier this session (18 commits, HEAD 91fd8b6 at section-write time):
+  B075/B084 proof-null fix; B074/B069 override-first + wrapper log;
+  B076 closed; B072/B073 L2 input + rounding; B091 Build-Check tiers;
+  B129 AST extraction; B059 live verify; T037 tests + Build-Check mvn test;
+  B130 filed; B104 prompt_check blocking; B100 verdict reclass (E1b) + E2-T revert;
+  SURFACE_POLICY 1b App covers every reach; LESSONS 7 entries.
 
 Pipeline:
   1.2 B075 LANDED; 1.11 B091 LANDED; 4.2 B076 LANDED; 4.4 B059 verified;
   4.6 B072 LANDED; 4.7 B073 LANDED; 4.8 B074 partial; 4.12 T037 LANDED
   (MarketDataSnapshot skeleton tests still disabled); 4.16 B069 partial;
-  5.1 T050 phase 3 offline LANDED, live exit criterion owed (testnet order).
+  5.1 T050 CLOSED (phase 3 live PASS).
   B104 partial (blocking + checks 6-10; item C write-time line-ending gate open).
+  B130 OPEN (execution/tests not collected by run_all_tests.py).
 
 Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
 

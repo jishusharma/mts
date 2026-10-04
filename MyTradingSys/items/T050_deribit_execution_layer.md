@@ -155,3 +155,21 @@ UI agreeing at every state transition. Not met: the live testnet loop shares
 this account, orphan_watchdog writes a HALT on a stray open order, and builders
 may not open trades. The sequence is owed to an operator-run CLI session.
 Row stays OPEN.
+
+## 2026-10-04T11:41Z - phase 3 LIVE PASS (exit criterion met)
+
+Operator ran MyTradingSys/execution/testnet/t050_phase3.py from a CLI session.
+Both sub-tests passed. Account: test.deribit.com, default account, flat before
+and after.
+
+T1a buy limit far below mark: mark=85283.08, min_price=82724.5, tick=0.5,
+limit price 82724.5 (3.00% under mark). Order 121807832893 placed open,
+listed by get_open_orders, cancelled (order_state=cancelled). Zero open orders
+after. Position still 0.
+
+T1b sell market 10: order 121807837545 filled at avg 85280.5. Position size
+-10. close_position order 121807838445 filled at avg 85276.5. Position size 0.
+Zero open orders at end.
+
+Session transcript: MyTradingSys/research/testnet_status/T050_PHASE3_2026-10-04.md
+Exit code 0.
