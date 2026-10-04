@@ -478,3 +478,4 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/system/sessions/MTS-2026-10-04-1045Z-APP-BLD-t037-test-coverage.md | session | Session record: T037 test coverage for 8 engine files + Build-Check mvn test tier. | MTS-2026-10-04-1045Z-APP-BLD-t037-test-coverage | 2026-10-04 |
 | MyTradingSys/system/sessions/MTS-2026-10-04-1105Z-APP-BLD-b129-harness.md | session | Session record: B129 AST-based extraction fix. | MTS-2026-10-04-1105Z-APP-BLD-b129-harness | 2026-10-04 |
 | MyTradingSys/items/B130_execution_tests_not_gated.md | doc | Bug B130: execution/tests not collected by run_all_tests.py; phase 3 deribit tests invisible to the gate. | MTS-2026-10-04-0916Z-DSA-COO | 2026-10-04 |
+| MyTradingSys/system/sessions/MTS-2026-10-04-1120Z-APP-BLD-b104-prompt-gate.md | session | Session record: B104 prompt_check.ps1 blocking + checks 6-10. | MTS-2026-10-04-1120Z-APP-BLD-b104-prompt-gate | 2026-10-04 |

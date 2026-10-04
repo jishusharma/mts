@@ -45,3 +45,6 @@ Re-run Build-Check. Update the audit header if the totals in H2 change.
 ## Receipt
 
 2026-10-04: E1b-T and E2-T reclassified NO-SOURCE -> CONCEPT-ONLY in EXEC_PROVENANCE_AUDIT.md, H2 counts updated; commit "B100: reclassify E1b-T/E2-T to CONCEPT-ONLY" (MTS-2026-10-04-1121Z-APP-BLD-b100-verdict-labels).
+## 2026-10-04T11:45Z - E2-T reverted
+
+E2-T reverted from CONCEPT-ONLY back to NO-SOURCE. B100's filing claimed every quoted passage supports a Tom idea for the E2 row. The row's own text contradicts that: Q09 kXh:19@1020 and Q10 WSC:19@10798 are labelled Opposed to a hold-time rule, Q11 is an event exit, and Q12 ends the session. H1 line 7 defines NO-SOURCE as no idea behind it, or a role the trader never gives it. Tom never gives time exit that role. E1b-T remains CONCEPT-ONLY.
