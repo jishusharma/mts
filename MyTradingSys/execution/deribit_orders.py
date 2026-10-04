@@ -439,6 +439,60 @@ def get_ticker(instrument_name: str = "BTC-PERPETUAL") -> dict:
     return _call("public/ticker", {"instrument_name": instrument_name})
 
 
+# ---------------------------------------------------------------- T050 phase 3 (single-position order management)
+
+def place(token, side: str, instrument_name: str, amount, order_type: str = "limit", price=None,
+          label: str = None, post_only: bool = False, reduce_only: bool = False) -> dict:
+    """Phase 3 testnet placement. Refuses off testnet and malformed input before any HTTP call.
+    Returns the exchange's order dict (result['order']), never a guess."""
+    if _ACTIVE_ENV != "test":
+        raise RuntimeError("REFUSED: T050 phase 3 place() is testnet-only")
+    if side not in ("buy", "sell"):
+        raise ValueError(f"REFUSED: side must be buy|sell, got {side!r}")
+    if not isinstance(amount, (int, float)) or isinstance(amount, bool) or amount <= 0:
+        raise ValueError(f"REFUSED: amount must be > 0, got {amount!r}")
+    if order_type == "limit" and (not isinstance(price, (int, float)) or price <= 0):
+        raise ValueError("REFUSED: limit order needs price > 0")
+    res = _place_order(side, token, instrument_name, amount, order_type, price, label,
+                       reduce_only, post_only=post_only)
+    order = res.get("order") if isinstance(res, dict) else None
+    if not order or "order_id" not in order:
+        raise OrderStateUnknown(f"private/{side}", label or instrument_name, "no_order_in_response")
+    return order
+
+
+def amend(token, order_id: str, amount=None, price=None) -> dict:
+    """Edit an open order. At least one of amount/price is required (fails closed)."""
+    if amount is None and price is None:
+        raise ValueError("REFUSED: amend needs amount and/or price")
+    if amount is not None and (not isinstance(amount, (int, float)) or amount <= 0):
+        raise ValueError(f"REFUSED: amount must be > 0, got {amount!r}")
+    if price is not None and (not isinstance(price, (int, float)) or price <= 0):
+        raise ValueError(f"REFUSED: price must be > 0, got {price!r}")
+    res = edit(token, order_id, amount=amount, price=price)
+    return res.get("order", res) if isinstance(res, dict) else res
+
+
+def get_order_history(token, instrument_name: str = "BTC-PERPETUAL", count: int = 100) -> list:
+    """private/get_order_history_by_instrument (filled/cancelled/rejected orders, newest first)."""
+    return _call("private/get_order_history_by_instrument",
+                 {"instrument_name": instrument_name, "count": count, "include_old": True,
+                  "include_unfilled": True}, token)
+
+
+def reconcile_open(token, order_id: str, instrument_name: str = "BTC-PERPETUAL") -> dict:
+    """A placed order must appear in the account open-orders read. {ok, order}."""
+    order = next((o for o in get_open_orders(token, instrument_name) if o.get("order_id") == order_id), None)
+    return {"ok": order is not None, "order": order}
+
+
+def reconcile_filled(token, order_id: str, instrument_name: str = "BTC-PERPETUAL") -> dict:
+    """A filled order must appear in order history with state 'filled' and be absent from open orders."""
+    order = next((o for o in get_order_history(token, instrument_name) if o.get("order_id") == order_id), None)
+    still_open = reconcile_open(token, order_id, instrument_name)["ok"]
+    return {"ok": bool(order) and order.get("order_state") == "filled" and not still_open, "order": order}
+
+
 def main(argv=None) -> int:
     """Smoke test: auth + reads, no orders. `--mainnet` runs it against mainnet
     (after the typed confirmation); without it, testnet exactly as before."""
