@@ -75,4 +75,17 @@ B101 | OPEN    | B101_dsa_context_ask.md | DSA asks for CLAUDE.md and mts go lau
 B104 | OPEN    | B104_rules_vs_gates.md | rules exist for prompt hygiene; check is advisory, not blocking; nine breaks in one session
 B102 | OPEN    | B102_dst_session_anchors.md | fixed-UTC session anchors in offline models; wrong 1h on ~40% of days
 B103 | OPEN    | B103_funding_coverage.md | funding cost silently 0 outside loaded range; archive has funding from 2020-01
+B116 | OPEN    | B116_unsourced_stop_floor_and_fallback.md | unsourced 0.1 pct stop floor + 0.2 pct fallback stop live in SetupCandidatesBuilder; filing only
+B117 | OPEN    | B117_unsourced_proof_bands.md | proof bands 3/5 NO-SOURCE still gate the verdict ladder; filing only
+B118 | OPEN    | B118_layer_bracket_unsourced.md | layer bracket stop_pct 1.0 / targets 2 / size 100 unsourced in auto_trader.py (live path); filing only
+B119 | OPEN    | B119_desktop_operator_gated_revalidation.md | paper verification, kappa clean reader, T2 run all need desktop/operator
+B120 | OPEN    | B120_provenance_audit_doc_followups.md | provenance audit doc follow-ups (reclass, 9 fields, re-extraction, definition gaps); doc-only
+B121 | OPEN    | B121_poll_cadence_defaults.md | poll cadence: live_runner 60 s not bar-aligned, auto_trader 20 s; proposals not landed
+B122 | OPEN    | B122_reject_text_event_fallback.md | auto_trader reject text uses alert.get('event') not the fallback; cosmetic
+B123 | OPEN    | B123_zero_trade_and_quiet_families.md | zero-trade after AUTO_PAUSE (cleared), 24 h re-run pending, jishu_4 QUIET to investigate
+B124 | OPEN    | B124_journal_dir_open_plan_check.md | no check that execution/journal holds each open plan; canary has no journal check
+B125 | OPEN    | B125_consensus_writer_staged_only.md | consensus writer staged .new only, not promoted; Top-5 #3 acceptance absent
+B126 | OPEN    | B126_supervisor_inbox_consumption.md | cloud to SUP inbox consumption unverifiable; no mechanism on disk
+B127 | OPEN    | B127_partial_code_no_test.md | audit PARTIAL (e): 13 findings, code exists, test missing/staged; refs T037
+B128 | OPEN    | B128_partial_code_partial_no_test.md | audit PARTIAL (f): 18 findings, code partial/unwired, no test; refs T037
 # END
