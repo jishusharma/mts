@@ -28,3 +28,26 @@ If not, file a companion to B084.
 -
 
 # END
+
+## 2026-10-04T12:15Z - hypothesis refuted
+
+Read F:\MTS\data\tom_bt\allshorts.diag.jsonl (320 rows, 215 short / 105 long).
+
+last_3_delta contradiction rate is comparable in both directions:
+- 21 of 105 longs (20.0%) hit last_3_delta=neg,neg,neg vs LONG.
+- 37 of 215 shorts (17.2%) hit last_3_delta=pos,pos,pos vs SHORT.
+
+Not asymmetric. The last_3_delta guard fires at the same rate against longs
+and shorts. It is not the driver of the 215:105 pool skew.
+
+After the 13295c8 book_imbalance guard, the pool ratio at the survivor level
+is closer to parity: 19 short survivors (8.8% of the short pool) and 9 long
+survivors (8.6% of the long pool).
+
+Where the skew actually lives: upstream, in the candidate pool composition,
+not in math_object_builder's proof-direction guard. The 320 proof-5 rows are
+pre-classified short/long by SetupCandidatesBuilder.java. The 2:1 short:long
+ratio is baked in before proof-direction runs.
+
+Action: close B085 (hypothesis refuted). File B131 for the candidate-pool
+skew, which is a separate defect in a separate file.
