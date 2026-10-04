@@ -22,6 +22,10 @@ Checks (B083 Fix section):
   9 restrictions no restriction words (do not, don't, must not, never, forbidden, prohibited, off-limits, keep separate,
                not allowed) unless the line passes the check-4 escapes (OPERATOR-SET, verbatim quote, -OperatorWords)
   10 signature  a line 'P.S : All Access'
+  11 line-ending (B104 C) with -Target <file>: the text under check is the content about to be written to <file>; FAIL when
+               its line endings (CRLF or LF) differ from the target's on-disk line endings, or when it mixes both
+               against a single-style target. No -Target, no newline in the content, a missing target (new file) or a
+               target with no newline: PASS (not applicable). Give the content with -Path; stdin loses CR.
 
 Conventions: a path on a line marked (NEW), NEW:, CREATE: or "new file" is a file the prompt asks to create; it is
 counted, not checked. Placeholders (< > * ? $ { }) and URLs are skipped.
@@ -33,6 +37,7 @@ param(
     [string]$OperatorWords = '',
     [string]$IgnoreTokens = '',
     [string]$NowUtc = '',
+    [string]$Target = '',
     [int]$MaxSkewMinutes = 30
 )
 $ErrorActionPreference = 'Continue'
@@ -285,6 +290,32 @@ Add-Row '9' 'no unstated restriction' ($badRestr.Count -eq 0) $d9 $nRestr
 # 10 signature line
 $sigOk = [regex]::IsMatch($text, '(?im)^\s*P\.S\s*:\s*All Access\b')
 Add-Row '10' 'signature line' $sigOk $(if ($sigOk) { 'signature present' } else { "no line 'P.S : All Access'" }) $(if ($sigOk) { 1 } else { 0 })
+
+# 11 write-time line-ending gate (B104 C)
+function Get-Eol([string]$t) {
+    $crlf = [regex]::Matches($t, "`r`n").Count
+    $lf = [regex]::Matches($t, "(?<!`r)`n").Count
+    $style = 'none'
+    if ($crlf -gt 0 -and $lf -eq 0) { $style = 'CRLF' } elseif ($lf -gt 0 -and $crlf -eq 0) { $style = 'LF' } elseif ($crlf -gt 0 -and $lf -gt 0) { $style = 'mixed' }
+    return [pscustomobject]@{ Style = $style; Crlf = $crlf; Lf = $lf }
+}
+$eolOk = $true; $d11 = 'no -Target given (not applicable)'; $n11 = 0
+if ($Target) {
+    if (-not (Test-Path -LiteralPath $Target -PathType Leaf)) {
+        $d11 = 'target not on disk (new file; not applicable)'
+    } else {
+        $tt = [System.IO.File]::ReadAllText((Resolve-Path -LiteralPath $Target).Path)
+        $te = Get-Eol $tt; $ce = Get-Eol $text; $n11 = 1
+        $d11 = 'content {0} (CRLF {1}, LF {2}) vs target {3} (CRLF {4}, LF {5})' -f $ce.Style, $ce.Crlf, $ce.Lf, $te.Style, $te.Crlf, $te.Lf
+        if ($ce.Style -eq 'none' -or $te.Style -eq 'none' -or $te.Style -eq 'mixed') {
+            $d11 += '; not applicable'
+        } elseif ($ce.Style -ne $te.Style) {
+            $eolOk = $false
+            $d11 += '; refuse write: line endings differ from the target'
+        }
+    }
+}
+Add-Row '11' 'write line ending matches target' $eolOk $d11 $n11
 
 # ---------------------------------------------------------------- report and log
 Write-Output ('{0,-3} {1,-30} {2,-6} {3}' -f '#', 'CHECK', 'RESULT', 'DETAIL')
