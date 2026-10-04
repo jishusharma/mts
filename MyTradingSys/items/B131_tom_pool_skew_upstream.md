@@ -47,3 +47,30 @@ short-side and long-side emission paths line by line.
 Filing only.
 
 # END
+
+## 2026-10-04T12:50Z - direction path read
+
+Reading pass over SetupCandidatesBuilder.java direction logic complete.
+
+- determineDirections (L253-274): above_vah -> [short, long]; below_val ->
+  [long]; in_va above POC -> [short]; in_va below POC -> [long]; in_va at
+  POC -> [short, long]. Symmetric in the general case.
+- determineSetupType (L412-447): vah-family zones -> ct_short only;
+  val-family zones -> ct_long only; POC zones -> both directions only in
+  trend_unhealthy; vwap and vwap_band -> both in balance, long-only in
+  trend_healthy; fvg -> null; prior_day_close -> both.
+- Zone list from extractZones (partial read): 4 vah-family, 4 val-family,
+  4 POC, 1 vwap, 4 vwap_band. Balanced across short-only and long-only
+  families.
+
+The direction-assignment path reads as symmetric. The 2:1 short skew is not
+visible here.
+
+Next stage: the proof-count distribution. The 320 proof-5 rows are a filtered
+subset, not the raw candidate pool. If the proof detectors (rejection_wick,
+absorption, delta_flip, volume_spike) fire more readily on vah-zone shorts
+than on val-zone longs, the proof-5 subset skews short even though the raw
+candidate pool is balanced. Read the proof detector code in
+SetupCandidatesBuilder.java and math_object_builder.py.
+
+B131 stays OPEN. Next fix shape is a reading pass over the proof detectors.

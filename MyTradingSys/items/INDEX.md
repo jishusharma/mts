@@ -89,7 +89,7 @@ B126 | OPEN    | B126_supervisor_inbox_consumption.md | cloud to SUP inbox consu
 B127 | OPEN    | B127_partial_code_no_test.md | audit PARTIAL (e): 13 findings, code exists, test missing/staged; refs T037
 B128 | OPEN    | B128_partial_code_partial_no_test.md | audit PARTIAL (f): 18 findings, code partial/unwired, no test; refs T037
 B129 | CLOSED  | B129_b074_test_harness_fragility.md | test_b074_rule_order.py fail-before fires on parser error, not assertion
-B130 | OPEN    | B130_execution_tests_not_gated.md | execution/tests not collected by run_all_tests.py; phase 3 deribit tests invisible to the gate
+B130 | CLOSED  | B130_execution_tests_not_gated.md | execution/tests wired into PYTEST_LAYER_PATHS; guard test passes
 B131 | OPEN    | B131_tom_pool_skew_upstream.md | Tom proof-5 pool 2:1 short at SetupCandidatesBuilder, before proof-direction; separate from B085
 B132 | OPEN    | B132_dsa_does_quick_wins.md | DSA dispatches work it can do itself; codify DSA-does-this list + CC-prompt names DSA unblock work
 # END

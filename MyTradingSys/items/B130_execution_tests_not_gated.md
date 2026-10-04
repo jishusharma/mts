@@ -34,3 +34,11 @@ test that fails if the path is not present.
 ## Not fixed here
 
 Filing only. Gate edit belongs to a follow-up session.
+
+## 2026-10-04T12:50Z - CLOSED
+
+Fixed: PYTEST_LAYER_PATHS in scripts/dev/run_all_tests.py gains
+"MyTradingSys/execution/tests". Guard test added at
+MyTradingSys/tests/test_run_all_tests_paths.py; it fails on the pre-change
+runner and passes after. 8 deribit_orders phase 3 tests now execute in step 4
+of the gate.
