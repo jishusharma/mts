@@ -1,6 +1,6 @@
 # B129 - test_b074_rule_order.py harness fragility
 
-Status: OPEN
+Status: CLOSED
 Opened: 2026-10-04
 Test authored: MTS-2026-10-04-1034Z-APP-BLD-b074-b069-wrapper
 Verified: MTS-2026-10-04-0916Z-DSA-COO
@@ -34,3 +34,5 @@ a real regression.
 - Or move the wrapper logic into a sourceable module and dot-source it.
 
 Whichever path, the test must fail on old code by assertion, not parser error.
+
+Receipt 2026-10-04: AST extraction (Parser.ParseFile, FunctionDefinitionAst by name; wrapper = statements from $umsCmd to $s) + B074_PS1 path override; current file 2 passed, 8604bc0 2 failed by assertion (WAIT_PROOF vs WAIT_RR; 'exit=0' missing), no ParserError.
