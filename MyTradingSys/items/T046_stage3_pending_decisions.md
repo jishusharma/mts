@@ -55,3 +55,20 @@ fails on both PS candidates. Two-item cross-reference cleanup can be filed
 as a low-severity task if drift is ever observed.
 
 Status: d4 DONE (no extraction, finding recorded).
+
+### 2026-10-04T10:15Z - builder, session MTS-2026-10-04-1009Z-APP-BLD-t052-b063-t046
+
+One line per item (what_is_next.md Stage 3, L32-L41). Note: D1_D7_DECISION_BRIEF.md covers D1-D7 and does not mention these
+five items; decisions below rest on name_audit_20260915.md, COMMANDS.md and the disk state.
+1. Rename or keep the seven live shortcuts: ACCEPT keep. name_audit v1.0.1 verdict is "document, do not rename"; lx..la no longer
+   exist on disk (scripts/live holds alerts, context, deltas, health, live, quick, ...), so there is nothing to rename.
+2. Rename or keep open-loop numbers: ACCEPT keep the number, add a plain title. L_ITEMS_MASTER.md is frozen (live list is BUGS.md);
+   open_loops_status.md already uses plain titles.
+3. Folder renames: NEEDS OPERATOR. The plan calls for a quiet window, and the working tree runs the live testnet system whose
+   processes import from these paths; only the operator can name a window.
+4. Pull duplicate function into shared file: REJECT. Get-Descendants (the audit's duplicate) is already in
+   scripts/core/shared-functions.ps1:4 and mode.ps1 uses it; stop-day.ps1 no longer defines it. The remaining PS duplicates
+   were declined by the 2026-09-24 d4 result (rule 4, no tests).
+5. Confirm the A, B, E mapping: ACCEPT. A = compiled_engine.md, B = conditions/*.md, E = CONSOLIDATED_RULES.md (all exist on disk;
+   extracts/processed/tom/CONSOLIDATED_RULES.md). The task package is no longer used (name_audit sec 6).
+Stage 3 status: 3 accept, 1 reject, 1 needs operator. Stage 4 "Folder renames" stays gated on item 3.
