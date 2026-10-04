@@ -1,6 +1,6 @@
 # B100 - EXEC_PROVENANCE_AUDIT verdict mismatch on E1b and E2
 
-Status: OPEN | Severity: MED | Opened 2026-10-04
+Status: CLOSED | Severity: MED | Opened 2026-10-04
 
 ## Defect
 
@@ -41,3 +41,7 @@ Re-run Build-Check. Update the audit header if the totals in H2 change.
 - MyTradingSys/research/EXEC_PROVENANCE_AUDIT.md (H1 verdict defs, E1b/E2 rows)
 - MyTradingSys/research/fast_track_2026-09-27/PROVENANCE_AUDIT_TOM.md (Q03, Q09-Q12)
 - OPERATOR_RULINGS_2026-10-02.md (Ruling 3, accepted 2026-10-04)
+
+## Receipt
+
+2026-10-04: E1b-T and E2-T reclassified NO-SOURCE -> CONCEPT-ONLY in EXEC_PROVENANCE_AUDIT.md, H2 counts updated; commit "B100: reclassify E1b-T/E2-T to CONCEPT-ONLY" (MTS-2026-10-04-1121Z-APP-BLD-b100-verdict-labels).
