@@ -4,7 +4,7 @@ Status: OPEN. Severity: HIGH. Opened 2026-10-03.
 
 ## Defect
 
-Cloud credit on the awgp account, ~$100, expires 2026-10-03.
+Cloud credit on the awgp account, ~$100, expires 2026-11-05 (corrected 2026-10-03 12:35Z).
 The 2026-10-03 roadmap proposes eight items C1-C8. Two of them
 (C2, C6) point at sources cloud cannot reach: gitignored runtime
 data and F:\ filesystem data. Two more (C3, C5) can write but not
@@ -16,12 +16,12 @@ two buckets and names the precondition per contingent item.
 
 ## Evidence (revalidated 2026-10-03)
 
-Committed and on origin/fast-track at a8b8fcf:
-  REVALIDATION_ACTIONS_2026-10-01.md           270 lines
-  TWO_CORES_READINESS_2026-10-01.md             63 lines
-  MAINTAINER_REPORT_2026-09-29.md              104 lines
-  MAINTAINER_REPORT_2026-09-30.md               78 lines
-  W3_KAPPA_REPORT_2026-10-01.md                147 lines
+Paths verified 2026-10-04; committed at a8b8fcf:
+  research/REVALIDATION_ACTIONS_2026-10-01.md                       270 lines
+  research/TWO_CORES_READINESS_2026-10-01.md                         63 lines
+  research/fast_track_2026-09-27/MAINTAINER_REPORT_2026-09-29.md
+  research/fast_track_2026-09-27/MAINTAINER_REPORT_2026-09-30.md
+  research/W3_KAPPA_REPORT_2026-10-01.md                            147 lines
   Fabio v3 tree, 14 files, plus pending_test_fabio_v3.py
   T054, T055, T058, T060, T061 item docs
 

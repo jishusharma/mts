@@ -1,4 +1,4 @@
-# CLOUD CREDIT ROADMAP 2026-10-03 (awgp account, ~$100, expires today)
+# CLOUD CREDIT ROADMAP 2026-10-03 (awgp account, ~$100, expires 2026-11-05; header corrected 2026-10-04)
 
 Author: App session, operator request 2026-10-03. Status: PROPOSED, nothing launched.
 
