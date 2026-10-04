@@ -465,3 +465,74 @@ Rule: the "from:" field in a SUPERVISOR_LOG entry names an actor from disk, not 
 Where the rule lives: DSA_SESSION_PROMPT.md section 6 WRITING.
 
 Receipt: commit b31b7bf corrected the entry.
+
+## 2026-10-04 - Group rows by file set, not wave order
+
+What happened: DSA printed a 30-step sequential plan for pipeline rows. Operator asked why 30. Re-laid as 23 groups. Operator then asked if the groups were sequential; DSA admitted most were parallelizable. Two operator corrections, two re-lays.
+
+Rule: group rows by file set (one-writer-per-file-set, B086). Walk each row, name its files, merge rows whose file sets overlap. Two rows with disjoint paths run concurrently. Wave order is a priority hint, not a schedule.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 6b BATCHING.
+
+Receipt: operator 2026-10-04.
+
+## 2026-10-04 - Stop hedging when the pair is parallel-safe
+
+What happened: after composing B104 (prompt-hygiene check) and B100 (audit verdict labels) with zero shared paths, DSA wrote "Recommendation: run B104 first, then B100." Operator: "why u gave me both if they were not both supposed to be sent togther?"
+
+Rule: after naming the file sets, state the collision check and stop. Disjoint: run together. Overlap at a named path: order X then Y. One line. No recommendation.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 6b BATCHING.
+
+Receipt: operator 2026-10-04.
+
+## 2026-10-04 - Resolve-Path throws on a file that does not exist yet
+
+What happened: twice, [IO.File]::WriteAllText with Resolve-Path on the target path, for a file that did not exist yet. Resolve-Path threw, the batch stopped. Cost: two retries.
+
+Rule: build the path with Join-Path using $root = (Get-Location).Path. Resolve-Path is only for files that already exist.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 6 WRITING.
+
+Receipt: B129 item doc write, B129 session record write.
+
+## 2026-10-04 - A diagnostic line that throws aborts a commit batch mid-flight
+
+What happened: in the E2-T revert batch, a probe called .Substring(0,60) on a shorter string. The probe threw before any write to the audit. The push earlier in the same block had already landed. Half-completed batch, one retry.
+
+Rule: no diagnostic line that can throw between the first write and the commit. Probes go in their own block after commit, or wrap with a length guard: if the string is long enough to slice, slice; otherwise print the whole string.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 6 WRITING.
+
+Receipt: E2-T revert batch; the audit write landed in 94310a3.
+
+## 2026-10-04 - git trailers custom format hides a trailer behind a blank line
+
+What happened: DSA verified push trailers with the trailers:key custom format in git log. It returned blank for f088b52 and 18ed141. DSA reported "missing trailer, file a row." Both commits carry the trailer; a blank line before Co-Authored-By hides it from that format. One wrong claim, one correction.
+
+Rule: read trailers with git log -1 --format=full followed by a body grep. Do not use the trailers:key format when another trailer paragraph may follow.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 9 HARD RULES.
+
+Receipt: f088b52, 18ed141.
+
+## 2026-10-04 - Flipping a verdict label without reading the row
+
+What happened: B100 prompt (audit verdict-label mismatch) told the session to flip E1b and E2 from NO-SOURCE to CONCEPT-ONLY. E1b-T was correct. E2-T's own row text lists 0 hold-time rules in 58 transcripts and calls its nearest quotes Opposed. The session followed the instruction and flagged the concern in its reply. E2-T needed a revert (94310a3) plus an audit count resync (a20f602).
+
+Rule: before composing a "flip verdict X to Y" prompt, read the target row's own evidence cell. If the row contradicts the flip, the prompt says: read row R. If the row's own text supports CONCEPT-ONLY, flip. If not, state why and leave NO-SOURCE. Verify-then-edit, not edit-then-verify.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 5 TASK LOOP step 1 VALIDATE.
+
+Receipt: B100, 94310a3, a20f602.
+
+## 2026-10-04 - Angle brackets in a composed prompt now fail prompt_check
+
+What happened: DSA prompts carry the commit-trailer instruction with angle brackets around the ID placeholder. B104 (prompt-hygiene check) landed check 8 the same day, which fails any angle-bracket token in a composed prompt. Going forward, DSA prompts fail their own gate.
+
+Rule: the trailer instruction reads: Commit trailer: MTS-Session: followed by the ID you composed per SURFACE_POLICY section 4. No angle brackets in composed prompt text. A placeholder-shaped instruction is a placeholder.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 9 HARD RULES, near the mts go launch-block line.
+
+Receipt: B104 (60f3250).
+
