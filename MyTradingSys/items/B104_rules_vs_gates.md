@@ -35,5 +35,5 @@ Structural, not moral. Reading a rule is not the same as executing it. The B083 
 
 ## Receipt
 
--
+- 2026-10-04 MTS-2026-10-04-1120Z-APP-BLD-b104-prompt-gate: fix (A)+(B) done: prompt_check.ps1 blocking (exit 1 on FAIL, names failing check) with checks 6-10 (session ID vs disk clock, mode line, placeholder, unstated restriction, signature); test_prompt_check.ps1 10/10 PASS, 8 of 10 fail on the pre-change script. (C) write-time line-ending gate still OPEN.
 # END

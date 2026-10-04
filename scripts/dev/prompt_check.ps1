@@ -1,9 +1,9 @@
 <#
-prompt_check.ps1 - advisory disk check of a composed prompt (B083). FAIL warns and logs; nothing stops.
+prompt_check.ps1 - blocking disk check of a composed prompt (B083, B104). Any FAIL exits 1; the composer must not print the prompt.
 
 Input : -Path <text file>, or the prompt piped on stdin.
-Output: a PASS/FAIL table (one row per check) and a final STATUS line. Exit code is always 0: the prompt still
-        ships and the operator decides.
+Output: a PASS/FAIL table (one row per check) and a final STATUS line naming each failing check. Exit code 0 when
+        every check passes, 1 on any FAIL or on missing input.
 Log   : one JSON line per check appended to MyTradingSys\runtime\prompt_check_log.jsonl (override with -LogPath).
 
 Checks (B083 Fix section):
@@ -15,6 +15,14 @@ Checks (B083 Fix section):
   5 limits     no capability limit on another surface (cannot / has no / read-only / design-only ...) unless the
                operator's own words carry it (same three escapes as check 4)
 
+  6 session-id  a session ID MTS-YYYY-MM-DD-HHMMZ-<SURF>-<ROLE> is present and its stamp is within -MaxSkewMinutes
+               of the disk clock (UTC now; -NowUtc overrides for tests); a stamp typed from memory fails
+  7 mode-line   a line 'Mode: live' or 'Mode: static'
+  8 placeholder no angle-bracket placeholder such as <HHMM> or <ID> left in the prompt
+  9 restrictions no restriction words (do not, don't, must not, never, forbidden, prohibited, off-limits, keep separate,
+               not allowed) unless the line passes the check-4 escapes (OPERATOR-SET, verbatim quote, -OperatorWords)
+  10 signature  a line 'P.S : All Access'
+
 Conventions: a path on a line marked (NEW), NEW:, CREATE: or "new file" is a file the prompt asks to create; it is
 counted, not checked. Placeholders (< > * ? $ { }) and URLs are skipped.
 #>
@@ -23,7 +31,9 @@ param(
     [string]$RepoRoot = '',
     [string]$LogPath = '',
     [string]$OperatorWords = '',
-    [string]$IgnoreTokens = ''
+    [string]$IgnoreTokens = '',
+    [string]$NowUtc = '',
+    [int]$MaxSkewMinutes = 30
 )
 $ErrorActionPreference = 'Continue'
 
@@ -48,8 +58,8 @@ if ($Path) {
 }
 if (-not $text) {
     Write-Output 'prompt_check: no input (give -Path <file> or pipe the prompt on stdin)'
-    Write-Output 'STATUS: FAIL (advisory; no prompt text was read; nothing was stopped)'
-    exit 0
+    Write-Output 'STATUS: FAIL (no prompt text was read) FAILED: input'
+    exit 1
 }
 $lines = $text -split "`r?`n"
 
@@ -228,15 +238,63 @@ $d5 = '{0} capability-limit line(s), {1} without the operator''s words' -f $nLim
 if ($badLimit.Count) { $d5 += ': ' + (($badLimit | Select-Object -First 8) -join '; ') }
 Add-Row '5' 'no invented capability limit' ($badLimit.Count -eq 0) $d5 $nLimit
 
+# 6 session ID composed from the disk clock
+$idRx = 'MTS-(\d{4})-(\d{2})-(\d{2})-(\d{2})(\d{2})Z-(CLD|APP|CLI|LAP|DSA|ASK)-(SUP|BLD|ANA|EXT|MON|COO|WRK)\b'
+$idM = [regex]::Match($text, $idRx)
+$now = [DateTime]::UtcNow
+if ($NowUtc) { $now = [DateTime]::Parse($NowUtc, [Globalization.CultureInfo]::InvariantCulture, [Globalization.DateTimeStyles]::AdjustToUniversal -bor [Globalization.DateTimeStyles]::AssumeUniversal) }
+if (-not $idM.Success) {
+    Add-Row '6' 'session id from disk clock' $false 'no session ID MTS-YYYY-MM-DD-HHMMZ-SURF-ROLE found' 0
+} else {
+    $stamp = $null
+    try { $stamp = New-Object DateTime ([int]$idM.Groups[1].Value), ([int]$idM.Groups[2].Value), ([int]$idM.Groups[3].Value), ([int]$idM.Groups[4].Value), ([int]$idM.Groups[5].Value), 0, ([DateTimeKind]::Utc) } catch { $stamp = $null }
+    if (-not $stamp) {
+        Add-Row '6' 'session id from disk clock' $false ('{0} is not a valid UTC time' -f $idM.Value) 1
+    } else {
+        $skew = [Math]::Abs(($now - $stamp).TotalMinutes)
+        Add-Row '6' 'session id from disk clock' ($skew -le $MaxSkewMinutes) ('{0}: stamp is {1:N0} min from disk UTC {2:yyyy-MM-dd HHmm}Z (max {3})' -f $idM.Value, $skew, $now, $MaxSkewMinutes) 1
+    }
+}
+
+# 7 mode line
+$modeOk = [regex]::IsMatch($text, '(?im)^\s*Mode\s*:\s*(live|static)\b')
+Add-Row '7' 'mode line (live / static)' $modeOk $(if ($modeOk) { 'mode line present' } else { "no line 'Mode: live' or 'Mode: static'" }) $(if ($modeOk) { 1 } else { 0 })
+
+# 8 angle-bracket placeholders
+$phs = @()
+for ($i = 0; $i -lt $lines.Count; $i++) {
+    foreach ($m in [regex]::Matches($lines[$i], '<[A-Za-z][A-Za-z0-9 _\-/:.]{0,40}>')) { $phs += ('L{0} {1}' -f ($i + 1), $m.Value) }
+}
+$d8 = '{0} placeholder(s)' -f $phs.Count
+if ($phs.Count) { $d8 += ': ' + (($phs | Select-Object -First 8) -join '; ') }
+Add-Row '8' 'no placeholder' ($phs.Count -eq 0) $d8 $phs.Count
+
+# 9 restriction words the operator did not say
+$restrRx = '(?i)\b(do not|don''t|must not|never|forbidden|prohibited|off-limits|keep separate|not allowed)\b'
+$badRestr = @(); $nRestr = 0
+for ($i = 0; $i -lt $lines.Count; $i++) {
+    $ln = $lines[$i]
+    if ($ln -notmatch $restrRx) { continue }
+    $nRestr++
+    if (-not (Test-OperatorLine $ln)) { $badRestr += ('L{0} "{1}"' -f ($i + 1), (Short $ln 70)) }
+}
+$d9 = '{0} restriction line(s), {1} without the operator''s words' -f $nRestr, $badRestr.Count
+if ($badRestr.Count) { $d9 += ': ' + (($badRestr | Select-Object -First 8) -join '; ') }
+Add-Row '9' 'no unstated restriction' ($badRestr.Count -eq 0) $d9 $nRestr
+
+# 10 signature line
+$sigOk = [regex]::IsMatch($text, '(?im)^\s*P\.S\s*:\s*All Access\b')
+Add-Row '10' 'signature line' $sigOk $(if ($sigOk) { 'signature present' } else { "no line 'P.S : All Access'" }) $(if ($sigOk) { 1 } else { 0 })
+
 # ---------------------------------------------------------------- report and log
-Write-Output ('{0,-2} {1,-30} {2,-5} {3}' -f '#', 'CHECK', 'RESULT', 'DETAIL')
-foreach ($r in $rows) { Write-Output ('{0,-2} {1,-30} {2,-5} {3}' -f $r.Id, $r.Name, $r.Status, $r.Detail) }
+Write-Output ('{0,-3} {1,-30} {2,-6} {3}' -f '#', 'CHECK', 'RESULT', 'DETAIL')
+foreach ($r in $rows) { Write-Output ('{0,-3} {1,-30} {2,-6} {3}' -f $r.Id, $r.Name, $r.Status, $r.Detail) }
 $failed = @($rows | Where-Object { $_.Status -eq 'FAIL' })
-foreach ($r in $failed) { Write-Warning ('prompt_check FAIL {0} {1}' -f $r.Id, $r.Name) }
+foreach ($r in $failed) { Write-Warning ('prompt_check FAIL check {0}: {1}' -f $r.Id, $r.Name) }
 if ($failed.Count -eq 0) {
     Write-Output 'STATUS: PASS'
 } else {
-    Write-Output ('STATUS: FAIL ({0} of 5 checks; advisory: the prompt still ships, the operator decides, nothing was stopped)' -f $failed.Count)
+    Write-Output ('STATUS: FAIL ({0} of {1} checks) FAILED: {2}' -f $failed.Count, $rows.Count, (($failed | ForEach-Object { '{0} {1}' -f $_.Id, $_.Name }) -join '; '))
 }
 
 try {
@@ -255,4 +313,5 @@ try {
 } catch {
     Write-Warning ('prompt_check: log write failed: ' + $_.Exception.Message)
 }
+if ($failed.Count -gt 0) { exit 1 }
 exit 0
