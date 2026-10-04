@@ -73,8 +73,8 @@ B099 | CLOSED  | B099_v3_l3_pool_hang.md | run_v3_l3 pool stall now fails closed
 B100 | CLOSED  | B100_audit_verdict_mismatch.md | E1b/E2 labelled NO-SOURCE but carry Tom quotes; should be CONCEPT-ONLY per audit's own rules
 B101 | OPEN    | B101_dsa_context_ask.md | DSA asks for CLAUDE.md and mts go launch block before composing a CL prompt; both are one-liners
 B104 | OPEN    | B104_rules_vs_gates.md | rules exist for prompt hygiene; check is advisory, not blocking; partial 60f3250; item (C) line-ending gate open
-B102 | OPEN    | B102_dst_session_anchors.md | fixed-UTC session anchors in offline models; wrong 1h on ~40% of days
-B103 | OPEN    | B103_funding_coverage.md | funding cost silently 0 outside loaded range; archive has funding from 2020-01
+B102 | CLOSED  | B102_dst_session_anchors.md | fixed-UTC session anchors in offline models; wrong 1h on ~40% of days
+B103 | CLOSED  | B103_funding_coverage.md | funding cost silently 0 outside loaded range; archive has funding from 2020-01
 B116 | OPEN    | B116_unsourced_stop_floor_and_fallback.md | unsourced 0.1 pct stop floor + 0.2 pct fallback stop live in SetupCandidatesBuilder; filing only
 B117 | OPEN    | B117_unsourced_proof_bands.md | proof bands 3/5 NO-SOURCE still gate the verdict ladder; filing only
 B118 | OPEN    | B118_layer_bracket_unsourced.md | layer bracket stop_pct 1.0 / targets 2 / size 100 unsourced in auto_trader.py (live path); filing only

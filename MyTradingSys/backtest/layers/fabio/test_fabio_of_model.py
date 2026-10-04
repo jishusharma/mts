@@ -42,14 +42,33 @@ class TestProfile(unittest.TestCase):
 
 class TestSessions(unittest.TestCase):
     def test_sequence_and_state(self):
-        seq = M.session_sequence([0, 86400000])
+        seq = M.session_sequence([0, 86400000])   # 1970-01-01/02: US standard, UK winter
         self.assertEqual([s[0] for s in seq], ["asia", "london", "ny"] * 2)
         self.assertEqual(seq[1][1], 480 * 60000)
-        self.assertEqual(seq[2][2], 1260 * 60000)
+        self.assertEqual(seq[2][1], 870 * 60000)   # B102: ny 14:30 UTC in standard time
+        self.assertEqual(seq[2][2], 1320 * 60000)
         lv = {"vah": 110.0, "val": 90.0}
         self.assertEqual(M.session_state(111, lv), "imb_up")
         self.assertEqual(M.session_state(89, lv), "imb_dn")
         self.assertEqual(M.session_state(100, lv), "balance")
+
+
+class TestSessionsDst(unittest.TestCase):
+    def test_dst_anchors(self):
+        from datetime import datetime, timezone
+        def d0(y, m, d):
+            return int(datetime(y, m, d, tzinfo=timezone.utc).timestamp() * 1000)
+        # 2026-07-15: US DST + UK BST -> london 07:00, ny 13:30 UTC; fixed-UTC model gave 08:00
+        seq = M.session_sequence([d0(2026, 7, 15)])
+        self.assertEqual((seq[0][2] - seq[0][1]) // 60000, 420)
+        self.assertEqual((seq[1][1] - d0(2026, 7, 15)) // 60000, 420)
+        self.assertEqual((seq[2][1] - d0(2026, 7, 15)) // 60000, 810)
+        # 2026-03-20: US DST started (Mar 8), UK not yet (Mar 29) -> london 08:00, ny 13:30
+        seq = M.session_sequence([d0(2026, 3, 20)])
+        self.assertEqual([(s[1] - d0(2026, 3, 20)) // 60000 for s in seq], [0, 480, 810])
+        # 2026-01-14: winter -> ny 14:30
+        seq = M.session_sequence([d0(2026, 1, 14)])
+        self.assertEqual([(s[1] - d0(2026, 1, 14)) // 60000 for s in seq], [0, 480, 870])
 
 
 class TestTfBars(unittest.TestCase):

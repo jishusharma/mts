@@ -1,6 +1,6 @@
 # B102 - Offline session models anchor NY and London at fixed UTC minutes
 
-Status: OPEN. Severity: LOW. Opened 2026-10-04.
+Status: CLOSED. Severity: LOW. Opened 2026-10-04.
 
 ## Defect
 
@@ -38,5 +38,5 @@ Label old C2 and OF results as fixed-UTC.
 
 ## Receipt
 
--
+- commit with trailer MTS-Session: MTS-2026-10-04-1233Z-APP-BLD-b102-b103: fabio_of_model.session_sequence, session_momentum (session_start_min="ny"/"london") and run_t055.c2_grid now use day_gates DST rules/anchors; tests fail on pre-change, pass after. Existing T055_BT_c2 and FABIO_OF_REPORT results are fixed-UTC (pre-B102) and were NOT rerun.
 # END

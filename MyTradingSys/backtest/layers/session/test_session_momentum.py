@@ -43,6 +43,24 @@ class TestSessionMomentum(unittest.TestCase):
         self.assertEqual([(e["i"], e["side"]) for e in ev], [(1, "short")])
         self.assertEqual(ev[0]["session_start"], DAY - M30)
 
+    def test_ny_anchor_is_dst_aware(self):
+        # B102: fixed 810 (13:30 UTC) is wrong in US standard time; "ny" = day_gates.ny_open_utc
+        import datetime as dt
+        def ms(y, m, d, h, mi):
+            return int(dt.datetime(y, m, d, h, mi, tzinfo=dt.timezone.utc).timestamp() * 1000)
+        for (y, m, d), (h, mi) in (((2026, 1, 14), (14, 30)), ((2026, 7, 15), (13, 30))):
+            s = ms(y, m, d, h, mi)
+            bars = [b(s - M30, 1, 1), b(s, 100, 101), b(s + M30, 101, 102)]
+            ev = session_momentum_events(bars, bar_min=30, session_start_min="ny", first_min=30, entry_min=60)
+            self.assertEqual([(e["i"], e["side"], e["session_start"]) for e in ev], [(2, "long", s)])
+
+    def test_ny_anchor_skips_weekend(self):
+        import datetime as dt
+        sat = int(dt.datetime(2026, 1, 17, 14, 30, tzinfo=dt.timezone.utc).timestamp() * 1000)
+        bars = [b(sat, 100, 101), b(sat + M30, 101, 102)]
+        self.assertEqual(session_momentum_events(bars, bar_min=30, session_start_min="ny",
+                                                 first_min=30, entry_min=60), [])
+
     def test_missing_entry_bar_skips(self):
         self.assertEqual(session_momentum_events(BARS[:1], bar_min=30, first_min=30, entry_min=60), [])
 

@@ -1,6 +1,6 @@
 # B103 - Backtest funding cost is silently zero outside the loaded range
 
-Status: OPEN. Severity: MED. Opened 2026-10-04.
+Status: CLOSED (code fix; 2020+ data fetch and C1 rerun still outstanding, see B127). Severity: MED. Opened 2026-10-04.
 
 ## Defect
 
@@ -46,5 +46,5 @@ results 12-month-only until rerun.
 
 ## Receipt
 
--
+- commit with trailer MTS-Session: MTS-2026-10-04-1233Z-APP-BLD-b102-b103: trade_costs.funding_paid raises ValueError when (t_in, t_out] is outside the loaded records' span (empty list = explicit no-funding, still 0.0); test fails on pre-change (0.0 returned), passes after. Existing C1 results stay 12-month-only until rerun; fabio/v3/costs.py funding_r not changed.
 # END
