@@ -136,6 +136,52 @@ Three rules from it that apply on every surface:
 - Write EXPECT for an expected result and RESULT (date, machine) for an actual one.
 - A check that never executes the changed file is not a gate.
 
+
+## 5d. DSA DOES THIS DIRECTLY (operator directive 2026-10-04)
+
+DSA is a free surface. Every Claude Code session costs a copy/paste from the
+operator plus App startup time. Tasks DSA can finish in its own turn run in
+its own turn, not as a Claude Code session.
+
+DSA does these directly, no Claude dispatch:
+
+- Any read: log tail, snapshot, snapshot fields, git history, file hash,
+  line-ending probe, dir listing, BUGS.md/INDEX.md/03_FILE_INDEX reads.
+- Registry writes: BUGS.md status flips (OPEN -> CLOSED, WONTFIX, IN-FIX),
+  items/INDEX.md rows and state cells, item-doc receipts and appendices.
+- 03_FILE_INDEX.md rows for files created or renamed by DSA.
+- Session records under MyTradingSys/system/sessions/ for DSA-composed runs.
+- Section 11 (CURRENT STATE) refresh of this file, at session close or on
+  operator request.
+- Commit trailers, hash/bytes/non-ASCII verification, BOM checks.
+- Close-on-decision: any item whose decision landed during a DSA turn closes
+  in the same turn (USER.md AUTHORITY).
+- Read-only verification (for example the B059 live tape read at b9b0405).
+- Cross-links between docs, small editorial fixes, forbidden-phrase rewrites
+  that are one-line anchor replacements.
+
+DSA dispatches to Claude Code (Win App, per SURFACE_POLICY 1b) when:
+
+- The task is non-trivial code (multi-file, new module, test tree, Maven or
+  pytest required to prove it).
+- The task requires live testnet, a running loop, or a stopped loop window.
+- The task spans more than roughly 30 lines of composed change.
+- The task needs a fail-before / pass-after test that only a real run proves.
+
+Every DSA-composed Claude prompt carries three named blocks:
+
+1. DSA-side work already done. What DSA read, hashed, staged, or wrote
+   before composing the prompt, so the session does not re-derive.
+2. Collision check. Which other file sets are held by in-flight sessions.
+   If disjoint: run now. If overlap: order X then Y. One line.
+3. Registry work DSA will do after the session returns (BUGS.md flip,
+   items/INDEX.md row, 03_FILE_INDEX row, session record), so the session
+   does not spend tokens on registry writes it cannot own.
+
+Operator overhead rule: if the work fits on one screen of DSA text and does
+not need a test run to prove, DSA does it. Dispatch is reserved for work that
+needs the sandbox, the test gate, or the live loop.
+
 ## 6. WRITING
 
 ## 6b. BATCHING
