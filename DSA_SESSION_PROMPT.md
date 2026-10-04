@@ -314,48 +314,46 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-04T12:20Z (price 85224.5, TWOPEAK/above_vah, WAIT_RR ct_long @ 5m_swing_low 85223.0).
+Last live read:  2026-10-04T12:20Z.
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 23824, java 23440, supervisor 20788. Snapshot age 31s.
-Build PASS at last gate (2026-10-04T12:20:29Z). Math 316/316, Doc 5/5, Java 108/123 (15 skipped).
-HEAD a7b85b1 on fast-track. origin/fast-track = a7b85b1.
+Runtime + loops: loop UP. wrapper 23824, java 23440, supervisor 20788.
+Build PASS at last gate (2026-10-04T12:51:37Z). Math 317/317, Doc 5/5, Java 108/123 (15 skipped).
+HEAD 3956b67 on fast-track. origin/fast-track = 3956b67.
 
-LANDED this DSA session (24 commits, in order):
-  5831779 section 11; d9b295f B074/B069; 15f3c0b B129+B074 receipts;
-  87b2063 INDEX B129; d36ec97 SURFACE_POLICY 1b; f088b52 T050 phase 3 primitives;
-  18ed141 B129 AST; b9b0405 B059 live verify; 7563de7 T037 tests + Build-Check mvn test;
-  5da10b0 B129 CLOSED + T050 record; ae12ed2 B130 filed; 60f3250 B104 blocking;
-  29079ea B100 reclass E1b; 94310a3 E2-T revert; a20f602 audit counts;
+LANDED this DSA session (27 commits, in order):
+  5831779 section 11; d9b295f B074/B069; 15f3c0b B129+B074 receipts; 87b2063 INDEX B129;
+  d36ec97 SURFACE_POLICY 1b; f088b52 T050 p3 primitives; 18ed141 B129 AST; b9b0405 B059 verify;
+  7563de7 T037 tests + Build-Check mvn test; 5da10b0 B129 CLOSED; ae12ed2 B130 filed;
+  60f3250 B104 blocking; 29079ea B100 E1b reclass; 94310a3 E2-T revert; a20f602 audit counts;
   d417595 LESSONS 7; 91fd8b6 section 11; 6a1b3e5 T050 CLOSED (phase 3 live PASS);
   010f2c2 B085 refuted + B131 filed; b796edb B104 (C) check 11;
   38f75d8 B102 DST + B103 funding fail-closed; 9b76e71 LY1 layer provenance audit;
-  a7b85b1 B132 + section 5d DSA-DOES-THIS.
+  a7b85b1 B132 + section 5d; 41dc5f3 B104 CLOSED + section 11;
+  3956b67 B130 CLOSED + B131 direction receipt.
 
-CLOSED this session: B074, B069, B075, B084, B072, B073, B076, B100, B104,
-  B129, B059, B085, B102, B103, T037, T050.
-OPENED: B129 (closed same session), B130, B131, B132.
+CLOSED this session: B074, B069, B075, B084, B072, B073, B076, B100, B104, B129, B059,
+  B085, B102, B103, B130, T037, T050.
+OPENED: B129 (closed same), B130 (closed same), B131, B132.
 
 Pipeline:
   Wave 1-2 LANDED. Wave 4: 4.8 B074 partial, 4.12 T037 LANDED, 4.16 B069 partial,
-  4.4 B059 verified. 5.1 T050 CLOSED. 8.1 LY1 LANDED. 7.1 R7 unblocked.
-  B130 OPEN (execution/tests not gated). B131 OPEN (upstream pool skew).
-  B132 OPEN (policy landed in section 5d).
+  4.4 B059 verified. 5.1 T050 CLOSED. 8.1 LY1 LANDED.
+  7.1 R7 dispatched to an App session this close.
+  B131 OPEN (upstream pool skew; direction path read symmetric; next stage proof detectors).
+  B132 OPEN (policy in section 5d, enforcement running).
 
 Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
 
 Next session first action:
-  1. R7 Tom backtest re-run. Write PRE_REG_R7.md first, then dispatch.
-     All four blockers (4.1, 4.6, 4.7, 1.7) landed.
-  2. B131 upstream pool skew diagnosis (read-only SetupCandidatesBuilder.java).
-  3. B130 wire MyTradingSys/execution/tests into run_all_tests.py.
-  4. B093-B095 scheduler layer (pick_state hold + headless mts go + cost field).
+  1. Read R7 result; verify against PRE_REG_R7.md.
+  2. B131 proof detector read (SetupCandidatesBuilder.java computeProof L531-620;
+     math_object_builder.py proof block).
+  3. Scheduler layer: B093 (pick_state hold), B094 (headless mts go), B095 (per-session cost).
 
-Section 5d (DSA DOES THIS DIRECTLY) is in force per B132: registry flips,
-section 11 refresh, item-doc receipts, and 03_FILE_INDEX rows run in DSA's
-own turn. Dispatch is reserved for code with a test gate, the live loop,
-testnet, or multi-file changes.
+Section 5d (DSA DOES THIS DIRECTLY) in force per B132: registry flips, section 11,
+item-doc receipts, 03_FILE_INDEX rows run in DSA's own turn.
 
 ## 12. SESSION END
 
