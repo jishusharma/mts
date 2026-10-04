@@ -314,42 +314,48 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-04T11:46Z (cycle 2, price 85233.8, WAIT_RR ct_long @ 5m_swing_low 85223.0).
+Last live read:  2026-10-04T12:20Z (price 85224.5, TWOPEAK/above_vah, WAIT_RR ct_long @ 5m_swing_low 85223.0).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 23824, java 23440, supervisor 20788. Restarted 11:43Z
-                 after the T050 phase-3 stop window; picks up the B074 verdict-order fix
-                 (d9b295f). Snapshot age 31s, state_code 32s.
-Build PASS at last gate (2026-10-04T09:33:50Z). Math 255/255. Doc 5/5.
-HEAD 91fd8b6 on fast-track. origin/fast-track = 91fd8b6.
+Runtime + loops: loop UP. wrapper 23824, java 23440, supervisor 20788. Snapshot age 31s.
+Build PASS at last gate (2026-10-04T12:20:29Z). Math 316/316, Doc 5/5, Java 108/123 (15 skipped).
+HEAD a7b85b1 on fast-track. origin/fast-track = a7b85b1.
 
-T050 CLOSED 2026-10-04: phase 3 live exit criterion met on test.deribit.com
-  default account. T1a buy limit 82724.5 (~3% under mark) placed / listed /
-  cancelled, zero open orders after. T1b sell market 10 filled at 85280.5,
-  position -10, close_position filled at 85276.5, position 0. Transcript:
-  MyTradingSys/research/testnet_status/T050_PHASE3_2026-10-04.md.
+LANDED this DSA session (24 commits, in order):
+  5831779 section 11; d9b295f B074/B069; 15f3c0b B129+B074 receipts;
+  87b2063 INDEX B129; d36ec97 SURFACE_POLICY 1b; f088b52 T050 phase 3 primitives;
+  18ed141 B129 AST; b9b0405 B059 live verify; 7563de7 T037 tests + Build-Check mvn test;
+  5da10b0 B129 CLOSED + T050 record; ae12ed2 B130 filed; 60f3250 B104 blocking;
+  29079ea B100 reclass E1b; 94310a3 E2-T revert; a20f602 audit counts;
+  d417595 LESSONS 7; 91fd8b6 section 11; 6a1b3e5 T050 CLOSED (phase 3 live PASS);
+  010f2c2 B085 refuted + B131 filed; b796edb B104 (C) check 11;
+  38f75d8 B102 DST + B103 funding fail-closed; 9b76e71 LY1 layer provenance audit;
+  a7b85b1 B132 + section 5d DSA-DOES-THIS.
 
-Landed earlier this session (18 commits, HEAD 91fd8b6 at section-write time):
-  B075/B084 proof-null fix; B074/B069 override-first + wrapper log;
-  B076 closed; B072/B073 L2 input + rounding; B091 Build-Check tiers;
-  B129 AST extraction; B059 live verify; T037 tests + Build-Check mvn test;
-  B130 filed; B104 prompt_check blocking; B100 verdict reclass (E1b) + E2-T revert;
-  SURFACE_POLICY 1b App covers every reach; LESSONS 7 entries.
+CLOSED this session: B074, B069, B075, B084, B072, B073, B076, B100, B104,
+  B129, B059, B085, B102, B103, T037, T050.
+OPENED: B129 (closed same session), B130, B131, B132.
 
 Pipeline:
-  1.2 B075 LANDED; 1.11 B091 LANDED; 4.2 B076 LANDED; 4.4 B059 verified;
-  4.6 B072 LANDED; 4.7 B073 LANDED; 4.8 B074 partial; 4.12 T037 LANDED
-  (MarketDataSnapshot skeleton tests still disabled); 4.16 B069 partial;
-  5.1 T050 CLOSED (phase 3 live PASS).
-  B104 partial (blocking + checks 6-10; item C write-time line-ending gate open).
-  B130 OPEN (execution/tests not collected by run_all_tests.py).
+  Wave 1-2 LANDED. Wave 4: 4.8 B074 partial, 4.12 T037 LANDED, 4.16 B069 partial,
+  4.4 B059 verified. 5.1 T050 CLOSED. 8.1 LY1 LANDED. 7.1 R7 unblocked.
+  B130 OPEN (execution/tests not gated). B131 OPEN (upstream pool skew).
+  B132 OPEN (policy landed in section 5d).
 
 Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
 
-Next session first action: read BUGS.md open rows + items/INDEX.md; pick from
-B085 (Tom BT proof-5 skew diagnosis), B130 (wire execution/tests into the gate),
-B104 item (C), B102+B103 (DST + funding fail-open), B093-B095 (scheduler), or R7.
+Next session first action:
+  1. R7 Tom backtest re-run. Write PRE_REG_R7.md first, then dispatch.
+     All four blockers (4.1, 4.6, 4.7, 1.7) landed.
+  2. B131 upstream pool skew diagnosis (read-only SetupCandidatesBuilder.java).
+  3. B130 wire MyTradingSys/execution/tests into run_all_tests.py.
+  4. B093-B095 scheduler layer (pick_state hold + headless mts go + cost field).
+
+Section 5d (DSA DOES THIS DIRECTLY) is in force per B132: registry flips,
+section 11 refresh, item-doc receipts, and 03_FILE_INDEX rows run in DSA's
+own turn. Dispatch is reserved for code with a test gate, the live loop,
+testnet, or multi-file changes.
 
 ## 12. SESSION END
 
