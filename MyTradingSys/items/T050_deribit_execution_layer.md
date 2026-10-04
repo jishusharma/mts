@@ -146,3 +146,12 @@ for executor.py's automated pipeline specifically (which already has its own
 hard refusal guard in main() for this reason), not for this primitive-level test.
 
 2026-10-04 (MTS-2026-10-04-1130Z-APP-BLD-t050-phase3): Phase 3 code + offline tests DONE; live order placement NOT run. Added place/amend/get_order_history/reconcile_open/reconcile_filled to deribit_orders.py (buy/sell/edit/cancel already existed; auth + wallet-scope guard reused; place() testnet-only). 8 offline tests in execution/tests/test_deribit_orders_phase3.py, 8/8 error on pre-change code, 8/8 pass after; run_all_tests --quick PASS. Observed testnet (read-only, authenticated): get_open_orders -> 0 orders, get_order_history_by_instrument -> 0 orders (account has no history, so reconcile_filled has no live sample). Not placed: any order, since the live testnet loop (orphan_watchdog HALTs on stray open orders, builders may not open trades) shares this account; supervisor/operator to run the far-limit place/amend/cancel sequence.
+
+## 2026-10-04T11:35Z - phase 3 exit criterion
+
+f088b52 landed place/amend/cancel primitives and 8 offline tests. Phase 3's
+exit criterion is a live testnet place/amend/cancel with MTS log and Deribit
+UI agreeing at every state transition. Not met: the live testnet loop shares
+this account, orphan_watchdog writes a HALT on a stray open order, and builders
+may not open trades. The sequence is owed to an operator-run CLI session.
+Row stays OPEN.

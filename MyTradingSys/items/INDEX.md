@@ -89,4 +89,5 @@ B126 | OPEN    | B126_supervisor_inbox_consumption.md | cloud to SUP inbox consu
 B127 | OPEN    | B127_partial_code_no_test.md | audit PARTIAL (e): 13 findings, code exists, test missing/staged; refs T037
 B128 | OPEN    | B128_partial_code_partial_no_test.md | audit PARTIAL (f): 18 findings, code partial/unwired, no test; refs T037
 B129 | CLOSED  | B129_b074_test_harness_fragility.md | test_b074_rule_order.py fail-before fires on parser error, not assertion
+B130 | OPEN    | B130_execution_tests_not_gated.md | execution/tests not collected by run_all_tests.py; phase 3 deribit tests invisible to the gate
 # END
