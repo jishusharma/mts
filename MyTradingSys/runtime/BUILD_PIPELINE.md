@@ -70,7 +70,7 @@ QUEUED / IN-FLIGHT / GATED / LANDED / BLOCKED / PARKED
 | # | ID | Slug | Status | Blocker | Next |
 |---|---|---|---|---|---|
 | 4.1 | B070 | demote UTC 00:00 anchor + 0.75 slippage from gating | LANDED | - | CLOSED: fee model (fees.py) replaces 0.75 in mts_math.py, math_object_builder.py, ExecutionMathConstants/SetupCandidatesBuilder/ExtraSetupBuilder.java; MarketDataSnapshot.java cvd slope rolling, UTC anchor value-only; supervisor: rebuild jar + restart Java feed |
-| 4.2 | B076 | SETUP_CONFIRMED unreachable | QUEUED | - | trace verdict path |
+| 4.2 | B076 | SETUP_CONFIRMED unreachable | LANDED | - | B076 CLOSED 2026-10-04 (MTS-2026-10-03-2114Z-CLI-BLD-b076-setup-confirmed): verdict path traced; SETUP_CONFIRMED is unreachable by design (start-trading-day.ps1 Compute-Verdict L225-231 and backtest/verdict.py L121-126 top out at SETUP_FORMING; compiled_engine.md sec 8 L449-459 documents thresholds 3/5 as SYSTEM and the unreachable status, C5/D6). No emitter added: no Tom-cited trigger exists (provenance rule); the trigger is T052 (pipeline 4.3). MyTradingSys/tests/test_b076_setup_confirmed_unreachable.py: 4 tests; mutant verdict.py emitting SETUP_CONFIRMED at proof>=7 is killed. Residual: auto_trader.py:63 and auto_trader_config.json:12-15 still list SETUP_CONFIRMED (dead entry, live-path, proposed to supervisor). Commit prefix: B076 |
 | 4.3 | T052 | Tom-cited SETUP_CONFIRMED trigger | QUEUED | 4.2 | cite or reject |
 | 4.4 | B059 | pf_vp bin-edge drift live verify | QUEUED | - | live tape confirm |
 | 4.5 | T042 | OI/CVD peak reference still not emitted | QUEUED | - | add producer |

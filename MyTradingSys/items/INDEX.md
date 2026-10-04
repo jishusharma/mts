@@ -36,7 +36,7 @@ B072 | OPEN    | B072_l2_input_validation.md | L2 input validation absent for cu
 B073 | OPEN    | B073_net_rr_rounding.md | net_rr rounding inconsistency: output 2dp, sanity check unrounded (F11)
 B074 | OPEN    | B074_rule_order_dependence.md | rule-order dependence: contradiction cap runs before broken-value override (F12)
 B075 | OPEN    | B075_historical_mode_unfit.md | historical mode unfit for backtesting; zeroes flow fields, look-ahead leak (F7)
-B076 | OPEN    | B076_setup_confirmed_unreachable.md | SETUP_CONFIRMED unreachable; Compute-Verdict never emits it (F9)
+B076 | CLOSED  | B076_setup_confirmed_unreachable.md | SETUP_CONFIRMED unreachable; Compute-Verdict never emits it (F9)
 B077 | CLOSED  | B077_stop_order_wrong_type.md | stop_market via deribit_orders.py; closed 5e387a1; receipt in BUGS row
 B078 | CLOSED  | B078_cancel_all_by_label_overscope.md | cancel_by_label is label-scoped server-side; closed 5e387a1; receipt in BUGS row
 B079 | CLOSED  | B079_caps_check_not_enforced.md | caps enforced in executor.py; closed 5e387a1, b05c1cf; receipt in BUGS row
