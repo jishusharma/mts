@@ -1,6 +1,6 @@
 # B093 - parallel dispatch instead of single-slot hold
 
-Status: OPEN. Severity: HIGH. Opened 2026-10-03.
+Status: CLOSED 2026-10-04. Severity: HIGH. Opened 2026-10-03.
 
 ## Defect
 
@@ -56,6 +56,14 @@ pick_task.py at least once, and must not weaken B086.
 
 ## Receipt
 
--
+Chosen: (B) parallel by file set. Why: the defect is a hold that blocks rows touching other files; B removes exactly
+that and keeps B086 (one writer per file set) as the admission test, with no new operator step (A needs slot
+selection, C needs a size classifier, D and E leave two writers possible or rely on the operator).
+Rule: file set = file names in the row Next cell and item doc, minus register files (BUGS, BUILD_PIPELINE, INDEX,
+STATUS, LESSONS, 03_FILE_INDEX, SUPERVISOR_LOG). Disjoint -> picked together, up to 3 (MTS_PICK_SLOTS). Empty set
+fails closed. Held rows still release on land / cooldown (24h); a conflicting row is skipped, not waited on.
+Files: queue/slots/<id>.txt|json per active row; next_task.* mirrors the first (go.py unchanged); retired slots
+move to slots/released/. Tests 23-30 in test_pick_task.py; 8 fail on the pre-change script.
+Gate: run_all_tests.py --quick PASS.
 
 # END

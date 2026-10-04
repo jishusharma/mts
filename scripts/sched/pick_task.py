@@ -3,15 +3,21 @@ sys.dont_write_bytecode = True
 
 """Queue dispatcher: pick the next QUEUED row of BUILD_PIPELINE.md and write a ready-to-run CL prompt.
 
-One wake, one pick. Reads the pipeline fresh each run, so stale rows drop out. No Claude call, no network.
+One wake, one or more picks (B093). Reads the pipeline fresh each run, so stale rows drop out. No Claude call, no network.
 Writes MyTradingSys/runtime/queue/{next_task.txt, next_task.json, pick_log.jsonl, pick_state.json}; a prior next_task.*
 is renamed next_task_<prior_composed_utc>.* first. Prints `PICK <id> wave=<n> slug=<slug> surface=<App|CLI>`,
 `HOLD <id> ...` or `IDLE no pickable row`.
 Bug sweep (B089): an OPEN or IN-FIX id in BUGS.md with no pipeline row in any wave is a candidate too, in one wave
 after the last pipeline wave (file order), so a bug filed without a pipeline row is never invisible. Pipeline rows
 always go first; an id with any pipeline row is governed by that row only.
-Re-pick guard (B087a): pick_state.json records each pick. A picked row that is still pickable is HELD (next_task.*
-left untouched, nothing else offered: one writer at a time) for the cooldown (env MTS_PICK_COOLDOWN_H hours; default
+Parallel dispatch (B093, shape B, by file set): a wake keeps up to MTS_PICK_SLOTS (default 3) rows active. A new row
+is picked only when its file set (file_set: names in its Next cell and item doc, shared registers excluded) is disjoint
+from every held and newly picked row; an unknown (empty) file set conflicts with all, so one writer per file set holds
+(B086). Each active row has its prompt in queue/slots/<id>.txt|json; next_task.* mirrors the first active row, so
+`mts go` is unchanged. Slots of rows that leave the active set move to slots/released/. Output: one PICK/HOLD line
+per active row.
+Re-pick guard (B087a): pick_state.json records each pick. A picked row that is still pickable is HELD (its prompt left
+untouched; rows on a conflicting file set are not offered: one writer per file set) for the cooldown (env MTS_PICK_COOLDOWN_H hours; default
 = check_sessions.MAX_OPEN, the window after which an open session counts as stale, SCHEDULER_PLAN_2026-10-02 s5 #5;
 B088). After the cooldown it is offered again, so a row whose session died never starves. A row that stops being
 pickable (landed, blocked, status change) drops out of the state at once.
@@ -44,6 +50,11 @@ SURFACE = "App"
 SURF, ROLE = "CLI", "BLD"  # session-id codes, SURFACE_POLICY section 4
 SLUG_MAX = 20
 STATE_NAME = "pick_state.json"
+SLOTS = QUEUE / "slots"  # B093: one prompt per active pick, slots/<id>.txt + .json; next_task.* mirrors the first
+SLOT_CAP = 3
+# Register and index files every close touches (append-only rows); not a file set, never a collision key.
+SHARED = {"bugs.md", "build_pipeline.md", "index.md", "status.md", "lessons_learned.md", "03_file_index.md",
+          "supervisor_log.md"}
 
 SIGNATURE = '"P.S : All Access, Change Repo/Device/All that you need!"'
 DIRECTIVE = ('"I need all pending tasks to be in the continuous build and test workflow."\n'
@@ -166,8 +177,9 @@ def load_state():
         return {}
 
 
-def held_row(candidates, state, now):
-    """First pickable row picked within the cooldown, else None. Unparseable stamps count as expired."""
+def held_rows(candidates, state, now):
+    """Every pickable row picked within the cooldown, in order. Unparseable stamps count as expired."""
+    out = []
     for r in candidates:
         e = state.get(r["id"])
         if not e:
@@ -177,8 +189,58 @@ def held_row(candidates, state, now):
         except ValueError:
             continue
         if timedelta(0) <= now - at < cooldown():
-            return r
-    return None
+            out.append(r)
+    return out
+
+
+def held_row(candidates, state, now):
+    """First held row, else None."""
+    h = held_rows(candidates, state, now)
+    return h[0] if h else None
+
+
+def slot_cap():
+    try:
+        return max(1, int(os.environ["MTS_PICK_SLOTS"]))
+    except (KeyError, ValueError):
+        return SLOT_CAP
+
+
+def file_set(r):
+    """B093: lower-cased basenames the row writes: files named in its Next cell and its item doc, minus the item doc
+    itself and the shared registers. Over-inclusion only costs parallelism; an empty set is unknown and fails closed
+    (see conflicts)."""
+    doc = item_doc(r["id"]) if BUG_ID.match(r["id"]) else None
+    text = r["next"] + (" " + doc.read_text(encoding="utf-8", errors="replace") if doc else "")
+    names = {f.replace("\\", "/").rsplit("/", 1)[-1].lower() for f in FILE_RE.findall(text)}
+    if doc:
+        names.discard(doc.name.lower())
+    return names - SHARED
+
+
+def conflicts(a, b):
+    """True when two file sets may share a writer. An empty (unknown) set conflicts with everything."""
+    return not a or not b or bool(a & b)
+
+
+def pick_more(pickable, held, cap):
+    """B093 shape B: new picks, in queue order, whose file set is disjoint from every held and already-new pick,
+    up to cap active rows in all. A row blocked by a held file set is skipped, not waited on, so it never blocks
+    the rows behind it; it is offered again once the holder lands, goes stale or leaves the queue."""
+    claimed = [file_set(r) for r in held]
+    held_ids = {r["id"] for r in held}
+    out = []
+    for r in pickable:
+        if len(held) + len(out) >= cap:
+            break
+        if r["id"] in held_ids:
+            continue
+        fs = file_set(r)
+        if any(conflicts(fs, c) for c in claimed):
+            continue
+        claimed.append(fs)
+        out.append(r)
+    return out
 
 
 def compose(r, now, doc, session_id):
@@ -266,6 +328,32 @@ def current_pick_id():
         return None
 
 
+def write_slot(r, now, iso):
+    slug = slug_of(r)
+    sid = session_id(slug, now)
+    doc = item_doc(r["id"]) if BUG_ID.match(r["id"]) else None
+    meta = {"id": r["id"], "wave": r["wave"], "slug": slug, "surface": SURFACE,
+            "item_doc": str(doc.relative_to(ROOT)).replace("\\", "/") if doc else None, "composed_utc": iso,
+            "session_id": sid, "source": r.get("source", "pipeline")}
+    atomic_write(SLOTS / (r["id"] + ".txt"), compose(r, now, doc, sid))
+    atomic_write(SLOTS / (r["id"] + ".json"), json.dumps(meta, indent=1) + chr(10))
+    return meta
+
+
+def release_slots(active_ids, now):
+    """Move slot prompts of rows that are no longer active into slots/released/ (moves, never deletes)."""
+    rel = SLOTS / "released"
+    for p in sorted(SLOTS.glob("*.*")):
+        if p.suffix in (".txt", ".json") and p.stem not in active_ids:
+            rel.mkdir(exist_ok=True)
+            dest = rel / ("%s_%s%s" % (p.stem, now.strftime("%Y%m%dT%H%M%SZ"), p.suffix))
+            n = 1
+            while dest.exists():
+                dest = rel / ("%s_%s_%d%s" % (p.stem, now.strftime("%Y%m%dT%H%M%SZ"), n, p.suffix))
+                n += 1
+            p.replace(dest)
+
+
 def log_line(entry):
     with open(QUEUE / "pick_log.jsonl", "a", encoding="utf-8", newline="\n") as f:
         f.write(json.dumps(entry, sort_keys=True) + "\n")
@@ -287,39 +375,44 @@ def main():
     pickable = [r for r in ordered if skip_reason(r, bugs, by_num) is None]
     state = load_state()
     state = {k: v for k, v in state.items() if k in {r["id"] for r in pickable}}
-    held = held_row(pickable, state, now)
-    chosen = held or (pickable[0] if pickable else None)
+    held = held_rows(pickable, state, now)
+    fresh = pick_more(pickable, held, slot_cap())
+    active = [r for r in pickable if r in held or r in fresh]
+    lines = []
     try:
         QUEUE.mkdir(parents=True, exist_ok=True)
-        if held and current_pick_id() == held["id"]:
-            atomic_write(QUEUE / STATE_NAME, json.dumps(state, indent=1, sort_keys=True) + chr(10))
-            log_line({"ts": iso, "result": "HOLD", "id": held["id"]})
-            print("HOLD %s picked %s, cooldown %sh; next_task.* unchanged" % (
-                held["id"], state[held["id"]]["picked_utc"], cooldown().total_seconds() / 3600))
-            return 0
-        archive_prior(now)
-        if chosen is None:
+        SLOTS.mkdir(parents=True, exist_ok=True)
+        release_slots({r["id"] for r in active}, now)
+        if not active:
+            archive_prior(now)
             atomic_write(QUEUE / STATE_NAME, "{}" + chr(10))
             atomic_write(QUEUE / "next_task.txt", "IDLE no pickable row" + chr(10))
             log_line({"ts": iso, "result": "IDLE"})
             print("IDLE no pickable row")
             return 0
-        slug = slug_of(chosen)
-        sid = session_id(slug, now)
-        doc = item_doc(chosen["id"]) if BUG_ID.match(chosen["id"]) else None
-        meta = {"id": chosen["id"], "wave": chosen["wave"], "slug": slug, "surface": SURFACE,
-                "item_doc": str(doc.relative_to(ROOT)).replace("\\", "/") if doc else None, "composed_utc": iso,
-                "session_id": sid, "source": chosen.get("source", "pipeline")}
-        atomic_write(QUEUE / "next_task.txt", compose(chosen, now, doc, sid))
-        atomic_write(QUEUE / "next_task.json", json.dumps(meta, indent=1) + "\n")
-        state[chosen["id"]] = {"picked_utc": iso, "count": state.get(chosen["id"], {}).get("count", 0) + 1}
+        first = active[0]["id"]
+        for r in active:
+            rid = r["id"]
+            slot_ok = (SLOTS / (rid + ".txt")).is_file() and (SLOTS / (rid + ".json")).is_file()
+            if rid in {h["id"] for h in held} and slot_ok and (rid != first or current_pick_id() is not None):
+                lines.append("HOLD %s picked %s, cooldown %sh" % (rid, state[rid]["picked_utc"],
+                                                                  cooldown().total_seconds() / 3600))
+                log_line({"ts": iso, "result": "HOLD", "id": rid})
+                continue
+            meta = write_slot(r, now, iso)
+            state[rid] = {"picked_utc": iso, "count": state.get(rid, {}).get("count", 0) + 1}
+            log_line({"ts": iso, "result": "PICK", **{k: meta[k] for k in ("id", "wave", "slug", "surface", "source")}})
+            lines.append("PICK %s wave=%d slug=%s surface=%s source=%s slot=%s" % (
+                rid, r["wave"], meta["slug"], SURFACE, meta["source"], "queue/slots/" + rid + ".txt"))
+        if current_pick_id() != first:
+            archive_prior(now)
+            for ext in (".txt", ".json"):
+                atomic_write(QUEUE / ("next_task" + ext), (SLOTS / (first + ext)).read_text(encoding="utf-8"))
         atomic_write(QUEUE / STATE_NAME, json.dumps(state, indent=1, sort_keys=True) + chr(10))
-        log_line({"ts": iso, "result": "PICK", **{k: meta[k] for k in ("id", "wave", "slug", "surface", "source")}})
     except OSError as e:
         print("pick_task: disk error: %s" % e, file=sys.stderr)
         return 1
-    print("PICK %s wave=%d slug=%s surface=%s source=%s" % (
-        chosen["id"], chosen["wave"], slug, SURFACE, meta["source"]))
+    print("\n".join(lines))
     return 0
 
 
