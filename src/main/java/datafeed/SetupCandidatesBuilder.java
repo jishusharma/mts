@@ -547,7 +547,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         double speedAtrRatio = 0;
         int speedConsecutiveLarge = 0;
         boolean cvdAligned = false;
-        double bookImbalance = 0;
+        Double bookImbalance = null;   // null = no order-book data (historical/BT); never 0.0 on that path
         // Proximity fields (0.1% threshold)
         double rejectionWickProximityPct = 0.0;
         double rejectionWickActualLevel = 0.0;
@@ -572,7 +572,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
             if (volumeSpikeDetected && volumeSpikeAtLevel) count++;
             // D4: speed proxy no longer counted toward proof (still emitted in the proof JSON).
             if (cvdAligned) count++;
-            if (bookImbalance != 0.0) {
+            if (bookImbalance != null && bookImbalance != 0.0) {
                 // D4: count book imbalance only when it favours the trade direction
                 // (long: bid-heavy > 1.5; short: ask-heavy < 0.67).
                 boolean favoursTrade = "long".equals(direction) ? bookImbalance > 1.5 : bookImbalance < 0.67;
@@ -630,7 +630,8 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
                 speed.put("proximity_pct", Math.round(speedProximityPct * 10000.0) / 10000.0);
             }
             proof.put("cvd_aligned", cvdAligned);
-            proof.put("book_imbalance", Math.round(bookImbalance * 100.0) / 100.0);
+            if (bookImbalance == null) proof.putNull("book_imbalance");
+            else proof.put("book_imbalance", Math.round(bookImbalance * 100.0) / 100.0);
             return proof;
         }
     }
@@ -817,9 +818,13 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
 
         // 9.7 cvd_aligned
         String mainCvdSlope = root.get("cvd").get("slope").asText();
-        double netDelta = root.get("trade_flow").get("net_delta_1m").asDouble();
+        JsonNode netDeltaNode = root.get("trade_flow").get("net_delta_1m");
+        boolean netDeltaKnown = netDeltaNode != null && !netDeltaNode.isNull();   // historical mode: null, no tape
+        double netDelta = netDeltaKnown ? netDeltaNode.asDouble() : 0.0;
         boolean cvdAligned = false;
-        if ("rising".equals(mainCvdSlope) && netDelta > 0) cvdAligned = true;
+        if (!netDeltaKnown) {
+            // no trade flow: cannot confirm alignment, leave false
+        } else if ("rising".equals(mainCvdSlope) && netDelta > 0) cvdAligned = true;
         else if ("falling".equals(mainCvdSlope) && netDelta < 0) cvdAligned = true;
         else if ("flat".equals(mainCvdSlope) || mainCvdSlope.isEmpty()) {
             // tiebreaker: cvd_recent.slope_1h
@@ -830,7 +835,8 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         res.cvdAligned = cvdAligned;
 
         // 9.8 book_imbalance
-        res.bookImbalance = root.get("order_book_depth").get("bid_ask_ratio").asDouble();
+        JsonNode ratioNode = root.get("order_book_depth").get("bid_ask_ratio");
+        res.bookImbalance = (ratioNode == null || ratioNode.isNull()) ? null : ratioNode.asDouble();
 
         return res;
     }

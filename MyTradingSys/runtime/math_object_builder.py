@@ -443,7 +443,11 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
         _proof = _top.get("proof", {}) if isinstance(_top.get("proof"), dict) else {}
         _fa = _proof.get("finished_auction", {}) if isinstance(_proof.get("finished_auction"), dict) else {}
         _fa_dir = _fa.get("direction", "")
-        _book = _proof.get("book_imbalance", 1.0)
+        # .get(key, default) returns None (not the default) when the key is present with a JSON null, so absent and
+        # null are both handled here. null/absent/0.0/non-numeric = no order-book data (BT path): UNAVAILABLE, never 1.0.
+        _book = _proof.get("book_imbalance")
+        _book_ok = isinstance(_book, (int, float)) and not isinstance(_book, bool) and _book != 0.0
+        result["proof_book_imbalance"] = _book if _book_ok else "UNAVAILABLE"
         _last3 = snapshot.get("cvd", {}).get("last_3_delta", [])
         _contradictions = []
         if _dir == "short":

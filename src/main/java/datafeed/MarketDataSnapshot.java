@@ -1188,7 +1188,7 @@ public class MarketDataSnapshot {
         root.set("trade_flow", tradeFlow);
         root.set("structure", structure);
         ObjectNode ob = mapper.createObjectNode();
-        ob.put("bid_ask_ratio", 0.0);
+        ob.putNull("bid_ask_ratio");
         ob.put("confidence", "LOW");
         root.set("order_book_depth", ob);
         root.set("conditions", cond);
@@ -1223,7 +1223,7 @@ public class MarketDataSnapshot {
         ObjectNode dataQuality = mapper.createObjectNode();
         ArrayNode unavailableFields = dataQuality.putArray("unavailable_fields");
         for (String f : new String[]{"spot_perp_basis", "oi_breakdown", "trade_flow.net_delta_1m", "trade_flow.net_delta_5m",
-                "trade_flow.net_delta_15m", "trade_flow.net_delta_1h", "conditions.book_imbalance", "funding.current_rate"}) {
+                "trade_flow.net_delta_15m", "trade_flow.net_delta_1h", "conditions.book_imbalance", "order_book_depth.bid_ask_ratio", "funding.current_rate"}) {
             unavailableFields.add(f);
         }
         dataQuality.put("reason", "historical reconstruction from klines only; live-only inputs are null/UNAVAILABLE, never 0.0");
