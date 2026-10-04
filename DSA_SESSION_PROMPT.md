@@ -268,30 +268,35 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-03T20:30Z (loop UP on new jar, fresh cycle).
+Last live read:  2026-10-04T09:17Z (cycle 9, NO_TRADE, TWOPEAK/above_vah).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP after B070 restart. java 15268, wrapper 12548, supervisor 10012, 21636. auto_trader 5320.
-Build PASS at last gate (2026-10-03T19:54:03Z).
-HEAD c8d36b8 on fast-track, tag last-snapshot moves per commit.
+Runtime + loops: loop UP. wrapper 19404, java 4864, supervisor 19656.
+                 Restarted 09:08:43Z after 11h50m down. Restart was via
+                 pwsh -File scripts/core/mode.ps1 -M armed -IntervalMin 1, detached.
+Build PASS at last gate (2026-10-04T07:13:52Z). Math 255/255. Doc 5/5.
+HEAD 0cdb875 on fast-track. origin/fast-track = 0cdb875. Working tree dirty on
+loop-written runtime files only.
 
-Landed this session: 26 commits (see session record MTS-2026-10-03-2030Z-DSA-COO-close.md).
-Key: TF4 audit, TF5 promoted, TF7 golden, TF8 L3-FAIL, B070 fee model + UTC anchor,
-B088/B089, B095 receipt, B097 filed, B099 fixed, B100 filed, Ruling 3 accepted,
-TRIAL_REGISTRY un-ignored, DSA 6b BATCHING + B092 CLOSED.
+Landed this DSA session (10 commits):
+  B101 filed; B104 filed (rules vs gates); B072+B073 closed;
+  B076 closed; B090 real paths + expiry; C1 audit-reconcile matrix landed
+  (101 findings); B105-B128 filed from the C1 follow-up
+  (11 WONTFIX, 13 OPEN, 8 BUGS rows annotated).
 
-Pipeline: 1.6 TF4 LANDED; 1.7 TF5 LANDED; 1.8 TF6 LANDED; 1.9 TF7 LANDED;
-1.10 TF8 LANDED (L3-FAIL); 1.11 B091 QUEUED (this commit carries the row);
-4.1 B070 LANDED; 4.6 B072 QUEUED; 4.7 B073 QUEUED; 4.2 B076 QUEUED.
-R7 (7.1) blockers now B072 + B073 only.
+Pipeline: 1.11 B091 LANDED; 4.2 B076 LANDED; 4.6 B072 LANDED; 4.7 B073 LANDED;
+  R7 (7.1) unblocked. B075 residual (1.2) still QUEUED.
 
-Registries: BUGS.md 160 rows; items/INDEX.md 39 open IDs; 66 item files.
+Registries: BUGS.md 188 rows (32 OPEN B, 17 OPEN T); items/INDEX.md 83 rows;
+  items/ 84 docs.
 
 Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
 
-Next session first action: pick B091 with the CL prompt printed at close, or
-run mts go for wave 1 row 1.11. Then B072+B073 bundle (math_object_builder.py).
+Next session first action: read BUGS.md open rows + items/INDEX.md; pick from
+B104 (prompt_check blocking), B075 residual, R7, or candle P0 rerun (APP).
+Before any mts go: T052 holds pick_state until 2026-10-05T04:59:11Z.
+
 ## 12. SESSION END
 
 1. Do NOT stop the runtime loop at close. The loop runs across sessions.
