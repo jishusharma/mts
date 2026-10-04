@@ -476,3 +476,4 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/tests/test_t037_regime_classifier.py | test | T037: regime_classifier votes and main() state-file cycle; MEDIUM/HIGH streaks not pinned. | MTS-2026-10-04-1045Z-APP-BLD-t037-test-coverage | 2026-10-04 |
 | MyTradingSys/tests/test_t037_update_market_state.py | test | T037: update_market_state atomic write, latest-snapshot pick, main() wiring with stubbed mts_math. | MTS-2026-10-04-1045Z-APP-BLD-t037-test-coverage | 2026-10-04 |
 | MyTradingSys/system/sessions/MTS-2026-10-04-1045Z-APP-BLD-t037-test-coverage.md | session | Session record: T037 test coverage for 8 engine files + Build-Check mvn test tier. | MTS-2026-10-04-1045Z-APP-BLD-t037-test-coverage | 2026-10-04 |
+| MyTradingSys/system/sessions/MTS-2026-10-04-1105Z-APP-BLD-b129-harness.md | session | Session record: B129 AST-based extraction fix. | MTS-2026-10-04-1105Z-APP-BLD-b129-harness | 2026-10-04 |
