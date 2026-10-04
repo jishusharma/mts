@@ -268,34 +268,47 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-04T09:17Z (cycle 9, NO_TRADE, TWOPEAK/above_vah).
+Last live read:  2026-10-04T10:59Z (snapshot price 85230.3, TWOPEAK/above_vah, rank-1 ct_long @ 4h_val 85122.95).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
 Runtime + loops: loop UP. wrapper 19404, java 4864, supervisor 19656.
-                 Restarted 09:08:43Z after 11h50m down. Restart was via
-                 pwsh -File scripts/core/mode.ps1 -M armed -IntervalMin 1, detached.
-Build PASS at last gate (2026-10-04T07:13:52Z). Math 255/255. Doc 5/5.
-HEAD 0cdb875 on fast-track. origin/fast-track = 0cdb875. Working tree dirty on
-loop-written runtime files only.
+                 Restarted 09:08:43Z after 11h50m down. start-trading-day.ps1 edited at
+                 ~16:06 IST (d9b295f); next restart picks up the new verdict order.
+Build PASS at last gate (2026-10-04T09:33:50Z). Math 255/255. Doc 5/5.
+HEAD d417595 on fast-track. origin/fast-track = d417595.
 
-Landed this DSA session (10 commits):
-  B101 filed; B104 filed (rules vs gates); B072+B073 closed;
-  B076 closed; B090 real paths + expiry; C1 audit-reconcile matrix landed
-  (101 findings); B105-B128 filed from the C1 follow-up
-  (11 WONTFIX, 13 OPEN, 8 BUGS rows annotated).
+Landed this session (18 commits):
+  5831779 section 11 refresh; d9b295f B074/B069 override-first + wrapper log;
+  15f3c0b B129 filed + B074/B069 partial receipts; 87b2063 INDEX B129 row;
+  d36ec97 SURFACE_POLICY 1b App covers every reach; f088b52 T050 phase 3 primitives;
+  18ed141 B129 AST extraction fix; b9b0405 B059 live verify (fix holds);
+  7563de7 T037 tests for 8 engine files + Build-Check mvn test;
+  5da10b0 B129 CLOSED + T050 session record fix; ae12ed2 B130 filed;
+  60f3250 B104 prompt_check.ps1 blocking + checks 6-10;
+  29079ea B100 verdict reclass (E1b correct); 94310a3 E2-T revert + B104 session record;
+  a20f602 audit counts resynced; d417595 LESSONS 7 entries.
 
-Pipeline: 1.11 B091 LANDED; 4.2 B076 LANDED; 4.6 B072 LANDED; 4.7 B073 LANDED;
-  R7 (7.1) unblocked. B075 residual (1.2) still QUEUED.
+Rows closed or partly closed this session:
+  B075, B084 (proof null fix); B074, B069 (override-first + wrapper log, partial);
+  B072, B073 (L2 input validation + rounding); B076 (unreachable, no emitter added);
+  B100 (E1b CONCEPT-ONLY, E2 NO-SOURCE); B129 (AST extraction); B059 (live verify).
 
-Registries: BUGS.md 188 rows (32 OPEN B, 17 OPEN T); items/INDEX.md 83 rows;
-  items/ 84 docs.
+Rows filed this session:
+  B129 (closed same session); B130 (OPEN, execution/tests not collected by run_all_tests.py).
+
+Pipeline:
+  1.2 B075 LANDED; 1.11 B091 LANDED; 4.2 B076 LANDED; 4.4 B059 verified;
+  4.6 B072 LANDED; 4.7 B073 LANDED; 4.8 B074 partial; 4.12 T037 LANDED
+  (MarketDataSnapshot skeleton tests still disabled); 4.16 B069 partial;
+  5.1 T050 phase 3 offline LANDED, live exit criterion owed (testnet order).
+  B104 partial (blocking + checks 6-10; item C write-time line-ending gate open).
 
 Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
 
 Next session first action: read BUGS.md open rows + items/INDEX.md; pick from
-B104 (prompt_check blocking), B075 residual, R7, or candle P0 rerun (APP).
-Before any mts go: T052 holds pick_state until 2026-10-05T04:59:11Z.
+B085 (Tom BT proof-5 skew diagnosis), B130 (wire execution/tests into the gate),
+B104 item (C), B102+B103 (DST + funding fail-open), B093-B095 (scheduler), or R7.
 
 ## 12. SESSION END
 
