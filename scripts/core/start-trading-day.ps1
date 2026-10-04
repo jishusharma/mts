@@ -229,16 +229,8 @@ function Compute-Verdict {
     } else {
         $v = "SETUP_FORMING"; $reason = "proof $proof"
     }
-    if ($proofDir -eq "contradiction" -and $v -eq "SETUP_FORMING") {
-        $v = "WATCH"; $reason = "proof $proof contradicted"
-    }
-    # B071 fix (CORE_READINESS_PLAN.md task B1): fail closed instead of
-    # silently defaulting to "aligned" when L2 (proof-direction) errored.
-    if ($proofDir -ne "aligned" -and $proofDir -ne "contradiction" -and ($v -eq "WATCH" -or $v -eq "SETUP_FORMING")) {
-        $v = "WAIT_PROOF"; $reason = "proof_dir error"
-    }
-
-    # broken-value override - suppress CT against confirmed flow direction
+    # B074: broken-value override runs FIRST so the proof_dir caps below cannot pre-empt it
+    # (same snapshot must give the same verdict and reason for every proofDir).
     $pvVa = $snap.conditions.price_vs_va
     $cvdSlope = $snap.conditions.cvd_slope
     $setupDir = ""
@@ -252,6 +244,15 @@ function Compute-Verdict {
         if ($v -in @("SETUP_FORMING","SETUP_CONFIRMED")) {
             $v = "WAIT_RR"; $reason = "broken above_vah + CVD rising vs SHORT"
         }
+    }
+
+    if ($proofDir -eq "contradiction" -and $v -eq "SETUP_FORMING") {
+        $v = "WATCH"; $reason = "proof $proof contradicted"
+    }
+    # B071 fix (CORE_READINESS_PLAN.md task B1): fail closed instead of
+    # silently defaulting to "aligned" when L2 (proof-direction) errored.
+    if ($proofDir -ne "aligned" -and $proofDir -ne "contradiction" -and ($v -eq "WATCH" -or $v -eq "SETUP_FORMING")) {
+        $v = "WAIT_PROOF"; $reason = "proof_dir error"
     }
 
     # B058 part C - flow contradiction suppression.
@@ -448,10 +449,14 @@ try {
     
         $umsCmd = 'python "' + $R + '\MyTradingSys\runtime\update_market_state.py" > runtime_data\ums.log 2>&1'
         $rc = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $umsCmd) -TimeoutSec 30 -Tag "update_market_state" -WorkDir $R
+        # B069: log line carries the exit code and, on failure, the last stderr line from ums.log
+        # (stderr is redirected to ums.log, not NUL), so log and exit code agree.
         if ($rc -ne 0) {
-            Log-Line ("STATE_UPDATE_WARN exit=" + $rc)
+            $umsErr = ""
+            try { $umsErr = [string](Get-Content (Join-Path $R "runtime_data/ums.log") -Tail 1 -ErrorAction Stop) } catch {}
+            Log-Line ("STATE_UPDATE_WARN exit=" + $rc + " last=" + $umsErr.Trim())
         } else {
-            Log-Line "state_updated"
+            Log-Line "state_updated exit=0"
         }
     
         $s = Get-ChildItem "$R\runtime_data\snapshots\${Symbol}_*.json" |
