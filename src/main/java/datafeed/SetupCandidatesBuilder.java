@@ -572,12 +572,8 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
             if (volumeSpikeDetected && volumeSpikeAtLevel) count++;
             // D4: speed proxy no longer counted toward proof (still emitted in the proof JSON).
             if (cvdAligned) count++;
-            if (bookImbalance != null && bookImbalance != 0.0) {
-                // D4: count book imbalance only when it favours the trade direction
-                // (long: bid-heavy > 1.5; short: ask-heavy < 0.67).
-                boolean favoursTrade = "long".equals(direction) ? bookImbalance > 1.5 : bookImbalance < 0.67;
-                if (favoursTrade) count++;
-            }
+            // B131: book_imbalance is not counted (no Tom source; ask-heavy side is far more common, so it
+            // gave every short +1 and every long +0). Still emitted in the proof JSON.
             return count;
         }
 

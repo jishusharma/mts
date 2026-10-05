@@ -154,3 +154,9 @@ Shape A matches the doctrine that non-Tom signals do not gate core.
 The edit is one conditional at SetupCandidatesBuilder.java L575-580.
 Needs a test that proves a balanced input pool yields a balanced
 proof-5 output.
+
+RESOLUTION 2026-10-05T03:30Z: shape A applied. book_imbalance removed from
+countSignals (SetupCandidatesBuilder.java); JSON and math_object_builder guard untouched.
+Tests: SetupCandidatesBuilderRulesTest.proofCountFourOfSixIgnoresBookImbalance,
+proofCountFiveOfSixIgnoresBookImbalance; CountSignalsD4Test book tests flipped to expect 0.
+mvn test: 130 run, 0 fail. Follow-up: re-run allshorts diag to confirm proof-5 parity.
