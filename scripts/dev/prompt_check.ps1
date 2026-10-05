@@ -26,6 +26,9 @@ Checks (B083 Fix section):
                its line endings (CRLF or LF) differ from the target's on-disk line endings, or when it mixes both
                against a single-style target. No -Target, no newline in the content, a missing target (new file) or a
                target with no newline: PASS (not applicable). Give the content with -Path; stdin loses CR.
+  12 surface-mismatch (B133) a prompt whose surface marker is APP must not carry the CLI launch line 'mts go'; a CLI marker
+               or no marker (check 13 reports that) is not applicable
+  13 surface-marker (B133) exactly one line 'SURFACE: APP' or 'SURFACE: CLI'; zero or two (or more) markers FAIL
 
 Conventions: a path on a line marked (NEW), NEW:, CREATE: or "new file" is a file the prompt asks to create; it is
 counted, not checked. Placeholders (< > * ? $ { }) and URLs are skipped.
@@ -316,6 +319,20 @@ if ($Target) {
     }
 }
 Add-Row '11' 'write line ending matches target' $eolOk $d11 $n11
+
+# 12 and 13 surface marker (B133)
+$surfM = @([regex]::Matches($text, '(?im)^[ 	]*SURFACE[ 	]*:[ 	]*(APP|CLI)[ 	]*$'))
+$surfKinds = @($surfM | ForEach-Object { $_.Groups[1].Value.ToUpper() })
+$goLines = @()
+for ($i = 0; $i -lt $lines.Count; $i++) { if ($lines[$i] -match '(?i)\bmts\s+go\b') { $goLines += ('L{0}' -f ($i + 1)) } }
+if ($surfKinds.Count -eq 1 -and $surfKinds[0] -eq 'APP') {
+    $d12 = if ($goLines.Count) { 'SURFACE: APP but the CLI launch line mts go is present at ' + ($goLines -join ', ') } else { 'SURFACE: APP, no mts go line' }
+    Add-Row '12' 'no mts go on an App prompt' ($goLines.Count -eq 0) $d12 $goLines.Count
+} else {
+    Add-Row '12' 'no mts go on an App prompt' $true 'not an App prompt (see check 13); not applicable' 0
+}
+$d13 = '{0} surface marker line(s): {1}' -f $surfKinds.Count, $(if ($surfKinds.Count) { $surfKinds -join ', ' } else { 'none' })
+Add-Row '13' 'one surface marker' ($surfKinds.Count -eq 1) $d13 $surfKinds.Count
 
 # ---------------------------------------------------------------- report and log
 Write-Output ('{0,-3} {1,-30} {2,-6} {3}' -f '#', 'CHECK', 'RESULT', 'DETAIL')
