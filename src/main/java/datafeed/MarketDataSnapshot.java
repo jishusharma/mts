@@ -852,6 +852,11 @@ public class MarketDataSnapshot {
         return node;
     }
 
+    /** D3: US cash open 09:30 America/New_York as UTC for a date: 13:30Z during EDT, 14:30Z during EST. */
+    static ZonedDateTime usEquityOpenUtc(LocalDate date) {
+        return ZonedDateTime.of(date, LocalTime.of(9,30), ZoneId.of("America/New_York")).withZoneSameInstant(ZoneOffset.UTC);
+    }
+
     private ObjectNode buildSessionTiming(ZonedDateTime now) {
         ObjectNode node = mapper.createObjectNode();
         LocalDate today = now.toLocalDate();
@@ -893,8 +898,7 @@ public class MarketDataSnapshot {
         // BUG-009 fix (2026-09-10): use decimal hour so us_cash_open can fire.
         double hourDec = hour + now.getMinute() / 60.0;
         // L25 fix (2026-09-16): session labels DST-aware. US cash open shifts with DST.
-        ZonedDateTime nyOpenRef = ZonedDateTime.of(now.toLocalDate(), LocalTime.of(9,30), ZoneId.of("America/New_York"));
-        ZonedDateTime nyOpenUtcRef = nyOpenRef.withZoneSameInstant(ZoneOffset.UTC);
+        ZonedDateTime nyOpenUtcRef = usEquityOpenUtc(now.toLocalDate());
         double usOpenHr = nyOpenUtcRef.getHour() + nyOpenUtcRef.getMinute() / 60.0;
         String session;
         if (hourDec >= 0.0 && hourDec < 7.0) session = "asian";
@@ -918,9 +922,8 @@ public class MarketDataSnapshot {
         }
         node.put("funding_reset_window", fundingWindow);
 
-        ZonedDateTime nyOpen = ZonedDateTime.of(now.toLocalDate(), LocalTime.of(9,30), ZoneId.of("America/New_York"));
-        ZonedDateTime nyOpenUtc = nyOpen.withZoneSameInstant(ZoneOffset.UTC);
-        boolean usOpenWindow = !now.toLocalDate().equals(nyOpen.toLocalDate()) ? false : now.isAfter(nyOpenUtc) && now.isBefore(nyOpenUtc.plusMinutes(90));
+        ZonedDateTime nyOpenUtc = usEquityOpenUtc(now.toLocalDate());
+        boolean usOpenWindow = !now.toLocalDate().equals(nyOpenUtc.toLocalDate()) ? false : now.isAfter(nyOpenUtc) && now.isBefore(nyOpenUtc.plusMinutes(90));
         node.put("us_equity_open_window", usOpenWindow);
         long minutesUntilUsOpen = ChronoUnit.MINUTES.between(now, nyOpenUtc);
         if (minutesUntilUsOpen < 0) minutesUntilUsOpen += 24*60;
