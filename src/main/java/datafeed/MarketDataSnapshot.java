@@ -215,18 +215,10 @@ public class MarketDataSnapshot {
         double bidAskRatio = askDepth > 0 ? bidDepth / askDepth : 0.0;
 
         // ── Open interest direction ──
-        String oiDirection = "flat";
-        double oiChangePct = 0.0;
-        try {
-            JsonNode oiHist = client.openInterestHist(symbol, "1h", 2);
-            if (oiHist != null && oiHist.size() >= 2) {
-                double prev = oiHist.get(0).get("sumOpenInterest").asDouble();
-                double curr = oiHist.get(1).get("sumOpenInterest").asDouble();
-                oiChangePct = prev != 0 ? (curr - prev) / prev * 100.0 : 0.0;
-                if (curr > prev * 1.001) oiDirection = "rising";
-                else if (curr < prev * 0.999) oiDirection = "falling";
-            }
-        } catch (Exception e) { /* keep flat */ }
+        ObjectNode oiFetch = oiFromHistory(client, symbol, mapper);
+        String oiDirection = oiFetch.get("direction").asText();
+        boolean oiAvailable = !"UNAVAILABLE".equals(oiDirection);
+        double oiChangePct = oiAvailable ? oiFetch.get("change_1h_pct").asDouble() : 0.0;
 
         // ── Funding ──
         double fundingRate = 0.0;
@@ -363,7 +355,7 @@ public class MarketDataSnapshot {
         root.set("funding", fund);
         ObjectNode oi = mapper.createObjectNode();
         oi.put("direction", oiDirection);
-        oi.put("change_1h_pct", Math.round(oiChangePct * 100.0) / 100.0);
+        if (oiAvailable) oi.put("change_1h_pct", Math.round(oiChangePct * 100.0) / 100.0); else oi.putNull("change_1h_pct");
         oi.put("delta_state", classifyOiDeltaState(oiDirection, nd1h));
         double priceDelta1h = 0.0;
         if (klines1m != null && klines1m.size() >= 61) {
@@ -372,7 +364,7 @@ public class MarketDataSnapshot {
             priceDelta1h = nowClose - agoClose;
         }
         oi.put("delta_state_price", classifyOiDeltaState(oiDirection, priceDelta1h));
-        oi.put("confidence", CONFIDENCE_HIGH);
+        oi.put("confidence", oiAvailable ? CONFIDENCE_HIGH : CONFIDENCE_LOW);
         root.set("open_interest", oi);
         root.set("session", buildSession(klines1m, priorDayClose, currentPrice, dailyVp.get("vah").asDouble(), dailyVp.get("val").asDouble(), priorDayVp.get("high").asDouble(), priorDayVp.get("low").asDouble()));
         root.set("session_timing", sessionTiming);
@@ -1431,6 +1423,29 @@ public class MarketDataSnapshot {
             node.put("confidence", "LOW");
         }
         return node;
+    }
+
+    /** 1h OI direction from openInterestHist; any failure or short history yields UNAVAILABLE/LOW, never a fake flat. */
+    static ObjectNode oiFromHistory(BinanceClient client, String symbol, ObjectMapper mapper) {
+        ObjectNode n = mapper.createObjectNode();
+        try {
+            JsonNode h = client.openInterestHist(symbol, "1h", 2);
+            if (h != null && h.size() >= 2) {
+                double prev = h.get(0).get("sumOpenInterest").asDouble();
+                double curr = h.get(1).get("sumOpenInterest").asDouble();
+                String dir = "flat";
+                if (curr > prev * 1.001) dir = "rising";
+                else if (curr < prev * 0.999) dir = "falling";
+                n.put("direction", dir);
+                n.put("change_1h_pct", prev != 0 ? (curr - prev) / prev * 100.0 : 0.0);
+                n.put("confidence", "HIGH");
+                return n;
+            }
+        } catch (Exception e) { /* fall through to UNAVAILABLE */ }
+        n.put("direction", "UNAVAILABLE");
+        n.putNull("change_1h_pct");
+        n.put("confidence", "LOW");
+        return n;
     }
 
         // OI delta 4-state classifier per INDICATOR_IMPLEMENTATION_HANDOFF.md Phase 2.

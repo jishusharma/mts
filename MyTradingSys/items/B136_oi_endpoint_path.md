@@ -19,3 +19,6 @@ Master: research/OPERATOR_ASKS_2026-10-05.md section 1. Task list rows 1-2.
 
 ## Done when
 SNAP OI change matches public openInterestHist within 0.05% for 1 h; Maven + run_all_tests green.
+
+## Taint note (2026-10-05)
+OI-dependent results from 2026-09-24 (acca1d0 folder-flatten) to the B136 fix commit ran on a constant OI (change_1h_pct 0.0, direction flat, confidence HIGH). Treat open_interest-derived fields and any testnet/backtest conclusion that used them as OI-tainted. Fixed: all five futures-data URLs restored to /futures/data/; open_interest now emits UNAVAILABLE/LOW on fetch failure. oi_breakdown (buildOiBreakdown) was not changed in this session.
