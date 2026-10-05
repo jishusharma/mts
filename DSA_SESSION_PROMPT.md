@@ -319,33 +319,40 @@ Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
 Runtime + loops: loop UP. wrapper 23824, java 23440, supervisor 20788.
-Build PASS at last gate (2026-10-04T18:51:37Z). Math 317/317, Doc 5/5, Java 108/123 (15 skipped).
-HEAD 1c81d81 on fast-track. origin/fast-track = 5132444 (1c81d81 local-only until the next push).
+Build PASS at last gate (2026-10-04T19:58:34Z). Math 325/325, Doc 5/5, Java 108/123 (15 skipped).
+HEAD 727d9ea on fast-track. origin/fast-track lags until the next push (four commits).
 
-LANDED this DSA session (5 commits, in order):
+LANDED this DSA session (11 commits, in order):
   df5059e B133 filed; fce0551 B131 item-doc mechanism append;
   ed0e3c1 B133 tags + root causes + LESSONS; 5132444 B133 LOGGER backfill;
-  1c81d81 B093 parallel dispatch by file set (shape B, 3 slots) [returned from a CLI session].
+  1c81d81 B093 parallel dispatch (CLI session return);
+  107ef2e B093 reopen launcher side + b093 session record + section 11;
+  87658ae B093 launcher side (go.py --id) [APP];
+  1412c28 T037 MarketDataSnapshotTest bodies (seam b) [APP];
+  81c7e9f B133 prompt_check checks 12-13 [APP];
+  727d9ea B133 receipt row.
 
-CLOSED this DSA session: none.
+CLOSED this DSA session: B093, T037.
 OPENED this DSA session: B133.
-REOPENED this DSA session: B093 (pick side landed at 1c81d81; launcher side remains).
+OPEN with partial fix: B133 (part 1 landed 81c7e9f; part 2 = DSA_SESSION_PROMPT
+  section 9 line, needs operator approval; part 3 = LESSONS landed ed0e3c1).
 
 Pipeline:
-  B093 REOPENED: go.py --id <rid> launcher side not delivered; prerequisite for B094.
-  B131 OPEN: mechanism identified (book_imbalance count gate at
-  SetupCandidatesBuilder.java L575-580); fix shape A composed, not dispatched.
-  B133 OPEN: prompt_check checks 12-13 composed as an App dispatch.
-  T037 OPEN: MarketDataSnapshot body tests + BinanceClient seam composed as an App dispatch.
+  B093 CLOSED: pick side 1c81d81, launcher side 87658ae.
+  T037 CLOSED: 21 tests, mvn 128 pass, seam b.
+  B133 OPEN: checks 12-13 at 81c7e9f; section 9 line pending approval.
+  B131 OPEN: mechanism (book_imbalance count gate); fix shape A composed, not dispatched.
+  B094 next: headless mts go (go.py --id landed today, prerequisite met).
+  B095 next: per-session cost on disk.
   R7: no PRE_REG_R7.md and no R7_RESULTS on disk; awaiting the operator paste.
 
 Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
 
 Next session first action:
-  1. Read the B133/T037 App replies; verify against the dispatch prompts.
-  2. B131 fix shape A: dispatch (already composed).
-  3. B093 launcher side: go.py --id; mts.ps1 go verb pass-through.
-  4. B094 headless mts go, B095 per-session cost.
+  1. B131 fix shape A: dispatch (composed).
+  2. B094 headless mts go (go.py --id landed).
+  3. B095 per-session cost.
+  4. B133 part 2 (section 9 line) on operator approval.
 
 Section 5d in force per B132.
 
