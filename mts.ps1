@@ -10,6 +10,7 @@
 param(
     [Parameter(Position = 0)][string]$Verb = "help",
     [Parameter(Position = 1)][string]$Arg = "",
+    [string]$Id = "",
     [switch]$Dry
 )
 
@@ -41,7 +42,7 @@ $Verbs = @(
     @("Auto",        "auto",    "Start the testnet auto-trader (Tom + layer signals) in its own window"),
     @("Auto",        "autolog", "Last 20 auto-trader decisions (trades, skips, rejects)"),
     @("Auto",        "ledger",  "Closed auto-trades per source: count, win rate, mean and total net P/L"),
-    @("Upkeep",      "go",      "Launch the next queued build task in claude (mts go [slug] [-Dry])"),
+    @("Upkeep",      "go",      "Launch the next queued build task in claude (mts go [slug] [-Id B074] [-Dry])"),
     @("Upkeep",      "test",    "Run the offline test suite (no exchange)"),
     @("Upkeep",      "guide",   "Open the user guide"),
     @("Upkeep",      "help",    "This list")
@@ -273,7 +274,7 @@ switch ($Verb.ToLower()) {
 
     "go" {
         # Launch logic lives in scripts/sched/go.py: dry inside a Claude Code session (one writer per tree), live here.
-        $goArgs = @(); if ($Arg) { $goArgs += $Arg }; if ($Dry) { $goArgs += "--dry" }
+        $goArgs = @(); if ($Arg) { $goArgs += $Arg }; if ($Id) { $goArgs += @("--id", $Id) }; if ($Dry) { $goArgs += "--dry" }
         Set-Location $Root
         Py (Join-Path $Root "scripts\sched\go.py") @goArgs; exit $LASTEXITCODE
     }

@@ -12,9 +12,11 @@ Session name (B087c): no argument -> the Session ID already inside the prompt (n
 (<=20 chars, lowercase) -> MTS-YYYY-MM-DD-HHMMZ-CLI-BLD-<slug> from the current UTC (SURFACE_POLICY section 4), and
 the prompt's `Session ID:` line is rewritten to match. One builder: pick_task.session_id (B088). An inherited name
 composed before B088 with the off-policy code -CL- is launched as -CLI-, prompt line rewritten to match.
-Exit 0 on launch, dry run or IDLE; 1 when claude cannot be started; 2 on a bad slug.
+`--id <rid>` (B093) launches the slot row queue/slots/<rid>.* instead of next_task.*: the session name is the one stored in
+the slot json, the prompt's `Session ID:` line is rewritten to match; the same dry-run gate applies.
+Exit 0 on launch, dry run or IDLE; 1 when claude cannot be started; 2 on a bad slug or bad --id; 3 when the slot is missing.
 Test hooks: MTS_PICK_ROOT replaces the repo root, MTS_CLAUDE_BIN replaces the claude executable.
-Usage (repo root): python scripts/sched/go.py [slug] [--dry]
+Usage (repo root): python scripts/sched/go.py [slug] [--id <rid>] [--dry]
 """
 import json
 import os
@@ -31,18 +33,36 @@ ROOT = Path(os.environ.get("MTS_PICK_ROOT") or Path(__file__).resolve().parents[
 QUEUE = ROOT / "MyTradingSys" / "runtime" / "queue"
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 SLUG_MAX = 20
+RID_RE = re.compile(r"^[A-Za-z][A-Za-z0-9]*$")
 LEGACY_CL = re.compile(r"^(MTS-\d{4}-\d{2}-\d{2}-\d{4}Z-)CL(-[A-Z]+-)")
+
+
+def m_name(prompt):
+    m = re.search(r"(?m)^Session ID: (\S+)", prompt)
+    return m.group(1) if m else None
 
 
 def main(argv, now=None):
     now = now or datetime.now(timezone.utc)
     dry = "--dry" in argv
     args = [a for a in argv if a != "--dry"]
+    rid = None
+    if "--id" in args:
+        i = args.index("--id")
+        rid = args[i + 1] if i + 1 < len(args) else ""
+        args = args[:i] + args[i + 2:]
+        if not RID_RE.match(rid):
+            print("go: --id needs a row id such as B074 (got %r)" % rid, file=sys.stderr)
+            return 2
     slug = args[0] if args else ""
     if slug and not (SLUG_RE.match(slug) and len(slug) <= SLUG_MAX):
         print("go: slug must be lowercase kebab, at most %d chars (got %r)" % (SLUG_MAX, slug), file=sys.stderr)
         return 2
-    task = QUEUE / "next_task.txt"
+    base = (QUEUE / "slots" / rid) if rid else (QUEUE / "next_task")
+    task = base.with_name(base.name + ".txt")
+    if rid and not task.is_file():
+        print("go: no slot for %s (%s)" % (rid, task), file=sys.stderr)
+        return 3
     if not task.is_file():
         print("IDLE: queue empty")
         return 0
@@ -56,7 +76,7 @@ def main(argv, now=None):
         prompt = re.sub(r"(?m)^Session ID: .*$", "Session ID: " + name, prompt, count=1)
     else:
         try:
-            name = json.loads((QUEUE / "next_task.json").read_text(encoding="utf-8")).get("session_id")
+            name = json.loads(base.with_name(base.name + ".json").read_text(encoding="utf-8")).get("session_id")
         except (OSError, ValueError, AttributeError):
             name = None
         if not name:
@@ -64,6 +84,7 @@ def main(argv, now=None):
             name = m.group(1) if m else None
         if name and LEGACY_CL.match(name):
             name = LEGACY_CL.sub(r"\g<1>" + SURF + r"\g<2>", name)
+        if name and (rid or name != m_name(prompt)):
             prompt = re.sub(r"(?m)^Session ID: .*$", "Session ID: " + name, prompt, count=1)
     reason = "--dry" if dry else ("running inside Claude Code (CLAUDECODE), one writer per tree" if os.environ.get("CLAUDECODE") else "")
     if reason:

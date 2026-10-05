@@ -88,3 +88,7 @@ Residual fix shape (for Claude):
 Not folded into B094. B094 is "launch without the operator"; this is
 "launch a specific slot", a prerequisite for it. Same file set (go.py,
 mts.ps1), so ordering is: B093 launcher side, then B094.
+
+## Fix landed (launcher side, 2026-10-05)
+
+go.py --id <rid> reads runtime/queue/slots/<rid>.txt|json, uses the stored session_id, rewrites the prompt Session ID line, same dry gate. Exit 3 on missing slot, 2 on bad id. mts.ps1 go -Id forwards it. Tests test_go.py 10-13; 10, 11, 12 fail on pre-change go.py. Gate: test_go 13 passed, run_all_tests --quick PASS.

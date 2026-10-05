@@ -64,7 +64,7 @@ B089 | CLOSED  | B089_bugs_invisible_to_scheduler.md | shape A: pick_task.py swe
 B090 | OPEN    | B090_cloud_credit_approval.md | two-bucket cloud plan ($50 today + $49 contingent); Claude approves; 2 of 8 items need a desktop precondition
 B091 | CLOSED  | B091_build_check_speed.md | Build-Check.ps1 ~45s and dirties tree each run; fast tier + read-only mode; Claude decides shape
 B092 | CLOSED  | B092_dsa_write_batching.md | DSA appends gate+commit to every write; add section 6b BATCHING rule; Claude decides wording
-B093 | OPEN    | B093_parallel_dispatch.md | pick-side fix at 1c81d81 (shape B, 3 slots); launcher side OPEN (go.py --id)
+B093 | FIXED   | B093_parallel_dispatch.md | pick-side fix at 1c81d81 (shape B, 3 slots); launcher side fixed (go.py --id, test_go 10-13)
 B094 | OPEN    | B094_headless_scheduler.md | headless mts go; operator enables, auto-disables when running makes no sense; Claude decides sense conditions
 B095 | OPEN    | B095_per_session_cost.md | per-session cost not on disk; session record + prompt composer need a cost field; Claude decides shape
 B097 | OPEN    | B097_kxh_mislabel.md | kXhIAug0Gh8_v2.md:65 says entry before proof; rows 6-7 say proof first

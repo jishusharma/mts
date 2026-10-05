@@ -86,11 +86,52 @@ def test_6_idle_queue_prints_idle(tmp_path):
     assert p.returncode == 0 and "IDLE" in p.stdout and not argv.exists()
 
 
+def add_slot(tmp_path, rid="B074", sid="MTS-2026-10-04-1914Z-CLI-BLD-b074-rule-order-cont"):
+    s = tmp_path / "MyTradingSys" / "runtime" / "queue" / "slots"
+    s.mkdir(exist_ok=True)
+    (s / (rid + ".txt")).write_text("Session ID: OLD-NAME" + chr(10) + "TASK: %s" % rid + chr(10), encoding="utf-8", newline=chr(10))
+    (s / (rid + ".json")).write_text(json.dumps({"id": rid, "session_id": sid}), encoding="utf-8")
+    return sid
+
+
+def test_10_id_launches_slot_with_stored_session_name(tmp_path):
+    wrapper, argv = setup(tmp_path)
+    sid = add_slot(tmp_path)
+    p = go(tmp_path, wrapper, ["--id", "B074"])
+    assert p.returncode == 0, p.stderr
+    got = json.loads(argv.read_text(encoding="utf-8"))
+    assert got[0] == "--name" and got[1] == sid
+    assert got[2] == "Session ID: " + sid
+
+
+def test_11_id_missing_slot_exits_3_no_launch(tmp_path):
+    wrapper, argv = setup(tmp_path)
+    p = go(tmp_path, wrapper, ["--id", "B999"])
+    assert p.returncode == 3 and "no slot" in p.stderr
+    assert not argv.exists()
+
+
+def test_12_id_inherits_claudecode_dry_gate(tmp_path):
+    wrapper, argv = setup(tmp_path)
+    sid = add_slot(tmp_path)
+    p = go(tmp_path, wrapper, ["--id", "B074"], claudecode=True)
+    assert p.returncode == 0 and "DRY RUN" in p.stdout and sid in p.stdout and "TASK: B074" in p.stdout
+    assert not argv.exists()
+
+
+def test_13_id_bad_value_rejected(tmp_path):
+    wrapper, argv = setup(tmp_path)
+    for bad in (["--id"], ["--id", "../x"]):
+        assert go(tmp_path, wrapper, bad).returncode == 2
+    assert not argv.exists()
+
+
 def test_7_mts_go_verb_delegates_to_go_py():
     text = (REPO / "mts.ps1").read_text(encoding="utf-8")
     body = text[text.index('    "go" {'):text.index('    "guide" {')]
     assert "go.py" in body and "& claude" not in body
     assert "[switch]$Dry" in text
+    assert '"--id"' in body and "[string]$Id" in text
 
 
 # ---- B088: one surface code (CLI, SURFACE_POLICY section 4) ----
