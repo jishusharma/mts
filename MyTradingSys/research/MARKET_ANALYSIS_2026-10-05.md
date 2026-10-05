@@ -92,3 +92,38 @@ Invalidations: above 86230 A/B are dead; below 84677 C is dead.
   G10 provenance check; G5 liquidation/OI-ratio feed (data only).
 - P2: G7/G8 only after a trader quote exists; run T054 H3 US-open study on 30 days of orderflow_live; G9 keep/kill decision
   from 7-day ToC expectancy; G11 per-setup expectancy table feeding a go/no-go for real trades.
+
+## 7. US-open update (data cutoff 13:42Z)
+
+Sources: SNAP `runtime_data/snapshots/BTCUSDT_2026-10-05_1791207792987.json`; LOG hourly 05-13Z; LEDGER rows ts >= 05:17Z.
+
+Forecast check (honest): called 85,300-85,900 at 13:30Z, centre 85,550. Actual 13:30Z = 86,068.7 -> MISS by ~170 above range.
+Scenario C (hourly close > 85,814) fired at 06Z close 86,182.7; path reached VWAP 86,248 but not 86,510 (high 86,463.6 @08Z).
+Then 09-13Z rotated 85,773-86,194 around the new daily POC.
+
+US open tape: 13:30 86,068.7 -> 13:31 **85,786.7** (sweep under weekly VAL 85,824.6 / prior-day VAL 85,798.75 /
+4H VAL 85,821.5) -> back inside by 13:32, 85,935.5 at 13:42. Engine 13:41 WATCH ct_long proof 4; 13:42 WAIT_TRIGGER
+ct_long @ prior_day_val nrr 2.68.
+
+Readings now: weekly VP POC 86,094.95 / VAH 86,645.67 / VAL 85,824.6 (weekly POC was 86,510 at 05Z -> value migrating DOWN,
+Tom money-flow lean bearish). Daily POC 86,039.88 / VAH 86,430.39 / VAL 85,664.39. VWAP 86,106 falling; -1s 85,756, -2s 85,406.
+Flow: CVD 1h +313 / 4h +19 (rising), trade-flow 15m -161, 1h +287. Book 0.54 (ask-heavy). Funding 1.76e-05, OI flat, basis -0.05%.
+Regime RANGE.
+
+| Rest of US session (to ~20Z) | Odds | Condition | Path |
+|---|---|---|---|
+| A. Rotate in daily value | 50% | holds 85,800 cluster, stays < 86,170 | 85,800-86,430 around POC 86,040 |
+| B. Break down | 30% | 1h close < 85,800 | 85,664 -> 85,406 (VWAP -2s) / 85,369 (4h swing low) |
+| C. Up | 20% | 1h close > 86,170 (VWAP + 1h swing high) | 86,430-86,470 -> 86,646 (weekly VAH) |
+
+Tom read: the 13:31 dip under the 85,800 cluster that was bought back inside within one minute is the "failed break back into value"
+shape. Long valid only while 85,787 holds; target daily POC 86,040 then VAH 86,430. Lean: neutral-to-bearish (value migrating down,
+VWAP falling, book ask-heavy) - long is a rotation trade, not a trend call.
+
+Trades 05:17-13:42Z: turn_of_candle 34 (6 wins, -$0.33); rsi 5 (2 wins, -$0.06); cryptocred 1 (-$0.01). Tom/Fabio/session: none.
+
+New/confirmed gaps:
+- G12 (new): at the sweep minute 13:31 the engine logged NO_TRADE (no candidates); the zone touch lasted < 1 cycle (1/min sampling),
+  so a Tom-shape reclaim at the exact level was invisible to it. Needs tick/1m-OHLC low, not sampled last price, for zone touch.
+- G4 still open: structure.1d swing 84,829.6 / 84,482.8 (stale, 10-01/02). G5 still open: liquidation clusters + OI breakdown = 0.
+- G1 confirmed again: 13:19-13:40 every candidate WAIT_RR at nrr 0.2-0.8 vs 1.25 floor.
