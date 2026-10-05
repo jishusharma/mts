@@ -114,3 +114,45 @@ diff(event-control) 4h: mean 11.9bp boot95[-12.5,35.9]
 
 ### Next (Desktop / LAN)
 Run arm A1 on 30 d of 5m OI per section 1 hand-off (`--oi`), last 10 d as holdout; only if A1 passes does an alert candidate go to T067 (T067 spec in this repo is therefore written as conditional on A1).
+
+## 3. RESULTS - arm A1 (sweep + OI drop + price/CVD), Desktop 2026-10-05
+
+Command: `python MyTradingSys/research/t063_event_study.py --oi MyTradingSys/runtime/oi_live/oi_5m_30d.csv` (PRE_REG + AMEND 1, parameters unchanged).
+Window: overlap of OI and price/CVD, 2026-09-29 to 2026-10-05 (7 UTC days touched, 1,888 complete 5m bars). Not 30 d (see AMEND 1). No holdout.
+Sign: positive = flush continues, negative = reverses. Control here also carries the OI clause (same flush + OI drop, no prior sweep).
+
+```
+## A1 sweep + OI drop + price/CVD
+bars=1888 days_touched=7 sweeps_with_window=518 events_raw=22 control_raw=20
+events_with_full_4h=21 control_with_full_4h=19
+P(flush|sweep)=0.042 (22/518); events/day=3.14
+-- EVENT n=21
+  15m: mean=-1.8bp median=2.2bp reversal=9/21=0.43 CI[0.24,0.63]
+  1h: mean=-9.0bp median=-0.8bp reversal=11/21=0.52 CI[0.32,0.72]
+  4h: mean=5.8bp median=9.3bp reversal=6/21=0.29 CI[0.14,0.50]
+  depth_ATR median=1.87 p75=2.29
+  snap_back_12bars=10/21 median_bars=4.5
+  opposite_pivot_taken_within_4h=12/21
+  per_day={20725: 5, 20726: 2, 20727: 2, 20728: 3, 20729: 4, 20730: 3, 20731: 2}
+-- CONTROL n=19
+  15m: mean=1.6bp median=2.1bp reversal=6/19=0.32 CI[0.15,0.54]
+  1h: mean=5.0bp median=0.0bp reversal=9/19=0.47 CI[0.27,0.68]
+  4h: mean=-10.9bp median=-10.2bp reversal=11/19=0.58 CI[0.36,0.77]
+  depth_ATR median=1.30 p75=3.79
+  snap_back_12bars=7/19 median_bars=5
+  per_day={20725: 5, 20726: 2, 20727: 1, 20728: 4, 20729: 2, 20730: 4, 20731: 1}
+diff(event-control) 15m: mean -3.4bp boot95[-10.5,3.6]
+diff(event-control) 1h: mean -14.0bp boot95[-38.2,7.2]
+diff(event-control) 4h: mean 16.6bp boot95[-28.6,60.1]
+```
+
+### Reading (within the pre-registered rule)
+- **Base rate:** 22 of 518 sweeps (4.2%) had a flush with an OI drop >= 2x adjacent-bar median within 30 min; ~3.1 per day. The OI clause cuts A0's 114 events to 22.
+- **Sample size:** 21 events with a full 4h window (< 30). **Decision rule: inconclusive** (n < 30). The control has 19, so the diff CIs are wide.
+- **Forward returns (event):** 15m mean -1.8bp (reversal 0.43), 1h mean -9.0bp (reversal 0.52, CI [0.32,0.72]), 4h mean +5.8bp (reversal 0.29, CI [0.14,0.50]).
+  Event-minus-control 1h diff -14.0bp, bootstrap [-38.2, +7.2] contains 0; 15m and 4h also contain 0.
+- **Pullback depth before snap-back:** median 1.87 ATR14 (p75 2.29) beyond the flush close in 12 bars (control 1.30 / 3.79); snap-back through the flush open in 10 of 21 (48%), median 4.5 bars.
+- **Opposite pivot taken within 4h:** 12 of 21 (57%), descriptive, no control.
+- **Operator claim:** neither supported nor refuted. A 4h continuation lean (reversal 0.29) is the only pattern, but its CI [0.14,0.50] touches 50% and the control flips sign (4h reversal 0.58), so this is noise-compatible at n=21.
+- **Caveats:** overlapping 4h windows make every CI optimistic; one 7-day regime; ts_ms joined as bar open (assumed per PRE_REG); no unit tests on the script. Re-run when >= 30 d of price/CVD exists (orderflow recorder started 09-29; ~3 more weeks), then n should clear 30.
+- **T067:** stays conditional; A1 did not pass.
