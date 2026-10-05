@@ -25,12 +25,13 @@ Run (desktop or NUC, needs internet):
   python MyTradingSys/backtest/fetch_binance_archive.py --start 2026-09-01 --end 2026-09-26 --datasets klines,metrics,fundingRate,bookDepth,aggTrades
 Default datasets: klines,metrics,fundingRate,markPriceKlines,bookDepth (aggTrades opt-in: size).
 """
-import argparse, hashlib, io, urllib.request, urllib.error, zipfile, time
+import argparse, hashlib, io, os, urllib.request, urllib.error, zipfile, time
 from datetime import date, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-BASE = "https://data.binance.vision/data/futures/um"
+# MTS_ARCHIVE_BASE: same files via the S3 bucket behind data.binance.vision (for hosts that block the vanity domain)
+BASE = os.environ.get("MTS_ARCHIVE_BASE", "https://data.binance.vision/data/futures/um")
 SYM = "BTCUSDT"
 MONTHLY_OK = {"klines", "aggTrades", "fundingRate", "markPriceKlines", "premiumIndexKlines"}
 DAILY_ONLY = {"metrics", "bookDepth"}
