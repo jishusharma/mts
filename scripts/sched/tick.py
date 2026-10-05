@@ -31,6 +31,7 @@ TS_FMT = "%Y%m%dT%H%M%SZ"
 CHECKS = [
     ("snapshot_age", [PY, "scripts/sched/check_snapshot_age.py"], "event"),
     ("canary", [PY, "scripts/dev/testnet_canary.py"], "event"),
+    ("autogo", [PY, "scripts/sched/autogo.py", "--tick"], "event"),
     ("sessions", [PY, "scripts/sched/check_sessions.py"], "digest"),
     ("bug_age", [PY, "scripts/sched/check_bug_age.py"], "digest"),
     ("paste_size", [PY, "scripts/sched/check_paste_size.py"], "digest"),

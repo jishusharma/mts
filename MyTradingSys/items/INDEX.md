@@ -65,7 +65,7 @@ B090 | OPEN    | B090_cloud_credit_approval.md | two-bucket cloud plan ($50 toda
 B091 | CLOSED  | B091_build_check_speed.md | Build-Check.ps1 ~45s and dirties tree each run; fast tier + read-only mode; Claude decides shape
 B092 | CLOSED  | B092_dsa_write_batching.md | DSA appends gate+commit to every write; add section 6b BATCHING rule; Claude decides wording
 B093 | CLOSED  | B093_parallel_dispatch.md | pick-side fix at 1c81d81 (shape B, 3 slots); launcher side fixed (go.py --id, test_go 10-13)
-B094 | OPEN    | B094_headless_scheduler.md | headless mts go; operator enables, auto-disables when running makes no sense; Claude decides sense conditions
+B094 | CLOSED  | B094_headless_scheduler.md | autogo.py + go.py per-run cap + tick check; ships disabled, operator enables; 4 auto-disable conditions
 B095 | OPEN    | B095_per_session_cost.md | per-session cost not on disk; session record + prompt composer need a cost field; Claude decides shape
 B097 | OPEN    | B097_kxh_mislabel.md | kXhIAug0Gh8_v2.md:65 says entry before proof; rows 6-7 say proof first
 B098 | OPEN    | B098_python_cpu_spin.md | CPU spike was TF8 backtest pool; closed

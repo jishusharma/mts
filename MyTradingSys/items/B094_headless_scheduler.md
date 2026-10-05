@@ -1,6 +1,6 @@
 # B094 - headless scheduler
 
-Status: OPEN. Severity: MED. Opened 2026-10-03.
+Status: CLOSED 2026-10-05. Severity: MED. Opened 2026-10-03.
 
 ## Operator rule (verbatim, 2026-10-03)
 
@@ -50,6 +50,8 @@ Test must fail on the pre-change go.py or tick.py at least once.
 
 ## Receipt
 
--
+go.py: --max-usd / env MTS_GO_MAX_USD (default 5, 0 = no cap) passed as --max-budget-usd; --headless adds -p. New scripts/sched/autogo.py (--tick/--enable --words/--disable/--status): enable is operator-only via flag file runtime/sched/autogo_enabled, words logged; auto-disable (logged to runtime/sched/autogo_log.jsonl) on brake file (HALT/HALT_DAILY_LOSS/AUTO_PAUSE), canary RED, no pickable slot, all slots held over 24h unlaunched; skips on CLAUDECODE, live pid, slot launched <24h. tick.py CHECKS gains autogo (event). Tests: test_autogo.py 9, test_go.py 14-17; on pre-change go.py/tick.py 4 fail (test_9 autogo, 14, 15, 17). Ships DISABLED; operator runs autogo.py --enable --words. Not rejected-by-design: token-pool floor (no pool reading on disk; per-run cap covers it). Receipt commit: see git log 'B094: '.
+
+Design: cadence = the 15-minute tick (one launch per tick, no second task). Sense conditions chosen: brake file, canary RED, no pickable slot, stale-held slots (replaces "pick_state held X hours"). Rejected: token pool floor (no on-disk pool reading), "CL session running" as a disable (transient, so a skip instead).
 
 # END

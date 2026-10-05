@@ -54,7 +54,7 @@ def test_2_operator_terminal_launches_live(tmp_path):
     assert p.returncode == 0, p.stderr
     got = json.loads(argv.read_text(encoding="utf-8"))
     assert got[0] == "--name" and got[1] == "MTS-2026-10-03-1000Z-CLI-BLD-b070-demo"
-    assert got[2].startswith("Session ID: MTS-2026-10-03-1000Z")  # cmd.exe wrapper keeps line 1 of the prompt only
+    assert got[-1].startswith("Session ID: MTS-2026-10-03-1000Z")  # cmd.exe wrapper keeps line 1 of the prompt only
 
 
 def test_3_dry_flag_forces_no_launch(tmp_path):
@@ -69,7 +69,7 @@ def test_4_slug_derives_policy_session_id_and_rewrites_prompt(tmp_path):
     assert p.returncode == 0, p.stderr
     got = json.loads(argv.read_text(encoding="utf-8"))
     assert re.fullmatch(r"MTS-\d{4}-\d{2}-\d{2}-\d{4}Z-CLI-BLD-fix-dispatcher", got[1]), got[1]
-    assert got[2].startswith("Session ID: " + got[1])
+    assert got[-1].startswith("Session ID: " + got[1])
 
 
 def test_5_bad_slug_rejected_nothing_launched(tmp_path):
@@ -101,7 +101,7 @@ def test_10_id_launches_slot_with_stored_session_name(tmp_path):
     assert p.returncode == 0, p.stderr
     got = json.loads(argv.read_text(encoding="utf-8"))
     assert got[0] == "--name" and got[1] == sid
-    assert got[2] == "Session ID: " + sid
+    assert got[-1] == "Session ID: " + sid
 
 
 def test_11_id_missing_slot_exits_3_no_launch(tmp_path):
@@ -143,7 +143,7 @@ def test_8_inherited_legacy_cl_name_launches_as_cli(tmp_path):
     assert p.returncode == 0, p.stderr
     got = json.loads(argv.read_text(encoding="utf-8"))
     assert got[1] == "MTS-2026-10-03-1000Z-CLI-BLD-b070-demo", got[1]
-    assert got[2] == "Session ID: " + got[1]
+    assert got[-1] == "Session ID: " + got[1]
 
 
 def test_9_go_and_pick_share_the_policy_surface_code(tmp_path):
@@ -155,3 +155,36 @@ def test_9_go_and_pick_share_the_policy_surface_code(tmp_path):
     sys.path.insert(0, str(SCRIPT.parent))
     import pick_task
     assert pick_task.SURF == code
+
+
+def test_14_cap_default_passed_as_max_budget_usd(tmp_path):
+    wrapper, argv = setup(tmp_path)
+    r = go(tmp_path, wrapper)
+    assert r.returncode == 0
+    a = json.loads(argv.read_text())
+    assert a[a.index("--max-budget-usd") + 1] == "5"
+
+
+def test_15_flag_overrides_env_and_zero_means_no_cap(tmp_path):
+    wrapper, argv = setup(tmp_path)
+    assert go(tmp_path, wrapper, ["--max-usd", "2.5"]).returncode == 0
+    a = json.loads(argv.read_text())
+    assert a[a.index("--max-budget-usd") + 1] == "2.5"
+    argv.unlink()
+    assert go(tmp_path, wrapper, ["--max-usd", "0"]).returncode == 0
+    assert "--max-budget-usd" not in json.loads(argv.read_text())
+
+
+def test_16_bad_cap_rejected_nothing_launched(tmp_path):
+    wrapper, argv = setup(tmp_path)
+    for bad in ("-1", "abc"):
+        r = go(tmp_path, wrapper, ["--max-usd", bad])
+        assert r.returncode == 2 and not argv.exists()
+
+
+def test_17_headless_adds_print_flag_and_dry_shows_cap(tmp_path):
+    wrapper, argv = setup(tmp_path)
+    assert go(tmp_path, wrapper, ["--headless"]).returncode == 0
+    assert "-p" in json.loads(argv.read_text())
+    r = go(tmp_path, wrapper, ["--dry"])
+    assert "cap: --max-budget-usd 5" in r.stdout

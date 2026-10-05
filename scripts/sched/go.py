@@ -15,8 +15,10 @@ composed before B088 with the off-policy code -CL- is launched as -CLI-, prompt 
 `--id <rid>` (B093) launches the slot row queue/slots/<rid>.* instead of next_task.*: the session name is the one stored in
 the slot json, the prompt's `Session ID:` line is rewritten to match; the same dry-run gate applies.
 Exit 0 on launch, dry run or IDLE; 1 when claude cannot be started; 2 on a bad slug or bad --id; 3 when the slot is missing.
+Per-run cap (B094): `--max-usd N` or env MTS_GO_MAX_USD (flag wins, default 5) is passed to claude as --max-budget-usd N;
+0 means no cap; a negative or non-numeric value exits 2. `--headless` adds claude -p (print mode, where the cap is enforced).
 Test hooks: MTS_PICK_ROOT replaces the repo root, MTS_CLAUDE_BIN replaces the claude executable.
-Usage (repo root): python scripts/sched/go.py [slug] [--id <rid>] [--dry]
+Usage (repo root): python scripts/sched/go.py [slug] [--id <rid>] [--dry] [--headless] [--max-usd N]
 """
 import json
 import os
@@ -34,6 +36,7 @@ QUEUE = ROOT / "MyTradingSys" / "runtime" / "queue"
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 SLUG_MAX = 20
 RID_RE = re.compile(r"^[A-Za-z][A-Za-z0-9]*$")
+DEFAULT_MAX_USD = "5"
 LEGACY_CL = re.compile(r"^(MTS-\d{4}-\d{2}-\d{2}-\d{4}Z-)CL(-[A-Z]+-)")
 
 
@@ -45,7 +48,20 @@ def m_name(prompt):
 def main(argv, now=None):
     now = now or datetime.now(timezone.utc)
     dry = "--dry" in argv
-    args = [a for a in argv if a != "--dry"]
+    headless = "--headless" in argv
+    args = [a for a in argv if a not in ("--dry", "--headless")]
+    cap = os.environ.get("MTS_GO_MAX_USD", DEFAULT_MAX_USD)
+    if "--max-usd" in args:
+        i = args.index("--max-usd")
+        cap = args[i + 1] if i + 1 < len(args) else ""
+        args = args[:i] + args[i + 2:]
+    try:
+        cap_val = float(cap)
+        if cap_val < 0 or cap_val != cap_val:
+            raise ValueError(cap)
+    except ValueError:
+        print("go: --max-usd / MTS_GO_MAX_USD must be a number >= 0 (got %r)" % cap, file=sys.stderr)
+        return 2
     rid = None
     if "--id" in args:
         i = args.index("--id")
@@ -89,13 +105,14 @@ def main(argv, now=None):
     reason = "--dry" if dry else ("running inside Claude Code (CLAUDECODE), one writer per tree" if os.environ.get("CLAUDECODE") else "")
     if reason:
         print("DRY RUN (%s): nothing launched. session name: %s" % (reason, name))
+        print("cap: %s" % (("--max-budget-usd " + cap) if cap_val > 0 else "none"))
         print(prompt)
         return 0
     exe = os.environ.get("MTS_CLAUDE_BIN") or shutil.which("claude")
     if not exe:
         print("WARN: claude not found on PATH; nothing launched. session name: %s" % name, file=sys.stderr)
         return 1
-    cmd = [exe] + (["--name", name] if name else []) + [prompt]
+    cmd = [exe] + (["--name", name] if name else []) + (["--max-budget-usd", cap] if cap_val > 0 else [])         + (["-p"] if headless else []) + [prompt]
     try:
         return subprocess.call(cmd, cwd=ROOT)
     except OSError as e:
