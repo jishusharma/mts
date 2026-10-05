@@ -45,7 +45,7 @@ price
   level" [TOM-180]. This is the 70-rupee saffron price, where everyone agreed.
 - **VAH / VAL, Value Area High and Low**: the top and bottom edges of the zone where most trading happened. Tom:
   "everything above the value area high and below the value area low is considered an unfair price area" [TOM-183].
-  The usual cut is the 70% of volume around the POC **[convention]**. Tom gives the idea; the 70% figure is not his.
+  The usual cut is the 70% of volume around the POC **[convention]**. Tom gives the idea; the 70% figure is not from Tom.
 - **Inside value** = fair = comfortable. **Outside value** = unfair. Price is out there only briefly, or because
   something has changed.
 
@@ -179,7 +179,7 @@ extraction is done: Tom 2 of 74 engine parameters are sourced, Fabio v3 0 of 8 n
 | M5 | Fabio's hidden pressure (S2) and effort vs result (S3) are the core | Built in `backtest/layers/fabio/v3/signals.py` (`pressure`, `effort_result`), but v3 is shadow and has 0 live rows (E6); its tests are not in the gate (E7) | Fix the v3 live silence first; it is the only layer that holds Fabio's real idea |
 | M6 | Both traders manage the winner: breakeven, add, trail behind control levels; no clock | Time exit after 8 bars (E2); runner dead at 10 USD size (E3); no pyramiding | Remove the time exit for Tom/Fabio on testnet; trade multiples of the minimum contract so a split and adds can exist |
 | M7 | Proof at the zone, entry *when* proof shows (one video shows entry before proof, E5) | Limit orders at the zone that do not fill (E1: 5 of 6); proof rarely completes (E4) | Golden-scenario tests from the line-by-line extracts: fire a trade when the extract says Tom entered |
-| M8 | Wait while the market is "sorting itself out"; Fabio presses only on volatile days | turn_of_candle trades every 15 min regardless (35 trades, -0.25 USD since 10-04 20Z) | Keep ToC as a cost/plumbing probe only; a day-selection gate for Fabio needs his words first |
+| M8 | Wait while the market is "sorting itself out"; Fabio presses only on volatile days | turn_of_candle trades every 15 min regardless (35 trades, -0.25 USD since 10-04 20Z) | Keep ToC as a cost/plumbing probe only; a day-selection gate for Fabio needs a Fabio quote first |
 | M9 | Fabio's market is the NY cash open | US anchor hard-coded 13:30Z; wrong from 2026-11-01 | DST-aware anchor (MA G6) |
 
 **Short version.** MTS already *knows* the map: profiles, VA, POC, VWAP and regime all work. It does not yet
