@@ -114,7 +114,7 @@ Proof is the crowd at the zone confirming that it cares about the level:
 **Step 3, the Math.** Know where you are wrong (the stop goes *below the last liquidity*, `risk_protocol.md` 2.1) and where
 you are going (the next node). Tom's whole edge is asymmetry:
 > "even with a hit rate of 30 to 40% you have an average riskreward ratio of greater than three and you will be
-> incredibly successful" [TOM-092]
+> incredibly successful" [TOM-091]
 > "through your hit rate and the minimum usable risk-reward ratio, you can know, 'I have to trade at least up to
 > here, otherwise the whole thing makes no sense.'" [TOM-093]
 
@@ -172,7 +172,7 @@ extraction is done: Tom 2 of 74 engine parameters are sourced, Fabio v3 0 of 8 n
 
 | # | What the teacher says | What MTS does | Gap / fix direction |
 |---|---|---|---|
-| M1 | The minimum R:R comes from **your own hit rate** [TOM-093]; the edge is R:R above 3 at a 30-40% hit rate [TOM-092] | Fixed floor 1.25 (testnet ruling 10-03), no measured hit rate; WAIT_RR blocked every rally hour 10-04/05 | Measure the hit rate per setup and derive the floor from it, as Tom says. Until then the floor is a placeholder, not Tom |
+| M1 | The minimum R:R comes from **your own hit rate** [TOM-093]; the edge is R:R above 3 at a 30-40% hit rate [TOM-091] | Fixed floor 1.25 (testnet ruling 10-03), no measured hit rate; WAIT_RR blocked every rally hour 10-04/05 | Measure the hit rate per setup and derive the floor from it, as Tom says. Until then the floor is a placeholder, not Tom |
 | M2 | The target is the *next volume node*, node to node [TOM-132..134] | Target = nearest POC/HVN. A near target makes R:R small, and the trade dies at WAIT_RR | Test "next node beyond the nearest" as the Tom route; replay 10-04 |
 | M3 | Weekly VPOC direction = money flow [TOM-196] | Not computed anywhere (grep: no vpoc-trend feature) | Add weekly POC migration to the snapshot as context (Tom-sourced) |
 | M4 | "came back in, formed acceptance" [TOM-011]: the failed-break trade | No acceptance definition and no failed-break setup; rank-1 today is a long at a level price sits *below* | Needs a sourced acceptance test (closes/time back inside VA); flag NO-SOURCE until a quote gives one |

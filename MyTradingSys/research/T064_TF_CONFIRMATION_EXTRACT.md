@@ -228,3 +228,11 @@ Every item carries its source or NO-SOURCE (provenance rule, CLAUDE.md).
 ## 5. Verifier result
 
 `python scripts/dev/verify_extract_quotes.py` on this file, run on Cloud 2026-10-05: **PASS: 0 problem(s)** (35 quotes OK, GPS position tags match).
+
+## Citation note: "30 to 40% hit rate" quote (TOM-091 vs TOM-092), 2026-10-05
+
+This extract does not itself cite the quote (grep: no TOM-091/TOM-092 here); the mis-citation named in the brief sits in `research/TOM_FABIO_STORY_2026-10-05.md` (L117, L175) and `conditions/risk_protocol.md` L262.
+Checked against `raw_transcripts_canonical/BVpYGKz9PBU_raw.txt` (GPS BVpYGKz9PBU): the quote "even with a hit rate of 30 to 40% you have an average riskreward ratio of greater than three ..." is verbatim there, and it follows "With counter trades, I always have to rely on the math."
+The transcript confirms quote and video, not the numeric id. By the registry (`TOM_VERBATIM_INDEX.md`, the declared citation authority) the id is **TOM-091** (TOM-090 = the "rely on the math" line, TOM-092 = the "precisely 3:1" line). Fixed: TOM_FABIO_STORY L117 and L175 now cite TOM-091.
+**Not fixed (needs DSA/operator):** `conditions/risk_protocol.md` tags this quote TOM-092 (L262), the math line TOM-091 (L255), the 3:1 line TOM-101 (L271), and carries an extra quote at L209 tagged TOM-090 ("my risk is 45 points") that has no index row. The file ids are shifted from the index by one around here; renumbering them in place would create duplicate ids,
+and `verify_rule_citations.ps1` only checks that ids exist, so it passes (PASS, 214 ids) despite the drift. Suggested fix: add an index row for the 45-points quote (new id), then retag risk_protocol 255/262/271 to 090/091/092 and the later ids to the index text.
