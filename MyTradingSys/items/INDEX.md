@@ -96,9 +96,9 @@ B133 | CLOSED  | B133_dsa_default_cli_over_app.md | CLOSED: checks 12-13 (81c7e9
 B134 | OPEN    | B134_compose_surface_marker.md | compose() emits prose, not the "SURFACE: APP" marker check 13 requires; same file set as B095
 B135 | OPEN    | B135_b131_threshold_recheck.md | B131 follow-up: ps1 proof-count thresholds and allshorts parity re-run
 B136 | IN-FIX  | B136_oi_endpoint_path.md | URLs fixed 881f22b (tests 3/3, mvn 133/133); loop restart pending; oi_breakdown residual
-T063 | PARTIAL | T063_stop_run_oi_flush_signature.md | pre-reg + arm A0 done (no separation, 4.6d); OI arm 30d 5m still to run on Desktop; commits 3776f2f b055c2b
+T063 | PARTIAL | T063_stop_run_oi_flush_signature.md | pre-reg + A0 + A1 (n=21 inconclusive, below 30 min); holds 09-29.., ~7d overlap not 30d; commits 3776f2f b055c2b c61a26a 690b238
 T064 | DONE    | T064_timeframe_selection_confirmation.md | 35 quotes (20 Tom, 15 Fabio); Tom zone/trigger sourced, Fabio retrace NO-SOURCE; verify_extract_quotes.py green; 65d4748. Cross-check TOM-091 vs TOM-092 pending
-T065 | PARTIAL | T065_lazybear_survey.md | shortlist 4 (SQZMOM, BVI, WaveTrend=T061, VFI); TradingView blocked from Cloud so Pine not opened; Desktop Pine check pending; 1569678
-T066 | OPEN    | T066_my_charts_module.md | My charts: read operator TradingView layouts via Claude in Chrome -> my_charts/
-T067 | PARTIAL | T067_alert_improvements.md | spec + 29 failing-first tests (research/t067/); sweep+OI alert gated on T063 OI arm; alerts.ps1 untouched; b92bd29; buy-detection meaning still pending operator
+T065 | DONE    | T065_lazybear_survey.md | shortlist 4 (SQZMOM, BVI, WaveTrend=T061, VFI); Pine sources verified on Desktop (BVI lookback 8/no thresholds, VFI 130/0.2/2.5/5, SQZ BB-mult bug); 1569678 e9bd822
+T066 | BLOCKED | T066_my_charts_module.md | my_charts/ created (README only); Claude in Chrome not connected; operator to connect extension + open two layouts; 1c0d276
+T067 | PARTIAL | T067_alert_improvements.md | spec + 29 failing-first tests; sweep+OI alert held because T063 A1 inconclusive; alerts.ps1 untouched; b92bd29; buy-detection meaning still pending operator
 # END

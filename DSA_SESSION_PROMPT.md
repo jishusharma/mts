@@ -315,13 +315,13 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-05T16:22Z.
+Last live read:  2026-10-05T16:40Z.
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 26300, java 20916 (pre-B136 bytecode), supervisor 20788.
+Runtime + loops: loop UP. wrapper 26300, java 20916 (pre-B136), supervisor 20788. HTF writer 5656/9780. Watchdog task MTS-Feed-Watchdog Ready.
 Build PASS at last gate (this close; see BUILD_REPORT.md).
-HEAD 8dfec36 on fast-track. origin/fast-track at 9e56bb3; local ahead (D2, D3, 8 Cloud cherry-picks).
+HEAD ba8824c on fast-track. origin/fast-track at ed604ab; local ahead 8 commits (Desktop batch 2).
 
 LANDED this DSA session (in order):
   df5059e B133 filed; fce0551 B131 item-doc mechanism;
@@ -343,7 +343,9 @@ LANDED this DSA session (in order):
   952b951 D2 OI recorder + backfill [APP];
   d4bc506 D3 US-open DST helper + test [APP];
   65d4748 T064 quotes; 1569678 T065 shortlist; 3776f2f+b055c2b T063 pre-reg+arm A0;
-  2927244+627150b replay partial; b92bd29 T067 spec+tests; 8dfec36 session record + inbox cleanup [CLD].
+  2927244+627150b replay partial; b92bd29 T067 spec+tests; 8dfec36 session record + inbox cleanup [CLD];
+  c60d0e2 D4 watchdog; 1c0d276 D6 my_charts scaffold; c61a26a+690b238 T063 pre-reg amend + A1;
+  b455a2f full replay 930 episodes; e9bd822 T065 Pine verify; dec81d7 TOM-091/092 fix; ba8824c watchdog negative-age clamp.
 
 CLOSED this DSA session: B093, T037, B133, B131, B094.
 OPENED this DSA session: B133 (closed same), B134, B135.
@@ -364,10 +366,11 @@ Pipeline:
 Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
 
 Next session first action:
-  1. Operator: git push origin fast-track (local ahead 10 commits).
+  1. Operator: git push origin fast-track (local ahead 8 commits).
   2. Operator: scripts\core\stop-day.ps1 then scripts\core\mode.ps1 -M armed (B136 + D3 live load).
-  3. Desktop Sonnet resume: Wave 3 watchdog approval, Wave 5 My charts, T063 OI arm 30d, full 10-04/05 replay from snapshots, T065 Pine check, TOM-091 vs TOM-092 cross-check.
+  3. Operator decisions owed: Chrome extension connect for T066; TOM-091/092 retag in risk_protocol.md; buy-detection meaning for T067.
   4. B136 verify: SNAP OI change_1h_pct matches public within 0.05% after loop restart.
+  5. NOTE: two go.py processes running (22856, 21156) at last read; resolve before next dispatch.
 
 Section 5d in force per B132.
 

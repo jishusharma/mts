@@ -506,3 +506,7 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/runtime/oi_live/oi_recorder.py | tool | 1m OI sampler + 5m backfill writer. | MTS-2026-10-05-1600Z-APP-BLD-desktop-haiku-batch | 2026-10-05 |
 | MyTradingSys/runtime/oi_live/oi_1m.csv | data | Live 1m OI samples. | MTS-2026-10-05-1600Z-APP-BLD-desktop-haiku-batch | 2026-10-05 |
 | MyTradingSys/runtime/oi_live/oi_5m_30d.csv | data | 30d 5m OI backfill (8,640 rows). | MTS-2026-10-05-1600Z-APP-BLD-desktop-haiku-batch | 2026-10-05 |
+| scripts/live/feed-watchdog.ps1 | tool | D4: snapshot+state_code age logger; starts htf_context_live if absent. | MTS-2026-10-05-1650Z-APP-BLD-desktop-sonnet-finish | 2026-10-05 |
+| my_charts/README.md | doc | T066: read operator TradingView layouts via Claude in Chrome. | MTS-2026-10-05-1650Z-APP-BLD-desktop-sonnet-finish | 2026-10-05 |
+| runtime_data/feed_watchdog.log | data | D4 watchdog output. | MTS-2026-10-05-1650Z-APP-BLD-desktop-sonnet-finish | 2026-10-05 |
+| MyTradingSys/research/TOM_FABIO_STORY_2026-10-05.md | doc | Tom+Fabio story; TOM-091 citation fix at L117,L175. | MTS-2026-10-05-1650Z-APP-BLD-desktop-sonnet-finish | 2026-10-05 |
