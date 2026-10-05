@@ -104,3 +104,10 @@ Three causes, one on disk, one on the composer, one on the format.
    with Session ID, Mode line, repo root, then the task brief. The mts go
    launch block belongs to CLI prompts only.
 3. Lesson: LESSONS_LEARNED.md entry logged 2026-10-04.
+
+## Receipt: part 1 (code), 2026-10-05
+Commit 81c7e9f (session MTS-2026-10-04-2005Z-APP-BLD-b133-surface). scripts/dev/prompt_check.ps1:
+- check 12: a prompt whose only SURFACE marker is APP and which carries a line matching `mts go` FAILs; CLI marker or no marker is not applicable.
+- check 13: exactly one line `SURFACE: APP` or `SURFACE: CLI`; zero, two or more FAIL.
+scripts/dev/test_prompt_check.ps1: fixtures 13-16 added (16 of 16 PASS); fixtures 1-12 keep passing with a SURFACE: APP line added to their header and log-row count 11 -> 13.
+Parts 2 (DSA_SESSION_PROMPT.md section 9) and 3 (lesson) remain open.
