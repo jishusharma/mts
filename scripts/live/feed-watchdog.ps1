@@ -5,7 +5,7 @@ param([int]$MaxSnapshotAgeSec = 180, [int]$MaxStateAgeSec = 180)
 $root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 $log  = "$root\runtime_data\feed_watchdog.log"
 $now  = Get-Date
-function Age($p) { if (Test-Path $p) { [int]($now - (Get-Item $p).LastWriteTime).TotalSeconds } else { -1 } }
+function Age($p) { if (Test-Path $p) { [Math]::Max(0,[int]($now - (Get-Item $p).LastWriteTime).TotalSeconds) } else { -1 } }
 $snap = Get-ChildItem "$root\runtime_data\snapshots\BTCUSDT_*.json" -ErrorAction SilentlyContinue | Sort LastWriteTime -Desc | Select -First 1
 $sAge = if ($snap) { Age $snap.FullName } else { -1 }
 $cAge = Age "$root\MyTradingSys\runtime\state_code.json"
