@@ -133,3 +133,28 @@ New/confirmed gaps:
 under daily VAH 86,430. Daily POC migrated up 86,040 -> 86,255; 4H VA 85,947-86,360. Book flipped 0.35 -> 2.61 -> 0.72 -> 2.23 (unstable).
 Engine: WATCH ct_short @ daily_vah 86,430 (proof 4, nrr 1.71); 4h_vah short proof 5 blocked nrr 0.69 + flow contradiction.
 Missed: 13:31 reclaim long 85,787 -> 86,345 (+558, ~3x a 190-pt stop) never entered - G12 + G1 in one live example.
+
+## 9. Higher-timeframe context (operator ask 14:0xZ) - daily/weekly/cycle
+Source: Binance fapi public klines 1d x400 + 1w x12 (read-only, fetched this session). Local `Dumps/backtest/raw_1d` ends 09-26 (stale).
+- Cycle: ATH 126,208.5 (2025-10-06) -> low 57,758.6 (2026-07-01, -54%, 9 months) -> rally to 87,385.1 (2026-09-21) = +29.6k (+51%).
+  Price at fetch 86,632 = 31% below ATH, between 0.382 (83,850) and 0.5 (91,983) retrace of the 126.2k->57.8k drop.
+- Resistance tested 4x: 87,385 (09-21, 24.5B vol impulse) / 87,247 (09-23) / 87,250 (10-02, rejected to 84,483 close, 19.9B) / 86,976 (today).
+  Highs slightly lower; daily lows rising 82,500 (09-28) -> 83,842 -> 84,677 -> 85,369 = compression under 87.0-87.4k.
+- Weekly closes 81,144 -> 84,433 -> 86,483 (highest of the rally). Weekly POC 83,896 (prior) -> 86,095 (this week): value moving up.
+- Two-week balance 82,500-87,385; we are at its top edge.
+
+Approach to 87.0-87.4k (judgement on MTS levels; MTS has NO HTF model, so these are not MTS outputs):
+| Case | Odds (this week) | Tell | Path |
+|---|---|---|---|
+| 1. First-pass rejection | 40% | wick into 87.0-87.4k, flow up but price stalls (absorption, as seen 13:52-13:55Z at 86.3k), 1h close back < 86,646 | 86,095 -> 85,825 -> 84.5k |
+| 2. Sweep + fail (bull trap) | 25% | pokes 87.4-88k (stops over the triple top), 4h/daily close back < 87,250 | 86,095 -> 83,900 (prior wk POC) -> 82,500 |
+| 3. Break + retest + hold | 35% | daily close > 87,385, pullback holds 87.0-87.4k, value (POC) builds above | no level above in MTS; HTF 0.5 retrace ~92k |
+Bull-trap case: prior cycle bottoms came ~12-13 months after the peak (2018-12, 2022-11); this low came at 9 months, and a 0.382-0.5 retrace
+is where 2022's relief rally failed. Bull case: rising lows + rising weekly value + 4th test of one level. Small sample (3 cycles), lore not MTS.
+Trade rule of thumb (Tom shape): never buy the first poke above 87.4k; buy the RETEST that holds, or sell the failed break back inside.
+
+Gaps (new):
+- G13: MTS has no daily/weekly candle context - no test count at an HTF level, no rising-lows/compression read, no cycle position/ATH distance.
+  Only structure.1w swing 87,249.6/82,500.1 exists (and 1w swing high misses 87,385 wick). Needs Tom/Fabio quotes on HTF context first.
+- G14: no "break -> retest -> hold" (acceptance above an old high) or "sweep -> fail" setup on daily levels; ties to M4.
+- G15: daily kline dump stale since 09-26; refresh job missing.
