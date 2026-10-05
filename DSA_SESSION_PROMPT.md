@@ -315,13 +315,13 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-05T05:17Z.
+Last live read:  2026-10-05T15:36Z.
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 23824, java 23440, supervisor 20788.
+Runtime + loops: loop UP. wrapper 26300, java 20916 (pre-B136 bytecode), supervisor 20788.
 Build PASS at last gate (this close; see BUILD_REPORT.md).
-HEAD 32eb40a on fast-track. origin/fast-track lags until the push.
+HEAD 881f22b on fast-track. origin/fast-track at db65e77; push pending.
 
 LANDED this DSA session (in order):
   df5059e B133 filed; fce0551 B131 item-doc mechanism;
@@ -337,7 +337,8 @@ LANDED this DSA session (in order):
   4f9290e B131 fix shape A [APP];
   2b12c9b B094 headless scheduler (ships disabled) [APP];
   32eb40a week-open market analysis [APP-ANA];
-  this close-out commit (B134 + B135 filed, 4 session records, s11).
+  this close-out commit (B134 + B135 filed, 4 session records, s11);
+  881f22b B136 OI endpoint fix (4 files, +121 -19) [APP]; loop restart + registry pending.
 
 CLOSED this DSA session: B093, T037, B133, B131, B094.
 OPENED this DSA session: B133 (closed same), B134, B135.
@@ -358,10 +359,10 @@ Pipeline:
 Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
 
 Next session first action:
-  1. Dispatch B095 + B125 (both composed).
-  2. Dispatch B134 (compose marker; sequence behind B095).
-  3. B135 read-only pass: allshorts diag re-run + ps1 threshold read.
-  4. R7 paste when available.
+  1. Operator: scripts\core\stop-day.ps1 then scripts\core\mode.ps1 -M armed (B136 live load).
+  2. Verify SNAP open_interest.change_1h_pct varies hour-to-hour and matches public openInterestHist within 0.05%.
+  3. Dispatch D2-D5 desktop batch, then D6 My charts pilot, then D7 Cloud merge.
+  4. Cloud: T064 + T065 (CLOUD_INBOX notes, already on origin).
 
 Section 5d in force per B132.
 

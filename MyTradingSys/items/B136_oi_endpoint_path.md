@@ -22,3 +22,10 @@ SNAP OI change matches public openInterestHist within 0.05% for 1 h; Maven + run
 
 ## Taint note (2026-10-05)
 OI-dependent results from 2026-09-24 (acca1d0 folder-flatten) to the B136 fix commit ran on a constant OI (change_1h_pct 0.0, direction flat, confidence HIGH). Treat open_interest-derived fields and any testnet/backtest conclusion that used them as OI-tainted. Fixed: all five futures-data URLs restored to /futures/data/; open_interest now emits UNAVAILABLE/LOW on fetch failure. oi_breakdown (buildOiBreakdown) was not changed in this session.
+
+## Residual (2026-10-05, MTS-2026-10-05-1510Z-APP-BLD-b136-oi-endpoint close)
+
+Commit 881f22b. Registry (same turn): BUGS.md IN-FIX; INDEX.md IN-FIX.
+
+1. Live loop not restarted. Session hit the auto-mode classifier on scripts\core\stop-day.ps1; java 20916 still runs pre-B136 bytecode, still writing flat OI. Operator action: stop-day.ps1 then mode.ps1 -M armed.
+2. oi_breakdown (buildOiBreakdown) swallow path unchanged. Same fail-open pattern as the fixed open_interest path. Follow-up.
