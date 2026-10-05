@@ -315,45 +315,53 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-04T13:02Z.
+Last live read:  2026-10-05T05:17Z.
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
 Runtime + loops: loop UP. wrapper 23824, java 23440, supervisor 20788.
-Build PASS at last gate (2026-10-04T19:58:34Z). Math 325/325, Doc 5/5, Java 108/123 (15 skipped).
-HEAD 727d9ea on fast-track. origin/fast-track lags until the next push (four commits).
+Build PASS at last gate (this close; see BUILD_REPORT.md).
+HEAD 32eb40a on fast-track. origin/fast-track lags until the push.
 
-LANDED this DSA session (11 commits, in order):
-  df5059e B133 filed; fce0551 B131 item-doc mechanism append;
+LANDED this DSA session (in order):
+  df5059e B133 filed; fce0551 B131 item-doc mechanism;
   ed0e3c1 B133 tags + root causes + LESSONS; 5132444 B133 LOGGER backfill;
-  1c81d81 B093 parallel dispatch (CLI session return);
-  107ef2e B093 reopen launcher side + b093 session record + section 11;
+  1c81d81 B093 parallel dispatch (CLI);
+  107ef2e B093 reopen launcher side + b093 session record + s11;
   87658ae B093 launcher side (go.py --id) [APP];
   1412c28 T037 MarketDataSnapshotTest bodies (seam b) [APP];
   81c7e9f B133 prompt_check checks 12-13 [APP];
-  727d9ea B133 receipt row.
+  727d9ea B133 receipt; b475d9a close-out B093/T037;
+  e41de5f section 9 App-opening line + handoff;
+  963b6af B133 CLOSED;
+  4f9290e B131 fix shape A [APP];
+  2b12c9b B094 headless scheduler (ships disabled) [APP];
+  32eb40a week-open market analysis [APP-ANA];
+  this close-out commit (B134 + B135 filed, 4 session records, s11).
 
-CLOSED this DSA session: B093, T037.
-OPENED this DSA session: B133.
-OPEN with partial fix: B133 (part 1 landed 81c7e9f; part 2 = DSA_SESSION_PROMPT
-  section 9 line, needs operator approval; part 3 = LESSONS landed ed0e3c1).
+CLOSED this DSA session: B093, T037, B133, B131, B094.
+OPENED this DSA session: B133 (closed same), B134, B135.
 
 Pipeline:
-  B093 CLOSED: pick side 1c81d81, launcher side 87658ae.
-  T037 CLOSED: 21 tests, mvn 128 pass, seam b.
-  B133 OPEN: checks 12-13 at 81c7e9f; section 9 line pending approval.
-  B131 OPEN: mechanism (book_imbalance count gate); fix shape A composed, not dispatched.
-  B094 next: headless mts go (go.py --id landed today, prerequisite met).
-  B095 next: per-session cost on disk.
-  R7: no PRE_REG_R7.md and no R7_RESULTS on disk; awaiting the operator paste.
+  B134 OPEN: compose() surface marker vs prompt_check check 13; same file
+    set as B095 (pick_task.py). Sequence behind B095 or land together.
+  B135 OPEN: ps1 proof-count thresholds + allshorts diag parity re-run
+    (read-only first; start-trading-day.ps1 if an edit is needed).
+  B095 OPEN (prompt ready): per-session cost on disk.
+  B125 OPEN (prompt ready): promote the consensus writer.
+  B075 OPEN: historical mode; residual is SetupCandidatesBuilder.java,
+    now free (B131 landed). Sequences after B135 read.
+  B121, B122, B124, B098: LIVE PATH. Wait for a stopped-loop window.
+  R7: no PRE_REG_R7.md, no R7_RESULTS on disk. Awaiting the operator paste.
+  B090 OPEN: cloud credit approval (operator).
 
 Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
 
 Next session first action:
-  1. B131 fix shape A: dispatch (composed).
-  2. B094 headless mts go (go.py --id landed).
-  3. B095 per-session cost.
-  4. B133 part 2 (section 9 line) on operator approval.
+  1. Dispatch B095 + B125 (both composed).
+  2. Dispatch B134 (compose marker; sequence behind B095).
+  3. B135 read-only pass: allshorts diag re-run + ps1 threshold read.
+  4. R7 paste when available.
 
 Section 5d in force per B132.
 

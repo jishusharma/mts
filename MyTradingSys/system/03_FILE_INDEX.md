@@ -486,3 +486,5 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/items/B132_dsa_does_quick_wins.md | doc | Bug B132: DSA dispatches work it can do itself; codify DSA-does list + CC prompt names DSA unblock work. | MTS-2026-10-04-0916Z-DSA-COO | 2026-10-04 |
 | MyTradingSys/tests/test_run_all_tests_paths.py | test | B130 guard: PYTEST_LAYER_PATHS in scripts/dev/run_all_tests.py must include MyTradingSys/execution/tests. | MTS-2026-10-04-0916Z-DSA-COO | 2026-10-04 |
 | MyTradingSys/items/B133_dsa_default_cli_over_app.md | doc | Bug B133: DSA defaults to CLI or ships the mts go launch block when the App is the correct surface; policy at d36ec97. | MTS-2026-10-04-1325Z-DSA-COO | 2026-10-04 |
+| MyTradingSys/items/B134_compose_surface_marker.md | doc | Bug B134: compose() emits prose surface line, not the SURFACE marker prompt_check check 13 requires. | MTS-2026-10-04-1325Z-DSA-COO | 2026-10-05 |
+| MyTradingSys/items/B135_b131_threshold_recheck.md | doc | Bug B135: B131 follow-up, ps1 proof-count thresholds and allshorts parity re-run. | MTS-2026-10-04-1325Z-DSA-COO | 2026-10-05 |

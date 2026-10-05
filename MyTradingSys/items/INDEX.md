@@ -93,4 +93,6 @@ B130 | CLOSED  | B130_execution_tests_not_gated.md | execution/tests wired into 
 B131 | CLOSED  | B131_tom_pool_skew_upstream.md | Tom proof-5 pool 2:1 short at SetupCandidatesBuilder, before proof-direction; separate from B085
 B132 | OPEN    | B132_dsa_does_quick_wins.md | DSA dispatches work it can do itself; codify DSA-does-this list + CC-prompt names DSA unblock work
 B133 | CLOSED  | B133_dsa_default_cli_over_app.md | CLOSED: checks 12-13 (81c7e9f), section 9 App-opening line (e41de5f), LESSONS (ed0e3c1)
+B134 | OPEN    | B134_compose_surface_marker.md | compose() emits prose, not the "SURFACE: APP" marker check 13 requires; same file set as B095
+B135 | OPEN    | B135_b131_threshold_recheck.md | B131 follow-up: ps1 proof-count thresholds and allshorts parity re-run
 # END
