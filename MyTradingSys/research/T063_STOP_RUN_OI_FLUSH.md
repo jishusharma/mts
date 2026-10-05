@@ -50,6 +50,18 @@ Otherwise "inconclusive" (n<30) or "not supported". No other conclusion is allow
 run `research/t063_event_study.py --oi <csv>` (hook present, see script).
 <!-- PRE_REG_END -->
 
+<!-- PRE_REG_AMEND_1_BEGIN -->
+### PRE_REG AMEND 1 (Desktop, 2026-10-05, written before any A1 outcome was computed)
+
+Facts found on Desktop that the original hand-off did not know:
+- `runtime/oi_live/oi_5m_30d.csv` has 30 d of OI (2026-09-05 to 2026-10-05) but price+CVD 1m rows (`orderflow_live/*.csv`) only exist from 2026-09-29.
+  The A1 join window is therefore the ~6.5 d overlap, not 30 d. The "first 20 d sanity / last 10 d holdout" split is **not possible and is dropped**; A1 is a single
+  pass over the overlap with parameters unchanged (N=12, W=6, M=2.0, COOL=6). No holdout exists, so a "supported" outcome would be provisional.
+- CSV columns are `ts_ms,sumOpenInterest` (not `t,oi`); the script loader is adapted to read both. `ts_ms` is joined as the 5m bar open `t`, as in section 1. No other logic changes.
+- Decision rule unchanged (n_events >= 30, 1h reversal CI excludes 50%, event-minus-control 1h diff CI excludes 0). With ~6.5 d of data and an OI-drop clause, n < 30 is the likely
+  outcome and would be reported as "inconclusive", not as evidence against the operator claim.
+<!-- PRE_REG_AMEND_1_END -->
+
 ## 2. Results, arm A0 (sweep + price/CVD, no OI clause), run on Cloud 2026-10-05
 
 Command: `python MyTradingSys/research/t063_event_study.py` (script is in this commit; parameters exactly as section 1). Sign convention: positive

@@ -194,7 +194,7 @@ def main(argv):
     bars = load_5m()
     report("A0 sweep + price/CVD (no OI)", *build(bars), bars)
     if "--oi" in argv:
-        oi = {int(r["t"]): float(r["oi"]) for r in csv.DictReader(open(argv[argv.index("--oi") + 1]))}
+        oi = {int(r.get("t") or r["ts_ms"]): float(r.get("oi") or r["sumOpenInterest"]) for r in csv.DictReader(open(argv[argv.index("--oi") + 1]))}
         report("A1 sweep + OI drop + price/CVD", *build(bars, oi), bars)
 
 
