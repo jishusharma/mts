@@ -127,3 +127,9 @@ New/confirmed gaps:
   so a Tom-shape reclaim at the exact level was invisible to it. Needs tick/1m-OHLC low, not sampled last price, for zone touch.
 - G4 still open: structure.1d swing 84,829.6 / 84,482.8 (stale, 10-01/02). G5 still open: liquidation clusters + OI breakdown = 0.
 - G1 confirmed again: 13:19-13:40 every candidate WAIT_RR at nrr 0.2-0.8 vs 1.25 floor.
+
+## 8. Live watch 13:50-13:56Z (1/min polls)
+13:48 squeeze 86,002 -> 86,322; 1h flow +863 -> +1,184 BTC by 13:55; price capped 86,345 (13:52), 86,304 at 13:55 = effort without result
+under daily VAH 86,430. Daily POC migrated up 86,040 -> 86,255; 4H VA 85,947-86,360. Book flipped 0.35 -> 2.61 -> 0.72 -> 2.23 (unstable).
+Engine: WATCH ct_short @ daily_vah 86,430 (proof 4, nrr 1.71); 4h_vah short proof 5 blocked nrr 0.69 + flow contradiction.
+Missed: 13:31 reclaim long 85,787 -> 86,345 (+558, ~3x a 190-pt stop) never entered - G12 + G1 in one live example.
