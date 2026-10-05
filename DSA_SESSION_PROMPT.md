@@ -290,6 +290,7 @@ One per line. No compression.
 - Manager verbs: mts go / mstatus / mresume / mstop / usage. Bare status /
   resume / stop belong to the market loop.
 - CLI prompts open with the mts go launch block. The prompt text follows the launch. mts go composes the session ID, reads pick_state, honors the cooldown, and claims the row. A bare CLI prompt skips all four.
+- App prompts open with Session ID, Mode line, repo root, then the task brief. The mts go launch block belongs to CLI prompts only.
 - Before telling the operator to run mts go, confirm no claude window is foregrounded in that shell. mts go echoes the prompt into the shell; a live claude window consumes it there.
 - Local Maven: D:\tools\apache-maven-3.9.14. Cloud cannot run Maven. All tests
   run on desktop.
