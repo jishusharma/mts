@@ -495,3 +495,14 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/items/T065_lazybear_survey.md | doc | T065: LazyBear survey + shortlist. | MTS-2026-10-05-1500Z-APP-ANA-operator-asks | 2026-10-05 |
 | MyTradingSys/items/T066_my_charts_module.md | doc | T066: My charts module (operator TradingView layouts). | MTS-2026-10-05-1500Z-APP-ANA-operator-asks | 2026-10-05 |
 | MyTradingSys/items/T067_alert_improvements.md | doc | T067: alert improvements incl. buy detection. | MTS-2026-10-05-1500Z-APP-ANA-operator-asks | 2026-10-05 |
+| MyTradingSys/research/T064_TF_CONFIRMATION_EXTRACT.md | doc | T064: 35 Tom+Fabio quotes (TF/confirmation/stop-run/retrace). | MTS-2026-10-05-1600Z-CLD-ANA-cloud-haiku-batch | 2026-10-05 |
+| MyTradingSys/research/T065_LAZYBEAR_SURVEY.md | doc | T065: LazyBear survey, shortlist of 4. | MTS-2026-10-05-1600Z-CLD-ANA-cloud-haiku-batch | 2026-10-05 |
+| MyTradingSys/research/T063_STOP_RUN_OI_FLUSH.md | doc | T063: pre-reg + arm A0 result. | MTS-2026-10-05-1600Z-CLD-ANA-cloud-haiku-batch | 2026-10-05 |
+| MyTradingSys/research/REPLAY_2026-10-04_05.md | doc | G1/M1/M2 partial document-based replay 10-04/05. | MTS-2026-10-05-1600Z-CLD-ANA-cloud-haiku-batch | 2026-10-05 |
+| MyTradingSys/research/T067_ALERT_SPEC.md | doc | T067: sweep+OI + zone absorption alert spec. | MTS-2026-10-05-1600Z-CLD-ANA-cloud-haiku-batch | 2026-10-05 |
+| MyTradingSys/research/t063_event_study.py | tool | T063 event-study harness. | MTS-2026-10-05-1600Z-CLD-ANA-cloud-haiku-batch | 2026-10-05 |
+| MyTradingSys/research/replay_2026_10_04_05.py | tool | 10-04/05 candidate replay tool. | MTS-2026-10-05-1600Z-CLD-ANA-cloud-haiku-batch | 2026-10-05 |
+| MyTradingSys/research/t067/test_alert_patterns.py.spec | tool | T067 failing-first test spec, 29 tests. | MTS-2026-10-05-1600Z-CLD-ANA-cloud-haiku-batch | 2026-10-05 |
+| MyTradingSys/runtime/oi_live/oi_recorder.py | tool | 1m OI sampler + 5m backfill writer. | MTS-2026-10-05-1600Z-APP-BLD-desktop-haiku-batch | 2026-10-05 |
+| MyTradingSys/runtime/oi_live/oi_1m.csv | data | Live 1m OI samples. | MTS-2026-10-05-1600Z-APP-BLD-desktop-haiku-batch | 2026-10-05 |
+| MyTradingSys/runtime/oi_live/oi_5m_30d.csv | data | 30d 5m OI backfill (8,640 rows). | MTS-2026-10-05-1600Z-APP-BLD-desktop-haiku-batch | 2026-10-05 |
