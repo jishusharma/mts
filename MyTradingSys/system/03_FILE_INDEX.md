@@ -488,3 +488,10 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/items/B133_dsa_default_cli_over_app.md | doc | Bug B133: DSA defaults to CLI or ships the mts go launch block when the App is the correct surface; policy at d36ec97. | MTS-2026-10-04-1325Z-DSA-COO | 2026-10-04 |
 | MyTradingSys/items/B134_compose_surface_marker.md | doc | Bug B134: compose() emits prose surface line, not the SURFACE marker prompt_check check 13 requires. | MTS-2026-10-04-1325Z-DSA-COO | 2026-10-05 |
 | MyTradingSys/items/B135_b131_threshold_recheck.md | doc | Bug B135: B131 follow-up, ps1 proof-count thresholds and allshorts parity re-run. | MTS-2026-10-04-1325Z-DSA-COO | 2026-10-05 |
+| MyTradingSys/research/OPERATOR_ASKS_2026-10-05.md | research | Operator asks 1-5 (stop-run/OI flush, TF confirmation, LazyBear, My charts, alerts), chart cross-check, ordered Desktop/Cloud task list. | MTS-2026-10-05-1500Z-APP-ANA-operator-asks | 2026-10-05 |
+| MyTradingSys/items/B136_oi_endpoint_path.md | doc | Bug B136: /futures/data endpoints broken since 09-24, OI fail-open. | MTS-2026-10-05-1500Z-APP-ANA-operator-asks | 2026-10-05 |
+| MyTradingSys/items/T063_stop_run_oi_flush_signature.md | doc | T063: sweep + OI flush + CVD event study (operator obs). | MTS-2026-10-05-1500Z-APP-ANA-operator-asks | 2026-10-05 |
+| MyTradingSys/items/T064_timeframe_selection_confirmation.md | doc | T064: TF choice + confirmation, Tom/Fabio extract. | MTS-2026-10-05-1500Z-APP-ANA-operator-asks | 2026-10-05 |
+| MyTradingSys/items/T065_lazybear_survey.md | doc | T065: LazyBear survey + shortlist. | MTS-2026-10-05-1500Z-APP-ANA-operator-asks | 2026-10-05 |
+| MyTradingSys/items/T066_my_charts_module.md | doc | T066: My charts module (operator TradingView layouts). | MTS-2026-10-05-1500Z-APP-ANA-operator-asks | 2026-10-05 |
+| MyTradingSys/items/T067_alert_improvements.md | doc | T067: alert improvements incl. buy detection. | MTS-2026-10-05-1500Z-APP-ANA-operator-asks | 2026-10-05 |
