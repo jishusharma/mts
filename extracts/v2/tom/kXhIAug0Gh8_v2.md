@@ -62,7 +62,7 @@ TRADE 1 - short [inferred] - rows 5-18 (S and P)
 state (day/week): day 2 opens "very very very very far away from the previous day"; previous day: buying tail, selling tail, huge volume, equilibrium zone
 location: value high and a buying tail of the prior day ; level type: VAH / tail
 leading signal: prior-day profile levels
-trigger: rejection and an absolute selling overhang ; entered BEFORE or AFTER proof: before (rows 6-7); further proof after (row 14, falling volume)
+trigger: rejection and an absolute selling overhang ; entered BEFORE or AFTER proof: after (proof row 6, entry row 7; further proof row 14); further proof after (row 14, falling volume)
 entry order type: unknown ; placed before the touch: unknown
 initial stop: not stated ; distance: not stated ; % of price: unknown
 target: "run to value" / "take profit down here" ; distance: not stated ; stated R:R: "greater than one" then "around four to one"
