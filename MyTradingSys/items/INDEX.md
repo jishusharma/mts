@@ -13,7 +13,7 @@ B065 | CLOSED  | B065_stale_swing_consumer.md | stale-swing rejection in extract
 B066 | OPEN    | B066_rank1_distance_gate.md | rank-1 shown at trigger_ready while 150 pts from price; split from B059
 T034 | OPEN    | T034_positioning_states.md | 4 positioning flags; blocked on Rule 33 readers + output type
 T035 | CLOSED  | T035_multi_venue_cvd.md | DEFER - SCREENER module, no Tom source
-T037 | OPEN   | T037_test_coverage_gap.md | tests written for 8 files, Build-Check runs mvn test; MarketDataSnapshot bodies still skeleton
+T037 | CLOSED | T037_test_coverage_gap.md | tests for all 8 files; MarketDataSnapshot bodies filled (21 tests, seam b); mvn test 128 pass
 T038 | CLOSED  | T038_context_bucket_gate.md | spec delivered W3; trigger 21000 labels
 T039 | CLOSED  | T039_functionality_doc_sweep.md | doc sweep; landed
 T040 | OPEN    | T040_tick_delta_layer.md | tick delta layer; thresholds need Tom citation or documented exception
