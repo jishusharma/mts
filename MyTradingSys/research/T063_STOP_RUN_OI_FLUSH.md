@@ -49,3 +49,56 @@ Otherwise "inconclusive" (n<30) or "not supported". No other conclusion is allow
 **Hand-off for A1 (Desktop).** Backfill 30 d 5m `openInterestHist` for BTCUSDT (or use `runtime/oi_live` once D2 is pushed), join on 5m `t`,
 run `research/t063_event_study.py --oi <csv>` (hook present, see script).
 <!-- PRE_REG_END -->
+
+## 2. Results, arm A0 (sweep + price/CVD, no OI clause), run on Cloud 2026-10-05
+
+Command: `python MyTradingSys/research/t063_event_study.py` (script is in this commit; parameters exactly as section 1). Sign convention: positive
+return = the flush **continues**, negative = it **reverses**. Raw output:
+
+```
+## A0 sweep + price/CVD (no OI)
+bars=1320 days_touched=5 sweeps_with_window=369 events_raw=78 control_raw=92
+events_with_full_4h=71 control_with_full_4h=82
+P(flush|sweep)=0.211 (78/369); events/day=15.60
+-- EVENT n=71
+  15m: mean=0.0bp median=-0.6bp reversal=36/71=0.51 CI[0.39,0.62]
+  1h: mean=1.5bp median=4.9bp reversal=30/71=0.42 CI[0.31,0.54]
+  4h: mean=8.5bp median=11.6bp reversal=30/71=0.42 CI[0.31,0.54]
+  depth_ATR median=1.49 p75=3.22
+  snap_back_12bars=37/71 median_bars=4
+  opposite_pivot_taken_within_4h=41/71
+  per_day={20725: 18, 20726: 15, 20727: 17, 20728: 15, 20729: 6}
+-- CONTROL n=82
+  15m: mean=2.8bp median=0.4bp reversal=41/82=0.50 CI[0.39,0.61]
+  1h: mean=2.3bp median=4.2bp reversal=32/82=0.39 CI[0.29,0.50]
+  4h: mean=-3.5bp median=-0.2bp reversal=41/82=0.50 CI[0.39,0.61]
+  depth_ATR median=1.60 p75=2.78
+  snap_back_12bars=38/82 median_bars=4.0
+  per_day={20725: 17, 20726: 18, 20727: 21, 20728: 18, 20729: 8}
+diff(event-control) 15m: mean -2.8bp boot95[-9.3,3.7]
+diff(event-control) 1h: mean -0.8bp boot95[-13.8,12.3]
+diff(event-control) 4h: mean 11.9bp boot95[-12.5,35.9]
+```
+
+### Reading (within the pre-registered rule)
+
+- **Base rate:** 78 of 369 sweeps (21%) were followed within 30 min by a flush bar meeting the price/CVD/magnitude conditions; about 15.6 events per day.
+  The control (same flush, no prior sweep) occurs about as often (92 raw), so a flush is not rare and the sweep does not make it more likely to be followed by anything different.
+- **Forward returns (sample n=71, 1h reversal rate 0.42, CI 0.31-0.54):** the 1h reversal-rate CI contains 50% and event-minus-control 1h mean difference is -0.8 bp
+  with bootstrap CI [-13.8, +12.3]; 15m and 4h also straddle zero. Median returns are a few bp in the continue direction in both groups.
+  **Decision rule outcome for A0: not supported (no separation from control).** This says nothing about the OI clause.
+- **Pullback depth before snap-back (descriptive, events):** median extension 1.49 ATR14 (p75 3.22) beyond the flush bar close within 12 bars; a snap-back through the flush bar's
+  open occurred in 37 of 71 events, median 4 bars. The control looks the same (1.60 ATR, 38/82). The only retrace numbers here are measured, not sourced (T064: NO-SOURCE).
+- **"Continues in its direction":** the opposite pivot (the low before an up-sweep, or high before a down-sweep) was taken within 4h in 41 of 71 events (58%). No control for this was
+  computed, so it is descriptive only.
+
+### Caveats that matter
+
+1. **Sample is 4.6 days of one regime** (09-29 to 10-03 17:05), with a trending drift: 379 pivot sweeps in 1,308 bars, about twice what independent bars would give (~7.7% per side).
+2. **Overlapping windows:** events fire ~15 per day and 4h outcomes overlap; the Wilson/bootstrap CIs treat events as independent and are therefore too narrow. Treat every CI as optimistic.
+3. **OI clause untested** (section 0). The operator's claim is specifically about a larger-than-adjacent OI drop; A0 cannot confirm or refute it.
+4. The script has no unit tests; it was sanity-checked only by recounting sweeps (207 up + 172 down, matches 369 after dropping the last W bars). Results are exploratory.
+5. 1m bars with the 5m grid: 1,320 complete 5m bars; any partially recorded 5m bar is dropped.
+
+### Next (Desktop / LAN)
+Run arm A1 on 30 d of 5m OI per section 1 hand-off (`--oi`), last 10 d as holdout; only if A1 passes does an alert candidate go to T067 (T067 spec in this repo is therefore written as conditional on A1).
