@@ -22,3 +22,7 @@ found-and-not-fixed (read-only session).
 ## Fix shape
 
 Edit line 65 to match decision rows 6-7: proof first, entry second.
+
+## 2026-10-05 receipt
+
+kXhIAug0Gh8_v2.md L65 rewritten: proof row 6, entry row 7, further proof row 14. DSA session MTS-2026-10-04-1325Z-DSA-COO.

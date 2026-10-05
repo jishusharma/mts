@@ -67,7 +67,7 @@ B092 | CLOSED  | B092_dsa_write_batching.md | DSA appends gate+commit to every w
 B093 | CLOSED  | B093_parallel_dispatch.md | pick-side fix at 1c81d81 (shape B, 3 slots); launcher side fixed (go.py --id, test_go 10-13)
 B094 | CLOSED  | B094_headless_scheduler.md | autogo.py + go.py per-run cap + tick check; ships disabled, operator enables; 4 auto-disable conditions
 B095 | OPEN    | B095_per_session_cost.md | per-session cost not on disk; session record + prompt composer need a cost field; Claude decides shape
-B097 | OPEN    | B097_kxh_mislabel.md | kXhIAug0Gh8_v2.md:65 says entry before proof; rows 6-7 say proof first
+B097 | CLOSED  | B097_kxh_mislabel.md | kXhIAug0Gh8_v2.md:65 says entry before proof; rows 6-7 say proof first
 B098 | OPEN    | B098_python_cpu_spin.md | CPU spike was TF8 backtest pool; closed
 B099 | CLOSED  | B099_v3_l3_pool_hang.md | run_v3_l3 pool stall now fails closed + resumable; re-run completed; original cause unknown
 B100 | CLOSED  | B100_audit_verdict_mismatch.md | E1b/E2 labelled NO-SOURCE but carry Tom quotes; should be CONCEPT-ONLY per audit's own rules
@@ -95,4 +95,10 @@ B132 | OPEN    | B132_dsa_does_quick_wins.md | DSA dispatches work it can do its
 B133 | CLOSED  | B133_dsa_default_cli_over_app.md | CLOSED: checks 12-13 (81c7e9f), section 9 App-opening line (e41de5f), LESSONS (ed0e3c1)
 B134 | OPEN    | B134_compose_surface_marker.md | compose() emits prose, not the "SURFACE: APP" marker check 13 requires; same file set as B095
 B135 | OPEN    | B135_b131_threshold_recheck.md | B131 follow-up: ps1 proof-count thresholds and allshorts parity re-run
+B136 | OPEN    | B136_oi_endpoint_path.md | P0: /futures/data paths broken since 09-24; OI/LS/taker dead, reported HIGH; fix + fail-closed
+T063 | OPEN    | T063_stop_run_oi_flush_signature.md | operator obs: opposite-extreme sweep + OI flush + CVD in step -> event study
+T064 | OPEN    | T064_timeframe_selection_confirmation.md | which TF's absorption to trade; confirmation; Tom/Fabio quote extract
+T065 | OPEN    | T065_lazybear_survey.md | LazyBear survey; shortlist 5 or fewer as switchable layers
+T066 | OPEN    | T066_my_charts_module.md | My charts: read operator TradingView layouts via Claude in Chrome -> my_charts/
+T067 | OPEN    | T067_alert_improvements.md | alert improvements; buy detection meaning pending operator
 # END
