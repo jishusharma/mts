@@ -10,7 +10,7 @@ $snap = Get-ChildItem "$root\runtime_data\snapshots\BTCUSDT_*.json" -ErrorAction
 $sAge = if ($snap) { Age $snap.FullName } else { -1 }
 $cAge = Age "$root\MyTradingSys\runtime\state_code.json"
 $lvl  = if ($sAge -lt 0 -or $sAge -gt $MaxSnapshotAgeSec -or $cAge -lt 0 -or $cAge -gt $MaxStateAgeSec) { "WARN" } else { "OK" }
-$htf = Get-CimInstance Win32_Process -Filter "Name='python.exe'" | Where-Object { $_.CommandLine -match 'htf_context_live' } | Select -First 1
+$htf = Get-CimInstance Win32_Process -Filter "Name='python.exe' OR Name='pythonw.exe'" | Where-Object { $_.CommandLine -match 'htf_context_live' } | Select -First 1
 $htfNote = "htf_pid=$($htf.ProcessId)"
 if (-not $htf) {
     $py = (Get-Command pythonw).Source
