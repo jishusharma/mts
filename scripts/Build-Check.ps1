@@ -1,6 +1,14 @@
 # Build-Check.ps1 - Preflight + routing manifest for DSA sessions.
 # Writes MyTradingSys/runtime/BUILD_REPORT.md - paste this first at any session start.
 # Does not modify any live file.
+# Tiers (B091):
+#   (default)   full: compile + Java tests (mvn -q test) + math tests + doc tests + registry checks; writes BUILD_REPORT.md.
+#   -Quick      fast pre-commit tier: Java compile only; math tests and Java tests (mvn -q test) skipped
+#               (the release gate runs them); STATUS says QUICK.
+#   -ReadOnly   print the report only; BUILD_REPORT.md is not rewritten, so the tree stays clean.
+# Build-Check never writes session_log.json; -ReadOnly removes its only tree write.
+
+param([switch]$Quick, [switch]$ReadOnly)
 
 $ErrorActionPreference = "Continue"
 
@@ -31,8 +39,35 @@ if ($LASTEXITCODE -eq 0) {
     $overallFail = $true
 }
 
+# 1b. Java tests (T037): full tier runs mvn -q test; -Quick stays compile-only
+if ($Quick) {
+    $lines.Add("Java tests:    SKIP (quick tier; compile only; full pass is the release gate)")
+} else {
+    $t0 = Get-Date
+    $jtestOut = (& mvn -q test 2>&1 | Out-String)
+    $jtestRc = $LASTEXITCODE
+    $dur = [math]::Round(((Get-Date) - $t0).TotalSeconds, 1)
+    $jrun = 0; $jskip = 0
+    if (Test-Path "target/surefire-reports") {
+        foreach ($rf in (Get-ChildItem "target/surefire-reports" -Filter "*.txt" | Where-Object { $_.LastWriteTime -ge $t0 })) {
+            $jm = [regex]::Match((Get-Content $rf.FullName -Raw), "Tests run: (\d+), Failures: \d+, Errors: \d+, Skipped: (\d+)")
+            if ($jm.Success) { $jrun += [int]$jm.Groups[1].Value; $jskip += [int]$jm.Groups[2].Value }
+        }
+    }
+    if ($jtestRc -eq 0 -and $jrun -gt 0) {
+        $lines.Add("Java tests:    PASS $($jrun - $jskip)/$jrun run, $jskip skipped ($dur s)")
+    } else {
+        $lines.Add("Java tests:    FAIL ($dur s)")
+        foreach ($jl in ($jtestOut -split "`n" | Where-Object { $_ -match "FAIL|ERROR|Tests run:.*(Failures|Errors): [1-9]" } | Select-Object -First 5)) { $lines.Add("  - " + $jl.Trim()) }
+        $overallFail = $true
+    }
+}
+
 # 2. Math tests
 $t0 = Get-Date
+if ($Quick) {
+    $lines.Add("Math tests:    SKIP (quick tier; full pass is the release gate)")
+} else {
 $mtestOut = (& python -m pytest MyTradingSys/tests --ignore=MyTradingSys/tests/docs -q 2>&1 | Out-String)
 $dur = [math]::Round(((Get-Date) - $t0).TotalSeconds, 1)
 $m = [regex]::Match($mtestOut, "(\d+) passed")
@@ -41,6 +76,7 @@ if ($LASTEXITCODE -eq 0 -and $m.Success) {
 } else {
     $lines.Add("Math tests:    FAIL ($dur s)")
     $overallFail = $true
+}
 }
 
 # 3. Doc tests
@@ -276,7 +312,8 @@ if ($dispatchFail.Count -gt 0) {
 }
 $lines.Add("")
 if ($bomHits.Count -gt 0 -or $nonAsciiHits.Count -gt 0) { $overallFail = $true }
-if ($overallFail) { $lines.Add("STATUS: FAIL") } else { $lines.Add("STATUS: PASS") }
+$tier = if ($Quick) { " (QUICK: math tests and Java tests not run)" } else { "" }
+if ($overallFail) { $lines.Add("STATUS: FAIL$tier") } else { $lines.Add("STATUS: PASS$tier") }
 $lines.Add("")
 $lines.Add("Pastes for this session:")
 $lines.Add("  Always:   MyTradingSys/runtime/BUILD_REPORT.md")
@@ -287,11 +324,15 @@ $lines.Add("  Extract:  Dumps/dump_extracts.md (paste sections only)")
 $lines.Add("")
 
 # Write
-$outDir = "MyTradingSys/runtime"
-if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir -Force | Out-Null }
-$outFile = Join-Path $outDir "BUILD_REPORT.md"
-Write-TextNoBom -Path $outFile -Lines $lines
-
 $lines | ForEach-Object { Write-Host $_ }
 Write-Host ""
-Write-Host "Report: $((Resolve-Path $outFile).Path)"
+if ($ReadOnly) {
+    Write-Host "Report: not written (-ReadOnly)"
+} else {
+    $outDir = "MyTradingSys/runtime"
+    if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir -Force | Out-Null }
+    $outFile = Join-Path $outDir "BUILD_REPORT.md"
+    Write-TextNoBom -Path $outFile -Lines $lines
+    Write-Host "Report: $((Resolve-Path $outFile).Path)"
+}
+if ($overallFail) { exit 1 }

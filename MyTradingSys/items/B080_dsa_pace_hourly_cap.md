@@ -1,6 +1,6 @@
 # B080 dsa_worker hourly-cap misfires on stale pace entries
 
-Opened 2026-10-01. Status OPEN. Severity MED.
+Opened 2026-10-01. Status CLOSED 2026-10-03. Severity MED.
 
 ## Symptom
 

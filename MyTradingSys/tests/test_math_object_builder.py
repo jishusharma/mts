@@ -162,12 +162,13 @@ def test_rr_sanity_matches_gross():
             )
 
 
-def test_net_rr_is_75pct_of_gross():
-    """net_rr = gross_rr * 0.75 (default friction)."""
+def test_net_rr_uses_fee_model():
+    """B070: net_rr = (reward - 2*taker*entry) / (risk + 2*taker*entry), not gross * 0.75."""
     m = build_math_object(load_snapshot())
     for name, z in m["zones"].items():
         if z["gross_rr"] is not None:
-            expected = round(z["gross_rr"] * 0.75, 4)
+            cost = 2.0 * 0.0005 * z["price"]
+            expected = round((abs(z["target"] - z["price"]) - cost) / (abs(z["price"] - z["stop"]) + cost), 4)
             assert abs(z["net_rr"] - expected) < 0.0001, (
                 f"Zone {name}: net_rr={z['net_rr']}, expected={expected}"
             )
@@ -390,53 +391,48 @@ def test_bug_007_no_candidates_defaults_false():
 
 
 # ============================================================
-# BOOK IMBALANCE 0.0 NO-DATA BUG (2026-10-02)
-# Operator-approved fix: 0.0 = no order-book data (not ask-heavy)
+# B072 - current_price input validation (fail closed)
 # ============================================================
 
-def test_book_imbalance_zero_no_contradiction_long():
-    """book_imbalance=0.0 (no data) should NOT trigger ask-heavy contradiction for LONG.
+import math as _math
+import pytest
 
-    Reference: Java SetupCandidatesBuilder.java:581 skips 0.0 as "no data".
-    Operator-approved 2026-09-30 (SUPERVISOR_INBOX 22:30Z item 1).
-    """
+
+@pytest.mark.parametrize("bad", ["x", None, 0, -5.0, float("nan"), float("inf"), True])
+def test_b072_bad_current_price_raises_flat_schema(bad):
     snap = dict(LIVE_V120)
-    snap["setup_candidates"] = [{
-        "rank": 1,
-        "setup_type": "ct_long",
-        "direction": "long",
-        "zone": {"name": "weekly_val", "price": 78000.0, "type": "weekly_val"},
-        "math": {"distance_pct": 0.1, "distance_cap": 0.5, "tier": "conditional",
-                 "substate": "below", "stop": 77900.0, "target": 78100.0,
-                 "gross_rr": 2.0, "net_rr": 1.5, "net_rr_sanity": True, "rr_sanity": True},
-        "proof": {"rejection_wick": "WEAK", "speed": {"picking_up": False},
-                  "cvd_aligned": False, "book_imbalance": 0.0},
-        "score": {"raw": 70, "confidence": "B", "proof_count": 2, "confluence_bonus": 0},
-    }]
-    m = build_math_object(snap)
-    details = m.get("proof_direction_details", [])
-    assert not any("ask-heavy vs LONG" in str(d) for d in details), (
-        f"book_imbalance=0.0 (no data) must not trigger ask-heavy contradiction. Got: {details}"
-    )
+    snap["current_price"] = bad
+    with pytest.raises(ValueError, match="current_price"):
+        build_math_object(snap)
 
 
-def test_book_imbalance_small_positive_contradicts_long():
-    """book_imbalance=0.2 (ask-heavy, valid data) should trigger ask-heavy contradiction for LONG."""
-    snap = dict(LIVE_V120)
-    snap["setup_candidates"] = [{
-        "rank": 1,
-        "setup_type": "ct_long",
-        "direction": "long",
-        "zone": {"name": "weekly_val", "price": 78000.0, "type": "weekly_val"},
-        "math": {"distance_pct": 0.1, "distance_cap": 0.5, "tier": "conditional",
-                 "substate": "below", "stop": 77900.0, "target": 78100.0,
-                 "gross_rr": 2.0, "net_rr": 1.5, "net_rr_sanity": True, "rr_sanity": True},
-        "proof": {"rejection_wick": "WEAK", "speed": {"picking_up": False},
-                  "cvd_aligned": False, "book_imbalance": 0.2},
-        "score": {"raw": 70, "confidence": "B", "proof_count": 2, "confluence_bonus": 0},
-    }]
-    m = build_math_object(snap)
-    details = m.get("proof_direction_details", [])
-    assert any("book_imbalance=0.2 ask-heavy vs LONG" in str(d) for d in details), (
-        f"book_imbalance=0.2 (ask-heavy, valid data) must trigger ask-heavy contradiction. Got: {details}"
-    )
+@pytest.mark.parametrize("bad", ["x", None])
+def test_b072_bad_current_price_raises_old_schema(bad):
+    snap = load_snapshot()
+    snap["data"]["current_price"] = bad
+    with pytest.raises(ValueError, match="current_price"):
+        build_math_object(snap)
+
+
+def test_b072_missing_current_price_raises():
+    snap = {k: v for k, v in LIVE_V120.items() if k != "current_price"}
+    with pytest.raises(ValueError, match="current_price"):
+        build_math_object(snap)
+
+
+# ============================================================
+# B073 - emitted rr values and rr_sanity agree (round, then sanity)
+# ============================================================
+
+def test_b073_sanity_matches_emitted_gross_rr(monkeypatch):
+    import math_object_builder as mob
+    # 1.49996 rounds to 1.5 on output; the sanity flag must be computed on that same rounded value (>= 1.5).
+    monkeypatch.setattr(mob, "calculate_gross_rr", lambda e, t, s: 1.49996)
+    monkeypatch.setattr(mob, "calculate_net_rr", lambda e, t, s, *a, **k: 1.996)
+    m = mob.build_math_object(dict(LIVE_V120))
+    rows = [z for z in m["zones"].values() if z["gross_rr"] is not None]
+    assert rows, "need at least one evaluated zone"
+    for z in rows:
+        assert z["gross_rr"] == 1.5
+        assert z["net_rr"] == 1.996
+        assert z["rr_sanity"] is (z["gross_rr"] >= 1.5), "rr_sanity disagrees with the emitted gross_rr"

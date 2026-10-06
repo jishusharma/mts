@@ -23,7 +23,7 @@ working capacity at any moment is small.
 
 Practical rules for this session:
 - One block at a time. Never assume parallel calls work.
-- A paste over roughly 80 KB should be split with a confirmation between
+- A paste over roughly 150 KB should be split with a confirmation between
   each part. If a paste feels long, ask the user to split it.
 - If a task needs more context than the boot provides, ask for one section
   at a time. Do not ask for a whole file when a section will do.
@@ -76,6 +76,12 @@ Two more boot rules, added 2026-09-16 after a boot reply invented field values a
    the reply's file paths. MyTradingSys/ means MTS. cbp_v2/ or
    mts_queue/ means CBP.
 
+10. DSA composes and ships prompts. Verify disk facts only when the claim is uncertain or contested.
+
+11. After boot, run Get-ChildItem MyTradingSys/research/*PROMPT*. If any match,
+    move to MyTradingSys/research/_archive/2026-10-02-prompts/. USER.md forbids
+    saving prompts.
+
 ## 4. READING LARGE FILES
 
 Any file over 20 KB: read by line range, not whole file.
@@ -92,6 +98,9 @@ Before any non-trivial task, run these steps in order. Do not skip.
    Restate the request in one line.
    List the project requirements that apply.
    If anything is missing or unclear, ask. Stop until answered.
+   Read the target row's blocker cell, not the row number. Row order is not dependency order. The pipeline picker reads the cell.
+   Before saying a row is blocked, name its blocker cell and the blocker's current status from BUILD_PIPELINE.md.
+   Before writing a STOP or BLOCKED condition into a prompt, name the harm it prevents and the mechanism by which the change would cause it. A condition that fires on an unrelated process or file is over-broad. Narrow it to the file or field the change actually touches.
 
 2. DECIDE
    Propose the simplest path that satisfies those requirements.
@@ -113,20 +122,9 @@ Before any non-trivial task, run these steps in order. Do not skip.
 
 A task is not done when the artifact changes. It is done when the goal moves.
 
-## 5b. VERIFY LOOP
+## 5b. VERIFY
 
-This surface runs V4.1 Flash. It does not reliably detect its own missed
-items. A first-person "nothing missed" is not evidence.
-
-Every verify step is one of three kinds:
-- mechanical: count, hash, grep, line number. Show the number.
-- routed: hand the check to a reasoning surface. State what to check.
-- unverifiable on this surface: say so. Do not claim otherwise.
-
-Before "done", print four lines:
-TASK / DONE / VERIFIED / MISSED.
-VERIFIED names which kind. MISSED names anything dropped, or "none".
-Skipping this block is a defect.
+Before "done", one line: TASK / DONE / VERIFIED / MISSED. Short. No ritual.
 
 ## 5c. LESSONS
 
@@ -138,7 +136,60 @@ Three rules from it that apply on every surface:
 - Write EXPECT for an expected result and RESULT (date, machine) for an actual one.
 - A check that never executes the changed file is not a gate.
 
+
+## 5d. DSA DOES THIS DIRECTLY (operator directive 2026-10-04)
+
+DSA is a free surface. Every Claude Code session costs a copy/paste from the
+operator plus App startup time. Tasks DSA can finish in its own turn run in
+its own turn, not as a Claude Code session.
+
+DSA does these directly, no Claude dispatch:
+
+- Any read: log tail, snapshot, snapshot fields, git history, file hash,
+  line-ending probe, dir listing, BUGS.md/INDEX.md/03_FILE_INDEX reads.
+- Registry writes: BUGS.md status flips (OPEN -> CLOSED, WONTFIX, IN-FIX),
+  items/INDEX.md rows and state cells, item-doc receipts and appendices.
+- 03_FILE_INDEX.md rows for files created or renamed by DSA.
+- Session records under MyTradingSys/system/sessions/ for DSA-composed runs.
+- Section 11 (CURRENT STATE) refresh of this file, at session close or on
+  operator request.
+- Commit trailers, hash/bytes/non-ASCII verification, BOM checks.
+- Close-on-decision: any item whose decision landed during a DSA turn closes
+  in the same turn (USER.md AUTHORITY).
+- Read-only verification (for example the B059 live tape read at b9b0405).
+- Cross-links between docs, small editorial fixes, forbidden-phrase rewrites
+  that are one-line anchor replacements.
+
+DSA dispatches to Claude Code (Win App, per SURFACE_POLICY 1b) when:
+
+- The task is non-trivial code (multi-file, new module, test tree, Maven or
+  pytest required to prove it).
+- The task requires live testnet, a running loop, or a stopped loop window.
+- The task spans more than roughly 30 lines of composed change.
+- The task needs a fail-before / pass-after test that only a real run proves.
+
+Every DSA-composed Claude prompt carries three named blocks:
+
+1. DSA-side work already done. What DSA read, hashed, staged, or wrote
+   before composing the prompt, so the session does not re-derive.
+2. Collision check. Which other file sets are held by in-flight sessions.
+   If disjoint: run now. If overlap: order X then Y. One line.
+3. Registry work DSA will do after the session returns (BUGS.md flip,
+   items/INDEX.md row, 03_FILE_INDEX row, session record), so the session
+   does not spend tokens on registry writes it cannot own.
+
+Operator overhead rule: if the work fits on one screen of DSA text and does
+not need a test run to prove, DSA does it. Dispatch is reserved for work that
+needs the sandbox, the test gate, or the live loop.
+
 ## 6. WRITING
+
+## 6b. BATCHING
+
+Write blocks end with write and verify only. No gate, no commit, no tag.
+Gate + commit run only on: explicit operator word "gate"; session close; a live-path or critical-file change shipping this turn.
+A gate costs ~45s wall and dirties BUILD_REPORT.md and session_log.json every run. Batching amortises that per session.
+When a gate does run: wrap the block in & { }, run Build-Check, abort on STATUS: FAIL, then stage exact paths and commit.
 
 Before any write:
 - Detect the line ending of the target from disk. One command:
@@ -148,18 +199,18 @@ Before any write:
     "CRLF=$crlf  LF-only=$lf"
   Compose the anchor with the detected line ending. Never assume.
 - Re-read the target from disk.
+- Before any write to a file the doc test reads (anything under MyTradingSys\ except research\), scan the new content for the eight forbidden phrases: the git command names and 'version control'. The list lives in tests/docs/test_integrity.py test_2_no_forbidden_refs. A forbidden phrase in the new content is a doc-test FAIL waiting to happen.
 - Verify every anchor verbatim. If an anchor count is not 1, stop and report.
 
 After any write:
 - Verify by a method other than the one used to write.
 - Report line count, byte count, and non-ASCII count.
+- Stage exact paths when a second writer is active. A staged path DSA did not write means stop and do not commit. gitsnap stages the whole tree; that captures another session's in-flight file.
+- Exact paths means the named file list, never a directory. Every git add names a file. Review the staged list before commit; a directory-scoped add or a staged path DSA did not write means stop and unstage.
 
 After creating a new file:
 - Add one row to MyTradingSys/system/03_FILE_INDEX.md.
 - If the file belongs in boot content, add it to SESSION_MANIFEST.json boot_files (positioned) or boot_supplemental (reference), as the role dictates.
-
-Critical files require a four-step proof:
-hash before, edit via explicit replace, hash after, diff.
 
 Critical files:
 - MyTradingSys/runtime/compiled_engine.md
@@ -206,7 +257,7 @@ CBP consumer: MyTradingSys\queue\consumer.py (MTS side)
 CBP contract: ack-only, utf-8-sig tolerated (2d20a5c).
 
 Pro pool:    weekly. Resets Fri 09:00 UTC (14:30 IST). Feeds local claude.exe and mts go.
-Cloud pool:  $100 credits, expire 2026-11-05. Feeds Win app cloud sessions.
+Cloud pool: Feeds Win app cloud sessions.
 Pools are separate. Never assume one buys the other.
 
 Never guess a path. If a read fails, list the parent directory before retrying.
@@ -234,10 +285,13 @@ One per line. No compression.
 - Cloud Claude pushes to its own session branch (claude/<name>), not cloud/work,
   no matter what the prompt says. Cherry-pick onto main. Do not fight it.
 - Two cost pools are separate. Pro plan (weekly, resets Fri 09:00 UTC) feeds
-  local claude.exe and mts go. Cloud credits ($100, expire 2026-11-05) feed
+  local claude.exe and mts go. Cloud credits feed
   Win app cloud sessions. Never assume one buys the other.
 - Manager verbs: mts go / mstatus / mresume / mstop / usage. Bare status /
   resume / stop belong to the market loop.
+- CLI prompts open with the mts go launch block. The prompt text follows the launch. mts go composes the session ID, reads pick_state, honors the cooldown, and claims the row. A bare CLI prompt skips all four.
+- App prompts open with Session ID, Mode line, repo root, then the task brief. The mts go launch block belongs to CLI prompts only.
+- Before telling the operator to run mts go, confirm no claude window is foregrounded in that shell. mts go echoes the prompt into the shell; a live claude window consumes it there.
 - Local Maven: D:\tools\apache-maven-3.9.14. Cloud cannot run Maven. All tests
   run on desktop.
 - Cloud honesty. Read the reply against disk in the same turn. Cloud has stated
@@ -261,46 +315,64 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-02T10:05Z (static, java absent).
+Last live read:  2026-10-05T16:40Z.
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop DOWN since 2026-10-01 evening. java absent.
-                 Build PASS 2026-10-02T09:07:53Z. HEAD 50e206f.
-                 Working tree: BUILD_REPORT.md + session_log.json dirty
-                 (manager writes).
+Runtime + loops: loop UP. wrapper 26300, java 20916 (pre-B136), supervisor 20788. HTF writer 5656/9780. Watchdog task MTS-Feed-Watchdog Ready.
+Build PASS at last gate (this close; see BUILD_REPORT.md).
+HEAD ba8824c on fast-track. origin/fast-track at ed604ab; local ahead 8 commits (Desktop batch 2).
 
-Landing since 2026-10-01 close:
-- 2665558 live fix: book_imbalance 0.0 no longer blocks Tom longs.
-- d982802 live fix: TF maps gain 3m and 1d (alert_rate_check + auto_trader).
-- 0dd2311/c8f04df/e6b2aea W3 kappa: 0.446 (<0.6). 36 NO-SOURCE is
-  reader-dependent.
-- cf1ef14 wiring audit: maintenance protocols have no trigger.
-- c453d82 prompt conformance checklist. 2b62c2d budget never-refuse.
-- d63b2a8 nomenclature: CC = Claude Cloud, CL = Claude Local.
-- 5b4a9de Fabio v3 engine.py.new + 50e206f tests: 8 modules + 5 test
-  files, all .new, all unverified.
+LANDED this DSA session (in order):
+  df5059e B133 filed; fce0551 B131 item-doc mechanism;
+  ed0e3c1 B133 tags + root causes + LESSONS; 5132444 B133 LOGGER backfill;
+  1c81d81 B093 parallel dispatch (CLI);
+  107ef2e B093 reopen launcher side + b093 session record + s11;
+  87658ae B093 launcher side (go.py --id) [APP];
+  1412c28 T037 MarketDataSnapshotTest bodies (seam b) [APP];
+  81c7e9f B133 prompt_check checks 12-13 [APP];
+  727d9ea B133 receipt; b475d9a close-out B093/T037;
+  e41de5f section 9 App-opening line + handoff;
+  963b6af B133 CLOSED;
+  4f9290e B131 fix shape A [APP];
+  2b12c9b B094 headless scheduler (ships disabled) [APP];
+  32eb40a week-open market analysis [APP-ANA];
+  this close-out commit (B134 + B135 filed, 4 session records, s11);
+  881f22b B136 OI endpoint fix (4 files, +121 -19) [APP];
+  9e56bb3 B136 registry;
+  952b951 D2 OI recorder + backfill [APP];
+  d4bc506 D3 US-open DST helper + test [APP];
+  65d4748 T064 quotes; 1569678 T065 shortlist; 3776f2f+b055c2b T063 pre-reg+arm A0;
+  2927244+627150b replay partial; b92bd29 T067 spec+tests; 8dfec36 session record + inbox cleanup [CLD];
+  c60d0e2 D4 watchdog; 1c0d276 D6 my_charts scaffold; c61a26a+690b238 T063 pre-reg amend + A1;
+  b455a2f full replay 930 episodes; e9bd822 T065 Pine verify; dec81d7 TOM-091/092 fix; ba8824c watchdog negative-age clamp.
 
-Account B (jishu.awgp) live for CC/CL: collaborator jishu-awgp on
-jishusharma/mts; Claude GitHub App scoped to that repo. $99 of $100
-cloud credits, expires 2026-11-05.
+CLOSED this DSA session: B093, T037, B133, B131, B094.
+OPENED this DSA session: B133 (closed same), B134, B135.
 
-Next (after weekly reset Fri 14:30 IST):
-1. Fabio v3 README.md (CL).
-2. Promote all 8 fabio/v3 .new with four-step proof each.
-3. Gate: run_all_tests --quick + Build-Check.
-4. Wire Fabio into live_runner as peer; route source:fabio-core to
-   fabio testnet account.
-5. Resolve 6 unknown: markers in engine.py.new.
+Pipeline:
+  B134 OPEN: compose() surface marker vs prompt_check check 13; same file
+    set as B095 (pick_task.py). Sequence behind B095 or land together.
+  B135 OPEN: ps1 proof-count thresholds + allshorts diag parity re-run
+    (read-only first; start-trading-day.ps1 if an edit is needed).
+  B095 OPEN (prompt ready): per-session cost on disk.
+  B125 OPEN (prompt ready): promote the consensus writer.
+  B075 OPEN: historical mode; residual is SetupCandidatesBuilder.java,
+    now free (B131 landed). Sequences after B135 read.
+  B121, B122, B124, B098: LIVE PATH. Wait for a stopped-loop window.
+  R7: no PRE_REG_R7.md, no R7_RESULTS on disk. Awaiting the operator paste.
+  B090 OPEN: cloud credit approval (operator).
 
-Open queues: same as prior close. Bugs 27 OPEN; tasks T034, T037
-BLOCKED, T040, T042, T044, T046, T048, T049, T050, T051 PARKED,
-T052-T061.
+Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
 
-Prompt rules now binding: see MyTradingSys/system/PROMPT_CONFORMANCE_CHECKLIST.md
-and LESSONS_LEARNED.md 2026-10-02 entry.
+Next session first action:
+  1. Operator: git push origin fast-track (local ahead 8 commits).
+  2. Operator: scripts\core\stop-day.ps1 then scripts\core\mode.ps1 -M armed (B136 + D3 live load).
+  3. Operator decisions owed: Chrome extension connect for T066; TOM-091/092 retag in risk_protocol.md; buy-detection meaning for T067.
+  4. B136 verify: SNAP OI change_1h_pct matches public within 0.05% after loop restart.
+  5. NOTE: two go.py processes running (22856, 21156) at last read; resolve before next dispatch.
 
-Next session first action: read items/INDEX.md + BUGS.md open rows.
+Section 5d in force per B132.
 
 ## 12. SESSION END
 

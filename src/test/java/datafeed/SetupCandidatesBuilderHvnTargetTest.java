@@ -11,20 +11,29 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * T1 (DSA_TASKS_2026-10-01): HVNs from weekly_vp / daily_vp / intraday_4h_vp are target candidates
- * [TOM-018] "it looks for the next high volume price and that is your target".
+ * HVNs from weekly_vp / daily_vp / intraday_4h_vp are target candidates [TOM-018] "it looks for the next high volume
+ * price and that is your target". Operator ruling 2026-10-03: the 2.0R-3.5R window is gone; the target is the NEAREST
+ * node in trade direction whose netRR >= floor, else the farthest node.
  *
- * Hand-computed scenario (short at daily_vah, state balance, so only ct_short at daily_vah survives):
- *   zone 100.0, swing_high (15m) 100.5 -> stop 100.5, risk 0.5
- *   target window [2.0R, 3.5R] below zone = [98.25, 99.0]
- *   every POC/VAL/VWAP/prior-day level is placed OUTSIDE that window, so without HVNs there is no target
- *   and the candidate is dropped; with an HVN at 98.6 the target is 98.6 (gross R:R 2.8).
- * Nearest-in-window rule: of two HVNs 98.6 and 98.3, the nearer to the zone (98.6) wins.
- * Direction filter: an HVN above the zone (101.5) is ignored for a short.
+ * Hand-computed scenario (floor pinned to 1.25; B070 fee model net = (reward - 2*0.0005*entry) / (risk + 2*0.0005*entry); short at daily_vah, state balance):
+ *   zone 100.0, swing_high (15m) 100.5 -> stop 100.5, risk 0.5; daily POC 99.9 = 0.1 below zone = 0.2R gross, net 0.0
+ *   -> fails the floor. HVN 98.6 = 1.4 below = 2.8R gross, net 2.1 -> qualifies.
  */
 public class SetupCandidatesBuilderHvnTargetTest {
 
     private static final ObjectMapper M = new ObjectMapper();
+
+    @org.junit.jupiter.api.BeforeEach
+    void pinFloor(@org.junit.jupiter.api.io.TempDir java.nio.file.Path tmp) throws Exception {
+        java.nio.file.Path f = tmp.resolve("net_rr_floor.json");
+        java.nio.file.Files.writeString(f, "{\"net_rr_floor\": 1.25}");
+        System.setProperty(NetRrFloor.PATH_PROPERTY, f.toString());
+    }
+
+    @org.junit.jupiter.api.AfterEach
+    void unpinFloor() {
+        System.clearProperty(NetRrFloor.PATH_PROPERTY);
+    }
 
     private static ObjectNode root(double[] dailyHvns, double[] weeklyHvns) {
         ObjectNode r = M.createObjectNode();
@@ -86,37 +95,105 @@ public class SetupCandidatesBuilderHvnTargetTest {
         return out.get(0);
     }
 
-    @Test
-    void noHvnMeansNoTargetAndNoCandidate() {
-        ArrayNode out = SetupCandidatesBuilder.build(M, root(new double[]{}, new double[]{}), new HashMap<>(), klines());
-        assertEquals(0, out.size(), "all levels outside [2R,3.5R]: candidate must be dropped");
+    /** The daily_vah candidate (the 15m swing-high is itself a zone at the real-shape prices, so more than one survives). */
+    private static JsonNode daily(ArrayNode out) {
+        for (JsonNode c : out) if ("daily_vah".equals(c.get("zone").get("name").asText())) return c;
+        fail("no daily_vah candidate: " + out.size() + " candidates");
+        return null;
     }
 
     @Test
-    void dailyHvnInWindowBecomesTarget() {
+    void onlyPocBelowFloorIsStillReportedAsFarthestNode() {
+        // old code: POC 99.9 outside [98.25, 99.0] -> candidate dropped. new: only node, fails floor, kept as farthest.
+        ArrayNode out = SetupCandidatesBuilder.build(M, root(new double[]{}, new double[]{}), new HashMap<>(), klines());
+        JsonNode math = only(out).get("math");
+        assertEquals(99.9, math.get("target").asDouble(), 1e-9);
+        assertEquals(0.2, math.get("gross_rr").asDouble(), 1e-9);   // 0.1 / 0.5
+        assertEquals(0.0, math.get("net_rr").asDouble(), 1e-9);     // B070 fee model: (0.1 - 2*0.0005*100) / (0.5 + 0.1) = 0
+        assertEquals(0.0, math.get("runner_target").asDouble(), 1e-9);
+    }
+
+    @Test
+    void dailyHvnQualifyingBecomesTargetAndPocIsSkipped() {
         ArrayNode out = SetupCandidatesBuilder.build(M, root(new double[]{98.6}, new double[]{}), new HashMap<>(), klines());
         JsonNode math = only(out).get("math");
         assertEquals(98.6, math.get("target").asDouble(), 1e-9);
         assertEquals(100.5, math.get("stop").asDouble(), 1e-9);
         assertEquals(2.8, math.get("gross_rr").asDouble(), 1e-9); // 1.4 / 0.5
+        assertEquals(0.0, math.get("runner_target").asDouble(), 1e-9); // no node beyond 98.6
     }
 
     @Test
-    void weeklyHvnInWindowBecomesTarget() {
+    void weeklyHvnQualifyingBecomesTarget() {
         ArrayNode out = SetupCandidatesBuilder.build(M, root(new double[]{}, new double[]{98.7}), new HashMap<>(), klines());
         assertEquals(98.7, only(out).get("math").get("target").asDouble(), 1e-9);
     }
 
     @Test
-    void nearestInWindowHvnWins() {
+    void nearestQualifyingHvnWinsAndNextNodeIsRunner() {
+        // distances from 100: POC 0.1, HVN 1.4 (98.6), HVN 1.7 (98.3). 98.6 is the nearest that qualifies; runner 98.3.
         ArrayNode out = SetupCandidatesBuilder.build(M, root(new double[]{98.3, 98.6}, new double[]{}), new HashMap<>(), klines());
-        assertEquals(98.6, only(out).get("math").get("target").asDouble(), 1e-9);
+        JsonNode math = only(out).get("math");
+        assertEquals(98.6, math.get("target").asDouble(), 1e-9);
+        assertEquals(98.3, math.get("runner_target").asDouble(), 1e-9);
     }
 
     @Test
     void hvnOnWrongSideOfShortIsIgnored() {
         ArrayNode out = SetupCandidatesBuilder.build(M, root(new double[]{101.5}, new double[]{}), new HashMap<>(), klines());
-        assertEquals(0, out.size(), "HVN above the zone is not a short target");
+        assertEquals(99.9, only(out).get("math").get("target").asDouble(), 1e-9); // 101.5 above zone is not a short target
+    }
+
+    @Test
+    void noNodeInDirectionDropsTheCandidate() {
+        ObjectNode r = root(new double[]{}, new double[]{});
+        ((ObjectNode) r.get("daily_vp")).put("poc", 100.6);   // above the short zone: no node below
+        assertEquals(0, SetupCandidatesBuilder.build(M, r, new HashMap<>(), klines()).size());
+    }
+
+    @Test
+    void closeNodesFailingFloorAreSkippedForFarOne() {
+        // real-shape case: short at 87064, stop 87238 (risk 174). Nodes 86900 (164 = 0.943R gross, fee-model net < 0: skip),
+        // 83851 (3213 / 174 = 18.466R gross, fee-model net 11.97: qualifies). Old window [348, 609] holds neither -> dropped.
+        ObjectNode r = root(new double[]{86900, 83851}, new double[]{});
+        ((ObjectNode) r.get("daily_vp")).put("poc", 0.0).put("vah", 87064.0).put("val", 80000.0);
+        r.put("current_price", 87063.0);
+        ((ObjectNode) r.get("vwap")).put("price", 88000.0);
+        ObjectNode s = (ObjectNode) r.get("structure").get("15m");
+        s.put("swing_high", 87238.0).put("swing_low", 86000.0);
+        JsonNode math = daily(SetupCandidatesBuilder.build(M, r, new HashMap<>(), klines())).get("math");
+        assertEquals(83851.0, math.get("target").asDouble(), 1e-9);
+        assertEquals(87238.0, math.get("stop").asDouble(), 1e-9);
+        assertEquals(18.47, math.get("gross_rr").asDouble(), 1e-9);   // 3213/174 = 18.4655 rounded to 2dp
+    }
+
+    @Test
+    void realShapeNearestQualifyingWithRunner() {
+        // short at 87064, stop 87238 (risk 174): 86600 = 464 = 2.667R gross, fee-model net (464 - 87.064) / 261.064 = 1.444 >= 1.25 -> target; runner 83851.
+        ObjectNode r = root(new double[]{86600, 83851}, new double[]{});
+        ((ObjectNode) r.get("daily_vp")).put("poc", 0.0).put("vah", 87064.0).put("val", 80000.0);
+        r.put("current_price", 87063.0);
+        ((ObjectNode) r.get("vwap")).put("price", 88000.0);
+        ObjectNode s = (ObjectNode) r.get("structure").get("15m");
+        s.put("swing_high", 87238.0).put("swing_low", 86000.0);
+        JsonNode math = daily(SetupCandidatesBuilder.build(M, r, new HashMap<>(), klines())).get("math");
+        assertEquals(86600.0, math.get("target").asDouble(), 1e-9);
+        assertEquals(83851.0, math.get("runner_target").asDouble(), 1e-9);
+    }
+
+    @Test
+    void singleNodeAtFiveRKeptWhereOldWindowDroppedIt() {
+        // short at 87064, risk 174: only node 86194 = 870 below = 5.0R gross (> 3.5R old cap), fee-model net (870 - 87.064) / 261.064 = 2.999 -> 3.0 at 2dp. Old: dropped.
+        ObjectNode r = root(new double[]{86194}, new double[]{});
+        ((ObjectNode) r.get("daily_vp")).put("poc", 0.0).put("vah", 87064.0).put("val", 80000.0);
+        r.put("current_price", 87063.0);
+        ((ObjectNode) r.get("vwap")).put("price", 88000.0);
+        ObjectNode s = (ObjectNode) r.get("structure").get("15m");
+        s.put("swing_high", 87238.0).put("swing_low", 86000.0);
+        JsonNode math = daily(SetupCandidatesBuilder.build(M, r, new HashMap<>(), klines())).get("math");
+        assertEquals(86194.0, math.get("target").asDouble(), 1e-9);
+        assertEquals(5.0, math.get("gross_rr").asDouble(), 1e-9);
+        assertEquals(3.0, math.get("net_rr").asDouble(), 1e-9);
     }
 
     @Test

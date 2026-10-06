@@ -277,4 +277,279 @@ Cost of these mistakes: ~$18 cloud burn (Ultracode); 2 lost waves
 (Waves 1+2 of the two-cores session); several DSA turns rewriting
 prompts; one 1-byte file; one unintended deletion of 7 tracked files.
 
+
+## 2026-10-03 - surface choice was CLI-by-default, not task-first
+
+What happened: DSA composed a Tom-and-Fabio fix prompt with surface
+'Claude local CLI on the desktop' as the default. Operator correction
+same day: CLI is fallback, not default. The order is App first
+(Code / Cowork / Chat / Cloud), CLI only when the App cannot reach
+local Maven, local testnet, the live loop, PowerShell-only files,
+repo-importing scripts, or a gitignored path.
+
+Rule: choose the surface by what the task needs, not by what the
+policy lists first. App if it can read, write, run tests, and commit.
+Otherwise CLI, and state the fallback reason in the session record.
+
+Where the rule lives: MyTradingSys/system/SURFACE_POLICY.md section 1b.
 # END
+
+## 2026-10-02 - prompt delivery failures
+
+Four defects in one day, all on the DSA chat surface, all from
+composing CC/CL/Opus prompts from earlier pastes instead of disk reads.
+
+1. Claimed 13 Fabio v3 files. Disk had 14.
+   Rule: no prompt claim without a same-turn read. Now in USER.md and
+   PROMPT_CONFORMANCE_CHECKLIST.md STEP -1.
+
+2. Invented a 500K/100K session token cap.
+   Rule: any numeric cap is OPERATOR-SET or omitted. Now in
+   PROMPT_CONFORMANCE_CHECKLIST.md STEP -1 tags.
+
+3. Invented four "do not read" restrictions on the Opus session.
+   Rule: every restriction needs the operator's own words. Now in
+   USER.md and PROMPT_CONFORMANCE_CHECKLIST.md STEP 0.
+
+4. Delivered a prompt labelled verified, composed from prior pastes.
+   Rule: verification means same-turn disk read with a pasted receipt.
+   Now in PROMPT_CONFORMANCE_CHECKLIST.md STEP -1 and DELIVERY FORMAT.
+
+Cost: one wasted Opus session on 2026-10-02.
+
+Prevented by: SESSION_MANIFEST now loads the checklist and this file
+at boot; DSA_SESSION_PROMPT.md section 3 step 10 requires the checklist
+run before any prompt leaves the surface.
+
+Structural fix still pending: scripts/dev/prompt_check.ps1, a real gate
+that greps a composed prompt against disk and refuses launch on FAIL.
+Filed for later.
+
+## 2026-10-03 - DSA pacing: batch reads at boot, one block per phase
+
+Cost: roughly ten turns burned in MTS-2026-10-03-1444Z-DSA-COO-tf4-compose
+on context gathering that fits in two.
+
+What happened.
+1. Reads split across five turns (git state, queue state, execution
+   inventory, three audits, five extracts, OPERATOR_RULINGS, CLAUDE.md,
+   BUILD_PIPELINE) when one batch would have returned all of it.
+2. Two reads used wrong path prefixes (.\runtime\queue, .\execution).
+   The files live under MyTradingSys\runtime\queue and
+   MyTradingSys\execution. Both returned empty; two turns lost.
+3. The writer-check (index.lock, reflog tail, session-record mtime)
+   ran after the operator asked, not inside the compose step.
+4. A process-list grep matched Claude Desktop Electron helpers and
+   long-lived Code sessions. I reported "two Opus sessions running"
+   when the count was three and the idle state was unverified.
+
+Rules that now prevent it.
+- At boot, issue ONE command block that returns: the last three commits and
+  the working-tree state; .git\index.lock; queue pick_state + pick_log tail;
+  session-record mtimes; execution/ file list; the day's audit inputs.
+  No follow-up read unless the paste shows a missing path.
+- Every path is MyTradingSys\... . Never .\runtime\... or .\execution\...
+  from the repo root.
+- The writer-check is part of compose, not a response to a challenge.
+  Run it inside the same block as the boot batch, before any prompt prints.
+- Process check filters to Name='claude.exe' AND CommandLine matches
+  'claude-code'. Electron helper PIDs (renderer, gpu, crashpad, network)
+  are not writers.
+
+Where the rule lives: this entry is the record until
+DSA_SESSION_PROMPT.md section 5 TASK LOOP step 1 and section 3 boot
+procedure carry the batch-read rule. Section 3 step 11 (prompt archive)
+and section 8 (paths, test both prefixes) already cover parts of it.
+
+Receipt: cost measured against MTS-2026-10-03-1444Z-DSA-COO-tf4-compose;
+commit c9319e9.
+
+## 2026-10-03 - Gate guard failed; commit landed on FAIL
+
+What happened: the guarded gate block ran, printed ABORT: build FAIL,
+and gitsnap still ran. Commit bb9d73c landed on a failing doc test.
+
+Cause: in an interactive paste, return at top level does not abort the
+remaining statements. Same rule already in live_session_protocol.md
+PROCESS SPEED RULES #2, dated 2026-09-19.
+
+Fix: every gate+commit block is wrapped in & { ... }. return inside
+& { } aborts the block. Confirmed 2026-10-03.
+
+Cost: one FAIL commit on fast-track, one fix commit to follow.
+
+## 2026-10-03 - CLI prompts must open with mts go
+
+What happened: the TF5 promote prompt (session MTS-2026-10-03-1700Z-CLI-SUP-tf5-promote) was printed as bare text with no mts go launch block. DSA dropped the launch and handed the operator a naked prompt.
+
+Rule that now prevents it: every CLI prompt DSA prints opens with the mts go launch block. The prompt text follows the launch. mts go composes the session ID, reads pick_state, honors the cooldown, and claims the row. A bare CLI prompt skips all four.
+
+Where the rule lives: USER.md LIKES (prompt-fence bullet) and DSA_SESSION_PROMPT.md section 9 HARD RULES.
+
+Receipt: operator 2026-10-03.
+
+## 2026-10-03 - Row order is not dependency order; read the blocker cell
+
+What happened: DSA told the operator TF6 could not run until TF5's promote landed. TF6's blocker cell reads only 1.6 (TF4). TF4 was LANDED. TF6 was pickable the whole time. The picker proved it: mts go launched MTS-2026-10-03-1659Z-CLI-BLD-tf6-tom-golden-scena on the next tick.
+
+Cause: DSA read the row number (1.8 follows 1.7) instead of the blocker cell (1.8 blocker = 1.6). Pipeline row order is not dependency order.
+
+Rule that now prevents it: before saying a pipeline row is blocked, name its blocker cell and the blocker's current status, read from BUILD_PIPELINE.md in the same turn. The picker reads the blocker cell; DSA reads the same cell.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 5 TASK LOOP step 1 VALIDATE.
+
+Receipt: operator 2026-10-03.
+
+## 2026-10-03 - gitsnap stages the whole tree and swept another writer's file
+
+What happened: two DSA commits swept a live session's in-flight file into DSA's commit. 9d43d03 captured TF4's EXEC_PROVENANCE_AUDIT.md mid-work. 91c2d0a captured TF6's test_tom_golden.py mid-work. Both sessions reported the sweep in their own T5 MISSED.
+
+Cause: gitsnap stages the entire working tree. With a second writer active, the stage captures whatever is on disk, including another session's stage.
+
+Rule: when a second writer is active, stage exact paths and commit by hand. Confirm the stage list equals the files DSA wrote before commit.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 6 WRITING.
+
+Receipt: two incidents, both self-reported by the swept session.
+
+## 2026-10-03 - Stop conditions must name the harm and the mechanism
+
+What happened: the TF5 promote prompt (MTS-2026-10-03-1700Z-CLI-SUP-tf5-promote) carried a T0 rule reading "if a trade is open, STOP and report". The session read three position_manager processes as "trade open", stopped at T0, and touched nothing. The promote is still pending.
+
+Cause: the rule was written without naming the harm it prevents or the mechanism by which the promote would cause that harm. The promote touches auto_trader.py, auto_trader_config.json, and test_auto_trader.py. position_manager.py is a separate process; it loads its own plan file at start and does not reload the auto_trader config. Promoting auto_trader does not affect a running position manager.
+
+Rule: every STOP or BLOCKED condition in a composed prompt names two things in one line - the harm it prevents, and the mechanism by which the target change would cause that harm. A condition that fires on an unrelated process or file is over-broad. The check is a dependency check, not a process check: name the file or field the target change touches and the code that reads it.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 5 TASK LOOP step 1.
+
+Receipt: operator 2026-10-03. One promote session blocked at T0, no files touched, no commit, staged files unchanged.
+
+## 2026-10-03 - mts go feeds the prompt into whatever CLI window is foregrounded
+
+What happened: after TF7 landed, DSA said "run mts go". The operator ran it while the TF7 claude window was still the foreground shell. The picker wrote the TF8 prompt to next_task.txt and echoed it. The TF7 window consumed the echo as its next user message. TF8 T0 started under the TF7 session ID. Caught before any TF8 file was written.
+
+Rule: before telling the operator to run mts go, check the shell state. If a claude window is foregrounded in the same shell, mts go feeds the prompt there. The picker composes the ID from the clock and echoes the text; it does not open a new window.
+
+Shape: Ctrl+C twice in the CLI window to exit claude. Then run claude fresh. Then paste the prompt from next_task.txt.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 9 HARD RULES.
+
+Receipt: operator 2026-10-03.
+
+## 2026-10-03 - A directory-scoped stage verb is not exact paths
+
+What happened: to commit three .new deletions, DSA used a directory-scoped stage with the update flag on MyTradingSys/execution/. That directory also held three pm_heartbeat JSON files the loop writes every cycle. All six were staged; the commit added the current content of the three heartbeats.
+
+Rule: "exact paths" means the explicit file list, never a directory. Every add is a named file. If a directory is used, the staged list is reviewed and any path DSA did not write is unstaged before commit.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 6 WRITING.
+
+Receipt: commit 7a1749c.
+
+## 2026-10-03 - Quoted the 30-line cap, then broke it in the same session
+
+What happened: DSA composed a TF4 prompt at roughly 60 lines. CLAUDE.md says "Prompt <= 30 lines." DSA had quoted that line two turns earlier, then composed over it. Caught during the operator challenge pass, corrected to 28 lines before the prompt shipped.
+
+Rule: the 30-line cap is read from CLAUDE.md at compose time, not from memory. Count the prompt lines before printing. If a prompt carries inherited hard rules or restated state, that is a defect: CLAUDE.md already has them.
+
+Where the rule lives: CLAUDE.md "What a CL prompt carries"; DSA_SESSION_PROMPT.md section 9.
+
+Receipt: operator 2026-10-03.
+
+## 2026-10-03 - SUPERVISOR_LOG entry attributed a promote to a session that did not exist
+
+What happened: DSA wrote a SUPERVISOR_LOG entry for the TF5 promote with "from: MTS-2026-10-03-1725Z-CLI-SUP-tf5-promote". That session ID was invented. The promote was performed by a PowerShell block from DSA chat, not by a CLI session. The CLI promote session that was launched stopped at T0 and wrote nothing.
+
+Rule: the "from:" field in a SUPERVISOR_LOG entry names an actor from disk, not an actor DSA thinks should exist. If a promote is done by a PowerShell block, the field reads the operator block description, not a session ID. If a session ID is named, the session record must exist on disk before the entry is written.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 6 WRITING.
+
+Receipt: commit b31b7bf corrected the entry.
+
+## 2026-10-04 - Group rows by file set, not wave order
+
+What happened: DSA printed a 30-step sequential plan for pipeline rows. Operator asked why 30. Re-laid as 23 groups. Operator then asked if the groups were sequential; DSA admitted most were parallelizable. Two operator corrections, two re-lays.
+
+Rule: group rows by file set (one-writer-per-file-set, B086). Walk each row, name its files, merge rows whose file sets overlap. Two rows with disjoint paths run concurrently. Wave order is a priority hint, not a schedule.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 6b BATCHING.
+
+Receipt: operator 2026-10-04.
+
+## 2026-10-04 - Stop hedging when the pair is parallel-safe
+
+What happened: after composing B104 (prompt-hygiene check) and B100 (audit verdict labels) with zero shared paths, DSA wrote "Recommendation: run B104 first, then B100." Operator: "why u gave me both if they were not both supposed to be sent togther?"
+
+Rule: after naming the file sets, state the collision check and stop. Disjoint: run together. Overlap at a named path: order X then Y. One line. No recommendation.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 6b BATCHING.
+
+Receipt: operator 2026-10-04.
+
+## 2026-10-04 - Resolve-Path throws on a file that does not exist yet
+
+What happened: twice, [IO.File]::WriteAllText with Resolve-Path on the target path, for a file that did not exist yet. Resolve-Path threw, the batch stopped. Cost: two retries.
+
+Rule: build the path with Join-Path using $root = (Get-Location).Path. Resolve-Path is only for files that already exist.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 6 WRITING.
+
+Receipt: B129 item doc write, B129 session record write.
+
+## 2026-10-04 - A diagnostic line that throws aborts a commit batch mid-flight
+
+What happened: in the E2-T revert batch, a probe called .Substring(0,60) on a shorter string. The probe threw before any write to the audit. The push earlier in the same block had already landed. Half-completed batch, one retry.
+
+Rule: no diagnostic line that can throw between the first write and the commit. Probes go in their own block after commit, or wrap with a length guard: if the string is long enough to slice, slice; otherwise print the whole string.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 6 WRITING.
+
+Receipt: E2-T revert batch; the audit write landed in 94310a3.
+
+## 2026-10-04 - git trailers custom format hides a trailer behind a blank line
+
+What happened: DSA read push trailers using the trailers:key custom format in the log command. It returned blank for f088b52 and 18ed141. DSA reported "missing trailer, file a row." Both commits carry the trailer; a blank line before Co-Authored-By hides it from that format. One wrong claim, one correction.
+
+Rule: read trailers with the log command's --format=full followed by a body grep. Do not use the trailers:key format when another trailer paragraph may follow.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 9 HARD RULES.
+
+Receipt: f088b52, 18ed141.
+
+## 2026-10-04 - Flipping a verdict label without reading the row
+
+What happened: B100 prompt (audit verdict-label mismatch) told the session to flip E1b and E2 from NO-SOURCE to CONCEPT-ONLY. E1b-T was correct. E2-T's own row text lists 0 hold-time rules in 58 transcripts and calls its nearest quotes Opposed. The session followed the instruction and flagged the concern in its reply. E2-T needed a revert (94310a3) plus an audit count resync (a20f602).
+
+Rule: before composing a "flip verdict X to Y" prompt, read the target row's own evidence cell. If the row contradicts the flip, the prompt says: read row R. If the row's own text supports CONCEPT-ONLY, flip. If not, state why and leave NO-SOURCE. Verify-then-edit, not edit-then-verify.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 5 TASK LOOP step 1 VALIDATE.
+
+Receipt: B100, 94310a3, a20f602.
+
+## 2026-10-04 - Angle brackets in a composed prompt now fail prompt_check
+
+What happened: DSA prompts carry the commit-trailer instruction with angle brackets around the ID placeholder. B104 (prompt-hygiene check) landed check 8 the same day, which fails any angle-bracket token in a composed prompt. Going forward, DSA prompts fail their own gate.
+
+Rule: the trailer instruction reads: Commit trailer: MTS-Session: followed by the ID you composed per SURFACE_POLICY section 4. No angle brackets in composed prompt text. A placeholder-shaped instruction is a placeholder.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 9 HARD RULES, near the mts go launch-block line.
+
+Receipt: B104 (60f3250).
+
+
+## 2026-10-04 - Applied a CLI-only rule to App prompts
+
+What happened: USER.md LIKES and DSA_SESSION_PROMPT.md section 9 both scope
+the mts go launch block to CLI prompts. This session printed three App prompts
+(B093, T037, B133) each opening with the block. Operator: "from where do you
+read mts go? why it is here?" Same defect twice this session, and once earlier
+in the week (B104 break #6).
+
+Rule: the mts go launch block belongs to CLI prompts only. App prompts open
+with Session ID, Mode line, repo root, then the task brief. Before printing
+any prompt, read the surface line and pick the opening that matches.
+
+Where the rule lives: DSA_SESSION_PROMPT.md section 9 (line to add);
+prompt_check.ps1 check 12 (code gate); B133 item doc.
+
+Receipt: B133 filed df5059e.

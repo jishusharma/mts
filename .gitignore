@@ -97,3 +97,27 @@ MyTradingSys/execution/plans/
 MyTradingSys/research/fast_track_2026-09-27/bt_runs/
 runtime_data/mts-watch.log
 backup_session/
+
+# Rewritten every 30 min by the scheduled canary task; not a reviewed document
+MyTradingSys/research/testnet_status/CANARY_*.md
+
+# --- Scheduler runtime state (scripts/sched; regenerated every tick) ---
+MyTradingSys/runtime/sched/*
+!MyTradingSys/runtime/sched/locks/
+MyTradingSys/runtime/sched/locks/*
+!MyTradingSys/runtime/sched/locks/.gitkeep
+MyTradingSys/research/sched_reports/tick_*.md
+MyTradingSys/research/sched_reports/worker_*.md
+
+# CI/CD runner and prompt-check receipts (scripts/dev/cicd_run.py, prompt_check.ps1); evidence is pasted into the session record
+MyTradingSys/runtime/cicd_run_*.jsonl
+MyTradingSys/runtime/cicd_run_*.out.txt
+MyTradingSys/runtime/cicd_warn.jsonl
+MyTradingSys/runtime/prompt_check_log.jsonl
+
+# Queue dispatcher output (scripts/sched/pick_task.py); regenerated every tick
+MyTradingSys/runtime/queue/
+
+# Pre-registration trial registry (TF8 L3 run, B099). Tracked on fast-track.
+!MyTradingSys/research/fast_track_2026-09-27/bt_runs/
+!MyTradingSys/research/fast_track_2026-09-27/bt_runs/TRIAL_REGISTRY.csv

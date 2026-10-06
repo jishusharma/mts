@@ -16,6 +16,17 @@ class TestFundingPaid(unittest.TestCase):
     def test_exit_before_first_record_in_window(self):
         self.assertEqual(funding_paid("long", 0, 28799999, FUNDING), 0.0)
 
+    def test_window_outside_loaded_span_raises(self):
+        # B103: was silently 0.0 / partial sum
+        with self.assertRaises(ValueError):
+            funding_paid("long", -1, 28800000, FUNDING)        # starts before first record
+        with self.assertRaises(ValueError):
+            funding_paid("long", 0, 57600001, FUNDING)         # ends after last record
+        with self.assertRaises(ValueError):
+            funding_paid("long", 100000000, 110000000, FUNDING)  # wholly after the span
+        with self.assertRaises(ValueError):
+            net_return("long", 100, 101, 100000000, 110000000, FUNDING)
+
     def test_empty_funding(self):
         self.assertEqual(funding_paid("long", 0, 100, []), 0.0)
 

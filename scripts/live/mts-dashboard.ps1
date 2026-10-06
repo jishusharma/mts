@@ -73,7 +73,7 @@ if ($vparts.Count -ge 5) {
     if ($validWords -contains $candidate) { $verdictWord = $candidate } else { $verdictWord = "UNKNOWN"; $reason = "parse mismatch: " + $vparts[4] }
 }
 if ($verdictWord -eq "") { $verdictWord = "UNKNOWN" }
-if ($lastCycle -match 'WAIT_RR \(net_rr ([\d\.]+) < 2\.0\)') { $reason = "net reward to risk " + $matches[1] + " below the 2.0 gate"; $waitKind = "RR" }
+if ($lastCycle -match 'WAIT_RR \(net_rr ([\d\.]+) < ([\d\.]+)\)') { $reason = "net reward to risk " + $matches[1] + " below the " + $matches[2] + " gate"; $waitKind = "RR" }
 elseif ($lastCycle -match 'WAIT_TRIGGER \(price not at zone\)') { $reason = "price not at zone"; $waitKind = "TRIGGER" }
 elseif ($verdictWord -eq "WATCH") { $reason = "setup being watched"; $waitKind = "WATCH" }
 elseif ($verdictWord -eq "SETUP_FORMING") { $reason = "setup forming"; $waitKind = "FORMING" }

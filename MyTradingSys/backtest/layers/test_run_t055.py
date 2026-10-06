@@ -228,10 +228,9 @@ class TestFundingForC2(unittest.TestCase):
         bars[1]["c"] = 99.0
         tr = R.score_trades([{"i": 0, "side": "short"}], bars, 1, bm, funding, R._cost_fn())
         self.assertAlmostEqual(tr[0]["net"], 0.0092, places=9)
-        # no funding record -> pre-funding-history trade flagged fee-only
-        tr = R.score_trades([{"i": 0, "side": "short"}], bars, 1, bm, [(T0 + 99 * DAY, 0.1)], R._cost_fn())
-        self.assertFalse(tr[0]["funded"])
-        self.assertAlmostEqual(tr[0]["net"], 0.0088, places=9)
+        # B103: hold outside the funding history fails closed (was: scored fee-only, funded=False)
+        with self.assertRaises(ValueError):
+            R.score_trades([{"i": 0, "side": "short"}], bars, 1, bm, [(T0 + 99 * DAY, 0.1)], R._cost_fn())
 
 
 class TestSpecsAndReport(unittest.TestCase):
@@ -248,7 +247,7 @@ class TestSpecsAndReport(unittest.TestCase):
         g = R.c2_grid(5)
         self.assertEqual(len(g), 16)
         self.assertEqual({x["first_min"] for x in g}, {30, 60})
-        self.assertEqual({x["session_start_min"] for x in g}, {0, 810})
+        self.assertEqual({x["session_start_min"] for x in g}, {0, "ny"})
         self.assertEqual({x["min_abs"] for x in g}, {0.0, 0.001})
         for x in g:
             self.assertIn(x["entry_min"], (x["first_min"], 1410))

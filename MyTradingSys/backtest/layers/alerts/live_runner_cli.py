@@ -123,6 +123,118 @@ def save_state(state: dict, path) -> None:
 CONFIRM_LAG_BARS = {"volume_fvg": 1}
 
 
+# ---- Fabio v3 live emitter (staged MTS-2026-10-02-1930Z-CLI-BLD-fabio-v3-shadow) -----------------------------------
+# Decision per grid parameter, from research/FABIO_V3_SOURCING_2026-10-02.md: SOURCE = a Fabio quote gives the numeric
+# value; SHADOW = it does not (NS-grid). A cell is SOURCE only if every parameter it uses is SOURCE. A SOURCE signal is
+# an ordinary fabio.* alert (has "side", the auto-trader maps it). A SHADOW signal is collection-only: tagged
+# `collection_only`, carries `shadow_side` and NO "side" and no layer_rules entry, so the auto-trader's layer_side()
+# returns None and it rejects the alert as unmapped (same pattern as turn_of_candle). No order path exists here.
+FABIO_V3_DECISIONS = {"N": "SHADOW", "p": "SHADOW", "z_hi": "SHADOW", "m_c": "SHADOW", "f": "SHADOW"}
+FABIO_V3_GRID = {"N": (60, 120, 240), "p": (0.05, 0.10), "z_hi": (2.0, 2.5, 3.0), "m_c": (5, 15), "f": (0.003, 0.005)}
+# Not grid-expanded here (spec 7.2 main grid values): day gate off, confirm entry (a discrete SIGNAL on one bar; the
+# resting-limit ARMED state persists across bars and is not an event), event management.
+FABIO_V3_FIXED = {"g": "off", "entry_mode": "confirm", "mgmt": "event"}
+FABIO_V3_FLOW_COLS = ("buy_vol", "sell_vol", "b99_buy_vol", "b99_sell_vol", "thr_days", "fp")
+FABIO_V3_PARAMS_ID = "fabio_v3_grid_2026-10-02"
+
+
+def fabio_v3_cells(grid=None):
+    """Cartesian product of the grid as a list of dicts (stable order)."""
+    import itertools
+    grid = FABIO_V3_GRID if grid is None else grid
+    keys = list(grid)
+    return [dict(zip(keys, vals)) for vals in itertools.product(*(grid[k] for k in keys))]
+
+
+def fabio_v3_cell_decision(cell, decisions=None):
+    """"SOURCE" only if every parameter of the cell is SOURCE; a missing or unknown decision is SHADOW (fail closed)."""
+    decisions = FABIO_V3_DECISIONS if decisions is None else decisions
+    return "SOURCE" if cell and all(decisions.get(k) == "SOURCE" for k in cell) else "SHADOW"
+
+
+def fabio_v3_flow_window(bars):
+    """The partial NY window (open .. last closed bar) of 1m ORDER-FLOW bars, or None. Order-flow bars carry
+    aggTrades columns (FABIO_V3_FLOW_COLS); plain Binance klines ({t,o,h,l,c,v,tbv}) do not, so on a klines feed this
+    returns None and the layer is silent (poll line shows 0). Also None if the window has a gap, is empty, or any bar
+    has thr_days == 0 (own-day big-trade thresholds = look-ahead, spec section 1)."""
+    import datetime as dt
+    from MyTradingSys.backtest.layers.fabio.v3.day_gates import ny_open_utc
+    if not bars or any(c not in bars[-1] for c in FABIO_V3_FLOW_COLS):
+        return None
+    last = bars[-1]["t"]
+    opener = ny_open_utc(dt.datetime.fromtimestamp(last / 1000.0, dt.timezone.utc).date())
+    if opener is None:
+        return None
+    t0 = int(opener.timestamp() * 1000)
+    win = [b for b in bars if t0 <= b["t"] <= last]
+    if not win or win[0]["t"] != t0 or len(win) != (last - t0) // 60000 + 1:
+        return None
+    if any(b.get("thr_days", 0) == 0 for b in win):
+        return None
+    return win
+
+
+FABIO_V3_OF_DIR = pathlib.Path(__file__).resolve().parents[4] / "MyTradingSys" / "runtime" / "orderflow_live"
+
+
+def fabio_v3_live_flow(bars, of_dir=None):
+    """Default flow source of the v3 layer. Bars that already carry the order-flow columns are used as given. On the
+    klines feed (no such columns) the live order-flow writer's files (orderflow_live.py, R3) are read and cut at the last
+    closed kline's open time, so the layer and the registry agree on "now". Any read problem, a gap, thr_days == 0 or a
+    missing file -> None (silent, fail closed)."""
+    win = fabio_v3_flow_window(bars)
+    if win or not bars:
+        return win
+    try:
+        from MyTradingSys.backtest.layers.fabio.orderflow_live import load_live_bars
+        last = bars[-1]["t"]
+        # a NY window is at most 390 bars: read only the last ~7 h
+        of = [b for b in load_live_bars(of_dir or FABIO_V3_OF_DIR, since_ms=last - 7 * 3600 * 1000) if b["t"] <= last]
+    except Exception:  # noqa: BLE001
+        return None
+    if not of or of[-1]["t"] != last:      # the writer is behind the klines: stale window, stay silent
+        return None
+    return fabio_v3_flow_window(of)
+
+
+def make_fabio_v3_layer(grid=None, decisions=None, fixed=None, run_fn=None, flow_fn=None):
+    """Layer function fn(bars) -> events for the live registry: one engine run per grid cell, an event per SIGNAL.
+    `run_fn(win, config)` defaults to fabio v3 engine.run (imported lazily), `flow_fn(bars)` to fabio_v3_live_flow;
+    both injectable for tests. Event "t" = the signal bar's open time, "event" is unique per (cell, model, side)."""
+    cells = fabio_v3_cells(grid)
+    fixed = dict(FABIO_V3_FIXED if fixed is None else fixed)
+
+    def _layer(bars):
+        win = (flow_fn or fabio_v3_live_flow)(bars)
+        if not win:
+            return []
+        run = run_fn
+        if run is None:
+            from MyTradingSys.backtest.layers.fabio.v3.engine import run
+        events = []
+        for cell in cells:
+            res = run(win, {**cell, **fixed})
+            if res.get("verdict") != "SIGNAL":
+                continue
+            side = {1: "long", -1: "short"}.get(res.get("side"))
+            if side is None:
+                continue
+            decision = fabio_v3_cell_decision(cell, decisions)
+            tag = "_".join("%s%s" % (k, cell[k]) for k in cell)
+            ev = {"t": win[-1]["t"], "event": "v3_%s_%s_%s" % (tag, res["model"], side), "model": res["model"],
+                  "cell": dict(cell), "decision": decision, "entry_ref": res.get("entry"), "stop": res.get("stop"),
+                  "target": res.get("target")}
+            if decision == "SOURCE":
+                ev["side"] = side
+            else:
+                ev["collection_only"] = True
+                ev["shadow_side"] = side
+            events.append(ev)
+        return events
+
+    return _layer
+
+
 def build_default_registry(fetch_funding=None) -> dict:
     """
     Builds and returns a registry for two registered layers: RSI and FABIO CVD.
@@ -192,6 +304,9 @@ def build_default_registry(fetch_funding=None) -> dict:
     ]:
         entries.append({"layer": layer, "sub": sub, "tf": tf, "fn": fn, "params_id": sub + suffix,
                         "confirm_lag_bars": CONFIRM_LAG_BARS.get(sub, 0)})
+    # Fabio v3: one key, all grid cells inside (a SHADOW cell is collection-only, see FABIO_V3_DECISIONS)
+    entries.append({"layer": "fabio", "sub": "v3_grid", "tf": "1m", "fn": make_fabio_v3_layer(),
+                    "params_id": FABIO_V3_PARAMS_ID, "confirm_lag_bars": 0})
     
     # Import here to avoid circular dependency
     from MyTradingSys.backtest.layers.alerts.live_runner_core import build_registry
