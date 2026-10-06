@@ -397,3 +397,8 @@ baseline at any of 8 holding horizons, with multiple-testing correction - no com
 attributed to it does not. Corrected in T055b_PROVEN_SETUPS.md (gate v3.0 rewrite); claim removed.
 
 ---
+
+## 2026-10-04 - T052 / B063 / T046 decisions
+2026-10-04 - T052: no Tom-cited SETUP_CONFIRMED trigger exists (extract gaps YopZ5ZDmMFw:146, rrHj24GSR6M:124; "confirms" = zone proof); status stays unused, no emitter; see items/T052 (MTS-2026-10-04-1009Z-APP-BLD-t052-b063-t046)
+2026-10-04 - B063: DEPRECATE divergence in the snapshot schema (Tom gives only a guard, extract_rFPCtOcfUMI_fresh.md:71; thresholds NO-SOURCE); six doc files listed in items/B063, none changed yet (MTS-2026-10-04-1009Z-APP-BLD-t052-b063-t046)
+2026-10-04 - T046: Stage 3 bundle - accept keep shortcuts, accept keep L-numbers + titles, reject extraction (Get-Descendants already shared), accept A/B/E map, folder renames need operator (MTS-2026-10-04-1009Z-APP-BLD-t052-b063-t046)

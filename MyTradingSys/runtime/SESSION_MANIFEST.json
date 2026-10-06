@@ -26,7 +26,8 @@
                               {"path":"MyTradingSys/methodology/chart_read_protocol.md","role":"chart_read_method","read":"full","mode":"always"},
                               {"path":"operator_reminders.md","role":"operator_reminders","read":"full","mode":"live_only"},
                               {"path":"MyTradingSys/items/INDEX.md","role":"items_index","read":"full","mode":"always"},
-                              {"path":"Dumps/operator/context/DSA_HANDOFF.md","role":"session_handoff","read":"full","mode":"always"}
+                              {"path":"Dumps/operator/context/DSA_HANDOFF.md","role":"session_handoff","read":"full","mode":"always"},
+                              {"path":"MyTradingSys/system/LESSONS_LEARNED.md","role":"lessons","read":"tail","lines":40,"mode":"always"}
                           ],
     "process_check":  ["java"],
     "handoff_required_fields":  ["STATUS","STATUS_NOTE"]

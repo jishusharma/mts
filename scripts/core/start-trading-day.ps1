@@ -147,6 +147,19 @@ function Beep-Alert {
 
 }
 
+function Get-NetRrFloor {
+    # Single source of the net_rr floor: MyTradingSys\system\net_rr_floor.json, read on every cycle so an edit
+    # applies without restarting this loop. Unreadable or invalid -> $null and the caller fails closed (no fallback number).
+    try {
+        $j = Get-Content (Join-Path $R "MyTradingSys\system\net_rr_floor.json") -Raw -Encoding UTF8 | ConvertFrom-Json
+        $raw = $j.net_rr_floor
+        if ($raw -is [bool] -or $raw -isnot [ValueType]) { return $null }
+        $f = [double]$raw
+        if ([double]::IsNaN($f) -or [double]::IsInfinity($f) -or $f -le 0) { return $null }
+        return $f
+    } catch { return $null }
+}
+
 function Compute-Verdict {
     param($snap, $proofDir = "aligned")
     $price = [double]$snap.current_price
@@ -166,7 +179,8 @@ function Compute-Verdict {
 
     $top = $cands[0]
     $net_rr = [double]$top.math.net_rr
-    $net_ok = [bool]$top.math.net_rr_sanity
+    $floor  = Get-NetRrFloor   # operator 2026-10-02: floor lives only in net_rr_floor.json (was D1(a), NO-SOURCE)
+    $net_ok = ($null -ne $floor) -and [bool]($top.math.net_rr -ge $floor)
     $tier   = [string]$top.math.tier
     $proof  = [int]$top.score.proof_count
     $setup  = [string]$top.setup_type
@@ -202,7 +216,8 @@ function Compute-Verdict {
     # exception. suspend_rr path removed; $mode is still computed above and
     # returned for display/logging only, per the operator's ruling.
     if (-not $net_ok) {
-        $v = "WAIT_RR"; $reason = ("net_rr {0:N2} < 2.0" -f $net_rr)
+        $v = "WAIT_RR"
+        if ($null -eq $floor) { $reason = "net_rr floor unreadable" } else { $reason = ("net_rr {0:N2} < {1:N2}" -f $net_rr, $floor) }
     } elseif ($tier -eq "ignore") {
         $v = "WAIT_FAR"; $reason = "tier=ignore"
     } elseif ($tier -eq "conditional") {
@@ -214,16 +229,8 @@ function Compute-Verdict {
     } else {
         $v = "SETUP_FORMING"; $reason = "proof $proof"
     }
-    if ($proofDir -eq "contradiction" -and $v -eq "SETUP_FORMING") {
-        $v = "WATCH"; $reason = "proof $proof contradicted"
-    }
-    # B071 fix (CORE_READINESS_PLAN.md task B1): fail closed instead of
-    # silently defaulting to "aligned" when L2 (proof-direction) errored.
-    if ($proofDir -ne "aligned" -and $proofDir -ne "contradiction" -and ($v -eq "WATCH" -or $v -eq "SETUP_FORMING")) {
-        $v = "WAIT_PROOF"; $reason = "proof_dir error"
-    }
-
-    # broken-value override - suppress CT against confirmed flow direction
+    # B074: broken-value override runs FIRST so the proof_dir caps below cannot pre-empt it
+    # (same snapshot must give the same verdict and reason for every proofDir).
     $pvVa = $snap.conditions.price_vs_va
     $cvdSlope = $snap.conditions.cvd_slope
     $setupDir = ""
@@ -237,6 +244,15 @@ function Compute-Verdict {
         if ($v -in @("SETUP_FORMING","SETUP_CONFIRMED")) {
             $v = "WAIT_RR"; $reason = "broken above_vah + CVD rising vs SHORT"
         }
+    }
+
+    if ($proofDir -eq "contradiction" -and $v -eq "SETUP_FORMING") {
+        $v = "WATCH"; $reason = "proof $proof contradicted"
+    }
+    # B071 fix (CORE_READINESS_PLAN.md task B1): fail closed instead of
+    # silently defaulting to "aligned" when L2 (proof-direction) errored.
+    if ($proofDir -ne "aligned" -and $proofDir -ne "contradiction" -and ($v -eq "WATCH" -or $v -eq "SETUP_FORMING")) {
+        $v = "WAIT_PROOF"; $reason = "proof_dir error"
     }
 
     # B058 part C - flow contradiction suppression.
@@ -302,6 +318,10 @@ function Build-Card {
         $lines += "ENTRY:   $($top.zone.price)"
         $lines += "STOP:    $($top.math.stop)"
         $lines += "TARGET:  $($top.math.target)"
+        # R2: the node after TARGET (math.runner_target; 0 = none). Emitted only when present so a card without it
+        # keeps the single-target behaviour in auto_trader.
+        $runnerTarget = $top.math.runner_target
+        if ($null -ne $runnerTarget -and [double]$runnerTarget -gt 0) { $lines += "RUNNER_TARGET: $runnerTarget" }
         $lines += "R:R:     gross $($top.math.gross_rr) / net $($top.math.net_rr)"
         $lines += ""
         $lines += "PROOF:"
@@ -429,10 +449,14 @@ try {
     
         $umsCmd = 'python "' + $R + '\MyTradingSys\runtime\update_market_state.py" > runtime_data\ums.log 2>&1'
         $rc = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $umsCmd) -TimeoutSec 30 -Tag "update_market_state" -WorkDir $R
+        # B069: log line carries the exit code and, on failure, the last stderr line from ums.log
+        # (stderr is redirected to ums.log, not NUL), so log and exit code agree.
         if ($rc -ne 0) {
-            Log-Line ("STATE_UPDATE_WARN exit=" + $rc)
+            $umsErr = ""
+            try { $umsErr = [string](Get-Content (Join-Path $R "runtime_data/ums.log") -Tail 1 -ErrorAction Stop) } catch {}
+            Log-Line ("STATE_UPDATE_WARN exit=" + $rc + " last=" + $umsErr.Trim())
         } else {
-            Log-Line "state_updated"
+            Log-Line "state_updated exit=0"
         }
     
         $s = Get-ChildItem "$R\runtime_data\snapshots\${Symbol}_*.json" |

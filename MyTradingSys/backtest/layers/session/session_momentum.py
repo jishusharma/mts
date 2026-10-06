@@ -2,13 +2,18 @@
 candidate C2, intraday session momentum.
 Source: Shen, Urquhart, Wang, Financial Review 57(2), 319-344, 2022 (T1):
 the return over the first half-hour predicts the return of the last half-hour.
-The 24/7 BTC adaptation (session = UTC day from `session_start_min`) is UNDEFINED in the source
+The 24/7 BTC adaptation (session = UTC day from `session_start_min`; "ny"/"london" = DST-aware day_gates open, B102) is UNDEFINED in the source
 and is a parameter, not a claim. Independent layer, never a Tom filter.
 """
 
+import datetime as dt
 from typing import List, Dict
 
-def session_momentum_events(bars: List[Dict], bar_min: int = 1, session_start_min: int = 0,
+from MyTradingSys.backtest.layers.fabio.v3.day_gates import ny_open_utc, london_open_utc
+
+_ANCHORS = {"ny": ny_open_utc, "london": london_open_utc}  # B102: DST-aware, None on weekends/holidays
+
+def session_momentum_events(bars: List[Dict], bar_min: int = 1, session_start_min=0,
                             first_min: int = 30, entry_min: int = 30, min_abs: float = 0.0) -> List[Dict]:
     if not bars:
         raise ValueError("bars cannot be empty")
@@ -26,9 +31,22 @@ def session_momentum_events(bars: List[Dict], bar_min: int = 1, session_start_mi
     sessions = {}
     for i, bar in enumerate(bars):
         t = bar["t"]
-        S = (t // DAY) * DAY + session_start_min * 60000
-        if S > t:
-            S -= DAY
+        if isinstance(session_start_min, str):
+            # DST-aware named anchor: session starts at that day's open; days with no open are skipped
+            day = dt.datetime.fromtimestamp(t // DAY * DAY / 1000, tz=dt.timezone.utc).date()
+            o = _ANCHORS[session_start_min](day)
+            if o is None:
+                continue
+            S = int(o.timestamp() * 1000)
+            if S > t:
+                prev = _ANCHORS[session_start_min](day - dt.timedelta(days=1))
+                if prev is None:
+                    continue
+                S = int(prev.timestamp() * 1000)
+        else:
+            S = (t // DAY) * DAY + session_start_min * 60000
+            if S > t:
+                S -= DAY
         if S not in sessions:
             sessions[S] = []
         sessions[S].append((i, bar))

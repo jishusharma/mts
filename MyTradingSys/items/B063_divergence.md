@@ -48,3 +48,27 @@ Verbatim action cell (L104):
 Context: schema declares value, slope, divergence, last_3_delta, confidence, source. Emitter emits value, slope, last_3_delta, cvd_recent, confidence, scope, session_start_utc. Gap columns: divergence, source. Two unresolved directions: restore divergence or deprecate in schema, and source-string mismatch.
 
 This fold is documentation only. No schema change. Ties to the detector audit already recorded above.
+
+### 2026-10-04T10:15Z - builder, session MTS-2026-10-04-1009Z-APP-BLD-t052-b063-t046
+
+DECISION: DEPRECATE divergence in the snapshot schema. Do not restore.
+Why:
+- Provenance. market_data/data_schema_v1.2.0.md:148: "Tom does not define 'divergence' numerically. The boolean flag is a
+  screener heuristic." (also L452, L138). The only numeric rule on disk (divergence_monitor.py 30pt / 200 / 20, 10m)
+  has no Tom source = NO-SOURCE.
+- Tom's only divergence words are a guard, not a detector: extracts/fresh/extract_rFPCtOcfUMI_fresh.md:71 (verbatim in raw
+  rFPCtOcfUMI:13) "don't trade the delta divergence alone always use confirmation". No computation is given.
+- The emitter never wrote the field (compiled_output_audit_20260915.md L104), the live alerts do not fire on it, and no
+  condition file or verdict reads it. Restoring means inventing a threshold plus a verdict consumer.
+- Fabio CC-2 absorption_cvd (ANALYST_LAYER_FRAMEWORK.md:144) is the candidate for a separate layer; it is not this field.
+Files that change on the DEPRECATE path (nothing changed this session):
+- MyTradingSys/market_data/data_schema_v1.2.0.md L138, L430, L452 (remove divergence from the cvd row; keep the Tom guard as a note)
+- MyTradingSys/market_data/data_state_document.md L20, L151 (CVD field list; TC pullback row)
+- MyTradingSys/market_data/sample_btc_snapshot.json L109 (divergence: false)
+- MyTradingSys/research/MTS_DICTIONARY.md L200-213 (DIVERGENCE section: state deprecated, point to the Tom guard)
+- MyTradingSys/research/compiled_output_audit_20260915.md L104 (close the "restore or deprecate" action)
+- MyTradingSys/research/BUGS.md B063 row (close). Detectors tape-watch.ps1 and divergence_monitor.py are tooling, left as is.
+Files that would change on the RESTORE path (blocked: needs a sourced Tom definition first):
+- MarketDataSnapshot.java (cvd emitter), data_schema_v1.2.0.md, a conditions/*.md rule, math_object_builder.py,
+  Compute-Verdict in start-trading-day.ps1 and backtest/verdict.py (critical files, four-step proof), plus tests.
+Next step if the operator agrees: one small doc-only task for the six DEPRECATE files above.
