@@ -147,6 +147,10 @@
 | validation_prompt_grok.md | ~7KB | Grok validation prompt template |
 | whale_positioning_evidence_2026-09-12.md | ~3KB | 4-AI whale research |
 | session_anchor_options_note.md | ~5KB | Session anchor options A/B/C + evidence + constraints (2026-09-18) |
+| P1_COST_FLOOR_FULL_20261006_CORRECTED.md | ~2.5KB | P1 analysis: passive limit order adverse selection (PASS: 0.02 bp mean) |
+| P1_BREAKDOWNS_20261006.md | ~3KB | P1 breakdowns: discrepancy analysis vs operator 4.7-day run |
+| P2_FABIO_V3_HOLDOUT_STATUS.md | ~2.5KB | P2 verification: Fabio v3 holdout L3-FAIL (code unchanged, single OOS read) |
+| P4_QUARTER_HOUR_IMBALANCE_20261006_FINAL.md | ~3KB | P4 analysis: Kim & Hansen replication partial (8h PASS, 4h/12h fail sign stability) |
 
 ## MTS/TESTS/ - Test System (9 files)
 
