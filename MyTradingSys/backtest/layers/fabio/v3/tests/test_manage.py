@@ -1,6 +1,7 @@
 """Fabio v3 management (spec 5.2): stop helpers, adds, and the single-leg walk. Expected values from spec T31-T34,
 T51-T54, T62 (hand-derived there); T34 inputs are not in the spec, so the inputs here are our own with hand arithmetic."""
 import unittest
+import pytest
 
 from MyTradingSys.backtest.layers.fabio.v3 import (add_allowed, add_size, be_update, defended_level, opp_stop,
                                                    simulate_trade, trail_update)
