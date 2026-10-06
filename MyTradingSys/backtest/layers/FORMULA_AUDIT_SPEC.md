@@ -339,43 +339,47 @@ All keys present; old "fvg" array is converted to `conditions.fvg_nearest_unfill
 
 ---
 
-## 21. Book Imbalance Contradiction Logic (`runtime/math_object_builder.py:399–413`) — LIVE SAFETY
+## 21. Book Imbalance Contradiction Logic (`runtime/math_object_builder.py:399–419`) — Live-Safety Check
 
 ### 21.1 Order Book Imbalance Direction Check
 
-**Chosen definition:** Check if current book imbalance contradicts the intended trade direction:
+**Chosen definition:** Check if current book imbalance contradicts the intended trade direction (already correctly implemented on fast-track as of 2026-09-30):
 
 ```
 if book_imbalance == 0.0 or book_imbalance is None:
-    # No data; skip check
+    # No data; skip check (0.0 is explicitly excluded by operator approval)
     return False (no contradiction)
-else if book_imbalance > 0.0:
-    # Bid-heavy; favor LONG entries, disfavor SHORT
-    if direction == "LONG":
-        return False (no contradiction, book supports LONG)
-    else:
-        return True (contradiction: book is bid-heavy, SHORT entry risky)
-else if book_imbalance < 0.0:
-    # Ask-heavy; favor SHORT entries, disfavor LONG
+else if book_imbalance > 3.0:
+    # Strongly bid-heavy; flag contradiction for SHORT
     if direction == "SHORT":
-        return False (no contradiction, book supports SHORT)
+        return True (contradiction: book is strongly bid-heavy, SHORT entry risky)
     else:
+        return False (no contradiction for LONG)
+else if book_imbalance > 0.0 and < 3.0:
+    # No contradiction for LONG
+    return False
+else if 0.0 < book_imbalance < 0.33:
+    # Ask-heavy; flag contradiction for LONG
+    if direction == "LONG":
         return True (contradiction: book is ask-heavy, LONG entry risky)
+    else:
+        return False (no contradiction for SHORT)
 ```
 
-**Canonical source:** Market microstructure (bid/ask imbalance is a filling-friction indicator; matching your direction to imbalance reduces slippage).
+**Canonical source:** Market microstructure (bid/ask imbalance is a filling-friction indicator; matching your direction to imbalance reduces slippage). Operator-approved fix (2026-09-30): 0.0 (no Java order-book data) must skip check, not be treated as ask-heavy. Reference: Java SetupCandidatesBuilder.java:581 (skips 0.0), MarketDataSnapshot.java:213-214, SUPERVISOR_INBOX 2026-09-30 22:30Z item 1.
 
-**Known issue (bug fixed in audit):** Current code treats 0.0 (no data) the same as ask-heavy, flagging false contradictions. Corrected definition: 0.0 → skip check, return False.
+**Status (already fixed on fast-track):** Line 414 explicitly checks `_book != 0.0` to exclude no-data case; line 412-413 documents operator approval. This is NOT an open bug — it is already correctly implemented.
 
 **Purpose:** Reject setups where order-book structure contradicts entry direction.
 
 **Worked example:**
-- imbalance=0.0 (no data), direction="LONG" → contradiction=False (check skipped)
-- imbalance=+0.5 (bid-heavy), direction="LONG" → contradiction=False (book supports LONG)
-- imbalance=+0.5 (bid-heavy), direction="SHORT" → contradiction=True (book argues against SHORT)
-- imbalance=-0.3 (ask-heavy), direction="SHORT" → contradiction=False (book supports SHORT)
+- imbalance=0.0 (no data), direction="LONG" → contradiction=False (check skipped, per operator approval)
+- imbalance=0.15 (ask-heavy), direction="LONG" → contradiction=True (book argues against LONG)
+- imbalance=0.15 (ask-heavy), direction="SHORT" → contradiction=False (book supports SHORT)
+- imbalance=5.0 (bid-heavy), direction="SHORT" → contradiction=True (book argues against SHORT)
+- imbalance=5.0 (bid-heavy), direction="LONG" → contradiction=False (book supports LONG)
 
-**Test requirement:** New test must fail on pre-fix code (`imbalance=0.0, direction="LONG"` currently flags contradiction; should not).
+**Test requirement:** Tests should verify that 0.0 correctly skips the check (no false contradiction) and that thresholds (0.33 for ask-heavy, 3.0 for bid-heavy) are applied correctly per direction.
 
 ---
 
