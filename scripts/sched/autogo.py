@@ -68,9 +68,12 @@ def pid_alive(pid):
         return str(pid) in out.split()
     try:
         os.kill(pid, 0)
-        return True
     except OSError:
         return False
+    try:  # an exited child nobody reaped (orphan under a non-reaping PID 1, e.g. a container) is a zombie, not alive
+        return Path("/proc/%d/stat" % pid).read_text().rsplit(")", 1)[1].split()[0] != "Z"
+    except (OSError, IndexError):
+        return True
 
 
 def slots():
