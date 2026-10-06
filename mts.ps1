@@ -41,7 +41,7 @@ $Verbs = @(
     @("Safety",      "guard",   "Start the daily-loss guard in its own window"),
     @("Safety",      "orphans", "Check every testnet account for a position no manager owns (may set HALT)"),
     @("Auto",        "auto",    "Start the testnet auto-trader (Tom + layer signals) in its own window"),
-    @("Auto",        "runner",  "Start the alert runner (indicator layers) in its own window"),
+    @("Auto",        "runner",  "Start the alert runner (indicator layers) in its own window (only the runner; mts guard starts it too, with the loss monitor and orderflow)"),
     @("Auto",        "autolog", "Last 20 auto-trader decisions (trades, skips, rejects)"),
     @("Auto",        "ledger",  "Closed auto-trades per source: count, win rate, mean and total net P/L"),
     @("Upkeep",      "go",      "Launch the next queued build task in claude (mts go [slug] [-Id B074] [-Dry])"),

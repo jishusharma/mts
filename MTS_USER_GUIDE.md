@@ -243,7 +243,7 @@ Open trades are not affected: their stops live on the exchange. Keep any
 | `mts guard`          | Start the daily-loss guard in its own window              |
 | `mts orphans`        | Check every testnet account for a position no manager owns (may set HALT) |
 | `mts auto`           | Start the testnet auto-trader in its own window           |
-| `mts runner`         | Start the alert runner (indicator layers) in its own window |
+| `mts runner`         | Start the alert runner (indicator layers) in its own window (only the runner; mts guard starts it too, with the loss monitor and orderflow) |
 | `mts autolog`        | Last 20 auto-trader decisions                             |
 | `mts ledger`         | Closed auto-trades per source: n, win rate, net P/L       |
 | `mts go [slug]`      | Launch the next queued build task in claude (empty queue prints IDLE). Slug = lowercase kebab, names the session MTS-<UTC>-CLI-BLD-<slug>. `-Dry` prints only; run from inside a Claude Code session it always prints only |
