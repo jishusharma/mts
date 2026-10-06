@@ -299,6 +299,7 @@ class CycleTest(unittest.TestCase):
         at.AUTO_PAUSE = d / "AUTO_PAUSE"
         at.LAYER_ALERT_DIR.mkdir()
         self.placed = []
+        self.placed_accounts = []
 
         class P:
             def __init__(s, rc=None):
@@ -309,8 +310,9 @@ class CycleTest(unittest.TestCase):
 
         self.P = P
 
-        def fake_place(sig, dry_run):
+        def fake_place(sig, dry_run, account=None):  # cycle() passes the routed account as a 3rd arg
             self.placed.append(sig)
+            self.placed_accounts.append(account)
             return {"outcome": "entered", "plan_id": f"p{len(self.placed)}", "proc": P()}
         at.place = fake_place
         self.ledger = []
