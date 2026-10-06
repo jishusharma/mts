@@ -387,3 +387,56 @@ def test_bug_007_no_candidates_defaults_false():
     snap = {k: v for k, v in LIVE_V120.items() if k != "setup_candidates"}
     m = build_math_object(snap)
     assert m["hard_stops_compiled"]["top_candidate_rr_below_threshold"] is False
+
+
+# ============================================================
+# BOOK IMBALANCE 0.0 NO-DATA BUG (2026-10-02)
+# Operator-approved fix: 0.0 = no order-book data (not ask-heavy)
+# ============================================================
+
+def test_book_imbalance_zero_no_contradiction_long():
+    """book_imbalance=0.0 (no data) should NOT trigger ask-heavy contradiction for LONG.
+
+    Reference: Java SetupCandidatesBuilder.java:581 skips 0.0 as "no data".
+    Operator-approved 2026-09-30 (SUPERVISOR_INBOX 22:30Z item 1).
+    """
+    snap = dict(LIVE_V120)
+    snap["setup_candidates"] = [{
+        "rank": 1,
+        "setup_type": "ct_long",
+        "direction": "long",
+        "zone": {"name": "weekly_val", "price": 78000.0, "type": "weekly_val"},
+        "math": {"distance_pct": 0.1, "distance_cap": 0.5, "tier": "conditional",
+                 "substate": "below", "stop": 77900.0, "target": 78100.0,
+                 "gross_rr": 2.0, "net_rr": 1.5, "net_rr_sanity": True, "rr_sanity": True},
+        "proof": {"rejection_wick": "WEAK", "speed": {"picking_up": False},
+                  "cvd_aligned": False, "book_imbalance": 0.0},
+        "score": {"raw": 70, "confidence": "B", "proof_count": 2, "confluence_bonus": 0},
+    }]
+    m = build_math_object(snap)
+    details = m.get("proof_direction_details", [])
+    assert not any("ask-heavy vs LONG" in str(d) for d in details), (
+        f"book_imbalance=0.0 (no data) must not trigger ask-heavy contradiction. Got: {details}"
+    )
+
+
+def test_book_imbalance_small_positive_contradicts_long():
+    """book_imbalance=0.2 (ask-heavy, valid data) should trigger ask-heavy contradiction for LONG."""
+    snap = dict(LIVE_V120)
+    snap["setup_candidates"] = [{
+        "rank": 1,
+        "setup_type": "ct_long",
+        "direction": "long",
+        "zone": {"name": "weekly_val", "price": 78000.0, "type": "weekly_val"},
+        "math": {"distance_pct": 0.1, "distance_cap": 0.5, "tier": "conditional",
+                 "substate": "below", "stop": 77900.0, "target": 78100.0,
+                 "gross_rr": 2.0, "net_rr": 1.5, "net_rr_sanity": True, "rr_sanity": True},
+        "proof": {"rejection_wick": "WEAK", "speed": {"picking_up": False},
+                  "cvd_aligned": False, "book_imbalance": 0.2},
+        "score": {"raw": 70, "confidence": "B", "proof_count": 2, "confluence_bonus": 0},
+    }]
+    m = build_math_object(snap)
+    details = m.get("proof_direction_details", [])
+    assert any("book_imbalance=0.2 ask-heavy vs LONG" in str(d) for d in details), (
+        f"book_imbalance=0.2 (ask-heavy, valid data) must trigger ask-heavy contradiction. Got: {details}"
+    )
