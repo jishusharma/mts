@@ -2,8 +2,8 @@
 MTS consumer for the CBP mts_queue contract.
 
 Reads CryptoScrapper/mts_queue/pending.json, writes acks to
-mts_queue/acks/<id>.json, and flips consumed entries to status
-"consumed" in pending.json.
+mts_queue/acks/<id>.json, and never modifies pending.json (CBP owns it;
+the ack file is the only consumed/rejected state).
 
 Read-only on markets. Never places orders. No live process imports it.
 """
@@ -79,8 +79,6 @@ def consume(queue_dir, validate=None, on_consume=None):
             ack["decision"] = "rejected"
             ack["reason"] = "expired before consumption"
             _write_json(ack_file, ack)
-            a["status"] = "rejected"
-            a["reason"] = "expired before consumption"
             result["rejected_expired"].append(aid)
             continue
         errors = validate(a) if validate else []
@@ -88,17 +86,13 @@ def consume(queue_dir, validate=None, on_consume=None):
             ack["decision"] = "rejected"
             ack["reason"] = "invalid: " + "; ".join(errors)
             _write_json(ack_file, ack)
-            a["status"] = "rejected"
-            a["reason"] = ack["reason"]
             result.setdefault("rejected_invalid", []).append(aid)
             continue
         if on_consume:
             on_consume(a)
         ack["decision"] = "consumed"
         _write_json(ack_file, ack)
-        a["status"] = "consumed"
         result["consumed"].append(aid)
-    _write_json(pending_path, alerts)
     return result
 
 
