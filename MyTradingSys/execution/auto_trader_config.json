@@ -23,5 +23,19 @@
   "max_loss_usd": 2,
   "max_age_bars": 2.0,
   "hours": 1.0
+ },
+ "trade_blocklist": [
+  "layer:session:session_momentum:",
+  "layer:positioning:funding_cvd_fade:",
+  "layer:turn_of_candle:",
+  "layer:fabio:escalation:",
+  "layer:rsi:rsi_events:15m"
+ ],
+ "trade_blocklist_reasons": {
+  "layer:session:session_momentum:": "T055 C2 FAIL (research/fast_track_2026-09-27/T055_BT_c2.md): backtest failed; alerts kept for data collection",
+  "layer:positioning:funding_cvd_fade:": "T055 C1 FAIL (research/fast_track_2026-09-27/T055_BT_c1.md): backtest failed; alerts kept for data collection",
+  "layer:turn_of_candle:": "T055 C3 NO EDGE (research/fast_track_2026-09-27/T055_BT_c3.md): no gross edge; alerts kept for data collection",
+  "layer:fabio:escalation:": "FABIO_L1_REPORT (backtest/layers/fabio/FABIO_L1_REPORT.md): no edge; alerts kept for data collection",
+  "layer:rsi:rsi_events:15m": "BACKTEST_L1_REPORT (backtest/layers/BACKTEST_L1_REPORT.md): PBO 0.79-0.91, overfit; alerts kept for data collection"
  }
 }
