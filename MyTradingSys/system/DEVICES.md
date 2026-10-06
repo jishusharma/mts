@@ -180,7 +180,7 @@ login); sessions then record each machine's Tailscale name and address in this f
   Paths with backslashes get mangled in transit: build them with [char]92.
 - Ollama: 0.34.4 and ~38 GB of models in F:\ollama (qwen3.6:35b, qwen3-coder:30b),
   idle since the Qwen lane was decommissioned 2026-10-01. DELETED 2026-10-06 on the
-  operator's word (ollama rm of both models over the ssh gate; Ollama itself stays
+  operator's word (ollama rm of both models over the ssh gate; checked afterwards on JIS-NUC by hostname, ollama list empty; Ollama itself stays
   installed; free space on F: after is NOT CAPTURED). Original proposal (B137 Q7):
   delete the models; F: has room so this is housekeeping, and they can be
   re-pulled if a local model is ever wanted again.
