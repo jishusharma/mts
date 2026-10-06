@@ -223,14 +223,31 @@ def test_rr_zero_reward():
 # TESTS: calculate_net_rr
 # ============================================================
 
-def test_net_rr_default_friction():
-    assert calculate_net_rr(4.0) == 3.0
+# B070 fee model, FORMULAS.md section 17. Hand arithmetic: entry 100, taker 0.0005 -> cost = 2 * 0.0005 * 100 = 0.1.
+def test_net_rr_fee_model_long():
+    # reward 4, risk 2: (4 - 0.1) / (2 + 0.1) = 3.9 / 2.1
+    assert abs(calculate_net_rr(100.0, 104.0, 98.0) - 3.9 / 2.1) < 1e-12
 
-def test_net_rr_custom_friction():
-    assert calculate_net_rr(4.0, friction=0.10) == 3.6
+def test_net_rr_fee_model_short_mirrors_long():
+    assert abs(calculate_net_rr(100.0, 96.0, 102.0) - 3.9 / 2.1) < 1e-12
 
-def test_net_rr_zero():
-    assert calculate_net_rr(0.0) == 0.0
+def test_net_rr_custom_taker():
+    # taker 0.001 -> cost 0.2: (4 - 0.2) / (2 + 0.2) = 3.8 / 2.2
+    assert abs(calculate_net_rr(100.0, 104.0, 98.0, taker=0.001) - 3.8 / 2.2) < 1e-12
+
+def test_net_rr_zero_taker_equals_gross():
+    assert calculate_net_rr(100.0, 104.0, 98.0, taker=0.0) == 2.0
+
+def test_net_rr_not_flat_friction():
+    # old code returned gross * 0.75 = 1.5 for gross 2.0; the fee model does not
+    assert calculate_net_rr(100.0, 104.0, 98.0) != 2.0 * 0.75
+
+def test_net_rr_zero_risk():
+    assert calculate_net_rr(100.0, 104.0, 100.0) == 0.0
+
+def test_net_rr_tight_stop_costs_more_r():
+    # stop 0.1% away: risk 0.1, cost 0.1; reward 0.3 -> (0.3 - 0.1) / (0.1 + 0.1) = 1.0 (gross 3.0)
+    assert abs(calculate_net_rr(100.0, 100.3, 99.9) - 1.0) < 1e-9
 
 
 # ============================================================
@@ -539,7 +556,7 @@ def test_all_functions_deterministic():
     assert get_tier(0.002, 0.004) == get_tier(0.002, 0.004)
     assert check_trigger_validity("at_zone", "ct_short") == check_trigger_validity("at_zone", "ct_short")
     assert calculate_gross_rr(79500.0, 80500.0, 79200.0) == calculate_gross_rr(79500.0, 80500.0, 79200.0)
-    assert calculate_net_rr(4.0) == calculate_net_rr(4.0)
+    assert calculate_net_rr(100.0, 104.0, 98.0) == calculate_net_rr(100.0, 104.0, 98.0)
     assert calculate_rr_sanity(2.0) == calculate_rr_sanity(2.0)
     zones = [{"name": "A", "price": 78000.0}, {"name": "B", "price": 78050.0}]
     c1 = detect_confluence(zones)

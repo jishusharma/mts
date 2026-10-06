@@ -9,7 +9,9 @@
 
 param(
     [Parameter(Position = 0)][string]$Verb = "help",
-    [Parameter(Position = 1)][string]$Arg = ""
+    [Parameter(Position = 1)][string]$Arg = "",
+    [string]$Id = "",
+    [switch]$Dry
 )
 
 $ErrorActionPreference = "Stop"
@@ -40,6 +42,7 @@ $Verbs = @(
     @("Auto",        "auto",    "Start the testnet auto-trader (Tom + layer signals) in its own window"),
     @("Auto",        "autolog", "Last 20 auto-trader decisions (trades, skips, rejects)"),
     @("Auto",        "ledger",  "Closed auto-trades per source: count, win rate, mean and total net P/L"),
+    @("Upkeep",      "go",      "Launch the next queued build task in claude (mts go [slug] [-Id B074] [-Dry])"),
     @("Upkeep",      "test",    "Run the offline test suite (no exchange)"),
     @("Upkeep",      "guide",   "Open the user guide"),
     @("Upkeep",      "help",    "This list")
@@ -149,12 +152,6 @@ switch ($Verb.ToLower()) {
 
     "watch" { & (Join-Path $Root "scripts\live\mts-dashboard.ps1") }
 
-    "go"      { Py (Join-Path $Root "scripts\manager\claude_manager.py") "go" $Arg; exit $LASTEXITCODE }
-    "mstatus" { Py (Join-Path $Root "scripts\manager\claude_manager.py") "status"; exit $LASTEXITCODE }
-    "mresume" { Py (Join-Path $Root "scripts\manager\claude_manager.py") "resume"; exit $LASTEXITCODE }
-    "mstop"   { Py (Join-Path $Root "scripts\manager\claude_manager.py") "stop" $Arg; exit $LASTEXITCODE }
-    "usage"   { Py (Join-Path $Root "scripts\manager\claude_manager.py") "usage" $Arg; exit $LASTEXITCODE }
-
     "plan" { Py (Join-Path $Exec "new_plan.py"); exit $LASTEXITCODE }
 
     "plans" {
@@ -235,15 +232,27 @@ switch ($Verb.ToLower()) {
     }
 
     "guard" {
-        if ((Get-Procs "daily_loss_monitor" "Name='python.exe'").Count) { Ok "daily-loss guard already running"; break }
-        Open-Window "MTS daily-loss guard" "python '$Exec\daily_loss_monitor.py'"
-        Ok "daily-loss guard started in its own window - leave it open while trading"
+        if ((Get-Procs "daily_loss_monitor" "Name='python.exe'").Count) { Ok "daily-loss guard already running" }
+        else {
+            Open-Window "MTS daily-loss guard" "python '$Exec\daily_loss_monitor.py'"
+            Ok "daily-loss guard started in its own window - leave it open while trading"
+        }
+        if ((Get-Procs "live_runner_cli" "Name='python.exe'").Count) { Ok "live-runner-cli already running" }
+        else {
+            Open-Window "MTS live-runner-cli" "python -m MyTradingSys.backtest.layers.alerts.live_runner_cli"
+            Ok "live-runner-cli started in its own window - leave it open while trading"
+        }
+        if ((Get-Procs "orderflow_live" "Name='python.exe'").Count) { Ok "orderflow-live already running" }
+        else {
+            Open-Window "MTS orderflow-live" "python -m MyTradingSys.backtest.layers.fabio.orderflow_live"
+            Ok "orderflow-live started in its own window - leave it open while trading"
+        }
     }
 
     "auto" {
         if ((Get-Procs "auto_trader" "Name='python.exe'").Count) { Ok "auto-trader already running"; break }
         if ((Test-Path $Halt) -or (Test-Path $HaltLoss)) { Show-Brakes; Say "Brakes are set - the auto-trader logs signals but places nothing until: mts resume" Yellow }
-        Open-Window "MTS auto-trader" "python -m MyTradingSys.execution.auto_trader"
+        Open-Window "MTS auto-trader" "& 'C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe' -m MyTradingSys.execution.auto_trader"
         Ok "auto-trader started in its own window - it trades Tom + layer signals on TESTNET; mts pause stops new trades"
     }
 
@@ -262,6 +271,13 @@ switch ($Verb.ToLower()) {
     }
 
     "test" { Py (Join-Path $Root "scripts\dev\run_all_tests.py") "--quick"; exit $LASTEXITCODE }
+
+    "go" {
+        # Launch logic lives in scripts/sched/go.py: dry inside a Claude Code session (one writer per tree), live here.
+        $goArgs = @(); if ($Arg) { $goArgs += $Arg }; if ($Id) { $goArgs += @("--id", $Id) }; if ($Dry) { $goArgs += "--dry" }
+        Set-Location $Root
+        Py (Join-Path $Root "scripts\sched\go.py") @goArgs; exit $LASTEXITCODE
+    }
 
     "guide" { Invoke-Item $Guide }
 

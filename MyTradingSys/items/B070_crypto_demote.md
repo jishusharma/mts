@@ -26,4 +26,5 @@ documented exception per playbook.md Part I).
 
 ## STATUS
 
-OPEN. Decision gated on operator.
+CLOSED 2026-10-04. Operator ruling (a): friction = fee model from backtest/fees.py (FORMULAS.md section 17); UTC 00:00 anchor
+display-only. Session record: MyTradingSys/system/sessions/MTS-2026-10-03-1845Z-CLI-BLD-b070-demote-utc-00.md.

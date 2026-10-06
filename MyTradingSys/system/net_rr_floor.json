@@ -1,0 +1,5 @@
+{
+  "net_rr_floor": 1.25,
+  "owner": "operator 2026-10-02: 2.0 was D1(a), NO-SOURCE; lowered for testnet collection; restore after P4",
+  "readers": "scripts/core/start-trading-day.ps1 (every cycle), MyTradingSys/runtime/net_rr_floor.py (backtest/verdict.py, runtime/math_object_builder.py, execution/auto_trader.py), src/main/java/datafeed/NetRrFloor.java"
+}

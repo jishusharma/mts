@@ -21,8 +21,12 @@ def funding_paid(side: str, t_in: int, t_out: int, funding: list) -> float:
     if t_out < t_in:
         raise ValueError("t_out must not be less than t_in")
         
-    if not funding or t_out <= funding[0][0]:
-        return 0.0
+    if not funding:
+        return 0.0  # explicit "no funding model" (net_nofund variant); NOT a coverage claim
+    if t_in < funding[0][0] or t_out > funding[-1][0]:
+        # B103: fail closed - (t_in, t_out] must lie inside the loaded records' span
+        raise ValueError(f"funding records cover [{funding[0][0]}, {funding[-1][0]}] but trade window is "
+                         f"({t_in}, {t_out}]; load funding for the whole hold")
 
     # Find the index of the last funding record before or at t_in
     idx = bisect_right([x[0] for x in funding], t_in) - 1

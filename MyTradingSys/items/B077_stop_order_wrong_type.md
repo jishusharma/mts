@@ -2,7 +2,7 @@
 
 Opened: 2026-09-27 by session Claude Sonnet 5 (core readiness review, continuing CORE_READINESS_PLAN.md).
 Severity: HIGH (stop-loss does not function as a stop; would fill instantly for a long, per plan headline).
-Status: OPEN.
+Status: CLOSED. Receipt: 5e387a1 (full receipt in the BUGS.md B077 row).
 
 ## DESCRIPTION
 

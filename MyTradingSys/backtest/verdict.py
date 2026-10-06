@@ -24,6 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "MyTradingSys" / "runtime"))
 from math_object_builder import build_math_object  # noqa: E402
+from net_rr_floor import load_floor  # noqa: E402
 
 
 def _d(x):
@@ -62,7 +63,11 @@ def proof_dir_of(snap, fail_closed=False):
     return "error" if fail_closed else (pd or "aligned")
 
 
-def compute_verdict(snap, pd="aligned"):
+def compute_verdict(snap, pd="aligned", floor=None):
+    # The net_rr floor is read from MyTradingSys/system/net_rr_floor.json on every call (the wrapper does the
+    # same each cycle). `floor` overrides it for a replay of a log recorded under another floor. An unreadable
+    # file raises NetRrFloorError: a backtest must not silently pick a number.
+    floor = load_floor() if floor is None else float(floor)
     price = _d(snap.get("current_price"))
     cond = snap.get("conditions") or {}
     cands = snap.get("setup_candidates") or []
@@ -81,7 +86,7 @@ def compute_verdict(snap, pd="aligned"):
                     mode="normal", direction="", price=price, net_rr=0.0, proof=0)
     m = top.get("math") or {}
     net_rr = _d(m.get("net_rr"))
-    net_ok = bool(m.get("net_rr_sanity"))
+    net_ok = net_rr >= floor  # not Java's net_rr_sanity, which has its own copy of the number
     tier = str(m.get("tier")).lower()
     proof = int(_g(top, "score", "proof_count") or 0)
     sdir = str(top.get("direction") or "").lower()
@@ -108,7 +113,7 @@ def compute_verdict(snap, pd="aligned"):
     # for display/logging only, per the operator's ruling.
 
     if not net_ok:
-        v, r = "WAIT_RR", "net_rr %.2f < 2.0" % net_rr
+        v, r = "WAIT_RR", "net_rr %.2f < %.2f" % (net_rr, floor)
     elif tier == "ignore":
         v, r = "WAIT_FAR", "tier=ignore"
     elif tier == "conditional":
