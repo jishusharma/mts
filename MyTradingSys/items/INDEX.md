@@ -96,7 +96,7 @@ B132 | OPEN    | B132_dsa_does_quick_wins.md | DSA dispatches work it can do its
 B133 | CLOSED  | B133_dsa_default_cli_over_app.md | CLOSED: checks 12-13 (81c7e9f), section 9 App-opening line (e41de5f), LESSONS (ed0e3c1)
 B134 | OPEN    | B134_compose_surface_marker.md | compose() emits prose, not the "SURFACE: APP" marker check 13 requires; same file set as B095
 B135 | OPEN    | B135_b131_threshold_recheck.md | B131 follow-up: ps1 proof-count thresholds and allshorts parity re-run
-B136 | IN-FIX  | B136_oi_endpoint_path.md | URLs fixed 881f22b (tests 3/3, mvn 133/133); loop restart pending; oi_breakdown residual
+B136 | IN-FIX  | B136_oi_endpoint_path.md | URLs fixed 881f22b (tests 3/3, mvn 133/133); loop restarted 2026-10-06T19:25Z, java 18152 on post-fix classes (built 19:19Z); oi_breakdown residual
 B137 | OPEN    | B137_device_roles_undecided.md | device roles undecided post-Qwen; 11 open questions on desktop/NUC/laptop split
 B138 | OPEN    | B138_dumps_two_copies.md | Dumps split C:/F: after move; share still points C:; junction blocked by live writer
 T063 | PARTIAL | T063_stop_run_oi_flush_signature.md | pre-reg + A0 + A1 (n=21 inconclusive, below 30 min); holds 09-29.., ~7d overlap not 30d; commits 3776f2f b055c2b c61a26a 690b238
