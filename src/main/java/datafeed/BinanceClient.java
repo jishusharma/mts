@@ -9,7 +9,7 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class BinanceClient {
+public class BinanceClient implements HistoricalSource {
     private static final String BASE = "https://fapi.binance.com";
     private final OkHttpClient client;
     private final ObjectMapper mapper;

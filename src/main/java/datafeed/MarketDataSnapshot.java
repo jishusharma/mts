@@ -19,6 +19,10 @@ import java.util.concurrent.*;
 public class MarketDataSnapshot {
 
     private final BinanceClient client;
+    /** Klines for the historical (as-of) path only; null (default) = the REST client, so live behaviour is unchanged. */
+    private final HistoricalSource histSource;
+
+    private HistoricalSource hist() { return histSource != null ? histSource : client; }
     private final ObjectMapper mapper;
     private final FvgCalculator fvgCalc;
     private static final double VALUE_AREA_PCT = 0.70;
@@ -28,6 +32,15 @@ public class MarketDataSnapshot {
 
     public MarketDataSnapshot() {
         this.client = new BinanceClient();
+        this.histSource = null;
+        this.mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        this.fvgCalc = new FvgCalculator();
+    }
+
+    /** Archive mode: historical snapshots come from the local 1m archive under raw/klines; no network in that path. */
+    public MarketDataSnapshot(java.nio.file.Path raw) {
+        this.client = new BinanceClient();
+        this.histSource = ArchiveHistoricalSource.lazy(raw);
         this.mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         this.fvgCalc = new FvgCalculator();
     }
@@ -1040,7 +1053,7 @@ public class MarketDataSnapshot {
         // ── Prior day bars ──
         ZonedDateTime yesterdayStartUtc = now.minusDays(1).truncatedTo(ChronoUnit.DAYS);
         ZonedDateTime yesterdayEndUtc = yesterdayStartUtc.plusDays(1).minusNanos(1);
-        JsonNode yesterdayKlines = client.klinesRange(symbol, "1m",
+        JsonNode yesterdayKlines = hist().klinesRange(symbol, "1m",
                 yesterdayStartUtc.toInstant().toEpochMilli(),
                 yesterdayEndUtc.toInstant().toEpochMilli(), 1440);
         List<JsonNode> priorDayBars = new ArrayList<>();
@@ -1064,7 +1077,7 @@ public class MarketDataSnapshot {
         // Previous two weeks VPOC (requires additional historical fetches)
         ZonedDateTime prevWeekMonday = mondayStart.minusWeeks(1);
         ZonedDateTime prevWeekSunday = prevWeekMonday.plusDays(6).withHour(23).withMinute(59).withSecond(59).withNano(0);
-        JsonNode prevWeekKlines = client.klinesRange(symbol, "1h",
+        JsonNode prevWeekKlines = hist().klinesRange(symbol, "1h",
                 prevWeekMonday.toInstant().toEpochMilli(),
                 prevWeekSunday.toInstant().toEpochMilli(), 168);
         List<JsonNode> prevWeekBars = new ArrayList<>();
@@ -1076,7 +1089,7 @@ public class MarketDataSnapshot {
 
         ZonedDateTime twoWeekMonday = mondayStart.minusWeeks(2);
         ZonedDateTime twoWeekSunday = twoWeekMonday.plusDays(6).withHour(23).withMinute(59).withSecond(59).withNano(0);
-        JsonNode twoWeekKlines = client.klinesRange(symbol, "1h",
+        JsonNode twoWeekKlines = hist().klinesRange(symbol, "1h",
                 twoWeekMonday.toInstant().toEpochMilli(),
                 twoWeekSunday.toInstant().toEpochMilli(), 168);
         List<JsonNode> twoWeekBars = new ArrayList<>();
@@ -1283,7 +1296,7 @@ public class MarketDataSnapshot {
                 try {
                     long durationMs = getDurationMillis(tf);
                     long start = asOf.toEpochMilli() - durationMs * limit;
-                    JsonNode k = client.klinesRange(symbol, tf, start, asOf.toEpochMilli(), limit);
+                    JsonNode k = hist().klinesRange(symbol, tf, start, asOf.toEpochMilli(), limit);
                     dropFormingBar(k, asOf.toEpochMilli());
                     result.put(tf, k);
                 } catch (IOException ex) {
