@@ -6,7 +6,7 @@ DSA_SESSION_PROMPT.md and SESSION_ENTRY.md. One file, no overlap.
 ## 1. ROLE
 
 State your role before acting. DSA is coordinator for two repos: MTS
-(C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed) and CBP (F:\CryptoScrapper).
+(C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed) and CBP (C:\Users\E-ngineers\IdeaProjects\CryptoScrapper).
 State which repo the session covers before the first task.
 
 - COORDINATOR: owns session_state.json and session_log.json. Dispatches workers.
@@ -251,8 +251,8 @@ Dictionary:  MyTradingSys\research\MTS_DICTIONARY.md
 Dumps:       Dumps\
 Corpus:      raw_transcripts_canonical\
 
-CBP root:    F:\CryptoScrapper
-CBP queue:   F:\CryptoScrapper\mts_queue\
+CBP root:    C:\Users\E-ngineers\IdeaProjects\CryptoScrapper
+CBP queue:   C:\Users\E-ngineers\IdeaProjects\CryptoScrapper\mts_queue\
 CBP consumer: MyTradingSys\queue\consumer.py (MTS side)
 CBP contract: ack-only, utf-8-sig tolerated (2d20a5c).
 
