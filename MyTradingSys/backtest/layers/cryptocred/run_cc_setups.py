@@ -9,9 +9,12 @@ setup3_failed_msb_reversal) backtested NET of fees. Modelled on layers/run_t055.
   tf_resample to --tf (default 1h; 15m/4h allowed).
 - Signals: cc_setups functions with their CURRENT defaults. No parameter grid (layer provenance
   audit forbids tuning), so PBO is N/A and is NOT part of the verdict.
-- Trades: cc_bt_adapter.signals_to_trades, simulated on the 1m bars (stop/target ordering at 1m
-  resolution). The signal bar's entry_t is moved to the last 1m bar of the signal bar so
-  scanning starts after the signal bar closes (no look-ahead).
+- Trades, simulated on the 1m bars (stop/target ordering at 1m resolution):
+  * setups 1 and 2 are RESTING LIMIT orders at the level (entry_price), placed at the close of the
+    MSB confirm bar (meta placed_t) and valid to meta valid_until_t; filled on the first later 1m bar
+    whose range reaches the level (gap bar: fill at its open). The fill bar can only stop the trade
+    (stop_first); exits are simulated from the fill. Unfilled limits are no trade and are counted.
+  * setup 3 enters at the close of the signal bar (entry_price = close of its last 1m bar).
 - Fees (fees.py), two variants: all_taker (Deribit taker on every leg, conservative) and
   maker_entry (Deribit maker on entry and targets, taker on stop/timeout; the entry fee is
   refunded on top of the engine's taker-entry charge). Funding from the funding files when
@@ -26,6 +29,7 @@ Alert-only research code; never touches execution or Tom core. Output goes to --
 a temp dir, never the repo unless --allow-repo-out).
 """
 import argparse
+import bisect
 import json
 import os
 import sys
@@ -37,8 +41,10 @@ REPO = Path(os.environ.get("MTS_REPO") or Path(__file__).resolve().parents[4])
 sys.path.insert(0, str(REPO))
 
 from MyTradingSys.backtest import fees as F
+from MyTradingSys.backtest.bt.bt_engine import simulate_trade
 from MyTradingSys.backtest.bt.bt_stats import sharpe
 from MyTradingSys.backtest.layers.cryptocred import cc_setups
+from MyTradingSys.backtest.layers.cryptocred.cc_setups import _r_target
 from MyTradingSys.backtest.layers.cryptocred.cc_bt_adapter import signals_to_trades
 
 REGISTRY_PATH = REPO / "MyTradingSys" / "backtest" / "layers" / "timeframe" / "registry.json"
@@ -78,34 +84,112 @@ def split_trades(trades, split_t):
     return ([t for t in trades if t["t"] < split_t], [t for t in trades if t["t"] >= split_t])
 
 
-def build_trades(signals, sim_bars, funding, variant, tf_ms, max_bars=1440):
+LIMIT_SETUPS = ("sr_flip", "fib_pullback")
+
+
+def _record(sig, entry, risk, tr, entry_refund, fill_t):
+    refund_r = entry_refund * entry / risk
+    funding_r = (tr["funding_paid_pct"] / 100.0) * entry / risk
+    net_r = tr["net_r"] + refund_r
+    net_nf_r = net_r + funding_r
+    k = risk / entry
+    return {"t": sig["entry_t"], "side": sig["side"], "exit_reason": tr["exit_reason"],
+            "gross_r": tr["gross_r"], "net_r": net_r, "net_nofund_r": net_nf_r,
+            "net_pct": net_r * k, "net_nofund_pct": net_nf_r * k, "gross_pct": tr["gross_r"] * k,
+            "entry_price": entry, "fill_t": fill_t}
+
+
+def find_limit_fill(sig, sim_bars, tf_ms, times=None):
+    """Resting LIMIT at sig['entry_price'], placed at the close of the MSB confirm bar
+    (meta placed_t + tf_ms), valid through the close of the bar opened at meta valid_until_t.
+    Fills on the FIRST 1m bar strictly after placement whose low<=level (long) / high>=level (short).
+    Fill price = level when the bar range contains it; otherwise (bar entirely beyond the level,
+    i.e. a gap) the bar open. Returns (index, fill_price) or None."""
+    meta = sig["meta"]
+    times = times if times is not None else [b["t"] for b in sim_bars]
+    lo = bisect.bisect_left(times, meta["placed_t"] + tf_ms)
+    hi = bisect.bisect_left(times, meta["valid_until_t"] + tf_ms)
+    level, long_ = sig["entry_price"], sig["side"] == "long"
+    for k in range(lo, hi):
+        b = sim_bars[k]
+        if (b["l"] <= level) if long_ else (b["h"] >= level):
+            inside = b["l"] <= level <= b["h"]
+            return k, (level if inside else b["o"])
+    return None
+
+
+def _limit_trade(sig, hit, sim_bars, taker, maker, entry_refund, funding, max_bars):
+    """Trade record for a limit filled at hit=(index, price); None if the data ends open."""
+    k, fill = hit
+    fb = sim_bars[k]
+    long_ = sig["side"] == "long"
+    stop = sig["stop"]
+    if (fill <= stop) if long_ else (fill >= stop):
+        # gapped through the stop: filled and stopped at the same open (gross 0, two taker legs)
+        risk_orig = abs(sig["entry_price"] - stop)
+        tr = {"exit_reason": "stop", "gross_r": 0.0, "net_r": -2 * taker * fill / risk_orig,
+              "funding_paid_pct": 0.0}
+        return _record(sig, fill, risk_orig, tr, entry_refund, fb["t"])
+    # Fill bar: keep its real excursion toward the stop but cap the favourable side at the fill
+    # price (order of events inside the 1m bar is unknown), so only the stop can act in it
+    # (stop_first) and no target is credited before the fill. entry_t = 1ms before the fill bar.
+    syn = ({"t": fb["t"], "o": fill, "h": fill, "l": fb["l"], "c": fill} if long_
+           else {"t": fb["t"], "o": fill, "h": fb["h"], "l": fill, "c": fill})
+    seq = [syn] + sim_bars[k + 1:]
+    call = {kk: v for kk, v in sig.items() if kk not in ("meta", "entry_price", "entry_t")}
+    tr = simulate_trade(entry_price=fill, entry_t=fb["t"] - 1, bars=seq, funding=funding or None,
+                        taker_fee=taker, maker_fee=maker, max_bars=max_bars, stop_first=True, **call)
+    if tr.get("net_r") is None:
+        return None
+    return _record(sig, fill, abs(fill - stop), tr, entry_refund, fb["t"])
+
+
+def _market_trade(sig, sim_bars, by_t, tf_ms, taker, maker, entry_refund, funding, max_bars):
+    """Entry at the close of the signal bar (setup 3 and generic signals): entry_t moved to the last
+    1m bar of the signal bar. For setup 3 the entry price is that 1m bar's close (= HTF close)."""
+    s2 = dict(sig)
+    s2["entry_t"] = sig["entry_t"] + tf_ms - 60000
+    if sig.get("meta", {}).get("setup") == "failed_msb_reversal" and s2["entry_t"] in by_t:
+        c = by_t[s2["entry_t"]]["c"]
+        if c != sig["entry_price"]:
+            s2["entry_price"] = c
+            s2["targets"] = [(_r_target(c, sig["stop"], sig["side"], sig["meta"]["target_r"]), 1.0)]
+    r = signals_to_trades([s2], sim_bars, funding=funding or None, taker_fee=taker,
+                          maker_fee=maker, max_bars=max_bars)[0]["trade_result"]
+    if r.get("net_r") is None:  # open at end of data
+        return None
+    return _record(sig, s2["entry_price"], abs(s2["entry_price"] - sig["stop"]), r, entry_refund,
+                   s2["entry_t"])
+
+
+def build_trades(signals, sim_bars, funding, variant, tf_ms, max_bars=1440, stats=None):
     """Simulate signals on sim_bars (1m) and return per-trade records.
+    Setups 1/2 (sr_flip, fib_pullback) are resting limit orders at the level, placed when the setup
+    is known (close of the MSB confirm bar) and filled on the first later 1m bar that trades through
+    the level; no fill within the validity window = no trade (counted in stats['unfilled']).
+    Other signals (setup 3, generic) enter at the close of the signal bar.
     r values are per unit risk; pct = fraction of entry notional (net_r * risk / entry).
     net_* = with funding (equals net_nofund_* when no funding is supplied)."""
     taker, maker, entry_refund = FEE_VARIANTS[variant]
-    shift = tf_ms - 60000
-    sims = []
-    for s in signals:
-        s2 = dict(s)
-        s2["entry_t"] = s["entry_t"] + shift
-        sims.append(s2)
-    res = signals_to_trades(sims, sim_bars, funding=funding or None, taker_fee=taker,
-                            maker_fee=maker, max_bars=max_bars)
+    times = [b["t"] for b in sim_bars]
+    by_t = {b["t"]: b for b in sim_bars}
     out = []
-    for sig, r in zip(signals, res):
-        tr = r["trade_result"]
-        if tr.get("net_r") is None:  # open at end of data
-            continue
-        entry, risk = sig["entry_price"], abs(sig["entry_price"] - sig["stop"])
-        refund_r = entry_refund * entry / risk
-        funding_r = (tr["funding_paid_pct"] / 100.0) * entry / risk
-        net_r = tr["net_r"] + refund_r
-        net_nf_r = net_r + funding_r
-        k = risk / entry
-        out.append({"t": sig["entry_t"], "side": sig["side"], "exit_reason": tr["exit_reason"],
-                    "gross_r": tr["gross_r"], "net_r": net_r, "net_nofund_r": net_nf_r,
-                    "net_pct": net_r * k, "net_nofund_pct": net_nf_r * k,
-                    "gross_pct": tr["gross_r"] * k})
+    if stats is None:
+        stats = {}
+    stats.update({"signals": len(signals), "unfilled": 0, "filled": 0})
+    for sig in signals:
+        meta = sig.get("meta", {})
+        if meta.get("setup") in LIMIT_SETUPS and "placed_t" in meta:
+            hit = find_limit_fill(sig, sim_bars, tf_ms, times)
+            if hit is None:
+                stats["unfilled"] += 1
+                continue
+            rec = _limit_trade(sig, hit, sim_bars, taker, maker, entry_refund, funding, max_bars)
+        else:
+            rec = _market_trade(sig, sim_bars, by_t, tf_ms, taker, maker, entry_refund, funding, max_bars)
+        if rec is not None:
+            stats["filled"] += 1
+            out.append(rec)
     return out
 
 
@@ -166,12 +250,14 @@ def run_setup(name, tf_bars, sim_bars, funding, tf_ms, is_frac=0.70, max_bars=14
            "pbo_note": "N/A: no parameter grid (defaults only; provenance audit forbids tuning)",
            "funding_included": has_fund, "variants": {}}
     for variant in FEE_VARIANTS:
-        trades = build_trades(signals, sim_bars, funding, variant, tf_ms, max_bars)
+        fstats = {}
+        trades = build_trades(signals, sim_bars, funding, variant, tf_ms, max_bars, stats=fstats)
         key = "net" if has_fund else "net_nofund"
         v = evaluate(trades, split_t, key)
         v["headline_basis"] = "net_with_funding" if has_fund else "net_nofund (NO funding files: fees only)"
         v["nofund"] = evaluate(trades, split_t, "net_nofund") if has_fund else None
         v["n_trades"] = len(trades)
+        v["n_unfilled"] = fstats.get("unfilled", 0)
         res["variants"][variant] = v
     return res
 
@@ -194,7 +280,7 @@ def write_markdown(results, meta, path):
     for r in results:
         for variant, v in r["variants"].items():
             L += [f"## {r['setup']} / {variant}: **{v['verdict']}**", "",
-                  f"signals {r['n_signals']}, trades {v['n_trades']}; basis: {v['headline_basis']}", "",
+                  f"signals {r['n_signals']}, trades {v['n_trades']}, unfilled limits {v['n_unfilled']}; basis: {v['headline_basis']}", "",
                   "| split | n | mean net R | mean net % | hit | net Sharpe |", "|---|---|---|---|---|---|"]
             for k in ("is", "oos"):
                 s = v[k]
