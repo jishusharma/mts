@@ -35,6 +35,7 @@ def test_consumer_end_to_end(tmp_path):
     already_rejected = dict(base, id="test_already_rejected", status="rejected")
     _write(q / "pending.json", [base, expired, already_consumed, already_rejected])
 
+    pending_before = json.loads((q / "pending.json").read_text(encoding="utf-8"))
     r = consumer.consume(q)
 
     assert "test_fresh" in r["consumed"]
@@ -48,8 +49,5 @@ def test_consumer_end_to_end(tmp_path):
     assert not (q / "acks" / "test_already_consumed.json").exists()
     assert not (q / "acks" / "test_already_rejected.json").exists()
 
-    after = json.loads((q / "pending.json").read_text(encoding="utf-8"))
-    by_id = {a["id"]: a for a in after}
-    assert by_id["test_fresh"]["status"] == "consumed"
-    assert by_id["test_expired"]["status"] == "rejected"
-    assert by_id["test_already_consumed"]["status"] == "consumed"
+    # contract: MTS never rewrites CBP's pending.json
+    assert json.loads((q / "pending.json").read_text(encoding="utf-8")) == pending_before

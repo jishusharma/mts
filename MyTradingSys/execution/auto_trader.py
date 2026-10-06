@@ -79,6 +79,11 @@ DEFAULT_CONFIG = {
     # source prefix -> named testnet account (credentials .secrets/testnet_<label>.secret.json).
     # Missing file -> shared default slot, exactly as before.
     "accounts": {"layer:fabio:": "fabio"},
+    # Layer source prefixes that keep emitting alerts (data collection) but never place a trade, with the reason per
+    # prefix. Tom ("tom") is never matched. Missing key = nothing blocked; a PRESENT but malformed key, or an unreadable /
+    # missing config file, blocks ALL layer trades (fail closed) - see trade_block_reason / load_config.
+    "trade_blocklist": [],
+    "trade_blocklist_reasons": {},
 }
 SECRETS_DIR = HERE / ".secrets"
 _warned_missing = set()
@@ -342,6 +347,45 @@ def brakes() -> list:
 
 def account_secret_path(label: str) -> Path:
     return SECRETS_DIR / f"testnet_{label}.secret.json"
+
+
+BLOCKLIST_INVALID = "trade_blocklist invalid or config unreadable: all layer trades blocked (fail closed)"
+
+
+def trade_block_reason(source: str, cfg: dict):
+    """Reason string when a LAYER source may not trade, else None. Tom (any source not starting 'layer:') is never
+    blocked. Fail closed: a trade_blocklist that is present but not a list of non-empty strings, or reasons that are
+    not a dict, blocks every layer source (never silently re-enables a layer that failed its backtest)."""
+    if not str(source).startswith("layer:"):
+        return None
+    bl = cfg.get("trade_blocklist", [])
+    reasons = cfg.get("trade_blocklist_reasons", {})
+    if (not isinstance(bl, list) or not isinstance(reasons, dict)
+            or not all(isinstance(p, str) and p for p in bl)):
+        return BLOCKLIST_INVALID
+    for prefix in bl:
+        if source.startswith(prefix):
+            r = reasons.get(prefix)
+            return r if isinstance(r, str) and r else "blocklisted (no reason recorded)"
+    return None
+
+
+def load_config(path: Path) -> dict:
+    """DEFAULT_CONFIG overlaid with the JSON file. A missing/unparseable/non-object file cannot be trusted to still
+    carry the blocklist, so it sets trade_blocklist to None (-> trade_block_reason blocks all layer trades) and logs."""
+    cfg = json.loads(json.dumps(DEFAULT_CONFIG))
+    try:
+        raw = json.loads(Path(path).read_text(encoding="utf-8"))
+        if not isinstance(raw, dict):
+            raise ValueError("config top level is not an object")
+    except (OSError, ValueError) as e:
+        log({"event": "config_unreadable", "path": str(path), "error": repr(e)[:200],
+             "action": "all layer trades blocked (fail closed); Tom unaffected"})
+        cfg["trade_blocklist"] = None
+        return cfg
+    for k, v in raw.items():
+        cfg[k] = {**cfg[k], **v} if isinstance(v, dict) and isinstance(cfg.get(k), dict) else v
+    return cfg
 
 
 def account_for(source: str, cfg: dict):
@@ -611,7 +655,12 @@ def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = N
     halted = brakes()
     for sig in signals:
         base = {"source": sig["source"], "key": sig["key"], "side": sig.get("side"), **sig.get("log", {})}
-        if "reject" in sig:
+        blocked = trade_block_reason(sig["source"], cfg)
+        if blocked:
+            # Alert already consumed (layer_offsets advance in read_new_layer_alerts, persisted each cycle): no retry.
+            log({"event": "layer_trade_blocked", "source": sig["source"], "reason": blocked, "key": sig["key"],
+                 "side": sig.get("side")})
+        elif "reject" in sig:
             log({"event": "signal_rejected", **base, "reason": sig["reject"]})
         elif halted:
             log({"event": "skipped_halt", **base, "brakes": halted})
@@ -648,9 +697,7 @@ def main(argv=None) -> int:
     ap.add_argument("--poll-seconds", type=int, default=20)
     ap.add_argument("--config", default=str(HERE / "auto_trader_config.json"))
     a = ap.parse_args(argv)
-    cfg = json.loads(json.dumps(DEFAULT_CONFIG))
-    for k, v in load_json(Path(a.config), {}).items():
-        cfg[k] = {**cfg[k], **v} if isinstance(v, dict) and isinstance(cfg.get(k), dict) else v
+    cfg = load_config(Path(a.config))
     state = load_json(STATE_PATH, {})
     if "tom_last_alert_no" not in state:     # first start: never trade an alert that predates the trader
         p = parse_tom_alert(load_json(TOM_ALERT, {}))

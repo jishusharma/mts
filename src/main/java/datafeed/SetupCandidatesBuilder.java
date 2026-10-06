@@ -45,7 +45,7 @@ public class SetupCandidatesBuilder {
 
     private static final double VALUE_AREA_PCT = 0.70;
     private static final double CONFLUENCE_DIST_PCT = 0.3; // 0.3%
-    private static final double MIN_STOP_PCT = 0.001; // v1.3.3 floor: stop must be >= 0.1% from zone
+    // MIN_STOP_PCT (0.1% stop floor, A04) removed per T3 ruling (T3_STOP_RULING_2026-10-01): NO-SOURCE.
     private static final int MAX_CANDIDATES = 3;
 
     public static ArrayNode build(ObjectMapper mapper, ObjectNode root, Map<String, JsonNode> mtf, JsonNode klines1m) {
@@ -101,7 +101,7 @@ public class SetupCandidatesBuilder {
             double zonePrice = c.zone.price;
             String swingTF = getSwingTF(c.zone.type);
             JsonNode structureNode = root.get("structure");
-            // RULE TOM-074/TOM-073/TOM-072 (stop beyond last swing / last liquidity); 0.2% fallback and 0.1% floor below are NO-SOURCE (A03/A04)
+            // RULE TOM-074/TOM-073/TOM-072 (stop beyond last swing / last liquidity); the former 0.2% fallback (A03) and 0.1% floor (A04) were NO-SOURCE and are removed per T3 ruling
             double swingHigh = 0, swingLow = 0;
             boolean tfStale = false;
             if (structureNode != null && structureNode.has(swingTF)) {
@@ -113,19 +113,15 @@ public class SetupCandidatesBuilder {
                 }
             }
 
+            // A03/A04 removed per T3 ruling: a stop exists only when a swing lies beyond the zone (matches the
+            // Python path, math_object_builder.py); otherwise the candidate is dropped (fail closed). No fallback, no widening.
             if ("short".equals(c.direction)) {
-                if (swingHigh > zonePrice) c.stop = swingHigh;
-                else c.stop = zonePrice * 1.002; // fallback 0.2% above
+                c.stop = swingHigh > zonePrice ? swingHigh : 0;
             } else { // long
-                if (swingLow < zonePrice) c.stop = swingLow;
-                else c.stop = zonePrice * 0.998; // fallback 0.2% below
+                c.stop = (swingLow > 0 && swingLow < zonePrice) ? swingLow : 0;
             }
-
-            // v1.3.3 minimum stop-distance floor: reject noise-level stops.
-            // Rule 32 evidence: 100 of 750 candidates (2026-09-12/13) had |zone-stop|/zone < 0.05%.
-            double minStopDist = zonePrice * MIN_STOP_PCT;
-            if (Math.abs(zonePrice - c.stop) < minStopDist) {
-                c.stop = "short".equals(c.direction) ? zonePrice * 1.002 : zonePrice * 0.998;
+            if (c.stop <= 0) {
+                continue; // c.valid stays false -> removed by removeIf below
             }
 
             // Target selection. RULE TOM-018/TOM-102: target = the next high volume price/area (POCs, HVNs).
