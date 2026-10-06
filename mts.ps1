@@ -37,7 +37,9 @@ $Verbs = @(
     @("Safety",      "kill",    "EMERGENCY: cancel every order, close every position, pause"),
     @("Safety",      "kill-mainnet", "EMERGENCY on MAINNET: cancel every order, close every position, pause"),
     @("Safety",      "guard",   "Start the daily-loss guard in its own window"),
+    @("Safety",      "orphans", "Check every testnet account for a position no manager owns (may set HALT)"),
     @("Auto",        "auto",    "Start the testnet auto-trader (Tom + layer signals) in its own window"),
+    @("Auto",        "runner",  "Start the alert runner (indicator layers) in its own window"),
     @("Auto",        "autolog", "Last 20 auto-trader decisions (trades, skips, rejects)"),
     @("Auto",        "ledger",  "Closed auto-trades per source: count, win rate, mean and total net P/L"),
     @("Upkeep",      "test",    "Run the offline test suite (no exchange)"),
@@ -144,6 +146,67 @@ switch ($Verb.ToLower()) {
         $mgr = Get-Procs "position_manager" "Name='python.exe'"
         if ($mgr.Count) { foreach ($m in $mgr) { Ok "manager running: $(($m.CommandLine -split '\s+')[-1])" } }
         else { Say "  --    no plan being managed" }
+        Say ""; Say "Layers and watchdogs" Cyan
+
+        # Alert runner (process + state file age)
+        $runner = Get-Procs "-m\s+MyTradingSys\.backtest\.layers\.alerts\.live_runner_cli(\s|$)" "Name='python.exe' OR Name='pythonw.exe'"
+        $stateFile = Join-Path $Root "MyTradingSys\runtime\live_alert_state.json"
+        $stateAge = Age $stateFile
+        $StateFileLimitSeconds = 180
+        if ($runner.Count) {
+            if ($null -ne $stateAge) {
+                if ($stateAge -le $StateFileLimitSeconds) {
+                    Ok "alert runner running (pid $($runner[0].ProcessId)), state updated ${stateAge}s ago"
+                } else {
+                    Warn "alert runner running (pid $($runner[0].ProcessId)) but state updated ${stateAge}s ago - STALE (limit ${StateFileLimitSeconds}s)"
+                }
+            } else {
+                Say "  --    alert runner running (pid $($runner[0].ProcessId)), waiting for its first poll"
+            }
+        } else {
+            if ($null -ne $stateAge) {
+                Warn "alert runner: no process found but state updated ${stateAge}s ago - started elsewhere, or its command line is not visible"
+            } else {
+                Warn "alert runner not running - start it with: mts runner"
+            }
+        }
+
+        # Orphan watchdog (read last log row)
+        $orphanLogFile = Join-Path $Root "MyTradingSys\execution\orphan_watchdog.jsonl"
+        try {
+            if ((Test-Path $orphanLogFile) -and ((Get-Item $orphanLogFile).Length -gt 0)) {
+                $lastLine = Get-Content $orphanLogFile -Encoding UTF8 -Tail 1
+                $log = $lastLine | ConvertFrom-Json -ErrorAction Stop
+                $logTs = [datetimeoffset]::Parse($log.ts)
+                $logAge = [int]((Get-Date).ToUniversalTime() - $logTs.UtcDateTime).TotalSeconds
+                $haltExists = Test-Path $Halt
+
+                if ($log.event -eq "ok") {
+                    if ($log.errors -and $log.errors.PSObject.Properties.Count -gt 0) {
+                        Warn "orphan watchdog last run $logAge s ago: $($log.errors.PSObject.Properties.Count) account(s) unreadable (not counted as orphans)"
+                    } else {
+                        $managers = if ($log.live -and $log.live.Count -gt 0) { [string]::Join(", ", $log.live) } else { "no live managers" }
+                        Ok "orphan watchdog last run $logAge s ago: no orphans ($managers)"
+                    }
+                } elseif ($log.event -eq "orphan_halt") {
+                    if ($haltExists) {
+                        $orphanInfo = if ($log.orphans -and $log.orphans.Count -gt 0) {
+                            $o = $log.orphans[0]
+                            "ORPHAN $($o.account) position=$($o.position) open_orders=$($o.open_orders)"
+                        } else {
+                            "ORPHAN found"
+                        }
+                        Bad "orphan watchdog last run $logAge s ago: $orphanInfo - HALT is set; mts account, then mts resume"
+                    } else {
+                        Warn "orphan watchdog last run $logAge s ago found an orphan (HALT since cleared) - re-check with: mts orphans"
+                    }
+                }
+            } else {
+                Say "  --    orphan watchdog never run - run it with: mts orphans"
+            }
+        } catch {
+            Warn "orphan watchdog log unreadable: $orphanLogFile"
+        }
         Say ""
     }
 
@@ -238,6 +301,23 @@ switch ($Verb.ToLower()) {
         if ((Get-Procs "daily_loss_monitor" "Name='python.exe'").Count) { Ok "daily-loss guard already running"; break }
         Open-Window "MTS daily-loss guard" "python '$Exec\daily_loss_monitor.py'"
         Ok "daily-loss guard started in its own window - leave it open while trading"
+    }
+
+    "runner" {
+        if ((Get-Procs "-m\s+MyTradingSys\.backtest\.layers\.alerts\.live_runner_cli(\s|$)" "Name='python.exe' OR Name='pythonw.exe'").Count) { Ok "alert runner already running"; break }
+        Open-Window "MTS alert runner" "python -m MyTradingSys.backtest.layers.alerts.live_runner_cli --poll-seconds 60"
+        Ok "alert runner started in its own window - it only writes alerts (no orders); leave it open"
+    }
+
+    "orphans" {
+        Py (Join-Path $Exec "orphan_watchdog_cli.py")
+        switch ($LASTEXITCODE) {
+            0 { Ok "no orphan accounts" }
+            1 { Warn "some accounts could not be read (not counted as orphans) - see MyTradingSys\execution\orphan_watchdog.jsonl" }
+            3 { Bad "ORPHAN found - HALT written. Check: mts account. When it is flat or owned again: mts resume" }
+            default { Bad "orphan watchdog failed (exit $LASTEXITCODE)" }
+        }
+        exit $LASTEXITCODE
     }
 
     "auto" {
