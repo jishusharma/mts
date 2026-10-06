@@ -31,7 +31,7 @@ sys.path.insert(0, str(ROOT / "MyTradingSys" / "backtest"))
 from snapshots import iter_snapshots, parse_ts  # noqa: E402
 
 # Spec constants. Source in brackets. Change only with the source.
-FRICTION = 0.75            # compiled_engine.md sec 7 NET = gross * 0.75
+FEE_RT = 0.001            # B070: 2 * taker 0.0005 (backtest/fees.py); FORMULAS.md section 17
 NET_MIN = 2.0              # compiled_engine.md sec 6 row 4, sec 7 Min R:R 2:1 NET
 GROSS_SANITY = 1.5         # compiled_engine.md sec 7 pre-filter
 TRIGGER_READY_PCT = 0.1    # compiled_engine.md sec 2.6 two-tier table
@@ -43,7 +43,7 @@ CAPS = [("weekly_", 0.5), ("daily_", 0.4), ("4h_", 0.4), ("prior_day_", 0.4), ("
 
 # Baselines measured 2026-09-27 (full corpus / since golden boundary).
 BASELINE_FULL = {
-    "I01 net_rr != gross_rr*0.75 (+-0.011)": 0,
+    "I01 net_rr != fee model (+-0.011)": 0,
     "I02 rr_sanity != (gross>=1.5)": 0,
     "I03 net_rr_sanity != (net>=2.0) beyond rounding": 0,
     "I04 SCB candidate geometry stop/entry/target misordered": 0,
@@ -104,8 +104,8 @@ def check(snaps):
             if "poc" in str(z.get("type", "")):
                 hit("I15 POC-zone candidate emitted (needs trend_unhealthy)", p.name)
             if g is not None and n is not None:
-                if abs(round(g * FRICTION, 2) - n) > 0.011:
-                    hit("I01 net_rr != gross_rr*0.75 (+-0.011)", (p.name, g, n))
+                if None not in (e, st, tg) and e != st and abs(round((abs(tg - e) - FEE_RT * e) / (abs(e - st) + FEE_RT * e), 2) - n) > 0.011:
+                    hit("I01 net_rr != fee model (+-0.011)", (p.name, g, n))
                 if bool(m.get("rr_sanity")) != (g >= GROSS_SANITY):
                     hit("I02 rr_sanity != (gross>=1.5)", (p.name, g))
                 # net_rr is rounded to 2 dp on output; sanity uses the unrounded value.

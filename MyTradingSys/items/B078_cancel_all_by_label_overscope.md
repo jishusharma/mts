@@ -2,7 +2,7 @@
 
 Opened: 2026-09-27 by session Claude Sonnet 5 (core readiness review, continuing CORE_READINESS_PLAN.md).
 Severity: MED (not yet called anywhere, so no live risk today; becomes HIGH the moment teardown/reconciliation wires it in).
-Status: OPEN.
+Status: CLOSED. Receipt: 5e387a1 (full receipt in the BUGS.md B078 row).
 
 ## DESCRIPTION
 

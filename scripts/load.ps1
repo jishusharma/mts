@@ -1,4 +1,6 @@
 # MTS aliases. Dot-source once: . .\scripts\load.ps1
+# mts - the one-command wrapper (mts.ps1 at repo root). Verbs: mts help
+function mts { & "$ScriptDir\..\mts.ps1" @args }
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 function quick    { & "$ScriptDir\live\quick.ps1" }

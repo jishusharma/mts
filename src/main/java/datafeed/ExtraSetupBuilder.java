@@ -41,12 +41,13 @@ public class ExtraSetupBuilder {
             math.put("stop", stop);
             math.put("target", target);
             math.put("gross_rr", target > 0 ? Math.round(Math.abs(target-price)/Math.abs(price-stop)*100.0)/100.0 : 0.0);
-            math.put("net_rr", target > 0 ? Math.round(Math.abs(target-price)/Math.abs(price-stop)*0.75*100.0)/100.0 : 0.0);
+            double _net   = target > 0 ? ExecutionMathConstants.netRR(price, target, stop) : 0.0;  // B070: fee model, was gross * 0.75
+            math.put("net_rr", Math.round(_net*100.0)/100.0);
             double _gross = target > 0 ? Math.abs(target-price)/Math.abs(price-stop) : 0.0;
-            double _net   = _gross * 0.75;
             math.put("rr_sanity", _gross >= 1.5);
-            math.put("net_rr_sanity", _net >= 2.0);
-            if (_net < 2.0) {
+            final double netRrFloor = NetRrFloor.read();  // single source: MyTradingSys/system/net_rr_floor.json
+            math.put("net_rr_sanity", _net >= netRrFloor);
+            if (!(_net >= netRrFloor)) {  // negated so an unreadable floor (NaN) rejects
                 // B039: no RR gate — reject momentum candidate
                 extra.remove(extra.size() - 1);
                 return extra;
