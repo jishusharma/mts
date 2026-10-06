@@ -4,6 +4,7 @@ Usage:
   python scripts/dev/run_all_tests.py         (run all steps)
   python scripts/dev/run_all_tests.py --quick (skip mvn and backtest)
 """
+import os
 import shutil
 import subprocess
 import sys
@@ -39,11 +40,11 @@ def run_step(step_num, description, cmd, cwd=None):
             return True, output
         else:
             print(f"Step {step_num}: FAIL")
-            # Print last 15 lines of output on failure
+            # Print last 15 lines of output on failure (all of it under CI, where nothing else can be read)
             lines = output.splitlines()
             if lines:
                 print("  Last output:")
-                for line in lines[-15:]:
+                for line in (lines if os.environ.get("CI") else lines[-15:]):
                     print(f"    {line}")
             return False, output
     except FileNotFoundError as e:
