@@ -41,3 +41,8 @@ Surfaces, handoff, budget and session naming: `MyTradingSys/system/SURFACE_POLIC
   checks fail closed.
 - Never conclude from truncated output (`cut`, `head`, tail of a log); parse the real format, then count.
 - Backups/rejects: archive with `python scripts/dev/declutter_backups.py --apply` (moves, never deletes).
+
+## Interview Prep Pipeline
+- When a thread or project message says "Note this for InterviewPrep", append one entry to `/mnt/project-files/interview_prep/NOTES.md` with date, source link, and status "not yet exported".
+- Jis runs `scripts\dev\export_interview_notes.ps1` manually to copy "not yet exported" entries to F:\Interview Prep\inbox\ and mark them "exported".
+- This captures lightweight insights from MTS and CBP work without daily summary overhead.
