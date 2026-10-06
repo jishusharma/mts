@@ -13,7 +13,8 @@ $lvl  = if ($sAge -lt 0 -or $sAge -gt $MaxSnapshotAgeSec -or $cAge -lt 0 -or $cA
 $htf = Get-CimInstance Win32_Process -Filter "Name='python.exe'" | Where-Object { $_.CommandLine -match 'htf_context_live' } | Select -First 1
 $htfNote = "htf_pid=$($htf.ProcessId)"
 if (-not $htf) {
-    $py = (Get-Command python).Source
+    $py = (Get-Command pythonw).Source
+    if (-not $py) { $py = (Get-Command python).Source }
     $p = Start-Process $py -ArgumentList "-m","MyTradingSys.backtest.layers.fabio.htf_context_live","--loop" -WorkingDirectory $root -WindowStyle Hidden `
          -RedirectStandardOutput "$root\runtime_data\htf_context_live.out.txt" -RedirectStandardError "$root\runtime_data\htf_context_live.err.txt" -PassThru
     $htfNote = "htf_started_pid=$($p.Id)"
