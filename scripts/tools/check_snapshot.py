@@ -25,7 +25,7 @@ print("hard_stops_compiled:", m1["hard_stops_compiled"])
 if "setup_candidate" in m1:
     sc = m1["setup_candidate"]
     print("setup_candidate:", sc["setup_type"], "@", sc["zone"]["name"], sc["zone"]["price"], "(raw=" + str(sc["score"]["raw"]) + ")")
-    print("  net_rr:", sc["math"]["net_rr"], "| hard_stop_4 (net_rr<2.0):", sc["math"]["net_rr"] < 2.0)
+    print("  net_rr:", sc["math"]["net_rr"], "| hard_stop_4 (net_rr below floor):", m1["hard_stops_compiled"]["top_candidate_rr_below_threshold"])
     print("  candidate speed proof:", sc.get("proof", {}).get("speed", {}).get("picking_up"))
 else:
     print("setup_candidate: NOT PRESENT (legacy fallback path)")

@@ -2,7 +2,7 @@
 
 Opened: 2026-09-27 by session Claude Sonnet 5 (via NUC worker task 008, reviewed by coordinator).
 Severity: LOW (input validation missing; not a defect, but could cause silent errors).
-Status: OPEN.
+Status: CLOSED.
 
 ## DESCRIPTION
 
@@ -19,3 +19,5 @@ section 2, finding F10.
 ## UPDATES
 
 2026-09-27: Filed per CORE_READINESS_PLAN.md F10.
+
+B072 closed 2026-10-04 (MTS-2026-10-04-0538Z-CLI-BLD-b072-b073-math-object): ValueError on bad current_price; see research/BUGS.md B072.

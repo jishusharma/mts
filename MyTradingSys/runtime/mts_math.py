@@ -4,7 +4,15 @@
 #
 # Canonical: C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\runtime\mts_math.py
 
+import os
+import sys
+from pathlib import Path
 from typing import List, Dict, Any
+
+# B070: friction comes from the exchange fee model (backtest/fees.py, B081), not a flat 25% haircut.
+_REPO = Path(os.environ.get("MTS_REPO_ROOT") or Path(__file__).resolve().parents[2])
+sys.path.insert(0, str(_REPO / "MyTradingSys" / "backtest"))
+from fees import DERIBIT_TAKER  # noqa: E402
 
 
 def calculate_distance(price: float, zone_price: float) -> float:
@@ -67,8 +75,14 @@ def calculate_gross_rr(entry: float, target: float, stop: float) -> float:
     return reward / risk
 
 
-def calculate_net_rr(gross_rr: float, friction: float = 0.25) -> float:
-    return gross_rr * (1.0 - friction)
+def calculate_net_rr(entry: float, target: float, stop: float, taker: float = DERIBIT_TAKER) -> float:
+    """B070 fee model (FORMULAS.md section 17): both legs market/taker, cost = 2 * taker * entry in price units.
+    net_rr = (|target - entry| - cost) / (|entry - stop| + cost). Zero risk or non-positive denominator -> 0.0."""
+    risk = abs(entry - stop)
+    if risk == 0:
+        return 0.0
+    cost = 2.0 * taker * entry
+    return (abs(target - entry) - cost) / (risk + cost)
 
 
 def calculate_rr_sanity(gross_rr: float, threshold: float = 1.5) -> bool:

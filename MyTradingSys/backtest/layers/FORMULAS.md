@@ -397,6 +397,14 @@ candles (minutes 0, 15, 30, 45 of the hour). The paper has no cost model.
 
 ---
 
+## 17. B070 net R:R fee model (`runtime/mts_math.py` calculate_net_rr, `ExecutionMathConstants.netRR`) - added 2026-10-03
+
+Operator ruling (a), 2026-10-03: replaces the flat `net = gross * 0.75` (no trader source). Source of the fee: `backtest/fees.py`
+DERIBIT_TAKER = BINANCE_TAKER = 0.0005 per side, both legs taker (stop and entry are market). `cost = 2 * taker * entry`
+(price units). `net_rr = (|target - entry| - cost) / (|entry - stop| + cost)`; stop == entry -> 0.0.
+Worked: entry 100, target 104, stop 98: cost 0.1, net = 3.9 / 2.1 = 1.8571. Tight stop: entry 100, target 100.3, stop 99.9:
+cost 0.1, net = 0.2 / 0.2 = 1.0 (gross 3.0). The Java constant must equal fees.py (`tests/test_b070_fee_parity.py`).
+
 ## Verification note (this audit, 2026-09-28)
 
 Every case number in `layers/timeframe/TEST_PLAN.md`, `layers/rsi/TEST_PLAN.md`,

@@ -97,6 +97,11 @@ def _validate_structure(plan: dict):
     _validate_stop(plan["stop"])
     if "targets" in plan:
         _validate_targets(plan["targets"])
+    if "breakeven_after_first_target" in plan:   # R2: position_manager moves the stop to entry after target 1
+        _require(plan["breakeven_after_first_target"] is True,
+                 "breakeven_after_first_target must be the boolean true when present (omit it to disable)")
+        _require(len(plan.get("targets") or []) >= 2,
+                 "breakeven_after_first_target needs at least 2 targets (a runner must remain after the first fills)")
 
 
 def _validate_entry(entry: dict):

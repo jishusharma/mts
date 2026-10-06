@@ -8,7 +8,7 @@ Severity: LOW. Status: OPEN (NUC spec 121-paste-size-guard running).
 
 start-session.ps1 regenerates Dumps\SESSION_PASTE.txt every mts-start run,
 but never splits it. Current paste is 135540 bytes (132.4 KB), over the
-DSA_SESSION_PROMPT.md section-2 80 KB threshold. Operator splits by hand.
+DSA_SESSION_PROMPT.md section-2 150 KB threshold. Operator splits by hand.
 
 ## EVIDENCE (2026-09-29 revalidate)
 
@@ -19,7 +19,7 @@ DSA_SESSION_PROMPT.md section-2 80 KB threshold. Operator splits by hand.
 
 ## FIX
 
-NUC spec 121-paste-size-guard: when block > 80 KB, split at the nearest
+NUC spec 121-paste-size-guard: when block > 150 KB, split at the nearest
 top-level "### " boundary to the midpoint, write part1/part2/HEAD, keep
 the original SESSION_PASTE.txt for path-compatible tools.
 

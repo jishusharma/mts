@@ -38,13 +38,13 @@ public class CountSignalsD4Test {
         return (int) m.invoke(proofResult, direction);
     }
 
-    // --- Book imbalance: long favours ratio > 1.5, short favours ratio < 0.67 ---
+    // --- Book imbalance: B131 removed it from the proof count (still in JSON) ---
 
     @Test
-    void bookImbalance_longFavoured_counts() throws Exception {
+    void bookImbalance_longFavoured_doesNotCount_B131() throws Exception {
         Object p = newProofResult();
         setField(p, "bookImbalance", 2.0);
-        assertEquals(1, countSignals(p, "long"));
+        assertEquals(0, countSignals(p, "long"));
     }
 
     @Test
@@ -55,10 +55,10 @@ public class CountSignalsD4Test {
     }
 
     @Test
-    void bookImbalance_shortFavoured_counts() throws Exception {
+    void bookImbalance_shortFavoured_doesNotCount_B131() throws Exception {
         Object p = newProofResult();
         setField(p, "bookImbalance", 0.3);
-        assertEquals(1, countSignals(p, "short"));
+        assertEquals(0, countSignals(p, "short"));
     }
 
     @Test
@@ -147,11 +147,11 @@ public class CountSignalsD4Test {
     @Test
     void multipleFavourableSignals_sumCorrectly() throws Exception {
         Object p = newProofResult();
-        setField(p, "bookImbalance", 2.0);              // favours long: +1
+        setField(p, "bookImbalance", 2.0);              // B131: never counted: +0
         setField(p, "finishedAuctionDetected", true);
         setField(p, "finishedAuctionDirection", "sell"); // favours long: +1
         setField(p, "cvdAligned", true);                  // unaffected: +1
         setField(p, "speedPickingUp", true);              // never counted: +0
-        assertEquals(3, countSignals(p, "long"));
+        assertEquals(2, countSignals(p, "long"));
     }
 }

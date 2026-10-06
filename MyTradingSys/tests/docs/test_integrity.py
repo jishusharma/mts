@@ -5,6 +5,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 MTS = REPO / "MyTradingSys"
+INDEX_CEILING_KB = 100
 
 
 def _live_files(extensions):
@@ -81,15 +82,17 @@ def test_3_version_consistency():
 
 
 def test_4_file_index_size_claim():
+    """The SIZE header is not a hand-kept number (B087b): a claim edited to fit a check inverts the check.
+    The header must say it is computed (no NNKB figure), and the measured size must stay under the read-budget ceiling."""
     idx = MTS / "system" / "03_FILE_INDEX.md"
     assert idx.exists()
     text = idx.read_text(encoding="utf-8")
-    m = re.search(r"# SIZE:\s*~?([\d.]+)KB", text)
+    m = re.search(r"^# SIZE:(.*)$", text, re.M)
     assert m, "SIZE header not found"
-    claimed = float(m.group(1))
+    assert not re.search(r"\d\s*KB", m.group(1), re.I), f"SIZE header carries a hand-kept figure: {m.group(1).strip()}"
+    assert "computed" in m.group(1), "SIZE header must read 'computed'"
     actual = idx.stat().st_size / 1024.0
-    diff = abs(claimed - actual)
-    assert diff <= 1.0, f"SIZE claim {claimed}KB vs actual {actual:.1f}KB (diff {diff:.1f})"
+    assert actual <= INDEX_CEILING_KB, f"03_FILE_INDEX.md is {actual:.1f}KB, ceiling {INDEX_CEILING_KB}KB: split or archive rows"
 
 
 def test_5_no_stray_cleanup_candidates():

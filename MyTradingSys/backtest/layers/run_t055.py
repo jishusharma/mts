@@ -72,7 +72,7 @@ def c2_grid(bar_min=5):
     out = []
     for fm in (30, 60):
         for em in (fm, SESSION_LEN_MIN - 30):
-            for ss in (0, 810):
+            for ss in (0, "ny"):  # B102: "ny" = day_gates.ny_open_utc (DST-aware), was fixed 810
                 for ma in (0.0, 0.001):
                     out.append({"bar_min": bar_min, "session_start_min": ss, "first_min": fm,
                                 "entry_min": em, "min_abs": ma})

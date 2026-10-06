@@ -11,6 +11,15 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 
+# Function-style pytest tests that step 5b (unittest) collects only partly: Fabio v3 + live writers (TF1, E7).
+PYTEST_LAYER_PATHS = [
+    "MyTradingSys/backtest/layers/fabio/v3/tests",
+    "MyTradingSys/backtest/layers/fabio/test_orderflow_live.py",
+    "MyTradingSys/backtest/layers/fabio/test_of_backfill.py",
+    "MyTradingSys/backtest/layers/fabio/test_htf_context_live.py",
+    "MyTradingSys/execution/tests",
+]
+
 
 def run_step(step_num, description, cmd, cwd=None):
     """Run a single test step. Return True on success, False on failure."""
@@ -82,7 +91,7 @@ def main(argv=None):
         "test_gh_retry_offline", "test_halt_preflight_offline", "test_kill_switch", "test_kill_switch_account", "test_premainnet1_offline",
         "test_risk_guard", "test_s1_cap_offline", "test_s3_unprotected_offline",
         "test_s6_orphan_offline", "test_triggered_stop_offline", "test_soak_report", "test_fix3_offline", "test_fix4_offline",
-        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_fabio_slot", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry",  # W2 R2: execution-math tests (FORMULAS.md 11)
+        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_fabio_slot", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry", "test_r2_runner_exit", "test_r2_breakeven_move",  # W2 R2: execution-math tests (FORMULAS.md 11)
     ]
     success, output = run_step(1, "Execution module tests", cmd1)
     results.append(("Step 1: Execution tests", success))
@@ -115,9 +124,18 @@ def main(argv=None):
     cmd3s = [sys.executable, "scripts/dev/test_testnet_status.py"]
     success, output = run_step("3s", "Testnet status summary tests", cmd3s)
     results.append(("Step 3s: Testnet status tests", success))
+    cmd3f = [sys.executable, "scripts/dev/test_funnel_report.py"]
+    success, output = run_step("3f", "Funnel report tests", cmd3f)
+    results.append(("Step 3f: Funnel report tests", success))
     cmd3d = [sys.executable, "scripts/dev/test_verify_extract_quotes.py"]
     success, output = run_step("3d", "Extract quote checker tests", cmd3d)
     results.append(("Step 3d: Quote checker tests", success))
+    cmd3h = [sys.executable, "scripts/dev/test_mts_launcher.py"]
+    success, output = run_step("3h", "Launcher verb static tests (runner, orphans)", cmd3h)
+    results.append(("Step 3h: Launcher static tests", success))
+    cmd3g = [sys.executable, "scripts/dev/test_run_all_tests.py"]
+    success, output = run_step("3g", "Gate coverage tests (Fabio v3 + live writers)", cmd3g)
+    results.append(("Step 3g: Gate coverage tests", success))
     cmd3e = [sys.executable, "scripts/worker/test_dsa_worker.py"]
     success, output = run_step("3e", "DSA browser worker + queue lane tests", cmd3e)
     results.append(("Step 3e: DSA worker tests", success))
@@ -127,7 +145,7 @@ def main(argv=None):
             # function-style tests that unittest-based steps 5b/6 do not collect
             "MyTradingSys/backtest/bt/test_bt_rsi.py", "MyTradingSys/backtest/bt/test_bt_rsi_edge.py",
             "MyTradingSys/backtest/test_prob_table.py", "MyTradingSys/backtest/test_prob_table_edge.py",
-            "MyTradingSys/backtest/test_tom_bt.py"]
+            "MyTradingSys/backtest/test_tom_bt.py"] + PYTEST_LAYER_PATHS
     success, output = run_step(4, "Pytest (math + doc tests)", cmd4)
     results.append(("Step 4: Pytest tests", success))
 

@@ -1,0 +1,5 @@
+def sharpe(x):
+    mean, sd, _, _ = moments(x)
+    if sd == 0:
+        return 0.0
+    return mean / sd

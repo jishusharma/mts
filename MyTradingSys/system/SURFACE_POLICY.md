@@ -16,7 +16,16 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 | DSA chat (chat.deepseek.com) | pasted text only, no disk | long-context reading, extraction, rulebooks |
 | CLD cloud (free pool) | pushed git refs only; no LAN, no gitignored files | offline research, specs, reviews, docs, backtests on committed data |
 | AIBridge (F:\AIBridge) | allowlisted loopback agent 127.0.0.1:7181, Chrome MV3 extension | PowerShell on desktop, on request from a web AI |
-Builders touching execution/ or layers/alerts/ stage .new only (CLAUDE.md hard rules).
+Builders edit live. Gate before commit. Stage .new only when the running system imports the file mid-session.
+
+## 1b. Surface choice (operator directive 2026-10-04)
+App first, always. Claude Code Win App (Code / Cowork / Chat / Cloud modes) covers
+every reach: local Maven, local testnet, the live loop, PowerShell-only files,
+scripts that import from the repo tree, and writes to gitignored paths.
+CLI is a fallback, not a default.
+
+Choose by what the task needs, not by what this policy lists first.
+State the reason in the session record when a surface other than the App is chosen.
 
 ## 2. Handoff
 A handoff is a file in the receiver's inbox that names the sender's session ID.
@@ -26,23 +35,57 @@ Cloud returns commits on its branch plus its session record; SUP gates, merges, 
 A cloud session sees one repo; cross-repo work (CBP owns mts_queue/, MTS writes acks/ only) runs on the desktop.
 Before starting a task, grep MyTradingSys/system/sessions/ and the inboxes for its slug; skip duplicates.
 
-## 3. Budget (per account; read /usage or the chat-header usage indicator)
+## 3. Budget (Session Manager governs; operator supplies values when needed)
 
 OPERATOR DIRECTIVE 2026-10-02: never refuse a task for budget. Work to
-completion. If usage is at 95 percent or above (5 percent or less remaining),
-commit and push immediately, then continue with a commit after each step.
-At 1 percent remaining, still work.
+completion. Commit after each step when Session Manager signals low headroom.
 
-A: chat, cowork, code, cloud (only cloud account). B: chat, cowork, code; cloud
-later. Route to the one with headroom. Cloud also spends session credits
-(100 USD pool, expires 2026-11-05 13:29 GMT+5:30; applied automatically to cloud sessions; not eligible for Projects or Routines; per Claude account, see CLOUD_ACCOUNTS.md).
+DSA never states a numeric usage percent, budget cap, token cap, or dollar pool
+in any prompt, unless the operator supplied that exact number in the same session.
+No default. No placeholder.
 
->=70 percent weekly: Opus only for safety diffs; rest to T0, DSA, other account.
->=85 percent: prefer one session reading by range over subagent fan-out.
->=95 percent: write-then-commit each step. Do not stop. Live processes run.
+Session Manager routes by account and headroom. Routing tiers live in the
+Session Manager, not here. This file does not restate them.
 
 Cloud: no routines or always-on sessions; one session per task; nothing live
 depends on it.
+
+## 3b. Manager routing + spawn caps (added 2026-10-02)
+
+Budget unit: % of session or weekly pool for Pro/CL sessions. $ for CC cloud credits. Operator hints, Session Manager routes.
+Sessions inherit these rules at boot.
+
+Spawn:
+- Default one child per task. Hard cap 3 per mts go call.
+- Split only when 2 or more independent files/modules, each fits one brief.
+- Never split when pieces share state, task is a safety diff, or tier >= 85%.
+
+Routing (cheapest workable):
+- question/status -> Haiku, low.
+- extraction, docs/spec, backtest report -> Sonnet, medium.
+- build -> Sonnet (Sonnet reviews Sonnet), medium.
+- safety diff (execution/, HALT, orders) -> Opus, high.
+
+Mode selection (surface / model / Ultracode / cap / batch):
+- DSA one artifact: n/a / off / 0 / n/a.
+- CC one deliverable: Sonnet / off / 0 / n/a.
+- CC 2-3 independent modules, or build wave: Sonnet / ON / 3 / 1.
+- CL local fix: Sonnet / off / 0 / n/a.
+- Safety diff: Opus / high / off / 0 / n/a.
+- Question/status: Haiku / low / off / 0 / n/a.
+
+Ultracode rules:
+- OFF is default. ON only when 2 or more truly independent workstreams, each can checkpoint.
+- Every prompt states: total subagent cap, batch size, "commit and push between batches".
+- Never more than 3 subagents in a cloud session.
+- Waves sequential unless prompt names a parallel batch.
+- Live-path edit: Ultracode off, one writer, four-step proof.
+- Safety diff: Opus, high, Ultracode off.
+
+Incident: 2026-10-02 CC session MTS-2026-10-01-1916Z-CLD-BLD-two-cores-int.
+Prompt said "one subagent per wave"; Ultracode spawned 4 parallel; 0.97 credit
+spent in 9 minutes; Waves 1-2 lost uncommitted.
+
 
 ## 4. Naming
 Session ID: MTS-YYYY-MM-DD-HHMMZ-<SURF>-<ROLE>[-<slug>] (UTC start; slug <=20 chars, lowercase kebab).
