@@ -101,7 +101,7 @@ def test_10_id_launches_slot_with_stored_session_name(tmp_path):
     assert p.returncode == 0, p.stderr
     got = json.loads(argv.read_text(encoding="utf-8"))
     assert got[0] == "--name" and got[1] == sid
-    assert got[-1] == "Session ID: " + sid
+    assert got[-1].splitlines()[0] == "Session ID: " + sid  # a .cmd shim (Windows) passes only the first line
 
 
 def test_11_id_missing_slot_exits_3_no_launch(tmp_path):
@@ -143,7 +143,7 @@ def test_8_inherited_legacy_cl_name_launches_as_cli(tmp_path):
     assert p.returncode == 0, p.stderr
     got = json.loads(argv.read_text(encoding="utf-8"))
     assert got[1] == "MTS-2026-10-03-1000Z-CLI-BLD-b070-demo", got[1]
-    assert got[-1] == "Session ID: " + got[1]
+    assert got[-1].splitlines()[0] == "Session ID: " + got[1]
 
 
 def test_9_go_and_pick_share_the_policy_surface_code(tmp_path):
