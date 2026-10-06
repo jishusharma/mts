@@ -1,3 +1,8 @@
+> **Fee note (2026-10-06, bug B081 residue):** results in this report were produced with the legacy fee pair
+> (3.5 bp taker, -1.5 bp maker rebate, per side), not the fees stated in the text below (taker 5 bp, maker 2 bp). The
+> API-verified Deribit schedule (fees.py) is taker 5 bp, maker 0. Correct fees only lower net R, so the 'no edge /
+> insufficient n' verdicts stand. A rerun is needed before any reuse of the numbers.
+
 # Fabio on true order flow (aggTrades) - conditional-model test
 
 Modules: `orderflow_bars.py` (aggTrades -> 1m order-flow bars), `fabio_of_model.py` (state/location/trigger/management

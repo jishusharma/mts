@@ -2,9 +2,9 @@
 MyTradingSys/backtest/layers/fabio/run_of_model_v2.py - Fabio conditional model with the Deribit BTC-PERPETUAL cost model.
 
 Same state/location/trigger as run_of_model (see fabio_of_model), different execution:
-  * entry 'limit' = resting limit AT the level (maker, -1.5 bps/side rebate), fills only if price trades through the
+  * entry 'limit' = resting limit AT the level (maker, 0 bp, fees.py DERIBIT_MAKER), fills only if price trades through the
     level by 1 tick (fades: within 3 tf bars of the trigger; breaks: limit at the broken level right after the aggression
-    bar, within 6 tf bars, no retest-hold information); entry 'mkt' = taker 3.5 bps at the next open (breaks: after the
+    bar, within 6 tf bars, no retest-hold information); entry 'mkt' = taker 5 bps at the next open (breaks: after the
     retest holds).
   * target = resting limit (maker; needs 1 tick through); stop / breakeven / trail / session-end exits = market (taker).
   * slippage 2 bps on each taker leg in the headline (net at 0 / 2 / 5 bps also reported).

@@ -32,6 +32,32 @@ public class MarketDataSnapshot {
         this.fvgCalc = new FvgCalculator();
     }
 
+    /** B084: a null ratio (depth fetch failed / empty ask side) is emitted as JSON null, never a fake 0.0. */
+    static void putBookRatio(ObjectNode cond, ObjectNode ob, Double ratio) {
+        if (ratio == null) {
+            cond.putNull("book_imbalance");
+            ob.putNull("bid_ask_ratio");
+        } else {
+            cond.put("book_imbalance", Math.round(ratio * 100.0) / 100.0);
+            ob.put("bid_ask_ratio", Math.round(ratio * 100.0) / 100.0);
+        }
+    }
+
+    static Double bidAskRatioFromDepth(JsonNode depth, double currentPrice) {
+        double bidDepth = 0, askDepth = 0;
+        for (JsonNode bid : depth.get("bids")) {
+            double p = bid.get(0).asDouble();
+            double q = bid.get(1).asDouble();
+            if (p >= currentPrice * 0.99) bidDepth += p * q;
+        }
+        for (JsonNode ask : depth.get("asks")) {
+            double p = ask.get(0).asDouble();
+            double q = ask.get(1).asDouble();
+            if (p <= currentPrice * 1.01) askDepth += p * q;
+        }
+        return askDepth > 0 ? bidDepth / askDepth : null; // null = unavailable (B084)
+    }
+
     public ObjectNode fetchSnapshot(String symbol, BinanceLiquidationAccumulator liqAccumulator) throws IOException {
         long t0 = System.currentTimeMillis();
 
@@ -198,21 +224,10 @@ public class MarketDataSnapshot {
         ObjectNode structure = buildStructure(mtf, currentPrice);
 
         // ── Order book ratio ──
-        double bidDepth = 0, askDepth = 0;
+        Double bidAskRatioBox = null;
         try {
-            JsonNode depth = client.orderBookDepth(symbol, 100);
-            for (JsonNode bid : depth.get("bids")) {
-                double p = bid.get(0).asDouble();
-                double q = bid.get(1).asDouble();
-                if (p >= currentPrice * 0.99) bidDepth += p * q;
-            }
-            for (JsonNode ask : depth.get("asks")) {
-                double p = ask.get(0).asDouble();
-                double q = ask.get(1).asDouble();
-                if (p <= currentPrice * 1.01) askDepth += p * q;
-            }
-        } catch (Exception e) { /* keep 0 */ }
-        double bidAskRatio = askDepth > 0 ? bidDepth / askDepth : 0.0;
+            bidAskRatioBox = bidAskRatioFromDepth(client.orderBookDepth(symbol, 100), currentPrice);
+        } catch (Exception e) { /* depth unavailable: stays null (B084) */ }
 
         // ── Open interest direction ──
         ObjectNode oiFetch = oiFromHistory(client, symbol, mapper);
@@ -305,7 +320,6 @@ public class MarketDataSnapshot {
         cond.put("fvg_unfilled_count", unfilledCount);
         if (nearestUnfilled != null) cond.set("fvg_nearest_unfilled", nearestUnfilled);
         else cond.putNull("fvg_nearest_unfilled");
-        cond.put("book_imbalance", Math.round(bidAskRatio * 100.0) / 100.0);
         cond.put("funding_extreme", Math.abs(fundingRate) > 0.001);
         cond.put("oi_trend", oiDirection);
         cond.put("speed_picking_up", speedPickingUp);
@@ -343,7 +357,7 @@ public class MarketDataSnapshot {
         root.set("trade_flow", tradeFlow);
         root.set("structure", structure);
         ObjectNode ob = mapper.createObjectNode();
-        ob.put("bid_ask_ratio", Math.round(bidAskRatio * 100.0) / 100.0);
+        putBookRatio(cond, ob, bidAskRatioBox);
         ob.put("confidence", CONFIDENCE_HIGH);
         root.set("order_book_depth", ob);
         root.set("conditions", cond);

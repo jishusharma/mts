@@ -37,12 +37,12 @@ BIN = 10.0
 STATE_MIN = 15
 RETEST_BARS = 6
 FILL_TF_BARS = 3
-# Deribit BTC-PERPETUAL (T055b_PROVEN_SETUPS.md fee floor): taker 7 bps round trip (3.5 bps/side); maker nets -3 bps
-# round trip (-1.5 bps/side rebate). Resting limits fill only if price trades THROUGH the level by 1 tick
+# Deribit BTC-PERPETUAL (API-verified 2026-09-26, fees.py): taker 5 bps/side (10 bps round trip), maker 0. B081 residue
+# fixed 2026-10-06 (was the legacy 3.5 bp taker / -1.5 bp maker rebate pair). Resting limits fill only if price trades THROUGH the level by 1 tick
 # (BACKTEST_PROTOCOL.md stress rule). Optional slippage (bps) is applied to taker legs by net_at().
-from MyTradingSys.backtest.fees import LEGACY_FABIO_TAKER as FEE_TAKER, LEGACY_FABIO_MAKER as FEE_MAKER  # B081
 from MyTradingSys.backtest.layers.fabio.v3.day_gates import us_dst, uk_bst  # B102: DST rules behind ny_open_utc/london_open_utc
 SESSIONS = (("asia", 0, 480), ("london", 480, 810), ("ny", 810, 1260))  # fixed-UTC base [start, end); see session_bounds()
+from MyTradingSys.backtest.fees import DERIBIT_TAKER as FEE_TAKER, DERIBIT_MAKER as FEE_MAKER  # B081
 DAY_MS = 86400000
 
 

@@ -87,49 +87,45 @@ def classify_msb(bars: list, swings: list, require_prior_sequence: bool = True, 
 
     events = []
 
-    # Bullish MSB candidates
-    for i in range(1, len(swing_highs)):
-        H_prev = swing_highs[i - 1]
-        H_last = swing_highs[i]
+    # Audit #14 (FORMULAS.md s9): MSB = a close beyond the MOST RECENT confirmed opposing swing
+    # at that bar (swing known by that bar, confirmed_i < k), gated by the lower-high / higher-low
+    # prior sequence when require_prior_sequence. Each broken swing fires at most once.
+    highs = sorted(swing_highs, key=lambda s: s["i"])
+    lows = sorted(swing_lows, key=lambda s: s["i"])
 
-        if require_prior_sequence and H_last["price"] >= H_prev["price"]:
-            continue
-
-        start_idx = max(H_last["i"], H_last["confirmed_i"])
-        for k in range(start_idx + 1, len(bars)):
-            if bars[k]["c"] > H_last["price"]:
+    def _scan(side, direction):
+        fired = set()
+        for k in range(len(bars)):
+            known = [s for s in side if s["confirmed_i"] < k and s["i"] < k]
+            if not known:
+                continue
+            last = known[-1]
+            if last["i"] in fired:
+                continue
+            if require_prior_sequence:
+                if len(known) < 2:
+                    continue
+                prev = known[-2]
+                if direction == "bull" and last["price"] >= prev["price"]:
+                    continue
+                if direction == "bear" and last["price"] <= prev["price"]:
+                    continue
+            close = bars[k]["c"]
+            broke = close > last["price"] if direction == "bull" else close < last["price"]
+            if broke:
+                fired.add(last["i"])
                 events.append({
                     "t": bars[k]["t"],
                     "i": k,
-                    "direction": "bull",
-                    "broken_level": H_last["price"],
-                    "broken_swing_i": H_last["i"],
+                    "direction": direction,
+                    "broken_level": last["price"],
+                    "broken_swing_i": last["i"],
                     "confirm_i": k,
                     "at_range_extreme": is_range_extreme(bars, k, range_lookback, range_extreme_pct)
                 })
-                break
 
-    # Bearish MSB candidates
-    for i in range(1, len(swing_lows)):
-        L_prev = swing_lows[i - 1]
-        L_last = swing_lows[i]
-
-        if require_prior_sequence and L_last["price"] <= L_prev["price"]:
-            continue
-
-        start_idx = max(L_last["i"], L_last["confirmed_i"])
-        for k in range(start_idx + 1, len(bars)):
-            if bars[k]["c"] < L_last["price"]:
-                events.append({
-                    "t": bars[k]["t"],
-                    "i": k,
-                    "direction": "bear",
-                    "broken_level": L_last["price"],
-                    "broken_swing_i": L_last["i"],
-                    "confirm_i": k,
-                    "at_range_extreme": is_range_extreme(bars, k, range_lookback, range_extreme_pct)
-                })
-                break
+    _scan(highs, "bull")
+    _scan(lows, "bear")
 
     if filter_range_noise:
         events = [e for e in events if e["at_range_extreme"]]

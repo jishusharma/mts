@@ -151,7 +151,7 @@ class TestSimulate(unittest.TestCase):
         bars = [b1(100, 100.5, 99.5, 100), b1(100, 101.2, 100, 101), b1(101, 101, 99.9, 100)]
         r = self.sim(bars)
         self.assertEqual((r["reason"], r["gross_R"]), ("be", 0.0))
-        self.assertAlmostEqual(r["net_R"], -(0.00035 + 0.00035) * 100 / 1.0)   # taker in + taker BE-stop out = -0.07 R
+        self.assertAlmostEqual(r["net_R"], -(0.0005 + 0.0005) * 100 / 1.0)   # fees.py DERIBIT taker 5 bp/side: net = gross - (fee_in+fee_out)*entry/risk = -0.10 R
         self.assertEqual(r["taker_legs"], 2)
 
     def test_full_stop(self):
@@ -161,7 +161,7 @@ class TestSimulate(unittest.TestCase):
     def test_target_3R(self):
         r = self.sim([b1(100, 100.5, 99.5, 100), b1(100, 103.2, 100, 103)])
         self.assertEqual((r["reason"], r["gross_R"]), ("target", 3.0))
-        self.assertAlmostEqual(r["net_R"], 3.0 - (0.00035 - 0.00015) * 100)   # taker in, maker target out
+        self.assertAlmostEqual(r["net_R"], 3.0 - (0.0005 + 0.0) * 100)   # taker in 5 bp, maker target out 0: 3 - 0.0005*100/1 = 2.95
         self.assertEqual(r["taker_legs"], 1)
 
     def test_hvn_target_nearer_than_3R(self):
@@ -198,7 +198,7 @@ class TestSimulate(unittest.TestCase):
         self.assertEqual(r["entry"], 100.0)
         self.assertEqual(r["risk"], 1.0)
         self.assertEqual(r["reason"], "target")           # bar 2 low 95.0 <= 97 (3R)
-        self.assertAlmostEqual(r["net_R"], 3.0 + 0.0003 * 100)   # maker rebate both legs: -1.5 bps each
+        self.assertAlmostEqual(r["net_R"], 3.0 - (0.0 + 0.0) * 100)   # DERIBIT maker 0 both legs: net = 3.0 exactly
         self.assertEqual(r["taker_legs"], 0)
         self.assertIsNone(M.simulate_trade(bars[:1], 0, 0, "short", "limit", 100.0, 101.0, [], False, 3))
 
