@@ -2,6 +2,20 @@
 
 One entry per supervisor session. Next supervisor: read this plus STATUS.md; nothing else from the chat is needed.
 
+## 2026-10-06 - Cloud Haiku session: Consensus writer + TF maps
+
+**Ownership claim:** MyTradingSys/backtest/layers/consensus/ and MyTradingSys/backtest/layers/rsi/observation.py
+
+Promoted to production:
+- MyTradingSys/backtest/layers/consensus/writer.py (from .new)
+- MyTradingSys/backtest/layers/consensus/test_writer.py (from .new)
+- MyTradingSys/backtest/layers/rsi/observation.py (from .new)
+- MyTradingSys/backtest/layers/rsi/test_observation.py (from .new)
+
+Tests passed: Layer tests (Step 5b PASS, includes consensus.test_writer + rsi.test_observation).
+TF_SECONDS and TF_MIN already contain 3m and 1d (commit d982802, pre-merged to main).
+Consensus writer ready for wiring into live_runner_cli.py and auto_trader.py (noted in README.md as open item).
+
 ## 2026-09-28 - session 1
 
 Landed: 0bbace1 L6 re-arm (T4 safety review: breach check still runs after re-arm, never blocks the
