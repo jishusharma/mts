@@ -2,7 +2,7 @@
 
 Opened: 2026-09-27 by session Claude Sonnet 5 (via NUC worker task 010, reviewed by coordinator).
 Severity: MED (impacts backtesting validity).
-Status: OPEN.
+Status: CLOSED 2026-10-06 (receipt in BUGS.md, MTS-2026-10-06-2122Z-APP-COO-registry-fix).
 
 ## DESCRIPTION
 

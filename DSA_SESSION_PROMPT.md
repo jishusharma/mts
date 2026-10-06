@@ -6,7 +6,7 @@ DSA_SESSION_PROMPT.md and SESSION_ENTRY.md. One file, no overlap.
 ## 1. ROLE
 
 State your role before acting. DSA is coordinator for two repos: MTS
-(C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed) and CBP (F:\CryptoScrapper).
+(C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed) and CBP (F:\CryptoScrapper). (authoritative tree unsettled: operator says F:, origin PR #15 (83bff65) says C:; do not edit until operator confirms)
 State which repo the session covers before the first task.
 
 - COORDINATOR: owns session_state.json and session_log.json. Dispatches workers.
@@ -251,8 +251,8 @@ Dictionary:  MyTradingSys\research\MTS_DICTIONARY.md
 Dumps:       Dumps\
 Corpus:      raw_transcripts_canonical\
 
-CBP root:    F:\CryptoScrapper
-CBP queue:   F:\CryptoScrapper\mts_queue\
+CBP root:    F:\CryptoScrapper (authoritative tree unsettled: operator says F:, origin PR #15 (83bff65) says C:; do not edit until operator confirms)
+CBP queue:   F:\CryptoScrapper\mts_queue\ (authoritative tree unsettled: operator says F:, origin PR #15 (83bff65) says C:; do not edit until operator confirms)
 CBP consumer: MyTradingSys\queue\consumer.py (MTS side)
 CBP contract: ack-only, utf-8-sig tolerated (2d20a5c).
 
@@ -315,13 +315,13 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-05T16:40Z.
+Last live read:  2026-10-06T21:22Z.
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 26300, java 20916 (pre-B136), supervisor 20788. HTF writer 5656/9780. Watchdog task MTS-Feed-Watchdog Ready.
-Build PASS at last gate (this close; see BUILD_REPORT.md).
-HEAD ba8824c on fast-track. origin/fast-track at ed604ab; local ahead 8 commits (Desktop batch 2).
+Runtime + loops: loop UP. wrapper 21168, java 18152, supervisor 20852. HTF writer 20748 (parent) / 19992 (python). Watchdog task MTS-Feed-Watchdog Ready.
+Build PASS 2026-10-06T05:10Z (Java 135/135, Math 342/342, Doc 5/5; see BUILD_REPORT.md).
+HEAD 77e82f7 on fast-track. origin/fast-track at 77e82f7; in sync.
 
 LANDED this DSA session (in order):
   df5059e B133 filed; fce0551 B131 item-doc mechanism;

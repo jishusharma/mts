@@ -1,6 +1,6 @@
 # B116 - Unsourced 0.1 percent minimum stop floor and 0.2 percent fallback stop are still live in SetupCandidatesBuilder
 
-Status: OPEN. Severity: MED. Opened 2026-10-04.
+Status: CLOSED 2026-10-06 (receipt in BUGS.md, MTS-2026-10-06-2122Z-APP-COO-registry-fix). Severity: MED. Opened 2026-10-04.
 Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. Group (b) from MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md.
 
 ## Defect
