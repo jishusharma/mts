@@ -35,8 +35,23 @@ def shipped_cfg():
 
 class BlocklistCycleTest(unittest.TestCase):
     """Reuses CycleTest's fixture (tmp log/alerts dir, fake place, fake ledger) without re-running its tests."""
-    setUp = _base.CycleTest.setUp
     tearDown = _base.CycleTest.tearDown
+
+    def setUp(self):
+        _base.CycleTest.setUp(self)
+        # Account routing depends on which testnet secret files exist on the host (the desktop has them, the
+        # cloud does not). Pin it: no named-account secrets by default; tests that need routing call routed().
+        saved = at.account_secret_path
+        self.addCleanup(setattr, at, "account_secret_path", saved)
+        self.secrets = Path(self.tmp.name) / "secrets"
+        self.secrets.mkdir()
+        at.account_secret_path = lambda label: self.secrets / f"testnet_{label}.secret.json"
+        at._warned_missing.clear()
+
+    def routed(self, *labels):
+        """Simulate the desktop: secret files present for these account labels."""
+        for lab in labels:
+            (self.secrets / f"testnet_{lab}.secret.json").write_text("{}", encoding="utf-8")
     rows_of = _base.CycleTest.rows_of
     P = None  # set by setUp
 
@@ -205,11 +220,45 @@ class BlocklistCycleTest(unittest.TestCase):
 
     def test_api_error_path_unchanged_for_non_blocked_layer(self):
         """place() failing (entry_failed / plan_refused) leaves the slot free and logs; blocklist adds no new path."""
-        at.place = lambda sig, dry: {"outcome": "entry_failed", "plan_id": "x"}
+        at.place = lambda sig, dry, account=None: {"outcome": "entry_failed", "plan_id": "x"}
         st = {"tom_last_alert_no": 43}
         self.feed({"layer": "rsi", "sub": "rsi_events", "tf": "1h", "side": "long"}, st=st)
         self.assertEqual(at.cycle(st, shipped_cfg(), False, {}, NOW), {})
         self.assertEqual(self.events(), ["trade_attempt"])
+
+    # ---- desktop routing: layers go to named-account slots (jishu_4 for rsi via "layer:")
+
+    def test_non_blocked_layer_placed_on_routed_account(self):
+        self.routed("jishu_1", "jishu_2", "jishu_3", "jishu_4")
+        c = shipped_cfg()
+        st = {"tom_last_alert_no": 43}
+        self.feed({"layer": "rsi", "sub": "rsi_events", "tf": "1h", "side": "long"},
+                  {"layer": "session", "sub": "session_momentum", "tf": "15m", "side": "long"}, st=st)
+        extra = {}
+        active = at.cycle(st, c, False, {}, NOW, extra)
+        self.assertEqual([s["source"] for s in self.placed], ["layer:rsi:rsi_events:1h"])
+        self.assertEqual(self.placed_accounts, [c["accounts"]["layer:rsi:"]])
+        self.assertEqual(active, {})
+        self.assertEqual(extra[c["accounts"]["layer:rsi:"]]["source"], "layer:rsi:rsi_events:1h")
+        self.assertIn("layer_trade_blocked", self.events())
+
+    def test_blocked_layer_never_placed_on_routed_account(self):
+        self.routed("jishu_1", "jishu_2", "jishu_3", "jishu_4")
+        st = {"tom_last_alert_no": 43}
+        self.feed(*[a for a, _ in BLOCKED_ALERTS], st=st)
+        extra = {}
+        at.cycle(st, shipped_cfg(), False, {}, NOW, extra)
+        self.assertEqual(self.placed, [])
+        self.assertEqual(extra, {})
+
+    def test_routed_api_error_leaves_account_slot_free(self):
+        self.routed("jishu_3")
+        at.place = lambda sig, dry, account=None: {"outcome": "entry_failed", "plan_id": "x"}
+        st = {"tom_last_alert_no": 43}
+        self.feed({"layer": "rsi", "sub": "rsi_events", "tf": "1h", "side": "long"}, st=st)
+        extra = {}
+        self.assertEqual(at.cycle(st, shipped_cfg(), False, {}, NOW, extra), {})
+        self.assertEqual(extra, {})
 
 
 if __name__ == "__main__":
