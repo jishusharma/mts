@@ -315,13 +315,13 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-06T21:22Z.
+Last live read:  2026-10-07T05:06Z.
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 21168, java 18152, supervisor 20852. HTF writer 20748 (parent) / 19992 (python). Watchdog task MTS-Feed-Watchdog Ready.
+Runtime + loops: loop UP. wrapper 21168, java 18152, supervisor 20852, restart_count_24h 0. HTF writer 20748 (parent) / 19992 (python). Watchdog task MTS-Feed-Watchdog Ready.
 Build PASS 2026-10-06T05:10Z (Java 135/135, Math 342/342, Doc 5/5; see BUILD_REPORT.md).
-HEAD 77e82f7 on fast-track. origin/fast-track at 77e82f7; in sync.
+HEAD on origin/fast-track: 573bca0. B136 CLOSED. B137, B138 OPEN.
 
 LANDED this DSA session (in order):
   df5059e B133 filed; fce0551 B131 item-doc mechanism;
@@ -366,11 +366,11 @@ Pipeline:
 Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
 
 Next session first action:
-  1. Operator: git push origin fast-track (local ahead 8 commits).
-  2. Operator: scripts\core\stop-day.ps1 then scripts\core\mode.ps1 -M armed (B136 + D3 live load).
+  1. [struck, superseded 2026-10-07: commits already on origin/fast-track]
+  2. [struck, superseded: loop restarted 2026-10-06T19:25Z]
   3. Operator decisions owed: Chrome extension connect for T066; TOM-091/092 retag in risk_protocol.md; buy-detection meaning for T067.
-  4. B136 verify: SNAP OI change_1h_pct matches public within 0.05% after loop restart.
-  5. NOTE: two go.py processes running (22856, 21156) at last read; resolve before next dispatch.
+  4. [struck, superseded: B136 CLOSED]
+  5. [struck, superseded: no go.py running per operator 2026-10-07]
 
 Section 5d in force per B132.
 
