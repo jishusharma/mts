@@ -102,6 +102,141 @@ class TestFees(unittest.TestCase):
         self.assertEqual(tr[0]["exit_reason"], "stop")
 
 
+TF5 = 5 * MIN  # HTF bar = 5 one-minute bars in these tests
+
+
+def limit_signal(setup="sr_flip"):
+    # long limit at level 100, stop 99 (risk 1), target 101.5 (1.5R). Confirm bar = HTF bar 0
+    # (t 0..5min, known at 5min); retest HTF bar = t 5min; limit valid through HTF bar at 10min.
+    return {"side": "long", "entry_price": 100.0, "entry_t": TF5, "stop": 99.0,
+            "targets": [(101.5, 1.0)],
+            "meta": {"setup": setup, "placed_t": 0, "valid_until_t": 2 * TF5, "target_r": 1.5}}
+
+
+def confirm_bars():
+    # minutes 0-4 (the confirm bar): trades at 101, dips to 99.5 in minute 2 BEFORE the setup is known
+    b = [bar(i * MIN, 101, 101.2, 100.8, 101) for i in range(5)]
+    b[2] = bar(2 * MIN, 101, 101, 99.5, 100.9)
+    return b
+
+
+class TestLimitFill(unittest.TestCase):
+    def test_first_minute_touch_then_rally_fills_at_level_not_after_close(self):
+        # Retest HTF bar (min 5-9): touches 100.0 in its FIRST minute, then rallies to 102.5 and closes
+        # far above. Old runner: entry booked at 100 at the END of this bar (min 9) with the rally
+        # already known; the following bar then falls to 98.5 -> stop -> about -1.1R.
+        # Fixed: filled at 100 in minute 5, minute 6 high 101.6 >= 101.5 -> target.
+        bars = confirm_bars() + [
+            bar(5 * MIN, 100.5, 100.6, 100.0, 100.4),
+            bar(6 * MIN, 100.4, 101.6, 100.4, 101.5),
+            bar(7 * MIN, 101.5, 102.0, 101.4, 102.0),
+            bar(8 * MIN, 102.0, 102.4, 101.9, 102.3),
+            bar(9 * MIN, 102.3, 102.5, 102.2, 102.5),
+            bar(10 * MIN, 102.5, 102.5, 98.5, 98.6),
+        ] + [bar((11 + i) * MIN, 98.6, 98.6, 98.6, 98.6) for i in range(10)]
+        tr = R.build_trades([limit_signal()], bars, [], "all_taker", TF5)
+        self.assertEqual(len(tr), 1)
+        t = tr[0]
+        self.assertEqual(t["exit_reason"], "targets")  # old runner: "stop" (entry booked after the rally)
+        self.assertEqual(t["fill_t"], 5 * MIN)         # first minute of the retest bar
+        self.assertAlmostEqual(t["entry_price"], 100.0, places=12)
+        self.assertAlmostEqual(t["gross_r"], 1.5, places=12)
+        # fees: entry 0.0005*100/1 = 0.05R, target 0.0005*101.5/1 = 0.05075R
+        self.assertAlmostEqual(t["net_r"], 1.5 - 0.05 - 0.05075, places=12)
+        m = R.build_trades([limit_signal()], bars, [], "maker_entry", TF5)[0]
+        self.assertAlmostEqual(m["net_r"], 1.5, places=12)  # maker 0 on limit entry and target
+
+    def test_dip_before_placement_does_not_fill(self):
+        # price never returns to 100 after the setup is known (min 5 onward all >= 100.2)
+        bars = confirm_bars() + [bar((5 + i) * MIN, 100.5, 100.8, 100.2, 100.5) for i in range(15)]
+        st = {}
+        tr = R.build_trades([limit_signal()], bars, [], "all_taker", TF5, stats=st)
+        self.assertEqual(tr, [])
+        self.assertEqual((st["signals"], st["filled"], st["unfilled"]), (1, 0, 1))
+
+    def test_touch_after_validity_window_does_not_fill(self):
+        # window = placement (5min) .. close of the HTF bar opened at 10min (= 15min)
+        bars = confirm_bars() + [bar((5 + i) * MIN, 100.5, 100.8, 100.2, 100.5) for i in range(10)]
+        bars.append(bar(15 * MIN, 100.5, 100.5, 99.9, 100.1))
+        st = {}
+        self.assertEqual(R.build_trades([limit_signal()], bars, [], "all_taker", TF5, stats=st), [])
+        self.assertEqual(st["unfilled"], 1)
+
+    def test_fill_bar_can_only_stop_never_target(self):
+        # fill minute trades 100 .. 98.9 .. 101.6: stop (99) hit in the fill bar -> stop_first, no target
+        bars = confirm_bars() + [bar(5 * MIN, 100.5, 101.6, 98.9, 101.0)] + \
+            [bar((6 + i) * MIN, 101, 101, 101, 101) for i in range(5)]
+        t = R.build_trades([limit_signal()], bars, [], "all_taker", TF5)[0]
+        self.assertEqual(t["exit_reason"], "stop")
+        self.assertAlmostEqual(t["gross_r"], -1.0, places=12)
+        self.assertAlmostEqual(t["net_r"], -1.0 - 0.05 - 0.0495, places=12)
+
+    def test_fill_bar_high_does_not_credit_target(self):
+        # fill minute high 101.6 (above target) but no stop: target must wait for a LATER bar
+        bars = confirm_bars() + [bar(5 * MIN, 100.5, 101.6, 100.0, 101.0),
+                                 bar(6 * MIN, 101, 101, 100.9, 101),
+                                 bar(7 * MIN, 101, 101.5, 100.9, 101.4)]
+        t = R.build_trades([limit_signal()], bars, [], "all_taker", TF5)[0]
+        self.assertEqual(t["exit_reason"], "targets")
+        self.assertEqual(t["fill_t"], 5 * MIN)
+        # exits at the later bar (min 7); gross still 1.5R at limit price 101.5
+        self.assertAlmostEqual(t["gross_r"], 1.5, places=12)
+
+    def test_gap_bar_below_level_fills_at_open(self):
+        # whole minute below the level (h 99.8 < 100): fill at its open 99.8, not at 100
+        bars = confirm_bars() + [bar(5 * MIN, 99.8, 99.8, 99.4, 99.6),
+                                 bar(6 * MIN, 99.6, 101.5, 99.6, 101.5)]
+        t = R.build_trades([limit_signal()], bars, [], "all_taker", TF5)[0]
+        self.assertAlmostEqual(t["entry_price"], 99.8, places=12)
+        # risk 0.8; gross (101.5-99.8)/0.8 = 2.125; fees 0.0005*99.8/0.8 + 0.0005*101.5/0.8
+        self.assertAlmostEqual(t["gross_r"], 2.125, places=12)
+        self.assertAlmostEqual(t["net_r"], 2.125 - 0.062375 - 0.0634375, places=12)
+
+    def test_short_limit_fills_on_high(self):
+        sig = {"side": "short", "entry_price": 100.0, "entry_t": TF5, "stop": 101.0,
+               "targets": [(98.5, 1.0)],
+               "meta": {"setup": "fib_pullback", "placed_t": 0, "valid_until_t": 2 * TF5, "target_r": 1.5}}
+        bars = [bar(i * MIN, 99, 99.2, 98.8, 99) for i in range(5)]
+        bars[1] = bar(MIN, 99, 100.5, 98.8, 99)  # pre-placement spike through 100: must not fill
+        bars += [bar(5 * MIN, 99.5, 99.9, 99.4, 99.6), bar(6 * MIN, 99.6, 100.0, 99.5, 99.7),
+                 bar(7 * MIN, 99.7, 99.7, 98.4, 98.5)]
+        t = R.build_trades([sig], bars, [], "all_taker", TF5)[0]
+        self.assertEqual(t["fill_t"], 6 * MIN)
+        self.assertAlmostEqual(t["entry_price"], 100.0, places=12)
+        self.assertAlmostEqual(t["gross_r"], 1.5, places=12)
+
+    def test_run_setup_reports_unfilled(self):
+        bars = confirm_bars() + [bar((5 + i) * MIN, 100.5, 100.8, 100.2, 100.5) for i in range(15)]
+        res = R.run_setup("stub", bars, bars, [], TF5, setup_fn=lambda b: [limit_signal()])
+        for v in res["variants"].values():
+            self.assertEqual((v["n_trades"], v["n_unfilled"]), (0, 1))
+
+
+class TestSetup3EntryAtClose(unittest.TestCase):
+    def sig(self, entry_price):
+        # short, stop 101, target_r 2; signal bar = HTF bar at t=0 (minutes 0-4)
+        return {"side": "short", "entry_price": entry_price, "entry_t": 0, "stop": 101.0,
+                "targets": [(entry_price - 2 * (101.0 - entry_price), 1.0)],
+                "meta": {"setup": "failed_msb_reversal", "target_r": 2.0}}
+
+    def bars(self):
+        b = [bar(i * MIN, 100.4, 100.6, 100.0, 100.4) for i in range(5)]
+        b[4] = bar(4 * MIN, 100.4, 100.5, 100.1, 100.2)  # last 1m close = HTF close 100.2
+        return b + [bar(5 * MIN, 100.2, 100.2, 98.5, 98.6)]
+
+    def test_entry_equals_last_1m_close(self):
+        # risk 0.8, target 100.2 - 1.6 = 98.6 hit in minute 5 (low 98.5). fees 0.0005*100.2/0.8, 0.0005*98.6/0.8
+        t = R.build_trades([self.sig(100.2)], self.bars(), [], "all_taker", TF5)[0]
+        self.assertAlmostEqual(t["entry_price"], 100.2, places=12)
+        self.assertAlmostEqual(t["gross_r"], 2.0, places=12)
+        self.assertAlmostEqual(t["net_r"], 2.0 - 0.062625 - 0.061625, places=12)
+
+    def test_stale_entry_price_is_snapped_to_close_and_target_recomputed(self):
+        t = R.build_trades([self.sig(100.0)], self.bars(), [], "all_taker", TF5)[0]
+        self.assertAlmostEqual(t["entry_price"], 100.2, places=12)
+        self.assertAlmostEqual(t["gross_r"], 2.0, places=12)  # target moved to 98.6 (2R from 100.2)
+
+
 class TestVerdict(unittest.TestCase):
     def split_eval(self, is_list, oos_list):
         return R.evaluate(is_list + oos_list, 1000, "net")
