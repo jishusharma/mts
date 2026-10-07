@@ -232,12 +232,21 @@ class LayerSignalTest(unittest.TestCase):
         s = at.layer_signal({"layer": "rsi", "sub": "rsi_events", "event": "support", "tf": "3m", "t_close": t}, cfg(), NOW)
         self.assertIn("stale", s.get("reject", ""))
 
-    def test_rsi_cross_direction(self):
-        up = at.layer_signal({"layer": "rsi", "event": "cross", "direction": "up", "tf": "15m",
-                              "t_close": self.T15}, cfg(), NOW)
-        dn = at.layer_signal({"layer": "rsi", "event": "cross", "direction": "down", "tf": "15m",
-                              "t_close": self.T15}, cfg(), NOW)
-        self.assertEqual((up["side"], dn["side"]), ("long", "short"))
+    def test_rsi_cross_side_by_level(self):
+        # B128 M29-11 (operator 2026-10-08): side comes from the level crossed, not the direction alone. Source MLK-R1
+        # (malkan_40_60.py): a bull regime cannot cross 40 downward, a bear regime cannot cross 60 upward, so a cross
+        # down through 40 -> short and a cross up through 60 -> long. Every other cross (incl. unknown level) -> no side.
+        def sig(level, direction):
+            alert = {"layer": "rsi", "event": "cross", "direction": direction, "tf": "15m", "t_close": self.T15}
+            if level is not None:
+                alert["level_value"] = level
+            return at.layer_signal(alert, cfg(), NOW)
+        self.assertEqual(sig(40.0, "down")["side"], "short")
+        self.assertEqual(sig(60.0, "up")["side"], "long")
+        for level, direction in ((40.0, "up"), (60.0, "down"), (50.0, "up"), (50.0, "down"), (None, "up"), (None, "down")):
+            s = sig(level, direction)
+            self.assertIsNone(s["side"], (level, direction))
+            self.assertIn("unmapped", s["reject"], (level, direction))
 
     def test_side_field_wins_for_new_layers(self):
         s = at.layer_signal({"layer": "brand_new_layer", "kind": "x", "side": "short", "tf": "1h",

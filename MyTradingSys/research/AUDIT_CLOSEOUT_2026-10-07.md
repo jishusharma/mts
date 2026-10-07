@@ -45,3 +45,23 @@ All 13 source paths exist. Rows were reached through AUDIT_RECONCILE_2026-10-04.
 - run_t055.load_data clips bars to funding coverage (failed before the fix, 26 pass).
 - tom_bt_report.adapter_line prefers the promoted adapter files (crash fix; test added).
 - Coverage tests: test_b127_fetch_archive_funding (6), test_b127_declutter_backups (3), test_b127_fabio_v3_isolation (2), test_b128_cc_range_noise_filter (3). Fail-first intent not satisfiable on already-correct code; kept as coverage tests, mutation coverage incomplete.
+
+## Operator rulings 2026-10-08 and what was done
+1. CLOUD_INBOX note 2 CLOSED and removed: TWO_CORES_FIX_PASS_2026-10-02.md is SUPERSEDED by the merged PRs jishusharma/BinanceDataFeed #2 (book_imbalance no-data fix), #4 (Fabio v3 core), #5 (mts launcher runner/orphans verbs), #6 (consensus writer + TF maps), #7 (engine tests), #8 (formula audit), #10 (fast-track consolidation); no doc written.
+2. B127 RA-W4-A11 reclassified TOM-CONCEPT-ONLY (PROVENANCE_AUDIT_TOM.md:33, summary 34/35). B127 CLOSED.
+3. B128 TC-W1-6: filter_range_noise stays off; B145 filed with file and exact test.
+4. B128 M29-11: rsi:cross now side-by-level, fail-first test, backup auto_trader.py.pre_rsicross. The running auto_trader (PID 5364) keeps the old mapping until the supervisor restarts it. Source for the table: MLK-R1; 40-down -> short, 60-up -> long, every other cross has no side. Live alerts today are all level 40, so only 40-down trades and 40-up is now rejected.
+5. B128 M29-15: t_close meaning accepted; comment added.
+6. Smoke dir moved (receipt in B128).
+7. B120 W3-5 stays parked.
+
+## Next session first action
+Month-by-month diff of the live-rule drop (17 filled trades / 19 SETUP_FORMING signals -> 0).
+Row directories compared: OLD F:\MTS\data\tom_bt (previous run) vs NEW F:\MTS\data\tom_bt_2026-10-07 (this rerun, current Java).
+Command (from the repo root, read-only, script added this session):
+
+    python scripts/dev/diff_tom_rows.py F:/MTS/data/tom_bt F:/MTS/data/tom_bt_2026-10-07
+
+First result (run once 2026-10-08): SETUP_FORMING rows total old 19, new 0, differing in 15 months (2022-02 ... 2026-05, one or two rows each).
+Rows per month fall about 25 percent (e.g. 2022-02: 1856 -> 1264), WAIT_RR falls sharply (1147 -> 355) and WAIT_PROOF roughly doubles (264 -> 446). So the current Java emits fewer candidates, fewer fail on R:R, and more fail on proof: consistent with PR #12 (stop floor removed, book_imbalance null, net R:R gate from net_rr_floor.json) but not yet attributed.
+Next step: for 2022-02, join old and new rows on t and print proof, stop, gross_rr, net_rr for the one old SETUP_FORMING row; the field that moved is the cause.

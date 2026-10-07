@@ -532,3 +532,5 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md | doc | B143 item doc: CryptoCred 0.1 pct stop and 1.5R target NO-SOURCE. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
 | MyTradingSys/items/B144_exhaustion_proxy_unsourced_params.md | doc | B144 item doc: exhaustion proxy 2x/240 NO-SOURCE (SCREENER). | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
 | MyTradingSys/system/sessions/MTS-2026-10-07-1002Z-APP-BLD-research-closeout.md | doc | Session record: research closeout. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
+| MyTradingSys/items/B145_cc_range_noise_live_neutrality.md | doc | B145 item doc: stopped-loop neutrality test before filter_range_noise goes live. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-08 |
+| scripts/dev/diff_tom_rows.py | tool | Month-by-month verdict-count diff of two Tom core BT row directories (read-only). | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-08 |

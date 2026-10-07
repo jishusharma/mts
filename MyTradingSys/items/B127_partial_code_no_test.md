@@ -1,6 +1,6 @@
 # B127 - Audit PARTIAL (e): code exists, test missing or only staged
 
-Status: OPEN (receipt written 2026-10-07; one residual row RA-W4-A11). Severity: MED. Opened 2026-10-04.
+Status: CLOSED 2026-10-08 (13 of 13 rows have a disposition; A11 reclassified by operator ruling, no Java test written). Severity: MED. Opened 2026-10-04.
 Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. References T037 (test coverage gap): MyTradingSys/items/T037_test_coverage_gap.md.
 
 ## Defect
@@ -47,7 +47,7 @@ Session MTS-2026-10-07-1002Z-APP-BLD-research-closeout, verdicts checked on disk
 
 | finding | verdict | evidence | disposition |
 |---|---|---|---|
-| RA-W4-A11 | CONFIRMED | SetupCandidatesBuilder.java:153 `c.rrSanity = c.grossRR >= 1.5` advisory only; no Java test; PROVENANCE_AUDIT_TOM.md A11 not reclassified | OPEN: Java test that a grossRR<1.5 candidate is kept, plus doc reclass to CONCEPT-ONLY (operator ruling needed for the class) |
+| RA-W4-A11 | CONFIRMED | SetupCandidatesBuilder.java:153 `c.rrSanity = c.grossRR >= 1.5` advisory only; no Java test; PROVENANCE_AUDIT_TOM.md A11 not reclassified | CLOSED 2026-10-08: operator ruling reclassified A11 to TOM-CONCEPT-ONLY (PROVENANCE_AUDIT_TOM.md:33, summary 34/35). Optional later: Java test that grossRR<1.5 is kept |
 | RA-W6-FABIO | REFUTED | backtest/layers/alerts/test_live_runner_v3_shadow.py:141 asserts all FABIO_V3_DECISIONS are SHADOW | CLOSED |
 | TC-W1-4 | REFUTED | scripts/dev/test_mts_launcher.py:1,22-25 (runner/orphans verbs) | CLOSED |
 | TC-W2-SS | REFUTED | src/test/java/datafeed/SetupScreenerTest.java | CLOSED |

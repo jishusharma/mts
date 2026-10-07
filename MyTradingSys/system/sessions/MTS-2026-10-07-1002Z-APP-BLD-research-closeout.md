@@ -37,3 +37,8 @@ F:\MTS\data\tom_raw\klines (89 files), tom_snapshots_2026-10-06 (57 months), tom
 
 ## Gate
 Build-Check result in the commit message and BUILD_REPORT.md.
+
+## Continuation 2026-10-08 (operator rulings)
+- Note 2 closed (superseded by PRs #2, #4, #5, #6, #7, #8, #10); B127 A11 reclassified, B127 CLOSED; B145 filed (filter_range_noise stays off); rsi:cross side-by-level in auto_trader.py (fail-first test, backup auto_trader.py.pre_rsicross, live process keeps old mapping until the supervisor restarts it); t_close comment; smoke dir moved to F:/MTS/data/_archive/smoke/2026-10-07 (2026-09.jsonl.gz sha256_8=737621E3 lines=60; 2026-09.meta.json sha256_8=047A39D8 lines=1).
+- scripts/dev/diff_tom_rows.py added; first result in AUDIT_CLOSEOUT_2026-10-07.md.
+

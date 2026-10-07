@@ -69,11 +69,12 @@ DEFAULT_CONFIG = {
     "layers": {"enabled": True, "size_usd": 100, "max_loss_usd": 10, "stop_pct": 1.0, "targets": "2",
                "hours": 2.0, "max_age_bars": 1.2,
                "max_hold_bars": 8},   # time exit = 8 bars of the signal timeframe (minutes derived per alert tf)
-    # (layer, event) -> side. "direction" means: up -> long, down -> short. A "side" field on the alert wins.
+    # (layer, event) -> side. "direction" means: up -> long, down -> short; "level" means the side comes from the level
+    # crossed (CROSS_SIDE_BY_LEVEL), everything else unmapped. A "side" field on the alert wins.
     "layer_rules": {
         "rsi:support": "long",
         "rsi:rejection": "short",
-        "rsi:cross": "direction",
+        "rsi:cross": "level",
     },
     "disabled_layers": [],
     # source prefix -> named testnet account (credentials .secrets/testnet_<label>.secret.json).
@@ -270,6 +271,11 @@ def apply_venue_price(sig: dict, mark_fn=None):
 
 # ---------------------------------------------------------------- layer signals
 
+# (RSI level, cross direction) -> side. MLK-R1 (backtest/layers/rsi/malkan_40_60.py): a bull regime cannot cross 40 downward,
+# a bear regime cannot cross 60 upward, so those two crosses are the regime failing. Any other cross has no source: no side.
+CROSS_SIDE_BY_LEVEL = {(40.0, "down"): "short", (60.0, "up"): "long"}
+
+
 def layer_side(alert: dict, cfg: dict):
     """Side for a layer alert, or None if no rule maps it."""
     if alert.get("side") in ("long", "short"):
@@ -277,6 +283,9 @@ def layer_side(alert: dict, cfg: dict):
     rule = cfg["layer_rules"].get(f"{alert.get('layer')}:{alert.get('event')}")
     if rule == "direction":
         return {"up": "long", "down": "short"}.get(alert.get("direction"))
+    if rule == "level":
+        lv = alert.get("level_value")
+        return CROSS_SIDE_BY_LEVEL.get((float(lv), alert.get("direction"))) if isinstance(lv, (int, float)) else None
     return rule if rule in ("long", "short") else None
 
 
@@ -308,6 +317,7 @@ def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
     c = cfg["layers"]
     layer, tf = alert.get("layer"), alert.get("tf")
     event = alert.get("event") or alert.get("kind") or alert.get("sub")
+    # t_close is the bar's OPEN time in ms (Binance kline convention), not its close; the name is kept (operator 2026-10-08).
     key = f"{layer}:{alert.get('sub')}:{event}:{tf}:{alert.get('t_close')}"
     sig = {"source": f"layer:{layer}:{alert.get('sub')}:{tf}", "key": key, "detail": alert}
     side = layer_side(alert, cfg)

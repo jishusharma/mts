@@ -89,8 +89,8 @@ B123 | OPEN    | B123_zero_trade_and_quiet_families.md | zero-trade after AUTO_P
 B124 | OPEN    | B124_journal_dir_open_plan_check.md | no check that execution/journal holds each open plan; canary has no journal check
 B125 | OPEN    | B125_consensus_writer_staged_only.md | consensus writer staged .new only, not promoted; Top-5 #3 acceptance absent
 B126 | OPEN    | B126_supervisor_inbox_consumption.md | cloud to SUP inbox consumption unverifiable; no mechanism on disk
-B127 | OPEN    | B127_partial_code_no_test.md | receipt 2026-10-07: 12 of 13 closed (7 refuted as stale, 5 closed by new tests); residual RA-W4-A11 Java test + reclass
-B128 | OPEN    | B128_partial_code_partial_no_test.md | receipt 2026-10-07: 9 of 18 closed; residual RA-W2-N, TC-W2-MDS/SCE, TC-W1-10, M29-11/14/15, M30-04/11
+B127 | CLOSED  | B127_partial_code_no_test.md | CLOSED 2026-10-08: 13 of 13 rows dispositioned; A11 reclassified TOM-CONCEPT-ONLY by operator
+B128 | OPEN    | B128_partial_code_partial_no_test.md | receipt 2026-10-08: 11 of 18 closed (rsi:cross side-by-level landed); residual RA-W2-N, TC-W2-MDS/SCE, TC-W1-10, M29-14, M30-04/11
 B129 | CLOSED  | B129_b074_test_harness_fragility.md | test_b074_rule_order.py fail-before fires on parser error, not assertion
 B130 | CLOSED  | B130_execution_tests_not_gated.md | execution/tests wired into PYTEST_LAYER_PATHS; guard test passes
 B131 | CLOSED  | B131_tom_pool_skew_upstream.md | Tom proof-5 pool 2:1 short at SetupCandidatesBuilder, before proof-direction; separate from B085
@@ -113,4 +113,5 @@ T071 | OPEN    | T071_absorption_events_post_p2.md | P7 absorption events after 
 B142 | OPEN    | B142_extrasetupbuilder_1m_stop_unsourced.md | ExtraSetupBuilder stop = previous 1m bar high/low, no trader source; filing only
 B143 | OPEN    | B143_cryptocred_stop_buffer_and_target_unsourced.md | CryptoCred 0.1 pct stop buffer and 1.5R target NO-SOURCE; filing only
 B144 | OPEN    | B144_exhaustion_proxy_unsourced_params.md | exhaustion proxy SCB volume 2x over 240 1m bars NO-SOURCE (tag SCREENER); filing only
+B145 | OPEN    | B145_cc_range_noise_live_neutrality.md | stopped-loop neutrality test needed before classify_msb filter_range_noise goes live (flag stays off)
 # END

@@ -348,9 +348,9 @@ CLOSEOUT 2026-10-07 (MTS-2026-10-07-1002Z-APP-BLD-research-closeout):
   T055 C1/C2 FAIL on full funding T055_BT_RERUN_FULLFUNDING_2026-10-07.md (10-06 reruns superseded);
   Tom core BT rerun TOM_CORE_BT_RERUN_2026-10-06.md (no edge; live rule 0 signals, was 17).
   Filed: B142 ESB 1m stop, B143 CryptoCred 0.1% stop + 1.5R, B144 exhaustion proxy 2x/240 (tag SCREENER). All NO-SOURCE items stay flagged.
-  Receipts: B120 (W3-5 parked), B127 (12/13), B128 (9/18) all still OPEN with named residuals. CLOUD_INBOX note 1 DONE on disk, note 2 OPEN (task 1).
+  Receipts: B120 (W3-5 parked) OPEN; B127 CLOSED 2026-10-08; B128 OPEN (11/18, residual RA-W2-N, TC-W2-MDS/SCE, TC-W1-10, M29-14, M30-04/11). B145 filed. CLOUD_INBOX note 1 DONE on disk, note 2 CLOSED. rsi:cross is side-by-level in auto_trader.py; takes effect at the next auto_trader restart.
   Closeout matrix and operator decisions: MyTradingSys/research/AUDIT_CLOSEOUT_2026-10-07.md.
-  Research branch mts-research 7aa01cd is local only, not pushed.
+  Research branch research/agenda-2026-10-06 pushed 2026-10-08 (tip in the closeout reply).
 
 LANDED this DSA session (in order):
   df5059e B133 filed; fce0551 B131 item-doc mechanism;
