@@ -10,7 +10,7 @@ Microsoft-Windows-WHEA-Logger Id 1 on the desktop, 43 events 2026-07-19..2026-10
   Source is constant: one part, not CPU/RAM/PCIe/power.
 - No BugCheck, Kernel-Power 41, 6008, disk 7/11/15/51/153 or thermal event in 30 days. The OS never crashed on one.
 - SMART not read (needs elevation). Disk vs SATA cable vs port is open.
-- Live exposure: java 18152 and Maven run from D:	ools; SMB share MTS is D:\MTS_Share. The repo and F:\MTS data are on the SSD.
+- Live exposure: java 18152 and Maven run from D:\tools; SMB share MTS is D:\MTS_Share. The repo and F:\MTS data are on the SSD.
 
 ## Next
 1. Elevated SMART read (5, 197, 198, 199). 2. Swap SATA cable and port. 3. Back up D:. 4. Move JDK/Maven to the SSD (supervisor restarts the loop once).

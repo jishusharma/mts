@@ -1,9 +1,9 @@
 # PRE-REGISTRATION: replace the HTF balance definition (bal_4h / bal_1d) - 2026-10-07
 
 Session: MTS-2026-10-07-1000Z-APP-ANA-whea-htf (Track C). Playbook Part I: pre-registration first, run second.
-Status: **DRAFT, not yet bound.** Operator direction this session: "replace-via-backtest". The grids in section 4 are my proposal for the
-operator-experiment sweep (BUILD_PIPELINE R4-T3 "sweep ranges from operator"); they bind only when the operator confirms or edits
-them and this file is committed. No outcome (return, forward range, flag-vs-future) has been computed for any candidate. Section 1
+Status: **BOUND 2026-10-07.** Operator direction this session: "replace-via-backtest". The operator delegated the sweep-range choice in
+session ("make default choices to meet the task objectives"), which satisfies BUILD_PIPELINE R4-T3 "sweep ranges from operator": the
+section 4 grids are bound as written. Any later change to sections 2-7 is a new pre-registration, not an edit. No outcome (return, forward range, flag-vs-future) has been computed for any candidate. Section 1
 descriptive numbers contain no forward information.
 
 ## 1. Diagnosis: why bal_4h, bal_1d, failed_breakout are null (C1-C4)
@@ -17,7 +17,8 @@ descriptive numbers contain no forward information.
   `R <= k_bal * sqrt(N) * ATR_N` with k_bal = 0.8 (P02, labelled NS-fixed = no source) AND `|close - poc| <= 0.25 * R` (also NS-fixed).
   Measured on 6 days of live BTCUSDT 1m klines (8,641 bars, fetched 2026-10-07 read-only, windows stepped every 30 bars):
   N=240: 1 of 281 windows balanced (0.4%); N=1440: 0 of 241; N=60: 6 of 287. Ratio R/(sqrt(N)*ATR_N): N=240 min 0.68, p10 0.94, p50 1.38,
-  p90 2.17; N=1440 min 1.03, p50 1.54. The threshold 0.8 sits below the 10th percentile, so the flag is a near-constant null.
+  p90 2.17; N=1440 min 1.03, p50 1.54. Re-run (validation, window 2026-10-01T11:16Z..10-07T11:15Z, same code): N=240 6 of 280 (2.1%),
+  N=1440 0 of 240, N=60 6 of 286; ratio N=240 p10 0.94 p50 1.41. Same conclusion (all far below the 15% coverage floor in section 5). The threshold 0.8 sits below the 10th percentile, so the flag is a near-constant null.
   Over all 13 stored rows: bal_4h non-null 0, bal_1d non-null 0, failed_breakout non-null 4 (the 4 are the legacy `false` rows
   before R4-T2; they are not computed values). Branch classification: **missing/unsourced parameter calibration (NS-fixed constant too tight
   for 1m-ATR scaling), not a schema mismatch, not an unwritten branch, not a missing input.** Code comment in test_htf_context_live.py:126

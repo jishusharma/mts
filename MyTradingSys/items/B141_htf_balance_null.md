@@ -11,6 +11,9 @@ Not a runtime error (err/out logs empty). balance() (backtest/layers/fabio/v3/si
 balanced, N=1440 0 of 241 (median R/(sqrt(N)*ATR) 1.38 and 1.54 against the 0.8 threshold).
 
 ## Path
-Operator 2026-10-07: replace-via-backtest. Pre-registration drafted (28 declared cells, holdout read once):
-MyTradingSys/research/PRE_REG_HTF_REPLACE_2026-10-07.md. It binds only after the operator confirms or edits the sweep ranges. Unblocks
+Operator 2026-10-07: replace-via-backtest. Pre-registration BOUND 2026-10-07 (28 declared cells, holdout read once;
+operator delegated the sweep ranges in session): MyTradingSys/research/PRE_REG_HTF_REPLACE_2026-10-07.md. Next: run it. Unblocks
 BUILD_PIPELINE 2.4 (R4-D) and 3.1 (R5) once run.
+
+## Validation
+validated 2026-10-07 on JIS-NUC (session MTS-2026-10-07-1000Z-APP-ANA-whea-htf, follow-up): balance() re-run on live klines ending 2026-10-07T11:15Z: N=240 6 of 280 (2.1%), N=1440 0 of 240. Cause confirmed.
