@@ -5,4 +5,4 @@ Ask (operator, verbatim): "revalidate - check what we really need to build - iss
 Scope: market guide (read-only observation digest), candle pilot P0/P1, MA literature pass, RSI verdicts.
 Live tree: no live-imported file edited; no process stopped/started; no HALT/AUTO_PAUSE/orders. No layers/alerts/ or execution/ claim taken.
 Results: research/MARKET_GUIDE_RESULTS_2026-10-07.md.
-Open: rsi_ma_events backtest still running at commit time; MA briefs sonnet-02/03; MA backtest (pre-reg needed).
+Open: MA briefs sonnet-02/03; MA backtest (pre-reg needed).

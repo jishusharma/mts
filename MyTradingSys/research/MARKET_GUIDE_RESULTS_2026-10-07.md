@@ -19,7 +19,7 @@ Gate: OOS n >= 30, OOS mean net > 0, PBO < 0.5 (layer drivers); candle pilot tri
 |---|---|---|
 | rsi_events 40/60 level (live) | NO-EDGE | backtest/layers/BACKTEST_L1_REPORT.md:16-25: best cell 1h/40 OOS +0.043% gross (n 89) < 14 bps cost; other cells PBO >= 0.39 |
 | rsi malkan_40_60 (live malkan_*) | NO-EDGE / insufficient n | run 2026-10-07 Dumps/backtest/runs/rsi_malkan_40_60/REPORT.md: 1h OOS n 43, -0.092% net, PBO 0.760; 4h n 17, 1d n 5 |
-| rsi_ma_events (offline only) | PENDING | run started 2026-10-07; append when Dumps/backtest/runs/rsi_rsi_ma_events/REPORT.md exists |
+| rsi_ma_events (offline only) | NO-EDGE | run 2026-10-07 Dumps/backtest/runs/rsi_rsi_ma_events/REPORT.md (1h+4h only; 15m dropped after a 30-min timeout): 1h OOS n 357, -0.199% net, PBO 0.352; 4h n 69, -0.216%, PBO 0.455 |
 | fabio cvd_absorption / escalation / volume_fvg | NO-EDGE | backtest/layers/fabio/FABIO_L1_REPORT.md:33-58 |
 | cryptocred sr_flip / fib_pullback | NO-EDGE | research/AUDIT_CLOSEOUT_2026-10-07.md:25 |
 | positioning funding_cvd_fade | NO-EDGE | AUDIT_CLOSEOUT_2026-10-07.md:23 (OOS -0.0453%) |
@@ -33,7 +33,7 @@ Answer to the operator question: the layers fire, and as context they say what t
 candle shape, S/R flips, absorption). None of them is a proven entry signal on our data. The guide prints each row with its tag.
 
 ## Trials
-Candle pilot: 130 rows in TRIAL_REGISTRY.csv (P0 10, P1 120). RSI malkan_40_60: 27 variants x 3 tf. VALIDATION/HOLDOUT untouched.
+Candle pilot: 130 rows in TRIAL_REGISTRY.csv (P0 10, P1 120). RSI malkan_40_60: 27 variants x 3 tf; rsi_ma_events: 24 variants x 2 tf. VALIDATION/HOLDOUT untouched.
 
 ## Next (only if wanted)
 1. MA layer backtest, pre-registered: log price/MA ratio 1/2/4/10/20w (hypothesis: 1w best), then close vs SMA 20/50/100/200d;
