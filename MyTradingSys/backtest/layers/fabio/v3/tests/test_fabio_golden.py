@@ -21,7 +21,30 @@ per-price big trades), D27 exit variant by day type (ex-post only), D18 "buyers 
 import functools
 import os
 
-import pytest
+import unittest
+
+
+class _Approx:
+    """pytest.approx stand-in (unittest-only gate): equal within abs tol (default 1e-6 or 1e-6 relative)."""
+    def __init__(self, expected, abs=None):
+        self.expected = expected
+        self.tol = abs if abs is not None else max(1e-6, 1e-6 * __builtins__["abs"](expected) if isinstance(__builtins__, dict) else 1e-6)
+
+    def __eq__(self, other):
+        return -self.tol <= other - self.expected <= self.tol
+
+    __hash__ = None
+
+    def __repr__(self):
+        return "approx(%r)" % (self.expected,)
+
+
+class pytest:  # noqa: N801 - minimal shim so the scenario bodies stay byte-identical to the spec-derived originals
+    approx = staticmethod(_Approx)
+
+    @staticmethod
+    def skip(msg):
+        raise unittest.SkipTest(msg)
 
 from MyTradingSys.backtest.layers.fabio.v3 import (add_allowed, add_size, engine, exhaustion, first_leg_allowed,
                                                    first_leg_risk, simulate_trade)
@@ -356,3 +379,20 @@ def test_g20_opposite_control_breaking_the_last_level_exits():
     assert exhaustion(bars, 61, trade, **kw) is True
     below = prelude(61) + [bar(61, 100.5, 100.6, 99.4, 100.2, 80, 20)]
     assert exhaustion(below, 61, trade, **kw) is False
+
+
+class GoldenScenarios(unittest.TestCase):
+    """unittest entry point: one test per module-level test_g* scenario function (the gate runs unittest, not pytest)."""
+
+
+def _bind(fn):
+    return lambda self: fn()
+
+
+for _name, _fn in list(globals().items()):
+    if _name.startswith("test_") and callable(_fn):
+        setattr(GoldenScenarios, _name, _bind(_fn))
+
+
+if __name__ == "__main__":
+    unittest.main()
