@@ -324,7 +324,7 @@ class TestNoMutationAndAppendOnly(WriterTestBase):
         (self.root / "bystander.txt").write_bytes(b"b")
 
         def tree():
-            return sorted(str(p.relative_to(self.root)) for p in self.root.rglob("*"))
+            return sorted(p.relative_to(self.root).as_posix() for p in self.root.rglob("*"))
 
         old = os.getcwd()
         os.chdir(cwd_dir)
