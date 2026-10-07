@@ -30,6 +30,15 @@ class LauncherVerbs(unittest.TestCase):
         for bad in ("Stop-Process", "Remove-Item", "Move-Item", "mode.ps1"):
             self.assertNotIn(bad, b)
 
+    def test_market_verb_runs_read_only_guide(self):
+        table = re.search(r"# VERBS-BEGIN(.*?)# VERBS-END", MTS, re.S).group(1)
+        self.assertIn("market", set(re.findall(r'@\("[^"]+",\s*"([a-z-]+)"', table)))
+        b = branch("market")
+        self.assertTrue(b, "no switch branch for market")
+        self.assertIn("market_guide.py", b)
+        for bad in ("Stop-Process", "Remove-Item", "Move-Item", "mode.ps1", "auto_trader"):
+            self.assertNotIn(bad, b)
+
     def test_orphans_branch_maps_exit_codes(self):
         b = branch("orphans")
         self.assertTrue(b, "no switch branch for orphans")

@@ -27,6 +27,7 @@ $Verbs = @(
     @("Market loop", "start",   "Start the market loop and its watchdog"),
     @("Market loop", "stop",    "Stop the market loop cleanly"),
     @("Market loop", "status",  "One screen: loop, market state, last alert, brakes"),
+    @("Market loop", "market",  "Market guide: MA / RSI / candle state + recent layer alerts, with backtest verdict tags (context only)"),
     @("Market loop", "watch",   "Live dashboard (Ctrl+C to leave)"),
     @("Trading",     "plan",    "Build a trade plan by answering questions"),
     @("Trading",     "plans",   "List saved plans"),
@@ -111,6 +112,12 @@ switch ($Verb.ToLower()) {
     "start" {
         $null = . (Join-Path $Root "scripts\load.ps1")
         mts-up
+    }
+
+    "market" {
+        # Read-only observation digest; also writes MyTradingSys/runtime/market_guide.md
+        Py (Join-Path $Root "scripts\dev\market_guide.py")
+        Py (Join-Path $Root "scripts\dev\market_guide.py") "--stdout"
     }
 
     "stop" { & (Join-Path $Root "scripts\core\stop-day.ps1") }
