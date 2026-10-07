@@ -131,6 +131,9 @@ def main(argv=None):
     cmd3d = [sys.executable, "scripts/dev/test_verify_extract_quotes.py"]
     success, output = run_step("3d", "Extract quote checker tests", cmd3d)
     results.append(("Step 3d: Quote checker tests", success))
+    cmd3h = [sys.executable, "scripts/dev/test_mts_launcher.py"]
+    success, output = run_step("3h", "Launcher verb static tests (runner, orphans)", cmd3h)
+    results.append(("Step 3h: Launcher static tests", success))
     cmd3g = [sys.executable, "scripts/dev/test_run_all_tests.py"]
     success, output = run_step("3g", "Gate coverage tests (Fabio v3 + live writers)", cmd3g)
     results.append(("Step 3g: Gate coverage tests", success))
