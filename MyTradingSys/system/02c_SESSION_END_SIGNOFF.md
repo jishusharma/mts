@@ -1,3 +1,12 @@
+# SUPERSEDED 2026-10-07
+
+The live close procedure lives in DSA_SESSION_PROMPT.md section 12 (SESSION END)
+and section 13b (SESSION HANDOFF NOTE). This file is kept as a historical
+reference. Sessions close by the handoff and the section 11 refresh, not by
+this checklist.
+
+---
+
 # SESSION END SIGN-OFF — 2026-09-02 (Session 2: JSON Card + Data Audit + Cleanup)
 # Purpose: Immutable session record. Append-only.
 # ---

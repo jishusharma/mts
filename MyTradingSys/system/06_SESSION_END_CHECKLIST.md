@@ -1,3 +1,12 @@
+# SUPERSEDED 2026-10-07
+
+The live close procedure lives in DSA_SESSION_PROMPT.md section 12 (SESSION END)
+and section 13b (SESSION HANDOFF NOTE). This file is kept as a historical
+reference. Sessions close by the handoff and the section 11 refresh, not by
+this checklist.
+
+---
+
 # SESSION-END VALIDATION PROTOCOL
 # File: system/06_SESSION_END_CHECKLIST.md
 # Purpose: Run this checklist BEFORE closing any session. Catches the errors 

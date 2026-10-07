@@ -82,6 +82,11 @@ Two more boot rules, added 2026-09-16 after a boot reply invented field values a
     move to MyTradingSys/research/_archive/2026-10-02-prompts/. USER.md forbids
     saving prompts.
 
+12. Read MyTradingSys/research/fast_track_2026-09-27/SUPERVISOR_INBOX.md,
+    filtered to entries newer than the last session boot. Cloud sessions write
+    there; the SUP wake cron was deleted 2026-09-30, so COORD is the only
+    reader. F3 decision 2026-10-07.
+
 ## 4. READING LARGE FILES
 
 Any file over 20 KB: read by line range, not whole file.
@@ -138,6 +143,21 @@ Three rules from it that apply on every surface:
 
 
 ## 5d. DSA DOES THIS DIRECTLY (operator directive 2026-10-04)
+
+OPERATOR STANDING ORDER 2026-10-07 (verbatim):
+
+> why these questions exists for me? of course claude must decide decide these based on the task objectives. Since claude a full access from user Claud must try to finish the tasks instead of holding them. find the right solution and use default ones that are aligned to the task objectives!!!
+
+> See all these are obvious choices based on why the task was worked upon in the first place! Claude must be able to do it going forward!
+
+> Useless dependency on Jishu after Claude has been asked to already take decisions to keep CI CD going and trades being tested on test-net - all layers firing!
+
+> If u are flagging it then why not already do it the default correct task oriented implementations an then flag later man!!!!!!!!
+
+Standing rule: for any task with a clear task-aligned default, DSA and CC pick
+the default and execute. Flag after, not before. Ask only when no clear default
+exists, or the call belongs to the operator (trading direction, orders,
+budget where no number was supplied).
 
 DSA is a free surface. Every Claude Code session costs a copy/paste from the
 operator plus App startup time. Tasks DSA can finish in its own turn run in

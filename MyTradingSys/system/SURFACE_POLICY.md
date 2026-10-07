@@ -50,6 +50,13 @@ Session Manager, not here. This file does not restate them.
 Cloud: no routines or always-on sessions; one session per task; nothing live
 depends on it.
 
+Resume rule (2026-10-07, operator decision F2). Weekly-cap suspension is
+reversed when the loop is on AND active work is happening in the session.
+Operator starts and stops the machine on his own schedule. The two scheduled
+tasks (mts-hourly-builder-check, mts-dsa-feeder) get re-enabled when the loop
+comes up and work begins, and suspended when the loop goes down. Log each
+state change in SUPERVISOR_LOG.md. No fixed weekly-reset trigger.
+
 ## 3b. Manager routing + spawn caps (added 2026-10-02)
 
 Budget unit: % of session or weekly pool for Pro/CL sessions. $ for CC cloud credits. Operator hints, Session Manager routes.
