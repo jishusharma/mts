@@ -16,7 +16,7 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 | DSA chat (chat.deepseek.com) | pasted text only, no disk | long-context reading, extraction, rulebooks |
 | CLD cloud (free pool) | pushed git refs only; no LAN, no gitignored files | offline research, specs, reviews, docs, backtests on committed data |
 | AIBridge (F:\AIBridge) | allowlisted loopback agent 127.0.0.1:7181, Chrome MV3 extension | PowerShell on desktop, on request from a web AI |
-Builders edit live. Gate before commit. Stage .new only when the running system imports the file mid-session.
+Builders work in a work tree, never the live tree; sharing and deploy: PARALLEL.md.
 
 ## 1b. Surface choice (operator directive 2026-10-04)
 App first, always. Claude Code Win App (Code / Cowork / Chat / Cloud modes) covers
@@ -28,12 +28,9 @@ Choose by what the task needs, not by what this policy lists first.
 State the reason in the session record when a surface other than the App is chosen.
 
 ## 2. Handoff
-A handoff is a file in the receiver's inbox that names the sender's session ID.
-SUP: research/fast_track_2026-09-27/SUPERVISOR_INBOX.md. AIBridge: F:\AIBridge\HANDOFF.md. DSA worker: incoming_dsa/.
-Poller: Dumps/operator/inbox. Cloud: MyTradingSys/system/CLOUD_INBOX.md (desktop commits and pushes).
-Cloud returns commits on its branch plus its session record; SUP gates, merges, logs in SUPERVISOR_LOG.
-A cloud session sees one repo; cross-repo work (CBP owns mts_queue/, MTS writes acks/ only) runs on the desktop.
-Before starting a task, grep MyTradingSys/system/sessions/ and the inboxes for its slug; skip duplicates.
+Replaced by PARALLEL.md (2026-10-07): work is handed off by shipping commits to origin/fast-track;
+an open question for the operator goes in the commit body as `Operator: <question>`. DSA (no disk) still
+pastes into incoming_dsa/; AIBridge still uses F:\AIBridge\HANDOFF.md.
 
 ## 3. Budget (Session Manager governs; operator supplies values when needed)
 
@@ -97,9 +94,7 @@ spent in 9 minutes; Waves 1-2 lost uncommitted.
 ## 4. Naming
 Session ID: MTS-YYYY-MM-DD-HHMMZ-<SURF>-<ROLE>[-<slug>] (UTC start; slug <=20 chars, lowercase kebab).
 SURF: CLD APP CLI LAP DSA ASK. ROLE: SUP BLD ANA EXT MON COO WRK. Chat title = session ID.
-Record: MyTradingSys/system/sessions/<ID>.md (template: sessions/README.md). Predecessor = newest record
-with the same -<SURF>-<ROLE>, also named in the record.
-Commit trailer: MTS-Session: <ID>.
+Record: the commit trailer `MTS-Session: <ID>` (commit history is the registry; sessions/ is history, no new files).
 Cloud branch: cloud/work; cloud/YYYY-MM-DD-<slug> only for concurrent Cloud sessions. Harness-assigned
 names (claude/...) are recorded as branch_alias, never reused.
 Lanes: bridge-nb = F:\AIBridge; dsaweb-nb = incoming_dsa/; ask-nb = poller. Directories are not renamed.

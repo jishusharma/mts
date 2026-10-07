@@ -3,7 +3,8 @@
 Read first: `MyTradingSys/research/STATUS.md` (regenerate: `python scripts/dev/make_status.py`),
 then `MyTradingSys/system/LESSONS_LEARNED.md`; supervisor decisions: `research/fast_track_2026-09-27/SUPERVISOR_LOG.md`. Don't re-read handoff docs STATUS.md already summarises.
 Chat-surface (DSA) behaviour lives in `DSA_SESSION_PROMPT.md`; this file is for code mode.
-Surfaces, handoff, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md` (read at boot; register the session in `MyTradingSys/system/sessions/`).
+Parallel work (any machine, any account): `MyTradingSys/system/PARALLEL.md` - `sync.py start`, commit, `sync.py ship`.
+Surfaces, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md`.
 
 ## What a CL prompt carries
 - Prompt <= 30 lines.
@@ -24,23 +25,25 @@ Surfaces, handoff, budget and session naming: `MyTradingSys/system/SURFACE_POLIC
   definition + source), computed independently - never from existing code. OUTPUT_TOKENS must fit the whole reply.
 
 ## Hard rules
-- Branch `fast-track`; never commit to master, never push/merge/rebase/reset.
-- Staged work is `<file>.new` (gitignored). Promote: back up to `.pre_<tag>`, rename, re-gate, then commit.
+- Share work only through `python scripts/dev/sync.py ship` (merges origin/fast-track, gates code, pushes fast-track).
+  Never commit to master, never rebase/reset/force-push. Never work in the live tree (it holds `.mts_live`).
+- Commit body carries `Result: <what works now / the number>` - the operator reads `sync.py news`, not diffs.
+- Other sessions' uncommitted files are not yours: don't stash, clean, revert or report them.
 - Testnet only (Deribit test); never mainnet; never read `.secrets/`, `.env` or keys.
 - Windows: write files with `newline='\n'`; long patches go in a .py script, not a heredoc.
 - Tom is core; every other indicator system is a separate layer (PROJECT_VISION), never a Tom filter.
 - Provenance (operator 2026-09-30): every engine/layer parameter, gate and label comes from that trader's own words
   (transcript quote + file:line) or it does not exist. Unsourced = NO-SOURCE: flag, then remove or replace; never tune it.
-- One session owns execution/ or layers/alerts/ at a time (claim it in SUPERVISOR_LOG); others propose only.
-  Whoever sets AUTO_PAUSE logs owner + expected end; each wake clears or escalates an overdue pause.
+- Whoever sets AUTO_PAUSE logs owner + expected end; each wake clears or escalates an overdue pause.
 - Adding a timeframe or layer family: grep every TF/family map (alert_rate_check, account routing, audits).
-- The working tree runs the live testnet system (auto_trader, position_manager, daily_loss_monitor,
-  live_runner_cli): never edit a file they import in place; builders never stop/restart them or touch HALT files
-  or open trades (only the supervisor restarts one, after its fix is committed and gated). Every builder brief touching `MyTradingSys/execution/` or `layers/alerts/` repeats this.
+- The live tree on JIS-NB runs the testnet system (auto_trader, position_manager, daily_loss_monitor,
+  live_runner_cli). Code reaches it only by the supervisor's deploy (stop, `git merge --ff-only origin/fast-track`,
+  gate, restart). Builders never stop/restart processes, touch HALT files or open trades.
 - Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety
   checks fail closed.
 - Never conclude from truncated output (`cut`, `head`, tail of a log); parse the real format, then count.
 - Backups/rejects: archive with `python scripts/dev/declutter_backups.py --apply` (moves, never deletes).
+- Never add to `.git/info/exclude`; an ignore that matters goes in `.gitignore` and ships.
 
 ## Interview Prep Notes
 - When a thread or project message says "Note this for InterviewPrep", append one entry to `/mnt/project-files/interview_prep/NOTES.md` with date, source link, and status "not yet exported".

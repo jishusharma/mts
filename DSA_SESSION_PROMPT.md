@@ -82,10 +82,9 @@ Two more boot rules, added 2026-09-16 after a boot reply invented field values a
     move to MyTradingSys/research/_archive/2026-10-02-prompts/. USER.md forbids
     saving prompts.
 
-12. Read MyTradingSys/research/fast_track_2026-09-27/SUPERVISOR_INBOX.md,
-    filtered to entries newer than the last session boot. Cloud sessions write
-    there; the SUP wake cron was deleted 2026-09-30, so COORD is the only
-    reader. F3 decision 2026-10-07.
+12. Read the pasted output of `python scripts/dev/sync.py news <hours since
+    last boot>`: every shipped commit with its Result line. SUPERVISOR_INBOX
+    is retired (system/PARALLEL.md, 2026-10-07).
 
 ## 4. READING LARGE FILES
 
@@ -302,8 +301,8 @@ One per line. No compression.
   committed repo and writes to its own session branch. Local claude.exe (via
   mts go) reads and writes disk with Maven. The operator runs every command
   and is the only courier between surfaces.
-- Cloud Claude pushes to its own session branch (claude/<name>), not cloud/work,
-  no matter what the prompt says. Cherry-pick onto main. Do not fight it.
+- Cloud Claude pushes to its own session branch (claude/<name>) and opens a PR
+  into fast-track; CI auto-merges it when green. Do not fight it.
 - Two cost pools are separate. Pro plan (weekly, resets Fri 09:00 UTC) feeds
   local claude.exe and mts go. Cloud credits feed
   Win app cloud sessions. Never assume one buys the other.

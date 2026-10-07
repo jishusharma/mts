@@ -114,20 +114,13 @@ login); sessions then record each machine's Tailscale name and address in this f
 - Both machines must be left on for travel access; the operator switches them
   off/on by hand today (B137 Q8).
 
-## 5. Code sync (operator OK 2026-10-06; replaces the removed MTS-Repo share)
+## 5. Code sync (operator 2026-10-07, replaces the desktop-only push rule)
 
-- Today: desktop branch fast-track is canonical and local only; NUC gets a
-  manual `git archive` zip via NUC-QUEUE\bt_stage; the laptop clone is on
-  master tracking the removed share (stale).
-- Decided (operator 2026-10-06): GitHub (private jishusharma/mts) is the hub. The desktop pushes
-  fast-track after a gated commit; the NUC and laptop only fetch/pull, never
-  commit. Push authority for fast-track was granted by the operator on 2026-10-06 (CLAUDE.md says
-  never push; only the desktop supervisor session pushes, after the gates, and
-  the supervisor updates that CLAUDE.md line; every other session still never pushes).
-- Fallback if push stays off: the desktop writes a `git bundle` of fast-track
-  to the MTS-Queue share; NUC and laptop `git fetch` from the bundle.
-- Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new
-  recordings, and parity is re-checked with `tom_bt_run.py rows` (section 7).
+GitHub jishusharma/mts `fast-track` is the hub. Any work tree on any machine (NUC, laptop, an App
+worktree on the desktop, cloud) ships with `scripts/dev/sync.py ship`; see system/PARALLEL.md. Only the
+live tree on JIS-NB (marked `.mts_live`) never ships; it changes only by the supervisor's deploy.
+Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new recordings, and parity is
+re-checked with `tom_bt_run.py rows` (section 7).
 
 ## 6. jis-nb (desktop) - primary, source of truth for the repository
 
