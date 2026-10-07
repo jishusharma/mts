@@ -246,3 +246,14 @@ Run the ipconfig command on each machine and replace the matching
 NOT CAPTURED line. Add a new machine as its own section in the same
 format the moment it's connected, even before you know its final role.
 When the operator answers a PROPOSED line, replace it with the decision and date.
+
+- Status 2026-10-08 (operator-reported, NUC UNBLOCKED): the Windows 11 25H2 upgrade failed on
+  Windows Update (0x80242016, then 0x8007001F) after a component-store corruption (KB5066791 had
+  failed 2026-09-26 with 0x80073712). Operator ran `DISM /Online /Cleanup-Image /RestoreHealth`
+  (ok) and `sfc /scannow` (corrupt files repaired). Decision: stay on Windows 10 22H2. Operator
+  set policy values under HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate:
+  TargetReleaseVersion=1, ProductVersion="Windows 10", TargetReleaseVersionInfo="22H2", and
+  AU\NoAutoRebootWithLoggedOnUsers=1 (stops the 25H2 offer and surprise restarts). Windows 10 is
+  out of support (no ESU): NO-SECURITY-PATCHES risk accepted for a worker with no live path.
+  New HDMI cable: Acer ACR06F8 detected, 1920x1080. Not verified: that the policy took effect
+  after `gpupdate`/restart, and that KB5066791 now installs. Undo = delete those four values.
