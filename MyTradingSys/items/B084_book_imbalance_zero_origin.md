@@ -1,6 +1,6 @@
 # B084 - book_imbalance 0.0 origin in the Python proof block
 
-Status: OPEN. Severity: MED. Opened 2026-10-03.
+Status: CLOSED 2026-10-06 (receipt in BUGS.md, MTS-2026-10-06-2122Z-APP-COO-registry-fix). Severity: MED. Opened 2026-10-03.
 
 ## Defect
 

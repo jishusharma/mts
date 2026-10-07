@@ -514,3 +514,8 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | my_charts/README.md | doc | T066: read operator TradingView layouts via Claude in Chrome. | MTS-2026-10-05-1650Z-APP-BLD-desktop-sonnet-finish | 2026-10-05 |
 | runtime_data/feed_watchdog.log | data | D4 watchdog output. | MTS-2026-10-05-1650Z-APP-BLD-desktop-sonnet-finish | 2026-10-05 |
 | MyTradingSys/research/TOM_FABIO_STORY_2026-10-05.md | doc | Tom+Fabio story; TOM-091 citation fix at L117,L175. | MTS-2026-10-05-1650Z-APP-BLD-desktop-sonnet-finish | 2026-10-05 |
+| MyTradingSys/queue/cbp_adapter.py | code | CBP -> MTS adapter: validate pending.json, write CANDIDATE_UNTESTED rows (B139). | MTS-2026-10-06-2122Z-APP-COO-registry-fix | 2026-10-06 |
+| MyTradingSys/queue/cbp_contract_v1.schema.json | config | CBP queue contract v1 schema (B139). | MTS-2026-10-06-2122Z-APP-COO-registry-fix | 2026-10-06 |
+| MyTradingSys/tests/test_cbp_adapter.py | test | cbp_adapter validation and ingest tests (B139). | MTS-2026-10-06-2122Z-APP-COO-registry-fix | 2026-10-06 |
+| MyTradingSys/items/B139_cbp_adapter.md | doc | B139 item doc: CBP adapter registration and real-queue run. | MTS-2026-10-06-2122Z-APP-COO-registry-fix | 2026-10-06 |
+| MyTradingSys/system/sessions/MTS-2026-10-06-2122Z-APP-COO-registry-fix.md | doc | Session record: registry and doc corrections. | MTS-2026-10-06-2122Z-APP-COO-registry-fix | 2026-10-06 |

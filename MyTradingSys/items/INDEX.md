@@ -11,6 +11,7 @@ B063 | OPEN    | B063_divergence.md | decision: restore divergence in schema, or
 B064 | CLOSED  | B064_supervisor_stop_flag.md | supervisor_stop.flag retired 2026-09-24, loop_stop.flag only
 B065 | CLOSED  | B065_stale_swing_consumer.md | stale-swing rejection in extractZones + stop selection; landed
 B066 | OPEN    | B066_rank1_distance_gate.md | rank-1 shown at trigger_ready while 150 pts from price; split from B059
+B139 | OPEN    | B139_cbp_adapter.md | CBP adapter registered; real-queue run 0 candidates (1 acked, 1 rejected); analyst-rule backtests pending
 T034 | OPEN    | T034_positioning_states.md | 4 positioning flags; blocked on Rule 33 readers + output type
 T035 | CLOSED  | T035_multi_venue_cvd.md | DEFER - SCREENER module, no Tom source
 T037 | CLOSED | T037_test_coverage_gap.md | tests for all 8 files; MarketDataSnapshot bodies filled (21 tests, seam b); mvn test 128 pass
@@ -95,10 +96,16 @@ B132 | OPEN    | B132_dsa_does_quick_wins.md | DSA dispatches work it can do its
 B133 | CLOSED  | B133_dsa_default_cli_over_app.md | CLOSED: checks 12-13 (81c7e9f), section 9 App-opening line (e41de5f), LESSONS (ed0e3c1)
 B134 | OPEN    | B134_compose_surface_marker.md | compose() emits prose, not the "SURFACE: APP" marker check 13 requires; same file set as B095
 B135 | OPEN    | B135_b131_threshold_recheck.md | B131 follow-up: ps1 proof-count thresholds and allshorts parity re-run
-B136 | IN-FIX  | B136_oi_endpoint_path.md | URLs fixed 881f22b (tests 3/3, mvn 133/133); loop restart pending; oi_breakdown residual
+B136 | IN-FIX  | B136_oi_endpoint_path.md | URLs fixed 881f22b (tests 3/3, mvn 133/133); loop restarted 2026-10-06T19:25Z, java 18152 on post-fix classes (built 19:19Z); oi_breakdown residual
+B137 | OPEN    | B137_device_roles_undecided.md | device roles undecided post-Qwen; 11 open questions on desktop/NUC/laptop split
+B138 | OPEN    | B138_dumps_two_copies.md | Dumps split C:/F: after move; share still points C:; junction blocked by live writer
 T063 | PARTIAL | T063_stop_run_oi_flush_signature.md | pre-reg + A0 + A1 (n=21 inconclusive, below 30 min); holds 09-29.., ~7d overlap not 30d; commits 3776f2f b055c2b c61a26a 690b238
 T064 | DONE    | T064_timeframe_selection_confirmation.md | 35 quotes (20 Tom, 15 Fabio); Tom zone/trigger sourced, Fabio retrace NO-SOURCE; verify_extract_quotes.py green; 65d4748. Cross-check TOM-091 vs TOM-092 pending
 T065 | DONE    | T065_lazybear_survey.md | shortlist 4 (SQZMOM, BVI, WaveTrend=T061, VFI); Pine sources verified on Desktop (BVI lookback 8/no thresholds, VFI 130/0.2/2.5/5, SQZ BB-mult bug); 1569678 e9bd822
 T066 | BLOCKED | T066_my_charts_module.md | my_charts/ created (README only); Claude in Chrome not connected; operator to connect extension + open two layouts; 1c0d276
 T067 | PARTIAL | T067_alert_improvements.md | spec + 29 failing-first tests; sweep+OI alert held because T063 A1 inconclusive; alerts.ps1 untouched; b92bd29; buy-detection meaning still pending operator
+T068 | OPEN    | T068_oi_arm_rerun.md | P3 OI arm rerun of T063 when n>=30 per arm; queued (research-agenda)
+T069 | OPEN    | T069_funding_settlement_clock.md | P5 funding settlement clock event study; queued (research-agenda)
+T070 | OPEN    | T070_volatility_timing_read_only.md | P6 volatility timing read-only analysis; queued (research-agenda)
+T071 | OPEN    | T071_absorption_events_post_p2.md | P7 absorption events after P2 Fabio L3-FAIL; queued (research-agenda)
 # END
