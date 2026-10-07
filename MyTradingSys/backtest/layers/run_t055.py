@@ -334,10 +334,18 @@ def load_data(cand, root1, root2, tf):
         bars_1m += [b for b in load_klines(root2) if b["t"] > last]
         bars_1m.sort(key=lambda b: b["t"])
     funding = load_funding(root2) if spec["use_funding"] else []
+    tf_ms = {"1m": 60000, "5m": 300000, "15m": 900000, "1h": 3600000}.get(tf, 60000)
     if tf == "1m":
-        return bars_1m, funding
-    registry = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
-    return resample_with_tbv(bars_1m, tf, registry), funding
+        bars = bars_1m
+    else:
+        registry = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
+        bars = resample_with_tbv(bars_1m, tf, registry)
+    if funding:
+        # Funding archive can end before the klines (monthly files publish after month end). A hold past the last funding
+        # record raises in trade_costs.funding_paid, so keep only bars that close inside funding coverage.
+        last_f = funding[-1][0]
+        bars = [b for b in bars if b["t"] + tf_ms <= last_f]
+    return bars, funding
 
 
 def main(argv=None):
