@@ -82,15 +82,15 @@ B116 | OPEN    | B116_unsourced_stop_floor_and_fallback.md | unsourced 0.1 pct s
 B117 | OPEN    | B117_unsourced_proof_bands.md | proof bands 3/5 NO-SOURCE still gate the verdict ladder; filing only
 B118 | OPEN    | B118_layer_bracket_unsourced.md | layer bracket stop_pct 1.0 / targets 2 / size 100 unsourced in auto_trader.py (live path); filing only
 B119 | OPEN    | B119_desktop_operator_gated_revalidation.md | paper verification, kappa clean reader, T2 run all need desktop/operator
-B120 | OPEN    | B120_provenance_audit_doc_followups.md | provenance audit doc follow-ups (reclass, 9 fields, re-extraction, definition gaps); doc-only
+B120 | OPEN    | B120_provenance_audit_doc_followups.md | receipt 2026-10-07: W3-5 parked on operator DATA-PLUMBING definition; other sub-items unblocked doc work, not run
 B121 | OPEN    | B121_poll_cadence_defaults.md | poll cadence: live_runner 60 s not bar-aligned, auto_trader 20 s; proposals not landed
 B122 | OPEN    | B122_reject_text_event_fallback.md | auto_trader reject text uses alert.get('event') not the fallback; cosmetic
 B123 | OPEN    | B123_zero_trade_and_quiet_families.md | zero-trade after AUTO_PAUSE (cleared), 24 h re-run pending, jishu_4 QUIET to investigate
 B124 | OPEN    | B124_journal_dir_open_plan_check.md | no check that execution/journal holds each open plan; canary has no journal check
 B125 | OPEN    | B125_consensus_writer_staged_only.md | consensus writer staged .new only, not promoted; Top-5 #3 acceptance absent
 B126 | OPEN    | B126_supervisor_inbox_consumption.md | cloud to SUP inbox consumption unverifiable; no mechanism on disk
-B127 | OPEN    | B127_partial_code_no_test.md | audit PARTIAL (e): 13 findings, code exists, test missing/staged; refs T037
-B128 | OPEN    | B128_partial_code_partial_no_test.md | audit PARTIAL (f): 18 findings, code partial/unwired, no test; refs T037
+B127 | OPEN    | B127_partial_code_no_test.md | receipt 2026-10-07: 12 of 13 closed (7 refuted as stale, 5 closed by new tests); residual RA-W4-A11 Java test + reclass
+B128 | OPEN    | B128_partial_code_partial_no_test.md | receipt 2026-10-07: 9 of 18 closed; residual RA-W2-N, TC-W2-MDS/SCE, TC-W1-10, M29-11/14/15, M30-04/11
 B129 | CLOSED  | B129_b074_test_harness_fragility.md | test_b074_rule_order.py fail-before fires on parser error, not assertion
 B130 | CLOSED  | B130_execution_tests_not_gated.md | execution/tests wired into PYTEST_LAYER_PATHS; guard test passes
 B131 | CLOSED  | B131_tom_pool_skew_upstream.md | Tom proof-5 pool 2:1 short at SetupCandidatesBuilder, before proof-direction; separate from B085
@@ -110,4 +110,7 @@ T068 | OPEN    | T068_oi_arm_rerun.md | P3 OI arm rerun of T063 when n>=30 per a
 T069 | OPEN    | T069_funding_settlement_clock.md | P5 funding settlement clock event study; queued (research-agenda)
 T070 | OPEN    | T070_volatility_timing_read_only.md | P6 volatility timing read-only analysis; queued (research-agenda)
 T071 | OPEN    | T071_absorption_events_post_p2.md | P7 absorption events after P2 Fabio L3-FAIL; queued (research-agenda)
+B142 | OPEN    | B142_extrasetupbuilder_1m_stop_unsourced.md | ExtraSetupBuilder stop = previous 1m bar high/low, no trader source; filing only
+B143 | OPEN    | B143_cryptocred_stop_buffer_and_target_unsourced.md | CryptoCred 0.1 pct stop buffer and 1.5R target NO-SOURCE; filing only
+B144 | OPEN    | B144_exhaustion_proxy_unsourced_params.md | exhaustion proxy SCB volume 2x over 240 1m bars NO-SOURCE (tag SCREENER); filing only
 # END

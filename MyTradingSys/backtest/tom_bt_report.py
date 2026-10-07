@@ -38,6 +38,22 @@ def sha(p):
     return hashlib.sha256(Path(p).read_bytes()).hexdigest()[:16]
 
 
+def adapter_line(root):
+    """Provenance line for the archive adapter. 3fdf8cb promoted the staged .new files to tracked sources; prefer the
+    promoted file and fall back to the old staged name so older checkouts still report."""
+    d = Path(root) / "src/main/java/datafeed"
+
+    def pick(*names):
+        for n in names:
+            if (d / n).exists():
+                return n, sha(d / n)
+        raise FileNotFoundError("none of %s under %s" % (names, d))
+
+    a_name, a_sha = pick("ArchiveHistoricalSource.java", "ArchiveHistoricalSource.java.new")
+    m_name, m_sha = pick("MarketDataSnapshot.java.archive_mode.new", "MarketDataSnapshot.java")
+    return "Archive adapter (compiled in %%TEMP%% only): %s %s; %s %s" % (a_name, a_sha, m_name, m_sha)
+
+
 def git(*a):
     return subprocess.run(["git", *a], cwd=ROOT, capture_output=True, text=True).stdout.strip()
 
@@ -125,9 +141,7 @@ def main():
               "SetupCandidatesBuilder.java sha256[:16]: %s" % sha(ROOT / "src/main/java/datafeed/SetupCandidatesBuilder.java"),
               "verdict.py: %s | tom_bt.py: %s | tom_bt_run.py: %s | l1_patch_mds.py: %s" % (
                   sha(HERE / "verdict.py"), sha(HERE / "tom_bt.py"), sha(HERE / "tom_bt_run.py"), sha(HERE / "l1_patch_mds.py")),
-              "Archive adapter (staged .new, compiled in %%TEMP%% only): ArchiveHistoricalSource.java.new %s; MarketDataSnapshot.java.archive_mode.new %s" % (
-                  sha(ROOT / "src/main/java/datafeed/ArchiveHistoricalSource.java.new"),
-                  sha(ROOT / "src/main/java/datafeed/MarketDataSnapshot.java.archive_mode.new")),
+              adapter_line(ROOT),
               "Rules: Tom core unchanged (D1/D3/D4 rulings as committed); verdict.py fail_closed proof direction; no fitted parameters",
               "(walk-forward has nothing to fit: every month is out-of-sample by construction; the split below is descriptive).",
               "Signals: rank-1 candidate; entry limit at zone price; stop/target from math; order life and time exit 8 zone-tf bars;",

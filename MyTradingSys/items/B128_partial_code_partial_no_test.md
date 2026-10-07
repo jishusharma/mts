@@ -1,6 +1,6 @@
 # B128 - Audit PARTIAL (f): code partial or unwired, no test
 
-Status: OPEN. Severity: MED. Opened 2026-10-04.
+Status: OPEN (receipt written 2026-10-07; residual rows named in the table). Severity: MED. Opened 2026-10-04.
 Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. References T037 (test coverage gap): MyTradingSys/items/T037_test_coverage_gap.md.
 
 ## Defect
@@ -48,3 +48,23 @@ Filing only. No code or test was written.
 
 ## Receipt
 
+Session MTS-2026-10-07-1002Z-APP-BLD-research-closeout, verdicts checked on disk after the live tree was fast-forwarded to 5053e2d.
+
+| finding | verdict | evidence | disposition |
+|---|---|---|---|
+| TC-W1-2, TC-TOP5-4 | REFUTED | mts.ps1:154-173 prints the alert runner status; scripts/dev/test_mts_launcher.py | CLOSED |
+| TC-W1-5 | REFUTED | mts.ps1:42 `orphans` verb, :44 `runner` verb | CLOSED |
+| TC-W1-6 | CONFIRMED then fixed | new MyTradingSys/tests/test_b128_cc_range_noise_filter.py (3 pass). live_runner _cc_layer still passes no flag (default False) | CLOSED for the test; enabling the flag live is an operator decision |
+| TC-TOP5-3 | REFUTED | MyTradingSys/backtest/layers/consensus/writer.py and test_writer.py promoted (row-count test at test_writer.py:53-60); .new pair gone | CLOSED |
+| M29-02, M30-03 | CONFIRMED (config) | .gitignore:77-90 and :93-94 hold the rules; doc check, no unit test applies | CLOSED |
+| M29-03 | CONFIRMED | git ls-files lists positioning/test_funding_cvd_fade.py and research/fast_track_2026-09-27/review/OPUS_PREMAINNET_AUDIT.md | CLOSED |
+| M29-18 | CONFIRMED (doc) | CLAUDE.md hard rules and LESSONS_LEARNED.md:76 | CLOSED |
+| RA-W2-N | UNVERIFIED | tom_bt_report.py:174 counts registry rows; N=3 dedupe and DSR not implemented | OPEN: needs the DSR formula in FORMULAS.md first, then a test |
+| TC-W2-MDS, TC-W2-SCE | UNVERIFIED | Java tests: Build-Check ran 147/147; no snapshot-field-contract, OI delta-state or state-letter test written this session | OPEN: write the Java tests (src/test only) |
+| TC-W1-10 | UNVERIFIED | research/testnet_status has 10-01, 02, 03, 05, 07 only; no 10-04 or 10-06 | OPEN: scheduler gap, check the task on the desktop |
+| M29-11 | CONFIRMED | auto_trader.py:75-78 rsi:cross direction->side; test exists, semantic risk stands | OPEN: operator decision on level-aware side |
+| M29-14, M29-15 | CONFIRMED | lesson only; auto_trader.py:311,320 key name t_close unchanged | OPEN: rename or accept, operator decision |
+| M30-04 | CONFIRMED | bt_runs/tom_core_20260929/ still untracked; the Tom core rerun writes a fresh dir | OPEN: track after the Tom rerun |
+| M30-11 | UNVERIFIED | cicd_run.py L6 owner/end check; file-content mechanism absent | OPEN |
+
+Mutation caveat (operator ruling 2026-10-07): fail-first intent not satisfiable on already-correct code; kept as coverage tests, mutation coverage incomplete. Each new test was broken once in memory (checksum compare, filter flag, move-vs-copy) and caught.
