@@ -45,6 +45,53 @@ class LauncherVerbs(unittest.TestCase):
         self.assertIn("alert runner", MTS)
         self.assertIn("orphan watchdog", MTS)
 
+    # Spec (wiring audit F4, 2026-10-07): status reports live_runner_cli and orphan_watchdog_cli; `mts runner`
+    # starts live_runner_cli like `mts guard` does and honours the single-instance check.
+
+    def test_status_verb_reports_runner_running_or_not(self):
+        s = branch("status")
+        self.assertTrue(s, "no switch branch for status")
+        self.assertIn('Say ""; Say "Layers and watchdogs" Cyan', s)
+        self.assertRegex(s, r'Ok "alert runner running')
+        self.assertRegex(s, r'Warn "alert runner not running - start it with: mts runner"')
+
+    def test_status_runner_line_sees_pythonw_and_python(self):
+        # the runner is launched hidden under pythonw.exe by the scheduled launcher (a4a657a) or by hand under python.exe
+        s = branch("status")
+        m = re.search(r'\$runner = Get-Procs "([^"]*live_runner_cli[^"]*)" "([^"]*)"', s)
+        self.assertTrue(m, "status does not look the runner process up")
+        self.assertIn("python.exe", m.group(2))
+        self.assertIn("pythonw.exe", m.group(2))
+
+    def test_status_verb_reports_orphan_watchdog_outcomes(self):
+        s = branch("status")
+        for text in ("orphan watchdog never run - run it with: mts orphans",
+                     "orphan watchdog last run",
+                     "no orphans",
+                     "HALT is set"):
+            self.assertIn(text, s)
+
+    def test_runner_verb_is_single_instance(self):
+        b = branch("runner")
+        start = b.index("Open-Window")
+        check = b.index("already running")
+        self.assertLess(check, start, "the already-running check must come before the start")
+        self.assertIn("break", b[check:start])
+        self.assertIn("pythonw.exe", b[:start], "a hidden (pythonw) runner must count as running")
+
+    def test_runner_and_guard_start_the_same_module_in_a_window(self):
+        mod = "-m MyTradingSys.backtest.layers.alerts.live_runner_cli"
+        for verb in ("runner", "guard"):
+            b = branch(verb)
+            self.assertRegex(b, r'Open-Window "[^"]*" "python %s' % re.escape(mod), verb)
+
+    def test_guard_does_not_start_a_second_runner_when_one_runs_hidden(self):
+        # the guard's already-running check for the runner must see pythonw.exe too, or it starts a duplicate
+        b = branch("guard")
+        m = re.search(r'if \(\(Get-Procs "[^"]*live_runner_cli[^"]*" "([^"]*)"\)\.Count\)', b)
+        self.assertTrue(m, "guard has no already-running check for live_runner_cli")
+        self.assertIn("pythonw.exe", m.group(1))
+
 
 if __name__ == "__main__":
     unittest.main()

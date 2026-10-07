@@ -300,7 +300,7 @@ switch ($Verb.ToLower()) {
             Open-Window "MTS daily-loss guard" "python '$Exec\daily_loss_monitor.py'"
             Ok "daily-loss guard started in its own window - leave it open while trading"
         }
-        if ((Get-Procs "live_runner_cli" "Name='python.exe'").Count) { Ok "live-runner-cli already running" }
+        if ((Get-Procs "-m\s+MyTradingSys\.backtest\.layers\.alerts\.live_runner_cli(\s|$)" "Name='python.exe' OR Name='pythonw.exe'").Count) { Ok "live-runner-cli already running" }
         else {
             Open-Window "MTS live-runner-cli" "python -m MyTradingSys.backtest.layers.alerts.live_runner_cli"
             Ok "live-runner-cli started in its own window - leave it open while trading"
