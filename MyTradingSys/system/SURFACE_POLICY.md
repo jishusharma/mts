@@ -1,6 +1,6 @@
 # SURFACE POLICY - routing, handoff, budget, naming (all surfaces read at boot)
 
-Keep under 4 KB (it is in every DSA boot paste). Tiers: CLAUDE.md work routing. Machines: WORKSTATION_MODES.md.
+Size: no enforced limit; DSA boot pastes need only sections 0-2. Tiers: CLAUDE.md work routing. Machines: WORKSTATION_MODES.md.
 
 ## 0. Mode (operator, direct, 2026-09-30)
 Auto mode: reversible work -> safe default, act, log it in the session record. Irreversible or
@@ -9,8 +9,8 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 ## 1. Surfaces and ownership
 | Surface | Reach | Owns |
 |---|---|---|
-| CLI desktop (SUP) | full tree, queue, live processes, testnet, commits | live path, restarts, HALT, promote/merge, commits |
-| APP desktop | scheduled tasks (hourly-builder-check, dsa-feeder) | chat supervision, scheduled checks |
+| APP desktop, Code mode (default, incl. SUP) | full tree, queue, live processes, testnet, commits, scheduled tasks (hourly-builder-check, dsa-feeder) | live path, restarts, HALT, promote/merge, commits, chat supervision |
+| CLI desktop (fallback) | same reach | only what a Claude Code session cannot do |
 | LAP laptop CLI | read-only monitors, queue share | questions, monitoring |
 | ASK poller | headless claude -p; default haiku, escalation sonnet | status questions |
 | DSA chat (chat.deepseek.com) | pasted text only, no disk | long-context reading, extraction, rulebooks |
@@ -19,7 +19,7 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 Builders never edit a file a live process imports (auto_trader, position_manager, daily_loss_monitor, live_runner_cli) in place: stage `.new`, gate, promote (CLAUDE.md hard rules). Other files: edit, gate, commit.
 
 ## 1b. Surface choice (operator directive 2026-10-04)
-App first, always. Claude Code Win App (Code / Cowork / Chat / Cloud modes) covers
+App first, always (operator, re-stated 2026-10-08: CLI only if a Claude Code session cannot do the task). Claude Code Win App (Code / Cowork / Chat / Cloud modes) covers
 every reach: local Maven, local testnet, the live loop, PowerShell-only files,
 scripts that import from the repo tree, and writes to gitignored paths.
 CLI is a fallback, not a default.
