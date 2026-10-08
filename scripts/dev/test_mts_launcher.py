@@ -93,5 +93,35 @@ class LauncherVerbs(unittest.TestCase):
         self.assertIn("pythonw.exe", m.group(1))
 
 
+class WiredToolVerbs(unittest.TestCase):
+    """Wiring ledger 2026-10-08: tools that only tests referenced are now reachable through mts verbs."""
+
+    def test_verbs_in_table(self):
+        table = re.search(r"# VERBS-BEGIN(.*?)# VERBS-END", MTS, re.S).group(1)
+        verbs = set(re.findall(r'@\("[^"]+",\s*"([a-z-]+)"', table))
+        for v in ("missed", "soak", "wiring"):
+            self.assertIn(v, verbs)
+
+    def test_each_verb_runs_its_script_and_returns_the_exit_code(self):
+        for verb, script in (("missed", "observation" + chr(92) + "missed.py"), ("soak", "soak_report.py"),
+                             ("wiring", "wiring_scan.py")):
+            b = branch(verb)
+            self.assertTrue(b, "no switch branch for " + verb)
+            self.assertIn(script, b)
+            self.assertIn("exit $LASTEXITCODE", b)
+
+    def test_read_only_verbs_never_delete_stop_or_trade(self):
+        for verb in ("missed", "soak", "wiring"):
+            b = branch(verb)
+            for bad in ("Stop-Process", "Remove-Item", "Move-Item", "Set-Content", "--mainnet", "executor"):
+                self.assertNotIn(bad, b, verb)
+
+    def test_wiring_verb_runs_the_check_mode(self):
+        self.assertIn('"--check"', branch("wiring"))
+
+    def test_missed_verb_passes_horizon_through(self):
+        self.assertIn("--horizon-h", branch("missed"))
+
+
 if __name__ == "__main__":
     unittest.main()

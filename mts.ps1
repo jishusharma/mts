@@ -44,6 +44,9 @@ $Verbs = @(
     @("Auto",        "runner",  "Start the alert runner (indicator layers) in its own window (only the runner; mts guard starts it too, with the loss monitor and orderflow)"),
     @("Auto",        "autolog", "Last 20 auto-trader decisions (trades, skips, rejects)"),
     @("Auto",        "ledger",  "Closed auto-trades per source: count, win rate, mean and total net P/L"),
+    @("Upkeep",      "missed",  "Missed-trade analysis: chart-observed setups vs what MTS did (mts missed [horizon hours])"),
+    @("Upkeep",      "soak",    "Testnet soak report from the execution journal (read-only)"),
+    @("Upkeep",      "wiring",  "Check that every code file is run by something or declared (the gate runs this too)"),
     @("Upkeep",      "go",      "Launch the next queued build task in claude (mts go [slug] [-Id B074] [-Dry])"),
     @("Upkeep",      "test",    "Run the offline test suite (no exchange)"),
     @("Upkeep",      "guide",   "Open the user guide"),
@@ -348,6 +351,20 @@ switch ($Verb.ToLower()) {
             $why = if ($e.reason) { $e.reason } elseif ($e.outcome) { "$($e.outcome) $($e.plan_id)" } elseif ($e.busy_with) { "busy with $($e.busy_with)" } else { "" }
             Say ("{0}  {1,-16} {2,-28} {3,-5} {4}" -f $e.ts, $e.event, $e.source, $e.side, $why)
         }
+    }
+
+    "missed" {
+        # Read-only: scores chart-observed setups (observation store) against auto_trades.jsonl on 1m bars.
+        $mArgs = @(); if ($Arg) { $mArgs += @("--horizon-h", $Arg) }
+        Py (Join-Path $Root "MyTradingSys\observation\missed.py") @mArgs; exit $LASTEXITCODE
+    }
+
+    "soak" {
+        Py (Join-Path $Exec "soak_report.py") (Join-Path $Exec "journal"); exit $LASTEXITCODE
+    }
+
+    "wiring" {
+        Py (Join-Path $Root "scripts\dev\wiring_scan.py") "--check"; exit $LASTEXITCODE
     }
 
     "test" { Py (Join-Path $Root "scripts\dev\run_all_tests.py") "--quick"; exit $LASTEXITCODE }

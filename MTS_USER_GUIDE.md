@@ -246,6 +246,9 @@ Open trades are not affected: their stops live on the exchange. Keep any
 | `mts runner`         | Start the alert runner (indicator layers) in its own window (only the runner; mts guard starts it too, with the loss monitor and orderflow) |
 | `mts autolog`        | Last 20 auto-trader decisions                             |
 | `mts ledger`         | Closed auto-trades per source: n, win rate, net P/L       |
+| `mts missed [hours]` | Missed-trade analysis: chart-observed setups vs what MTS did, scored on 1m bars (read-only) |
+| `mts soak`           | Testnet soak report from the execution journal (read-only) |
+| `mts wiring`         | Check that every code file is run by something or declared in system/wiring_registry.json |
 | `mts go [slug]`      | Launch the next queued build task in claude (empty queue prints IDLE). Slug = lowercase kebab, names the session MTS-<UTC>-CLI-BLD-<slug>. `-Dry` prints only; run from inside a Claude Code session it always prints only |
 | `mts test`           | Run the offline tests (no exchange)                       |
 | `mts guide`          | Open this guide                                           |
