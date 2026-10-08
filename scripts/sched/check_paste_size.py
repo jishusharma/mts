@@ -1,13 +1,15 @@
-"""Check 7: Dumps/SESSION_PASTE.txt over 150 KB (150*1024 bytes). Digest check: WARN.
+"""Check 7: Dumps/SESSION_PASTE.txt over 400 KB (400*1024 bytes). Digest check: WARN.
 
-Hash = check + 150 KB size band, so it re-fires only when the band changes (SCHEDULER_PLAN s4).
+Operator 2026-10-08: a 100-250 KB paste is normal and must work; the limit only catches a runaway paste.
+
+Hash = check + 400 KB size band, so it re-fires only when the band changes (SCHEDULER_PLAN s4).
 """
 import sys
 
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent))
 from _common import REPO, emit, run
 
-LIMIT = 150 * 1024
+LIMIT = 400 * 1024
 
 
 def main():

@@ -4,7 +4,7 @@ Permanent. Loaded at boot by every session. Supersedes verbal preferences.
 
 ## WHO
 - Operator, not a developer.
-- Runs all PowerShell. Holds final authority.
+- Runs PowerShell by hand. In DSA direct mode (AIBridge) DSA runs it inside the project working tree. Holds final authority.
 - Values speed and correctness over polish.
 
 ## COMMUNICATION

@@ -13,9 +13,9 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 | APP desktop | scheduled tasks (hourly-builder-check, dsa-feeder) | chat supervision, scheduled checks |
 | LAP laptop CLI | read-only monitors, queue share | questions, monitoring |
 | ASK poller | headless claude -p; default haiku, escalation sonnet | status questions |
-| DSA chat (chat.deepseek.com) | pasted text only, no disk | long-context reading, extraction, rulebooks |
+| DSA chat (chat.deepseek.com) | direct mode: shell in the project working tree via AIBridge; paste mode when the bridge is down | long-context reading, extraction, rulebooks, registry writes |
 | CLD cloud (free pool) | pushed git refs only; no LAN, no gitignored files | offline research, specs, reviews, docs, backtests on committed data |
-| AIBridge (F:\AIBridge) | allowlisted loopback agent 127.0.0.1:7181, Chrome MV3 extension | PowerShell on desktop, on request from a web AI |
+| AIBridge (F:\AIBridge) | loopback agent 127.0.0.1:7181, Chrome MV3 extension; reach = project working tree, delete allowed (AIBRIDGE_LANE.md) | PowerShell on desktop, run by DSA directly |
 Builders work in a work tree, never the live tree; sharing and deploy: PARALLEL.md.
 
 ## 1b. Surface choice (operator directive 2026-10-04)
