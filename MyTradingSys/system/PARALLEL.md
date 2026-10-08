@@ -30,6 +30,15 @@ system, so the running system gets its own checkout that no session works in.
 
 Cloud sessions with a harness branch (`claude/...`) open a PR instead; CI auto-merges it when green.
 
+## Needing the desktop (desk board)
+A session blocked on desktop reach (JIS-NB data, a file only it holds, a look at the live tree) does not stop:
+`python scripts/dev/desk.py post "<title>" --need "<exact paths/commands>" --done-when "<observable>"`, carries on with
+other work, and later `desk.py wait <id>` or reads the result after `sync.py start`. The desktop agent (a Claude
+session or the operator) lists open tasks with `mts desk`, claims one (`desk.py take`) and closes it
+(`desk.py done <id> --result ...`, or `--failed` with a reason). It is a board for agents, not an executor: nothing
+runs a command from task text, and restarts, HALT, orders, deploys and secrets stay with the supervisor
+(a declined task closes `--failed` and its `Operator:` line shows in `sync.py news`). Cloud work still uses CLOUD_INBOX.md.
+
 ## What the operator reads
 `python scripts/dev/sync.py news [hours]` - every shipped commit as subject + Result line + folders touched.
 No diffs, no PR review. A missing Result line shows as "(not stated)" and is the thing to push back on.

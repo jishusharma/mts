@@ -48,6 +48,7 @@ $Verbs = @(
     @("Upkeep",      "missed",  "Missed-trade analysis: chart-observed setups vs what MTS did (mts missed [horizon hours])"),
     @("Upkeep",      "soak",    "Testnet soak report from the execution journal (read-only)"),
     @("Upkeep",      "wiring",  "Check that every code file is run by something or declared (the gate runs this too)"),
+    @("Upkeep",      "desk",    "Open desktop-reach tasks other sessions wait on (post/take/done: scripts/dev/desk.py)"),
     @("Upkeep",      "go",      "Launch the next queued build task in claude (mts go [slug] [-Id B074] [-Dry])"),
     @("Upkeep",      "test",    "Run the offline test suite (no exchange)"),
     @("Upkeep",      "guide",   "Open the user guide"),
@@ -372,6 +373,11 @@ switch ($Verb.ToLower()) {
 
     "wiring" {
         Py (Join-Path $Root "scripts\dev\wiring_scan.py") "--check"; exit $LASTEXITCODE
+    }
+
+    "desk" {
+        # Read-only list of the desk board; agents take/finish tasks with scripts\dev\desk.py.
+        Py (Join-Path $Root "scripts\dev\desk.py") "list"; exit $LASTEXITCODE
     }
 
     "test" { Py (Join-Path $Root "scripts\dev\run_all_tests.py") "--quick"; exit $LASTEXITCODE }

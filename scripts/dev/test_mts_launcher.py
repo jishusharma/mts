@@ -108,19 +108,19 @@ class WiredToolVerbs(unittest.TestCase):
     def test_verbs_in_table(self):
         table = re.search(r"# VERBS-BEGIN(.*?)# VERBS-END", MTS, re.S).group(1)
         verbs = set(re.findall(r'@\("[^"]+",\s*"([a-z-]+)"', table))
-        for v in ("missed", "soak", "wiring"):
+        for v in ("missed", "soak", "wiring", "desk"):
             self.assertIn(v, verbs)
 
     def test_each_verb_runs_its_script_and_returns_the_exit_code(self):
         for verb, script in (("missed", "observation" + chr(92) + "missed.py"), ("soak", "soak_report.py"),
-                             ("wiring", "wiring_scan.py")):
+                             ("wiring", "wiring_scan.py"), ("desk", "desk.py")):
             b = branch(verb)
             self.assertTrue(b, "no switch branch for " + verb)
             self.assertIn(script, b)
             self.assertIn("exit $LASTEXITCODE", b)
 
     def test_read_only_verbs_never_delete_stop_or_trade(self):
-        for verb in ("missed", "soak", "wiring"):
+        for verb in ("missed", "soak", "wiring", "desk"):
             b = branch(verb)
             for bad in ("Stop-Process", "Remove-Item", "Move-Item", "Set-Content", "--mainnet", "executor"):
                 self.assertNotIn(bad, b, verb)
