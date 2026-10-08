@@ -1,5 +1,5 @@
 # Audit digest (T056)
-Generated: 2026-09-29T19:39:17Z
+Generated: 2026-10-08T05:50:16Z
 Open findings shown: 0 (capped at 40). Closed: 3.
 Dropped (QUOTE not confirmed near the claimed line): 15.
 Dropped by reason: line_off=9, quote_not_found=6; duplicates merged=0.
