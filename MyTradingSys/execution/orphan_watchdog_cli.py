@@ -1,4 +1,10 @@
-"""CLI for the orphan sweep (testnet only, read-only, NOT scheduled). Exit 0 ok, 1 read errors, 3 orphan HALT written."""
+"""CLI for the orphan sweep (testnet only, read-only towards the exchange). Exit 0 ok, 1 read errors, 3 orphan HALT written.
+--once (default): one sweep, an orphan writes HALT at once (manual use, unchanged).
+--interval N --confirm-sweeps K [--max-sweeps M]: repeated sweeps (daily task MTS-Orphan-Watchdog via
+launch-orphan-sweep.vbs runs M = K, then exits; M = 0 loops forever). An account is HALTed only
+when it is an orphan in K consecutive sweeps (a read error neither counts nor resets), so the gap between an entry
+fill and its position_manager's first heartbeat cannot trip it. Each orphan episode is written to HALT once; the loop
+keeps running after a HALT. Exit code of a repeated run: 3 if any sweep wrote HALT, else the last sweep's code. Accounts whose testnet secret file is missing are skipped (no client to read)."""
 import sys
 sys.dont_write_bytecode = True
 
@@ -8,6 +14,7 @@ import json
 import os
 import re
 import time
+from datetime import datetime, timezone
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
@@ -17,6 +24,7 @@ import pm_heartbeat
 
 LABEL_RE = re.compile(r"[a-z0-9_]{1,32}")
 DEFAULT_CONFIG_PATH = HERE / "auto_trader_config.json"
+SECRETS_DIR = HERE / ".secrets"
 HALT_PATH = HERE / "HALT"
 LOG_PATH = HERE / "orphan_watchdog.jsonl"
 
@@ -31,6 +39,11 @@ def account_labels(config_path=None) -> list:
     except (OSError, KeyError, json.JSONDecodeError):
         labels = ["fabio"]
     return ["default"] + sorted(set(labels))
+
+
+def has_secret(label) -> bool:
+    """Existence check only (never read). The main account ("default") is always swept."""
+    return label == "default" or (SECRETS_DIR / f"testnet_{label}.secret.json").exists()
 
 
 def real_get_client(label):
@@ -50,7 +63,8 @@ def real_get_client(label):
             os.environ["MTS_ACCOUNT"] = old_mts_account
 
 
-def main(argv=None, get_client=None, hb_dir=None, halt_path=None, log_path=None, alive=None, config_path=None) -> int:
+def main(argv=None, get_client=None, hb_dir=None, halt_path=None, log_path=None, alive=None, config_path=None,
+         secret_check=None, sleep=time.sleep) -> int:
     if argv is None:
         argv = sys.argv[1:]
     
@@ -58,12 +72,18 @@ def main(argv=None, get_client=None, hb_dir=None, halt_path=None, log_path=None,
     parser.add_argument("--once", action="store_true", default=True)
     parser.add_argument("--interval", type=float, default=0.0)
     parser.add_argument("--currency", default="BTC")
+    parser.add_argument("--confirm-sweeps", type=int, default=1,
+                        help="consecutive orphan sweeps before HALT (daily task uses 7)")
+    parser.add_argument("--max-sweeps", type=int, default=0, help="stop after this many sweeps (0 = no limit)")
     
     # testnet only: --mainnet is not defined, so argparse rejects it (exit 2)
     args = parser.parse_args(argv)
 
     if get_client is None:
         get_client = real_get_client
+        secret_check = secret_check or has_secret
+    confirm = max(1, args.confirm_sweeps)
+    streak, reported = {}, set()
     if halt_path is None:
         halt_path = HALT_PATH
     if log_path is None:
@@ -73,27 +93,42 @@ def main(argv=None, get_client=None, hb_dir=None, halt_path=None, log_path=None,
     
     def run_once():
         labels = account_labels(config_path)
+        if secret_check is not None:
+            labels = [lab for lab in labels if secret_check(lab)]
         live = pm_heartbeat.live_accounts(hb_dir, alive=alive)
-        res = orphan_watchdog.run_once(get_client, labels, live, halt_path, log_path=log_path, currency=args.currency)
+        res = orphan_watchdog.run_once(get_client, labels, live, None, log_path=log_path, currency=args.currency)
+        seen = {o["account"] for o in res["orphans"]}
+        for lab in labels:
+            if lab in seen:
+                streak[lab] = streak.get(lab, 0) + 1
+            elif lab not in res["errors"]:
+                streak[lab] = 0
+                reported.discard(lab)
+        confirmed = [o for o in res["orphans"] if streak[o["account"]] >= confirm]
+        new = [o for o in confirmed if o["account"] not in reported]
+        if new:
+            orphan_watchdog.write_orphan_halt(halt_path, new, datetime.now(timezone.utc))
+            reported.update(o["account"] for o in new)
         if res["orphans"]:
-            print(f"Orphan accounts found: {', '.join(o['account'] for o in res['orphans'])}")
+            print(f"Orphan accounts found: {', '.join(o['account'] for o in res['orphans'])}"
+                  f" (HALT: {', '.join(o['account'] for o in confirmed) or 'not yet, unconfirmed'})")
         if res["errors"]:
             print(f"Errors occurred: {len(res['errors'])}")
-        return 3 if res["orphans"] else 1 if res["errors"] else 0
+        return 3 if confirmed else 1 if res["errors"] else 0
     
     code = run_once()
+    halted, n = code == 3, 1
     
     if args.interval > 0:
         try:
-            while True:
-                time.sleep(args.interval)
+            while args.max_sweeps <= 0 or n < args.max_sweeps:     # keeps sweeping after a HALT
+                sleep(args.interval)
                 code = run_once()
-                if code == 3:
-                    break
+                halted, n = halted or code == 3, n + 1
         except KeyboardInterrupt:
             pass
     
-    return code
+    return 3 if halted else code
 
 
 if __name__ == "__main__":
