@@ -124,3 +124,6 @@ MyTradingSys/runtime/queue/
 # Pre-registration trial registry (TF8 L3 run, B099). Tracked on fast-track.
 !MyTradingSys/research/fast_track_2026-09-27/bt_runs/
 !MyTradingSys/research/fast_track_2026-09-27/bt_runs/TRIAL_REGISTRY.csv
+
+# options module raw data
+MyTradingSys/options/data/
