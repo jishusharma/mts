@@ -1,6 +1,6 @@
 # B136 - Binance /futures/data endpoints broken since 2026-09-24 (OI, L/S ratios, taker vol) - fail-open
 
-Opened 2026-10-05 by MTS-2026-10-05-1500Z-APP-ANA-operator-asks. Status OPEN. Severity P0 (live input dead 11 days, reported as HIGH confidence).
+Opened 2026-10-05 by MTS-2026-10-05-1500Z-APP-ANA-operator-asks. Status IN-FIX (reopened 2026-10-08: oi_breakdown residual, see BUGS row). Severity P0 (live input dead 11 days, reported as HIGH confidence).
 Master: research/OPERATOR_ASKS_2026-10-05.md section 1. Task list rows 1-2.
 
 ## Evidence

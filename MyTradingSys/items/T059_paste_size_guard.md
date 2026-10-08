@@ -2,7 +2,7 @@
 
 Register row: MyTradingSys/research/BUGS.md T059.
 Opened: 2026-09-29 by session MTS-2026-09-29-1039Z.
-Severity: LOW. Status: OPEN (NUC spec 121-paste-size-guard running).
+Severity: LOW. Status: WONTFIX 2026-10-08 (see RECEIPT).
 
 ## PROBLEM
 
@@ -25,6 +25,9 @@ the original SESSION_PASTE.txt for path-compatible tools.
 
 ## RECEIPT
 
-Pending. Verify with: python scripts\worker\queue_tool.py verify 121-paste-size-guard
+WONTFIX 2026-10-08, operator (MTS-2026-10-08-0806Z-APP-BLD-dsa-direct-mode): "i do not care if sessionpaste is 100kb or 250 kb - it should work".
+No split. DSA_SESSION_PROMPT.md section 2 now says paste size is not a limit; the warning in
+scripts/start-session.ps1 and the check in scripts/sched/check_paste_size.py moved from 80/150 KB to 400 KB.
+Guard: MyTradingSys/tests/test_dsa_direct_mode.py::test_paste_size_alarms_sit_above_250_kb.
 
 # END

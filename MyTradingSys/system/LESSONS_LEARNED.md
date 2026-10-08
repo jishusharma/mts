@@ -553,3 +553,13 @@ Where the rule lives: DSA_SESSION_PROMPT.md section 9 (line to add);
 prompt_check.ps1 check 12 (code gate); B133 item doc.
 
 Receipt: B133 filed df5059e.
+
+## 2026-10-08 - `git stash push -- <pathspec>` emptied the index while renames were staged
+
+What happened: during the wiring cleanup, a fail-before proof used `git stash push -- <paths>` while `git mv` renames were
+staged. The index came back empty (status showed everything as deleted/untracked); working-tree files were intact.
+Recovery: `git read-tree HEAD` rebuilt the index without touching files, then the changes were re-staged by explicit path.
+Nothing lost, but a parallel session's staged work in the same tree would have been wiped.
+
+Rule: no `git stash` in a shared tree (CLAUDE.md already bans it). Fail-before proofs copy the old file aside
+(or run the test against `git show HEAD:<path>` written to a scratch dir), they do not stash.

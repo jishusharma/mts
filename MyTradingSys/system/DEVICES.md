@@ -114,20 +114,13 @@ login); sessions then record each machine's Tailscale name and address in this f
 - Both machines must be left on for travel access; the operator switches them
   off/on by hand today (B137 Q8).
 
-## 5. Code sync (operator OK 2026-10-06; replaces the removed MTS-Repo share)
+## 5. Code sync (operator 2026-10-07, replaces the desktop-only push rule)
 
-- Today: desktop branch fast-track is canonical and local only; NUC gets a
-  manual `git archive` zip via NUC-QUEUE\bt_stage; the laptop clone is on
-  master tracking the removed share (stale).
-- Decided (operator 2026-10-06): GitHub (private jishusharma/mts) is the hub. The desktop pushes
-  fast-track after a gated commit; the NUC and laptop only fetch/pull, never
-  commit. Push authority for fast-track was granted by the operator on 2026-10-06 (CLAUDE.md says
-  never push; only the desktop supervisor session pushes, after the gates, and
-  the supervisor updates that CLAUDE.md line; every other session still never pushes).
-- Fallback if push stays off: the desktop writes a `git bundle` of fast-track
-  to the MTS-Queue share; NUC and laptop `git fetch` from the bundle.
-- Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new
-  recordings, and parity is re-checked with `tom_bt_run.py rows` (section 7).
+GitHub jishusharma/mts `fast-track` is the hub. Any work tree on any machine (NUC, laptop, an App
+worktree on the desktop, cloud) ships with `scripts/dev/sync.py ship`; see system/PARALLEL.md. Only the
+live tree on JIS-NB (marked `.mts_live`) never ships; it changes only by the supervisor's deploy.
+Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new recordings, and parity is
+re-checked with `tom_bt_run.py rows` (section 7).
 
 ## 6. jis-nb (desktop) - primary, source of truth for the repository
 
@@ -253,3 +246,14 @@ Run the ipconfig command on each machine and replace the matching
 NOT CAPTURED line. Add a new machine as its own section in the same
 format the moment it's connected, even before you know its final role.
 When the operator answers a PROPOSED line, replace it with the decision and date.
+
+- Status 2026-10-08 (operator-reported, NUC UNBLOCKED): the Windows 11 25H2 upgrade failed on
+  Windows Update (0x80242016, then 0x8007001F) after a component-store corruption (KB5066791 had
+  failed 2026-09-26 with 0x80073712). Operator ran `DISM /Online /Cleanup-Image /RestoreHealth`
+  (ok) and `sfc /scannow` (corrupt files repaired). Decision: stay on Windows 10 22H2. Operator
+  set policy values under HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate:
+  TargetReleaseVersion=1, ProductVersion="Windows 10", TargetReleaseVersionInfo="22H2", and
+  AU\NoAutoRebootWithLoggedOnUsers=1 (stops the 25H2 offer and surprise restarts). Windows 10 is
+  out of support (no ESU): NO-SECURITY-PATCHES risk accepted for a worker with no live path.
+  New HDMI cable: Acer ACR06F8 detected, 1920x1080. Not verified: that the policy took effect
+  after `gpupdate`/restart, and that KB5066791 now installs. Undo = delete those four values.

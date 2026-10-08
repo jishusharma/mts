@@ -212,6 +212,27 @@ try {
 }
 
 [void]$sb.AppendLine("")
+[void]$sb.AppendLine("### news: python scripts/dev/sync.py news 72 (every shipped commit with its Result line) ###")
+$newsHours = 72
+$prevEap = $ErrorActionPreference
+$ErrorActionPreference = 'Continue'
+try {
+    $newsOut = (& python (Join-Path $root 'scripts\dev\sync.py') news $newsHours 2>&1 | Out-String).TrimEnd()
+    if ($LASTEXITCODE -ne 0 -or -not $newsOut) {
+        [void]$sb.AppendLine("(news unavailable, exit=$LASTEXITCODE; run it yourself: python scripts/dev/sync.py news $newsHours)")
+        if ($newsOut) { [void]$sb.AppendLine($newsOut) }
+        Write-Host "news: unavailable (exit=$LASTEXITCODE)" -ForegroundColor Yellow
+    } else {
+        [void]$sb.AppendLine($newsOut)
+        Write-Host "news: included ($newsHours h)" -ForegroundColor Green
+    }
+} catch {
+    [void]$sb.AppendLine("(news unavailable: $_; run it yourself: python scripts/dev/sync.py news $newsHours)")
+    Write-Host "news: unavailable: $_" -ForegroundColor Yellow
+}
+$ErrorActionPreference = $prevEap
+
+[void]$sb.AppendLine("")
 [void]$sb.AppendLine("### loop health ###")
 $lockPath = Join-Path $root 'runtime_data\apparatus.lock'
 if (Test-Path $lockPath) {
@@ -311,8 +332,9 @@ if (Test-Path $cmdPath) {
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("Constraints:")
 [void]$sb.AppendLine("  - USER.md binds. Terse. Answer first. No emoji.")
-[void]$sb.AppendLine("  - One block at a time. Long pastes split with a confirmation between each.")
-[void]$sb.AppendLine("  - Read-only first. One decision per turn.")
+[void]$sb.AppendLine("  - One block at a time. This paste is read whole, whatever its size.")
+[void]$sb.AppendLine("  - Direct mode: you have a shell through AIBridge. Run commands yourself (DSA_SESSION_PROMPT.md section 0).")
+[void]$sb.AppendLine("  - One decision per turn.")
 [void]$sb.AppendLine("  - No blind java kill. No session_state.json thesis change without approval.")
 [void]$sb.AppendLine("  - Plain language. No codes. No shorthand.")
 
@@ -321,8 +343,8 @@ Write-Host "generated: $($block.Length) chars"
 
 $sizeKb = [math]::Round($block.Length / 1024, 1)
 Write-Host "paste size: $sizeKb KB"
-if ($sizeKb -gt 80) {
-    Write-Host "WARNING: paste over 80 KB (DSA section 2 threshold)" -ForegroundColor Yellow
+if ($sizeKb -gt 400) {
+    Write-Host "WARNING: paste over 400 KB (100-250 KB is normal; operator 2026-10-08)" -ForegroundColor Yellow
     $contrib = @()
     foreach ($f in ($m.boot_files + $m.boot_supplemental)) {
         $body = Get-ReadBody $f

@@ -29,7 +29,7 @@ T046 | OPEN    | T046_stage3_pending_decisions.md | 5 pending decisions; bundle
 
 B067 | CLOSED  | B067_crypto_module_audit.md | audit delivered W4; demote action in B070
 B069 | OPEN    | B069_update_market_state_wrapper.md | wrapper STATE_UPDATE_WARN exit=1; stderr hidden | LOW
-B070 | OPEN    | B070_crypto_demote.md | demote UTC 00:00 anchor + 0.75 slippage from gating; split from B067
+B070 | CLOSED  | B070_crypto_demote.md | net_rr = fee model (fees.py), UTC 00:00 anchor display-only; c8d36b8; NetRRConstantTest, CvdAnchorDisplayOnlyTest, test_b070_fee_parity; live jar rebuild + supervisor restart pending
 T048 | OPEN    | T048_satellite_framework.md | exchange API layer active (Deribit); freeze lifted 2026-09-26; satellites follow
 T049 | CLOSED  | T049_nuc_worker_v2.md | Qwen decommissioned 2026-10-01; NUC lane retired; AIBridge replaces run-command surface
 T050 | CLOSED  | T050_deribit_execution_layer.md | phase 3 live testnet PASS 2026-10-04
@@ -38,17 +38,17 @@ B071 | CLOSED  | B071_fail_open_proof_direction.md | fail-open fix applied live 
 B072 | CLOSED  | B072_l2_input_validation.md | L2 input validation absent for current_price "x" or None in build_math_object (F10)
 B073 | CLOSED  | B073_net_rr_rounding.md | net_rr rounding inconsistency: output 2dp, sanity check unrounded (F11)
 B074 | OPEN    | B074_rule_order_dependence.md | rule-order dependence: contradiction cap runs before broken-value override (F12)
-B075 | OPEN    | B075_historical_mode_unfit.md | historical mode unfit for backtesting; zeroes flow fields, look-ahead leak (F7)
+B075 | CLOSED  | B075_historical_mode_unfit.md | historical snapshot no live calls, flow fields null/UNAVAILABLE; 86313de 2f40ea5 3fdf8cb; HistoricalSnapshotNoLiveCallsTest, HistoricalBookImbalanceNullTest
 B076 | CLOSED  | B076_setup_confirmed_unreachable.md | SETUP_CONFIRMED unreachable; Compute-Verdict never emits it (F9)
 B077 | CLOSED  | B077_stop_order_wrong_type.md | stop_market via deribit_orders.py; closed 5e387a1; receipt in BUGS row
 B078 | CLOSED  | B078_cancel_all_by_label_overscope.md | cancel_by_label is label-scoped server-side; closed 5e387a1; receipt in BUGS row
 B079 | CLOSED  | B079_caps_check_not_enforced.md | caps enforced in executor.py; closed 5e387a1, b05c1cf; receipt in BUGS row
 T052 | OPEN    | T052_setup_confirmed_trigger.md | define a Tom-cited trigger for SETUP_CONFIRMED per operator D6b ruling
-T059 | OPEN    | T059_paste_size_guard.md | auto-split SESSION_PASTE at 80 KB; NUC 121 running
+T059 | WONTFIX | T059_paste_size_guard.md | auto-split dropped 2026-10-08: operator wants the 100-250 KB paste whole
 T053 | OPEN    | T053_two_account_hedge_scalping.md | two-account hedge / leveraged scalping research; ask restated 2026-09-28
 T054 | OPEN    | T054_us_session_news_correlation.md | US session / pre-market alerts, US-equity correlation, news sentiment; filed 2026-09-28
 T055 | OPEN    | T055_positioning_flow_and_proven_setups.md | Net/New Longs and Shorts research plus proven BTC setups; filed 2026-09-28
-T056 | OPEN    | T056_qwen_audit_program.md | Qwen regular auditing program; design at research/fast_track_2026-09-27/QWEN_AUDIT_PROGRAM.md
+T056 | WONTFIX | T056_qwen_audit_program.md | premise gone: Qwen NUC lane decommissioned 2026-10-01 (263b13f, T049 + B082 closed)
 T057 | OPEN    | T057_simplify_declutter.md | simplify / optimize / declutter; follows DEV_VELOCITY_AUDIT.md 2026-09-27
 T058 | OPEN    | T058_broken_extremes_sweep_vs_continuation.md | broken lows/highs by timeframe: continuation vs liquidity sweep; filed 2026-09-29
 T060 | OPEN    | T060_low_volatility_btc.md | low-volatility anomaly; test whether trailing realized-vol rank predicts BTC forward return
@@ -58,7 +58,7 @@ B081 | CLOSED  | B081_fee_source_conflict.md | fees.py single source; receipt 1e
 B082 | CLOSED  | B082_qwen_feeder_missing.md | task deleted; Qwen decommissioned 2026-10-01
 T062 | CLOSED  | T062_deprecate_manager.md | deprecate mts-manager; superseded by DSA-composed CL prompts
 B083 | CLOSED  | B083_prompt_check_gate.md | prompt_check.ps1 advisory gate; test_prompt_check.ps1 PASS 4/4 2026-10-03
-B084 | OPEN    | B084_book_imbalance_zero_origin.md | origin of 0.0 in Python proof block unverified; 13295c8 WIP-unverified load-bearing
+B084 | CLOSED  | B084_book_imbalance_zero_origin.md | origin found (ProofResult default 0 + asDouble null->0.0); fixed 2f40ea5 0c34a2d; BookImbalanceUnavailableTest, HistoricalBookImbalanceNullTest
 B085 | CLOSED  | B085_tom_bt_proof5_skew.md | hypothesis refuted; skew is upstream (see B131)
 B086 | CLOSED  | B086_dispatcher_second_writer.md | dispatcher demo launched a second CL writer; one-writer-per-file-set violated; Claude decides fix
 B087 | CLOSED  | B087_pick_task_repick.md | pick_task.py re-picks same row each wake; two smaller flags attached; Claude decides fixes
@@ -78,7 +78,7 @@ B101 | OPEN    | B101_dsa_context_ask.md | DSA asks for CLAUDE.md and mts go lau
 B104 | CLOSED  | B104_rules_vs_gates.md | rules exist for prompt hygiene; check is advisory, not blocking; blocking + checks 6-10 (60f3250) + check 11 (b796edb)
 B102 | CLOSED  | B102_dst_session_anchors.md | fixed-UTC session anchors in offline models; wrong 1h on ~40% of days
 B103 | CLOSED  | B103_funding_coverage.md | funding cost silently 0 outside loaded range; archive has funding from 2020-01
-B116 | OPEN    | B116_unsourced_stop_floor_and_fallback.md | unsourced 0.1 pct stop floor + 0.2 pct fallback stop live in SetupCandidatesBuilder; filing only
+B116 | CLOSED  | B116_unsourced_stop_floor_and_fallback.md | 0.1 pct floor + 0.2 pct fallback removed 0c34a2d (SetupCandidatesBuilder.java:48,104,116-124); SetupCandidatesBuilderStopT3Test
 B117 | OPEN    | B117_unsourced_proof_bands.md | proof bands 3/5 NO-SOURCE still gate the verdict ladder; filing only
 B118 | OPEN    | B118_layer_bracket_unsourced.md | layer bracket stop_pct 1.0 / targets 2 / size 100 unsourced in auto_trader.py (live path); filing only
 B119 | OPEN    | B119_desktop_operator_gated_revalidation.md | paper verification, kappa clean reader, T2 run all need desktop/operator
@@ -98,7 +98,7 @@ B132 | OPEN    | B132_dsa_does_quick_wins.md | DSA dispatches work it can do its
 B133 | CLOSED  | B133_dsa_default_cli_over_app.md | CLOSED: checks 12-13 (81c7e9f), section 9 App-opening line (e41de5f), LESSONS (ed0e3c1)
 B134 | OPEN    | B134_compose_surface_marker.md | compose() emits prose, not the "SURFACE: APP" marker check 13 requires; same file set as B095
 B135 | OPEN    | B135_b131_threshold_recheck.md | B131 follow-up: ps1 proof-count thresholds and allshorts parity re-run
-B136 | IN-FIX  | B136_oi_endpoint_path.md | URLs fixed 881f22b (tests 3/3, mvn 133/133); loop restarted 2026-10-06T19:25Z, java 18152 on post-fix classes (built 19:19Z); oi_breakdown residual
+B136 | IN-FIX  | B136_oi_endpoint_path.md | URLs fixed 881f22b (tests 3/3, mvn 133/133), loop restarted 2026-10-06; REOPENED 2026-10-08: buildOiBreakdown still fail-open (0.0 + LOW, no UNAVAILABLE), TESTNET_STATUS taint rows not found
 B137 | OPEN    | B137_device_roles_undecided.md | device roles undecided post-Qwen; 11 open questions on desktop/NUC/laptop split
 B138 | OPEN    | B138_dumps_two_copies.md | Dumps split C:/F: after move; share still points C:; junction blocked by live writer
 T063 | PARTIAL | T063_stop_run_oi_flush_signature.md | pre-reg + A0 + A1 (n=21 inconclusive, below 30 min); holds 09-29.., ~7d overlap not 30d; commits 3776f2f b055c2b c61a26a 690b238
