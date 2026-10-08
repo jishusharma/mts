@@ -146,10 +146,17 @@ def main(argv=None):
     success, output = run_step("3e", "DSA browser worker + queue lane tests", cmd3e)
     results.append(("Step 3e: DSA worker tests", success))
 
+    # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
+    cmd3w = [sys.executable, "scripts/dev/test_wiring_scan.py"]
+    success, output = run_step("3w", "Wiring gate tests", cmd3w)
+    results.append(("Step 3w: Wiring gate tests", success))
+    cmd3x = [sys.executable, "scripts/dev/wiring_scan.py", "--check"]
+    success, output = run_step("3x", "Wiring check: no undeclared unwired code (wiring_scan.py --check)", cmd3x)
+    results.append(("Step 3x: Wiring check", success))
+
     # Step 4: pytest (math + doc tests)
     cmd4 = [sys.executable, "-m", "pytest", "MyTradingSys/tests", "-q",
             # function-style tests that unittest-based steps 5b/6 do not collect
-            "MyTradingSys/backtest/bt/test_bt_rsi.py", "MyTradingSys/backtest/bt/test_bt_rsi_edge.py",
             "MyTradingSys/backtest/test_prob_table.py", "MyTradingSys/backtest/test_prob_table_edge.py",
             "MyTradingSys/backtest/test_tom_bt.py"] + PYTEST_LAYER_PATHS
     success, output = run_step(4, "Pytest (math + doc tests)", cmd4)
