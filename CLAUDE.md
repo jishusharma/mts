@@ -17,6 +17,12 @@ Surfaces, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md`.
 - Implementations go to Sonnet; tests derived from the spec, from Sonnet.
 - Wait on the queue with one background shell, never a polling agent. Spot-check one claim per worker report.
 
+## Surface (operator 2026-10-08, repeated)
+- Claude Code Win App only. Never tell the operator to "use the CLI" or hand work back to them: run it here in bypassPermissions.
+- A permission block is not a reason to stop: report the exact blocked call + why, try the allowed equivalent, keep going.
+- Only if a task truly cannot run in the App (e.g. needs a process this App cannot reach) create a CLI task file
+  `MyTradingSys/system/cli_tasks/<date>_<slug>.md` (exact commands, why forced, expected result) and say so in one line. Never stay silent.
+
 ## Gates (must pass before any commit touching the area)
 - All offline: `python scripts/dev/run_all_tests.py` (`--quick` skips Maven + backtest).
 - Extractions: `python scripts/dev/verify_extract_quotes.py <extract.md>` (quotes verbatim + GPS position).
