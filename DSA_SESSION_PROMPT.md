@@ -374,10 +374,13 @@ LANDED this DSA session (in order):
   65d4748 T064 quotes; 1569678 T065 shortlist; 3776f2f+b055c2b T063 pre-reg+arm A0;
   2927244+627150b replay partial; b92bd29 T067 spec+tests; 8dfec36 session record + inbox cleanup [CLD];
   c60d0e2 D4 watchdog; 1c0d276 D6 my_charts scaffold; c61a26a+690b238 T063 pre-reg amend + A1;
-  b455a2f full replay 930 episodes; e9bd822 T065 Pine verify; dec81d7 TOM-091/092 fix; ba8824c watchdog negative-age clamp.
+  b455a2f full replay 930 episodes; e9bd822 T065 Pine verify; dec81d7 TOM-091/092 fix; ba8824c watchdog negative-age clamp;
+  ff to origin/fast-track 5053e2d 2026-10-07 (48 commits, PRs #2 #4 #5 #6 #7 #8 #10 #12 #13 #17 #18, CI gate);
+  36a1149 closeout (CryptoCred/T055/Tom core reruns, B142-B144, section 11); aaf007a closeout 2 (rsi:cross side-by-level, A11 reclassified, B127 closed, B145 filed).
+  Later on the branch, not DSA: fcbff0d orphan sweep, 32312fa live path, 86e44a3 + d604c50 docs/SURFACE_POLICY.
 
-CLOSED this DSA session: B093, T037, B133, B131, B094.
-OPENED this DSA session: B133 (closed same), B134, B135.
+CLOSED: B093, T037, B133, B131, B094 (10-04 DSA); B075, B084, B116, B136 (10-07); B127 (10-08, closeout 2).
+OPENED: B133 (closed same), B134, B135 (10-04 DSA); B137, B138, B139, B141 (10-07); B142, B143, B144, B145 (closeout).
 
 Pipeline:
   B134 OPEN: compose() surface marker vs prompt_check check 13; same file
@@ -395,6 +398,7 @@ Pipeline:
 Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
 
 Next session first action:
+  0. Month-by-month diff of the live-rule drop (19 SETUP_FORMING -> 0): python scripts/dev/diff_tom_rows.py F:/MTS/data/tom_bt F:/MTS/data/tom_bt_2026-10-07; next step is the 2022-02 join on t (proof, stop, gross_rr, net_rr). Detail: AUDIT_CLOSEOUT_2026-10-07.md. Read-only.
   1. [struck, superseded 2026-10-07: commits already on origin/fast-track]
   2. [struck, superseded: loop restarted 2026-10-06T19:25Z]
   3. Operator decisions owed: Chrome extension connect for T066; TOM-091/092 retag in risk_protocol.md; buy-detection meaning for T067.
