@@ -23,6 +23,19 @@ Surfaces, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md`.
 - Only if a task truly cannot run in the App (e.g. needs a process this App cannot reach) create a CLI task file
   `MyTradingSys/system/cli_tasks/<date>_<slug>.md` (exact commands, why forced, expected result) and say so in one line. Never stay silent.
 
+## Quick answers (the operator is not a developer: do these, do not ask, do not re-investigate)
+- Push: never from the live tree (the folder holding `.mts_live`). `git worktree add ../mts-push -b <host>/<slug> HEAD` (reuse it if present),
+  `git merge origin/fast-track` there (docs conflicts: take origin's text; STATUS.md: take origin's, regenerate),
+  `python scripts/dev/run_all_tests.py --quick`, then `git push origin <branch>:fast-track`. `sync.py ship` does the same.
+- Deploy to the live tree (operator pre-authorised "just do it" 2026-10-09): if other sessions have uncommitted edits there, do NOT
+  merge/stash. `git -C <live> checkout origin/fast-track -- <only the changed live-path files>`, run their tests, kill only that
+  process; `loop-supervisor` restarts it in ~1 min. Java needs `mvn compile` + restart: leave until a window, say so.
+- Git denies chained `cd x && git checkout/merge ...` in Bash: use `git -C <dir> <cmd>` as its own call.
+- Machine off = stack down. `MTS-Supervisor` starts at logon (+90 s) and revives every aux process. Missed events are not replayed
+  after an outage on purpose (no stale-signal trades); do not build catch-up.
+- Runner output: `runtime_data/live_runner.log`. alert_rate_check candles: `scripts/dev/refresh_klines.py` runs daily before it.
+- Local gate needs `pip install numpy` (Step 3p). Two `htf_context_live` loops = duplicate rows: keep one (shim parent + child = one loop).
+
 ## Gates (must pass before any commit touching the area)
 - All offline: `python scripts/dev/run_all_tests.py` (`--quick` skips Maven + backtest).
 - Extractions: `python scripts/dev/verify_extract_quotes.py <extract.md>` (quotes verbatim + GPS position).
