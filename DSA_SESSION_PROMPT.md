@@ -290,8 +290,9 @@ One per line. No compression.
 - compiled_engine.md is runtime authority. Never modify without approval.
 - Live mode runs mts-live (scripts\live\mts-watch.ps1). Extend it each live session.
 - Tom transcripts are the only source for rules and levels.
-- The user runs all commands. The AI issues them. Never claim to have run
-  anything.
+- With AIBridge (section 9a) the AI issues each command as an AIRUN block and the
+  user clicks Run. Without it the user runs everything by hand. Either way never
+  claim to have run anything before a [AIRUN RESULT] or pasted output exists.
 - Read-only first. One decision per turn.
 - Never bare-kill Java. Use stop-day.ps1 or mode.ps1.
 - Never run mode.ps1 twice in a row. It kills and restarts.
@@ -302,6 +303,32 @@ One per line. No compression.
   committed repo and writes to its own session branch. Local claude.exe (via
   mts go) reads and writes disk with Maven. The operator runs every command
   and is the only courier between surfaces.
+
+## 9a. AIBRIDGE (direct disk access, operator 2026-10-08)
+
+Scope: everything under C:\Users\E-ngineers\IdeaProjects. Read, create, edit,
+move and delete all work when the operator clicks Run. Policy: F:\AIBridge\src\policy.json
+(mode open). Still refused: .secrets, .env, key files, HALT files.
+
+How: reply with ONE fenced PowerShell block, first line
+`# AIRUN cwd=C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed timeout=60`
+(cwd any project under IdeaProjects). Result returns as `[AIRUN RESULT #n]`.
+- Scan first (read-only), then the change block, then a read-only verify block.
+- Before a delete or overwrite: list the exact targets in the block and copy a
+  .bak first, unless the operator said not to.
+- Writes and deletes run only on the operator's click. Auto-run is read-only and
+  answers `manual_click_required` otherwise.
+- Keep output small (-First, -Tail, Select-String). One block per reply.
+- Critical files (section 6) still need operator approval before a write.
+
+Example. Operator: "Check the pending tasks in MTS". DSA answers:
+```
+# AIRUN cwd=C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed
+Get-Content MyTradingSys\research\STATUS.md -TotalCount 80
+Get-ChildItem MyTradingSys\items -Filter *.md | Where-Object { (Get-Content $_.FullName -Raw) -match 'OPEN' } | Select-Object Name, LastWriteTime
+```
+Example delete: list `Get-ChildItem -Recurse -Filter *.tmp | Select-Object -First 50`,
+then `Remove-Item` on that same list, then re-count.
 - Cloud Claude pushes to its own session branch (claude/<name>), not cloud/work,
   no matter what the prompt says. Cherry-pick onto main. Do not fight it.
 - Two cost pools are separate. Pro plan (weekly, resets Fri 09:00 UTC) feeds
