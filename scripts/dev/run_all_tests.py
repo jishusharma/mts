@@ -20,6 +20,7 @@ PYTEST_LAYER_PATHS = [
     "MyTradingSys/backtest/layers/fabio/test_htf_context_live.py",
     "MyTradingSys/execution/tests",
     "scripts/dev/test_market_guide.py",
+    "MyTradingSys/observation/tests",
 ]
 
 
@@ -138,6 +139,9 @@ def main(argv=None):
     cmd3g = [sys.executable, "scripts/dev/test_run_all_tests.py"]
     success, output = run_step("3g", "Gate coverage tests (Fabio v3 + live writers)", cmd3g)
     results.append(("Step 3g: Gate coverage tests", success))
+    cmd3k = [sys.executable, "scripts/dev/test_sync.py"]
+    success, output = run_step("3k", "sync.py parallel ship tests", cmd3k)
+    results.append(("Step 3k: sync.py tests", success))
     cmd3e = [sys.executable, "scripts/worker/test_dsa_worker.py"]
     success, output = run_step("3e", "DSA browser worker + queue lane tests", cmd3e)
     results.append(("Step 3e: DSA worker tests", success))
