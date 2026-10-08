@@ -271,7 +271,7 @@ Outside the MTS window, run `.\mts.ps1 <command>` from the project folder.
 
 ## 10. Known limits
 
-- Testnet only. There is no mainnet path.
+- Trading is testnet only. The only mainnet command is `mts kill-mainnet` (emergency close).
 - One plan at a time on BTC-PERPETUAL.
 - The daily-loss guard's profit-and-loss reading is still being verified on
   testnet. Treat it as a backstop, not your only protection.

@@ -1,3 +1,5 @@
+> **SUPERSEDED (2026-10-08).** One-off FIX3 batch brief from 2026-09-28. Current rules: CLAUDE.md. Its "never run testnet suites / never push" lines applied to that batch only.
+
 # Code-mode brief (written 2026-09-28 03:20 IST by the Opus coordinator session)
 
 You are working natively on Windows in C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed (use `python`, PowerShell 7).
