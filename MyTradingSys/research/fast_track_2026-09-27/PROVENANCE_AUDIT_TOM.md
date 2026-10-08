@@ -9,8 +9,8 @@ Verdicts: TOM-SOURCED = a quote supports the value. TOM-CONCEPT-ONLY = Tom names
 | verdict | rows |
 |---|---|
 | TOM-SOURCED | 2 |
-| TOM-CONCEPT-ONLY | 33 |
-| NO-SOURCE | 36 |
+| TOM-CONCEPT-ONLY | 34 |
+| NO-SOURCE | 35 |
 | DATA-PLUMBING | 3 |
 | total | 74 |
 
@@ -30,7 +30,7 @@ None of the numbers that decide whether a Tom trade exists (stop floor and fallb
 | A08 | SCB:150 | Minimum target distance | 2.0 x stop | comment '2x stop filter' | - (Q05: minimum comes from his hit rate; Q46, Q04 give 2:1 as an example) | NO-SOURCE | Drops candidates whose nearest level is under 2R. |
 | A09 | SCB:151 | Maximum target distance | 3.5 x stop | - | - (Tom: 8.1R Q10, 7R Q11, 3:1+ Q35, Q36) | NO-SOURCE | Tom's 12/97-tick trade cannot be produced (AH E-003 A,B; MP 0.1, 2.2). |
 | A10 | SCB:153-175 | Target = NEAREST pool level inside [2.0, 3.5]R, else candidate dropped | nearest | - | - (Q03, Q12 name the next node, no window) | NO-SOURCE | WAIT_RR in 80,847 of 120,892 rows (BT:14); nearest-first turns a passing farther level into WAIT_RR (REV). |
-| A11 | SCB:183; MTH:74-75 | Gross R:R >= 1.5 or candidate removed | 1.5 | CE:154,231,414-418 ('Tom never lowers R:R minimum') | - (risk_protocol.md:626; Q05) | NO-SOURCE | Redundant with A08. CE:231 credits Tom with a rule no quote gives. |
+| A11 | SCB:183; MTH:74-75 | Gross R:R >= 1.5 or candidate removed | 1.5 | CE:154,231,414-418 ('Tom never lowers R:R minimum') | - (risk_protocol.md:626; Q05) | TOM-CONCEPT-ONLY | Redundant with A08. CE:231 credits Tom with a rule no quote gives. RECLASSIFIED 2026-10-08 (operator, MTS-2026-10-07-1002Z-APP-BLD-research-closeout, B127 RA-W4-A11): the gross 1.5 drop was removed, SetupCandidatesBuilder.java:153 keeps rrSanity as an advisory output flag only (never drops a candidate), so it is a concept-only advisory (CE:154 'Tom never lowers R:R minimum'). |
 | A12 | SCB:182; ExecutionMathConstants.java:34; MTH:70-72; CE:153,429 | Friction: net = gross x 0.75 | 25% | CE:429 'System rule (Tom never addresses slippage)' | Q06: fees enter his break-even hit rate; no number | TOM-CONCEPT-ONLY | Flat 25% ignores stop width; at 0.2% stop fees are 0.22-0.23R (BT:84; MP 0.2). |
 | A13 | SCB:184; VRD:110-111; PS1:169,204; CE:397,426 | Net R:R >= 2.0 ('2:1 NET') or verdict WAIT_RR | 2.0 | CE:426 and entry_timing_triggers.md:65,730 cite qLnQan0KGmQ | - qLnQan0KGmQ read in full: no '2:1', no minimum (Q01, Q02 only). Nearest Tom 2:1: Q46, Q04, each an example followed by 'what is my hit rate' | NO-SOURCE | MISCITED. With A12 needs gross >= 2.67; A09 caps 3.5: band [2.67, 3.5]R (MP 2.2). |
 | A14 | SCB:201 | Confluence bonus to score | +10 | CE:159,251 say no numeric bonus | - | NO-SOURCE | Changes which candidate is 'top'. |

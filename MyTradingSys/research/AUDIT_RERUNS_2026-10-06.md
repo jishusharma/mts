@@ -19,3 +19,12 @@ CryptoCred PASS is invalid until rerun: bt_engine.simulate_trade fills at entry_
 2. Tom core: in the PC research worktree merge origin/claude/project-thread-7gvyfy (needs 3fdf8cb), build, run TomSnapshotGen into F:\MTS\data\tom_snapshots_2026-10-06 (README_REPLAY.md), then tom_bt_run.py rows/report into a fresh dir, and write TOM_CORE_BT_RERUN_2026-10-06.md.
 3. Decide on the remaining NO-SOURCE items from the audit: ExtraSetupBuilder 1m stop, layer brackets (auto_trader.py stop 1% / target 2%), CryptoCred 0.1% stop and 1.5R target, exhaustion proxy (SCB 2x/240), proof bands 3/5.
 4. Push the PC research branch commits (4c74cd7, 2aa75cc, b3dbe74) when the operator allows.
+
+## UPDATE 2026-10-07 (MTS-2026-10-07-1002Z-APP-BLD-research-closeout)
+| Rerun | Result | File |
+|---|---|---|
+| CryptoCred setups, limit-fill model | setup1 FAIL, setup2 FAIL, setup3 FAIL (both fee variants). The b3dbe74 PASS was the fill bias; UNVERIFIED mark removed | research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md |
+| T055 C1 / C2, full funding | C1 FAIL (OOS net -0.0453%), C2 FAIL (OOS +0.0177%, Sharpe 0.0084). The 10-06 reruns used ~12 months of funding, not the 80 files, and are superseded; full funding crashed run_t055 until bars were clipped to funding coverage (fixed, tested) | research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md |
+| Tom core BT, current Java | no edge, live rule 0 signals (was 17), net R -2.91 sensitivity (fee ~2.76 R per trade after the stop floor removal) | research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06.md |
+| Step 3 NO-SOURCE items | all five stay flagged by operator ruling 2026-10-07: B116 (closed earlier), B117, B118, B142, B143, B144 | items/ |
+| Step 4 push of research commits | not done; research branch is local at 7aa01cd | - |

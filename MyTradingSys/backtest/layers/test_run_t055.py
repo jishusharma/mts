@@ -215,6 +215,24 @@ class TestFundingForC2(unittest.TestCase):
             bd.load_klines, bd.load_funding = old
         self.assertEqual(f, [(T0 + 8 * 3600000, 0.0001)])
 
+    def test_load_data_clips_bars_to_funding_coverage(self):
+        # Funding archive ends before the klines do (funding to 2026-08-31, klines to 2026-09-26): a hold past the
+        # last funding record raises in trade_costs.funding_paid, so bars whose close is after the last record are dropped.
+        import MyTradingSys.backtest.bt.bt_data as bd
+        old = (bd.load_klines, bd.load_funding)
+        last_f = T0 + 8 * 3600000
+        bd.load_klines = lambda root: [{"t": T0 + i * 60000, "o": 1, "h": 1, "l": 1, "c": 1, "v": 1, "tbv": 0}
+                                       for i in range(0, 8 * 60 + 30)]
+        bd.load_funding = lambda root: [(T0, 0.0001), (last_f, 0.0001)]
+        try:
+            bars, f = R.load_data("c2", "r1", "r2", "1m")
+        finally:
+            bd.load_klines, bd.load_funding = old
+        self.assertEqual(f[-1][0], last_f)
+        self.assertTrue(bars)
+        self.assertTrue(all(b["t"] + 60000 <= last_f for b in bars))
+        self.assertEqual(bars[-1]["t"] + 60000, last_f)
+
     def test_session_hold_crossing_funding_times_section13_worked_example(self):
         # FORMULAS.md s13: long 100 -> 101, funding 8h 0.0001 and 16h 0.0003, t_in=0, t_out=16h:
         # net = 0.01 - 0.0010 - 0.0002 - 0.0004 = 0.0084 ; short 100 -> 99: 0.01 - 0.0012 + 0.0004 = 0.0092

@@ -42,7 +42,9 @@ Ranking rule: our own OOS backtest > T1 > T2 > T3 (Part I 3e). Findings carry `T
 
 ## 3. Findings
 
-(pending: workers W1 Q1, W2 Q2, W3 Q3+Q4; evidence files in research/btc_ma_2026-10-03/)
+Consolidated pass 2026-10-07 (one Sonnet worker, Q1 + Q2 definitions): btc_ma_2026-10-03/Q_ALL_ma_findings.md section 3.
+Supervisor spot-check: Wei et al. 2024 (DOI 10.1002/ijfe.2863) PDF opened, title/DOI match.
+OPEN: Q2 adaptive-MA head-to-head (KAMA/Hull/ALMA...) and Q3/Q4 regime/factor papers not reached (briefs sonnet-02/03 remain).
 
 ## 4. Backtest feasibility vs current MTS and Fabio functions (file map)
 
@@ -109,8 +111,12 @@ reference: run_t055.py PASS needs n_oos >= 30 events in the last 30%.
 
 ## 5. Answer and surface
 
-(pending)
+See Q_ALL_ma_findings.md section 5. Short form: only the ~1-week log price/MA ratio (PMA1) has snooping-controlled, OOS,
+net-of-cost support on BTC (Wei et al. 2024, T1, sample ends 2022-03). Crossovers incl. 50/200, VMA lengths and adaptive
+"secret" MAs: no validated evidence found. No validated ex-ante trending/ranging filter. Pi Cycle, Mayer 2.4/0.8, 200W bottom:
+folklore (n <= 4 cycles). Surface: close vs SMA20/50/200 shown in scripts/dev/market_guide.py as OBSERVATION (UNTESTED).
+Next backtest (separate layer, position-series, daily, OOS post-2024-09): log price/MA ratio 1/2/4/10/20w, pre-registered PMA1 hypothesis.
 
 ## 6. Discarded (REJECT / untestable), one line each
 
-(pending)
+See Q_ALL_ma_findings.md section 6. Untestable as events: 50x200 golden cross (12 events), Pi Cycle (2).

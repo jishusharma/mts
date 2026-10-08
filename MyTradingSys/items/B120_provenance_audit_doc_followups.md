@@ -1,6 +1,6 @@
 # B120 - Tom provenance audit doc follow-ups from W3 and revalidation not delivered
 
-Status: OPEN. Severity: MED. Opened 2026-10-04.
+Status: OPEN (receipt written 2026-10-07; W3-5 parked on an operator ruling). Severity: MED. Opened 2026-10-04.
 Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. Group (c) from MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md.
 
 ## Defect
@@ -42,3 +42,10 @@ Filing only. No code or doc edit was made for this item.
 
 ## Receipt
 
+Session MTS-2026-10-07-1002Z-APP-BLD-research-closeout. Doc-only item. No audit document was edited this session.
+
+- W3-5: awaiting operator definition of DATA-PLUMBING per W3_BLIND_PACKET_2026-10-01.md:14. PARKED.
+- RA-W3-RECLASS, RA-W5-FIELDS, W3-4, W3-6, W3-LIM: CONFIRMED still undelivered (PROVENANCE_AUDIT_TOM.md:5 definition unchanged). Next action: Sonnet doc pass with verify_extract_quotes.py. Not run this session.
+- W3-2: CONFIRMED undelivered; headline 36 still in OPUS_PLAN_2026-10-02.md:20. Re-extraction of the 22 both-reader rows needs a transcript read and passes verify_extract_quotes.py. Not run this session.
+
+Item stays OPEN. W3-5 is the only operator-blocked sub-item; the rest are unblocked doc work.

@@ -334,13 +334,22 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-07T05:06Z.
+Last live read:  2026-10-07T13:17Z (MTS-2026-10-07-1002Z-APP-BLD-research-closeout).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
 Next trigger:    none set.
 Invalidates:     none set.
-Runtime + loops: loop UP. wrapper 21168, java 18152, supervisor 20852, restart_count_24h 0. HTF writer 20748 (parent) / 19992 (python). Watchdog task MTS-Feed-Watchdog Ready.
-Build PASS 2026-10-06T05:10Z (Java 135/135, Math 342/342, Doc 5/5; see BUILD_REPORT.md).
-HEAD at section 11 write: 892a025 (read git rev-parse origin/fast-track for the current tip). B136 CLOSED. B137, B138 OPEN.
+Runtime + loops: loop UP after the 2026-10-07 stop-day / ff / mode armed window. supervisor 3404, wrapper 3644 (mvn exec:java), java 17568, apparatus.lock 21772. auto_trader 5364, live_runner_cli 19364, orderflow 2728. HTF writer 20748 (parent) / 19992 (python). feed watchdog OK. position_manager S-mkt-1007-1141 (PID 18688) no longer running at 13:17Z. Prior PIDs wrapper 21168 / java 18152 / supervisor 20852 are gone.
+Build PASS 2026-10-07T10:05Z pre-ff (Java 147/147, Math 345/345, Doc 5/5); re-gated at close, see the session record.
+HEAD: live tree fast-forwarded to origin/fast-track 5053e2d on 2026-10-07 (was 3a64f3d, 48 commits), then the closeout commit on top. B136 CLOSED. B137, B138 OPEN.
+
+CLOSEOUT 2026-10-07 (MTS-2026-10-07-1002Z-APP-BLD-research-closeout):
+  Results: CryptoCred setups all FAIL (limit-fill; b3dbe74 PASS was fill bias) CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md;
+  T055 C1/C2 FAIL on full funding T055_BT_RERUN_FULLFUNDING_2026-10-07.md (10-06 reruns superseded);
+  Tom core BT rerun TOM_CORE_BT_RERUN_2026-10-06.md (no edge; live rule 0 signals, was 17).
+  Filed: B142 ESB 1m stop, B143 CryptoCred 0.1% stop + 1.5R, B144 exhaustion proxy 2x/240 (tag SCREENER). All NO-SOURCE items stay flagged.
+  Receipts: B120 (W3-5 parked) OPEN; B127 CLOSED 2026-10-08; B128 OPEN (11/18, residual RA-W2-N, TC-W2-MDS/SCE, TC-W1-10, M29-14, M30-04/11). B145 filed. CLOUD_INBOX note 1 DONE on disk, note 2 CLOSED. rsi:cross is side-by-level in auto_trader.py; takes effect at the next auto_trader restart.
+  Closeout matrix and operator decisions: MyTradingSys/research/AUDIT_CLOSEOUT_2026-10-07.md.
+  Research branch research/agenda-2026-10-06 pushed 2026-10-08 (tip in the closeout reply).
 
 LANDED this DSA session (in order):
   df5059e B133 filed; fce0551 B131 item-doc mechanism;
@@ -375,7 +384,7 @@ Pipeline:
   B135 OPEN: ps1 proof-count thresholds + allshorts diag parity re-run
     (read-only first; start-trading-day.ps1 if an edit is needed).
   B095 OPEN (prompt ready): per-session cost on disk.
-  B125 OPEN (prompt ready): promote the consensus writer.
+  B125: consensus writer promoted on origin (consensus/writer.py live, .new pair gone); DSA to confirm and close.
   B075 OPEN: historical mode; residual is SetupCandidatesBuilder.java,
     now free (B131 landed). Sequences after B135 read.
   B121, B122, B124, B098: LIVE PATH. Wait for a stopped-loop window.

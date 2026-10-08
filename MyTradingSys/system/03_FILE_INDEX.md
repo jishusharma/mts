@@ -519,3 +519,18 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/tests/test_cbp_adapter.py | test | cbp_adapter validation and ingest tests (B139). | MTS-2026-10-06-2122Z-APP-COO-registry-fix | 2026-10-06 |
 | MyTradingSys/items/B139_cbp_adapter.md | doc | B139 item doc: CBP adapter registration and real-queue run. | MTS-2026-10-06-2122Z-APP-COO-registry-fix | 2026-10-06 |
 | MyTradingSys/system/sessions/MTS-2026-10-06-2122Z-APP-COO-registry-fix.md | doc | Session record: registry and doc corrections. | MTS-2026-10-06-2122Z-APP-COO-registry-fix | 2026-10-06 |
+| MyTradingSys/research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md | research | CryptoCred setups rerun with resting-limit fill: all three FAIL; b3dbe74 PASS was fill bias. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
+| MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md | research | T055 C1/C2 rerun on all 7305 funding records: both FAIL; 10-06 reruns superseded. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
+| MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06.md | research | Tom core BT rerun on current Java (run tom_core_20261007): live rule 0 signals, no edge. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
+| MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06_full.md | research | Full generated Tom core BT report of the rerun (306 lines). | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
+| MyTradingSys/research/AUDIT_CLOSEOUT_2026-10-07.md | research | Closeout matrix: audit findings validated, why-stuck, operator decisions. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
+| MyTradingSys/tests/test_b127_fetch_archive_funding.py | test | fetch_binance_archive funding URL, plan, checksum tests (B127 B103-F2). | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
+| MyTradingSys/tests/test_b127_declutter_backups.py | test | declutter_backups move-not-delete, manifest, exclude tests (B127). | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
+| MyTradingSys/tests/test_b127_fabio_v3_isolation.py | test | Fabio v3 package import isolation (B127 TC-TOP5-2). | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
+| MyTradingSys/tests/test_b128_cc_range_noise_filter.py | test | classify_msb filter_range_noise tests (B128 TC-W1-6). | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
+| MyTradingSys/items/B142_extrasetupbuilder_1m_stop_unsourced.md | doc | B142 item doc: ExtraSetupBuilder 1m stop NO-SOURCE. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
+| MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md | doc | B143 item doc: CryptoCred 0.1 pct stop and 1.5R target NO-SOURCE. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
+| MyTradingSys/items/B144_exhaustion_proxy_unsourced_params.md | doc | B144 item doc: exhaustion proxy 2x/240 NO-SOURCE (SCREENER). | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
+| MyTradingSys/system/sessions/MTS-2026-10-07-1002Z-APP-BLD-research-closeout.md | doc | Session record: research closeout. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
+| MyTradingSys/items/B145_cc_range_noise_live_neutrality.md | doc | B145 item doc: stopped-loop neutrality test before filter_range_noise goes live. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-08 |
+| scripts/dev/diff_tom_rows.py | tool | Month-by-month verdict-count diff of two Tom core BT row directories (read-only). | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-08 |

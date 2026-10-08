@@ -1,6 +1,6 @@
 # B127 - Audit PARTIAL (e): code exists, test missing or only staged
 
-Status: OPEN. Severity: MED. Opened 2026-10-04.
+Status: CLOSED 2026-10-08 (13 of 13 rows have a disposition; A11 reclassified by operator ruling, no Java test written). Severity: MED. Opened 2026-10-04.
 Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. References T037 (test coverage gap): MyTradingSys/items/T037_test_coverage_gap.md.
 
 ## Defect
@@ -43,3 +43,19 @@ Filing only. No code or test was written.
 
 ## Receipt
 
+Session MTS-2026-10-07-1002Z-APP-BLD-research-closeout, verdicts checked on disk after the live tree was fast-forwarded to 5053e2d.
+
+| finding | verdict | evidence | disposition |
+|---|---|---|---|
+| RA-W4-A11 | CONFIRMED | SetupCandidatesBuilder.java:153 `c.rrSanity = c.grossRR >= 1.5` advisory only; no Java test; PROVENANCE_AUDIT_TOM.md A11 not reclassified | CLOSED 2026-10-08: operator ruling reclassified A11 to TOM-CONCEPT-ONLY (PROVENANCE_AUDIT_TOM.md:33, summary 34/35). Optional later: Java test that grossRR<1.5 is kept |
+| RA-W6-FABIO | REFUTED | backtest/layers/alerts/test_live_runner_v3_shadow.py:141 asserts all FABIO_V3_DECISIONS are SHADOW | CLOSED |
+| TC-W1-4 | REFUTED | scripts/dev/test_mts_launcher.py:1,22-25 (runner/orphans verbs) | CLOSED |
+| TC-W2-SS | REFUTED | src/test/java/datafeed/SetupScreenerTest.java | CLOSED |
+| TC-W2-UMS | REFUTED | MyTradingSys/tests/test_t037_update_market_state.py | CLOSED |
+| TC-W2-QC, TC-W2-RC, TC-TOP5-5 | REFUTED | MyTradingSys/tests/test_quad_classify.py, test_regime_classifier.py promoted; .new copies gone | CLOSED |
+| TC-TOP5-2 | CONFIRMED then fixed | new MyTradingSys/tests/test_b127_fabio_v3_isolation.py (2 pass); pending_test_fabio_v3.py with only the import changed to the v3 package: 64 pass, 2 fail (T50, X01), both check the old flat fabio_v3*.py file layout, not behaviour | CLOSED; T50/X01 are layout-specific and do not apply to the package |
+| M29-01, M30-01, M30-02 | CONFIRMED then fixed | new MyTradingSys/tests/test_b127_declutter_backups.py (3 pass): move not delete, manifest row with sha256, --exclude, dry run | CLOSED for the tool; the 6 .pre_tf5 files in execution/ remain, they are in the live area and need the supervisor |
+| B103-F2 | CONFIRMED then fixed | new MyTradingSys/tests/test_b127_fetch_archive_funding.py (6 pass): URL, monthly plan, checksum accept/reject, 404 | CLOSED |
+
+Mutation caveat (operator ruling 2026-10-07): fail-first intent not satisfiable on already-correct code; kept as coverage tests, mutation coverage incomplete. Each new test was broken once in memory (checksum compare, filter flag, move-vs-copy) and caught.
+Gate: MyTradingSys/tests collection, see the Build-Check line in the session record.

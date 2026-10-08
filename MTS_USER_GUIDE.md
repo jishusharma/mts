@@ -244,6 +244,7 @@ Open trades are not affected: their stops live on the exchange. Keep any
 | `mts orphans`        | Check every testnet account for a position no manager owns (may set HALT) |
 | `mts auto`           | Start the testnet auto-trader in its own window           |
 | `mts runner`         | Start the alert runner (indicator layers) in its own window (only the runner; mts guard starts it too, with the loss monitor and orderflow) |
+| `mts market`         | Market guide: MA / RSI / candle state per timeframe + recent layer alerts, each tagged with its backtest verdict (EDGE / NO-EDGE / UNTESTED). Context only, never a trade signal. Also writes `MyTradingSys/runtime/market_guide.md` |
 | `mts autolog`        | Last 20 auto-trader decisions                             |
 | `mts ledger`         | Closed auto-trades per source: n, win rate, net P/L       |
 | `mts missed [hours]` | Missed-trade analysis: chart-observed setups vs what MTS did, scored on 1m bars (read-only) |
