@@ -92,6 +92,35 @@ class TestWriter(unittest.TestCase):
             r = self.cycle(d, FakeExchange(TRADES))  # recovers, nothing lost
             self.assertEqual(r["rows"], 2)
 
+    def test_error_mid_backfill_keeps_fetched_minutes(self):
+        """2026-10-07: a 15 h backfill hit HTTP 429 part way through every cycle and, all-or-nothing, never advanced.
+        Pages fetched before the error are kept (whole minutes before the last fetched one); the rest retries."""
+        with tempfile.TemporaryDirectory() as d:
+            prior_hist(d)
+            old = ol.PAGE
+            ol.PAGE = 1
+
+            class FailFourth(FakeExchange):   # pages 1-3 = trades 1-3 (minutes 0, 0, 1), page 4 fails
+                def __call__(self, *a, **k):
+                    if self.calls == 3:
+                        self.calls += 1
+                        raise OSError("HTTP Error 429: Too Many Requests")
+                    return super().__call__(*a, **k)
+            try:
+                r = self.cycle(d, FailFourth(TRADES))
+            finally:
+                ol.PAGE = old
+            self.assertIn("429", r["error"])
+            self.assertEqual([b["t"] for b in ol.load_live_bars(d)], [T0])   # minute 0 complete; minute 1 retried
+            self.assertEqual(ol.load_state(d)["next_ms"], T0 + 60000)
+            r = self.cycle(d, FakeExchange(TRADES))
+            self.assertEqual([b["t"] for b in ol.load_live_bars(d)], [T0, T0 + 60000])
+            self.assertAlmostEqual(ol.load_live_bars(d)[1]["cvd_day"], 0.299)
+
+    def test_default_page_budget_stays_under_binance_weight_limit(self):
+        # aggTrades weight 20, limit 2400/min; one cycle every 20 s -> 3 cycles/min
+        self.assertLessEqual(ol.MAX_PAGES * 20 * 3, 2400)
+
     def test_pagination_dedup(self):
         with tempfile.TemporaryDirectory() as d:
             prior_hist(d)

@@ -85,6 +85,10 @@ DEFAULT_CONFIG = {
     # missing config file, blocks ALL layer trades (fail closed) - see trade_block_reason / load_config.
     "trade_blocklist": [],
     "trade_blocklist_reasons": {},
+    # Layer source prefix -> {"size_usd", "max_loss_usd"}; the longest matching prefix replaces the layers size and max
+    # loss. Testnet calibration spread (operator 2026-10-07: "Use amounts ranging from 20 to 1000 $"). A malformed
+    # entry rejects the signal (no order at a guessed size).
+    "size_overrides": {},
 }
 SECRETS_DIR = HERE / ".secrets"
 _warned_missing = set()
@@ -313,6 +317,29 @@ def read_new_layer_alerts(state: dict, alert_dir: Path = None) -> list:
     return out
 
 
+SIZE_CEILING_USD = 10000   # trade_plan_validator.MAX_NOTIONAL_CEILING
+
+
+def size_override(source: str, cfg: dict):
+    """(size_usd, max_loss_usd) from the longest size_overrides prefix matching source, or None. Raises ValueError on
+    a malformed table or entry: size a positive 10 USD multiple (Deribit contract) up to the validator ceiling,
+    max loss a positive number."""
+    table = cfg.get("size_overrides") or {}
+    if not isinstance(table, dict):
+        raise ValueError("size_overrides is not an object")
+    hits = [p for p in table if isinstance(p, str) and p and source.startswith(p)]
+    if not hits:
+        return None
+    v = table[max(hits, key=len)]
+    size = v.get("size_usd") if isinstance(v, dict) else None
+    loss = v.get("max_loss_usd") if isinstance(v, dict) else None
+    if not (isinstance(size, int) and not isinstance(size, bool) and 0 < size <= SIZE_CEILING_USD and size % 10 == 0):
+        raise ValueError(f"size_usd {size!r} for {max(hits, key=len)}")
+    if not (isinstance(loss, (int, float)) and not isinstance(loss, bool) and loss > 0):
+        raise ValueError(f"max_loss_usd {loss!r} for {max(hits, key=len)}")
+    return size, loss
+
+
 def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
     c = cfg["layers"]
     layer, tf = alert.get("layer"), alert.get("tf")
@@ -340,10 +367,16 @@ def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
             age = now.timestamp() - (t_close / 1000 + bar)
             if age > c["max_age_bars"] * bar:
                 sig["reject"] = f"stale ({int(age)} s after bar close)"
+    size, max_loss = c["size_usd"], c["max_loss_usd"]
     if "reject" not in sig:
-        sig["plan_args"] = ["--side", side, "--entry", "market", "--size", str(c["size_usd"]),
+        try:
+            size, max_loss = size_override(sig["source"], cfg) or (size, max_loss)
+        except ValueError as e:
+            sig["reject"] = f"bad size_overrides: {e}"
+    if "reject" not in sig:
+        sig["plan_args"] = ["--side", side, "--entry", "market", "--size", str(size),
                             "--stop", str(c["stop_pct"]), "--targets", c["targets"],
-                            "--max-loss", str(c["max_loss_usd"]), "--hours", str(c["hours"])]
+                            "--max-loss", str(max_loss), "--hours", str(c["hours"])]
         if c.get("max_hold_bars"):
             sig["plan_args"] += ["--max-hold-minutes", f"{c['max_hold_bars'] * bar / 60:g}"]
     return sig
@@ -394,7 +427,9 @@ def load_config(path: Path) -> dict:
         cfg["trade_blocklist"] = None
         return cfg
     for k, v in raw.items():
-        cfg[k] = {**cfg[k], **v} if isinstance(v, dict) and isinstance(cfg.get(k), dict) else v
+        # accounts is an ordered prefix table (first match wins): the file replaces it, never overlays it, or a default
+        # key keeps its early position and shadows the file's more specific prefixes (fabio fell to the main slot).
+        cfg[k] = ({**cfg[k], **v} if isinstance(v, dict) and isinstance(cfg.get(k), dict) and k != "accounts" else v)
     return cfg
 
 

@@ -30,7 +30,12 @@ BLOCKED_ALERTS = [
 
 
 def shipped_cfg():
-    return at.load_config(SHIPPED)
+    """Shipped config with its parked research blocklist re-applied. Testnet calibration ships an empty blocklist
+    (operator 2026-10-07: all layers fire); the blocklist mechanism is still tested against the real verdicts."""
+    c = at.load_config(SHIPPED)
+    parked = c["trade_blocklist_parked"]
+    c["trade_blocklist"], c["trade_blocklist_reasons"] = list(parked), dict(parked)
+    return c
 
 
 class BlocklistCycleTest(unittest.TestCase):
@@ -88,9 +93,34 @@ class BlocklistCycleTest(unittest.TestCase):
                        "layer:cryptocred:sr_flip:1h", "layer:rsi:malkan_bull:1h"):
             self.assertIsNone(at.trade_block_reason(source, c), source)
 
+    def test_shipped_calibration_config_blocks_no_layer(self):
+        c = at.load_config(SHIPPED)
+        self.assertEqual(c["trade_blocklist"], [])
+        for _, source in BLOCKED_ALERTS:
+            self.assertIsNone(at.trade_block_reason(source, c), source)
+
     def test_shipped_config_keeps_account_routing(self):
-        self.assertEqual(shipped_cfg()["accounts"]["layer:"], "jishu_4")
         self.assertEqual(shipped_cfg()["accounts"]["layer:turn_of_candle:"], "jishu_1")
+        self.assertEqual(shipped_cfg()["accounts"]["layer:rsi:rsi_events:1h"], "jishu_4")
+
+    def test_every_layer_group_has_its_own_account(self):
+        """One position per account: layer groups that fire together must not share an account."""
+        c = shipped_cfg()
+        groups = ["layer:turn_of_candle:turn_of_candle:1m", "layer:rsi:rsi_events:5m", "layer:rsi:rsi_events:15m",
+                  "layer:rsi:rsi_events:1h", "layer:rsi:malkan_bull:1h", "layer:rsi:malkan_bear:1h",
+                  "layer:session:session_momentum:15m", "layer:positioning:funding_cvd_fade:1h",
+                  "layer:fabio:cvd_absorption:15m", "layer:fabio:cvd_absorption:1h", "layer:fabio:escalation:15m",
+                  "layer:fabio:volume_fvg:15m", "layer:fabio:v3_grid:1m", "layer:cryptocred:sr_flip:15m",
+                  "layer:cryptocred:sr_flip:1h", "layer:cryptocred:fib_pullback:15m", "layer:cryptocred:fib_pullback:1h"]
+        secrets = Path(self.tmp.name) / "all_secrets"
+        secrets.mkdir()
+        for lab in set(c["accounts"].values()):
+            (secrets / f"testnet_{lab}.secret.json").write_text("{}", encoding="utf-8")
+        at.account_secret_path = lambda label: secrets / f"testnet_{label}.secret.json"
+        got = {g: at.account_for(g, c) for g in groups}
+        self.assertNotIn(None, got.values(), got)
+        self.assertEqual(len(set(got.values())), len(groups), got)
+        self.assertNotIn("tom", c["accounts"])      # Tom keeps the default (main) slot
 
     def test_blocked_sources_never_reach_place(self):
         c = shipped_cfg()
@@ -237,9 +267,9 @@ class BlocklistCycleTest(unittest.TestCase):
         extra = {}
         active = at.cycle(st, c, False, {}, NOW, extra)
         self.assertEqual([s["source"] for s in self.placed], ["layer:rsi:rsi_events:1h"])
-        self.assertEqual(self.placed_accounts, [c["accounts"]["layer:rsi:"]])
+        self.assertEqual(self.placed_accounts, [c["accounts"]["layer:rsi:rsi_events:1h"]])
         self.assertEqual(active, {})
-        self.assertEqual(extra[c["accounts"]["layer:rsi:"]]["source"], "layer:rsi:rsi_events:1h")
+        self.assertEqual(extra[c["accounts"]["layer:rsi:rsi_events:1h"]]["source"], "layer:rsi:rsi_events:1h")
         self.assertIn("layer_trade_blocked", self.events())
 
     def test_blocked_layer_never_placed_on_routed_account(self):

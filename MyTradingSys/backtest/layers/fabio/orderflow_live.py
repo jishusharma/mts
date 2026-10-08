@@ -43,6 +43,9 @@ DEFAULT_OUT = REPO / "MyTradingSys" / "runtime" / "orderflow_live"
 OFFLINE_HIST = Path(r"F:\MTS\data\orderflow_1m\_qhist")
 FAPI = "https://fapi.binance.com/fapi/v1/aggTrades"
 PAGE = 1000
+# Pages per cycle. aggTrades weight 20, Binance limit 2400/min, one cycle per 20 s: 25 x 20 x 3 = 1500/min.
+# 200 hit HTTP 429 on a 15 h backfill (2026-10-07) and, all-or-nothing, never advanced.
+MAX_PAGES = 25
 MIN_MS = 60000
 
 
@@ -63,12 +66,19 @@ def to_tuple(r):
     return (int(r["a"]), float(r["p"]), float(r["q"]), int(r["f"]), int(r["l"]), int(r["T"]), bool(r["m"]))
 
 
-def fetch_trades(fetch_fn, symbol, start_ms, end_ms, max_pages=200):
-    """All aggTrades with start_ms <= T < end_ms, ascending, deduplicated by agg id. Raises on a fetch error (the
-    caller writes nothing for that cycle). Stops after max_pages (backfill is continued next cycle)."""
-    out, from_id, pages = [], None, 0
+def fetch_trades(fetch_fn, symbol, start_ms, end_ms, max_pages=MAX_PAGES):
+    """(trades, capped, error): all aggTrades with start_ms <= T < end_ms, ascending, deduplicated by agg id.
+    Stops after max_pages (backfill is continued next cycle). An error on the first page raises (the caller writes
+    nothing); an error after it returns the pages already fetched as capped, with the error, so a backfill advances."""
+    out, from_id, pages, err = [], None, 0, None
     while pages < max_pages:
-        rows = fetch_fn(symbol, start_ms=start_ms, from_id=from_id, limit=PAGE)
+        try:
+            rows = fetch_fn(symbol, start_ms=start_ms, from_id=from_id, limit=PAGE)
+        except Exception as exc:  # noqa: BLE001
+            if not out:
+                raise
+            err = repr(exc)
+            break
         pages += 1
         if not rows:
             break
@@ -83,7 +93,7 @@ def fetch_trades(fetch_fn, symbol, start_ms, end_ms, max_pages=200):
         from_id = int(rows[-1]["a"]) + 1
         if done or len(rows) < PAGE:
             break
-    return out, pages >= max_pages
+    return out, pages >= max_pages or err is not None, err
 
 
 # ---------------------------------------------------------------- thresholds
@@ -167,7 +177,7 @@ def load_live_bars(out, since_ms=None):
 
 
 # ---------------------------------------------------------------- one cycle
-def run_cycle(out, fetch_fn, symbol="BTCUSDT", now_ms=None, since_ms=None, hist_dirs=None, keep_days=10, max_pages=200):
+def run_cycle(out, fetch_fn, symbol="BTCUSDT", now_ms=None, since_ms=None, hist_dirs=None, keep_days=10, max_pages=MAX_PAGES):
     """Fetch and write every closed minute not yet written. Returns a dict {rows, pages, next_ms, thr_days, error}.
     Nothing is written (and state is not advanced) if the fetch fails."""
     out = Path(out)
@@ -184,7 +194,7 @@ def run_cycle(out, fetch_fn, symbol="BTCUSDT", now_ms=None, since_ms=None, hist_
         save_state(out, st)
         return res
     try:
-        trades, capped = fetch_trades(fetch_fn, symbol, nxt, cur_min, max_pages)
+        trades, capped, res["error"] = fetch_trades(fetch_fn, symbol, nxt, cur_min, max_pages)
     except Exception as exc:  # noqa: BLE001 - any network/parse error: write nothing, retry next cycle
         res["error"] = repr(exc)
         return res

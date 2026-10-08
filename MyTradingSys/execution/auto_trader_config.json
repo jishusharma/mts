@@ -1,10 +1,25 @@
 {
+ "_calibration": "Testnet calibration from 2026-10-08 (operator 2026-10-07: all layers fire, sizes 20 to 1000 USD, base 20). Blocklist parked, not deleted; restore it from trade_blocklist_parked before any mainnet use.",
  "accounts": {
   "layer:turn_of_candle:": "jishu_1",
-  "layer:fabio:": "jishu_3",
-  "layer:rsi:rsi_events:15m": "jishu_2",
-  "layer:rsi:": "jishu_3",
-  "layer:": "jishu_4"
+  "layer:rsi:rsi_events:5m": "jishu_2",
+  "layer:rsi:rsi_events:15m": "jishu_3",
+  "layer:rsi:rsi_events:1h": "jishu_4",
+  "layer:rsi:malkan_bull:": "jishu_7",
+  "layer:rsi:malkan_bear:": "jishu_8",
+  "layer:session:": "jishu_9",
+  "layer:positioning:": "jishu_10",
+  "layer:fabio:cvd_absorption:15m": "jishu_11",
+  "layer:fabio:cvd_absorption:1h": "jishu_12",
+  "layer:fabio:escalation:": "jishu_13",
+  "layer:fabio:volume_fvg:": "jishu_14",
+  "layer:fabio:": "jishu_15",
+  "layer:cryptocred:sr_flip:15m": "jishu_16",
+  "layer:cryptocred:sr_flip:1h": "jishu_17",
+  "layer:cryptocred:fib_pullback:15m": "jishu_18",
+  "layer:cryptocred:fib_pullback:1h": "jishu_19",
+  "layer:cryptocred:": "jishu_20",
+  "layer:": "jishu_21"
  },
  "tom": {
   "size_usd": 20,
@@ -19,23 +34,81 @@
   "max_entry_seconds": 600
  },
  "layers": {
-  "size_usd": 10,
+  "size_usd": 20,
   "max_loss_usd": 2,
   "max_age_bars": 2.0,
   "hours": 1.0
  },
- "trade_blocklist": [
-  "layer:session:session_momentum:",
-  "layer:positioning:funding_cvd_fade:",
-  "layer:turn_of_candle:",
-  "layer:fabio:escalation:",
-  "layer:rsi:rsi_events:15m"
- ],
- "trade_blocklist_reasons": {
+ "size_overrides": {
+  "layer:turn_of_candle:": {
+   "size_usd": 20,
+   "max_loss_usd": 2
+  },
+  "layer:rsi:rsi_events:5m": {
+   "size_usd": 50,
+   "max_loss_usd": 2
+  },
+  "layer:rsi:rsi_events:15m": {
+   "size_usd": 100,
+   "max_loss_usd": 3
+  },
+  "layer:rsi:rsi_events:1h": {
+   "size_usd": 250,
+   "max_loss_usd": 5
+  },
+  "layer:rsi:malkan_": {
+   "size_usd": 500,
+   "max_loss_usd": 10
+  },
+  "layer:session:": {
+   "size_usd": 150,
+   "max_loss_usd": 3
+  },
+  "layer:positioning:": {
+   "size_usd": 750,
+   "max_loss_usd": 15
+  },
+  "layer:fabio:cvd_absorption:15m": {
+   "size_usd": 100,
+   "max_loss_usd": 3
+  },
+  "layer:fabio:cvd_absorption:1h": {
+   "size_usd": 300,
+   "max_loss_usd": 6
+  },
+  "layer:fabio:escalation:": {
+   "size_usd": 400,
+   "max_loss_usd": 8
+  },
+  "layer:fabio:volume_fvg:": {
+   "size_usd": 1000,
+   "max_loss_usd": 20
+  },
+  "layer:cryptocred:sr_flip:15m": {
+   "size_usd": 200,
+   "max_loss_usd": 4
+  },
+  "layer:cryptocred:sr_flip:1h": {
+   "size_usd": 600,
+   "max_loss_usd": 12
+  },
+  "layer:cryptocred:fib_pullback:15m": {
+   "size_usd": 350,
+   "max_loss_usd": 7
+  },
+  "layer:cryptocred:fib_pullback:1h": {
+   "size_usd": 800,
+   "max_loss_usd": 16
+  }
+ },
+ "trade_blocklist": [],
+ "trade_blocklist_reasons": {},
+ "trade_blocklist_parked": {
   "layer:session:session_momentum:": "T055 C2 FAIL (research/fast_track_2026-09-27/T055_BT_c2.md): backtest failed; alerts kept for data collection",
   "layer:positioning:funding_cvd_fade:": "T055 C1 FAIL (research/fast_track_2026-09-27/T055_BT_c1.md): backtest failed; alerts kept for data collection",
   "layer:turn_of_candle:": "T055 C3 NO EDGE (research/fast_track_2026-09-27/T055_BT_c3.md): no gross edge; alerts kept for data collection",
   "layer:fabio:escalation:": "FABIO_L1_REPORT (backtest/layers/fabio/FABIO_L1_REPORT.md): no edge; alerts kept for data collection",
   "layer:rsi:rsi_events:15m": "BACKTEST_L1_REPORT (backtest/layers/BACKTEST_L1_REPORT.md): PBO 0.79-0.91, overfit; alerts kept for data collection"
- }
+ },
+ "_accounts_note": "2026-10-08: one account per layer group so one-position-per-account never blocks another layer; Tom stays on the main (default) slot; jishu_22 spare. A missing secret file falls back to the main slot (logged as <label>_account_missing)."
 }
