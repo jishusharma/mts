@@ -31,7 +31,7 @@ State repo and role in the first line of the boot reply. Two repos: MTS
 operator says F:, origin PR #15 (83bff65) says C:; do not edit CBP until the operator confirms).
 
 - COORDINATOR (bridge chat): reads, composes, edits non-critical files, writes registry rows, dispatches.
-  Owns session_state.json and session_log.json. Does not commit or push; Claude Code commits.
+  Owns session_state.json and session_log.json. Commits and pushes on the operator's word. Promotion to main and merge to main stay with Claude Code.
 - WORKER (separate chat, no bridge): output only, no shell, no disk. Interprets pasted evidence, names
   file plus line range for any fact it needs. Never touches state files.
 
