@@ -364,8 +364,10 @@ def main(argv=None) -> int:
     parser.add_argument("--alerts-dir", default="MyTradingSys/runtime/alerts")
     parser.add_argument("--limit", type=int, default=100)
     parser.add_argument("--poll-seconds", type=int, default=60)
+    parser.add_argument("--consensus-dir", default=None,
+                        help="directory for consensus_<date>.jsonl rows (default Dumps/consensus)")
     parser.add_argument("--once", action="store_true")
-    
+
     args = parser.parse_args(argv)
     
     registry = build_default_registry()
@@ -386,7 +388,19 @@ def main(argv=None) -> int:
         # Write alerts to JSONL files
         for tf, group in alerts_by_tf.items():
             append_alerts_jsonl(group, pathlib.Path(args.alerts_dir) / f"{tf}.jsonl")
-            
+
+        # Consensus row (observation only: never gates a core, never raises). One row per poll in which the Fabio
+        # core emitted an alert or the Tom card advanced (research/ARCHITECTURE_TWO_CORES_2026-10-01.md:29-43).
+        # Runs after the alert files are written because the rsi block is read back from them.
+        try:
+            from MyTradingSys.backtest.layers.consensus.hook import consensus_after_poll
+            consensus_after_poll(
+                result["alerts"], alerts_dir=pathlib.Path(args.alerts_dir),
+                state_path=pathlib.Path(args.state_path).with_name("consensus_hook_state.json"),
+                base_dir=args.consensus_dir)
+        except Exception as exc:  # noqa: BLE001 - observation must never stop the alert runner
+            print(json.dumps({"key": "consensus_hook", "error": str(exc)}), file=sys.stderr, flush=True)
+
         save_state(result["state"], args.state_path)
         state = result["state"]
         

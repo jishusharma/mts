@@ -534,3 +534,6 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/system/sessions/MTS-2026-10-07-1002Z-APP-BLD-research-closeout.md | doc | Session record: research closeout. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
 | MyTradingSys/items/B145_cc_range_noise_live_neutrality.md | doc | B145 item doc: stopped-loop neutrality test before filter_range_noise goes live. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-08 |
 | scripts/dev/diff_tom_rows.py | tool | Month-by-month verdict-count diff of two Tom core BT row directories (read-only). | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-08 |
+| scripts/dev/dsa_eval.py | tool | Scores DSA chat replies against 12 fixed failure scenarios (sheet/template/score); history in research/dsa_eval_history.jsonl. | MTS-2026-10-09-slim-boot-dsa-eval | 2026-10-09 |
+| scripts/dev/dsa_eval_scenarios.py | tool | The 12 DSA eval scenarios from B083/B101/B104/B132/B133 and LESSONS, with good and bad fixture replies. | MTS-2026-10-09-slim-boot-dsa-eval | 2026-10-09 |
+| MyTradingSys/tests/test_dsa_eval.py | test | Tests that every eval scenario's good reply passes and bad reply fails. | MTS-2026-10-09-slim-boot-dsa-eval | 2026-10-09 |

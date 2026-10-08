@@ -90,5 +90,48 @@ class TestObservability(unittest.TestCase):
         self.assertTrue(buf.getvalue().startswith("poll "))
 
 
+class TestConsensusWiring(unittest.TestCase):
+    """LY5 / B125: the runner calls the consensus hook after each poll; the hook can never stop the runner."""
+
+    FABIO = {"layer": "fabio", "sub": "v3_grid", "tf": "1m", "event": "v3_x_A_long", "model": "A", "side": "long",
+             "entry_ref": 100.5, "stop": 99.5, "target": 103.0, "t_close": 60000, "params_id": "p"}
+
+    def _run(self, d, alerts):
+        def fake_poll(registry, symbol, tfs, fetch, state, limit=100):
+            return {"alerts": alerts, "state": state, "errors": []}
+
+        with mock.patch.object(cli, "poll_once", fake_poll), redirect_stdout(io.StringIO()):
+            return cli.main(["--once", "--state-path", d + "/s.json", "--alerts-dir", d + "/alerts",
+                             "--consensus-dir", d + "/consensus"])
+
+    def test_fabio_alert_in_poll_writes_one_consensus_row(self):
+        import json
+        import pathlib
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(self._run(d, [dict(self.FABIO)]), 0)
+            files = list(pathlib.Path(d, "consensus").glob("consensus_*.jsonl"))
+            self.assertEqual(len(files), 1)
+            rows = [json.loads(x) for x in files[0].read_text(encoding="utf-8").splitlines()]
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["fabio"]["model"], "A")
+            self.assertEqual(rows[0]["fabio"]["entry"], 100.5)
+
+    def test_no_alert_in_poll_writes_no_consensus_row(self):
+        import pathlib
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(self._run(d, []), 0)
+            self.assertFalse(pathlib.Path(d, "consensus").exists())
+
+    def test_hook_failure_does_not_stop_the_runner(self):
+        from MyTradingSys.backtest.layers.consensus import hook
+        err = io.StringIO()
+        with tempfile.TemporaryDirectory() as d, \
+                mock.patch.object(hook, "consensus_after_poll", side_effect=RuntimeError("boom")), \
+                mock.patch("sys.stderr", err):
+            self.assertEqual(self._run(d, [dict(self.FABIO)]), 0)
+            self.assertTrue(__import__("os").path.exists(d + "/s.json"))     # state still saved after the hook error
+        self.assertIn("consensus_hook", err.getvalue())
+
+
 if __name__ == "__main__":
     unittest.main()

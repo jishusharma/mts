@@ -15,6 +15,9 @@
 
 [CmdletBinding()]
 param(
+  [string]$Manifest = 'MyTradingSys\runtime\SESSION_MANIFEST.json',
+  [string]$Out = 'Dumps\SESSION_PASTE.txt',
+  [switch]$FullBuild,
   [switch]$NoClipboard,
   [switch]$NoLoad
 )
@@ -30,14 +33,45 @@ function Write-TextNoBom {
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 
-# Fresh build check before assembling paste.
-try {
-    & (Join-Path $root 'scripts\Build-Check.ps1')
-} catch {
-    Write-Host "Build-Check failed: $_" -ForegroundColor Yellow
+# Build check before assembling paste. The full tier is ~100 s (math tests alone 78 s), so:
+#   - last report is a full PASS and no Java/Python source is newer than it -> reuse it, say so
+#   - otherwise -> quick tier (compile + registry checks)
+#   - -FullBuild forces the full tier
+$reportPath = Join-Path $root 'MyTradingSys\runtime\BUILD_REPORT.md'
+$buildMode  = 'quick'
+$buildWhy   = ''
+if ($FullBuild) {
+    $buildMode = 'full'; $buildWhy = '-FullBuild'
+} elseif (Test-Path $reportPath) {
+    $rep = Get-Content $reportPath -Raw
+    $okFull = ($rep -match '(?m)^STATUS: PASS\s*$')
+    $repTime = (Get-Item $reportPath).LastWriteTimeUtc
+    $roots = @((Join-Path $root 'src'), (Join-Path $root 'MyTradingSys')) | Where-Object { Test-Path $_ }
+    $newer = Get-ChildItem $roots -Recurse -File -Include '*.java','*.py' -ErrorAction SilentlyContinue |
+        Where-Object { $_.FullName -notmatch '\\(research|archive|runtime_data|__pycache__)\\' -and $_.LastWriteTimeUtc -gt $repTime } |
+        Select-Object -First 1
+    $pom = Join-Path $root 'pom.xml'
+    if (-not $newer -and (Test-Path $pom) -and (Get-Item $pom).LastWriteTimeUtc -gt $repTime) { $newer = Get-Item $pom }
+    if ($okFull -and -not $newer) {
+        $buildMode = 'reuse'
+        $buildWhy  = "full PASS from $([math]::Round(((Get-Date).ToUniversalTime() - $repTime).TotalMinutes)) min ago, no source newer"
+    } elseif ($newer) {
+        $buildWhy = "source newer than report: $($newer.Name)"
+    } else {
+        $buildWhy = 'last report is not a full PASS'
+    }
+}
+Write-Host "build check: $buildMode ($buildWhy)" -ForegroundColor Cyan
+if ($buildMode -ne 'reuse') {
+    try {
+        if ($buildMode -eq 'full') { & (Join-Path $root 'scripts\Build-Check.ps1') }
+        else                       { & (Join-Path $root 'scripts\Build-Check.ps1') -Quick }
+    } catch {
+        Write-Host "Build-Check failed: $_" -ForegroundColor Yellow
+    }
 }
 
-$manifestPath = 'MyTradingSys\runtime\SESSION_MANIFEST.json'
+$manifestPath = $Manifest
 $logPath      = 'MyTradingSys\runtime\session_log.json'
 
 $m = Get-Content $manifestPath -Raw | ConvertFrom-Json
@@ -56,6 +90,7 @@ function Get-ReadBody {
             $file = Get-ChildItem $f.path -Filter $f.pattern | Sort-Object LastWriteTime -Descending | Select-Object -First $f.count
             if ($file) { return (Get-Content $file.FullName -Raw) } else { return "(no snapshot)" }
         }
+        'pointer'     { return "(not pasted; read it through the AIRUN boot block, DSA_SESSION_PROMPT.md section 3: $($f.path))" }
         'skip'        { return "(skipped - see session_log context below)" }
         'open_only'   {
             $src = Get-Content $f.path -Raw
@@ -107,7 +142,7 @@ $sb = [System.Text.StringBuilder]::new()
 [void]$sb.AppendLine("Session name: $sessionName")
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("Role: state your role (COORDINATOR or WORKER) per DSA_SESSION_PROMPT.md section 1.")
-[void]$sb.AppendLine("Boot: all content is in this file. Confirm the manifest, run the build check.")
+[void]$sb.AppendLine("Boot: the core is in this file; large files marked not-pasted are read through the AIRUN boot block (prompt section 3). Confirm the manifest and the build check.")
 [void]$sb.AppendLine("If build status is not PASS, stop and report. Do not proceed.")
 [void]$sb.AppendLine("Read the current-state section of the prompt. Then state role and mission.")
 [void]$sb.AppendLine("")
@@ -140,7 +175,7 @@ foreach ($f in ($m.boot_files + $m.boot_supplemental)) {
 # SESSION_MANIFEST.json raw (boot rule 3.1)
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("### SESSION_MANIFEST.json [manifest_raw] ###")
-[void]$sb.AppendLine((Get-Content $manifestPath -Raw))
+[void]$sb.AppendLine('(not pasted; read it on disk if needed: ' + $manifestPath + ')')
 
 # Reference index. Files on disk not pasted. Request by path + line range.
 $refPaths = @(
@@ -315,6 +350,12 @@ if (Test-Path $cmdPath) {
 [void]$sb.AppendLine("  - Read-only first. One decision per turn.")
 [void]$sb.AppendLine("  - No blind java kill. No session_state.json thesis change without approval.")
 [void]$sb.AppendLine("  - Plain language. No codes. No shorthand.")
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("LAST CHECK (same as DSA_SESSION_PROMPT.md section 0, restated at the end on purpose):")
+[void]$sb.AppendLine("  1. Claim only what you saw pasted or in an [AIRUN RESULT]. 2. No invented number, path, alias or restriction.")
+[void]$sb.AppendLine("  3. Tom's transcripts are the only source for rules. 4. Clear task-aligned default: take it, flag after.")
+[void]$sb.AppendLine("  5. One decision, one block, answer first. 6. Testnet only; nothing live touched.")
+[void]$sb.AppendLine("  7. The handoffs above are the previous session's word to you: act on them, then write yours at close (prompt section 13).")
 
 $block = $sb.ToString()
 Write-Host "generated: $($block.Length) chars"
@@ -333,7 +374,7 @@ if ($sizeKb -gt 80) {
     }
 }
 
-$pasteFile = 'Dumps\SESSION_PASTE.txt'
+$pasteFile = $Out
 Write-TextNoBom -Path $pasteFile -Text $block
 Write-Host "written:   $pasteFile" -ForegroundColor Cyan
 
