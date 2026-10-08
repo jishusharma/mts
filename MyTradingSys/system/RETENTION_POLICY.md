@@ -10,7 +10,7 @@ encodes the discard rules (dry run; `--apply` deletes). Run it weekly; it prints
 | `backup_session/` | pre-git hand backups (09-16..09-26) | nobody | delete entries older than 14 days |
 | `Dumps/_archive/<date>/` | `declutter_backups.py` | nobody | delete after 14 days |
 | `Dumps/workers/NUC-QUEUE/done/` | NUC lane (decommissioned 2026-10-01) | nobody | delete after 14 days |
-| `system/session_end_logs.md` | `StateCodeEmitter.appendTransitionLog` (one line per state transition) | nobody (grep: only the writer) | keep last 2000 lines; stop the writer when Java is next rebuilt |
+| `system/session_end_logs.md` | `StateCodeEmitter.appendTransitionLog` (one line per state transition) | nobody (grep: only the writer) | keep last 2000 lines; writer removed from source 2026-10-08 (running JVM still writes until its next restart/rebuild) |
 | `runtime_data/mts-watch.log`, `supervisor_log.txt` | watch / supervisor | nobody | keep last 2000 lines |
 | `*.pre_*` next to live files | promote step | nobody | `declutter_backups.py` moves them; retention deletes after 14 days |
 | `*.new` older than 7 days | staging | nobody once promoted | promote or delete; never leave |
@@ -19,4 +19,4 @@ Kept on purpose (read by code): `runtime_data/snapshots/` (replay, outcome label
 `apparatus_log.txt` (parity.py), `outcome_labels.json`, `Dumps/backtest/raw*` (research inputs, re-downloadable).
 
 Open: `Dumps/backtest/raw/bookDepth` is 700 MB; confirm which backtests use it before trimming.
-Open: schedule retention.py (see runtime_data/launch-declutter-backups.vbs for the pattern).
+Scheduled: task `MTS-Retention` daily 09:10 local runs `retention.py --apply` via `runtime_data/launch-retention.vbs`.
