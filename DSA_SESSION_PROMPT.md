@@ -11,7 +11,7 @@ State which repo the session covers before the first task.
 
 - COORDINATOR: owns session_state.json and session_log.json. Dispatches workers.
   Commits. Approves writes.
-- WORKER: produces output only. No shell, no disk. Interprets
+- WORKER (a separate chat with no AIBridge): produces output only. No shell, no disk. Interprets
   pasted evidence. Requests facts by naming file + line range; coordinator
   runs and pastes back. Never commits. Never touches state files.
 
@@ -20,6 +20,12 @@ State which repo the session covers before the first task.
 Per 2026-09-16 research: this surface runs V4.1 Flash. Serial only, no
 concurrent requests. Long pastes cost little to read but the model's active
 working capacity at any moment is small.
+
+Web UI settings (operator picks per chat; from third-party sources on the
+V4 line, not verified against DeepSeek docs): Expert + DeepThink for audits,
+extraction, rule and contradiction work. Instant for quick scans and bridge
+loops. Search OFF: Tom transcripts are the only source for rules; a web claim
+is tagged UNVERIFIED-WEB. Role and task come first in the paste (they do).
 
 Practical rules for this session:
 - One block at a time. Never assume parallel calls work.
@@ -301,8 +307,9 @@ One per line. No compression.
 - On any write: revalidate the anchor first, retest after.
 - Four actor workflow. DSA reads and composes. Cloud Claude (Win app) reads
   committed repo and writes to its own session branch. Local claude.exe (via
-  mts go) reads and writes disk with Maven. The operator runs every command
-  and is the only courier between surfaces.
+  mts go) reads and writes disk with Maven. The operator clicks Run on
+  AIBridge blocks (or runs commands by hand where no bridge) and is the only
+  courier between surfaces.
 
 ## 9a. AIBRIDGE (direct disk access, operator 2026-10-08)
 

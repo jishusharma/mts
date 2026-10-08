@@ -13,9 +13,9 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 | CLI desktop (fallback) | same reach | only what a Claude Code session cannot do |
 | LAP laptop CLI | read-only monitors, queue share | questions, monitoring |
 | ASK poller | headless claude -p; default haiku, escalation sonnet | status questions |
-| DSA chat (chat.deepseek.com) | pasted text only, no disk | long-context reading, extraction, rulebooks |
+| DSA chat (chat.deepseek.com) | pasted text, plus disk under IdeaProjects through AIBridge blocks the operator clicks Run on (a WORKER chat has no bridge) | long-context reading, extraction, rulebooks, scanning and editing the repo |
 | CLD cloud (free pool) | pushed git refs only; no LAN, no gitignored files | offline research, specs, reviews, docs, backtests on committed data |
-| AIBridge (F:\AIBridge) | allowlisted loopback agent 127.0.0.1:7181, Chrome MV3 extension | PowerShell on desktop, on request from a web AI |
+| AIBridge (F:\AIBridge) | loopback agent 127.0.0.1:7181 + Chrome extension; open mode (read/write/delete under IdeaProjects on click; secrets, keys, HALT refused; auto-run read-only) | PowerShell on desktop, on request from a web AI |
 Builders never edit a file a live process imports (auto_trader, position_manager, daily_loss_monitor, live_runner_cli) in place: stage `.new`, gate, promote (CLAUDE.md hard rules). Other files: edit, gate, commit.
 
 ## 1b. Surface choice (operator directive 2026-10-04)
