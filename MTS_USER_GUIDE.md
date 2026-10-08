@@ -250,6 +250,7 @@ Open trades are not affected: their stops live on the exchange. Keep any
 | `mts missed [hours]` | Missed-trade analysis: chart-observed setups vs what MTS did, scored on 1m bars (read-only) |
 | `mts soak`           | Testnet soak report from the execution journal (read-only) |
 | `mts wiring`         | Check that every code file is run by something or declared in system/wiring_registry.json |
+| `mts desk`           | List open desktop tasks that other sessions posted (post/take/done: scripts/dev/desk.py)  |
 | `mts go [slug]`      | Launch the next queued build task in claude (empty queue prints IDLE). Slug = lowercase kebab, names the session MTS-<UTC>-CLI-BLD-<slug>. `-Dry` prints only; run from inside a Claude Code session it always prints only |
 | `mts test`           | Run the offline tests (no exchange)                       |
 | `mts guide`          | Open this guide                                           |

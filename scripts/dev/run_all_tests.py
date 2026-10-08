@@ -130,6 +130,15 @@ def main(argv=None):
     cmd3f = [sys.executable, "scripts/dev/test_funnel_report.py"]
     success, output = run_step("3f", "Funnel report tests", cmd3f)
     results.append(("Step 3f: Funnel report tests", success))
+    cmd3dk = [sys.executable, "scripts/dev/test_desk.py"]
+    success, output = run_step("3dk", "Desk board tests", cmd3dk)
+    results.append(("Step 3dk: Desk board tests", success))
+    cmd3q = [sys.executable, "scripts/dev/test_registry_consistency.py"]
+    success, output = run_step("3q", "INDEX/BUGS consistency", cmd3q)
+    results.append(("Step 3q: INDEX/BUGS consistency", success))
+    cmd3p = [sys.executable, "MyTradingSys/research/test_p4_corrected.py"]
+    success, output = run_step("3p", "P4 corrected script tests", cmd3p)
+    results.append(("Step 3p: P4 corrected script tests", success))
     cmd3d = [sys.executable, "scripts/dev/test_verify_extract_quotes.py"]
     success, output = run_step("3d", "Extract quote checker tests", cmd3d)
     results.append(("Step 3d: Quote checker tests", success))
