@@ -16,7 +16,7 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 | DSA chat (chat.deepseek.com) | pasted text only, no disk | long-context reading, extraction, rulebooks |
 | CLD cloud (free pool) | pushed git refs only; no LAN, no gitignored files | offline research, specs, reviews, docs, backtests on committed data |
 | AIBridge (F:\AIBridge) | allowlisted loopback agent 127.0.0.1:7181, Chrome MV3 extension | PowerShell on desktop, on request from a web AI |
-Builders edit live. Gate before commit. Stage .new only when the running system imports the file mid-session.
+Builders never edit a file a live process imports (auto_trader, position_manager, daily_loss_monitor, live_runner_cli) in place: stage `.new`, gate, promote (CLAUDE.md hard rules). Other files: edit, gate, commit.
 
 ## 1b. Surface choice (operator directive 2026-10-04)
 App first, always. Claude Code Win App (Code / Cowork / Chat / Cloud modes) covers

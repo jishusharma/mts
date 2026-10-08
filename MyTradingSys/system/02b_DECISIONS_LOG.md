@@ -1,3 +1,7 @@
+> **SUPERSEDED (2026-10-08).** Frozen history from the September build. For current state read
+> `MyTradingSys/research/STATUS.md`, then `MyTradingSys/system/LESSONS_LEARNED.md` (entry order is in CLAUDE.md).
+> Where this file disagrees with CLAUDE.md or SURFACE_POLICY.md, those win.
+
 # 2026-09-14: Coordinator + Worker Night — Cleanup, Rule 38, Checkers Landed
 # ---
 # - Cleanup: 12 .old files archived to archive/cleanup-2026-09-13/. Deleted
