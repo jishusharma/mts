@@ -553,3 +553,9 @@ Where the rule lives: DSA_SESSION_PROMPT.md section 9 (line to add);
 prompt_check.ps1 check 12 (code gate); B133 item doc.
 
 Receipt: B133 filed df5059e.
+
+## 2026-10-09 - commit swept another session's staged files
+What happened: commit 02e7598 (DSA slim boot) also contained four files another session had staged: backtest/layers/alerts/live_runner_cli.py, alerts/test_live_runner_wiring.py, consensus/hook.py, consensus/test_hook.py. I added exact paths but never listed the staged set before committing.
+Rule that prevents it: run the staged-file list (names only) right before every commit; if it holds a path you did not write, unstage it first (CLAUDE.md hard rule: no reset, so unstage only that path).
+Where the rule lives: DSA_SESSION_PROMPT.md section 6 (after any write, review the staged list).
+Cost: the other session's edits are in my commit; working tree unchanged, nothing pushed. The owning session should know 02e7598 holds its four files.
