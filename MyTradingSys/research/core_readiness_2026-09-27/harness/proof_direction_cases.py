@@ -52,7 +52,7 @@ CASES = [
     ("long_fa_buy",            snap("long", fa="buy"),                         "contradiction", "finished_auction=BUY"),
     ("long_book_0.32",         snap("long", book=0.32),                        "contradiction", "ask-heavy"),
     ("long_book_0.33_edge",    snap("long", book=0.33),                        "aligned", None),
-    ("long_book_0.0_histmode", snap("long", book=0.0),                         "contradiction", "ask-heavy"),
+    ("long_book_0.0_nodata",   snap("long", book=0.0),                         "aligned", None),  # 0.0 = no data, fix 2026-10-02 (dsa_task_012_setup_candidates.md:514)
     ("long_last3_neg",         snap("long", last3=["negative"] * 3),           "contradiction", "last_3_delta=neg"),
     ("long_book_bool_ignored", snap("long", book=True),                        "aligned", None),
     ("long_two_reasons",       snap("long", fa="buy", book=0.1),               "contradiction", "ask-heavy"),
