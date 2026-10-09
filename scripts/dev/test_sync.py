@@ -93,8 +93,7 @@ class SyncTest(unittest.TestCase):
         self.assertIn("Result: 4 alerts in 2h replay", buf.getvalue())
 
     def test_where_flags_unshipped_commit_and_clears_after_ship(self):
-        commit(self.a, "w.txt", "w
-")
+        commit(self.a, "w.txt", "w" + chr(10))
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             sync.where(self.a)
