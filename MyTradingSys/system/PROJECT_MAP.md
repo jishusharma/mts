@@ -21,17 +21,17 @@
 ## Progress at a glance
 | Group | What it is | Open (HIGH) | Closed | Won't fix | Files | Live path |
 |---|---|---|---|---|---|---|
-| **DATA** | Market data and snapshot engine | 4 (1) | 25 | 16 | 72 | yes |
-| **SRC** | Rule sources and extraction | 3 (0) | 7 | 4 | 257 | no |
+| **DATA** | Market data and snapshot engine | 4 (1) | 26 | 16 | 74 | yes |
+| **SRC** | Rule sources and extraction | 3 (0) | 8 | 4 | 274 | no |
 | **CORE** | Tom core engine and verdicts | 8 (0) | 26 | 11 | 54 | yes |
-| **LAYR** | Independent layers (switchable modules) | 8 (1) | 2 | 3 | 202 | yes |
-| **EVID** | Backtest and evidence | 12 (2) | 2 | 8 | 60 | no |
-| **EXEC** | Execution and risk (Deribit testnet) | 12 (5) | 5 | 0 | 121 | yes |
-| **VIS** | Charts, screenshots and observation | 0 (0) | 0 | 0 | 14 | no |
+| **LAYR** | Independent layers (switchable modules) | 10 (2) | 2 | 3 | 210 | yes |
+| **EVID** | Backtest and evidence | 14 (2) | 2 | 8 | 66 | no |
+| **EXEC** | Execution and risk (Deribit testnet) | 11 (4) | 6 | 0 | 121 | yes |
+| **VIS** | Charts, screenshots and observation | 0 (0) | 0 | 0 | 21 | no |
 | **DESK** | Operator interface (DSA and live desk) | 1 (1) | 8 | 4 | 35 | no |
-| **OPS** | AI workforce and process | 7 (1) | 20 | 5 | 720 | no |
+| **OPS** | AI workforce and process | 9 (1) | 20 | 5 | 760 | no |
 | **INFRA** | Machines, runtime plumbing, housekeeping | 6 (2) | 10 | 3 | 107 | yes |
-| | all rows | 61 (13) | 105 | 54 | 1642 | |
+| | all rows | 66 (13) | 108 | 54 | 1722 | |
 
 ## DATA - Market data and snapshot engine
 The Java feed and snapshot producer, kline / open-interest / order-flow recorders, funding, higher-timeframe context, and the volume profile, VWAP and CVD numbers the snapshot carries.
@@ -100,10 +100,12 @@ Everything that sits on top of Tom and never gates it: RSI / Malkan, CryptoCred,
 | Open item | Sev | Status | Title |
 |---|---|---|---|
 | T040 | HIGH | OPEN | Tick-based delta layer: standalone Python process subscribing to raw tick feed, computing fast deltas over rol |
+| T087 | HIGH | OPEN | Session-levels observation layer: MTS did not see today's failed first break of the prior-day high (83,499.9 v |
 | B125 | MED | OPEN | Consensus writer exists only as staged writer.py.new and test_writer.py.new; not promoted, so not live |
 | B142 | MED | OPEN | ExtraSetupBuilder stop is the previous 1m bar high/low with no trader source |
 | B143 | MED | OPEN | CryptoCred 0.1 percent stop buffer and 1.5R target are NO-SOURCE |
 | B144 | MED | OPEN | Exhaustion proxy (SCB volume 2.0x over 240 one-minute bars) is NO-SOURCE; tag SCREENER |
+| B156 | MED | OPEN | Tom alert card SSOT_THESIS text is stale: alert #273 (14:26Z, price 83106.5) still says "Price ~77600 never pr |
 | T034 | MED | OPEN | Add Net Longs / Net Shorts / (New) positioning states from OI + CVD cross |
 | T061 | MED | OPEN | WaveTrend with Crosses [LazyBear] integration as a separate indicator layer (module, never core, never a Tom f |
 | B145 | LOW | OPEN | classify_msb filter_range_noise is off in the live CryptoCred layer; no evidence it is neutral or better |
@@ -123,6 +125,7 @@ The harness, trial registry, holdouts, the big-trade study and capture matrix, a
 | B147 | HIGH | OPEN | Tom live-rule evidence is unreliable: rerun shows 0 SETUP_FORMING signals but the older run on the same histor |
 | T081 | HIGH | OPEN | Backtest D: walk-forward tuning of stop_buffer_atr (stop = structure +/- k x ATR) for Tom and every tight-stop |
 | B151 | MED | OPEN | CryptoCred limit-fill backtest fills on touch and drops signals by a future event, so its PASS numbers are upp |
+| B154 | MED | OPEN | No regime-stratified and no session-stratified backtest verdict exists; every reported edge is one aggregate n |
 | T051 | MED | BLOCKED | Backtest on MTS raw verdict done; parked by operator 2026-09-26; reopens only when T050 phase 4 + B071 fixed |
 | T053 | MED | OPEN | Two-account hedge / leveraged BTC scalping research (hedge thresholds, fee cover, trigger conditions) |
 | T054 | MED | OPEN | US session / pre-market alert, US-equity and BTC correlation, news sentiment research |
@@ -132,6 +135,7 @@ The harness, trial registry, holdouts, the big-trade study and capture matrix, a
 | T082 | MED | OPEN | Re-run the capture matrix and the Tom core backtest after the Stage 1 data fixes land (volume profile, naked P |
 | T083 | MED | OPEN | Lead check: rsi_events 1h (3 of 3 live testnet wins, +9.75 USD) on full 2022-2026 history with fees |
 | T084 | MED | OPEN | Lead check: fabio escalation 1h (best capture-matrix lift 1.24-1.38 at 24 bars, small n) with walk-forward and |
+| T090 | MED | OPEN | 7h timeframe research under playbook PART I (who uses it, anchor, any tested evidence) |
 
 ## EXEC - Execution and risk (Deribit testnet)
 Everything that places or protects an order: auto_trader, position_manager, daily-loss monitor, orphan watchdog, deribit_orders, runner, kill switch, fee model, subaccounts.
@@ -148,7 +152,6 @@ Everything that places or protects an order: auto_trader, position_manager, dail
 | B146 | HIGH | OPEN | No minimum stop width exists since 0c34a2d removed the NO-SOURCE 0.1 % floor and nothing replaced it: Tom back |
 | B148 | HIGH | OPEN | Daily-loss monitor re-authenticates as the MAIN account when a named subaccount token expires; it also silentl |
 | T048 | HIGH | OPEN | Satellite framework + exchange API layer; operator goal is API-ready trading with MTS |
-| T080 | HIGH | OPEN | Maker execution model: limit entry and target, taker only on the stop; measure fee_R vs all-taker (P1 adverse  |
 | T086 | HIGH | OPEN | Go-live bar for real money: written, operator-signed criteria (proposal = Control Room decision D06-gate) |
 | B118 | MED | OPEN | Layer bracket in auto_trader.py is a fixed unsourced stop_pct 1.0, targets 2, size 100 for every layer alert |
 | B123 | MED | OPEN | Zero-trade and QUIET family follow-ups from the 2026-09-30 maintainer report: Tom main and fabio jishu_3 after |
@@ -200,8 +203,10 @@ How the work gets done: surfaces and session naming, scheduler and pick_task, sy
 | B095 | MED | OPEN | Per-session cost is visible only inside the Claude CLI Status panel and is never written to disk; no per-sessi |
 | B128 | MED | OPEN | Audit PARTIAL group (f): 18 findings where the code is partial or unwired and has no test; references T037 |
 | B150 | MED | OPEN | The test gate is a hand-maintained allow-list: new live-path safety tests (dlm_failure_cap, auto_trader_blockl |
+| B155 | MED | OPEN | Section 5d Claude-prompt contract is hand-checked; no executable gate for line count, three-block presence, op |
 | T046 | MED | OPEN | Stage 3 pending decisions bundle; five coordinator decisions gate Stage 4 |
 | T057 | MED | OPEN | Simplify architecture, optimise, declutter |
+| T088 | MED | OPEN | Timeframe registry: add 4m, 3h, 7h (7h does not divide 24h: epoch vs day-reset anchor) with fail-first tests;  |
 | B126 | LOW | OPEN | Cloud to SUP inbox consumption cannot be verified; SUPERVISOR_LOG.md:203 is still the last inbox line |
 
 ## INFRA - Machines, runtime plumbing, housekeeping
@@ -225,5 +230,5 @@ The computers and the plumbing under everything: desktop / NUC / laptop, supervi
 
 ## Checks
 - UNGROUPED registry rows: 0
-- Tracked files no group claims: 1 -> DSA_SESSION_PROMPT.md.pending_patch_2026-10-09_screenshots.md (1)
+- Tracked files no group claims: 2 -> DSA_SESSION_PROMPT.md.pending_patch_2026-10-09.md (1), DSA_SESSION_PROMPT.md.pending_patch_2026-10-09_screenshots.md (1)
 - Fix either by adding an "assign" entry or a keyword / path in groups.json.
