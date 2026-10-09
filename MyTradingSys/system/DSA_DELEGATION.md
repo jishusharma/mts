@@ -52,6 +52,7 @@ spec; DSA may run them.
 | Something looks wrong (refusal, no result seen) | DeepSeek chat | Check the AIBridge extension is loaded and the tab is reloaded; DSA falls back to paste mode (prompt 0.7). |
 | A DSA result looks suspicious | Claude (Sonnet) | Ask for a spot check of one number. Do not ask for a redo. |
 
+Operator decision D12 (2026-10-09 20:30Z, Control Room): "Yes, once a day" - one DSA session runs the desk queue daily.
 Daily rhythm that costs the least: morning, one DSA session pulls `desk.py list`, runs the queue and ships;
 Claude sessions start with `sync.py start`, read DSA results, post the next tasks, and stop at the short-session limit.
 
