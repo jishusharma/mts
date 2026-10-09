@@ -11,9 +11,11 @@ Budget: heavy work (1-3) waits for the weekly reset Sun 2026-10-11 22:30 IST; be
 2. T089 multi-TF RSI divergence capture (+T091 long-range column, operator idea, NO-SOURCE), then T088 (add 4m, 3h, 7h), T090 7h research
    under playbook PART I. Detail: items/T088_all_timeframe_module.md.
 3. T087 session-levels observation layer (prior-day / Asia / EU highs-lows, failed first break, backtested odds). items/T087_*.md.
-4. After Jis answers: D08-D10 -> apply, rebuild + republish Control Room, then B148 part 5 and T085.
-Open questions for Jis: D08 (turn_of_candle next), D09 (fee gate 0.3 on/off), D10 (heartbeat age limit) - answers are only in the
-Control Room db, unreadable from account B; OK to pull ~9 Malkan transcripts with yt-dlp?; 7h candle anchor: epoch or restart at 00:00 UTC?
+4. D09 (fee gate 0.3 on) and D10 (heartbeat 10 min) are already applied on origin (B146, B148 part 5 in code). Left: D08 -> apply,
+   then T085. Rebuild + republish Control Room only from the account that owns it.
+Open questions for Jis (asked in the project thread 2026-10-09): D08 park turn_of_candle (alerts kept) or keep it as the volume
+generator (default until answered: keep, no change); OK to pull ~9 Malkan transcripts with yt-dlp?; 7h candle anchor
+(default taken: restart at 00:00 UTC each day, like TradingView, last bar of the day 3h; flagged NO-SOURCE).
 End: ship via sync.py ship, `sync.py where` must show 0 unshipped, overwrite this file.
 ```
 
