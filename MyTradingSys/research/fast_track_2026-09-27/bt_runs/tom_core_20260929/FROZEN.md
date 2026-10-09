@@ -12,3 +12,6 @@ Fees: entry/target maker 0, stop/timeout taker 0.0005 (Deribit BTC-PERPETUAL as 
 5 bps extra slippage on stop/timeout, target-first ambiguity. Funding not modelled (hold <= 8 zone bars).
 Splits: hist 2022-01-20..2025-08-31 | dev 2025-09-01..2026-06-25 | HOLDOUT 2026-06-26..2026-09-26 (run once, this run).
 Fabio tags: L1 IS-best frozen params (FABIO_L1_REPORT.md), descriptive only.
+
+## NOTE 2026-10-09 (B147)
+HOLDOUT 2026-06-26..2026-09-26 was read TWICE for Tom (this run and tom_core_20261007). It is burned for Tom: any further Tom result on it is not out-of-sample. Treat the live rule as 'insufficient N' until B147 attribution of the 120,892 to 90,699 row drop is done.

@@ -25,4 +25,6 @@ Failing-first tests, then fixes: (1) make re-auth account-explicit (pass the lab
 
 ## Receipt
 
+2026-10-09 consolidate session: parts 1-3 done in git (deribit_orders token->account map, named_account_labels last-good/raise, auto_trader rejects routed trade with missing secret; tests test_b148_reauth_account, test_dlm_aggregate, test_fabio_slot). NOT DEPLOYED: needs auto_trader + daily_loss_monitor restart. Parts 4-5 (orphan_halt log, heartbeat-age liveness) open.
+
 # END

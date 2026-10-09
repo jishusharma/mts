@@ -24,4 +24,6 @@ Do NOT re-add 0.1 % (NO-SOURCE). Measure instead, pre-registered: net R by stop-
 
 ## Receipt
 
+2026-10-09 consolidate session: measured (research/fast_track_2026-09-27/TOM_STOP_WIDTH_2026-10-09.md): sub-0.10 % stops = 57 % of trades, 3.8-7.6 R fee drag each; gross R negative in every bucket. Staged auto_trader tom.max_fee_to_stop (default off) + test_b146_fee_to_stop. Open: operator enables it (recommend 0.3) and Java SetupCandidatesBuilder still builds tiny stops (F-BT-01 path).
+
 # END

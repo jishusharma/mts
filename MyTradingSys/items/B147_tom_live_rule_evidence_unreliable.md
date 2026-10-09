@@ -25,4 +25,6 @@ Tom live-rule evidence is unreliable: rerun shows 0 SETUP_FORMING signals but th
 
 ## Receipt
 
+2026-10-09 consolidate session: done (3) bt_runs/tom_core_20261007/FROZEN.md + 36-row TRIAL_REGISTRY.csv copied from research/agenda-2026-10-06 (branch itself not merged); (5) P2_FABIO_V3_HOLDOUT_STATUS corrected, SUPERVISOR_LOG correction appended; holdout recorded as burned for Tom. Still open: (1) attribution of the 120,892 to 90,699 row drop (F-BT-01 attributes 19 old signals: 7 candidates gone, 12 lost one proof point), (2) B135 long/short re-run, (4) DSR/PBO for Tom.
+
 # END

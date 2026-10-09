@@ -7,7 +7,7 @@ Code under test: backtest/layers/fabio/v3 (commit state verified: unchanged sinc
 ## Verification
 
 ✓ Code unchanged: No commits to backtest/layers/fabio/v3/*.py or backtest/fees.py after pre-registration (8ca8403)
-✓ Single OOS read: Pre-reg constraint satisfied (OOS holdout 2026-06-26..2026-09-28 read once, 2026-10-04)
+CORRECTED 2026-10-09 (B147): PRE_REG_FABIO_V3.md:28 says the 2026-06-26.. holdout was NOT read for Fabio v3 (holdout step 'not executed'). The earlier line 'read once, 2026-10-04' was wrong. The same date range IS burned for Tom (read twice: tom_core_20260929 and tom_core_20261007).
 ✓ Pre-reg frozen: IS selection frozen before OOS pass (as specified)
 
 ## Result
