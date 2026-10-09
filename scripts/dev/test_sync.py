@@ -77,6 +77,11 @@ class SyncTest(unittest.TestCase):
         sh(self.a, "pull", "-q", "origin", "fast-track")
         self.assertEqual(sync.read_claims(self.a, "HEAD"), [])
 
+    def test_claim_rejects_flag_like_name(self):
+        with self.assertRaises(sync.SyncError):
+            sync.claim(self.a, "--help", gate=self.gate)
+        self.assertEqual(sync.read_claims(self.a, "HEAD"), [])
+
     def test_live_tree_refused(self):
         (self.a / sync.LIVE_MARKER).write_text("", newline="\n")
         with self.assertRaises(sync.SyncError):

@@ -34,6 +34,8 @@ both JIS-NB and JIS-NUC and they are different disks.
 | JIS-NUC (192.168.29.110) | Backtest and heavy-research worker (Qwen lane ended 2026-10-01); PROPOSED future home of the live loop (section 3) | Python 3.14.6, repo copy F:\MTS\repo, data F:\MTS\data; jobs as one-shot scheduled tasks |
 | DESKTOP-F7IU69N | Full working machine when travelling; infrastructure at home | Remote Desktop into JIS-NB and JIS-NUC; Claude app; own repo clone for reading and cloud work |
 
+Datasets: the 1m klines (Dumps/backtest/raw_1m_2022, ~2.5M BTCUSDT bars, needed by run_cc_setups and the fabio/rsi runners) exist only on JIS-NB; JIS-NUC has only raw_1h / raw_1d / funding (2026-10-09, B151).
+
 Rule: the live testnet system moves between machines only in a supervisor restart window (section 3).
 
 ## 2. The operator's screen rule (2026-10-06)

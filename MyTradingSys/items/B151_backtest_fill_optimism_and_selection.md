@@ -24,6 +24,9 @@ Change the fill rule to trade-through by 1 tick; count a signal as unfilled/lost
 2026-10-09 (JIS-NUC, sharma): PARTIAL. run_cc_setups.find_limit_fill now needs a trade-through by 1 tick (TICK=0.1); build_trades reports stats["open_at_end"] instead of dropping silently. 62 cryptocred tests pass (new test fails on old code; 3 touch-based tests moved one tick through).
 STILL OPEN: (a) setup2_fib_pullback emits no signal when a bar blows through the zone, (b) bt_engine targets fill on touch, (c) rerun + update CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md. The rerun needs Dumps/backtest/raw_1m_2022 (1m klines) which is not on JIS-NUC (only raw_1h/1d/fund); run on JIS-NB or fetch 1m first.
 
+2026-10-09 (JIS-NB): RERUN DONE (item c). Trade-through rerun on 1m data (research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md, appended section): all three setups FAIL on both fee variants. S/R flip OOS -0.038% maker / -0.107% taker (n 423); fib pullback OOS +0.042% maker (Sharpe 0.106, 1 of 2 positive years) / -0.030% taker (n 143); failed-MSB OOS negative. The earlier PASS verdicts do not survive (already withdrawn on 10-07; the tick rule moved S/R flip by <0.01 pp). Data window is 264 h longer than the 10-07 run. open_at_end is counted in stats but not printed in the report.
+STILL OPEN: (a) setup2_fib_pullback no-signal on blow-through (its 0 unfilled is by construction, so its numbers stay an upper bound), (b) bt_engine targets fill on touch, (d) print open_at_end in the report.
+
 ## Receipt
 
 # END

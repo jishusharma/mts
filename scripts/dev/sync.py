@@ -189,6 +189,8 @@ def print_claims(repo, ref=None):
 
 
 def claim(repo, task, area="-", gate=run_gate):
+    if str(task).startswith("--"):
+        raise SyncError(f"claim name {task!r} looks like a flag, not a task name; usage: sync.py claim \"<task>\" [--area <paths>]")
     refuse_live(repo)
     git(repo, "fetch", "--quiet", "origin", TRUNK)
     slug = slugify(task)
