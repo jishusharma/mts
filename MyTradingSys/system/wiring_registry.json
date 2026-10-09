@@ -11,6 +11,11 @@
    "ref": "T080",
    "why": "Offline research script that regenerates research/fast_track_2026-09-27/T080_MAKER_MODEL_2026-10-09.md; run by hand, no live process imports it."
   },
+  "MyTradingSys/backtest/layers/rsi/run_t090_anchor_probe.py": {
+   "disp": "REPRO",
+   "ref": "T090",
+   "why": "Offline research script that regenerates research/t090_7h_2026-10-09/anchor_probe.json; run by hand, no live process imports it."
+  },
   "MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py": {
    "disp": "REPRO",
    "ref": "T089",
