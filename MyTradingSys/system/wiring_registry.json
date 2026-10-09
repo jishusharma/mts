@@ -329,6 +329,16 @@
   "MyTradingSys/backtest/bigtrade/exit_policies.py": {
    "disp": "TOOL",
    "why": "Backtest C (PLAN.md section 2): exit policies on fires_spot; run by hand, output research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md."
+  },
+  "MyTradingSys/backtest/layers/rsi/rsi_reclaim.py": {
+   "disp": "WIRE",
+   "ref": "RSI_2A_SPEC.md steps 4-5",
+   "why": "Operator RSI 2a context events (dwell/depth reclaim of 40/60, retest); built and tested 2026-10-09, to be called by run_rsi_backtest.py in the confluence-logging backtest (research/rsi_2a_2026-10-09/RSI_2A_SPEC.md). Not live."
+  },
+  "MyTradingSys/backtest/layers/rsi/rsi_divergence.py": {
+   "disp": "WIRE",
+   "ref": "RSI_2A_SPEC.md steps 4-5",
+   "why": "Malkan close-to-close divergence detector (3-10 bars, params/malkan_divergence_default.json); built and tested 2026-10-09, to be called by run_rsi_backtest.py. Not live."
   }
  }
 }
