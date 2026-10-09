@@ -12,9 +12,10 @@ Surfaces, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md`.
 - No restated hard rules (this file has them).
 - No restated state (STATUS.md has it).
 - Continuous execution, no stop between tasks.
-- SESSION TOKEN BAR (operator 2026-10-09): at about 120k context tokens (about 40 turns if size isn't visible), finish the
-  current step, commit and `sync.py ship`, overwrite `system/NEXT_SESSION.md` with a compact handoff (queue, what waits
-  for the weekly reset, open questions, last commit), confirm `sync.py where` is clean, say so in one line, and stop.
+- SHORT SESSIONS (operator 2026-10-09): one session = one task. Hand off as soon as the task is done, or after 5 turns with
+  the operator, or about 50k context tokens, whichever comes first: finish the step, commit and `sync.py ship`, overwrite
+  `system/NEXT_SESSION.md` (queue, what waits for the weekly reset, open questions, last commit), confirm `sync.py where`
+  is clean, say so in one line, and stop. Live market analysis threads hand off after 5 screenshot reads.
 
 ## Work routing (cheapest tier that can do it; see research/fast_track_2026-09-27/WORKER_ROADMAP.md)
 - T0 script > T1 Haiku > T2 Sonnet > T3 Opus. (Qwen NUC lane decommissioned 2026-10-01; AIBridge on desktop is the run-command surface.)

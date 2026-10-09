@@ -5,7 +5,7 @@ Paste the block below into a new Claude Code session (Win App, bypassPermissions
 ```
 MTS builder session. Read CLAUDE.md, STATUS.md, then this file's State section. Worktree only, never the live tree.
 0. Start: `python scripts/dev/sync.py start`, then `sync.py where`. If push fails, say so in one line and stop.
-Token bar: at ~120k context tokens (~40 turns) finish the step, ship, overwrite this file, check `sync.py where`, stop.
+Short sessions: one task per session; hand off when it is done, after 5 operator turns or ~50k tokens (first wins): ship, overwrite this file, check `sync.py where`, stop.
 Budget: heavy work (1-3) waits for the weekly reset Sun 2026-10-11 22:30 IST; before it only cheap reads and replies.
 1. Tom core backtest phase 2 (research/tom_core_bt_2026-10-09/PLAN.md): backtest/vp_pivot_probe.py exactly as FORMULAS 18,
    tests first from the 18.1-18.7 worked examples. Data: Dumps/backtest raw_1m_2022 + raw klines (2022-01..2026-10-07).
