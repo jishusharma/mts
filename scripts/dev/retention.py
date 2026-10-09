@@ -32,14 +32,19 @@ def _files(root):
             for r, _, fs in os.walk(root) for f in fs}
 
 
+def _same_bytes(x, y):
+    """Direct byte compare; filecmp caches by stat signature and goes stale on same-size rewrites in one mtime tick."""
+    with open(x, 'rb') as fx, open(y, 'rb') as fy:
+        return fx.read() == fy.read()
+
+
 def dup_copy_is_subset(copy, original):
     """True only if every file in `copy` exists in `original` with the same size, except names in IGNORE_DIFF."""
     if not (os.path.isdir(copy) and os.path.isdir(original)):
         return False
     a, b = _files(copy), _files(original)
     # B152: sizes alone can hide a different file; require identical bytes too
-    return all(k in b and (k in IGNORE_DIFF or (b[k] == v and filecmp.cmp(os.path.join(copy, k), os.path.join(original, k),
-                                                                          shallow=False)))
+    return all(k in b and (k in IGNORE_DIFF or (b[k] == v and _same_bytes(os.path.join(copy, k), os.path.join(original, k))))
                for k, v in a.items())
 
 
