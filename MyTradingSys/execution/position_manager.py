@@ -97,6 +97,9 @@ import journal  # noqa: E402
 import pm_heartbeat  # noqa: E402
 
 POLL_INTERVAL_SECONDS = 2
+# B148 part 5: the heartbeat file is refreshed this often so orphan_watchdog can tell a live manager from a dead one
+# whose pid Windows reused (limit pm_heartbeat.DEFAULT_MAX_AGE_S = 600 s).
+HEARTBEAT_REFRESH_SECONDS = 60
 LIVE_STOP_STATES = {"untriggered", "open"}
 # S3: how long a live position may go with no live server-side stop covering
 # it before position_manager gives up retrying and flattens. Set to match the
@@ -297,6 +300,19 @@ def _signed(size):
     return int(size or 0)
 
 
+def _beat_heartbeat(plan_id, last, now=None):
+    """Refresh the heartbeat file at most every HEARTBEAT_REFRESH_SECONDS; returns the new last-refresh time.
+    A failure is swallowed and not retried until the next interval: it must never stop position protection."""
+    now = time.time() if now is None else now
+    if now - last < HEARTBEAT_REFRESH_SECONDS:
+        return last
+    try:
+        pm_heartbeat.beat(plan_id)
+    except Exception as he:  # noqa: BLE001
+        print(f"WARNING: could not refresh heartbeat ({he!r})")
+    return now
+
+
 def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, token=None):
     """Heartbeat wrapper: file exists for exactly the lifetime of the manager
     (removed in finally on every exit path: return, ManagerHalted, any exception)."""
@@ -327,6 +343,7 @@ def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=Fal
     is_long = entry_side == "BUY"
     token = token or _retry_call(do.authenticate)
     unprotected_since = None  # S3: set when a poll first observes the stop not live
+    hb_last = time.time()  # the wrapper wrote the heartbeat just before this
     t_end = time.time() + max_seconds if max_seconds else None
     max_hold_s = (_plan_max_hold_minutes(plan_id) or 0) * 60 or None
     entry_ts = _entry_fill_ts(plan_id) if max_hold_s else None
@@ -476,6 +493,7 @@ def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=Fal
         raise ManagerHalted(f"flattened + halted: {reason}")
 
     while True:
+        hb_last = _beat_heartbeat(plan_id, hb_last)  # first thing every poll: no early exit of the body can skip it
         pos = _signed(rd(do.get_position, instrument).get("size"))
         # journal target fills we can see (audit only; position is the truth)
         for oid, tg in targets.items():

@@ -118,6 +118,23 @@ class TestMain(unittest.TestCase):
         self.assertEqual(rc, 0)
         self.assertFalse(self.halt.exists())
 
+    def test_stale_heartbeat_with_reused_pid_does_not_suppress_halt(self):
+        # B148 part 5: manager died 20 min ago, Windows reused pid 77, pid_alive says True: still an orphan
+        from datetime import datetime, timedelta, timezone
+        old = datetime.now(timezone.utc) - timedelta(minutes=20)
+        pm_heartbeat.write_heartbeat("p1", account="fabio", pid=77, hb_dir=self.hb, now=old)
+        rc = self._main({"default": FakeReadClient(), "fabio": FakeReadClient(size=10)}, alive=lambda pid: True)
+        self.assertEqual(rc, 3)
+        self.assertIn("fabio", self.halt.read_text(encoding="utf-8"))
+
+    def test_hb_max_age_flag_is_honoured(self):
+        from datetime import datetime, timedelta, timezone
+        old = datetime.now(timezone.utc) - timedelta(minutes=20)
+        pm_heartbeat.write_heartbeat("p1", account="fabio", pid=77, hb_dir=self.hb, now=old)
+        rc = self._main({"default": FakeReadClient(), "fabio": FakeReadClient(size=10)},
+                        argv=("--once", "--hb-max-age", "3600"), alive=lambda pid: True)
+        self.assertEqual(rc, 0)
+
     def test_dead_heartbeat_does_not_suppress(self):
         pm_heartbeat.write_heartbeat("p1", account="fabio", pid=77, hb_dir=self.hb)
         rc = self._main({"default": FakeReadClient(), "fabio": FakeReadClient(size=10)}, alive=lambda pid: False)

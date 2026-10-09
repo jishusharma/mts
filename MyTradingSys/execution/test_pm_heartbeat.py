@@ -72,6 +72,65 @@ class TestPmHeartbeat(unittest.TestCase):
         hb.write_heartbeat("p1", account="", pid=10, hb_dir=self.dir)
         self.assertEqual(hb.live_accounts(self.dir, alive=lambda pid: True), {"default"})
 
+    # --- B148 part 5 (operator D10 2026-10-09: heartbeat older than 10 minutes = dead, whatever the pid says) ---
+    NOW = datetime(2026, 10, 9, 12, 0, 0, tzinfo=timezone.utc)
+
+    def _at(self, seconds_before):
+        from datetime import timedelta
+        return self.NOW - timedelta(seconds=seconds_before)
+
+    def test_default_limit_is_ten_minutes(self):
+        self.assertEqual(hb.DEFAULT_MAX_AGE_S, 600)
+
+    def test_reused_pid_with_stale_beat_is_not_live(self):
+        # the manager crashed 11 min ago; Windows handed its pid to another process, so pid_alive() says True
+        hb.write_heartbeat("p1", account="fabio", pid=77, hb_dir=self.dir, now=self._at(660))
+        self.assertEqual(hb.live_accounts(self.dir, alive=lambda pid: True, now=self.NOW), set())
+
+    def test_fresh_beat_with_live_pid_is_live(self):
+        hb.write_heartbeat("p1", account="fabio", pid=77, hb_dir=self.dir, now=self._at(30))
+        self.assertEqual(hb.live_accounts(self.dir, alive=lambda pid: True, now=self.NOW), {"fabio"})
+
+    def test_beat_exactly_at_the_limit_is_still_live_one_second_over_is_not(self):
+        hb.write_heartbeat("p1", account="a", pid=1, hb_dir=self.dir, now=self._at(600))
+        hb.write_heartbeat("p2", account="b", pid=2, hb_dir=self.dir, now=self._at(601))
+        self.assertEqual(hb.live_accounts(self.dir, alive=lambda pid: True, now=self.NOW), {"a"})
+
+    def test_fresh_beat_with_dead_pid_is_still_dead(self):
+        hb.write_heartbeat("p1", account="fabio", pid=77, hb_dir=self.dir, now=self._at(5))
+        self.assertEqual(hb.live_accounts(self.dir, alive=lambda pid: False, now=self.NOW), set())
+
+    def test_legacy_heartbeat_without_beat_field_stays_pid_only(self):
+        # managers started before this change never refresh their file: they must not be called dead by age
+        (self.dir).mkdir(parents=True, exist_ok=True)
+        (self.dir / "old.json").write_text(json.dumps({"plan_id": "old", "account": "fabio", "pid": 5,
+                                                       "started_utc": self._at(86400).isoformat()}), encoding="utf-8")
+        self.assertEqual(hb.live_accounts(self.dir, alive=lambda pid: True, now=self.NOW), {"fabio"})
+
+    def test_unparseable_or_future_beat_fails_open(self):
+        (self.dir).mkdir(parents=True, exist_ok=True)
+        for name, beat in (("junk", "not-a-date"), ("fut", "2099-01-01T00:00:00+00:00"), ("naive", "2026-10-09T11:59:00")):
+            (self.dir / (name + ".json")).write_text(json.dumps({"plan_id": name, "account": name, "pid": 5,
+                                                                 "beat_utc": beat}), encoding="utf-8")
+        self.assertEqual(hb.live_accounts(self.dir, alive=lambda pid: True, now=self.NOW), {"junk", "fut", "naive"})
+
+    def test_max_age_none_disables_the_age_rule(self):
+        hb.write_heartbeat("p1", account="fabio", pid=77, hb_dir=self.dir, now=self._at(99999))
+        self.assertEqual(hb.live_accounts(self.dir, alive=lambda pid: True, max_age_s=None, now=self.NOW), {"fabio"})
+
+    def test_beat_refreshes_only_the_beat_time(self):
+        hb.write_heartbeat("p1", account="fabio", pid=77, hb_dir=self.dir, now=self._at(900))
+        self.assertTrue(hb.beat("p1", hb_dir=self.dir, now=self.NOW))
+        d = json.loads((self.dir / "p1.json").read_text(encoding="utf-8"))
+        self.assertEqual((d["account"], d["pid"]), ("fabio", 77))
+        self.assertTrue(d["started_utc"].startswith("2026-10-09T11:45:00"))
+        self.assertTrue(d["beat_utc"].startswith("2026-10-09T12:00:00"))
+        self.assertEqual(hb.live_accounts(self.dir, alive=lambda pid: True, now=self.NOW), {"fabio"})
+
+    def test_beat_does_not_resurrect_a_removed_heartbeat(self):
+        self.assertFalse(hb.beat("gone", hb_dir=self.dir, now=self.NOW))
+        self.assertFalse((self.dir / "gone.json").exists())
+
     def test_pid_alive_real(self):
         self.assertTrue(hb.pid_alive(os.getpid()))
         # fail-safe: unknown/corrupt pid values are treated as alive
