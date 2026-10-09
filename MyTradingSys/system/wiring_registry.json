@@ -311,6 +311,10 @@
   "scripts/tools/divergence_monitor.py": {
    "disp": "TOOL",
    "why": "Diagnostic divergence reader, \"tooling, left as is\": MyTradingSys/items/B063_divergence.md:70."
+  },
+  "MyTradingSys/backtest/tom_stop_width.py": {
+   "disp": "TOOL",
+   "why": "B146 analysis script (stop width vs fees); run by hand, output research/fast_track_2026-09-27/TOM_STOP_WIDTH_2026-10-09.md."
   }
  }
 }
