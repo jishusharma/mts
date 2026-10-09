@@ -39,9 +39,14 @@ $R = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 # pwsh 7 launched via Start-Process from an IDE terminal inherits a PATH
 # missing system32 and Maven. Prepend so bare "cmd.exe", "mvn", and
 # "taskkill.exe" resolve inside the loop and its children.
+# B140/D18: JDK + Maven copies on the SSD (C:\tools) are preferred over the
+# D: HDD that logs WHEA errors; D:\tools stays the fallback.
+$mavenBin = 'D:\tools\apache-maven-3.9.14\bin'
+if (Test-Path 'C:\tools\apache-maven-3.9.14\bin\mvn.cmd') { $mavenBin = 'C:\tools\apache-maven-3.9.14\bin' }
+if (Test-Path 'C:\tools\jdk-17.0.18\bin\java.exe') { $env:JAVA_HOME = 'C:\tools\jdk-17.0.18' }
 $requiredPaths = @(
     (Join-Path $env:SystemRoot 'system32'),
-    'D:\tools\apache-maven-3.9.14\bin'
+    $mavenBin
 )
 foreach ($rp in $requiredPaths) {
     if (-not (Test-Path $rp)) { continue }
@@ -301,7 +306,7 @@ function Build-Card {
         $quadLine = (python $qScript 2>&1 | Out-String).Trim()
     } catch {}
     if ($quadLine) { $lines += $quadLine }
-    if ($thesisLine) { $lines += "SSOT_THESIS: $thesisLine" }
+    # D13/B158 (operator 2026-10-09): the SSOT thesis is no longer printed on the card (no writer since 2026-09-14).
     if ($triggerLine) { $lines += "SSOT_TRIGGER: $triggerLine" }
     $lines += "ZONE:    $($v.zone) @ $($v.zone_price)"
     $st = $snap.session_timing
@@ -762,20 +767,16 @@ print("logged")
             elseif ($reason -match "price") { $popTitle = "MTS #$($script:AlertCount) - PRICE MOVE" }
     
             # SSOT: read current thesis for context
-        $thesisLine = ""
         $triggerLine = ""
         try {
             $stateScript = Join-Path $R "MyTradingSys\runtime\session_state.py"
             $stateRead = python $stateScript show 2>&1 | Out-String
             $stateObj = $stateRead | ConvertFrom-Json
-            # B156: the helper prints the thesis with its written time and age (empty text = no line)
-            $thesisLine = (python $stateScript thesis-line 2>&1 | Out-String).Trim()
-            if ($LASTEXITCODE -ne 0) { $thesisLine = "THESIS: unavailable" }
             if ($stateObj.next_trigger -and $stateObj.next_trigger.condition) {
                 $triggerLine = "NEXT_TRIGGER: $($stateObj.next_trigger.condition)"
             }
         } catch {
-            $thesisLine = "THESIS: unavailable"
+            $triggerLine = ""
         }
         $session_state_read = $true
 
