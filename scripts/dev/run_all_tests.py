@@ -139,6 +139,9 @@ def main(argv=None):
     cmd3p = [sys.executable, "MyTradingSys/research/test_p4_corrected.py"]
     success, output = run_step("3p", "P4 corrected script tests", cmd3p)
     results.append(("Step 3p: P4 corrected script tests", success))
+    cmd3t = [sys.executable, "MyTradingSys/research/test_t093_toc_imbalance_klines.py"]
+    success, output = run_step("3t", "T093 turn-of-candle imbalance tests", cmd3t)
+    results.append(("Step 3t: T093 imbalance tests", success))
     cmd3d = [sys.executable, "scripts/dev/test_verify_extract_quotes.py"]
     success, output = run_step("3d", "Extract quote checker tests", cmd3d)
     results.append(("Step 3d: Quote checker tests", success))
@@ -163,6 +166,12 @@ def main(argv=None):
     cmd3xt = [sys.executable, "scripts/dev/run_extra_tests.py"]
     success, output = run_step("3xt", "Extra tests outside the collected dirs (B150 discovery)", cmd3xt)
     results.append(("Step 3xt: Extra tests", success))
+    cmd3ad = [sys.executable, "scripts/dev/test_auto_deploy.py"]
+    success, output = run_step("3ad", "Scheduled auto-deploy tests (stops on red gate)", cmd3ad)
+    results.append(("Step 3ad: Auto-deploy tests", success))
+    cmd3hy = [sys.executable, "scripts/dev/test_daily_hygiene.py"]
+    success, output = run_step("3hy", "Daily hygiene job tests", cmd3hy)
+    results.append(("Step 3hy: Daily hygiene tests", success))
     cmd3pc = [sys.executable, "scripts/dev/test_prompt_contract.py"]
     success, output = run_step("3pc", "Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)", cmd3pc)
     results.append(("Step 3pc: Prompt contract tests", success))

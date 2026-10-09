@@ -312,3 +312,23 @@ OOS per year: 2025: n=19 - (-0.6150%), 2026: n=29 + (0.0052%)
 
 Same trades without funding, OOS: mean net -0.2372%, n=48.
 
+
+## Rerun 2026-10-10 (B151 closed in code): bear fib zone fixed, blow-through bars fill, targets need a tick through
+
+Changes since the 2026-10-09 trade-through rerun (commit cc16a73): (a) `setup2_fib_pullback` built its bear zone descending, so the
+bear branch never emitted a signal (the earlier fib numbers were long-only); it now emits shorts. A bar that blows through the whole zone fills
+the resting limit and is no longer dropped. (b) `bt_engine.simulate_trade(target_through=)`: a resting target fills only when price trades one tick
+(0.1) through it, as entries already did. (d) The report prints open-at-end trades.
+
+Data: BTCUSDT 1m 2022-01-01..2026-09-26 (F:/MTS/data/tom_raw/klines, 2,491,200 bars, zero gaps), 1h bars 41,520, funding 7,395 records. Defaults only, no grid.
+```
+setup1_sr_flip           all_taker  FAIL  trades 1477 (unfilled 50, open at end 0)  OOS n=421  mean net -0.1069 %  Sharpe -0.883
+                         maker      FAIL                                           OOS n=421  mean net -0.0382 %  Sharpe -0.263
+setup2_fib_pullback      all_taker  FAIL  trades 1382 (unfilled 0,  open at end 0)  OOS n=398  mean net -0.0940 %  Sharpe -0.316
+                         maker      FAIL                                           OOS n=398  mean net -0.0275 %  Sharpe -0.087
+setup3_failed_msb_rev    all_taker  FAIL  trades 167  (unfilled 0,  open at end 0)  OOS n=48   mean net -0.2981 %  Sharpe -0.194
+                         maker      FAIL                                           OOS n=48   mean net -0.2408 %  Sharpe -0.156
+```
+Reading: the fib pullback's earlier OOS +0.042 % (maker, n 143) does not survive: with shorts included and blow-through fills counted, OOS n is 398 and the
+mean is -0.0275 % (maker) / -0.094 % (taker); its "0 unfilled" is now true by construction of the fill rule rather than by dropped signals. No CryptoCred setup
+passes under either fee variant. The stop buffer and target values stay NO-SOURCE (B143); nothing here selects them.
