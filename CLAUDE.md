@@ -11,6 +11,7 @@ Surfaces, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md`.
 
 ## What a CL prompt carries
 - Prompt <= 30 lines.
+- ONE-MESSAGE HANDOFF (operator 2026-10-10): NEXT_SESSION.md's block must run with zero operator input: defaults for every open question, tasks in order, Control Room checked by the session.
 - No restated hard rules (this file has them).
 - No restated state (STATUS.md has it).
 - Continuous execution, no stop between tasks.
