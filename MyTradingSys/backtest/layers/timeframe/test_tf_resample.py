@@ -93,5 +93,73 @@ class TestResampleAggregation(unittest.TestCase):
             resample(bars, "7m", REGISTRY)
 
 
+DAY = 1791504000000  # 2026-10-09 00:00 UTC (epoch day 20735)
+H = 3600000
+MIN = 60000
+
+
+def day_bars(start_ms, n, skip=()):
+    """n consecutive 1m bars from start_ms, minus the minute offsets in skip."""
+    return [{"t": start_ms + i * MIN, "o": i, "h": i, "l": i, "c": i, "v": 1} for i in range(n) if i not in skip]
+
+
+class TestT088NewFrames(unittest.TestCase):
+    """T088 (items/T088_all_timeframe_module.md): 4m, 3h, 7h day-reset, 7h_epoch."""
+
+    def test_t088_registry_holds_the_four_keys_and_7h_flags(self):
+        for tf in ("4m", "3h", "7h", "7h_epoch"):
+            self.assertIn(tf, REGISTRY["timeframes"])
+        self.assertIn("NO-SOURCE", REGISTRY["timeframes"]["7h"].get("flag", ""))
+        self.assertIn("NO-SOURCE", REGISTRY["timeframes"]["7h_epoch"].get("flag", ""))
+
+    def test_t088_4m_bucket_start_end(self):
+        t = DAY + 9 * MIN
+        self.assertEqual(bucket_start(t, "4m", REGISTRY), DAY + 8 * MIN)
+        self.assertEqual(bucket_end(t, "4m", REGISTRY), DAY + 12 * MIN)
+
+    def test_t088_3h_bucket_start_end(self):
+        t = DAY + 14 * H + 30 * MIN
+        self.assertEqual(bucket_start(t, "3h", REGISTRY), DAY + 12 * H)
+        self.assertEqual(bucket_end(t, "3h", REGISTRY), DAY + 15 * H)
+
+    def test_t088_7h_day_reset_buckets(self):
+        cases = [(0, 0, 7), (6 * H + 59 * MIN, 0, 7), (7 * H, 7, 14), (20 * H + 59 * MIN, 14, 21),
+                 (21 * H, 21, 24), (23 * H + 59 * MIN, 21, 24)]
+        for off, s, e in cases:
+            self.assertEqual(bucket_start(DAY + off, "7h", REGISTRY), DAY + s * H, off)
+            self.assertEqual(bucket_end(DAY + off, "7h", REGISTRY), DAY + e * H, off)
+        # Next day restarts at 00:00, not at 04:00.
+        self.assertEqual(bucket_start(DAY + 24 * H + 30 * MIN, "7h", REGISTRY), DAY + 24 * H)
+
+    def test_t088_7h_epoch_drifts_against_utc_day(self):
+        # 1791504000 % 25200 = 10800: the epoch bucket holding 00:00 opened at 21:00 the day before.
+        self.assertEqual(bucket_start(DAY, "7h_epoch", REGISTRY), DAY - 3 * H)
+        self.assertEqual(bucket_end(DAY, "7h_epoch", REGISTRY), DAY + 4 * H)
+
+    def test_t088_7h_full_day_is_four_bars_last_is_3h_stub(self):
+        out = resample(day_bars(DAY, 1440), "7h", REGISTRY)
+        self.assertEqual([b["t"] for b in out], [DAY, DAY + 7 * H, DAY + 14 * H, DAY + 21 * H])
+        self.assertEqual([b["n_bars"] for b in out], [420, 420, 420, 180])
+        self.assertEqual([b["gap_count"] for b in out], [0, 0, 0, 0])
+        last = out[-1]
+        self.assertEqual((last["o"], last["c"], last["v"]), (1260, 1439, 180))
+
+    def test_t088_7h_open_stub_is_not_closed(self):
+        out = resample(day_bars(DAY, 22 * 60), "7h", REGISTRY)
+        self.assertEqual(len(out), 3)
+
+    def test_t088_7h_gap_count(self):
+        out = resample(day_bars(DAY, 7 * 60 + 1, skip=(5, 100)), "7h", REGISTRY)
+        self.assertEqual(len(out), 1)
+        self.assertEqual((out[0]["n_bars"], out[0]["gap_count"]), (418, 2))
+
+    def test_t088_4m_and_3h_gap_and_closed_only(self):
+        out = resample(day_bars(DAY, 10, skip=(1,)), "4m", REGISTRY)
+        self.assertEqual([(b["t"], b["n_bars"], b["gap_count"]) for b in out],
+                         [(DAY, 3, 1), (DAY + 4 * MIN, 4, 0)])
+        out = resample(day_bars(DAY, 7 * 60), "3h", REGISTRY)
+        self.assertEqual([(b["t"], b["n_bars"]) for b in out], [(DAY, 180), (DAY + 3 * H, 180)])
+
+
 if __name__ == "__main__":
     unittest.main()

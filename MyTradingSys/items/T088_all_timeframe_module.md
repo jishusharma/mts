@@ -16,3 +16,11 @@ Live: the live runner polls 1m / 5m / 15m / 1h layers only (live_runner.log fami
 
 ## Result T089 + T091 (2026-10-09)
 DONE. No edge on any timeframe with >= 300 events (32 cells, 1m-1h + 2h Malkan bearish), Malkan or operator column; the rest of 2h and up stay insufficient n. research/rsi_divergence_mtf_2026-10-09/RESULT.md.
+
+## Result T088 (2026-10-09)
+DONE. registry.json now holds 4m, 3h, 7h (unit day_reset_seconds: 00/07/14/21 UTC then a 3h stub, the default) and
+7h_epoch (epoch-aligned, drifts 3h a day); both 7h keys carry a NO-SOURCE flag until T090 picks the anchor.
+tf_resample.py handles the new unit; 9 new tests in test_tf_resample.py failed on the old code. TF maps: observation/capture.py
+TF_MINUTES gained 4m/3h/7h; alert_rate_check and market_guide map live alert families only, none on these frames, unchanged.
+T089 rerun on the four frames: 4m no edge; 3h/7h insufficient n; 7h operator bullish lead (46, t 2.11) disappears on 7h_epoch.
+research/rsi_divergence_mtf_2026-10-09/RESULT.md (T088 addendum).

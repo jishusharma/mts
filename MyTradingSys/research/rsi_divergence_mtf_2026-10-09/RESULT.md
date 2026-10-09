@@ -21,3 +21,14 @@ candle confirmation: this measures the raw signal only. B154 regime split not av
 
 Files: REPORT.md (all cells + by-year table), summary.json (all horizons, by year, by 12h half).
 Data: 2,507,040 1m bars (1741 full days, no gaps), live-tree Dumps/backtest raw_1m_2022 + raw.
+
+## T088 addendum: 4m, 3h, 7h, 7h_epoch (2026-10-09)
+
+Same script, data and rules, `--tfs 4m,3h,7h,7h_epoch` after T088 added them to the registry. Files: REPORT_T088.md,
+summary_T088.json.
+- 4m: no edge. 14,490 Malkan + 8,815 operator events, gross equals drift, net -0.10% at 10 bars (t -14 to -20),
+  negative in every year 2022-2026.
+- 3h (168-208 Malkan, 94-106 operator) and 7h (46-113): insufficient n, no verdict.
+- 7h operator bullish, 46 events, net +1.09%, t 2.11, positive in all 5 years (8-11 a year): the same shape as the
+  6h operator bullish lead. A lead for a multi-symbol rerun only. The epoch-aligned 7h variant gives 41 events,
+  net +0.47%, t 0.72, so the lead depends on the 00:00 UTC day-reset anchor (NO-SOURCE, T090 open).
