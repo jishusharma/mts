@@ -23,7 +23,7 @@ End: ship via sync.py ship, `sync.py where` must show 0 unshipped, overwrite thi
 ## State at handoff
 - 2026-10-09 night: T088 DONE. registry.json + tf_resample.py: 4m, 3h, 7h (day-reset 00:00 UTC, default), 7h_epoch; both 7h NO-SOURCE.
   9 tests fail-first. T089 rerun: 4m no edge, 3h/7h insufficient n, 7h operator bullish lead (46, t 2.11) only on the day-reset anchor.
-  Branch jisnb/t088-tf-module in worktree mts-vpa. Last commit: see `git log origin/fast-track -1`.
+  Branch jisnb/t088-tf-module in worktree mts-vpa.
 - 2026-10-09 night: T089+T091 DONE. backtest/layers/rsi/run_divergence_mtf.py (9 tests); research/rsi_divergence_mtf_2026-10-09/RESULT.md. RSI divergence on all 19 registry TFs 2022-01..2026-10-07, net of taker x2: no edge in any of the 32 cells with >= 300 events (1m-1h), Malkan 3-10 bars or operator 11-60 bars; 2h+ insufficient n on one symbol. Lead only: 6h operator bullish n=54. Branch jisnb/t089-rsi-div in worktree mts-vpa.
 - 2026-10-09 late: Tom core phase 2 done (backtest/vp_pivot_probe.py, 26 tests). 48 anchor x level streams 2022-2026: all net -0.19..-0.25 R taker, gross ~0, none beats placebo; pivot anchors no better than calendar ones. Worktree mts-vpa, branch jisnb/tom-bt-phase2.
 - 2026-10-09 evening: screenshots 90e55256ec34, 850745dc9d8d, 6188a576411b read and closed (research/screenshots/); T087-T091 filed in BUGS.md + items. The live tree registry is behind origin, so shot.py `done --outcome finding:` refuses new ids there; use note: until the next deploy.
