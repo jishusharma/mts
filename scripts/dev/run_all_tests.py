@@ -160,6 +160,9 @@ def main(argv=None):
     cmd3mg = [sys.executable, "scripts/dev/test_make_groups.py"]
     success, output = run_step("3mg", "Project group map tests (every row and file has one group)", cmd3mg)
     results.append(("Step 3mg: Project group map tests", success))
+    cmd3cr = [sys.executable, "scripts/dev/test_make_control_room.py"]
+    success, output = run_step("3cr", "Control Room page generator tests", cmd3cr)
+    results.append(("Step 3cr: Control Room tests", success))
 
     # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
     cmd3w = [sys.executable, "scripts/dev/test_wiring_scan.py"]

@@ -24,6 +24,7 @@ Surfaces, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md`.
   `MyTradingSys/system/cli_tasks/<date>_<slug>.md` (exact commands, why forced, expected result) and say so in one line. Never stay silent.
 
 ## Quick answers (the operator is not a developer: do these, do not ask, do not re-investigate)
+- Operator page = MTS Control Room (pinned artifact). Their questions/tasks arrive in its Inbox, verbatim; procedure `MyTradingSys/system/CONTROL_ROOM.md`. Ask the operator via a page decision, not chat.
 - Push: never from the live tree (the folder holding `.mts_live`). `git worktree add ../mts-push -b <host>/<slug> HEAD` (reuse it if present),
   `git merge origin/fast-track` there (docs conflicts: take origin's text; STATUS.md: take origin's, regenerate),
   `python scripts/dev/run_all_tests.py --quick`, then `git push origin <branch>:fast-track`. `sync.py ship` does the same.

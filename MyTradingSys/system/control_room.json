@@ -1,0 +1,195 @@
+{
+  "_doc": "Hand-kept content of the MTS Control Room page (scripts/dev/make_control_room.py). Edit HERE, never the page. Process: MyTradingSys/system/CONTROL_ROOM.md. Item ids: registry rows (B/T), bigtrade findings (F-BT-NN), or X- road tasks defined below. When an X- task gets a registry row, replace the X- id with the row id.",
+  "artifact_url": "https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su",
+  "asof": "2026-10-09",
+  "verdict": "The system runs and trades on testnet, but no source has shown a real edge after fees. Current step: Stage 1, trustworthy measurements. Several data bugs mean today's 'no edge' verdicts cannot be trusted either way.",
+  "road": [
+    {
+      "id": "S1",
+      "name": "Trustworthy measurements",
+      "goal": "Every number a backtest or the live engine reads is correct. Until this holds, every 'no edge' verdict is suspect.",
+      "exit": "B146-B148 closed; volume profile, naked POC and OI fixes live; backtests re-run on fixed data.",
+      "items": [
+        "B146",
+        "B147",
+        "B148",
+        "F-BT-09",
+        "F-BT-14",
+        "F-BT-10",
+        "F-BT-11",
+        "F-BT-12",
+        "F-BT-20",
+        "F-BT-21",
+        "B136",
+        "B141",
+        "B059",
+        "B066",
+        "F-BT-13"
+      ]
+    },
+    {
+      "id": "S2",
+      "name": "Survive the fees",
+      "goal": "Stops wide enough that a 1m wick does not hit them and fees cost a small fraction of R.",
+      "exit": "fee_R under 0.25 R on Tom and every traded layer; maker entries modelled and tested.",
+      "items": [
+        "F-BT-01",
+        "F-BT-22",
+        "X-MAKER",
+        "B118",
+        "B142",
+        "B143",
+        "B144",
+        "B151",
+        "B153"
+      ]
+    },
+    {
+      "id": "S3",
+      "name": "Find a real edge",
+      "goal": "At least one source shows net-positive expectancy out of sample, after fees, on fixed data.",
+      "exit": "Walk-forward (backtest D) net R > 0 with CI above 0 for at least one Tom or layer config.",
+      "items": [
+        "X-BTD",
+        "X-RERUN",
+        "F-BT-08",
+        "F-BT-02",
+        "X-RSI1H",
+        "X-ESC1H",
+        "B117",
+        "T052",
+        "B063",
+        "T055",
+        "T058"
+      ]
+    },
+    {
+      "id": "S4",
+      "name": "Prove it on testnet",
+      "goal": "The winning configs trade on testnet with real exits, enough trades, the stack up around the clock.",
+      "exit": "200+ trades from S3 configs, net positive, under 5 % of exits by time-out, uptime over 95 %.",
+      "items": [
+        "F-BT-19",
+        "X-EXITS",
+        "B123",
+        "B124",
+        "B121",
+        "B149",
+        "B125"
+      ]
+    },
+    {
+      "id": "S5",
+      "name": "Go-live gate",
+      "goal": "A written bar for real money, agreed by the operator, met by S4 numbers.",
+      "exit": "Operator signs the bar; S4 meets it for 30 days.",
+      "items": [
+        "X-GATE",
+        "T048"
+      ]
+    }
+  ],
+  "x_tasks": {
+    "X-MAKER": [
+      "HIGH",
+      "OPEN",
+      "Maker execution model: limit entry and target, taker only on the stop (P1 showed adverse selection +0.02 bp vs ~10 bp fee)"
+    ],
+    "X-BTD": [
+      "HIGH",
+      "OPEN",
+      "Backtest D: walk-forward tuning of stop_buffer_atr per layer and Tom, report fee_R per cell, label BT-TUNED"
+    ],
+    "X-RERUN": [
+      "MED",
+      "OPEN",
+      "Re-run the capture matrix and Tom backtest after Stage 1 fixes land"
+    ],
+    "X-RSI1H": [
+      "MED",
+      "OPEN",
+      "Lead: rsi_events 1h, 3 of 3 live wins (+9.75 USD); needs a full-history check"
+    ],
+    "X-ESC1H": [
+      "MED",
+      "OPEN",
+      "Lead: fabio escalation 1h, best lift in the capture matrix (1.24-1.38 at 24 bars, small n)"
+    ],
+    "X-EXITS": [
+      "MED",
+      "OPEN",
+      "97 % of testnet trades end on the time exit: targets and stops are almost never reached"
+    ],
+    "X-GATE": [
+      "HIGH",
+      "OPEN",
+      "Write the go-live bar for real money (proposal is decision D06 on the page)"
+    ]
+  },
+  "evidence": [
+    {
+      "test": "Tom core backtest",
+      "result": "Gross -0.15 R before fees (CI -0.29 to +0.04); live rule now finds 0 signals where an older run found 19",
+      "verdict": "fail",
+      "src": "B147, TOM_CORE_BT_RERUN"
+    },
+    {
+      "test": "Capture matrix, 34 layer/side rows, 2022-2026",
+      "result": "0 of 34 reach lift 1.15 at 96 bars; most sit at 1.00 (no better than chance)",
+      "verdict": "fail",
+      "src": "bigtrade_2026-10-09/CAPTURE_MATRIX_SPOT.md"
+    },
+    {
+      "test": "Fabio order-flow model, 64 variants",
+      "result": "0 net-positive out of sample; gross +0.13 R, fees cost 0.66 R",
+      "verdict": "fail",
+      "src": "SUPERVISOR_LOG 2026-09-30 FABIO_OF"
+    },
+    {
+      "test": "Passive (maker) execution, P1",
+      "result": "Adverse selection +0.02 bp against a ~10 bp fee: maker fills are realistic",
+      "verdict": "pass",
+      "src": "SUPERVISOR_LOG 2026-10-06 research agenda"
+    },
+    {
+      "test": "Kim & Hansen imbalance replication, P4",
+      "result": "8 h window passes; 4 h and 12 h fail sign stability",
+      "verdict": "partial",
+      "src": "SUPERVISOR_LOG 2026-10-06 research agenda"
+    },
+    {
+      "test": "Live layers vs backtest parity",
+      "result": "92-100 % after switching backtests to spot data (was 0-70 % on perp)",
+      "verdict": "pass",
+      "src": "FINDINGS F-BT-18"
+    }
+  ],
+  "health_notes": [
+    {
+      "k": "Uptime",
+      "v": "Gaps",
+      "s": "warn",
+      "d": "dark ~23 of the last 120 h; 2-day gap 09-30..10-02 (F-BT-19)"
+    },
+    {
+      "k": "Hardware",
+      "v": "WHEA errors",
+      "s": "bad",
+      "d": "fatal hardware error every 1-3 days since July, SMART unread (B140)"
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-10-09",
+      "what": "Page made: road to profitability, decisions, evidence, ledger, board."
+    },
+    {
+      "date": "2026-10-09",
+      "what": "Generator moved into the repo; refreshed daily from the real files."
+    },
+    {
+      "date": "2026-10-09",
+      "what": "Inbox added: paste questions, tasks and requirements word for word; Claude replies under each."
+    }
+  ]
+}
