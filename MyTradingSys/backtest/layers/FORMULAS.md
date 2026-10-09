@@ -405,6 +405,82 @@ DERIBIT_TAKER = BINANCE_TAKER = 0.0005 per side, both legs taker (stop and entry
 Worked: entry 100, target 104, stop 98: cost 0.1, net = 3.9 / 2.1 = 1.8571. Tight stop: entry 100, target 100.3, stop 99.9:
 cost 0.1, net = 0.2 / 0.2 = 1.0 (gross 3.0). The Java constant must equal fees.py (`tests/test_b070_fee_parity.py`).
 
+## 18. Anchored volume profile touch study (`backtest/vp_pivot_probe.py`) - added 2026-10-09
+
+Context: `research/vp_pivots_2026-10-09/SOURCES.md` and `PLAN.md`. Tom draws a composite profile "from the last major
+high to the last major low" (sQ_biBKhPVU:19); the engine anchors every profile to a UTC calendar boundary. This section
+defines the mechanical pieces of the offline probe. Everything marked NO-SOURCE is a measurement choice or the pivot
+definition, flagged and not tuned.
+
+**18.1 Profile of a bar set (bin grid w = 10.0 USD, NO-SOURCE, engine uses about 5 USD).** Bin k covers `[k*w, (k+1)*w)`.
+A bar `(l, h, v)` with `h > l` adds `v * overlap([l,h],[k*w,(k+1)*w)) / (h - l)` to bin k (uniform spread over its
+high-low; the engine instead uses triangular weights around the typical price, an accepted difference because every
+family in the probe goes through the same builder). A bar with `h == l` adds all of `v` to bin `floor(l/w)`.
+POC = lowest bin holding the maximum volume (ties go to the lower bin, as the engine's `Stream.max` keeps the first
+key). `poc_price = k_poc*w + w/2`. Value area = 70% (engine `VALUE_AREA_PCT`; Tom: "70% of the trades",
+1utSjHs_Mq8:19): start `lo = hi = k_poc`, `acc = vol[k_poc]`; while `acc < 0.70 * total` and bins remain: `vl = vol[lo-1]`
+(or -1 if `lo` is the first bin), `vh = vol[hi+1]` (or -1 at the last bin); if `vl >= vh` and `lo` is not the first
+bin take `lo-1`, else take `hi+1` (else `lo-1`). The scan covers every bin from the lowest to the highest bin touched
+by any bar of the set (zero-volume interior bins included). `val = lo*w`, `vah = (hi+1)*w`. Empty or zero-volume set -> none.
+*Worked A (w = 1):* bars (l,h,v) = (0,2,6), (1,3,4), (1,2,10): bin0 = 3, bin1 = 3+2+10 = 15, bin2 = 2, total 20, target
+14; POC = bin1 (poc_price 1.5), `acc = 15 >= 14` at once -> val 1.0, vah 2.0.
+*Worked B (w = 1, point-mass bars at bin centres):* bin volumes [1,2,10,4,3], total 20, target 14: POC bin2, `acc = 10`;
+`vl = 2 < vh = 4` -> hi = 3, `acc = 14` stop -> val 2.0, vah 4.0, poc_price 2.5.
+*Worked C (tie):* bin volumes [3,10,3], total 16, target 11.2: `acc = 10`, `vl = vh = 3` -> lower: lo = 0, `acc = 13` stop
+-> val 0.0, vah 2.0.
+
+**18.2 Fractal pivots (NO-SOURCE width n; FORMULAS section 9 fixed-width fractal, strict comparisons).** On a bar series
+with wicks `h`, `l`: bar i is a pivot high iff `h[i] > h[j]` for every `j in [i-n, i+n], j != i`; pivot low iff
+`l[i] < l[j]` for the same j. Highs and lows are tested independently (an outside bar can be both; `find_swings` would
+label it a high only). Needs `n <= i <= len-1-n`. A pivot at i is confirmed at the close of bar `i+n`, so it may be used
+from the open of bar `i+n+1` (no look-ahead).
+*Worked:* n = 1, h = [1,3,2,5,4,1,2] -> pivot highs at i = 1 and 3 (h = 3 > 1,2; 5 > 2,4); i = 6 is the last bar, not
+testable; a plateau h = [1,3,3,2] gives none (equality fails). n = 2 with h = [1,2,5,2,1] -> pivot high at i = 2 only.
+
+**18.3 Size filter (NO-SOURCE k).** A pivot p is *meaningful* for k > 0 iff there is an earlier pivot q of the opposite
+kind (largest `q.i < p.i`) with `|price_p - price_q| >= k * ATR14(p.i)`, where ATR14(i) is the plain-SMA ATR of section 12
+over the 14 true ranges ending at bar i (needs i >= 14). `k = 0`: every fractal pivot is meaningful. Pivot price = the
+bar's `h` (high) or `l` (low).
+
+**18.4 Anchored families (all built on 5-minute bars, levels refreshed on a 15-minute grid, i.e. at 5m bars whose open
+time is a multiple of 900 s, using only bars that closed before the refresh).**
+- `session`: bars from 00:00 UTC of the current day. `weekly`: from Monday 00:00 UTC. Developing; need >= 12 bars.
+- `prior_day`: the previous UTC day; `prior_week`: the previous Monday-Sunday. Static, active from the first bar after.
+- `A1(n,k)` (Tom-shaped): let H = the last meaningful pivot high and Lo = the last meaningful pivot low, both confirmed;
+  the set is every 5m bar from the open of the earlier pivot's 1h bar to the close of the later pivot's 1h bar. Active
+  from the open of the 5m bar after the later pivot is confirmed (`i_later + n` closed). Static until a newer
+  meaningful pivot is confirmed.
+- `A2(n,k)` (operator's idea, not Tom's words): the set is every 5m bar from the open of the last confirmed meaningful
+  pivot's 1h bar (either kind) up to the refresh. Developing; need >= 12 bars.
+Each profile contributes three levels: POC (`poc_price`), VAH, VAL (Tom, aursfDVYzUk:7: "reaction levels, value high,
+value low, ... point of control").
+
+**18.5 Touch event and R-multiple outcome (NO-SOURCE measurement choices: R = 1 x ATR14 of 1h bars, H bars, barriers
++-1R).** Let `L` be the level in force at 5m bar j (the value from the latest refresh at or before bar j's open),
+`c[j-1]` the previous close, `R = ATR14` of the 1h bars closed before bar j's open. Event: `l[j] <= L <= h[j]` and
+`c[j-1] != L`. Side: `c[j-1] > L` -> long (price came down to the level, expected support); `c[j-1] < L` -> short.
+Entry price is `L` (limit at the level). Long: stop `L-R`, target `L+R`; short mirrored. Resolution, conservative:
+(1) in the touch bar only the stop is tested (`l[j] <= stop` for a long -> stopped at the stop price); (2) bars
+j+1..j+H: if `l <= stop` (long) the exit is the stop, filled at the bar open if the bar opened beyond the stop; else if
+`h >= target` the exit is the target; the stop is tested first when a bar holds both; (3) otherwise exit at the close of
+bar j+H (timeout). One open event per (family, level type) at a time: a touch is skipped while the previous event of that
+stream is still open (its exit bar >= this bar).
+`gross_R = side * (exit - L) / R`; `net_R = (side * (exit - L) - fee_in * L - fee_out * exit) / R`, fees as fractions of
+price from `backtest/fees.py`: primary all-taker `BINANCE_TAKER = 0.0005` on entry and exit; stated variant entry and
+target maker `BINANCE_MAKER = 0.0002`, stop and timeout taker.
+*Worked:* long, L = 100, R = 2, target 102 reached, taker: `net_R = (2 - 0.0005*100 - 0.0005*102) / 2 = 0.9495`. Stop
+(98): `(-2 - 0.05 - 0.049) / 2 = -1.0495`. Timeout at 100.5: `(0.5 - 0.05 - 0.05025) / 2 = 0.19987`.
+
+**18.6 Placebo.** For every real level value the placebo level is `L + d * R_ref`, `R_ref` = the ATR14(1h) in force at the
+refresh, and `d` cycles deterministically through (-3, -2, -1, -0.5, +0.5, +1, +2, +3) by `(refresh_index) mod 8`. The
+same event rule (18.5) is then applied. It measures what any price level earns under the same barriers and fees.
+
+**18.7 Statistics.** n = events; hit = share of exits at target; stop%; timeout%; `mean gross_R`, `mean net_R`. 95%
+interval of a mean (or of a difference of two streams) = day-block bootstrap: events are grouped by UTC date, days are
+resampled with replacement (2000 resamples, numpy `default_rng(20261009)`), statistic = sum of R over resampled days
+divided by the number of events in them (difference: both streams use the same resampled days). Percentiles 2.5 / 97.5.
+*Worked:* two days, day A events R = [1, 3], day B events R = [-2]; resample (A, A): mean 2.0; (B, B): -2.0; (A, B): 0.6667.
+
 ## Verification note (this audit, 2026-09-28)
 
 Every case number in `layers/timeframe/TEST_PLAN.md`, `layers/rsi/TEST_PLAN.md`,
