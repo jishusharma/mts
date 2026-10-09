@@ -110,9 +110,9 @@ T068 | OPEN    | T068_oi_arm_rerun.md | P3 OI arm rerun of T063 when n>=30 per a
 T069 | OPEN    | T069_funding_settlement_clock.md | P5 funding settlement clock event study; queued (research-agenda)
 T070 | OPEN    | T070_volatility_timing_read_only.md | P6 volatility timing read-only analysis; queued (research-agenda)
 T071 | OPEN    | T071_absorption_events_post_p2.md | P7 absorption events after P2 Fabio L3-FAIL; queued (research-agenda)
-B142 | BLOCKED | B142_extrasetupbuilder_1m_stop_unsourced.md | NEEDS OPERATOR: remove/disable unsourced ExtraSetupBuilder stop? default disable; DSA sweep NOT FOUND
+B142 | OPEN    | B142_extrasetupbuilder_1m_stop_unsourced.md | D15 answered: disable ExtraSetupBuilder candidates until a sourced stop exists; Java change + restart at next Java window
 B143 | BLOCKED | B143_cryptocred_stop_buffer_and_target_unsourced.md | NEEDS OPERATOR: 1.5R sourced (CC Rule 9), 0.1pct buffer NOT FOUND; default alert-only + replace at next CC build
-B144 | BLOCKED | B144_exhaustion_proxy_unsourced_params.md | NEEDS OPERATOR: 2.0x/240-bar exhaustion NOT FOUND; default SCREENER-only, remove at Java window
+B144 | OPEN    | B144_exhaustion_proxy_unsourced_params.md | D17 answered: screener-only now, remove at Java window; finding: volume spike still counts in Tom proof (Java change)
 B145 | CLOSED  | B145_cc_range_noise_live_neutrality.md | neutrality test run on archive: filter NOT neutral for 2 of 3 setups, flag stays off; opt-in test in cryptocred/
 B146 | CLOSED  | B146_no_min_stop_after_floor_removal.md | fee-to-stop admission gate on at 0.3 (D09), tests gated; Java stop buffer is T081
 B147 | IN-FIX  | B147_tom_live_rule_evidence_unreliable.md | row drop attributed to removed 0.2pct fallback stop (0c34a2d, B131); exact regen diff and DSR pending on JIS-NB
@@ -126,4 +126,5 @@ B154 | OPEN    | B154_regime_and_session_stratified_backtest.md | no regime or s
 B155 | CLOSED  | B155_claude_prompt_contract_unchecked.md | section 5d contract is an executing gate (prompt_contract.py, step 3pc)
 B156 | CLOSED  | B156_tom_alert_stale_ssot_thesis.md | alert card thesis line shows when it was written (age), tests
 T093 | CLOSED  | T093_toc_imbalance_klines.md | turn-of-candle 4-12h imbalance on klines 2022-2026: NO REPLICATION (gross +0.5bp vs 10bp fee)
+B162 | OPEN    | B162_qriptal_signal_layer.md | Qriptal (Habib) layer: score his public record first, Discord feed route = D21, own testnet account
 # END
