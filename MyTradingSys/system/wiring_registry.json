@@ -11,6 +11,11 @@
    "ref": "T080",
    "why": "Offline research script that regenerates research/fast_track_2026-09-27/T080_MAKER_MODEL_2026-10-09.md; run by hand, no live process imports it."
   },
+  "MyTradingSys/backtest/vp_pivot_probe.py": {
+   "disp": "REPRO",
+   "ref": "T082",
+   "why": "Offline research script that regenerates research/tom_core_bt_2026-10-09/phase2/results.md (PHASE2_RESULT.md); run by hand, no live process imports it."
+  },
   "MyTradingSys/backtest/stop_buffer_wf.py": {
    "disp": "REPRO",
    "ref": "T081",
