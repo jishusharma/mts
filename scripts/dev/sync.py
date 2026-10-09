@@ -201,9 +201,10 @@ def claim(repo, task, area="-", gate=run_gate):
     NL = chr(10)
     path.write_text(NL.join([f"task: {task}", f"host: {socket.gethostname()}", f"account: {account(repo)}",
                              f"area: {area}", f"epoch: {int(time.time())}", ""]), newline=chr(10))
-    git(repo, "add", str(path))
+    rel = f"{CLAIMS_DIR}/{slug}.md"  # relative: a 8.3 short temp path is "outside repository" to git
+    git(repo, "add", rel)
     msg = NL.join([f"claim {slug}", "", f"Result: {account(repo)} on {socket.gethostname()} works on: {task}"])
-    git(repo, "commit", "-q", "-m", msg, "--", str(path))
+    git(repo, "commit", "-q", "-m", msg, "--", rel)
     ship(repo, gate=gate)
     print(f"claimed {slug}; release with: sync.py release {slug}")
 
@@ -214,8 +215,9 @@ def release(repo, slug, gate=run_gate):
     path = repo / CLAIMS_DIR / f"{slug}.md"
     if not path.exists():
         raise SyncError(f"no claim {slug} on origin/{TRUNK}")
-    git(repo, "rm", "-q", str(path))
-    git(repo, "commit", "-q", "-m", f"release {slug}"+chr(10)*2+f"Result: claim {slug} closed", "--", str(path))
+    rel = f"{CLAIMS_DIR}/{slug}.md"
+    git(repo, "rm", "-q", rel)
+    git(repo, "commit", "-q", "-m", f"release {slug}"+chr(10)*2+f"Result: claim {slug} closed", "--", rel)
     ship(repo, gate=gate)
     print(f"released {slug}")
 
