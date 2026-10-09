@@ -41,10 +41,19 @@ Operator answer to the open questions: "these questions will be answered by Malk
 - Malkan exits at target C with a candle-based stop. The earlier RSI backtests used a generic 1%/2% bracket (RSI_HISTORY.md in the mts-rsi worktree), so their "no edge" verdict does not test Malkan's own exit.
 - Operator 1m use vs Malkan daily-and-up: the 10-bar max rule may scale with timeframe or may not; test per timeframe.
 
-## Build order (not started)
+## Build order (steps 1-3 DONE 2026-10-09; 27 tests; both mutation-checked)
 1. `rsi_events` annotation: dwell bars below the level before the cross, depth of dip. Parameter-free; bucket later.
 2. cross-then-support sequencer (Case C).
 3. `rsi_divergence.py`: close-to-close swing points, 3..10 bars apart (MALKAN), decimals allowed, bullish only if RSI at the low is near 40 as a logged flag (not a filter). Tests derived from FORMULAS.md style hand-computed series.
 4. Confluence flags logged per event (MA support, divergence count, HTF RSI state, BB position, CVD, OI).
 5. Malkan-exit backtest (candle-break entry, stop beyond candle, target C) vs generic bracket, both reported.
 6. Speed-based early trigger last (needs intrabar RSI; out of scope in rsi_events today).
+
+## Built (backtest/layers/rsi/)
+- `rsi_reclaim.py`: `rsi_reclaim_events` (dwell_below, band_bars, depth, direct; up for the 40 side, down for the 60 side) and `rsi_retest` (Case C: support / fail / none within N bars). Clearance and window are arguments with no default.
+- `rsi_divergence.py`: close-to-close bullish/bearish divergence between consecutive swing closes, 3..10 bars inclusive (params/malkan_divergence_default.json, quotes cited), `chain` = multiple-divergence count. Event is stamped one bar after the second swing (causal).
+- v1 limits: only consecutive swings are compared; no candle confirmation or target C yet (step 5).
+
+## Corpus findings
+- A 4th Malkan transcript existed, `2HcJ3NeZmEQ` (5-star sell setup: monthly < 40, weekly < 40, daily rises to 60). The inventory counted 3. Extracted (gate PASS) and the raw file added to git (it was untracked).
+- WEB_RESEARCH.md lists ~8 more Malkan videos with no transcript in the repo (W1HrDl70Lhk, A-CQiV_UFB4, fgN6QBFY3Ss Bollinger father-son, kVIvcn7T44o, N7r3v7plqZM, FHEoMmD6xKM, dXxQOnK2jhQ, TYB7GJODt-k volatility divergence, WBByyLBp8-c). The Bollinger and volatility-divergence ones are the ones the 2a' short side needs. Downloading them needs operator approval.
