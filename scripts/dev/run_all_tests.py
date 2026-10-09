@@ -164,6 +164,10 @@ def main(argv=None):
     success, output = run_step("3cr", "Control Room page generator tests", cmd3cr)
     results.append(("Step 3cr: Control Room tests", success))
 
+    cmd3bk = [sys.executable, "scripts/dev/test_backup_snapshot.py"]
+    success, output = run_step("3bk", "Backup snapshot tests (dirty/untracked work reaches the remote)", cmd3bk)
+    results.append(("Step 3bk: Backup snapshot tests", success))
+
     # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
     cmd3w = [sys.executable, "scripts/dev/test_wiring_scan.py"]
     success, output = run_step("3w", "Wiring gate tests", cmd3w)

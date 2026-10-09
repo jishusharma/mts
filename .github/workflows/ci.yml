@@ -76,3 +76,17 @@ jobs:
         run: >-
           gh pr merge ${{ github.event.pull_request.number }} --repo ${{ github.repository }}
           --merge --match-head-commit ${{ github.event.pull_request.head.sha }}
+
+  # CD, safe half: the last SHA whose gate was green on both OSes is published as the branch green/fast-track.
+  # The supervisor deploy to the live tree (JIS-NB) is `git merge --ff-only origin/green/fast-track` + restart, so a
+  # half-tested push can never be deployed. This job restarts nothing and touches no exchange or secret.
+  mark-green:
+    needs: offline-gate
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/fast-track'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish tested SHA as green/fast-track
+        run: git push --force origin "${{ github.sha }}:refs/heads/green/fast-track"
