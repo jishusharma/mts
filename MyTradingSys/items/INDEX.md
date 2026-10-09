@@ -74,7 +74,7 @@ B097 | CLOSED  | B097_kxh_mislabel.md | kXhIAug0Gh8_v2.md:65 says entry before p
 B098 | OPEN    | B098_python_cpu_spin.md | CPU spike was TF8 backtest pool; closed
 B099 | CLOSED  | B099_v3_l3_pool_hang.md | run_v3_l3 pool stall now fails closed + resumable; re-run completed; original cause unknown
 B100 | CLOSED  | B100_audit_verdict_mismatch.md | E1b/E2 labelled NO-SOURCE but carry Tom quotes; should be CONCEPT-ONLY per audit's own rules
-B101 | OPEN    | B101_dsa_context_ask.md | DSA asks for CLAUDE.md and mts go launch block before composing a CL prompt; both are one-liners
+B101 | CLOSED  | B101_dsa_context_ask.md | behavioral; the two one-liners exist at DSA_SESSION_PROMPT.md L99 and L100
 B104 | CLOSED  | B104_rules_vs_gates.md | rules exist for prompt hygiene; check is advisory, not blocking; blocking + checks 6-10 (60f3250) + check 11 (b796edb)
 B102 | CLOSED  | B102_dst_session_anchors.md | fixed-UTC session anchors in offline models; wrong 1h on ~40% of days
 B103 | CLOSED  | B103_funding_coverage.md | funding cost silently 0 outside loaded range; archive has funding from 2020-01
@@ -96,7 +96,7 @@ B130 | CLOSED  | B130_execution_tests_not_gated.md | execution/tests wired into 
 B131 | CLOSED  | B131_tom_pool_skew_upstream.md | Tom proof-5 pool 2:1 short at SetupCandidatesBuilder, before proof-direction; separate from B085
 B132 | OPEN    | B132_dsa_does_quick_wins.md | DSA dispatches work it can do itself; codify DSA-does-this list + CC-prompt names DSA unblock work
 B133 | CLOSED  | B133_dsa_default_cli_over_app.md | CLOSED: checks 12-13 (81c7e9f), section 9 App-opening line (e41de5f), LESSONS (ed0e3c1)
-B134 | OPEN    | B134_compose_surface_marker.md | compose() emits prose, not the "SURFACE: APP" marker check 13 requires; same file set as B095
+B134 | CLOSED  | B134_compose_surface_marker.md | pick_task.py:256 emits SURFACE: APP; prompt_check.ps1 check 13 PASS on composed probe
 B135 | OPEN    | B135_b131_threshold_recheck.md | B131 follow-up: ps1 proof-count thresholds and allshorts parity re-run
 B136 | IN-FIX  | B136_oi_endpoint_path.md | URLs fixed 881f22b (tests 3/3, mvn 133/133), loop restarted 2026-10-06; REOPENED 2026-10-08: buildOiBreakdown still fail-open (0.0 + LOW, no UNAVAILABLE), TESTNET_STATUS taint rows not found
 B137 | OPEN    | B137_device_roles_undecided.md | device roles undecided post-Qwen; 11 open questions on desktop/NUC/laptop split
@@ -122,4 +122,6 @@ B150 | OPEN    | B150_gate_is_hand_maintained_allowlist.md | gate allow-list mis
 B151 | OPEN    | B151_backtest_fill_optimism_and_selection.md | cc limit-fill optimism; from AUDIT_MAJOR_GAPS_2026-10-09.md
 B152 | OPEN    | B152_retention_deletes_read_data_and_deploy_trap.md | retention deletes read data; deploy trap; from AUDIT_MAJOR_GAPS_2026-10-09.md
 B153 | OPEN    | B153_netrr_floor_ownerless_and_cross_language_parity.md | net_rr floor ownerless; parity indirect; from AUDIT_MAJOR_GAPS_2026-10-09.md
+B154 | OPEN    | B154_regime_and_session_stratified_backtest.md | no regime or session stratified verdict; from research pass 2026-10-09 (playbook PART I)
+B155 | OPEN    | B155_claude_prompt_contract_unchecked.md | section 5d prompt contract checked by hand, no executing gate
 # END

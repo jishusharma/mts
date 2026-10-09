@@ -403,6 +403,25 @@ Authority order when rules conflict:
 4. This prompt, for behavior.
 5. PROJECT_VISION.md, for what should enter the engine over time.
 
+## 9a. AIBRIDGE (direct disk access, operator 2026-10-08)
+
+Scope: everything under C:\Users\E-ngineers\IdeaProjects. Read, create, edit, move, delete work when the operator clicks Run.
+Refused: .secrets, .env, key files, HALT files. Auto-run is read-only; writes answer manual_click_required.
+
+- Reply with ONE fenced PowerShell block whose first line is `# AIRUN cwd=<project dir> timeout=60`. The result returns by itself as [AIRUN RESULT #n]. Never ask the operator to paste a result; if refused, say "click Run on the block above" and wait.
+- Order: scan (read-only), change, read-only verify. Before a delete or overwrite, list the exact targets and copy a .bak first, unless told otherwise.
+- Keep output small (-First, -Tail, Select-String). Do not print a block to re-read what you already have in this chat.
+- DISCUSSION is the default: answer from what you know; print a block only when asked to look. After a result, report in plain words and stop. END-TO-END only when the operator says "end to end": chain at most 10 reads, finish with plain text and no block (a reply with no block ends the loop).
+- Never claim a command ran before its [AIRUN RESULT] exists.
+- Critical files (section 6) still need operator approval before a write.
+
+Example. Operator: "Check the pending tasks in MTS."
+```powershell
+# AIRUN cwd=C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed
+Get-Content MyTradingSys\research\STATUS.md -TotalCount 80
+Get-ChildItem MyTradingSys\items -Filter *.md | Where-Object { (Get-Content $_.FullName -Raw) -match 'OPEN' } | Select-Object Name, LastWriteTime
+```
+
 ## 10. EXTRACTION DISCIPLINE
 
 Before importing any concept from the transcripts:
@@ -412,74 +431,17 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Last live read:  2026-10-07T13:17Z (MTS-2026-10-07-1002Z-APP-BLD-research-closeout).
-Thesis:          neutral, low confidence. Unchanged since 2026-09-14.
-Next trigger:    none set.
-Invalidates:     none set.
-Runtime + loops: loop UP after the 2026-10-07 stop-day / ff / mode armed window. supervisor 3404, wrapper 3644 (mvn exec:java), java 17568, apparatus.lock 21772. auto_trader 5364, live_runner_cli 19364, orderflow 2728. HTF writer 20748 (parent) / 19992 (python). feed watchdog OK. position_manager S-mkt-1007-1141 (PID 18688) no longer running at 13:17Z. Prior PIDs wrapper 21168 / java 18152 / supervisor 20852 are gone.
-Build PASS 2026-10-07T10:05Z pre-ff (Java 147/147, Math 345/345, Doc 5/5); re-gated at close, see the session record.
-HEAD: live tree fast-forwarded to origin/fast-track 5053e2d on 2026-10-07 (was 3a64f3d, 48 commits), then the closeout commit on top. B136 CLOSED. B137, B138 OPEN.
+Refresh at session close or on operator request. Keep to this size; history lives in the ledger and the commit log.
 
-CLOSEOUT 2026-10-07 (MTS-2026-10-07-1002Z-APP-BLD-research-closeout):
-  Results: CryptoCred setups all FAIL (limit-fill; b3dbe74 PASS was fill bias) CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md;
-  T055 C1/C2 FAIL on full funding T055_BT_RERUN_FULLFUNDING_2026-10-07.md (10-06 reruns superseded);
-  Tom core BT rerun TOM_CORE_BT_RERUN_2026-10-06.md (no edge; live rule 0 signals, was 17).
-  Filed: B142 ESB 1m stop, B143 CryptoCred 0.1% stop + 1.5R, B144 exhaustion proxy 2x/240 (tag SCREENER). All NO-SOURCE items stay flagged.
-  Receipts: B120 (W3-5 parked) OPEN; B127 CLOSED 2026-10-08; B128 OPEN (11/18, residual RA-W2-N, TC-W2-MDS/SCE, TC-W1-10, M29-14, M30-04/11). B145 filed. CLOUD_INBOX note 1 DONE on disk, note 2 CLOSED. rsi:cross is side-by-level in auto_trader.py; takes effect at the next auto_trader restart.
-  Closeout matrix and operator decisions: MyTradingSys/research/AUDIT_CLOSEOUT_2026-10-07.md.
-  Research branch research/agenda-2026-10-06 pushed 2026-10-08 (tip in the closeout reply).
-
-LANDED this DSA session (in order):
-  df5059e B133 filed; fce0551 B131 item-doc mechanism;
-  ed0e3c1 B133 tags + root causes + LESSONS; 5132444 B133 LOGGER backfill;
-  1c81d81 B093 parallel dispatch (CLI);
-  107ef2e B093 reopen launcher side + b093 session record + s11;
-  87658ae B093 launcher side (go.py --id) [APP];
-  1412c28 T037 MarketDataSnapshotTest bodies (seam b) [APP];
-  81c7e9f B133 prompt_check checks 12-13 [APP];
-  727d9ea B133 receipt; b475d9a close-out B093/T037;
-  e41de5f section 9 App-opening line + handoff;
-  963b6af B133 CLOSED;
-  4f9290e B131 fix shape A [APP];
-  2b12c9b B094 headless scheduler (ships disabled) [APP];
-  32eb40a week-open market analysis [APP-ANA];
-  this close-out commit (B134 + B135 filed, 4 session records, s11);
-  881f22b B136 OI endpoint fix (4 files, +121 -19) [APP];
-  9e56bb3 B136 registry;
-  952b951 D2 OI recorder + backfill [APP];
-  d4bc506 D3 US-open DST helper + test [APP];
-  65d4748 T064 quotes; 1569678 T065 shortlist; 3776f2f+b055c2b T063 pre-reg+arm A0;
-  2927244+627150b replay partial; b92bd29 T067 spec+tests; 8dfec36 session record + inbox cleanup [CLD];
-  c60d0e2 D4 watchdog; 1c0d276 D6 my_charts scaffold; c61a26a+690b238 T063 pre-reg amend + A1;
-  b455a2f full replay 930 episodes; e9bd822 T065 Pine verify; dec81d7 TOM-091/092 fix; ba8824c watchdog negative-age clamp.
-
-CLOSED this DSA session: B093, T037, B133, B131, B094.
-OPENED this DSA session: B133 (closed same), B134, B135.
-
-Pipeline:
-  B134 OPEN: compose() surface marker vs prompt_check check 13; same file
-    set as B095 (pick_task.py). Sequence behind B095 or land together.
-  B135 OPEN: ps1 proof-count thresholds + allshorts diag parity re-run
-    (read-only first; start-trading-day.ps1 if an edit is needed).
-  B095 OPEN (prompt ready): per-session cost on disk.
-  B125: consensus writer promoted on origin (consensus/writer.py live, .new pair gone); DSA to confirm and close.
-  B075 OPEN: historical mode; residual is SetupCandidatesBuilder.java,
-    now free (B131 landed). Sequences after B135 read.
-  B121, B122, B124, B098: LIVE PATH. Wait for a stopped-loop window.
-  R7: no PRE_REG_R7.md, no R7_RESULTS on disk. Awaiting the operator paste.
-  B090 OPEN: cloud credit approval (operator).
-
-Ruling 3 accepted 2026-10-04: MEASURED for CONCEPT-ONLY, testnet only.
-
-Next session first action:
-  1. [struck, superseded 2026-10-07: commits already on origin/fast-track]
-  2. [struck, superseded: loop restarted 2026-10-06T19:25Z]
-  3. Operator decisions owed: Chrome extension connect for T066; TOM-091/092 retag in risk_protocol.md; buy-detection meaning for T067.
-  4. [struck, superseded: B136 CLOSED]
-  5. [struck, superseded: no go.py running per operator 2026-10-07]
-
-Section 5d in force per B132.
-Direct mode (section 0) in force from 2026-10-08. Bridge side: AIBRIDGE_LANE.md.
+Last live read:  2026-10-09 (MTS-2026-10-08-2342Z-DSA-COO; diff rerun confirmed by MTS-2026-10-08-1933Z-APP-ANA-bigtrade-bt).
+Thesis:          neutral, low confidence. Unchanged since 2026-09-14. Next trigger: none. Invalidates: none.
+Loop:            UP after the 2026-10-07 restart; verify live PIDs from the boot paste, not from this line.
+Build:           PASS 2026-10-07T10:05Z (Java 147/147, Math 345/345, Doc 5/5); re-gate at close.
+Branch:          fast-track; live tree fast-forwarded to origin/fast-track 5053e2d on 2026-10-07, closeout commits on top.
+Results:         CryptoCred setups FAIL (limit-fill); T055 C1/C2 FAIL on full funding; Tom core rerun no edge (live rule 0 signals, was 17).
+Open:            B120, B128, B134, B135, B095, B137, B138, B142-B145; live-path B121, B122, B124, B098 wait for a stopped-loop window; B125 confirm and close; B090 cloud credit (operator).
+Operator decisions owed: Chrome extension connect for T066; TOM-091/092 retag in risk_protocol.md; buy-detection meaning for T067.
+First action next session: F-BT-01 fix path - backtest D tunes stop_buffer_atr (stop = structure level +/- k x ATR(TF), BT-TUNED), then staged SetupCandidatesBuilder .new with a fail-first test that stop distance never falls below the tuned buffer; supervisor promotes. Detail: research/bigtrade_2026-10-09/FINDINGS.md F-BT-01.
 
 ## 12. SESSION END
 

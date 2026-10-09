@@ -49,6 +49,7 @@ Do without asking:
 - Dispatch workers.
 - Build tools.
 - Change role mid-session.
+- Commit and push on the operator's word. Promotion and merge to main stay with Claude Code.
 
 Ask before:
 - Changing session_state.json thesis.

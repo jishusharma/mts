@@ -568,3 +568,9 @@ Nothing lost, but a parallel session's staged work in the same tree would have b
 
 Rule: no `git stash` in a shared tree (CLAUDE.md already bans it). Fail-before proofs copy the old file aside
 (or run the test against `git show HEAD:<path>` written to a scratch dir), they do not stash.
+
+## 2026-10-09 - commit swept another session's staged files
+What happened: commit 02e7598 (DSA slim boot) also contained four files another session had staged: backtest/layers/alerts/live_runner_cli.py, alerts/test_live_runner_wiring.py, consensus/hook.py, consensus/test_hook.py. I added exact paths but never listed the staged set before committing.
+Rule that prevents it: run the staged-file list (names only) right before every commit; if it holds a path you did not write, unstage it first (CLAUDE.md hard rule: no reset, so unstage only that path).
+Where the rule lives: DSA_SESSION_PROMPT.md section 6 (after any write, review the staged list).
+Cost: the other session's edits are in my commit; working tree unchanged, nothing pushed. The owning session should know 02e7598 holds its four files.
