@@ -130,6 +130,10 @@ def build(cfg, data_root, now=None):
         g, _ = mg.classify(r, gcfg)
         items[r["id"]] = {"id": r["id"], "sev": r["sev"], "status": r["status"], "title": r["title"], "group": g, "src": "BUGS.md"}
     items.update(load_findings(data_root / FINDINGS))
+    # a finding fixed on trunk before its FINDINGS.md owner ships the status line: the config closes it (id -> receipt text)
+    for fid, why in cfg.get("finding_closed", {}).items():
+        if fid in items:
+            items[fid] = {**items[fid], "status": "CLOSED", "title": items[fid]["title"], "src": "FINDINGS.md + closed in control_room.json: " + why[:80]}
     for k, (sev, st, t) in cfg.get("x_tasks", {}).items():
         items[k] = {"id": k, "sev": sev, "status": st, "title": t, "group": "ROAD", "src": "road task (no registry row yet)"}
     stage_of = {i: s["id"] for s in cfg["road"] for i in s["items"]}

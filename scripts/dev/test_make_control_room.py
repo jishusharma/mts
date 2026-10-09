@@ -144,6 +144,16 @@ class RealConfigTest(unittest.TestCase):
         self.assertTrue(closed, "reg must include closed registry rows")
         self.assertTrue(all(k not in {b["id"] for b in data["board"]} or k in {i for s in self.cfg["road"] for i in s["items"]} for k in closed))
 
+    def test_finding_closed_in_config_overrides_findings_file(self):
+        d = Path(tempfile.mkdtemp())
+        f = d / "MyTradingSys/research/bigtrade_2026-10-09"
+        f.mkdir(parents=True)
+        (f / "FINDINGS.md").write_bytes(b"## F-BT-09  buildVp weights  [HIGH]  status: AUDITED, ESCALATED" + bytes([10]))
+        cfg = dict(self.cfg, finding_closed={"F-BT-09": "fixed in 39520d4, deployed 2026-10-09"})
+        before = cr.build(dict(self.cfg), d, NOW)["reg"]["F-BT-09"]["status"]
+        after = cr.build(cfg, d, NOW)["reg"]["F-BT-09"]["status"]
+        self.assertEqual((before, after), ("ESCALATED", "CLOSED"))
+
 
 if __name__ == "__main__":
     unittest.main()

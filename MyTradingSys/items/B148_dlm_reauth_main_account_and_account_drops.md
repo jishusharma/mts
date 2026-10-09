@@ -27,4 +27,6 @@ Failing-first tests, then fixes: (1) make re-auth account-explicit (pass the lab
 
 2026-10-09 consolidate session: parts 1-3 done in git (deribit_orders token->account map, named_account_labels last-good/raise, auto_trader rejects routed trade with missing secret; tests test_b148_reauth_account, test_dlm_aggregate, test_fabio_slot). NOT DEPLOYED: needs auto_trader + daily_loss_monitor restart. Parts 4-5 (orphan_halt log, heartbeat-age liveness) open.
 
+2026-10-09 supervisor session (jisnb/stage1-2026-10-09): parts 1-4 are DEPLOYED. The live tree already held origin's auto_trader, daily_loss_monitor and deribit_orders (written 08:42) and auto_trader (pid 18860, 08:44) and daily_loss_monitor (pid 14848, 08:42) started after that, so parts 1-3 run. orphan_watchdog_cli (part 4) is picked up by the next 09:10 sweep. Part 5 (liveness by heartbeat age instead of pid only) stays OPEN: it needs an agreed heartbeat-age limit (no source for a number; ask on the Control Room page) and a test for pid reuse; pm_heartbeat.pid_alive deliberately fails open today.
+
 # END
