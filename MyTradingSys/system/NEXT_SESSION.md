@@ -1,4 +1,4 @@
-# NEXT SESSION PROMPT (handoff 2026-10-10, DSA delegation session; Claude Code Win App, either account)
+# NEXT SESSION PROMPT (handoff 2026-10-10, after T092; Claude Code Win App, either account)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
 
@@ -7,25 +7,28 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
 0. `python scripts/dev/sync.py start`, `sync.py where`, `desk.py list --all`. Push fails: say so in one line, stop.
    One task per session; hand off after the task, 5 operator turns or ~50k tokens: ship, overwrite this file, `where` clean.
 1. Control Room (url in CONTROL_ROOM.md): ArtifactData list decisions + feedback. Apply answered decisions with no `applied`;
-   file `new` inbox items per CONTROL_ROOM.md step 3. D11 (Malkan yt-dlp) unanswered = do NOT download. D12 unanswered = no change.
+   file `new` inbox items per CONTROL_ROOM.md step 3. D13 (session_state thesis on the Tom card) unanswered = no change.
 2. DSA results: for every desk task now done, spot-check ONE number against its file, then use it (no redo). Pending DSA tasks stay.
-3. TASK (pick first unclaimed, claim it): 
-   0. T092 (operator 2026-10-10, ask answered in its own session): run on OPUS, brief = items/T092_screenshot_context_gap.md. Deliverable = research/screenshot_context_2026-10-1x/REPORT.md + filed items; no code. Mirror first: `live_mirror.py pull && brief`.
-   a. T085 spec: 4-12h order-imbalance after the turn of candle (D08 answer), from klines taker-buy volume (no aggTrades on disk),
-      BTCUSDT 2022-2026, windows 4h/8h/12h, net of taker fees x2, source = research/TURN_OF_CANDLE_ORIGIN_2026-10-09.md paper.
-      Write items/T085 + tests derived from the spec (fail first), then `desk.py post ... --target DSA` for the runs (split by year, <300 s each).
-   b. B151 gaps: setup2_fib_pullback emits no signal on blow-through; bt_engine targets fill on touch. Sonnet implementation, fail-first tests.
-   c. B156 Tom alert card stale SSOT_THESIS price text.
+3. TASK (pick first unclaimed, claim it):
+   a. T085/T093 4-12h imbalance spec. Another session was writing items/T093 + tests in the main NUC clone (uncommitted, 2026-10-10 02:16).
+      Check origin first: if T093 shipped, only post its DSA runs (split by year, <300 s each); if not shipped and no claim, write it.
+   b. B157 carried context in screenshot reads (Sonnet): prompt in research/screenshot_context_2026-10-10/REPORT.md section 7.
+   c. D11 answered "Yes, download" (2026-10-09 19:43Z): ~9 Malkan public captions with yt-dlp (no video), plus Hindi ones per the note;
+      then mark D11 applied. D12 answered "Yes, once a day": record it in system/DSA_DELEGATION.md, mark D12 applied.
+   d. B159, B160 (prompts in the T092 REPORT section 7), then B151 gaps, then B158 after D13.
 4. Route run-and-report work to DSA (system/DSA_DELEGATION.md); post what the DSA queue lacks before ending.
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
 
-## State at handoff
-- 2026-10-10 DSA delegation DONE (e7d5084, cd8117f): desk board target DSA, system/DSA_DELEGATION.md, prompt 5e + step 0 gate + block format, CLAUDE.md inbox/delegation lines. Guard test 14 passed.
-- DSA queue (all pending at 2026-10-10 start, DSA has not run yet; needs a fresh SESSION_PASTE from the operator): B154 stratify, NO-SOURCE sweep B142-B145, transcript inventory, daily gate, data refresh.
-- Control Room: inbox items answered; D08 answered (replace with 4-12h imbalance test; T085 spec not yet written = task 3a); D11 Malkan download and D12 daily DSA session wait for the operator.
-- Operator manual steps: `setx MTS_ACCOUNT sharma` on the NUC; republish of the Control Room page only from its owning account (db changes are live without it).
-- B151: CryptoCred rerun on 1m data done on JIS-NB (bb4a6bc): all three setups FAIL under trade-through fills.
-- Earlier state (T087-T091 research all no edge after fees, Tom phase 2 no anchor edge, Kurisko = Quad Rotation not RSI): see research/STATUS and items; origin/fast-track is the only truth.
-- Not shipped, owned by JIS-NB live tree: backtest/bigtrade/*, research/bigtrade_2026-10-09/*, pm_heartbeats files (origin/backup/JIS-NB/BinanceDataFeed). Do not edit.
-- No git stash in shared clones; do not pass --help to sync.py subcommands.
+State at handoff
+
+* 2026-10-10 T092 DONE (Opus, JIS-NUC): research/screenshot_context_2026-10-10/REPORT.md. Every screenshot read starts cold;
+  session_state.json (the only context store) is dead since 09-14; the engine's archive mode can replay state at a shot's time
+  but no read calls it; claim rows are kept as counts only. Filed B157 (HIGH), B158-B161. D13 asks the operator about B158.
+* Live mirror still REFUSED on the NUC (no CURRENT under \JIS-NB\MTS-Mirror); desk task 20261009-202832 (JIS-NB) pending.
+* Control Room: D09/D10 marked applied (5c5678d). D11 and D12 answered, not yet applied (task 3c).
+* DSA: refresh-klines done on JIS-NB (klines to 10-08, funding to 09-30); not spot-checkable on the NUC (cache on JIS-NB only).
+  Pending: B154 stratify, NO-SOURCE sweep (taken), transcript inventory, daily gate.
+* Main NUC clone (BinanceDataFeed) holds another session's 2 unshipped commits (938d96b, 1ca6e4c: B149/B153) and T093 files: not ours.
+* Not shipped, owned by JIS-NB live tree: backtest/bigtrade/, research/bigtrade_2026-10-09/, pm_heartbeats files. Do not edit.
+* No git stash in shared clones; do not pass --help to sync.py subcommands.
