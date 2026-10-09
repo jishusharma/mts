@@ -123,4 +123,9 @@ Only potentially viable as entry-timing filter on wider thesis. Not backtested w
 2. Measure net R after fees using verdict.py + PBO, OOS splits, funding included.
 3. If survives, test marlin-strategy design.
 
+## Related MTS work
+T093_TOC_IMBALANCE_KLINES_2026-10-10.md: kline-proxy turn-of-candle imbalance, 4/8/12h, 2022-2026, NO REPLICATION (gross +0.5 bp vs 10 bp fee, net CI95 below zero).
+P4_QUARTER_HOUR_IMBALANCE_CORRECTED_2026-10-08.md: same family, 2024-12..2026-09, NO REPLICATION.
+This file adds the L2 order book imbalance branch (distinct from kline time-of-day). Not yet backtested in MTS.
+
 # END
