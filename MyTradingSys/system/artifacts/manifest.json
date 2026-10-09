@@ -1,11 +1,47 @@
 {
   "pages": [
-    {"slug": "mts_control_room", "title": "MTS Control Room", "pinned": true, "html_saved": false,
-     "db": ["inbox", "decisions"], "db_owner": "cloud", "urls": {"desktop": "", "cloud": ""}},
-    {"slug": "cbp_consensus_desk", "title": "CBP Consensus Desk", "pinned": true, "html_saved": false,
-     "db": [], "db_owner": "cloud", "urls": {"desktop": "", "cloud": ""}},
-    {"slug": "cbp_monday_desk", "title": "CBP Monday Desk", "pinned": true, "html_saved": false,
-     "db": [], "db_owner": "cloud", "urls": {"desktop": "", "cloud": ""}}
+    {
+      "slug": "mts_control_room",
+      "title": "MTS Control Room",
+      "pinned": true,
+      "html_saved": true,
+      "db": [
+        "decisions",
+        "feedback"
+      ],
+      "db_owner": "cloud",
+      "urls": {
+        "desktop": "",
+        "cloud": "https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su"
+      },
+      "note": "Snapshot 2026-10-09. Regenerated daily by scripts/dev/make_control_room.py (template control_room.tpl.html); republish from that output, not by hand-editing this file. Uses capabilities db + user."
+    },
+    {
+      "slug": "cbp_consensus_desk",
+      "title": "CBP Consensus Desk",
+      "pinned": true,
+      "html_saved": true,
+      "db": [],
+      "db_owner": "cloud",
+      "urls": {
+        "desktop": "",
+        "cloud": "https://claude.ai/artifact/V1d9xSL9fKQYtbWjrMqASU"
+      },
+      "note": "Snapshot, static page, no capabilities."
+    },
+    {
+      "slug": "cbp_monday_desk",
+      "title": "CBP Monday Desk",
+      "pinned": true,
+      "html_saved": true,
+      "db": [],
+      "db_owner": "cloud",
+      "urls": {
+        "desktop": "",
+        "cloud": "https://claude.ai/artifact/X8ZB1v6eSEcW14zV9orAK7"
+      },
+      "note": "Snapshot, static page, no capabilities."
+    }
   ],
   "unpinned_on_desktop": {
     "Binance Perp Backtesting Guide": "https://claude.ai/artifact/Dq2rYvfgXqvCsabsFZwRXj",

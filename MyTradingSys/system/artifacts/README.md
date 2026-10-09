@@ -23,4 +23,5 @@ and save its HTML here first. Ship via sync.py.
 
 ## Status 2026-10-09
 - Desktop (gmail) account: the 3 pinned pages are not on this account; its 6 old artifacts were unpinned.
-- Waiting on the owner account to save the 3 HTML files (`html_saved: false`).
+- Owner (cloud) account saved the 3 HTML files and URLs (html_saved: true). Next: desktop account runs the align prompt.
+- Control Room db collections are `decisions` and `feedback` (not `inbox`).
