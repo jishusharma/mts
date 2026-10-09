@@ -11,6 +11,16 @@
    "ref": "T080",
    "why": "Offline research script that regenerates research/fast_track_2026-09-27/T080_MAKER_MODEL_2026-10-09.md; run by hand, no live process imports it."
   },
+  "MyTradingSys/backtest/layers/session_levels/run_session_levels.py": {
+   "disp": "REPRO",
+   "ref": "T087",
+   "why": "Offline research script that regenerates research/t087_session_levels_2026-10-09/ (RESULT.md, summary.json); run by hand, no live process imports it."
+  },
+  "MyTradingSys/backtest/layers/session_levels/session_levels.py": {
+   "disp": "PARKED",
+   "ref": "T087",
+   "why": "Observation layer, backtest only: no sourced clock or threshold and no edge found (RESULT.md), so it is not wired live; only its runner and tests import it."
+  },
   "MyTradingSys/backtest/layers/rsi/run_t090_anchor_probe.py": {
    "disp": "REPRO",
    "ref": "T090",
