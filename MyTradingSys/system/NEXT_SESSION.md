@@ -1,29 +1,27 @@
-# NEXT SESSION PROMPT (handoff 2026-10-09 evening, from the Stage 1 supervisor session jisnb/stage1-2026-10-09)
+# NEXT SESSION PROMPT (handoff 2026-10-09 night, sync/recovery session; for Claude Code Win App on the PC, second subscription account)
 
 Paste the block below into a new Claude Code session (Win App, bypassPermissions). Overwrite this file at each handoff.
 
 ```
-MTS supervisor session. Read CLAUDE.md, STATUS.md, then MyTradingSys/system/CONTROL_ROOM.md. Work in a worktree, never the live tree.
-0. Control Room first (https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su): run the pickup (Inbox + answered decisions D08-D10;
-   D08 turn_of_candle next step, D09 fee gate on/off, D10 heartbeat age), apply them, rebuild + republish.
-1. Live tree is behind origin and holds other sessions' uncommitted work (bigtrade FINDINGS/backtest/bigtrade). Not yours.
-   Their 9 open screenshots need the shot ids written into that study's extract before `shot.py read` accepts them.
-2. Stage 1 left: B148 part 5 (heartbeat-age liveness, limit from D10, fail-first test incl. pid reuse), F-BT-12 VWAP anchor,
-   F-BT-10/11 OI (5m series instead of hourly; recorder holes), F-BT-20/21. Java F-BT-09/F-BT-14 are DEPLOYED (verify tomorrow's
-   naked_pocs file gets 2026-10-09 and prior_day.poc stays near the trade-level POC).
-3. Stage 2: read T081 and T080 reports (research/fast_track_2026-09-27/T081_..., T080_...), then T082 re-run (capture matrix + Tom
-   core backtest on the fixed volume profile / naked POC) and T085 (97 % time-exits).
-4. Apply D08/D09/D10 answers. T083/T084 lead checks only after T082.
-End: update control_room.json (verdict, evidence, changelog), ship, overwrite this file.
+MTS builder session (second account, PC). Read CLAUDE.md, STATUS.md, then this file's State section. Worktree only, never the live tree.
+0. Start: `python scripts/dev/sync.py start`, then `sync.py where`. Account B needs GitHub write access (CLOUD_ACCOUNTS.md); if push fails, say so in one line and stop.
+1. Fix 2 non-verbatim quoted fragments in extracts/v2/tom/etg6j0JybfE_v2.md (lines 40, 158) against raw_transcripts_canonical/etg6j0JybfE_raw.txt;
+   rerun verify_extract_quotes.py (must be 0 problems).
+2. Re-extract the 4 remaining Tom videos (inbox 3b25rvpra36evfyzc5rz) as extracts/v2/tom/<id>_v2.md, same format as ShYS_pD5cxQ_v2.md:
+   QClPWDJ-BrU, 5Ljfwvtktek, Of_wlv3xaZo, oPyUif2Zrtk. Sonnet workers; run extract_fix_gps.py then verify_extract_quotes.py. Aim: rules that apply on a naked BTC chart.
+3. Then Tom core backtest on those rules in phases (T082 re-run on the fixed volume profile / naked POC), using volume profiles anchored at pivots
+   (research/vp_pivots_2026-10-09/SOURCES.md, FORMULAS.md). Expected numbers from FORMULAS.md only.
+4. Control Room: operator answers D08 (turn_of_candle next), D09 (fee gate 0.3 on/off), D10 (heartbeat age limit) -> apply, rebuild + republish.
+   Then B148 part 5 (limit from D10, fail-first test incl. pid reuse), T085 (97 % time exits).
+5. Malkan RSI: steps 1-3 done (backtest/layers/rsi). Pulling the ~9 missing Malkan transcripts with yt-dlp needs operator OK first (fgN6QBFY3Ss, TYB7GJODt-k matter most).
+End: ship via sync.py ship, `sync.py where` must show 0 unshipped, overwrite this file.
 ```
 
 ## State at handoff
-- Deployed 2026-10-09 12:46 IST: F-BT-09 (buildVp conserves volume) and F-BT-14 (naked-POC writer), engine restarted per D03; B148 parts 1-4 already ran.
-- Written: GO_LIVE_BAR.md (T086), TURN_OF_CANDLE_ORIGIN_2026-10-09.md (D01), backfill_naked_pocs.py (applied once).
-- Safety net (2026-10-09 CI/CD session): Windows task `MTS-Backup` runs `scripts/dev/backup_snapshot.py` every 15 min and pushes every worktree
-  (live tree included: uncommitted + untracked, secrets dropped) to `origin/backup/JIS-NB/<worktree>`; recover with `git fetch origin backup/JIS-NB/<name>`
-  and copy the files out of FETCH_HEAD with `git restore --source=FETCH_HEAD -- <files>`. Backup refs are never merged. One-off pre-task snapshot: `origin/backup/live-tree-2026-10-09`.
-  CI (`.github/workflows/ci.yml`) gates fast-track on ubuntu + windows; job `mark-green` publishes the last green SHA as `origin/green/fast-track`.
-  Supervisor deploy = `git merge --ff-only origin/green/fast-track` (never a half-tested push). Live tree still holds 188fa67 (B154+B155) and
-  other sessions' bigtrade files: owners must commit + ship them; the backup only protects them. Cron CI is impossible (default branch `main` has no workflow).
-- Waiting on the operator: D08, D09, D10 on the page. Windows: restarts after updates / power loss are the remaining uptime risk (sleep is already off).
+- origin/fast-track is the only truth. Everything from the earlier sessions is on it (B148 p5 heartbeat, B146 fee gate 0.3, F-BT-09/14 Java deployed, RSI reclaim/divergence, Kurisko spec,
+  pivot-VP sources, Control Room, MTS-Backup task, CI mark-green -> origin/green/fast-track). Recovered this session: Tom v2 extracts ShYS_pD5cxQ, etg6j0JybfE, scripts/dev/extract_fix_gps.py.
+- NOT shipped, owned by the JIS-NB live tree: backtest/bigtrade/*, research/bigtrade_2026-10-09/*, pm_heartbeats files. Only on origin/backup/JIS-NB/BinanceDataFeed. Owners must `sync.py ship` them. Do not edit.
+- Stale, ignore: origin/backup/JIS-NB/mts-research (old harness/canary files).
+- Kurisko: his scalp is "Quad Rotation" (4 stochastics), no source ties him to RSI; "4 RSI" stays NO-SOURCE, no backtest.
+- Recovery: `git fetch origin backup/JIS-NB/<name>` then `git restore --source=FETCH_HEAD -- <files>`. Backups are never merged.
+- Two subscriptions: credits are per account, nothing else is. Start with `sync.py where`+`start`, end with `where`+`ship`.
