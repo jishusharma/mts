@@ -88,6 +88,7 @@ it for the bridge operator.
 4. A refusal is data: DSA quotes it, names the one config change that would allow it, and stops.
 
 ## Open items
+- Block parsing (observed 2026-10-09): the reader splits a fenced block into phantom blocks when a line inside begins with a hash, and only the first runs. In PowerShell source, build a hash from [char]35 so no source line begins with one. Long single-line commands get wrapped and come back as CommandNotFoundException; keep source lines under about 200 chars.
 
 - Acceptance 5: extension auto-run and auto-return of results into the DSA chat (bridge project).
 - Output ceiling per chat message: the bridge returns up to 262144 bytes; whether the chat accepts a
@@ -96,6 +97,7 @@ it for the bridge operator.
 - Create mts-dsa (DSA, first boot).
 
 ## Pointers
+- Pending patches for the merge-blocked files: DSA_SESSION_PROMPT.md.pending_patch_2026-10-09.md and MyTradingSys/system/LESSONS_LEARNED.md.pending_patch_2026-10-09.md. Splice, then delete each patch file.
 
 - DSA_SESSION_PROMPT.md section 0 (direct mode) and 0.8 (paste and news, protected)
 - SURFACE_POLICY.md section 1 (surface table)
