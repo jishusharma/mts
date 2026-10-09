@@ -114,12 +114,13 @@ def setup2_fib_pullback(bars: list, fib_lo: float = 0.618, fib_hi: float = 0.786
             H_price = msb_event["broken_level"]
             P_low = prev_low["price"]
             fib_zone = [H_price - fib_hi * (H_price - P_low), H_price - fib_lo * (H_price - P_low)]
-            # Scan bars after confirm_i for first bar that touches the zone
+            # Scan bars after confirm_i for the first bar that reaches the resting limit at the zone's upper
+            # edge. A bar that blows through the whole zone (low below the zone) filled it too (B151).
             start_idx = msb_event["confirm_i"] + 1
             end_idx = min(start_idx + expiry_bars, len(bars))
             found_bar = None
             for k in range(start_idx, end_idx):
-                if fib_zone[0] <= bars[k]["l"] <= fib_zone[1]:
+                if bars[k]["l"] <= fib_zone[1]:
                     found_bar = k
                     break
             if found_bar is None:
@@ -140,13 +141,15 @@ def setup2_fib_pullback(bars: list, fib_lo: float = 0.618, fib_hi: float = 0.786
             # The impulse leg is from the high to the low that was broken
             L_price = msb_event["broken_level"]
             P_high = prev_high["price"]
-            fib_zone = [L_price + fib_hi * (P_high - L_price), L_price + fib_lo * (P_high - L_price)]
-            # Scan bars after confirm_i for first bar that touches the zone
+            # ascending like the bull zone: nearest edge (fib_lo) first, so zone[0] is the short's resting limit
+            fib_zone = [L_price + fib_lo * (P_high - L_price), L_price + fib_hi * (P_high - L_price)]
+            # Scan bars after confirm_i for the first bar that reaches the resting limit at the zone's lower
+            # edge. A bar that blows through the whole zone (high above the zone) filled it too (B151).
             start_idx = msb_event["confirm_i"] + 1
             end_idx = min(start_idx + expiry_bars, len(bars))
             found_bar = None
             for k in range(start_idx, end_idx):
-                if fib_zone[0] <= bars[k]["h"] <= fib_zone[1]:
+                if bars[k]["h"] >= fib_zone[0]:
                     found_bar = k
                     break
             if found_bar is None:

@@ -98,11 +98,18 @@ class BlocklistCycleTest(unittest.TestCase):
                        "layer:cryptocred:sr_flip:1h", "layer:rsi:malkan_bull:1h"):
             self.assertIsNone(at.trade_block_reason(source, c), source)
 
-    def test_shipped_calibration_config_blocks_no_layer(self):
+    def test_shipped_config_is_either_blocking_or_an_explicit_parked_calibration(self):
+        # B150: the gate must not pin an empty list (restoring the parked list would fail it). Either the layers are blocked,
+        # or the empty list is a documented calibration (parked entries kept) that mainnet refuses (executor.mainnet_config_refusals).
         c = at.load_config(SHIPPED)
-        self.assertEqual(c["trade_blocklist"], [])
-        for _, source in BLOCKED_ALERTS:
-            self.assertIsNone(at.trade_block_reason(source, c), source)
+        if c["trade_blocklist"]:
+            for _, source in BLOCKED_ALERTS:
+                self.assertTrue(at.trade_block_reason(source, c), source)
+        else:
+            self.assertTrue(c.get("trade_blocklist_parked"), "empty blocklist needs trade_blocklist_parked")
+            self.assertIn("_calibration", c)
+            for _, source in BLOCKED_ALERTS:
+                self.assertIsNone(at.trade_block_reason(source, c), source)
 
     def test_shipped_config_keeps_account_routing(self):
         self.assertEqual(shipped_cfg()["accounts"]["layer:turn_of_candle:"], "jishu_1")

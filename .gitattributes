@@ -1,0 +1,2 @@
+# Files whose exact bytes matter (hashed or compared) are pinned to LF on every host.
+MyTradingSys/system/sched/worker_prefix.md text eol=lf

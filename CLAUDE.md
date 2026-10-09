@@ -8,6 +8,7 @@ Same-page check on either Claude account, and before ending a session: `python s
 Start ritual for any account or device (full text in PARALLEL.md): `sync.py start` (prints open claims), pick ONE task from NEXT_SESSION.md,
 `sync.py claim "<task>"`, work, `sync.py ship`, `sync.py release <slug>`, `sync.py where` clean.
 Surfaces, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md`.
+Live state off the desktop (NUC, laptop): `sync.py start` pulls the read-only mirror; `python scripts/dev/live_mirror.py brief` before any live read; say `mirror@<utc>` when you quote it (LIVE_MIRROR.md).
 
 ## What a CL prompt carries
 - Prompt <= 30 lines.

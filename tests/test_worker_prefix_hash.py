@@ -47,6 +47,12 @@ class WorkerPrefixHash(unittest.TestCase):
             self.assertEqual(line, line.rstrip(), f"trailing whitespace line {n}")
         self.assertTrue(text.endswith("=== RUN ===\n"))
 
+    def test_gitattributes_pins_the_prefix_to_lf(self):
+        # core.autocrlf=true checks the prefix out as CRLF on Windows; run_worker then refuses it and the scheduled
+        # worker never runs there. The attribute makes the checkout byte-identical on every host.
+        attrs = (REPO / ".gitattributes").read_text(encoding="utf-8")
+        self.assertIn("MyTradingSys/system/sched/worker_prefix.md text eol=lf", attrs)
+
     def test_timestamp_in_prefix_is_rejected(self):
         with tempfile.TemporaryDirectory() as d:
             bad = pathlib.Path(d) / "bad_prefix.md"

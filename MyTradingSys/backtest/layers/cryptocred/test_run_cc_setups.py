@@ -175,7 +175,7 @@ class TestLimitFill(unittest.TestCase):
         # fill minute high 101.6 (above target) but no stop: target must wait for a LATER bar
         bars = confirm_bars() + [bar(5 * MIN, 100.5, 101.6, 99.9, 101.0),
                                  bar(6 * MIN, 101, 101, 100.9, 101),
-                                 bar(7 * MIN, 101, 101.5, 100.9, 101.4)]
+                                 bar(7 * MIN, 101, 101.7, 100.9, 101.4)]   # one tick through (B151)
         t = R.build_trades([limit_signal()], bars, [], "all_taker", TF5)[0]
         self.assertEqual(t["exit_reason"], "targets")
         self.assertEqual(t["fill_t"], 5 * MIN)
@@ -185,7 +185,7 @@ class TestLimitFill(unittest.TestCase):
     def test_gap_bar_below_level_fills_at_open(self):
         # whole minute below the level (h 99.8 < 100): fill at its open 99.8, not at 100
         bars = confirm_bars() + [bar(5 * MIN, 99.8, 99.8, 99.4, 99.6),
-                                 bar(6 * MIN, 99.6, 101.5, 99.6, 101.5)]
+                                 bar(6 * MIN, 99.6, 101.7, 99.6, 101.5)]   # high one tick through the 101.5 target (B151)
         t = R.build_trades([limit_signal()], bars, [], "all_taker", TF5)[0]
         self.assertAlmostEqual(t["entry_price"], 99.8, places=12)
         # risk 0.8; gross (101.5-99.8)/0.8 = 2.125; fees 0.0005*99.8/0.8 + 0.0005*101.5/0.8
@@ -219,6 +219,26 @@ class TestLimitFill(unittest.TestCase):
         self.assertEqual((st["filled"] + st["open_at_end"], st["unfilled"]), (1, 0))
         if t:
             self.assertEqual(t[0]["fill_t"], 8 * MIN)
+
+    def test_target_needs_trade_through_in_build_trades(self):
+        # B151: engine targets are resting limits too; a bar whose high only touches the target must not take profit
+        sig = {"side": "long", "entry_price": 100.0, "entry_t": 0, "stop": 99.0, "targets": [(101.5, 1.0)], "meta": {}}
+        mk = lambda hi: [bar(i * MIN, 100, 100.2, 99.8, 100) for i in range(3)] + [bar(3 * MIN, 100, hi, 99.8, 100)] +             [bar((4 + i) * MIN, 100, 100.2, 99.8, 100) for i in range(3)]
+        touch = R.build_trades([sig], mk(101.5), [], "all_taker", MIN, max_bars=4)
+        through = R.build_trades([sig], mk(101.6), [], "all_taker", MIN, max_bars=4)
+        self.assertGreater(through[0]["gross_r"], 1.4)   # target taken: +1.5 R
+        self.assertLess(touch[0]["gross_r"], 1.0)        # touch only: left open, closed at the timeout
+
+    def test_report_prints_open_at_end(self):
+        bars = confirm_bars() + [bar((5 + i) * MIN, 100.5, 100.8, 100.2, 100.5) for i in range(15)]
+        res = R.run_setup("stub", bars, bars, [], TF5, setup_fn=lambda b: [limit_signal()])
+        for v in res["variants"].values():
+            self.assertIn("n_open_at_end", v)
+        meta = {"tf": "5m", "n_bars": len(bars), "n_is_bars": 1, "n_oos_bars": 1, "n_funding": 0}
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "r.md"
+            R.write_markdown([res], meta, p)
+            self.assertIn("open at end", p.read_text(encoding="utf-8"))
 
     def test_run_setup_reports_unfilled(self):
         bars = confirm_bars() + [bar((5 + i) * MIN, 100.5, 100.8, 100.2, 100.5) for i in range(15)]

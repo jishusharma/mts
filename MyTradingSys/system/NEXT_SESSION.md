@@ -10,6 +10,7 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
    file `new` inbox items per CONTROL_ROOM.md step 3. D11 (Malkan yt-dlp) unanswered = do NOT download. D12 unanswered = no change.
 2. DSA results: for every desk task now done, spot-check ONE number against its file, then use it (no redo). Pending DSA tasks stay.
 3. TASK (pick first unclaimed, claim it): 
+   0. T092 (operator 2026-10-10, ask answered in its own session): run on OPUS, brief = items/T092_screenshot_context_gap.md. Deliverable = research/screenshot_context_2026-10-1x/REPORT.md + filed items; no code. Mirror first: `live_mirror.py pull && brief`.
    a. T085 spec: 4-12h order-imbalance after the turn of candle (D08 answer), from klines taker-buy volume (no aggTrades on disk),
       BTCUSDT 2022-2026, windows 4h/8h/12h, net of taker fees x2, source = research/TURN_OF_CANDLE_ORIGIN_2026-10-09.md paper.
       Write items/T085 + tests derived from the spec (fail first), then `desk.py post ... --target DSA` for the runs (split by year, <300 s each).

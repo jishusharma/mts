@@ -41,6 +41,7 @@ def test_find_stale_pre_backups_prunes_excluded_dirs(tmp_path, monkeypatch):
 
 def test_find_leftover_names_matches_rejected_and_raw(tmp_path, monkeypatch):
     monkeypatch.setattr(audit_t0_checks, "DUMPS_WORKERS", tmp_path)
+    monkeypatch.setattr(audit_t0_checks, "REPO", tmp_path)   # results are repo-relative; tmp_path is outside the real repo
     (tmp_path / "_nuc_rejected").mkdir()
     (tmp_path / "_nuc_rejected" / "inner.txt").write_text("x", encoding="utf-8")
     (tmp_path / "qwen_raw_042.txt").write_text("x", encoding="utf-8")

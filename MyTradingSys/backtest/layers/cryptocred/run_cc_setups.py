@@ -122,7 +122,7 @@ def find_limit_fill(sig, sim_bars, tf_ms, times=None, tick=TICK):
     return None
 
 
-def _limit_trade(sig, hit, sim_bars, taker, maker, entry_refund, funding, max_bars):
+def _limit_trade(sig, hit, sim_bars, taker, maker, entry_refund, funding, max_bars, tick=0.0):
     """Trade record for a limit filled at hit=(index, price); None if the data ends open."""
     k, fill = hit
     fb = sim_bars[k]
@@ -142,13 +142,14 @@ def _limit_trade(sig, hit, sim_bars, taker, maker, entry_refund, funding, max_ba
     seq = [syn] + sim_bars[k + 1:]
     call = {kk: v for kk, v in sig.items() if kk not in ("meta", "entry_price", "entry_t")}
     tr = simulate_trade(entry_price=fill, entry_t=fb["t"] - 1, bars=seq, funding=funding or None,
-                        taker_fee=taker, maker_fee=maker, max_bars=max_bars, stop_first=True, **call)
+                        taker_fee=taker, maker_fee=maker, max_bars=max_bars, stop_first=True,
+                        target_through=tick, **call)
     if tr.get("net_r") is None:
         return None
     return _record(sig, fill, abs(fill - stop), tr, entry_refund, fb["t"])
 
 
-def _market_trade(sig, sim_bars, by_t, tf_ms, taker, maker, entry_refund, funding, max_bars):
+def _market_trade(sig, sim_bars, by_t, tf_ms, taker, maker, entry_refund, funding, max_bars, tick=0.0):
     """Entry at the close of the signal bar (setup 3 and generic signals): entry_t moved to the last
     1m bar of the signal bar. For setup 3 the entry price is that 1m bar's close (= HTF close)."""
     s2 = dict(sig)
@@ -159,7 +160,7 @@ def _market_trade(sig, sim_bars, by_t, tf_ms, taker, maker, entry_refund, fundin
             s2["entry_price"] = c
             s2["targets"] = [(_r_target(c, sig["stop"], sig["side"], sig["meta"]["target_r"]), 1.0)]
     r = signals_to_trades([s2], sim_bars, funding=funding or None, taker_fee=taker,
-                          maker_fee=maker, max_bars=max_bars)[0]["trade_result"]
+                          maker_fee=maker, max_bars=max_bars, target_through=tick)[0]["trade_result"]
     if r.get("net_r") is None:  # open at end of data
         return None
     return _record(sig, s2["entry_price"], abs(s2["entry_price"] - sig["stop"]), r, entry_refund,
@@ -188,9 +189,9 @@ def build_trades(signals, sim_bars, funding, variant, tf_ms, max_bars=1440, stat
             if hit is None:
                 stats["unfilled"] += 1
                 continue
-            rec = _limit_trade(sig, hit, sim_bars, taker, maker, entry_refund, funding, max_bars)
+            rec = _limit_trade(sig, hit, sim_bars, taker, maker, entry_refund, funding, max_bars, tick)
         else:
-            rec = _market_trade(sig, sim_bars, by_t, tf_ms, taker, maker, entry_refund, funding, max_bars)
+            rec = _market_trade(sig, sim_bars, by_t, tf_ms, taker, maker, entry_refund, funding, max_bars, tick)
         if rec is None:
             stats["open_at_end"] += 1  # filled but still open when data ends: reported, not dropped silently
         else:
@@ -264,6 +265,7 @@ def run_setup(name, tf_bars, sim_bars, funding, tf_ms, is_frac=0.70, max_bars=14
         v["nofund"] = evaluate(trades, split_t, "net_nofund") if has_fund else None
         v["n_trades"] = len(trades)
         v["n_unfilled"] = fstats.get("unfilled", 0)
+        v["n_open_at_end"] = fstats.get("open_at_end", 0)
         res["variants"][variant] = v
     return res
 
@@ -286,7 +288,7 @@ def write_markdown(results, meta, path):
     for r in results:
         for variant, v in r["variants"].items():
             L += [f"## {r['setup']} / {variant}: **{v['verdict']}**", "",
-                  f"signals {r['n_signals']}, trades {v['n_trades']}, unfilled limits {v['n_unfilled']}; basis: {v['headline_basis']}", "",
+                  f"signals {r['n_signals']}, trades {v['n_trades']}, unfilled limits {v['n_unfilled']}, open at end {v.get('n_open_at_end', 0)}; basis: {v['headline_basis']}", "",
                   "| split | n | mean net R | mean net % | hit | net Sharpe |", "|---|---|---|---|---|---|"]
             for k in ("is", "oos"):
                 s = v[k]
