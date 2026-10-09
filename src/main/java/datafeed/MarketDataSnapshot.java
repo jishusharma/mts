@@ -1564,18 +1564,16 @@ private ObjectNode buildOiBreakdown(String symbol) {
                 topAccounts.put("change_1h", Math.round(topChange1h*10000.0)/10000.0);
                 topAccounts.put("change_4h", Math.round(topChange4h*10000.0)/10000.0);
             } catch (Exception eTop) {
-                topAccounts.put("long_short_ratio", 0.0);
-                topAccounts.put("change_1h", 0.0);
-                topAccounts.put("change_4h", 0.0);
-                topAccounts.put("note", "unavailable");
+                node.putNull("topAccounts");   // B153/B136: unavailable is null, never a fake 0.0 ratio
+                node.put("topAccounts_note", "unavailable");
             }
             node.put("confidence", "MEDIUM");
             node.put("note", "Proxy data - account/position ratio, not absolute OI");
         } catch (Exception e) {
-            node.putObject("retail").put("long_short_ratio", 0.0).put("change_1h", 0.0).put("change_4h", 0.0);
-            node.putObject("whale").put("long_short_ratio", 0.0).put("change_1h", 0.0).put("change_4h", 0.0);
-            node.putObject("topAccounts").put("long_short_ratio", 0.0).put("change_1h", 0.0).put("change_4h", 0.0);
-            node.put("confidence", "LOW");
+            node.putNull("retail");   // B153/B136: unavailable is null, never a fake 0.0 ratio
+            node.putNull("whale");
+            node.putNull("topAccounts");
+            node.put("confidence", "UNAVAILABLE");
             node.put("note", "OI breakdown unavailable");
         }
         return node;

@@ -437,23 +437,22 @@ public class MarketDataSnapshotTest {
     // ===================================================================================================
 
     @Test
-    void buildOiBreakdown_nullRatioInput_fallsBackToLowZeros() throws Exception {
+    void buildOiBreakdown_nullRatioInput_isUnavailableNeverZero() throws Exception {
         // client returns null for the retail ratio -> NPE inside the try -> catch (:1397-1402 fallback block).
         StubClient s = new StubClient();
         s.retailRatio = MAPPER.nullNode(); // need() only rejects Java null; a JSON null node has size() 0 -> get(-1) null -> NPE
         s.whaleRatio = json("[{\"longShortRatio\":\"1.0\"}]");
         ObjectNode node = (ObjectNode) call(withStub(s), "buildOiBreakdown", new Class<?>[]{String.class}, SYM);
-        assertEquals("LOW", node.get("confidence").asText());
+        // B136 residual (B153): a failed fetch is UNAVAILABLE with null blocks, never a fake 0.0 ratio
+        assertEquals("UNAVAILABLE", node.get("confidence").asText());
         assertEquals("OI breakdown unavailable", node.get("note").asText());
         for (String k : new String[]{"retail", "whale", "topAccounts"}) {
-            assertEquals(0.0, node.get(k).get("long_short_ratio").asDouble(), 0.0, k);
-            assertEquals(0.0, node.get(k).get("change_1h").asDouble(), 0.0, k);
-            assertEquals(0.0, node.get(k).get("change_4h").asDouble(), 0.0, k);
+            assertTrue(node.get(k).isNull(), k);
         }
 
         // client not configured at all (IOException) takes the same path
         ObjectNode unconfigured = (ObjectNode) call(withStub(new StubClient()), "buildOiBreakdown", new Class<?>[]{String.class}, SYM);
-        assertEquals("LOW", unconfigured.get("confidence").asText());
+        assertEquals("UNAVAILABLE", unconfigured.get("confidence").asText());
     }
 
     @Test
@@ -464,7 +463,7 @@ public class MarketDataSnapshotTest {
         s.retailRatio = json("[{\"longShortRatio\":\"1.0\"},{\"longShortRatio\":\"1.1\"},{\"longShortRatio\":\"1.2\"},"
                 + "{\"longShortRatio\":\"1.3\"},{\"longShortRatio\":\"1.5\"}]");
         s.whaleRatio = json("[{\"longShortRatio\":\"2.0\"},{\"longShortRatio\":\"2.5\"}]");
-        // topRatio left null -> the inner catch sets topAccounts to 0.0 with note "unavailable"
+        // topRatio left null -> the inner catch marks topAccounts null with note "unavailable" (no fake 0.0)
         ObjectNode node = (ObjectNode) call(withStub(s), "buildOiBreakdown", new Class<?>[]{String.class}, SYM);
         assertEquals(1.5, node.get("retail").get("long_short_ratio").asDouble(), 1e-9);
         assertEquals(0.2, node.get("retail").get("change_1h").asDouble(), 1e-9);
@@ -472,7 +471,8 @@ public class MarketDataSnapshotTest {
         assertEquals(2.5, node.get("whale").get("long_short_ratio").asDouble(), 1e-9);
         assertEquals(0.5, node.get("whale").get("change_1h").asDouble(), 1e-9);
         assertEquals(0.0, node.get("whale").get("change_4h").asDouble(), 0.0);
-        assertEquals("unavailable", node.get("topAccounts").get("note").asText());
+        assertTrue(node.get("topAccounts").isNull());
+        assertEquals("unavailable", node.get("topAccounts_note").asText());
         assertEquals("MEDIUM", node.get("confidence").asText());
     }
 
