@@ -1,3 +1,4 @@
+<!-- relay: stop reason=relay installed 2026-10-10, not enabled: operator starts the chain depth=0 id=f50c7f3c -->
 # NEXT SESSION PROMPT (handoff 2026-10-10, after the unblock-trunk / bug-closing / CI-CD block; Claude Code Win App, either account)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
