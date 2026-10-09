@@ -1,0 +1,10 @@
+{
+  "done_when": "RESULT.md has 4 rows, each a quote with file:line or NOT FOUND with N",
+  "from": "JIS-NUC",
+  "id": "20261009-181323-no-source-sweep-b142-b143-b144-b145",
+  "need": "For each parameter (ExtraSetupBuilder stop = previous 1m bar high/low; CryptoCred 0.1 percent stop buffer and 1.5R target; SCB exhaustion volume 2.0x over 240 one-minute bars; classify_msb filter_range_noise) search all transcript extracts under MyTradingSys (grep -rn with the trader name and key words). Report per parameter: verbatim quote + file:line, or 'NOT FOUND in N files searched'. Write research/no_source_sweep_2026-10-09/RESULT.md. Do not change any code.",
+  "posted": "2026-10-09T18:13:23Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "NO-SOURCE sweep B142 B143 B144 B145"
+}
