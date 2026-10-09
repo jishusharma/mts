@@ -21,6 +21,7 @@ End: ship via sync.py ship, `sync.py where` must show 0 unshipped, overwrite thi
 ```
 
 ## State at handoff
+- 2026-10-09 late: DSA delegation shipped (e7d5084). Desk board target DSA holds 5 tasks (B154 stratify, NO-SOURCE sweep, transcript inventory, daily gate, data refresh). Doc: system/DSA_DELEGATION.md; prompt 5e. Claude next: write the T085 spec (4-12h order imbalance from klines taker-buy volume, D08 answer) and post it to DSA; read DSA results via `desk.py list --all`. Operator: D11 (Malkan download) and D12 (daily DSA session) open in Control Room; regenerate SESSION_PASTE so DSA sees 5e.
 - 2026-10-09 T087 DONE: backtest/layers/session_levels/ (session_levels.py + runner, 15 tests fail-first), 913 events 2022-2026; no edge, clocks NO-SOURCE. Branch jisnb/t087-session-levels in worktree mts-vpa.
 - 2026-10-09 T090 DONE: 7h anchor = 18:00 NY (22/23 UTC) is the only sourced one; 00:00 UTC and epoch stay NO-SOURCE; 7h bullish lead is an anchor/drift artifact (t 1.2 at sourced anchor). Branch jisnb/t088-tf-module.
 - 2026-10-09 night: T088 DONE. registry.json + tf_resample.py: 4m, 3h, 7h (day-reset 00:00 UTC, default), 7h_epoch; both 7h NO-SOURCE.
