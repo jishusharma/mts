@@ -25,13 +25,13 @@
 | **SRC** | Rule sources and extraction | 3 (0) | 7 | 4 | 257 | no |
 | **CORE** | Tom core engine and verdicts | 8 (0) | 26 | 11 | 54 | yes |
 | **LAYR** | Independent layers (switchable modules) | 8 (1) | 2 | 3 | 202 | yes |
-| **EVID** | Backtest and evidence | 8 (1) | 2 | 8 | 60 | no |
-| **EXEC** | Execution and risk (Deribit testnet) | 9 (3) | 5 | 0 | 121 | yes |
-| **VIS** | Charts, screenshots and observation | 0 (0) | 0 | 0 | 10 | no |
+| **EVID** | Backtest and evidence | 12 (2) | 2 | 8 | 60 | no |
+| **EXEC** | Execution and risk (Deribit testnet) | 12 (5) | 5 | 0 | 121 | yes |
+| **VIS** | Charts, screenshots and observation | 0 (0) | 0 | 0 | 14 | no |
 | **DESK** | Operator interface (DSA and live desk) | 1 (1) | 8 | 4 | 35 | no |
-| **OPS** | AI workforce and process | 7 (1) | 20 | 5 | 709 | no |
+| **OPS** | AI workforce and process | 7 (1) | 20 | 5 | 720 | no |
 | **INFRA** | Machines, runtime plumbing, housekeeping | 6 (2) | 10 | 3 | 107 | yes |
-| | all rows | 54 (10) | 105 | 54 | 1627 | |
+| | all rows | 61 (13) | 105 | 54 | 1642 | |
 
 ## DATA - Market data and snapshot engine
 The Java feed and snapshot producer, kline / open-interest / order-flow recorders, funding, higher-timeframe context, and the volume profile, VWAP and CVD numbers the snapshot carries.
@@ -121,6 +121,7 @@ The harness, trial registry, holdouts, the big-trade study and capture matrix, a
 | Open item | Sev | Status | Title |
 |---|---|---|---|
 | B147 | HIGH | OPEN | Tom live-rule evidence is unreliable: rerun shows 0 SETUP_FORMING signals but the older run on the same histor |
+| T081 | HIGH | OPEN | Backtest D: walk-forward tuning of stop_buffer_atr (stop = structure +/- k x ATR) for Tom and every tight-stop |
 | B151 | MED | OPEN | CryptoCred limit-fill backtest fills on touch and drops signals by a future event, so its PASS numbers are upp |
 | T051 | MED | BLOCKED | Backtest on MTS raw verdict done; parked by operator 2026-09-26; reopens only when T050 phase 4 + B071 fixed |
 | T053 | MED | OPEN | Two-account hedge / leveraged BTC scalping research (hedge thresholds, fee cover, trigger conditions) |
@@ -128,6 +129,9 @@ The harness, trial registry, holdouts, the big-trade study and capture matrix, a
 | T055 | MED | OPEN | Positioning flow (Net / New Longs and Shorts) and proven BTC setups research |
 | T058 | MED | OPEN | Broken lows/highs by timeframe: continuation vs liquidity sweep |
 | T060 | MED | OPEN | Low-volatility anomaly: does trailing realized-vol rank predict BTC forward return at any horizon MTS can comp |
+| T082 | MED | OPEN | Re-run the capture matrix and the Tom core backtest after the Stage 1 data fixes land (volume profile, naked P |
+| T083 | MED | OPEN | Lead check: rsi_events 1h (3 of 3 live testnet wins, +9.75 USD) on full 2022-2026 history with fees |
+| T084 | MED | OPEN | Lead check: fabio escalation 1h (best capture-matrix lift 1.24-1.38 at 24 bars, small n) with walk-forward and |
 
 ## EXEC - Execution and risk (Deribit testnet)
 Everything that places or protects an order: auto_trader, position_manager, daily-loss monitor, orphan watchdog, deribit_orders, runner, kill switch, fee model, subaccounts.
@@ -144,10 +148,13 @@ Everything that places or protects an order: auto_trader, position_manager, dail
 | B146 | HIGH | OPEN | No minimum stop width exists since 0c34a2d removed the NO-SOURCE 0.1 % floor and nothing replaced it: Tom back |
 | B148 | HIGH | OPEN | Daily-loss monitor re-authenticates as the MAIN account when a named subaccount token expires; it also silentl |
 | T048 | HIGH | OPEN | Satellite framework + exchange API layer; operator goal is API-ready trading with MTS |
+| T080 | HIGH | OPEN | Maker execution model: limit entry and target, taker only on the stop; measure fee_R vs all-taker (P1 adverse  |
+| T086 | HIGH | OPEN | Go-live bar for real money: written, operator-signed criteria (proposal = Control Room decision D06-gate) |
 | B118 | MED | OPEN | Layer bracket in auto_trader.py is a fixed unsourced stop_pct 1.0, targets 2, size 100 for every layer alert |
 | B123 | MED | OPEN | Zero-trade and QUIET family follow-ups from the 2026-09-30 maintainer report: Tom main and fabio jishu_3 after |
 | B124 | MED | OPEN | No check that execution/journal holds a file for each open plan; testnet_canary has no journal check |
 | B149 | MED | OPEN | L6 part 2 (daily-loss PnL source) is implemented but the tracker still says OPEN/DEFERRED, and the built sourc |
+| T085 | MED | OPEN | 97 % of testnet trades end on the time exit: find why targets/stops are almost never reached and fix exits so  |
 | B121 | LOW | OPEN | Bar-aligned polling and 5 s auto_trader poll not landed; live_runner_cli 60 s and auto_trader 20 s defaults un |
 | B122 | COSMETIC | OPEN | auto_trader.py reject text uses alert.get('event') instead of the fallback key |
 
@@ -218,5 +225,5 @@ The computers and the plumbing under everything: desktop / NUC / laptop, supervi
 
 ## Checks
 - UNGROUPED registry rows: 0
-- Tracked files no group claims: 0
+- Tracked files no group claims: 1 -> DSA_SESSION_PROMPT.md.pending_patch_2026-10-09_screenshots.md (1)
 - Fix either by adding an "assign" entry or a keyword / path in groups.json.

@@ -35,7 +35,7 @@
       "items": [
         "F-BT-01",
         "F-BT-22",
-        "X-MAKER",
+        "T080",
         "B118",
         "B142",
         "B143",
@@ -50,12 +50,12 @@
       "goal": "At least one source shows net-positive expectancy out of sample, after fees, on fixed data.",
       "exit": "Walk-forward (backtest D) net R > 0 with CI above 0 for at least one Tom or layer config.",
       "items": [
-        "X-BTD",
-        "X-RERUN",
+        "T081",
+        "T082",
         "F-BT-08",
         "F-BT-02",
-        "X-RSI1H",
-        "X-ESC1H",
+        "T083",
+        "T084",
         "B117",
         "T052",
         "B063",
@@ -70,7 +70,7 @@
       "exit": "200+ trades from S3 configs, net positive, under 5 % of exits by time-out, uptime over 95 %.",
       "items": [
         "F-BT-19",
-        "X-EXITS",
+        "T085",
         "B123",
         "B124",
         "B121",
@@ -84,48 +84,12 @@
       "goal": "A written bar for real money, agreed by the operator, met by S4 numbers.",
       "exit": "Operator signs the bar; S4 meets it for 30 days.",
       "items": [
-        "X-GATE",
+        "T086",
         "T048"
       ]
     }
   ],
-  "x_tasks": {
-    "X-MAKER": [
-      "HIGH",
-      "OPEN",
-      "Maker execution model: limit entry and target, taker only on the stop (P1 showed adverse selection +0.02 bp vs ~10 bp fee)"
-    ],
-    "X-BTD": [
-      "HIGH",
-      "OPEN",
-      "Backtest D: walk-forward tuning of stop_buffer_atr per layer and Tom, report fee_R per cell, label BT-TUNED"
-    ],
-    "X-RERUN": [
-      "MED",
-      "OPEN",
-      "Re-run the capture matrix and Tom backtest after Stage 1 fixes land"
-    ],
-    "X-RSI1H": [
-      "MED",
-      "OPEN",
-      "Lead: rsi_events 1h, 3 of 3 live wins (+9.75 USD); needs a full-history check"
-    ],
-    "X-ESC1H": [
-      "MED",
-      "OPEN",
-      "Lead: fabio escalation 1h, best lift in the capture matrix (1.24-1.38 at 24 bars, small n)"
-    ],
-    "X-EXITS": [
-      "MED",
-      "OPEN",
-      "97 % of testnet trades end on the time exit: targets and stops are almost never reached"
-    ],
-    "X-GATE": [
-      "HIGH",
-      "OPEN",
-      "Write the go-live bar for real money (proposal is decision D06 on the page)"
-    ]
-  },
+  "x_tasks": {},
   "evidence": [
     {
       "test": "Tom core backtest",
@@ -190,6 +154,10 @@
     {
       "date": "2026-10-09",
       "what": "Inbox added: paste questions, tasks and requirements word for word; Claude replies under each."
+    },
+    {
+      "date": "2026-10-09",
+      "what": "Road tasks filed as registry rows T080-T086; the board now shows their real status."
     }
   ]
 }

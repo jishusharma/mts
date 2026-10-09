@@ -627,6 +627,13 @@
     "T057": "OPS",
     "T058": "EVID",
     "T060": "EVID",
-    "T061": "LAYR"
+    "T061": "LAYR",
+    "T080": "EXEC",
+    "T081": "EVID",
+    "T082": "EVID",
+    "T083": "EVID",
+    "T084": "EVID",
+    "T085": "EXEC",
+    "T086": "EXEC"
   }
 }
