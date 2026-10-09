@@ -452,7 +452,7 @@ Thesis:          neutral, low confidence. Unchanged since 2026-09-14. Next trigg
 Loop:            UP after the 2026-10-07 restart; verify live PIDs from the boot paste, not from this line.
 Build:           PASS 2026-10-07T10:05Z (Java 147/147, Math 345/345, Doc 5/5); re-gate at close.
 Branch:          fast-track; live tree fast-forwarded to origin/fast-track 5053e2d on 2026-10-07, closeout commits on top.
-Results:         CryptoCred setups FAIL (limit-fill); T055 C1/C2 FAIL on full funding; Tom core rerun no edge (live rule 0 signals, was 17).
+Results:         CryptoCred setups FAIL (limit-fill); T055 C1/C2 FAIL on full funding; Tom core rerun no edge (live rule 0 signals, was 17). OBI research filed (research/imbalance_2026-10-10/RESEARCH.md): no net-of-cost order book imbalance strategy validated; T093/P4 kline imbalance NO REPLICATION.
 Open:            B120, B128, B134, B135, B095, B137, B138, B142-B145; live-path B121, B122, B124, B098 wait for a stopped-loop window; B125 confirm and close; B090 cloud credit (operator).
 Operator decisions owed: Chrome extension connect for T066; TOM-091/092 retag in risk_protocol.md; buy-detection meaning for T067.
 First action next session: F-BT-01 fix path - backtest D tunes stop_buffer_atr (stop = structure level +/- k x ATR(TF), BT-TUNED), then staged SetupCandidatesBuilder .new with a fail-first test that stop distance never falls below the tuned buffer; supervisor promotes. Detail: research/bigtrade_2026-10-09/FINDINGS.md F-BT-01.

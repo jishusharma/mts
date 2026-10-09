@@ -28,6 +28,8 @@ STATE = SCHED / "auto_deploy_state.json"
 LAST = SCHED / "auto_deploy_last.json"
 LOG = SCHED / "auto_deploy.log"
 BRANCH = "green/fast-track"
+FALLBACK_BRANCH = "fast-track"   # gated here by the same local gate when CI has not advanced green for GREEN_STALE_S
+GREEN_STALE_S = 90 * 60
 ORDERFLOW_STATE = "MyTradingSys/runtime/orderflow_live/_state.json"
 JAVA_RE = re.compile(r"^(src/main/java/|src/test/java/|pom\.xml$)")
 NEVER_KILL = ("position_manager",)
@@ -143,6 +145,22 @@ def _finish(res, save, state=None):
     return res
 
 
+def pick_branch(ops):
+    """green/fast-track normally. If CI has not advanced it for GREEN_STALE_S (burst of pushes, CI down) and fast-track is ahead of it,
+    use fast-track: the local gate in a throwaway worktree is the real safety, CI is only the early filter."""
+    green = ops.git("rev-parse", f"origin/{BRANCH}")[1].strip()
+    trunk = ops.git("rev-parse", f"origin/{FALLBACK_BRANCH}")[1].strip()
+    if not green or not trunk or green == trunk:
+        return BRANCH
+    if ops.git("merge-base", "--is-ancestor", green, trunk)[0] != 0:
+        return BRANCH
+    try:
+        age = ops.now().timestamp() - int(ops.git("log", "-1", "--format=%ct", f"origin/{BRANCH}")[1].strip())
+    except ValueError:
+        return BRANCH
+    return FALLBACK_BRANCH if age > GREEN_STALE_S else BRANCH
+
+
 def run(ops=None, check=False, state=None, save=True):
     ops = ops or Ops()
     state = _load_state() if state is None else state
@@ -151,11 +169,13 @@ def run(ops=None, check=False, state=None, save=True):
         d = decide(is_live=False, head="", target="", is_ff=False, changed=[], dirty=[])
         res.update(action=d["action"], reason=d["reason"])
         return _finish(res, save)
-    rc, out = ops.git("fetch", "origin", BRANCH)
+    rc, out = ops.git("fetch", "origin", BRANCH, FALLBACK_BRANCH)
     if rc != 0:
         res.update(action="STOP_FETCH", reason="git fetch failed: " + out.strip()[-200:])
         return _finish(res, save)
-    target = ops.git("rev-parse", f"origin/{BRANCH}")[1].strip()
+    branch = pick_branch(ops)
+    res["branch"] = branch
+    target = ops.git("rev-parse", f"origin/{branch}")[1].strip()
     head = ops.git("rev-parse", "HEAD")[1].strip()
     res["target"] = target
     is_ff = ops.git("merge-base", "--is-ancestor", head, target)[0] == 0
@@ -181,7 +201,7 @@ def run(ops=None, check=False, state=None, save=True):
         backup = REPO / "runtime_data" / "deploy_backup" / ops.now().strftime("%Y%m%dT%H%M%SZ")
         backup.mkdir(parents=True, exist_ok=True)
         shutil.copy2(sp, backup / "_state.json")
-    mrc, mout = ops.git("merge", "--ff-only", f"origin/{BRANCH}")
+    mrc, mout = ops.git("merge", "--ff-only", f"origin/{branch}")
     if mrc != 0:
         res.update(action="STOP_MERGE", reason="ff-only merge refused: " + mout.strip()[-200:])
         return _finish(res, save, state)

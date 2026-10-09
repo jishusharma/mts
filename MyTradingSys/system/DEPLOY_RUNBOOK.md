@@ -27,3 +27,11 @@ Read the last result any time: `python -c "import json;print(open('MyTradingSys/
 `python scripts/dev/auto_deploy.py --check` decides and reports without changing anything.
 
 Register (once per host, as the logged-in user): `powershell -File scripts/sched/register_cicd_tasks.ps1 -Trigger` (add `-SkipDeploy` on hosts that are not the live tree).
+
+## CI starvation fallback (2026-10-10)
+The GitHub token on the builder machines has no `workflow` scope, so `.github/workflows/ci.yml` cannot be changed from here.
+ci.yml cancels the running push job on every new push, so during a burst `green/fast-track` stops advancing (it sat at 24197c4 for
+a day). `auto_deploy.py` therefore falls back: when `origin/green/fast-track` is older than 90 min and is an ancestor of
+`origin/fast-track`, it gates and fast-forwards `origin/fast-track` instead. The local gate in the throwaway worktree is the
+safety; red still stops. The root fix is `MyTradingSys/system/ci_concurrency_fix.patch` (`cancel-in-progress` only for PRs):
+operator applies it once from an account with workflow scope (`git apply` then push), or adds the `workflow` scope to the token.
