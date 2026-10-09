@@ -21,6 +21,12 @@ MUTS = [
     ("vdata.py", 'i = bisect.bisect_right(self.times, t0)', 'i = bisect.bisect_left(self.times, t0)'),
     ("vdata.py", 'if end_ms > VALID_END_MS and not unseal:', 'if end_ms > VALID_END_MS + 10 ** 12 and not unseal:'),
     ("vstats.py", 'stat = sum_ev_val / n[:, None] - sum_all / m', 'stat = sum_ev_val / n[:, None]'),
+    ("vstate.py", 'e[k + "_HI"] = (pr >= 2 / 3) & valid', 'e[k + "_HI"] = (pr >= 1 / 2) & valid'),
+    ("vstate.py", 'out[win:] = (prev <= x[win:, None]).mean(axis=1)', 'out[win:] = (prev < x[win:, None]).mean(axis=1)'),
+    ("vstate.py", 'if hr >= 16:', 'if hr >= 15:'),
+    ("vstate.py", 'bull, bear = rsi >= 60, rsi <= 40', 'bull, bear = rsi > 60, rsi < 40'),
+    ("vstate.py", 's["VT"] = np.log(m20 / m100)', 's["VT"] = np.log(m20 / roll_sum(v, 50) * 50)'),
+    ("vstate.py", 's["D20"] = roll_sum(dv, 20) / roll_sum(v, 20)', 's["D20"] = roll_sum(dv, 20) / roll_sum(v, 21)'),
     ("vstats.py", 'return (z_alpha + z_power) * sd / np.sqrt(max(n, 1))', 'return (z_alpha + z_power) * sd / max(n, 1)'),
 ]
 bad = 0
@@ -36,9 +42,10 @@ for fname, old, new in MUTS:
             print("MUTATION TEXT NOT FOUND", fname, old[:50]); bad += 1; continue
         p.write_text(s.replace(old, new, 1), encoding="utf-8", newline="\n")
         # vdata.ROOT is parents[3]: keep the data root reachable by running from the scratch copy with ROOT patched
-        env_py = tmp / "volume_2026-10-09" / "test_volume.py"
-        r = subprocess.run([sys.executable, str(env_py)], capture_output=True, text=True, timeout=600)
-        killed = r.returncode != 0
+        killed = False
+        for tf_ in ("test_volume.py", "test_state.py"):
+            r = subprocess.run([sys.executable, str(tmp / "volume_2026-10-09" / tf_)], capture_output=True, text=True, timeout=600)
+            killed = killed or r.returncode != 0
         print(("KILLED  " if killed else "SURVIVED"), fname, "|", old[:55].replace("\n", " "))
         if not killed:
             bad += 1
