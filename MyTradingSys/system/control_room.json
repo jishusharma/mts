@@ -2,7 +2,7 @@
   "_doc": "Hand-kept content of the MTS Control Room page (scripts/dev/make_control_room.py). Edit HERE, never the page. Process: MyTradingSys/system/CONTROL_ROOM.md. Item ids: registry rows (B/T), bigtrade findings (F-BT-NN), or X- road tasks defined below. When an X- task gets a registry row, replace the X- id with the row id.",
   "artifact_url": "https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su",
   "asof": "2026-10-09",
-  "verdict": "The system runs and trades on testnet, but no source has shown a real edge after fees. Current step: Stage 1, trustworthy measurements. Several data bugs mean today's 'no edge' verdicts cannot be trusted either way.",
+  "verdict": "The system runs and trades on testnet, but no source has shown a real edge after fees. Stage 1 data fixes are now live (volume profile, naked POC); Stage 2 results are in and negative for Tom: a wider stop or maker orders only shrink fees, because gross R is already negative. Next: re-run the backtests on the fixed data (T082) and look for gross edge elsewhere.",
   "road": [
     {
       "id": "S1",
@@ -126,6 +126,30 @@
       "result": "92-100 % after switching backtests to spot data (was 0-70 % on perp)",
       "verdict": "pass",
       "src": "FINDINGS F-BT-18"
+    },
+    {
+      "test": "Stop-buffer walk-forward (T081, Tom)",
+      "result": "Out-of-fold net R negative in all 8 runs; best -0.20 R [-0.28, -0.12] vs -6.6 R with no buffer. Wider stops cut fees, gross R stays negative",
+      "verdict": "fail",
+      "src": "T081_STOP_BUFFER_WF_2026-10-09.md"
+    },
+    {
+      "test": "Maker execution model (T080, Tom)",
+      "result": "Maker entry removes 50 % of fee drag (9.3 -> 4.7 R per trade); net still -4.9 R because gross R is -0.29",
+      "verdict": "fail",
+      "src": "T080_MAKER_MODEL_2026-10-09.md"
+    },
+    {
+      "test": "Volume profile fix (F-BT-09)",
+      "result": "POC now within 50 points of trade-level on 10-06 and 10-07 (was 300-690 off); deployed 2026-10-09 12:46",
+      "verdict": "pass",
+      "src": "39520d4, BuildVpWeightTest"
+    },
+    {
+      "test": "turn_of_candle (D01 research)",
+      "result": "Already one slot; research found no gross edge; pays its fees and nothing else (-11 bp vs 12 bp cost)",
+      "verdict": "fail",
+      "src": "TURN_OF_CANDLE_ORIGIN_2026-10-09.md"
     }
   ],
   "health_notes": [
@@ -133,7 +157,7 @@
       "k": "Uptime",
       "v": "Gaps",
       "s": "warn",
-      "d": "dark ~23 of the last 120 h; 2-day gap 09-30..10-02 (F-BT-19)"
+      "d": "dark ~23 of the last 120 h; 2-day gap 09-30..10-02 (F-BT-19). Windows sleep is already off; remaining causes are restarts and power. Java engine restarted 2026-10-09 12:46 (2m20s gap)."
     },
     {
       "k": "Hardware",
@@ -158,6 +182,14 @@
     {
       "date": "2026-10-09",
       "what": "Road tasks filed as registry rows T080-T086; the board now shows their real status."
+    },
+    {
+      "date": "2026-10-09",
+      "what": "Pickup: D01-D07 applied, D08-D10 asked; T080/T081 results added to Evidence; F-BT-09 and F-BT-14 shown as closed; go-live bar written (T086)."
     }
-  ]
+  ],
+  "finding_closed": {
+    "F-BT-09": "fixed 39520d4, deployed 2026-10-09 12:46 (POC within 50 of trade level)",
+    "F-BT-14": "writer added 39520d4, deployed 2026-10-09 12:46; Sep-Oct backfilled"
+  }
 }

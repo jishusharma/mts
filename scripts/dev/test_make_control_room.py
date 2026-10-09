@@ -150,7 +150,7 @@ class RealConfigTest(unittest.TestCase):
         f.mkdir(parents=True)
         (f / "FINDINGS.md").write_bytes(b"## F-BT-09  buildVp weights  [HIGH]  status: AUDITED, ESCALATED" + bytes([10]))
         cfg = dict(self.cfg, finding_closed={"F-BT-09": "fixed in 39520d4, deployed 2026-10-09"})
-        before = cr.build(dict(self.cfg), d, NOW)["reg"]["F-BT-09"]["status"]
+        before = cr.build(dict(self.cfg, finding_closed={}), d, NOW)["reg"]["F-BT-09"]["status"]
         after = cr.build(cfg, d, NOW)["reg"]["F-BT-09"]["status"]
         self.assertEqual((before, after), ("ESCALATED", "CLOSED"))
 
