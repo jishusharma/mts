@@ -204,6 +204,11 @@ def main(argv=None):
         success, output = run_step("5b", f"Layer tests ({len(layer_modules)} modules)", cmd5b)
         results.append(("Step 5b: Layer tests", success))
 
+    # Step 5c: options module (own pytest run: its bare module names, e.g. fees.py, collide with other packages)
+    cmd5c = [sys.executable, "-m", "pytest", "MyTradingSys/options/tests", "-q"]
+    success, output = run_step("5c", "Options module tests", cmd5c)
+    results.append(("Step 5c: Options tests", success))
+
     # Step 6: backtest (unless --quick)
     if not quick:
         modules = find_backtest_modules()

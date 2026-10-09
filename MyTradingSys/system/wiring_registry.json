@@ -90,6 +90,38 @@
    "disp": "REPRO",
    "why": "Reproduces the T050 phase-3 primitive-level testnet transcript in MyTradingSys/research/testnet_status/T050_PHASE3_2026-10-02.md:4 (and 10-04)."
   },
+  "MyTradingSys/options/backtest/panel.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
+  "MyTradingSys/options/backtest/run_grid.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
+  "MyTradingSys/options/backtest/selection.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
+  "MyTradingSys/options/backtest/stats.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
+  "MyTradingSys/options/backtest/strategies.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
+  "MyTradingSys/options/collector/deribit_opt_backfill.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
+  "MyTradingSys/options/collector/deribit_opt_common.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
+  "MyTradingSys/options/collector/deribit_opt_snapshot.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
   "MyTradingSys/queue/cbp_adapter.py": {
    "disp": "WIRE",
    "ref": "B139",
