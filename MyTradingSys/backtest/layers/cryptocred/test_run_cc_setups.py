@@ -127,7 +127,7 @@ class TestLimitFill(unittest.TestCase):
         # already known; the following bar then falls to 98.5 -> stop -> about -1.1R.
         # Fixed: filled at 100 in minute 5, minute 6 high 101.6 >= 101.5 -> target.
         bars = confirm_bars() + [
-            bar(5 * MIN, 100.5, 100.6, 100.0, 100.4),
+            bar(5 * MIN, 100.5, 100.6, 99.9, 100.4),
             bar(6 * MIN, 100.4, 101.6, 100.4, 101.5),
             bar(7 * MIN, 101.5, 102.0, 101.4, 102.0),
             bar(8 * MIN, 102.0, 102.4, 101.9, 102.3),
@@ -173,7 +173,7 @@ class TestLimitFill(unittest.TestCase):
 
     def test_fill_bar_high_does_not_credit_target(self):
         # fill minute high 101.6 (above target) but no stop: target must wait for a LATER bar
-        bars = confirm_bars() + [bar(5 * MIN, 100.5, 101.6, 100.0, 101.0),
+        bars = confirm_bars() + [bar(5 * MIN, 100.5, 101.6, 99.9, 101.0),
                                  bar(6 * MIN, 101, 101, 100.9, 101),
                                  bar(7 * MIN, 101, 101.5, 100.9, 101.4)]
         t = R.build_trades([limit_signal()], bars, [], "all_taker", TF5)[0]
@@ -198,12 +198,27 @@ class TestLimitFill(unittest.TestCase):
                "meta": {"setup": "fib_pullback", "placed_t": 0, "valid_until_t": 2 * TF5, "target_r": 1.5}}
         bars = [bar(i * MIN, 99, 99.2, 98.8, 99) for i in range(5)]
         bars[1] = bar(MIN, 99, 100.5, 98.8, 99)  # pre-placement spike through 100: must not fill
-        bars += [bar(5 * MIN, 99.5, 99.9, 99.4, 99.6), bar(6 * MIN, 99.6, 100.0, 99.5, 99.7),
+        bars += [bar(5 * MIN, 99.5, 99.9, 99.4, 99.6), bar(6 * MIN, 99.6, 100.1, 99.5, 99.7),
                  bar(7 * MIN, 99.7, 99.7, 98.4, 98.5)]
         t = R.build_trades([sig], bars, [], "all_taker", TF5)[0]
         self.assertEqual(t["fill_t"], 6 * MIN)
         self.assertAlmostEqual(t["entry_price"], 100.0, places=12)
         self.assertAlmostEqual(t["gross_r"], 1.5, places=12)
+
+    def test_touch_of_level_does_not_fill_trade_through_does(self):
+        # B151: BACKTEST_PROTOCOL needs a trade-through by 1 tick. Low == level (touch) must NOT fill.
+        base = confirm_bars()
+        touch = base + [bar((5 + i) * MIN, 100.5, 100.8, 100.2, 100.5) for i in range(3)] +             [bar(8 * MIN, 100.5, 100.6, 100.0, 100.4)] +             [bar((9 + i) * MIN, 100.4, 100.6, 100.2, 100.4) for i in range(6)]
+        st = {}
+        self.assertEqual(R.build_trades([limit_signal()], touch, [], "all_taker", TF5, stats=st), [])
+        self.assertEqual(st["unfilled"], 1)
+        through = list(touch)
+        through[8] = bar(8 * MIN, 100.5, 100.6, 99.9, 100.4)  # one tick through
+        st = {}
+        t = R.build_trades([limit_signal()], through, [], "all_taker", TF5, stats=st)
+        self.assertEqual((st["filled"] + st["open_at_end"], st["unfilled"]), (1, 0))
+        if t:
+            self.assertEqual(t[0]["fill_t"], 8 * MIN)
 
     def test_run_setup_reports_unfilled(self):
         bars = confirm_bars() + [bar((5 + i) * MIN, 100.5, 100.8, 100.2, 100.5) for i in range(15)]

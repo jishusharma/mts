@@ -99,10 +99,14 @@ def _record(sig, entry, risk, tr, entry_refund, fill_t):
             "entry_price": entry, "fill_t": fill_t}
 
 
-def find_limit_fill(sig, sim_bars, tf_ms, times=None):
+TICK = 0.1  # BTCUSDT price tick; BACKTEST_PROTOCOL: a resting limit fills only if price trades THROUGH it by 1 tick
+
+
+def find_limit_fill(sig, sim_bars, tf_ms, times=None, tick=TICK):
     """Resting LIMIT at sig['entry_price'], placed at the close of the MSB confirm bar
     (meta placed_t + tf_ms), valid through the close of the bar opened at meta valid_until_t.
-    Fills on the FIRST 1m bar strictly after placement whose low<=level (long) / high>=level (short).
+    Fills on the FIRST 1m bar strictly after placement that trades THROUGH the level by one tick:
+    low<=level-tick (long) / high>=level+tick (short); a mere touch does not fill.
     Fill price = level when the bar range contains it; otherwise (bar entirely beyond the level,
     i.e. a gap) the bar open. Returns (index, fill_price) or None."""
     meta = sig["meta"]
@@ -112,7 +116,7 @@ def find_limit_fill(sig, sim_bars, tf_ms, times=None):
     level, long_ = sig["entry_price"], sig["side"] == "long"
     for k in range(lo, hi):
         b = sim_bars[k]
-        if (b["l"] <= level) if long_ else (b["h"] >= level):
+        if (b["l"] <= level - tick) if long_ else (b["h"] >= level + tick):
             inside = b["l"] <= level <= b["h"]
             return k, (level if inside else b["o"])
     return None
@@ -162,7 +166,7 @@ def _market_trade(sig, sim_bars, by_t, tf_ms, taker, maker, entry_refund, fundin
                    s2["entry_t"])
 
 
-def build_trades(signals, sim_bars, funding, variant, tf_ms, max_bars=1440, stats=None):
+def build_trades(signals, sim_bars, funding, variant, tf_ms, max_bars=1440, stats=None, tick=TICK):
     """Simulate signals on sim_bars (1m) and return per-trade records.
     Setups 1/2 (sr_flip, fib_pullback) are resting limit orders at the level, placed when the setup
     is known (close of the MSB confirm bar) and filled on the first later 1m bar that trades through
@@ -176,18 +180,20 @@ def build_trades(signals, sim_bars, funding, variant, tf_ms, max_bars=1440, stat
     out = []
     if stats is None:
         stats = {}
-    stats.update({"signals": len(signals), "unfilled": 0, "filled": 0})
+    stats.update({"signals": len(signals), "unfilled": 0, "filled": 0, "open_at_end": 0})
     for sig in signals:
         meta = sig.get("meta", {})
         if meta.get("setup") in LIMIT_SETUPS and "placed_t" in meta:
-            hit = find_limit_fill(sig, sim_bars, tf_ms, times)
+            hit = find_limit_fill(sig, sim_bars, tf_ms, times, tick)
             if hit is None:
                 stats["unfilled"] += 1
                 continue
             rec = _limit_trade(sig, hit, sim_bars, taker, maker, entry_refund, funding, max_bars)
         else:
             rec = _market_trade(sig, sim_bars, by_t, tf_ms, taker, maker, entry_refund, funding, max_bars)
-        if rec is not None:
+        if rec is None:
+            stats["open_at_end"] += 1  # filled but still open when data ends: reported, not dropped silently
+        else:
             stats["filled"] += 1
             out.append(rec)
     return out

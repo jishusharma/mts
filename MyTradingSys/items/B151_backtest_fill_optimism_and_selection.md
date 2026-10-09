@@ -21,6 +21,9 @@ Change the fill rule to trade-through by 1 tick; count a signal as unfilled/lost
 
 - MyTradingSys/research/AUDIT_MAJOR_GAPS_2026-10-09.md
 
+2026-10-09 (JIS-NUC, sharma): PARTIAL. run_cc_setups.find_limit_fill now needs a trade-through by 1 tick (TICK=0.1); build_trades reports stats["open_at_end"] instead of dropping silently. 62 cryptocred tests pass (new test fails on old code; 3 touch-based tests moved one tick through).
+STILL OPEN: (a) setup2_fib_pullback emits no signal when a bar blows through the zone, (b) bt_engine targets fill on touch, (c) rerun + update CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md. The rerun needs Dumps/backtest/raw_1m_2022 (1m klines) which is not on JIS-NUC (only raw_1h/1d/fund); run on JIS-NB or fetch 1m first.
+
 ## Receipt
 
 # END
