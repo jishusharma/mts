@@ -58,12 +58,23 @@ def snapshot_tree(wt):
         return git(["write-tree"], wt, env).stdout.strip()
 
 
+def remote_tip(wt, remote, ref):
+    """Tip of the backup ref on the remote (made available locally), '' if none. The remote is the truth, so a
+    second clone or a concurrent run chains onto it instead of being rejected as non-fast-forward."""
+    out = git(["ls-remote", remote, ref], wt).stdout.split()
+    if not out:
+        return ""
+    sha = out[0]
+    if git(["cat-file", "-e", sha + "^{commit}"], wt, check=False).returncode != 0:
+        git(["fetch", "-q", remote, ref], wt)
+    return sha
+
+
 def backup_one(wt, remote, host, dry_run):
     name = slug(wt.name)
     ref = "refs/heads/backup/%s/%s" % (slug(host), name)
-    local_ref = "refs/mts-backup/%s/%s" % (slug(host), name)
     tree = snapshot_tree(wt)
-    prev = git(["rev-parse", "--verify", "-q", local_ref], wt, check=False).stdout.strip()
+    prev = remote_tip(wt, remote, ref)
     if prev and git(["rev-parse", prev + "^{tree}"], wt).stdout.strip() == tree:
         return name, "unchanged"
     head = git(["rev-parse", "--verify", "-q", "HEAD"], wt, check=False).stdout.strip()
@@ -77,7 +88,6 @@ def backup_one(wt, remote, host, dry_run):
     if dry_run:
         return name, "would push %s" % commit[:9]
     git(["push", "-q", remote, "%s:%s" % (commit, ref)], wt)
-    git(["update-ref", local_ref, commit], wt)
     return name, "pushed %s" % commit[:9]
 
 

@@ -75,6 +75,25 @@ class BackupSnapshotTest(unittest.TestCase):
         self.assertNotEqual(second, first)
         g(self.remote, "merge-base", "--is-ancestor", first, second)             # fast-forward, never forced
 
+    def test_chains_onto_remote_tip_made_elsewhere(self):
+        # another run/clone already pushed this worktree's ref: we must fast-forward it, not get rejected
+        (self.repo / "n.txt").write_text("1\n", newline="\n")
+        bs.main(["--repo", str(self.repo)])
+        ref = [r for r in self.remote_refs().splitlines() if r.endswith("/repo")][0]
+        other = Path(self.td.name) / "other"
+        g(self.td.name, "clone", "-q", str(self.remote), str(other))
+        g(other, "config", "user.name", "o")
+        g(other, "config", "user.email", "o@o")
+        g(other, "checkout", "-q", "-B", "x", "origin/" + ref.replace("refs/heads/", ""))
+        (other / "elsewhere.txt").write_text("e\n", newline="\n")
+        g(other, "add", "-A")
+        g(other, "commit", "-q", "-m", "elsewhere")
+        g(other, "push", "-q", "origin", "x:" + ref)
+        tip = g(self.remote, "rev-parse", ref)
+        (self.repo / "n.txt").write_text("2\n", newline="\n")
+        self.assertEqual(bs.main(["--repo", str(self.repo)]), 0)
+        g(self.remote, "merge-base", "--is-ancestor", tip, ref)
+
     def test_dry_run_pushes_nothing(self):
         (self.repo / "n.txt").write_text("1\n", newline="\n")
         self.assertEqual(bs.main(["--repo", str(self.repo), "--dry-run"]), 0)
