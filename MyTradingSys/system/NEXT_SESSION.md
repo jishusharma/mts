@@ -34,3 +34,9 @@ End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py whe
 - Tool quirk: Bash heredocs with backslash-n or many quotes can be mangled; write scripts with the Write tool. The main NUC clone is shared by several sessions: commit only your files.
 - Not shipped, owned by JIS-NB live tree: backtest/bigtrade/*, research/bigtrade_2026-10-09/*, pm_heartbeats files. Do not edit. Untracked check_handoff.py / skill_src are another session's.
 - No git stash in shared clones; do not pass --help to sync.py subcommands.
+
+## Update 2026-10-10 (CI/CD pass 2)
+- Root cause of green/fast-track stuck at 24197c4: ci.yml `cancel-in-progress: true` kills every push run during a push burst. The fix needs a token with `workflow` scope (ours has none: push of .github/workflows is rejected). Patch ready: system/ci_concurrency_fix.patch (operator or a workflow-scope account applies it once).
+- Workaround shipped: auto_deploy.py gates and deploys origin/fast-track itself when green is >90 min stale (local gate still stops on red). 34 tests.
+- Fixed: retention.py used filecmp (stale stat cache; B152 test flaky) -> byte compare. mts-dsa commits shipped.
+- The latest code reaches JIS-NB testnet only when the pending JIS-NB desk task `register-ci-cd-scheduled-jobs` is run there (JIS-NUC has no access to JIS-NB: c$ denied). Until then JIS-NB deploys by hand per CLAUDE.md. First action of any session on JIS-NB: run that desk task.
