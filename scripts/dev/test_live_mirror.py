@@ -1,0 +1,232 @@
+"""live_mirror.py: tests derived from MyTradingSys/system/LIVE_MIRROR.md (and the Opus review of it)."""
+import datetime as dt
+import hashlib
+import json
+import os
+import re
+import shutil
+import sys
+import tempfile
+import time
+import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import live_mirror as lm
+
+REPO = Path(__file__).resolve().parents[2]
+T0 = dt.datetime(2026, 10, 9, 20, 0, tzinfo=dt.timezone.utc)
+
+
+def put(repo, rel, text):
+    p = Path(repo) / rel
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(text, encoding="utf-8", newline="\n")
+    return p
+
+
+def age(path, minutes):
+    t = (T0 - dt.timedelta(minutes=minutes)).timestamp()
+    os.utime(path, (t, t))
+
+
+def make_live(tmp):
+    live = Path(tmp) / "live"
+    live.mkdir()
+    (live / ".mts_live").write_text("x")
+    snap = put(live, "runtime_data/snapshots/s1.json",
+               json.dumps({"vwap": 82600.5, "regime": "RANGE", "oi": {"change_1h": 0.07}}))
+    age(snap, 1)
+    put(live, "runtime_data/last_alert.json", json.dumps({"number": 273, "price": 83106.5, "ssot_thesis": "x"}))
+    put(live, "runtime_data/live_runner.log", "".join(f"line {i}\n" for i in range(5000)))
+    put(live, "MyTradingSys/execution/auto_trades.jsonl", '{"outcome":"skipped"}\n')
+    put(live, "MyTradingSys/execution/AUTO_PAUSE", "owner x")
+    return live
+
+
+class MirrorTest(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp, True)
+        self.live = make_live(self.tmp)
+        self.root = Path(self.tmp) / "share"
+        self.root.mkdir()
+        self.nuc = Path(self.tmp) / "nuc"
+        self.nuc.mkdir()
+
+    def pub(self, now=T0):
+        return lm.publish(self.live, self.root, now=now)
+
+    # --- who may run what
+    def test_publish_refuses_outside_live_tree(self):
+        with self.assertRaises(lm.MirrorError):
+            lm.publish(self.nuc, self.root)
+
+    def test_pull_refuses_in_live_tree(self):
+        self.pub()
+        with self.assertRaises(lm.MirrorError):
+            lm.pull(self.live, self.root)
+
+    # --- secrets
+    def test_allowlisted_secret_path_fails_publish_and_leaves_nothing(self):
+        put(self.live, "MyTradingSys/execution/plans/x.secret.json", "{}")
+        before = set(p.name for p in self.root.iterdir())
+        with self.assertRaises(lm.MirrorError):
+            self.pub()
+        self.assertEqual(before, set(p.name for p in self.root.iterdir()))
+
+    def test_secrets_dir_never_copied(self):
+        put(self.live, ".secrets/deribit.json", '{"client_secret": "abcdefghijklmnopqrstuvwxyz0123"}')
+        m = self.pub()
+        self.assertFalse(any(".secrets" in f["rel"] for f in m["files"]))
+
+    def test_key_shaped_line_redacted_hash_kept(self):
+        h = hashlib.sha256(b"a").hexdigest()
+        put(self.live, "MyTradingSys/runtime/alerts/5m.jsonl",
+            '{"plan_id":"%s"}\n{"api_key": "AbCdEfGhIjKlMnOpQrSt1234"}\n' % h)
+        m = self.pub()
+        text = (self.root / m["version"] / "MyTradingSys/runtime/alerts/5m.jsonl").read_text()
+        self.assertIn(h, text)
+        self.assertNotIn("AbCdEfGhIj", text)
+        self.assertEqual(m["redacted_lines"], 1)
+
+    # --- content and flags
+    def test_tail_and_flags(self):
+        m = self.pub()
+        log = (self.root / m["version"] / "runtime_data/live_runner.log").read_text().splitlines()
+        self.assertEqual((len(log), log[-1]), (3000, "line 4999"))
+        self.assertTrue(m["flags"]["AUTO_PAUSE"])
+        self.assertFalse(m["flags"]["HALT"])
+
+    def test_pointer_moves_last_and_old_versions_pruned(self):
+        for i in range(5):
+            self.pub(T0 + dt.timedelta(minutes=i))
+        vs = sorted(p.name for p in self.root.iterdir() if p.is_dir())
+        self.assertEqual(len(vs), lm.KEEP_VERSIONS)
+        self.assertEqual((self.root / "CURRENT").read_text(), vs[-1])
+
+    # --- pull
+    def test_pull_roundtrip_lands_in_mirror_dir_not_runtime_paths(self):
+        self.pub()
+        self.assertEqual(lm.pull(self.nuc, self.root)[0], "pulled")
+        self.assertTrue((self.nuc / lm.MIRROR_DIR / "runtime_data/last_alert.json").exists())
+        self.assertFalse((self.nuc / "runtime_data/last_alert.json").exists())
+        self.assertEqual(lm.pull(self.nuc, self.root)[0], "up to date")
+
+    def test_pull_does_not_modify_share(self):
+        self.pub()
+
+        def snap():
+            return sorted((str(p), p.stat().st_mtime_ns, p.stat().st_size) for p in self.root.rglob("*"))
+        before = snap()
+        lm.pull(self.nuc, self.root)
+        self.assertEqual(before, snap())
+
+    def test_bad_hash_keeps_previous_mirror(self):
+        self.pub()
+        lm.pull(self.nuc, self.root)
+        good = (self.nuc / lm.MIRROR_DIR / "manifest.json").read_text()
+        m = self.pub(T0 + dt.timedelta(minutes=5))
+        (self.root / m["version"] / "runtime_data/last_alert.json").write_text("tampered")
+        with self.assertRaises(lm.MirrorError):
+            lm.pull(self.nuc, self.root)
+        self.assertEqual(good, (self.nuc / lm.MIRROR_DIR / "manifest.json").read_text())
+        self.assertFalse([p for p in self.nuc.rglob("*") if ".tmp" in p.name])
+
+    def test_missing_or_partial_pointer_fails(self):
+        with self.assertRaises(lm.MirrorError):
+            lm.pull(self.nuc, self.root)
+        (self.root / "CURRENT").write_text("v2026")
+        with self.assertRaises(lm.MirrorError):
+            lm.pull(self.nuc, self.root)
+        (self.root / "CURRENT").write_text("v20261009T200000Z")
+        with self.assertRaises(lm.MirrorError):
+            lm.pull(self.nuc, self.root)
+
+    def test_manifest_path_escape_refused(self):
+        m = self.pub()
+        mp = self.root / m["version"] / "manifest.json"
+        d = json.loads(mp.read_text())
+        d["files"].append({"rel": "../evil.txt", "size": 0, "sha256": hashlib.sha256(b"").hexdigest(),
+                           "mtime": T0.isoformat()})
+        mp.write_text(json.dumps(d))
+        with self.assertRaises(lm.MirrorError):
+            lm.pull(self.nuc, self.root)
+
+    def test_lock_serialises_and_stale_lock_recovers(self):
+        lock = self.nuc / "runtime_data" / "_mirror.lock"
+        lock.parent.mkdir(parents=True)
+        lock.write_text("123")
+        self.pub()
+        with self.assertRaises(lm.MirrorError):
+            lm.pull(self.nuc, self.root)
+        old = time.time() - lm.LOCK_STALE_S - 5
+        os.utime(lock, (old, old))
+        self.assertEqual(lm.pull(self.nuc, self.root)[0], "pulled")
+
+    # --- brief
+    def pulled(self):
+        self.pub()
+        lm.pull(self.nuc, self.root)
+
+    def test_brief_ok_warn_stale_boundaries(self):
+        self.pulled()
+        first = lambda mins: lm.brief_lines(self.nuc, now=T0 + dt.timedelta(minutes=mins))
+        self.assertIn(" OK:", first(5)[0])
+        self.assertIn(" WARN:", first(lm.WARN_MIN + 1)[0])
+        out = "\n".join(first(lm.STALE_MIN + 1))
+        self.assertIn(" STALE:", out)
+        self.assertIn("do NOT present", out)
+
+    def test_brief_stale_when_manifest_fresh_but_snapshot_old(self):
+        age(self.live / "runtime_data/snapshots/s1.json", 300)
+        self.pulled()
+        self.assertIn(" STALE:", lm.brief_lines(self.nuc, now=T0 + dt.timedelta(minutes=1))[0])
+
+    def test_brief_no_mirror_never_reads_git_snapshot(self):
+        put(self.nuc, "runtime_data/snapshots/git_committed.json", '{"vwap": 1}')
+        out = "\n".join(lm.brief_lines(self.nuc))
+        self.assertIn("NO MIRROR", out)
+        self.assertNotIn("vwap", out)
+
+    def test_brief_shows_flags_alert_and_snapshot_fields(self):
+        self.pulled()
+        out = "\n".join(lm.brief_lines(self.nuc, now=T0 + dt.timedelta(minutes=2)))
+        for needle in ("AUTO_PAUSE", "number=273", "vwap=82600.5", "regime=RANGE", "mirror@2026-10-09 20:00Z"):
+            self.assertIn(needle, out)
+
+    # --- export-obs
+    def test_export_obs_dedups(self):
+        put(self.nuc, "runtime_data/observations/captures/2026-10-09.jsonl", '{"obs_id":"a1"}\n{"obs_id":"b2"}\n')
+        self.assertEqual(lm.export_obs(self.nuc)[0], 2)
+        self.assertEqual(lm.export_obs(self.nuc)[0], 0)
+        put(self.nuc, "runtime_data/observations/captures/2026-10-10.jsonl", '{"obs_id":"c3"}\n')
+        self.assertEqual(lm.export_obs(self.nuc)[0], 1)
+
+
+class RepoContractTest(unittest.TestCase):
+    def test_no_trading_or_gating_code_reads_the_mirror(self):
+        bad = []
+        for sub in ("MyTradingSys/execution", "MyTradingSys/backtest/layers", "MyTradingSys/runtime"):
+            for p in (REPO / sub).rglob("*.py"):
+                if re.search(r"runtime_data[/\\]_mirror|live_mirror|MIRROR_DIR", p.read_text(encoding="utf-8", errors="ignore")):
+                    bad.append(str(p.relative_to(REPO)))
+        self.assertEqual(bad, [])
+
+    def test_allowlist_names_exist_in_the_code_that_writes_them(self):
+        """Each allowlisted name must appear in tracked source, so a renamed output cannot silently drop out."""
+        src = "\n".join(p.read_text(encoding="utf-8", errors="ignore")
+                        for ext in ("*.py", "*.ps1", "*.java") for p in REPO.rglob(ext)
+                        if ".git" not in p.parts and p.name not in ("live_mirror.py", "test_live_mirror.py"))
+        src += (REPO / "CLAUDE.md").read_text(encoding="utf-8")
+        missing = []
+        for pattern, _ in lm.ALLOW:
+            base = pattern.split("/")[-1]
+            token = base if "*" not in base else pattern.split("/")[-2]
+            if token not in src:
+                missing.append(pattern)
+        self.assertEqual(missing, [], "allowlist entries no code mentions (renamed output?)")
+
+
+if __name__ == "__main__":
+    unittest.main()
