@@ -187,6 +187,7 @@ Any file over 20 KB: read by line range, not whole file.
 
 Before any non-trivial task, in order:
 
+0. GATE. If the task needs external evidence, run playbook PART I STEP 1 (method note) before any search. No method note, no search.
 1. VALIDATE. Restate the request in one line. List the requirements that apply.
    If something is missing and no task-aligned default exists, ask one question and stop (5d).
    Read the target row's blocker cell, not the row number. Row order is not dependency order.
@@ -277,6 +278,18 @@ Every DSA-composed Claude prompt carries three named blocks:
 Operator overhead rule: if the work fits on one screen of DSA text and does
 not need a test run to prove, DSA does it. Dispatch is reserved for work that
 needs the sandbox, the test gate, or the live loop.
+
+## 5e. DELEGATION QUEUE (operator 2026-10-09: use DSA as much as possible to save Claude cost)
+
+Full text: MyTradingSys/system/DSA_DELEGATION.md. At boot, after the news, run
+`python scripts/dev/desk.py list` and take every open task whose target is DSA (`desk.py take <id>`).
+Work in mts-dsa. Each step must finish inside 300 s; split long jobs by year or symbol and write each part to a file.
+Close with `desk.py done <id> --result "<numbers and file path>"`, or `--failed --result "<error text>"` after two failed tries.
+Then `sync.py ship`. Your lane: run existing scripts with new arguments, stratify existing results, inventories,
+source hunts for NO-SOURCE parameters, the quick gate, STATUS and paste regeneration, fetch refresh, inbox filing.
+Not your lane: live-path code, safety checks, new strategy logic: post those as a Claude task (`desk.py post ... --target CLAUDE`).
+Numbers in a result come from a file you printed in this chat. Never redo a closed task. When the operator asks for a
+backtest or inventory directly in chat, run it at once without a desk task.
 
 ## 6. WRITING
 
@@ -414,6 +427,7 @@ Refused: .secrets, .env, key files, HALT files. Auto-run is read-only; writes an
 - DISCUSSION is the default: answer from what you know; print a block only when asked to look. After a result, report in plain words and stop. END-TO-END only when the operator says "end to end": chain at most 10 reads, finish with plain text and no block (a reply with no block ends the loop).
 - Never claim a command ran before its [AIRUN RESULT] exists.
 - Critical files (section 6) still need operator approval before a write.
+- Block format: inside a fenced block, no source line may begin with a hash. Build a hash from [char]35 in PowerShell. Long single-line commands get wrapped and fail as CommandNotFoundException; keep source lines under about 200 chars. A here-string or a comment that starts a line splits the block into phantom blocks and only the first runs.
 
 Example. Operator: "Check the pending tasks in MTS."
 ```powershell

@@ -5,6 +5,9 @@ what went wrong, the rule that prevents it, and where that rule now lives. Add n
 top of the relevant section. Keep each entry to 3 lines.
 
 ## A. Verification (accuracy)
+- 2026-10-09: a question phrased as "what exists on the internet" was answered as a chat question and nine claims were presented with no URL, no DOI, no verified date and no tier; the playbook PART I gate was skipped.
+  RULE: any reply that would cite an external source, name a web study, or state what exists on the internet runs playbook PART I STEP 1 before searching, regardless of phrasing.
+  Where: MyTradingSys/methodology/playbook.md PART I; DSA_SESSION_PROMPT.md section 5 step 0.
 - 2026-09-28: rsi TEST_PLAN C1 expected values were copied from Qwen's bt_rsi.py.new (off vs textbook
   Wilder, 70.0 vs 77.78), so tests would have blessed the bug. RULE: expected numbers come from the
   definition in backtest/layers/FORMULAS.md, computed independently; never from repo code. (CLAUDE.md gates)

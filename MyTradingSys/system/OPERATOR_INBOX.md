@@ -30,3 +30,13 @@ What abt John Kurisko straegies? he said there is one that yoiu need to sit and 
 Since we use two diff claude subscriptions - i need a way to be sure that each time I use any app- I am on the same page from both the apps and that work is not lost in sessions. This is another tragedy that paid sessions are being lost because they do not commit or save etc. There something should be fixed. We need optimized token efficiency and performance. So resuming tasks and flows must be stresmlined. 
 
 ```
+
+## yizf0of55rn3rbizxl1p | 2026-10-09T16:38:14Z | question
+```
+Why inbix items are not getting picked? fix it? every new session must be aware to pick itemsfrom here if aligned to the task - we need a way - a mechanism to make this work efficiently - token use wise - resources wise
+```
+
+## yw7mzs63zt238i4owopj | 2026-10-09T16:47:18Z | question
+```
+Check how we can save/optimize session tokens? Check App settings - Agent and Prompt Choices. I am not sure what - but what ppl are currently doing to save cost while working with paid Claude Services. What internet says - what ppl are actually doing is impt to note know!
+```

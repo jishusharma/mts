@@ -97,7 +97,7 @@ it for the bridge operator.
 - Create mts-dsa (DSA, first boot).
 
 ## Pointers
-- Pending patches for the merge-blocked files: DSA_SESSION_PROMPT.md.pending_patch_2026-10-09.md and MyTradingSys/system/LESSONS_LEARNED.md.pending_patch_2026-10-09.md. Splice, then delete each patch file.
+- DSA delegation queue (desk board, target DSA): MyTradingSys/system/DSA_DELEGATION.md, prompt section 5e.
 
 - DSA_SESSION_PROMPT.md section 0 (direct mode) and 0.8 (paste and news, protected)
 - SURFACE_POLICY.md section 1 (surface table)
