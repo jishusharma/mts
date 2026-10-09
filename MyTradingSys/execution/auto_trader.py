@@ -446,6 +446,15 @@ def account_for(source: str, cfg: dict):
     return None
 
 
+def account_secret_missing(source: str, cfg: dict):
+    """Label of the named account this source is routed to when its secret file is missing, else None.
+    A routed source must never fall back to the main slot (B148): that sent layer trades to MAIN at the override size."""
+    for prefix, label in (cfg.get("accounts") or {}).items():
+        if source.startswith(prefix):
+            return None if account_secret_path(label).exists() else label
+    return None
+
+
 def run(cmd: list, timeout: int = 900, account: str = None) -> tuple:
     env = {**os.environ, "MTS_ACCOUNT": account} if account else {k: v for k, v in os.environ.items() if k != "MTS_ACCOUNT"}
     r = subprocess.run(cmd, cwd=REPO, capture_output=True, text=True, encoding="utf-8", errors="replace",
@@ -711,6 +720,10 @@ def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = N
             log({"event": "skipped_halt", **base, "brakes": halted})
         elif AUTO_PAUSE.exists():
             log({"event": "skipped_auto_pause", **base})
+        elif account_secret_missing(sig["source"], cfg):
+            account_for(sig["source"], cfg)        # logs <label>_account_missing once
+            log({"event": "signal_rejected", **base, "reason": "account_secret_missing",
+                 "account": account_secret_missing(sig["source"], cfg)})
         else:
             acct = account_for(sig["source"], cfg)
             slot = extra.get(acct) if acct else active

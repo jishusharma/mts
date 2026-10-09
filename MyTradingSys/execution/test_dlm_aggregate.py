@@ -138,7 +138,16 @@ class DiscoveryTest(unittest.TestCase):
                                                 "e:": "../x"}}), encoding="utf-8")
         (self.tmp / "testnet_jishu_7.secret.json").write_text("{}", encoding="utf-8")
         self.assertEqual(dlm.named_account_labels(cfg, self.tmp), ["jishu_7"])
-        self.assertEqual(dlm.named_account_labels(self.tmp / "missing.json", self.tmp), [])
+
+    def test_unreadable_config_keeps_last_good_list_and_never_returns_empty(self):
+        cfg = self.tmp / "cfg2.json"
+        cfg.write_text(json.dumps({"accounts": {"a:": "jishu_7"}}), encoding="utf-8")
+        (self.tmp / "testnet_jishu_7.secret.json").write_text("{}", encoding="utf-8")
+        self.assertEqual(dlm.named_account_labels(cfg, self.tmp), ["jishu_7"])
+        cfg.write_text("{ not json", encoding="utf-8")
+        self.assertEqual(dlm.named_account_labels(cfg, self.tmp), ["jishu_7"])   # B148: not []
+        with self.assertRaises(RuntimeError):                                    # no earlier good read: fail closed
+            dlm.named_account_labels(self.tmp / "missing.json", self.tmp)
 
     def test_auth_per_label_with_env_set_and_restored(self):
         seen = []
