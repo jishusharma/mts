@@ -57,3 +57,27 @@ hides the problem on one machine and breaks the next one.
 Runtime data (orderflow_live, snapshots, klines) is gitignored and lives on JIS-NB. A clone elsewhere sees only
 the last committed snapshot; a chart or backtest there that "stops" at an old date is reading that snapshot,
 not a broken recorder. Copy data explicitly (DEVICES section 7) before analysing it off the desktop.
+
+## Two accounts, three devices: the ritual (2026-10-09)
+Any Claude account on any device runs the same four steps. Nothing else is needed to avoid collisions.
+1. `python scripts/dev/sync.py start` (from a work tree, never the live tree) - pulls origin/fast-track and prints open claims.
+2. Read `system/NEXT_SESSION.md` (the queue) and pick ONE task not in the claims list.
+3. `python scripts/dev/sync.py claim "<task>" --area <paths>` - ships a one-file claim at once, so a parallel session on the
+   other account/device sees it. A second claim of the same task is refused. Claims older than 24 h show STALE: ask, then release.
+4. Work, commit (`Result:` line), `sync.py ship`, `sync.py release <slug>`, `sync.py where` must be clean, overwrite NEXT_SESSION.md
+   if you are the last session of the day. Short sessions: CLAUDE.md.
+The account name on a claim is `MTS_ACCOUNT` (env var) else git `user.name`; set `MTS_ACCOUNT=sharma` or `awgp` once per machine.
+
+### Per-device rules
+| Device | Runs | May push fast-track? | Rule |
+|---|---|---|---|
+| JIS-NB (desktop) | live loop (live tree), Claude sessions, scheduled checks | yes, from work trees only (`../mts-<slug>`) | the live tree is touched only by the supervisor deploy; data lives here (gitignored) |
+| JIS-NUC | backtests/heavy research on committed data; F:\MTS\data | yes, once its clone has a work tree + git credentials (below) | until credentials exist, NUC output is copied/committed from JIS-NB: write results under `research/<slug>/` and ship from JIS-NB. Never run the live loop there before the DEVICES section 3 move |
+| DESKTOP-F7IU69N (laptop) | travel: Claude app, own clone, RDP into the others | yes, from its clone | work on committed data only; need JIS-NB files -> `desk.py post` and carry on |
+Only one machine runs the live loop at a time (DEVICES section 3).
+
+### Accounts
+One repo (jishusharma/mts), one history. Both Claude accounts push as themselves:
+- jishu.sharma (GitHub `jishusharma`, owner): works everywhere out of the box.
+- jishu.awgp (GitHub `jishu-awgp`): needs write access, see CLOUD_ACCOUNTS.md "Hand steps". Until granted it cannot push; it hands work over as a file in the thread and another session ships it.
+Credits are per account, state is not: whichever account has budget picks up `NEXT_SESSION.md`. When one account is near its weekly limit, the other takes the queue; do not wait for the reset.

@@ -3,14 +3,19 @@
   python scripts/dev/sync.py start   # bring this checkout up to date with origin/fast-track
   python scripts/dev/sync.py ship    # merge origin/fast-track, gate, push HEAD to origin/fast-track
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
+  python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once)
+  python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
   python scripts/dev/sync.py where   # every worktree: commits not on origin/fast-track, uncommitted files (nothing lost?)
 
 Rules live in MyTradingSys/system/PARALLEL.md. The live tree (a checkout holding the gitignored marker
 file .mts_live) is never synced or shipped from: the running system imports it, so it changes only by
 the supervisor deploy (stop, ff-merge, gate, restart).
 """
+import os
+import re
 import socket
 import subprocess
+import time
 import sys
 from pathlib import Path
 
@@ -18,6 +23,8 @@ TRUNK = "fast-track"
 LIVE_MARKER = ".mts_live"
 DOC_SUFFIXES = (".md", ".txt")
 PUSH_TRIES = 3
+CLAIMS_DIR = "MyTradingSys/system/claims"
+STALE_HOURS = 24
 
 
 class SyncError(Exception):
@@ -76,6 +83,7 @@ def start(repo):
     n = merge_trunk(repo)
     branch = git(repo, "branch", "--show-current").stdout.strip() or "(detached)"
     print(f"host={socket.gethostname()} branch={branch} pulled={n} head={git(repo, 'rev-parse', '--short', 'HEAD').stdout.strip()}")
+    print_claims(repo)
 
 
 def ship(repo, gate=run_gate):
@@ -144,8 +152,89 @@ def where(repo):
     print(f"{open_items} worktree(s) hold work that is not on origin/{TRUNK}; commit and `sync.py ship` them (the live tree is shipped by its owners)")
 
 
+def account(repo):
+    """Which Claude/GitHub identity is working: MTS_ACCOUNT env wins, else git user.name."""
+    return os.environ.get("MTS_ACCOUNT") or git(repo, "config", "user.name", check=False).stdout.strip() or "unknown"
+
+
+def slugify(text):
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")[:40] or "task"
+
+
+def read_claims(repo, ref):
+    """[(slug, {key: value})] of claim files on `ref`."""
+    names = git(repo, "ls-tree", "--name-only", ref, f"{CLAIMS_DIR}/", check=False).stdout.split()
+    rows = []
+    for n in names:
+        if not n.endswith(".md"):
+            continue
+        body = git(repo, "show", f"{ref}:{n}").stdout
+        kv = dict(l.split(": ", 1) for l in body.splitlines() if ": " in l)
+        rows.append((Path(n).stem, kv))
+    return rows
+
+
+def print_claims(repo, ref=None):
+    ref = ref or f"origin/{TRUNK}"
+    rows = read_claims(repo, ref)
+    if not rows:
+        print("claims: none open")
+        return
+    now = time.time()
+    for slug, kv in rows:
+        age_h = (now - int(kv.get("epoch", now))) / 3600
+        stale = " STALE (ask the owner or release it)" if age_h > STALE_HOURS else ""
+        print(f"claim {slug}: {kv.get('host','?')} / {kv.get('account','?')} - {kv.get('task','?')} "
+              f"[area: {kv.get('area','-')}] {age_h:.0f}h old{stale}")
+
+
+def claim(repo, task, area="-", gate=run_gate):
+    refuse_live(repo)
+    git(repo, "fetch", "--quiet", "origin", TRUNK)
+    slug = slugify(task)
+    existing = dict(read_claims(repo, f"origin/{TRUNK}"))
+    if slug in existing:
+        kv = existing[slug]
+        raise SyncError(f"already claimed by {kv.get('host')} / {kv.get('account')}: {kv.get('task')}. Pick another task or ask them.")
+    path = repo / CLAIMS_DIR / f"{slug}.md"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    NL = chr(10)
+    path.write_text(NL.join([f"task: {task}", f"host: {socket.gethostname()}", f"account: {account(repo)}",
+                             f"area: {area}", f"epoch: {int(time.time())}", ""]), newline=chr(10))
+    git(repo, "add", str(path))
+    msg = NL.join([f"claim {slug}", "", f"Result: {account(repo)} on {socket.gethostname()} works on: {task}"])
+    git(repo, "commit", "-q", "-m", msg, "--", str(path))
+    ship(repo, gate=gate)
+    print(f"claimed {slug}; release with: sync.py release {slug}")
+
+
+def release(repo, slug, gate=run_gate):
+    refuse_live(repo)
+    merge_trunk(repo)
+    path = repo / CLAIMS_DIR / f"{slug}.md"
+    if not path.exists():
+        raise SyncError(f"no claim {slug} on origin/{TRUNK}")
+    git(repo, "rm", "-q", str(path))
+    git(repo, "commit", "-q", "-m", f"release {slug}"+chr(10)*2+f"Result: claim {slug} closed", "--", str(path))
+    ship(repo, gate=gate)
+    print(f"released {slug}")
+
+
 def main(argv):
-    cmds = {"start": start, "ship": ship, "news": news, "where": where}
+    cmds = {"start": start, "ship": ship, "news": news, "where": where, "claims": print_claims}
+    extra = {"claim", "release"}
+    if argv and argv[0] in extra and len(argv) >= 2:
+        try:
+            repo = toplevel(Path.cwd())
+            if argv[0] == "release":
+                release(repo, argv[1])
+            else:
+                area = argv[argv.index("--area") + 1] if "--area" in argv else "-"
+                claim(repo, argv[1], area)
+        except SyncError as e:
+            print(f"sync: {e}", file=sys.stderr)
+            return 1
+        return 0
     if not argv or argv[0] not in cmds or (argv[0] != "news" and len(argv) != 1):
         print(__doc__)
         return 2
