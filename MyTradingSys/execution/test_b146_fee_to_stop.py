@@ -30,6 +30,14 @@ class FeeToStopTest(unittest.TestCase):
         s = self.sig(0.3, stop=83529.6, target=84000.0, setup="ct_long")
         self.assertIn("fee/stop 10.85 R", s["reject"])
 
+    def test_shipped_config_has_the_gate_on_at_0_3(self):
+        # operator decision D09 2026-10-09: "Switch on at 0.3". The code default stays off (test_default_is_off).
+        cfg_file = Path(__file__).resolve().parent / "auto_trader_config.json"
+        loaded = at.load_config(cfg_file)
+        self.assertEqual(loaded["tom"].get("max_fee_to_stop"), 0.3)
+        sig = at.tom_signal(tom_alert(stop=83529.6, target=84000.0, setup="ct_long"), {"tom_last_alert_no": 0}, loaded, NOW)
+        self.assertIn("fee/stop", sig["reject"])
+
     def test_bad_cut_fails_closed(self):
         self.assertIn("misconfigured", self.sig("abc")["reject"])
         self.assertIn("misconfigured", self.sig(0)["reject"])

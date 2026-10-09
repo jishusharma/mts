@@ -57,6 +57,27 @@ class TestManageHeartbeat(unittest.TestCase):
                 mock.patch.object(pm, "_manage_impl", lambda *a, **k: {"ok": 1}):
             self.assertEqual(pm.manage("planX"), {"ok": 1})
 
+    # --- B148 part 5: the running manager must keep refreshing beat_utc, or the age rule would call it dead ---
+    def test_refresh_is_throttled_and_well_inside_the_age_limit(self):
+        self.assertLessEqual(pm.HEARTBEAT_REFRESH_SECONDS * 5, pm_heartbeat.DEFAULT_MAX_AGE_S)
+        calls = []
+        with mock.patch.object(pm_heartbeat, "beat", lambda plan_id, **k: calls.append(plan_id) or True):
+            t = pm._beat_heartbeat("planX", 1000.0, now=1000.0 + pm.HEARTBEAT_REFRESH_SECONDS - 1)
+            self.assertEqual((calls, t), ([], 1000.0))            # too soon: no write, last unchanged
+            t = pm._beat_heartbeat("planX", 1000.0, now=1000.0 + pm.HEARTBEAT_REFRESH_SECONDS)
+            self.assertEqual((calls, t), (["planX"], 1000.0 + pm.HEARTBEAT_REFRESH_SECONDS))
+
+    def test_refresh_failure_never_stops_the_manager(self):
+        with mock.patch.object(pm_heartbeat, "beat", side_effect=OSError("disk")):
+            t = pm._beat_heartbeat("planX", 0.0, now=10_000.0)
+        self.assertEqual(t, 10_000.0)                              # no exception, and no retry storm every 2 s poll
+
+    def test_poll_loop_calls_the_refresh_every_iteration(self):
+        import inspect
+        src = inspect.getsource(pm._manage_impl)
+        self.assertIn("_beat_heartbeat(plan_id", src)
+        self.assertLess(src.index("_beat_heartbeat(plan_id"), src.index("time.sleep(POLL_INTERVAL_SECONDS)"))
+
 
 if __name__ == "__main__":
     unittest.main()

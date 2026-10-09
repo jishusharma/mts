@@ -680,7 +680,13 @@ class TF5CycleTest(unittest.TestCase):
         at.STATE_PATH.write_text(json.dumps({"tom_last_alert_no": 43}), encoding="utf-8")
         alert = tom_alert(time=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), runner=82000.0)
         at.TOM_ALERT.write_text(json.dumps(alert), encoding="utf-8")
-        self.assertEqual(at.main(["--once", "--config", str(staged_config_path())]), 0)
+        # this test is about config loading and no-replay, not the B146 fee gate (D09, covered in test_b146_fee_to_stop):
+        # its fixture alert has a 0.2 % stop, so run it on the staged config without the gate
+        raw = json.loads(staged_config_path().read_text(encoding="utf-8"))
+        raw["tom"].pop("max_fee_to_stop", None)
+        cfg_path = d / "cfg_no_gate.json"
+        cfg_path.write_text(json.dumps(raw), encoding="utf-8")
+        self.assertEqual(at.main(["--once", "--config", str(cfg_path)]), 0)
         self.assertEqual(len(self.placed), 1)
         a = self.placed[0]["plan_args"]
         self.assertEqual(a[a.index("--size") + 1], "20")                         # E3 CFG 10 -> 20
@@ -688,7 +694,7 @@ class TF5CycleTest(unittest.TestCase):
         self.assertEqual(a[a.index("--max-hold-minutes") + 1], "120")           # E2 flat
         self.assertEqual(self.placed[0]["executor_args"], ["--max-entry-seconds", "600"])   # E1b
         self.assertEqual(json.loads(at.STATE_PATH.read_text(encoding="utf-8"))["tom_last_alert_no"], 44)
-        at.main(["--once", "--config", str(staged_config_path())])              # second restart: same alert
+        at.main(["--once", "--config", str(cfg_path)])                          # second restart: same alert
         self.assertEqual(len(self.placed), 1)
 
     def test_reset_state_never_trades_the_alert_already_on_disk(self):

@@ -79,6 +79,8 @@ def main(argv=None, get_client=None, hb_dir=None, halt_path=None, log_path=None,
     parser.add_argument("--confirm-sweeps", type=int, default=1,
                         help="consecutive orphan sweeps before HALT (daily task uses 7)")
     parser.add_argument("--max-sweeps", type=int, default=0, help="stop after this many sweeps (0 = no limit)")
+    parser.add_argument("--hb-max-age", type=float, default=pm_heartbeat.DEFAULT_MAX_AGE_S,
+                        help="seconds without a heartbeat refresh before a manager counts as dead (B148, D10)")
     
     # testnet only: --mainnet is not defined, so argparse rejects it (exit 2)
     args = parser.parse_args(argv)
@@ -99,7 +101,7 @@ def main(argv=None, get_client=None, hb_dir=None, halt_path=None, log_path=None,
         labels = account_labels(config_path)
         if secret_check is not None:
             labels = [lab for lab in labels if secret_check(lab)]
-        live = pm_heartbeat.live_accounts(hb_dir, alive=alive)
+        live = pm_heartbeat.live_accounts(hb_dir, alive=alive, max_age_s=args.hb_max_age)
         res = orphan_watchdog.run_once(get_client, labels, live, None, log_path=log_path, currency=args.currency)
         seen = {o["account"] for o in res["orphans"]}
         for lab in labels:
