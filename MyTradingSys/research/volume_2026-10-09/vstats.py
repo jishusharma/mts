@@ -122,7 +122,8 @@ def contrast(evA, evB, val, block, reps=1000, seed=12345):
     ds = np.sort(d)
     cen = d - d.mean()
     p_two = float((np.sum(np.abs(cen) >= abs(diff)) + 1.0) / (len(d) + 1))
-    return {"nA": int(nA), "nB": int(nB), "diff": diff, "lo": float(ds[int(0.025 * len(ds))]),
+    return {"nA": int(nA), "nB": int(nB), "diff": diff, "meanA": float((a * val).sum() / nA), "meanB": float((b * val).sum() / nB),
+            "lo": float(ds[int(0.025 * len(ds))]),
             "hi": float(ds[min(len(ds) - 1, int(0.975 * len(ds)))]), "p_two": p_two}
 
 
