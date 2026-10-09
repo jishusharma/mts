@@ -1,0 +1,10 @@
+{
+  "done_when": "Report lists pass/fail per gate step verbatim, STATUS regenerated, unshipped-worktree list, declutter dry-run counts",
+  "from": "JIS-NUC",
+  "id": "20261009-181324-daily-gate-and-hygiene-run",
+  "need": "In mts-dsa: python scripts/dev/sync.py start; python scripts/dev/run_all_tests.py --quick (split by step if a call nears 300 s, write output to scratch file and read tail ranges); python scripts/dev/make_status.py; python scripts/dev/sync.py where; python scripts/dev/declutter_backups.py (dry run only, report counts).",
+  "posted": "2026-10-09T18:13:24Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "Daily gate and hygiene run"
+}
