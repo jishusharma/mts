@@ -1,6 +1,6 @@
 # B152 - retention.py deletes/trims files that other tools read (audit digest, supervisor canary), irreversibly; deploy of af91b21 will trip on orderflow _state.json
 
-Status: OPEN. Severity: MED. Opened 2026-10-09.
+Status: CLOSED. Severity: MED. Opened 2026-10-09.
 Session: MTS-2026-10-09-APP-ANA-major-gaps-audit. Source: research/AUDIT_MAJOR_GAPS_2026-10-09.md (audit revalidated by four read-only workers; no code edited).
 
 ## Defect
@@ -23,5 +23,7 @@ Exclude audit-read paths from retention or change audit_digest to read an archiv
 ## Receipt
 
 2026-10-09 consolidate session: retention.py no longer deletes NUC-QUEUE/done (audit_digest reads it), gzips the removed head of trimmed logs beside them, and compares content (filecmp) not only sizes; MyTradingSys/tests/test_retention_b152.py (3 tests). Open: testnet_canary reads supervisor_log mtime (a daily trim still touches it), _state.json copy step in the deploy runbook.
+
+2026-10-10 close (b7e644a, 12530a0): canary mtime test and runbook test in test_retention_b152.py (5 tests); DEPLOY_RUNBOOK.md step 5; scripts/dev/auto_deploy.py copies _state.json to runtime_data/deploy_backup/<stamp>/ before git merge --ff-only and restores it if the merge removed it.
 
 # END

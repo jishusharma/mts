@@ -84,6 +84,19 @@ def start(repo):
     branch = git(repo, "branch", "--show-current").stdout.strip() or "(detached)"
     print(f"host={socket.gethostname()} branch={branch} pulled={n} head={git(repo, 'rev-parse', '--short', 'HEAD').stdout.strip()}")
     print_claims(repo)
+    pull_mirror(repo)
+
+
+def pull_mirror(repo):
+    """Best effort: refresh runtime_data/_mirror (desktop live state, read-only) so a work tree can answer live questions."""
+    script = Path(repo) / "scripts" / "dev" / "live_mirror.py"
+    if not script.exists():
+        return
+    try:
+        r = subprocess.run([sys.executable, str(script), "pull"], capture_output=True, text=True, timeout=45, cwd=repo)
+        print("live mirror: " + ((r.stdout or r.stderr).strip().splitlines() or ["no output"])[-1])
+    except (subprocess.TimeoutExpired, OSError) as e:
+        print(f"live mirror: skipped ({type(e).__name__}); run live_mirror.py pull by hand")
 
 
 def ship(repo, gate=run_gate):

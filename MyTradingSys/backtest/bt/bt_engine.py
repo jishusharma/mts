@@ -5,7 +5,8 @@ Stdlib only. Bars: dicts {t,o,h,l,c}, t = open time epoch ms. Conventions per BA
 - scanning starts at the first bar with t > entry_t (no look-ahead);
 - stop tested on mark bars when given (fallback: trade bar), targets on trade bars;
 - same-bar stop+target: stop_first=True -> stop takes the whole remaining size (conservative);
-- gap through the stop -> fill at the bar open (worse); targets fill at their limit price (maker);
+- gap through the stop -> fill at the bar open (worse); targets fill at their limit price (maker),
+  and only when price trades THROUGH the limit by `target_through` (default 0.0 = touch; B151 callers pass the tick);
 - entry, stop and timeout pay taker; funding charged at each settlement while size remains.
 All R figures are per unit size 1.0: R = abs(entry - stop).
 """
@@ -13,7 +14,7 @@ import bisect
 
 
 def simulate_trade(side, entry_price, entry_t, stop, targets, bars, mark_bars=None, funding=None,
-                   taker_fee=0.0005, maker_fee=0.0, max_bars=1440, stop_first=True):
+                   taker_fee=0.0005, maker_fee=0.0, max_bars=1440, stop_first=True, target_through=0.0):
     if side not in ("long", "short"):
         raise ValueError("side must be long or short")
     if targets and abs(sum(f for _, f in targets) - 1.0) > 1e-9:
@@ -71,7 +72,8 @@ def simulate_trade(side, entry_price, entry_t, stop, targets, bars, mark_bars=No
         mfe = max(mfe, r_of(b["h"] if sgn > 0 else b["l"]))
 
         stop_hit = (mk["l"] <= stop) if sgn > 0 else (mk["h"] >= stop)
-        hit_targets = [(p, f) for p, f in open_t if ((b["h"] >= p) if sgn > 0 else (b["l"] <= p))]
+        hit_targets = [(p, f) for p, f in open_t
+                       if ((b["h"] >= p + target_through) if sgn > 0 else (b["l"] <= p - target_through))]
         if stop_hit and hit_targets:
             ambiguous += 1
         gapped = (b["o"] <= stop) if sgn > 0 else (b["o"] >= stop)

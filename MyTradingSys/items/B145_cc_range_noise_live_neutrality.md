@@ -1,6 +1,6 @@
 # B145 - Stopped-loop neutrality test before classify_msb filter_range_noise goes live
 
-Status: OPEN. Severity: LOW. Opened 2026-10-08.
+Status: CLOSED. Severity: LOW. Opened 2026-10-08.
 Session: MTS-2026-10-07-1002Z-APP-BLD-research-closeout. Follow-up to B128 TC-W1-6. Operator ruling 2026-10-08: the flag stays disabled; no live change this session.
 
 ## Defect
@@ -27,5 +27,7 @@ The filter threshold (25 percent of the 50-bar range, cc_structure.py:62) is NO-
 - MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md
 
 ## Receipt
+
+2026-10-10: MyTradingSys/backtest/layers/cryptocred/test_cc_range_noise_live_neutrality.py written to the spec and run with MTS_CC_NEUTRALITY_DATA=F:/MTS/data/tom_raw (382 s). Failures: setup1_sr_flip mean net R with the flag -1.1351 vs without -1.0707 (n 474 vs 1477); setup3_failed_msb_reversal -0.1504 vs -0.1029 (n 52 vs 167). Passes for setup2_fib_pullback; kept-alert count >= 30 and the subset property hold for all three. Decision: filter_range_noise stays disabled, live_layers.py:122 is not changed. The test is opt-in (skips without the env var) so the quick gate stays fast.
 
 # END

@@ -1,6 +1,6 @@
 # B143 - CryptoCred 0.1 percent stop buffer and 1.5R target are NO-SOURCE
 
-Status: OPEN. Severity: MED. Opened 2026-10-07.
+Status: BLOCKED. Severity: MED. Opened 2026-10-07.
 Session: MTS-2026-10-07-1002Z-APP-BLD-research-closeout. Also carries the CryptoCred fill-bias UNVERIFIED state (see Receipt of the rerun). Operator ruling 2026-10-07: stays flagged this session; remove-or-replace review is a separate session. Same shape as B116/B117/B118.
 
 ## Defect

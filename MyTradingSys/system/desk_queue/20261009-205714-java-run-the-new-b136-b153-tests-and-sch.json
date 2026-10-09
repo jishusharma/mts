@@ -1,0 +1,10 @@
+{
+  "done_when": "mvn output shows both classes green; live snapshot JSON oi_breakdown is null/UNAVAILABLE when the long-short endpoints fail, or the restart is queued with a time",
+  "from": "JIS-NUC",
+  "id": "20261009-205714-java-run-the-new-b136-b153-tests-and-sch",
+  "need": "Maven with JDK 17: mvn -q -Dtest=NetRRParityFixtureTest,MarketDataSnapshotTest test (both pass on a javac-11 harness here). If green, MarketDataSnapshot.buildOiBreakdown (UNAVAILABLE not 0.0, B136 residual) needs mvn compile + JVM restart in a window; do it when no position is open and report the time. Tests: src/test/java/datafeed/NetRRParityFixtureTest.java, MarketDataSnapshotTest.buildOiBreakdown_*.",
+  "posted": "2026-10-09T20:57:14Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Java: run the new B136/B153 tests and schedule the JVM restart window"
+}

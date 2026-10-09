@@ -266,5 +266,19 @@ class TestTransactionLogSource(unittest.TestCase):
         self.assertTrue(hp.exists())
 
 
+class TestHelpText(unittest.TestCase):
+    def test_pnl_source_help_matches_default_pnl_source(self):
+        # B149: default_pnl_source picks transaction_log on testnet too when the client can read the log
+        import contextlib
+        import io
+        import daily_loss_monitor as dlm
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf), self.assertRaises(SystemExit):
+            dlm.main(["--help"])
+        text = " ".join(buf.getvalue().split())
+        self.assertNotIn("equity on testnet", text)
+        self.assertIn("transaction_log", text)
+
+
 if __name__ == "__main__":
     unittest.main()

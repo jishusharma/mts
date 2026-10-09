@@ -1,6 +1,6 @@
 # B142 - ExtraSetupBuilder stop is the previous 1m bar high/low, with no trader source
 
-Status: OPEN. Severity: MED. Opened 2026-10-07.
+Status: BLOCKED. Severity: MED. Opened 2026-10-07.
 Session: MTS-2026-10-07-1002Z-APP-BLD-research-closeout. Operator ruling 2026-10-07: stays flagged this session; remove-or-replace review is a separate session. Same shape as B116/B117/B118.
 
 ## Defect

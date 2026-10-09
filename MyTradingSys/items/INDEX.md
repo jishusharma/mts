@@ -12,7 +12,7 @@ B064 | CLOSED  | B064_supervisor_stop_flag.md | supervisor_stop.flag retired 202
 B065 | CLOSED  | B065_stale_swing_consumer.md | stale-swing rejection in extractZones + stop selection; landed
 B066 | OPEN    | B066_rank1_distance_gate.md | rank-1 shown at trigger_ready while 150 pts from price; split from B059
 B139 | OPEN    | B139_cbp_adapter.md | CBP adapter registered; real-queue run 0 candidates (1 acked, 1 rejected); analyst-rule backtests pending
-B140 | OPEN    | B140_whea_storport_hdd.md | WHEA Id 1 every 1-3 d, source = storahci / WDC WD1002FAEX (D: HDD); SMART unread; live java runs from D:\tools
+B140 | BLOCKED | B140_whea_storport_hdd.md | NEEDS OPERATOR (hardware): swap SATA cable+port, elevated smartctl short test, back up D:, move D:\tools to SSD; SMART already clean
 B141 | OPEN    | B141_htf_balance_null.md | htf bal_4h/bal_1d null: NS-fixed k_bal 0.8 balanced 0.4% of windows; replace-via-backtest pre-reg BOUND, run next
 T034 | OPEN    | T034_positioning_states.md | 4 positioning flags; blocked on Rule 33 readers + output type
 T035 | CLOSED  | T035_multi_venue_cvd.md | DEFER - SCREENER module, no Tom source
@@ -110,18 +110,20 @@ T068 | OPEN    | T068_oi_arm_rerun.md | P3 OI arm rerun of T063 when n>=30 per a
 T069 | OPEN    | T069_funding_settlement_clock.md | P5 funding settlement clock event study; queued (research-agenda)
 T070 | OPEN    | T070_volatility_timing_read_only.md | P6 volatility timing read-only analysis; queued (research-agenda)
 T071 | OPEN    | T071_absorption_events_post_p2.md | P7 absorption events after P2 Fabio L3-FAIL; queued (research-agenda)
-B142 | OPEN    | B142_extrasetupbuilder_1m_stop_unsourced.md | ExtraSetupBuilder stop = previous 1m bar high/low, no trader source; filing only
-B143 | OPEN    | B143_cryptocred_stop_buffer_and_target_unsourced.md | CryptoCred 0.1 pct stop buffer and 1.5R target NO-SOURCE; filing only
-B144 | OPEN    | B144_exhaustion_proxy_unsourced_params.md | exhaustion proxy SCB volume 2x over 240 1m bars NO-SOURCE (tag SCREENER); filing only
-B145 | OPEN    | B145_cc_range_noise_live_neutrality.md | stopped-loop neutrality test needed before classify_msb filter_range_noise goes live (flag stays off)
-B146 | OPEN    | B146_no_min_stop_after_floor_removal.md | no min stop width; fees dominate tiny stops; from AUDIT_MAJOR_GAPS_2026-10-09.md
-B147 | OPEN    | B147_tom_live_rule_evidence_unreliable.md | Tom live-rule evidence unreliable; from AUDIT_MAJOR_GAPS_2026-10-09.md
-B148 | OPEN    | B148_dlm_reauth_main_account_and_account_drops.md | DLM re-auth as main; account drops; orphan gaps; from AUDIT_MAJOR_GAPS_2026-10-09.md
-B149 | OPEN    | B149_l6_pnl_source_tracker_stale_settlement_gap.md | L6 PnL source: tracker stale, settlement gap; from AUDIT_MAJOR_GAPS_2026-10-09.md
-B150 | OPEN    | B150_gate_is_hand_maintained_allowlist.md | gate allow-list misses live-path tests; from AUDIT_MAJOR_GAPS_2026-10-09.md
-B151 | OPEN    | B151_backtest_fill_optimism_and_selection.md | cc limit-fill optimism; from AUDIT_MAJOR_GAPS_2026-10-09.md
-B152 | OPEN    | B152_retention_deletes_read_data_and_deploy_trap.md | retention deletes read data; deploy trap; from AUDIT_MAJOR_GAPS_2026-10-09.md
-B153 | OPEN    | B153_netrr_floor_ownerless_and_cross_language_parity.md | net_rr floor ownerless; parity indirect; from AUDIT_MAJOR_GAPS_2026-10-09.md
+B142 | BLOCKED | B142_extrasetupbuilder_1m_stop_unsourced.md | NEEDS OPERATOR: remove/disable unsourced ExtraSetupBuilder stop? default disable; DSA sweep NOT FOUND
+B143 | BLOCKED | B143_cryptocred_stop_buffer_and_target_unsourced.md | NEEDS OPERATOR: 1.5R sourced (CC Rule 9), 0.1pct buffer NOT FOUND; default alert-only + replace at next CC build
+B144 | BLOCKED | B144_exhaustion_proxy_unsourced_params.md | NEEDS OPERATOR: 2.0x/240-bar exhaustion NOT FOUND; default SCREENER-only, remove at Java window
+B145 | CLOSED  | B145_cc_range_noise_live_neutrality.md | neutrality test run on archive: filter NOT neutral for 2 of 3 setups, flag stays off; opt-in test in cryptocred/
+B146 | CLOSED  | B146_no_min_stop_after_floor_removal.md | fee-to-stop admission gate on at 0.3 (D09), tests gated; Java stop buffer is T081
+B147 | IN-FIX  | B147_tom_live_rule_evidence_unreliable.md | row drop attributed to removed 0.2pct fallback stop (0c34a2d, B131); exact regen diff and DSR pending on JIS-NB
+B148 | IN-FIX  | B148_dlm_reauth_main_account_and_account_drops.md | code+tests complete (parts 1-5); Step 0 test fallout fixed 9b27da3; close on first live beat_utc refresh
+B149 | BLOCKED | B149_l6_pnl_source_tracker_stale_settlement_gap.md | help text + L6 fixed, capture tool built; needs a captured testnet log across 08:00 settlement (desk task JIS-NB)
+B150 | CLOSED  | B150_gate_is_hand_maintained_allowlist.md | discovery covers every tracked test; extra-tests step; mainnet refuses testnet calibration; 3 ungated failures fixed
+B151 | CLOSED  | B151_backtest_fill_optimism_and_selection.md | fib bear zone + blow-through, target trade-through, open_at_end printed, rerun: all CC setups FAIL
+B152 | CLOSED  | B152_retention_deletes_read_data_and_deploy_trap.md | retention keeps audit data and mtime; deploy runbook + auto_deploy copy/restore _state.json
+B153 | CLOSED  | B153_netrr_floor_ownerless_and_cross_language_parity.md | Py+Java parity table, floor owner/review date 2026-11-10, OI breakdown UNAVAILABLE; floor value is an operator question in the decision block
 B154 | OPEN    | B154_regime_and_session_stratified_backtest.md | no regime or session stratified verdict; from research pass 2026-10-09 (playbook PART I)
-B155 | OPEN    | B155_claude_prompt_contract_unchecked.md | section 5d prompt contract checked by hand, no executing gate
+B155 | CLOSED  | B155_claude_prompt_contract_unchecked.md | section 5d contract is an executing gate (prompt_contract.py, step 3pc)
+B156 | CLOSED  | B156_tom_alert_stale_ssot_thesis.md | alert card thesis line shows when it was written (age), tests
+T093 | CLOSED  | T093_toc_imbalance_klines.md | turn-of-candle 4-12h imbalance on klines 2022-2026: NO REPLICATION (gross +0.5bp vs 10bp fee)
 # END

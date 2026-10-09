@@ -52,5 +52,21 @@ class TestEngine(unittest.TestCase):
         r = sim("long", 100, 0, 99, T, [B(M, 100, 100.5, 99.5, 100)])
         self.assertEqual(r["exit_reason"], "open_at_end"); self.assertIsNone(r["net_r"])
 
+    def test13_target_touch_does_not_fill_with_target_through(self):
+        # B151: a resting target limit fills only when price trades THROUGH it by the tick; touch leaves the trade open
+        bars = [B(M, 100, 102.0, 99.5, 101), B(2*M, 101, 102.05, 100.5, 101)]
+        touch = sim("long", 100, 0, 99, [(102.0, 1.0)], bars, taker_fee=0, target_through=0.1)
+        self.assertEqual(touch["exit_reason"], "open_at_end")
+        bars2 = bars + [B(3*M, 101, 102.1, 100.5, 101)]
+        thru = sim("long", 100, 0, 99, [(102.0, 1.0)], bars2, taker_fee=0, target_through=0.1)
+        self.assertEqual(thru["exit_reason"], "targets"); self.assertAlmostEqual(thru["gross_r"], 2.0, places=9)
+        # default 0.0 keeps the old touch rule
+        self.assertEqual(sim("long", 100, 0, 99, [(102.0, 1.0)], bars, taker_fee=0)["exit_reason"], "targets")
+    def test14_short_target_through(self):
+        bars = [B(M, 100, 100.5, 98.0, 99), B(2*M, 99, 99.5, 97.95, 99)]
+        self.assertEqual(sim("short", 100, 0, 101, [(98.0, 1.0)], bars, taker_fee=0, target_through=0.1)["exit_reason"], "open_at_end")
+        bars.append(B(3*M, 99, 99.5, 97.9, 99))
+        self.assertEqual(sim("short", 100, 0, 101, [(98.0, 1.0)], bars, taker_fee=0, target_through=0.1)["exit_reason"], "targets")
+
 if __name__ == "__main__":
     unittest.main()

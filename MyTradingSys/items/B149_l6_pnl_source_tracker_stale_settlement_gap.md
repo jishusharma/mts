@@ -1,6 +1,6 @@
 # B149 - L6 part 2 (daily-loss PnL source) is implemented but the tracker still says OPEN/DEFERRED, and the built source excludes settlement/funding and loses unrealised loss across the 08:00 settlement
 
-Status: OPEN. Severity: MED. Opened 2026-10-09.
+Status: BLOCKED. Severity: MED. Opened 2026-10-09.
 Session: MTS-2026-10-09-APP-ANA-major-gaps-audit. Source: research/AUDIT_MAJOR_GAPS_2026-10-09.md (audit revalidated by four read-only workers; no code edited).
 
 ## Defect
@@ -21,5 +21,7 @@ Verify against a captured testnet response across an 08:00 settlement; include s
 - MyTradingSys/research/AUDIT_MAJOR_GAPS_2026-10-09.md
 
 ## Receipt
+
+2026-10-10: (a) --pnl-source help now says transaction_log on testnet and mainnet whenever the client can read the log (test_daily_loss_monitor.TestHelpText fails on the old text); (b) OPEN_FINDINGS L6 states part 2 IMPLEMENTED with the settlement question open; (c) execution/capture_txlog_settlement.py (+ test, gated) captures type/change/cashflow/session_profit_loss for 36 h around a settlement. NOT verified: whether a settlement entry double counts the trade cashflow, or drops pre-08:00 unrealised loss. No code change to mainnet_pnl.py without that data. Desk task 20261009-205713-b149-capture-the-transaction-log-across- (JIS-NB).
 
 # END

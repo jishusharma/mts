@@ -39,6 +39,17 @@ def get_screenshot_status():
         return f"(screenshot status unavailable: {e})"
 
 
+def get_hygiene_status(sched_dir=None):
+    """Head of the scheduled daily hygiene report (scripts/dev/daily_hygiene.py); never fails the status build."""
+    d = Path(sched_dir) if sched_dir else Path("MyTradingSys/runtime/sched")
+    f = d / "hygiene_latest.md"
+    try:
+        lines = f.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return "(no hygiene run on this host yet: python scripts/dev/daily_hygiene.py, or register_cicd_tasks.ps1)"
+    return chr(10).join(lines[:12])
+
+
 def get_group_line():
     """Open / HIGH / closed registry rows per project group; never fails the status build."""
     try:
@@ -173,6 +184,13 @@ def main():
     output.append("## Screenshots")
     output.append("```")
     output.append(get_screenshot_status())
+    output.append("```")
+    output.append("")
+
+    # Scheduled daily hygiene (gate, where, declutter dry run): the report a session reads at boot
+    output.append("## Daily Hygiene (scheduled)")
+    output.append("```")
+    output.append(get_hygiene_status())
     output.append("```")
     output.append("")
 

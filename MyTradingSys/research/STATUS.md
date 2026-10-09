@@ -1,22 +1,22 @@
 # Development Status
 
-Generated: 2026-10-08 13:37:40
+Generated: 2026-10-10 02:34:50
 
 ## Git Status
 **Branch:** fast-track
 
 **Last 10 commits:**
 ```
-1c66458 desk task: Supervisor deploy: consensus hook + SetupScreener removal
-e799e71 gate: register desk, registry-consistency and P4 tests; guide lists mts desk
-1c2001d wiring gate: declare 58 unrun code files in wiring_registry.json, archive 9, gate runs wiring_scan --check
-ad95837 lessons: git stash with pathspec emptied the index
-075e1c5 P4 corrected run: no replication at 4h/8h/12h; decision rule fixed (net CI must be above zero)
-96f1328 registry: reconcile INDEX vs BUGS (B070 B075 B084 B116 closed, B136 reopened, T056 WONTFIX) + consistency test
-8a4adf2 desk board: a blocked session posts a desktop task, keeps working, picks up the result (mts desk)
-2b8318b Merge remote-tracking branch 'origin/fast-track' into fast-track
-af91b21 untrack orderflow recorder _state.json and ignore it (a Git op wound it back to Oct 3 and stalled the recorder)
-f6510eb Merge remote-tracking branch 'origin/fast-track' into fast-track-work
+98a0089 Merge origin/fast-track (B157-B161 rows kept, B155/B156 closed)
+7d47e7e Registry: B135-B156 + T093 closed/blocked/in-fix with receipts; CLAUDE.md CI/CD recipe; wiring entry for t093
+d26f712 claim unblock-trunk-close-bugs-b140-b156-ci-cd
+b612384 desk task: Java: run the new B136/B153 tests and schedule the JVM restart window
+fdc4785 desk task: B147/B135: regenerate Tom snapshots with HEAD Java and diff against the old run
+32b0e71 desk task: B149: capture the transaction log across an 08:00 UTC settlement
+500bae9 desk task: Register CI/CD scheduled jobs on the live host
+12530a0 T093 kline imbalance test (NO REPLICATION 2022-2026), B147 row-drop attribution, B151 rerun, scheduled auto-deploy + daily hygiene jobs
+fa1e414 Merge remote-tracking branch 'origin/fast-track' into jisnb/dsa
+b38aa0c release t092-screenshot-context-gap-report
 ```
 
 ## Queue Status
@@ -27,9 +27,14 @@ DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
 ```
 
 ## In-Flight .new Files
-- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (20.9h)
+- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (57.9h)
 
 ## Recent Reports (last 7 days)
+- MyTradingSys/research\screenshot_context_2026-10-10\REPORT.md (2026-10-10 02:33) # T092 REPORT - what context does a single screenshot read get? (2026-10-10, Opus, JIS-NUC)
+- MyTradingSys/research\rsi_divergence_mtf_2026-10-09\REPORT.md (2026-10-09 23:08) # T089 RSI divergence on every timeframe (+ T091 operator long-range column)
+- MyTradingSys/research\rsi_divergence_mtf_2026-10-09\REPORT_T088.md (2026-10-09 23:08) # T089 RSI divergence on every timeframe (+ T091 operator long-range column)
+- MyTradingSys/research\bigtrade_2026-10-09\EXIT_POLICIES_REPORT.md (2026-10-09 19:00) # EXIT POLICIES REPORT (backtest C), 2026-10-09
+- MyTradingSys/research\volume_2026-10-09\VOLUME_RESEARCH_REPORT_2026-10-09.md (2026-10-09 07:00) # BTC volume research: buy volume, sell volume, exhaustion, patterns, time (2026-10-09)
 - MyTradingSys/research\CONSOLIDATION_REPORT_2026-10-01.md (2026-10-07 16:40) # CONSOLIDATION REPORT 2026-10-01 (cloud session, read-only against main)
 - MyTradingSys/research\HANDOFF_FOR_CLAUDE_2026-10-01.md (2026-10-07 16:40) # HANDOFF FOR CLAUDE - Tom/Fabio revalidation (2026-10-01)
 - MyTradingSys/research\INDICATOR_IMPLEMENTATION_HANDOFF.md (2026-10-07 16:40) # INDICATOR IMPLEMENTATION HANDOFF
@@ -53,5 +58,31 @@ DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
 - MyTradingSys/research\fast_track_2026-09-27\T054_US_SESSION_BRIEF.md (2026-10-07 16:40) # T054 Research Brief: US Session / Correlation / News Effects on BTC
 - MyTradingSys/research\fast_track_2026-09-27\review\MUTATION_REPORT_FT2.md (2026-10-07 16:40) # FT-2 Mutation Testing Report — Offline Test Suite Strength
 
+## Screenshots
+```
+SHOTS landed 1: new 0, classified 0, read 0, done 1 | overdue(>24h) 0 | claims MATCH 4 MISMATCH 0 NOT_IN_DATA 5 | filed 0
+```
+
+## Daily Hygiene (scheduled)
+```
+# Daily hygiene 2026-10-09T20:56:35Z on JIS-NUC
+
+STATUS: RED (failed: gate)
+GATE: FAIL (147.0 s)
+
+Unshipped work (commit + `sync.py ship` it):
+- UNSHIPPED BinanceDataFeed              [fast-track] unshipped-commits=7 modified=1 untracked=3
+
+## gate: rc 1 (147.0 s)
+```
+Step 5: Maven tests: SKIP
+Step 5b: Layer tests: PASS
+```
+
+## Project Groups
+```
+GROUPS DATA open 6 (HIGH 1) closed 27 | SRC open 4 (HIGH 1) closed 8 | CORE open 7 (HIGH 0) closed 27 | LAYR open 8 (HIGH 2) closed 4 | EVID open 13 (HIGH 2) closed 3 | EXEC open 10 (HIGH 3) closed 7 | VIS open 2 (HIGH 0) closed 0 | DESK open 1 (HIGH 1) closed 8 | OPS open 7 (HIGH 1) closed 22 | INFRA open 5 (HIGH 2) closed 11
+```
+
 ## Open Findings
-- L6: 0bbace1 (part 1) Part 1 (re-arm): committed; Part 2 (PnL source) DEFERRED for testnet decision 2026-09-28
+- L6: 0bbace1 (part 1), 1542151 + 924d7a0 (part 2) Part 1 (re-arm) committed. Part 2 (PnL source = transaction log + session UPL, mainnet_pnl.py) IMPLEMENTED; open only the B149 question: settlement/funding are excluded and session UPL resets at 08:00 UTC, unverified on a captured testnet log (tool: execution/capture_txlog_settlement.py). Must close before mainnet

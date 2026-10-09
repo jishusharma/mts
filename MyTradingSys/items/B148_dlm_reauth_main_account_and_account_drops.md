@@ -1,6 +1,6 @@
 # B148 - Daily-loss monitor re-authenticates as the MAIN account when a named subaccount token expires; it also silently drops accounts on a config read error; orphan sweep can miss orphans and never reports a halt
 
-Status: OPEN. Severity: HIGH. Opened 2026-10-09.
+Status: IN-FIX. Severity: HIGH. Opened 2026-10-09.
 Session: MTS-2026-10-09-APP-ANA-major-gaps-audit. Source: research/AUDIT_MAJOR_GAPS_2026-10-09.md (audit revalidated by four read-only workers; no code edited).
 
 ## Defect
@@ -31,3 +31,5 @@ Failing-first tests, then fixes: (1) make re-auth account-explicit (pass the lab
 
 # END
 2026-10-09 CI/CD session: part 5 DONE in code (operator D10 = 10 minutes). pm_heartbeat.beat() + beat_utc; position_manager refreshes it every 60 s; live_accounts()/orphan_watchdog_cli --hb-max-age (default 600) treat an older beat as dead even if the pid was reused. Legacy heartbeats without beat_utc stay pid-only, so managers already running are never condemned by age. Tests: test_pm_heartbeat.py (9 new), test_orphan_watchdog_cli.py (2), test_pm_heartbeat_wiring.py (3), fail-first on the old code. Deploy: files are Python, picked up by the next watchdog sweep / newly started managers; B148 can close once a new manager's beat_utc is seen refreshing.
+
+2026-10-10: Step 0 fallout cleared (9b27da3): 4 failures + 14 errors in test_mainnet_flag_offline appeared only when MTS_ACCOUNT was set in the host environment (the safety code is correct: it refuses named accounts on mainnet). The test now clears MTS_ACCOUNT in setUp and pins the refusal in test_named_account_never_selects_a_mainnet_secret; the quick gate is green with and without MTS_ACCOUNT=sharma. Remaining: live evidence. pm_heartbeats on origin/backup/JIS-NB at 2026-10-09T20:13Z (S-mkt-1009-1845, S-mkt-1009-1901) have no beat_utc yet, i.e. no manager started after the deploy; close when one does and its beat_utc refreshes every 60 s.

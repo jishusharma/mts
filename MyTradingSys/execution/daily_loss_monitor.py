@@ -393,7 +393,7 @@ def main(argv=None):
     parser.add_argument("--currency", default="BTC")
     parser.add_argument("--instrument", default="BTC-PERPETUAL")
     parser.add_argument("--pnl-source", choices=PNL_SOURCES, default=None,
-                        help="default: equity on testnet, transaction_log on mainnet")
+                        help="default: transaction_log (testnet and mainnet) whenever the client can read the log, else equity")
     parser.add_argument("--cap-usd", type=float, default=DEFAULT_DAILY_LOSS_CAP_USD)
     args = parser.parse_args(argv)
 

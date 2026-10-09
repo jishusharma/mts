@@ -1,6 +1,6 @@
 # B146 - No minimum stop width exists since 0c34a2d removed the NO-SOURCE 0.1 % floor and nothing replaced it: Tom backtest median stop 0.082 %, planned gross R:R 79, fees dominate
 
-Status: OPEN. Severity: HIGH. Opened 2026-10-09.
+Status: CLOSED. Severity: HIGH. Opened 2026-10-09.
 Session: MTS-2026-10-09-APP-ANA-major-gaps-audit. Source: research/AUDIT_MAJOR_GAPS_2026-10-09.md (audit revalidated by four read-only workers; no code edited).
 
 ## Defect
@@ -30,3 +30,5 @@ Do NOT re-add 0.1 % (NO-SOURCE). Measure instead, pre-registered: net R by stop-
 
 # END
 2026-10-09 CI/CD session: operator D09 = switch on at 0.3. auto_trader_config.json tom.max_fee_to_stop = 0.3 (code default stays off). test_shipped_config_has_the_gate_on_at_0_3 fails without it. auto_trader reads the config at start: it needs a restart to pick it up (loop-supervisor revives it).
+
+2026-10-10 close: gate verified in the quick gate (step 1 lists test_b146_fee_to_stop); value 0.3 is the operator number from D09, not invented. Remaining Java-side tiny stops are tracked by T081 (walk-forward stop buffer).

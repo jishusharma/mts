@@ -69,3 +69,19 @@ def plan_refusals(compiled, plan, env, cap_usd) -> list:
         reasons.append(f"max_position_size {mps:g} > mainnet cap {cap_usd:g}")
     
     return reasons
+
+
+def calibration_refusals(cfg, env) -> list:
+    """B150: auto_trader_config.json carries the TESTNET calibration (trade_blocklist parked, per-layer size_overrides).
+    On mainnet that state is refused: restore trade_blocklist from trade_blocklist_parked and drop size_overrides first.
+    Fails closed on an unreadable or non-dict config. Testnet is unchanged."""
+    if env == "test":
+        return []
+    if not isinstance(cfg, dict):
+        return ["mainnet: auto_trader_config.json unreadable or not an object (cannot verify the calibration is off)"]
+    reasons = []
+    if not cfg.get("trade_blocklist") and cfg.get("trade_blocklist_parked"):
+        reasons.append("mainnet: trade_blocklist is empty while trade_blocklist_parked is not - restore the parked blocklist")
+    if cfg.get("size_overrides"):
+        reasons.append("mainnet: size_overrides are testnet calibration sizes - remove them")
+    return reasons

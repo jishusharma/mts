@@ -125,6 +125,7 @@ POLL_INTERVAL_SECONDS = 2
 DEFAULT_MAX_ENTRY_SECONDS = 600
 UNSUPPORTED_STOPS = ("trailing_stop_metadata_only", "breakeven_metadata_only", "trailing_percent",
                      "breakeven_after_fills")
+AUTO_TRADER_CONFIG = Path(__file__).resolve().parent / "auto_trader_config.json"
 HALT_PATH = Path(__file__).resolve().parent / "HALT"
 HALT_DAILY_LOSS_PATH = Path(__file__).resolve().parent / "HALT_DAILY_LOSS"
 HALT_DAILY_LOSS_PATH_MAINNET = Path(__file__).resolve().parent / "HALT_DAILY_LOSS_MAINNET"  # PREMAINNET1 H1
@@ -534,6 +535,15 @@ def load(path: Path):
     return compile_plan(d), d
 
 
+def mainnet_config_refusals() -> list:
+    """B150: refuse mainnet while the testnet calibration (parked blocklist, size overrides) is still in the config."""
+    try:
+        cfg = json.loads(AUTO_TRADER_CONFIG.read_text(encoding="utf-8-sig"))
+    except (OSError, ValueError):
+        cfg = None
+    return mainnet_plan_check.calibration_refusals(cfg, "mainnet")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("plan_file")
@@ -548,6 +558,9 @@ def main() -> int:
         return 0
     try:
         if args.mainnet:
+            _cal = mainnet_config_refusals()
+            if _cal:
+                raise RuntimeError("; ".join(_cal))
             do.select_environment(True)
     except RuntimeError as e:
         print(f"REFUSED: {e}")

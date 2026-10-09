@@ -64,7 +64,7 @@ def trades(d, window_min):
     ok[ok] = t[j[ok]] == exit_t[ok]  # exit bar must exist exactly (no gap filling)
     i, j = i[ok], j[ok]
     gross = np.sign(imb[i]) * (c[j] / c[i] - 1.0) * 1e4
-    return dict(day=t[i] // DAY_MS, year=year_of(t[i]), gross=gross, imb=imb[i])
+    return dict(t=t[i], day=t[i] // DAY_MS, year=year_of(t[i]), gross=gross, imb=imb[i])
 
 
 def day_block_ci(day, x, seed=SEED, draws=DRAWS):
@@ -78,25 +78,26 @@ def day_block_ci(day, x, seed=SEED, draws=DRAWS):
     return float(np.percentile(means, 2.5)), float(np.percentile(means, 97.5)), float(s.sum() / n.sum())
 
 
+def summarize(r):
+    """Verdict numbers for one window from its trades dict (day, year, gross, imb); shared with T093."""
+    by_year = {int(y): (float(r['gross'][r['year'] == y].mean()), int((r['year'] == y).sum()))
+               for y in np.unique(r['year'])}
+    signs = {np.sign(m) for m, _ in by_year.values()}
+    stable = len(signs) == 1 and 0 not in signs
+    net = r['gross'] - FEE_BP
+    lo, hi, mean_net = day_block_ci(r['day'], net)
+    rng = np.random.default_rng(SEED)
+    raw = r['gross'] / np.sign(r['imb'])  # unsigned forward return
+    pg = np.sign(rng.permutation(r['imb'])) * raw
+    plo, phi, pmean = day_block_ci(r['day'], pg - FEE_BP)
+    excl = lo > 0  # positive edge only: a CI wholly below zero is fee drag, not replication
+    return dict(n=len(net), by_year=by_year, gross_mean=float(r['gross'].mean()), net_mean=mean_net,
+                ci=(lo, hi), placebo_net=pmean, placebo_ci=(plo, phi), stable=stable, excludes_zero=excl,
+                verdict='PASS' if (stable and excl) else 'NO REPLICATION')
+
+
 def analyse(d):
-    out = {}
-    for name, w in WINDOWS.items():
-        r = trades(d, w)
-        by_year = {int(y): (float(r['gross'][r['year'] == y].mean()), int((r['year'] == y).sum()))
-                   for y in np.unique(r['year'])}
-        signs = {np.sign(m) for m, _ in by_year.values()}
-        stable = len(signs) == 1 and 0 not in signs
-        net = r['gross'] - FEE_BP
-        lo, hi, mean_net = day_block_ci(r['day'], net)
-        rng = np.random.default_rng(SEED)
-        raw = r['gross'] / np.sign(r['imb'])  # unsigned forward return
-        pg = np.sign(rng.permutation(r['imb'])) * raw
-        plo, phi, pmean = day_block_ci(r['day'], pg - FEE_BP)
-        excl = lo > 0  # positive edge only: a CI wholly below zero is fee drag, not replication
-        out[name] = dict(n=len(net), by_year=by_year, gross_mean=float(r['gross'].mean()), net_mean=mean_net,
-                         ci=(lo, hi), placebo_net=pmean, placebo_ci=(plo, phi), stable=stable, excludes_zero=excl,
-                         verdict='PASS' if (stable and excl) else 'NO REPLICATION')
-    return out
+    return {name: summarize(trades(d, w)) for name, w in WINDOWS.items()}
 
 
 def report(out):

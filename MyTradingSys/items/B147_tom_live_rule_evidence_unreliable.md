@@ -1,6 +1,6 @@
 # B147 - Tom live-rule evidence is unreliable: rerun shows 0 SETUP_FORMING signals but the older run on the same history had 19 (all short); the 'history lacks data' explanation is contradicted; holdout read twice; the Oct-7 run is not on HEAD
 
-Status: OPEN. Severity: HIGH. Opened 2026-10-09.
+Status: IN-FIX. Severity: HIGH. Opened 2026-10-09.
 Session: MTS-2026-10-09-APP-ANA-major-gaps-audit. Source: research/AUDIT_MAJOR_GAPS_2026-10-09.md (audit revalidated by four read-only workers; no code edited).
 
 ## Defect
@@ -26,5 +26,7 @@ Tom live-rule evidence is unreliable: rerun shows 0 SETUP_FORMING signals but th
 ## Receipt
 
 2026-10-09 consolidate session: done (3) bt_runs/tom_core_20261007/FROZEN.md + 36-row TRIAL_REGISTRY.csv copied from research/agenda-2026-10-06 (branch itself not merged); (5) P2_FABIO_V3_HOLDOUT_STATUS corrected, SUPERVISOR_LOG correction appended; holdout recorded as burned for Tom. Still open: (1) attribution of the 120,892 to 90,699 row drop (F-BT-01 attributes 19 old signals: 7 candidates gone, 12 lost one proof point), (2) B135 long/short re-run, (4) DSR/PBO for Tom.
+
+2026-10-10: part (1) attributed from the old run files: kept 120,892 of 164,257; 97,504 rows (80.7 pct) carried the exact +/-0.2 pct fallback stop; 287 of 320 proof>=5 rows and 17 of 19 SETUP_FORMING rows did. 0c34a2d removed that fallback (candidate dropped when no swing lies beyond the zone) and B131 removed one proof slot, which is the whole drop. So the 19 old signals are not evidence for the live rule; the statement is insufficient N. Doc: research/B147_ROW_DROP_ATTRIBUTION_2026-10-10.md. Still open: (a) exact per-snapshot regeneration with HEAD Java, (2) B135 long/short diag under sourced stops, (4) DSR/PBO for Tom: desk task 20261009-205714-b147-b135-regenerate-tom-snapshots-with- (JIS-NB, staged overlays live there).
 
 # END
