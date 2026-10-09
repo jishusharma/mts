@@ -1,0 +1,18 @@
+{
+  "pages": [
+    {"slug": "mts_control_room", "title": "MTS Control Room", "pinned": true, "html_saved": false,
+     "db": ["inbox", "decisions"], "db_owner": "cloud", "urls": {"desktop": "", "cloud": ""}},
+    {"slug": "cbp_consensus_desk", "title": "CBP Consensus Desk", "pinned": true, "html_saved": false,
+     "db": [], "db_owner": "cloud", "urls": {"desktop": "", "cloud": ""}},
+    {"slug": "cbp_monday_desk", "title": "CBP Monday Desk", "pinned": true, "html_saved": false,
+     "db": [], "db_owner": "cloud", "urls": {"desktop": "", "cloud": ""}}
+  ],
+  "unpinned_on_desktop": {
+    "Binance Perp Backtesting Guide": "https://claude.ai/artifact/Dq2rYvfgXqvCsabsFZwRXj",
+    "MTS Field Guide": "https://claude.ai/artifact/4Z18gHVtcU5sSQ2N8vn7yy",
+    "CBP Dashboard": "https://claude.ai/artifact/SYxhvYx9iTBp2UeGs9X4XS",
+    "MTS Research Follow-through Audit": "https://claude.ai/artifact/VYrWZbBj5LU1NR9rpesZNY",
+    "MTS Research Agenda": "https://claude.ai/artifact/5GfDJhpSc8hjZMUMLyCEuX",
+    "BACKTEST_PIPELINE_2026-10-05.md": "https://claude.ai/artifact/3p3RkxTbCBbGycMM1q8XvM"
+  }
+}
