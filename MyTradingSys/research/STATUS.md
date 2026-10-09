@@ -1,22 +1,22 @@
 # Development Status
 
-Generated: 2026-10-10 02:29:05
+Generated: 2026-10-10 02:34:50
 
 ## Git Status
 **Branch:** fast-track
 
 **Last 10 commits:**
 ```
+98a0089 Merge origin/fast-track (B157-B161 rows kept, B155/B156 closed)
+7d47e7e Registry: B135-B156 + T093 closed/blocked/in-fix with receipts; CLAUDE.md CI/CD recipe; wiring entry for t093
+d26f712 claim unblock-trunk-close-bugs-b140-b156-ci-cd
 b612384 desk task: Java: run the new B136/B153 tests and schedule the JVM restart window
 fdc4785 desk task: B147/B135: regenerate Tom snapshots with HEAD Java and diff against the old run
 32b0e71 desk task: B149: capture the transaction log across an 08:00 UTC settlement
 500bae9 desk task: Register CI/CD scheduled jobs on the live host
 12530a0 T093 kline imbalance test (NO REPLICATION 2022-2026), B147 row-drop attribution, B151 rerun, scheduled auto-deploy + daily hygiene jobs
-1ca6e4c wiring registry: declare capture_txlog_settlement tool (B149)
-938d96b B149 help text + settlement capture tool; B153 net_rr parity table (Py+Java), floor owner/review date, OI breakdown unavailable not 0.0
-95759fb release live-mirror-desktop-publishes-read-only-
-1a4c0eb Live mirror: desktop publishes read-only live state, work trees pull it (Opus-reviewed); T092 Opus session brief; shot 78f967b4e253 read
-b7e644a B150 gate discovery for every tracked test + extra-tests step + mainnet refuses testnet calibration; B152 trim keeps mtime, deploy runbook
+fa1e414 Merge remote-tracking branch 'origin/fast-track' into jisnb/dsa
+b38aa0c release t092-screenshot-context-gap-report
 ```
 
 ## Queue Status
@@ -27,9 +27,10 @@ DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
 ```
 
 ## In-Flight .new Files
-- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (57.8h)
+- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (57.9h)
 
 ## Recent Reports (last 7 days)
+- MyTradingSys/research\screenshot_context_2026-10-10\REPORT.md (2026-10-10 02:33) # T092 REPORT - what context does a single screenshot read get? (2026-10-10, Opus, JIS-NUC)
 - MyTradingSys/research\rsi_divergence_mtf_2026-10-09\REPORT.md (2026-10-09 23:08) # T089 RSI divergence on every timeframe (+ T091 operator long-range column)
 - MyTradingSys/research\rsi_divergence_mtf_2026-10-09\REPORT_T088.md (2026-10-09 23:08) # T089 RSI divergence on every timeframe (+ T091 operator long-range column)
 - MyTradingSys/research\bigtrade_2026-10-09\EXIT_POLICIES_REPORT.md (2026-10-09 19:00) # EXIT POLICIES REPORT (backtest C), 2026-10-09
@@ -64,12 +65,23 @@ SHOTS landed 1: new 0, classified 0, read 0, done 1 | overdue(>24h) 0 | claims M
 
 ## Daily Hygiene (scheduled)
 ```
-(no hygiene run on this host yet: python scripts/dev/daily_hygiene.py, or register_cicd_tasks.ps1)
+# Daily hygiene 2026-10-09T20:56:35Z on JIS-NUC
+
+STATUS: RED (failed: gate)
+GATE: FAIL (147.0 s)
+
+Unshipped work (commit + `sync.py ship` it):
+- UNSHIPPED BinanceDataFeed              [fast-track] unshipped-commits=7 modified=1 untracked=3
+
+## gate: rc 1 (147.0 s)
+```
+Step 5: Maven tests: SKIP
+Step 5b: Layer tests: PASS
 ```
 
 ## Project Groups
 ```
-GROUPS DATA open 4 (HIGH 1) closed 26 | SRC open 3 (HIGH 0) closed 8 | CORE open 8 (HIGH 0) closed 26 | LAYR open 10 (HIGH 2) closed 2 | EVID open 14 (HIGH 2) closed 2 | EXEC open 11 (HIGH 4) closed 6 | VIS open 0 (HIGH 0) closed 0 | DESK open 1 (HIGH 1) closed 8 | OPS open 9 (HIGH 1) closed 20 | INFRA open 6 (HIGH 2) closed 10
+GROUPS DATA open 6 (HIGH 1) closed 27 | SRC open 4 (HIGH 1) closed 8 | CORE open 7 (HIGH 0) closed 27 | LAYR open 8 (HIGH 2) closed 4 | EVID open 13 (HIGH 2) closed 3 | EXEC open 10 (HIGH 3) closed 7 | VIS open 2 (HIGH 0) closed 0 | DESK open 1 (HIGH 1) closed 8 | OPS open 7 (HIGH 1) closed 22 | INFRA open 5 (HIGH 2) closed 11
 ```
 
 ## Open Findings
