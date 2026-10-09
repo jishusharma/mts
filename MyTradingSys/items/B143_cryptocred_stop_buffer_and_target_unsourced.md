@@ -34,3 +34,13 @@ Filing only. No code or doc edit was made for this item.
 ## Receipt
 
 # END
+
+## Receipt - code-line anchors 2026-10-09
+
+- Setup functions confirmed on disk: cc_setups.py:53 `setup1_sr_flip(stop_buffer_pct=0.001, target_r=1.5)`; :89 `setup2_fib_pullback(... stop_buffer_pct=0.001, target_r=1.5)`; :178 `setup3_failed_msb_reversal(... stop_buffer_pct=0.001, target_r=2.0)`.
+- LIVE-PATH import confirmed: MyTradingSys/backtest/layers/alerts/live_layers.py:27-28 imports all three setups from cc_setups; :137-139 wire them as cc_sr_flip_layer, cc_fib_pullback_layer, cc_failed_msb_layer.
+- Consequence: any remove-or-replace edit to cc_setups.py must follow the section 6 staged path (stage .new, gate, promote, restart). Not a direct write.
+- Module header (cc_setups.py:1-19) names source MyTradingSys/research/cross_trader_consolidated.md, cluster C10 (Setup Types). Whether C10 carries a 0.1 pct buffer or a 1.5R target value is the next read for the remove-or-replace session.
+- Status stays OPEN per operator ruling 2026-10-07 (remove-or-replace is a separate session).
+
+Receipt by: 2026-10-09 MTS-2026-10-08-2225Z-DSA-COO
