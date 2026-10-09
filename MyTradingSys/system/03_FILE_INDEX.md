@@ -151,6 +151,7 @@
 | P1_BREAKDOWNS_20261006.md | ~3KB | P1 breakdowns: discrepancy analysis vs operator 4.7-day run |
 | P2_FABIO_V3_HOLDOUT_STATUS.md | ~2.5KB | P2 verification: Fabio v3 holdout L3-FAIL (code unchanged, single OOS read) |
 | P4_QUARTER_HOUR_IMBALANCE_20261006_FINAL.md | ~3KB | P4 analysis: Kim & Hansen replication partial (8h PASS, 4h/12h fail sign stability) |
+| imbalance_2026-10-10/RESEARCH.md | ~7.5KB | OBI research: free data sources (Binance/8 venues), 3 T1 papers, 1 T2 arXiv, T3 practitioners; no net-of-cost OBI strategy validated |
 
 ## MTS/TESTS/ - Test System (9 files)
 
