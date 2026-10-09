@@ -6,6 +6,16 @@
    "ref": "B137",
    "why": "UNSURE: ladder-entry fills (T051 L4); listed as a harness module in bt/README.md:5 but no runner imports it and no item says it is wired; B137 lists \"bt/ ladder\" among backtests whose device is undecided."
   },
+  "MyTradingSys/backtest/maker_model.py": {
+   "disp": "REPRO",
+   "ref": "T080",
+   "why": "Offline research script that regenerates research/fast_track_2026-09-27/T080_MAKER_MODEL_2026-10-09.md; run by hand, no live process imports it."
+  },
+  "MyTradingSys/backtest/stop_buffer_wf.py": {
+   "disp": "REPRO",
+   "ref": "T081",
+   "why": "Offline research script that regenerates research/fast_track_2026-09-27/T081_STOP_BUFFER_WF_2026-10-09.md; run by hand, no live process imports it."
+  },
   "MyTradingSys/backtest/l1_patch_mds.py": {
    "disp": "REPRO",
    "why": "Generates MarketDataSnapshot.java.archive_mode.new for the Tom core historical backtest; tom_bt_report.py:143 hashes it and :221 cites it in TOM_CORE_BT.md; L1_SLICE1_STATUS.md:76."
