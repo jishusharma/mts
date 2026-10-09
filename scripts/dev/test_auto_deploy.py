@@ -210,5 +210,46 @@ class TestSchedule(unittest.TestCase):
             self.assertEqual(r.returncode, 0, f + " must be ignored (per-host state, never committed)")
 
 
+
+class StaleOps(FakeOps):
+    """green older than the threshold; fast-track (origin/fast-track) is a different, newer SHA."""
+    def __init__(self, green_age_s, trunk="d" * 40, **kw):
+        super().__init__(**kw)
+        self.green_age_s, self.trunk = green_age_s, trunk
+
+    def git(self, *a, timeout=300):
+        if a[0] == "rev-parse" and a[1] == "origin/fast-track":
+            self.calls.append(a)
+            return 0, self.trunk + "\n"
+        if a[0] == "log":
+            self.calls.append(a)
+            return 0, str(int(self.now().timestamp()) - self.green_age_s) + "\n"
+        return super().git(*a, timeout=timeout)
+
+
+class TestStaleGreenFallback(TestRun):
+    def test_fresh_green_is_used(self):
+        ops = StaleOps(green_age_s=600)
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["branch"], "green/fast-track")
+
+    def test_stale_green_falls_back_to_gated_fast_track(self):
+        ops = StaleOps(green_age_s=3 * 3600)
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["branch"], "fast-track")
+        self.assertEqual(ops.gated, ["d" * 40])      # same local gate, on the fast-track SHA
+        self.assertEqual(self.merges(ops), [("merge", "--ff-only", "origin/fast-track")])
+
+    def test_stale_fallback_still_stops_on_red(self):
+        ops = StaleOps(green_age_s=3 * 3600, gate_rc=1)
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["action"], "STOP_RED")
+        self.assertEqual(self.merges(ops), [])
+
+    def test_green_not_ancestor_of_trunk_keeps_green(self):
+        ops = StaleOps(green_age_s=3 * 3600, ff=False)   # merge-base says not ancestor
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["branch"], "green/fast-track")
+
 if __name__ == "__main__":
     unittest.main()
