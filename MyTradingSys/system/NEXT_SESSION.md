@@ -35,8 +35,10 @@ End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py whe
 - Not shipped, owned by JIS-NB live tree: backtest/bigtrade/*, research/bigtrade_2026-10-09/*, pm_heartbeats files. Do not edit. Untracked check_handoff.py / skill_src are another session's.
 - No git stash in shared clones; do not pass --help to sync.py subcommands.
 
-## Update 2026-10-10 (CI/CD pass 2)
-- Root cause of green/fast-track stuck at 24197c4: ci.yml `cancel-in-progress: true` kills every push run during a push burst. The fix needs a token with `workflow` scope (ours has none: push of .github/workflows is rejected). Patch ready: system/ci_concurrency_fix.patch (operator or a workflow-scope account applies it once).
-- Workaround shipped: auto_deploy.py gates and deploys origin/fast-track itself when green is >90 min stale (local gate still stops on red). 34 tests.
-- Fixed: retention.py used filecmp (stale stat cache; B152 test flaky) -> byte compare. mts-dsa commits shipped.
-- The latest code reaches JIS-NB testnet only when the pending JIS-NB desk task `register-ci-cd-scheduled-jobs` is run there (JIS-NUC has no access to JIS-NB: c$ denied). Until then JIS-NB deploys by hand per CLAUDE.md. First action of any session on JIS-NB: run that desk task.
+## Update 2026-10-10 (CI/CD pass 3: deployed on JIS-NB)
+- DONE on the live host: live tree fast-forwarded to trunk (b4c1644), no unique edits lost (backups in runtime_data/deploy_backup/20261010-042024: 19 stale-deploy files, 5 untracked colliders incl. 4 that differed from trunk). live_runner_cli, auto_trader, daily_loss_monitor restarted 04:21 local by loop-supervisor on the new code; position_manager (L-mkt-1009-2100, S-mkt-1009-1901) untouched. Runner poll: 6 families / 14 setups (cryptocred, fabio, rsi, session, positioning, turn_of_candle), errors=0.
+- MTS-DailyHygiene (GREEN, gate PASS 499 s) and MTS-AutoDeploy (every 15 min, UP_TO_DATE via the fast-track fallback) are registered on JIS-NB and were triggered once each. Desk task register-ci-cd-scheduled-jobs = done.
+- Mvn tests (JDK 17.0.18 here, `mvn -q -o test` in a worktree): EXIT 0 on the deployed SHA. The JVM still runs the OLD classes: pom.xml, MarketDataSnapshot (B136 UNAVAILABLE), NakedPocTracker need `mvn compile` in the live tree + a JVM restart window (not done: it interrupts the feed). Do it in one quiet minute, then close B136 and the desk task "Java: run the new B136/B153 tests".
+- Still open (JIS-NB desk): B149 capture across an 08:00 UTC settlement, B147/B135 Tom snapshot regeneration (needs the restarted JVM), live mirror install.
+- Still the operator's / token owner's: apply system/ci_concurrency_fix.patch (workflow scope). Until then green/fast-track lags and auto_deploy uses its own gate on fast-track.
+- A session on the live host never works in the live tree: use a worktree, deploy via auto_deploy.py or the CLAUDE.md checkout recipe.
