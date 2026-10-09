@@ -1,6 +1,6 @@
 # B151 - CryptoCred limit-fill backtest fills on touch and drops signals by a future event, so its PASS numbers are upper bounds; maker-entry fee refund applied on touch fills with a 0.1 % stop
 
-Status: OPEN. Severity: MED. Opened 2026-10-09.
+Status: CLOSED. Severity: MED. Opened 2026-10-09.
 Session: MTS-2026-10-09-APP-ANA-major-gaps-audit. Source: research/AUDIT_MAJOR_GAPS_2026-10-09.md (audit revalidated by four read-only workers; no code edited).
 
 ## Defect
@@ -28,5 +28,7 @@ STILL OPEN: (a) setup2_fib_pullback emits no signal when a bar blows through the
 STILL OPEN: (a) setup2_fib_pullback no-signal on blow-through (its 0 unfilled is by construction, so its numbers stay an upper bound), (b) bt_engine targets fill on touch, (d) print open_at_end in the report.
 
 ## Receipt
+
+2026-10-10 close (cc16a73): (a) setup2_fib_pullback: a bar that blows through the zone now fills the resting limit; its bear branch also built fib_zone descending so the touch condition could never be true: no short signal was ever emitted and the earlier fib numbers were long-only (found by the new test). (b) bt_engine.simulate_trade(target_through=0.1) used by run_cc_setups for entries and targets. (d) n_open_at_end printed. (c) rerun done here on F:/MTS/data/tom_raw 1m: setup1 OOS -0.1069 pct taker / -0.0382 maker (n 421), setup2 -0.0940 / -0.0275 (n 398), setup3 -0.2981 / -0.2408 (n 48): FAIL x6. Earlier PASS verdicts stay withdrawn. Layers stay alert-only.
 
 # END

@@ -1,6 +1,6 @@
 # B155 - Section 5d Claude-prompt contract is hand-checked; no executable gate
 
-Status: OPEN. Severity: MED. Opened 2026-10-09.
+Status: CLOSED. Severity: MED. Opened 2026-10-09.
 Session: MTS-2026-10-09-DSA-COO.
 
 ## Defect
@@ -26,3 +26,5 @@ Add one pytest or PowerShell test that reads a prompt string and asserts: total 
 - B150 (gate is a hand-maintained allow-list; this narrows to the prompt contract specifically)
 
 ## Receipt
+
+2026-10-10 close (cc16a73): scripts/dev/prompt_contract.py checks the six section 5d requirements; scripts/dev/test_prompt_contract.py (10 tests, derived from 5d) runs in the quick gate as step 3pc. Run on any composed prompt: python scripts/dev/prompt_contract.py <file>.

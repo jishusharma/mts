@@ -42,7 +42,14 @@ Live state off the desktop (NUC, laptop): `sync.py start` pulls the read-only mi
 - Push: never from the live tree (the folder holding `.mts_live`). `git worktree add ../mts-push -b <host>/<slug> HEAD` (reuse it if present),
   `git merge origin/fast-track` there (docs conflicts: take origin's text; STATUS.md: take origin's, regenerate),
   `python scripts/dev/run_all_tests.py --quick`, then `git push origin <branch>:fast-track`. `sync.py ship` does the same.
-- Deploy to the live tree (operator pre-authorised "just do it" 2026-10-09): if other sessions have uncommitted edits there, do NOT
+- CI/CD without the operator (2026-10-10; recipe `MyTradingSys/system/DEPLOY_RUNBOOK.md`): `.github/workflows/ci.yml` gates every push on ubuntu AND windows and
+  publishes the tested SHA as `green/fast-track`. On the live host scheduled task `MTS-AutoDeploy` (15 min) runs `scripts/dev/auto_deploy.py`: gates that SHA
+  in a throwaway worktree, STOPS on red (live tree untouched), `merge --ff-only`, copies/restores orderflow `_state.json`, restarts only the changed processes
+  (never position_manager), lists Java under `java_pending`. Result: `MyTradingSys/runtime/sched/auto_deploy_last.json`. Task `MTS-DailyHygiene` (06:30)
+  runs `scripts/dev/daily_hygiene.py` (quick gate, `sync.py where`, declutter DRY run, STATUS) -> `MyTradingSys/runtime/sched/hygiene_latest.md`, which
+  STATUS.md embeds: read its STATUS/GATE lines at boot and fix a RED before new work. Register once per host:
+  `powershell -File scripts/sched/register_cicd_tasks.ps1 -Trigger` (`-SkipDeploy` off the live host). Never deploy by hand while it works.
+- Deploy to the live tree by hand only if that job is down (operator pre-authorised "just do it" 2026-10-09): if other sessions have uncommitted edits there, do NOT
   merge/stash. `git -C <live> checkout origin/fast-track -- <only the changed live-path files>`, run their tests, kill only that
   process; `loop-supervisor` restarts it in ~1 min. Java needs `mvn compile` + restart: leave until a window, say so.
 - Git denies chained `cd x && git checkout/merge ...` in Bash: use `git -C <dir> <cmd>` as its own call.

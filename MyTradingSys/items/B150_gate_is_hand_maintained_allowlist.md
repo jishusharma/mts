@@ -1,6 +1,6 @@
 # B150 - The test gate is a hand-maintained allow-list: new live-path safety tests (dlm_failure_cap, auto_trader_blocklist, auto_trader_sizes) are not in it; the calibration test pins an empty blocklist; nothing in code enforces restoring the parked blocklist
 
-Status: OPEN. Severity: MED. Opened 2026-10-09.
+Status: CLOSED. Severity: MED. Opened 2026-10-09.
 Session: MTS-2026-10-09-APP-ANA-major-gaps-audit. Source: research/AUDIT_MAJOR_GAPS_2026-10-09.md (audit revalidated by four read-only workers; no code edited).
 
 ## Defect
@@ -24,5 +24,7 @@ Make the gate discover tests (glob test_*.py, with an explicit skip-list that ne
 ## Receipt
 
 2026-10-09 consolidate session: gate now lists test_dlm_failure_cap, test_auto_trader_blocklist, test_auto_trader_sizes, test_auto_trader_confirm, test_b146/b148; MyTradingSys/tests/test_gate_discovery_b150.py fails when any execution/test_*.py is neither gated nor in SKIP-with-reason. Open: the 3 failing ungated tests (audit_t0_checks, worker_prefix_hash), non-execution dirs not covered by discovery, blocklist-restore guard (test_shipped_calibration_config_blocks_no_layer still pins an empty list).
+
+2026-10-10 close (b7e644a): gate discovery over all tracked tests (MyTradingSys/tests/test_gate_discovery_b150.py), scripts/dev/run_extra_tests.py (step 3xt) runs the 14 files outside the collected dirs, test_fix3_mutants_offline added to step 1. Diagnosed: worker prefix tests failed because core.autocrlf=true checked worker_prefix.md out as CRLF (run_worker refuses it, so the scheduled worker never ran on Windows): .gitattributes pins it to LF. test_audit_t0 patched REPO for a tmp path. Blocklist restore: executor.mainnet_config_refusals refuses mainnet while trade_blocklist is empty with trade_blocklist_parked set or size_overrides present (7 tests in test_mainnet_plan_check.py); test_auto_trader_blocklist no longer pins an empty list.
 
 # END

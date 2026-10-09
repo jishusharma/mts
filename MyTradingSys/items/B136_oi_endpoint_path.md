@@ -29,3 +29,5 @@ Commit 881f22b. Registry (same turn): BUGS.md IN-FIX; INDEX.md IN-FIX.
 
 1. Live loop not restarted. Session hit the auto-mode classifier on scripts\core\stop-day.ps1; java 20916 still runs pre-B136 bytecode, still writing flat OI. Operator action: stop-day.ps1 then mode.ps1 -M armed.
 2. oi_breakdown (buildOiBreakdown) swallow path unchanged. Same fail-open pattern as the fixed open_interest path. Follow-up.
+
+2026-10-10: reopened item closed in code (938d96b): buildOiBreakdown writes null retail/whale/topAccounts with confidence UNAVAILABLE on any failure and topAccounts null + topAccounts_note when only that endpoint fails; MarketDataSnapshotTest 21/21 on the javac-11 harness, the two OI tests fail on the old code. Needs mvn compile + JVM restart to run live. TESTNET_STATUS taint rows still not found.

@@ -1,6 +1,6 @@
 # B144 - Exhaustion proxy volume spike 2.0x over 240 one-minute bars is NO-SOURCE
 
-Status: OPEN. Severity: MED. Opened 2026-10-07.
+Status: BLOCKED. Severity: MED. Opened 2026-10-07.
 Session: MTS-2026-10-07-1002Z-APP-BLD-research-closeout. Secondary tag: SCREENER. Operator ruling 2026-10-07: stays flagged this session; remove-or-replace review is a separate session. Same shape as B116/B117/B118.
 
 ## Defect

@@ -1,22 +1,22 @@
 # Development Status
 
-Generated: 2026-10-08 13:37:40
+Generated: 2026-10-10 02:29:05
 
 ## Git Status
 **Branch:** fast-track
 
 **Last 10 commits:**
 ```
-1c66458 desk task: Supervisor deploy: consensus hook + SetupScreener removal
-e799e71 gate: register desk, registry-consistency and P4 tests; guide lists mts desk
-1c2001d wiring gate: declare 58 unrun code files in wiring_registry.json, archive 9, gate runs wiring_scan --check
-ad95837 lessons: git stash with pathspec emptied the index
-075e1c5 P4 corrected run: no replication at 4h/8h/12h; decision rule fixed (net CI must be above zero)
-96f1328 registry: reconcile INDEX vs BUGS (B070 B075 B084 B116 closed, B136 reopened, T056 WONTFIX) + consistency test
-8a4adf2 desk board: a blocked session posts a desktop task, keeps working, picks up the result (mts desk)
-2b8318b Merge remote-tracking branch 'origin/fast-track' into fast-track
-af91b21 untrack orderflow recorder _state.json and ignore it (a Git op wound it back to Oct 3 and stalled the recorder)
-f6510eb Merge remote-tracking branch 'origin/fast-track' into fast-track-work
+b612384 desk task: Java: run the new B136/B153 tests and schedule the JVM restart window
+fdc4785 desk task: B147/B135: regenerate Tom snapshots with HEAD Java and diff against the old run
+32b0e71 desk task: B149: capture the transaction log across an 08:00 UTC settlement
+500bae9 desk task: Register CI/CD scheduled jobs on the live host
+12530a0 T093 kline imbalance test (NO REPLICATION 2022-2026), B147 row-drop attribution, B151 rerun, scheduled auto-deploy + daily hygiene jobs
+1ca6e4c wiring registry: declare capture_txlog_settlement tool (B149)
+938d96b B149 help text + settlement capture tool; B153 net_rr parity table (Py+Java), floor owner/review date, OI breakdown unavailable not 0.0
+95759fb release live-mirror-desktop-publishes-read-only-
+1a4c0eb Live mirror: desktop publishes read-only live state, work trees pull it (Opus-reviewed); T092 Opus session brief; shot 78f967b4e253 read
+b7e644a B150 gate discovery for every tracked test + extra-tests step + mainnet refuses testnet calibration; B152 trim keeps mtime, deploy runbook
 ```
 
 ## Queue Status
@@ -27,9 +27,13 @@ DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
 ```
 
 ## In-Flight .new Files
-- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (20.9h)
+- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (57.8h)
 
 ## Recent Reports (last 7 days)
+- MyTradingSys/research\rsi_divergence_mtf_2026-10-09\REPORT.md (2026-10-09 23:08) # T089 RSI divergence on every timeframe (+ T091 operator long-range column)
+- MyTradingSys/research\rsi_divergence_mtf_2026-10-09\REPORT_T088.md (2026-10-09 23:08) # T089 RSI divergence on every timeframe (+ T091 operator long-range column)
+- MyTradingSys/research\bigtrade_2026-10-09\EXIT_POLICIES_REPORT.md (2026-10-09 19:00) # EXIT POLICIES REPORT (backtest C), 2026-10-09
+- MyTradingSys/research\volume_2026-10-09\VOLUME_RESEARCH_REPORT_2026-10-09.md (2026-10-09 07:00) # BTC volume research: buy volume, sell volume, exhaustion, patterns, time (2026-10-09)
 - MyTradingSys/research\CONSOLIDATION_REPORT_2026-10-01.md (2026-10-07 16:40) # CONSOLIDATION REPORT 2026-10-01 (cloud session, read-only against main)
 - MyTradingSys/research\HANDOFF_FOR_CLAUDE_2026-10-01.md (2026-10-07 16:40) # HANDOFF FOR CLAUDE - Tom/Fabio revalidation (2026-10-01)
 - MyTradingSys/research\INDICATOR_IMPLEMENTATION_HANDOFF.md (2026-10-07 16:40) # INDICATOR IMPLEMENTATION HANDOFF
@@ -53,5 +57,20 @@ DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
 - MyTradingSys/research\fast_track_2026-09-27\T054_US_SESSION_BRIEF.md (2026-10-07 16:40) # T054 Research Brief: US Session / Correlation / News Effects on BTC
 - MyTradingSys/research\fast_track_2026-09-27\review\MUTATION_REPORT_FT2.md (2026-10-07 16:40) # FT-2 Mutation Testing Report — Offline Test Suite Strength
 
+## Screenshots
+```
+SHOTS landed 1: new 0, classified 0, read 0, done 1 | overdue(>24h) 0 | claims MATCH 4 MISMATCH 0 NOT_IN_DATA 5 | filed 0
+```
+
+## Daily Hygiene (scheduled)
+```
+(no hygiene run on this host yet: python scripts/dev/daily_hygiene.py, or register_cicd_tasks.ps1)
+```
+
+## Project Groups
+```
+GROUPS DATA open 4 (HIGH 1) closed 26 | SRC open 3 (HIGH 0) closed 8 | CORE open 8 (HIGH 0) closed 26 | LAYR open 10 (HIGH 2) closed 2 | EVID open 14 (HIGH 2) closed 2 | EXEC open 11 (HIGH 4) closed 6 | VIS open 0 (HIGH 0) closed 0 | DESK open 1 (HIGH 1) closed 8 | OPS open 9 (HIGH 1) closed 20 | INFRA open 6 (HIGH 2) closed 10
+```
+
 ## Open Findings
-- L6: 0bbace1 (part 1) Part 1 (re-arm): committed; Part 2 (PnL source) DEFERRED for testnet decision 2026-09-28
+- L6: 0bbace1 (part 1), 1542151 + 924d7a0 (part 2) Part 1 (re-arm) committed. Part 2 (PnL source = transaction log + session UPL, mainnet_pnl.py) IMPLEMENTED; open only the B149 question: settlement/funding are excluded and session UPL resets at 08:00 UTC, unverified on a captured testnet log (tool: execution/capture_txlog_settlement.py). Must close before mainnet

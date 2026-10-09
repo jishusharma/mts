@@ -42,4 +42,6 @@ need retuning or hold. If a code edit is needed, one file
 scripts/core/start-trading-day.ps1 (if a code edit is needed).
 F:/MTS/data/tom_bt/allshorts.diag.stdout.txt (read-only, diag re-run).
 
+2026-10-10: not closed. Old allshorts diag (320 proof>=5 rows, 19 SETUP_FORMING all short) was built mostly on the removed 0.2 pct fallback stop (287 of 320, 17 of 19), so it cannot be the parity baseline. The re-run needs snapshots regenerated with HEAD Java: desk task 20261009-205714-b147-b135-regenerate-tom-snapshots-with- (JIS-NB). Then read L225/L227/L578 against the new base rate.
+
 # END
