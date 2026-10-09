@@ -8,6 +8,7 @@ Run: python -m unittest test_mainnet_flag_offline -v   (from MyTradingSys/execut
 """
 import io
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -57,7 +58,10 @@ class Base(unittest.TestCase):
             mock.patch.object(do, "SECRET", self.test_secret),
             mock.patch.object(do, "MAINNET_SECRET", self.main_secret),
             mock.patch("urllib.request.urlopen", self.rec),
+            # B148: the account now comes from MTS_ACCOUNT at call time; tests must not inherit the host's value
+            mock.patch.dict(os.environ),
         ]
+        os.environ.pop("MTS_ACCOUNT", None)
         for p in self.patches:
             p.start()
         do._ACTIVE_ENV = "test"
@@ -78,6 +82,16 @@ class Base(unittest.TestCase):
 
 
 class TestRefusalMatrix(Base):
+    def test_named_account_never_selects_a_mainnet_secret(self):
+        # B148 shipped behaviour: MTS_ACCOUNT set + mainnet flag -> refused before any prompt or network call
+        self.write(self.main_secret, "mainnet")
+        os.environ["MTS_ACCOUNT"] = "sharma"
+        with mock.patch("builtins.input", side_effect=AssertionError("must fail before prompt")):
+            with self.assertRaisesRegex(RuntimeError, "named accounts are testnet-only"):
+                do.select_environment(True)
+        self.assertEqual(do.active_env(), "test")
+        self.assertEqual(self.rec.urls, [])
+
     def test_row1_no_flag_is_testnet_unchanged(self):
         self.write(self.test_secret, "test")
         with mock.patch("builtins.input", side_effect=AssertionError("no prompt on testnet")):
