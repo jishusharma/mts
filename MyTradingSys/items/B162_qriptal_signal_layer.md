@@ -32,3 +32,7 @@ MyTradingSys/system/OPERATOR_INBOX.md under that id.
 3. Layer `layer:qriptal:` on its own testnet account; his stop and targets only (provenance: his words). Testnet only.
 
 # END
+
+## 2026-10-10 Control Room D21
+Operator: "Follow his channel into my server; set up a read-only bot" (note: "Also read youtube trasncripts").
+Applied: DSA desk task 20261009-231508 (captions + scorecard). Bot: operator steps (Follow the announcement channel into their own server, create a bot with read-only Message Content scope, keep the token outside the repo); session builds a read-only logger that writes calls to a jsonl, token from an env var the session never reads. No trades until the scorecard exists.

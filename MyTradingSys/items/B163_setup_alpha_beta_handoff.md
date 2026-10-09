@@ -43,3 +43,8 @@ part (e.g. Fabio's sweep/CVD rules, research/fast_track_2026-09-27/FABIO_RULEBOO
 2. Beta: event study on 15m/1h with kline CVD proxy, previous-day high/low and equal highs/lows as pre-marked levels,
    rules exactly as pasted; report n, win rate, net R after fees.
 3. Both go to DSA as desk tasks once D22 is answered.
+
+## 2026-10-10 Control Room D22
+Operator: "Run both as research tests" (note: "just for you - fresh eyes - see if there is something new in all this").
+Applied: DSA desk tasks 20261009-231504 (Alpha) and 20261009-231505 (Beta), both labelled NO-SOURCE.
+Fresh-eyes read: the one idea not already tested here is Beta's with/without-CVD comparison (does absorption add anything over a plain sweep reclaim); Alpha mostly repeats the 2026-10-03 MA research, so its likely value is drawdown cut, not return. Beta's task reports both rows.
