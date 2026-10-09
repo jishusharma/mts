@@ -315,6 +315,10 @@
   "MyTradingSys/backtest/tom_stop_width.py": {
    "disp": "TOOL",
    "why": "B146 analysis script (stop width vs fees); run by hand, output research/fast_track_2026-09-27/TOM_STOP_WIDTH_2026-10-09.md."
+  },
+  "MyTradingSys/backtest/bigtrade/exit_policies.py": {
+   "disp": "TOOL",
+   "why": "Backtest C (PLAN.md section 2): exit policies on fires_spot; run by hand, output research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md."
   }
  }
 }

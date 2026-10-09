@@ -64,3 +64,17 @@ Freeze (operator request, still standing): no new layers and no new audit docume
 ## 6. Where truth lives (read order for a new session)
 1. STATUS.md (regenerate) 2. this file 3. BUGS.md (OPEN rows) 4. AUDIT_MAJOR_GAPS_2026-10-09.md 5. bigtrade_2026-10-09/PLAN.md + FINDINGS.md
 6. SUPERVISOR_LOG.md claims (live-path ownership) 7. PROJECT_VISION.md (direction, verbatim, operator edit only).
+
+## 7. Execution log (same day, after the first write of this file)
+| Step | Result |
+|---|---|
+| 0 merge conflicts | Resolved (921d70d); shipped to origin/fast-track. |
+| 1 B148 | Parts 1-4 DONE and DEPLOYED to the live tree 08:42-08:45 IST (daily_loss_monitor + auto_trader restarted by kill; supervisor revived both; trading resumed). Part 5 (heartbeat-age liveness) open. |
+| 2 B146 | Measured: stops < 0.10 % = 57 % of Tom sim trades, 3.8-7.6 R fees each; gross R negative in every bucket. Gate `tom.max_fee_to_stop` deployed but OFF (recommend 0.3; operator enables). Java still builds tiny stops. |
+| 3 B147 | Docs corrected, holdout recorded burned for Tom, Oct-7 FROZEN.md + 36-row registry on trunk. Row-drop attribution, B135 re-run, Tom DSR/PBO still open. |
+| 4 operator decisions | NOT made (net_rr floor, turn_of_candle). Backtest C now answers the second: ToC nets -11 bp/trade = its cost, no exit policy changes it. |
+| 5 Backtest C | Done: EXIT_POLICIES_REPORT.md. 1 of 114 cells positive in both splits (noise-level). Exit management is not the accuracy problem; the fires lack edge. |
+| 6 B2 / D | B2 not started. D (tuning) NOT justified by C for existing fires. |
+| 7 B150 / B152 | Gate discovery test + ungated safety tests wired; retention keeps audit data, archives trimmed heads. B149 L6 settlement gap, B151 fill model open. |
+| 8-10 | Open: gap list E, Java fixes F-BT-09/12/14, B140 disk, B153 owner/end date. |
+Uncommitted work of other sessions NOT shipped by this session: backtest/bigtrade/ (bigmoves, capture, fires_kline) and research/bigtrade_2026-10-09/ reports sit untracked in the live tree; their owner session should `sync.py ship` them.
