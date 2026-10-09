@@ -4,7 +4,9 @@
   "id": "20261009-205713-register-ci-cd-scheduled-jobs-on-the-liv",
   "need": "powershell -NoProfile -File scripts\\sched\\register_cicd_tasks.ps1 -Trigger ; then: type MyTradingSys\\runtime\\sched\\auto_deploy_last.json ; type MyTradingSys\\runtime\\sched\\hygiene_latest.md. Recipe: MyTradingSys/system/DEPLOY_RUNBOOK.md. Run in a normal user shell (not the live tree session's build shell).",
   "posted": "2026-10-09T20:57:13Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-09T23:01:06Z",
+  "taken_by": "JIS-NB",
   "target": "JIS-NB",
   "title": "Register CI/CD scheduled jobs on the live host"
 }
