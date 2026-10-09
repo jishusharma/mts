@@ -85,8 +85,10 @@ def apply(items):
                 stamp = time.strftime("%Y%m%d")
                 with gzip.open(f"{path}.head_{stamp}.gz", "at", encoding="utf-8", newline=chr(10)) as z:
                     z.writelines(head)
+            st = os.stat(path)
             with open(path, "w", encoding="utf-8", newline="\n") as f:
                 f.writelines(tail)
+            os.utime(path, (st.st_atime, st.st_mtime))   # testnet_canary reads the mtime as last activity (B152)
 
 
 def main(argv):

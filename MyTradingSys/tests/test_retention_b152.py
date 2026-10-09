@@ -45,6 +45,22 @@ class RetentionTest(unittest.TestCase):
         self.assertEqual(len(gz), 1)
         self.assertEqual(gzip.open(gz[0], "rt", encoding="utf-8").read().splitlines(), [f"line {i}" for i in range(10)])
 
+    def test_trim_keeps_the_logs_mtime_the_canary_reads_it(self):
+        # testnet_canary.py check_freshness reads supervisor_log.txt mtime as "last supervisor activity";
+        # a daily trim must not turn a dead supervisor into a fresh one
+        p = self.root / "supervisor_log.txt"
+        p.write_text("".join(f"line {i}" + chr(10) for i in range(ret.TAIL_LINES + 10)), encoding="utf-8", newline=chr(10))
+        old = p.stat().st_mtime - 3 * 3600
+        os.utime(p, (old, old))
+        ret.apply([("trim", str(p), p.stat().st_size, "t")])
+        self.assertAlmostEqual(p.stat().st_mtime, old, delta=2)
+
+    def test_deploy_runbook_copies_the_orderflow_state_file(self):
+        # af91b21 untracked orderflow _state.json; git merge --ff-only on the live tree aborts or deletes it
+        text = (ROOT / "MyTradingSys" / "system" / "DEPLOY_RUNBOOK.md").read_text(encoding="utf-8")
+        self.assertIn("_state.json", text)
+        self.assertIn("copy", text.lower())
+
 
 if __name__ == "__main__":
     unittest.main()
