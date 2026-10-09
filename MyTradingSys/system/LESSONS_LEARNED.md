@@ -64,6 +64,11 @@ top of the relevant section. Keep each entry to 3 lines.
 - YouTube captions: `scripts/dev/fetch_captions.py` (captions only, 429 backoff); on HTTP 429, wait, don't transcribe.
 
 ## E. Domain framing
+- 2026-10-09 volume study: a pattern chosen after looking at DEV (volume-confirmed breakouts beat unconfirmed in 6/6 daily and 5/6 4h pairs; pooled p = 0.008) fell to -13 bp, p = 0.60 on VALIDATION. RULE: a hypothesis
+  suggested by DEV results is tested once on VALIDATION as a single pooled trial, never promoted on its DEV p-value. (volume_2026-10-09 V4)
+- 2026-10-09: plain relative volume (this bar / mean of the last N bars) is a clock for BTC: 36% of 12-16 UTC 4h bars vs 6% of 04-08 UTC bars qualify as 2x spikes; weekends run at 0.62-0.72x. RULE: any volume flag uses a
+  same-slot (hour or weekday) baseline; P06 (T073) still uses a 4-hour baseline. (volume_2026-10-09 V0)
+- 2026-10-09: a first placebo draw sampled lags with replacement from 9 values, so 4 of 20 runs were near-duplicates. RULE: placebo/permutation shifts are drawn without replacement and the lags are printed in the result.
 - 2026-09-30: Tom's stop floor 0.1%/0.2% fallback, 2-3.5R target window, 25% friction haircut and the TWOPEAK label were
   engineering choices with no Tom source; they cut his real trades (tight stops, 8R winners). RULE: parameters come only from
   the trader's own words (CLAUDE.md Provenance); unsourced ones are flagged NO-SOURCE, never tuned. (CLAUDE.md hard rules)
