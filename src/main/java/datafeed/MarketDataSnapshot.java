@@ -197,6 +197,11 @@ public class MarketDataSnapshot {
         priorDayVp.put("high", Math.round(priorDayHigh * 100.0) / 100.0);
         priorDayVp.put("low", priorDayLow == Double.MAX_VALUE ? 0.0 : Math.round(priorDayLow * 100.0) / 100.0);
 
+        // F-BT-14: the naked-POC list had no writer after 2026-08-28; record the finished prior UTC day and
+        // mark POCs the recent 1m bars traded through. Live path only (the historical builder must not write).
+        updateNakedPocs(new NakedPocTracker(symbol), priorDayVp, yesterdayStartUtc.toLocalDate(), priorDayBars.size(),
+                now.toLocalDate(), klines1m);
+
         // Add prior_day close / high / low
 
         // ── VWAP (trimmed) ──
@@ -503,6 +508,26 @@ public class MarketDataSnapshot {
         return result;
     }
 
+    /**
+     * F-BT-14. Never throws into the snapshot: the tracker is advisory (SetupCandidatesBuilder reads it).
+     * A prior day with fewer than 1000 of its 1440 bars is partial (outage or API gap): its POC is not recorded.
+     */
+    static void updateNakedPocs(NakedPocTracker tracker, JsonNode priorDayVp, java.time.LocalDate priorDay,
+                                int priorDayBarCount, java.time.LocalDate todayUtc, JsonNode klines1m) {
+        try {
+            if (priorDay != null && priorDayVp != null && priorDayVp.has("poc") && priorDayBarCount >= 1000) {
+                tracker.recordPoc(priorDay, priorDayVp.get("poc").asDouble());
+            }
+            if (klines1m != null && klines1m.size() > 0) {
+                List<JsonNode> bars = new ArrayList<>();
+                for (JsonNode b : klines1m) bars.add(b);
+                tracker.markVisitedByBars(bars, todayUtc);
+            }
+        } catch (Exception e) {
+            System.err.println("naked_poc update failed: " + e);
+        }
+    }
+
     private ObjectNode buildVp(List<JsonNode> bars, boolean includeHvnsLvns) {
         return buildVp(bars, includeHvnsLvns, 0.0);
     }
@@ -558,13 +583,28 @@ public class MarketDataSnapshot {
             double tp = (high + low + close) / 3.0;
             double halfRange = (high - low) / 2.0;
             int n = (int) Math.max(1, (high - low) / binSize);
+            // F-BT-09: normalise the triangular weights per bar so a bar adds exactly its own volume.
+            // Unnormalised, a bar added ~vol*n/2 (fast minutes up to 30x a quiet one) and a single-bin bar
+            // with tp above mid-range added nothing. A zero or NaN weight sum puts the volume on the tp bin.
+            double[] ps = new double[n];
+            double[] ws = new double[n];
+            double wsum = 0.0;
             for (int i = 0; i < n; i++) {
-                double p = low + i * (high - low) / n;
-                double weight = 1.0 - Math.abs(p - tp) / halfRange;
-                if (weight < 0) weight = 0;
-                Double key = profile.floorKey(p);
+                ps[i] = low + i * (high - low) / n;
+                double w = halfRange > 0 ? 1.0 - Math.abs(ps[i] - tp) / halfRange : 0.0;
+                ws[i] = (w > 0) ? w : 0.0;
+                wsum += ws[i];
+            }
+            if (wsum > 0) {
+                for (int i = 0; i < n; i++) {
+                    Double key = profile.floorKey(ps[i]);
+                    if (key == null) key = profile.firstKey();
+                    profile.merge(key, vol * ws[i] / wsum, Double::sum);
+                }
+            } else {
+                Double key = profile.floorKey(tp);
                 if (key == null) key = profile.firstKey();
-                profile.merge(key, vol * weight, Double::sum);
+                profile.merge(key, vol, Double::sum);
             }
         }
 
