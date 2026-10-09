@@ -29,3 +29,4 @@ Do NOT re-add 0.1 % (NO-SOURCE). Measure instead, pre-registered: net R by stop-
 2026-10-09 supervisor session: the fee-to-stop gate (tom.max_fee_to_stop, default OFF, fails closed on a bad value) is on origin and in the live tree; enabling it is Control Room decision D08. Measured: cut 0.3 keeps 161 hist / 34 dev trades at net -0.29 / -0.33 R (still negative, protective only). Java SetupCandidatesBuilder still builds tiny stops; the fix path is T081 (stop = structure +/- k x ATR, walk-forward, BT-TUNED), report research/fast_track_2026-09-27/T081_STOP_BUFFER_WF_2026-10-09.md.
 
 # END
+2026-10-09 CI/CD session: operator D09 = switch on at 0.3. auto_trader_config.json tom.max_fee_to_stop = 0.3 (code default stays off). test_shipped_config_has_the_gate_on_at_0_3 fails without it. auto_trader reads the config at start: it needs a restart to pick it up (loop-supervisor revives it).
