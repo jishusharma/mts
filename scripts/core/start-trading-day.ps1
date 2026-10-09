@@ -768,9 +768,9 @@ print("logged")
             $stateScript = Join-Path $R "MyTradingSys\runtime\session_state.py"
             $stateRead = python $stateScript show 2>&1 | Out-String
             $stateObj = $stateRead | ConvertFrom-Json
-            if ($stateObj.thesis) {
-                $thesisLine = "THESIS: $($stateObj.thesis.direction) ($($stateObj.thesis.confidence)) - $($stateObj.thesis.text)"
-            }
+            # B156: the helper prints the thesis with its written time and age (empty text = no line)
+            $thesisLine = (python $stateScript thesis-line 2>&1 | Out-String).Trim()
+            if ($LASTEXITCODE -ne 0) { $thesisLine = "THESIS: unavailable" }
             if ($stateObj.next_trigger -and $stateObj.next_trigger.condition) {
                 $triggerLine = "NEXT_TRIGGER: $($stateObj.next_trigger.condition)"
             }

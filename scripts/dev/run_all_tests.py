@@ -160,6 +160,10 @@ def main(argv=None):
     cmd3mg = [sys.executable, "scripts/dev/test_make_groups.py"]
     success, output = run_step("3mg", "Project group map tests (every row and file has one group)", cmd3mg)
     results.append(("Step 3mg: Project group map tests", success))
+    cmd3pc = [sys.executable, "scripts/dev/test_prompt_contract.py"]
+    success, output = run_step("3pc", "Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)", cmd3pc)
+    results.append(("Step 3pc: Prompt contract tests", success))
+
     cmd3cr = [sys.executable, "scripts/dev/test_make_control_room.py"]
     success, output = run_step("3cr", "Control Room page generator tests", cmd3cr)
     results.append(("Step 3cr: Control Room tests", success))
