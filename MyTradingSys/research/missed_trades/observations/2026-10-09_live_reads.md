@@ -29,6 +29,8 @@ Invalidation of the read: acceptance outside 82450-83470.
 Header (chart read 1m): O 82880.0 H 82888.6 L 82855.9 C 82873.0; VWAP 82624.4; BB20 82950.6 / 83115.5 / 82785.6; RSI 43.39, SMA 43.59.
 Divergence (chart read, est.): price high ~83200 (~14:21-14:25Z) then ~83250 (~14:33Z); RSI ~75 then ~69. Pair is ~9-13 bars apart,
 on the edge of Malkan's sourced 3-10 bar window: T089 catches it only if the detected pivots are <=10 bars apart, else it is a T091 pair.
+Kline check (fapi 1m closes): A 14:21 close 83180.8 RSI 74.54, B 14:34 close 83266.0 RSI 70.03 = 14 bars, three swing highs between.
+rsi_divergence does not flag it (3-10 or 3-60): not adjacent swings. T091 pair. Extract: research/screenshots/2026-10-09_BTCUSDT_502363361fff.md.
 After: lower highs, price ~82830-82870 at 15:10Z (about -400 from the high), under BB mid, near BB low. RSI under 50.
 
 Check against MTS data (live tree, read only):
