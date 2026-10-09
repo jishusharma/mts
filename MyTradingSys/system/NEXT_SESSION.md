@@ -9,7 +9,7 @@ Short sessions: one task per session; hand off when it is done, after 5 operator
 Budget: weekly-reset hold lifted 2026-10-09 (Jis); heavy work may run now.
 1. (T090 DONE, research/t090_7h_2026-10-09/RESULT.md: only sourced 7h anchor is 18:00 New York = 22/23 UTC, tool description only; T088 7h lead not robust, closed.)
    T088, T089, T090, T091 are DONE (see State).
-2. NEXT: T087 session-levels observation layer (prior-day / Asia / EU highs-lows, failed first break, backtested odds). items/T087_*.md.
+2. (T087 DONE, research/t087_session_levels_2026-10-09/RESULT.md: failed first break of prior-day high -> spike retaken first 57-67%, Asia low first 24%; short to the low net negative, no edge, EU cells n<300.)
 3. D09 (fee gate 0.3 on) and D10 (heartbeat 10 min) are already applied on origin (B146, B148 part 5 in code). Left: D08 -> apply,
    then T085. Rebuild + republish Control Room only from the account that owns it.
 4. Tom core phase 3 is parked: phase 2 found no anchor edge (research/tom_core_bt_2026-10-09/PHASE2_RESULT.md); Tom's confirmations
@@ -21,6 +21,7 @@ End: ship via sync.py ship, `sync.py where` must show 0 unshipped, overwrite thi
 ```
 
 ## State at handoff
+- 2026-10-09 T087 DONE: backtest/layers/session_levels/ (session_levels.py + runner, 15 tests fail-first), 913 events 2022-2026; no edge, clocks NO-SOURCE. Branch jisnb/t087-session-levels in worktree mts-vpa.
 - 2026-10-09 T090 DONE: 7h anchor = 18:00 NY (22/23 UTC) is the only sourced one; 00:00 UTC and epoch stay NO-SOURCE; 7h bullish lead is an anchor/drift artifact (t 1.2 at sourced anchor). Branch jisnb/t088-tf-module.
 - 2026-10-09 night: T088 DONE. registry.json + tf_resample.py: 4m, 3h, 7h (day-reset 00:00 UTC, default), 7h_epoch; both 7h NO-SOURCE.
   9 tests fail-first. T089 rerun: 4m no edge, 3h/7h insufficient n, 7h operator bullish lead (46, t 2.11) only on the day-reset anchor.
