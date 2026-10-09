@@ -27,6 +27,8 @@ MUTS = [
     ("vstate.py", 'bull, bear = rsi >= 60, rsi <= 40', 'bull, bear = rsi > 60, rsi < 40'),
     ("vstate.py", 's["VT"] = np.log(m20 / m100)', 's["VT"] = np.log(m20 / roll_sum(v, 50) * 50)'),
     ("vstate.py", 's["D20"] = roll_sum(dv, 20) / roll_sum(v, 20)', 's["D20"] = roll_sum(dv, 20) / roll_sum(v, 21)'),
+    ("vstats.py", '"p_one": float((np.sum(cen >= diff) + 1.0) / (len(d) + 1))}', '"p_one": float((np.sum(cen <= diff) + 1.0) / (len(d) + 1))}'),
+    ("vstats.py", 'diff = float(sumA.sum() / nA - sumB.sum() / nB)', 'diff = float(sumB.sum() / nB - sumA.sum() / nA)'),
     ("vstats.py", 'return (z_alpha + z_power) * sd / np.sqrt(max(n, 1))', 'return (z_alpha + z_power) * sd / max(n, 1)'),
 ]
 bad = 0

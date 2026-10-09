@@ -130,3 +130,26 @@ def contrast(evA, evB, val, block, reps=1000, seed=12345):
 def mde(sd, n, z_alpha=1.645, z_power=0.8416):
     """Analytic minimum detectable mean difference (one-sided alpha .05, power 80 percent) for n events vs the large all-bar baseline."""
     return (z_alpha + z_power) * sd / np.sqrt(max(n, 1))
+
+
+def pooled_contrast(cntA, sumA, cntB, sumB, block, reps=1000, seed=12345):
+    """Pooled difference (sum sumA / sum cntA) - (sum sumB / sum cntB) with a circular block bootstrap over the bar index.
+    cnt*: number of event instances at each bar (float), sum*: sum of their oriented returns at each bar.
+    Returns dict(nA, nB, diff, lo, hi, p_one) with p_one = share of centred replicates >= diff (H1: diff > 0)."""
+    m = len(cntA)
+    nA, nB = float(cntA.sum()), float(cntB.sum())
+    if nA < 2 or nB < 2:
+        return {"nA": nA, "nB": nB, "diff": np.nan, "lo": np.nan, "hi": np.nan, "p_one": np.nan}
+    pcA, psA = _prefix(np.concatenate([cntA, cntA])), _prefix(np.concatenate([sumA, sumA]))
+    pcB, psB = _prefix(np.concatenate([cntB, cntB])), _prefix(np.concatenate([sumB, sumB]))
+    starts, nb = _starts(m, block, reps, seed)
+    ca, sa = (pcA[starts + block] - pcA[starts]).sum(axis=1), (psA[starts + block] - psA[starts]).sum(axis=1)
+    cb, sb = (pcB[starts + block] - pcB[starts]).sum(axis=1), (psB[starts + block] - psB[starts]).sum(axis=1)
+    ok = (ca > 0) & (cb > 0)
+    d = sa[ok] / ca[ok] - sb[ok] / cb[ok]
+    diff = float(sumA.sum() / nA - sumB.sum() / nB)
+    cen = d - d.mean()
+    ds = np.sort(d)
+    return {"nA": int(nA), "nB": int(nB), "diff": diff, "meanA": float(sumA.sum() / nA), "meanB": float(sumB.sum() / nB),
+            "lo": float(ds[int(0.025 * len(ds))]), "hi": float(ds[min(len(ds) - 1, int(0.975 * len(ds)))]),
+            "p_one": float((np.sum(cen >= diff) + 1.0) / (len(d) + 1))}

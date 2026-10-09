@@ -277,6 +277,35 @@ class TestStats(unittest.TestCase):
         self.assertLess(r0["lo"], 0)
         self.assertGreater(r0["hi"], 0)
 
+    def test_pooled_contrast_matches_single_pair_and_pools_by_count(self):
+        rng = np.random.default_rng(9)
+        m = 1500
+        a = rng.random(m) < 0.1
+        bb = (~a) & (rng.random(m) < 0.1)
+        val = rng.normal(0, 1, m) + 0.5 * a
+        single = vstats.contrast(a, bb, val, block=5, reps=400, seed=3)
+        pooled = vstats.pooled_contrast(a.astype(float), a * val, bb.astype(float), bb * val, 5, reps=400, seed=3)
+        self.assertAlmostEqual(single["diff"], pooled["diff"], places=12)
+        self.assertAlmostEqual(single["lo"], pooled["lo"], places=12)
+        self.assertEqual(single["nA"], pooled["nA"])
+        # pooling two pairs weights by instance counts: A1 (n=2, mean 1), A2 (n=1, mean 4) -> pooled mean A = (2*1+4)/3 = 2; B: (n=1, 0), (n=1, 2) -> 1
+        cA = np.array([2.0, 1.0, 0, 0, 0, 0]); sA = np.array([2.0, 4.0, 0, 0, 0, 0])
+        cB = np.array([0, 0, 1.0, 1.0, 0, 0]); sB = np.array([0, 0, 0.0, 2.0, 0, 0])
+        r = vstats.pooled_contrast(cA, sA, cB, sB, 2, reps=50, seed=1)
+        self.assertAlmostEqual(r["meanA"], 2.0)
+        self.assertAlmostEqual(r["meanB"], 1.0)
+        self.assertAlmostEqual(r["diff"], 1.0)
+
+    def test_pooled_contrast_one_sided_p(self):
+        rng = np.random.default_rng(10)
+        m = 3000
+        a = (rng.random(m) < 0.1).astype(float)
+        bb = ((a == 0) & (rng.random(m) < 0.1)).astype(float)
+        good = vstats.pooled_contrast(a, a * (rng.normal(0, 1, m) + 1.0), bb, bb * rng.normal(0, 1, m), 5, reps=500, seed=1)
+        null = vstats.pooled_contrast(a, a * rng.normal(0, 1, m), bb, bb * rng.normal(0, 1, m), 5, reps=500, seed=1)
+        self.assertLess(good["p_one"], 0.01)
+        self.assertGreater(null["p_one"], 0.02)
+
     def test_mean_ci_and_bh(self):
         ev = np.ones(500, dtype=bool)
         val = np.full(500, 2.0)
