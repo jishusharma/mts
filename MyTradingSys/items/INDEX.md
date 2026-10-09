@@ -114,4 +114,12 @@ B142 | OPEN    | B142_extrasetupbuilder_1m_stop_unsourced.md | ExtraSetupBuilder
 B143 | OPEN    | B143_cryptocred_stop_buffer_and_target_unsourced.md | CryptoCred 0.1 pct stop buffer and 1.5R target NO-SOURCE; filing only
 B144 | OPEN    | B144_exhaustion_proxy_unsourced_params.md | exhaustion proxy SCB volume 2x over 240 1m bars NO-SOURCE (tag SCREENER); filing only
 B145 | OPEN    | B145_cc_range_noise_live_neutrality.md | stopped-loop neutrality test needed before classify_msb filter_range_noise goes live (flag stays off)
+B146 | OPEN    | B146_no_min_stop_after_floor_removal.md | no min stop width; fees dominate tiny stops; from AUDIT_MAJOR_GAPS_2026-10-09.md
+B147 | OPEN    | B147_tom_live_rule_evidence_unreliable.md | Tom live-rule evidence unreliable; from AUDIT_MAJOR_GAPS_2026-10-09.md
+B148 | OPEN    | B148_dlm_reauth_main_account_and_account_drops.md | DLM re-auth as main; account drops; orphan gaps; from AUDIT_MAJOR_GAPS_2026-10-09.md
+B149 | OPEN    | B149_l6_pnl_source_tracker_stale_settlement_gap.md | L6 PnL source: tracker stale, settlement gap; from AUDIT_MAJOR_GAPS_2026-10-09.md
+B150 | OPEN    | B150_gate_is_hand_maintained_allowlist.md | gate allow-list misses live-path tests; from AUDIT_MAJOR_GAPS_2026-10-09.md
+B151 | OPEN    | B151_backtest_fill_optimism_and_selection.md | cc limit-fill optimism; from AUDIT_MAJOR_GAPS_2026-10-09.md
+B152 | OPEN    | B152_retention_deletes_read_data_and_deploy_trap.md | retention deletes read data; deploy trap; from AUDIT_MAJOR_GAPS_2026-10-09.md
+B153 | OPEN    | B153_netrr_floor_ownerless_and_cross_language_parity.md | net_rr floor ownerless; parity indirect; from AUDIT_MAJOR_GAPS_2026-10-09.md
 # END

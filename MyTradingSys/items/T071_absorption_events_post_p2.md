@@ -31,3 +31,8 @@ Must pre-register:
 
 Output: MyTradingSys/research/P7_ABSORPTION_POST_P2_YYYY-MM-DD.md
 Result: Signal-time absorption signatures (n, mean volume, forward return) vs placebo
+
+## Evidence added 2026-10-09 (volume study, MTS-2026-10-09-APP-ANA-btc-volume)
+
+Absorption / exhaustion defined on 4h bars (RVadj >= 2 with range <= 0.8 x ATR14; or RVadj >= 2 at a 20-bar extreme closing off it) occur only 36-82 times in 4.5 years of BTC, so the registered 4h test is INSUFFICIENT-N (V1_DEV_RESULTS.md); descriptive numbers
+(NOT evidence) are in V4_RESULTS.md, e.g. buying climax followed by +141 bp over 3 days [+12, +259] vs +36 bp for all bars, absorption in an uptrend +462 bp over 7 days [+139, +812]. The test belongs at 1m / aggTrades where n is large; thresholds there need their own pre-registration.
