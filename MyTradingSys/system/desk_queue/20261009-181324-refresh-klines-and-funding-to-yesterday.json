@@ -4,7 +4,9 @@
   "id": "20261009-181324-refresh-klines-and-funding-to-yesterday",
   "need": "Run scripts/dev/refresh_klines.py and the funding fetch in MyTradingSys/backtest/fetch_bars.py for the symbols in the registry; no mainnet keys (public endpoints only). Print row counts and last timestamp per file.",
   "posted": "2026-10-09T18:13:24Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-09T18:48:43Z",
+  "taken_by": "JIS-NB",
   "target": "DSA",
   "title": "Refresh klines and funding to yesterday"
 }
