@@ -1,0 +1,2 @@
+strategy,cells,n_trades_all_cells,n_skipped_all_cells,n_no_fill,n_no_instrument,fill_rate,elapsed_s
+R2,2,103,1487,134,728,0.4346,328.4

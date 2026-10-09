@@ -1,0 +1,25 @@
+{
+ "data": [
+  {
+   "date": "2026-10-08",
+   "delivery_price": 83041.87
+  },
+  {
+   "date": "2026-10-07",
+   "delivery_price": 84206.91
+  },
+  {
+   "date": "2026-10-06",
+   "delivery_price": 85481.74
+  },
+  {
+   "date": "2026-10-05",
+   "delivery_price": 86249.11
+  },
+  {
+   "date": "2026-10-04",
+   "delivery_price": 84977.42
+  }
+ ],
+ "records_total": 2632
+}
