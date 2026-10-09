@@ -92,6 +92,20 @@ class SyncTest(unittest.TestCase):
         self.assertIn("Tom alerts fire on 3m", buf.getvalue())
         self.assertIn("Result: 4 alerts in 2h replay", buf.getvalue())
 
+    def test_where_flags_unshipped_commit_and_clears_after_ship(self):
+        commit(self.a, "w.txt", "w
+")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            sync.where(self.a)
+        self.assertIn("UNSHIPPED", buf.getvalue())
+        self.assertIn("unshipped-commits=1", buf.getvalue())
+        sync.ship(self.a, gate=self.gate)
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            sync.where(self.a)
+        self.assertNotIn("UNSHIPPED ", buf.getvalue())
+
     def test_failed_gate_pushes_nothing(self):
         commit(self.a, "bad.py", "x\n")
 

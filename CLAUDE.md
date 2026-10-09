@@ -4,6 +4,7 @@ Read first: `MyTradingSys/research/STATUS.md` (regenerate: `python scripts/dev/m
 then `MyTradingSys/system/LESSONS_LEARNED.md`; supervisor decisions: `research/fast_track_2026-09-27/SUPERVISOR_LOG.md`. Don't re-read handoff docs STATUS.md already summarises.
 Chat-surface (DSA) behaviour lives in `DSA_SESSION_PROMPT.md`; this file is for code mode.
 Parallel work (any machine, any account): `MyTradingSys/system/PARALLEL.md` - `sync.py start`, commit, `sync.py ship`.
+Same-page check on either Claude account, and before ending a session: `python scripts/dev/sync.py where` (lists worktrees holding work not on origin/fast-track); commit + ship anything flagged.
 Surfaces, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md`.
 
 ## What a CL prompt carries

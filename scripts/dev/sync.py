@@ -3,6 +3,7 @@
   python scripts/dev/sync.py start   # bring this checkout up to date with origin/fast-track
   python scripts/dev/sync.py ship    # merge origin/fast-track, gate, push HEAD to origin/fast-track
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
+  python scripts/dev/sync.py where   # every worktree: commits not on origin/fast-track, uncommitted files (nothing lost?)
 
 Rules live in MyTradingSys/system/PARALLEL.md. The live tree (a checkout holding the gitignored marker
 file .mts_live) is never synced or shipped from: the running system imports it, so it changes only by
@@ -113,8 +114,38 @@ def news(repo, hours=24):
     print("\n".join(lines) if lines else f"nothing shipped in the last {hours} h")
 
 
+def worktrees(repo):
+    """[(path, branch)] of every worktree of this repo."""
+    out, rows, cur = git(repo, "worktree", "list", "--porcelain").stdout, [], {}
+    for line in out.splitlines() + [""]:
+        if not line:
+            if cur.get("worktree"):
+                rows.append((cur["worktree"], cur.get("branch", "(detached)").replace("refs/heads/", "")))
+            cur = {}
+        else:
+            k, _, v = line.partition(" ")
+            cur[k] = v
+    return rows
+
+
+def where(repo):
+    """Same-page check for any account or machine: what is shipped, and what is still only in a worktree."""
+    git(repo, "fetch", "--quiet", "origin", TRUNK)
+    tip = git(repo, "log", "-1", "--format=%h %ar %s", f"origin/{TRUNK}").stdout.strip()
+    print(f"origin/{TRUNK}: {tip}")
+    open_items = 0
+    for path, branch in worktrees(repo):
+        ahead = git(Path(path), "rev-list", "--count", f"origin/{TRUNK}..HEAD").stdout.strip()
+        dirty = [l for l in git(Path(path), "status", "--short").stdout.splitlines() if l]
+        tracked = sum(1 for l in dirty if not l.startswith("??"))
+        flag = "ok" if ahead == "0" and not dirty else "UNSHIPPED"
+        open_items += flag != "ok"
+        print(f"{flag:9} {Path(path).name:28} [{branch}] unshipped-commits={ahead} modified={tracked} untracked={len(dirty) - tracked}")
+    print(f"{open_items} worktree(s) hold work that is not on origin/{TRUNK}; commit and `sync.py ship` them (the live tree is shipped by its owners)")
+
+
 def main(argv):
-    cmds = {"start": start, "ship": ship, "news": news}
+    cmds = {"start": start, "ship": ship, "news": news, "where": where}
     if not argv or argv[0] not in cmds or (argv[0] != "news" and len(argv) != 1):
         print(__doc__)
         return 2
