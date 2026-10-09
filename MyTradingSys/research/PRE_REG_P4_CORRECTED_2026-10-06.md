@@ -36,3 +36,5 @@ For each quarter-hour open bar i:
 ---
 
 Result block (to be appended after computation):
+
+**RESULT (2026-10-08): NO REPLICATION at 4h, 8h, 12h.** Gross mean +0.43 / +0.10 / -0.24 bp vs 10 bp fee; sign unstable by year. Detail and the interpretation choices this pre-reg left open: `P4_QUARTER_HOUR_IMBALANCE_CORRECTED_2026-10-08.md`.

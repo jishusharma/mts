@@ -73,6 +73,12 @@ MyTradingSys/execution/auto_trades.jsonl
 MyTradingSys/execution/trade_ledger.jsonl
 MyTradingSys/execution/auto_trader_state.json*
 
+# --- Screenshot images (extracts are committed, raw images are not) ---
+runtime_data/screenshot_extracts/img/
+
+# --- Live tree marker (only in the JIS-NB checkout the live system runs from; see system/PARALLEL.md) ---
+.mts_live
+
 # --- Backups / rejected worker output (archive via scripts/dev/declutter_backups.py) ---
 *.pre_*
 *.rejected_*
@@ -124,6 +130,13 @@ MyTradingSys/runtime/queue/
 # Pre-registration trial registry (TF8 L3 run, B099). Tracked on fast-track.
 !MyTradingSys/research/fast_track_2026-09-27/bt_runs/
 !MyTradingSys/research/fast_track_2026-09-27/bt_runs/TRIAL_REGISTRY.csv
+<<<<<<< HEAD
 
 # options module raw data
 MyTradingSys/options/data/
+=======
+# Live-session observation store (methodology/observation_capture_protocol.md)
+runtime_data/observations/
+# Orderflow recorder resume state: runtime only. Tracking it let a Git op wind it back to Oct 3 (2026-10-07 stall).
+MyTradingSys/runtime/orderflow_live/_state.json
+>>>>>>> b2bf1d41898fb883a8d56590b0a05afc43c7f737

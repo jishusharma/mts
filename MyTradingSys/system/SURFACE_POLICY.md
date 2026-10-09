@@ -1,6 +1,6 @@
 # SURFACE POLICY - routing, handoff, budget, naming (all surfaces read at boot)
 
-Size: no enforced limit; DSA boot pastes need only sections 0-2. Tiers: CLAUDE.md work routing. Machines: WORKSTATION_MODES.md.
+Keep under 4 KB (it is in every DSA boot paste). Tiers: CLAUDE.md work routing. Machines: WORKSTATION_MODES.md.
 
 ## 0. Mode (operator, direct, 2026-09-30)
 Auto mode: reversible work -> safe default, act, log it in the session record. Irreversible or
@@ -9,17 +9,17 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 ## 1. Surfaces and ownership
 | Surface | Reach | Owns |
 |---|---|---|
-| APP desktop, Code mode (default, incl. SUP) | full tree, queue, live processes, testnet, commits, scheduled tasks (hourly-builder-check, dsa-feeder) | live path, restarts, HALT, promote/merge, commits, chat supervision |
-| CLI desktop (fallback) | same reach | only what a Claude Code session cannot do |
+| CLI desktop (SUP) | full tree, queue, live processes, testnet, commits | live path, restarts, HALT, promote/merge, commits |
+| APP desktop | scheduled tasks (hourly-builder-check, dsa-feeder) | chat supervision, scheduled checks |
 | LAP laptop CLI | read-only monitors, queue share | questions, monitoring |
 | ASK poller | headless claude -p; default haiku, escalation sonnet | status questions |
-| DSA chat (chat.deepseek.com) | pasted text, plus disk under IdeaProjects through AIBridge blocks the operator clicks Run on (a WORKER chat has no bridge) | long-context reading, extraction, rulebooks, scanning and editing the repo |
+| DSA chat (chat.deepseek.com) | direct mode: shell in the project working tree via AIBridge; paste mode when the bridge is down | long-context reading, extraction, rulebooks, registry writes |
 | CLD cloud (free pool) | pushed git refs only; no LAN, no gitignored files | offline research, specs, reviews, docs, backtests on committed data |
-| AIBridge (F:\AIBridge) | loopback agent 127.0.0.1:7181 + Chrome extension; open mode (read/write/delete under IdeaProjects on click; secrets, keys, HALT refused; auto-run read-only) | PowerShell on desktop, on request from a web AI |
-Builders never edit a file a live process imports (auto_trader, position_manager, daily_loss_monitor, live_runner_cli) in place: stage `.new`, gate, promote (CLAUDE.md hard rules). Other files: edit, gate, commit.
+| AIBridge (F:\AIBridge) | loopback agent 127.0.0.1:7181, Chrome MV3 extension; reach = project working tree, delete allowed (AIBRIDGE_LANE.md) | PowerShell on desktop, run by DSA directly |
+Builders work in a work tree, never the live tree; sharing and deploy: PARALLEL.md.
 
 ## 1b. Surface choice (operator directive 2026-10-04)
-App first, always (operator, re-stated 2026-10-08: CLI only if a Claude Code session cannot do the task). Claude Code Win App (Code / Cowork / Chat / Cloud modes) covers
+App first, always. Claude Code Win App (Code / Cowork / Chat / Cloud modes) covers
 every reach: local Maven, local testnet, the live loop, PowerShell-only files,
 scripts that import from the repo tree, and writes to gitignored paths.
 CLI is a fallback, not a default.
@@ -28,12 +28,9 @@ Choose by what the task needs, not by what this policy lists first.
 State the reason in the session record when a surface other than the App is chosen.
 
 ## 2. Handoff
-A handoff is a file in the receiver's inbox that names the sender's session ID.
-SUP: research/fast_track_2026-09-27/SUPERVISOR_INBOX.md. AIBridge: F:\AIBridge\HANDOFF.md. DSA worker: incoming_dsa/.
-Poller: Dumps/operator/inbox. Cloud: MyTradingSys/system/CLOUD_INBOX.md (desktop commits and pushes).
-Cloud returns commits on its branch plus its session record; SUP gates, merges, logs in SUPERVISOR_LOG.
-A cloud session sees one repo; cross-repo work (CBP owns mts_queue/, MTS writes acks/ only) runs on the desktop.
-Before starting a task, grep MyTradingSys/system/sessions/ and the inboxes for its slug; skip duplicates.
+Replaced by PARALLEL.md (2026-10-07): work is handed off by shipping commits to origin/fast-track;
+an open question for the operator goes in the commit body as `Operator: <question>`. DSA (no disk) still
+pastes into incoming_dsa/; AIBridge still uses F:\AIBridge\HANDOFF.md.
 
 ## 3. Budget (Session Manager governs; operator supplies values when needed)
 
@@ -97,9 +94,7 @@ spent in 9 minutes; Waves 1-2 lost uncommitted.
 ## 4. Naming
 Session ID: MTS-YYYY-MM-DD-HHMMZ-<SURF>-<ROLE>[-<slug>] (UTC start; slug <=20 chars, lowercase kebab).
 SURF: CLD APP CLI LAP DSA ASK. ROLE: SUP BLD ANA EXT MON COO WRK. Chat title = session ID.
-Record: MyTradingSys/system/sessions/<ID>.md (template: sessions/README.md). Predecessor = newest record
-with the same -<SURF>-<ROLE>, also named in the record.
-Commit trailer: MTS-Session: <ID>.
+Record: the commit trailer `MTS-Session: <ID>` (commit history is the registry; sessions/ is history, no new files).
 Cloud branch: cloud/work; cloud/YYYY-MM-DD-<slug> only for concurrent Cloud sessions. Harness-assigned
 names (claude/...) are recorded as branch_alias, never reused.
 Lanes: bridge-nb = F:\AIBridge; dsaweb-nb = incoming_dsa/; ask-nb = poller. Directories are not renamed.

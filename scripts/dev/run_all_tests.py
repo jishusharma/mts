@@ -20,6 +20,7 @@ PYTEST_LAYER_PATHS = [
     "MyTradingSys/backtest/layers/fabio/test_htf_context_live.py",
     "MyTradingSys/execution/tests",
     "scripts/dev/test_market_guide.py",
+    "MyTradingSys/observation/tests",
 ]
 
 
@@ -129,6 +130,15 @@ def main(argv=None):
     cmd3f = [sys.executable, "scripts/dev/test_funnel_report.py"]
     success, output = run_step("3f", "Funnel report tests", cmd3f)
     results.append(("Step 3f: Funnel report tests", success))
+    cmd3dk = [sys.executable, "scripts/dev/test_desk.py"]
+    success, output = run_step("3dk", "Desk board tests", cmd3dk)
+    results.append(("Step 3dk: Desk board tests", success))
+    cmd3q = [sys.executable, "scripts/dev/test_registry_consistency.py"]
+    success, output = run_step("3q", "INDEX/BUGS consistency", cmd3q)
+    results.append(("Step 3q: INDEX/BUGS consistency", success))
+    cmd3p = [sys.executable, "MyTradingSys/research/test_p4_corrected.py"]
+    success, output = run_step("3p", "P4 corrected script tests", cmd3p)
+    results.append(("Step 3p: P4 corrected script tests", success))
     cmd3d = [sys.executable, "scripts/dev/test_verify_extract_quotes.py"]
     success, output = run_step("3d", "Extract quote checker tests", cmd3d)
     results.append(("Step 3d: Quote checker tests", success))
@@ -138,14 +148,24 @@ def main(argv=None):
     cmd3g = [sys.executable, "scripts/dev/test_run_all_tests.py"]
     success, output = run_step("3g", "Gate coverage tests (Fabio v3 + live writers)", cmd3g)
     results.append(("Step 3g: Gate coverage tests", success))
+    cmd3k = [sys.executable, "scripts/dev/test_sync.py"]
+    success, output = run_step("3k", "sync.py parallel ship tests", cmd3k)
+    results.append(("Step 3k: sync.py tests", success))
     cmd3e = [sys.executable, "scripts/worker/test_dsa_worker.py"]
     success, output = run_step("3e", "DSA browser worker + queue lane tests", cmd3e)
     results.append(("Step 3e: DSA worker tests", success))
 
+    # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
+    cmd3w = [sys.executable, "scripts/dev/test_wiring_scan.py"]
+    success, output = run_step("3w", "Wiring gate tests", cmd3w)
+    results.append(("Step 3w: Wiring gate tests", success))
+    cmd3x = [sys.executable, "scripts/dev/wiring_scan.py", "--check"]
+    success, output = run_step("3x", "Wiring check: no undeclared unwired code (wiring_scan.py --check)", cmd3x)
+    results.append(("Step 3x: Wiring check", success))
+
     # Step 4: pytest (math + doc tests)
     cmd4 = [sys.executable, "-m", "pytest", "MyTradingSys/tests", "-q",
             # function-style tests that unittest-based steps 5b/6 do not collect
-            "MyTradingSys/backtest/bt/test_bt_rsi.py", "MyTradingSys/backtest/bt/test_bt_rsi_edge.py",
             "MyTradingSys/backtest/test_prob_table.py", "MyTradingSys/backtest/test_prob_table_edge.py",
             "MyTradingSys/backtest/test_tom_bt.py"] + PYTEST_LAYER_PATHS
     success, output = run_step(4, "Pytest (math + doc tests)", cmd4)

@@ -1,0 +1,26 @@
+# B150 - The test gate is a hand-maintained allow-list: new live-path safety tests (dlm_failure_cap, auto_trader_blocklist, auto_trader_sizes) are not in it; the calibration test pins an empty blocklist; nothing in code enforces restoring the parked blocklist
+
+Status: OPEN. Severity: MED. Opened 2026-10-09.
+Session: MTS-2026-10-09-APP-ANA-major-gaps-audit. Source: research/AUDIT_MAJOR_GAPS_2026-10-09.md (audit revalidated by four read-only workers; no code edited).
+
+## Defect
+
+The test gate is a hand-maintained allow-list: new live-path safety tests (dlm_failure_cap, auto_trader_blocklist, auto_trader_sizes) are not in it; the calibration test pins an empty blocklist; nothing in code enforces restoring the parked blocklist.
+
+## Evidence
+
+- scripts/dev/run_all_tests.py:91-97 lists execution test modules by name. Worker count: 173 tracked test_*.py, 154 run by the full gate, 19 not run, of which 14 are live code tests, incl. execution/test_dlm_failure_cap.py, test_auto_trader_blocklist.py, test_auto_trader_sizes.py, test_auto_trader_confirm.py (all pass when run by hand, 38 tests). I re-checked that run_all_tests.py names test_dlm_aggregate and test_orphan_sweep_loop but not these. A regression in the DLM failure cap would not fail the gate.
+- Three ungated tests FAIL at HEAD (test_audit_t0_checks::test_find_leftover_names_matches_rejected_and_raw, two in tests/test_worker_prefix_hash.py): look Windows-specific, undiagnosed.
+- auto_trader_config.json (2026-10-08, '_calibration') parked trade_blocklist; routes ~21 prefixes to jishu_1..jishu_21 with size_overrides 20-1000 USD. Nothing in code reads trade_blocklist_parked or _calibration. test_auto_trader_blocklist.py:96 test_shipped_calibration_config_blocks_no_layer ASSERTS an empty blocklist, so restoring the list (as _calibration instructs) will fail the gate. Mainnet itself stays protected independently (executor called without --mainnet, typed confirmation at deribit_orders.py:177-199, named accounts refused on mainnet :153-155, 50 USD cap).
+
+## Fix shape
+
+Make the gate discover tests (glob test_*.py, with an explicit skip-list that needs a reason) or add a check that fails when a tracked execution/ test is neither listed nor skip-listed. Diagnose the 3 failing ungated tests. Replace the empty-blocklist assertion with a check that either the blocklist is present or a calibration flag explicitly allows empty, and add a mainnet-path guard that refuses non-empty-size_overrides/empty-blocklist config.
+
+## Related
+
+- MyTradingSys/research/AUDIT_MAJOR_GAPS_2026-10-09.md
+
+## Receipt
+
+# END

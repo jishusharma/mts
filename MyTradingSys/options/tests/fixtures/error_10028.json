@@ -1,0 +1,11 @@
+{
+ "error": {
+  "code": 10028,
+  "data": {
+   "reason": "too_many_requests"
+  },
+  "message": "Too many requests"
+ },
+ "jsonrpc": "2.0",
+ "testnet": false
+}

@@ -554,6 +554,16 @@ prompt_check.ps1 check 12 (code gate); B133 item doc.
 
 Receipt: B133 filed df5059e.
 
+## 2026-10-08 - `git stash push -- <pathspec>` emptied the index while renames were staged
+
+What happened: during the wiring cleanup, a fail-before proof used `git stash push -- <paths>` while `git mv` renames were
+staged. The index came back empty (status showed everything as deleted/untracked); working-tree files were intact.
+Recovery: `git read-tree HEAD` rebuilt the index without touching files, then the changes were re-staged by explicit path.
+Nothing lost, but a parallel session's staged work in the same tree would have been wiped.
+
+Rule: no `git stash` in a shared tree (CLAUDE.md already bans it). Fail-before proofs copy the old file aside
+(or run the test against `git show HEAD:<path>` written to a scratch dir), they do not stash.
+
 ## 2026-10-09 - commit swept another session's staged files
 What happened: commit 02e7598 (DSA slim boot) also contained four files another session had staged: backtest/layers/alerts/live_runner_cli.py, alerts/test_live_runner_wiring.py, consensus/hook.py, consensus/test_hook.py. I added exact paths but never listed the staged set before committing.
 Rule that prevents it: run the staged-file list (names only) right before every commit; if it holds a path you did not write, unstage it first (CLAUDE.md hard rule: no reset, so unstage only that path).
