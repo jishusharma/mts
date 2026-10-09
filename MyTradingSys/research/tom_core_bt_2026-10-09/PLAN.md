@@ -29,7 +29,7 @@ Statistics rules that bind every phase (Tom's words, not choices): report win ra
 
 ## 3. Phases
 1. (done, this file) Inventory, data check, order.
-2. Pivot-anchored profile touch study exactly as FORMULAS 18 (build `backtest/vp_pivot_probe.py` + tests whose expected numbers are the worked examples in 18.1-18.7; Sonnet implements, tests first). Families session, prior_day, prior_week, weekly, A1(n,k), A2(n,k) and the 18.6 placebo. Add the R-5Ljf-7 body-midpoint vs POC measurement as a side table. Output: per family hit / stop / timeout, mean net R with day-block bootstrap CI, longest losing streak, split by year.
+2. (done 2026-10-09, `PHASE2_RESULT.md`: no anchor has an edge, none beats placebo) Pivot-anchored profile touch study exactly as FORMULAS 18 (build `backtest/vp_pivot_probe.py` + tests whose expected numbers are the worked examples in 18.1-18.7; Sonnet implements, tests first). Families session, prior_day, prior_week, weekly, A1(n,k), A2(n,k) and the 18.6 placebo. Add the R-5Ljf-7 body-midpoint vs POC measurement as a side table. Output: per family hit / stop / timeout, mean net R with day-block bootstrap CI, longest losing streak, split by year.
 3. Trade rules on the winning anchor from phase 2: R-QClP-2/3 targets and stops, R-5Ljf-4/5 counter long at VAL. Needs FORMULAS entries first (target = next node above, stop = node below / PDL).
 4. Profile-shape classifier (trend vs balance) and R-Of_w-5 / R-QClP-1. Needs a sourced definition; if none is found it stays NO-SOURCE and is reported as a varied choice.
 Footprint rules wait for aggTrades.

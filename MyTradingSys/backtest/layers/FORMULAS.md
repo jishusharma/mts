@@ -468,6 +468,7 @@ stream is still open (its exit bar >= this bar).
 `gross_R = side * (exit - L) / R`; `net_R = (side * (exit - L) - fee_in * L - fee_out * exit) / R`, fees as fractions of
 price from `backtest/fees.py`: primary all-taker `BINANCE_TAKER = 0.0005` on entry and exit; stated variant entry and
 target maker `BINANCE_MAKER = 0.0002`, stop and timeout taker.
+H = 48 five-minute bars (4h): NO-SOURCE, set as the phase 2 default 2026-10-09, not tuned.
 *Worked:* long, L = 100, R = 2, target 102 reached, taker: `net_R = (2 - 0.0005*100 - 0.0005*102) / 2 = 0.9495`. Stop
 (98): `(-2 - 0.05 - 0.049) / 2 = -1.0495`. Timeout at 100.5: `(0.5 - 0.05 - 0.05025) / 2 = 0.19987`.
 
