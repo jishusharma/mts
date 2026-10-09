@@ -37,7 +37,7 @@ n_trades: 1 (hypothetical, long, ends without outcome)
 | 14 | 73 | PROOF (after the price point, before the order) | long | - | macro data | "are the data points, specifically the inflation data" and growth data "still holding steady" | news | "within that critical range where stock markets are truly supported" |
 | 15 | 81 | TARGET_SET | long | measured from the entry point upwards | distances of earlier moves | "these distances here are my minimum profit target" | swing high/low distances | "I calculate them from here" |
 | 16 | 85 | STOP_SET | long | a level below entry | past corrections | "this is the absolute maximum it has gone down in the past" ; "this level right here is now my defined risk" | swing low (largest past correction) | none stated |
-| 17 | 91 | CONTEXT | long | - | R:R | "my profit is about twice as large as my risk" | - | "check all the evidence provided that my idea can now be implemented" |
+| 17 | 91 | CONTEXT | long | - | R:R | "my profit is about twice as large as my risk" | - | "check, uh all the evidence provided that my idea can now be implemented" |
 | 18 | 98 | LESSON | - | - | - | "Does this align with the idea of the major market participants?" (to be checked "again and again") | - | none stated |
 | 19 | 96 | LESSON | - | - | key figures | "you absolutely must determine the key figures for yourself, so that you don't take any unnecessary risk" | - | none stated |
 | 20 | 93 | LESSON | - | stocks in sectors | - | "Try doing the whole thing with stocks" in "the corresponding sectors" | - | none stated |
@@ -137,7 +137,7 @@ R-etg6-1 | T5-like instruction in his own words ("You absolutely have to screen 
 - Source: [T/etg6j0JybfE:7@1360]
 - Naked BTC chart test: not chart-observable. BTC has no quarterly reports: not applicable to BTC. Event risk equivalent (funding times, macro releases) is NO-SOURCE here.
 
-R-etg6-2 | T1 (example) | Buy side needs "liquidity entering": volume low, then rising again in the area, before the trade.
+R-etg6-2 | T1 (example) | Buy side needs "liquidity seems to be entering the market": volume low, then rising again in the area, before the trade.
 - Source: [T/etg6j0JybfE:7@5269] ; [T/etg6j0JybfE:7@5448]
 - Naked BTC chart test: a volume histogram under the price (the rule names volume): volume bars shrink over a stretch near the highs, then bar height rises again. Measurable on a bare BTC chart with its volume pane. NO-SOURCE for how long the decrease must last, how much the increase must be, and the timeframe.
 
@@ -155,7 +155,7 @@ R-etg6-5 | T1 (example, he did it on the chart) | Stop for a long = entry minus 
 
 R-etg6-6 | T1 (example) | Target for a long = at least the distances of the earlier up moves ("minimum profit target"), measured up from the entry; check that profit is "about twice as large as my risk".
 - Source: [T/etg6j0JybfE:7@8777] ; [T/etg6j0JybfE:7@9549]
-- Naked BTC chart test: on a bare BTC chart measure the prior up swings and project the same distance above the entry. Which up swing is NO-SOURCE. The 2:1 is his picture's outcome ("I already see"), not a stated minimum: T3 one calculation, never a "minimum R:R 2" (Part J lists this exact error).
+- Naked BTC chart test: on a bare BTC chart measure the prior up swings and project the same distance above the entry. Which up swing is NO-SOURCE. The 2:1 is his picture's outcome ("I already see"), not a stated minimum: T3 one calculation, never a minimum-R:R-2 rule (Part J lists this exact error).
 
 R-etg6-7 | T1 | Horizon: swing trades are held "three, four, at most seven or eight days".
 - Source: [T/etg6j0JybfE:7@863]
