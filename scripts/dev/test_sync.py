@@ -65,6 +65,18 @@ class SyncTest(unittest.TestCase):
         sync.ship(self.a, gate=self.gate)
         self.assertEqual(self.gated, [self.a])
 
+    def test_claim_visible_to_other_clone_and_collision_refused(self):
+        sync.claim(self.a, "Build thing one", area="scripts/dev", gate=self.gate)
+        self.assertEqual(self.gated, [])  # claim files are docs: no gate
+        sh(self.b, "pull", "-q", "origin", "fast-track")
+        rows = sync.read_claims(self.b, "HEAD")
+        self.assertEqual([r[0] for r in rows], ["build-thing-one"])
+        with self.assertRaises(sync.SyncError):
+            sync.claim(self.b, "Build thing one", gate=self.gate)
+        sync.release(self.b, "build-thing-one", gate=self.gate)
+        sh(self.a, "pull", "-q", "origin", "fast-track")
+        self.assertEqual(sync.read_claims(self.a, "HEAD"), [])
+
     def test_live_tree_refused(self):
         (self.a / sync.LIVE_MARKER).write_text("", newline="\n")
         with self.assertRaises(sync.SyncError):

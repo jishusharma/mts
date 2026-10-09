@@ -5,6 +5,8 @@ then `MyTradingSys/system/LESSONS_LEARNED.md`; supervisor decisions: `research/f
 Chat-surface (DSA) behaviour lives in `DSA_SESSION_PROMPT.md`; this file is for code mode.
 Parallel work (any machine, any account): `MyTradingSys/system/PARALLEL.md` - `sync.py start`, commit, `sync.py ship`.
 Same-page check on either Claude account, and before ending a session: `python scripts/dev/sync.py where` (lists worktrees holding work not on origin/fast-track); commit + ship anything flagged.
+Start ritual for any account or device (full text in PARALLEL.md): `sync.py start` (prints open claims), pick ONE task from NEXT_SESSION.md,
+`sync.py claim "<task>"`, work, `sync.py ship`, `sync.py release <slug>`, `sync.py where` clean.
 Surfaces, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md`.
 
 ## What a CL prompt carries
@@ -16,6 +18,11 @@ Surfaces, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md`.
   the operator, or about 50k context tokens, whichever comes first: finish the step, commit and `sync.py ship`, overwrite
   `system/NEXT_SESSION.md` (queue, what waits for the weekly reset, open questions, last commit), confirm `sync.py where`
   is clean, say so in one line, and stop. Live market analysis threads hand off after 5 screenshot reads.
+
+## Standing rules for every account (operator 2026-10-09)
+- Model default is Sonnet for sessions and subagents; Opus only when the operator names it. Subagents only when clearly needed, on Sonnet/Haiku. Cost is the priority.
+- Two Claude accounts share one repo and one queue: whichever has budget takes NEXT_SESSION.md; never idle for a weekly reset.
+- Claim before you work, release when shipped; a claim older than 24 h is stale, ask then release it.
 
 ## Work routing (cheapest tier that can do it; see research/fast_track_2026-09-27/WORKER_ROADMAP.md)
 - T0 script > T1 Haiku > T2 Sonnet > T3 Opus. (Qwen NUC lane decommissioned 2026-10-01; AIBridge on desktop is the run-command surface.)
