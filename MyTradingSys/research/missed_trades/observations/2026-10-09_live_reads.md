@@ -44,3 +44,35 @@ Check against MTS data (live tree, read only):
 Read: bearish divergence into the high with OI building, then the OI flush at 14:57-15:01Z (longs exiting) as price lost the BB mid.
 Confluence: divergence + CVD lower high + OI drop. No MTS signal confirmed it (no live layer watches RSI).
 Invalidation: 1m acceptance back above ~83270 with RSI above ~75. Next levels below: VWAP ~82624, daily POC ~82488.
+
+## R3 - 3m, same 14:30 top seen across timeframes + MTS layer state (chart clock UTC, last bar ~16:27Z, posted 16:30Z)
+- Shot b5f554a9f68a. Source: CoinGlass TV, Binance BTCUSDT 3m, 09:00-16:27Z. Operator's red arrows: 3m divergence at ~14:30.
+- Obs id: chart_read 6657cd911836. Operator ask: divergence checks on every timeframe, and a way to see how it rolls over between them.
+- Not a tested signal: T089 found no fee-net edge for RSI divergence on any timeframe.
+
+Header (chart read 3m): O 82683.4 H 82700.0 L 82676.3 C 82691.6; VWAP 82676.4; BB20 82862.0 / 83046.7 / 82677.3; RSI 38.97, SMA 45.30.
+OI 91.78K drifting down since the 15:00 flush; CVD 3.707K flat; net delta 1.079K flat.
+
+One top, five timeframes (fapi klines, rsi_core 14, rsi_divergence Malkan 3-10, closes):
+- 1m : 14:21 -> 14:34, 14 bars, 3 swing highs between: NOT flagged (non-adjacent, outside 3-10). R2.
+- 3m : 14:21 -> 14:33, 5 bars, close 83160.1 -> 83173.8, RSI 66.5 -> 64.9: FLAGGED (adjacent, inside 3-10).
+- 5m : no pair at this top; earlier 3-10 bearish pairs 11:45->12:00, 12:45->13:05, 13:05->13:15.
+- 15m: 13:00 -> 14:15, 6 bars, close 83013.8 -> 83128.7, RSI 62.1 -> 61.1: FLAGGED.
+- 1h : none (RSI 55.0 at the 15:00 close).
+Roll-over: the 1m pair is too long and too noisy for the sourced window; it compresses into a clean 3-10 pair on 3m and 15m.
+Non-adjacent scan (all earlier swings within 60 bars) gives 98 bearish pairs on 1m since 12:00: long-range on low TFs is mostly noise.
+Live coverage: the runner's divergence detector is 1h only (rsi|malkan_bear|1h, rsi|malkan_bull|1h); 3m is not a live frame.
+
+MTS state at 16:30Z (live tree, read only):
+- Tom: last alert #273 at 14:26Z, NO_TRADE "no candidates", state TWOPEAK/above_vah -> in_va. No Tom alert since. Today: 12 Tom signals, all
+  rejected (WAIT_PROOF / WAIT_TRIGGER), last tom#266 07:04Z. MISMATCH: the alert's SSOT_THESIS text still cites price ~77600 and target 76300
+  (stale, price is ~83100 in the same alert).
+- Fabio: quiet since 14:20Z (v3_grid 1m long signals, unmapped, not traded). Last 15m cvd_absorption bearish ~07:15Z. All fabio counters 0 at 16:30Z.
+- Flow (snapshot 16:30Z): price 82690.7 = 4h VP POC 82686.77 / VAL 82676.66, VWAP 82632.5 rising, daily POC 82488.1, CVD flat, net delta 1h +93,
+  OI flat (+0.07 % 1h), book bid/ask 1.17, nearest unfilled FVG bearish 82725-82773. State code A>L (3 of 5 bullish). Regime RANGE since 14:57Z.
+  Session: day_type balance (provisional), range position 31 %.
+- 16:30Z testnet entries from other layers: cryptocred sr_flip short 15m @82683.5, rsi_events failure short 5m @82696.0, turn_of_candle long 1m @82687.0.
+
+Read: price sits on a cluster (VWAP, BB low, 4h POC/VAL ~82677-82690). The divergence move from the 14:33 top has done ~580 points. Flow is flat:
+no new shorts (OI drifting down), CVD flat. MTS calls it a range, Tom has no candidate, Fabio is silent.
+Falsify: a 3m close back above the BB mid 82862 with OI rising = range holds. Acceptance under 82630 (VWAP) = next daily POC ~82488.
