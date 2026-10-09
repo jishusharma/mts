@@ -33,8 +33,14 @@ class TestAccountLabels(unittest.TestCase):
         p.write_text(json.dumps({"accounts": {"layer:fabio:": "fabio", "layer:x:": "zed", "layer:y:": "fabio"}}), encoding="utf-8")
         self.assertEqual(cli.account_labels(p), ["default", "fabio", "zed"])
 
-    def test_missing_config_falls_back_to_default_plus_fabio(self):
-        self.assertEqual(cli.account_labels(self.tmp / "nope.json"), ["default", "fabio"])
+    def test_missing_config_falls_back_to_every_secret_file_label(self):
+        sd = self.tmp / "secrets"
+        sd.mkdir()
+        for n in ("fabio", "jishu_3", "jishu_12"):
+            (sd / f"testnet_{n}.secret.json").write_text("{}", encoding="utf-8")
+        (sd / "testnet.secret.json").write_text("{}", encoding="utf-8")        # main file is not a label
+        self.assertEqual(cli.account_labels(self.tmp / "nope.json", sd), ["default", "fabio", "jishu_12", "jishu_3"])
+        self.assertEqual(cli.account_labels(self.tmp / "nope.json", self.tmp / "nosuchdir"), ["default"])
 
     def test_bad_labels_in_config_are_dropped(self):
         p = self.tmp / "cfg.json"
@@ -99,6 +105,12 @@ class TestMain(unittest.TestCase):
         rc = self._main({"default": FakeReadClient(), "fabio": FakeReadClient(size=10)})
         self.assertEqual(rc, 3)
         self.assertIn("fabio", self.halt.read_text(encoding="utf-8"))
+
+    def test_confirmed_halt_is_recorded_in_the_log(self):
+        # B148: the CLI path used to log only orphan_seen, so `mts status` never showed a confirmed orphan halt
+        self._main({"default": FakeReadClient(), "fabio": FakeReadClient(size=10)})
+        events = [json.loads(x)["event"] for x in (self.tmp / "log.jsonl").read_text(encoding="utf-8").splitlines()]
+        self.assertEqual(events, ["orphan_seen", "orphan_halt"])
 
     def test_live_heartbeat_for_account_suppresses_halt(self):
         pm_heartbeat.write_heartbeat("p1", account="fabio", pid=77, hb_dir=self.hb)

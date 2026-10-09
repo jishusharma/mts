@@ -78,7 +78,9 @@ class LoopTest(unittest.TestCase):
         lines = self.halt_lines()
         self.assertEqual(len(lines), 1)
         self.assertIn("jishu_7", lines[0])
-        self.assertEqual(sum(1 for _ in self.log.open(encoding="utf-8")), 4)   # all four sweeps ran
+        ev = [json.loads(x)["event"] for x in self.log.open(encoding="utf-8")]
+        self.assertEqual(sum(1 for e in ev if e != "orphan_halt"), 4)          # all four sweeps ran
+        self.assertEqual(ev.count("orphan_halt"), 1)                           # B148: the halt itself is logged once
 
     def test_flat_sweep_resets_the_streak(self):
         self.loop([self.ORPHAN, self.FLAT, self.ORPHAN, self.FLAT])
