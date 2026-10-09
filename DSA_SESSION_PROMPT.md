@@ -202,7 +202,7 @@ Engine rules need three-snapshot proof; non-engine layers do not. Quotes must be
 
 Refresh at session close or on operator request. Keep to this size; history lives in the ledger and the commit log.
 
-Last live read:  2026-10-07T13:17Z (MTS-2026-10-07-1002Z-APP-BLD-research-closeout).
+Last live read:  2026-10-09 (MTS-2026-10-09-DSA-COO; diff rerun confirmed by MTS-2026-10-08-1933Z-APP-ANA-bigtrade-bt).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14. Next trigger: none. Invalidates: none.
 Loop:            UP after the 2026-10-07 restart; verify live PIDs from the boot paste, not from this line.
 Build:           PASS 2026-10-07T10:05Z (Java 147/147, Math 345/345, Doc 5/5); re-gate at close.
@@ -210,7 +210,7 @@ Branch:          fast-track; live tree fast-forwarded to origin/fast-track 5053e
 Results:         CryptoCred setups FAIL (limit-fill); T055 C1/C2 FAIL on full funding; Tom core rerun no edge (live rule 0 signals, was 17).
 Open:            B120, B128, B134, B135, B095, B137, B138, B142-B145; live-path B121, B122, B124, B098 wait for a stopped-loop window; B125 confirm and close; B090 cloud credit (operator).
 Operator decisions owed: Chrome extension connect for T066; TOM-091/092 retag in risk_protocol.md; buy-detection meaning for T067.
-First action next session: month-by-month diff of the live-rule drop (19 SETUP_FORMING to 0): python scripts/dev/diff_tom_rows.py F:/MTS/data/tom_bt F:/MTS/data/tom_bt_2026-10-07, then the 2022-02 join on t. Read-only. Detail: AUDIT_CLOSEOUT_2026-10-07.md.
+First action next session: F-BT-01 fix path - backtest D tunes stop_buffer_atr (stop = structure level +/- k x ATR(TF), BT-TUNED), then staged SetupCandidatesBuilder .new with a fail-first test that stop distance never falls below the tuned buffer; supervisor promotes. Detail: research/bigtrade_2026-10-09/FINDINGS.md F-BT-01.
 
 ## 12. SESSION END
 
