@@ -64,6 +64,10 @@ Surfaces, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md`.
 - Backups/rejects: archive with `python scripts/dev/declutter_backups.py --apply` (moves, never deletes).
 - Never add to `.git/info/exclude`; an ignore that matters goes in `.gitignore` and ships.
 
+## Screenshots (the operator's charts and random images are evidence, not decoration)
+- A hook saves every pasted image and prints `[SCREENSHOT INTAKE] ... SAVED` with ids; no notice = nothing new landed. On the notice: `python scripts/dev/shot.py classify <id> --kind ... --why "<operator's meaning>"`, read, `shot.py read`, `shot.py done`. Never leave a shot `new` at session end (`shot.py status`, also in STATUS.md).
+- Charts of one moment are one set, read together; every claim is MATCH / MISMATCH / NOT_IN_DATA against files you read; file the last two. Process and per-surface rules: `MyTradingSys/methodology/screenshot_intake.md`. Project map (which group an item belongs to): `MyTradingSys/system/PROJECT_MAP.md`.
+
 ## Interview Prep Notes
 - When a thread or project message says "Note this for InterviewPrep", append one entry to `/mnt/project-files/interview_prep/NOTES.md` with date, source link, and status "not yet exported".
 - Jis manually decides when to push entries to F:\Interview Prep project.

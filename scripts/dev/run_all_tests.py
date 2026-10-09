@@ -154,6 +154,12 @@ def main(argv=None):
     cmd3e = [sys.executable, "scripts/worker/test_dsa_worker.py"]
     success, output = run_step("3e", "DSA browser worker + queue lane tests", cmd3e)
     results.append(("Step 3e: DSA worker tests", success))
+    cmd3sh = [sys.executable, "scripts/dev/test_shot.py"]
+    success, output = run_step("3sh", "Screenshot intake tests (save, classify, read, close gates)", cmd3sh)
+    results.append(("Step 3sh: Screenshot intake tests", success))
+    cmd3mg = [sys.executable, "scripts/dev/test_make_groups.py"]
+    success, output = run_step("3mg", "Project group map tests (every row and file has one group)", cmd3mg)
+    results.append(("Step 3mg: Project group map tests", success))
 
     # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
     cmd3w = [sys.executable, "scripts/dev/test_wiring_scan.py"]
