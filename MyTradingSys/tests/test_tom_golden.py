@@ -99,6 +99,9 @@ class TomGolden(unittest.TestCase):
         p.start()
         self.addCleanup(p.stop)
         self.cfg = target_config()
+        # these cases test card normalisation and sizing with 0.04-0.2 % stops; the B146 fee gate (D09) is covered in
+        # execution/test_b146_fee_to_stop.py
+        self.cfg.get("tom", {}).pop("max_fee_to_stop", None)
 
     def sig(self, alert, cfg=None, last=0):
         return at.tom_signal(alert, {"tom_last_alert_no": last}, cfg or self.cfg, NOW)

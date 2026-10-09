@@ -22,7 +22,7 @@ End: update control_room.json (verdict, evidence, changelog), ship, overwrite th
 - Written: GO_LIVE_BAR.md (T086), TURN_OF_CANDLE_ORIGIN_2026-10-09.md (D01), backfill_naked_pocs.py (applied once).
 - Safety net (2026-10-09 CI/CD session): Windows task `MTS-Backup` runs `scripts/dev/backup_snapshot.py` every 15 min and pushes every worktree
   (live tree included: uncommitted + untracked, secrets dropped) to `origin/backup/JIS-NB/<worktree>`; recover with `git fetch origin backup/JIS-NB/<name>`
-  and `git checkout FETCH_HEAD -- <files>`. Backup refs are never merged. One-off pre-task snapshot: `origin/backup/live-tree-2026-10-09`.
+  and copy the files out of FETCH_HEAD with `git restore --source=FETCH_HEAD -- <files>`. Backup refs are never merged. One-off pre-task snapshot: `origin/backup/live-tree-2026-10-09`.
   CI (`.github/workflows/ci.yml`) gates fast-track on ubuntu + windows; job `mark-green` publishes the last green SHA as `origin/green/fast-track`.
   Supervisor deploy = `git merge --ff-only origin/green/fast-track` (never a half-tested push). Live tree still holds 188fa67 (B154+B155) and
   other sessions' bigtrade files: owners must commit + ship them; the backup only protects them. Cron CI is impossible (default branch `main` has no workflow).

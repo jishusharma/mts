@@ -7,6 +7,7 @@
 
 ## PART I - RESEARCH METHODOLOGY GATE [v3.0, 2026-09-28]
 ### *"Research how to research before you research."*
+Trigger (added 2026-10-09): any reply that would cite an external source, name a web study, or state what exists on the internet is a research task under this Part, regardless of how the question is phrased. Run STEP 1 before searching.
 
 Why: a never-verified "2026 Journal of Financial Markets" citation once justified the CVD divergence layer.
 No external claim enters MTS unverified. Applies to every external research task (web research, citation
