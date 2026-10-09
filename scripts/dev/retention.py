@@ -4,6 +4,8 @@ Policy: MyTradingSys/system/RETENTION_POLICY.md. Every rule names a reason it is
 (duplicate, regenerable, git has it, decommissioned lane, write-only log). Nothing that a
 script, test or live process reads is a candidate. Run: python scripts/dev/retention.py [--apply]
 """
+import filecmp
+import gzip
 import os
 import shutil
 import sys
@@ -35,7 +37,10 @@ def dup_copy_is_subset(copy, original):
     if not (os.path.isdir(copy) and os.path.isdir(original)):
         return False
     a, b = _files(copy), _files(original)
-    return all(k in b and (b[k] == v or k in IGNORE_DIFF) for k, v in a.items())
+    # B152: sizes alone can hide a different file; require identical bytes too
+    return all(k in b and (k in IGNORE_DIFF or (b[k] == v and filecmp.cmp(os.path.join(copy, k), os.path.join(original, k),
+                                                                          shallow=False)))
+               for k, v in a.items())
 
 
 IGNORE_DIFF = {"SESSION_PASTE.txt"}  # regenerated on every session start; the live copy is newer
@@ -58,11 +63,10 @@ def plan(root=ROOT):
         out.append(("delete", d, _size(d), "ignored pre-git session backup >14d; live files are tracked"))
     for d in old_children(os.path.join(root, "Dumps", "_archive"), 14):
         out.append(("delete", d, _size(d), "declutter archive >14d"))
-    for d in old_children(os.path.join(root, "Dumps", "workers", "NUC-QUEUE", "done"), 14):
-        out.append(("delete", d, _size(d), "NUC lane decommissioned 2026-10-01; done jobs >14d"))
+    # B152: NUC-QUEUE/done is NOT a candidate: scripts/worker/audit_digest.py reads its task/verdict/reply files.
     # write-only / unread logs: keep the tail
     for rel in ("MyTradingSys/system/session_end_logs.md", "runtime_data/mts-watch.log",
-                "runtime_data/supervisor_log.txt"):
+                "runtime_data/supervisor_log.txt"):   # supervisor_log: head is gzipped beside it before the trim (B152)
         p = os.path.join(root, *rel.split("/"))
         if os.path.isfile(p) and os.path.getsize(p) > 200_000:
             out.append(("trim", p, os.path.getsize(p), f"log with no reader; keep last {TAIL_LINES} lines"))
@@ -75,7 +79,12 @@ def apply(items):
             shutil.rmtree(path) if os.path.isdir(path) else os.remove(path)
         else:
             with open(path, "r", encoding="utf-8", errors="replace") as f:
-                tail = f.readlines()[-TAIL_LINES:]
+                lines = f.readlines()
+            tail, head = lines[-TAIL_LINES:], lines[:-TAIL_LINES]
+            if head:   # irreversible otherwise; the removed part stays as evidence (LOG_GAP_2026-10-02 cites old line numbers)
+                stamp = time.strftime("%Y%m%d")
+                with gzip.open(f"{path}.head_{stamp}.gz", "at", encoding="utf-8", newline=chr(10)) as z:
+                    z.writelines(head)
             with open(path, "w", encoding="utf-8", newline="\n") as f:
                 f.writelines(tail)
 

@@ -52,6 +52,11 @@ class BlocklistCycleTest(unittest.TestCase):
         self.secrets.mkdir()
         at.account_secret_path = lambda label: self.secrets / f"testnet_{label}.secret.json"
         at._warned_missing.clear()
+        # These tests are about the blocklist, not routing: a missing secret used to fall to the shared slot, now it
+        # rejects (B148, covered in test_fabio_slot). Keep the shared-slot behaviour for the blocklist cases.
+        saved_missing = at.account_secret_missing
+        self.addCleanup(setattr, at, "account_secret_missing", saved_missing)
+        at.account_secret_missing = lambda source, cfg: None
 
     def routed(self, *labels):
         """Simulate the desktop: secret files present for these account labels."""

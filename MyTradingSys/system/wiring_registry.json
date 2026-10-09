@@ -6,6 +6,16 @@
    "ref": "B137",
    "why": "UNSURE: ladder-entry fills (T051 L4); listed as a harness module in bt/README.md:5 but no runner imports it and no item says it is wired; B137 lists \"bt/ ladder\" among backtests whose device is undecided."
   },
+  "MyTradingSys/backtest/maker_model.py": {
+   "disp": "REPRO",
+   "ref": "T080",
+   "why": "Offline research script that regenerates research/fast_track_2026-09-27/T080_MAKER_MODEL_2026-10-09.md; run by hand, no live process imports it."
+  },
+  "MyTradingSys/backtest/stop_buffer_wf.py": {
+   "disp": "REPRO",
+   "ref": "T081",
+   "why": "Offline research script that regenerates research/fast_track_2026-09-27/T081_STOP_BUFFER_WF_2026-10-09.md; run by hand, no live process imports it."
+  },
   "MyTradingSys/backtest/l1_patch_mds.py": {
    "disp": "REPRO",
    "why": "Generates MarketDataSnapshot.java.archive_mode.new for the Tom core historical backtest; tom_bt_report.py:143 hashes it and :221 cites it in TOM_CORE_BT.md; L1_SLICE1_STATUS.md:76."
@@ -89,6 +99,38 @@
   "MyTradingSys/execution/testnet/t050_phase3.py": {
    "disp": "REPRO",
    "why": "Reproduces the T050 phase-3 primitive-level testnet transcript in MyTradingSys/research/testnet_status/T050_PHASE3_2026-10-02.md:4 (and 10-04)."
+  },
+  "MyTradingSys/options/backtest/panel.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
+  "MyTradingSys/options/backtest/run_grid.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
+  "MyTradingSys/options/backtest/selection.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
+  "MyTradingSys/options/backtest/stats.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
+  "MyTradingSys/options/backtest/strategies.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
+  "MyTradingSys/options/collector/deribit_opt_backfill.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
+  "MyTradingSys/options/collector/deribit_opt_common.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
+  },
+  "MyTradingSys/options/collector/deribit_opt_snapshot.py": {
+   "disp": "TOOL",
+   "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
   },
   "MyTradingSys/queue/cbp_adapter.py": {
    "disp": "WIRE",
@@ -212,6 +254,46 @@
    "disp": "TOOL",
    "why": "Runs tests against the staged .new overlay; usage in MyTradingSys/research/TWO_CORES_INT_HANDOFF_2026-10-01.md:30."
   },
+  "MyTradingSys/research/volume_2026-10-09/mutation_check.py": {
+   "disp": "TOOL",
+   "why": "Fail-before proof for the volume study: 24 mutants of vdata/vfeat/vstats/vstate each make test_volume.py or test_state.py fail (0 survivors, run 2026-10-09); mutants live in a scratch copy, no git stash."
+  },
+  "MyTradingSys/research/volume_2026-10-09/run_v0.py": {
+   "disp": "REPRO",
+   "why": "Reproduces V0_RESULTS.md (data QA, volume magnitudes, time map, event frequencies; docstring line 1)."
+  },
+  "MyTradingSys/research/volume_2026-10-09/run_v1.py": {
+   "disp": "REPRO",
+   "why": "Reproduces V1_DEV_RESULTS.md, v1_dev_results.json and the V1 rows of TRIAL_REGISTRY.csv (run V1-2026-10-09, 432 trials + placebo)."
+  },
+  "MyTradingSys/research/volume_2026-10-09/run_v2.py": {
+   "disp": "REPRO",
+   "why": "Reproduces V2_DEV_RESULTS.md and the V2 rows of TRIAL_REGISTRY.csv (96 state trials, PRE_REG_ADDENDUM_A_2026-10-09.md A2)."
+  },
+  "MyTradingSys/research/volume_2026-10-09/run_v3.py": {
+   "disp": "REPRO",
+   "why": "Reproduces V3_VALIDATION_RESULTS.md (the one-shot VALIDATION of the two addendum-A candidates; HOLDOUT never loaded)."
+  },
+  "MyTradingSys/research/volume_2026-10-09/run_v4.py": {
+   "disp": "REPRO",
+   "why": "Reproduces V4_RESULTS.md (pooled volume-confirmation premium, PRE_REG_ADDENDUM_B_2026-10-09.md; opens HOLDOUT only if VALIDATION supports, which it did not)."
+  },
+  "MyTradingSys/research/volume_2026-10-09/vdata.py": {
+   "disp": "REPRO",
+   "why": "Data layer with the sealed-HOLDOUT guard behind V0-V4; imported by run_v0..run_v4.py and test_volume.py."
+  },
+  "MyTradingSys/research/volume_2026-10-09/vfeat.py": {
+   "disp": "REPRO",
+   "why": "Volume/candle/BB/RSI features and the 36 registered events behind V1; definitions in PRE_REG_VOLUME_2026-10-09.md section 3-4."
+  },
+  "MyTradingSys/research/volume_2026-10-09/vstate.py": {
+   "disp": "REPRO",
+   "why": "V2 daily state variables (taker-delta share, volume trend, US/Asia-hours delta); PRE_REG_ADDENDUM_A_2026-10-09.md A2."
+  },
+  "MyTradingSys/research/volume_2026-10-09/vstats.py": {
+   "disp": "REPRO",
+   "why": "Vectorised White Reality-Check, block bootstrap, contrasts and BH q-values behind V1-V4; cross-checked against pilot stats_lite in test_volume.py."
+  },
   "MyTradingSys/runtime/backtest_oi_delta_4state.py": {
    "disp": "TOOL",
    "why": "OI-delta 4-state backtest over archived snapshots, hand-run; cited as implemented in MyTradingSys/research/fast_track_2026-09-27/T055a_POSITIONING_FLOW.md:48 and items/T063_stop_run_oi_flush_signature.md:18 (misplaced in runtime/ per items/T057_simplify_declutter.md:14)."
@@ -239,6 +321,14 @@
   "scripts/tools/divergence_monitor.py": {
    "disp": "TOOL",
    "why": "Diagnostic divergence reader, \"tooling, left as is\": MyTradingSys/items/B063_divergence.md:70."
+  },
+  "MyTradingSys/backtest/tom_stop_width.py": {
+   "disp": "TOOL",
+   "why": "B146 analysis script (stop width vs fees); run by hand, output research/fast_track_2026-09-27/TOM_STOP_WIDTH_2026-10-09.md."
+  },
+  "MyTradingSys/backtest/bigtrade/exit_policies.py": {
+   "disp": "TOOL",
+   "why": "Backtest C (PLAN.md section 2): exit policies on fires_spot; run by hand, output research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md."
   }
  }
 }

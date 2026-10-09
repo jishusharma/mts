@@ -347,16 +347,24 @@ def run_once(client, token, clock=_utc_now, currency: str = "BTC",
     return result
 
 
+_LAST_GOOD_LABELS = {}   # str(config_path) -> labels from the last successful read (B148)
+
+
 def named_account_labels(config_path: Path = None, secrets_dir: Path = None) -> list:
     """Sorted valid labels from auto_trader_config.json "accounts" whose testnet secret file exists
-    (existence check only, never read). Unreadable config -> [] (main account still monitored)."""
+    (existence check only, never read). Unreadable config -> the last good list; with no last good list it RAISES
+    (the caller's failure path counts it), because [] would silently drop accounts auto_trader keeps trading."""
     config_path, secrets_dir = config_path or ACCOUNTS_CONFIG, secrets_dir or SECRETS_DIR
     try:
         table = json.loads(Path(config_path).read_text(encoding="utf-8")).get("accounts") or {}
         labels = {v for v in table.values() if isinstance(v, str) and 0 < len(v) <= 32 and set(v) <= _LABEL_CHARS}
-    except (OSError, ValueError, AttributeError):
-        return []
-    return sorted(lab for lab in labels if (Path(secrets_dir) / f"testnet_{lab}.secret.json").exists())
+    except (OSError, ValueError, AttributeError) as e:
+        if str(config_path) in _LAST_GOOD_LABELS:
+            return list(_LAST_GOOD_LABELS[str(config_path)])
+        raise RuntimeError(f"accounts config unreadable and no earlier good read: {e!r}")
+    out = sorted(lab for lab in labels if (Path(secrets_dir) / f"testnet_{lab}.secret.json").exists())
+    _LAST_GOOD_LABELS[str(config_path)] = out
+    return out
 
 
 def refresh_named_accounts(do, current: dict, labels: list) -> dict:

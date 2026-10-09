@@ -191,6 +191,24 @@ def net_rr_floor_reject(net_rr: float):
     return None if net_rr >= floor else f"net_rr {net_rr} < {floor}"
 
 
+RT_TAKER_FEE_FRAC = 0.0010   # 2 x Deribit BTC-PERPETUAL taker 5 bp (backtest/fees.py, API-verified 2026-09-26): worst-case round trip
+
+
+def fee_to_stop_reject(entry: float, stop: float, cut):
+    """B146: None if the worst-case round-trip fee is at most `cut` of the stop distance (in R), else the reject reason.
+    Off unless tom.max_fee_to_stop is set. Evidence: research/fast_track_2026-09-27/TOM_STOP_WIDTH_2026-10-09.md
+    (stops under 0.10 % of price cost 3.8 to 7.6 R of fees per trade; cut 0.3 leaves under 0.3 R). Bad input -> reject."""
+    try:
+        cut = float(cut)
+        dist = abs(float(entry) - float(stop))
+        if not (cut > 0 and dist > 0 and float(entry) > 0):
+            raise ValueError
+    except (TypeError, ValueError):
+        return f"fee_to_stop gate misconfigured or zero stop distance (cut {cut!r})"
+    ratio = RT_TAKER_FEE_FRAC * float(entry) / dist
+    return None if ratio <= cut else f"fee/stop {ratio:.2f} R > {cut:g} R (stop {dist / float(entry) * 100:.3f} % of price)"
+
+
 def tom_signal(alert: dict, state: dict, cfg: dict, now: datetime):
     """New, fresh, actionable Tom alert -> order signal; else None. Marks the alert as seen in state."""
     c = cfg["tom"]
@@ -219,6 +237,9 @@ def tom_signal(alert: dict, state: dict, cfg: dict, now: datetime):
                      (p["side"] == "short" and not (p["target"] < p["entry"] < p["stop"]))
         if wrong_side:
             reject = "entry/stop/target not ordered for the side"
+    cut = c.get("max_fee_to_stop")
+    if not reject and cut is not None:
+        reject = fee_to_stop_reject(p["entry"], p["stop"], cut)
     wait = c.get("max_entry_seconds")
     if not reject and not (isinstance(wait, int) and not isinstance(wait, bool) and wait > 0):
         reject = f"bad tom.max_entry_seconds {wait!r}"     # config error: no order rather than a guessed wait
@@ -443,6 +464,15 @@ def account_for(source: str, cfg: dict):
                 _warned_missing.add(label)
                 log({"event": f"{label}_account_missing", "path": str(account_secret_path(label))})
             return None
+    return None
+
+
+def account_secret_missing(source: str, cfg: dict):
+    """Label of the named account this source is routed to when its secret file is missing, else None.
+    A routed source must never fall back to the main slot (B148): that sent layer trades to MAIN at the override size."""
+    for prefix, label in (cfg.get("accounts") or {}).items():
+        if source.startswith(prefix):
+            return None if account_secret_path(label).exists() else label
     return None
 
 
@@ -711,6 +741,10 @@ def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = N
             log({"event": "skipped_halt", **base, "brakes": halted})
         elif AUTO_PAUSE.exists():
             log({"event": "skipped_auto_pause", **base})
+        elif account_secret_missing(sig["source"], cfg):
+            account_for(sig["source"], cfg)        # logs <label>_account_missing once
+            log({"event": "signal_rejected", **base, "reason": "account_secret_missing",
+                 "account": account_secret_missing(sig["source"], cfg)})
         else:
             acct = account_for(sig["source"], cfg)
             slot = extra.get(acct) if acct else active

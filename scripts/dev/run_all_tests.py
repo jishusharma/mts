@@ -94,7 +94,7 @@ def main(argv=None):
         "test_gh_retry_offline", "test_halt_preflight_offline", "test_kill_switch", "test_kill_switch_account", "test_premainnet1_offline",
         "test_risk_guard", "test_s1_cap_offline", "test_s3_unprotected_offline",
         "test_s6_orphan_offline", "test_triggered_stop_offline", "test_soak_report", "test_fix3_offline", "test_fix4_offline",
-        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_dlm_aggregate", "test_orphan_sweep_loop", "test_fabio_slot", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry", "test_r2_runner_exit", "test_r2_breakeven_move",  # W2 R2: execution-math tests (FORMULAS.md 11)
+        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_dlm_aggregate", "test_b148_reauth_account", "test_b146_fee_to_stop", "test_dlm_failure_cap", "test_auto_trader_blocklist", "test_auto_trader_sizes", "test_auto_trader_confirm", "test_orphan_sweep_loop", "test_fabio_slot", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry", "test_r2_runner_exit", "test_r2_breakeven_move",  # W2 R2: execution-math tests (FORMULAS.md 11)
     ]
     success, output = run_step(1, "Execution module tests", cmd1)
     results.append(("Step 1: Execution tests", success))
@@ -154,6 +154,19 @@ def main(argv=None):
     cmd3e = [sys.executable, "scripts/worker/test_dsa_worker.py"]
     success, output = run_step("3e", "DSA browser worker + queue lane tests", cmd3e)
     results.append(("Step 3e: DSA worker tests", success))
+    cmd3sh = [sys.executable, "scripts/dev/test_shot.py"]
+    success, output = run_step("3sh", "Screenshot intake tests (save, classify, read, close gates)", cmd3sh)
+    results.append(("Step 3sh: Screenshot intake tests", success))
+    cmd3mg = [sys.executable, "scripts/dev/test_make_groups.py"]
+    success, output = run_step("3mg", "Project group map tests (every row and file has one group)", cmd3mg)
+    results.append(("Step 3mg: Project group map tests", success))
+    cmd3cr = [sys.executable, "scripts/dev/test_make_control_room.py"]
+    success, output = run_step("3cr", "Control Room page generator tests", cmd3cr)
+    results.append(("Step 3cr: Control Room tests", success))
+
+    cmd3bk = [sys.executable, "scripts/dev/test_backup_snapshot.py"]
+    success, output = run_step("3bk", "Backup snapshot tests (dirty/untracked work reaches the remote)", cmd3bk)
+    results.append(("Step 3bk: Backup snapshot tests", success))
 
     # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
     cmd3w = [sys.executable, "scripts/dev/test_wiring_scan.py"]
@@ -203,6 +216,11 @@ def main(argv=None):
         cmd5b = [sys.executable, "-m", "unittest"] + layer_modules
         success, output = run_step("5b", f"Layer tests ({len(layer_modules)} modules)", cmd5b)
         results.append(("Step 5b: Layer tests", success))
+
+    # Step 5c: options module (own pytest run: its bare module names, e.g. fees.py, collide with other packages)
+    cmd5c = [sys.executable, "-m", "pytest", "MyTradingSys/options/tests", "-q"]
+    success, output = run_step("5c", "Options module tests", cmd5c)
+    results.append(("Step 5c: Options tests", success))
 
     # Step 6: backtest (unless --quick)
     if not quick:

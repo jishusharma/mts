@@ -22,4 +22,6 @@ Exclude audit-read paths from retention or change audit_digest to read an archiv
 
 ## Receipt
 
+2026-10-09 consolidate session: retention.py no longer deletes NUC-QUEUE/done (audit_digest reads it), gzips the removed head of trimmed logs beside them, and compares content (filecmp) not only sizes; MyTradingSys/tests/test_retention_b152.py (3 tests). Open: testnet_canary reads supervisor_log mtime (a daily trim still touches it), _state.json copy step in the deploy runbook.
+
 # END

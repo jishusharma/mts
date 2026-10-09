@@ -24,6 +24,7 @@ Surfaces, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md`.
   `MyTradingSys/system/cli_tasks/<date>_<slug>.md` (exact commands, why forced, expected result) and say so in one line. Never stay silent.
 
 ## Quick answers (the operator is not a developer: do these, do not ask, do not re-investigate)
+- Operator page = MTS Control Room (pinned artifact). Their questions/tasks arrive in its Inbox, verbatim; procedure `MyTradingSys/system/CONTROL_ROOM.md`. Ask the operator via a page decision, not chat.
 - Push: never from the live tree (the folder holding `.mts_live`). `git worktree add ../mts-push -b <host>/<slug> HEAD` (reuse it if present),
   `git merge origin/fast-track` there (docs conflicts: take origin's text; STATUS.md: take origin's, regenerate),
   `python scripts/dev/run_all_tests.py --quick`, then `git push origin <branch>:fast-track`. `sync.py ship` does the same.
@@ -63,6 +64,10 @@ Surfaces, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md`.
 - Never conclude from truncated output (`cut`, `head`, tail of a log); parse the real format, then count.
 - Backups/rejects: archive with `python scripts/dev/declutter_backups.py --apply` (moves, never deletes).
 - Never add to `.git/info/exclude`; an ignore that matters goes in `.gitignore` and ships.
+
+## Screenshots (the operator's charts and random images are evidence, not decoration)
+- A hook saves every pasted image and prints `[SCREENSHOT INTAKE] ... SAVED` with ids; no notice = nothing new landed. On the notice: `python scripts/dev/shot.py classify <id> --kind ... --why "<operator's meaning>"`, read, `shot.py read`, `shot.py done`. Never leave a shot `new` at session end (`shot.py status`, also in STATUS.md).
+- Charts of one moment are one set, read together; every claim is MATCH / MISMATCH / NOT_IN_DATA against files you read; file the last two. Process and per-surface rules: `MyTradingSys/methodology/screenshot_intake.md`. Project map (which group an item belongs to): `MyTradingSys/system/PROJECT_MAP.md`.
 
 ## Interview Prep Notes
 - When a thread or project message says "Note this for InterviewPrep", append one entry to `/mnt/project-files/interview_prep/NOTES.md` with date, source link, and status "not yet exported".

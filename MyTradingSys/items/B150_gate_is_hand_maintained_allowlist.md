@@ -23,4 +23,6 @@ Make the gate discover tests (glob test_*.py, with an explicit skip-list that ne
 
 ## Receipt
 
+2026-10-09 consolidate session: gate now lists test_dlm_failure_cap, test_auto_trader_blocklist, test_auto_trader_sizes, test_auto_trader_confirm, test_b146/b148; MyTradingSys/tests/test_gate_discovery_b150.py fails when any execution/test_*.py is neither gated nor in SKIP-with-reason. Open: the 3 failing ungated tests (audit_t0_checks, worker_prefix_hash), non-execution dirs not covered by discovery, blocklist-restore guard (test_shipped_calibration_config_blocks_no_layer still pins an empty list).
+
 # END

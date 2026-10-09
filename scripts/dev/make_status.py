@@ -30,6 +30,24 @@ def get_queue_status():
     """Get queue_tool.py status output."""
     return run_cmd("python scripts/worker/queue_tool.py status")
 
+def get_screenshot_status():
+    """One line from the screenshot store plus any overdue shots; never fails the status build."""
+    try:
+        r = subprocess.run([sys.executable, "scripts/dev/shot.py", "status"], capture_output=True, text=True, timeout=30)
+        return (r.stdout or r.stderr).strip() or "(no screenshot store on this machine)"
+    except Exception as e:
+        return f"(screenshot status unavailable: {e})"
+
+
+def get_group_line():
+    """Open / HIGH / closed registry rows per project group; never fails the status build."""
+    try:
+        r = subprocess.run([sys.executable, "scripts/dev/make_groups.py", "--line"], capture_output=True, text=True, timeout=30)
+        return (r.stdout or r.stderr).strip() or "(no group line)"
+    except Exception as e:
+        return f"(group line unavailable: {e})"
+
+
 def get_new_files():
     """Get .new files under MyTradingSys with age in hours."""
     now = datetime.now()
@@ -149,6 +167,20 @@ def main():
             output.append(f"- {fpath} ({mtime}) {heading_str}")
     else:
         output.append("(none)")
+    output.append("")
+
+    # Screenshots: every image the operator showed a session, and how far each got (scripts/dev/shot.py)
+    output.append("## Screenshots")
+    output.append("```")
+    output.append(get_screenshot_status())
+    output.append("```")
+    output.append("")
+
+    # Project groups: where the open work sits (definitions: MyTradingSys/system/groups.json, map: PROJECT_MAP.md)
+    output.append("## Project Groups")
+    output.append("```")
+    output.append(get_group_line())
+    output.append("```")
     output.append("")
 
     # Open findings

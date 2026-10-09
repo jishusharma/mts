@@ -161,11 +161,17 @@ def secret_path_for(env: str, account: str = None) -> Path:
     return SECRET.parent / f"testnet_{account}.secret.json"
 
 
-def _load_secret(env: str = None) -> dict:
+_ENV_ACCOUNT = object()   # sentinel: take the account from MTS_ACCOUNT at call time
+_TOKEN_ACCOUNT = {}       # access_token -> account label it was issued for (None = main); B148
+
+
+def _load_secret(env: str = None, account=_ENV_ACCOUNT) -> dict:
     env = env or _ACTIVE_ENV
     if env not in ("test", "mainnet"):
         raise RuntimeError(f"REFUSED: unknown environment {env!r}")
-    path = secret_path_for(env, os.environ.get("MTS_ACCOUNT") or None)
+    if account is _ENV_ACCOUNT:
+        account = os.environ.get("MTS_ACCOUNT") or None
+    path = secret_path_for(env, account)
     if not path.exists():
         raise RuntimeError(f"MISSING: {path} - operator must create it first (see execution/README.md)")
     cfg = json.loads(path.read_text(encoding="utf-8"))
@@ -272,7 +278,10 @@ def _call(method: str, params: dict, token: str = None, retry: bool = True,
         code = body["error"].get("code")
         if token and code in AUTH_ERROR_CODES and not reauthed:
             try:
-                token = authenticate()
+                # B148: a token may only be refreshed as the account that issued it. Re-reading MTS_ACCOUNT here
+                # logged a subaccount's expired token back in as MAIN (the daily-loss monitor restores the env).
+                old = token
+                token = authenticate(_TOKEN_ACCOUNT.pop(old)) if old in _TOKEN_ACCOUNT else authenticate()
             except DeribitError:
                 raise
             except Exception as ex:  # FIX3 C1: never escape raw
@@ -289,9 +298,11 @@ def _call(method: str, params: dict, token: str = None, retry: bool = True,
         raise DeribitError(method, body["error"])
 
 
-def authenticate() -> str:
-    """Fresh access_token. Refuses withdraw-capable keys (testnet and mainnet)."""
-    cfg = _load_secret()
+def authenticate(account=_ENV_ACCOUNT) -> str:
+    """Fresh access_token. Refuses withdraw-capable keys (testnet and mainnet). account=None forces MAIN,
+    a label forces that named testnet account; default reads MTS_ACCOUNT. The token's account is remembered
+    so a mid-session re-auth in _call refreshes the same account (B148)."""
+    cfg = _load_secret(account=account)
     auth = _call("public/auth", {
         "grant_type": "client_credentials",
         "client_id": cfg["client_id"],
@@ -299,7 +310,11 @@ def authenticate() -> str:
     }, retry=False)
     if "wallet:read_write" in auth.get("scope", ""):
         raise RuntimeError("REFUSED: key can withdraw (wallet:read_write). Recreate it with wallet none/read.")
-    return auth["access_token"]
+    token = auth["access_token"]
+    _TOKEN_ACCOUNT[token] = (os.environ.get("MTS_ACCOUNT") or None) if account is _ENV_ACCOUNT else account
+    if len(_TOKEN_ACCOUNT) > 64:   # tokens are replaced on re-auth; bound the map anyway
+        _TOKEN_ACCOUNT.pop(next(iter(_TOKEN_ACCOUNT)))
+    return token
 
 
 # ---------------------------------------------------------------- orders

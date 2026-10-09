@@ -29,15 +29,19 @@ HALT_PATH = HERE / "HALT"
 LOG_PATH = HERE / "orphan_watchdog.jsonl"
 
 
-def account_labels(config_path=None) -> list:
+def account_labels(config_path=None, secrets_dir=None) -> list:
+    """default + the labels in auto_trader_config.json "accounts". An unreadable config falls back to every label that has
+    a testnet secret file (B148: the old fixed ['fabio'] left every jishu_N account unswept)."""
     if config_path is None:
         config_path = DEFAULT_CONFIG_PATH
     try:
         with open(config_path, encoding="utf-8") as f:
             data = json.load(f)
-        labels = [v for v in data.get("accounts", {}).values() if LABEL_RE.fullmatch(v)]
-    except (OSError, KeyError, json.JSONDecodeError):
-        labels = ["fabio"]
+        labels = [v for v in data.get("accounts", {}).values() if isinstance(v, str) and LABEL_RE.fullmatch(v)]
+    except (OSError, KeyError, AttributeError, json.JSONDecodeError):
+        sd = Path(secrets_dir) if secrets_dir is not None else SECRETS_DIR
+        labels = [m.group(1) for f in sd.glob("testnet_*.secret.json")
+                  if (m := re.fullmatch(r"testnet_([a-z0-9_]{1,32})\.secret\.json", f.name))] if sd.is_dir() else []
     return ["default"] + sorted(set(labels))
 
 
@@ -107,7 +111,14 @@ def main(argv=None, get_client=None, hb_dir=None, halt_path=None, log_path=None,
         confirmed = [o for o in res["orphans"] if streak[o["account"]] >= confirm]
         new = [o for o in confirmed if o["account"] not in reported]
         if new:
-            orphan_watchdog.write_orphan_halt(halt_path, new, datetime.now(timezone.utc))
+            now = datetime.now(timezone.utc)
+            orphan_watchdog.write_orphan_halt(halt_path, new, now)
+            # B148: run_once(halt_path=None) only logs orphan_seen, so a confirmed halt left no trace in the log
+            # that `mts status` reads. Record it.
+            Path(log_path).parent.mkdir(parents=True, exist_ok=True)
+            with open(log_path, "a", encoding="utf-8", newline=chr(10)) as lf:
+                lf.write(json.dumps({"ts": now.isoformat(), "event": "orphan_halt", "orphans": new, "errors": {},
+                                     "live": sorted(live)}) + chr(10))
             reported.update(o["account"] for o in new)
         if res["orphans"]:
             print(f"Orphan accounts found: {', '.join(o['account'] for o in res['orphans'])}"
