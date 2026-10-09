@@ -114,13 +114,19 @@ def health(cfg, last, halts, status_text, now):
 
 def build(cfg, data_root, now=None):
     now = now or datetime.now(timezone.utc)
-    # registry and group definitions from the same checkout as the ledger, so one page never mixes two trees
-    for attr, rel in (("BUGS", "MyTradingSys/research/BUGS.md"), ("GROUPS", "MyTradingSys/system/groups.json")):
-        if (data_root / rel).exists():
-            setattr(mg, attr, data_root / rel)
+    # registry = this checkout's rows (origin, freshest status) plus rows only the data checkout has (filed there, not yet shipped)
     gcfg = mg.load_cfg()
+    rows = mg.load_rows()
+    other = data_root / "MyTradingSys/research/BUGS.md"
+    if other.exists() and other.resolve() != mg.BUGS.resolve():
+        own, bugs = {r["id"] for r in rows}, mg.BUGS
+        try:
+            mg.BUGS = other
+            rows += [r for r in mg.load_rows() if r["id"] not in own]
+        finally:
+            mg.BUGS = bugs
     items = {}
-    for r in mg.load_rows():
+    for r in rows:
         g, _ = mg.classify(r, gcfg)
         items[r["id"]] = {"id": r["id"], "sev": r["sev"], "status": r["status"], "title": r["title"], "group": g, "src": "BUGS.md"}
     items.update(load_findings(data_root / FINDINGS))

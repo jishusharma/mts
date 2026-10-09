@@ -90,6 +90,20 @@ class HealthTest(unittest.TestCase):
         self.assertNotIn("Screenshots", [x["k"] for x in cr.health({}, None, 0, "nothing here", NOW)])
 
 
+class RegistryMergeTest(unittest.TestCase):
+    def test_rows_only_in_data_checkout_are_added_own_rows_win(self):
+        with tempfile.TemporaryDirectory() as d:
+            own = next(iter(cr.mg.load_rows()))
+            write(Path(d) / "MyTradingSys/research/BUGS.md",
+                  "\n".join([f"| {own['id']} | 2026-01-01 | CLOSED | LOW | stale copy | x | r |",
+                             "| B999 | 2026-10-09 | OPEN | HIGH | only in live | x | |", ""]))
+            cfg = json.loads(cr.CFG.read_text(encoding="utf-8"))
+            data = cr.build(cfg, Path(d), NOW)
+        self.assertEqual(data["reg"]["B999"]["status"], "OPEN")
+        self.assertEqual(data["reg"][own["id"]]["status"], own["status"])
+        self.assertNotEqual(cr.mg.BUGS, Path(d) / "MyTradingSys/research/BUGS.md")
+
+
 class RenderTest(unittest.TestCase):
     def test_script_close_tag_cannot_break_out(self):
         out = cr.render({"t": "</script><b>"}, "<script>const D = /*__DATA__*/null;</script>")
