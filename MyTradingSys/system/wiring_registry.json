@@ -393,6 +393,21 @@
    "disp": "WIRE",
    "ref": "RSI_2A_SPEC.md steps 4-5",
    "why": "Malkan close-to-close divergence detector (3-10 bars, params/malkan_divergence_default.json); built and tested 2026-10-09, to be called by run_rsi_backtest.py. Not live."
+  },
+  "MyTradingSys/backtest/dax_data.py": {
+   "disp": "REPRO",
+   "ref": "tom-dax-data",
+   "why": "Offline research tool: fetches Dukascopy GER40 1m and converts it to the 1m kline archive for the Tom DAX probe; research/tom_transfer_2026-10-11/PROBE_PLAN.md; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/backtest/dax_engine.py": {
+   "disp": "REPRO",
+   "ref": "tom-dax-data",
+   "why": "Offline research driver: compiles the engine to %TEMP% and runs SnapAt/TomSnapshotGen on a non-BTC symbol (GER40); research/tom_transfer_2026-10-11/PROBE_PLAN.md; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/backtest/tom_dax_recall.py": {
+   "disp": "REPRO",
+   "ref": "tom-dax-recall",
+   "why": "Offline research script: engine recall at Tom's own DAX trades read from video frames; writes F:/MTS/data/dax_recall; research/tom_transfer_2026-10-11/PROBE_PLAN.md; run by hand or a desk task, not by any loop."
   }
  }
 }

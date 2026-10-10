@@ -22,6 +22,9 @@ import java.util.zip.GZIPOutputStream;
  * line, only snapshots with >=1 setup candidate) + outDir/YYYY-MM.meta.json (evaluated/kept/errors counts).
  */
 public class TomSnapshotGen {
+    /** Symbol to replay: -Dmts.symbol=GER40 for the DAX probe (archive file prefix); default BTCUSDT. */
+    static final String SYMBOL = System.getProperty("mts.symbol", "BTCUSDT");
+
     public static void main(String[] a) throws Exception {
         Path raw = Paths.get(a[0]);
         Path out = Paths.get(a[1]);
@@ -32,7 +35,7 @@ public class TomSnapshotGen {
         int shards = Integer.parseInt(a[6]);
         Files.createDirectories(out);
         ObjectMapper om = new ObjectMapper(); // compact
-        ArchiveHistoricalSource probe = new ArchiveHistoricalSource(raw, "BTCUSDT");
+        ArchiveHistoricalSource probe = new ArchiveHistoricalSource(raw, SYMBOL);
         System.out.println("archive bars=" + probe.size() + " first=" + Instant.ofEpochMilli(probe.firstOpenTime())
                 + " last=" + Instant.ofEpochMilli(probe.lastOpenTime()));
         MarketDataSnapshot mds = new MarketDataSnapshot(raw);
@@ -56,7 +59,7 @@ public class TomSnapshotGen {
                 for (; t <= m1; t += stepMs) {
                     eval++;
                     try {
-                        ObjectNode s = mds.fetchHistoricalSnapshot("BTCUSDT", Instant.ofEpochMilli(t));
+                        ObjectNode s = mds.fetchHistoricalSnapshot(SYMBOL, Instant.ofEpochMilli(t));
                         s.remove("module_candidates");
                         if (s.get("setup_candidates") != null && s.get("setup_candidates").size() > 0) {
                             w.write(om.writeValueAsString(s));
