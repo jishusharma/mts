@@ -1258,3 +1258,18 @@ Almost none published with exact entry/exit for pure OBI/OFI on perps.
 There are a few tasks related to the imbalance trading system/indicator. 
 Get the profitable imbalance indicator in our Armory now now - implement -back test -  run on test net! End to end - high priority
 ```
+## bftuvmoo3owp3451dabt | 2026-10-10T16:33:46Z | task
+```
+wrt - 
+Why the current ritual is making the Sonnet agent use a lot of token? Is it not optimized? 
+This is high priority.  Investigate as per the very very latest inputs from Claude services/support/science/user-base to use sonnet effectively inside Win Claude App for prject management. Then apply the required changes. 
+Goals :
+-> Smarter Claude based AI integration with MTS
+-> Session Token optimization and automatic accurate prompt creation for regular usage! 
+__
+Now that we have switiching mechanism - we need to design keeping eveything in mind!
+```
+## rf1cr2yyvvbyny39zqei | 2026-10-10T16:31:35Z | task
+```
+I see a terminal window flashing on my screen. Most probably it is something with  Python. So it takes away the focus if I'm writing something and it is annoying. Try to fix it.
+```
