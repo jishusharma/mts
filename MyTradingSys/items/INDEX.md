@@ -110,7 +110,7 @@ T068 | OPEN    | T068_oi_arm_rerun.md | P3 OI arm rerun of T063 when n>=30 per a
 T069 | OPEN    | T069_funding_settlement_clock.md | P5 funding settlement clock event study; queued (research-agenda)
 T070 | OPEN    | T070_volatility_timing_read_only.md | P6 volatility timing read-only analysis; queued (research-agenda)
 T071 | OPEN    | T071_absorption_events_post_p2.md | P7 absorption events after P2 Fabio L3-FAIL; queued (research-agenda)
-B142 | OPEN    | B142_extrasetupbuilder_1m_stop_unsourced.md | D15 answered: disable ExtraSetupBuilder candidates until a sourced stop exists; Java change + restart at next Java window
+B142 | CLOSED  | B142_extrasetupbuilder_1m_stop_unsourced.md | momentum candidates disabled in code 2026-10-11 (ExtraSetupBuilderDisabledTest); live after the JIS-NB Java window
 B143 | BLOCKED | B143_cryptocred_stop_buffer_and_target_unsourced.md | NEEDS OPERATOR: 1.5R sourced (CC Rule 9), 0.1pct buffer NOT FOUND; default alert-only + replace at next CC build
 B144 | OPEN    | B144_exhaustion_proxy_unsourced_params.md | D17 answered: screener-only now, remove at Java window; finding: volume spike still counts in Tom proof (Java change)
 B145 | CLOSED  | B145_cc_range_noise_live_neutrality.md | neutrality test run on archive: filter NOT neutral for 2 of 3 setups, flag stays off; opt-in test in cryptocred/

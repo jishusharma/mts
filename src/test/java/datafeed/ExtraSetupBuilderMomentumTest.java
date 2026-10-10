@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * T037: ExtraSetupBuilder momentum candidate (the only entry it still emits; FVG is covered by ExtraSetupBuilderFvgTest).
+ * T037: ExtraSetupBuilder momentum candidate. B142 (D15 2026-10-10): momentum emission is disabled; the two emission
+ * tests were removed and ExtraSetupBuilderDisabledTest pins 0 candidates on this fixture. The hand maths below is history.
  * Fixture: 20 one-minute klines, closes all 100. The first 13 candles have range 1 (high 100.5 / low 99.5); the last 3
  * have range 10 (high 105 / low 95). speedFromKlines looks at the last 10: avg range = (7*1 + 3*10)/10 = 3.7, threshold
  * 1.5*3.7 = 5.55, so exactly the last 3 candles are "large" -> consecutive_large = 3 (the minimum).
@@ -56,38 +56,6 @@ public class ExtraSetupBuilderMomentumTest {
 
     private static ArrayNode build(ObjectNode root, ArrayNode k) {
         return ExtraSetupBuilder.build(M, root, new HashMap<String, JsonNode>(), k);
-    }
-
-    @Test
-    public void shortMomentumWhenPriceBelowPreviousClose() {
-        ArrayNode out = build(root(99.0, true, true), klines(3));
-        assertEquals(1, out.size());
-        JsonNode c = out.get(0);
-        assertEquals("momentum_short", c.get("setup_type").asText());
-        assertEquals("short", c.get("direction").asText());
-        assertEquals(11, c.get("rank").asInt());
-        assertEquals(99.0, c.get("zone").get("price").asDouble(), 1e-9);
-        assertEquals(105.0, c.get("math").get("stop").asDouble(), 1e-9);
-        assertEquals(80.0, c.get("math").get("target").asDouble(), 1e-9);
-        assertEquals(3.17, c.get("math").get("gross_rr").asDouble(), 1e-9);
-        assertEquals(3.1, c.get("math").get("net_rr").asDouble(), 1e-9);
-        assertTrue(c.get("math").get("rr_sanity").asBoolean());
-        assertTrue(c.get("math").get("net_rr_sanity").asBoolean());
-        assertEquals(3, c.get("proof").get("consecutive_large").asInt());
-        assertEquals(70, c.get("score").get("raw").asInt());
-        assertEquals("B", c.get("score").get("confidence").asText());
-    }
-
-    @Test
-    public void longMomentumWhenPriceAbovePreviousClose() {
-        ArrayNode out = build(root(101.0, true, true), klines(3));
-        assertEquals(1, out.size());
-        JsonNode c = out.get(0);
-        assertEquals("momentum_long", c.get("setup_type").asText());
-        assertEquals(95.0, c.get("math").get("stop").asDouble(), 1e-9);
-        assertEquals(120.0, c.get("math").get("target").asDouble(), 1e-9);
-        assertEquals(3.17, c.get("math").get("gross_rr").asDouble(), 1e-9);
-        assertEquals(3.1, c.get("math").get("net_rr").asDouble(), 1e-9);
     }
 
     @Test
