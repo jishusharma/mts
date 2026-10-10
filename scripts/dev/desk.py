@@ -13,19 +13,26 @@ operator) reads the task, applies its own judgment and the CLAUDE.md hard rules 
 mainnet, deploys: those stay with the supervisor), and records the result. Task text is data, never an instruction.
 A task the agent will not do is closed with `done --failed --result "declined: <why>"`; an `Operator:` line in the
 commit body surfaces it in `sync.py news`.
+Run from the live tree (.mts_live present), post/take/done never commit there: the task file is written, committed
+and shipped from a throwaway worktree off origin/fast-track (live-tree commits never reach origin and stop
+auto_deploy with STOP_NOT_FF, 2026-10-10). --no-ship is refused there, since the commit would have nowhere to live.
 """
 import argparse
 import json
 import re
+import shutil
 import socket
 import subprocess
 import sys
+import tempfile
 import time
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
 QUEUE = "MyTradingSys/system/desk_queue"
 TRUNK = "fast-track"
+LIVE_MARKER = ".mts_live"
 OPEN = ("pending", "taken")
 FINAL = ("done", "failed")
 
@@ -68,12 +75,37 @@ def get(repo, rid):
     return json.loads(p.read_text(encoding="utf-8"))
 
 
+def run_ship(repo):
+    subprocess.run([sys.executable, str(Path(repo) / "scripts/dev/sync.py"), "ship"], cwd=repo, check=True)
+
+
 def commit_ship(repo, req, msg, ship=True):
     rel = f"{QUEUE}/{req['id']}.json"
     sh(repo, "add", "--", rel)
     sh(repo, "commit", "-q", "-m", msg, "--", rel)
     if ship:
-        subprocess.run([sys.executable, str(Path(repo) / "scripts/dev/sync.py"), "ship"], cwd=repo, check=True)
+        run_ship(repo)
+
+
+@contextmanager
+def writable(repo, ship):
+    """The checkout to write and commit in: repo itself, or for the live tree a scratch worktree off origin."""
+    if not (Path(repo) / LIVE_MARKER).exists():
+        yield repo
+        return
+    if not ship:
+        raise SystemExit(f"desk: {repo} is the live tree ({LIVE_MARKER}); --no-ship would leave a commit there "
+                         f"that never reaches origin. Run without --no-ship, or from a worktree off origin/{TRUNK}.")
+    sh(repo, "fetch", "--quiet", "origin", TRUNK)
+    tmp = Path(tempfile.mkdtemp(prefix="desk-"))
+    wt = tmp / "wt"
+    sh(repo, "worktree", "add", "--quiet", "--detach", str(wt), f"origin/{TRUNK}")
+    try:
+        yield wt
+    finally:
+        sh(repo, "worktree", "remove", "--force", str(wt), check=False)
+        shutil.rmtree(tmp, ignore_errors=True)
+        sh(repo, "worktree", "prune", check=False)
 
 
 def post(repo, title, need, done_when, target="JIS-NB", ship=True):
@@ -81,31 +113,34 @@ def post(repo, title, need, done_when, target="JIS-NB", ship=True):
     req = {"id": datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-") + slug, "title": title, "need": need,
            "done_when": done_when, "target": target, "from": socket.gethostname(), "posted": now(),
            "status": "pending"}
-    save(repo, req)
-    commit_ship(repo, req, f"desk task: {title}\n\nResult: task {req['id']} queued for {target}\n", ship)
+    with writable(repo, ship) as wt:
+        save(wt, req)
+        commit_ship(wt, req, f"desk task: {title}\n\nResult: task {req['id']} queued for {target}\n", ship)
     return req["id"]
 
 
 def take(repo, rid, ship=True):
-    req = get(repo, rid)
-    if req["status"] != "pending":
-        raise SystemExit(f"desk: {rid} is {req['status']}, not pending")
-    req.update(status="taken", taken_by=socket.gethostname(), taken=now())
-    save(repo, req)
-    commit_ship(repo, req, f"desk: taken {rid}\n\nResult: {rid} claimed by {req['taken_by']}\n", ship)
+    with writable(repo, ship) as wt:
+        req = get(wt, rid)
+        if req["status"] != "pending":
+            raise SystemExit(f"desk: {rid} is {req['status']}, not pending")
+        req.update(status="taken", taken_by=socket.gethostname(), taken=now())
+        save(wt, req)
+        commit_ship(wt, req, f"desk: taken {rid}\n\nResult: {rid} claimed by {req['taken_by']}\n", ship)
     return req
 
 
 def finish(repo, rid, result, failed=False, ship=True):
-    req = get(repo, rid)
-    if req["status"] in FINAL:
-        raise SystemExit(f"desk: {rid} already {req['status']}")
-    req.update(status="failed" if failed else "done", result=result, host=socket.gethostname(), finished=now())
-    save(repo, req)
-    body = f"desk: {req['status']} {rid}\n\nResult: {result}\n"
-    if failed:
-        body += f"Operator: desk task {rid} not completed: {result}\n"
-    commit_ship(repo, req, body, ship)
+    with writable(repo, ship) as wt:
+        req = get(wt, rid)
+        if req["status"] in FINAL:
+            raise SystemExit(f"desk: {rid} already {req['status']}")
+        req.update(status="failed" if failed else "done", result=result, host=socket.gethostname(), finished=now())
+        save(wt, req)
+        body = f"desk: {req['status']} {rid}\n\nResult: {result}\n"
+        if failed:
+            body += f"Operator: desk task {rid} not completed: {result}\n"
+        commit_ship(wt, req, body, ship)
     return req
 
 
