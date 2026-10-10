@@ -37,7 +37,7 @@ Plan of record for the probe: PROBE_PLAN.md (hypotheses H1-H5, option arms S/Q/M
 | Session | Model | Card(s) | Input -> output |
 |---|---|---|---|
 | T0 background | script | tom-dax-data | finish Dukascopy fetch (F:/MTS/data/dax_fetch.log ALL_DONE; re-run the same fetch command if the shell died, it skips files already there), `dax_data.py convert`, close the card |
-| Build | Sonnet | tom-verdict-fee-per-market | finish/verify per-market fee (GER40 netRR(24229,24111,24257)=4.1662; BTC bit-identical) |
+| Build | Sonnet | tom-verdict-fee-per-market | finish/verify per-market fee (GER40 netRR(24229,24111,24257)=4.1696 (the brief said 4.1662: hand error, (118-0.24229)/(28+0.24229)=4.1696); BTC bit-identical) |
 | Frames | Sonnet | tom-trade-ledger | videos -> TOM_TRADE_LEDGER.csv/.md |
 | Frames | Sonnet | fabio-trade-ledger | videos -> FABIO_TRADE_LEDGER.csv/.md |
 | Research | **Opus** | tom-layer-v2-spec | ledger + this folder -> TOM_LAYER_V2_SPEC.md + Sonnet build cards |
