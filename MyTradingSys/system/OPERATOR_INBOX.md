@@ -759,3 +759,290 @@ This is the complete, production-oriented specification for the order-flow leg. 
 
 Would you like the matching Python / Pine Script skeleton next, or the full combined Alpha + Beta knowledge handoff document ready to paste to Claude?
 ```
+
+## c7byrwa0tni8i4tjrvco | 2026-10-10T05:52:38Z | task
+```
+check what is useful to learn from this?
+ Let DSA run reads on its own  Allow writes (commit, push, add, checkout, merge, stash) on auto-run 0/50
+extension was reloaded: refresh this page (F5)
+None selected 
+
+Skip to content
+Using Gmail with screen readers
+1 of 4,950
+This Indicator Caught Bitcoin’s Reversal — Now Where Does The Higher Low Form?
+Inbox
+
+FFA <no--reply@cryptocrewuniversity.com> Unsubscribe
+Fri 9 Oct, 20:14 (15 hours ago)
+to me
+
+Hello Jishu,
+
+
+
+⌛ Reading Time: 5 minutes
+
+
+
+Bitcoin has already given us the bullish reversal signals we were waiting for. 
+
+
+
+And one indicator caught the shift particularly well. 
+
+
+
+Steve’s Power Trend Indicator printed a BUY signal near the lows — before Bitcoin accelerated into the mid-$80Ks. 
+
+
+
+That was the reversal. 
+
+
+
+Now the question changes: Where does Bitcoin form its higher low? 
+
+
+
+Today we’re mapping the strongest support levels beneath price using Weekly moving averages, Fibonacci retracements and Volume Profile. 
+
+
+
+The goal is simple: Find the areas where buyers could step back in — without losing the new bullish structure. 
+
+ 
+
+Before We Jump Into The Charts… 
+
+
+
+We also recorded a full video breakdown where I walk through the charts and explain exactly what I’m watching.
+
+WATCH THE MEMBERS ONLY REPORT HERE:
+
+
+1) Indicator Spotlight — Steve’s Power Trend Caught The Reversal 
+BTC 3D Power Trend.png
+Let’s start with the chart that caught the move. 
+
+
+
+Steve’s Power Trend Indicator printed a BUY signal close to the lows, before Bitcoin accelerated sharply higher. 
+
+
+
+That is exactly where a trend indicator can add value. 
+
+
+
+It doesn’t need to predict the exact bottom. 
+
+
+
+It needs to help identify when the probabilities are beginning to shift. 
+
+
+
+And in this case, the signal came before the major expansion higher. 
+
+
+
+The Power Trend remains bullish today. 
+
+
+
+But now price needs to do the next part: Build a higher low. 
+
+
+
+Indicator Spotlight: Power Trend is one of the tools inside Steve’s Indicator Bundle. Over the coming weeks, I’ll highlight more of the indicators we use and show how they fit into our actual market analysis.
+
+
+
+2) Weekly Moving Averages — First Trend Support 
+2. BTC 1W SMAs.png
+Two important Weekly moving averages now sit beneath price: 
+
+50 Week SMA: ~$77.1K 
+21 Week SMA: ~$71.3K 
+These give us our first major support references. 
+
+
+
+A pullback into the 50 Week SMA would still represent a relatively shallow reset. 
+
+
+
+If price moves deeper, the 21 Week SMA becomes the next important level. 
+
+
+
+So our first support ladder is: $77.1K → $71.3K 
+
+
+
+But the Fibonacci chart adds even more confluence. 
+
+
+
+3) Fibonacci — Where The Higher Low Could Form 
+3. BTC 1W FIB LEVELS.png
+
+
+The key retracement levels are: 
+
+$79.6K — 1.0 
+$74.3K — 0.786 
+$70.4K — 0.618 
+$67.8K — 0.5 
+
+
+When we combine these with the Weekly moving averages, three clear support areas appear. 
+
+
+
+1) $79.6K–$77.1K 
+
+First support 
+Fib + 50 Week SMA 
+2) 74.3K–$70.4K 
+
+Primary higher-low zone 
+0.786 Fib + 21 Week SMA + 0.618 Fib 
+3) ~$67.8K 
+
+Deeper support 
+And that last level becomes particularly interesting when we add Volume Profile.
+
+
+
+4) Weekly Volume Profile — Major Confluence Around $67.9K 
+4. BTC 1W FRVP.png
+The Weekly Volume Profile gives us: 
+
+VAH: ~$87.9K 
+POC: ~$67.9K 
+VAL: ~$59.5K 
+The important level here is the: Point of Control at ~$67.9K 
+
+
+
+Why? Because the 0.5 Fibonacci retracement sits at ~$67.8K. 
+
+
+
+Two completely different tools. Almost exactly the same level. 
+
+
+
+That makes: $67.8K–$67.9K, a major deeper support zone if Bitcoin experiences a larger correction. 
+
+
+
+Below that, the Value Area Low around $59.5K becomes the next major higher-timeframe support.
+
+
+
+Putting Everything Together 
+We do not need to predict the exact bottom of the pullback. 
+
+
+
+We simply need to know where the strongest confluence sits.
+
+
+
+Support Zone 	Confluence 
+$79.6K–$77.1K	Fib + 50W SMA 
+$74.3K–$70.4K 	Fib + 21W SMA 
+$67.8K–$67.9K 	0.5 Fib + Weekly POC 
+~$59.5K 	Weekly Value Area Low 
+
+
+The support levels tell us where Bitcoin could react. 
+
+
+
+Price action will tell us whether buyers are actually defending them. 
+
+
+
+And if Bitcoin establishes a higher low while Power Trend remains bullish, that gives us another layer of confirmation that the new trend remains intact. 
+
+
+
+The Bottom Line 
+Power Trend caught the reversal. 
+
+
+
+Now Bitcoin needs to prove that reversal can hold. 
+
+
+
+The key areas I’m watching are: 
+
+$79.6K–$77.1K – First support
+$74.3K–$70.4K – Primary higher-low zone
+$67.8K–$67.9K – Major deeper confluence
+Bitcoin does not need to reach every level. 
+
+
+
+The question is simply: Where do buyers step back in? 
+
+
+
+The trend has flipped. Now we watch where Bitcoin builds the higher low. 
+
+
+
+Trade safe. Plan ahead. Win together. 👊 
+
+🔥 Join Today & Trade with Us LIVE! 🔥  
+
+
+
+Inside the FFA... It’s not just a team—it’s a community of like minded traders. 🔥    
+
+Show up for the LIVE Q&A, follow Professor’s Posts, and level up your trading
+
+and investing skills.  
+
+
+
+Everything You Need to Trade with Confidence:
+
+✔️Weekly Live Trading Sessions
+
+✔️Realtime Community Chat
+
+✔️Profit-ready trade alerts every week 
+
+✔️200+ Mini-courses to fast-track your skills
+
+✔️Daily Chart analysis for smarter decisions
+
+
+
+Unlock Instant Access Now!
+
+
+
+
+
+Steve
+Founder & CEO of Crypto Crew University
+
+Yt	Tw	Tt	Fb
+Sent to: jishu.sharma@gmail.com
+
+Crypto Crew, LLC, 12247 Cherrywood Street, Broomfield, CO 80020, United States
+
+Unsubscribe
+
+
+
+
+```
