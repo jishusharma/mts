@@ -1,4 +1,4 @@
-<!-- relay: stop reason=relay installed 2026-10-10, not enabled: operator starts the chain depth=0 id=f50c7f3c -->
+<!-- relay: go depth=0 id=0ae95ec9 -->
 # NEXT SESSION PROMPT (handoff 2026-10-10, after the unblock-trunk / bug-closing / CI-CD block; Claude Code Win App, either account)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -19,27 +19,20 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
       note; mark D11 applied. D12 answered "Yes, once a day": record it in system/DSA_DELEGATION.md, mark D12 applied.
    c. B159, B160 (prompts in the T092 REPORT section 7), then B158 after D13.
    d. B141: write the runner for the 28 pre-registered cells (research/PRE_REG_HTF_REPLACE_2026-10-07.md), run on F:/MTS/data, holdout once.
-   e. Tom DSR/PBO (B147 part 4) once the JIS-NB regeneration task (B147_ROW_DROP_EXACT) is done.
+   e. B149 capture (JIS-NB desk task, live host only): after 08:05 UTC, if a position stayed open across the 08:00 settlement
+      (daily_loss_monitor log), run the capture command in the desk task from a worktree with the live data dirs, ship the json, mark done.
 4. Route run-and-report work to DSA (system/DSA_DELEGATION.md); post what the DSA queue lacks before ending.
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
 
-## State at handoff
-- 2026-10-10 block DONE. Trunk unblocked (9b27da3): test_mainnet_flag_offline failed only when MTS_ACCOUNT is set in the host env; test now hermetic. Quick gate green with and without MTS_ACCOUNT.
-- Closed with tests: B145 (filter_range_noise NOT neutral, flag stays off), B146, B150 (gate discovery + extra-tests step 3xt + mainnet refuses testnet calibration), B151 (fib bear zone never fired; rerun: all CC setups FAIL),
-  B152, B153 (Py+Java net_rr parity), B155 (prompt contract gate 3pc), B156 (thesis age), T093 (turn-of-candle 4-12 h imbalance on klines 2022-2026: NO REPLICATION; the old handoff called it T085, T085 is the time-exit task).
-- IN-FIX: B147 (row drop attributed: 17/19 old SETUP_FORMING used the removed 0.2% fallback stop), B148 (close on first live beat_utc), B136 (buildOiBreakdown UNAVAILABLE, needs JVM restart). BLOCKED: B140 hardware, B142-B144 (D15-D17), B149 (needs a captured 08:00 settlement log).
-- JIS-NB desk tasks pending: register CI/CD jobs (`register_cicd_tasks.ps1 -Trigger`), B149 capture, B147/B135 snapshot regeneration, Java mvn tests + restart window. Live mirror install (20261009-202832) still pending.
-- CI/CD: auto_deploy.py + daily_hygiene.py + register script shipped; both tasks registered and triggered once on JIS-NUC (auto_deploy = NOT_LIVE there, correct; hygiene ran the gate and reported). green/fast-track advance is the only proof CI is green on both OSes (no gh CLI, repo is private): `git ls-remote origin refs/heads/green/fast-track` vs `origin/fast-track`. At handoff green was still 24197c4 (it contains the Step 0 fix, so that part is proven on both OSes) while fast-track was 6+ pushes ahead: check that it advances; if it does not, read the failing job on GitHub (CI cancels the previous run on every push, so a burst of pushes can starve it).
-- Java without JDK 17 (this NUC has only JDK 11): compile main + test with `javac --release 11` against the ~/.m2 jars and call the test methods from a small main (worked for MarketDataSnapshotTest 21/21).
-- Tool quirk: Bash heredocs with backslash-n or many quotes can be mangled; write scripts with the Write tool. The main NUC clone is shared by several sessions: commit only your files.
+## State at handoff (2026-10-10 ~06:30 IST, JIS-NB, after the Java restart + B147/B135 regeneration)
+- DONE this block: live tree is at trunk (auto_deploy keeps it there); Java compiled in the live tree and the state-machine JVM restarted 23:25Z by loop-supervisor (2.5 min feed gap, snapshot + state_code fresh, oi_breakdown real). B136 CLOSED.
+  B147 + B135 CLOSED with numbers: research/B147_ROW_DROP_EXACT_2026-10-10.md (HEAD Java regen: kept 90,295; 93.6 pct of lost snapshots were fallback-stop; proof>=5 rows 0; SETUP_FORMING 0). Tom live rule = insufficient N; DSR/PBO moot at N=0.
+  Desk tasks done: Java tests + restart, B147/B135 regeneration, CI/CD job registration.
+- Still open: B149 capture (needs 08:00Z settlement with an open position), live-mirror install (needs an admin shell on JIS-NB: operator), CI workflow patch system/ci_concurrency_fix.patch (needs a workflow-scope token: operator), DSA queue D11, D19-D22.
+- Positions open on testnet: L-mkt-1009-2100, S-mkt-1009-1901 (position_manager untouched; do not touch).
+- Relay (RELAY.md): chain started by the JIS-NB session at this handoff; stop it with `python scripts/sched/relay.py stop "<why>"`.
+- Java without JDK 17 (NUC has JDK 11): javac --release 11 harness (see git history of this file); JIS-NB has JDK 17 at C:	ools\jdk-17.0.18 and Maven, `mvn -q -o test` works in a worktree.
+- Tool quirk: Bash heredocs with backslash-n or many quotes can be mangled; write scripts with the Write tool. The sleep-chain is blocked: wait with an until-loop in a background shell.
 - Not shipped, owned by JIS-NB live tree: backtest/bigtrade/*, research/bigtrade_2026-10-09/*, pm_heartbeats files. Do not edit. Untracked check_handoff.py / skill_src are another session's.
-- No git stash in shared clones; do not pass --help to sync.py subcommands.
-
-## Update 2026-10-10 (CI/CD pass 3: deployed on JIS-NB)
-- DONE on the live host: live tree fast-forwarded to trunk (b4c1644), no unique edits lost (backups in runtime_data/deploy_backup/20261010-042024: 19 stale-deploy files, 5 untracked colliders incl. 4 that differed from trunk). live_runner_cli, auto_trader, daily_loss_monitor restarted 04:21 local by loop-supervisor on the new code; position_manager (L-mkt-1009-2100, S-mkt-1009-1901) untouched. Runner poll: 6 families / 14 setups (cryptocred, fabio, rsi, session, positioning, turn_of_candle), errors=0.
-- MTS-DailyHygiene (GREEN, gate PASS 499 s) and MTS-AutoDeploy (every 15 min, UP_TO_DATE via the fast-track fallback) are registered on JIS-NB and were triggered once each. Desk task register-ci-cd-scheduled-jobs = done.
-- Mvn tests (JDK 17.0.18 here, `mvn -q -o test` in a worktree): EXIT 0 on the deployed SHA. The JVM still runs the OLD classes: pom.xml, MarketDataSnapshot (B136 UNAVAILABLE), NakedPocTracker need `mvn compile` in the live tree + a JVM restart window (not done: it interrupts the feed). Do it in one quiet minute, then close B136 and the desk task "Java: run the new B136/B153 tests".
-- Still open (JIS-NB desk): B149 capture across an 08:00 UTC settlement, B147/B135 Tom snapshot regeneration (needs the restarted JVM), live mirror install.
-- Still the operator's / token owner's: apply system/ci_concurrency_fix.patch (workflow scope). Until then green/fast-track lags and auto_deploy uses its own gate on fast-track.
-- A session on the live host never works in the live tree: use a worktree, deploy via auto_deploy.py or the CLAUDE.md checkout recipe.
+- No git stash in shared clones; do not pass --help to sync.py subcommands. Worktree for this block: ../mts-task (jis-nb/task-2026-10-10).
