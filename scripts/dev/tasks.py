@@ -5,6 +5,7 @@
   python scripts/dev/tasks.py lint                  # every card: a `ready`/`active` card that fails DoR is an error (exit 1)
   python scripts/dev/tasks.py list [--state ready] [--lane SONNET]
   python scripts/dev/tasks.py status                # counts + the line the dispatcher reads: REFINE_NEEDED / REFINE_OK
+  python scripts/dev/tasks.py tried <id> [--asks "<question>"]   # refiner: a try that did not reach ready; --asks parks it for the operator
   python scripts/dev/tasks.py next [--n 3] [--lane SONNET]   # the first ready cards, best first
   python scripts/dev/tasks.py brief <id>            # the <= 30 line session prompt for one card
   python scripts/dev/tasks.py take <id> [--claim <slug>] | done <id> --result "<what>" | apply-op <id> bump|hold|drop|approve [--note ..]
@@ -34,6 +35,7 @@ LANES = ("HAIKU", "SONNET", "OPUS", "DSA", "DSA-NB", "DSA-NUC", "JIS-NB")
 CODE_LANES = ("HAIKU", "SONNET", "OPUS")        # relay sessions: need tests
 RUN_LANES = ("DSA", "DSA-NB", "DSA-NUC", "JIS-NB")   # run-and-report: need exact commands
 SIZES = ("S", "M", "L")
+MAX_TRIES = 2                                    # refiner attempts per card; then it is parked, not retried every tick
 BUFFER = 3                                       # ready cards to keep in stock before the refiner stops
 MAX_BRIEF = 30                                   # CLAUDE.md: a CL prompt is <= 30 lines
 MAX_FIELD = 400                                  # chars per text field: a card is a prompt, not an essay
@@ -89,7 +91,7 @@ def blank(cid, title, **kw):
     return {"id": cid, "title": title, "state": "raw", "prio": kw.get("prio", 3), "lane": kw.get("lane", ""), "size": "",
             "goal": "", "scope_in": [], "scope_out": [], "steps": [], "commands": [], "tests": "", "done_when": "",
             "sources": [], "depends_on": [], "refs": kw.get("refs", []), "live_path": False, "approved_by": "",
-            "from_inbox": kw.get("from_inbox", ""), "created": now(), "refined_by": "", "note": "", "result": ""}
+            "from_inbox": kw.get("from_inbox", ""), "refine_tries": 0, "asks": "", "created": now(), "refined_by": "", "note": "", "result": ""}
 
 
 def problems(card, cards=None, reg=None):
@@ -171,12 +173,19 @@ def counts(cards):
     return {s: sum(c["state"] == s for c in cards) for s in STATES}
 
 
+def refinable(card):
+    """A card the refiner may work on now: waiting, no open question for the operator, tries left."""
+    return card["state"] in ("raw", "refined") and not card.get("asks") and card.get("refine_tries", 0) < MAX_TRIES
+
+
 def status_line(cards):
+    """REFINE_NEEDED only while work the refiner can actually do waits; parked cards (asked the operator, or tried
+    MAX_TRIES times) never keep it on, so a stuck card cannot start a session every tick."""
     n = counts(cards)
-    todo = n["raw"] + n["refined"]
-    need = todo > 0 and n["ready"] < BUFFER
-    return (f"REFINE_NEEDED raw+refined={todo} ready={n['ready']} buffer={BUFFER}" if need
-            else f"REFINE_OK raw+refined={todo} ready={n['ready']} buffer={BUFFER}")
+    todo = sum(refinable(c) for c in cards)
+    parked = n["raw"] + n["refined"] - todo
+    tail = f"refinable={todo} parked={parked} ready={n['ready']} buffer={BUFFER}"
+    return ("REFINE_NEEDED " if todo > 0 and n["ready"] < BUFFER else "REFINE_OK ") + tail
 
 
 def summary(repo=REPO):
@@ -189,7 +198,8 @@ def summary(repo=REPO):
         rows.append({"id": c["id"], "title": c["title"], "state": c["state"], "prio": c.get("prio", 3), "lane": c.get("lane", ""),
                      "size": c.get("size", ""), "goal": c.get("goal", ""), "done_when": c.get("done_when", ""),
                      "pinned": bool(c.get("pinned")), "needs_approval": c.get("lane") == "OPUS" and not c.get("approved_by"),
-                     "missing": miss[:4], "note": c.get("note", "")})
+                     "missing": miss[:4], "note": c.get("note", ""), "asks": c.get("asks", ""),
+                     "parked": c["state"] in ("raw", "refined") and not refinable(c)})
     return {"counts": counts(cards), "line": status_line(cards), "rows": rows}
 
 
@@ -213,7 +223,7 @@ def cmd_check(a):
         miss = problems(c, cards, reg)
         if not miss:
             if c["state"] in ("raw", "refined"):
-                c["state"] = "ready"
+                c.update(state="ready", asks="")
                 save(REPO, c)
                 print(f"{c['id']}: READY (promoted)")
             elif a.id:
@@ -287,6 +297,16 @@ def cmd_take(a):
     print(f"{a.id}: active")
 
 
+def cmd_tried(a):
+    """Refiner: record a try that did not end `ready`. --asks parks the card until the operator answers (`apply-op retry`)."""
+    c = get(REPO, a.id)
+    c["refine_tries"] = c.get("refine_tries", 0) + 1
+    if a.asks:
+        c["asks"] = a.asks[:300]
+    save(REPO, c)
+    print(f"{a.id}: try {c['refine_tries']}/{MAX_TRIES}" + (" parked: asks the operator" if c.get("asks") else " parked: no tries left" if not refinable(c) else ""))
+
+
 def cmd_done(a):
     c = get(REPO, a.id)
     c.update(state="done", result=a.result, closed=now())
@@ -307,6 +327,8 @@ def cmd_apply_op(a):
         c["approved_by"] = "operator"
     elif a.op == "release" and c["state"] == "blocked":
         c["state"] = "refined"
+    elif a.op == "retry":
+        c.update(refine_tries=0, asks="")
     if a.note:
         c["note"] = a.note[:300]
     save(REPO, c)
@@ -361,13 +383,17 @@ def main(argv=None):
     t.add_argument("id")
     t.add_argument("--claim")
     t.set_defaults(f=cmd_take)
+    tr = sp.add_parser("tried")
+    tr.add_argument("id")
+    tr.add_argument("--asks")
+    tr.set_defaults(f=cmd_tried)
     d = sp.add_parser("done")
     d.add_argument("id")
     d.add_argument("--result", required=True)
     d.set_defaults(f=cmd_done)
     o = sp.add_parser("apply-op")
     o.add_argument("id")
-    o.add_argument("op", choices=("bump", "hold", "drop", "approve", "release"))
+    o.add_argument("op", choices=("bump", "hold", "drop", "approve", "release", "retry"))
     o.add_argument("--note")
     o.set_defaults(f=cmd_apply_op)
     s = sp.add_parser("sweep")

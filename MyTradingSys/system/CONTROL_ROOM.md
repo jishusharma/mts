@@ -27,6 +27,7 @@ The operator has two inputs on the page, both stored in the artifact's db (not i
      title under the operator's text on every rebuild (the resolution); set `done` with a one-line result when all refs close.
    - page -> change `control_room.json` or the template (+ test), add a `changelog` line, status `done`, say what changed.
    - Can't or won't -> status `declined` with the reason in `reply`. Never leave an item `new` past one pickup.
+3a. An Inbox reply that answers a card's `asks` question (the page shows "Question for you"): copy the answer into that card's `note`, `tasks.py apply-op <id> retry`, status `done`.
 3b. Backlog requests: `taskops` docs with no `applied`, oldest first: `python scripts/dev/tasks.py apply-op <task> <action>`, then `update` the doc with `applied: "<date>"`.
 4. Decisions with an `answer` and no `applied`: apply them (registry rows, SUPERVISOR_LOG line, config), then
    `update` the doc with `applied: "<date>: what was done"`. New questions for the operator become new `decisions` docs

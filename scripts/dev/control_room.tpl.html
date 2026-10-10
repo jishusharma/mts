@@ -281,7 +281,7 @@ function drawBacklog(){
     const acts = blDb ? ["bump","hold","drop"].concat(r.needs_approval ? ["approve"] : []).map(o => `<button class="chip" data-t="${esc(r.id)}" data-o="${o}">${OPLBL[o]}</button>`).join("") : "";
     return `<div class="it" style="grid-template-columns:auto 1fr auto"><span class="id">${esc(r.id)}</span>
       <div class="t">${esc(r.title)}<div class="src">${esc(r.lane||"no lane yet")}${r.size?" · size "+esc(r.size):""} · priority ${esc(r.prio)}${r.pinned?" · pinned":""}${r.goal?" · "+esc(r.goal):""}</div>
-      ${r.missing.length ? `<div class="src">Still needs: ${esc(r.missing.join("; "))}</div>` : ""}${r.note ? `<div class="src">${esc(r.note)}</div>` : ""}
+      ${r.asks ? `<div class="src"><strong>Question for you:</strong> ${esc(r.asks)} (answer it in the Inbox)</div>` : r.parked ? `<div class="src">Paused: the refiner could not finish this after two tries.</div>` : ""}${r.missing.length ? `<div class="src">Still needs: ${esc(r.missing.join("; "))}</div>` : ""}${r.note ? `<div class="src">${esc(r.note)}</div>` : ""}
       <div class="filters" style="margin-top:6px">${acts}${pend}</div></div>
       <span class="pill ${pill}">${esc(lbl)}</span></div>`;
   }).join("") || `<div class="empty">No open cards. New tasks from the Inbox become cards here.</div>`;

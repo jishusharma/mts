@@ -132,6 +132,32 @@ class QueueTest(unittest.TestCase):
         (self.repo / T.DIR / "B1.json").unlink()
         self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_OK"))   # nothing waiting
 
+    def test_parked_cards_do_not_keep_the_refiner_firing(self):
+        """The brake: a card the refiner cannot finish must not start a session every dispatcher tick."""
+        T.save(self.repo, good("B1", state="raw", goal=""))
+        self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_NEEDED"))
+        self.run_cli("tried", "B1")
+        self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_NEEDED"))     # 1 of 2 tries used
+        rc, out = self.run_cli("tried", "B1")
+        self.assertIn("no tries left", out)
+        line = T.status_line(T.load_all(self.repo))
+        self.assertTrue(line.startswith("REFINE_OK"), line)
+        self.assertIn("parked=1", line)
+        self.run_cli("apply-op", "B1", "retry")                                              # operator answered: back in play
+        self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_NEEDED"))
+
+    def test_asking_the_operator_parks_at_once_and_ready_clears_the_question(self):
+        T.save(self.repo, good("B1", state="refined", goal=""))
+        self.run_cli("tried", "B1", "--asks", "Which year is the holdout?")
+        self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_OK"))
+        row = T.summary(self.repo)["rows"][0]
+        self.assertEqual((row["parked"], row["asks"]), (True, "Which year is the holdout?"))
+        c = T.get(self.repo, "B1")
+        c.update(goal="holdout 2025", asks="", refine_tries=0)
+        T.save(self.repo, c)
+        self.run_cli("check", "B1")
+        self.assertEqual((T.get(self.repo, "B1")["state"], T.get(self.repo, "B1")["asks"]), ("ready", ""))
+
     def test_take_and_done_lifecycle(self):
         T.save(self.repo, good("B1"))
         self.assertEqual(self.run_cli("take", "B1", "--claim", "slug")[0], 0)
