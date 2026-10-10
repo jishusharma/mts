@@ -33,7 +33,7 @@ Stop it: `relay.py stop "<why>"`. Look: `relay.py status --file MyTradingSys/sys
 
 ## Dispatcher (operator ask 2026-10-10: "a scheduled worker who starts the Sonnet agent to pick up the tasks asap")
 Nothing used to START a chain except a session or the operator, so tasks sat. App scheduled task `mts-dispatcher` (every 30 min,
-App must be open) is a timer, not a builder: it runs `python scripts/sched/relay.py kick` (reads the handoff from origin/fast-track),
+App must be open) is a timer, not a builder: it runs origin/fast-track's relay.py `kick` (copied to %TEMP%/mts_relay_kick.py with `git show`, because the live tree's relay.py lags origin and had no `kick`: B164) (reads the handoff from origin/fast-track),
 on `KICK task=mts-relay-a|b` it runs that task, and when the Control Room Inbox has an item with status `new` it runs `mts-control-room`.
 `kick` prints IDLE (exit 1) when: stop flag, no header, header says stop, any launch under 45 min ago (chain is moving), or the same
 handoff id launched under 3 h ago (a session is on it; after 3 h a retry fires, claims stop a double). Log: `~/.claude/mts-relay-log.jsonl`
