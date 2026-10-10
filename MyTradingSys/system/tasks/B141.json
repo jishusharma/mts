@@ -1,5 +1,6 @@
 {
   "approved_by": "",
+  "closed": "2026-10-10T17:19:40Z",
   "commands": [],
   "created": "2026-10-10T16:31:57Z",
   "depends_on": [],
@@ -15,7 +16,7 @@
   "refs": [
     "B141"
   ],
-  "result": "",
+  "result": "Already executed 2026-10-10: Stage 1+2 scripts research/b141_htf_stage1.py, b141_htf_stage2.py (results in PRE_REG section 9); no candidate; writer .new staged (788b186), awaits supervisor promote. Card was stale.",
   "scope_in": [
     "MyTradingSys/research/PRE_REG_HTF_REPLACE_2026-10-07.md"
   ],
@@ -24,7 +25,7 @@
   "sources": [
     "MyTradingSys/system/NEXT_SESSION.md task 3a (2026-10-10)"
   ],
-  "state": "raw",
+  "state": "done",
   "steps": [],
   "tests": "",
   "title": "28-cell runner for the pre-registered HTF replace test"
