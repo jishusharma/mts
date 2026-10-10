@@ -26,6 +26,9 @@ DERIBIT_MAKER = 0.0
 BINANCE_TAKER = 0.0005
 BINANCE_MAKER = 0.0002
 
+# --- Eurex FDAX (symbol GER40), research replays only: ~0.1 point per round turn on ~24000 -> 0.000005 per side ---
+FDAX_FEE_PER_SIDE = 0.000005
+
 
 def fees_dict(entry, target, stop, timeout):
     """tom_bt.py / sim.py shape: per-leg fee fraction."""
@@ -35,3 +38,4 @@ def fees_dict(entry, target, stop, timeout):
 # --- tom_bt.py style profiles ---
 FEES_DERIBIT = fees_dict(entry=DERIBIT_MAKER, target=DERIBIT_MAKER, stop=DERIBIT_TAKER, timeout=DERIBIT_TAKER)
 FEES_ALL_TAKER = fees_dict(entry=DERIBIT_TAKER, target=DERIBIT_TAKER, stop=DERIBIT_TAKER, timeout=DERIBIT_TAKER)
+FEES_FDAX = fees_dict(entry=FDAX_FEE_PER_SIDE, target=FDAX_FEE_PER_SIDE, stop=FDAX_FEE_PER_SIDE, timeout=FDAX_FEE_PER_SIDE)
