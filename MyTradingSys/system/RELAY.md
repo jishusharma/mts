@@ -45,3 +45,9 @@ The gate writes its lock BEFORE the App starts the next task. An unattended sess
 mts-relay-b never ran and the dispatcher idled 3 h on "session still on it". Fixes: `mcp__scheduled-tasks__run_scheduled_task`
 is in ~/.claude/settings.json allow (host-local); STALE_H 3 -> 1; `kick` IDLE lines carry `lock=<utc> task=<id>` and the dispatcher
 checks list_task_runs: no run since the lock = rescue-launch it.
+
+### Correction 2026-10-10 12:50Z: allow rules do NOT fix it
+Dispatcher runs are bypassPermissions yet `run_scheduled_task` from inside a scheduled session still needs a human click.
+So no session may launch another. The cron-fired mts-dispatcher is now the worker: on KICK it runs the relay task itself and
+deletes ~/.claude/mts-relay-lock.json at the end, so the next 30-min tick starts the next handoff. mts-relay-a/b remain for manual use.
+Chain latency <= 30 min. Prompt is host-local (~/.claude/scheduled-tasks/mts-dispatcher/SKILL.md; backup SKILL.md.bak_20261010).
