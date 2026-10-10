@@ -1,4 +1,5 @@
-<!-- relay: stop reason=queue empty: 3c blocked on 10-09 klines, rest is DSA/operator-owned depth=0 id=942e1ec3 -->
+<!-- relay: go depth=0 id=180825b1 -->
+<!-- relay: go depth=0 id=seed2610a1 -->
 # NEXT SESSION PROMPT (handoff 2026-10-10 ~13:30Z, dispatcher-run relay closed B149 code; before: ~13:00Z applied D23; was ~12:40Z relay B closed B149 capture + B164; text below is history) (was 06:50Z, relay session after B160; Claude Code Win App, either account)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -12,14 +13,21 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
    (D01-D23 all applied; D23 at 13:00Z 2026-10-10). New unanswered decisions: act on the `recommended` option only when older
    than 24 h; Java changes (D15 on B142, D17 on B144) are staged + tested, the restart goes to a JIS-NB desk task.
 2. DSA / JIS-NB results: for every desk task now done, spot-check ONE number against its file, then use it (no redo).
-3. TASK (pick first unclaimed, claim it):
-   a. B149 CLOSED 2026-10-10 (mainnet_pnl.py counts settlement; live monitor loads it at next restart: supervisor/desk task, not yours).
-   b. B141 writer STAGED 2026-10-10 (htf_context_live.py.new + test .new, logged in SUPERVISOR_LOG): waits on the supervisor to promote + restart the pythonw writer. Not yours. Close B141 NO-INFO once promoted; BUILD_PIPELINE 2.4/3.1 stay blocked.
-   c. B160 follow-up: once <live>/Dumps/backtest/raw/klines has BTCUSDT-1m-2026-10-09.csv, run `shot.py engine <id>` for the 10-09
-      chart shots (78f967b4e253, b5f554a9f68a, 6188a576411b, ...), ship research/screenshots/engine/*.json; re-score NOT_IN_DATA rows only in a new extract.
+3. TASK (queue seeded by operator 2026-10-10; pick the first item not done, claim it, ONE per session; mark it DONE in "Queue status" below when shipped):
+   Q1. Read the overdue screenshots: `shot.py status`, take the OVERDUE classified charts oldest first (0e9036ae547d, 65656faa31ba, 29ff2b488f13, ...),
+       up to 5 per session; for each `shot.py read` with MATCH / MISMATCH / NOT_IN_DATA claims against files you read, then `shot.py done`. Ship the outputs.
+   Q2. B171 imbalance indicator end to end: read MyTradingSys/items/B171_imbalance_indicator_end_to_end.md, build the next unfinished step with a
+       fail-first test. Design rule from the Grok sweeps: control for price; NO REPLICATION in public evidence, so label it a hypothesis, no tuning.
+   Q3. Big-trade backtest follow-ups: research/bigtrade_2026-10-09/PLAN.md and FINDINGS.md, take the next open item (EXIT_POLICIES_REPORT.md lists the
+       state). Files under backtest/bigtrade/* stay in the live tree uncommitted: ask JIS-NB desk to commit them, do not copy.
+   Q4. Post a desk task to JIS-NB to run scripts/dev/refresh_klines.py for 2026-10-09 (unblocks old 3c: `shot.py engine <id>` on the 10-09 chart shots).
+   Empty list: reread Control Room decisions/feedback, then `desk.py list --all`; only then write stop.
 4. Route run-and-report work to DSA (system/DSA_DELEGATION.md); post what the DSA queue lacks before ending.
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
+
+## Queue status
+(none done yet; seeded 2026-10-10 ~18:00Z by operator request, the old "queue empty" stop was wrong: the real backlog was not listed)
 
 ## Update 2026-10-10 ~14:35Z (relay run by cron mts-dispatcher, JIS-NB)
 - No task done: 3a/3b closed or staged, 3c blocked (klines archive ends 2026-10-08, no 10-09 file). Remaining desk items are DSA/JIS-NB/operator-owned. Queue empty -> stop.
