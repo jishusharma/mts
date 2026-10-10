@@ -1,0 +1,10 @@
+{
+  "done_when": "c_drive_latest.md shows C: free before and after, task MTS-CDriveCare exists with LastTaskResult 0, outputs pasted in the done result",
+  "from": "JIS-NB",
+  "id": "20261010-095939-c-drive-care-report-clear-chrome-cache-r",
+  "need": "Work in mts-dsa after sync.py start. Step 1: powershell -NoProfile -File scripts\\dev\\c_drive_care.ps1 and paste the output. Step 2: ask the operator to close every Chrome window, then run powershell -NoProfile -File scripts\\dev\\c_drive_care.ps1 -Apply and paste the output (Chrome cache only; it skips if Chrome is open, say so). Step 3: powershell -NoProfile -File scripts\\sched\\register_c_drive_care.ps1 -Trigger and paste output. Step 4: Get-ScheduledTask MTS-CDriveCare | Get-ScheduledTaskInfo. Do NOT touch vm_bundles, Chrome Cookies/Login Data, D:, F:. Read MyTradingSys/system/DISK_CARE.md first. If a command fails twice close the task --failed with the error text.",
+  "posted": "2026-10-10T09:59:39Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "C: drive care: report, clear Chrome cache, register weekly task"
+}
