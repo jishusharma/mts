@@ -73,10 +73,11 @@ class RelayTest(unittest.TestCase):
         moving = self.kick(now="2026-10-10T10:20:00Z")
         self.assertEqual(moving.returncode, 1)
         self.assertIn("chain is moving", moving.stdout)
-        working = self.kick(now="2026-10-10T11:30:00Z")
+        working = self.kick(now="2026-10-10T10:50:00Z")
         self.assertEqual(working.returncode, 1)
         self.assertIn("session still on it", working.stdout)
-        retry = self.kick(now="2026-10-10T13:30:00Z")  # same id, 3.5 h: the session died, retry
+        self.assertIn("lock=2026-10-10T10:00:00Z task=mts-relay-", working.stdout)
+        retry = self.kick(now="2026-10-10T11:10:00Z")  # same id, 70 min: never started or died, retry (was 3 h)
         self.assertEqual(retry.returncode, 0, retry.stdout)
 
     def test_kick_idles_on_stop_header_no_header_and_stop_flag(self):
