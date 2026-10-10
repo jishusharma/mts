@@ -1,0 +1,9 @@
+id,video,date,time_local,market,side,qty,entry,stop,target,family,frame,note
+T1,n7ZSkjb7JXs,2025-12-22,~07:25 CET,FDAX,short,3,24481,24485(moved),24422,spike_fade_premarket,F:/MTS/data/tom_videos/frames/n7ZSkjb7JXs_0314.jpg;n7ZSkjb7JXs_0680.jpg,from RECALL_DAX.md s1; stop moved; partials
+T2,k0zm5NYn0IQ,2026-01-08,08:35 CET,FDAX,short,1,25343,n/s,n/s,spike_fade_counter,F:/MTS/data/tom_videos/frames/k0zm5NYn0IQ_0060.jpg;k0zm5NYn0IQ_0670.jpg,from RECALL_DAX.md s1
+T3,ujedEcmvBMk,2026-05-12,~10:00 CEST,FDAX,short,2,24229,24257,24111,spike_fade_premarket_high,F:/MTS/data/tom_videos/frames/ujedEcmvBMk_0063.jpg;ujedEcmvBMk_0168.jpg,stopped out
+T3b,ujedEcmvBMk,2026-05-12,~12:00 CEST,FDAX,short,1,24216,24236,24111,reentry_after_stop,F:/MTS/data/tom_videos/frames/ujedEcmvBMk_0330.jpg,re-entry at low volume
+T4,UOBgXV20yCM,2026-05-18,~10:00 CEST,FDAX,long,1,23887,23857,23962,gap_pullback,F:/MTS/data/tom_videos/frames/UOBgXV20yCM_0300.jpg,Monday gap P profile
+T5,T6hDJcHrVBM,2026-05-19,open spike,FDAX,short,3,24690,24753,24184,spike_fade_open,F:/MTS/data/tom_videos/frames/T6hDJcHrVBM_0420.jpg,TP2 24184; partials
+T6,zQTbdEweG3c,2026-06-02,~10:00 CEST,FDAX,short,1,25344,n/s,n/s,spike_fade_counter,F:/MTS/data/tom_videos/frames/zQTbdEweG3c_0345.jpg;zQTbdEweG3c_0465.jpg,counter-trend at spike top
+T7,l8RZrBfzvp4,2026-03-19,08:48 CET (taskbar clock),ES (#ESM6 5m),short,1,6806.25,6812.25,n/s,spike_fade_after_rally,F:/MTS/data/tom_videos/frames/l8RZrBfzvp4_0100.jpg,SL label $-300 = 6pt x $50; open P&L +$150 -> price 6803.25; read in zoom frames/l8RZ_0100_labels.png and l8RZ_0100_clock.png (this session)
