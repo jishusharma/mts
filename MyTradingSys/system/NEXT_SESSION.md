@@ -1,4 +1,4 @@
-<!-- relay: go depth=6 id=60b2e2a2 -->
+<!-- relay: go depth=0 id=ea26ce66 -->
 # NEXT SESSION PROMPT (handoff 2026-10-10 ~13:30Z, dispatcher-run relay closed B149 code; before: ~13:00Z applied D23; was ~12:40Z relay B closed B149 capture + B164; text below is history) (was 06:50Z, relay session after B160; Claude Code Win App, either account)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -14,12 +14,16 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
 2. DSA / JIS-NB results: for every desk task now done, spot-check ONE number against its file, then use it (no redo).
 3. TASK (pick first unclaimed, claim it):
    a. B149 CLOSED 2026-10-10 (mainnet_pnl.py counts settlement; live monitor loads it at next restart: supervisor/desk task, not yours).
-   b. B141 Stage 2 DONE 2026-10-10: no cell of 16 passes (PRE_REG section 9). Verdict = section 7 fail. NEXT: stage `htf_context_live.py.new` (live writer, never edit in place) dropping bal_4h/bal_1d/failed_breakout to constant UNAVAILABLE with the reason logged (keep OI delta), tests for restart state/API errors, gate, then log it in SUPERVISOR_LOG for the supervisor to promote+restart. Mark B141 CLOSED(NO-INFO) once promoted; BUILD_PIPELINE 2.4/3.1 (R4-D/R5) stay blocked.
+   b. B141 writer STAGED 2026-10-10 (htf_context_live.py.new + test .new, logged in SUPERVISOR_LOG): waits on the supervisor to promote + restart the pythonw writer. Not yours. Close B141 NO-INFO once promoted; BUILD_PIPELINE 2.4/3.1 stay blocked.
    c. B160 follow-up: once <live>/Dumps/backtest/raw/klines has BTCUSDT-1m-2026-10-09.csv, run `shot.py engine <id>` for the 10-09
       chart shots (78f967b4e253, b5f554a9f68a, 6188a576411b, ...), ship research/screenshots/engine/*.json; re-score NOT_IN_DATA rows only in a new extract.
 4. Route run-and-report work to DSA (system/DSA_DELEGATION.md); post what the DSA queue lacks before ending.
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
+
+## Update 2026-10-10 ~14:45Z (relay run by cron mts-dispatcher, JIS-NB)
+- DONE: B141 writer staged (.new force-added, *.new is gitignored), 15 staged tests OK / 4 fail on live code, quick gate GREEN, SUPERVISOR_LOG entry, B141 item progress. Not promoted.
+- Next: 3c only if klines 10-09 exist; else pick from desk/Control Room (nothing else unclaimed in this file).
 
 ## Update 2026-10-10 ~14:10Z (relay run by cron mts-dispatcher, JIS-NB)
 - DONE: B141 Stage 2 (research/b141_htf_stage2.py + 10 tests, mutation-checked, b141_stage2_result.json, PRE_REG section 9, item progress, wiring_registry REPRO, run_extra_tests). 0 of 16 cells pass; 4H ER cells opposite sign. Holdout not read (no candidate). Quick gate GREEN.

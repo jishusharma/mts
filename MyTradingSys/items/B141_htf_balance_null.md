@@ -23,3 +23,6 @@ Stage 1 (coverage) done: research/b141_htf_stage1.py, result in PRE_REG section 
 
 ## Progress 2026-10-10 (Stage 2)
 Stage 2 done: research/b141_htf_stage2.py, result in PRE_REG section 9 and research/b141_stage2_result.json. No cell of the 16 passes (CI/year/placebo); 4H ER cells show the opposite sign. Per PRE_REG section 7 the balance rule is to be removed/UNAVAILABLE in htf_context_live.py (stage as .new, supervisor restarts the writer). Holdout not read.
+
+## Progress 2026-10-10 (writer staged)
+Staged, NOT promoted: backtest/layers/fabio/htf_context_live.py.new + test_htf_context_live.py.new (force-added; .pre_ backups at promote). bal_4h/bal_1d/failed_breakout = constant UNAVAILABLE, new field unavailable_reason, OI delta kept, signals.balance import removed. Staged 15 tests pass; 4 fail on the live code (shape, balanced-window, first-day, no-balance-import). Promote = supervisor: back up to .pre_b141, rename both, re-gate, restart the pythonw writer. Close B141 (NO-INFO) after that.
