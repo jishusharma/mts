@@ -1,4 +1,4 @@
-<!-- relay: go depth=0 id=1a320f88 -->
+<!-- relay: go depth=1 id=ec62cdce -->
 <!-- relay: go depth=0 id=tomfab1011 -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
@@ -19,7 +19,7 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    `python -I MyTradingSys/backtest/dax_data.py fetch --start 2024-10-01 --end 2026-10-10 --raw F:/MTS/data/dax_raw --workers 3 --pause 2`.
 3. TASK: first Qn below not DONE and not claimed. Its card is the whole brief:
    `python scripts/dev/tasks.py brief <card>` -> `sync.py claim` -> work -> `tasks.py done <card> --result "<number/file>"` -> ship -> release.
-   Q1. Card tom-verdict-fee-per-market (Sonnet). Code is ON fast-track (09a6196, BTC bit-identical test, quick gate passed pre-merge); claim released; card still active. Remaining: quick gate on HEAD, confirm the new Java tests fail on old code, run `dax_engine.py snap --at 2026-05-12T07:55:00Z` and read the vwap_band_+1 short's net_rr (was 0.70 at gross 5.09; the agent's run printed nothing - check the out file), then `tasks.py done`. Java reaches live only via supervisor deploy. DONE when: card done_when holds (GER40 netRR(24229,24111,24257)=4.1696 (the brief said 4.1662: hand error, (118-0.24229)/(28+0.24229)=4.1696), BTCUSDT bit-identical test red-before).
+   Q1. DONE 2026-10-11 (relay JIS-NB): net_rr 0.70->4.94, quick gate green. (old text:) Card tom-verdict-fee-per-market (Sonnet). Code is ON fast-track (09a6196, BTC bit-identical test, quick gate passed pre-merge); claim released; card still active. Remaining: quick gate on HEAD, confirm the new Java tests fail on old code, run `dax_engine.py snap --at 2026-05-12T07:55:00Z` and read the vwap_band_+1 short's net_rr (was 0.70 at gross 5.09; the agent's run printed nothing - check the out file), then `tasks.py done`. Java reaches live only via supervisor deploy. DONE when: card done_when holds (GER40 netRR(24229,24111,24257)=4.1696 (the brief said 4.1662: hand error, (118-0.24229)/(28+0.24229)=4.1696), BTCUSDT bit-identical test red-before).
    Q2. Card tom-trade-ledger (Sonnet, frames not transcripts). DONE when: TOM_TRADE_LEDGER.csv >= 30 trades with frame evidence.
    Q3. Card fabio-trade-ledger (Sonnet). DONE when: FABIO_TRADE_LEDGER.csv >= 20 trades with frame evidence.
    Q4. Cards tom-layer-v2-spec (part A: families + sourced rules) then tom-layer-v2-cost (part B: per-market proofs/cost, BTC stop-width transfer rule, Sonnet build cards). OPUS, approved by the operator 2026-10-11, size M each = one card per session; both need Q2. DONE when: TOM_LAYER_V2_SPEC.md parts A and B + Sonnet build cards.
@@ -110,3 +110,7 @@ Not in this list on purpose (claimed by other sessions at 20:48Z): tom-verdict-f
 - Task 3b is therefore finished except d11b; D11/D12 already carry `applied` in Control Room.
 - JIS-NB (session "Inbox items") reports: CI/CD jobs registered; NOT done: live-mirror install (no \JIS-NB\MTS-Mirror share, so `live_mirror.py pull` fails on the NUC), B149 capture, JVM restart. Those are JIS-NB-only.
 - NUC-suited next: B141 28-cell runner (3d) on F:\MTS\data (daily/1h/1d only; 1m klines exist only on JIS-NB, so D22 Beta and anything on 1m/5m stays on JIS-NB).
+
+## Update 2026-10-11 ~04:30Z (relay via cron mts-dispatcher-night, JIS-NB)
+- DONE Q1 tom-verdict-fee-per-market: recall rerun T3 vwap_band_+1 net_rr 4.94 (was 0.70, gross 5.09); quick gate GREEN. Java fail-first on old code NOT re-run (permission denied); old-code evidence = the 0.70. Java live only via supervisor deploy.
+- Next: Q2 tom-trade-ledger (Sonnet). Q4/Q5 need an Opus session.

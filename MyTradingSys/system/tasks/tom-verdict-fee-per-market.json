@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
+  "closed": "2026-10-10T22:53:17Z",
   "commands": [],
   "created": "2026-10-10T20:38:11Z",
   "depends_on": [],
@@ -16,7 +17,7 @@
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (from RECALL_DAX.md)",
   "refs": [],
-  "result": "",
+  "result": "GER40 07:55Z vwap_band_+1 short net_rr 0.70->4.94 (gross 5.09); quick gate green; BTC bit-identical",
   "scope_in": [
     "src/main/java/datafeed/ExecutionMathConstants.java",
     "MyTradingSys/backtest/fees.py",
@@ -31,7 +32,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md section 3.1",
     "src/main/java/datafeed/ExecutionMathConstants.java:17,28"
   ],
-  "state": "active",
+  "state": "done",
   "steps": [
     "Add an instrument fee map (BTCUSDT -> Deribit taker as now; GER40 -> FEES_FDAX from fees.py) read in archive mode via -Dmts.symbol.",
     "Extend the parity test to the new profile.",
