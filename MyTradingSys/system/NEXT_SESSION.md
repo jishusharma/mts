@@ -1,6 +1,5 @@
-<!-- relay: stop reason=Q5 and Q6 blocked on desk task 20261010-165600 (JIS-NB: 10-09 klines refresh, bigtrade files shipped) depth=2 id=73b2aefa -->
-<!-- relay: go depth=0 id=seed2610a1 -->
-# NEXT SESSION PROMPT (handoff 2026-10-10 ~13:30Z, dispatcher-run relay closed B149 code; before: ~13:00Z applied D23; was ~12:40Z relay B closed B149 capture + B164; text below is history) (was 06:50Z, relay session after B160; Claude Code Win App, either account)
+<!-- relay: go depth=0 id=d5c269c8 -->
+# NEXT SESSION PROMPT (handoff 2026-10-10 ~21:00Z, queue rebuilt from the task cards; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
 
@@ -9,27 +8,27 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
 0. `python scripts/dev/sync.py start`, `sync.py where`, `desk.py list --all`. Push fails: say so in one line, stop.
    Read STATUS.md "Daily Hygiene": a RED there is fixed before new work. One task per session; hand off after the task,
    5 operator turns or ~50k tokens: ship, overwrite this file, `where` clean.
-1. Control Room (url in CONTROL_ROOM.md): ArtifactData query decisions + feedback. Apply answered decisions with no `applied`
-   New unanswered decisions: act on the `recommended` option only when older
-   than 24 h; Java changes (D15 on B142, D17 on B144) are staged + tested, the restart goes to a JIS-NB desk task.
-2. DSA / JIS-NB results: for every desk task now done, spot-check ONE number against its file, then use it (no redo).
-3. TASK: first item below not marked DONE in "Queue status", claim it, do ONLY it (each is sized for one session, Sonnet, <=50k tokens):
-   Q1. DONE 2026-10-10 ~16:15Z: set 29ff2b read (7 shots), extract research/screenshots/2026-10-07_BTCUSDT_29ff2b488f13.md shipped.
-   Q2. DONE 2026-10-10 ~16:40Z: 65656faa31ba, 359bdb0c7cf9, 23416389787e read + done; extract research/screenshots/2026-10-10_BTCUSDT_q2_single_tf.md (12 MATCH / 2 MISMATCH / 4 NOT_IN_DATA); `shot.py status` overdue 0.
-   Q3. DONE 2026-10-10 ~17:00Z: NO-INFO (no transcript quote defines an imbalance rule); recorded in items/B171; Control Room decision D24-imbalance-quote filed, default park B171.
-   Q4. DONE 2026-10-10 ~17:10Z: desk task 20261010-165600-refresh-2026-10-09-klines-and-ship-the-b posted to JIS-NB (klines 10-09 refresh + ship bigtrade files); pending.
-   Q5. (after Q4a lands) `shot.py engine <id>` for the 10-09 chart shots (78f967b4e253, b5f554a9f68a, 6188a576411b), ship research/screenshots/engine/*.json.
-       DONE when: the three engine json files are on origin.
-   Q6. (after Q4b lands) read research/bigtrade_2026-10-09/ PLAN/FINDINGS and write the chosen item as Q7 in this list, scoped to one session; do not build it now.
-       DONE when: Q7 is in this list and passes `relay.py lint`.
-   List exhausted or only blocked items left: reread Control Room + `desk.py list --all`; stop only then, naming each blocker.
-4. Route run-and-report work to DSA (system/DSA_DELEGATION.md); post what the DSA queue lacks before ending.
+1. Control Room (url in CONTROL_ROOM.md): ArtifactData query decisions + feedback. Apply answered decisions with no `applied`;
+   a new unanswered decision: act on its `recommended` option only when older than 24 h. Java restarts go to a JIS-NB desk task.
+2. For every desk task now done, spot-check ONE number against its file, then use it (no redo).
+3. TASK: first Qn below not DONE and not claimed (`sync.py start` lists claims). Its card is the whole brief:
+   `python scripts/dev/tasks.py brief <card>` -> `sync.py claim` -> work -> `tasks.py done <card> --result "<number/file>"` -> ship -> release.
+   Q1. Card B142 (disable ExtraSetupBuilder momentum candidates, Java). DONE when: mvn test green incl. new ExtraSetupBuilderDisabledTest (red on old code first); BUGS.md row B142 shows the fix; commit shipped.
+   Q2. Card B144 (stop counting the volume spike in proof_count, Java). DONE when: CountSignalsD4Test.volumeSpike_doesNotCount_B144 red before, green after; mvn test green; commit shipped.
+   Q3. Card B059 (pin the fixed-grid volume profile with a test). DONE when: BuildVpFixedGridTest green on HEAD and red under the L566 mutation (both outputs in the result); row B059 CLOSED.
+   Q4. Card B124 (testnet_canary journal check per open plan). DONE when: the 6 new tests in test_testnet_canary.py pass, red before; row B124 CLOSED; commit shipped.
+   Q5. Card B122 (unmapped-layer reject text, one-line fix). DONE when: LayerSignalTest.test_unmapped_reject_text_uses_fallback_key red before, green after; commit shipped.
+   Q6. (after desk task 20261010-165600 lands) Card B160-followup (engine snapshots for the 10-09 chart shots). DONE when: research/screenshots/engine/<id>.json exists for each id in the card, or the refusal text is in the result.
+   Q7. Refill: run `tasks.py status`. REFINE_NEEDED: refine up to 3 cards (TASK_REFINEMENT.md), then write the next ready cards in as Q8-Q12. DONE when: `tasks.py status` prints REFINE_OK and the new Qn pass `relay.py lint`.
+   Every Qn DONE or blocked: reread Control Room + `desk.py list --all`; stop only then, naming each blocker.
+4. Run-and-report work goes to DSA (system/DSA_DELEGATION.md); post what the DSA queue lacks before ending.
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
 
 ## Queue status
-Queue renumbered 2026-10-10 (operator audit). Done so far: shot 0e9036ae547d read + done (extract 2026-10-05_BTCUSDT_0e9036ae547d.md); it is not part of Q1/Q2.
-Q1 DONE 2026-10-10 ~16:15Z (set 29ff2b, 7 shots read+done, extract research/screenshots/2026-10-07_BTCUSDT_29ff2b488f13.md, claims 33 MATCH / 7 MISMATCH / 8 NOT_IN_DATA, reused from the bigtrade C06-C12 rows). Q2 DONE ~16:40Z (3 shots, extract 2026-10-10_BTCUSDT_q2_single_tf.md; 359bdb0c7cf9 rows 03-05 need the 10-09 klines from Q4a). Q3 DONE ~17:00Z (NO-INFO, D24 filed). Q4-Q6 not started; next is Q4. Overdue shots 0.
+Rebuilt 2026-10-10 ~21:00Z from `tasks.py next` after the Q1-Q4 screenshot/B171 work finished (Q1-Q4 of the old list DONE: shots 29ff2b + 3 single-TF read, B171 NO-INFO with D24 filed, klines desk task 20261010-165600 posted and still pending on JIS-NB).
+Why the chain was idle 17:18Z-20:42Z: the old list ended in two items blocked on that desk task, so the handoff said stop while 8 cards were ready. The list now starts from ready cards.
+Not in this list on purpose (claimed by other sessions at 20:48Z): tom-verdict-fee-per-market, tom-dax-data, tom-dax-backtest. Refined, waiting for a dispatcher refine pass: B066, B118, tom-encode-spike-fade, tom-probe-prereg.
 
 ## Update 2026-10-10 ~14:35Z (relay run by cron mts-dispatcher, JIS-NB)
 - No task done: 3a/3b closed or staged, 3c blocked (klines archive ends 2026-10-08, no 10-09 file). Remaining desk items are DSA/JIS-NB/operator-owned. Queue empty -> stop.

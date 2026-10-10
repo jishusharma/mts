@@ -408,6 +408,11 @@
    "disp": "REPRO",
    "ref": "tom-dax-recall",
    "why": "Offline research script: engine recall at Tom's own DAX trades read from video frames; writes F:/MTS/data/dax_recall; research/tom_transfer_2026-10-11/PROBE_PLAN.md; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/backtest/tom_dax_bt.py": {
+   "disp": "REPRO",
+   "ref": "tom-dax-backtest",
+   "why": "Offline research driver: untuned Tom core on DAX vs matched-proof BTC (gen snapshots, rows, four variants x verdict pair, null, dev/holdout), writes research/tom_transfer_2026-10-11/DAX_BT_REPORT.md and TRIAL_REGISTRY rows; PRE_REG_DAX.md; run by hand or a desk task, not by any loop."
   }
  }
 }
