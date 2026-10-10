@@ -20,6 +20,16 @@ Every claim about disk or process state carries a result you saw in this chat; i
 result has not appeared after your block, say "no result seen" in one line and wait for it.
 Do not guess it, and do not stack a second block on an unseen first.
 
+0.1a Timeouts (unattended runs; operator 2026-10-10). A timeout kills the command and wastes a turn.
+- Slow commands get timeout=300 (the maximum): `sync.py ship`, `desk.py done` (it ships by default and
+  takes about 145 s), `run_all_tests.py`, any backtest or inventory script. Quick reads keep 60.
+- Never put two slow steps in one block. Close a desk task with `desk.py done <id> --result "..." --no-ship`,
+  then `sync.py ship` as its own block with timeout=300.
+- A result with timed_out=true or exit -1 means the command may have half-run. Check state first (git status,
+  `desk.py show <id>`), then finish only the missing step. Never repeat the same block with the same timeout.
+- If a step needs more than 300 s, split it into steps that each fit, or post it with `desk.py post` and move on.
+- One AIRUN block per reply. A reply with no further command ends with a plain-text summary and no block.
+
 0.2 Reach. The project working tree: C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed
 and its work tree C:\Users\E-ngineers\IdeaProjects\mts-dsa (0.6). Inside those roots you
 read, write, create, move, copy, delete and run anything: scripts, python, pytest, Maven
