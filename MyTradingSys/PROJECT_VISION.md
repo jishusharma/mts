@@ -203,4 +203,45 @@ So you get the idea.. I need evrything rolling efficiently
 ### INTERPRETATION (not verbatim)
 Design decisions for this directive: MyTradingSys/research/fast_track_2026-09-27/RSI_TF_LAYER_DESIGN.md.
 
+## DIRECTION UPDATE (2026-10-10, operator approved D23 'Apply the addendum as drafted'; not verbatim; supersedes stale rows above where they conflict)
+
+### Goal and stages
+MTS exists to trade BTC with a proven net edge after fees, first on testnet, then real money only after the
+GO-LIVE BAR (system/GO_LIVE_BAR.md, D06-gate 2026-10-09) holds for 30 days. Work follows five stages:
+S1 trustworthy measurements, S2 survive the fees, S3 find a real edge (walk-forward OOS net R > 0, CI above 0),
+S4 prove it on testnet, S5 go-live gate. Status today: S1-S2 in progress; no source has passed S3.
+
+### Cores and layers
+Two cores since 2026-10-01: Tom and Fabio, each compiled independently with its own verdicts, plans and ledger
+source flag (research/ARCHITECTURE_TWO_CORES_2026-10-01.md). Every other system (RSI/Malkan, CryptoCred,
+session, positioning, probability, tick, timeframe, options, analyst/caller feeds) is a switchable layer that
+never gates a core. A core or layer that fails S3 on fixed data is parked (alerts kept for data), not tuned
+into passing. Promotion to core uses the S3 bar, never opinion.
+
+### Provenance and its two exceptions
+Every parameter comes from the source trader's own words (file:line) or is NO-SOURCE. Exceptions:
+(1) BT-TUNED: backtests may tune toward catching big, profitable moves; tuned values are labelled and never
+written to live files without an operator decision. (2) NO-SOURCE research tests: specs with no trader
+behind them (chatbot handoffs, B163) may run as labelled backtests only, never as live layers.
+
+### Sources we listen to
+A trader/analyst enters only with transcripts or a verifiable call history, scored before any trade
+(Qriptal scorecard B162 is the template). Each stays an isolated layer until S3.
+
+### Economics and risk
+Every result is net of real fees and funding. Stops are wide enough that fees cost under 0.25 R.
+Safety checks fail closed; missing data is reported as missing, never as 0. Per-source testnet accounts,
+daily-loss monitor and kill switch guard every trade. Testnet calibration (all layers fire) counts as data,
+not as S4 evidence; only S3-passed configs count toward the bar. Mainnet needs a separate signed decision.
+
+### How the project runs
+Operator speaks through the Control Room (inbox verbatim, decisions). Work is cost-routed: scripts, then DSA,
+then Sonnet, Opus only when named. Sessions are short and relay automatically. Code reaches the live tree only
+through CI-gated auto-deploy. Off-desktop sessions read live state through the read-only mirror.
+Devices: JIS-NB live loop; JIS-NUC backtests (candidate live host); laptop for travel. Qwen/Ollama lane retired.
+
+### Parked or open
+Local AI assistant: parked (no build since 2026-09-25). Symbol scope beyond BTCUSDT perp: undecided.
+Confluence may gate a trade only after each input passed S3 on its own.
+
 # END
