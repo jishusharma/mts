@@ -52,7 +52,8 @@ The operator's TradingView charts are one question seen at several timeframes. `
 (chart_read_protocol layers 3-4: the same level on another panel, and on a higher timeframe). One timeframe only = the read is context, not a read.
 
 ## 4 READ - the procedure that already worked
-Copy `MyTradingSys/research/screenshots/TEMPLATE.md`. Per image: pre-read gate (VVP-002 F.1), then each claim on the chart gets one row classed:
+Copy `MyTradingSys/research/screenshots/TEMPLATE.md`. Carried context first (B157): a chart extract needs a `Prior:` line (the previous read's extract, or `Prior: none`) or `shot.py read` refuses it; `read` prints that read's Invalidation/Falsify lines, each scored HELD / BROKEN / UNTESTED against the new chart.
+Per image: pre-read gate (VVP-002 F.1), then each claim on the chart gets one row classed:
 - MATCH: reproduced from files on disk (give file and numbers).
 - MISMATCH: the chart shows one thing, our pipeline or raw data another.
 - NOT_IN_DATA: the chart shows something no file holds (operator rays and boxes always land here until T066).

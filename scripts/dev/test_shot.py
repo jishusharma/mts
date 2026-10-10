@@ -187,22 +187,46 @@ class ShotTest(unittest.TestCase):
     def test_read_needs_classification_the_id_and_claim_rows(self):
         n = self.landed("n")
         c = self.chart("c", "5m")
-        good = "Shots: %s\n| C1-01 | MATCH | header O 83388 | klines equal |\n| C1-02 | MISMATCH | CVD -10.7K | cvd_day -6.6K |\n| C1-03 | NOT_IN_DATA | net delta | no field |\n" % c
+        good = "Shots: %s\nPrior: none\n| C1-01 | MATCH | header O 83388 | klines equal |\n| C1-02 | MISMATCH | CVD -10.7K | cvd_day -6.6K |\n| C1-03 | NOT_IN_DATA | net delta | no field |\n" % c
         with self.assertRaises(shot.ShotError):
             shot.read_extract(self.store, [n], self.extract("Shots: %s\n" % n))  # still new
         with self.assertRaises(shot.ShotError):
             shot.read_extract(self.store, [c], self.extract("no id here\n| C1-01 | MATCH | a | b |\n"))
         with self.assertRaises(shot.ShotError):
-            shot.read_extract(self.store, [c], self.extract("Shots: %s\nprose only, no claim rows\n" % c))
-        ids, counts = shot.read_extract(self.store, [c], self.extract(good))
+            shot.read_extract(self.store, [c], self.extract("Shots: %s\nPrior: none\nprose only, no claim rows\n" % c))
+        ids, counts, prior = shot.read_extract(self.store, [c], self.extract(good))
         self.assertEqual(counts, {"MATCH": 1, "MISMATCH": 1, "NOT_IN_DATA": 1})
         self.assertEqual(self.state()[c]["status"], "read")
+
+    def test_chart_read_carries_the_prior_reads_falsifiers(self):  # B157
+        c = self.chart("c", "5m")
+        rows = "| C1-01 | MATCH | a | b |\n"
+        with self.assertRaises(shot.ShotError):  # (a) no Prior line: the read would start cold
+            shot.read_extract(self.store, [c], self.extract("Shots: %s\n%s" % (c, rows)))
+        with self.assertRaises(shot.ShotError):  # (c) Prior names a file that does not exist
+            shot.read_extract(self.store, [c], self.extract("Shots: %s\nPrior: %s\n%s" % (c, self.tmp / "gone.md", rows)))
+        ids, counts, prior = shot.read_extract(self.store, [c], self.extract("Shots: %s\nPrior: none\n%s" % (c, rows)))  # (b)
+        self.assertEqual(prior, (None, []))
+        old = self.tmp / "prior_read.md"
+        old.write_text("Shots: x\n- Invalidation: acceptance outside 82450-83470\nnoise line\nFalsify: acceptance under 82630\n"
+                       "  - falsify if CVD flips\n", encoding="utf-8", newline="\n")
+        ids, counts, prior = shot.read_extract(self.store, [c], self.extract("Shots: %s\nPrior: %s\n%s" % (c, old, rows)))  # (d)
+        self.assertEqual(prior[1], ["Invalidation: acceptance outside 82450-83470", "Falsify: acceptance under 82630",
+                                    "falsify if CVD flips"])
+        self.assertTrue(str(prior[0]).endswith("prior_read.md"))
+        self.assertTrue(self.state()[c]["prior"].endswith("prior_read.md"))
+
+    def test_non_chart_extract_needs_no_prior_line(self):  # B157 default
+        a = self.landed("a")
+        shot.classify(self.store, a, "positions", "testnet positions table")
+        ids, counts, prior = shot.read_extract(self.store, [a], self.extract("Shots: %s\nprose\n" % a))
+        self.assertEqual(prior, (None, []))
 
     def test_done_needs_a_read_chart_and_an_outcome_that_exists(self):
         c = self.chart("c", "5m")
         with self.assertRaises(shot.ShotError):  # not read yet
             shot.done(self.store, [c], "noaction:nothing to see here at all")
-        shot.read_extract(self.store, [c], self.extract("Shots: %s\n| C1-01 | MISMATCH | a | b |\n" % c))
+        shot.read_extract(self.store, [c], self.extract("Shots: %s\nPrior: none\n| C1-01 | MISMATCH | a | b |\n" % c))
         with self.assertRaises(shot.ShotError):  # a MISMATCH cannot be waved away in a few words
             shot.done(self.store, [c], "noaction:chart quirk")
         with self.assertRaises(shot.ShotError):  # item id shape

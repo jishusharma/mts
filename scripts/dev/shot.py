@@ -41,6 +41,7 @@ PRIVATE_KINDS = ("positions",)
 STATUSES = ("new", "classified", "read", "done")
 CLAIM_CLASSES = ("MATCH", "MISMATCH", "NOT_IN_DATA")
 CLAIM_ROW = re.compile(r"^\|\s*[A-Za-z0-9_.-]+\s*\|\s*(MATCH|MISMATCH|NOT_IN_DATA)\s*\|", re.M)
+PRIOR_LINE = re.compile(r"^[\s>*-]*Prior(?::\**|\**:)[ \t]*(\S.*?)\s*$", re.M)  # B157: `Prior: <extract>` / `**Prior:** none`
 OUTCOME_ID = re.compile(r"^(B\d{3}|T\d{3}|F-BT-\d+|FEAT-\d+)$")
 SET_WINDOW_MIN = 10  # chart shots of one symbol within this many minutes are one set (the 2026-10-08 batch spanned 4)
 NAG_EVERY_HOURS = 6  # the SessionStart backlog reminder repeats at most this often
@@ -159,6 +160,10 @@ def fold(events):
             s.pop("extract", None)
         elif ev == "read":
             s.update(extract=e["extract"], claims=e["claims"], status="read")
+            if "prior" in e:
+                s["prior"] = e["prior"]
+            else:
+                s.pop("prior", None)
         elif ev == "done":
             s.update(outcome=e["outcome"], status="done")
     return S
@@ -404,15 +409,47 @@ def read_extract(store, prefixes, extract):
     counts = {c: 0 for c in CLAIM_CLASSES}
     for m in CLAIM_ROW.finditer(text):
         counts[m.group(1)] += 1
-    if any(S[i].get("kind") == "chart" for i in ids) and not sum(counts.values()):
+    is_chart = any(S[i].get("kind") == "chart" for i in ids)
+    if is_chart and not sum(counts.values()):
         raise ShotError("a chart extract needs claim rows: | id | MATCH or MISMATCH or NOT_IN_DATA | chart claim | data check |")
+    prior = carried_context(text, path) if is_chart else (None, [])
+    ev_extra = {"prior": repo_rel(prior[0])} if prior[0] else {}
+    for i in ids:
+        append(store, {"event": "read", "id": i, "ts": now_iso(), "extract": repo_rel(path), "claims": counts, **ev_extra})
+    return ids, counts, prior
+
+
+def repo_rel(path):
     try:
-        rel = str(path.resolve().relative_to(REPO))
+        rel = str(Path(path).resolve().relative_to(REPO))
     except ValueError:
         rel = str(path)
-    for i in ids:
-        append(store, {"event": "read", "id": i, "ts": now_iso(), "extract": rel.replace("\\", "/"), "claims": counts})
-    return ids, counts
+    return rel.replace("\\", "/")
+
+
+def carried_context(text, path):
+    """B157: a chart read must say which read came before it (`Prior: <extract>` or `Prior: none`), so it starts from
+    that read's context instead of cold. Returns (prior path or None, the prior read's Invalidation/Falsify lines),
+    which the new read scores HELD / BROKEN / UNTESTED against the new chart."""
+    m = PRIOR_LINE.search(text)
+    if not m:
+        raise ShotError("a chart extract needs a `Prior:` line: the previous read's extract path, or `Prior: none` (B157)")
+    value = m.group(1).strip().strip("`")
+    if value.lower() == "none":
+        return None, []
+    cand = Path(value)
+    tries = [cand] if cand.is_absolute() else [REPO / cand, path.parent / cand, Path.cwd() / cand]
+    found = next((t for t in tries if t.is_file()), None)
+    if found is None:
+        raise ShotError(f"Prior extract not found: {value}")
+    if found.resolve() == path.resolve():
+        raise ShotError("Prior must name the previous read, not this extract")
+    lines = []
+    for line in found.read_text(encoding="utf-8").splitlines():
+        s = line.strip().lstrip("-*> ").strip()
+        if s.lower().startswith(("invalidation", "falsify")):
+            lines.append(s)
+    return found, lines
 
 
 def outcome_exists(token):
@@ -597,8 +634,12 @@ def main(argv=None):
             i = classify(store, args.id, args.kind, args.why, args.symbol, args.tf, args.at, args.tz, args.source, args.zones_marked)
             print(f"OK {i} classified {args.kind}")
         elif args.cmd == "read":
-            ids, counts = read_extract(store, args.ids, args.extract)
+            ids, counts, (prior, falsifiers) = read_extract(store, args.ids, args.extract)
             print(f"OK {len(ids)} read, claims {counts}")
+            if prior:
+                print(f"Carried context from {repo_rel(prior)}: score each HELD / BROKEN / UNTESTED in this extract")
+                for line in falsifiers or ["(the prior read has no Invalidation/Falsify lines)"]:
+                    print("  " + line)
         elif args.cmd == "done":
             ids = done(store, args.ids, args.outcome)
             print(f"OK {len(ids)} done: {args.outcome}")
