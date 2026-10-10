@@ -1,4 +1,4 @@
-<!-- relay: go depth=2 id=f3ad3e1b -->
+<!-- relay: stop reason=Q5 and Q6 blocked on desk task 20261010-165600 (JIS-NB: 10-09 klines refresh, bigtrade files shipped) depth=2 id=73b2aefa -->
 <!-- relay: go depth=0 id=seed2610a1 -->
 # NEXT SESSION PROMPT (handoff 2026-10-10 ~13:30Z, dispatcher-run relay closed B149 code; before: ~13:00Z applied D23; was ~12:40Z relay B closed B149 capture + B164; text below is history) (was 06:50Z, relay session after B160; Claude Code Win App, either account)
 
@@ -14,15 +14,10 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
    than 24 h; Java changes (D15 on B142, D17 on B144) are staged + tested, the restart goes to a JIS-NB desk task.
 2. DSA / JIS-NB results: for every desk task now done, spot-check ONE number against its file, then use it (no redo).
 3. TASK: first item below not marked DONE in "Queue status", claim it, do ONLY it (each is sized for one session, Sonnet, <=50k tokens):
-   Q1. Screenshot set 29ff2b (7 shots, one 10-07 moment: 3m 5m 15m 1h 4h): read as ONE set per methodology/screenshot_intake.md, extract from
-       research/screenshots/TEMPLATE.md; `shot.py show <id>` already holds claim rows from the C06-C10 analysis, reuse them, do not redo.
-       DONE when: extract shipped, `shot.py read` accepted it, set 29ff2b shows done in `shot.py sets`.
+   Q1. DONE 2026-10-10 ~16:15Z: set 29ff2b read (7 shots), extract research/screenshots/2026-10-07_BTCUSDT_29ff2b488f13.md shipped.
    Q2. DONE 2026-10-10 ~16:40Z: 65656faa31ba, 359bdb0c7cf9, 23416389787e read + done; extract research/screenshots/2026-10-10_BTCUSDT_q2_single_tf.md (12 MATCH / 2 MISMATCH / 4 NOT_IN_DATA); `shot.py status` overdue 0.
    Q3. DONE 2026-10-10 ~17:00Z: NO-INFO (no transcript quote defines an imbalance rule); recorded in items/B171; Control Room decision D24-imbalance-quote filed, default park B171.
-   Q4. Desk post to JIS-NB (one task, `desk.py post ... --target JIS-NB`): (a) run scripts/dev/refresh_klines.py for 2026-10-09; (b) commit backtest/bigtrade/*
-       and research/bigtrade_2026-10-09/* from the live tree on a branch and ship (they exist only there; origin has EXIT_POLICIES_REPORT.md alone).
-       Then Q5 and Q6 become possible.
-       DONE when: `desk.py list --all` shows the JIS-NB task pending.
+   Q4. DONE 2026-10-10 ~17:10Z: desk task 20261010-165600-refresh-2026-10-09-klines-and-ship-the-b posted to JIS-NB (klines 10-09 refresh + ship bigtrade files); pending.
    Q5. (after Q4a lands) `shot.py engine <id>` for the 10-09 chart shots (78f967b4e253, b5f554a9f68a, 6188a576411b), ship research/screenshots/engine/*.json.
        DONE when: the three engine json files are on origin.
    Q6. (after Q4b lands) read research/bigtrade_2026-10-09/ PLAN/FINDINGS and write the chosen item as Q7 in this list, scoped to one session; do not build it now.
