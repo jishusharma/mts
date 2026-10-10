@@ -1,4 +1,4 @@
-<!-- relay: go depth=0 id=ea26ce66 -->
+<!-- relay: stop reason=queue empty: 3c blocked on 10-09 klines, rest is DSA/operator-owned depth=0 id=942e1ec3 -->
 # NEXT SESSION PROMPT (handoff 2026-10-10 ~13:30Z, dispatcher-run relay closed B149 code; before: ~13:00Z applied D23; was ~12:40Z relay B closed B149 capture + B164; text below is history) (was 06:50Z, relay session after B160; Claude Code Win App, either account)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -20,6 +20,10 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
 4. Route run-and-report work to DSA (system/DSA_DELEGATION.md); post what the DSA queue lacks before ending.
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
+
+## Update 2026-10-10 ~14:35Z (relay run by cron mts-dispatcher, JIS-NB)
+- No task done: 3a/3b closed or staged, 3c blocked (klines archive ends 2026-10-08, no 10-09 file). Remaining desk items are DSA/JIS-NB/operator-owned. Queue empty -> stop.
+- Reminder: position_manager and runtime/regime_classifier.py were not seen back after the 13:14Z python kill; supervisor to check.
 
 ## Update 2026-10-10 ~14:45Z (relay run by cron mts-dispatcher, JIS-NB)
 - DONE: B141 writer staged (.new force-added, *.new is gitignored), 15 staged tests OK / 4 fail on live code, quick gate GREEN, SUPERVISOR_LOG entry, B141 item progress. Not promoted.
