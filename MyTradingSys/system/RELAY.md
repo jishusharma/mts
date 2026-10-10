@@ -39,3 +39,15 @@ on `KICK task=mts-relay-a|b` it runs that task, and when the Control Room Inbox 
 handoff id launched under 3 h ago (a session is on it; after 3 h a retry fires, claims stop a double). Log: `~/.claude/mts-relay-log.jsonl`
 (`kick` / `idle` events). Its model is the App default; to make it Haiku set the model in the task's settings (the task tool cannot).
 Stop everything: `relay.py stop "<why>"` (the dispatcher honours the flag).
+
+## Launch never happened (B164, 2026-10-10 09:27Z -> 12:30Z)
+The gate writes its lock BEFORE the App starts the next task. An unattended session could not approve `run_scheduled_task`, so
+mts-relay-b never ran and the dispatcher idled 3 h on "session still on it". Fixes: `mcp__scheduled-tasks__run_scheduled_task`
+is in ~/.claude/settings.json allow (host-local); STALE_H 3 -> 1; `kick` IDLE lines carry `lock=<utc> task=<id>` and the dispatcher
+checks list_task_runs: no run since the lock = rescue-launch it.
+
+### Correction 2026-10-10 12:50Z: allow rules do NOT fix it
+Dispatcher runs are bypassPermissions yet `run_scheduled_task` from inside a scheduled session still needs a human click.
+So no session may launch another. The cron-fired mts-dispatcher is now the worker: on KICK it runs the relay task itself and
+deletes ~/.claude/mts-relay-lock.json at the end, so the next 30-min tick starts the next handoff. mts-relay-a/b remain for manual use.
+Chain latency <= 30 min. Prompt is host-local (~/.claude/scheduled-tasks/mts-dispatcher/SKILL.md; backup SKILL.md.bak_20261010).

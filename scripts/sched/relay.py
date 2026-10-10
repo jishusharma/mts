@@ -32,7 +32,8 @@ from pathlib import Path
 sys.dont_write_bytecode = True
 MAX_DEPTH = int(os.environ.get("MTS_RELAY_MAX_DEPTH") or 6)
 ACTIVE_MIN = 45  # kick: a launch younger than this means a session is probably still working
-STALE_H = 3  # kick: the same handoff id launched this long ago and never rewritten = the session died, retry
+STALE_H = 1  # kick: the same handoff id launched this long ago and never rewritten = the session died or never started, retry
+# (2026-10-10: the gate locks BEFORE the App starts the task; an unattended session could not approve run_scheduled_task, the 3 h wait wasted 3 h)
 KICK_REF = "origin/fast-track:MyTradingSys/system/NEXT_SESSION.md"
 HDR = re.compile(r"<!-- relay: (go|stop)(?: reason=([^>]*?))? depth=(\d+) id=([0-9a-f]+) -->")
 TS = "%Y-%m-%dT%H:%M:%SZ"
@@ -134,6 +135,11 @@ def header_from_git(spec):
     return (m.group(1), (m.group(2) or "").strip(), int(m.group(3)), m.group(4)) if m else None
 
 
+def lock_info(prev):
+    """` lock=<utc> task=<id>`: lets the dispatcher check list_task_runs for a run started after the lock (no run = launch never happened)."""
+    return " lock=%s task=mts-relay-%s" % (prev["_t"].strftime(TS), "ab"[int(prev.get("depth", 0)) % 2])
+
+
 def cmd_kick(a):
     """Dispatcher (a timer, not a session): start the relay when a committed handoff says go and nobody is working on it.
 
@@ -157,9 +163,9 @@ def cmd_kick(a):
     if prev:
         age = now() - prev["_t"]
         if age < timedelta(minutes=ACTIVE_MIN):
-            return idle("a launch %d min ago, chain is moving" % (age.total_seconds() // 60))
+            return idle("a launch %d min ago, chain is moving%s" % (age.total_seconds() // 60, lock_info(prev)))
         if prev.get("id") == hid and age < timedelta(hours=STALE_H):
-            return idle("handoff %s launched %d min ago, session still on it" % (hid, age.total_seconds() // 60))
+            return idle("handoff %s launched %d min ago, session still on it%s" % (hid, age.total_seconds() // 60, lock_info(prev)))
     home().mkdir(parents=True, exist_ok=True)
     (home() / "mts-relay-lock.json").write_text(json.dumps({"utc": now().strftime(TS), "id": hid, "depth": depth}), encoding="utf-8", newline="\n")
     (home() / "mts-relay-chain.json").write_text(json.dumps({"base": depth}), encoding="utf-8", newline="\n")

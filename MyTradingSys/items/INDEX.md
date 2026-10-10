@@ -99,8 +99,8 @@ B133 | CLOSED  | B133_dsa_default_cli_over_app.md | CLOSED: checks 12-13 (81c7e9
 B134 | CLOSED  | B134_compose_surface_marker.md | pick_task.py:256 emits SURFACE: APP; prompt_check.ps1 check 13 PASS on composed probe
 B135 | CLOSED  | B135_b131_threshold_recheck.md | B131 follow-up: ps1 proof-count thresholds and allshorts parity re-run
 B136 | CLOSED  | B136_oi_endpoint_path.md | URLs fixed 881f22b (tests 3/3, mvn 133/133), loop restarted 2026-10-06; REOPENED 2026-10-08: buildOiBreakdown still fail-open (0.0 + LOW, no UNAVAILABLE), TESTNET_STATUS taint rows not found
-B137 | OPEN    | B137_device_roles_undecided.md | device roles undecided post-Qwen; 11 open questions on desktop/NUC/laptop split
-B138 | OPEN    | B138_dumps_two_copies.md | Dumps split C:/F: after move; share still points C:; junction blocked by live writer
+B137 | OPEN    | B137_device_roles_undecided.md | 2026-10-10: 4 decided on disk (Q2, Q3, Q6-proposed, Q7), 7 operator-owed (Q1, Q4, Q5, Q8, Q9, Q10, Q11); DEVICES.md sec 4-10 carry the state
+B138 | OPEN    | B138_dumps_two_copies.md | 2026-10-10: C: canonical, F: stale; share stays C:; junction deferred to supervisor window (move_dumps_to_F.ps1 ready)
 T063 | PARTIAL | T063_stop_run_oi_flush_signature.md | pre-reg + A0 + A1 (n=21 inconclusive, below 30 min); holds 09-29.., ~7d overlap not 30d; commits 3776f2f b055c2b c61a26a 690b238
 T064 | DONE    | T064_timeframe_selection_confirmation.md | 35 quotes (20 Tom, 15 Fabio); Tom zone/trigger sourced, Fabio retrace NO-SOURCE; verify_extract_quotes.py green; 65d4748. Cross-check TOM-091 vs TOM-092 pending
 T065 | DONE    | T065_lazybear_survey.md | shortlist 4 (SQZMOM, BVI, WaveTrend=T061, VFI); Pine sources verified on Desktop (BVI lookback 8/no thresholds, VFI 130/0.2/2.5/5, SQZ BB-mult bug); 1569678 e9bd822
@@ -117,7 +117,7 @@ B145 | CLOSED  | B145_cc_range_noise_live_neutrality.md | neutrality test run on
 B146 | CLOSED  | B146_no_min_stop_after_floor_removal.md | fee-to-stop admission gate on at 0.3 (D09), tests gated; Java stop buffer is T081
 B147 | CLOSED  | B147_tom_live_rule_evidence_unreliable.md | row drop attributed to removed 0.2pct fallback stop (0c34a2d, B131); exact regen done 2026-10-10 (93.6pct of lost snapshots were fallback-stop; 0 proof>=5 rows under sourced stops); DSR moot at N=0
 B148 | IN-FIX  | B148_dlm_reauth_main_account_and_account_drops.md | code+tests complete (parts 1-5); Step 0 test fallout fixed 9b27da3; close on first live beat_utc refresh
-B149 | BLOCKED | B149_l6_pnl_source_tracker_stale_settlement_gap.md | help text + L6 fixed, capture tool built; needs a captured testnet log across 08:00 settlement (desk task JIS-NB)
+B149 | OPEN | B149_l6_pnl_source_tracker_stale_settlement_gap.md | log captured 2026-10-10: settlement + close = whole PnL, no double count; next: mainnet_pnl.py includes type settlement
 B150 | CLOSED  | B150_gate_is_hand_maintained_allowlist.md | discovery covers every tracked test; extra-tests step; mainnet refuses testnet calibration; 3 ungated failures fixed
 B151 | CLOSED  | B151_backtest_fill_optimism_and_selection.md | fib bear zone + blow-through, target trade-through, open_at_end printed, rerun: all CC setups FAIL
 B152 | CLOSED  | B152_retention_deletes_read_data_and_deploy_trap.md | retention keeps audit data and mtime; deploy runbook + auto_deploy copy/restore _state.json

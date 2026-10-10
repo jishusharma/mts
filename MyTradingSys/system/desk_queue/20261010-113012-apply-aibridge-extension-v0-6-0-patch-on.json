@@ -1,0 +1,10 @@
+{
+  "done_when": "Script prints 'patched to v0.6.0'; F:/AIBridge/extension/manifest.json says 0.6.0; token line in background.js unchanged",
+  "from": "JIS-NUC",
+  "id": "20261010-113012-apply-aibridge-extension-v0-6-0-patch-on",
+  "need": "On JIS-NB: python scripts/dev/sync.py start; python scripts/dev/aibridge_ext_v06_patch.py F:/AIBridge (token-free, backs up *.pre_v06, refuses unless manifest is 0.5.0). Then tell the operator to reload AIBridge in each Chrome profile (chrome://extensions) and F5 the DSA chat; do not touch src/ or the agent.",
+  "posted": "2026-10-10T11:30:12Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Apply AIBridge extension v0.6.0 patch on JIS-NB"
+}

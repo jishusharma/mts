@@ -1,5 +1,5 @@
-<!-- relay: go depth=1 id=8a455ad2 -->
-# NEXT SESSION PROMPT (handoff 2026-10-10 ~06:50Z, relay session after B160; Claude Code Win App, either account)
+<!-- relay: go depth=3 id=7f5f3d72 -->
+# NEXT SESSION PROMPT (handoff 2026-10-10 ~13:00Z, dispatcher-run relay applied D23; was ~12:40Z relay B closed B149 capture + B164; text below is history) (was 06:50Z, relay session after B160; Claude Code Win App, either account)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
 
@@ -9,21 +9,24 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
    Read STATUS.md "Daily Hygiene": a RED there is fixed before new work. One task per session; hand off after the task,
    5 operator turns or ~50k tokens: ship, overwrite this file, `where` clean.
 1. Control Room (url in CONTROL_ROOM.md): ArtifactData query decisions + feedback. Apply answered decisions with no `applied`
-   (D01-D22 were all applied at 00:30Z 2026-10-10). New unanswered decisions: act on the `recommended` option only when older
+   (D01-D23 all applied; D23 at 13:00Z 2026-10-10). New unanswered decisions: act on the `recommended` option only when older
    than 24 h; Java changes (D15 on B142, D17 on B144) are staged + tested, the restart goes to a JIS-NB desk task.
 2. DSA / JIS-NB results: for every desk task now done, spot-check ONE number against its file, then use it (no redo).
 3. TASK (pick first unclaimed, claim it):
-   0. Pre-check (2 min, not a task): `grep '"kick"\|"idle"' ~/.claude/mts-relay-log.jsonl | tail -3`. An event after 09:40Z
-      2026-10-10 from the dispatcher = B164 CLOSED (edit the row); none = list_task_runs mts-dispatcher, read its last run, fix.
-      D23 (vision addendum) answered -> apply to PROJECT_VISION.md + CHANGELOG, mark applied; unanswered -> leave (operator's call).
-   a. B141 (skip while the NUC claim on it is open: `sync.py start` lists claims): write the runner for the 28 pre-registered cells (research/PRE_REG_HTF_REPLACE_2026-10-07.md), run on F:/MTS/data, holdout once.
-   b. B149 capture (JIS-NB desk task, live host only): after 08:05 UTC, if a position stayed open across the 08:00 settlement
-      (daily_loss_monitor log), run the capture command in the desk task from a worktree with the live data dirs, ship the json, mark done.
+   a. B149 code (live-path: tests for restart/reset, non-trade balance moves, API errors; fail closed): MyTradingSys/execution/mainnet_pnl.py
+      must include type `settlement` entries (data: research/txlog_capture_2026-10-10_jishu_11.json: settlement -1.59e-06 + close -4e-08 = full
+      PnL, no double count). New test fails on old code first. Stage + gate; the restart is a JIS-NB desk task. Then B149 -> CLOSED (BUGS, item, INDEX).
+   b. B141 (skip while a claim on it is open): write the runner for the 28 pre-registered cells (research/PRE_REG_HTF_REPLACE_2026-10-07.md), run on F:/MTS/data, holdout once.
    c. B160 follow-up: once <live>/Dumps/backtest/raw/klines has BTCUSDT-1m-2026-10-09.csv, run `shot.py engine <id>` for the 10-09
       chart shots (78f967b4e253, b5f554a9f68a, 6188a576411b, ...), ship research/screenshots/engine/*.json; re-score NOT_IN_DATA rows only in a new extract.
 4. Route run-and-report work to DSA (system/DSA_DELEGATION.md); post what the DSA queue lacks before ending.
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
+
+## Update 2026-10-10 ~13:00Z (relay run by cron mts-dispatcher, JIS-NB, commit ee3d37e)
+- DONE: D23 applied: VISION_GAP_2026-10-10.md (c) addendum appended to PROJECT_VISION.md as drafted (DIRECTION UPDATE section),
+  changelog row in research/fast_track_2026-09-27/PROJECT_VISION_CHANGELOG.md, Control Room D23 marked applied. Inbox: 0 new.
+- Hygiene: still no run on this host (STATUS "Daily Hygiene" empty, not RED). Next: task 3a (B149 code).
 
 ## Update 2026-10-10 ~09:30Z (relay session A, JIS-NB, commit 0cdb2cb)
 - DONE: B164 follow-up: mts-dispatcher's 09:08Z tick failed silently: it ran the LIVE tree's relay.py (3f8a5ef, no `kick`). Its prompt

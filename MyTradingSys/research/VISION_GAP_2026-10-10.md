@@ -84,7 +84,7 @@ LAYER_PROVENANCE_AUDIT.md, CONTROL_ROOM.md, control_room.json, DEVICES.md, auto_
 17. Vision governance. Changelog empty; header undated; direction now also lives in CONSOLIDATED_ROADMAP and CLAUDE.md. Needs a
     single owner rule: vision = direction + stage + principles; roadmap = order; Control Room = status.
 
-## (c) PROPOSED ADDENDUM - DRAFT, NOT APPLIED (operator approves on the Control Room page; then log a changelog row)
+## (c) PROPOSED ADDENDUM - APPLIED 2026-10-10 (D23 answered 'Apply the addendum as drafted'; now in PROJECT_VISION.md, changelog row logged)
 
 ```
 ## DIRECTION UPDATE (DRAFT 2026-10-10, not verbatim; supersedes stale rows above where they conflict)
