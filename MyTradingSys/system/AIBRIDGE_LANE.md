@@ -91,6 +91,8 @@ it for the bridge operator.
 - Block parsing (observed 2026-10-09): the reader splits a fenced block into phantom blocks when a line inside begins with a hash, and only the first runs. In PowerShell source, build a hash from [char]35 so no source line begins with one. Long single-line commands get wrapped and come back as CommandNotFoundException; keep source lines under about 200 chars.
 
 - Acceptance 5: extension auto-run and auto-return of results into the DSA chat (bridge project).
+- 2026-10-10 stuck auto-run (NUC, DeepSeek): panel stayed 'waiting for DSA after #2' with a finished reply holding an unrun block. Suspected cause (not confirmed in-browser): DOM mutations never go quiet on DeepSeek. Extension v0.6.0 (F:\AIBridge\extension, backups *.pre_v06) uses visible-text quiet, rescans on wait timeout, adds a watchdog and a 'reply complete, N block(s) waiting' status. NOT YET TESTED: operator reloads the extension in both Chrome profiles, F5 on the chat, confirms console 'v0.6.0 loaded'.
+- Multi-machine (v0.6.0): '# AIRUN host=NAME' routes via chrome.storage.local aibridge_machines {NAME:{url,token,cwd}} over a loopback SSH tunnel; agent stays loopback-only. No machines configured yet. A relay service is NOT built (decision for the operator).
 - Output ceiling per chat message: the bridge returns up to 262144 bytes; whether the chat accepts a
   result that large as one message is not measured. A 250 KB session paste may need ranged reads.
 - Limited-account setup on JIS-NB: operator.
