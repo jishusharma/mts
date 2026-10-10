@@ -146,3 +146,19 @@ Fee problem: NOTHING FOUND. No public post describing a working maker or queue-p
 Bottom line: public X evidence of profitable, fee-surviving, pure OBI/OFI on BTCUSDT perps is essentially absent.
 Confirms the filed verdict. No new rule to test.
 Gemini YouTube/Google sweep still pending.
+
+## Addendum 2 - 2026-10-10 - Grok fuller X sweep (external, unverified, Tier T3)
+Source: Grok, operator-pasted. X links not opened by MTS. Same caveat as addendum 1.
+FLAG FIRST - net-of-fee profitable pure OBI/OFI on Binance BTCUSDT perps with P&L curve or trade log: NOTHING FOUND.
+1. Exact Binance BTCUSDT perp setup (L2 depth levels, ratio threshold, stop/target, holding period): NOTHING FOUND.
+Closest: @polyquantai (OBI to trade Polymarket, 72.4 pct win, 695 trades, not perps); @52kskew (discretionary OBI+OI+funding confluence); @buildixtrade (live OBI readings with CVD and Hyperliquid cohort flow).
+2. Maker play (counter-trade imbalance, fade the book, queue position, post-only OBI): NOTHING FOUND.
+Only tangential: @dexcexhub general queue-for-rebate bot advice, not tied to imbalance, no results.
+3. Fee solution (maker rebate OBI, VIP-tier rebate systems, lower-fee venues with net numbers): NOTHING FOUND.
+4. Dissent: no posts of the form I backtested OBI on BTCUSDT, fees killed it, here is the negative curve. The absence is itself a finding.
+5. Top accounts by evidence quality: @polyquantai, @VelvetSoul (control test), @52kskew, @buildixtrade, @The_JDK99 / @Yuriy_Biko (tied).
+6. Binance depth WebSocket angle (@depth@100ms) with code or performance numbers: NOTHING FOUND.
+Closest: @skeptikons mentions Binance depth OBI as one input in a 5-min prediction-market stack, no code or numbers.
+Two independent Grok sweeps plus the MTS search reach the same place: no net-of-fee OBI strategy on Binance BTCUSDT perps is publicly documented.
+Verdict unchanged. No new rule to test. Design rule from addendum 1 stands: control for price.
+Gemini YouTube/Google sweep still pending.
