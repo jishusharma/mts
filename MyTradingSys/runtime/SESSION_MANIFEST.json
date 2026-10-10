@@ -175,7 +175,7 @@
   {
    "path": "MyTradingSys/research/fast_track_2026-09-27/SUPERVISOR_INBOX.md",
    "role": "supervisor_inbox",
-   "read": "full",
+   "read": "pointer",
    "mode": "always"
   },
   {

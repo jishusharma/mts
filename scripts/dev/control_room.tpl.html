@@ -103,6 +103,16 @@ svg text{fill:var(--muted);font:11px var(--mono)}
 .howto ol{margin:6px 0 0;padding-left:20px}
 footer{font-size:.8rem;color:var(--muted)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+details.fold{margin:0 0 10px}
+details.fold>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:6px 0}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary h2{margin:0}
+details.fold>summary::after{content:"Show";font-size:.8rem;color:var(--muted,#6b7280)}
+details.fold[open]>summary::after{content:"Hide"}
+details.mini{margin:2px 0}
+details.mini>summary{cursor:pointer;color:var(--muted,#6b7280);font-size:.82rem}
+.arow{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:5px 0;border-bottom:1px solid var(--line);font-size:.86rem}
+.arow .t{overflow-wrap:anywhere}
 </style>
 
 <div class="wrap">
@@ -142,36 +152,36 @@ footer{font-size:.8rem;color:var(--muted)}
   <div class="items" id="fblist"></div>
 </section>
 
-<section>
-  <div class="sechead"><h2>Evidence so far</h2><span class="muted" style="font-size:.85rem">What the backtests and research say about an edge</span></div>
+<details class="fold" id="evid-sec">
+  <summary><h2>Evidence so far</h2><span class="muted" style="font-size:.85rem">What the backtests and research say about an edge</span></summary>
   <div class="panel tw"><table id="evidence"><thead><tr><th>Test</th><th>Result</th><th>Verdict</th><th>Source</th></tr></thead><tbody></tbody></table></div>
-</section>
+</details>
 
-<section>
-  <div class="sechead"><h2>Testnet ledger</h2><span class="muted num" style="font-size:.8rem" id="span"></span></div>
+<details class="fold" id="ledger-sec">
+  <summary><h2>Testnet ledger</h2><span class="muted num" style="font-size:.8rem" id="span"></span></summary>
   <div class="two">
     <div class="panel tw"><table id="ledger"><thead><tr><th>Source</th><th class="n">Trades</th><th class="n">Wins</th><th class="n">Time-outs</th><th class="n">Net USD</th></tr></thead><tbody></tbody></table></div>
     <div class="panel" style="display:grid;gap:8px"><h3>Net USD by day</h3><div id="daychart"></div>
       <p class="muted" style="font-size:.8rem;margin:0">Position sizes are tiny on testnet: read the sign and the share of time-outs, not the dollar size.</p></div>
   </div>
-</section>
+</details>
 
-<section>
-  <div class="sechead"><h2>Board</h2>
-    <div class="filters" id="filters"></div></div>
+<details class="fold" id="board-sec">
+  <summary><h2>Board</h2><span class="muted" style="font-size:.85rem">Every registry row by stage</span></summary>
+  <div class="filters" id="filters"></div>
   <div class="items" id="board"></div>
-</section>
+</details>
 
 
 
-<section class="panel howto">
-  <h3>How this page works</h3>
+<details class="panel howto fold">
+  <summary><h3 style="margin:0">How this page works</h3></summary>
   <ol>
     <li>The repo is the only place work is tracked: the registry (BUGS.md), the study findings and the trade ledger. Nobody edits this page by hand.</li>
     <li>A script rebuilds the page from those files every day, so it always matches the repo.</li>
     <li>You have two inputs. <strong>Decisions</strong> answer what Claude asks you. The <strong>Inbox</strong> takes anything you want to tell Claude, word for word. Claude reads both, acts and replies under each item.</li>
   </ol>
-</section>
+</details>
 <footer>Sources: research/BUGS.md · research/bigtrade_2026-10-09/FINDINGS.md · execution/auto_trades.jsonl · system/groups.json</footer>
 </div>
 
@@ -181,7 +191,9 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 $("#gen").textContent = D.generated;
 $("#verdict").textContent = D.verdict;
-$("#changelog").innerHTML = (D.changelog||[]).map(c => `<div class="it" style="grid-template-columns:auto 1fr"><span class="id">${esc(c.date.slice(5))}</span><div class="t">${esc(c.what)}</div></div>`).join("") || `<div class="empty">No changes yet.</div>`;
+const clRow = c => `<div class="it" style="grid-template-columns:auto 1fr"><span class="id">${esc(c.date.slice(5))}</span><div class="t">${esc(c.what)}</div></div>`;
+{ const cl = (D.changelog||[]).slice().reverse();
+  $("#changelog").innerHTML = cl.length ? cl.slice(0,3).map(clRow).join("") + (cl.length > 3 ? `<details class="mini"><summary>${cl.length-3} older</summary>${cl.slice(3).map(clRow).join("")}</details>` : "") : `<div class="empty">No changes yet.</div>`; }
 $("#span").textContent = (D.ledger_span[0]||"").slice(0,10) + " → " + (D.ledger_span[1]||"").slice(0,16).replace("T"," ") + "Z";
 
 $("#health").innerHTML = D.health.map(h => `<div class="hc s-${h.s}"><span class="eyebrow">${esc(h.k)}</span><span class="v"><span class="dot"></span>${esc(h.v)}</span><span class="d">${esc(h.d)}</span></div>`).join("");
@@ -264,7 +276,11 @@ renderBoard();
     if (snap.empty) { box.innerHTML = `<div class="empty">No open decisions. Claude adds one here whenever work is blocked on your call.</div>`; return; }
     const open = snap.docs.filter(d => !d.data().applied).length;
     st.textContent = `${open} waiting · live`;
-    box.innerHTML = snap.docs.map(d => {
+    const applied = snap.docs.filter(d => d.data().applied);
+    const appliedHtml = applied.length ? `<details class="mini" style="grid-column:1/-1"><summary>${applied.length} applied decision${applied.length>1?"s":""} (done)</summary>${applied.slice().reverse().map(d => { const x = d.data(); return `<div class="arow"><span class="id">${esc(String(d.id).split("-")[0])}</span><div class="t"><strong>${esc(x.title)}</strong> &mdash; ${esc(x.answer||"")}<div class="src">${esc(x.applied)}</div></div></div>`; }).join("")}</details>` : "";
+    const needs = snap.docs.filter(d => !d.data().applied);
+    if (!needs.length) { box.innerHTML = `<div class="empty">Nothing is waiting on you.</div>` + appliedHtml; return; }
+    box.innerHTML = needs.map(d => {
       const x = d.data(), dr = drafts[d.id] || {};
       const pick = dr.answer ?? x.answer ?? "";
       const state = x.applied ? `<span class="dstate ok">Applied: ${esc(x.applied)}</span>`
@@ -276,7 +292,7 @@ renderBoard();
         <div class="opts">${(x.options||[]).map(o => `<button class="opt ${pick===o?"on":""}" data-o="${esc(o)}" ${canWrite&&!x.applied?"":"disabled"}>${esc(o)}${o===x.recommended?'<span class="rec">recommended</span>':""}</button>`).join("")}</div>
         <textarea id="note-${esc(d.id)}" placeholder="Optional note for Claude" ${canWrite&&!x.applied?"":"disabled"}>${esc(dr.note ?? x.note ?? "")}</textarea>
         <div class="drow">${state}<button class="save" ${canWrite&&!x.applied?"":"disabled"}>Save answer</button></div></div>`;
-    }).join("");
+    }).join("") + appliedHtml;
     box.querySelectorAll(".dc").forEach(card => {
       const id = card.dataset.id;
       card.querySelectorAll(".opt").forEach(b => b.onclick = () => {
@@ -328,7 +344,7 @@ renderBoard();
       const refs = String(x.ref||"").split(/[ ,]+/).filter(Boolean);
       const res = refs.map(r => { const g = (D.reg||{})[r]; return `<div class="src"><span class="id">${esc(r)}</span> <span class="st st-${esc(g?g.status:"")}">${esc(g?g.status:"not in registry yet")}</span>${g?" · "+esc(g.title):""}</div>`; }).join("");
       return `<div class="it" style="grid-template-columns:1fr auto"><div class="t"><div class="src">${esc(KL[x.kind]||"Change this page")} · ${esc((x.created_at||"").slice(0,16).replace("T"," "))}</div>
-        <div style="white-space:pre-wrap">${esc(x.text)}</div>${x.reply||res?`<div class="reply">${x.reply?`<strong>Claude:</strong> <span style="white-space:pre-wrap">${esc(x.reply)}</span>`:""}${res?`<div style="margin-top:4px"><strong>Filed as:</strong>${res}</div>`:""}</div>`:""}</div>
+        ${(x.text||"").length > 320 ? `<details class="mini"><summary style="white-space:pre-wrap;color:inherit;font-size:.9rem">${esc(x.text.slice(0,200))}&hellip; (${x.text.length} characters, tap to read all)</summary><div style="white-space:pre-wrap">${esc(x.text)}</div></details>` : `<div style="white-space:pre-wrap">${esc(x.text)}</div>`}${x.reply||res?`<div class="reply">${x.reply?`<strong>Claude:</strong> <span style="white-space:pre-wrap">${esc(x.reply)}</span>`:""}${res?`<div style="margin-top:4px"><strong>Filed as:</strong>${res}</div>`:""}</div>`:""}</div>
         <span class="pill ${PILL[s]||"sev-LOW"}">${esc(LBL[s]||s)}</span></div>`; }).join("") || (fbDocs.length ? `<div class="empty">Nothing in this view.</div>` : "");
   };
   db.collection("feedback").orderBy("created_at","desc").limit(100).onSnapshot(snap => {

@@ -31,7 +31,7 @@ class RelayTest(unittest.TestCase):
         self.assertEqual(r.returncode, 1)
         self.assertIn("no relay header", r.stdout)
 
-    def test_go_then_lock_blocks_second_launch(self):
+    def test_same_id_double_fire_blocked(self):
         run(self.home, "handoff", "--file", str(self.f), "--go")
         r = run(self.home, "gate", "--file", str(self.f), "--started-id", "none")
         self.assertEqual(r.returncode, 0, r.stdout)
@@ -39,9 +39,55 @@ class RelayTest(unittest.TestCase):
         self.assertIn("task=mts-relay-a", r.stdout)
         r2 = run(self.home, "gate", "--file", str(self.f), "--started-id", "none", now="2026-10-10T10:05:00Z")
         self.assertEqual(r2.returncode, 1)
-        self.assertIn("launched", r2.stdout)
-        r3 = run(self.home, "gate", "--file", str(self.f), "--started-id", "none", now="2026-10-10T10:30:00Z")
-        self.assertEqual(r3.returncode, 0)
+        self.assertIn("already launched", r2.stdout)
+
+    def test_new_id_within_minutes_is_allowed(self):
+        # 2026-10-10 06:42 chain death: a short session handed over a NEW id 15 min after the previous launch and the
+        # old 20-minute clock lock stopped the chain. The lock is keyed by handoff id now.
+        run(self.home, "handoff", "--file", str(self.f), "--go")
+        self.assertEqual(run(self.home, "gate", "--file", str(self.f), "--started-id", "none").returncode, 0)
+        run(self.home, "handoff", "--file", str(self.f), "--go")
+        r = run(self.home, "gate", "--file", str(self.f), "--started-id", "none", now="2026-10-10T10:15:00Z")
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertIn("depth=1", r.stdout)
+        self.assertIn("task=mts-relay-b", r.stdout)
+
+    def kick(self, now="2026-10-10T10:00:00Z"):
+        return run(self.home, "kick", "--file", str(self.f), now=now)
+
+    def test_kick_starts_a_go_handoff_and_records_chain_base(self):
+        for _ in range(3):
+            run(self.home, "handoff", "--file", str(self.f), "--go")  # depth 2
+        r = self.kick()
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertIn("KICK depth=2", r.stdout)
+        self.assertIn("task=mts-relay-a", r.stdout)
+        # depth cap now counts from the kick: depth 2 with cap 2 would have stopped before, base 2 lets it through
+        run(self.home, "handoff", "--file", str(self.f), "--go")
+        g = run(self.home, "gate", "--file", str(self.f), "--started-id", "none", extra={"MTS_RELAY_MAX_DEPTH": "2"})
+        self.assertEqual(g.returncode, 0, g.stdout)
+
+    def test_kick_idles_when_chain_moving_or_session_on_it(self):
+        run(self.home, "handoff", "--file", str(self.f), "--go")
+        self.assertEqual(self.kick().returncode, 0)
+        moving = self.kick(now="2026-10-10T10:20:00Z")
+        self.assertEqual(moving.returncode, 1)
+        self.assertIn("chain is moving", moving.stdout)
+        working = self.kick(now="2026-10-10T11:30:00Z")
+        self.assertEqual(working.returncode, 1)
+        self.assertIn("session still on it", working.stdout)
+        retry = self.kick(now="2026-10-10T13:30:00Z")  # same id, 3.5 h: the session died, retry
+        self.assertEqual(retry.returncode, 0, retry.stdout)
+
+    def test_kick_idles_on_stop_header_no_header_and_stop_flag(self):
+        self.assertEqual(self.kick().returncode, 1)
+        run(self.home, "handoff", "--file", str(self.f), "--stop", "queue empty")
+        r = self.kick()
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("queue empty", r.stdout)
+        run(self.home, "handoff", "--file", str(self.f), "--go")
+        run(self.home, "stop", "weekly budget")
+        self.assertIn("stop flag", self.kick().stdout)
 
     def test_stop_header_stops_with_reason(self):
         run(self.home, "handoff", "--file", str(self.f), "--stop", "queue empty")

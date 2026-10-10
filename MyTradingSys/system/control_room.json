@@ -186,6 +186,10 @@
     {
       "date": "2026-10-09",
       "what": "Pickup: D01-D07 applied, D08-D10 asked; T080/T081 results added to Evidence; F-BT-09 and F-BT-14 shown as closed; go-live bar written (T086)."
+    },
+    {
+      "date": "2026-10-10",
+      "what": "Decluttered: only decisions waiting on you show as cards (applied ones fold to one line each); Evidence, Testnet ledger, Board and How-it-works start collapsed; long inbox items fold to 200 characters (full text one tap away); the changelog shows the 3 newest."
     }
   ],
   "finding_closed": {
