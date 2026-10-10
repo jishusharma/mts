@@ -1,4 +1,4 @@
-<!-- relay: go depth=0 id=180825b1 -->
+<!-- relay: go depth=1 id=3e166989 -->
 <!-- relay: go depth=0 id=seed2610a1 -->
 # NEXT SESSION PROMPT (handoff 2026-10-10 ~13:30Z, dispatcher-run relay closed B149 code; before: ~13:00Z applied D23; was ~12:40Z relay B closed B149 capture + B164; text below is history) (was 06:50Z, relay session after B160; Claude Code Win App, either account)
 
@@ -27,7 +27,8 @@ End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py whe
 ```
 
 ## Queue status
-(none done yet; seeded 2026-10-10 ~18:00Z by operator request, the old "queue empty" stop was wrong: the real backlog was not listed)
+Q1 progress (relay 2026-10-10 ~16:00Z): 0e9036ae547d read + done (5 MATCH, 1 NOT_IN_DATA; extract research/screenshots/2026-10-05_BTCUSDT_0e9036ae547d.md). 10 overdue left, next 65656faa31ba (engine json exists: research/screenshots/engine/65656faa31ba.json), 29ff2b488f13, be1fd3316ddc, deb4ad19b10f. Q2-Q4 untouched.
+(seeded 2026-10-10 ~18:00Z by operator request, the old "queue empty" stop was wrong: the real backlog was not listed)
 
 ## Update 2026-10-10 ~14:35Z (relay run by cron mts-dispatcher, JIS-NB)
 - No task done: 3a/3b closed or staged, 3c blocked (klines archive ends 2026-10-08, no 10-09 file). Remaining desk items are DSA/JIS-NB/operator-owned. Queue empty -> stop.
