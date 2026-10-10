@@ -17,6 +17,7 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 | CLD cloud (free pool) | pushed git refs only; no LAN, no gitignored files | offline research, specs, reviews, docs, backtests on committed data |
 | AIBridge (F:\AIBridge) | loopback agent 127.0.0.1:7181, Chrome MV3 extension; reach = project working tree, delete allowed (AIBRIDGE_LANE.md) | PowerShell on desktop, run by DSA directly |
 Builders work in a work tree, never the live tree; sharing and deploy: PARALLEL.md.
+Device roles (desktop JIS-NB, NUC JIS-NUC, laptop DESKTOP-F7IU69N): MyTradingSys/system/DEVICES.md. Live loop stays on JIS-NB until DEVICES.md sec 3 conditions are proven on JIS-NUC.
 
 ## 1b. Surface choice (operator directive 2026-10-04)
 App first, always. Claude Code Win App (Code / Cowork / Chat / Cloud modes) covers

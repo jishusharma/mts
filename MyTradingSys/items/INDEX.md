@@ -99,8 +99,8 @@ B133 | CLOSED  | B133_dsa_default_cli_over_app.md | CLOSED: checks 12-13 (81c7e9
 B134 | CLOSED  | B134_compose_surface_marker.md | pick_task.py:256 emits SURFACE: APP; prompt_check.ps1 check 13 PASS on composed probe
 B135 | CLOSED  | B135_b131_threshold_recheck.md | B131 follow-up: ps1 proof-count thresholds and allshorts parity re-run
 B136 | CLOSED  | B136_oi_endpoint_path.md | URLs fixed 881f22b (tests 3/3, mvn 133/133), loop restarted 2026-10-06; REOPENED 2026-10-08: buildOiBreakdown still fail-open (0.0 + LOW, no UNAVAILABLE), TESTNET_STATUS taint rows not found
-B137 | OPEN    | B137_device_roles_undecided.md | device roles undecided post-Qwen; 11 open questions on desktop/NUC/laptop split
-B138 | OPEN    | B138_dumps_two_copies.md | Dumps split C:/F: after move; share still points C:; junction blocked by live writer
+B137 | OPEN    | B137_device_roles_undecided.md | 2026-10-10: 4 decided on disk (Q2, Q3, Q6-proposed, Q7), 7 operator-owed (Q1, Q4, Q5, Q8, Q9, Q10, Q11); DEVICES.md sec 4-10 carry the state
+B138 | OPEN    | B138_dumps_two_copies.md | 2026-10-10: C: canonical, F: stale; share stays C:; junction deferred to supervisor window (move_dumps_to_F.ps1 ready)
 T063 | PARTIAL | T063_stop_run_oi_flush_signature.md | pre-reg + A0 + A1 (n=21 inconclusive, below 30 min); holds 09-29.., ~7d overlap not 30d; commits 3776f2f b055c2b c61a26a 690b238
 T064 | DONE    | T064_timeframe_selection_confirmation.md | 35 quotes (20 Tom, 15 Fabio); Tom zone/trigger sourced, Fabio retrace NO-SOURCE; verify_extract_quotes.py green; 65d4748. Cross-check TOM-091 vs TOM-092 pending
 T065 | DONE    | T065_lazybear_survey.md | shortlist 4 (SQZMOM, BVI, WaveTrend=T061, VFI); Pine sources verified on Desktop (BVI lookback 8/no thresholds, VFI 130/0.2/2.5/5, SQZ BB-mult bug); 1569678 e9bd822
