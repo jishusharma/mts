@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-10T20:38:22Z",
   "commands": [],
   "created": "2026-10-10T18:55:33Z",
   "depends_on": [
@@ -17,7 +18,7 @@
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat)",
   "refs": [],
-  "result": "",
+  "result": "RECALL_DAX.md: 0/7 signals on Tom's chart-verified DAX entries; 4 near-zone candidates with proof<=2 (WAIT_RR as coded, WAIT_PROOF DAX-fee), 3 spike-top shorts with no candidate. Stop rule: encoding first (tom-encode-spike-fade, tom-verdict-fee-per-market).",
   "scope_in": [
     "MyTradingSys/research/fast_track_2026-09-27/ANGLE_TRADE_CATALOG.md rows 8-19",
     "MyTradingSys/research/tom_transfer_2026-10-11/PROBE_PLAN.md sections 2 and 4",
@@ -33,7 +34,7 @@
     "operator chat 2026-10-11: queue DAX recall, gap rules, DAX backtest in that order; probe selection/management/session with options flagged up front",
     "MyTradingSys/research/fast_track_2026-09-27/ANGLE_TRADE_CATALOG.md"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Date each DAX row: chart x-axis in the video frame at the quoted position (approved download), else publish date + 'yesterday/Monday' in the quote; undatable = NOT_IN_DATA.",
     "Engine snapshot at entry -30..+30 min, 1-min steps: zone, side, proof count, verdict.",

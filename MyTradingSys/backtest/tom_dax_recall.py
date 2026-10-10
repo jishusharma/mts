@@ -15,7 +15,11 @@ Rules declared before the run (2026-10-11):
   FDAX fees are ~0.1 point per round turn).
 - MISS-PROOF: zone hit but proof < 3 everywhere (order-flow proofs cannot fire on CFD data: data limit).
   MISS-RULE: no same-side candidate near his entry at any snapshot.
-  python MyTradingSys/backtest/tom_dax_recall.py [--raw F:/MTS/data/dax_archive] [--out <dir>]
+SENSITIVITY --anchor extreme (added AFTER the declared run, post-hoc, labelled as such in the report): the observed
+  futures-CFD offset was ~200 points in Dec 2025/Jan 2026 (theory 100-120) while May/Jun matched theory, and the 06-02 spike
+  sat outside +-60 min. Entry instant := minute of the CFD session extreme within +-90 min (short: max high, long: min low),
+  entry := that extreme; Tom sells spike tops / buys the pullback low, so this anchors on the same bar shape.
+  python MyTradingSys/backtest/tom_dax_recall.py [--raw F:/MTS/data/dax_archive] [--out <dir>] [--anchor extreme]
 """
 import argparse
 import datetime as dt
@@ -75,6 +79,19 @@ def find_entry(bars, approx_utc, side, e_adj):
     return best[1] if best else None
 
 
+def find_extreme(bars, approx_utc, side, win=90):
+    best = None
+    for k in range(-win, win + 1):
+        t = approx_utc + dt.timedelta(minutes=k)
+        b = bars.get(int(t.timestamp() * 1000))
+        if not b:
+            continue
+        v = b[1] if side == "short" else b[2]
+        if best is None or (v > best[0] if side == "short" else v < best[0]):
+            best = (v, t)
+    return best
+
+
 def verdicts(s):
     a = V.compute_verdict(s, V.proof_dir_of(s, fail_closed=True))["verdict"]
     s2 = json.loads(json.dumps(s))
@@ -117,6 +134,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--raw", default="F:/MTS/data/dax_archive")
     ap.add_argument("--out", default="F:/MTS/data/dax_recall")
+    ap.add_argument("--anchor", choices=("declared", "extreme"), default="declared")
     x = ap.parse_args(argv)
     out = Path(x.out); out.mkdir(parents=True, exist_ok=True)
     plan, rows = [], []
@@ -125,7 +143,11 @@ def main(argv=None):
         approx = dt.datetime.combine(day, dt.time.fromisoformat(hm), BER).astimezone(dt.timezone.utc)
         e_adj = e - basis(e, day, ctr)
         tol = max(abs(e - stop) if stop else 0.0, TOL_PCT * e)
-        t0 = find_entry(load_bars(x.raw, day), approx, side, e_adj)
+        if x.anchor == "extreme":
+            ex = find_extreme(load_bars(x.raw, day), approx, side)
+            t0, e_adj = (ex[1], ex[0]) if ex else (None, e_adj)
+        else:
+            t0 = find_entry(load_bars(x.raw, day), approx, side, e_adj)
         plan.append(dict(id=tid, video=vid, side=side, entry=e, entry_adj=round(e_adj, 1), tol=round(tol, 1),
                          approx_utc=approx.isoformat(), entry_utc=t0.isoformat() if t0 else None, evidence=ev,
                          stop=stop, target=tgt))

@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-10T20:38:11Z",
+  "depends_on": [
+    "tom-verdict-fee-per-market"
+  ],
+  "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX_V2.md shows signal recall on the 7 entries (target >= 4/7) with every new parameter sourced or flagged NO-SOURCE; .new staged, tests green.",
+  "from_inbox": "",
+  "goal": "Add the setup behind 3 of Tom's 7 chart-verified DAX entries (fade of an opening/morning spike top: P-shape exhaustion, inside bar, weak-high ledge, no liquidity above) as a sourced candidate type with its own proofs, staged as .new, judged by recall on the 7 instants.",
+  "id": "tom-encode-spike-fade",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-11 (from RECALL_DAX.md)",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md",
+    "F:/MTS/data/tom_videos (frames + .txt transcripts with timestamps)",
+    "src/main/java/datafeed/SetupCandidatesBuilder.java",
+    "MyTradingSys/backtest/tom_dax_recall.py"
+  ],
+  "scope_out": [
+    "live tree / restarts (stage .new, supervisor deploys)",
+    "tuning on outcomes",
+    "BTC"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md sections 1-3"
+  ],
+  "state": "refined",
+  "steps": [
+    "Collect Tom's words for each element (transcripts of T6hDJcHrVBM, zQTbdEweG3c, k0zm5NYn0IQ + TOM_VERBATIM_INDEX), quote + file:line per parameter; unsourced numbers = NO-SOURCE, flagged.",
+    "Implement in a %TEMP% copy / .new; candidate type spike_fade with proofs; no change to existing types.",
+    "Re-run tom_dax_recall.py (declared anchor) against the staged engine; write MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX_V2.md."
+  ],
+  "tests": "Java unit test: a synthetic 1m series with an opening spike + inside bar at a prior-high ledge yields a short spike_fade candidate at the spike high; a flat series yields none (fails before the type exists).",
+  "title": "Encode Tom's spike-top fade as a candidate type (recall test on his 7 DAX entries)"
+}
