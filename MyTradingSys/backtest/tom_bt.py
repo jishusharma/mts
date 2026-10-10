@@ -21,6 +21,7 @@ Conventions (all frozen in bt_runs/<run>/FROZEN.md before a run):
 """
 import csv
 import math
+import os
 import random
 from array import array
 from pathlib import Path
@@ -49,16 +50,25 @@ def zone_tf(zone_type):
 class Bars1m:
     """Contiguous 1m bars in primitive arrays. idx(ts_ms) is O(1) because continuity is checked at load."""
 
-    def __init__(self, t0, o, h, l, c, v, tbv):
+    def __init__(self, t0, o, h, l, c, v, tbv, real=None):
         self.t0, self.o, self.h, self.l, self.c, self.v, self.tbv = t0, o, h, l, c, v, tbv
         self.n = len(o)
+        # real[i] == 1 where bar i came from the file, 0 where the loader filled a closed minute (fill_gaps only).
+        # None = a contiguous feed (BTC): every bar is real.
+        self.real = real
 
     def idx(self, ts_ms):
         return (ts_ms - self.t0) // 60000
 
 
-def load_bars_1m(klines_dir):
-    """Loads every *.csv under klines_dir (Binance 1m klines, header optional), dedupes, requires zero gaps."""
+def load_bars_1m(klines_dir, fill_gaps=None):
+    """Loads every *.csv under klines_dir (Binance 1m klines, header optional), dedupes, requires zero gaps.
+
+    fill_gaps (market with closing hours, DAX): closed minutes become flat bars at the last close with volume 0 so the
+    simulator can index by minute; Bars1m.real marks the bars that came from the file. Default None = env
+    TOM_MARKET_CLOSES == "1", else False: the BTC path is unchanged and still raises on any gap."""
+    if fill_gaps is None:
+        fill_gaps = os.environ.get("TOM_MARKET_CLOSES") == "1"
     rows = {}
     for f in sorted(Path(klines_dir).glob("*.csv")):
         with open(f, newline="", encoding="utf-8") as fh:
@@ -71,14 +81,25 @@ def load_bars_1m(klines_dir):
     ts = sorted(rows)
     if not ts:
         raise ValueError("no klines in %s" % klines_dir)
-    for a, b in zip(ts, ts[1:]):
-        if b - a != 60000:
-            raise ValueError("1m gap between %d and %d" % (a, b))
+    if not fill_gaps:
+        for a, b in zip(ts, ts[1:]):
+            if b - a != 60000:
+                raise ValueError("1m gap between %d and %d" % (a, b))
     o, h, l, c, v, tbv = (array("d") for _ in range(6))
+    real = bytearray() if fill_gaps else None
+    prev = None
     for t in ts:
         r = rows[t]
+        if fill_gaps:
+            if prev is not None:
+                for _ in range((t - prev) // 60000 - 1):  # closed minutes: flat at the last close, no volume
+                    lc = c[-1]
+                    o.append(lc); h.append(lc); l.append(lc); c.append(lc); v.append(0.0); tbv.append(0.0)
+                    real.append(0)
+            real.append(1)
         o.append(r[0]); h.append(r[1]); l.append(r[2]); c.append(r[3]); v.append(r[4]); tbv.append(r[5])
-    return Bars1m(ts[0], o, h, l, c, v, tbv)
+        prev = t
+    return Bars1m(ts[0], o, h, l, c, v, tbv, real)
 
 
 def resample_dicts(b, tf_min):
@@ -148,11 +169,11 @@ def signals(rows, variant):
 
 
 # ---------------------------------------------------------------- simulation
-from MyTradingSys.backtest.fees import FEES_DERIBIT, FEES_ALL_TAKER  # noqa: E402  (single source of truth, B081)
+from MyTradingSys.backtest.fees import FEES_DERIBIT, FEES_ALL_TAKER, FEES_FDAX  # noqa: E402  (single source of truth, B081)
 
 
 def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fees=FEES_DERIBIT,
-                    stop_first=True, slip=0.0):
+                    stop_first=True, slip=0.0, slip_pts=0.0):
     """Limit entry at `entry`, first eligible 1m bar index i0 (the bar opening at the signal time)."""
     sgn = 1.0 if side == "long" else -1.0
     if not (sgn * (stop - entry) < 0 and sgn * (target - entry) > 0):
@@ -172,7 +193,7 @@ def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fe
 
     def done(kind, px, j, amb):
         if kind in ("stop", "timeout"):
-            px = px - sgn * slip * px  # worse fill
+            px = px - sgn * slip * px - sgn * slip_pts  # worse fill (slip: fraction of price; slip_pts: index points)
         gross = sgn * (px - entry) / risk
         fee_r = (fees["entry"] * entry + fees[kind] * px) / risk
         return dict(filled=True, reason=kind, gross_r=gross, net_r=gross - fee_r, fee_r=fee_r, fill_i=fill_i,
@@ -201,7 +222,7 @@ def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fe
     return dict(filled=True, reason="open_at_end", fill_i=fill_i)
 
 
-def run_variant(sigs, b, fees=FEES_DERIBIT, stop_first=True, slip=0.0, one_at_a_time=True):
+def run_variant(sigs, b, fees=FEES_DERIBIT, stop_first=True, slip=0.0, one_at_a_time=True, slip_pts=0.0):
     """One position/pending order at a time. Returns a list of trade dicts (unfilled orders included)."""
     out = []
     busy_until_i = -1
@@ -214,7 +235,7 @@ def run_variant(sigs, b, fees=FEES_DERIBIT, stop_first=True, slip=0.0, one_at_a_
         if one_at_a_time and i0 <= busy_until_i:
             continue
         res = sim_limit_trade(b, i0, r["dir"], float(r["zprice"]), float(r["stop"]), float(r["target"]),
-                              8 * tfm, 8 * tfm, fees, stop_first, slip)
+                              8 * tfm, 8 * tfm, fees, stop_first, slip, slip_pts)
         if res["reason"] == "open_at_end":
             continue
         if res["filled"]:

@@ -46,6 +46,21 @@ class TestParse(unittest.TestCase):
             self.assertEqual(int(line[6]), DAY_MS + 60000 + 59999)
             self.assertEqual(float(line[9]), 2.0)                       # taker-buy = half of 4.0: delta 0
 
+    def test_convert_delta_is_exactly_zero_for_micro_volumes(self):
+        # volume 0.001335: half is 0.0006675, which 6 decimals round to 0.000668 (the old format), so the engine's
+        # delta = 2 * 0.000668 - 0.001335 = +1e-6: a phantom aggressor split. 7 decimals keep delta exactly 0.
+        with tempfile.TemporaryDirectory() as td:
+            raw, out = Path(td) / "raw", Path(td) / "out"
+            raw.mkdir()
+            recs = [(60 * k, 20000000, 20002000, 19999000, 20004000, v) for k, v in enumerate((0.001335, 0.00102, 3.141593))]
+            (raw / "2025-03-30.bi5").write_bytes(blob(recs))
+            D.convert(raw, out, "GER40")
+            lines = (out / "klines" / "GER40-1m-2025-03.csv").read_text().strip().splitlines()
+            self.assertEqual(len(lines), 3)
+            for line in lines:
+                f = line.split(",")
+                self.assertEqual(2 * float(f[9]) - float(f[5]), 0.0)
+
 
 if __name__ == "__main__":
     unittest.main()
