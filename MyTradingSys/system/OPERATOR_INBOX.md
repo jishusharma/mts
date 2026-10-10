@@ -1176,3 +1176,85 @@ What is missing in our vision for MTS given where it is today?
 ```
 Declutter MTS control room! 
 ```
+
+## gfu6dxifgkhsr3xaqxgn | 2026-10-10T13:59:36Z | task
+```
+Look at - 
+Grok
+**1. Traders with live/backtested results (OBI/OFI focus)**
+Very little high-quality evidence of profitable pure OBI/OFI systems on BTCUSDT perps that include fees and multi-trade track records. Most posts are qualitative order-flow analysis, single-setup screenshots, or Polymarket applications (different fee/structure environment).
+
+- **@polyquantai**: Claims 72.4% win rate, 695 trades, 27.8% avg ROI/trade using Binance BTCUSDT order-book imbalance to trade Polymarket 5–15 min BTC Up/Down. Evidence: stated backtest/results (screenshots of metrics). Fees: not mentioned in the posts. Links: https://x.com/polyquantai/status/2091984176450785488 and https://x.com/polyquantai/status/2091977784360927589.
+- **@VelvetSoul**: Backtested order-book imbalance on 1,600+ Polymarket 5-min BTC markets. Raw high imbalance looked 94–96% win rate; controlling for price (near-coin-flip cases) collapses to 33–56% (noise). Evidence: stated tick-by-tick backtest. Fees: not relevant/mentioned (Polymarket). Link: https://x.com/VelvetSoul/status/2105020672342671806.
+- **@52kskew**: Frequent orderbook imbalance + perp OI/funding confluence for directional setups (e.g., imbalanced ask liquidity + rising OI/funding as short setup). Evidence: qualitative live analysis with charts; no multi-trade P&L curve or pure-OBI backtest with fees found. Fees: not quantified in results. Example: https://x.com/52kskew/status/1766971742696915386.
+- Known handles (@The_JDK99, @Yuriy_Biko, @KillaXBT, @giffxtrader, @TradingParrot, @AlexMasonCrypto): Heavy order-flow / delta / absorption / imbalance discussion and chart breakdowns. No multi-trade backtests, equity curves, or stated win rates specifically for pure OBI/OFI systems with fees found in searches. They post educational/live analysis rather than strategy P&L track records.
+
+**Nothing found** for pure BTCUSDT perp OBI/OFI systems showing sustained live P&L curves or fee-inclusive backtests over many trades from independent practitioners.
+
+**2. Specific rules**
+Almost none published with exact entry/exit for pure OBI/OFI on perps.
+- PolyQuant: Track Binance BTCUSDT order-book imbalance → trade corresponding Polymarket 5-min outcome before gap closes. No exact threshold, exit, or fee discussion in the posts.
+- @52kskew style: Heavy ask (or bid) imbalance within ~2% of price + rising OI/funding + lack of opposing taker flow → short (or long) confluence around key levels. Discretionary, not a fixed ratio threshold or OFI sign-change rule. Exits via structure/liquidity.
+- General order-flow accounts (@The_JDK99, @Yuriy_Biko): Focus on absorption, trapped positions, delta divergence, volume profile, and auction dynamics rather than a numeric OBI threshold. Timeframes mostly discretionary LTF (seconds–minutes). Fees/funding rarely quantified against the signal.
+
+**3. Solving the fee problem (maker / post-only / rebate / queue)**
+**Nothing found.** Searches for “OBI maker”, “order flow maker fill”, “imbalance post-only”, “queue position edge”, “OBI rebate” (and close variants) returned no credible posts describing a working maker/post-only OBI/OFI edge on BTCUSDT perps that overcomes the ~0.05% round-trip taker wall. No evidence of systematic rebate or queue-position strategies tied to imbalance signals.
+
+**4. Credible dissent**
+- User’s own prior knowledge is consistent with the sparse public record: signal exists at short horizons but is too small after fees for simple strategies.
+- @VelvetSoul’s Polymarket test is the clearest public counter-example of the “imbalance predicts direction” claim collapsing under controls.
+- Broader quant-style posts note that many short-horizon edges (including book-related) fail once realistic fees are applied; no strong public defense of pure taker OBI after Binance fee changes.
+
+**5. Top accounts by evidence quality (not followers)**
+1. **@polyquantai** — Claims quantified multi-trade OBI results (Polymarket via Binance book). Evidence: stated stats + screenshots. Link above.
+2. **@VelvetSoul** — Controlled backtest showing OBI edge is mostly price restatement. Evidence: 1,600+ market test. Link above.
+3. **@52kskew** — Highest-volume, consistent public orderbook + flow + positioning confluence work. Evidence: repeated chart-based analysis (not pure OBI P&L). Link above.
+4. **@The_JDK99** — Detailed live order-flow / auction reads on BTC. Evidence: frequent chart breakdowns; no strategy P&L track record found.
+5. **@Yuriy_Biko** — Order-flow education + delta/absorption focus. Evidence: educational content; no multi-trade OBI results found.
+
+**Bottom line**: Public X evidence of *profitable, fee-surviving, pure OBI/OFI systems on BTCUSDT perps* is essentially absent. The accounts that discuss the topic most rigorously either (a) apply it to lower-friction venues like Polymarket, (b) use imbalance as one discretionary confluence among many, or (c) show the signal is real but fragile. The fee wall remains the binding constraint in the public conversation.
+
+```
+
+## 5mdfbjfq4ctldfgnnuhk | 2026-10-10T13:59:55Z | task
+```
+Gemini - 
+**1. Traders with live/backtested results (OBI/OFI focus)**
+Very little high-quality evidence of profitable pure OBI/OFI systems on BTCUSDT perps that include fees and multi-trade track records. Most posts are qualitative order-flow analysis, single-setup screenshots, or Polymarket applications (different fee/structure environment).
+
+- **@polyquantai**: Claims 72.4% win rate, 695 trades, 27.8% avg ROI/trade using Binance BTCUSDT order-book imbalance to trade Polymarket 5–15 min BTC Up/Down. Evidence: stated backtest/results (screenshots of metrics). Fees: not mentioned in the posts. Links: https://x.com/polyquantai/status/2091984176450785488 and https://x.com/polyquantai/status/2091977784360927589.
+- **@VelvetSoul**: Backtested order-book imbalance on 1,600+ Polymarket 5-min BTC markets. Raw high imbalance looked 94–96% win rate; controlling for price (near-coin-flip cases) collapses to 33–56% (noise). Evidence: stated tick-by-tick backtest. Fees: not relevant/mentioned (Polymarket). Link: https://x.com/VelvetSoul/status/2105020672342671806.
+- **@52kskew**: Frequent orderbook imbalance + perp OI/funding confluence for directional setups (e.g., imbalanced ask liquidity + rising OI/funding as short setup). Evidence: qualitative live analysis with charts; no multi-trade P&L curve or pure-OBI backtest with fees found. Fees: not quantified in results. Example: https://x.com/52kskew/status/1766971742696915386.
+- Known handles (@The_JDK99, @Yuriy_Biko, @KillaXBT, @giffxtrader, @TradingParrot, @AlexMasonCrypto): Heavy order-flow / delta / absorption / imbalance discussion and chart breakdowns. No multi-trade backtests, equity curves, or stated win rates specifically for pure OBI/OFI systems with fees found in searches. They post educational/live analysis rather than strategy P&L track records.
+
+**Nothing found** for pure BTCUSDT perp OBI/OFI systems showing sustained live P&L curves or fee-inclusive backtests over many trades from independent practitioners.
+
+**2. Specific rules**
+Almost none published with exact entry/exit for pure OBI/OFI on perps.
+- PolyQuant: Track Binance BTCUSDT order-book imbalance → trade corresponding Polymarket 5-min outcome before gap closes. No exact threshold, exit, or fee discussion in the posts.
+- @52kskew style: Heavy ask (or bid) imbalance within ~2% of price + rising OI/funding + lack of opposing taker flow → short (or long) confluence around key levels. Discretionary, not a fixed ratio threshold or OFI sign-change rule. Exits via structure/liquidity.
+- General order-flow accounts (@The_JDK99, @Yuriy_Biko): Focus on absorption, trapped positions, delta divergence, volume profile, and auction dynamics rather than a numeric OBI threshold. Timeframes mostly discretionary LTF (seconds–minutes). Fees/funding rarely quantified against the signal.
+
+**3. Solving the fee problem (maker / post-only / rebate / queue)**
+**Nothing found.** Searches for “OBI maker”, “order flow maker fill”, “imbalance post-only”, “queue position edge”, “OBI rebate” (and close variants) returned no credible posts describing a working maker/post-only OBI/OFI edge on BTCUSDT perps that overcomes the ~0.05% round-trip taker wall. No evidence of systematic rebate or queue-position strategies tied to imbalance signals.
+
+**4. Credible dissent**
+- User’s own prior knowledge is consistent with the sparse public record: signal exists at short horizons but is too small after fees for simple strategies.
+- @VelvetSoul’s Polymarket test is the clearest public counter-example of the “imbalance predicts direction” claim collapsing under controls.
+- Broader quant-style posts note that many short-horizon edges (including book-related) fail once realistic fees are applied; no strong public defense of pure taker OBI after Binance fee changes.
+
+**5. Top accounts by evidence quality (not followers)**
+1. **@polyquantai** — Claims quantified multi-trade OBI results (Polymarket via Binance book). Evidence: stated stats + screenshots. Link above.
+2. **@VelvetSoul** — Controlled backtest showing OBI edge is mostly price restatement. Evidence: 1,600+ market test. Link above.
+3. **@52kskew** — Highest-volume, consistent public orderbook + flow + positioning confluence work. Evidence: repeated chart-based analysis (not pure OBI P&L). Link above.
+4. **@The_JDK99** — Detailed live order-flow / auction reads on BTC. Evidence: frequent chart breakdowns; no strategy P&L track record found.
+5. **@Yuriy_Biko** — Order-flow education + delta/absorption focus. Evidence: educational content; no multi-trade OBI results found.
+
+**Bottom line**: Public X evidence of *profitable, fee-surviving, pure OBI/OFI systems on BTCUSDT perps* is essentially absent. The accounts that discuss the topic most rigorously either (a) apply it to lower-friction venues like Polymarket, (b) use imbalance as one discretionary confluence among many, or (c) show the signal is real but fragile. The fee wall remains the binding constraint in the public conversation.
+```
+
+## oclzxu4fqt9d6b0rx1gr | 2026-10-10T14:02:10Z | requirement
+```
+There are a few tasks related to the imbalance trading system/indicator. 
+Get the profitable imbalance indicator in our Armory now now - implement -back test -  run on test net! End to end - high priority
+```
