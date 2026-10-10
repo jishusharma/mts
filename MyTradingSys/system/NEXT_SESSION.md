@@ -5,23 +5,27 @@
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
 
 ```
-MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State below. Worktree only, never the live tree.
+MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State below.
 0. `python scripts/dev/sync.py start`, `sync.py where`, `desk.py list --all`. Push fails: say so in one line, stop.
    Read STATUS.md "Daily Hygiene": a RED there is fixed before new work. One task per session; hand off after the task,
    5 operator turns or ~50k tokens: ship, overwrite this file, `where` clean.
 1. Control Room (url in CONTROL_ROOM.md): ArtifactData query decisions + feedback. Apply answered decisions with no `applied`
-   (D01-D23 all applied; D23 at 13:00Z 2026-10-10). New unanswered decisions: act on the `recommended` option only when older
+   New unanswered decisions: act on the `recommended` option only when older
    than 24 h; Java changes (D15 on B142, D17 on B144) are staged + tested, the restart goes to a JIS-NB desk task.
 2. DSA / JIS-NB results: for every desk task now done, spot-check ONE number against its file, then use it (no redo).
-3. TASK (queue seeded by operator 2026-10-10; pick the first item not done, claim it, ONE per session; mark it DONE in "Queue status" below when shipped):
-   Q1. Read the overdue screenshots: `shot.py status`, take the OVERDUE classified charts oldest first (0e9036ae547d, 65656faa31ba, 29ff2b488f13, ...),
-       up to 5 per session; for each `shot.py read` with MATCH / MISMATCH / NOT_IN_DATA claims against files you read, then `shot.py done`. Ship the outputs.
-   Q2. B171 imbalance indicator end to end: read MyTradingSys/items/B171_imbalance_indicator_end_to_end.md, build the next unfinished step with a
-       fail-first test. Design rule from the Grok sweeps: control for price; NO REPLICATION in public evidence, so label it a hypothesis, no tuning.
-   Q3. Big-trade backtest follow-ups: research/bigtrade_2026-10-09/PLAN.md and FINDINGS.md, take the next open item (EXIT_POLICIES_REPORT.md lists the
-       state). Files under backtest/bigtrade/* stay in the live tree uncommitted: ask JIS-NB desk to commit them, do not copy.
-   Q4. Post a desk task to JIS-NB to run scripts/dev/refresh_klines.py for 2026-10-09 (unblocks old 3c: `shot.py engine <id>` on the 10-09 chart shots).
-   Empty list: reread Control Room decisions/feedback, then `desk.py list --all`; only then write stop.
+3. TASK: first item below not marked DONE in "Queue status", claim it, do ONLY it (each is sized for one session, Sonnet, <=50k tokens):
+   Q1. Screenshot set 29ff2b (7 shots, one 10-07 moment: 3m 5m 15m 1h 4h): read as ONE set per methodology/screenshot_intake.md, extract from
+       research/screenshots/TEMPLATE.md; `shot.py show <id>` already holds claim rows from the C06-C10 analysis, reuse them, do not redo. `shot.py read`, `done`, ship.
+   Q2. Screenshots 65656faa31ba (30m, 10-07), 359bdb0c7cf9 (15m, 10-09), 23416389787e (app): classify check, read each as single-TF context, `done`, ship.
+   Q3. B171 step 1 only (items/B171_...md): grep research/imbalance_2026-10-10/RESEARCH.md and transcripts for operator/trader QUOTES that define an imbalance
+       rule. Quote found: write PRE_REG_imbalance.md (candidate, trial count, fee model 10 bp round trip). No quote: record NO-INFO in the item and post a
+       Control Room decision asking for the trader quote (default: park B171). No tuning, no code, no backtest this session.
+   Q4. Desk post to JIS-NB (one task, `desk.py post ... --target JIS-NB`): (a) run scripts/dev/refresh_klines.py for 2026-10-09; (b) commit backtest/bigtrade/*
+       and research/bigtrade_2026-10-09/* from the live tree on a branch and ship (they exist only there; origin has EXIT_POLICIES_REPORT.md alone).
+       Then Q5 and Q6 become possible; DONE when the post is filed.
+   Q5. (after Q4a lands) `shot.py engine <id>` for the 10-09 chart shots (78f967b4e253, b5f554a9f68a, 6188a576411b), ship research/screenshots/engine/*.json.
+   Q6. (after Q4b lands) read research/bigtrade_2026-10-09/ PLAN/FINDINGS and write the next-open-item as Q7 in this list; do not build in the same session.
+   List exhausted or only blocked items left: reread Control Room + `desk.py list --all`; stop only then, naming each blocker.
 4. Route run-and-report work to DSA (system/DSA_DELEGATION.md); post what the DSA queue lacks before ending.
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
