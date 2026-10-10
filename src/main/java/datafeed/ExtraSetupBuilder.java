@@ -41,7 +41,7 @@ public class ExtraSetupBuilder {
             math.put("stop", stop);
             math.put("target", target);
             math.put("gross_rr", target > 0 ? Math.round(Math.abs(target-price)/Math.abs(price-stop)*100.0)/100.0 : 0.0);
-            double _net   = target > 0 ? ExecutionMathConstants.netRR(price, target, stop) : 0.0;  // B070: fee model, was gross * 0.75
+            double _net   = target > 0 ? ExecutionMathConstants.netRR(root.path("asset").asText(null), price, target, stop) : 0.0;  // B070: fee model, was gross * 0.75
             math.put("net_rr", Math.round(_net*100.0)/100.0);
             double _gross = target > 0 ? Math.abs(target-price)/Math.abs(price-stop) : 0.0;
             math.put("rr_sanity", _gross >= 1.5);

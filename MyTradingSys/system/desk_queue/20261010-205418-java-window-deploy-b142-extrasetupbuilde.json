@@ -1,0 +1,10 @@
+{
+  "done_when": "latest snapshot module_candidates is [] while speed_picking_up is true; feed back up within 5 min",
+  "from": "JIS-NB",
+  "id": "20261010-205418-java-window-deploy-b142-extrasetupbuilde",
+  "need": "After MTS-AutoDeploy ff's the live tree to a SHA containing B142: in the live tree PATH=C:/tools/jdk-17.0.18/bin:$PATH mvn -q compile; kill only the statemachine JVM; loop-supervisor relaunches (~2.5 min). Never touch position_manager.",
+  "posted": "2026-10-10T20:54:18Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Java window: deploy B142 (ExtraSetupBuilder momentum disabled) to the feed"
+}
