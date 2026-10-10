@@ -8,6 +8,8 @@
   python scripts/dev/shot.py read <id>... --extract <md>       # extract exists, names the ids, has claim rows
   python scripts/dev/shot.py done <id>... --outcome finding:B156 | feature:FEAT-11 | noaction:"<why>" | note:"<text>"
   python scripts/dev/shot.py sets                              # chart shots grouped into multi-timeframe sets
+  python scripts/dev/shot.py engine <id> [--raw DIR] [--plan]  # B160: engine snapshot at the shot's minute (SnapAt, 1m archive)
+                                                               #   -> MyTradingSys/research/screenshots/engine/<id>.json
   python scripts/dev/shot.py status [--max-age-hours 24]       # one line; exit 1 when a shot is overdue (the gate)
 
 Why this exists: Claude saves a pasted image in places no session is told about (the session transcript, ~/.claude/uploads,
@@ -46,6 +48,10 @@ SET_WINDOW_MIN = 10  # chart shots of one symbol within this many minutes are on
 NAG_EVERY_HOURS = 6  # the SessionStart backlog reminder repeats at most this often
 MAX_TEXT = 500
 EXT_OK = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
+ENGINE_SYMBOLS = ("BTCUSDT",)  # SnapAt.java hard-codes BTCUSDT
+SNAPAT = REPO / "MyTradingSys" / "research" / "core_readiness_2026-09-27" / "harness" / "java" / "SnapAt.java"
+ENGINE_JARS = ("jackson-databind-2.16.0.jar", "jackson-core-2.16.0.jar", "jackson-annotations-2.16.0.jar", "okhttp-4.12.0.jar",
+               "okio-jvm-3.6.0.jar", "kotlin-stdlib-1.8.21.jar", "Java-WebSocket-1.5.6.jar", "slf4j-api-2.0.9.jar")  # README_REPLAY.md
 
 
 class ShotError(ValueError):
@@ -521,6 +527,101 @@ def done(store, prefixes, outcome):
     return ids
 
 
+# ---------------------------------------------------------------- engine state at the shot (B160)
+def raw_root():
+    """The 1m kline archive ArchiveHistoricalSource reads (<raw>/klines/SYMBOL-1m-*.csv); refresh_klines.py tops it up daily."""
+    return Path(os.environ.get("MTS_KLINE_RAW") or main_root() / "Dumps" / "backtest" / "raw")
+
+
+def engine_dir():
+    return Path(os.environ.get("MTS_SHOT_ENGINE_DIR") or REPO / "MyTradingSys" / "research" / "screenshots" / "engine")
+
+
+def floor_minute(at):
+    t = datetime.fromisoformat(at.replace("Z", "+00:00")).astimezone(timezone.utc)
+    return t.replace(second=0, microsecond=0).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def archive_covers(raw, symbol, day):
+    """True when <raw>/klines holds the monthly (SYMBOL-1m-YYYY-MM.csv) or daily (SYMBOL-1m-YYYY-MM-DD.csv) file for `day`."""
+    d = Path(raw) / "klines"
+    names = {f"{symbol}-1m-{day[:7]}.csv", f"{symbol}-1m-{day}.csv"}
+    return d.is_dir() and any((d / n).is_file() for n in names)
+
+
+def engine_plan(store, prefix, raw=None):
+    """What `shot.py engine` would replay: refuses anything but a classified chart with a time on a symbol SnapAt serves,
+    and an archive without the shot's day (a snapshot from a short archive would be silently wrong)."""
+    S = fold(load_events(store))
+    i = resolve(S, prefix)
+    s = S[i]
+    if s.get("kind") != "chart":
+        raise ShotError(f"{i} is not a classified chart (kind {s.get('kind')!r}): only a chart has an instant to replay")
+    if not s.get("at"):
+        raise ShotError(f"{i} has no `at`: re-classify it with --at (the time on the chart's right edge)")
+    if s.get("symbol") not in ENGINE_SYMBOLS:
+        raise ShotError(f"{i} is {s.get('symbol')}: SnapAt replays {', '.join(ENGINE_SYMBOLS)} only")
+    as_of = floor_minute(s["at"])
+    raw = Path(raw) if raw else raw_root()
+    if not archive_covers(raw, s["symbol"], as_of[:10]):
+        raise ShotError(f"the 1m archive {raw / 'klines'} has no {s['symbol']} file for {as_of[:10]}: top it up "
+                        "(scripts/dev/refresh_klines.py, or fetch_binance_archive.py --start/--end) or pass --raw")
+    return {"id": i, "symbol": s["symbol"], "tf": s.get("tf"), "at": s["at"], "as_of": as_of, "raw": str(raw),
+            "out": str(engine_dir() / f"{i}.json")}
+
+
+def write_instants(plan, d):
+    p = Path(d) / "instants.txt"
+    p.write_text(plan["as_of"] + "\n", encoding="utf-8", newline="\n")
+    return p
+
+
+def engine_jars():
+    m2 = Path(os.environ.get("MTS_M2") or Path.home() / ".m2" / "repository")
+    jars = []
+    for name in ENGINE_JARS:
+        hits = sorted(m2.rglob(name)) if m2.is_dir() else []
+        if not hits:
+            raise ShotError(f"{name} not found under {m2}: run `mvn -q -o compile` once in a worktree so Maven fetches it")
+        jars.append(str(hits[0]))
+    return jars
+
+
+def run_engine(plan, runner=subprocess.run):
+    """Compile src/main + SnapAt into a temp copy (never src/ or target/), run it from an empty cwd, save one record."""
+    import shutil
+    tmp = Path(tempfile.mkdtemp(prefix="mts_snapat_"))
+    try:
+        src, out, cwd = tmp / "src", tmp / "out", tmp / "cwd"
+        for d in (src, out, cwd):
+            d.mkdir()
+        for f in sorted((REPO / "src" / "main" / "java" / "datafeed").glob("*.java")) + [SNAPAT]:
+            shutil.copy2(f, src / f.name)
+        cp = os.pathsep.join(engine_jars())
+        r = runner(["javac", "-nowarn", "-encoding", "UTF-8", "-d", str(out), "-cp", cp, *sorted(str(f) for f in src.glob("*.java"))],
+                   capture_output=True, text=True)
+        if r.returncode:
+            raise ShotError("javac failed: " + (r.stderr or r.stdout or "")[-800:])
+        inst, jsonl = write_instants(plan, tmp), tmp / "snap.jsonl"
+        r = runner(["java", "-Xmx3g", "-cp", str(out) + os.pathsep + cp, "datafeed.SnapAt", plan["raw"], str(inst), str(jsonl)],
+                   cwd=str(cwd), capture_output=True, text=True)
+        if r.returncode:
+            raise ShotError("SnapAt failed: " + (r.stderr or r.stdout or "")[-800:])
+        lines = [ln for ln in (jsonl.read_text(encoding="utf-8").splitlines() if jsonl.is_file() else []) if ln.strip()]
+        snap = json.loads(lines[0]) if len(lines) == 1 else None
+        if not isinstance(snap, dict):
+            raise ShotError(f"SnapAt returned {len(lines)} line(s) and no snapshot object for {plan['as_of']}")
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    rec = {"shot": plan["id"], "symbol": plan["symbol"], "tf": plan["tf"], "at": plan["at"], "as_of": plan["as_of"],
+           "raw": plan["raw"], "engine": "SnapAt: MarketDataSnapshot(raw archive).fetchHistoricalSnapshot",
+           "git_head": git("rev-parse", "HEAD").strip(), "snapshot": snap}
+    path = Path(plan["out"])
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(rec, indent=1, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+    return path
+
+
 # ---------------------------------------------------------------- views
 def age_hours(ts):
     try:
@@ -640,6 +741,8 @@ def main(argv=None):
     a = sub.add_parser("read"); a.add_argument("ids", nargs="+"); a.add_argument("--extract", required=True)
     a = sub.add_parser("done"); a.add_argument("ids", nargs="+"); a.add_argument("--outcome", required=True)
     sub.add_parser("sets")
+    a = sub.add_parser("engine"); a.add_argument("id"); a.add_argument("--raw", help="1m archive root (default <main>/Dumps/backtest/raw)")
+    a.add_argument("--plan", action="store_true", help="print the instant and paths, do not compile or run")
     a = sub.add_parser("status"); a.add_argument("--max-age-hours", type=float, default=24)
     args = p.parse_args(argv)
     if args.cmd == "hook":
@@ -677,6 +780,11 @@ def main(argv=None):
             for s in make_sets(fold(load_events(store))):
                 flag = "  SINGLE-TF: cross-timeframe layers of chart_read_protocol cannot be done" if s["single_tf"] else ""
                 print(f"set {s['set']} {s['symbol']} {s['from']}..{s['to']} tfs {','.join(s['tfs'])} [{s['status']}] ids {' '.join(i[:8] for i in s['ids'])}{flag}")
+        elif args.cmd == "engine":
+            plan = engine_plan(store, args.id, args.raw)
+            print(f"PLAN {plan['id']} {plan['symbol']} as_of {plan['as_of']} (at {plan['at']}) raw {plan['raw']} -> {repo_rel(plan['out'])}")
+            if not args.plan:
+                print(f"OK engine snapshot {repo_rel(run_engine(plan))}: cite it in the extract's claim rows")
         elif args.cmd == "status":
             line, overdue = status_line(fold(load_events(store)), args.max_age_hours)
             print(line)

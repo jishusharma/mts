@@ -58,7 +58,8 @@ Per image: pre-read gate (VVP-002 F.1), then each claim on the chart gets one ro
 - MISMATCH: the chart shows one thing, our pipeline or raw data another.
 - NOT_IN_DATA: the chart shows something no file holds (operator rays and boxes always land here until T066).
 Rules learned from the first study: state the chart clock; compare CVD steps, never CVD levels (the chart anchors at its first loaded bar); mark pixel reads with their error; footprint cell numbers are not volume (meaning unknown);
-no trade advice in an extract. A read that names a setup also goes to `capture.py add --kind chart_read ... --image <shot id>` (invalidation required, six layers).
+no trade advice in an extract.
+Engine state at the shot (B160): `shot.py engine <id>` writes `research/screenshots/engine/<id>.json` (the engine's own snapshot rebuilt at the shot's minute from the 1m archive); a claim row about VWAP, VP, CVD or state cites that file instead of whatever snapshot is current. A read that names a setup also goes to `capture.py add --kind chart_read ... --image <shot id>` (invalidation required, six layers).
 
 ## 5-6 REPORT AND CLOSE - the feedback loop
 | Claim class | Becomes | Owner group (PROJECT_MAP) |
