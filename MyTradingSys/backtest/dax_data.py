@@ -1,0 +1,124 @@
+"""DAX (Dukascopy DEUIDXEUR, free CFD feed) 1m bars -> the Binance-style 1m kline archive the engine reads.
+
+Operator 2026-10-11 approved the free Dukascopy feed for the Tom DAX probe (research/tom_transfer_2026-10-11/PROBE_PLAN.md).
+Usage:
+  python -I MyTradingSys/backtest/dax_data.py fetch   --start 2025-01-01 --end 2026-10-10 --raw F:/MTS/data/dax_raw
+  python -I MyTradingSys/backtest/dax_data.py convert --raw F:/MTS/data/dax_raw --out F:/MTS/data/dax_archive [--symbol GER40]
+Feed format (BID_candles_min_1.bi5): LZMA; records of 24 bytes big-endian >5i1f: seconds from 00:00 UTC of the day, open,
+close, low, high (int, price * 1000 for this instrument: checked against the 2025 DAX range), volume (float, the feed's own
+volume unit for a CFD: not exchange volume). Days are UTC; the month in the URL is 0-based.
+Output: <out>/klines/GER40-1m-YYYY-MM.csv rows `open_ms,o,h,l,c,volume,close_ms,quote_vol,count,taker_buy_vol,taker_buy_quote` (the fields
+ArchiveHistoricalSource reads). Minutes the feed does not print (market closed) are NOT forward-filled; a minute with zero
+volume and o=h=l=c (Dukascopy's closed-market filler) is dropped. Raw files are untrusted data: run with python -I.
+"""
+import argparse
+import concurrent.futures as cf
+import datetime as dt
+import lzma
+import struct
+import sys
+import time
+import urllib.request
+from pathlib import Path
+
+URL = "https://datafeed.dukascopy.com/datafeed/{inst}/{y:04d}/{m0:02d}/{d:02d}/BID_candles_min_1.bi5"
+INST = "DEUIDXEUR"
+SCALE = 1000.0
+REC = struct.Struct(">5if")
+
+
+def day_url(day, inst=INST):
+    return URL.format(inst=inst, y=day.year, m0=day.month - 1, d=day.day)
+
+
+def parse_bi5(blob, day):
+    """Bytes of one day's .bi5 -> [(open_ms, o, h, l, c, v)], dropping closed-market filler minutes."""
+    if not blob:
+        return []
+    raw = lzma.decompress(blob)
+    base = int(dt.datetime(day.year, day.month, day.day, tzinfo=dt.timezone.utc).timestamp()) * 1000
+    out = []
+    for k in range(0, len(raw) - REC.size + 1, REC.size):
+        sec, o, c, lo, hi, v = REC.unpack_from(raw, k)
+        if v == 0 and o == c == lo == hi:
+            continue
+        out.append((base + sec * 1000, o / SCALE, hi / SCALE, lo / SCALE, c / SCALE, float(v)))
+    return out
+
+
+HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126 Safari/537.36",
+           "Referer": "https://freeserv.dukascopy.com/2.0/"}
+
+
+def fetch(start, end, raw, workers=1, pause=1.0):
+    """The feed rate-limits (429/503): one worker, a pause per request, backoff on refusals."""
+    raw.mkdir(parents=True, exist_ok=True)
+    days = [start + dt.timedelta(n) for n in range((end - start).days + 1)]
+
+    def one(day):
+        f = raw / f"{day:%Y-%m-%d}.bi5"
+        if f.exists():
+            return day, "have"
+        for attempt in range(8):
+            time.sleep(pause)
+            try:
+                with urllib.request.urlopen(urllib.request.Request(day_url(day), headers=HEADERS), timeout=30) as r:
+                    f.write_bytes(r.read())
+                return day, "ok"
+            except Exception as e:  # 404 = no file for that day; retry refusals and transient errors
+                if getattr(e, "code", None) == 404:
+                    f.write_bytes(b"")
+                    return day, "404"
+                time.sleep(min(60, 3 * 2 ** attempt))
+        return day, "fail"
+
+    stats = {}
+    with cf.ThreadPoolExecutor(workers) as ex:
+        for day, st in ex.map(one, days):
+            stats[st] = stats.get(st, 0) + 1
+            if st == "fail":
+                print("FAIL", day, file=sys.stderr)
+    print("fetch", stats)
+    return stats
+
+
+def convert(raw, out, symbol="GER40"):
+    kd = out / "klines"
+    kd.mkdir(parents=True, exist_ok=True)
+    months, days_with_bars = {}, 0
+    for f in sorted(raw.glob("*.bi5")):
+        day = dt.date.fromisoformat(f.stem)
+        rows = parse_bi5(f.read_bytes(), day)
+        if rows:
+            days_with_bars += 1
+        months.setdefault(f"{day:%Y-%m}", []).extend(rows)
+    n = 0
+    for ym, rows in sorted(months.items()):
+        rows.sort()
+        with open(kd / f"{symbol}-1m-{ym}.csv", "w", newline="\n", encoding="utf-8") as w:
+            for t, o, h, lo, c, v in rows:
+                # No aggressor split in a CFD feed: taker-buy = half the volume keeps kline-derived delta/CVD at 0
+                # (neutral, the order-flow proofs cannot fire) instead of reading every bar as all-sell (tbv 0).
+                w.write(f"{t},{o:.3f},{h:.3f},{lo:.3f},{c:.3f},{v:.6f},{t + 59999},{v * c:.4f},0,{v / 2:.6f},{v * c / 2:.4f}\n")
+        n += len(rows)
+    print(f"convert {symbol}: {n} bars, {days_with_bars} days with bars, {len(months)} month files -> {kd}")
+    return n
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser()
+    sp = ap.add_subparsers(dest="cmd", required=True)
+    a = sp.add_parser("fetch"); a.add_argument("--start", required=True); a.add_argument("--end", required=True)
+    a.add_argument("--raw", required=True); a.add_argument("--workers", type=int, default=1)
+    a.add_argument("--pause", type=float, default=1.0)
+    b = sp.add_parser("convert"); b.add_argument("--raw", required=True); b.add_argument("--out", required=True)
+    b.add_argument("--symbol", default="GER40")
+    x = ap.parse_args(argv)
+    if x.cmd == "fetch":
+        fetch(dt.date.fromisoformat(x.start), dt.date.fromisoformat(x.end), Path(x.raw), x.workers, x.pause)
+    else:
+        convert(Path(x.raw), Path(x.out), x.symbol)
+
+
+if __name__ == "__main__":
+    main()
