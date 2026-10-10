@@ -55,6 +55,7 @@ public class SetupCandidatesBuilder {
         }
 
         double currentPrice = root.get("current_price").asDouble();
+        final String sym = root.path("asset").asText(null);  // instrument for the per-market fee (null/unknown -> BTC fee, unchanged)
         final double netRrFloor = NetRrFloor.read();  // single source: MyTradingSys/system/net_rr_floor.json; NaN (unreadable) fails every >= below
         final double runnerMinDistancePct = RunnerMinDistance.read();  // MyTradingSys/system/runner_min_distance.json; NaN -> no runner
 
@@ -137,7 +138,7 @@ public class SetupCandidatesBuilder {
             addHvns(root, "weekly_vp", nodes);
             addHvns(root, "daily_vp", nodes);
             addHvns(root, "intraday_4h_vp", nodes);
-            double[] picked = pickTarget(nodes, zonePrice, c.stop, "short".equals(c.direction), netRrFloor, runnerMinDistancePct);
+            double[] picked = pickTarget(nodes, zonePrice, c.stop, "short".equals(c.direction), netRrFloor, runnerMinDistancePct, sym);
             c.target = picked[0];
             c.runnerTarget = picked[1];
             if (c.target == 0) {
@@ -149,7 +150,7 @@ public class SetupCandidatesBuilder {
                 double risk = Math.abs(zonePrice - c.stop);
                 double reward = Math.abs(c.target - zonePrice);
                 c.grossRR = reward / risk;
-                c.netRR = ExecutionMathConstants.netRR(zonePrice, c.target, c.stop);  // B070: fee model, was gross * 0.75
+                c.netRR = ExecutionMathConstants.netRR(sym, zonePrice, c.target, c.stop);  // B070: fee model, was gross * 0.75
                 c.rrSanity = c.grossRR >= 1.5;   // advisory output flag only; no longer drops the candidate
                 c.netRrSanity = c.netRR >= netRrFloor;
                 c.valid = true;
@@ -464,6 +465,11 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
      */
     static double[] pickTarget(List<Double> nodes, double zonePrice, double stop, boolean isShort, double netRrFloor,
                                double runnerMinDistancePct) {
+        return pickTarget(nodes, zonePrice, stop, isShort, netRrFloor, runnerMinDistancePct, null);
+    }
+
+    static double[] pickTarget(List<Double> nodes, double zonePrice, double stop, boolean isShort, double netRrFloor,
+                               double runnerMinDistancePct, String symbol) {
         List<Double> dir = new ArrayList<>();
         for (double p : nodes) {
             if (isShort ? p < zonePrice : p > zonePrice) dir.add(p);
@@ -472,7 +478,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         dir.sort((x, y) -> Double.compare(Math.abs(x - zonePrice), Math.abs(y - zonePrice)));
         int idx = dir.size() - 1;  // fallback: farthest
         for (int i = 0; i < dir.size(); i++) {
-            if (ExecutionMathConstants.netRR(zonePrice, dir.get(i), stop) >= netRrFloor) { idx = i; break; }
+            if (ExecutionMathConstants.netRR(symbol, zonePrice, dir.get(i), stop) >= netRrFloor) { idx = i; break; }
         }
         double target = dir.get(idx);
         double runner = 0;

@@ -4,8 +4,9 @@
   "commands": [],
   "created": "2026-10-10T18:55:33Z",
   "depends_on": [
-    "tom-probe-diag-btc",
-    "tom-dax-backtest"
+    "tom-dax-backtest",
+    "tom-layer-v2-spec",
+    "tom-probe-diag-btc"
   ],
   "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_ARMS.md frozen (arms, source status, trial count, holdouts) and a runner card exists.",
   "from_inbox": "",
@@ -13,7 +14,7 @@
   "id": "tom-probe-prereg",
   "lane": "SONNET",
   "live_path": false,
-  "note": "",
+  "note": "opus 2026-10-11: DIAG_BTC says S SKIP, Q SKIP (thin), M GO. Scope reduced to the M arms (partials, trail, re-entry, no timeout) with stops wide enough to clear BTC noise+fees per TOM_LAYER_V2_SPEC; S/Q arms parked until the v2 encoding exists.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat)",

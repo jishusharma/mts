@@ -4,7 +4,8 @@
   "commands": [],
   "created": "2026-10-10T20:38:11Z",
   "depends_on": [
-    "tom-verdict-fee-per-market"
+    "tom-verdict-fee-per-market",
+    "tom-layer-v2-spec"
   ],
   "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX_V2.md shows signal recall on the 7 entries (target >= 4/7) with every new parameter sourced or flagged NO-SOURCE; .new staged, tests green.",
   "from_inbox": "",
@@ -12,7 +13,7 @@
   "id": "tom-encode-spike-fade",
   "lane": "SONNET",
   "live_path": false,
-  "note": "",
+  "note": "opus 2026-10-11, after the tom-dax-backtest build: with order-flow masked, only rejection_wick and volume_spike can count (SetupCandidatesBuilder.java:557-575), so proof <= 2 < 3 on CFD data. spike_fade proofs must be computable from OHLCV (profile shape, inside bar, ledge of prior highs, spike size) or recall stays 0 by construction. Gate the new type behind -Dmts.spikeFade=true (default off) instead of a .new file, so a deploy leaves live BTC output bit-identical (test that).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (from RECALL_DAX.md)",
@@ -36,7 +37,7 @@
   "state": "refined",
   "steps": [
     "Collect Tom's words for each element (transcripts of T6hDJcHrVBM, zQTbdEweG3c, k0zm5NYn0IQ + TOM_VERBATIM_INDEX), quote + file:line per parameter; unsourced numbers = NO-SOURCE, flagged.",
-    "Implement in a %TEMP% copy / .new; candidate type spike_fade with proofs; no change to existing types.",
+    "Implement in src/main (worktree) behind -Dmts.spikeFade (default off); candidate type spike_fade with OHLCV-computable proofs; no change to existing types; test that flag-off output is identical. dax_engine.py/tom_dax_recall.py pass the flag through.",
     "Re-run tom_dax_recall.py (declared anchor) against the staged engine; write MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX_V2.md."
   ],
   "tests": "Java unit test: a synthetic 1m series with an opening spike + inside bar at a prior-high ledge yields a short spike_fade candidate at the spike high; a flat series yields none (fails before the type exists).",

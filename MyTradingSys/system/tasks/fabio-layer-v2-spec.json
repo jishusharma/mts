@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T12:00:00Z",
+  "depends_on": [
+    "fabio-trade-ledger"
+  ],
+  "done_when": "FABIO_LAYER_V2_SPEC.md + follow-on Sonnet cards (recall harness, encode) created.",
+  "from_inbox": "",
+  "goal": "Apply today's Tom lesson to Fabio: does coded Fabio fire on his own trades (recall), what costs/stops mean on BTC vs NQ, which order-flow proofs need aggressor data (BTC has it, free NQ CFD data does not).",
+  "id": "fabio-layer-v2-spec",
+  "lane": "OPUS",
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/",
+    "MyTradingSys/research/fabio_transfer/"
+  ],
+  "scope_out": [
+    "coding",
+    "tuning",
+    "holdouts"
+  ],
+  "size": "L",
+  "sources": [
+    "MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md (L3-FAIL all four models)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read FABIO_TRADE_MODEL.md, PRE_REG_FABIO_V3.md, FABIO_PROVENANCE_AUDIT_2026-10-01.md, the ledger, MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md (method).",
+    "Decide the recall harness: free NQ/US100 1m (Dukascopy USA100) for price-only proofs; order-flow proofs flagged data-limited on CFD.",
+    "Write MyTradingSys/research/fabio_transfer/FABIO_LAYER_V2_SPEC.md (families, sourced rules, per-market proof/cost table, keep/change/drop) and the Sonnet build + recall cards."
+  ],
+  "tests": "Spec maps 5 ledger trades to rule paths.",
+  "title": "Fabio layer v2 spec: redefine from his own trades + home-market data plan (Opus research)"
+}

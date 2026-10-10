@@ -1,32 +1,50 @@
-<!-- relay: go depth=1 id=3d1817ef -->
-# NEXT SESSION PROMPT (handoff 2026-10-10 ~21:00Z, relay A ~21:00Z: Q1 done; Claude Code Win App, either account; older text below is history)
+<!-- relay: go depth=0 id=1a320f88 -->
+<!-- relay: go depth=0 id=tomfab1011 -->
+# NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
+DIRECTION (operator 2026-10-11): redefine the Tom and Fabio layers completely from today's findings. Road map, STOP list and session plan:
+`MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md` (read it before Q1). Do NOT backtest or tune the current Tom/Fabio encoding on BTC.
 
 ```
-MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State below.
+MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_transfer_2026-10-11/ROADMAP.md, then State below.
 0. `python scripts/dev/sync.py start`, `sync.py where`, `desk.py list --all`. Push fails: say so in one line, stop.
    Read STATUS.md "Daily Hygiene": a RED there is fixed before new work. One task per session; hand off after the task,
    5 operator turns or ~50k tokens: ship, overwrite this file, `where` clean.
 1. Control Room (url in CONTROL_ROOM.md): ArtifactData query decisions + feedback. Apply answered decisions with no `applied`;
-   a new unanswered decision: act on its `recommended` option only when older than 24 h. Java restarts go to a JIS-NB desk task.
-2. For every desk task now done, spot-check ONE number against its file, then use it (no redo).
-3. TASK: first Qn below not DONE and not claimed (`sync.py start` lists claims). Its card is the whole brief:
+   a new unanswered decision: act on its `recommended` option only when older than 24 h.
+2. T0 check (no tokens beyond this): if F:/MTS/data/dax_fetch.log ends with ALL_DONE, run
+   `python -I MyTradingSys/backtest/dax_data.py convert --raw F:/MTS/data/dax_raw --out F:/MTS/data/dax_archive`, check one GER40 snapshot
+   close = raw close, `tasks.py done tom-dax-data`. If it has no ALL_DONE and no fetch is running, restart it in a background shell:
+   `python -I MyTradingSys/backtest/dax_data.py fetch --start 2024-10-01 --end 2026-10-10 --raw F:/MTS/data/dax_raw --workers 3 --pause 2`.
+3. TASK: first Qn below not DONE and not claimed. Its card is the whole brief:
    `python scripts/dev/tasks.py brief <card>` -> `sync.py claim` -> work -> `tasks.py done <card> --result "<number/file>"` -> ship -> release.
-   Q1. DONE Card B142 (commit e262656; live after JIS-NB desk task 20261010-205418 Java window).
-   Q2. Card B144 (stop counting the volume spike in proof_count, Java). DONE when: CountSignalsD4Test.volumeSpike_doesNotCount_B144 red before, green after; mvn test green; commit shipped.
-   Q3. Card B059 (pin the fixed-grid volume profile with a test). DONE when: BuildVpFixedGridTest green on HEAD and red under the L566 mutation (both outputs in the result); row B059 CLOSED.
-   Q4. Card B124 (testnet_canary journal check per open plan). DONE when: the 6 new tests in test_testnet_canary.py pass, red before; row B124 CLOSED; commit shipped.
-   Q5. Card B122 (unmapped-layer reject text, one-line fix). DONE when: LayerSignalTest.test_unmapped_reject_text_uses_fallback_key red before, green after; commit shipped.
-   Q6. (after desk task 20261010-165600 lands) Card B160-followup (engine snapshots for the 10-09 chart shots). DONE when: research/screenshots/engine/<id>.json exists for each id in the card, or the refusal text is in the result.
-   Q7. Refill: run `tasks.py status`. REFINE_NEEDED: refine up to 3 cards (TASK_REFINEMENT.md), then write the next ready cards in as Q8-Q12. DONE when: `tasks.py status` prints REFINE_OK and the new Qn pass `relay.py lint`.
-   Every Qn DONE or blocked: reread Control Room + `desk.py list --all`; stop only then, naming each blocker.
-4. Run-and-report work goes to DSA (system/DSA_DELEGATION.md); post what the DSA queue lacks before ending.
+   Q1. Card tom-verdict-fee-per-market (Sonnet). Code is ON fast-track (09a6196, BTC bit-identical test, quick gate passed pre-merge); claim released; card still active. Remaining: quick gate on HEAD, confirm the new Java tests fail on old code, run `dax_engine.py snap --at 2026-05-12T07:55:00Z` and read the vwap_band_+1 short's net_rr (was 0.70 at gross 5.09; the agent's run printed nothing - check the out file), then `tasks.py done`. Java reaches live only via supervisor deploy. DONE when: card done_when holds (GER40 netRR(24229,24111,24257)=4.1696 (the brief said 4.1662: hand error, (118-0.24229)/(28+0.24229)=4.1696), BTCUSDT bit-identical test red-before).
+   Q2. Card tom-trade-ledger (Sonnet, frames not transcripts). DONE when: TOM_TRADE_LEDGER.csv >= 30 trades with frame evidence.
+   Q3. Card fabio-trade-ledger (Sonnet). DONE when: FABIO_TRADE_LEDGER.csv >= 20 trades with frame evidence.
+   Q4. Card tom-layer-v2-spec (OPUS - operator named Opus for this research 2026-10-11; needs Q2). DONE when: TOM_LAYER_V2_SPEC.md + Sonnet build cards.
+   Q5. Card fabio-layer-v2-spec (OPUS; needs Q3). DONE when: FABIO_LAYER_V2_SPEC.md + cards.
+   Q6. Card tom-encode-spike-fade (Sonnet; needs Q1+Q4). DONE when: RECALL_DAX_V2.md shows recall >= 4/7 (or the honest miss), flag-off BTC output identical.
+   Q7. Card tom-dax-backtest (run; needs Q6): `tom_dax_bt.py all --shifts 0,1,2,3`, then `report --read-holdout --shifts 0,1,2,3` once. DONE when: DAX_BT_REPORT.md has dev + holdout rows and the branch named.
+   Q8. Card tom-probe-prereg (M arms only, needs Q4). DONE when: card done_when holds.
+   Q9. Older ready cards (B142 DONE e262656, B144, B059, B124, B122, B160-followup): take any not done between the above when a Tom/Fabio card is blocked. DONE when: each card's own done_when.
+   A Sonnet session that reaches an OPUS card: skip it, take the next Sonnet card, and say "Q4/Q5 need an Opus session" in the handoff.
+4. Run-and-report work goes to DSA (system/DSA_DELEGATION.md).
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
 
+## Update 2026-10-10 ~21:10Z (relay A, JIS-NB)
+- DONE: B142 (commit e262656): ExtraSetupBuilder.build returns []; ExtraSetupBuilderDisabledTest red->green; full mvn test green. Live only via JIS-NB desk task 20261010-205418 (Java window). Merged over the Tom/Fabio handoff: its text kept, B142 marked done in Q9.
+
+## State at handoff 2026-10-11 (Opus operator session)
+- Shipped today: PROBE_PLAN.md, PRE_REG_DAX.md, RECALL_DAX.md (0/7), ROADMAP.md, DIAG_BTC.md (agent), conditions/gap_rules.md (27 rules, agent),
+  DAX tooling dax_data.py / dax_engine.py / tom_dax_recall.py / tom_dax_bt.py (build 1e67b85, 29 tests). Cards done: tom-dax-recall, tom-gap-rules-extract, tom-probe-diag-btc.
+- Still running at handoff: Dukascopy full fetch (background shell of the operator session; may die with it - step 2 restarts it). tom-dax-data stays active until converted.
+- Fee agent stopped by operator request 2026-10-11; its last state is in ../mts-feemkt (see Q1).
+- Data on F: dax_raw (raw .bi5, untrusted), dax_archive (Binance-format klines), tom_videos (6 mp4 + vtt + txt + frames), dax_recall*.
+- Worktree ../mts-daxbt: ~45 stray untracked files from a stash pop; nothing committed is lost; remove the worktree when idle.
+
 ## Queue status
-Relay A 2026-10-10 ~21:00Z (JIS-NB): Q1 B142 DONE: ExtraSetupBuilder.build returns []; ExtraSetupBuilderDisabledTest red->green; full mvn test green (22 suites). Java reaches the feed only via desk task 20261010-205418 (JIS-NB). Next: Q2 B144. Control Room not read this run (task did not need it). tasks.py status REFINE_OK, 7 ready.
 Rebuilt 2026-10-10 ~21:00Z from `tasks.py next` after the Q1-Q4 screenshot/B171 work finished (Q1-Q4 of the old list DONE: shots 29ff2b + 3 single-TF read, B171 NO-INFO with D24 filed, klines desk task 20261010-165600 posted and still pending on JIS-NB).
 Why the chain was idle 17:18Z-20:42Z: the old list ended in two items blocked on that desk task, so the handoff said stop while 8 cards were ready. The list now starts from ready cards.
 Not in this list on purpose (claimed by other sessions at 20:48Z): tom-verdict-fee-per-market, tom-dax-data, tom-dax-backtest. Refined, waiting for a dispatcher refine pass: B066, B118, tom-encode-spike-fade, tom-probe-prereg.
