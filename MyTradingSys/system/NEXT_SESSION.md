@@ -1,4 +1,4 @@
-<!-- relay: go depth=0 id=4fbdf8c6 -->
+<!-- relay: go depth=1 id=3efe918e -->
 <!-- relay: go depth=0 id=seed2610a1 -->
 # NEXT SESSION PROMPT (handoff 2026-10-10 ~13:30Z, dispatcher-run relay closed B149 code; before: ~13:00Z applied D23; was ~12:40Z relay B closed B149 capture + B164; text below is history) (was 06:50Z, relay session after B160; Claude Code Win App, either account)
 
@@ -17,8 +17,7 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
    Q1. Screenshot set 29ff2b (7 shots, one 10-07 moment: 3m 5m 15m 1h 4h): read as ONE set per methodology/screenshot_intake.md, extract from
        research/screenshots/TEMPLATE.md; `shot.py show <id>` already holds claim rows from the C06-C10 analysis, reuse them, do not redo.
        DONE when: extract shipped, `shot.py read` accepted it, set 29ff2b shows done in `shot.py sets`.
-   Q2. Screenshots 65656faa31ba (30m, 10-07), 359bdb0c7cf9 (15m, 10-09), 23416389787e (app): classify check, read each as single-TF context.
-       DONE when: all three show done in `shot.py status`, extracts shipped.
+   Q2. DONE 2026-10-10 ~16:40Z: 65656faa31ba, 359bdb0c7cf9, 23416389787e read + done; extract research/screenshots/2026-10-10_BTCUSDT_q2_single_tf.md (12 MATCH / 2 MISMATCH / 4 NOT_IN_DATA); `shot.py status` overdue 0.
    Q3. B171 step 1 only (items/B171_...md): grep research/imbalance_2026-10-10/RESEARCH.md and transcripts for operator/trader QUOTES that define an imbalance
        rule. Quote found: write PRE_REG_imbalance.md (candidate, trial count, fee model 10 bp round trip). No quote: record NO-INFO in the item and post a
        Control Room decision asking for the trader quote (default: park B171). No tuning, no code, no backtest this session.
@@ -38,7 +37,7 @@ End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py whe
 
 ## Queue status
 Queue renumbered 2026-10-10 (operator audit). Done so far: shot 0e9036ae547d read + done (extract 2026-10-05_BTCUSDT_0e9036ae547d.md); it is not part of Q1/Q2.
-Q1 DONE 2026-10-10 ~16:15Z (set 29ff2b, 7 shots read+done, extract research/screenshots/2026-10-07_BTCUSDT_29ff2b488f13.md, claims 33 MATCH / 7 MISMATCH / 8 NOT_IN_DATA, reused from the bigtrade C06-C12 rows). Q2-Q6 not started; next is Q2. 3 shots still OVERDUE per `shot.py status`.
+Q1 DONE 2026-10-10 ~16:15Z (set 29ff2b, 7 shots read+done, extract research/screenshots/2026-10-07_BTCUSDT_29ff2b488f13.md, claims 33 MATCH / 7 MISMATCH / 8 NOT_IN_DATA, reused from the bigtrade C06-C12 rows). Q2 DONE ~16:40Z (3 shots, extract 2026-10-10_BTCUSDT_q2_single_tf.md; 359bdb0c7cf9 rows 03-05 need the 10-09 klines from Q4a). Q3-Q6 not started; next is Q3. Overdue shots 0.
 
 ## Update 2026-10-10 ~14:35Z (relay run by cron mts-dispatcher, JIS-NB)
 - No task done: 3a/3b closed or staged, 3c blocked (klines archive ends 2026-10-08, no 10-09 file). Remaining desk items are DSA/JIS-NB/operator-owned. Queue empty -> stop.
