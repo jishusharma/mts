@@ -182,3 +182,15 @@ Never-extracted Tom ids in total: 26. Also worth a V2 pass (V1 only, highest den
 
 - CryptoCred (5: BHwoN7VPrBE, inqHN8q57X4, XeQV2ECtZVQ, Yp0k8HD5xro, _ndAoizXy64) and Flow Horse (3: Oy2Z-FQ77NM, UcPp0gFI5M8, zMM9QgxfEFI) extracts exist under extracts/processed, but their raw transcripts are not in raw_transcripts_canonical (see the orphan list above).
 - extracts/_staged_2026-09-27/ holds 13 Fabio and 22 Qriptal raw transcripts staged outside the canonical folder; not counted in the totals.
+
+## Malkan additions (D11, JIS-NUC, 2026-10-10)
+Captions only (yt-dlp 2026.08.19, no video). Both videos are Hindi speech; the `_hi_raw.txt` file is YouTube's Devanagari auto-caption (the original), the `_raw.txt` file is YouTube's machine translation to English: quote-check against the hi file.
+
+| Trader | video | raw file | status | notes |
+|---|---|---|---|---|
+| Malkan | W1HrDl70Lhk | raw_transcripts_canonical/W1HrDl70Lhk_raw.txt (+ _hi_raw.txt) | not-yet (no extract) | 5 Star RSI Strategy, Grandfather/Father/Son (Trader Insights, 2021-10-02), hi, 2513 words en |
+| Malkan | A-CQiV_UFB4 | raw_transcripts_canonical/A-CQiV_UFB4_raw.txt (+ _hi_raw.txt) | not-yet (no extract) | 8. RSI Reverse Divergence, 3X3 Swing Trading (Malkansview, 2025-03-11), hi, 2643 words en |
+| Malkan | N7r3v7plqZM | - | NOT AVAILABLE | yt-dlp: Private video |
+| Malkan | dXxQOnK2jhQ | - | NOT AVAILABLE | yt-dlp: members-only (Join this channel) |
+| Malkan | fgN6QBFY3Ss, kVIvcn7T44o, FHEoMmD6xKM, TYB7GJODt-k, WBByyLBp8-c | - | RETRY | HTTP 429 Too Many Requests on the caption fetch from the NUC IP, two attempts (full and throttled); retry after a cooldown |
+| Malkan | Hindi RSI/divergence picks (max 10) | - | NOT STARTED | channel listing not attempted while 429 held |

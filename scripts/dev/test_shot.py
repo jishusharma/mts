@@ -187,22 +187,142 @@ class ShotTest(unittest.TestCase):
     def test_read_needs_classification_the_id_and_claim_rows(self):
         n = self.landed("n")
         c = self.chart("c", "5m")
-        good = "Shots: %s\n| C1-01 | MATCH | header O 83388 | klines equal |\n| C1-02 | MISMATCH | CVD -10.7K | cvd_day -6.6K |\n| C1-03 | NOT_IN_DATA | net delta | no field |\n" % c
+        good = "Shots: %s\nPrior: none\n| C1-01 | MATCH | header O 83388 | klines equal |\n| C1-02 | MISMATCH | CVD -10.7K | cvd_day -6.6K |\n| C1-03 | NOT_IN_DATA | net delta | no field |\n" % c
         with self.assertRaises(shot.ShotError):
             shot.read_extract(self.store, [n], self.extract("Shots: %s\n" % n))  # still new
         with self.assertRaises(shot.ShotError):
             shot.read_extract(self.store, [c], self.extract("no id here\n| C1-01 | MATCH | a | b |\n"))
         with self.assertRaises(shot.ShotError):
-            shot.read_extract(self.store, [c], self.extract("Shots: %s\nprose only, no claim rows\n" % c))
-        ids, counts = shot.read_extract(self.store, [c], self.extract(good))
+            shot.read_extract(self.store, [c], self.extract("Shots: %s\nPrior: none\nprose only, no claim rows\n" % c))
+        ids, counts, prior = shot.read_extract(self.store, [c], self.extract(good))
         self.assertEqual(counts, {"MATCH": 1, "MISMATCH": 1, "NOT_IN_DATA": 1})
         self.assertEqual(self.state()[c]["status"], "read")
+
+    def test_chart_read_carries_the_prior_reads_falsifiers(self):  # B157
+        c = self.chart("c", "5m")
+        rows = "| C1-01 | MATCH | a | b |\n"
+        with self.assertRaises(shot.ShotError):  # (a) no Prior line: the read would start cold
+            shot.read_extract(self.store, [c], self.extract("Shots: %s\n%s" % (c, rows)))
+        with self.assertRaises(shot.ShotError):  # (c) Prior names a file that does not exist
+            shot.read_extract(self.store, [c], self.extract("Shots: %s\nPrior: %s\n%s" % (c, self.tmp / "gone.md", rows)))
+        ids, counts, prior = shot.read_extract(self.store, [c], self.extract("Shots: %s\nPrior: none\n%s" % (c, rows)))  # (b)
+        self.assertEqual(prior, (None, []))
+        old = self.tmp / "prior_read.md"
+        old.write_text("Shots: x\n- Invalidation: acceptance outside 82450-83470\nnoise line\nFalsify: acceptance under 82630\n"
+                       "  - falsify if CVD flips\n", encoding="utf-8", newline="\n")
+        ids, counts, prior = shot.read_extract(self.store, [c], self.extract("Shots: %s\nPrior: %s\n%s" % (c, old, rows)))  # (d)
+        self.assertEqual(prior[1], ["Invalidation: acceptance outside 82450-83470", "Falsify: acceptance under 82630",
+                                    "falsify if CVD flips"])
+        self.assertTrue(str(prior[0]).endswith("prior_read.md"))
+        self.assertTrue(self.state()[c]["prior"].endswith("prior_read.md"))
+
+    def test_read_stores_each_claim_row_in_the_manifest(self):  # B159
+        real = Path(shot.REPO) / "MyTradingSys" / "research" / "screenshots" / "2026-10-09_BTCUSDT_78f967b4e253.md"
+        c = self.chart("c", "5m")
+        body = real.read_text(encoding="utf-8").replace("78f967b4e253", c)
+        ids, counts, prior = shot.read_extract(self.store, [c], self.extract("Prior: none\n" + body))
+        self.assertEqual(counts, {"MATCH": 4, "MISMATCH": 0, "NOT_IN_DATA": 5})  # status_line counts unchanged
+        read = [e for e in shot.load_events(self.store) if e["event"] == "read"][-1]
+        rows = read["claim_rows"]
+        self.assertEqual(len(rows), 9)
+        self.assertEqual(rows[0]["id"], "D-01")
+        self.assertEqual(rows[0]["class"], "MATCH")
+        self.assertEqual(rows[0]["claim"], "price 82366 on 5m, bar low 82315.6")
+        self.assertTrue(rows[0]["evidence"].startswith("Binance fapi 5m klines fetched 20:14Z"))
+        self.assertEqual([r["class"] for r in rows].count("NOT_IN_DATA"), 5)
+        self.assertEqual(len(self.state()[c]["claim_rows"]), 9)
+        line, _ = shot.status_line(self.state())
+        self.assertIn("claims MATCH 4 MISMATCH 0 NOT_IN_DATA 5", line)
+
+    def test_malformed_claim_row_is_refused_with_its_line_number(self):  # B159
+        c = self.chart("c", "5m")
+        head = "Shots: %s\nPrior: none\n" % c
+        for bad in ("| C1-02 | MATCH | claim without evidence |\n",          # 3 cells
+                    "| C1-02 | MATCH |  | evidence but no claim |\n",       # empty claim
+                    "| C1-02 | Match | a | b |\n"):                         # class spelled off the contract
+            with self.assertRaises(shot.ShotError) as cm:
+                shot.read_extract(self.store, [c], self.extract(head + "| C1-01 | MATCH | a | b |\n" + bad))
+            self.assertIn("line 4", str(cm.exception), bad)
+        self.assertEqual([e["event"] for e in shot.load_events(self.store)].count("read"), 0)  # nothing appended
+        shot.read_extract(self.store, [c], self.extract(head + "| C1-01 | MATCH | a | b |\n"))  # a good one still passes
+
+    def test_non_chart_extract_needs_no_prior_line(self):  # B157 default
+        a = self.landed("a")
+        shot.classify(self.store, a, "positions", "testnet positions table")
+        ids, counts, prior = shot.read_extract(self.store, [a], self.extract("Shots: %s\nprose\n" % a))
+        self.assertEqual(prior, (None, []))
+
+    # ------------------------------------------------------------ engine at the shot (B160)
+    def archive(self, *names):
+        raw = Path(tempfile.mkdtemp(dir=self.tmp))
+        (raw / "klines").mkdir(parents=True, exist_ok=True)
+        for n in names:
+            (raw / "klines" / n).write_text("", encoding="utf-8")
+        return raw
+
+    def test_engine_refuses_a_shot_without_an_instant_or_archive(self):
+        raw = self.archive("BTCUSDT-1m-2026-10.csv")
+        app = self.landed("a")
+        shot.classify(self.store, app, "app", "claude desktop thread list")
+        with self.assertRaises(shot.ShotError):  # not a chart
+            shot.engine_plan(self.store, app, raw)
+        old = self.landed("o")  # a chart classified before `at` was required
+        shot.append(self.store, {"event": "classified", "id": old, "ts": "2026-10-01T00:00:00Z", "kind": "chart", "why": "old chart, no time", "symbol": "BTCUSDT"})
+        with self.assertRaisesRegex(shot.ShotError, "no `at`"):
+            shot.engine_plan(self.store, old, raw)
+        c = self.chart("c", "5m", "2026-10-09T20:13:59Z")
+        with self.assertRaisesRegex(shot.ShotError, "2026-10-09"):  # daily files stop at 10-08: refused, not a short replay
+            shot.engine_plan(self.store, c, self.archive("BTCUSDT-1m-2026-10-08.csv"))
+        rc, out, err = self.run_main("engine", c[:8], "--raw", str(self.tmp / "nowhere"), "--plan")
+        self.assertEqual(rc, 2)
+        self.assertIn("REFUSED", err)
+
+    def test_engine_floors_the_shot_time_and_writes_the_instants_file(self):
+        c = self.chart("c", "5m", "2026-10-09T20:13:59Z")
+        for name in ("BTCUSDT-1m-2026-10.csv", "BTCUSDT-1m-2026-10-09.csv"):  # monthly or daily file both cover the day
+            plan = shot.engine_plan(self.store, c, self.archive(name))
+            self.assertEqual((plan["as_of"], plan["at"]), ("2026-10-09T20:13:00Z", "2026-10-09T20:13:59Z"))
+        self.assertTrue(plan["out"].endswith(f"{c}.json"))
+        p = shot.write_instants(plan, self.tmp)
+        self.assertEqual(p.read_bytes(), b"2026-10-09T20:13:00Z\n")
+
+    def test_engine_runs_snapat_and_saves_one_cited_record(self):
+        c = self.chart("c", "5m", "2026-10-07T09:24:59Z")
+        m2 = self.tmp / "m2"
+        for j in shot.ENGINE_JARS:
+            (m2 / "x" / j).parent.mkdir(parents=True, exist_ok=True)
+            (m2 / "x" / j).write_bytes(b"")
+        calls = []
+
+        def fake(cmd, **kw):
+            calls.append(cmd)
+            if cmd[0] == "java":
+                self.assertEqual(Path(cmd[-2]).read_text(encoding="utf-8"), "2026-10-07T09:24:00Z\n")
+                Path(cmd[-1]).write_text(json.dumps({"price": 121000.5, "vp_poc": 120800.0}) + "\n", encoding="utf-8")
+            return mock.Mock(returncode=0, stdout="done 1", stderr="")
+        with mock.patch.dict(os.environ, {"MTS_M2": str(m2), "MTS_SHOT_ENGINE_DIR": str(self.tmp / "engine")}):
+            plan = shot.engine_plan(self.store, c, self.archive("BTCUSDT-1m-2026-10-07.csv"))
+            path = shot.run_engine(plan, runner=fake)
+            self.assertEqual([k[0] for k in calls], ["javac", "java"])
+            self.assertIn("datafeed.SnapAt", calls[1])
+            self.assertTrue(any(a.endswith("SnapAt.java") for a in calls[0]))
+            rec = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual((rec["shot"], rec["as_of"], rec["snapshot"]["vp_poc"]), (c, "2026-10-07T09:24:00Z", 120800.0))
+
+            def empty(cmd, **kw):  # SnapAt printing null (no data at the instant) is a refusal, not an empty record
+                if cmd[0] == "java":
+                    Path(cmd[-1]).write_text("null\n", encoding="utf-8")
+                return mock.Mock(returncode=0, stdout="", stderr="")
+            path.unlink()
+            with self.assertRaises(shot.ShotError):
+                shot.run_engine(plan, runner=empty)
+            self.assertFalse(path.exists())
 
     def test_done_needs_a_read_chart_and_an_outcome_that_exists(self):
         c = self.chart("c", "5m")
         with self.assertRaises(shot.ShotError):  # not read yet
             shot.done(self.store, [c], "noaction:nothing to see here at all")
-        shot.read_extract(self.store, [c], self.extract("Shots: %s\n| C1-01 | MISMATCH | a | b |\n" % c))
+        shot.read_extract(self.store, [c], self.extract("Shots: %s\nPrior: none\n| C1-01 | MISMATCH | a | b |\n" % c))
         with self.assertRaises(shot.ShotError):  # a MISMATCH cannot be waved away in a few words
             shot.done(self.store, [c], "noaction:chart quirk")
         with self.assertRaises(shot.ShotError):  # item id shape

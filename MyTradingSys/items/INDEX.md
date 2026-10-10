@@ -97,8 +97,8 @@ B131 | CLOSED  | B131_tom_pool_skew_upstream.md | Tom proof-5 pool 2:1 short at 
 B132 | OPEN    | B132_dsa_does_quick_wins.md | DSA dispatches work it can do itself; codify DSA-does-this list + CC-prompt names DSA unblock work
 B133 | CLOSED  | B133_dsa_default_cli_over_app.md | CLOSED: checks 12-13 (81c7e9f), section 9 App-opening line (e41de5f), LESSONS (ed0e3c1)
 B134 | CLOSED  | B134_compose_surface_marker.md | pick_task.py:256 emits SURFACE: APP; prompt_check.ps1 check 13 PASS on composed probe
-B135 | OPEN    | B135_b131_threshold_recheck.md | B131 follow-up: ps1 proof-count thresholds and allshorts parity re-run
-B136 | IN-FIX  | B136_oi_endpoint_path.md | URLs fixed 881f22b (tests 3/3, mvn 133/133), loop restarted 2026-10-06; REOPENED 2026-10-08: buildOiBreakdown still fail-open (0.0 + LOW, no UNAVAILABLE), TESTNET_STATUS taint rows not found
+B135 | CLOSED  | B135_b131_threshold_recheck.md | B131 follow-up: ps1 proof-count thresholds and allshorts parity re-run
+B136 | CLOSED  | B136_oi_endpoint_path.md | URLs fixed 881f22b (tests 3/3, mvn 133/133), loop restarted 2026-10-06; REOPENED 2026-10-08: buildOiBreakdown still fail-open (0.0 + LOW, no UNAVAILABLE), TESTNET_STATUS taint rows not found
 B137 | OPEN    | B137_device_roles_undecided.md | device roles undecided post-Qwen; 11 open questions on desktop/NUC/laptop split
 B138 | OPEN    | B138_dumps_two_copies.md | Dumps split C:/F: after move; share still points C:; junction blocked by live writer
 T063 | PARTIAL | T063_stop_run_oi_flush_signature.md | pre-reg + A0 + A1 (n=21 inconclusive, below 30 min); holds 09-29.., ~7d overlap not 30d; commits 3776f2f b055c2b c61a26a 690b238
@@ -110,12 +110,12 @@ T068 | OPEN    | T068_oi_arm_rerun.md | P3 OI arm rerun of T063 when n>=30 per a
 T069 | OPEN    | T069_funding_settlement_clock.md | P5 funding settlement clock event study; queued (research-agenda)
 T070 | OPEN    | T070_volatility_timing_read_only.md | P6 volatility timing read-only analysis; queued (research-agenda)
 T071 | OPEN    | T071_absorption_events_post_p2.md | P7 absorption events after P2 Fabio L3-FAIL; queued (research-agenda)
-B142 | BLOCKED | B142_extrasetupbuilder_1m_stop_unsourced.md | NEEDS OPERATOR: remove/disable unsourced ExtraSetupBuilder stop? default disable; DSA sweep NOT FOUND
+B142 | OPEN    | B142_extrasetupbuilder_1m_stop_unsourced.md | D15 answered: disable ExtraSetupBuilder candidates until a sourced stop exists; Java change + restart at next Java window
 B143 | BLOCKED | B143_cryptocred_stop_buffer_and_target_unsourced.md | NEEDS OPERATOR: 1.5R sourced (CC Rule 9), 0.1pct buffer NOT FOUND; default alert-only + replace at next CC build
-B144 | BLOCKED | B144_exhaustion_proxy_unsourced_params.md | NEEDS OPERATOR: 2.0x/240-bar exhaustion NOT FOUND; default SCREENER-only, remove at Java window
+B144 | OPEN    | B144_exhaustion_proxy_unsourced_params.md | D17 answered: screener-only now, remove at Java window; finding: volume spike still counts in Tom proof (Java change)
 B145 | CLOSED  | B145_cc_range_noise_live_neutrality.md | neutrality test run on archive: filter NOT neutral for 2 of 3 setups, flag stays off; opt-in test in cryptocred/
 B146 | CLOSED  | B146_no_min_stop_after_floor_removal.md | fee-to-stop admission gate on at 0.3 (D09), tests gated; Java stop buffer is T081
-B147 | IN-FIX  | B147_tom_live_rule_evidence_unreliable.md | row drop attributed to removed 0.2pct fallback stop (0c34a2d, B131); exact regen diff and DSR pending on JIS-NB
+B147 | CLOSED  | B147_tom_live_rule_evidence_unreliable.md | row drop attributed to removed 0.2pct fallback stop (0c34a2d, B131); exact regen done 2026-10-10 (93.6pct of lost snapshots were fallback-stop; 0 proof>=5 rows under sourced stops); DSR moot at N=0
 B148 | IN-FIX  | B148_dlm_reauth_main_account_and_account_drops.md | code+tests complete (parts 1-5); Step 0 test fallout fixed 9b27da3; close on first live beat_utc refresh
 B149 | BLOCKED | B149_l6_pnl_source_tracker_stale_settlement_gap.md | help text + L6 fixed, capture tool built; needs a captured testnet log across 08:00 settlement (desk task JIS-NB)
 B150 | CLOSED  | B150_gate_is_hand_maintained_allowlist.md | discovery covers every tracked test; extra-tests step; mainnet refuses testnet calibration; 3 ungated failures fixed
@@ -126,4 +126,6 @@ B154 | OPEN    | B154_regime_and_session_stratified_backtest.md | no regime or s
 B155 | CLOSED  | B155_claude_prompt_contract_unchecked.md | section 5d contract is an executing gate (prompt_contract.py, step 3pc)
 B156 | CLOSED  | B156_tom_alert_stale_ssot_thesis.md | alert card thesis line shows when it was written (age), tests
 T093 | CLOSED  | T093_toc_imbalance_klines.md | turn-of-candle 4-12h imbalance on klines 2022-2026: NO REPLICATION (gross +0.5bp vs 10bp fee)
+B162 | OPEN    | B162_qriptal_signal_layer.md | Qriptal (Habib) layer: score his public record first, Discord feed route = D21, own testnet account
+B163 | OPEN    | B163_setup_alpha_beta_handoff.md | Setup Alpha (1d SMA200 trend) / Beta (sweep+CVD) handoff: NO-SOURCE research backtest only, waits on D22
 # END

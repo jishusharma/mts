@@ -9,6 +9,12 @@ Pre-read (VVP-002 F.1): pass | fail: <what is missing: cursor at right edge, tim
 Operator marks: <rays, boxes, labels the operator drew, each with the price read off the axis; pixel reads marked +-error>
 Set timeframes present: <list>   missing: <list>   (a single timeframe makes this context, not a read)
 
+## Carried context
+Prior: <path of the previous read's extract of this symbol | none>   (chart extracts without this line are refused, B157)
+| Prior falsifier / invalidation (as `shot.py read` lists it) | HELD / BROKEN / UNTESTED | Evidence on this chart |
+|---|---|---|
+| <line from the prior read> | <class> | <price/time on the new chart> |
+
 ## <id> <TF> <source>
 - Window: <left edge .. right edge, clock>
 - Panels and indicators: <price, VWAP, VP, OI, CVD, net delta, footprint ...>

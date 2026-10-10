@@ -1,4 +1,5 @@
-# NEXT SESSION PROMPT (handoff 2026-10-10, after the unblock-trunk / bug-closing / CI-CD block; Claude Code Win App, either account)
+<!-- relay: go depth=1 id=8a455ad2 -->
+# NEXT SESSION PROMPT (handoff 2026-10-10 ~06:50Z, relay session after B160; Claude Code Win App, either account)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
 
@@ -7,36 +8,53 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
 0. `python scripts/dev/sync.py start`, `sync.py where`, `desk.py list --all`. Push fails: say so in one line, stop.
    Read STATUS.md "Daily Hygiene": a RED there is fixed before new work. One task per session; hand off after the task,
    5 operator turns or ~50k tokens: ship, overwrite this file, `where` clean.
-1. Control Room (url in CONTROL_ROOM.md): ArtifactData list decisions + feedback. Apply answered decisions with no `applied`.
-   Unanswered defaults: D14 keep net_rr 1.25 to 2026-11-10; D15 disable ExtraSetupBuilder candidates; D16 CC alert-only;
-   D17 exhaustion screener-only; D18 hardware (nothing a session can do); D13 no change. Act on a default only when the
-   decision is older than 24 h; D15/D17 are Java: stage, test with the javac-11 harness below, hand the restart to the JIS-NB desk task.
+1. Control Room (url in CONTROL_ROOM.md): ArtifactData query decisions + feedback. Apply answered decisions with no `applied`
+   (D01-D22 were all applied at 00:30Z 2026-10-10). New unanswered decisions: act on the `recommended` option only when older
+   than 24 h; Java changes (D15 on B142, D17 on B144) are staged + tested, the restart goes to a JIS-NB desk task.
 2. DSA / JIS-NB results: for every desk task now done, spot-check ONE number against its file, then use it (no redo).
 3. TASK (pick first unclaimed, claim it):
-   a. B157 carried context in screenshot reads (Sonnet): prompt in research/screenshot_context_2026-10-10/REPORT.md section 7.
-   b. D11 answered "Yes, download" (2026-10-09 19:43Z): ~9 Malkan public captions with yt-dlp (no video), plus Hindi ones per the
-      note; mark D11 applied. D12 answered "Yes, once a day": record it in system/DSA_DELEGATION.md, mark D12 applied.
-   c. B159, B160 (prompts in the T092 REPORT section 7), then B158 after D13.
-   d. B141: write the runner for the 28 pre-registered cells (research/PRE_REG_HTF_REPLACE_2026-10-07.md), run on F:/MTS/data, holdout once.
-   e. Tom DSR/PBO (B147 part 4) once the JIS-NB regeneration task (B147_ROW_DROP_EXACT) is done.
+   0. Pre-check (2 min, not a task): `grep '"kick"\|"idle"' ~/.claude/mts-relay-log.jsonl | tail -3`. An event after 09:40Z
+      2026-10-10 from the dispatcher = B164 CLOSED (edit the row); none = list_task_runs mts-dispatcher, read its last run, fix.
+      D23 (vision addendum) answered -> apply to PROJECT_VISION.md + CHANGELOG, mark applied; unanswered -> leave (operator's call).
+   a. B141 (skip while the NUC claim on it is open: `sync.py start` lists claims): write the runner for the 28 pre-registered cells (research/PRE_REG_HTF_REPLACE_2026-10-07.md), run on F:/MTS/data, holdout once.
+   b. B149 capture (JIS-NB desk task, live host only): after 08:05 UTC, if a position stayed open across the 08:00 settlement
+      (daily_loss_monitor log), run the capture command in the desk task from a worktree with the live data dirs, ship the json, mark done.
+   c. B160 follow-up: once <live>/Dumps/backtest/raw/klines has BTCUSDT-1m-2026-10-09.csv, run `shot.py engine <id>` for the 10-09
+      chart shots (78f967b4e253, b5f554a9f68a, 6188a576411b, ...), ship research/screenshots/engine/*.json; re-score NOT_IN_DATA rows only in a new extract.
 4. Route run-and-report work to DSA (system/DSA_DELEGATION.md); post what the DSA queue lacks before ending.
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
 
-## State at handoff
-- 2026-10-10 block DONE. Trunk unblocked (9b27da3): test_mainnet_flag_offline failed only when MTS_ACCOUNT is set in the host env; test now hermetic. Quick gate green with and without MTS_ACCOUNT.
-- Closed with tests: B145 (filter_range_noise NOT neutral, flag stays off), B146, B150 (gate discovery + extra-tests step 3xt + mainnet refuses testnet calibration), B151 (fib bear zone never fired; rerun: all CC setups FAIL),
-  B152, B153 (Py+Java net_rr parity), B155 (prompt contract gate 3pc), B156 (thesis age), T093 (turn-of-candle 4-12 h imbalance on klines 2022-2026: NO REPLICATION; the old handoff called it T085, T085 is the time-exit task).
-- IN-FIX: B147 (row drop attributed: 17/19 old SETUP_FORMING used the removed 0.2% fallback stop), B148 (close on first live beat_utc), B136 (buildOiBreakdown UNAVAILABLE, needs JVM restart). BLOCKED: B140 hardware, B142-B144 (D15-D17), B149 (needs a captured 08:00 settlement log).
-- JIS-NB desk tasks pending: register CI/CD jobs (`register_cicd_tasks.ps1 -Trigger`), B149 capture, B147/B135 snapshot regeneration, Java mvn tests + restart window. Live mirror install (20261009-202832) still pending.
-- CI/CD: auto_deploy.py + daily_hygiene.py + register script shipped; both tasks registered and triggered once on JIS-NUC (auto_deploy = NOT_LIVE there, correct; hygiene ran the gate and reported). green/fast-track advance is the only proof CI is green on both OSes (no gh CLI, repo is private): `git ls-remote origin refs/heads/green/fast-track` vs `origin/fast-track`. At handoff green was still 24197c4 (it contains the Step 0 fix, so that part is proven on both OSes) while fast-track was 6+ pushes ahead: check that it advances; if it does not, read the failing job on GitHub (CI cancels the previous run on every push, so a burst of pushes can starve it).
-- Java without JDK 17 (this NUC has only JDK 11): compile main + test with `javac --release 11` against the ~/.m2 jars and call the test methods from a small main (worked for MarketDataSnapshotTest 21/21).
-- Tool quirk: Bash heredocs with backslash-n or many quotes can be mangled; write scripts with the Write tool. The main NUC clone is shared by several sessions: commit only your files.
-- Not shipped, owned by JIS-NB live tree: backtest/bigtrade/*, research/bigtrade_2026-10-09/*, pm_heartbeats files. Do not edit. Untracked check_handoff.py / skill_src are another session's.
-- No git stash in shared clones; do not pass --help to sync.py subcommands.
+## Update 2026-10-10 ~09:30Z (relay session A, JIS-NB, commit 0cdb2cb)
+- DONE: B164 follow-up: mts-dispatcher's 09:08Z tick failed silently: it ran the LIVE tree's relay.py (3f8a5ef, no `kick`). Its prompt
+  (~/.claude/scheduled-tasks/mts-dispatcher/SKILL.md, host-local) now runs origin/fast-track's relay.py copied to %TEMP%; manual run logged IDLE.
+  B166 CLOSED (paste 88.9 KB). B165 declutter already live (page built 09:21Z). D23 still unanswered (created today): not applied.
+- B168 waits on the operator (reload AIBridge extension on JIS-NB + JIS-NUC). Live tree is behind origin (3f8a5ef + 1 unshipped commit, dirty):
+  MTS-AutoDeploy cannot ff it; supervisor's call, builders do not touch it.
 
-## Update 2026-10-10 (CI/CD pass 2)
-- Root cause of green/fast-track stuck at 24197c4: ci.yml `cancel-in-progress: true` kills every push run during a push burst. The fix needs a token with `workflow` scope (ours has none: push of .github/workflows is rejected). Patch ready: system/ci_concurrency_fix.patch (operator or a workflow-scope account applies it once).
-- Workaround shipped: auto_deploy.py gates and deploys origin/fast-track itself when green is >90 min stale (local gate still stops on red). 34 tests.
-- Fixed: retention.py used filecmp (stale stat cache; B152 test flaky) -> byte compare. mts-dsa commits shipped.
-- The latest code reaches JIS-NB testnet only when the pending JIS-NB desk task `register-ci-cd-scheduled-jobs` is run there (JIS-NUC has no access to JIS-NB: c$ denied). Until then JIS-NB deploys by hand per CLAUDE.md. First action of any session on JIS-NB: run that desk task.
+## State at handoff (2026-10-10 ~06:50Z, JIS-NB, relay session, depth 2 -> next fires mts-relay-a/b by parity)
+- DONE this session: B160 CLOSED (commit cbec6d2): `shot.py engine <id> [--raw DIR] [--plan]` floors the chart's `at` to the minute, compiles src/main + harness SnapAt.java into %TEMP% (src/ and target/ untouched), runs on the 1m archive (default <main>/Dumps/backtest/raw) from an empty cwd, writes research/screenshots/engine/<id>.json. Refuses non-chart, no `at`, non-BTCUSDT, archive missing the shot's day, null snapshot. test_shot 26 pass (3 new, fail-first checked). Real run 65656faa31ba (10-07 09:24:59Z): current_price 83745.4 = 09:23 1m close (MATCH, no look-ahead); live-only fields (net delta, OI breakdown, book, funding rate) are listed as unavailable in data_quality.
+- Archive coverage: <live>/Dumps/backtest/raw/klines ends 2026-10-08 (refresh_klines.py tops it up daily); F:/MTS/data/tom_raw ends 2026-09-26. Needs JDK 17: put C:/tools/jdk-17.0.18/bin first on PATH (D: java also works).
+- Quick gate: GREEN at cbec6d2 (the test_integrity red of the last handoff is gone).
+- Control Room: D01-D22 all applied; no new decisions at 06:45Z.
+- Hygiene: STATUS.md "Daily Hygiene" still has no run on this host (MTS-DailyHygiene not registered here).
+- Desk: DSA queue holds D11, D19, D20, D21, D22 (pending) + daily gate (taken); JIS-NB holds live-mirror install and B149 capture (pending).
+- Operator-owned, do not attempt: CI workflow patch `system/ci_concurrency_fix.patch` (needs a workflow-scope token); live-mirror install on JIS-NB (admin shell). `sync.py start` prints "live mirror: REFUSED: no CURRENT pointer" until then: expected.
+- Positions open on testnet at last check (01:30Z): L-mkt-1009-2100, S-mkt-1009-1901 (position_manager untouched; do not touch).
+- Relay (RELAY.md): chain running as Claude App scheduled tasks. Stop it with `python scripts/sched/relay.py stop "<why>"`.
+- Java: JIS-NB has JDK 17 at C:/tools\jdk-17.0.18 and Maven; NUC has JDK 11.
+- Tool quirks: Bash heredocs with backslash-n are mangled: write patch scripts with the Write tool or use Edit. A chained `cd x && git <merge or switch>` is denied: use `git -C <dir> <cmd>` as its own call. ArtifactData out_dir into the scratchpad is refused: read without out_dir.
+- Not shipped, owned by JIS-NB live tree: backtest/bigtrade/*, research/bigtrade_2026-10-09/*, pm_heartbeats files. Do not edit.
+- No stash in shared clones; do not pass --help to sync.py subcommands.
+
+## Update 2026-10-10 (inbox pass, JIS-NB, session switching fix)
+- Why chains stopped (B164): relay.py gate used a 20-minute clock lock (killed the 06:42Z hand-over), the 04:23Z header said stop, depth cap had no reset, nothing started a chain. Fixed: lock keyed by handoff id, chain base, `relay.py kick`, App task `mts-dispatcher` every 30 min (starts mts-relay-a/b when the handoff says go; starts mts-control-room when the Inbox has a `new` item). RELAY.md has the rules.
+- Inbox pass: 6 verbatim items recorded; B164-B170 filed (B165 declutter CLOSED, B169 MTS-Backup console hidden CLOSED, B170 CI emails = operator-only). Opus vision review: research/VISION_GAP_2026-10-10.md, draft NOT applied, decision D23 asks the operator.
+- AIBridge: content.js stays armed after a block-less DSA answer, faster poll (B168). The extension must be reloaded on JIS-NB and JIS-NUC by the operator.
+- NUC session is working D11 and B141: do not duplicate.
+
+## Update 2026-10-10 (JIS-NUC session)
+- D11 done in part on the NUC: Malkan W1HrDl70Lhk + A-CQiV_UFB4 captions are in raw_transcripts_canonical (hi original + en machine translation, no extracts yet). N7r3v7plqZM private, dXxQOnK2jhQ members-only. Five ids hit YouTube HTTP 429 from the NUC IP: follow-up desk task d11b (DSA) retries after a cooldown. yt-dlp is now installed on the NUC (pip --user).
+- Task 3b is therefore finished except d11b; D11/D12 already carry `applied` in Control Room.
+- JIS-NB (session "Inbox items") reports: CI/CD jobs registered; NOT done: live-mirror install (no \JIS-NB\MTS-Mirror share, so `live_mirror.py pull` fails on the NUC), B149 capture, JVM restart. Those are JIS-NB-only.
+- NUC-suited next: B141 28-cell runner (3d) on F:\MTS\data (daily/1h/1d only; 1m klines exist only on JIS-NB, so D22 Beta and anything on 1m/5m stays on JIS-NB).

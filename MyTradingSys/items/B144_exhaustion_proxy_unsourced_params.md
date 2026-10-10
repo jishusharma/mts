@@ -34,3 +34,12 @@ Filing only. No code or doc edit was made for this item.
 ## Receipt
 
 # END
+
+## Receipt - code-line anchors 2026-10-09
+
+- Confirmed on disk: SetupCandidatesBuilder.java:709 `boolean cond1 = volumes[i] > 2.0 * avgVol20;` (absorption); :775 `double avgVol4h = average(volumes, Math.max(0, n - 240), n); // 4h = 240 minutes`; :785 `res.volumeSpikeDetected = magnitude > 2.0;`.
+- Confirmed on disk: StateCodeEmitter.java:53 `private static final double VOL_RATIO_THRESHOLD = 2.0;`.
+- Both files compile into the running loop. Any edit is a Java live-path change: stopped-loop window required, or the section 6 staged .new path.
+- Status stays OPEN per operator ruling 2026-10-07 (remove-or-replace is a separate session).
+
+Receipt by: 2026-10-09 MTS-2026-10-08-2225Z-DSA-COO

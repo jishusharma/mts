@@ -29,4 +29,6 @@ Tom live-rule evidence is unreliable: rerun shows 0 SETUP_FORMING signals but th
 
 2026-10-10: part (1) attributed from the old run files: kept 120,892 of 164,257; 97,504 rows (80.7 pct) carried the exact +/-0.2 pct fallback stop; 287 of 320 proof>=5 rows and 17 of 19 SETUP_FORMING rows did. 0c34a2d removed that fallback (candidate dropped when no swing lies beyond the zone) and B131 removed one proof slot, which is the whole drop. So the 19 old signals are not evidence for the live rule; the statement is insufficient N. Doc: research/B147_ROW_DROP_ATTRIBUTION_2026-10-10.md. Still open: (a) exact per-snapshot regeneration with HEAD Java, (2) B135 long/short diag under sourced stops, (4) DSR/PBO for Tom: desk task 20261009-205714-b147-b135-regenerate-tom-snapshots-with- (JIS-NB, staged overlays live there).
 
+2026-10-10 (JIS-NB desk run): (a) done: snapshots regenerated with HEAD Java cceff62, 90,295 kept; 37,798 of 40,401 lost snapshots (93.6 pct) had an old fallback-stop top candidate; old proof>=5 320 (280 fallback by the 0.011 tolerance used in the script; the 287 above used a looser match), new 0; old SETUP_FORMING 19 (17 fallback), new 0. (2) done: B135 diag n=0 under sourced stops. (4) DSR/PBO moot at N=0 signals. Doc: research/B147_ROW_DROP_EXACT_2026-10-10.md. Item closed.
+
 # END

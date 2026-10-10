@@ -79,10 +79,20 @@ def test_start_session_still_writes_the_paste_from_the_manifest():
     assert "boot_files" in s and "boot_supplemental" in s
 
 
-def test_start_session_carries_the_news_section_and_never_fails_silently():
+def test_start_session_points_at_the_news_instead_of_pasting_it():
+    # operator 2026-10-10: the pasted 72 h news was 61 KB of a 189 KB paste; DSA runs sync.py news itself (0.8b)
     s = text(START)
-    assert "### news:" in s and "sync.py" in s
-    assert "news unavailable" in s                         # failure is written into the paste
+    assert "### news: NOT PASTED" in s and "sync.py news 72" in s
+    assert "news unavailable" in s                         # the pointer says what to report if the command fails
+    assert "sync.py') news" not in s                       # the paste builder no longer runs it
+    assert "Select-Object -First 30" in s                  # dirty-file list is capped
+
+
+def test_supervisor_inbox_is_a_pointer_in_the_manifest():
+    import json
+    m = json.loads(text(ROOT / "MyTradingSys" / "runtime" / "SESSION_MANIFEST.json"))
+    rows = [f for f in m["boot_supplemental"] if f["path"].endswith("SUPERVISOR_INBOX.md")]
+    assert rows and rows[0]["read"] == "pointer"
 
 
 def test_paste_size_alarms_sit_above_250_kb():

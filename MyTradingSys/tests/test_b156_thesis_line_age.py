@@ -37,10 +37,12 @@ class TestThesisLine(unittest.TestCase):
         st = dict(STATE, updated_utc="2026-10-09T14:00:00Z")
         self.assertIn("0h 26m old", ss.thesis_line(st, NOW))
 
-    def test_ps1_uses_the_helper(self):
+    def test_card_no_longer_prints_the_thesis(self):
+        # D13 (operator 2026-10-09, "Remove it from the card"): B156's age line is superseded; the card carries no thesis.
         ps1 = (Path(__file__).resolve().parents[2] / "scripts" / "core" / "start-trading-day.ps1").read_text(encoding="utf-8")
-        self.assertIn("session_state.py", ps1)
-        self.assertIn("thesis-line", ps1)
+        self.assertNotIn('"SSOT_THESIS:', ps1)
+        self.assertNotIn("thesis-line", ps1)
+        self.assertIn("session_state.py", ps1)   # SSOT_TRIGGER still read from the same store
 
 
 if __name__ == "__main__":

@@ -31,3 +31,5 @@ Commit 881f22b. Registry (same turn): BUGS.md IN-FIX; INDEX.md IN-FIX.
 2. oi_breakdown (buildOiBreakdown) swallow path unchanged. Same fail-open pattern as the fixed open_interest path. Follow-up.
 
 2026-10-10: reopened item closed in code (938d96b): buildOiBreakdown writes null retail/whale/topAccounts with confidence UNAVAILABLE on any failure and topAccounts null + topAccounts_note when only that endpoint fails; MarketDataSnapshotTest 21/21 on the javac-11 harness, the two OI tests fail on the old code. Needs mvn compile + JVM restart to run live. TESTNET_STATUS taint rows still not found.
+
+2026-10-10 CLOSED (JIS-NB): buildOiBreakdown UNAVAILABLE path is live. mvn compile in the live tree at 0fc934b, state-machine JVM stopped 23:25Z and relaunched by loop-supervisor (new PID 10744, grace passed, snapshot age <60 s, state_code fresh, oi_breakdown carries real long/short ratios); `mvn -q -o test` EXIT 0 on JDK 17.0.18 (MarketDataSnapshotTest, NetRRParityFixtureTest included). position_manager untouched; feed gap about 2.5 min.

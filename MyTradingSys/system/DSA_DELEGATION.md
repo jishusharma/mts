@@ -52,8 +52,30 @@ spec; DSA may run them.
 | Something looks wrong (refusal, no result seen) | DeepSeek chat | Check the AIBridge extension is loaded and the tab is reloaded; DSA falls back to paste mode (prompt 0.7). |
 | A DSA result looks suspicious | Claude (Sonnet) | Ask for a spot check of one number. Do not ask for a redo. |
 
+Operator decision D12 (2026-10-09 20:30Z, Control Room): "Yes, once a day" - one DSA session runs the desk queue daily.
 Daily rhythm that costs the least: morning, one DSA session pulls `desk.py list`, runs the queue and ships;
 Claude sessions start with `sync.py start`, read DSA results, post the next tasks, and stop at the short-session limit.
+
+## Two DSA bridges: JIS-NB and JIS-NUC (operator inbox i258bxlg4o668ipiy40c, 2026-10-09)
+A second AIBridge + DeepSeek chat now runs on the NUC next to the one on the desktop. Both read the same desk board
+(`desk.py list`), so a task can be taken by either; the rules below keep them off each other and keep tokens low.
+- Route by where the data lives (DEVICES.md): 1-minute klines (Dumps/backtest/raw_1m_2022: run_cc_setups, fabio, rsi runners)
+  exist only on JIS-NB -> post with `--target DSA-NB`. 1h/1d work, transcript extraction, inventories, diffing two result
+  files, YouTube caption fetches and other pure-compute jobs may run on the NUC -> `--target DSA-NUC`. Anything else: `--target DSA`
+  (whichever bridge boots first takes it; the claim in the task row stops the second one).
+- NUC thermal rule (LESSONS_LEARNED F): hold at 98 C, no filler work. Long backtests on the NUC are chunked (per year) so a
+  throttle only delays one chunk.
+- Division of labour, cheapest first: T0 script > DSA (extraction, preliminary checks, "dirty work that costs tokens", comparing
+  two result sets) > Haiku worker (classify, summarise one file) > Sonnet (spec, test, code) > Opus (safety diff, vision).
+  DSA does the first pass; Claude spot-checks ONE number per report (CLAUDE.md).
+- One chat per bridge; do not drive both from the same DeepSeek account at once if the second chat stops answering
+  (open item ldkziormfnb5jzgtosjy: not yet reproduced; the bridge audit log at F:\AIBridge\src\audit.jsonl on each host shows
+  the last call before a stop).
+- Extension tuning 2026-10-10 (F:\AIBridge\extension\content.js, backup content.js.pre_stayarmed): auto-run no longer switches
+  itself off when DSA answers without a block (it stays armed; the cap of 50 consecutive runs and the write checkbox still hold);
+  idle wait 4000 -> 2000 ms, poll 700 -> 250 ms, post-answer wait 1500 -> 600 ms. Reload the extension on BOTH machines
+  (chrome://extensions, Reload) and refresh the DeepSeek tab. Measured on JIS-NB audit.jsonl (426 calls, 32 bursts): median gap
+  between auto-runs 12 s, so most of the delay is DeepSeek thinking time, not the click.
 
 ## Standing DSA queue (ideas to keep it busy; post as budget allows)
 1. B154 stratified verdicts over every existing result CSV (session x regime), n per cell.

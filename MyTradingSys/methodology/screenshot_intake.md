@@ -17,7 +17,7 @@
 | 1 | LAND | automatic (hook), or `shot.py ingest` | none: saving never waits for a session to remember | `shot.py ingest` |
 | 2 | CLASSIFY | the session that sees it | a shot stays `new` and shows OVERDUE after 24 h; `--why` (the operator's meaning) is mandatory | `shot.py classify` |
 | 3 | SET | automatic | charts of one symbol within 10 min form a set; a set with one timeframe is flagged SINGLE-TF | `shot.py sets` |
-| 4 | READ | the session, chart sets by Sonnet or better | extract must name every shot id and carry claim rows | `shot.py read --extract` |
+| 4 | READ | the session, chart sets by Sonnet or better | extract must name every shot id and carry claim rows `\| id \| class \| claim \| evidence \|` (B159: each row is stored on the manifest `read` event; a malformed row is refused with its line number) | `shot.py read --extract` |
 | 5 | REPORT | the session | every MISMATCH is filed or explained in 20+ characters; NOT_IN_DATA becomes a feature hypothesis | file in BUGS.md / PLAN.md |
 | 6 | CLOSE | the session | outcome must exist in the repo (`finding:B156`, `feature:FEAT-11`) or be a stated `noaction:`/`note:` | `shot.py done` |
 | 7 | MEASURE | STATUS.md, every build | `SHOTS ...` line; overdue count; claims MATCH/MISMATCH/NOT_IN_DATA; items filed | `shot.py status` |
@@ -52,12 +52,14 @@ The operator's TradingView charts are one question seen at several timeframes. `
 (chart_read_protocol layers 3-4: the same level on another panel, and on a higher timeframe). One timeframe only = the read is context, not a read.
 
 ## 4 READ - the procedure that already worked
-Copy `MyTradingSys/research/screenshots/TEMPLATE.md`. Per image: pre-read gate (VVP-002 F.1), then each claim on the chart gets one row classed:
+Copy `MyTradingSys/research/screenshots/TEMPLATE.md`. Carried context first (B157): a chart extract needs a `Prior:` line (the previous read's extract, or `Prior: none`) or `shot.py read` refuses it; `read` prints that read's Invalidation/Falsify lines, each scored HELD / BROKEN / UNTESTED against the new chart.
+Per image: pre-read gate (VVP-002 F.1), then each claim on the chart gets one row classed:
 - MATCH: reproduced from files on disk (give file and numbers).
 - MISMATCH: the chart shows one thing, our pipeline or raw data another.
 - NOT_IN_DATA: the chart shows something no file holds (operator rays and boxes always land here until T066).
 Rules learned from the first study: state the chart clock; compare CVD steps, never CVD levels (the chart anchors at its first loaded bar); mark pixel reads with their error; footprint cell numbers are not volume (meaning unknown);
-no trade advice in an extract. A read that names a setup also goes to `capture.py add --kind chart_read ... --image <shot id>` (invalidation required, six layers).
+no trade advice in an extract.
+Engine state at the shot (B160): `shot.py engine <id>` writes `research/screenshots/engine/<id>.json` (the engine's own snapshot rebuilt at the shot's minute from the 1m archive); a claim row about VWAP, VP, CVD or state cites that file instead of whatever snapshot is current. A read that names a setup also goes to `capture.py add --kind chart_read ... --image <shot id>` (invalidation required, six layers).
 
 ## 5-6 REPORT AND CLOSE - the feedback loop
 | Claim class | Becomes | Owner group (PROJECT_MAP) |
