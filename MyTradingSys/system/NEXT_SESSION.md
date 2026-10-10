@@ -1,4 +1,4 @@
-<!-- relay: go depth=4 id=464dd1b9 -->
+<!-- relay: go depth=5 id=ef07664f -->
 # NEXT SESSION PROMPT (handoff 2026-10-10 ~13:30Z, dispatcher-run relay closed B149 code; before: ~13:00Z applied D23; was ~12:40Z relay B closed B149 capture + B164; text below is history) (was 06:50Z, relay session after B160; Claude Code Win App, either account)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -14,12 +14,16 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
 2. DSA / JIS-NB results: for every desk task now done, spot-check ONE number against its file, then use it (no redo).
 3. TASK (pick first unclaimed, claim it):
    a. B149 CLOSED 2026-10-10 (mainnet_pnl.py counts settlement; live monitor loads it at next restart: supervisor/desk task, not yours).
-   b. B141 (skip while a claim on it is open): write the runner for the 28 pre-registered cells (research/PRE_REG_HTF_REPLACE_2026-10-07.md), run on F:/MTS/data, holdout once.
+   b. B141 Stage 1 DONE 2026-10-10 (16 of 28 cells kept, PRE_REG section 9). NEXT: Stage 2 (H1: forward range ratio, day-block bootstrap, placebo) on the 16 kept cells, hist+dev only; extend research/b141_htf_stage1.py (reuse window_stats). Holdout read once, after the single candidate is chosen.
    c. B160 follow-up: once <live>/Dumps/backtest/raw/klines has BTCUSDT-1m-2026-10-09.csv, run `shot.py engine <id>` for the 10-09
       chart shots (78f967b4e253, b5f554a9f68a, 6188a576411b, ...), ship research/screenshots/engine/*.json; re-score NOT_IN_DATA rows only in a new extract.
 4. Route run-and-report work to DSA (system/DSA_DELEGATION.md); post what the DSA queue lacks before ending.
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
+
+## Update 2026-10-10 ~13:45Z (relay run by cron mts-dispatcher, JIS-NB)
+- DONE: B141 Stage 1 coverage (research/b141_htf_stage1.py + 7 tests + b141_stage1_result.json). Incumbent 3.3%/3.0% coverage; 16 of 28 cells kept. 3c still blocked: klines archive ends 10-08 (no BTCUSDT-1m-2026-10-09.csv).
+- Next: Stage 2 of B141.
 
 ## Update 2026-10-10 ~13:30Z (relay run by cron mts-dispatcher, JIS-NB)
 - DONE: B149 code: ALLOWED_TX_TYPES = {trade, settlement}, settlement adds `change` only; 2 new tests fail on old code; BUGS/INDEX/item CLOSED.

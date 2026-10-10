@@ -17,3 +17,6 @@ BUILD_PIPELINE 2.4 (R4-D) and 3.1 (R5) once run.
 
 ## Validation
 validated 2026-10-07 on JIS-NUC (session MTS-2026-10-07-1000Z-APP-ANA-whea-htf, follow-up): balance() re-run on live klines ending 2026-10-07T11:15Z: N=240 6 of 280 (2.1%), N=1440 0 of 240. Cause confirmed.
+
+## Progress 2026-10-10
+Stage 1 (coverage) done: research/b141_htf_stage1.py, result in PRE_REG section 9 and research/b141_stage1_result.json. 16 of 28 cells kept. Next: Stage 2 (H1) on the 16 kept cells, hist+dev only; holdout read once after selection.

@@ -100,4 +100,10 @@ only after the verdict, is promoted per the staging rule, and the pythonw writer
 
 ## 9. Result block
 
-(to be appended after the run; not computed)
+### Stage 1 (coverage), run 2026-10-10 by research/b141_htf_stage1.py (test_b141_htf_stage1.py, 7 pass; incumbent cell cross-checked against signals.balance)
+Data F:/MTS/data/tom_raw/klines, 2022-01-01..2026-06-25 (holdout NOT loaded); valid closes 4H 9821, 1D 1636; POC from the 10 USD hlc3 kline approximation (as live). Full table: research/b141_stage1_result.json.
+- Incumbent (k 0.8, b 0.25): 4H 3.3%, 1D 3.0% -> dropped (confirms NO-INFO, section 1).
+- Kept (coverage in [15%, 85%]): 4H A k1.0/b0.5 21%, k1.25 34%/48%, k1.5 48%/68%, k2.0/b0.25 61%, ER e0.05 50%, e0.10 82%; 1D A k1.0/b0.5 19%, k1.25 30%/43%, k1.5 42%/62%, k2.0 55%/80%. 16 of 28 cells.
+- Dropped: 4H k0.8 (both b), k1.0/b0.25 14.8%, k2.0/b0.5 85.0%, ER e0.15/0.25; 1D k0.8 (both b), k1.0/b0.25 13.9%, all ER (85%..100%). 12 of 28.
+- Stage 2 (H1 forward range, placebo, bootstrap), Stage 3, holdout, PBO/DSA: NOT yet run.
+
