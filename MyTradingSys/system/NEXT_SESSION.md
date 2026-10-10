@@ -31,8 +31,8 @@ End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py whe
 ```
 
 ## Queue status
-Q1 progress (relay 2026-10-10 ~16:00Z): 0e9036ae547d read + done (5 MATCH, 1 NOT_IN_DATA; extract research/screenshots/2026-10-05_BTCUSDT_0e9036ae547d.md). 10 overdue left, next 65656faa31ba (engine json exists: research/screenshots/engine/65656faa31ba.json), 29ff2b488f13, be1fd3316ddc, deb4ad19b10f. Q2-Q4 untouched.
-(seeded 2026-10-10 ~18:00Z by operator request, the old "queue empty" stop was wrong: the real backlog was not listed)
+Queue renumbered 2026-10-10 (operator audit). Done so far: shot 0e9036ae547d read + done (extract 2026-10-05_BTCUSDT_0e9036ae547d.md); it is not part of Q1/Q2.
+Q1 (set 29ff2b) not started. Q2-Q6 not started. 10 shots still OVERDUE per `shot.py status`.
 
 ## Update 2026-10-10 ~14:35Z (relay run by cron mts-dispatcher, JIS-NB)
 - No task done: 3a/3b closed or staged, 3c blocked (klines archive ends 2026-10-08, no 10-09 file). Remaining desk items are DSA/JIS-NB/operator-owned. Queue empty -> stop.
