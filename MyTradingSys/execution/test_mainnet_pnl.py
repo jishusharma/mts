@@ -31,10 +31,38 @@ class RealizedTests(unittest.TestCase):
 
     def test_non_allow_listed_types_excluded(self):
         junk = [tr(1.0, typ="deposit"), tr(-1.0, typ="withdrawal"), tr(0.5, typ="transfer"), tr(0.5, typ="swap"),
-                tr(0.3, typ="correction"), tr(-0.01, typ="settlement"), tr(0.2, typ="reward"),
+                tr(0.3, typ="correction"), tr(0.2, typ="reward"),
                 tr(0.2, typ="insurance fund"), tr(0.2, typ="something new"), tr(0.2, typ="TRANSFER")]
         self.assertEqual(mp.realized_btc(junk), 0.0)
         self.assertAlmostEqual(mp.realized_btc(junk + [tr(-1e-05)]), -1e-05, places=12)
+
+    def test_settlement_counted_and_no_double_count_with_closing_trade(self):  # B149, captured jishu_11 2026-10-09
+        # short 100 USD 82500 -> 82611.5 held across 08:00: whole PnL 100*(1/82611.5-1/82500) = -1.636e-06 BTC.
+        # settlement at 08:00 -1.59e-06 (change == cashflow); closing trade cashflow -4e-08 (fee -6.1e-07 in change).
+        es = [tr(-6.1e-07, -4e-08, True), {"type": "settlement", "change": -1.59e-06, "cashflow": -1.59e-06}]
+        self.assertAlmostEqual(mp.realized_btc(es), -6.1e-07 - 4e-08 - 1.59e-06, places=12)
+        # settlement alone (position still open after 08:00) is counted once, even if flagged profit_as_cashflow
+        self.assertAlmostEqual(mp.realized_btc([{"type": "settlement", "change": -1.59e-06, "cashflow": -1.59e-06,
+                                                 "profit_as_cashflow": True}]), -1.59e-06, places=12)
+        self.assertAlmostEqual(mp.realized_btc([tr(2e-06, typ="Settlement")]), 2e-06, places=12)
+
+    def test_settlement_without_numeric_change_raises(self):
+        with self.assertRaises(ValueError):
+            mp.realized_btc([{"type": "settlement", "cashflow": -1e-6}])
+
+    def test_settlement_counted_and_no_double_count_with_closing_trade(self):  # B149, captured jishu_11 2026-10-09
+        # short 100 USD 82500 -> 82611.5 held across 08:00: whole PnL 100*(1/82611.5-1/82500) = -1.636e-06 BTC.
+        # settlement at 08:00 -1.59e-06 (change == cashflow); closing trade cashflow -4e-08 (fee -6.1e-07 in change).
+        es = [tr(-6.1e-07, -4e-08, True), {"type": "settlement", "change": -1.59e-06, "cashflow": -1.59e-06}]
+        self.assertAlmostEqual(mp.realized_btc(es), -6.1e-07 - 4e-08 - 1.59e-06, places=12)
+        # settlement alone (position still open after 08:00) is counted once, even if flagged profit_as_cashflow
+        self.assertAlmostEqual(mp.realized_btc([{"type": "settlement", "change": -1.59e-06, "cashflow": -1.59e-06,
+                                                 "profit_as_cashflow": True}]), -1.59e-06, places=12)
+        self.assertAlmostEqual(mp.realized_btc([tr(2e-06, typ="Settlement")]), 2e-06, places=12)
+
+    def test_settlement_without_numeric_change_raises(self):
+        with self.assertRaises(ValueError):
+            mp.realized_btc([{"type": "settlement", "cashflow": -1e-6}])
 
     def test_trade_type_match_is_case_insensitive(self):
         self.assertAlmostEqual(mp.realized_btc([tr(-1e-05, typ="Trade")]), -1e-05, places=12)

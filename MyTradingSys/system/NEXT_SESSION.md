@@ -1,5 +1,5 @@
-<!-- relay: go depth=3 id=7f5f3d72 -->
-# NEXT SESSION PROMPT (handoff 2026-10-10 ~13:00Z, dispatcher-run relay applied D23; was ~12:40Z relay B closed B149 capture + B164; text below is history) (was 06:50Z, relay session after B160; Claude Code Win App, either account)
+<!-- relay: go depth=4 id=464dd1b9 -->
+# NEXT SESSION PROMPT (handoff 2026-10-10 ~13:30Z, dispatcher-run relay closed B149 code; before: ~13:00Z applied D23; was ~12:40Z relay B closed B149 capture + B164; text below is history) (was 06:50Z, relay session after B160; Claude Code Win App, either account)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
 
@@ -13,15 +13,20 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
    than 24 h; Java changes (D15 on B142, D17 on B144) are staged + tested, the restart goes to a JIS-NB desk task.
 2. DSA / JIS-NB results: for every desk task now done, spot-check ONE number against its file, then use it (no redo).
 3. TASK (pick first unclaimed, claim it):
-   a. B149 code (live-path: tests for restart/reset, non-trade balance moves, API errors; fail closed): MyTradingSys/execution/mainnet_pnl.py
-      must include type `settlement` entries (data: research/txlog_capture_2026-10-10_jishu_11.json: settlement -1.59e-06 + close -4e-08 = full
-      PnL, no double count). New test fails on old code first. Stage + gate; the restart is a JIS-NB desk task. Then B149 -> CLOSED (BUGS, item, INDEX).
+   a. B149 CLOSED 2026-10-10 (mainnet_pnl.py counts settlement; live monitor loads it at next restart: supervisor/desk task, not yours).
    b. B141 (skip while a claim on it is open): write the runner for the 28 pre-registered cells (research/PRE_REG_HTF_REPLACE_2026-10-07.md), run on F:/MTS/data, holdout once.
    c. B160 follow-up: once <live>/Dumps/backtest/raw/klines has BTCUSDT-1m-2026-10-09.csv, run `shot.py engine <id>` for the 10-09
       chart shots (78f967b4e253, b5f554a9f68a, 6188a576411b, ...), ship research/screenshots/engine/*.json; re-score NOT_IN_DATA rows only in a new extract.
 4. Route run-and-report work to DSA (system/DSA_DELEGATION.md); post what the DSA queue lacks before ending.
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
+
+## Update 2026-10-10 ~13:30Z (relay run by cron mts-dispatcher, JIS-NB)
+- DONE: B149 code: ALLOWED_TX_TYPES = {trade, settlement}, settlement adds `change` only; 2 new tests fail on old code; BUGS/INDEX/item CLOSED.
+- INCIDENT (mine): a stray `python -` in a Bash call hung on a REPL; I ran `taskkill /F /IM python.exe`, which killed ALL host Python processes.
+  Supervisor respawned auto_trader, live_runner_cli, orderflow_live, daily_loss_monitor at ~13:14Z (restarted, positions unaffected by the kill itself).
+  NOT seen back at 13:15Z: position_manager and runtime/regime_classifier.py. Supervisor/operator: check and restart them (builders may not). Never kill python by image name.
+- Next: 3b (B141) or 3c.
 
 ## Update 2026-10-10 ~13:00Z (relay run by cron mts-dispatcher, JIS-NB, commit ee3d37e)
 - DONE: D23 applied: VISION_GAP_2026-10-10.md (c) addendum appended to PROJECT_VISION.md as drafted (DIRECTION UPDATE section),

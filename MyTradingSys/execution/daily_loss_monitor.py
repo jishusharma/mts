@@ -49,17 +49,15 @@ L6 PART 2 (2026-09-29) - PnL SOURCE, decision in research/fast_track_2026-09-27/
 FIX4_DESIGN.md; arithmetic and field semantics in mainnet_pnl.py (audit HIGH #3, spec 129):
 pnl_source="transaction_log" = (realized + session unrealized) [BTC] times mark_price, where
   realized   = sum over today's 00:00-UTC..now private/get_transaction_log entries of type
-               "trade" (allow-list; every other type is ignored) of change, plus cashflow
-               when profit_as_cashflow is true (Deribit: a futures trade's realized session
+               "trade" or "settlement" (allow-list; every other type is ignored) of change,
+               plus cashflow for trades when profit_as_cashflow is true (Deribit: a futures trade's realized session
                PnL is carried in cashflow until the 08:00 UTC settlement; change holds only
                the fee);
   unrealized = account summary futures_session_upl (fallback session_upl).
-  Residual limits (honest): "settlement" entries are excluded (they double count the
-  cashflow already taken from trades); session UPL is "since the last 08:00 UTC
-  settlement", not since 00:00 UTC, so a position carried across the 08:00 settlement has
-  its pre-settlement P/L booked into that settlement entry and NOT counted; funding
-  (interest_pl) is not added. Fine for intraday flat-to-flat trading; revisit before
-  holding overnight. A missing or non-numeric field raises ValueError (fail closed: the
+  Residual limits (honest): "settlement" entries are INCLUDED since B149 (captured testnet log: the 08:00
+  settlement books the pre-08:00 P/L of a held position, the closing trade only the rest,
+  no double count), so a position carried across 08:00 is counted; funding on perpetuals
+  sits inside those entries, no separate funding type was seen. A missing or non-numeric field raises ValueError (fail closed: the
   consecutive-failure path writes HALT_DAILY_LOSS).
   Default source: "equity" on testnet (unchanged behaviour, keeps the FT-2
   testnet suite T-c identical); "transaction_log" whenever the client's

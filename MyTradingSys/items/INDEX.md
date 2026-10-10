@@ -117,7 +117,7 @@ B145 | CLOSED  | B145_cc_range_noise_live_neutrality.md | neutrality test run on
 B146 | CLOSED  | B146_no_min_stop_after_floor_removal.md | fee-to-stop admission gate on at 0.3 (D09), tests gated; Java stop buffer is T081
 B147 | CLOSED  | B147_tom_live_rule_evidence_unreliable.md | row drop attributed to removed 0.2pct fallback stop (0c34a2d, B131); exact regen done 2026-10-10 (93.6pct of lost snapshots were fallback-stop; 0 proof>=5 rows under sourced stops); DSR moot at N=0
 B148 | IN-FIX  | B148_dlm_reauth_main_account_and_account_drops.md | code+tests complete (parts 1-5); Step 0 test fallout fixed 9b27da3; close on first live beat_utc refresh
-B149 | OPEN | B149_l6_pnl_source_tracker_stale_settlement_gap.md | log captured 2026-10-10: settlement + close = whole PnL, no double count; next: mainnet_pnl.py includes type settlement
+B149 | CLOSED | B149_l6_pnl_source_tracker_stale_settlement_gap.md | log captured 2026-10-10: settlement + close = whole PnL, no double count; mainnet_pnl.py now includes type settlement (2026-10-10); live monitor picks it up at next restart
 B150 | CLOSED  | B150_gate_is_hand_maintained_allowlist.md | discovery covers every tracked test; extra-tests step; mainnet refuses testnet calibration; 3 ungated failures fixed
 B151 | CLOSED  | B151_backtest_fill_optimism_and_selection.md | fib bear zone + blow-through, target trade-through, open_at_end printed, rerun: all CC setups FAIL
 B152 | CLOSED  | B152_retention_deletes_read_data_and_deploy_trap.md | retention keeps audit data and mtime; deploy runbook + auto_deploy copy/restore _state.json
