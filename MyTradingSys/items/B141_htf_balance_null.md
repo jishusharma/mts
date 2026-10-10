@@ -20,3 +20,6 @@ validated 2026-10-07 on JIS-NUC (session MTS-2026-10-07-1000Z-APP-ANA-whea-htf, 
 
 ## Progress 2026-10-10
 Stage 1 (coverage) done: research/b141_htf_stage1.py, result in PRE_REG section 9 and research/b141_stage1_result.json. 16 of 28 cells kept. Next: Stage 2 (H1) on the 16 kept cells, hist+dev only; holdout read once after selection.
+
+## Progress 2026-10-10 (Stage 2)
+Stage 2 done: research/b141_htf_stage2.py, result in PRE_REG section 9 and research/b141_stage2_result.json. No cell of the 16 passes (CI/year/placebo); 4H ER cells show the opposite sign. Per PRE_REG section 7 the balance rule is to be removed/UNAVAILABLE in htf_context_live.py (stage as .new, supervisor restarts the writer). Holdout not read.
