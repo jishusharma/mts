@@ -65,22 +65,33 @@ def pathlib_read(path):
 
 
 # ---------------------------------------------------------------- windows process helpers
-_k32 = ctypes.WinDLL("kernel32", use_last_error=True)
-_k32.OpenProcess.restype = wintypes.HANDLE
-_k32.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
-_k32.CloseHandle.argtypes = [wintypes.HANDLE]
-_k32.GetExitCodeProcess.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
-_k32.GetProcessTimes.argtypes = [wintypes.HANDLE] + [ctypes.POINTER(wintypes.FILETIME)] * 4
-_k32.CreateJobObjectW.restype = wintypes.HANDLE
-_k32.CreateJobObjectW.argtypes = [wintypes.LPVOID, wintypes.LPCWSTR]
-_k32.SetInformationJobObject.argtypes = [wintypes.HANDLE, ctypes.c_int, wintypes.LPVOID, wintypes.DWORD]
-_k32.AssignProcessToJobObject.argtypes = [wintypes.HANDLE, wintypes.HANDLE]
-_k32.TerminateJobObject.argtypes = [wintypes.HANDLE, wintypes.UINT]
+# Windows only. Off Windows (CI ubuntu, cloud) _k32 is None so --print-prefix-hash and --dry-run still work;
+# anything that needs a PID check or a Job Object raises instead of running unbounded (fail closed).
+if os.name == "nt":
+    _k32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    _k32.OpenProcess.restype = wintypes.HANDLE
+    _k32.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    _k32.CloseHandle.argtypes = [wintypes.HANDLE]
+    _k32.GetExitCodeProcess.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
+    _k32.GetProcessTimes.argtypes = [wintypes.HANDLE] + [ctypes.POINTER(wintypes.FILETIME)] * 4
+    _k32.CreateJobObjectW.restype = wintypes.HANDLE
+    _k32.CreateJobObjectW.argtypes = [wintypes.LPVOID, wintypes.LPCWSTR]
+    _k32.SetInformationJobObject.argtypes = [wintypes.HANDLE, ctypes.c_int, wintypes.LPVOID, wintypes.DWORD]
+    _k32.AssignProcessToJobObject.argtypes = [wintypes.HANDLE, wintypes.HANDLE]
+    _k32.TerminateJobObject.argtypes = [wintypes.HANDLE, wintypes.UINT]
+else:
+    _k32 = None
+
+
+def _need_k32():
+    if _k32 is None:
+        raise OSError("run_worker: Windows process helpers (kernel32) unavailable on this OS")
+    return _k32
 
 
 def pid_ctime(pid):
     """Creation time (epoch seconds) of a running PID, or None if it is not running."""
-    h = _k32.OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
+    h = _need_k32().OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
     if not h:
         return None
     try:
@@ -114,7 +125,7 @@ class _ExtLimit(ctypes.Structure):
 
 
 def make_kill_on_close_job():
-    job = _k32.CreateJobObjectW(None, None)
+    job = _need_k32().CreateJobObjectW(None, None)
     if not job:
         raise OSError(ctypes.get_last_error(), "CreateJobObject failed")
     info = _ExtLimit()
