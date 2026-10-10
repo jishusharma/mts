@@ -1,0 +1,34 @@
+[
+ {
+  "setup": "setup1_sr_flip",
+  "rule": "pct_0.25",
+  "src": "NO-SOURCE",
+  "n": 1487,
+  "net_r": -0.3856348291658279,
+  "hit": 0.4055144586415602
+ },
+ {
+  "setup": "setup1_sr_flip",
+  "rule": "atr_1.0",
+  "src": "CC-invalidation",
+  "n": 1487,
+  "net_r": -0.16237060416272622,
+  "hit": 0.4108944182918628
+ },
+ {
+  "setup": "setup1_sr_flip",
+  "rule": "atr_1.5",
+  "src": "CC-invalidation",
+  "n": 1487,
+  "net_r": -0.0946269196552044,
+  "hit": 0.4209818426361802
+ },
+ {
+  "setup": "setup1_sr_flip",
+  "rule": "pct_0.1",
+  "src": "NO-SOURCE",
+  "n": 1487,
+  "net_r": -1.0685763580786551,
+  "hit": 0.3725622057834566
+ }
+]
