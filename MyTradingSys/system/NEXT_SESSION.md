@@ -1,4 +1,4 @@
-<!-- relay: go depth=1 id=3efe918e -->
+<!-- relay: go depth=2 id=f3ad3e1b -->
 <!-- relay: go depth=0 id=seed2610a1 -->
 # NEXT SESSION PROMPT (handoff 2026-10-10 ~13:30Z, dispatcher-run relay closed B149 code; before: ~13:00Z applied D23; was ~12:40Z relay B closed B149 capture + B164; text below is history) (was 06:50Z, relay session after B160; Claude Code Win App, either account)
 
@@ -18,10 +18,7 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
        research/screenshots/TEMPLATE.md; `shot.py show <id>` already holds claim rows from the C06-C10 analysis, reuse them, do not redo.
        DONE when: extract shipped, `shot.py read` accepted it, set 29ff2b shows done in `shot.py sets`.
    Q2. DONE 2026-10-10 ~16:40Z: 65656faa31ba, 359bdb0c7cf9, 23416389787e read + done; extract research/screenshots/2026-10-10_BTCUSDT_q2_single_tf.md (12 MATCH / 2 MISMATCH / 4 NOT_IN_DATA); `shot.py status` overdue 0.
-   Q3. B171 step 1 only (items/B171_...md): grep research/imbalance_2026-10-10/RESEARCH.md and transcripts for operator/trader QUOTES that define an imbalance
-       rule. Quote found: write PRE_REG_imbalance.md (candidate, trial count, fee model 10 bp round trip). No quote: record NO-INFO in the item and post a
-       Control Room decision asking for the trader quote (default: park B171). No tuning, no code, no backtest this session.
-       DONE when: PRE_REG_imbalance.md shipped, or NO-INFO in the item plus the Control Room decision filed.
+   Q3. DONE 2026-10-10 ~17:00Z: NO-INFO (no transcript quote defines an imbalance rule); recorded in items/B171; Control Room decision D24-imbalance-quote filed, default park B171.
    Q4. Desk post to JIS-NB (one task, `desk.py post ... --target JIS-NB`): (a) run scripts/dev/refresh_klines.py for 2026-10-09; (b) commit backtest/bigtrade/*
        and research/bigtrade_2026-10-09/* from the live tree on a branch and ship (they exist only there; origin has EXIT_POLICIES_REPORT.md alone).
        Then Q5 and Q6 become possible.
@@ -37,7 +34,7 @@ End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py whe
 
 ## Queue status
 Queue renumbered 2026-10-10 (operator audit). Done so far: shot 0e9036ae547d read + done (extract 2026-10-05_BTCUSDT_0e9036ae547d.md); it is not part of Q1/Q2.
-Q1 DONE 2026-10-10 ~16:15Z (set 29ff2b, 7 shots read+done, extract research/screenshots/2026-10-07_BTCUSDT_29ff2b488f13.md, claims 33 MATCH / 7 MISMATCH / 8 NOT_IN_DATA, reused from the bigtrade C06-C12 rows). Q2 DONE ~16:40Z (3 shots, extract 2026-10-10_BTCUSDT_q2_single_tf.md; 359bdb0c7cf9 rows 03-05 need the 10-09 klines from Q4a). Q3-Q6 not started; next is Q3. Overdue shots 0.
+Q1 DONE 2026-10-10 ~16:15Z (set 29ff2b, 7 shots read+done, extract research/screenshots/2026-10-07_BTCUSDT_29ff2b488f13.md, claims 33 MATCH / 7 MISMATCH / 8 NOT_IN_DATA, reused from the bigtrade C06-C12 rows). Q2 DONE ~16:40Z (3 shots, extract 2026-10-10_BTCUSDT_q2_single_tf.md; 359bdb0c7cf9 rows 03-05 need the 10-09 klines from Q4a). Q3 DONE ~17:00Z (NO-INFO, D24 filed). Q4-Q6 not started; next is Q4. Overdue shots 0.
 
 ## Update 2026-10-10 ~14:35Z (relay run by cron mts-dispatcher, JIS-NB)
 - No task done: 3a/3b closed or staged, 3c blocked (klines archive ends 2026-10-08, no 10-09 file). Remaining desk items are DSA/JIS-NB/operator-owned. Queue empty -> stop.

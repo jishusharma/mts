@@ -20,3 +20,4 @@ If nothing passes, the honest result is NO-INFO recorded here, not a tuned indic
 
 ## Progress
 2026-10-10: filed by Control Room pickup. Not started.
+2026-10-10 ~17:00Z (relay Q3): step 1 NO-INFO. grep of all 113 raw_transcripts_canonical files for "imbalance" (72 hits): used only as auction-market balance/imbalance (value area, single prints, breakouts) and once as a colour-coded footprint buy/sell imbalance (oPyUif2Zrtk, "104 sales, 147 purchases ... large buying imbalance") with no ratio, window or threshold. No quote defines a testable rule, so no PRE_REG_imbalance.md. Control Room decision D24-imbalance-quote filed (default: park B171). No code, no backtest.
