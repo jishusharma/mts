@@ -15,12 +15,13 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 | ASK poller | headless claude -p; default haiku, escalation sonnet | status questions |
 | DSA chat (chat.deepseek.com) | pasted text only, no disk | long-context reading, extraction, rulebooks |
 | CLD cloud (free pool) | pushed git refs only; no LAN, no gitignored files | offline research, specs, reviews, docs, backtests on committed data |
+| COD Codex (NB) | own checkout, branch codex/work; offline work, proposes only on live path | research, tests, reviews, docs |
 | AIBridge (F:\AIBridge) | allowlisted loopback agent 127.0.0.1:7181, Chrome MV3 extension | PowerShell on desktop, on request from a web AI |
 Builders touching execution/ or layers/alerts/ stage .new only (CLAUDE.md hard rules).
 
 ## 2. Handoff
 A handoff is a file in the receiver's inbox that names the sender's session ID.
-SUP: research/fast_track_2026-09-27/SUPERVISOR_INBOX.md. AIBridge: F:\AIBridge\HANDOFF.md. DSA worker: incoming_dsa/.
+SUP: research/fast_track_2026-09-27/SUPERVISOR_INBOX.md. AIBridge: F:\AIBridge\HANDOFF.md. DSA worker: incoming_dsa/. COD: system/CODEX_INBOX.md.
 Poller: Dumps/operator/inbox. Cloud: MyTradingSys/system/CLOUD_INBOX.md (desktop commits and pushes).
 Cloud returns commits on its branch plus its session record; SUP gates, merges, logs in SUPERVISOR_LOG.
 A cloud session sees one repo; cross-repo work (CBP owns mts_queue/, MTS writes acks/ only) runs on the desktop.
@@ -46,7 +47,7 @@ depends on it.
 
 ## 4. Naming
 Session ID: MTS-YYYY-MM-DD-HHMMZ-<SURF>-<ROLE>[-<slug>] (UTC start; slug <=20 chars, lowercase kebab).
-SURF: CLD APP CLI LAP DSA ASK. ROLE: SUP BLD ANA EXT MON COO WRK. Chat title = session ID.
+SURF: CLD APP CLI LAP DSA ASK COD. ROLE: SUP BLD ANA EXT MON COO WRK. Chat title = session ID.
 Record: MyTradingSys/system/sessions/<ID>.md (template: sessions/README.md). Predecessor = newest record
 with the same -<SURF>-<ROLE>, also named in the record.
 Commit trailer: MTS-Session: <ID>.
