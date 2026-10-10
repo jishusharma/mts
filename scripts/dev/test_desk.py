@@ -1,10 +1,12 @@
-"""desk.py: post -> take -> done across two clones, wait reads origin, finished tasks cannot be reopened."""
+"""desk.py: post -> take -> done across two clones, wait reads origin, finished tasks cannot be reopened,
+nothing is ever committed in the live tree (.mts_live)."""
 import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import desk
@@ -55,6 +57,33 @@ class DeskTest(unittest.TestCase):
         msg = subprocess.run(["git", "log", "-1", "--format=%B"], cwd=self.a, capture_output=True, text=True).stdout
         self.assertIn("Operator: desk task", msg)
         self.assertEqual(desk.tasks(self.a)[0]["status"], "failed")
+
+    def head(self, repo, ref="HEAD"):
+        return subprocess.run(["git", "rev-parse", ref], cwd=repo, capture_output=True, text=True).stdout.strip()
+
+    def test_live_tree_never_gets_a_commit(self):
+        """2026-10-10: take/done run in the live tree made commits there that never reached origin (STOP_NOT_FF)."""
+        rid = desk.post(self.b, "Fetch captions", "run fetch", "file exists", ship=False)
+        sh(self.b, "push", "-q", "origin", "HEAD:fast-track")
+        sh(self.a, "pull", "-q", "origin", "fast-track")  # the deployed live tree holds the task file too
+        (self.a / ".mts_live").write_text("")
+        before = self.head(self.a)
+        with self.assertRaises(SystemExit):  # --no-ship would strand the commit in the live tree
+            desk.take(self.a, rid, ship=False)
+        pushed = lambda wt: sh(wt, "push", "-q", "origin", "HEAD:refs/heads/fast-track")
+        with mock.patch.object(desk, "run_ship", pushed):
+            desk.take(self.a, rid)
+            desk.finish(self.a, rid, "fetched 3 files")  # live copy still says pending: status is read from origin
+            desk.post(self.a, "Follow-up", "x", "y")
+        self.assertEqual(self.head(self.a), before)
+        self.assertEqual(subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"], cwd=self.a,
+                                        capture_output=True, text=True).stdout, "")
+        self.assertEqual([t["status"] for t in desk.tasks(self.a)], ["pending"])  # live files untouched
+        self.assertEqual(len(subprocess.run(["git", "worktree", "list"], cwd=self.a, capture_output=True,
+                                            text=True).stdout.splitlines()), 1)  # scratch worktree cleaned up
+        sh(self.b, "pull", "-q", "origin", "fast-track")
+        got = sorted((t["title"], t["status"]) for t in desk.tasks(self.b))
+        self.assertEqual(got, [("Fetch captions", "done"), ("Follow-up", "pending")])
 
 
 if __name__ == "__main__":
