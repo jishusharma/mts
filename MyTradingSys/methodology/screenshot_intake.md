@@ -17,7 +17,7 @@
 | 1 | LAND | automatic (hook), or `shot.py ingest` | none: saving never waits for a session to remember | `shot.py ingest` |
 | 2 | CLASSIFY | the session that sees it | a shot stays `new` and shows OVERDUE after 24 h; `--why` (the operator's meaning) is mandatory | `shot.py classify` |
 | 3 | SET | automatic | charts of one symbol within 10 min form a set; a set with one timeframe is flagged SINGLE-TF | `shot.py sets` |
-| 4 | READ | the session, chart sets by Sonnet or better | extract must name every shot id and carry claim rows | `shot.py read --extract` |
+| 4 | READ | the session, chart sets by Sonnet or better | extract must name every shot id and carry claim rows `\| id \| class \| claim \| evidence \|` (B159: each row is stored on the manifest `read` event; a malformed row is refused with its line number) | `shot.py read --extract` |
 | 5 | REPORT | the session | every MISMATCH is filed or explained in 20+ characters; NOT_IN_DATA becomes a feature hypothesis | file in BUGS.md / PLAN.md |
 | 6 | CLOSE | the session | outcome must exist in the repo (`finding:B156`, `feature:FEAT-11`) or be a stated `noaction:`/`note:` | `shot.py done` |
 | 7 | MEASURE | STATUS.md, every build | `SHOTS ...` line; overdue count; claims MATCH/MISMATCH/NOT_IN_DATA; items filed | `shot.py status` |

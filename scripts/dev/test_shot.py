@@ -216,6 +216,36 @@ class ShotTest(unittest.TestCase):
         self.assertTrue(str(prior[0]).endswith("prior_read.md"))
         self.assertTrue(self.state()[c]["prior"].endswith("prior_read.md"))
 
+    def test_read_stores_each_claim_row_in_the_manifest(self):  # B159
+        real = Path(shot.REPO) / "MyTradingSys" / "research" / "screenshots" / "2026-10-09_BTCUSDT_78f967b4e253.md"
+        c = self.chart("c", "5m")
+        body = real.read_text(encoding="utf-8").replace("78f967b4e253", c)
+        ids, counts, prior = shot.read_extract(self.store, [c], self.extract("Prior: none\n" + body))
+        self.assertEqual(counts, {"MATCH": 4, "MISMATCH": 0, "NOT_IN_DATA": 5})  # status_line counts unchanged
+        read = [e for e in shot.load_events(self.store) if e["event"] == "read"][-1]
+        rows = read["claim_rows"]
+        self.assertEqual(len(rows), 9)
+        self.assertEqual(rows[0]["id"], "D-01")
+        self.assertEqual(rows[0]["class"], "MATCH")
+        self.assertEqual(rows[0]["claim"], "price 82366 on 5m, bar low 82315.6")
+        self.assertTrue(rows[0]["evidence"].startswith("Binance fapi 5m klines fetched 20:14Z"))
+        self.assertEqual([r["class"] for r in rows].count("NOT_IN_DATA"), 5)
+        self.assertEqual(len(self.state()[c]["claim_rows"]), 9)
+        line, _ = shot.status_line(self.state())
+        self.assertIn("claims MATCH 4 MISMATCH 0 NOT_IN_DATA 5", line)
+
+    def test_malformed_claim_row_is_refused_with_its_line_number(self):  # B159
+        c = self.chart("c", "5m")
+        head = "Shots: %s\nPrior: none\n" % c
+        for bad in ("| C1-02 | MATCH | claim without evidence |\n",          # 3 cells
+                    "| C1-02 | MATCH |  | evidence but no claim |\n",       # empty claim
+                    "| C1-02 | Match | a | b |\n"):                         # class spelled off the contract
+            with self.assertRaises(shot.ShotError) as cm:
+                shot.read_extract(self.store, [c], self.extract(head + "| C1-01 | MATCH | a | b |\n" + bad))
+            self.assertIn("line 4", str(cm.exception), bad)
+        self.assertEqual([e["event"] for e in shot.load_events(self.store)].count("read"), 0)  # nothing appended
+        shot.read_extract(self.store, [c], self.extract(head + "| C1-01 | MATCH | a | b |\n"))  # a good one still passes
+
     def test_non_chart_extract_needs_no_prior_line(self):  # B157 default
         a = self.landed("a")
         shot.classify(self.store, a, "positions", "testnet positions table")

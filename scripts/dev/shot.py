@@ -40,7 +40,6 @@ KINDS = ("chart", "positions", "app", "other", "noise")
 PRIVATE_KINDS = ("positions",)
 STATUSES = ("new", "classified", "read", "done")
 CLAIM_CLASSES = ("MATCH", "MISMATCH", "NOT_IN_DATA")
-CLAIM_ROW = re.compile(r"^\|\s*[A-Za-z0-9_.-]+\s*\|\s*(MATCH|MISMATCH|NOT_IN_DATA)\s*\|", re.M)
 PRIOR_LINE = re.compile(r"^[\s>*-]*Prior(?::\**|\**:)[ \t]*(\S.*?)\s*$", re.M)  # B157: `Prior: <extract>` / `**Prior:** none`
 OUTCOME_ID = re.compile(r"^(B\d{3}|T\d{3}|F-BT-\d+|FEAT-\d+)$")
 SET_WINDOW_MIN = 10  # chart shots of one symbol within this many minutes are one set (the 2026-10-08 batch spanned 4)
@@ -160,6 +159,10 @@ def fold(events):
             s.pop("extract", None)
         elif ev == "read":
             s.update(extract=e["extract"], claims=e["claims"], status="read")
+            if "claim_rows" in e:
+                s["claim_rows"] = e["claim_rows"]
+            else:
+                s.pop("claim_rows", None)
             if "prior" in e:
                 s["prior"] = e["prior"]
             else:
@@ -406,17 +409,44 @@ def read_extract(store, prefixes, extract):
     absent = [i for i in ids if i not in text]
     if absent:
         raise ShotError(f"the extract must name each shot id it covers; missing: {', '.join(absent)}")
+    rows = parse_claim_rows(text)
     counts = {c: 0 for c in CLAIM_CLASSES}
-    for m in CLAIM_ROW.finditer(text):
-        counts[m.group(1)] += 1
+    for r in rows:
+        counts[r["class"]] += 1
     is_chart = any(S[i].get("kind") == "chart" for i in ids)
     if is_chart and not sum(counts.values()):
         raise ShotError("a chart extract needs claim rows: | id | MATCH or MISMATCH or NOT_IN_DATA | chart claim | data check |")
     prior = carried_context(text, path) if is_chart else (None, [])
     ev_extra = {"prior": repo_rel(prior[0])} if prior[0] else {}
     for i in ids:
-        append(store, {"event": "read", "id": i, "ts": now_iso(), "extract": repo_rel(path), "claims": counts, **ev_extra})
+        append(store, {"event": "read", "id": i, "ts": now_iso(), "extract": repo_rel(path), "claims": counts, "claim_rows": rows, **ev_extra})
     return ids, counts, prior
+
+
+CLAIM_ID = re.compile(r"[A-Za-z0-9_.-]+")
+
+
+def parse_claim_rows(text):
+    """B159: every `| id | MATCH or MISMATCH or NOT_IN_DATA | chart claim | data check |` row as a dict
+    {id, class, claim, evidence}; the manifest keeps the rows, not only their counts. A row whose second cell names a class
+    loosely (`Match`, `NOT IN DATA`) or that lacks an id, claim or evidence is refused with its line number: it would
+    otherwise drop out of the count unseen."""
+    rows = []
+    for n, line in enumerate(text.splitlines(), 1):
+        s = line.strip()
+        if not s.startswith("|"):
+            continue
+        cells = [c.strip() for c in (s[1:-1] if s.endswith("|") else s[1:]).split("|")]
+        if len(cells) < 2 or re.sub(r"[\s-]+", "_", cells[1]).upper() not in CLAIM_CLASSES:
+            continue  # header, separator, outcome table: not a claim row
+        cls = cells[1]
+        if cls not in CLAIM_CLASSES:
+            raise ShotError(f"line {n}: claim class `{cls}` must be exactly one of {', '.join(CLAIM_CLASSES)}")
+        evidence = " | ".join(cells[3:]).strip(" |")
+        if len(cells) < 4 or not CLAIM_ID.fullmatch(cells[0]) or not cells[2] or not evidence:
+            raise ShotError(f"line {n}: a claim row is | id | {cls} | chart claim | data check |, all four filled: {s[:80]}")
+        rows.append({"id": cells[0], "class": cls, "claim": cells[2], "evidence": evidence})
+    return rows
 
 
 def repo_rel(path):
