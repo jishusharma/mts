@@ -178,6 +178,12 @@ def main(argv=None):
     cmd3hy = [sys.executable, "scripts/dev/test_daily_hygiene.py"]
     success, output = run_step("3hy", "Daily hygiene job tests", cmd3hy)
     results.append(("Step 3hy: Daily hygiene tests", success))
+    cmd3ms = [sys.executable, "scripts/dev/test_make_status.py"]
+    success, output = run_step("3ms", "STATUS.md generator tests (commit-dated reports, CI green line)", cmd3ms)
+    results.append(("Step 3ms: make_status tests", success))
+    cmd3cs = [sys.executable, "scripts/dev/test_cloud_setup.py"]
+    success, output = run_step("3cs", "Cloud SessionStart hook tests (no-op off cloud)", cmd3cs)
+    results.append(("Step 3cs: Cloud setup hook tests", success))
     cmd3pc = [sys.executable, "scripts/dev/test_prompt_contract.py"]
     success, output = run_step("3pc", "Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)", cmd3pc)
     results.append(("Step 3pc: Prompt contract tests", success))
