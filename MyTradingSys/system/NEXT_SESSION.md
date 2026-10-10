@@ -1,4 +1,4 @@
-<!-- relay: go depth=1 id=ec62cdce -->
+<!-- relay: go depth=2 id=f66ecf35 -->
 <!-- relay: go depth=0 id=tomfab1011 -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
@@ -20,7 +20,7 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
 3. TASK: first Qn below not DONE and not claimed. Its card is the whole brief:
    `python scripts/dev/tasks.py brief <card>` -> `sync.py claim` -> work -> `tasks.py done <card> --result "<number/file>"` -> ship -> release.
    Q1. DONE 2026-10-11 (relay JIS-NB): net_rr 0.70->4.94, quick gate green. (old text:) Card tom-verdict-fee-per-market (Sonnet). Code is ON fast-track (09a6196, BTC bit-identical test, quick gate passed pre-merge); claim released; card still active. Remaining: quick gate on HEAD, confirm the new Java tests fail on old code, run `dax_engine.py snap --at 2026-05-12T07:55:00Z` and read the vwap_band_+1 short's net_rr (was 0.70 at gross 5.09; the agent's run printed nothing - check the out file), then `tasks.py done`. Java reaches live only via supervisor deploy. DONE when: card done_when holds (GER40 netRR(24229,24111,24257)=4.1696 (the brief said 4.1662: hand error, (118-0.24229)/(28+0.24229)=4.1696), BTCUSDT bit-identical test red-before).
-   Q2. Card tom-trade-ledger (Sonnet, frames not transcripts). DONE when: TOM_TRADE_LEDGER.csv >= 30 trades with frame evidence.
+   Q2. Card tom-trade-ledger (Sonnet, frames not transcripts), CONTINUE: 8 trades in TOM_TRADE_LEDGER.csv (partial, claim is yours to retake); read the remaining contact sheets in F:/MTS/data/tom_videos/sheets (k0zm5N 10, n7ZSkj 6, UOBgXV 5, then others; 3-4 sheets per session is fine) and append trades/management rows. DONE when: TOM_TRADE_LEDGER.csv has >= 30 trades or every trade in all 7 videos, each with frame evidence, and TOM_TRADE_LEDGER.md family counts.
    Q3. Card fabio-trade-ledger (Sonnet). DONE when: FABIO_TRADE_LEDGER.csv >= 20 trades with frame evidence.
    Q4. Cards tom-layer-v2-spec (part A: families + sourced rules) then tom-layer-v2-cost (part B: per-market proofs/cost, BTC stop-width transfer rule, Sonnet build cards). OPUS, approved by the operator 2026-10-11, size M each = one card per session; both need Q2. DONE when: TOM_LAYER_V2_SPEC.md parts A and B + Sonnet build cards.
    Q5. Cards fabio-layer-v2-spec (part A) then fabio-layer-v2-markets (part B: NQ vs BTC data plan, cost, recall-harness + encode cards). OPUS, approved, size M each; both need Q3. DONE when: FABIO_LAYER_V2_SPEC.md parts A and B + cards.
