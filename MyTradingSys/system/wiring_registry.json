@@ -126,6 +126,10 @@
    "disp": "REPRO",
    "why": "Produced every number in MyTradingSys/research/TOM_BT_SHORT_DIAGNOSIS_2026-10-02.md:4 (all-shorts diagnosis)."
   },
+  "MyTradingSys/backtest/tom_probe_diag.py": {
+   "disp": "REPRO",
+   "why": "Produced every number in MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md (card tom-probe-diag-btc: MFE/MAE, session, selection diagnostics)."
+  },
   "MyTradingSys/backtest/tom_bt_report.py": {
    "disp": "REPRO",
    "why": "Writes TOM_CORE_BT.md and the trial registry; reruns recorded in MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06_full.md; B128 RA-W2-N (DSR/N=3 dedupe not implemented) points at :174."
