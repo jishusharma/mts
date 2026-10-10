@@ -9,12 +9,12 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 ## 1. Surfaces and ownership
 | Surface | Reach | Owns |
 |---|---|---|
-| CLI desktop (SUP) | full tree, queue, live processes, testnet, commits | live path, restarts, HALT, promote/merge, commits |
+| Desktop session (SUP): Win App, CLI only as fallback (1b) | full tree, queue, live processes, testnet, commits | live path, restarts, HALT, promote/merge, commits |
 | APP desktop | scheduled tasks (hourly-builder-check, dsa-feeder) | chat supervision, scheduled checks |
 | LAP laptop CLI | read-only monitors, queue share | questions, monitoring |
 | ASK poller | headless claude -p; default haiku, escalation sonnet | status questions |
 | DSA chat (chat.deepseek.com) | direct mode: shell in the project working tree via AIBridge; paste mode when the bridge is down | long-context reading, extraction, rulebooks, registry writes |
-| CLD cloud (free pool) | pushed git refs only; no LAN, no gitignored files | offline research, specs, reviews, docs, backtests on committed data |
+| CLD cloud (claude.ai/code) | pushed git refs only; no LAN, no gitignored files; ships by PR into fast-track (auto-merge on green) | offline research, specs, reviews, docs, backtests on committed data |
 | AIBridge (F:\AIBridge) | loopback agent 127.0.0.1:7181, Chrome MV3 extension; reach = project working tree, delete allowed (AIBRIDGE_LANE.md) | PowerShell on desktop, run by DSA directly |
 Builders work in a work tree, never the live tree; sharing and deploy: PARALLEL.md.
 Device roles (desktop JIS-NB, NUC JIS-NUC, laptop DESKTOP-F7IU69N): MyTradingSys/system/DEVICES.md. Live loop stays on JIS-NB until DEVICES.md sec 3 conditions are proven on JIS-NUC.
@@ -37,6 +37,9 @@ pastes into incoming_dsa/; AIBridge still uses F:\AIBridge\HANDOFF.md.
 
 OPERATOR DIRECTIVE 2026-10-02: never refuse a task for budget. Work to
 completion. Commit after each step when Session Manager signals low headroom.
+Handing off at the CLAUDE.md short-session limit (operator 2026-10-09: task done, 5 operator
+turns or ~50k tokens) is not a refusal: finish the step, ship, overwrite NEXT_SESSION.md; the
+next session continues the same queue.
 
 DSA never states a numeric usage percent, budget cap, token cap, or dollar pool
 in any prompt, unless the operator supplied that exact number in the same session.
@@ -96,8 +99,8 @@ spent in 9 minutes; Waves 1-2 lost uncommitted.
 Session ID: MTS-YYYY-MM-DD-HHMMZ-<SURF>-<ROLE>[-<slug>] (UTC start; slug <=20 chars, lowercase kebab).
 SURF: CLD APP CLI LAP DSA ASK. ROLE: SUP BLD ANA EXT MON COO WRK. Chat title = session ID.
 Record: the commit trailer `MTS-Session: <ID>` (commit history is the registry; sessions/ is history, no new files).
-Cloud branch: cloud/work; cloud/YYYY-MM-DD-<slug> only for concurrent Cloud sessions. Harness-assigned
-names (claude/...) are recorded as branch_alias, never reused.
+Cloud branch: the harness-assigned `claude/...` branch, started from origin/fast-track and shipped by PR
+(PARALLEL.md); `cloud/work` is legacy. Harness names are recorded as branch_alias, never reused.
 Lanes: bridge-nb = F:\AIBridge; dsaweb-nb = incoming_dsa/; ask-nb = poller. Directories are not renamed.
 Subagents: <parent ID>/<tier>-<nn> (e.g. /sonnet-02).
 Renames: chat titles by hand; git refs never renamed or rewritten (new ref at same commit, old deleted

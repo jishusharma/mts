@@ -1,7 +1,7 @@
 # MTS - Claude Code sessions
 
 Read first: `MyTradingSys/research/STATUS.md` (regenerate: `python scripts/dev/make_status.py`),
-then `MyTradingSys/system/LESSONS_LEARNED.md`; supervisor decisions: `research/fast_track_2026-09-27/SUPERVISOR_LOG.md`. Don't re-read handoff docs STATUS.md already summarises.
+then `MyTradingSys/system/LESSONS_DIGEST.md` (rules only; full stories in LESSONS_LEARNED.md, read an entry when its rule touches your task); supervisor decisions: `research/fast_track_2026-09-27/SUPERVISOR_LOG.md`. Don't re-read handoff docs STATUS.md already summarises.
 Chat-surface (DSA) behaviour lives in `DSA_SESSION_PROMPT.md`; this file is for code mode.
 Parallel work (any machine, any account): `MyTradingSys/system/PARALLEL.md` - `sync.py start`, commit, `sync.py ship`.
 Same-page check on either Claude account, and before ending a session: `python scripts/dev/sync.py where` (lists worktrees holding work not on origin/fast-track); commit + ship anything flagged.
@@ -44,13 +44,10 @@ Live state off the desktop (NUC, laptop): `sync.py start` pulls the read-only mi
 - Push: never from the live tree (the folder holding `.mts_live`). `git worktree add ../mts-push -b <host>/<slug> HEAD` (reuse it if present),
   `git merge origin/fast-track` there (docs conflicts: take origin's text; STATUS.md: take origin's, regenerate),
   `python scripts/dev/run_all_tests.py --quick`, then `git push origin <branch>:fast-track`. `sync.py ship` does the same.
-- CI/CD without the operator (2026-10-10; recipe `MyTradingSys/system/DEPLOY_RUNBOOK.md`): `.github/workflows/ci.yml` gates every push on ubuntu AND windows and
-  publishes the tested SHA as `green/fast-track`. On the live host scheduled task `MTS-AutoDeploy` (15 min) runs `scripts/dev/auto_deploy.py`: gates that SHA
-  in a throwaway worktree, STOPS on red (live tree untouched), `merge --ff-only`, copies/restores orderflow `_state.json`, restarts only the changed processes
-  (never position_manager), lists Java under `java_pending`. Result: `MyTradingSys/runtime/sched/auto_deploy_last.json`. Task `MTS-DailyHygiene` (06:30)
-  runs `scripts/dev/daily_hygiene.py` (quick gate, `sync.py where`, declutter DRY run, STATUS) -> `MyTradingSys/runtime/sched/hygiene_latest.md`, which
-  STATUS.md embeds: read its STATUS/GATE lines at boot and fix a RED before new work. Register once per host:
-  `powershell -File scripts/sched/register_cicd_tasks.ps1 -Trigger` (`-SkipDeploy` off the live host). Never deploy by hand while it works.
+- CI/CD without the operator: `.github/workflows/ci.yml` gates every push (ubuntu AND windows) and moves `green/fast-track`;
+  `MTS-AutoDeploy` (15 min) deploys only that SHA, stops on red; `MTS-DailyHygiene` writes the report STATUS.md embeds. Details,
+  restart map, registration: `MyTradingSys/system/DEPLOY_RUNBOOK.md`. STATUS.md's `CI green:` line says RED when the tip has not
+  gone green for an hour: then nothing deploys, and fixing CI is the first job of any session.
 - Deploy to the live tree by hand only if that job is down (operator pre-authorised "just do it" 2026-10-09): if other sessions have uncommitted edits there, do NOT
   merge/stash. `git -C <live> checkout origin/fast-track -- <only the changed live-path files>`, run their tests, kill only that
   process; `loop-supervisor` restarts it in ~1 min. Java needs `mvn compile` + restart: leave until a window, say so.
@@ -69,6 +66,8 @@ Live state off the desktop (NUC, laptop): `sync.py start` pulls the read-only mi
 
 ## Hard rules
 - Share work only through `python scripts/dev/sync.py ship` (merges origin/fast-track, gates code, pushes fast-track).
+  Cloud containers (claude.ai/code, harness branch `claude/...`): start from origin/fast-track, push the harness branch, open a PR
+  into fast-track; CI auto-merges it when green (PARALLEL.md). `python scripts/dev/cloud_setup.py` installs the gate deps and prints the state.
   Never commit to master, never rebase/reset/force-push. Never work in the live tree (it holds `.mts_live`).
 - Commit body carries `Result: <what works now / the number>` - the operator reads `sync.py news`, not diffs.
 - Other sessions' uncommitted files are not yours: don't stash, clean, revert or report them.
