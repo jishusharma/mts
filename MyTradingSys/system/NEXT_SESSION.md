@@ -1,4 +1,4 @@
-<!-- relay: go depth=0 id=7b14bccc -->
+<!-- relay: go depth=1 id=8a455ad2 -->
 # NEXT SESSION PROMPT (handoff 2026-10-10 ~06:50Z, relay session after B160; Claude Code Win App, either account)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -13,12 +13,10 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
    than 24 h; Java changes (D15 on B142, D17 on B144) are staged + tested, the restart goes to a JIS-NB desk task.
 2. DSA / JIS-NB results: for every desk task now done, spot-check ONE number against its file, then use it (no redo).
 3. TASK (pick first unclaimed, claim it):
-   0. B164/B166/B168 follow-up (Sonnet, 15 min): `tail ~/.claude/mts-relay-log.jsonl` for `kick`/`idle` events from mts-dispatcher
-      (no event after 40 min = the task did not run: check list_scheduled_tasks); on JIS-NB regenerate the paste
-      (`powershell -File scripts/start-session.ps1 -NoClipboard`) and write the `paste size` into B166 (CLOSED if <= 115 KB, else
-      cut DSA_SESSION_PROMPT.md); Control Room: rebuild + republish if the declutter (B165) is not live yet; D23 (vision addendum)
-      answered -> apply to PROJECT_VISION.md + PROJECT_VISION_CHANGELOG.md, mark applied.
-   a. B141: write the runner for the 28 pre-registered cells (research/PRE_REG_HTF_REPLACE_2026-10-07.md), run on F:/MTS/data, holdout once.
+   0. Pre-check (2 min, not a task): `grep '"kick"\|"idle"' ~/.claude/mts-relay-log.jsonl | tail -3`. An event after 09:40Z
+      2026-10-10 from the dispatcher = B164 CLOSED (edit the row); none = list_task_runs mts-dispatcher, read its last run, fix.
+      D23 (vision addendum) answered -> apply to PROJECT_VISION.md + CHANGELOG, mark applied; unanswered -> leave (operator's call).
+   a. B141 (skip while the NUC claim on it is open: `sync.py start` lists claims): write the runner for the 28 pre-registered cells (research/PRE_REG_HTF_REPLACE_2026-10-07.md), run on F:/MTS/data, holdout once.
    b. B149 capture (JIS-NB desk task, live host only): after 08:05 UTC, if a position stayed open across the 08:00 settlement
       (daily_loss_monitor log), run the capture command in the desk task from a worktree with the live data dirs, ship the json, mark done.
    c. B160 follow-up: once <live>/Dumps/backtest/raw/klines has BTCUSDT-1m-2026-10-09.csv, run `shot.py engine <id>` for the 10-09
@@ -26,6 +24,13 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
 4. Route run-and-report work to DSA (system/DSA_DELEGATION.md); post what the DSA queue lacks before ending.
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
+
+## Update 2026-10-10 ~09:30Z (relay session A, JIS-NB, commit 0cdb2cb)
+- DONE: B164 follow-up: mts-dispatcher's 09:08Z tick failed silently: it ran the LIVE tree's relay.py (3f8a5ef, no `kick`). Its prompt
+  (~/.claude/scheduled-tasks/mts-dispatcher/SKILL.md, host-local) now runs origin/fast-track's relay.py copied to %TEMP%; manual run logged IDLE.
+  B166 CLOSED (paste 88.9 KB). B165 declutter already live (page built 09:21Z). D23 still unanswered (created today): not applied.
+- B168 waits on the operator (reload AIBridge extension on JIS-NB + JIS-NUC). Live tree is behind origin (3f8a5ef + 1 unshipped commit, dirty):
+  MTS-AutoDeploy cannot ff it; supervisor's call, builders do not touch it.
 
 ## State at handoff (2026-10-10 ~06:50Z, JIS-NB, relay session, depth 2 -> next fires mts-relay-a/b by parity)
 - DONE this session: B160 CLOSED (commit cbec6d2): `shot.py engine <id> [--raw DIR] [--plan]` floors the chart's `at` to the minute, compiles src/main + harness SnapAt.java into %TEMP% (src/ and target/ untouched), runs on the 1m archive (default <main>/Dumps/backtest/raw) from an empty cwd, writes research/screenshots/engine/<id>.json. Refuses non-chart, no `at`, non-BTCUSDT, archive missing the shot's day, null snapshot. test_shot 26 pass (3 new, fail-first checked). Real run 65656faa31ba (10-07 09:24:59Z): current_price 83745.4 = 09:23 1m close (MATCH, no look-ahead); live-only fields (net delta, OI breakdown, book, funding rate) are listed as unavailable in data_quality.
