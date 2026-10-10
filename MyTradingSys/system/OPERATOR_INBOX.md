@@ -1273,3 +1273,7 @@ Now that we have switiching mechanism - we need to design keeping eveything in m
 ```
 I see a terminal window flashing on my screen. Most probably it is something with  Python. So it takes away the focus if I'm writing something and it is annoying. Try to fix it.
 ```
+## 9nzi6mqzbkudp0c3lbmo | 2026-10-10T19:45:55Z | task
+```
+i asked to deal with python.exe flasing on mky screen tme to time
+```
