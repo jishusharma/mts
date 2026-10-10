@@ -99,7 +99,11 @@ def convert(raw, out, symbol="GER40"):
             for t, o, h, lo, c, v in rows:
                 # No aggressor split in a CFD feed: taker-buy = half the volume keeps kline-derived delta/CVD at 0
                 # (neutral, the order-flow proofs cannot fire) instead of reading every bar as all-sell (tbv 0).
-                w.write(f"{t},{o:.3f},{h:.3f},{lo:.3f},{c:.3f},{v:.6f},{t + 59999},{v * c:.4f},0,{v / 2:.6f},{v * c / 2:.4f}\n")
+                # volume prints with 6 decimals and the engine computes delta = 2 * takerBuy - volume: taker-buy needs 7
+                # decimals (half of a 6-decimal number) or the rounding leaves delta = +-1e-6 and the order-flow proofs
+                # fire on noise (volumes here are as small as 0.001).
+                vs = f"{v:.6f}"
+                w.write(f"{t},{o:.3f},{h:.3f},{lo:.3f},{c:.3f},{vs},{t + 59999},{v * c:.4f},0,{float(vs) / 2:.7f},{v * c / 2:.4f}\n")
         n += len(rows)
     print(f"convert {symbol}: {n} bars, {days_with_bars} days with bars, {len(months)} month files -> {kd}")
     return n
