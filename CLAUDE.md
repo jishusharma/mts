@@ -8,6 +8,7 @@ Same-page check on either Claude account, and before ending a session: `python s
 Start ritual for any account or device (full text in PARALLEL.md): `sync.py start` (prints open claims), pick ONE task from NEXT_SESSION.md,
 `sync.py claim "<task>"`, work, `sync.py ship`, `sync.py release <slug>`, `sync.py where` clean.
 Automatic hand-over to a fresh session (no operator input): `MyTradingSys/system/RELAY.md`; at the end of a task run `relay.py handoff` then `relay.py gate`, fire the task it names. Writing tasks into NEXT_SESSION.md: RELAY.md "Task list standard" (curated, one session each, `DONE when:`); `relay.py handoff` refuses a list that fails `relay.py lint`.
+Task cards (refinement stage: raw idea -> ready task, Definition of Ready, Backlog on the Control Room): `MyTradingSys/system/TASK_REFINEMENT.md`; `python scripts/dev/tasks.py next` before picking work, `tasks.py new` for follow-ups you find.
 Surfaces, budget and session naming: `MyTradingSys/system/SURFACE_POLICY.md`.
 Live state off the desktop (NUC, laptop): `sync.py start` pulls the read-only mirror; `python scripts/dev/live_mirror.py brief` before any live read; say `mirror@<utc>` when you quote it (LIVE_MIRROR.md).
 

@@ -14,7 +14,8 @@ handoff and hands over to a fresh session costs far less (SHORT SESSIONS rule in
 ## The loop (every relay session)
 1. Worktree from `origin/fast-track` (never the live tree), `sync.py start`, read the header id as STARTED_ID.
 2. Do ONE task from NEXT_SESSION.md (claim, work, tests, commit, `sync.py ship`, `sync.py release`).
-3. Overwrite NEXT_SESSION.md (queue, state, last commit). Then `python scripts/sched/relay.py handoff --file MyTradingSys/system/NEXT_SESSION.md --go`
+3. Overwrite NEXT_SESSION.md (queue, state, last commit). Build its TASK list from `python scripts/dev/tasks.py next --n 3` (each card's `brief` is the task text);
+   no ready card, or `tasks.py status` says REFINE_NEEDED: the next task is the refiner session (TASK_REFINEMENT.md), never a vague builder task. Found follow-up work this session: `tasks.py new`. Then `python scripts/sched/relay.py handoff --file MyTradingSys/system/NEXT_SESSION.md --go`
    (more work, no operator question pending, no RED) or `--stop "<reason>"`; exit 2 = list failed the Task list standard below, fix and rerun. Commit and `sync.py ship`; `sync.py where` clean.
 4. `python scripts/sched/relay.py gate --file ... --started-id <STARTED_ID>`. GO line names the task: fire it with the
    `run_scheduled_task` tool (load via ToolSearch). STOP: one line with the reason, end.

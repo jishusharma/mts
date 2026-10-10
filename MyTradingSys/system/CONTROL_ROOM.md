@@ -22,10 +22,12 @@ The operator has two inputs on the page, both stored in the artifact's db (not i
      fenced block; never paraphrase, never fix typos). The repo copy is the durable one; the db can be wiped.
    - question -> answer it from files you read (MATCH/NOT_IN_DATA discipline), reply in `reply`, status `answered`.
    - task / requirement -> file a registry row in BUGS.md (or attach to an existing one), quote the operator's text in
-     the item file, set `ref` to the row id(s) (space-separated), status `filed`. The page then shows each row's live registry status and
+     the item file, set `ref` to the row id(s) (space-separated), status `filed`. Then capture a raw task card: `python scripts/dev/tasks.py new "<title>" --ref <row> --from-inbox <item id>`
+     (system/TASK_REFINEMENT.md); the refiner scopes it, you do not. The page then shows each row's live registry status and
      title under the operator's text on every rebuild (the resolution); set `done` with a one-line result when all refs close.
    - page -> change `control_room.json` or the template (+ test), add a `changelog` line, status `done`, say what changed.
    - Can't or won't -> status `declined` with the reason in `reply`. Never leave an item `new` past one pickup.
+3b. Backlog requests: `taskops` docs with no `applied`, oldest first: `python scripts/dev/tasks.py apply-op <task> <action>`, then `update` the doc with `applied: "<date>"`.
 4. Decisions with an `answer` and no `applied`: apply them (registry rows, SUPERVISOR_LOG line, config), then
    `update` the doc with `applied: "<date>: what was done"`. New questions for the operator become new `decisions` docs
    (one per question, `options` + `recommended`), never a chat message the operator has to find.

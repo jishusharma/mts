@@ -172,5 +172,21 @@ class DeclutterTemplateTest(unittest.TestCase):
         self.assertEqual(self.tpl.count("${esc(x.text)}"), 2)  # clipped summary uses slice; full text rendered once per branch
 
 
+class BacklogSectionTest(unittest.TestCase):
+    """Backlog section (2026-10-10): cards come from tasks.py, the page only writes taskops docs; nothing is edited in the page."""
+    tpl = (Path(__file__).resolve().parent / "control_room.tpl.html").read_text(encoding="utf-8")
+
+    def test_build_carries_the_backlog_summary(self):
+        data = cr.build(json.loads(cr.CFG.read_text(encoding="utf-8")), cr.REPO, NOW)
+        self.assertEqual(set(data["backlog"]), {"counts", "line", "rows"})
+        self.assertTrue(data["backlog"]["line"].startswith(("REFINE_OK", "REFINE_NEEDED")))
+
+    def test_page_writes_only_taskops_and_never_a_card(self):
+        self.assertIn('id="bl-sec"', self.tpl)
+        self.assertIn('db.collection("taskops")', self.tpl)
+        self.assertIn('blDb.collection("taskops").add(', self.tpl)
+        self.assertNotIn('collection("tasks")', self.tpl)   # cards live in the repo; the page is a view plus requests
+
+
 if __name__ == "__main__":
     unittest.main()

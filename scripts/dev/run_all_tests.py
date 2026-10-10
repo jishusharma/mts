@@ -133,6 +133,12 @@ def main(argv=None):
     cmd3dk = [sys.executable, "scripts/dev/test_desk.py"]
     success, output = run_step("3dk", "Desk board tests", cmd3dk)
     results.append(("Step 3dk: Desk board tests", success))
+    cmd3tk = [sys.executable, "scripts/dev/test_tasks.py"]
+    success, output = run_step("3tk", "Task card tests", cmd3tk)
+    results.append(("Step 3tk: Task card tests", success))
+    cmd3tl = [sys.executable, "scripts/dev/tasks.py", "lint"]   # a ready/active card that fails the Definition of Ready is an error
+    success, output = run_step("3tl", "Task cards meet the Definition of Ready", cmd3tl)
+    results.append(("Step 3tl: Task card lint", success))
     cmd3q = [sys.executable, "scripts/dev/test_registry_consistency.py"]
     success, output = run_step("3q", "INDEX/BUGS consistency", cmd3q)
     results.append(("Step 3q: INDEX/BUGS consistency", success))
