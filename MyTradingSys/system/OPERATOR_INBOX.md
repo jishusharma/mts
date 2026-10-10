@@ -1046,3 +1046,133 @@ Unsubscribe
 
 
 ```
+
+## dc0rb26iwlfevrnbfy3t | 2026-10-09T23:22:33Z | requirement
+```
+check if this is duplicate - 
+**Understood.**  
+
+The original objective is a **profitable, mechanical system** for BTC perpetual futures — not pure academic detail on CVD.  
+
+Everything below is therefore framed strictly as **Setup Beta**: a secondary, higher-frequency edge that is only traded when it has clear positive expectancy after fees, and only as a complement to the primary Macro Trend Engine (Setup Alpha).  
+
+### Setup Beta — Liquidity Sweep + CVD Absorption (Production Spec for Claude)
+
+**Role in the overall engine**  
+- Primary capital allocation remains with the daily trend-following system (long-biased / long-flat).  
+- Setup Beta is a **tactical overlay** that deploys small risk only on high-conviction order-flow reversals.  
+- Expected profile (from research + live X trader behaviour 2024–2026): win rate 55–68 % when all filters are met, average R ≥ 1.8, very short holding time (minutes to a few hours), low correlation to the daily trend system.  
+- Max risk allocation to this setup: 0.5–1.0 % of total equity per trade, and never more than 2–3 concurrent positions.
+
+**Exact Entry Rules (all must be true — no exceptions)**
+
+1. **Pre-marked liquidity pool**  
+   - Equal highs/lows (±0.05–0.1 %), previous-day high/low, round number, Asian-range extreme, or visible liquidation cluster on a reliable heatmap.  
+   - Level must be marked **before** the sweep occurs.
+
+2. **Aggressive sweep**  
+   - Price prints beyond the level with a long wick.  
+   - Candle body closes back inside the prior range on the detection timeframe (15-minute or 1-hour preferred).
+
+3. **CVD absorption / divergence (non-negotiable)**  
+   - On the same timeframe (or one lower): price makes a new extreme while CVD does **not** make a new extreme in the same direction (or actively moves opposite).  
+   - Prefer **Spot CVD** confirmation over pure Perp CVD.  
+   - Multi-venue aggregated CVD (Binance + Bybit + OKX + Hyperliquid, aggressor-side normalized) is materially better than single-venue.
+
+4. **Market Structure Shift confirmation**  
+   - On the 5-minute chart: clear break of the most recent minor swing in the opposite direction of the sweep (MSS / BOS).  
+   - Entry only after this confirmation candle closes.
+
+5. **Session filter**  
+   - London open, New York open, or London/NY overlap only.  
+   - Asian-session sweeps are skipped (statistically lower follow-through).
+
+6. **Open-interest filter**  
+   - OI should drop or stabilize after the sweep (positions flushed, not added). Rising OI on the sweep side is a red flag.
+
+**Entry Execution**  
+- Limit or market-on-close of the 5-minute MSS confirmation candle.  
+- Prefer maker where possible to reduce fee drag.
+
+**Risk & Position Sizing (locked)**  
+- Hard stop: 1–3 ticks beyond the absolute extreme of the sweep wick.  
+- Risk per trade: 0.5–1.0 % of total account equity.  
+- Position size = (Equity × Risk %) / (Entry – Stop distance in $).  
+- Isolated margin only. Structural leverage typically ends up 3–8× because the stop is extremely tight — this is acceptable only because the dollar risk is capped.  
+- Never risk more than 2 % total open risk across all Setup Beta positions.
+
+**Exit Rules**  
+- Primary target: 1.5–3.0 R or the next opposing liquidity pool / prior swing.  
+- Scale out 50 % at 1.5 R, trail the remainder with a tight ATR or structure-based trail.  
+- Time stop: if the trade has not moved 0.8 R within 45–90 minutes, exit at market (avoids dead capital).  
+- Immediate exit if Spot CVD flips hard against the position or a new opposing sweep forms.
+
+**Why this has edge (evidence summary)**  
+- Research and live trader behaviour show that pure price sweeps without CVD absorption are often genuine breakouts. The CVD filter removes a large percentage of the losers.  
+- Spot-vs-Perp CVD divergence is one of the cleanest real-money signals currently observable on X and in professional desks.  
+- Tight stop + defined structure gives asymmetric R even at modest win rates.  
+- Low correlation to the daily trend system improves overall portfolio Sharpe.
+
+**What Claude must implement / backtest**  
+1. Multi-venue trade-stream ingestion with aggressor-side normalization.  
+2. Pivot-reset or rolling-window CVD (30 m + 2 h).  
+3. Automatic detection of pre-marked levels + four-stage sweep logic.  
+4. Full cost model (0.04–0.06 % round-trip + realistic slippage on the tight stop).  
+5. Separate performance report for Setup Beta alone and for the combined Alpha + Beta portfolio.
+
+**Hard constraints (to keep it profitable)**  
+- Never trade this setup when the daily trend engine is in a strong opposing regime without an explicit override flag.  
+- Skip the setup entirely during major news or when funding is at extreme levels that signal crowded positioning.  
+- If live win rate over 50–100 trades falls below 52 % after costs, pause and re-examine filters.
+
+This is the complete, production-oriented specification for the order-flow leg. It is deliberately narrow and rule-bound so that Claude can turn it into compilable code and honest backtests without inventing extra degrees of freedom.
+
+Would you like the matching Python / Pine Script skeleton next, or the full combined Alpha + Beta knowledge handoff document ready to paste to Claude?
+```
+
+## j4028t7lf5gibka4eher | 2026-10-10T08:40:09Z | task
+```
+MCR paste size fix - session paste has outgrown the clipboard.
+
+The boot paste Dumps\SESSION_PASTE.txt is now 189,729 bytes (10-10-2026 13:40 local, session MTS-2026-10-10-0810Z).
+The clipboard copies only ~3KB of it, so a manual paste into a fresh DSA chat loses almost everything.
+On 2026-10-09 the same file was ~103KB; it nearly doubled in one day.
+
+Cause, measured from disk this session:
+- news section (sync.py news 72) = 61,619 bytes = 33% of the paste.
+- DSA_SESSION_PROMPT.md = 32,272 bytes.
+- SUPERVISOR_INBOX.md = 13,482 bytes.
+- everything else under 6KB.
+
+Fix options, for a Claude Code builder session (manifest / start-session.ps1 structure is protected per DSA section 0.8a, not a DSA direct edit):
+1. Drop the news section from the paste entirely. DSA already runs sync.py news at boot per section 0.8b, so the paste copy is duplicated work. Saves 61KB -> paste lands ~128KB.
+2. Shrink the news window from 72h to 12h or 24h. Cuts proportionally.
+3. SUPERVISOR_INBOX is 13KB of mostly closed notes; read only the open ones.
+
+Preferred: option 1, matching 0.8b. Keep the paste under 100KB so the clipboard holds it again.
+
+Context: DSA already reads the paste from disk through the AIBridge when the chat refuses it (section 2), so nothing is blocked today. This is about restoring the manual paste path and cutting per-boot cost.
+```
+
+## o6c6m6k5he1n0bpi53ly | 2026-10-10T08:42:31Z | requirement
+```
+Why clause session are stopping besides my clear instructions to keep working by using the switching mechanism between sessions to keep working economically along with CI/CD? I need a solution. High priority. 
+
+```
+
+## br8otmtc2o7xbbmpwodh | 2026-10-10T08:58:22Z | requirement
+```
+The tasks that that i am creating here is just sitting quietly.
+So we need a scheduled Hiaku worker who can start the Default Sonnet Model Agent to pick up the tasks and workon them asap and then get the CI CD going with session switching applied. 
+```
+
+## mpvin6sch7v345bc7zcn | 2026-10-10T08:59:14Z | task
+```
+Check is the vision doc is updated - Assing Opus to this task. 
+What is missing in our vision for MTS given where it is today?
+```
+
+## 2sn0idxj5o0uyfm52zca | 2026-10-10T09:03:33Z | task
+```
+Declutter MTS control room! 
+```
