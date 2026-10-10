@@ -15,9 +15,22 @@ handoff and hands over to a fresh session costs far less (SHORT SESSIONS rule in
 1. Worktree from `origin/fast-track` (never the live tree), `sync.py start`, read the header id as STARTED_ID.
 2. Do ONE task from NEXT_SESSION.md (claim, work, tests, commit, `sync.py ship`, `sync.py release`).
 3. Overwrite NEXT_SESSION.md (queue, state, last commit). Then `python scripts/sched/relay.py handoff --file MyTradingSys/system/NEXT_SESSION.md --go`
-   (more work, no operator question pending, no RED) or `--stop "<reason>"`. Commit and `sync.py ship`; `sync.py where` clean.
+   (more work, no operator question pending, no RED) or `--stop "<reason>"`; exit 2 = list failed the Task list standard below, fix and rerun. Commit and `sync.py ship`; `sync.py where` clean.
 4. `python scripts/sched/relay.py gate --file ... --started-id <STARTED_ID>`. GO line names the task: fire it with the
    `run_scheduled_task` tool (load via ToolSearch). STOP: one line with the reason, end.
+
+## Task list standard (operator 2026-10-10: "the tasks must be curated and scoped")
+The list is the product: the chain runs exactly what it says. `relay.py handoff` runs `relay.py lint` and REFUSES (exit 2, file untouched) a bad list;
+fix the list, run handoff again. Rules (code: scripts/sched/handoff_lint.py, tests: tests/test_relay.py LintTest):
+- Prompt block <= 30 lines; no restated hard rule or state (CLAUDE.md and STATUS.md carry them).
+- Tasks are `   Qn. <what>` lines. One task = one session (Sonnet, <= 50k tokens, <= 6 lines): split anything bigger, e.g. one screenshot SET, one pre-registration.
+- Every open task has `DONE when: <something a reviewer can observe>`, names the exact item (no "next open item", "follow-ups", "as needed", "etc."),
+  and every path it names exists on origin. Output files that do not exist yet belong to an earlier task; the later one starts `Qn. (after Qm ...)`.
+- A finished task is rewritten `Qn. DONE ...`. `--go` needs at least one open unblocked task; `--stop` is refused while one exists, so "queue empty" cannot be
+  written while work waits. All tasks blocked: add the unblocking task (desk post, Control Room decision) first, then stop naming each blocker.
+- Curating when the list runs low: read STATUS.md, `shot.py status`, `desk.py list --all`, items/INDEX.md and Control Room; cut each candidate to one
+  session with a finish line BEFORE writing it. A candidate you cannot scope in one session becomes a scoping task ("write the next item as Qn").
+- `python scripts/sched/relay.py lint --file MyTradingSys/system/NEXT_SESSION.md [--want stop]` checks without writing.
 
 ## Brakes (all fail closed)
 - no header, header says stop, or the id did not change (the handoff was not rewritten: would replay the same task) -> STOP

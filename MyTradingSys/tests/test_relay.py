@@ -12,7 +12,9 @@ SCRIPT = REPO / "scripts" / "sched" / "relay.py"
 
 def run(home, *args, now="2026-10-10T10:00:00Z", extra=None):
     env = {k: v for k, v in os.environ.items() if not k.startswith("MTS_RELAY")}
-    env.update(MTS_RELAY_HOME=str(home), MTS_RELAY_NOW=now, **(extra or {}))
+    env.update({"MTS_RELAY_HOME": str(home), "MTS_RELAY_NOW": now, "MTS_RELAY_NOLINT": "1", **(extra or {})})
+    if env.get("MTS_RELAY_NOLINT") == "":
+        del env["MTS_RELAY_NOLINT"]
     return subprocess.run([sys.executable, str(SCRIPT), *args], capture_output=True, text=True, env=env)
 
 
@@ -121,6 +123,72 @@ class RelayTest(unittest.TestCase):
         self.assertIn("weekly budget", r.stdout)
         run(self.home, "resume")
         self.assertEqual(run(self.home, "gate", "--file", str(self.f), "--started-id", "none").returncode, 0)
+
+
+GOOD = """<!-- relay: go depth=0 id=aaaa1111 -->
+# NEXT
+```
+MTS builder session.
+3. TASK:
+   Q1. DONE shots read.
+   Q2. Read set 29ff2b with `scripts/dev/shot.py` and extract.
+       DONE when: research/screenshots has the extract and shot.py status shows the set done.
+   Q3. (after Q2) engine run. DONE when: json shipped.
+```
+"""
+NL = chr(10)
+NOLINT_OFF = {"MTS_RELAY_NOLINT": ""}
+
+
+class LintTest(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.f = self.tmp / "NEXT_SESSION.md"
+        self.home = self.tmp / "home"
+
+    def lint(self, text, *args):
+        self.f.write_text(text, encoding="utf-8", newline=NL)
+        return run(self.home, "lint", "--file", str(self.f), "--root", str(REPO), *args, extra=NOLINT_OFF)
+
+    def test_good_list_passes(self):
+        r = self.lint(GOOD)
+        self.assertEqual(r.returncode, 0, r.stdout)
+
+    def test_missing_done_when_vague_and_missing_path_fail(self):
+        bad = GOOD.replace("DONE when: research/screenshots has the extract", "take the next open item in research/nonexistent_dir/PLAN.md. Ends with research")
+        r = self.lint(bad)
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("no `DONE when:`", r.stdout)
+        self.assertIn("vague", r.stdout)
+        self.assertIn("does not exist", r.stdout)
+
+    def test_block_too_long_and_restated_rule_fail(self):
+        r = self.lint(GOOD.replace("MTS builder session.", "Worktree only." + NL + ("x" + NL) * 31))
+        self.assertIn("limit 30", r.stdout)
+        self.assertIn("restates a hard rule", r.stdout)
+
+    def test_task_over_six_lines_fails(self):
+        pad = "".join("       " + c + NL for c in "abcde")
+        self.assertIn("split it", self.lint(GOOD.replace("       DONE when:", pad + "       DONE when:")).stdout)
+
+    def test_go_without_open_task_and_stop_with_open_task_refused(self):
+        none_open = GOOD.replace("Q2. Read set", "Q2. DONE Read set").replace("(after Q2)", "(after Q9)")
+        self.assertIn("go with no unblocked open task", self.lint(none_open).stdout)
+        r = self.lint(GOOD, "--want", "stop")
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("stop refused", r.stdout)
+
+    def test_handoff_refuses_bad_list_and_writes_nothing(self):
+        self.f.write_text("# NEXT" + NL + "```" + NL + "Q" + NL + "   Q1. do things as needed" + NL + "```" + NL, encoding="utf-8", newline=NL)
+        r = run(self.home, "handoff", "--file", str(self.f), "--go", extra=NOLINT_OFF)
+        self.assertEqual(r.returncode, 2, r.stdout)
+        self.assertIn("HANDOFF REFUSED", r.stdout)
+        self.assertNotIn("relay:", self.f.read_text(encoding="utf-8"))
+
+    def test_handoff_stop_allowed_when_all_done(self):
+        self.f.write_text(GOOD.replace("Q2. Read set", "Q2. DONE Read set").replace("(after Q2)", "(after Q9)"), encoding="utf-8", newline=NL)
+        r = run(self.home, "handoff", "--file", str(self.f), "--stop", "all done or blocked", extra=NOLINT_OFF)
+        self.assertEqual(r.returncode, 0, r.stdout)
 
 
 if __name__ == "__main__":
