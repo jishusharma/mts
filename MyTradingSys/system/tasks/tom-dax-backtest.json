@@ -4,7 +4,8 @@
   "commands": [],
   "created": "2026-10-10T18:55:33Z",
   "depends_on": [
-    "tom-dax-recall"
+    "tom-dax-recall",
+    "tom-encode-spike-fade"
   ],
   "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md with DAX and matched-proof BTC rows (n, gross R, net R, CI, null), holdout read once, TRIAL_REGISTRY rows added, branch named.",
   "from_inbox": "",
@@ -12,7 +13,7 @@
   "id": "tom-dax-backtest",
   "lane": "SONNET",
   "live_path": false,
-  "note": "",
+  "note": "Full run deferred by the PROBE_PLAN stop rule (RECALL_DAX.md: 0/7 signals). Build in progress/landed by the build session; run after tom-encode-spike-fade.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat)",
