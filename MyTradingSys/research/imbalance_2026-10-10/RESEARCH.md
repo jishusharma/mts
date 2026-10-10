@@ -129,3 +129,20 @@ P4_QUARTER_HOUR_IMBALANCE_CORRECTED_2026-10-08.md: same family, 2024-12..2026-09
 This file adds the L2 order book imbalance branch (distinct from kline time-of-day). Not yet backtested in MTS.
 
 # END
+
+## Addendum 2026-10-10 - Grok X.com sweep (external, unverified)
+Source: Grok, operator-pasted. X links not opened by MTS. Tier T3.
+Key finding - @VelvetSoul control test:
+Backtested OBI on 1600+ Polymarket 5-min BTC markets.
+Raw high-imbalance cells: 94-96 pct win rate.
+Controlling for price (near-coin-flip cases): 33-56 pct = noise.
+Naive OBI mostly restates the price move already made.
+Any MTS test of book_imbalance must control for price or it shows a false positive.
+@polyquantai: claims 72.4 pct win, 695 trades, Binance book imbalance to trade Polymarket.
+Polymarket not perps; fees not mentioned; unverified.
+@52kskew: qualitative OBI + OI + funding confluence. No multi-trade P&L.
+Other handles: educational order-flow content, no strategy P&L for pure OBI/OFI with fees.
+Fee problem: NOTHING FOUND. No public post describing a working maker or queue-position OBI edge on BTCUSDT perps that beats the 0.05 pct round-trip taker wall.
+Bottom line: public X evidence of profitable, fee-surviving, pure OBI/OFI on BTCUSDT perps is essentially absent.
+Confirms the filed verdict. No new rule to test.
+Gemini YouTube/Google sweep still pending.
