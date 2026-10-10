@@ -1,5 +1,5 @@
-<!-- relay: go depth=0 id=d5c269c8 -->
-# NEXT SESSION PROMPT (handoff 2026-10-10 ~21:00Z, queue rebuilt from the task cards; Claude Code Win App, either account; older text below is history)
+<!-- relay: go depth=1 id=3d1817ef -->
+# NEXT SESSION PROMPT (handoff 2026-10-10 ~21:00Z, relay A ~21:00Z: Q1 done; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
 
@@ -13,7 +13,7 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), then State be
 2. For every desk task now done, spot-check ONE number against its file, then use it (no redo).
 3. TASK: first Qn below not DONE and not claimed (`sync.py start` lists claims). Its card is the whole brief:
    `python scripts/dev/tasks.py brief <card>` -> `sync.py claim` -> work -> `tasks.py done <card> --result "<number/file>"` -> ship -> release.
-   Q1. Card B142 (disable ExtraSetupBuilder momentum candidates, Java). DONE when: mvn test green incl. new ExtraSetupBuilderDisabledTest (red on old code first); BUGS.md row B142 shows the fix; commit shipped.
+   Q1. DONE Card B142 (commit e262656; live after JIS-NB desk task 20261010-205418 Java window).
    Q2. Card B144 (stop counting the volume spike in proof_count, Java). DONE when: CountSignalsD4Test.volumeSpike_doesNotCount_B144 red before, green after; mvn test green; commit shipped.
    Q3. Card B059 (pin the fixed-grid volume profile with a test). DONE when: BuildVpFixedGridTest green on HEAD and red under the L566 mutation (both outputs in the result); row B059 CLOSED.
    Q4. Card B124 (testnet_canary journal check per open plan). DONE when: the 6 new tests in test_testnet_canary.py pass, red before; row B124 CLOSED; commit shipped.
@@ -26,6 +26,7 @@ End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py whe
 ```
 
 ## Queue status
+Relay A 2026-10-10 ~21:00Z (JIS-NB): Q1 B142 DONE: ExtraSetupBuilder.build returns []; ExtraSetupBuilderDisabledTest red->green; full mvn test green (22 suites). Java reaches the feed only via desk task 20261010-205418 (JIS-NB). Next: Q2 B144. Control Room not read this run (task did not need it). tasks.py status REFINE_OK, 7 ready.
 Rebuilt 2026-10-10 ~21:00Z from `tasks.py next` after the Q1-Q4 screenshot/B171 work finished (Q1-Q4 of the old list DONE: shots 29ff2b + 3 single-TF read, B171 NO-INFO with D24 filed, klines desk task 20261010-165600 posted and still pending on JIS-NB).
 Why the chain was idle 17:18Z-20:42Z: the old list ended in two items blocked on that desk task, so the handoff said stop while 8 cards were ready. The list now starts from ready cards.
 Not in this list on purpose (claimed by other sessions at 20:48Z): tom-verdict-fee-per-market, tom-dax-data, tom-dax-backtest. Refined, waiting for a dispatcher refine pass: B066, B118, tom-encode-spike-fade, tom-probe-prereg.
