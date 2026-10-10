@@ -28,7 +28,7 @@ Plan of record for the probe: PROBE_PLAN.md (hypotheses H1-H5, option arms S/Q/M
 
 ## 3. FOCUS (in this order)
 1. **Ground truth first:** trade ledgers from frames, Tom (>= 30 trades) and Fabio (>= 20). Cards tom-trade-ledger, fabio-trade-ledger.
-2. **Redefine each layer from its ledger (Opus research):** setup families, sourced rules, proofs per market data, cost model, stop-width transfer rule, management, session; keep/change/drop vs the current engine. Cards tom-layer-v2-spec, fabio-layer-v2-spec.
+2. **Redefine each layer from its ledger (Opus research, two cards each: A families/rules, B markets/cost/build cards):** setup families, sourced rules, proofs per market data, cost model, stop-width transfer rule, management, session; keep/change/drop vs the current engine. Cards tom-layer-v2-spec, fabio-layer-v2-spec.
 3. **Encode family by family behind a flag (Sonnet):** default off so live BTC stays bit-identical; spike-fade first (tom-encode-spike-fade). Pass bar = recall on his own trades (>= 4/7 now, then the full ledger).
 4. **Home-market backtest:** tom-dax-backtest (built), dev then holdout once; the pre-registered arm plus labelled --shifts extension arms, all counted.
 5. **Transfer to BTC:** only the families that work at home; stop-width/cost rule from the v2 spec; management arms (tom-probe-prereg, reduced to M arms).
@@ -40,8 +40,8 @@ Plan of record for the probe: PROBE_PLAN.md (hypotheses H1-H5, option arms S/Q/M
 | Build | Sonnet | tom-verdict-fee-per-market | finish/verify per-market fee (GER40 netRR(24229,24111,24257)=4.1696 (the brief said 4.1662: hand error, (118-0.24229)/(28+0.24229)=4.1696); BTC bit-identical) |
 | Frames | Sonnet | tom-trade-ledger | videos -> TOM_TRADE_LEDGER.csv/.md |
 | Frames | Sonnet | fabio-trade-ledger | videos -> FABIO_TRADE_LEDGER.csv/.md |
-| Research | **Opus** | tom-layer-v2-spec | ledger + this folder -> TOM_LAYER_V2_SPEC.md + Sonnet build cards |
-| Research | **Opus** | fabio-layer-v2-spec | ledger + Fabio files -> FABIO_LAYER_V2_SPEC.md + cards |
+| Research | **Opus** | tom-layer-v2-spec (A), then tom-layer-v2-cost (B) | A: ledger -> families + sourced rules + keep/change/drop. B: per-market proofs/cost, BTC stop-width transfer rule, Sonnet build cards. One card per session (each M; the original L card was split 2026-10-11) |
+| Research | **Opus** | fabio-layer-v2-spec (A), then fabio-layer-v2-markets (B) | A: ledger -> families + rules. B: NQ vs BTC data plan, cost, recall-harness + encode cards |
 | Build | Sonnet | tom-encode-spike-fade, then the cards the spec creates | flag-gated Java + recall V2 report |
 | Run | Sonnet/DSA | tom-dax-backtest, then tom-probe-prereg (M arms) | reports, holdout read once |
 

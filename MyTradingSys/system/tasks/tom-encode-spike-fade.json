@@ -5,7 +5,7 @@
   "created": "2026-10-10T20:38:11Z",
   "depends_on": [
     "tom-verdict-fee-per-market",
-    "tom-layer-v2-spec"
+    "tom-layer-v2-cost"
   ],
   "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX_V2.md shows signal recall on the 7 entries (target >= 4/7) with every new parameter sourced or flagged NO-SOURCE; .new staged, tests green.",
   "from_inbox": "",

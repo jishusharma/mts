@@ -1,14 +1,14 @@
 {
-  "approved_by": "",
+  "approved_by": "operator (chat 2026-10-11: 'whatever research u need with Opus')",
   "asks": "",
   "commands": [],
   "created": "2026-10-11T12:00:00Z",
   "depends_on": [
     "tom-trade-ledger"
   ],
-  "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md with sourced rules per family, per-market proof/cost table, keep/change/drop list vs current engine, and the follow-on Sonnet cards created.",
+  "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md part A: one section per ledger family with sourced rules, a keep/change/drop table vs the current engine, recall target per family, and 5 ledger trades each mapped to exactly one family. Part B (tom-layer-v2-cost) is NOT part of this card.",
   "from_inbox": "",
-  "goal": "Rewrite the Tom layer definition so it matches how Tom actually trades: setup families from the ledger, proofs computable from the data each market has, market-specific cost and stop width, management (partials, stop moves, re-entry) as part of the trade, his session window. Output is the spec the Sonnet build cards implement.",
+  "goal": "Rewrite WHAT Tom trades: every setup family in TOM_TRADE_LEDGER with entry trigger, proofs, stop rule, target, management and session, each rule sourced (Tom quote + file:line) or NO-SOURCE; keep/change/drop versus the current engine candidate types.",
   "id": "tom-layer-v2-spec",
   "lane": "OPUS",
   "live_path": false,
@@ -28,18 +28,18 @@
     "tuning on outcomes",
     "reading any holdout"
   ],
-  "size": "L",
+  "size": "M",
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md section 3",
     "MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md"
   ],
   "state": "refined",
   "steps": [
-    "Read: MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md, DIAG_BTC.md, PROBE_PLAN.md, TOM_TRADE_LEDGER.*, conditions/gap_rules.md, TOM_VERBATIM_INDEX.md, the current engine candidate types + proof list (SetupCandidatesBuilder.java:557-575).",
-    "For each setup family in the ledger: entry trigger, proofs, stop rule, target, management, session - each with a Tom quote + file:line or NO-SOURCE; map what the current engine has / lacks (keep / change / drop).",
-    "Per market: which proofs can fire on the data (DAX CFD has no aggressor split; BTC has); cost model; minimum stop width that clears noise + fees on BTC (DIAG_BTC: 1R ~0.084 %, fees ~2.8R per loss) - the transfer rule.",
-    "Write MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md + recall targets per family; split the build into Sonnet cards (spike-fade first) with test plans from FORMULAS.md style hand numbers."
+    "Read RECALL_DAX.md section 3, PROBE_PLAN.md, TOM_TRADE_LEDGER.*, conditions/gap_rules.md, TOM_VERBATIM_INDEX.md, and the current candidate types + proof list (SetupCandidatesBuilder.java:557-575).",
+    "For each setup family in the ledger (spike fade first): entry trigger, proofs, stop rule, target, management (partials, stop moves, re-entry), session - each with a Tom quote + file:line or NO-SOURCE. Unsourced is flagged, never tuned.",
+    "Map what the current engine has/lacks per family (keep / change / drop) and set a recall target per family on the ledger trades.",
+    "Write part A of TOM_LAYER_V2_SPEC.md and stop. Do not do per-market costs or the build cards (card tom-layer-v2-cost)."
   ],
   "tests": "Spec reviewed against 5 ledger trades: each trade maps to exactly one family with its rule path written out.",
-  "title": "Tom layer v2 spec: redefine the layer from home-market evidence (Opus research)"
+  "title": "Tom layer v2 spec, part A: setup families + sourced rules from the ledger (Opus research)"
 }
