@@ -21,12 +21,21 @@ handoff and hands over to a fresh session costs far less (SHORT SESSIONS rule in
 
 ## Brakes (all fail closed)
 - no header, header says stop, or the id did not change (the handoff was not rewritten: would replay the same task) -> STOP
-- depth cap 6 chain links per operator reset (`handoff --reset-depth`); a runaway chain is bounded
+- depth cap 6 chain links counted from the chain base (`handoff --reset-depth`, or `kick`, which records the base); a runaway chain is bounded
 - operator: `python scripts/sched/relay.py stop "<why>"` halts every host-local chain at its next gate; `... resume` clears it
 - a session that hits a blocker, RED hygiene it cannot fix, or an operator decision it needs writes `--stop` with the reason
-- the 20-minute lock stops a double fire; no relay for live-path/Java restarts (those stay desk tasks)
+- the lock is keyed by handoff id (2026-10-10): the same id launched twice = double fire = STOP, a new id is always allowed (the old 20-minute clock killed the chain when a short session handed over after 15 min); no relay for live-path/Java restarts (those stay desk tasks)
 - App scheduled tasks run only while the Claude app is open; if it is closed the task runs on next launch
 
 ## Operator controls
 Start the chain: any session (or the operator) runs `handoff --go --reset-depth` then the gate and fires `mts-relay-a`.
 Stop it: `relay.py stop "<why>"`. Look: `relay.py status --file MyTradingSys/system/NEXT_SESSION.md`; log `~/.claude/mts-relay-log.jsonl`.
+
+## Dispatcher (operator ask 2026-10-10: "a scheduled worker who starts the Sonnet agent to pick up the tasks asap")
+Nothing used to START a chain except a session or the operator, so tasks sat. App scheduled task `mts-dispatcher` (every 30 min,
+App must be open) is a timer, not a builder: it runs origin/fast-track's relay.py `kick` (copied to %TEMP%/mts_relay_kick.py with `git show`, because the live tree's relay.py lags origin and had no `kick`: B164) (reads the handoff from origin/fast-track),
+on `KICK task=mts-relay-a|b` it runs that task, and when the Control Room Inbox has an item with status `new` it runs `mts-control-room`.
+`kick` prints IDLE (exit 1) when: stop flag, no header, header says stop, any launch under 45 min ago (chain is moving), or the same
+handoff id launched under 3 h ago (a session is on it; after 3 h a retry fires, claims stop a double). Log: `~/.claude/mts-relay-log.jsonl`
+(`kick` / `idle` events). Its model is the App default; to make it Haiku set the model in the task's settings (the task tool cannot).
+Stop everything: `relay.py stop "<why>"` (the dispatcher honours the flag).

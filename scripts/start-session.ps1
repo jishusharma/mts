@@ -240,32 +240,17 @@ try {
     [void]$sb.AppendLine("Dirty: $gDirty file(s)")
     if ($gDirty -gt 0) {
         [void]$sb.AppendLine("Dirty files:")
-        (& git -C $root status --short 2>$null) | ForEach-Object { [void]$sb.AppendLine("  $_") }
+        $dirtyLines = @(& git -C $root status --short 2>$null)
+        $dirtyLines | Select-Object -First 30 | ForEach-Object { [void]$sb.AppendLine("  $_") }
+        if ($dirtyLines.Count -gt 30) { [void]$sb.AppendLine("  ... $($dirtyLines.Count - 30) more (run git status --short)") }
     }
 } catch {
     [void]$sb.AppendLine("(git unavailable)")
 }
 
 [void]$sb.AppendLine("")
-[void]$sb.AppendLine("### news: python scripts/dev/sync.py news 72 (every shipped commit with its Result line) ###")
-$newsHours = 72
-$prevEap = $ErrorActionPreference
-$ErrorActionPreference = 'Continue'
-try {
-    $newsOut = (& python (Join-Path $root 'scripts\dev\sync.py') news $newsHours 2>&1 | Out-String).TrimEnd()
-    if ($LASTEXITCODE -ne 0 -or -not $newsOut) {
-        [void]$sb.AppendLine("(news unavailable, exit=$LASTEXITCODE; run it yourself: python scripts/dev/sync.py news $newsHours)")
-        if ($newsOut) { [void]$sb.AppendLine($newsOut) }
-        Write-Host "news: unavailable (exit=$LASTEXITCODE)" -ForegroundColor Yellow
-    } else {
-        [void]$sb.AppendLine($newsOut)
-        Write-Host "news: included ($newsHours h)" -ForegroundColor Green
-    }
-} catch {
-    [void]$sb.AppendLine("(news unavailable: $_; run it yourself: python scripts/dev/sync.py news $newsHours)")
-    Write-Host "news: unavailable: $_" -ForegroundColor Yellow
-}
-$ErrorActionPreference = $prevEap
+[void]$sb.AppendLine("### news: NOT PASTED (operator 2026-10-10: the 72 h news was 61 KB, a third of the paste). Run it yourself at boot: python scripts/dev/sync.py news 72 (DSA_SESSION_PROMPT.md 0.8b, boot step 12). If it fails, say 'news unavailable' and read git log. ###")
+Write-Host "news: pointer only (run sync.py news 72 at boot)" -ForegroundColor Green
 
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("### loop health ###")

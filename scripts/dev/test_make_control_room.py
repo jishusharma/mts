@@ -155,5 +155,22 @@ class RealConfigTest(unittest.TestCase):
         self.assertEqual((before, after), ("ESCALATED", "CLOSED"))
 
 
+class DeclutterTemplateTest(unittest.TestCase):
+    """Operator inbox 2sn0idxj5o0uyfm52zca 2026-10-10: 'Declutter MTS control room'."""
+    tpl = (Path(__file__).resolve().parent / "control_room.tpl.html").read_text(encoding="utf-8")
+
+    def test_reference_sections_start_collapsed(self):
+        for sec in ("evid-sec", "ledger-sec", "board-sec"):
+            self.assertIn('<details class="fold" id="%s">' % sec, self.tpl)  # no `open`: collapsed by default
+
+    def test_only_decisions_waiting_on_the_operator_are_cards(self):
+        self.assertIn("const needs = snap.docs.filter(d => !d.data().applied)", self.tpl)
+        self.assertIn("applied decision", self.tpl)
+
+    def test_long_inbox_text_folds_but_stays_verbatim(self):
+        self.assertIn("(x.text||\"\").length > 320", self.tpl)
+        self.assertEqual(self.tpl.count("${esc(x.text)}"), 2)  # clipped summary uses slice; full text rendered once per branch
+
+
 if __name__ == "__main__":
     unittest.main()
