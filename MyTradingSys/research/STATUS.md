@@ -1,25 +1,25 @@
 # Development Status
 
-Generated: 2026-10-11 21:17:46
+Generated: 2026-10-11 22:25:43
 
 ## Git Status
-**Branch:** jisnb/relay-1011154728 (the host that generated this file; yours may differ)
+**Branch:** jisnb/relay-202610111655 (the host that generated this file; yours may differ)
 
-CI green: 003c94a (2026-10-11 20:00:41 +0530), 10 commit(s) behind origin/fast-track: RED: oldest ungreen commit is 1.3 h old - CI is failing, auto-deploy is idle; fix CI first
+CI green: 440e15b (2026-10-11 21:58:46 +0530), 6 commit(s) behind origin/fast-track: CI running
 LESSONS: digest in sync
 
 **Last 10 commits:**
 ```
-6cdde0b release fabio-trade-ledger
-2e02c1b relay: fabio ledger window t=6525-6775 (flat, no trade); handoff depth 36
-39fba81 claim fabio-trade-ledger
-83a53de Merge remote-tracking branch 'origin/fast-track' into jisnb/dsa
-fc83682 desk: done 20261011-140307-nuc-register-ci-cd-scheduled-tasks-no-de
-10e8804 desk: done 20261011-140621-nuc-set-up-codex-work-tree-and-codex-hom
-1e36b30 desk: done 20261011-140930-nuc-run-offline-gate-and-report
-16baea4 release fabio-trade-ledger
-d335f44 fabio ledger: DyS79Eb92Ug t=6275-6525 flat, no trade; handoff
-5d5e77e claim fabio-trade-ledger
+9331265 release fabio-ledger-w26
+a18d020 Merge remote-tracking branch 'origin/fast-track' into jisnb/relay-20261011163434
+75b2e11 fabio ledger: DyS79Eb92Ug t=7275-7525 read (flat, no trade); handoff depth 39
+b3115ec release unstick-queue-inbox-pickup-cards-stale-d
+a9212cc Merge remote-tracking branch 'origin/fast-track' into jis-nb/unstick
+18b2940 claim fabio-ledger-w26
+3e17947 desk: done 20261010-130645-claude-desktop-vm-bundles-on-c-validate-
+eaa1f67 Merge remote-tracking branch 'origin/fast-track' into jis-nb/unstick
+a4ab6a8 Merge remote-tracking branch 'origin/fast-track' into jisnb/control-room
+458bbba desk: done 20261010-130633-claude-desktop-vm-bundles-on-c-validate-
 ```
 
 ## Queue Status
@@ -35,6 +35,8 @@ DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
 - MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (0.0h)
 
 ## Recent Reports (last 7 days)
+- MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md (2026-10-11 21:39) # BIGMOVES REPORT (big-move ground truth, backtest A)
+- MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md (2026-10-11 21:39) # FIRES_B1_REPORT - fire history of the kline-only live layers (worker B1, 2026-10-09)
 - MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md (2026-10-11 02:13) # DAX_BT_REPORT: untuned Tom core on DAX vs matched-proof BTC (card tom-dax-backtest)
 - MyTradingSys/research/screenshot_context_2026-10-10/REPORT.md (2026-10-10 02:22) # T092 REPORT - what context does a single screenshot read get? (2026-10-10, Opus, JIS-NUC)
 - MyTradingSys/research/rsi_divergence_mtf_2026-10-09/REPORT_T088.md (2026-10-09 21:25) # T089 RSI divergence on every timeframe (+ T091 operator long-range column)
@@ -54,7 +56,7 @@ SHOTS landed 35: new 0, classified 1, read 0, done 34 | overdue(>24h) 0 | claims
 
 ## Project Groups
 ```
-GROUPS DATA open 5 (HIGH 0) closed 29 | SRC open 4 (HIGH 0) closed 9 | CORE open 4 (HIGH 0) closed 30 | LAYR open 8 (HIGH 2) closed 5 | EVID open 13 (HIGH 2) closed 4 | EXEC open 7 (HIGH 3) closed 10 | VIS open 1 (HIGH 0) closed 1 | DESK open 1 (HIGH 1) closed 9 | OPS open 12 (HIGH 3) closed 24 | INFRA open 7 (HIGH 3) closed 12
+GROUPS DATA open 5 (HIGH 0) closed 29 | SRC open 4 (HIGH 0) closed 9 | CORE open 4 (HIGH 0) closed 30 | LAYR open 10 (HIGH 2) closed 5 | EVID open 13 (HIGH 2) closed 4 | EXEC open 7 (HIGH 3) closed 10 | VIS open 1 (HIGH 0) closed 1 | DESK open 2 (HIGH 1) closed 9 | OPS open 15 (HIGH 4) closed 24 | INFRA open 7 (HIGH 3) closed 12
 ```
 
 ## Open Findings
