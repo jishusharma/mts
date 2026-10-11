@@ -80,7 +80,7 @@ The deterministic rule engine: compiled_engine, condition files, proof counting,
 |---|---|---|---|
 | B059 | MED | OPEN | Rank-1 candidate zone price drifts with post-funding window; substate stays above/below on a zone that is 130  |
 | B063 | MED | OPEN | Divergence handling fragmented; no dictionary definition, no condition-file rule, no verdict consumer |
-| B066 | MED | OPEN | Rank-1 candidate shown at trigger_ready tier while price is 150 pts away; substate and price disagree |
+| B066 | MED | CLOSED | Rank-1 candidate shown at trigger_ready tier while price is 150 pts away; substate and price disagree |
 | B117 | MED | OPEN | Unsourced proof bands 3 and 5 gate WAIT_PROOF, WATCH and SETUP_FORMING in start-trading-day.ps1 |
 | T052 | MED | OPEN | Define a Tom-cited trigger for SETUP_CONFIRMED, per operator D6b ruling (not removal) |
 | B074 | LOW | OPEN | Rule-order dependence in Compute-Verdict: contradiction cap runs before the broken-value override |

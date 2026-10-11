@@ -10,7 +10,7 @@ B062 | CLOSED  | B062_alert_direction_position.md | position-aware alert gating;
 B063 | OPEN    | B063_divergence.md | decision: restore divergence in schema, or deprecate
 B064 | CLOSED  | B064_supervisor_stop_flag.md | supervisor_stop.flag retired 2026-09-24, loop_stop.flag only
 B065 | CLOSED  | B065_stale_swing_consumer.md | stale-swing rejection in extractZones + stop selection; landed
-B066 | OPEN    | B066_rank1_distance_gate.md | rank-1 shown at trigger_ready while 150 pts from price; split from B059
+B066 | CLOSED  | B066_rank1_distance_gate.md | rank-1 shown at trigger_ready while 150 pts from price; split from B059
 B139 | OPEN    | B139_cbp_adapter.md | CBP adapter registered; real-queue run 0 candidates (1 acked, 1 rejected); analyst-rule backtests pending
 B140 | BLOCKED | B140_whea_storport_hdd.md | NEEDS OPERATOR (hardware): swap SATA cable+port, elevated smartctl short test, back up D:, move D:\tools to SSD; SMART already clean
 B141 | OPEN    | B141_htf_balance_null.md | htf bal_4h/bal_1d null: NS-fixed k_bal 0.8 balanced 0.4% of windows; replace-via-backtest pre-reg BOUND, run next

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-11T07:26:04Z",
   "commands": [
     "PATH=C:/tools/jdk-17.0.18/bin:$PATH mvn -q test -Dtest='SetupCandidatesBuilder*Test'"
   ],
@@ -19,7 +20,7 @@
   "refs": [
     "B066"
   ],
-  "result": "",
+  "result": "SetupCandidatesBuilderTierTest green; B066 CLOSED option C",
   "scope_in": [
     "src/main/java/datafeed/SetupCandidatesBuilder.java (tier L75 and L205)",
     "MyTradingSys/items/B066_rank1_distance_gate.md"
@@ -33,7 +34,7 @@
     "MyTradingSys/items/B066_rank1_distance_gate.md (fix shape not decided: options A, B, C)",
     "src/main/java/datafeed/SetupCandidatesBuilder.java:75 (distPct <= 0.1 trigger_ready)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Operator picks: C close as handled by the 0.1 percent tier rule (add a tier test), or A/B add a gate (needs a sourced threshold).",
     "On C: write a tier test (price 80524, zone 80373.47 -> conditional), CLOSE B066 with the test as Receipt."

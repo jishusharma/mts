@@ -36,3 +36,7 @@ documented exception.
 
 2026-09-24 OPEN. Not started.
 
+
+## STATE
+
+2026-10-11 CLOSED as option C (handled by the 0.1% tier rule, no new threshold). Receipt: src/test/java/datafeed/SetupCandidatesBuilderTierTest.java. A gate (A/B) needs a Tom-cited threshold.

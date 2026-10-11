@@ -48,6 +48,11 @@ public class SetupCandidatesBuilder {
     // MIN_STOP_PCT (0.1% stop floor, A04) removed per T3 ruling (T3_STOP_RULING_2026-10-01): NO-SOURCE.
     private static final int MAX_CANDIDATES = 3;
 
+    /** B066: trigger_ready only within 0.1% of price (a 150 pt / 0.19% zone is conditional); beyond the cap is ignore. */
+    static String tierFor(double distPct, double cap) {
+        return (distPct <= 0.1) ? "trigger_ready" : (distPct <= cap) ? "conditional" : "ignore";
+    }
+
     public static ArrayNode build(ObjectMapper mapper, ObjectNode root, Map<String, JsonNode> mtf, JsonNode klines1m) {
         ArrayNode candidatesArray = mapper.createArrayNode();
         if (root == null || klines1m == null || klines1m.size() < 20) {
@@ -73,7 +78,7 @@ public class SetupCandidatesBuilder {
         for (Zone z : zones) {
             double distPct = Math.abs(currentPrice - z.price) / currentPrice * 100.0;
             double cap = getDistanceCap(z.type);
-            String tier = (distPct <= 0.1) ? "trigger_ready" : (distPct <= cap) ? "conditional" : "ignore";
+            String tier = tierFor(distPct, cap);
             if (!"ignore".equals(tier)) {
                 filteredZones.add(z);
             }
@@ -203,7 +208,7 @@ public class SetupCandidatesBuilder {
             mathNode.put("distance_pct", Math.round(Math.abs(currentPrice - c.zone.price) / currentPrice * 10000.0) / 100.0);
             mathNode.put("distance_cap", getDistanceCap(c.zone.type));
             double dist = Math.abs(currentPrice - c.zone.price) / currentPrice * 100;
-            mathNode.put("tier", dist <= 0.1 ? "trigger_ready" : "conditional");
+            mathNode.put("tier", tierFor(dist, getDistanceCap(c.zone.type)));
             double distFromZone = Math.abs(currentPrice - c.zone.price) / c.zone.price;
 mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.zone.price ? "above" : "below"));
             mathNode.put("stop", Math.round(c.stop * 100.0) / 100.0);
