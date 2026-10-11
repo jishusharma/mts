@@ -19,7 +19,12 @@ Per-host state (not in git) lives in $MTS_RELAY_HOME (default ~/.claude): mts-re
   python scripts/sched/relay.py gate --file F --started-id <id|none>      exit 0 GO, 1 STOP
   python scripts/sched/relay.py kick [--file F | --git-ref REF:PATH]   dispatcher: KICK task=... (exit 0) or IDLE <why> (exit 1)
   python scripts/sched/relay.py status --file F | stop "<why>" | resume
-Test hooks: MTS_RELAY_HOME, MTS_RELAY_NOW (ISO), MTS_RELAY_MAX_DEPTH.
+Two hosts, any account (2026-10-12): every host runs the same dispatcher. `handoff` appends who wrote it (host, account, session
+title) to relay_runs.jsonl beside the handoff, and `kick --peer-quiet-min N` stays IDLE while ANOTHER host wrote the current
+handoff under N minutes ago. A host that goes silent (budget out, machine off, `relay.py stop`) is taken over after N minutes;
+nothing is keyed to an account, so signing a different account into either App changes nothing here.
+`handoff` also keeps the file under MTS_RELAY_MAX_BYTES by moving old `## ` sections to handoff_history/<date>.md.
+Test hooks: MTS_RELAY_HOME, MTS_RELAY_NOW (ISO), MTS_RELAY_MAX_DEPTH, MTS_RELAY_MAX_BYTES, MTS_RELAY_HOST, MTS_RELAY_ACCOUNT.
 """
 import argparse
 import json
@@ -35,7 +40,10 @@ MAX_DEPTH = int(os.environ.get("MTS_RELAY_MAX_DEPTH") or 6)
 ACTIVE_MIN = 45  # kick: a launch younger than this means a session is probably still working
 STALE_H = 1  # kick: the same handoff id launched this long ago and never rewritten = the session died or never started, retry
 # (2026-10-10: the gate locks BEFORE the App starts the task; an unattended session could not approve run_scheduled_task, the 3 h wait wasted 3 h)
-KICK_REF = "origin/fast-track:MyTradingSys/system/NEXT_SESSION.md"
+MAX_BYTES = int(os.environ.get("MTS_RELAY_MAX_BYTES") or 12288)  # handoff size cap: every relay session reads the whole file
+RUNS_NAME = "relay_runs.jsonl"
+RUNS_KEEP = 400
+KICK_REF ="origin/fast-track:MyTradingSys/system/NEXT_SESSION.md"
 HDR = re.compile(r"<!-- relay: (go|stop)(?: reason=([^>]*?))? depth=(\d+) id=([0-9a-f]+) -->")
 TS = "%Y-%m-%dT%H:%M:%SZ"
 
@@ -53,6 +61,62 @@ def log(event, **kw):
     home().mkdir(parents=True, exist_ok=True)
     with open(home() / "mts-relay-log.jsonl", "a", encoding="utf-8", newline="\n") as f:
         f.write(json.dumps({"utc": now().strftime(TS), "event": event, **kw}, sort_keys=True) + "\n")
+
+
+def host():
+    import platform
+    return os.environ.get("MTS_RELAY_HOST") or platform.node() or "?"
+
+
+def account():
+    """Label of the Claude account signed in to this App right now (which account holds the chat). Read from the App's own
+    sign-in record, NOT from $MTS_ACCOUNT: that is a fixed per-machine value and is wrong after an account switch
+    (2026-10-12: JIS-NUC had MTS_ACCOUNT=sharma while signed in as jishu.awgp). $MTS_RELAY_ACCOUNT overrides (tests)."""
+    v = os.environ.get("MTS_RELAY_ACCOUNT")
+    if v:
+        return v
+    try:
+        mail = json.loads((Path.home() / ".claude.json").read_text(encoding="utf-8"))["oauthAccount"]["emailAddress"]
+        return mail.split("@", 1)[0]
+    except (OSError, ValueError, KeyError, TypeError):
+        return os.environ.get("MTS_ACCOUNT") or "?"
+
+
+def parse_runs(text):
+    rows = []
+    for ln in (text or "").splitlines():
+        try:
+            d = json.loads(ln)
+            d["_t"] = datetime.fromisoformat(d["utc"].replace("Z", "+00:00"))
+            rows.append(d)
+        except (ValueError, KeyError, TypeError, AttributeError):
+            continue
+    return rows
+
+
+def append_run(handoff_path, **row):
+    """One line per handoff in relay_runs.jsonl beside the handoff file: it ships in the same commit, so every host and
+    account sees which host/account/session wrote which handoff id (the cross-device list of relay chats)."""
+    p = Path(handoff_path).parent / RUNS_NAME
+    old = p.read_text(encoding="utf-8").splitlines() if p.exists() else []
+    old.append(json.dumps({"utc": now().strftime(TS), "host": host(), "account": account(), **row}, sort_keys=True))
+    p.write_text("\n".join(old[-RUNS_KEEP:]) + "\n", encoding="utf-8", newline="\n")
+
+
+def trim_history(path, text):
+    """Over the size cap: move every `## ` section after the first fenced block to handoff_history/<date>.md (appended, nothing
+    is lost) so the next session does not pay to read old updates. Returns the kept text."""
+    lines = text.split("\n")
+    fences = [i for i, ln in enumerate(lines) if ln.startswith("```")]
+    start = fences[1] + 1 if len(fences) >= 2 else 0
+    cut = next((i for i in range(start, len(lines)) if lines[i].startswith("## ")), None)
+    if cut is None:
+        return text
+    hist = Path(path).parent / "handoff_history" / (now().strftime("%Y-%m-%d") + ".md")
+    hist.parent.mkdir(parents=True, exist_ok=True)
+    with open(hist, "a", encoding="utf-8", newline="\n") as f:
+        f.write("<!-- moved from %s at %s -->\n" % (Path(path).name, now().strftime(TS)) + "\n".join(lines[cut:]).rstrip("\n") + "\n\n")
+    return "\n".join(lines[:cut]).rstrip("\n") + "\n\nOlder updates: `handoff_history/` beside this file (read only when a task points there).\n"
 
 
 def read_lock():
@@ -109,13 +173,22 @@ def cmd_handoff(a):
             print("LINT " + e)
         print("HANDOFF REFUSED: fix the task list (RELAY.md 'Task list standard'), then run handoff again")
         return 2
+    if len(text.encode("utf-8")) > MAX_BYTES:
+        text = trim_history(p, text)
+        if len(text.encode("utf-8")) > MAX_BYTES:
+            print("HANDOFF REFUSED: %d bytes after moving old updates to handoff_history/, cap %d: shorten the task block "
+                  "(drop DONE items, link files instead of pasting progress)" % (len(text.encode("utf-8")), MAX_BYTES))
+            return 2
+        print("TRIMMED old updates to handoff_history/ (cap %d bytes)" % MAX_BYTES)
     old = read_header(p)
     depth = 0 if (a.reset_depth or old is None) else old[2] + (1 if a.go else 0)
     state = "go" if a.go else "stop"
     reason = "" if a.go else " reason=" + re.sub(r"[>\r\n]", " ", a.stop).strip()
-    line = "<!-- relay: %s%s depth=%d id=%s -->" % (state, reason, depth, uuid.uuid4().hex[:8])
+    hid = uuid.uuid4().hex[:8]
+    line = "<!-- relay: %s%s depth=%d id=%s -->" % (state, reason, depth, hid)
     text = HDR.sub(line, text, count=1) if HDR.search(text) else line + "\n" + text
     p.write_text(text, encoding="utf-8", newline="\n")
+    append_run(p, state=state, depth=depth, id=hid, session=(a.session or "")[:120])
     print(line)
     return 0
 
@@ -161,6 +234,31 @@ def header_from_git(spec):
     return (m.group(1), (m.group(2) or "").strip(), int(m.group(3)), m.group(4)) if m else None
 
 
+def handoff_owner(a, hid):
+    """(host, time) of whoever wrote handoff `hid`, from relay_runs.jsonl (same place as the handoff: file or git ref).
+    No row for this id (written by an older relay.py or by hand): host 'unknown' = treated as a peer, time = the handoff
+    file's last commit on the ref (None in --file mode, where there is nothing to date it by)."""
+    import subprocess
+    if a.file:
+        p = Path(a.file).parent / RUNS_NAME
+        text = p.read_text(encoding="utf-8") if p.exists() else ""
+    else:
+        ref, path = a.git_ref.split(":", 1)
+        r = subprocess.run(["git", "show", "%s:%s/%s" % (ref, path.rsplit("/", 1)[0], RUNS_NAME)], capture_output=True, text=True, encoding="utf-8", timeout=60)
+        text = r.stdout if r.returncode == 0 else ""
+    for d in reversed(parse_runs(text)):
+        if d.get("id") == hid:
+            return d.get("host") or "unknown", d["_t"]
+    if a.file:
+        return "unknown", None
+    ref, path = a.git_ref.split(":", 1)
+    r = subprocess.run(["git", "log", "-1", "--format=%ct", ref, "--", path], capture_output=True, text=True, timeout=60)
+    try:
+        return "unknown", datetime.fromtimestamp(int(r.stdout.strip()), timezone.utc)
+    except ValueError:
+        return "unknown", None
+
+
 def lock_info(prev):
     """` lock=<utc> task=<id>`: lets the dispatcher check list_task_runs for a run started after the lock (no run = launch never happened)."""
     return " lock=%s task=mts-relay-%s" % (prev["_t"].strftime(TS), "ab"[int(prev.get("depth", 0)) % 2])
@@ -185,6 +283,11 @@ def cmd_kick(a):
     state, reason, depth, hid = h
     if state != "go":
         return idle("handoff says stop: " + (reason or "no reason"))
+    if a.peer_quiet_min:
+        who, when = handoff_owner(a, hid)
+        if who != host() and when is not None and now() - when < timedelta(minutes=a.peer_quiet_min):
+            return idle("peer %s wrote handoff %s %d min ago (< %d): its chain is moving, this host stays out"
+                        % (who, hid, (now() - when).total_seconds() // 60, a.peer_quiet_min))
     prev = read_lock()
     if prev:
         age = now() - prev["_t"]
@@ -216,6 +319,7 @@ def main(argv=None):
     g.add_argument("--go", action="store_true")
     g.add_argument("--stop")
     h.add_argument("--reset-depth", action="store_true")
+    h.add_argument("--session", help="title of this App session, recorded in relay_runs.jsonl so the chat can be found later")
     li = sub.add_parser("lint")
     li.add_argument("--file", required=True)
     li.add_argument("--want", choices=["go", "stop"], default="go")
@@ -226,6 +330,8 @@ def main(argv=None):
     k = sub.add_parser("kick")
     k.add_argument("--file")
     k.add_argument("--git-ref", default=KICK_REF)
+    k.add_argument("--peer-quiet-min", type=int, default=0,
+                   help="IDLE while another host wrote the current handoff less than this many minutes ago (0 = off)")
     st = sub.add_parser("status")
     st.add_argument("--file", required=True)
     sp = sub.add_parser("stop")

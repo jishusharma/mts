@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-11T18:43:39Z",
   "commands": [],
   "created": "2026-10-11T18:08:10Z",
   "depends_on": [],
@@ -15,7 +16,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "relay.py: runs list + kick --peer-quiet-min + handoff trim (24 tests, 7 new fail on old code); NEXT_SESSION.md 34.7 KB -> 6.9 KB; prompts in scripts/sched/relay_prompts/; NUC tasks created; NB half is Q31",
   "scope_in": [
     "scripts/sched/relay.py",
     "scripts/sched/relay_prompts/",
@@ -35,7 +36,7 @@
     "scripts/sched/relay.py",
     "operator chat 2026-10-11 (JIS-NUC session)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Copy the SKILL.md of mts-relay-a, mts-relay-b, mts-dispatcher, mts-control-room from JIS-NB into scripts/sched/relay_prompts/ (git), plus install_relay_tasks.md saying how a host recreates them with create_scheduled_task. Must run on JIS-NB (source files are there).",
     "relay.py kick --standby-hours N: IDLE unless origin/fast-track's NEXT_SESSION.md commit is older than N hours (primary host silent) and the header says go; tests for fresh/old/stop/no-header.",

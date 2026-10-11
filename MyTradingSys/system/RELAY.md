@@ -65,3 +65,14 @@ Dispatcher runs are bypassPermissions yet `run_scheduled_task` from inside a sch
 So no session may launch another. The cron-fired mts-dispatcher is now the worker: on KICK it runs the relay task itself and
 deletes ~/.claude/mts-relay-lock.json at the end, so the next 30-min tick starts the next handoff. mts-relay-a/b remain for manual use.
 Chain latency <= 30 min. Prompt is host-local (~/.claude/scheduled-tasks/mts-dispatcher/SKILL.md; backup SKILL.md.bak_20261010).
+
+## Two hosts, any account (2026-10-12, card relay-two-host-standby)
+Every host runs the same three App tasks; their text and the recovery steps are in `scripts/sched/relay_prompts/install.md`,
+the session ritual in `scripts/sched/relay_prompts/relay_session.md` (hosts hold a stub that reads it from origin).
+- Nothing is keyed to an account. Sign either account into either App: the tasks run on that account's budget.
+- `handoff` appends host + signed-in account + session title to `system/relay_runs.jsonl` (ships with the handoff commit):
+  that is where to look up which App and account holds a relay chat.
+- `kick --peer-quiet-min N`: IDLE while ANOTHER host wrote the current handoff under N minutes ago; after N minutes of
+  silence the other host starts the chain. Rest a host on purpose with `relay.py stop "<why>"` on it.
+- `handoff` keeps NEXT_SESSION.md under 12 KB (`MTS_RELAY_MAX_BYTES`): old `## ` sections move to `system/handoff_history/<date>.md`.
+  Edit the block, do not append `## Update` sections.
