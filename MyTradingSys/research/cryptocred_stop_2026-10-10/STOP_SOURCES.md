@@ -47,3 +47,33 @@ Provenance rule forbids tuning an unsourced number, so hunt his words first.
 2. Precision scales with move size: a 1h structural setup wants a wider stop than a scalp.
 3. No quote gives a numeric percent. 0.1% / 0.25% / 0.5% are OUR numbers, marked NO-SOURCE.
 
+
+## NET R SWEEP RESULT (D20/B143) - 2026-10-11
+
+Driver: backtest/layers/cryptocred/cc_stop_sweep.py. Data: raw_1m_2022 1h bars.
+Metric: net_r after costs, and hit rate. Source column is the rule origin.
+
+| setup | n | rule | src | net_r | hit |
+|---|---|---|---|---|---|
+| setup1_sr_flip | 1487 | pct_0.1 | NO-SOURCE | -1.069 | 0.373 |
+| setup1_sr_flip | 1487 | pct_0.25 | NO-SOURCE | -0.386 | 0.406 |
+| setup1_sr_flip | 1487 | pct_0.5 | NO-SOURCE | -0.174 | 0.411 |
+| setup1_sr_flip | 1487 | atr_1.0 | CC-invalidation | -0.162 | 0.411 |
+| setup1_sr_flip | 1487 | atr_1.5 | CC-invalidation | -0.095 | 0.421 |
+| setup1_sr_flip | 1487 | atr_2.0 | CC-invalidation | -0.101 | 0.420 |
+| setup2_fib_pullback | 1392 | pct_0.1 | NO-SOURCE | -1.307 | 0.306 |
+| setup2_fib_pullback | 1392 | pct_0.5 | NO-SOURCE | -0.209 | 0.367 |
+| setup2_fib_pullback | 1392 | atr_1.0 | CC-invalidation | -0.184 | 0.361 |
+| setup2_fib_pullback | 1392 | atr_2.0 | CC-invalidation | -0.073 | 0.405 |
+| setup3_failed_msb_reversal | 167 | pct_0.1 | NO-SOURCE | -1.050 | 0.317 |
+| setup3_failed_msb_reversal | 167 | pct_0.5 | NO-SOURCE | -0.272 | 0.305 |
+| setup3_failed_msb_reversal | 167 | atr_1.0 | CC-invalidation | -0.217 | 0.329 |
+| setup3_failed_msb_reversal | 167 | atr_2.0 | CC-invalidation | -0.040 | 0.371 |
+
+Conclusion: every stop rule is net-negative on all three setups. Stop placement
+alone does not make a CryptoCred entry profitable. The widest ATR stop is least bad
+in each setup; the NO-SOURCE 0.1 percent stop is worst everywhere, which matches the
+operator note that drove this hunt. The fix is not a stop number: the entry needs a
+separate edge before stop tuning matters. Source hunt found no numeric percent in his
+words; the source-consistent rule is the structural invalidation level, per the quotes
+above.

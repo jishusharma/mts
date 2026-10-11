@@ -14,7 +14,7 @@ ROOT1 = "C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/Dumps/backtest/raw_1m_
 ROOT2 = "C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/Dumps/backtest/raw"
 OUT = Path("MyTradingSys/research/cryptocred_stop_2026-10-10/stop_sweep_result.json")
 TF_MS = 3600000
-BUDGET = 130.0
+BUDGET = 140.0
 
 RULES = {
     "pct_0.1": ("NO-SOURCE", 0.001),
@@ -89,7 +89,7 @@ def main():
             rs = [t["net_r"] for t in trades]
             rows.append({"setup": s, "rule": r, "src": tag, "n": len(trades),
                          "net_r": sum(rs) / len(rs), "hit": sum(1 for x in rs if x > 0) / len(rs)})
-        OUT.write_text(json.dumps(rows, indent=1), encoding="utf-8")
+        OUT.write_text(json.dumps(rows, indent=1), encoding="utf-8", newline="\n")
         print("done", s, r, "elapsed", int(time.time() - t0), flush=True)
     for r in rows:
         print("{setup:26} {rule:9} {src:15} n={n:4} net_r={net_r} hit={hit}".format(**r), flush=True)
