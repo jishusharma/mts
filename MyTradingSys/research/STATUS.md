@@ -1,25 +1,25 @@
 # Development Status
 
-Generated: 2026-10-11 15:48:53
+Generated: 2026-10-11 21:17:46
 
 ## Git Status
-**Branch:** jisnb/relay-20261011T1008 (the host that generated this file; yours may differ)
+**Branch:** jisnb/relay-1011154728 (the host that generated this file; yours may differ)
 
-CI green: 14bd4fa (2026-10-11 12:56:29 +0530), 21 commit(s) behind origin/fast-track: RED: oldest ungreen commit is 2.6 h old - CI is failing, auto-deploy is idle; fix CI first
+CI green: 003c94a (2026-10-11 20:00:41 +0530), 10 commit(s) behind origin/fast-track: RED: oldest ungreen commit is 1.3 h old - CI is failing, auto-deploy is idle; fix CI first
 LESSONS: digest in sync
 
 **Last 10 commits:**
 ```
-448fc6c release fabio-trade-ledger
-22a9df5 fabio ledger: F11 (DyS79Eb92Ug t=2775-3000), relay handoff
-791b987 claim fabio-trade-ledger
-c9cbe64 release fabio-trade-ledger
-484f62d fabio ledger: DyS79Eb92Ug t=1775-1950 no-trade row; handoff
-13220b7 claim fabio-trade-ledger
-741db84 release fabio-ledger
-9859f7d fabio ledger: DyS79Eb92Ug t=1575-1775, F10 resolved; relay handoff
-f9484e2 claim fabio-ledger
-91b80aa release fabio-trade-ledger
+6cdde0b release fabio-trade-ledger
+2e02c1b relay: fabio ledger window t=6525-6775 (flat, no trade); handoff depth 36
+39fba81 claim fabio-trade-ledger
+83a53de Merge remote-tracking branch 'origin/fast-track' into jisnb/dsa
+fc83682 desk: done 20261011-140307-nuc-register-ci-cd-scheduled-tasks-no-de
+10e8804 desk: done 20261011-140621-nuc-set-up-codex-work-tree-and-codex-hom
+1e36b30 desk: done 20261011-140930-nuc-run-offline-gate-and-report
+16baea4 release fabio-trade-ledger
+d335f44 fabio ledger: DyS79Eb92Ug t=6275-6525 flat, no trade; handoff
+5d5e77e claim fabio-trade-ledger
 ```
 
 ## Queue Status
@@ -30,9 +30,9 @@ DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
 ```
 
 ## In-Flight .new Files
-- MyTradingSys\backtest\layers\fabio\htf_context_live.py.new (0.2h)
-- MyTradingSys\backtest\layers\fabio\test_htf_context_live.py.new (0.2h)
-- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (0.2h)
+- MyTradingSys\backtest\layers\fabio\htf_context_live.py.new (0.0h)
+- MyTradingSys\backtest\layers\fabio\test_htf_context_live.py.new (0.0h)
+- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (0.0h)
 
 ## Recent Reports (last 7 days)
 - MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md (2026-10-11 02:13) # DAX_BT_REPORT: untuned Tom core on DAX vs matched-proof BTC (card tom-dax-backtest)
@@ -54,7 +54,7 @@ SHOTS landed 35: new 0, classified 1, read 0, done 34 | overdue(>24h) 0 | claims
 
 ## Project Groups
 ```
-GROUPS DATA open 5 (HIGH 0) closed 29 | SRC open 4 (HIGH 0) closed 9 | CORE open 4 (HIGH 0) closed 30 | LAYR open 8 (HIGH 2) closed 5 | EVID open 13 (HIGH 2) closed 4 | EXEC open 7 (HIGH 3) closed 10 | VIS open 1 (HIGH 0) closed 1 | DESK open 1 (HIGH 1) closed 9 | OPS open 11 (HIGH 3) closed 24 | INFRA open 5 (HIGH 2) closed 12
+GROUPS DATA open 5 (HIGH 0) closed 29 | SRC open 4 (HIGH 0) closed 9 | CORE open 4 (HIGH 0) closed 30 | LAYR open 8 (HIGH 2) closed 5 | EVID open 13 (HIGH 2) closed 4 | EXEC open 7 (HIGH 3) closed 10 | VIS open 1 (HIGH 0) closed 1 | DESK open 1 (HIGH 1) closed 9 | OPS open 12 (HIGH 3) closed 24 | INFRA open 7 (HIGH 3) closed 12
 ```
 
 ## Open Findings
