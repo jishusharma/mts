@@ -70,3 +70,5 @@ Ledger now 14 entries (F1-F10 + sub-rows). Still < 20 trades: unread DyS79Eb92Ug
 ## DyS79Eb92Ug t=1575-1775 (read 2026-10-11 relay, JIS-NB; sheets lowres/DyS79Eb92Ug_w5_00/01.jpg, step 25 s)
 F10 long (4 lots ~25040.5, stop 25019.5) scaled to 8 lots avg 25043.00, stop raised to 25038 then 25051.50 (+1360$ locked), sell LMT TP 25074.25 (5000$). Flat by t=1700, Daily P/L 19390 -> 24354 = +4964$ (TP hit, minus costs). Session sequence F7-F10: -38$, -2121$, +259$, +4964$. Stop 21pt (0.084%).
 Ledger: 13 entry rows / 40 lines (F1-F10 incl. F3a-c, F4a-b). Still < 20: unread DyS79Eb92Ug t>1775 (captions 2790, 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
+
+F11 (DyS79Eb92Ug t=2775-3000): NQ long 4 lots ~25104.75 after the squeeze above 25110, stop ~10pt (0.04%), scaled to 8 lots (stop 25094.25, 13pt = 0.052%), no TP reached, stopped out: Daily P/L 24354 -> 22239 = -2115$. Ledger 14 trades / 43 rows. Still < 20: unread DyS79Eb92Ug t>=3025 (captions 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
