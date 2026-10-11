@@ -101,6 +101,11 @@ class CommandTest(unittest.TestCase):
                      "do NOT mark the card done", "TASK lab-a [CODEX", "codex_run.py index"):
             self.assertIn(want, p)
 
+    def test_gitdir_is_absolute_for_a_work_tree_and_for_the_main_clone(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(R.abs_gitdir("F:/wt", str(Path(d) / ".git") + chr(10)), Path(d) / ".git")
+            self.assertEqual(R.abs_gitdir(d, ".git" + chr(10)), (Path(d) / ".git").resolve())
+
     def test_exe_lookup_order(self):
         self.assertEqual(R.find_exe({"MTS_CODEX_EXE": "X"}, lambda n: "P", lambda g: ["G"]), "X")
         self.assertEqual(R.find_exe({}, lambda n: "P", lambda g: ["G"]), "P")

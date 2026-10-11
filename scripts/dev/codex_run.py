@@ -145,6 +145,12 @@ def git(wt, *args, check=True):
     return subprocess.run(["git", "-C", str(wt), *args], capture_output=True, text=True, check=check)
 
 
+def abs_gitdir(wt, out):
+    """The repo's shared .git as an absolute path (git prints it relative inside the main clone; older gits lack --path-format)."""
+    p = Path(out.strip())
+    return p if p.is_absolute() else (Path(wt) / p).resolve()
+
+
 def refresh(wt):
     """Bring the lab work tree to origin/fast-track on its own branch. Refuses a dirty tree: unfinished work is never touched."""
     dirty = git(wt, "status", "--porcelain").stdout.strip()
@@ -191,7 +197,7 @@ def run_card(card, dry=False, env=os.environ):
     packs.mkdir(parents=True, exist_ok=True)
     pack = packs / f"{card['id']}.md"
     pack.write_text(codex_pack.build(card["id"], 24), encoding="utf-8", newline="\n")
-    gitdir = Path(git(wt, "rev-parse", "--path-format=absolute", "--git-common-dir").stdout.strip())
+    gitdir = abs_gitdir(wt, git(wt, "rev-parse", "--git-common-dir").stdout)
     cmd, text = command(find_exe(env), card, wt, sandbox, gitdir), prompt(card, wt, pack, when)
     if dry:
         print("DRY " + " ".join(cmd) + "\n" + text)
