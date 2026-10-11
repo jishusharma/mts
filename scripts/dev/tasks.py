@@ -184,8 +184,11 @@ def status_line(cards):
     n = counts(cards)
     todo = sum(refinable(c) for c in cards)
     parked = n["raw"] + n["refined"] - todo
-    tail = f"refinable={todo} parked={parked} ready={n['ready']} buffer={BUFFER}"
-    return ("REFINE_NEEDED " if todo > 0 and n["ready"] < BUFFER else "REFINE_OK ") + tail
+    # The buffer is for relay builders: ready run-lane cards (DSA, JIS-NB) cannot be taken by them, so they do not count
+    # (2026-10-11: three ready DSA cards kept REFINE_OK while 17 cards waited and builders had one task).
+    ready = sum(c["state"] == "ready" and c.get("lane") in CODE_LANES for c in cards)
+    tail = f"refinable={todo} parked={parked} ready={n['ready']} builder_ready={ready} buffer={BUFFER}"
+    return ("REFINE_NEEDED " if todo > 0 and ready < BUFFER else "REFINE_OK ") + tail
 
 
 def summary(repo=REPO):
