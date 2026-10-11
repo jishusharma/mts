@@ -11,6 +11,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 EXTRA = [
+    "scripts/dev/test_suplock.py",
     "MyTradingSys/research/test_b141_htf_stage1.py",
     "MyTradingSys/research/test_b141_htf_stage2.py",
     "MyTradingSys/execution/tests/test_deribit_orders_phase3.py",
