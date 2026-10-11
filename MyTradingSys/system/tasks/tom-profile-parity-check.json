@@ -1,0 +1,43 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T18:00:25Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/PROFILE_PARITY.md: a table of >= 6 drawn-vs-computed levels with MATCH/MISMATCH/NOT_IN_DATA and the usable-or-NOT_IN_DATA verdict.",
+  "from_inbox": "",
+  "goal": "Before any volume-based proof is encoded, test whether the free DAX CFD feed volume gives the profile levels Tom draws (N3).",
+  "id": "tom-profile-parity-check",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "cloud-research 2026-10-11 (C-Cloud BACKTEST_FAILURES_RESEARCH.md; operator: 'get this into action')",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
+    "F:/MTS/data/tom_videos (frames)",
+    "F:/MTS/data/dax_archive",
+    "MyTradingSys/backtest/dax_engine.py"
+  ],
+  "scope_out": [
+    "encoding the setup",
+    "any outcome or holdout read",
+    "BTC"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md N3, section 6 item 5"
+  ],
+  "state": "ready",
+  "steps": [
+    "Pick ledger frames where Tom's POC / VAH / VAL / low-volume node lines are on screen; read each line's price off the chart axis (not the transcript).",
+    "Compute session POC/VAH/VAL from dax_archive with the engine's profile code for the same session and bar time.",
+    "Per line: drawn vs computed, in points and % of price, MATCH (<= 1 tick of the axis read) / MISMATCH / NOT_IN_DATA.",
+    "Write PROFILE_PARITY.md with the table and one verdict: volume proofs usable on this feed, or NOT_IN_DATA (then price-shape proofs only, or buy FDAX volume = operator decision)."
+  ],
+  "tests": "A test on a hand-built 1m fixture with a known POC/VAH/VAL (computed on paper) passes; fails before the parity script exists.",
+  "title": "Profile parity: does Dukascopy DAX volume reproduce Tom's drawn POC/VAH/VAL?"
+}
