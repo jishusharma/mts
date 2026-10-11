@@ -1,7 +1,6 @@
 # Relay session prompt (canonical, host- and account-agnostic)
 
-App tasks `mts-relay-a` and `mts-relay-b` on every host hold a 3-line stub that prints this file from
-origin/fast-track and follows it. Change the relay ritual here, in git; never in a host's SKILL.md.
+The dispatcher task on a host prints this file from origin/fast-track after a KICK and follows it itself. Change the relay ritual here, in git; never in a host's SKILL.md.
 
 You are one MTS relay session: ONE task, then hand over. No operator is present; never ask, never wait.
 Keep reasoning and output short. Read only the files a step names.
@@ -19,9 +18,10 @@ Keep reasoning and output short. Read only the files a step names.
 5. `python scripts/sched/relay.py handoff --file MyTradingSys/system/NEXT_SESSION.md --go --session "<this session's title>"`
    when another unblocked non-OPUS task remains, else `--stop "<reason>"`. Commit (body carries `Result:`),
    `python scripts/dev/sync.py ship`, `sync.py release <slug>`, `sync.py where`.
-6. `python scripts/sched/relay.py gate --file MyTradingSys/system/NEXT_SESSION.md --started-id <STARTED_ID>`.
-   `RELAY GO ... task=<name>`: load `mcp__scheduled-tasks__run_scheduled_task` with ToolSearch and run that task.
-   `RELAY STOP`: nothing more.
-7. Reply with one line: task, result, GO/STOP. End.
+6. Do NOT start another scheduled task: the App asks a human to approve a session starting another one, so unattended
+   launch chains die (B164). Instead free the launch lock so the next dispatcher tick starts the next handoff at once
+   (skip this when you wrote `--stop`):
+   `python -c "import os;p=os.path.expanduser('~/.claude/mts-relay-lock.json');os.path.exists(p) and os.remove(p)"`
+7. Reply with one line: task, result, go/stop. End.
 
 Blocked call or a failure you cannot fix in two tries: `handoff --stop "<exact reason>"`, ship, end.

@@ -67,7 +67,7 @@ deletes ~/.claude/mts-relay-lock.json at the end, so the next 30-min tick starts
 Chain latency <= 30 min. Prompt is host-local (~/.claude/scheduled-tasks/mts-dispatcher/SKILL.md; backup SKILL.md.bak_20261010).
 
 ## Two hosts, any account (2026-10-12, card relay-two-host-standby)
-Every host runs the same three App tasks; their text and the recovery steps are in `scripts/sched/relay_prompts/install.md`,
+Every host runs an `mts-dispatcher` App task that is also the relay worker; its text and the recovery steps are in `scripts/sched/relay_prompts/TWO_HOST.md`,
 the session ritual in `scripts/sched/relay_prompts/relay_session.md` (hosts hold a stub that reads it from origin).
 - Nothing is keyed to an account. Sign either account into either App: the tasks run on that account's budget.
 - `handoff` appends host + signed-in account + session title to `system/relay_runs.jsonl` (ships with the handoff commit):
