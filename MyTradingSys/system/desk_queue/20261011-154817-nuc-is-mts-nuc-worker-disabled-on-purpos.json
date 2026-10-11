@@ -1,0 +1,10 @@
+{
+  "done_when": "State, last run time and the registering script/doc line printed and in the desk result",
+  "from": "JIS-NB",
+  "id": "20261011-154817-nuc-is-mts-nuc-worker-disabled-on-purpos",
+  "need": "On JIS-NUC: Get-ScheduledTask MTS-NUC-Worker | fl TaskName,State ; Get-ScheduledTaskInfo MTS-NUC-Worker ; grep the repo for MTS-NUC-Worker (scripts, MyTradingSys/system docs) and quote what registered it and why. Do NOT enable it. Close with the three outputs.",
+  "posted": "2026-10-11T15:48:17Z",
+  "status": "pending",
+  "target": "DSA-NUC",
+  "title": "NUC: is MTS-NUC-Worker Disabled on purpose? report"
+}
