@@ -129,4 +129,5 @@ T093 | CLOSED  | T093_toc_imbalance_klines.md | turn-of-candle 4-12h imbalance o
 B162 | OPEN    | B162_qriptal_signal_layer.md | Qriptal (Habib) layer: score his public record first, Discord feed route = D21, own testnet account
 B163 | OPEN    | B163_setup_alpha_beta_handoff.md | Setup Alpha (1d SMA200 trend) / Beta (sweep+CVD) handoff: NO-SOURCE research backtest only, waits on D22
 B171 | OPEN    | B171_imbalance_indicator_end_to_end.md | operator: profitable imbalance indicator end to end; none exists (T093/P4 NO REPLICATION); pre-register, backtest, testnet via supervisor
+B174 | OPEN    | B174_snapshot_oi_quantized.md | snapshot OI quantized to 0.01; full-precision series in backtest/raw/metrics unread; Claude decides consumer or display-only
 # END

@@ -251,5 +251,50 @@ class TestStaleGreenFallback(TestRun):
         r = ad.run(ops, save=False)
         self.assertEqual(r["branch"], "green/fast-track")
 
+class TestRunLock(unittest.TestCase):
+    def setUp(self):
+        self.dir = tempfile.TemporaryDirectory()
+        self.lock = Path(self.dir.name) / "auto_deploy.lock"
+
+    def tearDown(self):
+        self.dir.cleanup()
+
+    def test_second_start_exits_early_while_first_holds_lock(self):
+        ok1, _ = ad.acquire_lock(self.lock, pid_alive=lambda p: True)
+        ok2, why = ad.acquire_lock(self.lock, pid_alive=lambda p: True)
+        self.assertTrue(ok1)
+        self.assertFalse(ok2)
+        self.assertIn("another auto_deploy is running", why)
+
+    def test_dead_owner_lock_is_taken_over(self):
+        ad.acquire_lock(self.lock, pid_alive=lambda p: True)
+        ok, _ = ad.acquire_lock(self.lock, pid_alive=lambda p: False)
+        self.assertTrue(ok)
+
+    def test_old_lock_is_stale_even_if_pid_alive(self):
+        ad.acquire_lock(self.lock, pid_alive=lambda p: True, now=lambda: 1000)
+        ok, _ = ad.acquire_lock(self.lock, pid_alive=lambda p: True, now=lambda: 1000 + ad.LOCK_STALE_S + 1)
+        self.assertTrue(ok)
+
+    def test_release_allows_next_start(self):
+        ad.acquire_lock(self.lock, pid_alive=lambda p: True)
+        ad.release_lock(self.lock)
+        self.assertTrue(ad.acquire_lock(self.lock, pid_alive=lambda p: True)[0])
+
+    def test_main_skips_without_running_deploy_when_locked(self):
+        orig_lock, orig_run = ad.LOCK, ad.run
+        ad.LOCK = self.lock
+        ad.acquire_lock(self.lock)   # this process, alive
+        called = []
+        ad.run = lambda **kw: called.append(1) or {"action": "UP_TO_DATE"}
+        try:
+            rc = ad.main([])
+        finally:
+            ad.LOCK, ad.run = orig_lock, orig_run
+        self.assertEqual(rc, 0)
+        self.assertEqual(called, [])
+        self.assertTrue(self.lock.exists(), "skipped start must not delete the owner's lock")
+
+
 if __name__ == "__main__":
     unittest.main()

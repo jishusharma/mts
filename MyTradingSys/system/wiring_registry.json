@@ -413,6 +413,36 @@
    "disp": "REPRO",
    "ref": "tom-dax-backtest",
    "why": "Offline research driver: untuned Tom core on DAX vs matched-proof BTC (gen snapshots, rows, four variants x verdict pair, null, dev/holdout), writes research/tom_transfer_2026-10-11/DAX_BT_REPORT.md and TRIAL_REGISTRY rows; PRE_REG_DAX.md; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/backtest/layers/cryptocred/cc_stop_sweep.py": {
+   "disp": "REPRO",
+   "ref": "B143",
+   "why": "Offline research driver: D20/B143 stop-rule sweep across the three CryptoCred setups; regenerates research/cryptocred_stop_2026-10-10/stop_sweep_result.json; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/research/oi_divergence_test_2026-10-10.py": {
+   "disp": "REPRO",
+   "ref": "B174",
+   "why": "Offline research script: OI divergence event study from snapshots and outcome labels; regenerates research/OI_DIVERGENCE_2026-10-10.md; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/research/oi_divergence_v2_2026-10-10.py": {
+   "disp": "REPRO",
+   "ref": "B174",
+   "why": "Offline research script: second-pass OI divergence study from snapshots and labels; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/research/oi_event_study_2026-10-10.py": {
+   "disp": "REPRO",
+   "ref": "B174",
+   "why": "Offline research script: OI event study from snapshots and outcome labels; regenerates research/OI_EVENT_STUDY_2026-10-10.md; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/research/vpin_dayclustered_2026-10-10.py": {
+   "disp": "REPRO",
+   "ref": "D24",
+   "why": "Offline research script: day-clustered VPIN proxy significance test; imports vpin_proxy_2026-10-10.py; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/research/vpin_proxy_2026-10-10.py": {
+   "disp": "REPRO",
+   "ref": "D24",
+   "why": "Offline research script: VPIN proxy from 1m klines; regenerates research/VPIN_PROXY_2026-10-10.md; run by hand or a desk task, not by any loop."
   }
  }
 }

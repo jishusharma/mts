@@ -1,0 +1,114 @@
+[
+ {
+  "setup": "setup1_sr_flip",
+  "rule": "pct_0.25",
+  "src": "NO-SOURCE",
+  "n": 1487,
+  "net_r": -0.3856348291658279,
+  "hit": 0.4055144586415602
+ },
+ {
+  "setup": "setup1_sr_flip",
+  "rule": "atr_1.0",
+  "src": "CC-invalidation",
+  "n": 1487,
+  "net_r": -0.16237060416272622,
+  "hit": 0.4108944182918628
+ },
+ {
+  "setup": "setup1_sr_flip",
+  "rule": "atr_1.5",
+  "src": "CC-invalidation",
+  "n": 1487,
+  "net_r": -0.0946269196552044,
+  "hit": 0.4209818426361802
+ },
+ {
+  "setup": "setup1_sr_flip",
+  "rule": "pct_0.1",
+  "src": "NO-SOURCE",
+  "n": 1487,
+  "net_r": -1.0685763580786551,
+  "hit": 0.3725622057834566
+ },
+ {
+  "setup": "setup1_sr_flip",
+  "rule": "pct_0.5",
+  "src": "NO-SOURCE",
+  "n": 1487,
+  "net_r": -0.17362468510127152,
+  "hit": 0.4108944182918628
+ },
+ {
+  "setup": "setup1_sr_flip",
+  "rule": "atr_2.0",
+  "src": "CC-invalidation",
+  "n": 1487,
+  "net_r": -0.10128597264722235,
+  "hit": 0.41963685272360457
+ },
+ {
+  "setup": "setup2_fib_pullback",
+  "rule": "pct_0.1",
+  "src": "NO-SOURCE",
+  "n": 1392,
+  "net_r": -1.3074131709220922,
+  "hit": 0.30603448275862066
+ },
+ {
+  "setup": "setup2_fib_pullback",
+  "rule": "pct_0.5",
+  "src": "NO-SOURCE",
+  "n": 1392,
+  "net_r": -0.2086996925559714,
+  "hit": 0.3670977011494253
+ },
+ {
+  "setup": "setup2_fib_pullback",
+  "rule": "atr_1.0",
+  "src": "CC-invalidation",
+  "n": 1392,
+  "net_r": -0.1839634658627711,
+  "hit": 0.3613505747126437
+ },
+ {
+  "setup": "setup2_fib_pullback",
+  "rule": "atr_2.0",
+  "src": "CC-invalidation",
+  "n": 1392,
+  "net_r": -0.07310773585843557,
+  "hit": 0.4051724137931034
+ },
+ {
+  "setup": "setup3_failed_msb_reversal",
+  "rule": "pct_0.1",
+  "src": "NO-SOURCE",
+  "n": 167,
+  "net_r": -1.0502460141312882,
+  "hit": 0.31736526946107785
+ },
+ {
+  "setup": "setup3_failed_msb_reversal",
+  "rule": "pct_0.5",
+  "src": "NO-SOURCE",
+  "n": 167,
+  "net_r": -0.2717665348686765,
+  "hit": 0.30538922155688625
+ },
+ {
+  "setup": "setup3_failed_msb_reversal",
+  "rule": "atr_1.0",
+  "src": "CC-invalidation",
+  "n": 167,
+  "net_r": -0.21719897547178862,
+  "hit": 0.32934131736526945
+ },
+ {
+  "setup": "setup3_failed_msb_reversal",
+  "rule": "atr_2.0",
+  "src": "CC-invalidation",
+  "n": 167,
+  "net_r": -0.04030244065167057,
+  "hit": 0.3712574850299401
+ }
+]

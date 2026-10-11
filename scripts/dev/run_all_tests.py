@@ -79,8 +79,19 @@ def find_layer_modules():
     return sorted(".".join(f.relative_to(REPO).with_suffix("").parts) for f in layers.rglob("test_*.py"))
 
 
+def isolate_pytest_tmp():
+    """Give every pytest child of this gate its own fresh temp root (inherited via env). A stale pytest-of-<user>/pytest-current link in
+    %TEMP% that cannot be unlinked (WinError 5, seen 2026-10-11 after the ESET removal reboot) makes pytest exit 1 even when every test passes,
+    which turned the deploy gate red. Returns the path."""
+    import tempfile
+    root = os.environ.get("PYTEST_DEBUG_TEMPROOT") or tempfile.mkdtemp(prefix="mts_pytest_")
+    os.environ["PYTEST_DEBUG_TEMPROOT"] = root
+    return root
+
+
 def main(argv=None):
     args = sys.argv[1:] if argv is None else argv
+    isolate_pytest_tmp()
     quick = "--quick" in args
 
     results = []

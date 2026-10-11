@@ -1,4 +1,4 @@
-<!-- relay: go depth=17 id=5c5d9f32 -->
+<!-- relay: go depth=28 id=4ea2956a -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -18,7 +18,7 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    `python scripts/dev/tasks.py brief <card>` -> `sync.py claim` -> work -> `tasks.py done <card> --result "<number/file>"` -> ship -> release.
    Q1. DONE 2026-10-11 (relay JIS-NB): net_rr 0.70->4.94, quick gate green. (old text:) Card tom-verdict-fee-per-market (Sonnet). Code is ON fast-track (09a6196, BTC bit-identical test, quick gate passed pre-merge); claim released; card still active. Remaining: quick gate on HEAD, confirm the new Java tests fail on old code, run `dax_engine.py snap --at 2026-05-12T07:55:00Z` and read the vwap_band_+1 short's net_rr (was 0.70 at gross 5.09; the agent's run printed nothing - check the out file), then `tasks.py done`. Java reaches live only via supervisor deploy. DONE when: card done_when holds (GER40 netRR(24229,24111,24257)=4.1696 (the brief said 4.1662: hand error, (118-0.24229)/(28+0.24229)=4.1696), BTCUSDT bit-identical test red-before).
    Q2. DONE 2026-10-11 (relay JIS-NB): TOM_TRADE_LEDGER.csv 12 trade ids / 30 rows, every trade in all 7 videos (36 sheets); <30 because the videos show ~1.7 trades each. Follow-up card find-more-tom-trade-recap-videos-yt-dlp- (raw, refiner will scope).
-   Q3. Card fabio-trade-ledger (Sonnet; in progress: ledger 11 entries F1-F8 (F7/F8 from DyS79Eb92Ug t=1150-1350 done; NEXT window t=1350-1600, captions 'potential make 7' t=1360, then 2790/6992/7598), F6 outcome resolved +10368$ from DyS79Eb92Ug; read next: DyS79Eb92Ug t=1150-1350 ('risking 1,500', '$20 to make 3,000', flattened captions DyS79Eb92Ug.txt sit beside the video on the F: fabio_videos dir), window sheets via scripts/dev/fabio_window_sheet.py; one video window per session). DONE when: FABIO_TRADE_LEDGER.csv has >= 20 trades (or all available in the downloaded videos) with frame evidence.
+   Q3. Card fabio-trade-ledger (Sonnet; in progress: ledger 14 trades F1-F11 / 43 rows, DyS79Eb92Ug read to t=1950 (F10 +4964$, no trade t=1775-1950, talking head). F11 read (t=2775-3000, -2115$, ledger 14 trades / 43 rows). t=3025-3275 read (F12 NQ long 6->10, outcome not shown; ledger 15 trades / 46 rows). t=3275-3525 read (F12 stopped -1525$, F13 NQ long 8->10 open at t=3500, ledger 18 trades / 49 rows). t=3525-3775 read (F13 stopped -2910$, flat no trade to t=3750, ledger 16 trades / 52 rows). t=3775-4025 read (F14 NQ long 8, stopped -2611$, ledger 17 trades / 54 rows). t=4025-4275 read (flat, no trade, Daily 15147). t=4275-4525 read (flat, no trade, performance journal window, Daily 15147). t=4525-4775 read (flat, no trade, Daily 15147, talking heads). NEXT window t=4775-5025 step 25, tool: python -I scripts/dev/fabio_window_sheet.py DyS79Eb92Ug 4775 5025 25 w15, flattened captions DyS79Eb92Ug.txt beside the video on F: fabio_videos; one window per session). DONE when: FABIO_TRADE_LEDGER.csv has >= 20 trades (or all available in the downloaded videos) with frame evidence.
    Q4. Cards tom-layer-v2-spec (part A: families + sourced rules) then tom-layer-v2-cost (part B: per-market proofs/cost, BTC stop-width transfer rule, Sonnet build cards). OPUS, approved by the operator 2026-10-11, size M each = one card per session; both need Q2. DONE when: TOM_LAYER_V2_SPEC.md parts A and B + Sonnet build cards.
    Q5. Cards fabio-layer-v2-spec (part A) then fabio-layer-v2-markets (part B: NQ vs BTC data plan, cost, recall-harness + encode cards). OPUS, approved, size M each; both need Q3. DONE when: FABIO_LAYER_V2_SPEC.md parts A and B + cards.
    Q6. Card tom-encode-spike-fade (Sonnet; needs Q1 + tom-layer-v2-cost). DONE when: RECALL_DAX_V2.md shows recall >= 4/7 (or the honest miss), flag-off BTC output identical.
@@ -32,11 +32,35 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    Q15. DONE 2026-10-11 (relay JIS-NB, partial): F6 (Jpd96fLqr5M, NQ long) added, gLHd none shown (tutorial), 9I5vTvwsMBk has no f398, DyS79Eb92Ug/Is1HvdfQm5c/xUyqIjCfZzg downloaded unread (2.4-3.8 h): 2 raw follow-up cards for the refiner.
    Q16. DONE 2026-10-11 (relay JIS-NB): B066 CLOSED option C, tierFor() + SetupCandidatesBuilderTierTest green, registry test OK. Java live only via supervisor deploy.
    Q17. DONE 2026-10-11 (relay JIS-NB): B118 CLOSED option 1, layers.bracket_source=SAMPLING on every layer log row, new test red-before, 96 pass. Live only via supervisor deploy. (old text:) Card B118 (Sonnet), default option 1 (label layer trades bracket_source=SAMPLING, keep values). DONE when: test_auto_trader.py new test red-before then green and row B118 CLOSED. Edit auto_trader.py only as .new staged (live tree imports it).
-   Q18. Card find-more-fabio-trade-recap-videos-yt-dl, ONE video only: DyS79Eb92Ug (already downloaded in F:/MTS/data/fabio_videos, unread). DONE when: its ledger rows with frame files are in FABIO_TRADE_LEDGER.csv (or a per-video line saying none shown); remaining ids stay on the card.
+   Q18. (same video as Q3, covered there; skip unless Q3 is DONE) card find-more-fabio-trade-recap-videos-yt-dl, ONE video only: Is1HvdfQm5c. DONE when: its ledger rows with frame files are in FABIO_TRADE_LEDGER.csv (or a per-video line saying none shown).
    A Sonnet session that reaches an OPUS card: skip it, take the next Sonnet card, and say "Q4/Q5 need an Opus session" in the handoff.
 4. Run-and-report work goes to DSA (system/DSA_DELEGATION.md).
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
+
+## Update 2026-10-11 ~12:15Z (relay via cron mts-dispatcher, JIS-NB)
+- Q3 progress (not DONE): DyS79Eb92Ug t=4525-4775 read: flat, no trade (NQ chart t=4550-4575, Daily 15147), then talking heads. Ledger 17 trades. Next: t=4775+. Q4/Q5 need an Opus session.
+
+## Update 2026-10-11 ~11:50Z (relay via cron mts-dispatcher, JIS-NB)
+- Q3 progress (not DONE): DyS79Eb92Ug t=4275-4525 read: flat, no trade (Daily 15147 unchanged), performance-journal equity window t=4350-4425. Ledger 17 trades / 55 rows. Next: t=4525+. Q4/Q5 need an Opus session.
+
+## Update 2026-10-12 ~00:00Z (relay via cron mts-dispatcher, JIS-NB)
+- Q3 progress (not DONE): DyS79Eb92Ug t=4025-4275 read: flat, no trade, Daily 15147; chart zoomed out at t=4250. Ledger 17 trades. Next: t=4275+. Q4/Q5 need an Opus session.
+
+## Update 2026-10-11 ~23:50Z (relay via cron mts-dispatcher, JIS-NB)
+- Q3 progress (not DONE): DyS79Eb92Ug t=3775-4025 read: F14 NQ long 8 stop 25086.25 TP 25186.75, stopped -2611$ (Daily 17758->15147). Ledger 17 trades. Next: t=4025+. Q4/Q5 need an Opus session.
+
+## Update 2026-10-11 ~23:00Z (relay via cron mts-dispatcher, JIS-NB)
+- Q3 progress (not DONE): DyS79Eb92Ug t=3525-3750 read: F13 stopped -2910$ (Daily 20668->17758), then flat/no trade. Ledger 16 trades / 52 rows. Next: t=3775+. Q4/Q5 need an Opus session.
+
+## Update 2026-10-11 ~22:00Z (relay via cron mts-dispatcher, JIS-NB)
+- Q3 progress (not DONE): DyS79Eb92Ug t=3275-3500 read: F12 stopped out -1525$ (Daily 22193->20668), F13 NQ long 8->10 stop 25097.00, outcome not shown by t=3500. Ledger 49 rows. Next: t=3525+. Q4/Q5 need an Opus session.
+
+## Update 2026-10-11 ~20:00Z (relay via cron mts-dispatcher, JIS-NB)
+- Q3 progress (not DONE): DyS79Eb92Ug t=3025-3275 read: F12 NQ long 6->8->10 lots (stops 25085.75 -> 25098.50 -> 25098.25, TP 25140.75), outcome not shown (ad + interview from t=3175). Ledger 15 trades / 46 rows. Next: t=3275+. Q4/Q5 need an Opus session.
+
+## Update 2026-10-11 ~18:00Z (relay via cron mts-dispatcher, JIS-NB)
+- Q3 progress (not DONE): DyS79Eb92Ug t=1350-1600 read: F8-x -2121$, F9 long 8 (+259$ net), F10 long 4 open. Ledger 14 entries / 37 rows. Next: Q3 window t=1600+ (Sonnet). Q4/Q5 need an Opus session.
 
 ## Update 2026-10-11 ~10:00Z (relay via cron mts-dispatcher, JIS-NB)
 - Q3 progress (not DONE): DyS79Eb92Ug t=1150-1350 read: F7 long 4 (stop 19.5pt, scratch -38$), F8 long 8 (stop 12.75pt). Ledger 11 entries / 32 rows.
@@ -187,3 +211,12 @@ Not in this list on purpose (claimed by other sessions at 20:48Z): tom-verdict-f
 
 ## Update 2026-10-11 ~14:00Z (relay via cron mts-dispatcher, JIS-NB)
 - DONE Q12 B122. Q4/Q5 need an Opus session, Q6-Q8 wait on them. Next Sonnet task: Q13 refiner (REFINE_NEEDED).
+
+## Update 2026-10-11 ~09:20Z (relay via cron mts-dispatcher, JIS-NB)
+- Q3 progress (not DONE): DyS79Eb92Ug t=1575-1775 read, F10 resolved (+4964$, TP 25074.25). Ledger 13 entries. Next: Q3 continue t=1775+. Q4/Q5 need an Opus session.
+
+## Update 2026-10-11 ~10:00Z (relay via cron mts-dispatcher, JIS-NB)
+- Q3 progress (not DONE): DyS79Eb92Ug t=1775-1950 read, no new trade (Daily P/L 24354 flat, interview). Ledger 13 trades / 40 rows, frames exist. Next: t=2775+. Q4/Q5 need an Opus session.
+
+## Update 2026-10-11 ~19:00Z (relay via cron mts-dispatcher, JIS-NB)
+- Q3 progress (not DONE): DyS79Eb92Ug t=2775-3000 read: F11 NQ long 4->8 lots stopped out, -2115$. Ledger 14 trades / 43 rows. Next: t=3025+. Q4/Q5 need an Opus session.
