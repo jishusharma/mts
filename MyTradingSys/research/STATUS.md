@@ -1,25 +1,25 @@
 # Development Status
 
-Generated: 2026-10-11 15:11:16
+Generated: 2026-10-11 15:48:53
 
 ## Git Status
-**Branch:** jisnb/relay-202610110910 (the host that generated this file; yours may differ)
+**Branch:** jisnb/relay-20261011T1008 (the host that generated this file; yours may differ)
 
-CI green: 14bd4fa (2026-10-11 12:56:29 +0530), 12 commit(s) behind origin/fast-track: RED: oldest ungreen commit is 2.0 h old - CI is failing, auto-deploy is idle; fix CI first
+CI green: 14bd4fa (2026-10-11 12:56:29 +0530), 21 commit(s) behind origin/fast-track: RED: oldest ungreen commit is 2.6 h old - CI is failing, auto-deploy is idle; fix CI first
 LESSONS: digest in sync
 
 **Last 10 commits:**
 ```
+448fc6c release fabio-trade-ledger
+22a9df5 fabio ledger: F11 (DyS79Eb92Ug t=2775-3000), relay handoff
+791b987 claim fabio-trade-ledger
+c9cbe64 release fabio-trade-ledger
+484f62d fabio ledger: DyS79Eb92Ug t=1775-1950 no-trade row; handoff
+13220b7 claim fabio-trade-ledger
+741db84 release fabio-ledger
+9859f7d fabio ledger: DyS79Eb92Ug t=1575-1775, F10 resolved; relay handoff
+f9484e2 claim fabio-ledger
 91b80aa release fabio-trade-ledger
-3181d0f fabio ledger: DyS79Eb92Ug t=1350-1600 (F8 exit, F9, F10); handoff d24efef9
-4a5c6ad claim fabio-trade-ledger
-6004ebe release fabio-trade-ledger
-394806d fabio ledger: F7/F8 from DyS79Eb92Ug t=1150-1350; handoff
-07df39d claim fabio-trade-ledger
-d234f74 release b118
-7d7b059 B118: label layer bracket SAMPLING on every layer log row (test red-before), close B118
-9aca09a claim b118
-ec9c8eb release fabio-trade-ledger
 ```
 
 ## Queue Status
@@ -30,9 +30,9 @@ DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
 ```
 
 ## In-Flight .new Files
-- MyTradingSys\backtest\layers\fabio\htf_context_live.py.new (0.5h)
-- MyTradingSys\backtest\layers\fabio\test_htf_context_live.py.new (0.5h)
-- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (0.5h)
+- MyTradingSys\backtest\layers\fabio\htf_context_live.py.new (0.2h)
+- MyTradingSys\backtest\layers\fabio\test_htf_context_live.py.new (0.2h)
+- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (0.2h)
 
 ## Recent Reports (last 7 days)
 - MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md (2026-10-11 02:13) # DAX_BT_REPORT: untuned Tom core on DAX vs matched-proof BTC (card tom-dax-backtest)

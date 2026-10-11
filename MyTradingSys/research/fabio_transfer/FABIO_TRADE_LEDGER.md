@@ -72,3 +72,4 @@ F10 long (4 lots ~25040.5, stop 25019.5) scaled to 8 lots avg 25043.00, stop rai
 Ledger: 13 entry rows / 40 lines (F1-F10 incl. F3a-c, F4a-b). Still < 20: unread DyS79Eb92Ug t>1775 (captions 2790, 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
 
 F11 (DyS79Eb92Ug t=2775-3000): NQ long 4 lots ~25104.75 after the squeeze above 25110, stop ~10pt (0.04%), scaled to 8 lots (stop 25094.25, 13pt = 0.052%), no TP reached, stopped out: Daily P/L 24354 -> 22239 = -2115$. Ledger 14 trades / 43 rows. Still < 20: unread DyS79Eb92Ug t>=3025 (captions 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
+F12 (DyS79Eb92Ug t=3025-3275): NQ long 6 lots ~25107 right after F11 stop, stop ~25105.50 then 25085.75 (21pt), scaled to 8 (stop 25098.50, 9pt) and 10 (stop 25098.25, TP sell LMT 25140.75 ~40pt); outcome not shown (t=3175 intro/ad, 3225+ talking head). Ledger 15 trades / 46 rows. Still < 20: next window t=3275+, then Is1HvdfQm5c, xUyqIjCfZzg.
