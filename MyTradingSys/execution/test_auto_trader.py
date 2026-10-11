@@ -363,6 +363,25 @@ class CycleTest(unittest.TestCase):
         return [r for r in (json.loads(l) for l in at.LOG_PATH.read_text(encoding="utf-8").splitlines())
                 if r["event"] == event]
 
+    def test_layer_trade_log_rows_carry_bracket_source_sampling(self):
+        # B118: the layer bracket (stop_pct 1.0, targets 2, size 100, ...) is NO-SOURCE; every layer row says so.
+        f = at.LAYER_ALERT_DIR / "15m.jsonl"
+        f.write_text("", encoding="utf-8")
+        st = {}
+        at.read_new_layer_alerts(st)
+        f.write_text(json.dumps({"layer": "rsi", "sub": "rsi_events", "event": "support", "tf": "15m",
+                                 "t_close": LayerSignalTest.T15}) + "\n", encoding="utf-8")
+        at.cycle(st, cfg(), False, {}, NOW)
+        row = self.rows_of("trade_attempt")[0]
+        self.assertTrue(row["source"].startswith("layer:"))
+        self.assertEqual(row["bracket_source"], "SAMPLING")
+        self.assertEqual(cfg()["layers"]["bracket_source"], "SAMPLING")
+
+    def test_tom_trade_row_has_no_bracket_source(self):
+        at.TOM_ALERT.write_text(json.dumps(tom_alert()), encoding="utf-8")
+        at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW)
+        self.assertNotIn("bracket_source", self.rows_of("trade_attempt")[0])
+
     def test_trade_attempt_logs_the_runner_target(self):
         at.TOM_ALERT.write_text(json.dumps(tom_alert(runner=82000.0)), encoding="utf-8")
         at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW)

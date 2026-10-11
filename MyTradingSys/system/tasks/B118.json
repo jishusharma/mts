@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-11T08:06:15Z",
   "commands": [
     "python -m unittest discover -s MyTradingSys/execution -p test_auto_trader.py"
   ],
@@ -19,7 +20,7 @@
   "refs": [
     "B118"
   ],
-  "result": "",
+  "result": "layers.bracket_source=SAMPLING, test_auto_trader 96 pass, quick gate green",
   "scope_in": [
     "MyTradingSys/execution/auto_trader.py (layers config L69)",
     "MyTradingSys/backtest/layers/run_bracket_grid.py (exists, 27 tests)",
@@ -36,7 +37,7 @@
     "MyTradingSys/execution/auto_trader.py:69 (layers config)",
     "MyTradingSys/backtest/layers/run_bracket_grid.py:1-20 (54-cell grid driver)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Operator picks: (1) label layer trades source=SAMPLING in the log and config comment, keep values; or (2) DSA runs run_bracket_grid.py --layer all, frozen bracket still NO-SOURCE.",
     "Option 1: add a config key and a fail-first test that every layer trade log row carries it."

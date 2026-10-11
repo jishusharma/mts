@@ -1,6 +1,6 @@
 # B118 - Layer bracket in auto_trader.py is a fixed unsourced stop_pct 1.0, targets 2, size 100 for every layer alert
 
-Status: OPEN. Severity: MED. Opened 2026-10-04.
+Status: CLOSED 2026-10-11 (option 1, label only). Severity: MED. Opened 2026-10-04.
 Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. Group (b) from MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md.
 
 ## Defect
@@ -32,3 +32,4 @@ Filing only. No code or doc edit was made for this item.
 
 ## Receipt
 
+2026-10-11 (relay JIS-NB, default option 1): auto_trader.DEFAULT_CONFIG layers.bracket_source = "SAMPLING"; layer_signal sets sig["log"]["bracket_source"], so every layer trade_attempt / signal_rejected / skipped row carries it (Tom rows do not). Values unchanged (no tuning). New tests test_auto_trader.py test_layer_trade_log_rows_carry_bracket_source_sampling (red on old code: 2 errors CycleTest+RecoverTest) and test_tom_trade_row_has_no_bracket_source; 96 pass. Edited in the relay worktree only; live tree gets it via supervisor deploy/restart. Option 2 (grid run) not done; bracket stays NO-SOURCE.

@@ -80,7 +80,7 @@ B102 | CLOSED  | B102_dst_session_anchors.md | fixed-UTC session anchors in offl
 B103 | CLOSED  | B103_funding_coverage.md | funding cost silently 0 outside loaded range; archive has funding from 2020-01
 B116 | CLOSED  | B116_unsourced_stop_floor_and_fallback.md | 0.1 pct floor + 0.2 pct fallback removed 0c34a2d (SetupCandidatesBuilder.java:48,104,116-124); SetupCandidatesBuilderStopT3Test
 B117 | OPEN    | B117_unsourced_proof_bands.md | proof bands 3/5 NO-SOURCE still gate the verdict ladder; filing only
-B118 | OPEN    | B118_layer_bracket_unsourced.md | layer bracket stop_pct 1.0 / targets 2 / size 100 unsourced in auto_trader.py (live path); filing only
+B118 | CLOSED  | B118_layer_bracket_unsourced.md | layer bracket stop_pct 1.0 / targets 2 / size 100 unsourced in auto_trader.py (live path); filing only
 B119 | OPEN    | B119_desktop_operator_gated_revalidation.md | paper verification, kappa clean reader, T2 run all need desktop/operator
 B120 | OPEN    | B120_provenance_audit_doc_followups.md | receipt 2026-10-07: W3-5 parked on operator DATA-PLUMBING definition; other sub-items unblocked doc work, not run
 B121 | OPEN    | B121_poll_cadence_defaults.md | poll cadence: live_runner 60 s not bar-aligned, auto_trader 20 s; proposals not landed
