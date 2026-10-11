@@ -40,3 +40,11 @@ operator applies it once from an account with workflow scope (`git apply` then p
 Task `MTS-DailyHygiene` (06:30) runs `scripts/dev/daily_hygiene.py` (quick gate, `sync.py where`, declutter DRY run, STATUS) ->
 `MyTradingSys/runtime/sched/hygiene_latest.md`, which STATUS.md embeds: a session reads its STATUS/GATE lines at boot and fixes a
 RED before new work. Registered by the same `register_cicd_tasks.ps1` call as the deploy job. Never deploy by hand while the job works.
+
+## JIS-NUC notes (2026-10-11, from NUC session 1414Z)
+- NUC tree: `C:\Users\E-ngineers\IdeaProjects\mts-dsa` (worktree of `...\BinanceDataFeed\.git`). `F:\MTS\repo` is NOT a git repo there (only `MyTradingSys\` and `scripts\`
+  copies); desk tasks 20261011-140307 and 20261011-140621 and CODEX_START.md name it by mistake: read it as the mts-dsa tree. Codex tree: `F:\MTS\mts-codex` (branch nuc/codex-first).
+- `MTS-AutoDeploy` must never exist on the NUC (live tree is JIS-NB only). It was found registered there on 2026-10-11, almost certainly from an earlier run of
+  `register_cicd_tasks.ps1` without `-SkipDeploy`; unregistered. On the NUC always pass `-SkipDeploy`.
+- The NUC needs `tzdata` (Python 3.14 has none; tom_dax_recall uses ZoneInfo Europe/Berlin). `cloud_setup.py` GATE_DEPS and ci.yml now both carry it.
+- `MTS-NUC-Worker` showed Disabled on the NUC: whether intended is open (desk task posted).
