@@ -132,6 +132,12 @@ class QueueTest(unittest.TestCase):
         (self.repo / T.DIR / "B1.json").unlink()
         self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_OK"))   # nothing waiting
 
+    def test_ready_run_lane_cards_do_not_fill_the_builder_buffer(self):
+        T.save(self.repo, good("B1", state="raw"))
+        for i in range(3):
+            T.save(self.repo, good(f"D{i}", lane="DSA-NB"))
+        self.assertTrue(T.status_line(T.load_all(self.repo)).startswith("REFINE_NEEDED"))
+
     def test_parked_cards_do_not_keep_the_refiner_firing(self):
         """The brake: a card the refiner cannot finish must not start a session every dispatcher tick."""
         T.save(self.repo, good("B1", state="raw", goal=""))
