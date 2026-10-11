@@ -1,4 +1,4 @@
-<!-- relay: go depth=16 id=9b6eadaa -->
+<!-- relay: go depth=17 id=5c5d9f32 -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -18,7 +18,7 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    `python scripts/dev/tasks.py brief <card>` -> `sync.py claim` -> work -> `tasks.py done <card> --result "<number/file>"` -> ship -> release.
    Q1. DONE 2026-10-11 (relay JIS-NB): net_rr 0.70->4.94, quick gate green. (old text:) Card tom-verdict-fee-per-market (Sonnet). Code is ON fast-track (09a6196, BTC bit-identical test, quick gate passed pre-merge); claim released; card still active. Remaining: quick gate on HEAD, confirm the new Java tests fail on old code, run `dax_engine.py snap --at 2026-05-12T07:55:00Z` and read the vwap_band_+1 short's net_rr (was 0.70 at gross 5.09; the agent's run printed nothing - check the out file), then `tasks.py done`. Java reaches live only via supervisor deploy. DONE when: card done_when holds (GER40 netRR(24229,24111,24257)=4.1696 (the brief said 4.1662: hand error, (118-0.24229)/(28+0.24229)=4.1696), BTCUSDT bit-identical test red-before).
    Q2. DONE 2026-10-11 (relay JIS-NB): TOM_TRADE_LEDGER.csv 12 trade ids / 30 rows, every trade in all 7 videos (36 sheets); <30 because the videos show ~1.7 trades each. Follow-up card find-more-tom-trade-recap-videos-yt-dlp- (raw, refiner will scope).
-   Q3. Card fabio-trade-ledger (Sonnet; in progress: ledger 9 entries F1-F6, F6 outcome resolved +10368$ from DyS79Eb92Ug; read next: DyS79Eb92Ug t=1150-1350 ('risking 1,500', '$20 to make 3,000', flattened captions DyS79Eb92Ug.txt sit beside the video on the F: fabio_videos dir), window sheets via scripts/dev/fabio_window_sheet.py; one video window per session). DONE when: FABIO_TRADE_LEDGER.csv has >= 20 trades (or all available in the downloaded videos) with frame evidence.
+   Q3. Card fabio-trade-ledger (Sonnet; in progress: ledger 11 entries F1-F8 (F7/F8 from DyS79Eb92Ug t=1150-1350 done; NEXT window t=1350-1600, captions 'potential make 7' t=1360, then 2790/6992/7598), F6 outcome resolved +10368$ from DyS79Eb92Ug; read next: DyS79Eb92Ug t=1150-1350 ('risking 1,500', '$20 to make 3,000', flattened captions DyS79Eb92Ug.txt sit beside the video on the F: fabio_videos dir), window sheets via scripts/dev/fabio_window_sheet.py; one video window per session). DONE when: FABIO_TRADE_LEDGER.csv has >= 20 trades (or all available in the downloaded videos) with frame evidence.
    Q4. Cards tom-layer-v2-spec (part A: families + sourced rules) then tom-layer-v2-cost (part B: per-market proofs/cost, BTC stop-width transfer rule, Sonnet build cards). OPUS, approved by the operator 2026-10-11, size M each = one card per session; both need Q2. DONE when: TOM_LAYER_V2_SPEC.md parts A and B + Sonnet build cards.
    Q5. Cards fabio-layer-v2-spec (part A) then fabio-layer-v2-markets (part B: NQ vs BTC data plan, cost, recall-harness + encode cards). OPUS, approved, size M each; both need Q3. DONE when: FABIO_LAYER_V2_SPEC.md parts A and B + cards.
    Q6. Card tom-encode-spike-fade (Sonnet; needs Q1 + tom-layer-v2-cost). DONE when: RECALL_DAX_V2.md shows recall >= 4/7 (or the honest miss), flag-off BTC output identical.
@@ -37,6 +37,10 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
 4. Run-and-report work goes to DSA (system/DSA_DELEGATION.md).
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
+
+## Update 2026-10-11 ~10:00Z (relay via cron mts-dispatcher, JIS-NB)
+- Q3 progress (not DONE): DyS79Eb92Ug t=1150-1350 read: F7 long 4 (stop 19.5pt, scratch -38$), F8 long 8 (stop 12.75pt). Ledger 11 entries / 32 rows.
+- Next: Q3 continue DyS79Eb92Ug t=1350+ (Sonnet). Q4/Q5 need an Opus session.
 
 ## Update 2026-10-11 ~09:30Z (relay via cron mts-dispatcher, JIS-NB)
 - DONE T0: DAX fetch ALL_DONE -> convert (GER40 684940 bars, 631 days, 2025-03-03 bar = raw), tasks.py done tom-dax-data.

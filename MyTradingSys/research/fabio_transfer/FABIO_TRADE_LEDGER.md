@@ -55,3 +55,9 @@ Downloaded f398 720p (no en vtt exists for these): DyS79Eb92Ug (8500 s), Is1Hvdf
 Outcome now resolved: stop trailed to 24971.00 (6780$ locked) at t=960, TP filled ~25001.00, Daily P/L 10922 -> 21290 (+10368$) at t=1000 (frames lowres/DyS79Eb92Ug_w2_00/01.jpg). Caption quotes: 'risk 2,000 to make eight' (t=772), setup = buyers protecting the gap/value-area low, 'tight stop' (t=821).
 Captions F:/MTS/data/fabio_videos/DyS79Eb92Ug.txt (flattened, 3530 lines): other trade stories at t=1196 ('only risking 1,500'), 1289 ('risking $20 to make 3,000'), 2790 ('risking 800'), 6992 ('risking exactly 2,000'), 7598 ('10,000 risking 1,500'): each a candidate to read next (one window per session, tool: python -I scripts/dev/fabio_window_sheet.py <id> <t0> <t1> <step> <tag> writes lowres sheets; copy it into the tree if reused).
 Status: still 9 entries (F1-F6 families); 20-trade goal not met, remaining unread: DyS79Eb92Ug t>1100, Is1HvdfQm5c (2.5 h), xUyqIjCfZzg (3.8 h).
+
+## DyS79Eb92Ug t=1150-1350 (read 2026-10-11 relay, JIS-NB; sheets lowres/DyS79Eb92Ug_w3_00/01.jpg, step 25 s)
+Two more trades in the same live NQ session as F6 (Daily P/L 21290 at start). F7 long 4 lots ~25022.75 (derived from risk), stop 25003.25 (19.5pt = 0.078%, risk 1560$), TP sell limit 25067.32 (2.3R);
+stop raised to 25006.75, flat by t=1300 at about breakeven (Daily P/L 21290 -> 21252, -38$). F8 long 8 lots ~25032.5, stop 25021.75 (12.75pt = 0.051%, risk 2040$), TP not on frame.
+Setup in his words: buyers 'protecting the level', squeeze against trapped sellers, stop sized to a fixed dollar risk (1,500-2,000). Management: stop to ~zero risk fast, scratch if the auction fails, re-enter ('can try another time').
+Entry prices are derived (stop +/- risk/(qty*20)), flagged in the notes. Ledger now 11 entries (F1-F8). Still < 20: unread DyS79Eb92Ug t>1360 (captions: 2790, 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
