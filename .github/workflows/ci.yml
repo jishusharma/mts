@@ -5,6 +5,15 @@ name: CI
 on:
   push:
     branches: [fast-track]
+    paths:
+      - 'src/**'
+      - 'MyTradingSys/backtest/**'
+      - 'MyTradingSys/execution/**'
+      - 'MyTradingSys/runtime/**'
+      - 'MyTradingSys/tests/**'
+      - 'MyTradingSys/items/**'
+      - 'scripts/**'
+      - '.github/workflows/**'
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
