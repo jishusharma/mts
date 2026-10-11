@@ -1,0 +1,10 @@
+{
+  "done_when": "Get-ScheduledTask output printed showing MTS-DailyHygiene Ready on JIS-NUC and no MTS-AutoDeploy",
+  "from": "JIS-NB",
+  "id": "20261011-140307-nuc-register-ci-cd-scheduled-tasks-no-de",
+  "need": "On JIS-NUC in repo F:\\MTS\\repo worktree mts-dsa: git fetch origin; git merge --ff-only origin/fast-track; then powershell -File scripts/sched/register_cicd_tasks.ps1 -Trigger -SkipDeploy ; then Get-ScheduledTask -TaskName MTS-* and print the list. Do NOT register MTS-AutoDeploy (live tree is JIS-NB only). If a command fails twice close --failed with the error text.",
+  "posted": "2026-10-11T14:03:07Z",
+  "status": "pending",
+  "target": "DSA-NUC",
+  "title": "NUC: register CI/CD scheduled tasks (no deploy) on JIS-NUC"
+}
