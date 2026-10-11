@@ -86,3 +86,5 @@ Markets: NQ 13, ES 1 (F4, 1 lot, no stops). Session: US cash for every frame wit
 Stop width, 13 NQ stops with a read stop (points / % of ~25000): median 10.75pt = 0.043%, mean 13.6pt, min 1.5pt (0.006%), max 30.83pt (0.123%).
 DyS79Eb92Ug day: F7-F10 won/ended +4964$ at F10, then F11 -2115$, F12 -1525$, F13 -2910$, F14 -2611$ (four consecutive same-range longs stopped), then flat for 4400 s; day ended Daily P/L +15147$.
 Management as before: stops move only toward profit, TP pulled in late, scale-in on confirmation (4 -> 8 -> 10 lots).
+
+Is1HvdfQm5c t=0-250 (w00, 25 s steps) read: black intro, Excalidraw board (agenda: Mental Models, Live Charting, Execution Method Trick), no chart, no trade. Ledger +1 no-trade row (71 lines), still 14 trades. Next: t=250+ (w01), one 250 s window per session; the Live Charting part is likely later, so a coarse 120 s sample of the whole video may find it faster.

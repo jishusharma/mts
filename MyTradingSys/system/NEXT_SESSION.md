@@ -1,4 +1,4 @@
-<!-- relay: go depth=43 id=32eebe90 -->
+<!-- relay: go depth=44 id=14ec69ac -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -34,6 +34,9 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
 4. Run-and-report work goes to DSA (system/DSA_DELEGATION.md).
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
+
+## Update 2026-10-12 ~03:00Z (relay via cron mts-dispatcher, JIS-NB)
+- Q18 progress (not DONE): Is1HvdfQm5c t=0-250 read (intro + Excalidraw agenda, no chart, no trade); ledger 72 lines, 14 trades. Next: Q18 window t=250+ (sheets via `python -I scripts/dev/fabio_window_sheet.py Is1HvdfQm5c 250 500 25 w01`; consider coarse 120 s sampling to find Live Charting). Cards Q19-Q25 are unrefined (tasks.py brief says not ready): leave them to the refiner. Q4/Q5 need an Opus session.
 
 ## Update 2026-10-12 ~02:00Z (relay via cron mts-dispatcher, JIS-NB)
 - Q3 DONE (card fabio-trade-ledger done): DyS79Eb92Ug fully read (t=8275-8493 flat, video ends); ledger 70 rows / 14 filled trades (<20, all available), FINAL stats in FABIO_TRADE_LEDGER.md. Q3 is no longer a lane: skip it. Q5 (fabio-layer-v2-spec) is unblocked but needs an Opus session; Sonnet takes the next Sonnet card (tasks.py next).
