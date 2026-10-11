@@ -293,7 +293,7 @@ needs the sandbox, the test gate, or the live loop.
 ## 5e. DELEGATION QUEUE (operator 2026-10-09: use DSA as much as possible to save Claude cost)
 
 Full text: MyTradingSys/system/DSA_DELEGATION.md. At boot, after the news, run
-`python scripts/dev/desk.py list` and take every open task whose target is DSA (`desk.py take <id>`).
+`python scripts/dev/desk.py next` (this host's oldest pending DSA row; exit 1 = none) and take it (`desk.py take <id>`); repeat until none.
 Work in mts-dsa. Each step must finish inside 300 s; split long jobs by year or symbol and write each part to a file.
 Close with `desk.py done <id> --result "<numbers and file path>"`, or `--failed --result "<error text>"` after two failed tries.
 Then `sync.py ship`. Your lane: run existing scripts with new arguments, stratify existing results, inventories,

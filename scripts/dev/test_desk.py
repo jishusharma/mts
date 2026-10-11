@@ -85,6 +85,43 @@ class DeskTest(unittest.TestCase):
         got = sorted((t["title"], t["status"]) for t in desk.tasks(self.b))
         self.assertEqual(got, [("Fetch captions", "done"), ("Follow-up", "pending")])
 
+    def row(self, rid, target, status="pending"):
+        desk.save(self.a, {"id": rid, "title": rid, "need": "n", "done_when": "d", "target": target,
+                           "from": "t", "posted": "x", "status": status})
+
+    def test_next_returns_this_hosts_first_pending_row(self):
+        """B180: both DSA bridges read one board; each must be handed only its own lane, oldest first."""
+        self.row("20261001-000001-nb", "DSA-NB")
+        self.row("20261001-000002-nuc-taken", "DSA-NUC", "taken")
+        self.row("20261001-000003-live", "JIS-NUC")          # live-host row: never DSA's
+        self.row("20261001-000004-any", "DSA")
+        self.row("20261001-000005-nuc", "DSA-NUC")
+        self.assertEqual(desk.next_for(self.a, "JIS-NUC")["id"], "20261001-000004-any")
+        self.assertEqual(desk.next_for(self.a, "jis-nb")["id"], "20261001-000001-nb")
+        desk.finish(self.a, "20261001-000004-any", "ok", ship=False)
+        self.assertEqual(desk.next_for(self.a, "JIS-NUC")["id"], "20261001-000005-nuc")
+        self.assertIsNone(desk.next_for(self.a, "JIS-XYZ"))  # only the closed shared row and other hosts' rows remain
+        with mock.patch.object(desk.socket, "gethostname", return_value="JIS-NUC"):
+            self.assertEqual(desk.next_for(self.a)["id"], "20261001-000005-nuc")
+
+    def test_assign_posts_each_ready_dsa_card_once(self):
+        import tasks as T
+        base = dict(goal="g", scope_in=["x"], steps=["s"], done_when="file exists", size="S", state="ready")
+        for cid, lane in (("C1", "DSA-NUC"), ("C2", "SONNET"), ("C3", "JIS-NB")):
+            T.save(self.a, {**T.blank(cid, f"card {cid}", lane=lane), **base, "commands": ["python x.py"],
+                            "tests": "t fails first" if lane == "SONNET" else "", "live_path": lane == "JIS-NB"})
+        T.save(self.a, T.blank("C4", "raw card", lane="DSA"))
+        made = desk.assign(self.a, ship=False)
+        rows = desk.tasks(self.a)
+        self.assertEqual([(r["card"], r["target"], r["status"]) for r in rows], [("C1", "DSA-NUC", "pending")])
+        self.assertEqual(made, [rows[0]["id"]])
+        self.assertIn("python x.py", rows[0]["need"])
+        self.assertEqual(desk.next_for(self.a, "JIS-NUC")["card"], "C1")
+        desk.finish(self.a, made[0], "ran", ship=False)
+        self.assertEqual(desk.assign(self.a, ship=False), [])  # a closed row is not re-posted
+        self.assertEqual(subprocess.run(["git", "status", "--porcelain", "--", desk.QUEUE], cwd=self.a,
+                                        capture_output=True, text=True).stdout, "")  # rows are committed
+
 
 if __name__ == "__main__":
     unittest.main()
