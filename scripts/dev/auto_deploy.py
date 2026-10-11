@@ -15,10 +15,12 @@ Usage: python scripts/dev/auto_deploy.py [--check]   (--check: decide and report
 Exit 0 = deployed / up to date / not live; 1 = stopped (red gate, not ff, dirty, fetch failed): look at the json.
 """
 import json
+import os
 import re
 import shutil
 import subprocess
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -27,6 +29,8 @@ SCHED = REPO / "MyTradingSys" / "runtime" / "sched"
 STATE = SCHED / "auto_deploy_state.json"
 LAST = SCHED / "auto_deploy_last.json"
 LOG = SCHED / "auto_deploy.log"
+LOCK = SCHED / "auto_deploy.lock"   # run-lock: one deploy at a time (2026-10-11: manual start stacked on the 15-min run, two merges raced on .git/index.lock)
+LOCK_STALE_S = 30 * 60
 BRANCH = "green/fast-track"
 FALLBACK_BRANCH = "fast-track"   # gated here by the same local gate when CI has not advanced green for GREEN_STALE_S
 GREEN_STALE_S = 90 * 60
@@ -216,9 +220,65 @@ def run(ops=None, check=False, state=None, save=True):
     return _finish(res, save, state)
 
 
+def _pid_alive(pid):
+    if pid <= 0:
+        return False
+    if os.name == "nt":
+        out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True).stdout
+        return str(pid) in out
+    try:
+        os.kill(pid, 0)
+    except OSError:
+        return False
+    return True
+
+
+def acquire_lock(path=None, pid_alive=_pid_alive, now=time.time):
+    """Atomic O_EXCL create. Returns (True, '') or (False, reason). A lock whose owner pid is dead, or older than LOCK_STALE_S, is taken over."""
+    path = Path(path or LOCK)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    for _ in range(2):
+        try:
+            fd = os.open(str(path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            try:
+                pid, ts = (int(x) for x in path.read_text(encoding="utf-8").split()[:2])
+            except (OSError, ValueError):
+                pid, ts = 0, 0
+            if pid_alive(pid) and now() - ts < LOCK_STALE_S:
+                return False, f"another auto_deploy is running (pid {pid}, started {int(now() - ts)}s ago); exiting without touching git"
+            try:
+                path.unlink()
+            except OSError:
+                pass
+            continue
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as f:
+            f.write(f"{os.getpid()} {int(now())}\n")
+        return True, ""
+    return False, "could not take auto_deploy lock"
+
+
+def release_lock(path=None):
+    try:
+        Path(path or LOCK).unlink()
+    except OSError:
+        pass
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    res = run(check="--check" in argv)
+    check = "--check" in argv
+    if not check:
+        ok, why = acquire_lock()
+        if not ok:
+            res = {"utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "check_only": False, "action": "SKIP_LOCKED", "reason": why, "target": None}
+            print(json.dumps(res, indent=1))
+            return 0   # not a failure: the running deploy owns the result files, so nothing is written here
+    try:
+        res = run(check=check)
+    finally:
+        if not check:
+            release_lock()
     print(json.dumps(res, indent=1))
     return 1 if res["action"].startswith("STOP") else 0
 
