@@ -61,3 +61,8 @@ Two more trades in the same live NQ session as F6 (Daily P/L 21290 at start). F7
 stop raised to 25006.75, flat by t=1300 at about breakeven (Daily P/L 21290 -> 21252, -38$). F8 long 8 lots ~25032.5, stop 25021.75 (12.75pt = 0.051%, risk 2040$), TP not on frame.
 Setup in his words: buyers 'protecting the level', squeeze against trapped sellers, stop sized to a fixed dollar risk (1,500-2,000). Management: stop to ~zero risk fast, scratch if the auction fails, re-enter ('can try another time').
 Entry prices are derived (stop +/- risk/(qty*20)), flagged in the notes. Ledger now 11 entries (F1-F8). Still < 20: unread DyS79Eb92Ug t>1360 (captions: 2790, 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
+
+## DyS79Eb92Ug t=1350-1600 (read 2026-10-11 relay, JIS-NB; sheets lowres/DyS79Eb92Ug_w4_00/01/02.jpg, step 25 s)
+F8 (8 lots) was stopped out by t=1400 (Daily P/L 21252 -> 19131, -2121$; stop 25021.75, risk 2040$). Captions: 'we give back 2,500 ... auction is slow', 'this is the last trade for the day' (t=1410), yet he re-entered: F9 long 8 lots ~25034.5 (derived) with a 4-lot limit add, stop 25019.50 on 4 lots (low-res), flat by t=1550 for +259$ net (Daily 19390). F10 long 4 lots ~25040.5 at t=1575, stop 25019.50 (-1600$), outcome not read.
+Pattern: after a loss he re-enters the same protection-level squeeze three times in 5 minutes (F7 scratch -38$, F8 -2121$, F9 +259$): stop widths 12.75-21pt = 0.05-0.08%. Entry/stop values here are low-res reads, flagged approximate in the CSV.
+Ledger now 14 entries (F1-F10 + sub-rows). Still < 20 trades: unread DyS79Eb92Ug t>1600 (captions 2790, 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
