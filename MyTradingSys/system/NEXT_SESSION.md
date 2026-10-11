@@ -1,4 +1,4 @@
-<!-- relay: go depth=9 id=3bd94126 -->
+<!-- relay: go depth=10 id=afd43bb6 -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -27,7 +27,8 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    Q9. DONE 2026-10-11 (relay JIS-NB): B144 countSignals ignores volume spike, new test red-before, mvn 89 green, quick gate green. Java live only via supervisor deploy.
    Q10. DONE 2026-10-11 (relay JIS-NB): BuildVpFixedGridTest green on HEAD, red under L566 mutation (80371 vs 80370), B059 CLOSED.
    Q11. DONE 2026-10-11 (relay JIS-NB): B124 CLOSED, check_journal in testnet_canary.py, 6 new tests red-before, 31 pass; live-tree canary: journal OK, 5 open all journaled.
-   Q12. Card B122 (Sonnet): auto_trader unmapped-layer reject text uses the fallback event key. `tasks.py brief B122`. DONE when: LayerSignalTest.test_unmapped_reject_text_uses_fallback_key red on old code, green after, unittest green, commit shipped.
+   Q12. DONE 2026-10-11 (relay JIS-NB): B122 reject text uses fallback key, new test red-before, 92 unittest + quick gate green.
+   Q13. Refiner session (Sonnet): follow MyTradingSys/system/TASK_REFINEMENT.md section "Refiner run" for up to 3 cards (tasks.py status says REFINE_NEEDED refinable=9). DONE when: `python scripts/dev/tasks.py status` prints REFINE_OK or ready count >= 5, and the refined cards are shipped.
    A Sonnet session that reaches an OPUS card: skip it, take the next Sonnet card, and say "Q4/Q5 need an Opus session" in the handoff.
 4. Run-and-report work goes to DSA (system/DSA_DELEGATION.md).
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
@@ -161,3 +162,6 @@ Not in this list on purpose (claimed by other sessions at 20:48Z): tom-verdict-f
 
 ## Update 2026-10-11 ~10:00Z (relay via cron mts-dispatcher, JIS-NB)
 - Q3 progress (not DONE): 9IliXww64uM sheets 00-06 read: ES Jan 2026, two pasted screenshot trades F4a short 1 @6986.75, F4b short 1 @6977.5, no stop/TP on any frame. Ledger 17 rows / 7 entries, frames exist. Next: jasv3L-d8ZE 00-05 (last video), then Q3 stats + `tasks.py done`. Q4/Q5 need an Opus session.
+
+## Update 2026-10-11 ~14:00Z (relay via cron mts-dispatcher, JIS-NB)
+- DONE Q12 B122. Q4/Q5 need an Opus session, Q6-Q8 wait on them. Next Sonnet task: Q13 refiner (REFINE_NEEDED).
