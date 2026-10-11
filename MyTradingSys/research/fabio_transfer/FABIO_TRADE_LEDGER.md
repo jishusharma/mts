@@ -1,4 +1,4 @@
-# FABIO TRADE LEDGER (card fabio-trade-ledger) - Status: DONE 2026-10-11 (all available in the 5 videos: 8 entries F1, F2, F3a-c, F4a-b, F5)
+# FABIO TRADE LEDGER (card fabio-trade-ledger) - Status: DONE 2026-10-11 (8 entries F1, F2, F3a-c, F4a-b, F5 from the first 5 videos) + 2026-10-11 find-more pass: 9 entries (F6 added from Jpd96fLqr5M)
 
 Goal (card): >= 20 trades (or all available) with frame evidence. Reached: F1 full (frame-read order labels), F2 approximate (no order labels in the video),
 F3 transcript only. Rows are in FABIO_TRADE_LEDGER.csv. Read 2026-10-11 relay, JIS-NB.
@@ -42,3 +42,10 @@ Stop width on NQ (points / % of price): F1 15.75 / 0.061, F3b 8.88 / 0.036, F3c 
 Target distance: 138pt (8.8R), 107pt (12R), 87pt (25.9R), 50pt (5.3R): R-multiples far above 3 on every labelled trade.
 Management (all four labelled trades): stop moves only toward profit (breakeven or beyond) in steps; TP is pulled in late (F3c, F5); scale-in on confirmation (F3, F5: 12/14/18 lots) funded by day P/L.
 Gap to the 20-trade goal: the 5 downloaded videos are exhausted; more recap videos need a new search (follow-up card).
+
+## Find-more pass (card find-more-fabio-trade-recap-videos-yt-dl, relay 2026-10-11, JIS-NB) - PARTIAL, 9 entries now
+Downloaded f398 720p (no en vtt exists for these): DyS79Eb92Ug (8500 s), Is1HvdfQm5c (8881 s), xUyqIjCfZzg (13777 s), Jpd96fLqr5M (1051 s), gLHd20jE8UQ (701 s).
+9I5vTvwsMBk: f398 NOT available (formats are 144p-240p+ only per yt-dlp -F), not downloaded; needs another format/client. Files are on F: renamed <id>.f398.mp4.
+- Jpd96fLqr5M (read sheets 00-05; 06-08 are talking head): one live NQ trade F6, long 4->6 lots avg 24914.3, stop 24883.50 (30.8pt = 0.124%), stop trailed 24896.50 -> 24914.50 -> 24954.50 -> 24966.50 -> 24971.00, TP 25001.00, exit fill not shown. Sheets 00-05 in F:/MTS/data/fabio_videos/sheets.
+- gLHd20jE8UQ (read sheets 00,03): none shown, it is a MotiveWave big-trades (bubble) tutorial, no trade. His stated settings: Aggregate by Order ON, size filter 50 on ES, 'Fabio Valentini uses 30 to 40 on NQ' (a source for a big-trade size filter, quote from the on-screen slide).
+- DyS79Eb92Ug, Is1HvdfQm5c, xUyqIjCfZzg: downloaded, NOT read (2.4 h, 2.5 h, 3.8 h = 280, 296, 459 sheets at 30 s). Need per-video cards with a search step first (transcript or 5-min sampling); see follow-up cards.
