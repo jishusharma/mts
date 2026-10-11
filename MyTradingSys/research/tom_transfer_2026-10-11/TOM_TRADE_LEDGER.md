@@ -45,3 +45,10 @@ Remaining: read sheets of k0zm5NYn0IQ (10), n7ZSkjb7JXs (6), UOBgXV20yCM (5), T6
 - Family counts unchanged: spike fade 6 + 1 candidate (T8); re-entry 2; gap pullback 1; breakout pullback teaching 1. 11 trades / 24 rows; every frame path exists.
   Management actions now: scale_in 3, partial 5 rows, stop_tighten 4, stop_to_breakeven 1, stop_to_profit 1, tp_tighten 1, tp_removed 1, stop_out 2.
 - Remaining sheets: UOBgXV20yCM 03-04 (2), ujedEcmvBMk (4), zQTbdEweG3c (4), l8RZ 01-02 (2).
+
+## Update 2026-10-11 ~06:30Z (relay via cron mts-dispatcher, JIS-NB): ujedEcmvBMk sheets 00-03 all read
+- Video is the 2026-05-12 FDAX day (taskbar 12.05.2026); sheets 00-01 teaching (weekly profile, 'W' drawing), 02 re-entry review, 03 talking head + outro.
+- T3 corrected from zoom F:/MTS/data/tom_videos/frames/ujedEcmvBMk_0070_crop.png: -2 @24229, SL 24265 (RECALL_DAX 24257 = MISMATCH), TP 24111. The old 'stopped out' note is not supported by any frame: by t=250 the position is -1 (T3-p1, one lot closed, fill not shown).
+- T3b re-read (t=310 crop): -1 @24216, SL 24236, TP 24111, labelled 'reentry' by Tom: MATCH. Outcome of the re-entry NOT shown (T3b-x).
+- New management action: partial_exit at the 'Low Volume' node (T3-p1), re-entry after partial (not after stop). 11 trades / 27 rows, every frame path exists.
+- Remaining sheets: UOBgXV20yCM 03-04 (2), zQTbdEweG3c (4), l8RZrBfzvp4 01-02 (2).
