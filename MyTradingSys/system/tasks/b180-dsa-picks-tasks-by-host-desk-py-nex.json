@@ -1,0 +1,29 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T16:08:42Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "u0tq16gl6lcu4hw8jtgn",
+  "goal": "",
+  "id": "b180-dsa-picks-tasks-by-host-desk-py-nex",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "B180"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "B180 DSA picks tasks by host (desk.py next --host) and a scheduled assigner posts DSA-lane cards"
+}

@@ -1,0 +1,29 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T16:08:42Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "bftuvmoo3owp3451dabt",
+  "goal": "",
+  "id": "b172-token-audit-of-the-sonnet-relay-rit",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "B172"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "B172 Token audit of the Sonnet relay ritual: measure per-session tokens, trim always-loaded context, templatize prompts"
+}

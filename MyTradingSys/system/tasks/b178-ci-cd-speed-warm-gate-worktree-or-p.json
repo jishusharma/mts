@@ -1,0 +1,29 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T16:08:42Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "unmrdo3l1z9i5jmzqw85",
+  "goal": "",
+  "id": "b178-ci-cd-speed-warm-gate-worktree-or-p",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "B178"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "B178 CI/CD speed: warm gate worktree or per-module layer tests, stagger backup_snapshot (run-lock already shipped)"
+}

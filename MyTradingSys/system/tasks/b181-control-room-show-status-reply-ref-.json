@@ -1,0 +1,29 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T16:08:41Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "wlfq6r3l1by15luk1rhc",
+  "goal": "",
+  "id": "b181-control-room-show-status-reply-ref-",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "B181"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "B181 Control Room: show status/reply/ref for every Inbox item incl. items with no ref"
+}
