@@ -25,4 +25,9 @@ Result: Daily P/L 6468 -> 28485 = +22017$ (exit fill not on a frame). Stop width
 Narrative labels on chart: punch to the wall (absorbed effort), re entry, rewarded effort, failed auction on Cash session sensitive high, 0 doubt, squeeze.
 Stop moves only in steps behind structure as price falls; TP fixed far; size 10 on the re-entry funded by day profit.
 
-Next session: read 0jM5 00/03/04, then 9Ili and jasv sheets; add rows with frame evidence; target >= 20 or all available; then stop-width/session stats and `tasks.py done fabio-trade-ledger`.
+## 9IliXww64uM (read 2026-10-11 relay, sheets 00-06, ES, Jan 2026)
+Mostly talk: Schwab account page (value 217,392; equity curve jumped from ~61k on Nov 24 2025 to 210k on Jan 27 2026), ES 5-min and 1-min footprint charts with CVD/delta tables (no order labels),
+and two pasted trade screenshots (file 2026-01-30 214344): F4a short 1 @ 6986.75, F4b short 1 @ 6977.5 (ES, 1 lot, no stops visible). Hand-drawn schematic at t=780 (balance -> failed breakout -> reversal).
+No stop/TP prices on any frame, so no stop-width stat from this video. Ledger now 17 rows: 7 entries (F1, F2, F3a-c, F4a-b) plus management/exit rows.
+
+Next session: read jasv3L-d8ZE sheets 00-05; add rows with frame evidence; target >= 20 or all available; then stop-width/session stats and `tasks.py done fabio-trade-ledger`.

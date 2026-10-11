@@ -1,4 +1,4 @@
-<!-- relay: go depth=4 id=cc5ef223 -->
+<!-- relay: go depth=5 id=63e3c9bf -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -21,7 +21,7 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    `python scripts/dev/tasks.py brief <card>` -> `sync.py claim` -> work -> `tasks.py done <card> --result "<number/file>"` -> ship -> release.
    Q1. DONE 2026-10-11 (relay JIS-NB): net_rr 0.70->4.94, quick gate green. (old text:) Card tom-verdict-fee-per-market (Sonnet). Code is ON fast-track (09a6196, BTC bit-identical test, quick gate passed pre-merge); claim released; card still active. Remaining: quick gate on HEAD, confirm the new Java tests fail on old code, run `dax_engine.py snap --at 2026-05-12T07:55:00Z` and read the vwap_band_+1 short's net_rr (was 0.70 at gross 5.09; the agent's run printed nothing - check the out file), then `tasks.py done`. Java reaches live only via supervisor deploy. DONE when: card done_when holds (GER40 netRR(24229,24111,24257)=4.1696 (the brief said 4.1662: hand error, (118-0.24229)/(28+0.24229)=4.1696), BTCUSDT bit-identical test red-before).
    Q2. DONE 2026-10-11 (relay JIS-NB): TOM_TRADE_LEDGER.csv 12 trade ids / 30 rows, every trade in all 7 videos (36 sheets); <30 because the videos show ~1.7 trades each. Follow-up card find-more-tom-trade-recap-videos-yt-dlp- (raw, refiner will scope).
-   Q3. Card fabio-trade-ledger (Sonnet; in progress: 5 videos + 27 sheets on F:/MTS/data/fabio_videos, rows F1-F3 in research/fabio_transfer/FABIO_TRADE_LEDGER.csv; fZlNGWvd2Ko DONE 2026-10-11: F3a-c rows; 0jM5Y31YJak DONE 2026-10-11: no order labels, rows F2-m1/F2-x; next read sheets 9IliXww64uM 00-06, then jasv3L-d8ZE 00-05, one video per session). DONE when: FABIO_TRADE_LEDGER.csv has >= 20 trades (or all available in the 5 videos) with frame evidence.
+   Q3. Card fabio-trade-ledger (Sonnet; in progress: 5 videos + 27 sheets on F:/MTS/data/fabio_videos, rows F1-F3 in research/fabio_transfer/FABIO_TRADE_LEDGER.csv; fZlNGWvd2Ko DONE 2026-10-11: F3a-c rows; 0jM5Y31YJak DONE 2026-10-11: no order labels, rows F2-m1/F2-x; 9IliXww64uM DONE 2026-10-11: F4a-b ES shorts, no stops shown; next read jasv3L-d8ZE sheets 00-05, one video per session). DONE when: FABIO_TRADE_LEDGER.csv has >= 20 trades (or all available in the 5 videos) with frame evidence.
    Q4. Cards tom-layer-v2-spec (part A: families + sourced rules) then tom-layer-v2-cost (part B: per-market proofs/cost, BTC stop-width transfer rule, Sonnet build cards). OPUS, approved by the operator 2026-10-11, size M each = one card per session; both need Q2. DONE when: TOM_LAYER_V2_SPEC.md parts A and B + Sonnet build cards.
    Q5. Cards fabio-layer-v2-spec (part A) then fabio-layer-v2-markets (part B: NQ vs BTC data plan, cost, recall-harness + encode cards). OPUS, approved, size M each; both need Q3. DONE when: FABIO_LAYER_V2_SPEC.md parts A and B + cards.
    Q6. Card tom-encode-spike-fade (Sonnet; needs Q1 + tom-layer-v2-cost). DONE when: RECALL_DAX_V2.md shows recall >= 4/7 (or the honest miss), flag-off BTC output identical.
@@ -149,3 +149,6 @@ Not in this list on purpose (claimed by other sessions at 20:48Z): tom-verdict-f
 ## Update 2026-10-11 ~08:30Z (relay via cron mts-dispatcher, JIS-NB)
 - Q3 progress (not DONE): downloaded 5 Fabio videos (f398 720p; the default android client gave 360p, unreadable). F1 NQ short 10 @25652.75 SL 25668.50 TP 25514.75 fully read (stop trail 5 steps), F2 approx, F3 transcript only. Ledger + .md in research/fabio_transfer/.
 - Next: Q3 continue (0jM5 00/03/04, fZlNGWvd2Ko). Q4/Q5 need an Opus session.
+
+## Update 2026-10-11 ~10:00Z (relay via cron mts-dispatcher, JIS-NB)
+- Q3 progress (not DONE): 9IliXww64uM sheets 00-06 read: ES Jan 2026, two pasted screenshot trades F4a short 1 @6986.75, F4b short 1 @6977.5, no stop/TP on any frame. Ledger 17 rows / 7 entries, frames exist. Next: jasv3L-d8ZE 00-05 (last video), then Q3 stats + `tasks.py done`. Q4/Q5 need an Opus session.
