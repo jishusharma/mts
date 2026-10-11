@@ -2,6 +2,7 @@
   "approved_by": "operator chat 2026-10-11: free Dukascopy GER40 + Tom DAX videos approved",
   "asks": "",
   "claim": "",
+  "closed": "2026-10-11T03:50:06Z",
   "commands": [],
   "created": "2026-10-10T18:55:33Z",
   "depends_on": [],
@@ -16,7 +17,7 @@
   "refine_tries": 1,
   "refined_by": "opus-2026-10-11 (operator chat)",
   "refs": [],
-  "result": "",
+  "result": "F:/MTS/data/dax_archive: 684,940 GER40 1m bars, 631 trading days 2024-10-01..2026-10-09, all weekdays fetched (2 retried by hand); snapshot 2025-03-12T10:00Z current_price 22665.67 = raw 09:59 close 22665.666 (MATCH)",
   "scope_in": [
     "MyTradingSys/backtest/",
     "scripts/dev/shot.py (engine path)",
@@ -32,7 +33,7 @@
     "operator chat 2026-10-11: queue DAX recall, gap rules, DAX backtest in that order; probe selection/management/session with options flagged up front",
     "MyTradingSys/research/fast_track_2026-09-27/ANGLE_TRADE_CATALOG.md rows 8-19 (DAX is Tom's market)"
   ],
-  "state": "active",
+  "state": "done",
   "steps": [
     "Download per the operator-approved source (see note) into F:/MTS/data/dax_raw/ (own empty dir, untrusted data, python -I).",
     "Convert to the Binance-style 1m kline CSV layout under F:/MTS/data/dax_archive/ (UTC, DST-correct, no forward-fill of closed hours).",
