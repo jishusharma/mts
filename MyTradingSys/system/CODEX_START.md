@@ -18,6 +18,14 @@ Codex is one more work-tree session. It meets Claude only through `origin/fast-t
 - Data-bound cards (1m klines, DAX archive, videos live on JIS-NB disks): from another machine post a desk task
   (`desk.py post ... --target JIS-NB`) instead of guessing. `F:\MTS` on JIS-NB and JIS-NUC are different disks.
 
+## Who does what (three lanes; Cloud credits are the free budget, so Cloud takes what only needs the repo)
+| Lane | Takes | Why |
+|---|---|---|
+| CLD (claude.ai/code, session credits, SURFACE_POLICY section 1) | offline research and extraction, specs and card writing, adversarial reviews of Codex/Claude commits, docs, backtests on committed data, OPUS-lane thinking when the operator names Opus | needs only pushed git refs; credits ($100 pool, expires 2026-11-05) are use-it-or-lose-it |
+| COD on JIS-NUC (Codex trial, 1 month) | Sonnet/Haiku-lane code cards with fail-first tests, NUC-side runs (raw_1h/1d/funding data), refactors, test writing | cheap tier; no live tree; trial runs out, so start now |
+| JIS-NB (App session, relay) | live path, deploy, 1m-kline and video-bound cards, desk tasks, supervisor decisions | only machine with that data and the live tree |
+Rules of thumb: a card that needs no gitignored file and no live reach goes to CLD first; Codex gets code that must be built and run against NUC data; nothing crosses lanes without a card and a claim. Cloud sessions ship by PR into fast-track (CI auto-merges on green).
+
 ## Where to install (operator choice; recommendation: JIS-NUC)
 - JIS-NUC: no live tree, no operator screen, repo copy at `F:\MTS\repo`. Zero chance of touching the live system. Lacks the 1m klines.
 - JIS-NB: has the data, but also the live loop and the operator's screen; use only with the work tree on F: and no background windows.
