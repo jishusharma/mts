@@ -1,0 +1,29 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T20:16:34Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "lab-dax-trial-identity",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "Captured by lab-audit-tom-dax-bt. Freeze code, config, data and arm identity; every new look is registered, rerender alone is idempotent. No holdout reads or BTC runs during the fix.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md finding H8"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "DAX audit H8: bind cached rows and trial counts to frozen run inputs"
+}
