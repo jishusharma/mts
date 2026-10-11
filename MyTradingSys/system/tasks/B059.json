@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-11T04:51:24Z",
   "commands": [
     "PATH=C:/tools/jdk-17.0.18/bin:$PATH mvn -q test -Dtest=BuildVpFixedGridTest,BuildVpWeightTest"
   ],
@@ -19,7 +20,7 @@
   "refs": [
     "B059"
   ],
-  "result": "",
+  "result": "BuildVpFixedGridTest green on HEAD; red under L566 mutation (expected 80370.0 but was 80371.0); BUGS B059 CLOSED",
   "scope_in": [
     "src/test/java/datafeed/BuildVpFixedGridTest.java (new)",
     "src/main/java/datafeed/MarketDataSnapshot.java:538-570 (read; one temporary mutation, reverted)",
@@ -36,7 +37,7 @@
     "MyTradingSys/items/B059_rank1_zone_drift.md",
     "src/main/java/datafeed/MarketDataSnapshot.java:183 (call, bin 10.0) and :566 (binOrigin)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Copy the bar() and reflection helpers of BuildVpWeightTest.java; call buildVp(List, boolean, double) via getDeclaredMethod with double.class.",
     "Window A: 20 bars high 80378 low 80371 close 80374 volume 10. Hand maths: each bar is one bin (n = max(1,(7)/10) = 1) at low 80371; origin = floor(80371/10)*10 = 80370, so poc = vah = val = 80370.0. Window B = A plus one bar high 80360 low 80352 volume 1 (origin moves to 80350): still 80370.0 for all three.",
