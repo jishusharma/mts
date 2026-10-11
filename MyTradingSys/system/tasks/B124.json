@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-11T05:27:38Z",
   "commands": [
     "python -m pytest scripts/dev/test_testnet_canary.py -q"
   ],
@@ -19,7 +20,7 @@
   "refs": [
     "B124"
   ],
-  "result": "",
+  "result": "6 new tests red-before/green, 31 pass in test_testnet_canary.py",
   "scope_in": [
     "scripts/dev/testnet_canary.py (new check_journal, called in main after check_brakes; update the module docstring list)",
     "scripts/dev/test_testnet_canary.py"
@@ -36,7 +37,7 @@
     "MyTradingSys/system/LESSONS_LEARNED.md:130-131 (journal dir vanished; wakes check it holds the open plans' files)",
     "MyTradingSys/execution/auto_trader.py:661 (open_plans_from_log)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read auto_trader.open_plans_from_log (auto_trader.py:661) and mirror its rule in the canary with stdlib json; log path MyTradingSys/execution/auto_trades.jsonl; journal path MyTradingSys/execution/journal/<plan_id>.jsonl (journal.py _journal_path).",
     "Write the new tests first (red: no journal check exists): open plan without a journal file = RED; with file = OK; closed plan without file = OK; no open plans = OK; auto_trades.jsonl missing = WARN; output carries counts only, no plan id.",

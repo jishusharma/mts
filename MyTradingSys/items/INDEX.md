@@ -86,7 +86,7 @@ B120 | OPEN    | B120_provenance_audit_doc_followups.md | receipt 2026-10-07: W3
 B121 | OPEN    | B121_poll_cadence_defaults.md | poll cadence: live_runner 60 s not bar-aligned, auto_trader 20 s; proposals not landed
 B122 | OPEN    | B122_reject_text_event_fallback.md | auto_trader reject text uses alert.get('event') not the fallback; cosmetic
 B123 | OPEN    | B123_zero_trade_and_quiet_families.md | zero-trade after AUTO_PAUSE (cleared), 24 h re-run pending, jishu_4 QUIET to investigate
-B124 | OPEN    | B124_journal_dir_open_plan_check.md | no check that execution/journal holds each open plan; canary has no journal check
+B124 | CLOSED  | B124_journal_dir_open_plan_check.md | no check that execution/journal holds each open plan; canary has no journal check
 B125 | OPEN    | B125_consensus_writer_staged_only.md | consensus writer staged .new only, not promoted; Top-5 #3 acceptance absent
 B126 | OPEN    | B126_supervisor_inbox_consumption.md | cloud to SUP inbox consumption unverifiable; no mechanism on disk
 B127 | CLOSED  | B127_partial_code_no_test.md | CLOSED 2026-10-08: 13 of 13 rows dispositioned; A11 reclassified TOM-CONCEPT-ONLY by operator

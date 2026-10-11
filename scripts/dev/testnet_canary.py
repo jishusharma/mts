@@ -11,6 +11,9 @@ Checks (each OK / WARN / RED, overall verdict = worst):
                 auto_trades.jsonl last row ts (>6 h WARN), runtime/alerts/*.jsonl mtimes (report only)
   3 tom alerts  runtime_data/alert_counter.txt vs auto_trader_state.json tom_last_alert_no (gap > 2 RED)
   4 brakes      HALT / HALT_DAILY_LOSS / AUTO_PAUSE present -> WARN
+  4b journal    every open plan (auto_trades.jsonl trade_attempt entered, no later trade_closed; same rule as
+                auto_trader.open_plans_from_log) needs execution/journal/<plan_id>.jsonl -> RED when missing
+                (counts only, no ids); auto_trades.jsonl unreadable -> WARN
   5 new code    commits since runtime_data/canary_state.json last_commit touching live-path dirs; optional gates;
                 commit newer than the loading process start -> WARN RESTART NEEDED (supervisor only)
 
@@ -285,6 +288,38 @@ def check_brakes(res, repo):
         res.add("brakes", "OK", "none present")
 
 
+# ---------------------------------------------------------------- 4b journal files of open plans
+def check_journal(res, repo):
+    ex = repo / "MyTradingSys" / "execution"
+    try:
+        lines = (ex / "auto_trades.jsonl").read_text(encoding="utf-8").splitlines()
+    except OSError:
+        res.add("journal", "WARN", "auto_trades.jsonl unreadable: open plans not checked")
+        return
+    entered, closed = set(), set()
+    for ln in lines:
+        try:
+            e = json.loads(ln)
+        except ValueError:
+            continue
+        if not isinstance(e, dict):
+            continue
+        pid = e.get("plan_id")
+        if not pid:
+            continue
+        if e.get("event") == "trade_attempt" and e.get("outcome") == "entered":
+            entered.add(pid)
+            closed.discard(pid)
+        elif e.get("event") == "trade_closed":
+            closed.add(pid)
+    open_ids = sorted(entered - closed)
+    missing = [p for p in open_ids if not (ex / "journal" / (str(p) + ".jsonl")).is_file()]
+    if missing:
+        res.add("journal", "RED", "%d of %d open plans have no journal file" % (len(missing), len(open_ids)))
+    else:
+        res.add("journal", "OK", "%d open, all journaled" % len(open_ids))
+
+
 # ---------------------------------------------------------------- 5 new code
 def git(repo, *a):
     return subprocess.run(["git", "-C", str(repo)] + list(a), capture_output=True, text=True, timeout=60)
@@ -418,6 +453,7 @@ def main(argv=None):
     check_freshness(res, repo, now)
     check_alert_counter(res, repo)
     check_brakes(res, repo)
+    check_journal(res, repo)
     try:
         check_new_code(res, repo, args, starts)
     except Exception as e:

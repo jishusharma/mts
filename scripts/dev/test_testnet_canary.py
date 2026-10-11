@@ -303,3 +303,79 @@ def test_non_launch_command_lines_are_not_the_trader(tmp_path, capsys, decoy):
     code, out = run(capsys, repo, tmp_path, proc=p)
     assert code == 2
     assert "proc:auto_trader | RED | not running" in (tmp_path / "out" / "CANARY_2026-10-02.md").read_text(encoding="utf-8")
+
+
+# --- B124: every open plan (trade_attempt entered, no later trade_closed) needs execution/journal/<plan_id>.jsonl
+def trades_log(repo, rows):
+    touch(repo / "MyTradingSys" / "execution" / "auto_trades.jsonl",
+          "".join(json.dumps(r) + "\n" for r in rows))
+
+
+def attempt(pid, **kw):
+    return dict({"ts": "2026-10-02T11:00:00Z", "event": "trade_attempt", "outcome": "entered", "plan_id": pid}, **kw)
+
+
+def closed(pid):
+    return {"ts": "2026-10-02T11:30:00Z", "event": "trade_closed", "plan_id": pid}
+
+
+def journal_row(out):
+    md = [x for x in out.splitlines() if x.startswith("CANARY")]
+    return md[0]
+
+
+def journal_md(tmp_path):
+    md = (tmp_path / "out" / "CANARY_2026-10-02.md").read_text(encoding="utf-8")
+    rows = [x for x in md.splitlines() if x.startswith("| journal ")]
+    assert rows, md
+    return rows[-1]
+
+
+def test_journal_missing_for_open_plan_is_red(tmp_path, capsys):
+    repo = make_repo(tmp_path)
+    trades_log(repo, [attempt("L-mkt-1009-2100")])
+    code, out = run(capsys, repo, tmp_path, proc=procs(tmp_path))
+    assert code == 2 and out.startswith("CANARY RED"), out
+    assert "| RED | 1 of 1 open plans have no journal file" in journal_md(tmp_path)
+
+
+def test_journal_present_is_ok(tmp_path, capsys):
+    repo = make_repo(tmp_path)
+    trades_log(repo, [attempt("L-mkt-1009-2100")])
+    touch(repo / "MyTradingSys" / "execution" / "journal" / "L-mkt-1009-2100.jsonl", "{}\n")
+    code, out = run(capsys, repo, tmp_path, proc=procs(tmp_path))
+    assert code == 0, out
+    assert "| OK | 1 open, all journaled" in journal_md(tmp_path)
+
+
+def test_closed_plan_without_journal_is_ok(tmp_path, capsys):
+    repo = make_repo(tmp_path)
+    trades_log(repo, [attempt("L-mkt-1009-2100"), closed("L-mkt-1009-2100")])
+    code, out = run(capsys, repo, tmp_path, proc=procs(tmp_path))
+    assert code == 0, out
+    assert "| OK | 0 open, all journaled" in journal_md(tmp_path)
+
+
+def test_no_open_plans_ok(tmp_path, capsys):
+    repo = make_repo(tmp_path)
+    code, out = run(capsys, repo, tmp_path, proc=procs(tmp_path))
+    assert code == 0, out
+    assert "| OK | 0 open, all journaled" in journal_md(tmp_path)
+
+
+def test_trades_log_missing_is_warn(tmp_path, capsys):
+    repo = make_repo(tmp_path)
+    (repo / "MyTradingSys" / "execution" / "auto_trades.jsonl").unlink()
+    _, out = run(capsys, repo, tmp_path, proc=procs(tmp_path))
+    assert "| WARN |" in journal_md(tmp_path)
+
+
+def test_journal_output_has_no_plan_id(tmp_path, capsys):
+    repo = make_repo(tmp_path)
+    trades_log(repo, [attempt("L-mkt-1009-2100"), attempt("S-mkt-1009-1901")])
+    touch(repo / "MyTradingSys" / "execution" / "journal" / "S-mkt-1009-1901.jsonl", "{}\n")
+    _, out = run(capsys, repo, tmp_path, proc=procs(tmp_path))
+    md = (tmp_path / "out" / "CANARY_2026-10-02.md").read_text(encoding="utf-8")
+    assert "1 of 2 open plans have no journal file" in md
+    for s in ("L-mkt-1009-2100", "S-mkt-1009-1901"):
+        assert s not in out and s not in md
