@@ -373,7 +373,7 @@ def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
     if not c["enabled"] or layer in cfg["disabled_layers"]:
         sig["reject"] = "layer disabled"
     elif side is None:
-        sig["reject"] = f"unmapped {layer}:{alert.get('event')} (add a layer_rules entry)"
+        sig["reject"] = f"unmapped {layer}:{event} (add a layer_rules entry)"
     else:
         t_close = alert.get("t_close")
         bar = TF_SECONDS.get(tf)

@@ -177,6 +177,10 @@ class LayerSignalTest(unittest.TestCase):
         self.assertNotIn("reject", s)
         self.assertEqual(s["plan_args"][s["plan_args"].index("--entry") + 1], "market")
 
+    def test_unmapped_reject_text_uses_fallback_key(self):
+        s = at.layer_signal({"layer": "rsi", "kind": "wiggle", "tf": "15m", "t_close": self.T15}, cfg(), NOW)
+        self.assertEqual(s["reject"], "unmapped rsi:wiggle (add a layer_rules entry)")
+
     def test_max_hold_is_8_bars_of_signal_tf(self):
         for tf, mins in (("15m", "120"), ("1h", "480")):
             t = self.T15 if tf == "15m" else int(datetime(2026, 9, 28, 23, 0, tzinfo=timezone.utc).timestamp() * 1000)
