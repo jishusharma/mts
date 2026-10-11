@@ -1,0 +1,29 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T15:00:45Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "cul8u9eoqc0s86tt29e7",
+  "goal": "",
+  "id": "aibridge-auto-run-accepts-read-only-scri",
+  "lane": "",
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "B176"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "AIBridge: auto-run accepts read-only script blocks; agent accept-loop timeout"
+}
