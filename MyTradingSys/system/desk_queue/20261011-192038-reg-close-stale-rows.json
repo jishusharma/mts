@@ -1,0 +1,11 @@
+{
+  "card": "reg-close-stale-rows",
+  "done_when": "BUGS.md shows T087, T088, B125 CLOSED with a hash in each Receipt, B141 Receipt cites the section 9 result; quick gate passes; commit shipped.",
+  "from": "JIS-NUC",
+  "id": "20261011-192038-reg-close-stale-rows",
+  "need": "git show -s --format='%h %s%n%b' 71df3aa 0aa8f56 2fccf66; python scripts/dev/run_all_tests.py --quick; python scripts/dev/tasks.py sweep --apply (full brief: python scripts/dev/tasks.py brief reg-close-stale-rows)",
+  "posted": "2026-10-11T19:20:38Z",
+  "status": "pending",
+  "target": "DSA-NB",
+  "title": "Close registry rows whose work already shipped (T087 T088 B125)"
+}
