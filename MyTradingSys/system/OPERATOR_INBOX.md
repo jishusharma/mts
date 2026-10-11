@@ -1342,3 +1342,7 @@ DIRTY TREE - commit or stash before another session edits on top
 
 SCOPE. Two files for the fixes: src\policy.json and src\agent.ps1. MTS repo is not touched. No changes to background.js, content.js, loop.js required for the primary fix.
 ```
+## uatvl0nb0izontyg64lf | 2026-10-11T16:09:15Z | requirement
+```
+When possible. Design DSA AI Bridge tasks such that multiple sessions can run in || and complete tasks  quickly. Make sure that their scope on NB and NUC are maintained!
+```
