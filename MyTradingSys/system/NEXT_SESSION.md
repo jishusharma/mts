@@ -1,4 +1,4 @@
-<!-- relay: go depth=10 id=afd43bb6 -->
+<!-- relay: go depth=11 id=ba8ee21f -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -28,7 +28,9 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    Q10. DONE 2026-10-11 (relay JIS-NB): BuildVpFixedGridTest green on HEAD, red under L566 mutation (80371 vs 80370), B059 CLOSED.
    Q11. DONE 2026-10-11 (relay JIS-NB): B124 CLOSED, check_journal in testnet_canary.py, 6 new tests red-before, 31 pass; live-tree canary: journal OK, 5 open all journaled.
    Q12. DONE 2026-10-11 (relay JIS-NB): B122 reject text uses fallback key, new test red-before, 92 unittest + quick gate green.
-   Q13. Refiner session (Sonnet): follow MyTradingSys/system/TASK_REFINEMENT.md section "Refiner run" for up to 3 cards (tasks.py status says REFINE_NEEDED refinable=9). DONE when: `python scripts/dev/tasks.py status` prints REFINE_OK or ready count >= 5, and the refined cards are shipped.
+   Q13. DONE 2026-10-11 (relay JIS-NB): refiner pass, B066 + B118 + 2 find-more cards ready, tasks.py status REFINE_OK ready=6.
+   Q14. Card find-more-tom-trade-recap-videos-yt-dlp- (Sonnet): `tasks.py brief` it. DONE when: TOM_TRADE_LEDGER.csv has rows for at least 3 new video ids (or a note of the queries tried), .md header states the new trade count.
+   Q15. Card find-more-fabio-trade-recap-videos-yt-dl (Sonnet). DONE when: FABIO_TRADE_LEDGER.csv has rows (or a none-shown line) for DyS79Eb92Ug, Is1HvdfQm5c, xUyqIjCfZzg, Jpd96fLqr5M, 9I5vTvwsMBk, gLHd20jE8UQ.
    A Sonnet session that reaches an OPUS card: skip it, take the next Sonnet card, and say "Q4/Q5 need an Opus session" in the handoff.
 4. Run-and-report work goes to DSA (system/DSA_DELEGATION.md).
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.

@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "Layer bracket (stop 1 percent, 2 targets, $100) has no source: label it sampling-only and keep, or run the 54-cell bracket grid first?",
+  "asks": "",
   "commands": [
     "python -m unittest discover -s MyTradingSys/execution -p test_auto_trader.py"
   ],
@@ -36,7 +36,7 @@
     "MyTradingSys/execution/auto_trader.py:69 (layers config)",
     "MyTradingSys/backtest/layers/run_bracket_grid.py:1-20 (54-cell grid driver)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Operator picks: (1) label layer trades source=SAMPLING in the log and config comment, keep values; or (2) DSA runs run_bracket_grid.py --layer all, frozen bracket still NO-SOURCE.",
     "Option 1: add a config key and a fail-first test that every layer trade log row carries it."

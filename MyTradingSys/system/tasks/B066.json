@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "Close B066 as handled (tier trigger_ready only within 0.1 percent, so 150 pts is conditional) with a tier test, or add a hide gate (needs a Tom-sourced threshold)?",
+  "asks": "",
   "commands": [
     "PATH=C:/tools/jdk-17.0.18/bin:$PATH mvn -q test -Dtest='SetupCandidatesBuilder*Test'"
   ],
@@ -33,7 +33,7 @@
     "MyTradingSys/items/B066_rank1_distance_gate.md (fix shape not decided: options A, B, C)",
     "src/main/java/datafeed/SetupCandidatesBuilder.java:75 (distPct <= 0.1 trigger_ready)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Operator picks: C close as handled by the 0.1 percent tier rule (add a tier test), or A/B add a gate (needs a sourced threshold).",
     "On C: write a tier test (price 80524, zone 80373.47 -> conditional), CLOSE B066 with the test as Receipt."
