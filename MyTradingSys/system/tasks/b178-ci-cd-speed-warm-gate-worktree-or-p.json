@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-11T20:55:31Z",
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
@@ -19,7 +20,7 @@
   "refs": [
     "B178"
   ],
-  "result": "",
+  "result": "5b 29.8s->25.0s, total 172.6->169.4s on NUC; backup staggered to :07 offset",
   "scope_in": [
     "scripts/dev/run_all_tests.py",
     "scripts/dev/test_run_all_tests.py",
@@ -38,7 +39,7 @@
   "sources": [
     "MyTradingSys/research/BUGS.md row B178 (Control Room inbox 3nk95q0pnm8hwyf26yvm + unmrdo3l1z9i5jmzqw85, verbatim in OPERATOR_INBOX.md)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Time `run_all_tests.py --quick` per step on one SHA (baseline); record the step list.",
     "Speed up step 5b/pytest layer run (per-module or parallel processes, or a warm persistent gate worktree); every module still runs.",
