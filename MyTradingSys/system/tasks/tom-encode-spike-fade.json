@@ -5,9 +5,11 @@
   "created": "2026-10-10T20:38:11Z",
   "depends_on": [
     "tom-verdict-fee-per-market",
-    "tom-layer-v2-cost"
+    "tom-layer-v2-cost",
+    "tom-profile-parity-check",
+    "tom-holdout-clean-split"
   ],
-  "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX_V2.md shows signal recall on the 7 entries (target >= 4/7) with every new parameter sourced or flagged NO-SOURCE; .new staged, tests green.",
+  "done_when": "RECALL_DAX_V2.md: recall on the 7 entries (design set built from, CHECK set read once; target >= 4/7 overall), fire rate per DAX day on dev vs Tom's days, every recall iteration a TRIAL_REGISTRY row, every parameter sourced or NO-SOURCE, flag-off output identical.",
   "from_inbox": "",
   "goal": "Add the setup behind 3 of Tom's 7 chart-verified DAX entries (fade of an opening/morning spike top: P-shape exhaustion, inside bar, weak-high ledge, no liquidity above) as a sourced candidate type with its own proofs, staged as .new, judged by recall on the 7 instants.",
   "id": "tom-encode-spike-fade",
@@ -38,7 +40,8 @@
   "steps": [
     "Collect Tom's words for each element (transcripts of T6hDJcHrVBM, zQTbdEweG3c, k0zm5NYn0IQ + TOM_VERBATIM_INDEX), quote + file:line per parameter; unsourced numbers = NO-SOURCE, flagged.",
     "Implement in src/main (worktree) behind -Dmts.spikeFade (default off); candidate type spike_fade with OHLCV-computable proofs; no change to existing types; test that flag-off output is identical. dax_engine.py/tom_dax_recall.py pass the flag through.",
-    "Re-run tom_dax_recall.py (declared anchor) against the staged engine; write MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX_V2.md."
+    "Re-run tom_dax_recall.py (declared anchor) against the staged engine; write MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX_V2.md.",
+    "Encode from the DESIGN set in HOLDOUT_CLEAN.json only; read the CHECK set once at the end; report fire rate (signals per DAX day) next to recall, never recall alone."
   ],
   "tests": "Java unit test: a synthetic 1m series with an opening spike + inside bar at a prior-high ledge yields a short spike_fade candidate at the spike high; a flat series yields none (fails before the type exists).",
   "title": "Encode Tom's spike-top fade as a candidate type (recall test on his 7 DAX entries)"

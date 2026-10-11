@@ -4,9 +4,10 @@
   "commands": [],
   "created": "2026-10-11T12:00:00Z",
   "depends_on": [
-    "fabio-layer-v2-spec"
+    "fabio-layer-v2-spec",
+    "fabio-ledger-minute-timestamps"
   ],
-  "done_when": "FABIO_LAYER_V2_SPEC.md part B: per-market proof/cost/stop-width table, recall-harness decision, flag plan (default off) AND the Sonnet recall-harness + encode cards created in MyTradingSys/system/tasks/, each passing tasks.py check.",
+  "done_when": "FABIO_LAYER_V2_SPEC.md part B: per-market proof/cost/stop-width table, recall-harness decision, flag plan (default off), session-matched null + fill rules, NQ-tick-data cost as a Control Room decision with a default, AND the Sonnet recall/encode cards, each passing tasks.py check.",
   "from_inbox": "",
   "goal": "Decide what can be tested where: recall harness on free NQ/US100 1m (price-only proofs), which order-flow proofs need aggressor data (BTC has it, CFD does not), cost and stop width in points and % for NQ versus BTC, and the Sonnet cards that build the recall harness and the encoding.",
   "id": "fabio-layer-v2-markets",
@@ -35,7 +36,8 @@
   "steps": [
     "Read FABIO_LAYER_V2_SPEC.md part A, FABIO_TRADE_LEDGER.md stop-width stats, P2_FABIO_V3_HOLDOUT_STATUS.md, tom_transfer_2026-10-11/RECALL_DAX.md and DAX build report (harness pattern).",
     "Recall harness: free NQ/US100 1m (Dukascopy USA100) for price-only proofs; order-flow proofs flagged data-limited on CFD. State what NQ-to-BTC transfer needs (stop width vs fees).",
-    "Create the Sonnet cards with tasks.py new (recall harness first, then one family per encode card, flag-gated, fail-first tests) and append part B to FABIO_LAYER_V2_SPEC.md."
+    "Create the Sonnet cards with tasks.py new (recall harness first, then one family per encode card, flag-gated, fail-first tests) and append part B to FABIO_LAYER_V2_SPEC.md.",
+    "State per N4/N7: stops 0.014-0.061 % make BTC fees worse than Tom's; BTC has aggressor side (order-flow proofs testable), no NY-open analogue; NQ with aggressor needs paid CME tick data = decision (default: do not buy; price-only proofs on free NQ, order-flow on BTC); null drawn from the NY session window with the same fill mechanics."
   ],
   "tests": "Every created card passes tasks.py check.",
   "title": "Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)"

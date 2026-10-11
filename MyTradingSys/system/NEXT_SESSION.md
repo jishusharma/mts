@@ -30,10 +30,22 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    Q23. Card b180-dsa-picks-tasks-by-host-desk-py-nex (Sonnet, p2). DONE when: `desk.py next --host` returns this host's first pending row (test with fixture rows) and DSA_DELEGATION.md names the scheduled assigner.
    Q24. Card b177-control-room-layer-board-tab-per-ac (Sonnet, p2). DONE when: Layer Board tab renders one row per active layer from the registry, test green, page republished.
    Q25. Card b179-tom-and-fabio-layers-story-as-a-sli (Sonnet, p3). DONE when: a Slides artifact built from the existing Tom/Fabio story doc is published and its link is on the Control Room item.
+   Q26. Card tom-holdout-clean-split (Sonnet, p1; C-Cloud N1/N2). DONE when: HOLDOUT_CLEAN.json + dated PRE_REG_DAX.md addendum (ledger days dropped from the DAX holdout, forward holdout from 2026-10-10, design/check split of the ledger) committed BEFORE any encode. Dates only, no outcome reads.
+   Q27. Card tom-profile-parity-check (Sonnet, p1; N3). DONE when: PROFILE_PARITY.md table of >= 6 drawn-vs-computed POC/VAH/VAL levels + verdict (volume proofs usable on Dukascopy DAX, or NOT_IN_DATA).
+   Q28. Card backtest-readiness-template (Sonnet, p2). DONE when: backtest/PRE_REG_TEMPLATE.md (12 items) + test_pre_reg_template.py green + LESSONS_LEARNED entry.
+   Q29. Card fabio-ledger-minute-timestamps (Sonnet, p2; N4 iii). DONE when: ledger rows carry entry_time_utc read from frame clocks, replay-ready count in the .md.
+   Q30. Cards cryptocred-home-fit-audit, malkan-home-fit-audit, positioning-home-fit-audit (Sonnet, p4). Blocked until tom-layer-v2-cost, fabio-layer-v2-markets and Q28 are done; CryptoCred first (home market is BTC). No backtests.
+   ORDER (C-Cloud research 2026-10-11, BACKTEST_FAILURES_RESEARCH.md): Q26 and Q27 BEFORE tom-layer-v2-cost (Q4 part B) and tom-encode-spike-fade (Q6); Q29 before fabio-layer-v2-markets (Q5 part B). Q6/Q7 pass bar = recall AND fire rate on the held-back CHECK set; DAX holdout excludes ledger days.
    A Sonnet session that reaches an OPUS card: skip it, take the next Sonnet card, and say "Q4/Q5 need an Opus session" in the handoff.
 4. Run-and-report work goes to DSA (system/DSA_DELEGATION.md).
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
+
+## Update 2026-10-11 ~late (JIS-NB session, from C-Cloud research report)
+- C-Cloud's `research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md` is on fast-track. Result: no layer has passed S3; fair tests (volume, candles, MA, RSI divergence, session momentum) are real negatives, trader-derived layers (Tom, Fabio, Malkan, CryptoCred, positioning) were tested off their home market/timeframe/exits, so their negatives mostly measure our encoding.
+- New findings folded into cards: N1 DAX holdout contaminated by Tom's ledger days (T3-T6, T10-T12 sit in 2026-04-11..10-09) -> Q26; N2 recall alone is not a pass bar -> fire rate + design/check split in tom-encode-spike-fade; N3 DAX feed volume may not give Tom's profile -> Q27; N4 Fabio ledger needs minute timestamps, NQ tick data is an operator cost decision (default: do not buy) -> Q29 + fabio-layer-v2-markets; N5 re-measure MFE after the stop-width rule -> tom-probe-prereg; N6 snapshot fields market_state/day_type/htf_bias -> tom-layer-v2-cost; N7 session-matched null, touch + trade-through fills -> tom-dax-backtest.
+- STOP list unchanged (ROADMAP.md); adds: no layer backtest runs before its 12-point readiness checklist (Q28) is answered; keep literature-layer holdouts sealed.
+- Sonnet takes Q26 then Q27 first (tasks.py next); Q4/Q5 part A are Opus cards and skip for Sonnet.
 
 ## Update 2026-10-12 ~02:00Z (relay via cron mts-dispatcher, JIS-NB)
 - Q3 DONE (card fabio-trade-ledger done): DyS79Eb92Ug fully read (t=8275-8493 flat, video ends); ledger 70 rows / 14 filled trades (<20, all available), FINAL stats in FABIO_TRADE_LEDGER.md. Q3 is no longer a lane: skip it. Q5 (fabio-layer-v2-spec) is unblocked but needs an Opus session; Sonnet takes the next Sonnet card (tasks.py next).

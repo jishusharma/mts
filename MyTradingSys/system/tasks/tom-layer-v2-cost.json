@@ -4,9 +4,11 @@
   "commands": [],
   "created": "2026-10-11T12:00:00Z",
   "depends_on": [
-    "tom-layer-v2-spec"
+    "tom-layer-v2-spec",
+    "tom-profile-parity-check",
+    "tom-holdout-clean-split"
   ],
-  "done_when": "TOM_LAYER_V2_SPEC.md part B: per-market proof/cost table, the BTC transfer rule (minimum stop width / cost-aware R) with its DIAG_BTC numbers, flag plan (default off, live BTC bit-identical) AND the Sonnet build cards created in MyTradingSys/system/tasks/ (spike-fade first) with hand-computed test numbers from FORMULAS.md style.",
+  "done_when": "TOM_LAYER_V2_SPEC.md part B: per-market proof/cost table, BTC transfer rule with DIAG_BTC numbers, holdout + pass-bar + null + fill rules (N1/N2/N7), snapshot fields (N6), flag plan (default off, BTC bit-identical), AND the Sonnet build cards in system/tasks/.",
   "from_inbox": "",
   "goal": "Make the part-A families computable and affordable per market: which proofs can fire on DAX CFD (no aggressor split, proof cap 2) versus BTC (aggressor data), the cost model per market, the minimum stop width that clears noise + fees on BTC, and the Sonnet build cards that implement the spec.",
   "id": "tom-layer-v2-cost",
@@ -35,10 +37,11 @@
   ],
   "state": "refined",
   "steps": [
-    "Read TOM_LAYER_V2_SPEC.md part A, DIAG_BTC.md, RECALL_DAX.md section 3.4, FORMULAS.md, SetupCandidatesBuilder.java:557-575, the per-market fee code (card tom-verdict-fee-per-market).",
-    "Per market (FDAX/GER40 CFD, BTC perp): which proofs can fire on the data it has, cost per side, round-turn cost in points and R for Tom's 20-63 point stops.",
-    "Derive the transfer rule from DIAG_BTC (1R ~0.084 %, fees ~2.8R per loss): minimum stop width / cost-aware R, with the arithmetic shown. Sources or NO-SOURCE for every number.",
-    "Create the Sonnet build cards with tasks.py new (spike-fade first, one family per card, flag-gated, tests fail-first, hand-computed numbers) and append part B to TOM_LAYER_V2_SPEC.md."
+    "Read TOM_LAYER_V2_SPEC.md part A, DIAG_BTC.md, RECALL_DAX.md 3.4, FORMULAS.md, SetupCandidatesBuilder.java:557-575, the per-market fee code, PROFILE_PARITY.md, HOLDOUT_CLEAN.json, BACKTEST_FAILURES_RESEARCH.md N1-N8.",
+    "Per market (FDAX/GER40 CFD, BTC perp): proofs that can fire on the data it has (use PROFILE_PARITY verdict for volume proofs), cost per side, round-turn cost in points and R for Tom's 20-63 point stops.",
+    "Derive the transfer rule from DIAG_BTC (1R ~0.084 %, fees ~2.8R per loss) in noise/ATR units and fee share of R (< 0.25 R); arithmetic shown; sources or NO-SOURCE per number.",
+    "Part B must state: the holdout rule (HOLDOUT_CLEAN + forward holdout), recall AND fire-rate pass bar, fills touch + trade-through, session-matched null (N1, N2, N7), snapshot fields market_state/day_type/htf_bias (N6).",
+    "Create the Sonnet build cards with tasks.py new (spike-fade first, one family per card, flag-gated, fail-first tests, hand-computed numbers) and append part B to TOM_LAYER_V2_SPEC.md."
   ],
   "tests": "Every build card passes tasks.py check; the transfer-rule arithmetic reproduces the DIAG_BTC numbers by hand.",
   "title": "Tom layer v2 spec, part B: per-market proofs, cost, stop-width transfer rule, build cards (Opus research)"

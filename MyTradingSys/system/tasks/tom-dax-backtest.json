@@ -5,7 +5,8 @@
   "created": "2026-10-10T18:55:33Z",
   "depends_on": [
     "tom-dax-recall",
-    "tom-encode-spike-fade"
+    "tom-encode-spike-fade",
+    "tom-holdout-clean-split"
   ],
   "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md with DAX and matched-proof BTC rows (n, gross R, net R, CI, null), holdout read once, TRIAL_REGISTRY rows added, branch named.",
   "from_inbox": "",
@@ -39,7 +40,8 @@
     "Pre-register in MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md: rules frozen at HEAD, DAX holdout = last 6 months, fees = FDAX/CFD schedule stated, stops in points as the engine sets them.",
     "Snapshot DAX every 15 min in trading hours; tom_bt variants as in the 2026-10-06 rerun; random-entry null on DAX.",
     "BTC rerun with order-flow proofs masked (matched-proof).",
-    "Report gross and net R with CIs, n, null, holdout read once; branch per PROBE_PLAN section 4."
+    "Report gross and net R with CIs, n, null, holdout read once; branch per PROBE_PLAN section 4.",
+    "Holdout = HOLDOUT_CLEAN.json clean days plus the forward holdout (from 2026-10-10), read once; fills reported touch AND trade-through; null drawn from the same session window and order type."
   ],
   "tests": "test_tom_bt_symbol.py: a 20-bar synthetic DAX series with a known stop hit gives the hand-computed R (fails until tom_bt takes symbol/fees as input).",
   "title": "Untuned Tom backtest on DAX vs matched-proof BTC rerun"
