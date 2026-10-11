@@ -30,3 +30,9 @@ Remaining: read sheets of k0zm5NYn0IQ (10), n7ZSkjb7JXs (6), UOBgXV20yCM (5), T6
   Management actions: scale_in 3, partial 4 in rows (T2b x2, T1 x2) + T5 noted, stop_tighten 4, tp_tighten 1, tp_removed 1, stop_to_profit 1, stop_out 2.
 - Check: every frame path in all 19 rows exists (scratch append script prints missing = 0). Rows T1-p1, T1-p2, T8 re-read from the zoomed crops while writing them.
 - Remaining sheets: UOBgXV20yCM (5), T6hDJcHrVBM (4), ujedEcmvBMk (4), zQTbdEweG3c (4), l8RZ 01-02 (2).
+
+## Update 2026-10-11 ~05:00Z (relay via cron mts-dispatcher-night, JIS-NB): UOBgXV20yCM sheets 00-02 read
+- One trade only (teaching video, hindsight chart): T9 FDAX long 1 @23887, SL 23857 (30pt), TP 23962 (75pt), CRV ~2.5; zoom F:/MTS/data/tom_videos/frames/UOBgXV20yCM_0250_lab.png.
+  Taskbar clock 19.05.2026 07:12 is the recording time, not the trade time; chart header 2026-05-15 is the volume-profile history. Entry moment and exit fill are NOT shown (T9-x exit inferred from price 24014 on later chart).
+- Family: breakout_pullback_teaching (new family, 1). 11 trades / 21 rows in the csv; every frame path exists.
+- Remaining sheets: UOBgXV20yCM 03-04 (2), T6hDJcHrVBM (4), ujedEcmvBMk (4), zQTbdEweG3c (4), l8RZ 01-02 (2).

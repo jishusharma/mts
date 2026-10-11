@@ -1,4 +1,4 @@
-<!-- relay: go depth=4 id=d22fa242 -->
+<!-- relay: go depth=5 id=c1b3897c -->
 <!-- relay: go depth=0 id=tomfab1011 -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
@@ -20,7 +20,7 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
 3. TASK: first Qn below not DONE and not claimed. Its card is the whole brief:
    `python scripts/dev/tasks.py brief <card>` -> `sync.py claim` -> work -> `tasks.py done <card> --result "<number/file>"` -> ship -> release.
    Q1. DONE 2026-10-11 (relay JIS-NB): net_rr 0.70->4.94, quick gate green. (old text:) Card tom-verdict-fee-per-market (Sonnet). Code is ON fast-track (09a6196, BTC bit-identical test, quick gate passed pre-merge); claim released; card still active. Remaining: quick gate on HEAD, confirm the new Java tests fail on old code, run `dax_engine.py snap --at 2026-05-12T07:55:00Z` and read the vwap_band_+1 short's net_rr (was 0.70 at gross 5.09; the agent's run printed nothing - check the out file), then `tasks.py done`. Java reaches live only via supervisor deploy. DONE when: card done_when holds (GER40 netRR(24229,24111,24257)=4.1696 (the brief said 4.1662: hand error, (118-0.24229)/(28+0.24229)=4.1696), BTCUSDT bit-identical test red-before).
-   Q2. Card tom-trade-ledger (Sonnet, frames not transcripts), CONTINUE: 10 trades / 19 rows in TOM_TRADE_LEDGER.csv (partial, claim released; k0zm5N + n7ZSkj fully read 2026-10-11); read the remaining contact sheets in F:/MTS/data/tom_videos/sheets (UOBgXV 5, T6hDJc 4, ujedEc 4, zQTbdE 4, l8RZ 01-02; 4-6 sheets per session; zoom labels with the grab.py pattern in TOM_TRADE_LEDGER.md) and append trades/management rows. DONE when: TOM_TRADE_LEDGER.csv has >= 30 trades or every trade in all 7 videos, each with frame evidence, and TOM_TRADE_LEDGER.md family counts.
+   Q2. Card tom-trade-ledger (Sonnet, frames not transcripts), CONTINUE: 11 trades / 21 rows in TOM_TRADE_LEDGER.csv (partial, claim released; k0zm5N + n7ZSkj fully read, UOBgXV 00-02 read 2026-10-11); read the remaining contact sheets in F:/MTS/data/tom_videos/sheets (UOBgXV 03-04, T6hDJc 4, ujedEc 4, zQTbdE 4, l8RZ 01-02; 4-6 sheets per session; zoom labels with the grab.py pattern in TOM_TRADE_LEDGER.md) and append trades/management rows. DONE when: TOM_TRADE_LEDGER.csv has >= 30 trades or every trade in all 7 videos, each with frame evidence, and TOM_TRADE_LEDGER.md family counts.
    Q3. Card fabio-trade-ledger (Sonnet). DONE when: FABIO_TRADE_LEDGER.csv >= 20 trades with frame evidence.
    Q4. Cards tom-layer-v2-spec (part A: families + sourced rules) then tom-layer-v2-cost (part B: per-market proofs/cost, BTC stop-width transfer rule, Sonnet build cards). OPUS, approved by the operator 2026-10-11, size M each = one card per session; both need Q2. DONE when: TOM_LAYER_V2_SPEC.md parts A and B + Sonnet build cards.
    Q5. Cards fabio-layer-v2-spec (part A) then fabio-layer-v2-markets (part B: NQ vs BTC data plan, cost, recall-harness + encode cards). OPUS, approved, size M each; both need Q3. DONE when: FABIO_LAYER_V2_SPEC.md parts A and B + cards.
@@ -32,6 +32,10 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
 4. Run-and-report work goes to DSA (system/DSA_DELEGATION.md).
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
 ```
+
+## Update 2026-10-11 ~05:00Z (relay via cron mts-dispatcher-night, JIS-NB)
+- Q2 progress (not DONE): UOBgXV20yCM sheets 00-02 read: one teaching trade T9 FDAX long 23887 SL 23857 TP 23962 (entry/exit moment not shown). Ledger 11 trades / 21 rows, frames exist. DAX fetch: no ALL_DONE yet (log tail still FAIL days).
+- Next: Q2 continue with T6hDJcHrVBM (Sonnet). Q4/Q5 need an Opus session.
 
 ## Update 2026-10-11 ~00:40Z (relay via cron mts-dispatcher-night, JIS-NB)
 - Q2 progress (not DONE): n7ZSkjb7JXs sheets 00-05 read. T1 management added (scale-in to 4, two partials, TP 24422->24426 then removed, stop 24485->24484);
