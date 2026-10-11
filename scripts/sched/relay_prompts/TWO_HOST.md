@@ -30,12 +30,19 @@ Never start other scheduled tasks. Never kill processes by image name. Never tou
 - A dispatcher stays IDLE while ANOTHER host wrote the current handoff under PEER_QUIET_MIN minutes ago. When that host
   goes quiet (credits out, machine off, App closed) the other one picks the chain up by itself.
 - Move the work on purpose: `python scripts/sched/relay.py stop "<why>"` on the host to rest (host-local flag), `resume` later.
-- Budget asymmetry (operator 2026-10-12): the NUC account is nearly out until Fri 2026-10-16, so the NB is the primary and does NOT pass --peer-quiet-min; the NUC (90) yields while the NB keeps handing off and takes over only if the NB goes quiet. Q31 is therefore not applied.
+- Budget asymmetry, CORRECTED 2026-10-12 (the earlier line here had the two accounts swapped): the account with ~26% weekly
+  left until Fri 2026-10-16 is jishu.sharma, signed in on JIS-NB (operator, said in the NB App: "this one ... around 26%
+  weekly remaining", "more work on the other subscription"). jishu.awgp on JIS-NUC had used 4% of its week at
+  2026-10-11T19:05Z (App usage card, resets 2026-10-18). So the NUC is the primary: it passes 0 and never yields; the NB
+  passes 90 and yields while the NUC keeps handing off (Q31 in NEXT_SESSION.md stands, to be applied on the NB).
+  The primary is whichever host's signed-in account has budget: swap the two numbers when that changes.
+- Self re-pacing does not work: an unattended run's `update_scheduled_task` on its own cron is refused (NUC run
+  2026-10-12, `pace=BLOCKED`). Each host keeps one fixed cron; step 4 of the generic prompt is dropped on the NUC.
 - Both chains at once is safe (claims stop double work) but spends both budgets.
 
 | Host | PEER_QUIET_MIN | BUSY_CRON | IDLE_CRON | state |
 |---|---|---|---|---|
-| JIS-NUC | 90 | `*/15 * * * *` | `7 * * * *` | created 2026-10-12 from the generic prompt |
-| JIS-NB | 0 (primary on purpose, operator 2026-10-12) | `*/10 7-23 * * *` | `0 7-23 * * *` | own prompt (mts-dispatcher.SKILL.md); no flag, so it never yields to the NUC |
+| JIS-NUC | 0 (primary: account has budget) | fixed `7,37 * * * *` | same | generic prompt without step 4; first unattended run 2026-10-12 shipped one task in 6 min |
+| JIS-NB | should be 90 (Q31); today no flag, so it does not yield and spends the low account | `*/10 7-23 * * *` | `0 7-23 * * *` | own prompt (mts-dispatcher.SKILL.md) |
 
 Find a relay chat later: `relay_runs.jsonl` gives host + account + session title; open that App on that account and search the title.
