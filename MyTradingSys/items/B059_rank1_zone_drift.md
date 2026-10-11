@@ -49,7 +49,7 @@ Not the same defect:
   and price 80524. Distance 150 pts. Rank-1 distance gate is a
   separate defect. Needs its own row.
 
-Status: OPEN. Live tape confirmation pending next loop start.
+Status: CLOSED. Pinned by BuildVpFixedGridTest 2026-10-11.
 
 ## 2026-10-04T11:00Z - live verify
 

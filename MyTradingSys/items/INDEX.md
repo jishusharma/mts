@@ -5,7 +5,7 @@
 # Format: <id> | <status> | <file> | <one-line state>
 
 B058 | CLOSED  | B058_floor_reaction_mode.md | floor-reaction mode; receipt in BUGS row
-B059 | OPEN    | B059_rank1_zone_drift.md | pf_vp bin-edge drift; fix landed 2026-09-24, live tape pending
+B059 | CLOSED  | B059_rank1_zone_drift.md | pf_vp bin-edge drift; fix landed 2026-09-24, pinned by BuildVpFixedGridTest 2026-10-11
 B062 | CLOSED  | B062_alert_direction_position.md | position-aware alert gating; landed
 B063 | OPEN    | B063_divergence.md | decision: restore divergence in schema, or deprecate
 B064 | CLOSED  | B064_supervisor_stop_flag.md | supervisor_stop.flag retired 2026-09-24, loop_stop.flag only
