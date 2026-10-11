@@ -468,6 +468,11 @@
    "disp": "REPRO",
    "ref": "bigtrade-2026-10-09",
    "why": "Renders research/bigtrade_2026-10-09/BIGMOVES_REPORT.md from bigmoves_stats.json; every number from the json; run by hand after bigmoves.py."
+  },
+  "MyTradingSys/backtest/tom_profile_parity.py": {
+   "disp": "TOOL",
+   "ref": "tom-profile-parity-check",
+   "why": "Offline computed-side profile parity tool; extracts the unchanged engine buildVp method and uses explicit closed 1m windows. Run by hand or JIS-NB desk task, no live caller."
   }
  }
 }

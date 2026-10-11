@@ -1,0 +1,18 @@
+{
+  "profile_start_utc": "2025-12-22T00:00:00Z",
+  "as_of_utc": "2025-12-22T06:25:00Z",
+  "bar_count": 353,
+  "levels": {
+    "poc": 24314.7,
+    "vah": 24333.4,
+    "val": 24280.7
+  },
+  "first_bar_ms": 1766361600000,
+  "last_bar_ms": 1766384640000,
+  "volume_sum": 0.12828,
+  "engine_source": "src/main/java/datafeed/MarketDataSnapshot.java buildVp",
+  "engine_sha256": "009f6f533956ccffd2d85f531b15f0e408ac8252abb2beda5c5c8a82a7eab9a3",
+  "feed": "Dukascopy DEUIDXEUR 1m BID CFD feed volume",
+  "comparison_status": "NOT_IN_DATA",
+  "reason": "Drawn price, axis tick, profile anchor and frame time require verified frame read."
+}
