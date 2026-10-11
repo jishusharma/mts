@@ -1,4 +1,4 @@
-# TOM TRADE LEDGER (card tom-trade-ledger) - PARTIAL, 9 trades / 14 rows, 2026-10-11
+# TOM TRADE LEDGER (card tom-trade-ledger) - PARTIAL, 10 trades / 19 rows, 2026-10-11
 Status: NOT DONE (target >= 30 or every trade in every available video). 7 videos are on F:/MTS/data/tom_videos (l8RZrBfzvp4 now downloaded, video-only f398 mp4; no ffmpeg merge).
 Frame contact sheets (30 s spacing, 6 per sheet) are in F:/MTS/data/tom_videos/sheets (36 sheets); only l8RZrBfzvp4 sheet 00 has been read this session.
 Rows T1-T6 come from RECALL_DAX.md s1 (frames read earlier). T7 is new: ES short 6806.25, stop 6812.25 (frame l8RZrBfzvp4_0100.jpg, zoomed labels + taskbar clock 19.03.2026 08:48).
@@ -19,3 +19,14 @@ Remaining: read sheets of k0zm5NYn0IQ (10), n7ZSkjb7JXs (6), UOBgXV20yCM (5), T6
   scale_in 2, stop_tighten 3, partial 2+ (T1,T5,T2b x2), stop_to_profit 1, stop_out 2 (T3, T2 inferred).
 - Remaining sheets: n7ZSkjb7JXs (6), UOBgXV20yCM (5), T6hDJcHrVBM (4), ujedEcmvBMk (4), zQTbdEweG3c (4), l8RZ 01-02 (2).
   Frame grabber used: grab.py pattern (cv2, CAP_PROP_POS_MSEC, crop x2 cubic); videos are 1280x720, sheet cells are 960x540 (scale 4/3).
+
+## Update 2026-10-11 ~00:40Z (relay via cron mts-dispatcher-night, JIS-NB): n7ZSkjb7JXs sheets 00-05 all read
+- Video is edited (t=10 intro clip shows 08:59, t=220 shows 08:26; ends ~t=905 at 09:01 CET, 22.12.2025). Platform shows FDAX, GC, NQ, ES panels.
+- T1 management (FDAX, from order labels + panel): scale-in to 4 lots avg 24480.25 (t=580; RECALL_DAX had 3) -> partial 1 at 08:52 (-3 @24480.0)
+  -> TP pulled 24422 -> 24426 (t=730) -> partial 1 at 09:01 (-2 @24479.5), stop 24485 -> 24484, TP removed, order dragged to ~24456. Final 2 lots' exit not shown.
+- NEW T8: GC gold short 1 @4446.8, SL 4456.1 (93T), TP 4415.1 (317T, R:R 3.4), at the top of a steep rally; open before 08:26 (entry not shown), still open at 09:01, exit not shown.
+  Family spike_fade_candidate (the entry moment is not on screen).
+- Family counts now: spike fade 6 (T1,T2,T3,T5,T6,T7) + 1 candidate (T8); re-entry after stop 2 (T3b,T2b); gap pullback 1 (T4). 10 trades.
+  Management actions: scale_in 3, partial 4 in rows (T2b x2, T1 x2) + T5 noted, stop_tighten 4, tp_tighten 1, tp_removed 1, stop_to_profit 1, stop_out 2.
+- Check: every frame path in all 19 rows exists (scratch append script prints missing = 0). Rows T1-p1, T1-p2, T8 re-read from the zoomed crops while writing them.
+- Remaining sheets: UOBgXV20yCM (5), T6hDJcHrVBM (4), ujedEcmvBMk (4), zQTbdEweG3c (4), l8RZ 01-02 (2).
