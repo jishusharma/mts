@@ -95,6 +95,7 @@ function Watch-Aux {
 }
 
 # single-instance supervisor lock
+. (Join-Path $PSScriptRoot "suplock.ps1")
 try {
     $fs = [System.IO.File]::Open($SupLockFile, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
     $sw = New-Object System.IO.StreamWriter($fs)
@@ -102,9 +103,8 @@ try {
     $sw.Flush(); $sw.Close(); $fs.Close()
 } catch [System.IO.IOException] {
     $ex = Get-Content $SupLockFile -Raw -ErrorAction SilentlyContinue
-    $ep = 0
-    if ($ex) { $ep = [int](($ex.Trim() -split "\s+")[0]) }
-    if ($ep -gt 0 -and (Get-Process -Id $ep -ErrorAction SilentlyContinue)) {
+    $ep = Get-SupLockLivePid $ex
+    if ($ep -gt 0) {
         Write-Host "supervisor already running PID=$ep, exiting"
         exit 0
     }

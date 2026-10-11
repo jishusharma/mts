@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-GATE_DEPS = ("pytest", "numpy")
+GATE_DEPS = ("pytest", "numpy", "tzdata")
 
 
 def is_cloud(env=None):
