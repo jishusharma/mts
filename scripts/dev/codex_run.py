@@ -39,6 +39,7 @@ TEMPLATES = {
         "steps": ["Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
                   "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
                   "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+                  "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
                   "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."],
         "scope_out": ["code or spec changes", "holdout reads", "BTC runs of the current encoding (ROADMAP section 2)"],
         "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED."},

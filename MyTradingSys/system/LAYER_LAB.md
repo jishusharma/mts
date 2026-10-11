@@ -31,6 +31,12 @@ A card may name its own `model` or `effort` (low, medium, high, xhigh, max). The
 - Pause: `codex_run.py stop "<why>"`, `resume`. Run log and per-run output: `%CODEX_HOME%\lab_runs\`.
 - `tasks.py next` without `--lane` hides CODEX cards, so Claude relay sessions never take them; the claim is still the lock.
 
+## Asks typed in the Codex app (project "MTS Layer Lab", folder `F:\MTS\mts-codex`, created 2026-10-12)
+The operator types what they want checked or run. Codex then: `python scripts/dev/sync.py start`; writes the card with
+`codex_run.py ask ... --kind <audit|run|build> --scope <path>`; `sync.py claim "<card>"`; does it by the same rules and report
+format as an unattended run; `tasks.py done`, `codex_run.py index`, commit, `sync.py ship`, `sync.py release`. The app session
+has full access (operator's setting), so it does its own git steps; everything else in this file applies unchanged.
+
 ## Report format
 1. Verdict line: `SOUND` / `FIX-FIRST` / `BLOCKED` (audit), or the headline numbers (run), or changed files + test output (build).
 2. What was checked or run: files with line ranges, commands, data range.
