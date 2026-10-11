@@ -1,25 +1,25 @@
 # Development Status
 
-Generated: 2026-10-11 22:25:43
+Generated: 2026-10-12 00:48:05
 
 ## Git Status
-**Branch:** jisnb/relay-202610111655 (the host that generated this file; yours may differ)
+**Branch:** jis-nuc/relay (the host that generated this file; yours may differ)
 
-CI green: 440e15b (2026-10-11 21:58:46 +0530), 6 commit(s) behind origin/fast-track: CI running
-LESSONS: digest in sync
+CI green: eec03a1 (2026-10-12 00:24:08 +0530), 3 commit(s) behind origin/fast-track: CI running
+LESSONS: digest STALE (synced de2de3a7, now ad79e76d): read the new LESSONS_LEARNED.md entries (git diff), add their rule lines to LESSONS_DIGEST.md, update the blob
 
 **Last 10 commits:**
 ```
-9331265 release fabio-ledger-w26
-a18d020 Merge remote-tracking branch 'origin/fast-track' into jisnb/relay-20261011163434
-75b2e11 fabio ledger: DyS79Eb92Ug t=7275-7525 read (flat, no trade); handoff depth 39
-b3115ec release unstick-queue-inbox-pickup-cards-stale-d
-a9212cc Merge remote-tracking branch 'origin/fast-track' into jis-nb/unstick
-18b2940 claim fabio-ledger-w26
-3e17947 desk: done 20261010-130645-claude-desktop-vm-bundles-on-c-validate-
-eaa1f67 Merge remote-tracking branch 'origin/fast-track' into jis-nb/unstick
-a4ab6a8 Merge remote-tracking branch 'origin/fast-track' into jisnb/control-room
-458bbba desk: done 20261010-130633-claude-desktop-vm-bundles-on-c-validate-
+d0c4705 CODEX_BRIDGE: correct budget policy (NB account is the low one) and note NUC data limits
+0a47d9d Q31: NB dispatcher yields to NUC (--peer-quiet-min 90), fixed hourly
+ac52bc7 TWO_HOST: correct the budget facts - NUC is the primary, NB should yield
+eec03a1 TWO_HOST: NB stays primary (no peer flag) while NUC budget is low
+9d55313 release backtest-readiness-template
+931d9f5 Backtest readiness: 12-item pre-registration template (card backtest-readiness-template)
+586e717 claim backtest-readiness-template
+0a4fdb4 Relay prompts: dispatcher is the relay worker on every host; TWO_HOST.md
+336f1d2 release relay-two-host-standby
+015dedc Merge remote-tracking branch 'origin/fast-track' into fast-track
 ```
 
 ## Queue Status
@@ -30,9 +30,9 @@ DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
 ```
 
 ## In-Flight .new Files
-- MyTradingSys\backtest\layers\fabio\htf_context_live.py.new (0.0h)
-- MyTradingSys\backtest\layers\fabio\test_htf_context_live.py.new (0.0h)
-- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (0.0h)
+- MyTradingSys\backtest\layers\fabio\htf_context_live.py.new (0.5h)
+- MyTradingSys\backtest\layers\fabio\test_htf_context_live.py.new (0.5h)
+- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (0.5h)
 
 ## Recent Reports (last 7 days)
 - MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md (2026-10-11 21:39) # BIGMOVES REPORT (big-move ground truth, backtest A)
@@ -46,7 +46,7 @@ DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
 
 ## Screenshots
 ```
-SHOTS landed 35: new 0, classified 1, read 0, done 34 | overdue(>24h) 0 | claims MATCH 323 MISMATCH 59 NOT_IN_DATA 73 | filed 2
+SHOTS landed 0: new 0, classified 0, read 0, done 0 | overdue(>24h) 0 | claims MATCH 0 MISMATCH 0 NOT_IN_DATA 0 | filed 0
 ```
 
 ## Daily Hygiene (scheduled)

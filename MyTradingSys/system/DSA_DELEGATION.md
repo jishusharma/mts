@@ -7,7 +7,7 @@ judgment about code that trades, or a result DSA failed twice, it is Claude's.
 
 ## The mechanism (no new code: the desk board already exists)
 - Claude (or the operator) posts a task: `python scripts/dev/desk.py post "<title>" --need "<exact commands/paths>" --done-when "<observable>" --target DSA`
-- DSA at boot (prompt 5e) runs `python scripts/dev/desk.py list`, takes tasks with target DSA, works in `mts-dsa`,
+- DSA at boot (prompt 5e) runs `python scripts/dev/desk.py next`, takes the row it prints, works in `mts-dsa`,
   closes with `desk.py done <id> --result "<numbers + file>"` (or `--failed --result "<reason>"`), ships with `sync.py ship`.
 - Claude reads results with `sync.py start` + `desk.py list --all`; it never redoes a closed task, it spot-checks ONE claim.
 - Budget per DSA task: every step inside the 300 s bridge cap. A long job is posted as numbered steps (chunk by year or
@@ -59,6 +59,13 @@ Claude sessions start with `sync.py start`, read DSA results, post the next task
 ## Two DSA bridges: JIS-NB and JIS-NUC (operator inbox i258bxlg4o668ipiy40c, 2026-10-09)
 A second AIBridge + DeepSeek chat now runs on the NUC next to the one on the desktop. Both read the same desk board
 (`desk.py list`), so a task can be taken by either; the rules below keep them off each other and keep tokens low.
+- Pick by host (B180): each bridge runs `python scripts/dev/desk.py next` (or `next --host JIS-NUC`): it prints the oldest
+  pending row whose target is `DSA-<this host>` or `DSA`, exit 1 when there is none. Rows for the other bridge and rows
+  addressed to a host itself (`JIS-NB`: live-host work for a Claude session) are never returned.
+- Scheduled assigner (B180): `desk.py assign`, run every day by `MTS-DailyHygiene` (step `desk_assign` of
+  `scripts/dev/daily_hygiene.py`, 06:30 local, registered by `scripts/sched/register_cicd_tasks.ps1`). It posts one desk
+  row per ready task card whose lane is DSA / DSA-NB / DSA-NUC and that has no row yet (row field `card`), so a
+  refined run-and-report card reaches DSA with no Claude session in between. A closed row is never re-posted.
 - Route by where the data lives (DEVICES.md): 1-minute klines (Dumps/backtest/raw_1m_2022: run_cc_setups, fabio, rsi runners)
   exist only on JIS-NB -> post with `--target DSA-NB`. 1h/1d work, transcript extraction, inventories, diffing two result
   files, YouTube caption fetches and other pure-compute jobs may run on the NUC -> `--target DSA-NUC`. Anything else: `--target DSA`

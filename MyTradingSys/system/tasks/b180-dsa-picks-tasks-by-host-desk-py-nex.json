@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-11T19:20:53Z",
   "commands": [],
   "created": "2026-10-11T16:08:42Z",
   "depends_on": [],
@@ -17,12 +18,12 @@
   "refs": [
     "B180"
   ],
-  "result": "",
+  "result": "desk.py next --host + desk.py assign (hygiene step desk_assign); test_desk.py 5 green",
   "scope_in": [],
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "done",
   "steps": [],
   "tests": "",
   "title": "B180 DSA picks tasks by host (desk.py next --host) and a scheduled assigner posts DSA-lane cards"
