@@ -1277,3 +1277,25 @@ I see a terminal window flashing on my screen. Most probably it is something wit
 ```
 i asked to deal with python.exe flasing on mky screen tme to time
 ```
+## zu2mah3eiu13xkno2q9n | 2026-10-11T14:13:01Z | task
+```
+Look into this -
+
+Session ID: MTS-2026-10-11-1700Z-APP-BLD-defender-cpu
+Mode: code and gate work, live tree BinanceDataFeed, loop running
+Repo root: C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed
+
+PROBLEM
+MsMpEng.exe (Microsoft Defender Antimalware Service Executable) is holding ~0.94 of one CPU
+core continuously on JIS-NB. Measured twice, consistent:
+  243.84 -> 356.23 CPU seconds over 120 wall seconds
+  357.17 -> 376.42 CPU seconds over 20 wall seconds
+Task Manager snapshot: 12-24% depending on the moment. The machine is also loaded by
+IntelliJ, Chrome, Claude, the MTS loop, and Maven.
+
+[... remainder of the item (what was already done, research, ask with 5 ranked candidate moves, constraints) is in the Control Room feedback doc zu2mah3eiu13xkno2q9n; summarised in items/B175_defender_msmpeng_cpu.md. Not pasted in full by the unattended pickup. ...]
+
+ASK
+Find the right solution for JIS-NB specifically, and execute it. ... The operator wants
+the problem solved, not more incremental diagnostics.
+```

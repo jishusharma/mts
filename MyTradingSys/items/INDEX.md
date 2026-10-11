@@ -131,3 +131,4 @@ B163 | OPEN    | B163_setup_alpha_beta_handoff.md | Setup Alpha (1d SMA200 trend
 B171 | OPEN    | B171_imbalance_indicator_end_to_end.md | operator: profitable imbalance indicator end to end; none exists (T093/P4 NO REPLICATION); pre-register, backtest, testnet via supervisor
 B174 | OPEN    | B174_snapshot_oi_quantized.md | snapshot OI quantized to 0.01; full-precision series in backtest/raw/metrics unread; Claude decides consumer or display-only
 # END
+B175 | OPEN    | B175_defender_msmpeng_cpu.md | Defender MsMpEng ~0.94 core on JIS-NB; ordered fix plan (pid 3200, ext exclusions, Dev Drive), operator confirms host changes
