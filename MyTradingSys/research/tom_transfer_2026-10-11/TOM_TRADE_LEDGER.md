@@ -62,3 +62,12 @@ Remaining: read sheets of k0zm5NYn0IQ (10), n7ZSkjb7JXs (6), UOBgXV20yCM (5), T6
   (~1.7 trades/video; most recaps show the position tag only). Honest outcome per the card: "every trade in every available video if fewer".
   Family counts: spike fade 6 + 3 candidates (T8,T10 + T9 teaching breakout pullback); re-entry 2; gap pullback 1.
   More trades need more videos (card step 1: find further recap videos): file a follow-up card.
+
+## Update 2026-10-11 ~15:00Z (relay via cron mts-dispatcher, JIS-NB): card find-more-tom-trade-recap-videos-yt-dlp-
+- NEW COUNT: 14 trade ids / 37 rows (was 12 / 30). Three new video ids downloaded (f398 video-only, 1280x720; 30 s sheets in F:/MTS/data/tom_videos/sheets, frames in .../frames). English captions hit HTTP 429, so no .vtt for these three (frames only).
+- liEJMfE_PXg (2026-09-01): NEW T11 FDAX short 2 @26444, SL 26490, TP 26286 (3.4R), then "Ziel erreicht" (T11-x, fill not shown).
+- ZZeET7ng1nk (2026-07-14): NEW T12 FDAX short 1 @25116, SL 25139, TP 24974 (6.2R); T12-m1 stop moved to 25038 (78pt locked); exit not shown.
+- SANOimk8M9o (2026-05-12): SAME trade as T3/T3b (second video of it), not a new trade. Rows T3-s, T3-s-p1, T3b-s confirm the corrected T3 values (SL 24265) and add that the remaining lot's stop went to 24220 after the first lot closed.
+- Queries tried (yt_dlp ytsearch25): "World Champion LIVE trade DAX", "Trading World Champion DAX live trade recap", "World Champion trades DAX short stop target explained". Channels: Tom Vorwald (DE) and Tom Vorwald EN. Not downloaded (no trade recap on screen per title, explainers): K8qtT2_axPo, WSCIURybK3U, VumVuGnCcFM, jXR1afMy-3o.
+- Still unread-by-search: German-channel titles are not English; a query for "Tom Vorwald Live Trading DAX" on the DE channel playlist may yield more (follow-up). Families so far: spike fade 8 (T1,T2,T3,T5,T6,T7,T11,T12), unchanged others.
+- Check run: every frame path in the 7 new rows exists (append script printed missing = 0).

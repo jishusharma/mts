@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-11T06:32:27Z",
   "commands": [
     "python -m yt_dlp --flat-playlist --print \"%(id)s %(title)s\" \"ytsearch20:Tom trade recap DAX FDAX live trade\""
   ],
@@ -17,7 +18,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "TOM_TRADE_LEDGER.csv +7 rows, new videos liEJMfE_PXg (T11), ZZeET7ng1nk (T12), SANOimk8M9o (dup of T3); 14 trades/37 rows",
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",
@@ -31,7 +32,7 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md (remaining list)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List the 7 known ids from the ledger .md; run yt_dlp search on Tom's channel for trade recap / live trading videos not among them (free videos only).",
     "Download f398 video-only mp4 + en vtt, make 30 s sheets, read them as the earlier sessions did.",
