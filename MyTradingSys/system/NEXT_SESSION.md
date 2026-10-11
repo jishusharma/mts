@@ -1,4 +1,4 @@
-<!-- relay: go depth=12 id=5495796c -->
+<!-- relay: go depth=13 id=54a0bc23 -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -30,7 +30,8 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    Q12. DONE 2026-10-11 (relay JIS-NB): B122 reject text uses fallback key, new test red-before, 92 unittest + quick gate green.
    Q13. DONE 2026-10-11 (relay JIS-NB): refiner pass, B066 + B118 + 2 find-more cards ready, tasks.py status REFINE_OK ready=6.
    Q14. DONE 2026-10-11 (relay JIS-NB): TOM_TRADE_LEDGER.csv +7 rows, new videos liEJMfE_PXg (T11), ZZeET7ng1nk (T12), SANOimk8M9o (same trade as T3); 14 trades / 37 rows.
-   Q15. Card find-more-fabio-trade-recap-videos-yt-dl (Sonnet). DONE when: FABIO_TRADE_LEDGER.csv has rows (or a none-shown line) for DyS79Eb92Ug, Is1HvdfQm5c, xUyqIjCfZzg, Jpd96fLqr5M, 9I5vTvwsMBk, gLHd20jE8UQ.
+   Q15. DONE 2026-10-11 (relay JIS-NB, partial): F6 (Jpd96fLqr5M, NQ long) added, gLHd none shown (tutorial), 9I5vTvwsMBk has no f398, DyS79Eb92Ug/Is1HvdfQm5c/xUyqIjCfZzg downloaded unread (2.4-3.8 h): 2 raw follow-up cards for the refiner.
+   Q16. Card B066 (Sonnet). DONE when: card done_when holds (close as handled with evidence, or add the gate with a red-before test).
    A Sonnet session that reaches an OPUS card: skip it, take the next Sonnet card, and say "Q4/Q5 need an Opus session" in the handoff.
 4. Run-and-report work goes to DSA (system/DSA_DELEGATION.md).
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
@@ -137,6 +138,9 @@ Not in this list on purpose (claimed by other sessions at 20:48Z): tom-verdict-f
 - Task 3b is therefore finished except d11b; D11/D12 already carry `applied` in Control Room.
 - JIS-NB (session "Inbox items") reports: CI/CD jobs registered; NOT done: live-mirror install (no \JIS-NB\MTS-Mirror share, so `live_mirror.py pull` fails on the NUC), B149 capture, JVM restart. Those are JIS-NB-only.
 - NUC-suited next: B141 28-cell runner (3d) on F:\MTS\data (daily/1h/1d only; 1m klines exist only on JIS-NB, so D22 Beta and anything on 1m/5m stays on JIS-NB).
+
+## Update 2026-10-11 ~16:00Z (relay via cron mts-dispatcher, JIS-NB)
+- DONE Q15 partially (see Q15). Next Sonnet task: Q16 B066. Q4/Q5 need an Opus session.
 
 ## Update 2026-10-11 ~15:00Z (relay via cron mts-dispatcher, JIS-NB)
 - DONE Q14 find-more-tom videos. Q4/Q5 need an Opus session, Q6-Q8 wait on them. Next Sonnet task: Q15 find-more-fabio videos.
