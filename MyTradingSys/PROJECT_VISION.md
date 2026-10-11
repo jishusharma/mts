@@ -205,6 +205,8 @@ Design decisions for this directive: MyTradingSys/research/fast_track_2026-09-27
 
 ## DIRECTION UPDATE (2026-10-10, operator approved D23 'Apply the addendum as drafted'; not verbatim; supersedes stale rows above where they conflict)
 
+Backtest gate (2026-10-12): every layer backtest answers the 12 items in `backtest/PRE_REG_TEMPLATE.md` before it runs.
+
 ### Goal and stages
 MTS exists to trade BTC with a proven net edge after fees, first on testnet, then real money only after the
 GO-LIVE BAR (system/GO_LIVE_BAR.md, D06-gate 2026-10-09) holds for 30 days. Work follows five stages:

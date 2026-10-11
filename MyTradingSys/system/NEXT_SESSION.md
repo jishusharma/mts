@@ -1,4 +1,4 @@
-<!-- relay: go depth=46 id=33c485da -->
+<!-- relay: go depth=47 id=c01b33f1 -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -29,8 +29,8 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    Q24. Card b177-control-room-layer-board-tab-per-ac (Sonnet, p2). DONE when: Layer Board tab renders one row per active layer from the registry, test green, page republished.
    Q25. Card b179-tom-and-fabio-layers-story-as-a-sli (Sonnet, p3). DONE when: a Slides artifact built from the existing Tom/Fabio story doc is published and its link is on the Control Room item.
    Q26. Card tom-holdout-clean-split (Sonnet, p1; C-Cloud N1/N2). DONE when: HOLDOUT_CLEAN.json + dated PRE_REG_DAX.md addendum (ledger days dropped from the DAX holdout, forward holdout from 2026-10-10, design/check split of the ledger) committed BEFORE any encode. Dates only, no outcome reads.
-   Q27. Card tom-profile-parity-check (Sonnet, p1; N3). DONE when: PROFILE_PARITY.md table of >= 6 drawn-vs-computed POC/VAH/VAL levels + verdict (volume proofs usable on Dukascopy DAX, or NOT_IN_DATA).
-   Q28. Card backtest-readiness-template (Sonnet, p2). DONE when: the 12-item pre-registration template is in MyTradingSys/backtest with its test green + a LESSONS_LEARNED entry.
+   Q27. Card tom-profile-parity-check (Sonnet, p1; N3; needs F:/MTS/data on the host: JIS-NUC has no F: drive, run on JIS-NB). DONE when: PROFILE_PARITY.md table of >= 6 drawn-vs-computed POC/VAH/VAL levels + verdict (volume proofs usable on Dukascopy DAX, or NOT_IN_DATA).
+   Q28. DONE 2026-10-12 (JIS-NUC): PRE_REG_TEMPLATE.md + test + lesson + VISION link. (was: card backtest-readiness-template, Sonnet, p2. DONE when: the 12-item pre-registration template is in MyTradingSys/backtest with its test green + a LESSONS_LEARNED entry.)
    Q29. Card fabio-ledger-minute-timestamps (Sonnet, p2; N4 iii). DONE when: ledger rows carry entry_time_utc read from frame clocks, replay-ready count in the .md.
    Q30. (after tom-layer-v2-cost, fabio-layer-v2-markets, Q28) Cards cryptocred-home-fit-audit, malkan-home-fit-audit, positioning-home-fit-audit (Sonnet, p4). CryptoCred first. No backtests.
    Q31. JIS-NB only (Sonnet, p1; card relay-two-host-standby, NB half): add `--peer-quiet-min 90` to the kick line of the mts-dispatcher prompts on JIS-NB and update the JIS-NB row in scripts/sched/relay_prompts/TWO_HOST.md. DONE when: a JIS-NB dispatcher tick prints `IDLE peer JIS-NUC` or KICK, and relay_runs.jsonl has a JIS-NB row.
