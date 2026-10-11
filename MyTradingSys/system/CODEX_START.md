@@ -11,6 +11,8 @@ Codex is one more work-tree session. It meets Claude only through `origin/fast-t
 5. Codex never restarts processes, touches HALT files, opens trades, or reads `.secrets/` / `.env`. Testnet only.
 
 ## Routing (who takes which card; no code change needed)
+- Since 2026-10-12 Codex's own queue is lane `CODEX` (layer lab: audits, backtest runs, builds for the Tom/Fabio layers), fired
+  unattended by `scripts/dev/codex_run.py`: see `LAYER_LAB.md`. The lines below still hold for a hand-started app session.
 - Card lanes: `python scripts/dev/tasks.py next --lane SONNET` (and HAIKU). Codex takes these. That is the cheap tier.
 - `OPUS` cards (need `approved_by`) and anything the operator names Opus stay with Claude. Codex skips them.
 - Opus (Claude) is the guide: it writes and refines cards, owns the OPUS lane, and spot-checks one claim per Codex report

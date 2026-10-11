@@ -20,7 +20,7 @@ New is only: `scripts/dev/tasks.py`, cards in `MyTradingSys/system/tasks/<id>.js
 `tests`, `done_when`, `sources`, `depends_on`, `refs`, `live_path`, `approved_by`, `note`.
 - `refs` = registry rows this card closes while they are OPEN. A follow-up of a closed row (B160, B149) has NO refs: `sweep` retires a card whose refs are all closed.
 - States: `raw` (captured) -> `refined` (being scoped) -> `ready` (passes the gate) -> `active` -> `done`; `blocked` (operator hold) and `dropped`.
-- Lanes (cheapest tier that can do it): `DSA`/`DSA-NB`/`DSA-NUC` run-and-report; `HAIKU`, `SONNET` code and docs; `OPUS` only with `approved_by`; `JIS-NB` live host (desk task).
+- Lanes (cheapest tier that can do it): `DSA`/`DSA-NB`/`DSA-NUC` run-and-report; `HAIKU`, `SONNET` code and docs; `OPUS` only with `approved_by`; `JIS-NB` live host (desk task); `CODEX` layer lab (needs `kind` audit/run/build, LAYER_LAB.md; hidden from a plain `tasks.py next`).
 
 ## Definition of Ready (`tasks.py check`, fail closed; also in the offline gate as `tasks.py lint`)
 A card is `ready` only if all hold, and the tool names every miss:

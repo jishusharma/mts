@@ -147,6 +147,9 @@ def main(argv=None):
     cmd3tk = [sys.executable, "scripts/dev/test_tasks.py"]
     success, output = run_step("3tk", "Task card tests", cmd3tk)
     results.append(("Step 3tk: Task card tests", success))
+    cmd3cx = [sys.executable, "scripts/dev/test_codex_run.py"]
+    success, output = run_step("3cx", "Layer lab runner tests", cmd3cx)
+    results.append(("Step 3cx: Layer lab runner tests", success))
     cmd3tl = [sys.executable, "scripts/dev/tasks.py", "lint"]   # a ready/active card that fails the Definition of Ready is an error
     success, output = run_step("3tl", "Task cards meet the Definition of Ready", cmd3tl)
     results.append(("Step 3tl: Task card lint", success))
