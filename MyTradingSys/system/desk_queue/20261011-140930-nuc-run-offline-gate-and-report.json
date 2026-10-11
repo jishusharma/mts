@@ -1,0 +1,10 @@
+{
+  "done_when": "gate pass/fail lines printed in chat and desk done with the result",
+  "from": "JIS-NB",
+  "id": "20261011-140930-nuc-run-offline-gate-and-report",
+  "need": "On JIS-NUC in mts-dsa after ff-merging origin/fast-track: python scripts/dev/run_all_tests.py --quick ; paste failing test names verbatim or the pass line. Proves the NUC can act as second CI machine. Failure twice: close --failed with output.",
+  "posted": "2026-10-11T14:09:30Z",
+  "status": "pending",
+  "target": "DSA-NUC",
+  "title": "NUC: run offline gate and report"
+}
