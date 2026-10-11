@@ -540,3 +540,15 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | scripts/dev/dsa_eval.py | tool | Scores DSA chat replies against 12 fixed failure scenarios (sheet/template/score); history in research/dsa_eval_history.jsonl. | MTS-2026-10-09-slim-boot-dsa-eval | 2026-10-09 |
 | scripts/dev/dsa_eval_scenarios.py | tool | The 12 DSA eval scenarios from B083/B101/B104/B132/B133 and LESSONS, with good and bad fixture replies. | MTS-2026-10-09-slim-boot-dsa-eval | 2026-10-09 |
 | MyTradingSys/tests/test_dsa_eval.py | test | Tests that every eval scenario's good reply passes and bad reply fails. | MTS-2026-10-09-slim-boot-dsa-eval | 2026-10-09 |
+
+| MyTradingSys/research/PRE_REG_OI_DIVERGENCE_2026-10-10.md | doc | Pre-registration for OI divergence, rule fixed before data, result appended (NO REPLICATION). | MTS-2026-10-10-1608Z-DSA-COO | 2026-10-10 |
+| MyTradingSys/research/oi_divergence_v2_2026-10-10.py | tool | Pre-registered OI divergence run: 15m bars, metrics OI, cost wiring, regime labels, 3-fold walk-forward. | MTS-2026-10-10-1608Z-DSA-COO | 2026-10-10 |
+| MyTradingSys/research/OI_DIVERGENCE_V2_2026-10-10.md | doc | Result: 2350 events, 24 cells, all negative after costs, NO REPLICATION. | MTS-2026-10-10-1608Z-DSA-COO | 2026-10-10 |
+| MyTradingSys/research/OI_DIVERGENCE_2026-10-10.md | doc | First OI divergence pass (state table, no cost model), kept as record of the failed method. | MTS-2026-10-10-1608Z-DSA-COO | 2026-10-10 |
+| MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md | doc | Second OI pass (drift-subtracted event study), kept as record. | MTS-2026-10-10-1608Z-DSA-COO | 2026-10-10 |
+| MyTradingSys/items/B171_snapshot_oi_quantized.md | doc | B171 item doc: snapshot OI is a 0.01 gauge; full-precision series unread; Claude decides consumer or display-only. | MTS-2026-10-10-1608Z-DSA-COO | 2026-10-10 |
+| MyTradingSys/research/PRE_REG_VPIN_PROXY_2026-10-10.md | doc | Pre-registration for the VPIN proxy, result and day-clustered confirmation appended (PASS). | MTS-2026-10-10-1608Z-DSA-COO | 2026-10-10 |
+| MyTradingSys/research/vpin_proxy_2026-10-10.py | tool | VPIN proxy: 1m kline volume buckets, taker-buy imbalance, rolling toxicity, spike conditional test. | MTS-2026-10-10-1608Z-DSA-COO | 2026-10-10 |
+| MyTradingSys/research/VPIN_PROXY_2026-10-10.md | doc | Result: 2530 spikes; spike vs baseline abs 1h +0.185 pct, adverse 60 bars +0.315 pct; PASS as risk gate. | MTS-2026-10-10-1608Z-DSA-COO | 2026-10-10 |
+| MyTradingSys/research/vpin_dayclustered_2026-10-10.py | tool | Day-clustered t rerun on the VPIN spikes (removes the Welch-only deviation). | MTS-2026-10-10-1608Z-DSA-COO | 2026-10-10 |
+| MyTradingSys/research/VPIN_DAYCLUSTERED_2026-10-10.md | doc | Day-clustered t: abs 1h +7.14, abs 4h +4.97, adverse +7.02; VPIN proxy pass holds. | MTS-2026-10-10-1608Z-DSA-COO | 2026-10-10 |
