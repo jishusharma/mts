@@ -34,7 +34,7 @@ Never start other scheduled tasks. Never kill processes by image name. Never tou
   left until Fri 2026-10-16 is jishu.sharma, signed in on JIS-NB (operator, said in the NB App: "this one ... around 26%
   weekly remaining", "more work on the other subscription"). jishu.awgp on JIS-NUC had used 4% of its week at
   2026-10-11T19:05Z (App usage card, resets 2026-10-18). So the NUC is the primary: it passes 0 and never yields; the NB
-  passes 90 and yields while the NUC keeps handing off (Q31 in NEXT_SESSION.md stands, to be applied on the NB).
+  passes 90 and yields while the NUC keeps handing off (Q31 applied on the NB 2026-10-12).
   The primary is whichever host's signed-in account has budget: swap the two numbers when that changes.
 - Self re-pacing does not work: an unattended run's `update_scheduled_task` on its own cron is refused (NUC run
   2026-10-12, `pace=BLOCKED`). Each host keeps one fixed cron; step 4 of the generic prompt is dropped on the NUC.
@@ -43,6 +43,6 @@ Never start other scheduled tasks. Never kill processes by image name. Never tou
 | Host | PEER_QUIET_MIN | BUSY_CRON | IDLE_CRON | state |
 |---|---|---|---|---|
 | JIS-NUC | 0 (primary: account has budget) | fixed `7,37 * * * *` | same | generic prompt without step 4; first unattended run 2026-10-12 shipped one task in 6 min |
-| JIS-NB | should be 90 (Q31); today no flag, so it does not yield and spends the low account | `*/10 7-23 * * *` | `0 7-23 * * *` | own prompt (mts-dispatcher.SKILL.md) |
+| JIS-NB | 90 (applied 2026-10-12, Q31 done) | fixed `0 7-23 * * *` | n/a (no self-pacing: a run cannot edit its own schedule) | own prompt (mts-dispatcher.SKILL.md), yields to the NUC |
 
 Find a relay chat later: `relay_runs.jsonl` gives host + account + session title; open that App on that account and search the title.
