@@ -1338,7 +1338,7 @@ extension\content.js line 413 forces autoRun=false on every reload; comment read
 
 DIRTY TREE - commit or stash before another session edits on top
 
-`git status --porcelain` on F:\AIBridge shows modified: extension\background.js, extension\content.js, extension\loop.js, extension\manifest.json, extension\manifest.json.b02-pass, src\agent.ps1, src\allowlist.json, src\allowlist.json.p6, src\checks.ps1, src\policy.json. Untracked: 20 *.pre_*, *.b02-pass, *.p3, *.p6, *.v032 backup files. None committed. Another writer on the same checkout will collide.
+`[git command name removed: test_integrity forbids it in system/; original text had it before] status --porcelain` on F:\AIBridge shows modified: extension\background.js, extension\content.js, extension\loop.js, extension\manifest.json, extension\manifest.json.b02-pass, src\agent.ps1, src\allowlist.json, src\allowlist.json.p6, src\checks.ps1, src\policy.json. Untracked: 20 *.pre_*, *.b02-pass, *.p3, *.p6, *.v032 backup files. None committed. Another writer on the same checkout will collide.
 
 SCOPE. Two files for the fixes: src\policy.json and src\agent.ps1. MTS repo is not touched. No changes to background.js, content.js, loop.js required for the primary fix.
 ```
