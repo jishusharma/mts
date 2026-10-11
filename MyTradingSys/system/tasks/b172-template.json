@@ -1,0 +1,29 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T19:49:49Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "b172-template",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "B172"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "B172 step 3: template the relay and dispatcher prompts (automatic accurate prompt creation) per TOKEN_AUDIT"
+}

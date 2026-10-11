@@ -1,4 +1,4 @@
-<!-- relay: go depth=48 id=224c2650 -->
+<!-- relay: go depth=49 id=82f49102 -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -21,9 +21,9 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    Q7. Card tom-dax-backtest (run; needs Q6): `tom_dax_bt.py all --shifts 0,1,2,3`, then `report --read-holdout --shifts 0,1,2,3` once. DONE when: DAX_BT_REPORT.md has dev + holdout rows and the branch named.
    Q8. Card tom-probe-prereg (M arms only, needs tom-dax-backtest + tom-layer-v2-cost). DONE when: card done_when holds.
    Q18. (same video as Q3, covered there; skip unless Q3 is DONE) card find-more-fabio-trade-recap-videos-yt-dl, ONE video only: Is1HvdfQm5c. DONE when: its ledger rows with frame files are in FABIO_TRADE_LEDGER.csv (or a per-video line saying none shown).
-   Q19. Card b181-control-room-show-status-reply-ref- (Sonnet, p1). DONE when: a rebuilt page shows status + reply + ref for an Inbox item that has no ref, test_make_control_room.py green, changelog line, page republished.
-   Q20. Card b178-ci-cd-speed-warm-gate-worktree-or-p (Sonnet, p1). Run-lock already shipped (auto_deploy.acquire_lock). DONE when: quick-gate wall time measured before/after on the same SHA, every gate step still runs, backup_snapshot staggered off the deploy slot.
-   Q21. Card b172-token-audit-of-the-sonnet-relay-rit (Sonnet, p1). DONE when: research/TOKEN_AUDIT_<date>.md has per-session token numbers from transcripts, the always-loaded context trimmed (CLAUDE.md/memory/skills) with before/after counts, and the relay prompt templated.
+   Q19. Card b181-control-room-show-status-reply-ref- (Sonnet, p1; card READY 2026-10-12; republish needs the page owner account). DONE when: a rebuilt page shows status + reply + ref for an Inbox item that has no ref, test_make_control_room.py green, changelog line, page republished.
+   Q20. Card b178-ci-cd-speed-warm-gate-worktree-or-p (Sonnet, p1; card READY 2026-10-12, runs on any host). Run-lock already shipped (auto_deploy.acquire_lock). DONE when: quick-gate wall time measured before/after on the same SHA, every gate step still runs, backup_snapshot staggered off the deploy slot.
+   Q21. Card b172-token-audit-of-the-sonnet-relay-rit (Sonnet, p1; card READY 2026-10-12, step 1 = measure only, any host). DONE when: research/TOKEN_AUDIT_<date>.md has per-session token numbers from transcripts + ranked cuts, test_token_audit.py green. Then raw cards b172-trim (context trimmed, before/after counts) and b172-template (relay prompt templated): refine from the audit first.
    Q22. Card b173-hide-python-cmd-console-windows-of- (Sonnet, p2). DONE when: every scheduled job that starts python/cmd registers hidden (pythonw or -WindowStyle Hidden), listed in the commit body; no registration of a live-path process is restarted by this session.
    Q23. DONE 2026-10-12 (JIS-NUC): `desk.py next [--host]` + `desk.py assign` (daily, MTS-DailyHygiene step desk_assign), tests green, DSA_DELEGATION.md updated. (was: card b180-dsa-picks-tasks-by-host-desk-py-nex, Sonnet, p2. DONE when: `desk.py next --host` returns this host's first pending row (test with fixture rows) and DSA_DELEGATION.md names the scheduled assigner.)
    Q24. Card b177-control-room-layer-board-tab-per-ac (Sonnet, p2). DONE when: Layer Board tab renders one row per active layer from the registry, test green, page republished.

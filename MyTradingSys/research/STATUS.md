@@ -1,25 +1,25 @@
 # Development Status
 
-Generated: 2026-10-12 00:48:05
+Generated: 2026-10-12 01:18:05
 
 ## Git Status
 **Branch:** jis-nuc/relay (the host that generated this file; yours may differ)
 
-CI green: eec03a1 (2026-10-12 00:24:08 +0530), 3 commit(s) behind origin/fast-track: CI running
+CI green: 0a47d9d (2026-10-12 00:37:03 +0530), 7 commit(s) behind origin/fast-track: CI running
 LESSONS: digest STALE (synced de2de3a7, now ad79e76d): read the new LESSONS_LEARNED.md entries (git diff), add their rule lines to LESSONS_DIGEST.md, update the blob
 
 **Last 10 commits:**
 ```
-d0c4705 CODEX_BRIDGE: correct budget policy (NB account is the low one) and note NUC data limits
-0a47d9d Q31: NB dispatcher yields to NUC (--peer-quiet-min 90), fixed hourly
-ac52bc7 TWO_HOST: correct the budget facts - NUC is the primary, NB should yield
-eec03a1 TWO_HOST: NB stays primary (no peer flag) while NUC budget is low
-9d55313 release backtest-readiness-template
-931d9f5 Backtest readiness: 12-item pre-registration template (card backtest-readiness-template)
-586e717 claim backtest-readiness-template
-0a4fdb4 Relay prompts: dispatcher is the relay worker on every host; TWO_HOST.md
-336f1d2 release relay-two-host-standby
-015dedc Merge remote-tracking branch 'origin/fast-track' into fast-track
+15f4d14 release tom-profile-parity-check
+dce6874 Tom profile parity: ship computed side
+f733d0c Merge remote-tracking branch 'origin/fast-track' into nuc/codex-holdout
+684b596 desk task: Tom profile parity: read drawn levels and profile windows
+72715d7 release b180-desk-next-host
+5518371 Merge remote-tracking branch 'origin/fast-track' into jis-nuc/relay
+7d29869 claim tom-profile-parity-check
+be08ea3 B180: desk.py next --host and a scheduled assigner (desk.py assign)
+8b217b1 desk assign: 2 DSA-lane card(s)
+0101fcb claim b180-desk-next-host
 ```
 
 ## Queue Status
@@ -30,9 +30,9 @@ DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
 ```
 
 ## In-Flight .new Files
-- MyTradingSys\backtest\layers\fabio\htf_context_live.py.new (0.5h)
-- MyTradingSys\backtest\layers\fabio\test_htf_context_live.py.new (0.5h)
-- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (0.5h)
+- MyTradingSys\backtest\layers\fabio\htf_context_live.py.new (1.0h)
+- MyTradingSys\backtest\layers\fabio\test_htf_context_live.py.new (1.0h)
+- MyTradingSys\research\core_readiness_2026-09-27\harness\proof_direction_cases.py.new (1.0h)
 
 ## Recent Reports (last 7 days)
 - MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md (2026-10-11 21:39) # BIGMOVES REPORT (big-move ground truth, backtest A)
