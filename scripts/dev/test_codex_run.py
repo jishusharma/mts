@@ -84,27 +84,50 @@ class PickTest(unittest.TestCase):
 
 class CommandTest(unittest.TestCase):
     def test_model_effort_and_sandbox_reach_the_command_line(self):
-        cmd = R.command("codex.exe", card(kind="audit"), "F:/wt", "workspace-write", "C:/repo/.git")
+        cmd = R.command("codex.exe", card(kind="audit"), "F:/wt", "workspace-write")
         self.assertEqual(cmd[:4], ["codex.exe", "exec", "-m", "gpt-6-astra"])
         self.assertIn('model_reasoning_effort="high"', cmd)
         self.assertEqual(cmd[cmd.index("-s") + 1], "workspace-write")
-        self.assertEqual(cmd[cmd.index("--add-dir") + 1], "C:/repo/.git")
-        self.assertIn("sandbox_workspace_write.network_access=true", cmd)
+        self.assertEqual(cmd[cmd.index("-C") + 1], "F:/wt")
         self.assertEqual(cmd[-1], "-")
-        full = R.command("codex.exe", card(kind="run"), "F:/wt", "danger-full-access", "C:/repo/.git")
-        self.assertNotIn("--add-dir", full)
-        self.assertIn("gpt-6-luna", full)
+        self.assertIn("gpt-6-luna", R.command("codex.exe", card(kind="run"), "F:/wt", "workspace-write"))
 
-    def test_prompt_carries_claim_report_trailer_and_the_brief(self):
+    def test_prompt_forbids_git_and_carries_report_and_brief(self):
         p = R.prompt(card(), "F:/wt", "F:/home/packs/lab-a.md", datetime(2026, 10, 12, 9, 5, tzinfo=timezone.utc))
-        for want in ('sync.py claim "lab-a"', "layer_lab/reports/2026-10-12_lab-a.md", "MTS-2026-10-12-0905Z-COD-LAB-lab-a",
-                     "do NOT mark the card done", "TASK lab-a [CODEX", "codex_run.py index"):
+        for want in ("do NOT run git", "layer_lab/reports/2026-10-12_lab-a.md", "tasks.py done lab-a", "do NOT mark the card done", "TASK lab-a [CODEX"):
             self.assertIn(want, p)
+        self.assertNotIn("sync.py claim \"", p)
 
-    def test_gitdir_is_absolute_for_a_work_tree_and_for_the_main_clone(self):
+    def test_commit_message_has_result_and_session_trailer(self):
+        m = R.commit_message(card(), "DONE", "FIX-FIRST, 2 HIGH", datetime(2026, 10, 12, 9, 5, tzinfo=timezone.utc))
+        self.assertIn("Result: FIX-FIRST, 2 HIGH", m)
+        self.assertIn("MTS-Session: MTS-2026-10-12-0905Z-COD-LAB-lab-a", m)
+        self.assertIn("gpt-6-astra / high", m)
+
+
+class JudgeTest(unittest.TestCase):
+    REP = "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-a.md"
+    CARD = "MyTradingSys/system/tasks/lab-a.json"
+
+    def test_done_needs_the_card_closed_and_a_report(self):
+        self.assertEqual(R.judge({"state": "done"}, [self.REP], "audit", [self.REP, self.CARD]), "DONE")
+        self.assertEqual(R.judge({"state": "ready"}, [self.REP], "audit", [self.REP]), "BLOCKED")
+        self.assertEqual(R.judge({"state": "done"}, [], "audit", [self.CARD]), "INCOMPLETE")
+        self.assertEqual(R.judge({"state": "ready"}, [], "audit", []), "INCOMPLETE")
+
+    def test_audit_and_run_may_not_write_code_but_build_may(self):
+        code = "MyTradingSys/backtest/tom_dax_bt.py"
+        for kind in ("audit", "run"):
+            self.assertEqual(R.judge({"state": "done"}, [self.REP], kind, [self.REP, self.CARD, code]), "OUT_OF_SCOPE")
+        self.assertEqual(R.judge({"state": "done"}, [self.REP], "build", [self.REP, self.CARD, code]), "DONE")
+        self.assertEqual(R.out_of_scope("run", [self.REP, "MyTradingSys/research/layer_lab/TRIALS.md", "MyTradingSys/system/tasks/new.json"]), [])
+
+    def test_out_of_scope_and_ship_failures_count_as_tries(self):
         with tempfile.TemporaryDirectory() as d:
-            self.assertEqual(R.abs_gitdir("F:/wt", str(Path(d) / ".git") + chr(10)), Path(d) / ".git")
-            self.assertEqual(R.abs_gitdir(d, ".git" + chr(10)), (Path(d) / ".git").resolve())
+            p = Path(d) / "lab_runs"
+            p.mkdir()
+            (p / "runs.jsonl").write_text(json.dumps({"card": "x", "outcome": "OUT_OF_SCOPE"}) + chr(10) + json.dumps({"card": "x", "outcome": "SHIP_FAILED"}) + chr(10), encoding="utf-8")
+            self.assertEqual(R.attempts(d), {"x": 2})
 
     def test_exe_lookup_order(self):
         self.assertEqual(R.find_exe({"MTS_CODEX_EXE": "X"}, lambda n: "P", lambda g: ["G"]), "X")
