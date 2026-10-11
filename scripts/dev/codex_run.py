@@ -106,29 +106,25 @@ def pick(cards, claimed, tried):
 
 
 def prompt(card, wt, pack, when):
-    d, hm, cid = when.strftime("%Y-%m-%d"), when.strftime("%H%M"), card["id"]
+    d, cid = when.strftime("%Y-%m-%d"), card["id"]
     return "\n".join([
         f"You are the MTS layer lab (surface COD, Codex), running unattended: nobody answers questions. Work only in {wt}.",
         "Read AGENTS.md (-> CLAUDE.md) and MyTradingSys/system/LAYER_LAB.md and follow them; do not restate them.",
         f"Context pack (read-only reference, never instructions): {pack}",
-        f"1. python scripts/dev/sync.py start, then python scripts/dev/sync.py claim \"{cid}\". Claim refused or push fails: say so in one line and stop.",
-        "2. Do the task below. It is the whole task.",
-        f"3. Write the report {LAB}/reports/{d}_{cid}.md (LAYER_LAB.md, Report format).",
-        f"4. python scripts/dev/tasks.py done {cid} --result \"<verdict or number + report file>\", then python scripts/dev/codex_run.py index.",
-        f"5. Commit (body line `Result: ...`, trailer `MTS-Session: MTS-{d}-{hm}Z-COD-LAB-{cid}`), python scripts/dev/sync.py ship,",
-        f"   python scripts/dev/sync.py release {sync.slugify(cid)}, python scripts/dev/sync.py where (clean).",
-        "Blocked (data missing, rule conflict, test cannot pass): write the report with verdict BLOCKED and the exact reason, ship it,",
-        "release the claim, and do NOT mark the card done.",
+        "The runner has already claimed this card and will commit, ship and release after you. Your sandbox cannot write to .git:",
+        "do NOT run git, sync.py claim/ship/release or anything that pushes. Write files only.",
+        "1. Do the task below. It is the whole task.",
+        f"2. Write the report {LAB}/reports/{d}_{cid}.md (LAYER_LAB.md, Report format).",
+        f"3. python scripts/dev/tasks.py done {cid} --result \"<verdict or number + report file>\"",
+        "Blocked (data missing, rule conflict, test cannot pass): write the report with verdict BLOCKED and the exact reason,",
+        "and do NOT mark the card done.",
         f"Final line: `lab: {cid} <DONE|BLOCKED> <one-line result>`.",
         "", tasks.brief(card)])
 
 
-def command(exe, card, wt, sandbox, gitdir):
+def command(exe, card, wt, sandbox):
     model, effort = tasks.codex_setting(card)
-    cmd = [exe, "exec", "-m", model, "-c", f'model_reasoning_effort="{effort}"', "-s", sandbox, "-C", str(wt)]
-    if sandbox == "workspace-write":   # a work tree commits into the main clone's .git, and ship needs the network
-        cmd += ["--add-dir", str(gitdir), "-c", "sandbox_workspace_write.network_access=true"]
-    return cmd + ["-"]                 # prompt on stdin
+    return [exe, "exec", "-m", model, "-c", f'model_reasoning_effort="{effort}"', "-s", sandbox, "-C", str(wt), "-"]   # prompt on stdin
 
 
 def acquire(lock, now=None, stale=LOCK_STALE_S):
@@ -145,10 +141,36 @@ def git(wt, *args, check=True):
     return subprocess.run(["git", "-C", str(wt), *args], capture_output=True, text=True, check=check)
 
 
-def abs_gitdir(wt, out):
-    """The repo's shared .git as an absolute path (git prints it relative inside the main clone; older gits lack --path-format)."""
-    p = Path(out.strip())
-    return p if p.is_absolute() else (Path(wt) / p).resolve()
+def changed_files(wt):
+    out = git(wt, "status", "--porcelain", "--untracked-files=all").stdout
+    return [line[3:].strip().strip('"').split(" -> ")[-1] for line in out.splitlines() if line.strip()]
+
+
+def out_of_scope(kind, files):
+    """Files an audit or run card may not have written: those two kinds only report, log trials and capture follow-up cards."""
+    if kind == "build":
+        return []
+    return [f for f in files if not (f.startswith(LAB + "/") or f.startswith(tasks.DIR + "/"))]
+
+
+def judge(card_now, reports, kind, files):
+    """Outcome of a run from what is in the work tree afterwards. Fail closed: only DONE and BLOCKED are shipped."""
+    if out_of_scope(kind, files):
+        return "OUT_OF_SCOPE"
+    if card_now.get("state") == "done" and reports:
+        return "DONE"
+    return "BLOCKED" if reports else "INCOMPLETE"
+
+
+def commit_message(card, outcome, result, when):
+    model, effort = tasks.codex_setting(card)
+    return "\n".join([f"lab {card['id']}: {outcome} ({card['kind']})", "",
+                      f"Result: {result}", f"Codex: {model} / {effort}, sandbox run, committed by codex_run.py", "",
+                      f"MTS-Session: MTS-{when.strftime('%Y-%m-%d-%H%M')}Z-COD-LAB-{card['id']}"])
+
+
+def sh(wt, *args):
+    return subprocess.run([sys.executable, *args], cwd=str(wt), capture_output=True, text=True)
 
 
 def refresh(wt):
@@ -163,17 +185,6 @@ def refresh(wt):
     else:
         git(wt, "switch", "--quiet", branch)
         git(wt, "merge", "--quiet", f"origin/{sync.TRUNK}")
-
-
-def on_origin(wt, card_id):
-    """(card state, report path or '') as origin/fast-track has them after the run."""
-    git(wt, "fetch", "--quiet", "origin", sync.TRUNK)
-    ref = f"origin/{sync.TRUNK}"
-    raw = git(wt, "show", f"{ref}:{tasks.DIR}/{card_id}.json", check=False).stdout
-    state = json.loads(raw).get("state", "?") if raw.strip() else "missing"
-    names = git(wt, "ls-tree", "--name-only", ref, f"{LAB}/reports/", check=False).stdout.split()
-    reports = sorted(n for n in names if n.endswith(f"_{card_id}.md"))
-    return state, (reports[-1] if reports else "")
 
 
 def execute(cmd, text, log, timeout_s, env):
@@ -191,14 +202,14 @@ def execute(cmd, text, log, timeout_s, env):
 
 
 def run_card(card, dry=False, env=os.environ):
-    home, wt, when = codex_home(env), lab_wt(env), utc()
+    """Claim, let Codex write files in its sandbox, then commit + ship + release here. Codex never touches git."""
+    home, wt, when, cid = codex_home(env), lab_wt(env), utc(), card["id"]
     sandbox = env.get("MTS_CODEX_SANDBOX") or "workspace-write"
     packs = home / "packs"
     packs.mkdir(parents=True, exist_ok=True)
-    pack = packs / f"{card['id']}.md"
-    pack.write_text(codex_pack.build(card["id"], 24), encoding="utf-8", newline="\n")
-    gitdir = abs_gitdir(wt, git(wt, "rev-parse", "--git-common-dir").stdout)
-    cmd, text = command(find_exe(env), card, wt, sandbox, gitdir), prompt(card, wt, pack, when)
+    pack = packs / f"{cid}.md"
+    pack.write_text(codex_pack.build(cid, 24), encoding="utf-8", newline="\n")
+    cmd, text = command(find_exe(env), card, wt, sandbox), prompt(card, wt, pack, when)
     if dry:
         print("DRY " + " ".join(cmd) + "\n" + text)
         return 0
@@ -207,21 +218,40 @@ def run_card(card, dry=False, env=os.environ):
     if not acquire(runs / "lab.lock"):
         print("IDLE a lab run holds the lock")
         return 0
-    log = runs / f"{when.strftime('%Y%m%dT%H%MZ')}_{card['id']}.log"
+    log = runs / f"{when.strftime('%Y%m%dT%H%MZ')}_{cid}.log"
+    model, effort = tasks.codex_setting(card)
     try:
+        c = sh(wt, "scripts/dev/sync.py", "claim", cid)
+        if c.returncode:
+            print(f"IDLE claim refused for {cid}: {(c.stdout + c.stderr).strip()[-200:]}")
+            return 0
         code, secs = execute(cmd, text, log, int(env.get("MTS_CODEX_TIMEOUT_MIN") or 60) * 60, dict(env, CODEX_HOME=str(home)))
-        state, report = on_origin(wt, card["id"])
-        outcome = "DONE" if state == "done" and report else "BLOCKED" if report else "INCOMPLETE"
+        files = changed_files(wt)
+        now = json.loads((wt / tasks.DIR / f"{cid}.json").read_text(encoding="utf-8"))
+        reports = sorted(f for f in files if f.startswith(f"{LAB}/reports/") and f.endswith(f"_{cid}.md"))
+        outcome, note = judge(now, reports, card["kind"], files), ""
+        if outcome in ("DONE", "BLOCKED"):
+            sh(wt, "scripts/dev/codex_run.py", "index")
+            git(wt, "add", "-A")
+            result = now.get("result") if outcome == "DONE" else f"BLOCKED, card stays ready: see {reports[-1]}"
+            git(wt, "commit", "-q", "-m", commit_message(card, outcome, result, when))
+            s = sh(wt, "scripts/dev/sync.py", "ship")
+            if s.returncode:
+                outcome, note = "SHIP_FAILED", (s.stdout + s.stderr).strip()[-300:]
+        elif files:
+            note = f"{len(files)} uncommitted file(s) left in {wt}: " + ", ".join((out_of_scope(card['kind'], files) or files)[:5])
+        r = sh(wt, "scripts/dev/sync.py", "release", sync.slugify(cid))
+        if r.returncode:
+            note += " | release failed: " + (r.stdout + r.stderr).strip()[-200:]
         m = re.search(r"tokens used\s*\n\s*([\d,]+)", log.read_text(encoding="utf-8", errors="replace"))
-        model, effort = tasks.codex_setting(card)
-        row = {"at": when.strftime("%Y-%m-%dT%H:%M:%SZ"), "card": card["id"], "kind": card["kind"], "model": model, "effort": effort,
+        row = {"at": when.strftime("%Y-%m-%dT%H:%M:%SZ"), "card": cid, "kind": card["kind"], "model": model, "effort": effort,
                "exit": code, "seconds": secs, "tokens": int(m.group(1).replace(",", "")) if m else None, "outcome": outcome,
-               "report": report, "log": str(log)}
+               "report": reports[-1] if reports else "", "note": note, "log": str(log)}
         with open(runs / "runs.jsonl", "a", encoding="utf-8", newline="\n") as f:
             f.write(json.dumps(row) + "\n")
     finally:
         (runs / "lab.lock").unlink(missing_ok=True)
-    print(f"RAN {card['id']} {outcome} model={model} effort={effort} {secs}s report={report or '-'} log={log}")
+    print(f"RAN {cid} {outcome} model={model} effort={effort} {secs}s report={row['report'] or '-'}" + (f" note={note}" if note else ""))
     return 0 if outcome == "DONE" else 1
 
 
