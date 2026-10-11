@@ -1,0 +1,29 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T16:16:23Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "uatvl0nb0izontyg64lf",
+  "goal": "",
+  "id": "dsa-aibridge-tasks-parallel-safe-with-nb",
+  "lane": "",
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "B182"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "DSA AIBridge tasks parallel-safe with NB/NUC scope"
+}
