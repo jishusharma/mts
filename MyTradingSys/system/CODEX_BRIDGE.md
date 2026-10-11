@@ -2,6 +2,8 @@
 
 Codex (free trial, JIS-NUC) and Claude share ONE repo and never share a folder. Rules, lanes and install: `CODEX_START.md` (single source; AGENTS.md -> CLAUDE.md).
 
+Unattended use (layer lab, lane `CODEX`, `codex_run.py`, model and effort per card): `LAYER_LAB.md`.
+
 ## What Codex can and cannot see
 - Cannot: claude.ai chats, artifacts (Control Room), App session history, `~/.claude`. Do not try to import them wholesale.
 - Can: git (`origin/fast-track`), task cards, `sync.py news`, and a **pack file** outside the repo.
