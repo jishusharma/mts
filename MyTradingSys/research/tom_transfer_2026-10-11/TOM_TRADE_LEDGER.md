@@ -52,3 +52,13 @@ Remaining: read sheets of k0zm5NYn0IQ (10), n7ZSkjb7JXs (6), UOBgXV20yCM (5), T6
 - T3b re-read (t=310 crop): -1 @24216, SL 24236, TP 24111, labelled 'reentry' by Tom: MATCH. Outcome of the re-entry NOT shown (T3b-x).
 - New management action: partial_exit at the 'Low Volume' node (T3-p1), re-entry after partial (not after stop). 11 trades / 27 rows, every frame path exists.
 - Remaining sheets: UOBgXV20yCM 03-04 (2), zQTbdEweG3c (4), l8RZrBfzvp4 01-02 (2).
+
+## Update 2026-10-11 ~02:30Z (relay via cron mts-dispatcher, JIS-NB): zQTbdEweG3c 00-03, UOBgXV20yCM 03-04, l8RZrBfzvp4 01-02 read
+- All 36 sheets are now read. New trade T10 (zQTbdEweG3c t=310, zoom ..._0310_crop.png): FDAX short 1 @25344 (position tag), spike to ~25400 then 25230; hand-drawn SL above the spike at t=370.
+  Entry/stop order/exit NOT shown; recording date 2026-06-08 (taskbar), trade day unlabelled. Family spike_fade_candidate.
+- T7 management (l8RZ t=190 zoom): -1 @6806.25, SL 6812.25 ($-300), TP 6767.25 ($+1950) -> TP 6771.25 ($+1750) by t=220, SL label gone. Exit not shown.
+- UOBgXV20yCM 03-04 and zQTbdEweG3c 00,02,03 are teaching/outro: no orders.
+- Ledger 12 trade ids (T1-T10 incl. T2b, T3b) / 29 rows. Every trade visible in all 7 videos is now listed; target >= 30 NOT reachable from these videos
+  (~1.7 trades/video; most recaps show the position tag only). Honest outcome per the card: "every trade in every available video if fewer".
+  Family counts: spike fade 6 + 3 candidates (T8,T10 + T9 teaching breakout pullback); re-entry 2; gap pullback 1.
+  More trades need more videos (card step 1: find further recap videos): file a follow-up card.
