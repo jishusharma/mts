@@ -12,7 +12,8 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    5 operator turns or ~50k tokens: ship, overwrite this file, `where` clean.
 1. Control Room (url in CONTROL_ROOM.md): ArtifactData query decisions + feedback. Apply answered decisions with no `applied`;
    a new unanswered decision: act on its `recommended` option only when older than 24 h.
-2. T0 check (no tokens beyond this): if F:/MTS/data/dax_fetch.log ends with ALL_DONE, run
+2. T0 check: the first full pass ended 2026-10-11 with 561 ok / 59 FAIL (rate limits, many weekdays); a retry pass writes
+   F:/MTS/data/dax_fetch_retry.log (RETRY_DONE at the end). Re-run fetch until the last `fetch {...}` line fails only on weekend/holiday days, then run
    `python -I MyTradingSys/backtest/dax_data.py convert --raw F:/MTS/data/dax_raw --out F:/MTS/data/dax_archive`, check one GER40 snapshot
    close = raw close, `tasks.py done tom-dax-data`. If it has no ALL_DONE and no fetch is running, restart it in a background shell:
    `python -I MyTradingSys/backtest/dax_data.py fetch --start 2024-10-01 --end 2026-10-10 --raw F:/MTS/data/dax_raw --workers 3 --pause 2`.
