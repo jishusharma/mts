@@ -36,3 +36,12 @@ Remaining: read sheets of k0zm5NYn0IQ (10), n7ZSkjb7JXs (6), UOBgXV20yCM (5), T6
   Taskbar clock 19.05.2026 07:12 is the recording time, not the trade time; chart header 2026-05-15 is the volume-profile history. Entry moment and exit fill are NOT shown (T9-x exit inferred from price 24014 on later chart).
 - Family: breakout_pullback_teaching (new family, 1). 11 trades / 21 rows in the csv; every frame path exists.
 - Remaining sheets: UOBgXV20yCM 03-04 (2), T6hDJcHrVBM (4), ujedEcmvBMk (4), zQTbdEweG3c (4), l8RZ 01-02 (2).
+
+## Update 2026-10-11 ~01:30Z (relay via cron mts-dispatcher-night, JIS-NB): T6hDJcHrVBM sheets 00-03 all read
+- Only one trade in the video: T5 (FDAX 2026-05-19 open-range spike fade). Labels re-read at t=430 (zoom T6hDJcHrVBM_0430_crop.png): -3 @24690, SL 24753, TP 24184. MATCH with RECALL_DAX.
+- Management (new rows T5-m1, T5-p1, T5-a1): stop to breakeven 24690 by t=520 (SL label stacked behind the position tag, no printed value);
+  one-lot partial by t=550 while price tags VWAP 24425/24435 (fill price not shown); t=610 hand-drawn "SL 650" above the broken range low. Final exit of 2 lots NOT shown.
+- Sheets 00-01 are teaching (BTC daily profile, FDAX TPO "Openrange" profiles 05-11..05-19), no orders.
+- Family counts unchanged: spike fade 6 + 1 candidate (T8); re-entry 2; gap pullback 1; breakout pullback teaching 1. 11 trades / 24 rows; every frame path exists.
+  Management actions now: scale_in 3, partial 5 rows, stop_tighten 4, stop_to_breakeven 1, stop_to_profit 1, tp_tighten 1, tp_removed 1, stop_out 2.
+- Remaining sheets: UOBgXV20yCM 03-04 (2), ujedEcmvBMk (4), zQTbdEweG3c (4), l8RZ 01-02 (2).
