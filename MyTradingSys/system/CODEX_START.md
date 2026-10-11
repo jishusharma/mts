@@ -31,7 +31,7 @@ Rules of thumb: a card that needs no gitignored file and no live reach goes to C
 - JIS-NB: has the data, but also the live loop and the operator's screen; use only with the work tree on F: and no background windows.
 - Either way install on F: or D: and point Codex's data folder there (CODEX_HOME for the CLI; check the app's settings for its storage path) so C: stays clean.
 - Setup: `git fetch origin`, then `git worktree add F:\MTS\mts-codex -b <host>/codex-<slug> origin/fast-track`
-  (or a plain `git clone` on the NUC, then `git checkout -b nuc/codex-<slug> origin/fast-track`).
+  (or a plain `git clone` on the NUC, then `git switch -c nuc/codex-<slug> origin/fast-track`).
   In Codex: Add project -> that folder, approval mode "Ask for approval", then paste the block below.
 
 ## Paste into Codex
