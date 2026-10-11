@@ -30,11 +30,12 @@ Never start other scheduled tasks. Never kill processes by image name. Never tou
 - A dispatcher stays IDLE while ANOTHER host wrote the current handoff under PEER_QUIET_MIN minutes ago. When that host
   goes quiet (credits out, machine off, App closed) the other one picks the chain up by itself.
 - Move the work on purpose: `python scripts/sched/relay.py stop "<why>"` on the host to rest (host-local flag), `resume` later.
+- Budget asymmetry (operator 2026-10-12): the NUC account is nearly out until Fri 2026-10-16, so the NB is the primary and does NOT pass --peer-quiet-min; the NUC (90) yields while the NB keeps handing off and takes over only if the NB goes quiet. Q31 is therefore not applied.
 - Both chains at once is safe (claims stop double work) but spends both budgets.
 
 | Host | PEER_QUIET_MIN | BUSY_CRON | IDLE_CRON | state |
 |---|---|---|---|---|
 | JIS-NUC | 90 | `*/15 * * * *` | `7 * * * *` | created 2026-10-12 from the generic prompt |
-| JIS-NB | 90 once Q31 adds the flag | `*/10 7-23 * * *` | `0 7-23 * * *` | own prompt (mts-dispatcher.SKILL.md) |
+| JIS-NB | 0 (primary on purpose, operator 2026-10-12) | `*/10 7-23 * * *` | `0 7-23 * * *` | own prompt (mts-dispatcher.SKILL.md); no flag, so it never yields to the NUC |
 
 Find a relay chat later: `relay_runs.jsonl` gives host + account + session title; open that App on that account and search the title.
