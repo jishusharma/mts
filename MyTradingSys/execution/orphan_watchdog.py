@@ -79,14 +79,15 @@ def run_once(get_client, accounts, live, halt_path, log_path=None, now=None, cur
     
     orphans = find_orphans(states, live)
     
-    halted = bool(orphans)
+    # halt_path=None: detect and log only; the caller decides when to halt (orphan_watchdog_cli --confirm-sweeps)
+    halted = bool(orphans) and halt_path is not None
     if halted:
         write_orphan_halt(halt_path, orphans, now)
     
     if log_path is not None:
         log_entry = {
             "ts": now.isoformat(),
-            "event": "orphan_halt" if orphans else "ok",
+            "event": ("orphan_halt" if halted else "orphan_seen") if orphans else "ok",
             "orphans": orphans,
             "errors": errors,
             "live": sorted(live)

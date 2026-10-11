@@ -1,0 +1,37 @@
+{
+ "ask_iv": 36.88,
+ "best_ask_amount": 3.6,
+ "best_ask_price": 0.002,
+ "best_bid_amount": 30.0,
+ "best_bid_price": 0.0017,
+ "bid_iv": 34.28,
+ "estimated_delivery_price": 81747.57,
+ "greeks": {
+  "delta": -0.23278,
+  "gamma": 0.00028,
+  "rho": -0.27084,
+  "theta": -148.12428,
+  "vega": 9.39297
+ },
+ "index_price": 81747.57,
+ "instrument_name": "BTC-9OCT26-81000-P",
+ "interest_rate": 0.0,
+ "last_price": 0.002,
+ "mark_iv": 35.26,
+ "mark_price": 0.0018,
+ "max_price": 0.0295,
+ "min_price": 0.0001,
+ "open_interest": 1012.7,
+ "settlement_price": 0.00180883,
+ "state": "open",
+ "stats": {
+  "high": 0.011,
+  "low": 0.0009,
+  "price_change": 122.2222,
+  "volume": 934.8,
+  "volume_usd": 237738.75
+ },
+ "timestamp": 1791488286320,
+ "underlying_index": "BTC-9OCT26",
+ "underlying_price": 81779.63
+}

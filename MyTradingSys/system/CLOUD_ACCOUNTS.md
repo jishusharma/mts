@@ -59,3 +59,10 @@ MyTradingSys/research/fast_track_2026-09-27/CROSS_TRADER_RULEBOOK.md
 boundaries, or use CLD/CLI (SURFACE_POLICY section 1 names) when a
 two-letter token must be searched unambiguously.
 
+## Hand steps for the second account (2026-10-09)
+Operator does these once; sessions cannot (they need the GitHub owner login):
+1. GitHub as `jishusharma`: repo jishusharma/mts -> Settings -> Collaborators -> add `jishu-awgp` with Write; accept the invite as `jishu-awgp`.
+2. Each machine that account pushes from (JIS-NB, JIS-NUC, laptop): `gh auth login` as `jishu-awgp`, or the Claude GitHub App installed for that account (Connectors -> GitHub).
+3. Per machine, once: `setx MTS_ACCOUNT awgp` (or `sharma`), so claims say who holds a task.
+4. NUC only: `git clone https://github.com/jishusharma/mts` into F:\MTSepo (or add a worktree there) and run `sync.py start`; the live-tree marker `.mts_live` must not exist there.
+Ritual and per-device rules: PARALLEL.md "Two accounts, three devices".

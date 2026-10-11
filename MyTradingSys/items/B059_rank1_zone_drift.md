@@ -49,4 +49,13 @@ Not the same defect:
   and price 80524. Distance 150 pts. Rank-1 distance gate is a
   separate defect. Needs its own row.
 
-Status: OPEN. Live tape confirmation pending next loop start.
+Status: CLOSED. Pinned by BuildVpFixedGridTest 2026-10-11.
+
+## 2026-10-04T11:00Z - live verify
+
+pf_vah 85370.0 flat across the last 8 snapshots (16:22Z-16:29Z),
+pf_poc 85320.0 flat, pf_val 85110.0 for 7 cycles then 85120.0 on the
+latest (one 10-USD grid step). Price 85285.8 -> 85230.3 across the window;
+pf levels did not chase it. The 2026-09-20 symptom was pf_vah moving
+80346.11 -> 80373.47 across five cycles; today shows zero drift and no
+bin-edge jitter beyond the snap grid. Fix holds.

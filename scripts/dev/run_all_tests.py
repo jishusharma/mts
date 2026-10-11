@@ -4,12 +4,24 @@ Usage:
   python scripts/dev/run_all_tests.py         (run all steps)
   python scripts/dev/run_all_tests.py --quick (skip mvn and backtest)
 """
+import os
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
+
+# Function-style pytest tests that step 5b (unittest) collects only partly: Fabio v3 + live writers (TF1, E7).
+PYTEST_LAYER_PATHS = [
+    "MyTradingSys/backtest/layers/fabio/v3/tests",
+    "MyTradingSys/backtest/layers/fabio/test_orderflow_live.py",
+    "MyTradingSys/backtest/layers/fabio/test_of_backfill.py",
+    "MyTradingSys/backtest/layers/fabio/test_htf_context_live.py",
+    "MyTradingSys/execution/tests",
+    "scripts/dev/test_market_guide.py",
+    "MyTradingSys/observation/tests",
+]
 
 
 def run_step(step_num, description, cmd, cwd=None):
@@ -30,11 +42,11 @@ def run_step(step_num, description, cmd, cwd=None):
             return True, output
         else:
             print(f"Step {step_num}: FAIL")
-            # Print last 15 lines of output on failure
+            # Print last 15 lines of output on failure (all of it under CI, where nothing else can be read)
             lines = output.splitlines()
             if lines:
                 print("  Last output:")
-                for line in lines[-15:]:
+                for line in (lines if os.environ.get("CI") else lines[-15:]):
                     print(f"    {line}")
             return False, output
     except FileNotFoundError as e:
@@ -82,7 +94,7 @@ def main(argv=None):
         "test_gh_retry_offline", "test_halt_preflight_offline", "test_kill_switch", "test_kill_switch_account", "test_premainnet1_offline",
         "test_risk_guard", "test_s1_cap_offline", "test_s3_unprotected_offline",
         "test_s6_orphan_offline", "test_triggered_stop_offline", "test_soak_report", "test_fix3_offline", "test_fix4_offline",
-        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_fabio_slot", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry",  # W2 R2: execution-math tests (FORMULAS.md 11)
+        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_dlm_aggregate", "test_b148_reauth_account", "test_b146_fee_to_stop", "test_dlm_failure_cap", "test_auto_trader_blocklist", "test_auto_trader_sizes", "test_auto_trader_confirm", "test_orphan_sweep_loop", "test_fabio_slot", "test_fix3_mutants_offline", "test_capture_txlog_settlement", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry", "test_r2_runner_exit", "test_r2_breakeven_move",  # W2 R2: execution-math tests (FORMULAS.md 11)
     ]
     success, output = run_step(1, "Execution module tests", cmd1)
     results.append(("Step 1: Execution tests", success))
@@ -115,19 +127,94 @@ def main(argv=None):
     cmd3s = [sys.executable, "scripts/dev/test_testnet_status.py"]
     success, output = run_step("3s", "Testnet status summary tests", cmd3s)
     results.append(("Step 3s: Testnet status tests", success))
+    cmd3f = [sys.executable, "scripts/dev/test_funnel_report.py"]
+    success, output = run_step("3f", "Funnel report tests", cmd3f)
+    results.append(("Step 3f: Funnel report tests", success))
+    cmd3dk = [sys.executable, "scripts/dev/test_desk.py"]
+    success, output = run_step("3dk", "Desk board tests", cmd3dk)
+    results.append(("Step 3dk: Desk board tests", success))
+    cmd3tk = [sys.executable, "scripts/dev/test_tasks.py"]
+    success, output = run_step("3tk", "Task card tests", cmd3tk)
+    results.append(("Step 3tk: Task card tests", success))
+    cmd3tl = [sys.executable, "scripts/dev/tasks.py", "lint"]   # a ready/active card that fails the Definition of Ready is an error
+    success, output = run_step("3tl", "Task cards meet the Definition of Ready", cmd3tl)
+    results.append(("Step 3tl: Task card lint", success))
+    cmd3q = [sys.executable, "scripts/dev/test_registry_consistency.py"]
+    success, output = run_step("3q", "INDEX/BUGS consistency", cmd3q)
+    results.append(("Step 3q: INDEX/BUGS consistency", success))
+    cmd3p = [sys.executable, "MyTradingSys/research/test_p4_corrected.py"]
+    success, output = run_step("3p", "P4 corrected script tests", cmd3p)
+    results.append(("Step 3p: P4 corrected script tests", success))
+    cmd3t = [sys.executable, "MyTradingSys/research/test_t093_toc_imbalance_klines.py"]
+    success, output = run_step("3t", "T093 turn-of-candle imbalance tests", cmd3t)
+    results.append(("Step 3t: T093 imbalance tests", success))
     cmd3d = [sys.executable, "scripts/dev/test_verify_extract_quotes.py"]
     success, output = run_step("3d", "Extract quote checker tests", cmd3d)
     results.append(("Step 3d: Quote checker tests", success))
+    cmd3h = [sys.executable, "scripts/dev/test_mts_launcher.py"]
+    success, output = run_step("3h", "Launcher verb static tests (runner, orphans)", cmd3h)
+    results.append(("Step 3h: Launcher static tests", success))
+    cmd3g = [sys.executable, "scripts/dev/test_run_all_tests.py"]
+    success, output = run_step("3g", "Gate coverage tests (Fabio v3 + live writers)", cmd3g)
+    results.append(("Step 3g: Gate coverage tests", success))
+    cmd3k = [sys.executable, "scripts/dev/test_sync.py"]
+    success, output = run_step("3k", "sync.py parallel ship tests", cmd3k)
+    results.append(("Step 3k: sync.py tests", success))
     cmd3e = [sys.executable, "scripts/worker/test_dsa_worker.py"]
     success, output = run_step("3e", "DSA browser worker + queue lane tests", cmd3e)
     results.append(("Step 3e: DSA worker tests", success))
+    cmd3sh = [sys.executable, "scripts/dev/test_shot.py"]
+    success, output = run_step("3sh", "Screenshot intake tests (save, classify, read, close gates)", cmd3sh)
+    results.append(("Step 3sh: Screenshot intake tests", success))
+    cmd3mg = [sys.executable, "scripts/dev/test_make_groups.py"]
+    success, output = run_step("3mg", "Project group map tests (every row and file has one group)", cmd3mg)
+    results.append(("Step 3mg: Project group map tests", success))
+    cmd3xt = [sys.executable, "scripts/dev/run_extra_tests.py"]
+    success, output = run_step("3xt", "Extra tests outside the collected dirs (B150 discovery)", cmd3xt)
+    results.append(("Step 3xt: Extra tests", success))
+    cmd3ad = [sys.executable, "scripts/dev/test_auto_deploy.py"]
+    success, output = run_step("3ad", "Scheduled auto-deploy tests (stops on red gate)", cmd3ad)
+    results.append(("Step 3ad: Auto-deploy tests", success))
+    cmd3hy = [sys.executable, "scripts/dev/test_daily_hygiene.py"]
+    success, output = run_step("3hy", "Daily hygiene job tests", cmd3hy)
+    results.append(("Step 3hy: Daily hygiene tests", success))
+    cmd3ms = [sys.executable, "scripts/dev/test_make_status.py"]
+    success, output = run_step("3ms", "STATUS.md generator tests (commit-dated reports, CI green line)", cmd3ms)
+    results.append(("Step 3ms: make_status tests", success))
+    cmd3cs = [sys.executable, "scripts/dev/test_cloud_setup.py"]
+    success, output = run_step("3cs", "Cloud SessionStart hook tests (no-op off cloud)", cmd3cs)
+    results.append(("Step 3cs: Cloud setup hook tests", success))
+    cmd3pc = [sys.executable, "scripts/dev/test_prompt_contract.py"]
+    success, output = run_step("3pc", "Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)", cmd3pc)
+    results.append(("Step 3pc: Prompt contract tests", success))
+
+    cmd3cr = [sys.executable, "scripts/dev/test_make_control_room.py"]
+    success, output = run_step("3cr", "Control Room page generator tests", cmd3cr)
+    results.append(("Step 3cr: Control Room tests", success))
+
+    cmd3bk = [sys.executable, "scripts/dev/test_backup_snapshot.py"]
+    success, output = run_step("3bk", "Backup snapshot tests (dirty/untracked work reaches the remote)", cmd3bk)
+    results.append(("Step 3bk: Backup snapshot tests", success))
+
+    cmd3lm = [sys.executable, "scripts/dev/test_live_mirror.py"]
+    success, output = run_step("3lm", "Live mirror tests (read-only desktop->work-tree data, fail-closed)", cmd3lm)
+    results.append(("Step 3lm: Live mirror tests", success))
+
+    # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
+    cmd3w = [sys.executable, "scripts/dev/test_wiring_scan.py"]
+    success, output = run_step("3w", "Wiring gate tests", cmd3w)
+    results.append(("Step 3w: Wiring gate tests", success))
+    cmd3x = [sys.executable, "scripts/dev/wiring_scan.py", "--check"]
+    success, output = run_step("3x", "Wiring check: no undeclared unwired code (wiring_scan.py --check)", cmd3x)
+    results.append(("Step 3x: Wiring check", success))
 
     # Step 4: pytest (math + doc tests)
     cmd4 = [sys.executable, "-m", "pytest", "MyTradingSys/tests", "-q",
             # function-style tests that unittest-based steps 5b/6 do not collect
-            "MyTradingSys/backtest/bt/test_bt_rsi.py", "MyTradingSys/backtest/bt/test_bt_rsi_edge.py",
             "MyTradingSys/backtest/test_prob_table.py", "MyTradingSys/backtest/test_prob_table_edge.py",
-            "MyTradingSys/backtest/test_tom_bt.py"]
+            "MyTradingSys/backtest/test_tom_bt.py", "MyTradingSys/backtest/test_tom_probe_diag.py",
+            "MyTradingSys/backtest/test_dax_data.py", "MyTradingSys/backtest/test_tom_dax_recall.py",
+            "MyTradingSys/backtest/test_tom_dax_bt.py"] + PYTEST_LAYER_PATHS
     success, output = run_step(4, "Pytest (math + doc tests)", cmd4)
     results.append(("Step 4: Pytest tests", success))
 
@@ -163,6 +250,11 @@ def main(argv=None):
         cmd5b = [sys.executable, "-m", "unittest"] + layer_modules
         success, output = run_step("5b", f"Layer tests ({len(layer_modules)} modules)", cmd5b)
         results.append(("Step 5b: Layer tests", success))
+
+    # Step 5c: options module (own pytest run: its bare module names, e.g. fees.py, collide with other packages)
+    cmd5c = [sys.executable, "-m", "pytest", "MyTradingSys/options/tests", "-q"]
+    success, output = run_step("5c", "Options module tests", cmd5c)
+    results.append(("Step 5c: Options tests", success))
 
     # Step 6: backtest (unless --quick)
     if not quick:

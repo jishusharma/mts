@@ -1,6 +1,6 @@
 # MTS User Guide
 
-Last reviewed: 2026-09-29  |  Trading: Deribit **testnet** only  |  Instrument: BTC-PERPETUAL
+Last reviewed: 2026-10-06  |  Trading: Deribit **testnet** only  |  Instrument: BTC-PERPETUAL
 
 MTS watches the BTC market, tells you when a setup is forming, and places
 your trades with a stop that is always on the exchange. You decide; MTS executes.
@@ -241,9 +241,17 @@ Open trades are not affected: their stops live on the exchange. Keep any
 | `mts kill`           | Emergency: cancel all, close all, pause                   |
 | `mts kill-mainnet`   | Emergency on MAINNET: cancel all, close all, pause        |
 | `mts guard`          | Start the daily-loss guard in its own window              |
+| `mts orphans`        | Check every testnet account for a position no manager owns (may set HALT) |
 | `mts auto`           | Start the testnet auto-trader in its own window           |
+| `mts runner`         | Start the alert runner (indicator layers) in its own window (only the runner; mts guard starts it too, with the loss monitor and orderflow) |
+| `mts market`         | Market guide: MA / RSI / candle state per timeframe + recent layer alerts, each tagged with its backtest verdict (EDGE / NO-EDGE / UNTESTED). Context only, never a trade signal. Also writes `MyTradingSys/runtime/market_guide.md` |
 | `mts autolog`        | Last 20 auto-trader decisions                             |
 | `mts ledger`         | Closed auto-trades per source: n, win rate, net P/L       |
+| `mts missed [hours]` | Missed-trade analysis: chart-observed setups vs what MTS did, scored on 1m bars (read-only) |
+| `mts soak`           | Testnet soak report from the execution journal (read-only) |
+| `mts wiring`         | Check that every code file is run by something or declared in system/wiring_registry.json |
+| `mts desk`           | List open desktop tasks that other sessions posted (post/take/done: scripts/dev/desk.py)  |
+| `mts go [slug]`      | Launch the next queued build task in claude (empty queue prints IDLE). Slug = lowercase kebab, names the session MTS-<UTC>-CLI-BLD-<slug>. `-Dry` prints only; run from inside a Claude Code session it always prints only |
 | `mts test`           | Run the offline tests (no exchange)                       |
 | `mts guide`          | Open this guide                                           |
 | `mts help`           | List every command                                        |
@@ -267,7 +275,7 @@ Outside the MTS window, run `.\mts.ps1 <command>` from the project folder.
 
 ## 10. Known limits
 
-- Testnet only. There is no mainnet path.
+- Trading is testnet only. The only mainnet command is `mts kill-mainnet` (emergency close).
 - One plan at a time on BTC-PERPETUAL.
 - The daily-loss guard's profit-and-loss reading is still being verified on
   testnet. Treat it as a backstop, not your only protection.

@@ -49,17 +49,15 @@ L6 PART 2 (2026-09-29) - PnL SOURCE, decision in research/fast_track_2026-09-27/
 FIX4_DESIGN.md; arithmetic and field semantics in mainnet_pnl.py (audit HIGH #3, spec 129):
 pnl_source="transaction_log" = (realized + session unrealized) [BTC] times mark_price, where
   realized   = sum over today's 00:00-UTC..now private/get_transaction_log entries of type
-               "trade" (allow-list; every other type is ignored) of change, plus cashflow
-               when profit_as_cashflow is true (Deribit: a futures trade's realized session
+               "trade" or "settlement" (allow-list; every other type is ignored) of change,
+               plus cashflow for trades when profit_as_cashflow is true (Deribit: a futures trade's realized session
                PnL is carried in cashflow until the 08:00 UTC settlement; change holds only
                the fee);
   unrealized = account summary futures_session_upl (fallback session_upl).
-  Residual limits (honest): "settlement" entries are excluded (they double count the
-  cashflow already taken from trades); session UPL is "since the last 08:00 UTC
-  settlement", not since 00:00 UTC, so a position carried across the 08:00 settlement has
-  its pre-settlement P/L booked into that settlement entry and NOT counted; funding
-  (interest_pl) is not added. Fine for intraday flat-to-flat trading; revisit before
-  holding overnight. A missing or non-numeric field raises ValueError (fail closed: the
+  Residual limits (honest): "settlement" entries are INCLUDED since B149 (captured testnet log: the 08:00
+  settlement books the pre-08:00 P/L of a held position, the closing trade only the rest,
+  no double count), so a position carried across 08:00 is counted; funding on perpetuals
+  sits inside those entries, no separate funding type was seen. A missing or non-numeric field raises ValueError (fail closed: the
   consecutive-failure path writes HALT_DAILY_LOSS).
   Default source: "equity" on testnet (unchanged behaviour, keeps the FT-2
   testnet suite T-c identical); "transaction_log" whenever the client's
@@ -76,6 +74,17 @@ executor.py is NOT edited by this module or its owner):
   module never deletes the file itself - only an operator clears it,
   by design (the whole point of a hard halt is that it does not
   auto-resume).
+
+AGGREGATE OVER NAMED TESTNET SUBACCOUNTS (operator 2026-10-08):
+  On testnet the one loop also reads every named account in auto_trader_config.json "accounts" whose
+  secret file exists (existence check only), authenticates each with MTS_ACCOUNT=<label>, and caps the SUM:
+      total_pnl_usd = main account P&L + sum over named accounts of that account's P&L
+  (each account's P&L computed exactly as above, with its own day-start equity kept in state["accounts"]).
+  The existing threshold applies to that aggregate. A breach writes the same HALT_DAILY_LOSS and runs kill_all
+  on the main account AND every named account. An unreadable account fails the whole iteration (the
+  consecutive-failure path then fails closed): an aggregate that silently drops an account would under-count.
+  A named account first seen mid-day is baselined at first sight (its earlier loss that day is not counted).
+  Mainnet: unchanged, main account only (named accounts are testnet-only).
 
 DEPENDENCY INJECTION for testability:
   client: duck-typed like kill_switch.kill_all's client - needs
@@ -123,7 +132,17 @@ def paths_for_env(env: str):
     """(state_path, halt_path) for 'mainnet' or testnet; module globals read at call time."""
     return (STATE_PATH_MAINNET, HALT_PATH_MAINNET) if env == "mainnet" else (STATE_PATH, HALT_PATH)
 JOURNAL_PLAN_ID = "ACCOUNT_DAILY_LOSS"
-MAX_CONSECUTIVE_FAILURES = 3  # FIX3 H3: then fail closed (write HALT_DAILY_LOSS) instead of dying
+ACCOUNTS_CONFIG = Path(__file__).resolve().parent / "auto_trader_config.json"
+SECRETS_DIR = Path(__file__).resolve().parent / ".secrets"
+_LABEL_CHARS = set("abcdefghijklmnopqrstuvwxyz0123456789_")
+MAX_CONSECUTIVE_FAILURES = 3  # FIX3 H3: then fail closed (write HALT_DAILY_LOSS) instead of dying. Mainnet.
+# Testnet only: a 90 s DNS blip (3 x getaddrinfo, 2026-10-07 19:24Z) halted all calibration trading. 20 x 30 s poll =
+# 10 min blind at most, then the same fail-closed halt. NO-SOURCE testnet calibration value (operator 2026-10-07).
+MAX_CONSECUTIVE_FAILURES_TESTNET = 20
+
+
+def failure_cap(env: str) -> int:
+    return MAX_CONSECUTIVE_FAILURES if env == "mainnet" else MAX_CONSECUTIVE_FAILURES_TESTNET
 
 
 class StateUnreadable(Exception):
@@ -242,12 +261,15 @@ def compute_total_pnl_usd(client, token, state: dict, currency: str = "BTC",
 
 def run_once(client, token, clock=_utc_now, currency: str = "BTC",
              instrument: str = "BTC-PERPETUAL", cap_usd: float = DEFAULT_DAILY_LOSS_CAP_USD,
-             state_path: Path = None, halt_path: Path = None, pnl_source: str = None) -> dict:
+             state_path: Path = None, halt_path: Path = None, pnl_source: str = None,
+             accounts: dict = None) -> dict:
     """Single monitor iteration. Returns the check_daily_loss_cap() result
     dict (plus 'state' for tests). Idempotent: a breach only triggers
     kill_all/HALT-file/journal once per UTC day (state['breached_today']).
     
-    Re-arms breached_today flag if HALT_DAILY_LOSS file is cleared by operator."""
+    Re-arms breached_today flag if HALT_DAILY_LOSS file is cleared by operator.
+    accounts: optional {label: (client, token)} of named TESTNET subaccounts; their P&L is added to the main
+    account's and the cap applies to the sum (see AGGREGATE above). None/{} = main account only (unchanged)."""
     env_state, env_halt = paths_for_env(_client_env(client))
     state_path = state_path or env_state
     halt_path = halt_path or env_halt
@@ -269,8 +291,24 @@ def run_once(client, token, clock=_utc_now, currency: str = "BTC",
             "result": "re-armed by operator clear"
         })
 
+    now_ms = int(now.timestamp() * 1000)
     total_pnl_usd = compute_total_pnl_usd(client, token, state, currency=currency, instrument=instrument,
-                                          pnl_source=pnl_source, now_ms=int(now.timestamp() * 1000))
+                                          pnl_source=pnl_source, now_ms=now_ms)
+    per_account = None
+    if accounts:
+        per_account = {"main": total_pnl_usd}
+        base = state.setdefault("accounts", {})
+        new = [lab for lab in accounts if lab not in base]
+        for lab in new:
+            c, t = accounts[lab]
+            base[lab] = c.get_account_summary(t, currency=currency)["equity"]
+        if new:
+            save_state(state, state_path)          # a baseline must never be re-taken later in the day
+        for lab, (c, t) in accounts.items():
+            per_account[lab] = compute_total_pnl_usd(c, t, {"date": state["date"], "day_start_equity": base[lab]},
+                                                     currency=currency, instrument=instrument,
+                                                     pnl_source=pnl_source, now_ms=now_ms)
+        total_pnl_usd = round(sum(per_account.values()), 2)
     result = check_daily_loss_cap([{"pnl_usd": total_pnl_usd}], 0.0, cap_usd=cap_usd)
 
     if not result["ok"] and not state.get("breached_today"):
@@ -280,26 +318,69 @@ def run_once(client, token, clock=_utc_now, currency: str = "BTC",
             "total_pnl_usd": total_pnl_usd,
             "cap_usd": cap_usd,
             "reason": reason,
+            **({"per_account_pnl_usd": per_account} if per_account else {}),
         })
         # FIX3 H3: HALT first, and regardless of whether kill_all works
         write_halt(halt_path, state["date"], reason, now)
         state["breached_today"] = True
         save_state(state, state_path)
-        try:
-            kill_result = kill_switch.kill_all(client, token, currency=currency)
-            journal.append_event(JOURNAL_PLAN_ID, "error", {
-                "source": "daily_loss_monitor",
-                "kill_switch_report": kill_switch.format_kill_report(kill_result),
-                "kill_switch_ok": kill_result["ok"],
-            })
-        except Exception as e:  # noqa: BLE001
-            journal.append_event(JOURNAL_PLAN_ID, "error", {
-                "source": "daily_loss_monitor", "kill_switch_ok": False,
-                "kill_switch_error": repr(e)})
+        # flatten every account in the aggregate; one account's kill failure never skips the others
+        for lab, (c, t) in [("main", (client, token))] + list((accounts or {}).items()):
+            try:
+                kill_result = kill_switch.kill_all(c, t, currency=currency)
+                journal.append_event(JOURNAL_PLAN_ID, "error", {
+                    "source": "daily_loss_monitor", "account": lab,
+                    "kill_switch_report": kill_switch.format_kill_report(kill_result),
+                    "kill_switch_ok": kill_result["ok"],
+                })
+            except Exception as e:  # noqa: BLE001
+                journal.append_event(JOURNAL_PLAN_ID, "error", {
+                    "source": "daily_loss_monitor", "account": lab, "kill_switch_ok": False,
+                    "kill_switch_error": repr(e)})
 
     save_state(state, state_path)
     result["state"] = state
+    if per_account:
+        result["per_account_pnl_usd"] = per_account
     return result
+
+
+_LAST_GOOD_LABELS = {}   # str(config_path) -> labels from the last successful read (B148)
+
+
+def named_account_labels(config_path: Path = None, secrets_dir: Path = None) -> list:
+    """Sorted valid labels from auto_trader_config.json "accounts" whose testnet secret file exists
+    (existence check only, never read). Unreadable config -> the last good list; with no last good list it RAISES
+    (the caller's failure path counts it), because [] would silently drop accounts auto_trader keeps trading."""
+    config_path, secrets_dir = config_path or ACCOUNTS_CONFIG, secrets_dir or SECRETS_DIR
+    try:
+        table = json.loads(Path(config_path).read_text(encoding="utf-8")).get("accounts") or {}
+        labels = {v for v in table.values() if isinstance(v, str) and 0 < len(v) <= 32 and set(v) <= _LABEL_CHARS}
+    except (OSError, ValueError, AttributeError) as e:
+        if str(config_path) in _LAST_GOOD_LABELS:
+            return list(_LAST_GOOD_LABELS[str(config_path)])
+        raise RuntimeError(f"accounts config unreadable and no earlier good read: {e!r}")
+    out = sorted(lab for lab in labels if (Path(secrets_dir) / f"testnet_{lab}.secret.json").exists())
+    _LAST_GOOD_LABELS[str(config_path)] = out
+    return out
+
+
+def refresh_named_accounts(do, current: dict, labels: list) -> dict:
+    """{label: (do, token)} for labels; keeps existing tokens, authenticates new labels with MTS_ACCOUNT=label
+    (restored afterwards). Raises on an auth failure (the caller's failure path counts it)."""
+    out = {lab: current[lab] for lab in labels if lab in current}
+    prev = os.environ.get("MTS_ACCOUNT")
+    try:
+        for lab in labels:
+            if lab not in out:
+                os.environ["MTS_ACCOUNT"] = lab
+                out[lab] = (do, do.authenticate())
+    finally:
+        if prev is None:
+            os.environ.pop("MTS_ACCOUNT", None)
+        else:
+            os.environ["MTS_ACCOUNT"] = prev
+    return out
 
 
 def main(argv=None):
@@ -310,7 +391,7 @@ def main(argv=None):
     parser.add_argument("--currency", default="BTC")
     parser.add_argument("--instrument", default="BTC-PERPETUAL")
     parser.add_argument("--pnl-source", choices=PNL_SOURCES, default=None,
-                        help="default: equity on testnet, transaction_log on mainnet")
+                        help="default: transaction_log (testnet and mainnet) whenever the client can read the log, else equity")
     parser.add_argument("--cap-usd", type=float, default=DEFAULT_DAILY_LOSS_CAP_USD)
     args = parser.parse_args(argv)
 
@@ -320,26 +401,31 @@ def main(argv=None):
     token = do.authenticate()
 
     failures = 0
+    cap = failure_cap(_client_env(do))
+    named = {}   # testnet: named subaccounts in the aggregate (mainnet: always empty)
     while True:
         # FIX3 H3: a transient error (ticker 10028, summary timeout, re-auth)
         # must not kill the monitor; N consecutive failures -> fail closed.
         try:
+            if _client_env(do) != "mainnet":
+                named = refresh_named_accounts(do, named, named_account_labels())
             result = run_once(do, token, currency=args.currency, instrument=args.instrument,
-                              cap_usd=args.cap_usd, pnl_source=args.pnl_source)
+                              cap_usd=args.cap_usd, pnl_source=args.pnl_source, accounts=named)
             failures = 0
             print(format_breach_report(result))
             if args.once:
                 return 0 if result["ok"] else 1
         except Exception as e:  # noqa: BLE001
             failures += 1
-            print(f"daily_loss_monitor iteration failed ({failures}/{MAX_CONSECUTIVE_FAILURES}): {e!r}")
-            if failures >= MAX_CONSECUTIVE_FAILURES or args.once:
+            print(f"daily_loss_monitor iteration failed ({failures}/{cap}): {e!r}")
+            if failures >= cap or args.once:
                 now = _utc_now()
                 blind_halt = paths_for_env(_client_env(do))[1]
                 write_halt(blind_halt, _today_str(now),
                            f"daily_loss_monitor blind: {failures} consecutive failures, last {e!r}", now)
                 print(f"{blind_halt.name} written: {blind_halt} - monitor cannot see the account")
                 return 1
+            named = {}   # re-authenticate the named accounts too
             try:
                 token = do.authenticate()
             except Exception as ae:  # noqa: BLE001

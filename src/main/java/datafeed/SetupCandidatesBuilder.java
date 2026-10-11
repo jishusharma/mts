@@ -30,6 +30,8 @@ public class SetupCandidatesBuilder {
         String direction;  // "short" or "long"
         double stop;
         double target;
+        double runnerTarget;  // next node beyond target, 0 if none
+        boolean valid;
         double grossRR;
         double netRR;
         boolean rrSanity;
@@ -43,8 +45,13 @@ public class SetupCandidatesBuilder {
 
     private static final double VALUE_AREA_PCT = 0.70;
     private static final double CONFLUENCE_DIST_PCT = 0.3; // 0.3%
-    private static final double MIN_STOP_PCT = 0.001; // v1.3.3 floor: stop must be >= 0.1% from zone
+    // MIN_STOP_PCT (0.1% stop floor, A04) removed per T3 ruling (T3_STOP_RULING_2026-10-01): NO-SOURCE.
     private static final int MAX_CANDIDATES = 3;
+
+    /** B066: trigger_ready only within 0.1% of price (a 150 pt / 0.19% zone is conditional); beyond the cap is ignore. */
+    static String tierFor(double distPct, double cap) {
+        return (distPct <= 0.1) ? "trigger_ready" : (distPct <= cap) ? "conditional" : "ignore";
+    }
 
     public static ArrayNode build(ObjectMapper mapper, ObjectNode root, Map<String, JsonNode> mtf, JsonNode klines1m) {
         ArrayNode candidatesArray = mapper.createArrayNode();
@@ -53,6 +60,9 @@ public class SetupCandidatesBuilder {
         }
 
         double currentPrice = root.get("current_price").asDouble();
+        final String sym = root.path("asset").asText(null);  // instrument for the per-market fee (null/unknown -> BTC fee, unchanged)
+        final double netRrFloor = NetRrFloor.read();  // single source: MyTradingSys/system/net_rr_floor.json; NaN (unreadable) fails every >= below
+        final double runnerMinDistancePct = RunnerMinDistance.read();  // MyTradingSys/system/runner_min_distance.json; NaN -> no runner
 
         // Step 1: State classification
         String state = classifyState(root);
@@ -68,7 +78,7 @@ public class SetupCandidatesBuilder {
         for (Zone z : zones) {
             double distPct = Math.abs(currentPrice - z.price) / currentPrice * 100.0;
             double cap = getDistanceCap(z.type);
-            String tier = (distPct <= 0.1) ? "trigger_ready" : (distPct <= cap) ? "conditional" : "ignore";
+            String tier = tierFor(distPct, cap);
             if (!"ignore".equals(tier)) {
                 filteredZones.add(z);
             }
@@ -97,7 +107,7 @@ public class SetupCandidatesBuilder {
             double zonePrice = c.zone.price;
             String swingTF = getSwingTF(c.zone.type);
             JsonNode structureNode = root.get("structure");
-            // RULE TOM-074/TOM-073/TOM-072 (stop beyond last swing / last liquidity); 0.2% fallback and 0.1% floor below are NO-SOURCE (A03/A04)
+            // RULE TOM-074/TOM-073/TOM-072 (stop beyond last swing / last liquidity); the former 0.2% fallback (A03) and 0.1% floor (A04) were NO-SOURCE and are removed per T3 ruling
             double swingHigh = 0, swingLow = 0;
             boolean tfStale = false;
             if (structureNode != null && structureNode.has(swingTF)) {
@@ -109,74 +119,33 @@ public class SetupCandidatesBuilder {
                 }
             }
 
+            // A03/A04 removed per T3 ruling: a stop exists only when a swing lies beyond the zone (matches the
+            // Python path, math_object_builder.py); otherwise the candidate is dropped (fail closed). No fallback, no widening.
             if ("short".equals(c.direction)) {
-                if (swingHigh > zonePrice) c.stop = swingHigh;
-                else c.stop = zonePrice * 1.002; // fallback 0.2% above
+                c.stop = swingHigh > zonePrice ? swingHigh : 0;
             } else { // long
-                if (swingLow < zonePrice) c.stop = swingLow;
-                else c.stop = zonePrice * 0.998; // fallback 0.2% below
+                c.stop = (swingLow > 0 && swingLow < zonePrice) ? swingLow : 0;
+            }
+            if (c.stop <= 0) {
+                continue; // c.valid stays false -> removed by removeIf below
             }
 
-            // v1.3.3 minimum stop-distance floor: reject noise-level stops.
-            // Rule 32 evidence: 100 of 750 candidates (2026-09-12/13) had |zone-stop|/zone < 0.05%.
-            double minStopDist = zonePrice * MIN_STOP_PCT;
-            if (Math.abs(zonePrice - c.stop) < minStopDist) {
-                c.stop = "short".equals(c.direction) ? zonePrice * 1.002 : zonePrice * 0.998;
-            }
-
-            // Target selection (v1.3.2: include VAL/VAH + prior_day high/low, with 2x stop filter)
-            // RULE TOM-018/TOM-102 (target = next high volume price/area: POCs, HVNs); VAL/VAH, prior-day and VWAP members and the 2.0-3.5R window are NO-SOURCE (A07-A10)
-            List<Double> targets = new ArrayList<>();
-            addIfPresent(root, "weekly_vp", "poc", targets);
-            addIfPresent(root, "daily_vp", "poc", targets);
-            addIfPresent(root, "intraday_4h_vp", "poc", targets);
-            addIfPresent(root, "prior_day", "poc", targets);
-            // HVNs (MarketDataSnapshot.buildVp "hvns") are target candidates; mirrors math_object_builder.py (4deae5e).
-            // Direction filter is the p < / > zonePrice test in the selection loop below, same as the levels above.
-            addHvns(root, "weekly_vp", targets);
-            addHvns(root, "daily_vp", targets);
-            addHvns(root, "intraday_4h_vp", targets);
-            if ("short".equals(c.direction)) {
-                addIfPresent(root, "weekly_vp", "val", targets);
-                addIfPresent(root, "daily_vp", "val", targets);
-                addIfPresent(root, "intraday_4h_vp", "val", targets);
-                addIfPresent(root, "prior_day", "val", targets);
-                addIfPresent(root, "prior_day", "low", targets);
-            } else {
-                addIfPresent(root, "weekly_vp", "vah", targets);
-                addIfPresent(root, "daily_vp", "vah", targets);
-                addIfPresent(root, "intraday_4h_vp", "vah", targets);
-                addIfPresent(root, "prior_day", "vah", targets);
-                addIfPresent(root, "prior_day", "high", targets);
-            }
-            double vwap = root.get("vwap").get("price").asDouble();
-            if ("short".equals(c.direction) && vwap < zonePrice) targets.add(vwap);
-            if ("long".equals(c.direction) && vwap > zonePrice) targets.add(vwap);
-
-            double targetRisk = Math.abs(zonePrice - c.stop);
-            double minTargetDistance = 2.0 * targetRisk;
-            double maxTargetDistance = 3.5 * targetRisk;
-            double bestTarget = 0;
-            if ("short".equals(c.direction)) {
-                double nearest = Double.MIN_VALUE;
-                for (double p : targets) {
-                    if (p < zonePrice) {
-                        double distance = zonePrice - p;
-                        if (distance >= minTargetDistance && distance <= maxTargetDistance && p > nearest) nearest = p;
-                    }
-                }
-                if (nearest != Double.MIN_VALUE) bestTarget = nearest;
-            } else {
-                double nearest = Double.MAX_VALUE;
-                for (double p : targets) {
-                    if (p > zonePrice) {
-                        double distance = p - zonePrice;
-                        if (distance >= minTargetDistance && distance <= maxTargetDistance && p < nearest) nearest = p;
-                    }
-                }
-                if (nearest != Double.MAX_VALUE) bestTarget = nearest;
-            }
-            c.target = bestTarget;
+            // Target selection. RULE TOM-018/TOM-102: target = the next high volume price/area (POCs, HVNs).
+            // Operator ruling 2026-10-03: the 2.0R-3.5R window, the VAL/VAH, prior-day high/low and VWAP members and the
+            // gross 1.5 R:R drop were NO-SOURCE (A07-A10) and are removed.
+            // Rule: nearest node in trade direction whose netRR >= NetRrFloor.read(); if none qualifies, the farthest node
+            // in direction (still reported, the verdict net_rr gate decides). No node in direction -> candidate dropped.
+            List<Double> nodes = new ArrayList<>();
+            addIfPresent(root, "weekly_vp", "poc", nodes);
+            addIfPresent(root, "daily_vp", "poc", nodes);
+            addIfPresent(root, "intraday_4h_vp", "poc", nodes);
+            addIfPresent(root, "prior_day", "poc", nodes);
+            addHvns(root, "weekly_vp", nodes);
+            addHvns(root, "daily_vp", nodes);
+            addHvns(root, "intraday_4h_vp", nodes);
+            double[] picked = pickTarget(nodes, zonePrice, c.stop, "short".equals(c.direction), netRrFloor, runnerMinDistancePct, sym);
+            c.target = picked[0];
+            c.runnerTarget = picked[1];
             if (c.target == 0) {
                 continue;
             }
@@ -186,21 +155,14 @@ public class SetupCandidatesBuilder {
                 double risk = Math.abs(zonePrice - c.stop);
                 double reward = Math.abs(c.target - zonePrice);
                 c.grossRR = reward / risk;
-                c.netRR = ExecutionMathConstants.netRR(c.grossRR);  // W2: was hardcoded * 0.75, see ExecutionMathConstants
-                c.rrSanity = c.grossRR >= 1.5;
-                c.netRrSanity = c.netRR >= 2.0;
-            } else {
-                c.rrSanity = false;
+                c.netRR = ExecutionMathConstants.netRR(sym, zonePrice, c.target, c.stop);  // B070: fee model, was gross * 0.75
+                c.rrSanity = c.grossRR >= 1.5;   // advisory output flag only; no longer drops the candidate
+                c.netRrSanity = c.netRR >= netRrFloor;
+                c.valid = true;
             }
-
-            if (!c.rrSanity) {
-                // remove candidate
-                continue;
-            }
-            // else keep
         }
-        // Remove invalid candidates
-        candidates.removeIf(c -> !c.rrSanity);
+        // Remove candidates with no usable node / stop (the verdict net_rr gate decides everything else)
+        candidates.removeIf(c -> !c.valid);
 
         // Step 8: Confluence detection
         Map<Zone, Integer> confluenceCount = computeConfluence(candidates);
@@ -246,11 +208,12 @@ public class SetupCandidatesBuilder {
             mathNode.put("distance_pct", Math.round(Math.abs(currentPrice - c.zone.price) / currentPrice * 10000.0) / 100.0);
             mathNode.put("distance_cap", getDistanceCap(c.zone.type));
             double dist = Math.abs(currentPrice - c.zone.price) / currentPrice * 100;
-            mathNode.put("tier", dist <= 0.1 ? "trigger_ready" : "conditional");
+            mathNode.put("tier", tierFor(dist, getDistanceCap(c.zone.type)));
             double distFromZone = Math.abs(currentPrice - c.zone.price) / c.zone.price;
 mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.zone.price ? "above" : "below"));
             mathNode.put("stop", Math.round(c.stop * 100.0) / 100.0);
             mathNode.put("target", Math.round(c.target * 100.0) / 100.0);
+            mathNode.put("runner_target", Math.round(c.runnerTarget * 100.0) / 100.0);
             mathNode.put("gross_rr", Math.round(c.grossRR * 100.0) / 100.0);
             mathNode.put("net_rr", Math.round(c.netRR * 100.0) / 100.0);
             mathNode.put("rr_sanity", c.rrSanity);
@@ -493,6 +456,44 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         return "15m"; // default
     }
 
+    /** pickTarget with no runner minimum distance (any strictly farther node is the runner). */
+    static double[] pickTarget(List<Double> nodes, double zonePrice, double stop, boolean isShort, double netRrFloor) {
+        return pickTarget(nodes, zonePrice, stop, isShort, netRrFloor, 0.0);
+    }
+
+    /**
+     * Target pick from volume nodes (POC/HVN). Returns {target, runner_target}; {0,0} when no node lies in the trade
+     * direction. Nearest node first; the first whose netRR >= floor wins, else the farthest node. runner = the next node
+     * beyond the target whose distance from the target is at least runnerMinDistancePct percent of the target price
+     * (nodes closer than that are skipped), 0 if none. NaN floor never qualifies (fail closed -> farthest); NaN
+     * runnerMinDistancePct never qualifies (fail closed -> no runner).
+     */
+    static double[] pickTarget(List<Double> nodes, double zonePrice, double stop, boolean isShort, double netRrFloor,
+                               double runnerMinDistancePct) {
+        return pickTarget(nodes, zonePrice, stop, isShort, netRrFloor, runnerMinDistancePct, null);
+    }
+
+    static double[] pickTarget(List<Double> nodes, double zonePrice, double stop, boolean isShort, double netRrFloor,
+                               double runnerMinDistancePct, String symbol) {
+        List<Double> dir = new ArrayList<>();
+        for (double p : nodes) {
+            if (isShort ? p < zonePrice : p > zonePrice) dir.add(p);
+        }
+        if (dir.isEmpty()) return new double[]{0, 0};
+        dir.sort((x, y) -> Double.compare(Math.abs(x - zonePrice), Math.abs(y - zonePrice)));
+        int idx = dir.size() - 1;  // fallback: farthest
+        for (int i = 0; i < dir.size(); i++) {
+            if (ExecutionMathConstants.netRR(symbol, zonePrice, dir.get(i), stop) >= netRrFloor) { idx = i; break; }
+        }
+        double target = dir.get(idx);
+        double runner = 0;
+        for (int i = idx + 1; i < dir.size(); i++) {
+            if (Math.abs(dir.get(i) - zonePrice) > Math.abs(target - zonePrice)
+                    && Math.abs(dir.get(i) - target) / target * 100.0 >= runnerMinDistancePct) { runner = dir.get(i); break; }
+        }
+        return new double[]{target, runner};
+    }
+
     private static void addIfPresent(ObjectNode root, String objName, String field, List<Double> list) {
         JsonNode obj = root.get(objName);
         if (obj != null && obj.has(field) && !obj.get(field).isNull()) {
@@ -553,7 +554,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         double speedAtrRatio = 0;
         int speedConsecutiveLarge = 0;
         boolean cvdAligned = false;
-        double bookImbalance = 0;
+        Double bookImbalance = null;   // null = no order-book data (historical/BT); never 0.0 on that path
         // Proximity fields (0.1% threshold)
         double rejectionWickProximityPct = 0.0;
         double rejectionWickActualLevel = 0.0;
@@ -575,15 +576,11 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
                 if (favoursTrade) count++;
             }
             if (deltaFlipDetected && deltaFlipAtZone) count++;
-            if (volumeSpikeDetected && volumeSpikeAtLevel) count++;
+            // B144: volume spike (2.0x over 240 bars) has no source (operator D17): not counted, still emitted in the proof JSON.
             // D4: speed proxy no longer counted toward proof (still emitted in the proof JSON).
             if (cvdAligned) count++;
-            if (bookImbalance != 0.0) {
-                // D4: count book imbalance only when it favours the trade direction
-                // (long: bid-heavy > 1.5; short: ask-heavy < 0.67).
-                boolean favoursTrade = "long".equals(direction) ? bookImbalance > 1.5 : bookImbalance < 0.67;
-                if (favoursTrade) count++;
-            }
+            // B131: book_imbalance is not counted (no Tom source; ask-heavy side is far more common, so it
+            // gave every short +1 and every long +0). Still emitted in the proof JSON.
             return count;
         }
 
@@ -636,7 +633,8 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
                 speed.put("proximity_pct", Math.round(speedProximityPct * 10000.0) / 10000.0);
             }
             proof.put("cvd_aligned", cvdAligned);
-            proof.put("book_imbalance", Math.round(bookImbalance * 100.0) / 100.0);
+            if (bookImbalance == null) proof.putNull("book_imbalance");
+            else proof.put("book_imbalance", Math.round(bookImbalance * 100.0) / 100.0);
             return proof;
         }
     }
@@ -823,9 +821,13 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
 
         // 9.7 cvd_aligned
         String mainCvdSlope = root.get("cvd").get("slope").asText();
-        double netDelta = root.get("trade_flow").get("net_delta_1m").asDouble();
+        JsonNode netDeltaNode = root.get("trade_flow").get("net_delta_1m");
+        boolean netDeltaKnown = netDeltaNode != null && !netDeltaNode.isNull();   // historical mode: null, no tape
+        double netDelta = netDeltaKnown ? netDeltaNode.asDouble() : 0.0;
         boolean cvdAligned = false;
-        if ("rising".equals(mainCvdSlope) && netDelta > 0) cvdAligned = true;
+        if (!netDeltaKnown) {
+            // no trade flow: cannot confirm alignment, leave false
+        } else if ("rising".equals(mainCvdSlope) && netDelta > 0) cvdAligned = true;
         else if ("falling".equals(mainCvdSlope) && netDelta < 0) cvdAligned = true;
         else if ("flat".equals(mainCvdSlope) || mainCvdSlope.isEmpty()) {
             // tiebreaker: cvd_recent.slope_1h
@@ -836,7 +838,8 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         res.cvdAligned = cvdAligned;
 
         // 9.8 book_imbalance
-        res.bookImbalance = root.get("order_book_depth").get("bid_ask_ratio").asDouble();
+        JsonNode ratioNode = root.get("order_book_depth").get("bid_ask_ratio");
+        res.bookImbalance = (ratioNode == null || ratioNode.isNull()) ? null : ratioNode.asDouble();
 
         return res;
     }

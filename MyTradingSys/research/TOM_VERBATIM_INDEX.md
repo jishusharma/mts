@@ -226,4 +226,60 @@
 | TOM-213 | YmygDgtoxO8 | MIDDLE | "Because here we have accepted significantly lower prices. The major market participants have shifted their range from above to below. Now for example some news comes out the mar..." | zone_identification_rules.md |
 
 | TOM-214 | -dMWA_bbm3o | MIDDLE | "What information does this double distribution give me? I need to know that before the week starts." | compiled_engine.md |
+| TOM-215 | lO-Iptd29t4 | MIDDLE | "Gaps are nothing more than the market closed here and the next day it opened here. That means we have a price gap here." | gap_rules.md |
+| TOM-216 | 96iPFDpXEcU | BEGIN | "A price gap that usually occurs during after hours trading. But there are also price gaps that happen intraday." | gap_rules.md |
+| TOM-217 | lO-Iptd29t4 | MIDDLE | "And gaps, such price gaps, yes, they always occur exactly when big players, for whatever reason, do their business pre-market, after hours, in the middle of the night, or in o..." | gap_rules.md |
+| TOM-218 | Of_wlv3xaZo | END | "if you examine the gaps only from the cash session, so 10:00 p.m. and a bit, then you'll see that this close is much much more important than for example, a gap close from mid..." | gap_rules.md |
+| TOM-219 | Of_wlv3xaZo | END | "Even if the markets have gapped like crazy, most of the volume ran in the cash session, and that's what interests market participants." | gap_rules.md |
+| TOM-220 | lO-Iptd29t4 | MIDDLE | "I know that a lot of people always try to program things like this and so on. Please only do this during the main trading hours." | gap_rules.md |
+| TOM-221 | lO-Iptd29t4 | MIDDLE | "So, stop with this nonsense that you can always assume gaps will be closed." | gap_rules.md |
+| TOM-222 | 3JqMyzE8jIQ | BEGIN | "It's much more important to know when do these price gaps cause something to happen and what makes them get filled. Meaning, when does the market move back to close them and w..." | gap_rules.md |
+| TOM-223 | 96iPFDpXEcU | BEGIN | "Now, there are two ways to get to the bottom of this. One way is to check what fundamental data is behind it. Yes, that is incredibly important. And the second is how can I ev..." | gap_rules.md |
+| TOM-224 | YopZ5ZDmMFw | MIDDLE | "That means as a first step I determine for myself whether the gap makes sense or is it a gap that logically doesn't make sense to me." | gap_rules.md |
+| TOM-225 | 96iPFDpXEcU | BEGIN | "On one hand, the market might open above or it might open within the previous day's range." | gap_rules.md |
+| TOM-226 | 96iPFDpXEcU | BEGIN | "since the market is within fair prices, there's simply, technically speaking, the 80% rule where the market trades within value. So, there's a high probability the market fill..." | gap_rules.md |
+| TOM-227 | 96iPFDpXEcU | BEGIN | "The second scenario is we have a gap above the entire day. And when a gap like that occurs, it's very important to look at one thing. How is the liquidity up here? What is the..." | gap_rules.md |
+| TOM-228 | 96iPFDpXEcU | BEGIN | "Because at the very moment they become substantial, it means that the market is accepting prices up here. And what do we have then? Then, according to my PBD logic, we have a ..." | gap_rules.md |
+| TOM-229 | 96iPFDpXEcU | BEGIN | "And then you just have to see in which direction is the market breaking out now." | gap_rules.md |
+| TOM-230 | lO-Iptd29t4 | END | "Of course, there are also gaps called breakaway gaps. That means nothing other than the market skipping over a previous price range." | gap_rules.md |
+| TOM-231 | lO-Iptd29t4 | END | "If you have such a breakaway gap, assume that this gap here will not be closed. It will take a very very very very long time for that to happen." | gap_rules.md |
+| TOM-232 | 96iPFDpXEcU | MIDDLE | "It could be a breakaway gap, for example. But you don't have to make everything so mega complex and complicated. Instead, you can just think about it. Is this gap substantial ..." | gap_rules.md |
+| TOM-233 | 96iPFDpXEcU | MIDDLE | "If it has to do with economic news that is substantial, the gap will likely not be closed." | gap_rules.md |
+| TOM-234 | 96iPFDpXEcU | MIDDLE | "If, for example, a large gap occurs in the DAX future now, especially over the weekend, and the market is very far away, and the story behind it has to do with inflationary bu..." | gap_rules.md |
+| TOM-235 | 96iPFDpXEcU | MIDDLE | "But, and this is a really cool thing, if this gap has to do with political stock markets, and then I don't care about the direction, the probability is high that the market wi..." | gap_rules.md |
+| TOM-236 | 96iPFDpXEcU | MIDDLE | "Usually it doesn't happen on the same day, but one day later. So, we had day one here. We had day two here, where the gap was created, and now comes day three." | gap_rules.md |
+| TOM-237 | 96iPFDpXEcU | END | "then you'll see often on that day the market goes and closes the gap." | gap_rules.md |
+| TOM-238 | 96iPFDpXEcU | MIDDLE | "So, you have to know which product has which internal characteristics." | gap_rules.md |
+| TOM-239 | 96iPFDpXEcU | MIDDLE | "The hedgers, that is, those who carry out the hedging transactions, they have to hedge themselves." | gap_rules.md |
+| TOM-240 | 96iPFDpXEcU | MIDDLE | "You can forget about such markets closing such a price gap extremely quickly." | gap_rules.md |
+| TOM-241 | YopZ5ZDmMFw | MIDDLE | "The second thing I do now of course is look at how the market behaves at the opening of trading." | gap_rules.md |
+| TOM-242 | YopZ5ZDmMFw | MIDDLE | "It tells me that the people who speculated down here on gap closes were initially wrong. It also gives me further information namely that I see supply and demand have shifted ..." | gap_rules.md |
+| TOM-243 | YopZ5ZDmMFw | MIDDLE | "And with that, I know that market participants are accepting these higher prices because they are spending a lot of time here." | gap_rules.md |
+| TOM-244 | YopZ5ZDmMFw | END | "Then I look at the next time frame on the daily chart. What does the whole thing look like? How was the market opening? Where was my closing price? Is there a high probability..." | gap_rules.md |
+| TOM-245 | YopZ5ZDmMFw | END | "Like here when I see that strength is simply coming into the market after the market went down at the opening then I have an important piece of information." | gap_rules.md |
+| TOM-246 | 96iPFDpXEcU | END | "When huge gaps occur, it's often the case, if they're really huge, that the market is a bit lethargic afterwards. That's because the market participants have to redefine thems..." | gap_rules.md |
+| TOM-247 | 96iPFDpXEcU | END | "And now you go and take the space area, and look at where the balance is. You transfer that over here and then you have a P structure. And this structure, this gap structure, ..." | gap_rules.md |
+| TOM-248 | 96iPFDpXEcU | END | "Now comes the break upwards and the liquidity decreases. What does that mean? It means that many market participants no longer have any interest up there." | gap_rules.md |
+| TOM-249 | 96iPFDpXEcU | END | "Now the market goes back into a range and eventually goes below the range. And if it goes below the range and liquidity increases again, then you can reasonably expect that th..." | gap_rules.md |
+| TOM-250 | 96iPFDpXEcU | END | "But if you just wait a moment until the liquidity goes down and then increases again, then the probability is much higher that you can trade this gap close with a great risk r..." | gap_rules.md |
+| TOM-251 | lO-Iptd29t4 | END | "if a quick move happens after the news and then a range forms, please be careful that these gaps get closed only when the market leaves this range again and also signals that ..." | gap_rules.md |
+| TOM-252 | lO-Iptd29t4 | MIDDLE | "And we already know the PBD logic, and then you can already see, as long as the market holds this range, you shouldn't expect this gap to be closed." | gap_rules.md |
+| TOM-253 | lO-Iptd29t4 | END | "Now the market might briefly move above it again, but doesn't close the gap, and the liquidity returns. Then you are allowed to trade in the direction of the trend here using ..." | gap_rules.md |
+| TOM-254 | lO-Iptd29t4 | END | "These price gaps were closed in well over 95% of cases. In the meantime, liquidity has dried up. So, stop using the strategy of looking for these intraday price gaps in the fo..." | gap_rules.md |
+| TOM-255 | lO-Iptd29t4 | END | "If the market shoots up and leaves price gaps behind, those gaps often never get filled." | gap_rules.md |
+| TOM-256 | l8RZrBfzvp4 | BEGIN | "That means the market was completely outside of the previous day's range." | gap_rules.md |
+| TOM-257 | l8RZrBfzvp4 | MIDDLE | "And then for me it's always like this. I say the probability that the market returns to balance, especially if there's no fundamental sustainable story." | gap_rules.md |
+| TOM-258 | l8RZrBfzvp4 | END | "The story is the probability of a gap close is there. The exaggeration has no fundamental origin that is sustainable." | gap_rules.md |
+| TOM-259 | l8RZrBfzvp4 | MIDDLE | "Second, what this does is it provides me with clear proof that all of the buyers who entered during the pre-session, those participants who came in before the official market ..." | gap_rules.md |
+| TOM-260 | l8RZrBfzvp4 | MIDDLE | "Look, if the market had such a zone and has already provided me with proof that weakness can occur, then I have a great combination and that means at this point at the latest,..." | gap_rules.md |
+| TOM-261 | l8RZrBfzvp4 | MIDDLE | "And then you know, there were strong sellers here. This means your stop loss is definitely in a great position here because if the market were to go above that, there is a hig..." | gap_rules.md |
+| TOM-262 | l8RZrBfzvp4 | MIDDLE | "That is why I said I would rather set my take profit a few points away from this range because often it is exactly the case that such levels that everyone sees, remember this ..." | gap_rules.md |
+| TOM-263 | l8RZrBfzvp4 | END | "And it doesn't always have to work directly on the first trade because especially in the phases where the market starts at the opening, it is often the case that a lot of game..." | gap_rules.md |
+| TOM-264 | DVZVE9rXGtU | BEGIN | "And you can trade great gap strategies there off exchange, for example, when you see that at the closing price they've pushed another 60% of their total volume into the market..." | gap_rules.md |
+| TOM-265 | DVZVE9rXGtU | MIDDLE | "Most of the time in the closing auction, if another extreme is reached there, you'll see a gap down at the open the next day and then things start to reverse. And that's when ..." | gap_rules.md |
+| TOM-266 | DVZVE9rXGtU | MIDDLE | "So, if the market closes really strong and the next day it goes back into the red, then it just makes sense to take a contrarian position." | gap_rules.md |
+| TOM-267 | ujedEcmvBMk | MIDDLE | "What's exciting for me is that the market simply showed me a huge intraday price gap during main trading hours. And those are always nice areas that I like to define as target..." | gap_rules.md |
+| TOM-268 | ujedEcmvBMk | MIDDLE | "Whenever the last volumes before such a price range are not traded, caution is advised, which prompted me to first reduce my position and say, well, what you have, you have." | gap_rules.md |
+| TOM-269 | 3JqMyzE8jIQ | END | "There was never any trading here. So, is this price area interesting for us or is it just boring because there probably won't be any support there?" | gap_rules.md |
+| TOM-270 | 3JqMyzE8jIQ | END | "And now look over here and you'll see I'm talking exactly about this price area where in this picture the market during cash hours has no substantial support zone at all. It m..." | gap_rules.md |
 # END

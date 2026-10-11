@@ -14,7 +14,7 @@ setup3_failed_msb_reversal) since they all share the same signal contract.
 from MyTradingSys.backtest.bt.bt_engine import simulate_trade
 
 
-def signals_to_trades(signals: list, bars: list, mark_bars: list = None, funding: list = None, taker_fee: float = 0.0005, maker_fee: float = 0.0, max_bars: int = 1440, stop_first: bool = True) -> list:
+def signals_to_trades(signals: list, bars: list, mark_bars: list = None, funding: list = None, taker_fee: float = 0.0005, maker_fee: float = 0.0, max_bars: int = 1440, stop_first: bool = True, target_through: float = 0.0) -> list:
     """
     Convert cc_setups signals into bt_engine trade simulations.
     
@@ -46,6 +46,7 @@ def signals_to_trades(signals: list, bars: list, mark_bars: list = None, funding
             maker_fee=maker_fee,
             max_bars=max_bars,
             stop_first=stop_first,
+            target_through=target_through,
             **call_kwargs
         )
         results.append({"signal_meta": signal.get("meta", {}), "trade_result": result})

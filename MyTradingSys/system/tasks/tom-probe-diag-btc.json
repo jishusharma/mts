@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-10-10T19:36:24Z",
+  "commands": [],
+  "created": "2026-10-10T18:55:33Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md with the MFE table, session table, selection table (n and gross R each) and one GO/SKIP line per axis.",
+  "from_inbox": "",
+  "goal": "Descriptive test of H2/H3/H4 on the existing Tom backtest rows (hist+dev only): can selection, management or session timing matter at all? Decides which arms of PROBE_PLAN section 3 are worth running.",
+  "id": "tom-probe-diag-btc",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-11 (operator chat)",
+  "refs": [],
+  "result": "DIAG_BTC.md: MFE>=1R before stop 40.0% (n=2699); S SKIP, Q SKIP, M GO",
+  "scope_in": [
+    "F:/MTS/data/tom_bt_2026-10-07/ (else tom_bt)",
+    "MyTradingSys/backtest/tom_bt.py",
+    "MyTradingSys/research/tom_transfer_2026-10-11/PROBE_PLAN.md"
+  ],
+  "scope_out": [
+    "holdout 2026-06-26.. (burned)",
+    "any rule change",
+    "new arms runs"
+  ],
+  "size": "M",
+  "sources": [
+    "operator chat 2026-10-11: queue DAX recall, gap rules, DAX backtest in that order; probe selection/management/session with options flagged up front",
+    "MyTradingSys/research/tom_transfer_2026-10-11/PROBE_PLAN.md section 3"
+  ],
+  "state": "done",
+  "steps": [
+    "Per filled trade: MFE and MAE in R before exit and over 4 h; share with MFE >= 1, 2, 3 R before the stop.",
+    "Gross R by session start (Asia 09:00 JST, DAX 09:00 CET, London 08:00, US 09:30 ET, US close 16:00 ET; DST-correct) and weekday/weekend.",
+    "First signal per session vs the rest; gross R by proof count.",
+    "Write MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md with a GO/SKIP line for each axis S, Q, M."
+  ],
+  "taken": "2026-10-10T19:27:42Z",
+  "tests": "test_probe_diag.py: a hand-built 10-bar long trade with known high/low gives MFE 2.5 R and MAE 0.4 R computed by hand; a 13:30Z July bar maps to US open, a 14:30Z January bar too (fails before the module exists).",
+  "title": "Probe diagnostics on BTC Tom rows: MFE/MAE, session, first-of-session"
+}

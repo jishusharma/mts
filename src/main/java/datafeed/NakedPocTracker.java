@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +30,14 @@ public class NakedPocTracker {
     private final Path filePath;
 
     public NakedPocTracker(String symbol) {
+        // mts.naked_poc_dir lets the Maven test run write elsewhere (surefire sets it), never into runtime_data.
+        this(symbol, Paths.get(System.getProperty("mts.naked_poc_dir", "runtime_data/naked_pocs"), symbol + "_naked_pocs.json"));
+    }
+
+    NakedPocTracker(String symbol, Path filePath) {
         this.symbol = symbol;
         this.mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-        this.filePath = Paths.get("runtime_data", "naked_pocs", symbol + "_naked_pocs.json");
+        this.filePath = filePath;
     }
 
     public static class PocEntry {
@@ -76,7 +82,7 @@ public class NakedPocTracker {
     public List<PocEntry> checkRevisit(double currentPrice) throws IOException {
         List<PocEntry> entries = loadEntries();
         List<PocEntry> revisiting = new ArrayList<>();
-        String today = LocalDate.now().toString();
+        String today = LocalDate.now(ZoneOffset.UTC).toString();
 
         for (PocEntry e : entries) {
             if (e.visited || e.date.equals(today)) continue;
@@ -94,24 +100,59 @@ public class NakedPocTracker {
      * Record today's POC. If today already exists, update it.
      */
     public void recordTodayPoc(double poc) throws IOException {
+        recordPoc(LocalDate.now(ZoneOffset.UTC), poc);
+    }
+
+    /**
+     * F-BT-14: record the POC of one finished UTC day (upsert by date, a visited flag is kept). A non-finite
+     * or non-positive POC is ignored so an empty profile never creates a zone at price 0.
+     */
+    public void recordPoc(LocalDate day, double poc) throws IOException {
+        if (!(poc > 0) || Double.isInfinite(poc)) return;
         List<PocEntry> entries = loadEntries();
-        String today = LocalDate.now().toString();
+        String key = day.toString();
         boolean found = false;
         for (PocEntry e : entries) {
-            if (e.date.equals(today)) {
+            if (e.date.equals(key)) {
                 e.poc = poc;
                 found = true;
                 break;
             }
         }
         if (!found) {
-            entries.add(new PocEntry(today, poc, false));
+            entries.add(new PocEntry(key, poc, false));
+            entries.sort((a, b) -> a.date.compareTo(b.date));
         }
         // Keep last 90 days only
         if (entries.size() > 90) {
             entries = entries.subList(entries.size() - 90, entries.size());
         }
         saveEntries(entries);
+    }
+
+    /**
+     * F-BT-14: mark an unvisited POC visited when any 1m bar after its day traded through it
+     * (bar low <= poc <= bar high), so wicks between two snapshots are not missed.
+     * Bars are Binance kline rows [openTime, o, h, l, c, v, ...]. A POC is only checked against bars that
+     * opened after its own day ended. Returns the entries newly marked.
+     */
+    public List<PocEntry> markVisitedByBars(Iterable<JsonNode> bars, LocalDate todayUtc) throws IOException {
+        List<PocEntry> entries = loadEntries();
+        List<PocEntry> hit = new ArrayList<>();
+        for (PocEntry e : entries) {
+            if (e.visited || e.date.compareTo(todayUtc.toString()) >= 0) continue;
+            long after = LocalDate.parse(e.date).plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli();
+            for (JsonNode b : bars) {
+                if (b.get(0).asLong() < after) continue;
+                if (b.get(3).asDouble() <= e.poc && e.poc <= b.get(2).asDouble()) {
+                    e.visited = true;
+                    hit.add(e);
+                    break;
+                }
+            }
+        }
+        if (!hit.isEmpty()) saveEntries(entries);
+        return hit;
     }
 
     public ObjectNode getNakedPocsNode() throws IOException {

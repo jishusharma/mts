@@ -57,5 +57,46 @@ class PlanRefusalsTests(unittest.TestCase):
         self.assertTrue(mpc.plan_refusals(compiled(50), None, "weird", 50.0))
 
 
+
+class CalibrationRefusalsTests(unittest.TestCase):
+    """B150: the testnet calibration (empty trade_blocklist, parked list, size overrides) must not carry onto mainnet."""
+    CALIBRATED = {"trade_blocklist": [], "trade_blocklist_parked": {"layer:session:": "T055 C2 FAIL"},
+                  "size_overrides": {"layer:rsi:rsi_events:1h": {"size_usd": 250}}}
+
+    def test_testnet_never_refuses(self):
+        self.assertEqual(mpc.calibration_refusals(self.CALIBRATED, "test"), [])
+        self.assertEqual(mpc.calibration_refusals(None, "test"), [])
+
+    def test_mainnet_refuses_parked_blocklist_not_restored(self):
+        r = mpc.calibration_refusals({"trade_blocklist": [], "trade_blocklist_parked": {"layer:x:": "why"}}, "mainnet")
+        self.assertTrue(any("trade_blocklist_parked" in x for x in r), r)
+
+    def test_mainnet_refuses_size_overrides(self):
+        r = mpc.calibration_refusals({"trade_blocklist": ["a"], "trade_blocklist_parked": {}, "size_overrides": {"a": {}}}, "mainnet")
+        self.assertTrue(any("size_overrides" in x for x in r), r)
+
+    def test_mainnet_accepts_restored_blocklist_and_no_overrides(self):
+        cfg = {"trade_blocklist": ["layer:x:"], "trade_blocklist_parked": {}, "size_overrides": {}}
+        self.assertEqual(mpc.calibration_refusals(cfg, "mainnet"), [])
+        self.assertEqual(mpc.calibration_refusals({"trade_blocklist": [], "trade_blocklist_parked": {}}, "mainnet"), [])
+
+    def test_mainnet_unreadable_config_fails_closed(self):
+        for bad in (None, [], "x", 3):
+            self.assertTrue(mpc.calibration_refusals(bad, "mainnet"), bad)
+
+    def test_unknown_env_is_mainnet(self):
+        self.assertTrue(mpc.calibration_refusals(self.CALIBRATED, "prod"))
+
+    def test_shipped_testnet_config_is_refused_on_mainnet_until_restored(self):
+        import json
+        import executor
+        cfg = json.loads(executor.AUTO_TRADER_CONFIG.read_text(encoding="utf-8-sig"))
+        self.assertTrue(mpc.calibration_refusals(cfg, "mainnet"))
+        self.assertEqual(mpc.calibration_refusals(cfg, "test"), [])
+
+    def test_executor_mainnet_refusals_reads_the_shipped_config(self):
+        import executor
+        self.assertTrue(executor.mainnet_config_refusals())
+
 if __name__ == "__main__":
     unittest.main()

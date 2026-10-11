@@ -1,0 +1,15 @@
+{
+  "done_when": "RESULT.md table: speaker, total, extracted v2, not extracted (ids)",
+  "finished": "2026-10-09T21:37:05Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NUC",
+  "id": "20261009-181324-transcript-inventory-tom-v2-done-vs-tota",
+  "need": "Count transcripts per speaker in the transcript inventory (find the inventory file with grep -ril inventory MyTradingSys/methodology MyTradingSys/system) and how many have a v2 extract that passes scripts/dev/verify_extract_quotes.py. List the unextracted ones per speaker with video id. Write research/transcript_inventory_2026-10-09/RESULT.md. Do NOT download anything.",
+  "posted": "2026-10-09T18:13:24Z",
+  "result": "Tom 84 raw, 11 v2 extracted all gate PASS, 26 not extracted; Fabio 8/0, Malkan 4/0, guests 13/0; all 109/11. Inventory regenerated. RESULT.md at MyTradingSys/research/transcript_inventory_2026-10-09/RESULT.md.",
+  "status": "done",
+  "taken": "2026-10-09T21:35:20Z",
+  "taken_by": "JIS-NUC",
+  "target": "DSA",
+  "title": "Transcript inventory: Tom v2 done vs total, others from inventory"
+}

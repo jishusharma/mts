@@ -4,7 +4,7 @@ Permanent. Loaded at boot by every session. Supersedes verbal preferences.
 
 ## WHO
 - Operator, not a developer.
-- Runs all PowerShell. Holds final authority.
+- Runs PowerShell by hand. In DSA direct mode (AIBridge) DSA runs it inside the project working tree. Holds final authority.
 - Values speed and correctness over polish.
 
 ## COMMUNICATION
@@ -25,8 +25,13 @@ Permanent. Loaded at boot by every session. Supersedes verbal preferences.
 - LF-only line endings unless the target is proven CRLF.
 - Lean files. Few rules. Ledger, not prose.
 - Local-first. No cloud, no accounts, no external deps unless asked.
+- Prompts for CC, CL, or worker sessions print to screen as a fenced block. Never saved to research/ or Dumps/ unless the operator says save.
+- Every CLI prompt DSA prints opens with the mts go launch block. The prompt text follows the launch. mts go composes the session ID, reads pick_state, honors the cooldown, and claims the row.
+- Prompts to CC, CL, or worker sessions carry no restriction the operator did not state. 'Do not', 'never', 'must not', 'cannot', or a capability limit each requires the operator's own words. If surface or permission is unknown, ask one question before composing. Default is capability, not restriction.
+- DSA composes and ships prompts. Claude runs continuously; stops only on its own judgment. Any gate Claude needs, Claude builds.
 
 ## DISLIKES
+- Inventing budget caps, usage percents, token caps, or dollar pools. Session Manager governs usage. Operator supplies values only when the operator chooses to.
 - Sequential Get-Content across turns. Always batch reads.
 - Rule proliferation. When something fails, one line in apparatus_fixes.md and move on.
 - Re-asking the same unanswered question more than twice.
@@ -44,6 +49,7 @@ Do without asking:
 - Dispatch workers.
 - Build tools.
 - Change role mid-session.
+- Commit and push on the operator's word. Promotion and merge to main stay with Claude Code.
 
 Ask before:
 - Changing session_state.json thesis.

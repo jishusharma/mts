@@ -20,6 +20,9 @@ from typing import List, Dict, Any, Callable, Set
 DEFAULT_HB_DIR = Path(__file__).resolve().parent / "pm_heartbeats"
 DEFAULT_LABEL = "default"
 PLAN_ID_RE = re.compile(r"[A-Za-z0-9_.-]{1,80}")
+# B148 part 5, operator D10 2026-10-09: a heartbeat not refreshed for this long means the manager is dead,
+# even if Windows has handed its pid to another process. A safety limit, not a trader parameter.
+DEFAULT_MAX_AGE_S = 600
 
 
 def hb_path(plan_id: str, hb_dir=None) -> Path:
@@ -44,7 +47,7 @@ def hb_path(plan_id: str, hb_dir=None) -> Path:
     return Path(hb_dir) / f"{plan_id}.json"
 
 
-def write_heartbeat(plan_id: str, account=None, pid=None, hb_dir=None, now=None) -> Path:
+def write_heartbeat(plan_id: str, account=None, pid=None, hb_dir=None, now=None, started_utc=None) -> Path:
     """Write a heartbeat file for the given plan.
     
     Args:
@@ -74,7 +77,8 @@ def write_heartbeat(plan_id: str, account=None, pid=None, hb_dir=None, now=None)
         "plan_id": plan_id,
         "account": account,
         "pid": pid,
-        "started_utc": now.isoformat()
+        "started_utc": started_utc or now.isoformat(),
+        "beat_utc": now.isoformat()
     }
     
     # Write atomically using a temporary file
@@ -88,6 +92,23 @@ def write_heartbeat(plan_id: str, account=None, pid=None, hb_dir=None, now=None)
     os.replace(temp_path, path)
     
     return path
+
+
+def beat(plan_id: str, hb_dir=None, now=None) -> bool:
+    """Refresh beat_utc of an existing heartbeat (account, pid and started_utc are kept).
+
+    Returns False and writes nothing if the file is gone or unreadable: a refresh never resurrects a heartbeat
+    that remove_heartbeat() has deleted.
+    """
+    try:
+        data = json.loads(hb_path(plan_id, hb_dir).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return False
+    if not isinstance(data, dict):
+        return False
+    write_heartbeat(plan_id, account=data.get("account"), pid=data.get("pid"), hb_dir=hb_dir, now=now,
+                    started_utc=data.get("started_utc"))
+    return True
 
 
 def remove_heartbeat(plan_id: str, hb_dir=None) -> bool:
@@ -180,12 +201,29 @@ def pid_alive(pid) -> bool:
         return True
 
 
-def live_accounts(hb_dir=None, alive=None) -> Set[str]:
+def _age_seconds(heartbeat, now):
+    """Seconds since beat_utc, or None when it cannot be known (legacy file without the field, unparseable,
+    naive time): unknown age fails open, so only a positively stale beat can condemn a manager."""
+    raw = heartbeat.get("beat_utc")
+    if not isinstance(raw, str):
+        return None
+    try:
+        t = datetime.datetime.fromisoformat(raw)
+    except ValueError:
+        return None
+    if t.tzinfo is None:
+        return None
+    return (now - t).total_seconds()
+
+
+def live_accounts(hb_dir=None, alive=None, max_age_s=DEFAULT_MAX_AGE_S, now=None) -> Set[str]:
     """Get the set of accounts with live heartbeat processes.
     
     Args:
         hb_dir: The directory to read heartbeat files from. Defaults to DEFAULT_HB_DIR
         alive: A function that checks if a PID is alive. Defaults to pid_alive
+        max_age_s: a heartbeat whose beat_utc is older than this is dead whatever the pid says (None = off)
+        now: current time for the age rule (defaults to UTC now)
         
     Returns:
         A set of account names with active heartbeat processes
@@ -197,9 +235,14 @@ def live_accounts(hb_dir=None, alive=None) -> Set[str]:
         alive = pid_alive
     
     result = set()
+    if now is None:
+        now = datetime.datetime.now(datetime.timezone.utc)
     
     for heartbeat in read_heartbeats(hb_dir):
         pid = heartbeat.get("pid")
+        age = _age_seconds(heartbeat, now) if max_age_s is not None else None
+        if age is not None and age > max_age_s:
+            continue
         
         if alive(pid):
             account = heartbeat.get("account")

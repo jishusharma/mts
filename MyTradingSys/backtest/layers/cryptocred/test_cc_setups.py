@@ -154,6 +154,72 @@ class TestSetup2FibPullback(unittest.TestCase, _PatchMixin):
         self.assertEqual(sig["meta"]["msb_i"], 20)
 
 
+class TestSetup2FibBlowThrough(unittest.TestCase, _PatchMixin):
+    """B151: a resting limit at the zone edge fills when a bar blows through the whole zone in one bar.
+    Dropping those signals keeps only the pullbacks that stopped inside the zone (selection bias)."""
+
+    def _patch_bull(self):
+        swings = [
+            {"i": 0, "t": 0, "price": 10, "kind": "low", "confirmed_i": 0},
+            {"i": 1, "t": 1, "price": 60, "kind": "low", "confirmed_i": 1},
+            {"i": 2, "t": 2, "price": 40, "kind": "high", "confirmed_i": 2},
+            {"i": 3, "t": 3, "price": 100, "kind": "high", "confirmed_i": 3},
+        ]
+        events = [{"direction": "bull", "broken_level": 100, "broken_swing_i": 3, "confirm_i": 3, "i": 7}]
+        self.patch(find_swings=lambda *a, **k: swings, classify_msb=lambda *a, **k: events)
+
+    def test_bull_bar_through_the_whole_zone_still_signals(self):
+        self._patch_bull()
+        # zone [68.56, 75.28]; bar 4 opens above it and closes below it (low 50 < 68.56): the limit at 75.28 filled.
+        bars = filler(4) + [bar(4, l=50, c=52, h=90, o=89)]
+        got = cs.setup2_fib_pullback(bars, fib_lo=0.618, fib_hi=0.786, stop_buffer_pct=0.001, target_r=1.5)
+        self.assertEqual(len(got), 1)
+        self.assertEqual(got[0]["entry_t"], 4)
+        self.assertAlmostEqual(got[0]["entry_price"], 75.28)
+        self.assertAlmostEqual(got[0]["stop"], 68.49144)
+
+    def test_bear_bar_through_the_whole_zone_still_signals(self):
+        # bear impulse: prior swing high 60... mirror: P_high=140, L=100 broken -> zone [100+0.618*40, 100+0.786*40]
+        swings = [
+            {"i": 0, "t": 0, "price": 190, "kind": "high", "confirmed_i": 0},
+            {"i": 1, "t": 1, "price": 140, "kind": "high", "confirmed_i": 1},
+            {"i": 2, "t": 2, "price": 160, "kind": "low", "confirmed_i": 2},
+            {"i": 3, "t": 3, "price": 100, "kind": "low", "confirmed_i": 3},
+        ]
+        events = [{"direction": "bear", "broken_level": 100, "broken_swing_i": 3, "confirm_i": 3, "i": 7}]
+        self.patch(find_swings=lambda *a, **k: swings, classify_msb=lambda *a, **k: events)
+        # zone [124.72, 131.44]; bar 4 high 150 > 131.44 and low 80: limit at 124.72 filled and the bar ran past the zone.
+        bars = filler(4) + [bar(4, l=80, c=82, h=150, o=81)]
+        got = cs.setup2_fib_pullback(bars, fib_lo=0.618, fib_hi=0.786, stop_buffer_pct=0.001, target_r=1.5)
+        self.assertEqual(len(got), 1)
+        self.assertEqual(got[0]["side"], "short")
+        self.assertEqual(got[0]["entry_t"], 4)
+        self.assertAlmostEqual(got[0]["entry_price"], 124.72)
+
+    def test_bear_signal_has_stop_above_entry_and_target_below(self):
+        # before B151 the bear zone was built descending, so the bear branch could never emit a valid signal
+        swings = [
+            {"i": 0, "t": 0, "price": 190, "kind": "high", "confirmed_i": 0},
+            {"i": 1, "t": 1, "price": 140, "kind": "high", "confirmed_i": 1},
+            {"i": 2, "t": 2, "price": 160, "kind": "low", "confirmed_i": 2},
+            {"i": 3, "t": 3, "price": 100, "kind": "low", "confirmed_i": 3},
+        ]
+        events = [{"direction": "bear", "broken_level": 100, "broken_swing_i": 3, "confirm_i": 3, "i": 7}]
+        self.patch(find_swings=lambda *a, **k: swings, classify_msb=lambda *a, **k: events)
+        bars = filler(4) + [bar(4, l=110, c=120, h=127)]   # rallies into the zone [124.72, 131.44]
+        got = cs.setup2_fib_pullback(bars)
+        self.assertEqual(len(got), 1)
+        sig = got[0]
+        self.assertAlmostEqual(sig["entry_price"], 124.72)
+        self.assertAlmostEqual(sig["stop"], 131.44 * 1.001)
+        self.assertLess(sig["targets"][0][0], sig["entry_price"])
+
+    def test_bull_zone_never_reached_still_no_signal(self):
+        self._patch_bull()
+        bars = filler(4) + [bar(4, l=80, c=81), bar(5, l=79, c=80)]
+        self.assertEqual(cs.setup2_fib_pullback(bars), [])
+
+
 class TestSetup3FailedMsbReversal(unittest.TestCase, _PatchMixin):
     def test_u5_bull_msb_fails(self):
         # broken_level=95 confirmed at c=7; structure extreme over [5..7] (max h) = 98.

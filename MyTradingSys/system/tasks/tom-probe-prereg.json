@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-10T18:55:33Z",
+  "depends_on": [
+    "tom-dax-backtest",
+    "tom-layer-v2-cost",
+    "tom-probe-diag-btc"
+  ],
+  "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_ARMS.md frozen (arms, source status, trial count, holdouts) and a runner card exists.",
+  "from_inbox": "",
+  "goal": "Freeze the arms that survived the diagnostics, recall and DAX run into one pre-registration with an honest trial count, then capture the runner as a new card.",
+  "id": "tom-probe-prereg",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "opus 2026-10-11: DIAG_BTC says S SKIP, Q SKIP (thin), M GO. Scope reduced to the M arms (partials, trail, re-entry, no timeout) with stops wide enough to clear BTC noise+fees per TOM_LAYER_V2_SPEC; S/Q arms parked until the v2 encoding exists.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-11 (operator chat)",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/PROBE_PLAN.md",
+    "MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md",
+    "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md",
+    "MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md"
+  ],
+  "scope_out": [
+    "running the arms",
+    "live or testnet changes"
+  ],
+  "size": "S",
+  "sources": [
+    "operator chat 2026-10-11: queue DAX recall, gap rules, DAX backtest in that order; probe selection/management/session with options flagged up front",
+    "MyTradingSys/research/tom_transfer_2026-10-11/PROBE_PLAN.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "List each arm with source status (Tom quote + file:line, or NO-SOURCE needing an operator decision).",
+    "Fix market order per the branch in PROBE_PLAN section 4, holdouts (BTC forward data from 2026-09-27; DAX last 6 months), trial count, DSR/PBO.",
+    "tasks.py new for the runner card; Control Room decision for any NO-SOURCE arm."
+  ],
+  "tests": "python scripts/dev/tasks.py lint stays green with the new runner card (fails if the card misses tests/done_when).",
+  "title": "Pre-register the surviving S/Q/M/F arms and write their runner card"
+}

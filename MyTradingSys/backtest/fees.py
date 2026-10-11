@@ -8,16 +8,10 @@ Profiles, per side, as a fraction of price:
   DERIBIT_TAKER / DERIBIT_MAKER: Deribit BTC-PERPETUAL.
     Verified 2026-09-26 via public/get_instrument. maker 0.0,
     taker 0.0005 (5 bps per side, 10 bps round trip).
+  FDAX (Eurex DAX future, Tom's home market; DAX probe PRE_REG_DAX.md): see FEES_FDAX below.
   BINANCE_TAKER / BINANCE_MAKER: Binance USDT-M perpetual,
     default tier. maker 0.0002 (4 bps RT), taker 0.0005 (10 bps RT).
     Source: T055b_PROVEN_SETUPS.md L22-23.
-  LEGACY_FABIO_TAKER / LEGACY_FABIO_MAKER: pre-B081 value used by
-    MyTradingSys/backtest/layers/fabio/fabio_of_model.py.
-    Derived from T055b_PROVEN_SETUPS.md L22-23 read as Deribit
-    taker 7 bps RT, maker -3 bps RT rebate. Pending review: the
-    API-verified Deribit schedule above says maker 0 / taker 5 bps.
-    Do not use for new code. Kept so existing fabio tests pass
-    until the operator decides which number fabio should carry.
 
 Change rule: edit this file. Then run:
   python -m pytest MyTradingSys/tests MyTradingSys/backtest -q
@@ -33,9 +27,7 @@ DERIBIT_MAKER = 0.0
 BINANCE_TAKER = 0.0005
 BINANCE_MAKER = 0.0002
 
-# --- Fabio layer (pre-B081; pending review) ---
-LEGACY_FABIO_TAKER = 0.00035
-LEGACY_FABIO_MAKER = -0.00015
+# --- Eurex FDAX (symbol GER40), research replays only: ~0.1 point per round turn on ~24000 -> 0.000005 per side ---
 
 
 def fees_dict(entry, target, stop, timeout):
@@ -46,3 +38,13 @@ def fees_dict(entry, target, stop, timeout):
 # --- tom_bt.py style profiles ---
 FEES_DERIBIT = fees_dict(entry=DERIBIT_MAKER, target=DERIBIT_MAKER, stop=DERIBIT_TAKER, timeout=DERIBIT_TAKER)
 FEES_ALL_TAKER = fees_dict(entry=DERIBIT_TAKER, target=DERIBIT_TAKER, stop=DERIBIT_TAKER, timeout=DERIBIT_TAKER)
+
+# --- Eurex FDAX (DAX probe, research/tom_transfer_2026-10-11/PRE_REG_DAX.md "Fees") ---
+# Source: the pre-registration. Round turn about EUR 2.5 per contract against EUR 25 per index point = 0.1 point round
+# turn (0.05 point per side, about 2.1e-6 of price at DAX 24000). The frozen figure is 0.000005 of price per side on
+# every leg, maker and taker alike (0.12 point per side at 24000): about 2.4 times the arithmetic above, i.e. on the
+# conservative side. The EUR 2.5 is an order-of-magnitude retail figure, not a fetched fee schedule. Stress (+ 1 point on
+# stop and timeout legs) is `slip_pts` in tom_bt.sim_limit_trade, not a fee.
+FDAX_PER_SIDE = 0.000005
+FEES_FDAX = fees_dict(entry=FDAX_PER_SIDE, target=FDAX_PER_SIDE, stop=FDAX_PER_SIDE, timeout=FDAX_PER_SIDE)
+FDAX_FEE_PER_SIDE = FDAX_PER_SIDE  # alias mirrored by ExecutionMathConstants.FDAX_FEE_PER_SIDE (test_b070_fee_parity)

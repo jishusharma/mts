@@ -161,11 +161,17 @@ def secret_path_for(env: str, account: str = None) -> Path:
     return SECRET.parent / f"testnet_{account}.secret.json"
 
 
-def _load_secret(env: str = None) -> dict:
+_ENV_ACCOUNT = object()   # sentinel: take the account from MTS_ACCOUNT at call time
+_TOKEN_ACCOUNT = {}       # access_token -> account label it was issued for (None = main); B148
+
+
+def _load_secret(env: str = None, account=_ENV_ACCOUNT) -> dict:
     env = env or _ACTIVE_ENV
     if env not in ("test", "mainnet"):
         raise RuntimeError(f"REFUSED: unknown environment {env!r}")
-    path = secret_path_for(env, os.environ.get("MTS_ACCOUNT") or None)
+    if account is _ENV_ACCOUNT:
+        account = os.environ.get("MTS_ACCOUNT") or None
+    path = secret_path_for(env, account)
     if not path.exists():
         raise RuntimeError(f"MISSING: {path} - operator must create it first (see execution/README.md)")
     cfg = json.loads(path.read_text(encoding="utf-8"))
@@ -272,7 +278,10 @@ def _call(method: str, params: dict, token: str = None, retry: bool = True,
         code = body["error"].get("code")
         if token and code in AUTH_ERROR_CODES and not reauthed:
             try:
-                token = authenticate()
+                # B148: a token may only be refreshed as the account that issued it. Re-reading MTS_ACCOUNT here
+                # logged a subaccount's expired token back in as MAIN (the daily-loss monitor restores the env).
+                old = token
+                token = authenticate(_TOKEN_ACCOUNT.pop(old)) if old in _TOKEN_ACCOUNT else authenticate()
             except DeribitError:
                 raise
             except Exception as ex:  # FIX3 C1: never escape raw
@@ -289,9 +298,11 @@ def _call(method: str, params: dict, token: str = None, retry: bool = True,
         raise DeribitError(method, body["error"])
 
 
-def authenticate() -> str:
-    """Fresh access_token. Refuses withdraw-capable keys (testnet and mainnet)."""
-    cfg = _load_secret()
+def authenticate(account=_ENV_ACCOUNT) -> str:
+    """Fresh access_token. Refuses withdraw-capable keys (testnet and mainnet). account=None forces MAIN,
+    a label forces that named testnet account; default reads MTS_ACCOUNT. The token's account is remembered
+    so a mid-session re-auth in _call refreshes the same account (B148)."""
+    cfg = _load_secret(account=account)
     auth = _call("public/auth", {
         "grant_type": "client_credentials",
         "client_id": cfg["client_id"],
@@ -299,7 +310,11 @@ def authenticate() -> str:
     }, retry=False)
     if "wallet:read_write" in auth.get("scope", ""):
         raise RuntimeError("REFUSED: key can withdraw (wallet:read_write). Recreate it with wallet none/read.")
-    return auth["access_token"]
+    token = auth["access_token"]
+    _TOKEN_ACCOUNT[token] = (os.environ.get("MTS_ACCOUNT") or None) if account is _ENV_ACCOUNT else account
+    if len(_TOKEN_ACCOUNT) > 64:   # tokens are replaced on re-auth; bound the map anyway
+        _TOKEN_ACCOUNT.pop(next(iter(_TOKEN_ACCOUNT)))
+    return token
 
 
 # ---------------------------------------------------------------- orders
@@ -437,6 +452,60 @@ def get_transaction_log(token, currency: str = "BTC", start_ms: int = 0, end_ms:
 
 def get_ticker(instrument_name: str = "BTC-PERPETUAL") -> dict:
     return _call("public/ticker", {"instrument_name": instrument_name})
+
+
+# ---------------------------------------------------------------- T050 phase 3 (single-position order management)
+
+def place(token, side: str, instrument_name: str, amount, order_type: str = "limit", price=None,
+          label: str = None, post_only: bool = False, reduce_only: bool = False) -> dict:
+    """Phase 3 testnet placement. Refuses off testnet and malformed input before any HTTP call.
+    Returns the exchange's order dict (result['order']), never a guess."""
+    if _ACTIVE_ENV != "test":
+        raise RuntimeError("REFUSED: T050 phase 3 place() is testnet-only")
+    if side not in ("buy", "sell"):
+        raise ValueError(f"REFUSED: side must be buy|sell, got {side!r}")
+    if not isinstance(amount, (int, float)) or isinstance(amount, bool) or amount <= 0:
+        raise ValueError(f"REFUSED: amount must be > 0, got {amount!r}")
+    if order_type == "limit" and (not isinstance(price, (int, float)) or price <= 0):
+        raise ValueError("REFUSED: limit order needs price > 0")
+    res = _place_order(side, token, instrument_name, amount, order_type, price, label,
+                       reduce_only, post_only=post_only)
+    order = res.get("order") if isinstance(res, dict) else None
+    if not order or "order_id" not in order:
+        raise OrderStateUnknown(f"private/{side}", label or instrument_name, "no_order_in_response")
+    return order
+
+
+def amend(token, order_id: str, amount=None, price=None) -> dict:
+    """Edit an open order. At least one of amount/price is required (fails closed)."""
+    if amount is None and price is None:
+        raise ValueError("REFUSED: amend needs amount and/or price")
+    if amount is not None and (not isinstance(amount, (int, float)) or amount <= 0):
+        raise ValueError(f"REFUSED: amount must be > 0, got {amount!r}")
+    if price is not None and (not isinstance(price, (int, float)) or price <= 0):
+        raise ValueError(f"REFUSED: price must be > 0, got {price!r}")
+    res = edit(token, order_id, amount=amount, price=price)
+    return res.get("order", res) if isinstance(res, dict) else res
+
+
+def get_order_history(token, instrument_name: str = "BTC-PERPETUAL", count: int = 100) -> list:
+    """private/get_order_history_by_instrument (filled/cancelled/rejected orders, newest first)."""
+    return _call("private/get_order_history_by_instrument",
+                 {"instrument_name": instrument_name, "count": count, "include_old": True,
+                  "include_unfilled": True}, token)
+
+
+def reconcile_open(token, order_id: str, instrument_name: str = "BTC-PERPETUAL") -> dict:
+    """A placed order must appear in the account open-orders read. {ok, order}."""
+    order = next((o for o in get_open_orders(token, instrument_name) if o.get("order_id") == order_id), None)
+    return {"ok": order is not None, "order": order}
+
+
+def reconcile_filled(token, order_id: str, instrument_name: str = "BTC-PERPETUAL") -> dict:
+    """A filled order must appear in order history with state 'filled' and be absent from open orders."""
+    order = next((o for o in get_order_history(token, instrument_name) if o.get("order_id") == order_id), None)
+    still_open = reconcile_open(token, order_id, instrument_name)["ok"]
+    return {"ok": bool(order) and order.get("order_state") == "filled" and not still_open, "order": order}
 
 
 def main(argv=None) -> int:

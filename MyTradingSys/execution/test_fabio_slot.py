@@ -74,17 +74,21 @@ class Routing(Base):
         self.assertEqual(len(self.placed), 1)
         self.assertEqual([e["event"] for e in self.events()].count("skipped_busy"), 2)
 
-    def test_missing_file_falls_back_to_shared_slot_and_logs_once(self):
+    def test_missing_file_rejects_the_trade_and_logs_once(self):
+        # B148: a routed source whose secret is missing must NOT fall to the main slot
         busy = {"proc": Proc(), "plan_id": "rsi1", "source": RSI}
         extra = {}
         self.run_cycle([FABIO], busy, extra)
         self.run_cycle([FABIO], busy, extra)
         self.assertEqual(self.placed, [])
         self.assertEqual(extra, {})
-        self.assertEqual([e["event"] for e in self.events()].count("fabio_account_missing"), 1)
-        active = self.run_cycle([FABIO], {}, extra)               # free shared slot: trades on default account
-        self.assertEqual(self.placed, [(FABIO, None)])
-        self.assertTrue(active)
+        evs = self.events()
+        self.assertEqual([e["event"] for e in evs].count("fabio_account_missing"), 1)
+        self.assertEqual([e.get("reason") for e in evs if e["event"] == "signal_rejected"],
+                         ["account_secret_missing"] * 2)
+        active = self.run_cycle([FABIO], {}, extra)               # free shared slot: still no main-account trade
+        self.assertEqual(self.placed, [])
+        self.assertFalse(active)
 
 
 class Secrets(unittest.TestCase):

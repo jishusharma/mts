@@ -1,3 +1,7 @@
+> **SUPERSEDED (2026-10-08).** Frozen history from the September build. For current state read
+> `MyTradingSys/research/STATUS.md`, then `MyTradingSys/system/LESSONS_LEARNED.md` (entry order is in CLAUDE.md).
+> Where this file disagrees with CLAUDE.md or SURFACE_POLICY.md, those win.
+
 # FILE: 02a_CURRENT_STATUS.md
 # READ ORDER: 3 of 8
 # PURPOSE: System health, active components, current file inventory

@@ -31,6 +31,25 @@ def _r_target(entry_price, stop, side, target_r):
     return entry_price + sgn * target_r * risk
 
 
+def _limit_window_end_t(bars, msb_event, retest_kwargs=None):
+    """Open time of the last bar a resting limit at the broken level stays valid: the existing
+    find_retest expiry (default 200 bars) or the first bar whose close invalidates the level
+    (default 0.5% beyond it), whichever comes first. Mirrors cc_retest.find_retest defaults;
+    only used to expose meta['valid_until_t'] (no signal key is changed)."""
+    kw = retest_kwargs or {}
+    expiry = kw.get("expiry_bars", 200)
+    inval = kw.get("invalidate_pct", 0.005)
+    c = msb_event["confirm_i"]
+    lvl = msb_event["broken_level"]
+    end_k = min(c + expiry, len(bars) - 1)
+    for k in range(c, end_k + 1):
+        cl = bars[k]["c"]
+        if (msb_event["direction"] == "bull" and cl < lvl * (1 - inval)) or \
+           (msb_event["direction"] != "bull" and cl > lvl * (1 + inval)):
+            return bars[k]["t"]
+    return bars[end_k]["t"]
+
+
 def setup1_sr_flip(bars: list, stop_buffer_pct: float = 0.001, target_r: float = 1.5, msb_kwargs: dict | None = None, retest_kwargs: dict | None = None) -> list:
     swings = find_swings(bars, **{k:v for k,v in (msb_kwargs or {}).items() if k in ("left","right","use_body")})
     msb_events = classify_msb(bars, swings, **(msb_kwargs or {}))
@@ -57,6 +76,12 @@ def setup1_sr_flip(bars: list, stop_buffer_pct: float = 0.001, target_r: float =
                 "target_r": target_r
             }
         }
+        if msb_event["confirm_i"] < len(bars):
+            # limit-order placement info (open times of HTF bars): the setup is known at the
+            # close of the MSB confirm bar; a resting limit at entry_price is valid through
+            # the close of the bar opened at valid_until_t.
+            signal["meta"]["placed_t"] = bars[msb_event["confirm_i"]]["t"]
+            signal["meta"]["valid_until_t"] = _limit_window_end_t(bars, msb_event, retest_kwargs)
         signals.append(signal)
     return sorted(signals, key=lambda s: s["entry_t"])
 
@@ -89,12 +114,13 @@ def setup2_fib_pullback(bars: list, fib_lo: float = 0.618, fib_hi: float = 0.786
             H_price = msb_event["broken_level"]
             P_low = prev_low["price"]
             fib_zone = [H_price - fib_hi * (H_price - P_low), H_price - fib_lo * (H_price - P_low)]
-            # Scan bars after confirm_i for first bar that touches the zone
+            # Scan bars after confirm_i for the first bar that reaches the resting limit at the zone's upper
+            # edge. A bar that blows through the whole zone (low below the zone) filled it too (B151).
             start_idx = msb_event["confirm_i"] + 1
             end_idx = min(start_idx + expiry_bars, len(bars))
             found_bar = None
             for k in range(start_idx, end_idx):
-                if fib_zone[0] <= bars[k]["l"] <= fib_zone[1]:
+                if bars[k]["l"] <= fib_zone[1]:
                     found_bar = k
                     break
             if found_bar is None:
@@ -115,13 +141,15 @@ def setup2_fib_pullback(bars: list, fib_lo: float = 0.618, fib_hi: float = 0.786
             # The impulse leg is from the high to the low that was broken
             L_price = msb_event["broken_level"]
             P_high = prev_high["price"]
-            fib_zone = [L_price + fib_hi * (P_high - L_price), L_price + fib_lo * (P_high - L_price)]
-            # Scan bars after confirm_i for first bar that touches the zone
+            # ascending like the bull zone: nearest edge (fib_lo) first, so zone[0] is the short's resting limit
+            fib_zone = [L_price + fib_lo * (P_high - L_price), L_price + fib_hi * (P_high - L_price)]
+            # Scan bars after confirm_i for the first bar that reaches the resting limit at the zone's lower
+            # edge. A bar that blows through the whole zone (high above the zone) filled it too (B151).
             start_idx = msb_event["confirm_i"] + 1
             end_idx = min(start_idx + expiry_bars, len(bars))
             found_bar = None
             for k in range(start_idx, end_idx):
-                if fib_zone[0] <= bars[k]["h"] <= fib_zone[1]:
+                if bars[k]["h"] >= fib_zone[0]:
                     found_bar = k
                     break
             if found_bar is None:
@@ -141,7 +169,9 @@ def setup2_fib_pullback(bars: list, fib_lo: float = 0.618, fib_hi: float = 0.786
                 "setup": "fib_pullback",
                 "rule_id": "C10-E04",
                 "msb_i": msb_event["i"],
-                "target_r": target_r
+                "target_r": target_r,
+                "placed_t": bars[msb_event["confirm_i"]]["t"],
+                "valid_until_t": bars[end_idx - 1]["t"]
             }
         }
         signals.append(signal)

@@ -12,6 +12,7 @@
 #
 # All zone price levels come from the snapshot. No AI-invented prices.
 
+import math
 from typing import List, Dict, Any, Optional, Tuple
 from mts_math import (
     calculate_distance,
@@ -24,6 +25,8 @@ from mts_math import (
     calculate_rr_sanity,
     detect_confluence,
 )
+from net_rr_floor import NetRrFloorError, load_floor
+from runner_min_distance import RunnerMinDistanceError, load_runner_min_distance_pct
 
 
 # ============================================================
@@ -200,22 +203,20 @@ def _swing_tf_for_zone(ztype: str) -> str:
     return "5m"
 
 
-def _pick_stop_target(
+def _pick_stop_target_runner(
     zone: Dict[str, Any],
     price: float,
     normalized: Dict[str, Any]
-) -> Tuple[Optional[float], Optional[float]]:
-    """Return (stop, target) for R:R calculation from normalized snapshot data.
+) -> Tuple[Optional[float], Optional[float], Optional[float]]:
+    """Return (stop, target, runner_target) for R:R calculation from normalized snapshot data.
 
     DATA-DRIVEN selection:
     - Stop = nearest structural level beyond zone (per-TF swing matched to zone type)
-    - Target = nearest volume node in trade direction (POC, VWAP, or opposite VA boundary)
+    - Target = nearest sourced volume node (POC/HVN) in trade direction with netRR >= floor, else the farthest
 
-    Returns (None, None) if insufficient data.
+    Returns target None if no node lies in the trade direction.
     """
     struct = normalized.get("structure", {})
-    vwap = normalized.get("vwap", {})
-    vwap_price = vwap.get("price")
     zone_price = zone["price"]
     zone_type = zone["type"]
 
@@ -258,24 +259,53 @@ def _pick_stop_target(
         if swing_low is not None and swing_low < zone_price:
             stop = swing_low
 
-    # TARGET selection - nearest POC or VWAP in trade direction
-    # RULE TOM-018 (next high volume price is the target); VWAP member NO-SOURCE (A07)
-    target = None
-    if is_above:
-        # Short target = lower levels
-        candidates = [p for p in all_pocs if p < zone_price]
-        if vwap_price is not None and vwap_price < zone_price:
-            candidates.append(vwap_price)
-        if candidates:
-            target = max(candidates)  # nearest lower level
-    else:
-        # Long target = upper levels
-        candidates = [p for p in all_pocs if p > zone_price]
-        if vwap_price is not None and vwap_price > zone_price:
-            candidates.append(vwap_price)
-        if candidates:
-            target = min(candidates)  # nearest upper level
+    # TARGET selection. RULE TOM-018/TOM-102: target = next high volume price/area (POCs, HVNs).
+    # Operator ruling 2026-10-03: VWAP / VAL / VAH / prior-day high-low members and the 2.0R-3.5R window are NO-SOURCE
+    # (A07-A10) and removed. Mirrors SetupCandidatesBuilder.pickTarget (Java): nearest node in direction whose
+    # netRR >= floor (net_rr_floor.json), else the farthest node in direction; runner = next node beyond the target.
+    try:
+        floor = load_floor()
+    except NetRrFloorError:
+        floor = float("nan")   # nothing qualifies -> farthest node (fail closed; the verdict gate decides)
+    try:
+        runner_min_pct = load_runner_min_distance_pct()
+    except RunnerMinDistanceError:
+        runner_min_pct = float("nan")   # no node qualifies -> no runner (single target; fail closed)
+    target, runner = pick_target(all_pocs, zone_price, stop, is_above, floor, runner_min_pct)
+    return stop, target, runner
 
+
+def pick_target(nodes, zone_price, stop, is_short, floor, runner_min_pct=0.0):
+    """(target, runner_target) from volume nodes; (None, None) if no node lies in the trade direction.
+
+    runner = next node beyond the target at least runner_min_pct percent of the target price away from it (closer
+    nodes are skipped), else None. NaN runner_min_pct qualifies nothing (no runner). Mirrors the Java pickTarget."""
+    in_dir = sorted((p for p in nodes if (p < zone_price if is_short else p > zone_price)),
+                    key=lambda p: abs(p - zone_price))
+    if not in_dir:
+        return None, None
+    idx = len(in_dir) - 1   # fallback: farthest
+    if stop is not None and stop != zone_price:
+        risk = abs(zone_price - stop)
+        for i, p in enumerate(in_dir):
+            net = calculate_net_rr(zone_price, p, stop)
+            if net >= floor:   # NaN floor never qualifies
+                idx = i
+                break
+    else:
+        idx = 0   # no stop -> no R:R; nearest node
+    target = in_dir[idx]
+    runner = None
+    for p in in_dir[idx + 1:]:
+        if abs(p - zone_price) > abs(target - zone_price) and abs(p - target) / target * 100.0 >= runner_min_pct:
+            runner = p
+            break
+    return target, runner
+
+
+def _pick_stop_target(zone, price, normalized):
+    """(stop, target) - see _pick_stop_target_runner."""
+    stop, target, _runner = _pick_stop_target_runner(zone, price, normalized)
     return stop, target
 
 
@@ -294,6 +324,9 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     """
     normalized = _normalize_snapshot(snapshot)
     price = normalized["current_price"]
+    # B072: fail closed on a missing / non-numeric / non-finite / non-positive price (was passed through -> "aligned").
+    if isinstance(price, bool) or not isinstance(price, (int, float)) or not math.isfinite(price) or price <= 0:
+        raise ValueError("invalid current_price: %r (need a finite number > 0)" % (price,))
     speed = normalized.get("conditions", {}).get("speed_picking_up", False)
 
     zones = _extract_zones(normalized)
@@ -323,12 +356,16 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
         rr_sanity = None
         stop = None
         target = None
+        runner_target = None
 
         if tier_label != "ignore":
-            stop, target = _pick_stop_target(zone, price, normalized)
+            stop, target, runner_target = _pick_stop_target_runner(zone, price, normalized)
             if stop is not None and target is not None:
                 gross_rr = calculate_gross_rr(zprice, target, stop)
-                net_rr = calculate_net_rr(gross_rr)
+                net_rr = calculate_net_rr(zprice, target, stop)
+                # B073: round first (the emitted precision), then run the sanity check on that same value.
+                gross_rr = round(gross_rr, 4)
+                net_rr = round(net_rr, 4)
                 rr_sanity = calculate_rr_sanity(gross_rr)
 
         zone_math[name] = {
@@ -346,6 +383,7 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
             "rr_sanity": rr_sanity,
             "stop": stop,
             "target": target,
+            "runner_target": runner_target if runner_target is not None else 0,
         }
 
         confluence_input.append({"name": name, "price": zprice})
@@ -357,10 +395,13 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     # BUG-007 (2026-09-10): split any-zone R:R from top-candidate R:R.
     # BUG-011 (2026-09-12): read net_rr_sanity (>= 2.0 NET per engine Sec 6 row 4),
     #   not rr_sanity (gross >= 1.5). Prior code was a doc-code mismatch.
+    # 2026-10-02: the NET floor is MyTradingSys/system/net_rr_floor.json (single source), compared to the
+    #   candidate's net_rr here; Java's net_rr_sanity flag is no longer read.
     # - any_zone_rr_below_threshold: True if ANY evaluated zone fails rr_sanity (gross).
     #   Advisory only. Does NOT gate trade execution.
     # - top_candidate_rr_below_threshold: True only if the rank-1 setup_candidate
-    #   fails net_rr_sanity (>= 2.0 NET). This is what hard stop #4 reads.
+    #   net_rr is below the floor (unreadable floor -> True, fail closed; a candidate with no net_rr at all, an
+    #   old schema, falls back to its net_rr_sanity flag as before). This is what hard stop #4 reads.
     any_trigger_ready = any(z["tier"] == "trigger_ready" for z in zone_math.values())
     any_zone_rr_fail = any(z["rr_sanity"] is False for z in zone_math.values())
     all_ignore = all(z["tier"] == "ignore" for z in zone_math.values())
@@ -369,7 +410,13 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     _candidates = snapshot.get("setup_candidates")
     if _candidates and isinstance(_candidates, list) and len(_candidates) > 0:
         _top_math = _candidates[0].get("math", {})
-        if isinstance(_top_math, dict) and _top_math.get("net_rr_sanity") is False:
+        try:
+            _net = _top_math.get("net_rr") if isinstance(_top_math, dict) else None
+            if _net is None:
+                top_candidate_rr_fail = _top_math.get("net_rr_sanity") is False if isinstance(_top_math, dict) else False
+            else:
+                top_candidate_rr_fail = float(_net) < load_floor()
+        except (NetRrFloorError, TypeError, ValueError):
             top_candidate_rr_fail = True
 
     result: Dict[str, Any] = {
@@ -396,7 +443,11 @@ def build_math_object(snapshot: Dict[str, Any]) -> Dict[str, Any]:
         _proof = _top.get("proof", {}) if isinstance(_top.get("proof"), dict) else {}
         _fa = _proof.get("finished_auction", {}) if isinstance(_proof.get("finished_auction"), dict) else {}
         _fa_dir = _fa.get("direction", "")
-        _book = _proof.get("book_imbalance", 1.0)
+        # .get(key, default) returns None (not the default) when the key is present with a JSON null, so absent and
+        # null are both handled here. null/absent/0.0/non-numeric = no order-book data (BT path): UNAVAILABLE, never 1.0.
+        _book = _proof.get("book_imbalance")
+        _book_ok = isinstance(_book, (int, float)) and not isinstance(_book, bool) and _book != 0.0
+        result["proof_book_imbalance"] = _book if _book_ok else "UNAVAILABLE"
         _last3 = snapshot.get("cvd", {}).get("last_3_delta", [])
         _contradictions = []
         if _dir == "short":

@@ -23,6 +23,7 @@ To pause ONLY the auto-trader (e.g. while a testnet suite needs a flat account),
 """
 import argparse
 import json
+import math
 import os
 import re
 import subprocess
@@ -33,6 +34,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
+# Single source of the net_rr floor: MyTradingSys/system/net_rr_floor.json (MTS_REPO_ROOT is set by run_staged_tests.py).
+sys.path.append(str(Path(os.environ.get("MTS_REPO_ROOT") or REPO) / "MyTradingSys" / "runtime"))
+from net_rr_floor import NetRrFloorError, load_floor  # noqa: E402
 HALT = HERE / "HALT"
 HALT_DAILY_LOSS = HERE / "HALT_DAILY_LOSS"
 # Auto-trader-only pause: no new auto-trades, but no HALT (so manual trades and the testnet suites still run).
@@ -48,23 +52,46 @@ LAYER_ALERT_DIR = REPO / "MyTradingSys" / "runtime" / "alerts"
 TF_SECONDS = {"1m": 60, "3m": 180, "5m": 300, "15m": 900, "30m": 1800, "1h": 3600, "4h": 14400, "1d": 86400}
 
 DEFAULT_CONFIG = {
-    # Tom core: limit at the zone, stop/target from the alert, whole size off at the target.
-    "tom": {"enabled": True, "size_usd": 200, "max_loss_usd": 25, "hours": 1.0, "max_hold_minutes": None, "max_hold_bars": 8, "max_age_seconds": 300,
-            "verdicts": ["SETUP_FORMING", "SETUP_CONFIRMED"], "min_net_rr": 2.0},
-    # Layers have no stop/target of their own: fixed bracket, market entry, small size.
+    # Tom core: limit at the zone, stop/target from the alert. Whole size off at the target, or (R2) the
+    # runner_leg_pct share on RUNNER_TARGET when the card carries one.
+    # TF5 (EXEC_PROVENANCE_AUDIT H5 E1b, E2): max_hold_minutes is one flat time exit (no zone-TF scaling; None = no
+    # time exit) and max_entry_seconds is the limit wait passed to executor --max-entry-seconds. Both NO-SOURCE testnet
+    # defaults kept at the values the live path already used (120 = the old 15m fallback, 600 = executor default);
+    # MEASURE (operator Ruling 3, pending).
+    "tom": {"enabled": True, "size_usd": 200, "max_loss_usd": 25, "hours": 1.0, "max_hold_minutes": 120,
+            "max_entry_seconds": 600, "max_age_seconds": 300,
+            "verdicts": ["SETUP_FORMING", "SETUP_CONFIRMED"],   # net_rr floor is net_rr_floor.json, not a config key
+            # R2: share of size on the runner leg (RUNNER_TARGET); the rest exits at TARGET and the stop moves to
+            # breakeven when that first leg fills. NO-SOURCE testnet default (operator Ruling 2, 2026-10-03; BE
+            # concept: Fabio P21 "I put my stop loss to break even"). 0 = off = single target, as before.
+            "runner_leg_pct": 50},
+    # Layers have no stop/target of their own: fixed bracket, market entry, small size. B118: stop_pct, targets, size,
+    # hours, max_age_bars and max_hold_bars are NO-SOURCE (no trader quote); bracket_source labels every layer log row
+    # SAMPLING (trades exist to sample layer behaviour, the values are not tuned or claimed).
     "layers": {"enabled": True, "size_usd": 100, "max_loss_usd": 10, "stop_pct": 1.0, "targets": "2",
+               "bracket_source": "SAMPLING",
                "hours": 2.0, "max_age_bars": 1.2,
                "max_hold_bars": 8},   # time exit = 8 bars of the signal timeframe (minutes derived per alert tf)
-    # (layer, event) -> side. "direction" means: up -> long, down -> short. A "side" field on the alert wins.
+    # (layer, event) -> side. "direction" means: up -> long, down -> short; "level" means the side comes from the level
+    # crossed (CROSS_SIDE_BY_LEVEL), everything else unmapped. A "side" field on the alert wins.
     "layer_rules": {
         "rsi:support": "long",
         "rsi:rejection": "short",
-        "rsi:cross": "direction",
+        "rsi:cross": "level",
     },
     "disabled_layers": [],
     # source prefix -> named testnet account (credentials .secrets/testnet_<label>.secret.json).
     # Missing file -> shared default slot, exactly as before.
     "accounts": {"layer:fabio:": "fabio"},
+    # Layer source prefixes that keep emitting alerts (data collection) but never place a trade, with the reason per
+    # prefix. Tom ("tom") is never matched. Missing key = nothing blocked; a PRESENT but malformed key, or an unreadable /
+    # missing config file, blocks ALL layer trades (fail closed) - see trade_block_reason / load_config.
+    "trade_blocklist": [],
+    "trade_blocklist_reasons": {},
+    # Layer source prefix -> {"size_usd", "max_loss_usd"}; the longest matching prefix replaces the layers size and max
+    # loss. Testnet calibration spread (operator 2026-10-07: "Use amounts ranging from 20 to 1000 $"). A malformed
+    # entry rejects the signal (no order at a guessed size).
+    "size_overrides": {},
 }
 SECRETS_DIR = HERE / ".secrets"
 _warned_missing = set()
@@ -96,12 +123,23 @@ def save_json(path: Path, data) -> None:
 
 # ---------------------------------------------------------------- Tom core signal
 
-CARD_FIELD = re.compile(r"^(VERDICT|TIME|SETUP|ZONE|ENTRY|STOP|TARGET|R:R):\s*(.*)$", re.M)
+CARD_FIELD = re.compile(r"^(VERDICT|TIME|PRICE|SETUP|ZONE|ENTRY|STOP|TARGET|RUNNER_TARGET|R:R):\s*(.*)$", re.M)
 ALERT_NO = re.compile(r"#(\d+)")
 
 
+def _positive_float(raw):
+    """Card field (RUNNER_TARGET, PRICE) -> positive finite float, or None (absent, 0 = none, or unparsable)."""
+    try:
+        v = float(raw)
+    except (TypeError, ValueError):
+        return None
+    return v if math.isfinite(v) and v > 0 else None
+
+
 def parse_tom_alert(alert: dict) -> dict:
-    """Return {'alert_no','verdict','time','setup','side','entry','stop','target','net_rr'} or {} if unusable."""
+    """Return {'alert_no','verdict','time','price','setup','side','entry','stop','target','runner_target','net_rr'}
+    or {} if unusable. runner_target is None when the card carries no (valid) RUNNER_TARGET line; price (the
+    engine's market read, card PRICE line, PS1 Build-Card) is None when absent or unparsable."""
     card = alert.get("card_text") or ""
     fields = {k: v.strip() for k, v in CARD_FIELD.findall(card)}
     m = ALERT_NO.search(alert.get("title") or "")
@@ -112,11 +150,66 @@ def parse_tom_alert(alert: dict) -> dict:
     setup = fields.get("SETUP", "")
     side = "long" if setup.endswith("_long") else "short" if setup.endswith("_short") else None
     rr = re.search(r"net\s+([0-9.]+)", fields.get("R:R", ""))
-    zm = re.match(r"(\d+[mhd])_", fields.get("ZONE", ""))
     return {"alert_no": int(m.group(1)) if m else None, "verdict": fields.get("VERDICT", ""),
-            "zone_tf": zm.group(1) if zm and zm.group(1) in TF_SECONDS else None,
-            "time": fields.get("TIME", ""), "setup": setup, "side": side, "entry": entry, "stop": stop,
-            "target": target, "net_rr": float(rr.group(1)) if rr else None}
+            "time": fields.get("TIME", ""), "price": _positive_float(fields.get("PRICE")),
+            "setup": setup, "side": side, "entry": entry, "stop": stop,
+            "target": target, "runner_target": _positive_float(fields.get("RUNNER_TARGET")),
+            "net_rr": float(rr.group(1)) if rr else None}
+
+
+def runner_split(p: dict, c: dict):
+    """R2 leg split for a Tom alert -> (targets_arg, None) for 'near@pct,runner@pct', or (None, reason).
+    Share of size sent to the runner leg = c['runner_leg_pct'] (NO-SOURCE testnet default 50, operator Ruling 2;
+    0 disables). Fails closed to the single-target plan: no runner, runner not beyond TARGET, a leg that
+    would floor below the 10 USD contract minimum, or legs that do not sum to the size (TF5 E3: the compiler floors
+    each leg to 10 USD on its own, PC:266, so size 30 at 50/50 would leave 10 USD with no target)."""
+    pct = c.get("runner_leg_pct") or 0
+    if pct <= 0:
+        return None, "runner_leg_pct off"
+    runner = p.get("runner_target")
+    if runner is None:
+        return None, "no RUNNER_TARGET"
+    beyond = runner > p["target"] if p["side"] == "long" else runner < p["target"]
+    if not beyond:
+        return None, f"runner {runner} not beyond target {p['target']}"
+    size = c["size_usd"]
+    near = int(size * (100 - pct) / 100 // 10) * 10       # each leg floored to 10 USD exactly as PC round_size does
+    far = int(size * pct / 100 // 10) * 10
+    if near < 10 or far < 10:
+        return None, f"size {size} too small for a {100 - pct:g}/{pct:g} split"
+    if near + far != size:
+        return None, f"legs {near}+{far} do not sum to size {size}"
+    tgt_pct = round(abs(p["target"] - p["entry"]) / p["entry"] * 100, 3)
+    run_pct = round(abs(runner - p["entry"]) / p["entry"] * 100, 3)
+    return f"{100 - pct:g}@{tgt_pct},{pct:g}@{run_pct}", None
+
+
+def net_rr_floor_reject(net_rr: float):
+    """None if net_rr clears the floor, else the reject reason. The file is re-read on every alert, so an edit
+    applies without restarting the trader; unreadable -> reject (fail closed)."""
+    try:
+        floor = load_floor()
+    except NetRrFloorError as e:
+        return f"net_rr floor unreadable: {e}"
+    return None if net_rr >= floor else f"net_rr {net_rr} < {floor}"
+
+
+RT_TAKER_FEE_FRAC = 0.0010   # 2 x Deribit BTC-PERPETUAL taker 5 bp (backtest/fees.py, API-verified 2026-09-26): worst-case round trip
+
+
+def fee_to_stop_reject(entry: float, stop: float, cut):
+    """B146: None if the worst-case round-trip fee is at most `cut` of the stop distance (in R), else the reject reason.
+    Off unless tom.max_fee_to_stop is set. Evidence: research/fast_track_2026-09-27/TOM_STOP_WIDTH_2026-10-09.md
+    (stops under 0.10 % of price cost 3.8 to 7.6 R of fees per trade; cut 0.3 leaves under 0.3 R). Bad input -> reject."""
+    try:
+        cut = float(cut)
+        dist = abs(float(entry) - float(stop))
+        if not (cut > 0 and dist > 0 and float(entry) > 0):
+            raise ValueError
+    except (TypeError, ValueError):
+        return f"fee_to_stop gate misconfigured or zero stop distance (cut {cut!r})"
+    ratio = RT_TAKER_FEE_FRAC * float(entry) / dist
+    return None if ratio <= cut else f"fee/stop {ratio:.2f} R > {cut:g} R (stop {dist / float(entry) * 100:.3f} % of price)"
 
 
 def tom_signal(alert: dict, state: dict, cfg: dict, now: datetime):
@@ -133,8 +226,8 @@ def tom_signal(alert: dict, state: dict, cfg: dict, now: datetime):
         reject = f"verdict {p['verdict']}"
     elif p["side"] is None:
         reject = f"unknown setup side {p['setup']!r}"
-    elif p["net_rr"] is not None and p["net_rr"] < c["min_net_rr"]:
-        reject = f"net_rr {p['net_rr']} < {c['min_net_rr']}"
+    elif p["net_rr"] is not None and (rr_reject := net_rr_floor_reject(p["net_rr"])):
+        reject = rr_reject
     else:
         try:
             t = datetime.strptime(p["time"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
@@ -147,24 +240,69 @@ def tom_signal(alert: dict, state: dict, cfg: dict, now: datetime):
                      (p["side"] == "short" and not (p["target"] < p["entry"] < p["stop"]))
         if wrong_side:
             reject = "entry/stop/target not ordered for the side"
+    cut = c.get("max_fee_to_stop")
+    if not reject and cut is not None:
+        reject = fee_to_stop_reject(p["entry"], p["stop"], cut)
+    wait = c.get("max_entry_seconds")
+    if not reject and not (isinstance(wait, int) and not isinstance(wait, bool) and wait > 0):
+        reject = f"bad tom.max_entry_seconds {wait!r}"     # config error: no order rather than a guessed wait
     sig = {"source": "tom", "key": f"tom#{p['alert_no']}", "side": p["side"], "detail": p}
     if reject:
         sig["reject"] = reject
         return sig
     stop_pct = round(abs(p["entry"] - p["stop"]) / p["entry"] * 100, 3)
     tgt_pct = round(abs(p["target"] - p["entry"]) / p["entry"] * 100, 3)
+    legs, why_single = runner_split(p, c)
+    sig["log"] = {"runner_target": p["runner_target"]} if legs else {"runner_skipped": why_single}
     sig["plan_args"] = ["--side", p["side"], "--entry", "limit", "--price", f"{p['entry']}",
-                        "--size", str(c["size_usd"]), "--stop", f"{stop_pct}", "--targets", f"{tgt_pct}",
+                        "--size", str(c["size_usd"]), "--stop", f"{stop_pct}", "--targets", legs or f"{tgt_pct}",
                         "--max-loss", str(c["max_loss_usd"]), "--hours", str(c["hours"])]
-    if c.get("max_hold_minutes"):
+    if legs:                                   # R2: stop to breakeven when the first leg fills (position_manager)
+        sig["plan_args"].append("--breakeven-after-first-target")
+    if c.get("max_hold_minutes"):              # TF5 E2: one flat time exit; the zone name no longer scales it
         sig["plan_args"] += ["--max-hold-minutes", str(c["max_hold_minutes"])]
-    elif c.get("max_hold_bars"):   # time exit = N bars of the alert's zone timeframe (5m/15m/1h); 15m if unknown
-        tf_s = TF_SECONDS[p.get("zone_tf") or "15m"]
-        sig["plan_args"] += ["--max-hold-minutes", f"{c['max_hold_bars'] * tf_s / 60:g}"]
+    sig["executor_args"] = ["--max-entry-seconds", str(c["max_entry_seconds"])]   # TF5 E1b
+    sig["venue_price"] = True                  # TF5 E1a: cycle() moves --price onto Deribit before place()
     return sig
 
 
+def deribit_mark(instrument: str = "BTC-PERPETUAL") -> float:
+    """Deribit mark price (public/ticker, no credentials, testnet base by default). Raises on any failure."""
+    if str(HERE) not in sys.path:
+        sys.path.insert(0, str(HERE))
+    import deribit_orders as do
+    return do.get_ticker(instrument)["mark_price"]
+
+
+def apply_venue_price(sig: dict, mark_fn=None):
+    """TF5 E1a: the card's zone ENTRY is a Binance-derived price; Deribit trades at a basis to it. Move the limit to
+    zone + (Deribit mark - card PRICE). Stop and target stay percentages of the entry, so they move with it.
+    Returns None when --price was rewritten (and sig['log'] carries the numbers), else the reject reason.
+    Fails closed: no usable card PRICE or an unreadable/invalid mark -> no order."""
+    p = sig["detail"]
+    if p.get("price") is None:
+        return "no card PRICE: venue basis unknown"
+    try:
+        mark = float((mark_fn or deribit_mark)())
+    except Exception as e:  # noqa: BLE001 - any ticker failure refuses the entry
+        return f"deribit mark unreadable: {type(e).__name__}: {str(e)[:120]}"
+    if not math.isfinite(mark) or mark <= 0:
+        return f"deribit mark invalid: {mark!r}"
+    basis = mark - p["price"]
+    venue_entry = round(p["entry"] + basis, 1)
+    a = sig["plan_args"]
+    a[a.index("--price") + 1] = f"{venue_entry}"
+    sig.setdefault("log", {}).update({"card_entry": p["entry"], "card_price": p["price"], "deribit_mark": mark,
+                                      "basis": round(basis, 2), "venue_entry": venue_entry})
+    return None
+
+
 # ---------------------------------------------------------------- layer signals
+
+# (RSI level, cross direction) -> side. MLK-R1 (backtest/layers/rsi/malkan_40_60.py): a bull regime cannot cross 40 downward,
+# a bear regime cannot cross 60 upward, so those two crosses are the regime failing. Any other cross has no source: no side.
+CROSS_SIDE_BY_LEVEL = {(40.0, "down"): "short", (60.0, "up"): "long"}
+
 
 def layer_side(alert: dict, cfg: dict):
     """Side for a layer alert, or None if no rule maps it."""
@@ -173,6 +311,9 @@ def layer_side(alert: dict, cfg: dict):
     rule = cfg["layer_rules"].get(f"{alert.get('layer')}:{alert.get('event')}")
     if rule == "direction":
         return {"up": "long", "down": "short"}.get(alert.get("direction"))
+    if rule == "level":
+        lv = alert.get("level_value")
+        return CROSS_SIDE_BY_LEVEL.get((float(lv), alert.get("direction"))) if isinstance(lv, (int, float)) else None
     return rule if rule in ("long", "short") else None
 
 
@@ -200,18 +341,43 @@ def read_new_layer_alerts(state: dict, alert_dir: Path = None) -> list:
     return out
 
 
+SIZE_CEILING_USD = 10000   # trade_plan_validator.MAX_NOTIONAL_CEILING
+
+
+def size_override(source: str, cfg: dict):
+    """(size_usd, max_loss_usd) from the longest size_overrides prefix matching source, or None. Raises ValueError on
+    a malformed table or entry: size a positive 10 USD multiple (Deribit contract) up to the validator ceiling,
+    max loss a positive number."""
+    table = cfg.get("size_overrides") or {}
+    if not isinstance(table, dict):
+        raise ValueError("size_overrides is not an object")
+    hits = [p for p in table if isinstance(p, str) and p and source.startswith(p)]
+    if not hits:
+        return None
+    v = table[max(hits, key=len)]
+    size = v.get("size_usd") if isinstance(v, dict) else None
+    loss = v.get("max_loss_usd") if isinstance(v, dict) else None
+    if not (isinstance(size, int) and not isinstance(size, bool) and 0 < size <= SIZE_CEILING_USD and size % 10 == 0):
+        raise ValueError(f"size_usd {size!r} for {max(hits, key=len)}")
+    if not (isinstance(loss, (int, float)) and not isinstance(loss, bool) and loss > 0):
+        raise ValueError(f"max_loss_usd {loss!r} for {max(hits, key=len)}")
+    return size, loss
+
+
 def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
     c = cfg["layers"]
     layer, tf = alert.get("layer"), alert.get("tf")
     event = alert.get("event") or alert.get("kind") or alert.get("sub")
+    # t_close is the bar's OPEN time in ms (Binance kline convention), not its close; the name is kept (operator 2026-10-08).
     key = f"{layer}:{alert.get('sub')}:{event}:{tf}:{alert.get('t_close')}"
     sig = {"source": f"layer:{layer}:{alert.get('sub')}:{tf}", "key": key, "detail": alert}
+    sig["log"] = {"bracket_source": c.get("bracket_source", "SAMPLING")}
     side = layer_side(alert, cfg)
     sig["side"] = side
     if not c["enabled"] or layer in cfg["disabled_layers"]:
         sig["reject"] = "layer disabled"
     elif side is None:
-        sig["reject"] = f"unmapped {layer}:{alert.get('event')} (add a layer_rules entry)"
+        sig["reject"] = f"unmapped {layer}:{event} (add a layer_rules entry)"
     else:
         t_close = alert.get("t_close")
         bar = TF_SECONDS.get(tf)
@@ -226,10 +392,16 @@ def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
             age = now.timestamp() - (t_close / 1000 + bar)
             if age > c["max_age_bars"] * bar:
                 sig["reject"] = f"stale ({int(age)} s after bar close)"
+    size, max_loss = c["size_usd"], c["max_loss_usd"]
     if "reject" not in sig:
-        sig["plan_args"] = ["--side", side, "--entry", "market", "--size", str(c["size_usd"]),
+        try:
+            size, max_loss = size_override(sig["source"], cfg) or (size, max_loss)
+        except ValueError as e:
+            sig["reject"] = f"bad size_overrides: {e}"
+    if "reject" not in sig:
+        sig["plan_args"] = ["--side", side, "--entry", "market", "--size", str(size),
                             "--stop", str(c["stop_pct"]), "--targets", c["targets"],
-                            "--max-loss", str(c["max_loss_usd"]), "--hours", str(c["hours"])]
+                            "--max-loss", str(max_loss), "--hours", str(c["hours"])]
         if c.get("max_hold_bars"):
             sig["plan_args"] += ["--max-hold-minutes", f"{c['max_hold_bars'] * bar / 60:g}"]
     return sig
@@ -245,6 +417,47 @@ def account_secret_path(label: str) -> Path:
     return SECRETS_DIR / f"testnet_{label}.secret.json"
 
 
+BLOCKLIST_INVALID = "trade_blocklist invalid or config unreadable: all layer trades blocked (fail closed)"
+
+
+def trade_block_reason(source: str, cfg: dict):
+    """Reason string when a LAYER source may not trade, else None. Tom (any source not starting 'layer:') is never
+    blocked. Fail closed: a trade_blocklist that is present but not a list of non-empty strings, or reasons that are
+    not a dict, blocks every layer source (never silently re-enables a layer that failed its backtest)."""
+    if not str(source).startswith("layer:"):
+        return None
+    bl = cfg.get("trade_blocklist", [])
+    reasons = cfg.get("trade_blocklist_reasons", {})
+    if (not isinstance(bl, list) or not isinstance(reasons, dict)
+            or not all(isinstance(p, str) and p for p in bl)):
+        return BLOCKLIST_INVALID
+    for prefix in bl:
+        if source.startswith(prefix):
+            r = reasons.get(prefix)
+            return r if isinstance(r, str) and r else "blocklisted (no reason recorded)"
+    return None
+
+
+def load_config(path: Path) -> dict:
+    """DEFAULT_CONFIG overlaid with the JSON file. A missing/unparseable/non-object file cannot be trusted to still
+    carry the blocklist, so it sets trade_blocklist to None (-> trade_block_reason blocks all layer trades) and logs."""
+    cfg = json.loads(json.dumps(DEFAULT_CONFIG))
+    try:
+        raw = json.loads(Path(path).read_text(encoding="utf-8"))
+        if not isinstance(raw, dict):
+            raise ValueError("config top level is not an object")
+    except (OSError, ValueError) as e:
+        log({"event": "config_unreadable", "path": str(path), "error": repr(e)[:200],
+             "action": "all layer trades blocked (fail closed); Tom unaffected"})
+        cfg["trade_blocklist"] = None
+        return cfg
+    for k, v in raw.items():
+        # accounts is an ordered prefix table (first match wins): the file replaces it, never overlays it, or a default
+        # key keeps its early position and shadows the file's more specific prefixes (fabio fell to the main slot).
+        cfg[k] = ({**cfg[k], **v} if isinstance(v, dict) and isinstance(cfg.get(k), dict) and k != "accounts" else v)
+    return cfg
+
+
 def account_for(source: str, cfg: dict):
     """Named account for a signal source, or None (default shared slot). Existence check only, never reads the file."""
     for prefix, label in (cfg.get("accounts") or {}).items():
@@ -255,6 +468,15 @@ def account_for(source: str, cfg: dict):
                 _warned_missing.add(label)
                 log({"event": f"{label}_account_missing", "path": str(account_secret_path(label))})
             return None
+    return None
+
+
+def account_secret_missing(source: str, cfg: dict):
+    """Label of the named account this source is routed to when its secret file is missing, else None.
+    A routed source must never fall back to the main slot (B148): that sent layer trades to MAIN at the override size."""
+    for prefix, label in (cfg.get("accounts") or {}).items():
+        if source.startswith(prefix):
+            return None if account_secret_path(label).exists() else label
     return None
 
 
@@ -277,7 +499,8 @@ def place(sig: dict, dry_run: bool, account: str = None) -> dict:
     if dry_run:
         rc, out = run([py, str(HERE / "executor.py"), str(plan_file)], timeout=60, account=account)
         return {"outcome": "dry_run", "plan_id": plan_id, "rc": rc, "output": out.strip()[-300:]}
-    rc, out = run([py, str(HERE / "executor.py"), str(plan_file), "--go"], account=account)
+    rc, out = run([py, str(HERE / "executor.py"), str(plan_file), "--go", *sig.get("executor_args", [])],
+                  account=account)
     if rc != 0:
         return {"outcome": "entry_failed", "plan_id": plan_id, "output": out.strip()[-400:]}
     if "no_fill" in out:                     # limit entry that never filled: nothing to manage
@@ -510,19 +733,34 @@ def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = N
     signals += [layer_signal(a, cfg, now) for a in read_new_layer_alerts(state)]
     halted = brakes()
     for sig in signals:
-        base = {"source": sig["source"], "key": sig["key"], "side": sig.get("side")}
-        if "reject" in sig:
+        base = {"source": sig["source"], "key": sig["key"], "side": sig.get("side"), **sig.get("log", {})}
+        blocked = trade_block_reason(sig["source"], cfg)
+        if blocked:
+            # Alert already consumed (layer_offsets advance in read_new_layer_alerts, persisted each cycle): no retry.
+            log({"event": "layer_trade_blocked", "source": sig["source"], "reason": blocked, "key": sig["key"],
+                 "side": sig.get("side")})
+        elif "reject" in sig:
             log({"event": "signal_rejected", **base, "reason": sig["reject"]})
         elif halted:
             log({"event": "skipped_halt", **base, "brakes": halted})
         elif AUTO_PAUSE.exists():
             log({"event": "skipped_auto_pause", **base})
+        elif account_secret_missing(sig["source"], cfg):
+            account_for(sig["source"], cfg)        # logs <label>_account_missing once
+            log({"event": "signal_rejected", **base, "reason": "account_secret_missing",
+                 "account": account_secret_missing(sig["source"], cfg)})
         else:
             acct = account_for(sig["source"], cfg)
             slot = extra.get(acct) if acct else active
             if slot:
                 log({"event": "skipped_busy", **base, "busy_with": slot["plan_id"], "account": acct})
                 continue
+            if sig.get("venue_price"):           # read the mark only when the order is about to go out
+                why = apply_venue_price(sig)
+                if why:
+                    log({"event": "signal_rejected", **base, "reason": why})
+                    continue
+                base.update(sig["log"])
             res = place(sig, dry_run, acct) if acct else place(sig, dry_run)
             proc = res.pop("proc", None)
             log({"event": "trade_attempt", **base, **res, "account": acct})
@@ -542,9 +780,7 @@ def main(argv=None) -> int:
     ap.add_argument("--poll-seconds", type=int, default=20)
     ap.add_argument("--config", default=str(HERE / "auto_trader_config.json"))
     a = ap.parse_args(argv)
-    cfg = json.loads(json.dumps(DEFAULT_CONFIG))
-    for k, v in load_json(Path(a.config), {}).items():
-        cfg[k] = {**cfg[k], **v} if isinstance(v, dict) and isinstance(cfg.get(k), dict) else v
+    cfg = load_config(Path(a.config))
     state = load_json(STATE_PATH, {})
     if "tom_last_alert_no" not in state:     # first start: never trade an alert that predates the trader
         p = parse_tom_alert(load_json(TOM_ALERT, {}))

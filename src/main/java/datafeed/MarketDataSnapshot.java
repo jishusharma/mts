@@ -19,6 +19,10 @@ import java.util.concurrent.*;
 public class MarketDataSnapshot {
 
     private final BinanceClient client;
+    /** Klines for the historical (as-of) path only; null (default) = the REST client, so live behaviour is unchanged. */
+    private final HistoricalSource histSource;
+
+    private HistoricalSource hist() { return histSource != null ? histSource : client; }
     private final ObjectMapper mapper;
     private final FvgCalculator fvgCalc;
     private static final double VALUE_AREA_PCT = 0.70;
@@ -28,8 +32,43 @@ public class MarketDataSnapshot {
 
     public MarketDataSnapshot() {
         this.client = new BinanceClient();
+        this.histSource = null;
         this.mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         this.fvgCalc = new FvgCalculator();
+    }
+
+    /** Archive mode: historical snapshots come from the local 1m archive under raw/klines; no network in that path. */
+    public MarketDataSnapshot(java.nio.file.Path raw) {
+        this.client = new BinanceClient();
+        this.histSource = ArchiveHistoricalSource.lazy(raw);
+        this.mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        this.fvgCalc = new FvgCalculator();
+    }
+
+    /** B084: a null ratio (depth fetch failed / empty ask side) is emitted as JSON null, never a fake 0.0. */
+    static void putBookRatio(ObjectNode cond, ObjectNode ob, Double ratio) {
+        if (ratio == null) {
+            cond.putNull("book_imbalance");
+            ob.putNull("bid_ask_ratio");
+        } else {
+            cond.put("book_imbalance", Math.round(ratio * 100.0) / 100.0);
+            ob.put("bid_ask_ratio", Math.round(ratio * 100.0) / 100.0);
+        }
+    }
+
+    static Double bidAskRatioFromDepth(JsonNode depth, double currentPrice) {
+        double bidDepth = 0, askDepth = 0;
+        for (JsonNode bid : depth.get("bids")) {
+            double p = bid.get(0).asDouble();
+            double q = bid.get(1).asDouble();
+            if (p >= currentPrice * 0.99) bidDepth += p * q;
+        }
+        for (JsonNode ask : depth.get("asks")) {
+            double p = ask.get(0).asDouble();
+            double q = ask.get(1).asDouble();
+            if (p <= currentPrice * 1.01) askDepth += p * q;
+        }
+        return askDepth > 0 ? bidDepth / askDepth : null; // null = unavailable (B084)
     }
 
     public ObjectNode fetchSnapshot(String symbol, BinanceLiquidationAccumulator liqAccumulator) throws IOException {
@@ -158,6 +197,11 @@ public class MarketDataSnapshot {
         priorDayVp.put("high", Math.round(priorDayHigh * 100.0) / 100.0);
         priorDayVp.put("low", priorDayLow == Double.MAX_VALUE ? 0.0 : Math.round(priorDayLow * 100.0) / 100.0);
 
+        // F-BT-14: the naked-POC list had no writer after 2026-08-28; record the finished prior UTC day and
+        // mark POCs the recent 1m bars traded through. Live path only (the historical builder must not write).
+        updateNakedPocs(new NakedPocTracker(symbol), priorDayVp, yesterdayStartUtc.toLocalDate(), priorDayBars.size(),
+                now.toLocalDate(), klines1m);
+
         // Add prior_day close / high / low
 
         // ── VWAP (trimmed) ──
@@ -171,8 +215,9 @@ public class MarketDataSnapshot {
         // This caused JSON CVD to mismatch CoinGlass (which resets at 00:00 UTC).
         ArrayNode dailyBarsForCvd1 = mapper.createArrayNode();
         for (JsonNode bar : dailyBars) dailyBarsForCvd1.add(bar);
-        ObjectNode cvdNode = buildCvd(dailyBarsForCvd1);
+        ObjectNode cvdNode = buildCvd(dailyBarsForCvd1, klines1m);
         cvdNode.put("scope", "session");
+        cvdNode.put("gating_window", "rolling_1m");  // B070: slope/last_3_delta/cvd_recent are not anchored to 00:00 UTC
         cvdNode.put("session_start_utc", now.truncatedTo(ChronoUnit.DAYS).toInstant().toString());
 
         // ── Trade flow net delta (multi-window from klines1m) ──
@@ -197,35 +242,16 @@ public class MarketDataSnapshot {
         ObjectNode structure = buildStructure(mtf, currentPrice);
 
         // ── Order book ratio ──
-        double bidDepth = 0, askDepth = 0;
+        Double bidAskRatioBox = null;
         try {
-            JsonNode depth = client.orderBookDepth(symbol, 100);
-            for (JsonNode bid : depth.get("bids")) {
-                double p = bid.get(0).asDouble();
-                double q = bid.get(1).asDouble();
-                if (p >= currentPrice * 0.99) bidDepth += p * q;
-            }
-            for (JsonNode ask : depth.get("asks")) {
-                double p = ask.get(0).asDouble();
-                double q = ask.get(1).asDouble();
-                if (p <= currentPrice * 1.01) askDepth += p * q;
-            }
-        } catch (Exception e) { /* keep 0 */ }
-        double bidAskRatio = askDepth > 0 ? bidDepth / askDepth : 0.0;
+            bidAskRatioBox = bidAskRatioFromDepth(client.orderBookDepth(symbol, 100), currentPrice);
+        } catch (Exception e) { /* depth unavailable: stays null (B084) */ }
 
         // ── Open interest direction ──
-        String oiDirection = "flat";
-        double oiChangePct = 0.0;
-        try {
-            JsonNode oiHist = client.openInterestHist(symbol, "1h", 2);
-            if (oiHist != null && oiHist.size() >= 2) {
-                double prev = oiHist.get(0).get("sumOpenInterest").asDouble();
-                double curr = oiHist.get(1).get("sumOpenInterest").asDouble();
-                oiChangePct = prev != 0 ? (curr - prev) / prev * 100.0 : 0.0;
-                if (curr > prev * 1.001) oiDirection = "rising";
-                else if (curr < prev * 0.999) oiDirection = "falling";
-            }
-        } catch (Exception e) { /* keep flat */ }
+        ObjectNode oiFetch = oiFromHistory(client, symbol, mapper);
+        String oiDirection = oiFetch.get("direction").asText();
+        boolean oiAvailable = !"UNAVAILABLE".equals(oiDirection);
+        double oiChangePct = oiAvailable ? oiFetch.get("change_1h_pct").asDouble() : 0.0;
 
         // ── Funding ──
         double fundingRate = 0.0;
@@ -312,7 +338,6 @@ public class MarketDataSnapshot {
         cond.put("fvg_unfilled_count", unfilledCount);
         if (nearestUnfilled != null) cond.set("fvg_nearest_unfilled", nearestUnfilled);
         else cond.putNull("fvg_nearest_unfilled");
-        cond.put("book_imbalance", Math.round(bidAskRatio * 100.0) / 100.0);
         cond.put("funding_extreme", Math.abs(fundingRate) > 0.001);
         cond.put("oi_trend", oiDirection);
         cond.put("speed_picking_up", speedPickingUp);
@@ -350,7 +375,7 @@ public class MarketDataSnapshot {
         root.set("trade_flow", tradeFlow);
         root.set("structure", structure);
         ObjectNode ob = mapper.createObjectNode();
-        ob.put("bid_ask_ratio", Math.round(bidAskRatio * 100.0) / 100.0);
+        putBookRatio(cond, ob, bidAskRatioBox);
         ob.put("confidence", CONFIDENCE_HIGH);
         root.set("order_book_depth", ob);
         root.set("conditions", cond);
@@ -362,7 +387,7 @@ public class MarketDataSnapshot {
         root.set("funding", fund);
         ObjectNode oi = mapper.createObjectNode();
         oi.put("direction", oiDirection);
-        oi.put("change_1h_pct", Math.round(oiChangePct * 100.0) / 100.0);
+        if (oiAvailable) oi.put("change_1h_pct", Math.round(oiChangePct * 100.0) / 100.0); else oi.putNull("change_1h_pct");
         oi.put("delta_state", classifyOiDeltaState(oiDirection, nd1h));
         double priceDelta1h = 0.0;
         if (klines1m != null && klines1m.size() >= 61) {
@@ -371,7 +396,7 @@ public class MarketDataSnapshot {
             priceDelta1h = nowClose - agoClose;
         }
         oi.put("delta_state_price", classifyOiDeltaState(oiDirection, priceDelta1h));
-        oi.put("confidence", CONFIDENCE_HIGH);
+        oi.put("confidence", oiAvailable ? CONFIDENCE_HIGH : CONFIDENCE_LOW);
         root.set("open_interest", oi);
         root.set("session", buildSession(klines1m, priorDayClose, currentPrice, dailyVp.get("vah").asDouble(), dailyVp.get("val").asDouble(), priorDayVp.get("high").asDouble(), priorDayVp.get("low").asDouble()));
         root.set("session_timing", sessionTiming);
@@ -483,6 +508,26 @@ public class MarketDataSnapshot {
         return result;
     }
 
+    /**
+     * F-BT-14. Never throws into the snapshot: the tracker is advisory (SetupCandidatesBuilder reads it).
+     * A prior day with fewer than 1000 of its 1440 bars is partial (outage or API gap): its POC is not recorded.
+     */
+    static void updateNakedPocs(NakedPocTracker tracker, JsonNode priorDayVp, java.time.LocalDate priorDay,
+                                int priorDayBarCount, java.time.LocalDate todayUtc, JsonNode klines1m) {
+        try {
+            if (priorDay != null && priorDayVp != null && priorDayVp.has("poc") && priorDayBarCount >= 1000) {
+                tracker.recordPoc(priorDay, priorDayVp.get("poc").asDouble());
+            }
+            if (klines1m != null && klines1m.size() > 0) {
+                List<JsonNode> bars = new ArrayList<>();
+                for (JsonNode b : klines1m) bars.add(b);
+                tracker.markVisitedByBars(bars, todayUtc);
+            }
+        } catch (Exception e) {
+            System.err.println("naked_poc update failed: " + e);
+        }
+    }
+
     private ObjectNode buildVp(List<JsonNode> bars, boolean includeHvnsLvns) {
         return buildVp(bars, includeHvnsLvns, 0.0);
     }
@@ -538,13 +583,28 @@ public class MarketDataSnapshot {
             double tp = (high + low + close) / 3.0;
             double halfRange = (high - low) / 2.0;
             int n = (int) Math.max(1, (high - low) / binSize);
+            // F-BT-09: normalise the triangular weights per bar so a bar adds exactly its own volume.
+            // Unnormalised, a bar added ~vol*n/2 (fast minutes up to 30x a quiet one) and a single-bin bar
+            // with tp above mid-range added nothing. A zero or NaN weight sum puts the volume on the tp bin.
+            double[] ps = new double[n];
+            double[] ws = new double[n];
+            double wsum = 0.0;
             for (int i = 0; i < n; i++) {
-                double p = low + i * (high - low) / n;
-                double weight = 1.0 - Math.abs(p - tp) / halfRange;
-                if (weight < 0) weight = 0;
-                Double key = profile.floorKey(p);
+                ps[i] = low + i * (high - low) / n;
+                double w = halfRange > 0 ? 1.0 - Math.abs(ps[i] - tp) / halfRange : 0.0;
+                ws[i] = (w > 0) ? w : 0.0;
+                wsum += ws[i];
+            }
+            if (wsum > 0) {
+                for (int i = 0; i < n; i++) {
+                    Double key = profile.floorKey(ps[i]);
+                    if (key == null) key = profile.firstKey();
+                    profile.merge(key, vol * ws[i] / wsum, Double::sum);
+                }
+            } else {
+                Double key = profile.floorKey(tp);
                 if (key == null) key = profile.firstKey();
-                profile.merge(key, vol * weight, Double::sum);
+                profile.merge(key, vol, Double::sum);
             }
         }
 
@@ -655,7 +715,23 @@ public class MarketDataSnapshot {
         return node;
     }
 
-    private ObjectNode buildCvd(JsonNode klines) {
+    /**
+     * B070: the UTC 00:00 session anchor is display-only. "value" is the session CVD (bars since 00:00 UTC, matches
+     * CoinGlass). Everything a verdict reads (slope, last_3_delta, cvd_recent) comes from the rolling 1m window, so it
+     * never changes at the UTC rollover.
+     */
+    private ObjectNode buildCvd(JsonNode sessionBars, JsonNode rollingBars) {
+        ObjectNode node = buildCvdRolling(rollingBars);
+        double session = 0;
+        for (JsonNode bar : sessionBars) {
+            double vol = bar.get(5).asDouble(), buy = bar.get(9).asDouble();
+            session += (buy - (vol-buy));
+        }
+        node.put("value", Math.round(session*1000.0)/1000.0);
+        return node;
+    }
+
+    private ObjectNode buildCvdRolling(JsonNode klines) {
         ObjectNode node = mapper.createObjectNode();
         int size = klines.size();
         if (size == 0) {
@@ -843,6 +919,11 @@ public class MarketDataSnapshot {
         return node;
     }
 
+    /** D3: US cash open 09:30 America/New_York as UTC for a date: 13:30Z during EDT, 14:30Z during EST. */
+    static ZonedDateTime usEquityOpenUtc(LocalDate date) {
+        return ZonedDateTime.of(date, LocalTime.of(9,30), ZoneId.of("America/New_York")).withZoneSameInstant(ZoneOffset.UTC);
+    }
+
     private ObjectNode buildSessionTiming(ZonedDateTime now) {
         ObjectNode node = mapper.createObjectNode();
         LocalDate today = now.toLocalDate();
@@ -884,8 +965,7 @@ public class MarketDataSnapshot {
         // BUG-009 fix (2026-09-10): use decimal hour so us_cash_open can fire.
         double hourDec = hour + now.getMinute() / 60.0;
         // L25 fix (2026-09-16): session labels DST-aware. US cash open shifts with DST.
-        ZonedDateTime nyOpenRef = ZonedDateTime.of(now.toLocalDate(), LocalTime.of(9,30), ZoneId.of("America/New_York"));
-        ZonedDateTime nyOpenUtcRef = nyOpenRef.withZoneSameInstant(ZoneOffset.UTC);
+        ZonedDateTime nyOpenUtcRef = usEquityOpenUtc(now.toLocalDate());
         double usOpenHr = nyOpenUtcRef.getHour() + nyOpenUtcRef.getMinute() / 60.0;
         String session;
         if (hourDec >= 0.0 && hourDec < 7.0) session = "asian";
@@ -909,9 +989,8 @@ public class MarketDataSnapshot {
         }
         node.put("funding_reset_window", fundingWindow);
 
-        ZonedDateTime nyOpen = ZonedDateTime.of(now.toLocalDate(), LocalTime.of(9,30), ZoneId.of("America/New_York"));
-        ZonedDateTime nyOpenUtc = nyOpen.withZoneSameInstant(ZoneOffset.UTC);
-        boolean usOpenWindow = !now.toLocalDate().equals(nyOpen.toLocalDate()) ? false : now.isAfter(nyOpenUtc) && now.isBefore(nyOpenUtc.plusMinutes(90));
+        ZonedDateTime nyOpenUtc = usEquityOpenUtc(now.toLocalDate());
+        boolean usOpenWindow = !now.toLocalDate().equals(nyOpenUtc.toLocalDate()) ? false : now.isAfter(nyOpenUtc) && now.isBefore(nyOpenUtc.plusMinutes(90));
         node.put("us_equity_open_window", usOpenWindow);
         long minutesUntilUsOpen = ChronoUnit.MINUTES.between(now, nyOpenUtc);
         if (minutesUntilUsOpen < 0) minutesUntilUsOpen += 24*60;
@@ -1014,7 +1093,7 @@ public class MarketDataSnapshot {
         // ── Prior day bars ──
         ZonedDateTime yesterdayStartUtc = now.minusDays(1).truncatedTo(ChronoUnit.DAYS);
         ZonedDateTime yesterdayEndUtc = yesterdayStartUtc.plusDays(1).minusNanos(1);
-        JsonNode yesterdayKlines = client.klinesRange(symbol, "1m",
+        JsonNode yesterdayKlines = hist().klinesRange(symbol, "1m",
                 yesterdayStartUtc.toInstant().toEpochMilli(),
                 yesterdayEndUtc.toInstant().toEpochMilli(), 1440);
         List<JsonNode> priorDayBars = new ArrayList<>();
@@ -1038,7 +1117,7 @@ public class MarketDataSnapshot {
         // Previous two weeks VPOC (requires additional historical fetches)
         ZonedDateTime prevWeekMonday = mondayStart.minusWeeks(1);
         ZonedDateTime prevWeekSunday = prevWeekMonday.plusDays(6).withHour(23).withMinute(59).withSecond(59).withNano(0);
-        JsonNode prevWeekKlines = client.klinesRange(symbol, "1h",
+        JsonNode prevWeekKlines = hist().klinesRange(symbol, "1h",
                 prevWeekMonday.toInstant().toEpochMilli(),
                 prevWeekSunday.toInstant().toEpochMilli(), 168);
         List<JsonNode> prevWeekBars = new ArrayList<>();
@@ -1050,7 +1129,7 @@ public class MarketDataSnapshot {
 
         ZonedDateTime twoWeekMonday = mondayStart.minusWeeks(2);
         ZonedDateTime twoWeekSunday = twoWeekMonday.plusDays(6).withHour(23).withMinute(59).withSecond(59).withNano(0);
-        JsonNode twoWeekKlines = client.klinesRange(symbol, "1h",
+        JsonNode twoWeekKlines = hist().klinesRange(symbol, "1h",
                 twoWeekMonday.toInstant().toEpochMilli(),
                 twoWeekSunday.toInstant().toEpochMilli(), 168);
         List<JsonNode> twoWeekBars = new ArrayList<>();
@@ -1090,8 +1169,9 @@ public class MarketDataSnapshot {
         // Wrap dailyBars (List<JsonNode>) in ArrayNode since buildCvd takes JsonNode.
         ArrayNode dailyBarsForCvd = mapper.createArrayNode();
         for (JsonNode bar : dailyBars) dailyBarsForCvd.add(bar);
-        ObjectNode cvdNode = buildCvd(dailyBarsForCvd);
+        ObjectNode cvdNode = buildCvd(dailyBarsForCvd, klines1m);
         cvdNode.put("scope", "session");
+        cvdNode.put("gating_window", "rolling_1m");  // B070: slope/last_3_delta/cvd_recent are not anchored to 00:00 UTC
         cvdNode.put("session_start_utc", now.truncatedTo(ChronoUnit.DAYS).toInstant().toString());
 
         // ── Structure ──
@@ -1127,7 +1207,7 @@ public class MarketDataSnapshot {
         cond.put("fvg_unfilled_count", unfilledCount);
         if (nearestUnfilled != null) cond.set("fvg_nearest_unfilled", nearestUnfilled);
         else cond.putNull("fvg_nearest_unfilled");
-        cond.put("book_imbalance", 0.0);
+        cond.putNull("book_imbalance");
         cond.put("funding_extreme", false);
         cond.put("oi_trend", "flat");
         cond.put("speed_picking_up", computeSpeedPickingUp(klines1m));
@@ -1137,7 +1217,11 @@ public class MarketDataSnapshot {
         cond.put("volume_spike_at_level", false);
 
         // ── Spot-perp basis ──
-        ObjectNode spotPerpBasis = buildSpotPerpBasis(symbol);
+        ObjectNode spotPerpBasis = unavailableNode("historical snapshot: no live spot/mark data");
+        spotPerpBasis.putNull("spot_price");
+        spotPerpBasis.putNull("mark_price");
+        spotPerpBasis.putNull("basis_pct");
+        spotPerpBasis.put("direction", "unknown");
 
         // ── Liquidation clusters ──
         ObjectNode liquidationClusters = mapper.createObjectNode();
@@ -1158,23 +1242,23 @@ public class MarketDataSnapshot {
         root.set("vwap", vwapNode);
         root.set("cvd", cvdNode);
         ObjectNode tradeFlow = mapper.createObjectNode();
-        tradeFlow.put("net_delta_1m", 0.0);
-        tradeFlow.put("net_delta_5m", 0.0);
-        tradeFlow.put("net_delta_15m", 0.0);
-        tradeFlow.put("net_delta_1h", 0.0);
-        tradeFlow.put("confidence", "LOW");
+        tradeFlow.putNull("net_delta_1m");
+        tradeFlow.putNull("net_delta_5m");
+        tradeFlow.putNull("net_delta_15m");
+        tradeFlow.putNull("net_delta_1h");
+        tradeFlow.put("confidence", "UNAVAILABLE");
         root.set("trade_flow", tradeFlow);
         root.set("structure", structure);
         ObjectNode ob = mapper.createObjectNode();
-        ob.put("bid_ask_ratio", 0.0);
+        ob.putNull("bid_ask_ratio");
         ob.put("confidence", "LOW");
         root.set("order_book_depth", ob);
         root.set("conditions", cond);
         root.set("prior_day", priorDayVp);
         ObjectNode fund = mapper.createObjectNode();
-        fund.put("current_rate", 0.0);
+        fund.putNull("current_rate");
         fund.put("extreme", false);
-        fund.put("confidence", "LOW");
+        fund.put("confidence", "UNAVAILABLE");
         root.set("funding", fund);
         ObjectNode oi = mapper.createObjectNode();
         oi.put("direction", "flat");
@@ -1187,11 +1271,25 @@ public class MarketDataSnapshot {
         root.set("session_timing", sessionTiming);
         root.set("spot_perp_basis", spotPerpBasis);
         root.set("liquidation_clusters", liquidationClusters);
-        root.set("oi_breakdown", buildOiBreakdown(symbol));
+        ObjectNode oiBreakdown = unavailableNode("historical snapshot: no live long/short ratio data");
+        oiBreakdown.putNull("retail");
+        oiBreakdown.putNull("whale");
+        oiBreakdown.putNull("topAccounts");
+        root.set("oi_breakdown", oiBreakdown);
         ObjectNode liquidationWarning = mapper.createObjectNode();
         liquidationWarning.put("status", "none");
         liquidationWarning.putNull("nearest_cluster_distance_pct");
         liquidationWarning.put("note", "Historical snapshot; liquidation data not available.");
+        root.set("liquidation_warning", liquidationWarning);
+        root.set("session", buildSession(klines1m, priorDayClose, currentPrice, dailyVp.get("vah").asDouble(), dailyVp.get("val").asDouble(), priorDayVp.get("high").asDouble(), priorDayVp.get("low").asDouble()));
+        ObjectNode dataQuality = mapper.createObjectNode();
+        ArrayNode unavailableFields = dataQuality.putArray("unavailable_fields");
+        for (String f : new String[]{"spot_perp_basis", "oi_breakdown", "trade_flow.net_delta_1m", "trade_flow.net_delta_5m",
+                "trade_flow.net_delta_15m", "trade_flow.net_delta_1h", "conditions.book_imbalance", "order_book_depth.bid_ask_ratio", "funding.current_rate"}) {
+            unavailableFields.add(f);
+        }
+        dataQuality.put("reason", "historical reconstruction from klines only; live-only inputs are null/UNAVAILABLE, never 0.0");
+        root.set("data_quality", dataQuality);
 
         // ── Spot-perp basis ──
 
@@ -1217,6 +1315,13 @@ public class MarketDataSnapshot {
         return root;
     }
 
+    private ObjectNode unavailableNode(String reason) {
+        ObjectNode node = mapper.createObjectNode();
+        node.put("confidence", "UNAVAILABLE");
+        node.put("reason", reason);
+        return node;
+    }
+
     private Map<String, JsonNode> fetchMultiTimeframeAsOf(String symbol, Instant asOf) {
         Map<String, Integer> configs = Map.of(
                 "1w", 2, "1d", 7, "4h", 3, "1h", 168, "15m", 16, "5m", 48, "1m", 1440
@@ -1231,7 +1336,7 @@ public class MarketDataSnapshot {
                 try {
                     long durationMs = getDurationMillis(tf);
                     long start = asOf.toEpochMilli() - durationMs * limit;
-                    JsonNode k = client.klinesRange(symbol, tf, start, asOf.toEpochMilli(), limit);
+                    JsonNode k = hist().klinesRange(symbol, tf, start, asOf.toEpochMilli(), limit);
                     dropFormingBar(k, asOf.toEpochMilli());
                     result.put(tf, k);
                 } catch (IOException ex) {
@@ -1390,6 +1495,29 @@ public class MarketDataSnapshot {
         return node;
     }
 
+    /** 1h OI direction from openInterestHist; any failure or short history yields UNAVAILABLE/LOW, never a fake flat. */
+    static ObjectNode oiFromHistory(BinanceClient client, String symbol, ObjectMapper mapper) {
+        ObjectNode n = mapper.createObjectNode();
+        try {
+            JsonNode h = client.openInterestHist(symbol, "1h", 2);
+            if (h != null && h.size() >= 2) {
+                double prev = h.get(0).get("sumOpenInterest").asDouble();
+                double curr = h.get(1).get("sumOpenInterest").asDouble();
+                String dir = "flat";
+                if (curr > prev * 1.001) dir = "rising";
+                else if (curr < prev * 0.999) dir = "falling";
+                n.put("direction", dir);
+                n.put("change_1h_pct", prev != 0 ? (curr - prev) / prev * 100.0 : 0.0);
+                n.put("confidence", "HIGH");
+                return n;
+            }
+        } catch (Exception e) { /* fall through to UNAVAILABLE */ }
+        n.put("direction", "UNAVAILABLE");
+        n.putNull("change_1h_pct");
+        n.put("confidence", "LOW");
+        return n;
+    }
+
         // OI delta 4-state classifier per INDICATOR_IMPLEMENTATION_HANDOFF.md Phase 2.
     // Input: volume delta (trade_flow.net_delta_1h), sign only. Family per dictionary:
     // net_delta_* maps to CoinGlass "Volume Delta" (flow), not positioning.
@@ -1436,18 +1564,16 @@ private ObjectNode buildOiBreakdown(String symbol) {
                 topAccounts.put("change_1h", Math.round(topChange1h*10000.0)/10000.0);
                 topAccounts.put("change_4h", Math.round(topChange4h*10000.0)/10000.0);
             } catch (Exception eTop) {
-                topAccounts.put("long_short_ratio", 0.0);
-                topAccounts.put("change_1h", 0.0);
-                topAccounts.put("change_4h", 0.0);
-                topAccounts.put("note", "unavailable");
+                node.putNull("topAccounts");   // B153/B136: unavailable is null, never a fake 0.0 ratio
+                node.put("topAccounts_note", "unavailable");
             }
             node.put("confidence", "MEDIUM");
             node.put("note", "Proxy data - account/position ratio, not absolute OI");
         } catch (Exception e) {
-            node.putObject("retail").put("long_short_ratio", 0.0).put("change_1h", 0.0).put("change_4h", 0.0);
-            node.putObject("whale").put("long_short_ratio", 0.0).put("change_1h", 0.0).put("change_4h", 0.0);
-            node.putObject("topAccounts").put("long_short_ratio", 0.0).put("change_1h", 0.0).put("change_4h", 0.0);
-            node.put("confidence", "LOW");
+            node.putNull("retail");   // B153/B136: unavailable is null, never a fake 0.0 ratio
+            node.putNull("whale");
+            node.putNull("topAccounts");
+            node.put("confidence", "UNAVAILABLE");
             node.put("note", "OI breakdown unavailable");
         }
         return node;

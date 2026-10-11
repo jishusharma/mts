@@ -29,6 +29,11 @@
       "exclusiveMinimum": 0,
       "description": "Optional time exit: position_manager closes the position (reduce-only market, close first, then cancels stop/targets) once this many minutes have elapsed since the entry fill."
     },
+    "breakeven_after_first_target": {
+      "type": "boolean",
+      "const": true,
+      "description": "Optional R2 runner exit (needs >= 2 targets): position_manager edits the stop trigger to the average entry fill once the first target order is completely filled. Omit to disable. Not the stop.type breakeven_after_fills, which means ladder rungs and stays refused by executor."
+    },
     "validity": {
       "type": "object",
       "required": ["start", "end"],

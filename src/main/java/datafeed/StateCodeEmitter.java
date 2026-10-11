@@ -33,8 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * Subscribes to Binance @aggTrade for a single symbol. Maintains a 2h rolling
  * tick buffer plus session CVD / VWAP accumulators. Emits a flow-state code
- * every 60 seconds. Writes mts/runtime/state_code.json atomically and appends
- * one line per fired transition to system/session_end_logs.md.
+ * every 60 seconds. Writes mts/runtime/state_code.json atomically.
  *
  * Codes:    A, A>S, A>L, S, S>L, L, L>S
  * Signals:  net_delta_1m, last_3_delta, volume_ratio, cvd_slope, price_vs_vwap
@@ -288,10 +287,6 @@ public class StateCodeEmitter extends WebSocketClient {
                 + " av=" + available + " ticks=" + snapshot.size());
 
         writeStateJson(signals, bearish, bullish, available, nowMs);
-
-        if (firedFrom != null) {
-            appendTransitionLog(firedFrom, firedTo, bearish, bullish, trigger, nowMs);
-        }
     }
 
     private Dir computeNetDelta1m(List<Tick> snap, long nowT) {
@@ -454,23 +449,6 @@ public class StateCodeEmitter extends WebSocketClient {
     private static boolean isWeekend(long epochMs) {
         int dow = Instant.ofEpochMilli(epochMs).atZone(ZoneOffset.UTC).getDayOfWeek().getValue();
         return dow == 6 || dow == 7;
-    }
-
-    private void appendTransitionLog(String from, String to, int b, int bl, String trigger, long nowMs) {
-        Path dir = Paths.get("MyTradingSys", "system");
-        Path log = dir.resolve("session_end_logs.md");
-        String line = Instant.ofEpochMilli(nowMs).toString()
-                + "  " + from + " -> " + to
-                + "  bearish=" + b + " bullish=" + bl
-                + "  trigger=" + (trigger == null ? "unknown" : trigger)
-                + System.lineSeparator();
-        try {
-            Files.createDirectories(dir);
-            Files.write(log, line.getBytes(StandardCharsets.UTF_8),
-                    StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-        } catch (Exception e) {
-            System.err.println("[StateCode] log append failed: " + e.getMessage());
-        }
     }
 
     private void restoreStateFromDisk() {

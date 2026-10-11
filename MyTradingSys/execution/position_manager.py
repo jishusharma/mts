@@ -24,8 +24,14 @@ Per poll:
   stop not live       -> re-place stop for |pos|; see S3 below for how long this is allowed
                          to keep retrying before flatten_halt fires.
 
-Breakeven / trailing remain refused pre-flight by executor (R4); nothing here moves
-the stop PRICE.
+Trailing and the ladder-rung stop type breakeven_after_fills remain refused pre-flight by executor (R4).
+R2 (2026-10-03) is the one exception to "nothing here moves the stop PRICE": a plan with the field
+breakeven_after_first_target (>= 2 targets, stop.type stays fixed_percent) gets its live stop's trigger edited to the
+average entry fill once the FIRST target order is completely filled and the position really shrank. The move happens
+at most once per plan: it is journaled as stop_resized(reason=breakeven_first_target), which a restarted manager
+replays (trigger restored, move not repeated, a re-placed stop uses the breakeven trigger). It never loosens
+protection and never halts: an unverifiable entry average, a mark at/through the entry, or an edit error leaves the
+existing stop in place (edit errors are retried up to BREAKEVEN_MAX_ATTEMPTS).
 
 S3 (G-d, 2026-09-28): the old code allowed exactly one re-place attempt per
 manage() call before flattening (a `replaced_once` flag) - an IMPLICIT time
@@ -78,6 +84,7 @@ Run (after executor returned status entry_filled_stop_placed):
 import sys
 sys.dont_write_bytecode = True
 
+import math
 import os
 import time
 import argparse
@@ -90,6 +97,9 @@ import journal  # noqa: E402
 import pm_heartbeat  # noqa: E402
 
 POLL_INTERVAL_SECONDS = 2
+# B148 part 5: the heartbeat file is refreshed this often so orphan_watchdog can tell a live manager from a dead one
+# whose pid Windows reused (limit pm_heartbeat.DEFAULT_MAX_AGE_S = 600 s).
+HEARTBEAT_REFRESH_SECONDS = 60
 LIVE_STOP_STATES = {"untriggered", "open"}
 # S3: how long a live position may go with no live server-side stop covering
 # it before position_manager gives up retrying and flattens. Set to match the
@@ -101,6 +111,11 @@ LIVE_STOP_STATES = {"untriggered", "open"}
 MAX_UNPROTECTED_SECONDS = 2 * POLL_INTERVAL_SECONDS  # 4s
 # Time exit: retry a FAILED time-exit close no more often than this (the stop stays live meanwhile).
 TIME_EXIT_RETRY_SECONDS = 10
+# R2 breakeven: stop_resized reason a journal replay uses to know the move is done; failed edits tried before the
+# manager gives up (the old stop stays); BTC-PERPETUAL price tick (exchange constant, = plan_compiler.PRICE_TICK).
+BREAKEVEN_REASON = "breakeven_first_target"
+BREAKEVEN_MAX_ATTEMPTS = 5
+PRICE_TICK = 0.5
 PLANS_DIR = Path(__file__).resolve().parent / "plans"
 HALT_PATH = Path(__file__).resolve().parent / "HALT"  # FIX3 M5: same file executor preflight refuses on
 
@@ -237,8 +252,65 @@ def _entry_fill_ts(plan_id):
     return None
 
 
+def _plan_breakeven_first_target(plan_id):
+    """R2: the plan file's breakeven_after_first_target is exactly True. Missing / unreadable / anything else -> False
+    (the stop is then left where it is)."""
+    try:
+        import json
+        return json.loads((PLANS_DIR / f"{plan_id}.json").read_text(encoding="utf-8")).get(
+            "breakeven_after_first_target") is True
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def _breakeven_done(plan_id):
+    """True once a stop_resized(reason=breakeven_first_target) is journaled: the move is never repeated after a restart."""
+    return any(ev["event_type"] == "stop_resized" and (ev["data"] or {}).get("reason") == BREAKEVEN_REASON
+               for ev in journal.read_events(plan_id))
+
+
+def _entry_avg_price(plan_id):
+    """Average entry fill price from the journal's entry order_filled events (inverse contract: sum(size) /
+    sum(size / price), FORMULAS.md 11.4 - the same average executor uses for its targets). None if any filled entry
+    order lacks a price or nothing filled: breakeven is then skipped rather than guessed."""
+    entry_ids, fills = set(), {}
+    for ev in journal.read_events(plan_id):
+        d, t = ev["data"], ev["event_type"]
+        if t == "order_placed" and str(d.get("label", "")).startswith("entry"):
+            entry_ids.add(d["order_id"])
+        elif t == "order_filled" and d.get("order_id") in entry_ids:
+            try:
+                fills[d["order_id"]] = (int(d.get("filled_amount") or 0), float(d.get("average_price") or 0))
+            except (TypeError, ValueError):
+                fills[d["order_id"]] = (1, 0.0)      # unreadable price on a fill -> unverifiable below
+    filled = [(a, p) for a, p in fills.values() if a > 0]
+    if not filled or any(not (p > 0 and math.isfinite(p)) for _, p in filled):
+        return None
+    return sum(a for a, _ in filled) / sum(a / p for a, p in filled)
+
+
+def _breakeven_trigger(avg, is_long):
+    """Stop trigger at the average entry, snapped to the tick toward profit (LONG up, SHORT down): never on the
+    losing side of the entry."""
+    ticks = round(avg, 2) / PRICE_TICK
+    return (math.ceil(ticks) if is_long else math.floor(ticks)) * PRICE_TICK
+
+
 def _signed(size):
     return int(size or 0)
+
+
+def _beat_heartbeat(plan_id, last, now=None):
+    """Refresh the heartbeat file at most every HEARTBEAT_REFRESH_SECONDS; returns the new last-refresh time.
+    A failure is swallowed and not retried until the next interval: it must never stop position protection."""
+    now = time.time() if now is None else now
+    if now - last < HEARTBEAT_REFRESH_SECONDS:
+        return last
+    try:
+        pm_heartbeat.beat(plan_id)
+    except Exception as he:  # noqa: BLE001
+        print(f"WARNING: could not refresh heartbeat ({he!r})")
+    return now
 
 
 def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, token=None):
@@ -271,11 +343,15 @@ def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=Fal
     is_long = entry_side == "BUY"
     token = token or _retry_call(do.authenticate)
     unprotected_since = None  # S3: set when a poll first observes the stop not live
+    hb_last = time.time()  # the wrapper wrote the heartbeat just before this
     t_end = time.time() + max_seconds if max_seconds else None
     max_hold_s = (_plan_max_hold_minutes(plan_id) or 0) * 60 or None
     entry_ts = _entry_fill_ts(plan_id) if max_hold_s else None
     time_exit_pending = False   # a time-exit close was attempted: a later flat is explained by it
     last_te_try = None
+    be_enabled = _plan_breakeven_first_target(plan_id)             # R2: plan asks for breakeven after target 1
+    be_done = be_enabled and _breakeven_done(plan_id)              # journal replay: never moved twice across restarts
+    be_attempts = 0
 
     def time_exit(elapsed):
         """Close-first time exit (same ordering as kill_switch): reduce-only market close, verify flat,
@@ -322,6 +398,39 @@ def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=Fal
                                                          "target_filled": tf})
         return {"plan_id": plan_id, "status": "closed", "stop_state": "time_exit", "target_filled": tf,
                 "reason": "time_exit"}
+
+    def breakeven_move(size):
+        """R2: edit the live stop's trigger to the average entry (amount stays |position|). True once done. Never
+        halts and never loosens protection: no verifiable entry average, a mark at/through the entry (the edit would
+        fire the stop at once) or an edit error all leave the existing stop in place; edit errors are retried until
+        BREAKEVEN_MAX_ATTEMPTS."""
+        nonlocal be_attempts
+        avg = _entry_avg_price(plan_id)
+        if avg is None:
+            be_attempts = BREAKEVEN_MAX_ATTEMPTS
+            journal.append_event(plan_id, "error", {"context": "breakeven_skipped",
+                                                    "error": "no verifiable entry average in the journal - stop left in place"})
+            return False
+        trigger = _breakeven_trigger(avg, is_long)
+        try:
+            mark = do.get_ticker(instrument)["mark_price"]
+        except Exception as me:  # noqa: BLE001 - optional step: try again next poll
+            print(f"WARNING: breakeven deferred, mark price unreadable ({me!r})", flush=True)
+            return False
+        if (is_long and mark <= trigger) or (not is_long and mark >= trigger):
+            return False
+        try:
+            do.edit(token, stop["order_id"], amount=size, trigger_price=trigger)
+        except Exception as ee:  # noqa: BLE001 - the old stop is untouched and still protects
+            be_attempts += 1
+            journal.append_event(plan_id, "error", {"context": "breakeven_move", "attempt": be_attempts,
+                                                    "error": repr(ee)[:300]})
+            return False
+        stop["trigger"] = trigger
+        journal.append_event(plan_id, "stop_resized", {"order_id": stop["order_id"], "amount": size,
+                                                       "new_stop_price": trigger, "reason": BREAKEVEN_REASON,
+                                                       "entry_avg": round(avg, 2)})
+        return True
 
     def _reauth():
         nonlocal token
@@ -384,6 +493,7 @@ def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=Fal
         raise ManagerHalted(f"flattened + halted: {reason}")
 
     while True:
+        hb_last = _beat_heartbeat(plan_id, hb_last)  # first thing every poll: no early exit of the body can skip it
         pos = _signed(rd(do.get_position, instrument).get("size"))
         # journal target fills we can see (audit only; position is the truth)
         for oid, tg in targets.items():
@@ -514,6 +624,12 @@ def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=Fal
                                          {"reason": f"position grew to {size} outside the plan - stop resized to "
                                                     f"cover, manager halted", "by": "position_manager"})
                     raise ManagerHalted(f"plan {plan_id}: position grew outside plan; stop covers {size}; halted")
+            # R2: first target completely filled AND the position really shrank -> stop to breakeven, once.
+            # (Reached only with a live stop already sized to |position|, i.e. after the G1 resize above.)
+            if (be_enabled and not be_done and be_attempts < BREAKEVEN_MAX_ATTEMPTS
+                    and size == stop["amount"] and size < entry_filled_total
+                    and any(t["amount"] > 0 and t["filled"] >= t["amount"] for t in targets.values())):
+                be_done = breakeven_move(size)
 
         if once or (t_end and time.time() >= t_end):
             return {"plan_id": plan_id, "status": "managing", "position": pos, "stop_amount": stop["amount"],

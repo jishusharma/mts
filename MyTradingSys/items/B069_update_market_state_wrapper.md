@@ -47,3 +47,5 @@ already being written by other paths. But the WARN line is noise and
 the underlying failure has not been seen.
 
 # END
+
+2026-10-04: wrapper already sent stderr to runtime_data/ums.log (not NUL); now the log line carries exit=N and the ums.log tail on failure, so log and exit code agree. Pinned by test_b074_rule_order.py::test_b069_* (fails pre-change). Root cause of the original exit=1 NOT reproduced (ums.log from the last run is clean); item stays open for that. Session MTS-2026-10-04-1034Z-APP-BLD-b074-b069-wrapper.

@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-11T08:06:15Z",
+  "commands": [
+    "python -m unittest discover -s MyTradingSys/execution -p test_auto_trader.py"
+  ],
+  "created": "2026-10-10T18:29:08Z",
+  "depends_on": [],
+  "done_when": "Operator answer in note, then the label test green with row B118 closed, or a DSA grid result file with the verdict.",
+  "from_inbox": "",
+  "goal": "Settle the unsourced layer bracket in auto_trader (stop_pct 1.0, targets 2, size 100, hours 2.0, max_age_bars 1.2, max_hold_bars 8): label it sampling-only, or run the existing 54-cell grid first.",
+  "id": "B118",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "Needs an operator choice between label-only and grid-first; the grid needs Dumps/backtest raw 1m data (its default data root).",
+  "prio": 3,
+  "refine_tries": 1,
+  "refined_by": "refiner 2026-10-10",
+  "refs": [
+    "B118"
+  ],
+  "result": "layers.bracket_source=SAMPLING, test_auto_trader 96 pass, quick gate green",
+  "scope_in": [
+    "MyTradingSys/execution/auto_trader.py (layers config L69)",
+    "MyTradingSys/backtest/layers/run_bracket_grid.py (exists, 27 tests)",
+    "MyTradingSys/items/B118_layer_bracket_unsourced.md"
+  ],
+  "scope_out": [
+    "tuning any value",
+    "restart"
+  ],
+  "size": "S",
+  "sources": [
+    "BUGS.md:229 row B118",
+    "MyTradingSys/items/B118_layer_bracket_unsourced.md",
+    "MyTradingSys/execution/auto_trader.py:69 (layers config)",
+    "MyTradingSys/backtest/layers/run_bracket_grid.py:1-20 (54-cell grid driver)"
+  ],
+  "state": "done",
+  "steps": [
+    "Operator picks: (1) label layer trades source=SAMPLING in the log and config comment, keep values; or (2) DSA runs run_bracket_grid.py --layer all, frozen bracket still NO-SOURCE.",
+    "Option 1: add a config key and a fail-first test that every layer trade log row carries it."
+  ],
+  "tests": "test_auto_trader.py: layer trade log row carries bracket_source=SAMPLING (new).",
+  "title": "Layer bracket in auto_trader is unsourced: sampling-only label or grid run"
+}

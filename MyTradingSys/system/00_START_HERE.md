@@ -1,3 +1,7 @@
+> **SUPERSEDED (2026-10-08).** Frozen history from the September build. For current state read
+> `MyTradingSys/research/STATUS.md`, then `MyTradingSys/system/LESSONS_LEARNED.md` (entry order is in CLAUDE.md).
+> Where this file disagrees with CLAUDE.md or SURFACE_POLICY.md, those win.
+
 # [BLOCKED] /mnt/agents/temp/ IS FORBIDDEN FOR PROJECT FILES
 # The canonical project root is: C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\
 # Temp contains ephemeral session uploads — ignore everything there.

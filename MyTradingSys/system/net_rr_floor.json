@@ -1,0 +1,8 @@
+{
+  "net_rr_floor": 1.25,
+  "owner": "operator 2026-10-02: 2.0 was D1(a), NO-SOURCE; lowered for testnet collection; restore after P4",
+  "decision_owner": "operator (Control Room decision: restore 2.0 / keep 1.25 / pause Tom). Default until answered: keep 1.25 on testnet",
+  "review_by_utc": "2026-11-10",
+  "on_review": "P4 closed NO REPLICATION 2026-10-08, so it no longer gates a restore; at review_by_utc the operator answer replaces this line or the floor is re-confirmed with a new review date",
+  "readers": "scripts/core/start-trading-day.ps1 (every cycle), MyTradingSys/runtime/net_rr_floor.py (backtest/verdict.py, runtime/math_object_builder.py, execution/auto_trader.py), src/main/java/datafeed/NetRrFloor.java"
+}

@@ -3,6 +3,15 @@ param([string]$AlertFile)
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
+Add-Type -ReferencedAssemblies System.Windows.Forms -TypeDefinition @"
+using System; using System.Runtime.InteropServices; using System.Windows.Forms;
+public class AlertForm : Form {
+    protected override bool ShowWithoutActivation { get { return true; } }
+    [StructLayout(LayoutKind.Sequential)] struct FLASHWINFO { public uint cbSize; public IntPtr hwnd; public uint dwFlags; public uint uCount; public uint dwTimeout; }
+    [DllImport("user32.dll")] static extern bool FlashWindowEx(ref FLASHWINFO f);
+    public void Flash() { FLASHWINFO f = new FLASHWINFO(); f.cbSize = (uint)Marshal.SizeOf(f); f.hwnd = this.Handle; f.dwFlags = 3 | 12; f.uCount = 10; f.dwTimeout = 0; FlashWindowEx(ref f); }
+}
+"@
 # Hide the parent console window (the flash). Form is a separate window.
 Add-Type -Name Win32 -Namespace ConHide -MemberDefinition @"
 [DllImport("kernel32.dll")] public static extern IntPtr GetConsoleWindow();
@@ -15,7 +24,7 @@ try {
 
 $alert = Get-Content $AlertFile -Raw -Encoding UTF8 | ConvertFrom-Json
 
-$form = New-Object System.Windows.Forms.Form
+$form = New-Object AlertForm
 $form.Text = $alert.title
 $form.Width = 600
 $form.Height = 680
@@ -94,5 +103,6 @@ $timer.Add_Tick({ $timer.Stop(); $form.Close() })
 $timer.Start()
 
 [console]::beep(900, 180)
+$form.Add_Shown({ $form.Flash() })
 $form.ShowDialog() | Out-Null
 $form.Dispose()

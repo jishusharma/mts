@@ -28,5 +28,5 @@ Comprehensive tracking of all findings from FIX3 and FIX4 efforts. Only rows wit
 | L3 | FIXED | b05c1cf (FIX4) | Market entry B079 post-fill breach -> fail_closed |
 | L4 | FIXED | 879d4af | Unprotected-window timer on monotonic() |
 | L5 | FIXED | b05c1cf (FIX4) | Sleep after entry-deadline cancel pass |
-| L6 | OPEN | 0bbace1 (part 1) | Part 1 (re-arm): committed; Part 2 (PnL source) DEFERRED for testnet decision 2026-09-28 |
+| L6 | OPEN | 0bbace1 (part 1), 1542151 + 924d7a0 (part 2) | Part 1 (re-arm) committed. Part 2 (PnL source = transaction log + session UPL, mainnet_pnl.py) IMPLEMENTED; open only the B149 question: settlement/funding are excluded and session UPL resets at 08:00 UTC, unverified on a captured testnet log (tool: execution/capture_txlog_settlement.py). Must close before mainnet |
 | L7 | FIXED | 879d4af | Missing pnl_usd raises ValueError |

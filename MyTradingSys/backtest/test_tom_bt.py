@@ -233,3 +233,20 @@ class TestSummarize(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestReportAdapterLine(unittest.TestCase):
+    def test_adapter_line_uses_promoted_sources(self):
+        # 3fdf8cb promoted ArchiveHistoricalSource/MarketDataSnapshot from .new to tracked .java; the report must not need .new files
+        import tempfile
+        from pathlib import Path
+        import tom_bt_report as TR
+        with tempfile.TemporaryDirectory() as td:
+            d = Path(td) / "src/main/java/datafeed"
+            d.mkdir(parents=True)
+            (d / "ArchiveHistoricalSource.java").write_bytes(b"a")
+            (d / "MarketDataSnapshot.java").write_bytes(b"m")
+            line = TR.adapter_line(td)
+        self.assertIn("ArchiveHistoricalSource.java ", line)
+        self.assertIn("MarketDataSnapshot.java ", line)
+

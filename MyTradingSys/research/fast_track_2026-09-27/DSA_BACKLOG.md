@@ -33,3 +33,10 @@ except as a .new proposal. Tom is core; every other system is a separate layer, 
 Hold lifted by operator 2026-09-30: run as planned; Opus EXTRACTION_METHOD_V2 may add a later re-extraction.
 - [x] 2101-2104 Fabio recon: 0KyIEdvVKMQ, LQvv5xgy_ik, fZlNGWvd2Ko, FawPrRUGNpk (specs in nuc_specs/)
 - [x] 2105-2113 Tom recon: 7BQPMJ39WpI, 96iPFDpXEcU, HySZZSjMxF8, WQ_OAdz-PJ8, aursfDVYzUk, gWjHq5UMisY, hQ8sOq67x5o, pgdmKLJ0hhA, zAwEX_tRUfE
+
+## E. Options module backtests (MyTradingSys/options/, 2026-10-09; read options/OPTIONS_PLAN.md first)
+- [ ] 2301 (packed 2026-10-09) Independent audit of the options backtest engine (look-ahead, fills, fees, stats) -> options/research/BT_AUDIT_DSA_2301.md; defects only
+- [ ] 2302 (packed 2026-10-09) Spec-derived hand-computed tests for R1/R2/R3/R4 -> options/tests/pending_test_bt_independent.py; feeder runs them against strategies.py and files failures as defects
+- [ ] 2303 (packed 2026-10-09) Specs R8-R13 (wheel, skew filter, max pain, DVOL regime, basis carry, gamma scalp) from practitioner chatter -> options/backtest/BT_SPEC_V2_CANDIDATES.md
+- [ ] GROK channel (operator pastes): options/research/GROK_PROMPT_options_traders.md; save reply as options/research/GROK_REPLY_options_traders_<date>.md, then feed it to 2303 as SCOPE
+- [ ] (after 2301 verdict and data backfill to 2021) feeder runs `python MyTradingSys/options/backtest/run_grid.py --strategy all` and commits the report with IS/OOS + PBO; no profitability claim before then

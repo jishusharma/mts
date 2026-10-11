@@ -3,7 +3,7 @@
 Opened: 2026-09-27 by session Claude Sonnet 5 (execution-layer audit, continuing T050 review).
 Severity: HIGH (a governance cap can be silently exceeded; caps are the
 whole point of a "conservative first slice" execution layer).
-Status: OPEN.
+Status: CLOSED. Receipt: 5e387a1, b05c1cf (full receipt in the BUGS.md B079 row).
 
 ## DESCRIPTION
 

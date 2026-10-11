@@ -1,0 +1,292 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>CBP Consensus Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f5f2;
+    --surface: #ffffff;
+    --surface-2: #efeee9;
+    --border: #ddd9d0;
+    --text: #1c1b19;
+    --text-dim: #6f6a60;
+    --accent: #2f6f5e;
+    --accent-soft: #e4efec;
+    --good: #1f7a4d;
+    --good-soft: #e3f1e8;
+    --warn: #96650a;
+    --warn-soft: #fbf0dc;
+    --bad: #a4302a;
+    --bad-soft: #f7e6e4;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12151a;
+      --surface: #191d24;
+      --surface-2: #1f242c;
+      --border: #2c313b;
+      --text: #e7e6e2;
+      --text-dim: #8b9099;
+      --accent: #5fb39c;
+      --accent-soft: #1c2b27;
+      --good: #4fbd82;
+      --good-soft: #1a2b21;
+      --warn: #d9a441;
+      --warn-soft: #2e2717;
+      --bad: #e2726a;
+      --bad-soft: #2e1c1a;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12151a;
+    --surface: #191d24;
+    --surface-2: #1f242c;
+    --border: #2c313b;
+    --text: #e7e6e2;
+    --text-dim: #8b9099;
+    --accent: #5fb39c;
+    --accent-soft: #1c2b27;
+    --good: #4fbd82;
+    --good-soft: #1a2b21;
+    --warn: #d9a441;
+    --warn-soft: #2e2717;
+    --bad: #e2726a;
+    --bad-soft: #2e1c1a;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    padding-inline: 16px;
+    padding-block: 28px 48px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+
+  header.page { display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  h1 { font-size: 26px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+  .subline { color: var(--text-dim); font-size: 14px; }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .stat .label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+  .stat .value { font-family: var(--mono); font-size: 19px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .stat .note { font-size: 11.5px; color: var(--text-dim); }
+  .stat.stale .value { color: var(--warn); }
+
+  section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 18px 20px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  section > h2 {
+    font-size: 15px; margin: 0; display: flex; align-items: center; gap: 8px;
+    font-weight: 600;
+  }
+  section > h2 .count {
+    font-family: var(--mono); font-size: 12px; color: var(--text-dim); font-weight: 400;
+  }
+  .section-note { font-size: 13px; color: var(--text-dim); margin-top: -6px; }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--mono); font-size: 11.5px; font-weight: 600;
+    padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+  .pill.not-in { background: var(--good-soft); color: var(--good); }
+  .pill.not-conf { background: var(--warn-soft); color: var(--warn); }
+  .pill.ambiguous { background: var(--bad-soft); color: var(--bad); }
+  .pill.discussed { background: var(--surface-2); color: var(--text-dim); }
+  .pill.stale { background: var(--surface-2); color: var(--text-dim); text-decoration: line-through; opacity: 0.7; }
+  .pill.excluded { background: var(--surface-2); color: var(--text-dim); }
+
+  .tier-tag {
+    font-family: var(--mono); font-size: 10.5px; color: var(--text-dim);
+    border: 1px solid var(--border); border-radius: 5px; padding: 1px 5px;
+  }
+
+  .table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; }
+  table { width: 100%; border-collapse: collapse; min-width: 760px; font-size: 13.5px; }
+  thead th {
+    text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--text-dim); font-weight: 600; padding: 10px 12px; background: var(--surface-2);
+    border-bottom: 1px solid var(--border); position: sticky; top: 0;
+  }
+  tbody td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--surface-2); }
+  .analyst-name { font-weight: 600; }
+  .analyst-sub { display: block; font-size: 11.5px; color: var(--text-dim); font-weight: 400; margin-top: 1px; }
+  .video-date { font-family: var(--mono); font-size: 12.5px; color: var(--text-dim); white-space: nowrap; }
+  .evidence { font-size: 13px; line-height: 1.45; color: var(--text); }
+  .evidence q { color: var(--text-dim); }
+  .flag { color: var(--bad); font-weight: 600; }
+
+  .queue-card {
+    border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px;
+    background: var(--surface-2); display: flex; flex-direction: column; gap: 8px;
+  }
+  .queue-card .top-row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .queue-card .asset { font-family: var(--mono); font-weight: 700; font-size: 15px; }
+  .queue-card .direction { font-family: var(--mono); font-size: 12px; padding: 2px 7px; border-radius: 5px; }
+  .direction.long { background: var(--good-soft); color: var(--good); }
+  .queue-card dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 10px; margin: 0; font-size: 13px; }
+  .queue-card dt { color: var(--text-dim); }
+  .queue-card dd { margin: 0; }
+  .status-badge {
+    font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 5px; letter-spacing: 0.04em;
+  }
+  .status-badge.rejected { background: var(--bad-soft); color: var(--bad); }
+  .reason-box { font-size: 12.5px; color: var(--text-dim); border-left: 2px solid var(--border); padding-left: 10px; }
+
+  .confluence-box {
+    border: 1px solid var(--warn); border-radius: 10px; padding: 14px 16px;
+    background: var(--warn-soft);
+  }
+  .confluence-box h3 { margin: 0 0 8px; font-size: 13.5px; color: var(--warn); }
+  .conf-levels { display: flex; flex-direction: column; gap: 5px; font-size: 13px; }
+  .conf-levels div { display: flex; gap: 8px; }
+  .conf-levels .lvl { font-family: var(--mono); font-weight: 700; min-width: 74px; }
+
+  .alloc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; }
+  .alloc-item {
+    background: var(--surface-2); border-radius: 8px; padding: 10px; text-align: center;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .alloc-item .amt { font-family: var(--mono); font-weight: 600; font-size: 14px; }
+  .alloc-item .name { font-size: 11px; color: var(--text-dim); }
+
+  footer {
+    font-size: 12px; color: var(--text-dim); text-align: center; padding-top: 8px;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  footer .path { font-family: var(--mono); font-size: 11px; }
+
+  @media (max-width: 560px) {
+    h1 { font-size: 21px; }
+    section { padding: 14px; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="page">
+    <span class="eyebrow">CryptoBuyPlan · CBP v2</span>
+    <h1>Consensus Desk</h1>
+    <span class="subline">Cycle-bottom thesis, analyst positions and the live MTS trade queue — rebuilt each time you say "update."</span>
+  </header>
+
+  <div class="stat-row">
+    <div class="stat">
+      <span class="label">Thesis</span>
+      <span class="value" style="color:var(--good)">HOLDS ⚠</span>
+      <span class="note">0/9 say IN, but Jason dissents</span>
+    </div>
+    <div class="stat stale">
+      <span class="label">BTC snapshot</span>
+      <span class="value">$79,812</span>
+      <span class="note">Sep 6 — stale, don't trade on it</span>
+    </div>
+    <div class="stat">
+      <span class="label">Queue</span>
+      <span class="value" style="color:var(--bad)">0 live</span>
+      <span class="note">Krown alert rejected as stale</span>
+    </div>
+    <div class="stat">
+      <span class="label">Confluence</span>
+      <span class="value">82.6–83k</span>
+      <span class="note">4 analysts converge here</span>
+    </div>
+  </div>
+
+  <section>
+    <h2>Analyst read <span class="count">9 vote on thesis · fetched through Sep 27 01:30 IST</span></h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Analyst</th><th>Date</th><th>Call</th><th>Note</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="analyst-name">Benjamin</td><td class="video-date">Sep 26</td><td><span class="pill not-in">NOT IN</span></td><td class="evidence">Higher-low bear pattern, no cycle-low call.</td></tr>
+          <tr><td class="analyst-name">Bob Loukas</td><td class="video-date">Sep 9</td><td><span class="pill not-in">NOT IN</span></td><td class="evidence">"Not because cycle low is in" — reaccumulating early, not capitulating. Highest confidence.</td></tr>
+          <tr><td class="analyst-name">Jala</td><td class="video-date">Sep 26</td><td><span class="pill not-conf">NOT CONFIRMED</span></td><td class="evidence">Cup &amp; handle testing neckline. Discord alt feed still blocked (no bot token).</td></tr>
+          <tr><td class="analyst-name">Krown</td><td class="video-date">Sep 24–25</td><td><span class="pill not-in">NOT IN</span></td><td class="evidence">Bullish setup, not capitulation. His BTC long → <span class="flag">rejected, see queue</span>.</td></tr>
+          <tr><td class="analyst-name">CCU</td><td class="video-date">Sep 23–25</td><td><span class="pill discussed">NOT DISCUSSED</span></td><td class="evidence">Watch only: XRP RSI-MA cross, not yet triggered.</td></tr>
+          <tr><td class="analyst-name">Jason</td><td class="video-date">Sep 22–26</td><td><span class="pill ambiguous">AMBIGUOUS ⚠</span></td><td class="evidence">"Some call July 1 the cycle low" — leans low-already-in, breaks the consensus. ETH/SOL breaking out; XRP $1.70→$2, SOL $120.</td></tr>
+          <tr><td class="analyst-name">Michael</td><td class="video-date">Sep 21</td><td><span class="pill discussed">NOT DISCUSSED</span></td><td class="evidence">Levels only: hold $83k → $92k target; lose $83k = fakeout.</td></tr>
+          <tr><td class="analyst-name">Michaal</td><td class="video-date">Sep 20</td><td><span class="pill excluded">Excluded</span></td><td class="evidence">Bought an unnamed altcoin, +$40k/mo alt PnL. Disclosure, not a setup.</td></tr>
+          <tr><td class="analyst-name">Qriptal</td><td class="video-date">Sep 22</td><td><span class="pill excluded">Excluded</span></td><td class="evidence">Flat, no setup either side. Prior $72–73k bear thesis invalidated.</td></tr>
+          <tr><td class="analyst-name">Rekt</td><td class="video-date">Aug 12</td><td><span class="pill stale">STALE</span></td><td class="evidence">6 weeks old, excluded until refreshed.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Confluence · $82,600–83,000</h2>
+    <div class="confluence-box">
+      <div class="conf-levels">
+        <div><span class="lvl">$82,650</span><span>Krown — 55 EMA target</span></div>
+        <div><span class="lvl">$82,800</span><span>Qriptal — his invalidation, already broken</span></div>
+        <div><span class="lvl">$83,000</span><span>Jason/Michael — breakout level; lose it = fakeout</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>MTS queue</h2>
+    <div class="queue-card">
+      <div class="top-row">
+        <div><span class="asset">BTC</span> <span class="direction long">LONG</span></div>
+        <span class="status-badge rejected">Rejected</span>
+      </div>
+      <dl>
+        <dt>Source</dt><dd>Krown, Sep 25</dd>
+        <dt>Target</dt><dd>55 EMA(4h), snapshot $82,650</dd>
+        <dt>Why rejected</dt><dd>EMA moved since capture; sits past a level already broken (Qriptal, Sep 22)</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section>
+    <h2>Allocation <span class="count">0.200 BTC eq. — unchanged</span></h2>
+    <div class="alloc-grid">
+      <div class="alloc-item"><span class="amt">ETH</span><span class="name">0.061</span></div>
+      <div class="alloc-item"><span class="amt">HBAR</span><span class="name">0.035</span></div>
+      <div class="alloc-item"><span class="amt">QNT</span><span class="name">0.020</span></div>
+      <div class="alloc-item"><span class="amt">ONDO</span><span class="name">0.022</span></div>
+      <div class="alloc-item"><span class="amt">Reserve</span><span class="name">0.062</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Sep 27 · transcripts through 01:30 IST · no fetch since</span>
+  </footer>
+</div>
+
+</body></html>

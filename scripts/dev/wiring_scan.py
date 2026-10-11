@@ -1,0 +1,286 @@
+#!/usr/bin/env python
+"""Wiring scan: which code files does the running system actually reach?
+
+Builds a reference graph over tracked code files (python imports, `python -m` dotted paths, script file names in
+launchers, java class names) and classifies every non-test code file:
+
+  LIVE       reachable from a live launcher (runtime_data/*.vbs, scripts/core|live|sched|worker|operator, mts.ps1, CI)
+  DEV-TOOL   reachable from scripts/dev (the gate and operator tools) but not from a live launcher
+  TEST-ONLY  referenced by tests only: built and tested, never run by anything -> wire it or remove it
+  ORPHAN     referenced by nothing at all
+
+The scan reads code, not docs. Names are matched textually, so a launcher that builds a module name from
+pieces will show its target as TEST-ONLY/ORPHAN; confirm those by hand before deleting anything.
+
+Usage: python scripts/dev/wiring_scan.py [--check] [--json out.json] [--md out.md]
+
+The gate runs --check: every TEST-ONLY/ORPHAN file must be declared in MyTradingSys/system/wiring_registry.json
+(TOOL, REPRO, PARKED, WIRE) and every declaration must still be true. Work cannot go quietly unwired again.
+"""
+import argparse
+import ast
+import json
+import os
+import re
+import subprocess
+import sys
+from collections import defaultdict
+
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+CODE_EXT = {'.py', '.ps1', '.vbs', '.cmd', '.bat', '.java', '.yml', '.yaml'}
+SKIP_DIRS = {'.git', 'target', '__pycache__', 'node_modules', '_archive', 'archive', 'raw_transcripts_canonical',
+             'extracts', 'my_charts', '.pytest_cache'}
+LIVE_ROOT_PREFIX = ('runtime_data/', 'scripts/core/', 'scripts/live/', 'scripts/sched/', 'scripts/worker/',
+                    'scripts/operator/', 'scripts/schedules/', 'scripts/monitor/', '.github/')
+LIVE_ROOT_FILES = {'mts.ps1'}
+TEST_RE = re.compile(r'(^|/)(test_[^/]*|[^/]*_test\.py|[^/]*Test\.java)$')
+NUL = bytes([0])
+BACKSLASH = chr(92)
+
+REGISTRY_PATH = 'MyTradingSys/system/wiring_registry.json'
+DISPOSITIONS = {
+    'TOOL': 'run by hand on purpose (backtest driver, diagnostic, maintenance script)',
+    'REPRO': 'reproduces a number recorded in a named note; kept so the note can be re-run',
+    'PARKED': 'built for an item that is parked; wire it or archive it when the item resolves',
+    'WIRE': 'built and tested but nothing runs it yet; ref names the item that finishes the job',
+}
+UNWIRED = ('TEST-ONLY', 'ORPHAN')
+
+
+def is_test(p):
+    return bool(TEST_RE.search(p)) or '/tests/' in p or p.startswith('src/test/') or '/test/' in p
+
+
+def _wanted(rel):
+    parts = rel.split('/')
+    if any(x in SKIP_DIRS for x in parts[:-1]):
+        return False
+    ext = os.path.splitext(rel)[1].lower()
+    if ext not in CODE_EXT:
+        return False
+    if rel.startswith('runtime_data/') and ext not in ('.vbs', '.cmd', '.bat', '.ps1'):
+        return False
+    return True
+
+
+def collect(root):
+    """Tracked code files (git ls-files), so CI and a work tree agree; a plain walk when git is unavailable."""
+    try:
+        r = subprocess.run(['git', 'ls-files', '-z'], capture_output=True, cwd=root, check=True)
+        names = [n.decode('utf-8', 'replace') for n in r.stdout.split(NUL) if n]
+        found = [n for n in names if _wanted(n) and os.path.exists(os.path.join(root, n))]
+        if found:
+            return found
+    except (OSError, subprocess.CalledProcessError):
+        pass
+    out = []
+    for d, dirs, files in os.walk(root):
+        rel = os.path.relpath(d, root).replace(BACKSLASH, '/')
+        dirs[:] = [x for x in dirs if x not in SKIP_DIRS]
+        for f in files:
+            p = (rel + '/' + f) if rel != '.' else f
+            if _wanted(p):
+                out.append(p)
+    return out
+
+
+def build(root):
+    code = collect(root)
+    text = {}
+    for p in code:
+        try:
+            with open(os.path.join(root, p), encoding='utf-8', errors='replace') as fh:
+                text[p] = fh.read().replace(BACKSLASH + '.', '.')
+        except OSError:
+            text[p] = ''
+    by_base = defaultdict(list)
+    for p in code:
+        by_base[os.path.basename(p)].append(p)
+    dotted = {}
+    for p in code:
+        if p.endswith('.py'):
+            d = p[:-3].replace('/', '.')
+            dotted[d] = p
+            if d.endswith('.__init__'):
+                dotted[d[:-9]] = p
+    java = {os.path.splitext(os.path.basename(p))[0]: p for p in code if p.endswith('.java')}
+    edges = defaultdict(set)
+
+    def add(a, b):
+        if a != b:
+            edges[a].add(b)
+
+    def resolve(name):
+        parts = name.split('.')
+        while parts:
+            d = '.'.join(parts)
+            if d in dotted:
+                return dotted[d]
+            c = [v for k, v in dotted.items() if k.endswith('.' + d)]
+            if len(c) == 1:
+                return c[0]
+            parts.pop()
+        return None
+
+    file_ref = re.compile(r'[\w\-./\\]*?([\w\-]+\.(?:py|ps1|vbs|cmd|bat))')
+    mod_ref = re.compile(r'\bMyTradingSys[.\\/][\w.\\/]+')
+    for p in code:
+        t = text[p]
+        if p.endswith('.py'):
+            try:
+                tree = ast.parse(t)
+            except (SyntaxError, ValueError):
+                tree = None
+            pkg = os.path.dirname(p).replace('/', '.')
+            for n in (ast.walk(tree) if tree else ()):
+                if isinstance(n, ast.Import):
+                    for a in n.names:
+                        r = resolve(a.name)
+                        if r:
+                            add(p, r)
+                elif isinstance(n, ast.ImportFrom):
+                    base = n.module or ''
+                    if n.level:
+                        up = pkg.split('.')
+                        up = up[:len(up) - (n.level - 1)]
+                        base = '.'.join(up + ([base] if base else []))
+                    r = resolve(base) if base else None
+                    if r:
+                        add(p, r)
+                    for a in n.names:
+                        r2 = resolve((base + '.' if base else '') + a.name)
+                        if r2:
+                            add(p, r2)
+        for m in file_ref.finditer(t):
+            c = by_base.get(m.group(1), [])
+            if len(c) == 1:
+                add(p, c[0])
+            elif len(c) > 1:
+                frag = m.group(0).replace(BACKSLASH, '/').lstrip('./')
+                for q in c:
+                    if q.endswith(frag):
+                        add(p, q)
+        for m in mod_ref.finditer(t):
+            d = re.sub(r'[\\/]', '.', m.group(0)).rstrip('.')
+            if d.endswith('.py'):
+                d = d[:-3]
+            r = resolve(d)
+            if r:
+                add(p, r)
+        if p.endswith('.java'):
+            for cname, q in java.items():
+                if q != p and re.search(r'\b' + re.escape(cname) + r'\b', t):
+                    add(p, q)
+        elif p.endswith(('.ps1', '.vbs', '.cmd', '.yml', '.yaml')) and 'datafeed.Main' in t:
+            main_java = 'src/main/java/datafeed/Main.java'
+            if main_java in text:
+                add(p, main_java)
+    return code, edges
+
+
+def reach(roots, edges, skip_tests):
+    seen = set(roots)
+    stack = list(roots)
+    while stack:
+        x = stack.pop()
+        for y in edges.get(x, ()):
+            if y in seen or (skip_tests and is_test(y)):
+                continue
+            seen.add(y)
+            stack.append(y)
+    return seen
+
+
+def classify(root):
+    code, edges = build(root)
+    live_roots = [p for p in code if (p.startswith(LIVE_ROOT_PREFIX) or p in LIVE_ROOT_FILES) and not is_test(p)]
+    dev_roots = [p for p in code if p.startswith('scripts/dev/') and not is_test(p)]
+    test_roots = [p for p in code if is_test(p)]
+    live = reach(live_roots, edges, True)
+    dev = reach(dev_roots, edges, True)
+    tested = reach(test_roots, edges, False)
+    res = {}
+    for p in code:
+        if is_test(p):
+            continue
+        res[p] = 'LIVE' if p in live else 'DEV-TOOL' if p in dev else 'TEST-ONLY' if p in tested else 'ORPHAN'
+    return res
+
+
+def load_registry(root):
+    try:
+        with open(os.path.join(root, REGISTRY_PATH), encoding='utf-8') as fh:
+            return json.load(fh).get('entries', {})
+    except (OSError, ValueError):
+        return {}
+
+
+def check(res, registry):
+    """Errors for the gate. Every unwired file must be declared; a declaration must still be true."""
+    errors = []
+    for p in sorted(k for k, v in res.items() if v in UNWIRED and k not in registry):
+        errors.append('UNDECLARED %s: %s, referenced by %s. Wire it, archive it (git mv to MyTradingSys/archive/), '
+                      'or add it to %s with a disposition and a reason.'
+                      % (res[p], p, 'tests only' if res[p] == 'TEST-ONLY' else 'nothing', REGISTRY_PATH))
+    for p, e in sorted(registry.items()):
+        if p not in res:
+            errors.append('STALE %s: file is gone or is not code; remove the entry.' % p)
+            continue
+        if res[p] not in UNWIRED:
+            errors.append('STALE %s: now %s (something runs it); remove the entry.' % (p, res[p]))
+        if not isinstance(e, dict) or e.get('disp') not in DISPOSITIONS:
+            errors.append('BAD %s: disp must be one of %s.' % (p, sorted(DISPOSITIONS)))
+            continue
+        if not str(e.get('why', '')).strip():
+            errors.append('BAD %s: why is empty.' % p)
+        if e['disp'] == 'WIRE' and not str(e.get('ref', '')).strip():
+            errors.append('BAD %s: WIRE needs ref (the item that finishes the wiring).' % p)
+    return errors
+
+
+def last_commit(root, p):
+    try:
+        r = subprocess.run(['git', 'log', '-1', '--format=%ad', '--date=short', '--', p],
+                           capture_output=True, text=True, cwd=root)
+        return r.stdout.strip()
+    except OSError:
+        return ''
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--json')
+    ap.add_argument('--md')
+    ap.add_argument('--check', action='store_true', help='exit 1 on undeclared unwired files or stale declarations')
+    ap.add_argument('--root', default=ROOT)
+    a = ap.parse_args(argv)
+    res = classify(a.root)
+    counts = defaultdict(int)
+    for v in res.values():
+        counts[v] += 1
+    print(dict(counts))
+    if a.json:
+        with open(a.json, 'w', encoding='utf-8', newline='\n') as fh:
+            json.dump(res, fh, indent=1, sort_keys=True)
+    if a.md:
+        reg = load_registry(a.root)
+        lines = ['# WIRING SCAN', '', 'Generated by scripts/dev/wiring_scan.py. Counts: ' +
+                 ', '.join('%s %d' % (k, counts[k]) for k in sorted(counts)), '']
+        for cls in UNWIRED:
+            lines += ['## ' + cls, '', '| file | declared | last commit |', '|---|---|---|']
+            for p in sorted(k for k, v in res.items() if v == cls):
+                lines.append('| %s | %s | %s |' % (p, reg.get(p, {}).get('disp', '-'), last_commit(a.root, p)))
+            lines.append('')
+        with open(a.md, 'w', encoding='utf-8', newline='\n') as fh:
+            fh.write('\n'.join(lines))
+    if a.check:
+        errors = check(res, load_registry(a.root))
+        for e in errors:
+            print('FAIL:', e)
+        print('wiring check:', 'FAIL' if errors else 'PASS')
+        return 1 if errors else 0
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

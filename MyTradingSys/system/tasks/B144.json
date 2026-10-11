@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-11T04:35:09Z",
+  "commands": [
+    "PATH=C:/tools/jdk-17.0.18/bin:$PATH mvn -q test -Dtest='CountSignalsD4Test,SetupCandidatesBuilder*Test,StateCodeEmitterTest,MarketDataSnapshotTest'"
+  ],
+  "created": "2026-10-10T18:29:05Z",
+  "depends_on": [],
+  "done_when": "mvn test green; countSignals ignores the volume spike; proof JSON still carries volume_spike; result lists the proof_count thresholds found; commit shipped.",
+  "from_inbox": "",
+  "goal": "Stop the NO-SOURCE volume spike (2.0x over 240 one-minute bars) from counting toward proof_count; operator D17 (2026-10-10): screener-only now. It stays in the proof JSON.",
+  "id": "B144",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "Row B144 stays OPEN after this card: P06 / StateCodeEmitter removal is the second half (needs a decision on what the emitter outputs instead).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "refiner 2026-10-10",
+  "refs": [
+    "B144"
+  ],
+  "result": "countSignals ignores volume spike (SetupCandidatesBuilder.java:568); CountSignalsD4Test.volumeSpike_doesNotCount_B144 red old (1) green new; mvn 89 tests green; quick gate green. proof_count thresholds found, unchanged: start-trading-day.ps1:190, test_b076 text '<3 WAIT_PROOF; 3-4 WATCH; >=5 SETUP_FORMING', test_b074 uses 5, Java score raw += proofCount*7 (L178). Live only via Java window.",
+  "scope_in": [
+    "src/main/java/datafeed/SetupCandidatesBuilder.java (countSignals, L568)",
+    "src/test/java/datafeed/CountSignalsD4Test.java",
+    "src/test/java/datafeed/SetupCandidatesBuilderRulesTest.java (proofCount helper L226-250)"
+  ],
+  "scope_out": [
+    "P06 detection L775-781 and StateCodeEmitter VOL_RATIO_THRESHOLD (L52, L338): removing them changes the emitted state code, needs its own card at the Java window",
+    "proof bands 3 and 5 (B117)",
+    "restart or deploy"
+  ],
+  "size": "S",
+  "sources": [
+    "BUGS.md:255 row B144 (D17 2026-10-10 'Screener-only now, remove at next Java window'; finding: SetupCandidatesBuilder countSignals counts it)",
+    "MyTradingSys/items/B144_exhaustion_proxy_unsourced_params.md",
+    "MyTradingSys/research/no_source_sweep_2026-10-09/RESULT.md (B144: NOT FOUND in 154 files)",
+    "src/main/java/datafeed/SetupCandidatesBuilder.java:568"
+  ],
+  "state": "done",
+  "steps": [
+    "Add test volumeSpike_doesNotCount_B144 to CountSignalsD4Test (same reflection helpers): volumeSpikeDetected and volumeSpikeAtLevel true, nothing else set: countSignals is 0 for long and short. Red on old code (returns 1).",
+    "Delete `if (volumeSpikeDetected && volumeSpikeAtLevel) count++;` at SetupCandidatesBuilder.java:568; leave a comment in the style of the D4 speed line: B144 no source, still emitted in the proof JSON.",
+    "SetupCandidatesBuilderRulesTest.proofCount uses 6 slots with volume_spike as the 5th (index 4): drop it (5 counted signals) and fix expected numbers; read why any other test is red, never weaken one.",
+    "grep proof_count thresholds (start-trading-day.ps1 bands, tests) and list them in the --result; do not change them.",
+    "Run the mvn command. Reuse the Java-window desk task from B142 if open; else post one (see B142 step 5)."
+  ],
+  "tests": "CountSignalsD4Test.volumeSpike_doesNotCount_B144 (new): red on old code (count 1), green after.",
+  "title": "Stop counting the unsourced volume spike in proof_count"
+}

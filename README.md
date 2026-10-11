@@ -24,10 +24,10 @@ Copy that file into a fresh chat to bring the AI up to speed.
 ## Folders
 
     MyTradingSys/     the decision system
-      mts/runtime/      live state and Python math layer
-      mts/conditions/   rule files
-      mts/research/     written findings
-      mts/tests/        test suite
+      runtime/          live state and Python math layer
+      conditions/       rule files
+      research/         written findings
+      tests/            test suite
       system/           reference docs
       methodology/      research gate
 
@@ -63,8 +63,7 @@ When rules conflict:
 
 ## Rule of thumb
 
-The tree is the map. Do not keep a separate index file. Run
-"git ls-files" to see every tracked path. Run "git ls-files <folder>"
-to see one folder.
+The tree is the map. The one index is MyTradingSys/system/03_FILE_INDEX.md (one row per
+new file; the doc tests enforce it). For every tracked path run "git ls-files".
 
 # END

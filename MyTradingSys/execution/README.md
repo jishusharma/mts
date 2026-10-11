@@ -22,9 +22,10 @@ Expected shape once a key exists, testnet.secret.json:
   "env": "test"
 }
 
-## Files
+## Operator contracts
 
-deribit_client.py - phase 1: public (unauthenticated) read-only client.
-No credentials used or required. Fetches BTC-PERPETUAL ticker from
-test.deribit.com to prove the network path and client shape before any
-key exists.
+- execution/HALT: manual brake, and also written automatically by executor fail_closed and position_manager flatten_halt, and by kill_switch --confirm KILL before anything else; nothing trades until an operator deletes it
+- execution/HALT_DAILY_LOSS: written by daily_loss_monitor on breach, on unreadable state, and after 3 consecutive monitor failures; blocks if its date is today, future, malformed, or the file is unreadable; a valid past date only warns
+- plan_id must match [A-Za-z0-9_-]{1,24}
+- Testnet suites refuse to start while either HALT file exists
+- Offline gate: python scripts/dev/run_all_tests.py (use --quick to skip Maven + backtest)

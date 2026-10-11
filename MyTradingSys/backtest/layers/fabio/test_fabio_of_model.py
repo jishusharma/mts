@@ -42,14 +42,33 @@ class TestProfile(unittest.TestCase):
 
 class TestSessions(unittest.TestCase):
     def test_sequence_and_state(self):
-        seq = M.session_sequence([0, 86400000])
+        seq = M.session_sequence([0, 86400000])   # 1970-01-01/02: US standard, UK winter
         self.assertEqual([s[0] for s in seq], ["asia", "london", "ny"] * 2)
         self.assertEqual(seq[1][1], 480 * 60000)
-        self.assertEqual(seq[2][2], 1260 * 60000)
+        self.assertEqual(seq[2][1], 870 * 60000)   # B102: ny 14:30 UTC in standard time
+        self.assertEqual(seq[2][2], 1320 * 60000)
         lv = {"vah": 110.0, "val": 90.0}
         self.assertEqual(M.session_state(111, lv), "imb_up")
         self.assertEqual(M.session_state(89, lv), "imb_dn")
         self.assertEqual(M.session_state(100, lv), "balance")
+
+
+class TestSessionsDst(unittest.TestCase):
+    def test_dst_anchors(self):
+        from datetime import datetime, timezone
+        def d0(y, m, d):
+            return int(datetime(y, m, d, tzinfo=timezone.utc).timestamp() * 1000)
+        # 2026-07-15: US DST + UK BST -> london 07:00, ny 13:30 UTC; fixed-UTC model gave 08:00
+        seq = M.session_sequence([d0(2026, 7, 15)])
+        self.assertEqual((seq[0][2] - seq[0][1]) // 60000, 420)
+        self.assertEqual((seq[1][1] - d0(2026, 7, 15)) // 60000, 420)
+        self.assertEqual((seq[2][1] - d0(2026, 7, 15)) // 60000, 810)
+        # 2026-03-20: US DST started (Mar 8), UK not yet (Mar 29) -> london 08:00, ny 13:30
+        seq = M.session_sequence([d0(2026, 3, 20)])
+        self.assertEqual([(s[1] - d0(2026, 3, 20)) // 60000 for s in seq], [0, 480, 810])
+        # 2026-01-14: winter -> ny 14:30
+        seq = M.session_sequence([d0(2026, 1, 14)])
+        self.assertEqual([(s[1] - d0(2026, 1, 14)) // 60000 for s in seq], [0, 480, 870])
 
 
 class TestTfBars(unittest.TestCase):
@@ -132,7 +151,7 @@ class TestSimulate(unittest.TestCase):
         bars = [b1(100, 100.5, 99.5, 100), b1(100, 101.2, 100, 101), b1(101, 101, 99.9, 100)]
         r = self.sim(bars)
         self.assertEqual((r["reason"], r["gross_R"]), ("be", 0.0))
-        self.assertAlmostEqual(r["net_R"], -(0.00035 + 0.00035) * 100 / 1.0)   # taker in + taker BE-stop out = -0.07 R
+        self.assertAlmostEqual(r["net_R"], -(0.0005 + 0.0005) * 100 / 1.0)   # fees.py DERIBIT taker 5 bp/side: net = gross - (fee_in+fee_out)*entry/risk = -0.10 R
         self.assertEqual(r["taker_legs"], 2)
 
     def test_full_stop(self):
@@ -142,7 +161,7 @@ class TestSimulate(unittest.TestCase):
     def test_target_3R(self):
         r = self.sim([b1(100, 100.5, 99.5, 100), b1(100, 103.2, 100, 103)])
         self.assertEqual((r["reason"], r["gross_R"]), ("target", 3.0))
-        self.assertAlmostEqual(r["net_R"], 3.0 - (0.00035 - 0.00015) * 100)   # taker in, maker target out
+        self.assertAlmostEqual(r["net_R"], 3.0 - (0.0005 + 0.0) * 100)   # taker in 5 bp, maker target out 0: 3 - 0.0005*100/1 = 2.95
         self.assertEqual(r["taker_legs"], 1)
 
     def test_hvn_target_nearer_than_3R(self):
@@ -179,7 +198,7 @@ class TestSimulate(unittest.TestCase):
         self.assertEqual(r["entry"], 100.0)
         self.assertEqual(r["risk"], 1.0)
         self.assertEqual(r["reason"], "target")           # bar 2 low 95.0 <= 97 (3R)
-        self.assertAlmostEqual(r["net_R"], 3.0 + 0.0003 * 100)   # maker rebate both legs: -1.5 bps each
+        self.assertAlmostEqual(r["net_R"], 3.0 - (0.0 + 0.0) * 100)   # DERIBIT maker 0 both legs: net = 3.0 exactly
         self.assertEqual(r["taker_legs"], 0)
         self.assertIsNone(M.simulate_trade(bars[:1], 0, 0, "short", "limit", 100.0, 101.0, [], False, 3))
 

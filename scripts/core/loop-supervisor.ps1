@@ -31,6 +31,15 @@ $SupLockFile   = Join-Path $R "runtime_data\supervisor.lock"
 $StateCodeFile = Join-Path $R "MyTradingSys\runtime\state_code.json"
 $SnapGlob      = Join-Path $R "runtime_data\snapshots\BTCUSDT_*.json"
 
+# Auxiliary processes (added 2026-10-03). Restarted by VBS launcher so they
+# escape this supervisor's job object and survive terminal close.
+$Aux = @(
+    @{ name = "auto_trader";        match = "MyTradingSys\.execution\.auto_trader";               vbs = "launch-auto-trader.vbs" },
+    @{ name = "live_runner_cli";    match = "MyTradingSys\.backtest\.layers\.alerts\.live_runner_cli"; vbs = "launch-live-runner.vbs" },
+    @{ name = "orderflow_live";     match = "MyTradingSys\.backtest\.layers\.fabio\.orderflow_live";  vbs = "launch-orderflow-live.vbs" },
+    @{ name = "daily_loss_monitor"; match = "daily_loss_monitor\.py";                             vbs = "launch-daily-loss.vbs" }
+)
+
 function SupLog {
     param([string]$msg)
     $stamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")
@@ -66,6 +75,23 @@ function WriteState {
         $json = $obj | ConvertTo-Json -Compress
         [System.IO.File]::WriteAllText($StateFile, $json, (New-Object System.Text.UTF8Encoding $false))
     } catch { }
+}
+
+function Watch-Aux {
+    param([bool]$InGrace)
+    if ($InGrace) { return }
+    foreach ($a in $Aux) {
+        $alive = @(Get-CimInstance Win32_Process -Filter "Name='python.exe'" -ErrorAction SilentlyContinue |
+                   Where-Object { $_.CommandLine -match $a.match })
+        if ($alive.Count -gt 0) { continue }
+        $vbs = Join-Path $R ("runtime_data\" + $a.vbs)
+        if (-not (Test-Path $vbs)) {
+            SupLog "AUX missing launcher $($a.vbs) for $($a.name)"
+            continue
+        }
+        SupLog "AUX restart $($a.name) via $($a.vbs)"
+        Start-Process wscript.exe -ArgumentList "//nologo `"$vbs`"" -WindowStyle Hidden
+    }
 }
 
 # single-instance supervisor lock
@@ -240,6 +266,8 @@ while ($true) {
         $restartTimes.Add([DateTime]::UtcNow) | Out-Null
         $staleStrikes = 0
     }
+
+    Watch-Aux -InGrace:$inGrace
 
     Start-Sleep -Seconds $CheckIntervalSec
 }

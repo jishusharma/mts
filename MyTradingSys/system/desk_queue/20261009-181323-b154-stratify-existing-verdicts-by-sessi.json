@@ -1,0 +1,15 @@
+{
+  "done_when": "RESULT.md exists with one table per source result and a count of results that had no per-event file",
+  "finished": "2026-10-09T21:35:11Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NUC",
+  "id": "20261009-181323-b154-stratify-existing-verdicts-by-sessi",
+  "need": "In mts-dsa: list every RESULT.md/results CSV under MyTradingSys/research/*2026-10-0* and MyTradingSys/backtest with a per-trade or per-event file (columns with timestamp + net R). Using python only, add UTC session (Asia 00-08, EU 08-13, US 13-21, late 21-24) and a trend/range regime from 1d EMA50 slope on F:\\MTS\\data klines; write one table per result: n, mean net R, t-stat per cell, flag cells n<300. Output research/b154_stratified_2026-10-09/RESULT.md. Reads only; do not edit existing results.",
+  "posted": "2026-10-09T18:13:23Z",
+  "result": "No per-event file exists in any result. Scan of 23 CSV/JSONL: 0 have timestamp+net R rows; 11 result groups all aggregate-only. RESULT.md documents each source and the count; B154 needs an --events dump from the producing scripts. Path MyTradingSys/research/b154_stratified_2026-10-09/RESULT.md.",
+  "status": "done",
+  "taken": "2026-10-09T21:33:28Z",
+  "taken_by": "JIS-NUC",
+  "target": "DSA",
+  "title": "B154 stratify existing verdicts by session and regime"
+}

@@ -75,7 +75,7 @@ One per line. No compression.
 - Never bare-kill Java. Use stop-day.ps1 or mode.ps1.
 - Never run mode.ps1 twice in a row. It kills and restarts.
 - Before editing a critical file: hash, edit, hash, diff. Critical list
-  is in DSA_SESSION_PROMPT.md section 5.
+  is in DSA_SESSION_PROMPT.md section 6.
 - No writes to the session state thesis without user approval.
 - All timestamps UTC. Line endings LF.
 - The user runs all commands. The AI issues them.

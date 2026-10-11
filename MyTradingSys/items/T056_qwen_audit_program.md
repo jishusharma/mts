@@ -10,6 +10,8 @@ thing that it can do to save cost and give Claude a heads up to work with! It ca
 MTS protocols. So Claude can plan ahead and assign scheduled tasks for Qwen.
 
 ## STATE
+WONTFIX 2026-10-08: Qwen NUC lane decommissioned 2026-10-01 (263b13f); premise gone. History below kept.
+
 2026-09-28 filed (supervisor). Design already written by a prior session at
 research/fast_track_2026-09-27/QWEN_AUDIT_PROGRAM.md: idle-only backfill (packs only when the NUC queue
 has 0 waiting so audits never delay priority work), 7 fixed audit templates (A1 formula conformance, A2

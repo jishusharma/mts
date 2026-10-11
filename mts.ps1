@@ -9,7 +9,9 @@
 
 param(
     [Parameter(Position = 0)][string]$Verb = "help",
-    [Parameter(Position = 1)][string]$Arg = ""
+    [Parameter(Position = 1)][string]$Arg = "",
+    [string]$Id = "",
+    [switch]$Dry
 )
 
 $ErrorActionPreference = "Stop"
@@ -25,6 +27,7 @@ $Verbs = @(
     @("Market loop", "start",   "Start the market loop and its watchdog"),
     @("Market loop", "stop",    "Stop the market loop cleanly"),
     @("Market loop", "status",  "One screen: loop, market state, last alert, brakes"),
+    @("Market loop", "market",  "Market guide: MA / RSI / candle state + recent layer alerts, with backtest verdict tags (context only)"),
     @("Market loop", "watch",   "Live dashboard (Ctrl+C to leave)"),
     @("Trading",     "plan",    "Build a trade plan by answering questions"),
     @("Trading",     "plans",   "List saved plans"),
@@ -37,9 +40,16 @@ $Verbs = @(
     @("Safety",      "kill",    "EMERGENCY: cancel every order, close every position, pause"),
     @("Safety",      "kill-mainnet", "EMERGENCY on MAINNET: cancel every order, close every position, pause"),
     @("Safety",      "guard",   "Start the daily-loss guard in its own window"),
+    @("Safety",      "orphans", "Check every testnet account for a position no manager owns (may set HALT)"),
     @("Auto",        "auto",    "Start the testnet auto-trader (Tom + layer signals) in its own window"),
+    @("Auto",        "runner",  "Start the alert runner (indicator layers) in its own window (only the runner; mts guard starts it too, with the loss monitor and orderflow)"),
     @("Auto",        "autolog", "Last 20 auto-trader decisions (trades, skips, rejects)"),
     @("Auto",        "ledger",  "Closed auto-trades per source: count, win rate, mean and total net P/L"),
+    @("Upkeep",      "missed",  "Missed-trade analysis: chart-observed setups vs what MTS did (mts missed [horizon hours])"),
+    @("Upkeep",      "soak",    "Testnet soak report from the execution journal (read-only)"),
+    @("Upkeep",      "wiring",  "Check that every code file is run by something or declared (the gate runs this too)"),
+    @("Upkeep",      "desk",    "Open desktop-reach tasks other sessions wait on (post/take/done: scripts/dev/desk.py)"),
+    @("Upkeep",      "go",      "Launch the next queued build task in claude (mts go [slug] [-Id B074] [-Dry])"),
     @("Upkeep",      "test",    "Run the offline test suite (no exchange)"),
     @("Upkeep",      "guide",   "Open the user guide"),
     @("Upkeep",      "help",    "This list")
@@ -108,6 +118,12 @@ switch ($Verb.ToLower()) {
         mts-up
     }
 
+    "market" {
+        # Read-only observation digest; also writes MyTradingSys/runtime/market_guide.md
+        Py (Join-Path $Root "scripts\dev\market_guide.py")
+        Py (Join-Path $Root "scripts\dev\market_guide.py") "--stdout"
+    }
+
     "stop" { & (Join-Path $Root "scripts\core\stop-day.ps1") }
 
     "status" {
@@ -144,16 +160,71 @@ switch ($Verb.ToLower()) {
         $mgr = Get-Procs "position_manager" "Name='python.exe'"
         if ($mgr.Count) { foreach ($m in $mgr) { Ok "manager running: $(($m.CommandLine -split '\s+')[-1])" } }
         else { Say "  --    no plan being managed" }
+        Say ""; Say "Layers and watchdogs" Cyan
+
+        # Alert runner (process + state file age)
+        $runner = Get-Procs "-m\s+MyTradingSys\.backtest\.layers\.alerts\.live_runner_cli(\s|$)" "Name='python.exe' OR Name='pythonw.exe'"
+        $stateFile = Join-Path $Root "MyTradingSys\runtime\live_alert_state.json"
+        $stateAge = Age $stateFile
+        $StateFileLimitSeconds = 180
+        if ($runner.Count) {
+            if ($null -ne $stateAge) {
+                if ($stateAge -le $StateFileLimitSeconds) {
+                    Ok "alert runner running (pid $($runner[0].ProcessId)), state updated ${stateAge}s ago"
+                } else {
+                    Warn "alert runner running (pid $($runner[0].ProcessId)) but state updated ${stateAge}s ago - STALE (limit ${StateFileLimitSeconds}s)"
+                }
+            } else {
+                Say "  --    alert runner running (pid $($runner[0].ProcessId)), waiting for its first poll"
+            }
+        } else {
+            if ($null -ne $stateAge) {
+                Warn "alert runner: no process found but state updated ${stateAge}s ago - started elsewhere, or its command line is not visible"
+            } else {
+                Warn "alert runner not running - start it with: mts runner"
+            }
+        }
+
+        # Orphan watchdog (read last log row)
+        $orphanLogFile = Join-Path $Root "MyTradingSys\execution\orphan_watchdog.jsonl"
+        try {
+            if ((Test-Path $orphanLogFile) -and ((Get-Item $orphanLogFile).Length -gt 0)) {
+                $lastLine = Get-Content $orphanLogFile -Encoding UTF8 -Tail 1
+                $log = $lastLine | ConvertFrom-Json -ErrorAction Stop
+                $logTs = [datetimeoffset]::Parse($log.ts)
+                $logAge = [int]((Get-Date).ToUniversalTime() - $logTs.UtcDateTime).TotalSeconds
+                $haltExists = Test-Path $Halt
+
+                if ($log.event -eq "ok") {
+                    if ($log.errors -and $log.errors.PSObject.Properties.Count -gt 0) {
+                        Warn "orphan watchdog last run $logAge s ago: $($log.errors.PSObject.Properties.Count) account(s) unreadable (not counted as orphans)"
+                    } else {
+                        $managers = if ($log.live -and $log.live.Count -gt 0) { [string]::Join(", ", $log.live) } else { "no live managers" }
+                        Ok "orphan watchdog last run $logAge s ago: no orphans ($managers)"
+                    }
+                } elseif ($log.event -eq "orphan_halt") {
+                    if ($haltExists) {
+                        $orphanInfo = if ($log.orphans -and $log.orphans.Count -gt 0) {
+                            $o = $log.orphans[0]
+                            "ORPHAN $($o.account) position=$($o.position) open_orders=$($o.open_orders)"
+                        } else {
+                            "ORPHAN found"
+                        }
+                        Bad "orphan watchdog last run $logAge s ago: $orphanInfo - HALT is set; mts account, then mts resume"
+                    } else {
+                        Warn "orphan watchdog last run $logAge s ago found an orphan (HALT since cleared) - re-check with: mts orphans"
+                    }
+                }
+            } else {
+                Say "  --    orphan watchdog never run - run it with: mts orphans"
+            }
+        } catch {
+            Warn "orphan watchdog log unreadable: $orphanLogFile"
+        }
         Say ""
     }
 
     "watch" { & (Join-Path $Root "scripts\live\mts-dashboard.ps1") }
-
-    "go"      { Py (Join-Path $Root "scripts\manager\claude_manager.py") "go" $Arg; exit $LASTEXITCODE }
-    "mstatus" { Py (Join-Path $Root "scripts\manager\claude_manager.py") "status"; exit $LASTEXITCODE }
-    "mresume" { Py (Join-Path $Root "scripts\manager\claude_manager.py") "resume"; exit $LASTEXITCODE }
-    "mstop"   { Py (Join-Path $Root "scripts\manager\claude_manager.py") "stop" $Arg; exit $LASTEXITCODE }
-    "usage"   { Py (Join-Path $Root "scripts\manager\claude_manager.py") "usage" $Arg; exit $LASTEXITCODE }
 
     "plan" { Py (Join-Path $Exec "new_plan.py"); exit $LASTEXITCODE }
 
@@ -235,15 +306,44 @@ switch ($Verb.ToLower()) {
     }
 
     "guard" {
-        if ((Get-Procs "daily_loss_monitor" "Name='python.exe'").Count) { Ok "daily-loss guard already running"; break }
-        Open-Window "MTS daily-loss guard" "python '$Exec\daily_loss_monitor.py'"
-        Ok "daily-loss guard started in its own window - leave it open while trading"
+        if ((Get-Procs "daily_loss_monitor" "Name='python.exe'").Count) { Ok "daily-loss guard already running" }
+        else {
+            Open-Window "MTS daily-loss guard" "python '$Exec\daily_loss_monitor.py'"
+            Ok "daily-loss guard started in its own window - leave it open while trading"
+        }
+        if ((Get-Procs "-m\s+MyTradingSys\.backtest\.layers\.alerts\.live_runner_cli(\s|$)" "Name='python.exe' OR Name='pythonw.exe'").Count) { Ok "live-runner-cli already running" }
+        else {
+            Open-Window "MTS live-runner-cli" "python -m MyTradingSys.backtest.layers.alerts.live_runner_cli"
+            Ok "live-runner-cli started in its own window - leave it open while trading"
+        }
+        if ((Get-Procs "orderflow_live" "Name='python.exe'").Count) { Ok "orderflow-live already running" }
+        else {
+            Open-Window "MTS orderflow-live" "python -m MyTradingSys.backtest.layers.fabio.orderflow_live"
+            Ok "orderflow-live started in its own window - leave it open while trading"
+        }
+    }
+
+    "runner" {
+        if ((Get-Procs "-m\s+MyTradingSys\.backtest\.layers\.alerts\.live_runner_cli(\s|$)" "Name='python.exe' OR Name='pythonw.exe'").Count) { Ok "alert runner already running"; break }
+        Open-Window "MTS alert runner" "python -m MyTradingSys.backtest.layers.alerts.live_runner_cli --poll-seconds 60"
+        Ok "alert runner started in its own window - it only writes alerts (no orders); leave it open"
+    }
+
+    "orphans" {
+        Py (Join-Path $Exec "orphan_watchdog_cli.py")
+        switch ($LASTEXITCODE) {
+            0 { Ok "no orphan accounts" }
+            1 { Warn "some accounts could not be read (not counted as orphans) - see MyTradingSys\execution\orphan_watchdog.jsonl" }
+            3 { Bad "ORPHAN found - HALT written. Check: mts account. When it is flat or owned again: mts resume" }
+            default { Bad "orphan watchdog failed (exit $LASTEXITCODE)" }
+        }
+        exit $LASTEXITCODE
     }
 
     "auto" {
         if ((Get-Procs "auto_trader" "Name='python.exe'").Count) { Ok "auto-trader already running"; break }
         if ((Test-Path $Halt) -or (Test-Path $HaltLoss)) { Show-Brakes; Say "Brakes are set - the auto-trader logs signals but places nothing until: mts resume" Yellow }
-        Open-Window "MTS auto-trader" "python -m MyTradingSys.execution.auto_trader"
+        Open-Window "MTS auto-trader" "& 'C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe' -m MyTradingSys.execution.auto_trader"
         Ok "auto-trader started in its own window - it trades Tom + layer signals on TESTNET; mts pause stops new trades"
     }
 
@@ -261,7 +361,33 @@ switch ($Verb.ToLower()) {
         }
     }
 
+    "missed" {
+        # Read-only: scores chart-observed setups (observation store) against auto_trades.jsonl on 1m bars.
+        $mArgs = @(); if ($Arg) { $mArgs += @("--horizon-h", $Arg) }
+        Py (Join-Path $Root "MyTradingSys\observation\missed.py") @mArgs; exit $LASTEXITCODE
+    }
+
+    "soak" {
+        Py (Join-Path $Exec "soak_report.py") (Join-Path $Exec "journal"); exit $LASTEXITCODE
+    }
+
+    "wiring" {
+        Py (Join-Path $Root "scripts\dev\wiring_scan.py") "--check"; exit $LASTEXITCODE
+    }
+
+    "desk" {
+        # Read-only list of the desk board; agents take/finish tasks with scripts\dev\desk.py.
+        Py (Join-Path $Root "scripts\dev\desk.py") "list"; exit $LASTEXITCODE
+    }
+
     "test" { Py (Join-Path $Root "scripts\dev\run_all_tests.py") "--quick"; exit $LASTEXITCODE }
+
+    "go" {
+        # Launch logic lives in scripts/sched/go.py: dry inside a Claude Code session (one writer per tree), live here.
+        $goArgs = @(); if ($Arg) { $goArgs += $Arg }; if ($Id) { $goArgs += @("--id", $Id) }; if ($Dry) { $goArgs += "--dry" }
+        Set-Location $Root
+        Py (Join-Path $Root "scripts\sched\go.py") @goArgs; exit $LASTEXITCODE
+    }
 
     "guide" { Invoke-Item $Guide }
 

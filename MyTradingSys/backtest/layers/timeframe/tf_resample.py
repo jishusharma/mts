@@ -11,6 +11,7 @@ def bucket_start(t_ms: int, tf: str, registry: dict) -> int:
     Compute the start time (epoch ms) of the bucket containing t_ms for timeframe tf.
     Boundary regimes:
     - seconds: epoch-aligned (floor(t_sec / seconds) * seconds)
+    - day_reset_seconds: counted from 00:00 UTC each day; the last bucket of the day is cut at midnight (T088 7h)
     - days: epoch-day-mod-N with configurable anchor date
     - week: Monday-anchored ISO week (epoch_day % 7 == 4 is Monday)
     - month: first day of calendar UTC month
@@ -22,6 +23,11 @@ def bucket_start(t_ms: int, tf: str, registry: dict) -> int:
         sec = t_ms // 1000
         seconds = entry["seconds"]
         return (sec // seconds) * seconds * 1000
+    
+    elif unit == "day_reset_seconds":
+        day_ms = (t_ms // 86400000) * 86400000
+        step = entry["seconds"] * 1000
+        return day_ms + ((t_ms - day_ms) // step) * step
     
     elif unit == "days":
         anchor_date = entry["anchor_date"]
@@ -63,6 +69,8 @@ def bucket_end(t_ms: int, tf: str, registry: dict) -> int:
     
     if unit == "seconds":
         return start + entry["seconds"] * 1000
+    elif unit == "day_reset_seconds":
+        return min(start + entry["seconds"] * 1000, (start // 86400000 + 1) * 86400000)
     elif unit == "days":
         return start + entry["days"] * 86400000
     elif unit == "week":
@@ -129,7 +137,7 @@ def resample(bars_1m: list, tf: str, registry: dict) -> list:
             n_expected = entry["days"] * 1440
         elif unit == "week":
             n_expected = 10080
-        elif unit == "month":
+        elif unit in ("month", "day_reset_seconds"):
             n_expected = (bucket_end(bucket_start_ms, tf, registry) - bucket_start_ms) // 60000
         else:
             raise ValueError(f"Unsupported unit '{unit}' for timeframe '{tf}'")
