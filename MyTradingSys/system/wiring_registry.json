@@ -443,6 +443,31 @@
    "disp": "REPRO",
    "ref": "D24",
    "why": "Offline research script: VPIN proxy from 1m klines; regenerates research/VPIN_PROXY_2026-10-10.md; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/backtest/bigtrade/fires_kline.py": {
+   "disp": "REPRO",
+   "ref": "bigtrade-2026-10-09",
+   "why": "Worker B1 fire history of the kline-only live layers on current live parameters (PLAN.md 2B); read-only import of the live registry; run by hand or a desk task, covered by test_fires_kline.py."
+  },
+  "MyTradingSys/backtest/bigtrade/parity_kline.py": {
+   "disp": "REPRO",
+   "ref": "bigtrade-2026-10-09",
+   "why": "Parity gate of worker B1: replay vs the live runner's logged alerts per registry key (95 percent rule); run by hand, covered through fires_kline tests."
+  },
+  "MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py": {
+   "disp": "TOOL",
+   "ref": "bigtrade-2026-10-09",
+   "why": "Mutation check for bigmoves.py and capture.py: every mutant must fail test_bigmoves.py/test_capture.py; run by hand from the repo root, exits 0 only if all mutants die."
+  },
+  "MyTradingSys/backtest/bigtrade/obs_vp_check.py": {
+   "disp": "REPRO",
+   "ref": "bigtrade-2026-10-09",
+   "why": "Worker C F-BT-08 check: reproduces Java buildVp volume weighting against the trade-level profile; read-only, run by hand, output cited in SCREENSHOT_OBSERVATIONS.md."
+  },
+  "MyTradingSys/backtest/bigtrade/report_bigmoves.py": {
+   "disp": "REPRO",
+   "ref": "bigtrade-2026-10-09",
+   "why": "Renders research/bigtrade_2026-10-09/BIGMOVES_REPORT.md from bigmoves_stats.json; every number from the json; run by hand after bigmoves.py."
   }
  }
 }

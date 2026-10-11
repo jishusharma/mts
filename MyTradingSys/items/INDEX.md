@@ -132,3 +132,8 @@ B171 | OPEN    | B171_imbalance_indicator_end_to_end.md | operator: profitable i
 B174 | OPEN    | B174_snapshot_oi_quantized.md | snapshot OI quantized to 0.01; full-precision series in backtest/raw/metrics unread; Claude decides consumer or display-only
 # END
 B175 | OPEN    | B175_defender_msmpeng_cpu.md | Defender MsMpEng ~0.94 core on JIS-NB; ordered fix plan (pid 3200, ext exclusions, Dev Drive), operator confirms host changes
+B177 | OPEN    | B177.md | operator: Control Room 'Layer Board' tab - per active layer: dev/test activity, combined indicators, step count, actionables only
+B178 | OPEN    | B178.md | operator: CI/CD end-to-end speed - deploy gate runs the full layer suite as one cold call; backup_snapshot competes for disk
+B179 | OPEN    | B179.md | operator: turn the Tom and Fabio layers story (principles and concepts) into a slide deck artifact so the operator can learn what they taught
+B180 | OPEN    | B180.md | operator: DSA picks its tasks by default from the machine it runs on, and something assigns DSA tasks on a schedule (cost)
+B181 | OPEN    | B181.md | operator: Control Room Inbox shows no progress per item; an item without a registry ref shows nothing
