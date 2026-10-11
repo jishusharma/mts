@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-11T20:19:12Z",
   "commands": [
     "python scripts/dev/token_audit.py --days 7 --out MyTradingSys/research/TOKEN_AUDIT_<date>.md"
   ],
@@ -19,7 +20,7 @@
   "refs": [
     "B172"
   ],
-  "result": "",
+  "result": "research/TOKEN_AUDIT_2026-10-12.md: kick session 21 turns, ~65k always-loaded = ~82% of cache reads",
   "scope_in": [
     "scripts/dev/token_audit.py (new)",
     "scripts/dev/test_token_audit.py (new)",
@@ -36,7 +37,7 @@
   "sources": [
     "MyTradingSys/research/BUGS.md row B172 (Control Room inbox bftuvmoo3owp3451dabt): 'Why the current ritual is making the Sonnet agent use a lot of token? Is it not optimized? This is high priority.'"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write token_audit.py: sum the usage fields (input, cache read, cache write, output) per transcript, label dispatcher ticks vs relay sessions by first prompt.",
     "Run it over the last 7 days on this host; first-turn input = always-loaded context size.",
