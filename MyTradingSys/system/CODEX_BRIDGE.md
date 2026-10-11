@@ -12,7 +12,7 @@ clutters the repo. Chats worth keeping: export the transcript (App: session menu
 `%CODEX_HOME%\packs\chats\` as reference, never as instructions. Artifact content (Control Room decisions) goes the same way: paste or export to a file, `--chat`.
 Results return only through the card flow: `tasks.py done`, `sync.py ship` (Codex trailer `MTS-Session: ...-COD-BLD-<slug>`).
 
-## Budget policy (JIS-NUC account jishu.awgp, Pro, ~26% weekly left on 2026-10-11, resets Friday 2026-10-16)
-1. Codex trial first for every SONNET/HAIKU code card that needs only the repo or NUC data. Claude NUC budget is kept for OPUS-lane and guide work.
-2. JIS-NB (jishu.sharma) carries the relay, live path, deploy and desk tasks.
-3. NUC Claude dispatcher runs only as a standby (see `scripts/sched/relay_prompts/INSTALL.md`), never as a second primary.
+## Budget policy (corrected 2026-10-12: the low account is jishu.sharma on JIS-NB, ~26% weekly left, resets Fri 2026-10-16; jishu.awgp on JIS-NUC had used 4%)
+1. JIS-NUC carries the relay queue on Claude (primary dispatcher, `scripts/sched/relay_prompts/TWO_HOST.md`); JIS-NB yields and keeps the live path, deploy and data-bound desk tasks.
+2. Codex (free trial, expires) takes SONNET/HAIKU code cards in parallel with the NUC relay, so the trial is used before it runs out. The claim is the lock between them.
+3. Data check before a Codex card: `F:/MTS/data` on the NUC has no `dax_archive`, `tom_videos` or `fabio_videos` (2026-10-12). The DAX archive can be rebuilt here (`MyTradingSys/backtest/dax_data.py`, free feed, run with `python -I`); video frames exist only on JIS-NB, so a card that reads frames stays on the NB.
