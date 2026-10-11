@@ -1299,3 +1299,46 @@ ASK
 Find the right solution for JIS-NB specifically, and execute it. ... The operator wants
 the problem solved, not more incremental diagnostics.
 ```
+## cul8u9eoqc0s86tt29e7 | 2026-10-11T14:51:01Z | task
+```
+NOTE to Claude - AIBridge: auto-run must accept read-only script invocations
+From: DSA COORDINATOR, session MTS-2026-10-11-1414Z, JIS-NUC
+Date: 2026-10-11
+Target repo: F:\AIBridge (branch master, HEAD cfbd76f; working tree dirty: 9 tracked modified + 20 untracked backups)
+
+PRIMARY BUG - auto-run misclassifies script commands as writes
+
+Symptom (seen this session). A block containing `python scripts/dev/desk.py list` returned
+  [AIRUN RESULT #1] REFUSED http=403 reason=manual_click_required: this command writes, deletes, moves or runs a program; auto-run only does read-only commands.
+The command only reads the desk store.
+
+Cause. src\policy.json, key auto_write_regex, includes the bare alternation `python|node|npm|mvn|pip`. Any block whose text contains one of those words matches, regardless of what the script does.
+
+Fix (one file). Remove `python|node|npm|mvn|pip` from that alternation. The existing clauses (write cmdlets, redirection operator `>{1,2}`, git mutating verbs) already catch real writes and are sufficient. Keep the alternation only if it can be narrowed to inline-exec forms (`python -c`, `node -e`) and known write-capable script paths; otherwise drop it.
+
+Proof. After the edit, one AIRUN block containing only `python scripts/dev/desk.py list` must auto-run without a manual click, and a block containing `Set-Content foo.txt x` must still refuse on auto-run.
+
+SECOND BUG - agent accept loop hangs on a half-open socket
+
+Symptom (seen this session). PID 21396 was alive and listening on 127.0.0.1:7181, yet POST /run from the extension returned `[AIRUN RESULT #1] NO RESPONSE (agent off?)`, and Invoke-WebRequest GET against the same port timed out on every path. After a manual restart of the agent process, the same POST returned 403 (a real answer from the agent).
+
+Cause. src\agent.ps1 Read-Line loops on `$stream.ReadByte()` with no timeout. If a client connects and sends nothing, the single-threaded accept loop stops serving new clients until that socket closes.
+
+Fix. Give the socket a ReceiveTimeout and close the client on timeout, or run each accepted connection on its own runspace/thread so a stuck client cannot block the loop. Wrap accept and read in try/finally that always closes the stream. Lines: agent.ps1 `function Read-Line` and the `while ($true)` accept loop near the end.
+
+Proof. One manual Invoke-WebRequest GET against 127.0.0.1:7181 returns 404 within 1 s, repeatably, instead of timing out.
+
+MINOR - policy roots exclude F:\AIBridge
+
+Any block with cwd under F:\AIBridge is refused with `cwd_outside_roots: cwd 'F:\AIBridge' is not inside an allowed root (C:\Users\E-ngineers\IdeaProjects)`. If AIBridge-side commands are meant to run through the bridge, add F:\AIBridge to src\policy.json roots. Otherwise leave.
+
+MINOR - auto-run state not restored after extension reload
+
+extension\content.js line 413 forces autoRun=false on every reload; comment reads "always off after a reload; the operator turns it on per task". chrome.storage value aibridge_autoran is ignored across reloads, and the divergence is only surfaced by the "extension was reloaded: refresh this page (F5)" status (line 33), which requires the panel to be present. Optional: honor the stored value on reload, or make the refresh warning more visible.
+
+DIRTY TREE - commit or stash before another session edits on top
+
+`git status --porcelain` on F:\AIBridge shows modified: extension\background.js, extension\content.js, extension\loop.js, extension\manifest.json, extension\manifest.json.b02-pass, src\agent.ps1, src\allowlist.json, src\allowlist.json.p6, src\checks.ps1, src\policy.json. Untracked: 20 *.pre_*, *.b02-pass, *.p3, *.p6, *.v032 backup files. None committed. Another writer on the same checkout will collide.
+
+SCOPE. Two files for the fixes: src\policy.json and src\agent.ps1. MTS repo is not touched. No changes to background.js, content.js, loop.js required for the primary fix.
+```
