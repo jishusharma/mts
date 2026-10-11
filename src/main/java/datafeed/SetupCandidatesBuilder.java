@@ -571,7 +571,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
                 if (favoursTrade) count++;
             }
             if (deltaFlipDetected && deltaFlipAtZone) count++;
-            if (volumeSpikeDetected && volumeSpikeAtLevel) count++;
+            // B144: volume spike (2.0x over 240 bars) has no source (operator D17): not counted, still emitted in the proof JSON.
             // D4: speed proxy no longer counted toward proof (still emitted in the proof JSON).
             if (cvdAligned) count++;
             // B131: book_imbalance is not counted (no Tom source; ask-heavy side is far more common, so it

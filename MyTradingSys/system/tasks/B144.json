@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-11T04:35:09Z",
   "commands": [
     "PATH=C:/tools/jdk-17.0.18/bin:$PATH mvn -q test -Dtest='CountSignalsD4Test,SetupCandidatesBuilder*Test,StateCodeEmitterTest,MarketDataSnapshotTest'"
   ],
@@ -19,7 +20,7 @@
   "refs": [
     "B144"
   ],
-  "result": "",
+  "result": "countSignals ignores volume spike (SetupCandidatesBuilder.java:568); CountSignalsD4Test.volumeSpike_doesNotCount_B144 red old (1) green new; mvn 89 tests green; quick gate green. proof_count thresholds found, unchanged: start-trading-day.ps1:190, test_b076 text '<3 WAIT_PROOF; 3-4 WATCH; >=5 SETUP_FORMING', test_b074 uses 5, Java score raw += proofCount*7 (L178). Live only via Java window.",
   "scope_in": [
     "src/main/java/datafeed/SetupCandidatesBuilder.java (countSignals, L568)",
     "src/test/java/datafeed/CountSignalsD4Test.java",
@@ -37,7 +38,7 @@
     "MyTradingSys/research/no_source_sweep_2026-10-09/RESULT.md (B144: NOT FOUND in 154 files)",
     "src/main/java/datafeed/SetupCandidatesBuilder.java:568"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add test volumeSpike_doesNotCount_B144 to CountSignalsD4Test (same reflection helpers): volumeSpikeDetected and volumeSpikeAtLevel true, nothing else set: countSignals is 0 for long and short. Red on old code (returns 1).",
     "Delete `if (volumeSpikeDetected && volumeSpikeAtLevel) count++;` at SetupCandidatesBuilder.java:568; leave a comment in the style of the D4 speed line: B144 no source, still emitted in the proof JSON.",

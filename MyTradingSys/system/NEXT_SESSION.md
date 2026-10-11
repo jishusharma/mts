@@ -1,4 +1,4 @@
-<!-- relay: go depth=6 id=e6464725 -->
+<!-- relay: go depth=7 id=449b277d -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -24,7 +24,7 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    Q6. Card tom-encode-spike-fade (Sonnet; needs Q1 + tom-layer-v2-cost). DONE when: RECALL_DAX_V2.md shows recall >= 4/7 (or the honest miss), flag-off BTC output identical.
    Q7. Card tom-dax-backtest (run; needs Q6): `tom_dax_bt.py all --shifts 0,1,2,3`, then `report --read-holdout --shifts 0,1,2,3` once. DONE when: DAX_BT_REPORT.md has dev + holdout rows and the branch named.
    Q8. Card tom-probe-prereg (M arms only, needs tom-dax-backtest + tom-layer-v2-cost). DONE when: card done_when holds.
-   Q9. Card B144 (Sonnet): stop counting the unsourced volume spike in proof_count. `tasks.py brief B144`. DONE when: card done_when holds, new test red on old code.
+   Q9. DONE 2026-10-11 (relay JIS-NB): B144 countSignals ignores volume spike, new test red-before, mvn 89 green, quick gate green. Java live only via supervisor deploy.
    Q10. Card B059 (Sonnet): pin the fixed-grid volume profile fix with a test. `tasks.py brief B059`. DONE when: card done_when holds, test red on pre-fix code.
    Q11. Card B124 (Sonnet): testnet_canary journal check for each open plan. `tasks.py brief B124`. DONE when: card done_when holds.
    A Sonnet session that reaches an OPUS card: skip it, take the next Sonnet card, and say "Q4/Q5 need an Opus session" in the handoff.
@@ -133,6 +133,9 @@ Not in this list on purpose (claimed by other sessions at 20:48Z): tom-verdict-f
 - Task 3b is therefore finished except d11b; D11/D12 already carry `applied` in Control Room.
 - JIS-NB (session "Inbox items") reports: CI/CD jobs registered; NOT done: live-mirror install (no \JIS-NB\MTS-Mirror share, so `live_mirror.py pull` fails on the NUC), B149 capture, JVM restart. Those are JIS-NB-only.
 - NUC-suited next: B141 28-cell runner (3d) on F:\MTS\data (daily/1h/1d only; 1m klines exist only on JIS-NB, so D22 Beta and anything on 1m/5m stays on JIS-NB).
+
+## Update 2026-10-11 ~11:00Z (relay via cron mts-dispatcher, JIS-NB)
+- DONE Q9 B144. Q4/Q5 need an Opus session, Q6-Q8 wait on them. Next Sonnet card: Q10 B059.
 
 ## Update 2026-10-11 ~04:30Z (relay via cron mts-dispatcher-night, JIS-NB)
 - DONE Q1 tom-verdict-fee-per-market: recall rerun T3 vwap_band_+1 net_rr 4.94 (was 0.70, gross 5.09); quick gate GREEN. Java fail-first on old code NOT re-run (permission denied); old-code evidence = the 0.70. Java live only via supervisor deploy.

@@ -229,10 +229,8 @@ public class SetupCandidatesBuilderRulesTest {
         Constructor<?> ctor = pc.getDeclaredConstructor();
         ctor.setAccessible(true);
         Object p = ctor.newInstance();
-        String[] bools = {"absorptionDetected", "cvdAligned", "deltaFlipDetected", "deltaFlipAtZone",
-                "volumeSpikeDetected", "volumeSpikeAtLevel"};
-        // six slots: wick, absorption, finished_auction, delta_flip, volume_spike, cvd; fire the first n
-        boolean[] on = new boolean[6];
+        // five counted slots: wick, absorption, finished_auction, delta_flip, cvd (B144: volume spike not counted); fire the first n
+        boolean[] on = new boolean[5];
         for (int i = 0; i < nonBookSignals; i++) on[i] = true;
         set(pc, p, "rejectionWick", on[0] ? "BULLISH" : "NONE");
         set(pc, p, "absorptionDetected", on[1]);
@@ -240,9 +238,7 @@ public class SetupCandidatesBuilderRulesTest {
         set(pc, p, "finishedAuctionDirection", "long".equals(direction) ? "sell" : "buy");
         set(pc, p, "deltaFlipDetected", on[3]);
         set(pc, p, "deltaFlipAtZone", on[3]);
-        set(pc, p, "volumeSpikeDetected", on[4]);
-        set(pc, p, "volumeSpikeAtLevel", on[4]);
-        set(pc, p, "cvdAligned", on[5]);
+        set(pc, p, "cvdAligned", on[4]);
         set(pc, p, "bookImbalance", bookImbalance);
         Method m = pc.getDeclaredMethod("countSignals", String.class);
         m.setAccessible(true);
@@ -256,7 +252,7 @@ public class SetupCandidatesBuilderRulesTest {
     }
 
     @Test
-    public void proofCountFourOfSixIgnoresBookImbalance() throws Exception {
+    public void proofCountFourOfFiveIgnoresBookImbalance() throws Exception {
         for (String dir : new String[]{"long", "short"}) {
             assertEquals(4, proofCount(4, 0.34, dir));
             assertEquals(4, proofCount(4, 2.0, dir));
@@ -265,7 +261,7 @@ public class SetupCandidatesBuilderRulesTest {
     }
 
     @Test
-    public void proofCountFiveOfSixIgnoresBookImbalance() throws Exception {
+    public void proofCountFiveOfFiveIgnoresBookImbalance() throws Exception {
         for (String dir : new String[]{"long", "short"}) {
             assertEquals(5, proofCount(5, 0.34, dir));
             assertEquals(5, proofCount(5, 2.0, dir));
