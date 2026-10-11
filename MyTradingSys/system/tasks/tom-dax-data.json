@@ -2,7 +2,7 @@
   "approved_by": "operator chat 2026-10-11: free Dukascopy GER40 + Tom DAX videos approved",
   "asks": "",
   "claim": "",
-  "closed": "2026-10-11T03:50:06Z",
+  "closed": "2026-10-11T07:42:36Z",
   "commands": [],
   "created": "2026-10-10T18:55:33Z",
   "depends_on": [],
@@ -17,7 +17,7 @@
   "refine_tries": 1,
   "refined_by": "opus-2026-10-11 (operator chat)",
   "refs": [],
-  "result": "F:/MTS/data/dax_archive: 684,940 GER40 1m bars, 631 trading days 2024-10-01..2026-10-09, all weekdays fetched (2 retried by hand); snapshot 2025-03-12T10:00Z current_price 22665.67 = raw 09:59 close 22665.666 (MATCH)",
+  "result": "GER40 684940 1m bars, 631 days, 25 files F:/MTS/data/dax_archive/klines; 2025-03-03 bar close matches raw",
   "scope_in": [
     "MyTradingSys/backtest/",
     "scripts/dev/shot.py (engine path)",
