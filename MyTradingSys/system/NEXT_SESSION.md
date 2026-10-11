@@ -1,4 +1,4 @@
-<!-- relay: go depth=18 id=d24efef9 -->
+<!-- relay: go depth=19 id=b5728eda -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -190,3 +190,6 @@ Not in this list on purpose (claimed by other sessions at 20:48Z): tom-verdict-f
 
 ## Update 2026-10-11 ~14:00Z (relay via cron mts-dispatcher, JIS-NB)
 - DONE Q12 B122. Q4/Q5 need an Opus session, Q6-Q8 wait on them. Next Sonnet task: Q13 refiner (REFINE_NEEDED).
+
+## Update 2026-10-11 ~09:20Z (relay via cron mts-dispatcher, JIS-NB)
+- Q3 progress (not DONE): DyS79Eb92Ug t=1575-1775 read, F10 resolved (+4964$, TP 25074.25). Ledger 13 entries. Next: Q3 continue t=1775+. Q4/Q5 need an Opus session.
