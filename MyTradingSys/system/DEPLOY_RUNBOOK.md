@@ -35,3 +35,8 @@ a day). `auto_deploy.py` therefore falls back: when `origin/green/fast-track` is
 `origin/fast-track`, it gates and fast-forwards `origin/fast-track` instead. The local gate in the throwaway worktree is the
 safety; red still stops. The root fix is `MyTradingSys/system/ci_concurrency_fix.patch` (`cancel-in-progress` only for PRs):
 operator applies it once from an account with workflow scope (`git apply` then push), or adds the `workflow` scope to the token.
+
+## Daily hygiene (moved here from CLAUDE.md 2026-10-11)
+Task `MTS-DailyHygiene` (06:30) runs `scripts/dev/daily_hygiene.py` (quick gate, `sync.py where`, declutter DRY run, STATUS) ->
+`MyTradingSys/runtime/sched/hygiene_latest.md`, which STATUS.md embeds: a session reads its STATUS/GATE lines at boot and fixes a
+RED before new work. Registered by the same `register_cicd_tasks.ps1` call as the deploy job. Never deploy by hand while the job works.

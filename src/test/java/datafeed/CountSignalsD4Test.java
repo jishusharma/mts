@@ -126,6 +126,17 @@ public class CountSignalsD4Test {
         assertEquals(0, countSignals(p, "short"));
     }
 
+    // --- Volume spike: B144 no source (operator D17), not counted; still emitted in the proof JSON ---
+
+    @Test
+    void volumeSpike_doesNotCount_B144() throws Exception {
+        Object p = newProofResult();
+        setField(p, "volumeSpikeDetected", true);
+        setField(p, "volumeSpikeAtLevel", true);
+        assertEquals(0, countSignals(p, "long"));
+        assertEquals(0, countSignals(p, "short"));
+    }
+
     // --- Unaffected signals still count regardless of direction (regression guard) ---
 
     @Test

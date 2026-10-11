@@ -133,6 +133,12 @@ def main(argv=None):
     cmd3dk = [sys.executable, "scripts/dev/test_desk.py"]
     success, output = run_step("3dk", "Desk board tests", cmd3dk)
     results.append(("Step 3dk: Desk board tests", success))
+    cmd3tk = [sys.executable, "scripts/dev/test_tasks.py"]
+    success, output = run_step("3tk", "Task card tests", cmd3tk)
+    results.append(("Step 3tk: Task card tests", success))
+    cmd3tl = [sys.executable, "scripts/dev/tasks.py", "lint"]   # a ready/active card that fails the Definition of Ready is an error
+    success, output = run_step("3tl", "Task cards meet the Definition of Ready", cmd3tl)
+    results.append(("Step 3tl: Task card lint", success))
     cmd3q = [sys.executable, "scripts/dev/test_registry_consistency.py"]
     success, output = run_step("3q", "INDEX/BUGS consistency", cmd3q)
     results.append(("Step 3q: INDEX/BUGS consistency", success))
@@ -172,6 +178,12 @@ def main(argv=None):
     cmd3hy = [sys.executable, "scripts/dev/test_daily_hygiene.py"]
     success, output = run_step("3hy", "Daily hygiene job tests", cmd3hy)
     results.append(("Step 3hy: Daily hygiene tests", success))
+    cmd3ms = [sys.executable, "scripts/dev/test_make_status.py"]
+    success, output = run_step("3ms", "STATUS.md generator tests (commit-dated reports, CI green line)", cmd3ms)
+    results.append(("Step 3ms: make_status tests", success))
+    cmd3cs = [sys.executable, "scripts/dev/test_cloud_setup.py"]
+    success, output = run_step("3cs", "Cloud SessionStart hook tests (no-op off cloud)", cmd3cs)
+    results.append(("Step 3cs: Cloud setup hook tests", success))
     cmd3pc = [sys.executable, "scripts/dev/test_prompt_contract.py"]
     success, output = run_step("3pc", "Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)", cmd3pc)
     results.append(("Step 3pc: Prompt contract tests", success))
@@ -200,7 +212,9 @@ def main(argv=None):
     cmd4 = [sys.executable, "-m", "pytest", "MyTradingSys/tests", "-q",
             # function-style tests that unittest-based steps 5b/6 do not collect
             "MyTradingSys/backtest/test_prob_table.py", "MyTradingSys/backtest/test_prob_table_edge.py",
-            "MyTradingSys/backtest/test_tom_bt.py"] + PYTEST_LAYER_PATHS
+            "MyTradingSys/backtest/test_tom_bt.py", "MyTradingSys/backtest/test_tom_probe_diag.py",
+            "MyTradingSys/backtest/test_dax_data.py", "MyTradingSys/backtest/test_tom_dax_recall.py",
+            "MyTradingSys/backtest/test_tom_dax_bt.py"] + PYTEST_LAYER_PATHS
     success, output = run_step(4, "Pytest (math + doc tests)", cmd4)
     results.append(("Step 4: Pytest tests", success))
 

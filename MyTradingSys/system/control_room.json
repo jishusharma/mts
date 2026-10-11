@@ -190,6 +190,10 @@
     {
       "date": "2026-10-10",
       "what": "Decluttered: only decisions waiting on you show as cards (applied ones fold to one line each); Evidence, Testnet ledger, Board and How-it-works start collapsed; long inbox items fold to 200 characters (full text one tap away); the changelog shows the 3 newest."
+    },
+    {
+      "date": "2026-10-10",
+      "what": "New Backlog section: the tasks waiting to run, with their lane and size and what each still needs before it is ready. Move to top, Hold, Drop and Approve Opus are buttons here; Claude applies them at the next pickup."
     }
   ],
   "finding_closed": {

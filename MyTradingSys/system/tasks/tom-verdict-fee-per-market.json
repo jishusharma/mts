@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-10-10T22:53:17Z",
+  "commands": [],
+  "created": "2026-10-10T20:38:11Z",
+  "depends_on": [],
+  "done_when": "Parity test green for both profiles; a GER40 SnapAt at 2026-05-12T07:55Z shows net_rr close to gross_rr on the vwap_band_+1 candidate.",
+  "from_inbox": "",
+  "goal": "The verdict's net_rr uses the Deribit taker fee for every symbol (ExecutionMathConstants.java:17,28), so DAX replays fail WAIT_RR on Tom-sized stops. Make the fee per instrument for archive/research mode only; live BTC path unchanged.",
+  "id": "tom-verdict-fee-per-market",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-11 (from RECALL_DAX.md)",
+  "refs": [],
+  "result": "GER40 07:55Z vwap_band_+1 short net_rr 0.70->4.94 (gross 5.09); quick gate green; BTC bit-identical",
+  "scope_in": [
+    "src/main/java/datafeed/ExecutionMathConstants.java",
+    "MyTradingSys/backtest/fees.py",
+    "MyTradingSys/tests/test_b070_fee_parity.py"
+  ],
+  "scope_out": [
+    "live fee values for BTC",
+    "restarts"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md section 3.1",
+    "src/main/java/datafeed/ExecutionMathConstants.java:17,28"
+  ],
+  "state": "done",
+  "steps": [
+    "Add an instrument fee map (BTCUSDT -> Deribit taker as now; GER40 -> FEES_FDAX from fees.py) read in archive mode via -Dmts.symbol.",
+    "Extend the parity test to the new profile.",
+    "Stage as .new if the file is on the live path; note it for the supervisor."
+  ],
+  "taken": "2026-10-10T20:47:49Z",
+  "tests": "Java test: netRR(24229, 24111, 24257) for GER40 equals the hand value (118-0.24)/(28+0.24)=4.17 with fee 0.000005/side; BTCUSDT value unchanged (fails before the map exists).",
+  "title": "net_rr fee term per instrument (FDAX vs Deribit) for research replays"
+}

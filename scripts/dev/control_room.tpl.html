@@ -134,6 +134,12 @@ details.mini>summary{cursor:pointer;color:var(--muted,#6b7280);font-size:.82rem}
   <div class="dgrid" id="decisions"><div class="empty">Decisions load from the shared store. Claude adds a decision here whenever work is blocked on your call; your answer is read at the next supervisor wake.</div></div>
 </section>
 
+<section id="bl-sec">
+  <div class="sechead"><h2>Backlog</h2><span class="dstate" id="blstatus"></span></div>
+  <div class="goal muted" id="blline" style="margin-bottom:8px"></div>
+  <div class="items" id="bllist"></div>
+</section>
+
 <section id="inbox-sec">
   <div class="sechead"><h2>Inbox</h2><span class="dstate" id="fbstatus"></span></div>
   <div class="two">
@@ -259,6 +265,34 @@ function renderBoard(){
 }
 renderBoard();
 
+
+/* ---------- backlog: cards from the repo (tasks.py); the buttons write taskops docs, applied at the next pickup */
+const BL = D.backlog || {counts:{}, rows:[], line:""};
+const BLSTATE = {ready:["Ready","v-pass"], refined:["Being refined","v-partial"], raw:["Needs scoping","sev-LOW"], active:["Running","v-partial"], blocked:["On hold","v-fail"]};
+let blOps = {}, blDb = null;
+const OPLBL = {bump:"Move to top", hold:"Hold", drop:"Drop", approve:"Approve Opus"};
+function drawBacklog(){
+  const c = BL.counts || {};
+  $("#blline").textContent = BL.rows.length ? `${c.ready||0} ready · ${c.refined||0} being refined · ${c.raw||0} need scoping · ${c.active||0} running. ` +
+    (BL.line.startsWith("REFINE_NEEDED") ? "The ready stock is low, so a refiner session is due." : "Enough ready work is in stock.") : "";
+  $("#bllist").innerHTML = BL.rows.map(r => {
+    const [lbl, pill] = BLSTATE[r.state] || [r.state, "sev-LOW"];
+    const pend = (blOps[r.id]||[]).map(o => `<span class="dstate">${esc(OPLBL[o]||o)} requested, applied at the next pickup</span>`).join(" ");
+    const acts = blDb ? ["bump","hold","drop"].concat(r.needs_approval ? ["approve"] : []).map(o => `<button class="chip" data-t="${esc(r.id)}" data-o="${o}">${OPLBL[o]}</button>`).join("") : "";
+    return `<div class="it" style="grid-template-columns:auto 1fr auto"><span class="id">${esc(r.id)}</span>
+      <div class="t">${esc(r.title)}<div class="src">${esc(r.lane||"no lane yet")}${r.size?" · size "+esc(r.size):""} · priority ${esc(r.prio)}${r.pinned?" · pinned":""}${r.goal?" · "+esc(r.goal):""}</div>
+      ${r.asks ? `<div class="src"><strong>Question for you:</strong> ${esc(r.asks)} (answer it in the Inbox)</div>` : r.parked ? `<div class="src">Paused: the refiner could not finish this after two tries.</div>` : ""}${r.missing.length ? `<div class="src">Still needs: ${esc(r.missing.join("; "))}</div>` : ""}${r.note ? `<div class="src">${esc(r.note)}</div>` : ""}
+      <div class="filters" style="margin-top:6px">${acts}${pend}</div></div>
+      <span class="pill ${pill}">${esc(lbl)}</span></div>`;
+  }).join("") || `<div class="empty">No open cards. New tasks from the Inbox become cards here.</div>`;
+  document.querySelectorAll("#bllist .chip").forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    try { await blDb.collection("taskops").add({task: b.dataset.t, action: b.dataset.o, at: new Date().toISOString(), applied: ""}); }
+    catch(e) { b.disabled = false; $("#blstatus").textContent = "Could not save. Try again."; }
+  });
+}
+drawBacklog();
+
 /* ---------- decisions (db) */
 (async function(){
   const st = $("#decstatus");
@@ -266,6 +300,12 @@ renderBoard();
   const db = claude && claude.use ? await claude.use("db") : null;
   if (!db) { st.textContent = "Read-only view: decisions are not available here.";
     $("#fbsend").disabled = true; $("#fbtext").disabled = true; $("#fbmsg").textContent = "The inbox is not available in this view."; return; }
+  blDb = db; drawBacklog();
+  db.collection("taskops").orderBy("at").limit(200).onSnapshot(snap => {
+    blOps = {}; snap.docs.forEach(d => { const x = d.data(); if (!x.applied) (blOps[x.task] = blOps[x.task] || []).push(x.action); });
+    $("#blstatus").textContent = Object.keys(blOps).length ? `${Object.keys(blOps).length} change${Object.keys(blOps).length>1?"s":""} waiting for Claude` : "";
+    drawBacklog();
+  }, () => {});
   const user = await claude.use("user");
   let canWrite = true;
   try { const c = user && user.can ? await user.can("data.write") : null; if (c === false) canWrite = false; } catch(e) {}

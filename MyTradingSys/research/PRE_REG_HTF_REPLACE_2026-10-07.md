@@ -105,5 +105,10 @@ Data F:/MTS/data/tom_raw/klines, 2022-01-01..2026-06-25 (holdout NOT loaded); va
 - Incumbent (k 0.8, b 0.25): 4H 3.3%, 1D 3.0% -> dropped (confirms NO-INFO, section 1).
 - Kept (coverage in [15%, 85%]): 4H A k1.0/b0.5 21%, k1.25 34%/48%, k1.5 48%/68%, k2.0/b0.25 61%, ER e0.05 50%, e0.10 82%; 1D A k1.0/b0.5 19%, k1.25 30%/43%, k1.5 42%/62%, k2.0 55%/80%. 16 of 28 cells.
 - Dropped: 4H k0.8 (both b), k1.0/b0.25 14.8%, k2.0/b0.5 85.0%, ER e0.15/0.25; 1D k0.8 (both b), k1.0/b0.25 13.9%, all ER (85%..100%). 12 of 28.
-- Stage 2 (H1 forward range, placebo, bootstrap), Stage 3, holdout, PBO/DSA: NOT yet run.
+- Stage 2: see below. Stage 3, holdout, PBO/DSR: not run (no Stage 2 survivor).
 
+### Stage 2 (H1 forward range), run 2026-10-10 by research/b141_htf_stage2.py (test_b141_htf_stage2.py, 10 pass; mutation sqrt(H)->H fails 1 test)
+16 kept cells, hist+dev only (holdout NOT loaded). Valid closes with a full forward window: 4H 9815 (effective n 1636), 1D 1629 (effective n 233). D = median(FR|balanced) - median(FR|not); H1 predicts D < 0. Full table: research/b141_stage2_result.json.
+- **No cell passes** (CI95 upper < 0 AND every calendar year D < 0 AND placebo beaten). Only 4H A k1.0/b0.5 has a CI95 excluding 0 in the declared direction (D -0.052, CI [-0.098, -0.004]) but 2022 is +0.041 and the placebo is not beaten.
+- Direction: 4H family A D is small and negative (-0.01..-0.05), CI includes 0 in 5 of 6 other cells; 4H family B (ER) is the OPPOSITE sign (e0.05 D +0.13, e0.10 D +0.19, CI excludes 0 against H1: low-ER windows are followed by LARGER ranges); 1D cells are CI-wide (effective n 233), signs flip by year.
+- Selected candidate: none. Per section 7 (fail = no cell satisfies (a)-(d)): the NS-fixed balance rule is removed from htf_context_live.py / emitted as UNAVAILABLE, R5 stays blocked, incumbent recorded NO-INFO. Not yet done: that writer change (needs a `.new` + supervisor restart), Stage 3 (H2, flag-based, depends on a balance definition so is moot), holdout (not read: no candidate), PBO/DSR (no candidate to deflate).

@@ -1,0 +1,42 @@
+{
+  "approved_by": "operator (chat 2026-10-11: 'whatever research u need with Opus')",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T12:00:00Z",
+  "depends_on": [
+    "fabio-layer-v2-spec"
+  ],
+  "done_when": "FABIO_LAYER_V2_SPEC.md part B: per-market proof/cost/stop-width table, recall-harness decision, flag plan (default off) AND the Sonnet recall-harness + encode cards created in MyTradingSys/system/tasks/, each passing tasks.py check.",
+  "from_inbox": "",
+  "goal": "Decide what can be tested where: recall harness on free NQ/US100 1m (price-only proofs), which order-flow proofs need aggressor data (BTC has it, CFD does not), cost and stop width in points and % for NQ versus BTC, and the Sonnet cards that build the recall harness and the encoding.",
+  "id": "fabio-layer-v2-markets",
+  "lane": "OPUS",
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/",
+    "MyTradingSys/research/fabio_transfer/"
+  ],
+  "scope_out": [
+    "coding",
+    "tuning",
+    "holdouts"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md (L3-FAIL all four models)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read FABIO_LAYER_V2_SPEC.md part A, FABIO_TRADE_LEDGER.md stop-width stats, P2_FABIO_V3_HOLDOUT_STATUS.md, tom_transfer_2026-10-11/RECALL_DAX.md and DAX build report (harness pattern).",
+    "Recall harness: free NQ/US100 1m (Dukascopy USA100) for price-only proofs; order-flow proofs flagged data-limited on CFD. State what NQ-to-BTC transfer needs (stop width vs fees).",
+    "Create the Sonnet cards with tasks.py new (recall harness first, then one family per encode card, flag-gated, fail-first tests) and append part B to FABIO_LAYER_V2_SPEC.md."
+  ],
+  "tests": "Every created card passes tasks.py check.",
+  "title": "Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)"
+}

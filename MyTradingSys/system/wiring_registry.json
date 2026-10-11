@@ -1,6 +1,11 @@
 {
  "_doc": "Files the wiring scan finds unrun (TEST-ONLY/ORPHAN), each declared with a disposition and evidence. Checked by scripts/dev/wiring_scan.py --check in the gate. Dispositions: TOOL, REPRO, PARKED, WIRE. A file that becomes LIVE/DEV-TOOL or disappears must be removed from here.",
  "entries": {
+  "MyTradingSys/research/b141_htf_stage2.py": {
+   "disp": "REPRO",
+   "ref": "B141",
+   "why": "Offline research script: Stage 2 (H1 forward range, day-block bootstrap, placebo) on the Stage 1 kept cells (PRE_REG_HTF_REPLACE_2026-10-07.md section 9); regenerates research/b141_stage2_result.json; run by hand or a desk task, not by any loop."
+  },
   "MyTradingSys/research/b141_htf_stage1.py": {
    "disp": "REPRO",
    "ref": "B141",
@@ -120,6 +125,10 @@
   "MyTradingSys/backtest/tom_bt_diag.py": {
    "disp": "REPRO",
    "why": "Produced every number in MyTradingSys/research/TOM_BT_SHORT_DIAGNOSIS_2026-10-02.md:4 (all-shorts diagnosis)."
+  },
+  "MyTradingSys/backtest/tom_probe_diag.py": {
+   "disp": "REPRO",
+   "why": "Produced every number in MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md (card tom-probe-diag-btc: MFE/MAE, session, selection diagnostics)."
   },
   "MyTradingSys/backtest/tom_bt_report.py": {
    "disp": "REPRO",
@@ -384,6 +393,26 @@
    "disp": "WIRE",
    "ref": "RSI_2A_SPEC.md steps 4-5",
    "why": "Malkan close-to-close divergence detector (3-10 bars, params/malkan_divergence_default.json); built and tested 2026-10-09, to be called by run_rsi_backtest.py. Not live."
+  },
+  "MyTradingSys/backtest/dax_data.py": {
+   "disp": "REPRO",
+   "ref": "tom-dax-data",
+   "why": "Offline research tool: fetches Dukascopy GER40 1m and converts it to the 1m kline archive for the Tom DAX probe; research/tom_transfer_2026-10-11/PROBE_PLAN.md; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/backtest/dax_engine.py": {
+   "disp": "REPRO",
+   "ref": "tom-dax-data",
+   "why": "Offline research driver: compiles the engine to %TEMP% and runs SnapAt/TomSnapshotGen on a non-BTC symbol (GER40); research/tom_transfer_2026-10-11/PROBE_PLAN.md; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/backtest/tom_dax_recall.py": {
+   "disp": "REPRO",
+   "ref": "tom-dax-recall",
+   "why": "Offline research script: engine recall at Tom's own DAX trades read from video frames; writes F:/MTS/data/dax_recall; research/tom_transfer_2026-10-11/PROBE_PLAN.md; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/backtest/tom_dax_bt.py": {
+   "disp": "REPRO",
+   "ref": "tom-dax-backtest",
+   "why": "Offline research driver: untuned Tom core on DAX vs matched-proof BTC (gen snapshots, rows, four variants x verdict pair, null, dev/holdout), writes research/tom_transfer_2026-10-11/DAX_BT_REPORT.md and TRIAL_REGISTRY rows; PRE_REG_DAX.md; run by hand or a desk task, not by any loop."
   }
  }
 }

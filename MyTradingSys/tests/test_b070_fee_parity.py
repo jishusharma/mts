@@ -22,3 +22,15 @@ def test_java_taker_equals_fees_py():
 def test_python_default_taker_is_fees_py():
     import mts_math
     assert mts_math.DERIBIT_TAKER == fees.DERIBIT_TAKER
+
+
+def test_java_fdax_equals_fees_py():
+    src = (ROOT / "src" / "main" / "java" / "datafeed" / "ExecutionMathConstants.java").read_text(encoding="utf-8")
+    java = float(re.search(r"FDAX_FEE_PER_SIDE\s*=\s*([0-9.]+)\s*;", src).group(1))
+    assert java == fees.FDAX_FEE_PER_SIDE
+    assert fees.FEES_FDAX["entry"] == fees.FEES_FDAX["stop"] == fees.FDAX_FEE_PER_SIDE
+
+
+def test_java_symbol_map_is_ger40_fdax_else_btc():
+    src = (ROOT / "src" / "main" / "java" / "datafeed" / "ExecutionMathConstants.java").read_text(encoding="utf-8")
+    assert re.search(r'"GER40"\.equals\(symbol\)\s*\?\s*FDAX_FEE_PER_SIDE\s*:\s*TAKER_FEE_PER_SIDE', src)

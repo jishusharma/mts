@@ -1,0 +1,45 @@
+{
+  "approved_by": "operator (chat 2026-10-11: 'whatever research u need with Opus')",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T12:00:00Z",
+  "depends_on": [
+    "tom-layer-v2-spec"
+  ],
+  "done_when": "TOM_LAYER_V2_SPEC.md part B: per-market proof/cost table, the BTC transfer rule (minimum stop width / cost-aware R) with its DIAG_BTC numbers, flag plan (default off, live BTC bit-identical) AND the Sonnet build cards created in MyTradingSys/system/tasks/ (spike-fade first) with hand-computed test numbers from FORMULAS.md style.",
+  "from_inbox": "",
+  "goal": "Make the part-A families computable and affordable per market: which proofs can fire on DAX CFD (no aggressor split, proof cap 2) versus BTC (aggressor data), the cost model per market, the minimum stop width that clears noise + fees on BTC, and the Sonnet build cards that implement the spec.",
+  "id": "tom-layer-v2-cost",
+  "lane": "OPUS",
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/",
+    "MyTradingSys/conditions/",
+    "src/main/java/datafeed/SetupCandidatesBuilder.java"
+  ],
+  "scope_out": [
+    "coding",
+    "tuning on outcomes",
+    "reading any holdout"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md section 3",
+    "MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read TOM_LAYER_V2_SPEC.md part A, DIAG_BTC.md, RECALL_DAX.md section 3.4, FORMULAS.md, SetupCandidatesBuilder.java:557-575, the per-market fee code (card tom-verdict-fee-per-market).",
+    "Per market (FDAX/GER40 CFD, BTC perp): which proofs can fire on the data it has, cost per side, round-turn cost in points and R for Tom's 20-63 point stops.",
+    "Derive the transfer rule from DIAG_BTC (1R ~0.084 %, fees ~2.8R per loss): minimum stop width / cost-aware R, with the arithmetic shown. Sources or NO-SOURCE for every number.",
+    "Create the Sonnet build cards with tasks.py new (spike-fade first, one family per card, flag-gated, tests fail-first, hand-computed numbers) and append part B to TOM_LAYER_V2_SPEC.md."
+  ],
+  "tests": "Every build card passes tasks.py check; the transfer-rule arithmetic reproduces the DIAG_BTC numbers by hand.",
+  "title": "Tom layer v2 spec, part B: per-market proofs, cost, stop-width transfer rule, build cards (Opus research)"
+}

@@ -5,12 +5,12 @@
 # Format: <id> | <status> | <file> | <one-line state>
 
 B058 | CLOSED  | B058_floor_reaction_mode.md | floor-reaction mode; receipt in BUGS row
-B059 | OPEN    | B059_rank1_zone_drift.md | pf_vp bin-edge drift; fix landed 2026-09-24, live tape pending
+B059 | CLOSED  | B059_rank1_zone_drift.md | pf_vp bin-edge drift; fix landed 2026-09-24, pinned by BuildVpFixedGridTest 2026-10-11
 B062 | CLOSED  | B062_alert_direction_position.md | position-aware alert gating; landed
 B063 | OPEN    | B063_divergence.md | decision: restore divergence in schema, or deprecate
 B064 | CLOSED  | B064_supervisor_stop_flag.md | supervisor_stop.flag retired 2026-09-24, loop_stop.flag only
 B065 | CLOSED  | B065_stale_swing_consumer.md | stale-swing rejection in extractZones + stop selection; landed
-B066 | OPEN    | B066_rank1_distance_gate.md | rank-1 shown at trigger_ready while 150 pts from price; split from B059
+B066 | CLOSED  | B066_rank1_distance_gate.md | rank-1 shown at trigger_ready while 150 pts from price; split from B059
 B139 | OPEN    | B139_cbp_adapter.md | CBP adapter registered; real-queue run 0 candidates (1 acked, 1 rejected); analyst-rule backtests pending
 B140 | BLOCKED | B140_whea_storport_hdd.md | NEEDS OPERATOR (hardware): swap SATA cable+port, elevated smartctl short test, back up D:, move D:\tools to SSD; SMART already clean
 B141 | OPEN    | B141_htf_balance_null.md | htf bal_4h/bal_1d null: NS-fixed k_bal 0.8 balanced 0.4% of windows; replace-via-backtest pre-reg BOUND, run next
@@ -80,13 +80,13 @@ B102 | CLOSED  | B102_dst_session_anchors.md | fixed-UTC session anchors in offl
 B103 | CLOSED  | B103_funding_coverage.md | funding cost silently 0 outside loaded range; archive has funding from 2020-01
 B116 | CLOSED  | B116_unsourced_stop_floor_and_fallback.md | 0.1 pct floor + 0.2 pct fallback removed 0c34a2d (SetupCandidatesBuilder.java:48,104,116-124); SetupCandidatesBuilderStopT3Test
 B117 | OPEN    | B117_unsourced_proof_bands.md | proof bands 3/5 NO-SOURCE still gate the verdict ladder; filing only
-B118 | OPEN    | B118_layer_bracket_unsourced.md | layer bracket stop_pct 1.0 / targets 2 / size 100 unsourced in auto_trader.py (live path); filing only
+B118 | CLOSED  | B118_layer_bracket_unsourced.md | layer bracket stop_pct 1.0 / targets 2 / size 100 unsourced in auto_trader.py (live path); filing only
 B119 | OPEN    | B119_desktop_operator_gated_revalidation.md | paper verification, kappa clean reader, T2 run all need desktop/operator
 B120 | OPEN    | B120_provenance_audit_doc_followups.md | receipt 2026-10-07: W3-5 parked on operator DATA-PLUMBING definition; other sub-items unblocked doc work, not run
 B121 | OPEN    | B121_poll_cadence_defaults.md | poll cadence: live_runner 60 s not bar-aligned, auto_trader 20 s; proposals not landed
 B122 | OPEN    | B122_reject_text_event_fallback.md | auto_trader reject text uses alert.get('event') not the fallback; cosmetic
 B123 | OPEN    | B123_zero_trade_and_quiet_families.md | zero-trade after AUTO_PAUSE (cleared), 24 h re-run pending, jishu_4 QUIET to investigate
-B124 | OPEN    | B124_journal_dir_open_plan_check.md | no check that execution/journal holds each open plan; canary has no journal check
+B124 | CLOSED  | B124_journal_dir_open_plan_check.md | no check that execution/journal holds each open plan; canary has no journal check
 B125 | OPEN    | B125_consensus_writer_staged_only.md | consensus writer staged .new only, not promoted; Top-5 #3 acceptance absent
 B126 | OPEN    | B126_supervisor_inbox_consumption.md | cloud to SUP inbox consumption unverifiable; no mechanism on disk
 B127 | CLOSED  | B127_partial_code_no_test.md | CLOSED 2026-10-08: 13 of 13 rows dispositioned; A11 reclassified TOM-CONCEPT-ONLY by operator
@@ -110,7 +110,7 @@ T068 | OPEN    | T068_oi_arm_rerun.md | P3 OI arm rerun of T063 when n>=30 per a
 T069 | OPEN    | T069_funding_settlement_clock.md | P5 funding settlement clock event study; queued (research-agenda)
 T070 | OPEN    | T070_volatility_timing_read_only.md | P6 volatility timing read-only analysis; queued (research-agenda)
 T071 | OPEN    | T071_absorption_events_post_p2.md | P7 absorption events after P2 Fabio L3-FAIL; queued (research-agenda)
-B142 | OPEN    | B142_extrasetupbuilder_1m_stop_unsourced.md | D15 answered: disable ExtraSetupBuilder candidates until a sourced stop exists; Java change + restart at next Java window
+B142 | CLOSED  | B142_extrasetupbuilder_1m_stop_unsourced.md | momentum candidates disabled in code 2026-10-11 (ExtraSetupBuilderDisabledTest); live after the JIS-NB Java window
 B143 | BLOCKED | B143_cryptocred_stop_buffer_and_target_unsourced.md | NEEDS OPERATOR: 1.5R sourced (CC Rule 9), 0.1pct buffer NOT FOUND; default alert-only + replace at next CC build
 B144 | OPEN    | B144_exhaustion_proxy_unsourced_params.md | D17 answered: screener-only now, remove at Java window; finding: volume spike still counts in Tom proof (Java change)
 B145 | CLOSED  | B145_cc_range_noise_live_neutrality.md | neutrality test run on archive: filter NOT neutral for 2 of 3 setups, flag stays off; opt-in test in cryptocred/
@@ -128,5 +128,6 @@ B156 | CLOSED  | B156_tom_alert_stale_ssot_thesis.md | alert card thesis line sh
 T093 | CLOSED  | T093_toc_imbalance_klines.md | turn-of-candle 4-12h imbalance on klines 2022-2026: NO REPLICATION (gross +0.5bp vs 10bp fee)
 B162 | OPEN    | B162_qriptal_signal_layer.md | Qriptal (Habib) layer: score his public record first, Discord feed route = D21, own testnet account
 B163 | OPEN    | B163_setup_alpha_beta_handoff.md | Setup Alpha (1d SMA200 trend) / Beta (sweep+CVD) handoff: NO-SOURCE research backtest only, waits on D22
-B171 | OPEN    | B171_snapshot_oi_quantized.md | snapshot OI quantized to 0.01; full-precision series in backtest/raw/metrics unread; Claude decides consumer or display-only
+B171 | OPEN    | B171_imbalance_indicator_end_to_end.md | operator: profitable imbalance indicator end to end; none exists (T093/P4 NO REPLICATION); pre-register, backtest, testnet via supervisor
+B174 | OPEN    | B174_snapshot_oi_quantized.md | snapshot OI quantized to 0.01; full-precision series in backtest/raw/metrics unread; Claude decides consumer or display-only
 # END

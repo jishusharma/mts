@@ -65,8 +65,11 @@ DEFAULT_CONFIG = {
             # breakeven when that first leg fills. NO-SOURCE testnet default (operator Ruling 2, 2026-10-03; BE
             # concept: Fabio P21 "I put my stop loss to break even"). 0 = off = single target, as before.
             "runner_leg_pct": 50},
-    # Layers have no stop/target of their own: fixed bracket, market entry, small size.
+    # Layers have no stop/target of their own: fixed bracket, market entry, small size. B118: stop_pct, targets, size,
+    # hours, max_age_bars and max_hold_bars are NO-SOURCE (no trader quote); bracket_source labels every layer log row
+    # SAMPLING (trades exist to sample layer behaviour, the values are not tuned or claimed).
     "layers": {"enabled": True, "size_usd": 100, "max_loss_usd": 10, "stop_pct": 1.0, "targets": "2",
+               "bracket_source": "SAMPLING",
                "hours": 2.0, "max_age_bars": 1.2,
                "max_hold_bars": 8},   # time exit = 8 bars of the signal timeframe (minutes derived per alert tf)
     # (layer, event) -> side. "direction" means: up -> long, down -> short; "level" means the side comes from the level
@@ -368,12 +371,13 @@ def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
     # t_close is the bar's OPEN time in ms (Binance kline convention), not its close; the name is kept (operator 2026-10-08).
     key = f"{layer}:{alert.get('sub')}:{event}:{tf}:{alert.get('t_close')}"
     sig = {"source": f"layer:{layer}:{alert.get('sub')}:{tf}", "key": key, "detail": alert}
+    sig["log"] = {"bracket_source": c.get("bracket_source", "SAMPLING")}
     side = layer_side(alert, cfg)
     sig["side"] = side
     if not c["enabled"] or layer in cfg["disabled_layers"]:
         sig["reject"] = "layer disabled"
     elif side is None:
-        sig["reject"] = f"unmapped {layer}:{alert.get('event')} (add a layer_rules entry)"
+        sig["reject"] = f"unmapped {layer}:{event} (add a layer_rules entry)"
     else:
         t_close = alert.get("t_close")
         bar = TF_SECONDS.get(tf)

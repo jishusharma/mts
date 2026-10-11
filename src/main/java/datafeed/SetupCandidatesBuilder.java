@@ -48,6 +48,11 @@ public class SetupCandidatesBuilder {
     // MIN_STOP_PCT (0.1% stop floor, A04) removed per T3 ruling (T3_STOP_RULING_2026-10-01): NO-SOURCE.
     private static final int MAX_CANDIDATES = 3;
 
+    /** B066: trigger_ready only within 0.1% of price (a 150 pt / 0.19% zone is conditional); beyond the cap is ignore. */
+    static String tierFor(double distPct, double cap) {
+        return (distPct <= 0.1) ? "trigger_ready" : (distPct <= cap) ? "conditional" : "ignore";
+    }
+
     public static ArrayNode build(ObjectMapper mapper, ObjectNode root, Map<String, JsonNode> mtf, JsonNode klines1m) {
         ArrayNode candidatesArray = mapper.createArrayNode();
         if (root == null || klines1m == null || klines1m.size() < 20) {
@@ -55,6 +60,7 @@ public class SetupCandidatesBuilder {
         }
 
         double currentPrice = root.get("current_price").asDouble();
+        final String sym = root.path("asset").asText(null);  // instrument for the per-market fee (null/unknown -> BTC fee, unchanged)
         final double netRrFloor = NetRrFloor.read();  // single source: MyTradingSys/system/net_rr_floor.json; NaN (unreadable) fails every >= below
         final double runnerMinDistancePct = RunnerMinDistance.read();  // MyTradingSys/system/runner_min_distance.json; NaN -> no runner
 
@@ -72,7 +78,7 @@ public class SetupCandidatesBuilder {
         for (Zone z : zones) {
             double distPct = Math.abs(currentPrice - z.price) / currentPrice * 100.0;
             double cap = getDistanceCap(z.type);
-            String tier = (distPct <= 0.1) ? "trigger_ready" : (distPct <= cap) ? "conditional" : "ignore";
+            String tier = tierFor(distPct, cap);
             if (!"ignore".equals(tier)) {
                 filteredZones.add(z);
             }
@@ -137,7 +143,7 @@ public class SetupCandidatesBuilder {
             addHvns(root, "weekly_vp", nodes);
             addHvns(root, "daily_vp", nodes);
             addHvns(root, "intraday_4h_vp", nodes);
-            double[] picked = pickTarget(nodes, zonePrice, c.stop, "short".equals(c.direction), netRrFloor, runnerMinDistancePct);
+            double[] picked = pickTarget(nodes, zonePrice, c.stop, "short".equals(c.direction), netRrFloor, runnerMinDistancePct, sym);
             c.target = picked[0];
             c.runnerTarget = picked[1];
             if (c.target == 0) {
@@ -149,7 +155,7 @@ public class SetupCandidatesBuilder {
                 double risk = Math.abs(zonePrice - c.stop);
                 double reward = Math.abs(c.target - zonePrice);
                 c.grossRR = reward / risk;
-                c.netRR = ExecutionMathConstants.netRR(zonePrice, c.target, c.stop);  // B070: fee model, was gross * 0.75
+                c.netRR = ExecutionMathConstants.netRR(sym, zonePrice, c.target, c.stop);  // B070: fee model, was gross * 0.75
                 c.rrSanity = c.grossRR >= 1.5;   // advisory output flag only; no longer drops the candidate
                 c.netRrSanity = c.netRR >= netRrFloor;
                 c.valid = true;
@@ -202,7 +208,7 @@ public class SetupCandidatesBuilder {
             mathNode.put("distance_pct", Math.round(Math.abs(currentPrice - c.zone.price) / currentPrice * 10000.0) / 100.0);
             mathNode.put("distance_cap", getDistanceCap(c.zone.type));
             double dist = Math.abs(currentPrice - c.zone.price) / currentPrice * 100;
-            mathNode.put("tier", dist <= 0.1 ? "trigger_ready" : "conditional");
+            mathNode.put("tier", tierFor(dist, getDistanceCap(c.zone.type)));
             double distFromZone = Math.abs(currentPrice - c.zone.price) / c.zone.price;
 mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.zone.price ? "above" : "below"));
             mathNode.put("stop", Math.round(c.stop * 100.0) / 100.0);
@@ -464,6 +470,11 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
      */
     static double[] pickTarget(List<Double> nodes, double zonePrice, double stop, boolean isShort, double netRrFloor,
                                double runnerMinDistancePct) {
+        return pickTarget(nodes, zonePrice, stop, isShort, netRrFloor, runnerMinDistancePct, null);
+    }
+
+    static double[] pickTarget(List<Double> nodes, double zonePrice, double stop, boolean isShort, double netRrFloor,
+                               double runnerMinDistancePct, String symbol) {
         List<Double> dir = new ArrayList<>();
         for (double p : nodes) {
             if (isShort ? p < zonePrice : p > zonePrice) dir.add(p);
@@ -472,7 +483,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         dir.sort((x, y) -> Double.compare(Math.abs(x - zonePrice), Math.abs(y - zonePrice)));
         int idx = dir.size() - 1;  // fallback: farthest
         for (int i = 0; i < dir.size(); i++) {
-            if (ExecutionMathConstants.netRR(zonePrice, dir.get(i), stop) >= netRrFloor) { idx = i; break; }
+            if (ExecutionMathConstants.netRR(symbol, zonePrice, dir.get(i), stop) >= netRrFloor) { idx = i; break; }
         }
         double target = dir.get(idx);
         double runner = 0;
@@ -565,7 +576,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
                 if (favoursTrade) count++;
             }
             if (deltaFlipDetected && deltaFlipAtZone) count++;
-            if (volumeSpikeDetected && volumeSpikeAtLevel) count++;
+            // B144: volume spike (2.0x over 240 bars) has no source (operator D17): not counted, still emitted in the proof JSON.
             // D4: speed proxy no longer counted toward proof (still emitted in the proof JSON).
             if (cvdAligned) count++;
             // B131: book_imbalance is not counted (no Tom source; ask-heavy side is far more common, so it

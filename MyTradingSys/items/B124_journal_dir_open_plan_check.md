@@ -1,6 +1,6 @@
 # B124 - No check that execution/journal holds a file for each open plan; testnet_canary has no journal check
 
-Status: OPEN. Severity: MED. Opened 2026-10-04.
+Status: CLOSED 2026-10-11. Severity: MED. Opened 2026-10-04.
 Session: MTS-2026-10-04-0856Z-APP-BLD-audit-reconcile-followup. Group (c) from MyTradingSys/research/AUDIT_RECONCILE_2026-10-04.md.
 
 ## Defect
@@ -31,3 +31,4 @@ Filing only. No code or doc edit was made for this item.
 
 ## Receipt
 
+2026-10-11: scripts/dev/testnet_canary.py check_journal (open-plan rule mirrors auto_trader.open_plans_from_log). New tests in scripts/dev/test_testnet_canary.py, red before: test_journal_missing_for_open_plan_is_red, test_journal_present_is_ok, test_closed_plan_without_journal_is_ok, test_no_open_plans_ok, test_trades_log_missing_is_warn, test_journal_output_has_no_plan_id. 31 pass. Read-only canary run on the live tree: journal OK, 5 open all journaled.

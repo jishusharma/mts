@@ -15,6 +15,7 @@ Depth counts from the chain base (`kick` records it per host), so a timer-starte
 Per-host state (not in git) lives in $MTS_RELAY_HOME (default ~/.claude): mts-relay-stop (flag), mts-relay-lock.json, mts-relay-log.jsonl.
 
   python scripts/sched/relay.py handoff --file F (--go | --stop "<reason>") [--reset-depth]
+  python scripts/sched/relay.py lint --file F [--want go|stop]   task-list quality gate (handoff runs it; refuses on FAIL)
   python scripts/sched/relay.py gate --file F --started-id <id|none>      exit 0 GO, 1 STOP
   python scripts/sched/relay.py kick [--file F | --git-ref REF:PATH]   dispatcher: KICK task=... (exit 0) or IDLE <why> (exit 1)
   python scripts/sched/relay.py status --file F | stop "<why>" | resume
@@ -80,9 +81,34 @@ def read_header(path):
     return (m.group(1), (m.group(2) or "").strip(), int(m.group(3)), m.group(4)) if m else None
 
 
+def lint_file(path, want, root=None):
+    """Task-list quality gate (handoff_lint.py). MTS_RELAY_NOLINT=1 skips it (tests only)."""
+    if os.environ.get("MTS_RELAY_NOLINT"):
+        return []
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import handoff_lint
+    p = Path(path).resolve()
+    root = root or (p.parents[2] if len(p.parents) > 2 else Path.cwd())
+    return handoff_lint.lint(p.read_text(encoding="utf-8"), root, want)[0]
+
+
+def cmd_lint(a):
+    errs = lint_file(a.file, a.want, a.root)
+    for e in errs:
+        print("LINT " + e)
+    print("LINT OK" if not errs else "LINT FAIL %d" % len(errs))
+    return 1 if errs else 0
+
+
 def cmd_handoff(a):
     p = Path(a.file)
     text = p.read_text(encoding="utf-8")
+    errs = lint_file(p, "go" if a.go else "stop")
+    if errs:
+        for e in errs:
+            print("LINT " + e)
+        print("HANDOFF REFUSED: fix the task list (RELAY.md 'Task list standard'), then run handoff again")
+        return 2
     old = read_header(p)
     depth = 0 if (a.reset_depth or old is None) else old[2] + (1 if a.go else 0)
     state = "go" if a.go else "stop"
@@ -190,6 +216,10 @@ def main(argv=None):
     g.add_argument("--go", action="store_true")
     g.add_argument("--stop")
     h.add_argument("--reset-depth", action="store_true")
+    li = sub.add_parser("lint")
+    li.add_argument("--file", required=True)
+    li.add_argument("--want", choices=["go", "stop"], default="go")
+    li.add_argument("--root")
     ga = sub.add_parser("gate")
     ga.add_argument("--file", required=True)
     ga.add_argument("--started-id", required=True)
@@ -204,6 +234,8 @@ def main(argv=None):
     a = ap.parse_args(argv)
     if a.cmd == "handoff":
         return cmd_handoff(a)
+    if a.cmd == "lint":
+        return cmd_lint(a)
     if a.cmd == "gate":
         return cmd_gate(a)
     if a.cmd == "status":
