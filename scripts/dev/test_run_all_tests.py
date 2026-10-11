@@ -18,5 +18,20 @@ class GateCoverage(unittest.TestCase):
             self.assertTrue((rat.REPO / p).exists(), p)
 
 
+
+class TestPytestTmpIsolation(unittest.TestCase):
+    def test_isolate_pytest_tmp_sets_fresh_root_for_children(self):
+        import os
+        old = os.environ.pop("PYTEST_DEBUG_TEMPROOT", None)
+        try:
+            root = rat.isolate_pytest_tmp()
+            self.assertTrue(os.path.isdir(root))
+            self.assertEqual(os.environ["PYTEST_DEBUG_TEMPROOT"], root)
+        finally:
+            os.environ.pop("PYTEST_DEBUG_TEMPROOT", None)
+            if old is not None:
+                os.environ["PYTEST_DEBUG_TEMPROOT"] = old
+
+
 if __name__ == "__main__":
     unittest.main()
