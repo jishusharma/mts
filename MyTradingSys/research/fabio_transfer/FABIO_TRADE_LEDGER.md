@@ -1,4 +1,4 @@
-# FABIO TRADE LEDGER (card fabio-trade-ledger) - Status: NOT DONE, F1 and F3 read (3 entries), F2 approximate
+# FABIO TRADE LEDGER (card fabio-trade-ledger) - Status: DONE 2026-10-11 (all available in the 5 videos: 8 entries F1, F2, F3a-c, F4a-b, F5)
 
 Goal (card): >= 20 trades (or all available) with frame evidence. Reached: F1 full (frame-read order labels), F2 approximate (no order labels in the video),
 F3 transcript only. Rows are in FABIO_TRADE_LEDGER.csv. Read 2026-10-11 relay, JIS-NB.
@@ -30,4 +30,15 @@ Mostly talk: Schwab account page (value 217,392; equity curve jumped from ~61k o
 and two pasted trade screenshots (file 2026-01-30 214344): F4a short 1 @ 6986.75, F4b short 1 @ 6977.5 (ES, 1 lot, no stops visible). Hand-drawn schematic at t=780 (balance -> failed breakout -> reversal).
 No stop/TP prices on any frame, so no stop-width stat from this video. Ledger now 17 rows: 7 entries (F1, F2, F3a-c, F4a-b) plus management/exit rows.
 
-Next session: read jasv3L-d8ZE sheets 00-05; add rows with frame evidence; target >= 20 or all available; then stop-width/session stats and `tasks.py done fabio-trade-ledger`.
+
+## jasv3L-d8ZE (read 2026-10-11 relay, sheets 00-05, NQ-202512, $20/pt)
+F5 short 15 @ 24960.28, stop 24969.75 (9.47pt = 0.038%, risk 2850$), TP 24910.25 (50pt = 5.3R = 15000$). Started the trade at Daily P/L -9577.50 (title: manage a -10.000$ session).
+Management: stop tightened to 24961.50 then 24961.25 (above avg entry), scale-in to 18 lots avg 24959.18 (risk 720$), held through a pullback (open P/L 6629 -> 4559 -> 11129),
+at t=630 stop trailed to 24925.00 (locks 12330$) and TP pulled 24910.25 -> 24917.00. Flat by t=660, Daily P/L +2331.50 (+11909$ on the trade). Exit fill not on a frame.
+
+## Final stats (8 entries, 5 videos; video count is the limit, teaching videos show ~1.6 trades each)
+Markets: NQ 7 entries (F1, F2, F3a-c, F5; F2 levels approximate), ES 2 (F4a-b, 1 lot, no stops). Sessions: NY/US cash session for all frames with a clock.
+Stop width on NQ (points / % of price): F1 15.75 / 0.061, F3b 8.88 / 0.036, F3c 3.38 / 0.014, F5 9.47 / 0.038 (and 2.07 / 0.008 after tighten). Median 9.2pt ~ 0.037%.
+Target distance: 138pt (8.8R), 107pt (12R), 87pt (25.9R), 50pt (5.3R): R-multiples far above 3 on every labelled trade.
+Management (all four labelled trades): stop moves only toward profit (breakeven or beyond) in steps; TP is pulled in late (F3c, F5); scale-in on confirmation (F3, F5: 12/14/18 lots) funded by day P/L.
+Gap to the 20-trade goal: the 5 downloaded videos are exhausted; more recap videos need a new search (follow-up card).

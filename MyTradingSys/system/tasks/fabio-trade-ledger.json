@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-11T04:12:26Z",
   "commands": [],
   "created": "2026-10-11T12:00:00Z",
   "depends_on": [],
@@ -15,7 +16,7 @@
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
   "refs": [],
-  "result": "",
+  "result": "FABIO_TRADE_LEDGER.csv 23 rows / 8 entries (all in the 5 downloaded videos), frames exist; NQ stop median 0.037%",
   "scope_in": [
     "MyTradingSys/research/fast_track_2026-09-27/FABIO_TRADE_MODEL.md",
     "MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md"
@@ -28,7 +29,7 @@
   "sources": [
     "operator chat 2026-10-11: get Tom and Fabio layers redefined to match today's findings"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Identify his trade-recap / live-session videos (free YouTube, pre-approved); download to F:/MTS/data/fabio_videos.",
     "Frames at entry/exit; read instrument, date/time, side, entry, stop, target, footprint/order-flow reason in his words.",

@@ -1,4 +1,4 @@
-<!-- relay: go depth=5 id=63e3c9bf -->
+<!-- relay: go depth=6 id=e6464725 -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -18,13 +18,15 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    `python scripts/dev/tasks.py brief <card>` -> `sync.py claim` -> work -> `tasks.py done <card> --result "<number/file>"` -> ship -> release.
    Q1. DONE 2026-10-11 (relay JIS-NB): net_rr 0.70->4.94, quick gate green. (old text:) Card tom-verdict-fee-per-market (Sonnet). Code is ON fast-track (09a6196, BTC bit-identical test, quick gate passed pre-merge); claim released; card still active. Remaining: quick gate on HEAD, confirm the new Java tests fail on old code, run `dax_engine.py snap --at 2026-05-12T07:55:00Z` and read the vwap_band_+1 short's net_rr (was 0.70 at gross 5.09; the agent's run printed nothing - check the out file), then `tasks.py done`. Java reaches live only via supervisor deploy. DONE when: card done_when holds (GER40 netRR(24229,24111,24257)=4.1696 (the brief said 4.1662: hand error, (118-0.24229)/(28+0.24229)=4.1696), BTCUSDT bit-identical test red-before).
    Q2. DONE 2026-10-11 (relay JIS-NB): TOM_TRADE_LEDGER.csv 12 trade ids / 30 rows, every trade in all 7 videos (36 sheets); <30 because the videos show ~1.7 trades each. Follow-up card find-more-tom-trade-recap-videos-yt-dlp- (raw, refiner will scope).
-   Q3. Card fabio-trade-ledger (Sonnet; in progress: 5 videos + 27 sheets on F:/MTS/data/fabio_videos, rows F1-F3 in research/fabio_transfer/FABIO_TRADE_LEDGER.csv; fZlNGWvd2Ko DONE 2026-10-11: F3a-c rows; 0jM5Y31YJak DONE 2026-10-11: no order labels, rows F2-m1/F2-x; 9IliXww64uM DONE 2026-10-11: F4a-b ES shorts, no stops shown; next read jasv3L-d8ZE sheets 00-05, one video per session). DONE when: FABIO_TRADE_LEDGER.csv has >= 20 trades (or all available in the 5 videos) with frame evidence.
+   Q3. DONE 2026-10-11 (relay JIS-NB): FABIO_TRADE_LEDGER.csv 23 rows / 8 entries (F1, F2, F3a-c, F4a-b, F5), all that the 5 videos hold; NQ stop median 0.037%. Follow-up card find-more-fabio-trade-recap-videos-yt-dl (raw, refiner will scope).
    Q4. Cards tom-layer-v2-spec (part A: families + sourced rules) then tom-layer-v2-cost (part B: per-market proofs/cost, BTC stop-width transfer rule, Sonnet build cards). OPUS, approved by the operator 2026-10-11, size M each = one card per session; both need Q2. DONE when: TOM_LAYER_V2_SPEC.md parts A and B + Sonnet build cards.
    Q5. Cards fabio-layer-v2-spec (part A) then fabio-layer-v2-markets (part B: NQ vs BTC data plan, cost, recall-harness + encode cards). OPUS, approved, size M each; both need Q3. DONE when: FABIO_LAYER_V2_SPEC.md parts A and B + cards.
    Q6. Card tom-encode-spike-fade (Sonnet; needs Q1 + tom-layer-v2-cost). DONE when: RECALL_DAX_V2.md shows recall >= 4/7 (or the honest miss), flag-off BTC output identical.
    Q7. Card tom-dax-backtest (run; needs Q6): `tom_dax_bt.py all --shifts 0,1,2,3`, then `report --read-holdout --shifts 0,1,2,3` once. DONE when: DAX_BT_REPORT.md has dev + holdout rows and the branch named.
    Q8. Card tom-probe-prereg (M arms only, needs tom-dax-backtest + tom-layer-v2-cost). DONE when: card done_when holds.
-   Q9. Older ready cards (B142 DONE e262656, B144, B059, B124, B122, B160-followup): take any not done between the above when a Tom/Fabio card is blocked. DONE when: each card's own done_when.
+   Q9. Card B144 (Sonnet): stop counting the unsourced volume spike in proof_count. `tasks.py brief B144`. DONE when: card done_when holds, new test red on old code.
+   Q10. Card B059 (Sonnet): pin the fixed-grid volume profile fix with a test. `tasks.py brief B059`. DONE when: card done_when holds, test red on pre-fix code.
+   Q11. Card B124 (Sonnet): testnet_canary journal check for each open plan. `tasks.py brief B124`. DONE when: card done_when holds.
    A Sonnet session that reaches an OPUS card: skip it, take the next Sonnet card, and say "Q4/Q5 need an Opus session" in the handoff.
 4. Run-and-report work goes to DSA (system/DSA_DELEGATION.md).
 End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py where` clean, one-line summary, stop.
