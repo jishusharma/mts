@@ -194,6 +194,10 @@
     {
       "date": "2026-10-10",
       "what": "New Backlog section: the tasks waiting to run, with their lane and size and what each still needs before it is ready. Move to top, Hold, Drop and Approve Opus are buttons here; Claude applies them at the next pickup."
+    },
+    {
+      "date": "2026-10-12",
+      "what": "Every Inbox item now shows its status, Claude's reply and where it was filed. An item with no registry row yet says 'received, no registry row yet' instead of showing nothing (B181)."
     }
   ],
   "finding_closed": {
