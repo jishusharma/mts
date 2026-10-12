@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "research", "mfe_exit_2026-10-13"))
 import mfe_exit_study as M  # noqa: E402
 
 
