@@ -10,13 +10,14 @@ Subcommands (work dir F:/MTS/data/dax_bt, env TOM_DAX_WORK):
   rows    snapshots -> verdict rows, per month, cached. DAX: closed-market snapshots dropped BEFORE any verdict (a real 1m bar
           must exist in the 2 minutes before asOf). BTC (market btc): the 2026-10-06 snapshots re-scored with the order-flow
           proofs masked exactly as on DAX, rows from 2026-06-26 on are never written (burned holdout, B147).
-  report  simulate the four variants x verdict pair (as coded / DAX-fee), the null, dev/holdout split ->
+  report  simulate the four variants using per-instrument Java net RR, the null, dev/holdout split ->
           research/tom_transfer_2026-10-11/DAX_BT_REPORT.md + bt_runs/TRIAL_REGISTRY.csv rows.
   all     gen, rows, report.
 Holdout (DAX 2026-04-11..) is read only with `report --read-holdout`, once (marker file), after the dev table exists.
 
-Verdict pair: `coded` = Java net_rr (BTC perp fee term inside) and `daxfee` = net_rr := gross_rr on every candidate before
-compute_verdict. `--shifts` is an EXTENSION (not in the pre-registration): see the report's note on the proof ceiling.
+Primary verdict: `coded` preserves Java's per-instrument net_rr (GER40 uses FDAX fees). Gross-only selection is removed.
+Reviewed contract: layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md H5 addendum; original pre-registration preserved.
+`--shifts` is an EXTENSION (not in the pre-registration): see the report's note on the proof ceiling.
 """
 import argparse
 import copy
@@ -64,7 +65,7 @@ DAX_END = dt.date(2026, 10, 9)
 T_DAX_START, T_DAX_HOLD = _ts(2024, 11, 4), _ts(2026, 4, 11)
 T_BTC_DEV, T_BTC_BURNED = _ts(2025, 9, 1), _ts(2026, 6, 26)
 VARIANTS = ["A", "episode", "watch_episode", "p4_episode"]   # the four of the 2026-10-06 BTC rerun
-KINDS = ["daxfee", "coded"]                                    # DAX-fee is primary for this market; as-coded beside it
+KINDS = ["coded"]                     # primary: Java per-instrument net RR; no gross-only arm
 
 # Frozen legacy counter: SetupCandidatesBuilder.java:568-585 counts rejection_wick, absorption,
 # finished_auction (only when favouring), delta_flip and cvd_aligned. B144 excludes volume_spike
@@ -73,7 +74,7 @@ KINDS = ["daxfee", "coded"]                                    # DAX-fee is prim
 # `deltas[i] > 0 && close < open`) needs the delta sign, and DAX has delta == 0 exactly, so it can never fire there;
 # "masked exactly as on DAX" requires it off on BTC too (deviation from the PRE_REG list, stated in the report).
 MASK_OF = ("absorption", "cvd_aligned", "delta_flip", "finished_auction")
-PROOF_COUNT_SCHEMA = "java-b144-no-volume-spike-v1"
+PROOF_COUNT_SCHEMA = "java-b144-no-volume-spike-net-rr-primary-v2"
 
 
 # ---------------------------------------------------------------- proofs: parity count, masking, re-ranking
@@ -179,17 +180,11 @@ def require_proof_schema(obj, path):
                          "and rerun rows --force" % path)
 
 
-def daxfee(s):
-    """DAX-fee verdict input: net_rr := gross_rr on every candidate (the Java net_rr carries the BTC perp fee term)."""
-    for c in s.get("setup_candidates") or []:
-        m = c.get("math")
-        if isinstance(m, dict) and m.get("gross_rr") is not None:
-            m["net_rr"] = m["gross_rr"]
-
-
-def rows_for_snapshot(s0, parse_ts, proof_dir_of, compute_verdict=None, mask=MASK_OF, kinds=("coded", "daxfee"),
+def rows_for_snapshot(s0, parse_ts, proof_dir_of, compute_verdict=None, mask=MASK_OF, kinds=("coded",),
                       shifts=(0,), stats=None):
     """{'<kind>/<shift>': row} for one snapshot (s0 is not modified)."""
+    if any(kind != "coded" for kind in kinds):
+        raise ValueError("only coded per-instrument net RR is supported; gross-only selection was removed (H5)")
     if compute_verdict is None:
         from verdict import compute_verdict
     out = {}
@@ -200,9 +195,6 @@ def rows_for_snapshot(s0, parse_ts, proof_dir_of, compute_verdict=None, mask=MAS
             stats["mask_changed"] += n
         if "coded" in kinds:
             out["coded/%d" % sh] = T.snapshot_to_row(s1, parse_ts, compute_verdict, proof_dir_of)
-        if "daxfee" in kinds:
-            daxfee(s1)
-            out["daxfee/%d" % sh] = T.snapshot_to_row(s1, parse_ts, compute_verdict, proof_dir_of)
     return out
 
 
@@ -459,6 +451,8 @@ def _rows_month(job):
     market, path, out_dir, shifts, mask, cut_t = job
     from snapshots import parse_ts
     from verdict import compute_verdict, proof_dir_of
+    from net_rr_floor import load_floor
+    floor = load_floor()                 # one frozen floor for this month, recorded with the rows
     name = Path(path).name.replace(".jsonl.gz", "")
     out = Path(out_dir) / (name + ".rows.jsonl")
     meta = Path(out_dir) / (name + ".rows.meta.json")
@@ -481,11 +475,15 @@ def _rows_month(job):
             if market == "dax" and not is_open(_BARS, t):
                 stats["closed_dropped"] += 1
                 continue
-            keys = rows_for_snapshot(s, parse_ts, proof_dir_of, compute_verdict, mask, ("coded", "daxfee"), shifts, stats)
+            frozen_verdict = lambda snap, pd: compute_verdict(snap, pd, floor=floor)
+            keys = rows_for_snapshot(s, parse_ts, proof_dir_of, frozen_verdict, mask, KINDS, shifts, stats)
             fo.write(json.dumps({"proof_count_schema": PROOF_COUNT_SCHEMA, "t": t, "k": keys}) + "\n")
             stats["rows"] += 1
     tmp.replace(out)
-    meta.write_text(json.dumps(dict(stats, proof_count_schema=PROOF_COUNT_SCHEMA)) + "\n", encoding="utf-8", newline="\n")
+    meta.write_text(json.dumps(dict(stats, proof_count_schema=PROOF_COUNT_SCHEMA, net_rr_floor=floor,
+                                   rr_selection="Java per-instrument net_rr", fdax_fee_per_side=FEES_FDAX["entry"],
+                                   execution_math_sha=sha(ROOT / "src/main/java/datafeed/ExecutionMathConstants.java")))
+                    + "\n", encoding="utf-8", newline="\n")
     return name, dict(stats)
 
 
@@ -742,7 +740,10 @@ def cmd_report(a):
         ", holdout = 2026-04-11..2026-10-09 (READ in this run, marker `HOLDOUT_READ_DAX.json`)" if a.read_holdout else "; the holdout was NOT read"))
     md.append("\n## 2. Results (one-trade-at-a-time, limit at zone price, stop/target from the rank-1 candidate, 8 zone-tf bars)\n")
     md.append("Fees: DAX = `FEES_FDAX` (0.000005 of price per side on every leg); BTC = Deribit (maker 0, taker 0.0005) as in the BTC rerun. "
-              "`daxfee` = net_rr := gross_rr before the verdict; `coded` = Java net_rr. Shift 0 is the pre-registered rule; shift > 0 are EXTENSION arms "
+              "Primary `coded` preserves Java per-instrument net_rr; GER40 uses FDAX fees. Gross-only selection is removed "
+              "(H5 addendum in layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md; original PRE_REG_DAX.md preserved). "
+              "The row metadata freezes the verdict floor and records the FDAX fee and execution-math hash. "
+              "Shift 0 uses the reviewed rule; shift > 0 are EXTENSION arms "
               "(section 3). Pass bar: >= 100 filled trades in a period and net R 95% CI lower bound > 0.\n\n")
     md.append(HDR + "".join(md_rows))
     md.append("\n### DAX stress: + 1 index point of slippage on stop and timeout legs (dev)\n\n| arm | n filled | mean net R | with +1 pt [95% CI] | median stop distance | exit mix |\n|---|---|---|---|---|---|\n" + "".join(stress))

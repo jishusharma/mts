@@ -424,25 +424,46 @@ class TestMask(unittest.TestCase):
 
 
 class TestVerdictPair(unittest.TestCase):
-    def test_daxfee_sets_net_to_gross_on_every_candidate(self):
+    def test_primary_rejects_ger40_gross_rr_at_floor(self):
+        # EXPECT: FORMULAS.md:403-404 and ExecutionMathConstants.java:23-37:
+        # cost = 2 * .000005 * 100 = .001; net = 1.249/1.001
+        # = 1.247752247752... < frozen floor 1.25; gross = 1.25.
+        from verdict import compute_verdict
+        net = 1.249 / 1.001
+        c = cand(1, "long", "daily_poc", "daily_poc",
+                 proof_node("MODERATE", True, "sell", True, False, True),
+                 5, gross=1.25, net=net)
+        c["math"]["target"] = 101.25
+        s = snap([c])
+        s["symbol"] = "GER40"
+        verdict = lambda s, pd: compute_verdict(s, pd, floor=1.25)
+        rows = D.rows_for_snapshot(s, parse_ts, aligned, verdict, mask=())
+        primary = rows[D.KINDS[0] + "/0"]
+        self.assertEqual(primary["verdict"], "WAIT_RR")
+        self.assertAlmostEqual(primary["net_rr"], net)
+
+    def test_primary_preserves_net_on_every_candidate(self):
         a = cand(1, "long", "daily_poc", "daily_poc", proof_node("MODERATE", False, None, False, True, False), 1, gross=3.0, net=1.0)
         b = cand(2, "long", "vwap", "vwap_band", proof_node(), 0, gross=2.5, net=0.7)
         s = snap([a, b])
-        D.daxfee(s)
-        self.assertEqual([c["math"]["net_rr"] for c in s["setup_candidates"]], [3.0, 2.5])
+        seen = []
+        from verdict import compute_verdict
+        def capture(snapshot, pd):
+            seen.extend(c["math"]["net_rr"] for c in snapshot["setup_candidates"])
+            return compute_verdict(snapshot, pd, floor=1.25)
+        D.rows_for_snapshot(s, parse_ts, aligned, capture)
+        self.assertEqual(seen, [1.0, 0.7])
 
-    def test_pair_differs_when_net_is_below_floor(self):
-        # gross 3.0 but net 1.0 (< any floor in net_rr_floor.json): as coded WAIT_RR; DAX-fee passes the RR gate,
-        # proof 1 + shift 2 = 3 -> WATCH (proof >= 3, < 5); a synthetic extension, not a tuned arm.
+    def test_primary_rejects_net_below_floor_even_with_proof_shift(self):
+        # Proof extension cannot bypass the primary net-RR gate.
         a = cand(1, "long", "daily_poc", "daily_poc", proof_node("MODERATE", False, None, False, True, False), 1, gross=3.0, net=1.0)
         s = snap([a])
         r0 = D.rows_for_snapshot(copy.deepcopy(s), parse_ts, aligned, shifts=(0, 2))
         self.assertEqual(r0["coded/2"]["verdict"], "WAIT_RR")
-        self.assertEqual(r0["daxfee/2"]["verdict"], "WATCH")
-        self.assertEqual(r0["daxfee/0"]["verdict"], "WAIT_PROOF")   # proof 1 < 3
-        self.assertEqual(r0["daxfee/2"]["net_rr"], 3.0)
+        self.assertEqual(r0["coded/0"]["verdict"], "WAIT_RR")
+        self.assertEqual(set(r0), {"coded/0", "coded/2"})
         self.assertEqual(r0["coded/2"]["net_rr"], 1.0)
-        self.assertEqual(r0["daxfee/2"]["proof"], 3)
+        self.assertEqual(r0["coded/2"]["proof"], 3)
 
     def test_inputs_not_mutated(self):
         a = cand(1, "long", "daily_poc", "daily_poc", proof_node("MODERATE", True, None, False, True, False), 2, net=1.0)

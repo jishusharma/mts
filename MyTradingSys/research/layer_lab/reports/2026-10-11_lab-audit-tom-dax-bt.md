@@ -148,3 +148,11 @@ Persistent new content is limited to this report and the eight new task cards. `
 | B | `0214c962c5a1dacc2c92abe389d8d58cb017fee0da8de2025ba4506635c9ece6` |
 
 The runner retains responsibility for shipping/releasing. `tasks.py done lab-audit-tom-dax-bt` was deliberately not invoked because mandatory source verification is blocked as stated above.
+
+## H5 current-contract addendum (2026-10-12, lab-dax-net-fee-verdict)
+
+MATCH: the primary arm is now `coded`, preserving the Java per-instrument `math.net_rr` through proof masking and the Python verdict. GER40 uses 0.000005 per side (ExecutionMathConstants.java:23-37); entry 100, stop 99, target 101.25 gives net RR 1.249/1.001 = 1.247752247752, below the current 1.25 floor. Gross-only `daxfee` selection is removed. This supersedes the selection contract in the historical PRE_REG_DAX.md:20-21 without editing that dated document.
+
+The row-cache schema is advanced to refuse pre-fix rows. Each regenerated month's metadata records its frozen verdict floor, FDAX fee and execution-math hash. Complete snapshot/run provenance remains H8's separate task; this addendum does not establish readiness for an outcome run or resolve other audit findings.
+
+RESULT (2026-10-12, COD lab): the synthetic H5 regression failed before the fix (`SETUP_FORMING` instead of `WAIT_RR`), passed after, and all 40 harness tests passed. Evidence, commands and changed-file lines: `2026-10-12_lab-dax-net-fee-verdict.md`. No market-data backtest or recall was run.
