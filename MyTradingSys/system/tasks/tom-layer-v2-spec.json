@@ -1,6 +1,7 @@
 {
   "approved_by": "operator (chat 2026-10-11: 'whatever research u need with Opus')",
   "asks": "",
+  "closed": "2026-10-12T19:43:09Z",
   "commands": [],
   "created": "2026-10-11T12:00:00Z",
   "depends_on": [
@@ -25,7 +26,7 @@
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md part A: family A imbalance fade (10 of 12 groups), 69/69 quotes verbatim, split frozen (5 design + 2 check sessions), fee-net test stated",
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/",
     "MyTradingSys/conditions/",
@@ -41,7 +42,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md section 3",
     "MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read RECALL_DAX.md section 3, PROBE_PLAN.md, TOM_TRADE_LEDGER.*, conditions/gap_rules.md, TOM_VERBATIM_INDEX.md, and the current candidate types + proof list (SetupCandidatesBuilder.java:557-575).",
     "For each setup family in the ledger (spike fade first): entry trigger, proofs, stop rule, target, management (partials, stop moves, re-entry), session - each with a Tom quote + file:line or NO-SOURCE. Unsourced is flagged, never tuned.",
