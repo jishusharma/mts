@@ -1,4 +1,4 @@
-<!-- relay: go depth=66 id=02fe24d3 -->
+<!-- relay: go depth=67 id=d26f0b34 -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
