@@ -7,6 +7,7 @@
       "tracks": "Claude (spec/build), Codex lab (audits, DAX harness)",
       "status": "STOP on the BTC encoding; being redefined as Tom v2 (DAX home market). Never a filter for other layers.",
       "spec": [
+        "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md",
         "MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md",
         "MyTradingSys/research/tom_fabio_guidance_2026-10-12/SOURCED_RULES.md",
         "MyTradingSys/research/TOM_VERBATIM_INDEX.md"
