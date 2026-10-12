@@ -4,6 +4,10 @@
   "commands": [],
   "created": "2026-10-11T12:00:00Z",
   "depends_on": [
+    "tom-ledger-canonical-identities",
+    "tom-ledger-instrument-identity",
+    "tom-ledger-management-provenance",
+    "tom-ledger-time-provenance",
     "tom-trade-ledger"
   ],
   "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md part A: one section per ledger family with sourced rules, a keep/change/drop table vs the current engine, recall target per family, and 5 ledger trades each mapped to exactly one family. Part B (tom-layer-v2-cost) is NOT part of this card.",
@@ -12,7 +16,7 @@
   "id": "tom-layer-v2-spec",
   "lane": "OPUS",
   "live_path": false,
-  "note": " Codex ledger audits (lab-audit-tom-ledger-frames) and review 2026-10-12: 0/7 recall is provisional (3 NOT_IN_DATA, ledger date/price fixes); spec ALL families, spike-fade first; flag fixed brackets/100-trade bar as unproven; separate quote vs inferred.",
+  "note": " Codex ledger audits (lab-audit-tom-ledger-frames) and review 2026-10-12: 0/7 recall is provisional (3 NOT_IN_DATA, ledger date/price fixes); spec ALL families, spike-fade first; flag fixed brackets/100-trade bar as unproven; separate quote vs inferred. Tom ledger audit 2026-10-12 = FIX-FIRST (layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md): 14 IDs = 12 candidate groups (T4/T9, T6/T10 duplicates); T11 date 31-Aug likely; T5 chart is FDXM not FDAX (no multiplier assumed); T3-s-p1 SL 24220 unsupported. Start only after the four tom-ledger-* repair cards are done, or cite the audit row per rule and mark each affected rule UNRESOLVED.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
