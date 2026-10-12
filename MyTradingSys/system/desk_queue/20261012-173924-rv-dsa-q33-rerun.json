@@ -4,8 +4,9 @@
   "from": "JIS-NUC",
   "id": "20261012-173924-rv-dsa-q33-rerun",
   "need": "python MyTradingSys/backtest/fetch_binance_archive.py --help; python MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py Dumps/backtest/raw_1m_2022/klines <scratch-out-dir> (full brief: python scripts/dev/tasks.py brief rv-dsa-q33-rerun)",
+  "note": "blocked on klines re-fetch (thread Fix tidy and recover lost data); set status pending when Dumps/backtest/raw_1m_2022/klines exists",
   "posted": "2026-10-12T17:39:24Z",
-  "status": "pending",
+  "status": "blocked",
   "target": "DSA-NUC",
   "title": "RV-DSA Q33 matrix re-run on JIS-NUC and diff against the committed cells (host=JIS-NUC)"
 }

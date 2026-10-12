@@ -11,7 +11,7 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "host=any",
+  "note": "owned by thread \"Fix tidy and recover lost data\"; relay sessions do not pick it up",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -30,7 +30,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "active",
   "steps": [
     "Read the prompt and sync.py tidy.",
     "Write the three tests; run them: they fail.",

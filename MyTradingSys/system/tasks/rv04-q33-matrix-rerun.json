@@ -17,7 +17,7 @@
     "guidance"
   ],
   "live_path": false,
-  "note": "",
+  "note": "closed 2026-10-12: same work as thread \"Fix tidy and recover lost data\" (re-fetch klines, confirm Q33 reproduces); independent check is rv-dsa-q33-rerun",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
@@ -35,7 +35,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Run the commands exactly as written, on development data only; never read a holdout (ROADMAP section 2).",
     "Append one row per run to MyTradingSys/research/layer_lab/TRIALS.md (date, card, command, data range, headline number): every run is a counted trial.",

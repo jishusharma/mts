@@ -14,7 +14,7 @@
   "lane": "DSA-NUC",
   "layers": [],
   "live_path": false,
-  "note": "host=JIS-NUC",
+  "note": "BLOCKED until the klines re-fetch by thread \"Fix tidy and recover lost data\" lands in Dumps/backtest/raw_1m_2022/klines; then set the desk row back to pending",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -31,7 +31,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Run the commands in order, each inside the 300 s bridge cap.",
     "Paste the output tail into the chat; if a command fails twice close the task --failed with the error text.",

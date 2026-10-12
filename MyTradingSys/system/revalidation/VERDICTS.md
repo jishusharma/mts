@@ -8,10 +8,10 @@ here needs judgment-free run-and-report except the RV04 klines fetch, which sits
 ## Ranking (risk = how much a hidden defect costs x how little independent checking it had)
 | # | item | why | host= | runner | status 2026-10-12 |
 |---|---|---|---|---|---|
-| RV03 | sync.py tidy (+claim, hot-file resolve) | deletes directories; tests encode the hazard | any | Sonnet card rv03-tidy-safety-revalidate-and-fix-sync | RAN (mine): 2 defects CONFIRMED, fix queued |
+| RV03 | sync.py tidy (+claim, hot-file resolve) | deletes directories; tests encode the hazard | any | card rv03-tidy-safety-revalidate-and-fix-sync, owned by thread "Fix tidy and recover lost data" | RAN (mine): 2 defects CONFIRMED, fix in that thread |
 | RV01 | Tom ledger repairs | sole evidence base for Tom v2; 76 rows rewritten by the author | JIS-NUC | Codex audit rv01-tom-ledger-repairs | RAN mechanical (mine): 3 defects; frame pass QUEUED |
 | RV02 | DAX harness fixes H1-H8 + holdout isolation | burning the holdout is irreversible; fixes self-verified | JIS-NUC | Codex audit rv02-dax-harness-fixes | tests re-run 62 green; deep audit QUEUED |
-| RV04 | Q33 matrix | negative verdict closed Q34 | JIS-NUC | Codex run rv04-q33-matrix-rerun | numbers cross-checked (mine): MATCH; re-run QUEUED (klines absent) |
+| RV04 | Q33 matrix | negative verdict closed Q34 | JIS-NUC | rv-dsa-q33-rerun (DSA-NUC, BLOCKED on klines re-fetch; rv04 closed as duplicate) | numbers cross-checked (mine): MATCH; independent re-run waits for the klines |
 | RV05 | Fabio ledger frames | first audit read 4 sheets of 62 images | JIS-NUC | Codex audit rv05-fabio-ledger-frame-pass | QUEUED |
 | RV06 | live-read claims | MISMATCH lines become engine cards | JIS-NUC | Codex audit rv06-live-read-claims (luna) | QUEUED |
 | RV07 | layer tooling + shot.py guards | navigation layer; 2 guard gaps found | any | Sonnet card rv07-layer-tooling-revalidate | RAN partly (mine): 2 defects, paths clean; rest QUEUED |
