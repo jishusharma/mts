@@ -170,7 +170,9 @@ class BudgetTest(unittest.TestCase):
 
     def test_a_run_stopped_by_the_allowance_is_not_a_try(self):
         self.assertTrue(R.limit_hit("INCOMPLETE", [], "ERROR: You've hit your usage limit. Try again at 4:17 AM."))
-        self.assertFalse(R.limit_hit("INCOMPLETE", ["a.md"], "usage limit"))
+        self.assertTrue(R.limit_hit("INCOMPLETE", ["a.md"], "noise\n" * 400 + "ERROR: You've hit your usage limit."))
+        self.assertFalse(R.limit_hit("INCOMPLETE", ["a.md"], "the doc says usage limit\n" + "x\n" * 2000))
+        self.assertFalse(R.limit_hit("DONE", [], "usage limit"))
         self.assertFalse(R.limit_hit("INCOMPLETE", [], "tokens used\n9"))
         with tempfile.TemporaryDirectory() as d:
             p = Path(d) / "lab_runs"
@@ -227,6 +229,27 @@ class IndexTest(unittest.TestCase):
         self.assertIn("| ready | lab-q | audit |", text)
         self.assertNotIn("son", text.split("## Queued")[1])
         self.assertEqual(text, R.index_text([done2, card("lab-q"), done1], ["2026-10-12_lab-new.md", "2026-10-11_lab-old.md"]))
+
+
+class LimitFallback(unittest.TestCase):
+    def test_salvage_moves_untracked_and_restores_tracked(self):
+        import subprocess
+        with tempfile.TemporaryDirectory() as d:
+            wt, home = Path(d) / "wt", Path(d) / "home"
+            wt.mkdir()
+            run = lambda *a: subprocess.run(["git", "-C", str(wt), *a], check=True, capture_output=True)
+            run("init", "-q")
+            (wt / "tracked.txt").write_text("v1", encoding="utf-8")
+            run("add", ".")
+            run("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "i")
+            (wt / "tracked.txt").write_text("v2", encoding="utf-8")
+            (wt / "new.png").write_bytes(b"x")
+            dest, n = R.salvage(wt, home, "card", datetime(2026, 10, 12, 17, 0, tzinfo=timezone.utc))
+            self.assertEqual(n, 2)
+            self.assertEqual(R.changed_files(wt), [])
+            self.assertEqual((wt / "tracked.txt").read_text(encoding="utf-8"), "v1")
+            self.assertEqual((dest / "tracked.txt").read_text(encoding="utf-8"), "v2")
+            self.assertTrue((dest / "new.png").is_file())
 
 
 if __name__ == "__main__":

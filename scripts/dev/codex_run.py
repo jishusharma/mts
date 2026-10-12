@@ -141,8 +141,30 @@ def budget_line(rl, now):
 
 
 def limit_hit(outcome, files, log_text):
-    """A run that wrote nothing because the allowance ran out is not a try of the card: it waits for the window."""
-    return outcome == "INCOMPLETE" and not files and bool(lane_health.classify(log_text))   # usage limit AND out of credits
+def limit_hit(outcome, files, log_text):
+    """A run that ended on the allowance / credit error is not a try of the card, even with partial files (those are salvaged).
+    Only the log tail counts: the prompt and the files Codex read mention limits too (lane_health.classify)."""
+    return outcome == "INCOMPLETE" and bool(lane_health.classify(log_text))
+
+
+def salvage(wt, home, cid, when, files=None):
+    """Move unfinished files out of the lab work tree into <home>/lab_runs/salvage/<stamp>_<card>/ so the next tick is not blocked.
+    Moves, never deletes. Returns (destination, count)."""
+    files = changed_files(wt) if files is None else files
+    if not files:
+        return None, 0
+    dest = Path(home) / "lab_runs" / "salvage" / f"{when.strftime('%Y%m%dT%H%M%SZ')}_{cid}"
+    for f in files:
+        src = Path(wt) / f
+        if src.is_file():
+            (dest / f).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dest / f)
+        if git(wt, "ls-files", "--error-unmatch", "--", f, check=False).returncode == 0:
+            git(wt, "checkout", "--quiet", "--", f)
+        elif src.is_file():
+            src.unlink()
+    return dest, len(files)
+
 
 
 def pick(cards, claimed, tried, probe=False):
@@ -224,9 +246,9 @@ def sh(wt, *args):
 
 def refresh(wt):
     """Bring the lab work tree to origin/fast-track on its own branch. Refuses a dirty tree: unfinished work is never touched."""
-    dirty = git(wt, "status", "--porcelain").stdout.strip()
-    if dirty:
-        raise SystemExit(f"IDLE lab work tree {wt} has uncommitted files; finish or ship them first")
+    if git(wt, "status", "--porcelain").stdout.strip():
+        dest, n = salvage(wt, codex_home(), "tick", utc())   # an unfinished run (limit, crash) must not block the lab for good
+        print(f"salvaged {n} unfinished file(s) to {dest}")
     git(wt, "fetch", "--quiet", "origin", sync.TRUNK)
     branch = f"{socket.gethostname().lower()}/codex-lab"
     if git(wt, "rev-parse", "--verify", "--quiet", branch, check=False).returncode:
@@ -283,6 +305,10 @@ def run_card(card, dry=False, env=os.environ, probing=False):
         err = lane_health.classify(logtext) if outcome == "INCOMPLETE" else ""   # also when files were written: the 2026-10-12 astra run did 777 s of work, then hit the limit
         if limit_hit(outcome, files, logtext):
             outcome, note = "LIMIT", f"Codex {'credits' if err == 'credits' else 'allowance'} ran out; the card stays ready, is not charged a try, and the GPT lane is marked down"
+            dest, n = salvage(wt, home, cid, when, files)   # partial files leave the lab tree so the next tick is not blocked
+            if n:
+                note += f" | {n} partial file(s) salvaged to {dest}"
+            files = []
         lane = lane_health.record_run({**lane_health.load(wt), "last_probe": lane_health.iso(when)} if probing else lane_health.load(wt), outcome, err, when,
                                       lane_health.error_line(logtext) if err else "")
         lane_health.save(wt, lane)   # DONE/BLOCKED: rides in the commit below; otherwise shipped on its own
