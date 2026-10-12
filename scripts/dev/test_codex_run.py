@@ -179,6 +179,32 @@ class BudgetTest(unittest.TestCase):
             self.assertEqual(R.attempts(d), {})
 
 
+class StatusTest(unittest.TestCase):
+    ROW = {"at": "2026-10-12T05:47:00Z", "card": "lab-a", "model": "gpt-6.1-sol", "effort": "medium", "tokens": 94135, "seconds": 452}
+
+    def test_needs_look_names_each_thing_the_lab_cannot_fix(self):
+        a, b, c = card("lab-a"), card("lab-b"), card("lab-c")
+        self.assertEqual(R.needs_look([a, b, c], {}, [self.ROW | {"outcome": "DONE"}]), [])
+        look = R.needs_look([a], {"lab-a": R.MAX_ATTEMPTS}, [self.ROW | {"outcome": "SHIP_FAILED", "note": "gate failed"}], unshipped=2, stopped="why")
+        text = " | ".join(look)
+        for want in ("switched off: why", "2 unshipped", "lab-a failed 2 times", "ended SHIP_FAILED (lab-a): gate failed", "queue is empty"):
+            self.assertIn(want, text)
+        self.assertIn("only 1 card(s) left", R.needs_look([a], {}, [])[0])
+        self.assertEqual(R.needs_look([a], {}, [self.ROW | {"outcome": "LIMIT"}], held="window full"), [])
+        self.assertEqual(R.needs_look([a, b, c], {}, [self.ROW | {"outcome": "SHIP_FAILED"}], closed={"lab-a"}), [])
+
+    def test_status_is_plain_text_with_queue_deliveries_and_runs(self):
+        done = card("lab-old", state="done", closed="2026-10-11T08:00:00Z", result="SOUND")
+        t = R.status_text([card("lab-a"), card("lab-b"), card("lab-c")], [done], {}, [self.ROW | {"outcome": "DONE"}], None, 1791784000, "06:30Z IDLE")
+        for want in ("Queue: 3 ready", "lab-a [audit, gpt-6-astra / high]", "2026-10-11 lab-old: SOUND",
+                     "2026-10-12 05:47Z lab-a DONE (gpt-6.1-sol / medium, 94k tokens, 452s)", "NEEDS A LOOK: nothing", "Last check by the scheduler: 06:30Z IDLE"):
+            self.assertIn(want, t)
+        self.assertNotIn("{", t)
+        away = R.status_text([], [done], {}, [], None, 1791784000, host_has_lab=False)
+        self.assertIn("does not run the lab", away)
+        self.assertNotIn("NEEDS A LOOK", away)
+
+
 class LockTest(unittest.TestCase):
     def test_second_run_is_refused_until_the_lock_is_stale(self):
         with tempfile.TemporaryDirectory() as d:

@@ -52,6 +52,15 @@ has full access (operator's setting), so it does its own git steps; everything e
   sheets, captions), `dax_archive`, `dax_raw`, `dax_bt`, `dax_snapshots`, `bigtrade`. Not copied: `Dumps/backtest/raw_1m_2022`.
   Nothing refreshes it yet: data made on JIS-NB after that date is NOT_IN_DATA here until the next copy.
 
+## Checking on it (operator or any session, no chat history needed)
+- `python scripts/dev/codex_run.py status` prints, in plain words: the Codex allowance, the queue, the latest deliveries, the last
+  runs and a NEEDS A LOOK list. STATUS.md embeds the same text (section "Layer Lab (Codex)"), so every session sees it at start.
+- On JIS-NUC the operator double-clicks "Codex Lab Status" on the desktop (`scripts/sched/lab_status.cmd`): same text, no session needed.
+- NEEDS A LOOK is the lab's to-do list for people: an empty or short queue, a card that failed twice, a run that did not ship,
+  files left in the lab work tree, the lab switched off. "nothing" = leave it alone. Each line is the first job of the next
+  JIS-NUC session; on another machine post it to DSA-NUC (`desk.py post ... --target DSA-NUC`).
+- Deliveries, newest first, with their reports: `MyTradingSys/research/layer_lab/INDEX.md`.
+
 ## Allowance (Codex plan Plus: a 5-hour window and a weekly cap, shared with the operator's own app sessions)
 - Nothing but the scheduled script feeds Codex: no Claude session, no Haiku worker. A ready CODEX card is the only input.
 - Each tick reads the last allowance reading Codex wrote (`%CODEX_HOME%\sessions`). At 85% of the 5-hour window, or 85% of the

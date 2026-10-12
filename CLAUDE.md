@@ -54,6 +54,9 @@ Live state off the desktop (NUC, laptop): `sync.py start` pulls the read-only mi
 - Git denies chained `cd x && git checkout/merge ...` in Bash: use `git -C <dir> <cmd>` as its own call.
 - Machine off = stack down. `MTS-Supervisor` starts at logon (+90 s) and revives every aux process. Missed events are not replayed
   after an outage on purpose (no stale-signal trades); do not build catch-up.
+- "How is Codex doing?" = `python scripts/dev/codex_run.py status` (also in STATUS.md, "Layer Lab (Codex)"). Codex works lane `CODEX` cards
+  unattended on JIS-NUC (`MTS-CodexLab`, no Claude tokens); how it works, its limits and how to feed it: `MyTradingSys/system/LAYER_LAB.md`.
+  A NEEDS A LOOK line is a NUC session's first job. Scoped research or backtest-code work goes to lane CODEX before a Claude session takes it.
 - Runner output: `runtime_data/live_runner.log`. alert_rate_check candles: `scripts/dev/refresh_klines.py` runs daily before it.
 - Local gate needs `pip install numpy` (Step 3p). Two `htf_context_live` loops = duplicate rows: keep one (shim parent + child = one loop).
 
