@@ -93,6 +93,7 @@ Why: the Astra audit hit "You've hit your usage limit ... purchase more credits 
 gpt-6.1-sol runs printed the same line after 5 s and were retried every 30 min. Nothing moved the cards, so they just waited.
 Code: `scripts/dev/lane_health.py` (rules at the top of the file), state `MyTradingSys/system/lane_state.json`, tests `test_lane_health.py` (gate step 3lh).
 - **Down** at once on that error text in a run log (the last 4000 characters only), after 3 empty runs in a row, or when the lab host's heartbeat is older than **3 hours** (6 missed ticks). The state shows the ERROR line, including GPT's own reset time.
+- **Window spent** (2026-10-12): when the pre-check refuses a card because the 5-hour window (>= 85%) or the week is used up, `codex_run.py` marks the lane down with reason `window` and `until` = the reset time, and the same tick runs the sweep, so ready CODEX cards move to DSA/Claude at once. No probe (it would only hit the limit); the lane comes back up by itself at the reset and untaken rows are cancelled.
 - **Probe**: a down lane lets one card try every **60 min** (a crucial card first). DONE or BLOCKED = lane up again. A limit run costs 5 s and no try.
 - **Reroute** (lane down): a ready CODEX card goes to DSA (kinds `audit`, `run`: a desk row whose prompt is cut from the card in the DSA bridge format: worktree mts-dsa, exact commands, one report path, stop-after-two-failures)
   or to lane SONNET (kind `build`: needs a test, a relay session takes it). The card keeps a `reroute` field saying where it went and why.
