@@ -1554,3 +1554,7 @@ Get the appStart writing
 ```
 When possible. Design DSA AI Bridge tasks such that multiple sessions can run in || and complete tasks  quickly. Make sure that their scope on NB and NUC are maintained!
 ```
+## kvsh4c9zt1bvw26dhore | 2026-10-11T16:10:43Z | task
+```
+we have had changes in the way to improve AI health in MTS - I still see sessions doing starting rituals - is it expected/correct/optimized? If not fix as per our goals. 
+```
