@@ -106,3 +106,11 @@ it for the bridge operator.
 - scripts\dev\bridge_selftest.ps1
 - CLAUDE.md work routing line
 - Dumps/operator/context/DSA_HANDOFF.md section 14 (worker directive)
+
+## Autostart on JIS-NUC (2026-10-12)
+
+Task Scheduler `AIBridge-Agent` (registered by `scripts\sched\register_aibridge.ps1`): runs F:\AIBridge\src\agent.ps1 hidden
+(conhost --headless), starts at logon and every 5 min (IgnoreNew = watchdog, starts it only when it is not running), restarts up
+to 3x on failure, appends to F:\AIBridge\src\run\agent.log (rotates at 5 MB). Health: `python scripts\dev\aibridge_health.py`
+(exit 0 = answering on 127.0.0.1:7181). Before 2026-10-12 it was logon-only and visible; a logoff left it down (0xC000013A).
+Only a real reboot proves the logon trigger; the 5-min watchdog was proven by killing the agent.
