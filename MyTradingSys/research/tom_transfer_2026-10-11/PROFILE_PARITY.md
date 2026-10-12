@@ -76,3 +76,24 @@ with frame paths and no outcomes. Full drawn-vs-computed parity remains pending 
 Research rationale: BACKTEST_FAILURES_RESEARCH.md N3 / section 6 item 5.
 
 RESULT (2026-10-12, JIS-NUC): python scripts/dev/run_all_tests.py --quick: ALL TESTS PASSED.
+
+## JIS-NB frame read, 2026-10-12 (relay session; dev dates T1/T2 only, no holdout bars read)
+
+Frames viewed: n7ZSkjb7JXs_0314.jpg (T1), k0zm5NYn0IQ_0280.jpg (T2), plus T4/T5/T7 frames for the line inventory.
+- No labelled POC / VAH / VAL line is drawn on either DAX dev frame. Tom's only profile object there is the right-edge volume
+  histogram (no price text on its bars). T4/T5 show hand-drawn range lines (T5 blue line 24425 is "the value area", transcript
+  T6hDJcHrVBM 04:22) but 2026-05 dates are inside the closed holdout window, so their computed side was NOT read.
+  T7 is ES, not DAX. So the card's >= 6 drawn-vs-computed levels cannot be filled from dev data: 0 of 6 are MATCH/MISMATCH, all stay NOT_IN_DATA.
+- Price level offset (measured from price levels only, no outcomes): ledger entry price minus archive 1m close at the ledger minute:
+  T1 24481 - 24265.07 = +215.9 (2025-12-22 06:24Z); T2 25318 - 25087.66 = +230.3 (2026-01-08 07:34Z).
+  The dxFeed FDAX chart and the Dukascopy DEUIDXEUR CFD archive sit ~220 pts apart, and the offset differs by day, so a
+  1-tick absolute match is impossible by construction. (Part of it may be a timezone mismatch of the ledger instant; unverified.)
+- Eyeball of the T2 histogram: widest bar ~25215-25225 on the chart axis (10-pt labels, +-10 pt read). Computed candidate POC 25078.14 +
+  230 = 25308: not within a tick of the eyeball. Reading is screenshot-resolution only (no image library on this host: PIL/cv2 absent), so it is
+  evidence, not a status.
+
+Verdict unchanged: **NOT_IN_DATA**. Next steps, each one session:
+1. Operator decision or Q: volume proofs need futures volume (FDAX) or a per-day basis rule; the CFD feed shape can only be compared after
+   a basis offset, which is a parameter with no Tom source (provenance rule), so it must not be tuned.
+2. Pixel-accurate reads need Pillow on JIS-NB (download needs operator approval): then measure histogram POC row, top/bottom rows on T1/T2 frames
+   and compare SHAPE (POC position as fraction of high-low range) with the computed profile; that is basis-free.
