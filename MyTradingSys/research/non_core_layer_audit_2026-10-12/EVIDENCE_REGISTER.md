@@ -167,7 +167,7 @@ Machine-readable twin: `EVIDENCE_REGISTER.json`; check with `verify_register.py`
 - spec: `MyTradingSys/items/T061_wavetrend_lazybear.md:28` `wt2   = SMA(wt1, 4)`
 - spec: `MyTradingSys/items/T061_wavetrend_lazybear.md:16` `Overbought Level 2 = 53`
 - survey: `MyTradingSys/research/T065_LAZYBEAR_SURVEY.md:5` `## 0. Evidence status`
-- board: `MyTradingSys/system/control_room.json:250` `"id": "wavetrend",`
+- board: `MyTradingSys/system/control_room.json:254` `"id": "wavetrend",`
 
 **ER-08**
 - survey: `MyTradingSys/research/T065_LAZYBEAR_SURVEY.md:9` `Not verified: the Squeeze Momentum author's *updated* source`

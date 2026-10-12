@@ -390,8 +390,8 @@
      {
       "path": "MyTradingSys/system/control_room.json",
       "needle": "\"id\": \"wavetrend\",",
-      "line": 250,
-      "sha256": "ccd3b737d04e913dbdcb4da670928f30f592ba14be6e7f18ee5f3a89e65e34c8",
+      "line": 254,
+      "sha256": "0faf5685583edc9df3fb150aa37016de62b1e5f958140b5a154292d677f24945",
       "ok": true
      }
     ]
