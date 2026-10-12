@@ -1,0 +1,30 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-12T05:48:36Z",
+  "commands": [],
+  "created": "2026-10-11T16:08:42Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "rf1cr2yyvvbyny39zqei",
+  "goal": "",
+  "id": "b173-hide-python-cmd-console-windows-of-",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "B173"
+  ],
+  "result": "install_backup_task.ps1 + register_cicd_tasks.ps1 now register pythonw; codex_lab/c_drive_care/poller/setup-nuc/mode.ps1 were already hidden",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "done",
+  "steps": [],
+  "tests": "",
+  "title": "B173 Hide python/cmd console windows of scheduled jobs (pythonw / hidden), same as B169"
+}

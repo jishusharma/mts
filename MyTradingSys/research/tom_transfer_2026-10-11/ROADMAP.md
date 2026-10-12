@@ -49,3 +49,16 @@ Plan of record for the probe: PROBE_PLAN.md (hypotheses H1-H5, option arms S/Q/M
 - Worktree `../mts-daxbt` holds ~45 stray untracked files from a stash pop (never committed; the stash entry is intact). Delete the worktree when nothing else is in it.
 - l8RZrBfzvp4 video: yt-dlp 403; retry inside tom-trade-ledger.
 - Dec 2025/Jan 2026 FDAX-CFD offset ~200 points vs 100-120 theory: anchor trades on frames + price shape, not on the basis formula alone.
+
+## 6. Addendum 2026-10-11 (C-Cloud research, BACKTEST_FAILURES_RESEARCH.md)
+Beyond Tom and Fabio: the other trader layers (Malkan RSI, CryptoCred, positioning) show the same pattern (tested off home market, timeframe or exits), while volume/candle/MA/RSI-divergence/session layers are fair negatives and stay parked with sealed holdouts.
+| New finding | Consequence | Card |
+|---|---|---|
+| N1 DAX holdout contains Tom's ledger days | drop ledger days +-1 from the holdout, add forward holdout from 2026-10-10, split ledger design/check | tom-holdout-clean-split |
+| N2 recall >= 4/7 alone can be met by firing on every spike | pass bar = recall on CHECK set AND fire rate per day; recall iterations are trials | tom-encode-spike-fade |
+| N3 DAX feed volume is not Eurex volume | profile parity vs Tom's drawn POC/VAH/VAL before encoding volume proofs | tom-profile-parity-check |
+| N4 Fabio ledger lacks minute timestamps; stops tighter than Tom's | read clocks from frames; NQ tick data = operator cost decision | fabio-ledger-minute-timestamps, fabio-layer-v2-markets |
+| N5 MFE measured on noise-level stops | re-measure after the stop-width rule | tom-probe-prereg |
+| N6 snapshots lack market state / day type | write them so selection (Q) is testable later | tom-layer-v2-cost |
+| N7 null not session-matched; touch fills only | session-matched null, report touch and trade-through | tom-dax-backtest, tom-probe-prereg |
+Home-fit audits (CryptoCred first, then Malkan, positioning) run only after Tom/Fabio v2 part B and the readiness template: cards `*-home-fit-audit`.

@@ -31,9 +31,14 @@ STATES = ("raw", "refined", "ready", "active", "blocked", "done", "dropped")
 LIVE = ("ready", "active")                      # states that must satisfy the Definition of Ready
 FINAL = ("done", "dropped")
 SHOW = ("ready", "refined", "raw", "active", "blocked")   # page order: what can run first
-LANES = ("HAIKU", "SONNET", "OPUS", "DSA", "DSA-NB", "DSA-NUC", "JIS-NB")
+LANES = ("HAIKU", "SONNET", "OPUS", "DSA", "DSA-NB", "DSA-NUC", "JIS-NB", "CODEX")
 CODE_LANES = ("HAIKU", "SONNET", "OPUS")        # relay sessions: need tests
 RUN_LANES = ("DSA", "DSA-NB", "DSA-NUC", "JIS-NB")   # run-and-report: need exact commands
+# Layer lab (LAYER_LAB.md): CODEX cards are run by scripts/dev/codex_run.py, never by a Claude relay session.
+# kind -> (model, reasoning effort); a card may override either with `model` / `effort`.
+CODEX_KINDS = {"audit": ("gpt-6-astra", "high"), "build": ("gpt-6.1-sol", "medium"), "run": ("gpt-6-luna", "low")}
+CODEX_EFFORTS = ("low", "medium", "high", "xhigh", "max")
+LAB_REPORTS = "MyTradingSys/research/layer_lab/reports"
 SIZES = ("S", "M", "L")
 MAX_TRIES = 2                                    # refiner attempts per card; then it is parked, not retried every tick
 BUFFER = 3                                       # ready cards to keep in stock before the refiner stops
@@ -115,6 +120,16 @@ def problems(card, cards=None, reg=None):
         p.append("tests is empty (code lane: name the fail-first test)")
     if lane in RUN_LANES and not card.get("commands"):
         p.append("commands is empty (run lane: paste copy-ready commands)")
+    if lane == "CODEX":
+        kind = card.get("kind", "")
+        if kind not in CODEX_KINDS:
+            p.append(f"kind {kind!r} not one of {', '.join(CODEX_KINDS)} (lane CODEX)")
+        if kind == "build" and not str(card.get("tests", "")).strip():
+            p.append("tests is empty (CODEX build: name the fail-first test)")
+        if kind == "run" and not card.get("commands"):
+            p.append("commands is empty (CODEX run: paste copy-ready commands)")
+        if card.get("effort") and card["effort"] not in CODEX_EFFORTS:
+            p.append(f"effort {card['effort']!r} not one of {', '.join(CODEX_EFFORTS)}")
     if lane == "OPUS" and not card.get("approved_by"):
         p.append("lane OPUS needs approved_by (operator names Opus; CLAUDE.md)")
     if card.get("live_path") and lane != "JIS-NB":
@@ -153,8 +168,16 @@ def brief(card):
         L.append(f"Sources: {'; '.join(card['sources'])}")
     if card.get("refs"):
         L.append(f"Registry: {' '.join(card['refs'])}")
+    if card.get("lane") == "CODEX":
+        L.append(f"Report: {LAB_REPORTS}/<UTC date>_{card['id']}.md (findings or numbers, each with file:line or command)")
     L.append(f"Close: sync.py claim, work, tasks.py done {card['id']} --result \"<number/file>\", sync.py ship, sync.py release.")
     return "\n".join(L)
+
+
+def codex_setting(card):
+    """(model, effort) a CODEX card runs with: the kind's default unless the card names its own."""
+    model, effort = CODEX_KINDS[card["kind"]]
+    return card.get("model") or model, card.get("effort") or effort
 
 
 def rank(card):
@@ -184,8 +207,11 @@ def status_line(cards):
     n = counts(cards)
     todo = sum(refinable(c) for c in cards)
     parked = n["raw"] + n["refined"] - todo
-    tail = f"refinable={todo} parked={parked} ready={n['ready']} buffer={BUFFER}"
-    return ("REFINE_NEEDED " if todo > 0 and n["ready"] < BUFFER else "REFINE_OK ") + tail
+    # The buffer is for relay builders: ready run-lane cards (DSA, JIS-NB) cannot be taken by them, so they do not count
+    # (2026-10-11: three ready DSA cards kept REFINE_OK while 17 cards waited and builders had one task).
+    ready = sum(c["state"] == "ready" and c.get("lane") in CODE_LANES for c in cards)
+    tail = f"refinable={todo} parked={parked} ready={n['ready']} builder_ready={ready} buffer={BUFFER}"
+    return ("REFINE_NEEDED " if todo > 0 and ready < BUFFER else "REFINE_OK ") + tail
 
 
 def summary(repo=REPO):
@@ -210,6 +236,8 @@ def cmd_new(a):
     if path_of(REPO, cid).exists():
         raise SystemExit(f"tasks: card {cid} exists")
     card = blank(cid, a.title, prio=a.prio, lane=a.lane or "", refs=a.ref or [], from_inbox=a.from_inbox or "")
+    if a.kind:
+        card["kind"] = a.kind
     print(f"wrote {save(REPO, card)} (state raw; refine it, then `tasks.py check {cid}`)")
 
 
@@ -269,6 +297,8 @@ def cmd_status(a):
 
 def cmd_next(a):
     cs, _ = ready_cards(REPO, a.lane)
+    if not a.lane:   # CODEX cards belong to the layer-lab runner; a Claude session asking "what next" never sees them
+        cs = [c for c in cs if c["lane"] != "CODEX"]
     if not cs:
         print("NO_READY_CARD: run the refiner (TASK_REFINEMENT.md) or hand off with --stop")
         return 1
@@ -361,6 +391,7 @@ def main(argv=None):
     n.add_argument("--lane", choices=LANES)
     n.add_argument("--prio", type=int, default=3, choices=range(1, 6))
     n.add_argument("--from-inbox")
+    n.add_argument("--kind", choices=tuple(CODEX_KINDS), help="lane CODEX only: audit | build | run")
     n.set_defaults(f=cmd_new)
     c = sp.add_parser("check")
     c.add_argument("id", nargs="?")

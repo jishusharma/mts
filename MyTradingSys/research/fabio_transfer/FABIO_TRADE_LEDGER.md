@@ -76,3 +76,15 @@ F12 (DyS79Eb92Ug t=3025-3275): NQ long 6 lots ~25107 right after F11 stop, stop 
 F13 (DyS79Eb92Ug t=3525-3775): NQ long 8->10 lots ~25104, stop 25097.00 (7pt = 0.028%), stopped out between t=3550 and 3575: Daily P/L 20668 -> 17758 = -2910$. Then flat, no trade through t=3750 (the window ends t=3775; sheet shows 3725-3750 only). Sequence after F10 (+4964$): F11 -2115$, F12 -1525$, F13 -2910$, three chase longs near the 25110 prior high in ~9 chart minutes with stops 7-21pt. Ledger 16 trades / 52 rows (>= 20 trades not yet). Still < 20: next window t=3775+, then Is1HvdfQm5c, xUyqIjCfZzg.
 
 F14 (DyS79Eb92Ug t=3775-4025): NQ long 8 lots ~25101.4, stop 25086.25 (~15pt = 0.060%), target label 25186.75 (+13600$), stopped out between t=3925 and t=3950: Daily P/L 17758 -> 15147 = -2611$. A 10-lot preview order near 25109 at t=3800 was not filled. Talking-head at t=3850. Flat t=3975-4000. Sequence F10 +4964, F11 -2115, F12 -1525, F13 -2910, F14 -2611: four chase longs near the 25110 prior high. Ledger 17 trades / 53 rows (>= 20 not yet). Next window t=4025+, then Is1HvdfQm5c, xUyqIjCfZzg.
+
+## DyS79Eb92Ug t=8275-8493 (read 2026-10-12 relay, JIS-NB; sheets lowres/DyS79Eb92Ug_w30_00/01/02.jpg) - VIDEO FINISHED
+Flat, no trade (Daily P/L 15147$ unchanged); chart at t=8300 shows low ~24880 then bounce ~24940; talking heads to the end (video ends ~8493). Ledger 70 rows.
+
+## FINAL stats (all five downloaded videos read end to end; closes card fabio-trade-ledger)
+Filled trades: 14 (F1-F6 from 5 videos, F7-F14 from DyS79Eb92Ug). F15 (t=6775-7025) was an order ticket that never filled. Goal of >= 20 not reached: "all available" per the card (video count is the limit).
+Markets: NQ 13, ES 1 (F4, 1 lot, no stops). Session: US cash for every frame with a clock.
+Stop width, 13 NQ stops with a read stop (points / % of ~25000): median 10.75pt = 0.043%, mean 13.6pt, min 1.5pt (0.006%), max 30.83pt (0.123%).
+DyS79Eb92Ug day: F7-F10 won/ended +4964$ at F10, then F11 -2115$, F12 -1525$, F13 -2910$, F14 -2611$ (four consecutive same-range longs stopped), then flat for 4400 s; day ended Daily P/L +15147$.
+Management as before: stops move only toward profit, TP pulled in late, scale-in on confirmation (4 -> 8 -> 10 lots).
+
+Is1HvdfQm5c t=0-250 (w00, 25 s steps) read: black intro, Excalidraw board (agenda: Mental Models, Live Charting, Execution Method Trick), no chart, no trade. Ledger +1 no-trade row (71 lines), still 14 trades. Next: t=250+ (w01), one 250 s window per session; the Live Charting part is likely later, so a coarse 120 s sample of the whole video may find it faster.

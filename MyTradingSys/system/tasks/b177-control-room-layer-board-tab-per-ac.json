@@ -1,0 +1,29 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T16:08:43Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "0c3c2rw1dc5hz27ph4ro",
+  "goal": "",
+  "id": "b177-control-room-layer-board-tab-per-ac",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "B177"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "B177 Control Room Layer Board tab (per active layer: dev/test state, indicators, steps)"
+}

@@ -191,5 +191,76 @@ class LintTest(unittest.TestCase):
         self.assertEqual(r.returncode, 0, r.stdout)
 
 
+NUC = {"MTS_RELAY_HOST": "JIS-NUC", "MTS_RELAY_ACCOUNT": "acct-a"}
+NB = {"MTS_RELAY_HOST": "JIS-NB", "MTS_RELAY_ACCOUNT": "acct-b"}
+
+
+class TwoHostTest(unittest.TestCase):
+    """Two hosts share one handoff through git; neither is tied to an account (relay-two-host-standby)."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.f = self.tmp / "NEXT_SESSION.md"
+        self.f.write_text("# NEXT SESSION\nbody\n", encoding="utf-8", newline="\n")
+        self.runs = self.tmp / "relay_runs.jsonl"
+
+    def kick(self, who, home, now, *extra_args):
+        return run(self.tmp / home, "kick", "--file", str(self.f), *extra_args, now=now, extra=who)
+
+    def test_handoff_records_host_account_session(self):
+        r = run(self.tmp / "nb", "handoff", "--file", str(self.f), "--go", "--session", "relay 12", extra=NB)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        import json
+        row = json.loads(self.runs.read_text(encoding="utf-8").splitlines()[-1])
+        self.assertEqual((row["host"], row["account"], row["session"], row["state"]), ("JIS-NB", "acct-b", "relay 12", "go"))
+        self.assertIn("id=" + row["id"], self.f.read_text(encoding="utf-8"))
+
+    def test_peer_fresh_handoff_keeps_other_host_idle_then_takeover(self):
+        run(self.tmp / "nb", "handoff", "--file", str(self.f), "--go", extra=NB, now="2026-10-10T10:00:00Z")
+        r = self.kick(NUC, "nuc", "2026-10-10T10:30:00Z", "--peer-quiet-min", "90")
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("peer JIS-NB", r.stdout)
+        r = self.kick(NUC, "nuc", "2026-10-10T11:31:00Z", "--peer-quiet-min", "90")
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertIn("KICK", r.stdout)
+
+    def test_own_handoff_and_flag_off_are_not_blocked(self):
+        run(self.tmp / "nb", "handoff", "--file", str(self.f), "--go", extra=NB, now="2026-10-10T10:00:00Z")
+        self.assertEqual(self.kick(NB, "nb", "2026-10-10T10:05:00Z", "--peer-quiet-min", "90").returncode, 0)
+        self.assertEqual(self.kick(NUC, "nuc", "2026-10-10T10:05:00Z").returncode, 0)
+
+    def test_account_switch_on_same_host_changes_nothing(self):
+        run(self.tmp / "nb", "handoff", "--file", str(self.f), "--go", extra=NB, now="2026-10-10T10:00:00Z")
+        other_account = {"MTS_RELAY_HOST": "JIS-NB", "MTS_RELAY_ACCOUNT": "acct-a"}
+        self.assertEqual(self.kick(other_account, "nb", "2026-10-10T10:05:00Z", "--peer-quiet-min", "90").returncode, 0)
+
+    def test_peer_stop_header_stays_idle(self):
+        run(self.tmp / "nb", "handoff", "--file", str(self.f), "--stop", "operator question", extra=NB)
+        r = self.kick(NUC, "nuc", "2026-10-10T18:00:00Z", "--peer-quiet-min", "90")
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("handoff says stop", r.stdout)
+
+    def test_oversize_handoff_moves_updates_to_history(self):
+        block = "# NEXT\n```\nprompt\n   Q1. task\n```\n"
+        self.f.write_text(block + "\n## Update one\n" + "x" * 3000 + "\n## Update two\nkeepme\n", encoding="utf-8", newline="\n")
+        r = run(self.tmp / "nb", "handoff", "--file", str(self.f), "--go", extra={**NB, "MTS_RELAY_MAX_BYTES": "1000"})
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        text = self.f.read_text(encoding="utf-8")
+        self.assertLess(len(text.encode("utf-8")), 1000)
+        self.assertIn("Q1. task", text)
+        self.assertNotIn("Update one", text)
+        hist = list((self.tmp / "handoff_history").glob("*.md"))
+        self.assertEqual(len(hist), 1)
+        self.assertIn("keepme", hist[0].read_text(encoding="utf-8"))
+
+    def test_oversize_block_is_refused_and_untouched(self):
+        body = "# NEXT\n```\n" + "y" * 3000 + "\n```\n"
+        self.f.write_text(body, encoding="utf-8", newline="\n")
+        r = run(self.tmp / "nb", "handoff", "--file", str(self.f), "--go", extra={**NB, "MTS_RELAY_MAX_BYTES": "1000"})
+        self.assertEqual(r.returncode, 2, r.stdout)
+        self.assertEqual(self.f.read_text(encoding="utf-8"), body)
+        self.assertFalse(self.runs.exists())
+
+
 if __name__ == "__main__":
     unittest.main()

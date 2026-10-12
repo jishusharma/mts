@@ -2,7 +2,8 @@
 """daily_hygiene.py - the scheduled daily hygiene run (Step 4, 2026-10-10). No Claude, no operator, no network beyond git.
 
 Runs, in order: the offline gate (run_all_tests.py --quick), `sync.py where` (worktrees holding work not on origin/fast-track),
-declutter_backups.py in dry-run mode (never --apply), and make_status.py. Writes one file a session reads at boot:
+declutter_backups.py in dry-run mode (never --apply), `desk.py assign` (the scheduled assigner: posts each ready DSA-lane
+task card to the desk board once, B180), and make_status.py. Writes one file a session reads at boot:
   MyTradingSys/runtime/sched/hygiene_latest.md   (gitignored; STATUS.md embeds its first lines via make_status.py)
   MyTradingSys/runtime/sched/hygiene_latest.json
 Exit 0 when every step passed, 1 when any failed (the gate being red is the case that matters).
@@ -24,6 +25,7 @@ STEPS = [
     ("gate", [PY, "scripts/dev/run_all_tests.py", "--quick"], 1500, True),
     ("where", [PY, "scripts/dev/sync.py", "where"], 120, False),
     ("declutter_dry_run", [PY, "scripts/dev/declutter_backups.py"], 300, False),
+    ("desk_assign", [PY, "scripts/dev/desk.py", "assign"], 1800, False),
     ("status", [PY, "scripts/dev/make_status.py"], 300, False),
 ]
 TAIL = 8

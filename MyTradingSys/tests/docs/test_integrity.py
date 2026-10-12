@@ -48,6 +48,9 @@ def test_2_no_forbidden_refs():
         # still applies to the live doc set (system/, items/, runtime/, ...).
         if p.relative_to(MTS).parts[0] == "research":
             continue
+        # OPERATOR_INBOX.md is the operator's words verbatim (CONTROL_ROOM.md step 3): pasted logs may name git commands.
+        if p.name == "OPERATOR_INBOX.md":
+            continue
         try:
             text = p.read_text(encoding="utf-8", errors="ignore")
         except Exception:

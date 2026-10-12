@@ -6,6 +6,8 @@
   python scripts/dev/desk.py take <id>                    # desktop agent: claim a task (status taken)
   python scripts/dev/desk.py done <id> --result "<what happened>" [--failed] [--no-ship]   # desktop agent: report
   python scripts/dev/desk.py wait <id> [--timeout 600]    # poster: block until the task is done/failed on origin
+  python scripts/dev/desk.py next [--host JIS-NUC]        # DSA: this host's first pending row (DSA-<host> or DSA); exit 1 = none
+  python scripts/dev/desk.py assign [--no-ship]           # scheduled (daily_hygiene.py): post every ready DSA-lane card once
 
 One JSON file per task in MyTradingSys/system/desk_queue/ (no merge conflicts); it travels by sync.py like any commit.
 This is a board for AGENTS, not an executor: nothing here runs a command. The desktop agent (a Claude session or the
@@ -35,6 +37,7 @@ TRUNK = "fast-track"
 LIVE_MARKER = ".mts_live"
 OPEN = ("pending", "taken")
 FINAL = ("done", "failed")
+DSA_LANES = ("DSA", "DSA-NB", "DSA-NUC")
 
 
 def sh(repo, *args, check=True):
@@ -144,6 +147,47 @@ def finish(repo, rid, result, failed=False, ship=True):
     return req
 
 
+def dsa_targets(host=None):
+    """Targets the DSA bridge on this host may take: its own lane (JIS-NUC -> DSA-NUC) and the shared DSA lane.
+    A row addressed to the host itself (JIS-NB) is live-host work for a Claude session, never DSA's."""
+    host = (host or socket.gethostname()).upper()
+    return ("DSA-" + host.split("-", 1)[-1], "DSA")
+
+
+def next_for(repo, host=None):
+    """-> the oldest pending row this host's DSA may take, or None. Ids start with the post time, so sorted = oldest first."""
+    want = dsa_targets(host)
+    return next((t for t in tasks(repo) if t["status"] == "pending" and t["target"] in want), None)
+
+
+def assign(repo, ship=True):
+    """Post one desk row per ready DSA-lane task card that has no row yet (any status). -> list of new row ids."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import tasks as cards_mod
+    made = []
+    with writable(repo, ship) as wt:
+        have = {t.get("card") for t in tasks(wt)}
+        ready, _ = cards_mod.ready_cards(wt)
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-")
+        for c in ready:
+            if c["lane"] not in DSA_LANES or c["id"] in have:
+                continue
+            slug = re.sub(r"[^a-z0-9]+", "-", c["id"].lower()).strip("-")[:40]
+            need = "; ".join(c.get("commands", [])) + f" (full brief: python scripts/dev/tasks.py brief {c['id']})"
+            req = {"id": stamp + slug, "title": c["title"], "need": need, "done_when": c["done_when"],
+                   "target": c["lane"], "from": socket.gethostname(), "posted": now(), "status": "pending",
+                   "card": c["id"]}
+            save(wt, req)
+            sh(wt, "add", "--", f"{QUEUE}/{req['id']}.json")
+            made.append(req["id"])
+        if made:
+            sh(wt, "commit", "-q", "-m", f"desk assign: {len(made)} DSA-lane card(s)\n\n"
+               f"Result: desk rows posted for ready cards: {', '.join(made)}\n", "--", QUEUE)
+            if ship:
+                run_ship(wt)
+    return made
+
+
 def wait(repo, rid, timeout=600, poll=20):
     end = time.time() + timeout
     while True:
@@ -176,8 +220,11 @@ def main(argv):
             p.add_argument("--timeout", type=int, default=600)
     p = sub.add_parser("list")
     p.add_argument("--all", action="store_true")
+    p = sub.add_parser("next")
+    p.add_argument("--host", default=None, help="host name (default: this machine)")
+    sub.add_parser("assign")
     for p in sub.choices.values():
-        if p.prog.split()[-1] in ("post", "take", "done"):
+        if p.prog.split()[-1] in ("post", "take", "done", "assign"):
             p.add_argument("--no-ship", action="store_true")
     a = ap.parse_args(argv)
     repo = toplevel()
@@ -191,6 +238,14 @@ def main(argv):
         for r in tasks(repo):
             if a.all or r["status"] in OPEN:
                 print(f"{r['id']}  {r['status']:<8} -> {r['target']}  {r['title']}")
+    elif a.cmd == "next":
+        r = next_for(repo, a.host)
+        print(f"{r['id']}  {r['status']:<8} -> {r['target']}  {r['title']}" if r else
+              f"none: no pending row for {' / '.join(dsa_targets(a.host))}")
+        return 0 if r else 1
+    elif a.cmd == "assign":
+        made = assign(repo, not a.no_ship)
+        print("\n".join(made) if made else "assign: no ready DSA-lane card without a desk row")
     else:
         r = wait(repo, a.id, a.timeout)
         print(json.dumps(r, indent=2) if r else "timeout: still open")

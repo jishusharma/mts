@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T18:00:25Z",
+  "depends_on": [
+    "backtest-readiness-template",
+    "tom-layer-v2-cost",
+    "fabio-layer-v2-markets"
+  ],
+  "done_when": "HOME_FIT_AUDIT_POSITIONING.md with 12 answered items and follow-up cards, each passing tasks.py check.",
+  "from_inbox": "",
+  "goal": "Apply the 12-point checklist to the FlowHorse / whale positioning layer so its 'no edge' is read as measuring the encoding or the trader. Thresholds are UNDEFINED in source; decide: sourced threshold, or label as a NO-SOURCE research test (VISION exception 2).",
+  "id": "positioning-home-fit-audit",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "cloud-research 2026-10-11 (C-Cloud BACKTEST_FAILURES_RESEARCH.md; operator: 'get this into action')",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md",
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+    "MyTradingSys/research/MARKET_GUIDE_RESULTS_2026-10-07.md"
+  ],
+  "scope_out": [
+    "any backtest run",
+    "tuning",
+    "new layers"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md section 4, 6, 7"
+  ],
+  "state": "refined",
+  "steps": [
+    "Answer each of the 12 checklist items for this layer with evidence (file:line, quote) or NOT_IN_DATA.",
+    "Write MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md: verdict FAIR / UNFAIR per item, the cheapest fix, and the order of cards it would need.",
+    "Create at most 3 follow-up Sonnet cards via tasks.py new; no backtest here."
+  ],
+  "tests": "test_pre_reg_template.py passes for the new HOME_FIT_AUDIT file (all 12 items answered; fails before the file exists).",
+  "title": "Home-fit audit of the FlowHorse / whale positioning layer against the readiness checklist"
+}

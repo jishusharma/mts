@@ -31,7 +31,7 @@
   "sources": [
     "MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md (L3-FAIL all four models)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read FABIO_TRADE_MODEL.md, PRE_REG_FABIO_V3.md, FABIO_PROVENANCE_AUDIT_2026-10-01.md, FABIO_TRADE_LEDGER.*, RECALL_DAX.md (method only).",
     "Per family in the ledger: entry trigger, order-flow reason in his words, stop, target, management, session - each Fabio quote + file:line or NO-SOURCE.",

@@ -577,3 +577,8 @@ What happened: commit 02e7598 (DSA slim boot) also contained four files another 
 Rule that prevents it: run the staged-file list (names only) right before every commit; if it holds a path you did not write, unstage it first (CLAUDE.md hard rule: no reset, so unstage only that path).
 Where the rule lives: DSA_SESSION_PROMPT.md section 6 (after any write, review the staged list).
 Cost: the other session's edits are in my commit; working tree unchanged, nothing pushed. The owning session should know 02e7598 holds its four files.
+
+## 2026-10-12 - layer backtests ran before the encoding, ground truth and market fit were checked
+What happened: Tom/Fabio backtests on BTC were run and tuned while the encoding did not fire on the trader's own ledger trades, levels were not checked against drawn levels, and the source's home market/timeframe was not the tested one (BACKTEST_FAILURES_RESEARCH.md classes C1, C2, C8).
+Rule that prevents it: no layer backtest starts until the 12-item readiness template (encoding fidelity: recall AND fire rate on a held-back check set; extraction from frames: ledger with minute timestamps; market/timeframe transfer: home-fit and cost per instrument) is answered with file:line evidence.
+Where the rule lives: MyTradingSys/backtest/PRE_REG_TEMPLATE.md; test_pre_reg_template.py; PROJECT_VISION DIRECTION UPDATE.

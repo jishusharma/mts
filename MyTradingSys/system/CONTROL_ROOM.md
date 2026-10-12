@@ -1,6 +1,10 @@
 # CONTROL ROOM - the operator's one page, and how Claude keeps it alive
 
 Page: https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su (pinned in the operator's claude.ai sidebar; private to the operator).
+Second account (jishu.awgp@gmail.com, NUC): the same page is https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN. It declares `db` + `user`
+(republish keeps them; never pass `capabilities: {}`). Its Inbox was seeded 2026-10-12 from OPERATOR_INBOX.md (41 items, status answered/filed).
+Build from the NUC with a scratch `--data-root` holding BUGS.md, FINDINGS.md, STATUS.md and the pulled mirror ledger
+(`runtime_data/_mirror/MyTradingSys/execution/auto_trades.jsonl`, `live_mirror.py pull`).
 Built by `scripts/dev/make_control_room.py` from the repo; hand-kept content in `MyTradingSys/system/control_room.json`;
 look in `scripts/dev/control_room.tpl.html`. Nobody edits the published page by hand.
 

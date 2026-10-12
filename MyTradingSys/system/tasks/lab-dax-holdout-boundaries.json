@@ -1,0 +1,31 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-11T20:16:26Z",
+  "depends_on": [
+    "tom-holdout-clean-split"
+  ],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "lab-dax-holdout-boundaries",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "Captured by lab-audit-tom-dax-bt. Coordinate with tom-holdout-clean-split; this card covers enforcement in the runner, including outcome cutoffs. No holdout reads or BTC runs during the fix.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md finding H2"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "DAX audit H2: enforce clean holdout dates and isolate all development outcomes"
+}
