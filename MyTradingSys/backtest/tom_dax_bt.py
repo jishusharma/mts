@@ -207,6 +207,76 @@ def rows_for_snapshot(s0, parse_ts, proof_dir_of, compute_verdict=None, mask=MAS
 
 
 # ---------------------------------------------------------------- bars helpers
+def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fees=FEES_FDAX,
+                    stop_first=True, slip=0.0, slip_pts=0.0):
+    """DAX bracket: elapsed-minute clocks, execution only on real bars (audit H4).
+
+    Order expiry is unchanged. A holding deadline on a filler minute is deferred
+    to the next real open: stop gaps take priority, then target gaps, then timeout.
+    Intrabar prices after that open cannot affect the already expired position.
+    No reopening in coverage leaves open_at_end, never a fabricated close.
+    The mask marks executable data, not the cause of a missing minute; coverage
+    validation remains separate from execution.
+    """
+    if b.real is None:
+        return T.sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars,
+                                 fees, stop_first, slip, slip_pts)
+    if len(b.real) != b.n:
+        raise ValueError("invalid real-bar mask: coverage must match the bars")
+    sgn = 1.0 if side == "long" else -1.0
+    if not (sgn * (stop - entry) < 0 and sgn * (target - entry) > 0):
+        return dict(filled=False, reason="bad_geometry")
+    risk = abs(entry - stop)
+    fill_i = None
+    for i in range(i0, min(i0 + fill_window, b.n)):
+        if not b.real[i]:
+            continue
+        if (b.l[i] <= entry) if sgn > 0 else (b.h[i] >= entry):
+            fill_i = i
+            break
+        if (b.h[i] >= target) if sgn > 0 else (b.l[i] <= target):
+            return dict(filled=False, reason="ran")
+    if fill_i is None:
+        return dict(filled=False, reason="no_fill" if i0 + fill_window <= b.n else "open_at_end")
+
+    def done(kind, px, j, amb):
+        if kind in ("stop", "timeout"):
+            px = px - sgn * slip * px - sgn * slip_pts
+        gross = sgn * (px - entry) / risk
+        fee_r = (fees["entry"] * entry + fees[kind] * px) / risk
+        return dict(filled=True, reason=kind, gross_r=gross, net_r=gross - fee_r, fee_r=fee_r,
+                    fill_i=fill_i, exit_i=j, bars_held=j - fill_i, ambiguous=amb)
+
+    # Preserve the shared bracket's conservative fill-bar stop and fee model.
+    if (b.l[fill_i] <= stop) if sgn > 0 else (b.h[fill_i] >= stop):
+        px = min(b.o[fill_i], stop) if sgn > 0 else max(b.o[fill_i], stop)
+        return done("stop", px, fill_i, 0)
+    amb = 0
+    last = fill_i + hold_bars
+    for j in range(fill_i + 1, b.n):
+        if not b.real[j]:
+            continue
+        if j > last:
+            # Expired during closure: only the first executable opening price.
+            if sgn * (b.o[j] - stop) <= 0:
+                return done("stop", b.o[j], j, amb)
+            if sgn * (b.o[j] - target) >= 0:
+                return done("target", target, j, amb)
+            return done("timeout", b.o[j], j, amb)
+        s_hit = (b.l[j] <= stop) if sgn > 0 else (b.h[j] >= stop)
+        t_hit = (b.h[j] >= target) if sgn > 0 else (b.l[j] <= target)
+        if s_hit and t_hit:
+            amb += 1
+        if s_hit and (stop_first or not t_hit):
+            px = min(b.o[j], stop) if sgn > 0 else max(b.o[j], stop)
+            return done("stop", px, j, amb)
+        if t_hit:
+            return done("target", target, j, amb)
+        if j == last:
+            return done("timeout", b.c[j], j, amb)
+    return dict(filled=True, reason="open_at_end", fill_i=fill_i)
+
+
 def is_open(b, t_s, win_min=2):
     """Market-open filter: a real (non-filled) 1m bar opened in the `win_min` minutes before asOf."""
     i = b.idx(int(round(t_s * 1000)))
@@ -258,7 +328,7 @@ def random_entry_null(trades, b, n_perm=200, seed=7):
             sp, tp = abs(zp - float(t["stop"])) / zp, abs(float(t["target"]) - zp) / zp
             sgn = 1.0 if t["dir"] == "long" else -1.0
             tfm = T.ZONE_TF_MIN[t["zone_tf"]]
-            r = T.sim_limit_trade(b, k + 1, t["dir"], e, e * (1 - sgn * sp), e * (1 + sgn * tp), 1, 8 * tfm, FEES_FDAX, True, 0.0)
+            r = sim_limit_trade(b, k + 1, t["dir"], e, e * (1 - sgn * sp), e * (1 + sgn * tp), 1, 8 * tfm, FEES_FDAX, True, 0.0)
             if r["filled"] and r["reason"] in ("target", "stop", "timeout"):
                 tot += r["gross_r"]
                 cnt += 1
@@ -312,6 +382,20 @@ def complete_months(raw, start, end):
             out.append("%04d-%02d" % (y, m))
         y, m = nxt.year, nxt.month
     return out
+
+
+def require_download_coverage(raw, start, end):
+    """Do not interpret an undownloaded day as a scheduled market closure (H4).
+
+    The existing generator's coverage contract requires a .bi5 for every date,
+    including downloaded empty closed days. The bar mask alone cannot prove that.
+    """
+    d = start
+    while d <= end:
+        path = Path(raw) / ("%s.bi5" % d.isoformat())
+        if not path.is_file():
+            raise SystemExit("incomplete DAX download coverage: missing %s; cannot treat missing data as market closure" % path)
+        d += dt.timedelta(days=1)
 
 
 def contiguous_runs(months):
@@ -483,7 +567,28 @@ def verdict_line(s, label):
 
 def simulate(market, rows, b, variant, fees, slip_pts=0.0):
     sigs = T.signals(rows, variant)
-    return T.run_variant(sigs, b, fees=fees, stop_first=True, slip=0.0, slip_pts=slip_pts)
+    if market != "dax":
+        return T.run_variant(sigs, b, fees=fees, stop_first=True, slip=0.0, slip_pts=slip_pts)
+    # DAX-local counterpart of T.run_variant: preserve scheduling and signal
+    # geometry while routing every strategy/stress execution through the mask.
+    out, busy_until_i = [], -1
+    for r in sigs:
+        tf = T.zone_tf(r["ztype"])
+        tfm = T.ZONE_TF_MIN[tf]
+        i0 = b.idx(int(round(r["t"] * 1000)))
+        if i0 < 0 or i0 >= b.n or i0 <= busy_until_i:
+            continue
+        res = sim_limit_trade(b, i0, r["dir"], float(r["zprice"]), float(r["stop"]), float(r["target"]),
+                              8 * tfm, 8 * tfm, fees, True, 0.0, slip_pts)
+        if res["reason"] == "open_at_end":
+            continue
+        busy_until_i = (res["exit_i"] if res["filled"] else
+                        i0 + 8 * tfm - 1 if res["reason"] == "no_fill" else i0)
+        t = dict(r)
+        t.update(res)
+        t["zone_tf"] = tf
+        out.append(t)
+    return out
 
 
 def cell(s):
@@ -506,11 +611,15 @@ def build_report(a):
     md_rows, reg, stress, notes = [], [], [], []
     acct = {}
     # ---- DAX
-    b_dax = T.load_bars_1m(DAX_ARCHIVE / "klines", fill_gaps=True)
     lo_d, hi_d = DAX_START, DAX_END
     if months:
         lo_d = dt.date(int(min(months)[:4]), int(min(months)[5:]), 1)
         hi_d = dt.date(int(max(months)[:4]) + (max(months)[5:] == "12"), int(max(months)[5:]) % 12 + 1, 1)
+    coverage_end = min(DAX_END, hi_d - dt.timedelta(days=1) if months else hi_d)
+    if not a.read_holdout:
+        coverage_end = min(coverage_end, dt.datetime.fromtimestamp(T_DAX_HOLD, UTC).date() - dt.timedelta(days=1))
+    require_download_coverage(DAX_RAW, max(DAX_START, lo_d), coverage_end)
+    b_dax = T.load_bars_1m(DAX_ARCHIVE / "klines", fill_gaps=True)
     n_hole_days = _data_holes(b_dax, lo_d, hi_d)
     dax_meta = [json.loads(p.read_text()) for p in sorted(DAX_SNAPS.glob("*.meta.json")) if not months or p.name[:7] in months]
     rmeta = [json.loads(p.read_text()) for p in sorted((WORK / "rows_dax").glob("*.rows.meta.json")) if not months or p.name[:7] in months]

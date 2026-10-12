@@ -129,6 +129,116 @@ class TestGapLoader(unittest.TestCase):
         self.assertFalse(D.crossed_close(b, 5, 5))
 
 
+class TestClosedExecutions(unittest.TestCase):
+    def bars(self, side, first=(100.2, 100.5, 99.9, 100.0), reopen=(100.4, 100.6, 100.2, 100.5)):
+        # Mirror around 100; filler is exactly the last real close.
+        bars = [first, (first[3],) * 4, reopen]
+        if side == "short":
+            bars = [(200 - o, 200 - l, 200 - h, 200 - c) for o, h, l, c in bars]
+        b = mk(bars)
+        b.real = bytearray([1, 0, 1])
+        return b
+
+    def trade(self, b, side, i0=0, fill_window=1, hold_bars=1):
+        sgn = 1 if side == "long" else -1
+        return D.sim_limit_trade(b, i0, side, 100., 100. - sgn, 100. + 3 * sgn,
+                                 fill_window, hold_bars, F.FEES_FDAX)
+
+    def test_closed_market_executions(self):
+        # EXPECT H4: real=[1,0,1]; pending clocks expire without a filler fill;
+        # filled positions time out at the reopening open, or stop at its gap price.
+        for side in ("long", "short"):
+            with self.subTest(side=side, case="pending expires while closed"):
+                r = self.trade(self.bars(side), side, i0=1)
+                self.assertEqual(r, dict(filled=False, reason="no_fill"))
+            with self.subTest(side=side, case="pending survives closure"):
+                b = self.bars(side, reopen=(100.2, 100.5, 99.9, 100.3))
+                r = self.trade(b, side, i0=1, fill_window=2)
+                self.assertEqual(r["fill_i"], 2)
+                self.assertEqual(r["reason"], "open_at_end")
+            with self.subTest(side=side, case="timeout during closure"):
+                r = self.trade(self.bars(side), side)
+                self.assertEqual((r["fill_i"], r["exit_i"], r["reason"]), (0, 2, "timeout"))
+                self.assertAlmostEqual(r["gross_r"], .4)  # reopening open, not its .5 close
+                self.assertEqual(r["bars_held"], 2)
+            with self.subTest(side=side, case="reopening gap through stop"):
+                r = self.trade(self.bars(side, reopen=(97., 97.5, 96.5, 97.2)), side)
+                self.assertEqual((r["fill_i"], r["exit_i"], r["reason"]), (0, 2, "stop"))
+                self.assertAlmostEqual(r["gross_r"], -3.)
+
+    def test_deferred_timeout_uses_open_before_intrabar_prices(self):
+        for side in ("long", "short"):
+            with self.subTest(side=side):
+                b = self.bars(side, reopen=(100.4, 104., 98., 100.5))
+                r = self.trade(b, side)
+                self.assertEqual((r["reason"], r["exit_i"], r["ambiguous"]), ("timeout", 2, 0))
+                self.assertAlmostEqual(r["gross_r"], .4)
+                # Gap beyond target still executes the resting target at its limit.
+                r = self.trade(self.bars(side, reopen=(104., 105., 103.5, 104.5)), side)
+                self.assertEqual((r["reason"], r["exit_i"]), ("target", 2))
+                self.assertAlmostEqual(r["gross_r"], 3.)
+
+    def test_no_reopening_leaves_position_unresolved(self):
+        for side in ("long", "short"):
+            with self.subTest(side=side):
+                b = self.bars(side)
+                b.real[2] = 0
+                self.assertEqual(self.trade(b, side), dict(filled=True, reason="open_at_end", fill_i=0))
+                self.assertEqual(self.trade(b, side, i0=1), dict(filled=False, reason="no_fill"))
+
+    def test_real_deadline_keeps_close_price_and_slippage(self):
+        b = self.bars("long")
+        b.real[1] = 1
+        b.o[1], b.h[1], b.l[1], b.c[1] = 100.1, 100.8, 100.1, 100.7
+        r = self.trade(b, "long")
+        self.assertEqual((r["reason"], r["exit_i"]), ("timeout", 1))
+        self.assertAlmostEqual(r["gross_r"], .7)
+        for side, px in (("long", 99.9), ("short", 100.1)):
+            with self.subTest(side=side):
+                sgn = 1 if side == "long" else -1
+                r = D.sim_limit_trade(self.bars(side), 0, side, 100., 100. - sgn,
+                                      100. + 3 * sgn, 1, 1, F.FEES_FDAX, slip_pts=.5)
+                self.assertEqual((r["reason"], r["exit_i"]), ("timeout", 2))
+                self.assertAlmostEqual(r["gross_r"], -.1)
+                self.assertAlmostEqual(r["fee_r"], .0005 + .000005 * px)
+                self.assertAlmostEqual(r["net_r"], -.1 - (.0005 + .000005 * px))
+
+    def test_strategy_and_null_use_real_bar_execution(self):
+        # 5m zone => unchanged 8*5=40 elapsed minutes; deadline falls in closure.
+        b = mk([(100.2, 100.5, 99.9, 100.)] + [(100.,) * 4] * 41 + [(97., 97.5, 96.5, 97.2)])
+        b.real = bytearray([1] + [0] * 41 + [1])
+        row = dict(t=0, verdict="SETUP_FORMING", setup="ct_long", dir="long", zone="vwap",
+                   ztype="vwap_band", zprice=100., stop=99., target=103.)
+        rows = [row, dict(row, t=60), dict(row, t=42 * 60)]
+        trades = D.simulate("dax", rows, b, "A", F.FEES_FDAX, slip_pts=.5)
+        self.assertEqual(len(trades), 1)  # busy through the deferred exit, including its bar
+        self.assertEqual((trades[0]["fill_i"], trades[0]["exit_i"], trades[0]["reason"]), (0, 42, "stop"))
+        self.assertAlmostEqual(trades[0]["gross_r"], -3.5)
+        # Null fills at minute 1, expires at 41 (closed), stops at real minute 42.
+        b.real[1] = 1
+        with patch.object(D, "draw_real_minute", return_value=0):
+            real, p, null = D.random_entry_null([dict(row, filled=True, reason="timeout", gross_r=0., zone_tf="5m")] * 30,
+                                               b, n_perm=1)
+        self.assertEqual((real, p, null), (0., .5, -3.))
+
+    def test_missing_download_is_rejected_before_archive_read(self):
+        # Completed empty days are coverage evidence; absent files are not closures.
+        from types import SimpleNamespace
+        with tempfile.TemporaryDirectory() as td:
+            raw = Path(td)
+            start, end = dt.date(2026, 1, 1), dt.date(2026, 1, 3)
+            for d in (start, end):
+                (raw / (d.isoformat() + ".bi5")).write_bytes(b"")
+            with self.assertRaisesRegex(SystemExit, "missing .*2026-01-02.bi5"):
+                D.require_download_coverage(raw, start, end)
+            (raw / "2026-01-02.bi5").write_bytes(b"")
+            D.require_download_coverage(raw, start, end)
+            with patch.object(D, "DAX_RAW", raw), patch.object(T, "load_bars_1m") as load:
+                with self.assertRaisesRegex(SystemExit, "incomplete DAX download coverage"):
+                    D.build_report(SimpleNamespace(months=["2026-01"], shifts=[0], read_holdout=False))
+                load.assert_not_called()
+
+
 # ------------------------------------------------------------------ c) market-open filter
 class TestOpenFilter(unittest.TestCase):
     def setUp(self):
