@@ -159,6 +159,22 @@ class SyncTest(unittest.TestCase):
         self.assertNotEqual(Path(path), self.a)
         self.assertFalse((Path(path) / "unshipped.py").exists())
 
+    def test_tidy_removes_only_clean_shipped_session_worktrees(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            done = sync.new_worktree(self.a, "done")        # clean, nothing of its own
+            dirty = sync.new_worktree(self.a, "dirty")      # uncommitted file
+            ahead = sync.new_worktree(self.a, "ahead")      # unshipped commit
+        (dirty / "scratch.txt").write_text("wip\n", newline="\n")
+        commit(ahead, "unshipped.py", "u\n")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a), [str(done.resolve())])      # dry run lists, removes nothing
+            self.assertTrue(done.exists())
+            self.assertEqual(sync.tidy(self.a, apply=True), [str(done.resolve())])
+        self.assertFalse(done.exists())
+        self.assertTrue(dirty.exists())
+        self.assertTrue(ahead.exists())
+        self.assertTrue(self.a.exists())  # primary tree never touched
+
     def test_start_in_clean_tree_stays_put(self):
         with contextlib.redirect_stdout(io.StringIO()):
             path = sync.start(self.b)

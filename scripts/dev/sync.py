@@ -7,6 +7,7 @@
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once)
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
   python scripts/dev/sync.py where   # every worktree: commits not on origin/fast-track, uncommitted files (nothing lost?)
+  python scripts/dev/sync.py tidy [--apply] [--all]  # retire finished session worktrees (clean + fully on origin/fast-track); dry run by default
 
 Rules live in MyTradingSys/system/PARALLEL.md. The live tree (a checkout holding the gitignored marker
 file .mts_live) is never synced or shipped from: the running system imports it, so it changes only by
@@ -317,6 +318,49 @@ def claim(repo, task, area="-", gate=run_gate):
     print(f"claimed {slug}; release with: sync.py release {slug}")
 
 
+# Fixed lanes other tooling points at (dispatcher prompts, codex lab, push recipe): `tidy --all` still keeps them.
+LANE_WORKTREES = ("mts-push", "mts-refiner", "mts-codex-lab", "mts-codex", "mts-dsa", "mts-relay")
+
+
+def tidy(repo, apply=False, include_named=False):
+    """Retire finished session worktrees (`../mts-<host>-<slug>` made by `start`). Dry run unless apply.
+    Removed only when: not the primary tree, not the one we are in, no live marker, clean, branch fully on
+    origin/fast-track. Named lanes (mts-push, mts-codex-lab ...) and anything else are never touched.
+    Returns the paths removed (or that would be)."""
+    git(repo, "fetch", "--quiet", "origin", TRUNK)
+    here = Path(repo).resolve()
+    rows = worktrees(repo)
+    out = []
+    for path, branch in rows[1:]:
+        p = Path(path).resolve()
+        if p == here or not p.exists() or (p / LIVE_MARKER).exists():
+            continue
+        auto = re.match(r"mts-.+-s\d{4}-\d{6}(-\d+)?$", p.name) or p.name.startswith(f"mts-{socket.gethostname().lower()}-")
+        if p.name in LANE_WORKTREES or not (auto or include_named):
+            print(f"keep  {p.name}: named lane or hand-named (`tidy --all` includes hand-named ones)")
+            continue
+        if branch in ("(detached)", TRUNK, "master", "main"):
+            print(f"keep  {p.name}: branch {branch}")
+            continue
+        if git(p, "status", "--porcelain", check=False).stdout.strip():
+            print(f"keep  {p.name}: uncommitted files")
+            continue
+        if git(repo, "merge-base", "--is-ancestor", branch, f"origin/{TRUNK}", check=False).returncode != 0:
+            print(f"keep  {p.name}: {branch} has commits not on origin/{TRUNK}")
+            continue
+        if apply:
+            r = git(repo, "worktree", "remove", str(p), check=False)
+            if r.returncode != 0:
+                print(f"keep  {p.name}: remove failed ({r.stderr.strip()[:80]})")
+                continue
+            git(repo, "branch", "-d", branch, check=False)
+        print(f"{'removed' if apply else 'would remove'}  {p.name} [{branch}]")
+        out.append(str(p))
+    if apply:
+        git(repo, "worktree", "prune", check=False)
+    return out
+
+
 def release(repo, slug, gate=run_gate):
     refuse_live(repo)
     merge_trunk(repo)
@@ -333,6 +377,13 @@ def release(repo, slug, gate=run_gate):
 def main(argv):
     cmds = {"start": start, "ship": ship, "news": news, "where": where, "claims": print_claims, "health": health}
     extra = {"claim", "release"}
+    if argv and argv[0] == "tidy" and len(argv) <= 3:
+        try:
+            tidy(toplevel(Path.cwd()), "--apply" in argv, "--all" in argv)
+        except SyncError as e:
+            print(f"sync: {e}", file=sys.stderr)
+            return 1
+        return 0
     if argv and argv[0] in extra and len(argv) >= 2:
         try:
             repo = toplevel(Path.cwd())

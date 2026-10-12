@@ -39,6 +39,10 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
    something other than docs changed, pushes. A rejected push means someone shipped first; it re-merges and
    retries. A real conflict stops and asks you to resolve it.
 4. CI runs the full gate on both OSes after every push. Red CI is the next session's first job.
+5. Worktree hygiene (2026-10-12): a session that made a `../mts-<host>-<slug>` worktree and shipped everything
+   ends with `sync.py where` clean; the next session of any lane runs `sync.py tidy` (dry run) then `tidy --apply`,
+   which removes only session worktrees that are clean and fully on origin/fast-track. Never remove a worktree
+   with uncommitted or unshipped work, a named lane (mts-push, mts-codex-lab ...), or the main/live tree.
 
 Cloud sessions with a harness branch (`claude/...`) open a PR instead; CI auto-merges it when green.
 
