@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -159,21 +160,57 @@ class SyncTest(unittest.TestCase):
         self.assertNotEqual(Path(path), self.a)
         self.assertFalse((Path(path) / "unshipped.py").exists())
 
-    def test_tidy_removes_only_clean_shipped_session_worktrees(self):
+    def test_tidy_removes_only_clean_idle_shipped_session_worktrees(self):
         with contextlib.redirect_stdout(io.StringIO()):
-            done = sync.new_worktree(self.a, "done")        # clean, nothing of its own
+            done = sync.new_worktree(self.a, "done")        # clean, nothing of its own, idle long enough
             dirty = sync.new_worktree(self.a, "dirty")      # uncommitted file
             ahead = sync.new_worktree(self.a, "ahead")      # unshipped commit
         (dirty / "scratch.txt").write_text("wip\n", newline="\n")
         commit(ahead, "unshipped.py", "u\n")
+        later = time.time() + 48 * 3600
         with contextlib.redirect_stdout(io.StringIO()):
-            self.assertEqual(sync.tidy(self.a), [str(done.resolve())])      # dry run lists, removes nothing
+            self.assertEqual(sync.tidy(self.a, now=later), [str(done.resolve())])      # dry run lists, removes nothing
             self.assertTrue(done.exists())
-            self.assertEqual(sync.tidy(self.a, apply=True), [str(done.resolve())])
+            self.assertEqual(sync.tidy(self.a, apply=True, now=later), [str(done.resolve())])
         self.assertFalse(done.exists())
         self.assertTrue(dirty.exists())
         self.assertTrue(ahead.exists())
         self.assertTrue(self.a.exists())  # primary tree never touched
+
+    def test_tidy_keeps_a_just_started_worktree(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            fresh = sync.new_worktree(self.a, "fresh")      # clean and on origin, but a session may be about to use it
+            self.assertEqual(sync.tidy(self.a, apply=True), [])
+        self.assertTrue(fresh.exists())
+
+    def test_tidy_keeps_a_worktree_holding_ignored_data(self):
+        (self.a / ".gitignore").write_text("Dumps/*\n", newline="\n")
+        sh(self.a, "add", ".gitignore")
+        sh(self.a, "commit", "-q", "-m", "ignore")
+        sh(self.a, "push", "-q", "origin", "HEAD:fast-track")
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "data")
+        (wt / "Dumps").mkdir()
+        (wt / "Dumps" / "klines.csv").write_text("1,2,3\n", newline="\n")
+        (wt / "__pycache__").mkdir()
+        (wt / "__pycache__" / "x.pyc").write_bytes(b"0")
+        later = time.time() + 48 * 3600
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, now=later), [])
+        self.assertTrue((wt / "Dumps" / "klines.csv").exists())
+
+    def test_tidy_ignores_only_regenerable_ignored_files(self):
+        (self.a / ".gitignore").write_text("__pycache__/\n", newline="\n")
+        sh(self.a, "add", ".gitignore")
+        sh(self.a, "commit", "-q", "-m", "ignore")
+        sh(self.a, "push", "-q", "origin", "HEAD:fast-track")
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "cache")
+        (wt / "__pycache__").mkdir()
+        (wt / "__pycache__" / "x.pyc").write_bytes(b"0")
+        later = time.time() + 48 * 3600
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, now=later), [str(wt.resolve())])
 
     def test_start_in_clean_tree_stays_put(self):
         with contextlib.redirect_stdout(io.StringIO()):

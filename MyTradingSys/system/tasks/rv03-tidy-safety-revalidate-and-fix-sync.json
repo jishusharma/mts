@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-12T17:48:47Z",
   "commands": [],
   "created": "2026-10-12T17:18:21Z",
   "depends_on": [],
@@ -16,7 +17,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "tidy fixed red-first (ignored data + 24h idle guards), 22 sync tests green; no commits lost; Q33 klines re-fetched, matrix byte-identical; report MyTradingSys/research/revalidation/RV03_2026-10-12.md",
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/test_sync.py",
@@ -30,7 +31,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "active",
+  "state": "done",
   "steps": [
     "Read the prompt and sync.py tidy.",
     "Write the three tests; run them: they fail.",
