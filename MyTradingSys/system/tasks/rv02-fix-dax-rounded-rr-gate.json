@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T19:46:12Z",
+  "depends_on": [],
+  "done_when": "Linked HIGH finding has a synthetic red/green regression; focused harness/data tests pass and development isolation is preserved.",
+  "from_inbox": "",
+  "goal": "Reject exact net RR below 1.25 even when Java display serialization rounds it to 1.25; freeze decision geometry and fee assumptions and keep display rounding separate.",
+  "id": "rv02-fix-dax-rounded-rr-gate",
+  "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "Captured by completed RV02 audit; raw SONNET follow-up for refinement. No implementation change made by the audit.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/tom_dax_bt.py",
+    "MyTradingSys/backtest/test_tom_dax_bt.py"
+  ],
+  "scope_out": [
+    "Live path and shared engine changes without owner approval",
+    "Specs, ledger and historical reports",
+    "Real-data/holdout reads and current-encoding BTC runs"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md:44",
+    "MyTradingSys/system/revalidation/RV02_dax_harness_fixes.md",
+    "src/main/java/datafeed/SetupCandidatesBuilder.java:218 (read-only producer boundary)"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read the linked RV02 finding and executable synthetic appendix.",
+    "Refine the implementation boundary and reproduce the finding red with synthetic data.",
+    "Fix within the approved scope, invalidate incompatible caches, and run the focused tests."
+  ],
+  "tests": "Producer/consumer boundary fixture E=100 stop=99 target=101.25: exact 1249/1001 stays WAIT_RR after JSON serialization; test both sides and directions at the floor.",
+  "title": "RV02 R2: preserve exact DAX net RR through the decision boundary"
+}
