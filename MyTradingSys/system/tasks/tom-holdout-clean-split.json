@@ -9,6 +9,9 @@
   "goal": "Stop the spike-fade encoding from being scored on days it was built from: drop ledger days from the holdout, add a forward holdout, split the ledger (N1, N2).",
   "id": "tom-holdout-clean-split",
   "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
   "note": "",
   "prio": 1,

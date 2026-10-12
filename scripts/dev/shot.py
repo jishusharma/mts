@@ -6,7 +6,7 @@
   python scripts/dev/shot.py classify <id> --kind chart|positions|app|other|noise --why "<what it is / what the operator meant>"
                              [--symbol BTCUSDT --tf 15m --at "2026-10-08 02:47" --tz +05:30 --source "binance footprint"]
   python scripts/dev/shot.py read <id>... --extract <md>       # extract exists, names the ids, has claim rows
-  python scripts/dev/shot.py done <id>... --outcome finding:B156 | feature:FEAT-11 | noaction:"<why>" | note:"<text>"
+  python scripts/dev/shot.py done <id>... --outcome finding:B156 | finding:card:<task id> | feature:FEAT-11 | noaction:"<why>" | note:"<text>"
   python scripts/dev/shot.py sets                              # chart shots grouped into multi-timeframe sets
   python scripts/dev/shot.py engine <id> [--raw DIR] [--plan]  # B160: engine snapshot at the shot's minute (SnapAt, 1m archive)
                                                                #   -> MyTradingSys/research/screenshots/engine/<id>.json
@@ -43,7 +43,7 @@ PRIVATE_KINDS = ("positions",)
 STATUSES = ("new", "classified", "read", "done")
 CLAIM_CLASSES = ("MATCH", "MISMATCH", "NOT_IN_DATA")
 PRIOR_LINE = re.compile(r"^[\s>*-]*Prior(?::\**|\**:)[ \t]*(\S.*?)\s*$", re.M)  # B157: `Prior: <extract>` / `**Prior:** none`
-OUTCOME_ID = re.compile(r"^(B\d{3}|T\d{3}|F-BT-\d+|FEAT-\d+)$")
+OUTCOME_ID = re.compile(r"^(B\d{3}|T\d{3}|F-BT-\d+|FEAT-\d+|card:[a-z0-9][a-z0-9-]*)$")   # card: = a task card (tasks.py)
 SET_WINDOW_MIN = 10  # chart shots of one symbol within this many minutes are one set (the 2026-10-08 batch spanned 4)
 NAG_EVERY_HOURS = 6  # the SessionStart backlog reminder repeats at most this often
 MAX_TEXT = 500
@@ -489,10 +489,13 @@ def carried_context(text, path):
 
 
 def outcome_exists(token):
-    """A filed outcome must really be filed: B/T ids are rows of the registry, F-BT / FEAT ids appear in a markdown doc.
-    (A bare grep would let a test file or a code comment 'file' the item.)"""
+    """A filed outcome must really be filed: B/T ids are rows of the registry, card:<id> is a task card file
+    (MyTradingSys/system/tasks/<id>.json, the live channel; it shows under its layer in LAYERS.md), F-BT / FEAT ids appear
+    in a markdown doc. (A bare grep would let a test file or a code comment 'file' the item.)"""
     if os.environ.get("MTS_SHOT_SKIP_REPO_CHECK"):
         return True
+    if token.startswith("card:"):
+        return (REPO / "MyTradingSys" / "system" / "tasks" / f"{token[5:]}.json").is_file()
     if re.fullmatch(r"[BT]\d{3}", token):
         bugs = REPO / "MyTradingSys" / "research" / "BUGS.md"
         return bugs.is_file() and re.search(rf"^\|\s*{re.escape(token)}\s*\|", bugs.read_text(encoding="utf-8"), re.M) is not None
@@ -506,7 +509,7 @@ def done(store, prefixes, outcome):
     rest = rest.strip()
     if kind in ("finding", "feature"):
         if not OUTCOME_ID.match(rest):
-            raise ShotError(f"{kind}: needs an item id such as B156, T070, F-BT-23 or FEAT-11")
+            raise ShotError(f"{kind}: needs an item id such as B156, T070, F-BT-23, FEAT-11 or card:<task card id>")
         if not outcome_exists(rest):
             raise ShotError(f"{rest} is not in the repo yet: file it first, then close the shot")
     elif kind in ("noaction", "note"):

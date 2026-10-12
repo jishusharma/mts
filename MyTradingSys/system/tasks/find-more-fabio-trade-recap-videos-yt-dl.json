@@ -11,6 +11,9 @@
   "goal": "Extend FABIO_TRADE_LEDGER from 8 entries toward 20 using the six candidate Fabio videos listed in FABIO_TRADE_LEDGER.md, without re-reading the 5 done videos.",
   "id": "find-more-fabio-trade-recap-videos-yt-dl",
   "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
   "live_path": false,
   "note": "",
   "prio": 3,

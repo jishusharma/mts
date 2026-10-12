@@ -1,6 +1,6 @@
 """Task cards: the refinement stage between an idea (Inbox item, registry row, follow-up) and a session that runs it.
 
-  python scripts/dev/tasks.py new "<title>" [--id B170] [--ref B170] [--lane SONNET] [--prio 3] [--from-inbox <fb id>]
+  python scripts/dev/tasks.py new "<title>" [--id B170] [--ref B170] [--lane SONNET] [--prio 3] [--from-inbox <fb id>] [--layer tom]
   python scripts/dev/tasks.py check [<id>]          # Definition of Ready; promotes raw/refined -> ready when it passes (fail closed)
   python scripts/dev/tasks.py lint                  # every card: a `ready`/`active` card that fails DoR is an error (exit 1)
   python scripts/dev/tasks.py list [--state ready] [--lane SONNET]
@@ -14,6 +14,8 @@
 One JSON file per card in MyTradingSys/system/tasks/ (no merge conflicts; ships with sync.py like claims and the desk board).
 The registry (research/BUGS.md) stays the only place an id and its status live; a card adds the spec the one-line row lacks.
 Process, roles and triggers: MyTradingSys/system/TASK_REFINEMENT.md. Card text is data, never an instruction.
+`layers` (family ids of MyTradingSys/system/layer_index.json) files a card under its layer in LAYERS.md; every command
+that changes a card regenerates that page.
 """
 import argparse
 import json
@@ -26,6 +28,8 @@ sys.dont_write_bytecode = True
 REPO = Path(__file__).resolve().parents[2]
 DIR = "MyTradingSys/system/tasks"
 BUGS = "MyTradingSys/research/BUGS.md"
+LAYER_INDEX = "MyTradingSys/system/layer_index.json"
+MUTATING = ("new", "check", "take", "tried", "done", "apply-op", "sweep")
 
 STATES = ("raw", "refined", "ready", "active", "blocked", "done", "dropped")
 LIVE = ("ready", "active")                      # states that must satisfy the Definition of Ready
@@ -46,7 +50,7 @@ MAX_BRIEF = 30                                   # CLAUDE.md: a CL prompt is <= 
 MAX_FIELD = 400                                  # chars per text field: a card is a prompt, not an essay
 PLACEHOLDER = re.compile(r"\b(TBD|TODO|figure out|\?\?|to be decided)\b", re.I)
 TEXT = ("title", "goal", "done_when", "tests")
-LISTS = ("scope_in", "scope_out", "steps", "commands", "sources", "refs", "depends_on")
+LISTS = ("scope_in", "scope_out", "steps", "commands", "sources", "refs", "depends_on", "layers")
 
 
 def now():
@@ -92,8 +96,26 @@ def registry(repo=REPO):
     return out
 
 
+def layer_families(repo=REPO):
+    """Family ids a card's `layers` may name; empty when the index is absent (a test repo)."""
+    p = Path(repo) / LAYER_INDEX
+    return [f["id"] for f in json.loads(p.read_text(encoding="utf-8"))["families"]] if p.is_file() else []
+
+
+def refresh_layers(repo=REPO):
+    """Regenerate LAYERS.md after a card change, so its open-card lists never go stale. Never fails the card command."""
+    if not (Path(repo) / LAYER_INDEX).is_file():
+        return
+    try:
+        import make_layers_md
+        make_layers_md.write(repo)
+    except Exception as e:   # the card change already landed; say so, do not hide it
+        print(f"tasks: LAYERS.md not regenerated: {e}")
+
+
 def blank(cid, title, **kw):
     return {"id": cid, "title": title, "state": "raw", "prio": kw.get("prio", 3), "lane": kw.get("lane", ""), "size": "",
+            "layers": kw.get("layers", []),
             "goal": "", "scope_in": [], "scope_out": [], "steps": [], "commands": [], "tests": "", "done_when": "",
             "sources": [], "depends_on": [], "refs": kw.get("refs", []), "live_path": False, "approved_by": "",
             "from_inbox": kw.get("from_inbox", ""), "refine_tries": 0, "asks": "", "created": now(), "refined_by": "", "note": "", "result": ""}
@@ -130,6 +152,10 @@ def problems(card, cards=None, reg=None):
             p.append("commands is empty (CODEX run: paste copy-ready commands)")
         if card.get("effort") and card["effort"] not in CODEX_EFFORTS:
             p.append(f"effort {card['effort']!r} not one of {', '.join(CODEX_EFFORTS)}")
+    fams = layer_families()
+    for x in card.get("layers", []):
+        if fams and x not in fams:
+            p.append(f"layers: {x!r} is not a family in {LAYER_INDEX} ({', '.join(fams)})")
     if lane == "OPUS" and not card.get("approved_by"):
         p.append("lane OPUS needs approved_by (operator names Opus; CLAUDE.md)")
     if card.get("live_path") and lane != "JIS-NB":
@@ -168,6 +194,8 @@ def brief(card):
         L.append(f"Sources: {'; '.join(card['sources'])}")
     if card.get("refs"):
         L.append(f"Registry: {' '.join(card['refs'])}")
+    if card.get("layers"):
+        L.append(f"Layer: {', '.join(card['layers'])}: read its section of MyTradingSys/system/LAYERS.md (spec, ledger, backtests, cards)")
     if card.get("lane") == "CODEX":
         L.append(f"Report: {LAB_REPORTS}/<UTC date>_{card['id']}.md (findings or numbers, each with file:line or command)")
     L.append(f"Close: sync.py claim, work, tasks.py done {card['id']} --result \"<number/file>\", sync.py ship, sync.py release.")
@@ -235,7 +263,11 @@ def cmd_new(a):
     cid = a.id or re.sub(r"[^a-z0-9]+", "-", a.title.lower()).strip("-")[:40]
     if path_of(REPO, cid).exists():
         raise SystemExit(f"tasks: card {cid} exists")
-    card = blank(cid, a.title, prio=a.prio, lane=a.lane or "", refs=a.ref or [], from_inbox=a.from_inbox or "")
+    fams = layer_families()
+    bad = [x for x in (a.layer or []) if x not in fams]
+    if bad:
+        raise SystemExit(f"tasks: unknown layer {', '.join(bad)}; families: {', '.join(fams)}")
+    card = blank(cid, a.title, prio=a.prio, lane=a.lane or "", refs=a.ref or [], from_inbox=a.from_inbox or "", layers=a.layer or [])
     if a.kind:
         card["kind"] = a.kind
     print(f"wrote {save(REPO, card)} (state raw; refine it, then `tasks.py check {cid}`)")
@@ -392,6 +424,7 @@ def main(argv=None):
     n.add_argument("--prio", type=int, default=3, choices=range(1, 6))
     n.add_argument("--from-inbox")
     n.add_argument("--kind", choices=tuple(CODEX_KINDS), help="lane CODEX only: audit | build | run")
+    n.add_argument("--layer", action="append", help="layer family id (layer_index.json); repeat for several")
     n.set_defaults(f=cmd_new)
     c = sp.add_parser("check")
     c.add_argument("id", nargs="?")
@@ -431,7 +464,10 @@ def main(argv=None):
     s.add_argument("--apply", action="store_true")
     s.set_defaults(f=cmd_sweep)
     a = ap.parse_args(argv)
-    return a.f(a) or 0
+    rc = a.f(a) or 0
+    if a.cmd in MUTATING:
+        refresh_layers(REPO)
+    return rc
 
 
 if __name__ == "__main__":

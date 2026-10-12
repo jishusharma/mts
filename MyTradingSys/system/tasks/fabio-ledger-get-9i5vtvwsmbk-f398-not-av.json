@@ -9,6 +9,9 @@
   "goal": "",
   "id": "fabio-ledger-get-9i5vtvwsmbk-f398-not-av",
   "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
   "live_path": false,
   "note": "",
   "prio": 4,

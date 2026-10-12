@@ -9,6 +9,9 @@
   "goal": "Most Fabio ledger rows carry only a month or 'unknown'; a recall test needs the minute, read from the on-screen clock like Tom's ledger (N4 iii).",
   "id": "fabio-ledger-minute-timestamps",
   "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
   "live_path": false,
   "note": "JIS-NUC relay 2026-10-12: not runnable on JIS-NUC. The videos and old sheets are on F:, but python there has no cv2/ffmpeg/PIL so grab.py cannot cut full-res frames; the existing 960x540 sheet cells show minutes at best (DyS79Eb92Ug) and no date. Run on a host with cv2 (JIS-NB), grab 1280x720 frames at each entry t.",
   "prio": 2,

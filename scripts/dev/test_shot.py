@@ -335,7 +335,13 @@ class ShotTest(unittest.TestCase):
             shot.done(self.store, [c], "finding:F-BT-9999")
         with self.assertRaises(shot.ShotError):
             shot.done(self.store, [c], "closed")
+        with self.assertRaises(shot.ShotError):  # a task card that does not exist
+            shot.done(self.store, [c], "finding:card:no-such-card-for-this-test")
         shot.done(self.store, [c], "finding:B001")  # B001 is a real BUGS.md row
+        d = self.chart("d", "15m")
+        shot.read_extract(self.store, [d], self.extract("Shots: %s\nPrior: none\n| C1-01 | MISMATCH | a | b |\n" % d))
+        shot.done(self.store, [d], "finding:card:tom-trade-ledger")  # a real task card file files the finding too
+        self.assertEqual(self.state()[d]["status"], "done")
         self.assertEqual(self.state()[c]["status"], "done")
 
     def test_non_chart_can_close_without_a_read(self):

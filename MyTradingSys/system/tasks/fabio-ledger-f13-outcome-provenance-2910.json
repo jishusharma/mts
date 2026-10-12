@@ -9,6 +9,9 @@
   "goal": "",
   "id": "fabio-ledger-f13-outcome-provenance-2910",
   "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
   "live_path": false,
   "note": "",
   "prio": 3,
