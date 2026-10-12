@@ -59,7 +59,7 @@ Live state off the desktop (NUC, laptop): `sync.py start` pulls the read-only mi
   after an outage on purpose (no stale-signal trades); do not build catch-up.
 - "How is Codex doing?" = `python scripts/dev/codex_run.py status` (also in STATUS.md, "Layer Lab (Codex)"). Codex works lane `CODEX` cards
   unattended on JIS-NUC (`MTS-CodexLab`, no Claude tokens); how it works, its limits and how to feed it: `MyTradingSys/system/LAYER_LAB.md`.
-  A NEEDS A LOOK line is a NUC session's first job. Scoped research or backtest-code work goes to lane CODEX before a Claude session takes it.
+  A NEEDS A LOOK line is a NUC session's first job. GPT out of credits/limit or silent: `python scripts/dev/lane_health.py status` (cards move to DSA/Claude or pause by themselves; flag a must-wait card `tasks.py flag <id> crucial`). Scoped research or backtest-code work goes to lane CODEX before a Claude session takes it.
 - Runner output: `runtime_data/live_runner.log`. alert_rate_check candles: `scripts/dev/refresh_klines.py` runs daily before it.
 - Local gate needs `pip install numpy` (Step 3p). Two `htf_context_live` loops = duplicate rows: keep one (shim parent + child = one loop).
 

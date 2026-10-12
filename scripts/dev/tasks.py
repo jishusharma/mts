@@ -29,7 +29,7 @@ REPO = Path(__file__).resolve().parents[2]
 DIR = "MyTradingSys/system/tasks"
 BUGS = "MyTradingSys/research/BUGS.md"
 LAYER_INDEX = "MyTradingSys/system/layer_index.json"
-MUTATING = ("new", "check", "take", "tried", "done", "apply-op", "sweep")
+MUTATING = ("new", "check", "take", "tried", "done", "apply-op", "sweep", "flag")
 
 STATES = ("raw", "refined", "ready", "active", "blocked", "done", "dropped")
 LIVE = ("ready", "active")                      # states that must satisfy the Definition of Ready
@@ -270,6 +270,8 @@ def cmd_new(a):
     card = blank(cid, a.title, prio=a.prio, lane=a.lane or "", refs=a.ref or [], from_inbox=a.from_inbox or "", layers=a.layer or [])
     if a.kind:
         card["kind"] = a.kind
+    if a.crucial:
+        card["crucial"] = True
     print(f"wrote {save(REPO, card)} (state raw; refine it, then `tasks.py check {cid}`)")
 
 
@@ -376,6 +378,17 @@ def cmd_done(a):
     print(f"{a.id}: done")
 
 
+def cmd_flag(a):
+    """crucial / gpt_only: a CODEX card with either waits for GPT when the lane is down (lane_health.py); default off."""
+    c = get(REPO, a.id)
+    if a.off:
+        c.pop(a.flag, None)
+    else:
+        c[a.flag] = True
+    save(REPO, c)
+    print(f"{a.id}: {a.flag} {'off' if a.off else 'on'}")
+
+
 def cmd_apply_op(a):
     """Operator action from the Control Room (db taskops/<id>), applied by the pickup session."""
     c = get(REPO, a.id)
@@ -425,6 +438,7 @@ def main(argv=None):
     n.add_argument("--from-inbox")
     n.add_argument("--kind", choices=tuple(CODEX_KINDS), help="lane CODEX only: audit | build | run")
     n.add_argument("--layer", action="append", help="layer family id (layer_index.json); repeat for several")
+    n.add_argument("--crucial", action="store_true", help="lane CODEX: when the GPT lane is down this card waits for GPT instead of moving to DSA/Claude")
     n.set_defaults(f=cmd_new)
     c = sp.add_parser("check")
     c.add_argument("id", nargs="?")
@@ -455,6 +469,11 @@ def main(argv=None):
     d.add_argument("id")
     d.add_argument("--result", required=True)
     d.set_defaults(f=cmd_done)
+    fl = sp.add_parser("flag")
+    fl.add_argument("id")
+    fl.add_argument("flag", choices=("crucial", "gpt_only"))
+    fl.add_argument("--off", action="store_true")
+    fl.set_defaults(f=cmd_flag)
     o = sp.add_parser("apply-op")
     o.add_argument("id")
     o.add_argument("op", choices=("bump", "hold", "drop", "approve", "release", "retry"))

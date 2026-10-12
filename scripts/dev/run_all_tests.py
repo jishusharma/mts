@@ -247,6 +247,10 @@ def main(argv=None):
     success, output = run_step("3cr", "Control Room page generator tests", cmd3cr)
     results.append(("Step 3cr: Control Room tests", success))
 
+    cmd3lh = [sys.executable, "scripts/dev/test_lane_health.py"]
+    success, output = run_step("3lh", "GPT lane health tests (down/up rules, reroute, pause, resume, DSA prompt)", cmd3lh)
+    results.append(("Step 3lh: GPT lane health tests", success))
+
     cmd3rb = [sys.executable, "scripts/dev/test_relay_board.py"]
     success, output = run_step("3rb", "Claude-GPT relay board tests (shared notes, lanes, pack)", cmd3rb)
     results.append(("Step 3rb: Relay board tests", success))

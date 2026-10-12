@@ -232,17 +232,6 @@ class IndexTest(unittest.TestCase):
 
 
 class LimitFallback(unittest.TestCase):
-    def test_streak_counts_trailing_limits_only(self):
-        rows = [{"card": "c", "outcome": "DONE"}, {"card": "c", "outcome": "LIMIT"}, {"card": "x", "outcome": "DONE"}, {"card": "c", "outcome": "LIMIT"}]
-        self.assertEqual(R.limit_streak(rows, "c"), 2)
-        self.assertEqual(R.limit_streak(rows + [{"card": "c", "outcome": "DONE"}], "c"), 0)
-        self.assertEqual(R.limit_streak([{"card": "c", "outcome": "LIMIT", "dry": True}], "c"), 0)
-
-    def test_fallback_lane(self):
-        self.assertEqual(R.fallback_lane({"tests": "x passes"}), "SONNET")
-        self.assertEqual(R.fallback_lane({"tests": " ", "commands": ["python a.py"]}), "DSA")
-        self.assertEqual(R.fallback_lane({"tests": "", "commands": []}), "")
-
     def test_salvage_moves_untracked_and_restores_tracked(self):
         import subprocess
         with tempfile.TemporaryDirectory() as d:

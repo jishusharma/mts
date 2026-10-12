@@ -27,6 +27,7 @@ from pathlib import Path
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import codex_pack  # noqa: E402
+import lane_health  # noqa: E402
 import sync  # noqa: E402
 import tasks  # noqa: E402
 
@@ -36,8 +37,6 @@ MAX_ATTEMPTS = 2          # runs of one card that did not end `done`; after that
 LOCK_STALE_S = 3 * 3600
 WINDOW_STOP = 85          # % of the 5-hour window used: no new card until it resets
 WEEK_STOP = 85            # % of the week used: the rest stays with the operator's own Codex app sessions
-LIMIT_RE = re.compile(r"usage limit|rate limit reached", re.I)
-FALLBACK_LIMITS = 2       # this many LIMIT runs in a row on one card: Codex is out, so the card moves to a Claude / DSA lane
 
 TEMPLATES = {
     "audit": {
@@ -142,9 +141,9 @@ def budget_line(rl, now):
 
 
 def limit_hit(outcome, files, log_text):
-    """A run that ended on the allowance error is not a try of the card, even with partial files (those are salvaged).
-    Only the log tail counts: the prompt and the files Codex read mention limits too."""
-    return outcome == "INCOMPLETE" and bool(LIMIT_RE.search(log_text[-1500:]))
+    """A run that ended on the allowance / credit error is not a try of the card, even with partial files (those are salvaged).
+    Only the log tail counts: the prompt and the files Codex read mention limits too (lane_health.classify)."""
+    return outcome == "INCOMPLETE" and bool(lane_health.classify(log_text))
 
 
 def salvage(wt, home, cid, when, files=None):
@@ -166,44 +165,14 @@ def salvage(wt, home, cid, when, files=None):
     return dest, len(files)
 
 
-def limit_streak(rows, cid):
-    """Trailing LIMIT runs of one card (a DONE or any other outcome resets it)."""
-    n = 0
-    for r in reversed([r for r in rows if r.get("card") == cid and not r.get("dry")]):
-        if r.get("outcome") != "LIMIT":
-            break
-        n += 1
-    return n
 
-
-def fallback_lane(card):
-    """Lane that can finish a card Codex cannot: a coded card with tests goes to SONNET, one with exact commands to DSA, else ''."""
-    if str(card.get("tests", "")).strip():
-        return "SONNET"
-    if card.get("commands"):
-        return "DSA"
-    return ""
-
-
-def reroute(cards, rows, repo=REPO):
-    """Move every ready CODEX card whose last FALLBACK_LIMITS runs all hit the allowance to its fallback lane. Returns [(id, lane)]."""
-    moved = []
-    for c in cards:
-        lane = fallback_lane(c)
-        if c.get("lane") == "CODEX" and lane and limit_streak(rows, c["id"]) >= FALLBACK_LIMITS:
-            c = dict(tasks.get(repo, c["id"]), lane=lane)
-            c["notes"] = (str(c.get("notes", "")) + f" [codex_run {utc().strftime('%Y-%m-%d %H:%MZ')}: Codex allowance out {FALLBACK_LIMITS}x, moved to {lane}]").strip()
-            tasks.save(repo, c)
-            moved.append((c["id"], lane))
-    return moved
-
-
-def pick(cards, claimed, tried):
-    """First ready CODEX card nobody holds and that has tries left. `cards` is already ranked and passes the Definition of Ready."""
-    for c in cards:
-        if c["lane"] == "CODEX" and sync.slugify(c["id"]) not in claimed and tried.get(c["id"], 0) < MAX_ATTEMPTS:
-            return c
-    return None
+def pick(cards, claimed, tried, probe=False):
+    """First ready CODEX card nobody holds and that has tries left. `cards` is already ranked and passes the Definition of Ready.
+    A card lane_health moved to DSA (`reroute`) is not ours while GPT is down. A probe run (lane down) takes a crucial card first."""
+    ok = [c for c in cards if c["lane"] == "CODEX" and not c.get("reroute") and sync.slugify(c["id"]) not in claimed and tried.get(c["id"], 0) < MAX_ATTEMPTS]
+    if probe:
+        ok.sort(key=lambda c: not lane_health.is_crucial(c))
+    return ok[0] if ok else None
 
 
 def prompt(card, wt, pack, when):
@@ -302,7 +271,7 @@ def execute(cmd, text, log, timeout_s, env):
     return code, int(time.time() - t0)
 
 
-def run_card(card, dry=False, env=os.environ):
+def run_card(card, dry=False, env=os.environ, probing=False):
     """Claim, let Codex write files in its sandbox, then commit + ship + release here. Codex never touches git."""
     home, wt, when, cid = codex_home(env), lab_wt(env), utc(), card["id"]
     sandbox = env.get("MTS_CODEX_SANDBOX") or "workspace-write"
@@ -331,12 +300,17 @@ def run_card(card, dry=False, env=os.environ):
         now = json.loads((wt / tasks.DIR / f"{cid}.json").read_text(encoding="utf-8"))
         reports = sorted(f for f in files if f.startswith(f"{LAB}/reports/") and f.endswith(f"_{cid}.md"))
         outcome, note = judge(now, reports, card["kind"], files), ""
-        if limit_hit(outcome, files, log.read_text(encoding="utf-8", errors="replace")):
-            outcome, note = "LIMIT", "Codex allowance ran out; the card stays ready and is not charged a try"
-            dest, n = salvage(wt, home, cid, when, files)
+        logtext = log.read_text(encoding="utf-8", errors="replace")
+        err = lane_health.classify(logtext) if outcome == "INCOMPLETE" else ""   # also when files were written: the 2026-10-12 astra run did 777 s of work, then hit the limit
+        if limit_hit(outcome, files, logtext):
+            outcome, note = "LIMIT", f"Codex {'credits' if err == 'credits' else 'allowance'} ran out; the card stays ready, is not charged a try, and the GPT lane is marked down"
+            dest, n = salvage(wt, home, cid, when, files)   # partial files leave the lab tree so the next tick is not blocked
             if n:
                 note += f" | {n} partial file(s) salvaged to {dest}"
             files = []
+        lane = lane_health.record_run({**lane_health.load(wt), "last_probe": lane_health.iso(when)} if probing else lane_health.load(wt), outcome, err, when,
+                                      lane_health.error_line(logtext) if err else "")
+        lane_health.save(wt, lane)   # DONE/BLOCKED: rides in the commit below; otherwise shipped on its own
         if outcome in ("DONE", "BLOCKED"):
             sh(wt, "scripts/dev/codex_run.py", "index")
             git(wt, "add", "-A")
@@ -346,7 +320,10 @@ def run_card(card, dry=False, env=os.environ):
             if s.returncode:
                 outcome, note = "SHIP_FAILED", (s.stdout + s.stderr).strip()[-300:]
                 Path(str(log) + ".ship.txt").write_text(s.stdout + s.stderr, encoding="utf-8", newline="\n")   # which gate step failed
-        elif files:
+        elif not files:
+            lane_health.commit_ship(wt, [lane_health.STATE], f"lane health: GPT {lane['status']}" + (f" ({lane['reason']})" if lane["reason"] else "") +
+                                    f"\n\nResult: {lane_health.why_down(lane) if lane['status'] == 'down' else 'GPT lane up'}\n")
+        else:
             note = f"{len(files)} uncommitted file(s) left in {wt}: " + ", ".join((out_of_scope(card['kind'], files) or files)[:5])
         r = sh(wt, "scripts/dev/sync.py", "release", sync.slugify(cid))
         if r.returncode:
@@ -371,16 +348,12 @@ def cmd_next(a):
         return 0
     cards, _ = tasks.ready_cards(REPO, "CODEX")
     claimed = {slug for slug, _ in sync.read_claims(REPO, f"origin/{sync.TRUNK}")}
-    if not a.dry:
-        moved = reroute(cards, run_rows(home))
-        if moved:
-            git(REPO, "add", *[str(tasks.path_of(REPO, cid)) for cid, _ in moved])
-            git(REPO, "commit", "-q", "-m", "lab: Codex allowance out, cards moved to a Claude/DSA lane\n\nResult: "
-                + ", ".join(f"{c} -> {l}" for c, l in moved))
-            s = sh(REPO, "scripts/dev/sync.py", "ship")
-            print("REROUTED " + ", ".join(f"{c} -> {l}" for c, l in moved) + ("" if not s.returncode else " (ship failed, retried next tick)"))
-        cards, _ = tasks.ready_cards(REPO, "CODEX")
-    card = pick(cards, claimed, attempts(home))
+    lane = lane_health.load(REPO)
+    gate = "go" if a.dry else lane_health.allow(lane, utc())
+    if not gate:
+        print(f"IDLE {lane_health.why_down(lane)}; ready CODEX cards are moved to DSA/Claude or paused (lane_health.py status)")
+        return 0
+    card = pick(cards, claimed, attempts(home), gate == "probe")
     if not card:
         print(f"IDLE no CODEX card to run ({len(cards)} ready; claimed or out of tries are skipped)")
         return 0
@@ -388,7 +361,7 @@ def cmd_next(a):
     if why:
         print(f"IDLE {why}; {card['id']} waits")
         return 0
-    return run_card(card, a.dry)
+    return run_card(card, a.dry, probing=gate == "probe")
 
 
 def cmd_run(a):
@@ -405,6 +378,8 @@ def cmd_tick(a):
     runs.mkdir(parents=True, exist_ok=True)
     try:
         refresh(wt)
+        sw = subprocess.run([sys.executable, str(wt / "scripts/dev/lane_health.py"), "sweep", "--apply", "--ship", "--beat"], cwd=str(wt), capture_output=True, text=True)
+        (runs / "last_lane.txt").write_text(sw.stdout + sw.stderr, encoding="utf-8", newline="\n")   # sweep failing must not stop the lab
         r = subprocess.run([sys.executable, str(wt / "scripts/dev/codex_run.py"), "next"], cwd=str(wt), capture_output=True, text=True)
         code, line = r.returncode, (r.stdout.strip().splitlines() or [r.stderr.strip()[-300:] or "no output"])[-1]
     except SystemExit as e:
