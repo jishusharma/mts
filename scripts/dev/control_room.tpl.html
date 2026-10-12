@@ -129,6 +129,11 @@ details.mini>summary{cursor:pointer;color:var(--muted,#6b7280);font-size:.82rem}
   <div class="stagedetail" id="stagedetail"></div>
 </section>
 
+<section id="layer-sec">
+  <div class="sechead"><h2>Layer Board</h2><span class="muted" style="font-size:.85rem">Every layer being worked on: where it stands and what happens next. Layout waits for your approval.</span></div>
+  <div class="panel tw"><table id="layers"><thead><tr><th>Layer</th><th>Stage</th><th>Indicators</th><th>Setups</th><th>Open rows</th><th>Next</th></tr></thead><tbody></tbody></table></div>
+</section>
+
 <section id="dec-sec">
   <div class="sechead"><h2>Decisions for you</h2><span class="dstate" id="decstatus">Connecting…</span></div>
   <div class="dgrid" id="decisions"><div class="empty">Decisions load from the shared store. Claude adds a decision here whenever work is blocked on your call; your answer is read at the next supervisor wake.</div></div>
@@ -228,6 +233,7 @@ function renderRoad(){
 }
 const sevRank = s => ({HIGH:0,MED:1,LOW:2,INFO:3,COSMETIC:4}[s] ?? 5);
 renderRoad();
+$("#layers tbody").innerHTML = (D.layers||[]).map(x => `<tr><td><b>${esc(x.name)}</b></td><td>${esc(x.stage)}</td><td>${esc(x.indicators)}</td><td>${esc(x.setups)}</td><td>${x.open_rows}${x.worst?" ("+esc(x.worst)+")":""}${x.open_ids.length?`<div class="muted" style="font-size:.78rem">${esc(x.open_ids.join(", "))}</div>`:""}</td><td>${esc(x.next)}<div class="muted" style="font-size:.78rem">${esc(x.src)}</div></td></tr>`).join("") || `<tr><td colspan="6" class="muted">No layer in active work is recorded.</td></tr>`;
 
 $("#evidence tbody").innerHTML = D.evidence.map(e => `<tr><td><strong>${esc(e.test)}</strong></td><td>${esc(e.result)}</td><td><span class="pill v-${e.verdict}">${esc(e.verdict)}</span></td><td class="muted" style="font-size:.8rem">${esc(e.src)}</td></tr>`).join("");
 

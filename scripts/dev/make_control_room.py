@@ -113,6 +113,22 @@ def health(cfg, last, halts, status_text, now):
     return h + cfg.get("health_notes", [])
 
 
+SEV_RANK = {"HIGH": 3, "MED": 2, "MEDIUM": 2, "LOW": 1}
+
+
+def layer_board(cfg, items):
+    """One row per layer in active work (control_room.json `layers`); a parked layer is left out.
+    open_rows / worst come from the registry rows the layer names, never from the config."""
+    out = []
+    for x in cfg.get("layers", []):
+        if x.get("stage") == "parked":
+            continue
+        opened = [items[r] for r in x.get("rows", []) if r in items and items[r]["status"] in OPEN]
+        worst = max((o["sev"] for o in opened), key=lambda v: SEV_RANK.get(v, 0), default="")
+        out.append({**x, "open_rows": len(opened), "open_ids": [o["id"] for o in opened], "worst": worst})
+    return out
+
+
 def build(cfg, data_root, now=None):
     now = now or datetime.now(timezone.utc)
     # registry = this checkout's rows (origin, freshest status) plus rows only the data checkout has (filed there, not yet shipped)
@@ -146,7 +162,7 @@ def build(cfg, data_root, now=None):
     ledger, days, span, halts = load_ledger(data_root / LEDGER, now)
     st = data_root / STATUS
     return {"generated": now.strftime("%Y-%m-%d %H:%M UTC"), "verdict": cfg.get("verdict", ""), "road": cfg["road"],
-            "board": board, "missing": missing, "ledger": ledger, "days": days, "ledger_span": span,
+            "board": board, "layers": layer_board(cfg, items), "missing": missing, "ledger": ledger, "days": days, "ledger_span": span,
             "backlog": task_cards.summary(REPO),
             "evidence": cfg.get("evidence", []), "changelog": cfg.get("changelog", [])[-6:][::-1],
             "health": health(cfg, span[1], halts, st.read_text(encoding="utf-8") if st.exists() else "", now),

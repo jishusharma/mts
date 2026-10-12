@@ -198,10 +198,65 @@
     {
       "date": "2026-10-12",
       "what": "Every Inbox item now shows its status, Claude's reply and where it was filed. An item with no registry row yet says 'received, no registry row yet' instead of showing nothing (B181)."
+    },
+    {
+      "date": "2026-10-12",
+      "what": "New Layer Board section under the road: one line per layer being worked on (stage, indicators, setups, open rows, next step, source file). 'not recorded' means no committed file states it. Layout waits for your approval (B177)."
     }
   ],
   "finding_closed": {
     "F-BT-09": "fixed 39520d4, deployed 2026-10-09 12:46 (POC within 50 of trade level)",
     "F-BT-14": "writer added 39520d4, deployed 2026-10-09 12:46; Sep-Oct backfilled"
-  }
+  },
+  "layers": [
+    {
+      "id": "tom-v2",
+      "name": "Tom (v2 redefinition)",
+      "stage": "spec",
+      "indicators": "profile shape P/b, inside bar, ledge of old highs, liquidity above (his reasons, not yet in the code)",
+      "setups": "7 chart-verified DAX trades; coded Tom fired on 0 of 7; families not recorded",
+      "rows": [
+        "B146",
+        "B147",
+        "T052"
+      ],
+      "next": "tom-holdout-clean-split, then tom-layer-v2-spec (Opus)",
+      "src": "MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md:9"
+    },
+    {
+      "id": "fabio-v2",
+      "name": "Fabio (v2 redefinition)",
+      "stage": "spec",
+      "indicators": "not recorded",
+      "setups": "not recorded",
+      "rows": [
+        "T084",
+        "B123"
+      ],
+      "next": "fabio-ledger-minute-timestamps, then fabio-layer-v2-spec (Opus)",
+      "src": "MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md:44"
+    },
+    {
+      "id": "turn-of-candle",
+      "name": "turn_of_candle",
+      "stage": "live-testnet",
+      "indicators": "not recorded",
+      "setups": "not recorded",
+      "rows": [],
+      "next": "your yes/no on F-BT-02 (it failed its backtest)",
+      "src": "MyTradingSys/system/PROJECT_MAP.md:97"
+    },
+    {
+      "id": "wavetrend",
+      "name": "WaveTrend",
+      "stage": "parked",
+      "indicators": "WaveTrend with Crosses [LazyBear]",
+      "setups": "not recorded",
+      "rows": [
+        "T061"
+      ],
+      "next": "no new layers while Tom/Fabio are redefined",
+      "src": "MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md:27"
+    }
+  ]
 }
