@@ -14,6 +14,7 @@ Subcommands (work dir F:/MTS/data/dax_bt, env TOM_DAX_WORK):
           research/tom_transfer_2026-10-11/DAX_BT_REPORT.md + bt_runs/TRIAL_REGISTRY.csv rows.
   all     gen, rows, report.
 Reports require --split-manifest HOLDOUT_CLEAN.json from the split owner.
+Reports also require --readiness-manifest <JSON> answering all twelve PRE_REG_TEMPLATE items.
 Holdout is read only with `report --read-holdout`, once (durable reservation), after full development for that split.
 
 Primary verdict: `coded` preserves Java's per-instrument net_rr (GER40 uses FDAX fees). Gross-only selection is removed.
@@ -407,6 +408,40 @@ def random_entry_null(opportunities, b, n_perm=200, seed=7, session=None):
 
 
 # ---------------------------------------------------------------- periods, holdout guard, archive completeness
+def load_readiness(path):
+    """Freeze an owner-supplied readiness declaration before any outcome access.
+
+    JSON: {"items": {"1": {"status": "ANSWERED", "answer": "...",
+    "evidence": "file:line"}, ... "12": {...}}}. Keys are the twelve
+    numbered headings of PRE_REG_TEMPLATE.md. WAIVED needs an explicit reason
+    in answer, evidence of authorization, and a named approver. This validates
+    completeness, not the scientific truth of the owner's evidence. No default
+    production manifest or implicit waiver exists.
+    """
+    def supplied(value):
+        return (isinstance(value, str) and bool(value.strip()) and
+                value.strip().upper() not in {"TODO", "NOT_ANSWERED", "NOT_IN_DATA"})
+
+    try:
+        if not path:
+            raise ValueError("path required")
+        raw = Path(path).read_bytes()
+        obj = json.loads(raw)
+        items = obj["items"]
+        if not isinstance(items, dict) or set(items) != {str(i) for i in range(1, 13)}:
+            raise ValueError("items must cover exactly PRE_REG_TEMPLATE headings 1..12")
+        for key, item in items.items():
+            if not isinstance(item, dict) or item.get("status") not in ("ANSWERED", "WAIVED"):
+                raise ValueError("item %s must be ANSWERED or WAIVED" % key)
+            if not supplied(item.get("answer")) or not supplied(item.get("evidence")):
+                raise ValueError("item %s needs an answer and evidence" % key)
+            if item["status"] == "WAIVED" and not supplied(item.get("approver")):
+                raise ValueError("item %s waiver needs a named approver" % key)
+        return dict(path=str(path), sha256=hashlib.sha256(raw).hexdigest(), items=items)
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        raise ValueError("invalid or absent readiness manifest: %s" % e) from e
+
+
 def load_split(path):
     """Owner-supplied clean split; no historical default or inferred clean dates.
 
@@ -791,6 +826,7 @@ HDR = ("| market / verdict / shift / variant | period | n signals | n filled | f
 
 
 def build_report(a):
+    readiness = load_readiness(getattr(a, "readiness_manifest", None))
     split = load_split(getattr(a, "split_manifest", None))
     session = load_null_session(getattr(a, "null_session", None))
     if a.read_holdout:
@@ -802,7 +838,7 @@ def build_report(a):
     shifts = list(a.shifts)
     months = a.months or None
     md_rows, reg, stress, notes = [], [], [], []
-    acct = {"null_session": session, "null_draws": []}
+    acct = {"readiness": readiness, "null_session": session, "null_draws": []}
     # ---- DAX
     dev_last_day = dt.datetime.fromtimestamp(split["dev_end"]-1, UTC).date()
     lo_d, hi_d = DAX_START, (dt.datetime.now(UTC).date() if a.read_holdout else dev_last_day)
@@ -954,6 +990,16 @@ def cmd_report(a):
         sha(HERE / "tom_dax_bt.py"), sha(HERE / "fees.py")))
     d = acct["dax"]
     md.append("## 1. Data and accounting\n")
+    ready = acct["readiness"]
+    md.append("- Readiness manifest `%s`, SHA-256 `%s`, frozen before outcome access. "
+              "All twelve PRE_REG_TEMPLATE items are answered or explicitly waived; "
+              "evidence validity remains the owner's responsibility.\n" % (ready["path"], ready["sha256"]))
+    md.append("\n| readiness item | status | answer / waiver reason | evidence | approver |\n"
+              "|---|---|---|---|---|\n")
+    for key in map(str, range(1, 13)):
+        item = ready["items"][key]
+        cells = [key, item["status"], item["answer"], item["evidence"], item.get("approver", "")]
+        md.append("| " + " | ".join(str(v).replace("|", "\\|").replace("\n", " ").replace("\r", " ") for v in cells) + " |\n")
     md.append("- DAX snapshots (TomSnapshotGen, 15 min, -Dmts.symbol=GER40): %d month files; %d evaluated, %d kept by Java (>= 1 candidate), %d errors. "
               "Market-open filter (a real 1m bar in the 2 minutes before asOf) dropped %d closed-market snapshots before any verdict; %d rows remain. "
               "Order-flow mask changed the proof count of %d DAX candidates (expected 0: the archive's taker-buy is exactly half the volume, so every delta is 0).\n" % (
@@ -1072,6 +1118,7 @@ def main(argv=None):
         p.add_argument("--smoke", action="store_true")
         p.add_argument("--read-holdout", dest="read_holdout", action="store_true")
         p.add_argument("--split-manifest", type=Path, help="owner's HOLDOUT_CLEAN.json; required for reports")
+        p.add_argument("--readiness-manifest", type=Path, help="owner's JSON items 1..12: ANSWERED + answer/evidence, or WAIVED + answer/evidence/approver; required for reports")
         p.add_argument("--null-session", type=Path, help="owner's frozen session addendum JSON: timezone/start/end/source; required for reports")
     a = ap.parse_args(argv)
     if a.cmd in ("gen", "all"):

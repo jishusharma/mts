@@ -23,9 +23,8 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Ledger: `MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv`; `MyTradingSys/research/tom_transfer_2026-10-11/TOM_LEDGER_CANONICAL_GROUPS.csv`
 - Other results: `MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md`
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`; `MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md`
-- Codex lab reports (newest 4 of 8): `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-unavailable-flow.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-session-null.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-proof-parity.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-net-fee-verdict.md`
+- Codex lab reports (newest 4 of 9): `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-unavailable-flow.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-session-null.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-readiness-gate.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-proof-parity.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lab-dax-readiness-gate` ready p1 CODEX: DAX audit H7: gate the home-market report on all twelve readiness items
   - `lab-dax-trial-identity` ready p1 CODEX: DAX audit H8: bind cached rows and trial counts to frozen run inputs
   - `tom-encode-spike-fade` refined p1 SONNET: Encode Tom's spike-top fade as a candidate type (recall test on his 7 DAX entries)
   - `tom-holdout-clean-split` ready p1 SONNET: Clean the DAX holdout of ledger days and split Tom's ledger into design and check sets

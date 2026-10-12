@@ -242,7 +242,7 @@ class TestClosedExecutions(unittest.TestCase):
                  patch.object(D, "load_null_session", return_value=dict(timezone="UTC", start="10:00", end="12:00")):
                 with self.assertRaisesRegex(SystemExit, "incomplete DAX download coverage"):
                     D.build_report(SimpleNamespace(months=["2026-01"], shifts=[0], read_holdout=False,
-                                                   split_manifest=manifest))
+                                                   split_manifest=manifest, readiness_manifest=readiness_fixture(raw)))
                 load.assert_not_called()
 
 
@@ -562,7 +562,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
                        zone="vwap", ztype="vwap", zprice=100., stop=99., target=101.)
             rows = [row, dict(row, t=h), dict(row, t=h+60)]
             a = SimpleNamespace(read_holdout=False, shifts=[0, 1], months=None,
-                                split_manifest=manifest, market="dax", smoke=True)
+                                split_manifest=manifest, readiness_manifest=readiness_fixture(root), market="dax", smoke=True)
             seen = []
             summarize = T.summarize
             def capture(trades):
@@ -596,6 +596,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
     def test_absent_manifest_refuses_before_data_read(self):
         a = SimpleNamespace(read_holdout=False, shifts=[0], months=None, market="dax", smoke=True)
         with patch.object(D, "require_download_coverage", side_effect=AssertionError("coverage read before manifest")), \
+             patch.object(D, "load_readiness", return_value={}), \
              patch.object(T, "load_bars_1m", side_effect=AssertionError("data read before manifest")):
             with self.assertRaisesRegex((ValueError, SystemExit), "split manifest"):
                 D.build_report(a)
@@ -670,7 +671,8 @@ class TestHoldoutBoundaries(unittest.TestCase):
              patch.object(D, "HOLDOUT_MARKER", Path(td)/"read.json"):
             path = self.manifest(td)
             split = D.load_split(path)
-            a = SimpleNamespace(split_manifest=path, read_holdout=True, shifts=[0], months=None, smoke=False)
+            a = SimpleNamespace(split_manifest=path, readiness_manifest=readiness_fixture(td),
+                                read_holdout=True, shifts=[0], months=None, smoke=False)
             D.REPORT.write_text("A previous partial report", encoding="utf-8", newline="\n")
             with self.assertRaisesRegex(SystemExit, "full development"):
                 D.require_full_dev(a, split)
@@ -712,6 +714,7 @@ class TestSessionNull(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "trader quote"):
                 D.load_null_session(p)
         with patch.object(D, "load_split", return_value={}), \
+             patch.object(D, "load_readiness", return_value={}), \
              patch.object(D, "require_download_coverage", side_effect=AssertionError("data read")):
             with self.assertRaisesRegex(ValueError, "null session manifest required"):
                 D.build_report(SimpleNamespace(read_holdout=False))
@@ -914,6 +917,116 @@ class TestDriver(unittest.TestCase):
                     self.assertEqual(b.real[trade["signal_i"]], 1)
                     if trade["filled"]:
                         self.assertEqual(b.real[trade["fill_i"]], 1)
+
+
+def readiness_fixture(root):
+    """All twelve numbered PRE_REG_TEMPLATE headings; synthetic evidence only."""
+    p = Path(root) / "readiness.json"
+    p.write_text(json.dumps({"items": {str(i): dict(status="ANSWERED",
+        answer="Synthetic protocol answer", evidence="synthetic.md:1")
+        for i in range(1, 13)}}), encoding="utf-8", newline="\n")
+    return p
+
+
+class TestReadinessGate(unittest.TestCase):
+    def test_missing_partial_or_unanswered_manifest_before_any_simulation(self):
+        with tempfile.TemporaryDirectory() as td:
+            p = readiness_fixture(td)
+            complete = json.loads(p.read_text(encoding="utf-8"))
+            cases = [("missing", None), ("absent file", Path(td)/"absent.json")]
+            for i in range(1, 13):
+                obj = copy.deepcopy(complete)
+                del obj["items"][str(i)]
+                cases.append(("missing item %d" % i, obj))
+                for changes in [dict(status="NOT_ANSWERED"), dict(answer="TODO"),
+                                dict(evidence=""), dict(evidence="NOT_IN_DATA"),
+                                dict(status="WAIVED", approver=" ")]:
+                    obj = copy.deepcopy(complete)
+                    obj["items"][str(i)].update(changes)
+                    cases.append(("item %d %s" % (i, changes), obj))
+            for label, obj in cases:
+                with self.subTest(case=label):
+                    path = obj
+                    if isinstance(obj, dict):
+                        p.write_text(json.dumps(obj), encoding="utf-8", newline="\n")
+                        path = p
+                    a = SimpleNamespace(readiness_manifest=path, read_holdout=False,
+                                        shifts=[0], months=None, market="dax")
+                    with patch.object(D, "load_split", return_value=dict(dev_end=D.T_DAX_HOLD)), \
+                         patch.object(D, "load_null_session", return_value={}), \
+                         patch.object(D, "require_download_coverage", side_effect=AssertionError("data accessed before readiness")) as coverage, \
+                         patch.object(D, "load_development_bars") as bars, \
+                         patch.object(D, "simulate") as sim, \
+                         patch.object(D, "mark_holdout_read") as reservation:
+                        with self.assertRaisesRegex(ValueError, "readiness manifest"):
+                            D.build_report(a)
+                        coverage.assert_not_called()
+                        bars.assert_not_called()
+                        sim.assert_not_called()
+                        reservation.assert_not_called()
+
+    def test_complete_manifest_and_dax_cli_with_btc_cache(self):
+        # Exercise the real CLI -> cmd_report -> build_report path. All data,
+        # report and registry paths are local fixtures; git is never executed.
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            p = readiness_fixture(root)
+            split = root/"split.json"
+            split.write_text(json.dumps(dict(design_end_utc="2026-04-10T23:58:00Z",
+                holdout_start_utc="2026-04-11T00:00:00Z", embargo_s=0)), encoding="utf-8", newline="\n")
+            session = root/"session.json"
+            session.write_text(json.dumps(dict(timezone="UTC", start="10:00", end="12:00",
+                source="Synthetic quote, synthetic.md:1")), encoding="utf-8", newline="\n")
+            (root/"rows_btc").mkdir()
+            (root/"rows_btc"/"2026-01.rows.meta.json").write_text(
+                '{"rows": 1, "mask_changed": 0, "cut": 0}', encoding="utf-8", newline="\n")
+            b = mk([(100.,)*4]*2, int(D.T_DAX_START*1000))
+            for waived in (False, True):
+                obj = json.loads(p.read_text(encoding="utf-8"))
+                if waived:
+                    obj["items"]["5"] = dict(status="WAIVED", answer="Synthetic price-only scope",
+                        evidence="synthetic-approval.md:1", approver="Synthetic Owner")
+                    p.write_text(json.dumps(obj), encoding="utf-8", newline="\n")
+                with self.subTest(waived=waived), \
+                     patch.object(D, "WORK", root), patch.object(D, "DAX_SNAPS", root), \
+                     patch.object(D, "REPORT", root/"report.md"), patch.object(D, "REGISTRY", root/"trials.csv"), \
+                     patch.object(D, "git", return_value="synthetic"), patch.object(D, "sha", return_value="fixture"), \
+                     patch.object(D, "require_download_coverage"), \
+                     patch.object(D, "load_development_bars", return_value=b), \
+                     patch.object(T, "load_bars_1m", side_effect=AssertionError("BTC data read")) as btc, \
+                     patch.object(D, "load_rows", return_value=[]) as rows, \
+                     patch.object(D, "simulate", return_value=[]) as sim:
+                    D.main(["report", "--market", "dax", "--smoke", "--split-manifest", str(split),
+                            "--null-session", str(session), "--readiness-manifest", str(p)])
+                    self.assertEqual([c.args[0] for c in sim.call_args_list], ["dax"]*4)
+                    self.assertEqual([c.args[0] for c in rows.call_args_list], ["dax"])
+                    btc.assert_not_called()
+                    self.assertIn("| DAX / coded / s0 / A |", D.REPORT.read_text(encoding="utf-8"))
+                    text = D.REPORT.read_text(encoding="utf-8")
+                    self.assertIn(D.load_readiness(p)["sha256"], text)
+                    self.assertIn("Synthetic Owner" if waived else "Synthetic protocol answer", text)
+
+    def test_malformed_manifest_and_no_holdout_reservation(self):
+        with tempfile.TemporaryDirectory() as td:
+            p = readiness_fixture(td)
+            complete = json.loads(p.read_text(encoding="utf-8"))
+            cases = ["{", "null", "[]", '{}', '{"items": []}']
+            for change in [dict(answer=None), dict(evidence=False), dict(status="NOT_IN_DATA"),
+                           dict(status="WAIVED", approver="TODO"), dict(status="WAIVED", approver=7)]:
+                obj = copy.deepcopy(complete)
+                obj["items"]["3"].update(change)
+                cases.append(json.dumps(obj))
+            for raw in cases:
+                with self.subTest(raw=raw):
+                    p.write_text(raw, encoding="utf-8", newline="\n")
+                    with patch.object(D, "require_full_dev") as full, \
+                         patch.object(D, "load_rows") as rows, \
+                         patch.object(D, "mark_holdout_read") as reserve:
+                        with self.assertRaisesRegex(ValueError, "readiness manifest"):
+                            D.build_report(SimpleNamespace(readiness_manifest=p, read_holdout=True))
+                        full.assert_not_called()
+                        rows.assert_not_called()
+                        reserve.assert_not_called()
 
 
 if __name__ == "__main__":
