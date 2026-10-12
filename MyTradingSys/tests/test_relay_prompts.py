@@ -2,7 +2,7 @@
 import glob
 import os
 
-D = os.path.join(os.path.dirname(__file__), "..", "sched", "relay_prompts")
+D = os.path.join(os.path.dirname(__file__), "..", "..", "scripts", "sched", "relay_prompts")
 
 
 def test_prompts_carry_output_caps():
