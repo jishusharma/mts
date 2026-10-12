@@ -141,7 +141,6 @@ def budget_line(rl, now):
 
 
 def limit_hit(outcome, files, log_text):
-def limit_hit(outcome, files, log_text):
     """A run that ended on the allowance / credit error is not a try of the card, even with partial files (those are salvaged).
     Only the log tail counts: the prompt and the files Codex read mention limits too (lane_health.classify)."""
     return outcome == "INCOMPLETE" and bool(lane_health.classify(log_text))

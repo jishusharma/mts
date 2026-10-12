@@ -51,7 +51,8 @@ class Detect(unittest.TestCase):
 
     def test_codex_run_counts_credit_failure_as_limit_not_a_try(self):
         self.assertTrue(R.limit_hit("INCOMPLETE", [], CREDITS_LOG))
-        self.assertFalse(R.limit_hit("INCOMPLETE", ["a.md"], CREDITS_LOG))   # it wrote something: a normal incomplete run
+        self.assertTrue(R.limit_hit("INCOMPLETE", ["a.md"], CREDITS_LOG))   # partial files do not hide it (they are salvaged)
+        self.assertFalse(R.limit_hit("DONE", [], CREDITS_LOG))
         self.assertFalse(R.limit_hit("INCOMPLETE", [], ECHOED_PROMPT))
 
 
