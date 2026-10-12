@@ -155,6 +155,41 @@ class RealConfigTest(unittest.TestCase):
         self.assertEqual((before, after), ("ESCALATED", "CLOSED"))
 
 
+class LayerBoardTest(unittest.TestCase):
+    """B177 (operator inbox 0c3c2rw1dc5hz27ph4ro): one Layer Board row per layer in active work."""
+    tpl = (Path(__file__).resolve().parent / "control_room.tpl.html").read_text(encoding="utf-8")
+
+    def test_layer_board_one_row_per_active_layer(self):
+        cfg = json.loads(cr.CFG.read_text(encoding="utf-8"))
+        lay = lambda i, name, stage, rows: {"id": i, "name": name, "stage": stage, "indicators": "not recorded",
+                                            "setups": "not recorded", "rows": rows, "next": "n", "src": "f.md"}
+        cfg["layers"] = [lay("la", "Layer Alpha", "encode", ["B991", "B992"]), lay("lb", "Layer Beta", "spec", []),
+                         lay("lc", "Layer Parked", "parked", ["B991"])]
+        d = Path(tempfile.mkdtemp())
+        write(d / "MyTradingSys/research/BUGS.md",
+              "## BUGS\n\n| ID | Opened | Status | Severity | Title | Evidence | Receipt |\n|---|---|---|---|---|---|---|\n"
+              "| B991 | 2026-10-01 | OPEN | HIGH | alpha open row | e | r |\n"
+              "| B992 | 2026-10-01 | CLOSED | MED | alpha closed row | e | r |\n")
+        data = cr.build(cfg, d, NOW)
+        self.assertEqual([x["id"] for x in data["layers"]], ["la", "lb"])  # parked is left out
+        self.assertEqual((data["layers"][0]["open_rows"], data["layers"][0]["worst"]), (1, "HIGH"))
+        self.assertEqual((data["layers"][1]["open_rows"], data["layers"][1]["worst"]), (0, ""))
+        html = cr.render(data, self.tpl)
+        self.assertIn("Layer Alpha", html)
+        self.assertIn("Layer Beta", html)
+        self.assertIn('id="layer-sec"', self.tpl)
+
+    def test_real_layers_carry_a_source_and_known_rows(self):
+        cfg = json.loads(cr.CFG.read_text(encoding="utf-8"))
+        self.assertTrue(cfg["layers"])
+        reg = cr.build(cfg, Path(tempfile.gettempdir()) / "no_such_data_root", NOW)["reg"]
+        for x in cfg["layers"]:
+            self.assertTrue(x["src"] and (cr.REPO / x["src"].split(":")[0]).exists(), x["id"])
+            self.assertIn(x["stage"], ("spec", "encode", "backtest", "live-testnet", "parked"), x["id"])
+            for r in x["rows"]:
+                self.assertIn(r, reg, f"{x['id']}: {r} is not a registry row")
+
+
 class DeclutterTemplateTest(unittest.TestCase):
     """Operator inbox 2sn0idxj5o0uyfm52zca 2026-10-10: 'Declutter MTS control room'."""
     tpl = (Path(__file__).resolve().parent / "control_room.tpl.html").read_text(encoding="utf-8")
@@ -170,6 +205,18 @@ class DeclutterTemplateTest(unittest.TestCase):
     def test_long_inbox_text_folds_but_stays_verbatim(self):
         self.assertIn("(x.text||\"\").length > 320", self.tpl)
         self.assertEqual(self.tpl.count("${esc(x.text)}"), 2)  # clipped summary uses slice; full text rendered once per branch
+
+
+class InboxItemWithoutRefTest(unittest.TestCase):
+    """B181: an Inbox item with no ref (or no reply) still shows status + reply + ref, never nothing."""
+    tpl = (Path(__file__).resolve().parent / "control_room.tpl.html").read_text(encoding="utf-8")
+
+    def test_inbox_item_without_ref_shows_status_and_reply(self):
+        self.assertIn("received, no registry row yet", self.tpl)
+        self.assertIn("no reply yet", self.tpl)
+        # the reply box is rendered unconditionally, not only when reply or ref exist
+        self.assertNotIn("${x.reply||res?`<div class=\"reply\">", self.tpl)
+        self.assertNotIn("x.reply||res?", self.tpl)
 
 
 class BacklogSectionTest(unittest.TestCase):

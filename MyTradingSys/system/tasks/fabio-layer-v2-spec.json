@@ -12,7 +12,7 @@
   "id": "fabio-layer-v2-spec",
   "lane": "OPUS",
   "live_path": false,
-  "note": "",
+  "note": " Codex ledger audit (lab-audit-fabio-ledger-frames) first if delivered; spec must separate stated/frame-observed/inferred, list unresolved numerics and required inputs; do not invent rules.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
