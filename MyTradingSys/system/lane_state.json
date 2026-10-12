@@ -1,0 +1,13 @@
+{
+  "detail": "Codex 5-hour window 99% used, resets 2026-10-12 21:02Z",
+  "fails": 0,
+  "heartbeat": "2026-10-12T18:06:48Z",
+  "last_error": "2026-10-12T18:06:49Z",
+  "last_ok": "",
+  "last_probe": "",
+  "reason": "window",
+  "resumed": "",
+  "since": "2026-10-12T18:06:49Z",
+  "status": "down",
+  "until": "2026-10-12T21:02:51Z"
+}
