@@ -2,15 +2,17 @@ import sys
 sys.dont_write_bytecode = True
 """Tests for the DAX outcome backtest (card tom-dax-backtest): FEES_FDAX, the gap-filling loader, the market-open
 filter, the verdict pair, the matched-proof masking, the holdout guard. Every expected number is worked out by hand in
-the comment next to it from the rules in PRE_REG_DAX.md and SetupCandidatesBuilder.java (countSignals lines 557-575,
-scoring lines 175-181), not from the code under test."""
+the comment next to it from the rules in PRE_REG_DAX.md and SetupCandidatesBuilder.java (countSignals lines 568-585,
+scoring lines 182-185), not from the code under test."""
 import copy
 import csv
 import datetime as dt
+import gzip
 import json
 import os
 import tempfile
 import unittest
+from unittest.mock import patch
 from array import array
 from pathlib import Path
 
@@ -197,16 +199,34 @@ def aligned(s, fail_closed=False):
 
 
 class TestMask(unittest.TestCase):
+    def test_old_volume_spike_snapshot_rejected(self):
+        s = snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 1)])
+        before = copy.deepcopy(s)
+        with self.assertRaisesRegex(ValueError, "proof JSON gives 0, score.proof_count is 1"):
+            D.rescore(s)
+        self.assertEqual(s, before)
+
+    def test_volume_spike_only_counts_zero_and_rescore_accepts(self):
+        # EXPECT: SetupCandidatesBuilder.java:579 (B144) excludes volume_spike,
+        # although toJson at 615-616 still emits detected=True.
+        c = cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)
+        with self.subTest("current Java count"):
+            self.assertEqual(D.java_count(c), 0)
+        with self.subTest("current Java snapshot accepted"):
+            self.assertEqual(D.rescore(snap([c])), 0)
+            self.assertEqual(c["score"]["proof_count"], 0)
+            self.assertEqual(c["score"]["raw"], 50)
+
     def full(self):
-        # long: rejection(1) + absorption(1) + finished_auction 'sell' favours long (1) + delta_flip(1) + spike(1) + cvd(1) = 6
+        # Java:568-585: rejection + absorption + favouring auction + flip + cvd = 5; spike uncounted (B144).
         return cand(1, "long", "daily_poc", "daily_poc",
-                    proof_node("MODERATE", True, "sell", True, True, True), 6)
+                    proof_node("MODERATE", True, "sell", True, True, True), 5)
 
     def test_java_count_parity(self):
-        self.assertEqual(D.java_count(self.full()), 6)
-        # finished_auction 'buy' does not favour a long: 1+1+0+1+1+1 = 5
-        c = cand(1, "long", "daily_poc", "daily_poc", proof_node("WEAK", True, "buy", True, True, True), 5)
-        self.assertEqual(D.java_count(c), 5)
+        self.assertEqual(D.java_count(self.full()), 5)
+        # finished_auction 'buy' does not favour a long: 1+1+0+1+1 = 4
+        c = cand(1, "long", "daily_poc", "daily_poc", proof_node("WEAK", True, "buy", True, True, True), 4)
+        self.assertEqual(D.java_count(c), 4)
         # short favours 'buy'; the JSON volume_spike.detected already includes at_level (java toJson), so a spike away from the
         # level is detected=False: rw(1) + fa buy(1) = 2
         p = proof_node("STRONG", False, "buy", False, False, False)
@@ -216,8 +236,8 @@ class TestMask(unittest.TestCase):
         s = snap([self.full()])
         D.rescore(s)
         c = s["setup_candidates"][0]
-        self.assertEqual(c["score"]["proof_count"], 2)             # rejection wick + volume spike survive
-        self.assertEqual(c["score"]["raw"], 64)                    # 50 + 7*2
+        self.assertEqual(c["score"]["proof_count"], 1)             # only rejection wick counts
+        self.assertEqual(c["score"]["raw"], 57)                    # 50 + 7*1
         self.assertFalse(c["proof"]["absorption"]["detected"])
         self.assertFalse(c["proof"]["finished_auction"]["detected"])
         self.assertEqual(c["proof"]["finished_auction"]["direction"], "")
@@ -242,34 +262,33 @@ class TestMask(unittest.TestCase):
     def test_shift_adds_to_every_candidate(self):
         s = snap([self.full()])
         D.rescore(s, shift=1)
-        self.assertEqual(s["setup_candidates"][0]["score"]["proof_count"], 3)   # 2 + 1
-        self.assertEqual(s["setup_candidates"][0]["score"]["raw"], 71)          # 50 + 21
+        self.assertEqual(s["setup_candidates"][0]["score"]["proof_count"], 2)   # 1 + 1
+        self.assertEqual(s["setup_candidates"][0]["score"]["raw"], 64)          # 50 + 14
 
     def test_parity_mismatch_fails_closed(self):
         c = self.full()
-        c["score"]["proof_count"] = 5
+        c["score"]["proof_count"] = 6
         with self.assertRaises(ValueError):
             D.rescore(snap([c]))
 
     def test_rerank_by_masked_score_then_tf_rank(self):
-        # A: rank 1, daily_poc (tfRank 9), full proof 6 -> raw 92 -> masked 64.
-        # B: rank 2, 15m_swing_low (tfRank 3), rejection+spike = 2, confluence bonus 10 -> raw 74 (unchanged).
-        # After masking B (74) outranks A (64).
+        # A: full proof 5 -> raw 85 -> masked 57.
+        # B: rejection only counts (spike emitted), bonus 10 -> raw 67; outranks A after masking.
         a = self.full()
-        b = cand(2, "long", "15m_swing_low", "15m_swing_low", proof_node("MODERATE", False, None, False, True, False), 2, bonus=10)
-        self.assertEqual((a["score"]["raw"], b["score"]["raw"]), (92, 74))
+        b = cand(2, "long", "15m_swing_low", "15m_swing_low", proof_node("MODERATE", False, None, False, True, False), 1, bonus=10)
+        self.assertEqual((a["score"]["raw"], b["score"]["raw"]), (85, 67))
         s = snap([a, b])
         D.rescore(s)
         out = s["setup_candidates"]
         self.assertEqual([c["zone"]["name"] for c in out], ["15m_swing_low", "daily_poc"])
         self.assertEqual([c["rank"] for c in out], [1, 2])
-        self.assertEqual([c["score"]["raw"] for c in out], [74, 64])
+        self.assertEqual([c["score"]["raw"] for c in out], [67, 57])
 
     def test_rerank_tie_broken_by_tf_rank(self):
-        # both end at raw 64 (pc 2, bonus 0): higher tfRank first. Input order: 15m swing (3) then daily (9)
-        a = cand(1, "long", "15m_swing_low", "15m_swing_low", proof_node("MODERATE", True, None, False, True, False), 3)
-        b = cand(2, "long", "daily_poc", "daily_poc", proof_node("MODERATE", False, None, False, True, False), 2)
-        self.assertEqual((a["score"]["raw"], b["score"]["raw"]), (71, 64))
+        # both end at raw 57 (pc 1, bonus 0): higher tfRank first. Input order: 15m swing (3) then daily (9)
+        a = cand(1, "long", "15m_swing_low", "15m_swing_low", proof_node("MODERATE", True, None, False, True, False), 2)
+        b = cand(2, "long", "daily_poc", "daily_poc", proof_node("MODERATE", False, None, False, True, False), 1)
+        self.assertEqual((a["score"]["raw"], b["score"]["raw"]), (64, 57))
         s = snap([a, b])
         D.rescore(s)
         self.assertEqual([c["zone"]["name"] for c in s["setup_candidates"]], ["daily_poc", "15m_swing_low"])
@@ -284,19 +303,19 @@ class TestMask(unittest.TestCase):
             self.assertEqual(D.tf_rank(name, typ), want, name)
 
     def test_masking_changes_the_verdict(self):
-        # full proof 6 -> SETUP_FORMING unmasked; masked 2 -> WAIT_PROOF
+        # full proof 5 -> SETUP_FORMING unmasked; masked 1 -> WAIT_PROOF
         s = snap([self.full()])
         s["setup_candidates"][0]["math"]["net_rr"] = 2.0
         un = D.rows_for_snapshot(copy.deepcopy(s), parse_ts, aligned, mask=(), kinds=("coded",))
         self.assertEqual(un["coded/0"]["verdict"], "SETUP_FORMING")
         mk_ = D.rows_for_snapshot(copy.deepcopy(s), parse_ts, aligned, kinds=("coded",))
         self.assertEqual(mk_["coded/0"]["verdict"], "WAIT_PROOF")
-        self.assertEqual(mk_["coded/0"]["proof"], 2)
+        self.assertEqual(mk_["coded/0"]["proof"], 1)
 
 
 class TestVerdictPair(unittest.TestCase):
     def test_daxfee_sets_net_to_gross_on_every_candidate(self):
-        a = cand(1, "long", "daily_poc", "daily_poc", proof_node("MODERATE", False, None, False, True, False), 2, gross=3.0, net=1.0)
+        a = cand(1, "long", "daily_poc", "daily_poc", proof_node("MODERATE", False, None, False, True, False), 1, gross=3.0, net=1.0)
         b = cand(2, "long", "vwap", "vwap_band", proof_node(), 0, gross=2.5, net=0.7)
         s = snap([a, b])
         D.daxfee(s)
@@ -304,19 +323,19 @@ class TestVerdictPair(unittest.TestCase):
 
     def test_pair_differs_when_net_is_below_floor(self):
         # gross 3.0 but net 1.0 (< any floor in net_rr_floor.json): as coded WAIT_RR; DAX-fee passes the RR gate,
-        # proof 2 + shift 1 = 3 -> WATCH (proof >= 3, < 5)
-        a = cand(1, "long", "daily_poc", "daily_poc", proof_node("MODERATE", False, None, False, True, False), 2, gross=3.0, net=1.0)
+        # proof 1 + shift 2 = 3 -> WATCH (proof >= 3, < 5); a synthetic extension, not a tuned arm.
+        a = cand(1, "long", "daily_poc", "daily_poc", proof_node("MODERATE", False, None, False, True, False), 1, gross=3.0, net=1.0)
         s = snap([a])
-        r0 = D.rows_for_snapshot(copy.deepcopy(s), parse_ts, aligned, shifts=(0, 1))
-        self.assertEqual(r0["coded/1"]["verdict"], "WAIT_RR")
-        self.assertEqual(r0["daxfee/1"]["verdict"], "WATCH")
-        self.assertEqual(r0["daxfee/0"]["verdict"], "WAIT_PROOF")   # proof 2 < 3: the pre-registered gate cannot pass
-        self.assertEqual(r0["daxfee/1"]["net_rr"], 3.0)
-        self.assertEqual(r0["coded/1"]["net_rr"], 1.0)
-        self.assertEqual(r0["daxfee/1"]["proof"], 3)
+        r0 = D.rows_for_snapshot(copy.deepcopy(s), parse_ts, aligned, shifts=(0, 2))
+        self.assertEqual(r0["coded/2"]["verdict"], "WAIT_RR")
+        self.assertEqual(r0["daxfee/2"]["verdict"], "WATCH")
+        self.assertEqual(r0["daxfee/0"]["verdict"], "WAIT_PROOF")   # proof 1 < 3
+        self.assertEqual(r0["daxfee/2"]["net_rr"], 3.0)
+        self.assertEqual(r0["coded/2"]["net_rr"], 1.0)
+        self.assertEqual(r0["daxfee/2"]["proof"], 3)
 
     def test_inputs_not_mutated(self):
-        a = cand(1, "long", "daily_poc", "daily_poc", proof_node("MODERATE", True, None, False, True, False), 3, net=1.0)
+        a = cand(1, "long", "daily_poc", "daily_poc", proof_node("MODERATE", True, None, False, True, False), 2, net=1.0)
         s = snap([a])
         before = copy.deepcopy(s)
         D.rows_for_snapshot(s, parse_ts, aligned)
@@ -325,6 +344,41 @@ class TestVerdictPair(unittest.TestCase):
 
 # ------------------------------------------------------------------ f) driver helpers
 class TestDriver(unittest.TestCase):
+    def test_current_rows_written_reused_and_loaded(self):
+        # Synthetic current-Java input only; no archive or holdout loader.
+        with tempfile.TemporaryDirectory() as td, patch.object(D, "WORK", Path(td)):
+            out_dir = Path(td) / "rows_btc"
+            out_dir.mkdir()
+            source = Path(td) / "2026-01.jsonl.gz"
+            s = snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)])
+            with gzip.open(source, "wt", encoding="utf-8") as fh:
+                fh.write(json.dumps(s) + "\n")
+            job = ("btc", source, out_dir, (0,), D.MASK_OF, None)
+            self.assertEqual(D._rows_month(job)[1]["rows"], 1)
+            self.assertEqual(D._rows_month(job), ("2026-01", None))
+            self.assertEqual(D.load_rows("btc", "coded/0")[0]["proof"], 0)
+            out = out_dir / "2026-01.rows.jsonl"
+            row = json.loads(out.read_text(encoding="utf-8"))
+            self.assertEqual(row.pop("proof_count_schema"), D.PROOF_COUNT_SCHEMA)
+            out.write_text(json.dumps(row) + "\n", encoding="utf-8", newline="\n")
+            # Even valid metadata cannot bless an old row envelope.
+            with self.assertRaisesRegex(ValueError, "proof-count schema"):
+                D.load_rows("btc", "coded/0")
+            with self.assertRaisesRegex(ValueError, "proof-count schema"):
+                D._rows_month(job)
+
+    def test_old_rows_rejected_on_load_and_cache_reuse(self):
+        with tempfile.TemporaryDirectory() as td, patch.object(D, "WORK", Path(td)):
+            out_dir = Path(td) / "rows_dax"
+            out_dir.mkdir()
+            out = out_dir / "2026-01.rows.jsonl"
+            out.write_text(json.dumps({"t": 1, "k": {"coded/0": {"t": 1, "proof": 2}}}) + "\n",
+                           encoding="utf-8", newline="\n")
+            with self.assertRaisesRegex(ValueError, "proof-count schema"):
+                D.load_rows("dax", "coded/0")
+            with self.assertRaisesRegex(ValueError, "proof-count schema"):
+                D._rows_month(("dax", "2026-01.jsonl.gz", out_dir, (0,), D.MASK_OF, None))
+
     def test_complete_months(self):
         with tempfile.TemporaryDirectory() as td:
             raw = Path(td)
