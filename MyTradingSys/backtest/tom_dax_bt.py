@@ -31,6 +31,7 @@ import json
 import multiprocessing as mp
 import os
 import random
+import shutil
 import subprocess
 import time
 import math
@@ -43,6 +44,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "MyTradingSys/runtime"))
 import tom_bt as T  # noqa: E402
 from fees import FEES_FDAX  # noqa: E402
 
@@ -601,6 +603,15 @@ def _java_env():
     return env
 
 
+def generation_environment():
+    from dax_engine import shot
+    env = _java_env()
+    binaries = [shutil.which(name, path=env.get("PATH")) for name in ("java", "javac")]
+    if any(p is None for p in binaries):
+        raise ValueError("snapshot producer requires Java and javac identities")
+    return {str(p): file_hash(p) for p in [*binaries, *shot.engine_jars()]}
+
+
 def cmd_gen(a):
     t0 = time.time()
     subprocess.run([sys.executable, "-I", str(HERE / "dax_data.py"), "convert", "--raw", str(DAX_RAW), "--out", str(DAX_ARCHIVE)],
@@ -623,7 +634,25 @@ def cmd_gen(a):
                "--start", "%sT00:00:00Z" % s_day.isoformat(), "--end", "%sT23:59:00Z" % e_day.isoformat(),
                "--step", "15", "--shards", str(a.shards)]
         print(" ".join(cmd), flush=True)
+        inputs = dict(codes=generation_codes(), environment=generation_environment(), command=cmd,
+                      data={str(p): file_hash(p) for p in sorted((DAX_ARCHIVE / "klines").glob("*.csv"))})
+        existing = set(DAX_SNAPS.glob("*.jsonl.gz"))
+        for p in existing:
+            origin_path = p.with_name(p.name.replace(".jsonl.gz", ".inputs.json"))
+            origin = json.loads(origin_path.read_text(encoding="utf-8")) if origin_path.exists() else {}
+            if origin.get("codes") != inputs["codes"] or origin.get("data") != inputs["data"] or \
+                    origin.get("environment") != inputs["environment"] or \
+                    origin.get("snapshot_sha256") != file_hash(p):
+                raise ValueError("cache input snapshot provenance absent/stale in %s; use a fresh snapshot directory" % p)
         subprocess.run(cmd, check=True, env=_java_env())
+        after = dict(codes=generation_codes(), environment=generation_environment(), command=cmd,
+                     data={str(p): file_hash(p) for p in sorted((DAX_ARCHIVE / "klines").glob("*.csv"))})
+        if inputs != after:
+            raise ValueError("cache inputs changed during snapshot generation; use a fresh snapshot directory")
+        for p in set(DAX_SNAPS.glob("*.jsonl.gz")) - existing:
+            origin_path = p.with_name(p.name.replace(".jsonl.gz", ".inputs.json"))
+            origin_path.write_text(json.dumps(dict(inputs, snapshot_sha256=file_hash(p)), sort_keys=True) + "\n",
+                                   encoding="utf-8", newline="\n")
     metas = [json.loads(p.read_text()) for p in sorted(DAX_SNAPS.glob("*.meta.json")) if p.stem.replace(".meta", "") not in done_before]
     n = sum(m["evaluated"] for m in metas)
     dt_s = time.time() - t0
@@ -634,9 +663,111 @@ def cmd_gen(a):
 _BARS = None
 
 
-def _init_dax(klines):
+def digest(obj):
+    return hashlib.sha256(json.dumps(obj, sort_keys=True, separators=(",", ":"),
+                                     allow_nan=False).encode("utf-8")).hexdigest()
+
+
+def file_hash(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1024*1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def code_identity():
+    # Hash the actual dependencies, including uncommitted changes, without git.
+    paths = list((ROOT / "src/main/java/datafeed").glob("*.java"))
+    paths += list((RESEARCH / "core_readiness_2026-09-27/harness/java").glob("*.java"))
+    paths += [HERE / name for name in ("tom_dax_bt.py", "tom_bt.py", "verdict.py", "fees.py",
+                                      "snapshots.py", "dax_engine.py", "dax_data.py", "tom_bt_report.py")]
+    paths += [ROOT / "MyTradingSys/runtime" / name for name in ("math_object_builder.py", "net_rr_floor.py")]
+    paths += [ROOT / "MyTradingSys/system/net_rr_floor.json"]
+    paths += [ROOT / "pom.xml", ROOT / "scripts/dev/shot.py"]
+    return {p.relative_to(ROOT).as_posix(): file_hash(p) for p in sorted(set(paths))}
+
+
+def generation_codes():
+    return {k: v for k, v in code_identity().items() if k.endswith(".java") or
+            k.endswith(("dax_engine.py", "dax_data.py", "tom_dax_bt.py", "net_rr_floor.json", "pom.xml", "shot.py"))}
+
+
+def bars_identity(b):
+    h = hashlib.sha256()
+    for name in ("o", "h", "l", "c", "v", "tbv", "real"):
+        value = getattr(b, name)
+        h.update(name.encode())
+        h.update(b"absent" if value is None else bytes(value))
+    return dict(t0=b.t0, n=b.n, sha256=h.hexdigest())
+
+
+def freeze_run(manifest):
+    """Shared accounting identity for an outcome or explicitly labelled recall look.
+
+    A fresh look uses a fresh look_id; only an identical manifest is a rerender.
+    Files are create-only, and never infer historical producers from today's HEAD.
+    """
+    run_id = "dax_bt_" + digest(manifest)
+    path = WORK / "runs" / (run_id + ".json")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    raw = json.dumps(manifest, sort_keys=True, indent=2) + "\n"
+    if path.exists():
+        if path.read_text(encoding="utf-8") != raw:
+            raise ValueError("immutable run manifest mismatch: %s" % path)
+    else:
+        with open(path, "x", encoding="utf-8", newline="\n") as fh:
+            fh.write(raw)
+    return run_id, path, raw
+
+
+def cache_inputs(market, path, shifts, mask, cut_t, floor):
+    path = Path(path).resolve()
+    producer = path.with_name(path.name.replace(".jsonl.gz", ".inputs.json"))
+    if not producer.is_file():
+        raise ValueError("cache input provenance missing for %s; regenerate through gen" % path)
+    origin = json.loads(producer.read_text(encoding="utf-8")) if producer.is_file() else None
+    if origin is not None and (origin.get("codes") != generation_codes() or
+                               origin.get("snapshot_sha256") != file_hash(path)):
+        raise ValueError("cache input snapshot producer mismatch in %s; regenerate through gen" % producer)
+    source_meta = path.with_name(path.name.replace(".jsonl.gz", ".meta.json"))
+    return dict(schema="dax-inputs-v1", market=market, snapshot=str(path),
+                snapshot_sha256=file_hash(path),
+                snapshot_meta_sha256=file_hash(source_meta) if source_meta.exists() else None,
+                producer=origin,
+                codes=code_identity(), floor=floor, mask=sorted(mask), shifts=sorted(set(shifts)),
+                kinds=list(KINDS), cut_t=cut_t,
+                bars=bars_identity(_BARS) if market == "dax" and _BARS is not None else None)
+
+
+def validate_cache(out, meta, expected=None, mask=None, shifts=None, bars=None, verify_bars=True):
+    obj = json.loads(meta.read_text(encoding="utf-8")) if meta.exists() else {}
+    require_proof_schema(obj, meta)
+    frozen = obj.get("inputs")
+    if not frozen or obj.get("input_id") != digest(frozen) or obj.get("rows_sha256") != file_hash(out):
+        raise ValueError("cache input identity/content missing or changed in %s; rerun rows --force" % meta)
+    from net_rr_floor import load_floor
+    if expected is None:
+        expected = cache_inputs(frozen["market"], frozen["snapshot"], frozen["shifts"],
+                                frozen["mask"], frozen["cut_t"], load_floor())
+        if frozen["market"] == "dax":
+            if not verify_bars:
+                expected["bars"] = frozen["bars"]  # pre-reservation envelope counting only
+            elif bars is None and frozen["cut_t"] is None:
+                raise ValueError("cache input requires explicitly reserved full bars")
+            elif bars is None:
+                bars = load_development_bars(DAX_ARCHIVE / "klines", frozen["cut_t"])
+            if verify_bars:
+                expected["bars"] = bars_identity(bars)
+    if frozen != expected or (mask is not None and frozen["mask"] != sorted(mask)) or \
+            (shifts is not None and frozen["shifts"] != sorted(set(shifts))):
+        raise ValueError("cache input mismatch in %s; rerun rows --force" % meta)
+    return obj
+
+
+def _init_dax(klines, cut_t=None):
     global _BARS
-    _BARS = T.load_bars_1m(klines, fill_gaps=True)
+    _BARS = load_development_bars(klines, cut_t) if cut_t is not None else T.load_bars_1m(klines, fill_gaps=True)
 
 
 def _rows_month(job):
@@ -650,10 +781,14 @@ def _rows_month(job):
     meta = Path(out_dir) / (name + ".rows.meta.json")
     if out.exists():
         require_proof_schema(json.loads(meta.read_text(encoding="utf-8")) if meta.exists() else {}, meta)
+        inputs = cache_inputs(market, path, shifts, mask, cut_t, floor)
+        validate_cache(out, meta, expected=inputs)
         with open(out, encoding="utf-8") as fh:
             for line in fh:
                 require_proof_schema(json.loads(line), out)
         return name, None
+    inputs = cache_inputs(market, path, shifts, mask, cut_t, floor)
+    input_id = digest(inputs)
     stats = Counter()
     tmp = out.with_suffix(".part")
     with gzip.open(path, "rt", encoding="utf-8") as fh, open(tmp, "w", encoding="utf-8", newline="\n") as fo:
@@ -669,10 +804,13 @@ def _rows_month(job):
                 continue
             frozen_verdict = lambda snap, pd: compute_verdict(snap, pd, floor=floor)
             keys = rows_for_snapshot(s, parse_ts, proof_dir_of, frozen_verdict, mask, KINDS, shifts, stats)
-            fo.write(json.dumps({"proof_count_schema": PROOF_COUNT_SCHEMA, "t": t, "k": keys}) + "\n")
+            fo.write(json.dumps({"proof_count_schema": PROOF_COUNT_SCHEMA, "input_id": input_id, "t": t, "k": keys}) + "\n")
             stats["rows"] += 1
+    if inputs != cache_inputs(market, path, shifts, mask, cut_t, floor):
+        raise ValueError("cache inputs changed during row generation; discard rows and rerun --force")
     tmp.replace(out)
-    meta.write_text(json.dumps(dict(stats, proof_count_schema=PROOF_COUNT_SCHEMA, net_rr_floor=floor,
+    meta.write_text(json.dumps(dict(stats, proof_count_schema=PROOF_COUNT_SCHEMA, inputs=inputs,
+                                   input_id=input_id, rows_sha256=file_hash(out), net_rr_floor=floor,
                                    rr_selection="Java per-instrument net_rr", fdax_fee_per_side=FEES_FDAX["entry"],
                                    execution_math_sha=sha(ROOT / "src/main/java/datafeed/ExecutionMathConstants.java")))
                     + "\n", encoding="utf-8", newline="\n")
@@ -680,6 +818,9 @@ def _rows_month(job):
 
 
 def cmd_rows(a):
+    split = load_split(getattr(a, "split_manifest", None)) if a.market in ("dax", "both") else None
+    if split and a.read_holdout:
+        require_full_dev(a, split)
     for market in (["dax", "btc"] if a.market == "both" else [a.market]):
         snap_dir = DAX_SNAPS if market == "dax" else BTC_SNAPS
         out_dir = WORK / ("rows_" + market)
@@ -691,25 +832,31 @@ def cmd_rows(a):
                  if p.name.replace(".jsonl.gz", "") in (a.months or [p.name.replace(".jsonl.gz", "")])
                  and (snap_dir / (p.name.replace(".jsonl.gz", "") + ".meta.json")).exists()]
         mask = () if (market == "btc" and a.mask == "none") else MASK_OF   # DAX is always masked (no-op on exact-zero deltas)
-        jobs = [(market, f, str(out_dir), tuple(a.shifts), mask, T_BTC_BURNED if market == "btc" else None) for f in files]
+        cut_t = T_BTC_BURNED if market == "btc" else None if a.read_holdout else split["dev_end"]
+        jobs = [(market, f, str(out_dir), tuple(a.shifts), mask, cut_t) for f in files]
         t0 = time.time()
-        init = (_init_dax, (str(DAX_ARCHIVE / "klines"),)) if market == "dax" else (None, ())
+        init = (_init_dax, (str(DAX_ARCHIVE / "klines"), cut_t)) if market == "dax" else (None, ())
         with mp.Pool(a.procs, initializer=init[0], initargs=init[1]) as pool:
             for name, st in pool.imap_unordered(_rows_month, jobs):
                 print(market, name, st, "%.0fs" % (time.time() - t0), flush=True)
 
 
-def load_rows(market, key, months=None, split=None, read_holdout=False, counts=None):
+def load_rows(market, key, months=None, split=None, read_holdout=False, counts=None, mask=None, shifts=None,
+              bars=None, verify_bars=True):
     rows = []
     for p in sorted((WORK / ("rows_" + market)).glob("*.rows.jsonl")):
         if months and p.name[:7] not in months:
             continue
         meta = p.with_name(p.name.replace(".rows.jsonl", ".rows.meta.json"))
-        require_proof_schema(json.loads(meta.read_text(encoding="utf-8")) if meta.exists() else {}, meta)
+        frozen = validate_cache(p, meta, mask=mask, shifts=shifts, bars=bars, verify_bars=verify_bars)
+        if frozen["inputs"]["market"] != market:
+            raise ValueError("cache input market mismatch in %s" % p)
         with open(p, encoding="utf-8") as fh:
             for line in fh:
                 d = json.loads(line)
                 require_proof_schema(d, p)
+                if d.get("input_id") != frozen["input_id"]:
+                    raise ValueError("cache input envelope mismatch in %s" % p)
                 if market == "dax" and split:
                     per = dax_period(d["t"], split)
                     if counts is not None:
@@ -832,10 +979,10 @@ def build_report(a):
     if a.read_holdout:
         require_full_dev(a, split)
         counts = {}
-        load_rows("dax", "%s/%d" % (KINDS[0], a.shifts[0]), None, split=split, counts=counts)
+        load_rows("dax", "%s/%d" % (KINDS[0], a.shifts[0]), None, split=split, counts=counts, verify_bars=False)
         mark_holdout_read(counts.get("holdout", 0), HOLDOUT_MARKER, split)
     periods_dax = ["dev"] + (["holdout"] if a.read_holdout else [])
-    shifts = list(a.shifts)
+    shifts = sorted(set(a.shifts))
     months = a.months or None
     md_rows, reg, stress, notes = [], [], [], []
     acct = {"readiness": readiness, "null_session": session, "null_draws": []}
@@ -870,12 +1017,39 @@ def build_report(a):
                                 expected <= snap_months and expected <= row_months and
                                 acct["dax"]["errors"] == 0 and n_hole_days == 0)
     b_btc = None
+    from net_rr_floor import load_floor
+    selected_markets = ("dax", "btc") if getattr(a, "market", "both") == "both" else (getattr(a, "market", "dax"),)
+    row_files = [p for market in selected_markets for p in sorted((WORK / ("rows_" + market)).glob("*.rows.jsonl"))
+                 if not months or p.name[:7] in months]
+    cache_ids = {}
+    for p in row_files:
+        market = p.parent.name.removeprefix("rows_")
+        mask = () if market == "btc" and getattr(a, "mask", "all") == "none" else MASK_OF
+        meta = p.with_name(p.name.replace(".rows.jsonl", ".rows.meta.json"))
+        frozen = validate_cache(p, meta, mask=mask, shifts=shifts,
+                                bars=b_dax if market == "dax" else None)
+        if frozen["inputs"]["market"] != market:
+            raise ValueError("cache input market mismatch in %s" % meta)
+        if market == "dax" and frozen["inputs"]["cut_t"] != (None if a.read_holdout else split["dev_end"]):
+            raise ValueError("cache input split cutoff mismatch in %s; rerun rows --force" % meta)
+        cache_ids[str(p)] = dict(input_id=frozen["input_id"], rows_sha256=frozen["rows_sha256"],
+                                 inputs=frozen["inputs"])
+    acct["run_manifest"] = dict(schema="dax-run-v1", codes=code_identity(), floor=load_floor(),
+        market=list(selected_markets), split=split, readiness=readiness, session=session,
+        mask=getattr(a, "mask", "all"), shifts=sorted(set(shifts)), kinds=list(KINDS), variants=list(VARIANTS),
+        months=sorted(months) if months else None, smoke=getattr(a, "smoke", False),
+        read_holdout=a.read_holdout, look_id=getattr(a, "look_id", ""),
+        seeds=dict(null=7, null_draws=200, bootstrap=12345, bootstrap_draws=2000, diff=99), fees=dict(dax=FEES_FDAX, btc=T.FEES_DERIBIT),
+        dax_bars=bars_identity(b_dax), caches=cache_ids)
+    if "btc" in selected_markets and (WORK / "rows_btc").exists():
+        b_btc = T.load_bars_1m(BTC_KLINES)
+        acct["run_manifest"]["btc_bars"] = bars_identity(b_btc)
+    freeze_run(acct["run_manifest"])  # durable frozen inputs before any outcome evaluation
     runs_summary = []
     for market in (("dax", "btc") if getattr(a, "market", "both") == "both" else (getattr(a, "market", "dax"),)):
         if market == "btc":
             if not (WORK / "rows_btc").exists():
                 continue
-            b_btc = T.load_bars_1m(BTC_KLINES)
             bm = [json.loads(p.read_text()) for p in sorted((WORK / "rows_btc").glob("*.rows.meta.json")) if not months or p.name[:7] in months]
             acct["btc"] = dict(rows=sum(m.get("rows", 0) for m in bm), mask_changed=sum(m.get("mask_changed", 0) for m in bm),
                                cut=sum(m.get("cut", 0) for m in bm))
@@ -886,7 +1060,9 @@ def build_report(a):
                 counts = {}
                 rows = load_rows(market, "%s/%d" % (kind, sh), months,
                                  split=split if market == "dax" else None,
-                                 read_holdout=a.read_holdout, counts=counts)
+                                 read_holdout=a.read_holdout, counts=counts,
+                                 mask=() if market == "btc" and getattr(a, "mask", "all") == "none" else MASK_OF,
+                                 shifts=shifts, bars=b if market == "dax" else None)
                 if market == "dax":
                     # Count envelope timestamps once, independent of arms/variants/fills.
                     acct["dax"]["holdout_rows"] = max(acct["dax"]["holdout_rows"], counts.get("holdout", 0),
@@ -939,6 +1115,17 @@ def build_report(a):
                                 "%s [%s, %s]" % (f2(ss["mean_net"]), f2(ss["net_ci"][0]), f2(ss["net_ci"][1])) if ss.get("n_filled") else "-",
                                 "%.3f%%" % risks[len(risks) // 2],
                                 "target %d / stop %d / timeout %d" % tuple(s["exits"][k] for k in ("target", "stop", "timeout"))))
+    if acct["run_manifest"]["codes"] != code_identity() or acct["run_manifest"]["floor"] != load_floor():
+        raise ValueError("run inputs changed during outcome evaluation; report refused")
+    if split != load_split(a.split_manifest) or readiness != load_readiness(a.readiness_manifest) or \
+            session != load_null_session(getattr(a, "null_session", None)):
+        raise ValueError("run manifests changed during outcome evaluation; report refused")
+    for p in row_files:
+        meta = p.with_name(p.name.replace(".rows.jsonl", ".rows.meta.json"))
+        frozen = validate_cache(p, meta, bars=b_dax if p.parent.name == "rows_dax" else None)
+        if cache_ids[str(p)]["input_id"] != frozen["input_id"] or \
+                cache_ids[str(p)]["rows_sha256"] != frozen["rows_sha256"]:
+            raise ValueError("cache inputs changed during outcome evaluation; report refused")
     return md_rows, stress, reg, acct, n_hole_days
 
 
@@ -976,18 +1163,17 @@ def cmd_report(a):
     t0 = time.time()
     split = load_split(getattr(a, "split_manifest", None))
     md_rows, stress, reg, acct, holes = build_report(a)
-    head = git("rev-parse", "HEAD")
-    run_id = "dax_bt_%s%s%s" % (dt.datetime.now(UTC).strftime("%Y%m%d"), "_SMOKE" if a.smoke else "", "_holdout" if a.read_holdout else "")
+    manifest = acct["run_manifest"]
+    run_id, manifest_path, raw_manifest = freeze_run(manifest)
     md = []
     if a.smoke:
         md.append("> **SMOKE (partial data): %s only, dev period only. These numbers test the pipeline; they are NOT a result and "
                   "must not be quoted as one. The full run overwrites this file.**\n" % (", ".join(a.months) if a.months else "whatever months are in the archive"))
     md.append("# DAX_BT_REPORT: untuned Tom core on DAX vs matched-proof BTC (card tom-dax-backtest)\n")
-    md.append("Spec: `PRE_REG_DAX.md` (frozen 2026-10-11). Run `%s`, code HEAD `%s`, %s.\n" % (
-        run_id, head, dt.datetime.now(UTC).strftime("%Y-%m-%d %H:%MZ")))
-    md.append("Hashes: SetupCandidatesBuilder.java `%s`, verdict.py `%s`, tom_bt.py `%s`, tom_dax_bt.py `%s`, fees.py `%s`.\n" % (
-        sha(ROOT / "src/main/java/datafeed/SetupCandidatesBuilder.java"), sha(HERE / "verdict.py"), sha(HERE / "tom_bt.py"),
-        sha(HERE / "tom_dax_bt.py"), sha(HERE / "fees.py")))
+    md.append("Spec: `PRE_REG_DAX.md` (frozen 2026-10-11). Run `%s`, %s.\n" % (
+        run_id, dt.datetime.now(UTC).strftime("%Y-%m-%d %H:%MZ")))
+    md.append("Immutable run manifest `%s` (SHA-256 `%s`); hashes identify the frozen producers and inputs.\n"
+              "\n```json\n%s```\n" % (manifest_path, digest(manifest), raw_manifest))
     d = acct["dax"]
     md.append("## 1. Data and accounting\n")
     ready = acct["readiness"]
@@ -1091,14 +1277,18 @@ def cmd_report(a):
     registry = REGISTRY.with_name("TRIAL_REGISTRY_SMOKE.csv") if a.smoke else REGISTRY
     registry.parent.mkdir(parents=True, exist_ok=True)
     new = not registry.exists()
-    already = (not new) and any(l.startswith(run_id + ",") for l in open(registry, encoding="utf-8"))
-    if not already:
+    existing = set()
+    if not new:
+        with open(registry, encoding="utf-8", newline="") as fh:
+            existing = {(r["run_id"], r["variant"]) for r in csv.DictReader(fh)}
+    pending = [r for r in reg if (run_id, r[0]) not in existing]
+    if pending:
         with open(registry, "a", newline="", encoding="utf-8") as fh:
             w = csv.writer(fh, lineterminator="\n")
             if new:
                 w.writerow(["run_id", "date", "variant", "n_trades", "mean_R_net", "sharpe_per_trade"])
-            for r in reg:
-                w.writerow([run_id, dt.date.today().isoformat()] + r)
+            for r in pending:
+                w.writerow([run_id, dt.datetime.now(UTC).date().isoformat()] + r)
     print("wrote", REPORT, "(%d registry rows, %.0fs)" % (len(reg), time.time() - t0))
 
 
@@ -1115,6 +1305,7 @@ def main(argv=None):
         p.add_argument("--market", choices=["dax", "btc", "both"], default="both")
         p.add_argument("--mask", choices=["all", "none"], default="all", help="btc rows only: none = identity check against the old rows")
         p.add_argument("--force", action="store_true")
+        p.add_argument("--look-id", default="", help="unique label for a fresh experiment/recall look; identical frozen inputs and label rerender idempotently")
         p.add_argument("--smoke", action="store_true")
         p.add_argument("--read-holdout", dest="read_holdout", action="store_true")
         p.add_argument("--split-manifest", type=Path, help="owner's HOLDOUT_CLEAN.json; required for reports")
