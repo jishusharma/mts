@@ -45,6 +45,7 @@ Older updates: `handoff_history/` beside this file (read only when a task points
 - tom-layer-v2-spec released to `refined`; NOT started (Opus only when Jis asks). tom-layer-v2-cost still waits on tom-holdout-clean-split and tom-profile-parity-check.
 - Pass `TOM_LEDGER_CANONICAL_GROUPS.csv` (prior exposure) to the tom-holdout-clean-split owner; the split manifest was not touched.
 
-## Next task (queued 2026-10-12): Fabio ledger audit, run now (Codex out of capacity until ~21:30 IST)
-- Card `lab-audit-fabio-ledger-frames`: same row-by-row method as the Tom audit report (frame-observed / trader-quoted / inferred; duplicates; instrument; date/time provenance; entry vs management vs teaching vs unfilled; exact missing evidence per row). Report + verdict, repair cards for HIGH/MED, fabio v2 spec cards depending on them.
-- Fabio files only. Resume row index: 1 (nothing audited yet). Sonnet, no subagents.
+## Fabio ledger audit handoff (2026-10-12, JIS-NUC, Sonnet)
+- DONE: lab-audit-fabio-ledger-frames. FIX-FIRST: 72 rows, 3 HIGH (date "2026" contradicts contract NQ-202512; 4 entries disagree with STP labels; F13 outcome -2910 vs stop -1760), 4 MED. Report: research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md. Rows not named in it were checked on arithmetic/provenance only, not frame by frame.
+- 3 repair cards created (Sonnet): date-unknown, entry-from-stop-label, F13 outcome. fabio-layer-v2-spec/markets wait on them (Opus only when Jis asks).
+- Q29 (fabio-ledger-minute-timestamps) should absorb M4; it needs F: (JIS-NB or JIS-NUC, F: is present on JIS-NUC as of this audit).
