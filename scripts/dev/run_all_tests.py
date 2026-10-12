@@ -188,6 +188,9 @@ def main(argv=None):
     cmd3td = [sys.executable, "scripts/dev/test_tom_ledger_dates.py"]   # Tom ledger date column: observed or empty (RV01 D4)
     success, output = run_step("3td", "Tom ledger date tests", cmd3td)
     results.append(("Step 3td: Tom ledger date tests", success))
+    cmd3hs = [sys.executable, "scripts/dev/test_tom_holdout_split.py"]   # Tom holdout clean split, dates only
+    success, output = run_step("3hs", "Tom holdout split tests", cmd3hs)
+    results.append(("Step 3hs: Tom holdout split tests", success))
     cmd3sq = [sys.executable, "scripts/dev/test_check_spec_quotes.py"]   # spec quotes verbatim in the cited transcript lines
     success, output = run_step("3sq", "Spec quote checker tests", cmd3sq)
     results.append(("Step 3sq: Spec quote checker tests", success))
