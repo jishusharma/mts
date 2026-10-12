@@ -13,7 +13,8 @@ Subcommands (work dir F:/MTS/data/dax_bt, env TOM_DAX_WORK):
   report  simulate the four variants using per-instrument Java net RR, the null, dev/holdout split ->
           research/tom_transfer_2026-10-11/DAX_BT_REPORT.md + bt_runs/TRIAL_REGISTRY.csv rows.
   all     gen, rows, report.
-Holdout (DAX 2026-04-11..) is read only with `report --read-holdout`, once (marker file), after the dev table exists.
+Reports require --split-manifest HOLDOUT_CLEAN.json from the split owner.
+Holdout is read only with `report --read-holdout`, once (durable reservation), after full development for that split.
 
 Primary verdict: `coded` preserves Java's per-instrument net_rr (GER40 uses FDAX fees). Gross-only selection is removed.
 Reviewed contract: layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md H5 addendum; original pre-registration preserved.
@@ -31,6 +32,8 @@ import os
 import random
 import subprocess
 import time
+import math
+from array import array
 from collections import Counter
 from pathlib import Path
 
@@ -333,27 +336,110 @@ def random_entry_null(trades, b, n_perm=200, seed=7):
 
 
 # ---------------------------------------------------------------- periods, holdout guard, archive completeness
-def dax_period(t):
-    return "warmup" if t < T_DAX_START else "dev" if t < T_DAX_HOLD else "holdout"
+def load_split(path):
+    """Owner-supplied clean split; no historical default or inferred clean dates.
+
+    design_end_utc is the latest design exposure. Embargo must separate it from
+    holdout_start_utc; development prices/signals end at holdout minus embargo.
+    Dates are UTC ISO-8601 strings. The holdout start may be forward-dated.
+    """
+    try:
+        if not path:
+            raise ValueError("path required")
+        obj = json.loads(Path(path).read_text(encoding="utf-8"))
+        times = []
+        for key in ("design_end_utc", "holdout_start_utc"):
+            d = dt.datetime.fromisoformat(obj[key].replace("Z", "+00:00"))
+            if d.utcoffset() != dt.timedelta(0):
+                raise ValueError("%s must specify UTC" % key)
+            times.append(d.timestamp())
+        embargo = obj["embargo_s"]
+        if isinstance(embargo, bool) or not isinstance(embargo, (int, float)) or not math.isfinite(embargo) or embargo < 0:
+            raise ValueError("embargo_s must be a finite nonnegative number")
+        design, hold = times
+        if design < T_DAX_START or design >= hold or design + embargo > hold:
+            raise ValueError("design exposure and embargo must precede the holdout")
+        return dict(design_end_utc=obj["design_end_utc"], holdout_start_utc=obj["holdout_start_utc"],
+                    embargo_s=embargo, holdout_start=hold, dev_end=hold-embargo,
+                    identity=hashlib.sha256(json.dumps(obj, sort_keys=True).encode()).hexdigest())
+    except (OSError, ValueError, KeyError, TypeError, AttributeError) as e:
+        raise ValueError("invalid or absent split manifest: %s" % e) from e
+
+
+def dax_period(t, split=None):
+    # Legacy labels retained only for standalone helpers; reports always supply a split.
+    hold = split["holdout_start"] if split else T_DAX_HOLD
+    end = split["dev_end"] if split else hold
+    return "warmup" if t < T_DAX_START else "dev" if t < end else "embargo" if t < hold else "holdout"
+
+
+def slice_bars(b, start_s=None, end_s=None):
+    """Only complete 1m bars inside [start, end); never a bar straddling the cutoff."""
+    lo = max(0, math.ceil((start_s*1000-b.t0)/60000)) if start_s is not None else 0
+    hi = min(b.n, math.floor((end_s*1000-b.t0)/60000)) if end_s is not None else b.n
+    hi = max(lo, hi)
+    return T.Bars1m(b.t0+60000*lo, *(a[lo:hi] for a in (b.o, b.h, b.l, b.c, b.v, b.tbv)),
+                    real=b.real[lo:hi] if b.real is not None else None)
+
+
+def load_development_bars(path, end_s):
+    """Filter timestamps BEFORE parsing prices; no holdout OHLC enters development.
+
+    Same archive/deduplication/gap-fill convention as T.load_bars_1m, scoped here
+    so the shared engine and live path remain untouched.
+    """
+    rows = {}
+    for p in sorted(Path(path).glob("*.csv")):
+        with open(p, newline="", encoding="utf-8") as fh:
+            for r in csv.reader(fh):
+                if not r or not r[0].isdigit():
+                    continue
+                t = int(r[0])
+                if t + 60000 > end_s*1000 or t in rows:
+                    continue
+                rows[t] = tuple(float(r[k]) for k in (1, 2, 3, 4, 5, 9))
+    if not rows:
+        raise ValueError("no development klines before split cutoff")
+    vals = [array("d") for _ in range(6)]
+    real, prev = bytearray(), None
+    for t in sorted(rows):
+        if prev is not None:
+            if (t-prev) % 60000:
+                raise ValueError("DAX bars must be minute-aligned")
+            for _ in range((t-prev)//60000-1):
+                close = vals[3][-1]
+                for a, v in zip(vals, (close, close, close, close, 0., 0.)):
+                    a.append(v)
+                real.append(0)
+        for a, v in zip(vals, rows[t]):
+            a.append(v)
+        real.append(1)
+        prev = t
+    return T.Bars1m(min(rows), *vals, real=real)
 
 
 def btc_period(t):
     return "hist" if t < T_BTC_DEV else "dev" if t < T_BTC_BURNED else "burned"
 
 
-def select_rows(rows, read_holdout, marker=HOLDOUT_MARKER):
+def select_rows(rows, read_holdout, marker=HOLDOUT_MARKER, split=None):
     """Dev rows always; holdout rows only with read_holdout, and only if the marker does not exist yet (read once)."""
-    keep = [r for r in rows if dax_period(r["t"]) == "dev"]
+    keep = [r for r in rows if dax_period(r["t"], split) == "dev"]
     if not read_holdout:
         return keep
     if Path(marker).exists():
         raise SystemExit("holdout already read (%s): it is read once" % marker)
-    return keep + [r for r in rows if dax_period(r["t"]) == "holdout"]
+    return keep + [r for r in rows if dax_period(r["t"], split) == "holdout"]
 
 
-def mark_holdout_read(n_rows, marker=HOLDOUT_MARKER):
-    Path(marker).write_text(json.dumps({"read_utc": dt.datetime.now(UTC).isoformat(), "holdout_rows": n_rows}) + chr(10),
-                            encoding="utf-8", newline=chr(10))
+def mark_holdout_read(n_rows, marker=HOLDOUT_MARKER, split=None):
+    # Exclusive durable reservation before evaluation: failures do not permit a second look.
+    with open(marker, "x", encoding="utf-8", newline="\n") as fh:
+        json.dump(dict(read_utc=dt.datetime.now(UTC).isoformat(), holdout_rows=n_rows,
+                       split_identity=split["identity"] if split else None), fh)
+        fh.write("\n")
+        fh.flush()
+        os.fsync(fh.fileno())
 
 
 def complete_months(raw, start, end):
@@ -507,7 +593,7 @@ def cmd_rows(a):
                 print(market, name, st, "%.0fs" % (time.time() - t0), flush=True)
 
 
-def load_rows(market, key, months=None):
+def load_rows(market, key, months=None, split=None, read_holdout=False, counts=None):
     rows = []
     for p in sorted((WORK / ("rows_" + market)).glob("*.rows.jsonl")):
         if months and p.name[:7] not in months:
@@ -518,6 +604,12 @@ def load_rows(market, key, months=None):
             for line in fh:
                 d = json.loads(line)
                 require_proof_schema(d, p)
+                if market == "dax" and split:
+                    per = dax_period(d["t"], split)
+                    if counts is not None:
+                        counts[per] = counts.get(per, 0) + 1
+                    if per != "dev" and not (read_holdout and per == "holdout"):
+                        continue  # no verdict/outcome payload consumed for excluded timestamps
                 if key not in d["k"]:
                     raise SystemExit("rows lack key %s (rerun `rows --force --shifts ...`)" % key)
                 rows.append(d["k"][key])
@@ -563,7 +655,11 @@ def verdict_line(s, label):
     return "PASS: edge shown" if s["net_ci"][0] > 0 else "no edge shown"
 
 
-def simulate(market, rows, b, variant, fees, slip_pts=0.0):
+def simulate(market, rows, b, variant, fees, slip_pts=0.0, split=None, period="dev"):
+    if market == "dax" and split:
+        rows = [r for r in rows if dax_period(r["t"], split) == period]
+        b = slice_bars(b, T_DAX_START if period == "dev" else split["holdout_start"],
+                       split["dev_end"] if period == "dev" else None)
     sigs = T.signals(rows, variant)
     if market != "dax":
         return T.run_variant(sigs, b, fees=fees, stop_first=True, slip=0.0, slip_pts=slip_pts)
@@ -603,30 +699,50 @@ HDR = ("| market / verdict / shift / variant | period | n signals | n filled | f
 
 
 def build_report(a):
+    split = load_split(getattr(a, "split_manifest", None))
+    if a.read_holdout:
+        require_full_dev(a, split)
+        counts = {}
+        load_rows("dax", "%s/%d" % (KINDS[0], a.shifts[0]), None, split=split, counts=counts)
+        mark_holdout_read(counts.get("holdout", 0), HOLDOUT_MARKER, split)
     periods_dax = ["dev"] + (["holdout"] if a.read_holdout else [])
     shifts = list(a.shifts)
     months = a.months or None
     md_rows, reg, stress, notes = [], [], [], []
     acct = {}
     # ---- DAX
-    lo_d, hi_d = DAX_START, DAX_END
+    dev_last_day = dt.datetime.fromtimestamp(split["dev_end"]-1, UTC).date()
+    lo_d, hi_d = DAX_START, (dt.datetime.now(UTC).date() if a.read_holdout else dev_last_day)
     if months:
         lo_d = dt.date(int(min(months)[:4]), int(min(months)[5:]), 1)
         hi_d = dt.date(int(max(months)[:4]) + (max(months)[5:] == "12"), int(max(months)[5:]) % 12 + 1, 1)
-    coverage_end = min(DAX_END, hi_d - dt.timedelta(days=1) if months else hi_d)
+    coverage_end = hi_d - dt.timedelta(days=1) if months else hi_d
     if not a.read_holdout:
-        coverage_end = min(coverage_end, dt.datetime.fromtimestamp(T_DAX_HOLD, UTC).date() - dt.timedelta(days=1))
+        coverage_end = min(coverage_end, dt.datetime.fromtimestamp(split["dev_end"]-1, UTC).date())
     require_download_coverage(DAX_RAW, max(DAX_START, lo_d), coverage_end)
-    b_dax = T.load_bars_1m(DAX_ARCHIVE / "klines", fill_gaps=True)
-    n_hole_days = _data_holes(b_dax, lo_d, hi_d)
+    b_dax = (T.load_bars_1m(DAX_ARCHIVE / "klines", fill_gaps=True) if a.read_holdout else
+             load_development_bars(DAX_ARCHIVE / "klines", split["dev_end"]))
+    n_hole_days = _data_holes(b_dax, lo_d, hi_d if months else hi_d + dt.timedelta(days=1))
     dax_meta = [json.loads(p.read_text()) for p in sorted(DAX_SNAPS.glob("*.meta.json")) if not months or p.name[:7] in months]
     rmeta = [json.loads(p.read_text()) for p in sorted((WORK / "rows_dax").glob("*.rows.meta.json")) if not months or p.name[:7] in months]
     acct["dax"] = dict(months=len(dax_meta), evaluated=sum(m["evaluated"] for m in dax_meta), kept=sum(m["kept"] for m in dax_meta),
                        errors=sum(m["errors"] for m in dax_meta), closed=sum(m.get("closed_dropped", 0) for m in rmeta),
                        rows=sum(m.get("rows", 0) for m in rmeta), holdout_rows=0, mask_changed=sum(m.get("mask_changed", 0) for m in rmeta))
+    end_day = dt.datetime.fromtimestamp(split["dev_end"]-1, UTC).date()
+    expected = set()
+    day = DAX_START.replace(day=1)
+    while day <= end_day:
+        expected.add(day.strftime("%Y-%m"))
+        day = dt.date(day.year+(day.month == 12), day.month % 12+1, 1)
+    snap_months = {p.name[:7] for p in DAX_SNAPS.glob("*.meta.json")}
+    row_months = {p.name[:7] for p in (WORK / "rows_dax").glob("*.rows.meta.json")
+                  if p.with_name(p.name.replace(".rows.meta.json", ".rows.jsonl")).is_file()}
+    acct["dax"]["full_dev"] = (not a.read_holdout and not a.months and not getattr(a, "smoke", False) and
+                                expected <= snap_months and expected <= row_months and
+                                acct["dax"]["errors"] == 0 and n_hole_days == 0)
     b_btc = None
     runs_summary = []
-    for market in ("dax", "btc"):
+    for market in (("dax", "btc") if getattr(a, "market", "both") == "both" else (getattr(a, "market", "dax"),)):
         if market == "btc":
             if not (WORK / "rows_btc").exists():
                 continue
@@ -638,28 +754,39 @@ def build_report(a):
         fees = FEES_FDAX if market == "dax" else T.FEES_DERIBIT
         for kind in KINDS:
             for sh in shifts:
-                rows = load_rows(market, "%s/%d" % (kind, sh), months)
+                counts = {}
+                rows = load_rows(market, "%s/%d" % (kind, sh), months,
+                                 split=split if market == "dax" else None,
+                                 read_holdout=a.read_holdout, counts=counts)
                 if market == "dax":
-                    rows = select_rows(rows, a.read_holdout)
+                    # Count envelope timestamps once, independent of arms/variants/fills.
+                    acct["dax"]["holdout_rows"] = max(acct["dax"]["holdout_rows"], counts.get("holdout", 0),
+                        sum(dax_period(r["t"], split) == "holdout" for r in rows))
+                    rows = [r for r in rows if dax_period(r["t"], split) in periods_dax]
                 else:
                     rows = [r for r in rows if btc_period(r["t"]) == "dev"]   # BTC: dev only (hist is outside the comparison, holdout burned)
                 for var in VARIANTS:
-                    trades = simulate(market, rows, b, var, fees)
+                    trades = []
+                    for per in (periods_dax if market == "dax" else ["dev"]):
+                        trades.extend(simulate(market, rows, b, var, fees,
+                                               split=split if market == "dax" else None, period=per))
                     for t in trades:
-                        t["period"] = dax_period(t["t"]) if market == "dax" else btc_period(t["t"])
+                        t["period"] = dax_period(t["t"], split) if market == "dax" else btc_period(t["t"])
                     plist = periods_dax if market == "dax" else ["dev"]
                     for per in plist:
+                        period_b = (slice_bars(b, T_DAX_START if per == "dev" else split["holdout_start"],
+                                              split["dev_end"] if per == "dev" else None) if market == "dax" else b)
                         tr = [t for t in trades if t["period"] == per]
                         s = T.summarize(tr)
                         fl = resolved(tr)
                         null = None
                         if len(fl) >= 30:
                             if market == "dax":
-                                null = random_entry_null(tr, b)
+                                null = random_entry_null(tr, period_b)
                             else:
                                 import tom_bt_report as TR
                                 null = TR.random_entry_null(tr, b)
-                        held = sum(1 for t in fl if crossed_close(b, t["fill_i"], t["exit_i"])) if market == "dax" else 0
+                        held = sum(1 for t in fl if crossed_close(period_b, t["fill_i"], t["exit_i"])) if market == "dax" else 0
                         label = "%s / %s / s%d / %s" % (market.upper() if market == "dax" else "BTC-matched", kind, sh, var)
                         nul = "%s / %s / %s" % (f3(null[0]), f3(null[2]), f3(null[1])) if null else "-"
                         if sh == 0 or s.get("n_filled"):   # extension arms with no signal at all are left out of the table (still registered)
@@ -672,8 +799,8 @@ def build_report(a):
                                         "%.4f" % sharpe(nets) if sharpe(nets) is not None else ""])
                         if market == "dax" and per == "dev" and fl:
                             risks = sorted(abs(float(t["zprice"]) - float(t["stop"])) / float(t["zprice"]) * 100 for t in fl)
-                            ts = simulate(market, rows, b, var, fees, slip_pts=1.0)
-                            ss = T.summarize([t for t in ts if dax_period(t["t"]) == "dev"])
+                            ts = simulate(market, rows, b, var, fees, slip_pts=1.0, split=split)
+                            ss = T.summarize(ts)
                             stress.append("| %s / %s / s%d | %s | %s | %s | %s | %s |\n" % (
                                 kind, var, sh, s["n_filled"], f2(s["mean_net"]),
                                 "%s [%s, %s]" % (f2(ss["mean_net"]), f2(ss["net_ci"][0]), f2(ss["net_ci"][1])) if ss.get("n_filled") else "-",
@@ -702,15 +829,19 @@ def _data_holes(b, lo_d, hi_d):
     return holes
 
 
+def require_full_dev(a, split):
+    if getattr(a, "smoke", False) or a.months:
+        raise SystemExit("holdout requires full development; smoke/month restrictions refused")
+    token = "Full development completed for split %s" % split["identity"]
+    if not REPORT.exists() or token not in REPORT.read_text(encoding="utf-8"):
+        raise SystemExit("holdout requires full development report for this split manifest")
+    if HOLDOUT_MARKER.exists():
+        raise SystemExit("holdout already read (%s): it is read once" % HOLDOUT_MARKER)
+
+
 def cmd_report(a):
     t0 = time.time()
-    if a.read_holdout:
-        if a.smoke:
-            raise SystemExit("--smoke and --read-holdout cannot be combined")
-        if not REPORT.exists() or "SMOKE" in REPORT.read_text(encoding="utf-8")[:400]:
-            raise SystemExit("the holdout is read after the dev table is written: run `report` (no flag) on the full data first")
-        if HOLDOUT_MARKER.exists():
-            raise SystemExit("holdout already read (%s): it is read once" % HOLDOUT_MARKER)
+    split = load_split(getattr(a, "split_manifest", None))
     md_rows, stress, reg, acct, holes = build_report(a)
     head = git("rev-parse", "HEAD")
     run_id = "dax_bt_%s%s%s" % (dt.datetime.now(UTC).strftime("%Y%m%d"), "_SMOKE" if a.smoke else "", "_holdout" if a.read_holdout else "")
@@ -736,8 +867,14 @@ def cmd_report(a):
         bt = acct["btc"]
         md.append("- BTC matched-proof: 2026-10-06 snapshots re-scored with absorption, cvd_aligned, delta_flip and finished_auction masked; %d rows, "
                   "mask changed %d candidates; %d snapshots from 2026-06-26 on were never read (burned holdout, B147).\n" % (bt["rows"], bt["mask_changed"], bt["cut"]))
-    md.append("- Periods: DAX dev = 2024-11-04..2026-04-10%s. BTC-matched: dev only, 2025-09-01..2026-06-25 (hist is not part of the comparison; the holdout is burned).\n" % (
-        ", holdout = 2026-04-11..2026-10-09 (READ in this run, marker `HOLDOUT_READ_DAX.json`)" if a.read_holdout else "; the holdout was NOT read"))
+    md.append("- Split manifest `%s`, identity `%s`: design exposure ends %s; holdout starts %s; embargo %s seconds. "
+              "Development signals and complete bars precede %s UTC. Boundary-unresolved orders are dropped; "
+              "strategy, stress and null outcomes are isolated. Holdout rows: %d (%s).\n" % (
+                  a.split_manifest, split["identity"], split["design_end_utc"], split["holdout_start_utc"],
+                  split["embargo_s"], dt.datetime.fromtimestamp(split["dev_end"], UTC).isoformat(),
+                  d["holdout_rows"], "read once" if a.read_holdout else "excluded, outcomes not read"))
+    if not a.read_holdout and d["full_dev"]:
+        md.append("Full development completed for split %s\n" % split["identity"])
     md.append("\n## 2. Results (one-trade-at-a-time, limit at zone price, stop/target from the rank-1 candidate, 8 zone-tf bars)\n")
     md.append("Fees: DAX = `FEES_FDAX` (0.000005 of price per side on every leg); BTC = Deribit (maker 0, taker 0.0005) as in the BTC rerun. "
               "Primary `coded` preserves Java per-instrument net_rr; GER40 uses FDAX fees. Gross-only selection is removed "
@@ -786,8 +923,6 @@ def cmd_report(a):
     md.append("- Funding is not modelled (DAX future: none). Stop-first on ambiguous bars. Trial rows: `bt_runs/%s`, run id `%s`.\n" % (
         "TRIAL_REGISTRY_SMOKE.csv (smoke rows are kept apart from the real trial count)" if a.smoke else "TRIAL_REGISTRY.csv", run_id))
     REPORT.write_text("\n".join(md), encoding="utf-8", newline="\n")
-    if a.read_holdout:
-        mark_holdout_read(acct["dax"]["holdout_rows"])
     # registry (a re-render of the same run id is not a new trial)
     # a smoke run (partial data, pipeline test, no selection) goes to its own file so the honest trial count of real runs stays clean
     registry = REGISTRY.with_name("TRIAL_REGISTRY_SMOKE.csv") if a.smoke else REGISTRY
@@ -819,6 +954,7 @@ def main(argv=None):
         p.add_argument("--force", action="store_true")
         p.add_argument("--smoke", action="store_true")
         p.add_argument("--read-holdout", dest="read_holdout", action="store_true")
+        p.add_argument("--split-manifest", type=Path, help="owner's HOLDOUT_CLEAN.json; required for reports")
     a = ap.parse_args(argv)
     if a.cmd in ("gen", "all"):
         cmd_gen(a)

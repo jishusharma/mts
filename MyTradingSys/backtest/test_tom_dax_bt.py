@@ -12,6 +12,7 @@ import json
 import os
 import tempfile
 import unittest
+from types import SimpleNamespace
 from unittest.mock import patch
 from array import array
 from pathlib import Path
@@ -233,9 +234,13 @@ class TestClosedExecutions(unittest.TestCase):
                 D.require_download_coverage(raw, start, end)
             (raw / "2026-01-02.bi5").write_bytes(b"")
             D.require_download_coverage(raw, start, end)
+            manifest = raw / "split.json"
+            manifest.write_text(json.dumps(dict(design_end_utc="2026-04-10T23:59:00Z",
+                holdout_start_utc="2026-04-11T00:00:00Z", embargo_s=0)), encoding="utf-8", newline="\n")
             with patch.object(D, "DAX_RAW", raw), patch.object(T, "load_bars_1m") as load:
                 with self.assertRaisesRegex(SystemExit, "incomplete DAX download coverage"):
-                    D.build_report(SimpleNamespace(months=["2026-01"], shifts=[0], read_holdout=False))
+                    D.build_report(SimpleNamespace(months=["2026-01"], shifts=[0], read_holdout=False,
+                                                   split_manifest=manifest))
                 load.assert_not_called()
 
 
@@ -474,6 +479,153 @@ class TestVerdictPair(unittest.TestCase):
 
 
 # ------------------------------------------------------------------ f) driver helpers
+class TestHoldoutBoundaries(unittest.TestCase):
+    def manifest(self, root, **changes):
+        obj = dict(design_end_utc="2026-04-10T23:58:00Z",
+                   holdout_start_utc="2026-04-11T00:00:00Z", embargo_s=0)
+        obj.update(changes)
+        p = Path(root) / "split.json"
+        p.write_text(json.dumps(obj), encoding="utf-8", newline="\n")
+        return p
+
+    def test_development_outcomes_never_touch_holdout_and_count_real_rows(self):
+        # Synthetic dates only. Signal fills at H-60; the first target is at H.
+        # EXPECT: that unresolved dev outcome is dropped, never counted as a win.
+        h = D.T_DAX_HOLD
+        with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parent) as td:
+            root = Path(td)
+            (root / "klines").mkdir()
+            write_klines(root / "klines" / "synthetic.csv", [
+                (int((h - 120) * 1000), 100, 100, 100, 100, 1),
+                (int((h - 60) * 1000), 100, 100, 100, 100, 1),
+                (int(h * 1000), 100, 102, 100, 101, 1),
+                (int((h + 60) * 1000), 101, 102, 100, 101, 1)])
+            manifest = root / "split.json"
+            manifest.write_text(json.dumps(dict(
+                design_end_utc="2026-04-10T23:59:00Z",
+                holdout_start_utc="2026-04-11T00:00:00Z", embargo_s=0)),
+                encoding="utf-8", newline="\n")
+            row = dict(t=h-60, verdict="SETUP_FORMING", setup="ct_long", dir="long",
+                       zone="vwap", ztype="vwap", zprice=100., stop=99., target=101.)
+            rows = [row, dict(row, t=h), dict(row, t=h+60)]
+            a = SimpleNamespace(read_holdout=False, shifts=[0, 1], months=None,
+                                split_manifest=manifest, market="dax", smoke=True)
+            seen = []
+            summarize = T.summarize
+            def capture(trades):
+                seen.extend(trades)
+                return summarize(trades)
+            with patch.object(D, "DAX_ARCHIVE", root), patch.object(D, "DAX_SNAPS", root), \
+                 patch.object(D, "WORK", root), patch.object(D, "require_download_coverage"), \
+                 patch.object(D, "load_rows", return_value=rows), patch.object(T, "summarize", side_effect=capture):
+                result = D.build_report(a)
+            with self.subTest("outcome isolation"):
+                self.assertFalse(any(t.get("filled") and
+                                     h-120 + 60*t["exit_i"] >= h for t in seen), seen)
+            with self.subTest("actual row count"):
+                self.assertEqual(result[3]["dax"]["holdout_rows"], 2)  # rows, not arms or variants
+
+    def test_absent_manifest_refuses_before_data_read(self):
+        a = SimpleNamespace(read_holdout=False, shifts=[0], months=None, market="dax", smoke=True)
+        with patch.object(D, "require_download_coverage", side_effect=AssertionError("coverage read before manifest")), \
+             patch.object(T, "load_bars_1m", side_effect=AssertionError("data read before manifest")):
+            with self.assertRaisesRegex((ValueError, SystemExit), "split manifest"):
+                D.build_report(a)
+
+    def test_invalid_manifest_and_forward_boundary(self):
+        with tempfile.TemporaryDirectory() as td:
+            for changes in [dict(embargo_s=-1), dict(embargo_s=True), dict(embargo_s=float("nan")),
+                            dict(embargo_s=121), dict(holdout_start_utc="2026-04-10T23:58:00Z"),
+                            dict(design_end_utc="2026-04-10T23:58:00"),
+                            dict(holdout_start_utc="2026-04-11T00:00:00+01:00")]:
+                with self.subTest(changes=changes), self.assertRaisesRegex(ValueError, "split manifest"):
+                    D.load_split(self.manifest(td, **changes))
+            split = D.load_split(self.manifest(td, design_end_utc="2026-10-12T00:00:00Z",
+                holdout_start_utc="2026-11-01T00:00:00Z", embargo_s=86400))
+            self.assertEqual(D.dax_period(D._ts(2026, 10, 30), split), "dev")
+            self.assertEqual(D.dax_period(D._ts(2026, 10, 31), split), "embargo")
+            self.assertEqual(D.dax_period(D._ts(2026, 11, 1), split), "holdout")
+
+    def test_prices_after_cutoff_not_parsed_and_partial_minute_excluded(self):
+        h = D.T_DAX_HOLD
+        with tempfile.TemporaryDirectory() as td:
+            p = Path(td) / "a.csv"
+            write_klines(p, [(int((h-120)*1000), 100, 100, 100, 100, 1),
+                             (int((h-60)*1000), 100, 102, 100, 101, 1)])
+            with open(p, "a", encoding="utf-8", newline="\n") as fh:
+                fh.write(str(int(h*1000)) + ",HOLDOUT_PRICE_MUST_NOT_BE_PARSED\n")
+            split = D.load_split(self.manifest(td, embargo_s=30))
+            b = D.load_development_bars(td, split["dev_end"])
+            self.assertEqual(b.n, 1)  # H-60 bar extends beyond the H-30 cutoff
+            full = mk([(100, 100, 100, 100)]*3, int((h-120)*1000))
+            self.assertEqual(D.slice_bars(full, end_s=split["dev_end"]).n, 1)
+
+    def test_real_row_envelopes_counted_without_loading_holdout_payload(self):
+        h = D.T_DAX_HOLD
+        with tempfile.TemporaryDirectory() as td, patch.object(D, "WORK", Path(td)):
+            split = D.load_split(self.manifest(td, embargo_s=60))
+            out = Path(td) / "rows_dax"
+            out.mkdir()
+            p = out / "2026-04.rows.jsonl"
+            envelopes = [dict(t=h-120, k={"coded/0": {"t": h-120}}),
+                         dict(t=h-60, k={}), dict(t=h, k={}), dict(t=h+60, k={})]
+            for e in envelopes:
+                e["proof_count_schema"] = D.PROOF_COUNT_SCHEMA
+            p.write_text("".join(json.dumps(e)+"\n" for e in envelopes), encoding="utf-8", newline="\n")
+            p.with_name("2026-04.rows.meta.json").write_text(json.dumps(dict(
+                proof_count_schema=D.PROOF_COUNT_SCHEMA)), encoding="utf-8", newline="\n")
+            counts = {}
+            self.assertEqual(D.load_rows("dax", "coded/0", split=split, counts=counts), [{"t": h-120}])
+            self.assertEqual(counts, dict(dev=1, embargo=1, holdout=2))
+
+    def test_pending_orders_dropped_and_resolved_dev_kept_in_stress(self):
+        h = D.T_DAX_HOLD
+        with tempfile.TemporaryDirectory() as td:
+            split = D.load_split(self.manifest(td))
+            r = dict(t=h-60, verdict="SETUP_FORMING", setup="ct_long", dir="long",
+                     zone="vwap", ztype="vwap", zprice=100., stop=99., target=101.)
+            for side, stop, target in [("long", 99., 101.), ("short", 101., 99.)]:
+                row = dict(r, dir=side, stop=stop, target=target)
+                # No development fill; a fill would occur only at H.
+                px = 102 if side == "long" else 98
+                b = mk([(px, px, px, px), (100, 100, 100, 100)], int((h-60)*1000))
+                row["target"] = 104 if side == "long" else 96  # pending, not ran
+                self.assertEqual(D.simulate("dax", [row], b, "A", F.FEES_FDAX, split=split), [])
+            b = mk([(100, 100, 98, 99), (100, 102, 100, 101)], int((h-60)*1000))
+            trades = D.simulate("dax", [r], b, "A", F.FEES_FDAX, slip_pts=1., split=split)
+            self.assertEqual(len(trades), 1)
+            self.assertEqual((trades[0]["reason"], trades[0]["exit_i"]), ("stop", 0))
+            self.assertEqual(trades[0]["gross_r"], -2.)
+
+    def test_full_dev_guard_and_failed_read_remains_reserved(self):
+        with tempfile.TemporaryDirectory() as td, patch.object(D, "REPORT", Path(td)/"report.md"), \
+             patch.object(D, "HOLDOUT_MARKER", Path(td)/"read.json"):
+            path = self.manifest(td)
+            split = D.load_split(path)
+            a = SimpleNamespace(split_manifest=path, read_holdout=True, shifts=[0], months=None, smoke=False)
+            D.REPORT.write_text("A previous partial report", encoding="utf-8", newline="\n")
+            with self.assertRaisesRegex(SystemExit, "full development"):
+                D.require_full_dev(a, split)
+            D.REPORT.write_text("Full development completed for split " + split["identity"],
+                                encoding="utf-8", newline="\n")
+            a.months = ["2026-04"]
+            with self.assertRaisesRegex(SystemExit, "full development"):
+                D.require_full_dev(a, split)
+            a.months = None
+            def count(*args, counts, **kwargs):
+                counts["holdout"] = 2
+                return []
+            with patch.object(D, "load_rows", side_effect=count), patch.object(D, "require_download_coverage"), \
+                 patch.object(T, "load_bars_1m", side_effect=ValueError("synthetic outcome read failed")):
+                with self.assertRaisesRegex(ValueError, "synthetic outcome read failed"):
+                    D.build_report(a)
+            saved = json.loads(D.HOLDOUT_MARKER.read_text(encoding="utf-8"))
+            self.assertEqual(saved["holdout_rows"], 2)
+            self.assertEqual(saved["split_identity"], split["identity"])
+            with self.assertRaisesRegex(SystemExit, "already read"):
+                D.require_full_dev(a, split)
+
+
 class TestDriver(unittest.TestCase):
     def test_current_rows_written_reused_and_loaded(self):
         # Synthetic current-Java input only; no archive or holdout loader.
