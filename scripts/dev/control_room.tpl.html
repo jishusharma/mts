@@ -147,6 +147,7 @@ details.mini>summary{cursor:pointer;color:var(--muted,#6b7280);font-size:.82rem}
 
 <details class="fold" id="relay-sec" open>
   <summary><h2>Claude-GPT cycle</h2><span class="muted" style="font-size:.85rem" id="relayline"></span></summary>
+  <div id="gptlane"></div>
   <div class="dgrid" id="relaylanes"></div>
   <h3 style="margin:12px 0 6px">Shared notes (relayed to both sides)</h3>
   <div class="items" id="relaynotes"></div>
@@ -313,7 +314,14 @@ drawBacklog();
 (function(){
   const R = D.relay; if(!R){ $("#relay-sec").style.display="none"; return; }
   const L = R.lanes || {}, nm = {claude:"Claude (Sonnet/Opus cards)", gpt:"GPT / Codex (lane CODEX)", desk:"Run lanes (DSA, JIS-NB)"};
-  $("#relayline").textContent = `${(R.notes_open||[]).length} open notes · ${(R.claims||[]).length} claimed tasks · ${(L.gpt||{ready:0}).ready} ready for GPT`;
+  $("#relayline").textContent = `${(R.notes_open||[]).length} open notes · ${(R.claims||[]).length} claimed tasks · ${(L.gpt||{ready:0}).ready} ready for GPT · GPT lane ${(R.gpt_lane||{}).status||"?"}`;
+  const G = R.gpt_lane || {status:"unknown", rerouted:[], paused:[]}, down = G.status === "down";
+  $("#gptlane").innerHTML = `<div class="dc" style="margin-bottom:10px;border-left:4px solid ${down?"#c0392b":G.status==="up"?"#2e7d32":"#999"}"><div class="t"><strong>GPT lane: ${esc(String(G.status).toUpperCase())}</strong>${down?` · ${esc(G.reason)} since ${esc((G.since||"").slice(0,16).replace("T"," "))}Z`:""}</div>`
+    + (G.detail ? `<div class="src">${esc(G.detail)}</div>` : "")
+    + (down && G.next_probe ? `<div class="src">Next probe (one card tries GPT again): ${esc(G.next_probe.slice(0,16).replace("T"," "))}Z</div>` : "")
+    + `<div class="src">${G.heartbeat_age_h!=null ? "Lab heartbeat " + G.heartbeat_age_h + " h ago" : "No heartbeat yet"}${!down && G.resumed ? " · back up since " + esc(G.resumed.slice(0,16).replace("T"," ")) + "Z" : ""}</div>`
+    + (G.rerouted||[]).map(m => `<div class="src">Moved to ${esc(m.to)}: ${esc(m.id)}${m.desk?` (desk row ${esc(m.desk_status||"missing")})`:""}</div>`).join("")
+    + (G.paused||[]).map(p => `<div class="src"><strong>Paused, waits for GPT:</strong> ${esc(p.id)} · ${esc(p.why)}</div>`).join("") + `</div>`;
   $("#relaylanes").innerHTML = ["claude","gpt","desk"].map(k => { const x = L[k] || {ready:0, other:0, next:[]};
     return `<div class="dc"><div class="src">${esc(nm[k])}</div><div class="t"><strong>${x.ready}</strong> ready · ${x.other} in refinement or hold</div>` +
       x.next.map(n => `<div class="src">${esc(n.id)}: ${esc(n.title)} (p${esc(n.prio)})</div>`).join("") + `</div>`; }).join("");

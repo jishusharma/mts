@@ -82,3 +82,16 @@ A `build` card runs only its own test file: the quick gate cannot pass inside th
 refused; measured 2026-10-12, lab-dax-proof-parity), so `sync.py ship` in the runner is the gate. A failed ship leaves `<run log>.ship.txt`.
 Claude spot-checks one claim per lab report (CLAUDE.md work routing).
 CI gates every push exactly as for Claude code. The trial ends about 2026-11-11: nothing else may depend on the lab.
+
+## GPT lane health, reroute and pause (operator 2026-10-12)
+Why: the Astra audit hit "You've hit your usage limit ... purchase more credits or try again at ..." after 777 s of work (runs.jsonl 17:00Z); the earlier
+gpt-6.1-sol runs printed the same line after 5 s and were retried every 30 min. Nothing moved the cards, so they just waited.
+Code: `scripts/dev/lane_health.py` (rules at the top of the file), state `MyTradingSys/system/lane_state.json`, tests `test_lane_health.py` (gate step 3lh).
+- **Down** at once on that error text in a run log (the last 4000 characters only), after 3 empty runs in a row, or when the lab host's heartbeat is older than **3 hours** (6 missed ticks). The state shows the ERROR line, including GPT's own reset time.
+- **Probe**: a down lane lets one card try every **60 min** (a crucial card first). DONE or BLOCKED = lane up again. A limit run costs 5 s and no try.
+- **Reroute** (lane down): a ready CODEX card goes to DSA (kinds `audit`, `run`: a desk row whose prompt is cut from the card in the DSA bridge format: worktree mts-dsa, exact commands, one report path, stop-after-two-failures)
+  or to lane SONNET (kind `build`: needs a test, a relay session takes it). The card keeps a `reroute` field saying where it went and why.
+- **Pause**: a card flagged `crucial` or `gpt_only` (default off; `tasks.py flag <id> crucial`, or `tasks.py new ... --crucial`) is never moved. It waits, with the reason on the Control Room.
+- **Resume** (lane up): an untaken DSA row is cancelled and the card is back on CODEX; an unclaimed SONNET card goes back to CODEX; work already taken stays. A finished DSA row closes its card with `via DSA (row): result`. Paused cards run again by themselves.
+- **Who runs it**: `codex_run.py tick` (JIS-NUC, every 30 min, no model) and the Haiku watchdog `mts-lane-watch` (hourly; catches a NUC that is off). Operator override: `lane_health.py down "<why>"` / `up "<why>"`, then `sweep --apply --ship`.
+- **See it**: Control Room, "Claude-GPT cycle", top box; `python scripts/dev/lane_health.py status`.

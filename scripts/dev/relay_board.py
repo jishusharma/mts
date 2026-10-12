@@ -16,6 +16,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.dont_write_bytecode = True
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 NOTES = "MyTradingSys/system/RELAY_NOTES.md"
@@ -114,6 +115,15 @@ def claims(repo):
     return out
 
 
+def gpt_lane(repo, now):
+    """GPT lane health + moved/paused cards (lane_health.py); a failure here must not blank the whole relay section."""
+    try:
+        import lane_health
+        return lane_health.view(repo, now=now)
+    except Exception as e:   # noqa: BLE001
+        return {"status": "unknown", "reason": f"lane health unreadable: {e}", "rerouted": [], "paused": []}
+
+
 def board(repo=REPO, cards=None, now=None):
     """What is flowing between Claude and GPT right now. `cards` = tasks.summary(repo)["rows"] (passed in to avoid a second load)."""
     repo, now = Path(repo), now or datetime.now(timezone.utc)
@@ -138,7 +148,8 @@ def board(repo=REPO, cards=None, now=None):
             "claims": [{**c, "age_h": age(c["epoch"])} for c in claims(repo)],
             "runs": [{"utc": r.get("utc"), "host": r.get("host"), "account": r.get("account"), "session": r.get("session"),
                       "state": r.get("state")} for r in runs],
-            "gpt_reports": [f.name for f in reports]}
+            "gpt_reports": [f.name for f in reports],
+            "gpt_lane": gpt_lane(repo, now)}
 
 
 def main(argv=None):
