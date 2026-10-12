@@ -172,6 +172,18 @@ class DeclutterTemplateTest(unittest.TestCase):
         self.assertEqual(self.tpl.count("${esc(x.text)}"), 2)  # clipped summary uses slice; full text rendered once per branch
 
 
+class InboxItemWithoutRefTest(unittest.TestCase):
+    """B181: an Inbox item with no ref (or no reply) still shows status + reply + ref, never nothing."""
+    tpl = (Path(__file__).resolve().parent / "control_room.tpl.html").read_text(encoding="utf-8")
+
+    def test_inbox_item_without_ref_shows_status_and_reply(self):
+        self.assertIn("received, no registry row yet", self.tpl)
+        self.assertIn("no reply yet", self.tpl)
+        # the reply box is rendered unconditionally, not only when reply or ref exist
+        self.assertNotIn("${x.reply||res?`<div class=\"reply\">", self.tpl)
+        self.assertNotIn("x.reply||res?", self.tpl)
+
+
 class BacklogSectionTest(unittest.TestCase):
     """Backlog section (2026-10-10): cards come from tasks.py, the page only writes taskops docs; nothing is edited in the page."""
     tpl = (Path(__file__).resolve().parent / "control_room.tpl.html").read_text(encoding="utf-8")

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-12T07:18:41Z",
   "commands": [],
   "created": "2026-10-11T16:08:41Z",
   "depends_on": [],
@@ -17,7 +18,7 @@
   "refs": [
     "B181"
   ],
-  "result": "",
+  "result": "Inbox rows always render Status/Claude/Filed-as; test_make_control_room.py 22 green; NUC page Ep6g republished v4; JIS-NB page EoHi republish left to its owner account",
   "scope_in": [
     "scripts/dev/make_control_room.py",
     "scripts/dev/control_room.tpl.html",
@@ -33,7 +34,7 @@
   "sources": [
     "MyTradingSys/research/BUGS.md row B181 (Control Room inbox wlfq6r3l1by15luk1rhc, verbatim in OPERATOR_INBOX.md)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read how the Inbox row is rendered from feedback docs and the `reg` map in make_control_room.py and the template.",
     "Render status + reply + ref for every item; with no ref show the item's own status/reply (or 'received, no registry row yet').",

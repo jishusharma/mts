@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-12T06:38:20Z",
   "commands": [],
   "created": "2026-10-11T20:16:29Z",
   "depends_on": [],
@@ -16,7 +17,7 @@
   "refine_tries": 0,
   "refined_by": "JIS-NUC session 2026-10-12 from the lab audit report (operator: feed scoped tasks to Codex)",
   "refs": [],
-  "result": "",
+  "result": "H4 fixed; red 8 failures, green 39 tests OK; MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-closed-executions.md",
   "scope_in": [
     "MyTradingSys/backtest/tom_dax_bt.py",
     "MyTradingSys/backtest/test_tom_dax_bt.py",
@@ -34,7 +35,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md finding H4"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read finding H4 in MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md (file legend, evidence, proposed fix) and the lines it cites.",
     "Write the test named in Tests in MyTradingSys/backtest/test_tom_dax_bt.py and see it fail on the current code.",

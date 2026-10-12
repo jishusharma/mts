@@ -148,3 +148,19 @@ Persistent new content is limited to this report and the eight new task cards. `
 | B | `0214c962c5a1dacc2c92abe389d8d58cb017fee0da8de2025ba4506635c9ece6` |
 
 The runner retains responsibility for shipping/releasing. `tasks.py done lab-audit-tom-dax-bt` was deliberately not invoked because mandatory source verification is blocked as stated above.
+
+## H5 current-contract addendum (2026-10-12, lab-dax-net-fee-verdict)
+
+MATCH: the primary arm is now `coded`, preserving the Java per-instrument `math.net_rr` through proof masking and the Python verdict. GER40 uses 0.000005 per side (ExecutionMathConstants.java:23-37); entry 100, stop 99, target 101.25 gives net RR 1.249/1.001 = 1.247752247752, below the current 1.25 floor. Gross-only `daxfee` selection is removed. This supersedes the selection contract in the historical PRE_REG_DAX.md:20-21 without editing that dated document.
+
+The row-cache schema is advanced to refuse pre-fix rows. Each regenerated month's metadata records its frozen verdict floor, FDAX fee and execution-math hash. Complete snapshot/run provenance remains H8's separate task; this addendum does not establish readiness for an outcome run or resolve other audit findings.
+
+RESULT (2026-10-12, COD lab): the synthetic H5 regression failed before the fix (`SETUP_FORMING` instead of `WAIT_RR`), passed after, and all 40 harness tests passed. Evidence, commands and changed-file lines: `2026-10-12_lab-dax-net-fee-verdict.md`. No market-data backtest or recall was run.
+
+## H2 enforcement addendum (2026-10-12, lab-dax-holdout-boundaries)
+
+MATCH: reports now require `--split-manifest <path>` with UTC `design_end_utc`, UTC `holdout_start_utc`, and finite nonnegative `embargo_s`. The latest design exposure plus embargo must precede or equal the holdout start, with design exposure strictly before it. The manifest owner chooses the clean dates; this change does not certify ledger cleanliness or invent those dates. Development signals precede `holdout_start_utc - embargo_s`; only complete minute bars ending at or before that cutoff enter development price arrays. Forward dates are accepted without the historical DAX_END cap on development coverage.
+
+Strategy, slippage stress and null outcomes use isolated period bars. Pending or filled orders unresolved at the development cutoff are dropped, without a fabricated close or a holdout-priced outcome. Holdout envelope timestamps are counted once across arms; excluded holdout verdict payloads are not selected during development. An explicit holdout read requires a full-development completion token for the same split, complete monthly snapshot/cache coverage, raw-day coverage, and no snapshot errors or detected long archive holes when the token is produced. Smoke/partial reports cannot authorize it. The exclusive, fsynced read reservation records the actual envelope count before outcome-bar loading; a subsequent evaluation failure leaves that reservation in place.
+
+RESULT (2026-10-12, COD lab): before the change, the H-60 synthetic signal filled at index 1 and exited at index 2 (H), `holdout_rows` was 0 instead of 2, and absent-manifest handling reached coverage access. After the change, both requested regression tests pass and all 47 harness tests pass, including five additional synthetic boundary/manifest/reservation guards. Full commands, line references and red/green output: `2026-10-12_lab-dax-holdout-boundaries.md`. No real-data backtest, recall or holdout outcome was read. The original PRE_REG_DAX.md remains historical; H7 scientific readiness and H8 immutable trial identity remain separate findings.
