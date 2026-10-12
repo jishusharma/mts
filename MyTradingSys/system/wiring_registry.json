@@ -313,6 +313,8 @@
                                                                                                     "disp":  "TOOL",
                                                                                                     "why":  "Runs tests against the staged .new overlay; usage in MyTradingSys/research/TWO_CORES_INT_HANDOFF_2026-10-01.md:30."
                                                                                                 },
+                    "MyTradingSys/research/published_strats_2026-10-13/run_pub.py": {"disp": "REPRO", "why": "Reproduces RESULTS.md and TRIAL_REGISTRY.csv (62 published-rule variants on BTCUSDT perp; stages dev/val/hold, PRE_REG.md)."},
+                    "MyTradingSys/research/published_strats_2026-10-13/supp_carry.py": {"disp": "REPRO", "why": "Reproduces supp_carry.txt (post-hoc descriptive carry and buy-and-hold by window)."},
                     "MyTradingSys/research/volume_2026-10-09/mutation_check.py":  {
                                                                                       "disp":  "TOOL",
                                                                                       "why":  "Fail-before proof for the volume study: 24 mutants of vdata/vfeat/vstats/vstate each make test_volume.py or test_state.py fail (0 survivors, run 2026-10-09); mutants live in a scratch copy, no git stash."
