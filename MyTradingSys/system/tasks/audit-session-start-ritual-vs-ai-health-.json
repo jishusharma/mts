@@ -1,0 +1,29 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T05:35:53Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "kvsh4c9zt1bvw26dhore",
+  "goal": "",
+  "id": "audit-session-start-ritual-vs-ai-health-",
+  "lane": "",
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "B183"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Audit session start ritual vs AI-health token goals"
+}
