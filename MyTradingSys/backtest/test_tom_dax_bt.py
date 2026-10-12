@@ -316,6 +316,57 @@ def aligned(s, fail_closed=False):
 
 
 class TestMask(unittest.TestCase):
+    def test_half_volume_order_flow_unavailable_long_short_parity(self):
+        from verdict import build_math_object, proof_dir_of
+
+        # EXPECT H6: dax_data.py:100-106 supplies half-volume placeholders.
+        # MarketDataSnapshot.java:752-755 labels their zero delta negative.
+        # Missing aggressor data must not contradict either mirrored candidate.
+        bars = mk([(100., 101., 99., 100.)] * 3)
+        deltas = [2 * buy - vol for buy, vol in zip(bars.tbv, bars.v)]
+        self.assertEqual(deltas, [0., 0., 0.])
+        labels = ["positive" if delta > 0 else "negative" for delta in deltas]
+        rows = []
+        for side in ("long", "short"):
+            c = cand(1, side, "vwap", "vwap_band", proof_node("MODERATE"), 1, net=2.)
+            c["math"]["target"] = 103. if side == "long" else 97.
+            s = snap([c])
+            s["cvd"] = dict(value=0., slope="flat", last_3_delta=labels[:])
+            before = copy.deepcopy(s)
+            adapted = []
+
+            def checked_direction(snapshot, fail_closed=False):
+                adapted.append(copy.deepcopy(snapshot))
+                return proof_dir_of(snapshot, fail_closed=fail_closed)
+
+            # Synthetic extension only: reach the five-proof verdict to expose
+            # the latent WATCH cap; no production threshold/parameter is changed.
+            row = D.rows_for_snapshot(s, parse_ts, checked_direction, shifts=(4,))["coded/4"]
+            rows.append(row)
+            self.assertEqual(s, before)  # adapter must not mutate source snapshots
+            self.assertEqual(len(adapted), 1)
+            output = adapted[0]
+            with self.subTest(side=side, check="proof direction"):
+                self.assertEqual(build_math_object(output)["proof_direction_status"], "aligned")
+                self.assertEqual(row["pd"], "aligned")
+            with self.subTest(side=side, check="unavailable delta"):
+                self.assertFalse(set(output["cvd"]["last_3_delta"]) & {"negative", "positive"})
+                self.assertEqual(output["cvd"]["availability"], "UNAVAILABLE")
+                self.assertEqual(output["cvd"]["slope"], "unavailable")
+                self.assertEqual(output["conditions"]["cvd_slope"], "unavailable")
+            with self.subTest(side=side, check="verdict"):
+                self.assertEqual(row["verdict"], "SETUP_FORMING")
+        self.assertEqual([(r["pd"], r["verdict"]) for r in rows],
+                         [("aligned", "SETUP_FORMING")] * 2)
+
+    def test_unmasked_cvd_snapshot_is_preserved(self):
+        s = snap([self.full()])
+        s["cvd"] = dict(value=-3., slope="falling", last_3_delta=["negative"] * 3)
+        s["conditions"]["cvd_slope"] = "falling"
+        before = copy.deepcopy(s)
+        D.rescore(s, mask=())
+        self.assertEqual(s, before)
+
     def test_old_volume_spike_snapshot_rejected(self):
         s = snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 1)])
         before = copy.deepcopy(s)

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-12T11:03:44Z",
   "commands": [],
   "created": "2026-10-11T20:16:31Z",
   "depends_on": [],
@@ -16,7 +17,7 @@
   "refine_tries": 0,
   "refined_by": "JIS-NUC session 2026-10-12 (task refinement from the Codex status reply)",
   "refs": [],
-  "result": "",
+  "result": "H6 fixed; red regression then green; 55 tests pass; MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-unavailable-flow.md",
   "scope_in": [
     "MyTradingSys/backtest/tom_dax_bt.py",
     "MyTradingSys/backtest/test_tom_dax_bt.py",
@@ -34,7 +35,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md finding H6"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read finding H6 in MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md (file legend, evidence, proposed fix) and the lines it cites.",
     "Write the test named in Tests in MyTradingSys/backtest/test_tom_dax_bt.py and see it fail on the current code.",
