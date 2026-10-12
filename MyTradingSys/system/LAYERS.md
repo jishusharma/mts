@@ -14,9 +14,12 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Layer `tom_proofs`: book_imbalance never counts in historical snapshots (no raw source); P06 volume spike is NO-SOURCE | module SetupCandidatesBuilder.java (proof flags)
 - Layer `tom_vp_pivot`: closed: no anchor beats placebo | module backtest/vp_pivot_probe.py (FORMULAS 18)
 - Backtests (layer_map.json, newest first):
+  - 2026-10-11 `TOM-DIAG-BTC`: descriptive only; no rule change | `MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md`
   - 2026-10-10 `DAX-SMOKE`: SMOKE: pipeline test, not a result; full dev + holdout run is Q7 | `MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md`
   - 2026-10-09 `TOM-VP-PHASE2`: no anchor has an edge; 46/48 real-minus-placebo CIs straddle 0; every year negative | `MyTradingSys/research/tom_core_bt_2026-10-09/PHASE2_RESULT.md`
+  - 2026-10-09 `VP-PIVOT-P2`: negative net R; no level beats placebo | `MyTradingSys/research/tom_core_bt_2026-10-09/phase2/results.md`
   - 2026-10-07 `TOM-CORE-1007`: no edge: gross -0.15 R, net -2.91 R; holdout -2.80 R (mechanical: R tiny after floor removal) | `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06.md`
+  - 2026-10-07 `TOM-CORE-BT`: no edge shown; fees make it clearly negative | `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06_full.md`
   - 2026-09-30 `TOM-CORE-0929`: no edge: gross -0.07 R, net -0.30 R, holdout net -0.32 R (n=254) | `MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md`
 - Spec / sources: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`; `MyTradingSys/research/tom_fabio_guidance_2026-10-12/SOURCED_RULES.md`; `MyTradingSys/research/TOM_VERBATIM_INDEX.md`
 - Code: `src/main/java/datafeed/SetupCandidatesBuilder.java`; `MyTradingSys/backtest/tom_dax_bt.py`; `MyTradingSys/backtest/verdict.py`
@@ -43,6 +46,7 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Layer `fabio_v3`: tried 2026-10-04; encoding being redefined (Fabio v2) | module backtest/layers/fabio/fabio_v3*.py; run_v3_l3.py
 - Layer `fabio_of`: insufficient n; legacy fee pair | module backtest/layers/fabio/fabio_of_model.py; orderflow_bars.py
 - Backtests (layer_map.json, newest first):
+  - 2026-10-09 `FIRES-B1`: parity PASS on spot rerun | `MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md`
   - 2026-10-06 `FABIO-OF`: no edge / insufficient n (stands under correct fees; numbers not reusable) | `MyTradingSys/backtest/layers/fabio/FABIO_OF_REPORT.md`
   - 2026-10-04 `FABIO-V3`: not recorded in map | `MyTradingSys/research/fast_track_2026-09-27/bt_runs/TRIAL_REGISTRY.csv`
   - 2026-09-27 `L1-FABIO`: no edge / insufficient n (rule: OOS n>=30, net>0, PBO<0.5) | `MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md`
@@ -81,6 +85,7 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Layer `rsi_divergence`: no edge, all TFs | module backtest/layers/rsi/run_divergence_mtf.py
 - Backtests (layer_map.json, newest first):
   - 2026-10-09 `RSI-DIV-MTF`: no edge on any timeframe that reached 300 events; 31 of 32 net negative; 6h and 2d leads have n 6-54 | `MyTradingSys/research/rsi_divergence_mtf_2026-10-09/RESULT.md`
+  - 2026-10-09 `FIRES-B1`: parity PASS on spot rerun | `MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md`
   - 2026-10-07 `MARKET-GUIDE`: table in report not read for this map | `MyTradingSys/research/MARKET_GUIDE_RESULTS_2026-10-07.md`
   - 2026-09-27 `L1-D3`: mixed: 1h support PBO 0.030, everything else PBO 0.39-0.91 | `MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md`
 - Spec / sources: `MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md`; `MyTradingSys/backtest/layers/FORMULAS.md`
@@ -95,6 +100,7 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Layer `cryptocred`: adapter + stop sweep run | module backtest/layers/cryptocred/
 - Backtests (layer_map.json, newest first):
   - 2026-10-09 `BIGTRADE-EXIT`: first row negative both splits; full table not read for this map | `MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md`
+  - 2026-10-09 `FIRES-B1`: parity PASS on spot rerun | `MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md`
   - 2026-09-27 `L1-D3`: mixed: 1h support PBO 0.030, everything else PBO 0.39-0.91 | `MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md`
 - Spec / sources: `MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md`; `MyTradingSys/backtest/layers/FORMULAS.md`
 - Code: `MyTradingSys/backtest/layers/cryptocred`
@@ -124,6 +130,7 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Layer `session_levels`: no edge | module research/t087_session_levels_2026-10-09
 - Backtests (layer_map.json, newest first):
   - 2026-10-09 `T087`: no edge (net -0.036%, t -1.72); EU-touch cells insufficient n | `MyTradingSys/research/t087_session_levels_2026-10-09/RESULT.md`
+  - 2026-10-09 `FIRES-B1`: parity PASS on spot rerun | `MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md`
   - 2026-09-29, rerun 2026-10-07 `T055-C2`: FAIL (rerun OOS net +0.0177%, Sharpe 0.0084, 1 of 2 years positive) | `MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md`
   - 2026-09-29 `T055-C3`: NO EDGE (gross OOS about 0 at every horizon) | `MyTradingSys/research/fast_track_2026-09-27/T055_BT_c3.md`
 - Spec / sources: `MyTradingSys/research/TURN_OF_CANDLE_ORIGIN_2026-10-09.md`
@@ -142,8 +149,17 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
   - 2026-10-10 `ALPHA`: NO-SOURCE; A CAGR 20.5% maxDD 49% vs buy-and-hold 43.8% / 76.7%; not a result | `MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md`
   - 2026-10-09 `VOLUME`: no validated directional edge; volume gives intensity, not direction; 1 marginal DEV pass failed VALIDATION | `MyTradingSys/research/volume_2026-10-09/VOLUME_RESEARCH_REPORT_2026-10-09.md`
   - 2026-10-09 `BIGTRADE-EXIT`: first row negative both splits; full table not read for this map | `MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md`
+  - 2026-10-09 `BIGMOVES-A`: ground truth, no verdict | `MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md`
+  - 2026-10-09 `FIRES-B1`: parity PASS on spot rerun | `MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md`
+  - 2026-10-09 `CAPTURE-MATRIX`: see report; SYNTHETIC variant is a tool fixture, not layer output | `MyTradingSys/research/bigtrade_2026-10-09/CAPTURE_MATRIX_SPOT.md`
+  - 2026-10-09 `VOL-V1`: 0 pass triage | `MyTradingSys/research/volume_2026-10-09/V1_DEV_RESULTS.md`
+  - 2026-10-09 `VOL-V2`: 0 pass triage | `MyTradingSys/research/volume_2026-10-09/V2_DEV_RESULTS.md`
+  - 2026-10-09 `VOL-V3`: INSUFFICIENT-N; candidate stays unvalidated | `MyTradingSys/research/volume_2026-10-09/V3_VALIDATION_RESULTS.md`
+  - 2026-10-09 `VOL-V4`: NOT SUPPORTED | `MyTradingSys/research/volume_2026-10-09/V4_RESULTS.md`
   - 2026-10-07 `CANDLE-P1`: 1d engulfing rows read all FAIL; remaining rows and 1h table not read for this map | `MyTradingSys/research/candle_patterns_2026-10-04/P1_RESULTS.md`
   - 2026-10-07 `MARKET-GUIDE`: table in report not read for this map | `MyTradingSys/research/MARKET_GUIDE_RESULTS_2026-10-07.md`
+  - 2026-10-04 `CANDLE-D19`: NO-SOURCE; below buy-and-hold | `MyTradingSys/research/candle_patterns_2026-10-04/D19_4H_RESULTS.md`
+  - 2026-10-04 `CANDLE-P0`: exploratory; no edge vs random null | `MyTradingSys/research/candle_patterns_2026-10-04/P0_RESULTS.md`
 - Spec / sources: `MyTradingSys/backtest/layers/FORMULAS.md`
 - Code: `MyTradingSys/backtest/bigtrade`
 - Other results: `MyTradingSys/research/volume_2026-10-09`; `MyTradingSys/research/candle_patterns_2026-10-04`; `MyTradingSys/research/setup_alpha_beta_2026-10-10`; `MyTradingSys/research/bigtrade_2026-10-09`
