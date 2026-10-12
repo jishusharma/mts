@@ -39,6 +39,15 @@ def get_screenshot_status():
         return f"(screenshot status unavailable: {e})"
 
 
+def get_lab_status():
+    """Codex layer lab in plain words (scripts/dev/codex_run.py status); never fails the status build."""
+    try:
+        r = subprocess.run([sys.executable, "scripts/dev/codex_run.py", "status"], capture_output=True, text=True, timeout=60)
+        return (r.stdout or r.stderr).strip() or "(no lab status)"
+    except Exception as e:
+        return f"(lab status unavailable: {e})"
+
+
 def get_hygiene_status(sched_dir=None):
     """Head of the scheduled daily hygiene report (scripts/dev/daily_hygiene.py); never fails the status build."""
     d = Path(sched_dir) if sched_dir else Path("MyTradingSys/runtime/sched")
@@ -257,6 +266,13 @@ def main():
     output.append("## Screenshots")
     output.append("```")
     output.append(get_screenshot_status())
+    output.append("```")
+    output.append("")
+
+    # Codex layer lab: unattended runs on JIS-NUC; a line under NEEDS A LOOK is work for the next NUC session (LAYER_LAB.md)
+    output.append("## Layer Lab (Codex)")
+    output.append("```")
+    output.append(get_lab_status())
     output.append("```")
     output.append("")
 

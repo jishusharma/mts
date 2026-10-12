@@ -52,6 +52,15 @@ has full access (operator's setting), so it does its own git steps; everything e
   sheets, captions), `dax_archive`, `dax_raw`, `dax_bt`, `dax_snapshots`, `bigtrade`. Not copied: `Dumps/backtest/raw_1m_2022`.
   Nothing refreshes it yet: data made on JIS-NB after that date is NOT_IN_DATA here until the next copy.
 
+## Checking on it (operator or any session, no chat history needed)
+- `python scripts/dev/codex_run.py status` prints, in plain words: the Codex allowance, the queue, the latest deliveries, the last
+  runs and a NEEDS A LOOK list. STATUS.md embeds the same text (section "Layer Lab (Codex)"), so every session sees it at start.
+- On JIS-NUC the operator double-clicks "Codex Lab Status" on the desktop (`scripts/sched/lab_status.cmd`): same text, no session needed.
+- NEEDS A LOOK is the lab's to-do list for people: an empty or short queue, a card that failed twice, a run that did not ship,
+  files left in the lab work tree, the lab switched off. "nothing" = leave it alone. Each line is the first job of the next
+  JIS-NUC session; on another machine post it to DSA-NUC (`desk.py post ... --target DSA-NUC`).
+- Deliveries, newest first, with their reports: `MyTradingSys/research/layer_lab/INDEX.md`.
+
 ## Allowance (Codex plan Plus: a 5-hour window and a weekly cap, shared with the operator's own app sessions)
 - Nothing but the scheduled script feeds Codex: no Claude session, no Haiku worker. A ready CODEX card is the only input.
 - Each tick reads the last allowance reading Codex wrote (`%CODEX_HOME%\sessions`). At 85% of the 5-hour window, or 85% of the
@@ -67,5 +76,7 @@ Codex runs in sandbox `workspace-write`: it can write only inside the lab work t
 (measured 2026-10-11: a fetch from inside the sandbox is refused). So Codex never claims, commits or pushes: `codex_run.py` does
 every git step, and it ships only a run that ended DONE or BLOCKED. An `audit` or `run` card may write only under
 `research/layer_lab/` and `system/tasks/`; one file elsewhere makes the run OUT_OF_SCOPE and nothing is shipped.
+A `build` card runs only its own test file: the quick gate cannot pass inside the sandbox (tests that create git repositories are
+refused; measured 2026-10-12, lab-dax-proof-parity), so `sync.py ship` in the runner is the gate. A failed ship leaves `<run log>.ship.txt`.
 Claude spot-checks one claim per lab report (CLAUDE.md work routing).
 CI gates every push exactly as for Claude code. The trial ends about 2026-11-11: nothing else may depend on the lab.

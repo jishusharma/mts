@@ -4,7 +4,7 @@
   "commands": [],
   "created": "2026-10-11T20:16:30Z",
   "depends_on": [],
-  "done_when": "The new test fails before and passes after, the quick gate passes, and the report lists the changed files with the red-then-green output for H5.",
+  "done_when": "The new test fails before and passes after, and the report lists the changed files with the red-then-green output for H5.",
   "from_inbox": "",
   "goal": "The primary DAX arm selects on the per-instrument net RR the Java gate uses, not on gross RR; a gross-only arm, if kept, is labelled experimental.",
   "id": "lab-dax-net-fee-verdict",
@@ -39,7 +39,7 @@
     "Read finding H5 in MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md (file legend, evidence, proposed fix) and the lines it cites.",
     "Write the test named in Tests in MyTradingSys/backtest/test_tom_dax_bt.py and see it fail on the current code.",
     "Fix it as the finding proposes, inside scope_in only. If it cannot be fixed without a file outside scope_in, stop: report BLOCKED with the reason.",
-    "python MyTradingSys/backtest/test_tom_dax_bt.py and python scripts/dev/run_all_tests.py --quick pass."
+    "Run MyTradingSys/backtest/test_tom_dax_bt.py (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: it cannot pass inside the sandbox; the runner runs the quick gate when it ships."
   ],
   "tests": "A GER40 candidate entry=100 stop=99 target=101.25 is rejected by the primary arm (net RR 1.2478 below the 1.25 floor, FORMULAS.md:403-404); it passes on the current code (gross RR 1.25).",
   "title": "DAX audit H5: use actual per-market net RR for the primary DAX verdict"

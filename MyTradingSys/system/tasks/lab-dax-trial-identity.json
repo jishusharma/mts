@@ -4,7 +4,7 @@
   "commands": [],
   "created": "2026-10-11T20:16:34Z",
   "depends_on": [],
-  "done_when": "The new test fails before and passes after, the quick gate passes, and the report lists the changed files with the red-then-green output for H8.",
+  "done_when": "The new test fails before and passes after, and the report lists the changed files with the red-then-green output for H8.",
   "from_inbox": "",
   "goal": "Cached rows and the run id are bound to the inputs that made them (data, mask, shifts, engine, verdict floor, market, split, arm), so a new look is a new counted trial and a stale cache is refused.",
   "id": "lab-dax-trial-identity",
@@ -39,7 +39,7 @@
     "Read finding H8 in MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md (file legend, evidence, proposed fix) and the lines it cites.",
     "Write the test named in Tests in MyTradingSys/backtest/test_tom_dax_bt.py and see it fail on the current code.",
     "Fix it as the finding proposes, inside scope_in only. If it cannot be fixed without a file outside scope_in, stop: report BLOCKED with the reason.",
-    "python MyTradingSys/backtest/test_tom_dax_bt.py and python scripts/dev/run_all_tests.py --quick pass."
+    "Run MyTradingSys/backtest/test_tom_dax_bt.py (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: it cannot pass inside the sandbox; the runner runs the quick gate when it ships."
   ],
   "tests": "A cached rows file made with a different mask, shift or floor is refused, and a second arm on the same day gets its own run id and trial row; on the current code the file is reused by name and the row is suppressed.",
   "title": "DAX audit H8: bind cached rows and trial counts to frozen run inputs"

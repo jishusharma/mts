@@ -5,7 +5,8 @@
   python scripts/dev/codex_run.py run <card> [--dry]   # run one card by id
   python scripts/dev/codex_run.py ask "<title>" --kind audit|build|run --scope <path> [--cmd ..] [--tests ..] [--goal ..]
   python scripts/dev/codex_run.py index                # regenerate MyTradingSys/research/layer_lab/INDEX.md
-  python scripts/dev/codex_run.py status | stop "<why>" | resume
+  python scripts/dev/codex_run.py status               # plain words: allowance, queue, deliveries, last runs, NEEDS A LOOK
+  python scripts/dev/codex_run.py stop "<why>" | resume
 Spec, lanes and report format: MyTradingSys/system/LAYER_LAB.md. Model and effort come from the card (tasks.CODEX_KINDS).
 Environment (all optional): CODEX_HOME (F:/codex_home), MTS_CODEX_LAB_WT (F:/MTS/mts-codex-lab), MTS_CODEX_EXE,
 MTS_CODEX_SANDBOX (workspace-write), MTS_CODEX_TIMEOUT_MIN (60).
@@ -55,9 +56,9 @@ TEMPLATES = {
     "build": {
         "steps": ["Write the test named in Tests first and see it fail on the current code.",
                   "Implement the goal inside scope_in only; new behaviour sits behind a flag that is off by default.",
-                  "python scripts/dev/run_all_tests.py --quick passes."],
+                  "Run the test file you changed (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: tests that create git repositories are refused in the sandbox; the runner runs the quick gate when it ships."],
         "scope_out": ["the live path", "holdout reads", "parameters without a trader quote (NO-SOURCE)"],
-        "done_when": "The named test passes, the quick gate passes, and the report lists the changed files and the red-then-green test output."},
+        "done_when": "The named test passes and the report lists the changed files and the red-then-green test output (the runner's ship runs the quick gate)."},
 }
 
 
@@ -287,6 +288,7 @@ def run_card(card, dry=False, env=os.environ):
             s = sh(wt, "scripts/dev/sync.py", "ship")
             if s.returncode:
                 outcome, note = "SHIP_FAILED", (s.stdout + s.stderr).strip()[-300:]
+                Path(str(log) + ".ship.txt").write_text(s.stdout + s.stderr, encoding="utf-8", newline="\n")   # which gate step failed
         elif files:
             note = f"{len(files)} uncommitted file(s) left in {wt}: " + ", ".join((out_of_scope(card['kind'], files) or files)[:5])
         r = sh(wt, "scripts/dev/sync.py", "release", sync.slugify(cid))
@@ -397,18 +399,74 @@ def cmd_index(a):
     return 0
 
 
+def run_rows(home):
+    p = Path(home) / "lab_runs" / "runs.jsonl"
+    out = []
+    for line in (p.read_text(encoding="utf-8").splitlines() if p.is_file() else []):
+        try:
+            out.append(json.loads(line))
+        except ValueError:
+            continue
+    return out
+
+
+def run_line(r):
+    tok = f"{r['tokens'] // 1000}k tokens" if r.get("tokens") else "tokens ?"
+    return f"{str(r.get('at', ''))[:16].replace('T', ' ')}Z {r.get('card')} {r.get('outcome')} ({r.get('model')} / {r.get('effort')}, {tok}, {r.get('seconds', '?')}s)"
+
+
+def needs_look(ready, tried, rows, unshipped=0, stopped="", held="", closed=()):
+    """What the lab cannot fix by itself, in plain words. [] = nothing to do. Read by the operator and by STATUS.md."""
+    L = []
+    if stopped:
+        L.append(f"the lab is switched off: {stopped} (`codex_run.py resume` turns it on)")
+    if unshipped:
+        L.append(f"the lab work tree holds {unshipped} unshipped file(s) or commit(s); it stays idle until a session checks and ships them")
+    L += [f"{c['id']} failed {tried[c['id']]} times and is skipped: read its report and run log, then fix the card" for c in ready if tried.get(c["id"], 0) >= MAX_ATTEMPTS]
+    last = [r for r in rows if not r.get("dry")][-1:]
+    if last and last[0].get("outcome") not in ("DONE", "LIMIT") and last[0].get("card") not in closed:   # closed since = someone dealt with it
+        L.append(f"the last run ended {last[0]['outcome']} ({last[0]['card']}): {last[0].get('note') or 'read ' + (last[0].get('report') or last[0].get('log', 'its log'))}")
+    left = [c for c in ready if tried.get(c["id"], 0) < MAX_ATTEMPTS]
+    if not left:
+        L.append("the queue is empty, so the Codex allowance goes unused: move scoped cards to lane CODEX (LAYER_LAB.md, Allowance)")
+    elif len(left) < 3 and not held:
+        L.append(f"only {len(left)} card(s) left in the queue: add scoped cards (LAYER_LAB.md, Allowance)")
+    return L
+
+
+def status_text(ready, done, tried, rows, rl, now, last_tick="", unshipped=0, stopped="", host_has_lab=True):
+    L = [f"Layer lab (Codex) at {datetime.fromtimestamp(now, timezone.utc).strftime('%Y-%m-%d %H:%MZ')}: {'OFF' if stopped else 'on'}"]
+    if not host_has_lab:
+        L.append("  This machine does not run the lab (it runs on JIS-NUC): queue and deliveries below are from the repo; allowance, runs and what needs a look are only known there.")
+    else:
+        L += ["  " + budget_line(rl, now), "  Last check by the scheduler: " + (last_tick or "none yet")]
+    L.append(f"  Queue: {len(ready)} ready")
+    L += [f"    {c['id']} [{c['kind']}, {' / '.join(tasks.codex_setting(c))}]" + (" SKIPPED after failed tries" if tried.get(c["id"], 0) >= MAX_ATTEMPTS else "") for c in ready]
+    L.append("  Delivered (latest 5; all in MyTradingSys/research/layer_lab/INDEX.md):")
+    L += [f"    {c.get('closed', '')[:10]} {c['id']}: {c.get('result', '')}" for c in sorted(done, key=lambda c: c.get("closed", ""), reverse=True)[:5]] or ["    nothing yet"]
+    if host_has_lab:
+        L.append("  Last runs:")
+        L += ["    " + run_line(r) for r in rows[-5:]] or ["    none"]
+        look = needs_look(ready, tried, rows, unshipped, stopped, hold(rl, now), {c['id'] for c in done})
+        L.append("  NEEDS A LOOK: " + ("nothing" if not look else ""))
+        L += [f"    - {x}" for x in look]
+    return "\n".join(L)
+
+
 def cmd_status(a):
-    home = codex_home()
-    tried = attempts(home)
+    home, wt = codex_home(), lab_wt()
     cards, _ = tasks.ready_cards(REPO, "CODEX")
-    print(f"lab: {'STOPPED' if (home / 'lab.stop').is_file() else 'on'}; ready CODEX cards {len(cards)}; work tree {lab_wt()}")
-    print("  " + budget_line(budget(home), time.time()))
-    for c in cards:
-        n = tried.get(c["id"], 0)
-        print(f"  {c['id']} [{c['kind']}, {' / '.join(tasks.codex_setting(c))}] tries {n}/{MAX_ATTEMPTS}" + (" STUCK" if n >= MAX_ATTEMPTS else ""))
-    p = home / "lab_runs" / "runs.jsonl"
-    for line in (p.read_text(encoding="utf-8").splitlines()[-5:] if p.is_file() else []):
-        print("  run " + line)
+    done = [c for c in tasks.load_all(REPO) if c.get("lane") == "CODEX" and c["state"] == "done"]
+    here = (wt / ".git").exists()
+    unshipped = 0
+    if here:
+        unshipped = len(git(wt, "status", "--porcelain", check=False).stdout.splitlines())
+        ahead = git(wt, "rev-list", "--count", f"origin/{sync.TRUNK}..HEAD", check=False).stdout.strip()
+        unshipped += int(ahead) if ahead.isdigit() else 0
+    tick, stop = home / "lab_runs" / "last_tick.txt", home / "lab.stop"
+    print(status_text(cards, done, attempts(home), run_rows(home), budget(home), time.time(),
+                      tick.read_text(encoding="utf-8").strip() if tick.is_file() else "", unshipped,
+                      stop.read_text(encoding="utf-8").strip() if stop.is_file() else "", here))
     return 0
 
 
