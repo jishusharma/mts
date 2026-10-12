@@ -39,7 +39,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md section 3",
     "MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md"
   ],
-  "state": "refined",
+  "state": "blocked",
   "steps": [
     "Read TOM_LAYER_V2_SPEC.md part A, DIAG_BTC.md, RECALL_DAX.md 3.4, FORMULAS.md, SetupCandidatesBuilder.java:557-575, the per-market fee code, PROFILE_PARITY.md, HOLDOUT_CLEAN.json, BACKTEST_FAILURES_RESEARCH.md N1-N8.",
     "Per market (FDAX/GER40 CFD, BTC perp): proofs that can fire on the data it has (use PROFILE_PARITY verdict for volume proofs), cost per side, round-turn cost in points and R for Tom's 20-63 point stops.",
