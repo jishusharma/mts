@@ -1,0 +1,258 @@
+
+[Step 1] Execution module tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/run_staged_tests.py MyTradingSys/execution MyTradingSys/execution/testnet/offline -- test_daily_loss_guard test_daily_loss_monitor test_mainnet_flag_offline test_gh_executor_offline test_gh_retry_offline test_halt_preflight_offline test_kill_switch test_kill_switch_account test_premainnet1_offline test_risk_guard test_s1_cap_offline test_s3_unprotected_offline test_s6_orphan_offline test_triggered_stop_offline test_soak_report test_fix3_offline test_fix4_offline test_plan_compiler test_executor_math test_auto_trader test_dlm_aggregate test_b148_reauth_account test_b146_fee_to_stop test_dlm_failure_cap test_auto_trader_blocklist test_auto_trader_sizes test_auto_trader_confirm test_orphan_sweep_loop test_fabio_slot test_fix3_mutants_offline test_capture_txlog_settlement test_mts_kill_mainnet test_pm_heartbeat test_pm_heartbeat_wiring test_journal_env test_mainnet_plan_check test_env_wiring test_reconciler_env test_deribit_read_account test_orphan_watchdog test_orphan_watchdog_cli test_mainnet_pnl test_daily_pnl_wiring test_xferfix test_time_exit_offline test_trade_ledger test_netretry test_r2_runner_exit test_r2_breakeven_move
+  Elapsed: 4.9s
+Step 1: PASS
+
+[Step 2] G1G2 offline script test
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/run_staged_tests.py MyTradingSys/execution MyTradingSys/execution/testnet/offline --script test_g1g2_offline.py --fake fake_deribit_orders.py=deribit_orders.py
+  Elapsed: 0.5s
+Step 2: PASS
+
+[Step 3] Static test suite
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe MyTradingSys/execution/testnet/test_suite_static.py
+  Elapsed: 0.3s
+Step 3: PASS
+
+[Step 3b] User guide checker tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_check_guide.py
+  Elapsed: 0.2s
+Step 3b: PASS
+
+[Step 3c] User guide in sync with mts.ps1
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/check_guide.py
+  Elapsed: 0.1s
+Step 3c: PASS
+
+[Step 3r] Alert rate checker tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_alert_rate_check.py
+  Elapsed: 0.2s
+Step 3r: PASS
+
+[Step 3s] Testnet status summary tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_testnet_status.py
+  Elapsed: 0.3s
+Step 3s: PASS
+
+[Step 3f] Funnel report tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_funnel_report.py
+  Elapsed: 0.2s
+Step 3f: PASS
+
+[Step 3dk] Desk board tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_desk.py
+  Elapsed: 9.8s
+Step 3dk: PASS
+
+[Step 3tk] Task card tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_tasks.py
+  Elapsed: 1.0s
+Step 3tk: PASS
+
+[Step 3ly] Layer index tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_make_layers_md.py
+  Elapsed: 0.3s
+Step 3ly: PASS
+
+[Step 3cx] Layer lab runner tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_codex_run.py
+  Elapsed: 0.3s
+Step 3cx: PASS
+
+[Step 3tl] Task cards meet the Definition of Ready
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/tasks.py lint
+  Elapsed: 0.2s
+Step 3tl: PASS
+
+[Step 3q] INDEX/BUGS consistency
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_registry_consistency.py
+  Elapsed: 0.2s
+Step 3q: PASS
+
+[Step 3p] P4 corrected script tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe MyTradingSys/research/test_p4_corrected.py
+  Elapsed: 0.3s
+Step 3p: PASS
+
+[Step 3t] T093 turn-of-candle imbalance tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe MyTradingSys/research/test_t093_toc_imbalance_klines.py
+  Elapsed: 0.3s
+Step 3t: PASS
+
+[Step 3d] Extract quote checker tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_verify_extract_quotes.py
+  Elapsed: 0.2s
+Step 3d: PASS
+
+[Step 3h] Launcher verb static tests (runner, orphans)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_mts_launcher.py
+  Elapsed: 0.2s
+Step 3h: PASS
+
+[Step 3g] Gate coverage tests (Fabio v3 + live writers)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_run_all_tests.py
+  Elapsed: 0.2s
+Step 3g: PASS
+
+[Step 3k] sync.py parallel ship tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_sync.py
+  Elapsed: 33.0s
+Step 3k: PASS
+
+[Step 3e] DSA browser worker + queue lane tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/worker/test_dsa_worker.py
+  Elapsed: 0.9s
+Step 3e: PASS
+
+[Step 3sh] Screenshot intake tests (save, classify, read, close gates)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_shot.py
+  Elapsed: 1.7s
+Step 3sh: PASS
+
+[Step 3mg] Project group map tests (every row and file has one group)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_make_groups.py
+  Elapsed: 0.2s
+Step 3mg: PASS
+
+[Step 3xt] Extra tests outside the collected dirs (B150 discovery)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/run_extra_tests.py
+  Elapsed: 30.8s
+Step 3xt: PASS
+
+[Step 3ad] Scheduled auto-deploy tests (stops on red gate)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_auto_deploy.py
+  Elapsed: 0.4s
+Step 3ad: PASS
+
+[Step 3hy] Daily hygiene job tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_daily_hygiene.py
+  Elapsed: 0.3s
+Step 3hy: PASS
+
+[Step 3ms] STATUS.md generator tests (commit-dated reports, CI green line)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_make_status.py
+  Elapsed: 3.1s
+Step 3ms: PASS
+
+[Step 3cs] Cloud SessionStart hook tests (no-op off cloud)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_cloud_setup.py
+  Elapsed: 0.2s
+Step 3cs: PASS
+
+[Step 3pc] Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_prompt_contract.py
+  Elapsed: 0.2s
+Step 3pc: PASS
+
+[Step 3cr] Control Room page generator tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_make_control_room.py
+  Elapsed: 2.5s
+Step 3cr: PASS
+
+[Step 3bk] Backup snapshot tests (dirty/untracked work reaches the remote)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_backup_snapshot.py
+  Elapsed: 7.5s
+Step 3bk: PASS
+
+[Step 3lm] Live mirror tests (read-only desktop->work-tree data, fail-closed)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_live_mirror.py
+  Elapsed: 2.5s
+Step 3lm: PASS
+
+[Step 3w] Wiring gate tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_wiring_scan.py
+  Elapsed: 6.3s
+Step 3w: FAIL
+  Last output:
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "C:\Users\E-ngineers\IdeaProjects\mts-nuc-audit\scripts\dev\test_wiring_scan.py", line 81, in test_real_repo_passes
+        self.assertEqual(rc, 0, out)
+        ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+    AssertionError: 1 != 0 : {'LIVE': 233, 'ORPHAN': 52, 'TEST-ONLY': 61, 'DEV-TOOL': 25}
+    FAIL: UNDECLARED ORPHAN: MyTradingSys/research/non_core_layer_audit_2026-10-12/package_report.py, referenced by nothing. Wire it, archive it (git mv to MyTradingSys/archive/), or add it to MyTradingSys/system/wiring_registry.json with a disposition and a reason.
+    FAIL: UNDECLARED ORPHAN: MyTradingSys/research/non_core_layer_audit_2026-10-12/verify_audit.py, referenced by nothing. Wire it, archive it (git mv to MyTradingSys/archive/), or add it to MyTradingSys/system/wiring_registry.json with a disposition and a reason.
+    wiring check: FAIL
+    
+    
+    ----------------------------------------------------------------------
+    Ran 8 tests in 6.132s
+    
+    FAILED (failures=1)
+
+[Step 3x] Wiring check: no undeclared unwired code (wiring_scan.py --check)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/wiring_scan.py --check
+  Elapsed: 6.0s
+Step 3x: FAIL
+  Last output:
+    {'LIVE': 233, 'ORPHAN': 52, 'TEST-ONLY': 61, 'DEV-TOOL': 25}
+    FAIL: UNDECLARED ORPHAN: MyTradingSys/research/non_core_layer_audit_2026-10-12/package_report.py, referenced by nothing. Wire it, archive it (git mv to MyTradingSys/archive/), or add it to MyTradingSys/system/wiring_registry.json with a disposition and a reason.
+    FAIL: UNDECLARED ORPHAN: MyTradingSys/research/non_core_layer_audit_2026-10-12/verify_audit.py, referenced by nothing. Wire it, archive it (git mv to MyTradingSys/archive/), or add it to MyTradingSys/system/wiring_registry.json with a disposition and a reason.
+    wiring check: FAIL
+    <unknown>:84: SyntaxWarning: "\." is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\."? A raw string is also an option.
+
+[Step 4] Pytest (math + doc tests)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe -m pytest MyTradingSys/tests -q MyTradingSys/backtest/test_prob_table.py MyTradingSys/backtest/test_prob_table_edge.py MyTradingSys/backtest/test_tom_bt.py MyTradingSys/backtest/test_tom_probe_diag.py MyTradingSys/backtest/test_dax_data.py MyTradingSys/backtest/test_tom_dax_recall.py MyTradingSys/backtest/test_tom_dax_bt.py MyTradingSys/backtest/layers/fabio/v3/tests MyTradingSys/backtest/layers/fabio/test_orderflow_live.py MyTradingSys/backtest/layers/fabio/test_of_backfill.py MyTradingSys/backtest/layers/fabio/test_htf_context_live.py MyTradingSys/execution/tests scripts/dev/test_market_guide.py MyTradingSys/observation/tests
+  Elapsed: 56.0s
+Step 4: PASS
+
+[Step 5] Maven Java tests (skipped with --quick)
+
+[Step 5b] Layer tests (59 modules, 4 parallel processes)
+  Elapsed: 25.8s (4 processes)
+Step 5b: PASS
+
+[Step 5c] Options module tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe -m pytest MyTradingSys/options/tests -q
+  Elapsed: 3.2s
+Step 5c: PASS
+
+[Step 6] Backtest tests (skipped with --quick)
+
+======================================================================
+SUMMARY
+======================================================================
+Step 1: Execution tests: PASS
+Step 2: G1G2 offline test: PASS
+Step 3: Static test suite: PASS
+Step 3b: Guide checker tests: PASS
+Step 3c: Guide in sync: PASS
+Step 3r: Alert rate checker tests: PASS
+Step 3s: Testnet status tests: PASS
+Step 3f: Funnel report tests: PASS
+Step 3dk: Desk board tests: PASS
+Step 3tk: Task card tests: PASS
+Step 3ly: Layer index tests: PASS
+Step 3cx: Layer lab runner tests: PASS
+Step 3tl: Task card lint: PASS
+Step 3q: INDEX/BUGS consistency: PASS
+Step 3p: P4 corrected script tests: PASS
+Step 3t: T093 imbalance tests: PASS
+Step 3d: Quote checker tests: PASS
+Step 3h: Launcher static tests: PASS
+Step 3g: Gate coverage tests: PASS
+Step 3k: sync.py tests: PASS
+Step 3e: DSA worker tests: PASS
+Step 3sh: Screenshot intake tests: PASS
+Step 3mg: Project group map tests: PASS
+Step 3xt: Extra tests: PASS
+Step 3ad: Auto-deploy tests: PASS
+Step 3hy: Daily hygiene tests: PASS
+Step 3ms: make_status tests: PASS
+Step 3cs: Cloud setup hook tests: PASS
+Step 3pc: Prompt contract tests: PASS
+Step 3cr: Control Room tests: PASS
+Step 3bk: Backup snapshot tests: PASS
+Step 3lm: Live mirror tests: PASS
+Step 3w: Wiring gate tests: FAIL
+Step 3x: Wiring check: FAIL
+Step 4: Pytest tests: PASS
+Step 5: Maven tests: SKIP
+Step 5b: Layer tests: PASS
+Step 5c: Options tests: PASS
+Step 6: Backtest tests: SKIP
+======================================================================
+FAILED: 2 step(s)
+  - Step 3w: Wiring gate tests
+  - Step 3x: Wiring check
+exit=1

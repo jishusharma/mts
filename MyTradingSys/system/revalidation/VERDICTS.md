@@ -30,6 +30,8 @@ Fix card from RV01: rv-fix-tom-ledger-date-column (Sonnet, p2).
 | D7 | LOW | PRE_REG_Q33.md item 11 vs matrix_q33.py `half = N // 2` | "First half 2022-2024 / second half 2025-2026" is really split at bar N/2 = about 2024-05-22. Does not change the verdict (0 survivors either way). | arithmetic 167,520 bars x 15 min |
 | D8 | LOW | TOM_TRADE_LEDGER.csv `side` | Management rows carry action words (`stop_tighten`, `partial_exit`, `short(add)`) in a column consumers read as long/short. | CSV |
 
+| D9 | MED | scripts/sched/handoff_lint.py | Nothing guarded duplicate `Qn` ids; threads reused Q43-Q47 on 2026-10-12 (layer index, tidy, audit handoff). Fixed here: lint now errors on an id used twice in the block (test_duplicate_task_id_is_a_lint_error, red first, 31 relay tests green). Not caught: a number reused over time with different text across handoffs (needs the previous handoff); the block was unique after origin's renumbering, Q47 mine became Q48. | lint code + new test |
+
 ## Checked and clean (so nobody repeats it)
 - Q33: every number in MATRIX_REPORT.md matches MATRIX_CELLS.csv (336 cells = 186 + 89 + 61; 0 positive net means at 60 min; 3 positive at 240 min,
   best +0.039 %, q 0.62; event counts per trigger; per-trigger all-filter means). BH step-up and placebo code read: no look-ahead found
