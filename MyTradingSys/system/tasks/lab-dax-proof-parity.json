@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-12T06:08:40Z",
   "commands": [],
   "created": "2026-10-11T20:16:25Z",
   "depends_on": [],
@@ -16,7 +17,7 @@
   "refine_tries": 0,
   "refined_by": "JIS-NUC session 2026-10-12 from the lab audit report (operator: feed scoped tasks to Codex)",
   "refs": [],
-  "result": "",
+  "result": "H1 fixed: volume_spike no longer counted (Java B144), stale rows and snapshots refused, proof ceiling printed as 1; 33 harness tests pass, quick gate green outside the sandbox. reports/2026-10-12_lab-dax-proof-parity.md",
   "scope_in": [
     "MyTradingSys/backtest/tom_dax_bt.py",
     "MyTradingSys/backtest/test_tom_dax_bt.py",
@@ -34,7 +35,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md finding H1"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read finding H1 in MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md (file legend, evidence, proposed fix) and the lines it cites.",
     "Write the test named in Tests in MyTradingSys/backtest/test_tom_dax_bt.py and see it fail on the current code.",
