@@ -247,6 +247,13 @@ def main(argv=None):
     success, output = run_step("3cr", "Control Room page generator tests", cmd3cr)
     results.append(("Step 3cr: Control Room tests", success))
 
+    cmd3rb = [sys.executable, "scripts/dev/test_relay_board.py"]
+    success, output = run_step("3rb", "Claude-GPT relay board tests (shared notes, lanes, pack)", cmd3rb)
+    results.append(("Step 3rb: Relay board tests", success))
+    cmd3af = [sys.executable, "scripts/dev/test_artifacts.py"]
+    success, output = run_step("3af", "Artifact registry tests (one url per page per account)", cmd3af)
+    results.append(("Step 3af: Artifact registry tests", success))
+
     cmd3bk = [sys.executable, "scripts/dev/test_backup_snapshot.py"]
     success, output = run_step("3bk", "Backup snapshot tests (dirty/untracked work reaches the remote)", cmd3bk)
     results.append(("Step 3bk: Backup snapshot tests", success))
