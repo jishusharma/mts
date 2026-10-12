@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-12T08:25:33Z",
   "commands": [
     "python -m pytest scripts/dev/test_make_control_room.py -q",
     "python scripts/dev/make_control_room.py",
@@ -21,7 +22,7 @@
   "refs": [
     "B177"
   ],
-  "result": "",
+  "result": "Layer Board section live: 3 active layer rows, test_layer_board_one_row_per_active_layer green, quick gate green, NUC page v5",
   "scope_in": [
     "scripts/dev/make_control_room.py",
     "scripts/dev/control_room.tpl.html",
@@ -42,7 +43,7 @@
     "MyTradingSys/system/PROJECT_MAP.md:90 (LAYR group)",
     "MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add a `layers` list to control_room.json: one entry per layer in active work (Tom, Fabio and the LAYR rows of PROJECT_MAP.md with an OPEN row), fields id, name, stage (spec/encode/backtest/live-testnet/parked), indicators, setups, rows (registry ids), next. Fill each from a committed file and put that file path in `src`; unknown = 'not recorded', never a guess.",
     "make_control_room.py: build() adds data['layers']; each row carries the config fields plus open-row count and worst severity resolved from BUGS.md for its `rows`; a layer with stage parked is left out.",
