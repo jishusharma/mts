@@ -28,10 +28,13 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`; `MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md`
 - Codex lab reports (newest 4 of 10): `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-unavailable-flow.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-trial-identity.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-session-null.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-readiness-gate.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `rv01-tom-ledger-repairs` ready p1 CODEX: RV01 revalidate Tom ledger repairs (host=JIS-NUC)
+  - `rv02-dax-harness-fixes` ready p1 CODEX: RV02 revalidate DAX harness fixes H1-H8 and holdout isolation (host=JIS-NUC)
   - `tom-encode-spike-fade` refined p1 SONNET: Encode Tom's spike-top fade as a candidate type (recall test on his 7 DAX entries)
   - `tom-holdout-clean-split` ready p1 SONNET: Clean the DAX holdout of ledger days and split Tom's ledger into design and check sets
   - `tom-layer-v2-cost` blocked p1 OPUS: Tom layer v2 spec, part B: per-market proofs, cost, stop-width transfer rule, build cards (Opus research)
   - `tom-layer-v2-spec` refined p1 OPUS: Tom layer v2 spec, part A: setup families + sourced rules from the ledger (Opus research)
+  - `rv-fix-tom-ledger-date-column` ready p2 SONNET: Tom ledger: date column must not carry assumed or prose dates (RV01 finding)
   - `tom-dax-backtest` refined p2 SONNET: Untuned Tom backtest on DAX vs matched-proof BTC rerun
   - `tom-direction-health-vs-sources` raw p2 SONNET: Tom core direction/health rules vs his words: determineDirections gives below_val -> long only (SetupCandidate
   - `tom-probe-prereg` refined p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
@@ -60,6 +63,7 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
   - `fabio-layer-v2-spec` ready p2 OPUS: Fabio layer v2 spec, part A: setup families + sourced rules from his ledger (Opus research)
   - `fabio-ledger-minute-timestamps` ready p2 SONNET: Fabio ledger: read minute timestamps from frame clocks (replay-ready rows)
   - `lab-audit-fabio-ledger-frames` ready p2 CODEX: Audit Fabio's trade ledger against his chart frames and transcripts
+  - `rv05-fabio-ledger-frame-pass` ready p2 CODEX: RV05 Fabio ledger frame-by-frame pass over unread rows (host=JIS-NUC)
   - `fabio-ledger-f13-outcome-provenance-2910` raw p3 SONNET: fabio-ledger: F13 outcome provenance (-2910 vs stop -1760)
   - `fabio-ledger-recompute-entry-from-stp-la` raw p3 SONNET: fabio-ledger: recompute entry from STP label for F8 F12-m2 F13 F13-m1
   - `fabio-ledger-replace-date-2026-with-unkn` raw p3 SONNET: fabio-ledger: replace date 2026 with UNKNOWN for Jpd96/DyS79 session (contract NQ-202512)
@@ -75,7 +79,8 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
   - 2026-10-12 `Q33`: no cell survives (smallest q 0.62); do not wire cross-guidance | `MyTradingSys/research/tom_fabio_guidance_2026-10-12/MATRIX_REPORT.md`
 - Spec / sources: `MyTradingSys/research/tom_fabio_guidance_2026-10-12/GUIDANCE_AUDIT.md`; `MyTradingSys/research/tom_fabio_guidance_2026-10-12/PRE_REG_Q33.md`
 - Code: `MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py`; `MyTradingSys/backtest/layers/test_layer_boundaries.py`
-- Open cards: none
+- Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `rv04-q33-matrix-rerun` ready p2 CODEX: RV04 re-run Q33 matrix to scratch dir and diff cells (host=JIS-NUC)
 
 ## RSI / Malkan / Kurisko (`rsi`)
 - Status: 40/60 levels: tolerance study done; divergence: no edge on any TF.
@@ -177,6 +182,8 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
   - `chart-verify-py-recompute-bb-rsi-stochrs` raw p2 SONNET: chart_verify.py: recompute BB/RSI/StochRSI/volume/OI/delta-step for any CoinGlass timeframe from fapi at the s
   - `live-loop-one-owner-guard` ready p2 JIS-NB: Live loop one-owner guard: start verb refuses when another host's heartbeat is fresh, fails closed (DEVICES.md
   - `live-mirror-stale-published-2026-10-11-2` raw p2 JIS-NB: Live mirror stale: published 2026-10-11 20:09Z, 19 h old at 15:25Z 10-12; NUC reads cannot check HALT, layer f
+  - `rv06-live-read-claims` ready p2 CODEX: RV06 recompute live-read MATCH/MISMATCH claims from engine JSON and klines (host=JIS-NUC)
+  - `rv07-layer-tooling-revalidate` ready p2 SONNET: RV07 layer tooling second look and shot.py outcome guards (host=any)
   - `identify-the-coinglass-net-delta-panel-u` raw p3 SONNET: Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 1
   - `mts-cbp-integration-land-one-cbp-candida` ready p3 SONNET: MTS-CBP integration: land one CBP candidate on the real queue
   - `score-context-reads-automatically-carrie` raw p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 

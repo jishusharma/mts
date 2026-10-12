@@ -76,6 +76,12 @@ def lint(text, root, want="go", host=None):
     tasks = parse_tasks(lines)
     if not tasks:
         errs.append("no tasks: add lines `   Q1. <task> ... DONE when: <observable>`")
+    seen = {}
+    for t in tasks:
+        seen[t["id"]] = seen.get(t["id"], 0) + 1
+    for tid, n in seen.items():
+        if n > 1:
+            errs.append("%s is used twice in the block: two threads reused one number; renumber so each task id is unique" % tid)
     for t in tasks:
         if t["state"] != "open":
             continue

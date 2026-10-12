@@ -200,6 +200,13 @@ class LintTest(unittest.TestCase):
         r = run(self.home, "handoff", "--file", str(self.f), "--stop", "all done or blocked", extra=NOLINT_OFF)
         self.assertEqual(r.returncode, 0, r.stdout)
 
+    def test_duplicate_task_id_is_a_lint_error(self):
+        dup = GOOD.replace("   Q3. (after Q2) engine run.", "   Q2. DONE older task reusing the id." + NL + "   Q3. (after Q2) engine run.")
+        r = self.lint(dup, "--want", "go")
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("Q2 is used twice", r.stdout)
+        self.assertEqual(self.lint(GOOD, "--want", "go").returncode, 0)
+
     def test_host_tag_filters_go_for_other_hosts(self):
         nb = GOOD.replace("Q2. Read set", "Q2. host=JIS-NB Read set")
         self.assertEqual(self.lint(nb, "--want", "go").returncode, 0)  # host=None: any host may run it
