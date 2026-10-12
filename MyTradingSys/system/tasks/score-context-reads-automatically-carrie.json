@@ -1,0 +1,31 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T15:34:43Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "score-context-reads-automatically-carrie",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [
+    "live_engine"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the next read instead of by hand; T092 gap"
+}

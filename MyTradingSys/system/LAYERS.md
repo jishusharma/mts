@@ -148,7 +148,8 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Spec / sources: `MyTradingSys/backtest/layers/FORMULAS.md`
 - Code: `MyTradingSys/backtest/bigtrade`
 - Other results: `MyTradingSys/research/volume_2026-10-09`; `MyTradingSys/research/candle_patterns_2026-10-04`; `MyTradingSys/research/setup_alpha_beta_2026-10-10`; `MyTradingSys/research/bigtrade_2026-10-09`
-- Open cards: none
+- Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `time-adjusted-volume-context-line-for-th` raw p3 SONNET: Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-o
 
 ## Live engine, execution and live-market reads (feeds every layer) (`live_engine`)
 - Status: Testnet HALT since 2026-10-12 09:46Z (executor fail_closed); supervisor clears it. Live-market screenshot reads file findings as task cards.
@@ -159,8 +160,13 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Roadmap: `MyTradingSys/system/NEXT_SESSION.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `exec-halt-entry-10031` raw p1 JIS-NB: HALT since 2026-10-12 09:46Z: executor fail_closed on entry_market rejected 10031 invalid_args_for_instrument 
+  - `chart-verify-py-recompute-bb-rsi-stochrs` raw p2 SONNET: chart_verify.py: recompute BB/RSI/StochRSI/volume/OI/delta-step for any CoinGlass timeframe from fapi at the s
   - `live-loop-one-owner-guard` ready p2 JIS-NB: Live loop one-owner guard: start verb refuses when another host's heartbeat is fresh, fails closed (DEVICES.md
+  - `live-mirror-stale-published-2026-10-11-2` raw p2 JIS-NB: Live mirror stale: published 2026-10-11 20:09Z, 19 h old at 15:25Z 10-12; NUC reads cannot check HALT, layer f
+  - `identify-the-coinglass-net-delta-panel-u` raw p3 SONNET: Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 1
+  - `score-context-reads-automatically-carrie` raw p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
   - `state-machine-vwap-cvd-vs-klines` raw p3 SONNET: State machine session VWAP/CVD disagree with klines: 2026-10-12 13:08Z state_code.json cum_pv/cum_vol gives 83
+  - `one-timeframe-map-for-the-whole-toolchai` raw p4 SONNET: One timeframe map for the whole toolchain: capture.TF_MINUTES lacked 8h (CoinGlass button) while holding 7h; g
 
 ## Cross-cutting
 
