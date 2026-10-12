@@ -30,9 +30,9 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `rv02-dax-harness-fixes` ready p1 CODEX: RV02 revalidate DAX harness fixes H1-H8 and holdout isolation (host=JIS-NUC)
   - `tom-encode-spike-fade` refined p1 SONNET: Encode Tom's spike-top fade as a candidate type (recall test on his 7 DAX entries)
-  - `tom-holdout-clean-split` ready p1 SONNET: Clean the DAX holdout of ledger days and split Tom's ledger into design and check sets
+  - `tom-holdout-clean-split` refined p1 SONNET: Clean the DAX holdout of ledger days and split Tom's ledger into design and check sets
   - `tom-layer-v2-cost` blocked p1 OPUS: Tom layer v2 spec, part B: per-market proofs, cost, stop-width transfer rule, build cards (Opus research)
-  - `tom-layer-v2-spec` refined p1 OPUS: Tom layer v2 spec, part A: setup families + sourced rules from the ledger (Opus research)
+  - `tom-layer-v2-spec` ready p1 OPUS: Tom layer v2 spec, part A: setup families + sourced rules from the ledger (Opus research)
   - `rv-fix-tom-ledger-date-column` ready p2 SONNET: Tom ledger: date column must not carry assumed or prose dates (RV01 finding)
   - `tom-dax-backtest` refined p2 SONNET: Untuned Tom backtest on DAX vs matched-proof BTC rerun
   - `tom-direction-health-vs-sources` raw p2 SONNET: Tom core direction/health rules vs his words: determineDirections gives below_val -> long only (SetupCandidate
@@ -60,10 +60,11 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `fabio-layer-v2-markets` refined p2 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
-  - `fabio-layer-v2-spec` ready p2 OPUS: Fabio layer v2 spec, part A: setup families + sourced rules from his ledger (Opus research)
+  - `fabio-layer-v2-spec` blocked p2 OPUS: Fabio layer v2 spec, part A: setup families + sourced rules from his ledger (Opus research)
   - `fabio-ledger-minute-timestamps` ready p2 SONNET: Fabio ledger: read minute timestamps from frame clocks (replay-ready rows)
-  - `lab-audit-fabio-ledger-frames` ready p2 SONNET: Audit Fabio's trade ledger against his chart frames and transcripts
-  - `rv05-fabio-ledger-frame-pass` ready p2 SONNET: RV05 Fabio ledger frame-by-frame pass over unread rows (host=JIS-NUC)
+  - `fabio-video-prescreen` raw p2 SONNET: Fabio video pre-screen: list per 250 s window whether a frame shows an order ticket or position line, so only 
+  - `lab-audit-fabio-ledger-frames` ready p2 CODEX: Audit Fabio's trade ledger against his chart frames and transcripts
+  - `rv05-fabio-ledger-frame-pass` ready p2 CODEX: RV05 Fabio ledger frame-by-frame pass over unread rows (host=JIS-NUC)
   - `fabio-ledger-f13-outcome-provenance-2910` raw p3 SONNET: fabio-ledger: F13 outcome provenance (-2910 vs stop -1760)
   - `fabio-ledger-recompute-entry-from-stp-la` raw p3 SONNET: fabio-ledger: recompute entry from STP label for F8 F12-m2 F13 F13-m1
   - `fabio-ledger-replace-date-2026-with-unkn` raw p3 SONNET: fabio-ledger: replace date 2026 with UNKNOWN for Jpd96/DyS79 session (contract NQ-202512)
@@ -167,7 +168,10 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Code: `MyTradingSys/backtest/bigtrade`
 - Other results: `MyTradingSys/research/volume_2026-10-09`; `MyTradingSys/research/candle_patterns_2026-10-04`; `MyTradingSys/research/setup_alpha_beta_2026-10-10`; `MyTradingSys/research/bigtrade_2026-10-09`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `pooled-short-lookback-trend-tsmom-30d-sm` raw p3 DSA: Pooled short-lookback trend (TSMOM 30d, SMA50/100, 4h Donchian 20/10) on sealed 2025-07..2026-09 BTC holdout: 
   - `time-adjusted-volume-context-line-for-th` raw p3 SONNET: Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-o
+  - `fetch-ethusdt-perp-1h-klines-funding-202` raw p4 DSA: Fetch ETHUSDT perp 1h klines + funding 2020-2026 (fetch_binance_archive.py) and re-run research/published_stra
+  - `funding-carry-with-real-spot-basis-margi` raw p4 SONNET: Funding carry with real spot basis, margin and borrow: net 15.4 -> 12.1 -> 6.2 %/yr decay in published_strats_
 
 ## Live engine, execution and live-market reads (feeds every layer) (`live_engine`)
 - Status: Testnet HALT since 2026-10-12 09:46Z (executor fail_closed); supervisor clears it. Live-market screenshot reads file findings as task cards.
@@ -181,7 +185,7 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
   - `chart-verify-py-recompute-bb-rsi-stochrs` raw p2 SONNET: chart_verify.py: recompute BB/RSI/StochRSI/volume/OI/delta-step for any CoinGlass timeframe from fapi at the s
   - `live-loop-one-owner-guard` ready p2 JIS-NB: Live loop one-owner guard: start verb refuses when another host's heartbeat is fresh, fails closed (DEVICES.md
   - `live-mirror-stale-published-2026-10-11-2` raw p2 JIS-NB: Live mirror stale: published 2026-10-11 20:09Z, 19 h old at 15:25Z 10-12; NUC reads cannot check HALT, layer f
-  - `rv06-live-read-claims` ready p2 SONNET: RV06 recompute live-read MATCH/MISMATCH claims from engine JSON and klines (host=JIS-NUC)
+  - `rv06-live-read-claims` ready p2 CODEX: RV06 recompute live-read MATCH/MISMATCH claims from engine JSON and klines (host=JIS-NUC)
   - `rv07-layer-tooling-revalidate` ready p2 SONNET: RV07 layer tooling second look and shot.py outcome guards (host=any)
   - `identify-the-coinglass-net-delta-panel-u` raw p3 SONNET: Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 1
   - `mts-cbp-integration-land-one-cbp-candida` ready p3 SONNET: MTS-CBP integration: land one CBP candidate on the real queue
