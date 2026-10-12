@@ -202,6 +202,10 @@
     {
       "date": "2026-10-12",
       "what": "New Layer Board section under the road: one line per layer being worked on (stage, indicators, setups, open rows, next step, source file). 'not recorded' means no committed file states it. Layout waits for your approval (B177)."
+    },
+    {
+      "date": "2026-10-12",
+      "what": "Claude-GPT cycle section: shared relay notes, task lanes for Claude and GPT, claims, relay runs, Codex reports. Inbox gets a Note for the relay kind."
     }
   ],
   "finding_closed": {

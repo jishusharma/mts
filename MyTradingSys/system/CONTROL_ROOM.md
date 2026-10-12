@@ -1,5 +1,6 @@
 # CONTROL ROOM - the operator's one page, and how Claude keeps it alive
 
+Pages are listed in `system/artifacts/registry.json` (one url per page per account; `scripts/dev/artifacts.py`).
 Page: https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su (pinned in the operator's claude.ai sidebar; private to the operator).
 Second account (jishu.awgp@gmail.com, NUC): the same page is https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN. It declares `db` + `user`
 (republish keeps them; never pass `capabilities: {}`). Its Inbox was seeded 2026-10-12 from OPERATOR_INBOX.md (41 items, status answered/filed).
@@ -29,6 +30,7 @@ The operator has two inputs on the page, both stored in the artifact's db (not i
      the item file, set `ref` to the row id(s) (space-separated), status `filed`. Then capture a raw task card: `python scripts/dev/tasks.py new "<title>" --ref <row> --from-inbox <item id>`
      (system/TASK_REFINEMENT.md); the refiner scopes it, you do not. The page then shows each row's live registry status and
      title under the operator's text on every rebuild (the resolution); set `done` with a one-line result when all refs close.
+   - note -> (Claude-GPT cycle) append the item VERBATIM to `MyTradingSys/system/RELAY_NOTES.md` with `python scripts/dev/relay_board.py add --from jis --to <gpt|claude|all> "<text>"` (to = who it is for; default all), status `filed`, `ref` = the note id. GPT reads it through `codex_pack.py`.
    - page -> change `control_room.json` or the template (+ test), add a `changelog` line, status `done`, say what changed.
    - Can't or won't -> status `declined` with the reason in `reply`. Never leave an item `new` past one pickup.
 3a. An Inbox reply that answers a card's `asks` question (the page shows "Question for you"): copy the answer into that card's `note`, `tasks.py apply-op <id> retry`, status `done`.
