@@ -89,6 +89,8 @@ All five flow into the session-close operator decision block (Wave 9).
 - L98 wrapper died 2026-09-18: restarted; supervisor chain live.
 - L120 mojibake report: verified clean; Build-Check label corrected.
 
+- 2026-10-12 d9306fe relay host=<NAME> task tag: kick lints the committed handoff for its own host and IDLEs when every open task is another host's; handoff/lint ignore host unless --host. 29 relay tests green (tests/test_relay.py).
+
 ## LEARNED FACTS (documentation, not a fix queue)
 
 Worker W5 classified these as documentation or process rules. Kept for reference; no action expected.
