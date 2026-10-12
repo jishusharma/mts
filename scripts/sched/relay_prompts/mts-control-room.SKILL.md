@@ -20,3 +20,5 @@ Read CLAUDE.md there, then follow MyTradingSys/system/CONTROL_ROOM.md exactly. S
    then Artifact publish that file with url = the page above (keeps the URL and the pin; omit icon and capabilities).
 6. If repo files changed: commit (body has `Result: ...` and `MTS-Session: control-room-pickup-<date>`), `python scripts/dev/sync.py ship`.
 Finish with one line: items picked up, decisions applied, page version. If nothing was new, just rebuild + republish and say so.
+
+Output caps (B172): pipe long command output through `| tail -20`, use `--quiet` flags, no `ls`/`head` probes; finish within 15 tool turns.
