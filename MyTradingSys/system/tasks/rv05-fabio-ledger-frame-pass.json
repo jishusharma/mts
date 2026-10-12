@@ -5,6 +5,7 @@
   "created": "2026-10-12T17:18:12Z",
   "depends_on": [],
   "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "effort": "medium",
   "from_inbox": "",
   "goal": "Follow MyTradingSys/system/revalidation/RV05_fabio_ledger_frame_pass.md exactly; report per MyTradingSys/system/revalidation/_COMMON.md. host=JIS-NUC (frames on F:).",
   "id": "rv05-fabio-ledger-frame-pass",
@@ -14,6 +15,7 @@
     "fabio"
   ],
   "live_path": false,
+  "model": "gpt-6-astra",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
