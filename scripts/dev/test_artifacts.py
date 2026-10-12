@@ -36,7 +36,10 @@ class Registry(unittest.TestCase):
         self.assertIn("REPUBLISH    MTS Control Room", text)
         self.assertIn("RECORD URL   CBP Desk", text)
         self.assertIn("NO COPY      Tom and Fabio", text)
-        self.assertIn("OPERATOR UNPIN+DELETE  CBP Dashboard", text)
+        self.assertNotIn("CBP Dashboard", text)
+        r = copy.deepcopy(self.reg)
+        r["pages"][0]["status"] = "retire"
+        self.assertIn("OPERATOR UNPIN+DELETE  MTS Control Room", "\n".join(af.plan(r, "jishu.sharma")))
         self.assertIn("PUBLISH NEW  MTS Layer Map", text)
         with self.assertRaises(SystemExit):
             af.plan(self.reg, "nobody")
