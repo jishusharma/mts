@@ -78,7 +78,7 @@ KINDS = ["coded"]                     # primary: Java per-instrument net RR; no 
 # `deltas[i] > 0 && close < open`) needs the delta sign, and DAX has delta == 0 exactly, so it can never fire there;
 # "masked exactly as on DAX" requires it off on BTC too (deviation from the PRE_REG list, stated in the report).
 MASK_OF = ("absorption", "cvd_aligned", "delta_flip", "finished_auction")
-PROOF_COUNT_SCHEMA = "java-b144-no-volume-spike-net-rr-primary-v2"
+PROOF_COUNT_SCHEMA = "java-b144-no-volume-spike-net-rr-primary-unavailable-flow-v3"
 
 
 # ---------------------------------------------------------------- proofs: parity count, masking, re-ranking
@@ -148,7 +148,8 @@ def rescore(s, mask=MASK_OF, shift=0, rerank=True):
     the masked proofs, plus `shift`), score.raw = min(95, 50 + 7 * proof_count + bonus) (java 175-181) and re-ranks by
     (raw desc, tfRank desc), stable, as java 183-188 (only the three candidates Java printed are visible: a fourth that
     masking would lift into the top 3 is unknowable). Returns the number of candidates whose count the mask changed.
-    A candidate whose proof JSON does not reproduce its own proof_count raises ValueError (fail closed)."""
+    A candidate whose proof JSON does not reproduce its own proof_count raises ValueError (fail closed).
+    Masking cvd_aligned also marks snapshot CVD unavailable before downstream direction/verdict gates."""
     cands = s.get("setup_candidates") or []
     changed, touched = 0, False
     for c in cands:
@@ -174,11 +175,21 @@ def rescore(s, mask=MASK_OF, shift=0, rerank=True):
         for i, c in enumerate(vis, 1):
             c["rank"] = i
         s["setup_candidates"] = vis + rest
+    if "cvd_aligned" in mask:
+        # H6: half-volume CFD placeholders have zero delta, but Java labels
+        # zero as negative. Missing aggressor data is neither bearish nor bullish.
+        # Clear both the direction check's last_3_delta and the verdict's slope;
+        # do not expose placeholder numeric CVD as an observed zero either.
+        s["cvd"] = dict(availability="UNAVAILABLE", value=None, slope="unavailable",
+                        last_3_delta=[], cvd_recent={}, confidence="UNAVAILABLE")
+        conditions = s.get("conditions") or {}
+        conditions["cvd_slope"] = "unavailable"
+        s["conditions"] = conditions
     return changed
 
 
 def require_proof_schema(obj, path):
-    """Reject pre-B144 row caches, including unversioned/empty caches; never silently reuse them."""
+    """Reject incompatible adapter row caches, including unversioned/empty caches; never silently reuse them."""
     if obj.get("proof_count_schema") != PROOF_COUNT_SCHEMA:
         raise ValueError("incompatible proof-count schema in %s; regenerate snapshots with current Java "
                          "and rerun rows --force" % path)
