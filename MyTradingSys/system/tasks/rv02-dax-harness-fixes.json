@@ -19,6 +19,12 @@
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-12T18:07:06Z",
+    "desk": "20261012-180706-rv02-dax-harness-fixes",
+    "to": "DSA",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/system/revalidation/RV02_dax_harness_fixes.md",
