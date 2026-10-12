@@ -102,6 +102,36 @@ class Rules(unittest.TestCase):
         self.assertEqual(L.allow(L.go_down(L.blank(), "manual", "x", NOW), NOW + timedelta(days=1)), "")
 
 
+class Window(unittest.TestCase):
+    RL = {"primary": {"used_percent": 99.0, "resets_at": int(datetime(2026, 10, 12, 21, 2, tzinfo=timezone.utc).timestamp())},
+          "secondary": {"used_percent": 58.0, "resets_at": int(datetime(2026, 10, 18, 13, 41, tzinfo=timezone.utc).timestamp())}}
+
+    def test_spent_window_marks_lane_down_until_reset_and_reroutes(self):
+        now = NOW.timestamp()
+        self.assertTrue(R.hold(self.RL, now))
+        end = R.hold_until(self.RL, now)
+        self.assertEqual(end, self.RL["primary"]["resets_at"])
+        st = L.go_down(L.blank(), "window", R.hold(self.RL, now), NOW, datetime.fromtimestamp(end, timezone.utc))
+        self.assertEqual((st["status"], st["reason"], st["until"]), ("down", "window", "2026-10-12T21:02:00Z"))
+        self.assertEqual(L.allow(st, NOW), "")                                    # holds, and never probes (a probe would only hit the limit)
+        self.assertEqual(L.allow(st, NOW + timedelta(hours=2)), "")
+        pl = L.plan(st, [card("a-audit"), card("b-run", "run")], {}, set())
+        self.assertEqual(len(pl["reroute"]), 2)
+
+    def test_window_lane_returns_by_itself_after_reset_and_cards_go_back(self):
+        st = L.go_down(L.blank(), "window", "x", NOW, datetime(2026, 10, 12, 21, 2, tzinfo=timezone.utc))
+        before = L.sweep_state(st, datetime(2026, 10, 12, 21, 1, tzinfo=timezone.utc))
+        self.assertEqual(before["status"], "down")
+        after = L.sweep_state(st, datetime(2026, 10, 12, 21, 3, tzinfo=timezone.utc))
+        self.assertEqual((after["status"], after["until"]), ("up", ""))
+        self.assertEqual(L.allow(st, datetime(2026, 10, 12, 21, 3, tzinfo=timezone.utc)), "go")
+        c = card("a-audit", reroute={"to": "DSA", "desk": "d1"})
+        self.assertEqual(len(L.plan(after, [c], {"d1": {"status": "pending"}}, set())["cancel"]), 1)
+
+    def test_window_already_reset_is_not_held(self):
+        self.assertEqual(R.hold(self.RL, self.RL["primary"]["resets_at"] + 1), "")
+        self.assertEqual(R.hold_until(self.RL, self.RL["primary"]["resets_at"] + 1), 0)
+
 class Reroute(unittest.TestCase):
     def setUp(self):
         self.down = L.record_run(L.blank(), "LIMIT", "credits", NOW)

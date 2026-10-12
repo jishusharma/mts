@@ -129,6 +129,20 @@ def hold(rl, now):
     return ""
 
 
+def hold_until(rl, now):
+    """Epoch second when the held allowance window resets (the latest one when both are held), else 0."""
+    ends = [(rl or {}).get(k, {}).get("resets_at") or 0 for k, cap in (("primary", WINDOW_STOP), ("secondary", WEEK_STOP))
+            if ((rl or {}).get(k) or {}).get("used_percent", 0) >= cap]
+    return max([e for e in ends if e > now] or [0])
+
+
+def mark_window_down(why, until_epoch, now_dt):
+    """The allowance is spent: mark the GPT lane down until the reset so lane_health reroutes the ready CODEX cards (no card waits on GPT)."""
+    lane = lane_health.load(REPO)
+    until = datetime.fromtimestamp(until_epoch, timezone.utc)
+    lane_health.save(REPO, lane_health.go_down(lane, "window", why, now_dt, until))
+
+
 def budget_line(rl, now):
     if not rl:
         return "Codex allowance: no reading yet"
@@ -357,9 +371,13 @@ def cmd_next(a):
     if not card:
         print(f"IDLE no CODEX card to run ({len(cards)} ready; claimed or out of tries are skipped)")
         return 0
-    why = "" if a.dry else hold(budget(home), time.time())
+    rl = None if a.dry else budget(home)
+    why = "" if a.dry else hold(rl, time.time())
     if why:
-        print(f"IDLE {why}; {card['id']} waits")
+        end = hold_until(rl, time.time())
+        if end:
+            mark_window_down(why, end, utc())
+        print(f"IDLE {why}; lane marked down until the reset, cards move to DSA/Claude at the next sweep ({card['id']})")
         return 0
     return run_card(card, a.dry, probing=gate == "probe")
 
@@ -382,6 +400,9 @@ def cmd_tick(a):
         (runs / "last_lane.txt").write_text(sw.stdout + sw.stderr, encoding="utf-8", newline="\n")   # sweep failing must not stop the lab
         r = subprocess.run([sys.executable, str(wt / "scripts/dev/codex_run.py"), "next"], cwd=str(wt), capture_output=True, text=True)
         code, line = r.returncode, (r.stdout.strip().splitlines() or [r.stderr.strip()[-300:] or "no output"])[-1]
+        if "lane marked down" in line:   # next just found the window spent: reroute now, not at the next tick
+            sw = subprocess.run([sys.executable, str(wt / "scripts/dev/lane_health.py"), "sweep", "--apply", "--ship"], cwd=str(wt), capture_output=True, text=True)
+            (runs / "last_lane.txt").write_text(sw.stdout + sw.stderr, encoding="utf-8", newline="\n")
     except SystemExit as e:
         code, line = 1, str(e)
     except subprocess.CalledProcessError as e:

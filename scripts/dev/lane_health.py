@@ -8,7 +8,8 @@
 
 State: MyTradingSys/system/lane_state.json (git, so every host and the Control Room read the same). Rules, in one place:
 - DOWN at once when a run died on an out-of-credits / usage-limit error (reason credits | limit), after 3 runs in a row that
-  wrote nothing (reason failing), or when the lab host's heartbeat is older than HEARTBEAT_DOWN_S (reason heartbeat).
+  wrote nothing (reason failing), or when the lab host's heartbeat is older than HEARTBEAT_DOWN_S (reason heartbeat), or when the allowance
+  window is spent (codex_run: 5-hour >= 85% / week >= WEEK_STOP; reason window, `until` = the reset: the lane comes back by itself, no probe).
 - A down lane lets ONE card run as a probe every PROBE_S (crucial / gpt_only cards first, since only GPT may do them). A run that
   ends DONE or BLOCKED brings the lane back up; a fresh heartbeat brings a heartbeat-down lane back up.
 - While down, a ready CODEX card is moved off the lane unless the card is flagged `crucial` or `gpt_only` (default off):
@@ -79,7 +80,7 @@ def error_line(text):
 # ---- state ----------------------------------------------------------------------------------------------------------------
 def blank():
     return {"status": "up", "reason": "", "detail": "", "since": "", "heartbeat": "", "last_ok": "", "last_error": "",
-            "last_probe": "", "fails": 0, "resumed": ""}
+            "last_probe": "", "fails": 0, "resumed": "", "until": ""}
 
 
 def load(repo=REPO):
@@ -97,11 +98,12 @@ def save(repo, st):
     return p
 
 
-def go_down(st, reason, detail, now):
+def go_down(st, reason, detail, now, until=None):
+    """`until` (datetime): the allowance window resets then; the lane comes back up on its own (reason "window")."""
     st = dict(st)
     if st["status"] != "down":
         st.update(status="down", since=iso(now))
-    st.update(reason=reason, detail=detail, last_error=iso(now))
+    st.update(reason=reason, detail=detail, last_error=iso(now), until=iso(until) if until else "")
     return st
 
 
@@ -109,7 +111,7 @@ def go_up(st, now, why=""):
     st = dict(st)
     if st["status"] == "down":
         st["resumed"] = iso(now)
-    st.update(status="up", reason="", detail=why, since="", fails=0, last_ok=iso(now))
+    st.update(status="up", reason="", detail=why, since="", fails=0, last_ok=iso(now), until="")
     return st
 
 
@@ -133,6 +135,8 @@ def beat(st, now):
 def sweep_state(st, now):
     """Heartbeat rule. No heartbeat ever recorded = no signal yet (never down on a fresh install)."""
     hb = epoch(st["heartbeat"])
+    if st["status"] == "down" and st["reason"] == "window" and now.timestamp() >= epoch(st["until"]):
+        return go_up(st, now, "allowance window reset")
     if not hb:
         return st
     if now.timestamp() - hb > HEARTBEAT_DOWN_S and st["status"] == "up":
@@ -145,6 +149,8 @@ def sweep_state(st, now):
 def allow(st, now):
     """'go' (lane up), 'probe' (down, one card may try), '' (down, hold)."""
     if st["status"] == "up":
+        return "go"
+    if st["reason"] == "window" and now.timestamp() >= epoch(st["until"]):
         return "go"
     if st["reason"] in HOLD_REASONS and now.timestamp() - max(epoch(st["since"]), epoch(st["last_probe"])) >= PROBE_S:
         return "probe"
@@ -348,6 +354,8 @@ def sweep(repo=REPO, now=None, do_apply=False, do_ship=False, beating=False):
         lines = [f"{c['id']} would go to {to}" for c, to in pl["reroute"]] + [f"{c['id']} PAUSED" for c, _ in pl["paused"]]
     if st != old:
         changed.append(str(save(repo, st).relative_to(repo)))
+    elif git(repo, "status", "--porcelain", "--", STATE, check=False).stdout.strip():
+        changed.append(STATE)   # state written by codex_run (window spent): ship it too, a dirty tree would stop the next tick
     shipped = ""
     if do_ship and changed:
         ok = commit_ship(repo, sorted(set(changed)), f"lane health: GPT {st['status']}" + (f" ({st['reason']})" if st["reason"] else "")
