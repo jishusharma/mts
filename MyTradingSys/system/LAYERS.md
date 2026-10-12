@@ -185,6 +185,7 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
   - `rv06-live-read-claims` ready p2 CODEX: RV06 recompute live-read MATCH/MISMATCH claims from engine JSON and klines (host=JIS-NUC)
   - `rv07-layer-tooling-revalidate` ready p2 SONNET: RV07 layer tooling second look and shot.py outcome guards (host=any)
   - `identify-the-coinglass-net-delta-panel-u` raw p3 SONNET: Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 1
+  - `mts-cbp-integration-land-one-cbp-candida` ready p3 SONNET: MTS-CBP integration: land one CBP candidate on the real queue
   - `score-context-reads-automatically-carrie` raw p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
   - `state-machine-vwap-cvd-vs-klines` raw p3 SONNET: State machine session VWAP/CVD disagree with klines: 2026-10-12 13:08Z state_code.json cum_pv/cum_vol gives 83
   - `one-timeframe-map-for-the-whole-toolchai` raw p4 SONNET: One timeframe map for the whole toolchain: capture.TF_MINUTES lacked 8h (CoinGlass button) while holding 7h; g
