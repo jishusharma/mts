@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MTS Layer Map</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#16191d;--mute:#5d6672;--line:#dde1e6;--acc:#1f5fbf;--ok:#1a7f45;--bad:#b3261e;--warn:#9a6700;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111418;--card:#1a1f25;--ink:#e8eaed;--mute:#9aa4b0;--line:#2c333b;--acc:#6aa3ff;--ok:#5cc489;--bad:#ff8a80;--warn:#e3b341;--chip:#262d35}}
+:root[data-theme="dark"]{--bg:#111418;--card:#1a1f25;--ink:#e8eaed;--mute:#9aa4b0;--line:#2c333b;--acc:#6aa3ff;--ok:#5cc489;--bad:#ff8a80;--warn:#e3b341;--chip:#262d35}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,Segoe UI,sans-serif}
+main{max-width:1180px;margin:0 auto;padding:16px}
+h1{font-size:1.35rem;margin:.2em 0}h2{font-size:1.1rem;margin:1.2em 0 .4em}
+.sub{color:var(--mute);font-size:.88rem}
+.banner{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--warn);padding:10px 12px;border-radius:6px;margin:12px 0}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+nav button{background:var(--card);color:var(--ink);border:1px solid var(--line);padding:7px 12px;border-radius:6px;cursor:pointer;font:inherit}
+nav button.on{border-color:var(--acc);color:var(--acc);font-weight:600}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px;margin:10px 0}
+.chip{display:inline-block;background:var(--chip);border-radius:10px;padding:1px 8px;margin:1px 2px;font-size:.8rem}
+.v{font-weight:600}.v.bad{color:var(--bad)}.v.warn{color:var(--warn)}.v.ok{color:var(--ok)}
+.nr{color:var(--mute);font-style:italic}
+table{border-collapse:collapse;width:100%;font-size:.85rem}th,td{border:1px solid var(--line);padding:4px 6px;text-align:left;vertical-align:top}
+th{background:var(--chip);position:sticky;top:0}
+.scroll{overflow:auto;max-height:70vh}
+.dot{display:inline-block;width:14px;height:14px;border-radius:3px;background:var(--acc)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+label{display:block;font-size:.85rem;margin:6px 0 2px;color:var(--mute)}
+input[type=text],select,textarea{width:100%;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:5px;padding:6px;font:inherit}
+textarea{font-family:ui-monospace,Consolas,monospace;font-size:.82rem;min-height:130px}
+button.act{background:var(--acc);color:#fff;border:0;border-radius:6px;padding:8px 14px;cursor:pointer;font:inherit}
+input[type=search]{width:100%;max-width:340px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:7px}
+.src-sourced{color:var(--ok)}.src-NO-SOURCE{color:var(--bad)}.src-grid,.src-code{color:var(--mute)}
+details summary{cursor:pointer}
+</style></head><body><main>
+<h1>MTS Layer and Backtest Map</h1>
+<div class="sub" id="meta"></div>
+<div class="banner"><b>This page cannot run a backtest.</b> It is a static map generated from repo files. The configurator at the end only writes a task card
+you paste into <code>NEXT_SESSION.md</code>; a relay session on the host you name then runs it. Refresh: <code>python scripts/dev/make_layer_map.py</code>, then republish.</div>
+<nav id="tabs"></nav>
+
+<section id="t-over"></section>
+<section id="t-bt"><input type="search" id="q" placeholder="filter: layer, verdict word, market..."><div id="btlist"></div></section>
+<section id="t-mx"><p class="sub">Rows are backtests, columns are layers. A dot means the layer was on in that run (as recorded). Click a row title on the Backtests tab for the detail.</p><div class="scroll" id="matrix"></div></section>
+<section id="t-ly"><div id="layers"></div></section>
+<section id="t-cfg">
+ <div class="card"><b>Pick layers and parameters</b>
+  <p class="sub">Choices come from what past runs swept. A parameter marked <span class="src-NO-SOURCE">NO-SOURCE</span> has no trader quote: the card tells the run to flag it, never tune it (provenance rule). A new run is a trial: pre-register first, dev data only.</p>
+  <div id="cfglayers" class="grid2"></div></div>
+ <div class="card grid2">
+  <div><label>Task name</label><input type="text" id="c-name" value="layer-combo-probe">
+   <label>Host</label><select id="c-host"><option>JIS-NUC</option><option>JIS-NB</option><option>any</option></select>
+   <label>Q number</label><input type="text" id="c-q" value="Q42"></div>
+  <div><label>Market and data</label><select id="c-mkt"><option>BTCUSDT 1m archive 2022-01-01..2026-10-11</option><option>DAX / GER40 archive (F:/MTS/data/dax_archive)</option><option>other (state it in the note)</option></select>
+   <label>Split</label><select id="c-split"><option>70/30 chronological IS/OOS, holdout sealed</option><option>dev / validation / sealed holdout</option></select>
+   <label>Fees</label><select id="c-fee"><option>10 bps RT taker + 2 bps slip + funding</option><option>FEES_ALL_TAKER 0.10% RT</option><option>FEES_FDAX 0.000005 per side</option></select></div>
+  <div><label>Extra note (optional)</label><input type="text" id="c-note" value="">
+   <label>Priority</label><select id="c-prio"><option>p3</option><option>p2</option><option>p1</option><option>p4</option></select>
+   <p style="margin-top:12px"><button class="act" id="gen">Build task card</button></p></div>
+ </div>
+ <div class="card"><b>Warnings</b><div id="warn" class="sub">Pick layers, then build.</div></div>
+ <div class="card"><b>Paste into NEXT_SESSION.md</b> <button class="act" id="copy" style="float:right">Copy</button>
+  <textarea id="out" readonly></textarea>
+  <p class="sub">Then: run <code>python scripts/sched/relay.py lint --file MyTradingSys/system/NEXT_SESSION.md</code>, commit, <code>sync.py ship</code>. The card is one line, one session, with a DONE when.</p></div>
+</section>
+<section id="t-about"><div id="about"></div></section>
+</main>
+<script>
+const D=__DATA__;
+const NR='<span class="nr">not recorded</span>';
+const nz=v=>(v===null||v===undefined||v==='')?NR:esc(String(v));
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function vcls(v){v=(v||'').toLowerCase();if(/smoke|not read|not recorded|descriptive|no-source/.test(v))return'warn';if(/no edge|fail|no cell|no validated|no anchor|no verdict|insufficient/.test(v))return'bad';if(/edge|pass|survive/.test(v))return'ok';return''}
+const LY={};D.layers.forEach(l=>LY[l.id]=l);
+document.getElementById('meta').textContent='Data as of '+D.asof+' - generated '+D.generated+' from '+D.commit+' - '+D.backtests.length+' backtests, '+D.layers.length+' layers';
+const tabs=[['over','Overview'],['bt','Backtests'],['mx','Layer x backtest'],['ly','Layers and params'],['cfg','Configurator'],['about','Freshness']];
+const nav=document.getElementById('tabs');
+function show(id){tabs.forEach(t=>{document.getElementById('t-'+t[0]).classList.toggle('on',t[0]===id)});[...nav.children].forEach(b=>b.classList.toggle('on',b.dataset.t===id));try{location.hash=id}catch(e){}}
+tabs.forEach(t=>{const b=document.createElement('button');b.textContent=t[1];b.dataset.t=t[0];b.onclick=()=>show(t[0]);nav.appendChild(b)});
+// overview
+(function(){
+ const fam={};D.layers.forEach(l=>{(fam[l.family]=fam[l.family]||[]).push(l)});
+ const used={};D.backtests.forEach(b=>b.layers.forEach(x=>used[x]=(used[x]||0)+1));
+ let h='<div class="card"><b>What the repo says, in one paragraph</b><p>'+esc(D.headline)+'</p></div>';
+ h+='<div class="card"><b>Verdict count</b><div>'+Object.entries(D.verdictCounts).map(([k,v])=>'<span class="chip">'+esc(k)+': '+v+'</span>').join('')+'</div></div>';
+ h+='<div class="card"><b>Layers and how often they were backtested</b><div class="scroll"><table><tr><th>family</th><th>layer</th><th>runs</th><th>status</th></tr>';
+ D.layers.forEach(l=>{h+='<tr><td>'+esc(l.family)+'</td><td>'+esc(l.name)+'</td><td>'+(used[l.id]||0)+'</td><td>'+nz(l.status)+'</td></tr>'});
+ h+='</table></div></div>';
+ h+='<div class="card"><b>Where layers were combined</b><ul>'+D.backtests.filter(b=>b.layers.length>1||/x |confluence|mask/i.test(b.interaction||'')).map(b=>'<li><b>'+esc(b.id)+'</b>: '+nz(b.interaction)+' - <span class="v '+vcls(b.verdict)+'">'+nz(b.verdict)+'</span></li>').join('')+'</ul><p class="sub">Most runs test one layer alone. Real layer-on-layer interaction is recorded in only a few: Tom core proofs, Tom x Fabio confluence (descriptive), Q33 trigger x context cells, bigtrade layer x exit grid.</p></div>';
+ document.getElementById('t-over').innerHTML=h;
+})();
+// backtests
+function renderBT(){
+ const q=document.getElementById('q').value.toLowerCase();
+ let h='';
+ D.backtests.forEach(b=>{
+  const txt=JSON.stringify(b).toLowerCase()+b.layers.map(x=>(LY[x]||{}).name||'').join(' ').toLowerCase();
+  if(q&&txt.indexOf(q)<0)return;
+  h+='<div class="card" id="bt-'+esc(b.id)+'"><b>'+esc(b.id)+'</b> - '+esc(b.title)+' <span class="sub">('+nz(b.date)+')</span><div>'+b.layers.map(x=>'<span class="chip">'+esc((LY[x]||{}).name||x)+'</span>').join('')+'</div>'+
+  '<div class="grid2" style="margin-top:6px"><div><span class="sub">Verdict</span><br><span class="v '+vcls(b.verdict)+'">'+nz(b.verdict)+'</span></div>'+
+  '<div><span class="sub">Market / data</span><br>'+nz(b.market)+'</div><div><span class="sub">Fees / cost</span><br>'+nz(b.fees)+'</div><div><span class="sub">n</span><br>'+nz(b.n)+'</div></div>'+
+  '<details><summary>Params, interaction, effect on trades, split</summary><p><b>Params:</b> '+nz(b.params)+'</p><p><b>Layer interaction:</b> '+nz(b.interaction)+'</p><p><b>What it blocked or changed:</b> '+nz(b.effects)+'</p><p><b>Split:</b> '+nz(b.split)+'</p>'+
+  '<p><b>Report:</b> <code>'+esc(b.report)+'</code> '+(b.exists===false?'<span class="v bad">(file missing in repo)</span>':'')+' <span class="sub">read depth: '+esc(b.read||'?')+'</span></p></details></div>';
+ });
+ document.getElementById('btlist').innerHTML=h||'<p class="sub">No match.</p>';
+}
+document.getElementById('q').oninput=renderBT;renderBT();
+// matrix
+(function(){
+ let h='<table><tr><th>backtest</th>'+D.layers.map(l=>'<th title="'+esc(l.name)+'">'+esc(l.id)+'</th>').join('')+'<th>verdict</th></tr>';
+ D.backtests.forEach(b=>{h+='<tr><td>'+esc(b.id)+'</td>'+D.layers.map(l=>'<td>'+(b.layers.indexOf(l.id)>=0?'<span class="dot"></span>':'')+'</td>').join('')+'<td class="v '+vcls(b.verdict)+'">'+nz(b.verdict)+'</td></tr>'});
+ document.getElementById('matrix').innerHTML=h+'</table>';
+})();
+// layers
+(function(){
+ let h='';D.layers.forEach(l=>{
+  h+='<div class="card"><b>'+esc(l.name)+'</b> <span class="chip">'+esc(l.family)+'</span><div class="sub">'+esc(l.module)+'</div><div>Status: '+nz(l.status)+'</div><table><tr><th>param</th><th>values tried / defaults</th><th>source</th></tr>'+
+  l.params.map(p=>'<tr><td>'+esc(p.label)+'</td><td>'+p.values.map(v=>'<span class="chip">'+esc(v)+'</span>').join('')+'</td><td class="src-'+esc(p.src)+'">'+esc(p.src)+'</td></tr>').join('')+'</table></div>'});
+ document.getElementById('layers').innerHTML=h;
+})();
+// configurator
+const cl=document.getElementById('cfglayers');
+D.layers.forEach(l=>{
+ const d=document.createElement('div');d.className='card';
+ let h='<label style="color:var(--ink)"><input type="checkbox" data-l="'+esc(l.id)+'"> <b>'+esc(l.name)+'</b></label><div class="sub">'+esc(l.status||'')+'</div>';
+ l.params.forEach(p=>{
+  h+='<label>'+esc(p.label)+' <span class="src-'+esc(p.src)+'">['+esc(p.src)+']</span></label>';
+  if(p.kind==='choice')h+='<select data-l="'+esc(l.id)+'" data-p="'+esc(p.k)+'"><option value="">(not set)</option>'+p.values.map(v=>'<option>'+esc(v)+'</option>').join('')+'</select>';
+  else h+='<input type="text" data-l="'+esc(l.id)+'" data-p="'+esc(p.k)+'" placeholder="'+esc(p.values[0]||'')+'">';
+ });
+ d.innerHTML=h;cl.appendChild(d);
+});
+function build(){
+ const sel=[...document.querySelectorAll('input[type=checkbox][data-l]')].filter(c=>c.checked).map(c=>c.dataset.l);
+ const w=[];
+ if(!sel.length){document.getElementById('warn').textContent='Select at least one layer.';document.getElementById('out').value='';return}
+ const parts=sel.map(id=>{
+  const L=LY[id];const ps=[];
+  L.params.forEach(p=>{const el=document.querySelector('[data-l="'+id+'"][data-p="'+p.k+'"]');const v=el&&el.value.trim();
+   if(v){ps.push(p.k+'='+v.replace(/\s+/g,' '));if(p.src==='NO-SOURCE')w.push(L.id+'.'+p.k+' is NO-SOURCE: the card tells the run to flag it, not tune it')}});
+  if(/^STOP/.test(L.status||''))w.push(L.id+': '+L.status);
+  return id+(ps.length?'('+ps.join('; ')+')':'');
+ });
+ const mkt=document.getElementById('c-mkt').value;
+ if(/BTC/.test(mkt)&&sel.some(i=>/^(tom_core|tom_proofs|fabio_)/.test(i)))w.push('Tom/Fabio encoding on BTC: ROADMAP section 2 says STOP (no backtest or tuning of the current encoding). Expect the relay to refuse or the card to need an operator ok.');
+ if(sel.length>1)w.push('More than one layer: say in the pre-reg how they combine (AND gate, vote, or sequential filter); a combination that is not sourced is a NO-SOURCE rule.');
+ const name=document.getElementById('c-name').value.trim()||'layer-combo-probe';
+ const host=document.getElementById('c-host').value;
+ const q=document.getElementById('c-q').value.trim()||'Qn';
+ const note=document.getElementById('c-note').value.trim();
+ const txt='   '+q+'. '+(host==='any'?'':'host='+host+' ')+'(Sonnet, '+document.getElementById('c-prio').value+') Card '+name+': pre-register, then run a dev-data backtest of layers '+parts.join(' + ')+
+  ' on '+mkt+'; split '+document.getElementById('c-split').value+'; fees '+document.getElementById('c-fee').value+'. Holdout stays sealed; log every run in research/layer_lab/TRIALS.md; flag NO-SOURCE params, never tune them; per layer-alone arms plus the combined arm so the interaction is visible.'+(note?' '+note+'.':'')+
+  ' DONE when: a result file in a new folder under MyTradingSys/research/ lists layers on, params, n, gross and net mean, PBO or placebo p, per-arm blocked-trade counts and a verdict line, and tasks.py done recorded.';
+ document.getElementById('out').value=txt;
+ document.getElementById('warn').innerHTML=w.length?'<ul>'+w.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'None.';
+}
+document.getElementById('gen').onclick=build;
+document.getElementById('copy').onclick=()=>{const o=document.getElementById('out');o.select();try{document.execCommand('copy')}catch(e){}};
+// about
+(function(){
+ let h='<div class="card"><b>Freshness</b><p>Generated '+esc(D.generated)+' from commit '+esc(D.commit)+'. Curated data: <code>MyTradingSys/system/layer_map.json</code> (as of '+esc(D.asof)+').</p>'+
+ '<p><b>Cost to refresh:</b> run the script (zero model tokens) and republish. A Sonnet session is only needed to add rows for new reports; the list below shows reports the curated file does not index yet.</p></div>';
+ h+='<div class="card"><b>Trial registry rows (TRIAL_REGISTRY.csv)</b>'+(D.trials.length?'<ul>'+D.trials.map(t=>'<li><code>'+esc(t.run)+'</code>: '+t.rows+' variant rows, '+esc(t.date)+'</li>').join('')+'</ul>':'<p class="nr">none</p>')+'<p class="sub">Only Tom core and Fabio v3 write per-variant rows. No other run family keeps a machine-readable ledger, so their layer lists exist only in the curated file.</p></div>';
+ h+='<div class="card"><b>Reports not indexed yet ('+D.unindexed.length+')</b><div class="scroll" style="max-height:260px"><ul>'+D.unindexed.map(p=>'<li><code>'+esc(p)+'</code></li>').join('')+'</ul></div></div>';
+ h+='<div class="card"><b>What was missing</b><ul>'+D.gaps.map(g=>'<li>'+esc(g)+'</li>').join('')+'</ul></div>';
+ document.getElementById('t-about').innerHTML=h;
+})();
+{const h0=(location.hash||'#over').slice(1);show(tabs.some(t=>t[0]===h0)?h0:'over')}
+</script></body></html>
