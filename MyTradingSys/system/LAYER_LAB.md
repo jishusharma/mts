@@ -67,5 +67,7 @@ Codex runs in sandbox `workspace-write`: it can write only inside the lab work t
 (measured 2026-10-11: a fetch from inside the sandbox is refused). So Codex never claims, commits or pushes: `codex_run.py` does
 every git step, and it ships only a run that ended DONE or BLOCKED. An `audit` or `run` card may write only under
 `research/layer_lab/` and `system/tasks/`; one file elsewhere makes the run OUT_OF_SCOPE and nothing is shipped.
+A `build` card runs only its own test file: the quick gate cannot pass inside the sandbox (tests that create git repositories are
+refused; measured 2026-10-12, lab-dax-proof-parity), so `sync.py ship` in the runner is the gate. A failed ship leaves `<run log>.ship.txt`.
 Claude spot-checks one claim per lab report (CLAUDE.md work routing).
 CI gates every push exactly as for Claude code. The trial ends about 2026-11-11: nothing else may depend on the lab.

@@ -28,6 +28,11 @@ class LaneRulesTest(unittest.TestCase):
             with self.subTest(kind=kind):
                 self.assertEqual(T.problems(card(kind=kind)), [])
 
+    def test_build_template_leaves_the_gate_to_the_runner(self):
+        text = " ".join(R.TEMPLATES["build"]["steps"]) + R.TEMPLATES["build"]["done_when"]
+        self.assertIn("Do not run scripts/dev/run_all_tests.py", text)
+        self.assertNotIn("quick gate passes", text)
+
     def test_kind_is_required_and_checked(self):
         self.assertTrue(any("kind" in m for m in T.problems(card(kind="audit") | {"kind": ""})))
         self.assertTrue(any("kind" in m for m in T.problems(card() | {"kind": "think"})))

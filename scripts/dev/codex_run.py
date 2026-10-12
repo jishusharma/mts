@@ -55,9 +55,9 @@ TEMPLATES = {
     "build": {
         "steps": ["Write the test named in Tests first and see it fail on the current code.",
                   "Implement the goal inside scope_in only; new behaviour sits behind a flag that is off by default.",
-                  "python scripts/dev/run_all_tests.py --quick passes."],
+                  "Run the test file you changed (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: tests that create git repositories are refused in the sandbox; the runner runs the quick gate when it ships."],
         "scope_out": ["the live path", "holdout reads", "parameters without a trader quote (NO-SOURCE)"],
-        "done_when": "The named test passes, the quick gate passes, and the report lists the changed files and the red-then-green test output."},
+        "done_when": "The named test passes and the report lists the changed files and the red-then-green test output (the runner's ship runs the quick gate)."},
 }
 
 
@@ -287,6 +287,7 @@ def run_card(card, dry=False, env=os.environ):
             s = sh(wt, "scripts/dev/sync.py", "ship")
             if s.returncode:
                 outcome, note = "SHIP_FAILED", (s.stdout + s.stderr).strip()[-300:]
+                Path(str(log) + ".ship.txt").write_text(s.stdout + s.stderr, encoding="utf-8", newline="\n")   # which gate step failed
         elif files:
             note = f"{len(files)} uncommitted file(s) left in {wt}: " + ", ".join((out_of_scope(card['kind'], files) or files)[:5])
         r = sh(wt, "scripts/dev/sync.py", "release", sync.slugify(cid))
