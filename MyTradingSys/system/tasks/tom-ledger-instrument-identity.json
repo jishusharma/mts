@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-12T12:08:43Z",
+  "closed": "2026-10-12T16:18:41Z",
   "commands": [],
   "created": "2026-10-12T08:16:26Z",
   "depends_on": [],
@@ -18,7 +18,7 @@
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md"
   ],
-  "result": "Repaired in TOM_TRADE_LEDGER.csv/.md + TOM_LEDGER_CANONICAL_GROUPS.csv per audit rows; unresolved fields marked NOT_IN_DATA; no values invented.",
+  "result": "T5/T5-m1/T5-p1/T5-a1 carry chart_symbol_observed=Continuous(FDXM)@EUREX, executed contract/multiplier/tick/ccy NOT_IN_DATA (no guess); narrative T5 line qualified",
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",

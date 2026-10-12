@@ -54,7 +54,7 @@ Remaining: read sheets of k0zm5NYn0IQ (10), n7ZSkjb7JXs (6), UOBgXV20yCM (5), T6
 - Remaining sheets: UOBgXV20yCM 03-04 (2), T6hDJcHrVBM (4), ujedEcmvBMk (4), zQTbdEweG3c (4), l8RZ 01-02 (2).
 
 ## Update 2026-10-11 ~01:30Z (relay via cron mts-dispatcher-night, JIS-NB): T6hDJcHrVBM sheets 00-03 all read
-- Only one trade in the video: T5 (FDAX 2026-05-19 open-range spike fade). Labels re-read at t=430 (zoom T6hDJcHrVBM_0430_crop.png): -3 @24690, SL 24753, TP 24184. MATCH with RECALL_DAX.
+- Only one trade in the video: T5 (ledger label FDAX; chart header observed `Continuous(FDXM)@EUREX` at _0520.jpg, executed contract/multiplier/tick/currency NOT_IN_DATA, instrument-identity audit 2026-10-12; 2026-05-19 open-range spike fade). Labels re-read at t=430 (zoom T6hDJcHrVBM_0430_crop.png): -3 @24690, SL 24753, TP 24184. MATCH with RECALL_DAX.
 - Management (new rows T5-m1, T5-p1, T5-a1): stop to breakeven 24690 by t=520 (SL label stacked behind the position tag, no printed value);
   one-lot partial by t=550 while price tags VWAP 24425/24435 (fill price not shown); t=610 hand-drawn "SL 650" above the broken range low. Final exit of 2 lots NOT shown.
 - Sheets 00-01 are teaching (BTC daily profile, FDAX TPO "Openrange" profiles 05-11..05-19), no orders.
