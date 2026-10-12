@@ -37,6 +37,7 @@ LOCK_STALE_S = 3 * 3600
 WINDOW_STOP = 85          # % of the 5-hour window used: no new card until it resets
 WEEK_STOP = 85            # % of the week used: the rest stays with the operator's own Codex app sessions
 LIMIT_RE = re.compile(r"usage limit|rate limit reached", re.I)
+FALLBACK_LIMITS = 2       # this many LIMIT runs in a row on one card: Codex is out, so the card moves to a Claude / DSA lane
 
 TEMPLATES = {
     "audit": {
@@ -141,8 +142,60 @@ def budget_line(rl, now):
 
 
 def limit_hit(outcome, files, log_text):
-    """A run that wrote nothing because the allowance ran out is not a try of the card: it waits for the window."""
-    return outcome == "INCOMPLETE" and not files and bool(LIMIT_RE.search(log_text))
+    """A run that ended on the allowance error is not a try of the card, even with partial files (those are salvaged).
+    Only the log tail counts: the prompt and the files Codex read mention limits too."""
+    return outcome == "INCOMPLETE" and bool(LIMIT_RE.search(log_text[-1500:]))
+
+
+def salvage(wt, home, cid, when, files=None):
+    """Move unfinished files out of the lab work tree into <home>/lab_runs/salvage/<stamp>_<card>/ so the next tick is not blocked.
+    Moves, never deletes. Returns (destination, count)."""
+    files = changed_files(wt) if files is None else files
+    if not files:
+        return None, 0
+    dest = Path(home) / "lab_runs" / "salvage" / f"{when.strftime('%Y%m%dT%H%M%SZ')}_{cid}"
+    for f in files:
+        src = Path(wt) / f
+        if src.is_file():
+            (dest / f).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dest / f)
+        if git(wt, "ls-files", "--error-unmatch", "--", f, check=False).returncode == 0:
+            git(wt, "checkout", "--quiet", "--", f)
+        elif src.is_file():
+            src.unlink()
+    return dest, len(files)
+
+
+def limit_streak(rows, cid):
+    """Trailing LIMIT runs of one card (a DONE or any other outcome resets it)."""
+    n = 0
+    for r in reversed([r for r in rows if r.get("card") == cid and not r.get("dry")]):
+        if r.get("outcome") != "LIMIT":
+            break
+        n += 1
+    return n
+
+
+def fallback_lane(card):
+    """Lane that can finish a card Codex cannot: a coded card with tests goes to SONNET, one with exact commands to DSA, else ''."""
+    if str(card.get("tests", "")).strip():
+        return "SONNET"
+    if card.get("commands"):
+        return "DSA"
+    return ""
+
+
+def reroute(cards, rows, repo=REPO):
+    """Move every ready CODEX card whose last FALLBACK_LIMITS runs all hit the allowance to its fallback lane. Returns [(id, lane)]."""
+    moved = []
+    for c in cards:
+        lane = fallback_lane(c)
+        if c.get("lane") == "CODEX" and lane and limit_streak(rows, c["id"]) >= FALLBACK_LIMITS:
+            c = dict(tasks.get(repo, c["id"]), lane=lane)
+            c["notes"] = (str(c.get("notes", "")) + f" [codex_run {utc().strftime('%Y-%m-%d %H:%MZ')}: Codex allowance out {FALLBACK_LIMITS}x, moved to {lane}]").strip()
+            tasks.save(repo, c)
+            moved.append((c["id"], lane))
+    return moved
 
 
 def pick(cards, claimed, tried):
@@ -223,9 +276,9 @@ def sh(wt, *args):
 
 def refresh(wt):
     """Bring the lab work tree to origin/fast-track on its own branch. Refuses a dirty tree: unfinished work is never touched."""
-    dirty = git(wt, "status", "--porcelain").stdout.strip()
-    if dirty:
-        raise SystemExit(f"IDLE lab work tree {wt} has uncommitted files; finish or ship them first")
+    if git(wt, "status", "--porcelain").stdout.strip():
+        dest, n = salvage(wt, codex_home(), "tick", utc())   # an unfinished run (limit, crash) must not block the lab for good
+        print(f"salvaged {n} unfinished file(s) to {dest}")
     git(wt, "fetch", "--quiet", "origin", sync.TRUNK)
     branch = f"{socket.gethostname().lower()}/codex-lab"
     if git(wt, "rev-parse", "--verify", "--quiet", branch, check=False).returncode:
@@ -280,6 +333,10 @@ def run_card(card, dry=False, env=os.environ):
         outcome, note = judge(now, reports, card["kind"], files), ""
         if limit_hit(outcome, files, log.read_text(encoding="utf-8", errors="replace")):
             outcome, note = "LIMIT", "Codex allowance ran out; the card stays ready and is not charged a try"
+            dest, n = salvage(wt, home, cid, when, files)
+            if n:
+                note += f" | {n} partial file(s) salvaged to {dest}"
+            files = []
         if outcome in ("DONE", "BLOCKED"):
             sh(wt, "scripts/dev/codex_run.py", "index")
             git(wt, "add", "-A")
@@ -314,6 +371,15 @@ def cmd_next(a):
         return 0
     cards, _ = tasks.ready_cards(REPO, "CODEX")
     claimed = {slug for slug, _ in sync.read_claims(REPO, f"origin/{sync.TRUNK}")}
+    if not a.dry:
+        moved = reroute(cards, run_rows(home))
+        if moved:
+            git(REPO, "add", *[str(tasks.path_of(REPO, cid)) for cid, _ in moved])
+            git(REPO, "commit", "-q", "-m", "lab: Codex allowance out, cards moved to a Claude/DSA lane\n\nResult: "
+                + ", ".join(f"{c} -> {l}" for c, l in moved))
+            s = sh(REPO, "scripts/dev/sync.py", "ship")
+            print("REROUTED " + ", ".join(f"{c} -> {l}" for c, l in moved) + ("" if not s.returncode else " (ship failed, retried next tick)"))
+        cards, _ = tasks.ready_cards(REPO, "CODEX")
     card = pick(cards, claimed, attempts(home))
     if not card:
         print(f"IDLE no CODEX card to run ({len(cards)} ready; claimed or out of tries are skipped)")

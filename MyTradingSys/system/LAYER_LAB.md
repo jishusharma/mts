@@ -69,6 +69,12 @@ has full access (operator's setting), so it does its own git steps; everything e
   week, the tick stays IDLE and the card waits for the reset (`codex_run.py status` prints both numbers). The last 15% of the
   week is the operator's.
 - A run cut off by the allowance ends LIMIT: nothing shipped, the card stays ready, no try is charged.
+- The allowance error in the log tail makes a run LIMIT even when Codex left partial files: they are moved (never deleted) to
+  `%CODEX_HOME%\lab_runs\salvage\<stamp>_<card>\` so the lab tree is clean and the next tick is not blocked.
+- Failover (2026-10-12): a card with 2 LIMIT runs in a row moves to lane SONNET (it has `tests`) or DSA (it has `commands`) and
+  the tick ships that change; Claude/DSA then take it from the normal queue. A card with neither stays CODEX and waits.
+  Astra / high effort burns the shared allowance fastest (383k tokens in one audit): the operator's own app sessions on it
+  are what starve the lab.
 - Measured 2026-10-11: one high-effort audit = 200k tokens, 9 minutes. Keep the queue 4 to 8 cards deep; an empty queue wastes windows.
 - Filling the queue is refinement work: any session turns a scoped card into lane CODEX (`kind`, `tests` or `commands`,
   scope_in) and ships it. Cards that touch the live path, shared engine files or a holdout never go to the lab.
