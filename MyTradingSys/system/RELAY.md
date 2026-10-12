@@ -31,6 +31,10 @@ fix the list, run handoff again. Rules (code: scripts/sched/handoff_lint.py, tes
   written while work waits. All tasks blocked: add the unblocking task (desk post, Control Room decision) first, then stop naming each blocker.
 - Curating when the list runs low: read STATUS.md, `shot.py status`, `desk.py list --all`, items/INDEX.md and Control Room; cut each candidate to one
   session with a finish line BEFORE writing it. A candidate you cannot scope in one session becomes a scoping task ("write the next item as Qn").
+- Host tag: `   Qn. host=JIS-NB <what>` (a machine name or `any`; absent = any). `kick` lints the committed handoff for its own host and prints
+  `IDLE no unblocked task for host <name>` when every open task belongs to another host, so no session is launched just to find nothing runnable.
+  `handoff` and `lint` ignore the host unless `--host` is given (a NUC session must still be able to hand a go to NB). The tag is not a model
+  tag: OPUS-only work stays `(after ...)`.
 - `python scripts/sched/relay.py lint --file MyTradingSys/system/NEXT_SESSION.md [--want stop]` checks without writing.
 
 ## Brakes (all fail closed)
