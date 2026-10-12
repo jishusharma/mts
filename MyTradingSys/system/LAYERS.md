@@ -33,7 +33,6 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
   - `rv02-fix-dax-producer-data-binding` raw p1 SONNET: RV02 R4: reject DAX snapshots made from different execution data
   - `rv02-fix-dax-rounded-rr-gate` raw p1 SONNET: RV02 R2: preserve exact DAX net RR through the decision boundary
   - `tom-encode-spike-fade` refined p1 SONNET: Encode Tom's spike-top fade as a candidate type (recall test on his 7 DAX entries)
-  - `tom-holdout-clean-split` ready p1 SONNET: Clean the DAX holdout of ledger days and split Tom's ledger into design and check sets
   - `tom-layer-v2-cost` blocked p1 OPUS: Tom layer v2 spec, part B: per-market proofs, cost, stop-width transfer rule, build cards (Opus research)
   - `tom-check-set-find-frames-only-tom-trade` raw p2 SONNET: Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set
   - `tom-dax-backtest` refined p2 SONNET: Untuned Tom backtest on DAX vs matched-proof BTC rerun
