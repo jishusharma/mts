@@ -14,6 +14,8 @@ param([switch]$Trigger, [switch]$SkipDeploy)
 $ErrorActionPreference = 'Stop'
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $py = (Get-Command python -ErrorAction Stop).Source
+$pyw = Join-Path (Split-Path $py) 'pythonw.exe'   # no console window flashing every tick (B173)
+if (Test-Path $pyw) { $py = $pyw }
 $user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
 
 function Register-MtsJob($name, $script, $trigger) {
