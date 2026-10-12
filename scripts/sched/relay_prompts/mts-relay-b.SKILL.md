@@ -10,3 +10,5 @@ MTS relay session (task B of the A/B pair; you hand over to mts-relay-a). Your w
 4. Hand over per RELAY.md: overwrite NEXT_SESSION.md, `python scripts/sched/relay.py handoff --file MyTradingSys/system/NEXT_SESSION.md --go` (or `--stop "<reason>"` when blocked, an operator question is pending, hygiene is RED and unfixed, or the queue is empty), commit, `python scripts/dev/sync.py ship`, `sync.py where` clean.
 5. `python scripts/sched/relay.py gate --file MyTradingSys/system/NEXT_SESSION.md --started-id <STARTED_ID>`. If it prints `RELAY GO ... task=<id>`: load run_scheduled_task via ToolSearch and run exactly that task id. If STOP: end with the reason in one line.
 Hard rules in CLAUDE.md apply (testnet only, no secrets, no live-tree edits, no restarts/HALT/orders).
+
+Output caps (B172): pipe long command output through `| tail -20`, use `--quiet` flags, no `ls`/`head` probes; finish within 15 tool turns.
