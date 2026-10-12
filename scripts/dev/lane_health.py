@@ -319,6 +319,7 @@ def git(repo, *args, check=True):
 
 def commit_ship(repo, paths, msg):
     """Commit exactly `paths` and run sync.py ship. Skips (False) when the tree holds other uncommitted work: that is never ours to ship."""
+    paths = [str(x).replace(chr(92), "/") for x in paths]   # Windows callers pass relative_to() paths with backslashes; git status prints forward slashes
     others = [line for line in git(repo, "status", "--porcelain").stdout.splitlines() if line[3:].strip().strip('"') not in paths]
     if others:
         return False

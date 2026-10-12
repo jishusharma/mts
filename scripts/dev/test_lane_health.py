@@ -132,6 +132,28 @@ class Window(unittest.TestCase):
         self.assertEqual(R.hold(self.RL, self.RL["primary"]["resets_at"] + 1), "")
         self.assertEqual(R.hold_until(self.RL, self.RL["primary"]["resets_at"] + 1), 0)
 
+
+class CommitShip(unittest.TestCase):
+    def test_backslash_paths_match_git_status_and_commit(self):
+        import subprocess
+        with tempfile.TemporaryDirectory() as d:
+            def g(*a):
+                return subprocess.run(["git", "-C", d, "-c", "user.email=t@t", "-c", "user.name=t", *a], capture_output=True, text=True)
+            g("init", "-q")
+            (Path(d) / "sub").mkdir()
+            (Path(d) / "sub" / "x.json").write_text("{}\n")
+            g("add", "-A")
+            g("commit", "-qm", "base")
+            (Path(d) / "sub" / "x.json").write_text('{"a": 1}\n')
+            before = int(g("rev-list", "--count", "HEAD").stdout.strip())
+            old = L.git
+            L.git = lambda repo, *a, check=True: g(*a)   # keeps the test's git identity
+            try:
+                L.commit_ship(d, ["sub\\x.json"], "lane test")   # the ship step fails here (no sync.py): only the commit matters
+            finally:
+                L.git = old
+            self.assertEqual(int(g("rev-list", "--count", "HEAD").stdout.strip()), before + 1)
+
 class Reroute(unittest.TestCase):
     def setUp(self):
         self.down = L.record_run(L.blank(), "LIMIT", "credits", NOW)
