@@ -9,6 +9,18 @@ GitHub `origin/fast-track` is the only meeting point. Git already merges paralle
 conflicts; we stop re-implementing that with docs. The only thing git cannot protect is the running
 system, so the running system gets its own checkout that no session works in.
 
+## Collisions: what is measured, what is enforced (2026-10-12)
+Last 7 days: 200 merge commits on fast-track, 29 needed a hand edit; the repeat offenders were NEXT_SESSION.md,
+the one-line test list in run_all_tests.py and BUGS.md. Cause: sessions sharing a tree (the main folder holds
+other sessions' uncommitted files and unshipped commits) and a handful of hot files everyone edits.
+- `sync.py start [slug]`: in a tree that is dirty or ahead of origin it does NOT work there; it makes
+  `../mts-<host>-<slug>` off origin/fast-track and prints `WORKTREE: <path>`; work only there. `--here` opts out.
+- `ship`: a collision confined to NEXT_SESSION.md, STATUS.md or BUILD_REPORT.md resolves to origin's text and says so
+  (re-apply your edit if it mattered); a collision anywhere else still stops for a human.
+- Lists that every session appends to (run_all_tests.py test lists) are one entry per line; a test enforces it.
+- `sync.py health` (also in the daily hygiene report): stale claims, overlapping claim areas, shared/dirty trees,
+  orphan worktrees, branches never shipped for 24 h.
+
 ## Two kinds of checkout
 | Checkout | Where | Who changes it | How |
 |---|---|---|---|

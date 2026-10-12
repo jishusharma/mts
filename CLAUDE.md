@@ -5,6 +5,7 @@ then `MyTradingSys/system/LESSONS_DIGEST.md` (rules only; full stories in LESSON
 Chat-surface (DSA) behaviour lives in `DSA_SESSION_PROMPT.md`; this file is for code mode.
 Parallel work (any machine, any account): `MyTradingSys/system/PARALLEL.md` - `sync.py start`, commit, `sync.py ship`.
 Same-page check on either Claude account, and before ending a session: `python scripts/dev/sync.py where` (lists worktrees holding work not on origin/fast-track); commit + ship anything flagged.
+Every session works in its own worktree: `sync.py start` makes one when the tree is shared/dirty and prints `WORKTREE: <path>` (work only there); `sync.py health` lists collisions (PARALLEL.md).
 Start ritual for any account or device (full text in PARALLEL.md): `sync.py start` (prints open claims), pick ONE task from NEXT_SESSION.md,
 `sync.py claim "<task>"`, work, `sync.py ship`, `sync.py release <slug>`, `sync.py where` clean.
 Automatic hand-over to a fresh session (no operator input): `MyTradingSys/system/RELAY.md`; at the end of a task run `relay.py handoff` then `relay.py gate`, fire the task it names. Writing tasks into NEXT_SESSION.md: RELAY.md "Task list standard" (curated, one session each, `DONE when:`); `relay.py handoff` refuses a list that fails `relay.py lint`.
