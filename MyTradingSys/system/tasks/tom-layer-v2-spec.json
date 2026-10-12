@@ -16,7 +16,7 @@
   "id": "tom-layer-v2-spec",
   "lane": "OPUS",
   "live_path": false,
-  "note": " Codex ledger audits (lab-audit-tom-ledger-frames) and review 2026-10-12: 0/7 recall is provisional (3 NOT_IN_DATA, ledger date/price fixes); spec ALL families, spike-fade first; flag fixed brackets/100-trade bar as unproven; separate quote vs inferred. Tom ledger audit 2026-10-12 = FIX-FIRST (layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md): 14 IDs = 12 candidate groups (T4/T9, T6/T10 duplicates); T11 date 31-Aug likely; T5 chart is FDXM not FDAX (no multiplier assumed); T3-s-p1 SL 24220 unsupported. Start only after the four tom-ledger-* repair cards are done, or cite the audit row per rule and mark each affected rule UNRESOLVED.",
+  "note": "ledger repairs done 2026-10-12; Opus spec only when Jis asks",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
@@ -37,7 +37,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md section 3",
     "MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md"
   ],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "Read RECALL_DAX.md section 3, PROBE_PLAN.md, TOM_TRADE_LEDGER.*, conditions/gap_rules.md, TOM_VERBATIM_INDEX.md, and the current candidate types + proof list (SetupCandidatesBuilder.java:557-575).",
     "For each setup family in the ledger (spike fade first): entry trigger, proofs, stop rule, target, management (partials, stop moves, re-entry), session - each with a Tom quote + file:line or NO-SOURCE. Unsourced is flagged, never tuned.",
