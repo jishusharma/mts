@@ -42,6 +42,7 @@ STALE_H = 1  # kick: the same handoff id launched this long ago and never rewrit
 # (2026-10-10: the gate locks BEFORE the App starts the task; an unattended session could not approve run_scheduled_task, the 3 h wait wasted 3 h)
 MAX_BYTES = int(os.environ.get("MTS_RELAY_MAX_BYTES") or 12288)  # handoff size cap: every relay session reads the whole file
 RUNS_NAME = "relay_runs.jsonl"
+HOST_ERR = "go with no unblocked open task for host"  # == handoff_lint.HOST_ERR
 RUNS_KEEP = 400
 KICK_REF ="origin/fast-track:MyTradingSys/system/NEXT_SESSION.md"
 HDR = re.compile(r"<!-- relay: (go|stop)(?: reason=([^>]*?))? depth=(\d+) id=([0-9a-f]+) -->")
@@ -145,19 +146,20 @@ def read_header(path):
     return (m.group(1), (m.group(2) or "").strip(), int(m.group(3)), m.group(4)) if m else None
 
 
-def lint_file(path, want, root=None):
-    """Task-list quality gate (handoff_lint.py). MTS_RELAY_NOLINT=1 skips it (tests only)."""
+def lint_file(path, want, root=None, host=None, text=None):
+    """Task-list quality gate (handoff_lint.py). MTS_RELAY_NOLINT=1 skips it (tests only). `text` lints that content
+    instead of reading `path` (kick --git-ref). `host` makes want=go count only tasks that can run on that host."""
     if os.environ.get("MTS_RELAY_NOLINT"):
         return []
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import handoff_lint
     p = Path(path).resolve()
     root = root or (p.parents[2] if len(p.parents) > 2 else Path.cwd())
-    return handoff_lint.lint(p.read_text(encoding="utf-8"), root, want)[0]
+    return handoff_lint.lint(text if text is not None else p.read_text(encoding="utf-8"), root, want, host)[0]
 
 
 def cmd_lint(a):
-    errs = lint_file(a.file, a.want, a.root)
+    errs = lint_file(a.file, a.want, a.root, a.host)
     for e in errs:
         print("LINT " + e)
     print("LINT OK" if not errs else "LINT FAIL %d" % len(errs))
@@ -167,7 +169,8 @@ def cmd_lint(a):
 def cmd_handoff(a):
     p = Path(a.file)
     text = p.read_text(encoding="utf-8")
-    errs = lint_file(p, "go" if a.go else "stop")
+    # no host here: a session must be able to hand a go to the OTHER host (stop is refused while any task is open)
+    errs = lint_file(p, "go" if a.go else "stop", host=a.host)
     if errs:
         for e in errs:
             print("LINT " + e)
@@ -234,6 +237,13 @@ def header_from_git(spec):
     return (m.group(1), (m.group(2) or "").strip(), int(m.group(3)), m.group(4)) if m else None
 
 
+def text_from_git(spec):
+    """Handoff text from `REF:PATH` (header_from_git has just fetched it); None when git cannot show it."""
+    import subprocess
+    r = subprocess.run(["git", "show", spec], capture_output=True, text=True, encoding="utf-8", timeout=60)
+    return r.stdout if r.returncode == 0 else None
+
+
 def handoff_owner(a, hid):
     """(host, time) of whoever wrote handoff `hid`, from relay_runs.jsonl (same place as the handoff: file or git ref).
     No row for this id (written by an older relay.py or by hand): host 'unknown' = treated as a peer, time = the handoff
@@ -288,6 +298,13 @@ def cmd_kick(a):
         if who != host() and when is not None and now() - when < timedelta(minutes=a.peer_quiet_min):
             return idle("peer %s wrote handoff %s %d min ago (< %d): its chain is moving, this host stays out"
                         % (who, hid, (now() - when).total_seconds() // 60, a.peer_quiet_min))
+    # host awareness: a go whose open tasks all belong to other hosts is not work for this one (b1de4866, 2026-10-12)
+    me = a.host or host()
+    text = None if a.file else text_from_git(a.git_ref)
+    root = Path(a.root) if a.root else (Path.cwd() if text is not None else None)
+    for e in lint_file(a.file or "x", "go", root, me, text):
+        if e.startswith(HOST_ERR):
+            return idle("no unblocked task for host %s (%s)" % (me, e.split(": ", 1)[-1]))
     prev = read_lock()
     if prev:
         age = now() - prev["_t"]
@@ -300,6 +317,26 @@ def cmd_kick(a):
     (home() / "mts-relay-chain.json").write_text(json.dumps({"base": depth}), encoding="utf-8", newline="\n")
     log("kick", id=hid, depth=depth)
     print("KICK depth=%d id=%s task=mts-relay-%s" % (depth, hid, "ab"[depth % 2]))
+    return 0
+
+
+def cmd_brief(a):
+    """Print only what a relay session needs from NEXT_SESSION.md: the header and the first few open, non-OPUS tasks
+    (B172 cut 3: hand the session its task, not the whole queue)."""
+    text = Path(a.file).read_text(encoding="utf-8")
+    print("header:", read_header(a.file))
+    n = 0
+    for line in text.splitlines():
+        if not re.match(r"^\s+Q\d+\.", line):
+            continue
+        if re.search(r"(?<![A-Za-z])(DONE|OPUS)(?![A-Za-z])", line):
+            continue
+        print(line.strip()[:a.width])
+        n += 1
+        if n >= a.max:
+            break
+    if n == 0:
+        print("no open non-OPUS task line: pick with `python scripts/dev/tasks.py next`")
     return 0
 
 
@@ -318,20 +355,28 @@ def main(argv=None):
     g = h.add_mutually_exclusive_group(required=True)
     g.add_argument("--go", action="store_true")
     g.add_argument("--stop")
+    h.add_argument("--host", help="lint want=go for this host only (default: none, any host may run it)")
     h.add_argument("--reset-depth", action="store_true")
     h.add_argument("--session", help="title of this App session, recorded in relay_runs.jsonl so the chat can be found later")
     li = sub.add_parser("lint")
     li.add_argument("--file", required=True)
     li.add_argument("--want", choices=["go", "stop"], default="go")
     li.add_argument("--root")
+    li.add_argument("--host", help="count only tasks that can run on this host (default: none)")
     ga = sub.add_parser("gate")
     ga.add_argument("--file", required=True)
     ga.add_argument("--started-id", required=True)
     k = sub.add_parser("kick")
     k.add_argument("--file")
     k.add_argument("--git-ref", default=KICK_REF)
+    k.add_argument("--host", help="override this machine's name (tests); default MTS_RELAY_HOST or the node name")
+    k.add_argument("--root", help="tree for the task-path checks (default: cwd)")
     k.add_argument("--peer-quiet-min", type=int, default=0,
                    help="IDLE while another host wrote the current handoff less than this many minutes ago (0 = off)")
+    br = sub.add_parser("brief")
+    br.add_argument("--file", required=True)
+    br.add_argument("--max", type=int, default=3)
+    br.add_argument("--width", type=int, default=400)
     st = sub.add_parser("status")
     st.add_argument("--file", required=True)
     sp = sub.add_parser("stop")
@@ -346,6 +391,8 @@ def main(argv=None):
         return cmd_gate(a)
     if a.cmd == "status":
         return cmd_status(a)
+    if a.cmd == "brief":
+        return cmd_brief(a)
     if a.cmd == "kick":
         return cmd_kick(a)
     home().mkdir(parents=True, exist_ok=True)

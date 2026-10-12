@@ -19,7 +19,8 @@ Live state off the desktop (NUC, laptop): `sync.py start` pulls the read-only mi
 - No restated state (STATUS.md has it).
 - Continuous execution, no stop between tasks.
 - SHORT SESSIONS (operator 2026-10-09): one session = one task. Hand off as soon as the task is done, or after 5 turns with
-  the operator, or about 50k context tokens, whichever comes first: finish the step, commit and `sync.py ship`, overwrite
+  the operator, or 15 tool turns (a session already starts at ~65k tokens, measured B172 2026-10-12; turns x that prefix is
+  the cost), whichever comes first: finish the step, commit and `sync.py ship`, overwrite
   `system/NEXT_SESSION.md` (queue, what waits for the weekly reset, open questions, last commit), confirm `sync.py where`
   is clean, say so in one line, and stop. Live market analysis threads hand off after 5 screenshot reads.
 

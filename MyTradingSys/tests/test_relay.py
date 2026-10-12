@@ -28,6 +28,16 @@ class RelayTest(unittest.TestCase):
     def header_id(self):
         return self.f.read_text(encoding="utf-8").split("id=")[1].split(" ")[0]
 
+    def test_brief_skips_done_and_opus(self):
+        lines = ["<!-- relay: stop reason=x depth=1 id=abc -->", "# N", "   Q1. DONE 2026-10-12 x",
+                 "   Q2. OPUS card y", "   Q3. build card z", "   Q4. second open"]
+        self.f.write_text(chr(10).join(lines) + chr(10), encoding="utf-8", newline=chr(10))
+        r = run(self.home, "brief", "--file", str(self.f), "--max", "1")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn("Q3. build card z", r.stdout)
+        for bad in ("Q1.", "Q2.", "Q4."):
+            self.assertNotIn(bad, r.stdout)
+
     def test_no_header_stops(self):
         r = run(self.home, "gate", "--file", str(self.f), "--started-id", "none")
         self.assertEqual(r.returncode, 1)
@@ -190,6 +200,31 @@ class LintTest(unittest.TestCase):
         r = run(self.home, "handoff", "--file", str(self.f), "--stop", "all done or blocked", extra=NOLINT_OFF)
         self.assertEqual(r.returncode, 0, r.stdout)
 
+    def test_host_tag_filters_go_for_other_hosts(self):
+        nb = GOOD.replace("Q2. Read set", "Q2. host=JIS-NB Read set")
+        self.assertEqual(self.lint(nb, "--want", "go").returncode, 0)  # host=None: any host may run it
+        r = self.lint(nb, "--want", "go", "--host", "JIS-NUC")
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("for host JIS-NUC", r.stdout)
+        self.assertIn("Q2=JIS-NB", r.stdout)
+        self.assertEqual(self.lint(nb, "--want", "go", "--host", "jis-nb").returncode, 0)  # case-insensitive
+        any_ = GOOD.replace("Q2. Read set", "Q2. host=any Read set")
+        self.assertEqual(self.lint(any_, "--want", "go", "--host", "JIS-NUC").returncode, 0)
+
+    def test_host_tag_is_stripped_before_done_and_blocked(self):
+        t = GOOD.replace("Q2. Read set", "Q2. host=JIS-NB DONE Read set").replace("Q3. (after Q2)", "Q3. host=JIS-NB (after Q9)")
+        self.f.write_text(t, encoding="utf-8", newline=NL)
+        r = run(self.home, "handoff", "--file", str(self.f), "--stop", "all done or blocked", extra=NOLINT_OFF)
+        self.assertEqual(r.returncode, 0, r.stdout)
+
+    def test_handoff_go_not_filtered_by_this_host(self):
+        # NUC finishing its task must be able to hand a go to NB: stop is refused while a task is open
+        nb = GOOD.replace("Q2. Read set", "Q2. host=JIS-NB Read set").replace("`scripts/dev/shot.py`", "shots").replace("research/screenshots", "the dir")
+        nb = nb.replace("shot.py status", "status")
+        self.f.write_text(nb, encoding="utf-8", newline=NL)
+        extra = dict(NOLINT_OFF, MTS_RELAY_HOST="JIS-NUC")
+        self.assertEqual(run(self.home, "handoff", "--file", str(self.f), "--go", extra=extra).returncode, 0)
+
 
 NUC = {"MTS_RELAY_HOST": "JIS-NUC", "MTS_RELAY_ACCOUNT": "acct-a"}
 NB = {"MTS_RELAY_HOST": "JIS-NB", "MTS_RELAY_ACCOUNT": "acct-b"}
@@ -260,6 +295,29 @@ class TwoHostTest(unittest.TestCase):
         self.assertEqual(r.returncode, 2, r.stdout)
         self.assertEqual(self.f.read_text(encoding="utf-8"), body)
         self.assertFalse(self.runs.exists())
+
+
+class HostKickTest(unittest.TestCase):
+    """kick honors the `host=` task tag: a go whose open tasks all belong to another host is IDLE here, KICK there."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.f = self.tmp / "NEXT_SESSION.md"
+        self.f.write_text(GOOD.replace("Q2. Read set", "Q2. host=JIS-NB Read set"), encoding="utf-8", newline=NL)
+
+    def kick(self, who, *args):
+        return run(self.tmp / who["MTS_RELAY_HOST"], "kick", "--file", str(self.f), *args, extra=dict(NOLINT_OFF, **who))
+
+    def test_nb_only_tasks_idle_on_nuc_kick_on_nb(self):
+        r = self.kick(NUC)
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("IDLE no unblocked task for host JIS-NUC", r.stdout)
+        self.assertIn("KICK", self.kick(NB).stdout)
+
+    def test_other_lint_errors_do_not_block_a_kick(self):
+        self.f.write_text(GOOD.replace("DONE when: research/screenshots has the extract and shot.py status shows the set done.", "no end"),
+                          encoding="utf-8", newline=NL)
+        self.assertIn("KICK", self.kick(NUC).stdout)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 ---
 name: mts-dispatcher-night
+model: sonnet
 description: Night copy of mts-dispatcher: hourly 00:00-06:00.
 ---
 
