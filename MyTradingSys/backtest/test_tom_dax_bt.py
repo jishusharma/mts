@@ -72,7 +72,7 @@ class TestFees(unittest.TestCase):
 # ------------------------------------------------------------------ b) loader
 class TestGapLoader(unittest.TestCase):
     def setUp(self):
-        self.td = tempfile.TemporaryDirectory()
+        self.td = tempfile.TemporaryDirectory(dir=D.HERE)
         self.dir = Path(self.td.name)
         t0 = 1_700_000_000_000 - (1_700_000_000_000 % 60000)
         self.t0 = t0
@@ -226,7 +226,7 @@ class TestClosedExecutions(unittest.TestCase):
     def test_missing_download_is_rejected_before_archive_read(self):
         # Completed empty days are coverage evidence; absent files are not closures.
         from types import SimpleNamespace
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
             raw = Path(td)
             start, end = dt.date(2026, 1, 1), dt.date(2026, 1, 3)
             for d in (start, end):
@@ -249,7 +249,7 @@ class TestClosedExecutions(unittest.TestCase):
 # ------------------------------------------------------------------ c) market-open filter
 class TestOpenFilter(unittest.TestCase):
     def setUp(self):
-        self.td = tempfile.TemporaryDirectory()
+        self.td = tempfile.TemporaryDirectory(dir=D.HERE)
         self.dir = Path(self.td.name)
         t0 = 1_700_000_040_000 - (1_700_000_040_000 % 60000)
         self.t0 = t0
@@ -584,6 +584,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
             # Exercise report serialization with only synthetic, already computed
             # inputs. Git and hash probes are stubbed; outputs stay in this fixture.
             with patch.object(D, "build_report", return_value=result), \
+                 patch.object(D, "WORK", root), \
                  patch.object(D, "git", return_value="synthetic"), patch.object(D, "sha", return_value="fixture"), \
                  patch.object(D, "REPORT", root/"report.md"), patch.object(D, "REGISTRY", root/"trials.csv"):
                 D.cmd_report(a)
@@ -602,7 +603,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
                 D.build_report(a)
 
     def test_invalid_manifest_and_forward_boundary(self):
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
             for changes in [dict(embargo_s=-1), dict(embargo_s=True), dict(embargo_s=float("nan")),
                             dict(embargo_s=121), dict(holdout_start_utc="2026-04-10T23:58:00Z"),
                             dict(design_end_utc="2026-04-10T23:58:00"),
@@ -617,7 +618,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
 
     def test_prices_after_cutoff_not_parsed_and_partial_minute_excluded(self):
         h = D.T_DAX_HOLD
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
             p = Path(td) / "a.csv"
             write_klines(p, [(int((h-120)*1000), 100, 100, 100, 100, 1),
                              (int((h-60)*1000), 100, 102, 100, 101, 1)])
@@ -631,7 +632,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
 
     def test_real_row_envelopes_counted_without_loading_holdout_payload(self):
         h = D.T_DAX_HOLD
-        with tempfile.TemporaryDirectory() as td, patch.object(D, "WORK", Path(td)):
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td, patch.object(D, "WORK", Path(td)):
             split = D.load_split(self.manifest(td, embargo_s=60))
             out = Path(td) / "rows_dax"
             out.mkdir()
@@ -644,12 +645,18 @@ class TestHoldoutBoundaries(unittest.TestCase):
             p.with_name("2026-04.rows.meta.json").write_text(json.dumps(dict(
                 proof_count_schema=D.PROOF_COUNT_SCHEMA)), encoding="utf-8", newline="\n")
             counts = {}
-            self.assertEqual(D.load_rows("dax", "coded/0", split=split, counts=counts), [{"t": h-120}])
+            # This test isolates timestamp selection; identity validation has its
+            # own real-cache fixtures and must no longer accept this bare cache.
+            for e in envelopes:
+                e["input_id"] = "synthetic"
+            p.write_text("".join(json.dumps(e)+"\n" for e in envelopes), encoding="utf-8", newline="\n")
+            with patch.object(D, "validate_cache", return_value=dict(input_id="synthetic", inputs=dict(market="dax"))):
+                self.assertEqual(D.load_rows("dax", "coded/0", split=split, counts=counts), [{"t": h-120}])
             self.assertEqual(counts, dict(dev=1, embargo=1, holdout=2))
 
     def test_pending_orders_dropped_and_resolved_dev_kept_in_stress(self):
         h = D.T_DAX_HOLD
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
             split = D.load_split(self.manifest(td))
             r = dict(t=h-60, verdict="SETUP_FORMING", setup="ct_long", dir="long",
                      zone="vwap", ztype="vwap", zprice=100., stop=99., target=101.)
@@ -667,7 +674,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
             self.assertEqual(trades[0]["gross_r"], -2.)
 
     def test_full_dev_guard_and_failed_read_remains_reserved(self):
-        with tempfile.TemporaryDirectory() as td, patch.object(D, "REPORT", Path(td)/"report.md"), \
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td, patch.object(D, "REPORT", Path(td)/"report.md"), \
              patch.object(D, "HOLDOUT_MARKER", Path(td)/"read.json"):
             path = self.manifest(td)
             split = D.load_split(path)
@@ -707,7 +714,7 @@ class TestSessionNull(unittest.TestCase):
                         dict(timezone="UTC", start="25:00", end="12:00")]:
             with self.subTest(session=session), self.assertRaisesRegex(ValueError, "null session"):
                 D.random_entry_null([], b, session=session)
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
             p = Path(td)/"session.json"
             p.write_text(json.dumps(dict(timezone="UTC", start="10:00", end="12:00")),
                          encoding="utf-8", newline="\n")
@@ -816,15 +823,140 @@ class TestSessionNull(unittest.TestCase):
 
 
 class TestDriver(unittest.TestCase):
+    def test_h8_generation_freezes_producer_and_refuses_changed_archive(self):
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+            root = Path(td)
+            archive, snaps = root / "archive", root / "snaps"
+            (archive / "klines").mkdir(parents=True)
+            snaps.mkdir()
+            data = archive / "klines" / "synthetic.csv"
+            data.write_text("synthetic archive bytes\n", encoding="utf-8", newline="\n")
+            def fake_run(command, **kwargs):
+                if "dax_engine.py" not in str(command[2]):
+                    return
+                source = snaps / "2026-01.jsonl.gz"
+                if not source.exists():
+                    with gzip.open(source, "wt", encoding="utf-8") as fh:
+                        fh.write('{}\n')
+                    (snaps / "2026-01.meta.json").write_text('{"evaluated": 1}',
+                        encoding="utf-8", newline="\n")
+            a = SimpleNamespace(start=None, end=None, months=["2026-01"], shards=1)
+            with patch.object(D, "DAX_ARCHIVE", archive), patch.object(D, "DAX_SNAPS", snaps), \
+                 patch.object(D, "DAX_RAW", root / "raw"), \
+                 patch.object(D, "generation_environment", return_value={"synthetic-JDK-and-jars": "fixture"}), \
+                 patch.object(D, "complete_months", return_value=["2026-01"]), \
+                 patch.object(D.subprocess, "run", side_effect=fake_run):
+                D.cmd_gen(a)
+                origin = json.loads((snaps / "2026-01.inputs.json").read_text(encoding="utf-8"))
+                self.assertEqual(origin["codes"], D.generation_codes())
+                self.assertEqual(origin["environment"], {"synthetic-JDK-and-jars": "fixture"})
+                self.assertEqual(origin["data"][str(data)], D.file_hash(data))
+                self.assertEqual(origin["snapshot_sha256"], D.file_hash(snaps / "2026-01.jsonl.gz"))
+                D.cmd_gen(a)
+                data.write_text("changed archive\n", encoding="utf-8", newline="\n")
+                with self.assertRaisesRegex(ValueError, "provenance absent/stale"):
+                    D.cmd_gen(a)
+
+    def test_h8_cached_rows_refuse_changed_mask_shift_or_floor(self):
+        import verdict  # establishes the existing runtime import path
+        import net_rr_floor
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td, patch.object(D, "WORK", Path(td)):
+            root = Path(td)
+            out_dir = root / "rows_btc"
+            out_dir.mkdir()
+            source = root / "2026-01.jsonl.gz"
+            s = snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)])
+            with gzip.open(source, "wt", encoding="utf-8") as fh:
+                fh.write(json.dumps(s) + "\n")
+            source.with_name("2026-01.inputs.json").write_text(json.dumps(dict(
+                codes=D.generation_codes(), snapshot_sha256=D.file_hash(source), data={"synthetic": "fixture"})),
+                encoding="utf-8", newline="\n")
+            job = ("btc", source, out_dir, (0,), D.MASK_OF, None)
+            with patch.object(net_rr_floor, "load_floor", return_value=1.25):
+                D._rows_month(job)
+                self.assertEqual(D._rows_month(job), ("2026-01", None))
+                for changed in [(*job[:3], (0, 1), *job[4:]),
+                                (*job[:4], (), job[5])]:
+                    with self.subTest(job=changed), self.assertRaisesRegex(ValueError, "cache input"):
+                        D._rows_month(changed)
+            with patch.object(net_rr_floor, "load_floor", return_value=1.5):
+                with self.assertRaisesRegex(ValueError, "cache input"):
+                    D._rows_month(job)
+                with self.assertRaisesRegex(ValueError, "cache input"):
+                    D.load_rows("btc", "coded/0")
+            with patch.object(net_rr_floor, "load_floor", return_value=1.25):
+                codes = D.code_identity()
+                codes["MyTradingSys/backtest/verdict.py"] = "changed-engine-fixture"
+                with patch.object(D, "code_identity", return_value=codes):
+                    with self.assertRaisesRegex(ValueError, "cache input"):
+                        D._rows_month(job)
+                    with self.assertRaisesRegex(ValueError, "cache input"):
+                        D.load_rows("btc", "coded/0")
+                original = source.read_bytes()
+                with gzip.open(source, "wt", encoding="utf-8") as fh:
+                    fh.write(json.dumps(dict(s, current_price=123.)) + "\n")
+                with self.assertRaisesRegex(ValueError, "cache input"):
+                    D._rows_month(job)
+                source.write_bytes(original)
+                meta = root / "2026-01.meta.json"
+                meta.write_text('{"evaluated": 2}', encoding="utf-8", newline="\n")
+                with self.assertRaisesRegex(ValueError, "cache input"):
+                    D.load_rows("btc", "coded/0")
+                meta.unlink()
+                out = out_dir / "2026-01.rows.jsonl"
+                row = json.loads(out.read_text(encoding="utf-8"))
+                row["k"]["coded/0"]["proof"] = 999
+                out.write_text(json.dumps(row) + "\n", encoding="utf-8", newline="\n")
+                with self.assertRaisesRegex(ValueError, "cache input"):
+                    D.load_rows("btc", "coded/0")
+
+    def test_h8_dax_producer_and_development_bar_identity(self):
+        from snapshots import parse_ts
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td, patch.object(D, "WORK", Path(td)):
+            root = Path(td)
+            out_dir = root / "rows_dax"
+            out_dir.mkdir()
+            source = root / "2026-01.jsonl.gz"
+            s = snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)])
+            t = parse_ts(s["timestamp_utc"])
+            b = mk([(100.,)*4]*3, int(t*1000)-60000)
+            b.real = bytearray([1]*3)
+            with gzip.open(source, "wt", encoding="utf-8") as fh:
+                fh.write(json.dumps(s) + "\n")
+            job = ("dax", source, out_dir, (0,), D.MASK_OF, t+120)
+            with patch.object(D, "_BARS", b):
+                with self.assertRaisesRegex(ValueError, "provenance missing"):
+                    D._rows_month(job)
+                origin = root / "2026-01.inputs.json"
+                origin.write_text(json.dumps(dict(codes=D.generation_codes(),
+                    snapshot_sha256=D.file_hash(source), data={"synthetic": "fixture"})),
+                    encoding="utf-8", newline="\n")
+                D._rows_month(job)
+                self.assertEqual(D._rows_month(job), ("2026-01", None))
+                with patch.object(D, "load_development_bars", return_value=b):
+                    self.assertEqual(len(D.load_rows("dax", "coded/0")), 1)
+                    b.real[1] = 0
+                    with self.assertRaisesRegex(ValueError, "cache input"):
+                        D.load_rows("dax", "coded/0")
+                b.real[1] = 1
+                with self.assertRaisesRegex(ValueError, "cache input"):
+                    D._rows_month((*job[:5], t+60))
+                origin.write_text('{}', encoding="utf-8", newline="\n")
+                with self.assertRaisesRegex(ValueError, "producer mismatch"):
+                    D._rows_month(job)
+
     def test_current_rows_written_reused_and_loaded(self):
         # Synthetic current-Java input only; no archive or holdout loader.
-        with tempfile.TemporaryDirectory() as td, patch.object(D, "WORK", Path(td)):
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td, patch.object(D, "WORK", Path(td)):
             out_dir = Path(td) / "rows_btc"
             out_dir.mkdir()
             source = Path(td) / "2026-01.jsonl.gz"
             s = snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)])
             with gzip.open(source, "wt", encoding="utf-8") as fh:
                 fh.write(json.dumps(s) + "\n")
+            source.with_name("2026-01.inputs.json").write_text(json.dumps(dict(
+                codes=D.generation_codes(), snapshot_sha256=D.file_hash(source), data={"synthetic": "fixture"})),
+                encoding="utf-8", newline="\n")
             job = ("btc", source, out_dir, (0,), D.MASK_OF, None)
             self.assertEqual(D._rows_month(job)[1]["rows"], 1)
             self.assertEqual(D._rows_month(job), ("2026-01", None))
@@ -833,6 +965,10 @@ class TestDriver(unittest.TestCase):
             row = json.loads(out.read_text(encoding="utf-8"))
             self.assertEqual(row.pop("proof_count_schema"), D.PROOF_COUNT_SCHEMA)
             out.write_text(json.dumps(row) + "\n", encoding="utf-8", newline="\n")
+            meta = out_dir / "2026-01.rows.meta.json"
+            metadata = json.loads(meta.read_text(encoding="utf-8"))
+            metadata["rows_sha256"] = D.file_hash(out)
+            meta.write_text(json.dumps(metadata), encoding="utf-8", newline="\n")
             # Even valid metadata cannot bless an old row envelope.
             with self.assertRaisesRegex(ValueError, "proof-count schema"):
                 D.load_rows("btc", "coded/0")
@@ -840,7 +976,7 @@ class TestDriver(unittest.TestCase):
                 D._rows_month(job)
 
     def test_old_rows_rejected_on_load_and_cache_reuse(self):
-        with tempfile.TemporaryDirectory() as td, patch.object(D, "WORK", Path(td)):
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td, patch.object(D, "WORK", Path(td)):
             out_dir = Path(td) / "rows_dax"
             out_dir.mkdir()
             out = out_dir / "2026-01.rows.jsonl"
@@ -852,7 +988,7 @@ class TestDriver(unittest.TestCase):
                 D._rows_month(("dax", "2026-01.jsonl.gz", out_dir, (0,), D.MASK_OF, None))
 
     def test_complete_months(self):
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
             raw = Path(td)
             d = dt.date(2026, 1, 1)
             while d <= dt.date(2026, 2, 10):
@@ -885,7 +1021,7 @@ class TestDriver(unittest.TestCase):
         self.assertEqual(D.btc_period(ts(2026, 6, 26)), "burned")
 
     def test_holdout_needs_flag_and_reads_once(self):
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
             marker = Path(td) / "HOLDOUT_READ_DAX.json"
             rows = [{"t": dt.datetime(2026, 3, 1, tzinfo=dt.timezone.utc).timestamp()},
                     {"t": dt.datetime(2026, 5, 1, tzinfo=dt.timezone.utc).timestamp()}]
@@ -902,7 +1038,7 @@ class TestDriver(unittest.TestCase):
 
     def test_null_draws_only_real_minutes(self):
         # Real bars only in minutes 600..659; no next-bar-real requirement.
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
             day0 = 1_700_006_400_000 - (1_700_006_400_000 % 86400000)
             rows = [(day0 + (600 + i) * 60000, 100 + i % 3, 101 + i % 3, 99, 100.5, 1.0) for i in range(60)]
             write_klines(Path(td) / "a.csv", rows)
@@ -929,8 +1065,57 @@ def readiness_fixture(root):
 
 
 class TestReadinessGate(unittest.TestCase):
+    def test_h8_second_arm_same_day_is_counted_and_rerender_is_idempotent(self):
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+            root = Path(td)
+            p = readiness_fixture(root)
+            split = root / "split.json"
+            split.write_text(json.dumps(dict(design_end_utc="2026-04-10T23:58:00Z",
+                holdout_start_utc="2026-04-11T00:00:00Z", embargo_s=0)), encoding="utf-8", newline="\n")
+            session = root / "session.json"
+            session.write_text(json.dumps(dict(timezone="UTC", start="10:00", end="12:00",
+                source="Synthetic quote, synthetic.md:1")), encoding="utf-8", newline="\n")
+            b = mk([(100.,)*4]*2, int(D.T_DAX_START*1000))
+            args = ["report", "--market", "dax", "--smoke", "--split-manifest", str(split),
+                    "--null-session", str(session), "--readiness-manifest", str(p)]
+            def synthetic_simulation(*args, **kwargs):
+                self.assertTrue(list((root / "runs").glob("*.json")), "inputs must be durable before outcomes")
+                return []
+            with patch.object(D, "WORK", root), patch.object(D, "DAX_SNAPS", root), \
+                 patch.object(D, "REPORT", root/"report.md"), patch.object(D, "REGISTRY", root/"trials.csv"), \
+                 patch.object(D, "git", return_value="synthetic"), \
+                 patch.object(D, "require_download_coverage"), \
+                 patch.object(D, "load_development_bars", return_value=b), \
+                 patch.object(D, "load_rows", return_value=[]), patch.object(D, "simulate", side_effect=synthetic_simulation):
+                D.main(args + ["--shifts", "0"])
+                D.main(args + ["--shifts", "1"])
+                registry = root / "TRIAL_REGISTRY_SMOKE.csv"
+                with registry.open(encoding="utf-8") as fh:
+                    rows = list(csv.DictReader(fh))
+                # EXPECT: four variants per look, two distinct identities today.
+                self.assertEqual(len(rows), 8)
+                self.assertEqual(len({r["run_id"] for r in rows}), 2)
+                D.main(args + ["--shifts", "1"])
+                with registry.open(encoding="utf-8") as fh:
+                    self.assertEqual(list(csv.DictReader(fh)), rows)
+                manifests = sorted((root / "runs").glob("*.json"))
+                self.assertEqual(len(manifests), 2)
+                frozen = json.loads(manifests[0].read_text(encoding="utf-8"))
+                self.assertIn("MyTradingSys/system/net_rr_floor.json", frozen["codes"])
+                self.assertEqual(frozen["seeds"]["bootstrap"], 12345)
+                self.assertEqual(frozen["split"]["identity"], D.load_split(split)["identity"])
+                D.main(args + ["--shifts", "1", "--look-id", "fresh-recall-design-look"])
+                with registry.open(encoding="utf-8") as fh:
+                    extra = list(csv.DictReader(fh))
+                self.assertEqual((len(extra), len({r["run_id"] for r in extra})), (12, 3))
+                # Editing an immutable manifest cannot bless an old result.
+                manifests[0].write_text('{}\n', encoding="utf-8", newline="\n")
+                shift = str(frozen["shifts"][0])
+                with self.assertRaisesRegex(ValueError, "immutable run manifest"):
+                    D.main(args + ["--shifts", shift])
+
     def test_missing_partial_or_unanswered_manifest_before_any_simulation(self):
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
             p = readiness_fixture(td)
             complete = json.loads(p.read_text(encoding="utf-8"))
             cases = [("missing", None), ("absent file", Path(td)/"absent.json")]
@@ -968,7 +1153,7 @@ class TestReadinessGate(unittest.TestCase):
     def test_complete_manifest_and_dax_cli_with_btc_cache(self):
         # Exercise the real CLI -> cmd_report -> build_report path. All data,
         # report and registry paths are local fixtures; git is never executed.
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
             root = Path(td)
             p = readiness_fixture(root)
             split = root/"split.json"
@@ -1007,7 +1192,7 @@ class TestReadinessGate(unittest.TestCase):
                     self.assertIn("Synthetic Owner" if waived else "Synthetic protocol answer", text)
 
     def test_malformed_manifest_and_no_holdout_reservation(self):
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
             p = readiness_fixture(td)
             complete = json.loads(p.read_text(encoding="utf-8"))
             cases = ["{", "null", "[]", '{}', '{"items": []}']
