@@ -44,3 +44,7 @@ Older updates: `handoff_history/` beside this file (read only when a task points
 - DONE: tom-ledger-canonical-identities / -instrument-identity / -time-provenance / -management-provenance (12 candidate groups, not certified executions; T5 FDXM vs FDAX and T11 31.08 vs 01-Sep left UNRESOLVED).
 - tom-layer-v2-spec released to `refined`; NOT started (Opus only when Jis asks). tom-layer-v2-cost still waits on tom-holdout-clean-split and tom-profile-parity-check.
 - Pass `TOM_LEDGER_CANONICAL_GROUPS.csv` (prior exposure) to the tom-holdout-clean-split owner; the split manifest was not touched.
+
+## Next task (queued 2026-10-12): Fabio ledger audit, run now (Codex out of capacity until ~21:30 IST)
+- Card `lab-audit-fabio-ledger-frames`: same row-by-row method as the Tom audit report (frame-observed / trader-quoted / inferred; duplicates; instrument; date/time provenance; entry vs management vs teaching vs unfilled; exact missing evidence per row). Report + verdict, repair cards for HIGH/MED, fabio v2 spec cards depending on them.
+- Fabio files only. Resume row index: 1 (nothing audited yet). Sonnet, no subagents.
