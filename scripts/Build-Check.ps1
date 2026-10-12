@@ -68,7 +68,7 @@ $t0 = Get-Date
 if ($Quick) {
     $lines.Add("Math tests:    SKIP (quick tier; full pass is the release gate)")
 } else {
-$mtestOut = (& python -m pytest MyTradingSys/tests --ignore=MyTradingSys/tests/docs -q 2>&1 | Out-String)
+$mtestOut = (& python -m pytest MyTradingSys/tests --ignore=MyTradingSys/tests/docs -q --basetemp=$env:TEMP/mts_pytest_math 2>&1 | Out-String)
 $dur = [math]::Round(((Get-Date) - $t0).TotalSeconds, 1)
 $m = [regex]::Match($mtestOut, "(\d+) passed")
 if ($LASTEXITCODE -eq 0 -and $m.Success) {
@@ -83,7 +83,7 @@ if ($LASTEXITCODE -eq 0 -and $m.Success) {
 $docsDir = "MyTradingSys/tests/docs"
 if (Test-Path $docsDir) {
     $t0 = Get-Date
-    $dtestOut = (& python -m pytest $docsDir -q 2>&1 | Out-String)
+    $dtestOut = (& python -m pytest $docsDir -q --basetemp=$env:TEMP/mts_pytest_docs 2>&1 | Out-String)
     $dur = [math]::Round(((Get-Date) - $t0).TotalSeconds, 1)
     $dm = [regex]::Match($dtestOut, "(\d+) passed")
     $df = [regex]::Match($dtestOut, "(\d+) failed")
