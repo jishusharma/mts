@@ -41,6 +41,8 @@ RUN_LANES = ("DSA", "DSA-NB", "DSA-NUC", "JIS-NB")   # run-and-report: need exac
 # Layer lab (LAYER_LAB.md): CODEX cards are run by scripts/dev/codex_run.py, never by a Claude relay session.
 # kind -> (model, reasoning effort); a card may override either with `model` / `effort`.
 CODEX_KINDS = {"audit": ("gpt-6-astra", "high"), "build": ("gpt-6.1-sol", "medium"), "run": ("gpt-6-luna", "low")}
+REVAL_ID = re.compile(r"^rv\d+")
+REVAL_DEFAULT = ("gpt-6-luna", "medium")   # decided 2026-10-12: astra credits ran out; only original audits get astra
 CODEX_EFFORTS = ("low", "medium", "high", "xhigh", "max")
 LAB_REPORTS = "MyTradingSys/research/layer_lab/reports"
 SIZES = ("S", "M", "L")
@@ -205,6 +207,8 @@ def brief(card):
 def codex_setting(card):
     """(model, effort) a CODEX card runs with: the kind's default unless the card names its own."""
     model, effort = CODEX_KINDS[card["kind"]]
+    if card["kind"] == "audit" and REVAL_ID.match(str(card.get("id", ""))):
+        model, effort = REVAL_DEFAULT   # revalidation (rv01, rv02...) is a second look, not an original audit: luna, not astra
     return card.get("model") or model, card.get("effort") or effort
 
 
