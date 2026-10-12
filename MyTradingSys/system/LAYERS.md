@@ -95,6 +95,18 @@ Latest results AND as a row in `layer_map.json`. Two tracks work here: Claude se
 - Latest results: `MyTradingSys/research/volume_2026-10-09`; `MyTradingSys/research/candle_patterns_2026-10-04`; `MyTradingSys/research/setup_alpha_beta_2026-10-10`; `MyTradingSys/research/bigtrade_2026-10-09`
 - Open cards: none
 
+## Live engine, execution and live-market reads (feeds every layer)
+- Status: Testnet HALT since 2026-10-12 09:46Z (executor fail_closed); supervisor clears it. Live-market screenshot reads file findings as task cards.
+- Tracks: Claude (live reads on JIS-NB), supervisor for HALT/deploy
+- Spec / sources: `MyTradingSys/methodology/live_session_protocol.md`; `MyTradingSys/methodology/screenshot_intake.md`; `MyTradingSys/system/DEPLOY_RUNBOOK.md`
+- Code: `MyTradingSys/execution`
+- Latest results: `MyTradingSys/research/screenshots`
+- Roadmap: `MyTradingSys/system/NEXT_SESSION.md`
+- Open cards (`tasks.py brief <id>`):
+  - `exec-halt-entry-10031` raw p1 JIS-NB: HALT since 2026-10-12 09:46Z: executor fail_closed on entry_market rejected 10031 invalid_args_for_instrument 
+  - `live-loop-one-owner-guard` ready p2 JIS-NB: Live loop one-owner guard: start verb refuses when another host's heartbeat is fresh, fails closed (DEVICES.md
+  - `state-machine-vwap-cvd-vs-klines` raw p3 SONNET: State machine session VWAP/CVD disagree with klines: 2026-10-12 13:08Z state_code.json cum_pv/cum_vol gives 83
+
 ## Cross-cutting
 
 - Every backtest row (layers on, params, verdict, report): MyTradingSys/system/layer_map.json (artifact: make_layer_map.py)
