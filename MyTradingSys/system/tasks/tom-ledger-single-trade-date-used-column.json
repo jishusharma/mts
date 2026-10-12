@@ -1,0 +1,30 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T19:19:02Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "tom-ledger-single-trade-date-used-column",
+  "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Tom ledger: single trade_date_used column, blank date for non-observed rows (RV01 F1,F2)"
+}
