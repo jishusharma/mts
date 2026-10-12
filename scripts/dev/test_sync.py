@@ -138,5 +138,88 @@ class SyncTest(unittest.TestCase):
         self.assertTrue((self.b / "a.py").exists())
 
 
+    # ---- per-session tree, hot files, health (parallel-health task) ----
+    def test_start_in_dirty_shared_tree_makes_fresh_worktree(self):
+        (self.a / "README.md").write_text("another session's half-done edit\n", newline="\n")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            path = sync.start(self.a, slug="mine")
+        self.assertNotEqual(Path(path), self.a)
+        self.assertIn("WORKTREE:", buf.getvalue())
+        self.assertEqual((Path(path) / "README.md").read_text(), "x\n")  # clean copy of origin
+        self.assertEqual((self.a / "README.md").read_text(), "another session's half-done edit\n")
+        br = subprocess.run(["git", "-C", str(path), "branch", "--show-current"],
+                            capture_output=True, text=True).stdout.strip()
+        self.assertTrue(br.endswith("/mine"), br)
+
+    def test_start_in_tree_ahead_of_trunk_makes_fresh_worktree(self):
+        commit(self.a, "unshipped.py", "u\n")  # commits no session has shipped
+        with contextlib.redirect_stdout(io.StringIO()):
+            path = sync.start(self.a, slug="next")
+        self.assertNotEqual(Path(path), self.a)
+        self.assertFalse((Path(path) / "unshipped.py").exists())
+
+    def test_start_in_clean_tree_stays_put(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            path = sync.start(self.b)
+        self.assertEqual(Path(path), self.b)
+
+    def test_hot_file_conflict_resolved_to_origin_not_stalled(self):
+        name = "MyTradingSys/system/NEXT_SESSION.md"
+        (self.a / name).parent.mkdir(parents=True, exist_ok=True)
+        commit(self.a, name, "base\n")
+        sync.ship(self.a, gate=self.gate)
+        sh(self.b, "pull", "-q", "origin", "fast-track")
+        commit(self.a, name, "from a\n")
+        commit(self.b, name, "from b\n")
+        commit(self.b, "b.py", "b\n")
+        sync.ship(self.a, gate=self.gate)
+        with contextlib.redirect_stdout(io.StringIO()):
+            sync.ship(self.b, gate=self.gate)  # NEXT_SESSION.md collides: origin's text wins, ship goes on
+        sh(self.a, "fetch", "-q", "origin")
+        shown = subprocess.run(["git", "-C", str(self.a), "show", f"origin/fast-track:{name}"],
+                               capture_output=True, text=True).stdout
+        self.assertEqual(shown, "from a\n")
+        self.assertIn("b.py", self.head_files(self.a))
+
+    def test_real_code_conflict_still_stops(self):
+        commit(self.a, "x.py", "base\n")
+        sync.ship(self.a, gate=self.gate)
+        sh(self.b, "pull", "-q", "origin", "fast-track")
+        commit(self.a, "x.py", "a\n")
+        commit(self.b, "x.py", "b\n")
+        sync.ship(self.a, gate=self.gate)
+        with self.assertRaises(sync.SyncError):
+            sync.ship(self.b, gate=self.gate)
+
+    def test_health_flags_overlap_and_shared_tree(self):
+        sync.claim(self.a, "Task one", area="scripts/dev,MyTradingSys/backtest", gate=self.gate)
+        sync.claim(self.a, "Task two", area="scripts/dev/sync.py", gate=self.gate)
+        (self.a / "README.md").write_text("dirty\n", newline="\n")  # trunk tree with an uncommitted file
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            n = sync.health(self.a)
+        out = buf.getvalue()
+        self.assertIn("OVERLAP", out)
+        self.assertIn("SHARED", out)
+        self.assertGreaterEqual(n, 2)
+        self.assertIn("HEALTH:", out.strip().splitlines()[-1])
+
+    def test_health_clean_reports_zero(self):
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            n = sync.health(self.a)
+        self.assertEqual(n, 0)
+        self.assertIn("HEALTH: 0", buf.getvalue())
+
+    def test_gate_test_lists_are_one_entry_per_line(self):
+        """Every new test appends to these lists; two entries on one line is a guaranteed merge conflict."""
+        import re
+        src = (Path(__file__).resolve().parent / "run_all_tests.py").read_text(encoding="utf-8")
+        bad = [l.strip() for l in src.splitlines()
+               if len(re.findall(r'"[\w/.-]+\.py"', l)) >= 2 and "sys.executable" not in l]
+        self.assertEqual(bad, [])
+
+
 if __name__ == "__main__":
     unittest.main()

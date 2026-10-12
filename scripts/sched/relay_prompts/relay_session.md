@@ -11,8 +11,9 @@ step 5 within 15 tool turns; use `| tail -20` / `--quiet`, no `ls`/`head` probes
 1. Worktree. From the repo folder you start in: if `../mts-relay` does not exist run
    `git worktree add ../mts-relay -b <hostname in lower case>/relay origin/fast-track`. Work ONLY in `../mts-relay`
    (use `git -C ../mts-relay ...` and `cd ../mts-relay && python ...`). Never work in a folder that holds `.mts_live`.
-2. `python scripts/dev/sync.py start`. A failure here: reply one line with the error and end (do not repair other
-   sessions' files).
+2. `python scripts/dev/sync.py start`. If it prints `WORKTREE: <path>` the relay tree was dirty or ahead (another
+   session's leftovers): work ONLY in that path. A failure here: reply one line with the error and end (do not repair
+   other sessions' files).
 3. `python scripts/sched/relay.py brief --file MyTradingSys/system/NEXT_SESSION.md` (header + the first open non-OPUS
    tasks only; do NOT read the whole file, it is the long queue). Note the header id as STARTED_ID. Take that task;
    `tasks.py brief <card>` is its whole brief. Overrides to the file's block: ONE task only; skip any task whose lane is OPUS; Control Room: one ArtifactData attempt, and

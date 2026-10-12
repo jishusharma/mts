@@ -1,6 +1,7 @@
 """One way for any session on any machine to share work: origin/fast-track is the only meeting point.
 
-  python scripts/dev/sync.py start   # bring this checkout up to date with origin/fast-track
+  python scripts/dev/sync.py start [slug]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree
+  python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
   python scripts/dev/sync.py ship    # merge origin/fast-track, gate, push HEAD to origin/fast-track
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once)
@@ -25,6 +26,11 @@ DOC_SUFFIXES = (".md", ".txt")
 PUSH_TRIES = 3
 CLAIMS_DIR = "MyTradingSys/system/claims"
 STALE_HOURS = 24
+# Generated or whole-file-rewritten files that every session touches. A collision here is never worth a
+# stalled session: origin's text wins, the loser regenerates (STATUS.md) or re-applies its one-line edit.
+TAKE_ORIGIN = ("MyTradingSys/system/NEXT_SESSION.md", "MyTradingSys/research/STATUS.md",
+               "MyTradingSys/runtime/BUILD_REPORT.md")
+NOT_SHIPPED_HOURS = 24
 
 
 class SyncError(Exception):
@@ -50,14 +56,22 @@ def refuse_live(repo):
 
 
 def merge_trunk(repo):
-    """Fetch and merge origin/fast-track into HEAD (never rebase). Returns the commits pulled in."""
+    """Fetch and merge origin/fast-track into HEAD (never rebase). Returns the commits pulled in.
+    A conflict confined to TAKE_ORIGIN files is resolved to origin's text and reported; any other stops."""
     git(repo, "fetch", "--quiet", "origin", TRUNK)
     incoming = git(repo, "rev-list", "--count", f"HEAD..origin/{TRUNK}").stdout.strip()
     if incoming != "0":
         r = git(repo, "merge", "--no-edit", f"origin/{TRUNK}", check=False)
         if r.returncode != 0:
-            raise SyncError(
-                f"merge of origin/{TRUNK} conflicts; resolve, `git commit`, then run ship again.\n{r.stdout}")
+            bad = git(repo, "diff", "--name-only", "--diff-filter=U").stdout.split()
+            if not bad or any(f not in TAKE_ORIGIN for f in bad):
+                raise SyncError(
+                    f"merge of origin/{TRUNK} conflicts; resolve, `git commit`, then run ship again.\n{r.stdout}")
+            for f in bad:
+                git(repo, "checkout", "--theirs", "--", f)
+                git(repo, "add", "--", f)
+                print(f"merge: {f} collided; took origin's text. Re-apply your edit there if it mattered.")
+            git(repo, "commit", "-q", "--no-edit")
     return int(incoming)
 
 
@@ -76,15 +90,94 @@ def run_gate(repo):
         raise SyncError("offline gate (--quick) failed; nothing pushed")
 
 
-def start(repo):
-    # Uncommitted files may be another session's work in progress: not ours to judge. git merge
-    # refuses by itself only when an incoming commit touches one of them.
+def shared_tree_reason(repo):
+    """Why this checkout is not a clean per-session tree, or None. At the start of a session nothing in the
+    tree is ours, so uncommitted files and unshipped commits belong to another session."""
+    ahead = git(repo, "rev-list", "--count", f"origin/{TRUNK}..HEAD", check=False).stdout.strip()
+    dirty = [l for l in git(repo, "status", "--short").stdout.splitlines() if l]
+    if dirty:
+        return f"{len(dirty)} uncommitted file(s)"
+    if ahead not in ("", "0"):
+        return f"{ahead} commit(s) not shipped to origin/{TRUNK}"
+    return None
+
+
+def new_worktree(repo, slug=None):
+    host = socket.gethostname().lower()
+    slug = slugify(slug) if slug else time.strftime("s%m%d-%H%M%S", time.gmtime())
+    path = Path(repo).resolve().parent / f"mts-{host}-{slug}"
+    n = 1
+    while path.exists():
+        n += 1
+        path = path.with_name(f"mts-{host}-{slug}-{n}")
+    branch = f"{host}/{slug}" + ("" if n == 1 else f"-{n}")
+    git(repo, "fetch", "--quiet", "origin", TRUNK)
+    git(repo, "worktree", "add", "-q", str(path), "-b", branch, f"origin/{TRUNK}")
+    return path
+
+
+def start(repo, slug=None, here=False):
+    """Bring a tree up to date. Returns the tree the session must work in: `repo` when it is clean, else a
+    fresh worktree off origin/fast-track (printed as `WORKTREE: <path>`); never touches the other files."""
     refuse_live(repo)
+    reason = None if here else shared_tree_reason(repo)
+    if reason:
+        path = new_worktree(repo, slug)
+        print(f"this tree is shared ({reason}); not working here.")
+        print(f"WORKTREE: {path}")
+        print(f"work ONLY there: cd {path}")
+        repo = path
     n = merge_trunk(repo)
     branch = git(repo, "branch", "--show-current").stdout.strip() or "(detached)"
     print(f"host={socket.gethostname()} branch={branch} pulled={n} head={git(repo, 'rev-parse', '--short', 'HEAD').stdout.strip()}")
     print_claims(repo)
     pull_mirror(repo)
+    return repo
+
+
+def health(repo):
+    """Collision health, one line per problem, last line `HEALTH: <n> issue(s)`. Returns n. Read-only."""
+    git(repo, "fetch", "--quiet", "origin", TRUNK)
+    issues = []
+    now = time.time()
+    claims = read_claims(repo, f"origin/{TRUNK}")
+    areas = {}
+    for slug, kv in claims:
+        age_h = (now - int(kv.get("epoch", now))) / 3600
+        if age_h > STALE_HOURS:
+            issues.append(f"STALE-CLAIM {slug}: {kv.get('host','?')}/{kv.get('account','?')} {age_h:.0f}h old")
+        areas[slug] = [a.strip().rstrip("/") for a in re.split(r"[,\s]+", kv.get("area", "-")) if a.strip() not in ("", "-")]
+    slugs = sorted(areas)
+    for i, a in enumerate(slugs):
+        for b in slugs[i + 1:]:
+            hit = [(x, y) for x in areas[a] for y in areas[b] if x == y or x.startswith(y + "/") or y.startswith(x + "/")]
+            if hit:
+                issues.append(f"OVERLAP claims {a} / {b}: {hit[0][0]} ~ {hit[0][1]}")
+    for path, branch in worktrees(repo):
+        p = Path(path)
+        if not p.exists():
+            issues.append(f"ORPHAN worktree {p.name}: folder gone (git worktree prune)")
+            continue
+        if (p / LIVE_MARKER).exists():
+            continue
+        reason = shared_tree_reason(p)
+        if reason and branch in (TRUNK, "master", "main"):
+            issues.append(f"SHARED {p.name} [{branch}]: sessions work on the trunk branch here; {reason}")
+        elif reason:
+            issues.append(f"UNSHIPPED {p.name} [{branch}]: {reason}")
+    rows = git(repo, "for-each-ref", "refs/remotes/origin", "--format=%(refname:short)|%(committerdate:unix)").stdout.splitlines()
+    for row in rows:
+        ref, _, ts = row.partition("|")
+        short = ref.removeprefix("origin/")
+        if short in (TRUNK, "HEAD", "origin", "main", "master") or short.startswith(("backup/", "green/", "claude/")):
+            continue
+        ahead = git(repo, "rev-list", "--count", f"origin/{TRUNK}..{ref}", check=False).stdout.strip()
+        if ahead not in ("", "0") and ts and (now - int(ts)) / 3600 > NOT_SHIPPED_HOURS:
+            issues.append(f"NEVER-SHIPPED branch {short}: {ahead} commit(s), last {(now - int(ts)) / 3600:.0f}h ago")
+    for i in issues:
+        print(i)
+    print(f"HEALTH: {len(issues)} issue(s)")
+    return len(issues)
 
 
 def pull_mirror(repo):
@@ -238,7 +331,7 @@ def release(repo, slug, gate=run_gate):
 
 
 def main(argv):
-    cmds = {"start": start, "ship": ship, "news": news, "where": where, "claims": print_claims}
+    cmds = {"start": start, "ship": ship, "news": news, "where": where, "claims": print_claims, "health": health}
     extra = {"claim", "release"}
     if argv and argv[0] in extra and len(argv) >= 2:
         try:
@@ -248,6 +341,15 @@ def main(argv):
             else:
                 area = argv[argv.index("--area") + 1] if "--area" in argv else "-"
                 claim(repo, argv[1], area)
+        except SyncError as e:
+            print(f"sync: {e}", file=sys.stderr)
+            return 1
+        return 0
+    if argv and argv[0] == "start" and len(argv) <= 3:
+        try:
+            here = "--here" in argv
+            rest = [a for a in argv[1:] if a != "--here"]
+            start(toplevel(Path.cwd()), rest[0] if rest else None, here)
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1
