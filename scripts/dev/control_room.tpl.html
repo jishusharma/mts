@@ -145,6 +145,16 @@ details.mini>summary{cursor:pointer;color:var(--muted,#6b7280);font-size:.82rem}
   <div class="items" id="bllist"></div>
 </section>
 
+<details class="fold" id="relay-sec" open>
+  <summary><h2>Claude-GPT cycle</h2><span class="muted" style="font-size:.85rem" id="relayline"></span></summary>
+  <div class="dgrid" id="relaylanes"></div>
+  <h3 style="margin:12px 0 6px">Shared notes (relayed to both sides)</h3>
+  <div class="items" id="relaynotes"></div>
+  <h3 style="margin:12px 0 6px">Running now and recent</h3>
+  <div class="items" id="relayflow"></div>
+  <div class="muted" style="font-size:.8rem;margin-top:8px">Add a note: send an Inbox item of kind "Note for the relay"; the pickup copies it word for word into system/RELAY_NOTES.md, which Claude sessions and every GPT pack read.</div>
+</details>
+
 <section id="inbox-sec">
   <div class="sechead"><h2>Inbox</h2><span class="dstate" id="fbstatus"></span></div>
   <div class="two">
@@ -299,6 +309,23 @@ function drawBacklog(){
 }
 drawBacklog();
 
+/* ---------- Claude-GPT cycle: view of system/RELAY_NOTES.md, task lanes, claims, relay runs, Codex lab reports */
+(function(){
+  const R = D.relay; if(!R){ $("#relay-sec").style.display="none"; return; }
+  const L = R.lanes || {}, nm = {claude:"Claude (Sonnet/Opus cards)", gpt:"GPT / Codex (lane CODEX)", desk:"Run lanes (DSA, JIS-NB)"};
+  $("#relayline").textContent = `${(R.notes_open||[]).length} open notes · ${(R.claims||[]).length} claimed tasks · ${(L.gpt||{ready:0}).ready} ready for GPT`;
+  $("#relaylanes").innerHTML = ["claude","gpt","desk"].map(k => { const x = L[k] || {ready:0, other:0, next:[]};
+    return `<div class="dc"><div class="src">${esc(nm[k])}</div><div class="t"><strong>${x.ready}</strong> ready · ${x.other} in refinement or hold</div>` +
+      x.next.map(n => `<div class="src">${esc(n.id)}: ${esc(n.title)} (p${esc(n.prio)})</div>`).join("") + `</div>`; }).join("");
+  $("#relaynotes").innerHTML = (R.notes_open||[]).map(n => `<div class="it" style="grid-template-columns:auto 1fr"><span class="id">${esc(n.id)}</span><div class="t">${esc(n.text)}<div class="src">${esc(n.frm)} to ${esc(n.to)} · ${esc(n.at)}</div></div></div>`).join("")
+    + (R.notes_done||[]).map(n => `<div class="it" style="grid-template-columns:auto 1fr;opacity:.65"><span class="id">${esc(n.id)}</span><div class="t">${esc(n.text)}${n.reply?`<div class="src">Reply: ${esc(n.reply)}</div>`:""}<div class="src">done · ${esc(n.frm)} to ${esc(n.to)}</div></div></div>`).join("")
+    || `<div class="empty">No notes.</div>`;
+  const flow = (R.claims||[]).map(c => `<div class="it" style="grid-template-columns:1fr"><div class="t">Claimed: ${esc(c.task)}<div class="src">${esc(c.host)} · ${esc(c.account)}${c.age_h!=null?" · "+c.age_h+" h ago":""}${c.age_h>24?" · stale, ask then release":""}</div></div></div>`)
+    .concat((R.runs||[]).map(r => `<div class="it" style="grid-template-columns:1fr"><div class="t">Relay ${esc(r.state)}: ${esc(r.session)}<div class="src">${esc(r.host)} · ${esc(r.account)} · ${esc((r.utc||"").slice(0,16).replace("T"," "))}</div></div></div>`))
+    .concat((R.gpt_reports||[]).map(f => `<div class="it" style="grid-template-columns:1fr"><div class="t">Codex lab report: ${esc(f)}</div></div>`));
+  $("#relayflow").innerHTML = flow.join("") || `<div class="empty">Nothing running.</div>`;
+})();
+
 /* ---------- decisions (db) */
 (async function(){
   const st = $("#decstatus");
@@ -361,7 +388,7 @@ drawBacklog();
   /* inbox: {text (verbatim, never trimmed), kind: question|task|requirement|page, created_at,
      status: new|answered|filed|in_progress|done|declined, reply, ref (registry id once filed)} */
   const fbBtn = $("#fbsend"), fbTxt = $("#fbtext"), fbMsg = $("#fbmsg");
-  const KINDS = [["question","Question"],["task","Task"],["requirement","Requirement"],["page","Change this page"]];
+  const KINDS = [["question","Question"],["task","Task"],["requirement","Requirement"],["page","Change this page"],["note","Note for the relay"]];
   let kind = "question";
   const drawKinds = () => { $("#fbkinds").innerHTML = KINDS.map(([k,l]) => `<button class="opt ${kind===k?"on":""}" role="radio" aria-checked="${kind===k}" data-k="${k}">${l}</button>`).join("");
     document.querySelectorAll("#fbkinds .opt").forEach(b => b.onclick = () => { kind = b.dataset.k; drawKinds(); }); };
