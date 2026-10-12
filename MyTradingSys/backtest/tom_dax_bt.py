@@ -36,6 +36,7 @@ import math
 from array import array
 from collections import Counter
 from pathlib import Path
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
@@ -203,7 +204,7 @@ def rows_for_snapshot(s0, parse_ts, proof_dir_of, compute_verdict=None, mask=MAS
 
 # ---------------------------------------------------------------- bars helpers
 def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fees=FEES_FDAX,
-                    stop_first=True, slip=0.0, slip_pts=0.0):
+                    stop_first=True, slip=0.0, slip_pts=0.0, entry_end_i=None):
     """DAX bracket: elapsed-minute clocks, execution only on real bars (audit H4).
 
     Order expiry is unchanged. A holding deadline on a filler minute is deferred
@@ -213,10 +214,10 @@ def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fe
     The mask marks executable data, not the cause of a missing minute; coverage
     validation remains separate from execution.
     """
-    if b.real is None:
+    if b.real is None and entry_end_i is None:
         return T.sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars,
                                  fees, stop_first, slip, slip_pts)
-    if len(b.real) != b.n:
+    if b.real is not None and len(b.real) != b.n:
         raise ValueError("invalid real-bar mask: coverage must match the bars")
     sgn = 1.0 if side == "long" else -1.0
     if not (sgn * (stop - entry) < 0 and sgn * (target - entry) > 0):
@@ -224,7 +225,7 @@ def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fe
     risk = abs(entry - stop)
     fill_i = None
     for i in range(i0, min(i0 + fill_window, b.n)):
-        if not b.real[i]:
+        if (b.real is not None and not b.real[i]) or (entry_end_i is not None and i >= entry_end_i):
             continue
         if (b.l[i] <= entry) if sgn > 0 else (b.h[i] >= entry):
             fill_i = i
@@ -249,7 +250,7 @@ def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fe
     amb = 0
     last = fill_i + hold_bars
     for j in range(fill_i + 1, b.n):
-        if not b.real[j]:
+        if b.real is not None and not b.real[j]:
             continue
         if j > last:
             # Expired during closure: only the first executable opening price.
@@ -288,51 +289,110 @@ def crossed_close(b, i, j):
     return b.real.find(0, i, j + 1) >= 0
 
 
-def draw_real_minute(b, day0_s, rng):
-    """Uniform real-bar minute of the UTC day starting at day0_s whose next bar is real too (next-bar-open fill)."""
-    cache = b.__dict__.setdefault("_real_day", {})
-    ks = cache.get(day0_s)
-    if ks is None:
-        lo = max(0, b.idx(int(day0_s) * 1000))
-        hi = min(b.n - 1, b.idx(int(day0_s) * 1000) + 1440)
-        ks = [k for k in range(lo, hi) if b.real[k] and b.real[k + 1]]
-        cache[day0_s] = ks
-    return ks[rng.randrange(len(ks))]
+def validate_session(session):
+    """Explicit owner-frozen local window; no inferred trader hours."""
+    try:
+        tz = ZoneInfo(session["timezone"])
+        start, end = (dt.datetime.strptime(session[k], "%H:%M").time() for k in ("start", "end"))
+        if any(value.strftime("%H:%M") != session[key] for key, value in (("start", start), ("end", end))):
+            raise ValueError("HH:MM required")
+        if start == end:
+            raise ValueError("empty/whole-day window")
+    except (KeyError, TypeError, ValueError, ZoneInfoNotFoundError) as exc:
+        raise ValueError("null session requires timezone and distinct HH:MM start/end") from exc
+    return tz, start, end
 
 
-def random_entry_null(trades, b, n_perm=200, seed=7):
-    """tom_bt_report.random_entry_null for a market with closing hours: same day, same side, same stop/target distance (% of
-    entry), same hold, next-bar-open fill; the entry minute is drawn among REAL bars (closed minutes cannot be entered).
-    Returns (real mean gross, one-sided p, null mean) or None."""
-    filled = [t for t in trades if t.get("filled") and t["reason"] in ("target", "stop", "timeout")]
-    if len(filled) < 30:
-        return None
-    rng = random.Random(seed)
-    real = sum(t["gross_r"] for t in filled) / len(filled)
-    means = []
-    for _ in range(n_perm):
-        tot = cnt = 0
-        for t in filled:
-            day0 = int(t["t"] // 86400) * 86400
-            try:
-                k = draw_real_minute(b, day0, rng)
-            except ValueError:
+def load_null_session(path):
+    if not path:
+        raise ValueError("null session manifest required (owner's pre-registration addendum)")
+    session = json.loads(Path(path).read_text(encoding="utf-8"))
+    validate_session(session)
+    if not isinstance(session.get("source"), str) or not session["source"].strip():
+        raise ValueError("null session manifest requires trader quote + file:line in source")
+    return session
+
+
+def session_bounds(t, session):
+    tz, start, end = validate_session(session)
+    local = dt.datetime.fromtimestamp(t, tz)
+    date = local.date()
+    overnight = end < start
+    if overnight and local.time() < end:
+        date -= dt.timedelta(days=1)
+    lo = dt.datetime.combine(date, start, tzinfo=tz).timestamp()
+    hi = dt.datetime.combine(date + dt.timedelta(days=int(overnight)), end, tzinfo=tz).timestamp()
+    return lo, hi
+
+
+def session_opportunities(sigs, b, session):
+    validate_session(session)
+    out = []
+    for r in sigs:
+        lo, hi = session_bounds(r["t"], session)
+        i = b.idx(int(round(r["t"] * 1000)))
+        if lo <= r["t"] < hi and 0 <= i < b.n and (b.real is None or b.real[i]):
+            out.append(r)
+    return out
+
+
+def random_entry_null(opportunities, b, n_perm=200, seed=7, session=None):
+    """Randomise ORIGINAL variant opportunities, before scheduling/fill selection.
+
+    Rebase entry/current-open and stop/entry, target/entry ratios at a real
+    minute in the same local session. Orders use the strategy's touch model,
+    eight zone-TF bars and scheduler. Session constrains submissions and fills;
+    pending orders and positions retain their original elapsed lifetimes.
+    Counts include empty draws; inference requires 30 real resolved fills.
+    """
+    validate_session(session)
+    if not isinstance(n_perm, int) or isinstance(n_perm, bool) or n_perm < 1:
+        raise ValueError("null draws must be a positive integer")
+    sigs = session_opportunities(opportunities, b, session)
+    real_trades, real_counts = run_dax_opportunities(sigs, b, FEES_FDAX, session=session)
+    real_filled = resolved(real_trades)
+    real = sum(t["gross_r"] for t in real_filled) / len(real_filled) if real_filled else None
+    rng, draws, means, cache = random.Random(seed), [], [], {}
+    for draw in range(n_perm):
+        samples, missing = [], 0
+        for source_i, r in enumerate(sigs):
+            bounds = session_bounds(r["t"], session)
+            if bounds not in cache:
+                lo, hi = bounds
+                cache[bounds] = [k for k in range(max(0, b.idx(int(lo*1000))),
+                                                min(b.n, b.idx(int(hi*1000))))
+                                 if b.real is None or b.real[k]]
+            ks = cache[bounds]
+            if not ks:
+                missing += 1
                 continue
-            e = b.o[k + 1]
-            zp = float(t["zprice"])
-            sp, tp = abs(zp - float(t["stop"])) / zp, abs(float(t["target"]) - zp) / zp
-            sgn = 1.0 if t["dir"] == "long" else -1.0
-            tfm = T.ZONE_TF_MIN[t["zone_tf"]]
-            r = sim_limit_trade(b, k + 1, t["dir"], e, e * (1 - sgn * sp), e * (1 + sgn * tp), 1, 8 * tfm, FEES_FDAX, True, 0.0)
-            if r["filled"] and r["reason"] in ("target", "stop", "timeout"):
-                tot += r["gross_r"]
-                cnt += 1
-        if cnt:
-            means.append(tot / cnt)
-    if not means:
-        return None
-    p = (1 + sum(1 for m in means if m >= real)) / (1 + len(means))
-    return real, p, sum(means) / len(means)
+            k = ks[rng.randrange(len(ks))]
+            i = b.idx(int(round(r["t"] * 1000)))
+            zp = float(r["zprice"])
+            if zp <= 0 or b.o[i] <= 0 or b.o[k] <= 0:
+                raise ValueError("null requires positive entry/reference prices")
+            sgn = 1 if r["dir"] == "long" else -1
+            if sgn * (zp - b.o[i]) > 0:
+                raise ValueError("null opportunity has marketable rather than passive entry")
+            e = b.o[k] * (zp / b.o[i])
+            sample = dict(r, t=(b.t0+k*60000)/1000, zprice=e,
+                          stop=e*float(r["stop"])/zp, target=e*float(r["target"])/zp,
+                          source_i=source_i)
+            samples.append(sample)
+        trades, counts = run_dax_opportunities(sorted(samples, key=lambda r: (r["t"], r["source_i"])), b, FEES_FDAX, session=session)
+        filled = resolved(trades)
+        mean = sum(t["gross_r"] for t in filled)/len(filled) if filled else None
+        if mean is not None:
+            means.append(mean)
+        draws.append(dict(counts, draw=draw, sampled=len(samples), missing_session=missing,
+                          mean_gross=mean, trades=trades))
+    p = ((1+sum(m >= real for m in means))/(1+len(means))
+         if len(real_filled) >= 30 and means else None)
+    return dict(seed=seed, n_perm=n_perm, session=dict(session), opportunities=len(opportunities),
+                eligible_opportunities=len(sigs), outside_session=len(opportunities)-len(sigs),
+                real_counts=real_counts, real_mean=real, p=p,
+                null_mean=sum(means)/len(means) if means else None,
+                nonempty_draws=len(means), empty_draws=n_perm-len(means), draws=draws)
 
 
 # ---------------------------------------------------------------- periods, holdout guard, archive completeness
@@ -623,7 +683,7 @@ def f2(x):
 
 
 def f3(x):
-    return "%.3f" % x
+    return "-" if x is None else "%.3f" % x
 
 
 def sha(p):
@@ -655,7 +715,7 @@ def verdict_line(s, label):
     return "PASS: edge shown" if s["net_ci"][0] > 0 else "no edge shown"
 
 
-def simulate(market, rows, b, variant, fees, slip_pts=0.0, split=None, period="dev"):
+def simulate(market, rows, b, variant, fees, slip_pts=0.0, split=None, period="dev", session=None):
     if market == "dax" and split:
         rows = [r for r in rows if dax_period(r["t"], split) == period]
         b = slice_bars(b, T_DAX_START if period == "dev" else split["holdout_start"],
@@ -663,26 +723,47 @@ def simulate(market, rows, b, variant, fees, slip_pts=0.0, split=None, period="d
     sigs = T.signals(rows, variant)
     if market != "dax":
         return T.run_variant(sigs, b, fees=fees, stop_first=True, slip=0.0, slip_pts=slip_pts)
+    if session is not None:
+        sigs = session_opportunities(sigs, b, session)
+    out, _ = run_dax_opportunities(sigs, b, fees, slip_pts, session=session)
+    return [t for t in out if t["reason"] != "open_at_end"]
+
+
+def run_dax_opportunities(sigs, b, fees, slip_pts=0.0, session=None):
     # DAX-local counterpart of T.run_variant: preserve scheduling and signal
     # geometry while routing every strategy/stress execution through the mask.
     out, busy_until_i = [], -1
+    counts = dict(opportunities=len(sigs), submitted=0, busy_skipped=0, outside_bars=0,
+                  filled=0, resolved=0, no_fill=0, ran=0, bad_geometry=0, open_at_end=0)
     for r in sigs:
         tf = T.zone_tf(r["ztype"])
         tfm = T.ZONE_TF_MIN[tf]
         i0 = b.idx(int(round(r["t"] * 1000)))
-        if i0 < 0 or i0 >= b.n or i0 <= busy_until_i:
+        if i0 < 0 or i0 >= b.n:
+            counts["outside_bars"] += 1
             continue
+        if i0 <= busy_until_i:
+            counts["busy_skipped"] += 1
+            continue
+        counts["submitted"] += 1
+        entry_end_i = b.idx(int(session_bounds(r["t"], session)[1]*1000)) if session else None
         res = sim_limit_trade(b, i0, r["dir"], float(r["zprice"]), float(r["stop"]), float(r["target"]),
-                              8 * tfm, 8 * tfm, fees, True, 0.0, slip_pts)
-        if res["reason"] == "open_at_end":
-            continue
-        busy_until_i = (res["exit_i"] if res["filled"] else
+                              8 * tfm, 8 * tfm, fees, True, 0.0, slip_pts, entry_end_i=entry_end_i)
+        if res["filled"]:
+            counts["filled"] += 1
+        if res["reason"] in ("target", "stop", "timeout"):
+            counts["resolved"] += 1
+        else:
+            counts[res["reason"]] += 1
+        busy_until_i = (b.n-1 if res["reason"] == "open_at_end" else
+                        res["exit_i"] if res["filled"] else
                         i0 + 8 * tfm - 1 if res["reason"] == "no_fill" else i0)
         t = dict(r)
         t.update(res)
         t["zone_tf"] = tf
+        t["signal_i"] = i0
         out.append(t)
-    return out
+    return out, counts
 
 
 def cell(s):
@@ -700,6 +781,7 @@ HDR = ("| market / verdict / shift / variant | period | n signals | n filled | f
 
 def build_report(a):
     split = load_split(getattr(a, "split_manifest", None))
+    session = load_null_session(getattr(a, "null_session", None))
     if a.read_holdout:
         require_full_dev(a, split)
         counts = {}
@@ -709,7 +791,7 @@ def build_report(a):
     shifts = list(a.shifts)
     months = a.months or None
     md_rows, reg, stress, notes = [], [], [], []
-    acct = {}
+    acct = {"null_session": session, "null_draws": []}
     # ---- DAX
     dev_last_day = dt.datetime.fromtimestamp(split["dev_end"]-1, UTC).date()
     lo_d, hi_d = DAX_START, (dt.datetime.now(UTC).date() if a.read_holdout else dev_last_day)
@@ -769,7 +851,8 @@ def build_report(a):
                     trades = []
                     for per in (periods_dax if market == "dax" else ["dev"]):
                         trades.extend(simulate(market, rows, b, var, fees,
-                                               split=split if market == "dax" else None, period=per))
+                                               split=split if market == "dax" else None, period=per,
+                                               session=session if market == "dax" else None))
                     for t in trades:
                         t["period"] = dax_period(t["t"], split) if market == "dax" else btc_period(t["t"])
                     plist = periods_dax if market == "dax" else ["dev"]
@@ -780,15 +863,18 @@ def build_report(a):
                         s = T.summarize(tr)
                         fl = resolved(tr)
                         null = None
-                        if len(fl) >= 30:
-                            if market == "dax":
-                                null = random_entry_null(tr, period_b)
-                            else:
-                                import tom_bt_report as TR
-                                null = TR.random_entry_null(tr, b)
+                        if market == "dax":
+                            original = T.signals([r for r in rows if dax_period(r["t"], split) == per], var)
+                            null = random_entry_null(original, period_b, session=session)
+                            acct["null_draws"].append(dict(kind=kind, shift=sh, variant=var, period=per, result=null))
+                        elif len(fl) >= 30:
+                            import tom_bt_report as TR
+                            null = TR.random_entry_null(tr, b)
                         held = sum(1 for t in fl if crossed_close(period_b, t["fill_i"], t["exit_i"])) if market == "dax" else 0
                         label = "%s / %s / s%d / %s" % (market.upper() if market == "dax" else "BTC-matched", kind, sh, var)
-                        nul = "%s / %s / %s" % (f3(null[0]), f3(null[2]), f3(null[1])) if null else "-"
+                        nul = ("%s / %s / %s" % (f3(null["real_mean"]), f3(null["null_mean"]), f3(null["p"]))
+                               if market == "dax" else
+                               "%s / %s / %s" % (f3(null[0]), f3(null[2]), f3(null[1])) if null else "-")
                         if sh == 0 or s.get("n_filled"):   # extension arms with no signal at all are left out of the table (still registered)
                             md_rows.append("| %s | %s | %s | %s | %s | %s |\n" % (
                                 label, per, cell(s), nul, held if market == "dax" else "n/a", verdict_line(s, label)))
@@ -799,7 +885,7 @@ def build_report(a):
                                         "%.4f" % sharpe(nets) if sharpe(nets) is not None else ""])
                         if market == "dax" and per == "dev" and fl:
                             risks = sorted(abs(float(t["zprice"]) - float(t["stop"])) / float(t["zprice"]) * 100 for t in fl)
-                            ts = simulate(market, rows, b, var, fees, slip_pts=1.0, split=split)
+                            ts = simulate(market, rows, b, var, fees, slip_pts=1.0, split=split, session=session)
                             ss = T.summarize(ts)
                             stress.append("| %s / %s / s%d | %s | %s | %s | %s | %s |\n" % (
                                 kind, var, sh, s["n_filled"], f2(s["mean_net"]),
@@ -913,8 +999,28 @@ def cmd_report(a):
               "the pre-registration did not foresee it.\n")
     md.append("- **Net R means are driven by tiny-stop trades.** The engine places stops at the nearest swing beyond the zone, which can sit a few cents from it "
               "(a BTC candidate with a 0.03 USD stop costs 1588 R in taker fees). Read the gross column and the exit mix beside every net mean.\n")
-    md.append("- **Null** is `random_entry_null` (200 draws, same day, side and distances); on DAX the entry minute is drawn among real bars only "
-              "(closed minutes cannot be entered). BTC uses `tom_bt_report.random_entry_null` unchanged.\n")
+    md.append("- **DAX null**: original variant opportunities before fill/scheduling selection; 200 draws, seed 7; "
+              "same local session, passive entry/current-open ratio, side, stop/entry and target/entry ratios, "
+              "eight zone-TF bar order/hold clocks, real-bar touch fills and one-at-a-time scheduling. "
+              "Window constrains submissions and entry fills; pending orders/positions keep their clocks across session end. "
+              "Eight bars remain an inherited protocol choice, not a newly sourced Tom rule. "
+              "Frozen session addendum: `%s`. BTC null unchanged.\n" % json.dumps(acct["null_session"], sort_keys=True))
+    accounting = ["\n### DAX null opportunity and fill accounting\n\n"]
+    for arm in acct["null_draws"]:
+        result = arm["result"]
+        label = "%s/s%d/%s/%s" % (arm["kind"], arm["shift"], arm["variant"], arm["period"])
+        accounting.append("%s: seed %d, %d requested draws, %d nonempty, %d empty; %d session-eligible opportunities, %d outside session.\n" % (
+            label, result["seed"], result["n_perm"], result["nonempty_draws"], result["empty_draws"],
+            result["eligible_opportunities"], result["outside_session"]))
+        accounting.append("\n| arm / period | opportunities | draw | sampled | submitted | busy skipped | filled | resolved | no fill | ran | unresolved | bad geometry | missing session |\n"
+                          "|---|---|---|---|---|---|---|---|---|---|---|---|---|\n")
+        for name, counts in [("real", result["real_counts"])] + [(str(d["draw"]), d) for d in result["draws"]]:
+            accounting.append("| %s | %d | %s | %d | %d | %d | %d | %d | %d | %d | %d | %d | %d |\n" % (
+                label, result["opportunities"], name, counts.get("sampled", result["eligible_opportunities"]),
+                counts["submitted"], counts["busy_skipped"], counts["filled"], counts["resolved"],
+                counts["no_fill"], counts["ran"], counts["open_at_end"], counts["bad_geometry"], counts.get("missing_session", 0)))
+        accounting.append("\n")
+    md.append("".join(accounting))
     md.append("- **Closed minutes** are flat bars at the last close with volume 0 for the simulator only; the timeout counts clock bars; a gap through the "
               "stop fills at the reopening bar's open (`min/max(open, stop)`). `held across a close` counts filled trades whose fill..exit span a closed minute. "
               "A limit fill on a reopening gap is taken at the limit price (as on BTC), slightly optimistic.\n")
@@ -955,6 +1061,7 @@ def main(argv=None):
         p.add_argument("--smoke", action="store_true")
         p.add_argument("--read-holdout", dest="read_holdout", action="store_true")
         p.add_argument("--split-manifest", type=Path, help="owner's HOLDOUT_CLEAN.json; required for reports")
+        p.add_argument("--null-session", type=Path, help="owner's frozen session addendum JSON: timezone/start/end/source; required for reports")
     a = ap.parse_args(argv)
     if a.cmd in ("gen", "all"):
         cmd_gen(a)

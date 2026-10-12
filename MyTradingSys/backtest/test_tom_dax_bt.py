@@ -215,12 +215,13 @@ class TestClosedExecutions(unittest.TestCase):
         self.assertEqual(len(trades), 1)  # busy through the deferred exit, including its bar
         self.assertEqual((trades[0]["fill_i"], trades[0]["exit_i"], trades[0]["reason"]), (0, 42, "stop"))
         self.assertAlmostEqual(trades[0]["gross_r"], -3.5)
-        # Null fills at minute 1, expires at 41 (closed), stops at real minute 42.
-        b.real[1] = 1
-        with patch.object(D, "draw_real_minute", return_value=0):
-            real, p, null = D.random_entry_null([dict(row, filled=True, reason="timeout", gross_r=0., zone_tf="5m")] * 30,
-                                               b, n_perm=1)
-        self.assertEqual((real, p, null), (0., .5, -3.))
+        # Null uses the same passive limit at minute 0, including deferred exit.
+        with patch.object(D.random.Random, "randrange", return_value=0):
+            result = D.random_entry_null([row] * 30, b, n_perm=1,
+                                        session=dict(timezone="UTC", start="00:00", end="01:00"))
+        self.assertEqual(result["null_mean"], -3.)
+        self.assertEqual(result["draws"][0]["filled"], 1)
+        self.assertEqual(result["draws"][0]["busy_skipped"], 29)
 
     def test_missing_download_is_rejected_before_archive_read(self):
         # Completed empty days are coverage evidence; absent files are not closures.
@@ -237,7 +238,8 @@ class TestClosedExecutions(unittest.TestCase):
             manifest = raw / "split.json"
             manifest.write_text(json.dumps(dict(design_end_utc="2026-04-10T23:59:00Z",
                 holdout_start_utc="2026-04-11T00:00:00Z", embargo_s=0)), encoding="utf-8", newline="\n")
-            with patch.object(D, "DAX_RAW", raw), patch.object(T, "load_bars_1m") as load:
+            with patch.object(D, "DAX_RAW", raw), patch.object(T, "load_bars_1m") as load, \
+                 patch.object(D, "load_null_session", return_value=dict(timezone="UTC", start="10:00", end="12:00")):
                 with self.assertRaisesRegex(SystemExit, "incomplete DAX download coverage"):
                     D.build_report(SimpleNamespace(months=["2026-01"], shifts=[0], read_holdout=False,
                                                    split_manifest=manifest))
@@ -517,6 +519,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
                 return summarize(trades)
             with patch.object(D, "DAX_ARCHIVE", root), patch.object(D, "DAX_SNAPS", root), \
                  patch.object(D, "WORK", root), patch.object(D, "require_download_coverage"), \
+                 patch.object(D, "load_null_session", return_value=dict(timezone="UTC", start="23:00", end="01:00")), \
                  patch.object(D, "load_rows", return_value=rows), patch.object(T, "summarize", side_effect=capture):
                 result = D.build_report(a)
             with self.subTest("outcome isolation"):
@@ -524,6 +527,20 @@ class TestHoldoutBoundaries(unittest.TestCase):
                                      h-120 + 60*t["exit_i"] >= h for t in seen), seen)
             with self.subTest("actual row count"):
                 self.assertEqual(result[3]["dax"]["holdout_rows"], 2)  # rows, not arms or variants
+            self.assertEqual(len(result[3]["null_draws"]), 8)  # 2 shifts x 4 variants
+            self.assertTrue(all(arm["result"]["n_perm"] == 200 for arm in result[3]["null_draws"]))
+            self.assertTrue(all(arm["result"]["p"] is None for arm in result[3]["null_draws"]))
+            # Exercise report serialization with only synthetic, already computed
+            # inputs. Git and hash probes are stubbed; outputs stay in this fixture.
+            with patch.object(D, "build_report", return_value=result), \
+                 patch.object(D, "git", return_value="synthetic"), patch.object(D, "sha", return_value="fixture"), \
+                 patch.object(D, "REPORT", root/"report.md"), patch.object(D, "REGISTRY", root/"trials.csv"):
+                D.cmd_report(a)
+                text = D.REPORT.read_text(encoding="utf-8")
+                self.assertIn("seed 7, 200 requested draws", text)
+                self.assertIn("| sampled | submitted | busy skipped | filled |", text)
+                self.assertIn("| coded/s0/A/dev | 1 | 199 |", text)
+                self.assertNotIn("|\n\n| coded/", text)  # table rows stay contiguous
 
     def test_absent_manifest_refuses_before_data_read(self):
         a = SimpleNamespace(read_holdout=False, shifts=[0], months=None, market="dax", smoke=True)
@@ -616,6 +633,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
                 counts["holdout"] = 2
                 return []
             with patch.object(D, "load_rows", side_effect=count), patch.object(D, "require_download_coverage"), \
+                 patch.object(D, "load_null_session", return_value=dict(timezone="UTC", start="23:00", end="01:00")), \
                  patch.object(T, "load_bars_1m", side_effect=ValueError("synthetic outcome read failed")):
                 with self.assertRaisesRegex(ValueError, "synthetic outcome read failed"):
                     D.build_report(a)
@@ -624,6 +642,123 @@ class TestHoldoutBoundaries(unittest.TestCase):
             self.assertEqual(saved["split_identity"], split["identity"])
             with self.assertRaisesRegex(SystemExit, "already read"):
                 D.require_full_dev(a, split)
+
+
+class TestSessionNull(unittest.TestCase):
+    def test_missing_or_invalid_session_refuses_before_data_read(self):
+        b = mk([(100.,) * 4] * 100)
+        with self.assertRaisesRegex(ValueError, "null session"):
+            D.random_entry_null([], b)
+        for session in [dict(timezone="invalid", start="10:00", end="12:00"),
+                        dict(timezone="UTC", start="10:00", end="10:00"),
+                        dict(timezone="UTC", start="25:00", end="12:00")]:
+            with self.subTest(session=session), self.assertRaisesRegex(ValueError, "null session"):
+                D.random_entry_null([], b, session=session)
+        with tempfile.TemporaryDirectory() as td:
+            p = Path(td)/"session.json"
+            p.write_text(json.dumps(dict(timezone="UTC", start="10:00", end="12:00")),
+                         encoding="utf-8", newline="\n")
+            with self.assertRaisesRegex(ValueError, "trader quote"):
+                D.load_null_session(p)
+        with patch.object(D, "load_split", return_value={}), \
+             patch.object(D, "require_download_coverage", side_effect=AssertionError("data read")):
+            with self.assertRaisesRegex(ValueError, "null session manifest required"):
+                D.build_report(SimpleNamespace(read_holdout=False))
+
+    def test_timezone_dst_and_overnight_sessions(self):
+        session = dict(timezone="Europe/Berlin", start="10:00", end="12:00")
+        winter, summer = D._ts(2026, 1, 5), D._ts(2026, 7, 6)
+        self.assertEqual(D.session_bounds(winter+540*60, session), (winter+540*60, winter+660*60))
+        self.assertEqual(D.session_bounds(summer+480*60, session), (summer+480*60, summer+600*60))
+        overnight = dict(timezone="UTC", start="23:00", end="01:00")
+        self.assertEqual(D.session_bounds(winter+30*60, overnight), (winter-3600, winter+3600))
+
+    def test_session_end_no_entry_fill_and_unresolved_order_blocks(self):
+        b = mk([(100., 100.5, 99.5, 100.)]*60 + [(100., 100.5, 98.5, 100.)]*50)
+        b.real = bytearray([1]*b.n)
+        row = dict(t=59*60, verdict="SETUP_FORMING", setup="ct_long", dir="long",
+                   zone="vwap", ztype="vwap_band", zprice=99., stop=98., target=105.)
+        session = dict(timezone="UTC", start="00:00", end="01:00")
+        with patch.object(D.random.Random, "randrange", return_value=59):
+            result = D.random_entry_null([row], b, n_perm=1, session=session)
+        self.assertEqual(result["draws"][0]["no_fill"], 1)
+        self.assertEqual(result["real_counts"]["no_fill"], 1)
+        # 20 available minutes cannot resolve a 40-minute order; it stays busy.
+        short = mk([(100., 100.5, 99.5, 100.)]*20)
+        trades, counts = D.run_dax_opportunities([dict(row, t=0), dict(row, t=60)], short, F.FEES_FDAX)
+        self.assertEqual((counts["open_at_end"], counts["busy_skipped"]), (1, 1))
+        self.assertEqual(trades[0]["reason"], "open_at_end")
+
+    def test_ran_short_geometry_and_original_opportunities(self):
+        b = mk([(200., 200.5, 199.5, 200.)]*1440)
+        b.real = bytearray([1]*b.n)
+        session = dict(timezone="UTC", start="10:00", end="12:00")
+        row = dict(t=600*60, verdict="SETUP_FORMING", setup="ct_short", dir="short",
+                   zone="vwap", ztype="vwap_band", zprice=202., stop=204., target=198.)
+        # Original passive short offset 1%, stop +2, target -4 at price 200.
+        b.o[610] = b.h[610] = b.l[610] = b.c[610] = 100.
+        with patch.object(D.random.Random, "randrange", return_value=10):
+            result = D.random_entry_null([row], b, n_perm=1, session=session)
+        trade = result["draws"][0]["trades"][0]
+        self.assertEqual((trade["dir"], trade["zprice"], trade["stop"], trade["target"]),
+                         ("short", 101., 102., 99.))
+        # Target is reached before entry: unfilled opportunity is still sampled.
+        ran = dict(row, dir="long", zprice=198., stop=196., target=200.)
+        result = D.random_entry_null([ran], b, n_perm=2, session=session)
+        self.assertEqual(result["opportunities"], 1)
+        self.assertEqual([d["ran"] for d in result["draws"]], [1, 1])
+        self.assertEqual((result["nonempty_draws"], result["empty_draws"], result["p"]), (0, 2, None))
+        with self.assertRaisesRegex(ValueError, "marketable"):
+            D.random_entry_null([dict(row, zprice=199.)], b, session=session)
+
+    def test_null_preserves_order_lifetime(self):
+        b = mk([(100., 100.5, 99.5, 100.)] * 1440)
+        b.real = bytearray([1] * b.n)
+        row = dict(t=600*60, verdict="SETUP_FORMING", setup="ct_long",
+                   dir="long", zone="vwap", ztype="vwap_band", zone_tf="5m",
+                   zprice=100., stop=99., target=105., filled=True,
+                   reason="timeout", gross_r=0.)
+        with patch.object(D, "sim_limit_trade", wraps=D.sim_limit_trade) as sim:
+            D.random_entry_null([row] * 30, b, n_perm=1,
+                                session=dict(timezone="UTC", start="10:00", end="12:00"))
+        self.assertTrue(sim.call_args_list)
+        self.assertTrue(all(call.args[6] == 40 for call in sim.call_args_list),
+                        [call.args[6] for call in sim.call_args_list])
+
+    def test_session_limits_expiry_and_one_at_a_time(self):
+        # Synthetic winter day: Berlin 10:00..12:00 = UTC minutes 540..659.
+        day = D._ts(2026, 1, 5)
+        b = mk([(100., 100.5, 99.5, 100.)] * 1440, int(day * 1000))
+        b.real = bytearray([1] * b.n)
+        session = dict(timezone="Europe/Berlin", start="10:00", end="12:00")
+        base = dict(t=day+540*60, verdict="SETUP_FORMING", setup="ct_long",
+                    dir="long", zone="vwap", ztype="vwap_band",
+                    zprice=99., stop=98., target=105.)
+        rows = [dict(base, t=base["t"]+i*60) for i in range(30)]
+        # EXPECT: the passive 1% offset stays below every low; 40-minute
+        # orders expire, even though the old next-open comparator always fills.
+        result = D.random_entry_null(rows, b, n_perm=1, seed=7, session=session)
+        draw = result["draws"][0]
+        self.assertEqual(result["opportunities"], 30)
+        self.assertEqual(draw["sampled"], 30)
+        self.assertGreater(draw["submitted"], 0)
+        self.assertEqual(draw["filled"], 0)
+        self.assertEqual(draw["no_fill"], draw["submitted"])
+        self.assertGreater(draw["busy_skipped"], 0)
+        for trade in draw["trades"]:
+            self.assertTrue(540 <= trade["signal_i"] < 660)
+            self.assertEqual(trade["zprice"], 99.)
+        self.assertEqual(result, D.random_entry_null(rows, b, n_perm=1, seed=7, session=session))
+        # Same fixture with touching limits: positions last 40 minutes. Neither
+        # a second position nor a pending order may overlap their occupied bars.
+        touching = [dict(r, zprice=100., stop=99., target=105.) for r in rows]
+        result = D.random_entry_null(touching, b, n_perm=1, seed=7, session=session)
+        draw = result["draws"][0]
+        self.assertGreater(draw["filled"], 0)
+        self.assertGreater(draw["busy_skipped"], 0)
+        for left, right in zip(draw["trades"], draw["trades"][1:]):
+            self.assertGreater(right["fill_i"], left["exit_i"])
+        self.assertTrue(all(540 <= t["fill_i"] < 660 for t in draw["trades"]))
 
 
 class TestDriver(unittest.TestCase):
@@ -712,18 +847,22 @@ class TestDriver(unittest.TestCase):
             self.assertEqual([D.dax_period(r["t"]) for r in D.select_rows(rows, False, marker)], ["dev"])   # dev still fine
 
     def test_null_draws_only_real_minutes(self):
-        # one UTC day-aligned archive: real bars only in minutes 600..659; a null entry must never land elsewhere
+        # Real bars only in minutes 600..659; no next-bar-real requirement.
         with tempfile.TemporaryDirectory() as td:
             day0 = 1_700_006_400_000 - (1_700_006_400_000 % 86400000)
             rows = [(day0 + (600 + i) * 60000, 100 + i % 3, 101 + i % 3, 99, 100.5, 1.0) for i in range(60)]
             write_klines(Path(td) / "a.csv", rows)
             b = T.load_bars_1m(td, fill_gaps=True)
-            import random
-            rng = random.Random(1)
-            for _ in range(200):
-                k = D.draw_real_minute(b, day0 // 1000, rng)
-                self.assertEqual(b.real[k], 1)
-                self.assertEqual(b.real[k + 1], 1)                 # next-bar-open fill needs a real next bar
+            row = dict(t=day0/1000+600*60, verdict="SETUP_FORMING", setup="ct_long",
+                       dir="long", zone="vwap", ztype="vwap_band", zprice=100., stop=98., target=105.)
+            result = D.random_entry_null([row], b, seed=1,
+                                        session=dict(timezone="UTC", start="10:00", end="11:00"))
+            for draw in result["draws"]:
+                self.assertEqual(draw["sampled"], 1)
+                for trade in draw["trades"]:
+                    self.assertEqual(b.real[trade["signal_i"]], 1)
+                    if trade["filled"]:
+                        self.assertEqual(b.real[trade["fill_i"]], 1)
 
 
 if __name__ == "__main__":

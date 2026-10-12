@@ -157,6 +157,16 @@ The row-cache schema is advanced to refuse pre-fix rows. Each regenerated month'
 
 RESULT (2026-10-12, COD lab): the synthetic H5 regression failed before the fix (`SETUP_FORMING` instead of `WAIT_RR`), passed after, and all 40 harness tests passed. Evidence, commands and changed-file lines: `2026-10-12_lab-dax-net-fee-verdict.md`. No market-data backtest or recall was run.
 
+## H3 session-null addendum (2026-10-12, lab-dax-session-null)
+
+MATCH: the DAX null now takes original variant opportunities before scheduling and outcome selection. An explicit frozen session addendum supplies `timezone`, `start`, `end` and `source` (trader quote + file:line), via `--null-session`. Reports refuse a missing/invalid session before coverage or outcome reads. No production session hours were supplied or inferred by this build. Synthetic fixture hours are test inputs only.
+
+MATCH: each opportunity is sampled uniformly among real minutes of its exchange-local session, including overnight windows and seasonal timezone offsets. Entry/current-open, stop/entry and target/entry ratios preserve the passive offset, side and geometry without next-bar-open entry. Marketable source entries are rejected. Strategy and null share the real-bar touch simulator and one-at-a-time scheduler; both retain the existing eight-zone-TF-bar pending/holding clocks and ran/no-fill rules. Entry submissions and fills stay inside the supplied session; existing positions can exit outside it. Unresolved orders remain busy through available coverage and produce no resolved return. Eight bars remain an inherited protocol choice whose trader provenance is unresolved under M3, with no tuning here.
+
+MATCH: the report prints original/session-eligible opportunity counts, real submission/fill counts, and every draw's sampled, submitted, busy-skipped, filled, resolved, expired, ran and unresolved counts. Requested/nonempty/empty draws and seed 7 are explicit; default draws remain 200. The p-value is unavailable below 30 real resolved fills or without a nonempty null draw, while accounting is still reported.
+
+RESULT (2026-10-12, COD lab): the H3 tests failed before the fix (30 one-minute fill windows instead of 40; session argument unsupported), then passed after. Six session-null tests and all 53 harness tests pass. Full commands, changed-file references and red/green output: `2026-10-12_lab-dax-session-null.md`. Only synthetic fixtures were evaluated; PRE_REG_DAX.md and shared/live files were unchanged. The sourced production session addendum remains the owner's input, not a claim of scientific readiness.
+
 ## H2 enforcement addendum (2026-10-12, lab-dax-holdout-boundaries)
 
 MATCH: reports now require `--split-manifest <path>` with UTC `design_end_utc`, UTC `holdout_start_utc`, and finite nonnegative `embargo_s`. The latest design exposure plus embargo must precede or equal the holdout start, with design exposure strictly before it. The manifest owner chooses the clean dates; this change does not certify ledger cleanliness or invent those dates. Development signals precede `holdout_start_utc - embargo_s`; only complete minute bars ending at or before that cutoff enter development price arrays. Forward dates are accepted without the historical DAX_END cap on development coverage.
