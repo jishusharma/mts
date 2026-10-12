@@ -3,7 +3,9 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-11T20:16:26Z",
-  "depends_on": [],
+  "depends_on": [
+    "tom-holdout-clean-split"
+  ],
   "done_when": "",
   "from_inbox": "",
   "goal": "",

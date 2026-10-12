@@ -33,6 +33,9 @@ REPO = tasks.REPO
 LAB = "MyTradingSys/research/layer_lab"
 MAX_ATTEMPTS = 2          # runs of one card that did not end `done`; after that it is STUCK and skipped (no trial burn)
 LOCK_STALE_S = 3 * 3600
+WINDOW_STOP = 85          # % of the 5-hour window used: no new card until it resets
+WEEK_STOP = 85            # % of the week used: the rest stays with the operator's own Codex app sessions
+LIMIT_RE = re.compile(r"usage limit|rate limit reached", re.I)
 
 TEMPLATES = {
     "audit": {
@@ -93,9 +96,52 @@ def attempts(home):
                 r = json.loads(line)
             except ValueError:
                 continue
-            if r.get("outcome") != "DONE" and not r.get("dry"):
+            if r.get("outcome") not in ("DONE", "LIMIT") and not r.get("dry"):
                 out[r["card"]] = out.get(r["card"], 0) + 1
     return out
+
+
+def budget(home, newest=5):
+    """Latest Codex allowance reading ({'primary': 5-hour window, 'secondary': week}) from the newest session files, else None.
+    The lab and the operator's own app sessions share CODEX_HOME, so the reading covers both."""
+    files = sorted(Path(home).glob("sessions/**/*.jsonl"), key=lambda p: p.stat().st_mtime, reverse=True)[:newest]
+    for p in files:
+        for line in reversed(p.read_text(encoding="utf-8", errors="replace").splitlines()):
+            m = re.search(r'"rate_limits"\s*:\s*(?=\{)', line)
+            if not m:
+                continue
+            try:
+                rl, _ = json.JSONDecoder().raw_decode(line, m.end())
+            except ValueError:
+                continue
+            if isinstance(rl.get("primary"), dict):
+                return rl
+    return None
+
+
+def hold(rl, now):
+    """Why no card may start on this reading, or ''. A window whose reset time has passed counts as empty; no reading = go."""
+    for key, cap, name in (("primary", WINDOW_STOP, "5-hour window"), ("secondary", WEEK_STOP, "weekly allowance")):
+        w = (rl or {}).get(key) or {}
+        if (w.get("used_percent") or 0) >= cap and (w.get("resets_at") or 0) > now:
+            return f"Codex {name} {w['used_percent']:.0f}% used, resets {datetime.fromtimestamp(w['resets_at'], timezone.utc).strftime('%Y-%m-%d %H:%MZ')}"
+    return ""
+
+
+def budget_line(rl, now):
+    if not rl:
+        return "Codex allowance: no reading yet"
+    part = []
+    for key, name in (("primary", "5-hour window"), ("secondary", "week")):
+        w = rl.get(key) or {}
+        over = (w.get("resets_at") or 0) <= now
+        part.append(f"{name} {0 if over else w.get('used_percent', 0):.0f}% used" + ("" if over else f" (resets {datetime.fromtimestamp(w['resets_at'], timezone.utc).strftime('%m-%d %H:%MZ')})"))
+    return f"Codex allowance ({rl.get('plan_type') or 'plan ?'}): " + "; ".join(part)
+
+
+def limit_hit(outcome, files, log_text):
+    """A run that wrote nothing because the allowance ran out is not a try of the card: it waits for the window."""
+    return outcome == "INCOMPLETE" and not files and bool(LIMIT_RE.search(log_text))
 
 
 def pick(cards, claimed, tried):
@@ -231,6 +277,8 @@ def run_card(card, dry=False, env=os.environ):
         now = json.loads((wt / tasks.DIR / f"{cid}.json").read_text(encoding="utf-8"))
         reports = sorted(f for f in files if f.startswith(f"{LAB}/reports/") and f.endswith(f"_{cid}.md"))
         outcome, note = judge(now, reports, card["kind"], files), ""
+        if limit_hit(outcome, files, log.read_text(encoding="utf-8", errors="replace")):
+            outcome, note = "LIMIT", "Codex allowance ran out; the card stays ready and is not charged a try"
         if outcome in ("DONE", "BLOCKED"):
             sh(wt, "scripts/dev/codex_run.py", "index")
             git(wt, "add", "-A")
@@ -267,6 +315,10 @@ def cmd_next(a):
     card = pick(cards, claimed, attempts(home))
     if not card:
         print(f"IDLE no CODEX card to run ({len(cards)} ready; claimed or out of tries are skipped)")
+        return 0
+    why = "" if a.dry else hold(budget(home), time.time())
+    if why:
+        print(f"IDLE {why}; {card['id']} waits")
         return 0
     return run_card(card, a.dry)
 
@@ -350,6 +402,7 @@ def cmd_status(a):
     tried = attempts(home)
     cards, _ = tasks.ready_cards(REPO, "CODEX")
     print(f"lab: {'STOPPED' if (home / 'lab.stop').is_file() else 'on'}; ready CODEX cards {len(cards)}; work tree {lab_wt()}")
+    print("  " + budget_line(budget(home), time.time()))
     for c in cards:
         n = tried.get(c["id"], 0)
         print(f"  {c['id']} [{c['kind']}, {' / '.join(tasks.codex_setting(c))}] tries {n}/{MAX_ATTEMPTS}" + (" STUCK" if n >= MAX_ATTEMPTS else ""))

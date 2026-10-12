@@ -137,6 +137,43 @@ class JudgeTest(unittest.TestCase):
             R.find_exe({}, lambda n: None, lambda g: [])
 
 
+class BudgetTest(unittest.TestCase):
+    LINE = ('{"type":"event_msg","payload":{"type":"token_count","rate_limits":{"limit_id":"codex","primary":{"used_percent":%s,'
+            '"window_minutes":300,"resets_at":5000},"secondary":{"used_percent":%s,"window_minutes":10080,"resets_at":90000},"plan_type":"plus"}}}')
+
+    def reading(self, d, five, week):
+        p = Path(d) / "sessions" / "2026" / "10" / "12"
+        p.mkdir(parents=True, exist_ok=True)
+        (p / "rollout-a.jsonl").write_text('{"type":"other"}\n' + self.LINE % (five, week) + '\nnot json\n', encoding="utf-8")
+        return R.budget(d)
+
+    def test_reading_comes_from_the_newest_session_file(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.assertIsNone(R.budget(d))
+            rl = self.reading(d, 70.0, 11.0)
+            self.assertEqual((rl["primary"]["used_percent"], rl["secondary"]["resets_at"]), (70.0, 90000))
+
+    def test_full_window_holds_the_card_until_it_resets(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(R.hold(self.reading(d, 70.0, 11.0), 1000), "")
+            full = self.reading(d, float(R.WINDOW_STOP), 11.0)
+            self.assertIn("5-hour window 85% used, resets 1970-01-01 01:23Z", R.hold(full, 1000))
+            self.assertEqual(R.hold(full, 5001), "")
+            self.assertIn("weekly allowance", R.hold(self.reading(d, 10.0, float(R.WEEK_STOP)), 5001))
+            self.assertEqual(R.hold(None, 1000), "")
+            self.assertIn("5-hour window 0% used; week 85% used", R.budget_line(self.reading(d, 99.0, 85.0), 5001))
+
+    def test_a_run_stopped_by_the_allowance_is_not_a_try(self):
+        self.assertTrue(R.limit_hit("INCOMPLETE", [], "ERROR: You've hit your usage limit. Try again at 4:17 AM."))
+        self.assertFalse(R.limit_hit("INCOMPLETE", ["a.md"], "usage limit"))
+        self.assertFalse(R.limit_hit("INCOMPLETE", [], "tokens used\n9"))
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "lab_runs"
+            p.mkdir()
+            (p / "runs.jsonl").write_text(json.dumps({"card": "x", "outcome": "LIMIT"}) + "\n", encoding="utf-8")
+            self.assertEqual(R.attempts(d), {})
+
+
 class LockTest(unittest.TestCase):
     def test_second_run_is_refused_until_the_lock_is_stale(self):
         with tempfile.TemporaryDirectory() as d:

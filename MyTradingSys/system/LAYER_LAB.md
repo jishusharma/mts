@@ -6,8 +6,8 @@ AGENTS.md -> CLAUDE.md; protocol PARALLEL.md; plan of record for the layers is t
 
 ## Scope
 In: the trader layers being redefined (Tom, Fabio; later the home-fit audits), their specs, ledgers, encodings, backtest code and reports.
-Out: the live path, the relay (`NEXT_SESSION.md`, scheduled tasks), writing a layer spec (Opus research), reading video frames
-(they exist only on JIS-NB: post a desk task), any holdout read, anything in ROADMAP.md section 2 (STOP now).
+Out: the live path, the relay (`NEXT_SESSION.md`, scheduled tasks), writing a layer spec (Opus research), any holdout read,
+anything in ROADMAP.md section 2 (STOP now). Video frames are in scope since 2026-10-12 (copied to `F:/MTS/data` on JIS-NUC).
 
 ## Three kinds of card (lane `CODEX`, field `kind`)
 | kind | job | model / effort (tasks.CODEX_KINDS) | must have |
@@ -48,7 +48,19 @@ has full access (operator's setting), so it does its own git steps; everything e
 - Development data only. The holdout is read once, by the pre-registered card, never by the lab.
 - Every run is a trial: one row in `research/layer_lab/TRIALS.md`. A result picked from many unlogged runs is not a result.
 - No BTC run of the current Tom or Fabio encoding, no tuning (ROADMAP.md section 2). Missing input = NOT_IN_DATA, never 0.
-- Data on JIS-NUC (CODEX_BRIDGE.md): no `tom_videos` / `fabio_videos`; `dax_archive` must be rebuilt first with backtest/dax_data.py.
+- Data on JIS-NUC, `F:/MTS/data` (one-off copy from JIS-NB 2026-10-12, 3565 files, 4.5 GB): `tom_videos`, `fabio_videos` (frames,
+  sheets, captions), `dax_archive`, `dax_raw`, `dax_bt`, `dax_snapshots`, `bigtrade`. Not copied: `Dumps/backtest/raw_1m_2022`.
+  Nothing refreshes it yet: data made on JIS-NB after that date is NOT_IN_DATA here until the next copy.
+
+## Allowance (Codex plan Plus: a 5-hour window and a weekly cap, shared with the operator's own app sessions)
+- Nothing but the scheduled script feeds Codex: no Claude session, no Haiku worker. A ready CODEX card is the only input.
+- Each tick reads the last allowance reading Codex wrote (`%CODEX_HOME%\sessions`). At 85% of the 5-hour window, or 85% of the
+  week, the tick stays IDLE and the card waits for the reset (`codex_run.py status` prints both numbers). The last 15% of the
+  week is the operator's.
+- A run cut off by the allowance ends LIMIT: nothing shipped, the card stays ready, no try is charged.
+- Measured 2026-10-11: one high-effort audit = 200k tokens, 9 minutes. Keep the queue 4 to 8 cards deep; an empty queue wastes windows.
+- Filling the queue is refinement work: any session turns a scoped card into lane CODEX (`kind`, `tests` or `commands`,
+  scope_in) and ships it. Cards that touch the live path, shared engine files or a holdout never go to the lab.
 
 ## Guards
 Codex runs in sandbox `workspace-write`: it can write only inside the lab work tree, has no network and cannot write `.git`
