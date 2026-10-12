@@ -48,6 +48,10 @@ class LaneRulesTest(unittest.TestCase):
     def test_setting_comes_from_kind_unless_the_card_overrides(self):
         self.assertEqual(T.codex_setting(card(kind="audit")), ("gpt-6-astra", "high"))
         self.assertEqual(T.codex_setting(card(kind="run")), ("gpt-6-luna", "low"))
+        # revalidation cards (rv01...) are second looks: luna/medium; an original audit keeps astra/high; a card may still name its own
+        self.assertEqual(T.codex_setting(card(cid="rv05-fabio-pass", kind="audit")), ("gpt-6-luna", "medium"))
+        self.assertEqual(T.codex_setting(card(cid="lab-audit-x", kind="audit")), ("gpt-6-astra", "high"))
+        self.assertEqual(T.codex_setting(card(cid="rv05-fabio-pass", kind="audit", model="gpt-6-astra", effort="medium")), ("gpt-6-astra", "medium"))
         self.assertEqual(T.codex_setting(card(kind="build", model="gpt-6-astra", effort="max")), ("gpt-6-astra", "max"))
 
     def test_brief_names_the_report_and_fits_the_cap(self):
