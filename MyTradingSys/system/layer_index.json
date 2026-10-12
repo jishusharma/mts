@@ -1,0 +1,95 @@
+{
+  "_doc": "Hand-kept pointers for LAYERS.md (scripts/dev/make_layers_md.py). One row per layer family. Every path must exist (tests/test_layers_index.py). Open cards are matched live by card-id glob; never copy card state here. Per-variant results live in layer_map.json and TRIAL_REGISTRY.csv, not here.",
+  "families": [
+    {
+      "id": "tom", "name": "Tom (core engine + proofs)", "tracks": "Claude (spec/build), Codex lab (audits, DAX harness)",
+      "status": "STOP on the BTC encoding; being redefined as Tom v2 (DAX home market). Never a filter for other layers.",
+      "spec": ["MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md", "MyTradingSys/research/tom_fabio_guidance_2026-10-12/SOURCED_RULES.md", "MyTradingSys/research/TOM_VERBATIM_INDEX.md"],
+      "code": ["src/main/java/datafeed/SetupCandidatesBuilder.java", "MyTradingSys/backtest/tom_dax_bt.py", "MyTradingSys/backtest/verdict.py"],
+      "ledger": ["MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv", "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LEDGER_CANONICAL_GROUPS.csv"],
+      "results": ["MyTradingSys/research/tom_core_bt_2026-10-09/PHASE2_RESULT.md", "MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md", "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md", "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md"],
+      "roadmap": ["MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md", "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md"],
+      "cards": ["tom-*", "lab-dax-*", "lab-audit-tom-*"]
+    },
+    {
+      "id": "fabio", "name": "Fabio (order-flow layer)", "tracks": "Claude (spec/ledger), Codex lab (audits)",
+      "status": "v3 tried 2026-10-04, holdout FAIL; ledger audit FIX-FIRST; being redefined as Fabio v2 (waits on ledger repairs).",
+      "spec": ["MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md", "MyTradingSys/research/fast_track_2026-09-27/FABIO_RULEBOOK.md", "MyTradingSys/research/fast_track_2026-09-27/FABIO_TRADE_MODEL.md", "MyTradingSys/research/tom_fabio_guidance_2026-10-12/SOURCED_RULES.md"],
+      "code": ["MyTradingSys/backtest/layers/fabio/fabio_v3.py", "MyTradingSys/backtest/layers/fabio/fabio_of_model.py", "MyTradingSys/backtest/layers/fabio/run_v3_l3.py"],
+      "ledger": ["MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv", "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md"],
+      "results": ["MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md", "MyTradingSys/backtest/layers/fabio/FABIO_OF_REPORT.md", "MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md", "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md"],
+      "roadmap": ["MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md"],
+      "cards": ["fabio-*", "find-more-fabio-*", "lab-audit-fabio-*"]
+    },
+    {
+      "id": "guidance", "name": "Tom/Fabio cross-guidance (BB, LVN, regime filters)", "tracks": "Claude",
+      "status": "Q33 found no surviving cell: do not wire cross-guidance (Q34 skipped).",
+      "spec": ["MyTradingSys/research/tom_fabio_guidance_2026-10-12/GUIDANCE_AUDIT.md", "MyTradingSys/research/tom_fabio_guidance_2026-10-12/PRE_REG_Q33.md"],
+      "code": ["MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py", "MyTradingSys/backtest/layers/test_layer_boundaries.py"],
+      "ledger": [],
+      "results": ["MyTradingSys/research/tom_fabio_guidance_2026-10-12/MATRIX_REPORT.md"],
+      "roadmap": [],
+      "cards": []
+    },
+    {
+      "id": "rsi", "name": "RSI / Malkan / Kurisko", "tracks": "Claude",
+      "status": "40/60 levels: tolerance study done; divergence: no edge on any TF.",
+      "spec": ["MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md", "MyTradingSys/backtest/layers/FORMULAS.md"],
+      "code": ["MyTradingSys/backtest/layers/rsi/malkan_40_60.py", "MyTradingSys/backtest/layers/rsi/malkan_mtf.py"],
+      "ledger": [],
+      "results": ["MyTradingSys/research/rsi_divergence_mtf_2026-10-09"],
+      "roadmap": [],
+      "cards": ["malkan-*"]
+    },
+    {
+      "id": "cryptocred", "name": "CryptoCred setups", "tracks": "Claude",
+      "status": "S/R flip + fib pullback + failed MSB FAIL after trade-through rerun; stop buffer unsourced (B143).",
+      "spec": ["MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md", "MyTradingSys/backtest/layers/FORMULAS.md"],
+      "code": ["MyTradingSys/backtest/layers/cryptocred"],
+      "ledger": [],
+      "results": ["MyTradingSys/research/cryptocred_stop_2026-10-10"],
+      "roadmap": [],
+      "cards": ["cryptocred-*"]
+    },
+    {
+      "id": "positioning", "name": "Positioning (funding, OI, whale / FlowHorse)", "tracks": "Claude",
+      "status": "T055 C1 FAIL; OI/long-short unused as filters.",
+      "spec": ["MyTradingSys/research/whale_positioning_evidence_2026-09-12.md", "MyTradingSys/backtest/layers/FORMULAS.md"],
+      "code": ["MyTradingSys/backtest/layers/positioning"],
+      "ledger": [],
+      "results": ["MyTradingSys/research/OI_DIVERGENCE_V2_2026-10-10.md", "MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md"],
+      "roadmap": [],
+      "cards": ["positioning-*"]
+    },
+    {
+      "id": "session_timing", "name": "Session / timing (session levels, turn of candle, session momentum)", "tracks": "Claude",
+      "status": "T055 C2/C3 closed; T087 failed prior-day-high fade FAIL.",
+      "spec": ["MyTradingSys/research/TURN_OF_CANDLE_ORIGIN_2026-10-09.md"],
+      "code": ["MyTradingSys/backtest/layers/session", "MyTradingSys/backtest/layers/session_levels", "MyTradingSys/backtest/layers/turn_of_candle"],
+      "ledger": [],
+      "results": ["MyTradingSys/research/t087_session_levels_2026-10-09"],
+      "roadmap": [],
+      "cards": []
+    },
+    {
+      "id": "volume_candles_ma", "name": "Volume, candle patterns, daily MA setups, bigtrade", "tracks": "Claude",
+      "status": "No validated edge; volume HOLDOUT sealed; MA numbers NO-SOURCE.",
+      "spec": ["MyTradingSys/backtest/layers/FORMULAS.md"],
+      "code": ["MyTradingSys/backtest/bigtrade"],
+      "ledger": [],
+      "results": ["MyTradingSys/research/volume_2026-10-09", "MyTradingSys/research/candle_patterns_2026-10-04", "MyTradingSys/research/setup_alpha_beta_2026-10-10", "MyTradingSys/research/bigtrade_2026-10-09"],
+      "roadmap": [],
+      "cards": []
+    }
+  ],
+  "cross_cutting": [
+    {"what": "Every backtest row (layers on, params, verdict, report)", "where": "MyTradingSys/system/layer_map.json (artifact: make_layer_map.py)"},
+    {"what": "Every trial count (multiple-testing ledger)", "where": "MyTradingSys/research/fast_track_2026-09-27/bt_runs/TRIAL_REGISTRY.csv"},
+    {"what": "Formulas (canonical definitions)", "where": "MyTradingSys/backtest/layers/FORMULAS.md"},
+    {"what": "Layer provenance (sourced vs NO-SOURCE parameters)", "where": "MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md"},
+    {"what": "Codex layer lab deliveries and queue", "where": "MyTradingSys/research/layer_lab/INDEX.md (spec: system/LAYER_LAB.md)"},
+    {"what": "Work queue (relay Qn tasks)", "where": "MyTradingSys/system/NEXT_SESSION.md; cards: python scripts/dev/tasks.py list"},
+    {"what": "Group-level project map (DATA/CORE/LAYR/EVID...)", "where": "MyTradingSys/system/PROJECT_MAP.md"},
+    {"what": "Backtest pre-registration template and 12-point readiness checklist", "where": "MyTradingSys/backtest/PRE_REG_TEMPLATE.md"}
+  ]
+}
