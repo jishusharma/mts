@@ -10,7 +10,7 @@ Scope out: running `report --read-holdout` (the holdout is read once, by the pre
 Why risky: the same model family found the 14 defects, fixed 8 of them, and wrote the regression tests. A holdout leak burns the
 only out-of-sample set for Tom on DAX.
 Checks:
-1. For each H1..H8: open the original finding, the fix diff (`git log -p --follow` on the files), and the new test. Does the test fail
+1. For each H1..H8: open the original finding, the fix diff (the follow-renames commit history with patches on the files), and the new test. Does the test fail
    on the pre-fix commit (use `git worktree add` in the scratchpad, never the main tree)? MATCH/MISMATCH per H.
 2. The 6 MED findings of the audit that had no fix card: list status (fixed by side effect / still open / not reproducible).
 3. Holdout isolation, end to end: trace every path from raw bars to a metric printed by `all` and `report` without

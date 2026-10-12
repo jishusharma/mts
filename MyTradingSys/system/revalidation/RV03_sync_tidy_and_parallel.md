@@ -9,7 +9,7 @@ Why risky: `tidy --apply` deletes directories; hot-file auto-resolve silently pi
 Checks (each one a failing-then-passing test written in the scratchpad, shipped to scripts/dev/test_sync.py only on request):
 1. A worktree just made by `new_worktree` (clean, branch tip == origin/fast-track) and one that holds a live claim: does `tidy --apply`
    remove it? (test_tidy_removes_only_clean_shipped_session_worktrees asserts the removal of exactly such a tree.)
-2. Ignored but valuable files (`.gitignore`d data, e.g. Dumps/, runtime_data/): `git status --porcelain` omits them; does
+2. Ignored but valuable files (`.gitignore`d data, e.g. Dumps/, runtime_data/): the porcelain status listing omits them; does
    `git worktree remove` delete them? Name every ignored path pattern in .gitignore that holds non-reproducible data.
 3. Another tree's current directory / running process inside the worktree: any guard?
 4. `claim`: two sessions claim the same slug within one fetch window; claim of a slug that differs only by case or punctuation.
