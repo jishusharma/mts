@@ -170,7 +170,10 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Code: `MyTradingSys/backtest/bigtrade`
 - Other results: `MyTradingSys/research/volume_2026-10-09`; `MyTradingSys/research/candle_patterns_2026-10-04`; `MyTradingSys/research/setup_alpha_beta_2026-10-10`; `MyTradingSys/research/bigtrade_2026-10-09`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `pooled-short-lookback-trend-tsmom-30d-sm` raw p3 DSA: Pooled short-lookback trend (TSMOM 30d, SMA50/100, 4h Donchian 20/10) on sealed 2025-07..2026-09 BTC holdout: 
   - `time-adjusted-volume-context-line-for-th` raw p3 SONNET: Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-o
+  - `fetch-ethusdt-perp-1h-klines-funding-202` raw p4 DSA: Fetch ETHUSDT perp 1h klines + funding 2020-2026 (fetch_binance_archive.py) and re-run research/published_stra
+  - `funding-carry-with-real-spot-basis-margi` raw p4 SONNET: Funding carry with real spot basis, margin and borrow: net 15.4 -> 12.1 -> 6.2 %/yr decay in published_strats_
 
 ## Live engine, execution and live-market reads (feeds every layer) (`live_engine`)
 - Status: Testnet HALT since 2026-10-12 09:46Z (executor fail_closed); supervisor clears it. Live-market screenshot reads file findings as task cards.

@@ -228,108 +228,102 @@
   "2026-10-09"
  ],
  "remaining_count": 130,
+ "dev_window": [
+  "2024-11-04",
+  "2026-04-10"
+ ],
+ "dev_dropped_days": {
+  "2025-12-19": [
+   "2025-12-22"
+  ],
+  "2025-12-21": [
+   "2025-12-22"
+  ],
+  "2025-12-22": [
+   "2025-12-22"
+  ],
+  "2025-12-23": [
+   "2025-12-22"
+  ],
+  "2026-01-07": [
+   "2026-01-08"
+  ],
+  "2026-01-08": [
+   "2026-01-08"
+  ],
+  "2026-01-09": [
+   "2026-01-08"
+  ],
+  "2026-03-18": [
+   "2026-03-19"
+  ],
+  "2026-03-19": [
+   "2026-03-19"
+  ],
+  "2026-03-20": [
+   "2026-03-19"
+  ]
+ },
+ "dev_dropped_count": 10,
  "forward_holdout": {
   "from": "2026-10-10",
   "read_once_at_trades_ge": 100,
   "note": "DAX bars from 2026-10-10 on; no look before 100 trades; every recall iteration is a TRIAL_REGISTRY row"
  },
- "split_rule": "date clusters (groups sharing a candidate date) ordered by earliest candidate date; 0-based index % 3 == 1 -> check, else design; fixed before any encode",
- "clusters": [
-  {
-   "groups": [
-    "T1",
-    "T8"
+ "split_source": "TOM_LAYER_V2_SPEC.md section 7 (frozen; copied, not re-derived)",
+ "split": {
+  "design": {
+   "S1 n7ZSkjb7JXs": [
+    "T1"
    ],
-   "dates": [
-    "2025-12-22"
-   ],
-   "set": "design"
-  },
-  {
-   "groups": [
+   "S2 k0zm5NYn0IQ": [
     "T2",
     "T2b"
    ],
-   "dates": [
-    "2026-01-08"
-   ],
-   "set": "check"
-  },
-  {
-   "groups": [
-    "T7"
-   ],
-   "dates": [
-    "2026-03-19"
-   ],
-   "set": "design"
-  },
-  {
-   "groups": [
+   "S3 ujedEcmvBMk": [
     "T3",
     "T3b"
    ],
-   "dates": [
-    "2026-05-12"
-   ],
-   "set": "design"
-  },
-  {
-   "groups": [
-    "T4",
+   "S4 T6hDJcHrVBM": [
     "T5"
    ],
-   "dates": [
-    "2026-05-18",
-    "2026-05-19"
-   ],
-   "set": "check"
-  },
-  {
-   "groups": [
+   "S5 zQTbdEweG3c": [
     "T6"
    ],
-   "dates": [
-    "2026-06-02",
-    "2026-06-08"
-   ],
-   "set": "design"
+   "S6 l8RZrBfzvp4 (text only, ES)": [
+    "T7"
+   ]
   },
-  {
-   "groups": [
-    "T12"
-   ],
-   "dates": [
-    "2026-07-14"
-   ],
-   "set": "design"
-  },
-  {
-   "groups": [
+  "check": {
+   "S7 liEJMfE_PXg": [
     "T11"
    ],
-   "dates": [
-    "2026-08-31",
-    "2026-09-01"
-   ],
-   "set": "check"
+   "S8 ZZeET7ng1nk": [
+    "T12"
+   ]
+  },
+  "family_c_in_neither_set": {
+   "S9 UOBgXV20yCM": [
+    "T4"
+   ]
+  },
+  "excluded": {
+   "T8": "own row in S1 (spec: T1 (+T8, excluded))"
   }
- ],
+ },
  "design_groups": [
   "T1",
-  "T3",
-  "T3b",
-  "T6",
-  "T7",
-  "T8",
-  "T12"
- ],
- "check_groups": [
   "T2",
   "T2b",
-  "T4",
+  "T3",
+  "T3b",
   "T5",
-  "T11"
+  "T6",
+  "T7"
  ],
- "undated_groups": []
+ "check_groups": [
+  "T11",
+  "T12"
+ ],
+ "groups_not_covered_by_split": []
 }

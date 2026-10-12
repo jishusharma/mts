@@ -33,14 +33,16 @@ class T(unittest.TestCase):
         _, dropped, _ = h.clean_holdout(["2026-04-13"], days)
         self.assertEqual(sorted(dropped), ["2026-04-13", "2026-04-14"])
 
-    def test_split_clusters_and_every_third(self):
-        g = {"T1": {"2026-01-01"}, "T2": {"2026-01-02"}, "T3": {"2026-01-03", "2026-01-04"},
-             "T4": {"2026-01-04"}, "T5": {"2026-01-09"}, "T6": set()}
-        cl, design, check, undated = h.split(g)
-        self.assertEqual([c[0] for c in cl], [["T1"], ["T2"], ["T3", "T4"], ["T5"]])
-        self.assertEqual(check, ["T2"])
-        self.assertEqual(design, ["T1", "T3", "T4", "T5"])
-        self.assertEqual(undated, ["T6"])
+    def test_split_is_spec_section_7(self):
+        self.assertEqual(h.flat("design"), ["T1", "T2", "T2b", "T3", "T3b", "T5", "T6", "T7"])
+        self.assertEqual(h.flat("check"), ["T11", "T12"])
+        self.assertEqual(h.flat("family_c_in_neither_set"), ["T4"])
+        self.assertFalse(set(h.flat("design")) & set(h.flat("check")))
+
+    def test_dev_window_dropping(self):
+        days = ["2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23"]
+        _, dropped, _ = h.clean_holdout(["2026-03-19"], days, h.DEV_START, h.DEV_END)
+        self.assertEqual(sorted(dropped), ["2026-03-18", "2026-03-19", "2026-03-20"])
 
 
 if __name__ == "__main__":
