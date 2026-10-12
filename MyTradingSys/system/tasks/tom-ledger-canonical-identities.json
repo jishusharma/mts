@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-12T12:08:43Z",
+  "closed": "2026-10-12T13:19:05Z",
   "commands": [],
   "created": "2026-10-12T08:16:22Z",
   "depends_on": [],
@@ -18,7 +18,7 @@
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md"
   ],
-  "result": "Repaired in TOM_TRADE_LEDGER.csv/.md + TOM_LEDGER_CANONICAL_GROUPS.csv per audit rows; unresolved fields marked NOT_IN_DATA; no values invented.",
+  "result": "already repaired in 2868d6c: 37 rows kept, 14 ids = 12 candidate groups (TOM_LEDGER_CANONICAL_GROUPS.csv), 0 certified executions",
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",
