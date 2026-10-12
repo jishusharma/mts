@@ -303,6 +303,26 @@ def cmd_kick(a):
     return 0
 
 
+def cmd_brief(a):
+    """Print only what a relay session needs from NEXT_SESSION.md: the header and the first few open, non-OPUS tasks
+    (B172 cut 3: hand the session its task, not the whole queue)."""
+    text = Path(a.file).read_text(encoding="utf-8")
+    print("header:", read_header(a.file))
+    n = 0
+    for line in text.splitlines():
+        if not re.match(r"^\s+Q\d+\.", line):
+            continue
+        if re.search(r"(?<![A-Za-z])(DONE|OPUS)(?![A-Za-z])", line):
+            continue
+        print(line.strip()[:a.width])
+        n += 1
+        if n >= a.max:
+            break
+    if n == 0:
+        print("no open non-OPUS task line: pick with `python scripts/dev/tasks.py next`")
+    return 0
+
+
 def cmd_status(a):
     print("header:", read_header(a.file))
     flag = home() / "mts-relay-stop"
@@ -332,6 +352,10 @@ def main(argv=None):
     k.add_argument("--git-ref", default=KICK_REF)
     k.add_argument("--peer-quiet-min", type=int, default=0,
                    help="IDLE while another host wrote the current handoff less than this many minutes ago (0 = off)")
+    br = sub.add_parser("brief")
+    br.add_argument("--file", required=True)
+    br.add_argument("--max", type=int, default=3)
+    br.add_argument("--width", type=int, default=400)
     st = sub.add_parser("status")
     st.add_argument("--file", required=True)
     sp = sub.add_parser("stop")
@@ -346,6 +370,8 @@ def main(argv=None):
         return cmd_gate(a)
     if a.cmd == "status":
         return cmd_status(a)
+    if a.cmd == "brief":
+        return cmd_brief(a)
     if a.cmd == "kick":
         return cmd_kick(a)
     home().mkdir(parents=True, exist_ok=True)

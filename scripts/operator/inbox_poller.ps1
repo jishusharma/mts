@@ -20,14 +20,14 @@ function Invoke-Request($file) {
     $reply = Join-Path $Root "outbox\$base.reply.md"
     Move-Item $file.FullName $working -Force
     $raw = [IO.File]::ReadAllText($working)
-    $model = 'sonnet'
+    $model = 'haiku'   # SURFACE_POLICY 3b: question/status -> Haiku; a request escalates with `model: sonnet|opus`
     $text = $raw
     $parts = $raw -split "(?m)^---\r?\n", 2
     if ($parts.Count -eq 2) {
         $text = $parts[1]
         if ($parts[0] -match '(?im)^model:\s*(\w+)') { $model = $Matches[1].ToLower() }
     }
-    if ($model -notin 'sonnet','opus','haiku') { $model = 'sonnet' }
+    if ($model -notin 'sonnet','opus','haiku') { $model = 'haiku' }
     Log "start $base model=$model"
     $claude = Get-Command claude -ErrorAction SilentlyContinue
     if (-not $claude) {

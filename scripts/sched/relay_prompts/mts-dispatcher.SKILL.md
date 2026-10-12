@@ -1,5 +1,6 @@
 ---
 name: mts-dispatcher
+model: sonnet
 description: NB dispatcher, hourly 07-23; yields to the NUC while the NUC wrote the current handoff under 90 min ago, otherwise runs the relay itself. Inbox, refiner, housekeeping on each tick.
 ---
 

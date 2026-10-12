@@ -9,7 +9,7 @@ DIRECTION (operator 2026-10-11): redefine the Tom and Fabio layers completely fr
 MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_transfer_2026-10-11/ROADMAP.md, then State below.
 0. `python scripts/dev/sync.py start`, `sync.py where`, `desk.py list --all`. Push fails: say so in one line, stop.
    Read STATUS.md "Daily Hygiene": a RED there is fixed before new work. One task per session; hand off after the task,
-   5 operator turns or ~50k tokens: ship, overwrite this file, `where` clean.
+   5 operator turns or 15 tool turns: ship, overwrite this file, `where` clean.
 1. Control Room (url in CONTROL_ROOM.md): ArtifactData query decisions + feedback. Apply answered decisions with no `applied`;
    a new unanswered decision: act on its `recommended` option only when older than 24 h.
    every weekday fetched; snapshot check MATCH. Nothing to do here.

@@ -11,7 +11,7 @@ Layout (Dumps/ is gitignored): `Dumps/operator/{inbox,outbox,done,archive}`, `po
    Autostart at logon (run once by you): `scripts/operator/install_poller_task.ps1` (task `MTS-OperatorPoller`).
 
 ## Use
-- Ask: `scripts/operator/ask.ps1 "what is the auto-trader status?"` (add `-Model opus|haiku`; default sonnet).
+- Ask: `scripts/operator/ask.ps1 "what is the auto-trader status?"` (add `-Model opus|haiku`; default haiku; use sonnet for work requests).
 - Read: `scripts/operator/replies.ps1` (newest), `-Count 3`, or `-List`.
 - Runs `claude -p --model <m> --permission-mode acceptEdits` in the repo root, prompt on stdin; 30 min timeout;
   one request at a time; reply in `outbox/<req>.reply.md`, request moved to `done/`.
@@ -21,7 +21,7 @@ Layout (Dumps/ is gitignored): `Dumps/operator/{inbox,outbox,done,archive}`, `po
 - Requests needing the long-running supervisor session get a reply saying so.
 
 ## Cost notes
-Default sonnet, small fixed preamble; the model reads CLAUDE.md/STATUS.md only as needed. Use opus sparingly.
+Default haiku (escalate with -Model), small fixed preamble; the model reads CLAUDE.md/STATUS.md only as needed. Use opus sparingly.
 Every request pays for its own context read, so batch related questions into one request.
 
 ## Events (optional)
