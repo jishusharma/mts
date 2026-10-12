@@ -66,18 +66,19 @@ T_BTC_DEV, T_BTC_BURNED = _ts(2025, 9, 1), _ts(2026, 6, 26)
 VARIANTS = ["A", "episode", "watch_episode", "p4_episode"]   # the four of the 2026-10-06 BTC rerun
 KINDS = ["daxfee", "coded"]                                    # DAX-fee is primary for this market; as-coded beside it
 
-# Order-flow proofs (need aggressor data; DAX has none): SetupCandidatesBuilder.java countSignals lines 557-575 counts
-#   rejection_wick (562), absorption (563), finished_auction (564-568, only when favouring), delta_flip (569),
-#   volume_spike (570), cvd_aligned (572); book_imbalance is not counted (B131, 574).
+# Frozen legacy counter: SetupCandidatesBuilder.java:568-585 counts rejection_wick, absorption,
+# finished_auction (only when favouring), delta_flip and cvd_aligned. B144 excludes volume_spike
+# (579), still emitted at 615-616; book_imbalance is also uncounted (B131).
 # PRE_REG masks cvd_aligned, delta_flip, finished_auction. ABSORPTION IS ALSO MASKED here: its condition 3 (java 685-687,
 # `deltas[i] > 0 && close < open`) needs the delta sign, and DAX has delta == 0 exactly, so it can never fire there;
 # "masked exactly as on DAX" requires it off on BTC too (deviation from the PRE_REG list, stated in the report).
 MASK_OF = ("absorption", "cvd_aligned", "delta_flip", "finished_auction")
+PROOF_COUNT_SCHEMA = "java-b144-no-volume-spike-v1"
 
 
 # ---------------------------------------------------------------- proofs: parity count, masking, re-ranking
 def java_count(c):
-    """countSignals(direction) recomputed from the candidate's proof JSON (SetupCandidatesBuilder.java:557-575)."""
+    """countSignals(direction) from proof JSON (SetupCandidatesBuilder.java:568-585, B144)."""
     p, d = c["proof"], c["direction"]
     n = 0
     if p["rejection_wick"] != "NONE":
@@ -88,8 +89,6 @@ def java_count(c):
     if fa["detected"] and fa["direction"] == ("sell" if d == "long" else "buy"):
         n += 1
     if p["delta_flip"]["detected"]:       # JSON `detected` = deltaFlipDetected && deltaFlipAtZone, as counted
-        n += 1
-    if p["volume_spike"]["detected"]:     # JSON `detected` = volumeSpikeDetected && volumeSpikeAtLevel
         n += 1
     if p["cvd_aligned"]:
         n += 1
@@ -171,6 +170,13 @@ def rescore(s, mask=MASK_OF, shift=0, rerank=True):
             c["rank"] = i
         s["setup_candidates"] = vis + rest
     return changed
+
+
+def require_proof_schema(obj, path):
+    """Reject pre-B144 row caches, including unversioned/empty caches; never silently reuse them."""
+    if obj.get("proof_count_schema") != PROOF_COUNT_SCHEMA:
+        raise ValueError("incompatible proof-count schema in %s; regenerate snapshots with current Java "
+                         "and rerun rows --force" % path)
 
 
 def daxfee(s):
@@ -371,7 +377,12 @@ def _rows_month(job):
     from verdict import compute_verdict, proof_dir_of
     name = Path(path).name.replace(".jsonl.gz", "")
     out = Path(out_dir) / (name + ".rows.jsonl")
+    meta = Path(out_dir) / (name + ".rows.meta.json")
     if out.exists():
+        require_proof_schema(json.loads(meta.read_text(encoding="utf-8")) if meta.exists() else {}, meta)
+        with open(out, encoding="utf-8") as fh:
+            for line in fh:
+                require_proof_schema(json.loads(line), out)
         return name, None
     stats = Counter()
     tmp = out.with_suffix(".part")
@@ -387,10 +398,10 @@ def _rows_month(job):
                 stats["closed_dropped"] += 1
                 continue
             keys = rows_for_snapshot(s, parse_ts, proof_dir_of, compute_verdict, mask, ("coded", "daxfee"), shifts, stats)
-            fo.write(json.dumps({"t": t, "k": keys}) + "\n")
+            fo.write(json.dumps({"proof_count_schema": PROOF_COUNT_SCHEMA, "t": t, "k": keys}) + "\n")
             stats["rows"] += 1
     tmp.replace(out)
-    (Path(out_dir) / (name + ".rows.meta.json")).write_text(json.dumps(dict(stats)) + "\n", encoding="utf-8", newline="\n")
+    meta.write_text(json.dumps(dict(stats, proof_count_schema=PROOF_COUNT_SCHEMA)) + "\n", encoding="utf-8", newline="\n")
     return name, dict(stats)
 
 
@@ -419,9 +430,12 @@ def load_rows(market, key, months=None):
     for p in sorted((WORK / ("rows_" + market)).glob("*.rows.jsonl")):
         if months and p.name[:7] not in months:
             continue
+        meta = p.with_name(p.name.replace(".rows.jsonl", ".rows.meta.json"))
+        require_proof_schema(json.loads(meta.read_text(encoding="utf-8")) if meta.exists() else {}, meta)
         with open(p, encoding="utf-8") as fh:
             for line in fh:
                 d = json.loads(line)
+                require_proof_schema(d, p)
                 if key not in d["k"]:
                     raise SystemExit("rows lack key %s (rerun `rows --force --shifts ...`)" % key)
                 rows.append(d["k"][key])
@@ -624,14 +638,19 @@ def cmd_report(a):
     md.append(HDR + "".join(md_rows))
     md.append("\n### DAX stress: + 1 index point of slippage on stop and timeout legs (dev)\n\n| arm | n filled | mean net R | with +1 pt [95% CI] | median stop distance | exit mix |\n|---|---|---|---|---|---|\n" + "".join(stress))
     md.append("\n## 3. Proof-ceiling finding (the pre-registered rule cannot trade on a masked proof set)\n")
-    md.append("With the order-flow proofs masked, only rejection_wick and volume_spike can count: the proof count is at most 2. "
+    md.append("With the order-flow proofs masked, only rejection_wick can count: the proof count is at most 1. "
+              "B144 excludes volume_spike from the current Java counter even when its detected flag is emitted. "
+              "With this ceiling, WATCH requires shift >= 2 and SETUP_FORMING requires shift >= 4 at minimum. "
               "`compute_verdict` needs proof >= 3 for WATCH and >= 5 for SETUP_FORMING, so at shift 0 the verdict can never leave WAIT_PROOF "
               "and every variant has 0 signals on DAX and on matched BTC. The pre-registered comparison is therefore degenerate by construction "
-              "(the unmasked BTC history already topped out at proof 4; PRE_REG assumed WATCH reachable). Extension arms `--shifts 1,2,3` add k to every "
+              "(PRE_REG assumed WATCH reachable). Extension arms `--shifts 1,2,3` add k to every "
               "candidate's proof count (WATCH needs masked proof >= 3-k; SETUP_FORMING >= 5-k), i.e. they relax the proof gate to what the data can "
               "show. They are NOT in the pre-registration, are registered as trials (variant suffix `/s<k>`), and any reading needs the supervisor's "
               "decision on how to count them.\n")
     md.append("\n## 4. Deviations and caveats (all stated, none tuned)\n")
+    md.append("- **Current Java proof parity (B144).** Volume spikes remain visible but do not count. "
+              "Snapshots with incompatible counts fail closed; unversioned or incompatible row caches must be regenerated. "
+              "The historical pre-registration is unchanged and no shifts were tuned to compensate.\n")
     md.append("- **Absorption is masked too.** PRE_REG lists cvd_aligned, delta_flip, finished_auction. Absorption condition 3 (`SetupCandidatesBuilder.java:685-687`) "
               "needs the delta sign, which DAX does not have, so it cannot fire there; masking it on BTC is what \"exactly as on DAX\" requires.\n")
     md.append("- **Delta noise fixed in the archive format.** `dax_data.convert` printed taker-buy with 6 decimals, so micro volumes (0.001335) gave delta = +-1e-6 "
@@ -643,7 +662,8 @@ def cmd_report(a):
               "`cvd.last_3_delta` in the proof-direction check still see BTC order flow; on DAX they are flat. Residual BTC/DAX asymmetry.\n")
     md.append("- **DAX `cvd.last_3_delta` is constant `negative,negative,negative`** (the engine classifies delta 0 as negative), so the proof-direction check "
               "(`math_object_builder.py` 'last_3_delta=neg,neg,neg vs LONG') marks every DAX long as `contradiction`: a long SETUP_FORMING is capped to WATCH. "
-              "Only the SETUP_FORMING-based variants (A, episode, shift >= 3) are touched; the pre-registration did not foresee it.\n")
+              "Only the SETUP_FORMING-based variants (A, episode, shift >= 4 under the current masked ceiling) are touched; "
+              "the pre-registration did not foresee it.\n")
     md.append("- **Net R means are driven by tiny-stop trades.** The engine places stops at the nearest swing beyond the zone, which can sit a few cents from it "
               "(a BTC candidate with a 0.03 USD stop costs 1588 R in taker fees). Read the gross column and the exit mix beside every net mean.\n")
     md.append("- **Null** is `random_entry_null` (200 draws, same day, side and distances); on DAX the entry minute is drawn among real bars only "
