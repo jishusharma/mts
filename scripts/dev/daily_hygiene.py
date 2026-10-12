@@ -24,6 +24,7 @@ PY = sys.executable
 STEPS = [
     ("gate", [PY, "scripts/dev/run_all_tests.py", "--quick"], 1500, True),
     ("where", [PY, "scripts/dev/sync.py", "where"], 120, False),
+    ("health", [PY, "scripts/dev/sync.py", "health"], 120, False),
     ("declutter_dry_run", [PY, "scripts/dev/declutter_backups.py"], 300, False),
     ("desk_assign", [PY, "scripts/dev/desk.py", "assign"], 1800, False),
     ("status", [PY, "scripts/dev/make_status.py"], 300, False),
@@ -66,6 +67,11 @@ def run(runner=subprocess_runner, now=None, out_dir=OUT_DIR):
           f"GATE: {'PASS' if gate['rc'] == 0 else 'FAIL'} ({gate['seconds']} s)", ""]
     if unshipped:
         md += ["Unshipped work (commit + `sync.py ship` it):"] + [f"- {u}" for u in unshipped] + [""]
+    health = next((r for r in results if r["step"] == "health"), None)
+    problems = [ln for ln in (health["tail"] if health else [])
+                if ln.split(" ", 1)[0] in ("STALE-CLAIM", "OVERLAP", "ORPHAN", "SHARED", "NEVER-SHIPPED")]
+    if problems:
+        md += ["Parallel-work collisions (`sync.py health`):"] + [f"- {u}" for u in problems] + [""]
     for r in results:
         md += [f"## {r['step']}: rc {r['rc']} ({r['seconds']} s)", "```"] + r["tail"] + ["```", ""]
     out_dir.mkdir(parents=True, exist_ok=True)
