@@ -10,6 +10,8 @@ import numpy as np
 sys.dont_write_bytecode = True
 HERE = os.path.dirname(os.path.abspath(__file__))
 DUMPS = os.environ.get("MTS_DUMPS", r"C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\Dumps\backtest")
+SYMBOL = os.environ.get("PUB_SYMBOL", "BTCUSDT")
+ONLY = [x for x in os.environ.get("PUB_ONLY", "").split(",") if x]
 FEE = float(os.environ.get("PUB_FEE", "0.001"))  # per side per leg
 K = 2000
 SEALED_FROM = int(dt.datetime(2025, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)
@@ -35,7 +37,7 @@ def _loadcsv(f, cols):
 
 def load_1h():
     rows = [_loadcsv(f, (0, 1, 2, 3, 4, 5)).reshape(-1, 6)
-            for f in sorted(glob.glob(f"{DUMPS}/raw_1h/klines/BTCUSDT-1h-*.csv"))]
+            for f in sorted(glob.glob(f"{DUMPS}/raw_1h/klines/{SYMBOL}-1h-*.csv"))]
     a = np.vstack(rows)
     a = a[np.unique(a[:, 0], return_index=True)[1]]
     assert (np.diff(a[:, 0]) == HOUR).all(), "gap in 1h data"
@@ -59,7 +61,7 @@ def resample(a, tf):
 
 def load_funding():
     rows = [_loadcsv(f, None).reshape(-1, 3)
-            for f in sorted(glob.glob(f"{DUMPS}/raw_fund/fundingRate/BTCUSDT-fundingRate-*.csv"))]
+            for f in sorted(glob.glob(f"{DUMPS}/raw_fund/fundingRate/{SYMBOL}-fundingRate-*.csv"))]
     a = np.vstack(rows)
     return a[np.argsort(a[:, 0])]
 
@@ -517,7 +519,9 @@ def main():
     data = {tf: Bars(resample(a, tf), fund, tf) for tf in ("1h", "4h", "1d")}
     ONE_H.update(h=data['1h'].h, l=data['1h'].l, t=data['1h'].t)
     V = variants()
-    state_f = os.path.join(HERE, "state.json")
+    if ONLY:
+        V = [v for v in V if v[0] in ONLY]
+    state_f = os.path.join(HERE, "state.json" if SYMBOL == "BTCUSDT" else f"state_{SYMBOL}.json")
     state = json.load(open(state_f)) if os.path.exists(state_f) else {}
     rng = np.random.default_rng(20261013)
     wname = {"dev": "DEV", "val": "VAL", "hold": "HOLD"}[stage]

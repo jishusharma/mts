@@ -48,3 +48,19 @@ Buy-and-hold in DEV: 10.6 %/yr. 19 variants beat it in raw net return, none beyo
 ## Follow-ups queued
 See cards in the queue (tasks.py list): sealed-holdout look at the pooled 30-100 d trend family (needs operator decision A7), ETH data
 fetch for a second market, carry with real spot basis and margin.
+
+## ETH replication of the trend cluster (2026-10-13, same day, coordinator relay)
+ETHUSDT perp 1h klines + funding fetched with `fetch_binance_archive.py` (2020-01..2025-06 only; nothing from the sealed window). The 9
+cluster variants re-run with identical fees, funding, windows, placebo and BH (over 9). Data outside the repo: Dumps/backtest_eth.
+
+| Variant | Net %/yr | Sharpe | Trades | Placebo p | BH q | ETH buy-and-hold |
+|---|---|---|---|---|---|---|
+| TSMOM 30 d long-short | 65.9 | 0.73 | 66 | 0.117 | 0.53 | 63.4 %/yr |
+| TSMOM 30 d long-flat | 64.7 | 0.93 | 33 | 0.121 | 0.53 | |
+| Price > SMA50 long-flat | 45.5 | 0.70 | 28 | 0.295 | 0.53 | |
+| Price > SMA100 long-flat | 34.6 | 0.49 | 22 | 0.470 | 0.67 | |
+| Donchian 4h 20/10 long-flat / long-short | 5.8 / -18.4 | 0.11 / -0.23 | 84 / 158 | 0.68 / 0.60 | 0.68 / 0.67 | |
+
+**Does not replicate as an edge.** 0 of 9 advance. TSMOM 30 d lands at almost the same placebo p (0.12) as on BTC, but net return only
+matches buy-and-hold (it avoids drawdown, not adds return), and the BTC Donchian 4h result flips negative. VAL and HOLD not opened.
+Read: the 30 d trend lean is a risk-reduction effect at best; there is no evidence of excess return. The sealed BTC holdout stays sealed.
