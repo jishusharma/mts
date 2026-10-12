@@ -30,6 +30,9 @@ Live state off the desktop (NUC, laptop): `sync.py start` pulls the read-only mi
 - Model default is Sonnet for sessions and subagents; Opus only when the operator names it. Subagents only when clearly needed, on Sonnet/Haiku. Cost is the priority.
 - Two Claude accounts share one repo and one queue: whichever has budget takes NEXT_SESSION.md; never idle for a weekly reset.
 - Claim before you work, release when shipped; a claim older than 24 h is stale, ask then release it.
+- Pages follow builds (operator 2026-10-12): a session that shipped ends with `python scripts/dev/artifacts.py build`, then republishes the Control Room
+  (and the Layer Map if layer_map.json changed) over its url for this account (`artifacts.py plan --account <account>`). Blocked on the operator = a
+  `decisions` doc on the page plus its entry in `system/OPERATOR_DECISIONS.md`, never only a chat line. What sessions did: `python scripts/dev/session_log.py`.
 
 ## Work routing (cheapest tier that can do it; see research/fast_track_2026-09-27/WORKER_ROADMAP.md)
 - T0 script > T1 Haiku > T2 Sonnet > T3 Opus. (Qwen NUC lane decommissioned 2026-10-01; AIBridge on desktop is the run-command surface.)

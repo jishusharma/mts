@@ -19,7 +19,8 @@
     "tom"
   ],
   "live_path": false,
-  "note": "ledger repairs done 2026-10-12; Opus spec only when Jis asks",
+  "note": "Operator named Opus 2026-10-12 19:11Z (thread 'Non-core layer audit handoff'): run now, one Opus session. Ledger repairs done 2026-10-12.",
+  "pinned": true,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
@@ -40,7 +41,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md section 3",
     "MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read RECALL_DAX.md section 3, PROBE_PLAN.md, TOM_TRADE_LEDGER.*, conditions/gap_rules.md, TOM_VERBATIM_INDEX.md, and the current candidate types + proof list (SetupCandidatesBuilder.java:557-575).",
     "For each setup family in the ledger (spike fade first): entry trigger, proofs, stop rule, target, management (partials, stop moves, re-entry), session - each with a Tom quote + file:line or NO-SOURCE. Unsourced is flagged, never tuned.",

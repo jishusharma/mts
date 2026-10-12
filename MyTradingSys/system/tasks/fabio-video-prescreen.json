@@ -1,0 +1,30 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T19:27:04Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "fabio-video-prescreen",
+  "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Fabio video pre-screen: list per 250 s window whether a frame shows an order ticket or position line, so only windows with a trade are read by a model"
+}

@@ -10,8 +10,9 @@
   "id": "b172-trim",
   "lane": "SONNET",
   "live_path": false,
-  "note": "",
-  "prio": 2,
+  "note": "Alignment review 2026-10-13: every session re-reads 63-73k tokens of always-loaded context (TOKEN_AUDIT); this is the largest fixed cost of session switching.",
+  "pinned": true,
+  "prio": 1,
   "refine_tries": 0,
   "refined_by": "relay-sonnet-2026-10-12",
   "refs": [

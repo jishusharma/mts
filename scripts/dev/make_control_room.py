@@ -23,6 +23,7 @@ REPO = HERE.parents[1]
 sys.path.insert(0, str(HERE))
 import make_groups as mg  # noqa: E402
 import relay_board  # noqa: E402
+import session_log  # noqa: E402
 import tasks as task_cards  # noqa: E402
 
 CFG = REPO / "MyTradingSys" / "system" / "control_room.json"
@@ -166,6 +167,7 @@ def build(cfg, data_root, now=None):
     return {"generated": now.strftime("%Y-%m-%d %H:%M UTC"), "verdict": cfg.get("verdict", ""), "road": cfg["road"],
             "board": board, "layers": layer_board(cfg, items), "missing": missing, "ledger": ledger, "days": days, "ledger_span": span,
             "backlog": backlog, "relay": relay_board.board(REPO, backlog["rows"], now),
+            "sessions": session_log.view(REPO, 48, now),
             "evidence": cfg.get("evidence", []), "changelog": cfg.get("changelog", [])[-6:][::-1],
             "health": health(cfg, span[1], halts, st.read_text(encoding="utf-8") if st.exists() else "", now),
             "groups": {g["code"]: g["name"] for g in gcfg["groups"]},

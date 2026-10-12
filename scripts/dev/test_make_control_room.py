@@ -235,5 +235,21 @@ class BacklogSectionTest(unittest.TestCase):
         self.assertNotIn('collection("tasks")', self.tpl)   # cards live in the repo; the page is a view plus requests
 
 
+class SessionsSectionTest(unittest.TestCase):
+    """Sessions section (2026-10-13): the operator sees what each session shipped without opening a chat or a terminal."""
+    tpl = (Path(__file__).resolve().parent / "control_room.tpl.html").read_text(encoding="utf-8")
+
+    def test_build_carries_the_session_log(self):
+        data = cr.build(json.loads(cr.CFG.read_text(encoding="utf-8")), cr.REPO, NOW)
+        self.assertEqual(set(data["sessions"]), {"hours", "stats", "units", "shipped"})
+        self.assertEqual(set(data["sessions"]["stats"]),
+                         {"sessions", "closed", "open", "empty", "median_min", "commits", "bookkeeping", "no_result"})
+
+    def test_page_shows_sessions_and_hides_when_absent(self):
+        self.assertIn('id="sess-sec"', self.tpl)
+        self.assertIn("const S = D.sessions; if(!S)", self.tpl)
+        self.assertIn("Ended, nothing shipped", self.tpl)
+
+
 if __name__ == "__main__":
     unittest.main()

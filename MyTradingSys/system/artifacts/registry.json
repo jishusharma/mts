@@ -11,8 +11,8 @@
       "owner_app": "either; each account has its own db (Inbox, decisions) - see note", "refresh": "daily (task mts-control-room)",
       "db": ["decisions", "feedback"],
       "urls": {"jishu.awgp": "https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN", "jishu.sharma": "https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su"},
-      "last_published": {"jishu.awgp": "2026-10-12", "jishu.sharma": "unknown"},
-      "note": "Two dbs: an answer typed on one account is invisible on the other. Open question for Jis: pick ONE account as the Inbox owner (default: jishu.sharma, the page CLAUDE.md names) and publish the other as read-only. Now also carries the Claude-GPT cycle section (system/RELAY_NOTES.md)."
+      "last_published": {"jishu.awgp": "2026-10-13", "jishu.sharma": "unknown"},
+      "note": "Two dbs: an answer typed on one account is invisible on the other. Decision q1-one-control-room (2026-10-13, acted on under the operator blanket go, he can overrule on the page): the jishu.awgp page is the one place for questions and Inbox; the jishu.sharma page is a view and its old decisions need one JIS-NB session to copy them into system/OPERATOR_DECISIONS.md. Now also carries the Claude-GPT cycle section (system/RELAY_NOTES.md)."
     },
     {
       "slug": "mts_layer_map", "title": "MTS Layer Map", "status": "canonical", "pinned": true,

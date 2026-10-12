@@ -11,7 +11,8 @@
   "lane": "SONNET",
   "live_path": false,
   "note": "",
-  "prio": 2,
+  "pinned": true,
+  "prio": 1,
   "refine_tries": 0,
   "refined_by": "relay-sonnet-2026-10-12",
   "refs": [

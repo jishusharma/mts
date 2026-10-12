@@ -1,0 +1,30 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T19:18:56Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "nwaa0hbbf0hrd0sk8qti",
+  "goal": "",
+  "id": "aibridge-multi-block-f1-f7",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "B184"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "AIBridge multi-block replies: reject the whole reply before running, report blocks_seen/blocks_run, echo full block; ship the fixed build to NB with a new extension version (B184, F1-F7)"
+}
