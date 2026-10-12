@@ -1,5 +1,7 @@
 # TASK REFINEMENT - how a raw idea becomes a task a fresh session can run with no questions (operator ask 2026-10-10)
 
+Layer cards name their family: `tasks.py new "<title>" --layer tom` (ids in `layer_index.json`); the card then lists under that layer in `LAYERS.md` and its brief points there. Unknown ids fail the Definition of Ready.
+
 Why: sessions are short (one task, ~50k tokens). A registry row is one line, and NEXT_SESSION.md was written by hand at the end of the
 previous session, so every session re-derived scope, files and the done-test from scratch, and a vague task cost a whole session.
 Refinement moves that scoping work to a cheap, separate step that runs ahead of the builders and keeps a stock of ready work.

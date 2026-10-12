@@ -10,6 +10,9 @@
   "id": "state-machine-vwap-cvd-vs-klines",
   "kind": "audit",
   "lane": "SONNET",
+  "layers": [
+    "live_engine"
+  ],
   "live_path": false,
   "note": "",
   "prio": 3,

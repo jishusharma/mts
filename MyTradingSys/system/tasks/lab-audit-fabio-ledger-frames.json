@@ -10,6 +10,9 @@
   "id": "lab-audit-fabio-ledger-frames",
   "kind": "audit",
   "lane": "CODEX",
+  "layers": [
+    "fabio"
+  ],
   "live_path": false,
   "note": "",
   "prio": 2,

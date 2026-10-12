@@ -10,6 +10,9 @@
   "id": "lab-dax-trial-identity",
   "kind": "build",
   "lane": "CODEX",
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
   "note": "Captured by lab-audit-tom-dax-bt. Freeze code, config, data and arm identity; every new look is registered, rerender alone is idempotent. No holdout reads or BTC runs during the fix.",
   "prio": 1,

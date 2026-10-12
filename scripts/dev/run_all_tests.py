@@ -185,6 +185,9 @@ def main(argv=None):
     cmd3tk = [sys.executable, "scripts/dev/test_tasks.py"]
     success, output = run_step("3tk", "Task card tests", cmd3tk)
     results.append(("Step 3tk: Task card tests", success))
+    cmd3ly = [sys.executable, "scripts/dev/test_make_layers_md.py"]   # LAYERS.md: no dead pointer, every layer owned
+    success, output = run_step("3ly", "Layer index tests", cmd3ly)
+    results.append(("Step 3ly: Layer index tests", success))
     cmd3cx = [sys.executable, "scripts/dev/test_codex_run.py"]
     success, output = run_step("3cx", "Layer lab runner tests", cmd3cx)
     results.append(("Step 3cx: Layer lab runner tests", success))

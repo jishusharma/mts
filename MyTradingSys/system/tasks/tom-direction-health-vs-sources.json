@@ -10,6 +10,9 @@
   "id": "tom-direction-health-vs-sources",
   "kind": "audit",
   "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
   "note": "",
   "prio": 2,

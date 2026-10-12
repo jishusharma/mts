@@ -1,5 +1,5 @@
 {
-  "_doc": "Hand-kept pointers for LAYERS.md (scripts/dev/make_layers_md.py). One row per layer family. Every path must exist (tests/test_layers_index.py). Open cards are matched live by card-id glob; never copy card state here. Per-variant results live in layer_map.json and TRIAL_REGISTRY.csv, not here.",
+  "_doc": "Hand-kept pointers for LAYERS.md (scripts/dev/make_layers_md.py). One row per layer family. 'layers' lists the layer_map.json layer ids of the family: every layer_map layer belongs to exactly one family, and its backtest rows are listed under the family automatically, so 'results' holds only reports that are not layer_map backtest rows. Task cards join a family by their 'layers' field (tasks.py new --layer <family>); 'cards' globs only catch cards without that field (Codex lab cards). Every path must exist (scripts/dev/test_make_layers_md.py, gate step 3ly).",
   "families": [
     {
       "id": "tom",
@@ -34,6 +34,11 @@
         "tom-*",
         "lab-dax-*",
         "lab-audit-tom-*"
+      ],
+      "layers": [
+        "tom_core",
+        "tom_proofs",
+        "tom_vp_pivot"
       ]
     },
     {
@@ -69,6 +74,13 @@
         "fabio-*",
         "find-more-fabio-*",
         "lab-audit-fabio-*"
+      ],
+      "layers": [
+        "fabio_cvd_absorption",
+        "fabio_escalation",
+        "fabio_volume_fvg",
+        "fabio_v3",
+        "fabio_of"
       ]
     },
     {
@@ -89,7 +101,10 @@
         "MyTradingSys/research/tom_fabio_guidance_2026-10-12/MATRIX_REPORT.md"
       ],
       "roadmap": [],
-      "cards": []
+      "cards": [],
+      "layers": [
+        "bb_lvn_triggers"
+      ]
     },
     {
       "id": "rsi",
@@ -111,6 +126,10 @@
       "roadmap": [],
       "cards": [
         "malkan-*"
+      ],
+      "layers": [
+        "rsi_levels",
+        "rsi_divergence"
       ]
     },
     {
@@ -132,6 +151,9 @@
       "roadmap": [],
       "cards": [
         "cryptocred-*"
+      ],
+      "layers": [
+        "cryptocred"
       ]
     },
     {
@@ -154,6 +176,10 @@
       "roadmap": [],
       "cards": [
         "positioning-*"
+      ],
+      "layers": [
+        "funding_cvd_fade",
+        "oi_delta"
       ]
     },
     {
@@ -174,7 +200,12 @@
         "MyTradingSys/research/t087_session_levels_2026-10-09"
       ],
       "roadmap": [],
-      "cards": []
+      "cards": [],
+      "layers": [
+        "session_momentum",
+        "turn_of_candle",
+        "session_levels"
+      ]
     },
     {
       "id": "volume_candles_ma",
@@ -195,7 +226,13 @@
         "MyTradingSys/research/bigtrade_2026-10-09"
       ],
       "roadmap": [],
-      "cards": []
+      "cards": [],
+      "layers": [
+        "volume",
+        "candle_patterns",
+        "ma_daily",
+        "bigtrade_fires"
+      ]
     },
     {
       "id": "live_engine",
@@ -221,7 +258,8 @@
         "exec-*",
         "state-machine-*",
         "live-*"
-      ]
+      ],
+      "layers": []
     }
   ],
   "cross_cutting": [

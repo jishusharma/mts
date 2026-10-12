@@ -13,6 +13,9 @@
   "goal": "Apply the 12-point checklist to the FlowHorse / whale positioning layer so its 'no edge' is read as measuring the encoding or the trader. Thresholds are UNDEFINED in source; decide: sourced threshold, or label as a NO-SOURCE research test (VISION exception 2).",
   "id": "positioning-home-fit-audit",
   "lane": "SONNET",
+  "layers": [
+    "positioning"
+  ],
   "live_path": false,
   "note": "",
   "prio": 4,

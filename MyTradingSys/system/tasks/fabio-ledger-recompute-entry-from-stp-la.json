@@ -9,6 +9,9 @@
   "goal": "",
   "id": "fabio-ledger-recompute-entry-from-stp-la",
   "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
   "live_path": false,
   "note": "",
   "prio": 3,

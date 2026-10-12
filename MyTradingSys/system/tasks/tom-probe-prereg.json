@@ -13,6 +13,9 @@
   "goal": "Freeze the arms that survived the diagnostics, recall and DAX run into one pre-registration with an honest trial count, then capture the runner as a new card.",
   "id": "tom-probe-prereg",
   "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
   "note": "opus 2026-10-11: DIAG_BTC says S SKIP, Q SKIP (thin), M GO. Scope reduced to the M arms (partials, trail, re-entry, no timeout) with stops wide enough to clear BTC noise+fees per TOM_LAYER_V2_SPEC; S/Q arms parked until the v2 encoding exists.",
   "prio": 2,

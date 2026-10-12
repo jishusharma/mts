@@ -15,6 +15,9 @@
   "goal": "The live testnet loop can never run on two hosts at once: a start refuses when another host's owner heartbeat is fresh or the marker is unreadable (fail closed), so JIS-NUC can stay a cold standby for JIS-NB without a duplicate-order risk.",
   "id": "live-loop-one-owner-guard",
   "lane": "JIS-NB",
+  "layers": [
+    "live_engine"
+  ],
   "live_path": true,
   "note": "Created from the operator question 2026-10-12. Live-path: supervisor deploy and an operator approval are required before it reaches JIS-NB; the builder session does not restart anything.",
   "prio": 2,

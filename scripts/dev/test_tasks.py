@@ -65,6 +65,23 @@ class DefinitionOfReadyTest(unittest.TestCase):
         self.assertTrue(T.problems(good(depends_on=["B404"]), [], {}))
 
 
+
+class LayerFieldTest(unittest.TestCase):
+    """A card names its layer family (layer_index.json) so LAYERS.md and the brief point the session at the layer's files."""
+    def test_unknown_layer_fails_ready_known_layer_passes(self):
+        self.assertTrue(any("not a family" in m for m in T.problems(good(layers=["tom_v9"]))))
+        self.assertEqual(T.problems(good(layers=["tom", "fabio"])), [])
+
+    def test_brief_points_at_the_layer_index(self):
+        self.assertIn("LAYERS.md", T.brief(good(layers=["fabio"])))
+        self.assertNotIn("LAYERS.md", T.brief(good()))
+
+    def test_every_card_in_the_repo_names_known_layers(self):
+        fams = T.layer_families()
+        for c in T.load_all():
+            for x in c.get("layers", []):
+                self.assertIn(x, fams, c["id"])
+
 class QueueTest(unittest.TestCase):
     def setUp(self):
         self.d = tempfile.TemporaryDirectory()
@@ -85,6 +102,13 @@ class QueueTest(unittest.TestCase):
                 rc = e.code if isinstance(e.code, int) else 1
                 out.write(str(e.code) if not isinstance(e.code, int) else "")
         return rc, out.getvalue()
+
+    def test_new_with_layer_records_it_and_refuses_an_unknown_one(self):
+        rc, _ = self.run_cli("new", "Spike fade recall", "--id", "x1", "--layer", "tom")
+        self.assertEqual((rc, T.get(self.repo, "x1")["layers"]), (0, ["tom"]))
+        rc, out = self.run_cli("new", "Bad layer", "--id", "x2", "--layer", "nope")
+        self.assertNotEqual(rc, 0)
+        self.assertFalse(T.path_of(self.repo, "x2").exists())
 
     def test_ready_order_pin_then_prio_then_age(self):
         T.save(self.repo, good("B1", prio=3, created="2026-10-01"))

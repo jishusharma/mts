@@ -19,7 +19,7 @@
 | 3 | SET | automatic | charts of one symbol within 10 min form a set; a set with one timeframe is flagged SINGLE-TF | `shot.py sets` |
 | 4 | READ | the session, chart sets by Sonnet or better | extract must name every shot id and carry claim rows `\| id \| class \| claim \| evidence \|` (B159: each row is stored on the manifest `read` event; a malformed row is refused with its line number) | `shot.py read --extract` |
 | 5 | REPORT | the session | every MISMATCH is filed or explained in 20+ characters; NOT_IN_DATA becomes a feature hypothesis | file in BUGS.md / PLAN.md |
-| 6 | CLOSE | the session | outcome must exist in the repo (`finding:B156`, `feature:FEAT-11`) or be a stated `noaction:`/`note:` | `shot.py done` |
+| 6 | CLOSE | the session | outcome must exist in the repo (`finding:B156`, `finding:card:<task id>`, `feature:FEAT-11`) or be a stated `noaction:`/`note:` | `shot.py done` |
 | 7 | MEASURE | STATUS.md, every build | `SHOTS ...` line; overdue count; claims MATCH/MISMATCH/NOT_IN_DATA; items filed | `shot.py status` |
 
 ## 1 LAND - how a session knows it was saved
@@ -67,7 +67,7 @@ Engine state at the shot (B160): `shot.py engine <id>` writes `research/screensh
 | MISMATCH | a B-item (defect in data, engine or wiring) or an explained `noaction:` | the group that owns the field (DATA, CORE, LAYR) |
 | NOT_IN_DATA | a FEAT-hypothesis in the backtest plan (formula, causal at bar close, thresholds = analysis settings) | EVID |
 | MATCH | nothing; counted | none |
-`shot.py done --outcome finding:<id> | feature:<id> | noaction:<why> | note:<text>`. A chart cannot be closed unread; an id that is not in the repo is refused.
+`shot.py done --outcome finding:<id> | feature:<id> | noaction:<why> | note:<text>`. A chart cannot be closed unread; an id that is not in the repo is refused. A finding filed as a task card (`tasks.py new ... --layer <family>`) closes with `finding:card:<id>` and shows under its layer in `system/LAYERS.md`.
 
 ## 7 MEASURE
 `shot.py status` prints `SHOTS landed N: new, classified, read, done | overdue | claims | filed`; make_status.py puts it in STATUS.md, so every session reads it at boot.

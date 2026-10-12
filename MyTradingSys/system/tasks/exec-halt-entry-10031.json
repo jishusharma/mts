@@ -10,6 +10,9 @@
   "id": "exec-halt-entry-10031",
   "kind": "audit",
   "lane": "JIS-NB",
+  "layers": [
+    "live_engine"
+  ],
   "live_path": false,
   "note": "",
   "prio": 1,

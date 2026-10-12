@@ -1,5 +1,7 @@
 # Layer lab: Codex as the independent checker of the Tom and Fabio layers (operator 2026-10-12)
 
+Layer context for every card: `MyTradingSys/system/LAYERS.md` (per family: spec, ledger, backtests, lab reports, open cards); a card's `layers` field names its section, and its brief says so.
+
 Why: Claude wrote the encoding, its tests and its backtests, and the coded Tom still fired on 0 of 7 of his own trades
 (research/tom_transfer_2026-10-11/ROADMAP.md F1). A different model checks the same work. Rules are not copied here:
 AGENTS.md -> CLAUDE.md; protocol PARALLEL.md; plan of record for the layers is that ROADMAP.md.

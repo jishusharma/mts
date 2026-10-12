@@ -15,6 +15,9 @@
   "goal": "Rewrite WHAT Tom trades: every setup family in TOM_TRADE_LEDGER with entry trigger, proofs, stop rule, target, management and session, each rule sourced (Tom quote + file:line) or NO-SOURCE; keep/change/drop versus the current engine candidate types.",
   "id": "tom-layer-v2-spec",
   "lane": "OPUS",
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
   "note": "ledger repairs done 2026-10-12; Opus spec only when Jis asks",
   "prio": 1,

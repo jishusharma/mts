@@ -10,6 +10,9 @@
   "id": "lab-dax-readiness-gate",
   "kind": "build",
   "lane": "CODEX",
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
   "note": "Captured by lab-audit-tom-dax-bt. Consume evidence from tom-encode-spike-fade, tom-profile-parity-check and tom-holdout-clean-split. No holdout reads or BTC runs during the fix. Manifest path and the twelve item keys come from backtest/PRE_REG_TEMPLATE.md headings. The runner only checks presence and status; it does not judge the evidence.",
   "prio": 1,
