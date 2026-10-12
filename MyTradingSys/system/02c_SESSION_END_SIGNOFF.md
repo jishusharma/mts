@@ -200,3 +200,13 @@ this checklist.
 | **Next session** | Execute 6-action minimal consolidation: (1) Add gate rule, (2) Merge 4 prompt variants, (3) Merge signoff into checklist, (4) Archive audit log, (5) Delete duplicate instructions, (6) Validation card test. See `system/04_NEXT_SESSION_PROMPT.md`. |
 | **Signed** | AI Assistant, 2026-09-04 00:30 UTC |
 ---
+
+| Field | Value |
+|---|---|
+| **Session** | 2026-10-12 (relay, commit d9306fe) |
+| **Files modified** | `scripts/sched/relay.py`, `scripts/sched/handoff_lint.py`, `MyTradingSys/system/RELAY.md`, `MyTradingSys/tests/test_relay.py` |
+| **Decisions logged** | `host=<NAME>` task tag honored by lint and kick; NUC dispatcher no longer launches a session for NB-only lists. |
+| **Tests passed** | 29/29 relay tests (d9306fe) |
+| **Tests failed** | None |
+| **Signed** | relay session, 2026-10-12 |
+---
