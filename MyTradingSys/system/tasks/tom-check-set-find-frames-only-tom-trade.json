@@ -1,0 +1,32 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T19:43:09Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "tom-check-set-find-frames-only-tom-trade",
+  "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "TOM_LAYER_V2_SPEC.md section 7"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set is 2 trades)"
+}

@@ -226,3 +226,28 @@ Applied: (not yet)
  "recommended": "Yes, every session that shipped"
 }
 ```
+
+## q-pub-trend-holdout | asked 2026-10-13 | Research
+
+Spend the sealed 2025-07..2026-09 BTC holdout once on the short-lookback trend family (30-100 d)?
+
+Recommended: Yes, once, one pooled pre-registered hypothesis
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet)
+
+```json
+{
+ "order": 2,
+ "stage": "Research",
+ "refs": "research/published_strats_2026-10-13/RESULTS.md, volume report A7",
+ "title": "Spend the sealed 2025-07..2026-09 BTC holdout once on the short-lookback trend family (30-100 d)?",
+ "why": "62 published rules were tested at 0.10 % per side plus funding; none survived correction on 2021-01..2023-06. Short-lookback trend (TSMOM 30 d, price above SMA50/100) leans positive (Sharpe about 0.5, uncorrected p about 0.13) and is the only family worth a single look. The sealed holdout is the only clean data left for BTC, so it should be used once, on one pooled rule, or not at all.",
+ "options": [
+  "Yes, once, one pooled pre-registered hypothesis",
+  "No, keep it sealed for Tom or Fabio",
+  "Fetch ETH first and test there"
+ ],
+ "recommended": "Yes, once, one pooled pre-registered hypothesis"
+}
+```

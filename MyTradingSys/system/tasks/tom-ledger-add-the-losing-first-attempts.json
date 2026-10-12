@@ -1,0 +1,32 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T19:43:09Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "tom-ledger-add-the-losing-first-attempts",
+  "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "TOM_LAYER_V2_SPEC.md section 3: n7ZSkjb7JXs:31-33, l8RZrBfzvp4:175-177"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)"
+}

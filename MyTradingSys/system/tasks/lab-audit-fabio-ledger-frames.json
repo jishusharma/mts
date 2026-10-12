@@ -5,6 +5,7 @@
   "created": "2026-10-12T05:43:40Z",
   "depends_on": [],
   "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "effort": "medium",
   "from_inbox": "",
   "goal": "Every ledger row (date, market, side, entry, stop, target, exit, setup words) is MATCH / MISMATCH / NOT_IN_DATA against the frame or transcript line it cites. The v2 spec is written from this ledger. Frames are images under F:/MTS/data/fabio_videos/frames: open them.",
   "id": "lab-audit-fabio-ledger-frames",
@@ -14,6 +15,7 @@
     "fabio"
   ],
   "live_path": false,
+  "model": "gpt-6-astra",
   "note": "",
   "prio": 2,
   "refine_tries": 0,

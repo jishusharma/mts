@@ -1,14 +1,14 @@
 {
-  "detail": "operator 2026-10-12: GPT is back on (Jis)",
+  "detail": "ERROR: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 6:03 AM.",
   "fails": 0,
   "heartbeat": "2026-10-12T19:30:01Z",
-  "last_error": "2026-10-12T18:06:49Z",
-  "last_ok": "2026-10-12T19:27:53Z",
+  "last_error": "2026-10-12T20:00:07Z",
+  "last_ok": "2026-10-12T19:33:36Z",
   "last_probe": "",
-  "override": "2026-10-12T22:27:53Z",
-  "reason": "",
+  "override": "",
+  "reason": "credits",
   "resumed": "2026-10-12T19:27:53Z",
-  "since": "",
-  "status": "up",
+  "since": "2026-10-12T20:00:07Z",
+  "status": "down",
   "until": ""
 }

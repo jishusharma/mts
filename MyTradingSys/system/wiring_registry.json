@@ -1,6 +1,8 @@
 {
     "_doc":  "Files the wiring scan finds unrun (TEST-ONLY/ORPHAN), each declared with a disposition and evidence. Checked by scripts/dev/wiring_scan.py --check in the gate. Dispositions: TOOL, REPRO, PARKED, WIRE. A file that becomes LIVE/DEV-TOOL or disappears must be removed from here.",
     "entries":  {
+                    "MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py":  {"disp": "REPRO", "ref": "mfe_exit_2026-10-13", "why": "Offline study: MFE-peak readings and 15 causal exit variants on the 3 largest fire sets; run by hand (python mfe_exit_study.py out_dir); rerun unchanged for any setup with a real entry edge. Tested by MyTradingSys/tests/test_mfe_exit_study.py."},
+                    "MyTradingSys/research/mfe_exit_2026-10-13/control_random_entries.py":  {"disp": "REPRO", "ref": "mfe_exit_2026-10-13", "why": "Offline control: same trade count with random entry times, shows MFE/MAE/gross with no signal; run by hand after mfe_exit_study.py."},
                     "MyTradingSys/research/non_core_layer_audit_2026-10-12/build_register.py":  {"disp": "REPRO", "ref": "Q38", "why": "Offline builder: resolves register citations and writes EVIDENCE_REGISTER.json/.md; run by hand."},
                     "MyTradingSys/research/non_core_layer_audit_2026-10-12/verify_register.py":  {"disp": "REPRO", "ref": "Q38", "why": "Offline check: every register citation still resolves; run by hand or a desk task."},
                     "MyTradingSys/research/non_core_layer_audit_2026-10-12/package_report.py":  {"disp": "REPRO", "ref": "Q38", "why": "Offline packaging script: renders the audit PDF/ZIP from REPORT.md; run by hand."},
@@ -313,6 +315,8 @@
                                                                                                     "disp":  "TOOL",
                                                                                                     "why":  "Runs tests against the staged .new overlay; usage in MyTradingSys/research/TWO_CORES_INT_HANDOFF_2026-10-01.md:30."
                                                                                                 },
+                    "MyTradingSys/research/published_strats_2026-10-13/run_pub.py": {"disp": "REPRO", "why": "Reproduces RESULTS.md and TRIAL_REGISTRY.csv (62 published-rule variants on BTCUSDT perp; stages dev/val/hold, PRE_REG.md)."},
+                    "MyTradingSys/research/published_strats_2026-10-13/supp_carry.py": {"disp": "REPRO", "why": "Reproduces supp_carry.txt (post-hoc descriptive carry and buy-and-hold by window)."},
                     "MyTradingSys/research/volume_2026-10-09/mutation_check.py":  {
                                                                                       "disp":  "TOOL",
                                                                                       "why":  "Fail-before proof for the volume study: 24 mutants of vdata/vfeat/vstats/vstate each make test_volume.py or test_state.py fail (0 survivors, run 2026-10-09); mutants live in a scratch copy, no git stash."
