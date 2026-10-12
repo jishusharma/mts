@@ -12,8 +12,8 @@ State: MyTradingSys/system/lane_state.json (git, so every host and the Control R
 - A down lane lets ONE card run as a probe every PROBE_S (crucial / gpt_only cards first, since only GPT may do them). A run that
   ends DONE or BLOCKED brings the lane back up; a fresh heartbeat brings a heartbeat-down lane back up.
 - While down, a ready CODEX card is moved off the lane unless the card is flagged `crucial` or `gpt_only` (default off):
-  run/audit cards get a DSA desk row with a prompt cut from the card (DSA bridge format, DSA_DELEGATION.md), build cards
-  go to lane SONNET. Flagged cards stay put, PAUSED with the reason shown on the Control Room.
+  run/audit cards get a DSA desk row with a prompt cut from the card (DSA bridge format, DSA_DELEGATION.md); build cards and
+  cards that need to look at frames/images go to lane SONNET (DSA is text only). Flagged cards stay put, PAUSED with the reason shown on the Control Room.
 - When the lane is up again: a DSA row nobody took is cancelled and the card is back on CODEX; a SONNET card nobody claimed
   goes back to CODEX; work already taken or done stays where it is. A finished DSA row closes its card. Paused cards resume
   by themselves (nothing skips them any more).
@@ -41,7 +41,9 @@ CREDITS = re.compile(r"out of (?:credits?|tokens)|insufficient[_ ](?:credits?|qu
                      r"credits? (?:have been |are |is |were )?(?:exhausted|depleted|used up|run out)|run out of credits?|"
                      r"credit balance|(?:add|purchase|buy|top up)(?: more)? credits?|exceeded your (?:current )?quota|billing", re.I)
 LIMIT = re.compile(r"usage limit|rate[ _]limit(?: reached| exceeded)?|too many requests|limit reached", re.I)
-SAFE_FALLBACK = "SONNET"        # lane for rerouted build cards
+SAFE_FALLBACK = "SONNET"        # lane for rerouted build cards and for cards that need to SEE images (DSA is text only)
+VISION = re.compile(r"\b(frames?|images?|png|jpe?g|screenshots?)\b", re.I)
+REPORT_TEST = "Report file exists with the findings table or numbers and the verdict line; no code or spec changed"
 HOLD_REASONS = ("credits", "limit", "failing")
 
 
@@ -178,6 +180,12 @@ def dsa_need(card, when):
     return "\n".join(line[:200] for line in L)
 
 
+def needs_vision(card):
+    """Frames, images and screenshots can be read by a Claude session, not by DSA (a text chat through a shell bridge)."""
+    text = " ".join([card.get("title", ""), card.get("goal", "")] + card.get("scope_in", []))   # not steps: the audit template itself says "video frames"
+    return bool(VISION.search(text))
+
+
 def plan(st, cards, desk_rows, claimed):
     """What to do now. cards = all cards, desk_rows = {id: row}, claimed = set of claim slugs. Pure.
     -> {reroute: [(card, 'DSA'|lane)], paused: [(card, why)], restore: [card], cancel: [(card, desk id)],
@@ -205,7 +213,7 @@ def plan(st, cards, desk_rows, claimed):
             elif c.get("reroute_failed"):
                 out["paused"].append((c, f"DSA could not do it ({c['reroute_failed']}); waits for GPT"))
             else:
-                out["reroute"].append((c, SAFE_FALLBACK if c.get("kind") == "build" else "DSA"))
+                out["reroute"].append((c, SAFE_FALLBACK if c.get("kind") == "build" or needs_vision(c) else "DSA"))
         elif c.get("lane") == "CODEX" and c["state"] == "ready" and down and is_crucial(c):
             out["paused"].append((c, why_down(st)))
     return out
@@ -229,12 +237,17 @@ def apply_plan(repo, pl, st, now):
             lines.append(f"{c['id']} -> DSA desk row {rid}")
         else:
             c.update(lane=to, reroute={"to": to, "from": "CODEX", "at": iso(now), "why": st["reason"]})
+            if not str(c.get("tests", "")).strip():   # lane SONNET needs a test to be ready (Definition of Ready); undone on restore
+                c["tests"] = REPORT_TEST
+                c["reroute"]["added_tests"] = True
             lines.append(f"{c['id']} -> lane {to}")
         changed.append(str(tasks.save(repo, c).relative_to(repo)))
     for c, why in pl["paused"]:
         lines.append(f"{c['id']} PAUSED: {why}")
     for c in pl["restore"]:
         c["lane"] = "CODEX"
+        if c["reroute"].get("added_tests"):
+            c["tests"] = ""
         c.pop("reroute", None)
         changed.append(str(tasks.save(repo, c).relative_to(repo)))
         lines.append(f"{c['id']} back on CODEX (GPT is up, nobody had claimed it)")

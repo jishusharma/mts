@@ -112,6 +112,12 @@ class Reroute(unittest.TestCase):
         self.assertEqual(sorted(c["id"] for c, _ in pl["paused"]), ["d-crucial", "e-only"])
         self.assertIn("credits", pl["paused"][0][1])
 
+    def test_card_that_needs_images_goes_to_claude_not_dsa(self):
+        c = card("v-audit", goal="Frames are images under F:/MTS/data/fabio_videos/frames: open them.")
+        self.assertTrue(L.needs_vision(c))
+        self.assertEqual(L.plan(self.down, [c], {}, set())["reroute"][0][1], "SONNET")
+        self.assertFalse(L.needs_vision(card("plain")))
+
     def test_up_moves_nothing(self):
         pl = L.plan(L.blank(), [card("a"), card("d", crucial=True)], {}, set())
         self.assertEqual([len(v) for v in pl.values()], [0] * 6)
@@ -164,6 +170,7 @@ class EndToEnd(unittest.TestCase):
         c = self.cards()
         self.assertEqual((c["a-audit"]["reroute"]["to"], c["a-audit"]["lane"]), ("DSA", "CODEX"))
         self.assertEqual((c["c-build"]["lane"], c["d-crucial"].get("reroute")), ("SONNET", None))
+        self.assertEqual(T.problems(c["c-build"]), [])   # still a ready card in its new lane
         row = desk.get(self.repo, c["a-audit"]["reroute"]["desk"])
         self.assertEqual((row["target"], row["status"], row["card"]), ("DSA", "pending", "a-audit"))
         v = relay_board.gpt_lane(self.repo, NOW)
@@ -180,6 +187,18 @@ class EndToEnd(unittest.TestCase):
         self.assertEqual((c["a-audit"].get("reroute"), c["c-build"]["lane"], c["c-build"].get("reroute")), (None, "CODEX", None))
         self.assertEqual(desk.tasks(self.repo)[0]["status"], "failed")
         self.assertEqual(relay_board.gpt_lane(self.repo, NOW)["paused"], [])
+
+    def test_vision_audit_moves_to_sonnet_with_a_test_and_comes_back_clean(self):
+        T.save(self.repo, card("v-audit", goal="Open the frames (png) and compare."))
+        L.save(self.repo, L.record_run(L.blank(), "LIMIT", "credits", NOW))
+        L.sweep(self.repo, NOW, do_apply=True)
+        v = self.cards()["v-audit"]
+        self.assertEqual((v["lane"], v["tests"]), ("SONNET", L.REPORT_TEST))
+        self.assertEqual(T.problems(v), [])
+        L.save(self.repo, L.record_run(L.load(self.repo), "DONE", "", NOW + timedelta(hours=2)))
+        L.sweep(self.repo, NOW + timedelta(hours=2), do_apply=True)
+        v = self.cards()["v-audit"]
+        self.assertEqual((v["lane"], v["tests"], v.get("reroute")), ("CODEX", "", None))
 
     def test_finished_dsa_row_closes_the_card(self):
         L.save(self.repo, L.record_run(L.blank(), "LIMIT", "credits", NOW))
