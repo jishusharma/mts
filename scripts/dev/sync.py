@@ -322,11 +322,39 @@ def claim(repo, task, area="-", gate=run_gate):
 LANE_WORKTREES = ("mts-push", "mts-refiner", "mts-codex-lab", "mts-codex", "mts-dsa", "mts-relay")
 
 
-def tidy(repo, apply=False, include_named=False):
+TIDY_IDLE_HOURS = 24
+# Ignored paths that are rebuilt for free; anything else ignored (Dumps/, runtime_data/, fetched klines) is data.
+REGENERABLE = ("__pycache__/", ".pytest_cache/", ".pyc")
+
+
+def ignored_data(p):
+    """Ignored paths in worktree `p` that are not trivially regenerable (`git worktree remove` deletes them)."""
+    out = git(p, "status", "--porcelain", "--ignored=matching", check=False).stdout.splitlines()
+    return [l[3:] for l in out if l.startswith("!! ") and not any(m in l for m in REGENERABLE)]
+
+
+def idle_hours(p, branch, now):
+    """Hours since the last sign of life: newest of the branch tip commit and the worktree's index/HEAD/log files."""
+    stamps = []
+    r = git(p, "log", "-1", "--format=%ct", branch, check=False).stdout.strip()
+    if r.isdigit():
+        stamps.append(int(r))
+    gd = git(p, "rev-parse", "--absolute-git-dir", check=False).stdout.strip()
+    for n in ("index", "HEAD", "logs/HEAD"):
+        f = Path(gd) / n if gd else None
+        if f is not None and f.exists():
+            stamps.append(f.stat().st_mtime)
+    return (now - max(stamps)) / 3600 if stamps else 0.0
+
+
+def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS, now=None):
     """Retire finished session worktrees (`../mts-<host>-<slug>` made by `start`). Dry run unless apply.
-    Removed only when: not the primary tree, not the one we are in, no live marker, clean, branch fully on
-    origin/fast-track. Named lanes (mts-push, mts-codex-lab ...) and anything else are never touched.
+    Removed only when: not the primary tree, not the one we are in, no live marker, clean, no ignored data
+    files (those are deleted with the tree), branch fully on origin/fast-track, and idle for `min_idle_hours`
+    (a just-started tree is clean and "on origin" too, so cleanliness alone cannot tell it from a finished one).
+    Named lanes (mts-push, mts-codex-lab ...) and anything else are never touched.
     Returns the paths removed (or that would be)."""
+    now = time.time() if now is None else now
     git(repo, "fetch", "--quiet", "origin", TRUNK)
     here = Path(repo).resolve()
     rows = worktrees(repo)
@@ -347,6 +375,15 @@ def tidy(repo, apply=False, include_named=False):
             continue
         if git(repo, "merge-base", "--is-ancestor", branch, f"origin/{TRUNK}", check=False).returncode != 0:
             print(f"keep  {p.name}: {branch} has commits not on origin/{TRUNK}")
+            continue
+        data = ignored_data(p)
+        if data:
+            print(f"keep  {p.name}: ignored data would be deleted ({len(data)} path(s), e.g. {data[0]}); move it to the "
+                  f"primary tree's Dumps/ first")
+            continue
+        idle = idle_hours(p, branch, now)
+        if idle < min_idle_hours:
+            print(f"keep  {p.name}: active {idle:.1f} h ago (tidy waits {min_idle_hours} h)")
             continue
         if apply:
             r = git(repo, "worktree", "remove", str(p), check=False)

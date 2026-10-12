@@ -41,8 +41,12 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
 4. CI runs the full gate on both OSes after every push. Red CI is the next session's first job.
 5. Worktree hygiene (2026-10-12): a session that made a `../mts-<host>-<slug>` worktree and shipped everything
    ends with `sync.py where` clean; the next session of any lane runs `sync.py tidy` (dry run) then `tidy --apply`,
-   which removes only session worktrees that are clean and fully on origin/fast-track. Never remove a worktree
-   with uncommitted or unshipped work, a named lane (mts-push, mts-codex-lab ...), or the main/live tree.
+   which removes only session worktrees that are clean, fully on origin/fast-track, idle for 24 h (a just-started
+   tree looks identical to a finished one), and hold no ignored data files (`git worktree remove` deletes
+   Dumps/, runtime_data/ and fetched klines silently; only __pycache__/.pytest_cache/.pyc do not count).
+   Never remove a worktree with uncommitted or unshipped work, a named lane (mts-push, mts-codex-lab ...), or
+   the main/live tree. Fetched datasets belong in the primary tree's Dumps/ (never tidied), not in a session
+   worktree. 2026-10-12: tidy without these guards removed 15 worktrees on JIS-NUC (see RV03 report).
 
 Cloud sessions with a harness branch (`claude/...`) open a PR instead; CI auto-merges it when green.
 
