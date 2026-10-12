@@ -371,8 +371,9 @@ def cmd_next(a):
     if not card:
         print(f"IDLE no CODEX card to run ({len(cards)} ready; claimed or out of tries are skipped)")
         return 0
-    rl = None if a.dry else budget(home)
-    why = "" if a.dry else hold(rl, time.time())
+    skip = a.dry or lane_health.override_active(lane, utc())   # operator override (lane_health.py up): the stored reading may be stale
+    rl = None if skip else budget(home)
+    why = "" if skip else hold(rl, time.time())
     if why:
         end = hold_until(rl, time.time())
         if end:

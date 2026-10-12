@@ -24,7 +24,7 @@ import json
 import re
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.dont_write_bytecode = True
@@ -36,6 +36,7 @@ STATE = "MyTradingSys/system/lane_state.json"
 HEARTBEAT_DOWN_S = 3 * 3600     # the lab ticks every 30 min: 6 missed ticks = down
 HEARTBEAT_WRITE_S = 3600        # a heartbeat is committed at most hourly (git noise)
 PROBE_S = 3600                  # a down lane lets one card try again this often
+OVERRIDE_S = 3 * 3600            # operator "GPT is back": the allowance reading is not trusted for this long
 FAILS_DOWN = 3                  # runs in a row that wrote nothing and hit no known error
 TAIL = 4000                     # characters of a run log that are read for an error: the end, never the echoed prompt
 CREDITS = re.compile(r"out of (?:credits?|tokens)|insufficient[_ ](?:credits?|quota|funds|balance)|no (?:remaining |more )?credits?|"
@@ -80,7 +81,7 @@ def error_line(text):
 # ---- state ----------------------------------------------------------------------------------------------------------------
 def blank():
     return {"status": "up", "reason": "", "detail": "", "since": "", "heartbeat": "", "last_ok": "", "last_error": "",
-            "last_probe": "", "fails": 0, "resumed": "", "until": ""}
+            "last_probe": "", "fails": 0, "resumed": "", "until": "", "override": ""}
 
 
 def load(repo=REPO):
@@ -103,7 +104,7 @@ def go_down(st, reason, detail, now, until=None):
     st = dict(st)
     if st["status"] != "down":
         st.update(status="down", since=iso(now))
-    st.update(reason=reason, detail=detail, last_error=iso(now), until=iso(until) if until else "")
+    st.update(reason=reason, detail=detail, last_error=iso(now), until=iso(until) if until else "", override="")
     return st
 
 
@@ -126,6 +127,11 @@ def record_run(st, outcome, error, now, detail=""):
         if st["fails"] >= FAILS_DOWN:
             return go_down(st, "failing", f"{st['fails']} runs in a row wrote nothing", now)
     return st
+
+
+def override_active(st, now):
+    """Operator said GPT is back: codex_run skips its allowance pre-check until this time (a real limit error still marks the lane down)."""
+    return now.timestamp() < epoch(st.get("override", ""))
 
 
 def beat(st, now):
@@ -388,7 +394,12 @@ def main(argv=None):
         save(REPO, beat(load(REPO), utc()))
     elif a.cmd in ("down", "up"):
         now, st = utc(), load(REPO)
-        save(REPO, go_down(st, "manual", a.why, now) if a.cmd == "down" else go_up(st, now, a.why))
+        if a.cmd == "down":
+            st = go_down(st, "manual", a.why, now)
+        else:
+            st = go_up(st, now, a.why)
+            st["override"] = iso(now + timedelta(seconds=OVERRIDE_S))
+        save(REPO, st)
         print(f"lane {a.cmd}; run `lane_health.py sweep --apply --ship` to move cards and ship")
     else:
         print(classify(Path(a.log).read_text(encoding="utf-8", errors="replace")) or "no error text found")

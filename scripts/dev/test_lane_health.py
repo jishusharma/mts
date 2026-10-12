@@ -133,6 +133,26 @@ class Window(unittest.TestCase):
         self.assertEqual(R.hold_until(self.RL, self.RL["primary"]["resets_at"] + 1), 0)
 
 
+class Override(unittest.TestCase):
+    def test_operator_up_skips_allowance_precheck_until_expiry_and_a_limit_error_clears_it(self):
+        with tempfile.TemporaryDirectory() as d:
+            old = L.REPO
+            L.REPO = Path(d)
+            try:
+                st = L.go_down(L.blank(), "window", "x", NOW, NOW + timedelta(hours=3))
+                L.save(L.REPO, st)
+                L.main(["up", "operator: GPT is back"])
+                st = L.load(L.REPO)
+            finally:
+                L.REPO = old
+        self.assertEqual((st["status"], st["until"]), ("up", ""))
+        self.assertTrue(L.override_active(st, datetime.now(timezone.utc)))
+        self.assertFalse(L.override_active(st, datetime.now(timezone.utc) + timedelta(hours=4)))
+        self.assertFalse(L.override_active(L.blank(), NOW))
+        down = L.record_run(st, "LIMIT", "limit", NOW)
+        self.assertEqual(down["override"], "")
+
+
 class CommitShip(unittest.TestCase):
     def test_backslash_paths_match_git_status_and_commit(self):
         import subprocess

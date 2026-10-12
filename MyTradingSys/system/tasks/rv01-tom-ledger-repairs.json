@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-12T19:19:03Z",
   "commands": [],
   "created": "2026-10-12T17:17:55Z",
   "depends_on": [],
@@ -26,7 +27,7 @@
     "to": "SONNET",
     "why": "window"
   },
-  "result": "",
+  "result": "FIX-FIRST: 2 HIGH 3 MED 2 LOW; MyTradingSys/research/revalidation/RV01_2026-10-13.md",
   "scope_in": [
     "MyTradingSys/system/revalidation/RV01_tom_ledger_repairs.md",
     "MyTradingSys/system/revalidation/_COMMON.md",
@@ -41,7 +42,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
