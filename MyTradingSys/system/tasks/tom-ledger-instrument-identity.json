@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-12T12:08:43Z",
   "commands": [],
   "created": "2026-10-12T08:16:26Z",
   "depends_on": [],
@@ -17,7 +18,7 @@
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md"
   ],
-  "result": "",
+  "result": "Repaired in TOM_TRADE_LEDGER.csv/.md + TOM_LEDGER_CANONICAL_GROUPS.csv per audit rows; unresolved fields marked NOT_IN_DATA; no values invented.",
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",
@@ -30,7 +31,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Claim the shared ledger file area; serialize with other ledger repairs and respect the existing split owner's claim.",
     "Use report H3: T6hDJcHrVBM_0520.jpg shows Continuous(FDXM)@EUREX while T5 family says FDAX.",

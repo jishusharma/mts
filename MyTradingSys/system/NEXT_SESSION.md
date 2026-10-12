@@ -39,3 +39,8 @@ End: `sync.py ship`, `sync.py release <slug>`, overwrite this file, `sync.py whe
 ```
 
 Older updates: `handoff_history/` beside this file (read only when a task points there).
+
+## Tom ledger repair handoff (2026-10-12, JIS-NUC)
+- DONE: tom-ledger-canonical-identities / -instrument-identity / -time-provenance / -management-provenance (12 candidate groups, not certified executions; T5 FDXM vs FDAX and T11 31.08 vs 01-Sep left UNRESOLVED).
+- tom-layer-v2-spec released to `refined`; NOT started (Opus only when Jis asks). tom-layer-v2-cost still waits on tom-holdout-clean-split and tom-profile-parity-check.
+- Pass `TOM_LEDGER_CANONICAL_GROUPS.csv` (prior exposure) to the tom-holdout-clean-split owner; the split manifest was not touched.
