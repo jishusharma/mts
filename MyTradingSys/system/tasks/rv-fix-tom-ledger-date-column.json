@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-12T19:59:32Z",
   "commands": [],
   "created": "2026-10-12T17:18:21Z",
   "depends_on": [],
@@ -18,7 +19,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "date column empty on 37/37 rows (no observed trade date); 46 -> 0 violations via scripts/dev/tom_ledger_dates.py; assumed/inferred/legacy dates in trade_date_inferred + date_legacy_unverified; groups CSV has date_candidates_to_exclude",
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",
@@ -31,7 +32,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run the RV01 mechanical check.",
     "Fix the column, keep inferred values in trade_date_inferred.",

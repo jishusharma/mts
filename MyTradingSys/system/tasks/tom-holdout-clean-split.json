@@ -35,7 +35,7 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md N1, N2"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Use dates only: list ledger days inside the holdout 2026-04-11..2026-10-09; drop each +-1 trading day.",
     "Write HOLDOUT_CLEAN.json: dropped days, remaining holdout days, count dropped. Forward holdout = DAX bars from 2026-10-10 on, read once at >= 100 trades.",
