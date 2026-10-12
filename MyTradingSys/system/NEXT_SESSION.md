@@ -1,4 +1,4 @@
-<!-- relay: go depth=52 id=58dfa66a -->
+<!-- relay: go depth=53 id=b3dd6be1 -->
 # NEXT SESSION PROMPT (handoff 2026-10-11, Opus operator session "Tom/Fabio transfer probe"; Claude Code Win App, either account; older text below is history)
 
 ONE-MESSAGE RULE (operator 2026-10-10, standard practice): the block below must run with no input from the operator. Every open question carries a default; the session answers itself from Control Room (ArtifactData) and acts. Overwrite this file at each handoff.
@@ -24,7 +24,7 @@ MTS builder session. Read CLAUDE.md, STATUS.md (regenerate first), research/tom_
    Q19. Card b181-control-room-show-status-reply-ref- (Sonnet, p1; card READY 2026-10-12; republish needs the page owner account). DONE when: a rebuilt page shows status + reply + ref for an Inbox item that has no ref, test_make_control_room.py green, changelog line, page republished.
    Q20. DONE 2026-10-12 (JIS-NUC): parallel 5b + per-step timing + backup stagger (DEPLOY_RUNBOOK 'Quick-gate speed'). Left: re-time on cold JIS-NB, re-register MTS-Backup there (install_backup_task.ps1), step 4 pytest is the next cut.
    Q21. DONE 2026-10-12 (JIS-NUC): step 1 shipped, research/TOKEN_AUDIT_2026-10-12.md + token_audit.py + test. Next: refine cards b172-trim and b172-template from its ranked cuts (Sonnet). (was: card b172-token-audit-of-the-sonnet-relay-rit, step 1 = measure only, any host). DONE when: research/TOKEN_AUDIT_<date>.md has per-session token numbers from transcripts + ranked cuts, test_token_audit.py green. Then raw cards b172-trim (context trimmed, before/after counts) and b172-template (relay prompt templated): refine from the audit first.
-   Q22. Card b173-hide-python-cmd-console-windows-of- (Sonnet, p2). DONE when: every scheduled job that starts python/cmd registers hidden (pythonw or -WindowStyle Hidden), listed in the commit body; no registration of a live-path process is restarted by this session.
+   Q22. DONE 2026-10-12 (JIS-NUC): backup + cicd registrations use pythonw (others already hidden). Left: re-run install_backup_task.ps1 / register_cicd_tasks.ps1 on each host in a window (do not restart live-path processes).
    Q23. DONE 2026-10-12 (JIS-NUC): `desk.py next [--host]` + `desk.py assign` (daily, MTS-DailyHygiene step desk_assign), tests green, DSA_DELEGATION.md updated. (was: card b180-dsa-picks-tasks-by-host-desk-py-nex, Sonnet, p2. DONE when: `desk.py next --host` returns this host's first pending row (test with fixture rows) and DSA_DELEGATION.md names the scheduled assigner.)
    Q24. Card b177-control-room-layer-board-tab-per-ac (Sonnet, p2). DONE when: Layer Board tab renders one row per active layer from the registry, test green, page republished.
    Q25. Card b179-tom-and-fabio-layers-story-as-a-sli (Sonnet, p3). DONE when: a Slides artifact built from the existing Tom/Fabio story doc is published and its link is on the Control Room item.

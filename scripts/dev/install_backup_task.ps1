@@ -3,6 +3,8 @@
 # Per-user task, no admin, no secrets; run again to update. Remove with: schtasks /Delete /TN MTS-Backup /F
 param([string]$Repo = (Resolve-Path "$PSScriptRoot\..\..").Path)
 $py = (Get-Command python -ErrorAction Stop).Source
+$pyw = Join-Path (Split-Path $py) 'pythonw.exe'   # no console window flashing every tick (B173)
+if (Test-Path $pyw) { $py = $pyw }
 $action = New-ScheduledTaskAction -Execute $py -Argument "scripts\dev\backup_snapshot.py --repo `"$Repo`"" -WorkingDirectory $Repo
 $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).Date.AddMinutes(7) -RepetitionInterval (New-TimeSpan -Minutes 15)
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Minutes 10) -MultipleInstances IgnoreNew
