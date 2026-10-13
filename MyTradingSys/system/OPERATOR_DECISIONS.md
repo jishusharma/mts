@@ -361,3 +361,138 @@ Applied: (not yet)
  "recommended": "Yes, buy the 7 sessions + seeded controls; run before the CFD profile arm"
 }
 ```
+
+Audit note (2026-10-13, flow audit PR #28): the audit now recommends "No, park Tom as discretionary now" instead of buying DAX data (research/mts_flow_audit_2026-10-13/REPORT.md d1). The coordinator is asking Jis this directly; sessions do not act on q11 and do not auto-apply it.
+
+
+## q12-requeue-crypto-first | asked 2026-10-13 | Process | NO AUTO-APPLY
+
+Re-order the queue: crypto-native sources first?
+
+Recommended: Qriptal scoring (B162) and cryptocred-home-fit-audit to priority 1; pause the Tom v2 and Fabio v2 home-market chains
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+
+```json
+{
+ "order": 4,
+ "stage": "Process",
+ "refs": "research/mts_flow_audit_2026-10-13/REPORT.md section 5",
+ "title": "Re-order the queue: crypto-native sources first?",
+ "why": "Audit d2. The audit found the crypto-native sources (Qriptal posts entry, stop and target; CryptoCred is BTC) sit at the back of the queue while a machine-translated DAX trader is priority 1. Qriptal needs only free Binance candles. DIRECTION CHANGE: needs Jis's explicit answer; must NOT auto-apply after 24h.",
+ "options": [
+  "Qriptal scoring (B162) and cryptocred-home-fit-audit to priority 1; pause the Tom v2 and Fabio v2 home-market chains",
+  "Keep the current order",
+  "Qriptal and CryptoCred first, but let the running Tom v2 cards finish"
+ ],
+ "recommended": "Qriptal scoring (B162) and cryptocred-home-fit-audit to priority 1; pause the Tom v2 and Fabio v2 home-market chains",
+ "no_auto_apply": true
+}
+```
+
+
+## q13-six-line-gate | asked 2026-10-13 | Process | NO AUTO-APPLY
+
+Adopt the six-line pre-build gate as items 0a-0f of PRE_REG_TEMPLATE?
+
+Recommended: Yes
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+
+```json
+{
+ "order": 4,
+ "stage": "Process",
+ "refs": "research/mts_flow_audit_2026-10-13/REPORT.md section 5",
+ "title": "Adopt the six-line pre-build gate as items 0a-0f of PRE_REG_TEMPLATE?",
+ "why": "Audit d3. Six questions answered before anything is built (is the track record verified, do we have the data he reads, do fees allow his stop, and so on); see REPORT.md section 3. DIRECTION CHANGE: needs Jis's explicit answer; must NOT auto-apply after 24h.",
+ "options": [
+  "Yes",
+  "No",
+  "Yes, but as advice, not a gate"
+ ],
+ "recommended": "Yes",
+ "no_auto_apply": true
+}
+```
+
+
+## q14-doctrine-tom-core | asked 2026-10-13 | Process | NO AUTO-APPLY
+
+Doctrine: your 09-23 'Tom is core' vs the 10-10 'promotion to core uses the S3 bar, never opinion'
+
+Recommended: Let S3 decide what is core
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+
+```json
+{
+ "order": 4,
+ "stage": "Process",
+ "refs": "research/mts_flow_audit_2026-10-13/REPORT.md section 5",
+ "title": "Doctrine: your 09-23 'Tom is core' vs the 10-10 'promotion to core uses the S3 bar, never opinion'",
+ "why": "Audit d4. The two rules contradict each other and Tom has never passed S3. Changing the doctrine is the operator's edit only (VISION change rule), so a session will not edit it from this answer alone. DIRECTION CHANGE: needs Jis's explicit answer; must NOT auto-apply after 24h.",
+ "options": [
+  "Let S3 decide what is core",
+  "Keep Tom core by decree",
+  "Decide per layer later"
+ ],
+ "recommended": "Let S3 decide what is core",
+ "no_auto_apply": true
+}
+```
+
+
+## q15-merge-translation-postmortem | asked 2026-10-13 | Process | NO AUTO-APPLY
+
+Merge TRANSLATION_POSTMORTEM_2026-10-12.md into fast-track?
+
+Recommended: Yes
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+
+```json
+{
+ "order": 4,
+ "stage": "Process",
+ "refs": "research/mts_flow_audit_2026-10-13/REPORT.md section 5",
+ "title": "Merge TRANSLATION_POSTMORTEM_2026-10-12.md into fast-track?",
+ "why": "Audit d5. It is the only review that carries the simulator-validation list. DIRECTION CHANGE: needs Jis's explicit answer; must NOT auto-apply after 24h.",
+ "options": [
+  "Yes",
+  "No, leave it on its branch"
+ ],
+ "recommended": "Yes",
+ "no_auto_apply": true
+}
+```
+
+
+## q16-simulator-validation-card | asked 2026-10-13 | Process | NO AUTO-APPLY
+
+File the simulator-validation card: planted edge in tom_bt/sim, a null that includes fees, a trade-list diff?
+
+Recommended: Yes
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+
+```json
+{
+ "order": 4,
+ "stage": "Process",
+ "refs": "research/mts_flow_audit_2026-10-13/REPORT.md section 5",
+ "title": "File the simulator-validation card: planted edge in tom_bt/sim, a null that includes fees, a trade-list diff?",
+ "why": "Audit d6. None of the backtest engines has been shown to find a planted edge, so every FAIL so far is unvalidated. DIRECTION CHANGE: needs Jis's explicit answer; must NOT auto-apply after 24h.",
+ "options": [
+  "Yes",
+  "No"
+ ],
+ "recommended": "Yes",
+ "no_auto_apply": true
+}
+```
