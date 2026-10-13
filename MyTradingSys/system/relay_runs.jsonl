@@ -24,4 +24,7 @@
 {"account": "jishu.awgp", "depth": 70, "host": "JIS-NUC", "id": "3789584e", "session": "mts-relay-b", "state": "go", "utc": "2026-10-12T18:48:41Z"}
 {"account": "jishu.awgp", "depth": 71, "host": "JIS-NUC", "id": "1f6b548d", "session": "mts-relay-a", "state": "go", "utc": "2026-10-12T19:21:21Z"}
 {"account": "jishu.sharma", "depth": 73, "host": "JIS-NB", "id": "4b9cff05", "session": "", "state": "go", "utc": "2026-10-13T05:00:52Z"}
+{"account": "jishu.awgp", "depth": 69, "host": "JIS-NUC", "id": "dc5dcdee", "session": "relay JIS-NUC 2026-10-12", "state": "go", "utc": "2026-10-12T18:18:21Z"}
+{"account": "jishu.awgp", "depth": 72, "host": "JIS-NUC", "id": "26758a48", "session": "mts-relay-b", "state": "go", "utc": "2026-10-12T19:50:42Z"}
+{"account": "jishu.awgp", "depth": 62, "host": "JIS-NUC", "id": "18a31177", "session": "mts-dispatcher", "state": "go", "utc": "2026-10-12T12:48:39Z"}
 {"account": "jishu.awgp", "depth": 74, "host": "JIS-NUC", "id": "fc08bf70", "session": "relay: Haiku declined SONNET cards, rv07 next", "state": "go", "utc": "2026-10-13T06:18:41Z"}

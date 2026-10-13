@@ -66,8 +66,10 @@ def git(*args, cwd=None):
 
 def main_root():
     """The primary checkout (the live tree on the desktop): every worktree shares its store."""
-    common = git("rev-parse", "--path-format=absolute", "--git-common-dir").strip()
-    if not common:  # git older than 2.31
+    out = git("rev-parse", "--path-format=absolute", "--git-common-dir").strip().splitlines()
+    common = out[-1].strip() if out else ""
+    if not common or common.startswith("--"):  # git older than 2.31 echoes the flag as line 1 (2.24)
+        common = ""
         rel = git("rev-parse", "--git-common-dir").strip()
         common = str((REPO / rel).resolve()) if rel else ""
     p = Path(common) if common else REPO / ".git"
