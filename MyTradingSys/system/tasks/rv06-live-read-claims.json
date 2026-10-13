@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-13T05:55:49Z",
   "commands": [],
   "created": "2026-10-12T17:18:13Z",
   "depends_on": [],
@@ -21,7 +22,7 @@
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST: 6 findings; 3 cards confirmed faithful; report MyTradingSys/research/layer_lab/reports/2026-10-13_rv06-live-read-claims.md",
   "scope_in": [
     "MyTradingSys/system/revalidation/RV06_live_read_claims.md",
     "MyTradingSys/system/revalidation/_COMMON.md",
@@ -36,7 +37,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
