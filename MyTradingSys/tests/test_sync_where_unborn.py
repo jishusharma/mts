@@ -15,7 +15,8 @@ def _git(cwd, *args):
 
 def test_where_reports_unborn_worktree(tmp_path, capsys):
     repo = tmp_path / "repo"
-    _git(tmp_path, "init", "-q", "-b", sync.TRUNK, str(repo))
+    _git(tmp_path, "init", "-q", str(repo))
+    _git(repo, "symbolic-ref", "HEAD", f"refs/heads/{sync.TRUNK}")
     _git(repo, "config", "user.email", "t@t")
     _git(repo, "config", "user.name", "t")
     (repo / "a.txt").write_text("a\n")
@@ -23,7 +24,9 @@ def test_where_reports_unborn_worktree(tmp_path, capsys):
     _git(repo, "commit", "-qm", "init")
     _git(repo, "remote", "add", "origin", str(repo))  # the repo is its own origin: fetch works offline
     _git(repo, "fetch", "-q", "origin", sync.TRUNK)
-    _git(repo, "worktree", "add", "-q", "--orphan", "-b", "gone", str(tmp_path / "wt"))
+    # `worktree add --orphan` needs git >= 2.42; delete the branch ref instead so HEAD is unborn on any git
+    _git(repo, "worktree", "add", "-q", "-b", "gone", str(tmp_path / "wt"))
+    _git(repo, "update-ref", "-d", "refs/heads/gone")
     sync.where(repo)
     out = capsys.readouterr().out
     assert "BROKEN" in out and "wt" in out
