@@ -41,12 +41,13 @@ RUN_LANES = ("DSA", "DSA-NB", "DSA-NUC", "JIS-NB")   # run-and-report: need exac
 # Layer lab (LAYER_LAB.md): CODEX cards are run by scripts/dev/codex_run.py, never by a Claude relay session.
 # kind -> (model, reasoning effort); a card may override either with `model` / `effort`.
 # Operator 2026-10-13 (the 2026-10-12 limit drain: three astra/high runs took 90% of a 5-hour window each): bulk and revalidation
-# work runs on luna at low or medium effort. Astra only for a card flagged `crucial` (or `gpt_only`), at medium effort,
-# and at high only when that card names effort high itself. A non-crucial card that names astra runs on luna.
+# work runs on luna at low or medium effort. Astra only for a card flagged `crucial` (or `gpt_only`), and then only at low effort:
+# a card's own effort is ignored for astra. A non-crucial card that names astra runs on luna.
 CODEX_KINDS = {"audit": ("gpt-6-luna", "medium"), "build": ("gpt-6-luna", "medium"), "run": ("gpt-6-luna", "low")}
 REVAL_ID = re.compile(r"^rv\d+")
 REVAL_DEFAULT = ("gpt-6-luna", "medium")   # a revalidation (rv01, rv02...) is a second look
-CRUCIAL_SETTING = ("gpt-6-astra", "medium")
+CRUCIAL_SETTING = ("gpt-6-astra", "low")
+ASTRA_EFFORT = "low"   # operator 2026-10-13: astra at its lightest effort only, never medium or high, whatever the card says
 CODEX_EFFORTS = ("low", "medium", "high", "xhigh", "max")
 LAB_REPORTS = "MyTradingSys/research/layer_lab/reports"
 SIZES = ("S", "M", "L")
@@ -219,6 +220,8 @@ def codex_setting(card):
     model, effort = card.get("model") or model, card.get("effort") or effort
     if model == CRUCIAL_SETTING[0] and not crucial:
         model = CODEX_KINDS["build"][0]   # astra is the scarce model: a card that is not crucial may not spend it
+    elif model == CRUCIAL_SETTING[0]:
+        effort = ASTRA_EFFORT
     return model, effort
 
 

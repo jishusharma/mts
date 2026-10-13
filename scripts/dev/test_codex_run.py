@@ -51,9 +51,12 @@ class LaneRulesTest(unittest.TestCase):
         self.assertEqual(T.codex_setting(card(kind="build")), ("gpt-6-luna", "medium"))
         self.assertEqual(T.codex_setting(card(kind="run")), ("gpt-6-luna", "low"))
         self.assertEqual(T.codex_setting(card(cid="rv05-fabio-pass", kind="audit")), ("gpt-6-luna", "medium"))
-        self.assertEqual(T.codex_setting(card(kind="audit", crucial=True)), ("gpt-6-astra", "medium"))
-        self.assertEqual(T.codex_setting(card(kind="audit", crucial=True, effort="high")), ("gpt-6-astra", "high"))
-        self.assertEqual(T.codex_setting(card(kind="run", gpt_only=True)), ("gpt-6-astra", "medium"))
+        # operator 2026-10-13 (second rule): astra runs at the lightest effort only, whatever the card asks for
+        self.assertEqual(T.codex_setting(card(kind="audit", crucial=True)), ("gpt-6-astra", "low"))
+        self.assertEqual(T.codex_setting(card(kind="audit", crucial=True, effort="high")), ("gpt-6-astra", "low"))
+        self.assertEqual(T.codex_setting(card(kind="audit", crucial=True, effort="medium")), ("gpt-6-astra", "low"))
+        self.assertEqual(T.codex_setting(card(kind="audit", crucial=True, model="gpt-6-astra", effort="max")), ("gpt-6-astra", "low"))
+        self.assertEqual(T.codex_setting(card(kind="run", gpt_only=True)), ("gpt-6-astra", "low"))
         # a card that names astra without the flag runs on luna; it keeps the effort it asked for
         self.assertEqual(T.codex_setting(card(kind="audit", model="gpt-6-astra", effort="medium")), ("gpt-6-luna", "medium"))
         self.assertEqual(T.codex_setting(card(kind="build", model="gpt-6-astra", effort="max")), ("gpt-6-luna", "max"))
@@ -101,7 +104,8 @@ class CommandTest(unittest.TestCase):
     def test_model_effort_and_sandbox_reach_the_command_line(self):
         cmd = R.command("codex.exe", card(kind="audit", crucial=True, effort="high"), "F:/wt", "workspace-write")
         self.assertEqual(cmd[:4], ["codex.exe", "exec", "-m", "gpt-6-astra"])
-        self.assertIn('model_reasoning_effort="high"', cmd)
+        self.assertIn('model_reasoning_effort="low"', cmd)
+        self.assertNotIn('model_reasoning_effort="high"', cmd)
         self.assertEqual(cmd[cmd.index("-s") + 1], "workspace-write")
         self.assertEqual(cmd[cmd.index("-C") + 1], "F:/wt")
         self.assertEqual(cmd[-1], "-")
@@ -350,13 +354,14 @@ class SpendGuardTest(unittest.TestCase):
         self.assertEqual(R.budget_hold("gpt-6-luna", "low", None, [], self.NOW), ("", 0))
 
     def test_choose_takes_the_next_card_that_fits_instead_of_idling(self):
-        big, small = card("lab-big", crucial=True, effort="high"), card("lab-small")
-        c, why = R.choose([big, small], set(), {}, [], self.RL, self.NOW)
+        big, small = card("lab-big", crucial=True), card("lab-small")
+        rows = [self.run_row(self.stamp(1000), "gpt-6-astra", "low", pts=90.0)]   # measured: astra/low moved the window 90 points
+        c, why = R.choose([big, small], set(), {}, rows, self.RL, self.NOW)
         self.assertEqual(c["id"], "lab-small")
-        c, why = R.choose([big], set(), {}, [], self.RL, self.NOW)
+        c, why = R.choose([big], set(), {}, rows, self.RL, self.NOW)
         self.assertIsNone(c)
         self.assertIn("lab-big", why)
-        self.assertIn("gpt-6-astra/high", why)
+        self.assertIn("gpt-6-astra/low", why)
 
     def test_a_card_that_ran_out_mid_run_waits_out_a_cool_down(self):
         rows = [self.run_row(self.stamp(self.NOW - 600), "gpt-6-luna", "medium", outcome="INCOMPLETE", card="lab-a")]
