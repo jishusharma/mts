@@ -3,9 +3,7 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-13T06:33:20Z",
-  "depends_on": [
-    "tom-v2-dax-dev-backtest"
-  ],
+  "depends_on": [],
   "done_when": "The worked example of spec section 11.4 passes as a test, min_width off leaves an existing tom_bt fixture run unchanged, and the lookback 10/20/40 floors for 2026-06-25 are one line in the card result.",
   "from_inbox": "",
   "goal": "Give BTC research replays the minimum stop width of spec section 11.4: noise unit N5, noise floor 0.88 x N5, fee floor round-turn cost / 0.25, no trade below the larger one. Research replays only; live BTC output unchanged. Start only if DAX_BT_V2.md says PASS.",
@@ -15,7 +13,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "",
+  "note": "2026-10-13 (operator chat q11): no longer waits for the DAX dev run (held). The 0.40 % taker / 0.20 % maker floor is used directly by tom-btc-event-study.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",

@@ -40,7 +40,7 @@ class Registry(unittest.TestCase):
         r = copy.deepcopy(self.reg)
         r["pages"][0]["status"] = "retire"
         self.assertIn("OPERATOR UNPIN+DELETE  MTS Control Room", "\n".join(af.plan(r, "jishu.sharma")))
-        self.assertIn("PUBLISH NEW  MTS Layer Map", text)
+        self.assertIn("PUBLISH NEW  MTS Layers", text)
         with self.assertRaises(SystemExit):
             af.plan(self.reg, "nobody")
 

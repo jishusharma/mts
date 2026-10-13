@@ -15,7 +15,8 @@
     "tom"
   ],
   "live_path": false,
-  "note": "",
+  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
@@ -38,7 +39,7 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2.3, 2.4, 2.6, 13"
   ],
-  "state": "refined",
+  "state": "blocked",
   "steps": [
     "A3: top balance = the range formed after the session extreme; a 1m close below it emits fade_short path A3, entry next bar open, stop above the last traded volume (A-S3).",
     "A2: after a rejection that traded through the first buying zone, sell limit at the pullback level; quote spec section 2.3 in the comment.",

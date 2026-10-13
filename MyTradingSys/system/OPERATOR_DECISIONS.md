@@ -341,9 +341,9 @@ Applied: 2026-10-13 (JIS-NUC): answered 14:27Z. Card tom-profile-shape-parity is
 Buy Eurex FDAX trade data with aggressor side (buyer or seller crossed the spread) for Tom's 7 ledger sessions plus seeded random days, to test whether his named order-flow proofs mark his entries?
 
 Recommended: Yes, buy the 7 sessions + seeded controls; run before the CFD profile arm
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: No FDAX data. Apply Tom's core idea on BTC charts and BTC data with our own judgement (operator chat 2026-10-13; none of the four options fits word for word: it is not "park Tom")
+Operator note (verbatim): "I agree with you! I just have a feeling that orde-flow trading is real and Tom is not lying. 'Tom has never passed that test' yes because we have never applied Tom correctly.  We do not need tp prove anything abt Tom here. Orderflow is real and works on all markets." ... "so let us apply the core idea on the chart and uh, see how it needs to be adjusted in order to make profitable trades. Focus on that"
+Applied: 2026-10-13 (cloud, flow-audit session): plan research/tom_btc_2026-10-13/TOM_ON_BTC.md; DAX-only Tom cards held (tasks.py apply-op hold, note q11); Tom-on-BTC cards tom-btc-* created.
 
 ```json
 {
@@ -424,9 +424,9 @@ Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h def
 Doctrine: your 09-23 'Tom is core' vs the 10-10 'promotion to core uses the S3 bar, never opinion'
 
 Recommended: Let S3 decide what is core
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+Answer: No fixed core: remove "Tom is core" and the hard layer rules; flexible system (operator chat 2026-10-13)
+Operator note (verbatim): "WRT “Tom is core, non-negotiable” - It was a long time ago when we started - now it makes no sense to have anything like this. We need flexible system now that can adapt to whatever change we need to bring. So we have to remove all those uh, hard rules about layers and everything."
+Applied: (not yet) Rule text staged 2026-10-13: scripts/dev/staged/apply_rules_2026_10_13.py, task system/cli_tasks/2026-10-13_rules_rewrite.md. The cloud session could not apply it (its permission check blocks edits to agent instruction files); a local session runs it on Jis's OK.
 
 ```json
 {
@@ -493,6 +493,33 @@ Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h def
   "No"
  ],
  "recommended": "Yes",
+ "no_auto_apply": true
+}
+```
+
+
+## q17-simplify-operations | asked 2026-10-13 | Process | NO AUTO-APPLY
+
+Simplify how MTS runs: apply proposals P1-P5 in system/HOW_MTS_RUNS.md (one account per job, one machine starts sessions, one work list, bookkeeping out of git history, three pages)?
+
+Recommended: Yes, all five
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+
+```json
+{
+ "order": 5,
+ "stage": "Process",
+ "refs": "system/HOW_MTS_RUNS.md section 'Proposals to make it simpler'",
+ "title": "Simplify how MTS runs: apply P1-P5 (one account per job, one machine starts sessions, one work list, bookkeeping out of git, three pages)?",
+ "why": "Operator 2026-10-13: 'my head is actually spinning the project is growing uh, too big for me to handle it'. Work sits in five lists, hand-over runs three ways, two accounts take one queue, and about 44 % of 1,246 commits since 10-01 are bookkeeping. DIRECTION CHANGE: needs Jis's explicit answer; must NOT auto-apply after 24h.",
+ "options": [
+  "Yes, all five",
+  "Yes, but only the ones I name in the note",
+  "Not now"
+ ],
+ "recommended": "Yes, all five",
  "no_auto_apply": true
 }
 ```
