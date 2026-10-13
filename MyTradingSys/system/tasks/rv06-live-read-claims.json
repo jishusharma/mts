@@ -10,7 +10,7 @@
   "goal": "Follow MyTradingSys/system/revalidation/RV06_live_read_claims.md exactly; report per MyTradingSys/system/revalidation/_COMMON.md. host=JIS-NUC.",
   "id": "rv06-live-read-claims",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "layers": [
     "live_engine"
   ],
@@ -21,6 +21,13 @@
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refs": [],
+  "reroute": {
+    "added_tests": true,
+    "at": "2026-10-13T04:56:55Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "credits"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/system/revalidation/RV06_live_read_claims.md",
@@ -44,6 +51,6 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
-  "tests": "",
+  "tests": "Report file exists with the findings table or numbers and the verdict line; no code or spec changed",
   "title": "RV06 recompute live-read MATCH/MISMATCH claims from engine JSON and klines (host=JIS-NUC)"
 }
