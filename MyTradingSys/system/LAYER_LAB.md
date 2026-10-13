@@ -14,10 +14,12 @@ anything in ROADMAP.md section 2 (STOP now). Video frames are in scope since 202
 ## Three kinds of card (lane `CODEX`, field `kind`)
 | kind | job | model / effort (tasks.CODEX_KINDS) | must have |
 |---|---|---|---|
-| `audit` | check a spec, ledger, encoding or backtest report against its sources and backtest/PRE_REG_TEMPLATE.md; changes nothing | gpt-6-astra / high | scope_in |
+| `audit` | check a spec, ledger, encoding or backtest report against its sources and backtest/PRE_REG_TEMPLATE.md; changes nothing | gpt-6-luna / medium | scope_in |
 | `run` | run given backtest or recall commands on development data, report the numbers | gpt-6-luna / low | commands |
-| `build` | code from a card, test red first, behind a flag that is off | gpt-6.1-sol / medium | tests |
-A card may name its own `model` or `effort` (low, medium, high, xhigh, max). The strong model spends the trial faster: keep it for audits.
+| `build` | code from a card, test red first, behind a flag that is off | gpt-6-luna / medium | tests |
+Operator 2026-10-13: bulk, revalidation (rv01...) and build work runs on luna at low or medium. Astra only for a card flagged
+`crucial: true`, at medium, and at high only when that card names `effort: high` itself; a card that names astra without the flag
+runs on luna (tasks.codex_setting). A card may name its own `effort` (low, medium, high, xhigh, max) or another `model`.
 
 ## How work gets in and out
 - Ask: `python scripts/dev/codex_run.py ask "<what you want checked or run>" --kind audit --scope <repo path>` writes a ready card
@@ -74,6 +76,21 @@ has full access (operator's setting), so it does its own git steps; everything e
 - Failover (2026-10-12): the first allowance/credit error marks the whole GPT lane down and `lane_health.py` moves or pauses cards (section below).
   Astra / high effort burns the shared allowance fastest (383k tokens in one audit): the operator's own app sessions on it
   are what starve the lab.
+- Spend guard (2026-10-13; `codex_run.py`): the 85% pre-check only sees what is already used, so it cannot stop a card that starts at
+  16% and moves the window 80 points. Each run is estimated (measured max of the setting's latest runs, else the table
+  `EST_WINDOW_PTS`) and starts only if it fits under 100 minus a 10-point reserve, the lab's own spend stays under `LAB_WINDOW_PTS`
+  (50) of the window and `LAB_WEEK_PTS` (35) of the week, at most `LAB_RUNS_PER_WINDOW` (4) runs and 1 astra run per window, one
+  card per tick with `MIN_GAP_S` (20 min) between starts, and a card that ended INCOMPLETE waits `COOLDOWN_S` (2 h). When it is
+  spent the tick prints `IDLE lab budget: ...` and waits for the reset; it does not mark the lane down or reroute cards. A cheaper
+  card behind a held one still runs. `codex_run.py run <card> --force` is the operator's way past it.
+- The run lock (`lab_runs/lab.lock`) is created exclusively and is taken over at once when its process no longer runs.
+- Every run row in `runs.jsonl` carries the model and effort the CLI printed (`model_used`, `effort_used`), the session id, true
+  tokens from the rollout file (`tokens_total` counts cached input; the CLI's own `tokens used` line, kept as `tokens`, leaves it
+  out and under-reports about 10x) and the points the 5-hour window and the week moved (`window_pts`, `week_pts`; an operator app
+  session running at the same time is included). `MyTradingSys/system/codex_usage.json` ships with each run and is what the
+  Control Room "Claude-GPT cycle" section shows.
+- Measured 2026-10-12 (JIS-NUC): sol/medium 0.7 to 1.7M tokens = 5 to 9 window points, 1 week point; astra/high 3.7 to 5.1M tokens =
+  81 to 90 window points, 13 to 14 week points per run.
 - Measured 2026-10-11: one high-effort audit = 200k tokens, 9 minutes. Keep the queue 4 to 8 cards deep; an empty queue wastes windows.
 - Filling the queue is refinement work: any session turns a scoped card into lane CODEX (`kind`, `tests` or `commands`,
   scope_in) and ships it. Cards that touch the live path, shared engine files or a holdout never go to the lab.

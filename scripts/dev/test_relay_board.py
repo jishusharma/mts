@@ -60,6 +60,16 @@ class Notes(unittest.TestCase):
         self.assertEqual(b["lanes"]["desk"]["next"][0]["id"], "c")
         self.assertEqual(b["claims"][0]["age_h"], 2.0)
 
+    def test_board_carries_the_codex_usage_file_for_the_control_room(self):
+        self.assertEqual(rb.board(self.repo, [], NOW)["gpt_usage"], {})
+        d = self.repo / "MyTradingSys/system"
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "codex_usage.json").write_text('{"runs": [{"card": "x", "model": "gpt-6-luna"}], "allowance": {"window_used": 3.0}}', encoding="utf-8")
+        u = rb.board(self.repo, [], NOW)["gpt_usage"]
+        self.assertEqual(u["runs"][0]["model"], "gpt-6-luna")
+        (d / "codex_usage.json").write_text("not json", encoding="utf-8")
+        self.assertEqual(rb.board(self.repo, [], NOW)["gpt_usage"], {})
+
     def test_real_notes_file_parses(self):
         real = rb.load(rb.REPO)
         self.assertTrue(real and all(n["text"] for n in real))

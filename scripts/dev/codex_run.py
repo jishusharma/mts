@@ -2,12 +2,14 @@
 
   python scripts/dev/codex_run.py tick                 # scheduler entry: refresh the lab work tree, then `next`
   python scripts/dev/codex_run.py next [--dry]         # run the first ready, unclaimed CODEX card
-  python scripts/dev/codex_run.py run <card> [--dry]   # run one card by id
+  python scripts/dev/codex_run.py run <card> [--dry] [--force]   # run one card by id (--force: past the lab spend guard)
   python scripts/dev/codex_run.py ask "<title>" --kind audit|build|run --scope <path> [--cmd ..] [--tests ..] [--goal ..]
   python scripts/dev/codex_run.py index                # regenerate MyTradingSys/research/layer_lab/INDEX.md
   python scripts/dev/codex_run.py status               # plain words: allowance, queue, deliveries, last runs, NEEDS A LOOK
   python scripts/dev/codex_run.py stop "<why>" | resume
-Spec, lanes and report format: MyTradingSys/system/LAYER_LAB.md. Model and effort come from the card (tasks.CODEX_KINDS).
+Spec, lanes and report format: MyTradingSys/system/LAYER_LAB.md. Model and effort come from the card (tasks.codex_setting):
+luna low/medium by default, astra only for a `crucial` card. One card per tick, one run at a time (lab.lock), and a per-window
+spend guard (LAB_WINDOW_PTS, LAB_RUNS_PER_WINDOW, ASTRA_RUNS_PER_WINDOW, LAB_WEEK_PTS): when it is spent the lab idles until the reset.
 Environment (all optional): CODEX_HOME (F:/codex_home), MTS_CODEX_LAB_WT (F:/MTS/mts-codex-lab), MTS_CODEX_EXE,
 MTS_CODEX_SANDBOX (workspace-write), MTS_CODEX_TIMEOUT_MIN (60).
 """
@@ -37,6 +39,26 @@ MAX_ATTEMPTS = 2          # runs of one card that did not end `done`; after that
 LOCK_STALE_S = 3 * 3600
 WINDOW_STOP = 85          # % of the 5-hour window used: no new card until it resets
 WEEK_STOP = 85            # % of the week used: the rest stays with the operator's own Codex app sessions
+# Spend guard (operator 2026-10-13). 2026-10-12: one astra/high audit (5.1M tokens, 14 minutes) moved the 5-hour window 0 -> 90% and the
+# week 14 points; the 85% pre-check above only looks at what is already used, so a card that starts at 16% may still empty the window.
+WINDOW_S = 5 * 3600
+WEEK_S = 7 * 86400
+LAB_WINDOW_PTS = 50       # points of one 5-hour window the lab may spend (the rest stays with the operator's own sessions)
+LAB_WEEK_PTS = 35         # points of the week the lab may spend
+LAB_RUNS_PER_WINDOW = 4   # cards started per 5-hour window
+ASTRA_RUNS_PER_WINDOW = 1
+WINDOW_RESERVE = 10       # points of the window never planned away: a card starts only if its estimate fits below 100 - this
+WEEK_RESERVE = 15
+MIN_GAP_S = 20 * 60       # between two run starts (tick = 30 min); a manual run next to a tick cannot stack
+COOLDOWN_S = 2 * 3600     # a card that ended INCOMPLETE is not picked again for this long
+EST_WINDOW_PTS = {        # points of the 5-hour window one run moved (measured 2026-10-12 on the NUC; luna is an estimate until measured)
+    ("gpt-6-astra", "high"): 90, ("gpt-6-astra", "medium"): 45, ("gpt-6-astra", "low"): 20,
+    ("gpt-6.1-sol", "medium"): 10, ("gpt-6.1-sol", "low"): 5, ("gpt-6-luna", "medium"): 6, ("gpt-6-luna", "low"): 3}
+EST_DEFAULT = 50          # a model/effort not in the table is assumed expensive until it has been measured
+EST_WEEK_RATIO = 0.17     # week points per window point (13 / 81 and 1 / 7 on 2026-10-12)
+MEASURED_RUNS = 8         # the cost of a setting is the max of its latest runs that carry a measurement
+USAGE = "MyTradingSys/system/codex_usage.json"   # shipped with the run: what the Control Room "Claude-GPT cycle" shows
+USAGE_RUNS = 10
 
 TEMPLATES = {
     "audit": {
@@ -160,6 +182,201 @@ def limit_hit(outcome, files, log_text):
     return outcome == "INCOMPLETE" and bool(lane_health.classify(log_text))
 
 
+def epoch_of(at):
+    try:
+        return datetime.strptime(str(at), "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc).timestamp()
+    except ValueError:
+        return 0
+
+
+def setting_of(r):
+    """(model, effort) a run really used: what the CLI printed when the runner captured it, else what was asked."""
+    return (r.get("model_used") or r.get("model"), r.get("effort_used") or r.get("effort"))
+
+
+def est_pts(model, effort, rows):
+    """(window points, week points) one run of this setting is expected to move: the max of its latest measured runs, else the table."""
+    got = [r for r in rows if not r.get("dry") and setting_of(r) == (model, effort) and r.get("window_pts") is not None][-MEASURED_RUNS:]
+    if got:
+        w = max(r["window_pts"] for r in got)
+        k = [r["week_pts"] for r in got if r.get("week_pts") is not None]
+        return float(w), float(max(k)) if k else round(w * EST_WEEK_RATIO, 2)
+    w = EST_WINDOW_PTS.get((model, effort), EST_DEFAULT)
+    return float(w), round(w * EST_WEEK_RATIO, 2)
+
+
+def lab_spend(rows, since):
+    """Points and run counts the lab spent in runs started at or after `since` (epoch). A run without a measurement counts its estimate."""
+    out = {"window_pts": 0.0, "week_pts": 0.0, "runs": 0, "astra_runs": 0}
+    for r in rows:
+        if r.get("dry") or epoch_of(r.get("at")) < since:
+            continue
+        m, e = setting_of(r)
+        w, k = est_pts(m, e, [])
+        out["window_pts"] += r["window_pts"] if r.get("window_pts") is not None else w
+        out["week_pts"] += r["week_pts"] if r.get("week_pts") is not None else k
+        out["runs"] += 1
+        out["astra_runs"] += 1 if m == "gpt-6-astra" else 0
+    return out
+
+
+def windows(rl, now):
+    """(5-hour used %, its start epoch, its reset epoch, week used %, week start, week reset) from an allowance reading.
+    A window whose reset time has passed counts as empty and starts at that reset. No reading: nothing used, window = the last 5 h / 7 d."""
+    res = []
+    for key, span in (("primary", WINDOW_S), ("secondary", WEEK_S)):
+        w = (rl or {}).get(key) or {}
+        end = w.get("resets_at") or 0
+        if end > now:
+            res += [w.get("used_percent") or 0, end - span, end]
+        elif end:
+            res += [0, end, end + span]
+        else:
+            res += [0, now - span, now + span]
+    return tuple(res)
+
+
+def budget_hold(model, effort, rl, rows, now):
+    """Why one run of model/effort may not start now ('' = it may), and the epoch when the limiting window resets.
+    Plain text; the lane is NOT marked down for this (no card is rerouted: the lab just waits for the window)."""
+    est_w, est_k = est_pts(model, effort, rows)
+    used_w, w_start, w_end, used_k, k_start, k_end = windows(rl, now)
+    spent_w, spent_k = lab_spend(rows, w_start), lab_spend(rows, k_start)
+    name = f"{model}/{effort}"
+    if spent_w["runs"] >= LAB_RUNS_PER_WINDOW:
+        return f"{spent_w['runs']} lab runs in this window (cap {LAB_RUNS_PER_WINDOW})", int(w_end)
+    if model == "gpt-6-astra" and spent_w["astra_runs"] >= ASTRA_RUNS_PER_WINDOW:
+        return f"astra already ran {spent_w['astra_runs']}x in this window (cap {ASTRA_RUNS_PER_WINDOW})", int(w_end)
+    if used_w + est_w > 100 - WINDOW_RESERVE:
+        return f"{name} needs about {est_w:.0f} points of the 5-hour window and {used_w:.0f}% is used (keeps {WINDOW_RESERVE} free)", int(w_end)
+    if spent_w["window_pts"] + est_w > LAB_WINDOW_PTS:
+        return f"lab share of this 5-hour window: {spent_w['window_pts']:.0f} spent + {name} about {est_w:.0f} > {LAB_WINDOW_PTS}", int(w_end)
+    if used_k + est_k > 100 - WEEK_RESERVE:
+        return f"{name} would take the week past {100 - WEEK_RESERVE}% ({used_k:.0f}% used)", int(k_end)
+    if spent_k["week_pts"] + est_k > LAB_WEEK_PTS:
+        return f"lab share of this week: {spent_k['week_pts']:.0f} spent + {name} about {est_k:.1f} > {LAB_WEEK_PTS}", int(k_end)
+    return "", 0
+
+
+def cooling(rows, cid, now):
+    """A card whose last run ended INCOMPLETE (it ran out mid-run) is not picked again until the cool-down has passed."""
+    mine = [r for r in rows if r.get("card") == cid and not r.get("dry")]
+    return bool(mine) and mine[-1].get("outcome") == "INCOMPLETE" and now - epoch_of(mine[-1].get("at")) < COOLDOWN_S
+
+
+def gap_hold(rows, now):
+    real = [r for r in rows if not r.get("dry")]
+    if real:
+        ago = now - epoch_of(real[-1].get("at"))
+        if 0 <= ago < MIN_GAP_S:
+            return f"the last run started {ago / 60:.0f} minutes ago (minimum gap {MIN_GAP_S // 60})"
+    return ""
+
+
+def choose(cards, claimed, tried, rows, rl, now, probe=False):
+    """-> (card, '') for the first ready card that is not cooling and whose estimated cost fits the budget; a cheaper card behind a held
+    one still runs. (None, why) names the first card held and why."""
+    left = [c for c in cards if not cooling(rows, c["id"], now)]
+    first = ""
+    while True:
+        c = pick(left, claimed, tried, probe)
+        if not c:
+            return None, first
+        model, effort = tasks.codex_setting(c)
+        why, _ = budget_hold(model, effort, rl, rows, now)
+        if not why:
+            return c, ""
+        first = first or f"{c['id']}: {why}"
+        left = [x for x in left if x["id"] != c["id"]]
+
+
+def log_header(text):
+    """Model, reasoning effort and session id the CLI printed in its header: what actually ran, whatever was asked for."""
+    out = {}
+    for line in text.splitlines()[:40]:
+        for key, pat in (("model", r"^model:\s*(\S+)"), ("effort", r"^reasoning effort:\s*(\S+)"), ("session", r"^session id:\s*(\S+)")):
+            m = re.match(pat, line.strip())
+            if m and key not in out:
+                out[key] = m.group(1)
+    return out
+
+
+def setting_mismatch(asked, hdr):
+    if not hdr.get("model"):
+        return ""
+    got = (hdr["model"], hdr.get("effort") or asked[1])
+    return "" if got == tuple(asked) else f"asked {asked[0]}/{asked[1]}, CLI used {got[0]}/{got[1]}"
+
+
+def rollout_usage(home, session):
+    """Tokens and allowance points of one run, from its Codex rollout file (<home>/sessions/**/*<session>.jsonl). {} if not found.
+    Points are what the shared allowance showed between the run's first and last reading, so an operator app session that ran at the
+    same time is included; tokens_total counts cached input too (the CLI's own 'tokens used' line leaves it out)."""
+    if not session:
+        return {}
+    hits = glob.glob(os.path.join(str(home), "sessions", "**", f"*{session}.jsonl"), recursive=True) + \
+        glob.glob(os.path.join(str(home), "archived_sessions", f"*{session}.jsonl"))
+    if not hits:
+        return {}
+    total, first, last = None, None, None
+    for line in Path(hits[0]).read_text(encoding="utf-8", errors="replace").splitlines():
+        try:
+            o = json.loads(line)
+        except ValueError:
+            continue
+        pl = o.get("payload") or {}
+        if o.get("type") != "event_msg" or pl.get("type") != "token_count":
+            continue
+        t = (pl.get("info") or {}).get("total_token_usage")
+        if t:
+            total = t
+        rl = pl.get("rate_limits")
+        if isinstance(rl, dict) and isinstance(rl.get("primary"), dict):
+            first = first or rl
+            last = rl
+    if not total:
+        return {}
+    out = {"tokens_total": total.get("total_tokens"), "tokens_cached": total.get("cached_input_tokens"),
+           "tokens_uncached": (total.get("input_tokens") or 0) - (total.get("cached_input_tokens") or 0), "tokens_out": total.get("output_tokens")}
+    if first and last:
+        for key, name in (("primary", "window"), ("secondary", "week")):
+            a, b = first.get(key) or {}, last.get(key) or {}
+            before, after = a.get("used_percent"), b.get("used_percent")
+            if before is None or after is None:
+                continue
+            same = a.get("resets_at") == b.get("resets_at")
+            out[f"{name}_before"], out[f"{name}_after"] = before, after
+            out[f"{name}_pts"] = round(max(0.0, after - before), 1) if same else after
+    return out
+
+
+def usage_doc(rows, rl, now, host):
+    """The compact view the Control Room embeds (relay_board.board -> gpt_usage): allowance, the lab's spend and caps, latest runs."""
+    used_w, w_start, w_end, used_k, k_start, k_end = windows(rl, now)
+    sw, sk = lab_spend(rows, w_start), lab_spend(rows, k_start)
+    keep = ("at", "card", "kind", "outcome", "seconds", "tokens_total", "tokens_uncached", "tokens_out", "window_pts", "week_pts")
+    runs = []
+    for r in [x for x in rows if not x.get("dry")][-USAGE_RUNS:][::-1]:
+        m, e = setting_of(r)
+        d = {k: r.get(k) for k in keep}
+        d.update(model=m, effort=e, note=str(r.get("note") or "")[:160])
+        if (r.get("model"), r.get("effort")) != (m, e):
+            d["asked"] = f"{r.get('model')}/{r.get('effort')}"
+        runs.append(d)
+    return {"at": datetime.fromtimestamp(now, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "host": host,
+            "allowance": {"plan": (rl or {}).get("plan_type"), "window_used": used_w, "window_resets": int(w_end), "week_used": used_k, "week_resets": int(k_end)},
+            "lab": {"window_pts": round(sw["window_pts"], 1), "window_runs": sw["runs"], "astra_runs": sw["astra_runs"], "week_pts": round(sk["week_pts"], 1)},
+            "caps": {"window_pts": LAB_WINDOW_PTS, "week_pts": LAB_WEEK_PTS, "runs_per_window": LAB_RUNS_PER_WINDOW, "astra_runs_per_window": ASTRA_RUNS_PER_WINDOW,
+                     "min_gap_min": MIN_GAP_S // 60, "window_reserve": WINDOW_RESERVE},
+            "runs": runs}
+
+
+def write_usage(wt, rows, rl, now):
+    p = Path(wt) / USAGE
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(usage_doc(rows, rl, now, socket.gethostname()), indent=1, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+
+
 def salvage(wt, home, cid, when, files=None):
     """Move unfinished files out of the lab work tree into <home>/lab_runs/salvage/<stamp>_<card>/ so the next tick is not blocked.
     Moves, never deletes. Returns (destination, count)."""
@@ -211,14 +428,47 @@ def command(exe, card, wt, sandbox):
     return [exe, "exec", "-m", model, "-c", f'model_reasoning_effort="{effort}"', "-s", sandbox, "-C", str(wt), "-"]   # prompt on stdin
 
 
-def acquire(lock, now=None, stale=LOCK_STALE_S):
+def pid_alive(pid):
+    """Is a process with this id running here? Unknown answers count as alive (fail closed: the lock stays)."""
+    try:
+        pid = int(pid)
+        if os.name == "nt":   # os.kill(pid, 0) would TERMINATE the process on Windows
+            out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True, timeout=20).stdout
+            return str(pid) in out.split()
+        os.kill(pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except Exception:   # noqa: BLE001
+        return True
+
+
+def acquire(lock, now=None, stale=LOCK_STALE_S, alive=pid_alive):
+    """Take the lab lock. Creation is exclusive (O_EXCL), so two starters cannot both win. A lock is taken over when it is older than
+    `stale`, or when it names a process of this host that no longer runs."""
     now = now or time.time()
     lock = Path(lock)
-    if lock.is_file() and now - lock.stat().st_mtime < stale:
-        return False
     lock.parent.mkdir(parents=True, exist_ok=True)
-    lock.write_text(json.dumps({"pid": os.getpid(), "host": socket.gethostname(), "epoch": int(now)}), encoding="utf-8", newline="\n")
-    return True
+    for _ in range(2):
+        try:
+            fd = os.open(str(lock), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            try:
+                age = now - lock.stat().st_mtime
+                info = json.loads(lock.read_text(encoding="utf-8"))
+            except FileNotFoundError:
+                continue
+            except ValueError:
+                info = {}   # being written right now, or damaged: only age can free it
+            dead = info.get("host") == socket.gethostname() and info.get("pid") and not alive(info["pid"])
+            if age < stale and not dead:
+                return False
+            lock.unlink(missing_ok=True)
+            continue
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as f:
+            f.write(json.dumps({"pid": os.getpid(), "host": socket.gethostname(), "epoch": int(now)}))
+        return True
+    return False
 
 
 def git(wt, *args, check=True):
@@ -322,6 +572,19 @@ def run_card(card, dry=False, env=os.environ, probing=False):
             if n:
                 note += f" | {n} partial file(s) salvaged to {dest}"
             files = []
+        hdr = log_header(logtext)
+        use = rollout_usage(home, hdr.get("session"))
+        bad = setting_mismatch((model, effort), hdr)
+        if bad:
+            note = (note + " | " if note else "") + bad
+        m = re.search(r"tokens used\s*\n\s*([\d,]+)", logtext)
+
+        def make_row():
+            return {"at": when.strftime("%Y-%m-%dT%H:%M:%SZ"), "card": cid, "kind": card["kind"], "model": model, "effort": effort,
+                    "model_used": hdr.get("model"), "effort_used": hdr.get("effort"), "session": hdr.get("session"),
+                    "exit": code, "seconds": secs, "tokens": int(m.group(1).replace(",", "")) if m else None, **use, "outcome": outcome,
+                    "report": reports[-1] if reports else "", "note": note, "log": str(log)}
+        write_usage(wt, run_rows(home) + [make_row()], budget(home), time.time())
         lane = lane_health.record_run({**lane_health.load(wt), "last_probe": lane_health.iso(when)} if probing else lane_health.load(wt), outcome, err, when,
                                       lane_health.error_line(logtext) if err else "")
         lane_health.save(wt, lane)   # DONE/BLOCKED: rides in the commit below; otherwise shipped on its own
@@ -335,22 +598,20 @@ def run_card(card, dry=False, env=os.environ, probing=False):
                 outcome, note = "SHIP_FAILED", (s.stdout + s.stderr).strip()[-300:]
                 Path(str(log) + ".ship.txt").write_text(s.stdout + s.stderr, encoding="utf-8", newline="\n")   # which gate step failed
         elif not files:
-            lane_health.commit_ship(wt, [lane_health.STATE], f"lane health: GPT {lane['status']}" + (f" ({lane['reason']})" if lane["reason"] else "") +
+            lane_health.commit_ship(wt, [lane_health.STATE, USAGE], f"lane health: GPT {lane['status']}" + (f" ({lane['reason']})" if lane["reason"] else "") +
                                     f"\n\nResult: {lane_health.why_down(lane) if lane['status'] == 'down' else 'GPT lane up'}\n")
         else:
             note = f"{len(files)} uncommitted file(s) left in {wt}: " + ", ".join((out_of_scope(card['kind'], files) or files)[:5])
         r = sh(wt, "scripts/dev/sync.py", "release", sync.slugify(cid))
         if r.returncode:
             note += " | release failed: " + (r.stdout + r.stderr).strip()[-200:]
-        m = re.search(r"tokens used\s*\n\s*([\d,]+)", log.read_text(encoding="utf-8", errors="replace"))
-        row = {"at": when.strftime("%Y-%m-%dT%H:%M:%SZ"), "card": cid, "kind": card["kind"], "model": model, "effort": effort,
-               "exit": code, "seconds": secs, "tokens": int(m.group(1).replace(",", "")) if m else None, "outcome": outcome,
-               "report": reports[-1] if reports else "", "note": note, "log": str(log)}
+        row = make_row()
         with open(runs / "runs.jsonl", "a", encoding="utf-8", newline="\n") as f:
             f.write(json.dumps(row) + "\n")
     finally:
         (runs / "lab.lock").unlink(missing_ok=True)
-    print(f"RAN {cid} {outcome} model={model} effort={effort} {secs}s report={row['report'] or '-'}" + (f" note={note}" if note else ""))
+    print(f"RAN {cid} {outcome} model={row['model_used'] or model} effort={row['effort_used'] or effort} {secs}s tokens={row.get('tokens_total') or '?'} "
+          f"window+{row.get('window_pts', '?')} week+{row.get('week_pts', '?')} report={row['report'] or '-'}" + (f" note={note}" if note else ""))
     return 0 if outcome == "DONE" else 1
 
 
@@ -367,12 +628,13 @@ def cmd_next(a):
     if not gate:
         print(f"IDLE {lane_health.why_down(lane)}; ready CODEX cards are moved to DSA/Claude or paused (lane_health.py status)")
         return 0
-    card = pick(cards, claimed, attempts(home), gate == "probe")
+    tried = attempts(home)
+    card = pick(cards, claimed, tried, gate == "probe")
     if not card:
         print(f"IDLE no CODEX card to run ({len(cards)} ready; claimed or out of tries are skipped)")
         return 0
     skip = a.dry or lane_health.override_active(lane, utc())   # operator override (lane_health.py up): the stored reading may be stale
-    rl = None if skip else budget(home)
+    rl = None if a.dry else budget(home)
     why = "" if skip else hold(rl, time.time())
     if why:
         end = hold_until(rl, time.time())
@@ -380,6 +642,16 @@ def cmd_next(a):
             mark_window_down(why, end, utc())
         print(f"IDLE {why}; lane marked down until the reset, cards move to DSA/Claude at the next sweep ({card['id']})")
         return 0
+    if not a.dry:   # the spend guard also applies under the operator override: it looks at the cost of this card, not at the stale reading
+        rows, now = run_rows(home), time.time()
+        gap = gap_hold(rows, now)
+        if gap:
+            print(f"IDLE {gap}; one card per tick")
+            return 0
+        card, held = choose(cards, claimed, tried, rows, rl, now, gate == "probe")
+        if not card:
+            print(f"IDLE lab budget: {held}; the lab waits for the window (no card is rerouted)")
+            return 0
     return run_card(card, a.dry, probing=gate == "probe")
 
 
@@ -388,6 +660,10 @@ def cmd_run(a):
     miss = tasks.problems(card, tasks.load_all(REPO), tasks.registry(REPO))
     if card.get("lane") != "CODEX" or card["state"] != "ready" or miss:
         raise SystemExit(f"codex_run: {a.card} must be a ready CODEX card: " + ("; ".join(miss) or f"lane {card.get('lane')}, state {card['state']}"))
+    if not (a.dry or a.force):
+        why, _ = budget_hold(*tasks.codex_setting(card), budget(codex_home()), run_rows(codex_home()), time.time())
+        if why:
+            raise SystemExit(f"codex_run: lab budget: {why}. Wait for the window, or pass --force (operator decision).")
     return run_card(card, a.dry)
 
 
@@ -474,8 +750,11 @@ def run_rows(home):
 
 
 def run_line(r):
-    tok = f"{r['tokens'] // 1000}k tokens" if r.get("tokens") else "tokens ?"
-    return f"{str(r.get('at', ''))[:16].replace('T', ' ')}Z {r.get('card')} {r.get('outcome')} ({r.get('model')} / {r.get('effort')}, {tok}, {r.get('seconds', '?')}s)"
+    n = r.get("tokens_total") or r.get("tokens")
+    tok = (f"{n / 1e6:.1f}M tokens" if n and n >= 1e6 else f"{n // 1000}k tokens") if n else "tokens ?"
+    pts = f", window +{r['window_pts']:.0f} pts" if r.get("window_pts") is not None else ""
+    m, e = setting_of(r)
+    return f"{str(r.get('at', ''))[:16].replace('T', ' ')}Z {r.get('card')} {r.get('outcome')} ({m} / {e}, {tok}{pts}, {r.get('seconds', '?')}s)"
 
 
 def needs_look(ready, tried, rows, unshipped=0, stopped="", held="", closed=()):
@@ -497,12 +776,20 @@ def needs_look(ready, tried, rows, unshipped=0, stopped="", held="", closed=()):
     return L
 
 
+def guard_line(rows, rl, now):
+    _, w_start, w_end, _, k_start, _ = windows(rl, now)
+    sw, sk = lab_spend(rows, w_start), lab_spend(rows, k_start)
+    return (f"Lab spend guard: window {sw['window_pts']:.0f}/{LAB_WINDOW_PTS} pts, {sw['runs']}/{LAB_RUNS_PER_WINDOW} runs "
+            f"(astra {sw['astra_runs']}/{ASTRA_RUNS_PER_WINDOW}); week {sk['week_pts']:.0f}/{LAB_WEEK_PTS} pts; "
+            f"resets {datetime.fromtimestamp(w_end, timezone.utc).strftime('%H:%MZ')}")
+
+
 def status_text(ready, done, tried, rows, rl, now, last_tick="", unshipped=0, stopped="", host_has_lab=True):
     L = [f"Layer lab (Codex) at {datetime.fromtimestamp(now, timezone.utc).strftime('%Y-%m-%d %H:%MZ')}: {'OFF' if stopped else 'on'}"]
     if not host_has_lab:
         L.append("  This machine does not run the lab (it runs on JIS-NUC): queue and deliveries below are from the repo; allowance, runs and what needs a look are only known there.")
     else:
-        L += ["  " + budget_line(rl, now), "  Last check by the scheduler: " + (last_tick or "none yet")]
+        L += ["  " + budget_line(rl, now), "  " + guard_line(rows, rl, now), "  Last check by the scheduler: " + (last_tick or "none yet")]
     L.append(f"  Queue: {len(ready)} ready")
     L += [f"    {c['id']} [{c['kind']}, {' / '.join(tasks.codex_setting(c))}]" + (" SKIPPED after failed tries" if tried.get(c["id"], 0) >= MAX_ATTEMPTS else "") for c in ready]
     L.append("  Delivered (latest 5; all in MyTradingSys/research/layer_lab/INDEX.md):")
@@ -556,6 +843,7 @@ def main(argv=None):
     r = sp.add_parser("run")
     r.add_argument("card")
     r.add_argument("--dry", action="store_true")
+    r.add_argument("--force", action="store_true", help="run although the lab spend guard says the budget is spent")
     r.set_defaults(f=cmd_run)
     k = sp.add_parser("ask")
     k.add_argument("title")
