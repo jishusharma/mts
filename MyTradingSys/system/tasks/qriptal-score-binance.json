@@ -14,7 +14,7 @@
     "callers"
   ],
   "live_path": false,
-  "note": "",
+  "note": " 2026-10-14 scope fixed: transcripts are at repo-root extracts/_staged_2026-09-27; first run BLOCKED on the wrong MyTradingSys/ prefix.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
@@ -22,7 +22,8 @@
   "result": "",
   "scope_in": [
     "MyTradingSys/research/qriptal_2026-10-10",
-    "MyTradingSys/extracts/_staged_2026-09-27"
+    "extracts/_staged_2026-09-27 (read only; repo root, NOT under MyTradingSys)",
+    "F:\\MTS\\data\tom_raw\\klines (BTCUSDT 1m, JIS-NUC, read only)"
   ],
   "scope_out": [
     "the live path",
