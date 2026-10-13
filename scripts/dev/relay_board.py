@@ -124,6 +124,16 @@ def gpt_lane(repo, now):
         return {"status": "unknown", "reason": f"lane health unreadable: {e}", "rerouted": [], "paused": []}
 
 
+def gpt_usage(repo):
+    """What the Codex lab's runs really cost (codex_run.py writes MyTradingSys/system/codex_usage.json with each run): effective model and
+    effort, tokens, allowance points, and the lab's spend against its caps. {} when absent or unreadable."""
+    try:
+        d = json.loads((Path(repo) / "MyTradingSys/system/codex_usage.json").read_text(encoding="utf-8"))
+        return d if isinstance(d, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
 def board(repo=REPO, cards=None, now=None):
     """What is flowing between Claude and GPT right now. `cards` = tasks.summary(repo)["rows"] (passed in to avoid a second load)."""
     repo, now = Path(repo), now or datetime.now(timezone.utc)
@@ -149,7 +159,8 @@ def board(repo=REPO, cards=None, now=None):
             "runs": [{"utc": r.get("utc"), "host": r.get("host"), "account": r.get("account"), "session": r.get("session"),
                       "state": r.get("state")} for r in runs],
             "gpt_reports": [f.name for f in reports],
-            "gpt_lane": gpt_lane(repo, now)}
+            "gpt_lane": gpt_lane(repo, now),
+            "gpt_usage": gpt_usage(repo)}
 
 
 def main(argv=None):

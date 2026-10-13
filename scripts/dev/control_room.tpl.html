@@ -340,7 +340,12 @@ drawBacklog();
   const flow = (R.claims||[]).map(c => `<div class="it" style="grid-template-columns:1fr"><div class="t">Claimed: ${esc(c.task)}<div class="src">${esc(c.host)} · ${esc(c.account)}${c.age_h!=null?" · "+c.age_h+" h ago":""}${c.age_h>24?" · stale, ask then release":""}</div></div></div>`)
     .concat((R.runs||[]).map(r => `<div class="it" style="grid-template-columns:1fr"><div class="t">Relay ${esc(r.state)}: ${esc(r.session)}<div class="src">${esc(r.host)} · ${esc(r.account)} · ${esc((r.utc||"").slice(0,16).replace("T"," "))}</div></div></div>`))
     .concat((R.gpt_reports||[]).map(f => `<div class="it" style="grid-template-columns:1fr"><div class="t">Codex lab report: ${esc(f)}</div></div>`));
-  $("#relayflow").innerHTML = flow.join("") || `<div class="empty">Nothing running.</div>`;
+  const U = R.gpt_usage || {}, A = U.allowance || {}, B = U.lab || {}, C = U.caps || {};
+  const fmtT = n => n == null ? "?" : n >= 1e6 ? (n/1e6).toFixed(1) + "M" : Math.round(n/1e3) + "k";
+  const usage = U.runs ? [`<div class="dc" style="margin-bottom:10px"><div class="t"><strong>Codex allowance</strong> · 5-hour window ${esc(A.window_used)}% used, week ${esc(A.week_used)}% used${A.plan?` (${esc(A.plan)})`:""}</div>`
+    + `<div class="src">Lab spend guard: ${esc(B.window_pts)}/${esc(C.window_pts)} pts and ${esc(B.window_runs)}/${esc(C.runs_per_window)} runs this window · astra ${esc(B.astra_runs)}/${esc(C.astra_runs_per_window)} · week ${esc(B.week_pts)}/${esc(C.week_pts)} pts · updated ${esc((U.at||"").slice(0,16).replace("T"," "))}Z on ${esc(U.host||"?")}</div></div>`]
+    .concat(U.runs.map(r => `<div class="it" style="grid-template-columns:1fr"><div class="t">${esc(r.card)} · ${esc(r.outcome)}<div class="src">${esc(r.model)} / ${esc(r.effort)}${r.asked?` (card asked ${esc(r.asked)})`:""} · ${fmtT(r.tokens_total)} tokens · window ${r.window_pts==null?"?":"+"+esc(r.window_pts)} pts · week ${r.week_pts==null?"?":"+"+esc(r.week_pts)} pts · ${esc(r.seconds)} s · ${esc((r.at||"").slice(0,16).replace("T"," "))}Z</div></div></div>`)) : [];
+  $("#relayflow").innerHTML = usage.concat(flow).join("") || `<div class="empty">Nothing running.</div>`;
 })();
 
 /* ---------- Sessions: trunk history grouped by claim..release (scripts/dev/session_log.py); no transcript is read */

@@ -4,6 +4,7 @@
   "closed": "2026-10-13T05:10:15Z",
   "commands": [],
   "created": "2026-10-12T05:43:40Z",
+  "crucial": true,
   "depends_on": [],
   "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
   "effort": "medium",
