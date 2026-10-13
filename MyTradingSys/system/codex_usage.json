@@ -6,7 +6,7 @@
   "window_resets": 1791941636,
   "window_used": 0
  },
- "at": "2026-10-13T20:34:39Z",
+ "at": "2026-10-13T21:01:10Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 4.0,
   "window_pts": 0.0,
-  "window_runs": 0
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-13T21:00:02Z",
+   "card": "qriptal-score-binance",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 61,
+   "tokens_out": 3744,
+   "tokens_total": 473749,
+   "tokens_uncached": 48885,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-13T20:33:43Z",
    "card": "qriptal-score-binance",
@@ -152,21 +167,6 @@
    "note": "",
    "outcome": "DONE",
    "seconds": 815,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
-  },
-  {
-   "at": "2026-10-12T17:00:01Z",
-   "card": "lab-audit-fabio-ledger-frames",
-   "effort": "high",
-   "kind": "audit",
-   "model": "gpt-6-astra",
-   "note": "8 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/research/layer_lab/reports/2026-10-12_fabio_evidence/f10_1575.png, MyTradingSys/research/layer_",
-   "outcome": "INCOMPLETE",
-   "seconds": 777,
    "tokens_out": null,
    "tokens_total": null,
    "tokens_uncached": null,
