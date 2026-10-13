@@ -2,7 +2,7 @@
 import sys
 sys.dont_write_bytecode = True
 import os
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "scripts", "dev"))
 import tom_noise_units as t
 
 
