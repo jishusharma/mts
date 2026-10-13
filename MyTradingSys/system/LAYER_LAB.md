@@ -18,8 +18,8 @@ anything in ROADMAP.md section 2 (STOP now). Video frames are in scope since 202
 | `run` | run given backtest or recall commands on development data, report the numbers | gpt-6-luna / low | commands |
 | `build` | code from a card, test red first, behind a flag that is off | gpt-6-luna / medium | tests |
 Operator 2026-10-13: bulk, revalidation (rv01...) and build work runs on luna at low or medium. Astra only for a card flagged
-`crucial: true`, at medium, and at high only when that card names `effort: high` itself; a card that names astra without the flag
-runs on luna (tasks.codex_setting). A card may name its own `effort` (low, medium, high, xhigh, max) or another `model`.
+`crucial: true`, and then at low effort only (operator 2026-10-13: never medium or high; a card's own `effort` is ignored for
+astra); a card that names astra without the flag runs on luna (tasks.codex_setting). A card may name its own `effort` (low, medium, high, xhigh, max) or another `model`.
 
 ## How work gets in and out
 - Ask: `python scripts/dev/codex_run.py ask "<what you want checked or run>" --kind audit --scope <repo path>` writes a ready card
