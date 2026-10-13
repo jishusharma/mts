@@ -9,9 +9,9 @@ word for word (CONTROL_ROOM.md step 4). Seed a wiped or second db from the JSON 
 Which Control Room page holds your questions and Inbox?
 
 Recommended: This page is the one place
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: This page is the one place
+Operator note (verbatim): (none)
+Applied: 2026-10-13: this page (NUC account) is the one place; already treated so since the answer.
 
 ```json
 {
@@ -34,9 +34,46 @@ Applied: (not yet)
 JIS-NB looks dark: trading halted, live view 23 hours old. Can you open Claude there?
 
 Recommended: I will open Claude on JIS-NB; find the cause, then clear the halt
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: I will open Claude on JIS-NB; find the cause, then clear the halt
+Operator note (verbatim): 
+> Loot at this - 
+> 
+> Sync to the latest. And uh, see why the loop is down. Make everything tick. The work is mostly going on on Nuke. Check what you have to do on your sides. That is it. Do everything end to end.
+> 
+> Ran 2 commands
+> Many worktrees. Use mts-push (reuse) for work; first update it and run sync start there.
+> 
+> Ran 7 commands
+> Status: the machine rebooted at 10:09 today, so the stack was down overnight and is now back. I’m checking the Java feed and why CI hasn’t run since last night.
+> 
+> Ran 6 commands
+> Cause found: docs-only commits don’t trigger CI (path filter), so the “green” marker never advances and STATUS falsely says RED. I’m fixing that line to ignore commits that touch no gated paths.
+> 
+> Ran 6 commands
+> Q31 is already done (applied 10-12), so I’m moving to Q43, the worktree tidy. It also helps with the C: space complaint.
+> 
+> Ran 6 commands (1 blocked)
+> I’m still on the tidy fix. That command was blocked, so I’ll make the test edit with the Edit tool instead.
+> 
+> Edited test_sync.py, ran 4 commands (1 blocked)
+> Shipped. Next I’ll run a dry run of the tidy to see exactly what it would delete.
+> 
+> Ran 3 commands
+> The loop isn’t down now. It was down overnight because the PC was off, and everything restarted by itself at logon.
+> 
+> Why it was down
+> 
+> The PC was off from about 01:53 to 10:26 IST, and the last reboot was 10:09. Per the project’s own rule, the stack stays down while the machine is off and isn’t caught up afterwards.
+> The supervisor restarted everything at 10:29. The wrapper, Java feed, auto_trader, live_runner_cli, orderflow_live and daily_loss_monitor are all running.
+> Snapshot age is about 30 s and the supervisor log reads “ok”.
+> Fixed and shipped
+> 
+> False “CI RED”:
+> STATUS.md was saying CI was red and auto-deploy idle. Nothing had actually failed.
+> CI only runs on pushes that touch code paths, so docs-only commits never move the green marker.
+> get_ci_line in scripts/dev/make_status.py now ignores docs-only commits, with a new test.
+> sync.py tidy: it was keeping about 60 id
+Applied: 2026-10-13: queued as card exec-halt-entry-10031 (host=JIS-NB, p1): operator opens Claude on JIS-NB, finds the cause of the 10031 reject, then clears the halt. Not touched from the NUC.
 
 ```json
 {
@@ -84,9 +121,9 @@ Applied: (not yet)
 Write the Fabio v2 spec now, or after his trade ledger is fixed?
 
 Recommended: After the ledger fixes
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: After the ledger fixes
+Operator note (verbatim): (none)
+Applied: 2026-10-13: Fabio spec stays on hold (fabio-layer-v2-spec blocked) until the fabio-ledger-* fixes land.
 
 ```json
 {
@@ -109,9 +146,46 @@ Applied: (not yet)
 Four run-and-report rows wait for a DSA chat. Will you open one on the NUC?
 
 Recommended: I will open a DSA chat on the NUC
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: I will open a DSA chat on the NUC
+Operator note (verbatim): 
+> Today this was done -
+> 
+> Sync to the latest. And uh, see why the loop is down. Make everything tick. The work is mostly going on on Nuke. Check what you have to do on your sides. That is it. Do everything end to end.
+> 
+> Ran 2 commands
+> Many worktrees. Use mts-push (reuse) for work; first update it and run sync start there.
+> 
+> Ran 7 commands
+> Status: the machine rebooted at 10:09 today, so the stack was down overnight and is now back. I’m checking the Java feed and why CI hasn’t run since last night.
+> 
+> Ran 6 commands
+> Cause found: docs-only commits don’t trigger CI (path filter), so the “green” marker never advances and STATUS falsely says RED. I’m fixing that line to ignore commits that touch no gated paths.
+> 
+> Ran 6 commands
+> Q31 is already done (applied 10-12), so I’m moving to Q43, the worktree tidy. It also helps with the C: space complaint.
+> 
+> Ran 6 commands (1 blocked)
+> I’m still on the tidy fix. That command was blocked, so I’ll make the test edit with the Edit tool instead.
+> 
+> Edited test_sync.py, ran 4 commands (1 blocked)
+> Shipped. Next I’ll run a dry run of the tidy to see exactly what it would delete.
+> 
+> Ran 3 commands
+> The loop isn’t down now. It was down overnight because the PC was off, and everything restarted by itself at logon.
+> 
+> Why it was down
+> 
+> The PC was off from about 01:53 to 10:26 IST, and the last reboot was 10:09. Per the project’s own rule, the stack stays down while the machine is off and isn’t caught up afterwards.
+> The supervisor restarted everything at 10:29. The wrapper, Java feed, auto_trader, live_runner_cli, orderflow_live and daily_loss_monitor are all running.
+> Snapshot age is about 30 s and the supervisor log reads “ok”.
+> Fixed and shipped
+> 
+> False “CI RED”:
+> STATUS.md was saying CI was red and auto-deploy idle. Nothing had actually failed.
+> CI only runs on pushes that touch code paths, so docs-only commits never move the green marker.
+> get_ci_line in scripts/dev/make_status.py now ignores docs-only commits, with a new test.
+> sync.py tidy: it was keeping about
+Applied: 2026-10-13: operator will open a DSA chat on the NUC; nothing to do from a builder session. Rows stay posted for DSA.
 
 ```json
 {
@@ -134,9 +208,9 @@ Applied: (not yet)
 Install the image libraries on JIS-NUC so frame work can run here?
 
 Recommended: Yes, install Pillow and opencv-python on JIS-NUC
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Yes, install Pillow and opencv-python on JIS-NUC
+Operator note (verbatim): In future do not ask such question s- just download
+Applied: 2026-10-13: Pillow 12.3.0 and opencv-python 5.0.0 installed on JIS-NUC. Standing rule from the note: package installs for operator-approved work are done, not asked.
 
 ```json
 {
@@ -158,9 +232,9 @@ Applied: (not yet)
 Delete the stale pages so each app shows one clean list?
 
 Recommended: Delete all six pages and the leftover branch
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Delete all six pages and the leftover branch
+Operator note (verbatim): Deleted all sx
+Applied: 2026-10-13: the six pages are already gone from the account list (operator deleted them). Branch shots-inbox/2026-10-12-1532 NOT deleted: its two CoinGlass PNGs are not in the repo or the screenshot store (shot.py ingest failed: store path resolves wrong on this git). Kept until they are landed.
 
 ```json
 {
@@ -183,9 +257,9 @@ Applied: (not yet)
 Tom/Fabio cross-guidance: run a second matrix with trader-style exits?
 
 Recommended: No second matrix; revisit after the v2 specs
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: No second matrix; revisit after the v2 specs
+Operator note (verbatim): (none)
+Applied: 2026-10-13: closed; no second matrix. Revisit after the v2 specs.
 
 ```json
 {
@@ -207,9 +281,9 @@ Applied: (not yet)
 Pages are republished at the end of every session that shipped something. OK?
 
 Recommended: Yes, every session that shipped
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Yes, every session that shipped
+Operator note (verbatim): (none)
+Applied: 2026-10-13: rule stands; this session republishes the Control Room at hand-over.
 
 ```json
 {

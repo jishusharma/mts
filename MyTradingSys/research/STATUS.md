@@ -1,25 +1,25 @@
 # Development Status
 
-Generated: 2026-10-12 11:51:30
+Generated: 2026-10-13 11:25:42
 
 ## Git Status
-**Branch:** jis-nuc/codex-layer-lab (the host that generated this file; yours may differ)
+**Branch:** jis-nuc/s1013-ops (the host that generated this file; yours may differ)
 
-CI green: 8d76d93 (2026-10-12 11:44:47 +0530), 1 commit(s) behind origin/fast-track: CI running
+CI green: a3626dc (2026-10-13 01:46:42 +0530), 12 commit(s) behind origin/fast-track: RED: oldest ungreen commit is 9.6 h old - CI is failing, auto-deploy is idle; fix CI first
 LESSONS: digest STALE (synced de2de3a7, now ad79e76d): read the new LESSONS_LEARNED.md entries (git diff), add their rule lines to LESSONS_DIGEST.md, update the blob
 
 **Last 10 commits:**
 ```
-1fa1f0e claim codex-lab-status-for-operator-and-status
-8d76d93 Merge remote-tracking branch 'origin/fast-track' into jis-nuc/codex-layer-lab
-5f522b2 Merge remote-tracking branch 'origin/fast-track' into jisnb/nb-idle
-493a110 lab: build cards run their own tests, the runner's ship is the gate
-51adb23 declutter: archive superseded proof_direction_cases.py.new
-d315317 lab lab-dax-proof-parity: DONE after session check (build)
-b75bf76 release lab-dax-proof-parity
-5069e7c Merge remote-tracking branch 'origin/fast-track' into jis-nuc/codex-lab
-938205d Merge remote-tracking branch 'origin/fast-track' into jisnb/dsa
-2efe15c TWO_HOST: record JIS-NB idle-tick short-circuit and verified crons
+9b1b716 claim rv06-live-read-claims
+5331077 lab: rv05 fabio ledger frame pass report + 3 evidence cards
+372788c release rv05-fabio-ledger-frame-pass
+701dcb0 Merge remote-tracking branch 'origin/fast-track' into jis-nuc/krown-ta101
+4ba4e73 claim rv05-fabio-ledger-frame-pass
+7f968e5 handoff: NUC recovery state, Krown card note (429, run from JIS-NB)
+df9eb78 lane health: GPT up
+69ff649 card: krown-ta101-extract-remaining-10
+7cb7acb release krown-ta101-extraction-host-jis-nuc
+ba09f64 Merge remote-tracking branch 'origin/fast-track' into jis-nuc/krown-ta101
 ```
 
 ## Queue Status
@@ -30,10 +30,14 @@ DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
 ```
 
 ## In-Flight .new Files
-- MyTradingSys\backtest\layers\fabio\htf_context_live.py.new (10.5h)
-- MyTradingSys\backtest\layers\fabio\test_htf_context_live.py.new (10.5h)
+- MyTradingSys\backtest\layers\fabio\htf_context_live.py.new (0.1h)
+- MyTradingSys\backtest\layers\fabio\test_htf_context_live.py.new (0.1h)
 
 ## Recent Reports (last 7 days)
+- MyTradingSys/research/mfe_exit_2026-10-13/REPORT.md (2026-10-13 01:20) # MFE exit study: can exits be reverse-engineered from the peak-profit bar? (2026-10-13, JIS-NUC)
+- MyTradingSys/research/non_core_layer_audit_2026-10-12/CLAUDE_HANDOFF.md (2026-10-12 22:40) # Claude handoff - non-core layer evidence audit
+- MyTradingSys/research/non_core_layer_audit_2026-10-12/REPORT.md (2026-10-12 22:40) # Independent layer audit: RSI, WaveTrend and the other non-core layers
+- MyTradingSys/research/tom_fabio_guidance_2026-10-12/MATRIX_REPORT.md (2026-10-12 17:46) # Q33 matrix report (2026-10-12, JIS-NUC): nothing survives
 - MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md (2026-10-11 21:39) # BIGMOVES REPORT (big-move ground truth, backtest A)
 - MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md (2026-10-11 21:39) # FIRES_B1_REPORT - fire history of the kline-only live layers (worker B1, 2026-10-09)
 - MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md (2026-10-11 02:13) # DAX_BT_REPORT: untuned Tom core on DAX vs matched-proof BTC (card tom-dax-backtest)
@@ -50,23 +54,26 @@ SHOTS landed 0: new 0, classified 0, read 0, done 0 | overdue(>24h) 0 | claims M
 
 ## Layer Lab (Codex)
 ```
-Layer lab (Codex) at 2026-10-12 06:21Z: on
-  Codex allowance (plus): 5-hour window 5% used (resets 10-12 10:47Z); week 12% used (resets 10-18 13:41Z)
-  Last check by the scheduler: 2026-10-12T06:02Z RAN lab-dax-proof-parity SHIP_FAILED model=gpt-6.1-sol effort=medium 452s report=MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-proof-parity.md note=sync: offline gate (--quick) failed; nothing pushed | release failed: sync: offline gate (--quick) failed; nothing pushed
-  Queue: 5 ready
-    lab-dax-closed-executions [build, gpt-6.1-sol / medium]
-    lab-dax-net-fee-verdict [build, gpt-6.1-sol / medium]
-    lab-dax-trial-identity [build, gpt-6.1-sol / medium]
-    lab-audit-fabio-ledger-frames [audit, gpt-6-astra / high]
-    lab-audit-tom-ledger-frames [audit, gpt-6-astra / high]
+Layer lab (Codex) at 2026-10-13 05:55Z: on
+  Codex allowance (plus): 5-hour window 37% used (resets 10-13 10:08Z); week 6% used (resets 10-20 05:08Z)
+  Lab spend guard: window 20/50 pts, 1/4 runs (astra 1/1); week 4/35 pts; resets 10:08Z
+  Last check by the scheduler: 2026-10-13T05:38Z RAN rv05-fabio-ledger-frame-pass OUT_OF_SCOPE model=gpt-6-astra effort=medium 299s tokens=811992 window+20.0 week+4.0 report=MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md note=6 uncommitted file(s) left in F:\MTS\mts-codex-lab: MyTradingSys/system/LAYERS.md
+  Queue: 1 ready
+    rv06-live-read-claims [audit, gpt-6-luna / medium]
   Delivered (latest 5; all in MyTradingSys/research/layer_lab/INDEX.md):
-    2026-10-12 lab-dax-proof-parity: H1 fixed: volume_spike no longer counted (Java B144), stale rows and snapshots refused, proof ceiling printed as 1; 33 harness tests pass, quick gate green outside the sandbox. reports/2026-10-12_lab-dax-proof-parity.md
-    2026-10-11 lab-audit-tom-dax-bt: FIX-FIRST: 8 HIGH + 6 MED in the DAX backtest harness (stale proof count, dev trades exiting on holdout bars, fills on closed-market bars, fee gate bypassed); 8 follow-up cards lab-dax-*; report layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md. Claude spot-check: H1 and H5 MATCH the code. Closed by Claude: Codex left it open only because video frames are not on the NUC.
+    2026-10-13 rv05-fabio-ledger-frame-pass: FIX-FIRST: 2 remaining rows checked, 3 HIGH carried forward and 2 MED; MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md
+    2026-10-12 rv02-dax-harness-fixes: FIX-FIRST; 4 HIGH, 7 MED, 1 LOW; 66 tests passed; MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md
+    2026-10-12 lab-dax-trial-identity: H8 fixed; 62 synthetic harness tests pass (red first): MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-trial-identity.md
+    2026-10-12 lab-dax-readiness-gate: H7 fixed; 3 readiness tests and 58 harness tests pass; MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-readiness-gate.md
+    2026-10-12 lab-audit-tom-ledger-frames: FIX-FIRST: 37 rows, 65 cited plus 7 supplemental images; 4 HIGH and 4 MED; exact missing evidence per row; 4 repair cards. Report: MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md
   Last runs:
-    2026-10-11 20:06Z lab-audit-tom-dax-bt INCOMPLETE (gpt-6-astra / high, 23k tokens, 38s)
-    2026-10-11 20:12Z lab-audit-tom-dax-bt BLOCKED (gpt-6-astra / high, 199k tokens, 512s)
-    2026-10-12 05:47Z lab-dax-proof-parity SHIP_FAILED (gpt-6.1-sol / medium, 94k tokens, 452s)
-  NEEDS A LOOK: nothing
+    2026-10-12 17:00Z lab-audit-fabio-ledger-frames INCOMPLETE (gpt-6-astra / high, 383k tokens, 777s)
+    2026-10-12 19:33Z rv02-dax-harness-fixes DONE (gpt-6-astra / high, 284k tokens, 815s)
+    2026-10-12 20:00Z lab-audit-fabio-ledger-frames LIMIT (gpt-6-astra / high, 63k tokens, 68s)
+    2026-10-13 05:01Z lab-audit-fabio-ledger-frames DONE (gpt-6-astra / medium, 307k tokens, 545s)
+    2026-10-13 05:33Z rv05-fabio-ledger-frame-pass OUT_OF_SCOPE (gpt-6-astra / medium, 811k tokens, window +20 pts, 299s)
+  NEEDS A LOOK: 
+    - only 1 card(s) left in the queue: add scoped cards (LAYER_LAB.md, Allowance)
 ```
 
 ## Daily Hygiene (scheduled)
@@ -76,7 +83,7 @@ Layer lab (Codex) at 2026-10-12 06:21Z: on
 
 ## Project Groups
 ```
-GROUPS DATA open 5 (HIGH 0) closed 29 | SRC open 4 (HIGH 0) closed 9 | CORE open 4 (HIGH 0) closed 30 | LAYR open 10 (HIGH 2) closed 5 | EVID open 13 (HIGH 2) closed 4 | EXEC open 7 (HIGH 3) closed 10 | VIS open 1 (HIGH 0) closed 1 | DESK open 2 (HIGH 1) closed 9 | OPS open 16 (HIGH 4) closed 24 | INFRA open 7 (HIGH 3) closed 12
+GROUPS DATA open 5 (HIGH 0) closed 29 | SRC open 4 (HIGH 0) closed 9 | CORE open 4 (HIGH 0) closed 30 | LAYR open 10 (HIGH 2) closed 5 | EVID open 13 (HIGH 2) closed 4 | EXEC open 7 (HIGH 3) closed 10 | VIS open 1 (HIGH 0) closed 1 | DESK open 2 (HIGH 1) closed 9 | OPS open 17 (HIGH 4) closed 24 | INFRA open 7 (HIGH 3) closed 12
 ```
 
 ## Open Findings
