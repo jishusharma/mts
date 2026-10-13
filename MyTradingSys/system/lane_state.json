@@ -1,14 +1,14 @@
 {
-  "detail": "no heartbeat from the lab host since 2026-10-13T16:00:01Z",
+  "detail": "heartbeat is back",
   "fails": 0,
-  "heartbeat": "2026-10-13T20:00:01Z",
+  "heartbeat": "2026-10-13T20:30:01Z",
   "last_error": "2026-10-13T20:00:01Z",
-  "last_ok": "2026-10-13T16:03:30Z",
+  "last_ok": "2026-10-13T20:30:01Z",
   "last_probe": "",
   "override": "",
-  "reason": "heartbeat",
-  "resumed": "2026-10-13T04:59:45Z",
-  "since": "2026-10-13T20:00:01Z",
-  "status": "down",
+  "reason": "",
+  "resumed": "2026-10-13T20:30:01Z",
+  "since": "",
+  "status": "up",
   "until": ""
 }

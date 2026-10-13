@@ -9,7 +9,7 @@
   "goal": "Build research/tom_btc_2026-10-13/chart_lab.py: find oversized legs from a session start (00:00 UTC, 07:00 UTC, US cash open DST-aware) into a high/low beyond the prior day's value area, in DEV 2024-12..2025-03, and draw each at its decision bar. Every number is OURS and printed on the chart.",
   "id": "tom-btc-chart-lab",
   "kind": "build",
-  "lane": "SONNET",
+  "lane": "CODEX",
   "layers": [
     "tom"
   ],
@@ -19,12 +19,6 @@
   "refine_tries": 0,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-13T20:00:01Z",
-    "from": "CODEX",
-    "to": "SONNET",
-    "why": "heartbeat"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py",

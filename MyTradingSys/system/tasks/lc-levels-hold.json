@@ -9,7 +9,7 @@
   "goal": "Build levels.py (causal level set known at 00:00 UTC) and levels_hold.py: for every first touch of every level family per day, did price move 1 x stop width away before breaking through by 1 x stop width? Compare each family with random price lines at matched distance.",
   "id": "lc-levels-hold",
   "kind": "build",
-  "lane": "SONNET",
+  "lane": "CODEX",
   "layers": [],
   "live_path": false,
   "note": "Operator idea 2026-10-14; own layer (research only until LC3 passes); numbers OURS, printed in each report.",
@@ -17,12 +17,6 @@
   "refine_tries": 0,
   "refined_by": "opus-2026-10-14 (LC PLAN.md, operator chat)",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-13T20:00:01Z",
-    "from": "CODEX",
-    "to": "SONNET",
-    "why": "heartbeat"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/levels_confluence_2026-10-14/levels.py",
