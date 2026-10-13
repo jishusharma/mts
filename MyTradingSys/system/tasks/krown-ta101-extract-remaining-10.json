@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T05:23:56Z",
+  "depends_on": [],
+  "done_when": "10 extracts pass verify_extract_quotes.py (0 problems) and STATE.md shows 18 of 18 reachable done",
+  "from_inbox": "",
+  "goal": "Finish the Krown TA 101 playlist extraction: fetch timed captions for the 10 reachable videos still missing, then extract each in the same format as the 8 done.",
+  "id": "krown-ta101-extract-remaining-10",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "YouTube 429 to JIS-NUC on 2026-10-13 (subtitle download). If the fetch still gets 429 here, run the fetch step from JIS-NB.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/STATE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/",
+    "raw_transcripts_canonical/"
+  ],
+  "scope_out": [
+    "engine and layer code",
+    "any backtest"
+  ],
+  "size": "M",
+  "sources": [
+    "PLPEz1q0esi3gEd4DMbaGwFf3uqwAY6vTU"
+  ],
+  "state": "ready",
+  "steps": [
+    "run fetch_captions_timed.py for the ids in STATE.md (YouTube 429 on 2026-10-13: retry later or from JIS-NB)",
+    "extract one video per pass in the format of extracts/extract_HhV4HI9p5Uw.md",
+    "verify_extract_quotes.py on each, update STATE.md"
+  ],
+  "tests": "docs lane, no code: verify_extract_quotes.py is the gate",
+  "title": "Krown TA 101: fetch captions and extract the remaining 10 videos (ids in STATE.md); DONE when: 10 extracts pass verify_extract_quotes and STATE.md shows 18 of 18 reachable"
+}

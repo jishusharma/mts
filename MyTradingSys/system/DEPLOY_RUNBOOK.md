@@ -48,3 +48,28 @@ RED before new work. Registered by the same `register_cicd_tasks.ps1` call as th
   `register_cicd_tasks.ps1` without `-SkipDeploy`; unregistered. On the NUC always pass `-SkipDeploy`.
 - The NUC needs `tzdata` (Python 3.14 has none; tom_dax_recall uses ZoneInfo Europe/Berlin). `cloud_setup.py` GATE_DEPS and ci.yml now both carry it.
 - `MTS-NUC-Worker` showed Disabled on the NUC: whether intended is open (desk task posted).
+
+## Quick-gate speed (B178, 2026-10-12, JIS-NUC)
+- `run_all_tests.py` prints `Elapsed:` per step. Step 5b (layer unittest modules) now runs in `MTS_GATE_JOBS` parallel processes
+  (default min(4, CPUs); `MTS_GATE_JOBS=1` = the old single call). Same module list: `split_modules` partitions
+  `find_layer_modules()` and `test_quick_gate_runs_every_layer_module` fails if one is dropped.
+- Same tree, `--quick`, JIS-NUC (12 CPUs, warm): total 172.6 s -> 169.4 s; step 5b (59 modules) 29.8 s -> 25.0 s (4 processes).
+  Largest steps there: step 4 pytest 51 s, 3xt 26 s, 3k 16 s, 3dk 10 s. The 15-min figure is a cold run on a slower host:
+  re-time there with `MTS_GATE_JOBS=1` vs default and add the row. Step 4 (pytest) is the next cut (xdist or per-path processes).
+- MTS-Backup moved to :07/:22/:37/:52 (`install_backup_task.ps1`, offset 7 min past midnight + 15 min repeat) so it no longer
+  starts in the same minute as MTS-AutoDeploy (:00/:15/:30/:45). Not re-registered by this session; on each host run
+  `powershell -File scripts\dev\install_backup_task.ps1` (needs the live tree's repo path: pass `-Repo <path>` as it is registered today).
+
+## Zero-cost idle ticks (Q41 design, 2026-10-12, JIS-NUC) - NOT BUILT, B164 untested
+- Measured: one idle `relay.py kick` (git ref origin/fast-track, no model) = 0.8 s wall, ~0 CPU, 0 tokens. An idle App
+  dispatcher tick is a full model session (~65k-token context per CLAUDE-relay measurement B172), so 48 ticks/day are 48 model starts.
+- Design: Windows Task Scheduler job `MTS-RelayKick` every 30 min runs `git fetch -q origin fast-track` + `relay.py kick`
+  (no model). IDLE: exit, log only. KICK: write `~/.claude/mts-relay-pending.json` and run the existing dispatcher prompt once
+  (the App task is the only thing that may run a session: B164, a session cannot launch another and an external process
+  cannot approve the App's click).
+- Open risk (B164): whether an external timer can start an App scheduled task unattended is NOT TESTED here. A test needs the
+  App open and a human in reach for the first launch; an unattended session cannot run it. Until it is tested, keep the App
+  cron dispatcher as is (it also covers the no-timer case) and do not remove it.
+- Cheap interim cut that needs no new mechanism: lengthen the App dispatcher cadence when STATUS shows an empty queue, and
+  let the dispatcher's step 1 stay one Bash call (already so).
+

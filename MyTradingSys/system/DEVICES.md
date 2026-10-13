@@ -34,7 +34,7 @@ both JIS-NB and JIS-NUC and they are different disks.
 | JIS-NUC (192.168.29.110) | Backtest and heavy-research worker (Qwen lane ended 2026-10-01); PROPOSED future home of the live loop (section 3) | Python 3.14.6, repo copy F:\MTS\repo, data F:\MTS\data; jobs as one-shot scheduled tasks |
 | DESKTOP-F7IU69N | Full working machine when travelling; infrastructure at home | Remote Desktop into JIS-NB and JIS-NUC; Claude app; own repo clone for reading and cloud work |
 
-Datasets: the 1m klines (Dumps/backtest/raw_1m_2022, ~2.5M BTCUSDT bars, needed by run_cc_setups and the fabio/rsi runners) exist only on JIS-NB; JIS-NUC has only raw_1h / raw_1d / funding (2026-10-09, B151).
+Datasets: the 1m klines (Dumps/backtest/raw_1m_2022, ~2.5M BTCUSDT bars, needed by run_cc_setups and the fabio/rsi runners) exist on JIS-NB and, since 2026-10-12, on JIS-NUC (fetched from data.binance.vision by backtest/fetch_binance_archive.py, 2022-01..2026-10-11, 2,512,800 bars, 0 gaps; the first copy was deleted with its worktree by `tidy` 2026-10-12 and re-fetched 2026-10-12 to the PRIMARY tree C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\Dumps\backtest\raw_1m_2022\klines, which tidy never touches; from another worktree pass it as --data-root / the klines_dir argument); JIS-NUC otherwise has raw_1h / raw_1d / funding (B151). OI / long-short metrics are not fetched on the NUC.
 
 Rule: the live testnet system moves between machines only in a supervisor restart window (section 3).
 

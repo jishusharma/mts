@@ -1,70 +1,49 @@
 {
  "_doc": "Files the wiring scan finds unrun (TEST-ONLY/ORPHAN), each declared with a disposition and evidence. Checked by scripts/dev/wiring_scan.py --check in the gate. Dispositions: TOOL, REPRO, PARKED, WIRE. A file that becomes LIVE/DEV-TOOL or disappears must be removed from here.",
  "entries": {
-  "MyTradingSys/research/b141_htf_stage2.py": {
-   "disp": "REPRO",
-   "ref": "B141",
-   "why": "Offline research script: Stage 2 (H1 forward range, day-block bootstrap, placebo) on the Stage 1 kept cells (PRE_REG_HTF_REPLACE_2026-10-07.md section 9); regenerates research/b141_stage2_result.json; run by hand or a desk task, not by any loop."
-  },
-  "MyTradingSys/research/b141_htf_stage1.py": {
-   "disp": "REPRO",
-   "ref": "B141",
-   "why": "Offline research script: Stage 1 coverage of the 28 pre-registered HTF balance cells (PRE_REG_HTF_REPLACE_2026-10-07.md section 9); regenerates research/b141_stage1_result.json; run by hand or a desk task, not by any loop."
-  },
-  "MyTradingSys/research/b147_row_drop_exact.py": {
-   "disp": "REPRO",
-   "ref": "B147",
-   "why": "Offline research script that regenerates the tables in research/B147_ROW_DROP_EXACT_2026-10-10.md from two tom_bt rows dirs and two snapshot dirs; run by hand or a desk task, not by any loop."
-  },
-  "MyTradingSys/research/t093_toc_imbalance_klines.py": {
-   "disp": "REPRO",
-   "ref": "T093",
-   "why": "Offline research script that regenerates research/T093_TOC_IMBALANCE_KLINES_2026-10-10.md (part --year Y, then combine); reuses p4_corrected.py; run by hand or a desk task, not by any loop."
-  },
-  "MyTradingSys/execution/capture_txlog_settlement.py": {
+  "MyTradingSys/backtest/bigtrade/exit_policies.py": {
    "disp": "TOOL",
-   "ref": "B149",
-   "why": "Read-only testnet capture of the transaction log around an 08:00 UTC settlement; run once by hand or by a desk task (usage in its docstring), not by any loop."
+   "why": "Backtest C (PLAN.md section 2): exit policies on fires_spot; run by hand, output research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md."
+  },
+  "MyTradingSys/backtest/bigtrade/fires_kline.py": {
+   "disp": "REPRO",
+   "ref": "bigtrade-2026-10-09",
+   "why": "Worker B1 fire history of the kline-only live layers on current live parameters (PLAN.md 2B); read-only import of the live registry; run by hand or a desk task, covered by test_fires_kline.py."
+  },
+  "MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py": {
+   "disp": "TOOL",
+   "ref": "bigtrade-2026-10-09",
+   "why": "Mutation check for bigmoves.py and capture.py: every mutant must fail test_bigmoves.py/test_capture.py; run by hand from the repo root, exits 0 only if all mutants die."
+  },
+  "MyTradingSys/backtest/bigtrade/obs_vp_check.py": {
+   "disp": "REPRO",
+   "ref": "bigtrade-2026-10-09",
+   "why": "Worker C F-BT-08 check: reproduces Java buildVp volume weighting against the trade-level profile; read-only, run by hand, output cited in SCREENSHOT_OBSERVATIONS.md."
+  },
+  "MyTradingSys/backtest/bigtrade/parity_kline.py": {
+   "disp": "REPRO",
+   "ref": "bigtrade-2026-10-09",
+   "why": "Parity gate of worker B1: replay vs the live runner's logged alerts per registry key (95 percent rule); run by hand, covered through fires_kline tests."
+  },
+  "MyTradingSys/backtest/bigtrade/report_bigmoves.py": {
+   "disp": "REPRO",
+   "ref": "bigtrade-2026-10-09",
+   "why": "Renders research/bigtrade_2026-10-09/BIGMOVES_REPORT.md from bigmoves_stats.json; every number from the json; run by hand after bigmoves.py."
   },
   "MyTradingSys/backtest/bt/bt_ladder.py": {
    "disp": "PARKED",
    "ref": "B137",
    "why": "UNSURE: ladder-entry fills (T051 L4); listed as a harness module in bt/README.md:5 but no runner imports it and no item says it is wired; B137 lists \"bt/ ladder\" among backtests whose device is undecided."
   },
-  "MyTradingSys/backtest/maker_model.py": {
+  "MyTradingSys/backtest/dax_data.py": {
    "disp": "REPRO",
-   "ref": "T080",
-   "why": "Offline research script that regenerates research/fast_track_2026-09-27/T080_MAKER_MODEL_2026-10-09.md; run by hand, no live process imports it."
+   "ref": "tom-dax-data",
+   "why": "Offline research tool: fetches Dukascopy GER40 1m and converts it to the 1m kline archive for the Tom DAX probe; research/tom_transfer_2026-10-11/PROBE_PLAN.md; run by hand or a desk task, not by any loop."
   },
-  "MyTradingSys/backtest/layers/session_levels/run_session_levels.py": {
+  "MyTradingSys/backtest/dax_engine.py": {
    "disp": "REPRO",
-   "ref": "T087",
-   "why": "Offline research script that regenerates research/t087_session_levels_2026-10-09/ (RESULT.md, summary.json); run by hand, no live process imports it."
-  },
-  "MyTradingSys/backtest/layers/session_levels/session_levels.py": {
-   "disp": "PARKED",
-   "ref": "T087",
-   "why": "Observation layer, backtest only: no sourced clock or threshold and no edge found (RESULT.md), so it is not wired live; only its runner and tests import it."
-  },
-  "MyTradingSys/backtest/layers/rsi/run_t090_anchor_probe.py": {
-   "disp": "REPRO",
-   "ref": "T090",
-   "why": "Offline research script that regenerates research/t090_7h_2026-10-09/anchor_probe.json; run by hand, no live process imports it."
-  },
-  "MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py": {
-   "disp": "REPRO",
-   "ref": "T089",
-   "why": "Offline research script that regenerates research/rsi_divergence_mtf_2026-10-09/ (REPORT.md, summary.json); run by hand, no live process imports it."
-  },
-  "MyTradingSys/backtest/vp_pivot_probe.py": {
-   "disp": "REPRO",
-   "ref": "T082",
-   "why": "Offline research script that regenerates research/tom_core_bt_2026-10-09/phase2/results.md (PHASE2_RESULT.md); run by hand, no live process imports it."
-  },
-  "MyTradingSys/backtest/stop_buffer_wf.py": {
-   "disp": "REPRO",
-   "ref": "T081",
-   "why": "Offline research script that regenerates research/fast_track_2026-09-27/T081_STOP_BUFFER_WF_2026-10-09.md; run by hand, no live process imports it."
+   "ref": "tom-dax-data",
+   "why": "Offline research driver: compiles the engine to %TEMP% and runs SnapAt/TomSnapshotGen on a non-BTC symbol (GER40); research/tom_transfer_2026-10-11/PROBE_PLAN.md; run by hand or a desk task, not by any loop."
   },
   "MyTradingSys/backtest/l1_patch_mds.py": {
    "disp": "REPRO",
@@ -73,6 +52,11 @@
   "MyTradingSys/backtest/layers/cryptocred/cc_bt_adapter.py": {
    "disp": "TOOL",
    "why": "Adapter imported by run_cc_setups.py:48 (the hand-run CryptoCred runner); its 1440-bar time exit is C25 NO-SOURCE in LAYER_PROVENANCE_AUDIT.md:110, provenance cleanup is separate."
+  },
+  "MyTradingSys/backtest/layers/cryptocred/cc_stop_sweep.py": {
+   "disp": "REPRO",
+   "ref": "B143",
+   "why": "Offline research driver: D20/B143 stop-rule sweep across the three CryptoCred setups; regenerates research/cryptocred_stop_2026-10-10/stop_sweep_result.json; run by hand or a desk task, not by any loop."
   },
   "MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py": {
    "disp": "REPRO",
@@ -86,9 +70,39 @@
    "disp": "REPRO",
    "why": "Fabio v3 L3 pre-registered backtest, result L3-FAIL recorded in MyTradingSys/runtime/BUILD_PIPELINE.md:50 and PRE_REG_FABIO_V3.md; kept because that row lists an open follow-up (why models A, B, D almost never fire) that re-runs it."
   },
+  "MyTradingSys/backtest/layers/rsi/rsi_divergence.py": {
+   "disp": "WIRE",
+   "ref": "RSI_2A_SPEC.md steps 4-5",
+   "why": "Malkan close-to-close divergence detector (3-10 bars, params/malkan_divergence_default.json); built and tested 2026-10-09, to be called by run_rsi_backtest.py. Not live."
+  },
+  "MyTradingSys/backtest/layers/rsi/rsi_reclaim.py": {
+   "disp": "WIRE",
+   "ref": "RSI_2A_SPEC.md steps 4-5",
+   "why": "Operator RSI 2a context events (dwell/depth reclaim of 40/60, retest); built and tested 2026-10-09, to be called by run_rsi_backtest.py in the confluence-logging backtest (research/rsi_2a_2026-10-09/RSI_2A_SPEC.md). Not live."
+  },
+  "MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py": {
+   "disp": "REPRO",
+   "ref": "T089",
+   "why": "Offline research script that regenerates research/rsi_divergence_mtf_2026-10-09/ (REPORT.md, summary.json); run by hand, no live process imports it."
+  },
+  "MyTradingSys/backtest/layers/rsi/run_t090_anchor_probe.py": {
+   "disp": "REPRO",
+   "ref": "T090",
+   "why": "Offline research script that regenerates research/t090_7h_2026-10-09/anchor_probe.json; run by hand, no live process imports it."
+  },
   "MyTradingSys/backtest/layers/run_bracket_grid.py": {
    "disp": "TOOL",
    "why": "Q1 per-layer bracket grid driver, desktop-run on real history: MyTradingSys/research/fast_track_2026-09-27/DSA_BACKLOG.md:25 and SUPERVISOR_INBOX.md:10; no result note found yet."
+  },
+  "MyTradingSys/backtest/layers/session_levels/run_session_levels.py": {
+   "disp": "REPRO",
+   "ref": "T087",
+   "why": "Offline research script that regenerates research/t087_session_levels_2026-10-09/ (RESULT.md, summary.json); run by hand, no live process imports it."
+  },
+  "MyTradingSys/backtest/layers/session_levels/session_levels.py": {
+   "disp": "PARKED",
+   "ref": "T087",
+   "why": "Observation layer, backtest only: no sourced clock or threshold and no edge found (RESULT.md), so it is not wired live; only its runner and tests import it."
   },
   "MyTradingSys/backtest/layers/tick/build_tiers.py": {
    "disp": "TOOL",
@@ -113,22 +127,33 @@
    "disp": "TOOL",
    "why": "Real-data D1/TF-B5 cross-check (resampled 1d vs Binance native 1d), run by hand after fetch_binance_archive.py; docstring lines 1-9 and layers/timeframe/TEST_PLAN.md:125 (Case TF-B5)."
   },
+  "MyTradingSys/backtest/maker_model.py": {
+   "disp": "REPRO",
+   "ref": "T080",
+   "why": "Offline research script that regenerates research/fast_track_2026-09-27/T080_MAKER_MODEL_2026-10-09.md; run by hand, no live process imports it."
+  },
   "MyTradingSys/backtest/p1_compare.py": {
    "disp": "REPRO",
    "why": "Reproduces the P1 regen-vs-archived-snapshot result (5800/5800 fields equal) in MyTradingSys/research/core_readiness_2026-09-27/L1_SLICE1_STATUS.md:80."
+  },
+  "MyTradingSys/backtest/power_mde.py": {
+   "disp": "TOOL",
+   "ref": "gap-g1-power-mde-helper",
+   "why": "G1 power/MDE helper used by research cards (win prob, R:R, cost, N -> power, MDE, trades for 80 % power); run by hand and by test_power_mde.py, no live imports."
   },
   "MyTradingSys/backtest/prob_table.py": {
    "disp": "PARKED",
    "ref": "RSI_TF_LAYER_DESIGN.md:95",
    "why": "UNSURE: Dirichlet-smoothed outcome table (Qwen 033) with tests; only mentions are MyTradingSys/research/fast_track_2026-09-27/RSI_TF_LAYER_DESIGN.md:95 and layers/FORMULA_AUDIT_SPEC.md:413, no item wires it."
   },
+  "MyTradingSys/backtest/stop_buffer_wf.py": {
+   "disp": "REPRO",
+   "ref": "T081",
+   "why": "Offline research script that regenerates research/fast_track_2026-09-27/T081_STOP_BUFFER_WF_2026-10-09.md; run by hand, no live process imports it."
+  },
   "MyTradingSys/backtest/tom_bt_diag.py": {
    "disp": "REPRO",
    "why": "Produced every number in MyTradingSys/research/TOM_BT_SHORT_DIAGNOSIS_2026-10-02.md:4 (all-shorts diagnosis)."
-  },
-  "MyTradingSys/backtest/tom_probe_diag.py": {
-   "disp": "REPRO",
-   "why": "Produced every number in MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md (card tom-probe-diag-btc: MFE/MAE, session, selection diagnostics)."
   },
   "MyTradingSys/backtest/tom_bt_report.py": {
    "disp": "REPRO",
@@ -137,6 +162,44 @@
   "MyTradingSys/backtest/tom_bt_run.py": {
    "disp": "REPRO",
    "why": "Driver (rows|fabio|report) behind TOM_CORE_BT.md; cache behaviour documented in MyTradingSys/research/TOM_ROW_CACHE_REGEN_2026-10-02.md:8."
+  },
+  "MyTradingSys/backtest/tom_dax_bt.py": {
+   "disp": "REPRO",
+   "ref": "tom-dax-backtest",
+   "why": "Offline research driver: untuned Tom core on DAX vs matched-proof BTC (gen snapshots, rows, four variants x verdict pair, null, dev/holdout), writes research/tom_transfer_2026-10-11/DAX_BT_REPORT.md and TRIAL_REGISTRY rows; PRE_REG_DAX.md; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/backtest/tom_dax_recall.py": {
+   "disp": "REPRO",
+   "ref": "tom-dax-recall",
+   "why": "Offline research script: engine recall at Tom's own DAX trades read from video frames; writes F:/MTS/data/dax_recall; research/tom_transfer_2026-10-11/PROBE_PLAN.md; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/backtest/tom_probe_diag.py": {
+   "disp": "REPRO",
+   "why": "Produced every number in MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md (card tom-probe-diag-btc: MFE/MAE, session, selection diagnostics)."
+  },
+  "MyTradingSys/backtest/tom_profile_parity.py": {
+   "disp": "TOOL",
+   "ref": "tom-profile-parity-check",
+   "why": "Offline computed-side profile parity tool; extracts the unchanged engine buildVp method and uses explicit closed 1m windows. Run by hand or JIS-NB desk task, no live caller."
+  },
+  "MyTradingSys/backtest/tom_stop_width.py": {
+   "disp": "TOOL",
+   "why": "B146 analysis script (stop width vs fees); run by hand, output research/fast_track_2026-09-27/TOM_STOP_WIDTH_2026-10-09.md."
+  },
+  "MyTradingSys/backtest/tom_v2_recall.py": {
+   "disp": "REPRO",
+   "ref": "tom-v2-recall-fire-rate",
+   "why": "Research driver for the Tom v2 DESIGN recall and fire rate and the once-only CHECK read (python tom_v2_recall.py design|check); feeds RECALL_DAX_V2.md. Tested by test_tom_v2_recall.py."
+  },
+  "MyTradingSys/backtest/vp_pivot_probe.py": {
+   "disp": "REPRO",
+   "ref": "T082",
+   "why": "Offline research script that regenerates research/tom_core_bt_2026-10-09/phase2/results.md (PHASE2_RESULT.md); run by hand, no live process imports it."
+  },
+  "MyTradingSys/execution/capture_txlog_settlement.py": {
+   "disp": "TOOL",
+   "ref": "B149",
+   "why": "Read-only testnet capture of the transaction log around an 08:00 UTC settlement; run once by hand or by a desk task (usage in its docstring), not by any loop."
   },
   "MyTradingSys/execution/deribit_client.py": {
    "disp": "TOOL",
@@ -195,6 +258,21 @@
    "disp": "TOOL",
    "why": "CBP queue ack-only consumer run by hand from the desktop (DSA_SESSION_PROMPT.md:275); by decision no live process imports it (TWO_CORES_READINESS_2026-10-01.md:16)."
   },
+  "MyTradingSys/research/b141_htf_stage1.py": {
+   "disp": "REPRO",
+   "ref": "B141",
+   "why": "Offline research script: Stage 1 coverage of the 28 pre-registered HTF balance cells (PRE_REG_HTF_REPLACE_2026-10-07.md section 9); regenerates research/b141_stage1_result.json; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/research/b141_htf_stage2.py": {
+   "disp": "REPRO",
+   "ref": "B141",
+   "why": "Offline research script: Stage 2 (H1 forward range, day-block bootstrap, placebo) on the Stage 1 kept cells (PRE_REG_HTF_REPLACE_2026-10-07.md section 9); regenerates research/b141_stage2_result.json; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/research/b147_row_drop_exact.py": {
+   "disp": "REPRO",
+   "ref": "B147",
+   "why": "Offline research script that regenerates the tables in research/B147_ROW_DROP_EXACT_2026-10-10.md from two tom_bt rows dirs and two snapshot dirs; run by hand or a desk task, not by any loop."
+  },
   "MyTradingSys/research/candle_patterns_2026-10-04/pilot/cdata.py": {
    "disp": "REPRO",
    "why": "Data layer (DEV-only guard) behind P0_RESULTS.md and P1_RESULTS.md; PRE_REG_CANDLE_PILOT.md:12."
@@ -239,6 +317,11 @@
    "disp": "REPRO",
    "why": "Executable spec for B071; S1/S2 PASS recorded in MyTradingSys/research/core_readiness_2026-09-27/B1_FIX_APPLIED_2026-09-27.md:26 (BUGS.md:154 CLOSED)."
   },
+  "MyTradingSys/research/core_readiness_2026-09-27/harness/java/FadeReplay.java": {
+   "disp": "REPRO",
+   "ref": "tom-v2-recall-fire-rate",
+   "why": "Replay harness: SpikeFadeDetector at every window minute of given dates; compiled into a temp copy by dax_engine.py fade, not part of src/."
+  },
   "MyTradingSys/research/core_readiness_2026-09-27/harness/java/ReplayScbSteps1to8.java": {
    "disp": "TOOL",
    "why": "L1 replay steps 1-8, run via run_replay.ps1 (CORE_READINESS_PLAN.md:153, 118/118 PASS)."
@@ -280,6 +363,66 @@
    "ref": "WORKER_ROADMAP.md row 16",
    "why": "UNSURE: independent ladder cross-check oracle whose Qwen tests were weakened (WORKER_ROADMAP.md:70 row 16: \"not trusted until rewritten from spec 021\"); nothing compares it to bt_ladder."
   },
+  "MyTradingSys/research/levels_sizing_2026-10-14/probe.py": {
+   "disp": "REPRO",
+   "ref": "LC-SIZING-QUICK-20261014",
+   "why": "Standalone DEV-only level sizing diagnostic; manually run with python, checked by verify_probe.py; no live imports."
+  },
+  "MyTradingSys/research/levels_sizing_2026-10-14/save_report.py": {
+   "disp": "REPRO",
+   "ref": "LC-SIZING-QUICK-20261014",
+   "why": "Manual report and layer-map generator for the saved eight-arm diagnostic; python save_report.py."
+  },
+  "MyTradingSys/research/levels_sizing_2026-10-14/verify_probe.py": {
+   "disp": "REPRO",
+   "ref": "LC-SIZING-QUICK-20261014",
+   "why": "Manual independent path and cash-flow checks on probe results; python verify_probe.py; research only."
+  },
+  "MyTradingSys/research/mfe_exit_2026-10-13/control_random_entries.py": {
+   "disp": "REPRO",
+   "ref": "mfe_exit_2026-10-13",
+   "why": "Offline control: same trade count with random entry times, shows MFE/MAE/gross with no signal; run by hand after mfe_exit_study.py."
+  },
+  "MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py": {
+   "disp": "REPRO",
+   "ref": "mfe_exit_2026-10-13",
+   "why": "Offline study: MFE-peak readings and 15 causal exit variants on the 3 largest fire sets; run by hand (python mfe_exit_study.py out_dir); rerun unchanged for any setup with a real entry edge. Tested by MyTradingSys/tests/test_mfe_exit_study.py."
+  },
+  "MyTradingSys/research/non_core_layer_audit_2026-10-12/build_register.py": {
+   "disp": "REPRO",
+   "ref": "Q38",
+   "why": "Offline builder: resolves register citations and writes EVIDENCE_REGISTER.json/.md; run by hand."
+  },
+  "MyTradingSys/research/non_core_layer_audit_2026-10-12/package_report.py": {
+   "disp": "REPRO",
+   "ref": "Q38",
+   "why": "Offline packaging script: renders the audit PDF/ZIP from REPORT.md; run by hand."
+  },
+  "MyTradingSys/research/non_core_layer_audit_2026-10-12/verify_audit.py": {
+   "disp": "REPRO",
+   "ref": "Q38",
+   "why": "Offline repro script: re-runs the audit mechanical checks (tests, quote gates, report regeneration); run by hand."
+  },
+  "MyTradingSys/research/non_core_layer_audit_2026-10-12/verify_register.py": {
+   "disp": "REPRO",
+   "ref": "Q38",
+   "why": "Offline check: every register citation still resolves; run by hand or a desk task."
+  },
+  "MyTradingSys/research/oi_divergence_test_2026-10-10.py": {
+   "disp": "REPRO",
+   "ref": "B174",
+   "why": "Offline research script: OI divergence event study from snapshots and outcome labels; regenerates research/OI_DIVERGENCE_2026-10-10.md; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/research/oi_divergence_v2_2026-10-10.py": {
+   "disp": "REPRO",
+   "ref": "B174",
+   "why": "Offline research script: second-pass OI divergence study from snapshots and labels; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/research/oi_event_study_2026-10-10.py": {
+   "disp": "REPRO",
+   "ref": "B174",
+   "why": "Offline research script: OI event study from snapshots and outcome labels; regenerates research/OI_EVENT_STUDY_2026-10-10.md; run by hand or a desk task, not by any loop."
+  },
   "MyTradingSys/research/p1_cost_floor/p1_cost_floor.py": {
    "disp": "REPRO",
    "why": "Reproduces MyTradingSys/research/P1_COST_FLOOR_2026-10-06.md:4 (\"reruns in seconds\", results.json)."
@@ -287,6 +430,14 @@
   "MyTradingSys/research/p4_corrected.py": {
    "disp": "REPRO",
    "why": "Reproduces the numbers in MyTradingSys/research/P4_QUARTER_HOUR_IMBALANCE_CORRECTED_2026-10-08.md:5 (no replication at 4h/8h/12h); docstring line 3."
+  },
+  "MyTradingSys/research/published_strats_2026-10-13/run_pub.py": {
+   "disp": "REPRO",
+   "why": "Reproduces RESULTS.md and TRIAL_REGISTRY.csv (62 published-rule variants on BTCUSDT perp; stages dev/val/hold, PRE_REG.md)."
+  },
+  "MyTradingSys/research/published_strats_2026-10-13/supp_carry.py": {
+   "disp": "REPRO",
+   "why": "Reproduces supp_carry.txt (post-hoc descriptive carry and buy-and-hold by window)."
   },
   "MyTradingSys/research/replay_2026_10_04_05.py": {
    "disp": "REPRO",
@@ -300,9 +451,24 @@
    "disp": "REPRO",
    "why": "Reproduces research/session_sweeps/results_2026-10-04.json cited in MyTradingSys/research/fast_track_2026-09-27/BTC_SESSION_SWEEPS_2026-10-04.md:5 (T054/T058)."
   },
+  "MyTradingSys/research/setup_alpha_beta_2026-10-10/alpha_backtest.py": {
+   "disp": "REPRO",
+   "ref": "B163",
+   "why": "Offline NO-SOURCE research: daily long-flat SMA200 backtest 2020-2026 for desk row 20261009-231504; writes ALPHA_RESULTS.md; run by hand or a desk task, not by any loop."
+  },
   "MyTradingSys/research/t063_event_study.py": {
    "disp": "REPRO",
    "why": "Reproduces the T063 event-study arms: MyTradingSys/research/T063_STOP_RUN_OI_FLUSH.md:67,120 (PRE_REG + AMEND 1)."
+  },
+  "MyTradingSys/research/t093_toc_imbalance_klines.py": {
+   "disp": "REPRO",
+   "ref": "T093",
+   "why": "Offline research script that regenerates research/T093_TOC_IMBALANCE_KLINES_2026-10-10.md (part --year Y, then combine); reuses p4_corrected.py; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py": {
+   "disp": "REPRO",
+   "ref": "Q33",
+   "why": "Offline research script: fee-net trigger x context event study with placebo and BH-FDR, reproduces MATRIX_REPORT.md from Dumps 1m klines (PRE_REG_Q33.md)."
   },
   "MyTradingSys/research/two_cores_int_handoff_2026-10-01/stage_overlay.py": {
    "disp": "TOOL",
@@ -348,6 +514,16 @@
    "disp": "REPRO",
    "why": "Vectorised White Reality-Check, block bootstrap, contrasts and BH q-values behind V1-V4; cross-checked against pilot stats_lite in test_volume.py."
   },
+  "MyTradingSys/research/vpin_dayclustered_2026-10-10.py": {
+   "disp": "REPRO",
+   "ref": "D24",
+   "why": "Offline research script: day-clustered VPIN proxy significance test; imports vpin_proxy_2026-10-10.py; run by hand or a desk task, not by any loop."
+  },
+  "MyTradingSys/research/vpin_proxy_2026-10-10.py": {
+   "disp": "REPRO",
+   "ref": "D24",
+   "why": "Offline research script: VPIN proxy from 1m klines; regenerates research/VPIN_PROXY_2026-10-10.md; run by hand or a desk task, not by any loop."
+  },
   "MyTradingSys/runtime/backtest_oi_delta_4state.py": {
    "disp": "TOOL",
    "why": "OI-delta 4-state backtest over archived snapshots, hand-run; cited as implemented in MyTradingSys/research/fast_track_2026-09-27/T055a_POSITIONING_FLOW.md:48 and items/T063_stop_run_oi_flush_signature.md:18 (misplaced in runtime/ per items/T057_simplify_declutter.md:14)."
@@ -375,104 +551,6 @@
   "scripts/tools/divergence_monitor.py": {
    "disp": "TOOL",
    "why": "Diagnostic divergence reader, \"tooling, left as is\": MyTradingSys/items/B063_divergence.md:70."
-  },
-  "MyTradingSys/backtest/tom_stop_width.py": {
-   "disp": "TOOL",
-   "why": "B146 analysis script (stop width vs fees); run by hand, output research/fast_track_2026-09-27/TOM_STOP_WIDTH_2026-10-09.md."
-  },
-  "MyTradingSys/backtest/bigtrade/exit_policies.py": {
-   "disp": "TOOL",
-   "why": "Backtest C (PLAN.md section 2): exit policies on fires_spot; run by hand, output research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md."
-  },
-  "MyTradingSys/backtest/layers/rsi/rsi_reclaim.py": {
-   "disp": "WIRE",
-   "ref": "RSI_2A_SPEC.md steps 4-5",
-   "why": "Operator RSI 2a context events (dwell/depth reclaim of 40/60, retest); built and tested 2026-10-09, to be called by run_rsi_backtest.py in the confluence-logging backtest (research/rsi_2a_2026-10-09/RSI_2A_SPEC.md). Not live."
-  },
-  "MyTradingSys/backtest/layers/rsi/rsi_divergence.py": {
-   "disp": "WIRE",
-   "ref": "RSI_2A_SPEC.md steps 4-5",
-   "why": "Malkan close-to-close divergence detector (3-10 bars, params/malkan_divergence_default.json); built and tested 2026-10-09, to be called by run_rsi_backtest.py. Not live."
-  },
-  "MyTradingSys/backtest/dax_data.py": {
-   "disp": "REPRO",
-   "ref": "tom-dax-data",
-   "why": "Offline research tool: fetches Dukascopy GER40 1m and converts it to the 1m kline archive for the Tom DAX probe; research/tom_transfer_2026-10-11/PROBE_PLAN.md; run by hand or a desk task, not by any loop."
-  },
-  "MyTradingSys/backtest/dax_engine.py": {
-   "disp": "REPRO",
-   "ref": "tom-dax-data",
-   "why": "Offline research driver: compiles the engine to %TEMP% and runs SnapAt/TomSnapshotGen on a non-BTC symbol (GER40); research/tom_transfer_2026-10-11/PROBE_PLAN.md; run by hand or a desk task, not by any loop."
-  },
-  "MyTradingSys/backtest/tom_dax_recall.py": {
-   "disp": "REPRO",
-   "ref": "tom-dax-recall",
-   "why": "Offline research script: engine recall at Tom's own DAX trades read from video frames; writes F:/MTS/data/dax_recall; research/tom_transfer_2026-10-11/PROBE_PLAN.md; run by hand or a desk task, not by any loop."
-  },
-  "MyTradingSys/backtest/tom_dax_bt.py": {
-   "disp": "REPRO",
-   "ref": "tom-dax-backtest",
-   "why": "Offline research driver: untuned Tom core on DAX vs matched-proof BTC (gen snapshots, rows, four variants x verdict pair, null, dev/holdout), writes research/tom_transfer_2026-10-11/DAX_BT_REPORT.md and TRIAL_REGISTRY rows; PRE_REG_DAX.md; run by hand or a desk task, not by any loop."
-  },
-  "MyTradingSys/backtest/layers/cryptocred/cc_stop_sweep.py": {
-   "disp": "REPRO",
-   "ref": "B143",
-   "why": "Offline research driver: D20/B143 stop-rule sweep across the three CryptoCred setups; regenerates research/cryptocred_stop_2026-10-10/stop_sweep_result.json; run by hand or a desk task, not by any loop."
-  },
-  "MyTradingSys/research/oi_divergence_test_2026-10-10.py": {
-   "disp": "REPRO",
-   "ref": "B174",
-   "why": "Offline research script: OI divergence event study from snapshots and outcome labels; regenerates research/OI_DIVERGENCE_2026-10-10.md; run by hand or a desk task, not by any loop."
-  },
-  "MyTradingSys/research/oi_divergence_v2_2026-10-10.py": {
-   "disp": "REPRO",
-   "ref": "B174",
-   "why": "Offline research script: second-pass OI divergence study from snapshots and labels; run by hand or a desk task, not by any loop."
-  },
-  "MyTradingSys/research/oi_event_study_2026-10-10.py": {
-   "disp": "REPRO",
-   "ref": "B174",
-   "why": "Offline research script: OI event study from snapshots and outcome labels; regenerates research/OI_EVENT_STUDY_2026-10-10.md; run by hand or a desk task, not by any loop."
-  },
-  "MyTradingSys/research/vpin_dayclustered_2026-10-10.py": {
-   "disp": "REPRO",
-   "ref": "D24",
-   "why": "Offline research script: day-clustered VPIN proxy significance test; imports vpin_proxy_2026-10-10.py; run by hand or a desk task, not by any loop."
-  },
-  "MyTradingSys/research/vpin_proxy_2026-10-10.py": {
-   "disp": "REPRO",
-   "ref": "D24",
-   "why": "Offline research script: VPIN proxy from 1m klines; regenerates research/VPIN_PROXY_2026-10-10.md; run by hand or a desk task, not by any loop."
-  },
-  "MyTradingSys/backtest/bigtrade/fires_kline.py": {
-   "disp": "REPRO",
-   "ref": "bigtrade-2026-10-09",
-   "why": "Worker B1 fire history of the kline-only live layers on current live parameters (PLAN.md 2B); read-only import of the live registry; run by hand or a desk task, covered by test_fires_kline.py."
-  },
-  "MyTradingSys/backtest/bigtrade/parity_kline.py": {
-   "disp": "REPRO",
-   "ref": "bigtrade-2026-10-09",
-   "why": "Parity gate of worker B1: replay vs the live runner's logged alerts per registry key (95 percent rule); run by hand, covered through fires_kline tests."
-  },
-  "MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py": {
-   "disp": "TOOL",
-   "ref": "bigtrade-2026-10-09",
-   "why": "Mutation check for bigmoves.py and capture.py: every mutant must fail test_bigmoves.py/test_capture.py; run by hand from the repo root, exits 0 only if all mutants die."
-  },
-  "MyTradingSys/backtest/bigtrade/obs_vp_check.py": {
-   "disp": "REPRO",
-   "ref": "bigtrade-2026-10-09",
-   "why": "Worker C F-BT-08 check: reproduces Java buildVp volume weighting against the trade-level profile; read-only, run by hand, output cited in SCREENSHOT_OBSERVATIONS.md."
-  },
-  "MyTradingSys/backtest/bigtrade/report_bigmoves.py": {
-   "disp": "REPRO",
-   "ref": "bigtrade-2026-10-09",
-   "why": "Renders research/bigtrade_2026-10-09/BIGMOVES_REPORT.md from bigmoves_stats.json; every number from the json; run by hand after bigmoves.py."
-  },
-  "MyTradingSys/backtest/tom_profile_parity.py": {
-   "disp": "TOOL",
-   "ref": "tom-profile-parity-check",
-   "why": "Offline computed-side profile parity tool; extracts the unchanged engine buildVp method and uses explicit closed 1m windows. Run by hand or JIS-NB desk task, no live caller."
   }
  }
 }

@@ -6,7 +6,7 @@
   python scripts/dev/shot.py classify <id> --kind chart|positions|app|other|noise --why "<what it is / what the operator meant>"
                              [--symbol BTCUSDT --tf 15m --at "2026-10-08 02:47" --tz +05:30 --source "binance footprint"]
   python scripts/dev/shot.py read <id>... --extract <md>       # extract exists, names the ids, has claim rows
-  python scripts/dev/shot.py done <id>... --outcome finding:B156 | feature:FEAT-11 | noaction:"<why>" | note:"<text>"
+  python scripts/dev/shot.py done <id>... --outcome finding:B156 | finding:card:<task id> | feature:FEAT-11 | noaction:"<why>" | note:"<text>"
   python scripts/dev/shot.py sets                              # chart shots grouped into multi-timeframe sets
   python scripts/dev/shot.py engine <id> [--raw DIR] [--plan]  # B160: engine snapshot at the shot's minute (SnapAt, 1m archive)
                                                                #   -> MyTradingSys/research/screenshots/engine/<id>.json
@@ -43,7 +43,7 @@ PRIVATE_KINDS = ("positions",)
 STATUSES = ("new", "classified", "read", "done")
 CLAIM_CLASSES = ("MATCH", "MISMATCH", "NOT_IN_DATA")
 PRIOR_LINE = re.compile(r"^[\s>*-]*Prior(?::\**|\**:)[ \t]*(\S.*?)\s*$", re.M)  # B157: `Prior: <extract>` / `**Prior:** none`
-OUTCOME_ID = re.compile(r"^(B\d{3}|T\d{3}|F-BT-\d+|FEAT-\d+)$")
+OUTCOME_ID = re.compile(r"^(B\d{3}|T\d{3}|F-BT-\d+|FEAT-\d+|card:[a-z0-9][a-z0-9-]*)$")   # card: = a task card (tasks.py)
 SET_WINDOW_MIN = 10  # chart shots of one symbol within this many minutes are one set (the 2026-10-08 batch spanned 4)
 NAG_EVERY_HOURS = 6  # the SessionStart backlog reminder repeats at most this often
 MAX_TEXT = 500
@@ -66,8 +66,10 @@ def git(*args, cwd=None):
 
 def main_root():
     """The primary checkout (the live tree on the desktop): every worktree shares its store."""
-    common = git("rev-parse", "--path-format=absolute", "--git-common-dir").strip()
-    if not common:  # git older than 2.31
+    out = git("rev-parse", "--path-format=absolute", "--git-common-dir").strip().splitlines()
+    common = out[-1].strip() if out else ""
+    if not common or common.startswith("--"):  # git older than 2.31 echoes the flag as line 1 (2.24)
+        common = ""
         rel = git("rev-parse", "--git-common-dir").strip()
         common = str((REPO / rel).resolve()) if rel else ""
     p = Path(common) if common else REPO / ".git"
@@ -489,14 +491,17 @@ def carried_context(text, path):
 
 
 def outcome_exists(token):
-    """A filed outcome must really be filed: B/T ids are rows of the registry, F-BT / FEAT ids appear in a markdown doc.
-    (A bare grep would let a test file or a code comment 'file' the item.)"""
+    """A filed outcome must really be filed: B/T ids are rows of the registry, card:<id> is a task card file
+    (MyTradingSys/system/tasks/<id>.json, the live channel; it shows under its layer in LAYERS.md), F-BT / FEAT ids appear
+    in a markdown doc. (A bare grep would let a test file or a code comment 'file' the item.)"""
     if os.environ.get("MTS_SHOT_SKIP_REPO_CHECK"):
         return True
+    if token.startswith("card:"):
+        return (REPO / "MyTradingSys" / "system" / "tasks" / f"{token[5:]}.json").is_file()
     if re.fullmatch(r"[BT]\d{3}", token):
         bugs = REPO / "MyTradingSys" / "research" / "BUGS.md"
         return bugs.is_file() and re.search(rf"^\|\s*{re.escape(token)}\s*\|", bugs.read_text(encoding="utf-8"), re.M) is not None
-    return bool(git("grep", "--untracked", "-l", "-F", "-e", token, "--", "*.md").strip())
+    return bool(git("grep", "--untracked", "-l", "-w", "-F", "-e", token, "--", "*.md").strip())   # -w: FEAT-1 is not FEAT-11 (RV07)
 
 
 def done(store, prefixes, outcome):
@@ -506,7 +511,7 @@ def done(store, prefixes, outcome):
     rest = rest.strip()
     if kind in ("finding", "feature"):
         if not OUTCOME_ID.match(rest):
-            raise ShotError(f"{kind}: needs an item id such as B156, T070, F-BT-23 or FEAT-11")
+            raise ShotError(f"{kind}: needs an item id such as B156, T070, F-BT-23, FEAT-11 or card:<task card id>")
         if not outcome_exists(rest):
             raise ShotError(f"{rest} is not in the repo yet: file it first, then close the shot")
     elif kind in ("noaction", "note"):
@@ -520,8 +525,9 @@ def done(store, prefixes, outcome):
             raise ShotError(f"{i} is still 'new': classify it first")
         if s.get("kind") == "chart" and s["status"] != "read" and s["status"] != "done":
             raise ShotError(f"{i} is a chart that has not been read: write the extract and run `shot.py read` first")
-        if kind == "noaction" and (s.get("claims") or {}).get("MISMATCH") and len(rest) < 20:
-            raise ShotError(f"{i} has MISMATCH claims: file them (finding:/feature:) or explain in 20+ characters why not")
+        if (s.get("claims") or {}).get("MISMATCH"):   # a MISMATCH is a B-item or an explained noaction (screenshot_intake.md)
+            if kind in ("note", "feature") or (kind == "noaction" and len(rest) < 20):
+                raise ShotError(f"{i} has MISMATCH claims: file them (finding:) or explain in 20+ characters (noaction:) why not")
     for i in ids:
         append(store, {"event": "done", "id": i, "ts": now_iso(), "outcome": outcome})
     return ids
@@ -581,6 +587,8 @@ def engine_jars():
     jars = []
     for name in ENGINE_JARS:
         hits = sorted(m2.rglob(name)) if m2.is_dir() else []
+        if not hits and m2.is_dir() and name.startswith("slf4j-api-"):  # logging API only: any 2.x jar compiles the engine (JIS-NUC has 2.0.6)
+            hits = sorted(m2.rglob("slf4j-api-2.*.jar"), reverse=True)
         if not hits:
             raise ShotError(f"{name} not found under {m2}: run `mvn -q -o compile` once in a worktree so Maven fetches it")
         jars.append(str(hits[0]))

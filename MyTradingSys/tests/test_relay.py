@@ -28,6 +28,16 @@ class RelayTest(unittest.TestCase):
     def header_id(self):
         return self.f.read_text(encoding="utf-8").split("id=")[1].split(" ")[0]
 
+    def test_brief_skips_done_and_opus(self):
+        lines = ["<!-- relay: stop reason=x depth=1 id=abc -->", "# N", "   Q1. DONE 2026-10-12 x",
+                 "   Q2. OPUS card y", "   Q3. build card z", "   Q4. second open"]
+        self.f.write_text(chr(10).join(lines) + chr(10), encoding="utf-8", newline=chr(10))
+        r = run(self.home, "brief", "--file", str(self.f), "--max", "1")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn("Q3. build card z", r.stdout)
+        for bad in ("Q1.", "Q2.", "Q4."):
+            self.assertNotIn(bad, r.stdout)
+
     def test_no_header_stops(self):
         r = run(self.home, "gate", "--file", str(self.f), "--started-id", "none")
         self.assertEqual(r.returncode, 1)
@@ -190,6 +200,38 @@ class LintTest(unittest.TestCase):
         r = run(self.home, "handoff", "--file", str(self.f), "--stop", "all done or blocked", extra=NOLINT_OFF)
         self.assertEqual(r.returncode, 0, r.stdout)
 
+    def test_duplicate_task_id_is_a_lint_error(self):
+        dup = GOOD.replace("   Q3. (after Q2) engine run.", "   Q2. DONE older task reusing the id." + NL + "   Q3. (after Q2) engine run.")
+        r = self.lint(dup, "--want", "go")
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("Q2 is used twice", r.stdout)
+        self.assertEqual(self.lint(GOOD, "--want", "go").returncode, 0)
+
+    def test_host_tag_filters_go_for_other_hosts(self):
+        nb = GOOD.replace("Q2. Read set", "Q2. host=JIS-NB Read set")
+        self.assertEqual(self.lint(nb, "--want", "go").returncode, 0)  # host=None: any host may run it
+        r = self.lint(nb, "--want", "go", "--host", "JIS-NUC")
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("for host JIS-NUC", r.stdout)
+        self.assertIn("Q2=JIS-NB", r.stdout)
+        self.assertEqual(self.lint(nb, "--want", "go", "--host", "jis-nb").returncode, 0)  # case-insensitive
+        any_ = GOOD.replace("Q2. Read set", "Q2. host=any Read set")
+        self.assertEqual(self.lint(any_, "--want", "go", "--host", "JIS-NUC").returncode, 0)
+
+    def test_host_tag_is_stripped_before_done_and_blocked(self):
+        t = GOOD.replace("Q2. Read set", "Q2. host=JIS-NB DONE Read set").replace("Q3. (after Q2)", "Q3. host=JIS-NB (after Q9)")
+        self.f.write_text(t, encoding="utf-8", newline=NL)
+        r = run(self.home, "handoff", "--file", str(self.f), "--stop", "all done or blocked", extra=NOLINT_OFF)
+        self.assertEqual(r.returncode, 0, r.stdout)
+
+    def test_handoff_go_not_filtered_by_this_host(self):
+        # NUC finishing its task must be able to hand a go to NB: stop is refused while a task is open
+        nb = GOOD.replace("Q2. Read set", "Q2. host=JIS-NB Read set").replace("`scripts/dev/shot.py`", "shots").replace("research/screenshots", "the dir")
+        nb = nb.replace("shot.py status", "status")
+        self.f.write_text(nb, encoding="utf-8", newline=NL)
+        extra = dict(NOLINT_OFF, MTS_RELAY_HOST="JIS-NUC")
+        self.assertEqual(run(self.home, "handoff", "--file", str(self.f), "--go", extra=extra).returncode, 0)
+
 
 NUC = {"MTS_RELAY_HOST": "JIS-NUC", "MTS_RELAY_ACCOUNT": "acct-a"}
 NB = {"MTS_RELAY_HOST": "JIS-NB", "MTS_RELAY_ACCOUNT": "acct-b"}
@@ -260,6 +302,105 @@ class TwoHostTest(unittest.TestCase):
         self.assertEqual(r.returncode, 2, r.stdout)
         self.assertEqual(self.f.read_text(encoding="utf-8"), body)
         self.assertFalse(self.runs.exists())
+
+
+class HostKickTest(unittest.TestCase):
+    """kick honors the `host=` task tag: a go whose open tasks all belong to another host is IDLE here, KICK there."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.f = self.tmp / "NEXT_SESSION.md"
+        self.f.write_text(GOOD.replace("Q2. Read set", "Q2. host=JIS-NB Read set"), encoding="utf-8", newline=NL)
+
+    def kick(self, who, *args):
+        return run(self.tmp / who["MTS_RELAY_HOST"], "kick", "--file", str(self.f), *args, extra=dict(NOLINT_OFF, **who))
+
+    def test_nb_only_tasks_idle_on_nuc_kick_on_nb(self):
+        r = self.kick(NUC)
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("IDLE no unblocked task for host JIS-NUC", r.stdout)
+        self.assertIn("KICK", self.kick(NB).stdout)
+
+    def test_other_lint_errors_do_not_block_a_kick(self):
+        self.f.write_text(GOOD.replace("DONE when: research/screenshots has the extract and shot.py status shows the set done.", "no end"),
+                          encoding="utf-8", newline=NL)
+        self.assertIn("KICK", self.kick(NUC).stdout)
+
+
+SYNC_STUB = """import sys, os
+a = sys.argv[1:]
+if a[0] == "start":
+    if os.environ.get("STUB_SYNC_FAIL"):
+        print("sync: merge of origin/fast-track conflicts"); sys.exit(1)
+    print("host=T branch=x pulled=0")
+elif a[0] == "claim":
+    if os.environ.get("STUB_CLAIM_FAIL"):
+        print("claim refused"); sys.exit(1)
+    open("claimed.txt", "w").write(a[1])
+"""
+TASKS_STUB = """import sys
+if sys.argv[1] == "next":
+    print("opus-card [OPUS, M, p1] big thing")
+    print("sonnet-card [SONNET, M, p1] the task")
+    print("second-card [SONNET, S, p2] later")
+elif sys.argv[1] == "brief":
+    print("TASK " + sys.argv[2] + " brief line")
+"""
+
+
+def git(cwd, *a):
+    subprocess.run(["git", "-c", "user.email=t@t", "-c", "user.name=t", *a], cwd=str(cwd), check=True, capture_output=True)
+
+
+class BeginTest(unittest.TestCase):
+    """relay.py begin: worktree + sync start + first ready non-OPUS card + claim + brief in one call (B172 cut 2)."""
+
+    def setUp(self):
+        tmp = Path(tempfile.mkdtemp())
+        self.origin, self.clone = tmp / "origin.git", tmp / "clone"
+        git(tmp, "init", "-q", "--bare", str(self.origin))
+        git(tmp, "clone", "-q", str(self.origin), str(self.clone))
+        git(self.clone, "checkout", "-q", "-b", "fast-track")
+        d = self.clone / "scripts" / "dev"
+        d.mkdir(parents=True)
+        (d / "sync.py").write_text(SYNC_STUB, encoding="utf-8", newline=NL)
+        (d / "tasks.py").write_text(TASKS_STUB, encoding="utf-8", newline=NL)
+        git(self.clone, "add", "-A")
+        git(self.clone, "commit", "-q", "-m", "stubs")
+        git(self.clone, "push", "-q", "origin", "fast-track")
+        self.wt = tmp / "mts-relay"
+
+    def begin(self, extra=None, *args):
+        env = {**os.environ, **(extra or {})}
+        return subprocess.run([sys.executable, str(SCRIPT), "begin", "--root", str(self.clone), "--worktree", str(self.wt),
+                               "--branch", "t/relay", *args], capture_output=True, text=True, env=env)
+
+    def test_begin_picks_ready_task_and_claims(self):
+        r = self.begin()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("claimed: sonnet-card", r.stdout)
+        self.assertIn("TASK sonnet-card brief line", r.stdout)
+        self.assertLessEqual(len(r.stdout.splitlines()), 30)
+        self.assertEqual((self.wt / "claimed.txt").read_text(), "sonnet-card")
+
+    def test_begin_stops_on_sync_failure(self):
+        r = self.begin({"STUB_SYNC_FAIL": "1"})
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("BEGIN FAILED", r.stdout)
+        self.assertNotIn("claimed:", r.stdout)
+        self.assertFalse((self.wt / "claimed.txt").exists())
+
+    def test_begin_skips_opus_and_claimed(self):
+        r = self.begin(None, "--skip", "sonnet-card")
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertIn("claimed: second-card", r.stdout)
+        self.assertNotIn("opus-card", r.stdout.split("brief")[0].replace("TASK", ""))
+
+    def test_begin_fails_closed_on_claim_error(self):
+        r = self.begin({"STUB_CLAIM_FAIL": "1"})
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("BEGIN FAILED", r.stdout)
+        self.assertNotIn("brief line", r.stdout)
 
 
 if __name__ == "__main__":

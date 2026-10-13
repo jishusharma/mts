@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-12T13:49:51Z",
+  "commands": [],
+  "created": "2026-10-12T08:16:24Z",
+  "depends_on": [],
+  "done_when": "Every row distinguishes observed, quoted and inferred dates/times; unsupported precise execution times remain unknown.",
+  "from_inbox": "",
+  "goal": "Separate recording, chart and execution timestamps and their certainty.",
+  "id": "tom-ledger-time-provenance",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "Repair work only. Codex retains audit ownership; this card does not ask Claude to repeat the audit.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "Codex completed ledger audit",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md"
+  ],
+  "result": "TOM_TRADE_LEDGER.csv +6 time-provenance columns, 37 rows, execution minute UNKNOWN on all, T4/T9 T6/T10 aliased dates, T11 conflict kept",
+  "scope_in": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",
+    "Read-only source frames/captions under F:/MTS/data/tom_videos"
+  ],
+  "scope_out": [
+    "New audit; layer specs or code; live system; holdout reads; split manifest ownership"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Claim the shared ledger file area; serialize with other ledger repairs and respect the existing split owner's claim.",
+    "Use report H2/M4 and its per-row missing-evidence table; separate timestamp types and timezone provenance.",
+    "Resolve conflicting T4/T9 and T6/T10 dates; record T11 31.08 annotation versus 01.09 recording without asserting a verified replacement date.",
+    "Correct T12-m1 timing: 0900 shows SL25097; 0990 shows SL25038. Keep unknown execution minutes explicitly unknown.",
+    "Record prior exposure and supply date/group evidence to the existing split owner; do not create a split or inspect holdout."
+  ],
+  "tests": "Documentation validation: preserve row IDs/source pointers; check each changed claim against the cited audit evidence; parse CSV and check narrative consistency. No code tests or backtests.",
+  "title": "Tom ledger audit: separate trade time from recording and chart time"
+}

@@ -1,0 +1,31 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T13:15:47Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "exec-halt-entry-10031",
+  "kind": "audit",
+  "lane": "JIS-NB",
+  "layers": [
+    "live_engine"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "HALT since 2026-10-12 09:46Z: executor fail_closed on entry_market rejected 10031 invalid_args_for_instrument (plan L-mkt-1012-0945, jishu_1, turn_of_candle long); 9 layer fires skipped 12:01-13:00Z incl. shorts in the sell-off. Find the cause, decide if a rejected entry with no position should halt the whole stack, clear HALT per supervisor rules"
+}

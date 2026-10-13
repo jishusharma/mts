@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-11T20:29:10Z",
   "commands": [],
   "created": "2026-10-11T19:54:28Z",
   "depends_on": [],
@@ -16,7 +17,7 @@
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST: 8 HIGH + 6 MED in the DAX backtest harness (stale proof count, dev trades exiting on holdout bars, fills on closed-market bars, fee gate bypassed); 8 follow-up cards lab-dax-*; report layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md. Claude spot-check: H1 and H5 MATCH the code. Closed by Claude: Codex left it open only because video frames are not on the NUC.",
   "scope_in": [
     "MyTradingSys/backtest/tom_dax_bt.py",
     "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md",
@@ -30,7 +31,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",

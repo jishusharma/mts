@@ -1554,3 +1554,47 @@ Get the appStart writing
 ```
 When possible. Design DSA AI Bridge tasks such that multiple sessions can run in || and complete tasks  quickly. Make sure that their scope on NB and NUC are maintained!
 ```
+## kvsh4c9zt1bvw26dhore | 2026-10-11T16:10:43Z | task
+```
+we have had changes in the way to improve AI health in MTS - I still see sessions doing starting rituals - is it expected/correct/optimized? If not fix as per our goals. 
+```
+
+## nwaa0hbbf0hrd0sk8qti | 2026-10-12T11:22:52Z | task
+```
+After the fixes, AI Bridge must be available on NB as well. Change the version number of the extension. 
+AIBridge feedback - from DSA session MTS-2026-10-12-0952Z - 2026-10-12
+
+F1. Multi-block count does not match what was sent.
+    Result #1 note: "2 other AIRUN block(s) in the same reply were NOT run."
+    Result #2 note: "4 other AIRUN block(s) in the same reply were NOT run."
+    Both replies carried exactly one fenced AIRUN block. Either the detector
+    counts non-block content as blocks (false positive) or it splits the one
+    block on an internal delimiter. Either way the count is wrong.
+
+F2. Half-run semantics. When multi-block is detected the bridge runs the
+    first block and silently drops the rest. DSA cannot see from the result
+    which commands actually ran and had already told the operator "one block".
+    The first block can write state before the second is discovered missing.
+    Better: reject the whole reply, run nothing, return error text naming the
+    extra blocks. DSA then re-emits as one block.
+
+F3. cmd: echoes only the first line of the block. For a five-line block the
+    operator cannot verify the rest matched. Echo the full block under the
+    existing byte cap, or include a hash of the block.
+
+F4. The multi-block check runs AFTER the first block has executed. Move it
+    before the run so no partial work lands.
+
+F5. The warning is only in the result note. If the DSA session has already
+    composed its next reply when the note arrives, the note is lost. Add
+    structured fields to every result: blocks_seen (int), blocks_run (int),
+    so DSA can assert blocks_run == 1 on every call.
+
+F6. Keep the current [TRUNCATED...] + out_truncated pattern and extend it the
+    same way. Consistent, machine-readable, no prose.
+
+F7. "One block per reply" is in the bridge spec but the DSA session prompt
+    (section 0.5) only says "One command per call". The bridge accepts many
+    commands per block but one block per reply. Restate the bridge's actual
+    rule in the DSA prompt: one AIRUN block per reply, many lines per block.
+```

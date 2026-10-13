@@ -146,3 +146,6 @@ runtime_data/control_room/
 
 # Offline builder scratch: rebuilt feed and isolated profile compiler
 /work/
+
+# MTS-Live-Health popup payload (scripts/sched/check_live_health.py --alert)
+runtime_data/live_health_alert.json

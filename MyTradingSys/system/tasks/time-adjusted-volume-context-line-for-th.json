@@ -1,0 +1,31 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T15:34:42Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "time-adjusted-volume-context-line-for-th",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [
+    "volume_candles_ma"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-only market-guide field; VOLUME report recommendation (c)"
+}

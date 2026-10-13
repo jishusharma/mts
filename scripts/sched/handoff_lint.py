@@ -9,6 +9,8 @@ following lines indented deeper belong to the same task.
   - every unblocked task: <= 6 lines, contains `DONE when:` (an observable end), no vague wording, every path it names exists
   - a task starting `Qn. DONE` is finished; `Qn. (after ...)` is blocked: both skip the unblocked checks
   - the block restates no hard rule from CLAUDE.md
+  - a task may start `Qn. host=<NAME> ...` (NAME = a machine name or `any`; absent = any): with `host` set, lint() counts it
+    runnable only on that host. The tag is stripped before done/blocked is decided, so `Qn. host=JIS-NB (after Qm)` is blocked.
   - `--go` needs at least one unblocked open task; `--stop` is refused while one exists (stop only when all are done or blocked)
 """
 import re
@@ -19,6 +21,8 @@ MAX_TASK_LINES = 6
 VAGUE = ["next open", "follow-up", "follow up", "take the next", "next unfinished", "as needed", "etc.", "and more", "everything", "whatever"]
 RESTATED = ["never commit to master", "testnet only", "never the live tree", "worktree only", "never rebase", "never force-push", "never mainnet"]
 TASK = re.compile(r"^(\s+)Q(\d+)\.\s*(.*)$")
+HOST = re.compile(r"^host=(\S+)\s*", re.I)
+HOST_ERR = "go with no unblocked open task for host"
 PATH = re.compile(r"[\w.\-]+(?:/[\w.\-]+)+\.(?:py|md|json|csv|java|ps1|yml|yaml|txt)\b")
 
 
@@ -40,7 +44,9 @@ def parse_tasks(lines):
         else:
             cur = None
     for t in tasks:
-        f = t["first"]
+        m = HOST.match(t["first"])
+        t["host"] = m.group(1) if m else None
+        f = t["first"] = t["first"][m.end():] if m else t["first"]
         t["state"] = "done" if f.startswith("DONE") else "blocked" if f.startswith("(after") else "open"
     return tasks
 
@@ -51,8 +57,12 @@ def path_exists(root, tok):
     return any((Path(root) / pre / tok).exists() for pre in ("", "MyTradingSys"))
 
 
-def lint(text, root, want="go"):
-    """(errors, tasks). want = go | stop."""
+def runs_on(t, host):
+    return not host or not t.get("host") or t["host"].lower() in ("any", host.lower())
+
+
+def lint(text, root, want="go", host=None):
+    """(errors, tasks). want = go | stop. host: for want=go only tasks that can run on that host count as runnable."""
     errs = []
     lines = block_lines(text)
     if lines is None:
@@ -66,6 +76,12 @@ def lint(text, root, want="go"):
     tasks = parse_tasks(lines)
     if not tasks:
         errs.append("no tasks: add lines `   Q1. <task> ... DONE when: <observable>`")
+    seen = {}
+    for t in tasks:
+        seen[t["id"]] = seen.get(t["id"], 0) + 1
+    for tid, n in seen.items():
+        if n > 1:
+            errs.append("%s is used twice in the block: two threads reused one number; renumber so each task id is unique" % tid)
     for t in tasks:
         if t["state"] != "open":
             continue
@@ -83,6 +99,9 @@ def lint(text, root, want="go"):
     opened = [t for t in tasks if t["state"] == "open"]
     if want == "go" and tasks and not opened:
         errs.append("go with no unblocked open task: write `--stop` and name each blocker, or add the missing task")
+    elif want == "go" and host and opened and not any(runs_on(t, host) for t in opened):
+        errs.append("%s %s: open tasks all belong to other hosts (%s); write `--stop` naming them or add a task for this host"
+                    % (HOST_ERR, host, ", ".join("%s=%s" % (t["id"], t["host"]) for t in opened)))
     if want == "stop" and opened:
         errs.append("stop refused: %s still open and unblocked (%s)" % (len(opened), ", ".join(t["id"] for t in opened)))
     if want == "stop":

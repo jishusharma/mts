@@ -456,17 +456,16 @@ Before importing any concept from the transcripts:
 
 ## 11. CURRENT STATE
 
-Refresh at session close or on operator request. Keep to this size; history lives in the ledger and the commit log.
-
-Last live read:  2026-10-09 (MTS-2026-10-08-2342Z-DSA-COO; diff rerun confirmed by MTS-2026-10-08-1933Z-APP-ANA-bigtrade-bt).
+Last live read:  2026-10-12 (MTS-2026-10-12-0452Z-DSA-COO; direct mode on JIS-NB, loop up on B142).
 Thesis:          neutral, low confidence. Unchanged since 2026-09-14. Next trigger: none. Invalidates: none.
-Loop:            UP after the 2026-10-07 restart; verify live PIDs from the boot paste, not from this line.
-Build:           PASS 2026-10-07T10:05Z (Java 147/147, Math 345/345, Doc 5/5); re-gate at close.
-Branch:          fast-track; live tree fast-forwarded to origin/fast-track 5053e2d on 2026-10-07, closeout commits on top.
-Results:         CryptoCred setups FAIL (limit-fill); T055 C1/C2 FAIL on full funding; Tom core rerun no edge (live rule 0 signals, was 17). OBI research filed (research/imbalance_2026-10-10/RESEARCH.md): no net-of-cost order book imbalance strategy validated; T093/P4 kline imbalance NO REPLICATION.
-Open:            B120, B128, B134, B135, B095, B137, B138, B142-B145; live-path B121, B122, B124, B098 wait for a stopped-loop window; B125 confirm and close; B090 cloud credit (operator).
+Loop:            UP 2026-10-12T10:31:32Z: wrapper 3268, java 18280 (started 10:27Z), supervisor 9852; snapshot_age 20s, state_code_age 21s, stale_strikes 0, restart_count_24h 1.
+Build:           PASS 2026-10-12T10:36Z (run_all_tests quick gate, ALL TESTS PASSED); Java 152/152, Doc 5/5 at 08:34Z Build-Check.
+Branch:          fast-track; live HEAD 927665a, 0 ahead, 135 behind origin/fast-track. B142 code in HEAD.
+B142 live:       source e262656e 2026-10-10T21:03Z; class 2026-10-11T11:08Z; java 18280 2026-10-12T10:27Z. Desk card 20261010-205418-java-window-deploy-b142 closed.
+Results:         CryptoCred setups FAIL (limit-fill); T055 C1/C2 FAIL on full funding; Tom core rerun no edge. OBI research: no net-of-cost imbalance validated; T093/P4 NO REPLICATION.
+Open:            B120, B128, B134, B135, B095, B137, B138, B143-B145 (B142 closed); live-path B121, B122, B124, B098 wait for stopped-loop; B125 confirm and close; B090 cloud credit (operator).
 Operator decisions owed: Chrome extension connect for T066; TOM-091/092 retag in risk_protocol.md; buy-detection meaning for T067.
-First action next session: F-BT-01 fix path - backtest D tunes stop_buffer_atr (stop = structure level +/- k x ATR(TF), BT-TUNED), then staged SetupCandidatesBuilder .new with a fail-first test that stop distance never falls below the tuned buffer; supervisor promotes. Detail: research/bigtrade_2026-10-09/FINDINGS.md F-BT-01.
+First action next session: install live mirror on JIS-NB (desk 20261009-202832); then AIBridge v0.6.0 patch (desk 20261010-113012); then refresh 2026-10-09 klines (desk 20261010-165600).
 
 ## 12. SESSION END
 

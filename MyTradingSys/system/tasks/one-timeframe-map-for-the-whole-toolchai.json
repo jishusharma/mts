@@ -1,0 +1,31 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T15:34:42Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "one-timeframe-map-for-the-whole-toolchai",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [
+    "live_engine"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "One timeframe map for the whole toolchain: capture.TF_MINUTES lacked 8h (CoinGlass button) while holding 7h; grep and unify shot.py, alert_rate_check, audits (lesson G)"
+}

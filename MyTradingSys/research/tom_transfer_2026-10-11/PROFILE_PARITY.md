@@ -76,3 +76,35 @@ with frame paths and no outcomes. Full drawn-vs-computed parity remains pending 
 Research rationale: BACKTEST_FAILURES_RESEARCH.md N3 / section 6 item 5.
 
 RESULT (2026-10-12, JIS-NUC): python scripts/dev/run_all_tests.py --quick: ALL TESTS PASSED.
+
+## JIS-NB frame read, 2026-10-12 (relay session; dev dates T1/T2 only, no holdout bars read)
+
+Frames viewed: n7ZSkjb7JXs_0314.jpg (T1), k0zm5NYn0IQ_0280.jpg (T2), plus T4/T5/T7 frames for the line inventory.
+- No labelled POC / VAH / VAL line is drawn on either DAX dev frame. Tom's only profile object there is the right-edge volume
+  histogram (no price text on its bars). T4/T5 show hand-drawn range lines (T5 blue line 24425 is "the value area", transcript
+  T6hDJcHrVBM 04:22) but 2026-05 dates are inside the closed holdout window, so their computed side was NOT read.
+  T7 is ES, not DAX. So the card's >= 6 drawn-vs-computed levels cannot be filled from dev data: 0 of 6 are MATCH/MISMATCH, all stay NOT_IN_DATA.
+- Price level offset (measured from price levels only, no outcomes): ledger entry price minus archive 1m close at the ledger minute:
+  T1 24481 - 24265.07 = +215.9 (2025-12-22 06:24Z); T2 25318 - 25087.66 = +230.3 (2026-01-08 07:34Z).
+  The dxFeed FDAX chart and the Dukascopy DEUIDXEUR CFD archive sit ~220 pts apart, and the offset differs by day, so a
+  1-tick absolute match is impossible by construction. (Part of it may be a timezone mismatch of the ledger instant; unverified.)
+- Eyeball of the T2 histogram: widest bar ~25215-25225 on the chart axis (10-pt labels, +-10 pt read). Computed candidate POC 25078.14 +
+  230 = 25308: not within a tick of the eyeball. Reading is screenshot-resolution only (no image library on this host: PIL/cv2 absent), so it is
+  evidence, not a status.
+
+Verdict unchanged: **NOT_IN_DATA**. Next steps, each one session:
+1. Operator decision or Q: volume proofs need futures volume (FDAX) or a per-day basis rule; the CFD feed shape can only be compared after
+   a basis offset, which is a parameter with no Tom source (provenance rule), so it must not be tuned.
+2. Pixel-accurate reads need Pillow on JIS-NB (download needs operator approval): then measure histogram POC row, top/bottom rows on T1/T2 frames
+   and compare SHAPE (POC position as fraction of high-low range) with the computed profile; that is basis-free.
+
+## Basis-free shape comparison, 2026-10-13 (T1/T2 dev frames)
+
+Shape metric: `f=(widest-row price - profile low)/(profile high - profile low)`. For drawn, profile low/high are visible chart-axis endpoints; for computed, they are VAL/VAH in the corresponding `PROFILE_PARITY_T1/T2.json`. A match is within one histogram-row height normalized by visible chart height.
+
+| Frame | Chart / axis pixel box (x1,y1,x2,y2) | Widest row pixel box | Visible price low-high | f_drawn | Computed VAL-VAH; POC | f_computed | Result |
+|---|---|---|---:|---:|---|---:|---|
+| T1 `n7ZSkjb7JXs_0314.jpg` | DAX lower-left chart, approx (0,360,550,550); axis labels too compressed/obscured for endpoints | right-edge histogram visible, exact row bounds unreadable | NOT_IN_DATA | NOT_IN_DATA | 24280.70-24333.40; POC 24314.70 | NOT_IN_DATA | NOT_IN_DATA |
+| T2 `k0zm5NYn0IQ_0280.jpg` | approx (243,80,1112,694); visible axis 25070-25370 | approx (959,357,1073,365), widest row center ~25220 | 25070-25370 | ~0.500 | 25066.69-25123.94; POC 25078.14 | ~0.200 | MISMATCH (~0.300 difference; row fraction ~0.014) |
+
+**PROFILE arm on DAX = NOT_IN_DATA** (T1 is unreadable at the required axis precision; T2 alone indicates a shape mismatch, but both frames are required for the card verdict). Pixel boxes are approximate from the 1280x720 source images. No basis offset or outcomes were used.

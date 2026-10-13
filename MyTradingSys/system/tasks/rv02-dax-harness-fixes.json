@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-12T19:47:05Z",
+  "commands": [],
+  "created": "2026-10-12T17:18:12Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "from_inbox": "",
+  "goal": "Follow MyTradingSys/system/revalidation/RV02_dax_harness_fixes.md exactly; report per MyTradingSys/system/revalidation/_COMMON.md. host=JIS-NUC.",
+  "id": "rv02-dax-harness-fixes",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "result": "FIX-FIRST; 4 HIGH, 7 MED, 1 LOW; 66 tests passed; MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md",
+  "scope_in": [
+    "MyTradingSys/system/revalidation/RV02_dax_harness_fixes.md",
+    "MyTradingSys/system/revalidation/_COMMON.md",
+    "MyTradingSys/backtest/tom_dax_bt.py",
+    "MyTradingSys/backtest/dax_engine.py",
+    "MyTradingSys/backtest/dax_data.py",
+    "MyTradingSys/backtest/test_tom_dax_bt.py",
+    "MyTradingSys/research/layer_lab/reports"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "RV02 revalidate DAX harness fixes H1-H8 and holdout isolation (host=JIS-NUC)"
+}

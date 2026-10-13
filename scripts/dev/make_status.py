@@ -39,6 +39,15 @@ def get_screenshot_status():
         return f"(screenshot status unavailable: {e})"
 
 
+def get_lab_status():
+    """Codex layer lab in plain words (scripts/dev/codex_run.py status); never fails the status build."""
+    try:
+        r = subprocess.run([sys.executable, "scripts/dev/codex_run.py", "status"], capture_output=True, text=True, timeout=60)
+        return (r.stdout or r.stderr).strip() or "(no lab status)"
+    except Exception as e:
+        return f"(lab status unavailable: {e})"
+
+
 def get_hygiene_status(sched_dir=None):
     """Head of the scheduled daily hygiene report (scripts/dev/daily_hygiene.py); never fails the status build."""
     d = Path(sched_dir) if sched_dir else Path("MyTradingSys/runtime/sched")
@@ -132,6 +141,9 @@ def get_recent_reports(root="MyTradingSys/research", days=7, cwd=None):
     return reports
 
 
+# keep in step with the push paths filter in .github/workflows/ci.yml
+CI_PATHS = ["src", "MyTradingSys/backtest", "MyTradingSys/execution", "MyTradingSys/runtime", "MyTradingSys/tests",
+            "MyTradingSys/items", "scripts", ".github/workflows"]
 CI_STALE_MIN = 60  # a CI run takes ~4 min; a commit still not green after this means CI is red or stuck
 
 
@@ -148,6 +160,9 @@ def get_ci_line(cwd=None, now=None):
                if t.isdigit()]
     if not pending:
         return f"CI green: {green} ({when}) = origin/fast-track: OK"
+    # ci.yml only runs on pushes touching CI_PATHS: a tip that differs from green only in docs never gets a run
+    if not run_cmd("git diff --name-only origin/green/fast-track origin/fast-track -- " + " ".join(CI_PATHS), cwd=cwd):
+        return f"CI green: {green} ({when}), {len(pending)} docs-only commit(s) ahead (no CI-gated path changed): OK"
     age_min = ((now or datetime.now()).timestamp() - min(pending)) / 60
     tag = (f"RED: oldest ungreen commit is {age_min / 60:.1f} h old - CI is failing, auto-deploy is idle; fix CI first"
            if age_min > CI_STALE_MIN else "CI running")
@@ -257,6 +272,13 @@ def main():
     output.append("## Screenshots")
     output.append("```")
     output.append(get_screenshot_status())
+    output.append("```")
+    output.append("")
+
+    # Codex layer lab: unattended runs on JIS-NUC; a line under NEEDS A LOOK is work for the next NUC session (LAYER_LAB.md)
+    output.append("## Layer Lab (Codex)")
+    output.append("```")
+    output.append(get_lab_status())
     output.append("```")
     output.append("")
 

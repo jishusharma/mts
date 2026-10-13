@@ -1,0 +1,43 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q scripts/dev/test_sync.py",
+    "python -m pytest -q scripts/dev/test_shot.py scripts/dev/test_tasks.py",
+    "python -m pytest -q MyTradingSys/tests/test_relay.py",
+    "python -m pytest -q MyTradingSys/backtest/test_tom_dax_bt.py"
+  ],
+  "created": "2026-10-12T17:50:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/revalidation/RV_DSA_test_sweep.md lists passed/failed per file, and any failure verbatim.",
+  "from_inbox": "",
+  "goal": "Second-eyes baseline: run these tests in the mts-dsa worktree after sync, report pass/fail counts per file. Prompt context: MyTradingSys/system/revalidation/VERDICTS.md.",
+  "id": "rv-dsa-test-sweep",
+  "lane": "DSA-NUC",
+  "layers": [],
+  "live_path": false,
+  "note": "host=JIS-NUC",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/revalidation/VERDICTS.md"
+  ],
+  "scope_out": [
+    "editing code or ledgers",
+    "holdout reads",
+    "tidy --apply"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Run the commands in order, each inside the 300 s bridge cap.",
+    "Paste the output tail into the chat; if a command fails twice close the task --failed with the error text.",
+    "Write the numbers to the named file; change no code."
+  ],
+  "tests": "",
+  "title": "RV-DSA test sweep: run the 7 revalidation test files and report counts (host=JIS-NUC)"
+}

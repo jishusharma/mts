@@ -13,8 +13,12 @@
   "goal": "Freeze the arms that survived the diagnostics, recall and DAX run into one pre-registration with an honest trial count, then capture the runner as a new card.",
   "id": "tom-probe-prereg",
   "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
-  "note": "opus 2026-10-11: DIAG_BTC says S SKIP, Q SKIP (thin), M GO. Scope reduced to the M arms (partials, trail, re-entry, no timeout) with stops wide enough to clear BTC noise+fees per TOM_LAYER_V2_SPEC; S/Q arms parked until the v2 encoding exists.",
+  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | opus 2026-10-11: DIAG_BTC says S SKIP, Q SKIP (thin), M GO. Scope reduced to the M arms (partials, trail, re-entry, no timeout) with stops wide enough to clear BTC noise+fees per TOM_LAYER_V2_SPEC; S/Q arms parked until the v2 encoding exists.",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat)",
@@ -35,7 +39,7 @@
     "operator chat 2026-10-11: queue DAX recall, gap rules, DAX backtest in that order; probe selection/management/session with options flagged up front",
     "MyTradingSys/research/tom_transfer_2026-10-11/PROBE_PLAN.md"
   ],
-  "state": "refined",
+  "state": "blocked",
   "steps": [
     "List each arm with source status (Tom quote + file:line, or NO-SOURCE needing an operator decision).",
     "Fix market order per the branch in PROBE_PLAN section 4, holdouts (BTC forward data from 2026-09-27; DAX last 6 months), trial count, DSR/PBO.",

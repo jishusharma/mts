@@ -8,6 +8,7 @@ import os
 import shutil
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
@@ -20,6 +21,7 @@ PYTEST_LAYER_PATHS = [
     "MyTradingSys/backtest/layers/fabio/test_htf_context_live.py",
     "MyTradingSys/execution/tests",
     "scripts/dev/test_market_guide.py",
+    "scripts/dev/test_dax_engine_flag.py",
     "MyTradingSys/observation/tests",
 ]
 
@@ -28,6 +30,7 @@ def run_step(step_num, description, cmd, cwd=None):
     """Run a single test step. Return True on success, False on failure."""
     print(f"\n[Step {step_num}] {description}")
     print(f"  Command: {' '.join(cmd) if isinstance(cmd, list) else cmd}")
+    t0 = time.monotonic()
     try:
         result = subprocess.run(
             cmd,
@@ -37,6 +40,7 @@ def run_step(step_num, description, cmd, cwd=None):
             shell=isinstance(cmd, str),
         )
         output = result.stdout + result.stderr
+        print(f"  Elapsed: {time.monotonic() - t0:.1f}s")
         if result.returncode == 0:
             print(f"Step {step_num}: PASS")
             return True, output
@@ -77,6 +81,41 @@ def find_layer_modules():
     if not layers.exists():
         return []
     return sorted(".".join(f.relative_to(REPO).with_suffix("").parts) for f in layers.rglob("test_*.py"))
+
+
+def gate_jobs():
+    """Parallel unittest processes for step 5b: MTS_GATE_JOBS, default min(4, cpu count); 1 = the old single call."""
+    try:
+        n = int(os.environ.get("MTS_GATE_JOBS", ""))
+    except ValueError:
+        n = min(4, os.cpu_count() or 1)
+    return max(1, n)
+
+
+def split_modules(modules, jobs):
+    """Round-robin the module list into at most `jobs` non-empty chunks; their union is exactly `modules`."""
+    jobs = max(1, min(jobs, len(modules))) if modules else 1
+    return [c for c in (modules[i::jobs] for i in range(jobs)) if c]
+
+
+def run_layer_chunks(modules, jobs):
+    """Run every layer module in `jobs` concurrent unittest processes. Returns (success, output); fails if any chunk fails."""
+    chunks = split_modules(modules, jobs)
+    t0 = time.monotonic()
+    procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE,
+                              stderr=subprocess.STDOUT, text=True) for c in chunks]
+    outs = [p.communicate()[0] for p in procs]
+    ok = all(p.returncode == 0 for p in procs)
+    print(f"  Elapsed: {time.monotonic() - t0:.1f}s ({len(chunks)} processes)")
+    print(f"Step 5b: {'PASS' if ok else 'FAIL'}")
+    if not ok:
+        for p, o in zip(procs, outs):
+            if p.returncode != 0:
+                print("  Last output:")
+                lines = o.splitlines()
+                for line in (lines if os.environ.get("CI") else lines[-15:]):
+                    print(f"    {line}")
+    return ok, "\n".join(outs)
 
 
 def isolate_pytest_tmp():
@@ -147,6 +186,18 @@ def main(argv=None):
     cmd3tk = [sys.executable, "scripts/dev/test_tasks.py"]
     success, output = run_step("3tk", "Task card tests", cmd3tk)
     results.append(("Step 3tk: Task card tests", success))
+    cmd3td = [sys.executable, "scripts/dev/test_tom_ledger_dates.py"]   # Tom ledger date column: observed or empty (RV01 D4)
+    success, output = run_step("3td", "Tom ledger date tests", cmd3td)
+    results.append(("Step 3td: Tom ledger date tests", success))
+    cmd3hs = [sys.executable, "scripts/dev/test_tom_holdout_split.py"]   # Tom holdout clean split, dates only
+    success, output = run_step("3hs", "Tom holdout split tests", cmd3hs)
+    results.append(("Step 3hs: Tom holdout split tests", success))
+    cmd3sq = [sys.executable, "scripts/dev/test_check_spec_quotes.py"]   # spec quotes verbatim in the cited transcript lines
+    success, output = run_step("3sq", "Spec quote checker tests", cmd3sq)
+    results.append(("Step 3sq: Spec quote checker tests", success))
+    cmd3ly = [sys.executable, "scripts/dev/test_make_layers_md.py"]   # LAYERS.md: no dead pointer, every layer owned
+    success, output = run_step("3ly", "Layer index tests", cmd3ly)
+    results.append(("Step 3ly: Layer index tests", success))
     cmd3cx = [sys.executable, "scripts/dev/test_codex_run.py"]
     success, output = run_step("3cx", "Layer lab runner tests", cmd3cx)
     results.append(("Step 3cx: Layer lab runner tests", success))
@@ -206,6 +257,17 @@ def main(argv=None):
     success, output = run_step("3cr", "Control Room page generator tests", cmd3cr)
     results.append(("Step 3cr: Control Room tests", success))
 
+    cmd3lh = [sys.executable, "scripts/dev/test_lane_health.py"]
+    success, output = run_step("3lh", "GPT lane health tests (down/up rules, reroute, pause, resume, DSA prompt)", cmd3lh)
+    results.append(("Step 3lh: GPT lane health tests", success))
+
+    cmd3rb = [sys.executable, "scripts/dev/test_relay_board.py"]
+    success, output = run_step("3rb", "Claude-GPT relay board tests (shared notes, lanes, pack)", cmd3rb)
+    results.append(("Step 3rb: Relay board tests", success))
+    cmd3af = [sys.executable, "scripts/dev/test_artifacts.py"]
+    success, output = run_step("3af", "Artifact registry tests (one url per page per account)", cmd3af)
+    results.append(("Step 3af: Artifact registry tests", success))
+
     cmd3bk = [sys.executable, "scripts/dev/test_backup_snapshot.py"]
     success, output = run_step("3bk", "Backup snapshot tests (dirty/untracked work reaches the remote)", cmd3bk)
     results.append(("Step 3bk: Backup snapshot tests", success))
@@ -225,10 +287,16 @@ def main(argv=None):
     # Step 4: pytest (math + doc tests)
     cmd4 = [sys.executable, "-m", "pytest", "MyTradingSys/tests", "-q",
             # function-style tests that unittest-based steps 5b/6 do not collect
-            "MyTradingSys/backtest/test_prob_table.py", "MyTradingSys/backtest/test_prob_table_edge.py",
-            "MyTradingSys/backtest/test_tom_bt.py", "MyTradingSys/backtest/test_tom_probe_diag.py",
-            "MyTradingSys/backtest/test_dax_data.py", "MyTradingSys/backtest/test_tom_dax_recall.py",
-            "MyTradingSys/backtest/test_tom_dax_bt.py"] + PYTEST_LAYER_PATHS
+            # one entry per line: parallel sessions append here (a shared line is a guaranteed conflict)
+            "MyTradingSys/backtest/test_prob_table.py",
+            "MyTradingSys/backtest/test_prob_table_edge.py",
+            "MyTradingSys/backtest/test_tom_bt.py",
+            "MyTradingSys/backtest/test_tom_probe_diag.py",
+            "MyTradingSys/backtest/test_dax_data.py",
+            "MyTradingSys/backtest/test_tom_dax_recall.py",
+            "MyTradingSys/backtest/test_tom_v2_recall.py",
+            "MyTradingSys/backtest/test_tom_dax_bt.py",
+            ] + PYTEST_LAYER_PATHS
     success, output = run_step(4, "Pytest (math + doc tests)", cmd4)
     results.append(("Step 4: Pytest tests", success))
 
@@ -261,8 +329,13 @@ def main(argv=None):
     # Step 5b: indicator-layer tests (fast; run even with --quick)
     layer_modules = find_layer_modules()
     if layer_modules:
-        cmd5b = [sys.executable, "-m", "unittest"] + layer_modules
-        success, output = run_step("5b", f"Layer tests ({len(layer_modules)} modules)", cmd5b)
+        jobs = gate_jobs()
+        if jobs == 1:
+            cmd5b = [sys.executable, "-m", "unittest"] + layer_modules
+            success, output = run_step("5b", f"Layer tests ({len(layer_modules)} modules)", cmd5b)
+        else:
+            print(f"\n[Step 5b] Layer tests ({len(layer_modules)} modules, {jobs} parallel processes)")
+            success, output = run_layer_chunks(layer_modules, jobs)
         results.append(("Step 5b: Layer tests", success))
 
     # Step 5c: options module (own pytest run: its bare module names, e.g. fees.py, collide with other packages)

@@ -13,6 +13,9 @@
   "goal": "Apply the 12-point checklist to the CryptoCred layer so its 'no edge' is read as measuring the encoding or the trader. He is the one trader layer whose home market is BTC: needs no transfer, only his timeframe (daily/4h), invalidation stops, his targets and trade-through fills.",
   "id": "cryptocred-home-fit-audit",
   "lane": "SONNET",
+  "layers": [
+    "cryptocred"
+  ],
   "live_path": false,
   "note": "",
   "prio": 4,

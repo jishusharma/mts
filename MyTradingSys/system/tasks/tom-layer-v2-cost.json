@@ -1,25 +1,33 @@
 {
   "approved_by": "operator (chat 2026-10-11: 'whatever research u need with Opus')",
   "asks": "",
+  "closed": "2026-10-13T06:35:38Z",
   "commands": [],
   "created": "2026-10-11T12:00:00Z",
   "depends_on": [
+    "tom-holdout-clean-split",
     "tom-layer-v2-spec",
-    "tom-profile-parity-check",
-    "tom-holdout-clean-split"
+    "tom-ledger-canonical-identities",
+    "tom-ledger-instrument-identity",
+    "tom-ledger-management-provenance",
+    "tom-ledger-time-provenance",
+    "tom-profile-parity-check"
   ],
   "done_when": "TOM_LAYER_V2_SPEC.md part B: per-market proof/cost table, BTC transfer rule with DIAG_BTC numbers, holdout + pass-bar + null + fill rules (N1/N2/N7), snapshot fields (N6), flag plan (default off, BTC bit-identical), AND the Sonnet build cards in system/tasks/.",
   "from_inbox": "",
   "goal": "Make the part-A families computable and affordable per market: which proofs can fire on DAX CFD (no aggressor split, proof cap 2) versus BTC (aggressor data), the cost model per market, the minimum stop width that clears noise + fees on BTC, and the Sonnet build cards that implement the spec.",
   "id": "tom-layer-v2-cost",
   "lane": "OPUS",
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
-  "note": "",
+  "note": " Tom ledger audit 2026-10-12 = FIX-FIRST (layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md): 14 IDs = 12 candidate groups (T4/T9, T6/T10 duplicates); T11 date 31-Aug likely; T5 chart is FDXM not FDAX (no multiplier assumed); T3-s-p1 SL 24220 unsupported. Start only after the four tom-ledger-* repair cards are done, or cite the audit row per rule and mark each affected rule UNRESOLVED.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
   "refs": [],
-  "result": "",
+  "result": "TOM_LAYER_V2_SPEC.md part B (sections 10-15): BTC minimum stop 0.40 % of price all-taker (0.20 % maker in/target), noise floor 0.88 x N5 (Tom 20-63 pt = 0.88-2.84 DAX 5m ranges; BTC noise 1.5x DAX); DAX PRICE arm 4 proofs, PROFILE arm pending shape parity; 7 Sonnet cards (tom-profile-shape-parity ready, tom-encode-spike-fade ready)",
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/",
     "MyTradingSys/conditions/",
@@ -35,7 +43,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md section 3",
     "MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Read TOM_LAYER_V2_SPEC.md part A, DIAG_BTC.md, RECALL_DAX.md 3.4, FORMULAS.md, SetupCandidatesBuilder.java:557-575, the per-market fee code, PROFILE_PARITY.md, HOLDOUT_CLEAN.json, BACKTEST_FAILURES_RESEARCH.md N1-N8.",
     "Per market (FDAX/GER40 CFD, BTC perp): proofs that can fire on the data it has (use PROFILE_PARITY verdict for volume proofs), cost per side, round-turn cost in points and R for Tom's 20-63 point stops.",

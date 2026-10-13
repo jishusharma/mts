@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T17:10:37Z",
+  "depends_on": [],
+  "done_when": "The named test passes and the report lists the changed files and the red-then-green test output (the runner's ship runs the quick gate).",
+  "from_inbox": "",
+  "goal": "Score every Qriptal call from the 22 staged transcripts on Binance BTCUSDT 1m klines (0.05%/side fees, as posted); write research/qriptal_2026-10-10/SCORECARD.md: n, win rate, net R vs his claim 67.1%/3.99%/0.63%. Dev data only; no YouTube fetch. Brief: items/B162_qriptal_signal_layer.md, flow audit step 1.",
+  "id": "qriptal-score-binance",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [
+    "callers"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/qriptal_2026-10-10",
+    "MyTradingSys/extracts/_staged_2026-09-27"
+  ],
+  "scope_out": [
+    "the live path",
+    "holdout reads",
+    "parameters without a trader quote (NO-SOURCE)"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Write the test named in Tests first and see it fail on the current code.",
+    "Implement the goal inside scope_in only; new behaviour sits behind a flag that is off by default.",
+    "Run the test file you changed (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: tests that create git repositories are refused in the sandbox; the runner runs the quick gate when it ships."
+  ],
+  "tests": "scorer unit test on 3 hand-built calls (win, stop, never-filled), red first",
+  "title": "Qriptal: score his posted calls on Binance candles (B162)"
+}

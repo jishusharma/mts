@@ -12,7 +12,11 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 EXTRA = [
     "scripts/dev/test_suplock.py",
+    "scripts/dev/test_make_layer_map.py",
+    "scripts/dev/test_make_layers_board.py",
+    "scripts/dev/test_session_log.py",
     "scripts/dev/test_codex_pack.py",
+    "scripts/dev/test_token_audit.py",
     "MyTradingSys/research/test_b141_htf_stage1.py",
     "MyTradingSys/research/test_b141_htf_stage2.py",
     "MyTradingSys/execution/tests/test_deribit_orders_phase3.py",
@@ -29,6 +33,7 @@ EXTRA = [
     "scripts/worker/test_audit_rotation.py",
     "scripts/worker/test_audit_t0_checks.py",
     "tests/test_worker_prefix_hash.py",
+    "scripts/dev/test_fabio_prescreen.py",
 ]
 
 

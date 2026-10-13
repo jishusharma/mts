@@ -24,13 +24,17 @@ handoff and hands over to a fresh session costs far less (SHORT SESSIONS rule in
 The list is the product: the chain runs exactly what it says. `relay.py handoff` runs `relay.py lint` and REFUSES (exit 2, file untouched) a bad list;
 fix the list, run handoff again. Rules (code: scripts/sched/handoff_lint.py, tests: tests/test_relay.py LintTest):
 - Prompt block <= 30 lines; no restated hard rule or state (CLAUDE.md and STATUS.md carry them).
-- Tasks are `   Qn. <what>` lines. One task = one session (Sonnet, <= 50k tokens, <= 6 lines): split anything bigger, e.g. one screenshot SET, one pre-registration.
+- Tasks are `   Qn. <what>` lines. One task = one session (Sonnet, <= 15 tool turns, <= 6 lines): split anything bigger, e.g. one screenshot SET, one pre-registration.
 - Every open task has `DONE when: <something a reviewer can observe>`, names the exact item (no "next open item", "follow-ups", "as needed", "etc."),
   and every path it names exists on origin. Output files that do not exist yet belong to an earlier task; the later one starts `Qn. (after Qm ...)`.
 - A finished task is rewritten `Qn. DONE ...`. `--go` needs at least one open unblocked task; `--stop` is refused while one exists, so "queue empty" cannot be
   written while work waits. All tasks blocked: add the unblocking task (desk post, Control Room decision) first, then stop naming each blocker.
 - Curating when the list runs low: read STATUS.md, `shot.py status`, `desk.py list --all`, items/INDEX.md and Control Room; cut each candidate to one
   session with a finish line BEFORE writing it. A candidate you cannot scope in one session becomes a scoping task ("write the next item as Qn").
+- Host tag: `   Qn. host=JIS-NB <what>` (a machine name or `any`; absent = any). `kick` lints the committed handoff for its own host and prints
+  `IDLE no unblocked task for host <name>` when every open task belongs to another host, so no session is launched just to find nothing runnable.
+  `handoff` and `lint` ignore the host unless `--host` is given (a NUC session must still be able to hand a go to NB). The tag is not a model
+  tag: OPUS-only work stays `(after ...)`.
 - `python scripts/sched/relay.py lint --file MyTradingSys/system/NEXT_SESSION.md [--want stop]` checks without writing.
 
 ## Brakes (all fail closed)

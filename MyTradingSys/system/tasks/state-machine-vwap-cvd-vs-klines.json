@@ -1,0 +1,31 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T13:15:48Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "state-machine-vwap-cvd-vs-klines",
+  "kind": "audit",
+  "lane": "SONNET",
+  "layers": [
+    "live_engine"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "State machine session VWAP/CVD disagree with klines: 2026-10-12 13:08Z state_code.json cum_pv/cum_vol gives 83498.0 on 53825 BTC and session_cvd -4786.8; klines day VWAP 83577.0 on 73527 BTC and CVD -4314.456 (snapshot cvd.value matches klines). Also session.vwap_anchor_utc reads 2026-10-12T13:30:00Z (future) at 13:09Z. Find why (restart without backfill?) and which consumers read each"
+}

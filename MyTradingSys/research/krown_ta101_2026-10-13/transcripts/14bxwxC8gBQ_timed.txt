@@ -1,0 +1,1016 @@
+# Video ID: 14bxwxC8gBQ
+# Title: Your Trend Lines Keep Breaking Because They Were Never Real. Here Are the 2 Rules.
+# Published: 2026-09-12
+# Source: yt_dlp captions (manual); uploader: Krown
+# Analyst: Krown
+# Duration_s: 1672
+# Word count: 5655
+# ---
+[00:00:00] connecting everything to everything
+[00:00:01] the full Charlie from Always Sunny
+[00:00:01] crime board
+[00:00:04] it looks like an analysis,
+[00:00:04] looks like you're doing something
+[00:00:08] it looks like you're staying busy,
+[00:00:08] but what are you doing?
+[00:00:11] you're just decorating your charts
+[00:00:16] If you found this video, it's likely
+[00:00:16] because you are learning technical
+[00:00:18] analysis.
+[00:00:20] And as a new technical analysis acolyte,
+[00:00:20] you are probably learning trend lines.
+[00:00:24] You've drawn a few trend lines here.
+[00:00:26] They've all broken.
+[00:00:27] They've all wicked around.
+[00:00:28] You've gone long.
+[00:00:29] You've gone short that you don't know what
+[00:00:29] the hell is going on when price
+[00:00:31] action goes above or below your trend
+[00:00:31] line.
+[00:00:33] And honestly, it's probably because your
+[00:00:33] trend line is completely bunk to begin
+[00:00:35] with.
+[00:00:36] And I'm not saying this to, you know, to
+[00:00:36] poo-poo on you.
+[00:00:39] I'm saying this from experience, because
+[00:00:39] ultimately it's the first thing
+[00:00:42] that almost anyone learns when it comes to
+[00:00:42] technical analysis.
+[00:00:44] And usually it's the first thing that we
+[00:00:44] all get wrong because
+[00:00:46] we get very carried away with it.
+[00:00:48] We're drawing stuff that doesn't actually
+[00:00:48] exist.
+[00:00:50] And ultimately when it comes to trend
+[00:00:50] lines, the major rule here is that if
+[00:00:54] it ain't obvious, it's probably not a
+[00:00:54] trend line, it's probably just a phantom
+[00:00:57] of your mind, a phantom of your, or
+[00:00:57] figment of your imagination.
+[00:01:00] And it's going to act as such.
+[00:01:01] And if you treat them as, as valid, then
+[00:01:01] you'll probably end up losing
+[00:01:04] a shit ton of money, which we want to
+[00:01:04] avoid.
+[00:01:06] Thus we have created this nice
+[00:01:06] presentation right here to take you
+[00:01:09] through the fundamentals of technical
+[00:01:09] analysis with video number three,
+[00:01:13] which I'll get into a nice little
+[00:01:13] presentation as you can see.
+[00:01:16] All right.
+[00:01:17] Beautiful.
+[00:01:17] You can see a nice, nice, nice fake trend
+[00:01:17] line right there forced through
+[00:01:20] Hopium and of course it was never real.
+[00:01:23] It was never a real chart to begin with.
+[00:01:25] Anyways, what is this?
+[00:01:26] This is TA Foundations.
+[00:01:27] Like I said, episode number three, episode
+[00:01:27] number one was all about
+[00:01:30] candlesticks, episode number two was about
+[00:01:30] timeframes and episode number
+[00:01:33] three is of course trend lines that you
+[00:01:33] can actually draw anyways.
+[00:01:37] If you're not familiar with who I am,
+[00:01:37] where I'm coming from.
+[00:01:39] My name is Eric Krown.
+[00:01:39] He used to be a mark maker authorized
+[00:01:39] trader on the floor of New York
+[00:01:41] star change Arca as an equity options
+[00:01:41] market maker with series 56.
+[00:01:45] Not to say that you really need to become
+[00:01:45] a market maker in order
+[00:01:47] to send a trend lines.
+[00:01:48] I mean, realistically as a market maker,
+[00:01:48] we didn't use trend lines,
+[00:01:51] but I do think it is a powerful tool in
+[00:01:51] any TA's arsenal and can
+[00:01:56] provide a lot of value, especially when
+[00:01:56] documenting trends or if
+[00:01:58] you want to be more of a scalp trader.
+[00:02:01] Now, here's what I really want to avoid.
+[00:02:02] People typically look at trend lines as
+[00:02:02] invaluable in the sense
+[00:02:06] that if they break, then that means you're
+[00:02:06] going to get a reversal
+[00:02:08] and so on and so forth.
+[00:02:09] And that's just not fucking true.
+[00:02:11] If you trade like that, you're probably
+[00:02:11] going to lose a lot of money
+[00:02:13] and we want to avoid such things because
+[00:02:13] ultimately that is not
+[00:02:16] the goal of the game.
+[00:02:18] So moving on from there, let's go over
+[00:02:18] what trend lines actually are.
+[00:02:22] They are not a prediction.
+[00:02:24] You can't predict price.
+[00:02:25] I'm telling you this as a former market
+[00:02:25] maker, you can create models
+[00:02:28] of price, which gives you probabilities of
+[00:02:28] what prices like that
+[00:02:30] would be over a certain amount of times.
+[00:02:32] But you cannot predict price and trend
+[00:02:32] lines certainly are not
+[00:02:34] predicting anything to begin with.
+[00:02:35] I mean, all they are effectively a
+[00:02:35] footprint of where the big
+[00:02:38] players are positioning.
+[00:02:40] That's all you're looking for because
+[00:02:40] you're probably if you're
+[00:02:42] watching a video like this, you're
+[00:02:42] probably a pleb like me,
+[00:02:44] you know, not a massive quant firm that is
+[00:02:44] managing hundreds
+[00:02:47] of millions or billions of dollars.
+[00:02:49] And we're not moving the market.
+[00:02:51] So what do we do?
+[00:02:52] We're effectively trying to figure out
+[00:02:52] what the big players
+[00:02:55] are doing, where they are positioning so
+[00:02:55] that we can
+[00:02:57] effectively like ride with them because
+[00:02:57] they do leave a lot of
+[00:03:01] hints in.
+[00:03:02] actual price action, and that is where a
+[00:03:02] lot of the major highs or major lows are
+[00:03:05] found
+[00:03:07] in an overall trend. Thus, if we can see
+[00:03:07] what they're doing, it's probably good for
+[00:03:10] us to
+[00:03:12] at the very least pay attention and
+[00:03:12] generally trade with that. And there's a
+[00:03:14] lot of things
+[00:03:15] that we can do with that.
+[00:03:17] But anyways, you will notice these very
+[00:03:17] obviously, and again, I think by the end
+[00:03:21] of this video,
+[00:03:22] you'll probably be able to do this in the
+[00:03:22] same way that I do it, honestly, because
+[00:03:26] when it comes to trend lines, like I said,
+[00:03:26] it needs to be so fucking painfully
+[00:03:29] obvious
+[00:03:31] for it to be real, that when people end up
+[00:03:31] drawing a shit ton of trend lines, they
+[00:03:34] think
+[00:03:36] they're doing something, but they're not,
+[00:03:36] obviously. They're not. You get excited
+[00:03:38] when
+[00:03:39] you're learning something new and you
+[00:03:39] start to see it everywhere. And before you
+[00:03:42] know it,
+[00:03:43] you turn into that Charlie from Always
+[00:03:43] Sunny in Philadelphia meme, where he's
+[00:03:46] like losing
+[00:03:48] his fucking mind trying to connect all
+[00:03:48] these dots that just don't connect to
+[00:03:50] begin with.
+[00:03:52] We are looking for trends, ultimately. The
+[00:03:52] trend is your friend until the end, in
+[00:03:55] which case you make a new friend with a
+[00:03:55] new trend. And remember, all trends have
+[00:03:58] an
+[00:04:00] expiration date, and thus your friend will
+[00:04:00] die, or at least he won't necessarily die,
+[00:04:05] but he'll turn into an enemy rather than a
+[00:04:05] friend. If you don't realize it, dump him
+[00:04:10] at the proper time and then make a new
+[00:04:10] friend with a new trend. That's what we're
+[00:04:12] here to
+[00:04:14] do, and that is what we're going to be
+[00:04:14] working towards in this series here.
+[00:04:18] All right, cool. So let's go over a few
+[00:04:18] rules here. Rule number one, a trend line
+[00:04:22] may only be anchored to swing points or
+[00:04:22] swing highs and swing lows, a confirmed
+[00:04:26] high
+[00:04:27] or a confirmed low. Let's go over what
+[00:04:27] that even is first. So a swing low is
+[00:04:31] effectively
+[00:04:32] a low with higher lows on both sides. So
+[00:04:32] higher low over here, higher low over
+[00:04:35] here,
+[00:04:37] swing low right there. This would
+[00:04:37] obviously be in the context of, well, an
+[00:04:40] uptrend or
+[00:04:42] actually, I mean, really any trend, in
+[00:04:42] fact. But price turned right here. Real
+[00:04:45] buyers
+[00:04:47] basically showed up right there. That is
+[00:04:47] important. That's telling you a big player
+[00:04:51] stepped in or a big player stepped in and
+[00:04:51] started to buy. Thus, we want to mark
+[00:04:57] something off like that. And it should be
+[00:04:57] nearly as obvious as what you're seeing
+[00:05:00] right here. You can put it on a line chart
+[00:05:00] as well. Anyways, okay, a swing high.
+[00:05:05] Let's go over this. It's effectively the
+[00:05:05] mirror image of this. The turn is the
+[00:05:09] anchor. There's your high right there. You
+[00:05:09] have lower highs on both sides,
+[00:05:12] left and right over here. Again, it's
+[00:05:12] going to be painfully obvious. And we're
+[00:05:16] going to go to the chart in a second here
+[00:05:16] too. But what most people get caught
+[00:05:21] up doing is just random shit. They look at
+[00:05:21] anything else other than these
+[00:05:26] basically and start to draw lines. And
+[00:05:26] ultimately, that is a price you hope
+[00:05:31] holds, but it's not an anchor. It's more
+[00:05:31] so a wish. And we are not in the business
+[00:05:37] of wishing. I mean, it's good to have like
+[00:05:37] positive vibes and I don't know,
+[00:05:41] wish yourself well and say your fucking
+[00:05:41] affirmations in the mirror in the
+[00:05:44] morning, but practice, real practice is
+[00:05:44] usually...
+[00:05:48] All right, cool.
+[00:05:50] Okay, let's go into the next one here
+[00:05:52] and we shall go over rule of three.
+[00:05:55] So, and by the way, there is a nuances as
+[00:05:55] well.
+[00:05:59] We really wanna be finding a lot of value
+[00:05:59] here
+[00:06:01] that I don't see other people providing
+[00:06:02] which honestly, whenever I make these
+[00:06:02] videos,
+[00:06:05] I watch other people's contents first to
+[00:06:05] see,
+[00:06:08] what they're saying and what I can do
+[00:06:08] better basically
+[00:06:10] or at least what newer things I can add.
+[00:06:12] So, we will go over a few nuances here.
+[00:06:14] But first, rule number two, the counts.
+[00:06:17] So, two points draw a line,
+[00:06:20] but two points is basically a hypothesis.
+[00:06:22] You can see right there,
+[00:06:23] you got a couple of points connected with
+[00:06:23] each other.
+[00:06:26] Is that anything?
+[00:06:27] No, it's just a guess.
+[00:06:28] And it's, again, a phantom, it's nothing.
+[00:06:31] What makes this a trend is three touches.
+[00:06:33] Three touches makes it a trend.
+[00:06:36] That's when you actually have something
+[00:06:37] to be mindful of.
+[00:06:38] Now, the market came back and respected
+[00:06:38] your line
+[00:06:40] without you touching it, good sign.
+[00:06:43] Now it's probably solid, now it's real,
+[00:06:45] now you can at least put some faith in it.
+[00:06:47] But we're gonna go over a better heuristic
+[00:06:47] for this.
+[00:06:49] And by the way, there is an exception to
+[00:06:49] this as well.
+[00:06:51] Two touches on heavy volume at both
+[00:06:51] touches,
+[00:06:56] at both turning points,
+[00:06:57] that is acceptable to draw early.
+[00:06:59] Those typically will hold a lot of weight.
+[00:07:01] And when I say heavy volume,
+[00:07:03] I mean like double or more the recent
+[00:07:03] volume bars
+[00:07:09] around those lows or highs.
+[00:07:11] So, we'll go over an example with this in
+[00:07:11] fact very soon.
+[00:07:13] But for now, just be aware,
+[00:07:17] it doesn't have to be three tests all the
+[00:07:17] time.
+[00:07:19] Two tests is okay if you have heavy
+[00:07:19] volume.
+[00:07:21] And by the way, those are the best ones to
+[00:07:21] begin with.
+[00:07:23] Those are the ones that actually do
+[00:07:23] matter.
+[00:07:25] And you can see those will get respected
+[00:07:27] for quite some time.
+[00:07:29] In many cases, I mean, they kind of just
+[00:07:29] get respected
+[00:07:32] until, well, until prices so far away
+[00:07:35] that you don't even look at them anymore.
+[00:07:37] We'll show a few examples with that.
+[00:07:40] And like I said, those are some of the
+[00:07:40] best ones.
+[00:07:42] Anyways, let's go to slide number six here
+[00:07:44] and let's go over why your trend line
+[00:07:47] that you drew yesterday or this morning or
+[00:07:47] whenever broke.
+[00:07:50] So, the left line slices through the
+[00:07:50] candle
+[00:07:54] to hit the price basically that you're
+[00:07:54] looking for.
+[00:07:57] It's bent to fit.
+[00:07:58] It has to break.
+[00:07:59] It was never respecting anything.
+[00:08:00] You just drew a random line is what it
+[00:08:00] came down to.
+[00:08:03] Same data on the right however,
+[00:08:05] but it's anchored on the actual swing
+[00:08:05] points.
+[00:08:08] Thus, it actually gets respected.
+[00:08:10] That is the important thing.
+[00:08:13] So again, we don't want to fit like a
+[00:08:13] regression trend lines.
+[00:08:17] That's not gonna matter.
+[00:08:18] We also don't wanna be drawing trend lines
+[00:08:20] using unimportant anchors
+[00:08:23] that are effectively just not swing highs
+[00:08:23] or swing lows.
+[00:08:26] So, I think we need to go over a little
+[00:08:26] bit of a,
+[00:08:29] little bit of a tutorial of how to define
+[00:08:29] a swing high
+[00:08:32] and a swing low and this is.
+[00:08:34] actually best done by going over here to
+[00:08:34] TradingView,
+[00:08:36] putting your chart on a line chart.
+[00:08:37] So go to the top of TradingView,
+[00:08:39] click where it says candles, what is
+[00:08:39] usually on,
+[00:08:41] and go to line.
+[00:08:43] There you go.
+[00:08:44] Okay, all right.
+[00:08:45] This is where things, in my opinion,
+[00:08:47] get a lot more simple.
+[00:08:48] When you're looking at a line chart,
+[00:08:51] it should be painfully obvious
+[00:08:52] where the major highs and the major lows
+[00:08:52] are.
+[00:08:54] So I'm gonna go to a monthly timeframe
+[00:08:54] here.
+[00:08:57] And like I said, you will be able to do
+[00:08:57] this
+[00:09:00] probably by the end of this video.
+[00:09:02] It should be that easy.
+[00:09:03] Okay, so let's just, starting over here,
+[00:09:05] let's go over the major highs and major
+[00:09:05] lows.
+[00:09:06] What do you know?
+[00:09:07] High, low.
+[00:09:09] Do we have anything right there?
+[00:09:10] Not really, no.
+[00:09:11] We have a high right here, however.
+[00:09:13] We have a low right here.
+[00:09:14] We have a lower high right here.
+[00:09:15] We have a lower low over here.
+[00:09:17] And kind of a lower high along the way,
+[00:09:19] or a slew of them, resulting in another
+[00:09:19] lower low.
+[00:09:23] Okay, all of these are valid highs and
+[00:09:23] lows
+[00:09:27] to be connecting those trend lines with.
+[00:09:30] Again, painfully obvious,
+[00:09:33] and it is timeframe dependent.
+[00:09:35] So understand that if you perhaps use
+[00:09:37] a five minute timeframe,
+[00:09:38] you're gonna get a lot more noise
+[00:09:40] within these charts, of course,
+[00:09:41] but you can still obviously identify
+[00:09:44] the major highs and the major lows.
+[00:09:46] Again, it's gotta be obvious,
+[00:09:47] and it's gonna be in hindsight as well.
+[00:09:49] But remember, just because it's in
+[00:09:49] hindsight
+[00:09:51] doesn't mean that it can't be pulled
+[00:09:51] forward
+[00:09:52] and be respected in the future.
+[00:09:53] That's effectively what we're trying to do
+[00:09:53] here.
+[00:09:55] So let's draw a few for this move.
+[00:09:58] So we have a low right there.
+[00:09:59] We have a high right there.
+[00:10:00] We have a low right there.
+[00:10:01] High, low, high, well,
+[00:10:04] kind of a high and a low right here as
+[00:10:04] well.
+[00:10:06] Boom, high, low, high, low,
+[00:10:11] high, low, high, low.
+[00:10:15] You probably getting bored of me saying
+[00:10:15] this already.
+[00:10:17] High, low, high, low.
+[00:10:20] It is an obvious stop or reverse point.
+[00:10:22] It's an obvious stop or reverse point
+[00:10:22] again.
+[00:10:24] So if we're drawing trend lines here,
+[00:10:27] and we're using obvious stop or reverse
+[00:10:27] points,
+[00:10:28] again, keeping in mind that a lower time
+[00:10:30] from like this, a five minute,
+[00:10:31] you're gonna get more noise.
+[00:10:32] You're not gonna get as much noise
+[00:10:33] with like a daily, a weekly, a monthly
+[00:10:33] especially.
+[00:10:36] You're just not gonna get as many times to
+[00:10:36] draw a line
+[00:10:39] if that matters to you.
+[00:10:41] Maybe it does, maybe it don't.
+[00:10:42] But of course, these are things
+[00:10:45] that we could actually draw trend lines
+[00:10:45] through.
+[00:10:46] You could see connecting these highs,
+[00:10:48] one, two, three, when it breaks out over
+[00:10:48] here,
+[00:10:51] you actually get real fall through.
+[00:10:53] That's what we're looking for.
+[00:10:54] We're not looking for this fucking phantom
+[00:10:54] trend line
+[00:10:56] where you break through,
+[00:10:58] and then immediately after it crashes back
+[00:10:58] down,
+[00:11:00] it's like, okay, guess it didn't matter
+[00:11:00] that much.
+[00:11:04] Not very helpful, obviously.
+[00:11:06] Anyways, on the other side, we could,
+[00:11:09] I don't know, do we wanna do another
+[00:11:09] example right here?
+[00:11:11] Yeah, let's do another example.
+[00:11:12] Again, just high, or let's draw them out
+[00:11:12] first.
+[00:11:16] Let me scroll back here.
+[00:11:17] Let's go to an hourly, by the way, as
+[00:11:17] well.
+[00:11:19] Five minutes like there.
+[00:11:20] Reactive, obviously.
+[00:11:23] So let's go over the major ones here.
+[00:11:24] OK, we're going to start from this high,
+[00:11:24] boom, high.
+[00:11:27] And we're only going to look at highs.
+[00:11:29] High again, high, high.
+[00:11:32] And do we have any of these that really
+[00:11:32] connect to each other?
+[00:11:35] Yeah, we got these guys right here.
+[00:11:37] And what do you know?
+[00:11:38] When price breaks through over here,
+[00:11:40] it uses it, more importantly, that same
+[00:11:40] trend line
+[00:11:43] as a basing point for a couple more higher
+[00:11:43] lows.
+[00:11:46] Now, does that mean that this trend line
+[00:11:47] is going to hold for forever?
+[00:11:48] No, they can break again, especially on a
+[00:11:48] lower time
+[00:11:51] frame like this.
+[00:11:51] That can happen.
+[00:11:52] But if they are legitimate, it should
+[00:11:55] act as something like this, at least in
+[00:11:55] the more recent times.
+[00:12:00] And in this case, you get a pretty easy
+[00:12:00] chance
+[00:12:02] to buy what is effectively a higher low,
+[00:12:04] or yeah, a higher low after the reversal
+[00:12:04] over here.
+[00:12:06] Not bad.
+[00:12:07] Price works its way upwards and upwards
+[00:12:07] from there,
+[00:12:09] by the way, too.
+[00:12:10] So not bad.
+[00:12:11] And of course, we've just been looking at
+[00:12:11] highs recently.
+[00:12:13] We can also look at lows, too.
+[00:12:15] In fact, let's go to an uptrend and find
+[00:12:15] some good ones
+[00:12:19] to base us off of.
+[00:12:20] Yes, here.
+[00:12:21] Let's see.
+[00:12:23] I want to find something that's super
+[00:12:23] obvious.
+[00:12:27] Actually, you know what?
+[00:12:28] While we're here, let's show that nuance
+[00:12:28] rule, too.
+[00:12:30] So I'm going to turn on my volume bars.
+[00:12:32] Usually, your TradingView at default
+[00:12:35] will come with volume on it.
+[00:12:36] It'll usually be red and green colors, as
+[00:12:36] well.
+[00:12:38] I like to look at mine as gray because I
+[00:12:40] don't see color in volumes.
+[00:12:42] We are color neutral here.
+[00:12:44] But when we see big volume spikes on highs
+[00:12:44] or lows,
+[00:12:49] we can be a little bit more aggressive
+[00:12:49] with drawing
+[00:12:51] trend lines from that because usually
+[00:12:51] those
+[00:12:52] are going to matter a lot more.
+[00:12:53] So this is what I mean by looking at the
+[00:12:53] volume
+[00:12:56] bars over here.
+[00:12:57] Some of these are just massively outsized
+[00:12:59] compared to the other ones.
+[00:13:00] And those are generally pretty damn good
+[00:13:00] anchors.
+[00:13:02] So we have one right here and then one
+[00:13:02] right here, as well.
+[00:13:06] So we could very well draw a nice anchor
+[00:13:10] between these two guys.
+[00:13:12] And we can extend that forwards.
+[00:13:13] And if Bitcoin were to get back down to
+[00:13:13] this trend line
+[00:13:16] at some later point, we should expect a
+[00:13:16] reaction there.
+[00:13:19] It should be at least a bounce.
+[00:13:20] Maybe a reversal, but at least a bounce.
+[00:13:24] To the other side, now that we have gone
+[00:13:24] over the nuance
+[00:13:27] right there, let me get rid of my volume
+[00:13:29] because that was just two points.
+[00:13:31] And let's go over a support example.
+[00:13:33] So again, where are our lows coming after
+[00:13:33] this night's
+[00:13:37] downside move?
+[00:13:38] Well, we got one right here.
+[00:13:39] We got one right here.
+[00:13:42] Again, should be obvious.
+[00:13:44] And if we draw a trend line through that,
+[00:13:46] what happens after you break it over here?
+[00:13:48] You get a real downside move.
+[00:13:51] And by the way, if we pull this forwards,
+[00:13:55] we can expect that if Bitcoin tests this
+[00:13:55] trend line
+[00:13:59] from this under $10,000 to $10,000,
+[00:14:05] side, we should expect to pull back on the
+[00:14:05] first pass.
+[00:14:06] Now, again, does that mean it's never
+[00:14:06] going to break it ever again in history?
+[00:14:06] No, but at the very, at the first pass,
+[00:14:06] you're probably going to get a
+[00:14:08] regi a rejection, it can still, you know,
+[00:14:08] consolidate under that and then
+[00:14:13] reclaim it later on, absolutely possible.
+[00:14:15] But first pass, you almost always have a
+[00:14:15] decent scalp from there.
+[00:14:19] It's not going to be a fucking home run
+[00:14:19] trade, although that does
+[00:14:21] happen every once in a while, but you
+[00:14:21] almost always have a decent
+[00:14:24] scalp on that first pass.
+[00:14:26] So if this thing rose up from where it's
+[00:14:26] at right now to here, I'd
+[00:14:30] be expecting some like this boom, and then
+[00:14:30] maybe puts an higher low
+[00:14:32] there and even test it again and then does
+[00:14:32] the same thing, can do
+[00:14:35] something like that, or then it can just
+[00:14:35] break through, or it rejects
+[00:14:38] and then it just goes straight down.
+[00:14:39] All of these are possible.
+[00:14:40] So we're not trying to predict the future.
+[00:14:42] What we're trying to do is we're trying to
+[00:14:42] get a high probable trade.
+[00:14:44] So if we're going to short into a, into a
+[00:14:44] test like this, we don't
+[00:14:48] want to be holding this for forever,
+[00:14:48] unless if, you know, you have
+[00:14:50] balls of steel, but I probably wouldn't do
+[00:14:50] that.
+[00:14:53] Um, but you can have a nice little scalp
+[00:14:53] right there.
+[00:14:56] And that is a very high probability trade,
+[00:14:56] typically speaking.
+[00:14:59] All right.
+[00:15:00] Let me go back into our slideshow and
+[00:15:00] let's continue forwards here.
+[00:15:04] Yeah, we just kind of did, uh, our nice
+[00:15:04] little live demonstration right there.
+[00:15:08] So now let's move onwards from there.
+[00:15:11] Okay.
+[00:15:12] Thus far, we've been going over diagonal
+[00:15:12] trend lines.
+[00:15:14] We're going to go over a big nuance later
+[00:15:14] on, um, which I think will
+[00:15:18] be a very important thing, especially if
+[00:15:18] you want to really capture
+[00:15:23] trend reversals, but for right now, um,
+[00:15:23] let me just read through this.
+[00:15:27] The line gives you one more read for free.
+[00:15:30] It's effectively an angle.
+[00:15:32] So sustainable trends climb like a
+[00:15:32] staircase.
+[00:15:35] Typically they're kind of, uh, they go up
+[00:15:35] a little bit, go sideways, a little bit,
+[00:15:39] go up, go up a little bit, go sideways, a
+[00:15:39] little bit.
+[00:15:41] It's what we call constructive.
+[00:15:43] And when you get a parabolic move like
+[00:15:43] this, naturally, your trend
+[00:15:47] line is going to be fucking, I mean, close
+[00:15:47] to vertical in some cases.
+[00:15:50] So those while very exciting when they
+[00:15:50] break, it typically,
+[00:15:56] because everything does break at some
+[00:15:56] point, especially some like this,
+[00:15:59] that w that cannon will break.
+[00:16:00] You will get a similar move on the other
+[00:16:00] side.
+[00:16:05] The way you go up is the way that you go
+[00:16:05] down.
+[00:16:07] My mentor used to say this to me all the
+[00:16:07] time, whenever we'd see something,
+[00:16:10] you know, some, some random equity, go
+[00:16:10] fucking moon mode, the way you go
+[00:16:15] up is the way you go down.
+[00:16:16] If you go up in a straight line, you come
+[00:16:16] down a straight line and
+[00:16:18] I'll show you an example of the Bitcoin
+[00:16:18] here too.
+[00:16:20] Again, you can use this for any, um, uh,
+[00:16:20] for any asset that really has a chart.
+[00:16:25] Um, it's just general rules.
+[00:16:27] Sorry.
+[00:16:27] I'm just drawing lines right there.
+[00:16:28] Um, for example, we had the, we had the
+[00:16:28] 2021 bull market boom, straight
+[00:16:35] up over there, straight up over there,
+[00:16:35] straight down over here.
+[00:16:39] Great.
+[00:16:39] We had 2018 bull market boom, straight up,
+[00:16:39] straight down.
+[00:16:42] Now straight up again, straight.
+[00:16:45] This one actually took a little more time
+[00:16:45] coming down.
+[00:16:47] Uh, but generally the way that you come up
+[00:16:47] is the way that you go down.
+[00:16:50] And you can see the same thing over here.
+[00:16:51] They're almost, they're not perfect
+[00:16:51] mirrors, but they are brotherly
+[00:16:54] mirror images of each other, big sideways,
+[00:16:54] up, sideways, down, sideways,
+[00:17:00] up and sideways, down, small status up
+[00:17:00] here, small sort of stuff.
+[00:17:05] They're kind of at the same levels as
+[00:17:05] well.
+[00:17:07] Interesting how that works.
+[00:17:08] We'll go over why that is a little bit
+[00:17:08] later too.
+[00:17:10] Anyways, back into our slideshow.
+[00:17:13] So the flat line is not a trend that is a
+[00:17:13] typically a range forming, but
+[00:17:20] ranges will get their own episode, but I
+[00:17:20] will say flat trend lines,
+[00:17:23] horizontal trend lines, in other words,
+[00:17:23] those are actually the most important.
+[00:17:28] And I'll go over why, uh, closer to the
+[00:17:28] end of this video.
+[00:17:31] And then we'll go into like a lot more
+[00:17:31] detail in the next video.
+[00:17:35] Anyways, steepness is more or less, you
+[00:17:35] can consider
+[00:17:39] like a countdown timer, the steeper the
+[00:17:39] line, the shorter that trends
+[00:17:42] life probably will be.
+[00:17:44] And if it's like I said, more sustainable,
+[00:17:44] like either sort of
+[00:17:47] four to five degree angle right here,
+[00:17:47] that's going to be a trend that
+[00:17:51] probably goes on a lot more in terms of
+[00:17:51] time.
+[00:17:54] So now the part that separates hopefully
+[00:17:54] you from everyone who's going
+[00:17:57] to be crying in the comments or well,
+[00:17:57] especially other people's videos too,
+[00:18:01] trend lines were made to be broken all
+[00:18:01] trends.
+[00:18:06] And at some point a break is not your line
+[00:18:06] failing.
+[00:18:09] It's the market telling you the trend is
+[00:18:09] changing.
+[00:18:11] That's when you dump your previous friend
+[00:18:11] and adopt your new friend.
+[00:18:15] If you want to, uh, you know, minimize
+[00:18:15] your losses or make money on the new
+[00:18:20] trend, especially that's the end of the
+[00:18:20] friendship, the end, that's
+[00:18:24] the until the end part.
+[00:18:26] So anyways, watch what happens after the
+[00:18:26] break, the same line you were
+[00:18:30] vying against becomes the ceiling or
+[00:18:30] resistance that typically gets sold
+[00:18:34] against, so the line changes jobs, more or
+[00:18:34] less old support, new
+[00:18:38] resistance as the old adage goes.
+[00:18:40] Remember that flip it's the key to the
+[00:18:40] next episode as well.
+[00:18:43] And again, you've already seen a couple of
+[00:18:43] examples, um, when we were
+[00:18:46] going through the lower term time firms
+[00:18:46] over here with Bitcoin, for
+[00:18:48] example, with previous, um, uh,
+[00:18:48] resistances becoming supports, for
+[00:18:51] example.
+[00:18:53] So let me just do one more example right
+[00:18:53] here.
+[00:18:56] Um, yes, uh, this one was the one that we
+[00:18:56] highlighted right here.
+[00:19:00] Boom, boom, breakthrough it bases, bases.
+[00:19:04] Those are your new, your new supports.
+[00:19:06] Again, there is actually a better way of
+[00:19:06] doing this as well.
+[00:19:09] All right.
+[00:19:09] Let's go back into our slideshow.
+[00:19:11] Okay.
+[00:19:12] Like I said, the line didn't die.
+[00:19:14] Just changing what it's effectively, um,
+[00:19:14] doing no longer you
+[00:19:17] buying there, you're selling there.
+[00:19:19] Anyways, we're going to go back to the
+[00:19:19] charts now and
+[00:19:22] I want you, I want you to go back to the
+[00:19:22] charts actually,
+[00:19:26] I want you to draw one line in your own
+[00:19:26] chart.
+[00:19:28] Again, it should be fucking painfully
+[00:19:28] obvious.
+[00:19:30] Like show this, if you, like I have a four
+[00:19:30] year old niece,
+[00:19:34] I'm positive, if I showed her this,
+[00:19:36] she would be able to figure it out.
+[00:19:37] She's almost very smart.
+[00:19:38] But look, you should think of it from that
+[00:19:38] perspective.
+[00:19:43] If your, you know, whoever the youngest
+[00:19:43] person that you know,
+[00:19:47] like basically put yourself in, you know,
+[00:19:50] through the lens of a five year old,
+[00:19:51] if they wouldn't have drawn it
+[00:19:53] and it shouldn't be obvious to them,
+[00:19:54] then you probably shouldn't be either.
+[00:19:56] Really easy, heuristic to be going off of
+[00:19:56] there.
+[00:19:59] Okay, so like I said earlier, we kind of
+[00:19:59] alluded to this.
+[00:20:03] Extending the line,
+[00:20:04] kind of a bit of a nuance point here as
+[00:20:04] well,
+[00:20:07] that you can absolutely take for yourself.
+[00:20:09] Little bit of a veteran move, if you will.
+[00:20:11] When you draw a real line, extend it.
+[00:20:14] And I'm talking about the most important
+[00:20:14] ones,
+[00:20:16] especially those ones with big volume
+[00:20:16] anchors
+[00:20:18] on the highs or lows.
+[00:20:20] If you draw it out way into empty space,
+[00:20:22] as we looked at earlier,
+[00:20:24] those trend lines typically do not expire.
+[00:20:26] They leave, or sorry, they can get
+[00:20:26] respected for,
+[00:20:30] you know, months and months,
+[00:20:31] in some cases even years on end.
+[00:20:33] Like I said, we've already seen a couple
+[00:20:33] of examples
+[00:20:35] over here on the lower-term time frames,
+[00:20:37] but especially on the higher-term time
+[00:20:37] frames.
+[00:20:39] I mean, God, there are some crazy ones
+[00:20:42] like back on over here from the 2018 low
+[00:20:46] that if you would have plotted, for
+[00:20:46] example,
+[00:20:49] you would have gotten around the COVID
+[00:20:49] dump.
+[00:20:55] Very few people got that.
+[00:20:57] But you could have gotten that
+[00:20:59] if you had extended it through there.
+[00:21:00] And that's the thing.
+[00:21:01] This trend line anchor is,
+[00:21:04] oh, I should show you, it's on heavy
+[00:21:04] volume,
+[00:21:06] like heavy, heavy volume right there.
+[00:21:07] That trend line anchor is pulled through
+[00:21:07] from December 2018.
+[00:21:12] And it doesn't even get respected until
+[00:21:12] March of 2020,
+[00:21:14] so multiple years later.
+[00:21:16] That's my point.
+[00:21:16] If you pull it through,
+[00:21:17] you kind of get like free levels in the
+[00:21:17] future.
+[00:21:19] And if they're big ones with big volume
+[00:21:19] bars,
+[00:21:22] you're almost always gonna get a response
+[00:21:22] at that level.
+[00:21:24] And in this case, you get your next macro
+[00:21:24] higher low.
+[00:21:26] Massive, absolutely massive.
+[00:21:29] Anyways, let's move on from there.
+[00:21:32] Okay, so what not to do, analysis or
+[00:21:32] decoration?
+[00:21:36] Yeah, this is my favorite slide right
+[00:21:36] here, realistically.
+[00:21:39] You've already seen this chart.
+[00:21:40] You probably have one on your TradingView
+[00:21:42] or whoever showed you trend lines
+[00:21:44] probably looks something like this.
+[00:21:46] I swear, I've seen a million of these
+[00:21:46] fucking videos now.
+[00:21:49] And it seems like people really think
+[00:21:52] that the more trend lines you draw,
+[00:21:54] the better analyzer you are.
+[00:21:58] Yeah, disagree strongly with that.
+[00:22:02] Yeah, 15 fucking lines over here, every
+[00:22:02] color.
+[00:22:04] connecting everything to everything.
+[00:22:06] The full Charlie from Always Sunny crime
+[00:22:06] board,
+[00:22:08] it looks like an analysis,
+[00:22:10] looks like you're doing something
+[00:22:11] and that's kind of the deceiving part of
+[00:22:11] it.
+[00:22:12] It looks like you're staying busy,
+[00:22:15] but what are you doing?
+[00:22:15] You're just fucking decorating your charts
+[00:22:17] and making it more difficult to read.
+[00:22:19] One line, just one line.
+[00:22:20] The most obvious one right there.
+[00:22:22] Just draw it right through.
+[00:22:23] I'm telling you, less is more.
+[00:22:27] In general and especially when it comes to
+[00:22:27] trend lines,
+[00:22:29] especially diagonal trend lines.
+[00:22:32] Anyways, yes, that would be the best time
+[00:22:35] to ask for your hand in subscribing to
+[00:22:35] this channel
+[00:22:38] if you find this content valuable.
+[00:22:39] And we're gonna go over some more nuances
+[00:22:40] in a moment here too.
+[00:22:41] But anyways, if your chart looks like a
+[00:22:41] crime board,
+[00:22:44] you're not analyzing, you're decorating,
+[00:22:44] less is more
+[00:22:47] and that is the point to subscribe on,
+[00:22:47] beautiful.
+[00:22:51] There are seven more episodes in the
+[00:22:51] series, by the way.
+[00:22:52] There's gonna be levels, volumes, moving
+[00:22:52] averages,
+[00:22:55] all of it, everything that I think is
+[00:22:55] absolutely
+[00:22:56] fundamental to understanding technical
+[00:22:56] analysis
+[00:22:58] and trading when you're first starting.
+[00:23:00] And then of course, if you do wanna go a
+[00:23:00] little bit
+[00:23:02] deeper, if all this sounds remedial to you
+[00:23:03] and you already know it, check out the
+[00:23:03] TA101 program.
+[00:23:05] Also 100% free, as is this.
+[00:23:08] And it comes with quizzes as well.
+[00:23:09] And we'll go into a lot more detail there
+[00:23:11] on actual strategies, strategy creation,
+[00:23:13] how to actually trade, these sort of
+[00:23:13] things.
+[00:23:15] Anyways, subscribe in episode four,
+[00:23:16] finds you the moment it drops.
+[00:23:18] As always, it's better to get these things
+[00:23:20] while they're hot and fresh.
+[00:23:21] All right, cool.
+[00:23:22] The nice, cringy part of the video.
+[00:23:25] Anyways, yes, so quick recap here.
+[00:23:28] Four things, anchors are swings
+[00:23:29] where price actually turned, nothing else.
+[00:23:32] Again, should be obvious as all hell.
+[00:23:34] Two is a guess, three is a trend.
+[00:23:35] Unless you got massive, massive, massive,
+[00:23:35] massive volume
+[00:23:39] like we looked at earlier, those
+[00:23:39] absolutely do matter
+[00:23:42] and those are actually the most important
+[00:23:42] ones.
+[00:23:43] A break is just new information.
+[00:23:45] It means that your trend is changing
+[00:23:47] and that trend line is now probably gonna
+[00:23:47] change jobs.
+[00:23:50] Now, if it's a support, it's not gonna be
+[00:23:50] as binary.
+[00:23:53] It's gonna be a selling area.
+[00:23:54] And look, one honest line beats 10 hopeful
+[00:23:54] ones
+[00:23:58] every single time that's line literacy
+[00:24:00] and hopefully you are,
+[00:24:01] it is being baked into your brain at this
+[00:24:01] point.
+[00:24:04] All right, cool, let's move on from there.
+[00:24:06] Okay, so you just learned the market's
+[00:24:06] diagonal memory
+[00:24:09] but here's what gets you next.
+[00:24:11] The most violent moves on any chart
+[00:24:13] don't happen at trend lines.
+[00:24:14] They happen at levels, horizontal levels,
+[00:24:17] horizontal trend lines is what,
+[00:24:19] I mean, you could also call them too.
+[00:24:21] Horizontal prices, the market refuses to
+[00:24:21] forget.
+[00:24:23] Sometimes for years.
+[00:24:24] Let me just make sure my camera's actually
+[00:24:24] working.
+[00:24:26] Nice, okay, good.
+[00:24:27] Don't know how much battery we have left.
+[00:24:28] Anyways, almost everyone who draws these
+[00:24:28] does it wrong too
+[00:24:33] because they draw them as lines that were
+[00:24:33] never lines.
+[00:24:35] Episode four, we'll go over that
+[00:24:37] with support and resistance in a lot more
+[00:24:37] detail
+[00:24:39] but I will give you a quick little tidbit
+[00:24:42] when it comes to trend lines in general
+[00:24:42] thus far.
+[00:24:45] So going back here,
+[00:24:48] the most,
+[00:24:50] important highs or lows don't just form
+[00:24:50] diagonal trend lines, but you always,
+[00:24:53] almost always,
+[00:24:54] I should say, want to mark these off with
+[00:24:54] a horizontal bar.
+[00:24:59] So if you can see over here on the top
+[00:24:59] left hand side on trading, you got all
+[00:25:02] these trend
+[00:25:03] tools.
+[00:25:04] There's a trend line.
+[00:25:05] That's what we've been using.
+[00:25:06] You just draw one point to one point, you
+[00:25:06] can extend great, or you could use a rate
+[00:25:08] for that matter too.
+[00:25:09] It's fine.
+[00:25:10] Same thing.
+[00:25:11] It extends it for you.
+[00:25:12] So that's nice.
+[00:25:13] But what I'm going to use now is a
+[00:25:13] horizontal rate.
+[00:25:15] So a horizontal rate is just going to draw
+[00:25:15] a horizontal line from the higher load
+[00:25:18] that
+[00:25:20] I'm going to be interested in.
+[00:25:21] And so I'm going to, again, draw it on the
+[00:25:21] most obvious ones here.
+[00:25:24] We got a low right here.
+[00:25:26] We have a high right here.
+[00:25:28] We have another high right here.
+[00:25:30] This is obviously a downtrend.
+[00:25:32] And when we're talking about actual trend
+[00:25:32] reversals, you will not be able to fully
+[00:25:37] confirm
+[00:25:39] a trend reversal on any scale, on any
+[00:25:39] timeframe, officially, if you want to go
+[00:25:42] by the book,
+[00:25:44] which I do think is the best way to do
+[00:25:44] this, until you reclaim, which effectively
+[00:25:49] just means close above this horizontal
+[00:25:49] trend line governing that last lower high,
+[00:25:53] in this
+[00:25:55] case in the context of a downtrend.
+[00:25:57] Now, if we're in an uptrend, it's going to
+[00:25:57] be vice versa.
+[00:25:59] It's going to be marking off the major
+[00:25:59] higher lows.
+[00:26:02] So let's do it for this uptrend here.
+[00:26:04] We got this low.
+[00:26:08] We have this low.
+[00:26:09] We're going to have a lot of lows here, by
+[00:26:09] the way.
+[00:26:12] We got this low right here.
+[00:26:17] And then we have a shallow low right
+[00:26:17] there, but it is indeed there.
+[00:26:22] You can see throughout the whole way up,
+[00:26:22] it doesn't violate any of these lows.
+[00:26:26] Thus, your higher lows remain intact.
+[00:26:27] Thus, your trend is intact.
+[00:26:29] You don't really have to worry about any
+[00:26:29] major reversal.
+[00:26:31] Once you get over here, you have a major
+[00:26:31] higher low.
+[00:26:35] And when price action closes below it,
+[00:26:35] very specifically, when you close below
+[00:26:39] the wick
+[00:26:41] low of, in this case, a major higher low,
+[00:26:41] so the wick low of the higher low versus
+[00:26:46] the
+[00:26:48] closing price of the break over here.
+[00:26:51] When that happens, you have an official
+[00:26:51] break.
+[00:26:53] And the probability of this being a real
+[00:26:53] reversal, meaning that you're not just
+[00:26:55] going
+[00:26:56] to come down and put in a higher low and
+[00:26:56] then rally back up, but you're actually
+[00:26:58] going
+[00:26:59] to create, in this case, a downtrend,
+[00:26:59] become significantly higher.
+[00:27:04] That is really, really, really, really
+[00:27:04] important.
+[00:27:07] So moving on from there, let me get back
+[00:27:07] to our nice little slideshow here.
+[00:27:12] And I think we're actually on literally
+[00:27:12] the last, the last point.
+[00:27:15] So yes, a little bit of an insight into
+[00:27:15] where we're going with this one.
+[00:27:17] But again, those horizontal lines, those
+[00:27:17] actually, in my experience, matter a lot
+[00:27:20] more.
+[00:27:21] They're even more obvious in general.
+[00:27:24] And those ones are the ones that you can
+[00:27:24] actually use to define ranges, which then
+[00:27:27] give you potential major breakouts.
+[00:27:30] So that's where we're going to in the next
+[00:27:30] video.
+[00:27:32] I will see you in there.
+[00:27:33] As always, take care and much love.

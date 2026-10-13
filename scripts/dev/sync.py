@@ -1,11 +1,13 @@
 """One way for any session on any machine to share work: origin/fast-track is the only meeting point.
 
-  python scripts/dev/sync.py start   # bring this checkout up to date with origin/fast-track
+  python scripts/dev/sync.py start [slug]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree
+  python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
   python scripts/dev/sync.py ship    # merge origin/fast-track, gate, push HEAD to origin/fast-track
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once)
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
   python scripts/dev/sync.py where   # every worktree: commits not on origin/fast-track, uncommitted files (nothing lost?)
+  python scripts/dev/sync.py tidy [--apply] [--all]  # retire finished session worktrees (clean + fully on origin/fast-track); dry run by default
 
 Rules live in MyTradingSys/system/PARALLEL.md. The live tree (a checkout holding the gitignored marker
 file .mts_live) is never synced or shipped from: the running system imports it, so it changes only by
@@ -25,6 +27,11 @@ DOC_SUFFIXES = (".md", ".txt")
 PUSH_TRIES = 3
 CLAIMS_DIR = "MyTradingSys/system/claims"
 STALE_HOURS = 24
+# Generated or whole-file-rewritten files that every session touches. A collision here is never worth a
+# stalled session: origin's text wins, the loser regenerates (STATUS.md) or re-applies its one-line edit.
+TAKE_ORIGIN = ("MyTradingSys/system/NEXT_SESSION.md", "MyTradingSys/research/STATUS.md",
+               "MyTradingSys/runtime/BUILD_REPORT.md")
+NOT_SHIPPED_HOURS = 24
 
 
 class SyncError(Exception):
@@ -50,14 +57,22 @@ def refuse_live(repo):
 
 
 def merge_trunk(repo):
-    """Fetch and merge origin/fast-track into HEAD (never rebase). Returns the commits pulled in."""
+    """Fetch and merge origin/fast-track into HEAD (never rebase). Returns the commits pulled in.
+    A conflict confined to TAKE_ORIGIN files is resolved to origin's text and reported; any other stops."""
     git(repo, "fetch", "--quiet", "origin", TRUNK)
     incoming = git(repo, "rev-list", "--count", f"HEAD..origin/{TRUNK}").stdout.strip()
     if incoming != "0":
         r = git(repo, "merge", "--no-edit", f"origin/{TRUNK}", check=False)
         if r.returncode != 0:
-            raise SyncError(
-                f"merge of origin/{TRUNK} conflicts; resolve, `git commit`, then run ship again.\n{r.stdout}")
+            bad = git(repo, "diff", "--name-only", "--diff-filter=U").stdout.split()
+            if not bad or any(f not in TAKE_ORIGIN for f in bad):
+                raise SyncError(
+                    f"merge of origin/{TRUNK} conflicts; resolve, `git commit`, then run ship again.\n{r.stdout}")
+            for f in bad:
+                git(repo, "checkout", "--theirs", "--", f)
+                git(repo, "add", "--", f)
+                print(f"merge: {f} collided; took origin's text. Re-apply your edit there if it mattered.")
+            git(repo, "commit", "-q", "--no-edit")
     return int(incoming)
 
 
@@ -76,15 +91,94 @@ def run_gate(repo):
         raise SyncError("offline gate (--quick) failed; nothing pushed")
 
 
-def start(repo):
-    # Uncommitted files may be another session's work in progress: not ours to judge. git merge
-    # refuses by itself only when an incoming commit touches one of them.
+def shared_tree_reason(repo):
+    """Why this checkout is not a clean per-session tree, or None. At the start of a session nothing in the
+    tree is ours, so uncommitted files and unshipped commits belong to another session."""
+    ahead = git(repo, "rev-list", "--count", f"origin/{TRUNK}..HEAD", check=False).stdout.strip()
+    dirty = [l for l in git(repo, "status", "--short").stdout.splitlines() if l]
+    if dirty:
+        return f"{len(dirty)} uncommitted file(s)"
+    if ahead not in ("", "0"):
+        return f"{ahead} commit(s) not shipped to origin/{TRUNK}"
+    return None
+
+
+def new_worktree(repo, slug=None):
+    host = socket.gethostname().lower()
+    slug = slugify(slug) if slug else time.strftime("s%m%d-%H%M%S", time.gmtime())
+    path = Path(repo).resolve().parent / f"mts-{host}-{slug}"
+    n = 1
+    while path.exists():
+        n += 1
+        path = path.with_name(f"mts-{host}-{slug}-{n}")
+    branch = f"{host}/{slug}" + ("" if n == 1 else f"-{n}")
+    git(repo, "fetch", "--quiet", "origin", TRUNK)
+    git(repo, "worktree", "add", "-q", str(path), "-b", branch, f"origin/{TRUNK}")
+    return path
+
+
+def start(repo, slug=None, here=False):
+    """Bring a tree up to date. Returns the tree the session must work in: `repo` when it is clean, else a
+    fresh worktree off origin/fast-track (printed as `WORKTREE: <path>`); never touches the other files."""
     refuse_live(repo)
+    reason = None if here else shared_tree_reason(repo)
+    if reason:
+        path = new_worktree(repo, slug)
+        print(f"this tree is shared ({reason}); not working here.")
+        print(f"WORKTREE: {path}")
+        print(f"work ONLY there: cd {path}")
+        repo = path
     n = merge_trunk(repo)
     branch = git(repo, "branch", "--show-current").stdout.strip() or "(detached)"
     print(f"host={socket.gethostname()} branch={branch} pulled={n} head={git(repo, 'rev-parse', '--short', 'HEAD').stdout.strip()}")
     print_claims(repo)
     pull_mirror(repo)
+    return repo
+
+
+def health(repo):
+    """Collision health, one line per problem, last line `HEALTH: <n> issue(s)`. Returns n. Read-only."""
+    git(repo, "fetch", "--quiet", "origin", TRUNK)
+    issues = []
+    now = time.time()
+    claims = read_claims(repo, f"origin/{TRUNK}")
+    areas = {}
+    for slug, kv in claims:
+        age_h = (now - int(kv.get("epoch", now))) / 3600
+        if age_h > STALE_HOURS:
+            issues.append(f"STALE-CLAIM {slug}: {kv.get('host','?')}/{kv.get('account','?')} {age_h:.0f}h old")
+        areas[slug] = [a.strip().rstrip("/") for a in re.split(r"[,\s]+", kv.get("area", "-")) if a.strip() not in ("", "-")]
+    slugs = sorted(areas)
+    for i, a in enumerate(slugs):
+        for b in slugs[i + 1:]:
+            hit = [(x, y) for x in areas[a] for y in areas[b] if x == y or x.startswith(y + "/") or y.startswith(x + "/")]
+            if hit:
+                issues.append(f"OVERLAP claims {a} / {b}: {hit[0][0]} ~ {hit[0][1]}")
+    for path, branch in worktrees(repo):
+        p = Path(path)
+        if not p.exists():
+            issues.append(f"ORPHAN worktree {p.name}: folder gone (git worktree prune)")
+            continue
+        if (p / LIVE_MARKER).exists():
+            continue
+        reason = shared_tree_reason(p)
+        if reason and branch in (TRUNK, "master", "main"):
+            issues.append(f"SHARED {p.name} [{branch}]: sessions work on the trunk branch here; {reason}")
+        elif reason:
+            issues.append(f"UNSHIPPED {p.name} [{branch}]: {reason}")
+    rows = git(repo, "for-each-ref", "refs/remotes/origin", "--format=%(refname:short)|%(committerdate:unix)").stdout.splitlines()
+    for row in rows:
+        ref, _, ts = row.partition("|")
+        short = ref.removeprefix("origin/")
+        if short in (TRUNK, "HEAD", "origin", "main", "master") or short.startswith(("backup/", "green/", "claude/")):
+            continue
+        ahead = git(repo, "rev-list", "--count", f"origin/{TRUNK}..{ref}", check=False).stdout.strip()
+        if ahead not in ("", "0") and ts and (now - int(ts)) / 3600 > NOT_SHIPPED_HOURS:
+            issues.append(f"NEVER-SHIPPED branch {short}: {ahead} commit(s), last {(now - int(ts)) / 3600:.0f}h ago")
+    for i in issues:
+        print(i)
+    print(f"HEALTH: {len(issues)} issue(s)")
+    return len(issues)
 
 
 def pull_mirror(repo):
@@ -156,6 +250,11 @@ def where(repo):
     print(f"origin/{TRUNK}: {tip}")
     open_items = 0
     for path, branch in worktrees(repo):
+        if git(Path(path), "rev-parse", "--verify", "--quiet", "HEAD", check=False).returncode != 0:
+            # Unborn branch (its ref is gone): no commits to ship; report it instead of aborting the whole check.
+            open_items += 1
+            print(f"BROKEN    {Path(path).name:28} [{branch}] branch has no commits (ref missing); copy any wanted files out, then `git worktree remove`")
+            continue
         ahead = git(Path(path), "rev-list", "--count", f"origin/{TRUNK}..HEAD").stdout.strip()
         dirty = [l for l in git(Path(path), "status", "--short").stdout.splitlines() if l]
         tracked = sum(1 for l in dirty if not l.startswith("??"))
@@ -224,6 +323,86 @@ def claim(repo, task, area="-", gate=run_gate):
     print(f"claimed {slug}; release with: sync.py release {slug}")
 
 
+# Fixed lanes other tooling points at (dispatcher prompts, codex lab, push recipe): `tidy --all` still keeps them.
+LANE_WORKTREES = ("mts-push", "mts-refiner", "mts-codex-lab", "mts-codex", "mts-dsa", "mts-relay")
+
+
+TIDY_IDLE_HOURS = 24
+# Ignored paths that are rebuilt for free; anything else ignored (Dumps/, runtime_data/, fetched klines) is data.
+REGENERABLE = ("__pycache__/", ".pytest_cache/", ".pyc", " target/")  # target/ = Maven build output
+
+
+def ignored_data(p):
+    """Ignored paths in worktree `p` that are not trivially regenerable (`git worktree remove` deletes them)."""
+    out = git(p, "status", "--porcelain", "--ignored=matching", check=False).stdout.splitlines()
+    return [l[3:] for l in out if l.startswith("!! ") and not any(m in l for m in REGENERABLE)]
+
+
+def idle_hours(p, branch, now):
+    """Hours since the last sign of life: newest of the branch tip commit and the worktree's index/HEAD/log files."""
+    stamps = []
+    r = git(p, "log", "-1", "--format=%ct", branch, check=False).stdout.strip()
+    if r.isdigit():
+        stamps.append(int(r))
+    gd = git(p, "rev-parse", "--absolute-git-dir", check=False).stdout.strip()
+    for n in ("index", "HEAD", "logs/HEAD"):
+        f = Path(gd) / n if gd else None
+        if f is not None and f.exists():
+            stamps.append(f.stat().st_mtime)
+    return (now - max(stamps)) / 3600 if stamps else 0.0
+
+
+def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS, now=None):
+    """Retire finished session worktrees (`../mts-<host>-<slug>` made by `start`). Dry run unless apply.
+    Removed only when: not the primary tree, not the one we are in, no live marker, clean, no ignored data
+    files (those are deleted with the tree), branch fully on origin/fast-track, and idle for `min_idle_hours`
+    (a just-started tree is clean and "on origin" too, so cleanliness alone cannot tell it from a finished one).
+    Named lanes (mts-push, mts-codex-lab ...) and anything else are never touched.
+    Returns the paths removed (or that would be)."""
+    now = time.time() if now is None else now
+    git(repo, "fetch", "--quiet", "origin", TRUNK)
+    here = Path(repo).resolve()
+    rows = worktrees(repo)
+    out = []
+    for path, branch in rows[1:]:
+        p = Path(path).resolve()
+        if p == here or not p.exists() or (p / LIVE_MARKER).exists():
+            continue
+        auto = re.match(r"mts-.+-s\d{4}-\d{6}(-\d+)?$", p.name) or p.name.startswith(f"mts-{socket.gethostname().lower()}-")
+        if p.name in LANE_WORKTREES or not (auto or include_named):
+            print(f"keep  {p.name}: named lane or hand-named (`tidy --all` includes hand-named ones)")
+            continue
+        if branch in ("(detached)", TRUNK, "master", "main"):
+            print(f"keep  {p.name}: branch {branch}")
+            continue
+        if git(p, "status", "--porcelain", check=False).stdout.strip():
+            print(f"keep  {p.name}: uncommitted files")
+            continue
+        if git(repo, "merge-base", "--is-ancestor", branch, f"origin/{TRUNK}", check=False).returncode != 0:
+            print(f"keep  {p.name}: {branch} has commits not on origin/{TRUNK}")
+            continue
+        data = ignored_data(p)
+        if data:
+            print(f"keep  {p.name}: ignored data would be deleted ({len(data)} path(s), e.g. {data[0]}); move it to the "
+                  f"primary tree's Dumps/ first")
+            continue
+        idle = idle_hours(p, branch, now)
+        if idle < min_idle_hours:
+            print(f"keep  {p.name}: active {idle:.1f} h ago (tidy waits {min_idle_hours} h)")
+            continue
+        if apply:
+            r = git(repo, "worktree", "remove", str(p), check=False)
+            if r.returncode != 0:
+                print(f"keep  {p.name}: remove failed ({r.stderr.strip()[:80]})")
+                continue
+            git(repo, "branch", "-d", branch, check=False)
+        print(f"{'removed' if apply else 'would remove'}  {p.name} [{branch}]")
+        out.append(str(p))
+    if apply:
+        git(repo, "worktree", "prune", check=False)
+    return out
+
+
 def release(repo, slug, gate=run_gate):
     refuse_live(repo)
     merge_trunk(repo)
@@ -238,8 +417,15 @@ def release(repo, slug, gate=run_gate):
 
 
 def main(argv):
-    cmds = {"start": start, "ship": ship, "news": news, "where": where, "claims": print_claims}
+    cmds = {"start": start, "ship": ship, "news": news, "where": where, "claims": print_claims, "health": health}
     extra = {"claim", "release"}
+    if argv and argv[0] == "tidy" and len(argv) <= 3:
+        try:
+            tidy(toplevel(Path.cwd()), "--apply" in argv, "--all" in argv)
+        except SyncError as e:
+            print(f"sync: {e}", file=sys.stderr)
+            return 1
+        return 0
     if argv and argv[0] in extra and len(argv) >= 2:
         try:
             repo = toplevel(Path.cwd())
@@ -248,6 +434,15 @@ def main(argv):
             else:
                 area = argv[argv.index("--area") + 1] if "--area" in argv else "-"
                 claim(repo, argv[1], area)
+        except SyncError as e:
+            print(f"sync: {e}", file=sys.stderr)
+            return 1
+        return 0
+    if argv and argv[0] == "start" and len(argv) <= 3:
+        try:
+            here = "--here" in argv
+            rest = [a for a in argv[1:] if a != "--here"]
+            start(toplevel(Path.cwd()), rest[0] if rest else None, here)
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1

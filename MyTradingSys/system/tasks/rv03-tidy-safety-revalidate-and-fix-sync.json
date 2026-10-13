@@ -1,0 +1,43 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-12T17:48:47Z",
+  "commands": [],
+  "created": "2026-10-12T17:18:21Z",
+  "depends_on": [],
+  "done_when": "test_sync.py has red-first tests for fresh worktree, claimed worktree and ignored data; all green; report in research/revalidation/RV03_<date>.md with VERDICT line.",
+  "from_inbox": "",
+  "goal": "Follow MyTradingSys/system/revalidation/RV03_sync_tidy_and_parallel.md: write the failing tests first, then make tidy keep a worktree that is brand new (no commit of its own), holds a claim, or holds ignored non-reproducible data (Dumps/, runtime_data/). Q43 on JIS-NB must not run tidy --apply before this ships.",
+  "id": "rv03-tidy-safety-revalidate-and-fix-sync",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "owned by thread \"Fix tidy and recover lost data\"; relay sessions do not pick it up",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "tidy fixed red-first (ignored data + 24h idle guards), 22 sync tests green; no commits lost; Q33 klines re-fetched, matrix byte-identical; report MyTradingSys/research/revalidation/RV03_2026-10-12.md",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync.py",
+    "MyTradingSys/system/revalidation/RV03_sync_tidy_and_parallel.md",
+    "MyTradingSys/system/revalidation/_COMMON.md"
+  ],
+  "scope_out": [
+    "live path",
+    "holdout reads",
+    "running tidy --apply outside a throwaway test repo"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read the prompt and sync.py tidy.",
+    "Write the three tests; run them: they fail.",
+    "Fix tidy (compare branch tip with the commit the worktree was created at, claims in origin, ignored files via git status --ignored).",
+    "Run test_sync.py and run_all_tests.py --quick."
+  ],
+  "tests": "scripts/dev/test_sync.py: test_tidy_keeps_fresh_clean_worktree (fails on b3dadf1), test_tidy_keeps_claimed_worktree, test_tidy_keeps_ignored_data",
+  "title": "RV03 sync.py tidy: stop removing live-session worktrees (host=any)"
+}

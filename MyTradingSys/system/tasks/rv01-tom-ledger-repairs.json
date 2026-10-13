@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-12T19:19:03Z",
+  "commands": [],
+  "created": "2026-10-12T17:17:55Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "from_inbox": "",
+  "goal": "Follow MyTradingSys/system/revalidation/RV01_tom_ledger_repairs.md exactly; report per MyTradingSys/system/revalidation/_COMMON.md. host=JIS-NUC (frames are on F: here).",
+  "id": "rv01-tom-ledger-repairs",
+  "kind": "audit",
+  "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "reroute": {
+    "added_tests": true,
+    "at": "2026-10-12T18:07:06Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "window"
+  },
+  "result": "FIX-FIRST: 2 HIGH 3 MED 2 LOW; MyTradingSys/research/revalidation/RV01_2026-10-13.md",
+  "scope_in": [
+    "MyTradingSys/system/revalidation/RV01_tom_ledger_repairs.md",
+    "MyTradingSys/system/revalidation/_COMMON.md",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LEDGER_CANONICAL_GROUPS.csv",
+    "F:/MTS/data/tom_videos"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "Report file exists with the findings table or numbers and the verdict line; no code or spec changed",
+  "title": "RV01 revalidate Tom ledger repairs (host=JIS-NUC)"
+}

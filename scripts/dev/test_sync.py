@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -136,6 +137,143 @@ class SyncTest(unittest.TestCase):
         sync.ship(self.a, gate=self.gate)
         sync.start(self.b)
         self.assertTrue((self.b / "a.py").exists())
+
+
+    # ---- per-session tree, hot files, health (parallel-health task) ----
+    def test_start_in_dirty_shared_tree_makes_fresh_worktree(self):
+        (self.a / "README.md").write_text("another session's half-done edit\n", newline="\n")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            path = sync.start(self.a, slug="mine")
+        self.assertNotEqual(Path(path), self.a)
+        self.assertIn("WORKTREE:", buf.getvalue())
+        self.assertEqual((Path(path) / "README.md").read_text(), "x\n")  # clean copy of origin
+        self.assertEqual((self.a / "README.md").read_text(), "another session's half-done edit\n")
+        br = subprocess.run(["git", "-C", str(path), "branch", "--show-current"],
+                            capture_output=True, text=True).stdout.strip()
+        self.assertTrue(br.endswith("/mine"), br)
+
+    def test_start_in_tree_ahead_of_trunk_makes_fresh_worktree(self):
+        commit(self.a, "unshipped.py", "u\n")  # commits no session has shipped
+        with contextlib.redirect_stdout(io.StringIO()):
+            path = sync.start(self.a, slug="next")
+        self.assertNotEqual(Path(path), self.a)
+        self.assertFalse((Path(path) / "unshipped.py").exists())
+
+    def test_tidy_removes_only_clean_idle_shipped_session_worktrees(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            done = sync.new_worktree(self.a, "done")        # clean, nothing of its own, idle long enough
+            dirty = sync.new_worktree(self.a, "dirty")      # uncommitted file
+            ahead = sync.new_worktree(self.a, "ahead")      # unshipped commit
+        (dirty / "scratch.txt").write_text("wip\n", newline="\n")
+        commit(ahead, "unshipped.py", "u\n")
+        later = time.time() + 48 * 3600
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, now=later), [str(done.resolve())])      # dry run lists, removes nothing
+            self.assertTrue(done.exists())
+            self.assertEqual(sync.tidy(self.a, apply=True, now=later), [str(done.resolve())])
+        self.assertFalse(done.exists())
+        self.assertTrue(dirty.exists())
+        self.assertTrue(ahead.exists())
+        self.assertTrue(self.a.exists())  # primary tree never touched
+
+    def test_tidy_keeps_a_just_started_worktree(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            fresh = sync.new_worktree(self.a, "fresh")      # clean and on origin, but a session may be about to use it
+            self.assertEqual(sync.tidy(self.a, apply=True), [])
+        self.assertTrue(fresh.exists())
+
+    def test_tidy_keeps_a_worktree_holding_ignored_data(self):
+        (self.a / ".gitignore").write_text("Dumps/*\n", newline="\n")
+        sh(self.a, "add", ".gitignore")
+        sh(self.a, "commit", "-q", "-m", "ignore")
+        sh(self.a, "push", "-q", "origin", "HEAD:fast-track")
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "data")
+        (wt / "Dumps").mkdir()
+        (wt / "Dumps" / "klines.csv").write_text("1,2,3\n", newline="\n")
+        (wt / "__pycache__").mkdir()
+        (wt / "__pycache__" / "x.pyc").write_bytes(b"0")
+        later = time.time() + 48 * 3600
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, now=later), [])
+        self.assertTrue((wt / "Dumps" / "klines.csv").exists())
+
+    def test_tidy_ignores_only_regenerable_ignored_files(self):
+        (self.a / ".gitignore").write_text("__pycache__/\ntarget/\n", newline="\n")
+        sh(self.a, "add", ".gitignore")
+        sh(self.a, "commit", "-q", "-m", "ignore")
+        sh(self.a, "push", "-q", "origin", "HEAD:fast-track")
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "cache")
+        (wt / "target").mkdir()
+        (wt / "target" / "A.class").write_bytes(b"0")
+        (wt / "__pycache__").mkdir()
+        (wt / "__pycache__" / "x.pyc").write_bytes(b"0")
+        later = time.time() + 48 * 3600
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, now=later), [str(wt.resolve())])
+
+    def test_start_in_clean_tree_stays_put(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            path = sync.start(self.b)
+        self.assertEqual(Path(path), self.b)
+
+    def test_hot_file_conflict_resolved_to_origin_not_stalled(self):
+        name = "MyTradingSys/system/NEXT_SESSION.md"
+        (self.a / name).parent.mkdir(parents=True, exist_ok=True)
+        commit(self.a, name, "base\n")
+        sync.ship(self.a, gate=self.gate)
+        sh(self.b, "pull", "-q", "origin", "fast-track")
+        commit(self.a, name, "from a\n")
+        commit(self.b, name, "from b\n")
+        commit(self.b, "b.py", "b\n")
+        sync.ship(self.a, gate=self.gate)
+        with contextlib.redirect_stdout(io.StringIO()):
+            sync.ship(self.b, gate=self.gate)  # NEXT_SESSION.md collides: origin's text wins, ship goes on
+        sh(self.a, "fetch", "-q", "origin")
+        shown = subprocess.run(["git", "-C", str(self.a), "show", f"origin/fast-track:{name}"],
+                               capture_output=True, text=True).stdout
+        self.assertEqual(shown, "from a\n")
+        self.assertIn("b.py", self.head_files(self.a))
+
+    def test_real_code_conflict_still_stops(self):
+        commit(self.a, "x.py", "base\n")
+        sync.ship(self.a, gate=self.gate)
+        sh(self.b, "pull", "-q", "origin", "fast-track")
+        commit(self.a, "x.py", "a\n")
+        commit(self.b, "x.py", "b\n")
+        sync.ship(self.a, gate=self.gate)
+        with self.assertRaises(sync.SyncError):
+            sync.ship(self.b, gate=self.gate)
+
+    def test_health_flags_overlap_and_shared_tree(self):
+        sync.claim(self.a, "Task one", area="scripts/dev,MyTradingSys/backtest", gate=self.gate)
+        sync.claim(self.a, "Task two", area="scripts/dev/sync.py", gate=self.gate)
+        (self.a / "README.md").write_text("dirty\n", newline="\n")  # trunk tree with an uncommitted file
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            n = sync.health(self.a)
+        out = buf.getvalue()
+        self.assertIn("OVERLAP", out)
+        self.assertIn("SHARED", out)
+        self.assertGreaterEqual(n, 2)
+        self.assertIn("HEALTH:", out.strip().splitlines()[-1])
+
+    def test_health_clean_reports_zero(self):
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            n = sync.health(self.a)
+        self.assertEqual(n, 0)
+        self.assertIn("HEALTH: 0", buf.getvalue())
+
+    def test_gate_test_lists_are_one_entry_per_line(self):
+        """Every new test appends to these lists; two entries on one line is a guaranteed merge conflict."""
+        import re
+        src = (Path(__file__).resolve().parent / "run_all_tests.py").read_text(encoding="utf-8")
+        bad = [l.strip() for l in src.splitlines()
+               if len(re.findall(r'"[\w/.-]+\.py"', l)) >= 2 and "sys.executable" not in l]
+        self.assertEqual(bad, [])
 
 
 if __name__ == "__main__":

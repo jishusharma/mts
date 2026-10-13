@@ -12,6 +12,9 @@
   "goal": "Decide what can be tested where: recall harness on free NQ/US100 1m (price-only proofs), which order-flow proofs need aggressor data (BTC has it, CFD does not), cost and stop width in points and % for NQ versus BTC, and the Sonnet cards that build the recall harness and the encoding.",
   "id": "fabio-layer-v2-markets",
   "lane": "OPUS",
+  "layers": [
+    "fabio"
+  ],
   "live_path": false,
   "note": "",
   "prio": 2,

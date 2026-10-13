@@ -1,48 +1,57 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-13T07:23:49Z",
   "commands": [],
   "created": "2026-10-10T20:38:11Z",
   "depends_on": [
     "tom-verdict-fee-per-market",
     "tom-layer-v2-cost",
-    "tom-profile-parity-check",
     "tom-holdout-clean-split"
   ],
-  "done_when": "RECALL_DAX_V2.md: recall on the 7 entries (design set built from, CHECK set read once; target >= 4/7 overall), fire rate per DAX day on dev vs Tom's days, every recall iteration a TRIAL_REGISTRY row, every parameter sourced or NO-SOURCE, flag-off output identical.",
+  "done_when": "fade_short emitted on the synthetic series with the hand numbers above, none on the flat series, flag-off snapshot JSON bit-identical on BTC and GER40 fixtures, quick gate green.",
   "from_inbox": "",
-  "goal": "Add the setup behind 3 of Tom's 7 chart-verified DAX entries (fade of an opening/morning spike top: P-shape exhaustion, inside bar, weak-high ledge, no liquidity above) as a sourced candidate type with its own proofs, staged as .new, judged by recall on the 7 instants.",
+  "goal": "Add candidate type fade_short behind -Dmts.spikeFade (default off): short at the session extreme of an opening/pre-market impulse, PRICE arm only (spec sections 12, 13, 15), with stop A-S1/A-S2, target A-T1 and the section 14 snapshot fields.",
   "id": "tom-encode-spike-fade",
   "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
-  "note": "opus 2026-10-11, after the tom-dax-backtest build: with order-flow masked, only rejection_wick and volume_spike can count (SetupCandidatesBuilder.java:557-575), so proof <= 2 < 3 on CFD data. spike_fade proofs must be computable from OHLCV (profile shape, inside bar, ledge of prior highs, spike size) or recall stays 0 by construction. Gate the new type behind -Dmts.spikeFade=true (default off) instead of a .new file, so a deploy leaves live BTC output bit-identical (test that).",
+  "note": "Part B 2026-10-13: recall moved to card tom-v2-recall-fire-rate; PRICE arm only. No threshold beyond the spec's RANK-DEFAULT values; anything else unsourced is NO-SOURCE: flag, do not add.",
   "prio": 1,
   "refine_tries": 0,
-  "refined_by": "opus-2026-10-11 (from RECALL_DAX.md)",
+  "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
   "refs": [],
-  "result": "",
+  "result": "fade_short built behind -Dmts.spikeFade: hand numbers 24110/24130/24010 RR 5.0 net 4.9285 pass; flag-off golden identical BTC+GER40; quick gate green",
   "scope_in": [
-    "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md",
-    "F:/MTS/data/tom_videos (frames + .txt transcripts with timestamps)",
     "src/main/java/datafeed/SetupCandidatesBuilder.java",
-    "MyTradingSys/backtest/tom_dax_recall.py"
+    "src/test/java/datafeed/",
+    "MyTradingSys/backtest/dax_engine.py",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11-15"
   ],
   "scope_out": [
-    "live tree / restarts (stage .new, supervisor deploys)",
+    "live tree / restarts",
     "tuning on outcomes",
-    "BTC"
+    "reading any DAX holdout day (2026-04-11 on)",
+    "BTC runs",
+    "profile proofs (card tom-encode-fade-profile-proofs)",
+    "paths A2/A3",
+    "recall runs"
   ],
   "size": "M",
   "sources": [
-    "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md sections 1-3"
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2.1-2.5, 12, 13, 15",
+    "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md section 3"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
-    "Collect Tom's words for each element (transcripts of T6hDJcHrVBM, zQTbdEweG3c, k0zm5NYn0IQ + TOM_VERBATIM_INDEX), quote + file:line per parameter; unsourced numbers = NO-SOURCE, flagged.",
-    "Implement in src/main (worktree) behind -Dmts.spikeFade (default off); candidate type spike_fade with OHLCV-computable proofs; no change to existing types; test that flag-off output is identical. dax_engine.py/tom_dax_recall.py pass the flag through.",
-    "Re-run tom_dax_recall.py (declared anchor) against the staged engine; write MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX_V2.md.",
-    "Encode from the DESIGN set in HOLDOUT_CLEAN.json only; read the CHECK set once at the end; report fire rate (signals per DAX day) next to recall, never recall alone."
+    "Read spec sections 2, 12, 13, 15. Every condition keeps its spec id (A-C1, A-P4 ...) in the code comment and the proof JSON.",
+    "Zone = session extreme of the impulse leg; A-C1 via impulse_rank above the median of the prior 20 sessions; A-C2 = price above the prior day's range.",
+    "Proofs P2, P4 (5-minute inside bar), P5, P7 from OHLC; emit the list, count nothing else. Stop: A-S1 level if one exists above, else A-S2 20 DAX points. Target A-T1 start of the impulse.",
+    "Write market_state, day_type, htf_bias, impulse_rank, stop_n5 on each candidate. dax_engine.py passes the flag through.",
+    "Flag off: full snapshot JSON identical on a BTC and a GER40 fixture (test)."
   ],
-  "tests": "Java unit test: a synthetic 1m series with an opening spike + inside bar at a prior-high ledge yields a short spike_fade candidate at the spike high; a flat series yields none (fails before the type exists).",
-  "title": "Encode Tom's spike-top fade as a candidate type (recall test on his 7 DAX entries)"
+  "tests": "Java: 1m series with prior-day high 24000, open 24010, impulse to 24110 above the prior 20 legs' median, old high 24080 taken, 5m inside bar at the top -> one fade_short at 24110, stop 24130, target 24010, gross RR 5.0, GER40 net RR 99.7589/20.2411 = 4.9285, proofs P4+P5; flat series -> none; flag off -> output identical. Fails before the type exists.",
+  "title": "Tom v2: encode the fade PRICE arm (session-extreme zone, A-C1/A-C2, proofs P2 P4 P5 P7, path A1)"
 }

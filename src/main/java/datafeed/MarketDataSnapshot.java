@@ -1296,7 +1296,7 @@ public class MarketDataSnapshot {
         // ── Liquidation clusters (historical fallback) ──
 
         // ── Setup Candidates ──
-        ArrayNode setupCandidates = SetupCandidatesBuilder.build(mapper, root, mtf, klines1m);
+        ArrayNode setupCandidates = SetupCandidatesBuilder.build(mapper, root, mtf, klines1m, fadeSeries1m(symbol, asOf));
         ArrayNode extraCandidates = ExtraSetupBuilder.build(mapper, root, mtf, klines1m);
         double clusterAbovePrice = liquidationClusters.get("nearest_above").get("price").asDouble();
         double clusterBelowPrice = liquidationClusters.get("nearest_below").get("price").asDouble();
@@ -1347,6 +1347,27 @@ public class MarketDataSnapshot {
         for (Future<?> f : futures) { try { f.get(30, TimeUnit.SECONDS); } catch (Exception ignored) {} }
         pool.shutdownNow();
         return result;
+    }
+
+    /** Calendar days of 1m bars handed to the family A fade call: 20 prior sessions plus today with holiday margin. */
+    static final int FADE_SERIES_DAYS = 40;
+
+    /**
+     * Longer 1m series for SpikeFadeDetector (card tom-v2-recall-fire-rate): a snapshot's mtf 1m is 24 h, the detector
+     * needs 21 sessions. Only with -Dmts.spikeFade=true; null (flag off or no data) = the detector sees the 24 h series
+     * and fails closed. Used by this as-of path only; the live path is unchanged and research replays only reach it.
+     */
+    private JsonNode fadeSeries1m(String symbol, Instant asOf) {
+        if (!SpikeFadeDetector.enabled()) return null;
+        try {
+            long end = asOf.toEpochMilli();
+            JsonNode k = hist().klinesRange(symbol, "1m", end - FADE_SERIES_DAYS * 86_400_000L, end, FADE_SERIES_DAYS * 1440);
+            dropFormingBar(k, end);
+            return k;
+        } catch (IOException ex) {
+            System.err.println("[FADE] long 1m series failed: " + ex.getMessage());
+            return null;
+        }
     }
 
     private long getDurationMillis(String tf) {

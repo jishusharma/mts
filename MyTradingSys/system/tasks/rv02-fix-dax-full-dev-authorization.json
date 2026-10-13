@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T19:46:13Z",
+  "depends_on": [],
+  "done_when": "Linked HIGH finding has a synthetic red/green regression; focused harness/data tests pass and development isolation is preserved.",
+  "from_inbox": "",
+  "goal": "Reject partial snapshot months as full development and bind holdout authorization to a durable completed run with its code, arms, data, session and readiness identities.",
+  "id": "rv02-fix-dax-full-dev-authorization",
+  "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | Captured by completed RV02 audit; raw SONNET follow-up for refinement. No implementation change made by the audit.",
+  "pinned": false,
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/tom_dax_bt.py",
+    "MyTradingSys/backtest/test_tom_dax_bt.py",
+    "research/core_readiness_2026-09-27/harness/java/TomSnapshotGen.java"
+  ],
+  "scope_out": [
+    "Live path and shared engine changes without owner approval",
+    "Specs, ledger and historical reports",
+    "Real-data/holdout reads and current-encoding BTC runs"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md:45",
+    "MyTradingSys/system/revalidation/RV02_dax_harness_fixes.md"
+  ],
+  "state": "blocked",
+  "steps": [
+    "Read the linked RV02 finding and executable synthetic appendix.",
+    "Refine the implementation boundary and reproduce the finding red with synthetic data.",
+    "Fix within the approved scope, invalidate incompatible caches, and run the focused tests."
+  ],
+  "tests": "One evaluated snapshot over a complete 1440-minute day cannot certify 96 scheduled observations; reject missing edge coverage, stale producer ranges and changed-run authorization.",
+  "title": "RV02 R3: require complete DAX sampling and bind holdout authorization"
+}

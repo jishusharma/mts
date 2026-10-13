@@ -1,0 +1,43 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-12T13:19:05Z",
+  "commands": [],
+  "created": "2026-10-12T08:16:22Z",
+  "depends_on": [],
+  "done_when": "Duplicate aliases are explicit, all 37 rows remain traceable, and headline counts distinguish candidate groups from certified executions.",
+  "from_inbox": "",
+  "goal": "Resolve duplicate trade identities without losing event evidence.",
+  "id": "tom-ledger-canonical-identities",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "Repair work only. Codex retains audit ownership; this card does not ask Claude to repeat the audit.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "Codex completed ledger audit",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md"
+  ],
+  "result": "already repaired in 2868d6c: 37 rows kept, 14 ids = 12 candidate groups (TOM_LEDGER_CANONICAL_GROUPS.csv), 0 certified executions",
+  "scope_in": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",
+    "Read-only source frames/captions under F:/MTS/data/tom_videos"
+  ],
+  "scope_out": [
+    "New audit; layer specs or code; live system; holdout reads; split manifest ownership"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Claim the shared ledger file area; serialize with other ledger repairs and respect the existing split owner's claim.",
+    "Use report H1/M3: T4/T9 are one candidate episode; T6/T10 are one candidate episode; retain T3-s/T3b-s as aliases.",
+    "Add explicit canonical trade and event identities, preserving all 37 source rows and frame pointers; do not certify 12 executions from 12 candidate groups.",
+    "Update narrative counts and provide grouping/prior-exposure evidence for the existing JIS-NB split owner without editing its manifest."
+  ],
+  "tests": "Documentation validation: preserve row IDs/source pointers; check each changed claim against the cited audit evidence; parse CSV and check narrative consistency. No code tests or backtests.",
+  "title": "Tom ledger audit: canonical trade identities and duplicate aliases"
+}

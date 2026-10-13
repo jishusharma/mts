@@ -19,6 +19,8 @@ if ($Remove) {
 $script = Join-Path $LabTree 'scripts\dev\codex_run.py'
 if (-not (Test-Path $script)) { throw "no runner at $script (create the lab work tree first: LAYER_LAB.md)" }
 $py = (Get-Command python -ErrorAction Stop).Source
+$pyw = Join-Path (Split-Path $py) 'pythonw.exe'   # no console window flashing on the operator's screen every tick
+if (Test-Path $pyw) { $py = $pyw }
 $user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
 $act = New-ScheduledTaskAction -Execute $py -Argument ("`"$script`" tick") -WorkingDirectory $LabTree
 $trg = New-ScheduledTaskTrigger -Once -At (Get-Date).Date -RepetitionInterval (New-TimeSpan -Minutes 30)

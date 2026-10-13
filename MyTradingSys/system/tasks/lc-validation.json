@@ -1,0 +1,41 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T18:51:54Z",
+  "depends_on": [
+    "lc-ladder-dev"
+  ],
+  "done_when": "validation.md with n, mean R after fees and CI; card result carries the number.",
+  "from_inbox": "",
+  "goal": "One run of the frozen DEV rule on the validation window. No changes after; the number is the answer.",
+  "id": "lc-validation",
+  "lane": "DSA-NUC",
+  "layers": [],
+  "live_path": false,
+  "note": "Operator idea 2026-10-14; own layer (research only until LC3 passes); numbers OURS, printed in each report.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-14 (LC PLAN.md, operator chat)",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/validation.md"
+  ],
+  "scope_out": [
+    "any edit to frozen_rule.json or code",
+    "HOLDOUT 2025-07+"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/PLAN.md (operator ask 2026-10-14, verbatim at top)",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 10-15 (BTC minimum stop width)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (RSI, value area, Bollinger)"
+  ],
+  "state": "raw",
+  "steps": [
+    "python ladder.py --rule frozen_rule.json --window 2025-04-01..2025-06-30 > validation.md"
+  ],
+  "tests": "none (run card)",
+  "title": "LC4 Levels Confluence: run frozen_rule.json once on VALIDATION 2025-04..2025-06 and report"
+}

@@ -1,0 +1,43 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-12T16:18:41Z",
+  "commands": [],
+  "created": "2026-10-12T08:16:26Z",
+  "depends_on": [],
+  "done_when": "T5 family records observed chart identity and evidence-backed execution identity or explicit unknowns; no multiplier is guessed.",
+  "from_inbox": "",
+  "goal": "Resolve chart versus executed instrument identity for T5 and related rows.",
+  "id": "tom-ledger-instrument-identity",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "Repair work only. Codex retains audit ownership; this card does not ask Claude to repeat the audit.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "Codex completed ledger audit",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md"
+  ],
+  "result": "T5/T5-m1/T5-p1/T5-a1 carry chart_symbol_observed=Continuous(FDXM)@EUREX, executed contract/multiplier/tick/ccy NOT_IN_DATA (no guess); narrative T5 line qualified",
+  "scope_in": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",
+    "Read-only source frames/captions under F:/MTS/data/tom_videos"
+  ],
+  "scope_out": [
+    "New audit; layer specs or code; live system; holdout reads; split manifest ownership"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Claim the shared ledger file area; serialize with other ledger repairs and respect the existing split owner's claim.",
+    "Use report H3: T6hDJcHrVBM_0520.jpg shows Continuous(FDXM)@EUREX while T5 family says FDAX.",
+    "Preserve observed chart identity separately from executed contract; require direct evidence for contract, multiplier, tick size and currency.",
+    "If execution evidence is absent, mark NOT_IN_DATA and prevent unsupported monetary-risk conclusions; update narrative consistently."
+  ],
+  "tests": "Documentation validation: preserve row IDs/source pointers; check each changed claim against the cited audit evidence; parse CSV and check narrative consistency. No code tests or backtests.",
+  "title": "Tom ledger audit: resolve T5 FDXM chart versus FDAX instrument"
+}

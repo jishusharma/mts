@@ -1,0 +1,31 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-12T13:15:48Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "tom-direction-health-vs-sources",
+  "kind": "audit",
+  "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Tom core direction/health rules vs his words: determineDirections gives below_val -> long only (SetupCandidatesBuilder.java:255-262, daily-VP VAL) but TOM-145 (BVpYGKz9PBU_raw.txt:19) says below YESTERDAY's VAL a short can be tried; classifyState (java:236-251) calls every outside-VA price trend_healthy and trend_unhealthy only on cvd divergent, TOM-056/140 define unhealthy by liquidity left behind. Live case 2026-10-12 13:13Z. Feed the result to tom-layer-v2-spec"
+}

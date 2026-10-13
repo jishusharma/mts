@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T06:33:20Z",
+  "depends_on": [],
+  "done_when": "The worked example of spec section 11.4 passes as a test, min_width off leaves an existing tom_bt fixture run unchanged, and the lookback 10/20/40 floors for 2026-06-25 are one line in the card result.",
+  "from_inbox": "",
+  "goal": "Give BTC research replays the minimum stop width of spec section 11.4: noise unit N5, noise floor 0.88 x N5, fee floor round-turn cost / 0.25, no trade below the larger one. Research replays only; live BTC output unchanged. Start only if DAX_BT_V2.md says PASS.",
+  "id": "tom-v2-btc-min-stop-width",
+  "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "2026-10-13 (operator chat q11): no longer waits for the DAX dev run (held). The 0.40 % taker / 0.20 % maker floor is used directly by tom-btc-event-study.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/tom_bt.py",
+    "MyTradingSys/backtest/fees.py (read only)",
+    "scripts/dev/tom_noise_units.py",
+    "MyTradingSys/tests/",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md section 11"
+  ],
+  "scope_out": [
+    "live tree / restarts",
+    "tuning on outcomes",
+    "running a BTC backtest (needs its own pre-registration)",
+    "widening any stop",
+    "BTC holdout 2026-06-26 on (burned)"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md section 11",
+    "MyTradingSys/PROJECT_VISION.md:234",
+    "MyTradingSys/backtest/layers/FORMULAS.md section 12"
+  ],
+  "state": "ready",
+  "steps": [
+    "n5(bars, asof): median true range (FORMULAS.md 12) of completed 5-minute bars of the trailing 20 UTC days, as a fraction of close; reuse tom_noise_units.true_ranges.",
+    "min_stop_width(entry, n5, fees) = max(0.88 * n5, round-turn fee fraction / 0.25) * entry; a signal with a narrower stop is dropped with reason stop_below_min_width, never widened.",
+    "Off by default (argument min_width=False): existing tom_bt outputs identical. Report the floor at lookback 10 and 40 beside 20; choose nothing."
+  ],
+  "tests": "pytest: entry 100000, N5 0.14 % -> W_noise 123.20, all-taker W_fee 400.00, W_min 400.00; stop 100399 dropped, 100400 kept with fee 0.25 R; FEES_DERIBIT W_fee 200.00. FORMULAS 12 example: true ranges 2, 2, 2.5 -> median 2. min_width off -> same trades as before. Fails before the function exists.",
+  "title": "Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)"
+}

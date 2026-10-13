@@ -9,6 +9,18 @@ GitHub `origin/fast-track` is the only meeting point. Git already merges paralle
 conflicts; we stop re-implementing that with docs. The only thing git cannot protect is the running
 system, so the running system gets its own checkout that no session works in.
 
+## Collisions: what is measured, what is enforced (2026-10-12)
+Last 7 days: 200 merge commits on fast-track, 29 needed a hand edit; the repeat offenders were NEXT_SESSION.md,
+the one-line test list in run_all_tests.py and BUGS.md. Cause: sessions sharing a tree (the main folder holds
+other sessions' uncommitted files and unshipped commits) and a handful of hot files everyone edits.
+- `sync.py start [slug]`: in a tree that is dirty or ahead of origin it does NOT work there; it makes
+  `../mts-<host>-<slug>` off origin/fast-track and prints `WORKTREE: <path>`; work only there. `--here` opts out.
+- `ship`: a collision confined to NEXT_SESSION.md, STATUS.md or BUILD_REPORT.md resolves to origin's text and says so
+  (re-apply your edit if it mattered); a collision anywhere else still stops for a human.
+- Lists that every session appends to (run_all_tests.py test lists) are one entry per line; a test enforces it.
+- `sync.py health` (also in the daily hygiene report): stale claims, overlapping claim areas, shared/dirty trees,
+  orphan worktrees, branches never shipped for 24 h.
+
 ## Two kinds of checkout
 | Checkout | Where | Who changes it | How |
 |---|---|---|---|
@@ -27,6 +39,14 @@ system, so the running system gets its own checkout that no session works in.
    something other than docs changed, pushes. A rejected push means someone shipped first; it re-merges and
    retries. A real conflict stops and asks you to resolve it.
 4. CI runs the full gate on both OSes after every push. Red CI is the next session's first job.
+5. Worktree hygiene (2026-10-12): a session that made a `../mts-<host>-<slug>` worktree and shipped everything
+   ends with `sync.py where` clean; the next session of any lane runs `sync.py tidy` (dry run) then `tidy --apply`,
+   which removes only session worktrees that are clean, fully on origin/fast-track, idle for 24 h (a just-started
+   tree looks identical to a finished one), and hold no ignored data files (`git worktree remove` deletes
+   Dumps/, runtime_data/ and fetched klines silently; only __pycache__/.pytest_cache/.pyc do not count).
+   Never remove a worktree with uncommitted or unshipped work, a named lane (mts-push, mts-codex-lab ...), or
+   the main/live tree. Fetched datasets belong in the primary tree's Dumps/ (never tidied), not in a session
+   worktree. 2026-10-12: tidy without these guards removed 15 worktrees on JIS-NUC (see RV03 report).
 
 Cloud sessions with a harness branch (`claude/...`) open a PR instead; CI auto-merges it when green.
 

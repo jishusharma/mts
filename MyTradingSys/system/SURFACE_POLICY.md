@@ -38,7 +38,7 @@ pastes into incoming_dsa/; AIBridge still uses F:\AIBridge\HANDOFF.md.
 OPERATOR DIRECTIVE 2026-10-02: never refuse a task for budget. Work to
 completion. Commit after each step when Session Manager signals low headroom.
 Handing off at the CLAUDE.md short-session limit (operator 2026-10-09: task done, 5 operator
-turns or ~50k tokens) is not a refusal: finish the step, ship, overwrite NEXT_SESSION.md; the
+turns or 15 tool turns) is not a refusal: finish the step, ship, overwrite NEXT_SESSION.md; the
 next session continues the same queue.
 
 DSA never states a numeric usage percent, budget cap, token cap, or dollar pool

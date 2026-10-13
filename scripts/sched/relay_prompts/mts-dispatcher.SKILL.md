@@ -1,5 +1,6 @@
 ---
 name: mts-dispatcher
+model: sonnet
 description: NB dispatcher, hourly 07-23; yields to the NUC while the NUC wrote the current handoff under 90 min ago, otherwise runs the relay itself. Inbox, refiner, housekeeping on each tick.
 ---
 
@@ -16,3 +17,5 @@ MTS dispatcher AND worker. ECONOMY (operator 2026-10-11): an idle tick must cost
 3. (hourly tick only) Housekeeping (best effort, skip silently if the tools are missing): ToolSearch "select:mcp__ccd_session_mgmt__list_sessions,mcp__ccd_session_mgmt__archive_session", list_sessions limit 100, archive_session every session titled "MTS dispatcher (starts the Sonnet relay)" that is not running, is not this one, and whose lastActivityAt is older than 3 hours. Never touch other titles.
 4. Final line: `dispatcher: relay=<KICK worked task|IDLE reason>; inbox_new=<n>; pickup=<done|no>; refine=<OK|DONE n cards ready|SKIPPED|ERROR text>`.
 Never start other scheduled tasks. Never kill processes by image name (no taskkill /IM python.exe: it took down the live stack on 2026-10-10); stop only a PID you started yourself. Never touch the live tree's files, HALT files or trades. CLAUDE.md hard rules apply.
+
+Output caps (B172): pipe long command output through `| tail -20`, use `--quiet` flags, no `ls`/`head` probes; finish within 15 tool turns.
