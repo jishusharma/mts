@@ -426,7 +426,7 @@ Doctrine: your 09-23 'Tom is core' vs the 10-10 'promotion to core uses the S3 b
 Recommended: Let S3 decide what is core
 Answer: No fixed core: remove "Tom is core" and the hard layer rules; flexible system (operator chat 2026-10-13)
 Operator note (verbatim): "WRT “Tom is core, non-negotiable” - It was a long time ago when we started - now it makes no sense to have anything like this. We need flexible system now that can adapt to whatever change we need to bring. So we have to remove all those uh, hard rules about layers and everything."
-Applied: (not yet) Rule text staged 2026-10-13: scripts/dev/staged/apply_rules_2026_10_13.py, task system/cli_tasks/2026-10-13_rules_rewrite.md. The cloud session could not apply it (its permission check blocks edits to agent instruction files); a local session runs it on Jis's OK.
+Applied: 2026-10-14 JIS-NB on Jis's OK in chat ("Yes - go ahead from me - do not be afraid to change what makes sense to change!"), commit "rules rewrite q14 applied" (script deleted after use). Was: rule text staged 2026-10-13: scripts/dev/staged/apply_rules_2026_10_13.py, task system/cli_tasks/2026-10-13_rules_rewrite.md. The cloud session could not apply it (its permission check blocks edits to agent instruction files); a local session runs it on Jis's OK.
 
 ```json
 {

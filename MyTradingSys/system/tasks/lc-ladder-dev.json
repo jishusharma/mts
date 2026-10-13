@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T18:51:54Z",
+  "depends_on": [
+    "lc-event-table"
+  ],
+  "done_when": "ladder_dev.md table + frozen_rule.json; tests green.",
+  "from_inbox": "",
+  "goal": "Simulate the pre-registered combinations x exits X0 fixed 1R/2R, X1 all out at first opposing level, X2 ladder (1/2 at first level; rest held while CVD agrees, 1/2 of rest when CVD flat, all out on CVD against or opposite Bollinger band; time stop end of UTC day). Stop beyond level by max(0.10 %, 0.40 % taker / 0.20 % maker).",
+  "id": "lc-ladder-dev",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "note": "Operator idea 2026-10-14; own layer (research only until LC3 passes); numbers OURS, printed in each report.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-14 (LC PLAN.md, operator chat)",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/ladder.py",
+    "MyTradingSys/research/levels_confluence_2026-10-14/test_ladder.py",
+    "MyTradingSys/research/levels_confluence_2026-10-14/ladder_dev.md",
+    "MyTradingSys/research/levels_confluence_2026-10-14/frozen_rule.json"
+  ],
+  "scope_out": [
+    "VALIDATION (2025-04..06) and HOLDOUT (2025-07+) bars, except card lc-validation",
+    "live tree",
+    "Tom/Fabio layer code (read only)"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/PLAN.md (operator ask 2026-10-14, verbatim at top)",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 10-15 (BTC minimum stop width)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (RSI, value area, Bollinger)"
+  ],
+  "state": "raw",
+  "steps": [
+    "Simulator with fees both ways (fees.py), partial fills accounted per leg.",
+    "Report per combination x exit: n, mean R after fees with 95 % CI, max drawdown, power / minimum detectable effect (gap-g1 helper). Below 50 % power a FAIL reads INCONCLUSIVE.",
+    "Freeze the single best DEV rule in frozen_rule.json (no edits after)."
+  ],
+  "tests": "hand-built price path: long at support, first resistance hit -> half closed there; CVD flat bar -> quarter closed; opposite band -> rest closed; fees subtracted per leg match a hand sum.",
+  "title": "LC3 Levels Confluence: ladder-exit simulator (fixed vs first level vs CVD/Bollinger step-out) on the <= 6 LC2 combinations, DEV, maker+taker fees"
+}
