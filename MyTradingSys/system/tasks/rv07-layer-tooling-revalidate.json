@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-13T19:05:04Z",
   "commands": [],
   "created": "2026-10-12T17:18:21Z",
   "depends_on": [],
@@ -18,7 +19,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "SOUND; 2 known shot.py guards CONFIRMED+fixed (red-first tests), 3 LOW; MyTradingSys/research/revalidation/RV07_2026-10-13.md",
   "scope_in": [
     "scripts/dev/shot.py",
     "scripts/dev/test_shot.py",
@@ -35,7 +36,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run the five checks of the prompt; print counts.",
     "Write the two failing tests, fix shot.py.",
