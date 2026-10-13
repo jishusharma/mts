@@ -1,0 +1,32 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T05:35:47Z",
+  "depends_on": [],
+  "done_when": "Entry and stop readings carry exact frame times; F13 replacement and F12-m2 stop are adjudicated; partial stop coverage and label conventions are explicit.",
+  "from_inbox": "",
+  "goal": "Integrate RV05 H2 with the existing entry repair; adjudicate all five rows from full-resolution position and order labels.",
+  "id": "rv05-h2-position-line-evidence",
+  "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "note": "Evidence follow-up to existing repair, not a parallel duplicate implementation. See RV05 report.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "RV05 H2: read position lines and stop prices before applying existing Fabio entry repair"
+}

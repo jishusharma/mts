@@ -1,0 +1,32 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T05:35:47Z",
+  "depends_on": [],
+  "done_when": "Explain the -2910 daily delta versus -1760 partial-stop label with execution evidence, or retain an inferred outcome and unknown fill price.",
+  "from_inbox": "",
+  "goal": "Integrate RV05 H3 with the existing F13 outcome repair.",
+  "id": "rv05-h3-outcome-evidence",
+  "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "note": "Evidence follow-up to existing repair, not a parallel duplicate implementation. See RV05 report.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair"
+}

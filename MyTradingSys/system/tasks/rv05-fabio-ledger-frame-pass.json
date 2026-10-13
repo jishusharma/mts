@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-13T05:38:26Z",
   "commands": [],
   "created": "2026-10-12T17:18:12Z",
   "crucial": true,
@@ -22,7 +23,7 @@
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST: 2 remaining rows checked, 3 HIGH carried forward and 2 MED; MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md",
   "scope_in": [
     "MyTradingSys/system/revalidation/RV05_fabio_ledger_frame_pass.md",
     "MyTradingSys/system/revalidation/_COMMON.md",
@@ -36,7 +37,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",

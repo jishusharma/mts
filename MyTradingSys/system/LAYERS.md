@@ -59,19 +59,26 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Ledger: `MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv`; `MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md`
 - Other results: `MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md`
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`
-- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md`
+- Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `fabio-audit-20261013-attribution` raw p2 SONNET: H6: Separate secondary presenter settings from Fabio direct parameters
+  - `fabio-audit-20261013-counts` raw p2 SONNET: H4: Rebuild Fabio parent-trade inventory coverage and stop statistics
+  - `fabio-audit-20261013-dates` raw p2 SONNET: H3: Replace unsupported Fabio dates and source each execution timezone
+  - `fabio-audit-20261013-exits` raw p2 SONNET: H2: Reconcile Fabio exit causes and daily PnL deltas with fills
+  - `fabio-audit-20261013-prices` raw p2 SONNET: H1: Correct Fabio F8-F13 frame prices and buy-add order sides
+  - `fabio-audit-20261013-rules` raw p2 SONNET: H5: Correct Fabio management generalizations and distinguish order drawings
   - `fabio-layer-v2-markets` refined p2 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
   - `fabio-layer-v2-spec` blocked p2 OPUS: Fabio layer v2 spec, part A: setup families + sourced rules from his ledger (Opus research)
   - `fabio-ledger-minute-timestamps` ready p2 SONNET: Fabio ledger: read minute timestamps from frame clocks (replay-ready rows)
   - `fabio-video-prescreen` raw p2 SONNET: Fabio video pre-screen: list per 250 s window whether a frame shows an order ticket or position line, so only 
-  - `lab-audit-fabio-ledger-frames` ready p2 CODEX: Audit Fabio's trade ledger against his chart frames and transcripts
-  - `rv05-fabio-ledger-frame-pass` ready p2 CODEX: RV05 Fabio ledger frame-by-frame pass over unread rows (host=JIS-NUC)
   - `fabio-ledger-f13-outcome-provenance-2910` raw p3 SONNET: fabio-ledger: F13 outcome provenance (-2910 vs stop -1760)
   - `fabio-ledger-recompute-entry-from-stp-la` raw p3 SONNET: fabio-ledger: recompute entry from STP label for F8 F12-m2 F13 F13-m1
   - `fabio-ledger-replace-date-2026-with-unkn` raw p3 SONNET: fabio-ledger: replace date 2026 with UNKNOWN for Jpd96/DyS79 session (contract NQ-202512)
   - `fabio-ledger-scan-dys79eb92ug-is1hvdfqm5` raw p3 SONNET: Fabio ledger: scan DyS79Eb92Ug, Is1HvdfQm5c, xUyqIjCfZzg (downloaded on F:, 2.4-3.8 h live sessions) for trade
   - `find-more-fabio-trade-recap-videos-yt-dl` ready p3 SONNET: Find more Fabio trade-recap videos (yt-dlp), ledger has only 8 entries vs goal 20
+  - `rv05-h1-date-evidence` raw p3 SONNET: RV05 H1: incorporate date revalidation evidence into existing Fabio ledger date repair
+  - `rv05-h2-position-line-evidence` raw p3 SONNET: RV05 H2: read position lines and stop prices before applying existing Fabio entry repair
+  - `rv05-h3-outcome-evidence` raw p3 SONNET: RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair
   - `fabio-ledger-get-9i5vtvwsmbk-f398-not-av` raw p4 SONNET: Fabio ledger: get 9I5vTvwsMBk (f398 not available; try another format/client) and read it for trades
 
 ## Tom/Fabio cross-guidance (BB, LVN, regime filters) (`guidance`)
