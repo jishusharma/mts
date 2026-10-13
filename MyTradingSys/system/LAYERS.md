@@ -26,14 +26,17 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Ledger: `MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv`; `MyTradingSys/research/tom_transfer_2026-10-11/TOM_LEDGER_CANONICAL_GROUPS.csv`
 - Other results: `MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md`
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`; `MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md`
-- Codex lab reports (newest 4 of 11): `MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-unavailable-flow.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-trial-identity.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-session-null.md`
+- Codex lab reports (newest 4 of 12): `MyTradingSys/research/layer_lab/reports/2026-10-13_tom-profile-shape-parity.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-unavailable-flow.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-trial-identity.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `rv02-fix-dax-full-dev-authorization` raw p1 SONNET: RV02 R3: require complete DAX sampling and bind holdout authorization
   - `rv02-fix-dax-preprocessing-isolation` raw p1 SONNET: RV02 R1: isolate DAX preprocessing and report metadata before holdout
   - `rv02-fix-dax-producer-data-binding` raw p1 SONNET: RV02 R4: reject DAX snapshots made from different execution data
   - `rv02-fix-dax-rounded-rr-gate` raw p1 SONNET: RV02 R2: preserve exact DAX net RR through the decision boundary
-  - `tom-profile-shape-parity` ready p1 SONNET: Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)
+  - `tom-profile-shape-parity` ready p1 CODEX: Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)
   - `tom-v2-dax-dev-backtest` refined p1 SONNET: Tom v2: DAX dev backtest of the fade under the part B protocol (both fills, session null)
+  - `gap-g1-power-mde-helper` ready p2 CODEX: Gap G1: power / MDE helper that every pre-registration prints (verdict INCONCLUSIVE when power < 80 %)
+  - `gap-g4-through-ticks-flag` ready p2 CODEX: Gap G4: through_ticks flag in tom_bt.sim_limit_trade (entry and target), default off, output identical
+  - `gap-g6-trial-ledger` ready p2 CODEX: Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)
   - `tom-check-set-find-frames-only-tom-trade` raw p2 SONNET: Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set
   - `tom-dax-backtest` refined p2 SONNET: Untuned Tom backtest on DAX vs matched-proof BTC rerun
   - `tom-direction-health-vs-sources` raw p2 SONNET: Tom core direction/health rules vs his words: determineDirections gives below_val -> long only (SetupCandidate

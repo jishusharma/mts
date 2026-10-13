@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-13T16:49:03Z",
   "commands": [],
   "created": "2026-10-11T19:49:49Z",
   "depends_on": [],
@@ -18,7 +19,7 @@
   "refs": [
     "B172"
   ],
-  "result": "",
+  "result": "begin already shipped in a0080f0; 36/36 relay tests pass (4 begin tests incl. fail-closed); relay_session.md steps 1-3 call begin; mean-turns metric pending 3 kick sessions",
   "scope_in": [
     "scripts/sched/relay.py",
     "scripts/sched/relay_prompts/relay_session.md",
@@ -34,7 +35,7 @@
   "sources": [
     "MyTradingSys/research/TOKEN_AUDIT_2026-10-12.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add `relay.py begin`: create/ff ../mts-relay, run sync start quietly, pick first ready non-OPUS task, claim it, print its card brief.",
     "Fail closed: on sync or claim error print one line and exit non-zero without a task.",
