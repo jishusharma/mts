@@ -1,25 +1,25 @@
 # Development Status
 
-Generated: 2026-10-13 11:25:42
+Generated: 2026-10-13 12:19:35
 
 ## Git Status
-**Branch:** jis-nuc/s1013-ops (the host that generated this file; yours may differ)
+**Branch:** jis-nuc/tom-v2-partb (the host that generated this file; yours may differ)
 
-CI green: a3626dc (2026-10-13 01:46:42 +0530), 12 commit(s) behind origin/fast-track: RED: oldest ungreen commit is 9.6 h old - CI is failing, auto-deploy is idle; fix CI first
+CI green: a0080f0 (2026-10-13 11:44:27 +0530), 11 commit(s) behind origin/fast-track: CI running
 LESSONS: digest STALE (synced de2de3a7, now ad79e76d): read the new LESSONS_LEARNED.md entries (git diff), add their rule lines to LESSONS_DIGEST.md, update the blob
 
 **Last 10 commits:**
 ```
-9b1b716 claim rv06-live-read-claims
-5331077 lab: rv05 fabio ledger frame pass report + 3 evidence cards
-372788c release rv05-fabio-ledger-frame-pass
-701dcb0 Merge remote-tracking branch 'origin/fast-track' into jis-nuc/krown-ta101
-4ba4e73 claim rv05-fabio-ledger-frame-pass
-7f968e5 handoff: NUC recovery state, Krown card note (429, run from JIS-NB)
-df9eb78 lane health: GPT up
-69ff649 card: krown-ta101-extract-remaining-10
-7cb7acb release krown-ta101-extraction-host-jis-nuc
-ba09f64 Merge remote-tracking branch 'origin/fast-track' into jis-nuc/krown-ta101
+38f614b release tom-layer-v2-cost
+1e0c065 Merge remote-tracking branch 'origin/fast-track' into jis-nuc/tom-v2-partb
+2a6061c tom_noise_units test: move under MyTradingSys/tests so the gate collects it
+125cb21 Merge pull request #26 from jishusharma/claude/zen-mayer-g4t5ui
+7af0ffc research: backtest + extraction gap review vs BTC/Binance literature (cloud, read-only)
+2e20a9e handoff: NUC cleanup state, remaining permission-gated steps
+d0bff9e Merge remote-tracking branch 'origin/fast-track' into jis-nuc/tom-v2-partb
+9b26093 Tom v2 spec part B: stop-width transfer rule, per-market proofs, test protocol, 7 Sonnet build cards
+1d5d2ca shot.py: store path survives git 2.24 echoing --path-format as line 1 (JIS-NUC)
+b83bf69 Merge remote-tracking branch 'origin/fast-track' into jis-nuc/cleanup-1013
 ```
 
 ## Queue Status
@@ -30,10 +30,11 @@ DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
 ```
 
 ## In-Flight .new Files
-- MyTradingSys\backtest\layers\fabio\htf_context_live.py.new (0.1h)
-- MyTradingSys\backtest\layers\fabio\test_htf_context_live.py.new (0.1h)
+- MyTradingSys\backtest\layers\fabio\htf_context_live.py.new (0.4h)
+- MyTradingSys\backtest\layers\fabio\test_htf_context_live.py.new (0.4h)
 
 ## Recent Reports (last 7 days)
+- MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md (2026-10-13 12:07) # Backtest and extraction gap review: are we backtesting correctly? (2026-10-13, cloud session)
 - MyTradingSys/research/mfe_exit_2026-10-13/REPORT.md (2026-10-13 01:20) # MFE exit study: can exits be reverse-engineered from the peak-profit bar? (2026-10-13, JIS-NUC)
 - MyTradingSys/research/non_core_layer_audit_2026-10-12/CLAUDE_HANDOFF.md (2026-10-12 22:40) # Claude handoff - non-core layer evidence audit
 - MyTradingSys/research/non_core_layer_audit_2026-10-12/REPORT.md (2026-10-12 22:40) # Independent layer audit: RSI, WaveTrend and the other non-core layers
@@ -49,31 +50,40 @@ DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
 
 ## Screenshots
 ```
-SHOTS landed 0: new 0, classified 0, read 0, done 0 | overdue(>24h) 0 | claims MATCH 0 MISMATCH 0 NOT_IN_DATA 0 | filed 0
+SHOTS landed 17: new 9, classified 1, read 0, done 7 | overdue(>24h) 10 | claims MATCH 31 MISMATCH 5 NOT_IN_DATA 10 | filed 3
+  OVERDUE fdaf61046aae classified app                                  | DeepSeek DSA chat with AIBridge panel 'waiting for DSA after #2', auto-run 1/50, Run block not executed; operator reports bridge stuck
+  OVERDUE ca93edd5a668 new        -                                    | 
+  OVERDUE 7d9e56172f38 new        -                                    | i restarted - now i see this. Wjat needs to be done?
+  OVERDUE f35e98c02d0c new        -                                    | We needed sreen-shots and chart related work - things were pending on me like tr
+  OVERDUE 25050b52c03d new        -                                    | i need to know what is going on right now?
+  OVERDUE c0b4ba1b62f9 new        -                                    | i need to know what is going on right now?
+  OVERDUE bf07502e25bf new        -                                    | keeping in mind what we are doing on NUC - what to do with this? I need actions.
+  OVERDUE 0a687a5cdc7e new        -                                    | <pasted_content id="cdc4"> it installed - computed restarted but it failed. i ah
+  OVERDUE 616ec264d2e2 new        -                                    | 
+  OVERDUE be93c2b8ab49 new        -                                    |
 ```
 
 ## Layer Lab (Codex)
 ```
-Layer lab (Codex) at 2026-10-13 05:55Z: on
+Layer lab (Codex) at 2026-10-13 06:49Z: on
   Codex allowance (plus): 5-hour window 37% used (resets 10-13 10:08Z); week 6% used (resets 10-20 05:08Z)
-  Lab spend guard: window 20/50 pts, 1/4 runs (astra 1/1); week 4/35 pts; resets 10:08Z
-  Last check by the scheduler: 2026-10-13T05:38Z RAN rv05-fabio-ledger-frame-pass OUT_OF_SCOPE model=gpt-6-astra effort=medium 299s tokens=811992 window+20.0 week+4.0 report=MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md note=6 uncommitted file(s) left in F:\MTS\mts-codex-lab: MyTradingSys/system/LAYERS.md
-  Queue: 1 ready
-    rv06-live-read-claims [audit, gpt-6-luna / medium]
+  Lab spend guard: window 20/50 pts, 2/4 runs (astra 1/1); week 4/35 pts; resets 10:08Z
+  Last check by the scheduler: 2026-10-13T06:30Z IDLE no CODEX card to run (0 ready; claimed or out of tries are skipped)
+  Queue: 0 ready
   Delivered (latest 5; all in MyTradingSys/research/layer_lab/INDEX.md):
+    2026-10-13 rv06-live-read-claims: FIX-FIRST: 6 findings; 3 cards confirmed faithful; report MyTradingSys/research/layer_lab/reports/2026-10-13_rv06-live-read-claims.md
     2026-10-13 rv05-fabio-ledger-frame-pass: FIX-FIRST: 2 remaining rows checked, 3 HIGH carried forward and 2 MED; MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md
     2026-10-12 rv02-dax-harness-fixes: FIX-FIRST; 4 HIGH, 7 MED, 1 LOW; 66 tests passed; MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md
     2026-10-12 lab-dax-trial-identity: H8 fixed; 62 synthetic harness tests pass (red first): MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-trial-identity.md
     2026-10-12 lab-dax-readiness-gate: H7 fixed; 3 readiness tests and 58 harness tests pass; MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-readiness-gate.md
-    2026-10-12 lab-audit-tom-ledger-frames: FIX-FIRST: 37 rows, 65 cited plus 7 supplemental images; 4 HIGH and 4 MED; exact missing evidence per row; 4 repair cards. Report: MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md
   Last runs:
-    2026-10-12 17:00Z lab-audit-fabio-ledger-frames INCOMPLETE (gpt-6-astra / high, 383k tokens, 777s)
     2026-10-12 19:33Z rv02-dax-harness-fixes DONE (gpt-6-astra / high, 284k tokens, 815s)
     2026-10-12 20:00Z lab-audit-fabio-ledger-frames LIMIT (gpt-6-astra / high, 63k tokens, 68s)
     2026-10-13 05:01Z lab-audit-fabio-ledger-frames DONE (gpt-6-astra / medium, 307k tokens, 545s)
     2026-10-13 05:33Z rv05-fabio-ledger-frame-pass OUT_OF_SCOPE (gpt-6-astra / medium, 811k tokens, window +20 pts, 299s)
+    2026-10-13 05:54Z rv06-live-read-claims OUT_OF_SCOPE (gpt-6-luna / medium, 321k tokens, window +0 pts, 104s)
   NEEDS A LOOK: 
-    - only 1 card(s) left in the queue: add scoped cards (LAYER_LAB.md, Allowance)
+    - the queue is empty, so the Codex allowance goes unused: move scoped cards to lane CODEX (LAYER_LAB.md, Allowance)
 ```
 
 ## Daily Hygiene (scheduled)

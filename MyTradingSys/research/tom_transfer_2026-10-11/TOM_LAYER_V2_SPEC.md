@@ -247,3 +247,187 @@ trend healthy. The CVD-divergence requirement has no source in the trade videos.
 3. Date evidence found in the transcripts, for card `rv-fix-tom-ledger-date-column` (evidence only, not used here):
    T5 "what I traded there yesterday" (T6hDJcHrVBM:141-142) puts the trade one day before that recording.
 4. More check trades: two is too few. Frames-only videos are the cleanest source (no captions to leak rules).
+
+# PART B: per-market proofs, cost, stop-width transfer rule, test protocol, build cards (card tom-layer-v2-cost, 2026-10-13)
+
+Status: spec only. No setup was encoded, no trade outcome of family A exists or was read, and nothing from the DAX holdout
+(2026-04-11 on) was opened. Data read for part B: 1m prices of the DAX dev window (2024-11-04..2026-04-10, the 10 dropped
+ledger days removed) and BTC over the same calendar window, for a bar-range statistic only
+(`scripts/dev/tom_noise_units.py`); and the per-trade rows of the OLD BTC encoding (`F:/MTS/data/tom_probe_diag`, burned
+holdout already removed) to reproduce the DIAG_BTC fee figure. Part A is unchanged above. Tom is quoted only through part
+A's verified quotes; every number below that is not his is labelled OURS (a cost or safety limit, `fees.py` header: "Fees
+are safety limits; the trader-source rule does not apply") or RANK-DEFAULT (an outcome-free default, never tuned).
+
+## 10. Decisions of part B (read this first)
+1. **Stop location never changes.** The stop stays where Tom puts it (A-S1, A-S3; A-S2 when no reference). The transfer
+   rule is a **minimum width**: a BTC candidate whose structural stop is narrower than the minimum is **not traded**
+   (logged `stop_below_min_width`). It is never widened: a widened stop sits at a level Tom did not name.
+2. **Minimum width on BTC = max(noise floor, fee floor) = 0.40 % of price under all-taker fees** (section 11). That is as
+   wide as Tom's widest shown stop in noise terms (2.84 against 2.87 units). Only 5.2 % of the old BTC encoding's stops
+   were that wide. With maker entry and maker target the floor is 0.20 %; that is a second, separately counted readout.
+3. **Tom's stops are not noise on his own market:** 20-63 DAX points are 0.88 to 2.84 five-minute bar ranges. The old
+   BTC encoding's median stop (0.084 %) was 0.60 of a BTC five-minute bar range: below anything Tom shows.
+4. **DAX runs in two frozen arms:** PRICE (conditions and proofs computable from OHLC alone) and PROFILE (adds the
+   volume-profile conditions). PROFILE exists on DAX only if the shape-parity card passes (section 12); otherwise the
+   profile items are NOT_IN_DATA on the CFD feed and DAX is judged on PRICE alone.
+5. **Order of work is fixed:** encode (PRICE) -> recall and fire rate on DESIGN -> CHECK read once -> DAX dev backtest ->
+   clean holdout once -> only then any BTC run. A FAIL at any step stops the chain (part A section 1).
+6. **Section 9 list resolved** (section 13): each item is now a source, a same-session rank, or an explicit "not modelled".
+
+## 11. Stop-width transfer rule (arithmetic shown)
+### 11.1 What DIAG_BTC measured, reproduced by hand
+Rows: `F:/MTS/data/tom_probe_diag/trades_watch_episode.jsonl`, n = 2699, recomputed 2026-10-13.
+| Figure | Arithmetic | Value | Record |
+|---|---|---|---|
+| Median stop | median of `stop_pct` | 0.0837 % of price | DIAG_BTC "median stop 0.084%" |
+| Fee per stopped/timeout trade at the median stop | taker exit 0.05 % / 0.0837 % (`FEES_DERIBIT`: maker entry 0) | 0.60 R | - |
+| Mean fee per stopped/timeout trade | mean of 0.05 % / `stop_pct` over the 2629 non-target trades | 2.82 R | DIAG_BTC "about 2.8R" |
+| Mean fee over all trades | same, target exits pay 0 | 2.75 R | rerun report "mean fee 2.76 R" |
+| Why mean is 4.7x the median | harmonic mean of `stop_pct` = 0.0181 %; a tenth of the stops are below 0.017 % | - | - |
+| All-taker mean fee | mean of 0.10 % / `stop_pct` | 5.53 R | - |
+| Median 4 h adverse move | 5.66 R x 0.0837 % (recomputed per trade: 0.469 %) | 0.47 % of price | DIAG_BTC "4 h MAE 5.66 R" |
+So "2.8 R" is an average driven by stops a few dollars wide, not the cost of a typical stop. Both readings say the same
+thing: with no minimum width the stop is inside the noise and the fee is of the order of R.
+
+### 11.2 Noise unit (OURS; FORMULAS.md section 12 true range)
+N5 = median true range of completed 5-minute bars, as a fraction of the bar's close. Five minutes because it is the only
+chart Tom names for these trades (n7ZSkjb7JXs:290-293, paraphrase). Design-window medians, `tom_noise_units.py`:
+| Bars | DAX, Berlin 08-12 weekdays | BTC, same clock | BTC, all hours | BTC all hours / DAX |
+|---|---|---|---|---|
+| 1 min | 0.0370 % | 0.0489 % | 0.0527 % | 1.42 |
+| 5 min | 0.0897 % | 0.1300 % | 0.1395 % | 1.56 |
+| 15 min | 0.1618 % | 0.2410 % | 0.2577 % | 1.59 |
+| 60 min | 0.3561 % | 0.5061 % | 0.5356 % | 1.50 |
+BTC is about 1.5 times as noisy as the DAX morning at every bar size (1.42 to 1.59), so the choice of bar size moves the
+result by about 10 %, not by a multiple. DAX days loaded 436, BTC 513; no gap-spanning bar is counted.
+
+### 11.3 Tom's stops in noise units (frame-observed widths, part A section 2.4)
+| Tom's stop | % of price (RECALL_DAX) | In DAX N5 (0.0897 %) | Same multiple on BTC (N5 0.1395 %) |
+|---|---|---|---|
+| 20 points (A-S2, his stated fixed stop) | 0.079 % | 0.079 / 0.0897 = **0.88** | 0.88 x 0.1395 = **0.123 %** |
+| 63 points (widest frame) | 0.255 % | 0.255 / 0.0897 = **2.84** | 2.84 x 0.1395 = **0.397 %** |
+Cross-check with the other bar sizes: 0.079 % maps to 0.113-0.126 % and 0.255 % to 0.363-0.406 % of BTC price.
+Limit: N5 is the design-window median, not the value on his trade days (most of those lie in the closed holdout window).
+
+### 11.4 The rule (frozen)
+- Noise floor: `W_noise = 0.88 x N5(market)`. 0.88 is Tom's only stated width (20 points, k0zm5NYn0IQ:22-24) in units of
+  his own market's noise. Live form of N5: median true range of the completed 5-minute bars of the trailing 20 sessions
+  (DAX) or 20 UTC days (BTC). The 20 is OURS; the build card reports the floor at 10 and 40 beside it and picks nothing.
+- Fee floor: `W_fee = round-turn cost / 0.25`, from "Stops are wide enough that fees cost under 0.25 R"
+  (PROJECT_VISION.md:234).
+- `W_min = max(W_noise, W_fee)`. Structural stop narrower than `W_min` = no trade.
+| Market, fee profile | Round-turn cost | W_fee | W_noise | W_min | In N5 |
+|---|---|---|---|---|---|
+| FDAX, `FEES_FDAX` | 0.001 % (0.24 point at 24,000) | 0.004 % (0.96 point) | 0.079 % (20 points) | not enforced | - |
+| FDAX + 1 point slippage | 1.24 points | 4.96 points | 20 points | not enforced | - |
+| BTC, `FEES_ALL_TAKER` (primary, part A section 1) | 0.10 % | **0.40 %** | 0.123 % | **0.40 %** | 2.87 |
+| BTC, `FEES_DERIBIT` (maker in, maker target, taker stop) | 0.05 % on a loser | 0.20 % | 0.123 % | 0.20 % | 1.43 |
+- **DAX: the floor is reported, not enforced.** On his home market the width is an output of A-S1. The recall report
+  lists every candidate's stop in N5 units and the share below 0.88; a detector that mostly produces stops below his
+  narrowest is drawing the wrong zone. Even with 1 point of slippage the fee floor (4.96 points) is a quarter of his
+  narrowest stop: cost is not the constraint on DAX.
+- **BTC: enforced.** Old-encoding stops at or above 0.40 %: 5.2 % (139 of 2699); at or above 0.20 %: 17.7 %; at or above
+  0.123 %: about 33 %. This is a width census of the old zones, not a forecast for family A.
+- The `FEES_DERIBIT` readout counts only with trade-through fills (a maker fill claimed on touch is not a fill) and is
+  its own TRIAL_REGISTRY row. It cannot rescue a failed all-taker result; it is reported beside it.
+- Worked example (the unit test of card `tom-v2-btc-min-stop-width`): entry 100,000, N5 0.14 %. `W_noise` = 0.88 x 0.14 %
+  = 0.1232 % = 123.20; `W_fee` all-taker = 0.10 % / 0.25 = 0.40 % = 400.00; `W_min` = 400.00. Stop 100,399 -> no trade;
+  100,400 -> allowed, fee = 100 / 400 = 0.25 R. `FEES_DERIBIT`: `W_fee` = 0.05 % / 0.25 = 200.00; stop 100,200 allowed.
+- BTC session anchor: no source (DIAG_BTC S = SKIP; no BTC equivalent of 09:00 CET). Default for a later BTC
+  pre-registration: the European open, the only clock Tom trades. Decided there, after DAX dev passes, not here.
+- N5 (M arms): management figures of DIAG_BTC were measured on 0.084 % stops; re-measure MFE on family A candidates that
+  pass `W_min` before any management arm is written (BACKTEST_FAILURES_RESEARCH N5).
+
+## 12. What can fire on each feed
+DAX = Dukascopy DEUIDXEUR 1m BID cash-index CFD: OHLC is real, volume is the feed's own unit, no aggressor split, no
+book. BTC = Binance 1m klines with taker-buy volume, plus aggTrades. Profile parity on the CFD feed is NOT_IN_DATA today
+(PROFILE_PARITY.md: Tom draws no labelled POC/VAH/VAL on the dev frames; FDAX and the CFD sit about 220 points apart).
+| Item | Needs | DAX CFD | BTC | Arm |
+|---|---|---|---|---|
+| A-C1 impulse from the session start | OHLC | yes | yes | PRICE |
+| A-C2 above the prior day's range ("completely outside of the previous day's range", l8RZrBfzvp4:55-57) | OHLC | yes | yes | PRICE |
+| A-C2 above the prior value area | profile | parity pending | yes | PROFILE |
+| A-C3 thin top, volume below | profile | parity pending | yes | PROFILE |
+| A-C4 no cause, other markets not confirming | news; ES/NQ bars | NOT_IN_DATA | NOT_IN_DATA | not a gate |
+| A-P1 finished auction | aggressor | no | yes (engine has it) | BTC only |
+| A-P2 fast rejection from the high | OHLC | yes | yes | PRICE |
+| A-P3 failed P breakout, back inside | profile + OHLC | parity pending | yes | PROFILE |
+| A-P4 inside bar at the top (5-minute bars) | OHLC | yes | yes | PRICE |
+| A-P5 old high / pre-market high taken out | OHLC | yes | yes | PRICE |
+| A-P6 selling at the top | aggressor | no | yes | BTC only |
+| A-P7 back below the opening price | OHLC | yes | yes | PRICE |
+| A-P8 lower b-shape | profile | parity pending | yes | PROFILE |
+| A-P9 order book empty above | book | no | live only | never historical |
+| A-P10 retail sentiment | broker data | NOT_IN_DATA | NOT_IN_DATA | - |
+Proofs available: DAX PRICE 4 (P2, P4, P5, P7); DAX PROFILE 6 (+P3, P8); BTC 8 (P1-P8). The old engine could count at
+most 2 on CFD data. A missing input is NOT_IN_DATA, never 0 or false-as-evidence (B084, B136).
+- PRICE arm idea = A-C1 and A-C2 (prior-day range form). PROFILE arm idea = A-C1, A-C2 (either form) and A-C3. A-C3 is
+  the heart of Tom's idea ("there's no liquidity left", k0zm5NYn0IQ:21-22), so PRICE is a weaker reading of it: a PRICE pass is a pass of the weaker
+  rule and is labelled so.
+- Shape parity (card `tom-profile-shape-parity`): on the T1 and T2 frames compare the POSITION of the widest histogram row
+  as a fraction of the visible high-low range with the same fraction from the computed CFD profile. It is basis-free, so
+  the 220-point offset does not matter. PASS = both frames within one histogram row. FAIL or unreadable = PROFILE arm
+  is NOT_IN_DATA on DAX until FDAX volume is bought (operator cost decision, not assumed).
+- Matched-proof rule for a later BTC run: the primary BTC arm uses the same items as the DAX arm that passed; P1 and P6
+  are an extra, separately counted BTC arm.
+
+## 13. Section 9 list, resolved
+| Item | Resolution | Kind |
+|---|---|---|
+| Opening-range size (A-C1) | `impulse_rank`: today's leg (session start to its extreme, % of price) ranked among the same-window legs of the prior 20 sessions. Gate: above their median (the weakest reading of an opening range far beyond a normal one). Fire rate also reported at rank 0.8 and 0.9, never chosen by outcome | RANK-DEFAULT |
+| "Thin" (A-C3) | Split the leg's price range in thirds: volume in the top third is below the volume in each lower third, and the session POC is not in the top third | RANK-DEFAULT |
+| Inside-bar timeframe (A-P4) | 5-minute bars, the only chart he names (n7ZSkjb7JXs:290-293). No other timeframe is tested | paraphrase source |
+| Proof count | Recall and fire rate reported at every count 1..max. Primary k* = the largest count that keeps DESIGN recall at 4 of 5; fixed before any outcome exists | outcome-free rule |
+| "A few points" (A-T4) | 0: target at the level. The touch / trade-through pair (section 14) brackets it | not modelled |
+| Order type | A1 and A2: sell limit at the zone (passive side). A3: stop-market on the break (taker) | NO-SOURCE, stated |
+| Lots, partial sizes | 1 lot, no partial, no add. A fixed bracket is a lower bound on his managed trade; said in every report | not modelled |
+| Re-entries | at most 1 per session, only on a fresh signal with the idea intact (A-M5); the count is frame-observed | frame-observed |
+| Time exit | flat at 17:35 Berlin time, the end of the phase he calls liquid (T6hDJcHrVBM:94-97). The old 8-bar timeout is dropped (unsourced) | paraphrase source |
+
+## 14. Test protocol (frozen; BACKTEST_FAILURES_RESEARCH N1, N2, N6, N7)
+- **Holdout (N1).** DAX dev = 2024-11-04..2026-04-10 minus the 10 dropped days. Clean holdout = the 130 days of
+  `HOLDOUT_CLEAN.json` (`remaining_holdout_days`), read once, only after the dev table is written and dev passed. Forward
+  holdout = DAX bars from 2026-10-10 on, read once at 100 or more trades. Every look is a TRIAL_REGISTRY row.
+- **Power.** 100 fills need 0.77 fills per day on the 130 clean days and about 0.25 per day on dev. One idea plus one
+  re-entry per session caps the rate at 2 per day. Compute expected N from the DESIGN-period fire rate before each run;
+  below 100 the result reads "insufficient N" and the forward holdout keeps filling.
+- **Recall AND fire rate (N2).** Recall as defined in section 7. DESIGN pass = at least 4 of 5 AND at most 5 % of 1000
+  draws of the same number of random same-session instants reach that recall. CHECK (T11, T12) is read once, after the
+  encoding and k* are frozen: 2 of 2 pass, 1 of 2 inconclusive, 0 of 2 fail. Fire rate = family A first-attempt
+  candidates per session-day on dev, reported at every proof count and per arm. Tom states no frequency (N8): the fire
+  rate has no target, only the cap above and the random-instant comparison.
+- **Amendment to section 7 (dates).** Section 7 lets a group replay only once its trade date is verified. Card
+  `rv-fix-tom-ledger-date-column` closed with no observed trade date on any group (`trade_date_observed` is empty on
+  every row), so that rule would block recall for good. Replaced by: a group is replayed over every date in its
+  `date_candidates_to_exclude`, and the random-instant comparison draws from the same dates. A hit still needs the
+  price match of section 7, so a wrong date can lose a hit but can hardly create one. Each group's row says
+  `date_status = inferred`. The futures-to-CFD price shift stays the declared anchor of `tom_dax_recall.py`.
+- **Fills.** Every limit entry is run twice: fill on touch, and fill only when price trades strictly through the level
+  (bar high above a sell limit). PASS needs trade-through. A result that holds only on touch is reported as "touch only", not a pass.
+- **Null (N7).** Session-matched: random entries drawn from the same session label and clock window as the real
+  candidates, same side, same stop and target distances, same order type and fill rule, unfilled draws kept as
+  unfilled; 200 draws. The UTC-day null of DIAG_BTC is not used.
+- **Costs.** DAX: `FEES_FDAX` plus 1 point on stop and time-exit legs. BTC: `FEES_ALL_TAKER` with `W_min` 0.40 %.
+- **Pass bar.** Part A section 1, unchanged: at least 100 fills, 95 % CI lower bound of net R above 0, net R above the
+  session-matched null, on trade-through fills. Readout also by session label and day type beside the pooled number.
+- **Snapshot fields (N6).** Every candidate row carries `market_state` (engine `classifyState`), `day_type` (Monday,
+  gap day as in `conditions/gap_rules.md`, other), `htf_bias` (side of the prior week's value), `impulse_rank`,
+  `stop_n5` (stop width in N5) and the proof list. They are fields for a later selection test, never gates.
+- **Trials.** One row per arm x proof count x fill rule x fee profile x period, plus every recall iteration. The DSR of
+  the final verdict uses the full count.
+
+## 15. Flag plan and build cards
+One flag: `-Dmts.spikeFade=true`, default off. With the flag off the engine's output is bit-identical on BTC and on DAX
+(a test compares full snapshot JSON). Family A adds a candidate type `fade_short`; no existing type, proof or gate
+changes under the flag-off path. Nothing reaches the live tree: research replays only, until a result exists.
+Cards (Sonnet, one session each, fail-first tests, numbers by hand from this section and FORMULAS.md):
+| # | Card | Builds | Waits for |
+|---|---|---|---|
+| 1 | `tom-encode-spike-fade` | PRICE arm: session-extreme zone, A-C1, A-C2 (range form), P2, P4, P5, P7, entry A1, stop A-S1/A-S2, target A-T1, snapshot fields | this card |
+| 2 | `tom-v2-recall-fire-rate` | RECALL_DAX_V2.md: DESIGN recall, random-instant comparison, fire rate per count, k*, then CHECK once | 1 |
+| 3 | `tom-profile-shape-parity` | basis-free shape parity on T1/T2 frames; decides whether PROFILE exists on DAX | none |
+| 4 | `tom-encode-fade-profile-proofs` | PROFILE arm: A-C3, P3, P8 | 1, 3 |
+| 5 | `tom-encode-fade-entry-paths` | paths A2 and A3, one re-entry per session (A-M5) | 2 |
+| 6 | `tom-v2-dax-dev-backtest` | dev run under section 14 (both fills, session null, 17:35 exit); holdout only on a dev PASS | 2 |
+| 7 | `tom-v2-btc-min-stop-width` | `W_min` gate for BTC replays and N5 (section 11.4 worked example) | 6 PASS |
+Family C (T4) gets no card: one trade (section 4).

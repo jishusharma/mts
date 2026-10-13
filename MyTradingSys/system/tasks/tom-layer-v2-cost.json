@@ -1,6 +1,7 @@
 {
   "approved_by": "operator (chat 2026-10-11: 'whatever research u need with Opus')",
   "asks": "",
+  "closed": "2026-10-13T06:35:38Z",
   "commands": [],
   "created": "2026-10-11T12:00:00Z",
   "depends_on": [
@@ -26,7 +27,7 @@
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
   "refs": [],
-  "result": "",
+  "result": "TOM_LAYER_V2_SPEC.md part B (sections 10-15): BTC minimum stop 0.40 % of price all-taker (0.20 % maker in/target), noise floor 0.88 x N5 (Tom 20-63 pt = 0.88-2.84 DAX 5m ranges; BTC noise 1.5x DAX); DAX PRICE arm 4 proofs, PROFILE arm pending shape parity; 7 Sonnet cards (tom-profile-shape-parity ready, tom-encode-spike-fade ready)",
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/",
     "MyTradingSys/conditions/",
@@ -42,7 +43,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md section 3",
     "MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md"
   ],
-  "state": "blocked",
+  "state": "done",
   "steps": [
     "Read TOM_LAYER_V2_SPEC.md part A, DIAG_BTC.md, RECALL_DAX.md 3.4, FORMULAS.md, SetupCandidatesBuilder.java:557-575, the per-market fee code, PROFILE_PARITY.md, HOLDOUT_CLEAN.json, BACKTEST_FAILURES_RESEARCH.md N1-N8.",
     "Per market (FDAX/GER40 CFD, BTC perp): proofs that can fire on the data it has (use PROFILE_PARITY verdict for volume proofs), cost per side, round-turn cost in points and R for Tom's 20-63 point stops.",

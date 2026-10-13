@@ -32,13 +32,18 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
   - `rv02-fix-dax-preprocessing-isolation` raw p1 SONNET: RV02 R1: isolate DAX preprocessing and report metadata before holdout
   - `rv02-fix-dax-producer-data-binding` raw p1 SONNET: RV02 R4: reject DAX snapshots made from different execution data
   - `rv02-fix-dax-rounded-rr-gate` raw p1 SONNET: RV02 R2: preserve exact DAX net RR through the decision boundary
-  - `tom-encode-spike-fade` refined p1 SONNET: Encode Tom's spike-top fade as a candidate type (recall test on his 7 DAX entries)
-  - `tom-layer-v2-cost` blocked p1 OPUS: Tom layer v2 spec, part B: per-market proofs, cost, stop-width transfer rule, build cards (Opus research)
+  - `tom-encode-spike-fade` ready p1 SONNET: Tom v2: encode the fade PRICE arm (session-extreme zone, A-C1/A-C2, proofs P2 P4 P5 P7, path A1)
+  - `tom-profile-shape-parity` ready p1 SONNET: Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)
+  - `tom-v2-dax-dev-backtest` refined p1 SONNET: Tom v2: DAX dev backtest of the fade under the part B protocol (both fills, session null)
+  - `tom-v2-recall-fire-rate` refined p1 SONNET: Tom v2: recall and fire rate of the fade encoding on DESIGN, then CHECK once (RECALL_DAX_V2)
   - `tom-check-set-find-frames-only-tom-trade` raw p2 SONNET: Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set
   - `tom-dax-backtest` refined p2 SONNET: Untuned Tom backtest on DAX vs matched-proof BTC rerun
   - `tom-direction-health-vs-sources` raw p2 SONNET: Tom core direction/health rules vs his words: determineDirections gives below_val -> long only (SetupCandidate
+  - `tom-encode-fade-entry-paths` refined p2 SONNET: Tom v2: encode fade entry paths A2 (pullback) and A3 (range break) with one re-entry per session
+  - `tom-encode-fade-profile-proofs` refined p2 SONNET: Tom v2: encode the PROFILE arm of the fade (thin top, failed P breakout, lower b-shape)
   - `tom-ledger-add-the-losing-first-attempts` raw p2 SONNET: Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)
   - `tom-probe-prereg` refined p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
+  - `tom-v2-btc-min-stop-width` refined p2 SONNET: Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)
   - `tom-ledger-single-trade-date-used-column` raw p3 SONNET: Tom ledger: single trade_date_used column, blank date for non-observed rows (RV01 F1,F2)
 
 ## Fabio (order-flow layer) (`fabio`)
