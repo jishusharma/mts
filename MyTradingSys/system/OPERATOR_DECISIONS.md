@@ -362,7 +362,7 @@ Applied: 2026-10-13 (cloud, flow-audit session): plan research/tom_btc_2026-10-1
 }
 ```
 
-Audit note (2026-10-13, flow audit PR #28): the audit now recommends "No, park Tom as discretionary now" instead of buying DAX data (research/mts_flow_audit_2026-10-13/REPORT.md d1). The coordinator is asking Jis this directly; sessions do not act on q11 and do not auto-apply it.
+Audit note (2026-10-14, supersedes the 2026-10-13 flow-audit recommendation to park Tom): operator direction is that Tom's ideas are tested on BTC and no DAX/FDAX data is bought. Nothing is parked; see q11 Applied line above.
 
 
 ## q12-requeue-crypto-first | asked 2026-10-13 | Process | NO AUTO-APPLY
