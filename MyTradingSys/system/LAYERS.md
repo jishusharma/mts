@@ -70,7 +70,7 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
   - `fabio-layer-v2-markets` refined p2 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
   - `fabio-layer-v2-spec` blocked p2 OPUS: Fabio layer v2 spec, part A: setup families + sourced rules from his ledger (Opus research)
   - `fabio-ledger-minute-timestamps` ready p2 SONNET: Fabio ledger: read minute timestamps from frame clocks (replay-ready rows)
-  - `fabio-video-prescreen` ready p2 SONNET: Fabio video pre-screen: list per 250 s window whether a frame shows an order ticket or position line, so only 
+  - `fabio-prescreen-is1h-layout` ready p2 SONNET: Fabio pre-screen: add an Is1HvdfQm5c layout cue (it draws zone boxes, no order ticket) so its windows can be f
   - `fabio-ledger-f13-outcome-provenance-2910` raw p3 SONNET: fabio-ledger: F13 outcome provenance (-2910 vs stop -1760)
   - `fabio-ledger-recompute-entry-from-stp-la` raw p3 SONNET: fabio-ledger: recompute entry from STP label for F8 F12-m2 F13 F13-m1
   - `fabio-ledger-replace-date-2026-with-unkn` raw p3 SONNET: fabio-ledger: replace date 2026 with UNKNOWN for Jpd96/DyS79 session (contract NQ-202512)
