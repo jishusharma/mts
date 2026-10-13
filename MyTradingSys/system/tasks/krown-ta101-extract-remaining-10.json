@@ -11,7 +11,7 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "YouTube 429 to JIS-NUC on 2026-10-13 (subtitle download). If the fetch still gets 429 here, run the fetch step from JIS-NB.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
