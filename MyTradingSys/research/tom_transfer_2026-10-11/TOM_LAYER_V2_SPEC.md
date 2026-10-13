@@ -446,3 +446,10 @@ A-P7 = a low below the session open after the high. No staleness gate: every ins
 recall card dedups to first attempts and applies the section 7 timing rule (`bars_since_zone`, `price_left_zone_points`).
 Open point for card 2: a snapshot's 1m series is 1440 bars (24 h), the detector needs 21 sessions; it fails closed on less.
 
+## 17. Result record, card 2 (tom-v2-recall-fire-rate, 2026-10-13, JIS-NUC)
+Long series built (40 calendar days of 1m for the fade call only, flag-gated; replay parity with a flag-on snapshot checked
+on 3 fires). DESIGN recall of the frozen PRICE arm: 2 of 5 at k >= 1, 1 at k >= 2, 0 at k >= 3 and 4; no k*; verdict FAIL;
+CHECK not read; chain stops (section 10 item 5). One clarification of section 7 made on the way: the "price has moved one
+stop-width below his entry" clock starts when price first trades inside his band, because the literal reading scores a
+miss for every session that opens more than one stop-width under his entry (iteration 1, 0 of 5 by construction). Both
+iterations are TRIAL_REGISTRY rows. Numbers, census, fire rates: `RECALL_DAX_V2.md`.

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-13T08:01:16Z",
   "commands": [],
   "created": "2026-10-13T06:33:19Z",
   "depends_on": [
@@ -20,7 +21,7 @@
   "refine_tries": 0,
   "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
   "refs": [],
-  "result": "",
+  "result": "DESIGN FAIL: recall 2 of 5 at k>=1, no k*, CHECK not read; RECALL_DAX_V2.md",
   "scope_in": [
     "MyTradingSys/backtest/tom_dax_recall.py",
     "MyTradingSys/tests/",
@@ -41,7 +42,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 7 and 14",
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md N2"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Recall rule = spec section 7 and the section 14 amendment: replay each group over its date_candidates_to_exclude dates; a hit needs a fade_short within one of his stop-widths in price, before price fell one stop-width below his entry.",
     "DESIGN (S1-S5) first: recall at every proof count 1..4; 1000 draws of the same number of random same-session instants on the same dates; k* = largest count keeping recall 4 of 5.",

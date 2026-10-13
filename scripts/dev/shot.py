@@ -586,6 +586,8 @@ def engine_jars():
     jars = []
     for name in ENGINE_JARS:
         hits = sorted(m2.rglob(name)) if m2.is_dir() else []
+        if not hits and m2.is_dir() and name.startswith("slf4j-api-"):  # logging API only: any 2.x jar compiles the engine (JIS-NUC has 2.0.6)
+            hits = sorted(m2.rglob("slf4j-api-2.*.jar"), reverse=True)
         if not hits:
             raise ShotError(f"{name} not found under {m2}: run `mvn -q -o compile` once in a worktree so Maven fetches it")
         jars.append(str(hits[0]))

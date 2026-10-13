@@ -44,7 +44,7 @@ final class SpikeFadeDetector {
         return Boolean.getBoolean(FLAG);
     }
 
-    private static final class Bars {
+    static final class Bars {
         final int n;
         final long[] t;
         final double[] o, h, l, c;
@@ -73,6 +73,35 @@ final class SpikeFadeDetector {
             }
         }
 
+        /** Whole-archive series from primitive arrays (replay harness): date/time computed once. */
+        Bars(long[] t, double[] o, double[] h, double[] l, double[] c) {
+            n = t.length;
+            this.t = t;
+            this.o = o;
+            this.h = h;
+            this.l = l;
+            this.c = c;
+            date = new LocalDate[n];
+            time = new LocalTime[n];
+            for (int i = 0; i < n; i++) {
+                var z = Instant.ofEpochMilli(t[i]).atZone(BERLIN);
+                date[i] = z.toLocalDate();
+                time[i] = z.toLocalTime();
+            }
+        }
+
+        /** Bars [from, to) of a longer series: the same view detect() gets from a snapshot cut at to-1 (no look-ahead). */
+        Bars(Bars full, int from, int to) {
+            n = to - from;
+            t = Arrays.copyOfRange(full.t, from, to);
+            o = Arrays.copyOfRange(full.o, from, to);
+            h = Arrays.copyOfRange(full.h, from, to);
+            l = Arrays.copyOfRange(full.l, from, to);
+            c = Arrays.copyOfRange(full.c, from, to);
+            date = Arrays.copyOfRange(full.date, from, to);
+            time = Arrays.copyOfRange(full.time, from, to);
+        }
+
         boolean inWindow(int i) {
             return !time[i].isBefore(WINDOW_START) && !time[i].isAfter(WINDOW_END);
         }
@@ -81,7 +110,12 @@ final class SpikeFadeDetector {
     /** @return the fade_short candidate node (rank not set), or null when nothing fires. */
     static ObjectNode detect(ObjectMapper mapper, ObjectNode root, JsonNode klines1m, String marketState, String sym) {
         if (klines1m == null || klines1m.size() < 2) return null;
-        Bars b = new Bars(klines1m);
+        return detect(mapper, root, new Bars(klines1m), marketState, sym);
+    }
+
+    /** Same detector on a prepared series (card tom-v2-recall-fire-rate: replay slices, no JSON per minute). */
+    static ObjectNode detect(ObjectMapper mapper, ObjectNode root, Bars b, String marketState, String sym) {
+        if (b.n < 2) return null;
         int last = b.n - 1;
         LocalDate today = b.date[last];
         if (!b.inWindow(last)) return null;

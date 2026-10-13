@@ -214,4 +214,46 @@ public class SpikeFadeTest {
         c.get("proofs").forEach(n -> proofs.add(n.asText()));
         assertEquals(List.of("A-P4"), proofs);
     }
+
+    /** Card tom-v2-recall-fire-rate: a snapshot's 24 h 1m series fails closed; the longer fade series fires. */
+    @Test
+    void fadeCallUsesTheLongSeriesWhenGiven() {
+        ArrayNode shortSeries = M.createArrayNode();
+        today(shortSeries);   // 55 bars, no prior sessions: what a 24 h snapshot carries
+        ArrayNode none = SetupCandidatesBuilder.build(M, root("GER40", 24106.0), new HashMap<>(), shortSeries);
+        assertNull(fade(none), "24 h series alone fails closed: " + none);
+        ArrayNode viaLong = SetupCandidatesBuilder.build(M, root("GER40", 24106.0), new HashMap<>(), shortSeries, series());
+        JsonNode c = fade(viaLong);
+        assertNotNull(c, "long fade series must fire: " + viaLong);
+        assertEquals(24110.0, c.get("zone").get("price").asDouble(), 1e-9);
+        ArrayNode viaNull = SetupCandidatesBuilder.build(M, root("GER40", 24106.0), new HashMap<>(), shortSeries, null);
+        assertNull(fade(viaNull));
+    }
+
+    /** A slice of a whole-archive Bars gives the same candidate as the JSON series cut at the same bar (replay harness). */
+    @Test
+    void slicedBarsEqualJsonSeries() {
+        ArrayNode k = series();
+        int n = k.size();
+        long[] t = new long[n];
+        double[] o = new double[n], h = new double[n], l = new double[n], c = new double[n];
+        for (int i = 0; i < n; i++) {
+            JsonNode b = k.get(i);
+            t[i] = b.get(0).asLong();
+            o[i] = b.get(1).asDouble();
+            h[i] = b.get(2).asDouble();
+            l[i] = b.get(3).asDouble();
+            c[i] = b.get(4).asDouble();
+        }
+        SpikeFadeDetector.Bars full = new SpikeFadeDetector.Bars(t, o, h, l, c);
+        ObjectNode r = root("GER40", 24106.0);
+        ObjectNode fromJson = SpikeFadeDetector.detect(M, r, k, "balance", "GER40");
+        ObjectNode fromSlice = SpikeFadeDetector.detect(M, r, new SpikeFadeDetector.Bars(full, 0, n), "balance", "GER40");
+        assertNotNull(fromJson);
+        assertEquals(fromJson, fromSlice);
+        // a cut one bar earlier is the series a snapshot one minute before would see: bar 54 still inside the same window
+        ObjectNode earlier = SpikeFadeDetector.detect(M, r, new SpikeFadeDetector.Bars(full, 0, n - 1), "balance", "GER40");
+        assertNotNull(earlier);
+        assertEquals(24110.0, earlier.get("zone").get("price").asDouble(), 1e-9);
+    }
 }
