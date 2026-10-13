@@ -45,14 +45,20 @@ class LaneRulesTest(unittest.TestCase):
         self.assertTrue(any("effort" in m for m in T.problems(card(effort="huge"))))
         self.assertEqual(T.problems(card(effort="xhigh")), [])
 
-    def test_setting_comes_from_kind_unless_the_card_overrides(self):
-        self.assertEqual(T.codex_setting(card(kind="audit")), ("gpt-6-astra", "high"))
+    def test_setting_defaults_to_luna_and_astra_needs_a_crucial_flag(self):
+        # operator 2026-10-13: bulk and revalidation work on luna low/medium; astra only for crucial cards, medium unless the card says high
+        self.assertEqual(T.codex_setting(card(kind="audit")), ("gpt-6-luna", "medium"))
+        self.assertEqual(T.codex_setting(card(kind="build")), ("gpt-6-luna", "medium"))
         self.assertEqual(T.codex_setting(card(kind="run")), ("gpt-6-luna", "low"))
-        # revalidation cards (rv01...) are second looks: luna/medium; an original audit keeps astra/high; a card may still name its own
         self.assertEqual(T.codex_setting(card(cid="rv05-fabio-pass", kind="audit")), ("gpt-6-luna", "medium"))
-        self.assertEqual(T.codex_setting(card(cid="lab-audit-x", kind="audit")), ("gpt-6-astra", "high"))
-        self.assertEqual(T.codex_setting(card(cid="rv05-fabio-pass", kind="audit", model="gpt-6-astra", effort="medium")), ("gpt-6-astra", "medium"))
-        self.assertEqual(T.codex_setting(card(kind="build", model="gpt-6-astra", effort="max")), ("gpt-6-astra", "max"))
+        self.assertEqual(T.codex_setting(card(kind="audit", crucial=True)), ("gpt-6-astra", "medium"))
+        self.assertEqual(T.codex_setting(card(kind="audit", crucial=True, effort="high")), ("gpt-6-astra", "high"))
+        self.assertEqual(T.codex_setting(card(kind="run", gpt_only=True)), ("gpt-6-astra", "medium"))
+        # a card that names astra without the flag runs on luna; it keeps the effort it asked for
+        self.assertEqual(T.codex_setting(card(kind="audit", model="gpt-6-astra", effort="medium")), ("gpt-6-luna", "medium"))
+        self.assertEqual(T.codex_setting(card(kind="build", model="gpt-6-astra", effort="max")), ("gpt-6-luna", "max"))
+        # any other named model is honoured
+        self.assertEqual(T.codex_setting(card(kind="build", model="gpt-6.1-sol", effort="low")), ("gpt-6.1-sol", "low"))
 
     def test_brief_names_the_report_and_fits_the_cap(self):
         b = T.brief(card())
@@ -93,7 +99,7 @@ class PickTest(unittest.TestCase):
 
 class CommandTest(unittest.TestCase):
     def test_model_effort_and_sandbox_reach_the_command_line(self):
-        cmd = R.command("codex.exe", card(kind="audit"), "F:/wt", "workspace-write")
+        cmd = R.command("codex.exe", card(kind="audit", crucial=True, effort="high"), "F:/wt", "workspace-write")
         self.assertEqual(cmd[:4], ["codex.exe", "exec", "-m", "gpt-6-astra"])
         self.assertIn('model_reasoning_effort="high"', cmd)
         self.assertEqual(cmd[cmd.index("-s") + 1], "workspace-write")
@@ -111,7 +117,7 @@ class CommandTest(unittest.TestCase):
         m = R.commit_message(card(), "DONE", "FIX-FIRST, 2 HIGH", datetime(2026, 10, 12, 9, 5, tzinfo=timezone.utc))
         self.assertIn("Result: FIX-FIRST, 2 HIGH", m)
         self.assertIn("MTS-Session: MTS-2026-10-12-0905Z-COD-LAB-lab-a", m)
-        self.assertIn("gpt-6-astra / high", m)
+        self.assertIn("gpt-6-luna / medium", m)
 
 
 class JudgeTest(unittest.TestCase):
@@ -202,7 +208,7 @@ class StatusTest(unittest.TestCase):
     def test_status_is_plain_text_with_queue_deliveries_and_runs(self):
         done = card("lab-old", state="done", closed="2026-10-11T08:00:00Z", result="SOUND")
         t = R.status_text([card("lab-a"), card("lab-b"), card("lab-c")], [done], {}, [self.ROW | {"outcome": "DONE"}], None, 1791784000, "06:30Z IDLE")
-        for want in ("Queue: 3 ready", "lab-a [audit, gpt-6-astra / high]", "2026-10-11 lab-old: SOUND",
+        for want in ("Queue: 3 ready", "lab-a [audit, gpt-6-luna / medium]", "2026-10-11 lab-old: SOUND",
                      "2026-10-12 05:47Z lab-a DONE (gpt-6.1-sol / medium, 94k tokens, 452s)", "NEEDS A LOOK: nothing", "Last check by the scheduler: 06:30Z IDLE"):
             self.assertIn(want, t)
         self.assertNotIn("{", t)
@@ -215,10 +221,175 @@ class LockTest(unittest.TestCase):
     def test_second_run_is_refused_until_the_lock_is_stale(self):
         with tempfile.TemporaryDirectory() as d:
             lock = Path(d) / "lab.lock"
-            self.assertTrue(R.acquire(lock, now=1000))
+            alive = lambda pid: True
+            self.assertTrue(R.acquire(lock, now=1000, alive=alive))
             os.utime(lock, (1000, 1000))
-            self.assertFalse(R.acquire(lock, now=1000 + R.LOCK_STALE_S - 1))
-            self.assertTrue(R.acquire(lock, now=1000 + R.LOCK_STALE_S + 1))
+            self.assertFalse(R.acquire(lock, now=1000 + R.LOCK_STALE_S - 1, alive=alive))
+            self.assertTrue(R.acquire(lock, now=1000 + R.LOCK_STALE_S + 1, alive=alive))
+
+    def test_lock_of_a_dead_run_on_this_host_is_taken_over_at_once(self):
+        with tempfile.TemporaryDirectory() as d:
+            lock = Path(d) / "lab.lock"
+            self.assertTrue(R.acquire(lock, now=1000, alive=lambda pid: True))
+            os.utime(lock, (1000, 1000))
+            self.assertFalse(R.acquire(lock, now=1100, alive=lambda pid: True))
+            self.assertTrue(R.acquire(lock, now=1100, alive=lambda pid: False))
+
+    def test_creation_is_exclusive_so_two_starters_cannot_both_win(self):
+        with tempfile.TemporaryDirectory() as d:
+            lock = Path(d) / "lab.lock"
+            lock.write_text("not json", encoding="utf-8")   # a lock another process just created, contents not readable yet
+            self.assertFalse(R.acquire(lock, alive=lambda pid: True))
+            self.assertEqual(lock.read_text(encoding="utf-8"), "not json")
+
+
+class UsageTest(unittest.TestCase):
+    """What a run really cost: the effective model and effort the CLI printed, and tokens + allowance points from its rollout file."""
+    HEADER = "OpenAI Codex v0.162.0\n--------\nworkdir: F:\\wt\nmodel: gpt-6-astra\nprovider: openai\nreasoning effort: high\nsession id: 01a1-abc\n--------\nuser\n"
+
+    def rollout(self, home, sid="01a1-abc", pts=((16.0, 45.0, 5000), (97.0, 58.0, 5000))):
+        d = Path(home) / "sessions" / "2026" / "10" / "12"
+        d.mkdir(parents=True, exist_ok=True)
+        rows = []
+        for i, (five, week, reset) in enumerate(pts):
+            rows.append({"type": "event_msg", "payload": {"type": "token_count", "info": {"total_token_usage": {
+                "input_tokens": 1000 * (i + 1), "cached_input_tokens": 800 * (i + 1), "output_tokens": 50 * (i + 1), "total_tokens": 1050 * (i + 1)}},
+                "rate_limits": {"primary": {"used_percent": five, "resets_at": reset}, "secondary": {"used_percent": week, "resets_at": 90000}}}})
+        p = d / f"rollout-2026-10-12T22-30-07-{sid}.jsonl"
+        p.write_text("\n".join(json.dumps(r) for r in rows) + "\nnot json\n", encoding="utf-8")
+        return p
+
+    def test_header_gives_the_model_effort_and_session_the_cli_really_used(self):
+        h = R.log_header(self.HEADER)
+        self.assertEqual((h["model"], h["effort"], h["session"]), ("gpt-6-astra", "high", "01a1-abc"))
+        self.assertEqual(R.log_header("nothing here"), {})
+
+    def test_rollout_gives_tokens_and_the_points_the_run_moved(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.rollout(d)
+            u = R.rollout_usage(d, "01a1-abc")
+            self.assertEqual((u["tokens_total"], u["tokens_cached"], u["tokens_uncached"], u["tokens_out"]), (2100, 1600, 400, 100))
+            self.assertEqual((u["window_before"], u["window_after"], u["window_pts"]), (16.0, 97.0, 81.0))
+            self.assertEqual(u["week_pts"], 13.0)
+            self.assertEqual(R.rollout_usage(d, "missing"), {})
+            self.assertEqual(R.rollout_usage(d, ""), {})
+
+    def test_a_window_that_reset_mid_run_counts_what_the_new_window_shows(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.rollout(d, pts=((99.0, 45.0, 5000), (7.0, 46.0, 23000)))
+            self.assertEqual(R.rollout_usage(d, "01a1-abc")["window_pts"], 7.0)
+
+    def test_a_stale_first_reading_with_another_reset_time_is_not_a_reset(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.rollout(d, pts=((91.0, 14.0, 3000), (99.0, 15.0, 5000)))
+            u = R.rollout_usage(d, "01a1-abc")
+            self.assertEqual((u["window_pts"], u["week_pts"]), (8.0, 1.0))
+
+    def test_requested_and_effective_setting_mismatch_is_named(self):
+        self.assertEqual(R.setting_mismatch(("gpt-6-luna", "medium"), {"model": "gpt-6-luna", "effort": "medium"}), "")
+        self.assertEqual(R.setting_mismatch(("gpt-6-luna", "medium"), {}), "")
+        m = R.setting_mismatch(("gpt-6-luna", "medium"), {"model": "gpt-6.1-sol", "effort": "low"})
+        self.assertIn("asked gpt-6-luna/medium, CLI used gpt-6.1-sol/low", m)
+
+
+class SpendGuardTest(unittest.TestCase):
+    NOW = 100000
+    RL = {"primary": {"used_percent": 16.0, "resets_at": 102000}, "secondary": {"used_percent": 20.0, "resets_at": 1000000}}
+
+    def run_row(self, at, model, effort, pts=None, week=None, outcome="DONE", card="x"):
+        return {"at": at, "card": card, "model": model, "effort": effort, "outcome": outcome, "window_pts": pts, "week_pts": week}
+
+    def stamp(self, epoch):
+        return datetime.fromtimestamp(epoch, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    def test_astra_high_does_not_fit_a_window_with_16_percent_used(self):
+        why, until = R.budget_hold("gpt-6-astra", "high", self.RL, [], self.NOW)
+        self.assertIn("gpt-6-astra/high", why)
+        self.assertEqual(until, 102000)
+        self.assertEqual(R.budget_hold("gpt-6-luna", "medium", self.RL, [], self.NOW), ("", 0))
+
+    def test_measured_cost_of_a_setting_replaces_the_table(self):
+        rows = [self.run_row(self.stamp(1000), "gpt-6-luna", "medium", pts=70.0)]
+        self.assertEqual(R.est_pts("gpt-6-luna", "medium", rows)[0], 70.0)
+        self.assertEqual(R.est_pts("gpt-6-luna", "medium", [])[0], R.EST_WINDOW_PTS[("gpt-6-luna", "medium")])
+        self.assertEqual(R.est_pts("gpt-9", "low", [])[0], R.EST_DEFAULT)
+        self.assertIn("gpt-6-luna/medium", R.budget_hold("gpt-6-luna", "medium", self.RL, rows, self.NOW)[0])
+
+    def test_lab_may_not_spend_more_than_its_share_of_one_window(self):
+        start = 102000 - R.WINDOW_S
+        rows = [self.run_row(self.stamp(start + 60), "gpt-6-luna", "medium", pts=R.LAB_WINDOW_PTS - 3)]
+        why, until = R.budget_hold("gpt-6-luna", "medium", self.RL, rows, self.NOW)
+        self.assertIn("lab share of this 5-hour window", why)
+        self.assertEqual(until, 102000)
+        old = [self.run_row(self.stamp(start - 60), "gpt-6-luna", "medium", pts=R.LAB_WINDOW_PTS)]   # spent in the previous window
+        self.assertEqual(R.budget_hold("gpt-6-luna", "medium", self.RL, old, self.NOW), ("", 0))
+
+    def test_run_count_and_astra_count_per_window_are_capped(self):
+        start = 102000 - R.WINDOW_S
+        rows = [self.run_row(self.stamp(start + 60 * i), "gpt-6-luna", "low", pts=0.0) for i in range(1, R.LAB_RUNS_PER_WINDOW + 1)]
+        self.assertIn("runs in this window", R.budget_hold("gpt-6-luna", "low", self.RL, rows, self.NOW)[0])
+        rl = {**self.RL, "primary": {"used_percent": 0.0, "resets_at": 102000}}
+        one = [self.run_row(self.stamp(start + 60), "gpt-6-astra", "medium", pts=1.0)]
+        self.assertIn("astra", R.budget_hold("gpt-6-astra", "medium", rl, one, self.NOW)[0])
+        self.assertEqual(R.budget_hold("gpt-6-astra", "medium", rl, [], self.NOW), ("", 0))
+
+    def test_weekly_share_of_the_lab(self):
+        wk_start = 1000000 - R.WEEK_S
+        rows = [self.run_row(self.stamp(wk_start + 60), "gpt-6-luna", "medium", pts=1.0, week=R.LAB_WEEK_PTS - 1)]
+        why, until = R.budget_hold("gpt-6-luna", "medium", self.RL, rows, wk_start + 120)
+        self.assertIn("week", why)
+        self.assertEqual(until, 1000000)
+
+    def test_a_reading_whose_window_already_reset_counts_as_empty(self):
+        rl = {"primary": {"used_percent": 99.0, "resets_at": 5000}, "secondary": {"used_percent": 20.0, "resets_at": 1000000}}
+        self.assertEqual(R.budget_hold("gpt-6-luna", "medium", rl, [], self.NOW), ("", 0))
+
+    def test_no_reading_still_applies_the_lab_caps(self):
+        rows = [self.run_row(self.stamp(self.NOW - 60), "gpt-6-luna", "low", pts=0.0) for _ in range(R.LAB_RUNS_PER_WINDOW)]
+        self.assertIn("runs in this window", R.budget_hold("gpt-6-luna", "low", None, rows, self.NOW)[0])
+        self.assertEqual(R.budget_hold("gpt-6-luna", "low", None, [], self.NOW), ("", 0))
+
+    def test_choose_takes_the_next_card_that_fits_instead_of_idling(self):
+        big, small = card("lab-big", crucial=True, effort="high"), card("lab-small")
+        c, why = R.choose([big, small], set(), {}, [], self.RL, self.NOW)
+        self.assertEqual(c["id"], "lab-small")
+        c, why = R.choose([big], set(), {}, [], self.RL, self.NOW)
+        self.assertIsNone(c)
+        self.assertIn("lab-big", why)
+        self.assertIn("gpt-6-astra/high", why)
+
+    def test_a_card_that_ran_out_mid_run_waits_out_a_cool_down(self):
+        rows = [self.run_row(self.stamp(self.NOW - 600), "gpt-6-luna", "medium", outcome="INCOMPLETE", card="lab-a")]
+        self.assertTrue(R.cooling(rows, "lab-a", self.NOW))
+        self.assertFalse(R.cooling(rows, "lab-b", self.NOW))
+        self.assertFalse(R.cooling(rows, "lab-a", self.NOW + R.COOLDOWN_S + 1))
+        self.assertFalse(R.cooling([self.run_row(self.stamp(self.NOW - 60), "m", "e", outcome="LIMIT", card="lab-a")], "lab-a", self.NOW))
+        c, _ = R.choose([card("lab-a"), card("lab-b")], set(), {}, rows, None, self.NOW)
+        self.assertEqual(c["id"], "lab-b")
+
+    def test_min_gap_between_run_starts(self):
+        rows = [self.run_row(self.stamp(self.NOW - 60), "gpt-6-luna", "low", pts=0.0)]
+        self.assertIn("minutes ago", R.gap_hold(rows, self.NOW))
+        self.assertEqual(R.gap_hold(rows, self.NOW + R.MIN_GAP_S), "")
+        self.assertEqual(R.gap_hold([], self.NOW), "")
+
+
+class UsageDocTest(unittest.TestCase):
+    def test_usage_doc_is_compact_and_carries_effective_settings(self):
+        rows = [{"at": "2026-10-12T17:00:01Z", "card": "lab-a", "kind": "audit", "model": "gpt-6-astra", "effort": "high", "model_used": "gpt-6-astra",
+                 "effort_used": "high", "seconds": 777, "tokens": 383362, "tokens_total": 3710850, "window_pts": 81.0, "week_pts": 13.0,
+                 "outcome": "INCOMPLETE", "log": "F:/x.log", "note": "n" * 400}] * 14
+        rl = {"primary": {"used_percent": 97.0, "resets_at": 1791851629}, "secondary": {"used_percent": 58.0, "resets_at": 1792438429}, "plan_type": "plus"}
+        doc = R.usage_doc(rows, rl, 1791846000, "JIS-NUC")
+        self.assertEqual(len(doc["runs"]), R.USAGE_RUNS)
+        self.assertEqual(doc["runs"][0]["model"], "gpt-6-astra")
+        self.assertEqual(doc["runs"][0]["tokens_total"], 3710850)
+        self.assertNotIn("log", doc["runs"][0])
+        self.assertLessEqual(len(doc["runs"][0]["note"]), 160)
+        self.assertEqual(doc["allowance"]["window_used"], 97.0)
+        self.assertEqual(doc["caps"]["window_pts"], R.LAB_WINDOW_PTS)
+        self.assertEqual(doc["host"], "JIS-NUC")
+        json.dumps(doc)
 
 
 class IndexTest(unittest.TestCase):
