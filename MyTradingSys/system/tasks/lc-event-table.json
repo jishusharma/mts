@@ -42,7 +42,9 @@
   "steps": [
     "Bias arms B1 value-area side, B2 swing structure, B3 close vs EMA20 on 1h, 4h, 6h, 12h, 1D (closed bars only).",
     "Entry features E1 RSI(14) holding 40/60 (layers/rsi/malkan_40_60.py), E2 RSI vs its MA (rsi_ma.py), E3 5m CVD slope sign (kline proxy; footprint where it exists, both columns), E4 Bollinger(20,2) position.",
-    "separation.md: per feature, MFE-in-R difference good vs bad with CI; pick at most 6 combinations for LC3 BEFORE LC3 runs, written in the report."
+    "separation.md: per feature, MFE-in-R difference good vs bad with CI; pick at most 6 combinations for LC3 BEFORE LC3 runs, written in the report.",
+    "Path columns per touch: maximum adverse and favourable move in % and in R for stops K1-K5 (PLAN.md), whether L2 filled, and for each stop arm STOP_THEN_TARGET (bad stop) / STOP_THEN_1R_MORE (good stop) / NOT_STOPPED.",
+    "Winner-safe stop: the adverse move that keeps 90 % of touches that reached the first opposing level (from K0)."
   ],
   "tests": "synthetic bars: a touch at a known bar gets the hand-computed RSI/Bollinger values from FORMULAS.md; bias uses only bars closed before the touch.",
   "title": "LC2 Levels Confluence: event table of first touches with bias (1h-1D) and entry features (RSI 40/60, RSI-MA, CVD, Bollinger), DEV only"

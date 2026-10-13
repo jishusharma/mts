@@ -4,7 +4,7 @@
   "commands": [],
   "created": "2026-10-13T18:51:53Z",
   "depends_on": [],
-  "done_when": "levels_hold.md lists every family with hold rate vs random and KEEP/DROP; tests green; card result = \"families KEEP: <list>; DROP: <list>\".",
+  "done_when": "levels_hold.md lists every family with hold rate vs random and KEEP/DROP, plus the L1->L2 table; tests green; card result = \"families KEEP: <list>; DROP: <list>; L2 reached <x> %\".",
   "from_inbox": "",
   "goal": "Build levels.py (causal level set known at 00:00 UTC) and levels_hold.py: for every first touch of every level family per day, did price move 1 x stop width away before breaking through by 1 x stop width? Compare each family with random price lines at matched distance.",
   "id": "lc-levels-hold",
@@ -42,6 +42,7 @@
   "steps": [
     "levels.py: per UTC day, from data before 00:00 only: prior-day high/low, prior-day POC/VAH/VAL (70 % value area from 1m volume, bins 10 USD OURS), naked POCs of the last 10 days, daily open, prior-week high/low, 4h 5-bar fractal pivots of the last 10 days, round 1000s. Each level row: price, family, source tag TOM/FABIO/CONSENSUS/OURS.",
     "levels_hold.py: stop width w = max(0.40 % of price, 0.10 % level buffer); first touch per level per day; outcome HOLD / BREAK / NEITHER by end of UTC day; same for 5 random lines per real level at the same distance from the 00:00 price (seed 20261014).",
+    "Pairs: for every touch of L1, the next same-side KEEP-candidate level L2 (distance in %), whether L2 was touched before the end of the UTC day, and whether price then came back to L1. Gives how often a second level is reached (the operator scale-in case).",
     "Report levels_hold.md: per family n touches, hold rate, random hold rate, difference with 95 % CI (bootstrap by day). Families with CI touching 0 are marked DROP."
   ],
   "tests": "pytest test_levels.py: synthetic 2-day bars with known volume -> day-2 POC/VAH/VAL equal the hand-computed values from FORMULAS.md; no level of day 2 uses a bar at or after 00:00 of day 2 (look-ahead check); a touch that breaks by w before moving w away is BREAK. Fails before levels.py exists.",

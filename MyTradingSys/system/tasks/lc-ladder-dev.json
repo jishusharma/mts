@@ -8,7 +8,7 @@
   ],
   "done_when": "ladder_dev.md table + frozen_rule.json; tests green.",
   "from_inbox": "",
-  "goal": "Simulate the pre-registered combinations x exits X0 fixed 1R/2R, X1 all out at first opposing level, X2 ladder (1/2 at first level; rest held while CVD agrees, 1/2 of rest when CVD flat, all out on CVD against or opposite Bollinger band; time stop end of UTC day). Stop beyond level by max(0.10 %, 0.40 % taker / 0.20 % maker).",
+  "goal": "Simulate the pre-registered combinations x exits X0 fixed 1R/2R, X1 all out at first opposing level, X2 ladder (1/2 at first level; rest held while CVD agrees, 1/2 of rest when CVD flat, all out on CVD against or opposite Bollinger band; time stop end of UTC day). Stop beyond level by max(0.10 %, 0.40 % taker / 0.20 % maker). Scale-in arms S0-S3 and stop arms K1-K5 per PLAN.md; R = loss if every planned fill happens and the stop is hit.",
   "id": "lc-ladder-dev",
   "kind": "build",
   "lane": "CODEX",
@@ -40,9 +40,11 @@
   "state": "raw",
   "steps": [
     "Simulator with fees both ways (fees.py), partial fills accounted per leg.",
+    "Scale-in: S1 half at L1 + half at L2, one stop for the whole position set at entry; S0, S2, S3 on the SAME trade ideas; report net R per idea (unfilled halves count as zero), not per fill.",
+    "Stop table per arm: bad-stop rate, good-stop rate, net R after fees, fee share of R; the stop is chosen on net R.",
     "Report per combination x exit: n, mean R after fees with 95 % CI, max drawdown, power / minimum detectable effect (gap-g1 helper). Below 50 % power a FAIL reads INCONCLUSIVE.",
     "Freeze the single best DEV rule in frozen_rule.json (no edits after)."
   ],
-  "tests": "hand-built price path: long at support, first resistance hit -> half closed there; CVD flat bar -> quarter closed; opposite band -> rest closed; fees subtracted per leg match a hand sum.",
+  "tests": "hand-built price path: long at support, first resistance hit -> half closed there; CVD flat bar -> quarter closed; opposite band -> rest closed; fees subtracted per leg match a hand sum. Scale-in: path touching L1 then L2 then target -> two fills, average entry hand-computed, one stop beyond L2; path touching L1 then target -> half size win only; a stop hit then target -> counted BAD_STOP.",
   "title": "LC3 Levels Confluence: ladder-exit simulator (fixed vs first level vs CVD/Bollinger step-out) on the <= 6 LC2 combinations, DEV, maker+taker fees"
 }
