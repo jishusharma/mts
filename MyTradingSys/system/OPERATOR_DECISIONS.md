@@ -335,3 +335,29 @@ Answer: Add the profile arm, then re-run recall as a new trial
 Operator note (verbatim): (none)
 Applied: 2026-10-13 (JIS-NUC): answered 14:27Z. Card tom-profile-shape-parity is now lane CODEX kind build (GPT luna lab, Pillow on JIS-NUC); then tom-encode-fade-profile-proofs, then recall re-run as a NEW trial row. k=0 not adopted; Tom v2 not parked.
 
+
+## q11-fdax-orderflow-recall | asked 2026-10-13 | Tom v2
+
+Buy Eurex FDAX trade data with aggressor side (buyer or seller crossed the spread) for Tom's 7 ledger sessions plus seeded random days, to test whether his named order-flow proofs mark his entries?
+
+Recommended: Yes, buy the 7 sessions + seeded controls; run before the CFD profile arm
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet)
+
+```json
+{
+ "order": 3,
+ "stage": "Research",
+ "refs": "research/tom_dax_what_is_proven_2026-10-13/REPORT.md; backtest/dax_data.py:100-106; tom_transfer_2026-10-11/RECALL_DAX_V2.md:24-31",
+ "title": "Buy FDAX aggressor-side trade data to test Tom's order-flow proofs at his entries?",
+ "why": "Every DAX test so far ran on CFD candles where delta is forced to 0, so Tom's own proofs (footprint absorption, delta surplus; k0zm5NYn0IQ_raw.txt:19) could never fire. Recall with the idea alone was 4 of 5 (random 0.3 %) but the idea fires on 46 % of days; at 1+ proof it fell to 2 of 5 (random 15.7 %). Real FDAX order flow is the one input missing that Tom says picks his entries. PASS (>= 4 of 5 sessions within one stop-width, random <= 5 %, both check sessions hold) funds the full FDAX P&L run; FAIL parks the coded Tom layer as discretionary.",
+ "options": [
+  "Yes, buy the 7 sessions + seeded controls; run before the CFD profile arm",
+  "Yes, but after the CFD profile arm (q10) finishes",
+  "No, park Tom as discretionary now",
+  "No, keep the current CFD-only plan"
+ ],
+ "recommended": "Yes, buy the 7 sessions + seeded controls; run before the CFD profile arm"
+}
+```
