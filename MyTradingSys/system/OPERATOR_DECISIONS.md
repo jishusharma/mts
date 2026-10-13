@@ -325,3 +325,13 @@ Applied: (not yet)
  "recommended": "Yes, once, one pooled pre-registered hypothesis"
 }
 ```
+
+## q10-tom-v2-after-design-fail | asked 2026-10-13 | Tom v2
+
+Tom v2 failed its first test on DAX. What next?
+
+Recommended: Add the profile arm, then re-run recall as a new trial
+Answer: Add the profile arm, then re-run recall as a new trial
+Operator note (verbatim): (none)
+Applied: 2026-10-13 (JIS-NUC): answered 14:27Z. Card tom-profile-shape-parity is now lane CODEX kind build (GPT luna lab, Pillow on JIS-NUC); then tom-encode-fade-profile-proofs, then recall re-run as a NEW trial row. k=0 not adopted; Tom v2 not parked.
+

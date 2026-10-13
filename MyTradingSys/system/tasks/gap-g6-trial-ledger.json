@@ -1,0 +1,46 @@
+{
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-13T14:40:00Z",
+ "depends_on": [],
+ "done_when": "script + test + generated ledger with a total row count that matches the per-registry counts.",
+ "from_inbox": "",
+ "goal": "Add scripts/dev/trial_ledger.py that scans the TRIAL_REGISTRY files listed in REPORT.md G6 and writes research/TRIAL_LEDGER.csv (study, variant, date, data window, verdict) plus a holdout_reads.csv skeleton for the sealed 2025-07..2026-09 BTC window. Count per study printed.",
+ "id": "gap-g6-trial-ledger",
+ "kind": "build",
+ "lane": "CODEX",
+ "layers": [
+  "tom"
+ ],
+ "live_path": false,
+ "note": "",
+ "prio": 2,
+ "refine_tries": 0,
+ "refined_by": "sonnet-2026-10-13 gap review G1-G8",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "scripts/dev/trial_ledger.py",
+  "scripts/dev/test_trial_ledger.py",
+  "MyTradingSys/research/TRIAL_LEDGER.csv",
+  "MyTradingSys/research/ (registries, read only)"
+ ],
+ "scope_out": [
+  "live tree",
+  "holdout reads",
+  "editing registries",
+  "tuning"
+ ],
+ "size": "S",
+ "sources": [
+  "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
+ ],
+ "state": "ready",
+ "steps": [
+  "List registries by glob TRIAL*REGISTRY*; read their columns; normalise.",
+  "Write ledger, count line, test."
+ ],
+ "tests": "pytest on two tiny synthetic registries: rows merged, duplicate variant kept once with a dup flag, total count equals sum. Fails before the script exists.",
+ "title": "Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)"
+}

@@ -3,10 +3,10 @@
   "plan": "plus",
   "week_resets": 1792472898,
   "week_used": 6.0,
-  "window_resets": 1791886098,
-  "window_used": 37.0
+  "window_resets": 1791921616,
+  "window_used": 0
  },
- "at": "2026-10-13T05:55:56Z",
+ "at": "2026-10-13T15:03:00Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -17,19 +17,34 @@
  },
  "host": "JIS-NUC",
  "lab": {
-  "astra_runs": 1,
+  "astra_runs": 0,
   "week_pts": 4.0,
-  "window_pts": 20.0,
-  "window_runs": 2
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-10-13T15:00:02Z",
+   "card": "tom-profile-shape-parity",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 172,
+   "tokens_out": 8645,
+   "tokens_total": 1219346,
+   "tokens_uncached": 105933,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-13T05:54:06Z",
    "card": "rv06-live-read-claims",
    "effort": "medium",
    "kind": "audit",
    "model": "gpt-6-luna",
-   "note": "",
+   "note": "3 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/system/LAYERS.md",
    "outcome": "OUT_OF_SCOPE",
    "seconds": 104,
    "tokens_out": 4156,
@@ -152,21 +167,6 @@
    "note": "Codex allowance ran out; the card stays ready and is not charged a try",
    "outcome": "LIMIT",
    "seconds": 6,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
-  },
-  {
-   "at": "2026-10-12T15:00:02Z",
-   "card": "lab-dax-readiness-gate",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6.1-sol",
-   "note": "Codex allowance ran out; the card stays ready and is not charged a try",
-   "outcome": "LIMIT",
-   "seconds": 5,
    "tokens_out": null,
    "tokens_total": null,
    "tokens_uncached": null,
