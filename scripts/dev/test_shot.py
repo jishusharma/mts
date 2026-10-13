@@ -419,5 +419,14 @@ class ShotTest(unittest.TestCase):
         self.assertEqual(rc, 0)
 
 
+class MainRootOldGit(unittest.TestCase):
+    def test_git_224_flag_echo_is_not_a_path(self):
+        """git 2.24 prints the unsupported flag as line 1 then the dir; the store path must be the dir."""
+        def fake(*a, cwd=None):
+            return "--path-format=absolute\nC:/x/MTS/.git\n" if "--path-format=absolute" in a else ""
+        with mock.patch.object(shot, "git", fake):
+            self.assertEqual(shot.main_root(), Path("C:/x/MTS"))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)
