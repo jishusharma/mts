@@ -10,12 +10,12 @@
   "from_inbox": "",
   "goal": "One read of VALIDATION with DEV_FROZEN.json; PASS / FAIL / INCONCLUSIVE with power. HOLDOUT stays sealed (needs Jis's decision A7).",
   "id": "tom-btc-validation",
-  "lane": "SONNET",
+  "lane": "DSA-NUC",
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "",
+  "note": "ROUTED 2026-10-13 (operator: GPT + DSA do the work, Claude economy): one frozen run, DSA runs the command and reports.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",

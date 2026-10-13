@@ -11,12 +11,12 @@
   "from_inbox": "",
   "goal": "Flag-gated (default off) BTC detector from SpikeFadeDetector with footprint inputs; only concepts that separated in T4 or were agreed in T3. Every number labelled SOURCED or OURS.",
   "id": "tom-btc-encode",
-  "lane": "SONNET",
+  "lane": "CODEX",
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "",
+  "note": "ROUTED 2026-10-13 (operator: GPT + DSA do the work, Claude economy): GPT lab encodes the concepts that separated.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
@@ -41,5 +41,6 @@
     "Spec the rules from T3/T4 first, then code, flag-off output identical."
   ],
   "tests": "flag-off golden identical on BTC; one synthetic leg fires with each entry path",
-  "title": "Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at the level, targets node / impulse start)"
+  "title": "Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at the level, targets node / impulse start)",
+  "kind": "build"
 }

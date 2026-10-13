@@ -10,12 +10,12 @@
   "from_inbox": "",
   "goal": "Repeat T2 and T4 for trend continuation (pullback to VWAP/value in a volume-backed trend; target next high-volume area) and breakout/break-in (balance resolves with proof). Source: conditions/setup_type_rules.md sections 5-6.",
   "id": "tom-btc-other-setups",
-  "lane": "SONNET",
+  "lane": "CODEX",
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "",
+  "note": "ROUTED 2026-10-13 (operator: GPT + DSA do the work, Claude economy): GPT lab, after T4.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
@@ -39,5 +39,6 @@
     "Reuse chart_lab.py with a setup switch; then the event study table."
   ],
   "tests": "pytest: one synthetic pullback and one breakout candidate found",
-  "title": "Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, breakout/break-in)"
+  "title": "Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, breakout/break-in)",
+  "kind": "build"
 }
