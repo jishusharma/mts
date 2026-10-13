@@ -26,19 +26,18 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv`; `MyTradingSys/research/tom_transfer_2026-10-11/TOM_LEDGER_CANONICAL_GROUPS.csv`
 - Other results: `MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md`
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`; `MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md`
-- Codex lab reports (newest 4 of 13): `MyTradingSys/research/layer_lab/reports/2026-10-13_tom-profile-shape-parity.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_gap-g1-power-mde-helper.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-unavailable-flow.md`
+- Codex lab reports (newest 4 of 14): `MyTradingSys/research/layer_lab/reports/2026-10-13_tom-profile-shape-parity.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_tom-btc-chart-lab.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_gap-g1-power-mde-helper.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `rv02-fix-dax-full-dev-authorization` blocked p1 SONNET: RV02 R3: require complete DAX sampling and bind holdout authorization
   - `rv02-fix-dax-preprocessing-isolation` blocked p1 SONNET: RV02 R1: isolate DAX preprocessing and report metadata before holdout
   - `rv02-fix-dax-producer-data-binding` blocked p1 SONNET: RV02 R4: reject DAX snapshots made from different execution data
   - `rv02-fix-dax-rounded-rr-gate` blocked p1 SONNET: RV02 R2: preserve exact DAX net RR through the decision boundary
-  - `tom-btc-chart-lab` ready p1 CODEX: Tom on BTC T2: chart lab - 60 candidate + 20 random BTC charts (5m candles, session profile, delta, footprint 
   - `tom-btc-data-check` ready p1 DSA-NUC: Tom on BTC T1: check the footprint bars on JIS-NUC cover DEV + VALIDATION (2024-12..2025-06), list gaps
   - `tom-btc-event-study` raw p1 CODEX: Tom on BTC T4: event study - which Tom concepts separate winners on BTC (DEV only, fee-net, vs random same-win
   - `tom-btc-eye-read` raw p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
   - `tom-profile-shape-parity` blocked p1 CODEX: Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)
   - `tom-v2-dax-dev-backtest` blocked p1 SONNET: Tom v2: DAX dev backtest of the fade under the part B protocol (both fills, session null)
-  - `gap-g4-through-ticks-flag` ready p2 CODEX: Gap G4: through_ticks flag in tom_bt.sim_limit_trade (entry and target), default off, output identical
+  - `gap-g4-through-ticks-flag` ready p2 SONNET: Gap G4: through_ticks flag in tom_bt.sim_limit_trade (entry and target), default off, output identical
   - `gap-g6-trial-ledger` ready p2 CODEX: Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)
   - `tom-btc-dev-backtest` raw p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` raw p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
@@ -219,6 +218,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Status: Score the posted calls on Binance klines before anything else (B162). Self-reported 67.1 % wins, avg win 3.99 %, avg loss 0.63 %: unverified.
 - Tracks: Claude, Codex lab (scoring)
 - Spec / sources: `MyTradingSys/items/B162_qriptal_signal_layer.md`
+- Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-14_qriptal-score-binance.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_qriptal-score-binance.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `qriptal-score-binance` ready p1 CODEX: Qriptal: score his posted calls on Binance candles (B162)
 
