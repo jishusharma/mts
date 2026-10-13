@@ -6,7 +6,7 @@
   "depends_on": [
     "lc-event-table"
   ],
-  "done_when": "ladder_dev.md table + frozen_rule.json; tests green.",
+  "done_when": "ladder_dev.md table + frozen_rule.json; tests green. Arm P vs probe baseline, HTF bias/RSI 40/60 cuts, liquidation count and fee stress 10/25/50 % of R are in ladder_dev.md.",
   "from_inbox": "",
   "goal": "Simulate the pre-registered combinations x exits X0 fixed 1R/2R, X1 all out at first opposing level, X2 ladder (1/2 at first level; rest held while CVD agrees, 1/2 of rest when CVD flat, all out on CVD against or opposite Bollinger band; time stop end of UTC day). Stop beyond level by max(0.10 %, 0.40 % taker / 0.20 % maker). Scale-in arms S0-S3 and stop arms K1-K5 per PLAN.md; R = loss if every planned fill happens and the stop is hit.",
   "id": "lc-ladder-dev",
@@ -43,8 +43,10 @@
     "Scale-in: S1 half at L1 + half at L2, one stop for the whole position set at entry; S0, S2, S3 on the SAME trade ideas; report net R per idea (unfilled halves count as zero), not per fill.",
     "Stop table per arm: bad-stop rate, good-stop rate, net R after fees, fee share of R; the stop is chosen on net R.",
     "Report per combination x exit: n, mean R after fees with 95 % CI, max drawdown, power / minimum detectable effect (gap-g1 helper). Below 50 % power a FAIL reads INCONCLUSIVE.",
+    "Arm P (leveraged position-building, from the GPT probe levels_sizing_2026-10-14/METHOD.md): ONE loss budget for the whole position incl. every planned add; capped 1:2:3 units each sized from stop distance; staged exits (half at first resistance, then smaller exits as price and CVD develop); adds only while the level holds or is reclaimed, never widening the stop. BASELINE = probe result on 117 Dec-Mar signals (single_full -0.216R, equal_dip_staged -0.195R, 123_confirm_staged -0.210R, TRIAL_REGISTRY.csv); arm P must beat it on the same signals, paired day-bootstrap CI. Run P under B0 and the LC2 best B (HTF bias), with E0 and E1 (RSI 40/60 holds), and the no-skill baselines (random entry same exits, E0/B0 control) kept.",
+    "Liquidation check for arm P at the leverage actually used (isolated margin, mark price = bar low/high, maintenance margin + fee buffer): report max leverage reached, liquidation count (must be 0 to count), distance stop-to-liquidation; a campaign liquidated before its stop is a loss of full margin. Fee sensitivity: re-run P with total fees stressed to 10 %, 25 % and 50 % of risk R per campaign; report the break-even fee share.",
     "Freeze the single best DEV rule in frozen_rule.json (no edits after)."
   ],
-  "tests": "hand-built price path: long at support, first resistance hit -> half closed there; CVD flat bar -> quarter closed; opposite band -> rest closed; fees subtracted per leg match a hand sum. Scale-in: path touching L1 then L2 then target -> two fills, average entry hand-computed, one stop beyond L2; path touching L1 then target -> half size win only; a stop hit then target -> counted BAD_STOP.",
+  "tests": "hand-built price path: long at support, first resistance hit -> half closed there; CVD flat bar -> quarter closed; opposite band -> rest closed; fees subtracted per leg match a hand sum. Scale-in: path touching L1 then L2 then target -> two fills, average entry hand-computed, one stop beyond L2; path touching L1 then target -> half size win only; a stop hit then target -> counted BAD_STOP. Arm P: three fills 1:2:3 with one loss budget -> loss at stop == budget (hand sum); add refused after the level breaks; liquidation fixture: leverage so high that liquidation sits inside the stop -> counted LIQUIDATED, loss = margin.",
   "title": "LC3 Levels Confluence: ladder-exit simulator (fixed vs first level vs CVD/Bollinger step-out) on the <= 6 LC2 combinations, DEV, maker+taker fees"
 }
