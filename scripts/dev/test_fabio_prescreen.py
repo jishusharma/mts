@@ -1,5 +1,8 @@
 import sys, pathlib, unittest
-import numpy as np
+try:
+    import cv2, numpy as np
+except ImportError:  # CI image without OpenCV: nothing to test
+    raise unittest.SkipTest('cv2/numpy not installed')
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import fabio_prescreen as p
 
