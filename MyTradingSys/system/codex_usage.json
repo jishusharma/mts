@@ -4,9 +4,9 @@
   "week_resets": 1792472898,
   "week_used": 6.0,
   "window_resets": 1791921616,
-  "window_used": 0
+  "window_used": 1.0
  },
- "at": "2026-10-13T15:03:00Z",
+ "at": "2026-10-13T15:32:27Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 4.0,
-  "window_pts": 0.0,
-  "window_runs": 0
+  "window_pts": 1.0,
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-13T15:30:02Z",
+   "card": "tom-profile-shape-parity",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 139,
+   "tokens_out": 8268,
+   "tokens_total": 769710,
+   "tokens_uncached": 100194,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-13T15:00:02Z",
    "card": "tom-profile-shape-parity",
@@ -152,21 +167,6 @@
    "note": "",
    "outcome": "DONE",
    "seconds": 670,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
-  },
-  {
-   "at": "2026-10-12T15:30:01Z",
-   "card": "lab-dax-readiness-gate",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6.1-sol",
-   "note": "Codex allowance ran out; the card stays ready and is not charged a try",
-   "outcome": "LIMIT",
-   "seconds": 6,
    "tokens_out": null,
    "tokens_total": null,
    "tokens_uncached": null,
