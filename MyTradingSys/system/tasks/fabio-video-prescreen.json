@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-13T06:41:12Z",
   "commands": [],
   "created": "2026-10-12T19:27:04Z",
   "depends_on": [],
@@ -18,7 +19,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/fabio_prescreen.py + test; DyS layout: recall 8/8 ledger trade sheets, 1/19 empty windows falsely flagged (the 7025 window, whose ticket is really on screen); DyS list = ledger truth (NUC mp4 is sparse, 16.7 MB of 250 MB); Is1H screened t=0-5250 but layout has zone boxes, 13/20 windows only 'candidate'; follow-up fabio-prescreen-is1h-layout",
   "scope_in": [
     "F:/MTS/data/fabio_videos (frames, sheets)",
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
@@ -32,7 +33,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the test first: a synthetic frame with an order-ticket or position-line region is flagged, a blank chart frame is not (fails on empty script).",
     "Build scripts/dev/fabio_prescreen.py: per 250 s window of a video, sample frames with cv2 and flag order-ticket / position-line presence by colour+layout template; output a CSV window,flag,frame_ref.",
