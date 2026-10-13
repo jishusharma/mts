@@ -6,7 +6,9 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from MyTradingSys.backtest.tom_profile_parity import EngineProfile, select_bars, main
+from MyTradingSys.backtest.tom_profile_parity import (
+    EngineProfile, select_bars, main, profile_shape_fraction, profile_shape_matches,
+)
 
 
 def has_java_profile_dependencies():
@@ -16,6 +18,16 @@ def has_java_profile_dependencies():
 
 
 class ProfileParityTest(unittest.TestCase):
+    def test_basis_free_profile_shape_fraction(self):
+        drawn = profile_shape_fraction(25100, 25400, 25220)
+        computed = profile_shape_fraction(24870, 25170, 24990)
+        mismatch = profile_shape_fraction(24870, 25170, 25050)
+        self.assertAlmostEqual(drawn, 0.40)
+        self.assertAlmostEqual(computed, 0.40)
+        self.assertTrue(profile_shape_matches(drawn, computed, 0.033))
+        self.assertAlmostEqual(mismatch, 0.60)
+        self.assertFalse(profile_shape_matches(drawn, mismatch, 0.033))
+
     @unittest.skipUnless(has_java_profile_dependencies(), "Java and coherent Jackson Maven cache required for engine integration")
     def test_hand_computed_minute_profile(self):
         # EXPECT: point masses at 100,101,102,103,150 have volume 1,2,10,4,3.
