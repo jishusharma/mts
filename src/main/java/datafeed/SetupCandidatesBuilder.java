@@ -225,6 +225,16 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
             scoreNode.put("proof_count", c.proofCount);
             scoreNode.put("confluence_bonus", c.confluenceBonus);
         }
+        // Card tom-encode-spike-fade (TOM_LAYER_V2_SPEC section 15): family A fade_short, PRICE arm; flag off = untouched.
+        if (SpikeFadeDetector.enabled()) {
+            ObjectNode fade = SpikeFadeDetector.detect(mapper, root, klines1m, state, sym);
+            if (fade != null) {
+                ObjectNode ranked = mapper.createObjectNode();
+                ranked.put("rank", candidatesArray.size() + 1);
+                ranked.setAll(fade);
+                candidatesArray.add(ranked);
+            }
+        }
         return candidatesArray;
     }
 

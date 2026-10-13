@@ -34,10 +34,16 @@ def build(tmp):
     return str(out) + os.pathsep + cp
 
 
-def java(cp, symbol, main, args, tmp):
+def java_cmd(cp, symbol, main, args, spike_fade=False):
+    """Command line; -Dmts.spikeFade=true only when asked (card tom-encode-spike-fade, default off)."""
+    flags = [f"-Dmts.symbol={symbol}"] + (["-Dmts.spikeFade=true"] if spike_fade else [])
+    return ["java", "-Xmx3g", *flags, "-cp", cp, main, *args]
+
+
+def java(cp, symbol, main, args, tmp, spike_fade=False):
     cwd = tmp / "cwd"
     cwd.mkdir(exist_ok=True)
-    r = subprocess.run(["java", "-Xmx3g", f"-Dmts.symbol={symbol}", "-cp", cp, main, *args], cwd=str(cwd), text=True)
+    r = subprocess.run(java_cmd(cp, symbol, main, args, spike_fade), cwd=str(cwd), text=True)
     if r.returncode:
         raise SystemExit(f"{main} failed rc={r.returncode}")
 
@@ -50,6 +56,8 @@ def main(argv=None):
     g = sp.add_parser("gen"); g.add_argument("--raw", required=True); g.add_argument("--out", required=True)
     g.add_argument("--start", required=True); g.add_argument("--end", required=True); g.add_argument("--step", default="15")
     g.add_argument("--symbol", default="GER40"); g.add_argument("--shards", type=int, default=1)
+    for q in (s, g):
+        q.add_argument("--spike-fade", action="store_true", help="emit family A fade_short candidates (-Dmts.spikeFade=true)")
     x = ap.parse_args(argv)
     tmp = Path(tempfile.mkdtemp(prefix="mts_dax_"))
     try:
@@ -57,10 +65,10 @@ def main(argv=None):
         if x.cmd == "snap":
             inst = tmp / "instants.txt"
             inst.write_text("\n".join(x.at) + "\n", encoding="utf-8", newline="\n")
-            java(cp, x.symbol, "datafeed.SnapAt", [x.raw, str(inst), str(Path(x.out).resolve())], tmp)
+            java(cp, x.symbol, "datafeed.SnapAt", [x.raw, str(inst), str(Path(x.out).resolve())], tmp, x.spike_fade)
         else:
             for k in range(x.shards):  # sequential shards keep memory bounded; months are dealt round-robin
-                java(cp, x.symbol, "datafeed.TomSnapshotGen", [x.raw, x.out, x.start, x.end, x.step, str(k), str(x.shards)], tmp)
+                java(cp, x.symbol, "datafeed.TomSnapshotGen", [x.raw, x.out, x.start, x.end, x.step, str(k), str(x.shards)], tmp, x.spike_fade)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 

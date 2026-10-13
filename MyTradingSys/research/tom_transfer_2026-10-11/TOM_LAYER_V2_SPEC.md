@@ -431,3 +431,18 @@ Cards (Sonnet, one session each, fail-first tests, numbers by hand from this sec
 | 6 | `tom-v2-dax-dev-backtest` | dev run under section 14 (both fills, session null, 17:35 exit); holdout only on a dev PASS | 2 |
 | 7 | `tom-v2-btc-min-stop-width` | `W_min` gate for BTC replays and N5 (section 11.4 worked example) | 6 PASS |
 Family C (T4) gets no card: one trade (section 4).
+
+## 16. Build record, card 1 (tom-encode-spike-fade, 2026-10-13, JIS-NUC)
+PRICE arm built: `src/main/java/datafeed/SpikeFadeDetector.java`, hooked at the end of `SetupCandidatesBuilder.build` behind
+`-Dmts.spikeFade=true` (default off; `dax_engine.py --spike-fade` passes it). Tests: `SpikeFadeTest` (spec hand numbers:
+fade_short 24110, stop 24130 A-S2, target 24010, gross 5.0, net 4.9285; flat series, inside-range, short history, flag off,
+A-S1 variant) and `SpikeFadeFlagOffGoldenTest` (flag-off output equals goldens written by the pre-change builder, BTC and GER40).
+Encoding choices not in Tom's words (all labelled in the class header): session window start 07:00 Berlin (OURS), end 17:35
+(section 13); zone = running session high; A-C1 = leg above the median of the prior 20 sessions' same-clock legs; A-C2 =
+last close above the prior day's full-day high; A-S1 = lowest prior-session high above the zone (no buffer), else A-S2;
+A-P2 = fall rate since the high above the leg's own average rise rate; A-P4 = last completed 5m bar inside the 5m bar that
+holds the high; A-P5 = high above every daily high of the 20 prior sessions (so A-S1 and A-P5 are mutually exclusive);
+A-P7 = a low below the session open after the high. No staleness gate: every instant with the idea true emits; the
+recall card dedups to first attempts and applies the section 7 timing rule (`bars_since_zone`, `price_left_zone_points`).
+Open point for card 2: a snapshot's 1m series is 1440 bars (24 h), the detector needs 21 sessions; it fails closed on less.
+

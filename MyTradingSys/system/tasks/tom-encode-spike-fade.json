@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-13T07:23:49Z",
   "commands": [],
   "created": "2026-10-10T20:38:11Z",
   "depends_on": [
@@ -22,7 +23,7 @@
   "refine_tries": 0,
   "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
   "refs": [],
-  "result": "",
+  "result": "fade_short built behind -Dmts.spikeFade: hand numbers 24110/24130/24010 RR 5.0 net 4.9285 pass; flag-off golden identical BTC+GER40; quick gate green",
   "scope_in": [
     "src/main/java/datafeed/SetupCandidatesBuilder.java",
     "src/test/java/datafeed/",
@@ -43,7 +44,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2.1-2.5, 12, 13, 15",
     "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md section 3"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read spec sections 2, 12, 13, 15. Every condition keeps its spec id (A-C1, A-P4 ...) in the code comment and the proof JSON.",
     "Zone = session extreme of the impulse leg; A-C1 via impulse_rank above the median of the prior 20 sessions; A-C2 = price above the prior day's range.",

@@ -21,6 +21,7 @@ PYTEST_LAYER_PATHS = [
     "MyTradingSys/backtest/layers/fabio/test_htf_context_live.py",
     "MyTradingSys/execution/tests",
     "scripts/dev/test_market_guide.py",
+    "scripts/dev/test_dax_engine_flag.py",
     "MyTradingSys/observation/tests",
 ]
 

@@ -32,7 +32,6 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
   - `rv02-fix-dax-preprocessing-isolation` raw p1 SONNET: RV02 R1: isolate DAX preprocessing and report metadata before holdout
   - `rv02-fix-dax-producer-data-binding` raw p1 SONNET: RV02 R4: reject DAX snapshots made from different execution data
   - `rv02-fix-dax-rounded-rr-gate` raw p1 SONNET: RV02 R2: preserve exact DAX net RR through the decision boundary
-  - `tom-encode-spike-fade` ready p1 SONNET: Tom v2: encode the fade PRICE arm (session-extreme zone, A-C1/A-C2, proofs P2 P4 P5 P7, path A1)
   - `tom-profile-shape-parity` ready p1 SONNET: Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)
   - `tom-v2-dax-dev-backtest` refined p1 SONNET: Tom v2: DAX dev backtest of the fade under the part B protocol (both fills, session null)
   - `tom-v2-recall-fire-rate` refined p1 SONNET: Tom v2: recall and fire rate of the fade encoding on DESIGN, then CHECK once (RECALL_DAX_V2)
