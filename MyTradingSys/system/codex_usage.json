@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1792472898,
-  "week_used": 6.0,
-  "window_resets": 1791921616,
-  "window_used": 1.0
+  "week_used": 18.0,
+  "window_resets": 1791941636,
+  "window_used": 0
  },
- "at": "2026-10-13T16:04:58Z",
+ "at": "2026-10-13T20:34:39Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,18 +19,33 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 4.0,
-  "window_pts": 1.0,
-  "window_runs": 2
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-10-13T20:33:43Z",
+   "card": "qriptal-score-binance",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 50,
+   "tokens_out": 3324,
+   "tokens_total": 319756,
+   "tokens_uncached": 42000,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-13T16:03:30Z",
    "card": "gap-g1-power-mde-helper",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": "Maven tests: SKIP\nStep 5b: Layer tests: PASS\nStep 5c: Options tests: PASS\nStep 6: Backtest tests: SKIP\n=========================================================",
+   "outcome": "SHIP_FAILED",
    "seconds": 82,
    "tokens_out": 4741,
    "tokens_total": 382890,
@@ -152,21 +167,6 @@
    "note": "8 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/research/layer_lab/reports/2026-10-12_fabio_evidence/f10_1575.png, MyTradingSys/research/layer_",
    "outcome": "INCOMPLETE",
    "seconds": 777,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
-  },
-  {
-   "at": "2026-10-12T16:30:01Z",
-   "card": "lab-dax-trial-identity",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6.1-sol",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 895,
    "tokens_out": null,
    "tokens_total": null,
    "tokens_uncached": null,

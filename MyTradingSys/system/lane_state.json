@@ -1,9 +1,9 @@
 {
-  "detail": "heartbeat is back",
+  "detail": "Codex run finished",
   "fails": 0,
   "heartbeat": "2026-10-13T20:30:01Z",
   "last_error": "2026-10-13T20:00:01Z",
-  "last_ok": "2026-10-13T20:30:01Z",
+  "last_ok": "2026-10-13T20:33:43Z",
   "last_probe": "",
   "override": "",
   "reason": "",
