@@ -30,6 +30,7 @@ import argparse
 import json
 import os
 import re
+import subprocess
 import sys
 import uuid
 from datetime import datetime, timedelta, timezone
@@ -340,6 +341,71 @@ def cmd_brief(a):
     return 0
 
 
+def _sh(argv, cwd):
+    r = subprocess.run(argv, cwd=str(cwd), capture_output=True, text=True)
+    return r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()
+
+
+def begin_fail(why):
+    print("BEGIN FAILED: " + why.strip().splitlines()[-1][:300] if why.strip() else "BEGIN FAILED")
+    return 1
+
+
+def cmd_begin(a):
+    """B172 cut 2: the whole ritual (relay worktree, sync start, first ready non-OPUS card, claim, brief) in one call.
+    Fails closed: any sync/claim error prints one line, exits 1 and names no task."""
+    root = Path(a.root or os.getcwd()).resolve()
+    wt = Path(a.worktree).resolve() if a.worktree else root.parent / "mts-relay"
+    branch = a.branch or (host().lower() + "/relay")
+    rc, out = _sh(["git", "fetch", "-q", "origin", "fast-track"], root)
+    if rc:
+        return begin_fail("fetch: " + out)
+    if wt.exists():
+        rc, out = _sh(["git", "merge", "-q", "--ff-only", "origin/fast-track"], wt)
+        if rc:
+            return begin_fail("relay tree not fast-forwardable (leftover work?): " + out)
+    else:
+        rc, out = _sh(["git", "worktree", "add", str(wt), "-b", branch, "origin/fast-track"], root)
+        if rc:
+            rc, out = _sh(["git", "worktree", "add", str(wt), branch], root)
+            if rc:
+                return begin_fail("worktree add: " + out)
+            rc, out = _sh(["git", "merge", "-q", "--ff-only", "origin/fast-track"], wt)
+            if rc:
+                return begin_fail("relay branch not fast-forwardable: " + out)
+    rc, out = _sh([sys.executable, "scripts/dev/sync.py", "start"], wt)
+    if rc:
+        return begin_fail("sync start: " + out)
+    sync_lines = [l for l in out.splitlines() if l.strip()]
+    m = re.search(r"^WORKTREE:\s*(.+)$", out, re.M)
+    if m:   # sync.py moved us to a clean per-session tree; work only there
+        wt = Path(m.group(1).strip())
+    rc, out = _sh([sys.executable, "scripts/dev/tasks.py", "next", "--n", "10"], wt)
+    if rc:
+        return begin_fail("no ready card: " + out)
+    pick = None
+    for line in out.splitlines():
+        mm = re.match(r"^(\S+) \[([A-Z0-9]+),", line)
+        if mm and mm.group(2) not in ("OPUS", "CODEX") and mm.group(1) not in a.skip:
+            pick = mm.group(1)
+            break
+    if not pick:
+        return begin_fail("no ready non-OPUS card (hand off with --stop)")
+    rc, out = _sh([sys.executable, "scripts/dev/sync.py", "claim", pick], wt)
+    if rc:
+        return begin_fail("claim %s: %s" % (pick, out))
+    rc, brief = _sh([sys.executable, "scripts/dev/tasks.py", "brief", pick], wt)
+    if rc:
+        return begin_fail("brief %s: %s" % (pick, brief))
+    print("worktree: %s" % wt)
+    print("sync: " + " | ".join(l[:90] for l in sync_lines[-3:]))
+    print("claimed: %s (release: sync.py release %s)" % (pick, pick))
+    for line in brief.splitlines()[:22]:
+        print(line[:400])
+    log("begin", card=pick)
+    return 0
+
+
 def cmd_status(a):
     print("header:", read_header(a.file))
     flag = home() / "mts-relay-stop"
@@ -377,6 +443,11 @@ def main(argv=None):
     br.add_argument("--file", required=True)
     br.add_argument("--max", type=int, default=3)
     br.add_argument("--width", type=int, default=400)
+    bg = sub.add_parser("begin")
+    bg.add_argument("--root", help="repo folder to run from (default: cwd)")
+    bg.add_argument("--worktree", help="relay tree (default: ../mts-relay)")
+    bg.add_argument("--branch", help="branch for a new relay tree (default: <host>/relay)")
+    bg.add_argument("--skip", action="append", default=[], help="card id to pass over (repeatable)")
     st = sub.add_parser("status")
     st.add_argument("--file", required=True)
     sp = sub.add_parser("stop")
@@ -395,6 +466,8 @@ def main(argv=None):
         return cmd_brief(a)
     if a.cmd == "kick":
         return cmd_kick(a)
+    if a.cmd == "begin":
+        return cmd_begin(a)
     home().mkdir(parents=True, exist_ok=True)
     flag = home() / "mts-relay-stop"
     if a.cmd == "stop":

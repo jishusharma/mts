@@ -327,5 +327,81 @@ class HostKickTest(unittest.TestCase):
         self.assertIn("KICK", self.kick(NUC).stdout)
 
 
+SYNC_STUB = """import sys, os
+a = sys.argv[1:]
+if a[0] == "start":
+    if os.environ.get("STUB_SYNC_FAIL"):
+        print("sync: merge of origin/fast-track conflicts"); sys.exit(1)
+    print("host=T branch=x pulled=0")
+elif a[0] == "claim":
+    if os.environ.get("STUB_CLAIM_FAIL"):
+        print("claim refused"); sys.exit(1)
+    open("claimed.txt", "w").write(a[1])
+"""
+TASKS_STUB = """import sys
+if sys.argv[1] == "next":
+    print("opus-card [OPUS, M, p1] big thing")
+    print("sonnet-card [SONNET, M, p1] the task")
+    print("second-card [SONNET, S, p2] later")
+elif sys.argv[1] == "brief":
+    print("TASK " + sys.argv[2] + " brief line")
+"""
+
+
+def git(cwd, *a):
+    subprocess.run(["git", "-c", "user.email=t@t", "-c", "user.name=t", *a], cwd=str(cwd), check=True, capture_output=True)
+
+
+class BeginTest(unittest.TestCase):
+    """relay.py begin: worktree + sync start + first ready non-OPUS card + claim + brief in one call (B172 cut 2)."""
+
+    def setUp(self):
+        tmp = Path(tempfile.mkdtemp())
+        self.origin, self.clone = tmp / "origin.git", tmp / "clone"
+        git(tmp, "init", "-q", "--bare", str(self.origin))
+        git(tmp, "clone", "-q", str(self.origin), str(self.clone))
+        git(self.clone, "checkout", "-q", "-b", "fast-track")
+        d = self.clone / "scripts" / "dev"
+        d.mkdir(parents=True)
+        (d / "sync.py").write_text(SYNC_STUB, encoding="utf-8", newline=NL)
+        (d / "tasks.py").write_text(TASKS_STUB, encoding="utf-8", newline=NL)
+        git(self.clone, "add", "-A")
+        git(self.clone, "commit", "-q", "-m", "stubs")
+        git(self.clone, "push", "-q", "origin", "fast-track")
+        self.wt = tmp / "mts-relay"
+
+    def begin(self, extra=None, *args):
+        env = {**os.environ, **(extra or {})}
+        return subprocess.run([sys.executable, str(SCRIPT), "begin", "--root", str(self.clone), "--worktree", str(self.wt),
+                               "--branch", "t/relay", *args], capture_output=True, text=True, env=env)
+
+    def test_begin_picks_ready_task_and_claims(self):
+        r = self.begin()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("claimed: sonnet-card", r.stdout)
+        self.assertIn("TASK sonnet-card brief line", r.stdout)
+        self.assertLessEqual(len(r.stdout.splitlines()), 30)
+        self.assertEqual((self.wt / "claimed.txt").read_text(), "sonnet-card")
+
+    def test_begin_stops_on_sync_failure(self):
+        r = self.begin({"STUB_SYNC_FAIL": "1"})
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("BEGIN FAILED", r.stdout)
+        self.assertNotIn("claimed:", r.stdout)
+        self.assertFalse((self.wt / "claimed.txt").exists())
+
+    def test_begin_skips_opus_and_claimed(self):
+        r = self.begin(None, "--skip", "sonnet-card")
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertIn("claimed: second-card", r.stdout)
+        self.assertNotIn("opus-card", r.stdout.split("brief")[0].replace("TASK", ""))
+
+    def test_begin_fails_closed_on_claim_error(self):
+        r = self.begin({"STUB_CLAIM_FAIL": "1"})
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("BEGIN FAILED", r.stdout)
+        self.assertNotIn("brief line", r.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()

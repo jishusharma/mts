@@ -46,3 +46,5 @@ Never start other scheduled tasks. Never kill processes by image name. Never tou
 | JIS-NB | 90 (applied 2026-10-12, Q31 done) | fixed `0 7-23 * * *` | n/a (no self-pacing: a run cannot edit its own schedule) | own prompt (mts-dispatcher.SKILL.md), yields to the NUC. 2026-10-12: a tick printing `IDLE peer <host>` (any host, `unknown` = handoff without a relay_runs row) ends after step 1, skipping inbox, refiner, housekeeping (host-local SKILL.md edit). Live crons verified: mts-dispatcher `0 7-23 * * *`, mts-dispatcher-night `0 0-6 * * *`, mts-relay-a/b manual only |
 
 Find a relay chat later: `relay_runs.jsonl` gives host + account + session title; open that App on that account and search the title.
+
+Session start (B172): `python scripts/sched/relay.py begin` replaces the worktree + sync start + task pick + claim steps on either host; it fails closed with `BEGIN FAILED: <reason>`.
