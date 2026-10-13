@@ -344,7 +344,8 @@ def rollout_usage(home, session):
             before, after = a.get("used_percent"), b.get("used_percent")
             if before is None or after is None:
                 continue
-            same = a.get("resets_at") == b.get("resets_at")
+            # a different reset time with a higher reading is a stale first reading, not a reset (observed 2026-10-12 20:00Z)
+            same = a.get("resets_at") == b.get("resets_at") or after >= before
             out[f"{name}_before"], out[f"{name}_after"] = before, after
             out[f"{name}_pts"] = round(max(0.0, after - before), 1) if same else after
     return out

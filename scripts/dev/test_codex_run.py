@@ -279,6 +279,12 @@ class UsageTest(unittest.TestCase):
             self.rollout(d, pts=((99.0, 45.0, 5000), (7.0, 46.0, 23000)))
             self.assertEqual(R.rollout_usage(d, "01a1-abc")["window_pts"], 7.0)
 
+    def test_a_stale_first_reading_with_another_reset_time_is_not_a_reset(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.rollout(d, pts=((91.0, 14.0, 3000), (99.0, 15.0, 5000)))
+            u = R.rollout_usage(d, "01a1-abc")
+            self.assertEqual((u["window_pts"], u["week_pts"]), (8.0, 1.0))
+
     def test_requested_and_effective_setting_mismatch_is_named(self):
         self.assertEqual(R.setting_mismatch(("gpt-6-luna", "medium"), {"model": "gpt-6-luna", "effort": "medium"}), "")
         self.assertEqual(R.setting_mismatch(("gpt-6-luna", "medium"), {}), "")
