@@ -91,7 +91,7 @@ class CiLine(Base):
 
     def test_fresh_ungreen_commit_is_running_not_red(self):
         g = commit_file(self.repo, "a.txt", self.now - DAY)
-        t = commit_file(self.repo, "b.txt", self.now - 5 * 60)
+        t = commit_file(self.repo, "scripts/b.py", self.now - 5 * 60)
         self.refs(g, t)
         line = ms.get_ci_line(cwd=self.repo)
         self.assertIn("1 commit(s) behind", line)
@@ -100,12 +100,20 @@ class CiLine(Base):
 
     def test_old_ungreen_commit_is_red(self):
         g = commit_file(self.repo, "a.txt", self.now - 2 * DAY)
-        commit_file(self.repo, "b.txt", self.now - 3 * 3600)
-        t = commit_file(self.repo, "c.txt", self.now - 60)
+        commit_file(self.repo, "scripts/b.py", self.now - 3 * 3600)
+        t = commit_file(self.repo, "scripts/c.py", self.now - 60)
         self.refs(g, t)
         line = ms.get_ci_line(cwd=self.repo)
         self.assertIn("2 commit(s) behind", line)
         self.assertIn("RED", line)
+
+    def test_docs_only_commits_ahead_are_ok_not_red(self):
+        g = commit_file(self.repo, "a.txt", self.now - 2 * DAY)
+        t = commit_file(self.repo, "MyTradingSys/research/NOTE.md", self.now - 3 * 3600)
+        self.refs(g, t)
+        line = ms.get_ci_line(cwd=self.repo)
+        self.assertTrue(line.endswith("OK"), line)
+        self.assertNotIn("RED", line)
 
     def test_missing_green_ref_says_so(self):
         commit_file(self.repo, "a.txt", self.now)
