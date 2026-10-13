@@ -1,8 +1,9 @@
 import sys, pathlib, unittest
 try:
     import cv2, numpy as np
-except ImportError:  # CI image without OpenCV: nothing to test
-    raise unittest.SkipTest('cv2/numpy not installed')
+    HAS_CV = True
+except ImportError:  # CI image without OpenCV: skip the frame tests only. A module-level SkipTest collects 0 tests,
+    HAS_CV = False   # pytest exits 5 and run_extra_tests.py counts that as FAIL (CI red 2026-10-13, Step 3xt).
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import fabio_prescreen as p
 
@@ -32,6 +33,7 @@ def with_ticket(fr, stop=True, target=True):
     return fr
 
 
+@unittest.skipUnless(HAS_CV, 'cv2/numpy not installed')
 class T(unittest.TestCase):
     def test_ticket_frame_flagged(self):
         self.assertTrue(p.frame_has_ticket(with_ticket(chart())))
@@ -45,6 +47,8 @@ class T(unittest.TestCase):
     def test_talking_heads_not_flagged(self):
         self.assertFalse(p.frame_has_ticket(np.full((H, W, 3), (90, 110, 130), np.uint8)))
 
+
+class Window(unittest.TestCase):  # pure Python: runs with or without OpenCV
     def test_window_needs_two_hits(self):
         self.assertFalse(p.window_flag([True] + [False] * 49))
         self.assertTrue(p.window_flag([False] * 10 + [True, True] + [False] * 38))
