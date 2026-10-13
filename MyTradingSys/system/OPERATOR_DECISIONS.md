@@ -96,9 +96,9 @@ Applied: 2026-10-13: queued as card exec-halt-entry-10031 (host=JIS-NB, p1): ope
 Fabio's videos: keep reading one 250-second window per session?
 
 Recommended: Pre-screen windows with a script, read only those with a trade
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Pre-screen windows with a script, read only those with a trade
+Operator note (verbatim): (none)
+Applied: 2026-10-13: card fabio-video-prescreen refined to ready (Sonnet, M, p2, any host; NUC has Pillow+opencv). Q3 one-window reads stay stopped until its flagged-window list exists.
 
 ```json
 {
