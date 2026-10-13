@@ -11,7 +11,7 @@
   "goal": "Every ledger row (date, market, side, entry, stop, target, exit, setup words) is MATCH / MISMATCH / NOT_IN_DATA against the frame or transcript line it cites. The v2 spec is written from this ledger. Frames are images under F:/MTS/data/fabio_videos/frames: open them.",
   "id": "lab-audit-fabio-ledger-frames",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "layers": [
     "fabio"
   ],
@@ -22,6 +22,13 @@
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refs": [],
+  "reroute": {
+    "added_tests": true,
+    "at": "2026-10-13T04:56:55Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "credits"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
@@ -43,6 +50,6 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
-  "tests": "",
+  "tests": "Report file exists with the findings table or numbers and the verdict line; no code or spec changed",
   "title": "Audit Fabio's trade ledger against his chart frames and transcripts"
 }

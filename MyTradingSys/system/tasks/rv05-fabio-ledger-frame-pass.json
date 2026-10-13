@@ -11,7 +11,7 @@
   "goal": "Follow MyTradingSys/system/revalidation/RV05_fabio_ledger_frame_pass.md exactly; report per MyTradingSys/system/revalidation/_COMMON.md. host=JIS-NUC (frames on F:).",
   "id": "rv05-fabio-ledger-frame-pass",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "layers": [
     "fabio"
   ],
@@ -22,6 +22,13 @@
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refs": [],
+  "reroute": {
+    "added_tests": true,
+    "at": "2026-10-13T04:56:55Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "credits"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/system/revalidation/RV05_fabio_ledger_frame_pass.md",
@@ -44,6 +51,6 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
-  "tests": "",
+  "tests": "Report file exists with the findings table or numbers and the verdict line; no code or spec changed",
   "title": "RV05 Fabio ledger frame-by-frame pass over unread rows (host=JIS-NUC)"
 }

@@ -1,14 +1,14 @@
 {
-  "detail": "ERROR: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 6:03 AM.",
+  "detail": "credits back: 5h window 0% used, reset time 6:03 passed (NUC recovery 2026-10-13)",
   "fails": 0,
-  "heartbeat": "2026-10-12T19:30:01Z",
+  "heartbeat": "2026-10-13T04:55:26Z",
   "last_error": "2026-10-12T20:00:07Z",
-  "last_ok": "2026-10-12T19:33:36Z",
+  "last_ok": "2026-10-13T04:59:45Z",
   "last_probe": "",
-  "override": "",
-  "reason": "credits",
-  "resumed": "2026-10-12T19:27:53Z",
-  "since": "2026-10-12T20:00:07Z",
-  "status": "down",
+  "override": "2026-10-13T07:59:45Z",
+  "reason": "",
+  "resumed": "2026-10-13T04:59:45Z",
+  "since": "",
+  "status": "up",
   "until": ""
 }
