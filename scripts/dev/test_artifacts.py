@@ -43,8 +43,7 @@ class Registry(unittest.TestCase):
         self.assertIn("REPUBLISH    MTS Layers", text)
         r = copy.deepcopy(self.reg)
         next(pg for pg in r["pages"] if pg["slug"] == "mts_layer_map")["urls"]["jishu.sharma"] = ""
-        self.assertIn("PUBLISH NEW  MTS Layers", "
-".join(af.plan(r, "jishu.sharma")))
+        self.assertIn("PUBLISH NEW  MTS Layers", "\n".join(af.plan(r, "jishu.sharma")))
         with self.assertRaises(SystemExit):
             af.plan(self.reg, "nobody")
 
