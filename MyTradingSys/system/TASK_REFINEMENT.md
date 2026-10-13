@@ -70,4 +70,4 @@ pickup turns it into a raw card and replies with the card id. The operator never
 ## Rules
 - The card text is the contract: a builder that needs to ask a question hands the card back as `refined` with the question in `note`.
 - Cost: capture costs nothing, refinement is Sonnet/Haiku/DSA, builders get a <= 30-line prompt. Nobody pays to re-derive scope.
-- Provenance rule still applies: a card that sets a parameter cites the trader quote + file:line in `sources`, or it is NO-SOURCE.
+- Numbers rule (2026-10-13): a card that sets a parameter labels it SOURCED (quote + file:line in `sources`) or OURS (chosen on DEV, checked once on VALIDATION).

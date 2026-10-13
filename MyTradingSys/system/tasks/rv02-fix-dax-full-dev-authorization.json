@@ -13,7 +13,8 @@
     "tom"
   ],
   "live_path": false,
-  "note": "Captured by completed RV02 audit; raw SONNET follow-up for refinement. No implementation change made by the audit.",
+  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | Captured by completed RV02 audit; raw SONNET follow-up for refinement. No implementation change made by the audit.",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -34,7 +35,7 @@
     "MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md:45",
     "MyTradingSys/system/revalidation/RV02_dax_harness_fixes.md"
   ],
-  "state": "raw",
+  "state": "blocked",
   "steps": [
     "Read the linked RV02 finding and executable synthetic appendix.",
     "Refine the implementation boundary and reproduce the finding red with synthetic data.",

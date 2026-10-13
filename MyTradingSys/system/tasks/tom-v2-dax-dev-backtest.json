@@ -15,7 +15,8 @@
     "tom"
   ],
   "live_path": false,
-  "note": "",
+  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
@@ -41,7 +42,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md",
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md N1, N7"
   ],
-  "state": "refined",
+  "state": "blocked",
   "steps": [
     "Add to the harness: fill rule touch and trade-through (sell limit fills only if bar high > limit), time exit 17:35 Europe/Berlin, session-matched null (same session label and clock window, same side, distances, order type, fill rule; 200 draws).",
     "Costs FEES_FDAX plus 1 point on stop and time-exit legs. Entries at k* from RECALL_DAX_V2.md; other counts reported beside it.",

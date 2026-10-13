@@ -344,6 +344,33 @@ class ShotTest(unittest.TestCase):
         self.assertEqual(self.state()[d]["status"], "done")
         self.assertEqual(self.state()[c]["status"], "done")
 
+    def test_done_note_on_mismatch_shot_refused(self):
+        """RV07: a MISMATCH is a B-item or an explained noaction (screenshot_intake.md); note:/feature: must not close it."""
+        c = self.chart("c", "5m")
+        shot.read_extract(self.store, [c], self.extract("Shots: %s\nPrior: none\n| C1-01 | MISMATCH | a | b |\n" % c))
+        with mock.patch.object(shot, "outcome_exists", return_value=True):
+            with self.assertRaises(shot.ShotError):
+                shot.done(self.store, [c], "note:looked at it, fine")
+            with self.assertRaises(shot.ShotError):
+                shot.done(self.store, [c], "feature:FEAT-11")
+            self.assertEqual(self.state()[c]["status"], "read")
+            d = self.chart("d", "15m")
+            shot.read_extract(self.store, [d], self.extract("Shots: %s\nPrior: none\n| C1-01 | NOT_IN_DATA | a | b |\n" % d))
+            shot.done(self.store, [d], "feature:FEAT-11")  # NOT_IN_DATA becomes a feature hypothesis
+            self.assertEqual(self.state()[d]["status"], "done")
+
+    def test_outcome_exists_whole_token(self):
+        """RV07: FEAT-1 must not count as filed because FEAT-11 is in a doc (git grep -F was a substring match)."""
+        repo = self.tmp / "repo"
+        repo.mkdir()
+        shot.git("init", "-q", cwd=repo)
+        (repo / "doc.md").write_text("FEAT-11 and F-BT-23 are filed here\n", encoding="utf-8", newline="\n")
+        with mock.patch.object(shot, "REPO", repo), mock.patch.dict(os.environ, {"MTS_SHOT_SKIP_REPO_CHECK": ""}):
+            self.assertTrue(shot.outcome_exists("FEAT-11"))
+            self.assertTrue(shot.outcome_exists("F-BT-23"))
+            self.assertFalse(shot.outcome_exists("FEAT-1"))
+            self.assertFalse(shot.outcome_exists("F-BT-2"))
+
     def test_non_chart_can_close_without_a_read(self):
         a = self.landed("a")
         shot.classify(self.store, a, "app", "claude desktop showing the bypass-permissions prompt")

@@ -1,6 +1,6 @@
 {
  "_doc": "Hand-kept data for the Layer and Backtest Map (scripts/dev/make_layer_map.py -> MyTradingSys/system/artifacts/layer_map.html). One row per backtest or study; one row per layer. A field the repo does not record is null and the page prints 'not recorded'; never fill a guess. 'read' says how much of the source report was read when the row was written: summary = verdict and method read; header = only the top of the file. Append rows; set asof when you touch the file. Params carry src: sourced (trader's own words), grid (swept in the run), NO-SOURCE (flagged by the provenance rule), code (taken from the repo default).",
- "asof": "2026-10-12",
+ "asof": "2026-10-14",
  "layers": [
   {
    "id": "tom_core",
@@ -1266,6 +1266,24 @@
    "verdict": "NOT SUPPORTED",
    "report": "MyTradingSys/research/volume_2026-10-09/V4_RESULTS.md",
    "read": "header"
+  },
+  {
+   "id": "LC-SIZING-QUICK-20261014",
+   "title": "Levels: eight staged sizing/exit diagnostics",
+   "date": "2026-10-14",
+   "market": "BTCUSDT footprint 1m",
+   "layers": [
+    "session_levels"
+   ],
+   "params": "OURS: prior-day H/L/POC/VA, 4 entry arms x 2 exits; $50 campaign risk, 2x notional cap",
+   "split": "DEV 2024-12-02..2025-03-31 only; no validation",
+   "fees": "6bp each fill + funding stress 1bp/8h",
+   "interaction": "Sizing and exit mechanics only; no HTF/RSI filter",
+   "effects": "All eight negative; mean net R -0.216 to -0.195",
+   "n": "117 paired signal days",
+   "verdict": "EXPLORATORY NEGATIVE; full LC hypothesis untested",
+   "report": "MyTradingSys/research/levels_sizing_2026-10-14/REPORT.md",
+   "read": "summary"
   }
  ]
 }

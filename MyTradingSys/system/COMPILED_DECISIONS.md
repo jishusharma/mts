@@ -112,6 +112,8 @@
 
 ## 8. HARD RULES (NON-NEGOTIABLE)
 
+H1, H6 and H7 are SUPERSEDED 2026-10-13 (operator): numbers may be OURS (our judgement or tuned on DEV, checked once out of sample); see PROJECT_VISION DIRECTION UPDATE 2026-10-13.
+
 | # | Rule | Source | Date |
 |---|------|--------|------|
 | H1 | **AI never picks price levels** | User rejection of sys_AI suggestion | 2026-08-30 |

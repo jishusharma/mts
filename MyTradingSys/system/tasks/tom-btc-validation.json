@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T17:31:44Z",
+  "depends_on": [
+    "tom-btc-dev-backtest"
+  ],
+  "done_when": "VALIDATION.md verdict line.",
+  "from_inbox": "",
+  "goal": "One read of VALIDATION with DEV_FROZEN.json; PASS / FAIL / INCONCLUSIVE with power. HOLDOUT stays sealed (needs Jis's decision A7).",
+  "id": "tom-btc-validation",
+  "lane": "DSA-NUC",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "ROUTED 2026-10-13 (operator: GPT + DSA do the work, Claude economy): one frozen run, DSA runs the command and reports.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_btc_2026-10-13/"
+  ],
+  "scope_out": [
+    "any change to the frozen config",
+    "HOLDOUT"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
+  ],
+  "state": "raw",
+  "steps": [
+    "Run once, write the verdict line."
+  ],
+  "tests": "run lane",
+  "title": "Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config"
+}

@@ -341,9 +341,9 @@ Applied: 2026-10-13 (JIS-NUC): answered 14:27Z. Card tom-profile-shape-parity is
 Buy Eurex FDAX trade data with aggressor side (buyer or seller crossed the spread) for Tom's 7 ledger sessions plus seeded random days, to test whether his named order-flow proofs mark his entries?
 
 Recommended: Yes, buy the 7 sessions + seeded controls; run before the CFD profile arm
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: No FDAX data. Apply Tom's core idea on BTC charts and BTC data with our own judgement (operator chat 2026-10-13; none of the four options fits word for word: it is not "park Tom")
+Operator note (verbatim): "I agree with you! I just have a feeling that orde-flow trading is real and Tom is not lying. 'Tom has never passed that test' yes because we have never applied Tom correctly.  We do not need tp prove anything abt Tom here. Orderflow is real and works on all markets." ... "so let us apply the core idea on the chart and uh, see how it needs to be adjusted in order to make profitable trades. Focus on that"
+Applied: 2026-10-13 (cloud, flow-audit session): plan research/tom_btc_2026-10-13/TOM_ON_BTC.md; DAX-only Tom cards held (tasks.py apply-op hold, note q11); Tom-on-BTC cards tom-btc-* created.
 
 ```json
 {
@@ -359,5 +359,167 @@ Applied: (not yet)
   "No, keep the current CFD-only plan"
  ],
  "recommended": "Yes, buy the 7 sessions + seeded controls; run before the CFD profile arm"
+}
+```
+
+Audit note (2026-10-13, flow audit PR #28): the audit now recommends "No, park Tom as discretionary now" instead of buying DAX data (research/mts_flow_audit_2026-10-13/REPORT.md d1). The coordinator is asking Jis this directly; sessions do not act on q11 and do not auto-apply it.
+
+
+## q12-requeue-crypto-first | asked 2026-10-13 | Process | NO AUTO-APPLY
+
+Re-order the queue: crypto-native sources first?
+
+Recommended: Qriptal scoring (B162) and cryptocred-home-fit-audit to priority 1; pause the Tom v2 and Fabio v2 home-market chains
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+
+```json
+{
+ "order": 4,
+ "stage": "Process",
+ "refs": "research/mts_flow_audit_2026-10-13/REPORT.md section 5",
+ "title": "Re-order the queue: crypto-native sources first?",
+ "why": "Audit d2. The audit found the crypto-native sources (Qriptal posts entry, stop and target; CryptoCred is BTC) sit at the back of the queue while a machine-translated DAX trader is priority 1. Qriptal needs only free Binance candles. DIRECTION CHANGE: needs Jis's explicit answer; must NOT auto-apply after 24h.",
+ "options": [
+  "Qriptal scoring (B162) and cryptocred-home-fit-audit to priority 1; pause the Tom v2 and Fabio v2 home-market chains",
+  "Keep the current order",
+  "Qriptal and CryptoCred first, but let the running Tom v2 cards finish"
+ ],
+ "recommended": "Qriptal scoring (B162) and cryptocred-home-fit-audit to priority 1; pause the Tom v2 and Fabio v2 home-market chains",
+ "no_auto_apply": true
+}
+```
+
+
+## q13-six-line-gate | asked 2026-10-13 | Process | NO AUTO-APPLY
+
+Adopt the six-line pre-build gate as items 0a-0f of PRE_REG_TEMPLATE?
+
+Recommended: Yes
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+
+```json
+{
+ "order": 4,
+ "stage": "Process",
+ "refs": "research/mts_flow_audit_2026-10-13/REPORT.md section 5",
+ "title": "Adopt the six-line pre-build gate as items 0a-0f of PRE_REG_TEMPLATE?",
+ "why": "Audit d3. Six questions answered before anything is built (is the track record verified, do we have the data he reads, do fees allow his stop, and so on); see REPORT.md section 3. DIRECTION CHANGE: needs Jis's explicit answer; must NOT auto-apply after 24h.",
+ "options": [
+  "Yes",
+  "No",
+  "Yes, but as advice, not a gate"
+ ],
+ "recommended": "Yes",
+ "no_auto_apply": true
+}
+```
+
+
+## q14-doctrine-tom-core | asked 2026-10-13 | Process | NO AUTO-APPLY
+
+Doctrine: your 09-23 'Tom is core' vs the 10-10 'promotion to core uses the S3 bar, never opinion'
+
+Recommended: Let S3 decide what is core
+Answer: No fixed core: remove "Tom is core" and the hard layer rules; flexible system (operator chat 2026-10-13)
+Operator note (verbatim): "WRT “Tom is core, non-negotiable” - It was a long time ago when we started - now it makes no sense to have anything like this. We need flexible system now that can adapt to whatever change we need to bring. So we have to remove all those uh, hard rules about layers and everything."
+Applied: 2026-10-14 JIS-NB on Jis's OK in chat ("Yes - go ahead from me - do not be afraid to change what makes sense to change!"), commit "rules rewrite q14 applied" (script deleted after use). Was: rule text staged 2026-10-13: scripts/dev/staged/apply_rules_2026_10_13.py, task system/cli_tasks/2026-10-13_rules_rewrite.md. The cloud session could not apply it (its permission check blocks edits to agent instruction files); a local session runs it on Jis's OK.
+
+```json
+{
+ "order": 4,
+ "stage": "Process",
+ "refs": "research/mts_flow_audit_2026-10-13/REPORT.md section 5",
+ "title": "Doctrine: your 09-23 'Tom is core' vs the 10-10 'promotion to core uses the S3 bar, never opinion'",
+ "why": "Audit d4. The two rules contradict each other and Tom has never passed S3. Changing the doctrine is the operator's edit only (VISION change rule), so a session will not edit it from this answer alone. DIRECTION CHANGE: needs Jis's explicit answer; must NOT auto-apply after 24h.",
+ "options": [
+  "Let S3 decide what is core",
+  "Keep Tom core by decree",
+  "Decide per layer later"
+ ],
+ "recommended": "Let S3 decide what is core",
+ "no_auto_apply": true
+}
+```
+
+
+## q15-merge-translation-postmortem | asked 2026-10-13 | Process | NO AUTO-APPLY
+
+Merge TRANSLATION_POSTMORTEM_2026-10-12.md into fast-track?
+
+Recommended: Yes
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+
+```json
+{
+ "order": 4,
+ "stage": "Process",
+ "refs": "research/mts_flow_audit_2026-10-13/REPORT.md section 5",
+ "title": "Merge TRANSLATION_POSTMORTEM_2026-10-12.md into fast-track?",
+ "why": "Audit d5. It is the only review that carries the simulator-validation list. DIRECTION CHANGE: needs Jis's explicit answer; must NOT auto-apply after 24h.",
+ "options": [
+  "Yes",
+  "No, leave it on its branch"
+ ],
+ "recommended": "Yes",
+ "no_auto_apply": true
+}
+```
+
+
+## q16-simulator-validation-card | asked 2026-10-13 | Process | NO AUTO-APPLY
+
+File the simulator-validation card: planted edge in tom_bt/sim, a null that includes fees, a trade-list diff?
+
+Recommended: Yes
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+
+```json
+{
+ "order": 4,
+ "stage": "Process",
+ "refs": "research/mts_flow_audit_2026-10-13/REPORT.md section 5",
+ "title": "File the simulator-validation card: planted edge in tom_bt/sim, a null that includes fees, a trade-list diff?",
+ "why": "Audit d6. None of the backtest engines has been shown to find a planted edge, so every FAIL so far is unvalidated. DIRECTION CHANGE: needs Jis's explicit answer; must NOT auto-apply after 24h.",
+ "options": [
+  "Yes",
+  "No"
+ ],
+ "recommended": "Yes",
+ "no_auto_apply": true
+}
+```
+
+
+## q17-simplify-operations | asked 2026-10-13 | Process | NO AUTO-APPLY
+
+Simplify how MTS runs: apply proposals P1-P5 in system/HOW_MTS_RUNS.md (one account per job, one machine starts sessions, one work list, bookkeeping out of git history, three pages)?
+
+Recommended: Yes, all five
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+
+```json
+{
+ "order": 5,
+ "stage": "Process",
+ "refs": "system/HOW_MTS_RUNS.md section 'Proposals to make it simpler'",
+ "title": "Simplify how MTS runs: apply P1-P5 (one account per job, one machine starts sessions, one work list, bookkeeping out of git, three pages)?",
+ "why": "Operator 2026-10-13: 'my head is actually spinning the project is growing uh, too big for me to handle it'. Work sits in five lists, hand-over runs three ways, two accounts take one queue, and about 44 % of 1,246 commits since 10-01 are bookkeeping. DIRECTION CHANGE: needs Jis's explicit answer; must NOT auto-apply after 24h.",
+ "options": [
+  "Yes, all five",
+  "Yes, but only the ones I name in the note",
+  "Not now"
+ ],
+ "recommended": "Yes, all five",
+ "no_auto_apply": true
 }
 ```

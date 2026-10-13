@@ -49,7 +49,7 @@ Tom-speaker transcripts with no extract of any kind; ties broken by length. Gues
 | 5 | Kg6sYKgtkrY | The ONLY Trading Strategy you need for 2026 (World Champion explains the PbD Met | 2762 | 2.2 |
 | 6 | VOiy8mAALWA | The #1 Trading Indicator for 2026 - World Champions reveal the ONLY thing that m | 2763 | 2.2 |
 | 7 | 4VXpUjhKG2U | World Trading Champions Reveal: How to Always Win as a Trader! (3 Mistakes Every | 2162 | 1.9 |
-| 8 | lO-Iptd29t4 | The ONLY Newstrading-Video youВґll EVER need (Trading World Champion reveals) | 2743 | 1.5 |
+| 8 | lO-Iptd29t4 | The ONLY Newstrading-Video you´ll EVER need (Trading World Champion reveals) | 2743 | 1.5 |
 | 9 | cw8LWQmec1E | Gold & Silver Bubble WARNING from the World Trading Champion! (URGENT!) | 1988 | 1.0 |
 | 10 | 15JoLK0PbMU | VIX Strategy revealed: A Trading World Champion shows the #1 Indicator for high  | 2047 | 1.0 |
 
@@ -60,7 +60,7 @@ Never-extracted Tom ids in total: 26. Also worth a V2 pass (V1 only, highest den
 - hQ8sOq67x5o 9.0/1000w, 2214 words: The EXACT Strategy for TRIPLE-DIGIT Returns!
 - pgdmKLJ0hhA 8.1/1000w, 1977 words: The Ultimate Swing-Trading Guide! (Step-by-Step Breakdown)
 - qLnQan0KGmQ 7.9/1000w, 1513 words: Trading world champion reveals: How to find the PERFECT trade entry
-- yRvMW6lgN1o 7.1/1000w, 2126 words: I risk $250 to earn $1,212 tradingвЂ¦ Here's HOW!
+- yRvMW6lgN1o 7.1/1000w, 2126 words: I risk $250 to earn $1,212 trading… Here's HOW!
 - zQTbdEweG3c 6.9/1000w, 1736 words: THIS is How a World Champion Trades Against the Trend! ($4,720 in 15 Minutes)
 - OUM9LYwL8eA 6.6/1000w, 1365 words: $20,500 in 2 hours: How the World Champion ACTUALLY trades!
 
@@ -90,7 +90,7 @@ Never-extracted Tom ids in total: 26. Also worth a V2 pass (V1 only, highest den
 | Tom | G0CiJcuXCRs | raw_transcripts_canonical/G0CiJcuXCRs_raw.txt | V1-fresh: fresh/extract_G0CiJcuXCRs_fresh.md | no anchors; fragments 2/2 | V1-only | The ONLY Scalping-Video you will EVER need |
 | Tom | HySZZSjMxF8 | raw_transcripts_canonical/HySZZSjMxF8_raw.txt | V1-processed: processed/tom/new_selected_10/extract_HySZZSjMxF8.md | PASS 8/8; fragments 30/30 | V1-only | The Ultimate Multi-Timeframe Strategy for Perfect Entries (Every Time) |
 | Tom | K8qtT2_axPo | raw_transcripts_canonical/K8qtT2_axPo_raw.txt | - | - | not-yet | Market Profile: How Trading World Champions REALLY read the Market! |
-| Tom | KEe_CWHyuSg | raw_transcripts_canonical/KEe_CWHyuSg_raw.txt | V1-fresh: fresh/extract_KEe_CWHyuSg_fresh.md | no anchors; fragments 31/31 | V1-only | I Tested 1,000 Trading Indicators вЂ“ THIS One is the BEST! |
+| Tom | KEe_CWHyuSg | raw_transcripts_canonical/KEe_CWHyuSg_raw.txt | V1-fresh: fresh/extract_KEe_CWHyuSg_fresh.md | no anchors; fragments 31/31 | V1-only | I Tested 1,000 Trading Indicators – THIS One is the BEST! |
 | Tom | Kg6sYKgtkrY | raw_transcripts_canonical/Kg6sYKgtkrY_raw.txt | - | - | not-yet | The ONLY Trading Strategy you need for 2026 (World Champion explains the PbD Met |
 | Tom | Ld1dhjGdTCA | raw_transcripts_canonical/Ld1dhjGdTCA_raw.txt | V1-fresh: fresh/extract_Ld1dhjGdTCA_fresh.md | FAIL 0/38 (NO-GPS 38); fragments 76/77 | V1-only | Forget setups! The 13-step trading framework world champions ACTUALLY use |
 | Tom | Ly62G168MkQ | raw_transcripts_canonical/Ly62G168MkQ_raw.txt | - | - | not-yet | The Simplest Day Trading Strategy for Beginners (PbD Method) |
@@ -105,12 +105,12 @@ Never-extracted Tom ids in total: 26. Also worth a V2 pass (V1 only, highest den
 | Tom | UOBgXV20yCM | raw_transcripts_canonical/UOBgXV20yCM_raw.txt | V1-fresh: fresh/extract_UOBgXV20yCM_fresh.md | FAIL 0/31 (NO-GPS 31); fragments 34/60 | V1-only | The PERFECT Trade Exit with THIS Indicator! |
 | Tom | UrZ4vpHJ97g | raw_transcripts_canonical/UrZ4vpHJ97g_raw.txt | V2: v2/tom/UrZ4vpHJ97g_v2.md | PASS 8/8; fragments 32/39 | V2 | World Champion reveals: The PERFECT risk-reward ratio (RRR) in trading! |
 | Tom | VOiy8mAALWA | raw_transcripts_canonical/VOiy8mAALWA_raw.txt | - | - | not-yet | The #1 Trading Indicator for 2026 - World Champions reveal the ONLY thing that m |
-| Tom | Vd83oo_geMk | raw_transcripts_canonical/Vd83oo_geMk_raw.txt | V1-fresh: fresh/extract_Vd83oo_geMk_fresh.md | FAIL 0/42 (NO-GPS 42); fragments 48/51 | V1-only | THE TRUTH about Heatmap & Liquidity вЂ“ This is how the World Champion REALLY tr |
+| Tom | Vd83oo_geMk | raw_transcripts_canonical/Vd83oo_geMk_raw.txt | V1-fresh: fresh/extract_Vd83oo_geMk_fresh.md | FAIL 0/42 (NO-GPS 42); fragments 48/51 | V1-only | THE TRUTH about Heatmap & Liquidity – This is how the World Champion REALLY tr |
 | Tom | VumVuGnCcFM | raw_transcripts_canonical/VumVuGnCcFM_raw.txt | V1-fresh: fresh/extract_VumVuGnCcFM_fresh.md | no anchors; fragments 36/36 | V1-only | The ONLY VWAP-Video you will EVER need (Trading World Champion reveals) |
 | Tom | VxN5IxTwpbE | raw_transcripts_canonical/VxN5IxTwpbE_raw.txt | - | - | not-yet | How I Would Start Trading in 2026 (Beginner's Blueprint) |
 | Tom | WQ_OAdz-PJ8 | raw_transcripts_canonical/WQ_OAdz-PJ8_raw.txt | V1-processed: processed/tom/new_selected_10/extract_WQ_OAdz-PJ8.md | PASS 7/7; fragments 7/7 | V1-only | I Tested 10 Trading Strategies (Only THIS One Actually Works for Beginners) |
 | Tom | WSCIURybK3U | raw_transcripts_canonical/WSCIURybK3U_raw.txt | V1-fresh: fresh/extract_WSCIURybK3U_fresh.md<br>V2: v2/tom/WSCIURybK3U_v2.md | FAIL 0/43 (NO-GPS 43); fragments 51/55<br>PASS 7/7; fragments 31/36 | V2 | Trading World Champion Reveals: The #1 Reason Traders LOSE (and How to WIN Every |
-| Tom | YVUcLTsCOZI | raw_transcripts_canonical/YVUcLTsCOZI_raw.txt | V1-fresh: fresh/extract_YVUcLTsCOZI_fresh.md | no anchors | V1-only | Maximum win rate: The ONLY Scalping-Video youВґll EVER need! |
+| Tom | YVUcLTsCOZI | raw_transcripts_canonical/YVUcLTsCOZI_raw.txt | V1-fresh: fresh/extract_YVUcLTsCOZI_fresh.md | no anchors | V1-only | Maximum win rate: The ONLY Scalping-Video you´ll EVER need! |
 | Tom | YYYuaetck_0 | raw_transcripts_canonical/YYYuaetck_0_raw.txt | - | - | not-yet | The #1 Trading Strategy for the Current Market (Trading World Champion reveals) |
 | Tom | YkclL6xgu-s | raw_transcripts_canonical/YkclL6xgu-s_raw.txt | - | - | not-yet | How powerful is Volume Trading REALLY? World Trading Champion reveals the TRUTH |
 | Tom | YmygDgtoxO8 | raw_transcripts_canonical/YmygDgtoxO8_raw.txt | V1-fresh: fresh/extract_YmygDgtoxO8_fresh.md | FAIL 0/22 (NO-GPS 22); fragments 44/45 | V1-only | The ONLY Volume-Profile-Video you will EVER need (Trading World Champion reveals |
@@ -118,28 +118,28 @@ Never-extracted Tom ids in total: 26. Also worth a V2 pass (V1 only, highest den
 | Tom | aursfDVYzUk | raw_transcripts_canonical/aursfDVYzUk_raw.txt | V1-processed: processed/tom/new_selected_10/extract_aursfDVYzUk.md | PASS 10/10; fragments 19/20 | V1-only | The perfect trade entry with THIS volume analysis! |
 | Tom | cw8LWQmec1E | raw_transcripts_canonical/cw8LWQmec1E_raw.txt | - | - | not-yet | Gold & Silver Bubble WARNING from the World Trading Champion! (URGENT!) |
 | Tom | dh-ysRR8f-M | raw_transcripts_canonical/dh-ysRR8f-M_raw.txt | V1-fresh: fresh/extract_dh-ysRR8f-M_fresh.md | FAIL 0/22 (NO-GPS 22); fragments 25/27 | V1-only | My biggest loss in over 20 years ... |
-| Tom | e6Gm1n2h05M | raw_transcripts_canonical/e6Gm1n2h05M_raw.txt | V1-fresh: fresh/extract_e6Gm1n2h05M_fresh.md | FAIL 0/37 (NO-GPS 37); fragments 39/45 | V1-only | 1,000 Trading strategies tested вЂ“ THIS is the BEST one! |
+| Tom | e6Gm1n2h05M | raw_transcripts_canonical/e6Gm1n2h05M_raw.txt | V1-fresh: fresh/extract_e6Gm1n2h05M_fresh.md | FAIL 0/37 (NO-GPS 37); fragments 39/45 | V1-only | 1,000 Trading strategies tested – THIS is the BEST one! |
 | Tom | etg6j0JybfE | raw_transcripts_canonical/etg6j0JybfE_raw.txt | V2: v2/tom/etg6j0JybfE_v2.md | PASS 18/18; fragments 65/72 | V2 | The Ultimate Swing Trading Strategy 2026 (For Beginners) |
 | Tom | gFJBg8Bsw68 | raw_transcripts_canonical/gFJBg8Bsw68_raw.txt | - | - | not-yet | Trading World Champion reveals the BEST breakout strategy in 2026! |
 | Tom | gWjHq5UMisY | raw_transcripts_canonical/gWjHq5UMisY_raw.txt | V1-processed: processed/tom/new_selected_10/extract_gWjHq5UMisY.md | PASS 7/7; fragments 11/11 | V1-only | Day Trading vs Swing Trading: Which Is Better for Beginners? |
 | Tom | hQ8sOq67x5o | raw_transcripts_canonical/hQ8sOq67x5o_raw.txt | V1-processed: processed/tom/new_selected_10/extract_hQ8sOq67x5o.md | PASS 9/9; fragments 16/16 | V1-only | The EXACT Strategy for TRIPLE-DIGIT Returns! |
-| Tom | jXR1afMy-3o | raw_transcripts_canonical/jXR1afMy-3o_raw.txt | - | - | not-yet | PbD: The WorldвЂ™s BEST trading strategy (explained in detail) |
+| Tom | jXR1afMy-3o | raw_transcripts_canonical/jXR1afMy-3o_raw.txt | - | - | not-yet | PbD: The World’s BEST trading strategy (explained in detail) |
 | Tom | k0zm5NYn0IQ | raw_transcripts_canonical/k0zm5NYn0IQ_raw.txt | V1-fresh: fresh/extract_k0zm5NYn0IQ_fresh.md | no anchors | V1-only | DAX CRASH? Why I went SHORT while everyone else was LONG (Trading World Champion |
 | Tom | kKZCJui4S9U | raw_transcripts_canonical/kKZCJui4S9U_raw.txt | - | - | not-yet | THIS strategy puts you ahead of 99% of traders! |
 | Tom | kXhIAug0Gh8 | raw_transcripts_canonical/kXhIAug0Gh8_raw.txt | V1-fresh: fresh/extract_kXhIAug0Gh8_fresh.md<br>V2: v2/tom/kXhIAug0Gh8_v2.md | no anchors; fragments 91/98<br>PASS 13/13; fragments 58/73 | V2 | World Champion LIVE Trading: Exact strategy for the PERFECT stop-loss! |
 | Tom | l8RZrBfzvp4 | raw_transcripts_canonical/l8RZrBfzvp4_raw.txt | V1-fresh: fresh/extract_l8RZrBfzvp4_fresh.md | FAIL 0/20 (NO-GPS 20); fragments 25/25 | V1-only | World champion LIVE Trading: #1 Indicator for volatile markets! |
-| Tom | lO-Iptd29t4 | raw_transcripts_canonical/lO-Iptd29t4_raw.txt | - | - | not-yet | The ONLY Newstrading-Video youВґll EVER need (Trading World Champion reveals) |
+| Tom | lO-Iptd29t4 | raw_transcripts_canonical/lO-Iptd29t4_raw.txt | - | - | not-yet | The ONLY Newstrading-Video you´ll EVER need (Trading World Champion reveals) |
 | Tom | m3IMdc7QwN4 | raw_transcripts_canonical/m3IMdc7QwN4_raw.txt | - | - | not-yet | PbD: The BEST trading strategy for times of crisis, explained in detail! |
 | Tom | n7ZSkjb7JXs | raw_transcripts_canonical/n7ZSkjb7JXs_raw.txt | V1-fresh: fresh/extract_n7ZSkjb7JXs_fresh.md | FAIL 0/38 (NO-GPS 38); fragments 43/46 | V1-only | $3,400 in 30 minutes: This is how a World Champion ACTUALLY trades |
 | Tom | oPyUif2Zrtk | raw_transcripts_canonical/oPyUif2Zrtk_raw.txt | V2: v2/tom/oPyUif2Zrtk_v2.md | PASS 12/12; fragments 45/48 | V2 | Forget Candlestick Charts... Use THIS Instead! |
 | Tom | oa8kxSLLkAo | raw_transcripts_canonical/oa8kxSLLkAo_raw.txt | V1-fresh: fresh/extract_oa8kxSLLkAo_fresh.md | FAIL 0/27 (NO-GPS 27); fragments 31/36 | V1-only | The ONLY Footprint-Trading-Video you will EVER need (Trading World Champion reve |
 | Tom | pgdmKLJ0hhA | raw_transcripts_canonical/pgdmKLJ0hhA_raw.txt | V1-processed: processed/tom/new_selected_10/extract_pgdmKLJ0hhA.md | PASS 7/7; fragments 11/12 | V1-only | The Ultimate Swing-Trading Guide! (Step-by-Step Breakdown) |
 | Tom | qLnQan0KGmQ | raw_transcripts_canonical/qLnQan0KGmQ_raw.txt | V1-fresh: fresh/extract_qLnQan0KGmQ_fresh.md | FAIL 0/28 (NO-GPS 28); fragments 34/35 | V1-only | Trading world champion reveals: How to find the PERFECT trade entry |
-| Tom | ridY2Z0hSQA | raw_transcripts_canonical/ridY2Z0hSQA_raw.txt | - | - | not-yet | THIS is the World Trading ChampionвЂ™s Favorite Indicator! |
+| Tom | ridY2Z0hSQA | raw_transcripts_canonical/ridY2Z0hSQA_raw.txt | - | - | not-yet | THIS is the World Trading Champion’s Favorite Indicator! |
 | Tom | rrHj24GSR6M | raw_transcripts_canonical/rrHj24GSR6M_raw.txt | V1-fresh: fresh/extract_rrHj24GSR6M_fresh.md | FAIL 0/3 (NO-GPS 3); fragments 25/25 | V1-only | How to ACTUALLY Read Trading Charts (Without Indicators) |
 | Tom | sQ_biBKhPVU | raw_transcripts_canonical/sQ_biBKhPVU_raw.txt | V1-fresh: fresh/extract_sQ_biBKhPVU_fresh.md | FAIL 0/35 (NO-GPS 35); fragments 42/43 | V1-only | The 3 Must-Have Indicators for 2026! (Revealed by Trading World Champions) |
 | Tom | tS6ZEiHj8gQ | raw_transcripts_canonical/tS6ZEiHj8gQ_raw.txt | V1-fresh: fresh/extract_tS6ZEiHj8gQ_fresh.md<br>V2: v2/tom/tS6ZEiHj8gQ_v2.md | no anchors; fragments 2/2<br>PASS 10/10; fragments 53/64 | V2 | Trading World Champion Explains: The PERFECT Short Trade |
-| Tom | uFxYcpiaOpw | raw_transcripts_canonical/uFxYcpiaOpw_raw.txt | - | - | not-yet | My Simplest Trading Strategy (80вЂ“90% Win Rate) |
+| Tom | uFxYcpiaOpw | raw_transcripts_canonical/uFxYcpiaOpw_raw.txt | - | - | not-yet | My Simplest Trading Strategy (80–90% Win Rate) |
 | Tom | ujedEcmvBMk | raw_transcripts_canonical/ujedEcmvBMk_raw.txt | V1-fresh: fresh/extract_ujedEcmvBMk_fresh.md | no anchors | V1-only | This is the BEST DAX Trading Strategy! (LIVE Trade) |
 | Tom | uk4PZV59nYw | raw_transcripts_canonical/uk4PZV59nYw_raw.txt | - | - | not-yet | The PERFECT trade entry: World Champion explains his EXACT breakout setup! |
 | Tom | usho6UVLqkE | raw_transcripts_canonical/usho6UVLqkE_raw.txt | V1-fresh: fresh/extract_usho6UVLqkE_fresh.md | no anchors | V1-only | World Champion reveals the Orderflow System that 95% of Traders do NOT know! |
@@ -149,7 +149,7 @@ Never-extracted Tom ids in total: 26. Also worth a V2 pass (V1 only, highest den
 | Tom | vl01TiVTuoQ | raw_transcripts_canonical/vl01TiVTuoQ_raw.txt | V1-fresh: fresh/extract_vl01TiVTuoQ_fresh.md | no anchors; fragments 39/42 | V1-only | Master Orderflow Trading: The Ultimate Step-by-Step Guide 2026 |
 | Tom | wPMiyJXL0zU | raw_transcripts_canonical/wPMiyJXL0zU_raw.txt | V1-fresh: fresh/extract_wPMiyJXL0zU_fresh.md | FAIL 0/37 (NO-GPS 37); fragments 50/50 | V1-only | World Trading Champion breaks down his exact trades! (+full tutorial) |
 | Tom | y67l86cSqb8 | raw_transcripts_canonical/y67l86cSqb8_raw.txt | V1-fresh: fresh/extract_y67l86cSqb8_fresh.md | no anchors; fragments 77/91 | V1-only | The BEST Trading Indicator? World Champions reveal the secret CVD Strategy. |
-| Tom | yRvMW6lgN1o | raw_transcripts_canonical/yRvMW6lgN1o_raw.txt | V1-fresh: fresh/extract_yRvMW6lgN1o_fresh.md | no anchors; fragments 26/28 | V1-only | I risk $250 to earn $1,212 tradingвЂ¦ Here's HOW! |
+| Tom | yRvMW6lgN1o | raw_transcripts_canonical/yRvMW6lgN1o_raw.txt | V1-fresh: fresh/extract_yRvMW6lgN1o_fresh.md | no anchors; fragments 26/28 | V1-only | I risk $250 to earn $1,212 trading… Here's HOW! |
 | Tom | zAwEX_tRUfE | raw_transcripts_canonical/zAwEX_tRUfE_raw.txt | V1-processed: processed/tom/new_selected_10/extract_zAwEX_tRUfE.md | PASS 9/9; fragments 9/9 | V1-only | My Simple 1-Minute Scalping Strategy for $10,000/Month |
 | Tom | zQTbdEweG3c | raw_transcripts_canonical/zQTbdEweG3c_raw.txt | V1-fresh: fresh/extract_zQTbdEweG3c_fresh.md | FAIL 0/25 (NO-GPS 25); fragments 72/76 | V1-only | THIS is How a World Champion Trades Against the Trend! ($4,720 in 15 Minutes) |
 | Fabio | 0KyIEdvVKMQ | raw_transcripts_canonical/0KyIEdvVKMQ_raw.txt | V1-processed: processed/fabio_valentini/0KyIEdvVKMQ/extract_0KyIEdvVKMQ.md | PASS 10/10; fragments 10/10 | V1-only |  |

@@ -40,7 +40,10 @@ class Registry(unittest.TestCase):
         r = copy.deepcopy(self.reg)
         r["pages"][0]["status"] = "retire"
         self.assertIn("OPERATOR UNPIN+DELETE  MTS Control Room", "\n".join(af.plan(r, "jishu.sharma")))
-        self.assertIn("PUBLISH NEW  MTS Layer Map", text)
+        self.assertIn("REPUBLISH    MTS Layers", text)
+        r = copy.deepcopy(self.reg)
+        next(pg for pg in r["pages"] if pg["slug"] == "mts_layer_map")["urls"]["jishu.sharma"] = ""
+        self.assertIn("PUBLISH NEW  MTS Layers", "\n".join(af.plan(r, "jishu.sharma")))
         with self.assertRaises(SystemExit):
             af.plan(self.reg, "nobody")
 
