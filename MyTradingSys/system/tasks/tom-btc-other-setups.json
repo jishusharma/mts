@@ -1,0 +1,43 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T17:31:44Z",
+  "depends_on": [
+    "tom-btc-chart-lab"
+  ],
+  "done_when": "Charts + EVENT_STUDY_TC_BO.md table.",
+  "from_inbox": "",
+  "goal": "Repeat T2 and T4 for trend continuation (pullback to VWAP/value in a volume-backed trend; target next high-volume area) and breakout/break-in (balance resolves with proof). Source: conditions/setup_type_rules.md sections 5-6.",
+  "id": "tom-btc-other-setups",
+  "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_btc_2026-10-13/",
+    "MyTradingSys/conditions/setup_type_rules.md (read only)"
+  ],
+  "scope_out": [
+    "VALIDATION and HOLDOUT dates",
+    "live tree"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
+  ],
+  "state": "raw",
+  "steps": [
+    "Reuse chart_lab.py with a setup switch; then the event study table."
+  ],
+  "tests": "pytest: one synthetic pullback and one breakout candidate found",
+  "title": "Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, breakout/break-in)"
+}

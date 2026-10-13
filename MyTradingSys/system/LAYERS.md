@@ -5,10 +5,10 @@ every card change). Pointers: `layer_index.json`; layer status and backtests: `l
 Rules: Tom is core; every other family is a separate layer, never a Tom filter (CLAUDE.md). A new backtest is a row in
 `layer_map.json` (it then shows here); a new layer joins a family in `layer_index.json`; a new card names `--layer <family>`.
 
-Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | guidance = Tom/Fabio cross-guidance (BB, LVN, regime filters) | rsi = RSI / Malkan / Kurisko | cryptocred = CryptoCred setups | positioning = Positioning (funding, OI, whale / FlowHorse) | session_timing = Session / timing (session levels, turn of candle, session momentum) | volume_candles_ma = Volume, candle patterns, daily MA setups, bigtrade | live_engine = Live engine, execution and live-market reads (feeds every layer)
+Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow layer) | guidance = Tom/Fabio cross-guidance (BB, LVN, regime filters) | rsi = RSI / Malkan / Kurisko | cryptocred = CryptoCred setups | positioning = Positioning (funding, OI, whale / FlowHorse) | session_timing = Session / timing (session levels, turn of candle, session momentum) | volume_candles_ma = Volume, candle patterns, daily MA setups, bigtrade | live_engine = Live engine, execution and live-market reads (feeds every layer) | callers = Callers (posted trade calls: Qriptal)
 
-## Tom (core engine + proofs) (`tom`)
-- Status: STOP on the BTC encoding; being redefined as Tom v2 (DAX home market). Never a filter for other layers.
+## Tom (order flow + volume profile) (`tom`)
+- Status: Tom on BTC with our own judgement (operator 2026-10-13). DAX chain held, no FDAX data bought (q11). The old BTC encoding stays stopped.
 - Tracks: Claude (spec/build), Codex lab (audits, DAX harness)
 - Layer `tom_core`: STOP: do not backtest or tune the current BTC encoding (tom_transfer ROADMAP section 2); being redefined as Tom v2 | module src/main/java/datafeed/SetupCandidatesBuilder.java; backtest/verdict.py; backtest/tom_bt.py
 - Layer `tom_proofs`: book_imbalance never counts in historical snapshots (no raw source); P06 volume spike is NO-SOURCE | module SetupCandidatesBuilder.java (proof flags)
@@ -28,24 +28,32 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`; `MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md`
 - Codex lab reports (newest 4 of 12): `MyTradingSys/research/layer_lab/reports/2026-10-13_tom-profile-shape-parity.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-unavailable-flow.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-trial-identity.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `rv02-fix-dax-full-dev-authorization` raw p1 SONNET: RV02 R3: require complete DAX sampling and bind holdout authorization
-  - `rv02-fix-dax-preprocessing-isolation` raw p1 SONNET: RV02 R1: isolate DAX preprocessing and report metadata before holdout
-  - `rv02-fix-dax-producer-data-binding` raw p1 SONNET: RV02 R4: reject DAX snapshots made from different execution data
-  - `rv02-fix-dax-rounded-rr-gate` raw p1 SONNET: RV02 R2: preserve exact DAX net RR through the decision boundary
-  - `tom-profile-shape-parity` ready p1 CODEX: Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)
-  - `tom-v2-dax-dev-backtest` refined p1 SONNET: Tom v2: DAX dev backtest of the fade under the part B protocol (both fills, session null)
+  - `rv02-fix-dax-full-dev-authorization` blocked p1 SONNET: RV02 R3: require complete DAX sampling and bind holdout authorization
+  - `rv02-fix-dax-preprocessing-isolation` blocked p1 SONNET: RV02 R1: isolate DAX preprocessing and report metadata before holdout
+  - `rv02-fix-dax-producer-data-binding` blocked p1 SONNET: RV02 R4: reject DAX snapshots made from different execution data
+  - `rv02-fix-dax-rounded-rr-gate` blocked p1 SONNET: RV02 R2: preserve exact DAX net RR through the decision boundary
+  - `tom-btc-chart-lab` ready p1 SONNET: Tom on BTC T2: chart lab - 60 candidate + 20 random BTC charts (5m candles, session profile, delta, footprint 
+  - `tom-btc-data-check` ready p1 DSA-NUC: Tom on BTC T1: check the footprint bars on JIS-NUC cover DEV + VALIDATION (2024-12..2025-06), list gaps
+  - `tom-btc-event-study` raw p1 SONNET: Tom on BTC T4: event study - which Tom concepts separate winners on BTC (DEV only, fee-net, vs random same-win
+  - `tom-btc-eye-read` raw p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
+  - `tom-profile-shape-parity` blocked p1 CODEX: Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)
+  - `tom-v2-dax-dev-backtest` blocked p1 SONNET: Tom v2: DAX dev backtest of the fade under the part B protocol (both fills, session null)
   - `gap-g1-power-mde-helper` ready p2 CODEX: Gap G1: power / MDE helper that every pre-registration prints (verdict INCONCLUSIVE when power < 80 %)
   - `gap-g4-through-ticks-flag` ready p2 CODEX: Gap G4: through_ticks flag in tom_bt.sim_limit_trade (entry and target), default off, output identical
   - `gap-g6-trial-ledger` ready p2 CODEX: Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)
-  - `tom-check-set-find-frames-only-tom-trade` raw p2 SONNET: Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set
-  - `tom-dax-backtest` refined p2 SONNET: Untuned Tom backtest on DAX vs matched-proof BTC rerun
+  - `tom-btc-dev-backtest` raw p2 SONNET: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
+  - `tom-btc-encode` raw p2 SONNET: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
+  - `tom-btc-validation` raw p2 SONNET: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
+  - `tom-check-set-find-frames-only-tom-trade` blocked p2 SONNET: Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set
+  - `tom-dax-backtest` blocked p2 SONNET: Untuned Tom backtest on DAX vs matched-proof BTC rerun
   - `tom-direction-health-vs-sources` raw p2 SONNET: Tom core direction/health rules vs his words: determineDirections gives below_val -> long only (SetupCandidate
-  - `tom-encode-fade-entry-paths` refined p2 SONNET: Tom v2: encode fade entry paths A2 (pullback) and A3 (range break) with one re-entry per session
-  - `tom-encode-fade-profile-proofs` refined p2 SONNET: Tom v2: encode the PROFILE arm of the fade (thin top, failed P breakout, lower b-shape)
-  - `tom-ledger-add-the-losing-first-attempts` raw p2 SONNET: Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)
-  - `tom-probe-prereg` refined p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
+  - `tom-encode-fade-entry-paths` blocked p2 SONNET: Tom v2: encode fade entry paths A2 (pullback) and A3 (range break) with one re-entry per session
+  - `tom-encode-fade-profile-proofs` blocked p2 SONNET: Tom v2: encode the PROFILE arm of the fade (thin top, failed P breakout, lower b-shape)
+  - `tom-ledger-add-the-losing-first-attempts` blocked p2 SONNET: Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)
+  - `tom-probe-prereg` blocked p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
   - `tom-v2-btc-min-stop-width` refined p2 SONNET: Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)
-  - `tom-ledger-single-trade-date-used-column` raw p3 SONNET: Tom ledger: single trade_date_used column, blank date for non-observed rows (RV01 F1,F2)
+  - `tom-btc-other-setups` raw p3 SONNET: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
+  - `tom-ledger-single-trade-date-used-column` blocked p3 SONNET: Tom ledger: single trade_date_used column, blank date for non-observed rows (RV01 F1,F2)
 
 ## Fabio (order-flow layer) (`fabio`)
 - Status: v3 tried 2026-10-04, holdout FAIL; ledger audit FIX-FIRST; being redefined as Fabio v2 (waits on ledger repairs).
@@ -207,6 +215,13 @@ Families: tom = Tom (core engine + proofs) | fabio = Fabio (order-flow layer) | 
   - `score-context-reads-automatically-carrie` raw p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
   - `state-machine-vwap-cvd-vs-klines` raw p3 SONNET: State machine session VWAP/CVD disagree with klines: 2026-10-12 13:08Z state_code.json cum_pv/cum_vol gives 83
   - `one-timeframe-map-for-the-whole-toolchai` raw p4 SONNET: One timeframe map for the whole toolchain: capture.TF_MINUTES lacked 8h (CoinGlass button) while holding 7h; g
+
+## Callers (posted trade calls: Qriptal) (`callers`)
+- Status: Score the posted calls on Binance klines before anything else (B162). Self-reported 67.1 % wins, avg win 3.99 %, avg loss 0.63 %: unverified.
+- Tracks: Claude, Codex lab (scoring)
+- Spec / sources: `MyTradingSys/items/B162_qriptal_signal_layer.md`
+- Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `qriptal-score-binance` ready p1 CODEX: Qriptal: score his posted calls on Binance candles (B162)
 
 ## Cross-cutting
 

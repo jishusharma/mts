@@ -10,7 +10,9 @@
   "id": "qriptal-score-binance",
   "kind": "build",
   "lane": "CODEX",
-  "layers": [],
+  "layers": [
+    "callers"
+  ],
   "live_path": false,
   "note": "",
   "prio": 1,

@@ -30,23 +30,23 @@
     },
     {
       "slug": "mts_layer_map",
-      "title": "MTS Layer Map",
+      "title": "MTS Layers",
       "status": "canonical",
       "pinned": true,
-      "generator": "scripts/dev/make_layer_map.py",
-      "html": "MyTradingSys/system/artifacts/layer_map.html",
+      "generator": "scripts/dev/make_layers_board.py",
+      "html": "MyTradingSys/system/artifacts/layers_board.html",
       "owner_app": "either (static, no db)",
-      "refresh": "when layer_map.json changes (zero tokens)",
+      "refresh": "every session that ships, with the Control Room (zero tokens: artifacts.py build)",
       "db": [],
       "urls": {
         "jishu.awgp": "https://claude.ai/artifact/QwsvsN3LaZKNPvD6zPTTAe",
         "jishu.sharma": ""
       },
       "last_published": {
-        "jishu.awgp": "2026-10-12",
+        "jishu.awgp": "2026-10-13",
         "jishu.sharma": "never"
       },
-      "note": "Not on jishu.sharma yet: first publish there, record the url."
+      "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Not on jishu.sharma yet: first publish there, record the url."
     },
     {
       "slug": "tom_fabio_deck",
