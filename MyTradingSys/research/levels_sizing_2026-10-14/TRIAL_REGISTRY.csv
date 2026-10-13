@@ -1,0 +1,9 @@
+study,variant,date,data_window,verdict
+levels_sizing,123_confirm_full,2026-10-14,DEV 2024-12-02..2025-03-31,EXPLORATORY_NEGATIVE
+levels_sizing,123_confirm_staged,2026-10-14,DEV 2024-12-02..2025-03-31,EXPLORATORY_NEGATIVE
+levels_sizing,123_dip_full,2026-10-14,DEV 2024-12-02..2025-03-31,EXPLORATORY_NEGATIVE
+levels_sizing,123_dip_staged,2026-10-14,DEV 2024-12-02..2025-03-31,EXPLORATORY_NEGATIVE
+levels_sizing,equal_dip_full,2026-10-14,DEV 2024-12-02..2025-03-31,EXPLORATORY_NEGATIVE
+levels_sizing,equal_dip_staged,2026-10-14,DEV 2024-12-02..2025-03-31,EXPLORATORY_NEGATIVE
+levels_sizing,single_full,2026-10-14,DEV 2024-12-02..2025-03-31,EXPLORATORY_NEGATIVE
+levels_sizing,single_staged,2026-10-14,DEV 2024-12-02..2025-03-31,EXPLORATORY_NEGATIVE
