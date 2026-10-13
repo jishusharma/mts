@@ -1,9 +1,9 @@
 {
-  "detail": "credits back: 5h window 0% used, reset time 6:03 passed (NUC recovery 2026-10-13)",
+  "detail": "Codex run finished",
   "fails": 0,
   "heartbeat": "2026-10-13T04:55:26Z",
   "last_error": "2026-10-12T20:00:07Z",
-  "last_ok": "2026-10-13T04:59:45Z",
+  "last_ok": "2026-10-13T05:01:12Z",
   "last_probe": "",
   "override": "2026-10-13T07:59:45Z",
   "reason": "",
