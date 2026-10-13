@@ -8,7 +8,8 @@
   "from_inbox": "",
   "goal": "Build research/tom_btc_2026-10-13/chart_lab.py: find oversized legs from a session start (00:00 UTC, 07:00 UTC, US cash open DST-aware) into a high/low beyond the prior day's value area, in DEV 2024-12..2025-03, and draw each at its decision bar. Every number is OURS and printed on the chart.",
   "id": "tom-btc-chart-lab",
-  "lane": "CODEX",
+  "kind": "build",
+  "lane": "SONNET",
   "layers": [
     "tom"
   ],
@@ -18,6 +19,12 @@
   "refine_tries": 0,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-13T20:00:01Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "heartbeat"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py",
@@ -43,6 +50,5 @@
     "Sample 60 candidates + 20 random same-window moments (seed 20261013) into charts/ with blind ids; keys in charts/_key.csv (not opened by readers)."
   ],
   "tests": "pytest test_chart_lab.py: synthetic day with a leg above the prior-20 median and above prior VAH -> one candidate at the 3rd stall bar; plotted data ends at the decision bar (no look-ahead). Fails before chart_lab.py exists.",
-  "title": "Tom on BTC T2: chart lab - 60 candidate + 20 random BTC charts (5m candles, session profile, delta, footprint at the top), DEV only, no outcome shown",
-  "kind": "build"
+  "title": "Tom on BTC T2: chart lab - 60 candidate + 20 random BTC charts (5m candles, session profile, delta, footprint at the top), DEV only, no outcome shown"
 }
