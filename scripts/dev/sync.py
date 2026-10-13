@@ -324,7 +324,7 @@ LANE_WORKTREES = ("mts-push", "mts-refiner", "mts-codex-lab", "mts-codex", "mts-
 
 TIDY_IDLE_HOURS = 24
 # Ignored paths that are rebuilt for free; anything else ignored (Dumps/, runtime_data/, fetched klines) is data.
-REGENERABLE = ("__pycache__/", ".pytest_cache/", ".pyc")
+REGENERABLE = ("__pycache__/", ".pytest_cache/", ".pyc", " target/")  # target/ = Maven build output
 
 
 def ignored_data(p):

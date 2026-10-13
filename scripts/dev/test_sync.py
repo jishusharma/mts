@@ -200,12 +200,14 @@ class SyncTest(unittest.TestCase):
         self.assertTrue((wt / "Dumps" / "klines.csv").exists())
 
     def test_tidy_ignores_only_regenerable_ignored_files(self):
-        (self.a / ".gitignore").write_text("__pycache__/\n", newline="\n")
+        (self.a / ".gitignore").write_text("__pycache__/\ntarget/\n", newline="\n")
         sh(self.a, "add", ".gitignore")
         sh(self.a, "commit", "-q", "-m", "ignore")
         sh(self.a, "push", "-q", "origin", "HEAD:fast-track")
         with contextlib.redirect_stdout(io.StringIO()):
             wt = sync.new_worktree(self.a, "cache")
+        (wt / "target").mkdir()
+        (wt / "target" / "A.class").write_bytes(b"0")
         (wt / "__pycache__").mkdir()
         (wt / "__pycache__" / "x.pyc").write_bytes(b"0")
         later = time.time() + 48 * 3600
