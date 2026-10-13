@@ -1,0 +1,32 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T05:09:07Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "fabio-audit-20261013-dates",
+  "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "H3: Replace unsupported Fabio dates and source each execution timezone"
+}

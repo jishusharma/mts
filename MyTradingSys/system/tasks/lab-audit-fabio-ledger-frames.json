@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-13T05:10:15Z",
   "commands": [],
   "created": "2026-10-12T05:43:40Z",
   "depends_on": [],
@@ -28,7 +29,7 @@
     "to": "SONNET",
     "why": "credits"
   },
-  "result": "",
+  "result": "FIX-FIRST: 72 rows; 6 HIGH/4 MED/1 LOW; MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md",
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
@@ -41,7 +42,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
