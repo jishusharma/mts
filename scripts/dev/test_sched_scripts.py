@@ -255,8 +255,10 @@ class InstallBackup(unittest.TestCase):
 
 class Hygiene(unittest.TestCase):
     def test_lf_only(self):
+        # Check the committed blob (index), not the checkout: a Windows runner's autocrlf turns the working copy into CRLF.
         for rel in ALL_PS1:
-            self.assertEqual((ROOT / rel).read_bytes().count(b"\r"), 0, rel)
+            r = subprocess.run(["git", "-C", str(ROOT), "ls-files", "--eol", "--", rel], capture_output=True, text=True)
+            self.assertTrue(r.stdout.startswith("i/lf"), f"{rel}: {r.stdout.strip() or r.stderr.strip()}")
 
     @unittest.skipUnless(PWSH, "no PowerShell to parse with")
     def test_powershell_parses(self):
