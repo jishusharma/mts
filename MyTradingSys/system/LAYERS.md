@@ -85,12 +85,12 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `fabio-audit-20261013-rules` raw p2 SONNET: H5: Correct Fabio management generalizations and distinguish order drawings
   - `fabio-layer-v2-markets` refined p2 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
   - `fabio-layer-v2-spec` blocked p2 OPUS: Fabio layer v2 spec, part A: setup families + sourced rules from his ledger (Opus research)
-  - `fabio-ledger-minute-timestamps` ready p2 SONNET: Fabio ledger: read minute timestamps from frame clocks (replay-ready rows)
   - `fabio-prescreen-is1h-layout` ready p2 SONNET: Fabio pre-screen: add an Is1HvdfQm5c layout cue (it draws zone boxes, no order ticket) so its windows can be f
   - `fabio-ledger-f13-outcome-provenance-2910` raw p3 SONNET: fabio-ledger: F13 outcome provenance (-2910 vs stop -1760)
   - `fabio-ledger-recompute-entry-from-stp-la` raw p3 SONNET: fabio-ledger: recompute entry from STP label for F8 F12-m2 F13 F13-m1
   - `fabio-ledger-replace-date-2026-with-unkn` raw p3 SONNET: fabio-ledger: replace date 2026 with UNKNOWN for Jpd96/DyS79 session (contract NQ-202512)
   - `fabio-ledger-scan-dys79eb92ug-is1hvdfqm5` raw p3 SONNET: Fabio ledger: scan DyS79Eb92Ug, Is1HvdfQm5c, xUyqIjCfZzg (downloaded on F:, 2.4-3.8 h live sessions) for trade
+  - `fabio-session-date-price-match` raw p3 CODEX: Fabio: date the DyS79Eb92Ug/Jpd96fLqr5M NQ-202512 session by price-path match against NQ 1m history (F6 24914-
   - `find-more-fabio-trade-recap-videos-yt-dl` ready p3 SONNET: Find more Fabio trade-recap videos (yt-dlp), ledger has only 8 entries vs goal 20
   - `rv05-h1-date-evidence` raw p3 SONNET: RV05 H1: incorporate date revalidation evidence into existing Fabio ledger date repair
   - `rv05-h2-position-line-evidence` raw p3 SONNET: RV05 H2: read position lines and stop prices before applying existing Fabio entry repair

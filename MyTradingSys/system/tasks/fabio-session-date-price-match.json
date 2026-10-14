@@ -1,0 +1,31 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-14T16:42:46Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "fabio-session-date-price-match",
+  "kind": "run",
+  "lane": "CODEX",
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Fabio: date the DyS79Eb92Ug/Jpd96fLqr5M NQ-202512 session by price-path match against NQ 1m history (F6 24914->25001, F11-F14 25095-25110), then fill entry_time_utc"
+}

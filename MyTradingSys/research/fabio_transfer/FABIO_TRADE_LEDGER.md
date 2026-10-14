@@ -88,3 +88,10 @@ DyS79Eb92Ug day: F7-F10 won/ended +4964$ at F10, then F11 -2115$, F12 -1525$, F1
 Management as before: stops move only toward profit, TP pulled in late, scale-in on confirmation (4 -> 8 -> 10 lots).
 
 Is1HvdfQm5c t=0-250 (w00, 25 s steps) read: black intro, Excalidraw board (agenda: Mental Models, Live Charting, Execution Method Trick), no chart, no trade. Ledger +1 no-trade row (71 lines), still 14 trades. Next: t=250+ (w01), one 250 s window per session; the Live Charting part is likely later, so a coarse 120 s sample of the whole video may find it faster.
+
+## Minute timestamps (card fabio-ledger-minute-timestamps, 2026-10-14)
+Replay-ready rows (date + minute, convertible to UTC): **0 of 18 entry rows**. Columns `entry_time_utc` + `entry_time_src` added to the CSV.
+- Read this pass: F1 crop (no clock), fZlNGWvd2Ko sheets (no axis, no date), 9IliXww64uM t=630 (only the pasted screenshot's file name 2026-01-30 214344 = save time, not fill time), DyS79Eb92Ug t=1150-1225 (axis minutes 15:55-15:56 chart time, no date).
+- DyS79Eb92Ug / Jpd96fLqr5M (F6-F15) trade NQ-202512, so the session is 2025-09..12, not "2026" as the date column says; minutes are on the time axis but the day is not on screen. Dating it needs a price-path match (F6 24914 -> TP 25001, F11-F14 25095-25110 range) against NQ 1m history: follow-up card fabio-session-date-price-match.
+- Chart time zone: the axis puts the US open at 15:30, i.e. CET/CEST; UTC needs the date (DST), so no UTC value is written without it.
+- Times never come from transcripts (card rule); every unknown carries its reason.

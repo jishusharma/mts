@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-14T16:42:47Z",
   "commands": [],
   "created": "2026-10-11T18:00:25Z",
   "depends_on": [],
@@ -18,7 +19,7 @@
   "refine_tries": 0,
   "refined_by": "cloud-research 2026-10-11 (C-Cloud BACKTEST_FAILURES_RESEARCH.md; operator: 'get this into action')",
   "refs": [],
-  "result": "",
+  "result": "replay-ready 0/18 entry rows: no frame shows the trade date; entry_time_utc+entry_time_src added with reasons (FABIO_TRADE_LEDGER.csv/.md); follow-up fabio-session-date-price-match",
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
     "F:/MTS/data/fabio_videos (frames)"
@@ -32,7 +33,7 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md N4 (iii)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List the filled-trade rows with no minute timestamp.",
     "For each, open the frame at entry and read the platform clock and date off the chart; write entry_time_utc with a frame file reference and the time zone you assumed.",
