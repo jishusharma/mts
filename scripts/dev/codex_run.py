@@ -35,6 +35,10 @@ import tasks  # noqa: E402
 
 REPO = tasks.REPO
 LAB = "MyTradingSys/research/layer_lab"
+BAIL_S = 180              # a BLOCKED/INCOMPLETE run this short with no report is the model bailing, not the card failing
+BAIL_FREE = 2             # such bails per card that are not charged as tries (a fresh run usually gets through)
+STALL_S = 3 * 3600        # ready cards, lane up, no hold, and no run for this long = the lab is stalled (watchdog)
+READING_STALE_S = 2 * 3600  # an allowance reading older than this may undercount (other machines spend the same week)
 MAX_ATTEMPTS = 2          # runs of one card that did not end `done`; after that it is STUCK and skipped (no trial burn)
 LOCK_STALE_S = 3 * 3600
 WINDOW_STOP = 85          # % of the 5-hour window used: no new card until it resets
@@ -109,9 +113,15 @@ def find_exe(env=os.environ, which=shutil.which, globber=glob.glob):
     return max(found, key=lambda p: os.path.getmtime(p) if os.path.exists(p) else 0)
 
 
+def is_bail(r):
+    """The run ended BLOCKED/INCOMPLETE within BAIL_S with no report and no note: the model gave up early."""
+    return (r.get("outcome") in ("BLOCKED", "INCOMPLETE") and 0 < (r.get("seconds") or 0) < BAIL_S
+            and not r.get("report") and not r.get("note"))
+
+
 def attempts(home):
-    """{card: runs that did not end done} from the run log."""
-    out = {}
+    """{card: runs that did not end done} from the run log. The first BAIL_FREE early bails of a card are not tries."""
+    out, bails = {}, {}
     p = Path(home) / "lab_runs" / "runs.jsonl"
     if p.is_file():
         for line in p.read_text(encoding="utf-8").splitlines():
@@ -120,8 +130,36 @@ def attempts(home):
             except ValueError:
                 continue
             if r.get("outcome") not in ("DONE", "LIMIT") and not r.get("dry"):
+                if is_bail(r):
+                    bails[r["card"]] = bails.get(r["card"], 0) + 1
+                    if bails[r["card"]] <= BAIL_FREE:
+                        continue
                 out[r["card"]] = out.get(r["card"], 0) + 1
     return out
+
+
+def reading_age(home, now):
+    """Seconds since the newest Codex session file was written (the age of the allowance reading), or None."""
+    files = list(Path(home).glob("sessions/**/*.jsonl"))
+    return now - max(p.stat().st_mtime for p in files) if files else None
+
+
+def stall_findings(rows, ready, tried, lane_up, held, now, age=None):
+    """The watchdog: what is silently wrong although nothing 'failed'. [] = healthy."""
+    L = []
+    left = [c for c in ready if tried.get(c["id"], 0) < MAX_ATTEMPTS]
+    runs = [r for r in rows if not r.get("dry")]
+    if left and lane_up and not held and runs:
+        last = max(epoch_of(r.get("at")) for r in runs)
+        if last and now - last > STALL_S:
+            L.append(f"STALLED: {len(left)} card(s) ready, lane up, no allowance hold, but nothing ran for {(now - last) / 3600:.1f} h: "
+                     "read last_tick.txt and last_lane.txt on the lab host")
+    tail = runs[-3:]
+    if len(tail) == 3 and all(is_bail(r) for r in tail):
+        L.append("the model bailed early 3 runs in a row (" + ", ".join(r["card"] for r in tail) + "): the lab environment, not the cards, is the suspect")
+    if age is not None and age > READING_STALE_S:
+        L.append(f"the allowance reading is {age / 3600:.1f} h old: spend from other machines is not in it, so the week may be higher than shown")
+    return L
 
 
 def budget(home, newest=5):
@@ -780,7 +818,7 @@ def run_line(r):
     return f"{str(r.get('at', ''))[:16].replace('T', ' ')}Z {r.get('card')} {r.get('outcome')} ({m} / {e}, {tok}{pts}, {r.get('seconds', '?')}s)"
 
 
-def needs_look(ready, tried, rows, unshipped=0, stopped="", held="", closed=()):
+def needs_look(ready, tried, rows, unshipped=0, stopped="", held="", closed=(), watch=()):
     """What the lab cannot fix by itself, in plain words. [] = nothing to do. Read by the operator and by STATUS.md."""
     L = []
     if stopped:
@@ -791,6 +829,7 @@ def needs_look(ready, tried, rows, unshipped=0, stopped="", held="", closed=()):
     last = [r for r in rows if not r.get("dry")][-1:]
     if last and last[0].get("outcome") not in ("DONE", "LIMIT") and last[0].get("card") not in closed:   # closed since = someone dealt with it
         L.append(f"the last run ended {last[0]['outcome']} ({last[0]['card']}): {last[0].get('note') or 'read ' + (last[0].get('report') or last[0].get('log', 'its log'))}")
+    L += list(watch)
     left = [c for c in ready if tried.get(c["id"], 0) < MAX_ATTEMPTS]
     if not left:
         L.append("the queue is empty, so the Codex allowance goes unused: move scoped cards to lane CODEX (LAYER_LAB.md, Allowance)")
@@ -807,7 +846,7 @@ def guard_line(rows, rl, now):
             f"resets {datetime.fromtimestamp(w_end, timezone.utc).strftime('%H:%MZ')}")
 
 
-def status_text(ready, done, tried, rows, rl, now, last_tick="", unshipped=0, stopped="", host_has_lab=True):
+def status_text(ready, done, tried, rows, rl, now, last_tick="", unshipped=0, stopped="", host_has_lab=True, age=None, lane_up=True):
     L = [f"Layer lab (Codex) at {datetime.fromtimestamp(now, timezone.utc).strftime('%Y-%m-%d %H:%MZ')}: {'OFF' if stopped else 'on'}"]
     if not host_has_lab:
         L.append("  This machine does not run the lab (it runs on JIS-NUC): queue and deliveries below are from the repo; allowance, runs and what needs a look are only known there.")
@@ -820,7 +859,8 @@ def status_text(ready, done, tried, rows, rl, now, last_tick="", unshipped=0, st
     if host_has_lab:
         L.append("  Last runs:")
         L += ["    " + run_line(r) for r in rows[-5:]] or ["    none"]
-        look = needs_look(ready, tried, rows, unshipped, stopped, hold(rl, now), {c['id'] for c in done})
+        look = needs_look(ready, tried, rows, unshipped, stopped, hold(rl, now), {c['id'] for c in done},
+                          stall_findings(rows, ready, tried, lane_up, hold(rl, now), now, age))
         L.append("  NEEDS A LOOK: " + ("nothing" if not look else ""))
         L += [f"    - {x}" for x in look]
     return "\n".join(L)
@@ -839,7 +879,8 @@ def cmd_status(a):
     tick, stop = home / "lab_runs" / "last_tick.txt", home / "lab.stop"
     print(status_text(cards, done, attempts(home), run_rows(home), budget(home), time.time(),
                       tick.read_text(encoding="utf-8").strip() if tick.is_file() else "", unshipped,
-                      stop.read_text(encoding="utf-8").strip() if stop.is_file() else "", here))
+                      stop.read_text(encoding="utf-8").strip() if stop.is_file() else "", here,
+                      reading_age(home, time.time()), lane_health.allow(lane_health.load(REPO), utc()) != ""))
     return 0
 
 

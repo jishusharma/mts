@@ -501,5 +501,30 @@ class LimitFallback(unittest.TestCase):
             self.assertNotEqual(run("rev-parse", "-q", "--verify", "MERGE_HEAD").returncode, 0)
 
 
+
+class WatchdogTest(unittest.TestCase):
+    NOW = 1791784000
+    ROW = {"at": "2026-10-12T05:47:00Z", "card": "lab-a", "outcome": "BLOCKED", "seconds": 40, "report": "", "note": ""}
+
+    def test_early_bails_are_free_then_charged(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "lab_runs").mkdir()
+            rows = [self.ROW] * 3 + [self.ROW | {"seconds": 900, "note": "gate failed"}]
+            (Path(d) / "lab_runs" / "runs.jsonl").write_text(chr(10).join(json.dumps(r) for r in rows), encoding="utf-8")
+            self.assertEqual(R.attempts(d), {"lab-a": 2})   # 2 free bails; the 3rd bail and the real failure are charged
+
+    def test_stall_and_bail_streak_and_stale_reading_are_named(self):
+        ready = [card("lab-a")]
+        old = [self.ROW | {"outcome": "DONE", "seconds": 600, "at": "2026-10-11T00:00:00Z"}]
+        text = " | ".join(R.stall_findings(old, ready, {}, True, "", self.NOW, age=3 * 3600))
+        for want in ("STALLED", "nothing ran for", "reading is 3.0 h old"):
+            self.assertIn(want, text)
+        self.assertEqual(R.stall_findings(old, ready, {}, True, "window full", self.NOW), [])   # a hold is not a stall
+        self.assertEqual(R.stall_findings(old, ready, {}, False, "", self.NOW), [])             # lane down is lane_health's job
+        bails = [self.ROW | {"card": c, "at": "2026-10-14T00:00:00Z"} for c in ("a", "b", "c")]
+        self.assertIn("bailed early 3 runs in a row", " | ".join(R.stall_findings(bails, [], {}, True, "", self.NOW)))
+        self.assertIn("STALLED", " | ".join(R.needs_look(ready, {}, old, watch=R.stall_findings(old, ready, {}, True, "", self.NOW))))
+
 if __name__ == "__main__":
     unittest.main()
