@@ -7,6 +7,8 @@ HERE = os.path.dirname(__file__)
 D = os.path.join(HERE, "..", "..", "scripts", "sched", "relay_prompts")
 RELAY_MD = os.path.join(HERE, "..", "system", "RELAY.md")
 STUB = os.path.join(D, "mts-dispatcher.SKILL.md")
+SESSION = os.path.join(D, "relay_session.md")
+HISTORY = os.path.join(HERE, "..", "archive", "relay_2026-10-15", "RELAY_HISTORY.md")
 
 
 def read(p):
@@ -63,3 +65,24 @@ def test_relay_md_stays_current_truth_and_small():
     assert len(t.encode("utf-8")) <= 6144   # was 13222 B of history and contradictions; history is in archive/relay_2026-10-15/
     # cited by name at runtime: relay.py (handoff refusal), handoff_lint.py, turn_meter.py
     assert "## Task list standard" in t and "## Turn meter" in t
+
+
+def test_session_prompt_keeps_the_look_return_path():
+    # operator 2026-10-14 (GPT/DSA lanes): `kick` still wakes a session for `look=N` and `begin` only takes a card, so without this
+    # step a finished lane result is never read, its Qn stays open and the same KICK repeats every hour
+    t = read(SESSION)
+    for need in ("look=", "desk.py list --all", "tasks.py brief", "ONE claim", "DONE", "BEGIN FAILED: no ready", "worktree:"):
+        assert need in t, need
+    assert t.index("look=") < t.index("2. Otherwise run the card"), "the look step belongs before the card step"
+
+
+def test_relay_md_keeps_the_curating_and_lane_directives():
+    # operator 2026-10-14 "GPT and DSA for as much as possible": the session that writes the handoff reads this, nowhere else
+    t = read(RELAY_MD)
+    for need in ("Curating when the list runs low", "scoping task", "GPT and DSA for as much as possible", "tag every task a lane can do alone",
+                 "look=", "codex_look"):
+        assert need in t, need
+    h = read(HISTORY)
+    for need in ("Curating when the list runs low: read STATUS.md", "A candidate you cannot scope in one session becomes a scoping task",
+                 "Writing the task list: when curating, tag every task a lane can do alone", "`codex_look=N` (JIS-NUC only)"):
+        assert need in h, need

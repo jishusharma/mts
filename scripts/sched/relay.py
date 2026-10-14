@@ -637,6 +637,7 @@ def cmd_begin(a):
         return begin_fail("no ready card: " + out)
     pick, held = pick_card(out, a.skip, claimed, lanes, sync.slugify)
     if not pick:
+        print("worktree: %s" % wt)   # a `look=` wake-up still edits the handoff in this synced tree (relay_session.md step 1)
         return begin_fail("no ready %s card free to take (%d held by an open claim; hand off with --stop)" % ("/".join(lanes), held))
     rc, out = _sh([sys.executable, "scripts/dev/sync.py", "claim", pick], wt)
     if rc:

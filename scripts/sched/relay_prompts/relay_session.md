@@ -16,7 +16,11 @@ leaves a design choice open, `begin --skip <card>` and take the next.
    non-OPUS card no claim holds, claim, and that card's brief (the card is the whole brief). Work ONLY in the `worktree:` path it
    prints (`git -C <path> ...`); never in a folder that holds `.mts_live`. `BEGIN FAILED: <reason>`: reply that one line,
    `handoff --stop "<reason>"` and end (do not repair other sessions' files).
-2. Run the card: ONE task only; never an OPUS card.
+   LOOK: if the TICK line's `queue=` shows `look=N [Qn desk|card done|failed]`, a lane finished Qn and nobody has read it; that read
+   IS your task (the same KICK repeats until the Qn is rewritten). Read the row (`desk.py list --all`) or the card
+   (`tasks.py brief <id>`), spot-check ONE claim, rewrite the Qn as `DONE ...` in step 3. A `worktree:` line followed by
+   `BEGIN FAILED: no ready ...` is fine here: edit in that path, no `--stop`. A card `begin` claimed stays unworked: `sync.py release <card>`.
+2. Otherwise run the card: ONE task only; never an OPUS card.
 3. After the task (or when nothing is ready): open NEXT_SESSION.md in your worktree only now and EDIT the block (mark the item
    DONE, put the next step in its line). Do not append `## Update` sections: the outcome goes in the commit body `Result:` line.
 4. `python scripts/sched/relay.py handoff --file MyTradingSys/system/NEXT_SESSION.md --go --session "<this session's title>"`

@@ -57,3 +57,14 @@ the session ritual in `scripts/sched/relay_prompts/relay_session.md` (hosts hold
 - Dispatcher prompt: step 1 copies `relay.py` AND `handoff_lint.py` from origin to `$TEMP/mts_relay/`, runs `route`, then `kick`; the final `dispatcher:` line carries `route=` and `queue=`. Idle-tick economy is unchanged.
 - **No run row = not a peer (2026-10-14).** `kick --peer-quiet-min` waits only for a host named in a `relay_runs.jsonl` row. A handoff whose header was edited by hand (the Q64 tidy run wrote id 5f4d4fbe without a row) is owner `unknown` and no longer stalls this host for 90 min. Always write the header with `relay.py handoff`, never by hand: it also writes the row.
 - **Older handoff_lint (2026-10-14).** The QUEUE code reads a `lane=` tag itself when the tree's `handoff_lint.py` predates it, and `status` prints `QUEUE ? (...)` instead of crashing, so a copied relay.py can never take the dispatcher down.
+
+## Standing directives condensed back into RELAY.md (review fix 2026-10-15) [32-33, 39, 90, lane tag, 106, 108]
+Old text, verbatim. The directives live on in RELAY.md (Task list standard, Tick and queue); this is the unabridged wording.
+- Curating when the list runs low: read STATUS.md, `shot.py status`, `desk.py list --all`, items/INDEX.md and Control Room; cut each candidate to one
+  session with a finish line BEFORE writing it. A candidate you cannot scope in one session becomes a scoping task ("write the next item as Qn").
+- `relay.py begin` takes the first ready card of a builder lane (`tasks.CODE_LANES` without OPUS: HAIKU, SONNET) that no open claim holds; `tasks.py next` hides claimed cards too (`--all` shows them with the claimant).
+## Queue awareness and lane routing (operator 2026-10-14: "relay running continuously, aware of how many tasks are queued, GPT and DSA for as much as possible")
+- **Lane tag.** `Qn. lane=CODEX ...` (GPT / Codex Layer Lab on JIS-NUC, LAYER_LAB.md) or `Qn. lane=DSA ...` (AI Bridge run-and-report, DSA_DELEGATION.md), before or after
+  `host=`. Use it only for work the lane can finish alone: DSA = copy-ready commands, an observable result; CODEX = an audit/build/run card. A bad lane value fails lint.
+  `codex_look=N` (JIS-NUC only) counts the lines under `codex_run.py status` NEEDS A LOOK; it is information, it does not wake kick.
+- Writing the task list: when curating, tag every task a lane can do alone (a re-run of an existing script, an inventory, a CODEX audit card) instead of leaving it for a Claude session.

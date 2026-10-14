@@ -531,6 +531,15 @@ class BeginTest(unittest.TestCase):
         self.assertIn("BEGIN FAILED", r.stdout)
         self.assertFalse((self.wt / "claimed.txt").exists())
 
+    def test_begin_with_no_ready_card_still_names_the_synced_worktree(self):
+        # a `look=` wake-up (a finished lane result to read) may find no ready card: the session still edits the handoff in the
+        # relay tree begin already built, so the failure line is preceded by `worktree: <path>` and no card is claimed
+        r = self.begin({"STUB_NEXT": "dsa-card [DSA, S, p1] run"})
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("worktree: %s" % self.wt.resolve(), r.stdout.splitlines())
+        self.assertTrue(r.stdout.splitlines()[-1].startswith("BEGIN FAILED: no ready"), r.stdout)
+        self.assertFalse((self.wt / "claimed.txt").exists())
+
     def test_begin_runs_from_a_copy_outside_the_tree(self):
         # 2026-10-14: the dispatcher runs a copy of relay.py from %TEMP%/mts_relay/, where there is no sibling scripts/dev: begin made the
         # worktree, ran `sync.py start`, then printed "BEGIN FAILED: scripts/dev next to relay.py". The modules come from the relay tree.
