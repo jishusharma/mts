@@ -254,7 +254,8 @@ def text_from_git(spec):
 
 def handoff_owner(a, hid):
     """(host, time) of whoever wrote handoff `hid`, from relay_runs.jsonl (same place as the handoff: file or git ref).
-    No row for this id (written by an older relay.py or by hand): host 'unknown' = treated as a peer, time = the handoff
+    No row for this id (a session edited the header by hand, e.g. the Q64 tidy run 2026-10-14 23:28): host 'unknown', which kick does
+    NOT treat as a peer (it made this host wait 90 min on its own handoff, 2026-10-14); time = the handoff
     file's last commit on the ref (None in --file mode, where there is nothing to date it by)."""
     import subprocess
     if a.file:
@@ -307,7 +308,7 @@ def cmd_kick(a):
         return idle("handoff says stop: " + (reason or "no reason"))
     if a.peer_quiet_min:
         who, when = handoff_owner(a, hid)
-        if who != host() and when is not None and now() - when < timedelta(minutes=a.peer_quiet_min):
+        if who not in (host(), "unknown") and when is not None and now() - when < timedelta(minutes=a.peer_quiet_min):
             return idle("peer %s wrote handoff %s %d min ago (< %d): its chain is moving, this host stays out"
                         % (who, hid, (now() - when).total_seconds() // 60, a.peer_quiet_min))
     # host awareness: a go whose open tasks all belong to other hosts is not work for this one (b1de4866, 2026-10-12)
@@ -370,7 +371,15 @@ def sched_import(name, root=None):
 def parse_queue(text):
     hl = sched_import("handoff_lint")
     lines = hl.block_lines(text or "")
-    return hl.parse_tasks(lines) if lines else []
+    tasks = hl.parse_tasks(lines) if lines else []
+    for t in tasks:   # a copy run from a tree whose handoff_lint predates lane= (the dispatcher's live tree lagged origin): read the tag here
+        if "lane" not in t:
+            m = re.match(r"^(?:lane=(\w+)\s*)", t["first"], re.I)
+            t["lane"] = m.group(1).upper() if m else None
+            if m:
+                t["first"] = t["first"][m.end():]
+                t["state"] = "done" if t["first"].startswith("DONE") else "blocked" if t["first"].startswith("(after") else "open"
+    return tasks
 
 
 def task_key(t):
@@ -675,8 +684,10 @@ def cmd_status(a):
     print("header:", read_header(a.file))
     flag = home() / "mts-relay-stop"
     print("stop flag:", flag.read_text(encoding="utf-8").strip() if flag.exists() else "none")
-    text = Path(a.file).read_text(encoding="utf-8")
-    print(queue_line(queue_info(text, a.host or host(), root_of(a, a.file))))
+    try:
+        print(queue_line(queue_info(Path(a.file).read_text(encoding="utf-8"), a.host or host(), root_of(a, a.file))))
+    except Exception as e:   # fail soft: a QUEUE problem must never hide the header/stop-flag lines or take kick down
+        print("QUEUE ? (%s: %s)" % (type(e).__name__, str(e)[:120]))
     return 0
 
 
