@@ -17,6 +17,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 PWSH = shutil.which("pwsh") or shutil.which("powershell")
 WINDOWS = sys.platform == "win32"
+# Runs that touch the real scheduler or the host's python path only mean something on the MTS hosts, not a CI runner.
+MTS_HOST = WINDOWS and bool(PWSH) and not os.environ.get("GITHUB_ACTIONS")
 
 MODE = "scripts/core/mode.ps1"
 CATCHUP = "scripts/sched/add_logon_catchup.ps1"
@@ -151,7 +153,7 @@ class AddLogonCatchup(unittest.TestCase):
         for param in ("-Action", "-Principal", "-InputObject"):
             self.assertNotIn(param, apply_block)
 
-    @unittest.skipUnless(WINDOWS and PWSH, "dry run reads the Windows scheduler")
+    @unittest.skipUnless(MTS_HOST, "dry run reads this host's Windows scheduler")
     def test_dry_run_changes_nothing_and_names_every_task(self):
         rc, out = run_ps(CATCHUP)
         self.assertEqual(rc, 0, out)
@@ -199,7 +201,7 @@ class RegisterLiveMirror(unittest.TestCase):
         self.assertEqual(slots & deploy, set())
         self.assertEqual(slots & backup, set())
 
-    @unittest.skipUnless(WINDOWS and PWSH, "runs the script in PowerShell")
+    @unittest.skipUnless(MTS_HOST, "runs the script in PowerShell with this host's python")
     def test_refusal_and_dry_run_for_real(self):
         with tempfile.TemporaryDirectory() as td:
             rc, out = run_ps(MIRROR, "-Repo", td)
