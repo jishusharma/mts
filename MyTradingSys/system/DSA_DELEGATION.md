@@ -27,6 +27,11 @@ judgment about code that trades, or a result DSA failed twice, it is Claude's.
 | Fetch public market data into F:\MTS\data (klines, funding) with the existing fetch scripts | scripts exist | file list + row counts |
 | Draft first version of an item file, a RESULT.md or a doc from numbers it ran | writing | file; Claude reviews only if it touches rules |
 
+## Stand-in roles (Claude budget low, operator 2026-10-14)
+`MyTradingSys/system/DSA_STANDIN_PROMPT.md`: four Claude roles with a script gate (refine a card: `tasks.py check`/`lint`;
+spot-check one lab number; NEXT_SESSION.md handoff: `relay.py lint`; Control Room pickup). Post with `--target DSA` and a
+need text starting `STANDIN <role>`; two gate failures go back `--target CLAUDE`.
+
 ## What stays with Claude
 Live-path code (auto_trader, position manager, Java), safety checks, new strategy logic, formula tests,
 anything touching the CLAUDE.md hard rules, and a DSA task that failed twice. Claude writes the test and the
