@@ -51,7 +51,7 @@ into `research/missed_trades/observations/<host>_<date>.jsonl` for the next `syn
 - Moving the live loop to the NUC is a separate decision (DEVICES s3); the mirror works the same from either owner.
 
 ## Changes made after the Opus review (2026-10-10, agent aeffde92e539212b1) - these override the text above
-1. Separate share `MTS-Mirror` (F:\MTS\Mirror), READ access only for `mtsworker`. The existing MTS-Queue share is change-access, so the NUC could have rewritten what it reads. Default root `\JIS-NB\MTS-Mirror`, override `--root` or env `MTS_MIRROR_ROOT`.
+1. Separate share `MTS-Mirror` (F:\MTS\Mirror), READ access only for `mtsworker`. The existing MTS-Queue share is change-access, so the NUC could have rewritten what it reads. Default root `\JIS-NB\MTS-Mirror`, override `--root` or env `MTS_MIRROR_ROOT`. On JIS-NB (live tree and every work tree) the default is the local folder `F:\MTS\Mirror`: sessions there run as a user the share ACL does not list, so the UNC path answers `Permission denied` while the folder reads fine (`live_mirror.default_root`).
 2. No folder rename over SMB: each publish writes `v<utc>/`, then replaces the one-line `CURRENT` pointer last; last 3 versions kept. Pull reads the pointer, then that folder.
 3. Allowlist paths corrected from the code that writes them (`MyTradingSys/execution/...`, `runtime/alerts/<tf>.jsonl` tailed per file, `htf_context` under `MyTradingSys/research`); a test fails if an allowlisted name vanishes from the source.
 4. Added: trader state, plans, journal, pm_heartbeats, daily-loss state, live_alert_state, consensus state, supervisor and apparatus logs, observation captures. HALT / HALT_DAILY_LOSS / AUTO_PAUSE publish as flags in the manifest (existence only).
