@@ -258,7 +258,7 @@ class NextSkipsClaimedTest(unittest.TestCase):
     lock (sync.py): a session that took the first line anyway died in `sync.py claim` with 'already claimed' (b172-trim, 2026-10-14)."""
     def setUp(self):
         self.d = tempfile.TemporaryDirectory()
-        self.repo = Path(self.d.name)
+        self.repo = Path(self.d.name).resolve()  # git calls an 8.3 short TEMP path (E-NGIN~1) "outside repository"
         self._repo = T.REPO
         T.REPO = self.repo
         self.git("init", "-q")
