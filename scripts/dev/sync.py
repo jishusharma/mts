@@ -204,11 +204,16 @@ def health(repo):
         ahead = git(repo, "rev-list", "--count", f"origin/{TRUNK}..{ref}", check=False).stdout.strip()
         if ahead not in ("", "0") and ts and (now - int(ts)) / 3600 > NOT_SHIPPED_HOURS:
             issues.append(f"NEVER-SHIPPED branch {short}: {ahead} commit(s), last {(now - int(ts)) / 3600:.0f}h ago")
+    # UNSHIPPED rows first, collisions after them: daily_hygiene reads only the last lines of this output and needs
+    # STALE-CLAIM / OVERLAP / ORPHAN / SHARED / NEVER-SHIPPED there (the capped UNSHIPPED rows could push them out).
     unshipped = [i for i in issues if i.startswith("UNSHIPPED")]
-    for i in [i for i in issues if not i.startswith("UNSHIPPED")] + unshipped[:ROW_CAP]:
+    for i in unshipped[:ROW_CAP]:
         print(i)
     if len(unshipped) > ROW_CAP:
         print(f"... {len(unshipped) - ROW_CAP} more UNSHIPPED tree(s): sync.py where --all")
+    for i in issues:
+        if not i.startswith("UNSHIPPED"):
+            print(i)
     print(f"HEALTH: {len(issues)} issue(s)")
     return len(issues)
 
@@ -344,11 +349,14 @@ def where(repo, all_=False):
         for t in trees:
             print(f"BROKEN    {t['name']:28} [{t['branch']}] {t['fix']}" if t["flag"] == "BROKEN" else row(t))
     else:
-        shown = [t for t in trees if t["flag"] == "UNSHIPPED" or (t["flag"] == "ok" and Path(t["path"]).resolve() == here)]
-        for t in shown[:ROW_CAP]:
+        # This tree first, always (flagged or ok): the end-of-session check is about it. The cap applies to the rest.
+        mine = [t for t in trees if t["flag"] != "BROKEN" and Path(t["path"]).resolve() == here]
+        others = [t for t in trees if t["flag"] == "UNSHIPPED" and t not in mine]
+        room = max(ROW_CAP - len(mine), 0)
+        for t in mine + others[:room]:
             print(row(t))
-        if len(shown) > ROW_CAP:
-            print(f"... {len(shown) - ROW_CAP} more with unshipped work: sync.py where --all")
+        if len(others) > room:
+            print(f"... {len(others) - room} more with unshipped work: sync.py where --all")
         if broken:
             print(broken_summary(broken))
     open_items = sum(t["flag"] != "ok" for t in trees)
@@ -424,9 +432,11 @@ TIDY_KEEP_LINES = 10  # keep-reasons listed one per line; the rest only counted 
 QUIET_KEEPS = ("lane", "hand-named")  # decided by the name alone: counted, never listed
 # Ignored paths that are rebuilt for free; anything else ignored (Dumps/, runtime_data/, fetched klines) is data.
 # target/ = Maven build output; settings.local.json is an identical copy in every tree; control_room/ is generated HTML;
-# ACCOUNT_DAILY_LOSS.jsonl is what the daily-loss tests write into a work tree's journal.
+# ACCOUNT_DAILY_LOSS.jsonl is what the daily-loss tests write into a work tree's journal. _mirror (and its .lock/.tmp
+# staging dirs) is the desktop live state, re-pulled by `sync.py start` / `live_mirror.py brief`; .pytest_tmp/ and .codex/
+# are test-runner and tool droppings. All three are in .gitignore, so `status --ignored` lists them in every tree.
 REGENERABLE = ("__pycache__/", ".pytest_cache/", ".pyc", " target/", ".claude/settings.local.json", "runtime_data/control_room/",
-               "journal/ACCOUNT_DAILY_LOSS.jsonl")
+               "journal/ACCOUNT_DAILY_LOSS.jsonl", "runtime_data/_mirror", ".pytest_tmp/", ".codex/")
 
 
 def holds_files(root, rel):

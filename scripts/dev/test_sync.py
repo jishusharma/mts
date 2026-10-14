@@ -451,6 +451,85 @@ class SyncTest(unittest.TestCase):
         self.assertIn("kept 12", lines[-1])
         self.assertIn("uncommitted 12", lines[-1])
 
+    def test_tidy_retires_a_new_base_tree_holding_the_ignored_mirror_pytest_tmp_and_codex(self):
+        """New base: the mirror is git-ignored, so `status --ignored` lists it and a pull fills it. It is regenerable, not data."""
+        (self.a / ".gitignore").write_text("runtime_data/_mirror/\nruntime_data/_mirror.*\n.pytest_tmp/\n.codex/\n", newline="\n")
+        sh(self.a, "add", ".gitignore")
+        sh(self.a, "commit", "-q", "-m", "ignore the droppings")
+        sh(self.a, "push", "-q", "origin", "HEAD:fast-track")
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "newbase")
+        for rel in ("runtime_data/_mirror/live/state.json", "runtime_data/_mirror.lock/pid", ".pytest_tmp/run1/out.txt", ".codex/cache/c.bin"):
+            f = wt / rel
+            f.parent.mkdir(parents=True, exist_ok=True)
+            f.write_text("x\n", newline="\n")
+        self.assertEqual(sync.ignored_data(wt), [])
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 48 * 3600), [str(wt.resolve())])
+        self.assertFalse(wt.exists())
+
+    def test_tidy_still_keeps_a_tree_with_other_ignored_data(self):
+        (self.a / ".gitignore").write_text("runtime_data/_mirror/\nDumps/*\n", newline="\n")
+        sh(self.a, "add", ".gitignore")
+        sh(self.a, "commit", "-q", "-m", "ignore")
+        sh(self.a, "push", "-q", "origin", "HEAD:fast-track")
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "hasdata")
+        (wt / "runtime_data" / "_mirror").mkdir(parents=True)
+        (wt / "runtime_data" / "_mirror" / "m.txt").write_text("m\n", newline="\n")
+        (wt / "Dumps").mkdir()
+        (wt / "Dumps" / "result.csv").write_text("1,2\n", newline="\n")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 48 * 3600), [])
+        self.assertTrue((wt / "Dumps" / "result.csv").exists())
+
+    def test_where_always_prints_the_row_of_the_tree_it_runs_in(self):
+        """Own tree sorts last in `git worktree list` and holds real work: it is still printed, ahead of the cap."""
+        with contextlib.redirect_stdout(io.StringIO()):
+            others = [sync.new_worktree(self.a, f"other{i}") for i in range(5)]
+            own = sync.new_worktree(self.a, "mine")
+        for i, wt in enumerate(others):
+            commit(wt, f"o{i}.py", "o\n")
+        commit(own, "mine.py", "m\n")
+        real = sync.worktrees
+
+        def own_last(repo):
+            rows = real(repo)
+            return [r for r in rows if Path(r[0]).resolve() != own.resolve()] + [r for r in rows if Path(r[0]).resolve() == own.resolve()]
+        with mock.patch.object(sync, "ROW_CAP", 3), mock.patch.object(sync, "worktrees", own_last):
+            out = self.out_of(sync.where, own)
+        rows = [l for l in out.splitlines() if l.startswith("UNSHIPPED")]
+        self.assertIn(own.name, rows[0], out)  # this tree first, whatever the list order
+        self.assertEqual(len(rows), 3)
+        self.assertIn("3 more with unshipped work", out)  # 6 unshipped trees: 3 rows, the rest counted
+        self.assertIn("6 worktree(s) hold work", out)
+
+    def test_where_prints_the_own_tree_row_even_when_it_is_clean(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            own = sync.new_worktree(self.a, "cleanown")
+        out = self.out_of(sync.where, own)
+        self.assertTrue(any(l.startswith("ok") and own.name in l for l in out.splitlines()), out)
+        self.assertIn("0 worktree(s) hold work", out)
+
+    def test_health_keeps_the_collision_rows_in_the_last_eight_lines(self):
+        """daily_hygiene reads only the tail of `sync.py health`: many UNSHIPPED trees must not push SHARED/NEVER-SHIPPED out of it."""
+        import daily_hygiene
+        fake = [dict(path=str(self.tmp), name=f"t{i}", branch=f"x/t{i}", ahead=1, work=[], noise=[], fix="") for i in range(sync.ROW_CAP + 5)]
+        fake.append(dict(path=str(self.a), name="a", branch="fast-track", ahead=1, work=[], noise=[], fix=""))
+        sh(self.b, "switch", "-q", "-c", "idea")
+        commit(self.b, "idea.py", "i\n")
+        sh(self.b, "push", "-q", "origin", "idea")
+        sh(self.a, "fetch", "-q", "origin")
+        with mock.patch.object(sync, "survey", return_value=fake), mock.patch.object(sync, "NOT_SHIPPED_HOURS", -1):
+            out = self.out_of(sync.health, self.a)
+        lines = out.splitlines()
+        tail = daily_hygiene._tail(out)
+        self.assertTrue(lines[-1].startswith("HEALTH:"))
+        self.assertTrue(any(l.startswith("SHARED") for l in tail), tail)
+        self.assertTrue(any(l.startswith("NEVER-SHIPPED") for l in tail), tail)
+        self.assertEqual(len([l for l in lines if l.startswith("UNSHIPPED")]), sync.ROW_CAP)
+        self.assertTrue(any("more UNSHIPPED" in l for l in lines))
+
     def test_gate_test_lists_are_one_entry_per_line(self):
         """Every new test appends to these lists; two entries on one line is a guaranteed merge conflict."""
         import re
