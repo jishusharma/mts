@@ -472,6 +472,10 @@
    "ref": "B163",
    "why": "Offline NO-SOURCE research: daily long-flat SMA200 backtest 2020-2026 for desk row 20261009-231504; writes ALPHA_RESULTS.md; run by hand or a desk task, not by any loop."
   },
+  "MyTradingSys/research/setup_alpha_beta_2026-10-10/beta_sweep.py": {
+   "disp": "REPRO",
+   "why": "Offline NO-SOURCE research: liquidity sweep + CVD absorption event study that regenerates research/setup_alpha_beta_2026-10-10/BETA_RESULTS.md; run by hand or a desk task, not by any loop."
+  },
   "MyTradingSys/research/t063_event_study.py": {
    "disp": "REPRO",
    "why": "Reproduces the T063 event-study arms: MyTradingSys/research/T063_STOP_RUN_OI_FLUSH.md:67,120 (PRE_REG + AMEND 1)."

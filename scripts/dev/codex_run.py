@@ -528,7 +528,7 @@ def merge_trunk(wt, ref):
     """Merge `ref` into the lab branch. A clash only on the generated INDEX.md takes the trunk's copy (the next delivery
     regenerates it); any other clash aborts the merge so the tree stays clean and says which files need a session.
     JIS-NUC 2026-10-14: a merge stopped on INDEX.md left MERGE_HEAD behind and every later tick died on it."""
-    if (Path(wt) / ".git" / "MERGE_HEAD").exists():
+    if git(wt, "rev-parse", "-q", "--verify", "MERGE_HEAD", check=False).returncode == 0:   # not .git/MERGE_HEAD: the lab tree is a worktree (.git is a file)
         git(wt, "merge", "--abort", check=False)
     m = git(wt, "merge", "--quiet", "--no-edit", ref, check=False)
     if m.returncode == 0:
