@@ -1,0 +1,10 @@
+{
+  "done_when": "tasks.py lint PASS and result names check output for lc-event-table",
+  "from": "JIS-NB",
+  "id": "20261014-134217-standin-refine-lc-event-table-trial",
+  "need": "STANDIN refine. Follow MyTradingSys/system/DSA_STANDIN_PROMPT.md Role 1 for card lc-event-table (MyTradingSys/system/tasks/lc-event-table.json). Gate: python scripts/dev/tasks.py check lc-event-table; python scripts/dev/tasks.py lint. Card depends_on lc-levels-hold: if check says only the dependency blocks it, fill every other field and report that.",
+  "posted": "2026-10-14T13:42:17Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "STANDIN refine lc-event-table (trial)"
+}
