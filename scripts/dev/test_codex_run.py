@@ -464,7 +464,8 @@ class LimitFallback(unittest.TestCase):
         wt = Path(d) / "wt"
         (wt / "MyTradingSys/research/layer_lab").mkdir(parents=True)
         run = lambda *a: subprocess.run(["git", "-C", str(wt), "-c", "user.name=t", "-c", "user.email=t@t", *a], capture_output=True)
-        run("init", "-q", "-b", "trunk")
+        run("init", "-q")
+        run("symbolic-ref", "HEAD", "refs/heads/trunk")   # git < 2.28 (JIS-NUC runs 2.24) has no init -b
         run("config", "user.name", "t")   # merge_trunk commits without -c: CI runners may have no global identity
         run("config", "user.email", "t@t")
         for f in {lab_file, trunk_file, R.LAB + "/INDEX.md"}:
@@ -487,7 +488,7 @@ class LimitFallback(unittest.TestCase):
             wt, run = self._two_branches(d, idx, idx)
             R.merge_trunk(wt, "trunk")
             self.assertEqual(R.changed_files(wt), [])
-            self.assertFalse((wt / ".git/MERGE_HEAD").exists())
+            self.assertNotEqual(run("rev-parse", "-q", "--verify", "MERGE_HEAD").returncode, 0)
             self.assertEqual(run("merge-base", "--is-ancestor", "trunk", "HEAD").returncode, 0)
 
     def test_merge_trunk_aborts_a_real_clash_and_leaves_the_tree_clean(self):
@@ -497,7 +498,7 @@ class LimitFallback(unittest.TestCase):
                 R.merge_trunk(wt, "trunk")
             self.assertIn("code.py", str(e.exception))
             self.assertEqual(R.changed_files(wt), [])
-            self.assertFalse((wt / ".git/MERGE_HEAD").exists())
+            self.assertNotEqual(run("rev-parse", "-q", "--verify", "MERGE_HEAD").returncode, 0)
 
 
 if __name__ == "__main__":
