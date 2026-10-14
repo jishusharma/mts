@@ -563,6 +563,10 @@
   "scripts/tools/divergence_monitor.py": {
    "disp": "TOOL",
    "why": "Diagnostic divergence reader, \"tooling, left as is\": MyTradingSys/items/B063_divergence.md:70."
+  },
+  "MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py": {
+   "disp": "REPRO",
+   "why": "Reproduces research/tom_btc_2026-10-13/charts/ (80 chart PNGs + index.csv) cited in research/layer_lab/reports/2026-10-13_tom-btc-chart-lab.md (GPT lab card tom-btc-chart-lab); run by hand, no live process imports it."
   }
  }
 }
