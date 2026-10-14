@@ -1,5 +1,7 @@
 # Strategy direction audit — 2026-10-15
 
+Revalidated with corrections and executable proof: [adversarial follow-up](2026-10-15_revalidate-strategy-audit-with-counterev.md). That report supersedes overly broad advice here about required manual labels, paired inference, stop-width policy and the necessity of a particular flow experiment; it adds OI eligibility and study-specific gap-fill findings. Preserve this document as the original audit.
+
 FIX-FIRST — useful infrastructure and falsification work exist; the reviewed evidence does not establish a deployable, costed BTC edge. This is a quick documentary audit with targeted code checks, not a fresh performance replication.
 
 Operator request: economical cross-track audit of Claude/Cloud and GPT Layer Lab, progress, mistakes, profitability, edge and backtest accuracy; external order-flow research; save and ship checkpoints; notify Claude.
