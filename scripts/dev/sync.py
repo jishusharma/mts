@@ -6,8 +6,8 @@
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once)
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
-  python scripts/dev/sync.py where   # every worktree: commits not on origin/fast-track, uncommitted files (nothing lost?)
-  python scripts/dev/sync.py tidy [--apply] [--all]  # retire finished session worktrees (clean + fully on origin/fast-track); dry run by default
+  python scripts/dev/sync.py where [--all]  # trees holding work not on origin/fast-track (nothing lost?); --all lists every tree
+  python scripts/dev/sync.py tidy [--apply] [--all]  # retire finished worktrees (session, App-named, mts-relay-*; clean + fully on origin/fast-track + idle 24 h); dry run by default
 
 Rules live in MyTradingSys/system/PARALLEL.md. The live tree (a checkout holding the gitignored marker
 file .mts_live) is never synced or shipped from: the running system imports it, so it changes only by
@@ -19,6 +19,7 @@ import socket
 import subprocess
 import time
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 TRUNK = "fast-track"
@@ -32,6 +33,11 @@ STALE_HOURS = 24
 TAKE_ORIGIN = ("MyTradingSys/system/NEXT_SESSION.md", "MyTradingSys/research/STATUS.md",
                "MyTradingSys/runtime/BUILD_REPORT.md")
 NOT_SHIPPED_HOURS = 24
+ROW_CAP = 15  # rows `where` / `health` print before pointing at `where --all`
+# Rows of `git status --short` that are nobody's work: the desktop mirror a pull writes (regenerable data, git-ignored on
+# current trees, tracked on old bases) and the stray AGENTS.md / .codex of older trees.
+MIRROR_PREFIXES = ("runtime_data/_mirror/", "runtime_data/_mirror.")
+STRAY_UNTRACKED = ("AGENTS.md", ".codex/")
 
 
 class SyncError(Exception):
@@ -39,10 +45,19 @@ class SyncError(Exception):
 
 
 def git(repo, *args, check=True):
-    r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True)
+    # `status` refreshes and rewrites the index under index.lock; where/health/tidy run it in other sessions' trees,
+    # where that can break their `git add` and reset the idle clock tidy reads, so status never takes optional locks.
+    opts = ["--no-optional-locks"] if args and args[0] == "status" else []
+    r = subprocess.run(["git", "-C", str(repo), *opts, *args], capture_output=True, text=True)
     if check and r.returncode != 0:
         raise SyncError(f"git {' '.join(args)} failed:\n{r.stdout}{r.stderr}".rstrip())
     return r
+
+
+def is_noise(row, strays=True):
+    """True for a `status --short` row that is not anyone's work (see MIRROR_PREFIXES, STRAY_UNTRACKED)."""
+    path = row[3:].strip('"')
+    return path.startswith(MIRROR_PREFIXES) or (strays and row.startswith("??") and path in STRAY_UNTRACKED)
 
 
 def toplevel(path):
@@ -63,11 +78,18 @@ def merge_trunk(repo):
     incoming = git(repo, "rev-list", "--count", f"HEAD..origin/{TRUNK}").stdout.strip()
     if incoming != "0":
         r = git(repo, "merge", "--no-edit", f"origin/{TRUNK}", check=False)
+        if r.returncode != 0 and not git(repo, "diff", "--name-only", "--diff-filter=U").stdout.split() \
+                and "runtime_data/_mirror" in r.stdout + r.stderr:
+            # Trunk untracked the pulled mirror while this tree holds a pulled (edited) copy of it: regenerable data,
+            # nobody's work. Drop the copy so the merge can delete the tracked files; the next pull rewrites it.
+            git(repo, "checkout", "--", "runtime_data/_mirror", check=False)
+            git(repo, "clean", "-fdq", "--", "runtime_data/_mirror", check=False)
+            r = git(repo, "merge", "--no-edit", f"origin/{TRUNK}", check=False)
         if r.returncode != 0:
             bad = git(repo, "diff", "--name-only", "--diff-filter=U").stdout.split()
             if not bad or any(f not in TAKE_ORIGIN for f in bad):
                 raise SyncError(
-                    f"merge of origin/{TRUNK} conflicts; resolve, `git commit`, then run ship again.\n{r.stdout}")
+                    f"merge of origin/{TRUNK} conflicts; resolve, `git commit`, then run ship again.\n{r.stdout}{r.stderr}".rstrip())
             for f in bad:
                 git(repo, "checkout", "--theirs", "--", f)
                 git(repo, "add", "--", f)
@@ -95,7 +117,8 @@ def shared_tree_reason(repo):
     """Why this checkout is not a clean per-session tree, or None. At the start of a session nothing in the
     tree is ours, so uncommitted files and unshipped commits belong to another session."""
     ahead = git(repo, "rev-list", "--count", f"origin/{TRUNK}..HEAD", check=False).stdout.strip()
-    dirty = [l for l in git(repo, "status", "--short").stdout.splitlines() if l]
+    # Mirror churn is not another session's work; a stray AGENTS.md still counts (it can collide with the tracked one on merge).
+    dirty = [l for l in git(repo, "status", "--short").stdout.splitlines() if l and not is_noise(l, strays=False)]
     if dirty:
         return f"{len(dirty)} uncommitted file(s)"
     if ahead not in ("", "0"):
@@ -154,18 +177,24 @@ def health(repo):
             hit = [(x, y) for x in areas[a] for y in areas[b] if x == y or x.startswith(y + "/") or y.startswith(x + "/")]
             if hit:
                 issues.append(f"OVERLAP claims {a} / {b}: {hit[0][0]} ~ {hit[0][1]}")
-    for path, branch in worktrees(repo):
-        p = Path(path)
+    broken = []
+    for t in survey(repo):
+        p, branch = Path(t["path"]), t["branch"]
         if not p.exists():
             issues.append(f"ORPHAN worktree {p.name}: folder gone (git worktree prune)")
             continue
         if (p / LIVE_MARKER).exists():
             continue
-        reason = shared_tree_reason(p)
+        if t["ahead"] is None:
+            broken.append(t)
+            continue
+        reason = unshipped_reason(t)
         if reason and branch in (TRUNK, "master", "main"):
             issues.append(f"SHARED {p.name} [{branch}]: sessions work on the trunk branch here; {reason}")
         elif reason:
             issues.append(f"UNSHIPPED {p.name} [{branch}]: {reason}")
+    if broken:
+        issues.append(broken_summary(broken))
     rows = git(repo, "for-each-ref", "refs/remotes/origin", "--format=%(refname:short)|%(committerdate:unix)").stdout.splitlines()
     for row in rows:
         ref, _, ts = row.partition("|")
@@ -175,8 +204,11 @@ def health(repo):
         ahead = git(repo, "rev-list", "--count", f"origin/{TRUNK}..{ref}", check=False).stdout.strip()
         if ahead not in ("", "0") and ts and (now - int(ts)) / 3600 > NOT_SHIPPED_HOURS:
             issues.append(f"NEVER-SHIPPED branch {short}: {ahead} commit(s), last {(now - int(ts)) / 3600:.0f}h ago")
-    for i in issues:
+    unshipped = [i for i in issues if i.startswith("UNSHIPPED")]
+    for i in [i for i in issues if not i.startswith("UNSHIPPED")] + unshipped[:ROW_CAP]:
         print(i)
+    if len(unshipped) > ROW_CAP:
+        print(f"... {len(unshipped) - ROW_CAP} more UNSHIPPED tree(s): sync.py where --all")
     print(f"HEALTH: {len(issues)} issue(s)")
     return len(issues)
 
@@ -243,25 +275,85 @@ def worktrees(repo):
     return rows
 
 
-def where(repo):
-    """Same-page check for any account or machine: what is shipped, and what is still only in a worktree."""
+def tree_state(path):
+    """(ahead, work, noise) of the worktree at `path`: commits not on origin/fast-track, the uncommitted
+    `status --short` rows that are real work, and the rows that are not (is_noise). ahead is None when HEAD does not
+    resolve (unborn, pointing at a missing ref, or the folder is gone); work and noise are then empty."""
+    r = git(path, "rev-list", "--count", f"origin/{TRUNK}..HEAD", check=False)
+    if r.returncode != 0:
+        return None, [], []
+    rows = [l for l in git(path, "status", "--short", check=False).stdout.splitlines() if l]
+    return int(r.stdout.strip() or 0), [l for l in rows if not is_noise(l)], [l for l in rows if is_noise(l)]
+
+
+def survey(repo):
+    """One dict per worktree (path, name, branch, ahead, work, noise, fix), looked at in parallel: about 3 git calls each
+    and 90+ trees. `fix` says what to do about a tree whose HEAD does not resolve (ahead is None)."""
+    rows = worktrees(repo)
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        states = list(pool.map(lambda row: tree_state(row[0]), rows))
+    trees = [dict(path=p, name=Path(p).name, branch=b, ahead=s[0], work=s[1], noise=s[2], fix="")
+             for (p, b), s in zip(rows, states)]
+    broken = [t for t in trees if t["ahead"] is None]
+    if broken:
+        # A HEAD that names `jis-nb/x` while the branch is `JIS-NB/x` (made on a case-insensitive FS) never resolves.
+        heads = {h.lower(): h for h in git(repo, "for-each-ref", "--format=%(refname:short)", "refs/heads").stdout.split()}
+        for t in broken:
+            real = heads.get(t["branch"].lower())
+            if not Path(t["path"]).exists():
+                t["fix"] = "folder gone: `git worktree prune`"
+            elif real and real != t["branch"]:
+                t["fix"] = f"HEAD names {t['branch']} but the branch is {real}: git -C {t['path']} symbolic-ref HEAD refs/heads/{real}"
+            else:
+                t["fix"] = "branch has no commits (ref missing); copy any wanted files out, then `git worktree remove`"
+    return trees
+
+
+def unshipped_reason(t):
+    """Why a surveyed tree holds work, or None: real uncommitted files first, else commits not on origin."""
+    if t["work"]:
+        return f"{len(t['work'])} uncommitted file(s)"
+    if t["ahead"]:
+        return f"{t['ahead']} commit(s) not shipped to origin/{TRUNK}"
+    return None
+
+
+def broken_summary(broken):
+    names = ", ".join(t["name"] for t in broken[:5]) + (", ..." if len(broken) > 5 else "")
+    return f"BROKEN    {len(broken)} tree(s) with HEAD on a missing ref ({names}); `sync.py where --all` prints the fix per tree"
+
+
+def where(repo, all_=False):
+    """Same-page check for any account or machine: what is shipped, and what is still only in a worktree.
+    Default: this tree plus every tree holding real work (commits not on origin, or uncommitted files that are not the
+    pulled mirror / a stray AGENTS.md), at most ROW_CAP rows and one summary line (~1 KB). all_: every tree, one row each."""
     git(repo, "fetch", "--quiet", "origin", TRUNK)
     tip = git(repo, "log", "-1", "--format=%h %ar %s", f"origin/{TRUNK}").stdout.strip()
     print(f"origin/{TRUNK}: {tip}")
-    open_items = 0
-    for path, branch in worktrees(repo):
-        if git(Path(path), "rev-parse", "--verify", "--quiet", "HEAD", check=False).returncode != 0:
-            # Unborn branch (its ref is gone): no commits to ship; report it instead of aborting the whole check.
-            open_items += 1
-            print(f"BROKEN    {Path(path).name:28} [{branch}] branch has no commits (ref missing); copy any wanted files out, then `git worktree remove`")
-            continue
-        ahead = git(Path(path), "rev-list", "--count", f"origin/{TRUNK}..HEAD").stdout.strip()
-        dirty = [l for l in git(Path(path), "status", "--short").stdout.splitlines() if l]
-        tracked = sum(1 for l in dirty if not l.startswith("??"))
-        flag = "ok" if ahead == "0" and not dirty else "UNSHIPPED"
-        open_items += flag != "ok"
-        print(f"{flag:9} {Path(path).name:28} [{branch}] unshipped-commits={ahead} modified={tracked} untracked={len(dirty) - tracked}")
-    print(f"{open_items} worktree(s) hold work that is not on origin/{TRUNK}; commit and `sync.py ship` them (the live tree is shipped by its owners)")
+    here = Path(repo).resolve()
+    trees = survey(repo)
+    for t in trees:
+        t["flag"] = "BROKEN" if t["ahead"] is None else "UNSHIPPED" if unshipped_reason(t) else "ok"
+
+    def row(t):
+        tracked = sum(1 for l in t["work"] if not l.startswith("??"))
+        return (f"{t['flag']:9} {t['name']:28} [{t['branch']}] unshipped-commits={t['ahead']} modified={tracked} "
+                f"untracked={len(t['work']) - tracked}" + (f" ignored-noise={len(t['noise'])}" if all_ and t["noise"] else ""))
+    broken = [t for t in trees if t["flag"] == "BROKEN"]
+    if all_:
+        for t in trees:
+            print(f"BROKEN    {t['name']:28} [{t['branch']}] {t['fix']}" if t["flag"] == "BROKEN" else row(t))
+    else:
+        shown = [t for t in trees if t["flag"] == "UNSHIPPED" or (t["flag"] == "ok" and Path(t["path"]).resolve() == here)]
+        for t in shown[:ROW_CAP]:
+            print(row(t))
+        if len(shown) > ROW_CAP:
+            print(f"... {len(shown) - ROW_CAP} more with unshipped work: sync.py where --all")
+        if broken:
+            print(broken_summary(broken))
+    open_items = sum(t["flag"] != "ok" for t in trees)
+    print(f"{open_items} worktree(s) hold work that is not on origin/{TRUNK}; commit and `sync.py ship` them (the live tree is shipped by its owners)"
+          + ("" if all_ else f" [{len(trees)} trees checked; `sync.py where --all` lists every one]"))
 
 
 def account(repo):
@@ -328,14 +420,26 @@ LANE_WORKTREES = ("mts-push", "mts-refiner", "mts-codex-lab", "mts-codex", "mts-
 
 
 TIDY_IDLE_HOURS = 24
+TIDY_KEEP_LINES = 10  # keep-reasons listed one per line; the rest only counted in the last line
+QUIET_KEEPS = ("lane", "hand-named")  # decided by the name alone: counted, never listed
 # Ignored paths that are rebuilt for free; anything else ignored (Dumps/, runtime_data/, fetched klines) is data.
-REGENERABLE = ("__pycache__/", ".pytest_cache/", ".pyc", " target/")  # target/ = Maven build output
+# target/ = Maven build output; settings.local.json is an identical copy in every tree; control_room/ is generated HTML;
+# ACCOUNT_DAILY_LOSS.jsonl is what the daily-loss tests write into a work tree's journal.
+REGENERABLE = ("__pycache__/", ".pytest_cache/", ".pyc", " target/", ".claude/settings.local.json", "runtime_data/control_room/",
+               "journal/ACCOUNT_DAILY_LOSS.jsonl")
+
+
+def holds_files(root, rel):
+    """True when ignored path `rel` under `root` is a file or a directory with at least one file below it (an empty
+    ignored directory, such as Dumps/workers/, loses nothing when its tree is removed)."""
+    path = Path(root) / rel.strip('"')
+    return path.is_file() or any(files for _, _, files in os.walk(path))
 
 
 def ignored_data(p):
     """Ignored paths in worktree `p` that are not trivially regenerable (`git worktree remove` deletes them)."""
     out = git(p, "status", "--porcelain", "--ignored=matching", check=False).stdout.splitlines()
-    return [l[3:] for l in out if l.startswith("!! ") and not any(m in l for m in REGENERABLE)]
+    return [l[3:] for l in out if l.startswith("!! ") and not any(m in l for m in REGENERABLE) and holds_files(p, l[3:])]
 
 
 def idle_hours(p, branch, now):
@@ -352,54 +456,81 @@ def idle_hours(p, branch, now):
     return (now - max(stamps)) / 3600 if stamps else 0.0
 
 
+def is_app_tree(p):
+    """Worktrees the Claude desktop app and EnterWorktree make live in <repo>/.claude/worktrees/<random-name>."""
+    return p.parent.name == "worktrees" and p.parent.parent.name == ".claude"
+
+
 def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS, now=None):
-    """Retire finished session worktrees (`../mts-<host>-<slug>` made by `start`). Dry run unless apply.
-    Removed only when: not the primary tree, not the one we are in, no live marker, clean, no ignored data
-    files (those are deleted with the tree), branch fully on origin/fast-track, and idle for `min_idle_hours`
-    (a just-started tree is clean and "on origin" too, so cleanliness alone cannot tell it from a finished one).
-    Named lanes (mts-push, mts-codex-lab ...) and anything else are never touched.
+    """Retire finished worktrees: `../mts-<host>-<slug>` made by `start`, the App's `.claude/worktrees/*` and `../mts-relay-*`.
+    Dry run unless apply. Removed only when: not the primary tree, not the one we are in, no live marker, clean (the pulled
+    mirror and a stray AGENTS.md/.codex do not count), no ignored data files (those are deleted with the tree), branch fully
+    on origin/fast-track, and idle for `min_idle_hours` (a just-started tree is clean and "on origin" too, so cleanliness
+    alone cannot tell it from a finished one). Lanes (mts-push, mts-relay ...) and anything else are never touched unless
+    include_named. Prints the removals, at most TIDY_KEEP_LINES keep reasons, and a last line with a count per reason.
     Returns the paths removed (or that would be)."""
     now = time.time() if now is None else now
     git(repo, "fetch", "--quiet", "origin", TRUNK)
     here = Path(repo).resolve()
     rows = worktrees(repo)
-    out = []
+    out, kept, listed = [], {}, 0
+
+    def keep(p, key, why):
+        nonlocal listed
+        kept[key] = kept.get(key, 0) + 1
+        if key not in QUIET_KEEPS and listed < TIDY_KEEP_LINES:
+            listed += 1
+            print(f"keep  {p.name}: {why}")
+
     for path, branch in rows[1:]:
         p = Path(path).resolve()
         if p == here or not p.exists() or (p / LIVE_MARKER).exists():
             continue
-        auto = re.match(r"mts-.+-s\d{4}-\d{6}(-\d+)?$", p.name) or p.name.startswith(f"mts-{socket.gethostname().lower()}-")
-        if p.name in LANE_WORKTREES or not (auto or include_named):
-            print(f"keep  {p.name}: named lane or hand-named (`tidy --all` includes hand-named ones)")
+        auto = (re.match(r"mts-.+-s\d{4}-\d{6}(-\d+)?$", p.name) or p.name.startswith((f"mts-{socket.gethostname().lower()}-", "mts-relay-"))
+                or is_app_tree(p))
+        if p.name in LANE_WORKTREES:
+            keep(p, "lane", "named lane")
+            continue
+        if not (auto or include_named):
+            keep(p, "hand-named", "hand-named")
             continue
         if branch in ("(detached)", TRUNK, "master", "main"):
-            print(f"keep  {p.name}: branch {branch}")
+            keep(p, "branch", f"branch {branch}")
             continue
-        if git(p, "status", "--porcelain", check=False).stdout.strip():
-            print(f"keep  {p.name}: uncommitted files")
+        rows_dirty = [l for l in git(p, "status", "--short", check=False).stdout.splitlines() if l]
+        if any(not is_noise(l) for l in rows_dirty):
+            keep(p, "uncommitted", "uncommitted files")
             continue
-        if git(repo, "merge-base", "--is-ancestor", branch, f"origin/{TRUNK}", check=False).returncode != 0:
-            print(f"keep  {p.name}: {branch} has commits not on origin/{TRUNK}")
+        anc = git(repo, "merge-base", "--is-ancestor", branch, f"origin/{TRUNK}", check=False).returncode
+        if anc > 1:
+            keep(p, "unborn", f"HEAD names {branch}, which is not a branch (see `sync.py where --all`)")
+            continue
+        if anc == 1:
+            keep(p, "unshipped", f"{branch} has commits not on origin/{TRUNK}")
             continue
         data = ignored_data(p)
         if data:
-            print(f"keep  {p.name}: ignored data would be deleted ({len(data)} path(s), e.g. {data[0]}); move it to the "
-                  f"primary tree's Dumps/ first")
+            keep(p, "data", f"ignored data would be deleted ({len(data)} path(s), e.g. {data[0]}); move it to the "
+                            f"primary tree's Dumps/ first")
             continue
         idle = idle_hours(p, branch, now)
         if idle < min_idle_hours:
-            print(f"keep  {p.name}: active {idle:.1f} h ago (tidy waits {min_idle_hours} h)")
+            keep(p, "active", f"active {idle:.1f} h ago (tidy waits {min_idle_hours} h)")
             continue
         if apply:
-            r = git(repo, "worktree", "remove", str(p), check=False)
+            # --force only for the noise rows above (pulled mirror, stray AGENTS.md/.codex): git counts untracked files as dirt
+            r = git(repo, "worktree", "remove", *(["--force"] if rows_dirty else []), str(p), check=False)
             if r.returncode != 0:
-                print(f"keep  {p.name}: remove failed ({r.stderr.strip()[:80]})")
+                keep(p, "remove-failed", f"remove failed ({r.stderr.strip()[:80]})")
                 continue
             git(repo, "branch", "-d", branch, check=False)
         print(f"{'removed' if apply else 'would remove'}  {p.name} [{branch}]")
         out.append(str(p))
     if apply:
         git(repo, "worktree", "prune", check=False)
+    counts = ", ".join(f"{k} {n}" for k, n in sorted(kept.items(), key=lambda kv: (-kv[1], kv[0])))
+    print(f"{'removed' if apply else 'would remove'} {len(out)}; kept {sum(kept.values())}" + (f" ({counts})" if kept else "")
+          + ("" if apply else "; `sync.py tidy --apply` removes, `--all` also tries hand-named trees"))
     return out
 
 
@@ -417,8 +548,15 @@ def release(repo, slug, gate=run_gate):
 
 
 def main(argv):
-    cmds = {"start": start, "ship": ship, "news": news, "where": where, "claims": print_claims, "health": health}
+    cmds = {"start": start, "ship": ship, "news": news, "claims": print_claims, "health": health}
     extra = {"claim", "release"}
+    if argv and argv[0] == "where" and set(argv[1:]) <= {"--all"}:
+        try:
+            where(toplevel(Path.cwd()), "--all" in argv)
+        except SyncError as e:
+            print(f"sync: {e}", file=sys.stderr)
+            return 1
+        return 0
     if argv and argv[0] == "tidy" and len(argv) <= 3:
         try:
             tidy(toplevel(Path.cwd()), "--apply" in argv, "--all" in argv)

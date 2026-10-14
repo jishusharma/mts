@@ -29,5 +29,8 @@ def test_where_reports_unborn_worktree(tmp_path, capsys):
     _git(repo, "update-ref", "-d", "refs/heads/gone")
     sync.where(repo)
     out = capsys.readouterr().out
-    assert "BROKEN" in out and "wt" in out
+    assert "BROKEN" in out and "wt" in out  # default: one line naming the broken trees
     assert "worktree(s) hold work" in out
+    sync.where(repo, all_=True)
+    full = capsys.readouterr().out
+    assert any(l.startswith("BROKEN") and "wt" in l and "worktree remove" in l for l in full.splitlines())  # --all: one row, with the fix
