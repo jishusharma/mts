@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
-Generate MyTradingSys/research/STATUS.md
-Gathers: git status, queue_tool status, in-flight .new files, recent reports, open findings.
+Generate MyTradingSys/research/STATUS.md (the boot read: keep it short, one home per fact).
+Gathers: the CI green line, trunk tip, in-flight .new files, the 5 newest reports, screenshots, the layer lab, the
+hygiene report when this host has one, project groups, open findings. Lists that other indexes already hold (queue
+status of the retired NUC worker, 10 commits, delivered lab cards) are not repeated here.
 """
 import subprocess
 import os
@@ -9,6 +11,12 @@ import sys
 from pathlib import Path
 from datetime import datetime, timedelta
 import re
+
+TRUNK = "origin/fast-track"
+TRUNK_COMMITS = 3
+RECENT_REPORTS = 5
+RECENT_REPORT_DAYS = 3
+
 
 def run_cmd(cmd, cwd=None):
     """Run shell command and return stdout."""
@@ -18,17 +26,14 @@ def run_cmd(cmd, cwd=None):
     except Exception as e:
         return f"Error: {e}"
 
-def get_git_branch():
-    """Get current git branch."""
-    return run_cmd("git branch --show-current")
 
-def get_git_log():
-    """Get last 10 commits."""
-    return run_cmd("git log --oneline -10")
+def get_trunk_log(n=TRUNK_COMMITS, cwd=None):
+    """(label, one-line log) of the last n commits on origin/fast-track; falls back to HEAD and says so when the ref is missing.
+    Never this host's local HEAD when the trunk is known: that was 258 commits behind the tip in the committed copy."""
+    if run_cmd(f"git rev-parse --verify --quiet {TRUNK}", cwd=cwd):
+        return TRUNK, run_cmd(f"git log --oneline -{n} {TRUNK}", cwd=cwd)
+    return "HEAD (no origin/fast-track ref on this host)", run_cmd(f"git log --oneline -{n}", cwd=cwd)
 
-def get_queue_status():
-    """Get queue_tool.py status output."""
-    return run_cmd("python scripts/worker/queue_tool.py status")
 
 def get_screenshot_status():
     """One line from the screenshot store plus any overdue shots; never fails the status build."""
@@ -42,20 +47,23 @@ def get_screenshot_status():
 def get_lab_status():
     """Codex layer lab in plain words (scripts/dev/codex_run.py status); never fails the status build."""
     try:
-        r = subprocess.run([sys.executable, "scripts/dev/codex_run.py", "status"], capture_output=True, text=True, timeout=60)
+        r = subprocess.run([sys.executable, "scripts/dev/codex_run.py", "status", "--brief"], capture_output=True, text=True, timeout=60)
         return (r.stdout or r.stderr).strip() or "(no lab status)"
     except Exception as e:
         return f"(lab status unavailable: {e})"
 
 
 def get_hygiene_status(sched_dir=None):
-    """Head of the scheduled daily hygiene report (scripts/dev/daily_hygiene.py); never fails the status build."""
+    """Head of the scheduled daily hygiene report (scripts/dev/daily_hygiene.py), or "" when this host has none.
+
+    The report is gitignored and host-local, so a host without the scheduled task would print 'no hygiene run yet' forever:
+    the section is left out instead (main() skips an empty result). Never fails the status build."""
     d = Path(sched_dir) if sched_dir else Path("MyTradingSys/runtime/sched")
     f = d / "hygiene_latest.md"
     try:
         lines = f.read_text(encoding="utf-8").splitlines()
     except OSError:
-        return "(no hygiene run on this host yet: python scripts/dev/daily_hygiene.py, or register_cicd_tasks.ps1)"
+        return ""
     return chr(10).join(lines[:12])
 
 
@@ -68,18 +76,28 @@ def get_group_line():
         return f"(group line unavailable: {e})"
 
 
-def get_new_files():
-    """Get .new files under MyTradingSys with age in hours."""
-    now = datetime.now()
+def get_new_files(root="MyTradingSys", cwd=None, now=None):
+    """(path, age in hours) of the .new files under root.
+
+    A tracked .new file is aged by its last commit, an untracked one by mtime: a checkout stamps every tracked file with the
+    checkout time, which showed two days-old staged files as 0.2 h old."""
+    base = Path(cwd) if cwd else Path(".")
+    now = now or datetime.now()
+    tracked = set(run_cmd(f'git ls-files -- "{root}/*.new"', cwd=cwd).splitlines())   # git pathspec * crosses directories
     new_files = []
-    for root, dirs, files in os.walk("MyTradingSys"):
+    for dirpath, dirs, files in os.walk(base / root):
         for f in files:
-            if f.endswith(".new"):
-                fpath = os.path.join(root, f)
-                mtime = os.path.getmtime(fpath)
-                mtime_dt = datetime.fromtimestamp(mtime)
-                age_hours = (now - mtime_dt).total_seconds() / 3600
-                new_files.append((fpath, age_hours))
+            if not f.endswith(".new"):
+                continue
+            full = Path(dirpath) / f
+            rel = full.relative_to(base).as_posix()
+            when = None
+            if rel in tracked:
+                ts = run_cmd(f'git log -1 --format=%ct -- "{rel}"', cwd=cwd)
+                when = datetime.fromtimestamp(int(ts)) if ts.isdigit() else None
+            if when is None:
+                when = datetime.fromtimestamp(os.path.getmtime(full))
+            new_files.append((rel, (now - when).total_seconds() / 3600))
 
     new_files.sort(key=lambda x: x[0])
     return new_files
@@ -163,10 +181,16 @@ def get_ci_line(cwd=None, now=None):
     # ci.yml only runs on pushes touching CI_PATHS: a tip that differs from green only in docs never gets a run
     if not run_cmd("git diff --name-only origin/green/fast-track origin/fast-track -- " + " ".join(CI_PATHS), cwd=cwd):
         return f"CI green: {green} ({when}), {len(pending)} docs-only commit(s) ahead (no CI-gated path changed): OK"
-    age_min = ((now or datetime.now()).timestamp() - min(pending)) / 60
+    now_ts = (now or datetime.now()).timestamp()
+    age_min = (now_ts - min(pending)) / 60
     tag = (f"RED: oldest ungreen commit is {age_min / 60:.1f} h old - CI is failing, auto-deploy is idle; fix CI first"
            if age_min > CI_STALE_MIN else "CI running")
-    return f"CI green: {green} ({when}), {len(pending)} commit(s) behind origin/fast-track: {tag}"
+    # both numbers: the first-parent count (landings, drives the age above) is far below the plain commit count when merges land
+    total = run_cmd("git rev-list --count origin/green/fast-track..origin/fast-track", cwd=cwd)
+    green_ts = run_cmd("git log -1 --format=%ct origin/green/fast-track", cwd=cwd)
+    green_age = f", {(now_ts - int(green_ts)) / 3600:.1f} h old" if green_ts.isdigit() else ""
+    return (f"CI green: {green} ({when}{green_age}), {len(pending)} trunk landing(s) / {total or '?'} commit(s) behind "
+            f"origin/fast-track: {tag}")
 
 
 LESSONS = "MyTradingSys/system/LESSONS_LEARNED.md"
@@ -226,24 +250,15 @@ def main():
     output.append("Generated: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     output.append("")
 
-    # Git status
+    # Git status: trunk, not this host's branch (the old Branch line named the generating host's checkout)
     output.append("## Git Status")
-    branch = get_git_branch()
-    output.append(f"**Branch:** {branch} (the host that generated this file; yours may differ)")
-    output.append("")
     output.append(get_ci_line())
     output.append(get_lessons_line())
     output.append("")
-    output.append("**Last 10 commits:**")
+    label, log = get_trunk_log()
+    output.append(f"**Last {TRUNK_COMMITS} commits on {label}:**")
     output.append("```")
-    output.append(get_git_log())
-    output.append("```")
-    output.append("")
-
-    # Queue status
-    output.append("## Queue Status")
-    output.append("```")
-    output.append(get_queue_status())
+    output.append(log)
     output.append("```")
     output.append("")
 
@@ -257,13 +272,13 @@ def main():
         output.append("(none)")
     output.append("")
 
-    # Recent reports
-    output.append("## Recent Reports (last 7 days)")
-    reports = get_recent_reports()
+    # Recent reports: the newest few, one line each (the full list is git log / LAYERS.md)
+    output.append(f"## Recent Reports (newest {RECENT_REPORTS}, last {RECENT_REPORT_DAYS} days)")
+    reports = get_recent_reports(days=RECENT_REPORT_DAYS)[:RECENT_REPORTS]
     if reports:
         for fpath, mtime, heading in reports:
             heading_str = heading if heading else "(no heading)"
-            output.append(f"- {fpath} ({mtime}) {heading_str}")
+            output.append(f"- {fpath} ({mtime}) {heading_str[:90]}")
     else:
         output.append("(none)")
     output.append("")
@@ -282,12 +297,14 @@ def main():
     output.append("```")
     output.append("")
 
-    # Scheduled daily hygiene (gate, where, declutter dry run): the report a session reads at boot
-    output.append("## Daily Hygiene (scheduled)")
-    output.append("```")
-    output.append(get_hygiene_status())
-    output.append("```")
-    output.append("")
+    # Scheduled daily hygiene (gate, where, declutter dry run): the report a session reads at boot; no section on a host with no report
+    hygiene = get_hygiene_status()
+    if hygiene:
+        output.append("## Daily Hygiene (scheduled)")
+        output.append("```")
+        output.append(hygiene)
+        output.append("```")
+        output.append("")
 
     # Project groups: where the open work sits (definitions: MyTradingSys/system/groups.json, map: PROJECT_MAP.md)
     output.append("## Project Groups")

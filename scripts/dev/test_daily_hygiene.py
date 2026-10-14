@@ -79,7 +79,7 @@ class TestHygiene(unittest.TestCase):
             text = ms.get_hygiene_status(Path(d))
             self.assertIn("STATUS: RED (failed: gate)", text)
             self.assertIn("2026-10-10T06:30:00Z", text)
-            self.assertIn("no hygiene run", ms.get_hygiene_status(Path(d) / "missing"))
+            self.assertEqual(ms.get_hygiene_status(Path(d) / "missing"), "")   # no report on this host: STATUS.md leaves the section out
 
 
 if __name__ == "__main__":

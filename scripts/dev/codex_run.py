@@ -846,16 +846,19 @@ def guard_line(rows, rl, now):
             f"resets {datetime.fromtimestamp(w_end, timezone.utc).strftime('%H:%MZ')}")
 
 
-def status_text(ready, done, tried, rows, rl, now, last_tick="", unshipped=0, stopped="", host_has_lab=True, age=None, lane_up=True):
+def status_text(ready, done, tried, rows, rl, now, last_tick="", unshipped=0, stopped="", host_has_lab=True, age=None, lane_up=True, brief=False):
+    """brief=True (STATUS.md) leaves out the Delivered block: those results are in layer_lab/INDEX.md."""
     L = [f"Layer lab (Codex) at {datetime.fromtimestamp(now, timezone.utc).strftime('%Y-%m-%d %H:%MZ')}: {'OFF' if stopped else 'on'}"]
     if not host_has_lab:
-        L.append("  This machine does not run the lab (it runs on JIS-NUC): queue and deliveries below are from the repo; allowance, runs and what needs a look are only known there.")
+        L.append("  This machine does not run the lab (it runs on JIS-NUC): the queue below is from the repo; allowance, runs and what needs a look are only known there." if brief else
+                 "  This machine does not run the lab (it runs on JIS-NUC): queue and deliveries below are from the repo; allowance, runs and what needs a look are only known there.")
     else:
         L += ["  " + budget_line(rl, now), "  " + guard_line(rows, rl, now), "  Last check by the scheduler: " + (last_tick or "none yet")]
     L.append(f"  Queue: {len(ready)} ready")
     L += [f"    {c['id']} [{c['kind']}, {' / '.join(tasks.codex_setting(c))}]" + (" SKIPPED after failed tries" if tried.get(c["id"], 0) >= MAX_ATTEMPTS else "") for c in ready]
-    L.append("  Delivered (latest 5; all in MyTradingSys/research/layer_lab/INDEX.md):")
-    L += [f"    {c.get('closed', '')[:10]} {c['id']}: {c.get('result', '')}" for c in sorted(done, key=lambda c: c.get("closed", ""), reverse=True)[:5]] or ["    nothing yet"]
+    if not brief:
+        L.append("  Delivered (latest 5; all in MyTradingSys/research/layer_lab/INDEX.md):")
+        L += [f"    {c.get('closed', '')[:10]} {c['id']}: {c.get('result', '')}" for c in sorted(done, key=lambda c: c.get("closed", ""), reverse=True)[:5]] or ["    nothing yet"]
     if host_has_lab:
         L.append("  Last runs:")
         L += ["    " + run_line(r) for r in rows[-5:]] or ["    none"]
@@ -880,7 +883,7 @@ def cmd_status(a):
     print(status_text(cards, done, attempts(home), run_rows(home), budget(home), time.time(),
                       tick.read_text(encoding="utf-8").strip() if tick.is_file() else "", unshipped,
                       stop.read_text(encoding="utf-8").strip() if stop.is_file() else "", here,
-                      reading_age(home, time.time()), lane_health.allow(lane_health.load(REPO), utc()) != ""))
+                      reading_age(home, time.time()), lane_health.allow(lane_health.load(REPO), utc()) != "", brief=a.brief))
     return 0
 
 
@@ -923,7 +926,9 @@ def main(argv=None):
     k.add_argument("--effort", choices=tasks.CODEX_EFFORTS)
     k.set_defaults(f=cmd_ask)
     sp.add_parser("index").set_defaults(f=cmd_index)
-    sp.add_parser("status").set_defaults(f=cmd_status)
+    st = sp.add_parser("status")
+    st.add_argument("--brief", action="store_true", help="leave out the Delivered block (what STATUS.md embeds)")
+    st.set_defaults(f=cmd_status)
     s = sp.add_parser("stop")
     s.add_argument("why")
     s.set_defaults(f=cmd_stop)
