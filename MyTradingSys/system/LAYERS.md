@@ -40,6 +40,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-v2-dax-dev-backtest` blocked p1 SONNET: Tom v2: DAX dev backtest of the fade under the part B protocol (both fills, session null)
   - `gap-g4-through-ticks-flag` ready p2 CODEX: Gap G4: through_ticks flag in tom_bt.sim_limit_trade (entry and target), default off, output identical
   - `gap-g6-trial-ledger` ready p2 CODEX: Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)
+  - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
+  - `point-in-time-factor-design` raw p2 CODEX: Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-
   - `tom-btc-dev-backtest` raw p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` raw p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` raw p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
@@ -50,6 +52,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-encode-fade-profile-proofs` blocked p2 SONNET: Tom v2: encode the PROFILE arm of the fade (thin top, failed P breakout, lower b-shape)
   - `tom-ledger-add-the-losing-first-attempts` blocked p2 SONNET: Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)
   - `tom-probe-prereg` blocked p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
+  - `tom-short-coverage-above-vah` raw p2 SONNET: Tom short coverage on trend-down days: no candidate above VAH, ct_short at VAH killed by POC-only target (2026
   - `tom-v2-btc-min-stop-width` ready p2 CODEX: Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)
   - `tom-btc-other-setups` raw p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
   - `tom-ledger-single-trade-date-used-column` blocked p3 SONNET: Tom ledger: single trade_date_used column, blank date for non-observed rows (RV01 F1,F2)
@@ -118,6 +121,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/rsi/malkan_40_60.py`; `MyTradingSys/backtest/layers/rsi/malkan_mtf.py`
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
+  - `point-in-time-factor-design` raw p2 CODEX: Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-
   - `malkan-home-fit-audit` refined p4 SONNET: Home-fit audit of the Malkan RSI layer against the readiness checklist
 
 ## CryptoCred setups (`cryptocred`)
@@ -195,6 +200,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/volume_2026-10-09`; `MyTradingSys/research/candle_patterns_2026-10-04`; `MyTradingSys/research/setup_alpha_beta_2026-10-10`; `MyTradingSys/research/bigtrade_2026-10-09`; `MyTradingSys/research/layer_lab/candle_close_2026-10-14`
 - Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-14_lab-candle-close-research.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_lab-candle-close-dev.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_candle-close-independent-audit.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `bb-top-reversal-candle-backtest` raw p2 SONNET: Backtest the 15m top-reversal candle short at the upper Bollinger Band (operator rule 2026-10-14) with a band 
+  - `point-in-time-factor-design` raw p2 CODEX: Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-
   - `candle-close-phase-encounter-design` ready p3 SONNET: Candle research: preregister joint phases and fair encounter controls before rerun
   - `candle-close-test-import-guard` ready p3 SONNET: Candle research: fail closed on study import errors and verify dependency coverage
   - `pooled-short-lookback-trend-tsmom-30d-sm` raw p3 DSA: Pooled short-lookback trend (TSMOM 30d, SMA50/100, 4h Donchian 20/10) on sealed 2025-07..2026-09 BTC holdout: 
@@ -214,6 +221,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `exec-halt-entry-10031` ready p1 JIS-NB: HALT since 2026-10-12 09:46Z: entry_market rejected 10031 invalid_args_for_instrument (plan L-mkt-1012-0945, j
   - `blind-monitor-halt-recovery` raw p2 JIS-NB: Blind-monitor halt auto-recovery on testnet (operator policy)
   - `chart-verify-py-recompute-bb-rsi-stochrs` raw p2 SONNET: chart_verify.py: recompute BB/RSI/StochRSI/volume/OI/delta-step for any CoinGlass timeframe from fapi at the s
+  - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
   - `live-loop-one-owner-guard` ready p2 JIS-NB: Live loop one-owner guard: start verb refuses when another host's heartbeat is fresh, fails closed (DEVICES.md
   - `live-mirror-stale-published-2026-10-11-2` ready p2 JIS-NB: Live mirror stale: published 2026-10-11 20:09Z, 19 h old at 15:25Z 10-12; NUC reads cannot check HALT, layer f
   - `identify-the-coinglass-net-delta-panel-u` raw p3 SONNET: Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 1

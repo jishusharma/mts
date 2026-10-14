@@ -1,0 +1,33 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-14T15:00:06Z",
+  "depends_on": [],
+  "done_when": "RESULT.md with every variant in the trial ledger, fee-net, DEV/VAL/HOLDOUT side by side, a layer_map.json row, and a one-line verdict the operator can read.",
+  "from_inbox": "",
+  "goal": "Know, fee-net on DEV/VAL/HOLDOUT, whether the operator's 15m top-reversal short pays: price climbs into resistance at or near the upper Bollinger Band, the prior 15m candle is green, the next candle turns red and trades/closes below the green candle's open or low.",
+  "id": "bb-top-reversal-candle-backtest",
+  "lane": "SONNET",
+  "layers": [
+    "volume_candles_ma"
+  ],
+  "live_path": false,
+  "note": "Operator rule (2026-10-14, chat; screenshots 6b27526d76bd, 9fda889f1529; examples 08:00->08:15Z and 12:15->12:30Z on 14 Oct). Entry variants (all run, pre-registered): E0 short outside the upper band intrabar; E1 red candle trades below the prior green open; E2 closes below it; E3 closes below the prior green low. Lower-TF (1-3m) build-up is a later variant. Stop variants: S1 a few ticks above the top wick (default), S2 just above the red candle's open. Exits: 2R, VWAP/middle band, prior swing low, trail above each 15m high. Band 'touch' has a cushion (operator: close enough counts): high within k x bandwidth of the upper band, k from sources or OURS. Resistance filters, each alone and any-one: upper BB, RSI bearish divergence, CVD divergence, Tom level (VAH/prior high). BB settings: 20/2 vs the 24/7 candidates from research/bollinger_2026-10-14/SOURCES.md. The operator dismissed the clarifying questions, so these are defaults (OURS) until they answer. Resistance must be point-in-time (card point-in-time-factor-design). Leverage 5-20x and fixed-fixed-double-triple sizing read from the same trades, like research/eur_low_us_sweep_2026-10-14.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/screenshots/2026-10-14_BTCUSDT_9fda889f1529.md",
+    "MyTradingSys/research/bollinger_2026-10-14/SOURCES.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Backtest the 15m top-reversal candle short at the upper Bollinger Band (operator rule 2026-10-14) with a band cushion and BTC 24/7 BB settings"
+}
