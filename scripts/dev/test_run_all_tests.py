@@ -78,18 +78,53 @@ class TestParallelLayerGate(unittest.TestCase):
 
 
 # The 46 steps the gate had before it ran concurrently: speeding it up must not drop one.
+# One label per line; a new gate step needs no edit here (the test is a subset check).
 ORIGINAL_LABELS = {
-    "Step 1: Execution tests", "Step 2: G1G2 offline test", "Step 3: Static test suite", "Step 3b: Guide checker tests",
-    "Step 3c: Guide in sync", "Step 3r: Alert rate checker tests", "Step 3s: Testnet status tests", "Step 3f: Funnel report tests",
-    "Step 3dk: Desk board tests", "Step 3tk: Task card tests", "Step 3td: Tom ledger date tests", "Step 3hs: Tom holdout split tests",
-    "Step 3sq: Spec quote checker tests", "Step 3ly: Layer index tests", "Step 3cx: Layer lab runner tests", "Step 3tl: Task card lint",
-    "Step 3q: INDEX/BUGS consistency", "Step 3p: P4 corrected script tests", "Step 3t: T093 imbalance tests", "Step 3d: Quote checker tests",
-    "Step 3h: Launcher static tests", "Step 3g: Gate coverage tests", "Step 3k: sync.py tests", "Step 3e: DSA worker tests",
-    "Step 3sh: Screenshot intake tests", "Step 3mg: Project group map tests", "Step 3xt: Extra tests", "Step 3ad: Auto-deploy tests",
-    "Step 3hy: Daily hygiene tests", "Step 3ms: make_status tests", "Step 3cs: Cloud setup hook tests", "Step 3pc: Prompt contract tests",
-    "Step 3ds: DSA helper CLI tests", "Step 3cr: Control Room tests", "Step 3lh: GPT lane health tests", "Step 3rb: Relay board tests",
-    "Step 3af: Artifact registry tests", "Step 3bk: Backup snapshot tests", "Step 3lm: Live mirror tests", "Step 3w: Wiring gate tests",
-    "Step 3x: Wiring check", "Step 4: Pytest tests", "Step 5: Maven tests", "Step 5b: Layer tests", "Step 5c: Options tests",
+    "Step 1: Execution tests",
+    "Step 2: G1G2 offline test",
+    "Step 3: Static test suite",
+    "Step 3b: Guide checker tests",
+    "Step 3c: Guide in sync",
+    "Step 3r: Alert rate checker tests",
+    "Step 3s: Testnet status tests",
+    "Step 3f: Funnel report tests",
+    "Step 3dk: Desk board tests",
+    "Step 3tk: Task card tests",
+    "Step 3td: Tom ledger date tests",
+    "Step 3hs: Tom holdout split tests",
+    "Step 3sq: Spec quote checker tests",
+    "Step 3ly: Layer index tests",
+    "Step 3cx: Layer lab runner tests",
+    "Step 3tl: Task card lint",
+    "Step 3q: INDEX/BUGS consistency",
+    "Step 3p: P4 corrected script tests",
+    "Step 3t: T093 imbalance tests",
+    "Step 3d: Quote checker tests",
+    "Step 3h: Launcher static tests",
+    "Step 3g: Gate coverage tests",
+    "Step 3k: sync.py tests",
+    "Step 3e: DSA worker tests",
+    "Step 3sh: Screenshot intake tests",
+    "Step 3mg: Project group map tests",
+    "Step 3xt: Extra tests",
+    "Step 3ad: Auto-deploy tests",
+    "Step 3hy: Daily hygiene tests",
+    "Step 3ms: make_status tests",
+    "Step 3cs: Cloud setup hook tests",
+    "Step 3pc: Prompt contract tests",
+    "Step 3ds: DSA helper CLI tests",
+    "Step 3cr: Control Room tests",
+    "Step 3lh: GPT lane health tests",
+    "Step 3rb: Relay board tests",
+    "Step 3af: Artifact registry tests",
+    "Step 3bk: Backup snapshot tests",
+    "Step 3lm: Live mirror tests",
+    "Step 3w: Wiring gate tests",
+    "Step 3x: Wiring check",
+    "Step 4: Pytest tests",
+    "Step 5: Maven tests",
+    "Step 5b: Layer tests",
+    "Step 5c: Options tests",
     "Step 6: Backtest tests",
 }
 
@@ -99,7 +134,7 @@ class TestGateKeepsEveryStep(unittest.TestCase):
         for quick in (True, False):
             labels = [s.label for s in rat.build_plan(quick)]
             self.assertEqual(len(labels), len(set(labels)), quick)
-            self.assertEqual(set(labels), ORIGINAL_LABELS, quick)
+            self.assertLessEqual(ORIGINAL_LABELS, set(labels), quick)
 
     def test_quick_skips_only_maven_and_backtest(self):
         skipped = {s.num for s in rat.build_plan(True) if s.skip}
