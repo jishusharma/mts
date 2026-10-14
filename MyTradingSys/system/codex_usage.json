@@ -6,7 +6,7 @@
   "window_resets": 1792015537,
   "window_used": 0
  },
- "at": "2026-10-14T17:31:12Z",
+ "at": "2026-10-14T18:06:24Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 4.0,
   "window_pts": 0.0,
-  "window_runs": 1
+  "window_runs": 2
  },
  "runs": [
+  {
+   "at": "2026-10-14T18:05:20Z",
+   "card": "tom-v2-btc-min-stop-width",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 58,
+   "tokens_out": 3033,
+   "tokens_total": 484726,
+   "tokens_uncached": 56221,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-14T17:30:03Z",
    "card": "tom-v2-btc-min-stop-width",
@@ -157,21 +172,6 @@
    "tokens_uncached": 59176,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-13T05:33:29Z",
-   "card": "rv05-fabio-ledger-frame-pass",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-astra",
-   "note": "6 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/system/LAYERS.md",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 299,
-   "tokens_out": 7758,
-   "tokens_total": 811992,
-   "tokens_uncached": 103818,
-   "week_pts": 4.0,
-   "window_pts": 20.0
   }
  ]
 }
