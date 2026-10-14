@@ -112,6 +112,22 @@ class TickLineTest(TickBase):
         self.assertNotIn("not posted yet", head)   # kick's QUEUE line already sees the posted row
         self.assertEqual(len(list((self.repo / "MyTradingSys" / "system" / "desk_queue").glob("*.json"))), 1)
 
+    def test_a_noisy_failing_ship_does_not_leak_before_the_tick_line(self):
+        # route posts through `sync.py ship`, a child with inherited streams: its lines used to land ahead of the answer
+        dev = self.repo / "scripts" / "dev"
+        dev.mkdir(parents=True)
+        (dev / "sync.py").write_text('import sys\nprint("SHIP NOISE one")\nprint("SHIP NOISE two")\nsys.exit(1)\n', encoding="utf-8", newline=NL)
+        git(self.repo, "add", "-A")
+        git(self.repo, "commit", "-q", "-m", "ship stub")
+        self.write(GO + BLOCK)
+        sess = self.tmp / "relay_session.md"
+        sess.write_text("# Relay session\n", encoding="utf-8", newline=NL)
+        r = run(self.home, "tick", "--file", str(self.f), "--root", str(self.repo), "--session-file", str(sess), cwd=self.repo)   # no --no-ship
+        out = self.lines(r)
+        self.assertTrue(out[0].startswith("TICK KICK depth=3 id=aaaa1111 | route=Q1 DSA ERROR"), out[0])
+        self.assertIn("[SHIP NOISE two]", out[0])   # the failure reason travels inside the one line
+        self.assertNotIn("SHIP NOISE one", r.stdout + r.stderr)
+
     def test_peer_idle_skips_every_extra_and_keeps_the_hourly_gate_open(self):
         nb = run(self.tmp / "nb-home", "handoff", "--file", str(self.f), "--go", host="JIS-NB", now="2026-10-15T09:50:00Z")
         self.assertEqual(nb.returncode, 0, nb.stdout + nb.stderr)

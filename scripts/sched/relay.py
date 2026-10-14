@@ -664,16 +664,37 @@ SKILL_REL = Path("scheduled-tasks") / "mts-dispatcher" / "SKILL.md"   # under ho
 
 
 def captured(fn, ns):
-    """(exit code, stdout) of a cmd_* function; an exception becomes (3, 'ERROR ...') so tick always prints its line."""
+    """(exit code, stdout, child output) of a cmd_* function. Its prints are collected, and so is anything a child process writes to
+    fd 1/2 (route runs `sync.py ship` with inherited streams): tick prints ONE line, nothing may land before it. An exception becomes
+    (3, 'ERROR ...', ...) so tick always answers."""
     import contextlib
     import io
+    import tempfile
+    sys.stdout.flush()
+    sys.stderr.flush()
+    saved = os.dup(1), os.dup(2)
+    child = tempfile.TemporaryFile(mode="w+b")
     buf = io.StringIO()
     try:
-        with contextlib.redirect_stdout(buf):
-            rc = fn(ns)
-    except (SystemExit, Exception) as e:
-        return 3, "ERROR %s: %s" % (type(e).__name__, str(e)[:160])
-    return rc, buf.getvalue().strip()
+        os.dup2(child.fileno(), 1)
+        os.dup2(child.fileno(), 2)
+        try:
+            with contextlib.redirect_stdout(buf):
+                rc = fn(ns)
+        except (SystemExit, Exception) as e:
+            rc = 3
+            buf.write("ERROR %s: %s" % (type(e).__name__, str(e)[:160]))
+    finally:
+        sys.stdout.flush()
+        sys.stderr.flush()
+        os.dup2(saved[0], 1)
+        os.dup2(saved[1], 2)
+        os.close(saved[0])
+        os.close(saved[1])
+    child.seek(0)
+    out = child.read().decode("utf-8", "replace")
+    child.close()
+    return rc, buf.getvalue().strip(), out
 
 
 def last_line(text, width=160):
@@ -778,9 +799,11 @@ def cmd_tick(a):
         if rc:
             flags.append("fetch=STALE")
     ns = argparse.Namespace(file=a.file, git_ref=a.git_ref, root=a.root, no_ship=a.no_ship, host=a.host, peer_quiet_min=a.peer_quiet_min)
-    _, route_out = captured(cmd_route, ns)
+    route_rc, route_out, route_child = captured(cmd_route, ns)
     route = re.sub(r"^ROUTE ", "", (route_out.splitlines() or ["?"])[0])[:160]
-    rc, kick_out = captured(cmd_kick, ns)
+    if route_rc and last_line(route_child, 100):
+        route += " [" + last_line(route_child, 100) + "]"   # why a post or ship failed: the child's last line
+    rc, kick_out, _ = captured(cmd_kick, ns)
     kick_lines = kick_out.splitlines()
     verdict = kick_lines[0] if kick_lines else "ERROR kick printed nothing"
     queue = next((ln[len("QUEUE "):] for ln in kick_lines if ln.startswith("QUEUE ")), "")   # absent on the early IDLEs (stop flag, no header)
