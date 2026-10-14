@@ -1,0 +1,81 @@
+{
+  "broken_application_import": {
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "ssssssss\n----------------------------------------------------------------------\nRan 8 tests in 0.000s\n\nOK (skipped=8)\n"
+  },
+  "missing_pandas_pytest": {
+    "exit_code": 0,
+    "internal_error": false,
+    "system_exit": false,
+    "detail": []
+  },
+  "by_phase.csv": {
+    "rows": 378,
+    "has_ci": false,
+    "has_joint_phase_trend": false,
+    "cells_positive_14bp": 7,
+    "positive_14bp_and_n100": 1
+  },
+  "by_trend.csv": {
+    "rows": 252,
+    "has_ci": false,
+    "has_joint_phase_trend": false,
+    "cells_positive_14bp": 0,
+    "positive_14bp_and_n100": 0
+  },
+  "by_fourdir.csv": {
+    "rows": 269,
+    "has_ci": false,
+    "has_joint_phase_trend": false,
+    "cells_positive_14bp": 0,
+    "positive_14bp_and_n100": 0
+  },
+  "verification_scope": {
+    "archive_hashes": 30,
+    "independently_reconstructed_events": 126,
+    "arm_count_checks": 126,
+    "total_rows": 105541,
+    "status": "PASS"
+  },
+  "bounded_range_counterexample": {
+    "closes": [
+      100,
+      112,
+      104,
+      116,
+      108,
+      120,
+      112,
+      124,
+      116,
+      128,
+      120,
+      132,
+      124,
+      136,
+      128,
+      140,
+      132,
+      144,
+      136,
+      148,
+      140,
+      152,
+      144,
+      156,
+      148,
+      160,
+      152,
+      164,
+      156,
+      168,
+      160
+    ],
+    "net": 60,
+    "travelled": 300,
+    "efficiency": 0.2,
+    "label": "ranging",
+    "interpretation": "60% net rise despite ranging label; low efficiency is not proof of stable horizontal boundaries"
+  }
+}

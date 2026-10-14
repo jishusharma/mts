@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-14T12:10:19Z",
+  "depends_on": [],
+  "done_when": "A6 reproduction exits nonzero after fix; genuine dependency absence skips explicitly; eight numerical tests pass with pandas; research outputs unchanged.",
+  "from_inbox": "",
+  "goal": "Make an unexpected study import failure fail the research tests; distinguish missing optional pandas from broken application imports.",
+  "id": "candle-close-test-import-guard",
+  "lane": "SONNET",
+  "layers": [
+    "volume_candles_ma"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "Codex independent audit 2026-10-14",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_study.py",
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/INDEPENDENT_AUDIT.md",
+    "scripts/dev/run_extra_tests.py (read only)"
+  ],
+  "scope_out": [
+    "holdout or validation reads",
+    "live systems",
+    "changing historical strategy results"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/INDEPENDENT_AUDIT.md",
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/AUDIT_REPRODUCTIONS.json"
+  ],
+  "state": "ready",
+  "steps": [
+    "Reproduce A6: installed pandas plus ImportError for study currently exits 0 with eight skips.",
+    "Catch only optional pandas import failures; import study outside that catch. Add a subprocess regression that fails on the pre-change implementation.",
+    "Run real eight numerical tests with pandas and simulated missing-pandas skips; report which CI checks execute versus skip. Do not edit workflows or strategy outputs."
+  ],
+  "tests": "Subprocess with pandas present and forced ImportError for study must exit nonzero; fails on old code. Missing pandas remains explicit eight skips; numerical tests execute when pandas exists.",
+  "title": "Candle research: fail closed on study import errors and verify dependency coverage"
+}
