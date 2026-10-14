@@ -15,7 +15,7 @@ Depth counts from the chain base (`kick` records it per host), so a timer-starte
 Per-host state (not in git) lives in $MTS_RELAY_HOME (default ~/.claude): mts-relay-stop (flag), mts-relay-lock.json, mts-relay-log.jsonl.
 
   python scripts/sched/relay.py handoff --file F (--go | --stop "<reason>") [--reset-depth]
-  python scripts/sched/relay.py lint --file F [--want go|stop]   task-list quality gate (handoff runs it; refuses on FAIL)
+  python scripts/sched/relay.py lint --file F [--want go|stop]   task-list quality gate + size cap (handoff runs the gate; refuses on FAIL)
   python scripts/sched/relay.py gate --file F --started-id <id|none>      exit 0 GO, 1 STOP
   python scripts/sched/relay.py kick [--file F | --git-ref REF:PATH]   dispatcher: KICK task=... (exit 0) or IDLE <why> (exit 1)
   python scripts/sched/relay.py status --file F | stop "<why>" | resume
@@ -44,6 +44,7 @@ STALE_H = 1  # kick: the same handoff id launched this long ago and never rewrit
 MAX_BYTES = int(os.environ.get("MTS_RELAY_MAX_BYTES") or 12288)  # handoff size cap: every relay session reads the whole file
 RUNS_NAME = "relay_runs.jsonl"
 HOST_ERR = "go with no unblocked open task for host"  # == handoff_lint.HOST_ERR
+NONE_ERR = "go with no unblocked open task:"  # == handoff_lint.NONE_ERR
 RUNS_KEEP = 400
 KICK_REF ="origin/fast-track:MyTradingSys/system/NEXT_SESSION.md"
 HDR = re.compile(r"<!-- relay: (go|stop)(?: reason=([^>]*?))? depth=(\d+) id=([0-9a-f]+) -->")
@@ -161,6 +162,10 @@ def lint_file(path, want, root=None, host=None, text=None):
 
 def cmd_lint(a):
     errs = lint_file(a.file, a.want, a.root, a.host)
+    size = len(Path(a.file).read_text(encoding="utf-8").encode("utf-8"))   # same measure as handoff's cap check
+    if size > MAX_BYTES:   # not in lint_file: handoff lints first and may still trim old sections to get under the cap
+        errs.append("file is %d bytes, cap %d (every relay session reads the whole file): handoff moves old `## ` sections to "
+                    "handoff_history/ and refuses when that is not enough; shorten the task block (drop DONE items, link files)" % (size, MAX_BYTES))
     for e in errs:
         print("LINT " + e)
     print("LINT OK" if not errs else "LINT FAIL %d" % len(errs))
@@ -306,6 +311,8 @@ def cmd_kick(a):
     for e in lint_file(a.file or "x", "go", root, me, text):
         if e.startswith(HOST_ERR):
             return idle("no unblocked task for host %s (%s)" % (me, e.split(": ", 1)[-1]))
+        if e.startswith(NONE_ERR):  # only DONE/blocked rows: a KICK would pay for an empty session (RV08)
+            return idle("no unblocked open task in handoff %s" % hid)
     prev = read_lock()
     if prev:
         age = now() - prev["_t"]
@@ -351,9 +358,35 @@ def begin_fail(why):
     return 1
 
 
+CARD_LINE = re.compile(r"^(\S+) \[([A-Z0-9-]+),")   # a `tasks.py next` line: <id> [<lane>, <size>, p<prio>] <title>
+
+
+def dev_module(name):
+    """scripts/dev/<name>.py beside this file: the begin worktree may hold another copy (the tests put stubs there)."""
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "dev"))
+    return __import__(name)
+
+
+def pick_card(out, skip, claimed, lanes, slug):
+    """(card id, held) from `tasks.py next` output: the first card whose lane is exactly one of `lanes` (DSA, DSA-NB, DSA-NUC, JIS-NB
+    and CODEX are run or lab lanes, never a builder's), that is not in `skip` and that no open claim holds (`claimed` = claim slugs,
+    `slug` = sync.slugify). `held` counts the builder-lane cards passed over because of a claim."""
+    held = 0
+    for line in out.splitlines():
+        m = CARD_LINE.match(line)
+        if not m or m.group(2) not in lanes or m.group(1) in skip:
+            continue
+        if slug(m.group(1)) in claimed:
+            held += 1
+            continue
+        return m.group(1), held
+    return None, held
+
+
 def cmd_begin(a):
-    """B172 cut 2: the whole ritual (relay worktree, sync start, first ready non-OPUS card, claim, brief) in one call.
-    Fails closed: any sync/claim error prints one line, exits 1 and names no task."""
+    """B172 cut 2: the whole ritual (relay worktree, sync start, first ready card of a builder lane that no claim holds, claim,
+    brief) in one call. Builder lanes = tasks.CODE_LANES minus OPUS (the operator names Opus). Fails closed: any sync/claim
+    error prints one line, exits 1 and names no task."""
     root = Path(a.root or os.getcwd()).resolve()
     wt = Path(a.worktree).resolve() if a.worktree else root.parent / "mts-relay"
     branch = a.branch or (host().lower() + "/relay")
@@ -380,17 +413,21 @@ def cmd_begin(a):
     m = re.search(r"^WORKTREE:\s*(.+)$", out, re.M)
     if m:   # sync.py moved us to a clean per-session tree; work only there
         wt = Path(m.group(1).strip())
+    try:
+        sync, tasks = dev_module("sync"), dev_module("tasks")
+    except ImportError as e:
+        return begin_fail("scripts/dev next to relay.py: %s" % e)
+    lanes = [l for l in tasks.CODE_LANES if l != "OPUS"]
+    try:
+        claimed = {s for s, _ in sync.read_claims(wt, "origin/" + sync.TRUNK)}   # as of the fetch above; `claim` below stays the lock
+    except (OSError, sync.SyncError) as e:
+        return begin_fail("claims: %s" % e)
     rc, out = _sh([sys.executable, "scripts/dev/tasks.py", "next", "--n", "10"], wt)
     if rc:
         return begin_fail("no ready card: " + out)
-    pick = None
-    for line in out.splitlines():
-        mm = re.match(r"^(\S+) \[([A-Z0-9]+),", line)
-        if mm and mm.group(2) not in ("OPUS", "CODEX") and mm.group(1) not in a.skip:
-            pick = mm.group(1)
-            break
+    pick, held = pick_card(out, a.skip, claimed, lanes, sync.slugify)
     if not pick:
-        return begin_fail("no ready non-OPUS card (hand off with --stop)")
+        return begin_fail("no ready %s card free to take (%d held by an open claim; hand off with --stop)" % ("/".join(lanes), held))
     rc, out = _sh([sys.executable, "scripts/dev/sync.py", "claim", pick], wt)
     if rc:
         return begin_fail("claim %s: %s" % (pick, out))

@@ -87,6 +87,8 @@ Any Claude account on any device runs the same four steps. Nothing else is neede
 4. Work, commit (`Result:` line), `sync.py ship`, `sync.py release <slug>`, `sync.py where` must be clean, overwrite NEXT_SESSION.md
    if you are the last session of the day. Short sessions: CLAUDE.md.
 The account name on a claim is `MTS_ACCOUNT` (env var) else git `user.name`; set `MTS_ACCOUNT=sharma` or `awgp` once per machine.
+A third Claude account (jishusharma1985, Max, 2026-10-14) also works from JIS-NB and JIS-NUC; it follows the same four steps (CLOUD_ACCOUNTS.md "Account C").
+With several accounts on one machine the claim's account name is the machine's `MTS_ACCOUNT`, not the signed-in login: read the host, not the name.
 
 ### Per-device rules
 | Device | Runs | May push fast-track? | Rule |

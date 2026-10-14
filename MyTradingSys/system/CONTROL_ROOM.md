@@ -4,6 +4,8 @@ Pages are listed in `system/artifacts/registry.json` (one url per page per accou
 Page: https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su (pinned in the operator's claude.ai sidebar; private to the operator).
 Second account (jishu.awgp@gmail.com, NUC): the same page is https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN. It declares `db` + `user`
 (republish keeps them; never pass `capabilities: {}`). Its Inbox was seeded 2026-10-12 from OPERATOR_INBOX.md (41 items, status answered/filed).
+Third account (jishusharma1985, 2026-10-14): https://claude.ai/artifact/4D8YMxq5WeZagGnoHByXg9, a read-only mirror published WITHOUT capabilities
+(the page shows "Read-only view"), so no Inbox there goes unread. Republish it without passing `capabilities`.
 Build from the NUC with a scratch `--data-root` holding BUGS.md, FINDINGS.md, STATUS.md and the pulled mirror ledger
 (`runtime_data/_mirror/MyTradingSys/execution/auto_trades.jsonl`, `live_mirror.py pull`).
 Built by `scripts/dev/make_control_room.py` from the repo; hand-kept content in `MyTradingSys/system/control_room.json`;

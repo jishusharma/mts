@@ -11,6 +11,7 @@ following lines indented deeper belong to the same task.
   - the block restates no hard rule from CLAUDE.md
   - a task may start `Qn. host=<NAME> ...` (NAME = a machine name or `any`; absent = any): with `host` set, lint() counts it
     runnable only on that host. The tag is stripped before done/blocked is decided, so `Qn. host=JIS-NB (after Qm)` is blocked.
+    One tag, only right after `Qn.` (two tags or a tag on a continuation line = error); a node name's domain suffix is ignored.
   - `--go` needs at least one unblocked open task; `--stop` is refused while one exists (stop only when all are done or blocked)
 """
 import re
@@ -22,7 +23,9 @@ VAGUE = ["next open", "follow-up", "follow up", "take the next", "next unfinishe
 RESTATED = ["never commit to master", "testnet only", "never the live tree", "worktree only", "never rebase", "never force-push", "never mainnet"]
 TASK = re.compile(r"^(\s+)Q(\d+)\.\s*(.*)$")
 HOST = re.compile(r"^host=(\S+)\s*", re.I)
+HOST_ANY = re.compile(r"(?:^|\s)host=\S+", re.I)
 HOST_ERR = "go with no unblocked open task for host"
+NONE_ERR = "go with no unblocked open task:"
 PATH = re.compile(r"[\w.\-]+(?:/[\w.\-]+)+\.(?:py|md|json|csv|java|ps1|yml|yaml|txt)\b")
 
 
@@ -44,6 +47,8 @@ def parse_tasks(lines):
         else:
             cur = None
     for t in tasks:
+        t["tags"] = len(HOST_ANY.findall(t["first"]))
+        t["cont_tag"] = any(HOST_ANY.search(ln) for ln in t["lines"][1:])
         m = HOST.match(t["first"])
         t["host"] = m.group(1) if m else None
         f = t["first"] = t["first"][m.end():] if m else t["first"]
@@ -57,8 +62,13 @@ def path_exists(root, tok):
     return any((Path(root) / pre / tok).exists() for pre in ("", "MyTradingSys"))
 
 
+def short(name):
+    """JIS-NB.lan / jis-nb.localdomain -> jis-nb: platform.node() may carry a domain suffix the tag never has (RV08)."""
+    return name.split(".")[0].lower()
+
+
 def runs_on(t, host):
-    return not host or not t.get("host") or t["host"].lower() in ("any", host.lower())
+    return not host or not t.get("host") or short(t["host"]) in ("any", short(host))
 
 
 def lint(text, root, want="go", host=None):
@@ -83,6 +93,10 @@ def lint(text, root, want="go", host=None):
         if n > 1:
             errs.append("%s is used twice in the block: two threads reused one number; renumber so each task id is unique" % tid)
     for t in tasks:
+        if t["tags"] > 1:
+            errs.append("%s has %d host= tags: keep one (`host=<NAME>` or `host=any`) right after `%s.`" % (t["id"], t["tags"], t["id"]))
+        if t["cont_tag"]:
+            errs.append("%s has host= on a continuation line: it is read only right after `%s.`, move it there" % (t["id"], t["id"]))
         if t["state"] != "open":
             continue
         body = "\n".join(t["lines"])
@@ -98,7 +112,7 @@ def lint(text, root, want="go", host=None):
                 errs.append("%s names %s which does not exist in this tree (make a prior task create it, or mark this one `(after ...)`)" % (t["id"], tok))
     opened = [t for t in tasks if t["state"] == "open"]
     if want == "go" and tasks and not opened:
-        errs.append("go with no unblocked open task: write `--stop` and name each blocker, or add the missing task")
+        errs.append(NONE_ERR + " write `--stop` and name each blocker, or add the missing task")
     elif want == "go" and host and opened and not any(runs_on(t, host) for t in opened):
         errs.append("%s %s: open tasks all belong to other hosts (%s); write `--stop` naming them or add a task for this host"
                     % (HOST_ERR, host, ", ".join("%s=%s" % (t["id"], t["host"]) for t in opened)))

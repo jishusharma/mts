@@ -424,7 +424,8 @@
       ],
       "ledger": [],
       "results": [
-        "MyTradingSys/research/t087_session_levels_2026-10-09"
+        "MyTradingSys/research/t087_session_levels_2026-10-09",
+        "MyTradingSys/research/eur_low_us_sweep_2026-10-14"
       ],
       "roadmap": [],
       "cards": [],
@@ -480,7 +481,8 @@
         "MyTradingSys/research/volume_2026-10-09",
         "MyTradingSys/research/candle_patterns_2026-10-04",
         "MyTradingSys/research/setup_alpha_beta_2026-10-10",
-        "MyTradingSys/research/bigtrade_2026-10-09"
+        "MyTradingSys/research/bigtrade_2026-10-09",
+        "MyTradingSys/research/layer_lab/candle_close_2026-10-14"
       ],
       "roadmap": [],
       "cards": [],

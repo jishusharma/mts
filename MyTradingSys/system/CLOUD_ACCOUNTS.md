@@ -7,7 +7,8 @@
 | Account | Claude login | GitHub identity | Claude GitHub App |
 |---|---|---|---|
 | A (primary, cloud) | jishu.sharma@gmail.com | jishusharma | installed, cloud sessions only |
-| B (secondary, cloud) | jishu.awgp | jishu-awgp (to be created) | not installed yet |
+| B (secondary, cloud) | jishu.awgp | jishu-awgp (write collaborator, checked 2026-10-14) | not installed yet |
+| C (third, Max, 2026-10-14) | jishusharma1985@gmail.com | jishusharma1985 (write invite sent 2026-10-14, accept pending) | not installed yet |
 
 Repo owned by: jishusharma/mts (GitHub user jishusharma). One repo.
 Never duplicate the repo. Never fork for a second account.
@@ -64,5 +65,20 @@ Operator does these once; sessions cannot (they need the GitHub owner login):
 1. GitHub as `jishusharma`: repo jishusharma/mts -> Settings -> Collaborators -> add `jishu-awgp` with Write; accept the invite as `jishu-awgp`.
 2. Each machine that account pushes from (JIS-NB, JIS-NUC, laptop): `gh auth login` as `jishu-awgp`, or the Claude GitHub App installed for that account (Connectors -> GitHub).
 3. Per machine, once: `setx MTS_ACCOUNT awgp` (or `sharma`), so claims say who holds a task.
-4. NUC only: `git clone https://github.com/jishusharma/mts` into F:\MTSepo (or add a worktree there) and run `sync.py start`; the live-tree marker `.mts_live` must not exist there.
+4. NUC only: `git clone https://github.com/jishusharma/mts` into F:\MTS\repo (or add a worktree there) and run `sync.py start`; the live-tree marker `.mts_live` must not exist there.
 Ritual and per-device rules: PARALLEL.md "Two accounts, three devices".
+
+## Account C: jishusharma1985@gmail.com (Claude Max, added 2026-10-14)
+Used from JIS-NB and JIS-NUC (Claude Code Win App), same queue and ritual as A and B.
+- Local work needs no GitHub step: a session pushes with the machine's own git login (JIS-NB: `jishusharma` via gh), whatever Claude account is signed in.
+- Same wiring as B for cloud sessions and per-account audit (operator, once):
+  1. Create a GitHub user for jishusharma1985@gmail.com (suggested login `jishusharma1985`). A session may not create accounts.
+  2. Any session on JIS-NB then sends the Write invite as `jishusharma`:
+     `gh api -X PUT repos/jishusharma/mts/collaborators/<login> -f permission=push`
+     Accept the e-mailed invite as that user, then add the login to the table above.
+  3. Cloud sessions only: in the Claude app on account C, Connectors -> GitHub, install the Claude GitHub App for that user, scoped to jishusharma/mts.
+- Pages: account C has its own pins (artifacts/registry.json key `jishusharma1985`). Its Control Room copy is a read-only mirror
+  (published without capabilities); the one Inbox stays on jishu.awgp.
+- Claude routines (scheduled tasks) are per login: A's paused routines do not show on C. To run the relay on C's budget,
+  recreate mts-dispatcher on that host from scripts/sched/relay_prompts/TWO_HOST.md, signed in as C.
+- How a session knows it is on C: `Artifact read` of a jishu.sharma or jishu.awgp page url says "not found".

@@ -1,0 +1,30 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-14T11:26:00Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "gap-g1-prereg-power",
+  "lane": "OPUS",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "G1 pre-reg power: print MDE and trades-for-80%-power beside every verdict; INCONCLUSIVE rule (operator D-a)"
+}

@@ -11,7 +11,7 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "DSA_STANDIN_PROMPT.md shipped 8530343b (2026-10-14). Trial posted: desk 20261014-134217-standin-refine-lc-event-table-trial (--target DSA). Close when that desk row is done: tasks.py done with \"trial: lc-event-table lint PASS/FAIL\".",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-14",

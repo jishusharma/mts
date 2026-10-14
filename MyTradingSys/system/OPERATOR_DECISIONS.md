@@ -523,3 +523,73 @@ Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h def
  "no_auto_apply": true
 }
 ```
+
+## q-gap-a-underpowered-fail | asked 2026-10-14 | Research
+
+Is an underpowered FAIL on the DAX dev run INCONCLUSIVE (sample extended) instead of final STOP?
+
+Recommended: Keep the frozen bar, add an MDE line
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet)
+
+```json
+{
+ "order": 10,
+ "stage": "Research",
+ "refs": "research/backtest_gap_review_2026-10-13/REPORT.md",
+ "title": "Is an underpowered FAIL on the DAX dev run INCONCLUSIVE (sample extended) instead of final STOP?",
+ "why": "REPORT.md G1: at Tom's own numbers the frozen bar has 7-35 % power at 100-150 trades, so a FAIL is mostly a miss. Changing the stop rule is a protocol change, so the default keeps the bar and only prints the MDE (card gap-g1-power-mde-helper).",
+ "options": [
+  "Keep the frozen bar, add an MDE line",
+  "Yes: INCONCLUSIVE when power at the claimed edge < 80 %, extend the sample"
+ ],
+ "recommended": "Keep the frozen bar, add an MDE line"
+}
+```
+## q-gap-b-go-live-shadow-fills | asked 2026-10-14 | Research
+
+Should GO_LIVE_BAR count shadow fills from the real tape instead of testnet fills?
+
+Recommended: No change, report both
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet)
+
+```json
+{
+ "order": 11,
+ "stage": "Research",
+ "refs": "research/backtest_gap_review_2026-10-13/REPORT.md",
+ "title": "Should GO_LIVE_BAR count shadow fills from the real tape instead of testnet fills?",
+ "why": "REPORT.md G3: Deribit says testnet liquidity is synthetic (support article could not be opened from the NUC, so this stays a search snippet). Changing the go-live bar is yours; default leaves it and reports both numbers (card gap-g3-shadow-fills).",
+ "options": [
+  "No change, report both",
+  "Yes: shadow fills decide, testnet is a plumbing check"
+ ],
+ "recommended": "No change, report both"
+}
+```
+## q-gap-c-deribit-public-mainnet | asked 2026-10-14 | Research
+
+May sessions read Deribit public mainnet candles (no account) for a venue-parity check?
+
+Recommended: No
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet)
+
+```json
+{
+ "order": 12,
+ "stage": "Research",
+ "refs": "research/backtest_gap_review_2026-10-13/REPORT.md",
+ "title": "May sessions read Deribit public mainnet candles (no account) for a venue-parity check?",
+ "why": "REPORT.md G8: backtests use Binance prices, execution is Deribit. A parity check needs BTC-PERPETUAL 1m candles from the public endpoint. 'Never mainnet' is a standing rule, so the default is No (card gap-g8-deribit-parity).",
+ "options": [
+  "No",
+  "Yes, public market data only"
+ ],
+ "recommended": "No"
+}
+```

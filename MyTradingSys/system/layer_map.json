@@ -1284,6 +1284,42 @@
    "verdict": "EXPLORATORY NEGATIVE; full LC hypothesis untested",
    "report": "MyTradingSys/research/levels_sizing_2026-10-14/REPORT.md",
    "read": "summary"
+  },
+  {
+   "id": "CANDLE-CLOSE-DEV-20261014",
+   "title": "Close sequences at prior 4h/day/week levels",
+   "date": "2026-10-14",
+   "market": "Binance BTCUSDT perpetual 1m",
+   "layers": [
+    "candle_patterns"
+   ],
+   "params": "OURS: six signatures x seven trigger TFs x three parent level families; 60min endpoint",
+   "split": "DEV 2022-01..2024-06; validation/holdout unread",
+   "fees": "14/20bp cost screen only; historical funding unmodeled",
+   "interaction": "Daily phase/trend and 4h direction; nearby-price controls",
+   "effects": "0/126 pooled arms pass; all mean 14bp cost screens negative",
+   "n": "105541 correlated event rows; 59-1761 per arm",
+   "verdict": "EXPLORATORY NEGATIVE; cycle outcomes untested",
+   "report": "MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md",
+   "read": "summary"
+  },
+  {
+   "id": "EUR-LOW-US-SWEEP-20261014",
+   "title": "Retested 24h low broken in the US window (short + 1-1-2-3 ladder, 5-20x)",
+   "date": "2026-10-14",
+   "market": "Binance BTCUSDT perpetual 1m",
+   "layers": [
+    "session_levels"
+   ],
+   "params": "OURS: retest within 0.20% after 0.6% bounce in 6h before T0=US open-90m; target L-0.3%; ladder +0.4% steps, stop +1.6%",
+   "split": "DEV 2022-2024 / VAL 2025 / HOLDOUT 2026 reported side by side, no tuning",
+   "fees": "taker 0.05%/side every fill; funding unmodeled",
+   "interaction": "distance-to-low buckets; placebo anchors -12/-6/+6h",
+   "effects": "break 57% vs 26% but equal inside distance buckets; short -0.02%/trade t-0.24; ladder -0.02% t-0.32; 20x maxDD 98%",
+   "n": "99 retested, 1027 single-low weekdays",
+   "verdict": "EXPLORATORY NEGATIVE (short leg); long-after-reclaim untested",
+   "report": "MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md",
+   "read": "summary"
   }
  ]
 }

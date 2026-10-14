@@ -55,6 +55,12 @@ v6 (2026-09-29, operator decision): select_environment(True, kill_only=True) - u
   --mainnet - replaces the long typed sentence with the single word `kill` (interactive input(), case-sensitive).
   Rationale: the kill switch can only reduce risk. Gates 1, 2 and 4 (flag, secret env match, interactive prompt)
   and the withdraw-scope refusal all still apply; every other mainnet path keeps the full sentence.
+
+v7 (2026-10-14, reject diagnostics): a DeribitError raised by an order call (private/buy|sell, private/edit) now also
+  carries `.request`, a WHITELISTED view of what was sent (REQUEST_DIAG_FIELDS: no token, no credentials), so the
+  executor can journal the request next to the error. Plan L-mkt-1012-0945 got 10031 invalid_args_for_instrument on a
+  market entry and the journal kept only the error, so the cause could not be proven. Diagnostics only: the same
+  exception is raised at the same point, retries / OrderStateUnknown / return values are untouched.
 """
 import sys
 sys.dont_write_bytecode = True
@@ -114,6 +120,7 @@ class DeribitError(Exception):
         self.method = method
         self.error = error
         self.code = error.get("code") if isinstance(error, dict) else None
+        self.request = None   # set by _call_with_request on order calls: whitelisted view of what was sent
         super().__init__(f"{method}: {error}")
 
 
@@ -298,6 +305,27 @@ def _call(method: str, params: dict, token: str = None, retry: bool = True,
         raise DeribitError(method, body["error"])
 
 
+# Request fields that may be journaled on a rejection. A whitelist, never a copy of params: a field added to a request
+# later (token, credentials) must be opted in here on purpose. public/auth is never wrapped, so its secret never gets here.
+REQUEST_DIAG_FIELDS = ("order_id", "instrument_name", "amount", "type", "price", "label", "reduce_only", "post_only",
+                       "trigger_price", "trigger")
+
+
+def _request_view(method: str, params: dict) -> dict:
+    """What was sent, whitelisted (REQUEST_DIAG_FIELDS) - diagnostics for a rejected order call."""
+    return {"method": method, **{k: params[k] for k in REQUEST_DIAG_FIELDS if k in params}}
+
+
+def _call_with_request(method: str, params: dict, token: str = None, **kw) -> dict:
+    """_call for order calls: a DeribitError (incl. OrderStateUnknown) leaves here with .request set. Same exception,
+    re-raised as-is - no change to retries, ambiguity handling or the caller's flow."""
+    try:
+        return _call(method, params, token, **kw)
+    except DeribitError as e:
+        e.request = _request_view(method, params)
+        raise
+
+
 def authenticate(account=_ENV_ACCOUNT) -> str:
     """Fresh access_token. Refuses withdraw-capable keys (testnet and mainnet). account=None forces MAIN,
     a label forces that named testnet account; default reads MTS_ACCOUNT. The token's account is remembered
@@ -335,7 +363,7 @@ def _place_order(direction, token, instrument_name, amount, order_type, price=No
         params["trigger_price"] = trigger_price
         params["trigger"] = trigger or "mark_price"
     label_str = f"{direction} {instrument_name} {amount}@{order_type}" + (f" label={label}" if label else "")
-    return _call(f"private/{direction}", params, token, creates_order=True, params_label=label_str)
+    return _call_with_request(f"private/{direction}", params, token, creates_order=True, params_label=label_str)
 
 
 def buy(token, instrument_name, amount, order_type, price=None, label=None, reduce_only=False, **kw):
@@ -362,7 +390,7 @@ def edit(token, order_id, amount=None, price=None, trigger_price=None) -> dict:
         params["price"] = price
     if trigger_price is not None:
         params["trigger_price"] = trigger_price
-    return _call("private/edit", params, token)
+    return _call_with_request("private/edit", params, token)
 
 
 def cancel(token, order_id) -> dict:

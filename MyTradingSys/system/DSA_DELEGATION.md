@@ -27,6 +27,12 @@ judgment about code that trades, or a result DSA failed twice, it is Claude's.
 | Fetch public market data into F:\MTS\data (klines, funding) with the existing fetch scripts | scripts exist | file list + row counts |
 | Draft first version of an item file, a RESULT.md or a doc from numbers it ran | writing | file; Claude reviews only if it touches rules |
 
+## Builder roles: DSA does Claude's work too (operator 2026-10-14, one DSA prompt)
+`DSA_SESSION_PROMPT.md` section 5 (queue) and 5e (roles): besides this table DSA takes NEXT_SESSION.md tasks and HAIKU/SONNET
+cards that are not live-path (build with fail-first tests, refine cards, spot-check one number, write the handoff, file chat
+inbox items, extractions). A need text starting `STANDIN <role>` still works. Claude-only list: prompt section 5d;
+two gate failures go back `--target CLAUDE`.
+
 ## What stays with Claude
 Live-path code (auto_trader, position manager, Java), safety checks, new strategy logic, formula tests,
 anything touching the CLAUDE.md hard rules, and a DSA task that failed twice. Claude writes the test and the

@@ -6,7 +6,7 @@
   python scripts/dev/tasks.py list [--state ready] [--lane SONNET]
   python scripts/dev/tasks.py status                # counts + the line the dispatcher reads: REFINE_NEEDED / REFINE_OK
   python scripts/dev/tasks.py tried <id> [--asks "<question>"]   # refiner: a try that did not reach ready; --asks parks it for the operator
-  python scripts/dev/tasks.py next [--n 3] [--lane SONNET]   # the first ready cards, best first
+  python scripts/dev/tasks.py next [--n 3] [--lane SONNET] [--all]   # the first ready cards no session holds, best first (--all: claimed too, marked)
   python scripts/dev/tasks.py brief <id>            # the <= 30 line session prompt for one card
   python scripts/dev/tasks.py take <id> [--claim <slug>] | done <id> --result "<what>" | apply-op <id> bump|hold|drop|approve [--note ..]
   python scripts/dev/tasks.py sweep [--apply]       # cards whose registry rows are all CLOSED/WONTFIX -> done
@@ -237,6 +237,22 @@ def ready_cards(repo=REPO, lane=None):
     return sorted(out, key=rank), byid
 
 
+def open_claims(repo):
+    """{claim slug: claim fields} of the claim files on origin/fast-track, read with sync.py's own reader (as of the last fetch).
+    {} when git or the ref is unavailable (a test repo, a fresh clone): the claim itself stays the lock, `sync.py claim` refuses."""
+    import sync   # scripts/dev is on sys.path wherever tasks.py runs or is imported by name
+    try:
+        return dict(sync.read_claims(repo, f"origin/{sync.TRUNK}"))
+    except (OSError, sync.SyncError):
+        return {}
+
+
+def claim_of(card, claims):
+    """The open claim on this card, or None: `sync.py claim <id>` files it under slugify(id) (lower case, 40 chars)."""
+    import sync
+    return claims.get(sync.slugify(card["id"]))
+
+
 def counts(cards):
     return {s: sum(c["state"] == s for c in cards) for s in STATES}
 
@@ -350,11 +366,18 @@ def cmd_next(a):
     cs, _ = ready_cards(REPO, a.lane)
     if not a.lane:   # CODEX cards belong to the layer-lab runner; a Claude session asking "what next" never sees them
         cs = [c for c in cs if c["lane"] != "CODEX"]
-    if not cs:
-        print("NO_READY_CARD: run the refiner (TASK_REFINEMENT.md) or hand off with --stop")
+    held = open_claims(REPO)
+    free = [c for c in cs if not claim_of(c, held)]
+    shown = cs if a.all else free
+    if not shown:
+        n_held = len(cs) - len(free)
+        print("NO_READY_CARD: run the refiner (TASK_REFINEMENT.md) or hand off with --stop"
+              + (f" ({n_held} ready card(s) held by an open claim; `tasks.py next --all` lists them)" if n_held else ""))
         return 1
-    for c in cs[:a.n]:
-        print(f"{c['id']} [{c['lane']}, {c['size']}, p{c['prio']}] {c['title']}")
+    for c in shown[:a.n]:
+        owner = claim_of(c, held) if a.all else None
+        note = f" (claimed by {owner.get('host', '?')}/{owner.get('account', '?')})" if owner else ""
+        print(f"{c['id']} [{c['lane']}, {c['size']}, p{c['prio']}] {c['title']}{note}")
     return 0
 
 
@@ -470,6 +493,7 @@ def main(argv=None):
     nx = sp.add_parser("next")
     nx.add_argument("--n", type=int, default=3)
     nx.add_argument("--lane", choices=LANES)
+    nx.add_argument("--all", action="store_true", help="also list cards that hold an open claim, marked with the claimant")
     nx.set_defaults(f=cmd_next)
     b = sp.add_parser("brief")
     b.add_argument("id")

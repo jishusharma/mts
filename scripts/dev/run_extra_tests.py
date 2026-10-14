@@ -5,12 +5,15 @@ Each file runs in its own pytest process with the file's directory as cwd (the w
 helper modules in different dirs cannot collide. Exit 1 if any file fails. The list is checked by
 MyTradingSys/tests/test_gate_discovery_b150.py: a new tracked test file must be gated, listed here, or skipped with a reason.
 """
+import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 EXTRA = [
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_study.py",
     "scripts/dev/test_suplock.py",
     "scripts/dev/test_make_layer_map.py",
     "scripts/dev/test_make_layers_board.py",
@@ -20,6 +23,7 @@ EXTRA = [
     "MyTradingSys/research/test_b141_htf_stage1.py",
     "MyTradingSys/research/test_b141_htf_stage2.py",
     "MyTradingSys/execution/tests/test_deribit_orders_phase3.py",
+    "MyTradingSys/execution/tests/test_executor_reject_diag.py",
     "MyTradingSys/observation/tests/test_observation.py",
     "MyTradingSys/research/candle_patterns_2026-10-04/pilot/test_p1.py",
     "MyTradingSys/research/candle_patterns_2026-10-04/pilot/test_pilot.py",
@@ -34,22 +38,27 @@ EXTRA = [
     "scripts/worker/test_audit_t0_checks.py",
     "tests/test_worker_prefix_hash.py",
     "scripts/dev/test_fabio_prescreen.py",
+    "scripts/dev/test_sched_scripts.py",
 ]
 
 
 def main():
     bad = []
-    for rel in EXTRA:
+    # Own basetemp per file: pytest's default %TEMP%/pytest-of-<user>/pytest-current cleanup raises PermissionError
+    # (exit 1 after all tests pass) when another account left that link behind (JIS-NB 2026-10-14).
+    tmp = Path(tempfile.mkdtemp(prefix="mts_xt_"))
+    for i, rel in enumerate(EXTRA):
         p = REPO / rel
         if not p.exists():
             bad.append(f"{rel}: missing")
             continue
-        r = subprocess.run([sys.executable, "-m", "pytest", p.name, "-q", "-p", "no:cacheprovider"], cwd=p.parent,
-                           capture_output=True, text=True)
+        r = subprocess.run([sys.executable, "-m", "pytest", p.name, "-q", "-p", "no:cacheprovider",
+                            f"--basetemp={tmp / str(i)}"], cwd=p.parent, capture_output=True, text=True)
         tail = (r.stdout.strip().splitlines() or ["(no output)"])[-1]
         print(f"{'ok  ' if r.returncode == 0 else 'FAIL'} {rel}: {tail}")
         if r.returncode != 0:
             bad.append(rel)
+    shutil.rmtree(tmp, ignore_errors=True)
     print("extra tests: " + ("FAIL " + ", ".join(bad) if bad else "PASS"))
     return 1 if bad else 0
 

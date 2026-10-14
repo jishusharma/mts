@@ -8,12 +8,12 @@
   "from_inbox": "",
   "goal": "Give BTC research replays the minimum stop width of spec section 11.4: noise unit N5, noise floor 0.88 x N5, fee floor round-turn cost / 0.25, no trade below the larger one. Research replays only; live BTC output unchanged. Start only if DAX_BT_V2.md says PASS.",
   "id": "tom-v2-btc-min-stop-width",
-  "lane": "SONNET",
+  "lane": "CODEX",
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "2026-10-13 (operator chat q11): no longer waits for the DAX dev run (held). The 0.40 % taker / 0.20 % maker floor is used directly by tom-btc-event-study.",
+  "note": "2026-10-13 (operator chat q11): no longer waits for the DAX dev run (held). The 0.40 % taker / 0.20 % maker floor is used directly by tom-btc-event-study. | 2026-10-14 opus: moved to CODEX (Claude weekly budget 94%; GPT week 33%).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
@@ -46,5 +46,6 @@
     "Off by default (argument min_width=False): existing tom_bt outputs identical. Report the floor at lookback 10 and 40 beside 20; choose nothing."
   ],
   "tests": "pytest: entry 100000, N5 0.14 % -> W_noise 123.20, all-taker W_fee 400.00, W_min 400.00; stop 100399 dropped, 100400 kept with fee 0.25 R; FEES_DERIBIT W_fee 200.00. FORMULAS 12 example: true ranges 2, 2, 2.5 -> median 2. min_width off -> same trades as before. Fails before the function exists.",
-  "title": "Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)"
+  "title": "Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)",
+  "kind": "build"
 }

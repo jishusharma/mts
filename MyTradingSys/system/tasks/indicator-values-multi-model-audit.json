@@ -1,0 +1,34 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-14T15:00:06Z",
+  "depends_on": [],
+  "done_when": "research/indicator_audit_2026-10-14/AUDIT.md: a table value x reviewer (match / mismatch / could not compute), the seed, the packets, and a B-item for every mismatch our code is wrong on.",
+  "from_inbox": "",
+  "goal": "Independent check that the indicator values our engine computes are right: a random sample recomputed blind from raw bars by five different reviewers (GPT via lane CODEX, DSA, Haiku, Sonnet, Opus), compared with our numbers.",
+  "id": "indicator-values-multi-model-audit",
+  "lane": "SONNET",
+  "layers": [
+    "live_engine",
+    "rsi",
+    "tom"
+  ],
+  "live_path": false,
+  "note": "Operator 2026-10-14: 'maybe this has been done in the past, but it needs different eyes'. The last formula audit was FORMULAS.md 'Verification note (this audit, 2026-09-28)'. Steps: (1) T0 script draws a seeded random sample of about 20 values from live snapshots and alert files (RSI, RSI-MA, ATR, VWAP and bands, Bollinger, CVD, net delta, VP POC/VAH/VAL, OI change, swing levels); (2) a packet per value with the raw 1m bars and the canonical definition only, never our value; (3) send the same packets to Haiku, Sonnet and Opus subagents (Opus is operator-named here), a CODEX card for GPT, and a desk.py post for DSA; (4) compare: agree within a stated tolerance, or a B-item with the packet attached. Bollinger is not in FORMULAS.md yet: add its canonical entry first.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/backtest/layers/FORMULAS.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus"
+}

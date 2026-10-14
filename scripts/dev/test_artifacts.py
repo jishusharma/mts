@@ -1,5 +1,7 @@
 """artifacts.py: the real registry is consistent; duplicate urls, bad status and missing files are caught; plan names every action."""
+import contextlib
 import copy
+import io
 import sys
 import unittest
 from pathlib import Path
@@ -46,6 +48,14 @@ class Registry(unittest.TestCase):
         self.assertIn("PUBLISH NEW  MTS Layers", "\n".join(af.plan(r, "jishu.sharma")))
         with self.assertRaises(SystemExit):
             af.plan(self.reg, "nobody")
+
+    def test_list_and_plan_take_an_account_without_a_dot(self):
+        # jishusharma1985 (2026-10-14) has no "." in its key; list used a.split(".")[1] and raised IndexError.
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            af.cmd_list(self.reg)
+        self.assertIn("jishusharma1985=4D8YMxq5WeZagGnoHByXg9", out.getvalue())
+        self.assertIn("REPUBLISH    MTS Control Room", "\n".join(af.plan(self.reg, "jishusharma1985")))
 
 
 if __name__ == "__main__":

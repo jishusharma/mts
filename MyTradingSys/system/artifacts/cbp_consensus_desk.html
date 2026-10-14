@@ -1,292 +1,102 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>CBP Consensus Desk</title>
+<title>CBP Desk</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #f6f5f2;
-    --surface: #ffffff;
-    --surface-2: #efeee9;
-    --border: #ddd9d0;
-    --text: #1c1b19;
-    --text-dim: #6f6a60;
-    --accent: #2f6f5e;
-    --accent-soft: #e4efec;
-    --good: #1f7a4d;
-    --good-soft: #e3f1e8;
-    --warn: #96650a;
-    --warn-soft: #fbf0dc;
-    --bad: #a4302a;
-    --bad-soft: #f7e6e4;
-    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
-    --sans: 'IBM Plex Sans', system-ui, sans-serif;
-    color-scheme: light;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #12151a;
-      --surface: #191d24;
-      --surface-2: #1f242c;
-      --border: #2c313b;
-      --text: #e7e6e2;
-      --text-dim: #8b9099;
-      --accent: #5fb39c;
-      --accent-soft: #1c2b27;
-      --good: #4fbd82;
-      --good-soft: #1a2b21;
-      --warn: #d9a441;
-      --warn-soft: #2e2717;
-      --bad: #e2726a;
-      --bad-soft: #2e1c1a;
-      color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #12151a;
-    --surface: #191d24;
-    --surface-2: #1f242c;
-    --border: #2c313b;
-    --text: #e7e6e2;
-    --text-dim: #8b9099;
-    --accent: #5fb39c;
-    --accent-soft: #1c2b27;
-    --good: #4fbd82;
-    --good-soft: #1a2b21;
-    --warn: #d9a441;
-    --warn-soft: #2e2717;
-    --bad: #e2726a;
-    --bad-soft: #2e1c1a;
-    color-scheme: dark;
-  }
-
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    padding-inline: 16px;
-    padding-block: 28px 48px;
-  }
-  .wrap { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
-
-  header.page { display: flex; flex-direction: column; gap: 6px; }
-  .eyebrow {
-    font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--text-dim);
-  }
-  h1 { font-size: 26px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
-  .subline { color: var(--text-dim); font-size: 14px; }
-
-  .stat-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-  }
-  .stat {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-    display: flex; flex-direction: column; gap: 4px;
-  }
-  .stat .label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
-  .stat .value { font-family: var(--mono); font-size: 19px; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .stat .note { font-size: 11.5px; color: var(--text-dim); }
-  .stat.stale .value { color: var(--warn); }
-
-  section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px 18px 20px;
-    display: flex; flex-direction: column; gap: 12px;
-  }
-  section > h2 {
-    font-size: 15px; margin: 0; display: flex; align-items: center; gap: 8px;
-    font-weight: 600;
-  }
-  section > h2 .count {
-    font-family: var(--mono); font-size: 12px; color: var(--text-dim); font-weight: 400;
-  }
-  .section-note { font-size: 13px; color: var(--text-dim); margin-top: -6px; }
-
-  .pill {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-family: var(--mono); font-size: 11.5px; font-weight: 600;
-    padding: 3px 9px; border-radius: 999px; white-space: nowrap;
-    letter-spacing: 0.02em;
-  }
-  .pill.not-in { background: var(--good-soft); color: var(--good); }
-  .pill.not-conf { background: var(--warn-soft); color: var(--warn); }
-  .pill.ambiguous { background: var(--bad-soft); color: var(--bad); }
-  .pill.discussed { background: var(--surface-2); color: var(--text-dim); }
-  .pill.stale { background: var(--surface-2); color: var(--text-dim); text-decoration: line-through; opacity: 0.7; }
-  .pill.excluded { background: var(--surface-2); color: var(--text-dim); }
-
-  .tier-tag {
-    font-family: var(--mono); font-size: 10.5px; color: var(--text-dim);
-    border: 1px solid var(--border); border-radius: 5px; padding: 1px 5px;
-  }
-
-  .table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; }
-  table { width: 100%; border-collapse: collapse; min-width: 760px; font-size: 13.5px; }
-  thead th {
-    text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
-    color: var(--text-dim); font-weight: 600; padding: 10px 12px; background: var(--surface-2);
-    border-bottom: 1px solid var(--border); position: sticky; top: 0;
-  }
-  tbody td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
-  tbody tr:last-child td { border-bottom: none; }
-  tbody tr:hover { background: var(--surface-2); }
-  .analyst-name { font-weight: 600; }
-  .analyst-sub { display: block; font-size: 11.5px; color: var(--text-dim); font-weight: 400; margin-top: 1px; }
-  .video-date { font-family: var(--mono); font-size: 12.5px; color: var(--text-dim); white-space: nowrap; }
-  .evidence { font-size: 13px; line-height: 1.45; color: var(--text); }
-  .evidence q { color: var(--text-dim); }
-  .flag { color: var(--bad); font-weight: 600; }
-
-  .queue-card {
-    border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px;
-    background: var(--surface-2); display: flex; flex-direction: column; gap: 8px;
-  }
-  .queue-card .top-row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-  .queue-card .asset { font-family: var(--mono); font-weight: 700; font-size: 15px; }
-  .queue-card .direction { font-family: var(--mono); font-size: 12px; padding: 2px 7px; border-radius: 5px; }
-  .direction.long { background: var(--good-soft); color: var(--good); }
-  .queue-card dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 10px; margin: 0; font-size: 13px; }
-  .queue-card dt { color: var(--text-dim); }
-  .queue-card dd { margin: 0; }
-  .status-badge {
-    font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase;
-    padding: 2px 8px; border-radius: 5px; letter-spacing: 0.04em;
-  }
-  .status-badge.rejected { background: var(--bad-soft); color: var(--bad); }
-  .reason-box { font-size: 12.5px; color: var(--text-dim); border-left: 2px solid var(--border); padding-left: 10px; }
-
-  .confluence-box {
-    border: 1px solid var(--warn); border-radius: 10px; padding: 14px 16px;
-    background: var(--warn-soft);
-  }
-  .confluence-box h3 { margin: 0 0 8px; font-size: 13.5px; color: var(--warn); }
-  .conf-levels { display: flex; flex-direction: column; gap: 5px; font-size: 13px; }
-  .conf-levels div { display: flex; gap: 8px; }
-  .conf-levels .lvl { font-family: var(--mono); font-weight: 700; min-width: 74px; }
-
-  .alloc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; }
-  .alloc-item {
-    background: var(--surface-2); border-radius: 8px; padding: 10px; text-align: center;
-    display: flex; flex-direction: column; gap: 2px;
-  }
-  .alloc-item .amt { font-family: var(--mono); font-weight: 600; font-size: 14px; }
-  .alloc-item .name { font-size: 11px; color: var(--text-dim); }
-
-  footer {
-    font-size: 12px; color: var(--text-dim); text-align: center; padding-top: 8px;
-    display: flex; flex-direction: column; gap: 3px;
-  }
-  footer .path { font-family: var(--mono); font-size: 11px; }
-
-  @media (max-width: 560px) {
-    h1 { font-size: 21px; }
-    section { padding: 14px; }
-  }
+:root{--bg:#f6f5f2;--surface:#fff;--surface-2:#efeee9;--border:#ddd9d0;--text:#1c1b19;--dim:#6f6a60;--accent:#2f6f5e;
+--good:#1f7a4d;--good-s:#e3f1e8;--warn:#96650a;--warn-s:#fbf0dc;--bad:#a4302a;--bad-s:#f7e6e4;--info:#1d5c86;--info-s:#e3edf4;
+--mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12151a;--surface:#191d24;--surface-2:#1f242c;--border:#2c313b;--text:#e7e6e2;--dim:#8b9099;--accent:#5fb39c;
+--good:#4fbd82;--good-s:#1a2b21;--warn:#d9a441;--warn-s:#2e2717;--bad:#e2726a;--bad-s:#2e1c1a;--info:#6fb0dc;--info-s:#1b2d3c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12151a;--surface:#191d24;--surface-2:#1f242c;--border:#2c313b;--text:#e7e6e2;--dim:#8b9099;--accent:#5fb39c;
+--good:#4fbd82;--good-s:#1a2b21;--warn:#d9a441;--warn-s:#2e2717;--bad:#e2726a;--bad-s:#2e1c1a;--info:#6fb0dc;--info-s:#1b2d3c;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 var(--sans);padding:28px 16px 48px}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.eyebrow{font:12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+h1{font-size:26px;margin:4px 0;letter-spacing:-.01em}
+h2{font-size:15px;margin:0;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.count,.sub{font:12px var(--mono);color:var(--dim);font-weight:400}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:grid;gap:3px}
+.stat .l{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+.stat .v{font:600 18px var(--mono)}
+.stat .n{font-size:11.5px;color:var(--dim)}
+section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;display:grid;gap:12px;min-width:0}
+.pill{display:inline-block;font:600 11.5px var(--mono);padding:3px 9px;border-radius:999px;white-space:nowrap}
+.p-in{background:var(--bad-s);color:var(--bad)} .p-notin{background:var(--good-s);color:var(--good)}
+.p-und{background:var(--warn-s);color:var(--warn)} .p-nd{background:var(--surface-2);color:var(--dim)}
+.p-info{background:var(--info-s);color:var(--info)}
+.tw{overflow-x:auto;border:1px solid var(--border);border-radius:10px}
+table{width:100%;border-collapse:collapse;min-width:720px;font-size:13.5px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--dim);padding:9px 12px;background:var(--surface-2);border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:0}
+.d{font:12.5px var(--mono);color:var(--dim);white-space:nowrap}
+.verdict{border-left:4px solid var(--warn);background:var(--surface-2);padding:12px 16px;border-radius:0 10px 10px 0}
+.tl{display:grid;gap:0}
+.ev{display:grid;grid-template-columns:96px 74px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);align-items:start}
+.ev:last-child{border-bottom:0}
+.ev .w{font:12px var(--mono);color:var(--dim)}
+.card{border:1px solid var(--border);background:var(--surface-2);border-radius:10px;padding:12px 14px;display:grid;gap:5px}
+.card dl{display:grid;grid-template-columns:max-content 1fr;gap:3px 10px;margin:0;font-size:13px}
+.card dt{color:var(--dim)} .card dd{margin:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.alloc{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px}
+.alloc div{background:var(--surface-2);border-radius:8px;padding:9px;text-align:center}
+.alloc b{display:block;font:600 14px var(--mono)} .alloc span{font-size:11px;color:var(--dim)}
+.warnbox{border:1px solid var(--warn);background:var(--warn-s);border-radius:10px;padding:12px 14px}
+footer{font-size:12px;color:var(--dim);text-align:center}
+.s-ok{color:var(--good)} .s-warn{color:var(--warn)} .s-bad{color:var(--bad)}
+@media(max-width:560px){h1{font-size:21px}section{padding:14px}.ev{grid-template-columns:1fr}}
 </style>
 
-<div class="wrap">
-  <header class="page">
-    <span class="eyebrow">CryptoBuyPlan · CBP v2</span>
-    <h1>Consensus Desk</h1>
-    <span class="subline">Cycle-bottom thesis, analyst positions and the live MTS trade queue — rebuilt each time you say "update."</span>
-  </header>
+<div class="wrap" id="app"></div>
 
-  <div class="stat-row">
-    <div class="stat">
-      <span class="label">Thesis</span>
-      <span class="value" style="color:var(--good)">HOLDS ⚠</span>
-      <span class="note">0/9 say IN, but Jason dissents</span>
-    </div>
-    <div class="stat stale">
-      <span class="label">BTC snapshot</span>
-      <span class="value">$79,812</span>
-      <span class="note">Sep 6 — stale, don't trade on it</span>
-    </div>
-    <div class="stat">
-      <span class="label">Queue</span>
-      <span class="value" style="color:var(--bad)">0 live</span>
-      <span class="note">Krown alert rejected as stale</span>
-    </div>
-    <div class="stat">
-      <span class="label">Confluence</span>
-      <span class="value">82.6–83k</span>
-      <span class="note">4 analysts converge here</span>
-    </div>
-  </div>
+<script>
+const D = {"generated": "2026-10-14 10:49 IST", "subtitle": "Cycle-bottom thesis, analyst calls, MTS testnet status and automation, rebuilt by the twice-daily CBP workflow.", "stats": [{"label": "Thesis", "value": "CONTESTED", "cls": "s-warn", "note": "IN 2 (Jala flipped, Bob lean) · NOT_IN 1 (Krown) · UNDECIDED 3; thesis weakening"}, {"label": "BTC (analyst-quoted)", "value": "~$80–83k", "cls": "s-warn", "note": "No fresh snapshot; Krown later Oct 13 video: no BTC <75k in Oct, 90k+ this month"}, {"label": "MTS queue", "value": "0 live", "cls": "s-bad", "note": "No queueable setup (Krown Oct 13 long bias has no entry trigger or stop)"}, {"label": "Confluence", "value": "79–84k", "note": "5 analysts name this zone; Qriptal adds 84.1–85.5k resistance"}, {"label": "Transcripts", "value": "2 new", "note": "Jala Oct 13 (IN, MED), Krown Oct 13 (bullish, 95k signal); fetch OK, no list_failed"}, {"label": "MTS testnet 14d", "value": "-$15.2", "cls": "s-bad", "note": "Control Room ledger to Oct 12 15:30Z (Oct 11 -4.84, Oct 12 -2.23); no edge after fees yet"}], "thesis": {"statement": "\"BTC cycle bottom is NOT yet in.\"", "verdict": "Weakening - Jala flipped to IN.", "summary": "Jala (MED) flipped to IN on Oct 13: \"going up\" but one more deep spring to the 70s is possible. Krown stays NOT_IN on his washout call, but his later Oct 13 video is strongly bullish (no BTC below 75k in Oct, 90k+ this month, ~95k in 30d; invalid below 80-81k). Benjamin, Jason and CCU undecided; Bob leans IN (stale). Flag the split to Jishu before any allocation move."}, "happenings": [{"when": "Oct 14 10:49", "source": "CBP", "text": "Scheduled run: fetched 2 new transcripts (Jala Oct 13 flipped to IN/MED; Krown Oct 13 bullish, 90k+ this month, ~95k in 30d, invalid <80-81k, no entry/stop so not queueable). Vote IN 2 / NOT_IN 1 / UNDECIDED 3: thesis weakening. MTS queue 0 live. MTS: scheduled-task list only (Control Room artifact not re-read); day dispatcher and control-room disabled, relay-b ran Oct 13 19:01Z, night dispatcher enabled."}, {"when": "Oct 14 01:35", "source": "CBP", "text": "Scheduled run: fetched 2 new transcripts (CCU Oct 13, no BTC call; Qriptal Oct 13 NOT_IN/MED, conditional short zone 85.5k, resistance 84.1k, support 81.8k, no target or stop). Consensus still contested; MTS queue 0 live. MTS: Control Room unchanged since Oct 12 15:44Z (testnet net about -$15.2); mts-control-room and day mts-dispatcher disabled, night dispatcher succeeded."}, {"when": "Oct 13 16:20", "source": "CBP", "text": "Scheduled run: fetched 2 new transcripts (Krown Oct 13 NOT_IN/MED unchanged, washout to ~79.6k; Benjamin Oct 12 dominance, no BTC call). Consensus still contested; MTS queue 0 live. MTS: Control Room (Oct 12 15:44Z) testnet net about -$15.2 over 14 days; mts-control-room and day mts-dispatcher are disabled, night dispatcher ran Oct 13 04:59Z."}, {"when": "Oct 12 19:45", "source": "CBP", "text": "Scheduled run: fetch found no new transcripts (cookies OK, no list_failed). Consensus unchanged (contested); MTS queue 0 live. MTS: mts-dispatcher (hourly) is now DISABLED in the scheduler (night copy still enabled); Control Room last pickup 05:35Z, page shows no ledger rows in its latest build, so the -$13.2 testnet net is carried over from Oct 11 16:15Z."}, {"when": "Oct 12 17:00", "source": "CBP", "text": "Scheduled run: fetched 1 new transcript (Krown \"Slippage Explained\", Oct 11, educational, NOT_DISCUSSED). Consensus unchanged (contested); MTS queue 0 live. MTS: Control Room (Oct 11 16:16Z) testnet net about -$13.2 over 14 days, rsi_events 1h only clear positive (+$11.46); dispatcher, control-room (05:35Z) and cbp runs succeeded."}, {"when": "Oct 11 19:45", "source": "CBP", "text": "Scheduled run: fetched 1 new transcript (Michaal 'Ultimate Strategy: Altcoins', Oct 11): flips IN → UNDECIDED, warns of 50–70% market-wide correction and BTC 70–75k possible. Consensus still contested; MTS queue 0 live. MTS: control-room pickup 03:43Z and dispatcher 14:10Z succeeded; Control Room verdict unchanged (no edge yet, Tom gross negative, T082 next)."}, {"when": "Oct 11 08:00", "source": "CBP", "text": "Scheduled run: fetched 1 new transcript (Krown 'How Ranges Work', educational, bottom_call NOT_DISCUSSED). Consensus unchanged (contested); MTS queue 0 live. MTS: Control Room verdict unchanged, no edge yet, testnet net -$7.06; dispatcher healthy."}, {"when": "Oct 10 19:45", "source": "CBP", "text": "Scheduled run: fetch found no new transcripts (27 already in inbox, 14 off-topic, no list failures). Consensus unchanged; MTS queue 0 live. MTS: dispatcher running every 15 min, last Control Room pickup 09:17Z, no new verdict."}, {"when": "Oct 10 19:10", "source": "CBP", "text": "Fetched 27 transcripts (Benjamin, Rekt, Bob, Jason, Jala, Krown, CCU, Michaal, Qriptal); extracted by Haiku workers; consensus and dashboard rebuilt. Michael Pizzino: 0 of 12 uploads on-topic."}, {"when": "Oct 10 19:00", "source": "CBP", "text": "Scheduler <b>cbp-daily-workflow<\/b> created: runs 07:30 and 19:30 daily (fetch → Haiku extract → consensus → MTS emit → dashboard)."}, {"when": "Oct 10", "source": "Krown", "text": "\"Only done 8 times, all up within 12 months\": still doubts the correction is over; sideways to ~Oct 15, then a ~20% leg (90–95k) around day 40; 75k = invalidation. Bought spot at 82,680."}, {"when": "Oct 9", "source": "Jason", "text": "\"The FINAL Straw\": BTC daily closed under 82k; 74–75k weekly swing low next, 67k is the hard line. Undecided on bottom."}, {"when": "Oct 8", "source": "Jala", "text": "Flipped back to NOT_IN: Bitcoin lost the 400D, expects 80–79k, possibly ~70k. (He had called IN on Sep 27.)"}, {"when": "Oct 8", "source": "Benjamin", "text": "\"Q4 2026\": moves NOT_IN → UNDECIDED, \"can't completely give up the Q4 thesis\". Oct 7: 83k is the line in the sand."}, {"when": "Oct 7", "source": "CCU", "text": "Golden cross (2-day 50/200) expected ~mid-November \"regardless\"; reads it as a buying point."}, {"when": "Oct 6", "source": "Qriptal", "text": "Conditional short needs a 30m/1h imbalance at ~86.3k; above that he targets 89k+. No live trigger."}, {"when": "Oct 10 18:36", "source": "MTS", "text": "Desk tasks: Claude Desktop vm_bundles fix validated/applied; AIBridge v0.6.0 patch on JIS-NB; daily gate/hygiene STATUS regen (gate --quick PASS)."}, {"when": "Oct 10 17:17", "source": "MTS", "text": "NUC session decided B137 (device roles) and B138 (Dumps canonical location)."}, {"when": "Oct 10", "source": "MTS", "text": "Control Room verdict: system trades on testnet but no source shows an edge after fees. Stage 1 data fixes live (volume profile, naked POC); T080/T081 (maker model, stop buffer) negative because gross R is already negative. Next: T082 re-run backtests on fixed data."}, {"when": "Oct 10 13:11", "source": "MTS", "text": "mts-dispatcher (every 30 min) and mts-relay-a/b are succeeding; B164 (relay chain dying) is IN-FIX, dispatcher now runs origin's relay.py."}, {"when": "Oct 10", "source": "Fix", "text": "CBP bug fixed: detect_new.py listed _latest_run.txt as a new transcript. Bob's 9/9 call corrected NOT_IN/HIGH → IN/LOW (misread in the Sep 28 consensus)."}], "analysts_note": "latest per analyst · 6 live T1 voters", "analysts": [{"name": "Benjamin Cowen", "tier": "T1", "date": "Oct 8", "call": "UNDECIDED", "note": "Q4 thesis not given up; 83k line in the sand, floor 57–66k. LOW. Oct 12 dominance video has no BTC call."}, {"name": "Bob Loukas", "tier": "T1", "date": "Sep 9", "call": "IN", "note": "\"Gun to my head… cycle low has printed in July\", not definitive; keeps cash. LOW; 31 days old."}, {"name": "Jala", "tier": "T1", "date": "Oct 13", "call": "IN", "note": "Flipped from NOT_IN. Going up, but possibly one more deep spring to the 70s; ice line 807(?), 50W 765(?). MED."}, {"name": "Krown", "tier": "T1", "date": "Oct 13", "call": "NOT_IN", "note": "Expects test of low 80k (55 EMA ~79.6k) in 7–10 days, bounce 84–88k end of month, 90k+ mid/late Nov; bullish above 75k. NOT_IN, MED. Later Oct 13 video: bullish, no BTC <75k in Oct, 90k+ this month, 95k/30d, invalid <80-81k."}, {"name": "Jason Pizzino", "tier": "T1", "date": "Oct 9", "call": "UNDECIDED", "note": "Daily under 82k; 74–75k then 67k. Oct 8 hedged IN. LOW."}, {"name": "CCU", "tier": "T1", "date": "Oct 7", "call": "UNDECIDED", "note": "Golden cross ~mid-Nov; bull only after HH–HL–HH. Oct 13 video: no BTC call, teases a Nov/Dec \"secret clue\" (bonus video Oct 23)."}, {"name": "Rekt Capital", "tier": "T1", "date": "Aug 12", "call": "STALE", "note": "NOT_IN, 59 days old; excluded."}, {"name": "Michael Pizzino", "tier": "T1", "date": "—", "call": "NO DATA", "note": "0 on-topic of 12 scanned; check include_regex."}, {"name": "Michaal", "tier": "Monitor", "date": "Oct 11", "call": "UNDECIDED", "note": "Alt trader: expects 50–70% market-wide correction later 2026/Q1 2027; BTC 70–75k possible. Was IN Oct 4. LOW. Not a voter."}, {"name": "Qriptal", "tier": "Alerts", "date": "Oct 13", "call": "EXCLUDED", "note": "Expects lower prices; short zone ~85.5k after move up from 84.1k; 81.8k long stopped out. NOT_IN MED; excluded from vote."}], "levels": [{"level": "87.2–87.4k", "meaning": "Overhead; rejected repeatedly (Jason, Qriptal, Krown)"}, {"level": "83–84k", "meaning": "Benjamin's line in the sand; Krown: reclaim confirms low, bounce target 84k then 88k"}, {"level": "79–82.8k", "meaning": "Qriptal 81.4k, Jason 82k (lost on daily), Krown and Jala washout target 79–80k"}, {"level": "74–77k", "meaning": "Jason weekly swing low, Krown 75k invalidation, Jala 50W"}, {"level": "67k", "meaning": "Jason hard invalidation; Bob's 63–67k monthly support"}, {"level": "57–60k", "meaning": "Benjamin 2026 low 57k, Rekt 60k floor"}], "queue_note": "nothing live · Qriptal Oct 13 short zone 85.5k has no target or stop", "setups": [{"who": "Krown · BTC", "status": "NO SETUP", "cls": "p-nd", "rows": [["Targets", "Washout ~79.6k–80.35k within 7–10 days; bounce 84–88k; 90k+ by mid/late Nov; later video: 90k+ this month, ~95k within 30d"], ["Missing", "No entry trigger or stop for followers (stop NOT GIVEN); invalid below 75k"], ["Disclosed", "Kalshi buys on BTC Oct-high 87.5k and >90k contracts; spot buy 82,680 (Oct 10)"]]}, {"who": "Qriptal · BTC short", "status": "CONDITIONAL", "cls": "p-und", "rows": [["Trigger", "Move up into ~85.5k (4h/12h imbalance, value area high), then rejection"], ["Target", "NOT GIVEN"], ["Invalidation", "Break above 85.5k; no shorts above 87.4k"], ["Stop", "NOT GIVEN; expires ~Oct 17, update promised Thursday"]]}, {"who": "Michaal · alts", "status": "DISCLOSURE", "cls": "p-info", "rows": [["Book", "Cash ~20%; NEAR mostly sold, GRASS closing"], ["Largest", "TAO ~23K position, trim 500–650 (blocked-list coin)"], ["Note", "His book, not a signal; expects correction"]]}, {"who": "MTS pending.json", "status": "REJECTED", "cls": "p-in", "rows": [["Krown BTC LONG (Sep 25)", "Rejected as stale; expired Sep 29"], ["Handshake", "2026-09-30 consumed by desktop consumer"]]}], "mts": [{"title": "Testnet stack", "state": "Running", "cls": "s-ok", "detail": "Control Room figures carried from Oct 12 15:44Z (not re-read this run). relay-b last run Oct 13 19:01Z; night dispatcher enabled."}, {"title": "Edge status", "state": "None yet", "cls": "s-bad", "detail": "Tom gross −0.15 R; capture matrix 0/34 reach lift 1.15; T080/T081 negative. turn_of_candle is 79% of live trades and nets −$8.93."}, {"title": "Testnet ledger", "state": "-$15.2 / 14 d", "cls": "s-warn", "detail": "Oct 8 +$8.23, Oct 9 -$4.02, Oct 10 -$9.37, Oct 11 -$4.84, Oct 12 -$2.23 (to 15:30Z). turn_of_candle 570 trades net -$8.93; rsi_events 1h +$11.46 (4 trades)."}, {"title": "Uptime / hardware", "state": "Gaps · WHEA", "cls": "s-bad", "detail": "Dark ~23 of last 120 h; fatal WHEA hardware errors every 1–3 days since July (B140)."}, {"title": "MTS automation", "state": "Day tasks off", "cls": "s-warn", "detail": "mts-control-room (09:00/21:00) and day mts-dispatcher are now DISABLED; night dispatcher (hourly 00–06) enabled; relay-a/b manual."}, {"title": "CBP automation", "state": "Scheduled", "cls": "s-ok", "detail": "cbp-daily-workflow 07:30 and 19:30 local (this repo). Local commits are not pushed; cbp_v2/sync.ps1 pushes."}], "alloc": {"note": "0.200 BTC eq. — unchanged", "items": [["ETH", "0.061"], ["HBAR", "0.035"], ["QNT", "0.020"], ["ONDO", "0.022"], ["Reserve", "0.062"]]}, "footer": "Sources: cbp_v2/consensus.md · daily_actionable.md · extractions.md · MTS Control Room (read-only) · scheduled-task runs. All timestamps IST unless noted."};
+const $ = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
+const esc = s => String(s ?? '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const callPill = c => { const k = {IN:'p-in',NOT_IN:'p-notin',UNDECIDED:'p-und'}[c] || 'p-nd'; return `<span class="pill ${k}">${esc(String(c).replace('_',' '))}</span>`; };
+const app = document.getElementById('app');
 
-  <section>
-    <h2>Analyst read <span class="count">9 vote on thesis · fetched through Sep 27 01:30 IST</span></h2>
-    <div class="table-scroll">
-      <table>
-        <thead>
-          <tr><th>Analyst</th><th>Date</th><th>Call</th><th>Note</th></tr>
-        </thead>
-        <tbody>
-          <tr><td class="analyst-name">Benjamin</td><td class="video-date">Sep 26</td><td><span class="pill not-in">NOT IN</span></td><td class="evidence">Higher-low bear pattern, no cycle-low call.</td></tr>
-          <tr><td class="analyst-name">Bob Loukas</td><td class="video-date">Sep 9</td><td><span class="pill not-in">NOT IN</span></td><td class="evidence">"Not because cycle low is in" — reaccumulating early, not capitulating. Highest confidence.</td></tr>
-          <tr><td class="analyst-name">Jala</td><td class="video-date">Sep 26</td><td><span class="pill not-conf">NOT CONFIRMED</span></td><td class="evidence">Cup &amp; handle testing neckline. Discord alt feed still blocked (no bot token).</td></tr>
-          <tr><td class="analyst-name">Krown</td><td class="video-date">Sep 24–25</td><td><span class="pill not-in">NOT IN</span></td><td class="evidence">Bullish setup, not capitulation. His BTC long → <span class="flag">rejected, see queue</span>.</td></tr>
-          <tr><td class="analyst-name">CCU</td><td class="video-date">Sep 23–25</td><td><span class="pill discussed">NOT DISCUSSED</span></td><td class="evidence">Watch only: XRP RSI-MA cross, not yet triggered.</td></tr>
-          <tr><td class="analyst-name">Jason</td><td class="video-date">Sep 22–26</td><td><span class="pill ambiguous">AMBIGUOUS ⚠</span></td><td class="evidence">"Some call July 1 the cycle low" — leans low-already-in, breaks the consensus. ETH/SOL breaking out; XRP $1.70→$2, SOL $120.</td></tr>
-          <tr><td class="analyst-name">Michael</td><td class="video-date">Sep 21</td><td><span class="pill discussed">NOT DISCUSSED</span></td><td class="evidence">Levels only: hold $83k → $92k target; lose $83k = fakeout.</td></tr>
-          <tr><td class="analyst-name">Michaal</td><td class="video-date">Sep 20</td><td><span class="pill excluded">Excluded</span></td><td class="evidence">Bought an unnamed altcoin, +$40k/mo alt PnL. Disclosure, not a setup.</td></tr>
-          <tr><td class="analyst-name">Qriptal</td><td class="video-date">Sep 22</td><td><span class="pill excluded">Excluded</span></td><td class="evidence">Flat, no setup either side. Prior $72–73k bear thesis invalidated.</td></tr>
-          <tr><td class="analyst-name">Rekt</td><td class="video-date">Aug 12</td><td><span class="pill stale">STALE</span></td><td class="evidence">6 weeks old, excluded until refreshed.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+app.append($('header', '', `<div class="eyebrow">CryptoScrapper · CBP v2 · built ${esc(D.generated)}</div><h1>CBP Desk</h1><div class="sub">${esc(D.subtitle)}</div>`));
 
-  <section>
-    <h2>Confluence · $82,600–83,000</h2>
-    <div class="confluence-box">
-      <div class="conf-levels">
-        <div><span class="lvl">$82,650</span><span>Krown — 55 EMA target</span></div>
-        <div><span class="lvl">$82,800</span><span>Qriptal — his invalidation, already broken</span></div>
-        <div><span class="lvl">$83,000</span><span>Jason/Michael — breakout level; lose it = fakeout</span></div>
-      </div>
-    </div>
-  </section>
+const st = $('div', 'stats');
+D.stats.forEach(s => st.append($('div', 'stat', `<span class="l">${esc(s.label)}</span><span class="v ${s.cls||''}">${esc(s.value)}</span><span class="n">${esc(s.note)}</span>`)));
+app.append(st);
 
-  <section>
-    <h2>MTS queue</h2>
-    <div class="queue-card">
-      <div class="top-row">
-        <div><span class="asset">BTC</span> <span class="direction long">LONG</span></div>
-        <span class="status-badge rejected">Rejected</span>
-      </div>
-      <dl>
-        <dt>Source</dt><dd>Krown, Sep 25</dd>
-        <dt>Target</dt><dd>55 EMA(4h), snapshot $82,650</dd>
-        <dt>Why rejected</dt><dd>EMA moved since capture; sits past a level already broken (Qriptal, Sep 22)</dd>
-      </dl>
-    </div>
-  </section>
+const v = $('section', '', `<h2>Thesis <span class="count">${esc(D.thesis.statement)}</span></h2><div class="verdict"><b>${esc(D.thesis.verdict)}</b><br>${esc(D.thesis.summary)}</div>`);
+app.append(v);
 
-  <section>
-    <h2>Allocation <span class="count">0.200 BTC eq. — unchanged</span></h2>
-    <div class="alloc-grid">
-      <div class="alloc-item"><span class="amt">ETH</span><span class="name">0.061</span></div>
-      <div class="alloc-item"><span class="amt">HBAR</span><span class="name">0.035</span></div>
-      <div class="alloc-item"><span class="amt">QNT</span><span class="name">0.020</span></div>
-      <div class="alloc-item"><span class="amt">ONDO</span><span class="name">0.022</span></div>
-      <div class="alloc-item"><span class="amt">Reserve</span><span class="name">0.062</span></div>
-    </div>
-  </section>
+const hp = $('section', '', `<h2>Latest happenings <span class="count">newest first, all sources</span></h2>`);
+const tl = $('div', 'tl');
+D.happenings.forEach(h => tl.append($('div', 'ev', `<span class="w">${esc(h.when)}</span><span><span class="pill p-info">${esc(h.source)}</span></span><span>${h.text}</span>`)));
+hp.append(tl); app.append(hp);
 
-  <footer>
-    <span>Sep 27 · transcripts through 01:30 IST · no fetch since</span>
-  </footer>
-</div>
+const an = $('section', '', `<h2>Analyst read <span class="count">${esc(D.analysts_note)}</span></h2>`);
+const rows = D.analysts.map(a => `<tr><td><b>${esc(a.name)}</b><br><span class="sub">${esc(a.tier)}</span></td><td class="d">${esc(a.date)}</td><td>${callPill(a.call)}</td><td>${esc(a.note)}</td></tr>`).join('');
+an.append($('div', 'tw', `<table><thead><tr><th>Analyst</th><th>Latest</th><th>Call</th><th>Note</th></tr></thead><tbody>${rows}</tbody></table>`));
+app.append(an);
 
-</body></html>
+if (D.levels && D.levels.length) {
+  const lv = $('section', '', `<h2>Key levels</h2>`);
+  const b = $('div', 'warnbox'); D.levels.forEach(l => b.append($('div', '', `<b class="sub" style="color:var(--text)">${esc(l.level)}</b> &nbsp;${esc(l.meaning)}`)));
+  lv.append(b); app.append(lv);
+}
+
+const q = $('section', '', `<h2>Actionable setups &amp; MTS queue <span class="count">${esc(D.queue_note)}</span></h2>`);
+const g = $('div', 'grid2');
+D.setups.forEach(s => g.append($('div', 'card', `<div><b>${esc(s.who)}</b> &nbsp;<span class="pill ${s.cls||'p-nd'}">${esc(s.status)}</span></div><dl>${s.rows.map(r => `<dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd>`).join('')}</dl>`)));
+q.append(g); app.append(q);
+
+const mt = $('section', '', `<h2>MTS &amp; automation <span class="count">read-only snapshot</span></h2>`);
+const g2 = $('div', 'grid2');
+D.mts.forEach(m => g2.append($('div', 'card', `<div><b>${esc(m.title)}</b> &nbsp;<span class="${m.cls||''}">${esc(m.state)}</span></div><div class="sub">${esc(m.detail)}</div>`)));
+mt.append(g2); app.append(mt);
+
+if (D.alloc) {
+  app.append($('section', '', `<h2>Allocation <span class="count">${esc(D.alloc.note)}</span></h2><div class="alloc">${D.alloc.items.map(i => `<div><b>${esc(i[0])}</b><span>${esc(i[1])}</span></div>`).join('')}</div>`));
+}
+app.append($('footer', '', esc(D.footer)));
+</script>

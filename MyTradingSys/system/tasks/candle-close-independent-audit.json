@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-10-14T12:11:11Z",
+  "commands": [],
+  "created": "2026-10-14T06:36:14Z",
+  "depends_on": [],
+  "done_when": "Audit report gives SOUND/FIX-FIRST, exact evidence for every high finding, and whether a new DEV study is justified.",
+  "from_inbox": "",
+  "goal": "Independently audit candle event/phase probabilities and opportunity weighting before any validation.",
+  "id": "candle-close-independent-audit",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [
+    "volume_candles_ma"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "FIX-FIRST: phase/application and null mismatch; eight findings; broken study import reproduced as eight skips/exit0; two ready repair cards; no outcome rerun.",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14"
+  ],
+  "scope_out": [
+    "validation and holdout prices",
+    "live systems",
+    "changing hypotheses after seeing results"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read METHOD.md, DATA_AMENDMENT.md, REPORT.md and inspect study.py against raw-row verifier.",
+    "Audit first-event vs all-nearby control weighting, HTF availability, sampling dependence and rare phase cells; do not select winners.",
+    "Write findings with reproducible evidence and freeze a proposed fair-control extension before any further price run.",
+    "Read CYCLE_DESIGN.md: assess causal labels and five-block macro power bound; refine a local/swing build only if justified, keep all holdouts sealed."
+  ],
+  "taken": "2026-10-14T12:07:01Z",
+  "tests": "",
+  "title": "Candle closes: audit independent reconstruction and DEV subgroup evidence before validation"
+}
