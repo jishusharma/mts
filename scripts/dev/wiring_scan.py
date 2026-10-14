@@ -16,6 +16,11 @@ Usage: python scripts/dev/wiring_scan.py [--check] [--json out.json] [--md out.m
 
 The gate runs --check: every TEST-ONLY/ORPHAN file must be declared in MyTradingSys/system/wiring_registry.json
 (TOOL, REPRO, PARKED, WIRE) and every declaration must still be true. Work cannot go quietly unwired again.
+
+scripts/dev files are all roots (the gate and operator tools), so a dead one-off script there never shows as unwired. --check
+therefore also prints WARN NO-READER for a non-test scripts/dev file that no other non-test code file references, that no
+entry doc (CLAUDE.md, MyTradingSys/system/*.md, MyTradingSys/runtime/*.md, SKILL.md, relay prompts, scripts/schedules/*.md,
+artifacts/registry.json) names. Warn only (exit code unchanged): archive it (git mv to _archive/) or name its reader in a doc.
 """
 import argparse
 import ast
@@ -45,6 +50,10 @@ DISPOSITIONS = {
     'WIRE': 'built and tested but nothing runs it yet; ref names the item that finishes the job',
 }
 UNWIRED = ('TEST-ONLY', 'ORPHAN')
+DEV_PREFIX = 'scripts/dev/'
+INDEX_DOCS = {'MyTradingSys/system/03_FILE_INDEX.md', 'MyTradingSys/system/PROJECT_MAP.md',
+              'MyTradingSys/system/LAYERS.md'}   # inventories name every file, so a mention there proves no one uses it
+READER_JSON = {'MyTradingSys/system/artifacts/registry.json'}
 
 
 def is_test(p):
@@ -191,8 +200,59 @@ def reach(roots, edges, skip_tests):
     return seen
 
 
-def classify(root):
-    code, edges = build(root)
+def _is_reader_doc(rel):
+    """An entry doc whose mention of a scripts/dev tool counts as a reader (not a dated note or a generated inventory)."""
+    if rel in INDEX_DOCS:
+        return False
+    if rel in READER_JSON:
+        return True
+    if not rel.endswith('.md'):
+        return False
+    return (rel == 'CLAUDE.md' or rel.endswith('SKILL.md') or rel.startswith(('scripts/sched/relay_prompts/', 'scripts/schedules/'))
+            or (rel.startswith(('MyTradingSys/system/', 'MyTradingSys/runtime/')) and rel.count('/') == 2))
+
+
+def reader_docs_text(root):
+    try:
+        r = subprocess.run(['git', 'ls-files', '-z'], capture_output=True, cwd=root, check=True)
+        names = [n.decode('utf-8', 'replace') for n in r.stdout.split(NUL) if n]
+    except (OSError, subprocess.CalledProcessError):
+        names = []
+        for d, dirs, files in os.walk(root):
+            rel = os.path.relpath(d, root).replace(BACKSLASH, '/')
+            dirs[:] = [x for x in dirs if x not in SKIP_DIRS]
+            names += [(rel + '/' + f) if rel != '.' else f for f in files]
+    chunks = []
+    for n in names:
+        if _is_reader_doc(n):
+            try:
+                with open(os.path.join(root, n), encoding='utf-8', errors='replace') as fh:
+                    chunks.append(fh.read())
+            except OSError:
+                pass
+    return '\n'.join(chunks)
+
+
+def dev_no_reader(root, code, edges):
+    """Non-test scripts/dev files nobody reads: no other non-test code file references them and no entry doc names them.
+    scripts/dev files are all roots, so classify() can never call them unwired."""
+    referenced = set()
+    for src, targets in edges.items():
+        if not is_test(src):
+            referenced.update(targets)
+    docs = reader_docs_text(root)
+    out = []
+    for p in sorted(code):
+        if not p.startswith(DEV_PREFIX) or is_test(p) or p in referenced:
+            continue
+        if re.search(r'(?<![\w\-])' + re.escape(os.path.basename(p)), docs):
+            continue
+        out.append(p)
+    return out
+
+
+def classify(root, built=None):
+    code, edges = built or build(root)
     live_roots = [p for p in code if (p.startswith(LIVE_ROOT_PREFIX) or p in LIVE_ROOT_FILES) and not is_test(p)]
     dev_roots = [p for p in code if p.startswith('scripts/dev/') and not is_test(p)]
     test_roots = [p for p in code if is_test(p)]
@@ -254,11 +314,13 @@ def main(argv=None):
     ap.add_argument('--check', action='store_true', help='exit 1 on undeclared unwired files or stale declarations')
     ap.add_argument('--root', default=ROOT)
     a = ap.parse_args(argv)
-    res = classify(a.root)
+    built = build(a.root)
+    res = classify(a.root, built)
     counts = defaultdict(int)
     for v in res.values():
         counts[v] += 1
     print(dict(counts))
+    no_reader = dev_no_reader(a.root, built[0], built[1])
     if a.json:
         with open(a.json, 'w', encoding='utf-8', newline='\n') as fh:
             json.dump(res, fh, indent=1, sort_keys=True)
@@ -271,12 +333,16 @@ def main(argv=None):
             for p in sorted(k for k, v in res.items() if v == cls):
                 lines.append('| %s | %s | %s |' % (p, reg.get(p, {}).get('disp', '-'), last_commit(a.root, p)))
             lines.append('')
+        lines += ['## NO-READER (scripts/dev, warn only)', ''] + ['- ' + p for p in no_reader] + ['']
         with open(a.md, 'w', encoding='utf-8', newline='\n') as fh:
             fh.write('\n'.join(lines))
     if a.check:
         errors = check(res, load_registry(a.root))
         for e in errors:
             print('FAIL:', e)
+        if no_reader:
+            print('WARN NO-READER (%d scripts/dev files nobody reads; archive or document the reader): %s'
+                  % (len(no_reader), ', '.join(os.path.basename(p) for p in no_reader)))
         print('wiring check:', 'FAIL' if errors else 'PASS')
         return 1 if errors else 0
     return 0

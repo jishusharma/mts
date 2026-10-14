@@ -15,7 +15,6 @@ REPO = Path(__file__).resolve().parents[2]
 EXTRA = [
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_study.py",
     "scripts/dev/test_suplock.py",
-    "scripts/dev/test_check_handoff.py",
     "MyTradingSys/research/mfe_exit_2026-10-13/test_mfe_exit_study.py",
     "scripts/dev/test_make_layer_map.py",
     "scripts/dev/test_make_layers_board.py",
@@ -34,7 +33,6 @@ EXTRA = [
     "MyTradingSys/research/volume_2026-10-09/test_volume.py",
     "MyTradingSys/research/tom_btc_2026-10-13/test_chart_lab.py",
     "MyTradingSys/runtime/test_update_market_state.py",
-    "scripts/dev/test_backfill_naked_pocs.py",
     "scripts/dev/test_testnet_canary.py",
     "scripts/worker/test_audit_digest.py",
     "scripts/worker/test_audit_rotation.py",
