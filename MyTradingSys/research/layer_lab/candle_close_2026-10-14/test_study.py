@@ -1,0 +1,77 @@
+import unittest
+import numpy as np
+import pandas as pd
+import study
+
+
+class StudyTests(unittest.TestCase):
+    def test_signatures_and_mirror(self):
+        # close 99 -> 101 is a break, then 102 is acceptance.
+        a = pd.DataFrame(dict(o=[101, 101, 99, 101], h=[102, 102, 102, 103],
+                              l=[100, 98, 98, 100], c=[101, 99, 101, 102]))
+        m = study.signatures(a, np.full(4, 100.), 1)
+        self.assertTrue(m['break'][2])
+        self.assertTrue(m['reclaim'][2])
+        self.assertTrue(m['acceptance'][3])
+        b = pd.DataFrame(dict(o=200-a.o, h=200-a.l, l=200-a.h, c=200-a.c))
+        for key, value in m.items():
+            np.testing.assert_array_equal(value, study.signatures(b, np.full(4, 100.), -1)[key])
+
+    def test_wick_not_break_and_zero_range(self):
+        a = pd.DataFrame(dict(o=[101, 101, 101], h=[101, 103, 101],
+                              l=[101, 99, 101], c=[101, 102, 101]))
+        m = study.signatures(a, np.full(3, 100.), 1)
+        self.assertTrue(m['rejection'][1])
+        self.assertFalse(m['break'][1])
+        self.assertFalse(m['strong_break'][2])
+
+    def test_complete_buckets_and_duplicate_rejected(self):
+        a = self.bars(6)
+        b = study.aggregate(a, 2)
+        self.assertEqual(list(b.c), [102, 104, 106])
+        self.assertEqual(b.index[0], a.index[0]+pd.Timedelta(minutes=2))
+        self.assertEqual(len(study.aggregate(a.drop(a.index[1]), 2)), 2)
+        with self.assertRaises(ValueError):
+            study.validate(pd.concat([a, a.iloc[:1]]))
+
+    def test_level_available_after_parent_close(self):
+        a = self.bars(480)
+        parent = study.aggregate(a, 240)
+        t = pd.DatetimeIndex([a.index[239], a.index[240]])
+        levels = study.known(parent.h, t)
+        self.assertTrue(np.isnan(levels[0]))
+        self.assertEqual(levels[1], 341.)
+        # Mutating the future cannot change the first available level.
+        changed = a.copy()
+        changed.loc[changed.index>=a.index[240], 'h'] += 999
+        np.testing.assert_equal(levels, study.known(study.aggregate(changed, 240).h, t))
+
+    def test_next_open_outcome(self):
+        a = self.bars(70)
+        signal_end = a.index[5]
+        # Entry open 105, exit open 165; no signal candle close fill.
+        r = study.forward(a, pd.DatetimeIndex([signal_end]), 60)
+        self.assertAlmostEqual(r[0], 165/105-1)
+        self.assertTrue(np.isnan(study.forward(a, pd.DatetimeIndex([a.index[-1]]), 60)[0]))
+
+    def test_guard_and_ohlc(self):
+        with self.assertRaises(ValueError):
+            study.check_month('2024-07')
+        a = self.bars(2)
+        a.loc[a.index[0], 'l'] = 10000
+        with self.assertRaises(ValueError):
+            study.validate(a)
+
+    def test_gap_cannot_bridge_forward_window(self):
+        a = self.bars(70)
+        self.assertTrue(np.isnan(study.forward(a.drop(a.index[10]), pd.DatetimeIndex([a.index[5]]), 60)[0]))
+
+    @staticmethod
+    def bars(n):
+        op = np.arange(n)+100.
+        return pd.DataFrame(dict(o=op, h=op+2, l=op-1, c=op+1, v=np.ones(n)),
+                            index=pd.date_range('2022-01-01', periods=n, freq='min', tz='UTC'))
+
+
+if __name__ == '__main__':
+    unittest.main()
