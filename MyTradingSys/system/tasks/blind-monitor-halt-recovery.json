@@ -12,7 +12,7 @@
   "layers": [
     "live_engine"
   ],
-  "live_path": false,
+  "live_path": true,
   "note": "Parked on the operator policy question (asks). Size, commands and tests are set after his answer; check then promotes it.",
   "prio": 2,
   "refine_tries": 1,
