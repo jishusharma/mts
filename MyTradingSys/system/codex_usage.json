@@ -6,7 +6,7 @@
   "window_resets": 1792015537,
   "window_used": 1.0
  },
- "at": "2026-10-14T18:30:57Z",
+ "at": "2026-10-14T19:06:30Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 4.0,
   "window_pts": 1.0,
-  "window_runs": 3
+  "window_runs": 4
  },
  "runs": [
+  {
+   "at": "2026-10-14T19:05:24Z",
+   "card": "tom-btc-event-study",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 60,
+   "tokens_out": 4069,
+   "tokens_total": 428165,
+   "tokens_uncached": 58784,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-14T18:30:03Z",
    "card": "tom-btc-event-study",
@@ -157,21 +172,6 @@
    "tokens_uncached": 100194,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-13T15:00:02Z",
-   "card": "tom-profile-shape-parity",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 172,
-   "tokens_out": 8645,
-   "tokens_total": 1219346,
-   "tokens_uncached": 105933,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
