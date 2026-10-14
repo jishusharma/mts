@@ -9,7 +9,7 @@
   "goal": "Add scripts/dev/trial_ledger.py that scans the TRIAL_REGISTRY files listed in REPORT.md G6 and writes research/TRIAL_LEDGER.csv (study, variant, date, data window, verdict) plus a holdout_reads.csv skeleton for the sealed 2025-07..2026-09 BTC window. Count per study printed.",
   "id": "gap-g6-trial-ledger",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "layers": [
     "tom"
   ],
@@ -19,6 +19,12 @@
   "refine_tries": 0,
   "refined_by": "sonnet-2026-10-13 gap review G1-G8",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-14T07:03:51Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "scripts/dev/trial_ledger.py",
