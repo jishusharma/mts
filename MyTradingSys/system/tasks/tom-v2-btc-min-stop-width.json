@@ -41,7 +41,7 @@
     "MyTradingSys/PROJECT_VISION.md:234",
     "MyTradingSys/backtest/layers/FORMULAS.md section 12"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "n5(bars, asof): median true range (FORMULAS.md 12) of completed 5-minute bars of the trailing 20 UTC days, as a fraction of close; reuse tom_noise_units.true_ranges.",
     "min_stop_width(entry, n5, fees) = max(0.88 * n5, round-turn fee fraction / 0.25) * entry; a signal with a narrower stop is dropped with reason stop_below_min_width, never widened.",
