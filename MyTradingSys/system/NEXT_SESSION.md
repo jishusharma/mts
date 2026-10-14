@@ -1,4 +1,4 @@
-<!-- relay: go depth=86 id=5f4d4fbe -->
+<!-- relay: go depth=87 id=d26da8b5 -->
 KROWN 2026-10-14 (JIS-NB): 15 extracts, 120-rule ledger, spec v0.2 shipped (ddd051b6); Q65-Q71 are the rest (data, FORMULAS+tests, detectors, recall, captions retry, decisions); state research/krown_ta101_2026-10-13/STATE.md.
 RELAY 2026-10-14 ~16:55Z (JIS-NB relay): Q63 done (Fabio ledger 0/18 replay-ready, no date on any frame; follow-up card fabio-session-date-price-match, CODEX); Q64 is next on NB; Q60 still waits on DSA desk row; Q59 is JIS-NUC.
 UPDATE 2026-10-14 ~13:00Z (JIS-NB, new third Claude Max login jishusharma1985, operator chat): CI green again (c8a86f11); AutoDeploy STOP_NOT_FF fixed by ancestry merge 2bf0d6ac; relay/mirror/executor-diagnostics/sched-script fixes and live-tree-only doc edits shipped. Full diagnosis + old queue: handoff_history/2026-10-14_nb_ops.md.
