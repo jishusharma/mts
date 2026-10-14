@@ -8,7 +8,7 @@
 |---|---|---|---|
 | A (primary, cloud) | jishu.sharma@gmail.com | jishusharma | installed, cloud sessions only |
 | B (secondary, cloud) | jishu.awgp | jishu-awgp (write collaborator, checked 2026-10-14) | not installed yet |
-| C (third, Max, 2026-10-14) | jishusharma1985@gmail.com | none yet: no GitHub user has this email (API search 2026-10-14) | not installed yet |
+| C (third, Max, 2026-10-14) | jishusharma1985@gmail.com | jishusharma1985 (write invite sent 2026-10-14, accept pending) | not installed yet |
 
 Repo owned by: jishusharma/mts (GitHub user jishusharma). One repo.
 Never duplicate the repo. Never fork for a second account.
