@@ -220,7 +220,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/items/B162_qriptal_signal_layer.md`
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-14_qriptal-score-binance.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_qriptal-score-binance.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `qriptal-score-binance` ready p1 CODEX: Qriptal: score his posted calls on Binance candles (B162)
+  - `qriptal-score-binance` raw p1 CODEX: Qriptal: score his posted calls on Binance candles (B162)
+  - `qriptal-call-ledger` ready p2 CODEX: Qriptal: build the call ledger from the 22 staged transcripts (B162 step 1)
 
 ## Cross-cutting
 
