@@ -390,10 +390,12 @@ def salvage(wt, home, cid, when, files=None):
         if src.is_file():
             (dest / f).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(src, dest / f)
-        if git(wt, "ls-files", "--error-unmatch", "--", f, check=False).returncode == 0:
-            git(wt, "checkout", "--quiet", "--", f)
-        elif src.is_file():
-            src.unlink()
+        if git(wt, "cat-file", "-e", f"HEAD:{f}", check=False).returncode == 0:
+            git(wt, "checkout", "--quiet", "HEAD", "--", f)   # from HEAD: also clears a staged or unmerged entry (plain checkout refuses those)
+        else:
+            git(wt, "rm", "--quiet", "--cached", "--ignore-unmatch", "--", f)   # staged new file: unstage, then move it out
+            if src.is_file():
+                src.unlink()
     return dest, len(files)
 
 

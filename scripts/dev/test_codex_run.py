@@ -431,6 +431,34 @@ class LimitFallback(unittest.TestCase):
             self.assertEqual((dest / "tracked.txt").read_text(encoding="utf-8"), "v2")
             self.assertTrue((dest / "new.png").is_file())
 
+    def test_salvage_clears_unmerged_and_staged_files(self):
+        # JIS-NUC 2026-10-14: a stash-pop conflict left INDEX.md unmerged (no MERGE_HEAD) plus staged new files; every tick
+        # then died on `git checkout -- INDEX.md` ("path is unmerged") and the lab stayed idle.
+        import subprocess
+        with tempfile.TemporaryDirectory() as d:
+            wt, home = Path(d) / "wt", Path(d) / "home"
+            wt.mkdir()
+            run = lambda *a: subprocess.run(["git", "-C", str(wt), "-c", "user.name=t", "-c", "user.email=t@t", *a],
+                                            capture_output=True)
+            run("init", "-q")
+            (wt / "INDEX.md").write_text("v1\n", encoding="utf-8")
+            run("add", ".")
+            run("commit", "-qm", "i")
+            (wt / "INDEX.md").write_text("mine\n", encoding="utf-8")
+            run("stash", "-q")
+            (wt / "INDEX.md").write_text("theirs\n", encoding="utf-8")
+            run("commit", "-qam", "t")
+            (wt / "staged_new.md").write_text("n\n", encoding="utf-8")
+            run("add", "staged_new.md")
+            run("stash", "pop")
+            self.assertIn("UU INDEX.md", run("status", "--porcelain").stdout.decode())
+            dest, n = R.salvage(wt, home, "tick", datetime(2026, 10, 14, 15, 0, tzinfo=timezone.utc))
+            self.assertEqual(n, 2)
+            self.assertEqual(R.changed_files(wt), [])
+            self.assertEqual((wt / "INDEX.md").read_text(encoding="utf-8"), "theirs\n")
+            self.assertTrue((dest / "staged_new.md").is_file())
+            self.assertIn("mine", (dest / "INDEX.md").read_text(encoding="utf-8"))
+
 
 if __name__ == "__main__":
     unittest.main()
