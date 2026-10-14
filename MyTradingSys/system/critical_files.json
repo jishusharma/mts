@@ -13,10 +13,10 @@
   },
   {
    "path": "DSA_SESSION_PROMPT.md",
-   "blob": "12799766a63e96c37614a7fca8cf57a1ed333e46",
-   "sha256_8": "a06a307f",
+   "blob": "ce57c30f26f4ecab84434b6884359206b9b23101",
+   "sha256_8": "b22e5331",
    "eol": "LF",
-   "approved_by": "operator chat 2026-10-14 (JIS-NB): new single DSA prompt",
+   "approved_by": "operator chat 2026-10-14 (JIS-NB): smarter end-to-end DSA prompt (v2)",
    "approved_commit": "pending"
   },
   {
