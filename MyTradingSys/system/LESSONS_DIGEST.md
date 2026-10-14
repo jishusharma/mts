@@ -3,7 +3,7 @@
 Source: `MyTradingSys/system/LESSONS_LEARNED.md` (38 KB, append-only history). This file is the RULE line of every entry,
 grouped by who needs it; `[A]`..`[G]` = lettered section there, `[10-03 title]` = dated entry. Read the full entry when a
 rule touches your task. Adding a lesson: append the story to LESSONS_LEARNED.md AND one rule line here, same commit.
-Synced with LESSONS_LEARNED.md at blob: de2de3a7 (STATUS.md flags this file STALE when that blob changes).
+Synced with LESSONS_LEARNED.md at blob: ad79e76d (STATUS.md flags this file STALE when that blob changes).
 
 ## 1. Accuracy (every session)
 - Expected numbers come from the definition in `backtest/layers/FORMULAS.md`, computed independently; never from repo code. [A]
@@ -29,6 +29,7 @@ Synced with LESSONS_LEARNED.md at blob: de2de3a7 (STATUS.md flags this file STAL
 - Placebo/permutation shifts are drawn without replacement and the lags are printed. [E]
 - Collection-only families are marked as such in config + log, kept out of edge claims; pick a hold where fees do not decide. [G]
 - Before flipping a verdict label, read the row's own evidence cell; verify then edit. [10-04 flipping a verdict]
+- No layer backtest starts until the 12-item readiness template `MyTradingSys/backtest/PRE_REG_TEMPLATE.md` is answered with file:line evidence (encoding recall AND fire rate on a held-back check set, ledger with minute timestamps, home-market fit and cost per instrument). [10-12 backtests before encoding]
 
 ## 3. Live path (execution/, layers/alerts/, anything a running process imports)
 - Builders never edit a file a running process imports; stage `.new`; every brief touching execution/ says so. [F] [G]
