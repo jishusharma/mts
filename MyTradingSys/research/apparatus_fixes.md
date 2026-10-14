@@ -121,3 +121,32 @@ re-fired MTS-Supervisor. Supervisor pid 11296 up, log line 11:19:35.
 Permanent fix (code, not urgent): match pid AND process start time, or match the
 command line for loop-supervisor, before treating the lock as live. Target:
 scripts\core\loop-supervisor.ps1 lines 97-112. Claude Code.
+
+## 2026-10-14 JIS-NB build defect and paste defects
+
+Build FAIL on JIS-NB: Maven ran under JDK 11 while pom.xml sets
+maven.compiler.source/target = 17. javac refused with
+'invalid target release: 17' before parsing any source. Not a code
+defect; the 2026-10-14 01:29 edit to SpikeFadeDetector,
+SetupCandidatesBuilder, MarketDataSnapshot and the two SpikeFade
+tests is not implicated.
+
+Fix landed on JIS-NB:
+- User and Machine JAVA_HOME -> C:\Users\E-ngineers\Java\jdk-17.0.20.1+1
+- Machine PATH: removed the jdk-11.0.7\bin entry
+- JDK 11 unregistered through its MSI (Java SE Development Kit
+  11.0.7 64-bit); folder C:\Program Files\Java\jdk-11.0.7 removed
+- Proof: mvn compile exit 0 with
+  C:\Users\E-ngineers\Maven\apache-maven-3.6.3\bin\mvn.cmd
+- Residue: a running AIBridge agent still holds the old JAVA_HOME
+  string in its inherited environment. Restart the agent, or set
+  JAVA_HOME at Process scope for the turn.
+
+Paste defects this session (boot paste carried a NUC report while
+the session ran on JIS-NB):
+- BUILD_REPORT.md header says host: JIS-NUC, bridge is JIS-NB.
+- Boot loop health line (java_absent, supervisor_absent, snapshot
+  missing) describes JIS-NUC, not JIS-NB.
+- section 9 gives Maven at D:\tools\apache-maven-3.9.14; that path
+  does not exist on JIS-NB. Actual Maven on JIS-NB:
+  C:\Users\E-ngineers\Maven\apache-maven-3.6.3\bin\mvn.cmd.
