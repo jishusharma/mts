@@ -1,11 +1,14 @@
 {
   "card": "B160-followup",
   "done_when": "research/screenshots/engine/<id>.json exists for every shot id above, or the refusal text is written in the result.",
+  "finished": "2026-10-14T12:18:14Z",
   "from": "JIS-NUC",
+  "host": "JIS-NB",
   "id": "20261011-192038-b160-followup",
   "need": "PATH=C:/tools/jdk-17.0.18/bin:$PATH python scripts/dev/shot.py engine 78f967b4e253; PATH=C:/tools/jdk-17.0.18/bin:$PATH python scripts/dev/shot.py engine b5f554a9f68a; PATH=C:/tools/jdk-17.0.18/bin:$PATH python scripts/dev/shot.py engine 6188a576411b (full brief: python scripts/dev/tasks.py brief B160-followup)",
   "posted": "2026-10-11T19:20:38Z",
-  "status": "pending",
+  "result": "card B160-followup is done (2/3 engine snapshots written, one refused; see the card result)",
+  "status": "done",
   "target": "DSA-NB",
   "title": "Engine snapshots for the 2026-10-09 chart shots"
 }

@@ -1,10 +1,13 @@
 {
   "done_when": "On JIS-NUC python scripts/dev/live_mirror.py pull prints 'pulled: mirror of JIS-NB' and brief shows OK",
+  "finished": "2026-10-14T12:18:14Z",
   "from": "JIS-NUC",
+  "host": "JIS-NB",
   "id": "20261009-202832-install-live-mirror-on-jis-nb-read-only-",
   "need": "1) As admin on JIS-NB: mkdir F:\\MTS\\Mirror; New-SmbShare -Name MTS-Mirror -Path F:\\MTS\\Mirror -ReadAccess 'JIS-NB\\mtsworker' -FullAccess 'JIS-NB\\E-ngineers' (NUC must NOT get change access: Opus review 2026-10-10 item 1). 2) After the supervisor deploys scripts/dev/live_mirror.py to the live tree: schedule 'MTS-LiveMirror' every 5 min running python scripts/dev/live_mirror.py publish --root F:\\MTS\\Mirror from the live tree (own process, outside the trading loop). 3) Run it once by hand and check F:\\MTS\\Mirror\\CURRENT exists.",
   "posted": "2026-10-09T20:28:32Z",
-  "status": "pending",
+  "result": "obsolete, superseded by 20261011-201038-install-live-mirror-on-jis-nb (same MTS-LiveMirror publish task). Its step 1 is already done (MTS-Mirror share on F:\\MTS\\Mirror exists, checked 2026-10-14). Reversible: set status back to pending.",
+  "status": "failed",
   "target": "JIS-NB",
   "title": "Install live mirror on JIS-NB (read-only share + publish task)"
 }
