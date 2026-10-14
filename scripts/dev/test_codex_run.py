@@ -459,6 +459,46 @@ class LimitFallback(unittest.TestCase):
             self.assertTrue((dest / "staged_new.md").is_file())
             self.assertIn("mine", (dest / "INDEX.md").read_text(encoding="utf-8"))
 
+    def _two_branches(self, d, lab_file, trunk_file):
+        import subprocess
+        wt = Path(d) / "wt"
+        (wt / "MyTradingSys/research/layer_lab").mkdir(parents=True)
+        run = lambda *a: subprocess.run(["git", "-C", str(wt), "-c", "user.name=t", "-c", "user.email=t@t", *a], capture_output=True)
+        run("init", "-q", "-b", "trunk")
+        run("config", "user.name", "t")   # merge_trunk commits without -c: CI runners may have no global identity
+        run("config", "user.email", "t@t")
+        for f in {lab_file, trunk_file, R.LAB + "/INDEX.md"}:
+            (wt / f).write_text("base\n", encoding="utf-8")
+        run("add", ".")
+        run("commit", "-qm", "base")
+        run("switch", "-q", "-c", "lab")
+        (wt / lab_file).write_text("lab\n", encoding="utf-8")
+        run("commit", "-qam", "lab")
+        run("switch", "-q", "trunk")
+        (wt / trunk_file).write_text("trunk\n", encoding="utf-8")
+        run("commit", "-qam", "trunk")
+        run("switch", "-q", "lab")
+        return wt, run
+
+    def test_merge_trunk_resolves_a_generated_index_clash(self):
+        # JIS-NUC 2026-10-14 16:00Z: the tick's merge stopped on INDEX.md (generated), left MERGE_HEAD, every later tick failed.
+        with tempfile.TemporaryDirectory() as d:
+            idx = R.LAB + "/INDEX.md"
+            wt, run = self._two_branches(d, idx, idx)
+            R.merge_trunk(wt, "trunk")
+            self.assertEqual(R.changed_files(wt), [])
+            self.assertFalse((wt / ".git/MERGE_HEAD").exists())
+            self.assertEqual(run("merge-base", "--is-ancestor", "trunk", "HEAD").returncode, 0)
+
+    def test_merge_trunk_aborts_a_real_clash_and_leaves_the_tree_clean(self):
+        with tempfile.TemporaryDirectory() as d:
+            wt, run = self._two_branches(d, "code.py", "code.py")
+            with self.assertRaises(SystemExit) as e:
+                R.merge_trunk(wt, "trunk")
+            self.assertIn("code.py", str(e.exception))
+            self.assertEqual(R.changed_files(wt), [])
+            self.assertFalse((wt / ".git/MERGE_HEAD").exists())
+
 
 if __name__ == "__main__":
     unittest.main()
