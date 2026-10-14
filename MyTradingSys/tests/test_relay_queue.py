@@ -38,7 +38,9 @@ CARDS = "MyTradingSys/system/tasks"
 def run(home, *args, host="JIS-NB", script=None, cwd=None):
     env = {k: v for k, v in os.environ.items() if not k.startswith("MTS_RELAY")}
     env.update({"MTS_RELAY_HOME": str(home), "MTS_RELAY_NOW": "2026-10-14T10:00:00Z", "MTS_RELAY_NOLINT": "1",
-                "MTS_RELAY_HOST": host, "MTS_RELAY_NOCODEX": "1"})
+                "MTS_RELAY_HOST": host, "MTS_RELAY_NOCODEX": "1",
+                # route commits into the temp repo: a CI runner has no git identity of its own
+                "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t"})
     return subprocess.run([sys.executable, str(script or SCRIPT), *args], capture_output=True, text=True, env=env, cwd=cwd)
 
 
