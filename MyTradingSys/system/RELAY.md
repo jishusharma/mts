@@ -38,6 +38,11 @@ fix the list, run handoff again. Rules (code: scripts/sched/handoff_lint.py, tes
 - `python scripts/sched/relay.py lint --file MyTradingSys/system/NEXT_SESSION.md [--want stop]` checks without writing; it also fails when the file is over the size cap (12288 bytes), which `handoff` would otherwise only meet as a refusal.
 - `relay.py begin` takes the first ready card of a builder lane (`tasks.CODE_LANES` without OPUS: HAIKU, SONNET) that no open claim holds; `tasks.py next` hides claimed cards too (`--all` shows them with the claimant).
 
+## Turn meter (2026-10-14: the relay only saves tokens if sessions hand over)
+The 15 tool / 5 operator turn cap is a hook, not prose: `scripts/dev/turn_meter.py` (PostToolUse, UserPromptSubmit, SessionStart in
+.claude/settings.json) injects the hand-off instruction at the cap and every 5 tool turns after; a compact or clear resets the count.
+Operator threads get the same nudge (seen 2026-10-14: one thread at 625k tokens re-read per turn). `turn_meter.py status` lists them.
+
 ## Brakes (all fail closed)
 - no header, header says stop, or the id did not change (the handoff was not rewritten: would replay the same task) -> STOP
 - depth cap 6 chain links counted from the chain base (`handoff --reset-depth`, or `kick`, which records the base); a runaway chain is bounded
