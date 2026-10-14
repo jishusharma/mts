@@ -1,0 +1,32 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-14T14:37:40Z",
+  "depends_on": [],
+  "done_when": "RESULT.md with both variants fee-net on DEV/VAL/HOLDOUT vs current Tom; a layer_map.json row; a flag-gated change proposed only if VAL and HOLDOUT agree.",
+  "from_inbox": "",
+  "goal": "Know, from a fee-net backtest, whether Tom should (a) offer a short when price is above daily VAH and stalls (no candidate exists there today), and (b) use a farther target than the POC for ct_short at VAH (VAL or prior low), so a 0.2% stop is not rejected by the 1.25 net R:R floor.",
+  "id": "tom-short-coverage-above-vah",
+  "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "Evidence 2026-10-14 (extract research/screenshots/2026-10-14_BTCUSDT_6b27526d76bd.md): 08:10Z day high 84062 above VAH, setup_candidates null; 08:38Z ct_short at daily VAH 83727, stop 83889, target POC 83406, gross RR 1.97, net 0.96 -> rejected; 12:13-12:30Z second top above VAH, null again; price then fell to 81850. One day is a story, not evidence: pre-register, DEV/VAL/HOLDOUT, all variants in the trial ledger. Pairs with card eu-low-us-sweep-follow-ups-long-after-sw leg (c).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/screenshots/2026-10-14_BTCUSDT_6b27526d76bd.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Tom short coverage on trend-down days: no candidate above VAH, ct_short at VAH killed by POC-only target (2026-10-14)"
+}
