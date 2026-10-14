@@ -18,7 +18,9 @@ Per-host state (not in git) lives in $MTS_RELAY_HOME (default ~/.claude): mts-re
   python scripts/sched/relay.py lint --file F [--want go|stop]   task-list quality gate + size cap (handoff runs the gate; refuses on FAIL)
   python scripts/sched/relay.py gate --file F --started-id <id|none>      exit 0 GO, 1 STOP
   python scripts/sched/relay.py kick [--file F | --git-ref REF:PATH]   dispatcher: KICK task=... (exit 0) or IDLE <why> (exit 1)
-  python scripts/sched/relay.py status --file F | stop "<why>" | resume
+  python scripts/sched/relay.py status --file F [--host H]   header, stop flag and the QUEUE line (kick prints the same line after KICK/IDLE)
+  python scripts/sched/relay.py route [--file F | --git-ref REF:PATH]   post open `lane=CODEX` / `lane=DSA` tasks to their lane once (before kick)
+  python scripts/sched/relay.py stop "<why>" | resume
 Two hosts, any account (2026-10-12): every host runs the same dispatcher. `handoff` appends who wrote it (host, account, session
 title) to relay_runs.jsonl beside the handoff, and `kick --peer-quiet-min N` stays IDLE while ANOTHER host wrote the current
 handoff under N minutes ago. A host that goes silent (budget out, machine off, `relay.py stop`) is taken over after N minutes;
@@ -286,9 +288,13 @@ def cmd_kick(a):
     Never edits the handoff. Idle when: stop flag, no header, header says stop, the same id was launched less than STALE_H
     hours ago (a session is on it), or any launch is younger than ACTIVE_MIN (a chain is moving). Otherwise records the
     launch (lock + a new chain base, so the depth cap measures this chain only) and prints KICK."""
+    qinfo = {}
+
     def idle(why):
         log("idle", reason=why)
         print("IDLE " + why)
+        if qinfo:
+            print(queue_line(qinfo["q"]))
         return 1
     flag = home() / "mts-relay-stop"
     if flag.exists():
@@ -308,11 +314,20 @@ def cmd_kick(a):
     me = a.host or host()
     text = None if a.file else text_from_git(a.git_ref)
     root = Path(a.root) if a.root else (Path.cwd() if text is not None else None)
+    try:   # the QUEUE line is information: it must never stop a kick
+        qtext = Path(a.file).read_text(encoding="utf-8") if a.file else text
+        qinfo["q"] = queue_info(qtext, me, root or root_of(a, a.file), None if a.file else a.git_ref.split(":", 1)[0])
+    except Exception as e:
+        log("queue_error", error=str(e)[:200])
     for e in lint_file(a.file or "x", "go", root, me, text):
         if e.startswith(HOST_ERR):
             return idle("no unblocked task for host %s (%s)" % (me, e.split(": ", 1)[-1]))
         if e.startswith(NONE_ERR):  # only DONE/blocked rows: a KICK would pay for an empty session (RV08)
             return idle("no unblocked open task in handoff %s" % hid)
+    q = qinfo.get("q")
+    if q and not q["runnable"] and not q["looks"] and (q["lane"]["CODEX"] or q["lane"]["DSA"]):   # open work is all on a lane: no Claude session for it
+        return idle("no Claude-runnable task: open work is on lane CODEX (%s) / DSA (%s)%s" % (
+            ",".join(q["lane"]["CODEX"]) or "-", ",".join(q["lane"]["DSA"]) or "-", "; run `relay.py route` to post it" if q["unposted"] else ""))
     prev = read_lock()
     if prev:
         age = now() - prev["_t"]
@@ -325,7 +340,220 @@ def cmd_kick(a):
     (home() / "mts-relay-chain.json").write_text(json.dumps({"base": depth}), encoding="utf-8", newline="\n")
     log("kick", id=hid, depth=depth)
     print("KICK depth=%d id=%s task=mts-relay-%s" % (depth, hid, "ab"[depth % 2]))
+    if q:
+        print(queue_line(q))
     return 0
+
+
+# ---- queue awareness + lane routing (operator 2026-10-14) -----------------------------------------------------------
+
+DESK_DIR = "MyTradingSys/system/desk_queue"
+CARD_DIR = "MyTradingSys/system/tasks"
+ROUTED_NAME = "mts-relay-routed.json"   # per host, in home(): {task key: {lane, ref, utc}}; the lane artifact (row/card relay_key) is the shared record
+BLOCK_DSA = re.compile(r"desk row|\bDSA\b", re.I)
+BLOCK_OP = re.compile(r"operator|\bJIS\b|decision|control room", re.I)
+AFTER = re.compile(r"^\(after([^)]*)\)", re.I)
+
+
+def sched_import(name, root=None):
+    """Import a sibling script: scripts/sched next to this file, else (a copy run from %TEMP%) the tree's scripts/sched or scripts/dev."""
+    import importlib
+    here = Path(__file__).resolve().parent
+    for d in (here, here.parent / "dev", Path(root or ".") / "scripts" / "sched", Path(root or ".") / "scripts" / "dev"):
+        if (d / (name + ".py")).is_file():
+            if str(d) not in sys.path:
+                sys.path.insert(0, str(d))
+            return importlib.import_module(name)
+    raise ImportError(name)
+
+
+def parse_queue(text):
+    hl = sched_import("handoff_lint")
+    lines = hl.block_lines(text or "")
+    return hl.parse_tasks(lines) if lines else []
+
+
+def task_key(t):
+    """Stable id of one task line, so a lane task is posted once: its Qn plus a hash of its text."""
+    import hashlib
+    return "%s-%s" % (t["id"].lower(), hashlib.sha1("\n".join(t["lines"]).encode("utf-8")).hexdigest()[:8])
+
+
+def read_routed():
+    try:
+        return json.loads((home() / ROUTED_NAME).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def lane_rows(root, ref=None):
+    """Desk rows and cards that relay `route` posted: [{kind, id, key, lane, status}] from the tree or from a git ref."""
+    texts = []
+    if ref:
+        r = subprocess.run(["git", "-C", str(root), "grep", "-l", '"relay_key"', ref, "--", DESK_DIR, CARD_DIR],
+                           capture_output=True, text=True, encoding="utf-8", timeout=60)
+        for ln in r.stdout.splitlines():
+            n = ln.split(":", 1)[1] if ":" in ln else ""
+            s = subprocess.run(["git", "-C", str(root), "show", "%s:%s" % (ref, n)], capture_output=True, text=True, encoding="utf-8", timeout=60)
+            texts.append((n, s.stdout))
+    else:
+        for d in (DESK_DIR, CARD_DIR):
+            for p in sorted((Path(root) / d).glob("*.json")) if (Path(root) / d).is_dir() else []:
+                s = p.read_text(encoding="utf-8")
+                if '"relay_key"' in s:
+                    texts.append((d + "/" + p.name, s))
+    out = []
+    for n, s in texts:
+        try:
+            d = json.loads(s)
+        except ValueError:
+            continue
+        if d.get("relay_key"):
+            desk = n.startswith(DESK_DIR)
+            out.append({"kind": "desk" if desk else "card", "id": d["id"], "key": d["relay_key"],
+                        "lane": "DSA" if desk else "CODEX", "status": d.get("status") if desk else d.get("state", "")})
+    return out
+
+
+def codex_look(root):
+    """Lines under `codex_run.py status` NEEDS A LOOK; 0 on a host that has no lab (the lab runs on JIS-NUC) or when it cannot be read."""
+    if os.environ.get("MTS_RELAY_NOCODEX"):
+        return 0
+    script = Path(root) / "scripts" / "dev" / "codex_run.py"
+    if not script.is_file() or not (Path(os.environ.get("CODEX_HOME") or "F:/codex_home") / "lab_runs").is_dir():
+        return 0
+    try:
+        r = subprocess.run([sys.executable, str(script), "status"], capture_output=True, text=True, encoding="utf-8", timeout=30, cwd=str(root))
+    except (OSError, subprocess.SubprocessError):
+        return 0
+    n, on = 0, False
+    for ln in r.stdout.splitlines():
+        if "NEEDS A LOOK:" in ln:
+            on = True
+        elif on and ln.strip().startswith("- "):
+            n += 1
+    return n
+
+
+def queue_info(text, me, root=None, ref=None):
+    """Count the handoff's Qn tasks by why they wait. Uses handoff_lint's parser (one parser). Buckets are exclusive, first match wins:
+    done, blocked (operator/JIS | DSA desk row | other), lane CODEX/DSA (open, run by that lane), other host, runnable (a Claude session can take it now)."""
+    hl = sched_import("handoff_lint")
+    tasks = parse_queue(text)
+    q = {"total": len(tasks), "done": [], "runnable": [], "host": {}, "operator": [], "dsa_row": [], "blocked": [],
+         "lane": {"CODEX": [], "DSA": []}, "unposted": [], "looks": [], "codex_look": 0, "me": me}
+    routed = read_routed()
+    for t in tasks:
+        if t["state"] == "done":
+            q["done"].append(t["id"])
+        elif t["state"] == "blocked":
+            why = (AFTER.match(t["first"]) or [None, t["first"]])[1]
+            q["dsa_row" if BLOCK_DSA.search(why) else "operator" if BLOCK_OP.search(why) else "blocked"].append(t["id"])
+        elif t["lane"] in ("CODEX", "DSA"):
+            q["lane"][t["lane"]].append(t["id"])
+            if task_key(t) not in routed:
+                q["unposted"].append(t["id"])
+        elif not hl.runs_on(t, me):
+            q["host"].setdefault(t["host"], []).append(t["id"])
+        else:
+            q["runnable"].append(t["id"])
+    open_lane = {task_key(t): t["id"] for t in tasks if t["state"] == "open" and t["lane"] in ("CODEX", "DSA")}
+    if root is not None and open_lane:
+        for r in lane_rows(root, ref):
+            if r["key"] in open_lane and r["status"] in ("done", "failed", "dropped"):
+                q["looks"].append("%s %s %s" % (open_lane[r["key"]], r["kind"], r["status"]))
+    if root is not None:
+        q["codex_look"] = codex_look(root)
+    return q
+
+
+def queue_line(q):
+    host = ", ".join("host=%s %d" % (h, len(v)) for h, v in sorted(q["host"].items())) or "host=other 0"
+    lane = q["lane"]
+    return ("QUEUE total=%d runnable=%d%s | waiting: %s, operator/JIS %d, DSA desk row %d, other blocked %d | lane CODEX %d, lane DSA %d%s"
+            " | DONE %d | look=%d%s%s | for %s"
+            % (q["total"], len(q["runnable"]), " (%s)" % ",".join(q["runnable"]) if q["runnable"] else "", host, len(q["operator"]),
+               len(q["dsa_row"]), len(q["blocked"]), len(lane["CODEX"]), len(lane["DSA"]),
+               " (%d not posted yet: run route)" % len(q["unposted"]) if q["unposted"] else "", len(q["done"]), len(q["looks"]),
+               " [%s]" % "; ".join(q["looks"]) if q["looks"] else "", " codex_look=%d" % q["codex_look"] if q["codex_look"] else "", q["me"]))
+
+
+def root_of(a, file=None):
+    if getattr(a, "root", None):
+        return Path(a.root)
+    p = Path(file).resolve() if file else None
+    return p.parents[2] if p is not None and len(p.parents) > 2 else Path.cwd()
+
+
+def task_body(t):
+    return " ".join(ln.strip() for ln in t["lines"])
+
+
+def done_when(t):
+    m = re.search(r"DONE when:\s*(.*)$", task_body(t))
+    return (m.group(1) if m else task_body(t))[:380]
+
+
+def post_lane(t, key, root, ship):
+    """Post one open lane task to its lane: a desk row (DSA) or a raw lane-CODEX task card (CODEX), both carrying relay_key.
+    Returns (ref, note). Skips when a row/card with this key already exists (another host posted it)."""
+    desk = sched_import("desk", root)
+    tasks_mod = sched_import("tasks", root)
+    body = task_body(t)
+    with desk.writable(str(root), ship) as wt:
+        for r in lane_rows(wt):
+            if r["key"] == key:
+                return r["id"], "exists"
+        title = "%s %s" % (t["id"], re.sub(r"\s+", " ", t["first"])[:70])
+        if t["lane"] == "DSA":
+            rid = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-") + re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")[:40]
+            req = {"id": rid, "title": title, "need": body[:1500], "done_when": done_when(t), "target": "DSA", "from": host(),
+                   "posted": now().strftime(TS), "status": "pending", "relay_key": key}
+            desk.save(wt, req)
+            desk.commit_ship(wt, req, "desk task: %s\n\nResult: task %s queued for DSA (relay route %s)\n" % (title, rid, key), ship)
+            return rid, "posted"
+        cid = "relay-" + key
+        card = tasks_mod.blank(cid, title, lane="CODEX")
+        card.update(goal=body[:380], done_when=done_when(t), steps=[body[:380]], relay_key=key,
+                    scope_in=sorted(set(sched_import("handoff_lint").PATH.findall(body)))[:6],
+                    note="posted by relay.py route from %s of NEXT_SESSION.md; refiner: set kind, size, scope, then tasks.py check" % t["id"])
+        tasks_mod.save(wt, card)
+        rel = "%s/%s.json" % (CARD_DIR, cid)
+        desk.sh(wt, "add", "--", rel)
+        desk.sh(wt, "commit", "-q", "-m", "task card: %s (lane CODEX)\n\nResult: card %s created by relay route %s\n" % (title, cid, key), "--", rel)
+        if ship:
+            desk.run_ship(wt)
+        return cid, "posted"
+
+
+def cmd_route(a):
+    """T0 step before kick: post every open lane-tagged task (lane=CODEX, lane=DSA) to its lane exactly once. The task stays in the
+    handoff (a Claude session closes it when the result is read), but `kick` no longer counts it as Claude work."""
+    text = Path(a.file).read_text(encoding="utf-8") if a.file else text_from_git(a.git_ref)
+    if text is None:
+        print("ROUTE ERROR cannot read the handoff")
+        return 2
+    root = root_of(a, a.file)
+    routed = read_routed()
+    todo = [t for t in parse_queue(text) if t["state"] == "open" and t["lane"] in ("CODEX", "DSA") and task_key(t) not in routed]
+    if not todo:
+        print("ROUTE nothing to post")
+        return 0
+    out = []
+    for t in todo:
+        key = task_key(t)
+        try:
+            ref, note = post_lane(t, key, root, not a.no_ship)
+        except (SystemExit, Exception) as e:   # fail closed: not recorded, so the next tick retries
+            out.append("%s %s ERROR %s" % (t["id"], t["lane"], str(e)[:160]))
+            continue
+        routed[key] = {"lane": t["lane"], "ref": ref, "task": t["id"], "utc": now().strftime(TS)}
+        log("route", task=t["id"], lane=t["lane"], ref=ref, note=note)
+        out.append("%s %s %s %s" % (t["id"], t["lane"], note, ref))
+    home().mkdir(parents=True, exist_ok=True)
+    (home() / ROUTED_NAME).write_text(json.dumps(routed, indent=1, sort_keys=True), encoding="utf-8", newline="\n")
+    print("ROUTE " + "; ".join(out))
+    return 1 if any(" ERROR " in o for o in out) else 0
 
 
 def cmd_brief(a):
@@ -447,6 +675,8 @@ def cmd_status(a):
     print("header:", read_header(a.file))
     flag = home() / "mts-relay-stop"
     print("stop flag:", flag.read_text(encoding="utf-8").strip() if flag.exists() else "none")
+    text = Path(a.file).read_text(encoding="utf-8")
+    print(queue_line(queue_info(text, a.host or host(), root_of(a, a.file))))
     return 0
 
 
@@ -487,6 +717,13 @@ def main(argv=None):
     bg.add_argument("--skip", action="append", default=[], help="card id to pass over (repeatable)")
     st = sub.add_parser("status")
     st.add_argument("--file", required=True)
+    st.add_argument("--host", help="count runnable tasks for this host (default: this machine)")
+    st.add_argument("--root", help="tree holding desk_queue/ and tasks/ (default: two levels above --file)")
+    ro = sub.add_parser("route")
+    ro.add_argument("--file")
+    ro.add_argument("--git-ref", default=KICK_REF)
+    ro.add_argument("--root", help="tree to post from (default: cwd; the live tree posts through a scratch worktree off origin)")
+    ro.add_argument("--no-ship", action="store_true", help="commit the row/card but do not run sync.py ship (tests)")
     sp = sub.add_parser("stop")
     sp.add_argument("why")
     sub.add_parser("resume")
@@ -503,6 +740,8 @@ def main(argv=None):
         return cmd_brief(a)
     if a.cmd == "kick":
         return cmd_kick(a)
+    if a.cmd == "route":
+        return cmd_route(a)
     if a.cmd == "begin":
         return cmd_begin(a)
     home().mkdir(parents=True, exist_ok=True)

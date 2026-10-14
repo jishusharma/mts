@@ -86,3 +86,23 @@ the session ritual in `scripts/sched/relay_prompts/relay_session.md` (hosts hold
   silence the other host starts the chain. Rest a host on purpose with `relay.py stop "<why>"` on it.
 - `handoff` keeps NEXT_SESSION.md under 12 KB (`MTS_RELAY_MAX_BYTES`): old `## ` sections move to `system/handoff_history/<date>.md`.
   Edit the block, do not append `## Update` sections.
+
+## Queue awareness and lane routing (operator 2026-10-14: "relay running continuously, aware of how many tasks are queued, GPT and DSA for as much as possible")
+The dispatcher ticks every 10 minutes (the App never overlaps two runs of one task), so a tick must be cheap and must know what is waiting.
+- **QUEUE line.** `relay.py status --file MyTradingSys/system/NEXT_SESSION.md [--host H]` prints it, and `kick` prints it after every KICK/IDLE:
+  `QUEUE total=6 runnable=0 | waiting: host=JIS-NUC 1, operator/JIS 0, DSA desk row 1, other blocked 1 | lane CODEX 0, lane DSA 0 | DONE 3 | look=0 | for JIS-NB`.
+  Buckets are exclusive, parsed by `handoff_lint.parse_tasks` (the same parser lint uses), first match wins: DONE; `(after ...)` blocked, split by its text into
+  operator/JIS (operator, JIS, decision, Control Room), DSA desk row (`desk row` or DSA), other blocked (a date, another task); open `lane=` tasks;
+  open tasks of another host; the rest = `runnable` for this host (what a Claude session can take now).
+- **Lane tag.** `Qn. lane=CODEX ...` (GPT / Codex Layer Lab on JIS-NUC, LAYER_LAB.md) or `Qn. lane=DSA ...` (AI Bridge run-and-report, DSA_DELEGATION.md), before or after
+  `host=`. Use it only for work the lane can finish alone: DSA = copy-ready commands, an observable result; CODEX = an audit/build/run card. A bad lane value fails lint.
+- **`relay.py route`** (T0, the dispatcher runs it before `kick`; `--file F` or `--git-ref REF:PATH`, `--root R`, `--no-ship`): for every open lane task not yet posted it files
+  a desk row `--target DSA` (`desk.py` format) or a raw lane-CODEX task card (`tasks.py` format; the refiner sets kind/size/scope, then `tasks.py check`), each carrying
+  `relay_key` = `<qn>-<hash of the task text>`. Posted once: the key is recorded in `~/.claude/mts-relay-routed.json` (host-local) AND is on the row/card itself (shipped via
+  `sync.py ship`, so the other host sees it and answers `exists`). A failed post is not recorded and retries next tick. Edit the task text and it is a new key: it posts again.
+- **Kick skips lane work.** A handoff whose open tasks are all lane tasks gives `IDLE no Claude-runnable task: open work is on lane CODEX (...) / DSA (...)`: no Claude session is paid for it.
+- **Results come back as `look=`.** When the row is `done`/`failed` (or the card `done`) and its Qn is still open in the handoff, QUEUE shows `look=1 [Q60 desk done]` and `kick` wakes a
+  session: it reads the row (`desk.py list --all`) or card (`tasks.py brief <id>`), spot-checks ONE claim, and rewrites the Qn as `DONE ...` (that clears the look).
+  `codex_look=N` (JIS-NUC only) counts the lines under `codex_run.py status` NEEDS A LOOK; it is information, it does not wake kick.
+- Dispatcher prompt: step 1 copies `relay.py` AND `handoff_lint.py` from origin to `$TEMP/mts_relay/`, runs `route`, then `kick`; the final `dispatcher:` line carries `route=` and `queue=`. Idle-tick economy is unchanged.
+- Writing the task list: when curating, tag every task a lane can do alone (a re-run of an existing script, an inventory, a CODEX audit card) instead of leaving it for a Claude session.
