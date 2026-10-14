@@ -1,0 +1,8 @@
+{
+  "name": "mts-gate",
+  "description": "Run the offline gate (quick) in a work tree and report pass/fail with the failing lines",
+  "params": { "repo": "C:\\Users\\E-ngineers\\IdeaProjects\\mts-dsa" },
+  "steps": [
+    { "name": "gate", "cmd": "python scripts/dev/run_all_tests.py --quick", "cwd": "{repo}", "timeout_s": 900, "show": 6 }
+  ]
+}
