@@ -6,6 +6,7 @@ GitHub: jishusharma1985 invited as write collaborator 2026-10-14 (accept pending
 ```
 MTS builder session. Read CLAUDE.md and STATUS.md (regenerate first). One task per session; ship, overwrite this file, `sync.py where` clean.
 0. `python scripts/dev/sync.py start` from a worktree; `tasks.py next` now skips claimed cards (b172-trim is claimed by JIS-NUC).
+   Q59. host=JIS-NUC Card codex-lab-unstick-nuc (SONNET, M): `tasks.py brief codex-lab-unstick-nuc` (the GPT lab has been idle since ~08:00Z on an unmerged INDEX.md; evidence research/GPT_STATUS_2026-10-14.md). DONE when: `codex_run.py status` on JIS-NUC prints no ERROR and no NEEDS A LOOK.
    Q60. host=any (after DSA closes desk row 20261014-134217-standin-refine-lc-event-table-trial; DSA_STANDIN_PROMPT.md shipped 8530343b) Card dsa-claude-standin-prompt: `desk.py list --all`, rerun `tasks.py check lc-event-table` + `tasks.py lint` once. DONE when: card done with result "trial: lc-event-table lint PASS/FAIL".
    Q61. host=any Card rv08-relay-host-tag-edge-cases (SONNET, S): `tasks.py brief rv08-relay-host-tag-edge-cases`. DONE when: card done with its VERDICT line and test_relay.py green.
    Q62. host=any Spot-check one number in MyTradingSys/research/layer_lab/reports/2026-10-14_lab-candle-close-dev.md against raw 1m klines (pandas on JIS-NB). DONE when: MyTradingSys/research/layer_lab/INDEX.md row lab-candle-close-dev carries "Claude spot-check: MATCH/MISMATCH <number>".
