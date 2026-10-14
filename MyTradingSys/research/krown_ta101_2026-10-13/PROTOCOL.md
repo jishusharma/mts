@@ -4,7 +4,7 @@ Written before any further extraction, at the operator's request: "check all the
 everything is structured from the beginning." Sources read in full: methodology/extraction.md, methodology/playbook.md (Part I),
 research/fast_track_2026-09-27/EXTRACTION_METHOD_V2.md, research/EXTRACTION_ROUND2_2026-10-01.md,
 research/EXTRACTION_TO_ALERT_AUDIT_2026-09-19.md, system/LESSONS_DIGEST.md, system/LESSONS_LEARNED.md (2026-10-12 entry),
-backtest/PRE_REG_TEMPLATE.md, memory notes research-gate-in-briefs and tom-fabio-redefine-direction.
+backtest/PRE_REG_TEMPLATE.md, research/tom_transfer_2026-10-11/ROADMAP.md (F2) and RECALL_DAX.md section 1. The research gate for briefs is methodology/playbook.md Part I (T1-T3/REJECT, verified citations); the former memory notes research-gate-in-briefs and tom-fabio-redefine-direction were retired 2026-10-15.
 
 ## 1. Lessons and how each one applies to Krown
 
@@ -21,7 +21,7 @@ backtest/PRE_REG_TEMPLATE.md, memory notes research-gate-in-briefs and tom-fabio
 | L9 | Do not force our taxonomy during extraction; mapping to our labels happens later against the code (V2 s4.6) | Template rule 4. Family names in the ledger are Krown's own episode vocabulary. |
 | L10 | Do not write the mirrored rule unless he states it; record `Side` as said (V2 s4.1-4.3) | Template field `Side`; ledger column `mirror_stated`. |
 | L11 | Lectures give LESSON rows and little trade content; V2 trade format fits trade walk-throughs only (ROUND2 s5.2) | TA 101 are lectures: concept format is right. If Krown's daily event-study / live-call videos are extracted later (KROWN_FREE_VS_PAID.md), use V2 for those. |
-| L12 | Prices and dates for ground truth come from frames or from the price data, never from caption text (memory tom-fabio-redefine-direction; ASR errors like "55 minute closures", "three seven seven") | Every dated example in the extracts (Mar 2020, Feb 2026, Dec 2018...) is checked against klines before it is used as a recall check. |
+| L12 | Prices and dates for ground truth come from frames or from the price data, never from caption text (research/tom_transfer_2026-10-11/ROADMAP.md F2 and RECALL_DAX.md section 1; ASR errors like "55 minute closures", "three seven seven") | Every dated example in the extracts (Mar 2020, Feb 2026, Dec 2018...) is checked against klines before it is used as a recall check. |
 | L13 | No layer backtest until the 12-item readiness template is answered with file:line evidence (LESSONS 2026-10-12; PRE_REG_TEMPLATE.md) | PRE_REG_KROWN.md; item 2 (ledger of the source's own trades) is NOT_ANSWERED for TA 101 (lectures, no trade recaps). |
 | L14 | Every parameter is SOURCED (his words, quote + file:line) or OURS; OURS is chosen on DEV, checked once on VALIDATION, holdout read once; every variant in the trial ledger (CLAUDE.md 2026-10-13) | Ledger column `param_label`; no number is ever shown as his unless a quote carries it. His own statistics (5,284 candles, 82 %, 26 years, 80 touches) are claims: T3, REJECT as evidence, kept as hypotheses to TEST. |
 | L15 | Tier labels never upgraded; T3 = ideas and definitions only; a system change backed only by T3 needs operator approval (playbook Part I) | All ledger rows T3. No live wiring without the operator. |
