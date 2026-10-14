@@ -80,3 +80,7 @@ Research rationale and verified sources: RESEARCH.md. Frozen rules: METHOD.md (c
 `python MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_study.py`
 `python MyTradingSys/research/layer_lab/candle_close_2026-10-14/verify_result.py`
 `python MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py` refuses to overwrite existing results. Any fresh statistical run must be logged first. Python with numpy and pandas is required. Data download is public and DEV-only; no exchange account is accessed.
+
+## Subsequent audit, 2026-10-14
+
+INDEPENDENT_AUDIT.md identifies phase-model/application gaps, unequal control sampling, incomplete inference verification and a reproduced test-import skip defect. The original 126-arm outputs remain unchanged. Read that audit before interpreting phase-specific applicability; NEXT_EXPERIMENT.md records the required design correction before another outcome run.
