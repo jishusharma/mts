@@ -21,7 +21,7 @@
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refs": [],
-  "result": "126 DEV arms, 105541 correlated events, 0 pass; eight tests and independent 126-event reconstruction pass; validation unread.",
+  "result": "126 DEV arms, 105541 correlated events, 0 pass; eight tests and independent 126-event reconstruction pass; validation unread. Claude spot-check: MATCH gross -0.0166378 (2023-03-30 03:00Z 1h week-high break long; raw Binance 1m open 28952.1->28470.4, level 28881.0 = Mon-week high).",
   "scope_in": [
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14"
   ],
