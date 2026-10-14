@@ -2,7 +2,7 @@
   "_doc": "ONE registry of every claude.ai artifact we keep (replaces manifest.json, 2026-10-12). Pages are published from the repo copy over the SAME url on each account, so the link stays current and the pin stays. A session cannot delete or unpin: retire/duplicate rows are the list Jis cleans by hand. Check: python scripts/dev/artifacts.py check. Procedure: artifacts/README.md.",
   "accounts": {
     "jishu.awgp": "second account, JIS-NUC (Jis calls it the NB-app list with 6 pins)",
-    "jishu.sharma": "first account, JIS-NB (3 pins: Control Room, CBP Desk, CBP Monday Desk)"
+    "jishu.sharma": "first account, JIS-NB (pins 2026-10-14: Control Room, MTS Layers, CBP Desk = consensus desk, CBP Monday Desk)"
   },
   "pages": [
     {
@@ -24,7 +24,7 @@
       },
       "last_published": {
         "jishu.awgp": "2026-10-13",
-        "jishu.sharma": "unknown"
+        "jishu.sharma": "2026-10-14"
       },
       "note": "One Inbox: the jishu.awgp page. Publish the jishu.sharma copy without writing to its db. Carries the Claude-GPT cycle section (system/RELAY_NOTES.md). Republished by the NUC pickup, built with the trade ledger."
     },
@@ -44,7 +44,7 @@
       },
       "last_published": {
         "jishu.awgp": "2026-10-13",
-        "jishu.sharma": "never"
+        "jishu.sharma": "2026-10-14"
       },
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Not on jishu.sharma yet: first publish there, record the url."
     },
@@ -111,7 +111,7 @@
     {
       "slug": "cbp_desk",
       "title": "CBP Desk",
-      "status": "needs-url",
+      "status": "retire",
       "pinned": true,
       "generator": "CBP daily workflow routine (CryptoScrapper tree, not in this repo)",
       "html": null,
@@ -125,7 +125,7 @@
       "last_published": {
         "jishu.sharma": "2026-10-12 (viewed 2 h ago in the app)"
       },
-      "note": "Pinned only on the jishu.sharma app; its URL is in no repo file. A session on that account runs `artifacts.py plan --account jishu.sharma`, reads it from the Artifacts list and records it. Probably the live successor of CBP Dashboard and the Consensus Desk."
+      "note": "Pinned only on the jishu.sharma app; its URL is in no repo file. A session on that account runs `artifacts.py plan --account jishu.sharma`, reads it from the Artifacts list and records it. Probably the live successor of CBP Dashboard and the Consensus Desk. 2026-10-14: on jishu.sharma the page titled \"CBP Desk\" IS cbp_consensus_desk (same url V1d9xSL9...); no separate page."
     }
   ],
   "unpinned_old": {
