@@ -1,32 +1,33 @@
-"""Session relay guard: lets one Claude Code session start the next one from the committed handoff (zero operator input).
+"""Session relay: lets one Claude Code session start the next one from the committed handoff (zero operator input).
 
-The ending session ships its work, calls `handoff` (stamps NEXT_SESSION.md with a relay header), ships that, then runs
-`gate`; on GO it fires the App scheduled task named on the GO line (mts-relay-a for even depth, mts-relay-b for odd:
-a task cannot start itself while its own run is in progress, so the two alternate) via mcp run_scheduled_task, which opens a fresh session whose
-prompt is "read NEXT_SESSION.md and run its block". Fail closed: anything unclear = STOP (the operator starts it by hand).
+The dispatcher (an App scheduled task on a cron) runs `tick` in ONE call; on KICK that same session IS the relay session (an
+unattended session cannot start another one: B164), so there is no launch step. The ending session ships its work, calls `handoff`
+(stamps NEXT_SESSION.md with a relay header), ships that, and runs `unlock` so the next tick starts the next handoff at once.
 
 Header (one HTML comment line in NEXT_SESSION.md, travels through git so every machine/account sees the same chain):
   <!-- relay: go depth=3 id=a1b2c3d4 -->        or        <!-- relay: stop reason=<text> depth=3 id=a1b2c3d4 -->
-Gate STOPs on: no header / header says stop / depth >= MAX_DEPTH (default 6, per operator reset) / id equals --started-id
-(the session never rewrote the handoff = it would replay the same task) / stop flag file / the SAME handoff id already
-launched (double fire). The lock is keyed by handoff id, not by clock: a short session (the policy) that hands over a NEW id
-10 minutes after the previous launch must be allowed through (2026-10-10 06:42 chain death: "a relay launched 15 min ago").
-Depth counts from the chain base (`kick` records it per host), so a timer-started chain is never killed by an old depth.
-Per-host state (not in git) lives in $MTS_RELAY_HOME (default ~/.claude): mts-relay-stop (flag), mts-relay-lock.json, mts-relay-log.jsonl.
+`kick` stays IDLE on: stop flag / no header / header says stop / no task this host can run / a launch younger than ACTIVE_MIN /
+the SAME handoff id launched under STALE_H ago (a session is on it) / another host wrote the handoff under --peer-quiet-min ago.
+The lock is keyed by handoff id and freed by `unlock`, not by a clock alone.
+Per-host state (not in git) lives in $MTS_RELAY_HOME (default ~/.claude): mts-relay-stop (flag), mts-relay-lock.json,
+mts-relay-log.jsonl, mts-relay-routed.json, mts-hourly.json.
 
+  python scripts/sched/relay.py tick [--peer-quiet-min N]       dispatcher: fetch, route, kick, hourly gate, ONE `TICK NOOP|KICK` line
+  python scripts/sched/relay.py begin [--root R] [--skip CARD]  KICK session start: relay worktree, sync start, claim a card, brief
+  python scripts/sched/relay.py brief --file F                  header + first open tasks of the handoff (never read the whole file)
   python scripts/sched/relay.py handoff --file F (--go | --stop "<reason>") [--reset-depth]
-  python scripts/sched/relay.py lint --file F [--want go|stop]   task-list quality gate + size cap (handoff runs the gate; refuses on FAIL)
-  python scripts/sched/relay.py gate --file F --started-id <id|none>      exit 0 GO, 1 STOP
-  python scripts/sched/relay.py kick [--file F | --git-ref REF:PATH]   dispatcher: KICK task=... (exit 0) or IDLE <why> (exit 1)
-  python scripts/sched/relay.py status --file F [--host H]   header, stop flag and the QUEUE line (kick prints the same line after KICK/IDLE)
-  python scripts/sched/relay.py route [--file F | --git-ref REF:PATH]   post open `lane=CODEX` / `lane=DSA` tasks to their lane once (before kick)
+  python scripts/sched/relay.py unlock                          free the launch lock (last action of a KICK session, not after --stop)
+  python scripts/sched/relay.py lint --file F [--want go|stop]  task-list quality gate + size cap (handoff runs it; refuses on FAIL)
+  python scripts/sched/relay.py kick [--file F | --git-ref REF:PATH]   KICK depth=.. id=.. (exit 0) or IDLE <why> (exit 1), then the QUEUE line
+  python scripts/sched/relay.py route [--file F | --git-ref REF:PATH]  post open `lane=CODEX` / `lane=DSA` tasks to their lane once
+  python scripts/sched/relay.py status --file F [--host H]      header, stop flag and the QUEUE line
   python scripts/sched/relay.py stop "<why>" | resume
 Two hosts, any account (2026-10-12): every host runs the same dispatcher. `handoff` appends who wrote it (host, account, session
 title) to relay_runs.jsonl beside the handoff, and `kick --peer-quiet-min N` stays IDLE while ANOTHER host wrote the current
 handoff under N minutes ago. A host that goes silent (budget out, machine off, `relay.py stop`) is taken over after N minutes;
 nothing is keyed to an account, so signing a different account into either App changes nothing here.
 `handoff` also keeps the file under MTS_RELAY_MAX_BYTES by moving old `## ` sections to handoff_history/<date>.md.
-Test hooks: MTS_RELAY_HOME, MTS_RELAY_NOW (ISO), MTS_RELAY_MAX_DEPTH, MTS_RELAY_MAX_BYTES, MTS_RELAY_HOST, MTS_RELAY_ACCOUNT.
+Test hooks: MTS_RELAY_HOME, MTS_RELAY_NOW (ISO), MTS_RELAY_MAX_BYTES, MTS_RELAY_HOST, MTS_RELAY_ACCOUNT.
 """
 import argparse
 import json
@@ -39,10 +40,10 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.dont_write_bytecode = True
-MAX_DEPTH = int(os.environ.get("MTS_RELAY_MAX_DEPTH") or 6)
 ACTIVE_MIN = 45  # kick: a launch younger than this means a session is probably still working
 STALE_H = 1  # kick: the same handoff id launched this long ago and never rewritten = the session died or never started, retry
-# (2026-10-10: the gate locks BEFORE the App starts the task; an unattended session could not approve run_scheduled_task, the 3 h wait wasted 3 h)
+HOURLY_MIN = 55  # tick: minutes between two hourly bundles (refiner status, housekeeping), kept in mts-hourly.json
+HOUSEKEEP_H = 24  # tick: hours between two housekeeping asks
 MAX_BYTES = int(os.environ.get("MTS_RELAY_MAX_BYTES") or 12288)  # handoff size cap: every relay session reads the whole file
 RUNS_NAME = "relay_runs.jsonl"
 HOST_ERR = "go with no unblocked open task for host"  # == handoff_lint.HOST_ERR
@@ -133,13 +134,6 @@ def read_lock():
         return None
 
 
-def chain_base():
-    try:
-        return int(json.loads((home() / "mts-relay-chain.json").read_text(encoding="utf-8"))["base"])
-    except (OSError, ValueError, KeyError):
-        return 0
-
-
 def read_header(path):
     """(state, reason, depth, id) or None when the file or header is missing."""
     try:
@@ -204,34 +198,13 @@ def cmd_handoff(a):
     return 0
 
 
-def stop(reason):
-    log("stop", reason=reason)
-    print("RELAY STOP " + reason)
-    return 1
-
-
-def cmd_gate(a):
-    flag = home() / "mts-relay-stop"
-    if flag.exists():
-        return stop("operator stop flag: " + flag.read_text(encoding="utf-8").strip()[:120])
-    h = read_header(a.file)
-    if h is None:
-        return stop("no relay header in handoff file")
-    state, reason, depth, hid = h
-    if state != "go":
-        return stop("handoff says stop: " + (reason or "no reason"))
-    if depth - chain_base() >= MAX_DEPTH:
-        return stop("chain depth %d (base %d) reached cap %d; operator resets with handoff --reset-depth or kick" % (depth, chain_base(), MAX_DEPTH))
-    if a.started_id != "none" and hid == a.started_id:
-        return stop("handoff id unchanged since session start (task not consumed or handoff not rewritten)")
+def cmd_unlock(a):
+    """Last action of a KICK session (not after `handoff --stop`): frees the launch lock so the next tick starts the next handoff."""
     lock = home() / "mts-relay-lock.json"
-    prev = read_lock()
-    if prev and prev.get("id") == hid:
-        return stop("handoff %s already launched (double fire)" % hid)
-    home().mkdir(parents=True, exist_ok=True)
-    lock.write_text(json.dumps({"utc": now().strftime(TS), "id": hid, "depth": depth}), encoding="utf-8", newline="\n")
-    log("go", id=hid, depth=depth)
-    print("RELAY GO depth=%d id=%s task=mts-relay-%s" % (depth, hid, "ab"[depth % 2]))
+    had = lock.exists()
+    lock.unlink(missing_ok=True)
+    log("unlock", had_lock=had)
+    print("UNLOCKED" if had else "UNLOCKED (no lock)")
     return 0
 
 
@@ -278,17 +251,12 @@ def handoff_owner(a, hid):
         return "unknown", None
 
 
-def lock_info(prev):
-    """` lock=<utc> task=<id>`: lets the dispatcher check list_task_runs for a run started after the lock (no run = launch never happened)."""
-    return " lock=%s task=mts-relay-%s" % (prev["_t"].strftime(TS), "ab"[int(prev.get("depth", 0)) % 2])
-
-
 def cmd_kick(a):
     """Dispatcher (a timer, not a session): start the relay when a committed handoff says go and nobody is working on it.
 
     Never edits the handoff. Idle when: stop flag, no header, header says stop, the same id was launched less than STALE_H
     hours ago (a session is on it), or any launch is younger than ACTIVE_MIN (a chain is moving). Otherwise records the
-    launch (lock + a new chain base, so the depth cap measures this chain only) and prints KICK."""
+    launch (the lock `unlock` frees) and prints KICK."""
     qinfo = {}
 
     def idle(why):
@@ -333,14 +301,13 @@ def cmd_kick(a):
     if prev:
         age = now() - prev["_t"]
         if age < timedelta(minutes=ACTIVE_MIN):
-            return idle("a launch %d min ago, chain is moving%s" % (age.total_seconds() // 60, lock_info(prev)))
+            return idle("a launch %d min ago, chain is moving" % (age.total_seconds() // 60))
         if prev.get("id") == hid and age < timedelta(hours=STALE_H):
-            return idle("handoff %s launched %d min ago, session still on it%s" % (hid, age.total_seconds() // 60, lock_info(prev)))
+            return idle("handoff %s launched %d min ago, session still on it" % (hid, age.total_seconds() // 60))
     home().mkdir(parents=True, exist_ok=True)
     (home() / "mts-relay-lock.json").write_text(json.dumps({"utc": now().strftime(TS), "id": hid, "depth": depth}), encoding="utf-8", newline="\n")
-    (home() / "mts-relay-chain.json").write_text(json.dumps({"base": depth}), encoding="utf-8", newline="\n")
     log("kick", id=hid, depth=depth)
-    print("KICK depth=%d id=%s task=mts-relay-%s" % (depth, hid, "ab"[depth % 2]))
+    print("KICK depth=%d id=%s" % (depth, hid))
     if q:
         print(queue_line(q))
     return 0
@@ -598,10 +565,16 @@ def begin_fail(why):
 CARD_LINE = re.compile(r"^(\S+) \[([A-Z0-9-]+),")   # a `tasks.py next` line: <id> [<lane>, <size>, p<prio>] <title>
 
 
-def dev_module(name):
-    """scripts/dev/<name>.py beside this file: the begin worktree may hold another copy (the tests put stubs there)."""
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "dev"))
-    return __import__(name)
+def dev_module(name, *roots):
+    """scripts/dev/<name>.py beside this file, else under each of `roots` (the begin worktree). The dispatcher runs a copy of this file
+    from %TEMP%, where there is no sibling scripts/dev (2026-10-14: BEGIN FAILED after the worktree and `sync.py start` had run)."""
+    import importlib
+    for d in [Path(__file__).resolve().parents[1] / "dev"] + [Path(r) / "scripts" / "dev" for r in roots]:
+        if (d / (name + ".py")).is_file():
+            if str(d) not in sys.path:
+                sys.path.insert(0, str(d))
+            return importlib.import_module(name)
+    raise ImportError("no scripts/dev/%s.py beside relay.py or under %s" % (name, ", ".join(str(r) for r in roots) or "-"))
 
 
 def pick_card(out, skip, claimed, lanes, slug):
@@ -651,9 +624,9 @@ def cmd_begin(a):
     if m:   # sync.py moved us to a clean per-session tree; work only there
         wt = Path(m.group(1).strip())
     try:
-        sync, tasks = dev_module("sync"), dev_module("tasks")
+        sync, tasks = dev_module("sync", wt, root), dev_module("tasks", wt, root)
     except ImportError as e:
-        return begin_fail("scripts/dev next to relay.py: %s" % e)
+        return begin_fail("scripts/dev: %s" % e)
     lanes = [l for l in tasks.CODE_LANES if l != "OPUS"]
     try:
         claimed = {s for s, _ in sync.read_claims(wt, "origin/" + sync.TRUNK)}   # as of the fetch above; `claim` below stays the lock
@@ -677,6 +650,174 @@ def cmd_begin(a):
     for line in brief.splitlines()[:22]:
         print(line[:400])
     log("begin", card=pick)
+    return 0
+
+
+# ---- tick: the dispatcher's one call (2026-10-15) ---------------------------------------------------------------------
+# The App bills a full session per cron run (~78k tokens first turn) and every extra model call re-reads it, so everything
+# deterministic happens here, in T0: fetch, route, kick, the QUEUE line, the hourly gate, refiner status, prompt drift.
+
+HOURLY_NAME = "mts-hourly.json"   # {last_utc, last_housekeep_utc}: the hourly bundle runs once per HOURLY_MIN, whatever the cron jitter
+SESSION_REF = "origin/fast-track:scripts/sched/relay_prompts/relay_session.md"
+PROMPT_REF = "origin/fast-track:scripts/sched/relay_prompts/mts-dispatcher.SKILL.md"
+SKILL_REL = Path("scheduled-tasks") / "mts-dispatcher" / "SKILL.md"   # under home(): the prompt the App actually runs
+
+
+def captured(fn, ns):
+    """(exit code, stdout) of a cmd_* function; an exception becomes (3, 'ERROR ...') so tick always prints its line."""
+    import contextlib
+    import io
+    buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf):
+            rc = fn(ns)
+    except (SystemExit, Exception) as e:
+        return 3, "ERROR %s: %s" % (type(e).__name__, str(e)[:160])
+    return rc, buf.getvalue().strip()
+
+
+def last_line(text, width=160):
+    lines = [ln for ln in (text or "").strip().splitlines() if ln.strip()]
+    return lines[-1].strip()[:width] if lines else ""
+
+
+def minutes_since(iso):
+    try:
+        return (now() - datetime.fromisoformat(iso.replace("Z", "+00:00"))).total_seconds() / 60
+    except (ValueError, AttributeError, TypeError):
+        return None
+
+
+def read_hourly():
+    try:
+        return json.loads((home() / HOURLY_NAME).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def refine_status(root, tree=None):
+    """`REFINE_OK` | `REFINE_NEEDED` | `ERROR <why>` from the refiner worktree (../mts-refiner): create or fetch+merge it, then run its own
+    `tasks.py status`. Shells out inside that worktree: this file may be a %TEMP% copy with no sibling scripts/dev."""
+    wt = Path(tree) if tree else Path(root).resolve().parent / "mts-refiner"
+    if wt.exists():
+        rc, out = _sh(["git", "fetch", "-q", "origin"], wt)
+        if rc:
+            return "ERROR fetch: " + last_line(out)
+        rc, out = _sh(["git", "merge", "-q", "origin/fast-track"], wt)
+        if rc:
+            _sh(["git", "merge", "--abort"], wt)   # leave the tree as it was; never force
+            return "ERROR merge: " + last_line(out)
+    else:
+        branch = re.sub(r"[^a-z0-9]", "", host().lower()) + "/refiner"
+        rc, out = _sh(["git", "worktree", "add", str(wt), "-b", branch, "origin/fast-track"], root)
+        if rc:
+            rc, out = _sh(["git", "worktree", "add", str(wt), branch], root)   # the branch survived an earlier worktree
+            if rc:
+                return "ERROR worktree add: " + last_line(out)
+    rc, out = _sh([sys.executable, "scripts/dev/tasks.py", "status"], wt)
+    m = re.search(r"\bREFINE_(OK|NEEDED)\b", out)
+    return "REFINE_" + m.group(1) if m else "ERROR tasks.py status: " + last_line(out)
+
+
+def prompt_drift(root, prompt_file=None):
+    """` drift=SKILL ...` when the installed dispatcher prompt (home()/scheduled-tasks/mts-dispatcher/SKILL.md) differs from origin's
+    copy (relay_prompts/mts-dispatcher.SKILL.md); '' when equal, when no prompt is installed on this host, or when origin has none.
+    Read-only. CRLF, the trailing newline and the per-host `--peer-quiet-min N` are ignored."""
+    import hashlib
+    inst = home() / SKILL_REL
+    if not inst.is_file():
+        return ""
+    try:
+        inst_text = inst.read_text(encoding="utf-8")
+        if prompt_file:
+            repo_text = Path(prompt_file).read_text(encoding="utf-8")
+        else:
+            r = subprocess.run(["git", "-C", str(root), "show", PROMPT_REF], capture_output=True, text=True, encoding="utf-8", timeout=60)
+            repo_text = r.stdout if r.returncode == 0 else None
+    except (OSError, subprocess.SubprocessError, UnicodeError):
+        return ""
+    if repo_text is None:
+        return ""
+
+    def digest(t):
+        return hashlib.sha1(re.sub(r"--peer-quiet-min \d+", "--peer-quiet-min N", t.replace("\r\n", "\n")).strip().encode("utf-8")).hexdigest()[:8]
+    a, b = digest(inst_text), digest(repo_text)
+    return "" if a == b else "drift=SKILL installed=%s origin=%s (install: relay_prompts/INSTALL.md)" % (a, b)
+
+
+def hourly_bundle(a, root):
+    """(refine, housekeep) once per HOURLY_MIN, else None. refine = REFINE_OK | REFINE_NEEDED | SKIPPED | ERROR <why>; housekeep = bool
+    (due once per HOUSEKEEP_H). The state is written before the answer, so a slow or failed model step never repeats within the hour."""
+    st = read_hourly()
+    since = minutes_since(st.get("last_utc"))
+    if since is not None and since < a.hourly_min:
+        return None
+    st["last_utc"] = now().strftime(TS)
+    hk_since = minutes_since(st.get("last_housekeep_utc"))
+    housekeep = hk_since is None or hk_since >= HOUSEKEEP_H * 60
+    if housekeep:
+        st["last_housekeep_utc"] = st["last_utc"]
+    try:
+        home().mkdir(parents=True, exist_ok=True)
+        (home() / HOURLY_NAME).write_text(json.dumps(st, sort_keys=True), encoding="utf-8", newline="\n")
+    except OSError:
+        pass
+    if (home() / "mts-relay-stop").exists():
+        return "SKIPPED", housekeep
+    return refine_status(root, a.refiner_tree), housekeep
+
+
+def cmd_tick(a):
+    """The dispatcher's whole idle path in one call: fetch, route, kick, the QUEUE line, prompt drift and (once per hour, only when
+    this host is not waiting on a peer and no session was kicked) the refiner status. Prints ONE `TICK NOOP|KICK ...` line (plus an
+    `HOURLY ...` line only when the model has work to do). On KICK it appends the exact commands and relay_session.md. Exit 0 always."""
+    root = Path(a.root or os.getcwd()).resolve()
+    flags = []
+    if not a.file:   # a local --file handoff has nothing to fetch
+        rc, out = _sh(["git", "fetch", "-q", "origin", "fast-track"], root)
+        if rc:
+            flags.append("fetch=STALE")
+    ns = argparse.Namespace(file=a.file, git_ref=a.git_ref, root=a.root, no_ship=a.no_ship, host=a.host, peer_quiet_min=a.peer_quiet_min)
+    _, route_out = captured(cmd_route, ns)
+    route = re.sub(r"^ROUTE ", "", (route_out.splitlines() or ["?"])[0])[:160]
+    rc, kick_out = captured(cmd_kick, ns)
+    kick_lines = kick_out.splitlines()
+    verdict = kick_lines[0] if kick_lines else "ERROR kick printed nothing"
+    queue = next((ln[len("QUEUE "):] for ln in kick_lines if ln.startswith("QUEUE ")), "")   # absent on the early IDLEs (stop flag, no header)
+    is_kick = rc == 0 and verdict.startswith("KICK ")
+    drift = prompt_drift(root, a.prompt_file)
+    if drift:
+        flags.append(drift)
+    extra = []
+    if not is_kick and not verdict.startswith("IDLE peer "):   # a peer host is moving: skip every extra, like the old step 4 early exit
+        bundle = hourly_bundle(a, root)
+        if bundle:
+            refine, housekeep = bundle
+            if refine in ("REFINE_OK", "SKIPPED"):
+                flags.append("refine=" + ("OK" if refine == "REFINE_OK" else "SKIPPED"))
+            todo = [] if refine in ("REFINE_OK", "SKIPPED") else ["refine=" + refine]
+            if housekeep:
+                todo.append("housekeep=yes")
+            if todo:
+                extra.append("HOURLY " + " ".join(todo))
+    head = "TICK " + (verdict if is_kick else "NOOP | " + re.sub(r"^IDLE ", "", verdict))
+    print(" | ".join([head, "route=" + route] + flags + (["queue=" + queue] if queue else [])))
+    me = Path(__file__).resolve().as_posix()
+    if is_kick:
+        print('NEXT: python "%s" begin --root "%s"' % (me, root.as_posix()))
+        print('UNLOCK: python "%s" unlock' % me)
+        text = None
+        if a.session_file:
+            text = Path(a.session_file).read_text(encoding="utf-8")
+        else:
+            r = subprocess.run(["git", "-C", str(root), "show", SESSION_REF], capture_output=True, text=True, encoding="utf-8", timeout=60)
+            text = r.stdout if r.returncode == 0 else None
+            if text is None and (Path(__file__).resolve().parent / "relay_prompts" / "relay_session.md").is_file():
+                text = (Path(__file__).resolve().parent / "relay_prompts" / "relay_session.md").read_text(encoding="utf-8")
+        print("--- relay_session.md (follow it exactly) ---")
+        print(text.strip() if text else "relay_session.md unreadable: run `git show %s`, follow it, and report relay=ERROR" % SESSION_REF)
+    for ln in extra:
+        print(ln)
     return 0
 
 
@@ -707,9 +848,6 @@ def main(argv=None):
     li.add_argument("--want", choices=["go", "stop"], default="go")
     li.add_argument("--root")
     li.add_argument("--host", help="count only tasks that can run on this host (default: none)")
-    ga = sub.add_parser("gate")
-    ga.add_argument("--file", required=True)
-    ga.add_argument("--started-id", required=True)
     k = sub.add_parser("kick")
     k.add_argument("--file")
     k.add_argument("--git-ref", default=KICK_REF)
@@ -735,6 +873,19 @@ def main(argv=None):
     ro.add_argument("--git-ref", default=KICK_REF)
     ro.add_argument("--root", help="tree to post from (default: cwd; the live tree posts through a scratch worktree off origin)")
     ro.add_argument("--no-ship", action="store_true", help="commit the row/card but do not run sync.py ship (tests)")
+    ti = sub.add_parser("tick", help="the dispatcher's one call: fetch, route, kick, hourly gate, one TICK NOOP|KICK line")
+    ti.add_argument("--file", help="local handoff instead of origin's (tests; skips the fetch)")
+    ti.add_argument("--git-ref", default=KICK_REF)
+    ti.add_argument("--host", help="override this machine's name (tests)")
+    ti.add_argument("--root", help="repo folder (default: cwd); the refiner tree is ../mts-refiner beside it")
+    ti.add_argument("--peer-quiet-min", type=int, default=0,
+                    help="IDLE while another host wrote the current handoff less than this many minutes ago (0 = off)")
+    ti.add_argument("--hourly-min", type=int, default=HOURLY_MIN, help="minutes between two hourly bundles (refiner status, housekeeping)")
+    ti.add_argument("--no-ship", action="store_true", help="route: commit the row/card but do not run sync.py ship (tests)")
+    ti.add_argument("--refiner-tree", help="refiner worktree (default: ../mts-refiner)")
+    ti.add_argument("--prompt-file", help="repo copy of the dispatcher prompt for the drift check (default: origin's, via git show)")
+    ti.add_argument("--session-file", help="relay_session.md text printed on KICK (default: origin's, via git show)")
+    sub.add_parser("unlock", help="free the launch lock: last action of a KICK session, not after --stop")
     sp = sub.add_parser("stop")
     sp.add_argument("why")
     sub.add_parser("resume")
@@ -743,8 +894,10 @@ def main(argv=None):
         return cmd_handoff(a)
     if a.cmd == "lint":
         return cmd_lint(a)
-    if a.cmd == "gate":
-        return cmd_gate(a)
+    if a.cmd == "tick":
+        return cmd_tick(a)
+    if a.cmd == "unlock":
+        return cmd_unlock(a)
     if a.cmd == "status":
         return cmd_status(a)
     if a.cmd == "brief":
