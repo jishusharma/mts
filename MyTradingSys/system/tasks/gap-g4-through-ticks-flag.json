@@ -9,22 +9,16 @@
   "goal": "Add an optional through_ticks argument to sim_limit_trade so a limit fills only when price trades through by N ticks; default 0 leaves every output byte-identical. Copy the idea from bt/bt_ladder.py through_ticks.",
   "id": "gap-g4-through-ticks-flag",
   "kind": "build",
-  "lane": "SONNET",
+  "lane": "CODEX",
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "",
+  "note": "2026-10-14 opus: moved to CODEX (Claude weekly budget 94%; GPT week 33%).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "sonnet-2026-10-13 gap review G1-G8",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-13T20:00:01Z",
-    "from": "CODEX",
-    "to": "SONNET",
-    "why": "heartbeat"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/backtest/tom_bt.py",
