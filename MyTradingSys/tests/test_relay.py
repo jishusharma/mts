@@ -232,6 +232,19 @@ class LintTest(unittest.TestCase):
         extra = dict(NOLINT_OFF, MTS_RELAY_HOST="JIS-NUC")
         self.assertEqual(run(self.home, "handoff", "--file", str(self.f), "--go", extra=extra).returncode, 0)
 
+    def test_lint_fails_over_the_size_cap_and_passes_at_it(self):
+        # 2026-10-14: NEXT_SESSION.md was 12643 bytes against the 12288 cap and `lint` said OK; the refusal only came at handoff
+        self.f.write_text(GOOD, encoding="utf-8", newline=NL)
+        size = len(GOOD.encode("utf-8"))
+        args = ("lint", "--file", str(self.f), "--root", str(REPO))
+        r = run(self.home, *args, extra=dict(NOLINT_OFF, MTS_RELAY_MAX_BYTES=str(size - 1)))
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("%d bytes" % size, r.stdout)
+        self.assertIn("cap %d" % (size - 1), r.stdout)
+        self.assertIn("LINT FAIL", r.stdout)
+        r = run(self.home, *args, extra=dict(NOLINT_OFF, MTS_RELAY_MAX_BYTES=str(size)))
+        self.assertEqual(r.returncode, 0, r.stdout)
+
 
 NUC = {"MTS_RELAY_HOST": "JIS-NUC", "MTS_RELAY_ACCOUNT": "acct-a"}
 NB = {"MTS_RELAY_HOST": "JIS-NB", "MTS_RELAY_ACCOUNT": "acct-b"}
@@ -336,13 +349,18 @@ if a[0] == "start":
 elif a[0] == "claim":
     if os.environ.get("STUB_CLAIM_FAIL"):
         print("claim refused"); sys.exit(1)
+    if os.path.exists("MyTradingSys/system/claims/" + a[1] + ".md"):   # what the real sync.py does for an existing slug
+        print("sync: already claimed by JIS-NUC / sharma: " + a[1] + ". Pick another task or ask them."); sys.exit(1)
     open("claimed.txt", "w").write(a[1])
 """
-TASKS_STUB = """import sys
+TASKS_STUB = """import sys, os
 if sys.argv[1] == "next":
-    print("opus-card [OPUS, M, p1] big thing")
-    print("sonnet-card [SONNET, M, p1] the task")
-    print("second-card [SONNET, S, p2] later")
+    if os.environ.get("STUB_NEXT"):   # lines separated by |
+        print(os.environ["STUB_NEXT"].replace("|", chr(10)))
+    else:
+        print("opus-card [OPUS, M, p1] big thing")
+        print("sonnet-card [SONNET, M, p1] the task")
+        print("second-card [SONNET, S, p2] later")
 elif sys.argv[1] == "brief":
     print("TASK " + sys.argv[2] + " brief line")
 """
@@ -369,9 +387,22 @@ class BeginTest(unittest.TestCase):
         git(self.clone, "commit", "-q", "-m", "stubs")
         git(self.clone, "push", "-q", "origin", "fast-track")
         self.wt = tmp / "mts-relay"
+        self.relay_home = tmp / "relay-home"
+
+    def claim_on_origin(self, slug):
+        """A claim file on origin/fast-track, as `sync.py claim` leaves it (the stub claim refuses it like the real one)."""
+        d = self.clone / "MyTradingSys" / "system" / "claims"
+        d.mkdir(parents=True, exist_ok=True)
+        (d / (slug + ".md")).write_text(NL.join(["task: " + slug, "host: JIS-NUC", "account: sharma", "area: -", "epoch: 1", ""]),
+                                        encoding="utf-8", newline=NL)
+        git(self.clone, "add", "-A")
+        git(self.clone, "commit", "-q", "-m", "claim " + slug)
+        git(self.clone, "push", "-q", "origin", "fast-track")
 
     def begin(self, extra=None, *args):
-        env = {**os.environ, **(extra or {})}
+        # per-host relay state (the begin log row) goes to this test's own dir, never to the operator's ~/.claude
+        env = {k: v for k, v in os.environ.items() if not k.startswith("MTS_RELAY")}
+        env.update({"MTS_RELAY_HOME": str(self.relay_home), **(extra or {})})
         return subprocess.run([sys.executable, str(SCRIPT), "begin", "--root", str(self.clone), "--worktree", str(self.wt),
                                "--branch", "t/relay", *args], capture_output=True, text=True, env=env)
 
@@ -401,6 +432,47 @@ class BeginTest(unittest.TestCase):
         self.assertEqual(r.returncode, 1)
         self.assertIn("BEGIN FAILED", r.stdout)
         self.assertNotIn("brief line", r.stdout)
+
+    def test_begin_skips_a_card_that_holds_a_claim_on_origin(self):
+        # 2026-10-14 (b172-trim): `tasks.py next` listed the claimed card first, `sync.py claim` refused it ("already claimed")
+        # and begin printed BEGIN FAILED, so the relay stopped itself on every host
+        self.claim_on_origin("sonnet-card")
+        r = self.begin()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("claimed: second-card", r.stdout)
+        self.assertEqual((self.wt / "claimed.txt").read_text(), "second-card")
+
+    def test_begin_claim_match_is_by_slug_of_the_card_id(self):
+        self.claim_on_origin("b172-trim")   # sync.py files the claim under slugify(id): lower case
+        r = self.begin({"STUB_NEXT": "B172-Trim [SONNET, M, p1] held|second-card [SONNET, S, p2] later"})
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertEqual((self.wt / "claimed.txt").read_text(), "second-card")
+
+    def test_begin_takes_only_builder_lanes(self):
+        # a card of lane DSA matched the old [A-Z0-9]+ lane pattern and was claimed by a builder; DSA-NB / DSA-NUC / JIS-NB never matched, by accident
+        lines = ["dsa-card [DSA, S, p1] run", "dsa-nb-card [DSA-NB, S, p1] run", "dsa-nuc-card [DSA-NUC, S, p1] run",
+                 "jis-card [JIS-NB, S, p1] live", "codex-card [CODEX, M, p1] lab", "opus-card [OPUS, M, p1] big",
+                 "haiku-card [HAIKU, S, p2] small", "sonnet-card [SONNET, S, p2] code"]
+        r = self.begin({"STUB_NEXT": "|".join(lines)})
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertEqual((self.wt / "claimed.txt").read_text(), "haiku-card")
+
+    def test_begin_with_only_run_lane_cards_claims_nothing(self):
+        r = self.begin({"STUB_NEXT": "dsa-card [DSA, S, p1] run|jis-card [JIS-NB, S, p1] live|dsa-nb-card [DSA-NB, S, p1] run"})
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("BEGIN FAILED", r.stdout)
+        self.assertFalse((self.wt / "claimed.txt").exists())
+
+    def test_begin_writes_its_log_row_under_MTS_RELAY_HOME_only(self):
+        # every gate run used to append begin rows for the stub cards to the real ~/.claude/mts-relay-log.jsonl (163 rows by 2026-10-14)
+        stamp = "2031-01-02T03:04:05Z"   # a time no real run has: the check holds even while another process appends to the real log
+        real = Path(os.environ.get("MTS_RELAY_HOME") or Path.home() / ".claude") / "mts-relay-log.jsonl"
+        r = self.begin({"MTS_RELAY_NOW": stamp})
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        mine = self.relay_home / "mts-relay-log.jsonl"
+        self.assertTrue(mine.exists(), "begin must log under MTS_RELAY_HOME")
+        self.assertIn(stamp, mine.read_text(encoding="utf-8"))
+        self.assertNotIn(stamp, real.read_text(encoding="utf-8") if real.exists() else "")
 
 
 if __name__ == "__main__":

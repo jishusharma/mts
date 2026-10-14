@@ -2,6 +2,7 @@
 registry sweep, the brief length cap, and a CLI round-trip. Spec: MyTradingSys/system/TASK_REFINEMENT.md."""
 import contextlib
 import io
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -250,6 +251,76 @@ class QueueTest(unittest.TestCase):
         T.save(self.repo, good("B", state="refined"))
         T.save(self.repo, good("C"))
         self.assertEqual([r["id"] for r in T.summary(self.repo)["rows"]], ["C", "B", "A"])
+
+
+class NextSkipsClaimedTest(unittest.TestCase):
+    """`tasks.py next` hides a card that holds an open claim on origin/fast-track (NEXT_SESSION: "skips claimed"). The claim is the
+    lock (sync.py): a session that took the first line anyway died in `sync.py claim` with 'already claimed' (b172-trim, 2026-10-14)."""
+    def setUp(self):
+        self.d = tempfile.TemporaryDirectory()
+        self.repo = Path(self.d.name)
+        self._repo = T.REPO
+        T.REPO = self.repo
+        self.git("init", "-q")
+
+    def tearDown(self):
+        T.REPO = self._repo
+        self.d.cleanup()
+
+    def git(self, *a):
+        subprocess.run(["git", "-c", "user.email=t@t", "-c", "user.name=t", "-C", str(self.repo), *a], check=True, capture_output=True)
+
+    def claim(self, slug, host="JIS-NUC", account="sharma"):
+        """A claim file as sync.py writes it, committed and visible as origin/fast-track (what read_claims reads)."""
+        p = self.repo / "MyTradingSys" / "system" / "claims" / f"{slug}.md"
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(chr(10).join([f"task: {slug}", f"host: {host}", f"account: {account}", "area: -", "epoch: 1", ""]), encoding="utf-8", newline=chr(10))
+        self.git("add", str(p))
+        self.git("commit", "-q", "-m", f"claim {slug}")
+        self.git("update-ref", "refs/remotes/origin/fast-track", "HEAD")
+
+    def run_cli(self, *argv):
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            try:
+                rc = T.main(list(argv))
+            except SystemExit as e:
+                rc = e.code if isinstance(e.code, int) else 1
+        return rc, out.getvalue()
+
+    def test_next_skips_a_card_with_an_open_claim(self):
+        T.save(self.repo, good("B1", prio=1))   # claim files are lower-case slugs of the id (sync.slugify)
+        T.save(self.repo, good("B2", prio=2))
+        self.claim("b1")
+        rc, out = self.run_cli("next")
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(out.splitlines(), ["B2 [SONNET, S, p2] Run the 28 cells"])
+
+    def test_next_n_counts_only_the_cards_a_session_can_take(self):
+        for i in (1, 2, 3):
+            T.save(self.repo, good(f"B{i}", prio=i))
+        self.claim("b1")
+        rc, out = self.run_cli("next", "--n", "1")
+        self.assertEqual([ln.split()[0] for ln in out.splitlines()], ["B2"])
+
+    def test_next_all_lists_the_claimed_card_with_its_owner(self):
+        T.save(self.repo, good("B1", prio=1))
+        T.save(self.repo, good("B2", prio=2))
+        self.claim("b1", host="JIS-NUC", account="sharma")
+        rc, out = self.run_cli("next", "--all")
+        lines = out.splitlines()
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(lines[0], "B1 [SONNET, S, p1] Run the 28 cells (claimed by JIS-NUC/sharma)")
+        self.assertEqual(lines[1], "B2 [SONNET, S, p2] Run the 28 cells")
+
+    def test_next_with_every_ready_card_claimed_says_so(self):
+        T.save(self.repo, good("B1"))
+        self.claim("b1")
+        rc, out = self.run_cli("next")
+        self.assertEqual(rc, 1)
+        self.assertIn("NO_READY_CARD", out)
+        self.assertIn("1 ready card(s) held by an open claim", out)
+        self.assertNotIn("B1 [", out)
 
 
 class RepoDataTest(unittest.TestCase):

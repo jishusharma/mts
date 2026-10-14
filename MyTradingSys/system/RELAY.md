@@ -35,7 +35,8 @@ fix the list, run handoff again. Rules (code: scripts/sched/handoff_lint.py, tes
   `IDLE no unblocked task for host <name>` when every open task belongs to another host, so no session is launched just to find nothing runnable.
   `handoff` and `lint` ignore the host unless `--host` is given (a NUC session must still be able to hand a go to NB). The tag is not a model
   tag: OPUS-only work stays `(after ...)`.
-- `python scripts/sched/relay.py lint --file MyTradingSys/system/NEXT_SESSION.md [--want stop]` checks without writing.
+- `python scripts/sched/relay.py lint --file MyTradingSys/system/NEXT_SESSION.md [--want stop]` checks without writing; it also fails when the file is over the size cap (12288 bytes), which `handoff` would otherwise only meet as a refusal.
+- `relay.py begin` takes the first ready card of a builder lane (`tasks.CODE_LANES` without OPUS: HAIKU, SONNET) that no open claim holds; `tasks.py next` hides claimed cards too (`--all` shows them with the claimant).
 
 ## Brakes (all fail closed)
 - no header, header says stop, or the id did not change (the handoff was not rewritten: would replay the same task) -> STOP
