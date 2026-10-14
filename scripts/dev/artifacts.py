@@ -1,4 +1,4 @@
-"""Artifact registry: one list of every claude.ai page we keep, so both accounts show the same pages at the same links.
+"""Artifact registry: one list of every claude.ai page we keep, so every account shows the same pages at the same links.
 
   python scripts/dev/artifacts.py check                     # registry is consistent with the repo (gate step)
   python scripts/dev/artifacts.py list                      # table: page, status, urls, last published
@@ -86,7 +86,7 @@ def plan(reg, account):
 
 def cmd_list(reg):
     for pg in reg["pages"]:
-        urls = " ".join(f"{a.split('.')[1]}={u.rsplit('/', 1)[-1] or '-'}" for a, u in pg["urls"].items())
+        urls = " ".join(f"{a.split('.')[-1]}={u.rsplit('/', 1)[-1] or '-'}" for a, u in pg["urls"].items())
         print(f"{pg['slug']:20} {pg['status']:10} {'pin' if pg['pinned'] else '   '} {urls}  pub {pg['last_published']}")
 
 

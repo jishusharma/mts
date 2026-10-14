@@ -17,6 +17,7 @@ CONTROL_ROOM.md and relay_prompts/TWO_HOST.md. When one of those changes, change
 | Machine | Claude account | Runs by itself | You use it for |
 |---|---|---|---|
 | JIS-NB (desktop) | jishu.sharma | the live testnet system (auto_trader, position_manager, daily_loss_monitor, live_runner_cli, order-flow and context feeds, 2 Java feeds); MTS-Supervisor (at logon); MTS-AutoDeploy (every 15 min); MTS-Backup (every 15 min); MTS-DailyHygiene (06:30); mts-dispatcher (hourly 07-23, night task 00-06) | your trading screen and charts |
+| JIS-NB or JIS-NUC | jishusharma1985 (third, Max, 2026-10-14) | nothing of its own yet: routines are per login (CLOUD_ACCOUNTS.md "Account C") | any session from the queue; read-only Control Room mirror |
 | JIS-NUC | jishu.awgp | backtests and data (`F:\MTS\data`); MTS-CodexLab (GPT lab, every 30 min); mts-dispatcher (every 30 min); DSA desk worker | research sessions; Control Room Inbox owner |
 | Laptop (DESKTOP-F7IU69N) | either | nothing | travel; remote desktop into the other two |
 | Cloud (claude.ai/code) | either | nothing | reviews and research; its changes arrive as pull requests into fast-track |

@@ -38,7 +38,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-btc-eye-read` raw p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
   - `tom-profile-shape-parity` blocked p1 CODEX: Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)
   - `tom-v2-dax-dev-backtest` blocked p1 SONNET: Tom v2: DAX dev backtest of the fade under the part B protocol (both fills, session null)
-  - `gap-g4-through-ticks-flag` ready p2 SONNET: Gap G4: through_ticks flag in tom_bt.sim_limit_trade (entry and target), default off, output identical
+  - `gap-g4-through-ticks-flag` ready p2 CODEX: Gap G4: through_ticks flag in tom_bt.sim_limit_trade (entry and target), default off, output identical
   - `gap-g6-trial-ledger` ready p2 CODEX: Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)
   - `tom-btc-dev-backtest` raw p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` raw p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
@@ -50,7 +50,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-encode-fade-profile-proofs` blocked p2 SONNET: Tom v2: encode the PROFILE arm of the fade (thin top, failed P breakout, lower b-shape)
   - `tom-ledger-add-the-losing-first-attempts` blocked p2 SONNET: Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)
   - `tom-probe-prereg` blocked p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
-  - `tom-v2-btc-min-stop-width` ready p2 SONNET: Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)
+  - `tom-v2-btc-min-stop-width` ready p2 CODEX: Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)
   - `tom-btc-other-setups` raw p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
   - `tom-ledger-single-trade-date-used-column` blocked p3 SONNET: Tom ledger: single trade_date_used column, blank date for non-observed rows (RV01 F1,F2)
 
