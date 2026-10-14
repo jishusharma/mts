@@ -6,7 +6,7 @@
   "window_resets": 1792015537,
   "window_used": 0
  },
- "at": "2026-10-14T17:06:10Z",
+ "at": "2026-10-14T17:31:12Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 4.0,
   "window_pts": 0.0,
-  "window_runs": 0
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-14T17:30:03Z",
+   "card": "tom-v2-btc-min-stop-width",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 62,
+   "tokens_out": 1449,
+   "tokens_total": 232015,
+   "tokens_uncached": 30630,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-14T17:05:22Z",
    "card": "lc-levels-hold",
@@ -157,21 +172,6 @@
    "tokens_uncached": 103818,
    "week_pts": 4.0,
    "window_pts": 20.0
-  },
-  {
-   "at": "2026-10-13T05:01:12Z",
-   "card": "lab-audit-fabio-ledger-frames",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-astra",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 545,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
   }
  ]
 }
