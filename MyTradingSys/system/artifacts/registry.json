@@ -111,7 +111,7 @@
     {
       "slug": "cbp_desk",
       "title": "CBP Desk",
-      "status": "retire",
+      "status": "needs-url",
       "pinned": true,
       "generator": "CBP daily workflow routine (CryptoScrapper tree, not in this repo)",
       "html": null,
