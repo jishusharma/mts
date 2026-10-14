@@ -1,0 +1,33 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-14T15:36:52Z",
+  "depends_on": [],
+  "done_when": "The live read prints the three state lines from closed bars, a test fixes today's 15:08Z 1m state (price LL 81622, CVD HL, OI up) from a kline fixture, gate green.",
+  "from_inbox": "",
+  "goal": "Live read misses the CoinGlass order-flow view (operator shots 2026-10-14). Add one line per TF 1m/5m/15m: price swing, Binance CVD swing, OI 60-min change, combined state. Descriptive only, marked 'no tested edge' (orderflow_views_2026-10-14 RESULT.md).",
+  "id": "live-orderflow-state-line-1m-5m-15m-pric",
+  "lane": "SONNET",
+  "layers": [
+    "live_engine"
+  ],
+  "live_path": false,
+  "note": "CoinGlass chart VWAP/CVD levels anchor at the chart's first loaded bar (1m VWAP 82643 = 10:46Z start); print our 00:00Z VWAP and say CVD levels are chart-relative. Aggregated CVD and Net Longs/Shorts are not in our data (see card identify-the-coinglass-net-delta-panel-u).",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md",
+    "MyTradingSys/research/screenshots/2026-10-14_BTCUSDT_c688fa7b068c.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descriptive only"
+}

@@ -1320,6 +1320,25 @@
    "verdict": "EXPLORATORY NEGATIVE (short leg); long-after-reclaim untested",
    "report": "MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md",
    "read": "summary"
+  },
+  {
+   "id": "PRICE-CVD-DIV-1M5M-20261014",
+   "title": "Price lower low with CVD higher low (and mirror) on 1m and 5m, OI up/down split",
+   "date": "2026-10-14",
+   "market": "Binance BTCUSDT perpetual 1m (5m built from 1m); OI = Binance 5m metrics",
+   "layers": [
+    "fabio_cvd_absorption",
+    "oi_delta"
+   ],
+   "params": "OURS: halves 15x1m / 12x5m; at-the-low within 3 bars; falling context 0.25%/0.5% over 4 halves; stop 0.1% beyond extreme, 2R, 120m exit; cooldown 120m",
+   "split": "DEV 2022-2024 / VAL 2025 / HOLDOUT 2026; OI split only 2025-09+; no tuning",
+   "fees": "taker 0.05%/side; funding unmodeled",
+   "interaction": "DIV vs CONTROL (all lower lows at the low in a falling context) vs CONFIRM; OI up/down over 60m",
+   "effects": "DIV-CONTROL at 60m within +-0.04%, |t|<1.6 in every scale/side/split; all arms gross ~0, net ~-0.10% (the fee)",
+   "n": "S1 4933 long / 5434 short DIV events; S5 1411 / 1858",
+   "verdict": "NEGATIVE: CVD divergence adds nothing over price alone on 1m/5m",
+   "report": "MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md",
+   "read": "summary"
   }
  ]
 }
