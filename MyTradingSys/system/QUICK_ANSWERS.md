@@ -7,11 +7,11 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 - Operator page = MTS Control Room (pinned artifact). Their questions/tasks arrive in its Inbox, verbatim; procedure `MyTradingSys/system/CONTROL_ROOM.md`. Ask the operator via a page decision, not chat.
 - Session start (operator 2026-10-09): after `sync.py start`, read the Control Room Inbox/decisions (ArtifactData, CONTROL_ROOM.md) only if your task aligns; fetch full text of aligned items only.
 - Pages follow builds (operator 2026-10-12): a session that shipped ends with `python scripts/dev/artifacts.py build`, then republishes the Control Room
-  (and the Layer Map if layer_map.json changed) over its url for this account (`artifacts.py plan --account <account>`). Blocked on the operator = a
+  (and MTS Layers if layer_index.json or layer_map.json changed) over its url for this account (`artifacts.py plan --account <account>`). Blocked on the operator = a
   `decisions` doc on the page plus its entry in `system/OPERATOR_DECISIONS.md`, never only a chat line. What sessions did: `python scripts/dev/session_log.py`.
 
 ## Sessions, claims, task cards
-- Same-page check on any Claude login, and before ending a session: `python scripts/dev/sync.py where` (lists worktrees holding work not on origin/fast-track); commit + ship anything flagged. `sync.py health` lists collisions (PARALLEL.md).
+- Same-page check on any Claude login, and before ending a session: `python scripts/dev/sync.py where` (this tree plus trees holding unshipped work; `where --all` lists every tree); commit + ship what is yours. `sync.py health` lists collisions (PARALLEL.md).
 - Task cards (refinement stage: raw idea -> ready task, Definition of Ready, Backlog on the Control Room): `MyTradingSys/system/TASK_REFINEMENT.md`; `python scripts/dev/tasks.py next` before picking work, `tasks.py new` for follow-ups you find.
 - Writing tasks into NEXT_SESSION.md: RELAY.md "Task list standard" (curated, one session each, `DONE when:`); `relay.py handoff` refuses a list that fails `relay.py lint`.
 - Surface fallback (operator 2026-10-08): only if a task truly cannot run in the Claude Code Win App (e.g. needs a process this App cannot reach) create a CLI task file

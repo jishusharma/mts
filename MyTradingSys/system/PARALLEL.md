@@ -39,15 +39,16 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
    The body has one line `Result: <what works now, or the number it produced>`. A question for the operator:
    `Operator: <question>`. Other sessions' uncommitted files are not yours - never stash, clean or report them.
 4. `python scripts/dev/sync.py ship` - merges origin/fast-track (never rebase), runs the `--quick` gate only if
-   something other than docs changed, pushes. A rejected push means someone shipped first; it re-merges and
+   something other than docs changed (about 5 min: start `ship` with run_in_background and read the output once; a foreground tool call dies at 600 s), pushes. A rejected push means someone shipped first; it re-merges and
    retries. A real conflict stops and asks you to resolve it. Then `sync.py release <slug>`; `sync.py where` must be clean;
    overwrite NEXT_SESSION.md if you are the last session of the day (hand-over: RELAY.md; session length: CLAUDE.md SHORT SESSIONS).
 5. CI runs the full gate on both OSes after every push. Red CI is the next session's first job.
 6. Worktree hygiene (2026-10-12): a session that made a `../mts-<host>-<slug>` worktree and shipped everything
-   ends with `sync.py where` clean; the next session of any lane runs `sync.py tidy` (dry run) then `tidy --apply`,
-   which removes only session worktrees that are clean, fully on origin/fast-track, idle for 24 h (a just-started
+   ends with `sync.py where` (own tree clean); the next session of any lane runs `sync.py tidy` (dry run) then `tidy --apply`,
+   which removes only worktrees (`../mts-<host>-<slug>`, the App's `.claude/worktrees/*`, `../mts-relay-*`) that are clean
+   (the pulled mirror and a stray AGENTS.md/.codex do not count), fully on origin/fast-track, idle for 24 h (a just-started
    tree looks identical to a finished one), and hold no ignored data files (`git worktree remove` deletes
-   Dumps/, runtime_data/ and fetched klines silently; only __pycache__/.pytest_cache/.pyc do not count).
+   Dumps/, runtime_data/ and fetched klines silently; regenerable caches, empty ignored dirs and settings.local.json do not count).
    Never remove a worktree with uncommitted or unshipped work, a named lane (mts-push, mts-codex-lab ...), or
    the main/live tree. Fetched datasets belong in the primary tree's Dumps/ (never tidied), not in a session
    worktree. 2026-10-12: tidy without these guards removed 15 worktrees on JIS-NUC (see RV03 report).

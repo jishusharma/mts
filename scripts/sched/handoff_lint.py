@@ -5,7 +5,7 @@ while real work waits (2026-10-10: "queue empty" while a backlog existed; a task
 
 Format (RELAY.md "Task list standard"): the first fenced block of the file is the session prompt. Tasks are lines `   Qn. <text>`;
 following lines indented deeper belong to the same task.
-  - block <= 30 lines (CLAUDE.md "What a CL prompt carries")
+  - block <= 30 lines (RELAY.md "Task list standard")
   - every unblocked task: <= 6 lines, contains `DONE when:` (an observable end), no vague wording, every path it names exists
   - a task starting `Qn. DONE` is finished; `Qn. (after ...)` is blocked: both skip the unblocked checks
   - the block restates no hard rule from CLAUDE.md

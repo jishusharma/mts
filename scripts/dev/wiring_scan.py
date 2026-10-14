@@ -19,7 +19,7 @@ The gate runs --check: every TEST-ONLY/ORPHAN file must be declared in MyTrading
 
 scripts/dev files are all roots (the gate and operator tools), so a dead one-off script there never shows as unwired. --check
 therefore also prints WARN NO-READER for a non-test scripts/dev file that no other non-test code file references, that no
-entry doc (CLAUDE.md, MyTradingSys/system/*.md, MyTradingSys/runtime/*.md, SKILL.md, relay prompts, scripts/schedules/*.md,
+entry doc (CLAUDE.md, MyTradingSys/system/*.md, MyTradingSys/runtime/*.md, SKILL.md, relay prompts,
 artifacts/registry.json) names. Warn only (exit code unchanged): archive it (git mv to _archive/) or name its reader in a doc.
 """
 import argparse
@@ -36,7 +36,7 @@ CODE_EXT = {'.py', '.ps1', '.vbs', '.cmd', '.bat', '.java', '.yml', '.yaml'}
 SKIP_DIRS = {'.git', 'target', '__pycache__', 'node_modules', '_archive', 'archive', 'raw_transcripts_canonical',
              'extracts', 'my_charts', '.pytest_cache'}
 LIVE_ROOT_PREFIX = ('runtime_data/', 'scripts/core/', 'scripts/live/', 'scripts/sched/', 'scripts/worker/',
-                    'scripts/operator/', 'scripts/schedules/', 'scripts/monitor/', '.github/')
+                    'scripts/operator/', 'scripts/monitor/', '.github/')
 LIVE_ROOT_FILES = {'mts.ps1'}
 TEST_RE = re.compile(r'(^|/)(test_[^/]*|[^/]*_test\.py|[^/]*Test\.java)$')
 NUL = bytes([0])
@@ -208,7 +208,7 @@ def _is_reader_doc(rel):
         return True
     if not rel.endswith('.md'):
         return False
-    return (rel == 'CLAUDE.md' or rel.endswith('SKILL.md') or rel.startswith(('scripts/sched/relay_prompts/', 'scripts/schedules/'))
+    return (rel == 'CLAUDE.md' or rel.endswith('SKILL.md') or rel.startswith('scripts/sched/relay_prompts/')
             or (rel.startswith(('MyTradingSys/system/', 'MyTradingSys/runtime/')) and rel.count('/') == 2))
 
 

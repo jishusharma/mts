@@ -10,7 +10,7 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 | SURF | Reach | Owns |
 |---|---|---|
 | APP | Claude Code Win App (Code / Cowork / Chat / Cloud modes): full tree, local Maven, testnet, PowerShell, gitignored paths | build, research, refine; App first, always (operator 2026-10-04, repeated 2026-10-08) |
-| CLI | Claude Code CLI: only when the App cannot reach the task (a `cli_tasks/` file with the reason, CLAUDE.md) | same, as a fallback |
+| CLI | Claude Code CLI: only when the App cannot reach the task (a `cli_tasks/` file with the reason, QUICK_ANSWERS.md) | same, as a fallback |
 | CLD | cloud (claude.ai/code): pushed git refs only; no LAN, no gitignored files; ships by PR into fast-track (auto-merge on green) | offline research, specs, reviews, docs, backtests on committed data |
 | DSA | DeepSeek chat through AIBridge (F:\AIBridge, loopback 127.0.0.1:7181, AIBRIDGE_LANE.md); paste mode when the bridge is down | long-context reading, extraction, run-and-report jobs (DSA_DELEGATION.md) |
 | COD | Codex (CODEX_START.md, LAYER_LAB.md) | lane CODEX cards only |

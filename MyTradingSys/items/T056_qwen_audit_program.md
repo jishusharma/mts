@@ -1,7 +1,7 @@
 # T056 - QWEN REGULAR AUDITING PROGRAM
 
 Convention: one item, one doc. Verbatim ask at top. Updates appended, newest last.
-Related: T057 (simplify/declutter, feeds it the T0 clutter inventory), WORKER_ROADMAP.md (work routing
+Related: T057 (simplify/declutter, feeds it the T0 clutter inventory), MyTradingSys/archive/worker_roadmap_2026-10-15/WORKER_ROADMAP.md (work routing
 tiers), research/fast_track_2026-09-27/QWEN_AUDIT_PROGRAM.md (binding design doc).
 
 ## VERBATIM ASK (operator, 2026-09-28)

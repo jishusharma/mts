@@ -179,12 +179,6 @@
    "mode": "always"
   },
   {
-   "path": "MyTradingSys/system/CLOUD_INBOX.md",
-   "role": "cloud_inbox",
-   "read": "full",
-   "mode": "always"
-  },
-  {
    "path": "MyTradingSys/system/sessions",
    "role": "latest_session_record",
    "read": "latest_glob",

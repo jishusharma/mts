@@ -1,3 +1,5 @@
+Superseded 2026-10-14: the routine model comes only from the App routine settings (memory routine-model-check); a `model:` front matter never applies.
+
 # Dispatcher model check (2026-10-12, JIS-NUC)
 
 Claim under test: `model: sonnet` in ~/.claude/scheduled-tasks/mts-dispatcher/SKILL.md pins every dispatcher run to Sonnet.

@@ -41,17 +41,16 @@ A ready card that later fails (a dependency reopens, someone edits it) is not se
    read the registry row and its evidence, grep for the files and the source quote, fill the card, run `tasks.py check <id>`. Anything that is
    "run it and read numbers" it delegates as a DSA desk task instead of scoping the answer itself. A question only the operator can answer
    becomes a Control Room decision, and the card waits as `refined` with the reason in `note`.
-3. **Trigger**: `tasks.py status` prints `REFINE_NEEDED` when cards wait and fewer than 3 are ready, else `REFINE_OK`. The dispatcher and the
-   relay gate read that line; at NEEDED the next fired session is the refiner, not a builder. A relay session also runs `tasks.py next` at
+3. **Trigger**: `tasks.py status` prints `REFINE_NEEDED` when cards wait and fewer than 3 are ready, else `REFINE_OK`. `relay.py tick` computes
+   that line hourly (T0); at NEEDED the dispatcher runs the refiner, not a builder. A relay session also runs `tasks.py next` at
    hand-over: no ready card = refine first, never hand over a vague task.
 4. **Builder session**: `tasks.py next` -> `tasks.py brief <id>` is its whole prompt -> `sync.py claim` -> work -> `tasks.py done <id> --result` -> ship -> release.
 5. **Retire**: `tasks.py sweep --apply` (Control Room pickup or refiner session; never the live tree) closes cards whose registry rows closed.
 
-## Refiner run (the dispatcher's step 2b; any session can run it by hand)
-The dispatcher cannot launch another session (App approval), so it does this inline, only on a tick where the relay step was IDLE.
-1. Skip if `~/.claude/mts-relay-stop` exists. Worktree `C:/Users/E-ngineers/IdeaProjects/mts-refiner` (create: `git -C <live> worktree add ../mts-refiner -b jisnb/refiner origin/fast-track`;
-   reuse: `git -C <wt> fetch -q origin`, then `git -C <wt> merge -q origin/fast-track`, each its own call). Never the live tree.
-2. `python scripts/dev/tasks.py status`. `REFINE_OK`: stop, nothing else to do (this is the common, cheap tick).
+## Refiner run (the dispatcher's HOURLY line; any session can run it by hand)
+`relay.py tick` does the worktree and status in T0, once per 55 min (`../mts-refiner`: create, or fetch + merge origin/fast-track; then `tasks.py status`).
+The model does step 3 only when the tick prints `HOURLY refine=REFINE_NEEDED`; `REFINE_OK` needs nothing. By hand: skip if `~/.claude/mts-relay-stop` exists,
+update that worktree (`git -C <wt> fetch -q origin`, then `git -C <wt> merge -q origin/fast-track`, each its own call), run `python scripts/dev/tasks.py status`. Never the live tree.
 3. `REFINE_NEEDED`: `sync.py claim "refine <ids>"`; take at most 3 refinable cards (`tasks.py list --state raw`, then `refined`; priority order). Per card:
    read the registry row + its evidence file, grep for the files and the source quote, fill the card (Edit the JSON), `tasks.py check <id>`.
    - Passes: it is `ready`. Does not pass after your best effort: `tasks.py tried <id>` (a second miss parks it).
@@ -59,7 +58,7 @@ The dispatcher cannot launch another session (App approval), so it does this inl
    - Needs numbers from a run: post a DSA desk task (DSA_DELEGATION.md) and leave the card `refined` with the desk id in `note`; do not run it yourself.
    - Size L: split into S/M cards (`tasks.py new`), drop the parent with a note. A new defect or task still gets its BUGS.md row under that file's rules.
 4. Product code is out of scope for the refiner (cards, docs, desk posts only). `tasks.py lint`, `sync.py ship`, `sync.py release <slug>`.
-5. One pass per tick, 3 cards max, Sonnet. The brake: a card gets 2 tries, a question parks it at once, and parked cards do not count toward REFINE_NEEDED.
+5. One pass per HOURLY line, 3 cards max, Sonnet. The brake: a card gets 2 tries, a question parks it at once, and parked cards do not count toward REFINE_NEEDED.
 
 ## Operator controls (Control Room > Backlog; no other page)
 Per card: Move to top, Hold, Drop, and Approve Opus where a card names Opus. A click writes a `taskops` doc (`task`, `action`, `at`, `applied`)

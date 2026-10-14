@@ -8,7 +8,7 @@ Reference copies live here. The live text lives inside the Claude App
 scheduled task configuration. When the live task changes, refresh the copy
 here and note the date in the file header.
 
-Claude App scheduled tasks with prompt text:
+Claude App scheduled tasks with prompt text (both decommissioned, not registered; archived 2026-10-15):
 - mts-hourly-builder-check -> hourly-check.md
 - mts-dsa-feeder -> dsa-feeder.md
 

@@ -275,7 +275,7 @@ def compose(r, now, doc, session_id):
         "file a live process imports; back up to .pre_<tag> before promoting.",
         "== T2 TESTS == Tests derived from the spec; each must fail on the pre-change code at least once.",
         "== T3 GATE == python scripts/dev/run_all_tests.py --quick; Build-Check where the area needs it.",
-        "== T4 CLOSE == Update the register row (receipt on CLOSED), the pipeline row, 03_FILE_INDEX for new files, the",
+        "== T4 CLOSE == Update the register row (receipt on CLOSED), the pipeline row, the",
         "session record; commit on fast-track with prefix \"" + rid + ": \".",
         "== T5 MISSED == Name every deviation.",
         "",

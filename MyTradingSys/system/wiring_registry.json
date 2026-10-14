@@ -376,8 +376,8 @@
   },
   "MyTradingSys/research/fast_track_2026-09-27/backtest_xcheck/ref_ladder.py": {
    "disp": "PARKED",
-   "ref": "WORKER_ROADMAP.md row 16",
-   "why": "UNSURE: independent ladder cross-check oracle whose Qwen tests were weakened (WORKER_ROADMAP.md:70 row 16: \"not trusted until rewritten from spec 021\"); nothing compares it to bt_ladder."
+   "ref": "MyTradingSys/archive/worker_roadmap_2026-10-15/WORKER_ROADMAP.md row 16",
+   "why": "UNSURE: independent ladder cross-check oracle whose Qwen tests were weakened (MyTradingSys/archive/worker_roadmap_2026-10-15/WORKER_ROADMAP.md:70 row 16: \"not trusted until rewritten from spec 021\"); nothing compares it to bt_ladder."
   },
   "MyTradingSys/research/levels_sizing_2026-10-14/probe.py": {
    "disp": "REPRO",

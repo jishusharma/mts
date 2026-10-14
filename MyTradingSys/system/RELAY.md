@@ -25,7 +25,7 @@ Next tasks come from `python scripts/dev/tasks.py next --n 3` (a card's `brief` 
 - `begin` takes a HAIKU or SONNET card (`tasks.CODE_LANES` minus OPUS) that no open claim holds (`tasks.py next` hides claimed cards; `--all` shows them).
 
 ## Turn meter (2026-10-14)
-The 15 tool / 5 operator turn cap is a hook, `scripts/dev/turn_meter.py` (.claude/settings.json): it injects the hand-off instruction at the cap and every 5 tool turns after.
+The 15 tool / 5 operator turn cap is a hook, `scripts/dev/turn_meter.py`: at the cap and every 5 tool turns after, it injects a 1-line hand-off reminder (<= 250 B). One assistant message = one turn (parallel tool calls count once); subagents (`agent_id` in the hook payload) are skipped; compact or clear resets the count.
 
 ## Brakes (all fail closed)
 - no header, header says stop, no task this host can run, or only lane work left -> `kick` IDLE; `handoff --stop` ends a chain
@@ -33,10 +33,10 @@ The 15 tool / 5 operator turn cap is a hook, `scripts/dev/turn_meter.py` (.claud
 - operator: `relay.py stop "<why>"` halts every tick on that host, `relay.py resume` clears it; log `~/.claude/mts-relay-log.jsonl`
 - a session that hits a blocker, RED hygiene it cannot fix, or an operator decision it needs writes `--stop` with the reason; no relay for live-path/Java restarts (desk tasks)
 
-## Tick and queue (operator 2026-10-14: "relay running continuously, aware of how many tasks are queued, GPT and DSA for as much as possible")
+## Tick and queue (operator 2026-10-14)
 `relay.py tick` is the whole idle path, in T0: fetch, `route`, `kick`, the QUEUE line, a prompt drift check (installed vs origin) and, every 55 min (`mts-hourly.json`), the refiner status (`../mts-refiner`), housekeeping once per 24 h.
 It prints ONE line, `TICK NOOP | <why> | route=.. | queue=..`, or `TICK KICK ..` with the `NEXT:` command and relay_session.md; an `HOURLY refine=REFINE_NEEDED housekeep=yes` line only when the model has work, never while a peer moves the chain (`IDLE peer ..`). No Control Room inbox poll (INSTALL.md).
 - **QUEUE line** (tick, `kick`, `status`): task counts by why they wait (exclusive buckets, first match wins, `handoff_lint.parse_tasks`): DONE; `(after ..)` blocked; open `lane=` tasks; another host's; the rest = `runnable` here.
-- **`route`** files each open lane task once, as a desk row `--target DSA` or a raw lane-CODEX card, keyed `relay_key` = `<qn>-<hash of the text>` (edited text = new key; the other host answers `exists`). A handoff whose open tasks are all lane tasks gives `IDLE no Claude-runnable task`.
+- **`route`** files each open lane task once, as a desk row `--target DSA` or a raw lane-CODEX card, keyed `relay_key` = `<qn>-<hash of the text>` (edited text = new key; the other host answers `exists`).
 - **Results come back as `look=`**: the row is `done`/`failed` (or the card `done`) and its Qn is still open -> `look=1 [Q60 desk done]` and `kick` wakes a session: relay_session.md makes that read its task: row (`desk.py list --all`) or card (`tasks.py brief <id>`), spot-check ONE claim, rewrite the Qn as `DONE ...`. `codex_look=N` (JIS-NUC) counts `codex_run.py status` NEEDS A LOOK lines: information only, it does not wake kick.
 - **Peers**: `kick --peer-quiet-min N` waits only for a host named in a `relay_runs.jsonl` row (a hand-edited header is `unknown`). Both hosts run the same stub (TWO_HOST.md).

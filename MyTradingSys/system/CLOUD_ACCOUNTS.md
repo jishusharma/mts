@@ -54,5 +54,5 @@ Used from JIS-NB and JIS-NUC (Claude Code Win App), same queue and ritual as A a
 - Pages: login C has its own pins (artifacts/registry.json key `jishusharma1985`). Its Control Room copy is a read-only mirror
   (published without capabilities); the one Inbox stays on jishu.awgp.
 - Claude routines (scheduled tasks) are per login: A's paused routines do not show on C. To run the relay on C's budget,
-  recreate mts-dispatcher on that host from scripts/sched/relay_prompts/TWO_HOST.md, signed in as C.
+  recreate mts-dispatcher on that host from scripts/sched/relay_prompts/INSTALL.md, signed in as C.
 - How a session knows it is on C: `Artifact read` of a jishu.sharma or jishu.awgp page url says "not found".

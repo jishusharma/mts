@@ -78,12 +78,11 @@ operator-side session runs them as the logged-in user):
 - `MTS-NUC-Worker` showed Disabled on the NUC: whether intended is open (desk task posted).
 
 ## Quick-gate speed (B178, 2026-10-12, JIS-NUC)
-- `run_all_tests.py` prints `Elapsed:` per step. Step 5b (layer unittest modules) now runs in `MTS_GATE_JOBS` parallel processes
-  (default min(4, CPUs); `MTS_GATE_JOBS=1` = the old single call). Same module list: `split_modules` partitions
-  `find_layer_modules()` and `test_quick_gate_runs_every_layer_module` fails if one is dropped.
-- Same tree, `--quick`, JIS-NUC (12 CPUs, warm): total 172.6 s -> 169.4 s; step 5b (59 modules) 29.8 s -> 25.0 s (4 processes).
-  Largest steps there: step 4 pytest 51 s, 3xt 26 s, 3k 16 s, 3dk 10 s. The 15-min figure is a cold run on a slower host:
-  re-time there with `MTS_GATE_JOBS=1` vs default and add the row. Step 4 (pytest) is the next cut (xdist or per-path processes).
+- `run_all_tests.py` runs independent steps `MTS_GATE_JOBS` at a time (default min(4, CPUs); `MTS_GATE_JOBS=1` = one step at a time in
+  definition order, the old behaviour), also Step 5b and the extra tests; steps 3ly, 3af, 3x, 3ms, 3mg and Maven run serially after the
+  pool; each finished step prints its block with `Elapsed:` and a progress count. Quick gate 677 s -> 289 s on JIS-NB.
+  Step 5b module list: `split_modules` partitions `find_layer_modules()` and `test_quick_gate_runs_every_layer_module` fails if one is dropped.
+  Largest steps on JIS-NUC (warm): step 4 pytest 51 s, 3xt 26 s, 3k 16 s, 3dk 10 s; step 4 is the next cut (xdist or per-path processes).
 - MTS-Backup moved to :07/:22/:37/:52 (`install_backup_task.ps1`, offset 7 min past midnight + 15 min repeat) so it no longer
   starts in the same minute as MTS-AutoDeploy (:00/:15/:30/:45). Not re-registered by this session; on each host run
   `powershell -File scripts\dev\install_backup_task.ps1 -Repo <path>` (the tree the task runs from today: runtime_data\launch-backup.vbs names it).

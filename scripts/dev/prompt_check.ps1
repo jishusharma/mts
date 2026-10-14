@@ -247,7 +247,7 @@ if ($badLimit.Count) { $d5 += ': ' + (($badLimit | Select-Object -First 8) -join
 Add-Row '5' 'no invented capability limit' ($badLimit.Count -eq 0) $d5 $nLimit
 
 # 6 session ID composed from the disk clock
-$idRx = 'MTS-(\d{4})-(\d{2})-(\d{2})-(\d{2})(\d{2})Z-(CLD|APP|CLI|LAP|DSA|ASK)-(SUP|BLD|ANA|EXT|MON|COO|WRK)\b'
+$idRx = 'MTS-(\d{4})-(\d{2})-(\d{2})-(\d{2})(\d{2})Z-(CLD|APP|CLI|DSA|COD)-(SUP|BLD|ANA|EXT|MON|COO|WRK)\b'
 $idM = [regex]::Match($text, $idRx)
 $now = [DateTime]::UtcNow
 if ($NowUtc) { $now = [DateTime]::Parse($NowUtc, [Globalization.CultureInfo]::InvariantCulture, [Globalization.DateTimeStyles]::AdjustToUniversal -bor [Globalization.DateTimeStyles]::AssumeUniversal) }

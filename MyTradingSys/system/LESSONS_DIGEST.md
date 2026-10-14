@@ -3,7 +3,7 @@
 Source: `MyTradingSys/system/LESSONS_LEARNED.md` (38 KB, append-only history). This file is the RULE line of every entry,
 grouped by who needs it; `[A]`..`[G]` = lettered section there, `[10-03 title]` = dated entry. Read the full entry when a
 rule touches your task. Adding a lesson: append the story to LESSONS_LEARNED.md AND one rule line here, same commit.
-Synced with LESSONS_LEARNED.md at blob: ad79e76d (STATUS.md flags this file STALE when that blob changes).
+Synced with LESSONS_LEARNED.md at blob: a77e8f15 (STATUS.md flags this file STALE when that blob changes).
 Hard rules and gates live only in CLAUDE.md and are not repeated here; prompt-composition rules for the chat surface live in DSA_SESSION_PROMPT.md and RELAY.md.
 
 ## 1. Accuracy (every session)

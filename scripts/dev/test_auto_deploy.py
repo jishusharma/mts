@@ -1,5 +1,5 @@
 """auto_deploy.py: the scheduled deploy stops on a red gate, never touches a tree it should not, restarts only what changed.
-Expected outcomes come from the recipe in the module docstring / DEPLOY_RUNBOOK.md (CLAUDE.md quick answers: deploy), not from the code."""
+Expected outcomes come from the recipe in the module docstring / DEPLOY_RUNBOOK.md (DEPLOY_RUNBOOK.md Manual fallback), not from the code."""
 import json
 import sys
 import tempfile
@@ -191,7 +191,7 @@ class TestRun(unittest.TestCase):
 
 class TestSchedule(unittest.TestCase):
     """The registration script points at scripts that exist and at the documented cadence (a static check; the schedule itself is
-    proven by triggering the registered tasks once, see CLAUDE.md CI/CD recipe)."""
+    proven by triggering the registered tasks once, see DEPLOY_RUNBOOK.md)."""
 
     def test_register_script_names_both_jobs_and_real_files(self):
         ps1 = (Path(__file__).resolve().parents[1] / "sched" / "register_cicd_tasks.ps1").read_text(encoding="utf-8").replace(chr(92), "/")

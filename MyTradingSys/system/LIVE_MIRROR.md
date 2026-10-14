@@ -28,10 +28,10 @@ Files: `scripts/dev/live_mirror.py` (publish | pull | brief | status), `scripts/
    DENY (hard, checked by name and by content-sniff of the first 4 KB): `.secrets`, `.env*`, `*key*`, `*token*`, `*secret*`, `*.pem`,
    `credentials*`, anything matching an API-key-shaped string. A denied hit is counted in `excluded_count`, never copied, and fails the publish loudly if it was on the allowlist.
 3. PULL (any work tree; refuses in the live tree): reads `manifest.json`, verifies every sha256, copies into
-   `runtime_data/_mirror/` (NOT the real runtime paths, so no NUC process can mistake mirrored files for local live state),
+   `runtime_data/_mirror/` (git-ignored; the share is the only channel, never git; NOT the real runtime paths, so no NUC process can mistake mirrored files for local live state),
    writes `_mirror/.MIRROR_OF_JIS-NB` with the manifest time. Atomic: staged then renamed. A bad hash or missing manifest keeps the previous mirror and exits non-zero.
 4. BRIEF: `live_mirror.py brief` prints the answer sessions need in one screen: mirror age (WARN > 15 min, STALE > 60 min, never presented as live),
-   latest snapshot key fields, last Tom/Fabio alert + age, regime/day_type, open testnet positions summary, OI/CVD step since 1 h. Every line is labelled `mirror@<utc>`.
+   latest snapshot key fields, last Tom/Fabio alert + age, regime/day_type, open testnet positions summary, OI/CVD step since 1 h. Every line is labelled `mirror@<utc>`. In a work tree whose copy is missing or older than 15 min, `brief` pulls first (45 s cap, never in the live tree), prints one `mirror: pulled <version>` or `mirror: pull skipped (...)` line, and clips each line to 160 chars.
 5. Sessions use it: CLAUDE.md "Where to look" and QUICK_ANSWERS.md carry the line, "off the desktop: `live_mirror.py pull && brief` before any live read". A read quoting mirror numbers says so (`mirror@<utc>`).
 
 ## Fail-closed rules

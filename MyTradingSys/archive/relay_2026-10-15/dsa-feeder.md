@@ -11,5 +11,4 @@ specs, backtest drivers). One Haiku per 2h tick in the original design.
 Last known firing: 2026-09-30 02:38 IST (HOURLY_CHECK_LOG.md).
 Disabled at the weekly cap 2026-09-30. B080 pace bug also stalled the
 dsa_worker at that time.
-Re-enable rule (SURFACE_POLICY section 3, 2026-10-07): re-enable when the
-loop is on and active work is happening; suspend when the loop goes down.
+Archived 2026-10-15: task not registered; the resume rule left SURFACE_POLICY.

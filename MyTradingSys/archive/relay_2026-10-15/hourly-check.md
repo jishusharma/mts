@@ -10,5 +10,4 @@ rotation (T056, 7 templates, 95 targets).
 
 Last known firing: 2026-09-30 02:42 IST (HOURLY_CHECK_LOG.md).
 Disabled at the weekly cap 2026-09-30.
-Re-enable rule (SURFACE_POLICY section 3, 2026-10-07): re-enable when the
-loop is on and active work is happening; suspend when the loop goes down.
+Archived 2026-10-15: task not registered; the resume rule left SURFACE_POLICY.
