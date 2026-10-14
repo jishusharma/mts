@@ -1,0 +1,8 @@
+tf=1 complete
+tf=2 complete
+tf=3 complete
+tf=5 complete
+tf=15 complete
+tf=30 complete
+tf=60 complete
+{"data_start": "2022-01-01 00:00:00+00:00", "data_end": "2024-06-30 23:59:00+00:00", "bars": 1313280, "calendar_days": 912, "event_rows": 105541, "arms": 126, "candidates": 0, "code_sha256": "c6a4717acdf309dd789a5de90f52739671eb8fbbc08407addcccb8f2710880ad", "method_sha256": "d36eaff25df9538592ef8d73a77c9bdfa12c4e16232b209ea05967950082f00c"}

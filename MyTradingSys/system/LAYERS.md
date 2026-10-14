@@ -173,6 +173,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `ma_daily`: NO-SOURCE (chatbot handoff numbers) | module research/setup_alpha_beta_2026-10-10/alpha_backtest.py
 - Layer `bigtrade_fires`: fires + exit policies run, HOLDOUT unread | module backtest/bigtrade; research/bigtrade_2026-10-09
 - Backtests (layer_map.json, newest first):
+  - 2026-10-14 `CANDLE-CLOSE-DEV-20261014`: EXPLORATORY NEGATIVE; cycle outcomes untested | `MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md`
   - 2026-10-10 `ALPHA`: NO-SOURCE; A CAGR 20.5% maxDD 49% vs buy-and-hold 43.8% / 76.7%; not a result | `MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md`
   - 2026-10-09 `VOLUME`: no validated directional edge; volume gives intensity, not direction; 1 marginal DEV pass failed VALIDATION | `MyTradingSys/research/volume_2026-10-09/VOLUME_RESEARCH_REPORT_2026-10-09.md`
   - 2026-10-09 `BIGTRADE-EXIT`: first row negative both splits; full table not read for this map | `MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md`
@@ -189,8 +190,10 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - 2026-10-04 `CANDLE-P0`: exploratory; no edge vs random null | `MyTradingSys/research/candle_patterns_2026-10-04/P0_RESULTS.md`
 - Spec / sources: `MyTradingSys/backtest/layers/FORMULAS.md`
 - Code: `MyTradingSys/backtest/bigtrade`
-- Other results: `MyTradingSys/research/volume_2026-10-09`; `MyTradingSys/research/candle_patterns_2026-10-04`; `MyTradingSys/research/setup_alpha_beta_2026-10-10`; `MyTradingSys/research/bigtrade_2026-10-09`
+- Other results: `MyTradingSys/research/volume_2026-10-09`; `MyTradingSys/research/candle_patterns_2026-10-04`; `MyTradingSys/research/setup_alpha_beta_2026-10-10`; `MyTradingSys/research/bigtrade_2026-10-09`; `MyTradingSys/research/layer_lab/candle_close_2026-10-14`
+- Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-14_lab-candle-close-research.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_lab-candle-close-dev.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `candle-close-independent-audit` ready p3 CODEX: Candle closes: audit independent reconstruction and DEV subgroup evidence before validation
   - `pooled-short-lookback-trend-tsmom-30d-sm` raw p3 DSA: Pooled short-lookback trend (TSMOM 30d, SMA50/100, 4h Donchian 20/10) on sealed 2025-07..2026-09 BTC holdout: 
   - `time-adjusted-volume-context-line-for-th` raw p3 SONNET: Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-o
   - `fetch-ethusdt-perp-1h-klines-funding-202` raw p4 DSA: Fetch ETHUSDT perp 1h klines + funding 2020-2026 (fetch_binance_archive.py) and re-run research/published_stra

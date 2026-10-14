@@ -67,7 +67,7 @@ def load():
         parts.append(a)
     a = pd.concat(parts)
     validate(a)
-    gaps = np.where(np.diff(a.index.asi8) != 60_000_000_000)[0]
+    gaps = np.where(np.asarray(a.index[1:]-a.index[:-1]) != pd.Timedelta(minutes=1))[0]
     audit = [dict(before=str(a.index[i]), after=str(a.index[i+1]),
                   missing=int((a.index[i+1]-a.index[i]).total_seconds()/60)-1) for i in gaps]
     (OUT/'gaps.json').write_text(json.dumps(audit, indent=2)+'\n', encoding='utf-8', newline='\n')
@@ -126,7 +126,7 @@ def make_events(a):
     for tf in TFS:
         b = aggregate(a, tf)
         start = b.index-pd.Timedelta(minutes=tf)
-        consecutive = pd.Series(b.index).diff().eq(pd.Timedelta(minutes=tf)).to_numpy()
+        consecutive = pd.Series(b.index).diff().eq(pd.Timedelta(minutes=tf)).to_numpy(copy=True)
         consecutive &= np.roll(consecutive, 1)
         consecutive[:2] = False
         warm = np.isfinite(known(ret30, start)) & np.isfinite(known(er, start))

@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
+  "closed": "2026-10-14T06:39:59Z",
   "commands": [],
   "created": "2026-10-14T06:20:06Z",
   "depends_on": [],
@@ -11,14 +12,16 @@
   "id": "lab-candle-close-research",
   "kind": "audit",
   "lane": "CODEX",
-  "layers": [],
+  "layers": [
+    "volume_candles_ma"
+  ],
   "live_path": false,
   "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST for edge claims: verified sources, causal study design, split audit and two follow-up cards; full research report saved.",
   "scope_in": [
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14"
   ],
@@ -29,7 +32,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "active",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",

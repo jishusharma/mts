@@ -1284,6 +1284,24 @@
    "verdict": "EXPLORATORY NEGATIVE; full LC hypothesis untested",
    "report": "MyTradingSys/research/levels_sizing_2026-10-14/REPORT.md",
    "read": "summary"
+  },
+  {
+   "id": "CANDLE-CLOSE-DEV-20261014",
+   "title": "Close sequences at prior 4h/day/week levels",
+   "date": "2026-10-14",
+   "market": "Binance BTCUSDT perpetual 1m",
+   "layers": [
+    "candle_patterns"
+   ],
+   "params": "OURS: six signatures x seven trigger TFs x three parent level families; 60min endpoint",
+   "split": "DEV 2022-01..2024-06; validation/holdout unread",
+   "fees": "14/20bp cost screen only; historical funding unmodeled",
+   "interaction": "Daily phase/trend and 4h direction; nearby-price controls",
+   "effects": "0/126 pooled arms pass; all mean 14bp cost screens negative",
+   "n": "105541 correlated event rows; 59-1761 per arm",
+   "verdict": "EXPLORATORY NEGATIVE; cycle outcomes untested",
+   "report": "MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md",
+   "read": "summary"
   }
  ]
 }

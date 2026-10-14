@@ -66,6 +66,15 @@ class StudyTests(unittest.TestCase):
         a = self.bars(70)
         self.assertTrue(np.isnan(study.forward(a.drop(a.index[10]), pd.DatetimeIndex([a.index[5]]), 60)[0]))
 
+    def test_full_synthetic_event_pipeline(self):
+        a = self.bars(34*1440)
+        op = 100+np.sin(np.arange(len(a))/100)
+        a['o'], a['c'], a['h'], a['l'] = op, op+.05, op+.2, op-.2
+        e = study.make_events(a)
+        self.assertGreater(len(e), 0)
+        self.assertTrue((e.time>=pd.Timestamp('2022-02-01', tz='UTC')).all())
+        self.assertFalse(e[['gross', 'base_win', 'lift']].isna().any().any())
+
     @staticmethod
     def bars(n):
         op = np.arange(n)+100.
