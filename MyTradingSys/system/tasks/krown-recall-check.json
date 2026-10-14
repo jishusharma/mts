@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-14T15:57:18Z",
+  "depends_on": [
+    "krown-layer-v0-detectors",
+    "krown-data-daily-majors"
+  ],
+  "done_when": "research/krown_ta101_2026-10-13/RECALL.md: per example verified/not verified (klines evidence), hit/miss with the bar offset, fire counts, pass bars stated before the run; examples that do not verify are listed and dropped, not fixed",
+  "from_inbox": "",
+  "goal": "PRE_REG_KROWN item 3: first verify each dated chart example from his videos against klines (captions are not evidence of dates or prices; includes the Bitcoin 2017 and 2021 weekly tops, TOP-12/TOP-32, and the VJZ examples), then run the detectors on them: recall within 2 bars, and fire rate per setup against the 1-in-10-daily-bars ceiling.",
+  "id": "krown-recall-check",
+  "lane": "SONNET",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "note": "waits on its depends_on cards; release when they are done",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
+    "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/",
+    "MyTradingSys/backtest/layers/krown/"
+  ],
+  "scope_out": [
+    "any P&L",
+    "VALIDATION and HOLDOUT bars"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "blocked",
+  "steps": [
+    "list the examples with extract line cites (PRE_REG_KROWN item 3) and check each date/price against the 1d/1w klines",
+    "run the detectors on the verified examples; log every recall iteration to the trial ledger",
+    "report recall and fire rate; if recall fails fix the encoding (counts as a variant), never the example"
+  ],
+  "tests": "docs lane: the recall table is the result; every example row cites an extract line and a kline row",
+  "title": "Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_REG_KROWN item 3); DONE when: RECALL.md has per-example hit/miss and fire counts"
+}

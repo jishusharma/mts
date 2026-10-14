@@ -1,0 +1,830 @@
+# Video ID: 2-nG9bsMoPQ
+# Title: The First Thing Every Pro Trader Reads on a Chart (Most Beginners Miss This)
+# Published: 2026-03-16
+# Source: yt_dlp captions (auto); uploader: Krown
+# Analyst: Krown
+# Duration_s: 1602
+# Word count: 5324
+# ---
+[00:00:00] If you learn only one thing in this
+[00:00:01] whole TA 101 playlist, I would hope it
+[00:00:03] is this, which is trend. And that is
+[00:00:05] exactly what this video is, the
+[00:00:07] importance of trend, how to define it,
+[00:00:08] how to measure it, how to identify it.
+[00:00:10] All of these things are incredibly
+[00:00:12] important, and I can say that trend
+[00:00:15] supersedes literally any everything
+[00:00:17] else. If there's one saying that I hope
+[00:00:19] that you learn throughout this whole TA
+[00:00:21] 101 playlist, it is the trend is your
+[00:00:22] friend until the end of the trend, in
+[00:00:24] which case you make a new friend with a
+[00:00:26] new trend, so on and so forth to
+[00:00:28] infinity and beyond. And this is
+[00:00:30] incredibly important, and I want to say
+[00:00:31] before we get into this that if I had
+[00:00:33] really understood and incorporated this
+[00:00:36] very specific rule when I was first
+[00:00:38] learning how to trade, I would have
+[00:00:40] avoided going fully financially broke.
+[00:00:42] Yes, trend literally is the essence of
+[00:00:45] the reason why I went broke in early on
+[00:00:48] in my career when it comes to trading.
+[00:00:49] Look, I was a professional market maker
+[00:00:52] authorized trader on the floor of New
+[00:00:54] York Stock Exchange Arca, a
+[00:00:54] professional, you know, exchange and
+[00:00:56] everything, the you know, the evil
+[00:00:57] market makers that people usually think
+[00:00:59] are devils, basically. And I can assure
+[00:01:02] you that we can get wrecked, too, if we
+[00:01:04] do not obey the trend. Trend does come
+[00:01:06] into some importance at every level,
+[00:01:09] almost. And I also want to say that if
+[00:01:12] you are just finding this video kind of
+[00:01:14] out of context, if you just found this,
+[00:01:15] you know, randomly searching on YouTube,
+[00:01:17] you know, TA 101 and all this sort of
+[00:01:18] stuff, it is actually a part of a
+[00:01:19] greater TA 101 playlist, which you can
+[00:01:22] find in full in the link in the
+[00:01:24] description below, right here, in
+[00:01:26] Teachable. It'll bring you to this page,
+[00:01:28] and you can enroll in the course
+[00:01:29] literally for free, for $0.00.
+[00:01:32] You can even get a 100% discount on top
+[00:01:33] of that.
+[00:01:34] >> [laughter]
+[00:01:34] >> And And I also want to say that actually
+[00:01:36] the full content will only be available
+[00:01:38] here on Teachable. Yes, it is free, but
+[00:01:41] on Teachable we can actually enforce the
+[00:01:43] course order and quizzes on top of that,
+[00:01:45] so you'll actually need to pass quizzes
+[00:01:47] in order to move on. And at the very end
+[00:01:49] of it, if you do get there, and you
+[00:01:50] persevere through the whole damn thing,
+[00:01:52] then you can actually earn a certificate
+[00:01:55] of completion, as well as a few of the
+[00:01:56] bonuses, which I'll keep a bit of a
+[00:01:57] secret because, well,
+[00:01:59] you'll you'll understand why later.
+[00:02:01] Anyways, let's go into our slideshow
+[00:02:03] now. And before I actually get into the
+[00:02:04] slideshow, I do want to give a major
+[00:02:06] shout out to the sponsor of this whole
+[00:02:08] playlist, which is Blofin. They are the
+[00:02:10] one of the best no KYC or they are
+[00:02:12] probably the best no KYC exchange out
+[00:02:15] there. They also offer, very
+[00:02:17] specifically with the link in the
+[00:02:18] description below for Blofin, a 15% fee
+[00:02:21] discount. Or actually, what it really is
+[00:02:23] a is 15% cash back, but that effectively
+[00:02:26] is a fee discount. You get that money
+[00:02:27] back in your account, which almost no
+[00:02:29] other exchange offers up as of this
+[00:02:31] moment. It is again available
+[00:02:32] specifically with this link right here.
+[00:02:34] If you want to support this content,
+[00:02:35] that would be the best way to do it. All
+[00:02:37] right, cool. Let's get into the actual
+[00:02:38] slideshow now. Let's go over trend
+[00:02:39] identification. We're going to go over
+[00:02:40] the foundation of all of this. We're
+[00:02:41] going to go over how to spot the trend,
+[00:02:43] avoid false signals with the trend,
+[00:02:45] trade with the market, not against the
+[00:02:46] market, and that effectively just comes
+[00:02:48] down to being able to identify the
+[00:02:50] trend. Is price going up or down?
+[00:02:52] Is it going sideways? Is it going, you
+[00:02:56] know, has this move been going for a
+[00:02:57] long time, a short time? Effectively,
+[00:02:59] how mature is this trend? And is the
+[00:03:02] trend strengthening? Is the move getting
+[00:03:04] stronger or is it getting weaker, in
+[00:03:05] which we should be looking for a
+[00:03:06] potential reversal? We're going to go
+[00:03:08] over all these things, and we're going
+[00:03:10] to go over the heart of how to actually
+[00:03:12] identify the trend, because this is what
+[00:03:14] makes everything else
+[00:03:15] work effectively, at least in this TA
+[00:03:17] 101 playlist. And I would say, if you
+[00:03:19] want a very quick tip to increase the
+[00:03:22] hit rate of any one of your strategies
+[00:03:23] almost, all you need to do is
+[00:03:25] incorporate a condition that you only
+[00:03:28] trade in the same direction of the
+[00:03:30] current trend. Don't fight the trend.
+[00:03:32] Let the Let the trend be a friend.
+[00:03:34] That's exactly what that statement
+[00:03:35] means. So, as we move forward this,
+[00:03:37] let's go through
+[00:03:39] the three different trend states. The
+[00:03:41] three different trend states
+[00:03:43] and what they actually are. So again,
+[00:03:45] just going over what trend is, market
+[00:03:46] direction over time, defined by
+[00:03:48] structure, not indicators, and it exists
+[00:03:50] on all time frames. And you might have
+[00:03:52] different time frame trend for a daily
+[00:03:54] time frame than a 5-minute time frame.
+[00:03:55] In fact, you probably do. They're not
+[00:03:57] going to necessarily be that related to
+[00:03:58] each other, in which case I would say
+[00:04:01] both of them matter. Both of them are
+[00:04:02] pertinent to their time frame. However,
+[00:04:05] the higher term time frame in
+[00:04:07] relationship to the lower term time
+[00:04:08] frame is what we refer to as the
+[00:04:11] dominant trend. The dominant trend,
+[00:04:13] which effectively matters more. If you
+[00:04:15] have a 5-minute trend that's in an
+[00:04:17] uptrend, but you have a daily and a
+[00:04:18] weekly downtrend, guess what's more
+[00:04:21] likely to to occur? Down. Down overall.
+[00:04:24] Anyways, [snorts] in terms of the three
+[00:04:26] different market conditions and the
+[00:04:27] three different market trends, we have
+[00:04:29] an uptrend, which is effectively higher
+[00:04:31] highs and higher lows. We have a
+[00:04:32] downtrend, which is lower lows and lower
+[00:04:34] highs. And we have a range or sideways,
+[00:04:36] whatever you want to call it, that's
+[00:04:37] fine, which is effectively the same
+[00:04:39] highs and the same lows or about the
+[00:04:40] same. It doesn't need to be exact exact
+[00:04:42] exact, but reasonably close.
+[00:04:45] Now, of course, it sounds very simple
+[00:04:47] when you put it out like this. Just
+[00:04:48] higher highs and higher lows, lower lows
+[00:04:49] and lower highs, same highs and same
+[00:04:50] lows. All of this is super easy to
+[00:04:51] remember, but how do you actually put
+[00:04:53] this into action? How do you actually
+[00:04:54] understand what is a high and what is a
+[00:04:55] low?
+[00:04:56] This is where most people get [&nbsp;__&nbsp;] up
+[00:04:58] and because there's not like a great
+[00:05:00] definitional
+[00:05:02] you know, interplay of of TA, you know,
+[00:05:05] concepts,
+[00:05:06] these [snorts] sort of things get lost
+[00:05:08] in the wind, unfortunately. But, I think
+[00:05:10] I can explain it as simply as possible
+[00:05:11] here. No simpler than that, obviously,
+[00:05:13] but I'll do my best to to make it as
+[00:05:15] simple as possible. But again, I want to
+[00:05:17] reiterate every market on every time
+[00:05:19] frame is always in one of these three
+[00:05:20] states or one of these three trends. And
+[00:05:22] yeah, sideways is a trend as well. Most
+[00:05:25] traders lose because they trade ranges
+[00:05:27] like trends or trends like ranges.
+[00:05:29] Basically doing the wrong thing at the
+[00:05:30] right time or the right thing at the
+[00:05:32] wrong time,
+[00:05:33] right?
+[00:05:34] And and again, trend is just simply the
+[00:05:37] market making progress in one direction
+[00:05:38] over time. That's how you can kind of
+[00:05:39] boil it down all these statements. It
+[00:05:41] should be super obvious. It should be
+[00:05:42] super obvious. It's It's not going to be
+[00:05:44] an opinion. It's going to be visible.
+[00:05:45] Basically, think of it like this. If I
+[00:05:47] showed you this chart to your 5-year-old
+[00:05:48] niece, can she tell you if it's going
+[00:05:51] up, down, or sideways?
+[00:05:53] She probably could.
+[00:05:55] Start at the beginning
+[00:05:57] and at the end, is that line generally
+[00:05:59] going up or down? Well, if it's going
+[00:06:01] up, it's an uptrend. Okay, that's great,
+[00:06:03] but that doesn't really tell us where
+[00:06:04] the higher highs and higher lows are.
+[00:06:05] This is just a quick way to to identify,
+[00:06:07] of course.
+[00:06:08] In order to get the higher high or In
+[00:06:09] order to get the lows and the highs, for
+[00:06:11] that, I'd like to employ a little bit of
+[00:06:13] a different technique here.
+[00:06:15] A little bit of a different technique.
+[00:06:16] So,
+[00:06:17] we will now go over how to identify
+[00:06:21] highs and lows
+[00:06:23] within an uptrend. And you can apply
+[00:06:25] this to a downtrend as well, but the
+[00:06:27] first thing that I like to do, and this
+[00:06:28] is the first sort of tip that I would
+[00:06:31] hope makes things a lot simpler, is to
+[00:06:34] change your chart format from candles or
+[00:06:37] bars or whatever you might be on to a
+[00:06:39] line chart.
+[00:06:40] And then look at all these jagged edges
+[00:06:42] and peaks. Those are effectively highs
+[00:06:44] and lows. Now, are all of them
+[00:06:47] important? No. We'll go over some
+[00:06:49] nuances with that a little bit later,
+[00:06:51] but first we need to lay the groundwork.
+[00:06:53] So,
+[00:06:54] I'm just going to present it to you as
+[00:06:55] everyone does matter right now. Later
+[00:06:57] on, we'll go over why many of them don't
+[00:06:59] actually and how to decipher that in a
+[00:07:01] super simple way as well. So, in this
+[00:07:03] case, we have a nice low right here. So,
+[00:07:06] we'll start over here, then we have a
+[00:07:07] high, then we have a higher low, we have
+[00:07:09] a higher high, we have a higher low, we
+[00:07:11] have a higher high, we have Well, it's
+[00:07:13] kind of just a whole continuation move
+[00:07:15] here, really, but higher high, higher
+[00:07:17] low,
+[00:07:19] lower high, lower low, so a micro
+[00:07:21] downtrend here, lower high again, lower
+[00:07:23] low, and then price rallies back up to
+[00:07:25] the previous high, not higher, not
+[00:07:28] lower, and then from there, you get You
+[00:07:31] get kind of like a lower high right
+[00:07:32] there, same low right here, so what do
+[00:07:35] you have? You have a range right there.
+[00:07:36] You have a range. The range has formed,
+[00:07:38] then you get a higher low, lower high
+[00:07:40] again, higher low, you got 1 2 3 higher
+[00:07:43] lows. Okay, that's a lot of the time
+[00:07:45] that does precede a recent reversal. And
+[00:07:47] then what happens after that? You take
+[00:07:49] out the previous high on this bar right
+[00:07:51] here. Thus, an uptrend emerges from the
+[00:07:53] sideways consolidation. And then
+[00:07:56] continues up, higher high, higher low,
+[00:07:58] lower high, higher low. So,
+[00:08:00] consolidation, same highs.
+[00:08:03] Uh
+[00:08:04] same lows in this case, it's just going
+[00:08:05] to be another sideways consolidation
+[00:08:07] here. And then boom, breaks out with a
+[00:08:08] higher high. Thus, continuation is
+[00:08:10] confirmed as soon as you break above
+[00:08:12] this range high right here.
+[00:08:14] Continues onwards and forwards, you get
+[00:08:16] the idea probably by now. High, low,
+[00:08:19] higher high, lower low, lower high,
+[00:08:22] lower low.
+[00:08:23] >> [sighs and gasps]
+[00:08:23] >> Higher high, higher low, lower high.
+[00:08:27] Lower low, lower high. So, higher low,
+[00:08:31] lower high, lower low. Higher high.
+[00:08:34] Higher low. Higher high, and then breaks
+[00:08:38] the previous high right here. So,
+[00:08:40] I now want to go over the nuance as to
+[00:08:43] why most of these highs and lows don't
+[00:08:46] matter that much for confirming a
+[00:08:48] reversal or continuation.
+[00:08:52] So, do they all matter? Yes, but some
+[00:08:55] matter more than others. And what I'm
+[00:08:56] going to refer to as the ones that
+[00:08:58] matter most are going to be called the
+[00:09:00] dominant highs and the dominant lows.
+[00:09:03] The dominant highs, or actually in this
+[00:09:05] case, let's go over dominant lows first.
+[00:09:06] So, the dominant lows are the lows that
+[00:09:10] happen in an uptrend that are the lowest
+[00:09:13] low traded to before price action makes
+[00:09:18] a new high within that overall trend.
+[00:09:22] If that sounds like a bunch of different
+[00:09:23] words,
+[00:09:25] that's okay. We're going to go through
+[00:09:26] it in a moment here. So,
+[00:09:28] uh let's just go over this. So, this
+[00:09:30] would be your first low. This would be
+[00:09:32] your first high. You have a higher low
+[00:09:34] right here. This is going to be a
+[00:09:36] dominant higher low because a new high
+[00:09:39] was born from that low. Price made a new
+[00:09:41] high right there. Then price makes a
+[00:09:43] higher low right here and makes a higher
+[00:09:46] high over here. So this So this one then
+[00:09:48] becomes a new dominant higher low.
+[00:09:51] The reason why this matters is because I
+[00:09:54] would not confirm a reversal to the from
+[00:09:57] an uptrend in this case to a downtrend
+[00:09:58] until you trade and close below the most
+[00:10:02] recent dominant higher low.
+[00:10:05] So in this case you do get a short-term
+[00:10:07] downtrend here, right? You know, you get
+[00:10:09] lower lows, lower highs, lower lows,
+[00:10:11] lower highs.
+[00:10:12] But is this a real downtrend that's like
+[00:10:13] super concerning? No, not until it goes
+[00:10:17] down below this low right here. And in
+[00:10:19] fact
+[00:10:21] throughout this micro trend, you
+[00:10:23] basically just get a range as we went
+[00:10:24] over before.
+[00:10:26] And you get the same thing over here.
+[00:10:27] Boom, boom, boom, boom, boom. You get
+[00:10:29] the idea. None of these violate this low
+[00:10:31] over here, which is the most important
+[00:10:32] one because it made that new high, which
+[00:10:34] is not really been traded above uh
+[00:10:36] previously to that uh
+[00:10:38] from from there.
+[00:10:39] Um then going on from there, let's kind
+[00:10:41] of zero in on Let's actually go to a
+[00:10:43] daily. Let's do this for now a
+[00:10:44] downtrend.
+[00:10:46] Um
+[00:10:47] And by the way, if you need to rewatch
+[00:10:48] this content over time, it's completely
+[00:10:50] fine. It's really designed to be read
+[00:10:52] like that. And if you do want to go
+[00:10:53] deeper as well, of course we go
+[00:10:55] significantly in detail in the Crown
+[00:10:57] Trading Bible, but that is like the next
+[00:10:59] step evolution for the super TA nerds,
+[00:11:01] which probably not relevant for most
+[00:11:02] people. So if you're on the edge, don't
+[00:11:04] get into that. If you are really, really
+[00:11:06] considering trading though,
+[00:11:09] well, it's probably the It's It is
+[00:11:10] absolutely the program that I stand by
+[00:11:12] the most with. Anyways, let's go over a
+[00:11:14] downtrend now. So
+[00:11:15] just like an uptrend, the dominant
+[00:11:17] higher lows
+[00:11:18] in a downtrend, the dominant lower highs
+[00:11:21] are the points in which I would not
+[00:11:25] confirm a reversal until price
+[00:11:27] supersedes it or closes above it.
+[00:11:29] Reclaims it is what we call it. So what
+[00:11:32] is effectively a dominant lower high? It
+[00:11:34] is the highest high
+[00:11:37] traded to before price comes down and
+[00:11:41] makes a new low within that trend. So,
+[00:11:44] this this downtrend starts up right
+[00:11:45] around here.
+[00:11:47] We have our high.
+[00:11:48] We have our low. We have our lower high.
+[00:11:50] So, where is the dominant uh well, we
+[00:11:52] haven't really entered into like a full
+[00:11:53] downtrend. That happens right here. So,
+[00:11:55] where is our dominant lower high right
+[00:11:56] now? It'd be right here.
+[00:11:58] Why? Because this high was the most
+[00:12:01] recent Sorry, I shouldn't say that it's
+[00:12:03] the highest price. It is the most recent
+[00:12:05] highest
+[00:12:07] price or or most recent local high. Yes,
+[00:12:11] most recent local high that a new low
+[00:12:15] was created from.
+[00:12:17] So, this one pushes down, makes a new
+[00:12:19] low compared to this low right here.
+[00:12:21] Then, you see something very
+[00:12:23] interesting, which you're going to see a
+[00:12:23] lot of in trading, by the way. And this
+[00:12:25] is where people get confused. So, you
+[00:12:27] get a
+[00:12:28] a lower high, but you then you get a
+[00:12:30] higher low, and then you get a higher
+[00:12:31] high right here.
+[00:12:33] Oh, [&nbsp;__&nbsp;] Is this reversing?
+[00:12:35] No. We apply the same logic. Why? Price
+[00:12:39] needs to close above the previous
+[00:12:43] dominant high, which is right here. It
+[00:12:45] gets close there, but close but no cigar
+[00:12:48] is important. As long as you're below
+[00:12:50] there, I would not validate a reversal.
+[00:12:52] Now, is this going to work 100% of the
+[00:12:54] time? No, nothing works 100% of the
+[00:12:55] time, but it will keep you on the right
+[00:12:57] side of the trend more than 90% of the
+[00:13:00] time in my experience. This really does
+[00:13:01] matter.
+[00:13:03] And then from there, what happens? You
+[00:13:04] get continuation to the downside. You
+[00:13:05] actually even get another higher low,
+[00:13:06] then you get a lower high, then you get
+[00:13:08] a lower low right here.
+[00:13:09] So, where is our new dominant lower
+[00:13:11] high? It'd be this high right here. So,
+[00:13:13] as long as you're below there,
+[00:13:15] there's no talks of an upside reversal.
+[00:13:17] It's bearish.
+[00:13:18] And then what happens? Again, micro
+[00:13:20] trend, boom, uh lower high, lower low,
+[00:13:23] higher low, lower high or sorry, higher
+[00:13:25] high. So, you know, you have like a
+[00:13:27] short-term reversal there, but again,
+[00:13:28] that would fool most people,
+[00:13:30] but hopefully not you if you're watching
+[00:13:32] and paying attention because
+[00:13:33] if this high does not reclaim this high,
+[00:13:36] again, just by closing above it,
+[00:13:38] basically,
+[00:13:39] we don't have a reversal.
+[00:13:41] And you should be very much skeptical of
+[00:13:43] any sort of real reverse coming from
+[00:13:44] this region until that happens.
+[00:13:47] Now, sometimes it will happen, in which
+[00:13:48] case you'll feel like you're late to the
+[00:13:50] trade, but no, you're not late to the
+[00:13:52] trade. You are right on time with a
+[00:13:54] confirmation. That's how I'd reframe it.
+[00:13:57] And then, of course, from there you go
+[00:13:58] down.
+[00:13:59] This one makes a significantly lower low
+[00:14:01] right here. So, where's your next
+[00:14:02] dominant lower high? It's going to be
+[00:14:04] right here. And by the way, um the
+[00:14:05] reason why I'm not marking off these
+[00:14:08] sort of starter steps right here,
+[00:14:09] another nuance, and I think this is
+[00:14:11] really important to hammer in,
+[00:14:13] when you see these sort of one-bar
+[00:14:15] jagged peaks, they usually don't amount
+[00:14:17] to that much. I would not treat them as
+[00:14:19] highs or lows.
+[00:14:21] Some people do.
+[00:14:22] I think it's just going to be more
+[00:14:24] confusing than it's worth, and in this
+[00:14:25] case, you can see it quite literally is
+[00:14:27] that right here. And from there, you
+[00:14:29] know, you get a series of uh lows and
+[00:14:32] highs. In this case, we got a lower
+[00:14:33] high, higher low, higher high. So,
+[00:14:35] again, you know, a noob is going to look
+[00:14:37] at this and think, "Oh, [&nbsp;__&nbsp;] we have a
+[00:14:38] reversal. Let's get bullish. This
+[00:14:40] thing's going back up to, you know,
+[00:14:41] $100,000 plus." Like, no.
+[00:14:43] We don't have a reversal when we're back
+[00:14:45] above this high right here. That's the
+[00:14:46] one that matters. That's the one where
+[00:14:47] the big breakdown came from, and price
+[00:14:49] action made new lows. And what happens
+[00:14:51] after that? You get a higher low, you
+[00:14:52] get a lower high, you get a lower low,
+[00:14:56] lower low, but this is not lower than
+[00:14:58] this initial low right here. So, still,
+[00:14:59] this is the dominant uh lower high.
+[00:15:03] Then, blah, blah, blah, you rally up
+[00:15:05] here, boom, higher high, or sorry,
+[00:15:07] higher low, uh same highs, higher low,
+[00:15:09] higher high. Again, a lot of people are
+[00:15:11] going to be thinking that this
+[00:15:13] is the reversal.
+[00:15:15] But, it's not. And what happens after
+[00:15:16] that? Price comes back down, boom, low,
+[00:15:19] lower low,
+[00:15:21] lower high, then this is the lower high
+[00:15:24] in which a new low below this low is
+[00:15:28] made. Thus, this becomes the new
+[00:15:31] dominant lower high, and we cannot call
+[00:15:33] the reversal as long as price action is
+[00:15:35] below there.
+[00:15:37] Okay.
+[00:15:38] Like I said, if this doesn't make too
+[00:15:40] much sense at first pass, please rewatch
+[00:15:41] this video, and if you really want to go
+[00:15:43] deep, then check out the Crown Trading
+[00:15:44] Bible where we go over many examples
+[00:15:45] just like this. But, basically, it comes
+[00:15:47] down to the trend and then you're micro
+[00:15:50] trading your dominant trend.
+[00:15:52] There we go.
+[00:15:53] All right. And as we went over with an
+[00:15:54] uptrend, super simple, it's just a
+[00:15:56] series of higher highs and higher lows,
+[00:15:57] consistently rising prices, sign of
+[00:15:59] strength, again, remaining above that
+[00:16:02] previous dominant higher low.
+[00:16:04] Very important.
+[00:16:06] >> [sighs and gasps]
+[00:16:06] >> And then a downtrend is the opposite of
+[00:16:07] this, really, series of lower lows and
+[00:16:09] lower highs, consistently falling
+[00:16:10] prices, signs of weakness, obviously.
+[00:16:13] And as long as price is below the
+[00:16:15] dominant lower high,
+[00:16:17] we remain in an overall downtrend.
+[00:16:20] And like I said, there will be some
+[00:16:21] instances where what I just laid out
+[00:16:23] with the dominant trend will will still
+[00:16:25] be a fake out. These are called bull
+[00:16:27] traps or bear traps. They do happen.
+[00:16:30] But,
+[00:16:31] in my experience, this is still the best
+[00:16:33] way to avoid 90 plus percent of these
+[00:16:36] things, which in my opinion is
+[00:16:37] absolutely worth paying attention to.
+[00:16:39] All right. So, let's now go over
+[00:16:42] sideways as well. That's just basically
+[00:16:44] bouncing between support and resistance.
+[00:16:46] We've We've already gone over this. We
+[00:16:47] didn't really um
+[00:16:49] like hammered into well, so let's maybe
+[00:16:50] go over a little bit of this uh better
+[00:16:52] here.
+[00:16:53] Let's maybe go
+[00:16:55] Yeah.
+[00:16:56] So, in this case,
+[00:16:57] let's just
+[00:16:58] wrap this one up pretty damn uh pretty
+[00:17:00] damn fast. We got same highs throughout
+[00:17:03] this whole way, or at least just, you
+[00:17:04] know, this high is holding over here,
+[00:17:06] and most of these highs are about the
+[00:17:07] same areas.
+[00:17:08] And then we got our same lows kind of
+[00:17:10] coming in all around this region. That's
+[00:17:12] a sideways range, effectively. Yes,
+[00:17:14] there was a micro a
+[00:17:15] here.
+[00:17:16] It wasn't any real reversal though. Why?
+[00:17:18] Because your dominant higher low was
+[00:17:20] right here.
+[00:17:21] And price does not violate that low in
+[00:17:24] any meaningful I mean it just doesn't
+[00:17:25] violate at all really. So, not even
+[00:17:27] worth talking about. But yes, you can
+[00:17:28] see that this forms more or less a
+[00:17:30] trading range or probably even better
+[00:17:32] seen in this example right here. We get
+[00:17:34] these same highs, these same lows.
+[00:17:36] That's your sideways range. And when
+[00:17:38] you're in a sideways range consolidation
+[00:17:40] basically,
+[00:17:41] you almost always want to favor the
+[00:17:44] previous trend. The previous trend is
+[00:17:46] your friend.
+[00:17:48] I'll put it that way. And by the way,
+[00:17:49] while while we are here, this is
+[00:17:51] actually a good example of a fake out.
+[00:17:54] Bit of a bear trap actually in this
+[00:17:55] case. You had higher low, higher high,
+[00:17:57] lower low, and then it just zooms up and
+[00:17:59] makes, you know, a sniffing new higher
+[00:18:01] high. So, yeah, you do get that there,
+[00:18:03] too. All right.
+[00:18:04] Moving onwards.
+[00:18:06] How to determine the trend. Again, you
+[00:18:08] just identify the highs and lows. You
+[00:18:10] can use moving averages as well. That
+[00:18:11] can help confirm things. But again, we
+[00:18:13] want to be able to understand things in
+[00:18:15] essence with just a line chart. Or if
+[00:18:18] you want to use candles, that's fine,
+[00:18:19] too. But I think lines may get a little
+[00:18:20] bit simpler, a little bit easier.
+[00:18:22] Um so yes.
+[00:18:24] And then of course,
+[00:18:26] let's put this into just straight-up
+[00:18:28] text words. What is a high? A high is a
+[00:18:30] highest point is the highest point price
+[00:18:33] reaches before it moves down and can't
+[00:18:34] continue higher.
+[00:18:36] Price goes up, tries to go higher,
+[00:18:37] fails, moves down. What is a low? A low
+[00:18:39] is a lowest point price reaches before
+[00:18:42] it moves up and can't continue lower.
+[00:18:44] Basically, price goes down, tries to go
+[00:18:45] lower, fails, moves up. Same logic
+[00:18:48] flipped. Again, I think that probably
+[00:18:50] makes better sense with the examples
+[00:18:52] that we just went through. But for the
+[00:18:53] people who are more text-based learners,
+[00:18:55] which actually is myself as well,
+[00:18:57] uh hopefully this also puts some words
+[00:18:59] on it, too.
+[00:19:01] And let's
+[00:19:02] let's go over
+[00:19:04] the trend across time frame. So, like I
+[00:19:05] said, the trend is relevant to whatever
+[00:19:08] time frame you're looking at.
+[00:19:10] A 5-minute time frame has a different
+[00:19:11] trend than a daily time frame. Almost
+[00:19:13] all Well, maybe not almost always.
+[00:19:14] Sometimes they do align, some sometimes
+[00:19:16] they don't, but they're not necessarily
+[00:19:17] related to each other
+[00:19:18] that much. Because think about it, how
+[00:19:20] many 5-minute bars even make up one
+[00:19:23] daily bar?
+[00:19:24] Well, doing some bad mental math, I
+[00:19:25] mean, I think you got
+[00:19:27] well,
+[00:19:29] a lot.
+[00:19:31] I actually don't know off the off the
+[00:19:32] top of my head, to be honest with you. I
+[00:19:33] guess it'd be 15 * 24, so
+[00:19:36] uh 240 + 120, 360, 360 bars.
+[00:19:42] It seems like [laughter] a lot in one
+[00:19:44] day. So,
+[00:19:46] anyways, um short-term versus versus
+[00:19:48] long-term trend, again, the higher term
+[00:19:50] time frame trend always matters more
+[00:19:52] than the short-term time frame trend.
+[00:19:54] So, if you are caught in a pinch, or
+[00:19:56] again, if you're just looking for a way
+[00:19:57] to bolster your strategy, which we'll go
+[00:19:59] over much later in this whole um TA101
+[00:20:02] playlist, that'll be teachable content.
+[00:20:04] A really good way is to put a a a trend
+[00:20:08] filter related to a higher term time
+[00:20:09] frame trend. So, your your actual
+[00:20:11] trading strategy might be on a 4-hour
+[00:20:13] time frame, but you may reference You
+[00:20:15] may find value in referencing the
+[00:20:16] 12-hour or the daily uh time frame
+[00:20:18] trend,
+[00:20:19] and only trade your 4-hour strategy when
+[00:20:23] it's in the same direction as your daily
+[00:20:24] trend. So, for example, if your 4-hour
+[00:20:25] strategy is like a you know, a a buy
+[00:20:28] strategy, a long strategy, then when
+[00:20:30] your daily trend is up, that would
+[00:20:32] effectively give the green light to even
+[00:20:33] play that 4-hour trend strategy to begin
+[00:20:36] with.
+[00:20:37] Or 4-hour strategy in general. Um
+[00:20:39] anyways, trends can conflict as we went
+[00:20:41] over, context matters, absolutely, and a
+[00:20:44] market can be in a short-term downtrend
+[00:20:46] inside a long-term uptrend, basically.
+[00:20:48] That's not a contradiction, it's just
+[00:20:49] context is what it is. Don't let that
+[00:20:50] confuse you.
+[00:20:52] Anyways, let's let's let's show a quick
+[00:20:53] example with that. So,
+[00:20:55] um
+[00:20:56] >> [clears throat]
+[00:20:57] [sighs]
+[00:20:57] >> So, in fact, uh I I I I assume recently
+[00:21:00] over here, we can all agree this is a
+[00:21:02] downtrend, but if we go to a 4-hour time
+[00:21:04] frame,
+[00:21:06] you actually have
+[00:21:08] You actually have You actually have in
+[00:21:09] this case
+[00:21:11] a um
+[00:21:12] All right, no, you actually don't have
+[00:21:13] an uptrend. Maybe over here we do.
+[00:21:16] Uh yeah, in this case you actually do
+[00:21:17] flip around to an uptrend for a moment
+[00:21:18] on the 4-hour time frame. So, again,
+[00:21:20] this is all the same stuff, you know,
+[00:21:21] it's all the downtrend right here, but
+[00:21:22] if we go to the 4-hour time frame
+[00:21:24] you actually do have an uptrend, right?
+[00:21:26] Why? Because your
+[00:21:28] dominant lower high was right here.
+[00:21:31] That created this low right here. So, as
+[00:21:33] soon as price closes above, which it
+[00:21:35] does right here
+[00:21:37] technically, you have the conditions
+[00:21:39] ripe for a reversal. In which case you
+[00:21:42] get a higher low, you pop back around
+[00:21:43] that same high.
+[00:21:45] It's probably a tell right there.
+[00:21:47] And again, we're going We're going at a
+[00:21:49] per- We're I mean, this is honestly the
+[00:21:51] perfect example because the daily trend
+[00:21:53] is down. The 4-hour trend is showing
+[00:21:55] like maybe it's breaking out, maybe it's
+[00:21:56] not. I mean, you kind of got some
+[00:21:57] signals for reversal here but there's no
+[00:21:59] follow-through.
+[00:22:01] The daily trend takes precedence here
+[00:22:03] because the daily's aligned with the
+[00:22:04] weekly. These trends really do have a
+[00:22:06] lot of weight on everything else. Um
+[00:22:10] I mean, I could even argue that really
+[00:22:11] your high was right there, but even
+[00:22:12] then, you know, there is a fake out
+[00:22:14] right here. This would be your bull trap
+[00:22:15] effectively. And hey, bull traps happen.
+[00:22:18] That's That's literally the purpose of
+[00:22:20] them is to fake you out with that higher
+[00:22:22] high and then slam it back down for a
+[00:22:24] new low. And you're going to say, "Well,
+[00:22:26] how do I know when that happens?" You
+[00:22:27] don't. But here's the thing, 90% of the
+[00:22:30] time it's not going to be like that. So,
+[00:22:33] when this happens
+[00:22:34] at least the way that I think of it, I
+[00:22:36] don't try to get, you know, too on my
+[00:22:39] own case about it. I don't try to, you
+[00:22:40] know, mull over and be like, "Oh god,
+[00:22:42] I'm terrible, you know, I I fell into
+[00:22:43] that trap." No, it's it's there for a
+[00:22:46] reason. And I'm okay with losing on that
+[00:22:50] and quickly realizing that's a loss and
+[00:22:51] not losing any more than I need to if
+[00:22:53] I'm trading a a trend strategy like that
+[00:22:55] um rather than just, you know,
+[00:22:58] discounting it
+[00:22:59] you know, everything like that because
+[00:23:01] that is not going to be the norm. Like I
+[00:23:04] said, more than 90% of the time really
+[00:23:06] is probably closer to 95% of the time it
+[00:23:08] will operate in the exact way that I
+[00:23:10] laid out earlier by respecting the
+[00:23:11] dominant highs and dominant lows. Those
+[00:23:13] are very very very very very important.
+[00:23:16] So now let's go over why trend is a
+[00:23:17] filter. So
+[00:23:18] um trend effectively aligns probability.
+[00:23:22] When you're trading in the same
+[00:23:22] direction as the trend, it's just it
+[00:23:24] becomes your friend. Why? Because trends
+[00:23:25] are more likely to continue than they
+[00:23:27] are not. That's just the definition of a
+[00:23:28] trend.
+[00:23:30] They can go on for a lot They almost do
+[00:23:32] almost always go on for a lot longer
+[00:23:34] than you typically expect.
+[00:23:36] Um at least in my experience, especially
+[00:23:37] with traditional markets. With Bitcoin,
+[00:23:39] you know, it can be a little bit faster
+[00:23:40] to be fair.
+[00:23:41] Uh trend also is a great filter to not
+[00:23:46] take trades and avoid generally bad
+[00:23:48] trades. So if you have like I said a
+[00:23:50] like a long only strategy, maybe
+[00:23:51] consider only trading when the when when
+[00:23:55] price on that time frame or maybe even a
+[00:23:57] different time frame is in an uptrend
+[00:23:58] confirmed.
+[00:23:59] Um and ignoring the trends or sorry, the
+[00:24:02] signals when the overall trend is in a
+[00:24:04] downtrend.
+[00:24:06] Um
+[00:24:07] and it just simplifies decisions. Like
+[00:24:09] it's that that really is the essence of
+[00:24:10] it. It's like look at the trend look at
+[00:24:12] the chart. You should be able to quickly
+[00:24:14] identify that and know, oh, well, if
+[00:24:16] it's if I don't even have an uptrend
+[00:24:18] here, I don't even have a trade. So I'm
+[00:24:19] just going to shut off the chart because
+[00:24:20] who gives a [&nbsp;__&nbsp;] Like there's nothing
+[00:24:21] for me to do here. Completely fine,
+[00:24:23] completely valid.
+[00:24:24] Anyways, trend doesn't guarantee
+[00:24:25] success,
+[00:24:27] but ignoring it guarantees confusion,
+[00:24:28] frustration, and generally a lot of
+[00:24:30] [&nbsp;__&nbsp;] losses. Especially in my case,
+[00:24:32] like I said.
+[00:24:33] Every every strategy I use starts really
+[00:24:35] with this filter. It is is what it comes
+[00:24:37] down to. Like that really is a big
+[00:24:40] portion of a lot of my trading
+[00:24:41] strategies is some form of a trend
+[00:24:43] filter.
+[00:24:45] Anyways, we've now finished the trend
+[00:24:47] section of this TA 101 playlist. Like I
+[00:24:49] said, if you want the full TA 101
+[00:24:50] playlist, just go into the link in the
+[00:24:52] description right here. It's this baby
+[00:24:54] right here. It it literally $0.00.
+[00:24:56] You'll get all the content right now.
+[00:24:58] You don't need to wait for the rest of
+[00:24:59] the drip on YouTube, and you will get
+[00:25:01] quizzes plus some bonuses as well. Other
+[00:25:04] than that, what we're going to go over
+[00:25:05] in next is support and resistance, but
+[00:25:08] correctly, because this is so
+[00:25:10] Mhm.
+[00:25:11] It's so frustratingly done poorly, at
+[00:25:14] least from what I've seen from many
+[00:25:15] other people, in my opinion, I should
+[00:25:17] say.
+[00:25:18] Why most levels that people plot as
+[00:25:20] support and resistance just they don't
+[00:25:21] [&nbsp;__&nbsp;] matter. They are phantoms of
+[00:25:22] your imagination, and how trend and
+[00:25:25] levels
+[00:25:26] should work together. So, you should
+[00:25:27] actually be combining these things. And
+[00:25:28] that's really the whole purpose of this
+[00:25:29] TA 101 playlist is to combine all these
+[00:25:31] concepts into one coherent sort of
+[00:25:34] understanding of price, and more
+[00:25:37] importantly, trading strategies.
+[00:25:38] So, if trend isn't clear, nothing else
+[00:25:40] matters, and that's exactly why it comes
+[00:25:42] first. It It is priority number one,
+[00:25:45] always for me, at least. In video number
+[00:25:47] four, we will go over indicators that
+[00:25:49] help confirm trend algorithmically.
+[00:25:53] But first, in video number three, like I
+[00:25:54] said, we're going to go over support and
+[00:25:55] resistance. So, we'll end things right
+[00:25:56] there, and I'll see you in the next one.
+[00:25:58] Take care.
