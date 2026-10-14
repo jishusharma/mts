@@ -23,6 +23,7 @@ EXTRA = [
     "MyTradingSys/research/test_b141_htf_stage1.py",
     "MyTradingSys/research/test_b141_htf_stage2.py",
     "MyTradingSys/execution/tests/test_deribit_orders_phase3.py",
+    "MyTradingSys/execution/tests/test_executor_reject_diag.py",
     "MyTradingSys/observation/tests/test_observation.py",
     "MyTradingSys/research/candle_patterns_2026-10-04/pilot/test_p1.py",
     "MyTradingSys/research/candle_patterns_2026-10-04/pilot/test_pilot.py",

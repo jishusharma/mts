@@ -182,6 +182,23 @@ def _place(token, instrument, side, amount, order_type, price=None, label=None, 
     return r.get("order", r)
 
 
+def _rejection_detail(e) -> dict:
+    """Diagnostics merged into every order_rejected event (2026-10-14; plan L-mkt-1012-0945 got 10031 on a market
+    entry and the journal kept only str(error), so the cause could not be proven): the structured error (code,
+    message, data), the failing method, and `request` - the whitelisted view of what deribit_orders sent (None when
+    the failing call is not an order call, or a test double bypassed _place_order). Diagnostics only and never
+    raises: a journal helper must not turn a benign target rejection into a fail_closed."""
+    try:
+        err = getattr(e, "error", None)
+        d = {"error_code": getattr(e, "code", None),
+             "error_detail": err if isinstance(err, dict) else {"message": str(err)},
+             "method": getattr(e, "method", None),
+             "request": getattr(e, "request", None)}
+        return json.loads(json.dumps(d, default=str))
+    except Exception:  # noqa: BLE001
+        return {"error_detail": {"message": repr(e)}}
+
+
 def _check_halt_files(halt_path: Path, halt_daily_loss_path: Path) -> list:
     """HALT-file preflight (FT-2). Returns refusal reasons (empty = OK).
     Impure (filesystem reads) by necessity - see the HALT-files note in this
@@ -410,7 +427,8 @@ def execute_plan(compiled: dict, plan: dict = None, instrument: str = "BTC-PERPE
                 o = _place(token, instrument, spec["side"], spec["amount"], spec["order_type"],
                            price=spec.get("price"), label=_xlabel(plan_id, spec["label"]))
             except do.DeribitError as e:
-                journal.append_event(plan_id, "order_rejected", {"label": spec["label"], "error": str(e.error)})
+                journal.append_event(plan_id, "order_rejected", {"label": spec["label"], "error": str(e.error),
+                                                                 **_rejection_detail(e)})
                 fail_closed(f"entry {spec['label']} rejected: {e.error}")
             entries.append({"order_id": o["order_id"], "label": spec["label"], "filled": 0})
             journal.append_event(plan_id, "order_placed", {"order_id": o["order_id"], "label": spec["label"],
@@ -443,6 +461,11 @@ def execute_plan(compiled: dict, plan: dict = None, instrument: str = "BTC-PERPE
                 try:
                     ensure_stop(filled_total, avg_fill)
                 except do.DeribitError as ex:
+                    # diagnostics: journal the rejected stop create/resize (buy/sell/edit), not a failed mark read
+                    if str(getattr(ex, "method", "")).startswith("private/"):
+                        journal.append_event(plan_id, "order_rejected", {"label": stop_spec["label"],
+                                                                         "error": str(ex.error),
+                                                                         **_rejection_detail(ex)})
                     fail_closed(f"R7 stop could not be placed/resized: {ex}")
                 except ExecutionHalted as ex:
                     # ensure_stop's own raises (mark-through-stop, FIX4 M4
@@ -505,14 +528,16 @@ def execute_plan(compiled: dict, plan: dict = None, instrument: str = "BTC-PERPE
                 # cannot fill unmonitored. `remaining` is NOT reduced: the
                 # target's actual fate is unknown, so its share must still be
                 # offered to whatever target comes after it.
-                journal.append_event(plan_id, "order_rejected", {"label": f"target_{i}", "error": str(e.error)})
+                journal.append_event(plan_id, "order_rejected", {"label": f"target_{i}", "error": str(e.error),
+                                                                 **_rejection_detail(e)})
                 try:
                     do.cancel_by_label(token, _xlabel(plan_id, f"target_{i}"))
                 except Exception as ce:  # noqa: BLE001 - sweep failure is isolated, not fatal
                     journal.append_event(plan_id, "error", {"context": "target_ambiguous_sweep", "error": repr(ce)})
                 continue
             except do.DeribitError as e:
-                journal.append_event(plan_id, "order_rejected", {"label": f"target_{i}", "error": str(e.error)})
+                journal.append_event(plan_id, "order_rejected", {"label": f"target_{i}", "error": str(e.error),
+                                                                 **_rejection_detail(e)})
                 continue  # position is still protected by the stop; a missing target is not a safety issue
             target_ids.append(o["order_id"])
             journal.append_event(plan_id, "order_placed", {"order_id": o["order_id"], "label": f"target_{i}",
