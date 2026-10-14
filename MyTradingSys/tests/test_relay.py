@@ -340,6 +340,68 @@ class HostKickTest(unittest.TestCase):
         self.assertIn("KICK", self.kick(NUC).stdout)
 
 
+class HostTagEdgeTest(unittest.TestCase):
+    """RV08 (2026-10-14): host= tag edge cases. A wrong IDLE leaves a host without work; a wrong KICK pays for an empty session."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.f = self.tmp / "NEXT_SESSION.md"
+
+    def write(self, text):
+        self.f.write_text(text, encoding="utf-8", newline=NL)
+
+    def lint(self, text, *args):
+        self.write(text)
+        return run(self.tmp / "home", "lint", "--file", str(self.f), "--root", str(REPO), *args, extra=NOLINT_OFF)
+
+    def kick(self, text, who):
+        self.write(text)
+        return run(Path(tempfile.mkdtemp(dir=str(self.tmp))), "kick", "--file", str(self.f), "--root", str(REPO),
+                   extra=dict(NOLINT_OFF, MTS_RELAY_HOST=who))
+
+    def test_lower_and_mixed_case_tag_matches(self):
+        for tag in ("host=jis-nuc", "host=Jis-Nuc", "HOST=JIS-NUC"):
+            t = GOOD.replace("Q2. Read set", "Q2. %s Read set" % tag)
+            self.assertEqual(self.lint(t, "--want", "go", "--host", "JIS-NUC").returncode, 0, tag)
+            self.assertIn("KICK", self.kick(t, "JIS-NUC").stdout, tag)
+
+    def test_any_in_any_case_runs_everywhere(self):
+        t = GOOD.replace("Q2. Read set", "Q2. host=ANY Read set")
+        for who in ("JIS-NB", "JIS-NUC", "laptop"):
+            self.assertIn("KICK", self.kick(t, who).stdout, who)
+
+    def test_two_tags_on_one_line_is_a_lint_error(self):
+        t = GOOD.replace("Q2. Read set", "Q2. host=JIS-NB host=JIS-NUC Read set")
+        r = self.lint(t, "--want", "go")
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("Q2 has 2 host= tags", r.stdout)
+
+    def test_tag_on_continuation_line_is_a_lint_error(self):
+        t = GOOD.replace("       DONE when: research", "       host=JIS-NB DONE when: research")
+        r = self.lint(t, "--want", "go")
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("Q2 has host= on a continuation line", r.stdout)
+
+    def test_task_after_a_task_of_the_other_host(self):
+        # Q3 (NUC) waits on Q2 (NB): NUC has nothing runnable, NB does
+        t = GOOD.replace("Q2. Read set", "Q2. host=JIS-NB Read set").replace("Q3. (after Q2)", "Q3. host=JIS-NUC (after Q2)")
+        r = self.kick(t, "JIS-NUC")
+        self.assertIn("IDLE no unblocked task for host JIS-NUC", r.stdout)
+        self.assertIn("KICK", self.kick(t, "JIS-NB").stdout)
+
+    def test_hostname_with_domain_suffix_matches_its_tag(self):
+        t = GOOD.replace("Q2. Read set", "Q2. host=JIS-NB Read set")
+        self.assertEqual(self.lint(t, "--want", "go", "--host", "JIS-NB.lan").returncode, 0)
+        self.assertIn("KICK", self.kick(t, "jis-nb.localdomain").stdout)
+        self.assertIn("IDLE", self.kick(t, "JIS-NUC.lan").stdout)
+
+    def test_only_done_rows_idle_not_kick(self):
+        t = GOOD.replace("Q2. Read set", "Q2. DONE Read set").replace("Q3. (after Q2) engine", "Q3. DONE engine")
+        r = self.kick(t, "JIS-NB")
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("IDLE no unblocked open task", r.stdout)
+
+
 SYNC_STUB = """import sys, os
 a = sys.argv[1:]
 if a[0] == "start":

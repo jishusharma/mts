@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-14T14:44:27Z",
   "commands": [],
   "created": "2026-10-12T17:18:21Z",
   "depends_on": [],
@@ -16,7 +17,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "VERDICT FIX-FIRST->fixed: 3 findings (2 MED,1 LOW), 7 edge tests (5 red first), test_relay 48 green; MyTradingSys/research/revalidation/RV08_2026-10-14.md",
   "scope_in": [
     "scripts/sched/relay.py",
     "scripts/sched/handoff_lint.py",
@@ -31,7 +32,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the cases as tests.",
     "Run; list failures.",
