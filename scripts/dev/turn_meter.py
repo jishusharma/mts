@@ -9,6 +9,11 @@ Claude Code hook (project .claude/settings.json):
   SessionStart     resets the counters after a compact or clear (the context is small again)
 Never blocks, never raises: a broken meter must not break a prompt.
 
+A turn is one assistant message: parallel tool calls in one message share one context re-read, so they count once
+(the call's message id is looked up in the transcript tail; if that fails the call counts, as before).
+Subagents (workflow or Agent-tool workers) share the parent's session_id but have their own, short context: their hooks
+are skipped entirely, so they never move the parent's counter and are never told to hand off.
+
   python scripts/dev/turn_meter.py status        sessions with their counts, newest first
 Env: MTS_TURN_METER=off disables; MTS_TURN_METER_HOME (state dir), MTS_TURN_METER_TOOL_CAP, MTS_TURN_METER_USER_CAP.
 """
@@ -16,7 +21,6 @@ import json
 import os
 import sys
 import time
-import traceback
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -24,6 +28,8 @@ TOOL_CAP = 15      # CLAUDE.md SHORT SESSIONS: 15 tool turns
 USER_CAP = 5       # CLAUDE.md SHORT SESSIONS: 5 turns with the operator
 NAG_EVERY = 5      # after the cap, repeat every 5 tool turns (once is easy to ignore mid-step)
 PRUNE_DAYS = 7
+TAIL_START = 1 << 17   # transcript bytes read from the end to find a tool call's message (grows if big results push it out)
+TAIL_MAX = 1 << 22
 
 
 def home():
@@ -67,13 +73,49 @@ def prune(d):
 
 
 def message(state, tool_cap, user_cap):
-    return (f"[TURN METER] This session is at {state['tool']} tool turns / {state['user']} operator turns "
-            f"(SHORT SESSIONS cap {tool_cap} / {user_cap}, CLAUDE.md). Every further turn re-reads the whole context.\n"
-            "Finish the step you are on, then hand off: commit + `python scripts/dev/sync.py ship`; write what is left as a scoped "
-            "Qn task in MyTradingSys/system/NEXT_SESSION.md (RELAY.md Task list standard) and run `python scripts/sched/relay.py handoff "
-            "--file MyTradingSys/system/NEXT_SESSION.md --go` so the dispatcher runs it in a fresh session; an operator-driven thread "
-            "may instead start a fresh session (start_session, context \"fresh\", a full brief). Then `sync.py where`, one line, stop.\n"
-            "Only if the operator said in this session to keep going here: say so once and continue.")
+    """Kept under 250 bytes: it sits in the context for every later turn. The how-to is in RELAY.md."""
+    return (f"[TURN METER] {state['tool']} tool turns / {state['user']} operator turns (cap {tool_cap} / {user_cap}); "
+            "each turn re-reads the whole context. Finish this step, then hand off per RELAY.md: commit, sync.py ship, "
+            "relay.py handoff --go (unless the operator said to keep going here).")
+
+
+def is_subagent(payload):
+    """Claude Code sets agent_id only on hooks fired inside a subagent (it is absent on the main thread, even in --agent
+    sessions); subagent transcripts live under .../subagents/. agent_type alone is NOT a signal: a --agent main thread has it."""
+    if payload.get("agent_id"):
+        return True
+    return "/subagents/" in str(payload.get("transcript_path") or "").replace("\\", "/")
+
+
+def message_id(payload):
+    """Id of the assistant message that issued this tool call, read from the transcript tail; None if it cannot be found.
+    Parallel tool calls share it (Claude Code writes one transcript line per content block, same message.id)."""
+    tool_use_id, path = payload.get("tool_use_id"), payload.get("transcript_path")
+    if not tool_use_id or not path:
+        return None
+    try:
+        needle = str(tool_use_id).encode("utf-8")
+        with open(path, "rb") as f:
+            size = f.seek(0, 2)
+            window = TAIL_START
+            while True:
+                start = max(0, size - window)
+                f.seek(start)
+                data = f.read(size - start)
+                for line in reversed(data.split(b"\n")):
+                    if needle not in line:
+                        continue
+                    try:
+                        rec = json.loads(line)
+                    except ValueError:      # a partial first line of the window
+                        continue
+                    if rec.get("type") == "assistant" and (rec.get("message") or {}).get("id"):
+                        return str(rec["message"]["id"])
+                if start == 0 or window >= TAIL_MAX:
+                    return None
+                window *= 4
+    except (OSError, ValueError, AttributeError):
+        return None
 
 
 def handle(payload):
@@ -82,7 +124,7 @@ def handle(payload):
         return ""
     sid = payload.get("session_id")
     event = payload.get("hook_event_name")
-    if not sid or not event:
+    if not sid or not event or is_subagent(payload):
         return ""
     d = home()
     path = d / f"{safe_id(sid)}.json"
@@ -94,7 +136,11 @@ def handle(payload):
             state = {"tool": 0, "user": 0, "since": now_iso()}
         prune(d)
     elif event == "PostToolUse":
+        mid = message_id(payload)
+        if mid is not None and mid == state.get("msg"):
+            return ""       # another call of a message already counted: one context re-read, one turn
         state["tool"] = state.get("tool", 0) + 1
+        state["msg"] = mid
         t = state["tool"]
         if t >= tool_cap and (t - tool_cap) % NAG_EVERY == 0:
             out = json.dumps({"hookSpecificOutput": {"hookEventName": "PostToolUse",
@@ -121,6 +167,7 @@ def hook():
             print(text)
     except Exception:
         try:
+            import traceback    # only on failure: imported at the top it adds ~30-45 ms to every hook call
             home().mkdir(parents=True, exist_ok=True)
             with open(home() / "hook_errors.log", "a", encoding="utf-8", newline="\n") as f:
                 f.write(now_iso() + "\n" + traceback.format_exc() + "\n")

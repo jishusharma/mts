@@ -1,4 +1,5 @@
-"""scripts/dev/turn_meter.py: the SHORT SESSIONS cap (15 tool / 5 operator turns, CLAUDE.md) fires as a hook, resets on compact."""
+"""scripts/dev/turn_meter.py: the SHORT SESSIONS cap (15 tool / 5 operator turns, CLAUDE.md) fires as a hook, resets on compact,
+skips subagents (shared session_id), counts parallel tool calls of one assistant message once, and nags in <= 250 bytes."""
 import json
 import os
 import subprocess
@@ -20,6 +21,20 @@ def fire(home, event, sid="s1", extra=None, env=None):
     return r.stdout.strip()
 
 
+def write_transcript(path, messages, pad=0):
+    """Transcript lines as Claude Code writes them: one assistant line per content block (parallel tool calls share the
+    message id), then the tool_result user lines. messages: [(message_id, [tool_use_id, ...])]. pad: filler bytes after."""
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        for mid, ids in messages:
+            f.write(json.dumps({"type": "assistant", "message": {"id": mid, "content": [{"type": "thinking", "thinking": ""}]}}) + "\n")
+            for tid in ids:
+                f.write(json.dumps({"type": "assistant", "message": {"id": mid, "content": [
+                    {"type": "tool_use", "id": tid, "name": "Bash", "input": {}}]}}) + "\n")
+            for tid in ids:
+                f.write(json.dumps({"type": "user", "message": {"content": [
+                    {"type": "tool_result", "tool_use_id": tid, "content": "x" * pad}]}}) + "\n")
+
+
 class TurnMeterTest(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
@@ -27,6 +42,72 @@ class TurnMeterTest(unittest.TestCase):
 
     def tearDown(self):
         self.tmp.cleanup()
+
+    def counts(self, sid="s1"):
+        return json.loads((self.home / f"{sid}.json").read_text(encoding="utf-8"))
+
+    def test_subagent_calls_are_not_counted_or_nagged(self):
+        # workflow subagents share the parent's session_id; Claude Code marks their hooks with agent_id
+        for _ in range(30):
+            self.assertEqual(fire(self.home, "PostToolUse", extra={"agent_id": "a1", "agent_type": "workflow-subagent"}), "")
+        self.assertFalse((self.home / "s1.json").exists())
+        fired = [n for n in range(1, 16) if fire(self.home, "PostToolUse")]
+        self.assertEqual(fired, [15])  # the parent's own counter was untouched by the 30 subagent calls
+
+    def test_subagent_detected_by_transcript_path(self):
+        for tp in ("C:/u/.claude/projects/p/s1/subagents/workflows/wf_1/agent-a1.jsonl",
+                   "C:\\u\\.claude\\projects\\p\\s1\\subagents\\agent-a1.jsonl"):
+            for _ in range(20):
+                self.assertEqual(fire(self.home, "PostToolUse", extra={"transcript_path": tp}), "")
+        self.assertFalse((self.home / "s1.json").exists())
+
+    def test_agent_type_alone_is_the_main_thread(self):
+        # a session started with --agent sends agent_type on the main thread, without agent_id: it must still be metered
+        fired = [n for n in range(1, 16) if fire(self.home, "PostToolUse", extra={"agent_type": "reviewer"})]
+        self.assertEqual(fired, [15])
+
+    def test_parallel_calls_in_one_message_count_once(self):
+        tp = self.home / "t.jsonl"
+        msgs = [(f"msg_{m}", [f"toolu_{m}_{k}" for k in range(3)]) for m in range(1, 18)]
+        write_transcript(tp, msgs)
+        fired = []
+        for m, (mid, ids) in enumerate(msgs, 1):
+            for tid in ids:
+                if fire(self.home, "PostToolUse", extra={"tool_use_id": tid, "transcript_path": str(tp)}):
+                    fired.append((m, tid))
+        self.assertEqual(fired, [(15, "toolu_15_0")])  # 51 calls = 17 turns; the 3 calls of message 15 are one turn
+        self.assertEqual(self.counts()["tool"], 17)
+
+    def test_message_beyond_first_tail_window_is_found(self):
+        tp = self.home / "t.jsonl"
+        write_transcript(tp, [("msg_a", ["toolu_a0", "toolu_a1"])], pad=200_000)  # big results push the tool_use out of 128 KB
+        for _ in range(3):
+            fire(self.home, "PostToolUse", extra={"tool_use_id": "toolu_a0", "transcript_path": str(tp)})
+            fire(self.home, "PostToolUse", extra={"tool_use_id": "toolu_a1", "transcript_path": str(tp)})
+        self.assertEqual(self.counts()["tool"], 1)
+
+    def test_unreadable_transcript_counts_every_call(self):
+        # fail open: no way to tell which message a call belongs to -> one turn per call, as before
+        tp = self.home / "t.jsonl"
+        write_transcript(tp, [("msg_a", ["toolu_a0"])])
+        cases = {"id_not_in_transcript": {"tool_use_id": "toolu_zz", "transcript_path": str(tp)},
+                 "transcript_missing": {"tool_use_id": "toolu_a0", "transcript_path": str(self.home / "missing.jsonl")},
+                 "no_transcript_path": {"tool_use_id": "toolu_a0"}}
+        for sid, extra in cases.items():
+            for _ in range(2):
+                fire(self.home, "PostToolUse", sid=sid, extra=extra)
+        self.assertEqual({sid: self.counts(sid)["tool"] for sid in cases}, {sid: 2 for sid in cases})
+
+    def test_nag_is_short_and_names_the_handoff(self):
+        for name, state in (("s1", {"tool": 14, "user": 0}), ("s2", {"tool": 1999, "user": 99})):
+            (self.home / f"{name}.json").write_text(json.dumps(state), encoding="utf-8")
+        post = json.loads(fire(self.home, "PostToolUse", sid="s1"))["hookSpecificOutput"]["additionalContext"]
+        prompt = fire(self.home, "UserPromptSubmit", sid="s2")
+        worst = json.loads(fire(self.home, "PostToolUse", sid="s2"))["hookSpecificOutput"]["additionalContext"]
+        for text in (post, prompt, worst):
+            self.assertLessEqual(len(text.encode("utf-8")), 250, text)
+            self.assertIn("RELAY.md", text)
+            self.assertIn("relay.py handoff", text)
 
     def test_tool_cap_fires_at_15_then_every_5(self):
         fired = [n for n in range(1, 26) if fire(self.home, "PostToolUse")]
@@ -73,6 +154,7 @@ class TurnMeterTest(unittest.TestCase):
         e = {**os.environ, "MTS_TURN_METER_HOME": str(self.home)}
         r = subprocess.run([sys.executable, str(SCRIPT), "hook"], input="not json", capture_output=True, text=True, env=e)
         self.assertEqual((r.returncode, r.stdout), (0, ""))
+        self.assertIn("Traceback", (self.home / "hook_errors.log").read_text(encoding="utf-8"))
         (self.home / "s1.json").write_text("{broken", encoding="utf-8")
         self.assertEqual(fire(self.home, "PostToolUse"), "")
 
