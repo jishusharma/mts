@@ -8,6 +8,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -301,6 +302,9 @@ def main(argv=None):
             "MyTradingSys/backtest/test_tom_v2_recall.py",
             "MyTradingSys/backtest/test_tom_dax_bt.py",
             ] + PYTEST_LAYER_PATHS
+    # Own basetemp: parallel gates share %TEMP%/pytest-of-<user>/pytest-current and its cleanup raises
+    # PermissionError after all tests pass (JIS-NB 2026-10-14, six ships at once); same fix as run_extra_tests.py.
+    cmd4 += ["-p", "no:cacheprovider", f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s4_')) / 'bt'}"]
     success, output = run_step(4, "Pytest (math + doc tests)", cmd4)
     results.append(("Step 4: Pytest tests", success))
 
