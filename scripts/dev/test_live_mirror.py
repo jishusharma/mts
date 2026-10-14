@@ -9,6 +9,7 @@ import sys
 import tempfile
 import time
 import unittest
+from unittest import mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -202,6 +203,83 @@ class MirrorTest(unittest.TestCase):
         self.assertEqual(lm.export_obs(self.nuc)[0], 0)
         put(self.nuc, "runtime_data/observations/captures/2026-10-10.jsonl", '{"obs_id":"c3"}\n')
         self.assertEqual(lm.export_obs(self.nuc)[0], 1)
+
+
+class DefaultRootTest(unittest.TestCase):
+    """Which folder a session reads: JIS-NB sessions run as a user the SMB share ACL does not list (only E-ngineers and
+    mtsworker are), so on JIS-NB every tree reads the local folder; other hosts keep the UNC share."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp, True)
+        self.local = Path(self.tmp) / "Mirror"
+        self.local.mkdir()
+        self.work = Path(self.tmp) / "work"
+        self.work.mkdir()
+        self.marked = Path(self.tmp) / "marked"
+        self.marked.mkdir()
+        (self.marked / ".mts_live").write_text("x")
+        p = mock.patch.object(lm, "LIVE_ROOT", str(self.local))
+        p.start()
+        self.addCleanup(p.stop)
+        env = mock.patch.dict(os.environ)
+        env.start()
+        self.addCleanup(env.stop)
+        os.environ.pop("MTS_MIRROR_ROOT", None)
+
+    def host(self, name):
+        p = mock.patch.object(lm.socket, "gethostname", return_value=name)
+        p.start()
+        self.addCleanup(p.stop)
+
+    def test_worktree_on_jis_nb_reads_local_folder(self):
+        self.host("JIS-NB")
+        self.assertEqual(lm.default_root(self.work), str(self.local))
+
+    def test_hostname_case_does_not_matter(self):
+        self.host("jis-nb")
+        self.assertEqual(lm.default_root(self.work), str(self.local))
+
+    def test_other_host_keeps_unc_share(self):
+        self.host("JIS-NUC")
+        self.assertEqual(lm.default_root(self.work), lm.DEFAULT_ROOT)
+
+    def test_jis_nb_without_local_folder_falls_back_to_unc(self):
+        self.host("JIS-NB")
+        shutil.rmtree(self.local)
+        self.assertEqual(lm.default_root(self.work), lm.DEFAULT_ROOT)
+
+    def test_live_tree_uses_local_folder_on_any_host(self):
+        self.host("SOMEWHERE")
+        shutil.rmtree(self.local)  # publish creates the version folder; the marker alone decides
+        self.assertEqual(lm.default_root(self.marked), str(self.local))
+
+    def test_main_pull_in_worktree_on_jis_nb_reads_local_folder(self):
+        self.host("JIS-NB")
+        live = make_live(self.tmp)
+        lm.publish(live, self.local, now=T0)
+        self.assertEqual(lm.main(["pull", "--repo", str(self.work)]), 0)
+        self.assertTrue((self.work / lm.MIRROR_DIR / "manifest.json").exists())
+
+    def test_main_env_override_wins(self):
+        self.host("JIS-NB")
+        other = Path(self.tmp) / "other"
+        other.mkdir()
+        os.environ["MTS_MIRROR_ROOT"] = str(other)
+        live = make_live(self.tmp)
+        lm.publish(live, self.local, now=T0)  # data only in the local folder; the override points at an empty one
+        self.assertEqual(lm.main(["pull", "--repo", str(self.work)]), 2)
+        self.assertFalse((self.work / lm.MIRROR_DIR).exists())
+
+    def test_main_explicit_root_wins_over_default(self):
+        self.host("JIS-NB")
+        elsewhere = Path(self.tmp) / "elsewhere"
+        elsewhere.mkdir()
+        self.assertEqual(lm.main(["pull", "--repo", str(self.work), "--root", str(elsewhere)]), 2)
+
+    def test_auto_trades_stays_a_500_line_tail(self):
+        modes = dict(lm.ALLOW)
+        self.assertEqual(modes["MyTradingSys/execution/auto_trades.jsonl"], ("tail", 500))
 
 
 class RepoContractTest(unittest.TestCase):

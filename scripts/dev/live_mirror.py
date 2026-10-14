@@ -25,6 +25,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 LIVE_MARKER = ".mts_live"
 DEFAULT_ROOT = r"\\JIS-NB\MTS-Mirror"
+LIVE_ROOT = r"F:\MTS\Mirror"  # the folder behind that share; JIS-NB sessions are not on the share ACL but can read the folder
 MIRROR_DIR = "runtime_data/_mirror"
 KEEP_VERSIONS = 3
 WARN_MIN, STALE_MIN = 15, 60
@@ -90,6 +91,13 @@ def parse_stamp(s):
 
 def is_live_tree(repo):
     return (Path(repo) / LIVE_MARKER).exists()
+
+
+def default_root(repo):
+    """The live tree and every work tree on JIS-NB use the local folder; other machines go through the share."""
+    if is_live_tree(repo) or (socket.gethostname().upper() == "JIS-NB" and Path(LIVE_ROOT).is_dir()):
+        return LIVE_ROOT
+    return DEFAULT_ROOT
 
 
 def denied(rel):
@@ -365,9 +373,11 @@ def export_obs(repo):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("cmd", choices=["publish", "pull", "brief", "export-obs"])
-    ap.add_argument("--root", default=os.environ.get("MTS_MIRROR_ROOT", DEFAULT_ROOT))
+    ap.add_argument("--root", default=os.environ.get("MTS_MIRROR_ROOT"))  # unset: default_root(repo)
     ap.add_argument("--repo", default=str(REPO))
     a = ap.parse_args(argv)
+    if not a.root:
+        a.root = default_root(a.repo)
     try:
         if a.cmd == "publish":
             m = publish(a.repo, a.root)
