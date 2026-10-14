@@ -88,7 +88,7 @@ it for the bridge operator.
 
 1. DSA composes a command and sends it in the bridge's call format.
 2. The agent on 127.0.0.1:7181 applies the policy, runs it, returns stdout, stderr and rc.
-3. DSA reads the result, acts, and records decisions in the MTS session record under the same session ID.
+3. DSA reads the result, acts, and records decisions in the commit `Result:` line under the same session ID (SURFACE_POLICY.md section 4).
 4. A refusal is data: DSA quotes it, names the one config change that would allow it, and stops.
 
 ## Open items
@@ -108,7 +108,7 @@ it for the bridge operator.
 - DSA_SESSION_PROMPT.md section 0 (direct mode) and 0.8 (paste and news, protected)
 - SURFACE_POLICY.md section 1 (surface table)
 - scripts\dev\bridge_selftest.ps1
-- CLAUDE.md work routing line
+- CLAUDE.md Cost and routing; who runs on which machine and login: HOW_MTS_RUNS.md
 - Dumps/operator/context/DSA_HANDOFF.md section 14 (worker directive)
 
 ## Autostart on JIS-NUC (2026-10-12)
