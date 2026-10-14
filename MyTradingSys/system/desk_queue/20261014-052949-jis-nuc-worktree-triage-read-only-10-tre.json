@@ -1,0 +1,10 @@
+{
+  "done_when": "a table with one row per flagged JIS-NUC tree (mts-dsa, mts-krown, mts-nuc-b172, mts-nuc-recover, mts-jis-nuc-s1012-181720, mts-jis-nuc-s1012-194730, mts-codex, mts-codex-lab, mts-levels-quick, BinanceDataFeed) with a verdict",
+  "from": "JIS-NB",
+  "id": "20261014-052949-jis-nuc-worktree-triage-read-only-10-tre",
+  "need": "python scripts/dev/sync.py where ; then for each flagged tree: git -C <tree> status --short | head -30 ; git -C <tree> log --oneline origin/fast-track..HEAD | head ; report per tree: owner session (from claims/branch name), what the changes are, SHIP / DISCARD-CANDIDATE / ASK. Change nothing.",
+  "posted": "2026-10-14T05:29:49Z",
+  "status": "pending",
+  "target": "DSA-NUC",
+  "title": "JIS-NUC worktree triage, read only: 10 trees hold work not on fast-track"
+}

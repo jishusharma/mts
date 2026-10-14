@@ -2,23 +2,20 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-10-14T11:26:01Z",
+  "created": "2026-10-13T17:40:36Z",
   "depends_on": [],
   "done_when": "",
   "from_inbox": "",
   "goal": "",
-  "id": "gap-g4-through-ticks",
-  "kind": "build",
-  "lane": "CODEX",
+  "id": "control-room-layer-board-link",
+  "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "note": "",
-  "prio": 1,
+  "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [
-    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
-  ],
+  "refs": [],
   "result": "",
   "scope_in": [],
   "scope_out": [],
@@ -27,5 +24,5 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "G4 Tom harnesses: through_ticks fills, report touch and trade-through"
+  "title": "Control Room: replace the stale 4-row Layer Board with a link to the MTS Layers page (no duplicate layer view)"
 }

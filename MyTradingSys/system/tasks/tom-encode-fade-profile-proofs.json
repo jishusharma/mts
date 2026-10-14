@@ -16,7 +16,8 @@
     "tom"
   ],
   "live_path": false,
-  "note": "",
+  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
@@ -40,7 +41,7 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2.1, 2.2, 12, 13"
   ],
-  "state": "refined",
+  "state": "blocked",
   "steps": [
     "If tom-profile-shape-parity is not PASS: build for BTC replays only and mark the DAX PROFILE arm NOT_IN_DATA in the proof JSON.",
     "A-C3 per spec section 13: leg range in thirds, top-third volume below each lower third, session POC not in the top third.",

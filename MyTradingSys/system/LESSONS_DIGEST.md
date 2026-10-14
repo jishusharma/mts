@@ -22,8 +22,8 @@ Synced with LESSONS_LEARNED.md at blob: de2de3a7 (STATUS.md flags this file STAL
 - Check the observable result before re-asking the operator for a task. [F]
 
 ## 2. Research / backtests
-- Parameters come only from the trader's own words (Provenance); unsourced = NO-SOURCE, flagged, never tuned. [E]
-- Non-Tom systems are separate layers (PROJECT_VISION), never filters on Tom; read "INTEGRATIONS TRACKED" first. [E]
+- Every parameter is labelled SOURCED (trader's words, file:line) or OURS; OURS is chosen on DEV, checked once on VALIDATION, holdout read once (operator 2026-10-13, replaces the NO-SOURCE ban). [E]
+- No fixed core (operator 2026-10-13): layers may combine or filter each other; fee-net out-of-sample results decide what trades. [E]
 - A hypothesis suggested by DEV results is tested once on VALIDATION as one pooled trial, never promoted on its DEV p-value. [E]
 - Volume flags use a same-slot (hour or weekday) baseline; plain relative volume is a clock for BTC. [E]
 - Placebo/permutation shifts are drawn without replacement and the lags are printed. [E]

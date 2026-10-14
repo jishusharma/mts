@@ -8,12 +8,14 @@
   "from_inbox": "",
   "goal": "Decide whether the volume-profile conditions (A-C3, A-P3, A-P8) can be used on the Dukascopy DAX CFD feed, by a basis-free shape comparison of Tom's histogram with the computed profile on the two dev frames. Host: JIS-NUC (Pillow 12.3.0 installed, frames on F:).",
   "id": "tom-profile-shape-parity",
-  "lane": "SONNET",
+  "kind": "build",
+  "lane": "CODEX",
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "",
+  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | operator q10 2026-10-13: add the profile arm; GPT luna lab takes it (Pillow on JIS-NUC)",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
@@ -38,7 +40,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md section 12",
     "MyTradingSys/research/tom_transfer_2026-10-11/PROFILE_PARITY.md (next step 2)"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Per frame: with Pillow find the right-edge histogram rows, the widest row and the visible price range from the axis labels; record pixel boxes.",
     "Fraction f_drawn = (widest-row price - visible low) / (visible high - low). f_computed = same from the PROFILE_PARITY_T1/T2 computed profile over the same price span.",

@@ -250,6 +250,11 @@ def where(repo):
     print(f"origin/{TRUNK}: {tip}")
     open_items = 0
     for path, branch in worktrees(repo):
+        if git(Path(path), "rev-parse", "--verify", "--quiet", "HEAD", check=False).returncode != 0:
+            # Unborn branch (its ref is gone): no commits to ship; report it instead of aborting the whole check.
+            open_items += 1
+            print(f"BROKEN    {Path(path).name:28} [{branch}] branch has no commits (ref missing); copy any wanted files out, then `git worktree remove`")
+            continue
         ahead = git(Path(path), "rev-list", "--count", f"origin/{TRUNK}..HEAD").stdout.strip()
         dirty = [l for l in git(Path(path), "status", "--short").stdout.splitlines() if l]
         tracked = sum(1 for l in dirty if not l.startswith("??"))

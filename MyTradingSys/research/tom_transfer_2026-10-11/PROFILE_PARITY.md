@@ -97,3 +97,14 @@ Verdict unchanged: **NOT_IN_DATA**. Next steps, each one session:
    a basis offset, which is a parameter with no Tom source (provenance rule), so it must not be tuned.
 2. Pixel-accurate reads need Pillow on JIS-NB (download needs operator approval): then measure histogram POC row, top/bottom rows on T1/T2 frames
    and compare SHAPE (POC position as fraction of high-low range) with the computed profile; that is basis-free.
+
+## Basis-free shape comparison, 2026-10-13 (T1/T2 dev frames)
+
+Shape metric: `f=(widest-row price - profile low)/(profile high - profile low)`. For drawn, profile low/high are visible chart-axis endpoints; for computed, they are VAL/VAH in the corresponding `PROFILE_PARITY_T1/T2.json`. A match is within one histogram-row height normalized by visible chart height.
+
+| Frame | Chart / axis pixel box (x1,y1,x2,y2) | Widest row pixel box | Visible price low-high | f_drawn | Computed VAL-VAH; POC | f_computed | Result |
+|---|---|---|---:|---:|---|---:|---|
+| T1 `n7ZSkjb7JXs_0314.jpg` | DAX lower-left chart, approx (0,360,550,550); axis labels too compressed/obscured for endpoints | right-edge histogram visible, exact row bounds unreadable | NOT_IN_DATA | NOT_IN_DATA | 24280.70-24333.40; POC 24314.70 | NOT_IN_DATA | NOT_IN_DATA |
+| T2 `k0zm5NYn0IQ_0280.jpg` | approx (243,80,1112,694); visible axis 25070-25370 | approx (959,357,1073,365), widest row center ~25220 | 25070-25370 | ~0.500 | 25066.69-25123.94; POC 25078.14 | ~0.200 | MISMATCH (~0.300 difference; row fraction ~0.014) |
+
+**PROFILE arm on DAX = NOT_IN_DATA** (T1 is unreadable at the required axis precision; T2 alone indicates a shape mismatch, but both frames are required for the card verdict). Pixel boxes are approximate from the 1280x720 source images. No basis offset or outcomes were used.

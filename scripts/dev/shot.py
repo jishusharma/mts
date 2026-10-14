@@ -501,7 +501,7 @@ def outcome_exists(token):
     if re.fullmatch(r"[BT]\d{3}", token):
         bugs = REPO / "MyTradingSys" / "research" / "BUGS.md"
         return bugs.is_file() and re.search(rf"^\|\s*{re.escape(token)}\s*\|", bugs.read_text(encoding="utf-8"), re.M) is not None
-    return bool(git("grep", "--untracked", "-l", "-F", "-e", token, "--", "*.md").strip())
+    return bool(git("grep", "--untracked", "-l", "-w", "-F", "-e", token, "--", "*.md").strip())   # -w: FEAT-1 is not FEAT-11 (RV07)
 
 
 def done(store, prefixes, outcome):
@@ -525,8 +525,9 @@ def done(store, prefixes, outcome):
             raise ShotError(f"{i} is still 'new': classify it first")
         if s.get("kind") == "chart" and s["status"] != "read" and s["status"] != "done":
             raise ShotError(f"{i} is a chart that has not been read: write the extract and run `shot.py read` first")
-        if kind == "noaction" and (s.get("claims") or {}).get("MISMATCH") and len(rest) < 20:
-            raise ShotError(f"{i} has MISMATCH claims: file them (finding:/feature:) or explain in 20+ characters why not")
+        if (s.get("claims") or {}).get("MISMATCH"):   # a MISMATCH is a B-item or an explained noaction (screenshot_intake.md)
+            if kind in ("note", "feature") or (kind == "noaction" and len(rest) < 20):
+                raise ShotError(f"{i} has MISMATCH claims: file them (finding:) or explain in 20+ characters (noaction:) why not")
     for i in ids:
         append(store, {"event": "done", "id": i, "ts": now_iso(), "outcome": outcome})
     return ids
@@ -586,6 +587,8 @@ def engine_jars():
     jars = []
     for name in ENGINE_JARS:
         hits = sorted(m2.rglob(name)) if m2.is_dir() else []
+        if not hits and m2.is_dir() and name.startswith("slf4j-api-"):  # logging API only: any 2.x jar compiles the engine (JIS-NUC has 2.0.6)
+            hits = sorted(m2.rglob("slf4j-api-2.*.jar"), reverse=True)
         if not hits:
             raise ShotError(f"{name} not found under {m2}: run `mvn -q -o compile` once in a worktree so Maven fetches it")
         jars.append(str(hits[0]))

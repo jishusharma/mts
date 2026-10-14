@@ -1,11 +1,11 @@
 {
-  "_doc": "Hand-kept pointers for LAYERS.md (scripts/dev/make_layers_md.py). One row per layer family. 'layers' lists the layer_map.json layer ids of the family: every layer_map layer belongs to exactly one family, and its backtest rows are listed under the family automatically, so 'results' holds only reports that are not layer_map backtest rows. Task cards join a family by their 'layers' field (tasks.py new --layer <family>); 'cards' globs only catch cards without that field (Codex lab cards). Every path must exist (scripts/dev/test_make_layers_md.py, gate step 3ly).",
+  "_doc": "Hand-kept pointers for LAYERS.md (scripts/dev/make_layers_md.py). One row per layer family. 'layers' lists the layer_map.json layer ids of the family: every layer_map layer belongs to exactly one family, and its backtest rows are listed under the family automatically, so 'results' holds only reports that are not layer_map backtest rows. Task cards join a family by their 'layers' field (tasks.py new --layer <family>); 'cards' globs only catch cards without that field (Codex lab cards). Every path must exist (scripts/dev/test_make_layers_md.py, gate step 3ly). 'path' (2026-10-13, MTS Layers page): the standard road every layer walks (idea, inputs, fees, charts, built, dev, oos, testnet), each step {s: done|now|planned|later|missing|failed|skip, note, cards}; 'plain' is one line in plain words. The page (scripts/dev/make_layers_board.py) reads it; keep it true when a card lands.",
   "families": [
     {
       "id": "tom",
-      "name": "Tom (core engine + proofs)",
+      "name": "Tom (order flow + volume profile)",
       "tracks": "Claude (spec/build), Codex lab (audits, DAX harness)",
-      "status": "STOP on the BTC encoding; being redefined as Tom v2 (DAX home market). Never a filter for other layers.",
+      "status": "Tom on BTC with our own judgement (operator 2026-10-13). DAX chain held, no FDAX data bought (q11). The old BTC encoding stays stopped.",
       "spec": [
         "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md",
         "MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md",
@@ -40,7 +40,63 @@
         "tom_core",
         "tom_proofs",
         "tom_vp_pivot"
-      ]
+      ],
+      "plain": "Fade an oversized push into thin volume when sellers show at the top (and his other setups later), on BTC charts with real order flow.",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "TOM_ON_BTC.md inventory + TOM_LAYER_V2_SPEC (his words, families, proofs)"
+        },
+        "inputs": {
+          "s": "now",
+          "note": "footprint bars on JIS-NUC from 2024-12; check DEV + VALIDATION coverage",
+          "cards": [
+            "tom-btc-data-check"
+          ]
+        },
+        "fees": {
+          "s": "done",
+          "note": "spec s11: stop at least 0.40 % (taker) or 0.20 % (maker entry)",
+          "cards": [
+            "tom-v2-btc-min-stop-width"
+          ]
+        },
+        "charts": {
+          "s": "planned",
+          "note": "chart lab, then blind eye read by Claude and Jis",
+          "cards": [
+            "tom-btc-chart-lab",
+            "tom-btc-eye-read"
+          ]
+        },
+        "built": {
+          "s": "planned",
+          "note": "flag-gated BTC detector from the concepts that separate",
+          "cards": [
+            "tom-btc-encode"
+          ]
+        },
+        "dev": {
+          "s": "planned",
+          "note": "event study first, then DEV backtest with management arms",
+          "cards": [
+            "tom-btc-event-study",
+            "tom-btc-dev-backtest",
+            "tom-btc-other-setups"
+          ]
+        },
+        "oos": {
+          "s": "planned",
+          "note": "VALIDATION 2025-04..06 read once; HOLDOUT needs your decision (A7)",
+          "cards": [
+            "tom-btc-validation"
+          ]
+        },
+        "testnet": {
+          "s": "later",
+          "note": "after VALIDATION passes"
+        }
+      }
     },
     {
       "id": "fabio",
@@ -82,7 +138,41 @@
         "fabio_volume_fvg",
         "fabio_v3",
         "fabio_of"
-      ]
+      ],
+      "plain": "Order-flow pressure and absorption at the New York open (his home market is NQ futures).",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "FABIO_V3_SPEC, FABIO_RULEBOOK; v2 spec on hold (q4)"
+        },
+        "inputs": {
+          "s": "done",
+          "note": "BTC footprint and aggressor side exist (orderflow_bars.py)"
+        },
+        "fees": {
+          "s": "failed",
+          "note": "his stops 0.014-0.061 % of price: gross +0.13 R, fee drag 0.66 R (FABIO_OF_REPORT.md:127-128)"
+        },
+        "charts": {
+          "s": "missing",
+          "note": "never looked at his signals on BTC charts at a stop the fees allow (0.20 % maker or more). Suggested card: fabio-btc-wide-stop-retest, after Tom T4"
+        },
+        "built": {
+          "s": "done",
+          "note": "fabio_v3.py, fabio_of_model.py"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "0 of 64 order-flow variants net-positive out of sample"
+        },
+        "oos": {
+          "s": "failed",
+          "note": "v3 holdout FAIL (P2_FABIO_V3_HOLDOUT_STATUS.md)"
+        },
+        "testnet": {
+          "s": "skip"
+        }
+      }
     },
     {
       "id": "guidance",
@@ -105,7 +195,37 @@
       "cards": [],
       "layers": [
         "bb_lvn_triggers"
-      ]
+      ],
+      "plain": "Cross-guidance filters (Bollinger, LVN, regime) stacked on Tom/Fabio triggers.",
+      "path": {
+        "idea": {
+          "s": "done"
+        },
+        "inputs": {
+          "s": "done"
+        },
+        "fees": {
+          "s": "failed",
+          "note": "best of 186 cells +0.058 % gross at 60 min against a 0.10 % round trip (layer_combo_verdict)"
+        },
+        "charts": {
+          "s": "skip"
+        },
+        "built": {
+          "s": "done",
+          "note": "matrix_q33.py"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "Q33: 336 cells, 0 survivors, smallest q 0.62"
+        },
+        "oos": {
+          "s": "skip"
+        },
+        "testnet": {
+          "s": "skip"
+        }
+      }
     },
     {
       "id": "rsi",
@@ -131,7 +251,42 @@
       "layers": [
         "rsi_levels",
         "rsi_divergence"
-      ]
+      ],
+      "plain": "RSI 40/60 regimes (Malkan), RSI divergence, Kurisko.",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "Malkan extracts; operator 40/60 directive 2026-09-28"
+        },
+        "inputs": {
+          "s": "done"
+        },
+        "fees": {
+          "s": "done",
+          "note": "daily/weekly swings have wide stops"
+        },
+        "charts": {
+          "s": "planned",
+          "note": "Malkan at his own timeframes (daily/weekly/monthly) was never tested",
+          "cards": [
+            "malkan-home-fit-audit"
+          ]
+        },
+        "built": {
+          "s": "done",
+          "note": "rsi layers + alerts"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "divergence: no edge on any timeframe (gross about 0). 40/60 tested on 1m-1h only; 4h n=17, 1d n=5 = no evidence either way"
+        },
+        "oos": {
+          "s": "skip"
+        },
+        "testnet": {
+          "s": "later"
+        }
+      }
     },
     {
       "id": "cryptocred",
@@ -155,7 +310,43 @@
       ],
       "layers": [
         "cryptocred"
-      ]
+      ],
+      "plain": "Price-structure swing setups (S/R flip, failed market-structure break, fib pullback) from a BTC-native trader.",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "5 CryptoCred extracts"
+        },
+        "inputs": {
+          "s": "done",
+          "note": "price only: klines"
+        },
+        "fees": {
+          "s": "done",
+          "note": "daily/4h invalidation stops are wide"
+        },
+        "charts": {
+          "s": "planned",
+          "note": "his own timeframe (daily/4h) was never tested; the 15m run was the wrong timeframe",
+          "cards": [
+            "cryptocred-home-fit-audit"
+          ]
+        },
+        "built": {
+          "s": "done",
+          "note": "15m adapter (wrong timeframe)"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "15m brackets FAIL after the trade-through rerun; daily/4h untested"
+        },
+        "oos": {
+          "s": "skip"
+        },
+        "testnet": {
+          "s": "skip"
+        }
+      }
     },
     {
       "id": "positioning",
@@ -181,7 +372,42 @@
       "layers": [
         "funding_cvd_fade",
         "oi_delta"
-      ]
+      ],
+      "plain": "Funding, open interest and whale positioning (FlowHorse).",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "FlowHorse extracts; thresholds not stated in the source"
+        },
+        "inputs": {
+          "s": "now",
+          "note": "Binance OI and long/short ratios 2020-09.. being fetched on JIS-NUC (gap G5 desk task)"
+        },
+        "fees": {
+          "s": "later"
+        },
+        "charts": {
+          "s": "planned",
+          "note": "home-fit audit",
+          "cards": [
+            "positioning-home-fit-audit"
+          ]
+        },
+        "built": {
+          "s": "done",
+          "note": "funding_cvd_fade"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "funding + CVD fade: out of sample -0.045 %"
+        },
+        "oos": {
+          "s": "skip"
+        },
+        "testnet": {
+          "s": "skip"
+        }
+      }
     },
     {
       "id": "session_timing",
@@ -206,7 +432,37 @@
         "session_momentum",
         "turn_of_candle",
         "session_levels"
-      ]
+      ],
+      "plain": "Session levels, turn of candle, session momentum.",
+      "path": {
+        "idea": {
+          "s": "done"
+        },
+        "inputs": {
+          "s": "done"
+        },
+        "fees": {
+          "s": "failed",
+          "note": "turn_of_candle gross +0.1 to +0.9 bp against 12 bp cost (EXIT_POLICIES_REPORT.md:140)"
+        },
+        "charts": {
+          "s": "skip"
+        },
+        "built": {
+          "s": "done"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "T055 C2/C3 no edge; T087 prior-day-high fade -0.036 %"
+        },
+        "oos": {
+          "s": "skip"
+        },
+        "testnet": {
+          "s": "now",
+          "note": "turn_of_candle still trades on testnet (79 % of trades) although its backtest failed: your yes/no on F-BT-02"
+        }
+      }
     },
     {
       "id": "volume_candles_ma",
@@ -224,7 +480,8 @@
         "MyTradingSys/research/volume_2026-10-09",
         "MyTradingSys/research/candle_patterns_2026-10-04",
         "MyTradingSys/research/setup_alpha_beta_2026-10-10",
-        "MyTradingSys/research/bigtrade_2026-10-09"
+        "MyTradingSys/research/bigtrade_2026-10-09",
+        "MyTradingSys/research/layer_lab/candle_close_2026-10-14"
       ],
       "roadmap": [],
       "cards": [],
@@ -233,7 +490,36 @@
         "candle_patterns",
         "ma_daily",
         "bigtrade_fires"
-      ]
+      ],
+      "plain": "Volume flags, candle patterns, daily moving averages, big-trade fires (literature ideas, BTC-native).",
+      "path": {
+        "idea": {
+          "s": "done"
+        },
+        "inputs": {
+          "s": "done"
+        },
+        "fees": {
+          "s": "done"
+        },
+        "charts": {
+          "s": "skip"
+        },
+        "built": {
+          "s": "done"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "553 volume trials and 0/108 candle cells survive; MA numbers NO-SOURCE"
+        },
+        "oos": {
+          "s": "done",
+          "note": "VALIDATION read; HOLDOUT 2025-07..2026-09 still sealed"
+        },
+        "testnet": {
+          "s": "skip"
+        }
+      }
     },
     {
       "id": "live_engine",
@@ -260,7 +546,66 @@
         "state-machine-*",
         "live-*"
       ],
-      "layers": []
+      "layers": [],
+      "plain": "The live engine, execution and live-market reads that feed every layer (infrastructure, not a strategy).",
+      "kind": "infrastructure"
+    },
+    {
+      "id": "callers",
+      "name": "Callers (posted trade calls: Qriptal)",
+      "tracks": "Claude, Codex lab (scoring)",
+      "status": "Score the posted calls on Binance klines before anything else (B162). Self-reported 67.1 % wins, avg win 3.99 %, avg loss 0.63 %: unverified.",
+      "plain": "Traders who post entries, stops and targets: score their record first, then trade their calls on a testnet account.",
+      "spec": [
+        "MyTradingSys/items/B162_qriptal_signal_layer.md"
+      ],
+      "code": [],
+      "ledger": [],
+      "results": [],
+      "roadmap": [],
+      "cards": [
+        "qriptal-*"
+      ],
+      "layers": [],
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "B162: calls carry entry, stop and targets"
+        },
+        "inputs": {
+          "s": "done",
+          "note": "Binance klines; 22 staged transcripts"
+        },
+        "fees": {
+          "s": "done",
+          "note": "average loss 0.63 % means fees cost about 0.16 R"
+        },
+        "charts": {
+          "s": "skip"
+        },
+        "built": {
+          "s": "planned",
+          "note": "scoring script",
+          "cards": [
+            "qriptal-score-binance"
+          ]
+        },
+        "dev": {
+          "s": "planned",
+          "note": "the score is the test",
+          "cards": [
+            "qriptal-score-binance"
+          ]
+        },
+        "oos": {
+          "s": "later",
+          "note": "forward calls from his Discord"
+        },
+        "testnet": {
+          "s": "later",
+          "note": "own testnet account (B162 plan)"
+        }
+      }
     }
   ],
   "cross_cutting": [

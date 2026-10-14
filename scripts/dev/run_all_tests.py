@@ -21,6 +21,7 @@ PYTEST_LAYER_PATHS = [
     "MyTradingSys/backtest/layers/fabio/test_htf_context_live.py",
     "MyTradingSys/execution/tests",
     "scripts/dev/test_market_guide.py",
+    "scripts/dev/test_dax_engine_flag.py",
     "MyTradingSys/observation/tests",
 ]
 
@@ -293,6 +294,7 @@ def main(argv=None):
             "MyTradingSys/backtest/test_tom_probe_diag.py",
             "MyTradingSys/backtest/test_dax_data.py",
             "MyTradingSys/backtest/test_tom_dax_recall.py",
+            "MyTradingSys/backtest/test_tom_v2_recall.py",
             "MyTradingSys/backtest/test_tom_dax_bt.py",
             ] + PYTEST_LAYER_PATHS
     success, output = run_step(4, "Pytest (math + doc tests)", cmd4)

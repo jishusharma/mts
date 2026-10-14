@@ -1,0 +1,43 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T17:31:44Z",
+  "depends_on": [
+    "tom-btc-encode"
+  ],
+  "done_when": "DEV_BT.md table + DEV_FROZEN.json + trial rows.",
+  "from_inbox": "",
+  "goal": "Fee-net DEV run of the T5 detector; arms: partial at the node, no-loss after a new balance, one re-entry; touch and trade-through; power stated. Choose the OURS values on DEV only and freeze them.",
+  "id": "tom-btc-dev-backtest",
+  "lane": "CODEX",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "ROUTED 2026-10-13 (operator: GPT + DSA do the work, Claude economy): GPT lab runs the DEV backtest; Claude spot-checks one number.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_btc_2026-10-13/"
+  ],
+  "scope_out": [
+    "VALIDATION and HOLDOUT dates",
+    "live tree"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
+  ],
+  "state": "raw",
+  "steps": [
+    "Run, table, freeze config in DEV_FROZEN.json."
+  ],
+  "tests": "run lane",
+  "title": "Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant a trial row",
+  "kind": "build"
+}
