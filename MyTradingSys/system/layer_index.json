@@ -607,6 +607,90 @@
           "note": "own testnet account (B162 plan)"
         }
       }
+    },
+    {
+      "id": "krown",
+      "name": "Krown (TA 101: zones, volume, candles, averages, ranges)",
+      "tracks": "Claude (extraction, ledger, spec, detectors), DSA (data runs)",
+      "status": "Spec v0.2 + 120-rule ledger from 15 of 19 reachable TA 101 videos (14 TA + 1 fees). 4 videos blocked on YouTube captions (429). One structural stop (compression breakout), no stop distance or size rule: the rest is OURS. Not built, not backtested.",
+      "plain": "Daily and weekly BTC swing method: trend state from dominant highs and lows, levels from wick to close, volume at 2x its average, a volatility (BBWP) regime, RSI 40/60 zones as confirmation, four candle patterns, 21/55 EMA + 200 SMA; a close, not a wick, is the verdict.",
+      "spec": [
+        "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
+        "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md",
+        "MyTradingSys/research/krown_ta101_2026-10-13/PROTOCOL.md",
+        "MyTradingSys/research/krown_ta101_2026-10-13/STATE.md"
+      ],
+      "code": [
+        "MyTradingSys/research/krown_ta101_2026-10-13/tools/build_ledger.py",
+        "MyTradingSys/research/krown_ta101_2026-10-13/tools/check_numbers.py"
+      ],
+      "ledger": [
+        "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
+        "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_CONSOLIDATED.md",
+        "MyTradingSys/research/krown_ta101_2026-10-13/MANIFEST.csv"
+      ],
+      "results": [
+        "MyTradingSys/research/krown_ta101_2026-10-13/reflexivity_log.md",
+        "MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md",
+        "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md"
+      ],
+      "roadmap": [
+        "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md"
+      ],
+      "cards": [
+        "krown-*"
+      ],
+      "layers": [],
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "15 extracts, 120 consolidated rules, spec v0.2; 4 videos pending"
+        },
+        "inputs": {
+          "s": "now",
+          "note": "OHLCV 1d/1w only; volume venue and multi-asset data open; captions for 4 videos blocked",
+          "cards": [
+            "krown-ta101-extract-remaining-10",
+            "krown-data-daily-majors"
+          ]
+        },
+        "fees": {
+          "s": "planned",
+          "note": "expect fee share of R near 0.05 on daily stops; computed when detectors land",
+          "cards": [
+            "krown-layer-v0-detectors"
+          ]
+        },
+        "charts": {
+          "s": "planned",
+          "note": "recall on his dated examples, then blind eye read of zones",
+          "cards": [
+            "krown-recall-check"
+          ]
+        },
+        "built": {
+          "s": "planned",
+          "note": "flag-gated detectors, alert-only, params with a source per number",
+          "cards": [
+            "krown-layer-v0-detectors"
+          ]
+        },
+        "dev": {
+          "s": "planned",
+          "note": "event studies H-V1..H-T1, DEV only, fee-net, same-window placebo",
+          "cards": [
+            "krown-dev-event-study"
+          ]
+        },
+        "oos": {
+          "s": "later",
+          "note": "VALIDATION once, holdout sealed"
+        },
+        "testnet": {
+          "s": "later",
+          "note": "needs an operator ruling on no resting stop"
+        }
+      }
     }
   ],
   "cross_cutting": [

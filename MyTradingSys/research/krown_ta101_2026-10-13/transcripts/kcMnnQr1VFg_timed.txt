@@ -1,0 +1,937 @@
+# Video ID: kcMnnQr1VFg
+# Title: How to Know Exactly When to Enter a Trade (Volatility Secret)
+# Published: 2026-04-06
+# Source: yt_dlp captions (auto); uploader: Krown
+# Analyst: Krown
+# Duration_s: 1826
+# Word count: 6029
+# ---
+[00:00:00] Let me ask you this. Have you ever had
+[00:00:01] the trend right and momentum right and
+[00:00:04] somehow you still got chopped to death
+[00:00:06] and actually lost on the trade? Well,
+[00:00:08] that's not necessarily a bad analysis.
+[00:00:10] It is, however, very bad timing. And as
+[00:00:13] the old saying goes, even if you're
+[00:00:14] early, you're wrong. In fact, of course
+[00:00:16] you're wrong if you're early. And timing
+[00:00:19] essentially does matter. So, what is the
+[00:00:21] solution to this dilemma? It is
+[00:00:22] understanding and incorporating
+[00:00:24] volatility analysis into your trading
+[00:00:26] plan. And that's exactly what we're
+[00:00:28] going to be going over in this video
+[00:00:29] here. And I want to let you know that if
+[00:00:30] you're finding this video randomly, it
+[00:00:32] is a part of a 10 It is part of a
+[00:00:33] 10-part video series, which is only
+[00:00:36] available in full on Teachable. You can
+[00:00:38] find to a link to in the description
+[00:00:39] below. It's right here. Just click on
+[00:00:41] that link. You can have it for literally
+[00:00:43] the price of $0.00,
+[00:00:45] enroll for free, and of course that will
+[00:00:47] come with not just a full video series,
+[00:00:49] which is only available on Teachable.
+[00:00:50] This will be the last video that's
+[00:00:51] actually posted on YouTube here. It also
+[00:00:53] come with quizzes that can validate if
+[00:00:56] you actually, you know, understood the
+[00:00:57] material or not. And then whe- Before
+[00:01:00] you can even move on, you actually have
+[00:01:01] to pass these quizzes with 80% or
+[00:01:02] better. And at the very end of this
+[00:01:04] whole program, we will actually give you
+[00:01:07] some bonuses plus a certificate of
+[00:01:08] completion as well. Anyways, moving on
+[00:01:11] here, let's get into our actual slot
+[00:01:12] into our actual slideshow and go over
+[00:01:14] what is understanding volatility. Let me
+[00:01:16] just make sure you can actually properly
+[00:01:18] see the whole slide cuz that's been an
+[00:01:19] issue in the past. And yes, we're good
+[00:01:21] to go there. And effectively, this is
+[00:01:23] why timing matters more than direction
+[00:01:24] in many cases. And this is extremely
+[00:01:27] true, by the way, if we start to get
+[00:01:29] into uh trading options, which is the
+[00:01:31] next 101 playlist that I'm working on,
+[00:01:34] which will follow this one. But, in
+[00:01:36] regular trading as well, or just trading
+[00:01:38] your futures or spot, it also certainly
+[00:01:40] does matter when it time when you are
+[00:01:42] looking to time a move. Like I said,
+[00:01:44] even if you're early, you're wrong,
+[00:01:46] which is ancient market wisdom. Because
+[00:01:48] you can have the right idea on
+[00:01:50] direction. You can have the You can You
+[00:01:51] can be very much right on that, but if
+[00:01:53] your timing is wrong,
+[00:01:54] you can either have, you know, unoptimal
+[00:01:58] gains or you could quite literally have
+[00:01:59] a loss. I mean, there's many cases
+[00:02:01] where, you know, you might enter but it
+[00:02:03] you might enter prematurely and price
+[00:02:05] goes against you before going for you
+[00:02:07] and perhaps that wipes you out if you're
+[00:02:08] on leverage. That is obviously a
+[00:02:10] problem. Volatility signals essentially
+[00:02:13] prepare you for the major move. It lets
+[00:02:15] you have a greater impact and greater
+[00:02:18] edge on understanding when those moves
+[00:02:21] are literally likely to happen. That is
+[00:02:24] the beauty of it and more importantly,
+[00:02:25] actually, as we'll get into,
+[00:02:27] also understanding volatility tells you
+[00:02:29] when moves are unlikely to continue or
+[00:02:31] at least they have been mostly played
+[00:02:34] out, which I think is an incredibly
+[00:02:35] incredibly powerful tool to incorporate
+[00:02:38] in profit taking. Anyways, moving on
+[00:02:40] from there, let's go into, of course,
+[00:02:43] what volatility is.
+[00:02:45] And so, there are three facets of this.
+[00:02:47] One is speed. That is essentially how
+[00:02:49] fast price is moving in a given period.
+[00:02:53] The second would be range. And this is
+[00:02:55] the distance between highs and lows and
+[00:02:57] this effectively is expansion versus
+[00:03:00] contraction in the terms of volatility.
+[00:03:03] Basically, when volatility is going up,
+[00:03:04] it's expanding. When volatility is going
+[00:03:06] down, it is contracting. And the third
+[00:03:08] facet is activity. How aggressively
+[00:03:10] participants are trading the market.
+[00:03:12] Basically, you can understand volatility
+[00:03:14] or I should say you can you can
+[00:03:17] understand increasing volatility or high
+[00:03:19] volatility as very violent market moves.
+[00:03:23] And by contrast, when you have low
+[00:03:25] volatility, it is very boring ranges,
+[00:03:28] you know, tight ranges, very small
+[00:03:29] moves, not much going on. You basically
+[00:03:32] don't even want to pay attention to what
+[00:03:33] the hell, you know, your favorite asset
+[00:03:34] is doing.
+[00:03:36] In contrast, like I said, high
+[00:03:37] volatility, that is a very exciting
+[00:03:38] time. That's when you get those
+[00:03:39] parabolic rallies or just absolutely
+[00:03:41] disastrously dumps.
+[00:03:43] Anyways, the key inside here is
+[00:03:44] volatility is not direction. Volatility
+[00:03:46] is direction neutral by definition. It
+[00:03:48] doesn't tell you where the things are
+[00:03:49] going up or down. That's what trend
+[00:03:50] does. And momentum can kind of help with
+[00:03:52] that as well, but trend is the primary
+[00:03:53] factor in that. Volatility is timing
+[00:03:57] moves and it measures how fast and how
+[00:04:00] far price moves. And basically can it's
+[00:04:03] like a like a like violent. It's like
+[00:04:05] the violency
+[00:04:07] index. Probably not a word, but you get
+[00:04:09] what I'm saying, right? You know, when
+[00:04:10] prices moving very, very violently, that
+[00:04:12] is extremely high volatility. And that
+[00:04:14] those can be some of the most, you know,
+[00:04:15] opportune times to be fair.
+[00:04:17] Think of it this way. You got two cars
+[00:04:19] here. Both driving north. They're going
+[00:04:21] in the same direction. That is your
+[00:04:22] trend. One is driving at 20 mph, the
+[00:04:24] other one is driving at 120 mph. Same
+[00:04:27] direction, completely different risk.
+[00:04:30] That's volatility. That is volatility.
+[00:04:32] Your low volatility, that's very boring.
+[00:04:34] Going 20 mph, very boring. Might as well
+[00:04:36] just walk. Going 120 mph, that's when
+[00:04:38] you are about to crash, which is
+[00:04:40] actually a really, really good analogy
+[00:04:42] now that I explore a little bit deeper
+[00:04:43] because yes, when you get get into very,
+[00:04:45] very high volatility regimes, yeah, that
+[00:04:48] is when things can and uh and do
+[00:04:50] typically uh crash.
+[00:04:52] Anyways, markets don't move smoothly, as
+[00:04:54] you know. They compress and expand. They
+[00:04:56] go through cycles of this. Basically,
+[00:04:59] consolidate, move, consolidate, move,
+[00:05:01] consolidate, move.
+[00:05:02] And understanding this cycle is what
+[00:05:04] separates prepared traders from reactive
+[00:05:06] ones and typically the wrecked ones,
+[00:05:08] basically. So, let's go into um let's
+[00:05:10] just go into a quick chart demonstration
+[00:05:12] here. I'm going to be using this
+[00:05:13] indicator. This is the BBWP indicator,
+[00:05:16] the Bollinger Band Width Percentile.
+[00:05:17] It's a statistics and volatility
+[00:05:19] indicator. It's my favorite volatility
+[00:05:21] indicator and it is freely available on
+[00:05:23] TradingView. I should let you know as
+[00:05:24] well. All you needed to do is go here,
+[00:05:26] type in BBWP. It is the one from The
+[00:05:29] Caretaker, the legendary Caretaker. I
+[00:05:31] got it favorited and as of right now, it
+[00:05:33] has 3,400
+[00:05:35] likes. So, you can find it right there.
+[00:05:37] Again, 100% free.
+[00:05:38] Um I I do format it uh slightly
+[00:05:41] different perhaps than what is default.
+[00:05:43] I know Caretaker has kind of changed
+[00:05:44] this over the years. He might actually
+[00:05:45] have this default as of right now, but
+[00:05:47] just to check, go into the settings tab,
+[00:05:49] which you can find right here. Boom, and
+[00:05:51] that will bring up this pane, and just
+[00:05:53] copy these settings. The big ones are
+[00:05:55] basis moving average length, uh price
+[00:05:57] source would off have to be closed, but
+[00:05:58] I think that's default. Basis uh moving
+[00:06:01] average type is SMA. I use SMA and EMA
+[00:06:03] interchangeably. Both are fine. They're
+[00:06:05] going to give you about the same output
+[00:06:06] anyways. And then from there, um the
+[00:06:09] rest of it not as important to me and
+[00:06:11] and except for the MA type, which is an
+[00:06:13] SMA a thought sorry, a five period uh
+[00:06:15] simple moving average.
+[00:06:16] All right, cool. But, the big ones here,
+[00:06:18] basis moving average length seven and
+[00:06:21] look back period 100. That is where, you
+[00:06:23] know, your settings might be different.
+[00:06:25] Uh these are the settings that I
+[00:06:26] particularly like on Bitcoin for the
+[00:06:27] higher term time frames. You can use
+[00:06:30] other settings as well. We go into that
+[00:06:32] in depth in the Crown Trading Bible, but
+[00:06:34] again, the Crown Trading Bible is really
+[00:06:36] for the people who are
+[00:06:38] like I use this as a term like a term of
+[00:06:40] endearment, but the people who are
+[00:06:41] autistically interested in technical
+[00:06:43] analysis
+[00:06:44] and all of the different facets of it,
+[00:06:46] plus, you know, many other things like
+[00:06:47] options and trading psychology as well.
+[00:06:49] And that's where I just go [&nbsp;__&nbsp;] buck
+[00:06:50] wild with it, you know, laying
+[00:06:52] everything out. But, in this TA 101
+[00:06:54] series, I want to do like the 80/20 of
+[00:06:56] what's most important. All right. So,
+[00:06:59] yes, that's the settings I'm going to
+[00:07:00] use right there. Anyways, let's now go
+[00:07:02] over this indicator and just I identify
+[00:07:05] what is essentially considered high
+[00:07:06] volatility and what's considered low
+[00:07:07] volatility. High volatility, I consider
+[00:07:10] with Bitcoin anything above 85% higher
+[00:07:12] or more. Yes, can be time frame
+[00:07:13] dependent, dependent, but generally, we
+[00:07:16] could say around there.
+[00:07:18] And of course, low volatility, that
+[00:07:19] would be about any anywhere below about
+[00:07:21] 25% tile. And you can see this indicator
+[00:07:25] will also alert you when things are
+[00:07:27] extremely extremely high with these red
+[00:07:29] sort of uh backgrounds right here, and
+[00:07:31] when they're extremely extremely low,
+[00:07:32] like you see over here in the blue
+[00:07:33] backgrounds. Anyways, in terms of high
+[00:07:35] volatility, we expect that when price is
+[00:07:37] extremely violent, and that typically
+[00:07:39] hap happens around major pumps, major
+[00:07:41] dumps, major breakouts, major
+[00:07:43] breakdowns, basically. And so, when I
+[00:07:45] look at this volatility right here, I'm
+[00:07:47] going to expect a crazy move. So, let's
+[00:07:49] go see what essentially that looks like.
+[00:07:50] I'm going to mark it off with these
+[00:07:52] vertical bars. Boom and boom.
+[00:07:55] And where exactly is it on the chart?
+[00:07:58] Yes, dump number one, dump number two,
+[00:08:00] number two, very big, very bad, very
+[00:08:02] nasty, very violent. Um so, yes.
+[00:08:05] Uh looking at this here, we are getting
+[00:08:07] exactly what we would have expected with
+[00:08:09] a high volatility regime. By contrast,
+[00:08:12] in low volatility, which we can
+[00:08:14] basically look at this whole area right
+[00:08:16] here as as it was below 25th percentile,
+[00:08:18] but especially these blue bars here that
+[00:08:20] you can see, this was, by contrast, a
+[00:08:24] very boring period. You know, we can see
+[00:08:25] it right here, especially starting from
+[00:08:27] about this area to about this area. This
+[00:08:31] was incredibly, incredibly tight ranges.
+[00:08:33] Not much going on. That's effectively
+[00:08:35] contracted volatility. Whereas over
+[00:08:38] here, this is volatility expansion. This
+[00:08:40] contraction, expansion, contraction,
+[00:08:42] expansion, contraction, boring going
+[00:08:44] down, expansion, exciting going up.
+[00:08:47] Anyways, moving on from there
+[00:08:49] and going back into our slideshow, let's
+[00:08:51] go over the two volatility regimes in
+[00:08:54] sort of just more just boring English
+[00:08:56] language, even though we just kind of
+[00:08:58] showed it right there. But, one, can
+[00:09:00] compression. So, that is your low
+[00:09:02] volatility regimes. That's your tight
+[00:09:04] price ranges, small candles, not much
+[00:09:06] going on, boring,
+[00:09:08] lower opportunities typically in the
+[00:09:11] short term. However, low volatility
+[00:09:13] periods always precede high volatility
+[00:09:15] periods.
+[00:09:16] And we'll go over that a little bit
+[00:09:17] later. But anyways,
+[00:09:19] if you're looking at the Bollinger
+[00:09:19] Bands, for example, they'll be squeezing
+[00:09:21] together. Or if you're using the BBWP,
+[00:09:23] which I like significantly more because
+[00:09:24] it incorporates statistics, well, it is
+[00:09:27] going to show you very, very low
+[00:09:28] volatility regimes as
+[00:09:30] as that essentially. Or very low reads
+[00:09:33] on the BBWP essentially correlate to
+[00:09:34] that.
+[00:09:35] Uh the market is storing energy in a
+[00:09:37] way, and that energy is then used for a
+[00:09:40] very typically violent breakout. Um most
+[00:09:43] traders get chopped up here. So, here's
+[00:09:45] the issue that I think a lot of newer
+[00:09:46] people go through is they will see this
+[00:09:49] this sort of period of low volatility
+[00:09:50] right here. They're going to try to
+[00:09:52] trade direction during that. They're
+[00:09:54] going to pay attention to their momentum
+[00:09:55] oscillator signals, not recognizing that
+[00:09:57] this is a period of low volatility, and
+[00:10:00] during periods of low volatility, the
+[00:10:01] trend is no longer trending. It is going
+[00:10:04] into a consolidation phase, which then
+[00:10:06] can lead to either continuation or
+[00:10:08] reversal. But, during the consolidation
+[00:10:10] phase, in low volatility regimes, these
+[00:10:13] can go on for a lot longer typically
+[00:10:16] than high volatility regimes. And you
+[00:10:18] can see that right here in front of your
+[00:10:19] very face. I mean, it's very obvious.
+[00:10:21] This this whole regime over here allows
+[00:10:23] for about a month and a half, whereas
+[00:10:25] this move over here, once it hits
+[00:10:26] extremely high volatility, it's only got
+[00:10:28] about you know, less than a week from
+[00:10:30] hitting that peak to the next major low
+[00:10:32] in this case.
+[00:10:34] Anyways, back to my slideshow here,
+[00:10:36] and finishing off compression phases.
+[00:10:38] This is where smart money positions. Cuz
+[00:10:41] like I said,
+[00:10:42] low volatility always precedes periods
+[00:10:45] of high volatility. Why? Again, you can
+[00:10:47] just understand that as consolidation
+[00:10:49] leads to breakout. And so, when you if
+[00:10:52] you are going to position here, you
+[00:10:54] can't play direction, but you can
+[00:10:56] position for a breakout. So,
+[00:10:59] if you were looking at this, for
+[00:11:00] example, we would have known, okay, one
+[00:11:03] trend is overall down. And again, if you
+[00:11:06] paid attention to that video, that was
+[00:11:08] video number two in the series. So, if
+[00:11:09] you didn't, you know, if you don't
+[00:11:10] understand that, then definitely go back
+[00:11:11] there. Two, we have a range as well. A
+[00:11:14] range forms, right? As long as Bitcoin's
+[00:11:17] within this range, the trend is still to
+[00:11:19] the downside, or at least the buys is on
+[00:11:22] for the downside breakout. So, if we're
+[00:11:23] going to position here, we wait for low
+[00:11:25] volatility, and then ideally, the way
+[00:11:27] that I like to play them, and there is
+[00:11:29] many different ways to play them, but I
+[00:11:31] would prefer to pick a lower high as
+[00:11:35] long as this thing is operating within
+[00:11:36] this range.
+[00:11:38] Um
+[00:11:39] and I would prefer to enter when price
+[00:11:42] is as close to the top side of the range
+[00:11:45] as possible because if I'm then wrong,
+[00:11:49] if I enter, for example, right here,
+[00:11:52] and I'm wrong, and price crosses above
+[00:11:55] the top side of the range and starts to
+[00:11:56] break out above the top side of the
+[00:11:57] range,
+[00:11:59] then
+[00:12:01] I just can take a very small loss. I can
+[00:12:03] I don't have to risk that much money to
+[00:12:05] play that position. Whereas, if I enter
+[00:12:07] over here, you know, on the lows or
+[00:12:09] close to the lows, well,
+[00:12:12] yes, you might time that break out a
+[00:12:14] little bit better when volatility starts
+[00:12:16] to rise, like you see during this whole
+[00:12:18] portion right here, which is this whole
+[00:12:20] area right there.
+[00:12:21] Um
+[00:12:23] but of course, price can compress for a
+[00:12:26] very long time. Like I said, volatility
+[00:12:29] can remain low for a lot longer than
+[00:12:31] volatility typically remains high.
+[00:12:33] And, you know, you've seen this before.
+[00:12:35] I mean, you've seen this during periods
+[00:12:36] long periods of consolidation, sideways
+[00:12:38] consolidation. We're talking about I
+[00:12:40] mean, there's been many in Bitcoin's
+[00:12:41] history, you know, many, many months in
+[00:12:43] a row where you see Bitcoin essentially
+[00:12:44] go into a a sideways rectangular range.
+[00:12:47] Um and those are not the time, of
+[00:12:49] course, to be playing the trend
+[00:12:50] direction. If you're going to do
+[00:12:51] anything at all, should be playing
+[00:12:53] scalp, you know, scalping the range
+[00:12:55] edges, essentially. So, you know, if we
+[00:12:57] were to go back into this particular
+[00:12:59] instance right here, you could buy, you
+[00:13:02] know, buy near the low side of the
+[00:13:04] range, sell near the high side of the
+[00:13:05] range, but not look for the breakout
+[00:13:08] until you get an objective signal of a
+[00:13:10] breakout. We'll go over what that looks
+[00:13:12] like a little bit later. Again, we go
+[00:13:13] into much more detail in the Crown
+[00:13:14] Trading Bible. But anyways, expansion on
+[00:13:16] the other side, that is high volatility.
+[00:13:18] That is the very, very wild price
+[00:13:20] swings. You get very large candles,
+[00:13:21] typically. Bollinger bands, if you're
+[00:13:23] using them, are going to be widening
+[00:13:24] rapidly. If you're using the BBWP, it's
+[00:13:26] going to be going up significantly, you
+[00:13:28] know, like I said, above 80 to 85% tile.
+[00:13:31] Um this is when breakouts happen. That's
+[00:13:33] your trending moves. That's your major
+[00:13:34] gaps if you're in traditional markets.
+[00:13:36] This is where people typically get very
+[00:13:38] emotional. Um
+[00:13:39] and this is where profits hopefully are
+[00:13:41] realized if you do things rightly. Um
+[00:13:44] anyways, markets spend most of their
+[00:13:45] time compressing. And if you want just
+[00:13:47] sort of like a general rule, and this is
+[00:13:49] not super scientific, it's just my own
+[00:13:51] sort of um
+[00:13:53] uh experience with Bitcoin especially
+[00:13:55] and and markets in general, markets are
+[00:13:57] compressing for about 70% of the time
+[00:13:59] and they're breaking out for 30% of the
+[00:14:01] time. It might even be closer to like
+[00:14:02] 80/20 as many of these things are, but
+[00:14:06] somewhere around there. More often than
+[00:14:07] not, you're going to be compressing,
+[00:14:08] you're going to be operating a range.
+[00:14:10] Very less often, you are going to be
+[00:14:12] trending in any major direction.
+[00:14:15] But when they do it expand and do trend,
+[00:14:18] it typically happens very, very
+[00:14:20] violently.
+[00:14:21] Anyways, moving on from there,
+[00:14:24] let's go into why volatility matters.
+[00:14:26] And effectively tells you when a move is
+[00:14:29] likely coming. That is the big thing.
+[00:14:31] All breakouts are preceded by a period
+[00:14:35] of low volatility. And like we see right
+[00:14:37] here,
+[00:14:38] and like we see many other times now
+[00:14:40] that I'm looking at it, uh this low
+[00:14:42] volatility period right here is then
+[00:14:44] preceded by continually rising
+[00:14:46] volatility. Bitcoin breaks below the
+[00:14:48] bottom of the range low.
+[00:14:50] And in this case, we see volatility
+[00:14:52] explode, thus validating the breakout.
+[00:14:55] And as the breakout continues down, it
+[00:14:58] stays, you know, quite high for some
+[00:14:59] time. Once volatility starts to lose
+[00:15:02] that moving average right here, it
+[00:15:04] starts to really come down a bit, that's
+[00:15:06] when the move is basically over. And
+[00:15:08] when how do I kind of define coming
+[00:15:10] down? Well, this can again be viewed in
+[00:15:12] multiple different ways, but I would I
+[00:15:14] would judge this one as coming down and
+[00:15:16] going back into a compression phase
+[00:15:17] right here. And let's see if that where
+[00:15:18] the move is more or less over. Yeah, it
+[00:15:20] is. In fact, the move literally does top
+[00:15:22] on extreme volatility and then I would
+[00:15:24] say it's really confirmed right here.
+[00:15:26] So, that's how you can kind of judge if
+[00:15:28] your breakout is basically done or not.
+[00:15:31] Um and you should be looking for the
+[00:15:33] next, you know, sideways range, in which
+[00:15:35] case we certainly do get another
+[00:15:36] sideways range right here.
+[00:15:38] Anyways, erasing all of this and going
+[00:15:40] back to our slideshow.
+[00:15:42] All right. So, yes.
+[00:15:44] Uh
+[00:15:45] volatility also matters because it tells
+[00:15:47] you when a move maybe ending, as we just
+[00:15:49] went over. Very, very high volatility,
+[00:15:51] your move is mostly done if not already
+[00:15:54] always all done. Now, you will notice
+[00:15:57] some in some cases moves will continue
+[00:16:00] while volatility
+[00:16:02] decreases. That can happen, but it is a
+[00:16:06] sign that that that that trend is still
+[00:16:08] weakening. So, you shouldn't be
+[00:16:09] expecting it to go on for that much
+[00:16:12] longer. But yes, there are instances
+[00:16:13] where that will happen.
+[00:16:14] Um
+[00:16:15] but but with the settings that I have
+[00:16:17] right here,
+[00:16:19] that usually should you usually should
+[00:16:21] get it like pretty well for the short
+[00:16:23] term. If you want more long-term
+[00:16:25] settings, put the look back period
+[00:16:27] higher. Again, we go over these sort of
+[00:16:29] settings and whatnot in the minutia of
+[00:16:30] this in the Crown Trading Bible. Just
+[00:16:32] like a quick inside, the look back
+[00:16:33] period, you know, if you wanted to be a
+[00:16:34] little bit more
+[00:16:36] relaxed with this, you know, 252 would
+[00:16:38] be a good one for that. Why? Cuz that's
+[00:16:40] the amount of real trading days that you
+[00:16:41] have in the year if you follow
+[00:16:42] traditional markets.
+[00:16:44] Anyways,
+[00:16:45] going back into our slideshow. It also
+[00:16:47] shows you when risk is increasing. Of
+[00:16:49] course, rising volatility means wider
+[00:16:51] stops, naturally, cuz price is going to
+[00:16:52] have bigger ranges, larger position
+[00:16:55] risk, and faster drawdowns. Your sizing
+[00:16:57] must adapt and that typically means you
+[00:17:00] size down rather than size up.
+[00:17:02] Anyways, important rule here, low
+[00:17:04] volatility environments precede large
+[00:17:06] moves. And I would also go on to say the
+[00:17:09] opposite is true as well, even though
+[00:17:11] very few people acknowledge this, which
+[00:17:12] is very weird in my opinion. I mean, I
+[00:17:14] think that that's actually even more of
+[00:17:15] a I mean, both of them are very hard
+[00:17:17] rules, but you can trust that a move is
+[00:17:21] more than likely over when you hit
+[00:17:23] volatility extremes
+[00:17:25] again,
+[00:17:26] a a lot more than when you're at low
+[00:17:28] volatility expecting a breakout because
+[00:17:30] low volatility regimes can last for a
+[00:17:32] lot a lot longer, a lot longer.
+[00:17:36] I mean, [&nbsp;__&nbsp;] Like, if you go to the
+[00:17:38] higher time time frames here, you can
+[00:17:39] see a low volatility regime for, you
+[00:17:41] know, months at a time, whereas high
+[00:17:44] volatility regimes I mean, you're
+[00:17:45] probably going to see that at most for a
+[00:17:46] couple weeks.
+[00:17:48] Um you know, marking major highs and
+[00:17:50] make major lows almost always.
+[00:17:52] Um so, the spring analogy, the more you
+[00:17:54] compress a string a spring, um the more
+[00:17:57] violent the release. Markets work the
+[00:17:58] same way.
+[00:18:00] Tight consolidations for longer periods
+[00:18:02] of time equals more stored energy, and
+[00:18:05] thus that breakout coming from that
+[00:18:07] stored energy is going to be bigger than
+[00:18:09] a consolidation that was consolidating
+[00:18:12] in a range for a lower amount of time.
+[00:18:16] Anyways, moving on now. Let's go over
+[00:18:19] the volatility trap.
+[00:18:21] So, here's the mistake that certainly
+[00:18:23] most beginners make. I know I made this
+[00:18:25] a lot when I was uh when I was just a
+[00:18:27] young kid in my early 20s,
+[00:18:29] um entering after volatility's already
+[00:18:31] expanded, you know. Why do they do that?
+[00:18:34] It's It's actually very I mean, it's not
+[00:18:36] logical, but I can it It's an emotional
+[00:18:37] statement, but I understand why that
+[00:18:38] happens. You start to pay attention to
+[00:18:40] an asset once you start hearing about
+[00:18:42] it, once you've seen a lot about it. And
+[00:18:44] why do people start to talk a lot about
+[00:18:45] about an asset? Why does it get popular?
+[00:18:47] Because it's moving a lot. And when it's
+[00:18:48] moving a lot, it's very high volatility
+[00:18:50] most likely. Thus, when you know, the
+[00:18:52] major news sources start to talk about
+[00:18:54] it, when the major YouTube start to
+[00:18:55] start, you know, start to
+[00:18:56] uh hammer on it as well,
+[00:18:58] you're probably at the precipice of that
+[00:19:01] volatility peak.
+[00:19:02] Thus, you're going to start to chase
+[00:19:04] something that is likely ending. You're
+[00:19:07] late to the game. You're late to the
+[00:19:08] party. Like I said early or earlier,
+[00:19:11] even if you're early, you're wrong. Even
+[00:19:12] if you're late, you're more wrong. That
+[00:19:14] is also true, too. Basically, you see a
+[00:19:17] huge candle, you get excited, and you
+[00:19:18] chase it. I I I get it. I understand it.
+[00:19:20] Like I said, I I've done it, too. Um
+[00:19:22] but, you get trap trapped at the top of
+[00:19:24] a move or at the bottom of a move, as
+[00:19:26] well. Like I said, volatility is
+[00:19:27] direction neutral.
+[00:19:30] So, here's what is wrong. Chasing the
+[00:19:31] breakout candle. See, you know, you see
+[00:19:33] a massive green candle, you FOMO in.
+[00:19:34] Terrible. I mean, everyone knows this.
+[00:19:36] Enters at you know, you enter at the top
+[00:19:37] of an expansion or at the bottom of
+[00:19:39] expansion. You know, both are equally as
+[00:19:41] bad if you enter short at the bottom of
+[00:19:43] an expansion move, you know, to the
+[00:19:45] downside,
+[00:19:46] um as well as an expansion move to the
+[00:19:48] upside entering at the top. Also very
+[00:19:49] bad. You know, both will lose money. Um
+[00:19:52] volatility contracts, positions bleed
+[00:19:53] out, and you can get stopped out or just
+[00:19:56] panic sell, you know, cuz these are
+[00:19:57] going to be very emotional times.
+[00:20:00] The right way to do it is position
+[00:20:01] during compression. If you really want
+[00:20:03] to play a breakout, like I said, my
+[00:20:05] preferred way,
+[00:20:06] identify a compression range, enter in
+[00:20:09] on the closest area to confirm the next
+[00:20:13] trending higher low or trending lower
+[00:20:15] high. Again, if you're not familiar with
+[00:20:17] these concepts, go back to video number
+[00:20:19] two. That is the trending video. Um and
+[00:20:22] I personally like to do it that way cuz
+[00:20:24] then I don't have to risk as much to
+[00:20:25] figure out if I'm going to be wrong.
+[00:20:26] Yes, you can be wrong during do you can
+[00:20:29] be wrong during the doing this. Um but,
+[00:20:31] that I find is the best and safest
+[00:20:33] positioning, generally speaking. Um
+[00:20:36] you can position before the expansion
+[00:20:37] begins, which is very nice when you
+[00:20:39] actually get it right. And of course,
+[00:20:41] you get to ride the move with defined
+[00:20:43] risk, and you take profit as the
+[00:20:45] volatility peaks. Ideally, enter when
+[00:20:47] volatility is low, exit when volatility
+[00:20:49] is high. Or, if you're going to play
+[00:20:51] counter trend trend moves,
+[00:20:53] enter in the opposite direction when
+[00:20:55] volatility is very high, and then exit
+[00:20:57] as volatility comes down. That's a
+[00:21:00] little more advanced. Again, we go a lot
+[00:21:01] more into that in detail with examples,
+[00:21:03] and also live trades in the the Trading
+[00:21:05] Bible. But, you know, you can use it for
+[00:21:08] that uh
+[00:21:09] for that um as well.
+[00:21:11] Anyways, why indicators fail. So, most
+[00:21:14] indicators apply the same indicator
+[00:21:15] settings regardless of the volatility
+[00:21:17] regime. This is why the same RSI signal
+[00:21:19] works one day and fails the next day.
+[00:21:21] During low volatility, oscillators
+[00:21:23] generate constant false signals.
+[00:21:26] Again, you're looking at a compression
+[00:21:27] range. You shouldn't be looking for your
+[00:21:30] um momentum oscillators to, you know,
+[00:21:32] break you out of that range.
+[00:21:34] Um breakouts fail and reverse quickly
+[00:21:36] during low volatility
+[00:21:38] or they just, you know, will test and
+[00:21:39] poke a little hole into one side of the
+[00:21:41] range, but not have any follow-throughs.
+[00:21:43] What that essentially amounts to. Moving
+[00:21:45] averages give late and lagging entries
+[00:21:47] and your risk-reward compresses
+[00:21:49] naturally. You know, small moves only,
+[00:21:50] so naturally, you know, there ain't much
+[00:21:52] going on. Volume dries up confirming
+[00:21:55] nothing and again, you you know, the
+[00:21:57] only real trades that you have there are
+[00:21:59] scalp trades. So, that's also why I like
+[00:22:01] to um enter in the enter in on the
+[00:22:03] peripheries of that range if I'm going
+[00:22:05] to try to do something like that cuz it
+[00:22:07] still at least keeps you on the same
+[00:22:09] side for the compression phase if it
+[00:22:11] continues on. So, you at least you get
+[00:22:13] that.
+[00:22:14] During high volatility, however,
+[00:22:16] indicators will typically fail because
+[00:22:18] oscillators stay pegged to extremes.
+[00:22:21] So, like we went over in the in the RSI
+[00:22:22] video, we expect the RSI to be real
+[00:22:24] [&nbsp;__&nbsp;] high during a major breakout
+[00:22:28] to the upside.
+[00:22:30] And it is going to stay and it's going
+[00:22:31] to stay high. That's what we expect.
+[00:22:34] Duh.
+[00:22:35] You know, breakouts follow through with
+[00:22:38] momentum
+[00:22:39] during high volatility.
+[00:22:41] So, when volatility is rising, momentum
+[00:22:43] oscillators will generally be a lot a
+[00:22:45] lot, you know, a lot uh more
+[00:22:47] efficacious. You know, they'll work a
+[00:22:48] lot more often. Moving averages work as
+[00:22:51] dynamic dynamic support and resistance.
+[00:22:53] So, when you see high volatility, when
+[00:22:55] things are trending, your moving
+[00:22:57] averages for that trend will generally
+[00:22:59] catch, you know, your higher lows in an
+[00:23:00] uptrend and your lower highs in a
+[00:23:01] downtrend.
+[00:23:03] And your risk reward expands, you know,
+[00:23:05] you got bigger opportunities, obviously.
+[00:23:06] And volume will, once again, confirm,
+[00:23:08] you know, directional conviction. So,
+[00:23:10] the indicators aren't necessarily
+[00:23:11] broken, they're just being used in the
+[00:23:13] wrong volatility regime. You have to
+[00:23:14] understand
+[00:23:16] indicators are volatility con- uh
+[00:23:19] context dependent or especially momentum
+[00:23:21] oscillators, I should say, are
+[00:23:23] volatility context dependent.
+[00:23:27] Anyways,
+[00:23:28] let's go into measuring volatility. So,
+[00:23:30] you got many different things, you got
+[00:23:32] Bollinger Bands, you got ATR, you got
+[00:23:33] vol- uh volatility percentiles. Like I
+[00:23:35] said, I personally like to use the BBWP,
+[00:23:38] but I did feel like it was important to
+[00:23:39] include other, you know, um tools that,
+[00:23:41] you know, a lot of people find valuable
+[00:23:43] and a lot of people use. Uh these are
+[00:23:45] completely fine as well. I just come
+[00:23:46] from a statistics-based uh background
+[00:23:48] and mindset, and so I like the BBWP
+[00:23:50] because it gives us a a more objective
+[00:23:53] definition of what is is high volatility
+[00:23:55] compared uh compared to, you know, our
+[00:23:58] look back to the past, basically. I find
+[00:24:00] that a lot more valuable. Some people
+[00:24:02] would disagree. Again, there's not
+[00:24:03] really right or wrong, there's right or
+[00:24:05] wrong for you and how you fit that into
+[00:24:06] your own trading um plan, which is what
+[00:24:09] we go over in the later portion of this
+[00:24:11] series.
+[00:24:13] Anyways,
+[00:24:14] the compression trade setup. So, let's
+[00:24:15] go over just a quick sort of uh you
+[00:24:18] know, quick sort of hypothetical.
+[00:24:20] I'm going to use the BBWP for this, but
+[00:24:22] basically identify compression, so you
+[00:24:23] look for your, you know, your your
+[00:24:25] volatility indicator to show when it is
+[00:24:29] generally you know, tightening up,
+[00:24:31] compressing, contracting, and again, for
+[00:24:34] me, that's the BBWP. Whenever it gets
+[00:24:36] below, you know, about 30, 35 or 25 to
+[00:24:39] 35, anywhere in that pocket really is
+[00:24:40] going to be considered low, especially
+[00:24:41] if it's coming down from a high level.
+[00:24:43] Yes, that is when we consider it um
+[00:24:45] compressing. Then we determine the bias,
+[00:24:47] so that's when we use the trend. Do we
+[00:24:50] Do we look at the previous trend as up
+[00:24:51] or down? If it's up, our bias is for
+[00:24:54] further continuation to the upside, but
+[00:24:56] and essentially to look for higher lows
+[00:24:58] and vice versa for a downtrend.
+[00:25:00] Then we wait for expansion.
+[00:25:02] Um, again, don't anticipate something
+[00:25:03] like this. Wait for the first candle
+[00:25:05] that breaks the range. If you see
+[00:25:06] volatility rising through there,
+[00:25:08] especially back above 50th percentile,
+[00:25:10] um, plus your momentum oscillator is
+[00:25:12] also pointing in that same direction,
+[00:25:14] you probably are about right on that
+[00:25:16] breakout. Again, higher volatility
+[00:25:18] better, but I'd say at least above 50th
+[00:25:20] percentile. Like definitely at least
+[00:25:21] above 50th percentile. Honestly,
+[00:25:23] probably more is better to be fair, but
+[00:25:25] at least at least at least above 50th
+[00:25:27] percentile for God's sake.
+[00:25:28] Um,
+[00:25:29] and then we enter with defined risk. So,
+[00:25:32] stop on the opposite side of the
+[00:25:33] compression zone. In this case, that
+[00:25:35] would mean, you know, if you entered in
+[00:25:36] during this compression zone here,
+[00:25:40] which is this range,
+[00:25:42] then your stop, if you're going to be
+[00:25:44] playing this breakout to the upside, has
+[00:25:46] to be on a break, a closure below the
+[00:25:49] bottom end of this range. That would be
+[00:25:53] uh where it is. Now, after price breaks
+[00:25:56] out to the upside in this case, then you
+[00:25:58] can move that stop to the breakout area.
+[00:26:00] Ideally, you just take profit, but yes,
+[00:26:02] you know, that would be another way of
+[00:26:03] looking at it if you wanted to follow
+[00:26:05] that position more and more for longer
+[00:26:07] and longer.
+[00:26:08] Anyways,
+[00:26:09] and then of course, manage with
+[00:26:10] volatility. Once volatility starts to
+[00:26:12] really get into some crazy levels like
+[00:26:14] you see right here
+[00:26:15] on this candle right here. This one gets
+[00:26:17] up to 93rd percentile. You got to be
+[00:26:19] thinking, okay, we probably seen most of
+[00:26:22] this move. I should be taking at least
+[00:26:23] some profit, if not all profit. And you
+[00:26:26] can also couple that up with other
+[00:26:27] things as well. Maybe you see a momentum
+[00:26:29] oscillator turn down. Maybe you see a
+[00:26:31] reversal candlestick formation. If
+[00:26:33] you're looking at these sort of things,
+[00:26:34] this is a shooting star right here. See
+[00:26:36] that on high volatility? Okay, we've
+[00:26:38] probably seen most of the move. I should
+[00:26:40] not get too greedy here.
+[00:26:42] Take the money while it's in my hand and
+[00:26:43] run away. That's good.
+[00:26:45] Anyways, pro tip from the floor. As a
+[00:26:47] market maker on the exchange floor, I
+[00:26:48] watch this pattern play out very, very
+[00:26:50] often. I don't know about every single
+[00:26:52] day, but very very often. When option
+[00:26:55] premiums collapsed so low implied
+[00:26:57] volatility, again, we'll get into this
+[00:26:58] in the options 101 playlist, that'll
+[00:27:00] also be free as well, by the way.
+[00:27:02] We knew a big move is loading and that
+[00:27:04] is time to actually buy premiums if
+[00:27:06] you're going to do it at all. Like for
+[00:27:07] [&nbsp;__&nbsp;] Oh my god, if you are listening to
+[00:27:08] this right now and you trade options,
+[00:27:09] please please please please internalize
+[00:27:12] this [&nbsp;__&nbsp;] concept into the core of
+[00:27:14] your of of of of your soul.
+[00:27:18] We do not buy option premium
+[00:27:22] if volatility is high. The only time
+[00:27:26] where it makes sense is if volatility if
+[00:27:27] implied volatility, especially, is low.
+[00:27:29] That is when it can somewhat make sense.
+[00:27:31] I still don't really like it, though.
+[00:27:33] The compression to expansion cycle isn't
+[00:27:34] just a chart pattern, it's a reflection
+[00:27:36] of how liquidity and position actually
+[00:27:37] works in markets. This is the edge most
+[00:27:40] retailer traders never learn.
+[00:27:43] Anyways, here's a complete framework
+[00:27:45] just in one in in one slide. If you want
+[00:27:47] to screenshot this,
+[00:27:50] that is that is ideal. This is
+[00:27:52] effectively the way that I view markets.
+[00:27:54] First, we look at trend, then structure.
+[00:27:56] Volatility would be next. Momentum,
+[00:27:58] however, is how a lot of people look at
+[00:28:00] it. Fair enough. But, if you did have to
+[00:28:02] put it in order of priority, it would be
+[00:28:03] trend,
+[00:28:05] then actually volatility, then
+[00:28:06] structure. Although, structure and
+[00:28:08] volatility they could come kind of neck
+[00:28:09] and neck, to be fair. Really really They
+[00:28:12] They should be like 2A 2B.
+[00:28:15] Then momentum and then risk, of course.
+[00:28:18] That is your execution. That's not
+[00:28:19] necessarily like a priority list, but
+[00:28:21] you know, you have to incorporate all
+[00:28:22] these things realistically. And you are
+[00:28:24] here. Volatility doesn't replace your
+[00:28:26] analysis, it tells you when an analysis
+[00:28:27] is worth acting on. That is key.
+[00:28:29] Absolutely [&nbsp;__&nbsp;] key. It's the timing
+[00:28:31] aspect of everything. Trend, direction.
+[00:28:33] Structure, it's kind of like where are
+[00:28:34] you with that within the greater scheme
+[00:28:36] of things in that greater trend.
+[00:28:38] Momentum tells you, you know, which
+[00:28:40] Hopefully, if you're just looking at it
+[00:28:42] on the same side of the current trend,
+[00:28:44] you know, when the when the foot is on
+[00:28:45] the gas pedal. And then volatility's
+[00:28:47] timing when that foot presses that gas
+[00:28:50] pedal.
+[00:28:51] Momentum is just showing you how, you
+[00:28:53] know, how how hard you're pressing on
+[00:28:54] that, basically. Um so, yes.
+[00:28:57] Anyways, key takeaways here before we
+[00:28:58] move into the next one. And again, this
+[00:28:59] is the last video on on YouTube. The
+[00:29:01] rest of them are on Teachable alongside
+[00:29:03] all of the quiz and everything as well.
+[00:29:04] Volatility measures speed and range, not
+[00:29:06] direction. Market cycles be between
+[00:29:08] compression and expansion phases. Low
+[00:29:10] volatility environments proceed large
+[00:29:12] moves. Position during a compression,
+[00:29:14] not after expansion. At least that's my
+[00:29:16] personal way of doing it. I do know a
+[00:29:17] lot of people like to trade breakouts. I
+[00:29:19] These will fail very very often, but you
+[00:29:21] can make it work just you know, you
+[00:29:23] might fall into that issue of death by a
+[00:29:25] thousand cuts. Again, not saying don't
+[00:29:27] do it, just understand where you you
+[00:29:29] know, what your preferences are and
+[00:29:30] where your risk is.
+[00:29:32] And make the best decision for for
+[00:29:34] yourself based off of that. Um
+[00:29:35] indicators behave differently in each
+[00:29:37] volatility regime. Basically, don't
+[00:29:39] trust your momentum oscillators when
+[00:29:40] volatility's low.
+[00:29:42] And of course, when volatility's high,
+[00:29:44] well, you can trust a lot of things a
+[00:29:46] lot more, generally speaking. Um
+[00:29:49] Bollinger Bands, ATR, and percentiles
+[00:29:50] are your core tools. And again,
+[00:29:53] if you want to go a little bit deeper,
+[00:29:54] then of course or not a little bit
+[00:29:55] deeper, but like significantly deeper,
+[00:29:57] because we not just cover classical TA,
+[00:29:58] which is what this effectively is. We
+[00:30:00] cover quantitative analysis,
+[00:30:01] quantitative trading strategies. Of
+[00:30:03] course, we go over uh options, which is
+[00:30:06] God, like 35 to 40 hours of the whole
+[00:30:08] [&nbsp;__&nbsp;] program, and trading psychology.
+[00:30:10] Then yeah, check out the Crown Trading
+[00:30:12] Bible.
+[00:30:13] Uh but I would strongly strongly
+[00:30:14] strongly does to finish out this free
+[00:30:16] HTA 101 playlist first, because then
+[00:30:18] you'll know like is this is this as far
+[00:30:21] as I want to go to begin with. So, one
+[00:30:23] things right there. I will see you in
+[00:30:24] the next one, and take care.

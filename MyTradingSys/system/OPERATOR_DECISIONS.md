@@ -593,3 +593,96 @@ Applied: (not yet)
  "recommended": "No"
 }
 ```
+## q-krown-captions | asked 2026-10-14 | Research
+
+How do we get the captions for the 4 unextracted Krown TA 101 videos?
+
+Recommended: Retry once a day for 3 days, then ask me
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet)
+
+```json
+{
+ "order": 13,
+ "stage": "Research",
+ "refs": "research/krown_ta101_2026-10-13/STATE.md",
+ "title": "How do we get the captions for the 4 unextracted Krown TA 101 videos?",
+ "why": "YouTube returned HTTP 429 to JIS-NUC on 2026-10-13 and, for 4 of 11 videos, to JIS-NB on 2026-10-14 (the other 7 came through and are extracted). Rules say stop on a bot check, no workarounds. The 4 missing are about top-down method order, chart patterns, building a system and beginners adding indicators (card krown-ta101-extract-remaining-10, STATE.md).",
+ "options": [
+  "Retry once a day for 3 days, then ask me",
+  "I will paste the 4 transcripts",
+  "Skip them: build on the 14 TA videos"
+ ],
+ "recommended": "Retry once a day for 3 days, then ask me"
+}
+```
+## q-krown-saturation | asked 2026-10-14 | Research
+
+Waive the 20-video saturation gate for a descriptive Krown layer?
+
+Recommended: Yes: detectors and a DEV study only, no engine setup file
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet)
+
+```json
+{
+ "order": 14,
+ "stage": "Research",
+ "refs": "research/krown_ta101_2026-10-13/STATE.md",
+ "title": "Waive the 20-video saturation gate for a descriptive Krown layer?",
+ "why": "extraction.md SAFEGUARD 3 wants 20 videos and 5 consecutive saturated extractions before a setup file is built. Only 19 videos are reachable (14 TA extracted so far, and the last 5 extractions still added whole new rule families). The waiver covers descriptive detectors, recall and a DEV event study; nothing reaches the engine or live without you.",
+ "options": [
+  "Yes: detectors and a DEV study only, no engine setup file",
+  "No: wait for more Krown content"
+ ],
+ "recommended": "Yes: detectors and a DEV study only, no engine setup file"
+}
+```
+## q-krown-stop | asked 2026-10-14 | Research
+
+May any live Krown use run without a resting protective stop (his style)?
+
+Recommended: No: a protective stop always; his close-based exit is a backtest arm only
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet)
+
+```json
+{
+ "order": 15,
+ "stage": "Research",
+ "refs": "research/krown_ta101_2026-10-13/STATE.md",
+ "title": "May any live Krown use run without a resting protective stop (his style)?",
+ "why": "He says he does not like stop losses and exits himself when a zone breaks on a close (KR-X01). MTS rules require a protective stop on every live position. The default keeps the house rule (conflict C3 in KROWN_CONSOLIDATED.md).",
+ "options": [
+  "No: a protective stop always; his close-based exit is a backtest arm only",
+  "Yes, on the testnet only"
+ ],
+ "recommended": "No: a protective stop always; his close-based exit is a backtest arm only"
+}
+```
+## q-krown-volume-venue | asked 2026-10-14 | Research
+
+Which volume series counts for Krown's volume rules?
+
+Recommended: Test both: Binance and Coinbase daily volume
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet)
+
+```json
+{
+ "order": 16,
+ "stage": "Research",
+ "refs": "research/krown_ta101_2026-10-13/STATE.md",
+ "title": "Which volume series counts for Krown's volume rules?",
+ "why": "He says crypto volume can be faked and reads Coinbase, the TradingView index or CME. Our data is Binance. Coinbase BTC-USD daily candles are public market data (no account, no trading). Card krown-data-daily-majors fetches them only if you agree (conflict C6).",
+ "options": [
+  "Test both: Binance and Coinbase daily volume",
+  "Binance only"
+ ],
+ "recommended": "Test both: Binance and Coinbase daily volume"
+}
+```

@@ -4,19 +4,25 @@
   "commands": [],
   "created": "2026-10-13T05:23:56Z",
   "depends_on": [],
-  "done_when": "10 extracts pass verify_extract_quotes.py (0 problems) and STATE.md shows 18 of 18 reachable done",
+  "done_when": "4 extracts pass verify_extract_quotes.py (0 problems) AND check_numbers.py (0 not found); MANIFEST.csv shows 19 of 19 reachable EXTRACTED; python tools/build_ledger.py rebuilds KROWN_RULES.csv with 0 dead pointers (add their amendments to the batch-3 block); reflexivity_log.md has a batch 3 entry",
   "from_inbox": "",
-  "goal": "Finish the Krown TA 101 playlist extraction: fetch timed captions for the 10 reachable videos still missing, then extract each in the same format as the 8 done.",
+  "goal": "Finish the Krown TA 101 playlist extraction: get timed captions for the 4 reachable videos still missing (hNfjyrJEytI fMRvOt26xcA LB3DRYxnA0A _JoJbu_Ug-A; MANIFEST.csv), then extract each with a fresh single-video worker per PROTOCOL.md s3 (clean slate, EXTRACT_TEMPLATE.md), both gates, rebuild the ledger.",
   "id": "krown-ta101-extract-remaining-10",
   "lane": "SONNET",
-  "layers": [],
+  "layers": [
+    "krown"
+  ],
   "live_path": false,
-  "note": "YouTube 429 to JIS-NUC on 2026-10-13 (subtitle download). If the fetch still gets 429 here, run the fetch step from JIS-NB.",
+  "note": "2026-10-14: 7 of 11 transcripts fetched, 4 got HTTP 429 (intermittent). LESSONS_DIGEST s6: STOP on a bot check, no cookies, tokens or third-party sites, no YouTube watch pages in the in-app browser (autoplays audio). Operator options in decision q-krown-captions: retry daily for 3 days, paste the 4 transcripts, or skip.",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    "MyTradingSys/research/krown_ta101_2026-10-13/STATE.md"
+    "MyTradingSys/research/krown_ta101_2026-10-13/STATE.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/PROTOCOL.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/MANIFEST.csv",
+    "MyTradingSys/research/krown_ta101_2026-10-13/EXTRACT_TEMPLATE.md"
   ],
   "result": "",
   "scope_in": [
@@ -31,12 +37,13 @@
   "sources": [
     "PLPEz1q0esi3gEd4DMbaGwFf3uqwAY6vTU"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
-    "run fetch_captions_timed.py for the ids in STATE.md (YouTube 429 on 2026-10-13: retry later or from JIS-NB)",
-    "extract one video per pass in the format of extracts/extract_HhV4HI9p5Uw.md",
-    "verify_extract_quotes.py on each, update STATE.md"
+    "retry at most once: python scripts/dev/fetch_captions_timed.py --analyst Krown --out MyTradingSys/research/krown_ta101_2026-10-13/transcripts hNfjyrJEytI fMRvOt26xcA LB3DRYxnA0A _JoJbu_Ug-A  (STOP on 429; or the operator pastes them)",
+    "one fresh Sonnet worker per video with the PROTOCOL.md s3 brief (it must not read other extracts)",
+    "both gates on each extract, spot-check numbers against the transcript, then python tools/build_ledger.py (add a batch-3 amendments block)",
+    "update MANIFEST.csv, STATE.md and reflexivity_log.md; read the Gaps: do stops, targets or sizes appear now?"
   ],
   "tests": "docs lane, no code: verify_extract_quotes.py is the gate",
-  "title": "Krown TA 101: fetch captions and extract the remaining 10 videos (ids in STATE.md); DONE when: 10 extracts pass verify_extract_quotes and STATE.md shows 18 of 18 reachable"
+  "title": "Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass both gates, MANIFEST.csv shows 19 of 19 reachable, ledger rebuilt"
 }

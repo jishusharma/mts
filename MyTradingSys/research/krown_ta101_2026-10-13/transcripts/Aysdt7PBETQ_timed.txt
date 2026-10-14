@@ -1,0 +1,532 @@
+# Video ID: Aysdt7PBETQ
+# Title: The Last TA 101 Guide You'll Ever Need | Technical Analysis for Beginners
+# Published: 2026-03-09
+# Source: yt_dlp captions (auto); uploader: Krown
+# Analyst: Krown
+# Duration_s: 989
+# Word count: 3431
+# ---
+[00:00:00] When most people learn technical
+[00:00:01] analysis, they begin with indicators. I
+[00:00:03] know that I was there myself and
+[00:00:05] honestly, that is the wrong place to
+[00:00:07] begin. It will lead you down the wrong
+[00:00:09] path at the beginning. There are much
+[00:00:10] more important things to focus on at the
+[00:00:12] start that will massively pay off with
+[00:00:14] humongous dividends later on down the
+[00:00:16] road.
+[00:00:17] Here's the thing though, technical
+[00:00:18] analysis is not about predicting price.
+[00:00:20] I know that this is mind-blowing to many
+[00:00:21] people out there, but literally you
+[00:00:22] cannot predict price. And I'm speaking
+[00:00:24] as an evil market maker, at least a
+[00:00:25] former evil market maker. Authorized
+[00:00:27] trader was my official position as I
+[00:00:29] traded on the floor of New York Stock
+[00:00:30] Exchange ARCA in equity options and I
+[00:00:33] can assure you even with all of our
+[00:00:35] amazing models and everything, we could
+[00:00:37] not actually predict price with 100%
+[00:00:39] certainty. Now, we could come up with
+[00:00:40] probabilistic areas for price. That
+[00:00:43] could certainly be done, which will
+[00:00:44] actually go over in a different playlist
+[00:00:46] for the options.
+[00:00:47] However,
+[00:00:49] what technical analysis really is about
+[00:00:50] is about understanding behavior and then
+[00:00:52] how to apply that into a workable and
+[00:00:56] repeatable strategy system that is
+[00:00:59] essentially going to facilitate
+[00:01:00] generating consistent income. That is
+[00:01:02] the idea here. That does not mean we're
+[00:01:04] going to win win every trade. Doesn't
+[00:01:06] mean we're going to lose every trade, at
+[00:01:07] least if we are, we've done something
+[00:01:09] significantly wrong.
+[00:01:11] However, we want to come out on top over
+[00:01:14] time with a net gain to our account's
+[00:01:17] equity. That is the purpose of this
+[00:01:19] whole playlist here and I should I
+[00:01:20] should mention that this whole playlist
+[00:01:22] is massive in that I really really
+[00:01:26] really really want it to focus on
+[00:01:27] something that I don't see other TA 101
+[00:01:29] playlist focus on, which is system
+[00:01:31] creation and execution. So, we'll go
+[00:01:33] through the fundamentals of technical
+[00:01:35] analysis and how to interpret things and
+[00:01:37] then we'll go over how to actually set
+[00:01:38] it up into a workable and repeatable
+[00:01:41] program. This is where, like I said, I
+[00:01:43] want to really differentiate this
+[00:01:44] content versus other content that you
+[00:01:45] may have seen cuz I've been studying a
+[00:01:47] lot of other TA 101 playlist on YouTube
+[00:01:49] cuz I honestly, in the most egoic way
+[00:01:51] possible, I want this one to be the
+[00:01:53] best, the best one that you've ever seen
+[00:01:55] and I want to actually make an impact,
+[00:01:57] like a real change. So, what you're
+[00:01:59] going to learn in this series is first
+[00:02:01] and most importantly, trend
+[00:02:03] identification. Then we're going to go
+[00:02:05] into support and resistance, which is,
+[00:02:06] you know, kind of goes hand in hand with
+[00:02:08] trend. Then we're going to go into
+[00:02:09] indicators and confluence, and then of
+[00:02:11] course,
+[00:02:12] building a strategy and even much more
+[00:02:14] on top of that as well. But before we go
+[00:02:16] on, I really want to let you know that
+[00:02:18] you can actually get the full TA 101
+[00:02:20] playlist for free. And all of this, by
+[00:02:22] the way, is free. And there will be much
+[00:02:23] more videos coming out after this. So,
+[00:02:25] if you aren't into this content,
+[00:02:26] consider liking and subscribing. If you
+[00:02:28] want the full TA 101 playlist right now,
+[00:02:31] you can actually get that by going into
+[00:02:32] the description of this video below and
+[00:02:35] finding this link right here for
+[00:02:37] Teachable. And that will bring you to
+[00:02:38] this page in which you can enroll for
+[00:02:40] free and you will get access to all this
+[00:02:43] content. Content actually will not be
+[00:02:45] uploaded on YouTube as well. In fact,
+[00:02:46] there's almost about double the content
+[00:02:48] on Teachable. And on top of that, there
+[00:02:50] is going to come alongside quizzes as
+[00:02:52] well. So, you can actually test yourself
+[00:02:53] to figure out, "Oh, did I actually learn
+[00:02:55] this or not? Do I actually understand
+[00:02:56] this?" And it's going to enforce an
+[00:02:58] order of the content. Plus, you must
+[00:03:01] pass every quiz with 80% or better in
+[00:03:03] order to continue on. And yes, if you do
+[00:03:05] pass everything, especially with flying
+[00:03:07] colors, you'll actually get a cert-
+[00:03:08] certificate of completion amongst a few
+[00:03:11] other things as well. But I'll leave
+[00:03:12] those as a surprise for the people who
+[00:03:13] actually do get there. And again, I
+[00:03:15] really want people who are actually
+[00:03:16] putting effort into this to get a lot
+[00:03:18] out of it from a free playlist because,
+[00:03:20] you know, I understand not everyone has
+[00:03:22] the money for, you know, the Crown
+[00:03:23] Trading Bible or or other paid content,
+[00:03:25] wherever you may be going.
+[00:03:27] So, I want this to be good enough to get
+[00:03:29] people to that level. And then if you
+[00:03:31] want to go much deeper, then consider
+[00:03:33] the Crown Trading Bible or something of
+[00:03:35] that nature. And then also, I want to
+[00:03:37] give a major shoutout to our sponsor for
+[00:03:39] this whole play- playlist, which is
+[00:03:40] Blofin. They are the best crypto native
+[00:03:43] exchange that is no KYC that you can
+[00:03:46] trade crypto on and even commodities and
+[00:03:49] I think even some some of of indices as
+[00:03:50] well, most likely at this point. And
+[00:03:52] they will give you, specifically with
+[00:03:54] the link in the description below, which
+[00:03:55] is right here on the Blofin link, a 15%
+[00:03:58] cash back for every trade that you make,
+[00:04:01] which is effectively a 15% fee discount,
+[00:04:04] which is incredibly massive, cuz I don't
+[00:04:05] know of any other exchanges offering
+[00:04:07] this as of right now. So, again, if you
+[00:04:08] want to support this content, if you
+[00:04:09] want more content like this, the best
+[00:04:11] way to do that is to, of course, get on
+[00:04:14] with our sponsor, and they will let me
+[00:04:16] know. And again, not only will they give
+[00:04:18] you 15% cash back, but they're also
+[00:04:20] going to give you a bunch of
+[00:04:21] bonuses as well, like deposit bonuses, I
+[00:04:23] think up to $3,000, stuff like this,
+[00:04:25] which is incredibly valuable. And even
+[00:04:27] if you don't intend to use the account,
+[00:04:29] it's probably good to just snatch it up
+[00:04:31] right now, cuz then you can lock in all
+[00:04:32] of those perks for the future if you if
+[00:04:35] you do find that you actually need it.
+[00:04:36] And again, it is no KYC, that's pretty,
+[00:04:38] you know, rare in today's world, and can
+[00:04:41] be very valuable, of course, for people
+[00:04:42] who are in jurisdictions that, you know,
+[00:04:44] maybe are as not so permissive. But hey,
+[00:04:46] that's up to you. And like I said, all
+[00:04:48] of that's in the links in the
+[00:04:50] description below. All right, cool. And
+[00:04:52] this is also all free to you, too.
+[00:04:53] Anyways, let's go over what is technical
+[00:04:56] analysis. What what really is it? So,
+[00:04:58] basically, it is this, it is studying
+[00:04:59] price behavior. That's really all that
+[00:05:00] it is in essence. Where we are we're
+[00:05:02] becoming price historians, in a way.
+[00:05:04] It is based off of supply and demand,
+[00:05:06] and it reflects human psychology. Why?
+[00:05:08] Because it's all humans trading these
+[00:05:10] things. And then if you're thinking to
+[00:05:11] yourself, "But Crown, what about AI and,
+[00:05:13] you know, algorithms and bots and all
+[00:05:16] these sort of things?"
+[00:05:17] Sure, they're absolutely a part of the
+[00:05:19] game, but they're programmed by humans.
+[00:05:22] At the end of the day, there's really no
+[00:05:23] getting around it. Technical analysis is
+[00:05:26] simply the study of price behavior. In
+[00:05:28] other words, price is the final output
+[00:05:30] of millions of decisions. Fear, greed,
+[00:05:32] uncertainty, conviction, all of these
+[00:05:33] things go into a bar. When I look at
+[00:05:36] price over here on an 8 This is an 80 80
+[00:05:39] time frame just randomly here.
+[00:05:41] You know, you're on any on each and
+[00:05:42] every bar, you're looking at hundreds
+[00:05:44] thousands hundreds of thousands,
+[00:05:46] probably even millions of trades.
+[00:05:48] And this is showing you what happened
+[00:05:51] during that period and what people were
+[00:05:52] actually doing, like actually taking
+[00:05:55] actions on, not just their thoughts or
+[00:05:57] opinions, not like, you know, the spin
+[00:05:59] of a news media story, but what people
+[00:06:01] actually did, what where people actually
+[00:06:03] put their money, their hard-earned
+[00:06:04] money. That is represented in and only
+[00:06:07] in the price. Everything else outside of
+[00:06:09] that is a derivative and at best
+[00:06:12] slightly related and at worst completely
+[00:06:14] a, you know, just a loss of time. Now,
+[00:06:18] as we get through this, I want to
+[00:06:19] explain as well, TA doesn't tell you why
+[00:06:21] something moves. It can't, because we
+[00:06:23] can't know. And this is where news I
+[00:06:25] think gets it so [&nbsp;__&nbsp;] wrong.
+[00:06:28] We cannot know why something moved. We
+[00:06:30] can't know why these millions of people
+[00:06:33] did what they did. We're not going to go
+[00:06:35] ahead and interview all of them. And
+[00:06:36] even then, if we did interview all of
+[00:06:37] them, they don't even [&nbsp;__&nbsp;] know, cuz
+[00:06:39] they are emotionally driven. I'm not
+[00:06:41] saying like they're emotionally driven
+[00:06:42] stupid people, like we all are. We all
+[00:06:44] are. Like I am as well, and you are too.
+[00:06:46] Unless if you're like some monk living
+[00:06:47] in, I don't know, where do monks live?
+[00:06:49] Let me know in the comment section, but
+[00:06:52] but you know, we're all driven by
+[00:06:53] emotions.
+[00:06:55] Um
+[00:06:56] It's so it's basically telling you how
+[00:06:58] people are reacting. And that is
+[00:06:59] actually incredibly valuable in and of
+[00:07:01] itself anyways.
+[00:07:03] Okay.
+[00:07:04] Back into our slideshow here. Let's go
+[00:07:07] over why price matters most. Price shows
+[00:07:10] real supply and demand. It shows what
+[00:07:13] people are actually willing to pay or
+[00:07:14] sell
+[00:07:16] an asset for.
+[00:07:18] That is so important.
+[00:07:20] Because like I said, unless if you're an
+[00:07:21] insider, in which case
+[00:07:24] it's illegal,
+[00:07:25] but you know, to do at least in in
+[00:07:26] equities, in in crypto maybe less so, I
+[00:07:29] don't know the rules there. Um but if
+[00:07:31] you're an insider, okay, you got a
+[00:07:33] different edge there. That's fine.
+[00:07:34] You're probably not watching videos like
+[00:07:36] this. And also, I don't know, share the
+[00:07:37] information maybe.
+[00:07:40] Assuming you're not, which I'm not as
+[00:07:41] well, then the best way, the closest way
+[00:07:43] that we'll ever be to price action is by
+[00:07:45] looking at literal price. If we're
+[00:07:48] watching the news, if we're listening
+[00:07:49] to, you know, media stories and Twitter
+[00:07:51] and social media like this,
+[00:07:53] um we will always be one, the last
+[00:07:55] person to know because all that
+[00:07:56] information got filtered through who
+[00:07:58] knows how many people first over how
+[00:08:00] many days before it was even released.
+[00:08:02] And then two, it is naturally
+[00:08:04] subjective. We can two people can
+[00:08:07] experience the exact same event and have
+[00:08:09] wildly different based upon their frame
+[00:08:11] of reference. This is why actually um
+[00:08:14] witness like like witness testimony in
+[00:08:16] um in court cases is is very much like
+[00:08:19] not valuable in fact. Um
+[00:08:22] like we just don't even trust trust it.
+[00:08:24] Anyways,
+[00:08:25] we want to ignore the noise and think
+[00:08:27] objectively. And the best way to do that
+[00:08:28] is to focus on the price. Like I said,
+[00:08:30] this is what people are actually willing
+[00:08:31] to do as of right now when they put
+[00:08:34] their money on the line. Any everything
+[00:08:35] else is subjective. It's subjective
+[00:08:38] interpretation is at best with evil spin
+[00:08:40] on it at worst, which is what most of
+[00:08:42] these media places are. It's just a spin
+[00:08:44] It's spin central for more or less
+[00:08:47] entertainment is is what it is. I mean,
+[00:08:49] that's that's really what a lot of news
+[00:08:51] is, entertainment. Is it actually really
+[00:08:52] pertaining to your life?
+[00:08:54] Usually not. Anyways, let's go over the
+[00:08:56] main components of TA. This is
+[00:08:57] effectively what we're going to be um
+[00:08:59] documenting and studying throughout the
+[00:09:01] majority of this presentation. We're
+[00:09:03] going to go over first and certainly
+[00:09:04] most important, that is trend. Then
+[00:09:06] we'll go into support and resistance.
+[00:09:07] That is also important and kind of goes
+[00:09:09] hand in hand with trend actually.
+[00:09:11] Uh but we do separate them out here.
+[00:09:12] Then we're going to go into volatility.
+[00:09:14] That is absolutely the third most
+[00:09:15] important thing.
+[00:09:16] Then we'll go into momentum. That is a
+[00:09:17] distant fourth. And then indicators to
+[00:09:20] support all these effectively confirm or
+[00:09:23] or invalidate these statements.
+[00:09:26] Everything you see on a chart falls into
+[00:09:28] one of these categories.
+[00:09:29] And we'll cover each each one of these
+[00:09:31] in detail as well throughout this whole
+[00:09:33] playlist. So again, if you're interested
+[00:09:34] in this content, consider liking and
+[00:09:36] subscribing. It's the best way to get
+[00:09:37] the more of this content to you, and
+[00:09:38] I'll actually be even releasing more
+[00:09:40] content
+[00:09:41] on options. I'm actually already in the
+[00:09:43] midst of making a full-on options 101
+[00:09:46] playlist,
+[00:09:47] which will be released a little bit
+[00:09:48] later.
+[00:09:49] You know, let's say maybe like in a
+[00:09:50] month from this date, perhaps sooner
+[00:09:52] than that as well.
+[00:09:54] So anyways,
+[00:09:55] there is an order to how they should be
+[00:09:57] used. And that's where most beginners go
+[00:10:00] wrong. They put in They put so much
+[00:10:02] importance on momentum,
+[00:10:03] but not so much on trend. And without
+[00:10:06] the context of trend, momentum is
+[00:10:07] [&nbsp;__&nbsp;] meaningless. It can have you do
+[00:10:09] be doing the very wrong things, in fact.
+[00:10:13] So let's go into a naked chart right
+[00:10:14] here. Nice little naked chart.
+[00:10:17] And
+[00:10:18] what do indicators actually Or sorry, um
+[00:10:21] before indicators, you should always be
+[00:10:23] able to answer two questions.
+[00:10:25] Is the market trending or ranging?
+[00:10:28] And where has price reacted before? If
+[00:10:30] you can answer these two questions,
+[00:10:32] you're already in a pretty good state.
+[00:10:34] Now, it's very easy to do in hindsight
+[00:10:36] here. It's like, oh, what's this? Whole
+[00:10:38] area right here. That's an uptrend. Duh.
+[00:10:41] Why? Because it's going generally up
+[00:10:43] through that whole period of time. Okay,
+[00:10:45] fair enough. That is actually valid and
+[00:10:47] and certainly valuable.
+[00:10:49] And then of course, where is price
+[00:10:50] reacted before? Well, you know, you can
+[00:10:51] if you pull back over here, we see this
+[00:10:53] area. Okay, boom, boom. Also becomes
+[00:10:56] this area over here, this area right
+[00:10:57] here. Boom, boom. This one right here.
+[00:11:00] Boom and boom. This one right here.
+[00:11:02] Boom, boom, boom, boom. All of these
+[00:11:04] things certainly do matter, but we need
+[00:11:06] to put them in the context.
+[00:11:08] And of course, why is this an uptrend?
+[00:11:10] Higher highs and higher lows. More on
+[00:11:12] that in the next video. If we're going
+[00:11:13] to go to a downtrend, well, be this
+[00:11:15] right here. Lower lows and lower highs,
+[00:11:17] of course.
+[00:11:18] And then of course, we have our obvious
+[00:11:19] consolidation zones as well, where price
+[00:11:20] is effectively ranging sideways between
+[00:11:22] two major highs and two major lows. Like
+[00:11:25] see exactly right here, which took This
+[00:11:27] was a pretty nasty one for, you know,
+[00:11:28] 6-7 months. Anyways, if you can't answer
+[00:11:31] these questions indicators, indicators
+[00:11:33] will only confuse you and that is why I
+[00:11:36] really want to go deep into
+[00:11:38] fundamentally understanding trend and
+[00:11:40] structure and then how to get that
+[00:11:42] without indicators first. Then we're
+[00:11:44] going to apply indicators to get these
+[00:11:45] as well, but without understanding how
+[00:11:49] to do this, it's kind of like the same
+[00:11:50] as as like being given a calculator, but
+[00:11:52] you don't know how to do simple
+[00:11:53] addition.
+[00:11:54] It's like, yeah, you can just do it on
+[00:11:55] the calculator, but when push comes to
+[00:11:57] shove and maybe, you know, you you you
+[00:12:00] you know, you do something wrong, you're
+[00:12:02] not going to be able to figure it out as
+[00:12:03] well
+[00:12:04] as you would have if you actually
+[00:12:06] understood, you know, the fundamentals
+[00:12:08] of it.
+[00:12:09] Anyways, let's go into
+[00:12:11] the indicators, the truth, not the hype
+[00:12:14] here. So, what do indicators actually
+[00:12:15] do? They're measuring price in a
+[00:12:17] mathematical formula.
+[00:12:18] They react, they do not predict. Yes,
+[00:12:20] that's right, they are lagging,
+[00:12:23] which as I'd argue is incredibly
+[00:12:25] valuable.
+[00:12:26] And they add context, not certainty. We
+[00:12:29] cannot have certainty. Anytime you hear
+[00:12:30] someone talk about certainty when it
+[00:12:31] comes to trading or investing, run the
+[00:12:33] other way because I can assure you after
+[00:12:34] doing this for more than 15 years, at
+[00:12:36] least I haven't found a way to to know
+[00:12:38] certainty.
+[00:12:39] So, the only thing I'm certain about is
+[00:12:40] [&nbsp;__&nbsp;] taxes.
+[00:12:43] That's very certain, in fact. Anyways,
+[00:12:46] indicators don't move markets. They
+[00:12:48] don't do anything like that. They just
+[00:12:49] measure what price has already done and
+[00:12:51] they can validate
+[00:12:53] one of those factors of price that we
+[00:12:56] went over earlier for you in a
+[00:12:57] mathematical formula so that you have an
+[00:12:59] output that effectively equates to a one
+[00:13:01] or a zero. Is it a yes or is it a no? If
+[00:13:04] it's a if it's a one, we do this. If
+[00:13:05] it's a zero, we do that. Maybe we do
+[00:13:07] nothing at all. You know, that is very
+[00:13:09] important to understand.
+[00:13:11] Anyways,
+[00:13:15] as we move through this, I'm going to go
+[00:13:17] through
+[00:13:18] the right mental model and how to read
+[00:13:19] chart from a beginner framework, which
+[00:13:22] honestly, the beginner framework is
+[00:13:24] something that you will take with you
+[00:13:25] the whole way through. Being a
+[00:13:27] professional trader, being a very
+[00:13:28] advanced trader is honestly just doing
+[00:13:30] the fundamentals
+[00:13:32] really [&nbsp;__&nbsp;] well. And I people hate
+[00:13:35] that because they think at like a high
+[00:13:36] level you're doing something different.
+[00:13:38] You're not. I mean, you could employ
+[00:13:40] different, you know, instruments like
+[00:13:41] options and stuff like this. Like so
+[00:13:43] that's for another playlist, another big
+[00:13:44] playlist, let's say. Um but
+[00:13:48] we don't really need to go super exotic
+[00:13:50] on this. In fact, the the more that I
+[00:13:51] see people go exotic and when I've tried
+[00:13:53] to go more and more exotic on coming up
+[00:13:55] with strategies and different ways of,
+[00:13:57] you know, of of of of of implementing
+[00:13:59] indicators and whatnot,
+[00:14:01] it's just led me to more confusion and
+[00:14:03] generally not better results, actually.
+[00:14:05] So, whoops. Getting ahead of myself
+[00:14:07] there. So, let's go over the the order
+[00:14:10] of importance here. And this is also
+[00:14:12] effectively the next few videos. One,
+[00:14:14] we're going to identify trend or range.
+[00:14:17] Two, we're going to mark key levels,
+[00:14:19] that's your structure. Three, we're
+[00:14:20] going to check momentum and volatility.
+[00:14:23] And four, we're going to use indicators
+[00:14:25] for confirmation of these. Then we're
+[00:14:27] going to patch that up into a testable
+[00:14:30] format, effectively recreating the
+[00:14:32] scientific method as pertaining to
+[00:14:35] trading. Then we're going to test that.
+[00:14:37] Then we're going to document the
+[00:14:39] results, figure out if it's applicable
+[00:14:41] to us or not, and then either reiterate
+[00:14:42] on the process or
+[00:14:44] put it into motion.
+[00:14:47] And this simple order will save you
+[00:14:48] years of confusion. Most traders reverse
+[00:14:50] it or they just, you know,
+[00:14:51] discombobulate it completely, and that's
+[00:14:53] why trading feels random to them. And
+[00:14:55] you know, they have some some some some
+[00:14:56] successes over here, some losses over
+[00:14:58] there,
+[00:14:59] and it just gets confusing, you know?
+[00:15:01] You have some successes, so you think
+[00:15:02] you're doing something right, but at the
+[00:15:03] end of the day, you don't have
+[00:15:04] consistent successes. You don't see your
+[00:15:06] equity curve consistently going up into
+[00:15:07] the right, which is exactly what we
+[00:15:09] want.
+[00:15:10] All right.
+[00:15:12] So, what are we going to do next? We are
+[00:15:14] going to go over trend and market
+[00:15:16] structure, very, very, very, very, very
+[00:15:17] important. Like I said though, if you
+[00:15:19] want to jump ahead, if you're more, um
+[00:15:21] you know, self-learning, check out the
+[00:15:24] content on Teachable. Yes, the order is
+[00:15:27] enforced, but you can get access to all
+[00:15:29] of the content immediately
+[00:15:31] by going through it one by one, of
+[00:15:32] course, and the full content as well,
+[00:15:34] because we will not be uploading the
+[00:15:36] full content here on YouTube, um, just
+[00:15:38] because I think the back half of this
+[00:15:40] content is where things get a little bit
+[00:15:42] more mundane and boring, but it's also
+[00:15:43] the most important stuff, so I figure
+[00:15:45] only the most, you know, seriously
+[00:15:47] engaged people will go there, and these
+[00:15:49] are the people that I really want to
+[00:15:50] help the most cuz, you know, I feel like
+[00:15:52] I've been there myself as well. And for
+[00:15:55] those people, just go straight to this.
+[00:15:58] But for the people on YouTube, look,
+[00:15:59] like if you want to diddle-daddle
+[00:16:00] around, that's all good. Like there's
+[00:16:01] nothing wrong with that. Most people
+[00:16:03] don't need to go [&nbsp;__&nbsp;] you know,
+[00:16:04] balls-deep in all of this content to
+[00:16:06] learn what they need to learn. They just
+[00:16:07] need to learn what we're going to show
+[00:16:08] on YouTube, which is the main stuff with
+[00:16:11] trend, market structure, volatility,
+[00:16:13] momentum, and then putting that into a
+[00:16:15] package. Anyways, we'll leave it right
+[00:16:17] there. I'll be uploading the next video
+[00:16:18] next week. Again, if you want it right
+[00:16:21] now, check out the links in the
+[00:16:22] description below for Bluffin and for
+[00:16:24] the TA101 playlist, and I'll leave it
+[00:16:27] there, and I'll see you in the next one.
+[00:16:28] Take care.
