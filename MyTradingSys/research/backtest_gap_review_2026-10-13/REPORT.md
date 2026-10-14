@@ -215,3 +215,33 @@ to its owner rather than opening parallel cards.
   mark "verified 2026-10-xx" or REJECT, per playbook Part I 3a.
 - Not verified: Dukascopy ASK file availability for DEUIDXEUR; real DAX CFD spreads by minute; Deribit testnet behaviour beyond the
   support article; whether bookDepth bands can approximate the engine's book_imbalance.
+
+## 10. Desktop follow-up (JIS-NUC, 2026-10-13/14): source check and G2 RESULT
+### 10.1 Section 3 sources, opened 2026-10-13 from JIS-NUC (title/authors matched against the cited row)
+| Source | Result |
+|---|---|
+| arxiv 2512.22476 "AutoQuant ... Cryptocurrency Perpetual Futures" | verified 2026-10-13 (page mentions perpetuals, funding, slippage, overfitting) |
+| BIS WP 1087 "Crypto carry" (Schmeling, Schrimpf, Todorov) | verified 2026-10-13 |
+| Gerritsen et al., "The profitability of technical trading rules in the Bitcoin market", FRL 34 (repec) | verified 2026-10-13 (authors match; costs not checked) |
+| Liu & Tsyvinski, NBER w24877 "Risks and Returns of Cryptocurrency" | verified 2026-10-13 |
+| Shen, Urquhart & Wang, "Bitcoin intraday time series momentum" (Birmingham) | verified 2026-10-13 (abstract: first half-hour predicts last) |
+| Bakker, EUR thesis pdf (3,312 rules text found in the PDF) | verified 2026-10-13 (thesis, T3) |
+| Li, Wang, Wang, Yang, JAF 23(4) 2023 (articlegateway, opened in the browser pane) | verified 2026-10-13 (no profitable rule after data-snooping adjustment) |
+| arxiv 2108.09750 | verified as a page; title is "Fragmentation, Price Formation, and Cross-Impact in Bitcoin Markets", i.e. cross-impact, a looser fit than "order-flow work" in s3 |
+| Hudson & Urquhart (hull-repository.worktribe.com/output/2328042) | REJECT 2026-10-13: HTTP 403 (bot challenge), page did not open |
+| Deribit support article 28685385297053 | REJECT 2026-10-13: HTTP 403 (bot challenge) from curl; the browser-pane load timed out. G3 text stays "search snippet only" |
+| Bailey & Lopez de Prado (ideas.repec.org/a/rsk/journ4/2223785.html) | REJECT 2026-10-13: HTTP 404, wrong URL |
+| Deflated Sharpe (papers.ssrn.com/abstract=2460551) | REJECT 2026-10-13: HTTP 403 content blocked |
+REJECT here means "did not open or did not match", not "wrong"; the claim stays labelled [search] until a second route opens it.
+### 10.2 G2 RESULT: Dukascopy DEUIDXEUR ASK minus BID, 1-minute close, 10 weekdays 2026-09-28..2026-10-09
+ASK_candles_min_1.bi5 is served (HTTP 200 after backoff on 429). 15-minute buckets, Berlin time (UTC+2 in the window), 150 minute-pairs per bucket.
+| Berlin | median spread (index pt) | p90 |
+|---|---|---|
+| 07:00-08:00 | 2.65 | 2.68 |
+| 08:00-09:00 | 1.65 | 1.68 |
+| 09:00-11:00 | 1.15 | 1.18 |
+All 2,400 minute-pairs 07:00-11:00: median 1.19 pt. Spreads are flat inside each hour (the feed quotes a stepped spread), so the 15-minute table is three levels.
+Reading: the frozen cost table has 0.24 pt fee + 1 pt slippage on stop/timeout only (PRE_REG_DAX.md:17-18) and nothing on the target leg.
+For a short, the buy-to-cover target fill pays the ask: 1.15 pt from 09:00, 1.65 pt 08:00-09:00, 2.65 pt 07:00-08:00. Against a
+20 pt stop that is 0.06-0.13 R per trade, the same size as Tom's claimed 0.1-0.35 R edge. G2 is confirmed HIGH.
+Method: stdlib script, raw files kept off-repo; per minute `(ask_close - bid_close)/1000`; no forward fill; closed-market filler minutes dropped.
