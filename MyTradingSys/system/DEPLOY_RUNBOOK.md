@@ -41,6 +41,25 @@ Task `MTS-DailyHygiene` (06:30) runs `scripts/dev/daily_hygiene.py` (quick gate,
 `MyTradingSys/runtime/sched/hygiene_latest.md`, which STATUS.md embeds: a session reads its STATUS/GATE lines at boot and fixes a
 RED before new work. Registered by the same `register_cicd_tasks.ps1` call as the deploy job. Never deploy by hand while the job works.
 
+## Scheduled-task catch-up after the nightly power-off (2026-10-14, JIS-NB)
+JIS-NB is off ~02:00-10:30 IST, so the daily tasks (06:30-09:10) never run on time. `StartWhenAvailable` alone does not catch up: it fires
+~3 min after boot while no user is logged on and Task Scheduler drops it (event 332, principal ENG\jis Interactive/Limited), no retry.
+Logon sessions are ready ~2.5 min after logon event 7001, so the fix is a logon trigger delayed 10 min. Scripts (write-only here, the
+operator-side session runs them as the logged-in user):
+- `scripts\sched\add_logon_catchup.ps1` - dry run by default (reads tasks, prints the plan); `-Apply` adds the delayed logon trigger and turns
+  StartWhenAvailable on for MTS-DailyHygiene, MTS-Make-Status, MTS-Alert-Rate-Check, MTS-Audit-Rotation, MTS-Audit-Digest, MTS-Declutter-Backups,
+  MTS-Orphan-Watchdog, MTS-Retention, `MTS testnet status`, MTS-CDriveCare (Retention and testnet status had it off). Skips a missing task or one that
+  already has a logon trigger; keeps actions/principal; touches no other task. Effect to expect: each job also starts at every logon.
+- `scripts\sched\register_cicd_tasks.ps1 -Repo <live tree>` - new `-Repo` lets a worktree copy register tasks that point at the live tree;
+  MTS-DailyHygiene now registers with both its 06:30 trigger and the delayed logon trigger (a re-run keeps the catch-up).
+- `scripts\sched\register_live_mirror.ps1 -Repo <live tree> [-Apply]` - MTS-LiveMirror every 5 min at :01 :06 :11 ... (clear of AutoDeploy :00/:15/:30/:45
+  and Backup :07/:22/:37/:52) running `live_mirror.py publish`; refuses a repo without `.mts_live`; dry run by default.
+- `scripts\core\mode.ps1` re-registers MTS-Supervisor with BOTH triggers (far-future Once + AtLogOn delay PT1M30S) and `-AllowStartIfOnBatteries
+  -DontStopIfGoingOnBatteries -MultipleInstances IgnoreNew -ExecutionTimeLimit 0`. The logon trigger is the stack's only boot recovery and used to
+  be lost on every mode.ps1 run; the default 72 h limit would also have killed the supervisor.
+- Tests: `scripts/dev/test_sched_scripts.py` (static reads of the .ps1 files plus the dry-run/refusal paths on Windows; gated via run_extra_tests).
+  Never run `install_backup_task.ps1` or `register_cicd_tasks.ps1` to "test" them: they have no dry run and register for real.
+
 ## JIS-NUC notes (2026-10-11, from NUC session 1414Z)
 - NUC tree: `C:\Users\E-ngineers\IdeaProjects\mts-dsa` (worktree of `...\BinanceDataFeed\.git`). `F:\MTS\repo` is NOT a git repo there (only `MyTradingSys\` and `scripts\`
   copies); desk tasks 20261011-140307 and 20261011-140621 and CODEX_START.md name it by mistake: read it as the mts-dsa tree. Codex tree: `F:\MTS\mts-codex` (branch nuc/codex-first).
@@ -58,7 +77,11 @@ RED before new work. Registered by the same `register_cicd_tasks.ps1` call as th
   re-time there with `MTS_GATE_JOBS=1` vs default and add the row. Step 4 (pytest) is the next cut (xdist or per-path processes).
 - MTS-Backup moved to :07/:22/:37/:52 (`install_backup_task.ps1`, offset 7 min past midnight + 15 min repeat) so it no longer
   starts in the same minute as MTS-AutoDeploy (:00/:15/:30/:45). Not re-registered by this session; on each host run
-  `powershell -File scripts\dev\install_backup_task.ps1` (needs the live tree's repo path: pass `-Repo <path>` as it is registered today).
+  `powershell -File scripts\dev\install_backup_task.ps1 -Repo <path>` (the tree the task runs from today: runtime_data\launch-backup.vbs names it).
+  The GitHub repo is PUBLIC (2026-10-11), so snapshots go to the local bare repo, git remote `backup` (F:\MTS_backup.git). The installer now passes
+  `--remote backup` and refuses a repo with no `backup` remote; `backup_snapshot.py` defaults to `backup` and refuses origin (by name or same URL)
+  unless `--allow-origin`. Before this, re-running the installer would have pushed uncommitted/untracked snapshots to the public origin.
+  Re-running replaces the live task's `wscript launch-backup.vbs` action with `pythonw.exe` directly (also windowless).
 
 ## Zero-cost idle ticks (Q41 design, 2026-10-12, JIS-NUC) - NOT BUILT, B164 untested
 - Measured: one idle `relay.py kick` (git ref origin/fast-track, no model) = 0.8 s wall, ~0 CPU, 0 tokens. An idle App
