@@ -11,7 +11,7 @@
   "goal": "Repeat T2 and T4 for trend continuation (pullback to VWAP/value in a volume-backed trend; target next high-volume area) and breakout/break-in (balance resolves with proof). Source: conditions/setup_type_rules.md sections 5-6.",
   "id": "tom-btc-other-setups",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "layers": [
     "tom"
   ],
@@ -21,6 +21,12 @@
   "refine_tries": 0,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-14T20:35:45Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/tom_btc_2026-10-13/",

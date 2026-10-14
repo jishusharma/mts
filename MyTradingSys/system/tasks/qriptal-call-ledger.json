@@ -9,7 +9,7 @@
   "goal": "One reviewed row per Qriptal statement that could be a call, from the 22 raw transcripts, so the scorer has a source of truth. Lab run 2026-10-14 (layer_lab/reports/2026-10-14_qriptal-score-binance.md) BLOCKED the scorer for lack of this ledger. Rules: research/qriptal_2026-10-10/RULES.md.",
   "id": "qriptal-call-ledger",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "layers": [
     "callers"
   ],
@@ -19,6 +19,12 @@
   "refine_tries": 0,
   "refined_by": "opus-2026-10-14 (split after lab BLOCKED twice)",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-14T20:35:45Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/qriptal_2026-10-10/ledger.py",
