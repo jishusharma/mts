@@ -4,9 +4,9 @@
   "week_resets": 1792472898,
   "week_used": 18.0,
   "window_resets": 1791941636,
-  "window_used": 0
+  "window_used": 1.0
  },
- "at": "2026-10-13T21:01:10Z",
+ "at": "2026-10-13T21:37:53Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 4.0,
-  "window_pts": 0.0,
-  "window_runs": 1
+  "window_pts": 1.0,
+  "window_runs": 2
  },
  "runs": [
+  {
+   "at": "2026-10-13T21:33:46Z",
+   "card": "tom-btc-chart-lab",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 241,
+   "tokens_out": 17997,
+   "tokens_total": 2426165,
+   "tokens_uncached": 90856,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-13T21:00:02Z",
    "card": "qriptal-score-binance",
@@ -152,21 +167,6 @@
    "note": "Codex credits ran out; the card stays ready, is not charged a try, and the GPT lane is marked down",
    "outcome": "LIMIT",
    "seconds": 68,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
-  },
-  {
-   "at": "2026-10-12T19:33:36Z",
-   "card": "rv02-dax-harness-fixes",
-   "effort": "high",
-   "kind": "audit",
-   "model": "gpt-6-astra",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 815,
    "tokens_out": null,
    "tokens_total": null,
    "tokens_uncached": null,

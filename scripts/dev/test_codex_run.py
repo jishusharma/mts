@@ -431,6 +431,75 @@ class LimitFallback(unittest.TestCase):
             self.assertEqual((dest / "tracked.txt").read_text(encoding="utf-8"), "v2")
             self.assertTrue((dest / "new.png").is_file())
 
+    def test_salvage_clears_unmerged_and_staged_files(self):
+        # JIS-NUC 2026-10-14: a stash-pop conflict left INDEX.md unmerged (no MERGE_HEAD) plus staged new files; every tick
+        # then died on `git checkout -- INDEX.md` ("path is unmerged") and the lab stayed idle.
+        import subprocess
+        with tempfile.TemporaryDirectory() as d:
+            wt, home = Path(d) / "wt", Path(d) / "home"
+            wt.mkdir()
+            run = lambda *a: subprocess.run(["git", "-C", str(wt), "-c", "user.name=t", "-c", "user.email=t@t", *a],
+                                            capture_output=True)
+            run("init", "-q")
+            (wt / "INDEX.md").write_text("v1\n", encoding="utf-8")
+            run("add", ".")
+            run("commit", "-qm", "i")
+            (wt / "INDEX.md").write_text("mine\n", encoding="utf-8")
+            run("stash", "-q")
+            (wt / "INDEX.md").write_text("theirs\n", encoding="utf-8")
+            run("commit", "-qam", "t")
+            (wt / "staged_new.md").write_text("n\n", encoding="utf-8")
+            run("add", "staged_new.md")
+            run("stash", "pop")
+            self.assertIn("UU INDEX.md", run("status", "--porcelain").stdout.decode())
+            dest, n = R.salvage(wt, home, "tick", datetime(2026, 10, 14, 15, 0, tzinfo=timezone.utc))
+            self.assertEqual(n, 2)
+            self.assertEqual(R.changed_files(wt), [])
+            self.assertEqual((wt / "INDEX.md").read_text(encoding="utf-8"), "theirs\n")
+            self.assertTrue((dest / "staged_new.md").is_file())
+            self.assertIn("mine", (dest / "INDEX.md").read_text(encoding="utf-8"))
+
+    def _two_branches(self, d, lab_file, trunk_file):
+        import subprocess
+        wt = Path(d) / "wt"
+        (wt / "MyTradingSys/research/layer_lab").mkdir(parents=True)
+        run = lambda *a: subprocess.run(["git", "-C", str(wt), "-c", "user.name=t", "-c", "user.email=t@t", *a], capture_output=True)
+        run("init", "-q")
+        run("symbolic-ref", "HEAD", "refs/heads/trunk")   # git < 2.28 (JIS-NUC runs 2.24) has no init -b
+        run("config", "user.name", "t")   # merge_trunk commits without -c: CI runners may have no global identity
+        run("config", "user.email", "t@t")
+        for f in {lab_file, trunk_file, R.LAB + "/INDEX.md"}:
+            (wt / f).write_text("base\n", encoding="utf-8")
+        run("add", ".")
+        run("commit", "-qm", "base")
+        run("switch", "-q", "-c", "lab")
+        (wt / lab_file).write_text("lab\n", encoding="utf-8")
+        run("commit", "-qam", "lab")
+        run("switch", "-q", "trunk")
+        (wt / trunk_file).write_text("trunk\n", encoding="utf-8")
+        run("commit", "-qam", "trunk")
+        run("switch", "-q", "lab")
+        return wt, run
+
+    def test_merge_trunk_resolves_a_generated_index_clash(self):
+        # JIS-NUC 2026-10-14 16:00Z: the tick's merge stopped on INDEX.md (generated), left MERGE_HEAD, every later tick failed.
+        with tempfile.TemporaryDirectory() as d:
+            idx = R.LAB + "/INDEX.md"
+            wt, run = self._two_branches(d, idx, idx)
+            R.merge_trunk(wt, "trunk")
+            self.assertEqual(R.changed_files(wt), [])
+            self.assertFalse((wt / ".git/MERGE_HEAD").exists())
+            self.assertEqual(run("merge-base", "--is-ancestor", "trunk", "HEAD").returncode, 0)
+
+    def test_merge_trunk_aborts_a_real_clash_and_leaves_the_tree_clean(self):
+        with tempfile.TemporaryDirectory() as d:
+            wt, run = self._two_branches(d, "code.py", "code.py")
+            with self.assertRaises(SystemExit) as e:
+                R.merge_trunk(wt, "trunk")
+            self.assertIn("code.py", str(e.exception))
+            self.assertEqual(R.changed_files(wt), [])
+            self.assertFalse((wt / ".git/MERGE_HEAD").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

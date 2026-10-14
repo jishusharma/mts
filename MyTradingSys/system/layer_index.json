@@ -122,7 +122,8 @@
         "MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md",
         "MyTradingSys/backtest/layers/fabio/FABIO_OF_REPORT.md",
         "MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md",
-        "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md"
+        "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md",
+        "MyTradingSys/research/orderflow_views_2026-10-14"
       ],
       "roadmap": [
         "MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md"
