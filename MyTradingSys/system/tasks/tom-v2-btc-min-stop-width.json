@@ -3,7 +3,9 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-13T06:33:20Z",
-  "depends_on": [],
+  "depends_on": [
+    "tom-v2-dax-dev-backtest"
+  ],
   "done_when": "The worked example of spec section 11.4 passes as a test, min_width off leaves an existing tom_bt fixture run unchanged, and the lookback 10/20/40 floors for 2026-06-25 are one line in the card result.",
   "from_inbox": "",
   "goal": "Give BTC research replays the minimum stop width of spec section 11.4: noise unit N5, noise floor 0.88 x N5, fee floor round-turn cost / 0.25, no trade below the larger one. Research replays only; live BTC output unchanged. Start only if DAX_BT_V2.md says PASS.",

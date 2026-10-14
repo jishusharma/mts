@@ -7,7 +7,8 @@ GitHub: jishusharma1985 invited as write collaborator 2026-10-14 (accept pending
 ```
 MTS builder session. Read CLAUDE.md and STATUS.md (regenerate first). One task per session; ship, overwrite this file, `sync.py where` clean.
 0. `python scripts/dev/sync.py start` from a worktree; `tasks.py next` now skips claimed cards (b172-trim is claimed by JIS-NUC).
-   Q59. host=JIS-NUC Card codex-lab-unstick-nuc (SONNET, M): `tasks.py brief codex-lab-unstick-nuc` (the GPT lab has been idle since ~08:00Z on an unmerged INDEX.md; evidence research/GPT_STATUS_2026-10-14.md). DONE when: `codex_run.py status` on JIS-NUC prints no ERROR and no NEEDS A LOOK.
+   Q59. DONE 2026-10-14 codex-lab-unstick-nuc: lab ticks 17:00Z+17:30Z ran cards, no ERROR, tree level with origin; tom-btc-chart-lab (80 charts) on fast-track.
+   Q65. host=JIS-NUC Lab watch: `python scripts/dev/codex_run.py status`; lc-levels-hold ended INCOMPLETE 17:05Z (Luna sent an empty command and quit). If its next try also ends INCOMPLETE/BLOCKED, read the log, split or sharpen the card (`tasks.py` edit) so Luna can finish it. DONE when: lc-levels-hold is DONE with a report, or reworked and the lab's next run on it is not INCOMPLETE.
    Q60. host=any (after DSA closes desk row 20261014-134217-standin-refine-lc-event-table-trial; DSA_STANDIN_PROMPT.md shipped 8530343b) Card dsa-claude-standin-prompt: `desk.py list --all`, rerun `tasks.py check lc-event-table` + `tasks.py lint` once. DONE when: card done with result "trial: lc-event-table lint PASS/FAIL".
    Q61. DONE 2026-10-14 rv08-relay-host-tag-edge-cases: FIX-FIRST->fixed, 7 tests (5 red first), 48 green; report research/revalidation/RV08_2026-10-14.md
    Q62. DONE 2026-10-14 lab-candle-close-dev spot-check: MATCH gross -0.0166378 (2023-03-30 03:00Z event vs raw Binance 1m), INDEX row updated via card result.
