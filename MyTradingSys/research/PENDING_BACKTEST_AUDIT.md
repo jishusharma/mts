@@ -1,6 +1,7 @@
 # PENDING - BACKTEST AUDIT + PLANNING DOC
 # Written 2026-09-21T12:50Z by MTS-2026-09-21-0729Z close.
-# Status: NOT DONE. Carry into next session.
+# Status: DELIVERED AS DRAFT 2026-09-21 (research/BACKTEST_METHOD_2026-09-21.md, written from excerpts, no commands run).
+# SUPERSEDED 2026-10-09 by research/bigtrade_2026-10-09/PLAN.md. Fixed under F-BT-03.
 
 ## GOAL
 

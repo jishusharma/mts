@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1792472898,
-  "week_used": 18.0,
-  "window_resets": 1791941636,
-  "window_used": 1.0
+  "week_used": 41.0,
+  "window_resets": 1792015537,
+  "window_used": 0
  },
- "at": "2026-10-13T21:37:53Z",
+ "at": "2026-10-14T17:06:10Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,18 +19,33 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 4.0,
-  "window_pts": 1.0,
-  "window_runs": 2
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-10-14T17:05:22Z",
+   "card": "lc-levels-hold",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "INCOMPLETE",
+   "seconds": 42,
+   "tokens_out": 1511,
+   "tokens_total": 314201,
+   "tokens_uncached": 41330,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-13T21:33:46Z",
    "card": "tom-btc-chart-lab",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": ": Layer tests: PASS\nStep 5c: Options tests: PASS\nStep 6: Backtest tests: SKIP\n======================================================================\nFAILED: 3 s",
+   "outcome": "SHIP_FAILED",
    "seconds": 241,
    "tokens_out": 17997,
    "tokens_total": 2426165,
@@ -152,21 +167,6 @@
    "note": "",
    "outcome": "DONE",
    "seconds": 545,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
-  },
-  {
-   "at": "2026-10-12T20:00:07Z",
-   "card": "lab-audit-fabio-ledger-frames",
-   "effort": "high",
-   "kind": "audit",
-   "model": "gpt-6-astra",
-   "note": "Codex credits ran out; the card stays ready, is not charged a try, and the GPT lane is marked down",
-   "outcome": "LIMIT",
-   "seconds": 68,
    "tokens_out": null,
    "tokens_total": null,
    "tokens_uncached": null,
