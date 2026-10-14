@@ -521,7 +521,27 @@ def refresh(wt):
         git(wt, "switch", "--quiet", "-c", branch, f"origin/{sync.TRUNK}")
     else:
         git(wt, "switch", "--quiet", branch)
-        git(wt, "merge", "--quiet", f"origin/{sync.TRUNK}")
+        merge_trunk(wt, f"origin/{sync.TRUNK}")
+
+
+def merge_trunk(wt, ref):
+    """Merge `ref` into the lab branch. A clash only on the generated INDEX.md takes the trunk's copy (the next delivery
+    regenerates it); any other clash aborts the merge so the tree stays clean and says which files need a session.
+    JIS-NUC 2026-10-14: a merge stopped on INDEX.md left MERGE_HEAD behind and every later tick died on it."""
+    if (Path(wt) / ".git" / "MERGE_HEAD").exists():
+        git(wt, "merge", "--abort", check=False)
+    m = git(wt, "merge", "--quiet", "--no-edit", ref, check=False)
+    if m.returncode == 0:
+        return
+    clash = git(wt, "diff", "--name-only", "--diff-filter=U", check=False).stdout.split()
+    if clash and set(clash) <= {f"{LAB}/INDEX.md"}:
+        git(wt, "checkout", "--theirs", "--", *clash)
+        git(wt, "add", "--", *clash)
+        git(wt, "commit", "--quiet", "--no-edit")
+        return
+    git(wt, "merge", "--abort", check=False)
+    raise SystemExit(f"codex_run: merging {ref} into the lab tree clashes on {', '.join(clash) or m.stderr.strip()[-200:]}; "
+                     "merge aborted, tree clean; a session merges by hand")
 
 
 def execute(cmd, text, log, timeout_s, env):
