@@ -1,9 +1,9 @@
 {
-  "detail": "allowance window reset",
+  "detail": "Codex run finished",
   "fails": 0,
   "heartbeat": "2026-10-14T22:30:02Z",
   "last_error": "2026-10-14T20:35:45Z",
-  "last_ok": "2026-10-14T22:30:02Z",
+  "last_ok": "2026-10-14T22:33:22Z",
   "last_probe": "",
   "override": "",
   "reason": "",

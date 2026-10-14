@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1792472898,
-  "week_used": 41.0,
-  "window_resets": 1792015537,
-  "window_used": 1.0
+  "week_used": 57.0,
+  "window_resets": 1792035216,
+  "window_used": 0
  },
- "at": "2026-10-14T19:06:30Z",
+ "at": "2026-10-14T22:34:10Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 4.0,
-  "window_pts": 1.0,
-  "window_runs": 4
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-10-14T22:33:22Z",
+   "card": "lc-levels-hold",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 42,
+   "tokens_out": 2402,
+   "tokens_total": 275975,
+   "tokens_uncached": 42917,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-14T19:05:24Z",
    "card": "tom-btc-event-study",
@@ -157,21 +172,6 @@
    "tokens_uncached": 47653,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-13T15:30:02Z",
-   "card": "tom-profile-shape-parity",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 139,
-   "tokens_out": 8268,
-   "tokens_total": 769710,
-   "tokens_uncached": 100194,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
