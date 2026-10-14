@@ -44,6 +44,7 @@ STALE_H = 1  # kick: the same handoff id launched this long ago and never rewrit
 MAX_BYTES = int(os.environ.get("MTS_RELAY_MAX_BYTES") or 12288)  # handoff size cap: every relay session reads the whole file
 RUNS_NAME = "relay_runs.jsonl"
 HOST_ERR = "go with no unblocked open task for host"  # == handoff_lint.HOST_ERR
+NONE_ERR = "go with no unblocked open task:"  # == handoff_lint.NONE_ERR
 RUNS_KEEP = 400
 KICK_REF ="origin/fast-track:MyTradingSys/system/NEXT_SESSION.md"
 HDR = re.compile(r"<!-- relay: (go|stop)(?: reason=([^>]*?))? depth=(\d+) id=([0-9a-f]+) -->")
@@ -310,6 +311,8 @@ def cmd_kick(a):
     for e in lint_file(a.file or "x", "go", root, me, text):
         if e.startswith(HOST_ERR):
             return idle("no unblocked task for host %s (%s)" % (me, e.split(": ", 1)[-1]))
+        if e.startswith(NONE_ERR):  # only DONE/blocked rows: a KICK would pay for an empty session (RV08)
+            return idle("no unblocked open task in handoff %s" % hid)
     prev = read_lock()
     if prev:
         age = now() - prev["_t"]
