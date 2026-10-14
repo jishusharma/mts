@@ -12,6 +12,9 @@ following lines indented deeper belong to the same task.
   - a task may start `Qn. host=<NAME> ...` (NAME = a machine name or `any`; absent = any): with `host` set, lint() counts it
     runnable only on that host. The tag is stripped before done/blocked is decided, so `Qn. host=JIS-NB (after Qm)` is blocked.
     One tag, only right after `Qn.` (two tags or a tag on a continuation line = error); a node name's domain suffix is ignored.
+  - a task may also carry `lane=CODEX` or `lane=DSA` (after `Qn.`, before or after the host tag): it is run-and-report work for the GPT
+    layer lab or the DSA AI Bridge, so `relay.py route` posts it to that lane once and no Claude relay session runs it. Parsed here
+    (one parser for lint, QUEUE and route): `t["lane"]` is CODEX / DSA / None; two lane tags or another value = error.
   - `--go` needs at least one unblocked open task; `--stop` is refused while one exists (stop only when all are done or blocked)
 """
 import re
@@ -24,6 +27,9 @@ RESTATED = ["never commit to master", "testnet only", "never the live tree", "wo
 TASK = re.compile(r"^(\s+)Q(\d+)\.\s*(.*)$")
 HOST = re.compile(r"^host=(\S+)\s*", re.I)
 HOST_ANY = re.compile(r"(?:^|\s)host=\S+", re.I)
+LANE = re.compile(r"^lane=(\S+)\s*", re.I)
+LANE_ANY = re.compile(r"(?:^|\s)lane=\S+", re.I)
+LANES = ("CODEX", "DSA")
 HOST_ERR = "go with no unblocked open task for host"
 NONE_ERR = "go with no unblocked open task:"
 PATH = re.compile(r"[\w.\-]+(?:/[\w.\-]+)+\.(?:py|md|json|csv|java|ps1|yml|yaml|txt)\b")
@@ -49,9 +55,20 @@ def parse_tasks(lines):
     for t in tasks:
         t["tags"] = len(HOST_ANY.findall(t["first"]))
         t["cont_tag"] = any(HOST_ANY.search(ln) for ln in t["lines"][1:])
-        m = HOST.match(t["first"])
-        t["host"] = m.group(1) if m else None
-        f = t["first"] = t["first"][m.end():] if m else t["first"]
+        t["lane_tags"] = len(LANE_ANY.findall(t["first"]))
+        t["host"] = t["lane"] = None
+        f = t["first"]
+        while True:   # `host=` and `lane=` tags in either order, only right after `Qn.`
+            m = HOST.match(f) if t["host"] is None else None
+            if m:
+                t["host"] = m.group(1)
+            else:
+                m = LANE.match(f) if t["lane"] is None else None
+                if not m:
+                    break
+                t["lane"] = m.group(1).upper()
+            f = f[m.end():]
+        t["first"] = f
         t["state"] = "done" if f.startswith("DONE") else "blocked" if f.startswith("(after") else "open"
     return tasks
 
@@ -97,6 +114,8 @@ def lint(text, root, want="go", host=None):
             errs.append("%s has %d host= tags: keep one (`host=<NAME>` or `host=any`) right after `%s.`" % (t["id"], t["tags"], t["id"]))
         if t["cont_tag"]:
             errs.append("%s has host= on a continuation line: it is read only right after `%s.`, move it there" % (t["id"], t["id"]))
+        if t["lane_tags"] > 1 or (t["lane"] and t["lane"] not in LANES):
+            errs.append("%s: use one `lane=CODEX` or `lane=DSA` tag right after `%s.` (got %d, value %r)" % (t["id"], t["id"], t["lane_tags"], t["lane"]))
         if t["state"] != "open":
             continue
         body = "\n".join(t["lines"])
