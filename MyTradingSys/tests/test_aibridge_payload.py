@@ -27,11 +27,23 @@ def test_payload_files_exist_and_versions_agree():
     assert "L.VERSION = '0.7.0'" in (PAYLOAD / "extension/loop.js").read_text(encoding="utf-8")
 
 
+def _blob_eol(p):
+    """`git ls-files --eol` index column for p ('i/lf', 'i/crlf', ...), or None when git cannot say (no repo / untracked)."""
+    r = subprocess.run(["git", "-C", str(ROOT), "ls-files", "--eol", "--", str(p.relative_to(ROOT)).replace(os.sep, "/")],
+                       capture_output=True, text=True)
+    return r.stdout.split()[0] if r.returncode == 0 and r.stdout.strip() else None
+
+
 def test_payload_is_ascii_lf_no_bom():
+    # LF is checked on the committed blob (index), not the checkout: a Windows runner's autocrlf turns the working copy into CRLF.
     for p in list(PAYLOAD.rglob("*.ps1")) + list(PAYLOAD.rglob("*.js")) + list(PAYLOAD.rglob("*.json")):
         b = p.read_bytes()
         assert not b.startswith(b"\xef\xbb\xbf"), p
-        assert b"\r" not in b, p
+        eol = _blob_eol(p)
+        if eol is None:
+            assert b"\r" not in b, p   # no git metadata: fall back to the bytes on disk
+        else:
+            assert eol in ("i/lf", "i/none"), f"{p}: committed blob is {eol}"
         b.decode("ascii")
 
 
