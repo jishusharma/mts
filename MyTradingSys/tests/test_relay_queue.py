@@ -35,11 +35,11 @@ DESK = "MyTradingSys/system/desk_queue"
 CARDS = "MyTradingSys/system/tasks"
 
 
-def run(home, *args, host="JIS-NB"):
+def run(home, *args, host="JIS-NB", script=None, cwd=None):
     env = {k: v for k, v in os.environ.items() if not k.startswith("MTS_RELAY")}
     env.update({"MTS_RELAY_HOME": str(home), "MTS_RELAY_NOW": "2026-10-14T10:00:00Z", "MTS_RELAY_NOLINT": "1",
                 "MTS_RELAY_HOST": host, "MTS_RELAY_NOCODEX": "1"})
-    return subprocess.run([sys.executable, str(SCRIPT), *args], capture_output=True, text=True, env=env)
+    return subprocess.run([sys.executable, str(script or SCRIPT), *args], capture_output=True, text=True, env=env, cwd=cwd)
 
 
 def git(cwd, *a):
@@ -138,6 +138,66 @@ class QueueRouteTest(unittest.TestCase):
         self.assertIn("look=1 [Q1 desk done]", self.status())
         r = run(self.tmp / "h3", "kick", "--file", str(self.f))
         self.assertEqual(r.returncode, 0, r.stdout)   # a result for Claude to read is Claude work
+
+
+OLD_LINT = r'''import re
+TASK = re.compile(r"^(\s+)Q(\d+)\.\s*(.*)$")
+PATH = re.compile(r"[\w.\-]+(?:/[\w.\-]+)+\.(?:py|md|json)\b")
+def block_lines(text):
+    parts = text.split("```")
+    return parts[1].strip("\n").splitlines() if len(parts) >= 3 else None
+def parse_tasks(lines):
+    out = []
+    for ln in lines:
+        m = TASK.match(ln)
+        if m:
+            f = m.group(3).strip()
+            h = re.match(r"^host=(\S+)\s*", f)
+            host = h.group(1) if h else None
+            f = f[h.end():] if h else f
+            out.append({"id": "Q" + m.group(2), "lines": [ln], "first": f, "host": host,
+                        "state": "done" if f.startswith("DONE") else "blocked" if f.startswith("(after") else "open"})
+    return out
+def runs_on(t, host):
+    return not t.get("host") or t["host"].lower() in ("any", host.lower())
+'''
+
+
+class OldParserAndHandBuiltHeaderTest(unittest.TestCase):
+    """2026-10-14 spot check: (1) the dispatcher runs a copied relay.py next to whatever handoff_lint the tree has; one without the `lane`
+    key crashed status with KeyError. (2) a hand-edited header (Q64 tidy run) has no relay_runs row: kick made this host wait 90 min."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+
+    def test_status_and_kick_survive_a_handoff_lint_without_lane_support(self):
+        d = self.tmp / "copy"
+        d.mkdir()
+        (d / "relay.py").write_text(SCRIPT.read_text(encoding="utf-8"), encoding="utf-8")
+        (d / "handoff_lint.py").write_text(OLD_LINT, encoding="utf-8")
+        f = self.tmp / "repo" / "MyTradingSys" / "system" / "NEXT_SESSION.md"
+        f.parent.mkdir(parents=True)
+        f.write_text(HEADER + BLOCK, encoding="utf-8", newline="\n")
+        st = run(self.tmp / "h", "status", "--file", str(f), "--host", "JIS-NB", script=d / "relay.py")
+        self.assertEqual(st.returncode, 0, st.stderr)
+        self.assertNotIn("Traceback", st.stderr)
+        self.assertIn("lane CODEX 1, lane DSA 1", st.stdout)   # the tag is read by relay.py itself
+        k = run(self.tmp / "h2", "kick", "--file", str(f), script=d / "relay.py")
+        self.assertEqual(k.returncode, 0, k.stdout + k.stderr)
+        self.assertIn("QUEUE total=7", k.stdout)
+
+    def test_a_handoff_with_no_run_row_is_not_a_peer_wait(self):
+        repo = self.tmp / "g"
+        f = repo / "MyTradingSys" / "system" / "NEXT_SESSION.md"
+        f.parent.mkdir(parents=True)
+        subprocess.run(["git", "init", "-q", str(repo)], check=True)
+        f.write_text(HEADER + BLOCK, encoding="utf-8", newline="\n")   # header by hand, no relay_runs.jsonl row
+        git(repo, "add", "-A")
+        git(repo, "commit", "-q", "-m", "hand edited handoff")
+        r = run(self.tmp / "h", "kick", "--git-ref", "HEAD:MyTradingSys/system/NEXT_SESSION.md", "--root", str(repo),
+                "--peer-quiet-min", "90", cwd=repo)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertNotIn("peer", r.stdout)
 
 
 if __name__ == "__main__":
