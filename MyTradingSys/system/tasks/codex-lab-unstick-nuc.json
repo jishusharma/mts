@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-14T17:38:11Z",
   "commands": [],
   "created": "2026-10-14T14:34:05Z",
   "depends_on": [],
@@ -18,7 +19,7 @@
   "refs": [
     "MyTradingSys/system/LAYER_LAB.md"
   ],
-  "result": "",
+  "result": "Lab unstuck: salvage clears unmerged/staged files, merge_trunk resolves the generated INDEX.md clash (worktree-safe MERGE_HEAD check), tom-btc-chart-lab delivery (80 charts) passes the gate and is on fast-track; NUC ticks 17:00Z and 17:30Z ran cards with no ERROR, tree level with origin; 3 new tests in test_codex_run.py (46 pass).",
   "scope_in": [
     "F:/MTS/mts-codex-lab (JIS-NUC)",
     "scripts/dev/codex_run.py",
@@ -32,7 +33,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "On JIS-NUC: `git -C F:/MTS/mts-codex-lab status`, `git -C F:/MTS/mts-codex-lab stash list`, `git -C F:/MTS/mts-codex-lab diff --cached --stat`; write down how the tree got into UU-without-MERGE_HEAD (stash pop or checkout -m) from codex_run.py's refresh step and runs.jsonl.",
     "For each staged file: if origin/fast-track already holds the same content (git diff --cached origin/fast-track -- <path> empty or only regenerated pages), drop it from the index; otherwise keep it as a lab delivery. Never stash/clean/revert another session's tree; this tree belongs to the lab.",

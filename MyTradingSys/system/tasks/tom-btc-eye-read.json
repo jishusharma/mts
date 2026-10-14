@@ -35,7 +35,7 @@
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Claude reader marks all 80 from the PNGs only.",
     "Jis marks the 20 seed-chosen charts (sheet from index.csv).",

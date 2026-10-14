@@ -10,6 +10,7 @@
   "from_inbox": "",
   "goal": "Repeat T2 and T4 for trend continuation (pullback to VWAP/value in a volume-backed trend; target next high-volume area) and breakout/break-in (balance resolves with proof). Source: conditions/setup_type_rules.md sections 5-6.",
   "id": "tom-btc-other-setups",
+  "kind": "build",
   "lane": "CODEX",
   "layers": [
     "tom"
@@ -34,11 +35,10 @@
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Reuse chart_lab.py with a setup switch; then the event study table."
   ],
   "tests": "pytest: one synthetic pullback and one breakout candidate found",
-  "title": "Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, breakout/break-in)",
-  "kind": "build"
+  "title": "Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, breakout/break-in)"
 }
