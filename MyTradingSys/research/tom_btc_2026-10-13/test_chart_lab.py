@@ -1,6 +1,14 @@
 from datetime import datetime, timezone
 
-from chart_lab import detect_candidates, plot_chart
+import importlib.util
+
+import pytest
+
+# chart_lab draws with Pillow; gate machines without it skip the tests (a module-level skip collects nothing: pytest exit 5)
+HAS_PIL = importlib.util.find_spec("PIL") is not None
+pytestmark = pytest.mark.skipif(not HAS_PIL, reason="Pillow not installed")
+if HAS_PIL:
+    from chart_lab import detect_candidates, plot_chart
 
 
 def _bar(ts, high, low=None, close=None, volume=1.0, delta=0.0, fp=""):
