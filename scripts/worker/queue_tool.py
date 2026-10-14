@@ -463,7 +463,7 @@ def last_beat(hb, t):
 
 
 def print_dsa_status():
-    """Both lanes are dormant by design (Qwen retired 2026-10-01; the browser worker is replaced by AIBridge + the desk board),
+    """Both lanes are dormant by design (Qwen retired 2026-10-01; DSA work goes through AIBridge + the desk board),
     so only a fresh heartbeat is shown as a live worker; anything else is one honest 'dormant' line, never a fault."""
     waiting = len(list((QUEUE / "incoming_dsa").glob("*.task.json")))
     running = len(list((QUEUE / "claimed_dsa").glob("*.task.json")))
@@ -473,7 +473,7 @@ def print_dsa_status():
         print(f"DSA-WORKER heartbeat unreadable: {exc}; incoming_dsa {waiting}")
         return
     if not fresh:
-        print(f"DSA-WORKER dormant: browser worker superseded by AIBridge + desk board (DSA_DELEGATION.md){last_beat(hb, t)}; "
+        print(f"DSA-WORKER dormant: DSA work goes through AIBridge + the desk board (DSA_DELEGATION.md){last_beat(hb, t)}; "
               f"incoming_dsa {waiting}; running {running}")
         return
     task = f" task {hb['task']}" if hb.get("task") else ""
@@ -493,7 +493,7 @@ def cmd_status(args):
             print(f"WORKER   {hb.get('state', '?')}{task}, heartbeat {age_text(t)} "
                   f"(host {hb.get('host')}, worker {hb.get('worker')})")
         else:
-            print(f"WORKER   lane retired 2026-10-01 (Qwen NUC worker, task disabled 2026-10-06; DEVICES.md){last_beat(hb, t)}")
+            print(f"WORKER   lane retired 2026-10-01 (Qwen NUC worker; scheduled task disabled on JIS-NUC; DEVICES.md){last_beat(hb, t)}")
     except (ValueError, OSError) as exc:
         print(f"WORKER   heartbeat unreadable: {exc}")
     incoming = sorted((QUEUE / "incoming").glob("*.task.json"))
