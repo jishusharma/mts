@@ -1,15 +1,24 @@
-"""Unified offline test runner - runs all test suites in order.
+"""Unified offline test runner - runs all test suites.
 
 Usage:
   python scripts/dev/run_all_tests.py         (run all steps)
   python scripts/dev/run_all_tests.py --quick (skip mvn and backtest)
+
+Steps that share no state run concurrently in MTS_GATE_JOBS worker threads (default min(4, cpu count); MTS_GATE_JOBS=1 runs
+one step at a time in definition order, the old behaviour). SERIAL_STEPS (they scan or write checkout state) and Maven run one
+at a time after the pool. Each step prints its block when it finishes, line-buffered, with its own time and a progress count, so
+a redirected or backgrounded run shows progress; the SUMMARY lists every step in definition order. A foreground tool call dies
+at 600 s: start the gate (and `sync.py ship`, which calls it) in the background and read the output once.
 """
 import os
 import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
+import traceback
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
@@ -26,37 +35,61 @@ PYTEST_LAYER_PATHS = [
     "MyTradingSys/observation/tests",
 ]
 
+# These steps scan or write checkout state (layer index, artifact registry, wiring --check, STATUS generator, group map), and
+# Step 4's tests drop fixtures in the tree, so they never run beside the pool. Maven (step 5) is serial as well.
+SERIAL_STEPS = ("3ly", "3af", "3x", "3ms", "3mg", "5")
+# Submitted first so the pool's last step is not the slowest one (measured: 4, 3xt, 5b, 3k, 3ds, 3dk, 3bk, 3w).
+SLOWEST_FIRST = ("4", "3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
+_LOCK = threading.Lock()
+
+
+def unbuffer(stream=None):
+    """Line-buffer stdout so a redirected or backgrounded run shows each step as it finishes (block buffering printed nothing
+    until the end and a run killed at the tool cap left an empty file). errors=replace: a failing step's tail with a character the
+    console code page cannot encode must not crash the gate."""
+    stream = stream or sys.stdout
+    try:
+        stream.reconfigure(line_buffering=True, errors="replace")
+    except (AttributeError, ValueError):
+        pass
+    return stream
+
+
+def exec_step(cmd, cwd=None):
+    """Run one command to completion. Returns (ok, output): ok is True/False, or None with a reason when the executable is missing."""
+    try:
+        result = subprocess.run(cmd, cwd=cwd or str(REPO), capture_output=True, text=True, errors="replace",
+                                shell=isinstance(cmd, str))
+    except FileNotFoundError as e:
+        return None, f"not found: {e}"
+    return result.returncode == 0, result.stdout + result.stderr
+
+
+def format_step(num, description, cmd_text, ok, output, elapsed, progress="", tail=15):
+    """The block one finished step prints. tail = how many output lines a failure shows (None = all; CI always shows all)."""
+    lines = [f"\n[Step {num}] {description}", f"  Command: {cmd_text}"]
+    if ok is None:
+        lines.append(f"Step {num}: SKIP ({output})")
+        return lines
+    lines.append(f"  Elapsed: {elapsed:.1f}s" + (f" ({progress})" if progress else ""))
+    lines.append(f"Step {num}: {'PASS' if ok else 'FAIL'}")
+    out = output.splitlines()
+    if not ok and out:
+        lines.append("  Last output:")
+        lines += [f"    {ln}" for ln in (out if (os.environ.get("CI") or tail is None) else out[-tail:])]
+    elif ok:
+        lines += [f"  {ln}" for ln in out if ln.startswith("WARN")][:5]   # a passing step can still warn (wiring NO-READER)
+    return lines
+
 
 def run_step(step_num, description, cmd, cwd=None):
-    """Run a single test step. Return True on success, False on failure."""
-    print(f"\n[Step {step_num}] {description}")
-    print(f"  Command: {' '.join(cmd) if isinstance(cmd, list) else cmd}")
+    """Run one step now and print its block. Return (True|False|None, output); None means skipped."""
     t0 = time.monotonic()
-    try:
-        result = subprocess.run(
-            cmd,
-            cwd=cwd or str(REPO),
-            capture_output=True,
-            text=True,
-            shell=isinstance(cmd, str),
-        )
-        output = result.stdout + result.stderr
-        print(f"  Elapsed: {time.monotonic() - t0:.1f}s")
-        if result.returncode == 0:
-            print(f"Step {step_num}: PASS")
-            return True, output
-        else:
-            print(f"Step {step_num}: FAIL")
-            # Print last 15 lines of output on failure (all of it under CI, where nothing else can be read)
-            lines = output.splitlines()
-            if lines:
-                print("  Last output:")
-                for line in (lines if os.environ.get("CI") else lines[-15:]):
-                    print(f"    {line}")
-            return False, output
-    except FileNotFoundError as e:
-        print(f"Step {step_num}: SKIP (not found: {e})")
-        return None, str(e)  # None means skip
+    ok, output = exec_step(cmd, cwd)
+    block = format_step(step_num, description, " ".join(cmd) if isinstance(cmd, list) else cmd, ok, output, time.monotonic() - t0)
+    with _LOCK:
+        print("\n".join(block), flush=True)
+    return ok, output
 
 
 def find_backtest_modules():
@@ -85,7 +118,7 @@ def find_layer_modules():
 
 
 def gate_jobs():
-    """Parallel unittest processes for step 5b: MTS_GATE_JOBS, default min(4, cpu count); 1 = the old single call."""
+    """Concurrent workers: MTS_GATE_JOBS, default min(4, cpu count); 1 = one step at a time (the old single call)."""
     try:
         n = int(os.environ.get("MTS_GATE_JOBS", ""))
     except ValueError:
@@ -99,24 +132,18 @@ def split_modules(modules, jobs):
     return [c for c in (modules[i::jobs] for i in range(jobs)) if c]
 
 
-def run_layer_chunks(modules, jobs):
-    """Run every layer module in `jobs` concurrent unittest processes. Returns (success, output); fails if any chunk fails."""
+def exec_layer_chunks(modules, jobs):
+    """Run every layer module in `jobs` concurrent unittest processes. Returns (ok, output); fails if any chunk fails, and then
+    the output is the last lines of each failing chunk."""
     chunks = split_modules(modules, jobs)
-    t0 = time.monotonic()
     procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE,
-                              stderr=subprocess.STDOUT, text=True) for c in chunks]
+                              stderr=subprocess.STDOUT, text=True, errors="replace") for c in chunks]
     outs = [p.communicate()[0] for p in procs]
     ok = all(p.returncode == 0 for p in procs)
-    print(f"  Elapsed: {time.monotonic() - t0:.1f}s ({len(chunks)} processes)")
-    print(f"Step 5b: {'PASS' if ok else 'FAIL'}")
-    if not ok:
-        for p, o in zip(procs, outs):
-            if p.returncode != 0:
-                print("  Last output:")
-                lines = o.splitlines()
-                for line in (lines if os.environ.get("CI") else lines[-15:]):
-                    print(f"    {line}")
-    return ok, "\n".join(outs)
+    if ok:
+        return True, "\n".join(outs)
+    keep = [o if os.environ.get("CI") else "\n".join(o.splitlines()[-15:]) for p, o in zip(procs, outs) if p.returncode != 0]
+    return False, "\n".join(keep)
 
 
 def isolate_pytest_tmp():
@@ -129,12 +156,34 @@ def isolate_pytest_tmp():
     return root
 
 
-def main(argv=None):
-    args = sys.argv[1:] if argv is None else argv
-    isolate_pytest_tmp()
-    quick = "--quick" in args
+class Step:
+    """One gate step. cmd is an argv list (or a string), or run is a zero-argument callable returning (ok, output); skip = reason
+    it does not run. lane 'seq' steps run one at a time after the concurrent pool."""
 
-    results = []
+    def __init__(self, num, desc, label, cmd=None, run=None, cmd_text=None, skip=None, tail=15):
+        self.num, self.desc, self.label, self.skip, self.tail = str(num), desc, label, skip, tail
+        self.cmd_text = cmd_text or (" ".join(cmd) if isinstance(cmd, list) else str(cmd))
+        self.run = run or (lambda: exec_step(cmd))
+        self.lane = "seq" if self.num in SERIAL_STEPS else "par"
+
+
+def run_mvn():
+    """Maven, or (None, reason) when mvn is not installed."""
+    mvn = shutil.which("mvn") or shutil.which("mvn.cmd") or "mvn"  # Windows: mvn.cmd
+    try:
+        if subprocess.run([mvn, "--version"], capture_output=True, text=True).returncode != 0:
+            return None, "mvn not found"
+    except FileNotFoundError:
+        return None, "mvn not found"
+    return exec_step([mvn, "-q", "test"])
+
+
+def build_plan(quick):
+    """Every step in report order. One step per line: parallel sessions append here (a shared line is a guaranteed conflict)."""
+    plan = []
+
+    def add(num, desc, cmd, label):
+        plan.append(Step(num, desc, label, cmd=cmd))
 
     # Step 1: execution tests
     cmd1 = [
@@ -147,8 +196,7 @@ def main(argv=None):
         "test_s6_orphan_offline", "test_triggered_stop_offline", "test_soak_report", "test_fix3_offline", "test_fix4_offline",
         "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_dlm_aggregate", "test_b148_reauth_account", "test_b146_fee_to_stop", "test_dlm_failure_cap", "test_auto_trader_blocklist", "test_auto_trader_sizes", "test_auto_trader_confirm", "test_orphan_sweep_loop", "test_fabio_slot", "test_fix3_mutants_offline", "test_capture_txlog_settlement", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry", "test_r2_runner_exit", "test_r2_breakeven_move",  # W2 R2: execution-math tests (FORMULAS.md 11)
     ]
-    success, output = run_step(1, "Execution module tests", cmd1)
-    results.append(("Step 1: Execution tests", success))
+    add(1, "Execution module tests", cmd1, "Step 1: Execution tests")
 
     # Step 2: g1g2 offline script test
     cmd2 = [
@@ -157,137 +205,50 @@ def main(argv=None):
         "--script", "test_g1g2_offline.py",
         "--fake", "fake_deribit_orders.py=deribit_orders.py",
     ]
-    success, output = run_step(2, "G1G2 offline script test", cmd2)
-    results.append(("Step 2: G1G2 offline test", success))
+    add(2, "G1G2 offline script test", cmd2, "Step 2: G1G2 offline test")
 
-    # Step 3: static suite test
-    cmd3 = [sys.executable, "MyTradingSys/execution/testnet/test_suite_static.py"]
-    success, output = run_step(3, "Static test suite", cmd3)
-    results.append(("Step 3: Static test suite", success))
-
-    # Step 3b: user guide matches mts.ps1 (commands + paths)
-    cmd3b = [sys.executable, "scripts/dev/test_check_guide.py"]
-    success, output = run_step("3b", "User guide checker tests", cmd3b)
-    results.append(("Step 3b: Guide checker tests", success))
-    cmd3c = [sys.executable, "scripts/dev/check_guide.py"]
-    success, output = run_step("3c", "User guide in sync with mts.ps1", cmd3c)
-    results.append(("Step 3c: Guide in sync", success))
-    cmd3r = [sys.executable, "scripts/dev/test_alert_rate_check.py"]
-    success, output = run_step("3r", "Alert rate checker tests", cmd3r)
-    results.append(("Step 3r: Alert rate checker tests", success))
-    cmd3s = [sys.executable, "scripts/dev/test_testnet_status.py"]
-    success, output = run_step("3s", "Testnet status summary tests", cmd3s)
-    results.append(("Step 3s: Testnet status tests", success))
-    cmd3f = [sys.executable, "scripts/dev/test_funnel_report.py"]
-    success, output = run_step("3f", "Funnel report tests", cmd3f)
-    results.append(("Step 3f: Funnel report tests", success))
-    cmd3dk = [sys.executable, "scripts/dev/test_desk.py"]
-    success, output = run_step("3dk", "Desk board tests", cmd3dk)
-    results.append(("Step 3dk: Desk board tests", success))
-    cmd3tk = [sys.executable, "scripts/dev/test_tasks.py"]
-    success, output = run_step("3tk", "Task card tests", cmd3tk)
-    results.append(("Step 3tk: Task card tests", success))
-    cmd3td = [sys.executable, "scripts/dev/test_tom_ledger_dates.py"]   # Tom ledger date column: observed or empty (RV01 D4)
-    success, output = run_step("3td", "Tom ledger date tests", cmd3td)
-    results.append(("Step 3td: Tom ledger date tests", success))
-    cmd3hs = [sys.executable, "scripts/dev/test_tom_holdout_split.py"]   # Tom holdout clean split, dates only
-    success, output = run_step("3hs", "Tom holdout split tests", cmd3hs)
-    results.append(("Step 3hs: Tom holdout split tests", success))
-    cmd3sq = [sys.executable, "scripts/dev/test_check_spec_quotes.py"]   # spec quotes verbatim in the cited transcript lines
-    success, output = run_step("3sq", "Spec quote checker tests", cmd3sq)
-    results.append(("Step 3sq: Spec quote checker tests", success))
-    cmd3ly = [sys.executable, "scripts/dev/test_make_layers_md.py"]   # LAYERS.md: no dead pointer, every layer owned
-    success, output = run_step("3ly", "Layer index tests", cmd3ly)
-    results.append(("Step 3ly: Layer index tests", success))
-    cmd3cx = [sys.executable, "scripts/dev/test_codex_run.py"]
-    success, output = run_step("3cx", "Layer lab runner tests", cmd3cx)
-    results.append(("Step 3cx: Layer lab runner tests", success))
-    cmd3tl = [sys.executable, "scripts/dev/tasks.py", "lint"]   # a ready/active card that fails the Definition of Ready is an error
-    success, output = run_step("3tl", "Task cards meet the Definition of Ready", cmd3tl)
-    results.append(("Step 3tl: Task card lint", success))
-    cmd3q = [sys.executable, "scripts/dev/test_registry_consistency.py"]
-    success, output = run_step("3q", "INDEX/BUGS consistency", cmd3q)
-    results.append(("Step 3q: INDEX/BUGS consistency", success))
-    cmd3p = [sys.executable, "MyTradingSys/research/test_p4_corrected.py"]
-    success, output = run_step("3p", "P4 corrected script tests", cmd3p)
-    results.append(("Step 3p: P4 corrected script tests", success))
-    cmd3t = [sys.executable, "MyTradingSys/research/test_t093_toc_imbalance_klines.py"]
-    success, output = run_step("3t", "T093 turn-of-candle imbalance tests", cmd3t)
-    results.append(("Step 3t: T093 imbalance tests", success))
-    cmd3d = [sys.executable, "scripts/dev/test_verify_extract_quotes.py"]
-    success, output = run_step("3d", "Extract quote checker tests", cmd3d)
-    results.append(("Step 3d: Quote checker tests", success))
-    cmd3h = [sys.executable, "scripts/dev/test_mts_launcher.py"]
-    success, output = run_step("3h", "Launcher verb static tests (runner, orphans)", cmd3h)
-    results.append(("Step 3h: Launcher static tests", success))
-    cmd3g = [sys.executable, "scripts/dev/test_run_all_tests.py"]
-    success, output = run_step("3g", "Gate coverage tests (Fabio v3 + live writers)", cmd3g)
-    results.append(("Step 3g: Gate coverage tests", success))
-    cmd3k = [sys.executable, "scripts/dev/test_sync.py"]
-    success, output = run_step("3k", "sync.py parallel ship tests", cmd3k)
-    results.append(("Step 3k: sync.py tests", success))
-    cmd3e = [sys.executable, "scripts/worker/test_dsa_worker.py"]
-    success, output = run_step("3e", "DSA browser worker + queue lane tests", cmd3e)
-    results.append(("Step 3e: DSA worker tests", success))
-    cmd3sh = [sys.executable, "scripts/dev/test_shot.py"]
-    success, output = run_step("3sh", "Screenshot intake tests (save, classify, read, close gates)", cmd3sh)
-    results.append(("Step 3sh: Screenshot intake tests", success))
-    cmd3mg = [sys.executable, "scripts/dev/test_make_groups.py"]
-    success, output = run_step("3mg", "Project group map tests (every row and file has one group)", cmd3mg)
-    results.append(("Step 3mg: Project group map tests", success))
-    cmd3xt = [sys.executable, "scripts/dev/run_extra_tests.py"]
-    success, output = run_step("3xt", "Extra tests outside the collected dirs (B150 discovery)", cmd3xt)
-    results.append(("Step 3xt: Extra tests", success))
-    cmd3ad = [sys.executable, "scripts/dev/test_auto_deploy.py"]
-    success, output = run_step("3ad", "Scheduled auto-deploy tests (stops on red gate)", cmd3ad)
-    results.append(("Step 3ad: Auto-deploy tests", success))
-    cmd3hy = [sys.executable, "scripts/dev/test_daily_hygiene.py"]
-    success, output = run_step("3hy", "Daily hygiene job tests", cmd3hy)
-    results.append(("Step 3hy: Daily hygiene tests", success))
-    cmd3ms = [sys.executable, "scripts/dev/test_make_status.py"]
-    success, output = run_step("3ms", "STATUS.md generator tests (commit-dated reports, CI green line)", cmd3ms)
-    results.append(("Step 3ms: make_status tests", success))
-    cmd3cs = [sys.executable, "scripts/dev/test_cloud_setup.py"]
-    success, output = run_step("3cs", "Cloud SessionStart hook tests (no-op off cloud)", cmd3cs)
-    results.append(("Step 3cs: Cloud setup hook tests", success))
-    cmd3pc = [sys.executable, "scripts/dev/test_prompt_contract.py"]
-    success, output = run_step("3pc", "Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)", cmd3pc)
-    results.append(("Step 3pc: Prompt contract tests", success))
-
-    cmd3ds = [sys.executable, "scripts/dev/test_dsa.py"]   # dsa.py: DSA one-call helpers (put/edit/commit/begin/end/host)
-    success, output = run_step("3ds", "DSA helper CLI tests (dsa.py)", cmd3ds)
-    results.append(("Step 3ds: DSA helper CLI tests", success))
-
-    cmd3cr = [sys.executable, "scripts/dev/test_make_control_room.py"]
-    success, output = run_step("3cr", "Control Room page generator tests", cmd3cr)
-    results.append(("Step 3cr: Control Room tests", success))
-
-    cmd3lh = [sys.executable, "scripts/dev/test_lane_health.py"]
-    success, output = run_step("3lh", "GPT lane health tests (down/up rules, reroute, pause, resume, DSA prompt)", cmd3lh)
-    results.append(("Step 3lh: GPT lane health tests", success))
-
-    cmd3rb = [sys.executable, "scripts/dev/test_relay_board.py"]
-    success, output = run_step("3rb", "Claude-GPT relay board tests (shared notes, lanes, pack)", cmd3rb)
-    results.append(("Step 3rb: Relay board tests", success))
-    cmd3af = [sys.executable, "scripts/dev/test_artifacts.py"]
-    success, output = run_step("3af", "Artifact registry tests (one url per page per account)", cmd3af)
-    results.append(("Step 3af: Artifact registry tests", success))
-
-    cmd3bk = [sys.executable, "scripts/dev/test_backup_snapshot.py"]
-    success, output = run_step("3bk", "Backup snapshot tests (dirty/untracked work reaches the remote)", cmd3bk)
-    results.append(("Step 3bk: Backup snapshot tests", success))
-
-    cmd3lm = [sys.executable, "scripts/dev/test_live_mirror.py"]
-    success, output = run_step("3lm", "Live mirror tests (read-only desktop->work-tree data, fail-closed)", cmd3lm)
-    results.append(("Step 3lm: Live mirror tests", success))
+    # Step 3: static suite test, then the small script-level steps (one per line)
+    add(3, "Static test suite", [sys.executable, "MyTradingSys/execution/testnet/test_suite_static.py"], "Step 3: Static test suite")
+    add("3b", "User guide checker tests", [sys.executable, "scripts/dev/test_check_guide.py"], "Step 3b: Guide checker tests")
+    add("3c", "User guide in sync with mts.ps1", [sys.executable, "scripts/dev/check_guide.py"], "Step 3c: Guide in sync")
+    add("3r", "Alert rate checker tests", [sys.executable, "scripts/dev/test_alert_rate_check.py"], "Step 3r: Alert rate checker tests")
+    add("3s", "Testnet status summary tests", [sys.executable, "scripts/dev/test_testnet_status.py"], "Step 3s: Testnet status tests")
+    add("3f", "Funnel report tests", [sys.executable, "scripts/dev/test_funnel_report.py"], "Step 3f: Funnel report tests")
+    add("3dk", "Desk board tests", [sys.executable, "scripts/dev/test_desk.py"], "Step 3dk: Desk board tests")
+    add("3tk", "Task card tests", [sys.executable, "scripts/dev/test_tasks.py"], "Step 3tk: Task card tests")
+    add("3td", "Tom ledger date tests", [sys.executable, "scripts/dev/test_tom_ledger_dates.py"], "Step 3td: Tom ledger date tests")   # Tom ledger date column: observed or empty (RV01 D4)
+    add("3hs", "Tom holdout split tests", [sys.executable, "scripts/dev/test_tom_holdout_split.py"], "Step 3hs: Tom holdout split tests")   # Tom holdout clean split, dates only
+    add("3sq", "Spec quote checker tests", [sys.executable, "scripts/dev/test_check_spec_quotes.py"], "Step 3sq: Spec quote checker tests")   # spec quotes verbatim in the cited transcript lines
+    add("3ly", "Layer index tests", [sys.executable, "scripts/dev/test_make_layers_md.py"], "Step 3ly: Layer index tests")   # LAYERS.md: no dead pointer, every layer owned
+    add("3cx", "Layer lab runner tests", [sys.executable, "scripts/dev/test_codex_run.py"], "Step 3cx: Layer lab runner tests")
+    add("3tl", "Task cards meet the Definition of Ready", [sys.executable, "scripts/dev/tasks.py", "lint"], "Step 3tl: Task card lint")   # a ready/active card that fails the Definition of Ready is an error
+    add("3q", "INDEX/BUGS consistency", [sys.executable, "scripts/dev/test_registry_consistency.py"], "Step 3q: INDEX/BUGS consistency")
+    add("3p", "P4 corrected script tests", [sys.executable, "MyTradingSys/research/test_p4_corrected.py"], "Step 3p: P4 corrected script tests")
+    add("3t", "T093 turn-of-candle imbalance tests", [sys.executable, "MyTradingSys/research/test_t093_toc_imbalance_klines.py"], "Step 3t: T093 imbalance tests")
+    add("3d", "Extract quote checker tests", [sys.executable, "scripts/dev/test_verify_extract_quotes.py"], "Step 3d: Quote checker tests")
+    add("3h", "Launcher verb static tests (runner, orphans)", [sys.executable, "scripts/dev/test_mts_launcher.py"], "Step 3h: Launcher static tests")
+    add("3g", "Gate coverage tests (Fabio v3 + live writers)", [sys.executable, "scripts/dev/test_run_all_tests.py"], "Step 3g: Gate coverage tests")
+    add("3k", "sync.py parallel ship tests", [sys.executable, "scripts/dev/test_sync.py"], "Step 3k: sync.py tests")
+    add("3e", "DSA browser worker + queue lane tests", [sys.executable, "scripts/worker/test_dsa_worker.py"], "Step 3e: DSA worker tests")
+    add("3sh", "Screenshot intake tests (save, classify, read, close gates)", [sys.executable, "scripts/dev/test_shot.py"], "Step 3sh: Screenshot intake tests")
+    add("3mg", "Project group map tests (every row and file has one group)", [sys.executable, "scripts/dev/test_make_groups.py"], "Step 3mg: Project group map tests")
+    add("3xt", "Extra tests outside the collected dirs (B150 discovery)", [sys.executable, "scripts/dev/run_extra_tests.py"], "Step 3xt: Extra tests")
+    add("3ad", "Scheduled auto-deploy tests (stops on red gate)", [sys.executable, "scripts/dev/test_auto_deploy.py"], "Step 3ad: Auto-deploy tests")
+    add("3hy", "Daily hygiene job tests", [sys.executable, "scripts/dev/test_daily_hygiene.py"], "Step 3hy: Daily hygiene tests")
+    add("3ms", "STATUS.md generator tests (commit-dated reports, CI green line)", [sys.executable, "scripts/dev/test_make_status.py"], "Step 3ms: make_status tests")
+    add("3cs", "Cloud SessionStart hook tests (no-op off cloud)", [sys.executable, "scripts/dev/test_cloud_setup.py"], "Step 3cs: Cloud setup hook tests")
+    add("3pc", "Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)", [sys.executable, "scripts/dev/test_prompt_contract.py"], "Step 3pc: Prompt contract tests")
+    add("3ds", "DSA helper CLI tests (dsa.py)", [sys.executable, "scripts/dev/test_dsa.py"], "Step 3ds: DSA helper CLI tests")   # dsa.py: DSA one-call helpers (put/edit/commit/begin/end/host)
+    add("3cr", "Control Room page generator tests", [sys.executable, "scripts/dev/test_make_control_room.py"], "Step 3cr: Control Room tests")
+    add("3lh", "GPT lane health tests (down/up rules, reroute, pause, resume, DSA prompt)", [sys.executable, "scripts/dev/test_lane_health.py"], "Step 3lh: GPT lane health tests")
+    add("3rb", "Claude-GPT relay board tests (shared notes, lanes, pack)", [sys.executable, "scripts/dev/test_relay_board.py"], "Step 3rb: Relay board tests")
+    add("3af", "Artifact registry tests (one url per page per account)", [sys.executable, "scripts/dev/test_artifacts.py"], "Step 3af: Artifact registry tests")
+    add("3bk", "Backup snapshot tests (dirty/untracked work reaches the remote)", [sys.executable, "scripts/dev/test_backup_snapshot.py"], "Step 3bk: Backup snapshot tests")
+    add("3lm", "Live mirror tests (read-only desktop->work-tree data, fail-closed)", [sys.executable, "scripts/dev/test_live_mirror.py"], "Step 3lm: Live mirror tests")
 
     # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
-    cmd3w = [sys.executable, "scripts/dev/test_wiring_scan.py"]
-    success, output = run_step("3w", "Wiring gate tests", cmd3w)
-    results.append(("Step 3w: Wiring gate tests", success))
-    cmd3x = [sys.executable, "scripts/dev/wiring_scan.py", "--check"]
-    success, output = run_step("3x", "Wiring check: no undeclared unwired code (wiring_scan.py --check)", cmd3x)
-    results.append(("Step 3x: Wiring check", success))
+    add("3w", "Wiring gate tests", [sys.executable, "scripts/dev/test_wiring_scan.py"], "Step 3w: Wiring gate tests")
+    add("3x", "Wiring check: no undeclared unwired code (wiring_scan.py --check)", [sys.executable, "scripts/dev/wiring_scan.py", "--check"], "Step 3x: Wiring check")
 
     # Step 4: pytest (math + doc tests)
     cmd4 = [sys.executable, "-m", "pytest", "MyTradingSys/tests", "-q",
@@ -305,54 +266,35 @@ def main(argv=None):
     # Own basetemp: parallel gates share %TEMP%/pytest-of-<user>/pytest-current and its cleanup raises
     # PermissionError after all tests pass (JIS-NB 2026-10-14, six ships at once); same fix as run_extra_tests.py.
     cmd4 += ["-p", "no:cacheprovider", f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s4_')) / 'bt'}"]
-    success, output = run_step(4, "Pytest (math + doc tests)", cmd4)
-    results.append(("Step 4: Pytest tests", success))
+    add(4, "Pytest (math + doc tests)", cmd4, "Step 4: Pytest tests")
 
     # Step 5: mvn test (unless --quick)
     if not quick:
-        # Check if mvn is available
-        try:
-            mvn = shutil.which("mvn") or shutil.which("mvn.cmd") or "mvn"  # Windows: mvn.cmd
-            check_mvn = subprocess.run(
-                [mvn, "--version"],
-                capture_output=True,
-                text=True,
-            )
-            if check_mvn.returncode == 0:
-                cmd5 = [mvn, "-q", "test"]
-                success, output = run_step(5, "Maven Java tests", cmd5)
-                results.append(("Step 5: Maven tests", success))
-            else:
-                print("\n[Step 5] Maven Java tests")
-                print("Step 5: SKIP (mvn not found)")
-                results.append(("Step 5: Maven tests", None))
-        except FileNotFoundError:
-            print("\n[Step 5] Maven Java tests")
-            print("Step 5: SKIP (mvn not found)")
-            results.append(("Step 5: Maven tests", None))
+        plan.append(Step(5, "Maven Java tests", "Step 5: Maven tests", run=run_mvn, cmd_text="mvn -q test"))
     else:
-        print("\n[Step 5] Maven Java tests (skipped with --quick)")
-        results.append(("Step 5: Maven tests", None))
+        plan.append(Step(5, "Maven Java tests", "Step 5: Maven tests", skip="skipped with --quick"))
 
     # Step 5b: indicator-layer tests (fast; run even with --quick)
     layer_modules = find_layer_modules()
     if layer_modules:
         jobs = gate_jobs()
         if jobs == 1:
-            cmd5b = [sys.executable, "-m", "unittest"] + layer_modules
-            success, output = run_step("5b", f"Layer tests ({len(layer_modules)} modules)", cmd5b)
+            add("5b", f"Layer tests ({len(layer_modules)} modules)", [sys.executable, "-m", "unittest"] + layer_modules, "Step 5b: Layer tests")
         else:
-            print(f"\n[Step 5b] Layer tests ({len(layer_modules)} modules, {jobs} parallel processes)")
-            success, output = run_layer_chunks(layer_modules, jobs)
-        results.append(("Step 5b: Layer tests", success))
+            plan.append(Step("5b", f"Layer tests ({len(layer_modules)} modules, {jobs} parallel processes)", "Step 5b: Layer tests",
+                             run=lambda: exec_layer_chunks(layer_modules, jobs), cmd_text=f"python -m unittest ({len(layer_modules)} modules)",
+                             tail=None))
 
-    # Step 5c: options module (own pytest run: its bare module names, e.g. fees.py, collide with other packages)
-    cmd5c = [sys.executable, "-m", "pytest", "MyTradingSys/options/tests", "-q"]
-    success, output = run_step("5c", "Options module tests", cmd5c)
-    results.append(("Step 5c: Options tests", success))
+    # Step 5c: options module (own pytest run: its bare module names, e.g. fees.py, collide with other packages); own basetemp and
+    # no cache dir because it runs beside other pytest processes
+    cmd5c = [sys.executable, "-m", "pytest", "MyTradingSys/options/tests", "-q", "-p", "no:cacheprovider",
+             f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s5c_')) / 'bt'}"]
+    add("5c", "Options module tests", cmd5c, "Step 5c: Options tests")
 
     # Step 6: backtest (unless --quick)
-    if not quick:
+    if quick:
+        plan.append(Step(6, "Backtest tests", "Step 6: Backtest tests", skip="skipped with --quick"))
+    else:
         modules = find_backtest_modules()
         if modules:
             cmd6 = [
@@ -360,29 +302,76 @@ def main(argv=None):
                 "MyTradingSys/backtest/bt",
                 "--",
             ] + modules
-            success, output = run_step(6, f"Backtest tests ({len(modules)} modules)", cmd6)
-            results.append(("Step 6: Backtest tests", success))
+            add(6, f"Backtest tests ({len(modules)} modules)", cmd6, "Step 6: Backtest tests")
         else:
-            print("\n[Step 6] Backtest tests")
-            print("Step 6: SKIP (no test modules found)")
-            results.append(("Step 6: Backtest tests", None))
+            plan.append(Step(6, "Backtest tests", "Step 6: Backtest tests", skip="no test modules found"))
+    return plan
+
+
+def run_plan(plan, jobs, out=None):
+    """Run the plan and print each step's block as it finishes. Independent steps run `jobs` at a time, slowest first; SERIAL_STEPS
+    follow one by one; jobs == 1 runs everything in definition order. Returns {step num: True|False|None}."""
+    out = out or sys.stdout
+    results = {}
+    skipped = [s for s in plan if s.skip]
+    todo = [s for s in plan if not s.skip]
+    for s in skipped:
+        print(f"\n[Step {s.num}] {s.desc}\nStep {s.num}: SKIP ({s.skip})", file=out, flush=True)
+        results[s.num] = None
+    print(f"Gate: {len(todo)} steps, {jobs} at a time", file=out, flush=True)
+    t_start = time.monotonic()
+    finished = [0]
+
+    def run_one(s):
+        t0 = time.monotonic()
+        try:
+            ok, output = s.run()
+        except Exception:   # a crashing step is a failed step, not a dead gate
+            ok, output = False, traceback.format_exc()
+        elapsed = time.monotonic() - t0
+        with _LOCK:
+            finished[0] += 1
+            progress = f"{finished[0]}/{len(todo)} done, +{time.monotonic() - t_start:.0f}s"
+            print("\n".join(format_step(s.num, s.desc, s.cmd_text, ok, output, elapsed, progress, s.tail)), file=out, flush=True)
+        results[s.num] = ok
+
+    if jobs <= 1:
+        for s in todo:
+            run_one(s)
     else:
-        print("\n[Step 6] Backtest tests (skipped with --quick)")
-        results.append(("Step 6: Backtest tests", None))
+        par = [s for s in todo if s.lane == "par"]
+        par.sort(key=lambda s: SLOWEST_FIRST.index(s.num) if s.num in SLOWEST_FIRST else len(SLOWEST_FIRST))   # stable: the rest keep definition order
+        with ThreadPoolExecutor(max_workers=jobs) as pool:
+            list(pool.map(run_one, par))
+        for s in todo:
+            if s.lane == "seq":
+                run_one(s)
+    return results
+
+
+def main(argv=None):
+    args = sys.argv[1:] if argv is None else argv
+    unbuffer()
+    isolate_pytest_tmp()
+    quick = "--quick" in args
+
+    plan = build_plan(quick)
+    results = run_plan(plan, gate_jobs())
 
     # Summary
     print("\n" + "=" * 70)
     print("SUMMARY")
     print("=" * 70)
     failed = []
-    for step_name, result in results:
+    for s in plan:
+        result = results.get(s.num)
         if result is True:
-            print(f"{step_name}: PASS")
+            print(f"{s.label}: PASS")
         elif result is False:
-            print(f"{step_name}: FAIL")
-            failed.append(step_name)
+            print(f"{s.label}: FAIL")
+            failed.append(s.label)
         else:
-            print(f"{step_name}: SKIP")
+            print(f"{s.label}: SKIP")
 
     print("=" * 70)
     if failed:

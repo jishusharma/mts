@@ -1,5 +1,10 @@
 """Gate coverage: run_all_tests.py must run Fabio v3 + live-writer tests (TF1, review E7)."""
+import contextlib
+import io
+import os
 import sys
+import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -70,6 +75,210 @@ class TestParallelLayerGate(unittest.TestCase):
         self.assertIsNotNone(d_)
         bo, do = int(b.group(1) or 0), int(d_.group(1) or 0)
         self.assertNotEqual(bo % 15, do % 15)
+
+
+# The 46 steps the gate had before it ran concurrently: speeding it up must not drop one.
+ORIGINAL_LABELS = {
+    "Step 1: Execution tests", "Step 2: G1G2 offline test", "Step 3: Static test suite", "Step 3b: Guide checker tests",
+    "Step 3c: Guide in sync", "Step 3r: Alert rate checker tests", "Step 3s: Testnet status tests", "Step 3f: Funnel report tests",
+    "Step 3dk: Desk board tests", "Step 3tk: Task card tests", "Step 3td: Tom ledger date tests", "Step 3hs: Tom holdout split tests",
+    "Step 3sq: Spec quote checker tests", "Step 3ly: Layer index tests", "Step 3cx: Layer lab runner tests", "Step 3tl: Task card lint",
+    "Step 3q: INDEX/BUGS consistency", "Step 3p: P4 corrected script tests", "Step 3t: T093 imbalance tests", "Step 3d: Quote checker tests",
+    "Step 3h: Launcher static tests", "Step 3g: Gate coverage tests", "Step 3k: sync.py tests", "Step 3e: DSA worker tests",
+    "Step 3sh: Screenshot intake tests", "Step 3mg: Project group map tests", "Step 3xt: Extra tests", "Step 3ad: Auto-deploy tests",
+    "Step 3hy: Daily hygiene tests", "Step 3ms: make_status tests", "Step 3cs: Cloud setup hook tests", "Step 3pc: Prompt contract tests",
+    "Step 3ds: DSA helper CLI tests", "Step 3cr: Control Room tests", "Step 3lh: GPT lane health tests", "Step 3rb: Relay board tests",
+    "Step 3af: Artifact registry tests", "Step 3bk: Backup snapshot tests", "Step 3lm: Live mirror tests", "Step 3w: Wiring gate tests",
+    "Step 3x: Wiring check", "Step 4: Pytest tests", "Step 5: Maven tests", "Step 5b: Layer tests", "Step 5c: Options tests",
+    "Step 6: Backtest tests",
+}
+
+
+class TestGateKeepsEveryStep(unittest.TestCase):
+    def test_plan_has_every_original_step_exactly_once(self):
+        for quick in (True, False):
+            labels = [s.label for s in rat.build_plan(quick)]
+            self.assertEqual(len(labels), len(set(labels)), quick)
+            self.assertEqual(set(labels), ORIGINAL_LABELS, quick)
+
+    def test_quick_skips_only_maven_and_backtest(self):
+        skipped = {s.num for s in rat.build_plan(True) if s.skip}
+        self.assertEqual(skipped, {"5", "6"})
+        self.assertEqual({s.num for s in rat.build_plan(False) if s.skip} - {"6"}, set())
+
+    def test_serial_steps_are_real_steps_and_get_the_serial_lane(self):
+        plan = {s.num: s for s in rat.build_plan(True)}
+        for num in rat.SERIAL_STEPS:
+            self.assertIn(num, plan)
+            self.assertEqual(plan[num].lane, "seq", num)
+        self.assertEqual(plan["4"].lane, "par")
+
+    def test_pytest_steps_that_run_beside_others_have_own_basetemp_and_no_cache(self):
+        plan = {s.num: s for s in rat.build_plan(True)}
+        for num in ("4", "5c"):
+            cmd = " ".join(plan[num].cmd_text.split())
+            self.assertIn("--basetemp=", cmd, num)
+            self.assertIn("no:cacheprovider", cmd, num)
+
+
+def fake(num, log, seconds=0.15, ok=True, boom=False):
+    def run():
+        log.append(("start", num, time.monotonic()))
+        time.sleep(seconds)
+        log.append(("end", num, time.monotonic()))
+        if boom:
+            raise RuntimeError("boom " + num)
+        return ok, f"out of {num}\nWARN note {num}"
+    return rat.Step(num, "desc " + num, "Step " + num + ": label", run=run, cmd_text="fake " + num)
+
+
+def max_overlap(log, nums):
+    running, peak = set(), 0
+    for kind, num, _ in sorted(log, key=lambda e: e[2]):
+        if num not in nums:
+            continue
+        running.add(num) if kind == "start" else running.discard(num)
+        peak = max(peak, len(running))
+    return peak
+
+
+def at(log, kind, num):
+    return next(t for k, n, t in log if k == kind and n == num)
+
+
+class TestConcurrentGate(unittest.TestCase):
+    def run_plan(self, plan, jobs):
+        buf = io.StringIO()
+        results = rat.run_plan(plan, jobs, out=buf)
+        return results, buf.getvalue()
+
+    def test_independent_steps_overlap_and_all_results_come_back(self):
+        log = []
+        plan = [fake(n, log) for n in ("3a", "3b", "3c", "3d")]
+        results, _ = self.run_plan(plan, 4)
+        self.assertEqual(results, {"3a": True, "3b": True, "3c": True, "3d": True})
+        self.assertGreaterEqual(max_overlap(log, {"3a", "3b", "3c", "3d"}), 2)
+
+    def test_jobs_1_runs_one_at_a_time_in_definition_order(self):
+        log = []
+        plan = [fake(n, log, 0.02) for n in ("3a", "3ly", "3b", "4")]
+        self.run_plan(plan, 1)
+        self.assertEqual(max_overlap(log, {s.num for s in plan}), 1)
+        self.assertEqual([n for k, n, _ in log if k == "start"], ["3a", "3ly", "3b", "4"])
+
+    def test_serial_steps_start_after_the_pool_and_never_overlap(self):
+        log = []
+        plan = [fake(n, log) for n in ("3a", "3ly", "3b", "3af", "4", "3x")]
+        self.run_plan(plan, 4)
+        pool_end = max(at(log, "end", n) for n in ("3a", "3b", "4"))
+        for n in ("3ly", "3af", "3x"):
+            self.assertGreaterEqual(at(log, "start", n), pool_end, n)
+        self.assertEqual(max_overlap(log, {"3ly", "3af", "3x"}), 1)
+
+    def test_slowest_step_is_submitted_first(self):
+        log = []
+        plan = [fake(n, log, 0.05) for n in ("3a", "3b", "3c", "4")]
+        self.run_plan(plan, 2)
+        first_two = [n for k, n, _ in sorted(log, key=lambda e: e[2]) if k == "start"][:2]
+        self.assertIn("4", first_two)
+
+    def test_each_step_prints_one_whole_block_with_time_and_progress(self):
+        log = []
+        plan = [fake(n, log, 0.05) for n in ("3a", "3b", "3c", "4")]
+        _, text = self.run_plan(plan, 4)
+        blocks = [b for b in text.split("\n[Step ")[1:]]
+        self.assertEqual(len(blocks), 4)
+        for b in blocks:
+            self.assertEqual(sum(1 for ln in b.splitlines() if ln.startswith("Step ") and ln.endswith(": PASS")), 1, b)
+            self.assertIn("Command: fake", b)
+            self.assertRegex(b, r"Elapsed: \d+\.\ds \(\d/4 done, \+\d+s\)")
+            self.assertIn("WARN note", b)      # a warning on a passing step stays visible
+        self.assertIn("Gate: 4 steps, 4 at a time", text)
+
+    def test_a_failing_and_a_crashing_step_are_failed_steps_not_a_dead_gate(self):
+        log = []
+        plan = [fake("3a", log, ok=False), fake("3b", log, boom=True), fake("3c", log)]
+        results, text = self.run_plan(plan, 3)
+        self.assertEqual(results, {"3a": False, "3b": False, "3c": True})
+        self.assertIn("Step 3a: FAIL", text)
+        self.assertIn("RuntimeError: boom 3b", text)
+        self.assertIn("Last output:", text)
+
+    def test_skipped_steps_are_reported_first_and_count_as_none(self):
+        plan = [rat.Step("5", "Maven Java tests", "Step 5: Maven tests", skip="skipped with --quick"), fake("3a", [])]
+        results, text = self.run_plan(plan, 2)
+        self.assertEqual(results, {"5": None, "3a": True})
+        self.assertIn("Step 5: SKIP (skipped with --quick)", text)
+
+    def test_stdout_becomes_line_buffered(self):
+        stream = io.TextIOWrapper(io.BytesIO(), write_through=False)
+        self.assertFalse(stream.line_buffering)
+        self.assertIs(rat.unbuffer(stream), stream)
+        self.assertTrue(stream.line_buffering)
+
+    def test_missing_executable_is_a_skip_with_a_reason(self):
+        ok, why = rat.exec_step(["definitely-not-a-real-executable-xyz"])
+        self.assertIsNone(ok)
+        self.assertIn("not found", why)
+
+    def test_failure_shows_the_tail_and_ci_shows_everything(self):
+        out = "\n".join(f"line {i}" for i in range(40))
+        block = "\n".join(rat.format_step("3a", "d", "c", False, out, 1.0))
+        self.assertIn("line 39", block)
+        self.assertNotIn("line 10\n", block)
+        old = os.environ.get("CI")
+        os.environ["CI"] = "1"
+        try:
+            self.assertIn("line 0\n", "\n".join(rat.format_step("3a", "d", "c", False, out, 1.0)) + "\n")
+        finally:
+            os.environ.pop("CI", None)
+            if old is not None:
+                os.environ["CI"] = old
+
+
+class TestExtraTestsRunConcurrently(unittest.TestCase):
+    def test_files_overlap_each_gets_own_basetemp_and_failures_keep_list_order(self):
+        import threading
+        import run_extra_tests as rx
+        seen, live, peak, lock = [], [0], [0], threading.Lock()
+
+        def one(rel, basetemp):
+            with lock:
+                live[0] += 1
+                peak[0] = max(peak[0], live[0])
+                seen.append(str(basetemp))
+            time.sleep(0.1)
+            with lock:
+                live[0] -= 1
+            return (rel not in ("b.py", "d.py")), ("missing" if rel == "d.py" else "1 passed")
+
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            bad = rx.run_files(["a.py", "b.py", "c.py", "d.py"], 4, one=one, tmp=tempfile.mkdtemp())
+        self.assertGreaterEqual(peak[0], 2)
+        self.assertEqual(len(set(seen)), 4)
+        self.assertEqual(bad, ["b.py", "d.py: missing"])
+        self.assertEqual(sorted(ln[:4] for ln in buf.getvalue().splitlines()), ["FAIL", "FAIL", "ok  ", "ok  "])
+
+    def test_one_job_is_sequential(self):
+        import run_extra_tests as rx
+        order = []
+        with contextlib.redirect_stdout(io.StringIO()):
+            rx.run_files(["a.py", "b.py", "c.py"], 1, one=lambda rel, bt: (order.append(rel) or True, "ok"), tmp=tempfile.mkdtemp())
+        self.assertEqual(order, ["a.py", "b.py", "c.py"])
+
+    def test_jobs_env_knob(self):
+        import run_extra_tests as rx
+        old = os.environ.get("MTS_GATE_JOBS")
+        try:
+            os.environ["MTS_GATE_JOBS"] = "3"
+            self.assertEqual(rx.jobs(), 3)
+            os.environ["MTS_GATE_JOBS"] = "0"
+            self.assertEqual(rx.jobs(), 1)
+        finally:
+            os.environ.pop("MTS_GATE_JOBS", None)
+            if old is not None:
+                os.environ["MTS_GATE_JOBS"] = old
 
 
 if __name__ == "__main__":
