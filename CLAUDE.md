@@ -25,6 +25,8 @@ Live state off the desktop (NUC, laptop): `sync.py start` pulls the read-only mi
   the cost), whichever comes first: finish the step, commit and `sync.py ship`, overwrite
   `system/NEXT_SESSION.md` (queue, what waits for the weekly reset, open questions, last commit), confirm `sync.py where`
   is clean, say so in one line, and stop. Live market analysis threads hand off after 5 screenshot reads.
+  Enforced by the turn-meter hook (`scripts/dev/turn_meter.py`, .claude/settings.json): at the cap it injects the hand-off
+  instruction, every 5 tool turns after; compact/clear resets it; `turn_meter.py status` lists sessions over the cap.
 
 ## Standing rules for every account (operator 2026-10-09)
 - Model default is Sonnet for sessions and subagents; Opus only when the operator names it. Subagents only when clearly needed, on Sonnet/Haiku. Cost is the priority.

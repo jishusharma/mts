@@ -488,7 +488,7 @@ class LimitFallback(unittest.TestCase):
             wt, run = self._two_branches(d, idx, idx)
             R.merge_trunk(wt, "trunk")
             self.assertEqual(R.changed_files(wt), [])
-            self.assertFalse((wt / ".git/MERGE_HEAD").exists())
+            self.assertNotEqual(run("rev-parse", "-q", "--verify", "MERGE_HEAD").returncode, 0)
             self.assertEqual(run("merge-base", "--is-ancestor", "trunk", "HEAD").returncode, 0)
 
     def test_merge_trunk_aborts_a_real_clash_and_leaves_the_tree_clean(self):
@@ -498,7 +498,7 @@ class LimitFallback(unittest.TestCase):
                 R.merge_trunk(wt, "trunk")
             self.assertIn("code.py", str(e.exception))
             self.assertEqual(R.changed_files(wt), [])
-            self.assertFalse((wt / ".git/MERGE_HEAD").exists())
+            self.assertNotEqual(run("rev-parse", "-q", "--verify", "MERGE_HEAD").returncode, 0)
 
 
 if __name__ == "__main__":
