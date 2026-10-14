@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-14T19:55:56Z",
   "commands": [],
   "created": "2026-10-14T19:52:02Z",
   "depends_on": [],
@@ -17,7 +18,7 @@
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST: cross-track audit, stale lab prerequisites, overlapping research splits, flow-data limits and five-step roadmap; report 2026-10-15_strategy-direction-audit.md; Cloud notified",
   "scope_in": [
     "MyTradingSys/research"
   ],
@@ -28,7 +29,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
