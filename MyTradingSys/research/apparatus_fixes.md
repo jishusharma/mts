@@ -105,3 +105,19 @@ Worker W5 classified these as documentation or process rules. Kept for reference
 - L114 log tail is not a health check: process rule.
 - L117 PowerShell quoting lesson: process rule.
 - L119 verify method lesson: process rule.
+
+## 2026-10-11 - supervisor.lock held a recycled pid; supervisor exited silently
+
+What happened: loop-supervisor.ps1 single-instance guard read the pid in
+runtime_data\supervisor.lock (4468), called Get-Process -Id 4468, found a process,
+and exited 0. Pid 4468 had been recycled to svchost after a reboot. The guard tests
+pid existence only: no start-time match, no command-line match. Every MTS-Supervisor
+task run reported result 0, no supervisor process, no line in supervisor_log.txt,
+because the exit path uses Write-Host, not SupLog.
+
+Fix applied: removed the stale lock (backup at backup_session\supervisor.lock.20261011-1118Z.bak),
+re-fired MTS-Supervisor. Supervisor pid 11296 up, log line 11:19:35.
+
+Permanent fix (code, not urgent): match pid AND process start time, or match the
+command line for loop-supervisor, before treating the lock as live. Target:
+scripts\core\loop-supervisor.ps1 lines 97-112. Claude Code.

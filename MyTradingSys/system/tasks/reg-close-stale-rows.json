@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-14T12:24:08Z",
   "commands": [
     "git show -s --format='%h %s%n%b' 71df3aa 0aa8f56 2fccf66",
     "python scripts/dev/run_all_tests.py --quick",
@@ -19,7 +20,7 @@
   "refine_tries": 0,
   "refined_by": "refiner 2026-10-10",
   "refs": [],
-  "result": "",
+  "result": "BUGS.md: T087 (71df3aa), T088 (0aa8f56), B125 (2fccf66) CLOSED with receipts; B141 receipt cites PRE_REG section 9 (stage1/stage2 scripts), row restored to 7 cells",
   "scope_in": [
     "MyTradingSys/research/BUGS.md (Status and Receipt cells of T087, T088, B125, B141 only)"
   ],
@@ -35,7 +36,7 @@
     "MyTradingSys/items/T088_all_timeframe_module.md (Result T088, DONE 2026-10-09)",
     "MyTradingSys/system/tasks/B141.json (result field)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run the git show commands; confirm each commit's Result line matches its row (T087 913 failed first breaks, no edge; T088 4m/3h/7h in registry.json; B125 hook.py writer wired into live_runner_cli).",
     "Edit only Status and Receipt: T087, T088, B125 -> CLOSED, Receipt = '2026-10-10: <hash> <Result line>'.",
