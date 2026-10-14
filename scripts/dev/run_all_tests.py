@@ -253,6 +253,10 @@ def main(argv=None):
     success, output = run_step("3pc", "Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)", cmd3pc)
     results.append(("Step 3pc: Prompt contract tests", success))
 
+    cmd3ds = [sys.executable, "scripts/dev/test_dsa.py"]   # dsa.py: DSA one-call helpers (put/edit/commit/begin/end/host)
+    success, output = run_step("3ds", "DSA helper CLI tests (dsa.py)", cmd3ds)
+    results.append(("Step 3ds: DSA helper CLI tests", success))
+
     cmd3cr = [sys.executable, "scripts/dev/test_make_control_room.py"]
     success, output = run_step("3cr", "Control Room page generator tests", cmd3cr)
     results.append(("Step 3cr: Control Room tests", success))
