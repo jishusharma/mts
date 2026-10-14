@@ -38,6 +38,7 @@ EXTRA = [
     "scripts/worker/test_audit_t0_checks.py",
     "tests/test_worker_prefix_hash.py",
     "scripts/dev/test_fabio_prescreen.py",
+    "scripts/dev/test_sched_scripts.py",
 ]
 
 
