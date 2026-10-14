@@ -253,6 +253,7 @@ def compose(r, now, doc, session_id):
         read_first += ["MyTradingSys/runtime/BUILD_PIPELINE.md (row %s)" % r["num"]]
     rid = r["id"]
     return "\n".join([
+        "SURFACE: APP",
         "Session ID: " + session_id,
         "Surface: Claude Win App, Code mode. Where the App cannot reach the local repo filesystem or run a child",
         "process, state which, use CLI, and write the reason in the session record. CLI is fallback, not default.",

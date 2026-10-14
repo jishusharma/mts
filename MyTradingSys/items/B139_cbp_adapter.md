@@ -10,14 +10,14 @@ Session: MTS-2026-10-06-2122Z-APP-COO-registry-fix. Source: CLOUD_INBOX note 202
 
 ## Run 2026-10-06T21:30Z
 
-`python MyTradingSys/queue/cbp_adapter.py C:\Users\E-ngineers\IdeaProjects\CryptoScrapper\mts_queue`
+`python MyTradingSys/queue/cbp_adapter.py F:\CryptoScrapper\mts_queue`
 consumed 0; rejected_expired 0; skipped_acked 1 (handshake_test_2026-09-30);
 skipped_status 1 (krown_2026-09-25_OggsnATGbOg, status rejected).
 MyTradingSys/queue/candidates/cbp_candidates.jsonl not produced (0 rows).
 
 ## Path
 
-Run used C:\Users\E-ngineers\IdeaProjects\CryptoScrapper (consumer.py DEFAULT_QUEUE). Authoritative tree not settled: operator says
+Run used F:\CryptoScrapper (consumer.py DEFAULT_QUEUE). Authoritative tree not settled: operator says
 F:\CryptoScrapper is correct and CBP was restructured. DSA_SESSION_PROMPT.md section 8 left at F:.
 
 ## Done when

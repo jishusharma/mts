@@ -14,7 +14,7 @@ from pathlib import Path
 
 sys.dont_write_bytecode = True
 
-DEFAULT_QUEUE = Path(r"C:\Users\E-ngineers\IdeaProjects\CryptoScrapper\mts_queue")
+DEFAULT_QUEUE = Path(r"F:\CryptoScrapper\mts_queue")
 CONSUMER_ID = "MTS-consumer-v1"
 
 
