@@ -14,9 +14,17 @@ What exists already (claims to check, not evidence):
 
 ---
 
-MTS Fable session (Fable 5.1, effort high). Boot per CLAUDE.md steps 1-2 only (sync.py start, STATUS.md), then read
-`MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md` sections 0 and 4. OPERATOR OVERRIDE for this session
-only: the tool-turn cap is 40; do not hand over mid-way; write the deliverable section by section as you go.
+MTS Fable session (Fable 5.1, effort high). Boot per CLAUDE.md steps 1-2 only (sync.py start, STATUS.md). OPERATOR OVERRIDE
+for this session only: the tool-turn cap is 40; do not hand over mid-way; write the deliverable section by section as you go.
+
+**Your three earlier runs, and what an independent audit found they missed.** Read `MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md` in full.
+Open each deliverable only where this task uses it.
+| Run | Prompt | Deliverable | Gap to close in THIS session |
+|---|---|---|---|
+| R1 pilot | `layer_rebuild_2026-10-15/FABLE_PILOT_PROMPT.md` | `gross_effect_screen_2026-10-15/PRE_REG.md`, `RESULT.md`, `decay.csv` | You froze the PRE_REG with no count-only power check (n_T = 40, MDE 0.365 % vs 0.14 % cost). The headline hid a powered control FAIL (n = 1,439, t_cost -6.0) and a decay sign flip (+0.02 % at 5 m, -0.10 % at 240 m). Your step 5 must count first, give one verdict per arm, and limit the kill scope to the tested family |
+| R2 adversarial | (six questions, restated in the review) | `fable_audit_2026-10-16/PROMOTION_REVIEW.md` | You checked that the gate fails closed, not whether it can tell an edge from luck: 95 % CI with no variant adjustment, MIN_TRADES 30. The testnet records no decision price, so it cannot measure slippage. Your PRE_REG must state its multiple-testing treatment (Holm over the trial-ledger variant count) and must not use testnet fills as cost evidence |
+| R3 A3 catalogue | `layer_rebuild_2026-10-15/FABLE_PROMPT_PACK.md` section A3 | `fable_audit_2026-10-16/CATALOGUE_AUDIT.md` | You checked fidelity, not cost: Tom's stated stops cost 1.1-3.2 R at Binance taker fees. Completeness was sampled (3 of 3 V1-only videos held misses) but not extrapolated. Steps 3-4 below finish that work; reuse your 4.3 markability table and your P3 definition list rather than starting over |
+Disagree with the audit where the code or data says otherwise, and say so with file:line.
 
 **Usage guard.** Call `get_usage` first and last and record both in `PIT_USAGE.md`. Stop, write up and ship if
 weekly all-models rises 8 points or reaches 95 %.
