@@ -1,7 +1,6 @@
 # RELAY - how one session starts the next with no operator input (operator ask 2026-10-10)
 
-While a super session runs (SUPER_SESSION.md) the relay is paused with `relay.py stop`; its coordinator is the dispatcher.
-Retired text (B164, 30-min era, `gate`, `run_scheduled_task`): `MyTradingSys/archive/relay_2026-10-15/RELAY_HISTORY.md`.
+Super session running (SUPER_SESSION.md): relay paused by `relay.py stop`; dispatcher coordinates. Retired text (B164, 30-min era, `gate`, `run_scheduled_task`): `archive/relay_2026-10-15/RELAY_HISTORY.md`.
 
 ## Pieces
 | Piece | Role |
@@ -12,7 +11,7 @@ Retired text (B164, 30-min era, `gate`, `run_scheduled_task`): `MyTradingSys/arc
 
 ## The loop (`relay_prompts/relay_session.md`, printed by `tick` on KICK)
 `tick` (`TICK NOOP` = reply, stop) -> `begin` (worktree `../mts-relay`, claim, brief) -> ONE task in <= 15 tool turns -> edit the NEXT_SESSION.md block -> `handoff --go` (or `--stop "<reason>"`) -> `sync.py ship`, `where` clean -> `unlock` (not after `--stop`).
-Next tasks come from `python scripts/dev/tasks.py next --n 3` (a card's `brief` is the task text). No ready card, or `tasks.py status` says REFINE_NEEDED: the next task is the refiner (TASK_REFINEMENT.md), never a vague builder task.
+Next tasks: `python scripts/dev/tasks.py next --n 3` (`brief` = the task text). No ready card, or `tasks.py status` says REFINE_NEEDED: the next task is the refiner (TASK_REFINEMENT.md), never a vague builder task.
 
 ## Task list standard (operator 2026-10-10: "the tasks must be curated and scoped")
 `relay.py handoff` runs `relay.py lint` and REFUSES (exit 2, file untouched) a bad list. Code: sched/handoff_lint.py.
@@ -20,8 +19,8 @@ Next tasks come from `python scripts/dev/tasks.py next --n 3` (a card's `brief` 
 - Tasks are `   Qn. <what>` lines. One task = one session (<= 15 tool turns, <= 6 lines): split anything bigger.
 - Every open task has `DONE when: <something a reviewer can observe>`, names the exact item (lint rejects "next open item", "as needed", "etc.") and every path it names exists on origin; a task that needs an earlier task's output starts `Qn. (after Qm ...)`.
 - A finished task is rewritten `Qn. DONE ...`. `--go` needs one open unblocked task; `--stop` is refused while one exists. All blocked: add the unblocking task first, then `--stop` naming each blocker.
-- Curating when the list runs low: read STATUS.md, `shot.py status`, `desk.py list --all`, items/INDEX.md and Control Room; cut each candidate to one session with a finish line BEFORE writing it. A candidate you cannot scope in one session becomes a scoping task (write the next item as Qn).
-- Tags right after `Qn.`, either order, one of each: `host=<machine|any>` (absent = any; `handoff`/`lint` ignore it unless `--host`; `kick` says `IDLE no unblocked task for host X` when every open task is another host's; OPUS-only work stays `(after ...)`) and `lane=CODEX` (GPT / Codex Layer Lab, JIS-NUC) or `lane=DSA` (AI Bridge). Operator 2026-10-14, "GPT and DSA for as much as possible": when curating, tag every task a lane can do alone (a re-run of an existing script, an inventory, a CODEX audit card) instead of leaving it for a Claude session. A bad lane value fails lint.
+- Curating when the list runs low: read STATUS.md, `shot.py status`, `desk.py list --all`, items/INDEX.md and Control Room; cut each candidate to one session with a finish line BEFORE writing it; one you cannot scope becomes a scoping task (the next Qn).
+- Tags right after `Qn.`, either order, one of each: `host=<machine|any>` (absent = any; `handoff`/`lint` ignore it unless `--host`; `kick` says `IDLE no unblocked task for host X` when every open task is another host's; OPUS-only work stays `(after ...)`) and `lane=CODEX` (GPT / Codex Layer Lab, JIS-NUC) or `lane=DSA` (AI Bridge). Operator 2026-10-14, "GPT and DSA for as much as possible": tag every task a lane can do alone (a re-run of an existing script, an inventory, a CODEX audit card) instead of leaving it for a Claude session. A bad lane value fails lint.
 - `relay.py lint --file <handoff> [--want stop]` checks without writing. Write the header with `handoff` only: it also writes the `relay_runs.jsonl` row.
 - `begin` takes a HAIKU or SONNET card (`tasks.CODE_LANES` minus OPUS) that no open claim holds (`tasks.py next` hides claimed cards; `--all` shows them).
 
