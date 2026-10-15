@@ -587,6 +587,14 @@
   "MyTradingSys/research/krown_ta101_2026-10-13/tools/check_numbers.py": {
    "disp": "TOOL",
    "why": "Number gate for Krown extracts: every number in 'Stated mechanics' must exist in the transcript (PROTOCOL.md s4, reflexivity_log.md L21); run by hand per extract next to verify_extract_quotes.py."
+  },
+  "MyTradingSys/research/malkan_extract_2026-10-15/tools/check_numbers.py": {
+   "disp": "TOOL",
+   "why": "Number gate for Malkan extracts (wraps the Krown checker, reads raw_transcripts_canonical, fixes the range bug found on A-CQiV_UFB4); named in malkan_extract_2026-10-15/EXTRACT_TEMPLATE.md rule 12; run by hand per extract next to verify_extract_quotes.py."
+  },
+  "MyTradingSys/research/malkan_extract_2026-10-15/tools/check_hindi.py": {
+   "disp": "TOOL",
+   "why": "Hindi quote gate for Malkan extracts (every 'Hindi original' line must occur in <id>_hi_raw.txt; verify_extract_quotes.py cannot read Devanagari); named in malkan_extract_2026-10-15/EXTRACT_TEMPLATE.md rule 12; run by hand per Hindi extract."
   }
  }
 }
