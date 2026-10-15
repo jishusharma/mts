@@ -16,8 +16,8 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "",
-  "prio": 2,
+  "note": "2026-10-15 q12: home-market chain paused (p5) per operator answer; raise again when crypto-native cards are done.",
+  "prio": 5,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
   "refs": [],

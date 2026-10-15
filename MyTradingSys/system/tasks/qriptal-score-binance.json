@@ -16,7 +16,7 @@
     "callers"
   ],
   "live_path": false,
-  "note": " 2026-10-14 scope fixed: transcripts are at repo-root extracts/_staged_2026-09-27; first run BLOCKED on the wrong MyTradingSys/ prefix. 2026-10-14: BLOCKED twice for lack of a call ledger; back to raw, waits on qriptal-call-ledger.",
+  "note": "2026-10-14 scope fixed: transcripts are at repo-root extracts/_staged_2026-09-27; first run BLOCKED on the wrong MyTradingSys/ prefix. 2026-10-14: BLOCKED twice for lack of a call ledger; back to raw, waits on qriptal-call-ledger. 2026-10-15 q12: stays p1 (operator answer).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",

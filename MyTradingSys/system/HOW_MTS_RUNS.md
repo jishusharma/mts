@@ -41,7 +41,8 @@ Claims are labelled by the machine's `MTS_ACCOUNT`, not by the login that is sig
   44 % are bookkeeping (claim, release, lane health, relay, sync) and about 20 % are research or backtests.
 - **Three logins take the same queue,** so "which window should I open?" has no fixed answer.
 
-## Proposals to make it simpler (decision q17; nothing is applied until you answer)
+## Proposals to make it simpler (decision q17: answered "Yes, all five" 2026-10-14; note: "I will add one more a/c in future. I need flexibility to run any a/c on any machine.")
+Adopted as defaults, not locks: any account must be able to run on any machine, a third account is expected. Cards: see OPERATOR_DECISIONS.md q17 Applied.
 P1 and P2 are open and conflict with your 2026-10-14 request that the relay runs every 10 minutes on the desktop; they stay pending q17 and are not the plan today.
 | # | Change | What you notice |
 |---|---|---|

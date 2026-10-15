@@ -24,7 +24,7 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 ## Hard rules
 - Share work only through `sync.py ship`; cloud containers open a PR into fast-track. Never commit to master, never rebase/reset/force-push. Chained `cd x && git ...` is denied: run `git -C <dir> <cmd>` on its own.
 - Commit body carries `Result: <what works now / the number>`. Other sessions' uncommitted files are not yours: don't stash, clean, revert or report them.
-- Testnet only (Deribit test); never mainnet; never read `.secrets/`, `.env` or keys.
+- Testnet only (Deribit test); never mainnet orders or accounts (public mainnet market data, no account, is allowed: operator 2026-10-15 q-gap-c); never read `.secrets/`, `.env` or keys.
 - Repo is PUBLIC (since 2026-10-11): never commit runtime/order/account data; MTS-Backup pushes only to local F:/MTS_backup.git; go private before mainnet.
 - The live tree (`.mts_live`, JIS-NB) runs the testnet system and changes only by MTS-AutoDeploy (manual fallback: DEPLOY_RUNBOOK.md). Builders never deploy, stop/restart processes, touch HALT files or open trades. "Supervisor" = the MTS-Supervisor task (process revival only).
 - Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety checks fail closed. New timeframe or layer family: grep every TF/family map. Whoever sets AUTO_PAUSE logs owner + expected end in SUPERVISOR_LOG; each wake clears or escalates an overdue pause.
