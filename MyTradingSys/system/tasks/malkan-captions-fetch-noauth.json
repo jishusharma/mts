@@ -1,0 +1,45 @@
+{
+  "approved_by": "operator 2026-10-15",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-15T09:05:38Z",
+  "depends_on": [],
+  "done_when": "each of the 5 ids and every Hindi pick is in raw_transcripts_canonical/ or has a NOT AVAILABLE line with reason in transcript_inventory_2026-10-09.md, on origin/fast-track",
+  "from_inbox": "",
+  "goal": "Get the Malkan captions the operator asked for: the 5 ids blocked by HTTP 429 (fgN6QBFY3Ss kVIvcn7T44o FHEoMmD6xKM TYB7GJODt-k WBByyLBp8-c) and up to 10 Hindi picks from the Vishal B Malkan channel, anonymously, with spaced retries.",
+  "id": "malkan-captions-fetch-noauth",
+  "lane": "HAIKU",
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "note": "operator 2026-10-15: \"Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.\" NO cookies, browser cookies, tokens, impersonation or third-party caption sites (LESSONS_DIGEST s6); this supersedes the cookie plan in desk_queue/20261012-085022-d11b-follow-up-claude-malkan-captions-42.json. Never open YouTube watch pages in the in-app browser. Part of LAYER_REBUILD_PLAN_2026-10-15 gate G0.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/transcript_inventory_2026-10-09.md",
+    "MyTradingSys/system/desk_queue/20261012-085022-d11b-follow-up-claude-malkan-captions-42.json"
+  ],
+  "result": "",
+  "scope_in": [
+    "raw_transcripts_canonical/",
+    "MyTradingSys/research/transcript_inventory_2026-10-09.md"
+  ],
+  "scope_out": [
+    "engine and layer code",
+    "any backtest",
+    "cookies or credentials"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "try ONE id first: python scripts/dev/fetch_captions_timed.py --analyst Malkan --out raw_transcripts_canonical fgN6QBFY3Ss (also try the JIS-NB host if the NUC is rate-limited)",
+    "on success fetch the other 4, at least 60 s apart; on 429 STOP for today and record the attempt in the card note (retry once a day, 3 days max, then NOT AVAILABLE)",
+    "Hindi picks: list the channel with yt-dlp --flat-playlist (metadata only), pick up to 10 trading-rule videos (RSI 40/60, 5-star, 7-star, divergence titles first), fetch hi + en captions",
+    "add one row per id to the Malkan additions section of MyTradingSys/research/transcript_inventory_2026-10-09.md (fetched / NOT AVAILABLE + reason)"
+  ],
+  "tests": "docs lane, no code: files present or NOT AVAILABLE line per id",
+  "title": "Malkan: fetch the 5 blocked captions + up to 10 Hindi picks, no cookies, spaced retries; DONE when each id is in raw_transcripts_canonical or has a NOT AVAILABLE line"
+}

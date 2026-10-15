@@ -598,9 +598,9 @@ Applied: (not yet)
 How do we get the captions for the 4 unextracted Krown TA 101 videos?
 
 Recommended: Retry once a day for 3 days, then ask me
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Retry once a day for 3 days, then ask me (2026-10-15)
+Operator note (verbatim): Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.
+Applied: 2026-10-15 card krown-ta101-extract-remaining-10 set ready (no cookies)
 
 ```json
 {
@@ -767,9 +767,9 @@ Applied: (not yet)
 One long-lived worktree per machine/lane, a branch per task?
 
 Recommended: Yes, adopt it
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Yes, adopt it (chat 2026-10-15)
+Operator note (verbatim): decide as per the goals of the task from where this question originates (no stale trees left behind, lower cost, same performance)
+Applied: (pending) CLAUDE.md boot + SHORT SESSIONS, sync.py start <slug> in a lane tree, PARALLEL.md
 
 ```json
 {
@@ -777,13 +777,14 @@ Applied: (not yet)
  "stage": "Process",
  "refs": "system/PARALLEL.md, scripts/dev/stop_guard.py",
  "title": "One long-lived worktree per machine/lane, a branch per task?",
- "why": "26 stale worktrees piled up on JIS-NB because every session makes its own tree and ends before shipping. Safety net shipped 2026-10-15: the Stop hook and the daily hygiene run now park any dirty or unshipped tree at refs/leftovers/<tree> on the private F:/MTS_backup.git, so nothing is lost even when a session crashes. The cause is still one tree per session. Proposal: one persistent worktree per machine and lane (JIS-NB: app, relay, dsa; NUC: relay), a fresh branch per task inside it (sync.py start <slug> switches to host/<slug> off origin/fast-track), claims only when the claimed areas overlap with an open claim (health already reports overlaps), and the session cap raised from 5 operator / 15 tool turns to 10 / 40 for one task. CLAUDE.md rules 'work only in the printed WORKTREE' and 'SHORT SESSIONS' would change; nothing is changed until you answer.",
+ "why": "26 stale worktrees piled up on JIS-NB because every session makes its own tree and ends before shipping. Data is already safe: the MTS-Backup task snapshots every tree every 15 min to the private F:/MTS_backup.git. The cause is still one tree per session. Proposal: one persistent worktree per machine and lane (JIS-NB: app, relay, dsa; NUC: relay), a fresh branch per task inside it (sync.py start <slug> switches to host/<slug> off origin/fast-track), claims only when the claimed areas overlap with an open claim (health already reports overlaps), and the session cap raised from 5 operator / 15 tool turns to 10 / 40 for one task. CLAUDE.md rules 'work only in the printed WORKTREE' and 'SHORT SESSIONS' would change; nothing is changed until you answer.",
  "options": [
   "Yes, adopt it",
   "Only the longer session cap",
   "No, keep one tree per session"
  ],
- "recommended": "Yes, adopt it"
+ "recommended": "Yes, adopt it",
+ "answer": "Yes, adopt it"
 }
 ```
 
@@ -794,7 +795,8 @@ Which login owns the Control Room page and its Inbox/decisions database?
 Recommended: jishu.sharma (the account with the GitHub identity)
 Answer: jishu.sharma (chat 2026-10-15)
 Operator note (verbatim): there is no 1 place for me to record decisons? i need all artifacts to be associated with the jishu.sharma a/c - it is the main a/c that has my GitHub.
-Applied: (pending) needs a session signed in as jishu.sharma; q1-one-control-room (jishu.awgp) is superseded once it is done.
+Operator 2026-10-15 (chat): do not wait for or copy answers still in the jishu.awgp db; seed from the repo only, ask later if something was missed.
+Applied: (pending) needs a session signed in as jishu.sharma (run it on the NUC, where that login is signed in); q1-one-control-room (jishu.awgp) is superseded once it is done.
 
 ```json
 {
