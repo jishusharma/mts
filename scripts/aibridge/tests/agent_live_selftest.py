@@ -172,7 +172,11 @@ try:
     t0 = time.time()
     st, r = run('Write-Output quick')
     quick = time.time() - t0
-    check('parallel: quick command answers while a slow one runs', st == 200 and quick < 4, 'took %.1fs' % quick)
+    # ordering, not wall time: a blocking agent answers quick only after slow ends;
+    # a fixed seconds bound tripped under ship-time load (4.4-4.5s, 2026-10-15)
+    slow_running = t.is_alive()
+    check('parallel: quick command answers while a slow one runs', st == 200 and slow_running,
+          'took %.1fs, slow still running=%s' % (quick, slow_running))
     t.join()
     check('parallel: the slow one still completes', res['slow'][0] == 200 and res['slow'][1]['out'].strip() == 'slow')
 
