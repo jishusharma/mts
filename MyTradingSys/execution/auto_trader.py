@@ -378,6 +378,9 @@ def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
         sig["reject"] = "layer disabled"
     elif side is None:
         sig["reject"] = f"unmapped {layer}:{event} (add a layer_rules entry)"
+    elif alert.get("collection_only") is True:
+        # promotion pipeline: shadow setups (and any alert while the promoted_setups registry is unreadable) never trade
+        sig["reject"] = f"collection_only {layer}:{event} (shadow)"
     else:
         t_close = alert.get("t_close")
         bar = TF_SECONDS.get(tf)
