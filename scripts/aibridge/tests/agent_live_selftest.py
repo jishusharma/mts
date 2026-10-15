@@ -166,14 +166,13 @@ try:
 
     # parallel chats: a slow command must not block a quick one
     res = {}
-    t = threading.Thread(target=lambda: res.update(slow=run('Start-Sleep -Seconds 12; Write-Output slow', timeout_s=40)))
+    t = threading.Thread(target=lambda: res.update(slow=run('Start-Sleep -Seconds 6; Write-Output slow', timeout_s=30)))
     t.start()
     time.sleep(1)
     t0 = time.time()
     st, r = run('Write-Output quick')
     quick = time.time() - t0
-    # load-tolerant: the proof of "not blocked" is that the slow one is still running when the quick one answers, not a wall-clock cap
-    check('parallel: quick command answers while a slow one runs', st == 200 and t.is_alive(), 'took %.1fs' % quick)
+    check('parallel: quick command answers while a slow one runs', st == 200 and quick < 4, 'took %.1fs' % quick)
     t.join()
     check('parallel: the slow one still completes', res['slow'][0] == 200 and res['slow'][1]['out'].strip() == 'slow')
 
