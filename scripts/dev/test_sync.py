@@ -665,5 +665,57 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(bad, [])
 
 
+class GateSlotTest(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        sh(self.tmp, "init", "-q")
+        self.slots = self.tmp / ".git" / "gate-slots"
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_third_acquirer_waits_while_two_slots_held(self):
+        class Stop(Exception):
+            pass
+
+        def stop(_):
+            raise Stop
+        out = io.StringIO()
+        with sync.gate_slot(self.tmp, alive=lambda p: True), sync.gate_slot(self.tmp, alive=lambda p: True):
+            with contextlib.redirect_stdout(out), self.assertRaises(Stop):
+                with sync.gate_slot(self.tmp, alive=lambda p: True, sleep=stop, note_every=0):
+                    self.fail("third gate must not get a slot")
+            self.assertIn("gate slot busy (2/2), waiting", out.getvalue())
+            self.assertEqual(len(list(self.slots.iterdir())), 2)
+
+    def test_stale_pid_slot_is_reclaimed(self):
+        self.slots.mkdir()
+        for i in (0, 1):
+            (self.slots / f"slot-{i}").write_text("999999")
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            with sync.gate_slot(self.tmp, alive=lambda p: p != 999999) as g:
+                self.assertEqual((self.slots / g.path.name).read_text(), str(os.getpid()))
+        self.assertIn("999999 is dead", out.getvalue())
+
+    def test_slot_released_after_gate_raises(self):
+        real = subprocess.run
+
+        def fake(cmd, *a, **k):
+            if "run_all_tests.py" in " ".join(map(str, cmd)):
+                raise RuntimeError("boom")
+            return real(cmd, *a, **k)
+        with mock.patch.object(sync.subprocess, "run", side_effect=fake):
+            with self.assertRaises(RuntimeError):
+                sync.run_gate(self.tmp)
+        self.assertEqual(list(self.slots.iterdir()), [])
+
+    def test_pid_alive_self_and_dead(self):
+        self.assertTrue(sync.pid_alive(os.getpid()))
+        p = subprocess.Popen([sys.executable, "-c", "pass"])
+        p.wait()
+        self.assertFalse(sync.pid_alive(p.pid))
+
+
 if __name__ == "__main__":
     unittest.main()
