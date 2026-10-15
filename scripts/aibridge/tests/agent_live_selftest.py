@@ -1,6 +1,6 @@
 # Live self-test for the AIBridge agent (v0.7.0). Starts a scratch agent from the src folder next to this tests folder
-# (or from --src), on port 7199, with a scratch policy, and drives it over HTTP exactly like the extension does.
-#   python tests/agent_live_selftest.py [--src <dir with agent.ps1>] [--port 7199]
+# (or from --src), on a free local port, with a scratch policy, and drives it over HTTP exactly like the extension does.
+#   python tests/agent_live_selftest.py [--src <dir with agent.ps1>] [--port N]  (default: a free port picked per run, so concurrent gates never share one)
 # Exit 0 = all checks passed. Windows only (needs powershell.exe).
 import json
 import os
@@ -16,10 +16,17 @@ import winreg
 HERE = os.path.dirname(os.path.abspath(__file__))
 args = sys.argv[1:]
 SRC = os.path.normpath(args[args.index('--src') + 1]) if '--src' in args else os.path.normpath(os.path.join(HERE, '..', 'src'))
-PORT = int(args[args.index('--port') + 1]) if '--port' in args else 7199
+def _free_port():
+    import socket
+    with socket.socket() as s:
+        s.bind(('127.0.0.1', 0))
+        return s.getsockname()[1]
+
+
+PORT = int(args[args.index('--port') + 1]) if '--port' in args else _free_port()
 PATCH = os.path.normpath(os.path.join(HERE, '..', 'policy_patch.json'))
 ORIGIN = 'chrome-extension://selftestselftestselftestselftest'
-TOKEN = 'selftesttoken'
+TOKEN = 'selftest' + os.urandom(8).hex()
 
 work = tempfile.mkdtemp(prefix='aibridge_selftest_')
 sdir = os.path.join(work, 'src')
@@ -82,6 +89,8 @@ try:
     up = False
     for _ in range(60):
         time.sleep(0.5)
+        if proc.poll() is not None:
+            break
         try:
             up = http('GET', '/ping', timeout=3)[1].get('ok')
             if up:
