@@ -19,6 +19,7 @@ import json
 import random
 import statistics
 import subprocess
+import tempfile
 from collections import defaultdict
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -719,11 +720,11 @@ def daily_chart(code, D, i, blind_id):
 
 
 def render(jobs, ps1=HERE / "render_png.ps1", batch=20):
-    for s in range(0, len(jobs), batch):
-        tmp = HERE / f"_render_{s}.json"
-        tmp.write_text(json.dumps([dict(out=str(j["out"]), w=W_PX, h=H_PX, prims=j["prims"]) for j in jobs[s:s + batch]]), encoding="utf-8")
-        subprocess.run(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(ps1), str(tmp)], check=True)
-        tmp.unlink()
+    with tempfile.TemporaryDirectory() as td:  # primitives never land in the repo folder
+        for s in range(0, len(jobs), batch):
+            tmp = Path(td) / f"render_{s}.json"
+            tmp.write_text(json.dumps([dict(out=str(j["out"]), w=W_PX, h=H_PX, prims=j["prims"]) for j in jobs[s:s + batch]]), encoding="utf-8")
+            subprocess.run(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(ps1), str(tmp)], check=True)
 
 
 # ---------------------------------------------------------------- outputs

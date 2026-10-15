@@ -22,6 +22,14 @@
    "disp": "REPRO",
    "why": "Manually reproduces four synthetic witnesses and hashed source excerpts for the 2026-10-15 strategy audit revalidation; no market data or live imports; PASS recorded in the attached proof pack."
   },
+  "MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py": {
+   "disp": "REPRO",
+   "why": "G3 blind-chart marking pack (seeded windows, causal pre-filters, chart geometry); run by hand (counts | build | draw), reproduces WINDOWS.csv, the answer key and the PNGs; covered by test_g3_pack.py; DEV data only, no live imports."
+  },
+  "MyTradingSys/research/g3_marks_2026-10-16/render_png.ps1": {
+   "disp": "TOOL",
+   "why": "GDI+ renderer called by g3_pack.py draw (subprocess, no Pillow on JIS-NB); draws rect/line/text primitives from JSON to PNG."
+  },
   "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py": {
    "disp": "REPRO",
    "why": "Pre-registered DEV-only gross-effect screen (PRE_REG.md); run by hand (--count | --full), reproduces RESULT.md/decay.csv/ledger.csv; covered by test_screen.py; no live imports."
