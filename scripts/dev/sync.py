@@ -1,10 +1,11 @@
 """One way for any session on any machine to share work: origin/fast-track is the only meeting point.
 
-  python scripts/dev/sync.py start [slug]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree
+  python scripts/dev/sync.py start [slug]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
+                                           # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
   python scripts/dev/sync.py ship    # merge origin/fast-track, gate, push HEAD to origin/fast-track
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
-  python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once)
+  python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once); refused only when --area overlaps an open claim
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
   python scripts/dev/sync.py where [--all]  # trees holding work not on origin/fast-track (nothing lost?); --all lists every tree
   python scripts/dev/sync.py tidy [--apply] [--all]  # retire finished worktrees (session, App-named, mts-relay-*; clean + fully on origin/fast-track + idle 24 h); dry run by default
@@ -138,6 +139,29 @@ def branch_prefix(repo, host):
     return host
 
 
+# Persistent per-lane trees (operator q20, 2026-10-15): `start <slug>` inside one switches to a fresh branch instead of making a worktree.
+SWITCH_LANES = ("mts-app", "mts-relay", "mts-dsa")
+
+
+def switch_lane_branch(repo, slug):
+    """Inside a persistent lane tree: move to a fresh branch <host>/<slug> off origin/fast-track. Refuses when the tree holds
+    work (uncommitted files or commits not on origin), so nothing is left behind; the previous task's branch is deleted when it
+    is fully on origin/fast-track. Returns the branch name."""
+    slug = slugify(slug)
+    reason = shared_tree_reason(repo)
+    if reason:
+        raise SyncError(f"lane tree {Path(repo).name} holds work ({reason}); commit and `sync.py ship` it first (`sync.py where` shows it).")
+    git(repo, "fetch", "--quiet", "origin", TRUNK)
+    branch = f"{branch_prefix(repo, socket.gethostname())}/{slug}"
+    old = git(repo, "branch", "--show-current").stdout.strip()
+    if git(repo, "rev-parse", "--verify", "-q", f"refs/heads/{branch}", check=False).returncode == 0             and git(repo, "merge-base", "--is-ancestor", branch, f"origin/{TRUNK}", check=False).returncode != 0:
+        raise SyncError(f"branch {branch} already has commits not on origin/{TRUNK}; pick another slug or ship it (`sync.py where`).")
+    git(repo, "switch", "-q", "-C", branch, f"origin/{TRUNK}")
+    if old and old != branch and old != TRUNK and git(repo, "merge-base", "--is-ancestor", old, f"origin/{TRUNK}", check=False).returncode == 0:
+        git(repo, "branch", "-D", old, check=False)
+    return branch
+
+
 def new_worktree(repo, slug=None):
     host = socket.gethostname().lower()
     slug = slugify(slug) if slug else time.strftime("s%m%d-%H%M%S", time.gmtime())
@@ -160,7 +184,11 @@ def start(repo, slug=None, here=False):
     """Bring a tree up to date. Returns the tree the session must work in: `repo` when it is clean, else a
     fresh worktree off origin/fast-track (printed as `WORKTREE: <path>`); never touches the other files."""
     refuse_live(repo)
-    reason = None if here else shared_tree_reason(repo)
+    if slug and not here and Path(repo).resolve().name in SWITCH_LANES:
+        print(f"lane tree {Path(repo).name}: switched to {switch_lane_branch(repo, slug)} off origin/{TRUNK}; work here")
+        reason = None
+    else:
+        reason = None if here else shared_tree_reason(repo)
     if reason:
         path = new_worktree(repo, slug)
         print(f"this tree is shared ({reason}); not working here.")
@@ -175,6 +203,16 @@ def start(repo, slug=None, here=False):
     return repo
 
 
+def claim_areas(kv):
+    """Paths a claim covers (the `area:` line), without trailing slashes; [] for '-' or none."""
+    return [a.strip().rstrip("/") for a in re.split(r"[,\s]+", kv.get("area", "-")) if a.strip() not in ("", "-")]
+
+
+def area_overlap(xs, ys):
+    """First pair (x, y) of paths, one from each list, that are equal or nested; None when the lists do not meet."""
+    return next(((x, y) for x in xs for y in ys if x == y or x.startswith(y + "/") or y.startswith(x + "/")), None)
+
+
 def health(repo):
     """Collision health, one line per problem, last line `HEALTH: <n> issue(s)`. Returns n. Read-only."""
     git(repo, "fetch", "--quiet", "origin", TRUNK)
@@ -186,13 +224,13 @@ def health(repo):
         age_h = (now - int(kv.get("epoch", now))) / 3600
         if age_h > STALE_HOURS:
             issues.append(f"STALE-CLAIM {slug}: {kv.get('host','?')}/{kv.get('account','?')} {age_h:.0f}h old")
-        areas[slug] = [a.strip().rstrip("/") for a in re.split(r"[,\s]+", kv.get("area", "-")) if a.strip() not in ("", "-")]
+        areas[slug] = claim_areas(kv)
     slugs = sorted(areas)
     for i, a in enumerate(slugs):
         for b in slugs[i + 1:]:
-            hit = [(x, y) for x in areas[a] for y in areas[b] if x == y or x.startswith(y + "/") or y.startswith(x + "/")]
+            hit = area_overlap(areas[a], areas[b])
             if hit:
-                issues.append(f"OVERLAP claims {a} / {b}: {hit[0][0]} ~ {hit[0][1]}")
+                issues.append(f"OVERLAP claims {a} / {b}: {hit[0]} ~ {hit[1]}")
     broken = []
     for t in survey(repo):
         p, branch = Path(t["path"]), t["branch"]
@@ -422,10 +460,21 @@ def claim(repo, task, area="-", gate=run_gate):
     refuse_live(repo)
     git(repo, "fetch", "--quiet", "origin", TRUNK)
     slug = slugify(task)
-    existing = dict(read_claims(repo, f"origin/{TRUNK}"))
-    if slug in existing:
-        kv = existing[slug]
-        raise SyncError(f"already claimed by {kv.get('host')} / {kv.get('account')}: {kv.get('task')}. Pick another task or ask them.")
+    open_claims = read_claims(repo, f"origin/{TRUNK}")
+    mine = claim_areas({"area": area})
+    for other, kv in open_claims:
+        # With areas on both sides a claim blocks only on overlap (operator q20); a claim without --area cannot be compared,
+        # so there only the same task name blocks.
+        theirs = claim_areas(kv)
+        hit = area_overlap(mine, theirs) if mine and theirs else None
+        if hit or (other == slug and not (mine and theirs)):
+            raise SyncError(f"already claimed by {kv.get('host')} / {kv.get('account')}: {kv.get('task')}"
+                            + (f" (area {hit[0]} ~ {hit[1]})" if hit else "") + ". Pick another task or area, or ask them (a claim over 24 h old is stale: release it).")
+    taken = {s for s, _ in open_claims}
+    base, n = slug, 1
+    while slug in taken:  # same task name, disjoint areas: both may work
+        n += 1
+        slug = f"{base}-{n}"
     path = repo / CLAIMS_DIR / f"{slug}.md"
     path.parent.mkdir(parents=True, exist_ok=True)
     NL = chr(10)
@@ -442,7 +491,7 @@ def claim(repo, task, area="-", gate=run_gate):
 # Fixed lanes other tooling points at (dispatcher prompts, codex lab, push recipe): `tidy --all` still keeps them.
 # mts-control-room is the working folder of the Claude routine mts-control-room (~/.claude/scheduled-tasks/mts-control-room/
 # SKILL.md); it sits idle between runs, so without this `tidy --all` would remove it as hand-named.
-LANE_WORKTREES = ("mts-push", "mts-refiner", "mts-codex-lab", "mts-codex", "mts-dsa", "mts-relay", "mts-control-room")
+LANE_WORKTREES = ("mts-push", "mts-refiner", "mts-codex-lab", "mts-codex", "mts-dsa", "mts-relay", "mts-control-room", "mts-app")
 
 
 TIDY_IDLE_HOURS = 24

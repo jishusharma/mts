@@ -1,8 +1,8 @@
 {
   "_doc": "ONE registry of every claude.ai artifact we keep (replaces manifest.json, 2026-10-12). Pages are published from the repo copy over the SAME url on each account, so the link stays current and the pin stays. A session cannot delete or unpin: retire/duplicate rows are the list Jis cleans by hand. Check: python scripts/dev/artifacts.py check. Procedure: artifacts/README.md.",
   "accounts": {
-    "jishu.awgp": "second account, JIS-NUC (Jis calls it the NB-app list with 6 pins)",
-    "jishu.sharma": "first account, JIS-NB (pins 2026-10-14: Control Room, MTS Layers, CBP Desk = consensus desk, CBP Monday Desk)",
+    "jishu.sharma": "login A (jishu.sharma@gmail.com, GitHub jishusharma), JIS-NUC; owns the Control Room with the Inbox and decisions db (q21). Until 2026-10-15 these urls were filed under jishu.awgp: checked 2026-10-15: a session whose Claude login is jishu.sharma@gmail.com on JIS-NUC owns Ep6gA5 and the other pages filed until then under 'jishu.awgp' (Artifact list), and cannot read EoHi2q. Pins: Control Room, MTS Layers, Tom and Fabio, CBP Consensus Desk, CBP Monday Desk",
+    "jishu.awgp": "the JIS-NB login that published the pages filed until 2026-10-15 under jishu.sharma (pins 2026-10-14: Control Room, MTS Layers, CBP Desk = consensus desk, CBP Monday Desk). Which login it is was inferred, not checked: a session on JIS-NB confirms with Artifact list",
     "jishusharma1985": "third account (Claude Max, added 2026-10-14), JIS-NB and JIS-NUC; pins 2026-10-14: Control Room (read-only mirror, no db), MTS Layers, CBP Desk = consensus desk, CBP Monday Desk"
   },
   "pages": [
@@ -13,23 +13,23 @@
       "pinned": true,
       "generator": "scripts/dev/make_control_room.py",
       "html": "MyTradingSys/system/artifacts/mts_control_room.html",
-      "owner_app": "jishu.awgp (Inbox and decisions owner, Control Room q1, 2026-10-13); jishu.sharma copy is a read-only mirror",
-      "refresh": "every session that ships (artifacts.py build, then plan --account); Inbox pickup by hand from a jishu.awgp session (relay_prompts/INSTALL.md)",
+      "owner_app": "jishu.sharma (Inbox and decisions owner, decision q21, 2026-10-15); the jishu.awgp and jishusharma1985 copies are read-only views",
+      "refresh": "every session that ships (artifacts.py build, then plan --account); Inbox pickup by hand from a jishu.sharma session (relay_prompts/INSTALL.md)",
       "db": [
         "decisions",
         "feedback"
       ],
       "urls": {
-        "jishu.awgp": "https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN",
-        "jishu.sharma": "https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su",
+        "jishu.sharma": "https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN",
+        "jishu.awgp": "https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su",
         "jishusharma1985": "https://claude.ai/artifact/4D8YMxq5WeZagGnoHByXg9"
       },
       "last_published": {
-        "jishu.awgp": "2026-10-13",
-        "jishu.sharma": "2026-10-14",
+        "jishu.sharma": "2026-10-15",
+        "jishu.awgp": "2026-10-14",
         "jishusharma1985": "2026-10-14"
       },
-      "note": "One Inbox: the jishu.awgp page. Publish the jishu.sharma copy without writing to its db. Carries the Claude-GPT cycle section (system/RELAY_NOTES.md). Republished by the NUC pickup, built with the trade ledger. The jishusharma1985 copy is published WITHOUT capabilities (2026-10-14): the page's own code shows 'Read-only view', so that login has no second Inbox nobody picks up. Republish it without passing capabilities."
+      "note": "One Inbox: the jishu.sharma page (q21; db seeded from OPERATOR_DECISIONS.md and OPERATOR_INBOX.md 2026-10-15, existing answers kept). Publish the other copies without writing to their db. Carries the Claude-GPT cycle section (system/RELAY_NOTES.md). Republished by the NUC pickup, built with the trade ledger. The jishusharma1985 copy is published WITHOUT capabilities (2026-10-14): the page's own code shows 'Read-only view', so that login has no second Inbox nobody picks up. Republish it without passing capabilities."
     },
     {
       "slug": "mts_layer_map",
@@ -42,16 +42,16 @@
       "refresh": "every session that ships, with the Control Room (zero tokens: artifacts.py build)",
       "db": [],
       "urls": {
-        "jishu.awgp": "https://claude.ai/artifact/QwsvsN3LaZKNPvD6zPTTAe",
-        "jishu.sharma": "https://claude.ai/artifact/E4NKdbEH5CJkhax9rUeHVF",
+        "jishu.sharma": "https://claude.ai/artifact/QwsvsN3LaZKNPvD6zPTTAe",
+        "jishu.awgp": "https://claude.ai/artifact/E4NKdbEH5CJkhax9rUeHVF",
         "jishusharma1985": "https://claude.ai/artifact/La75j7gM19pxiQKCpVjJcW"
       },
       "last_published": {
-        "jishu.awgp": "2026-10-13",
-        "jishu.sharma": "2026-10-14",
+        "jishu.sharma": "2026-10-13",
+        "jishu.awgp": "2026-10-14",
         "jishusharma1985": "2026-10-14"
       },
-      "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Not on jishu.sharma yet: first publish there, record the url."
+      "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins."
     },
     {
       "slug": "tom_fabio_deck",
@@ -60,17 +60,17 @@
       "pinned": true,
       "generator": null,
       "html": null,
-      "owner_app": "jishu.awgp (slides authored in claude.ai, B179)",
+      "owner_app": "jishu.sharma (slides authored in claude.ai, B179)",
       "refresh": "manual",
       "db": [],
       "urls": {
-        "jishu.awgp": "https://claude.ai/artifact/2DXWotLraL8te3xNqo4hWV",
-        "jishu.sharma": "",
+        "jishu.sharma": "https://claude.ai/artifact/2DXWotLraL8te3xNqo4hWV",
+        "jishu.awgp": "",
         "jishusharma1985": ""
       },
       "last_published": {
-        "jishu.awgp": "2026-10-12",
-        "jishu.sharma": "never",
+        "jishu.sharma": "2026-10-12",
+        "jishu.awgp": "never",
         "jishusharma1985": "never"
       },
       "note": "Slides type: no repo HTML. Share the link; do not copy to the other account."
@@ -86,13 +86,13 @@
       "refresh": "weekly, Monday",
       "db": [],
       "urls": {
-        "jishu.awgp": "https://claude.ai/artifact/7V5bKe7YYkYS32vbKc1Yn8",
-        "jishu.sharma": "https://claude.ai/artifact/X8ZB1v6eSEcW14zV9orAK7",
+        "jishu.sharma": "https://claude.ai/artifact/7V5bKe7YYkYS32vbKc1Yn8",
+        "jishu.awgp": "https://claude.ai/artifact/X8ZB1v6eSEcW14zV9orAK7",
         "jishusharma1985": "https://claude.ai/artifact/2UmzNzM9aQ7s6m7TMbPPss"
       },
       "last_published": {
-        "jishu.awgp": "2026-10-09",
-        "jishu.sharma": "unknown",
+        "jishu.sharma": "2026-10-09",
+        "jishu.awgp": "unknown",
         "jishusharma1985": "2026-10-14"
       },
       "note": "Repo HTML is a 2026-10-09 snapshot; the live content comes from CBP."
@@ -108,16 +108,16 @@
       "refresh": "daily",
       "db": [],
       "urls": {
-        "jishu.awgp": "https://claude.ai/artifact/4JZxNEPNYRMLrteBbcRrqD",
-        "jishu.sharma": "https://claude.ai/artifact/V1d9xSL9fKQYtbWjrMqASU",
+        "jishu.sharma": "https://claude.ai/artifact/4JZxNEPNYRMLrteBbcRrqD",
+        "jishu.awgp": "https://claude.ai/artifact/V1d9xSL9fKQYtbWjrMqASU",
         "jishusharma1985": "https://claude.ai/artifact/TzdcZtTBCvCyw158pSpzYf"
       },
       "last_published": {
-        "jishu.awgp": "2026-10-09",
-        "jishu.sharma": "unknown",
+        "jishu.sharma": "2026-10-09",
+        "jishu.awgp": "unknown",
         "jishusharma1985": "2026-10-14"
       },
-      "note": "Repo HTML is a snapshot of F:/CryptoScrapper/cbp_v2/dashboard.html (refreshed 2026-10-14 10:49 IST build); the live content comes from the CBP daily workflow. Not in the pinned list of the jishu.sharma app (screenshot 2026-10-12): pin it or retire it there."
+      "note": "Repo HTML is a snapshot of F:/CryptoScrapper/cbp_v2/dashboard.html (refreshed 2026-10-14 10:49 IST build); the live content comes from the CBP daily workflow. Not in the pinned list of the JIS-NB app (screenshot 2026-10-12): pin it or retire it there."
     },
     {
       "slug": "cbp_desk",
@@ -130,20 +130,20 @@
       "refresh": "twice daily (CBP daily workflow)",
       "db": [],
       "urls": {
-        "jishu.awgp": "",
         "jishu.sharma": "",
+        "jishu.awgp": "",
         "jishusharma1985": ""
       },
       "last_published": {
-        "jishu.sharma": "2026-10-12 (viewed 2 h ago in the app)",
+        "jishu.awgp": "2026-10-12 (viewed 2 h ago in the app)",
         "jishusharma1985": "never"
       },
-      "note": "Pinned only on the jishu.sharma app; its URL is in no repo file. A session on that account runs `artifacts.py plan --account jishu.sharma`, reads it from the Artifacts list and records it. Probably the live successor of CBP Dashboard and the Consensus Desk. 2026-10-14: on jishu.sharma the page titled \"CBP Desk\" IS cbp_consensus_desk (same url V1d9xSL9...); no separate page."
+      "note": "Pinned only on the JIS-NB app (key jishu.awgp since the 2026-10-15 relabel); its URL is in no repo file. 2026-10-14: on that login the page titled \"CBP Desk\" IS cbp_consensus_desk (same url V1d9xSL9...); no separate page."
     }
   ],
   "unpinned_old": {
-    "_doc": "Not pinned, not generated, last touched 2026-10-05/06. Delete when Jis answers Control Room q7 (recommended: delete all).",
-    "jishu.awgp": [
+    "_doc": "Not pinned, not generated, last touched 2026-10-05/06. Delete when Jis answers Control Room q7 (recommended: delete all). Listed under jishu.sharma since the 2026-10-15 relabel (the NUC login that owns them).",
+    "jishu.sharma": [
       {
         "title": "Binance Perp Backtesting Guide",
         "url": "https://claude.ai/artifact/Dq2rYvfgXqvCsabsFZwRXj"
