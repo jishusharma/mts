@@ -629,6 +629,10 @@
   "MyTradingSys/research/setup_catalog_2026-10-15/evidence/bb_mtf_center_checks.py": {
    "disp": "REPRO",
    "why": "Manually reproduces bb_mtf_center_checks_output.txt (30m/1h BB(20,2) legends and 1h/30m close-vs-mid tables from public Binance 1m klines) for drafts/OPR-BB-MTF-CENTER.md."
+  },
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py": {
+   "disp": "REPRO",
+   "why": "Manually reproduces rsi_divergence_mtf_checks_output.txt (5m legend of shot 8fc58204ee18, RSI14 regular bullish divergence on 1m/2m/3m/5m, 5m upper-band walk, taker delta from public Binance 1m klines) for drafts/OPR-RSI-DIV-SWEEP-BAND-WALK.md."
   }
  }
 }
