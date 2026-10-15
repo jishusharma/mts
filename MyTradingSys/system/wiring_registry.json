@@ -678,6 +678,14 @@
   "MyTradingSys/research/video_priority_2026-10-15/apply_selection.py": {
    "disp": "TOOL",
    "why": "One-shot: writes the selected ids into the Malkan caption card and the NOT SELECTED rows into transcript_inventory_2026-10-09.md; named in video_priority_2026-10-15/METHOD.md pipeline step 5; already applied."
+  },
+  "MyTradingSys/research/krown_ta101_2026-10-13/tools/fetch_daily_majors.py": {
+   "disp": "REPRO",
+   "why": "Public-data fetch for the Krown studies (Binance spot monthly klines checked against published SHA256, Coinbase BTC-USD candles); run by hand, reproduces DATA_MANIFEST.csv; no orders, no account, no secrets."
+  },
+  "MyTradingSys/research/krown_ta101_2026-10-13/tools/build_data_coverage.py": {
+   "disp": "REPRO",
+   "why": "Builds weekly bars from the daily files and writes DATA_COVERAGE.md; run by hand after fetch_daily_majors.py; reads timestamps and DEV-window OHLC equality only."
   }
  }
 }
