@@ -108,8 +108,99 @@ def needs_gate(files):
     return any(not f.endswith(DOC_SUFFIXES) for f in files)
 
 
+GATE_SLOTS = 2
+GATE_WAIT_NOTE_S = 60
+
+
+def pid_alive(pid):
+    """True when a process with this PID exists (Windows: OpenProcess via ctypes; elsewhere: signal 0)."""
+    if pid <= 0:
+        return False
+    if os.name == "nt":
+        import ctypes
+        k32 = ctypes.windll.kernel32
+        k32.OpenProcess.restype = ctypes.c_void_p
+        h = k32.OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
+        if not h:
+            return ctypes.get_last_error() == 5 or k32.GetLastError() == 5  # access denied: it exists
+        code = ctypes.c_ulong()
+        ok = k32.GetExitCodeProcess(ctypes.c_void_p(h), ctypes.byref(code))
+        k32.CloseHandle(ctypes.c_void_p(h))
+        return bool(ok) and code.value == 259  # STILL_ACTIVE
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    return True
+
+
+class gate_slot:
+    """Machine-wide limit on concurrent ship gates: at most GATE_SLOTS slot files under <git common dir>/gate-slots/, each
+    holding its owner's PID, created with O_EXCL. A slot whose PID is dead is reclaimed. Released on exit, whatever raised."""
+
+    def __init__(self, repo, slots=GATE_SLOTS, alive=pid_alive, sleep=time.sleep, note_every=GATE_WAIT_NOTE_S, poll=2.0):
+        self.repo, self.slots, self.alive, self.sleep = repo, slots, alive, sleep
+        self.note_every, self.poll, self.path = note_every, poll, None
+
+    def _dir(self):
+        common = Path(git(self.repo, "rev-parse", "--git-common-dir").stdout.strip())
+        d = (common if common.is_absolute() else Path(self.repo) / common) / "gate-slots"
+        d.mkdir(parents=True, exist_ok=True)
+        return d
+
+    def _try(self, d):
+        busy = 0
+        for i in range(self.slots):
+            p = d / f"slot-{i}"
+            for _ in range(2):
+                try:
+                    fd = os.open(str(p), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+                except FileExistsError:
+                    try:
+                        owner = int(p.read_text().strip() or 0)
+                    except (OSError, ValueError):
+                        owner = None  # unreadable or half-written: its creator may be mid-write; treat as busy
+                    if owner is not None and not self.alive(owner):
+                        print(f"gate slot {i}: owner PID {owner} is dead, reclaiming")
+                        try:
+                            p.unlink()
+                        except OSError:
+                            pass
+                        continue
+                    busy += 1
+                    break
+                with os.fdopen(fd, "w") as f:
+                    f.write(str(os.getpid()))
+                return p, busy
+        return None, busy
+
+    def __enter__(self):
+        d = self._dir()
+        last = time.monotonic()
+        while True:
+            self.path, busy = self._try(d)
+            if self.path:
+                return self
+            if time.monotonic() - last >= self.note_every:
+                print(f"gate slot busy ({busy}/{self.slots}), waiting")
+                last = time.monotonic()
+            self.sleep(self.poll)
+
+    def __exit__(self, *exc):
+        if self.path:
+            try:
+                self.path.unlink()
+            except OSError:
+                pass
+            self.path = None
+        return False
+
+
 def run_gate(repo):
-    r = subprocess.run([sys.executable, "scripts/dev/run_all_tests.py", "--quick"], cwd=repo)
+    with gate_slot(repo):
+        r = subprocess.run([sys.executable, "scripts/dev/run_all_tests.py", "--quick"], cwd=repo)
     if r.returncode != 0:
         raise SyncError("offline gate (--quick) failed; nothing pushed")
 
