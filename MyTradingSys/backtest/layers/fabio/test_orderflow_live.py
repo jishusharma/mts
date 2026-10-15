@@ -182,5 +182,95 @@ class TestWriter(unittest.TestCase):
                 self.assertIn(c, header)
 
 
+class FakeClock:
+    """Synthetic wall clock: sleep() advances it, so the loop runs instantly."""
+
+    def __init__(self):
+        self.t, self.sleeps = 1000.0, []
+
+    def __call__(self):
+        return self.t
+
+    def sleep(self, s):
+        self.sleeps.append(s)
+        self.t += s
+
+
+class StallLoopTests(unittest.TestCase):
+    def loop(self, d, fetch, clock, logs, **kw):
+        kw.setdefault("stall_minutes", 15)
+        since = kw.pop("since", T0)
+        return ol.run_loop(d, fetch, "BTCUSDT", since, 10, 20, sleep=clock.sleep, clock=clock, log=logs.append, **kw)
+
+    def test_fetch_failure_is_logged_with_exception(self):
+        with tempfile.TemporaryDirectory() as d:
+            clock, logs = FakeClock(), []
+            code = self.loop(d, FakeExchange(TRADES, fail=True), clock, logs, max_cycles=2)
+            self.assertEqual(code, 0)
+            errs = [m for m in logs if m.startswith("ERROR")]
+            self.assertEqual(len(errs), 2)
+            self.assertIn("boom", errs[0])
+
+    def test_429_backs_off_and_is_bounded(self):
+        with tempfile.TemporaryDirectory() as d:
+            clock, logs = FakeClock(), []
+            self.loop(d, FakeExchange(TRADES, fail=True), clock, logs, max_cycles=12, stall_minutes=10 ** 6)
+            self.assertEqual(clock.sleeps[:3], [40, 80, 160])
+            self.assertEqual(max(clock.sleeps), ol.BACKOFF_MAX_S)
+
+    def test_backoff_resets_after_success(self):
+        self.assertEqual(ol.backoff_seconds(20, 0), 20)
+        self.assertEqual(ol.backoff_seconds(20, 1), 40)
+        self.assertEqual(ol.backoff_seconds(20, 99), ol.BACKOFF_MAX_S)
+
+    def test_no_progress_for_15_min_takes_exit_path(self):
+        with tempfile.TemporaryDirectory() as d:
+            clock, logs = FakeClock(), []
+            code = self.loop(d, FakeExchange(TRADES, fail=True), clock, logs)
+            self.assertEqual(code, ol.STALL_EXIT_CODE)
+            self.assertNotEqual(code, 0)
+            self.assertTrue(any(m.startswith("STALL") for m in logs))
+            self.assertLessEqual(clock.t - 1000.0, 15 * 60 + ol.BACKOFF_MAX_S)
+
+    def test_state_rewrite_without_progress_does_not_reset_guard(self):
+        """The 2026-10-15 symptom: _state.json is rewritten every cycle with next_ms unchanged."""
+        with tempfile.TemporaryDirectory() as d:
+            clock, logs = FakeClock(), []
+
+            def stuck(out, fetch_fn, symbol, since_ms=None, keep_days=10):
+                ol.save_state(out, {"next_ms": T0})
+                return {"rows": 0, "next_ms": T0, "thr_days": None, "error": None}
+
+            code = self.loop(d, None, clock, logs, cycle=stuck)
+            self.assertEqual(code, ol.STALL_EXIT_CODE)
+
+    def test_progress_resets_guard(self):
+        g = ol.StallGuard(0, 15)
+        self.assertTrue(g.update(100, 14 * 60))
+        self.assertTrue(g.update(160, 28 * 60))   # advanced: guard restarted at 28 min
+        self.assertTrue(g.update(160, 42 * 60))   # 14 min since progress
+        self.assertFalse(g.update(160, 44 * 60))  # 16 min since progress
+
+    def test_restart_resumes_from_state(self):
+        with tempfile.TemporaryDirectory() as d:
+            prior_hist(d)
+            ol.save_state(d, {"next_ms": T0})
+            ex = FakeExchange(TRADES)
+            clock, logs = FakeClock(), []
+            self.loop(d, ex, clock, logs, max_cycles=1)
+            self.assertTrue(any(m.startswith("ok") for m in logs))
+            self.assertGreater(ol.load_state(d)["next_ms"], T0)
+            self.assertFalse(any(m.startswith("WARN") for m in logs))
+
+    def test_corrupt_state_behaviour_unchanged_and_warned(self):
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "_state.json").write_text("{not json")
+            self.assertEqual(ol.load_state(d), {})
+            clock, logs = FakeClock(), []
+            self.loop(d, FakeExchange(TRADES), clock, logs, max_cycles=1, since=None, cycle=lambda *a, **k: {
+                "rows": 0, "next_ms": T0, "thr_days": None, "error": None})
+            self.assertTrue(any(m.startswith("WARN") for m in logs))
+
+
 if __name__ == "__main__":
     unittest.main()
