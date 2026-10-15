@@ -90,28 +90,17 @@ Inputs: list_sessions (60, incl. archived), list_events on 10 sessions, get_usag
 | #7 Fabio holdout label | approved | layer_index.json -> LAYERS.md: "OOS FAIL (model C); holdout NOT read for Fabio" |
 | G3 | coordinator starts it after fix-selftest-gate and lab-unstall | brief below |
 
-## G3 brief (start as written; Sonnet session, one task)
-Goal: the first G3 marks. Two blind readers mark Tom's setups on BTC charts; then Fabio. G4 recall needs these marks; nothing else unblocks G5.
-- Rows (SETUP_CATALOG.md, columns "stop stated in words" and "BTC visible"):
-  - Tom first: TOM-2, TOM-4 and TOM-5 have stop stated Y and BTC visible YES. Add TOM-1 (stop Y, BTC PARTIAL), which has the most real trades (16).
-  - Then Fabio: FAB-4 and FAB-8 (BTC YES), and FAB-5 (PARTIAL, 11 real trades). No FAB row states a stop in his words. G3 marks the event only; the stop stays OURS for G5.
-- Charts: BTCUSDT from the public Binance 1m archive, resampled to the row's timeframe, in the DEV window only (never VALIDATION, never the sealed holdout).
-  - 30 windows per row, right edge at a random DEV time (seed recorded). No bars after the edge. Only the panels the row names (volume profile, VWAP, volume; Fabio rows add CVD from our engine).
-  - 4 Tom rows x 30 = 120 windows, then 90 for Fabio.
-- Readers:
-  - (1) The operator, on a phone page: an Artifact with the `db` capability. One window per screen; YES/NO, plus a tap on the bar where the setup triggers. About 10 s per window, so about 20 min for Tom.
-  - (2) A blind Sonnet subagent. It sees the same PNG and only the row's catalogue text (what you see, his words), never the operator's marks.
-- Output: `research/g3_marks_<date>/` holding:
-  - MARKS.csv (row, window, reader, yes/no, trigger bar UTC);
-  - WINDOWS.csv (seed, edges);
-  - G3_REPORT.md: per row, the yes-rate per reader and agreement (Cohen kappa). A row with kappa < 0.4 goes back to G2 with the disagreeing windows listed.
-  - PNGs are rebuilt from the seed and not committed.
-- Done when:
-  - both readers have marked all 120 Tom windows;
-  - G3_REPORT.md is on origin (`git cherry` empty);
-  - `gate_board.json` sets tom to G3, with proof G3_REPORT.md, in the same commit.
-  - Card `tom-btc-eye-read` is closed with `tasks.py done`.
-- Not in scope: encoding, event studies, any Krown or Malkan row (G2 first).
+## G3 brief (REVISED 2026-10-16, CATALOGUE_AUDIT P3/P4/P6 and decisions D1, D3, D4; the 2026-10-15 text is replaced)
+Goal: the first G3 marks. Two blind readers mark the setups on BTC charts. G4 recall needs these marks; nothing else unblocks G5.
+- Definitions first: research/layer_rebuild_2026-10-15/READER_PROTOCOL.md (session anchor 00:00 UTC, balance, P/b/D by closes, thin top, big trade, healthy trend, timeframe per row). OURS, fixed before G3, never varied during it.
+- Rows (D4): start with the rows marked YES in audit 4.3: TOM-4, TOM-6, TOM-12, TOM-15, FAB-1, FAB-4, FAB-5, plus Krown KR-S1, KR-S8 and Malkan MAL-2/5, MAL-16/17 (P6 order: clear stops, daily/weekly bars). MAL-5 is MAL-2's order mechanic and MAL-16/17 are the two sides of one divergence: one mark each (D3). TOM-1a and TOM-2 follow after the protocol is on origin. G3 marks the event only; the stop stays OURS for G5.
+- Windows (replaces "30 windows per row with a random right edge"): per row 20 windows, half random (the false-positive floor), half candidate-enriched from a cheap causal pre-filter that is written down in g3_pack.py (OURS, logged, selection only, never an entry rule). Rare events (the screen's flow flag fired 40 times in 912 DEV days) make random edges give a yes-rate near zero and an undefined kappa. The two halves are reported separately; a row whose enriched half has fewer than 5 YES marks from both readers is extended by 20 more windows from the same generator with a new seed suffix (logged; not built yet, `pick` takes the seed as a parameter) before it is judged.
+- Charts: BTCUSDT DEV only, no bar after the right edge, dates hidden, price axis in % from the last close, only the panels the protocol names per row. Footprint rows (Tom/Fabio, 15m/30m/5m) use F:/MTS/data/orderflow_1m, 2024-12-02..2025-03-31 (the Tom footprint track's DEV, per task brief; it lies inside the standard VALIDATION dates and is logged as such in EXPOSURE_LEDGER.csv). Daily/weekly rows (Krown, Malkan) use daily klines 2021-03-01..2024-06-30 (standard DEV, before 2024-07-01).
+- Readers: (1) the operator, one window per screen: TAKE / SKIP, side, tap on the trigger bar (offset), stop % and target %. (2) A blind Sonnet subagent that sees the same PNG, the protocol and the row's catalogue text only, never reader 1's marks and never the answer key.
+- Answer key: ANSWER_KEY_CLOSED/KEY.csv (half, pre-filter tag, dates) stays closed until both marking sheets are committed; its sha256 is recorded in g3_marks_2026-10-16/README.md. Window ids carry no hint of the half.
+- Output: `research/g3_marks_2026-10-16/` holding WINDOWS.csv (ids, rows, right edges, seeds), MARKING_SHEET_reader1_operator.csv and MARKING_SHEET_reader2_claude.csv (one row per window), the key, and later G3_REPORT.md: per row and per half, the yes-rate per reader and agreement (Cohen kappa; undefined kappa is reported as undefined, never as 0). A row with kappa < 0.4 goes back to G2 with the disagreeing windows listed. PNGs are rebuilt from WINDOWS.csv (`g3_pack.py draw`) and not committed.
+- Done when: both readers have marked every window of the first batch; G3_REPORT.md is on origin (`git cherry` empty); `gate_board.json` moves each layer whose rows passed to G3, with proof G3_REPORT.md, in the same commit.
+- Not in scope: encoding, event studies, any row not listed above.
 
 ## GPT (NUC Codex lab) and NUC-only queue (coordinator task, 2026-10-15 14:30Z)
 Rules: GPT only for high-value work, gpt-6-astra at low effort only (a card needs `crucial` for astra: tasks.codex_setting); the lab
