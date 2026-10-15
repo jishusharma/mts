@@ -18,7 +18,7 @@
   "refine_tries": 0,
   "refined_by": "opus-2026-10-14 (LC PLAN.md, operator chat)",
   "refs": [],
-  "result": "families KEEP: prior_day_high, prior_day_low, prior_day_poc, naked_poc, 4h_fractal_low, 4h_fractal_high, round_1000, prior_week_high; DROP: prior_day_vah, prior_day_val, daily_open, prior_week_low; L2 reached 83.8% - MyTradingSys/research/layer_lab/reports/2026-10-14_lc-levels-hold.md",
+  "result": "families KEEP: prior_day_high, prior_day_low, prior_day_poc, naked_poc, 4h_fractal_low, 4h_fractal_high, round_1000, prior_week_high; DROP: prior_day_vah, prior_day_val, daily_open, prior_week_low; L2 reached 83.8% - MyTradingSys/research/layer_lab/reports/2026-10-14_lc-levels-hold.md. Claude spot-check: MATCH prior_day_high touches 57, hold 32/57 = 56.1% and prior_day_low 60 touches, hold 38/60 = 63.3%, recomputed independently from public data.binance.vision futures/um BTCUSDT 1m klines 2024-12-01..2025-03-31.",
   "scope_in": [
     "MyTradingSys/research/levels_confluence_2026-10-14/levels.py",
     "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py",
