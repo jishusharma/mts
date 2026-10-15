@@ -16,8 +16,8 @@ $py = (Get-Command python -ErrorAction Stop).Source
 $pyw = Join-Path (Split-Path $py) 'pythonw.exe'
 if (Test-Path $pyw) { $py = $pyw }
 $action = New-ScheduledTaskAction -Execute $py -Argument ('"{0}\scripts\sched\dispatch_gate.py" --root "{0}" --peer-quiet-min {1}' -f $Repo, $PeerQuietMin) -WorkingDirectory $Repo
-$trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes 10)
+$trig = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes 10)
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Hours 2)
-Register-ScheduledTask -TaskName 'MTS-DispatchGate' -Action $action -Trigger $trigger -Settings $settings -Force | Out-Null
+Register-ScheduledTask -TaskName 'MTS-DispatchGate' -Action $action -Trigger $trig -Settings $settings -Force | Out-Null
 Write-Output 'registered MTS-DispatchGate (every 10 min)'
 if ($Trigger) { Start-ScheduledTask -TaskName 'MTS-DispatchGate'; Start-Sleep 5; Get-ScheduledTaskInfo -TaskName 'MTS-DispatchGate' | Select-Object LastRunTime, LastTaskResult }
