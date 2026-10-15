@@ -106,39 +106,6 @@ def backup_one(wt, remote, host, dry_run):
     return name, "pushed %s" % commit[:9]
 
 
-LEFTOVERS_PREFIX = "refs/leftovers/"
-
-
-def leftovers_snapshot(wt, remote="backup"):
-    """Losslessly park the tree `wt` (HEAD + every non-ignored file, untracked included) at refs/leftovers/<tree> on `remote`.
-    Same plumbing as snapshot_tree/backup_one: a temp index and commit-tree, so the tree, its index, stashes and branches are
-    never touched. Chains onto the previous leftovers commit, HEAD is the second parent (unshipped commits stay reachable).
-    Never raises, never pushes to the public origin. -> (ref, 'pushed <sha>' | 'unchanged' | 'skipped: <why>')."""
-    wt = Path(wt)
-    ref = LEFTOVERS_PREFIX + slug(wt.name)
-    try:
-        if targets_origin(wt, remote):
-            return ref, "skipped: remote %r is the public origin" % remote
-        if git(["remote", "get-url", remote], wt, check=False).returncode != 0:
-            return ref, "skipped: no remote %r" % remote
-        tree = snapshot_tree(wt)
-        prev = remote_tip(wt, remote, ref)
-        if prev and git(["rev-parse", prev + "^{tree}"], wt).stdout.strip() == tree:
-            return ref, "unchanged"
-        head = git(["rev-parse", "--verify", "-q", "HEAD"], wt, check=False).stdout.strip()
-        args = ["commit-tree", tree]
-        for p in (prev, head):
-            if p:
-                args += ["-p", p]
-        args += ["-m", "leftovers snapshot %s (not for merge)" % wt.name]
-        commit = git(args, wt, {"GIT_AUTHOR_NAME": "mts-backup", "GIT_AUTHOR_EMAIL": "mts-backup@localhost",
-                                "GIT_COMMITTER_NAME": "mts-backup", "GIT_COMMITTER_EMAIL": "mts-backup@localhost"}).stdout.strip()
-        git(["push", "-q", remote, "%s:%s" % (commit, ref)], wt)
-        return ref, "pushed %s" % commit[:9]
-    except Exception as exc:
-        return ref, "skipped: %s" % str(exc)[:200]
-
-
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo", default=str(Path(__file__).resolve().parents[2]))
