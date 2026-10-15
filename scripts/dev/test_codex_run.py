@@ -6,6 +6,7 @@ import json
 import os
 import sys
 import tempfile
+import time
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
@@ -550,6 +551,39 @@ class WatchdogTest(unittest.TestCase):
         bails = [self.ROW | {"card": c, "at": "2026-10-14T00:00:00Z"} for c in ("a", "b", "c")]
         self.assertIn("bailed early 3 runs in a row", " | ".join(R.stall_findings(bails, [], {}, True, "", self.NOW)))
         self.assertIn("STALLED", " | ".join(R.needs_look(ready, {}, old, watch=R.stall_findings(old, ready, {}, True, "", self.NOW))))
+
+class TimeBoxTest(unittest.TestCase):
+    """2026-10-15: the tick's `lane_health sweep --ship` ran the quick gate with no time limit; a hung gate held the tick for 30+ minutes
+    and no card ran. The sweep is boxed and a timeout must kill the whole process tree (children hold the pipes)."""
+
+    HANG = "import subprocess, sys, time; subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(120)']); time.sleep(120)"
+
+    def test_boxed_returns_124_for_a_hung_process_tree_and_passes_normal_output(self):
+        t0 = time.time()
+        r = R.boxed([sys.executable, "-c", self.HANG], Path.cwd(), 3)
+        self.assertEqual(r.returncode, 124)
+        self.assertIn("TIMEOUT after 3s", r.stderr)
+        self.assertLess(time.time() - t0, 60)   # not the 120 s the grandchild sleeps
+        ok = R.boxed([sys.executable, "-c", "print('hi')"], Path.cwd(), 30)
+        self.assertEqual((ok.returncode, ok.stdout.strip()), (0, "hi"))
+
+    def test_a_hung_sweep_is_cut_off_and_recorded_so_the_tick_can_go_on(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            wt, runs = Path(d) / "wt", Path(d) / "runs"
+            (wt / "scripts" / "dev").mkdir(parents=True)
+            runs.mkdir()
+            (wt / "scripts" / "dev" / "lane_health.py").write_text(self.HANG + chr(10), encoding="utf-8", newline=chr(10))
+            old, R.SWEEP_TIMEOUT_S = R.SWEEP_TIMEOUT_S, 3
+            try:
+                t0 = time.time()
+                sw = R.run_sweep(wt, runs, "--apply", "--ship")
+            finally:
+                R.SWEEP_TIMEOUT_S = old
+            self.assertEqual(sw.returncode, 124)
+            self.assertLess(time.time() - t0, 60)
+            self.assertIn("TIMEOUT", (runs / "last_lane.txt").read_text(encoding="utf-8"))
+
 
 if __name__ == "__main__":
     unittest.main()
