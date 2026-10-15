@@ -3,7 +3,7 @@
 Everything below was removed from its worktree and kept in the local bare repo `F:/MTS_backup.git` (remote `backup`, private:
 it holds runtime files that must never go to the public origin). Nothing was deleted without a copy.
 
-Restore a set: `git fetch backup refs/leftovers/<name>:refs/heads/restore-<name>`, then `git checkout restore-<name>`.
+Restore a set: `git fetch backup refs/leftovers/<name>:refs/heads/restore-<name>`, then switch to `restore-<name>`.
 Each `refs/leftovers/<tree>` is one commit on top of that tree's old HEAD holding its uncommitted files (mirror and pytest
 droppings excluded: the mirror is regenerable by `live_mirror.py pull`). `refs/leftovers/branch/<branch>` are branch tips.
 
