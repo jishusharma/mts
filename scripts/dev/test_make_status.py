@@ -119,6 +119,63 @@ class CiLine(Base):
         commit_file(self.repo, "a.txt", self.now)
         self.assertIn("no origin/green/fast-track ref", ms.get_ci_line(cwd=self.repo))
 
+    def test_behind_line_reports_landings_and_plain_commits_and_green_age(self):
+        # A merge lands many commits as one first-parent step: the line must show both numbers, plus how old green is.
+        g = commit_file(self.repo, "a.txt", self.now - 5 * 3600)
+        git(self.repo, "checkout", "-q", "-b", "side")
+        commit_file(self.repo, "scripts/s1.py", self.now - 4 * 3600)
+        commit_file(self.repo, "scripts/s2.py", self.now - 3 * 3600)
+        git(self.repo, "checkout", "-q", "-")
+        git(self.repo, "merge", "-q", "--no-ff", "-m", "merge side", "side", when=self.now - 60)
+        t = git(self.repo, "rev-parse", "HEAD")
+        self.refs(g, t)
+        line = ms.get_ci_line(cwd=self.repo, now=datetime.fromtimestamp(self.now))
+        self.assertTrue(line.startswith("CI green: "), line)       # dsa.py and cloud_setup.py read this prefix
+        self.assertIn("1 trunk landing(s) / 3 commit(s) behind", line)
+        self.assertIn("5.0 h old", line)
+
+
+class TrunkLog(Base):
+    def test_log_is_origin_fast_track_not_local_head(self):
+        commit_file(self.repo, "a.txt", self.now - 3 * DAY)
+        tip = commit_file(self.repo, "b.txt", self.now - 2 * DAY)
+        git(self.repo, "update-ref", "refs/remotes/origin/fast-track", tip)
+        commit_file(self.repo, "local_only.txt", self.now - DAY)       # this host's HEAD moved on; the trunk did not
+        label, log = ms.get_trunk_log(2, cwd=self.repo)
+        self.assertEqual(label, "origin/fast-track")
+        self.assertEqual(len(log.splitlines()), 2)
+        self.assertNotIn("local_only.txt", log)
+
+    def test_without_the_trunk_ref_falls_back_to_head_and_says_so(self):
+        commit_file(self.repo, "a.txt", self.now - DAY)
+        label, log = ms.get_trunk_log(3, cwd=self.repo)
+        self.assertIn("no origin/fast-track ref", label)
+        self.assertEqual(len(log.splitlines()), 1)
+
+
+class NewFiles(Base):
+    def test_tracked_new_file_is_aged_by_its_commit_not_its_checkout_mtime(self):
+        commit_file(self.repo, "MyTradingSys/x/staged.py.new", self.now - 3 * DAY)
+        os.utime(Path(self.repo) / "MyTradingSys/x/staged.py.new", None)      # checkout stamps mtime = now
+        (path, age), = ms.get_new_files(cwd=self.repo, now=datetime.fromtimestamp(self.now))
+        self.assertEqual(path, "MyTradingSys/x/staged.py.new")
+        self.assertAlmostEqual(age, 72.0, delta=0.1)
+
+    def test_untracked_new_file_is_aged_by_mtime(self):
+        commit_file(self.repo, "MyTradingSys/keep.txt", self.now - 30 * DAY)
+        p = Path(self.repo) / "MyTradingSys/y/draft.py.new"
+        p.parent.mkdir(parents=True)
+        p.write_text("x\n", encoding="utf-8")
+        os.utime(p, (self.now - 2 * 3600, self.now - 2 * 3600))
+        (path, age), = ms.get_new_files(cwd=self.repo, now=datetime.fromtimestamp(self.now))
+        self.assertAlmostEqual(age, 2.0, delta=0.1)
+
+
+class HygieneSection(unittest.TestCase):
+    def test_host_without_a_hygiene_report_gets_no_section_text(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(ms.get_hygiene_status(Path(d)), "")
+
 
 class LessonsLine(Base):
     def write(self, rel, text):

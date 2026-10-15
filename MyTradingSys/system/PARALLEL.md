@@ -24,26 +24,31 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
 ## Two kinds of checkout
 | Checkout | Where | Who changes it | How |
 |---|---|---|---|
-| Live tree | JIS-NB `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed`, marked by the gitignored file `.mts_live` | supervisor only | deploy in a restart window: stop, `git merge --ff-only origin/fast-track`, gate, restart |
+| Live tree | JIS-NB `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed`, marked by the gitignored file `.mts_live` | `MTS-AutoDeploy` only (DEPLOY_RUNBOOK.md) | gate the green SHA, `git merge --ff-only`, restart what changed |
 | Work tree | anything else: an App worktree, `../mts-<slug>`, the NUC or laptop clone, a cloud container | any session | `sync.py start` ... commit ... `sync.py ship` |
 
 `sync.py` refuses to run in the live tree, so a session that opens there is told to make a worktree:
 `git worktree add ../mts-<slug> -b <host>/<slug> origin/fast-track`.
 
 ## A session's whole protocol
-1. `python scripts/dev/sync.py start` - pull everyone else's work.
-2. Work. Commit small and often, trailer `MTS-Session: <ID>` (that is the session record; commit history is the registry).
+1. `python scripts/dev/sync.py start` (from a work tree, never the live tree) - pull everyone else's work; it prints the open claims.
+2. Pick ONE task not in the claims list (`system/NEXT_SESSION.md`, or `tasks.py next`) and
+   `python scripts/dev/sync.py claim "<task>" --area <paths>`: it ships a one-file claim at once, so a parallel session on any
+   login or device sees it; a second claim of the same task is refused; a claim older than 24 h shows STALE: ask, then release.
+3. Work. Commit small and often, trailer `MTS-Session: <ID>` (that is the session record; commit history is the registry).
    The body has one line `Result: <what works now, or the number it produced>`. A question for the operator:
    `Operator: <question>`. Other sessions' uncommitted files are not yours - never stash, clean or report them.
-3. `python scripts/dev/sync.py ship` - merges origin/fast-track (never rebase), runs the `--quick` gate only if
-   something other than docs changed, pushes. A rejected push means someone shipped first; it re-merges and
-   retries. A real conflict stops and asks you to resolve it.
-4. CI runs the full gate on both OSes after every push. Red CI is the next session's first job.
-5. Worktree hygiene (2026-10-12): a session that made a `../mts-<host>-<slug>` worktree and shipped everything
-   ends with `sync.py where` clean; the next session of any lane runs `sync.py tidy` (dry run) then `tidy --apply`,
-   which removes only session worktrees that are clean, fully on origin/fast-track, idle for 24 h (a just-started
+4. `python scripts/dev/sync.py ship` - merges origin/fast-track (never rebase), runs the `--quick` gate only if
+   something other than docs changed (about 5 min: start `ship` with run_in_background and read the output once; a foreground tool call dies at 600 s), pushes. A rejected push means someone shipped first; it re-merges and
+   retries. A real conflict stops and asks you to resolve it. Then `sync.py release <slug>`; `sync.py where` must be clean;
+   overwrite NEXT_SESSION.md if you are the last session of the day (hand-over: RELAY.md; session length: CLAUDE.md SHORT SESSIONS).
+5. CI runs the full gate on both OSes after every push. Red CI is the next session's first job.
+6. Worktree hygiene (2026-10-12): a session that made a `../mts-<host>-<slug>` worktree and shipped everything
+   ends with `sync.py where` (own tree clean); the next session of any lane runs `sync.py tidy` (dry run) then `tidy --apply`,
+   which removes only worktrees (`../mts-<host>-<slug>`, the App's `.claude/worktrees/*`, `../mts-relay-*`) that are clean
+   (the pulled mirror and a stray AGENTS.md/.codex do not count), fully on origin/fast-track, idle for 24 h (a just-started
    tree looks identical to a finished one), and hold no ignored data files (`git worktree remove` deletes
-   Dumps/, runtime_data/ and fetched klines silently; only __pycache__/.pytest_cache/.pyc do not count).
+   Dumps/, runtime_data/ and fetched klines silently; regenerable caches, empty ignored dirs and settings.local.json do not count).
    Never remove a worktree with uncommitted or unshipped work, a named lane (mts-push, mts-codex-lab ...), or
    the main/live tree. Fetched datasets belong in the primary tree's Dumps/ (never tidied), not in a session
    worktree. 2026-10-12: tidy without these guards removed 15 worktrees on JIS-NUC (see RV03 report).
@@ -56,17 +61,17 @@ A session blocked on desktop reach (JIS-NB data, a file only it holds, a look at
 other work, and later `desk.py wait <id>` or reads the result after `sync.py start`. The desktop agent (a Claude
 session or the operator) lists open tasks with `mts desk`, claims one (`desk.py take`) and closes it
 (`desk.py done <id> --result ...`, or `--failed` with a reason). It is a board for agents, not an executor: nothing
-runs a command from task text, and restarts, HALT, orders, deploys and secrets stay with the supervisor
-(a declined task closes `--failed` and its `Operator:` line shows in `sync.py news`). Cloud work still uses CLOUD_INBOX.md.
+runs a command from task text, and restarts, HALT, orders, deploys and secrets stay with the operator and MTS-AutoDeploy
+(a declined task closes `--failed` and its `Operator:` line shows in `sync.py news`). Cloud work ships by pull request (above).
 
 ## What the operator reads
 `python scripts/dev/sync.py news [hours]` - every shipped commit as subject + Result line + folders touched.
 No diffs, no PR review. A missing Result line shows as "(not stated)" and is the thing to push back on.
 
 ## What still needs a person
-- Deploying to the live tree, restarts, HALT, orders: supervisor only (CLAUDE.md hard rules unchanged).
+- Deploying to the live tree: `MTS-AutoDeploy` only (DEPLOY_RUNBOOK.md). Restarts, HALT, orders: not a builder's (CLAUDE.md hard rules).
 - Changes to `execution/` or `layers/alerts/` ship like anything else; they reach the live system only on the
-  next deploy, so the supervisor reads what changed under execution/ since the live HEAD before deploying.
+  next `MTS-AutoDeploy`, which restarts just the processes whose files changed.
 - Two sessions knowingly on the same file: say so in the commit message; git does the rest.
 
 ## Machine-local settings never go in .git/info/exclude
@@ -78,28 +83,21 @@ Runtime data (orderflow_live, snapshots, klines) is gitignored and lives on JIS-
 the last committed snapshot; a chart or backtest there that "stops" at an old date is reading that snapshot,
 not a broken recorder. Copy data explicitly (DEVICES section 7) before analysing it off the desktop.
 
-## Two accounts, three devices: the ritual (2026-10-09)
-Any Claude account on any device runs the same four steps. Nothing else is needed to avoid collisions.
-1. `python scripts/dev/sync.py start` (from a work tree, never the live tree) - pulls origin/fast-track and prints open claims.
-2. Read `system/NEXT_SESSION.md` (the queue) and pick ONE task not in the claims list.
-3. `python scripts/dev/sync.py claim "<task>" --area <paths>` - ships a one-file claim at once, so a parallel session on the
-   other account/device sees it. A second claim of the same task is refused. Claims older than 24 h show STALE: ask, then release.
-4. Work, commit (`Result:` line), `sync.py ship`, `sync.py release <slug>`, `sync.py where` must be clean, overwrite NEXT_SESSION.md
-   if you are the last session of the day. Short sessions: CLAUDE.md.
-The account name on a claim is `MTS_ACCOUNT` (env var) else git `user.name`; set `MTS_ACCOUNT=sharma` or `awgp` once per machine.
-A third Claude account (jishusharma1985, Max, 2026-10-14) also works from JIS-NB and JIS-NUC; it follows the same four steps (CLOUD_ACCOUNTS.md "Account C").
-With several accounts on one machine the claim's account name is the machine's `MTS_ACCOUNT`, not the signed-in login: read the host, not the name.
+## Devices and accounts (ritual: "A session's whole protocol" above)
+The account name on a claim is the machine's `MTS_ACCOUNT` (env var, `sharma` or `awgp`, set once per machine) else git `user.name`,
+not the signed-in login: read the host, not the name. Logins, GitHub identities, credits and hand steps: CLOUD_ACCOUNTS.md.
+Credits are per login, state is not: whichever login has budget picks up `NEXT_SESSION.md`; do not wait for a weekly reset.
+Which machine, login, lane and model may touch what: HOW_MTS_RUNS.md.
 
-### Per-device rules
 | Device | Runs | May push fast-track? | Rule |
 |---|---|---|---|
-| JIS-NB (desktop) | live loop (live tree), Claude sessions, scheduled checks | yes, from work trees only (`../mts-<slug>`) | the live tree is touched only by the supervisor deploy; data lives here (gitignored) |
-| JIS-NUC | backtests/heavy research on committed data; F:\MTS\data | yes, once its clone has a work tree + git credentials (below) | until credentials exist, NUC output is copied/committed from JIS-NB: write results under `research/<slug>/` and ship from JIS-NB. Never run the live loop there before the DEVICES section 3 move |
+| JIS-NB (desktop) | live loop (live tree), Claude sessions, scheduled checks | yes, from work trees only (`../mts-<slug>`) | the live tree is touched only by `MTS-AutoDeploy`; data lives here (gitignored) |
+| JIS-NUC | relay sessions, Codex lab, backtests/heavy research on committed data; F:\MTS\data | yes, from its work tree (relay and lab sessions ship from there) | never run the live loop there before the DEVICES section 3 move; data made on JIS-NB is not there until copied |
 | DESKTOP-F7IU69N (laptop) | travel: Claude app, own clone, RDP into the others | yes, from its clone | work on committed data only; need JIS-NB files -> `desk.py post` and carry on |
 Only one machine runs the live loop at a time (DEVICES section 3).
 
-### Accounts
-One repo (jishusharma/mts), one history. Both Claude accounts push as themselves:
-- jishu.sharma (GitHub `jishusharma`, owner): works everywhere out of the box.
-- jishu.awgp (GitHub `jishu-awgp`): needs write access, see CLOUD_ACCOUNTS.md "Hand steps". Until granted it cannot push; it hands work over as a file in the thread and another session ships it.
-Credits are per account, state is not: whichever account has budget picks up `NEXT_SESSION.md`. When one account is near its weekly limit, the other takes the queue; do not wait for the reset.
+## Fallback if sync.py is broken (moved from CLAUDE.md Quick answers, 2026-10-15)
+Never from the live tree (the folder holding `.mts_live`). `git worktree add ../mts-push -b <host>/<slug> HEAD` (reuse it if present),
+`git -C ../mts-push merge origin/fast-track` (the Bash settings deny a bare `git merge`; docs conflicts: take origin's text; STATUS.md:
+take origin's, regenerate), `python scripts/dev/run_all_tests.py --quick` there, then `git -C ../mts-push push origin <branch>:fast-track`.
+`sync.py ship` does the same plus the retry and the NEXT_SESSION/STATUS/BUILD_REPORT collision rule above.

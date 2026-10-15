@@ -48,7 +48,7 @@ Seed keywords -> grep -> harvest co-occurring terms from each hit's sentence -> 
 adds <10% new hits. Report every term, hits per term, files matched and files read.
 
 ### CONSEQUENCES
-- A rule built on unverified research = BLOCKER; log it in system/02b_DECISIONS_LOG.md.
+- A rule built on unverified research = BLOCKER; log it in system/OPERATOR_DECISIONS.md.
 - A system change backed only by T3 needs explicit operator approval.
 
 ---

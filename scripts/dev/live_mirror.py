@@ -3,10 +3,12 @@
   python scripts/dev/live_mirror.py publish [--root DIR]   # JIS-NB live tree only; copies the ALLOWLIST to <root>/v<utc>/, then moves CURRENT
   python scripts/dev/live_mirror.py pull    [--root DIR]   # any work tree; verifies sha256, lands in runtime_data/_mirror/
   python scripts/dev/live_mirror.py brief                  # one screen: how old, flags, last alert, trades; every line says mirror@<utc>
+                                                           # (a work tree whose copy is missing or older than WARN_MIN pulls first)
   python scripts/dev/live_mirror.py export-obs             # copy this machine's observation captures into git-tracked research/ (dedup by obs_id)
 
 Design, review (Opus, 2026-10-10) and fail-closed rules: MyTradingSys/system/LIVE_MIRROR.md.
 The mirror is data, never authority: no trading, gating or pause code may read runtime_data/_mirror.
+runtime_data/_mirror* is git-ignored: the share is the only channel, so a pull never dirties a tree.
 """
 import argparse
 import datetime as dt
@@ -19,6 +21,7 @@ import shutil
 import socket
 import subprocess
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -33,6 +36,8 @@ FILE_CAP = 50 * 1024 * 1024
 TOTAL_CAP = 400 * 1024 * 1024
 VERSION_RE = re.compile(r"^v\d{8}T\d{6}Z$")
 LOCK_STALE_S = 600
+PULL_TIMEOUT_S = 45  # as sync.py pull_mirror: a hung share must not hang a session
+BRIEF_WIDTH = 160
 
 EXEC = "MyTradingSys/execution"
 RT = "MyTradingSys/runtime"
@@ -343,6 +348,54 @@ def brief_lines(repo, now=None):
     return out
 
 
+def clip(line, width=BRIEF_WIDTH):
+    return line if len(line) <= width else line[:width - 3] + "..."
+
+
+def mirror_age_min(repo, now=None):
+    """Minutes since the desktop published the copy in this tree; None when there is no readable copy."""
+    try:
+        m = json.loads((Path(repo) / MIRROR_DIR / "manifest.json").read_text(encoding="utf-8"))
+        return ((now or utcnow()) - dt.datetime.fromisoformat(m["utc"])).total_seconds() / 60
+    except (OSError, ValueError, KeyError):
+        return None
+
+
+def try_pull(repo, root, timeout=PULL_TIMEOUT_S):
+    """One best-effort pull, capped at `timeout` s. Returns the status line to print, or None when nothing changed."""
+    res = {}
+
+    def run():
+        try:
+            res["r"] = pull(repo, root)
+        except MirrorError as e:
+            res["err"] = str(e)
+        except Exception as e:  # an unreachable share raises OSError subclasses of every kind
+            res["err"] = f"{type(e).__name__}: {e}"
+
+    t = threading.Thread(target=run, daemon=True)
+    t.start()
+    t.join(timeout)
+    if t.is_alive():
+        return f"mirror: pull skipped (timed out after {timeout}s)"
+    if "err" in res:
+        return f"mirror: pull skipped ({res['err'][:100]})"
+    state, m = res["r"]
+    return f"mirror: pulled {m['version']} ({len(m['files'])} files)" if state == "pulled" else None
+
+
+def brief(repo, root, now=None, pull_timeout=PULL_TIMEOUT_S):
+    """The brief a session prints. A work tree whose copy is missing or older than WARN_MIN pulls first, because trees made
+    by the App never run `sync.py start`; the live tree owns the data and never pulls. Lines are clipped to one screen."""
+    lines = []
+    age = mirror_age_min(repo, now)
+    if not is_live_tree(repo) and (age is None or age > WARN_MIN):
+        note = try_pull(repo, root, pull_timeout)
+        if note:
+            lines.append(note)
+    return [clip(l) for l in lines + brief_lines(repo, now)]
+
+
 def export_obs(repo):
     src = Path(repo) / "runtime_data" / "observations" / "captures"
     dest = Path(repo) / "MyTradingSys" / "research" / "missed_trades" / "observations" / f"{socket.gethostname()}_captures.jsonl"
@@ -386,7 +439,7 @@ def main(argv=None):
             state, m = pull(a.repo, a.root)
             print(f"{state}: mirror of {m['host']} {m['utc']} ({len(m['files'])} files)")
         elif a.cmd == "brief":
-            print("\n".join(brief_lines(a.repo)))
+            print("\n".join(brief(a.repo, a.root)))
         else:
             n, dest = export_obs(a.repo)
             print(f"exported {n} new capture(s) to {dest}")

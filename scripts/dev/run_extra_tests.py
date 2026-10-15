@@ -2,20 +2,23 @@
 """run_extra_tests.py - run the tracked test files that live outside the dirs the main gate collects (B150).
 
 Each file runs in its own pytest process with the file's directory as cwd (the way each was written to run), so same-named
-helper modules in different dirs cannot collide. Exit 1 if any file fails. The list is checked by
+helper modules in different dirs cannot collide. Files run MTS_GATE_JOBS at a time (default min(4, cpu count); 1 = one after
+the other), each with its own --basetemp, and print their line when they finish. Exit 1 if any file fails. The list is checked by
 MyTradingSys/tests/test_gate_discovery_b150.py: a new tracked test file must be gated, listed here, or skipped with a reason.
 """
+import os
 import shutil
 import subprocess
 import sys
 import tempfile
+import threading
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 EXTRA = [
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_study.py",
     "scripts/dev/test_suplock.py",
-    "scripts/dev/test_check_handoff.py",
     "MyTradingSys/research/mfe_exit_2026-10-13/test_mfe_exit_study.py",
     "scripts/dev/test_make_layer_map.py",
     "scripts/dev/test_make_layers_board.py",
@@ -34,7 +37,6 @@ EXTRA = [
     "MyTradingSys/research/volume_2026-10-09/test_volume.py",
     "MyTradingSys/research/tom_btc_2026-10-13/test_chart_lab.py",
     "MyTradingSys/runtime/test_update_market_state.py",
-    "scripts/dev/test_backfill_naked_pocs.py",
     "scripts/dev/test_testnet_canary.py",
     "scripts/worker/test_audit_digest.py",
     "scripts/worker/test_audit_rotation.py",
@@ -45,22 +47,53 @@ EXTRA = [
 ]
 
 
-def main():
-    bad = []
+def jobs():
+    """Concurrent pytest processes: MTS_GATE_JOBS (the gate's knob), default min(4, cpu count)."""
+    try:
+        n = int(os.environ.get("MTS_GATE_JOBS", ""))
+    except ValueError:
+        n = min(4, os.cpu_count() or 1)
+    return max(1, n)
+
+
+def run_one(rel, basetemp):
+    """(ok, one-line result) for one extra test file: its own pytest process, cwd and basetemp."""
+    p = REPO / rel
+    if not p.exists():
+        return False, "missing"
+    r = subprocess.run([sys.executable, "-m", "pytest", p.name, "-q", "-p", "no:cacheprovider", f"--basetemp={basetemp}"],
+                       cwd=p.parent, capture_output=True, text=True, errors="replace")
+    return r.returncode == 0, (r.stdout.strip().splitlines() or ["(no output)"])[-1]
+
+
+def run_files(rels, n_jobs, one=run_one, tmp=None):
+    """Run every file `n_jobs` at a time and print one flushed line per file as it finishes. Returns the failures in list order."""
     # Own basetemp per file: pytest's default %TEMP%/pytest-of-<user>/pytest-current cleanup raises PermissionError
-    # (exit 1 after all tests pass) when another account left that link behind (JIS-NB 2026-10-14).
+    # (exit 1 after all tests pass) when another account left that link behind (JIS-NB 2026-10-14); it is also what lets
+    # the files run beside each other.
+    tmp = Path(tmp or tempfile.mkdtemp(prefix="mts_xt_"))
+    lock = threading.Lock()
+    done = {}
+
+    def work(item):
+        i, rel = item
+        ok, tail = one(rel, tmp / str(i))
+        with lock:
+            print(f"{'ok  ' if ok else 'FAIL'} {rel}: {tail}", flush=True)
+        done[rel] = (ok, tail)
+
+    with ThreadPoolExecutor(max_workers=max(1, n_jobs)) as pool:
+        list(pool.map(work, enumerate(rels)))
+    return [f"{rel}: missing" if done[rel][1] == "missing" else rel for rel in rels if not done[rel][0]]
+
+
+def main():
+    try:
+        sys.stdout.reconfigure(line_buffering=True, errors="replace")
+    except (AttributeError, ValueError):
+        pass
     tmp = Path(tempfile.mkdtemp(prefix="mts_xt_"))
-    for i, rel in enumerate(EXTRA):
-        p = REPO / rel
-        if not p.exists():
-            bad.append(f"{rel}: missing")
-            continue
-        r = subprocess.run([sys.executable, "-m", "pytest", p.name, "-q", "-p", "no:cacheprovider",
-                            f"--basetemp={tmp / str(i)}"], cwd=p.parent, capture_output=True, text=True)
-        tail = (r.stdout.strip().splitlines() or ["(no output)"])[-1]
-        print(f"{'ok  ' if r.returncode == 0 else 'FAIL'} {rel}: {tail}")
-        if r.returncode != 0:
-            bad.append(rel)
+    bad = run_files(EXTRA, jobs(), tmp=tmp)
     shutil.rmtree(tmp, ignore_errors=True)
     print("extra tests: " + ("FAIL " + ", ".join(bad) if bad else "PASS"))
     return 1 if bad else 0

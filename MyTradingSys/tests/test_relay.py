@@ -1,4 +1,5 @@
-"""Fixtures for scripts/sched/relay.py: header stamping, every gate STOP condition, GO writes the launch lock."""
+"""Fixtures for scripts/sched/relay.py: header stamping, every kick IDLE condition, KICK writes the launch lock, unlock frees it."""
+import json
 import os
 import subprocess
 import sys
@@ -38,46 +39,48 @@ class RelayTest(unittest.TestCase):
         for bad in ("Q1.", "Q2.", "Q4."):
             self.assertNotIn(bad, r.stdout)
 
-    def test_no_header_stops(self):
-        r = run(self.home, "gate", "--file", str(self.f), "--started-id", "none")
-        self.assertEqual(r.returncode, 1)
-        self.assertIn("no relay header", r.stdout)
-
-    def test_same_id_double_fire_blocked(self):
-        run(self.home, "handoff", "--file", str(self.f), "--go")
-        r = run(self.home, "gate", "--file", str(self.f), "--started-id", "none")
-        self.assertEqual(r.returncode, 0, r.stdout)
-        self.assertIn("RELAY GO depth=0", r.stdout)
-        self.assertIn("task=mts-relay-a", r.stdout)
-        r2 = run(self.home, "gate", "--file", str(self.f), "--started-id", "none", now="2026-10-10T10:05:00Z")
-        self.assertEqual(r2.returncode, 1)
-        self.assertIn("already launched", r2.stdout)
-
-    def test_new_id_within_minutes_is_allowed(self):
-        # 2026-10-10 06:42 chain death: a short session handed over a NEW id 15 min after the previous launch and the
-        # old 20-minute clock lock stopped the chain. The lock is keyed by handoff id now.
-        run(self.home, "handoff", "--file", str(self.f), "--go")
-        self.assertEqual(run(self.home, "gate", "--file", str(self.f), "--started-id", "none").returncode, 0)
-        run(self.home, "handoff", "--file", str(self.f), "--go")
-        r = run(self.home, "gate", "--file", str(self.f), "--started-id", "none", now="2026-10-10T10:15:00Z")
-        self.assertEqual(r.returncode, 0, r.stdout)
-        self.assertIn("depth=1", r.stdout)
-        self.assertIn("task=mts-relay-b", r.stdout)
-
     def kick(self, now="2026-10-10T10:00:00Z"):
         return run(self.home, "kick", "--file", str(self.f), now=now)
 
-    def test_kick_starts_a_go_handoff_and_records_chain_base(self):
+    def test_unlock_lets_the_next_handoff_start_at_once(self):
+        # 2026-10-10 06:42 chain death: a short session handed over a NEW id 15 min after the previous launch and the
+        # old 20-minute clock lock stopped the chain. The KICK session frees the lock itself now (relay_session.md step 6).
+        run(self.home, "handoff", "--file", str(self.f), "--go")
+        self.assertEqual(self.kick().returncode, 0)
+        run(self.home, "handoff", "--file", str(self.f), "--go")
+        waiting = self.kick(now="2026-10-10T10:15:00Z")
+        self.assertEqual(waiting.returncode, 1, waiting.stdout)
+        self.assertIn("chain is moving", waiting.stdout)
+        lock = self.home / "mts-relay-lock.json"
+        self.assertTrue(lock.exists())
+        u = run(self.home, "unlock", now="2026-10-10T10:15:00Z")
+        self.assertEqual(u.returncode, 0, u.stderr)
+        self.assertIn("UNLOCKED", u.stdout)
+        self.assertFalse(lock.exists())
+        r = self.kick(now="2026-10-10T10:16:00Z")
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertIn("KICK depth=1", r.stdout)
+        self.assertEqual(run(self.home, "unlock").returncode, 0)   # nothing to free is not an error
+
+    def test_kick_starts_a_go_handoff(self):
         for _ in range(3):
             run(self.home, "handoff", "--file", str(self.f), "--go")  # depth 2
         r = self.kick()
         self.assertEqual(r.returncode, 0, r.stdout)
-        self.assertIn("KICK depth=2", r.stdout)
-        self.assertIn("task=mts-relay-a", r.stdout)
-        # depth cap now counts from the kick: depth 2 with cap 2 would have stopped before, base 2 lets it through
+        self.assertIn("KICK depth=2 id=" + self.header_id(), r.stdout)
+        lock = json.loads((self.home / "mts-relay-lock.json").read_text(encoding="utf-8"))
+        self.assertEqual((lock["id"], lock["depth"]), (self.header_id(), 2))
+
+    def test_the_dead_launch_path_is_gone(self):
+        # B164 (2026-10-10): an unattended session cannot run_scheduled_task another one, so `gate` and the A/B task names are gone
         run(self.home, "handoff", "--file", str(self.f), "--go")
-        g = run(self.home, "gate", "--file", str(self.f), "--started-id", "none", extra={"MTS_RELAY_MAX_DEPTH": "2"})
-        self.assertEqual(g.returncode, 0, g.stdout)
+        g = run(self.home, "gate", "--file", str(self.f), "--started-id", "none")
+        self.assertEqual(g.returncode, 2)
+        self.assertIn("invalid choice", g.stderr)
+        k = self.kick()
+        self.assertNotIn("task=", k.stdout)
+        self.assertNotIn("mts-relay-", k.stdout)
+        self.assertNotIn("lock=", self.kick(now="2026-10-10T10:20:00Z").stdout)
 
     def test_kick_idles_when_chain_moving_or_session_on_it(self):
         run(self.home, "handoff", "--file", str(self.f), "--go")
@@ -88,12 +91,12 @@ class RelayTest(unittest.TestCase):
         working = self.kick(now="2026-10-10T10:50:00Z")
         self.assertEqual(working.returncode, 1)
         self.assertIn("session still on it", working.stdout)
-        self.assertIn("lock=2026-10-10T10:00:00Z task=mts-relay-", working.stdout)
         retry = self.kick(now="2026-10-10T11:10:00Z")  # same id, 70 min: never started or died, retry (was 3 h)
         self.assertEqual(retry.returncode, 0, retry.stdout)
 
     def test_kick_idles_on_stop_header_no_header_and_stop_flag(self):
         self.assertEqual(self.kick().returncode, 1)
+        self.assertIn("no relay header", self.kick().stdout)
         run(self.home, "handoff", "--file", str(self.f), "--stop", "queue empty")
         r = self.kick()
         self.assertEqual(r.returncode, 1)
@@ -101,38 +104,16 @@ class RelayTest(unittest.TestCase):
         run(self.home, "handoff", "--file", str(self.f), "--go")
         run(self.home, "stop", "weekly budget")
         self.assertIn("stop flag", self.kick().stdout)
+        run(self.home, "resume")
+        self.assertEqual(self.kick().returncode, 0)
 
-    def test_stop_header_stops_with_reason(self):
-        run(self.home, "handoff", "--file", str(self.f), "--stop", "queue empty")
-        r = run(self.home, "gate", "--file", str(self.f), "--started-id", "none")
-        self.assertEqual(r.returncode, 1)
-        self.assertIn("queue empty", r.stdout)
-
-    def test_unchanged_id_stops(self):
-        run(self.home, "handoff", "--file", str(self.f), "--go")
-        r = run(self.home, "gate", "--file", str(self.f), "--started-id", self.header_id())
-        self.assertEqual(r.returncode, 1)
-        self.assertIn("unchanged", r.stdout)
-
-    def test_depth_increments_and_caps(self):
+    def test_depth_increments_and_resets(self):
         for _ in range(3):
             run(self.home, "handoff", "--file", str(self.f), "--go")
         self.assertIn("depth=2", self.f.read_text(encoding="utf-8"))
-        r = run(self.home, "gate", "--file", str(self.f), "--started-id", "none", extra={"MTS_RELAY_MAX_DEPTH": "2"})
-        self.assertEqual(r.returncode, 1)
-        self.assertIn("cap", r.stdout)
         run(self.home, "handoff", "--file", str(self.f), "--go", "--reset-depth")
         self.assertIn("depth=0", self.f.read_text(encoding="utf-8"))
         self.assertEqual(self.f.read_text(encoding="utf-8").count("relay:"), 1)
-
-    def test_operator_stop_flag_and_resume(self):
-        run(self.home, "handoff", "--file", str(self.f), "--go")
-        run(self.home, "stop", "weekly budget")
-        r = run(self.home, "gate", "--file", str(self.f), "--started-id", "none")
-        self.assertEqual(r.returncode, 1)
-        self.assertIn("weekly budget", r.stdout)
-        run(self.home, "resume")
-        self.assertEqual(run(self.home, "gate", "--file", str(self.f), "--started-id", "none").returncode, 0)
 
 
 GOOD = """<!-- relay: go depth=0 id=aaaa1111 -->
@@ -428,6 +409,31 @@ elif sys.argv[1] == "brief":
 """
 
 
+SYNC_API_STUB = """import sys, os
+TRUNK = "fast-track"
+class SyncError(Exception):
+    pass
+def slugify(s):
+    return s.lower()
+def read_claims(wt, ref):
+    return []
+if __name__ == "__main__":
+    a = sys.argv[1:]
+    if a[0] == "claim":
+        open("claimed.txt", "w").write(a[1])
+    else:
+        print("host=T branch=x pulled=0")
+"""
+TASKS_API_STUB = """import sys
+CODE_LANES = ["HAIKU", "SONNET", "OPUS"]
+if __name__ == "__main__":
+    if sys.argv[1] == "next":
+        print("sonnet-card [SONNET, M, p1] the task")
+    elif sys.argv[1] == "brief":
+        print("TASK " + sys.argv[2] + " brief line")
+"""
+
+
 def git(cwd, *a):
     subprocess.run(["git", "-c", "user.email=t@t", "-c", "user.name=t", *a], cwd=str(cwd), check=True, capture_output=True)
 
@@ -524,6 +530,36 @@ class BeginTest(unittest.TestCase):
         self.assertEqual(r.returncode, 1, r.stdout)
         self.assertIn("BEGIN FAILED", r.stdout)
         self.assertFalse((self.wt / "claimed.txt").exists())
+
+    def test_begin_with_no_ready_card_still_names_the_synced_worktree(self):
+        # a `look=` wake-up (a finished lane result to read) may find no ready card: the session still edits the handoff in the
+        # relay tree begin already built, so the failure line is preceded by `worktree: <path>` and no card is claimed
+        r = self.begin({"STUB_NEXT": "dsa-card [DSA, S, p1] run"})
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("worktree: %s" % self.wt.resolve(), r.stdout.splitlines())
+        self.assertTrue(r.stdout.splitlines()[-1].startswith("BEGIN FAILED: no ready"), r.stdout)
+        self.assertFalse((self.wt / "claimed.txt").exists())
+
+    def test_begin_runs_from_a_copy_outside_the_tree(self):
+        # 2026-10-14: the dispatcher runs a copy of relay.py from %TEMP%/mts_relay/, where there is no sibling scripts/dev: begin made the
+        # worktree, ran `sync.py start`, then printed "BEGIN FAILED: scripts/dev next to relay.py". The modules come from the relay tree.
+        d = self.clone / "scripts" / "dev"
+        (d / "sync.py").write_text(SYNC_API_STUB, encoding="utf-8", newline=NL)
+        (d / "tasks.py").write_text(TASKS_API_STUB, encoding="utf-8", newline=NL)
+        git(self.clone, "add", "-A")
+        git(self.clone, "commit", "-q", "-m", "stubs with an importable api")
+        git(self.clone, "push", "-q", "origin", "fast-track")
+        copy = self.wt.parent / "temp-copy" / "mts_relay"
+        copy.mkdir(parents=True)
+        for name in ("relay.py", "handoff_lint.py"):
+            (copy / name).write_text((SCRIPT.parent / name).read_text(encoding="utf-8"), encoding="utf-8", newline=NL)
+        env = {k: v for k, v in os.environ.items() if not k.startswith("MTS_RELAY")}
+        env["MTS_RELAY_HOME"] = str(self.relay_home)
+        r = subprocess.run([sys.executable, str(copy / "relay.py"), "begin", "--root", str(self.clone), "--worktree", str(self.wt),
+                            "--branch", "t/relay"], capture_output=True, text=True, env=env)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("claimed: sonnet-card", r.stdout)
+        self.assertEqual((self.wt / "claimed.txt").read_text(), "sonnet-card")
 
     def test_begin_writes_its_log_row_under_MTS_RELAY_HOME_only(self):
         # every gate run used to append begin rows for the stub cards to the real ~/.claude/mts-relay-log.jsonl (163 rows by 2026-10-14)

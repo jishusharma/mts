@@ -53,7 +53,7 @@ LAB_REPORTS = "MyTradingSys/research/layer_lab/reports"
 SIZES = ("S", "M", "L")
 MAX_TRIES = 2                                    # refiner attempts per card; then it is parked, not retried every tick
 BUFFER = 3                                       # ready cards to keep in stock before the refiner stops
-MAX_BRIEF = 30                                   # CLAUDE.md: a CL prompt is <= 30 lines
+MAX_BRIEF = 30                                   # RELAY.md Task list standard: block <= 30 lines
 MAX_FIELD = 400                                  # chars per text field: a card is a prompt, not an essay
 PLACEHOLDER = re.compile(r"\b(TBD|TODO|figure out|\?\?|to be decided)\b", re.I)
 TEXT = ("title", "goal", "done_when", "tests")

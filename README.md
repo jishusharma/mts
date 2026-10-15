@@ -63,7 +63,6 @@ When rules conflict:
 
 ## Rule of thumb
 
-The tree is the map. The one index is MyTradingSys/system/03_FILE_INDEX.md (one row per
-new file; the doc tests enforce it). For every tracked path run "git ls-files".
+The tree is the map: git ls-files, MyTradingSys/system/LAYERS.md (layers) and PROJECT_MAP.md (groups).
 
 # END

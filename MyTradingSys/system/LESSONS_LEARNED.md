@@ -74,7 +74,7 @@ top of the relevant section. Keep each entry to 3 lines.
 - 2026-10-09: a first placebo draw sampled lags with replacement from 9 values, so 4 of 20 runs were near-duplicates. RULE: placebo/permutation shifts are drawn without replacement and the lags are printed in the result.
 - 2026-09-30: Tom's stop floor 0.1%/0.2% fallback, 2-3.5R target window, 25% friction haircut and the TWOPEAK label were
   engineering choices with no Tom source; they cut his real trades (tight stops, 8R winners). RULE: parameters come only from
-  the trader's own words (CLAUDE.md Provenance); unsourced ones are flagged NO-SOURCE, never tuned. (CLAUDE.md hard rules)
+  the trader's own words (CLAUDE.md Provenance); unsourced ones are flagged NO-SOURCE, never tuned. (Replaced 2026-10-13 by the CLAUDE.md Numbers rule: SOURCED or OURS labels.)
 - Non-Tom systems (MalkanView RSI, CryptoCred, FlowHorse, probability, session frame) are separate
   layers per PROJECT_VISION, extracted and backtested on their own, never as filters on Tom.
   RULE: read PROJECT_VISION "INTEGRATIONS TRACKED" before framing any indicator work.
@@ -458,9 +458,9 @@ Receipt: commit 7a1749c.
 
 What happened: DSA composed a TF4 prompt at roughly 60 lines. CLAUDE.md says "Prompt <= 30 lines." DSA had quoted that line two turns earlier, then composed over it. Caught during the operator challenge pass, corrected to 28 lines before the prompt shipped.
 
-Rule: the 30-line cap is read from CLAUDE.md at compose time, not from memory. Count the prompt lines before printing. If a prompt carries inherited hard rules or restated state, that is a defect: CLAUDE.md already has them.
+Rule: the 30-line cap is read from RELAY.md "Task list standard" at compose time, not from memory. Count the prompt lines before printing. If a prompt carries inherited hard rules or restated state, that is a defect: CLAUDE.md and STATUS.md already have them.
 
-Where the rule lives: CLAUDE.md "What a CL prompt carries"; DSA_SESSION_PROMPT.md section 9.
+Where the rule lives: RELAY.md "Task list standard" (block <= 30 lines, enforced by `relay.py lint`). (CLAUDE.md "What a CL prompt carries" was folded into these on 2026-10-15.)
 
 Receipt: operator 2026-10-03.
 

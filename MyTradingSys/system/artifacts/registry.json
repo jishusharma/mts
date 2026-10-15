@@ -14,7 +14,7 @@
       "generator": "scripts/dev/make_control_room.py",
       "html": "MyTradingSys/system/artifacts/mts_control_room.html",
       "owner_app": "jishu.awgp (Inbox and decisions owner, Control Room q1, 2026-10-13); jishu.sharma copy is a read-only mirror",
-      "refresh": "daily (task mts-control-room)",
+      "refresh": "every session that ships (artifacts.py build, then plan --account); Inbox pickup by hand from a jishu.awgp session (relay_prompts/INSTALL.md)",
       "db": [
         "decisions",
         "feedback"

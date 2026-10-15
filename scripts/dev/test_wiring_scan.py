@@ -89,6 +89,43 @@ class WiringGate(unittest.TestCase):
                 self.assertTrue(e.get('ref', '').strip(), p + ': PARKED must name the parked item')
 
 
+class DevToolNoReader(unittest.TestCase):
+    """scripts/dev files are all roots, so a dead one-off script there never shows as unwired; --check warns (never fails)."""
+
+    def dev_root(self, tmp):
+        write(tmp, 'scripts/dev/dead_tool.py')
+        write(tmp, 'scripts/dev/test_dead_tool.py', 'import dead_tool\n')     # its own test does not count as a reader
+        write(tmp, 'scripts/dev/doc_tool.py')
+        write(tmp, 'scripts/dev/driver.py', 'import called_tool\n')
+        write(tmp, 'scripts/dev/called_tool.py')
+        write(tmp, 'CLAUDE.md', 'Run `python scripts/dev/doc_tool.py` first; driver.py is the entry.\n')
+        write(tmp, '_archive/2026-10-15-scripts-dev/old_tool.py')
+        write(tmp, 'MyTradingSys/system/03_FILE_INDEX.md', '| scripts/dev/dead_tool.py | tool |\n')   # an inventory is no reader
+        return tmp
+
+    def test_unread_dev_tool_is_warned_and_the_gate_still_passes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            rc, out = run_check(self.dev_root(tmp))
+            self.assertEqual(rc, 0, out)
+            warn = [ln for ln in out.splitlines() if ln.startswith('WARN NO-READER')]
+            self.assertEqual(len(warn), 1, out)
+            self.assertIn('dead_tool.py', warn[0])
+            for fine in ('doc_tool.py', 'called_tool.py', 'driver.py', 'old_tool.py', 'test_dead_tool.py'):
+                self.assertNotIn(fine, warn[0].split(':', 1)[1])
+
+    def test_naming_the_tool_in_an_entry_doc_clears_the_warning(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertIn('dead_tool.py', run_check(self.dev_root(tmp))[1].split('WARN NO-READER')[1])
+            write(tmp, 'MyTradingSys/system/PARALLEL.md', 'dead_tool.py is the monthly cleanup.\n')
+            self.assertNotIn('WARN NO-READER', run_check(tmp)[1])
+
+    def test_dev_no_reader_lists_only_the_unread_file(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.dev_root(tmp)
+            built = ws.build(tmp)
+            self.assertEqual(ws.dev_no_reader(tmp, built[0], built[1]), ['scripts/dev/dead_tool.py'])
+
+
 class GateRunsIt(unittest.TestCase):
     def test_run_all_tests_runs_wiring_check_before_quick_cutoff(self):
         src = Path(rat.__file__).read_text(encoding='utf-8')

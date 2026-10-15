@@ -1,7 +1,7 @@
 # DEPLOY RUNBOOK (live tree on JIS-NB)
 
 Since 2026-10-10 the deploy runs by itself: scheduled task `MTS-AutoDeploy` (every 15 min) runs `python scripts/dev/auto_deploy.py` on the host
-that holds `.mts_live`. Builders never deploy by hand and never stop or restart processes. Code reaches the live tree only from
+that holds `.mts_live`. Builders never deploy by hand while it works (fallback: "Manual fallback" below) and never stop or restart processes. Code reaches the live tree only from
 `origin/green/fast-track`, the SHA CI gated on ubuntu AND windows (.github/workflows/ci.yml, job `mark-green`), never from an untested tip.
 
 What the job does, in order; it stops at the first failure and writes the reason to `MyTradingSys/runtime/sched/auto_deploy_last.json`
@@ -33,13 +33,21 @@ The GitHub token on the builder machines has no `workflow` scope, so `.github/wo
 ci.yml cancels the running push job on every new push, so during a burst `green/fast-track` stops advancing (it sat at 24197c4 for
 a day). `auto_deploy.py` therefore falls back: when `origin/green/fast-track` is older than 90 min and is an ancestor of
 `origin/fast-track`, it gates and fast-forwards `origin/fast-track` instead. The local gate in the throwaway worktree is the
-safety; red still stops. The root fix is `MyTradingSys/system/ci_concurrency_fix.patch` (`cancel-in-progress` only for PRs):
-operator applies it once from an account with workflow scope (`git apply` then push), or adds the `workflow` scope to the token.
+safety; red still stops. The root fix is `cancel-in-progress` only for PRs in ci.yml (the patch file was archived 2026-10-15 under
+`MyTradingSys/archive/`): the operator applies it once from an account with workflow scope, or adds the `workflow` scope to the token.
 
 ## Daily hygiene (moved here from CLAUDE.md 2026-10-11)
 Task `MTS-DailyHygiene` (06:30) runs `scripts/dev/daily_hygiene.py` (quick gate, `sync.py where`, declutter DRY run, STATUS) ->
 `MyTradingSys/runtime/sched/hygiene_latest.md`, which STATUS.md embeds: a session reads its STATUS/GATE lines at boot and fixes a
 RED before new work. Registered by the same `register_cicd_tasks.ps1` call as the deploy job. Never deploy by hand while the job works.
+
+## Manual fallback (only if MTS-AutoDeploy is down; moved from CLAUDE.md 2026-10-15)
+Operator pre-authorised "just do it" 2026-10-09. If other sessions have uncommitted edits in the live tree, do NOT merge or stash there.
+`git -C <live> checkout origin/fast-track -- <only the changed live-path files>`, run their tests, kill only the process that imports them;
+`loop-supervisor` restarts it in about a minute. position_manager is never killed (it guards an open position). Java needs `mvn compile`
+and a restart window: leave it and say so. Builders never stop or restart anything else, touch HALT files or open trades.
+"Supervisor" in these docs means the Windows task `MTS-Supervisor` (starts at logon, revives dead processes); it deploys nothing.
+Only `MTS-AutoDeploy`, or this fallback while it is down, changes the live tree.
 
 ## Scheduled-task catch-up after the nightly power-off (2026-10-14, JIS-NB)
 JIS-NB is off ~02:00-10:30 IST, so the daily tasks (06:30-09:10) never run on time. `StartWhenAvailable` alone does not catch up: it fires
@@ -62,19 +70,19 @@ operator-side session runs them as the logged-in user):
 
 ## JIS-NUC notes (2026-10-11, from NUC session 1414Z)
 - NUC tree: `C:\Users\E-ngineers\IdeaProjects\mts-dsa` (worktree of `...\BinanceDataFeed\.git`). `F:\MTS\repo` is NOT a git repo there (only `MyTradingSys\` and `scripts\`
-  copies); desk tasks 20261011-140307 and 20261011-140621 and CODEX_START.md name it by mistake: read it as the mts-dsa tree. Codex tree: `F:\MTS\mts-codex` (branch nuc/codex-first).
+  copies); desk tasks 20261011-140307 and 20261011-140621 name it by mistake: read it as the mts-dsa tree. Codex trees: `F:\MTS\mts-codex` (Codex app project,
+  hand-started) and `F:\MTS\mts-codex-lab` (unattended MTS-CodexLab, branch `jis-nuc/codex-lab`; LAYER_LAB.md).
 - `MTS-AutoDeploy` must never exist on the NUC (live tree is JIS-NB only). It was found registered there on 2026-10-11, almost certainly from an earlier run of
   `register_cicd_tasks.ps1` without `-SkipDeploy`; unregistered. On the NUC always pass `-SkipDeploy`.
 - The NUC needs `tzdata` (Python 3.14 has none; tom_dax_recall uses ZoneInfo Europe/Berlin). `cloud_setup.py` GATE_DEPS and ci.yml now both carry it.
 - `MTS-NUC-Worker` showed Disabled on the NUC: whether intended is open (desk task posted).
 
 ## Quick-gate speed (B178, 2026-10-12, JIS-NUC)
-- `run_all_tests.py` prints `Elapsed:` per step. Step 5b (layer unittest modules) now runs in `MTS_GATE_JOBS` parallel processes
-  (default min(4, CPUs); `MTS_GATE_JOBS=1` = the old single call). Same module list: `split_modules` partitions
-  `find_layer_modules()` and `test_quick_gate_runs_every_layer_module` fails if one is dropped.
-- Same tree, `--quick`, JIS-NUC (12 CPUs, warm): total 172.6 s -> 169.4 s; step 5b (59 modules) 29.8 s -> 25.0 s (4 processes).
-  Largest steps there: step 4 pytest 51 s, 3xt 26 s, 3k 16 s, 3dk 10 s. The 15-min figure is a cold run on a slower host:
-  re-time there with `MTS_GATE_JOBS=1` vs default and add the row. Step 4 (pytest) is the next cut (xdist or per-path processes).
+- `run_all_tests.py` runs independent steps `MTS_GATE_JOBS` at a time (default min(4, CPUs); `MTS_GATE_JOBS=1` = one step at a time in
+  definition order, the old behaviour), also Step 5b and the extra tests; steps 3ly, 3af, 3x, 3ms, 3mg and Maven run serially after the
+  pool; each finished step prints its block with `Elapsed:` and a progress count. Quick gate 677 s -> 289 s on JIS-NB.
+  Step 5b module list: `split_modules` partitions `find_layer_modules()` and `test_quick_gate_runs_every_layer_module` fails if one is dropped.
+  Largest steps on JIS-NUC (warm): step 4 pytest 51 s, 3xt 26 s, 3k 16 s, 3dk 10 s; step 4 is the next cut (xdist or per-path processes).
 - MTS-Backup moved to :07/:22/:37/:52 (`install_backup_task.ps1`, offset 7 min past midnight + 15 min repeat) so it no longer
   starts in the same minute as MTS-AutoDeploy (:00/:15/:30/:45). Not re-registered by this session; on each host run
   `powershell -File scripts\dev\install_backup_task.ps1 -Repo <path>` (the tree the task runs from today: runtime_data\launch-backup.vbs names it).

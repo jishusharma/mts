@@ -220,6 +220,17 @@ class StatusTest(unittest.TestCase):
         self.assertIn("does not run the lab", away)
         self.assertNotIn("NEEDS A LOOK", away)
 
+    def test_brief_status_drops_the_delivered_block_and_keeps_queue_and_needs_a_look(self):
+        done = card("lab-old", state="done", closed="2026-10-11T08:00:00Z", result="SOUND")
+        t = R.status_text([card("lab-a"), card("lab-b"), card("lab-c")], [done], {}, [self.ROW | {"outcome": "DONE"}], None, 1791784000, "06:30Z IDLE", brief=True)
+        self.assertNotIn("Delivered", t)
+        self.assertNotIn("lab-old", t)
+        for want in ("Queue: 3 ready", "lab-a [audit, gpt-6-luna / medium]", "NEEDS A LOOK: nothing"):
+            self.assertIn(want, t)
+        away = R.status_text([], [done], {}, [], None, 1791784000, host_has_lab=False, brief=True)
+        self.assertIn("does not run the lab", away)
+        self.assertNotIn("deliveries", away)
+
 
 class LockTest(unittest.TestCase):
     def test_second_run_is_refused_until_the_lock_is_stale(self):

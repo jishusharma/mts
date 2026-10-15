@@ -149,3 +149,28 @@ runtime_data/control_room/
 
 # MTS-Live-Health popup payload (scripts/sched/check_live_health.py --alert)
 runtime_data/live_health_alert.json
+
+# Desktop live-state mirror pulled by scripts/dev/live_mirror.py (sync.py start / brief), its lock and staging dirs.
+# Published through the share, never through git: tracked, every pull dirtied every work tree.
+runtime_data/_mirror/
+runtime_data/_mirror.*
+
+# Tool and runtime droppings that are neither source nor reviewed output
+.pytest_tmp/
+.codex/
+*.bak
+*.bak_*
+runtime_data/deploy_backup/
+runtime_data/*.log
+runtime_data/*.out.txt
+runtime_data/*.err.txt
+runtime_data/*.gz
+MyTradingSys/system/*.gz
+MyTradingSys/runtime/consensus_hook_state.json
+MyTradingSys/execution/pm_heartbeats/
+# Dated recorder output (file patterns, not directories: oi_live/ also holds the tracked oi_recorder.py)
+MyTradingSys/research/htf_context/*.jsonl
+MyTradingSys/research/htf_context/*_summary.json
+MyTradingSys/runtime/orderflow_live/*.csv
+MyTradingSys/runtime/orderflow_live/_qhist/*.json
+MyTradingSys/runtime/oi_live/*.csv

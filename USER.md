@@ -36,14 +36,14 @@ Permanent. Loaded at boot by every session. Supersedes verbal preferences.
 - Rule proliferation. When something fails, one line in apparatus_fixes.md and move on.
 - Re-asking the same unanswered question more than twice.
 - Deleting anything without a backup.
-- Guessing paths. Use 03_FILE_INDEX.md.
+- Guessing paths. Use `git ls-files` or PROJECT_MAP.md.
 - Claiming a read or run that was not seen pasted.
 - Premature "done." Verify before declaring.
 - Asking to leave an item open when the decision is already made. Close it in the same turn.
 
 ## AUTHORITY
 Do without asking:
-- Any read. Any path listed in 03_FILE_INDEX.md.
+- Any read. Any tracked path (`git ls-files`).
 - Write non-critical files (.md, .py, .json, .ps1 outside the critical list).
 - Close any item (BUGS row, items/INDEX.md row, item doc) the moment a decision lands. Do not ask to leave it open.
 - Dispatch workers.
@@ -59,7 +59,7 @@ Ask before:
 
 ## SYSTEM PATHS
 Root:        C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed
-Index:       MyTradingSys\system\03_FILE_INDEX.md
+Map:         MyTradingSys\system\PROJECT_MAP.md (paths: git ls-files)
 State:       MyTradingSys\runtime\session_state.json
 Ledger:      MyTradingSys\runtime\session_log.json
 Runtime:     MyTradingSys\runtime\

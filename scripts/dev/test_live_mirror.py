@@ -5,6 +5,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
 import tempfile
 import time
@@ -196,6 +197,61 @@ class MirrorTest(unittest.TestCase):
         for needle in ("AUTO_PAUSE", "number=273", "vwap=82600.5", "regime=RANGE", "mirror@2026-10-09 20:00Z"):
             self.assertIn(needle, out)
 
+    # --- brief pulls first when this tree's copy is missing or old (trees made by the App never run `sync.py start`)
+    def test_brief_pulls_when_no_mirror_yet(self):
+        self.pub()
+        out = lm.brief(self.nuc, self.root)
+        self.assertIn("pulled v20261009T200000Z", out[0])
+        self.assertTrue((self.nuc / lm.MIRROR_DIR / "manifest.json").exists())
+        self.assertIn("mirror@2026-10-09 20:00Z", "\n".join(out))
+
+    def test_brief_pulls_the_newer_version_when_the_copy_is_old(self):
+        self.pulled()
+        m2 = self.pub(T0 + dt.timedelta(minutes=5))
+        out = lm.brief(self.nuc, self.root)  # the real clock is far past T0: the copy is stale
+        self.assertIn("pulled " + m2["version"], out[0])
+        manifest = json.loads((self.nuc / lm.MIRROR_DIR / "manifest.json").read_text())
+        self.assertEqual(manifest["version"], m2["version"])
+
+    def test_brief_does_not_pull_while_the_copy_is_fresh(self):
+        now = lm.utcnow()
+        lm.publish(self.live, self.root, now=now - dt.timedelta(minutes=3))
+        lm.pull(self.nuc, self.root)
+        lm.publish(self.live, self.root, now=now - dt.timedelta(minutes=1))
+        out = lm.brief(self.nuc, self.root)
+        self.assertFalse(any(l.startswith("mirror: ") for l in out), out)
+        manifest = json.loads((self.nuc / lm.MIRROR_DIR / "manifest.json").read_text())
+        self.assertEqual(manifest["version"], lm.stamp(now - dt.timedelta(minutes=3)))
+
+    def test_brief_with_unreachable_root_still_says_no_mirror(self):
+        out = lm.brief(self.nuc, Path(self.tmp) / "no-such-share")
+        self.assertIn("pull skipped", out[0])
+        self.assertIn("NO MIRROR", "\n".join(out))
+
+    def test_brief_never_pulls_into_the_live_tree(self):
+        self.pub()
+        out = lm.brief(self.live, self.root)
+        self.assertFalse(any(l.startswith("mirror: ") for l in out), out)
+        self.assertFalse((self.live / lm.MIRROR_DIR).exists())
+
+    def test_brief_gives_up_on_a_hung_share(self):
+        def hang(repo, root):
+            time.sleep(3)
+        with mock.patch.object(lm, "pull", hang):
+            t0 = time.time()
+            out = lm.brief(self.nuc, self.root, pull_timeout=0.2)
+        self.assertLess(time.time() - t0, 2)
+        self.assertIn("timed out", out[0])
+
+    def test_brief_lines_are_clipped_to_one_screen_width(self):
+        put(self.live, "runtime_data/snapshots/s1.json",
+            json.dumps({f"k{i}": {"vwap": 82600.5 + i, "poc": 1, "regime": "RANGE" * 5} for i in range(30)}))
+        age(self.live / "runtime_data/snapshots/s1.json", 1)
+        self.pub()
+        out = lm.brief(self.nuc, self.root)
+        self.assertTrue(all(len(l) <= lm.BRIEF_WIDTH for l in out), [len(l) for l in out])
+        self.assertTrue(any(l.endswith("...") for l in out))
+
     # --- export-obs
     def test_export_obs_dedups(self):
         put(self.nuc, "runtime_data/observations/captures/2026-10-09.jsonl", '{"obs_id":"a1"}\n{"obs_id":"b2"}\n')
@@ -290,6 +346,19 @@ class RepoContractTest(unittest.TestCase):
                 if re.search(r"runtime_data[/\\]_mirror|live_mirror|MIRROR_DIR", p.read_text(encoding="utf-8", errors="ignore")):
                     bad.append(str(p.relative_to(REPO)))
         self.assertEqual(bad, [])
+
+    def test_pulled_mirror_is_ignored_and_untracked(self):
+        """A pull rewrites runtime_data/_mirror in every work tree; tracked, it made each fresh tree dirty within minutes
+        (sync.py where UNSHIPPED, tidy refusing). Publishing goes through the share, never through git."""
+        if subprocess.run(["git", "-C", str(REPO), "rev-parse", "--git-dir"], capture_output=True).returncode != 0:
+            self.skipTest("not a git checkout")
+        for rel in ("runtime_data/_mirror/runtime_data/last_alert.json", "runtime_data/_mirror/manifest.json",
+                    "runtime_data/_mirror.lock", "runtime_data/_mirror.old/x", "runtime_data/_mirror.tmp123/x"):
+            r = subprocess.run(["git", "-C", str(REPO), "check-ignore", "-q", rel], capture_output=True)
+            self.assertEqual(r.returncode, 0, f"{rel} is not git-ignored")
+        tracked = subprocess.run(["git", "-C", str(REPO), "ls-files", "runtime_data/_mirror"],
+                                 capture_output=True, text=True).stdout.split()
+        self.assertEqual(tracked, [])
 
     def test_allowlist_names_exist_in_the_code_that_writes_them(self):
         """Each allowlisted name must appear in tracked source, so a renamed output cannot silently drop out."""

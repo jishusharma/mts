@@ -1,11 +1,10 @@
 # CONTROL ROOM - the operator's one page, and how Claude keeps it alive
 
 Pages are listed in `system/artifacts/registry.json` (one url per page per account; `scripts/dev/artifacts.py`).
-Page: https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su (pinned in the operator's claude.ai sidebar; private to the operator).
-Second account (jishu.awgp@gmail.com, NUC): the same page is https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN. It declares `db` + `user`
-(republish keeps them; never pass `capabilities: {}`). Its Inbox was seeded 2026-10-12 from OPERATOR_INBOX.md (41 items, status answered/filed).
-Third account (jishusharma1985, 2026-10-14): https://claude.ai/artifact/4D8YMxq5WeZagGnoHByXg9, a read-only mirror published WITHOUT capabilities
-(the page shows "Read-only view"), so no Inbox there goes unread. Republish it without passing `capabilities`.
+Page: https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN (jishu.awgp, NUC; the Inbox and decisions db owner; it declares `db` + `user`, republish keeps them, never pass
+`capabilities: {}`; Inbox seeded 2026-10-12 from OPERATOR_INBOX.md, 41 items, status answered/filed).
+Copies, view only, never queried: https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su (jishu.sharma, pinned in the operator's sidebar) and
+https://claude.ai/artifact/4D8YMxq5WeZagGnoHByXg9 (jishusharma1985, 2026-10-14; published WITHOUT capabilities, shows "Read-only view": republish it the same way).
 Build from the NUC with a scratch `--data-root` holding BUGS.md, FINDINGS.md, STATUS.md and the pulled mirror ledger
 (`runtime_data/_mirror/MyTradingSys/execution/auto_trades.jsonl`, `live_mirror.py pull`).
 Built by `scripts/dev/make_control_room.py` from the repo; hand-kept content in `MyTradingSys/system/control_room.json`;
@@ -27,6 +26,11 @@ The operator has two inputs on the page, both stored in the artifact's db (not i
 3. Inbox items with status `new`, oldest first:
    - Record first: append the item VERBATIM to `MyTradingSys/system/OPERATOR_INBOX.md` (id, date, kind, text in a
      fenced block; never paraphrase, never fix typos). The repo copy is the durable one; the db can be wiped.
+     Append with Bash (`cat >> MyTradingSys/system/OPERATOR_INBOX.md <<'EOF'`); never Read the file (a full Read costs about 20k tokens).
+     Rotation: when `wc -c` shows more than 30000 B, `git mv` it to `MyTradingSys/archive/operator_inbox/<first date>_to_<last date>.md`,
+     cut that copy before the 5th-from-last heading (`## <id> | <ts> | <kind>`; pasted text may hold other `##` lines), and recreate
+     OPERATOR_INBOX.md from its header plus the cut-off tail. Nothing is trimmed or reworded; test_integrity test_7 caps the live file at 30720 B.
+     Older asks: grep `MyTradingSys/archive/operator_inbox/`.
    - question -> answer it from files you read (MATCH/NOT_IN_DATA discipline), reply in `reply`, status `answered`.
    - task / requirement -> file a registry row in BUGS.md (or attach to an existing one), quote the operator's text in
      the item file, set `ref` to the row id(s) (space-separated), status `filed`. Then capture a raw task card: `python scripts/dev/tasks.py new "<title>" --ref <row> --from-inbox <item id>`

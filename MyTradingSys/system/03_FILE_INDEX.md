@@ -1,16 +1,12 @@
 # FILE: 03_FILE_INDEX.md
-# READ ORDER: 6 of 8
-# PURPOSE: Hierarchical index of all active files in MyTradingSys/
-# LAST UPDATED: 2026-10-03
+# NOT MAINTAINED since 2026-10-15. Partial (about a third of the files have a row; some rows name files that are gone).
+# A new file does not need a row. The map is the tree: git ls-files, LAYERS.md (layers), PROJECT_MAP.md (groups).
 # SIZE: computed (never hand-edited; test_4 enforces a ceiling)
-# NEXT FILE: 04_PER_JSON_GUIDE.md
-# PREVIOUS FILE: 02b_DECISIONS_LOG.md
 # ---
 
 # FILE INDEX - MTS Project v4.2.0-p5
-# Purpose: Authoritative index of live files. Hierarchical structure.
+# Purpose: Partial index of live files (not maintained). Hierarchical structure.
 # NOTE: Files in archive/ and *.old files are EXCLUDED from active counts.
-# See 05_NORMS.md for conventions.
 
 ---
 
@@ -18,19 +14,11 @@
 
 | File | Size | Purpose |
 |------|------|---------|
-| 00_START_HERE.md | ~21KB | Methodology reference. Entry point deprecated - see DSA_SESSION_PROMPT.md |
 | 01_AI_BEHAVIOR.md | ~34KB | Behavior rules, mistake history, Section 14 JSON workflow, Rules 31-36 |
-| 02a_CURRENT_STATUS.md | ~42KB | System status, component health, operational parameters |
-| 02b_DECISIONS_LOG.md | ~39KB | Append-only decision history |
-| 02c_SESSION_END_SIGNOFF.md | ~18KB | Historical session end sign-offs (append-only) |
 | 03_FILE_INDEX.md | ~10.4KB | This file |
 | 04_NEXT_SESSION_PROMPT.md | ~19KB | Current session handoff prompt |
-| 04_PER_JSON_GUIDE.md | ~2.4KB | Per-JSON load order + abbreviations |
-| 05_NORMS.md | ~3KB | Folder conventions, naming rules, archival rules |
-| 06_SESSION_END_CHECKLIST.md | ~7KB | Mandatory validation checklist before closing session |
 | COMPILED_DECISIONS.md | ~11KB | Single-page reference of all 56 system decisions |
 | session_end_logs.md | ~49KB | Archived session end logs (append-only history) |
-| session_handoff_btcusdt_mts_2026-09-07.md | ~13KB | Session handoff document (historical) |
 
 ## METHODOLOGY/ - Research Protocols & Domain Theory
 
@@ -334,7 +322,6 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/system/SURFACE_POLICY.md | policy | Surfaces, reach, task ownership, handoff inboxes, budget thresholds, session/branch/lane naming, legacy aliases. Boot file for every surface. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/system/sessions/README.md | registry | Session registry rules + record template. One record file per session; predecessor lookup by -SURF-ROLE. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/system/sessions/MTS-2026-09-30-1005Z-CLD-ANA-connected-system.md | session | First registry record: Cloud analyst session that wrote the connected-system docs. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
-| MyTradingSys/system/CLOUD_INBOX.md | inbox | Tasks for Cloud sessions (Cloud sees only pushed git refs). Desktop appends, commits, pushes. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/research/fast_track_2026-09-27/MISSING_PIECES_2026-09-30.md | research | Opus applied readings (Fabio jasv3L-d8ZE, Tom yRvMW6lgN1o), why rule synthesis fails, H1 wider stop / H2 adverse-add ladders / H3 narrow-window protocol (model results, no market data). | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/research/fast_track_2026-09-27/T054_US_SESSION_BRIEF.md | research | T054 brief from on-disk research: US session / correlation / news claims on BTC, verified vs unverified, gaps needing sources. | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
 | MyTradingSys/research/fast_track_2026-09-27/TOM_RULEBOOK_MERGE_999.md | research | Redo of lost DSA task 999: 16 new Tom T- rules vs conditions/ master; 4 NEW, 12 MATCH, 2 CONFLICT (stop placement R5, re-acceptance exit R8). | MTS-2026-09-30-1005Z-CLD-ANA-connected-system | 2026-09-30 |
@@ -534,7 +521,7 @@ CLAUDE_MANAGER_SPEC.md | MyTradingSys/research/ | 130 lines | manager spec, fron
 | MyTradingSys/items/B144_exhaustion_proxy_unsourced_params.md | doc | B144 item doc: exhaustion proxy 2x/240 NO-SOURCE (SCREENER). | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
 | MyTradingSys/system/sessions/MTS-2026-10-07-1002Z-APP-BLD-research-closeout.md | doc | Session record: research closeout. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-07 |
 | MyTradingSys/items/B145_cc_range_noise_live_neutrality.md | doc | B145 item doc: stopped-loop neutrality test before filter_range_noise goes live. | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-08 |
-| scripts/dev/diff_tom_rows.py | tool | Month-by-month verdict-count diff of two Tom core BT row directories (read-only). | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-08 |
+| _archive/2026-10-15-scripts-dev/diff_tom_rows.py | tool | Month-by-month verdict-count diff of two Tom core BT row directories (read-only). | MTS-2026-10-07-1002Z-APP-BLD-research-closeout | 2026-10-08 |
 | scripts/dev/bridge_selftest.ps1 | tool | Direct-mode end-to-end probe run through AIBridge: write/read/delete, sync.py news, paste pipeline parse, python; prints SELFTEST line, denial probes, and a numbered big-output block that measures the output cap. | MTS-2026-10-08-0806Z-APP-BLD-dsa-direct-mode | 2026-10-08 |
 | MyTradingSys/tests/test_dsa_direct_mode.py | test | Guards DSA direct mode: prompt section 0, no split rule, paste and news pipeline intact, sync.py news works in a live tree, size alarms above 250 KB, lane doc contract. | MTS-2026-10-08-0806Z-APP-BLD-dsa-direct-mode | 2026-10-08 |
 | scripts/dev/dsa_eval.py | tool | Scores DSA chat replies against 12 fixed failure scenarios (sheet/template/score); history in research/dsa_eval_history.jsonl. | MTS-2026-10-09-slim-boot-dsa-eval | 2026-10-09 |

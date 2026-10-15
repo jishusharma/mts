@@ -5,7 +5,7 @@
 - Live state is not: `runtime_data/snapshots`, `last_alert.json`, `live_runner.log`, orderflow/OI series, `auto_trades.jsonl`,
   loop state live only on JIS-NB and are gitignored. On the NUC they are empty or days old, so "market read per MTS"
   cannot be answered there (2026-10-09 20:13Z: Tom, Fabio, regime, VP all NOT_IN_DATA).
-- Two Claude accounts / three machines share the repo, not the runtime. Per-machine stores (screenshots, observations) do not meet either.
+- Three Claude logins / three machines share the repo, not the runtime. Per-machine stores (screenshots, observations) do not meet either.
 
 ## Options considered
 | # | Option | Verdict |
@@ -28,17 +28,17 @@ Files: `scripts/dev/live_mirror.py` (publish | pull | brief | status), `scripts/
    DENY (hard, checked by name and by content-sniff of the first 4 KB): `.secrets`, `.env*`, `*key*`, `*token*`, `*secret*`, `*.pem`,
    `credentials*`, anything matching an API-key-shaped string. A denied hit is counted in `excluded_count`, never copied, and fails the publish loudly if it was on the allowlist.
 3. PULL (any work tree; refuses in the live tree): reads `manifest.json`, verifies every sha256, copies into
-   `runtime_data/_mirror/` (NOT the real runtime paths, so no NUC process can mistake mirrored files for local live state),
+   `runtime_data/_mirror/` (git-ignored; the share is the only channel, never git; NOT the real runtime paths, so no NUC process can mistake mirrored files for local live state),
    writes `_mirror/.MIRROR_OF_JIS-NB` with the manifest time. Atomic: staged then renamed. A bad hash or missing manifest keeps the previous mirror and exits non-zero.
 4. BRIEF: `live_mirror.py brief` prints the answer sessions need in one screen: mirror age (WARN > 15 min, STALE > 60 min, never presented as live),
-   latest snapshot key fields, last Tom/Fabio alert + age, regime/day_type, open testnet positions summary, OI/CVD step since 1 h. Every line is labelled `mirror@<utc>`.
-5. Sessions use it: CLAUDE.md start ritual gains one line, "off the desktop: `live_mirror.py pull && brief` before any live read". A read quoting mirror numbers says so.
+   latest snapshot key fields, last Tom/Fabio alert + age, regime/day_type, open testnet positions summary, OI/CVD step since 1 h. Every line is labelled `mirror@<utc>`. In a work tree whose copy is missing or older than 15 min, `brief` pulls first (45 s cap, never in the live tree), prints one `mirror: pulled <version>` or `mirror: pull skipped (...)` line, and clips each line to 160 chars.
+5. Sessions use it: CLAUDE.md "Where to look" and QUICK_ANSWERS.md carry the line, "off the desktop: `live_mirror.py pull && brief` before any live read". A read quoting mirror numbers says so (`mirror@<utc>`).
 
 ## Fail-closed rules
 - Unreadable/missing/old manifest: brief says NO MIRROR, never falls back to the stale 10-03 git snapshot silently.
 - Mirror is data, not authority: no code path reads `_mirror/` for trading, gating or auto-pause.
 - Pull is idempotent; two NUC sessions pulling at once serialise on a lock file.
-- Desktop off = mirror ages and brief says so (same "machine off = stack down" rule as CLAUDE.md).
+- Desktop off = mirror ages and brief says so (same "machine off = stack down" rule as QUICK_ANSWERS.md).
 
 ## Return path (v1: minimal)
 Per-machine stores that matter to the others (observation captures) ship as files under `MyTradingSys/research/` through git
@@ -46,7 +46,7 @@ Per-machine stores that matter to the others (observation captures) ship as file
 into `research/missed_trades/observations/<host>_<date>.jsonl` for the next `sync.py ship`. Screenshots stay local (extract + id is the record).
 
 ## Out of scope / open (defaults chosen)
-- Control Room (ArtifactData) is per-owning-account; not mirrored. Default: both accounts keep reading it via CONTROL_ROOM.md.
+- Control Room (ArtifactData) is per-owning-account; not mirrored. Default: every login keeps reading it via CONTROL_ROOM.md.
 - Tailscale/remote access (DEVICES s4) stays the fallback for what the mirror lacks.
 - Moving the live loop to the NUC is a separate decision (DEVICES s3); the mirror works the same from either owner.
 
@@ -58,6 +58,6 @@ into `research/missed_trades/observations/<host>_<date>.jsonl` for the next `syn
 5. Secrets: deny by path (fatal if an allowlisted file hits it); content match = the line is redacted and counted, never fatal (hashes and order ids pass).
 6. Brief reports two ages: manifest age (desktop clock vs now) and publish-minus-newest-snapshot (both desktop clock, skew-proof). STALE if either exceeds 60 min.
 7. The brief has no "open positions" line: positions come from the Deribit API and need secrets. Decisions come from auto_trades.jsonl instead.
-8. Publish is a separate process outside the trading loop, installed by desk task `install-live-mirror-on-jis-nb`; it reaches the live tree by the normal supervisor deploy.
+8. Publish is a separate process outside the trading loop, installed by desk task `install-live-mirror-on-jis-nb`; it reaches the live tree by the normal MTS-AutoDeploy (DEPLOY_RUNBOOK.md; task MTS-LiveMirror every 5 min, `register_live_mirror.ps1`).
 9. `sync.py start` runs `live_mirror.py pull` (45 s cap, never fatal) in any work tree.
 10. Known and left open: Control Room (ArtifactData) is readable only from its owning account; screenshot stores and `shot.py status` differ per machine.
