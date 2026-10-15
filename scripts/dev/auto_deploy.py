@@ -8,7 +8,10 @@ Runs where the file `.mts_live` exists (JIS-NB). Anywhere else it reports NOT_LI
   3. Gate the candidate in a throwaway detached worktree (run_all_tests.py --quick). Red = STOP_RED: the live tree is never touched, and the same
      SHA is not re-gated every cycle (the state file remembers it).
   3b. Dirty GENERATED files (GENERATED_RE) are backed up to runtime_data/deploy_backup/<stamp>/regenerated/ and restored by `git checkout -- <file>`.
-  4. Copy orderflow _state.json away (B152), `git merge --ff-only`, restore _state.json if the merge dropped it.
+  3c. Fast-track fallback (stale green) only while the newest COMPLETED CI run on fast-track is green; red = FALLBACK_REFUSED_CI_RED, unknown
+     (gh missing / auth / parse error / no completed run) = FALLBACK_REFUSED_CI_UNKNOWN (fail closed): both stay on green/fast-track.
+  4. Copy orderflow _state.json away (B152), `git merge --ff-only`, restore _state.json if the merge dropped it. Live INPUTS among the
+     regenerated files (LIVE_INPUT_RE: htf_context, oi_live) are put back from the backup after the merge (L6); STATUS.md etc. stay committed.
   5. Restart only the processes whose files changed (loop-supervisor revives them in about a minute). position_manager is never killed (it
      guards an open position; new managers pick the code up). Java (src/main/java, pom.xml) is reported in java_pending for a compile + JVM window.
 Result of the last run: MyTradingSys/runtime/sched/auto_deploy_last.json (gitignored) and a line in auto_deploy.log beside it.
@@ -45,6 +48,9 @@ NEVER_KILL = ("position_manager",)
 GENERATED_RE = re.compile(
     r"^MyTradingSys/(research/STATUS\.md|research/audits/(AUDIT_DIGEST|T0_CHECKS)\.md|runtime/BUILD_REPORT\.md"
     r"|runtime/oi_live/[^/]+\.csv|research/htf_context/[^/]+\.(jsonl|json))$")
+# Subset of GENERATED_RE that the live runner / health check READS: the checked-out committed copy would be a stale input, so the live-written
+# copy is restored after the merge. STATUS.md, AUDIT_DIGEST, T0_CHECKS, BUILD_REPORT are outputs only and take the committed version.
+LIVE_INPUT_RE = re.compile(r"^MyTradingSys/(runtime/oi_live/[^/]+\.csv|research/htf_context/[^/]+\.(jsonl|json))$")
 # (regex on a changed path, script name to restart). A process is listed once. position_manager is deliberately absent.
 RESTART_MAP = [
     (re.compile(r"^MyTradingSys/execution/(auto_trader|auto_trader_config|executor|plan_compiler|mainnet_plan_check|risk_guard|journal|deribit_orders)\b"), "auto_trader.py"),
@@ -136,6 +142,12 @@ class Ops:
     def kill(self, script):
         return kill_process(script)
 
+    def ci_runs(self):
+        """Newest-first CI runs on fast-track, or None when unknown (gh missing / error). Uses ci_red_card.fetch_runs."""
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import ci_red_card
+        return ci_red_card.fetch_runs(REPO)
+
     def now(self):
         return datetime.now(timezone.utc)
 
@@ -162,9 +174,26 @@ def _finish(res, save, state=None):
     return res
 
 
-def pick_branch(ops):
+def ci_state(ops):
+    """-> "GREEN" | "RED" | "UNKNOWN" for the newest COMPLETED CI run on fast-track. Any error or missing data is UNKNOWN (fail closed)."""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import ci_red_card
+        runs = ops.ci_runs()
+        if not isinstance(runs, list):
+            return "UNKNOWN"
+        if ci_red_card.first_failing(runs) is not None:
+            return "RED"
+        done = [r for r in runs if r.get("status") == "completed" and r.get("conclusion") in ("success", "failure", "timed_out")]
+        return "GREEN" if done and done[0]["conclusion"] == "success" else "UNKNOWN"
+    except Exception:   # noqa: BLE001 - gh/parse trouble must never open the fallback
+        return "UNKNOWN"
+
+
+def pick_branch(ops, note=None):
     """green/fast-track normally. If CI has not advanced it for GREEN_STALE_S (burst of pushes, CI down) and fast-track is ahead of it,
-    use fast-track: the local gate in a throwaway worktree is the real safety, CI is only the early filter."""
+    use fast-track ONLY while the newest completed CI run on fast-track is green (red -> FALLBACK_REFUSED_CI_RED, unknown ->
+    FALLBACK_REFUSED_CI_UNKNOWN, both stay on green; recorded in note["fallback"]). The local gate in a throwaway worktree is the second check."""
     green = ops.git("rev-parse", f"origin/{BRANCH}")[1].strip()
     trunk = ops.git("rev-parse", f"origin/{FALLBACK_BRANCH}")[1].strip()
     if not green or not trunk or green == trunk:
@@ -175,7 +204,14 @@ def pick_branch(ops):
         age = ops.now().timestamp() - int(ops.git("log", "-1", "--format=%ct", f"origin/{BRANCH}")[1].strip())
     except ValueError:
         return BRANCH
-    return FALLBACK_BRANCH if age > GREEN_STALE_S else BRANCH
+    if age <= GREEN_STALE_S:
+        return BRANCH
+    st = ci_state(ops)
+    if st != "GREEN":
+        if note is not None:
+            note["fallback"] = "FALLBACK_REFUSED_CI_RED" if st == "RED" else "FALLBACK_REFUSED_CI_UNKNOWN"
+        return BRANCH
+    return FALLBACK_BRANCH
 
 
 def run(ops=None, check=False, state=None, save=True):
@@ -190,8 +226,11 @@ def run(ops=None, check=False, state=None, save=True):
     if rc != 0:
         res.update(action="STOP_FETCH", reason="git fetch failed: " + out.strip()[-200:])
         return _finish(res, save)
-    branch = pick_branch(ops)
+    note = {}
+    branch = pick_branch(ops, note)
     res["branch"] = branch
+    if note.get("fallback"):
+        res["fallback"] = note["fallback"]
     target = ops.git("rev-parse", f"origin/{branch}")[1].strip()
     head = ops.git("rev-parse", "HEAD")[1].strip()
     res["target"] = target
@@ -242,6 +281,13 @@ def run(ops=None, check=False, state=None, save=True):
         sp.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(backup / "_state.json", sp)
         res["state_json_restored"] = True
+    for rel in regen:   # L6: live inputs (htf_context, oi_live) keep the live-written copy; the checkout above only let the merge pass
+        if LIVE_INPUT_RE.match(rel):
+            b = backup / "regenerated" / rel if backup is not None else None
+            if b is not None and b.exists():
+                (REPO / rel).parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(b, REPO / rel)
+                res.setdefault("live_inputs_restored", []).append(rel)
     res["restarted"] = {proc: ops.kill(proc) for proc in d["restarts"]}
     state["last_deployed_sha"] = target
     state.pop("last_red_sha", None)
