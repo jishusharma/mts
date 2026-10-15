@@ -49,6 +49,9 @@ RUNS_NAME = "relay_runs.jsonl"
 HOST_ERR = "go with no unblocked open task for host"  # == handoff_lint.HOST_ERR
 NONE_ERR = "go with no unblocked open task:"  # == handoff_lint.NONE_ERR
 RUNS_KEEP = 400
+SUPER_STALE_MIN = 60  # watchdog (OURS): a super-session stop whose heartbeat is older than this (or unreadable) is lifted
+SUPER_PREFIX = "super-session"
+HEARTBEAT_NAME = "mts-super-heartbeat.json"
 KICK_REF ="origin/fast-track:MyTradingSys/system/NEXT_SESSION.md"
 HDR = re.compile(r"<!-- relay: (go|stop)(?: reason=([^>]*?))? depth=(\d+) id=([0-9a-f]+) -->")
 TS = "%Y-%m-%dT%H:%M:%SZ"
@@ -859,6 +862,51 @@ def cmd_tick(a):
     return 0
 
 
+def cmd_heartbeat(a):
+    """The super-session coordinator rewrites ~/.claude/mts-super-heartbeat.json on every wake."""
+    home().mkdir(parents=True, exist_ok=True)
+    row = {"coordinator": a.coordinator, "host": host(), "utc": now().strftime(TS), "note": a.note}
+    (home() / HEARTBEAT_NAME).write_text(json.dumps(row, sort_keys=True), encoding="utf-8", newline="\n")
+    print("HEARTBEAT", row["utc"], a.coordinator)
+    return 0
+
+
+def do_resume(event="operator_resume", **kw):
+    (home() / "mts-relay-stop").unlink(missing_ok=True)
+    log(event, **kw)
+
+
+def watchdog():
+    """Lift a dead coordinator's stop. Only a stop whose reason starts with `super-session` is ever touched (an operator stop never);
+    a missing / unreadable / malformed / old heartbeat counts as stale. Returns a one-line verdict."""
+    flag = home() / "mts-relay-stop"
+    try:
+        why = flag.read_text(encoding="utf-8").strip() if flag.exists() else None
+    except (OSError, UnicodeError):
+        return "WATCHDOG NOOP stop flag unreadable"   # cannot prove it is a super-session stop: leave it
+    if why is None:
+        return "WATCHDOG NOOP relay not stopped"
+    if not why.startswith(SUPER_PREFIX):
+        return "WATCHDOG NOOP operator stop"
+    who, age = "none", None
+    try:
+        hb = json.loads((home() / HEARTBEAT_NAME).read_text(encoding="utf-8"))
+        who = str(hb["coordinator"])
+        age = (now() - datetime.strptime(hb["utc"], TS).replace(tzinfo=timezone.utc)).total_seconds() / 60
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
+        age = None   # missing or malformed
+    if age is not None and age <= SUPER_STALE_MIN:
+        return "WATCHDOG NOOP heartbeat fresh %.0fmin (%s)" % (age, who)
+    age_s = "unreadable" if age is None else "%.0fmin" % age
+    do_resume("watchdog_resume", who=who, why="stale heartbeat", heartbeat_age=age_s, stop=why[:120])
+    return "WATCHDOG RESUMED %s heartbeat %s" % (who, age_s)
+
+
+def cmd_watchdog(a):
+    print(watchdog())
+    return 0
+
+
 def cmd_status(a):
     print("header:", read_header(a.file))
     flag = home() / "mts-relay-stop"
@@ -927,6 +975,10 @@ def main(argv=None):
     sp = sub.add_parser("stop")
     sp.add_argument("why")
     sub.add_parser("resume")
+    hb = sub.add_parser("heartbeat", help="super-session coordinator liveness (rewrite on every wake)")
+    hb.add_argument("coordinator")
+    hb.add_argument("--note", default="")
+    sub.add_parser("watchdog", help="resume if a super-session stop has a stale heartbeat (run by dispatch_gate.py)")
     a = ap.parse_args(argv)
     if a.cmd == "handoff":
         return cmd_handoff(a)
@@ -934,6 +986,10 @@ def main(argv=None):
         return cmd_lint(a)
     if a.cmd == "tick":
         return cmd_tick(a)
+    if a.cmd == "heartbeat":
+        return cmd_heartbeat(a)
+    if a.cmd == "watchdog":
+        return cmd_watchdog(a)
     if a.cmd == "unlock":
         return cmd_unlock(a)
     if a.cmd == "status":
@@ -952,8 +1008,7 @@ def main(argv=None):
         flag.write_text(a.why, encoding="utf-8", newline="\n")
         log("operator_stop", reason=a.why)
     else:
-        flag.unlink(missing_ok=True)
-        log("operator_resume")
+        do_resume()
     return 0
 
 
