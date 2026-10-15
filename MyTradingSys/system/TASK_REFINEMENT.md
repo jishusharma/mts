@@ -37,7 +37,7 @@ A ready card that later fails (a dependency reopens, someone edits it) is not se
 ## Who refines, and when (the mechanism)
 1. **Capture is free and immediate**: any session that finds follow-up work, and Control Room pickup for every Inbox `task`/`requirement`,
    runs `tasks.py new "<title>" [--ref B###] [--from-inbox <id>]`. Raw card, zero scoping cost at that moment.
-2. **Refiner session** (Sonnet; Haiku for S cards; reads files, writes no product code): takes raw/refined cards by priority, up to 3 per session:
+2. **Refiner session** (runs inside the dispatcher session on its HOURLY line, so on the routine model: Haiku 5.5, set in the App, RELAY.md; reads files, writes no product code): takes raw/refined cards by priority, up to 3 per session:
    read the registry row and its evidence, grep for the files and the source quote, fill the card, run `tasks.py check <id>`. Anything that is
    "run it and read numbers" it delegates as a DSA desk task instead of scoping the answer itself. A question only the operator can answer
    becomes a Control Room decision, and the card waits as `refined` with the reason in `note`.
@@ -58,7 +58,7 @@ update that worktree (`git -C <wt> fetch -q origin`, then `git -C <wt> merge -q 
    - Needs numbers from a run: post a DSA desk task (DSA_DELEGATION.md) and leave the card `refined` with the desk id in `note`; do not run it yourself.
    - Size L: split into S/M cards (`tasks.py new`), drop the parent with a note. A new defect or task still gets its BUGS.md row under that file's rules.
 4. Product code is out of scope for the refiner (cards, docs, desk posts only). `tasks.py lint`, `sync.py ship`, `sync.py release <slug>`.
-5. One pass per HOURLY line, 3 cards max, Sonnet. The brake: a card gets 2 tries, a question parks it at once, and parked cards do not count toward REFINE_NEEDED.
+5. One pass per HOURLY line, 3 cards max, routine model. The brake: a card gets 2 tries, a question parks it at once, and parked cards do not count toward REFINE_NEEDED.
 
 ## Operator controls (Control Room > Backlog; no other page)
 Per card: Move to top, Hold, Drop, and Approve Opus where a card names Opus. A click writes a `taskops` doc (`task`, `action`, `at`, `applied`)
