@@ -73,5 +73,13 @@ class GateTest(unittest.TestCase):
         self.assertFalse((self.d / "prompt.txt").exists())
 
 
+class RegisterScriptTest(unittest.TestCase):
+    def test_hidden_window_and_no_switch_shadow(self):
+        text = (REPO / "scripts" / "sched" / "register_dispatch_gate.ps1").read_text(encoding="utf-8")
+        self.assertIn("conhost.exe", text)   # a bare pythonw flashes a console for every git child
+        self.assertIn("--headless", text)
+        self.assertNotRegex(text.lower(), r"(?m)^\$trigger\s*=")   # PowerShell is case-insensitive: it would shadow the -Trigger switch
+
+
 if __name__ == "__main__":
     unittest.main()
