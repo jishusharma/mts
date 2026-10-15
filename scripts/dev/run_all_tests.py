@@ -32,6 +32,7 @@ PYTEST_LAYER_PATHS = [
     "MyTradingSys/execution/tests",
     "scripts/dev/test_market_guide.py",
     "scripts/dev/test_dax_engine_flag.py",
+    "scripts/dev/test_check_handoff.py",
     "MyTradingSys/observation/tests",
 ]
 
