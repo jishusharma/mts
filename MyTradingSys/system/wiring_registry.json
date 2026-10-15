@@ -261,6 +261,10 @@
    "disp": "TOOL",
    "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
   },
+  "MyTradingSys/research/krown_ta101_2026-10-13/tools/build_setup_catalog.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md (G2 catalogue, KR-S1..KR-S16 + cross-trader overlap) by copying every quote and its Source GPS from the extracts and failing on any lookup that does not match one line; cited in KROWN_SETUP_CATALOG.md header; run by hand after an extract changes, no live process imports it."
+  },
   "MyTradingSys/options/collector/deribit_opt_backfill.py": {
    "disp": "TOOL",
    "why": "Options module (Deribit BTC options research); hand-run offline tool, covered by MyTradingSys/options/tests; see MyTradingSys/options/OPTIONS_PLAN.md. Not wired to live trading."
@@ -610,9 +614,33 @@
    "disp": "TOOL",
    "why": "Hindi quote gate for Malkan extracts (every 'Hindi original' line must occur in <id>_hi_raw.txt; verify_extract_quotes.py cannot read Devanagari); named in malkan_extract_2026-10-15/EXTRACT_TEMPLATE.md rule 12; run by hand per Hindi extract."
   },
-  "MyTradingSys/research/krown_ta101_2026-10-13/tools/build_setup_catalog.py": {
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/apply_review_fixes.py": {
    "disp": "REPRO",
-   "why": "Rebuilds research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md (G2 catalogue, KR-S1..KR-S16 + cross-trader overlap) by copying every quote and its Source GPS from the extracts and failing on any lookup that does not match one line; cited in KROWN_SETUP_CATALOG.md header; run by hand after an extract changes, no live process imports it."
+   "why": "Manual one-off: applies the 17 reviewer fixes to drafts/MAL-BB-RSI-4060.md (record of the 2026-10-15 review round); run by hand, no market data."
+  },
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/bb_mid_engulf_checks.py": {
+   "disp": "REPRO",
+   "why": "Manually reproduces bb_mid_engulf_checks_output.txt (5m BB/RSI legends, engulf and HTF checks from public Binance 1m klines) for drafts/MAL-BB-MID-ENGULF.md."
+  },
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/bb_rsi_4060_indicators.py": {
+   "disp": "REPRO",
+   "why": "Manually reproduces bb_rsi_4060_indicators_output.txt (BB(20,2), RSI14 legend recompute from public Binance 1m klines) for drafts/MAL-BB-RSI-4060.md."
+  },
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/count_rule_table.py": {
+   "disp": "REPRO",
+   "why": "Manually counts the SOURCED/OPERATOR/OURS/NOT FOUND labels of the MAL-BB-RSI-4060 rule table (reported counts 5/9/1/10); reads the draft only."
+  },
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/weekly_low_sweep_checks.py": {
+   "disp": "REPRO",
+   "why": "Manually reproduces weekly_low_sweep_checks_output.txt (weekly low, 80K sweep, reclaim, RSI, taker delta, OI checks from public Binance klines and the OI recorder) for drafts/OPR-WEEKLY-LOW-ROUND-SWEEP.md."
+  },
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/bb_mtf_center_checks.py": {
+   "disp": "REPRO",
+   "why": "Manually reproduces bb_mtf_center_checks_output.txt (30m/1h BB(20,2) legends and 1h/30m close-vs-mid tables from public Binance 1m klines) for drafts/OPR-BB-MTF-CENTER.md."
+  },
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py": {
+   "disp": "REPRO",
+   "why": "Manually reproduces rsi_divergence_mtf_checks_output.txt (5m legend of shot 8fc58204ee18, RSI14 regular bullish divergence on 1m/2m/3m/5m, 5m upper-band walk, taker delta from public Binance 1m klines) for drafts/OPR-RSI-DIV-SWEEP-BAND-WALK.md."
   },
   "MyTradingSys/research/video_priority_2026-10-15/fetch_meta.py": {
    "disp": "TOOL",
