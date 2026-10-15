@@ -70,3 +70,4 @@ pickup turns it into a raw card and replies with the card id. The operator never
 - The card text is the contract: a builder that needs to ask a question hands the card back as `refined` with the question in `note`.
 - Cost: capture costs nothing, refinement is Sonnet/Haiku/DSA, builders get a <= 30-line prompt. Nobody pays to re-derive scope.
 - Numbers rule (2026-10-13): a card that sets a parameter labels it SOURCED (quote + file:line in `sources`) or OURS (chosen on DEV, checked once on VALIDATION).
+- PRE_REG template (`research/gross_effect_screen_2026-10-15/PRE_REG.md`): before freezing, run `python scripts/dev/verdicts.py check "<family words>"` and paste its output; append your row after RESULT (`verdicts.py backfill`; `verdicts.py count --split DEV` is the m for a Holm adjustment). Registry: `research/VERDICTS.csv`; exit 1 = a one_run PRE_REG or a FAIL already covers this family.
