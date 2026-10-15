@@ -1,7 +1,8 @@
-"""make_status.py: recent reports are dated by git commit, not mtime; CI line flags a stuck green ref.
+"""make_status.py: recent reports are dated by git commit, not mtime; CI line flags a stuck green ref; gate board.
 
 Run: python scripts/dev/test_make_status.py
 """
+import json
 import os
 import subprocess
 import sys
@@ -200,6 +201,43 @@ class LessonsLine(Base):
     def test_missing_digest_points_to_full_file(self):
         self.write(ms.LESSONS, "# L\n")
         self.assertIn("read MyTradingSys/system/LESSONS_LEARNED.md in full", ms.get_lessons_line(cwd=self.repo))
+
+
+class GateBoard(Base):
+    """Expected values by hand: proof committed 30 h / 2 h before now; commit mix 2 research, 1 claim, 1 other of 4 in 24 h."""
+    def board(self, layers, when):
+        commit_file(self.repo, ms.GATE_BOARD, when, json.dumps({"layers": layers}))
+
+    def test_stale_proof_age_and_no_move_flag(self):
+        self.board([{"layer": "tom", "gate": "G2", "proof": ["MyTradingSys/research/a/CAT.md"], "next": "G3"}], self.now - 50 * 3600)
+        commit_file(self.repo, "MyTradingSys/research/a/CAT.md", self.now - 30 * 3600)
+        lines = ms.get_gate_board(cwd=self.repo, now=self.now)
+        self.assertTrue(lines[0].startswith("tom     G2  proof changed 30h ago | next: G3"), lines[0])
+        self.assertIn("NO GATE MOVED IN 24h", lines[1])
+
+    def test_recent_proof_clears_flag_and_missing_proof_says_so(self):
+        self.board([{"layer": "tom", "gate": "G2", "proof": ["MyTradingSys/research/a/CAT.md"], "next": "G3"},
+                    {"layer": "krown", "gate": "G1", "proof": ["MyTradingSys/research/k/NONE.md"], "next": "G2"}], self.now - 50 * 3600)
+        commit_file(self.repo, "MyTradingSys/research/a/CAT.md", self.now - 2 * 3600)
+        lines = ms.get_gate_board(cwd=self.repo, now=self.now)
+        self.assertIn("proof changed 2h ago", lines[0])
+        self.assertIn("proof not on trunk", lines[1])
+        self.assertFalse(any("NO GATE MOVED" in ln for ln in lines))
+
+    def test_commit_mix_counts_only_the_last_24h(self):
+        commit_file(self.repo, "scripts/dev/old.py", self.now - 48 * 3600)
+        commit_file(self.repo, "MyTradingSys/research/a/X.md", self.now - 3600)
+        commit_file(self.repo, "MyTradingSys/methodology/W.md", self.now - 3500)
+        commit_file(self.repo, "scripts/dev/y.py", self.now - 3400)
+        git(self.repo, "commit", "--allow-empty", "-q", "-m", "claim some-task", when=self.now - 3300)
+        self.assertEqual(ms.get_commit_mix("HEAD", cwd=self.repo, now=self.now),
+                         "commits 24h: 4 = research 50% | claim/release 25% | other 25%")
+
+    def test_status_md_alone_is_not_research_and_cap_flag_shows(self):
+        commit_file(self.repo, "MyTradingSys/research/STATUS.md", self.now - 3600)
+        commit_file(self.repo, "MyTradingSys/research/a/X.md", self.now - 3500)
+        self.assertEqual(ms.get_commit_mix("HEAD", cwd=self.repo, now=self.now),
+                         "commits 24h: 2 = research 50% | claim/release 0% | other 50%  OVER 30% CAP")
 
 
 if __name__ == "__main__":

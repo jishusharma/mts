@@ -53,9 +53,12 @@ def test_extension_helpers_node():
     assert r.returncode == 0, r.stdout + r.stderr
 
 
+# 159 s quiet for two concurrent runs; 280 s timed out with six ship gates on one machine (2026-10-15). OURS: room for that load.
+SELFTEST_TIMEOUT_S = 900
+
 @pytest.mark.skipif(os.name != "nt" or shutil.which("powershell.exe") is None, reason="needs Windows PowerShell")
 def test_agent_live_selftest():
-    r = subprocess.run([sys.executable, "tests/agent_live_selftest.py"], cwd=PAYLOAD, capture_output=True, text=True, timeout=280)
+    r = subprocess.run([sys.executable, "tests/agent_live_selftest.py"], cwd=PAYLOAD, capture_output=True, text=True, timeout=SELFTEST_TIMEOUT_S)
     fails = [ln for ln in r.stdout.splitlines() if ln.startswith("FAIL")]
     assert r.returncode == 0 and not fails, "\n".join(fails)[:3000] or r.stderr[-2000:]
     assert re.search(r"\d+ passed, 0 failed", r.stdout)
@@ -76,7 +79,7 @@ def test_agent_live_selftest_concurrent_and_port_clash():
     try:
         cmd = [sys.executable, "tests/agent_live_selftest.py"]
         procs = [subprocess.Popen(cmd, cwd=PAYLOAD, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) for _ in range(2)]
-        outs = [p.communicate(timeout=280)[0] for p in procs]
+        outs = [p.communicate(timeout=SELFTEST_TIMEOUT_S)[0] for p in procs]
     finally:
         if squat:
             squat.close()

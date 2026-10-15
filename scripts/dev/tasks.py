@@ -205,7 +205,7 @@ def brief(card):
         L.append(f"Layer: {', '.join(card['layers'])}: read its section of MyTradingSys/system/LAYERS.md (spec, ledger, backtests, cards)")
     if card.get("lane") == "CODEX":
         L.append(f"Report: {LAB_REPORTS}/<UTC date>_{card['id']}.md (findings or numbers, each with file:line or command)")
-    L.append(f"Close: sync.py claim, work, tasks.py done {card['id']} --result \"<number/file>\", sync.py ship, sync.py release.")
+    L.append(f"Close: sync.py claim, work, tasks.py done {card['id']} --result \"<number/file>\", sync.py ship, sync.py release; report it shipped only with an empty `git cherry origin/fast-track <sha>`.")
     return "\n".join(L)
 
 

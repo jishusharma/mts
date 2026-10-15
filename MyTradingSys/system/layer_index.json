@@ -102,7 +102,7 @@
       "id": "fabio",
       "name": "Fabio (order-flow layer)",
       "tracks": "Claude (spec/ledger), Codex lab (audits)",
-      "status": "v3 tried 2026-10-04, holdout FAIL; ledger audit FIX-FIRST; being redefined as Fabio v2 (waits on ledger repairs).",
+      "status": "v3 tried 2026-10-04: OOS FAIL (only model C evaluable, 79 trades, mean -0.1038R); holdout 2026-06-26.. NOT read for Fabio (P2_FABIO_V3_HOLDOUT_STATUS.md, B147); ledger audit FIX-FIRST; being redefined as Fabio v2 (waits on ledger repairs).",
       "spec": [
         "MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md",
         "MyTradingSys/research/fast_track_2026-09-27/FABIO_RULEBOOK.md",

@@ -14,7 +14,8 @@
     "krown"
   ],
   "live_path": false,
-  "note": "",
+  "note": "PARKED until Krown G2+G3 (LAYER_REBUILD_PLAN s3; coordinator 2026-10-15, OPERATOR_DECISIONS q-pause-krown-detectors)",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -37,7 +38,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "add a Krown section to FORMULAS.md: zone = [close, wick extreme] (KR-Z01), volume ratio (KR-V01/V02), strict engulfing (KR-C06), dominant low / dominant lower high (KR-L10), BBWP (KR-Q01: basis 7, lookback 100; multiplier 2 and the percentile formula are OURS, say so), leash (KR-M06), each with a hand-computed example",
     "write tests first from those examples (expected numbers independent of the code), run them against an empty module: all fail",
