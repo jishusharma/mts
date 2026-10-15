@@ -150,10 +150,35 @@ class TestGateKeepsEveryStep(unittest.TestCase):
 
     def test_pytest_steps_that_run_beside_others_have_own_basetemp_and_no_cache(self):
         plan = {s.num: s for s in rat.build_plan(True)}
-        for num in ("4", "5c"):
+        for num in ("4", "4b", "4c", "4d", "4e", "4f", "5c"):
             cmd = " ".join(plan[num].cmd_text.split())
             self.assertIn("--basetemp=", cmd, num)
             self.assertIn("no:cacheprovider", cmd, num)
+
+
+class TestShardedPytest(unittest.TestCase):
+    def test_every_test_file_of_the_tests_dir_is_in_exactly_one_shard(self):
+        plan = {s.num: s for s in rat.build_plan(True)}
+        shards = [plan[n].cmd_text for n in ("4", "4b", "4c", "4d")]
+        for f in (rat.REPO / "MyTradingSys" / "tests").glob("test_*.py"):
+            hits = sum(f"MyTradingSys/tests/{f.name}" in c.split() or f"MyTradingSys/tests/{f.name}" in c for c in shards)
+            self.assertEqual(hits, 1, f.name)
+
+    def test_smoke_selection_skips_unselected_steps_and_full_keeps_all(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / "c.txt"
+            f.write_text("MyTradingSys/system/RELAY.md\n", encoding="utf-8")
+            plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(f)])
+            self.assertEqual(mode, "docs")
+            self.assertEqual({s.num for s in plan if not s.skip}, {"3tl", "3q", "3pc", "3c", "4d"})
+            f.write_text("MyTradingSys/execution/executor.py\n", encoding="utf-8")
+            plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(f)])
+            self.assertEqual(mode, "full")
+            self.assertEqual({s.num for s in plan if s.skip}, {"5", "6"})
+            plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(Path(d) / "missing")])
+            self.assertIsNone(mode)   # unreadable list: everything runs
+            self.assertEqual({s.num for s in plan if s.skip}, {"5", "6"})
 
 
 def fake(num, log, seconds=0.15, ok=True, boom=False):
