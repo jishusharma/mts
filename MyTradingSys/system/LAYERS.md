@@ -32,12 +32,11 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `rv02-fix-dax-preprocessing-isolation` blocked p1 SONNET: RV02 R1: isolate DAX preprocessing and report metadata before holdout
   - `rv02-fix-dax-producer-data-binding` blocked p1 SONNET: RV02 R4: reject DAX snapshots made from different execution data
   - `rv02-fix-dax-rounded-rr-gate` blocked p1 SONNET: RV02 R2: preserve exact DAX net RR through the decision boundary
-  - `tom-btc-data-check` ready p1 DSA-NUC: Tom on BTC T1: check the footprint bars on JIS-NUC cover DEV + VALIDATION (2024-12..2025-06), list gaps
   - `tom-btc-event-study` ready p1 CODEX: Tom on BTC T4: event study - which Tom concepts separate winners on BTC (DEV only, fee-net, vs random same-win
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
   - `tom-profile-shape-parity` blocked p1 CODEX: Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)
-  - `gap-g4-through-ticks-flag` ready p2 CODEX: Gap G4: through_ticks flag in tom_bt.sim_limit_trade (entry and target), default off, output identical
-  - `gap-g6-trial-ledger` ready p2 CODEX: Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)
+  - `gap-g4-through-ticks-flag` blocked p2 CODEX: Gap G4: through_ticks flag in tom_bt.sim_limit_trade (entry and target), default off, output identical
+  - `gap-g6-trial-ledger` blocked p2 CODEX: Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)
   - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
   - `point-in-time-factor-design` raw p2 CODEX: Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-
   - `tom-btc-dev-backtest` raw p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
@@ -124,6 +123,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
   - `malkan-captions-fetch-noauth` ready p2 HAIKU: Malkan: fetch the 5 blocked captions + up to 10 Hindi picks, no cookies, spaced retries; DONE when each id is 
   - `malkan-extract-5star-7star` ready p2 SONNET: Malkan: extract the 7-star (A-CQiV_UFB4) and 5-star (W1HrDl70Lhk) transcripts already on disk; DONE when both 
+  - `malkan-hindi-rows-gpt-read` ready p2 CODEX: Malkan Hindi rows: independent GPT reading of the GARBLED / NOT STATED entry, stop, target and the 5-star / 7-
   - `point-in-time-factor-design` raw p2 CODEX: Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-
   - `malkan-home-fit-audit` refined p4 SONNET: Home-fit audit of the Malkan RSI layer against the readiness checklist
 
@@ -256,6 +256,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-dev-event-study` blocked p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `krown-layer-v0-detectors` blocked p2 SONNET: Krown layer v0 detectors: swings, zones, volume, candles, averages, range/coil as pure functions + params file
   - `krown-recall-check` blocked p2 SONNET: Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_RE
+  - `krown-catalogue-gpt-audit` ready p3 CODEX: Krown G2 catalogue: GPT audit of NOT STATED cells, quote support and BTC-visible calls for S1-S9
   - `krown-other-sources-event-study-videos` blocked p3 SONNET: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
   - `krown-ta101-extract-remaining-10` ready p3 SONNET: Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass bo
 

@@ -14,7 +14,8 @@
     "tom"
   ],
   "live_path": false,
-  "note": "2026-10-14 opus: moved to CODEX (Claude weekly budget 94%; GPT week 33%).",
+  "note": "PARKED: mechanical flag in the old DAX tom_bt (plan s3: old code reference only); moves no gate; GPT is for high-value work only. Lab ran it 14:03Z luna/medium: BLOCKED. LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "sonnet-2026-10-13 gap review G1-G8",
@@ -36,7 +37,7 @@
   "sources": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Read sim_limit_trade and bt_ladder through_ticks.",
     "Test red first, add the argument, run existing tom_bt tests."

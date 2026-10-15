@@ -113,5 +113,27 @@ Goal: the first G3 marks. Two blind readers mark Tom's setups on BTC charts; the
   - Card `tom-btc-eye-read` is closed with `tasks.py done`.
 - Not in scope: encoding, event studies, any Krown or Malkan row (G2 first).
 
+## GPT (NUC Codex lab) and NUC-only queue (coordinator task, 2026-10-15 14:30Z)
+Rules: GPT only for high-value work, gpt-6-astra at low effort only (a card needs `crucial` for astra: tasks.codex_setting); the lab
+allows 1 astra run per 5-hour window (codex_run.py ASTRA_RUNS_PER_WINDOW), so about 4 cards a day. No layer is past G2, so no G4/G5
+build or event study is gate-ready (plan s2: no layer skips a gate). GPT work now = second-model-family audits that guard G2 and G3.
+
+| order | card | why it is worth an astra run |
+|---|---|---|
+| 1 | gpt-catalog-notstated-audit (gpt-cards; asked to add TOM-4 + FAB-8 and prio 1) | the rows G3 spends 210 blind marks on; a wrong row wastes the operator's marks and carries into G4 |
+| 2 | gpt-formulas-rederive (gpt-cards) | every fee-net G5 verdict rests on FORMULAS.md 7/12/13/17; an independent re-derivation before G5 |
+| 3 | malkan-hindi-rows-gpt-read (new) | 7 Malkan rows and the 5-star/7-star rule exist only as YouTube machine translation; Malkan G2 needs his words |
+| 4 | krown-catalogue-gpt-audit (new) | Krown G2 catalogue (krown-g2, f4a5182a) checked by another model family before its G3 marks |
+
+Parked (hold, note on card): gap-g4-through-ticks-flag (old DAX tom_bt flag, mechanical; ran 14:03Z luna/medium, BLOCKED),
+gap-g6-trial-ledger (mechanical; reopen on SONNET at the first G5), tom-btc-event-study (gpt-cards: G5 before Tom G3/G4).
+Next when Tom reaches G3: point-in-time-factor-design (raw, audit) for G4.
+
+NUC-only: tom-btc-data-check done by the observer through the gate (`ps`, read only): F:\MTS\data\orderflow_1m holds 211 of 212
+days of 2024-12-01..2025-06-30 (missing 2024-12-01). JIS-NB holds orderflow_1m and tom_raw too, so G3 chart windows render on JIS-NB.
+DSA-NUC: rv-dsa-ledger-mechanical stays ready (Tom ledger feeds the catalogue's real-trade column); rv-dsa-q33-rerun (parked
+guidance layer, heavy fetch) and rv-dsa-test-sweep (every ship runs these tests) held. Heavy NUC runs (tom-btc-dev-backtest,
+lc-validation, Tom/Fabio G5) start only when a layer reaches G4.
+
 ## How to tell the whole thing is working (daily, about 5 min, Haiku)
 Read the gate board line in STATUS.md, the SHIP_FAILED count (`git log --grep SHIP_FAILED --since=1.day`) and the shots line. The day is on track if one gate moved, there were 0 repeated ship failures, and no operator report needed correcting. If not, the coordinator gets one line naming the stuck gate.

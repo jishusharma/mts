@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T14:29:32Z",
   "commands": [
     "python -c \"from pathlib import Path; import datetime as d; p=Path(r'F:\\MTS\\data\\orderflow_1m'); s=d.date(2024,12,1); n=(d.date(2025,6,30)-s).days+1; days=[s+d.timedelta(i) for i in range(n)]; miss=[str(x) for x in days if not list(p.glob(str(x)+'*'))]; print(n-len(miss),'of',n,'days present; missing',len(miss),miss[:40])\""
   ],
@@ -20,7 +21,7 @@
   "refine_tries": 0,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
   "refs": [],
-  "result": "",
+  "result": "JIS-NUC F:\\MTS\\data\\orderflow_1m 2024-12-01..2025-06-30: 211 of 212 days present, missing 2024-12-01 only, no file under 100 kB (observer via nuc-gate ps, 2026-10-15 14:2xZ); files span 2024-12-02..2026-09-28 (666)",
   "scope_in": [
     "F:\\MTS\\data\\orderflow_1m (read only)",
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4 (windows)"
@@ -35,7 +36,7 @@
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run the command on JIS-NUC.",
     "Paste the printed line into the card result with tasks.py done."
