@@ -95,6 +95,9 @@ function Watch-Aux {
 }
 
 # single-instance supervisor lock
+# One-owner guard (DEVICES.md section 3): refuse to start a second live owner; fail closed.
+& python (Join-Path $R "scripts\dev\live_owner.py") check
+if ($LASTEXITCODE -ne 0) { Write-Host "live loop owner guard refused start, exiting"; exit 1 }
 . (Join-Path $PSScriptRoot "suplock.ps1")
 try {
     $fs = [System.IO.File]::Open($SupLockFile, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
@@ -266,6 +269,8 @@ while ($true) {
         $restartTimes.Add([DateTime]::UtcNow) | Out-Null
         $staleStrikes = 0
     }
+
+    & python (Join-Path $R "scripts\dev\live_owner.py") claim | ForEach-Object { SupLog "  owner: $_" }
 
     Watch-Aux -InGrace:$inGrace
 

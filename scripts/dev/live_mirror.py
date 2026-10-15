@@ -210,6 +210,44 @@ def publish(repo, root, now=None):
     return manifest
 
 
+FAIL_FILE = "PUBLISH_FAIL.json"
+
+
+def publish_recorded(repo, root, now=None):
+    """publish() for the scheduled task: a failure (any exception) is written to <root>/PUBLISH_FAIL.json so readers see
+    it (the task runs hidden, nobody sees stderr); a success clears it. The error is re-raised."""
+    root = Path(root)
+    try:
+        m = publish(repo, root, now=now)
+    except Exception as e:
+        try:
+            prev = json.loads((root / FAIL_FILE).read_text(encoding="utf-8"))
+            since = prev.get("since")
+        except (OSError, ValueError):
+            since = None
+        t = (now or utcnow()).isoformat()
+        try:
+            root.mkdir(parents=True, exist_ok=True)
+            (root / FAIL_FILE).write_text(json.dumps({"since": since or t, "last": t, "error": f"{type(e).__name__}: {e}"[:300]}),
+                                          encoding="utf-8", newline="\n")
+        except OSError:
+            pass
+        raise
+    (root / FAIL_FILE).unlink(missing_ok=True)
+    return m
+
+
+def publish_fail_line(root, now=None):
+    """Loud line when the publisher's last run failed; None when fine or unreadable."""
+    try:
+        f = json.loads((Path(root) / FAIL_FILE).read_text(encoding="utf-8"))
+        since = dt.datetime.fromisoformat(f["since"])
+        mins = ((now or utcnow()) - since).total_seconds() / 60
+        return f"PUBLISHER FAILING for {mins:.0f} min (since {since.strftime('%Y-%m-%d %H:%MZ')}): {f['error']}"
+    except (OSError, ValueError, KeyError):
+        return None
+
+
 def prune(root, current):
     versions = sorted(p.name for p in Path(root).iterdir() if p.is_dir() and VERSION_RE.match(p.name))
     for old in versions[:-KEEP_VERSIONS]:
@@ -393,6 +431,9 @@ def brief(repo, root, now=None, pull_timeout=PULL_TIMEOUT_S):
         note = try_pull(repo, root, pull_timeout)
         if note:
             lines.append(note)
+    fail = publish_fail_line(root, now)
+    if fail:
+        lines.append(fail)
     return [clip(l) for l in lines + brief_lines(repo, now)]
 
 
@@ -433,7 +474,7 @@ def main(argv=None):
         a.root = default_root(a.repo)
     try:
         if a.cmd == "publish":
-            m = publish(a.repo, a.root)
+            m = publish_recorded(a.repo, a.root)
             print(f"published {m['version']}: {len(m['files'])} files, flags raised {[k for k, v in m['flags'].items() if v]}")
         elif a.cmd == "pull":
             state, m = pull(a.repo, a.root)
@@ -446,6 +487,11 @@ def main(argv=None):
     except MirrorError as e:
         print(f"REFUSED: {e}", file=sys.stderr)
         return 2
+    except Exception as e:
+        if a.cmd != "publish":
+            raise
+        print(f"PUBLISH FAILED: {type(e).__name__}: {e}", file=sys.stderr)
+        return 3
     return 0
 
 
