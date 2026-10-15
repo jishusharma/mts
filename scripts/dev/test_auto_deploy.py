@@ -127,6 +127,35 @@ class TestRun(unittest.TestCase):
         self.assertEqual(last["action"], "DEPLOYED")
         self.assertIn("DEPLOYED", ad.LOG.read_text(encoding="utf-8"))
 
+    def test_dirty_generated_file_is_backed_up_restored_and_deploy_goes_on(self):
+        rel = "MyTradingSys/research/STATUS.md"
+        f = self.root / rel
+        f.parent.mkdir(parents=True)
+        f.write_text("live-host edit", encoding="utf-8")
+        ops = FakeOps(changed=[rel, "README.md"], dirty=[rel])
+        r = ad.run(ops)
+        self.assertEqual(r["action"], "DEPLOYED")
+        self.assertEqual(r["regenerated"], [rel])
+        self.assertIn(("checkout", "--", rel), ops.calls)
+        self.assertLess(ops.calls.index(("checkout", "--", rel)), ops.calls.index(("merge", "--ff-only", "origin/green/fast-track")))
+        saved = list((self.root / "runtime_data" / "deploy_backup").glob("*/regenerated/" + rel))
+        self.assertEqual(len(saved), 1)
+        self.assertEqual(saved[0].read_text(encoding="utf-8"), "live-host edit")
+
+    def test_dirty_non_allowlisted_file_still_stops(self):
+        ops = FakeOps(changed=["MyTradingSys/execution/auto_trader.py"], dirty=["MyTradingSys/execution/auto_trader.py"])
+        self.assertEqual(ad.run(ops)["action"], "STOP_DIRTY")
+        self.assertEqual(self.merges(ops), [])
+
+    def test_generated_and_non_generated_dirty_stops_and_restores_nothing(self):
+        gen, other = "MyTradingSys/research/STATUS.md", "MyTradingSys/execution/auto_trader.py"
+        ops = FakeOps(changed=[gen, other], dirty=[gen, other])
+        r = ad.run(ops)
+        self.assertEqual(r["action"], "STOP_DIRTY")
+        self.assertEqual([c for c in ops.calls if c[0] == "checkout"], [])
+        self.assertEqual(self.merges(ops), [])
+        self.assertFalse((self.root / "runtime_data").exists())
+
     def test_red_gate_never_merges_or_kills_and_is_remembered(self):
         ops = FakeOps(gate_rc=1, changed=["MyTradingSys/execution/auto_trader.py"])
         r = ad.run(ops)
