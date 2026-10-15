@@ -795,7 +795,8 @@ Which login owns the Control Room page and its Inbox/decisions database?
 Recommended: jishu.sharma (the account with the GitHub identity)
 Answer: jishu.sharma (chat 2026-10-15)
 Operator note (verbatim): there is no 1 place for me to record decisons? i need all artifacts to be associated with the jishu.sharma a/c - it is the main a/c that has my GitHub.
-Applied: (pending) needs a session signed in as jishu.sharma; q1-one-control-room (jishu.awgp) is superseded once it is done.
+Operator 2026-10-15 (chat): do not wait for or copy answers still in the jishu.awgp db; seed from the repo only, ask later if something was missed.
+Applied: (pending) needs a session signed in as jishu.sharma (run it on the NUC, where that login is signed in); q1-one-control-room (jishu.awgp) is superseded once it is done.
 
 ```json
 {
