@@ -17,8 +17,8 @@
     "cryptocred"
   ],
   "live_path": false,
-  "note": "",
-  "prio": 4,
+  "note": "2026-10-15 q12: raised p4 -> p1 (operator answer).",
+  "prio": 1,
   "refine_tries": 0,
   "refined_by": "cloud-research 2026-10-11 (C-Cloud BACKTEST_FAILURES_RESEARCH.md; operator: 'get this into action')",
   "refs": [],
