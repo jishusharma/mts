@@ -686,17 +686,6 @@ Applied: (not yet)
  "recommended": "Test both: Binance and Coinbase daily volume"
 }
 ```
-<<<<<<< HEAD
-
-## q-context-baseline | asked 2026-10-15 | Process
-
-Switch off the add-ons MTS sessions never use?
-
-Recommended: Yes, switch them off on all three logins
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
-=======
 ## q-host-worktree-tidy | asked 2026-10-15 | Process | NO AUTO-APPLY
 
 Remove 39 finished worktrees on JIS-NB (about 750 MB) and repair 23 broken ones?
@@ -706,23 +695,11 @@ Answer: (none yet)
 Operator note (verbatim): (none yet)
 Applied: (not yet; waits for Jis's explicit answer, no 24h default)
 Page db: not yet a doc (asked from the jishusharma1985 login, which cannot write the jishu.awgp db); the next jishu.awgp pickup creates it from the JSON below. Apply on JIS-NB only.
->>>>>>> origin/fast-track
 
 ```json
 {
  "order": 17,
  "stage": "Process",
-<<<<<<< HEAD
- "refs": "system/CONTEXT_BASELINE.md",
- "title": "Switch off the add-ons MTS sessions never use?",
- "why": "Every MTS session starts at about 65k tokens before reading a file (median of 160 Sonnet sessions, 7 days, JIS-NB). About 5.9k of that describes add-ons no MTS session used in those 7 days: computer use, Claude in Chrome, the Claude Docs and visualize connectors, and 9 file-format skills (docx, pptx, xlsx, pdf ...). Switched off, every turn of every session is about 9% lighter. Nothing is deleted and each one switches back on with the same click. The built-in browser stays (YouTube trader videos). Clicks: CONTEXT_BASELINE.md.",
- "options": [
-  "Yes, switch them off on all three logins",
-  "Only computer use and Claude in Chrome",
-  "No, keep everything"
- ],
- "recommended": "Yes, switch them off on all three logins"
-=======
  "refs": "system/HOST_WORKTREES_2026-10-15.md",
  "title": "Remove 39 finished worktrees on JIS-NB (about 750 MB) and repair 23 broken ones?",
  "why": "`sync.py tidy --all` (dry run, 2026-10-15) checked 101 worktrees on JIS-NB and would remove only 2. A git cleanup at 03:07 today rewrote every tree's history file, so tidy thinks 32 more finished trees were used 5 h ago; they are clean, fully on origin and idle 32-140 h (18 old relay trees, 13 App trees, mts-sup). 5 App trees with a detached HEAD are clean with nothing unshipped. 23 trees are broken: HEAD names jis-nb/x but the branch is JIS-NB/x, so git shows every file as new; after a one-line repair 17 of them are clean and shipped. Kept whatever you answer: 12 trees with uncommitted work, 8 with unshipped commits (incl. BinanceDataFeed.registry, which MTS-Live-Health runs from), 14 used in the last 24 h, 4 named lanes, and mts-control-room (the mts-control-room routine works there). The tree-by-tree list is in the refs file.",
@@ -757,6 +734,30 @@ Page db: not yet a doc (asked from the jishusharma1985 login, which cannot write
   "Not now"
  ],
  "recommended": "Yes: disable Tick and both Audit tasks (unregister after 7 quiet days), unregister Monitor_4h, point Live-Health at the live tree, fix MTS-Backup"
->>>>>>> origin/fast-track
+}
+```
+
+## q-context-baseline | asked 2026-10-15 | Process
+
+Switch off the add-ons MTS sessions never use?
+
+Recommended: Yes, switch them off on all three logins
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet)
+
+```json
+{
+ "order": 19,
+ "stage": "Process",
+ "refs": "system/CONTEXT_BASELINE.md",
+ "title": "Switch off the add-ons MTS sessions never use?",
+ "why": "Every MTS session starts at about 65k tokens before reading a file (median of 160 Sonnet sessions, 7 days, JIS-NB). About 5.9k of that describes add-ons no MTS session used in those 7 days: computer use, Claude in Chrome, the Claude Docs and visualize connectors, and 9 file-format skills (docx, pptx, xlsx, pdf ...). Switched off, every turn of every session is about 9% lighter. Nothing is deleted and each one switches back on with the same click. The built-in browser stays (YouTube trader videos). Clicks: CONTEXT_BASELINE.md.",
+ "options": [
+  "Yes, switch them off on all three logins",
+  "Only computer use and Claude in Chrome",
+  "No, keep everything"
+ ],
+ "recommended": "Yes, switch them off on all three logins"
 }
 ```
