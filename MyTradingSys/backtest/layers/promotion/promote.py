@@ -34,6 +34,7 @@ from MyTradingSys.backtest.layers.promotion import registry as reg
 REPO = Path(__file__).resolve().parents[4]
 CONFIG_PATH = REPO / "MyTradingSys" / "execution" / "auto_trader_config.json"
 MIN_TRADES = 30        # OURS: sanity floor on the OOS sample (GO_LIVE_BAR needs 200 testnet trades later); not from a trader
+SIZE_CEILING_USD = 10000   # = auto_trader.SIZE_CEILING_USD (test_promote asserts they match)
 LABEL = "BT-TUNED"
 REQUIRED = ("setup_id", "layer", "pre_reg", "screen_verdict", "backtest", "oos", "trial_ledger",
             "validation_reads", "holdout_reads", "requested_mode")
@@ -139,6 +140,11 @@ def check(manifest, repo=REPO, config_path=None):
             if rc != 0 or pre_date is None:
                 reasons.append("pre_reg.git_sha does not hold the PRE_REG file")
                 pre_date = None
+            else:
+                rc1, b1 = _git(repo, "rev-parse", "%s:%s" % (pre["git_sha"], pre["path"]))
+                rc2, b2 = _git(repo, "rev-parse", "HEAD:%s" % pre["path"])
+                if rc1 != 0 or rc2 != 0 or not b1 or b1 != b2:
+                    reasons.append("PRE_REG edited after registration (blob at git_sha differs from HEAD, or HEAD lacks it)")
         sfile = _rel_file(repo, scr.get("path")) if scr else None
         if not sfile:
             reasons.append("screen verdict file missing or unreadable")
@@ -231,9 +237,12 @@ def has_testnet_flag(setup_id, config_path=None):
         cfg = json.loads(Path(config_path or CONFIG_PATH).read_text(encoding="utf-8"))
         table = cfg.get("size_overrides", {})
         for k, v in table.items():
-            if isinstance(k, str) and len(k) > len("layer:") and setup_id.startswith(k) and isinstance(v, dict) \
-                    and isinstance(v.get("size_usd"), int) and v["size_usd"] > 0:
-                return True
+            if isinstance(k, str) and len(k) > len("layer:") and setup_id.startswith(k):
+                try:
+                    reg.size_entry(v, SIZE_CEILING_USD)      # same validation as auto_trader.size_override (L7)
+                    return True
+                except ValueError:
+                    pass
     except (OSError, ValueError, AttributeError):
         pass
     return False
@@ -271,20 +280,68 @@ def register(manifest_path, mode, repo=REPO, registry_path=None, config_path=Non
     return True, "registered %s as %s" % (sid, mode), res
 
 
-def demote(setup_id, to="shadow", registry_path=None):
-    """testnet -> shadow (default) or remove the entry (--to off, which returns the layer to today's behaviour)."""
+def _block_setup(setup_id, config_path, now):
+    """Add setup_id to the trade_blocklist that auto_trader ENFORCES (trade_block_reason; trade_blocklist_parked is only
+    documentation) with a reason. -> (ok, message). Refuses, writing nothing, when the config cannot be read or is malformed."""
+    cp = Path(config_path)
+    try:
+        raw = cp.read_text(encoding="utf-8")
+        cfg = json.loads(raw)
+    except (OSError, ValueError) as e:
+        return False, "auto_trader_config unreadable (%r): refusing to demote off (cannot block the setup)" % (e,)
+    if not isinstance(cfg, dict):
+        return False, "auto_trader_config is not an object: refusing to demote off"
+    bl, reasons = cfg.get("trade_blocklist", []), cfg.get("trade_blocklist_reasons", {})
+    if not isinstance(bl, list) or not isinstance(reasons, dict) or not all(isinstance(p, str) and p for p in bl):
+        return False, "trade_blocklist / trade_blocklist_reasons malformed: refusing to demote off"
+    if setup_id not in bl:
+        bl.append(setup_id)
+    reasons[setup_id] = "demoted off %s (promote.py demote --to off)" % (now or dt.datetime.now(dt.timezone.utc)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    cfg["trade_blocklist"], cfg["trade_blocklist_reasons"] = bl, reasons
+    indent = 1 if raw.startswith('{\n "') else 2
+    try:
+        cp.write_text(json.dumps(cfg, indent=indent, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+    except OSError as e:
+        return False, "auto_trader_config not writable (%r): refusing to demote off" % (e,)
+    return True, "blocked"
+
+
+def _blocked_exact(setup_id, config_path):
+    try:
+        bl = json.loads(Path(config_path).read_text(encoding="utf-8")).get("trade_blocklist", [])
+        return [p for p in bl if p == setup_id] if isinstance(bl, list) else []
+    except (OSError, ValueError, AttributeError):
+        return []
+
+
+def _cover(a, b):
+    return a.startswith(b) or b.startswith(a)
+
+
+def demote(setup_id, to="shadow", registry_path=None, config_path=None, now=None):
+    """testnet -> shadow (default), or --to off. 'off' is never a return to trading: the entry is removed AND setup_id is
+    written to auto_trader_config trade_blocklist (the list auto_trader enforces) with a reason, so a grandfathered or
+    sized source stays blocked. A setup with no registry entry can also be blocked with --to off (grandfathered source)."""
+    if to not in ("shadow", "off"):
+        return False, "--to must be shadow or off"
     rp = Path(registry_path or reg.DEFAULT_PATH)
     entries, err = reg.load_registry(rp)
     if err:
         return False, "registry unreadable: " + err
     hit = next((e for e in entries if e["setup_id"] == setup_id), None)
+    cp = config_path or CONFIG_PATH
     if not hit:
+        if to == "off" and not _blocked_exact(setup_id, cp):
+            ok, msg = _block_setup(setup_id, cp, now)
+            return (True, "%s not in registry; -> off (blocked)" % setup_id) if ok else (False, msg)
         return False, "%s not in registry" % setup_id
     rest = [e for e in entries if e["setup_id"] != setup_id]
     if to == "shadow":
         rest.append(dict(hit, mode="shadow"))
-    elif to != "off":
-        return False, "--to must be shadow or off"
+    else:
+        ok, msg = _block_setup(setup_id, cp, now)       # block first: a failed config write leaves the registry untouched
+        if not ok:
+            return False, msg
     _write_registry(rp, rest)
     return True, "%s -> %s" % (setup_id, to)
 
@@ -303,6 +360,22 @@ def verify(repo=REPO, registry_path=None, config_path=None):
             problems.append("%s: manifest setup_id is %s" % (e["setup_id"], r["setup_id"]))
         elif e["mode"] == "testnet" and not has_testnet_flag(e["setup_id"], config_path):
             problems.append("%s: mode testnet but no sized testnet flag" % e["setup_id"])
+    # H2: every sized prefix needs a registry entry, a grandfather entry or a block entry (else a hand edit left a sized,
+    # rule-mapped setup that default-deny cannot account for)
+    try:
+        cfg = json.loads(Path(config_path or CONFIG_PATH).read_text(encoding="utf-8"))
+        table = cfg.get("size_overrides", {})
+        gf = cfg.get("pre_pipeline_sources", {})
+        bl = cfg.get("trade_blocklist", [])
+        if not isinstance(table, dict) or not isinstance(gf, dict) or not isinstance(bl, list):
+            raise ValueError("size_overrides/pre_pipeline_sources/trade_blocklist malformed")
+    except (OSError, ValueError, AttributeError) as e:
+        problems.append("auto_trader_config unreadable or malformed (%r): cannot check sized prefixes" % (e,))
+        return problems
+    known = [e["setup_id"] for e in entries] + [g for g in gf if isinstance(g, str)] + [b for b in bl if isinstance(b, str)]
+    for k in table:
+        if isinstance(k, str) and len(k) > len("layer:") and not any(_cover(k, x) for x in known):
+            problems.append("size_overrides %s has no registry entry, no pre_pipeline_sources entry and no trade_blocklist entry" % k)
     return problems
 
 

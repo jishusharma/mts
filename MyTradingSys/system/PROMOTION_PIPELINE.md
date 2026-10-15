@@ -41,6 +41,9 @@ Manifest format: docstring at the top of `promote.py`.
   re-read on every poll, so a restart, demotion or edit takes effect on the next poll.
 
 ## Demote
-`promote.py demote <setup_id> --to shadow` (testnet back to collection-only) or `--to off` (entry removed; the layer returns to today's
-behaviour, so use it only for a layer that traded before the pipeline or that is being deleted). Commit on fast-track; AutoDeploy ships it.
+`promote.py demote <setup_id> --to shadow` (testnet back to collection-only) or `--to off` (entry removed AND the setup_id written to
+`trade_blocklist` in auto_trader_config.json, the list auto_trader enforces, with a reason: off is blocked, never a return to trading;
+refused if the config cannot be written; works for a grandfathered source with no entry too). `verify` flags any sized
+`size_overrides` prefix with no registry, `pre_pipeline_sources` or `trade_blocklist` entry. `check` also rejects when the PRE_REG blob at
+`pre_reg.git_sha` differs from HEAD ("edited after registration"). Commit on fast-track; AutoDeploy ships it.
 A failed `verify` (`promote.py verify`) means fix or demote the entry first.
