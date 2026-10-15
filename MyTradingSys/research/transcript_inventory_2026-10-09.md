@@ -192,5 +192,5 @@ Captions only (yt-dlp 2026.08.19, no video). Both videos are Hindi speech; the `
 | Malkan | A-CQiV_UFB4 | raw_transcripts_canonical/A-CQiV_UFB4_raw.txt (+ _hi_raw.txt) | not-yet (no extract) | 8. RSI Reverse Divergence, 3X3 Swing Trading (Malkansview, 2025-03-11), hi, 2643 words en |
 | Malkan | N7r3v7plqZM | - | NOT AVAILABLE | yt-dlp: Private video |
 | Malkan | dXxQOnK2jhQ | - | NOT AVAILABLE | yt-dlp: members-only (Join this channel) |
-| Malkan | fgN6QBFY3Ss, kVIvcn7T44o, FHEoMmD6xKM, TYB7GJODt-k, WBByyLBp8-c | - | RETRY | HTTP 429 Too Many Requests on the caption fetch from the NUC IP, two attempts (full and throttled); retry after a cooldown |
-| Malkan | Hindi RSI/divergence picks (max 10) | - | NOT STARTED | channel listing not attempted while 429 held |
+| Malkan | fgN6QBFY3Ss, kVIvcn7T44o, FHEoMmD6xKM, TYB7GJODt-k, WBByyLBp8-c | - | PENDING_CAPTIONS | HTTP 429 Too Many Requests on the caption fetch (2026-10-15 12:18Z still 429, anonymous, one request); retry once a day, 3 days max, then NOT AVAILABLE |
+| Malkan | Hindi RSI/divergence picks (max 10) | - | PENDING_CAPTIONS | channel listed 2026-10-15 (876 videos, UCKxWWqBQZYKTA01GkyQdMHA); shortlist in research/malkan_extract_2026-10-15/CHANNEL_LIST.md; captions not fetched (429) |
