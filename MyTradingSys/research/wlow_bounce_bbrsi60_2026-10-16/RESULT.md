@@ -62,3 +62,9 @@ Layer rule (PRE_REG): no combined stack; a layer matters only if its own side pa
 - Verdict INCONCLUSIVE is mechanical: n=8 < 10. The nominal DIFF of -0.30 % (4 h, events lower than baseline a) points toward "fails back down" and the short-net readout is +0.15 % at the 4 h cell, but with 8 events (7 distinct weeks, SE uses day clusters) a t of -2.05 is not evidence: MDE80 0.41 % at n=8, and 24 h returns flip sign (+0.71 %). Do not trade it. DECISION (OURS): the short side is a hypothesis for a new PRE_REG, not a finding.
 - Sample needed for a decision at MDE80 <= 0.28 % (2C): about 130 events per group; DEV yields about 3 per year. Forward live sampling (status CLI + shadow emitter card) and a looser pre-registered definition on VALIDATION-era data are the only routes; neither is run here.
 - Layers: every split has a side with n < 10, so all NOT_EVALUATED. OI is NOT_IN_DATA on DEV (archive from 2025-09-01).
+
+## Promotion check (draft manifest, NOT registered)
+`promote.py check candidate_manifest.draft.json` on 2026-10-16: REJECT. Reasons: validation_reads and holdout_reads missing; screen verdict INCONCLUSIVE (need PASS); no BT-TUNED backtest report; fee-net OOS net R 0, CI low 0, n_trades 0 < 30. The PRE_REG-before-verdict date gate and the trial-ledger row count (8) did not raise a reason.
+
+## Live tracking (observation only)
+`python -m MyTradingSys.backtest.layers.wlow_bounce.status` on 2026-10-16 read ACTIVE for the 2026-10-15 shape (closed 1h bar 19:00Z: RSI14 56.7, close 0.47 % under the upper BB, prior weekly low 80344.8, OI 93.66K coins). It is a detector reading, not a validated signal.

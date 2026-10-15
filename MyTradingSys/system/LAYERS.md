@@ -230,6 +230,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `mts-cbp-integration-land-one-cbp-candida` blocked p3 SONNET: MTS-CBP integration: land one CBP candidate on the real queue
   - `score-context-reads-automatically-carrie` raw p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
   - `state-machine-vwap-cvd-vs-klines` raw p3 SONNET: State machine session VWAP/CVD disagree with klines: 2026-10-12 13:08Z state_code.json cum_pv/cum_vol gives 83
+  - `wlow-bounce-shadow-emitter` ready p3 JIS-NB: wire wlow-bounce detector as collection-only shadow emitter in live_runner_cli after fable-h1 ships
   - `one-timeframe-map-for-the-whole-toolchai` raw p4 SONNET: One timeframe map for the whole toolchain: capture.TF_MINUTES lacked 8h (CoinGlass button) while holding 7h; g
 
 ## Callers (posted trade calls: Qriptal) (`callers`)

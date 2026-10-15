@@ -1,6 +1,15 @@
 {
  "_doc": "Files the wiring scan finds unrun (TEST-ONLY/ORPHAN), each declared with a disposition and evidence. Checked by scripts/dev/wiring_scan.py --check in the gate. Dispositions: TOOL, REPRO, PARKED, WIRE. A file that becomes LIVE/DEV-TOOL or disappears must be removed from here.",
  "entries": {
+  "MyTradingSys/backtest/layers/wlow_bounce/detector.py": {
+   "disp": "WIRE",
+   "ref": "task card wlow-bounce-shadow-emitter",
+   "why": "Weekly-low bounce detector (observation only, UNVALIDATED); used by status.py CLI and tests today; card wlow-bounce-shadow-emitter wires it as a collection-only emitter in live_runner_cli."
+  },
+  "MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py": {
+   "disp": "REPRO",
+   "why": "Pre-registered DEV-only study (PRE_REG.md); run by hand (--counts | --run), reproduces RESULT.md and events.csv; imports the detector only."
+  },
   "MyTradingSys/research/setup_catalog_2026-10-15/malkan/tools/build_glossary.py": {
    "disp": "REPRO",
    "why": "Regenerates MALKAN_DIVERGENCE_GLOSSARY.md from GLOSSARY_SRC.md, locating each quote in raw_transcripts_canonical for file:line and timestamp; run manually from repo root."
