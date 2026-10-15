@@ -42,6 +42,17 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/stop_guard.py\" hook",
+            "timeout": 20
+          }
+        ]
+      }
     ]
   }
 }

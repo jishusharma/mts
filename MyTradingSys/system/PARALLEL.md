@@ -96,6 +96,9 @@ Which machine, login, lane and model may touch what: HOW_MTS_RUNS.md.
 | DESKTOP-F7IU69N (laptop) | travel: Claude app, own clone, RDP into the others | yes, from its clone | work on committed data only; need JIS-NB files -> `desk.py post` and carry on |
 Only one machine runs the live loop at a time (DEVICES section 3).
 
+## Nothing left behind (operator 2026-10-15)
+A session ends with its tree clean and shipped: the Stop hook (`scripts/dev/stop_guard.py`) blocks one stop while it is not. `daily_hygiene.py` runs `sync.py tidy --apply` each morning (repairs case-broken HEADs, retires finished trees). Leftovers swept by hand are listed in LEFTOVERS_2026-10-15.md with the restore command.
+
 ## Fallback if sync.py is broken (moved from CLAUDE.md Quick answers, 2026-10-15)
 Never from the live tree (the folder holding `.mts_live`). `git worktree add ../mts-push -b <host>/<slug> HEAD` (reuse it if present),
 `git -C ../mts-push merge origin/fast-track` (the Bash settings deny a bare `git merge`; docs conflicts: take origin's text; STATUS.md:

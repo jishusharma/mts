@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 """daily_hygiene.py - the scheduled daily hygiene run (Step 4, 2026-10-10). No Claude, no operator, no network beyond git.
 
-Runs, in order: the offline gate (run_all_tests.py --quick), `sync.py where` (worktrees holding work not on origin/fast-track),
+Runs, in order: the offline gate (run_all_tests.py --quick), `sync.py tidy --apply` (repairs case-broken worktree HEADs,
+retires finished clean worktrees), `sync.py where` (worktrees holding work not on origin/fast-track),
 declutter_backups.py in dry-run mode (never --apply), `desk.py assign` (the scheduled assigner: posts each ready DSA-lane
 task card to the desk board once, B180), and make_status.py. Writes one file a session reads at boot:
   MyTradingSys/runtime/sched/hygiene_latest.md   (gitignored; STATUS.md embeds its first lines via make_status.py)
@@ -23,6 +24,7 @@ OUT_DIR = REPO / "MyTradingSys" / "runtime" / "sched"
 PY = sys.executable
 STEPS = [
     ("gate", [PY, "scripts/dev/run_all_tests.py", "--quick"], 1500, True),
+    ("tidy", [PY, "scripts/dev/sync.py", "tidy", "--apply"], 900, False),
     ("where", [PY, "scripts/dev/sync.py", "where"], 120, False),
     ("health", [PY, "scripts/dev/sync.py", "health"], 120, False),
     ("declutter_dry_run", [PY, "scripts/dev/declutter_backups.py"], 300, False),

@@ -199,7 +199,7 @@ def health(repo):
     for row in rows:
         ref, _, ts = row.partition("|")
         short = ref.removeprefix("origin/")
-        if short in (TRUNK, "HEAD", "origin", "main", "master") or short.startswith(("backup/", "green/", "claude/")):
+        if short in (TRUNK, "HEAD", "origin", "main", "master") or short.startswith(("backup/", "green/", "claude/", "shots-inbox/")):
             continue
         ahead = git(repo, "rev-list", "--count", f"origin/{TRUNK}..{ref}", check=False).stdout.strip()
         if ahead not in ("", "0") and ts and (now - int(ts)) / 3600 > NOT_SHIPPED_HOURS:
@@ -489,6 +489,20 @@ def is_app_tree(p):
     return p.parent.name == "worktrees" and p.parent.parent.name == ".claude"
 
 
+def repair_heads(repo, apply=True):
+    """Point a worktree whose HEAD names `jis-nb/x` at the real `JIS-NB/x` (case-only mismatch from a case-insensitive FS).
+    Only HEAD moves: no file, index or commit is touched. Returns the paths repaired (or that would be)."""
+    done = []
+    for t in survey(repo):
+        m = re.search(r"symbolic-ref HEAD (refs/heads/\S+)$", t["fix"])
+        if t["ahead"] is None and m and Path(t["path"]).exists():
+            if apply:
+                git(t["path"], "symbolic-ref", "HEAD", m.group(1), check=False)
+            done.append(t["path"])
+            print(f"{'repaired' if apply else 'would repair'}  {t['name']}: HEAD -> {m.group(1)}")
+    return done
+
+
 def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS, now=None):
     """Retire finished worktrees: `../mts-<host>-<slug>` made by `start`, the App's `.claude/worktrees/*` and `../mts-relay-*`.
     Dry run unless apply. Removed only when: not the primary tree, not the one we are in, no live marker, clean (the pulled
@@ -499,6 +513,8 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
     Returns the paths removed (or that would be)."""
     now = time.time() if now is None else now
     git(repo, "fetch", "--quiet", "origin", TRUNK)
+    if apply:
+        repair_heads(repo)   # a case-broken HEAD would hide the tree from every check below
     here = Path(repo).resolve()
     rows = worktrees(repo)
     out, kept, listed = [], {}, 0
