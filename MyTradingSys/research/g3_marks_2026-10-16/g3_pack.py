@@ -558,6 +558,8 @@ class Chart:
         self.line(run, c, w)
 
     def seg(self, k0, k1, v, c, label=""):
+        if not self.top <= self.y(v) <= self.top + self.h:
+            return  # outside the visible price range: not drawn
         self.line([(self.x(k0) - 3, self.y(v)), (self.x(k1) + 3, self.y(v))], c, 1)
         if label:
             self.text(self.x(k1) + 4, self.y(v) - 7, label, 10, c)
@@ -626,7 +628,7 @@ def intra_chart(code, cx, i, blind_id):
             ch.line([(ch.x(k), ch.top), (ch.x(k), ch.top + ch.h)], "#7a6a2f", 1)
     if code in ("TOM4", "TOM6"):
         ch.series([pct(v) for v in cx.vwap[i - n + 1:i + 1]], "#e6c76a", 1)
-        ch.text(X0 + 120, ch.top + 2, "yellow = session VWAP (00:00 UTC)", 11, "#e6c76a")
+        ch.text(X0 + 230, ch.top + 2, "yellow = session VWAP (00:00 UTC)", 11, "#e6c76a")
     if code in ("TOM4", "TOM12", "FAB4"):
         for d, ks in day_k.items():
             va = cx.va_prior(d * DAY)
