@@ -1,0 +1,391 @@
+# Video ID: 9IliXww64uM
+# Source: F:/MTS/data/fabio_videos/9IliXww64uM.en.vtt (yt-dlp auto captions, en), converted 2026-10-16 by MyTradingSys/research/setup_catalog_2026-10-15/evidence/vtt_to_canonical.py; rolling duplicates dropped, entities decoded, [music] tags removed
+# Analyst: Fabio Valentini (trader-interview/live-session caption file)
+# Word count: 2738
+# ---
+[0:00] I've made a little over $4,000 trading
+[0:02] the S&P 500 futures in a single session
+[0:04] using order flow. I will show you
+[0:06] exactly the strategy I have used with an
+[0:08] exact trading breakdown. So, the first
+[0:10] thing I do when I open my computer is
+[0:12] open my deep charts platform and have
+[0:14] the 1-minute chart on this side and the
+[0:16] 5-minute chart on this side. On the
+[0:17] 5-minute chart, I typically have these
+[0:19] big bubbles that are the big trades
+[0:21] taken through the order flow of the
+[0:23] entire futures market filtered by size
+[0:26] so we can filter out the noise and just
+[0:28] see the big trades from big banks, from
+[0:30] the smart money, the trades that
+[0:31] actually matter. And on this side
+[0:33] instead, I have a more, let's say, old
+[0:35] school type of footprint chart, your
+[0:37] very classic bid-ask footprint chart
+[0:39] where you can see the numbers, the
+[0:40] needy-greedy details, all the statistics
+[0:42] of each candle with the deep stats, and
+[0:44] the cumulative volume delta. I also keep
+[0:46] typically a volume profile on this side,
+[0:48] and this is my basic setup. You can find
+[0:50] it here on the templates of deep charts
+[0:52] full version under Achimi ES. This is
+[0:54] the 5-minute on this chart, and this is
+[0:56] the 1-minute template on this chart.
+[0:57] But, before we see the actual trades
+[0:59] that taken during this session, you
+[1:01] might want to see, "Hey, I don't want to
+[1:02] only see the charts. I want to see that
+[1:04] you actually took these trades in a real
+[1:06] account, in the real market." And that's
+[1:09] completely true. So, first I'm going to
+[1:10] show you that I have actually executed
+[1:12] these trades. Just going to log out for
+[1:14] a second from my Thinkorswim platform,
+[1:16] and I'm also going to log out from my
+[1:18] brokerage and re-login just to make sure
+[1:20] we're talking about the same thing. So,
+[1:23] let's re-login. Let's not make any cut
+[1:25] here, editors, please, and so they can
+[1:27] see it's all real and we're not faking
+[1:29] anything. And this is my real account.
+[1:32] I've I'm not a prop firm trader anymore
+[1:34] since probably at least 2 years. I
+[1:36] haven't been trading prop firms. I use
+[1:38] my money. I basically trade it kind of
+[1:40] conservatively conservatively because I
+[1:42] want to grow my money through time, and
+[1:44] I don't use trading necessarily as a
+[1:46] cash flow business. But, still, I've
+[1:48] deposited 50K in September, managed to
+[1:51] put them up at around 65, 66,000 dollars
+[1:54] in a matter of, what is it, like 2
+[1:56] months, 1 month and a half? Then
+[1:58] November was a very high drawdown phase.
+[2:00] I I probably lost, I don't know, around
+[2:03] $6,000, not much.
+[2:05] Uh and I didn't trade throughout all the
+[2:07] entire winter because I was doing
+[2:08] holidays. And then I've deposited 75K
+[2:11] and then 75K more. And on January 26th,
+[2:14] I started my trading once more. And as I
+[2:17] promised to share a little bit of, you
+[2:18] know, my journey through trading, the
+[2:20] good, the bad, and the ugly, I want to
+[2:22] transparently show you my exact track
+[2:25] record. And I'm going to do it more
+[2:26] times in inside of this channel for
+[2:27] transparency purposes. So if you
+[2:29] appreciate that, uh join the community
+[2:31] by subscribing to the channel. And so
+[2:33] starting in January 26th, for now
+[2:35] starting at $209,000,
+[2:38] we've been going up until 217. Well,
+[2:41] I've taken a screenshot just in case.
+[2:42] These are the actual trades. I've taken
+[2:45] the screenshot on the same day, uh but
+[2:46] you can see them clearly here.
+[2:48] Uh that's exactly the trades that I've
+[2:51] took. And now I can show you why I
+[2:53] executed these trades and go to the
+[2:56] actual breakdown of the trades. Let's go
+[2:58] and understand how I frame my entries.
+[3:00] I'll typically start on a 5-minute
+[3:02] chart. And what I want to see is where
+[3:04] is most likely price is going to stay
+[3:08] throughout the day, or what's the most
+[3:09] likely path for the price and for the
+[3:12] auction throughout the day. And I And to
+[3:14] do that, I use volume profiles. I use
+[3:17] two types of volume profile. The most
+[3:18] important one being for framing the
+[3:20] bias, my composite volume profile. And
+[3:23] this composite volume profile basically
+[3:24] takes the entirety of the volume of the
+[3:27] chart that I have loaded. And I
+[3:28] typically load the last 10 days. And
+[3:31] what I can see is we have a double
+[3:33] distribution. So this is a first
+[3:35] distribution, and this is a second
+[3:36] distribution. We have a low volume node
+[3:38] right over here. And that's going to be
+[3:40] a crucial point, and I'll explain you
+[3:42] why in a bit. And the second thing I'm
+[3:45] looking is how is the previous cash
+[3:47] session profile unfolding. So this dark
+[3:51] orange one is the volume profile of the
+[3:54] regular trading hour session, the
+[3:55] so-called New York session. The Asian
+[3:58] and the London session are in this
+[3:59] lighter color because there's less
+[4:01] volume into those areas. These are the
+[4:03] ETH or extended or electronic trading
+[4:06] hour session. And then again, this is
+[4:08] the session I've actually traded. We
+[4:10] have another volume profile cuz that's
+[4:12] the next New York session, as you can
+[4:13] see from volume. So, since yesterday in
+[4:15] the last session, this was the main fair
+[4:18] valuation. And we are in a fair
+[4:21] valuation area where most of the money
+[4:24] has been traded over the last sessions,
+[4:26] then this I consider this to be a very
+[4:30] strong area of comfort where price is
+[4:32] likely to be keep trading because
+[4:35] already 70% of the trading activity
+[4:38] happened within this range in the
+[4:40] previous session. So, what I want to see
+[4:42] is one of two things. We either break
+[4:45] out from this area, so aggressive buyers
+[4:48] are not considering these prices to be
+[4:50] fair anymore and instead consider higher
+[4:54] prices to be the new fair valuation of
+[4:56] the asset and not just with an impulse.
+[4:58] I don't want to just see an impulse
+[5:00] during the breakout. Basic market
+[5:02] structure is not enough. What I want to
+[5:04] see is a range being formed outside of
+[5:08] the previous day valuation because that
+[5:10] will tell me that both sides of the
+[5:12] auctions, both the aggressive seller and
+[5:15] the aggressive buyers, consider this to
+[5:17] be a fair valuation of the asset because
+[5:19] just the face of price discovery doesn't
+[5:22] mean price acceptance. This would be
+[5:24] only price discovery. This is price
+[5:27] acceptance. So, in order to qualify a
+[5:29] breakout, I wait for a range to form.
+[5:31] And I would like to see this range
+[5:33] formed either outside of this range or
+[5:36] inside of this other distribution. And
+[5:39] as we open our session right over here,
+[5:41] the first thing price did was pump up.
+[5:44] And I was genuinely waiting for a
+[5:45] breakout, right? But then as traders we
+[5:47] adapt to what the market tells us. We
+[5:49] don't need to marry an analysis. We need
+[5:52] to adapt our idea as the market gives us
+[5:54] new information, and we want to align
+[5:56] ourselves where the biggest flow of
+[5:57] money is. Already a very important piece
+[6:00] of information I can see is where did we
+[6:02] open the session? Well, we opened the
+[6:03] session exactly
+[6:05] inside of the previous value area. This
+[6:07] is already a good sign that we're
+[6:09] probably going to stay inside of this
+[6:10] range for the rest of the day because
+[6:11] there was no relevant news or price
+[6:14] discovery auction during the Asian or
+[6:17] London session, and we're about to open
+[6:19] the session exactly where most of the
+[6:21] money was traded yesterday. So, if from
+[6:23] here, again, we move outside and we
+[6:25] create fair valuation, then I'm looking
+[6:27] for longs. But for now, I have more
+[6:29] information that I'm probably going to
+[6:30] look for bouncing from this area or from
+[6:33] this area and wait for an order flow
+[6:35] pattern to unfold over here where I can
+[6:37] see buyers being absorbed. And you can
+[6:39] kind of already see it now with the big
+[6:41] trades. Let's zoom in to understand what
+[6:42] happened. So, right at the top of this
+[6:44] area, we had buyers genuinely trying to
+[6:48] push the auction up and up and up, but
+[6:50] they were absorbed by seller in all of
+[6:53] this effort. They put a lot of effort
+[6:55] into trying to get out, but sellers
+[6:57] consider these prices to be very
+[6:59] interesting to sell for them, way more
+[7:02] than aggressive buyers were, and the
+[7:04] auction has been pushed down. The first
+[7:06] trade idea happened around here when we
+[7:08] had the first fail uh breakout to the
+[7:11] downside. So, this was my first trade
+[7:13] idea. I saw this was the initial
+[7:16] balance, and we had an attempt that
+[7:18] already failed, another attempt that
+[7:20] already failed. So, I know that this is
+[7:22] already fair value. We're in a ranging
+[7:24] market. So, the first idea I had is when
+[7:25] I saw these aggressive sellers being
+[7:28] absorbed at the bottom, it's simply the
+[7:30] same thing that happened over here, but
+[7:32] from the sell side of the market. And
+[7:34] that's when I drop into the lower time
+[7:36] frames. And that's when I drop into the
+[7:38] lower time frames. And let's see what
+[7:39] exactly happened here and made me pull
+[7:42] the trigger on this exact candle over
+[7:45] here. If we zoom in, we can clearly see
+[7:47] there was a lot of effort. Look at the
+[7:49] numbers over here. 3,000 contracts,
+[7:51] 5,000, 8,000 contracts. A lot of sellers
+[7:55] over here and I can see those
+[7:57] thousands of contracts being absorbed
+[7:59] over here and right after a very strong
+[8:03] volume reversal. This is very crucial
+[8:05] for me. A strong low happens when we,
+[8:09] for example, break out with a lot of
+[8:11] volume, 5,000, 6,000. You see volume
+[8:14] here increasing on the way out, but then
+[8:16] also increasing all the way up back
+[8:19] inside of the range. We still kept a
+[8:21] very strong pace, 6,000, 6,000. When I
+[8:23] saw this huge volume and I started
+[8:26] seeing sellers also from the CBD being
+[8:28] absorbed, so you have a negative delta
+[8:31] with a positive price action. That's a
+[8:33] very clear divergence in market
+[8:35] pressure. There was an effort from
+[8:36] seller that is not having any follow
+[8:39] through. And the 5-minute was about to
+[8:41] close right over here and that was my
+[8:43] signal for the entry. I have a clear
+[8:45] absorbed seller. This stuff you cannot
+[8:47] see it with price action, unfortunately.
+[8:48] And then I traded all the way to the
+[8:50] other side of the range where sellers
+[8:52] are likely to get aggressive. And as you
+[8:54] can see, that's the trade being closed
+[8:56] over here. So, we opened the trade over
+[8:57] here, we closed it over here. And then I
+[8:59] simply waited for this thing to happen
+[9:02] here once more. I saw a lot of
+[9:04] aggressive buying, to be honest. I was
+[9:05] waiting for this level to be broken
+[9:07] above a very strong candle, a lot of
+[9:10] buyers and maybe trading an opening
+[9:12] range breakout type of setup. But what
+[9:14] happened again is buyers very aggressive
+[9:16] at the top of the wick completely
+[9:18] reabsorbing the price action. And then I
+[9:21] zoomed in again into the needy-greedy
+[9:22] details and I can see again exactly the
+[9:25] same thing. During the breakout, really
+[9:28] high volume. We had 3,000 contracts
+[9:30] averaging the previous candles and then
+[9:32] 5,000, 6,000. And then again, 3,000 and
+[9:36] 4,300 on the way down. And I think this
+[9:39] is where I said, "You know what? This is
+[9:40] a very good sell idea because the
+[9:42] auction is clearly telling me, without a
+[9:45] shadow of a doubt, that the party is not
+[9:47] going anywhere up on the upside. That
+[9:49] the money is not ready to go up. They
+[9:51] told me this with numbers in a very
+[9:54] objective way." We had a very strong
+[9:56] rejection with a lot of volume. The buy
+[9:58] candle had little to no volume, 3,000
+[10:00] contracts, that's negligible stuff. And
+[10:02] instead, as we broke back inside, the
+[10:05] activity started rising. Buyers and
+[10:07] sellers start auctioning very
+[10:08] aggressively again on both sides of the
+[10:10] auction, but with a clear selling
+[10:12] dominance. 4,000 contracts, 4,000
+[10:14] contracts again. So, the party is going
+[10:18] inside of the range once more. The fair
+[10:20] valuation is still this one. We're not
+[10:22] ready to break out. This is a clear
+[10:24] failed auction. And that was exactly the
+[10:26] second trade. I've probably opened it
+[10:28] already here as I saw the candle
+[10:31] reabsorbing. Stop was likely somewhere
+[10:33] above here, and we took profits around
+[10:35] the beginning of this candle. So,
+[10:37] probably somewhere around here. And
+[10:38] that's already another one to four risk
+[10:40] to reward. Why did I take profit so
+[10:42] early? Well, because the beginning of a
+[10:44] strong impulse happened here, and that's
+[10:46] typically a very strong area for a buyer
+[10:49] response. We had big buyers on this
+[10:51] candle with the candle closing within
+[10:53] the big trade, a lot of low volume
+[10:55] areas, which is, you know, pure
+[10:57] momentum, pure buying pressure. So,
+[10:59] that's where I want to be out, where I
+[11:01] have a risk that buyers will take
+[11:03] control again. And as you can see, they
+[11:05] kind of did, right? They've consolidated
+[11:07] into this area for some time, and then
+[11:10] we finally had the breakout that I was
+[11:12] waiting for. Look at this breakout. We
+[11:13] broke the opening range with a strong
+[11:15] sell candle, big trades inside of the
+[11:18] candle, which is a very crucial point of
+[11:20] information for me. Another sell candle,
+[11:22] and look at this. What happens to the
+[11:24] volume when we break out? Do we have a
+[11:25] dry up in volume immediately? No. We
+[11:27] have a lot of volume in this. The party
+[11:29] is going down, okay? So, what I wanted
+[11:32] to see now was from this area, from the
+[11:35] sell zone, value being created inside of
+[11:39] the big range. This is exactly what
+[11:40] happened. We had a very strong momentum
+[11:43] down, a lot of volume here, small failed
+[11:46] auction above here, absorbed buyers on
+[11:48] top right over here. I can already see
+[11:49] it from the candles, but if you see it
+[11:51] right here, there was a very weird
+[11:53] exhaustion movement from buyers where
+[11:54] they tried to buy up, but they got
+[11:56] completely rejected. So, how I frame
+[11:58] these type of entries is I take my
+[12:00] volume profile from the top to the last
+[12:02] of the range, and whenever I see on this
+[12:04] short-term bearish value area, I want to
+[12:06] see a breakout of this level. And when I
+[12:08] saw it, I think it was right over here.
+[12:10] Yes, that's exactly when I saw this
+[12:11] breakout on the test, I think I've
+[12:13] executed my sell trade, and I've exited
+[12:15] and took took my target after this big
+[12:18] bearish leg of price. So, basically took
+[12:22] this movement, very short-term. I could
+[12:24] have honestly taken another short trade
+[12:26] over here, and it would have been a
+[12:27] pretty successful trade, but I was
+[12:29] pretty much done for the day. Three
+[12:31] trades, perfectly executed, no need to
+[12:33] force the hand anymore. I just got the
+[12:35] out of the market, but ultimately,
+[12:37] we reached the final target, which was
+[12:39] the other side of the previous day value
+[12:41] area. So, to summarize, we had a range,
+[12:43] the first idea was aggressive sellers
+[12:45] absorbed, buyers taking control, let's
+[12:47] head to the other side of our range
+[12:49] because that's where most money's being
+[12:51] traded. Secondly, buyers being absorbed
+[12:53] at the top, same thing, let's sell until
+[12:55] the other side of the range, more or
+[12:56] less, and then let's wait for a strong
+[12:58] breakout where a clear auction is
+[13:00] unfolding, and wait for a breakout of
+[13:02] this area to go to the other side of our
+[13:04] main value area, which would be our
+[13:06] value area low. So, two setups were
+[13:08] reversal trades, one setup was a
+[13:10] continuation trade, but always following
+[13:12] the money, always following order flow,
+[13:15] and reading the auction in real time
+[13:17] without any preconception, without any
+[13:18] bias, just objectively looking at where
+[13:21] the party's going, and where the money
+[13:24] is telling me it's going. I just simply
+[13:26] join the party. They show me the
+[13:28] invitation. So, don't need to force
+[13:29] trades. I don't need to guess. Whenever
+[13:31] they show me the invitation, I join or I
+[13:34] choose to not join. I hope this video
+[13:35] give you some value. Let me know in the
+[13:36] comments if you want to see more of this
+[13:38] trade breakdown videos. I'll keep you
+[13:40] posted on how my real account is going.
+[13:42] So, subscribe to the channel and I'll
+[13:43] see you in the next one. Ciao.

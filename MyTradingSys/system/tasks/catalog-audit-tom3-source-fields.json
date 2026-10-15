@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T21:28:32Z",
   "commands": [],
   "created": "2026-10-15T19:07:19Z",
   "depends_on": [],
@@ -18,12 +19,12 @@
   "refs": [
     "MyTradingSys/research/layer_lab/gpt-catalog-notstated-audit/CATALOG_AUDIT.md"
   ],
-  "result": "",
+  "result": "Fixed in SETUP_CATALOG.md (catalogue-p1-p2, 2026-10-16): TOM-3 target = last week's POC + smart-support zone (6,768 set as target, yRvMW6lgN1o quotes Y1/Y6/Y3/Y2); stop = not above the high, at the largest footprint volumes, exact price still NOT STATED. Quote gate PASS.",
   "scope_in": [],
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "done",
   "steps": [],
   "tests": "",
   "title": "Catalog audit H1: restore TOM-3 sourced target and qualified stop guidance; see CATALOG_AUDIT finding H1"
