@@ -235,6 +235,101 @@ def make_fabio_v3_layer(grid=None, decisions=None, fixed=None, run_fn=None, flow
     return _layer
 
 
+# ---- Weekly-low bounce SHADOW emitter (task wlow-bounce-shadow-emitter) --------------------------------------------
+# OBSERVATION ONLY. Setup is UNVALIDATED (research/wlow_bounce_bbrsi60_2026-10-16/RESULT.md: INCONCLUSIVE, n=8 on DEV).
+# Every event is collection_only, carries shadow_side and NO "side"; no layer_rules / size_overrides / promoted_setups /
+# pre_pipeline_sources entry exists, so auto_trader.layer_signal rejects it (no plan_args). Forward readings (OI, CVD,
+# net delta) are appended to a git-ignored jsonl so a forward sample builds.
+WLOW_PARAMS_ID = "wlow_bounce_bbrsi60_2026-10-16"
+WLOW_EVENT = "wlow_bounce_bbrsi60_active"
+WLOW_LOG_DEFAULT = "MyTradingSys/runtime/wlow_bounce_forward.jsonl"
+WLOW_MIN_BARS = 169   # at least one full week + 1 bar (the weekly low needs a complete prior ISO week); the runner's 100-bar window is too short
+
+
+def _wlow_default_fetch():
+    from MyTradingSys.backtest.layers.wlow_bounce import status as S
+    return S.fetch_candles(limit=500)
+
+
+def _wlow_default_oi(k):
+    from MyTradingSys.backtest.layers.wlow_bounce import status as S
+    return S.fetch_oi(k)
+
+
+def make_wlow_bounce_layer(fetch_candles=None, fetch_oi=None, log_path=WLOW_LOG_DEFAULT, params=None):
+    """Layer function fn(bars) -> events. Candles come from its own fetch (injectable; default = public USD-M 1h klines,
+    closed bars only) because the weekly low needs >100 bars. Any fetch/compute error -> [] (logged to stderr), never raises.
+    ARMED/ACTIVE readings are appended once per (bar, state) to `log_path`; only a NEW ACTIVE trigger on the last bar is an event."""
+    from MyTradingSys.backtest.layers.wlow_bounce import detector as D
+    logged = set()
+    P = params or D.PARAMS
+
+    def _err(msg):
+        print(json.dumps({"key": "wlow_bounce", "error": msg}), file=sys.stderr, flush=True)
+
+    def _log_row(row):
+        if not log_path:
+            return
+        key = (row.get("asof_bar"), row.get("state"))
+        if key in logged:
+            return
+        logged.add(key)
+        try:
+            pth = pathlib.Path(log_path)
+            if pth.exists():  # restart: do not repeat a row already written for this (bar, state)
+                with open(pth, "r", encoding="utf-8") as f:
+                    for line in f.readlines()[-20:]:
+                        try:
+                            r = json.loads(line)
+                        except ValueError:
+                            continue
+                        if (r.get("asof_bar"), r.get("state")) == key:
+                            return
+            pth.parent.mkdir(parents=True, exist_ok=True)
+            with open(pth, "a", encoding="utf-8", newline="\n") as f:
+                f.write(json.dumps(row, sort_keys=True) + "\n")
+        except Exception as exc:  # noqa: BLE001 - observation logging must never stop the runner
+            _err("wlow_log: %s" % exc)
+
+    def _layer(bars):
+        try:
+            candles = (fetch_candles or _wlow_default_fetch)()
+            if not candles or len(candles) < WLOW_MIN_BARS:
+                _err("wlow_too_few_bars")
+                return []
+            if any(c.get("tbv") is None for c in candles):
+                _err("wlow_no_tbv")
+                return []
+            st = D.status_now(candles, P)
+            if st["state"] not in ("ARMED", "ACTIVE"):
+                return []
+            e, i, K = st["event"], len(candles) - 1, P["K"]
+            bb, rsi = D.indicators(candles, P)
+            try:
+                oi_now, oi_chg = (fetch_oi or _wlow_default_oi)(K)
+            except Exception:  # noqa: BLE001 - OI is a live-tracking field; None when unavailable
+                oi_now = oi_chg = None
+            gap = ((candles[i]["c"] / bb[i] - 1) * 100) if bb[i] else None
+            row = {"asof_bar": candles[i]["t"], "state": st["state"], "phase": e["status"], "close": candles[i]["c"],
+                   "rsi14": rsi[i], "gap_to_upper_pct": gap, "prior_weekly_low": e["W"],
+                   "break_bar": candles[e["start"]]["t"], "net_delta_last_K": D.delta_sum(candles, i - K + 1, i),
+                   "episode_cvd": D.delta_sum(candles, e["start"], i), "oi_now": oi_now,
+                   "oi_change_last_K_h": oi_chg, "collection_only": True}
+            _log_row(row)
+            if st["state"] != "ACTIVE" or e["trigger"] != i:
+                return []
+            return [{"t": candles[i]["t"], "event": WLOW_EVENT, "collection_only": True, "shadow_side": "long",
+                     "prior_weekly_low": e["W"], "rsi14": rsi[i], "gap_to_upper_pct": gap,
+                     "net_delta_hold": D.delta_sum(candles, i - K + 1, i),
+                     "episode_cvd": D.delta_sum(candles, e["start"], e["trigger"]),
+                     "oi_now": oi_now, "oi_change_last_K_h": oi_chg}]
+        except Exception as exc:  # noqa: BLE001 - fail closed: no event, runner keeps running
+            _err("wlow_error: %s" % exc)
+            return []
+
+    return _layer
+
+
 def build_default_registry(fetch_funding=None) -> dict:
     """
     Builds and returns a registry for two registered layers: RSI and FABIO CVD.
@@ -307,6 +402,9 @@ def build_default_registry(fetch_funding=None) -> dict:
     # Fabio v3: one key, all grid cells inside (a SHADOW cell is collection-only, see FABIO_V3_DECISIONS)
     entries.append({"layer": "fabio", "sub": "v3_grid", "tf": "1m", "fn": make_fabio_v3_layer(),
                     "params_id": FABIO_V3_PARAMS_ID, "confirm_lag_bars": 0})
+    # Weekly-low bounce: collection-only shadow (never a side, never promoted)
+    entries.append({"layer": "wlow_bounce", "sub": "bbrsi60", "tf": "1h", "fn": make_wlow_bounce_layer(),
+                    "params_id": WLOW_PARAMS_ID, "confirm_lag_bars": 0})
     
     # Import here to avoid circular dependency
     from MyTradingSys.backtest.layers.alerts.live_runner_core import build_registry

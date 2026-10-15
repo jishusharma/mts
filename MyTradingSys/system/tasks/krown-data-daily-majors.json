@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T21:31:17Z",
   "commands": [
     "python MyTradingSys/backtest/test_fetch_binance_archive.py   (new: the default futures URL is unchanged after adding --market and --symbol)",
     "python MyTradingSys/backtest/fetch_binance_archive.py --market spot --symbol BTCUSDT --datasets klines --interval 1d --start 2017-08-17 --end 2026-09-30",
@@ -28,7 +29,7 @@
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
     "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md"
   ],
-  "result": "",
+  "result": "Result: BTCUSDT spot 1d (3332 bars 2017-08-17..2026-09-30, 0 gaps) and 1w (456 published, 8 gap weeks in Binance's own file; 475 weeks built from daily, 352/352 DEV weeks identical to published), ETH/BNB/SOL 1d, Coinbase BTC-USD 1d (4106 bars 2015-07-20..2026-10-15) fetched to F:/MTS/data/krown_daily; 508 monthly zips matched their published SHA256; DATA_MANIFEST.csv + DATA_COVERAGE.md committed, data not in git. Dedicated fetch script instead of editing fetch_binance_archive.py (OURS).",
   "scope_in": [
     "MyTradingSys/research/krown_ta101_2026-10-13/",
     "MyTradingSys/backtest/fetch_binance_archive.py (add --market spot, default futures, default output unchanged)"
@@ -39,7 +40,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "blocked",
+  "state": "done",
   "steps": [
     "add --market spot and --symbol to fetch_binance_archive.py (defaults unchanged: futures, BTCUSDT) with a test that the default URL is byte-identical",
     "run the commands for BTC, ETH, BNB, SOL (spot 1d from the listing date); build weekly bars; fetch Coinbase BTC-USD daily candles in pages",
