@@ -260,14 +260,16 @@ def lab_spend(rows, since):
 
 def windows(rl, now):
     """(5-hour used %, its start epoch, its reset epoch, week used %, week start, week reset) from an allowance reading.
-    A window whose reset time has passed counts as empty and starts at that reset. No reading: nothing used, window = the last 5 h / 7 d."""
+    A window whose reset time has passed counts as empty and starts at that reset, but never earlier than one window length ago: a stale
+    reading (no Codex session wrote a newer one) must not pin the window to its old reset, or every run since then counts as "this window"
+    and the guard blocks the runs that would refresh the reading (JIS-NUC 2026-10-15: 7/4 runs, idle 14 h). No reading: nothing used, window = the last 5 h / 7 d."""
     res = []
     for key, span in (("primary", WINDOW_S), ("secondary", WEEK_S)):
         w = (rl or {}).get(key) or {}
         end = w.get("resets_at") or 0
         if end > now:
             res += [w.get("used_percent") or 0, end - span, end]
-        elif end:
+        elif end > now - span:
             res += [0, end, end + span]
         else:
             res += [0, now - span, now + span]
