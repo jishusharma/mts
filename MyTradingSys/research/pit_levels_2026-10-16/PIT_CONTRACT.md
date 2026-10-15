@@ -14,12 +14,12 @@ One row per level instance, written when it becomes available, never edited (a c
 | price, zone_lo, zone_hi | float | a line (zone_lo = zone_hi) or a zone; USDT |
 | formed_at | ms | open time of the last bar whose data the level uses |
 | available_at | ms | first decision time at which it may be read = close of the confirming bar (fractal: close of i+n, FORMULAS 18.2; period levels: the period's end; developing profiles: each 15-min refresh, bars closed before the refresh) |
-| touch_history | list | (t, side, outcome_known_at) appended only after `outcome_known_at` <= the reading time |
-| age_bars | int | bars since available_at, at the reading time |
-| role | enum | support / resistance / flipped (set by the first close beyond, known at that close) |
-| invalidated_at | ms or null | first close beyond the level by more than 1 x ATR14 of the source_tf (OURS) |
+| touch_history | list | (t, side, outcome_known_at); readable once outcome_known_at <= reading time |
+| age_bars | int | bars since available_at at the reading time |
+| role | enum | support / resistance / flipped (first close beyond; known at that close) |
+| invalidated_at | ms or null | first close beyond the level by > 1 x ATR14 of source_tf (OURS) |
 | algo_version | str | builder file + git sha |
-Readers join on `available_at <= decision_time` only. A level that is later replaced by a newer pivot keeps its row (no repainting).
+Readers join on `available_at <= decision_time`. A replaced pivot keeps its row (no repainting).
 
 ## 2. OURS definitions (written once; rows that need them)
 Each definition says how it is computed from bars <= t and what a trader sees on the chart at t.
