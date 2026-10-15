@@ -818,3 +818,27 @@ Closed 2026-10-15: the 9 answers were copied and applied (Control Room pickup, J
  "answer": "jishu.sharma"
 }
 ```
+## q-pause-krown-detectors | asked 2026-10-15 | Research
+
+Pause the Krown detector queue (NEXT_SESSION Q65-Q69) until Krown setups pass G2 and G3?
+
+Recommended: Yes: park Q65-Q69 until G2-G3
+Answer: Yes: park Q65-Q69 until G2-G3 (decided by coordinator on operator's behalf 2026-10-15 per operator rule 'decide toward goals'; reopens when krown-g2 catalogue rows pass G3)
+Operator note (verbatim): (none: coordinator decision under the operator's standing rule)
+Applied: 2026-10-15 observer commit: NEXT_SESSION.md PARKED block; cards krown-data-daily-majors, krown-layer-v0-detectors, krown-recall-check on hold.
+Page db: not yet a doc; the next Control Room pickup creates it from the JSON below.
+
+```json
+{
+ "order": 22,
+ "stage": "Research",
+ "refs": "research/layer_rebuild_2026-10-15/LAYER_REBUILD_PLAN_2026-10-15.md s3",
+ "title": "Pause the Krown detector queue (NEXT_SESSION Q65-Q69) until Krown setups pass G2 and G3?",
+ "why": "The claude-side audit (research/layer_lab/reports/2026-10-15_claude-side-audit.md, question 2) asked whether to pause the Krown detector queue Q65-Q69. LAYER_REBUILD_PLAN_2026-10-15 s3 says no detectors or backtests before a setup passes G2 and G3; Krown is G1 with its G2 catalogue in progress (krown-g2).",
+ "options": [
+  "Yes: park Q65-Q69 until G2-G3",
+  "No: keep building Krown detectors now"
+ ],
+ "recommended": "Yes: park Q65-Q69 until G2-G3"
+}
+```

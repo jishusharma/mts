@@ -61,6 +61,13 @@ Rules learned from the first study: state the chart clock; compare CVD steps, ne
 no trade advice in an extract.
 Engine state at the shot (B160): `shot.py engine <id>` writes `research/screenshots/engine/<id>.json` (the engine's own snapshot rebuilt at the shot's minute from the 1m archive); a claim row about VWAP, VP, CVD or state cites that file instead of whatever snapshot is current. A read that names a setup also goes to `capture.py add --kind chart_read ... --image <shot id>` (invalidation required, six layers).
 
+### 4b PAIRED REVIEW (operator 2026-10-15: review runs side by side, different models, economical)
+Evidence: on set 7f3698134541 the serial Haiku review (run after the read) caught 5 WRONG + 1 UNSUPPORTED of 22 claims (`..._REVIEW.md`), which is worth keeping. Because it ran after the read, it added wall-clock, and it anchored on the draft.
+1. START TOGETHER: right after `classify` + `engine`, the reader (Sonnet) starts one Haiku subagent in the background (`run_in_background`). A spawned session cannot `start_session`, so a subagent is the route. That subagent is the BLIND reader. It gets the shot ids, image paths, `engine/<id>.json` and the 1m kline path, and never the reader's draft. It writes its own claim rows (`| id | class | claim | evidence |`) to `<set>_REVIEW.md` under `## Blind read`.
+2. RECONCILE: the reader diffs both claim lists. A claim only one side made, or any number that differs by more than the pixel error, is re-checked against raw data by the reader. Then the same subagent gets a second message to verify the reader's final rows. That message carries no new context, only the final extract. It records CONFIRMED / WRONG / UNSUPPORTED under `## Verdicts`.
+3. ONE SHIP: the extract and the REVIEW go in one `sync.py ship`. The verdict counts go on the commit's `Result:` line. A read counts as done only when `git cherry origin/fast-track <sha>` prints nothing. On 10-15 a read was reported "on fast-track" while its commit was local only.
+4. COST RULE: when 3 sets in a row get 0 WRONG, step 1 drops to a numbers-only check. When WRONG is above 15% for 3 sets, change the reading procedure (this file), not the reviewer.
+
 ## 5-6 REPORT AND CLOSE - the feedback loop
 | Claim class | Becomes | Owner group (PROJECT_MAP) |
 |---|---|---|

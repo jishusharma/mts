@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1792472898,
-  "week_used": 57.0,
-  "window_resets": 1792035216,
+  "week_resets": 1792677804,
+  "week_used": 0,
+  "window_resets": 1792091004,
   "window_used": 1.0
  },
- "at": "2026-10-14T23:06:27Z",
+ "at": "2026-10-15T14:32:13Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,19 +18,49 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 4.0,
+  "week_pts": 0.0,
   "window_pts": 1.0,
   "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-15T14:30:02Z",
+   "card": "gap-g4-through-ticks-flag",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 125,
+   "tokens_out": 7743,
+   "tokens_total": 982938,
+   "tokens_uncached": 61275,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": "2026-10-15T14:03:08Z",
+   "card": "gap-g4-through-ticks-flag",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 154,
+   "tokens_out": 9634,
+   "tokens_total": 1449330,
+   "tokens_uncached": 79568,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-14T23:00:02Z",
    "card": "lc-levels-hold",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": ": Layer tests: PASS\nStep 5c: Options tests: PASS\nStep 6: Backtest tests: SKIP\n======================================================================\nFAILED: 3 s",
+   "outcome": "SHIP_FAILED",
    "seconds": 378,
    "tokens_out": 24900,
    "tokens_total": 2732949,
@@ -142,36 +172,6 @@
    "tokens_uncached": 90856,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-13T21:00:02Z",
-   "card": "qriptal-score-binance",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 61,
-   "tokens_out": 3744,
-   "tokens_total": 473749,
-   "tokens_uncached": 48885,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-13T20:33:43Z",
-   "card": "qriptal-score-binance",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 50,
-   "tokens_out": 3324,
-   "tokens_total": 319756,
-   "tokens_uncached": 42000,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }

@@ -582,3 +582,9 @@ Cost: the other session's edits are in my commit; working tree unchanged, nothin
 What happened: Tom/Fabio backtests on BTC were run and tuned while the encoding did not fire on the trader's own ledger trades, levels were not checked against drawn levels, and the source's home market/timeframe was not the tested one (BACKTEST_FAILURES_RESEARCH.md classes C1, C2, C8).
 Rule that prevents it: no layer backtest starts until the 12-item readiness template (encoding fidelity: recall AND fire rate on a held-back check set; extraction from frames: ledger with minute timestamps; market/timeframe transfer: home-fit and cost per instrument) is answered with file:line evidence.
 Where the rule lives: MyTradingSys/backtest/PRE_REG_TEMPLATE.md; test_pre_reg_template.py; PROJECT_VISION DIRECTION UPDATE.
+
+## 2026-10-15 observer: red gate without an owner, colliding gate runs, an unshipped "shipped"
+- The card aibridge-live-selftest-flaky was filed 2026-10-14 (d140cbaa). For about 13 h no session owned it, while live-read, gpt-cards and malkan-extract each lost 11-minute ship runs to it.
+- At 13:47Z three `run_all_tests.py --quick` runs from different sessions ran at once on JIS-NB. The failing selftest reads a shared task directory, and a different sub-check failed each time.
+- live-read reported afaf3dae "on fast-track". The coordinator relayed that to the operator. In fact `git cherry origin/fast-track afaf3dae` printed "+".
+RULE: two sessions report the same red gate test, so the coordinator starts a Sonnet fixer within the hour. At most 2 `sync.py ship` / `run_all_tests.py` runs per machine at once. A "shipped" claim quotes an empty `git cherry origin/fast-track <sha>`.
