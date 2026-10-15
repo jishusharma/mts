@@ -13,7 +13,7 @@
     "rsi"
   ],
   "live_path": false,
-  "note": "operator 2026-10-15: \"Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.\" NO cookies, browser cookies, tokens, impersonation or third-party caption sites (LESSONS_DIGEST s6); this supersedes the cookie plan in desk_queue/20261012-085022-d11b-follow-up-claude-malkan-captions-42.json. Never open YouTube watch pages in the in-app browser. Part of LAYER_REBUILD_PLAN_2026-10-15 gate G0.",
+  "note": "operator 2026-10-15: \"Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.\" NO cookies, browser cookies, tokens, impersonation or third-party caption sites (LESSONS_DIGEST s6); this supersedes the cookie plan in desk_queue/20261012-085022-d11b-follow-up-claude-malkan-captions-42.json. Never open YouTube watch pages in the in-app browser. Part of LAYER_REBUILD_PLAN_2026-10-15 gate G0. 2026-10-15 12:18Z: HTTP 429 on the first request (hNfjyrJEytI, Krown); all 13 target ids PENDING_CAPTIONS: Malkan fgN6QBFY3Ss kVIvcn7T44o FHEoMmD6xKM TYB7GJODt-k WBByyLBp8-c; Krown hNfjyrJEytI fMRvOt26xcA LB3DRYxnA0A _JoJbu_Ug-A; Krown priority UHY740h3e-Y SOaAP9vBgM4 -9rAJNUpMsk EQy4HouRMMk (options list, not in the TA MANIFEST). Next step: retry once a day for 3 days, one request at a time, 60 s apart, no cookies; then NOT AVAILABLE. Channel list and shortlist: research/malkan_extract_2026-10-15/CHANNEL_LIST.md. Session stopped at its turn cap; no relay stop block, per the parent session.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
