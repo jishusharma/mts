@@ -32,7 +32,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `rv02-fix-dax-preprocessing-isolation` blocked p1 SONNET: RV02 R1: isolate DAX preprocessing and report metadata before holdout
   - `rv02-fix-dax-producer-data-binding` blocked p1 SONNET: RV02 R4: reject DAX snapshots made from different execution data
   - `rv02-fix-dax-rounded-rr-gate` blocked p1 SONNET: RV02 R2: preserve exact DAX net RR through the decision boundary
-  - `tom-btc-data-check` ready p1 DSA-NUC: Tom on BTC T1: check the footprint bars on JIS-NUC cover DEV + VALIDATION (2024-12..2025-06), list gaps
   - `tom-btc-event-study` ready p1 CODEX: Tom on BTC T4: event study - which Tom concepts separate winners on BTC (DEV only, fee-net, vs random same-win
   - `tom-btc-eye-read` ready p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
   - `tom-profile-shape-parity` blocked p1 CODEX: Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)
@@ -121,7 +120,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
-  - `malkan-captions-fetch-noauth` ready p2 HAIKU: Malkan: fetch the 5 blocked captions + up to 10 Hindi picks, no cookies, spaced retries; DONE when each id is 
+  - `malkan-captions-fetch-noauth` ready p2 HAIKU: Malkan: fetch captions for the 12 ranked-top videos only (video_priority_2026-10-15), no cookies, spaced retri
   - `malkan-extract-5star-7star` ready p2 SONNET: Malkan: extract the 7-star (A-CQiV_UFB4) and 5-star (W1HrDl70Lhk) transcripts already on disk; DONE when both 
   - `point-in-time-factor-design` raw p2 CODEX: Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-
   - `malkan-home-fit-audit` refined p4 SONNET: Home-fit audit of the Malkan RSI layer against the readiness checklist

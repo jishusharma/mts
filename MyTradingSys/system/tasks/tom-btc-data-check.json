@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T15:33:08Z",
   "commands": [
     "python -c \"from pathlib import Path; import datetime as d; p=Path(r'F:\\MTS\\data\\orderflow_1m'); s=d.date(2024,12,1); n=(d.date(2025,6,30)-s).days+1; days=[s+d.timedelta(i) for i in range(n)]; miss=[str(x) for x in days if not list(p.glob(str(x)+'*'))]; print(n-len(miss),'of',n,'days present; missing',len(miss),miss[:40])\""
   ],
@@ -20,7 +21,7 @@
   "refine_tries": 0,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
   "refs": [],
-  "result": "",
+  "result": "211 of 212 days present; missing 1 ['2024-12-01'] (F:\\MTS\\data\\orderflow_1m, JIS-NUC, read only)",
   "scope_in": [
     "F:\\MTS\\data\\orderflow_1m (read only)",
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4 (windows)"
@@ -35,7 +36,7 @@
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run the command on JIS-NUC.",
     "Paste the printed line into the card result with tasks.py done."
