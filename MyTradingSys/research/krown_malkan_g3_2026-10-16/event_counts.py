@@ -390,9 +390,20 @@ def write_md(rows, path):
       "Data: Binance spot daily files from `F:/MTS/data/krown_daily` (DATA_COVERAGE.md), cut to bars opened before 2024-07-01 (DEV) before any indicator was built.\n"
       "Reproduce: `python MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py --data F:/MTS/data/krown_daily --out MyTradingSys/research/krown_malkan_g3_2026-10-16` "
       "(full per-asset, per-year table: `event_counts.csv`).\n")
+    btc = {(r["row"], r["tf"]): r for r in rows if r["asset"] == "BTCUSDT"}
+    pooled = {(r["row"], r["tf"]): r for r in rows if r["asset"] == "POOLED4"}
+    name = lambda k: f"{k[0]} {k[1]}"
+    enough = [name(k) for k, r in btc.items() if verdict(r) == "ENOUGH"]
+    rescued = [f"{name(k)} ({fmt(pooled[k]['mde_net_r'], 2)}R)" for k, r in btc.items() if verdict(r) == "THIN" and verdict(pooled[k]) in ("ENOUGH", "MARGINAL")]
+    still = [name(k) for k, r in btc.items() if verdict(r) == "THIN" and verdict(pooled[k]) == "THIN"]
+    w("## Answer\n")
+    w(f"- **Enough events on BTC alone (MDE <= 0.30R net):** {', '.join(enough) or 'none'}.\n"
+      f"- **Too few on BTC alone but MARGINAL when pooled over BTC, ETH, BNB, SOL (MDE in brackets, assumes independent events, so optimistic):** {', '.join(rescued) or 'none'}.\n"
+      f"- **Too few even pooled (descriptive reading only, no G5 test):** {', '.join(still) or 'none'}.\n"
+      f"- No row can confirm a +{TARGET_NET_R:.2f}R net edge: that needs about {fmt(btc[('KR-S1', '1d')]['events_for_80pct_power'], 0)} independent events. The question G5 can answer is whether a large effect is present, not a small one.\n")
     w("## How to read it\n")
     w("- Every pre-filter is **OURS** (written down before any outcome was looked at); it is a cheap stand-in for the trader's chart reading, not the rule itself. "
-      "Where a leg of his rule cannot be computed from OHLC alone it is dropped and the count is an upper bound.\n"
+      "Where a leg of his rule cannot be computed from OHLC alone it is dropped, so the count is an order of magnitude, not a guaranteed upper bound.\n"
       f"- `n` = events after merging events closer than {MIN_SEP} bars on the same side (OURS; neighbours share one move). `bars` = DEV bars in the series.\n"
       "- Stop geometry is read from the event bar itself (never the future): stop % = distance from the planned entry to the stated stop reference; "
       f"cost in R = round trip taker fee {FEE_RT * 100:.2f}% / stop %. Fees are the Deribit taker rate (`fees.py:23`), both sides.\n"
@@ -432,8 +443,11 @@ def write_md(rows, path):
       "- MAL-2 and MAL-10 are small because the 'weekly and monthly RSI both above 60' gate is true in only a few bull stretches of BTC; "
       "the monthly RSI(14) also needs 14 closed months, so the gate is blank before late 2018.\n"
       "- Weekly rows hold under 40 events on BTC; they are descriptive only. The weekly stops are wide (see the stop column), which makes fees negligible but the sample tiny.\n"
-      "- No pre-filter here uses the 'with the trend' leg (KR-S1) or the 5-star timeframe pairing that is garbled in the transcript (MAL-2, MAL-5); "
-      "the counts are upper bounds on what the trader's full rule would flag.\n")
+      "- No pre-filter here uses the 'with the trend' leg (KR-S1) or the 5-star timeframe pairing that is garbled in the transcript (MAL-2, MAL-5), "
+      "so those counts are likely above what the trader's full rule would flag.\n"
+      "- KR-S8 weekly shows a median stop of 87% because a 10-week range on BTC is that wide: that row is not tradeable as written, whatever its count.\n"
+      "- MAL-2 and MAL-5 are two readings of the same sentence (RSI back at the sixty line while weekly and monthly are above 60); the support event is the "
+      "narrower one. The timeframe of that sixty line is NOT STATED in the transcript (see malkan_extract_2026-10-15/COMPARE.md s1.2).\n")
     Path(path).write_text("\n".join(L) + "\n", encoding="utf-8", newline="\n")
 
 
