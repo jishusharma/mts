@@ -605,6 +605,26 @@
   "MyTradingSys/research/malkan_extract_2026-10-15/tools/check_hindi.py": {
    "disp": "TOOL",
    "why": "Hindi quote gate for Malkan extracts (every 'Hindi original' line must occur in <id>_hi_raw.txt; verify_extract_quotes.py cannot read Devanagari); named in malkan_extract_2026-10-15/EXTRACT_TEMPLATE.md rule 12; run by hand per Hindi extract."
+  },
+  "MyTradingSys/research/video_priority_2026-10-15/fetch_meta.py": {
+   "disp": "TOOL",
+   "why": "Anonymous metadata-only fetch (playlists, per-video detail; 5 s spacing, no cookies) for the video priority method; run by hand, named in video_priority_2026-10-15/METHOD.md pipeline step 1 and 4."
+  },
+  "MyTradingSys/research/video_priority_2026-10-15/score.py": {
+   "disp": "TOOL",
+   "why": "Video priority scoring (every weight OURS) -> RANKED_MALKAN.csv; run by hand, named in video_priority_2026-10-15/METHOD.md (Rerun); krown_rank.py and sensitivity.py import it."
+  },
+  "MyTradingSys/research/video_priority_2026-10-15/krown_rank.py": {
+   "disp": "TOOL",
+   "why": "Orders the pending Krown caption ids -> RANKED_KROWN.csv; run by hand, named in video_priority_2026-10-15/METHOD.md (Krown, Rerun)."
+  },
+  "MyTradingSys/research/video_priority_2026-10-15/sensitivity.py": {
+   "disp": "TOOL",
+   "why": "Weight-perturbation check of the validation ranks (data/sensitivity.txt); run by hand, named in video_priority_2026-10-15/METHOD.md pipeline step 6."
+  },
+  "MyTradingSys/research/video_priority_2026-10-15/apply_selection.py": {
+   "disp": "TOOL",
+   "why": "One-shot: writes the selected ids into the Malkan caption card and the NOT SELECTED rows into transcript_inventory_2026-10-09.md; named in video_priority_2026-10-15/METHOD.md pipeline step 5; already applied."
   }
  }
 }
