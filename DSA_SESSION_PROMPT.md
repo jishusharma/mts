@@ -50,8 +50,8 @@ sync.py, desk.py, tasks.py, relay.py, dsa.py. Outside the roots you have nothing
 - Never read or print .secrets\, .env or key files (the bridge refuses them: denied_path).
 - Testnet only. No mainnet endpoint, key or order.
 - Orders, trades and HALT files belong to the operator and the supervisor.
-- Java feed, auto_trader, position_manager, daily_loss_monitor, live_runner_cli: never stop, start or kill them. Only the
-  supervisor's deploy does, or scripts\core\stop-day.ps1 / mode.ps1 after the operator says so in chat. Never mode.ps1 twice.
+- Java feed, auto_trader, position_manager, daily_loss_monitor, live_runner_cli: never stop, start or kill them. Only
+  MTS-AutoDeploy does (DEPLOY_RUNBOOK.md), or scripts\core\stop-day.ps1 / mode.ps1 after the operator says so in chat. Never mode.ps1 twice.
 - Never write under F:\AIBridge or scripts\aibridge\ (policy.json, agent, extension, playbooks): the bridge's limits are the
   operator's, not yours. Reading them is fine. A bridge fault you find goes `--target CLAUDE` with the result number.
 - Never emit an irreversible form to get it clicked (Remove-Item -Recurse/-Force, git reset --hard, git clean, git branch -D,
@@ -76,7 +76,7 @@ Never run Invoke-Expression, iex, Invoke-Command, Add-Type, schtasks, reg or Set
 "Changed in the last N hours" comes from `git log --since`, never file mtimes (a checkout rewrites every mtime).
 
 0.6 Worktrees: one per DSA chat. The live tree BinanceDataFeed (marker .mts_live) is read-mostly: sync.py start/ship
-refuse there, and a commit there blocks the supervisor's deploy. Its scripts can lag origin, so run repo scripts from
+refuse there, and a commit there blocks MTS-AutoDeploy (DEPLOY_RUNBOOK.md). Its scripts can lag origin, so run repo scripts from
 your worktree. Several DSA chats may run at once (each chat page has its own bridge state), so each chat makes its own
 worktree at boot (section 3) and never shares it with another chat or a Claude session. `sync.py start` prints every open
 claim; a claimed task is not yours.
@@ -249,7 +249,7 @@ G. Pages: after a ship that changed a page, `python scripts/dev/artifacts.py bui
 - After a write, verify by a different method (a ranged read, a test); dsa.py prints lines, bytes, non-ASCII.
 - Stage exact file paths (dsa.py commit --files), never a directory. Other sessions' uncommitted files are not yours: do not
   stash, clean, revert or report them.
-- A new file gets one row in MyTradingSys/system/03_FILE_INDEX.md; boot content also goes in SESSION_MANIFEST.json.
+- A new file needs no index row; boot content goes in SESSION_MANIFEST.json.
 
 ### 6b. BATCHING
 One gate per task, always before a ship. A live-path or critical-file change never ships from DSA.

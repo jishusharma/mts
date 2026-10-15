@@ -424,7 +424,9 @@ def claim(repo, task, area="-", gate=run_gate):
 
 
 # Fixed lanes other tooling points at (dispatcher prompts, codex lab, push recipe): `tidy --all` still keeps them.
-LANE_WORKTREES = ("mts-push", "mts-refiner", "mts-codex-lab", "mts-codex", "mts-dsa", "mts-relay")
+# mts-control-room is the working folder of the Claude routine mts-control-room (~/.claude/scheduled-tasks/mts-control-room/
+# SKILL.md); it sits idle between runs, so without this `tidy --all` would remove it as hand-named.
+LANE_WORKTREES = ("mts-push", "mts-refiner", "mts-codex-lab", "mts-codex", "mts-dsa", "mts-relay", "mts-control-room")
 
 
 TIDY_IDLE_HOURS = 24
@@ -452,17 +454,33 @@ def ignored_data(p):
     return [l[3:] for l in out if l.startswith("!! ") and not any(m in l for m in REGENERABLE) and holds_files(p, l[3:])]
 
 
+def last_reflog_stamp(f):
+    """Epoch of the last entry in reflog file `f` (`<old> <new> <name> <email> <epoch> <tz>\t<msg>`), or None. The file's
+    mtime is no sign of life: `git gc` (reflog expire) rewrites it without adding an entry."""
+    try:
+        lines = [l for l in Path(f).read_text(encoding="utf-8", errors="replace").splitlines() if l.strip()]
+    except OSError:
+        return None
+    m = re.search(r" (\d+) [+-]\d{4}$", lines[-1].split("\t", 1)[0]) if lines else None
+    return int(m.group(1)) if m else None
+
+
 def idle_hours(p, branch, now):
-    """Hours since the last sign of life: newest of the branch tip commit and the worktree's index/HEAD/log files."""
+    """Hours since the last sign of life: newest of the branch tip commit, the worktree's index/HEAD mtimes and the
+    time of the last entry in its logs/HEAD."""
     stamps = []
     r = git(p, "log", "-1", "--format=%ct", branch, check=False).stdout.strip()
     if r.isdigit():
         stamps.append(int(r))
     gd = git(p, "rev-parse", "--absolute-git-dir", check=False).stdout.strip()
-    for n in ("index", "HEAD", "logs/HEAD"):
-        f = Path(gd) / n if gd else None
-        if f is not None and f.exists():
-            stamps.append(f.stat().st_mtime)
+    if gd:
+        for n in ("index", "HEAD"):
+            f = Path(gd) / n
+            if f.exists():
+                stamps.append(f.stat().st_mtime)
+        last = last_reflog_stamp(Path(gd) / "logs" / "HEAD")
+        if last is not None:
+            stamps.append(last)
     return (now - max(stamps)) / 3600 if stamps else 0.0
 
 

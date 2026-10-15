@@ -14,8 +14,7 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 - Same-page check on any Claude login, and before ending a session: `python scripts/dev/sync.py where` (this tree plus trees holding unshipped work; `where --all` lists every tree); commit + ship what is yours. `sync.py health` lists collisions (PARALLEL.md).
 - Task cards (refinement stage: raw idea -> ready task, Definition of Ready, Backlog on the Control Room): `MyTradingSys/system/TASK_REFINEMENT.md`; `python scripts/dev/tasks.py next` before picking work, `tasks.py new` for follow-ups you find.
 - Writing tasks into NEXT_SESSION.md: RELAY.md "Task list standard" (curated, one session each, `DONE when:`); `relay.py handoff` refuses a list that fails `relay.py lint`.
-- Surface fallback (operator 2026-10-08): only if a task truly cannot run in the Claude Code Win App (e.g. needs a process this App cannot reach) create a CLI task file
-  `MyTradingSys/system/cli_tasks/<date>_<slug>.md` (exact commands, why forced, expected result) and say so in one line. Never stay silent.
+- Surface fallback (operator 2026-10-08): only if a task truly cannot run in the Claude Code Win App (e.g. needs a process this App cannot reach) file a card (lane JIS-NB) or a desk row with the exact commands, why forced and the expected result, and say so in one line. Never stay silent.
 - Archive backups/rejects with `python scripts/dev/declutter_backups.py --apply` (moves, never deletes).
 
 ## Layers
