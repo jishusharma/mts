@@ -686,3 +686,28 @@ Applied: (not yet)
  "recommended": "Test both: Binance and Coinbase daily volume"
 }
 ```
+
+## q-context-baseline | asked 2026-10-15 | Process
+
+Switch off the add-ons MTS sessions never use?
+
+Recommended: Yes, switch them off on all three logins
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet)
+
+```json
+{
+ "order": 17,
+ "stage": "Process",
+ "refs": "system/CONTEXT_BASELINE.md",
+ "title": "Switch off the add-ons MTS sessions never use?",
+ "why": "Every MTS session starts at about 65k tokens before reading a file (median of 160 Sonnet sessions, 7 days, JIS-NB). About 5.9k of that describes add-ons no MTS session used in those 7 days: computer use, Claude in Chrome, the Claude Docs and visualize connectors, and 9 file-format skills (docx, pptx, xlsx, pdf ...). Switched off, every turn of every session is about 9% lighter. Nothing is deleted and each one switches back on with the same click. The built-in browser stays (YouTube trader videos). Clicks: CONTEXT_BASELINE.md.",
+ "options": [
+  "Yes, switch them off on all three logins",
+  "Only computer use and Claude in Chrome",
+  "No, keep everything"
+ ],
+ "recommended": "Yes, switch them off on all three logins"
+}
+```
