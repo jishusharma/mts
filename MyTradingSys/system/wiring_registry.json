@@ -605,6 +605,26 @@
   "MyTradingSys/research/malkan_extract_2026-10-15/tools/check_hindi.py": {
    "disp": "TOOL",
    "why": "Hindi quote gate for Malkan extracts (every 'Hindi original' line must occur in <id>_hi_raw.txt; verify_extract_quotes.py cannot read Devanagari); named in malkan_extract_2026-10-15/EXTRACT_TEMPLATE.md rule 12; run by hand per Hindi extract."
+  },
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/apply_review_fixes.py": {
+   "disp": "REPRO",
+   "why": "Manual one-off: applies the 17 reviewer fixes to drafts/MAL-BB-RSI-4060.md (record of the 2026-10-15 review round); run by hand, no market data."
+  },
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/bb_mid_engulf_checks.py": {
+   "disp": "REPRO",
+   "why": "Manually reproduces bb_mid_engulf_checks_output.txt (5m BB/RSI legends, engulf and HTF checks from public Binance 1m klines) for drafts/MAL-BB-MID-ENGULF.md."
+  },
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/bb_rsi_4060_indicators.py": {
+   "disp": "REPRO",
+   "why": "Manually reproduces bb_rsi_4060_indicators_output.txt (BB(20,2), RSI14 legend recompute from public Binance 1m klines) for drafts/MAL-BB-RSI-4060.md."
+  },
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/count_rule_table.py": {
+   "disp": "REPRO",
+   "why": "Manually counts the SOURCED/OPERATOR/OURS/NOT FOUND labels of the MAL-BB-RSI-4060 rule table (reported counts 5/9/1/10); reads the draft only."
+  },
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/weekly_low_sweep_checks.py": {
+   "disp": "REPRO",
+   "why": "Manually reproduces weekly_low_sweep_checks_output.txt (weekly low, 80K sweep, reclaim, RSI, taker delta, OI checks from public Binance klines and the OI recorder) for drafts/OPR-WEEKLY-LOW-ROUND-SWEEP.md."
   }
  }
 }
