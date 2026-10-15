@@ -796,7 +796,12 @@ Recommended: jishu.sharma (the account with the GitHub identity)
 Answer: jishu.sharma (chat 2026-10-15)
 Operator note (verbatim): there is no 1 place for me to record decisons? i need all artifacts to be associated with the jishu.sharma a/c - it is the main a/c that has my GitHub.
 Operator 2026-10-15 (chat): do not wait for or copy answers still in the jishu.awgp db; seed from the repo only, ask later if something was missed.
-Applied: (pending) needs a session signed in as jishu.sharma (run it on the NUC, where that login is signed in); q1-one-control-room (jishu.awgp) is superseded once it is done.
+Applied: 2026-10-15 (JIS-NUC, session signed in as jishu.sharma@gmail.com): no move was needed. Artifact list on this login shows it already owns
+the Control Room Ep6gA5 (and the other pages the repo filed under jishu.awgp), and it cannot read EoHi2q: the repo had the two logins' names swapped.
+Ep6gA5 stays the one Control Room (a new page would split the Inbox again). Its db was seeded from the repo only: the 11 decisions and 1 Inbox item
+in OPERATOR_DECISIONS.md / OPERATOR_INBOX.md that it lacked were added; nothing was overwritten or deleted. Registry keys, CONTROL_ROOM.md,
+CLOUD_ACCOUNTS.md, HOW_MTS_RUNS.md, ACCOUNT_SYNC.md, INSTALL.md and mts-control-room.SKILL.md now name jishu.sharma. q1-one-control-room is superseded.
+Open: 9 answers sit in the db with no Answer line here (q-gap-a/b/c, q-pub-trend-holdout, q12, q13, q15, q16, q17): the next Control Room pickup (step 4) copies them.
 
 ```json
 {

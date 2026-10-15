@@ -37,7 +37,9 @@ class Registry(unittest.TestCase):
         text = "\n".join(af.plan(self.reg, "jishu.sharma"))
         self.assertIn("REPUBLISH    MTS Control Room", text)
         self.assertIn("RECORD URL   CBP Desk", text)
-        self.assertIn("NO COPY      Tom and Fabio", text)
+        # q21 (2026-10-15): the Inbox page Ep6gA5 belongs to jishu.sharma; Tom and Fabio has no copy on the other login
+        self.assertIn("MTS Control Room <- MyTradingSys/system/artifacts/mts_control_room.html  url=https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN", text)
+        self.assertIn("NO COPY      Tom and Fabio", "\n".join(af.plan(self.reg, "jishu.awgp")))
         self.assertNotIn("CBP Dashboard", text)
         r = copy.deepcopy(self.reg)
         r["pages"][0]["status"] = "retire"
