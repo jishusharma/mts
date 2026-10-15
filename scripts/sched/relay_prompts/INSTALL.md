@@ -20,3 +20,8 @@ It is the second line: `codex_run.py tick` on JIS-NUC already runs `lane_health.
 ## Control Room inbox pickup
 `mts-control-room.SKILL.md` is not scheduled and the dispatcher no longer polls it. The Inbox db lives on the jishu.awgp page (CONTROL_ROOM.md); only a session signed in as that
 account can read it. Run it by hand from there, or give that host's dispatcher an inbox step on purpose (operator decision).
+
+## Model-free gate (2026-10-15)
+`scripts/sched/dispatch_gate.py` runs `relay.py tick` from Task Scheduler (`register_dispatch_gate.ps1`, task `MTS-DispatchGate`, every 10 min) and starts a
+headless Haiku relay session only on `TICK KICK`; NOOP costs no tokens. The App routine `mts-dispatcher` drops to cron `7 * * * *` (hourly fallback: refine, housekeep).
+Log `~/.claude/mts-dispatch-gate.log`. Register after ship: `powershell -File scripts\sched\register_dispatch_gate.ps1 -Repo <live tree> -Trigger`.
