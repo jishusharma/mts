@@ -1,6 +1,7 @@
 """sync.py: two clones of one origin ship to fast-track without losing each other's work."""
 import contextlib
 import io
+import os
 import shutil
 import subprocess
 import sys
@@ -416,6 +417,26 @@ class SyncTest(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 48 * 3600), [])
         self.assertTrue(app.exists())
+
+    def test_idle_clock_reads_the_last_reflog_entry_not_the_reflog_file_mtime(self):
+        # JIS-NB 2026-10-15: a `git gc` reflog expire rewrote logs/HEAD of 95 trees without adding entries, and tidy
+        # called trees idle 32-140 h "active 5.3 h". The last entry inside logs/HEAD is the sign of life, not its mtime.
+        base = self.tmp.resolve()
+        app = self.make_tree(base / ".claude" / "worktrees" / "idle-gc-touched", "claude/idle-gc-touched")
+        later = time.time() + 48 * 3600
+        gd = Path(subprocess.run(["git", "-C", str(app), "rev-parse", "--absolute-git-dir"],
+                                 capture_output=True, text=True).stdout.strip())
+        self.assertTrue((gd / "logs" / "HEAD").read_text().strip())  # last entry stamped now, i.e. 48 h before `later`
+        os.utime(gd / "logs" / "HEAD", (later, later))  # gc rewrote the file at `later`
+        self.assertAlmostEqual(sync.idle_hours(app, "claude/idle-gc-touched", later), 48, delta=0.5)
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, now=later), [str(app)])
+
+    def test_tidy_all_keeps_the_mts_control_room_routine_folder(self):
+        lane = self.make_tree(self.tmp.resolve() / "mts-control-room", "jisnb/control-room")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, include_named=True, now=time.time() + 48 * 3600), [])
+        self.assertTrue(lane.exists())
 
     def test_tidy_does_not_count_noise_or_empty_ignored_dirs_as_work(self):
         (self.a / ".gitignore").write_text("Dumps/*\n.claude/settings.local.json\n", newline="\n")
