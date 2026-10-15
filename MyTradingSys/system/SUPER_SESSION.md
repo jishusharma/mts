@@ -39,6 +39,36 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 5. **Second coordinator for the tail.** When the coordinator passes ~300 turns or the operator is about to restart, it hands the
    drain (ship queue, archive, hand-over note) to a fresh Sonnet coordinator instead of compacting again.
 6. **No disk or process scans in loops** (Defender finding 2026-10-15): size a folder once with a timeout; never kill processes.
+7. **Learning loop (operator 2026-10-16).** Each super session reads Boot facts below INSTEAD of looking them up, and before it
+   ends: (a) adds every fact it had to look up and corrects any that were wrong, (b) adds one line to the Session log, (c) prunes.
+   Keep Boot facts under ~25 lines and the log to the last 5 sessions (older lines go to the session's own report). The measure
+   is boot cost: turns and tokens spent before the first worker starts; each session should beat the last.
+8. **Agent workers (2026-10-16).** Briefs ask for: ship once then stop (a second `sync.py ship` only re-wakes the coordinator),
+   the proof that new tests fail on the old code (run them against `git show <sha>^:<file>` copies), a final reply of at most
+   N lines, long notes in the shared notes folder. Tasks touching the same file run one after the other; others run in parallel.
+
+## Boot facts (read, do not re-look-up; every super session corrects this list)
+- Live tree = the main checkout `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed` (`.mts_live` there is a marker FILE, not a
+  folder). Read-only for sessions. Deploy result: `MyTradingSys/runtime/sched/auto_deploy_last.json`; HALT file:
+  `MyTradingSys/execution/HALT` (+ `halt_history`); dirty files: `git -C <live> status --short --untracked-files=no`.
+- Live state in one read: `live_mirror.py brief` (LIVE_MIRROR.md) + `scripts/sched/check_live_health.py`; ledger =
+  `runtime_data` trade_ledger.jsonl in the live tree. A Sonnet read-only worker does this in ~15 tool calls.
+- A coordinator started BY ANOTHER SESSION cannot `start_session` (the app refuses): workers are Agent subagents
+  (`run_in_background`, `isolation: worktree`, model sonnet/haiku), visible in the Tasks pane, not the sidebar. A coordinator the
+  operator opens directly can use `start_session` (sidebar sessions, cost about the same).
+- Waking: other sessions send no idle notices. Use ONE background shell watcher (`git fetch` every 5 min; exit on a file landing
+  on origin/fast-track or after 50 min), and on every wake `python scripts/sched/relay.py heartbeat "<id>" --note "<what>"`.
+- JIS-NB has no MTS-DispatchGate Windows task; the `mts-dispatcher` routine runs in the live tree, so relay/watchdog code only
+  takes effect after a deploy.
+- `tasks.py` has no host field: `lane` carries it (JIS-NB, CODEX, DSA-NUC, SONNET, HAIKU). Ready list: `tasks.py list | grep ready`.
+  Cards that change the live tree or scheduled tasks (nb-*) are operator-side.
+- Verify a worker ship: `git cherry origin/fast-track <sha>` prints nothing. CI state: `origin/green/fast-track` moved past it.
+- Usage: `get_usage` (ccd_session_mgmt) once per wake; NUC/Fable sessions share the same Max weekly meter.
+
+## Session log (newest first; one line each, last 5)
+- 2026-10-16 super-2 (JIS-NB, Opus coordinator, Agent workers): boot ~25 tool turns, ~10 of them lookups now in Boot facts
+  (live tree path, start_session refusal, deploy/HALT state, wake mechanism). 16 workers, weekly +6 by 20:35Z. Learned: coordinator
+  wakes dominate cost; three double-ship wakes; one worker skipped the old-code test proof (rule 8).
 
 ## Start (operator: open a new session, model Opus, paste the prompt below)
 The coordinator, on its first turn: `get_usage` (stop if the Pacing state is THROTTLE), `python scripts/sched/relay.py stop
@@ -50,7 +80,8 @@ first: a stop starting `super-session` with a heartbeat missing, malformed or ol
 
 ## End
 Drain: every worker shipped (`git cherry` empty) or its partial work handed over in NEXT_SESSION.md; archive finished workers;
-`get_usage` written into the hand-over note; `python scripts/sched/relay.py resume`; one line to the operator.
+`get_usage` written into the hand-over note; refresh the operator's Research Map (`system/artifacts/research_map.html`, edit its DATA,
+republish to claude.ai/artifact/9nqpZeMeEehadoBoYopZU3 from the jishusharma1985 login); `python scripts/sched/relay.py resume`; one line to the operator.
 
 ## Pacing (when no super session runs) - state from the weekly meter
 `f` = fraction of the week elapsed since the last weekly reset, `U` = Weekly all-models % used.

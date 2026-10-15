@@ -5,8 +5,12 @@ File: MyTradingSys/execution/promoted_setups.json = {"version": 1, "entries": [{
 auto_trader uses: source = "layer:<layer>:<sub>:<tf>"). mode is "shadow" (alerts collected, never traded) or "testnet".
 
 Fail closed: a missing, unreadable or malformed registry means NO alert may trade (every alert is made collection-only).
-A well-formed empty registry changes nothing. A layer that is not in the registry keeps today's behaviour."""
+DEFAULT-DENY (fable H1, enforced in auto_trader): a source with no registry entry may trade only if it is on the explicit
+pre_pipeline_sources grandfather list in auto_trader_config.json; see decision_for_source. apply_promotion_gate below
+(live runner) only marks shadow entries."""
 import json
+import re
+from datetime import date
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[4]
@@ -49,6 +53,55 @@ def entry_for_source(source, entries):
     """Longest-prefix registry entry for a source, or None."""
     hits = [e for e in entries if source.startswith(e["setup_id"])]
     return max(hits, key=lambda e: len(e["setup_id"])) if hits else None
+
+
+def grandfather_error(grandfather):
+    """None when `grandfather` is a well-formed pre_pipeline_sources table {prefix: {reason, review_by}}, else a reason.
+    An empty table is well formed (nothing grandfathered). Pure."""
+    if not isinstance(grandfather, dict):
+        return "pre_pipeline_sources is not an object"
+    for prefix, v in grandfather.items():
+        if not isinstance(prefix, str) or not prefix.strip():
+            return "pre_pipeline_sources: empty or non-string prefix"
+        if not isinstance(v, dict):
+            return "pre_pipeline_sources[%s] is not an object" % prefix
+        if not isinstance(v.get("reason"), str) or not v["reason"].strip():
+            return "pre_pipeline_sources[%s]: reason missing" % prefix
+        rb = v.get("review_by")
+        if not isinstance(rb, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", rb):
+            return "pre_pipeline_sources[%s]: review_by must be YYYY-MM-DD" % prefix
+        try:
+            date.fromisoformat(rb)
+        except ValueError:
+            return "pre_pipeline_sources[%s]: review_by is not a date" % prefix
+    return None
+
+
+def decision_for_source(source, entries, grandfather):
+    """Pure default-deny lookup -> 'trade' | 'shadow' | 'unregistered' | 'registry_error'.
+    entries: load_registry() entries, or None when the registry could not be read; grandfather: pre_pipeline_sources.
+    A registry entry wins (shadow never trades, even for a grandfathered prefix; testnet trades). No entry: trades only
+    when the source starts with a grandfathered prefix, else 'unregistered'. entries None or a malformed grandfather
+    table -> 'registry_error' (callers reject everything)."""
+    if entries is None or grandfather_error(grandfather) is not None or not isinstance(source, str):
+        return "registry_error"
+    e = entry_for_source(source, entries)
+    if e is not None:
+        return "shadow" if e["mode"] == "shadow" else "trade"
+    return "trade" if any(source.startswith(p) for p in grandfather) else "unregistered"
+
+
+def size_entry(v, ceiling=10000):
+    """Shared size_overrides entry check (auto_trader.size_override and promote.has_testnet_flag): -> (size_usd,
+    max_loss_usd), or raises ValueError. size: int (not bool), 0 < size <= ceiling, a multiple of 10 (Deribit contract);
+    max_loss_usd: a positive finite number. Pure."""
+    size = v.get("size_usd") if isinstance(v, dict) else None
+    loss = v.get("max_loss_usd") if isinstance(v, dict) else None
+    if not (isinstance(size, int) and not isinstance(size, bool) and 0 < size <= ceiling and size % 10 == 0):
+        raise ValueError("size_usd %r" % (size,))
+    if not (isinstance(loss, (int, float)) and not isinstance(loss, bool) and loss > 0 and loss != float("inf")):
+        raise ValueError("max_loss_usd %r" % (loss,))
+    return size, loss
 
 
 def make_collection_only(alert, why):

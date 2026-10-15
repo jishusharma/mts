@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T20:43:41Z",
   "commands": [],
   "created": "2026-10-15T19:40:00Z",
   "depends_on": [],
@@ -17,7 +18,7 @@
   "refine_tries": 0,
   "refined_by": "fable-testnet-adversarial-review",
   "refs": [],
-  "result": "",
+  "result": "already on origin/fast-track as 8254ece6 (default-deny gate, grandfather list, registry_error fail-closed); tests test_auto_trader_promotion + test_registry_gate spot-checked",
   "scope_in": [
     "MyTradingSys/execution/auto_trader.py (layer_signal, tom_signal, load_config)",
     "MyTradingSys/execution/auto_trader_config.json (new key pre_pipeline_sources: {prefix: {reason, review_by}})",
@@ -34,7 +35,7 @@
     "MyTradingSys/research/fable_audit_2026-10-16/PROMOTION_REVIEW.md",
     "MyTradingSys/system/GO_LIVE_BAR.md line 1"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add registry.decision_for_source(source, entries, grandfather) -> trade | shadow | unregistered | registry_error (pure).",
     "auto_trader.layer_signal: load the registry each cycle (fail closed: error = reject all layer signals), reject 'unregistered (promotion pipeline)' unless the source matches a pre_pipeline_sources prefix; keep the existing collection_only reject.",

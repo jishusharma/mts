@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T20:53:31Z",
   "commands": [],
   "created": "2026-10-15T19:40:00Z",
   "depends_on": [],
@@ -17,7 +18,7 @@
   "refine_tries": 0,
   "refined_by": "fable-testnet-adversarial-review",
   "refs": [],
-  "result": "",
+  "result": "already shipped in 3c7dcf86 (origin/fast-track): ci_state gates the stale-green fallback; 54/54 test_auto_deploy pass; no new change",
   "scope_in": [
     "scripts/dev/auto_deploy.py (pick_branch, run)",
     "scripts/dev/test_auto_deploy.py",
@@ -33,7 +34,7 @@
     "MyTradingSys/research/fable_audit_2026-10-16/PROMOTION_REVIEW.md",
     "scripts/dev/auto_deploy.py:163-176"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "pick_branch(ops): before returning FALLBACK_BRANCH call ci_red_card.first_failing(ci_red_card.fetch_runs(repo)); a failing newest completed run -> return BRANCH and record reason FALLBACK_REFUSED_CI_RED in the result/state; runs None (gh missing/offline) or in progress -> today's fallback (CI slow, not red).",
     "Inject the run list through ops so tests need no gh.",
