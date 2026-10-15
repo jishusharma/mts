@@ -89,6 +89,9 @@ def main(argv=None):
         print("GATE NO_LAUNCHER", argv0)
         return 2
     relay = fetch_scripts(a.root)
+    w = subprocess.run([sys.executable, str(relay), "watchdog"], capture_output=True, text=True, encoding="utf-8", timeout=60)
+    if "RESUMED" in w.stdout:   # a dead super-session coordinator left the relay stopped; relay.py logged who/why/age
+        log(w.stdout.strip())
     r = subprocess.run([sys.executable, str(relay), "tick", "--root", a.root, "--peer-quiet-min", a.peer_quiet_min,
                         "--hourly-min", HOURLY_OFF], capture_output=True, text=True, encoding="utf-8", timeout=300)
     verdict, line = decide(r.stdout)
