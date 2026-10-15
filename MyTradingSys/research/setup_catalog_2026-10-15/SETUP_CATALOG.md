@@ -1,6 +1,7 @@
 # SETUP CATALOG: every trade setup Tom and Fabio describe, in plain chart terms (2026-10-15)
 
-Status: consolidation of what the repo already holds. No new extraction, no test design, no fees, no stop-size math, no
+Status: consolidation of what the repo already holds, extended 2026-10-15 by a line-by-line pass over the 26 never-extracted Tom
+transcripts (batch 1: 12 of 26 read, section 6.1a; the other 14 are still open). Before that pass: no new extraction, no test design, no fees, no stop-size math, no
 backtest, no VALIDATION/HOLDOUT read. Operator decision 2026-10-15: identify all bare setups first (what the naked eye sees on a
 BTC chart and how the trader applies it) before any further test design. This file is the base for: filling gaps from unread
 transcripts, blind eye-read marking on BTC charts by two readers, then stops/fees/code. Fable 5.1 audits it against raw
@@ -32,7 +33,7 @@ A day or session boundary on BTC (UTC day, a chosen "open") is OURS; where a set
 | id | setup (his name where he has one) | trader | what you see on the chart (one line) | stop stated in words | BTC visible | real trades |
 |---|---|---|---|---|---|---|
 | TOM-1 | Counter trade at the top of an unhealthy push ("no liquidity left"; imbalance fade) | Tom | a fast push from the open far above prior value, thin profile at its top, the push stalls and sellers show, short back to the volume below | Y | PARTIAL | 16 (10 ledger groups + T8 candidate + 5 ANG rows) |
-| TOM-2 | Counter trade in balance ("short trades up here and long trades down here") | Tom | sideways market, sell the top and buy the bottom of the balance, b-profile / lower balance as the proof | Y | YES | 0 (1 plan, ANG R24) |
+| TOM-2 | Counter trade in balance ("short trades up here and long trades down here") | Tom | sideways market, sell the top and buy the bottom of the balance, b-profile / lower balance as the proof | Y | YES | 1 (viT_, lost; + 1 plan, ANG R24) |
 | TOM-3 | Limit sell below the last volume step | Tom | trend flattening into a range, an inside day at the high, a resting sell order just below the last volume step of the profile | N | YES | 1 (ANG R13) |
 | TOM-4 | Trend continuation pullback | Tom | healthy trend with volume behind it, price pulls back to VWAP or a fair zone, buy with the trend, target the next high-volume area | N | YES | 0 |
 | TOM-5 | Pullback long into value after a buying tail | Tom | yesterday's profile has a buying tail, price came back into value and pulls back to the POC, buyers aggressive, long to value high / the ledge above | Y | YES | 3 (ANG R6, R7, R17) |
@@ -41,6 +42,8 @@ A day or session boundary on BTC (UTC day, a chosen "open") is OURS; where a set
 | TOM-8 | Gap close (incl. Monday gap pullback long) | Tom | the open is far outside the prior day with no news, a failed extension, range, liquidity returns, trade back into the gap / prior value | N | NO | 1 (TL T4) |
 | TOM-9 | Gap not closed: trade with the trend | Tom | the gap holds, prices are accepted (P shape), liquidity returns: trade in the gap direction | N | NO | 0 |
 | TOM-10 | Closing-auction gap reversal | Tom | a very strong close with a closing-auction extreme, next day opens back in the red: contrarian | N | NO | 0 |
+| TOM-11 | Cross-market lead: crude oil reacts first, index future follows | Tom | two charts: a level is hit in crude oil, crude reacts for seconds, the index future lags and is bought/sold early | N | NO | 0 |
+| TOM-12 | Break-in: price returns into the old balance after outside prices fail to hold | Tom | P or B outside the old value area with no volume base, then a fast return inside, enter the pullback with the move, target the start of the outside impulse | N | YES | 0 |
 | FAB-1 | Balance with CVD pressure, break on volume ("sell model day") | Fabio | flat balance while CVD runs hard one way, first candle where price follows the volume out of balance with big trades | N | PARTIAL | 1 (FL F2) |
 | FAB-2 | Absorbed push, rewarded effort ("punch to the wall") | Fabio | one side's aggression hits a wall (big delta, no price result), the other side's aggression moves price: trade with the side that gets the result | N | PARTIAL | 1 (FL F1) |
 | FAB-3 | Failed auction of one side, then aggression of the other at the level | Fabio | consolidation where one side was absorbed, then the other side aggresses at that level with big trades: enter with the aggressor | N | PARTIAL | 2 (FL F3c, F5) |
@@ -50,9 +53,10 @@ A day or session boundary on BTC (UTC day, a chosen "open") is OURS; where a set
 | FAB-7 | Heat-map liquidity: reload, protection wall, break and protect, book sweep | Fabio | resting order walls on the heat map get hit, absorb, reload; trade the reload or the break that is protected | N | NO | 0 (1 hypothetical, ANG R35) |
 | FAB-8 | Volume-defined fair value gap rejection | Fabio | the lowest-volume price inside the value area of a swing; price rejects there | N | YES | 0 |
 
-Counts: Tom 10 setups, 3 with a stop stated in words, BTC visible YES 6 / PARTIAL 1 / NO 3. Fabio 8 setups, 0 with an initial
+Counts: Tom 12 setups (10 + TOM-11, TOM-12 from the 2026-10-15 never-extracted pass, batch 1), 3 with a stop stated in words (unchanged: no
+new price or distance stop was found in batch 1), BTC visible YES 7 / PARTIAL 1 / NO 4. Fabio 8 setups, 0 with an initial
 stop stated in words (his management rules are stated; the initial stop is always "here" on the chart), BTC visible YES 2 /
-PARTIAL 5 / NO 1. Real trades: Tom 21 assigned + 1 unassigned (ANG R20) + 2 anti-examples; Fabio 17 FL entry rows assigned (F1, F2,
+PARTIAL 5 / NO 1. Real trades: Tom 22 assigned (21 + viT_ lost counter trade in TOM-2) + 1 unassigned (ANG R20) + 2 anti-examples; Fabio 17 FL entry rows assigned (F1, F2,
 F3a-c, F4a-b, F5, F6-F14; F15 never filled), 2 unassigned trade groups (ANG R31, R33).
 
 ## 1. Duplicate map (one setup, many file names)
@@ -69,6 +73,8 @@ F3a-c, F4a-b, F5, F6-F14; F15 never filled), 2 unassigned trade groups (ANG R31,
 | TOM-8 | V2 family C "gap-close pullback long"; TL `gap pullback`, `breakout_pullback_teaching` (T9 = alias of T4); ANG R12 "gap + P profile + pullback buy signal"; GAP G05, G09, G14, G15 |
 | TOM-9 | GAP G06 (accepted prices = P), G11, G16 |
 | TOM-10 | GAP G23 |
+| TOM-11 | none before 2026-10-15 (YYYuaetck_0, never extracted) |
+| TOM-12 | TOM-6 "breakin" (undefined there); V2 A3 "P that fails back inside"; PBD "break-in" (m3IM, jXR1, gFJB, Ly62) |
 | FAB-1 | FTM s1 "the trade (both videos teach the same one)"; V3 S1+S2+S5 and model A trigger; FR-10, FR-11; FL `balance_distribution_breakout_short`; ANG R26-R27 "CVD distribution + big trades + price follow-through", "continuation in redistribution phase; sell model day" |
 | FAB-2 | FTM s1 step 3 "punch to the wall"; FR-16, FR-20, FR-22; FL F1 `balance_failed_auction_punch_to_wall`; ANG R28, R29; V3 S3 ABSORBED/CONTROL |
 | FAB-3 | V3 model D "failed-auction breakout" (S5D); LBL T2 and M4; FR-19, FR-86, FR-88; FL `failed_auction_reentry...`, `failed_auction_short_rewarded_effort...`; ANG R32, R34 |
@@ -206,6 +212,22 @@ rules with a quote; whether they carry to his other setups is NOT STATED):
 **Source GPS: OUM9LYwL8eA | END**
 
 4. **Context he requires.** A push without volume under it and without a fundamental story: "especially if there's no fundamental sustainable story" (l8RZrBfzvp4:87-89); other markets not confirming: "if for example fundamental news had led to one market being extremely strong and the other not then that's a different story" (T6hDJcHrVBM:291-294). Many proofs against the trend: "If you make trades against the trend, then you need many, many parameters that speak in your favor" (zQTbdEweG3c:23-26); no count given. Session: DAX pre-market and cash open, "the market phase where the highest liquidity is present between 8:30, 9:00 and 17:35" (T6hDJcHrVBM:94-97); pre-market with less size. Do NOT fade when volume builds above: "if the market were to accumulate large volumes there then yes I would definitely be looking for a long position" (k0zm5NYn0IQ:357-360); not on a true breakaway gap: "we're not at the all-time high and didn't gap out of a range" (zQTbdEweG3c:87-89). Direction is set for the day in advance: "The direction you want to take for the day must be predefined and that can change if the context breaks" (ujedEcmvBMk:277-279).
+   - Added 2026-10-15 from never-extracted videos (batch 1, section 6.1a), context filter and proof wording (VOiy8mAALWA): the value centres (VPOCs) decide whether counter trades are allowed.
+
+> "if they shift upward overlapping each other stop doing counter trades"
+**Source GPS: VOiy8mAALWA | MIDDLE**
+
+> "after two higher and two lower Vpo following a balance phase, I shouldn't be taking counter trades anymore"
+**Source GPS: VOiy8mAALWA | END**
+
+> "And during such trend phases, you should never use counter trading mechanics for yourself."
+**Source GPS: VOiy8mAALWA | MIDDLE**
+
+> "But of course, even better are counterrading setups in terms of volume, in terms of being able to see in the footprint chart that liquidity is gone. I have a finished auction or something similar."
+**Source GPS: VOiy8mAALWA | END**
+
+   His test for "real" flow: is the shift accompanied by genuine volume at the higher prices, or does the bulk of the money still sit lower (footprint). The count "two" is his (VOiy), "two higher" read as VPOC shifts day over day; whether it carries to BTC UTC days is OURS. This tightens the "healthy vs unhealthy" gap below (item 7) from volume-under-the-move to value-centre shift; both are his.
+
 5. **BTC visibility: PARTIAL.**
    | element | BTC |
    |---|---|
@@ -267,6 +289,31 @@ rules with a quote; whether they carry to his other setups is NOT STATED):
 **Source GPS: BVpYGKz9PBU | END**
 
 4. **Context.** Balance, not trend; continue "until either the big player here or the big players here decide that the market will continue" (STR s6.2A, BVpY). After a strong trend a balance is not yet a short: "That doesn't mean it's going short yet. It can just as easily continue long" (zQTbdEweG3c:110-111). Time of day, news: NOT STATED.
+   - Added 2026-10-15 from never-extracted videos (batch 1, section 6.1a), one taken trade that failed, with the exit rule in his words (viT_VzF5Fsw; DAX-type index, prepared levels = prior-day value area and a single-print rejection):
+
+> "I had booked a wonderful short trade and then held the position there. I was of the opinion that we could close the market opening and the gap from the previous day."
+**Source GPS: viT_VzF5Fsw | MIDDLE**
+
+> "I absolutely should have given up the position up here because we completely traded through and accepted this balance here."
+**Source GPS: viT_VzF5Fsw | MIDDLE**
+
+> "It's not a good idea to then continue to hold on to the counter trade."
+**Source GPS: viT_VzF5Fsw | MIDDLE**
+
+> "For me, point one, where I went short was initially just a target area, not a real entry area."
+**Source GPS: viT_VzF5Fsw | END**
+
+> "Secondly, the volume kept increasing, which means the acceptance of market participants kept going higher."
+**Source GPS: viT_VzF5Fsw | END**
+
+> "Thirdly, although the delta showed that a lot was being sold, the market continued to rise."
+**Source GPS: viT_VzF5Fsw | END**
+
+> "I decided that I would try to take the opposite position."
+**Source GPS: viT_VzF5Fsw | END**
+
+   Reading: the invalidation is a state, not a price: the market trades through the balance he sells and accepts it (volume rising at higher prices). It is a counter-trade exit (TOM-1/TOM-2 family), no distance or tick stop is given. After it he flips long (a break-in of acceptance, TOM-12). The sell zone was "a target area, not a real entry area": a level alone is not an entry. Assigned here (counter trade at prepared levels; target = gap close, so TOM-8 overlaps; TOM-1 overlaps as a counter to the trend). Open.
+
 5. **BTC visibility: YES.** Balance, VAH/VAL/POC, b-profile, lower balance, VWAP: computed from klines/aggTrades. Volume coming in: aggTrades.
 6. **Evidence.** 0 real trades. 1 plan (ANG R24, illustration). kXhI R5 is a possible instance (assigned to TOM-1, open).
 7. **Gaps and contradictions.**
@@ -339,6 +386,19 @@ rules with a quote; whether they carry to his other setups is NOT STATED):
 
    - Management: NOT STATED.
 4. **Context.** Trend, not balance ("in a sequence like this, you mustn't trade a trend continuation", 43JaKHRvxHk, TOM-7); VWAP must have a trend: "first rule, very important, the VWAP must be based on a trend" (43Ja BEGIN, STR s3). Time, news: NOT STATED.
+   - Added 2026-10-15 from never-extracted videos (batch 1, section 6.1a), the order he checks before any setup (ODdF0Bn_KSc), which says where trend continuation is allowed:
+
+> "That's step one. I determine whether the trend structure is healthy."
+**Source GPS: ODdF0Bn_KSc | BEGIN**
+
+> "And this setup needs to show us that actual buying is taking place."
+**Source GPS: ODdF0Bn_KSc | MIDDLE**
+
+> "So, you absolutely need to know which setups you're looking for and at which points."
+**Source GPS: ODdF0Bn_KSc | MIDDLE**
+
+   Three layers in his order: (1) trend structure on 15 min / 30 min / daily and the weekly profiles (is there "a foundation behind this trend"); (2) a support or resistance zone from old profiles (naked POC, value area, single-print zone); (3) the setup, which "needs to show us that actual buying is taking place". A pullback long into an upward weekly structure is his example; a breakout setup to the downside there "makes absolutely no sense". No stop, no target distance: NOT STATED. This is the same chain as TOM-5, which stays a separate row because TOM-5 has the stop wording.
+
 5. **BTC visibility: YES.** Trend, VWAP (anchor OURS), value areas, volume under the move, high-volume nodes.
 6. **Evidence.** 0 trades (TL and ANG have none tagged as this; TOM-5 trades are possible instances).
 7. **Gaps.** Stop location, entry trigger at the pullback: NOT STATED. Trend speeds (fast, normal, creeping; TOB s2.1) not in these quotes. OURS: engine `tc_long` at VWAP only, no `tc_short` (V2 s6).
@@ -400,6 +460,56 @@ rules with a quote; whether they carry to his other setups is NOT STATED):
 **Source GPS: 4MoNjEQ2Dd8 | MIDDLE**
 
 4. **Context.** Balance resolving or trend accelerating; overlap zones (YmygDgtoxO8, STR 6.3, not re-verified here). Time, news: NOT STATED.
+   - Added 2026-10-15 from never-extracted videos (batch 1, section 6.1a), where a breakout is allowed and what proof he wants (uk4PZV59nYw, gFJBg8Bsw68, uFxYcpiaOpw). He says the three basic trader types are breakout, trend following and counter trading (gFJB, paraphrase). Location and proof:
+
+> "whenever you trade breakouts, you need to have plenty of clear space to the left"
+**Source GPS: uk4PZV59nYw | MIDDLE**
+
+> "In addition to this, these breakouts should ideally be accompanied by the right kind of order flow."
+**Source GPS: uk4PZV59nYw | MIDDLE**
+
+> "we now have a strong candlestick followed by a brief pullback, and then another strong candlestick appears."
+**Source GPS: uk4PZV59nYw | END**
+
+> "It's complete nonsense to think that markets only make rapid moves at highs or lows."
+**Source GPS: gFJBg8Bsw68 | END**
+
+> "Market profilers would say it leaves a single print."
+**Source GPS: gFJBg8Bsw68 | MIDDLE**
+
+> "if it then moves above the absolute high above the value area you can assume that a breakout will occur there and then you can expect the market to accelerate sharply again"
+**Source GPS: gFJBg8Bsw68 | MIDDLE**
+
+> "I wait to see if a consolidation occurs, and only if a consolidation happens."
+**Source GPS: gFJBg8Bsw68 | BEGIN**
+
+> "We need a setup here that provides us with proof that the market is indeed strong."
+**Source GPS: uFxYcpiaOpw | MIDDLE**
+
+> "we see the market opening a single print here, which means aggressive buyers have entered the market."
+**Source GPS: uFxYcpiaOpw | MIDDLE**
+
+> "And there we can see, boom, and it gives us a wonderful P."
+**Source GPS: uFxYcpiaOpw | END**
+
+> "I have a breakout here with this higher closing price."
+**Source GPS: uFxYcpiaOpw | END**
+
+   Reading: the breakout is a chain, not a pattern: (a) the location (his words for the wrong place: a fresh low or high inside an "unfair" price range with volume still below, uk4P; the right place: clear space to the left, an unfinished auction, a single print, uk4P/gFJB), (b) a stronger-than-normal first bar ("strong candlestick, brief pullback, another strong candlestick", uk4P, on a footprint view), (c) a P (or B) on a fast chart (1-minute in the Nikkei example, uFxY) with a higher close, (d) order flow behind it (large volume pushed in dynamically, uk4P). After news he waits for a consolidation, then volume again, then the trend direction (gFJB, wording above). In uFxY he says this model "only works about once a day" and "only works in 30% of the market phases" (hit rate 80 to 90 %, his claim, not tested).
+
+   Exit and R:R in his words (uk4P): the breakout hit rate is high but the payoff is small, and he leaves when momentum reverses.
+
+> "with breakout setups, you often have risk reward ratios that are not greater than 1:1 or 1.5:1."
+**Source GPS: uk4PZV59nYw | END**
+
+> "you need to check whether the exact opposite of what aligns with your trend direction is actually happening there. If that's the case, you need to exit immediately."
+**Source GPS: uk4PZV59nYw | END**
+
+> "with breakout trading, defining your target is often not so easy because it frequently happens that the market quickly reacts in the opposite direction"
+**Source GPS: uk4PZV59nYw | END**
+
+   Still NOT STATED: breakout stop (price or distance), entry order type, speed threshold. The 1:1 to 1.5:1 R:R contradicts the "explosion" holding style of TOM-5/6 (4MoN): he says both, in different videos. Not resolved. Evidence: no trade is taken in uk4P, gFJB or uFxY (chart examples only), so the count stays 0.
+
 5. **BTC visibility: YES.** Balances, overlaps, ledges, VWAP shift, buying/selling speed (aggTrades).
 6. **Evidence.** 0 standalone trades; the 4MoN add (TOM-5) is the only taken instance.
 7. **Gaps.** Entry trigger, speed threshold, stop: NOT STATED. Never-extracted `uk4PZV59nYw` ("his EXACT breakout setup") and `gFJBg8Bsw68` ("BEST breakout strategy") are the obvious sources (section 6).
@@ -491,6 +601,109 @@ rules with a quote; whether they carry to his other setups is NOT STATED):
 5. **BTC visibility: NO** (no closing auction).
 6. **Evidence.** 0 trades.
 7. **Gaps.** All execution fields NOT STATED. One video.
+
+### TOM-11 Cross-market lead: crude oil reacts first, the index future follows
+1. **Name / trader.** Tom (YYYuaetck_0, "my trading style currently"). No name of his own; this catalog calls it a cross-market lead.
+2. **What you see.** Two charts at once: crude oil and an index future (S&P). In the high-volatility geopolitical phase of the video big money moves from risk-on stocks into commodities, so crude oil is the "pre-indicator". A technical level is reached in crude oil, crude reacts for seconds, the index future reacts a little later.
+
+> "And I know it is crude oil most of the time."
+**Source GPS: YYYuaetck_0 | MIDDLE**
+
+> "And this is the way that I use informations for me that I have a lot of seconds reactions before in crude oil and after it in index futures."
+**Source GPS: YYYuaetck_0 | MIDDLE**
+
+> "Please use two charts, and use if you are looking for long trades, look is here a level with short reaction."
+**Source GPS: YYYuaetck_0 | END**
+
+3. **Entry, stop, target, management (his words).**
+   - Entry: not in the crude oil but in the index future, a few seconds after the crude oil reaction, before the breakout of the index. Long example: a small technical pullback in the index while crude oil sells for about 30 seconds.
+
+> "I use it here to make my long trade. And I'm going long earlier than the breakout is coming."
+**Source GPS: YYYuaetck_0 | END**
+
+> "You can put your position inside of the index future. It will be a little bit lagging behind the crude oil."
+**Source GPS: YYYuaetck_0 | END**
+
+> "You can use it, I think, four to five times per day."
+**Source GPS: YYYuaetck_0 | END**
+
+   - Stop: NOT STATED. Target: "the last reference level" of the index (the quote below); a level he points at ("Here is my target"). Management: NOT STATED.
+
+> "I know now it's time to invest me long in this way into"
+**Source GPS: YYYuaetck_0 | END**
+
+> "And also I know opportunity is very high that we go over the last reference level with a long situation."
+**Source GPS: YYYuaetck_0 | END**
+
+4. **Context he requires.** The video is about one regime (war and oil, inflation up and growth down, capital moving into commodities); whether it works outside that regime is NOT STATED. Without the second chart the plain index breakout often fails:
+
+> "if you don't look also in other markets in this way, especially crude oil, often you have this opportunity"
+**Source GPS: YYYuaetck_0 | END**
+
+5. **BTC visibility: NO.** Crude oil and index futures are not on disk, and the lead is seconds. A BTC/ETH or BTC/perp version would be OURS (ETH is held, no crude, no index).
+6. **Evidence.** 0 trades with dates or prices; he shows a long and a "normal breakout" long in S&P as chart illustrations (not counted).
+7. **Gaps.** Stop, target level type, the size of the crude oil reaction that counts, how to tell "pullback" in the index: all NOT STATED. Single video, single regime.
+
+### TOM-12 Break-in: price returns into the old balance after outside prices fail to hold
+1. **Name / trader.** Tom, "break-in" (PBD logic). TOM-6 names it ("breakin or breakout") without a definition; these videos give one, so it is catalogued on its own. Merged files: TOM-6, TOM-1 path A3 (the P that fails back inside).
+2. **What you see.** Price accepted new prices outside the old balance (a P above, a B below) but with no volume foundation under them; then it falls back into the old value area with momentum. Participants who entered outside are now underwater and have to close; the move back through the old range is fast ("the best breakouts you can get").
+
+> "is there here a fundamental base in terms of volume or did the market rise very quickly here without any foundation"
+**Source GPS: gFJBg8Bsw68 | MIDDLE**
+
+> "And the moment it re-enters the value area here, very often strong momentum arises."
+**Source GPS: gFJBg8Bsw68 | BEGIN**
+
+> "the probability that it breaks in here that it breaks through the P and goes below the last value area is very high"
+**Source GPS: gFJBg8Bsw68 | MIDDLE**
+
+> "All these market participants here, they're no longer in a good position. Suddenly, they're underwater."
+**Source GPS: gFJBg8Bsw68 | MIDDLE**
+
+> "The market has traded, crossed over briefly, and we call that a break-in, and so it usually continues."
+**Source GPS: m3IMdc7QwN4 | MIDDLE**
+
+> "We call this a break-in."
+**Source GPS: jXR1afMy-3o | END**
+
+   PBD in his words (shared by TOM-6, -12): the structures are P (aggressive trend up), B (aggressive trend down), D (large balance); he counts closing prices, not highs and lows.
+
+> "By the way, the D's are nothing more than large balance phases. The P's are the aggressive trend phases upwards, and the B's are the aggressive trend phases downwards."
+**Source GPS: m3IMdc7QwN4 | END**
+
+> "The P's and the B's are both structures, setups that typically cause a market to accelerate."
+**Source GPS: jXR1afMy-3o | BEGIN**
+
+> "in the PBD concept, we don't use the absolute high and low points, but we always look at the closing prices and the market openings"
+**Source GPS: Ly62G168MkQ | BEGIN**
+
+3. **Entry, stop, target, management (his words).**
+   - Entry: the pullback after the move back inside.
+
+> "And look at what a great opportunity you have here. Pullback. And then the thing breaks downwards."
+**Source GPS: gFJBg8Bsw68 | MIDDLE**
+
+> "the market goes below the range and then back in. Yes, then the probability is initially high that it will go back up."
+**Source GPS: jXR1afMy-3o | END**
+
+   - Stop: NOT STATED. Target: the start of the impulse that formed the outside move, then the next fair price area.
+
+> "So, I know my next target is below the start of the impulse."
+**Source GPS: jXR1afMy-3o | END**
+
+> "We will, with high probability, run below the start of this movement."
+**Source GPS: m3IMdc7QwN4 | END**
+
+   - R:R and hit rate: break-in is the better payoff of the two kinds.
+
+> "And with both approaches, you can make money just as quickly, although the break-in scenarios usually have much higher riskreward ratios."
+**Source GPS: gFJBg8Bsw68 | END**
+
+   - Management: NOT STATED.
+4. **Context he requires.** The outside prices must lack a volume base (above), the old value area must still be the place of the weekly or daily profile. Trade direction is with the break-in (a B above the old range breaking back down, or a P below breaking back up); a failed break-in he reads as the market not accepting the outside prices.
+5. **BTC visibility: YES.** Old value area, P/B shapes, volume under the outside move, the speed of the return: klines and aggTrades.
+6. **Evidence.** 0 trades. Weekly-chart examples only (gFJB). The viT_ trade (TOM-2) ends with a long that is this idea (acceptance above, pullback, up), told after the fact (viT_VzF5Fsw, "By the way, I bought here.").
+7. **Gaps.** Stop, entry trigger beyond "pullback", how far inside the old range price must close (closing-price counting rule is "taught elsewhere", not in these videos), timeframe: NOT STATED. Overlap with TOM-1 path A3 and TOM-2 "lower balance after rejection": same family, listed separately because he names it a break-in and enters it WITH the move inside.
 
 ### Tom: unassigned and anti-examples
 - ANG R20 (wPMiyJXL0zU): ANG infers a short counter trade, but the target he names reads like a long: "In this case, for example, I take the value area high of the current day as my target area." (MIDDLE) followed by "the market can continue to rise" (context window, same passage). Side is unresolved; not assigned. Stated risk:
@@ -677,18 +890,18 @@ FABIO_TRADE_LEDGER.md:48 and :90.
 ### 6.1 Tom, never extracted (26)
 | id | title (inventory) | could fill |
 |---|---|---|
-| uk4PZV59nYw | The PERFECT trade entry: World Champion explains his EXACT breakout setup! | TOM-6 entry trigger, stop (rank 1 by risk/stop density) |
-| gFJBg8Bsw68 | Trading World Champion reveals the BEST breakout strategy in 2026! | TOM-6 trigger, speed, stop |
-| Kg6sYKgtkrY | The ONLY Trading Strategy you need for 2026 (PbD Method) | PBD definitions: P, b, D shapes used by TOM-1/2/8/9 (STR gap 3) |
-| jXR1afMy-3o | PbD: The World's BEST trading strategy (explained in detail) | same |
-| m3IMdc7QwN4 | PbD: The BEST trading strategy for times of crisis | same; TOM-1 in fast markets |
-| Ly62G168MkQ | The Simplest Day Trading Strategy for Beginners (PbD Method) | same; simple entry/stop rules |
-| ODdF0Bn_KSc | Perfect trade entry: Trading World Champion reveals exact strategy! | entry triggers for TOM-1/2/4 |
-| YYYuaetck_0 | The #1 Trading Strategy for the Current Market | unknown setup; rank 2 by density |
-| kKZCJui4S9U | THIS strategy puts you ahead of 99% of traders! | unknown; rank 3 |
-| viT_VzF5Fsw | THIS Trading Strategy Delivers MAXIMUM Win Rates NOW! | TOM-7 scalp stop/target |
-| uFxYcpiaOpw | My Simplest Trading Strategy (80-90% Win Rate) | TOM-7 or a high-hit-rate setup not catalogued |
-| VOiy8mAALWA | The #1 Trading Indicator for 2026 | proof items (volume/footprint) |
+| uk4PZV59nYw | The PERFECT trade entry: World Champion explains his EXACT breakout setup! | TOM-6 entry trigger, stop (rank 1 by risk/stop density) **(READ 2026-10-15, see 6.1a)** |
+| gFJBg8Bsw68 | Trading World Champion reveals the BEST breakout strategy in 2026! | TOM-6 trigger, speed, stop **(READ 2026-10-15, see 6.1a)** |
+| Kg6sYKgtkrY | The ONLY Trading Strategy you need for 2026 (PbD Method) | PBD definitions: P, b, D shapes used by TOM-1/2/8/9 (STR gap 3) **(READ 2026-10-15, see 6.1a)** |
+| jXR1afMy-3o | PbD: The World's BEST trading strategy (explained in detail) | same **(READ 2026-10-15, see 6.1a)** |
+| m3IMdc7QwN4 | PbD: The BEST trading strategy for times of crisis | same; TOM-1 in fast markets **(READ 2026-10-15, see 6.1a)** |
+| Ly62G168MkQ | The Simplest Day Trading Strategy for Beginners (PbD Method) | same; simple entry/stop rules **(READ 2026-10-15, see 6.1a)** |
+| ODdF0Bn_KSc | Perfect trade entry: Trading World Champion reveals exact strategy! | entry triggers for TOM-1/2/4 **(READ 2026-10-15, see 6.1a)** |
+| YYYuaetck_0 | The #1 Trading Strategy for the Current Market | unknown setup; rank 2 by density **(READ 2026-10-15, see 6.1a)** |
+| kKZCJui4S9U | THIS strategy puts you ahead of 99% of traders! | unknown; rank 3 **(READ 2026-10-15, see 6.1a)** |
+| viT_VzF5Fsw | THIS Trading Strategy Delivers MAXIMUM Win Rates NOW! | TOM-7 scalp stop/target **(READ 2026-10-15, see 6.1a)** |
+| uFxYcpiaOpw | My Simplest Trading Strategy (80-90% Win Rate) | TOM-7 or a high-hit-rate setup not catalogued **(READ 2026-10-15, see 6.1a)** |
+| VOiy8mAALWA | The #1 Trading Indicator for 2026 | proof items (volume/footprint) **(READ 2026-10-15, see 6.1a)** |
 | ridY2Z0hSQA | THIS is the World Trading Champion's Favorite Indicator! | proof items |
 | YkclL6xgu-s | How powerful is Volume Trading REALLY? | TOM-1 A-C3 "thin" in his words |
 | 1utSjHs_Mq8 | The ONLY Market-Profile-Video you will EVER need | TOM-2 balance edges, single prints, tails (TOM-5) |
@@ -703,6 +916,26 @@ FABIO_TRADE_LEDGER.md:48 and :90.
 | VxN5IxTwpbE | How I Would Start Trading in 2026 (Beginner's Blueprint) | unknown, beginner |
 | 15JoLK0PbMU | VIX Strategy revealed | day selection / volatility context |
 | cw8LWQmec1E | Gold & Silver Bubble WARNING | TL T8 gold short context |
+
+### 6.1a Pass status (2026-10-15, line by line from raw_transcripts_canonical/<id>_raw.txt)
+Read in inventory order: 12 of 26 (batch 1). NOT yet read: ridY2Z0hSQA, YkclL6xgu-s, 1utSjHs_Mq8, K8qtT2_axPo, 0CrkbfuIhkc, lO-Iptd29t4
+(GAP G01-G18 already read it), 6BAzqewtPUk, 9VN9y2DVtGQ, 2xnNPIyHGQ4, 4VXpUjhKG2U, Sy-x5AQ9-Pk, VxN5IxTwpbE, 15JoLK0PbMU, cw8LWQmec1E (14).
+Result of the 12 (no fees, no backtest, no VALIDATION/HOLDOUT; any number added is OURS or his, labelled where used):
+| id | read | what it gave |
+|---|---|---|
+| uk4PZV59nYw | READ | TOM-6: clear space to the left, order flow, strong-pullback-strong bar pattern, R:R 1:1 to 1.5:1, exit when momentum reverses. No stop, no trade taken **(READ 2026-10-15, see 6.1a)** |
+| gFJBg8Bsw68 | READ | TOM-6 (single print variant, news-then-consolidation) and new TOM-12 (break-in) with trapped-participant logic. No stop, no trade **(READ 2026-10-15, see 6.1a)** |
+| Kg6sYKgtkrY | READ | market overview (Bitcoin B structure, 6E, S&P, silver, copper). No setup. BTC context only: "no acceptance in the old balances" reading; nothing quoted **(READ 2026-10-15, see 6.1a)** |
+| jXR1afMy-3o | READ | PBD definitions (P/B accelerate, 30 % of markets, D balance, 70 %), break-in, target = start of impulse (TOM-12) **(READ 2026-10-15, see 6.1a)** |
+| m3IMdc7QwN4 | READ | PBD definitions P/B/D in his words, B break-in, failure case: run below the start of the move (TOM-12) **(READ 2026-10-15, see 6.1a)** |
+| Ly62G168MkQ | READ | closing prices not extremes, impulse then sideways phase, D area counter trading, failure rule: stops hit and price runs back in means a bigger balance. No stop distance **(READ 2026-10-15, see 6.1a)** |
+| ODdF0Bn_KSc | READ | trend / smart-zone / setup order (TOM-4 filter); the four trader types by temperament. No stop **(READ 2026-10-15, see 6.1a)** |
+| YYYuaetck_0 | READ | NEW setup TOM-11 (crude oil leads, index future follows). No stop **(READ 2026-10-15, see 6.1a)** |
+| kKZCJui4S9U | READ | mindset only. No setup, no quote used **(READ 2026-10-15, see 6.1a)** |
+| viT_VzF5Fsw | READ | a failed counter short with its exit reason in words (TOM-2 evidence, first taken trade there); flip long (TOM-12) **(READ 2026-10-15, see 6.1a)** |
+| uFxYcpiaOpw | READ | TOM-6: single print open, P on 1-minute, higher close; "once a day", "30 % of market phases" **(READ 2026-10-15, see 6.1a)** |
+| VOiy8mAALWA | READ | TOM-1/TOM-2 filter: stop counter trades after shifting VPOCs (two days), footprint "liquidity is gone, finished auction" proof **(READ 2026-10-15, see 6.1a)** |
+Setups that gained a stated stop from batch 1: 0 (the invalidation exit in viT_ is a state, not a price; recorded under TOM-2). New setups: 2 (TOM-11, TOM-12).
 
 ### 6.2 Tom, V1 only (47): the ones that carry setup fields above
 Every STR quote (TOM-2, -4, -6, -7) comes from V1 extracts whose gate FAILS with NO-GPS (BVpYGKz9PBU 0/35, 43JaKHRvxHk 0/25,
@@ -729,8 +962,8 @@ Vd83oo_geMk (heat map, 0/42) for Tom's view of FAB-7-type liquidity; 3o1VVsfBmmU
 | xUyqIjCfZzg | 3.8 h; unread (FL:57) | live session: more FAB-3/FAB-5 trades |
 
 ## 7. What this catalog does not settle (for the next steps)
-1. Initial stop in words: Tom 3 of 10 setups, Fabio 0 of 8. Every other stop is a chart point ("here") or a frame value. The blind eye-read marking should record where each reader would put the stop and the next extraction should search for it.
+1. Initial stop in words: Tom 3 of 12 setups (after batch 1; 14 never-extracted videos still unread), Fabio 0 of 8. Every other stop is a chart point ("here") or a frame value. The blind eye-read marking should record where each reader would put the stop and the next extraction should search for it.
 2. Session anchors on BTC (cash open, pre-market, US open, closing auction) are needed by TOM-1, TOM-8/9/10, FAB-6. Any choice is OURS.
 3. Two setups are mostly our structure (FAB-4, FAB-8) and one is only ours (V3 model A).
 4. Real-trade evidence is concentrated: TOM-1 16 of Tom's 21 and FAB-5 11 of Fabio's 17 assigned trades; TOM-2, -4, -6, -7, -9, -10 and FAB-6, -7,
-   -8 have none.
+   -8 have none; TOM-11, TOM-12 also none. TOM-2 now has 1 (a loss).

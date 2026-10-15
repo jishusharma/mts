@@ -183,6 +183,11 @@ details.mini>summary{cursor:pointer;color:var(--muted,#6b7280);font-size:.82rem}
   <div class="items" id="fblist"></div>
 </section>
 
+<details class="fold" id="pages-sec" open>
+  <summary><h2>Pages</h2><span class="muted" style="font-size:.85rem">Every page we keep, one link each</span></summary>
+  <div class="panel tw"><table id="pages"><thead><tr><th>Page</th><th>Refreshed</th><th>Last published</th></tr></thead><tbody></tbody></table></div>
+</details>
+
 <details class="fold" id="evid-sec">
   <summary><h2>Evidence so far</h2><span class="muted" style="font-size:.85rem">What the backtests and research say about an edge</span></summary>
   <div class="panel tw"><table id="evidence"><thead><tr><th>Test</th><th>Result</th><th>Verdict</th><th>Source</th></tr></thead><tbody></tbody></table></div>
@@ -254,6 +259,8 @@ function renderRoad(){
 const sevRank = s => ({HIGH:0,MED:1,LOW:2,INFO:3,COSMETIC:4}[s] ?? 5);
 renderRoad();
 $("#layers tbody").innerHTML = (D.layers||[]).map(x => `<tr><td><b>${esc(x.name)}</b></td><td>${esc(x.stage)}</td><td>${esc(x.indicators)}</td><td>${esc(x.setups)}</td><td>${x.open_rows}${x.worst?" ("+esc(x.worst)+")":""}${x.open_ids.length?`<div class="muted" style="font-size:.78rem">${esc(x.open_ids.join(", "))}</div>`:""}</td><td>${esc(x.next)}<div class="muted" style="font-size:.78rem">${esc(x.src)}</div></td></tr>`).join("") || `<tr><td colspan="6" class="muted">No layer in active work is recorded.</td></tr>`;
+
+$("#pages tbody").innerHTML = (D.pages||[]).map(x => `<tr><td><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title)}</b></a></td><td class="muted">${esc(x.refresh)}</td><td class="muted">${esc(x.pub)}</td></tr>`).join("") || `<tr><td colspan="3" class="muted">No pages recorded.</td></tr>`;
 
 $("#evidence tbody").innerHTML = D.evidence.map(e => `<tr><td><strong>${esc(e.test)}</strong></td><td>${esc(e.result)}</td><td><span class="pill v-${e.verdict}">${esc(e.verdict)}</span></td><td class="muted" style="font-size:.8rem">${esc(e.src)}</td></tr>`).join("");
 

@@ -53,6 +53,18 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Agent|Task|mcp__ccd_session__start_session|mcp__ccd_session_mgmt__set_session_model",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/model_guard.py\" hook",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   }
 }
