@@ -26,7 +26,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv`; `MyTradingSys/research/tom_transfer_2026-10-11/TOM_LEDGER_CANONICAL_GROUPS.csv`
 - Other results: `MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md`
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`; `MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md`
-- Codex lab reports (newest 4 of 17): `MyTradingSys/research/layer_lab/reports/2026-10-15_tom-btc-event-study.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_tom-v2-btc-min-stop-width.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_tom-btc-event-study.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_tom-profile-shape-parity.md`
+- Codex lab reports (newest 4 of 18): `MyTradingSys/research/layer_lab/reports/2026-10-15_tom-btc-event-study.md`; `MyTradingSys/research/layer_lab/reports/2026-10-15_gap-g4-through-ticks-flag.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_tom-v2-btc-min-stop-width.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_tom-btc-event-study.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `rv02-fix-dax-full-dev-authorization` blocked p1 SONNET: RV02 R3: require complete DAX sampling and bind holdout authorization
   - `rv02-fix-dax-preprocessing-isolation` blocked p1 SONNET: RV02 R1: isolate DAX preprocessing and report metadata before holdout
@@ -36,7 +36,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-btc-event-study` ready p1 CODEX: Tom on BTC T4: event study - which Tom concepts separate winners on BTC (DEV only, fee-net, vs random same-win
   - `tom-btc-eye-read` ready p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
   - `tom-profile-shape-parity` blocked p1 CODEX: Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)
-  - `gap-g4-through-ticks-flag` ready p2 CODEX: Gap G4: through_ticks flag in tom_bt.sim_limit_trade (entry and target), default off, output identical
   - `gap-g6-trial-ledger` ready p2 CODEX: Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)
   - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
   - `point-in-time-factor-design` raw p2 CODEX: Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-
