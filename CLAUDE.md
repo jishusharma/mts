@@ -4,20 +4,20 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 
 ## Boot (every turn re-reads the context)
 1. `python scripts/dev/sync.py start <slug>`: in a lane tree (mts-app/relay/dsa) it switches to branch <host>/<slug>; elsewhere it prints `WORKTREE: <path>` (work only there, never the live tree).
-2. Read `MyTradingSys/research/STATUS.md` (regenerate: `python scripts/dev/make_status.py`), not what it summarises; `LESSONS_DIGEST.md` only for live-path or backtest work. RED `CI green:` line: fixing CI is the first job.
+2. Read `MyTradingSys/research/STATUS.md` (regenerate: `python scripts/dev/make_status.py`), not what it summarises; `LESSONS_DIGEST.md` only for live-path or backtest work. RED `CI green:` line: fix CI first (pinned `ci-<sha>` card).
 3. ONE task from NEXT_SESSION.md (relay KICK: `relay_prompts/relay_session.md`) or `tasks.py next`; `sync.py claim "<task>"`, work, `sync.py ship`, `sync.py release <slug>`, `sync.py where` (own tree clean).
-4. Hand-over (RELAY.md): after overwriting NEXT_SESSION.md run `python scripts/sched/relay.py handoff --file MyTradingSys/system/NEXT_SESSION.md --go` (or `--stop "<why>"`), `sync.py ship`, `relay.py unlock` (not after `--stop`); the dispatcher tick starts the next one (B164). The block must run with zero operator input (operator 2026-10-10: defaults for open questions, tasks in order, Control Room checked by the session); no stop between tasks.
-5. SHORT SESSIONS (operator 2026-10-09): one session = one task; hand over when it is done, after 10 operator turns or 40 tool turns, whichever first (commit, then steps 3-4, one line, stop). Live market threads: after 5 screenshot reads. Hook `turn_meter.py`: a turn = one assistant message.
+4. Hand-over (RELAY.md): after overwriting NEXT_SESSION.md run `python scripts/sched/relay.py handoff --file MyTradingSys/system/NEXT_SESSION.md --go` (or `--stop "<why>"`), `sync.py ship`, `relay.py unlock` (not after `--stop`); the dispatcher tick starts the next one. The block must run with zero operator input (operator 2026-10-10: defaults for open questions, tasks in order, Control Room checked by the session); no stop between tasks.
+5. SHORT SESSIONS: one session = one task; hand over when it is done, after 10 operator turns or 40 tool turns, whichever first (commit, then steps 3-4, one line, stop). Live market threads: after 5 screenshot reads. Hook `turn_meter.py`: a turn = one assistant message.
 
-## Cost and routing (operator 2026-10-09)
-- Interactive sessions and subagents: Sonnet (implementations, spec-derived tests), Opus only when the operator names it; relay/dispatcher sessions run on the routine model (App setting; `get_session`). Haiku for status/mechanical work; subagents only if clearly needed. Wait on a queue with one background shell, never a polling agent; spot-check one worker claim.
-- Do not ask routine questions: pick the default, finish end to end; free public market data and YouTube videos are pre-approved (operator 2026-10-11).
+## Cost and routing
+- Interactive sessions and subagents: Sonnet (implementations, spec-derived tests), Opus only when the operator names it; relay/dispatcher sessions run on the routine model. Haiku for status/mechanical work; subagents only if clearly needed. Wait on a queue with one background shell, never a polling agent; spot-check one worker claim.
+- Do not ask routine questions: pick the default, finish end to end; free public market data and YouTube videos are pre-approved.
 - T0 script first, then by card lane (HOW_MTS_RUNS.md): run-and-report goes to DSA (`desk.py post ... --target DSA`; low on budget: post the rest to DSA, then hand over).
 - Logins share one repo and queue (CLOUD_ACCOUNTS.md): whoever has budget takes NEXT_SESSION.md; never idle for a weekly reset.
-- Surface (operator 2026-10-08): Claude Code Win App only; never tell the operator to "use the CLI" or hand work back. A permission block is not a reason to stop: report the exact blocked call, try the allowed equivalent.
+- Surface: Claude Code Win App only; never tell the operator to "use the CLI" or hand work back. A permission block is not a reason to stop: report the exact blocked call, try the allowed equivalent.
 
 ## Gates (before any commit touching the area)
-- `python scripts/dev/run_all_tests.py` (all offline; `--quick` skips Maven + backtest). Extractions: `python scripts/dev/verify_extract_quotes.py <extract.md>`.
+- `sync.py ship`: smoke gate (live-path or unknown paths = all `--quick`; `--full`); CI + green-only deploy gate the rest. Full: `python scripts/dev/run_all_tests.py` (`--quick`: no Maven/backtest). Extractions: `python scripts/dev/verify_extract_quotes.py <extract.md>`.
 - New tests must fail on the pre-change code at least once.
 - Formulas: expected numbers come from `MyTradingSys/backtest/layers/FORMULAS.md`, computed independently, never from existing code. OUTPUT_TOKENS must fit the whole reply.
 

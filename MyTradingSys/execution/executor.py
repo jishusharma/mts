@@ -138,6 +138,9 @@ PLAN_ID_RE = re.compile(r"^[A-Za-z0-9_-]{1,24}$")  # FIX3 M6: labels never trunc
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
+SETTLEMENT_IN_PROGRESS = 10041 # Deribit: the 08:00 UTC settlement window is open; entries are refused until it ends
+
+
 class ExecutionHalted(Exception):
     """Operator attention required. Never caught silently."""
 
@@ -429,6 +432,14 @@ def execute_plan(compiled: dict, plan: dict = None, instrument: str = "BTC-PERPE
             except do.DeribitError as e:
                 journal.append_event(plan_id, "order_rejected", {"label": spec["label"], "error": str(e.error),
                                                                  **_rejection_detail(e)})
+                if e.code == SETTLEMENT_IN_PROGRESS and not entries:
+                    # 2026-10-15: 10041 settlement_in_progress is a transient exchange state, not a fault. Nothing is placed yet
+                    # (no entry, no stop, no position), so skip this plan: no order, no retry, NO HALT. Any other code, or a
+                    # rejection after an earlier entry went in, still goes to fail_closed below.
+                    journal.append_event(plan_id, "entry_skipped_settlement",
+                                         {"label": spec["label"], "error_code": e.code})
+                    return {"plan_id": plan_id, "filled_total": 0, "status": "no_fill",
+                            "reason": "entry_skipped_settlement"}
                 fail_closed(f"entry {spec['label']} rejected: {e.error}")
             entries.append({"order_id": o["order_id"], "label": spec["label"], "filled": 0})
             journal.append_event(plan_id, "order_placed", {"order_id": o["order_id"], "label": spec["label"],

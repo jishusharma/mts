@@ -7,6 +7,7 @@ Runs where the file `.mts_live` exists (JIS-NB). Anywhere else it reports NOT_LI
      edited and the deploy would change = STOP_DIRTY (never merge or stash over another session's edits).
   3. Gate the candidate in a throwaway detached worktree (run_all_tests.py --quick). Red = STOP_RED: the live tree is never touched, and the same
      SHA is not re-gated every cycle (the state file remembers it).
+  3b. Dirty GENERATED files (GENERATED_RE) are backed up to runtime_data/deploy_backup/<stamp>/regenerated/ and restored by `git checkout -- <file>`.
   4. Copy orderflow _state.json away (B152), `git merge --ff-only`, restore _state.json if the merge dropped it.
   5. Restart only the processes whose files changed (loop-supervisor revives them in about a minute). position_manager is never killed (it
      guards an open position; new managers pick the code up). Java (src/main/java, pom.xml) is reported in java_pending for a compile + JVM window.
@@ -37,10 +38,19 @@ GREEN_STALE_S = 90 * 60
 ORDERFLOW_STATE = "MyTradingSys/runtime/orderflow_live/_state.json"
 JAVA_RE = re.compile(r"^(src/main/java/|src/test/java/|pom\.xml$)")
 NEVER_KILL = ("position_manager",)
+# GENERATED files that scheduled jobs on the live host rewrite while they are tracked in git (each generator checked in the repo, 2026-10-15):
+# STATUS.md make_status.py; AUDIT_DIGEST.md scripts/worker/audit_digest.py; T0_CHECKS.md scripts/worker/audit_t0_checks.py;
+# runtime/BUILD_REPORT.md scripts/Build-Check.ps1; runtime/oi_live/*.csv oi_recorder.py; research/htf_context/* fabio/htf_context_live.py.
+# Dirty + in the deploy diff = back up, `git checkout -- <file>`, merge. Anything else dirty stays STOP_DIRTY (fail closed).
+GENERATED_RE = re.compile(
+    r"^MyTradingSys/(research/STATUS\.md|research/audits/(AUDIT_DIGEST|T0_CHECKS)\.md|runtime/BUILD_REPORT\.md"
+    r"|runtime/oi_live/[^/]+\.csv|research/htf_context/[^/]+\.(jsonl|json))$")
 # (regex on a changed path, script name to restart). A process is listed once. position_manager is deliberately absent.
 RESTART_MAP = [
     (re.compile(r"^MyTradingSys/execution/(auto_trader|auto_trader_config|executor|plan_compiler|mainnet_plan_check|risk_guard|journal|deribit_orders)\b"), "auto_trader.py"),
     (re.compile(r"^MyTradingSys/execution/(daily_loss_monitor|mainnet_pnl|kill_switch|deribit_orders)\b"), "daily_loss_monitor.py"),
+    # recorder: launched as `python -m MyTradingSys.backtest.layers.fabio.orderflow_live` (command line has no .py); loop-supervisor relaunches it.
+    (re.compile(r"^MyTradingSys/backtest/layers/fabio/(orderflow_live|orderflow_bars)\.py$"), "orderflow_live"),
     (re.compile(r"^MyTradingSys/backtest/layers/(alerts|rsi|fabio|session|positioning|cryptocred|turn_of_candle|tick|timeframe|consensus)/"), "live_runner_cli.py"),
     (re.compile(r"^MyTradingSys/backtest/(bt/|fees)"), "live_runner_cli.py"),
 ]
@@ -49,7 +59,7 @@ RESTART_MAP = [
 def decide(*, is_live, head, target, is_ff, changed, dirty, last_red_sha=None):
     """Pure decision -> dict(action, reason, restarts, java_pending).
     action: NOT_LIVE | UP_TO_DATE | STOP_NOT_FF | STOP_DIRTY | RED_KNOWN | DEPLOY (the gate still has to run)."""
-    out = dict(action="", reason="", restarts=[], java_pending=[])
+    out = dict(action="", reason="", restarts=[], java_pending=[], regenerate=[])
     if not is_live:
         out.update(action="NOT_LIVE", reason="no .mts_live marker here: not the live tree, nothing changed")
         return out
@@ -60,9 +70,12 @@ def decide(*, is_live, head, target, is_ff, changed, dirty, last_red_sha=None):
         out.update(action="STOP_NOT_FF", reason=f"HEAD {head[:7]} is not an ancestor of {BRANCH} {target[:7]}; never reset or rebase: a human decides")
         return out
     clash = sorted(set(changed) & set(dirty))
+    regen = [p for p in clash if GENERATED_RE.match(p)]
+    clash = [p for p in clash if p not in regen]
     if clash:
         out.update(action="STOP_DIRTY", reason="uncommitted edits by another session on files the deploy changes: " + ", ".join(clash[:8]))
         return out
+    out["regenerate"] = regen
     if last_red_sha == target:
         out.update(action="RED_KNOWN", reason=f"{target[:7]} already failed the gate here; waiting for a newer green SHA")
         return out
@@ -205,11 +218,27 @@ def run(ops=None, check=False, state=None, save=True):
         backup = REPO / "runtime_data" / "deploy_backup" / ops.now().strftime("%Y%m%dT%H%M%SZ")
         backup.mkdir(parents=True, exist_ok=True)
         shutil.copy2(sp, backup / "_state.json")
+    has_state = backup is not None
+    regen = d.get("regenerate") or []
+    for rel in regen:   # generated file edited on the live host: keep a copy, restore only that file, then the merge can proceed
+        src = REPO / rel
+        if src.exists():
+            if backup is None:
+                backup = REPO / "runtime_data" / "deploy_backup" / ops.now().strftime("%Y%m%dT%H%M%SZ")
+            dst = backup / "regenerated" / rel
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst)
+        crc, cout = ops.git("checkout", "--", rel)
+        if crc != 0:
+            res.update(action="STOP_MERGE", reason=f"could not restore generated file {rel}: " + cout.strip()[-200:])
+            return _finish(res, save, state)
+    if regen:
+        res["regenerated"] = regen
     mrc, mout = ops.git("merge", "--ff-only", f"origin/{branch}")
     if mrc != 0:
         res.update(action="STOP_MERGE", reason="ff-only merge refused: " + mout.strip()[-200:])
         return _finish(res, save, state)
-    if backup and not sp.exists():
+    if has_state and not sp.exists():
         sp.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(backup / "_state.json", sp)
         res["state_json_restored"] = True

@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1792677804,
-  "week_used": 0,
-  "window_resets": 1792091004,
-  "window_used": 1.0
+  "week_resets": 1792677805,
+  "week_used": 16.0,
+  "window_resets": 1792109026,
+  "window_used": 60.0
  },
- "at": "2026-10-15T14:32:13Z",
+ "at": "2026-10-15T19:11:32Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,11 +18,41 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 0.0,
-  "window_pts": 1.0,
-  "window_runs": 1
+  "week_pts": 16.0,
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-10-15T19:03:26Z",
+   "card": "gpt-catalog-notstated-audit",
+   "effort": "low",
+   "kind": "audit",
+   "model": "gpt-6-astra",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 480,
+   "tokens_out": 13901,
+   "tokens_total": 3803538,
+   "tokens_uncached": 198085,
+   "week_pts": 9.0,
+   "window_pts": 60.0
+  },
+  {
+   "at": "2026-10-15T16:00:03Z",
+   "card": "malkan-hindi-rows-gpt-read",
+   "effort": "low",
+   "kind": "audit",
+   "model": "gpt-6-astra",
+   "note": "5 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/system/LAYERS.md",
+   "outcome": "OUT_OF_SCOPE",
+   "seconds": 436,
+   "tokens_out": 11022,
+   "tokens_total": 2330221,
+   "tokens_uncached": 164191,
+   "week_pts": 7.0,
+   "window_pts": 41.0
+  },
   {
    "at": "2026-10-15T14:30:02Z",
    "card": "gap-g4-through-ticks-flag",
@@ -142,36 +172,6 @@
    "tokens_uncached": 30630,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-14T17:05:22Z",
-   "card": "lc-levels-hold",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "INCOMPLETE",
-   "seconds": 42,
-   "tokens_out": 1511,
-   "tokens_total": 314201,
-   "tokens_uncached": 41330,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-13T21:33:46Z",
-   "card": "tom-btc-chart-lab",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": ": Layer tests: PASS\nStep 5c: Options tests: PASS\nStep 6: Backtest tests: SKIP\n======================================================================\nFAILED: 3 s",
-   "outcome": "SHIP_FAILED",
-   "seconds": 241,
-   "tokens_out": 17997,
-   "tokens_total": 2426165,
-   "tokens_uncached": 90856,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }

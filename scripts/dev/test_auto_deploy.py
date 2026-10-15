@@ -57,6 +57,20 @@ class TestDecide(unittest.TestCase):
         self.assertNotIn("position_manager.py", r["restarts"])
         self.assertEqual(r["restarts"], [])
 
+    def test_orderflow_recorder_restarts_when_its_code_changes(self):
+        r = d(changed=["MyTradingSys/backtest/layers/fabio/orderflow_live.py"])
+        self.assertIn("orderflow_live", r["restarts"])
+        r = d(changed=["MyTradingSys/backtest/layers/fabio/orderflow_bars.py"])
+        self.assertIn("orderflow_live", r["restarts"])
+        self.assertNotIn("orderflow_live", d(changed=["MyTradingSys/research/x.md", "MyTradingSys/execution/daily_loss_monitor.py"])["restarts"])
+        self.assertNotIn("orderflow_live", d(changed=["MyTradingSys/backtest/layers/fabio/htf_context_live.py"])["restarts"])
+        self.assertNotIn("orderflow_live", d(changed=["MyTradingSys/execution/position_manager.py"])["restarts"])
+
+    def test_orderflow_restart_name_is_in_the_module_command_line_and_supervisor_relaunches(self):
+        sup = (Path(ad.__file__).resolve().parents[1] / "core" / "loop-supervisor.ps1").read_text(encoding="utf-8")
+        self.assertIn("launch-orderflow-live.vbs", sup)
+        self.assertIn("orderflow_live", "python -m MyTradingSys.backtest.layers.fabio.orderflow_live")
+
     def test_java_is_reported_not_deployed_by_restart(self):
         r = d(changed=["src/main/java/datafeed/MarketDataSnapshot.java", "pom.xml", "MyTradingSys/x.md"])
         self.assertEqual(r["java_pending"], ["src/main/java/datafeed/MarketDataSnapshot.java", "pom.xml"])
@@ -126,6 +140,35 @@ class TestRun(unittest.TestCase):
         last = json.loads(ad.LAST.read_text(encoding="utf-8"))
         self.assertEqual(last["action"], "DEPLOYED")
         self.assertIn("DEPLOYED", ad.LOG.read_text(encoding="utf-8"))
+
+    def test_dirty_generated_file_is_backed_up_restored_and_deploy_goes_on(self):
+        rel = "MyTradingSys/research/STATUS.md"
+        f = self.root / rel
+        f.parent.mkdir(parents=True)
+        f.write_text("live-host edit", encoding="utf-8")
+        ops = FakeOps(changed=[rel, "README.md"], dirty=[rel])
+        r = ad.run(ops)
+        self.assertEqual(r["action"], "DEPLOYED")
+        self.assertEqual(r["regenerated"], [rel])
+        self.assertIn(("checkout", "--", rel), ops.calls)
+        self.assertLess(ops.calls.index(("checkout", "--", rel)), ops.calls.index(("merge", "--ff-only", "origin/green/fast-track")))
+        saved = list((self.root / "runtime_data" / "deploy_backup").glob("*/regenerated/" + rel))
+        self.assertEqual(len(saved), 1)
+        self.assertEqual(saved[0].read_text(encoding="utf-8"), "live-host edit")
+
+    def test_dirty_non_allowlisted_file_still_stops(self):
+        ops = FakeOps(changed=["MyTradingSys/execution/auto_trader.py"], dirty=["MyTradingSys/execution/auto_trader.py"])
+        self.assertEqual(ad.run(ops)["action"], "STOP_DIRTY")
+        self.assertEqual(self.merges(ops), [])
+
+    def test_generated_and_non_generated_dirty_stops_and_restores_nothing(self):
+        gen, other = "MyTradingSys/research/STATUS.md", "MyTradingSys/execution/auto_trader.py"
+        ops = FakeOps(changed=[gen, other], dirty=[gen, other])
+        r = ad.run(ops)
+        self.assertEqual(r["action"], "STOP_DIRTY")
+        self.assertEqual([c for c in ops.calls if c[0] == "checkout"], [])
+        self.assertEqual(self.merges(ops), [])
+        self.assertFalse((self.root / "runtime_data").exists())
 
     def test_red_gate_never_merges_or_kills_and_is_remembered(self):
         ops = FakeOps(gate_rc=1, changed=["MyTradingSys/execution/auto_trader.py"])
