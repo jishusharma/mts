@@ -5,7 +5,7 @@
 ## What was checked
 
 - Read `gross_effect_screen_2026-10-15/PRE_REG.md` sections 2, 4, 5, and 7 before reading `RESULT.md`.
-- Independently recomputed the eligible ledger counts from those frozen rules with [gross_screen_independent_recount.py](../gross_screen_independent_recount.py), using only `F:/MTS/data/tom_raw/klines/BTCUSDT-1m-2022-01.csv` through `BTCUSDT-1m-2024-06.csv`. All 30 SHA256 values matched `DATA_MANIFEST.csv`; all 1,313,280 DEV bars were present, with no gaps. The loader rejected any timestamp at or after 2024-07-01. No later bar was read.
+- Independently recomputed the eligible ledger counts from those frozen rules with the recorded Python source [gross_screen_independent_recount.py.txt](../gross_screen_independent_recount.py.txt), using only `F:/MTS/data/tom_raw/klines/BTCUSDT-1m-2022-01.csv` through `BTCUSDT-1m-2024-06.csv`. All 30 SHA256 values matched `DATA_MANIFEST.csv`; all 1,313,280 DEV bars were present, with no gaps. The loader rejected any timestamp at or after 2024-07-01. No later bar was read.
 - Compared `screen.py` lines 43-131 and 134-164 with PRE_REG sections 2-5 and 7; compared output and verdict code at lines 168-255 and 271-299 with the reported values.
 - Independently recomputed only T at the primary cell d=1, h=60 from the eligible timestamps and DEV opens. No other cell or variant was run; no audited screen/spec/test file was changed.
 
