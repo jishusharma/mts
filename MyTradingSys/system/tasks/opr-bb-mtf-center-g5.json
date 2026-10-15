@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T22:09:23Z",
   "commands": [],
   "created": "2026-10-15T14:45:12Z",
   "depends_on": [],
@@ -16,7 +17,7 @@
   "refine_tries": 0,
   "refined_by": "bb-rsi-40-60 setup draft session 2026-10-15",
   "refs": [],
-  "result": "",
+  "result": "INCONCLUSIVE (screen, ran before G3 marks by operator decision 2026-10-16): 476 first-touch events; AU long n=194 (<200 bar) mean G +0.020%; AD short n=282 mean G +0.032% (net -0.108%, FAIL); Krown M1-M4 descriptive tables included; MyTradingSys/research/opr_bb_mtf_center_2026-10-16/RESULT.md",
   "scope_in": [
     "MyTradingSys/research/setup_catalog_2026-10-15/drafts/OPR-BB-MTF-CENTER.md",
     "MyTradingSys/research/setup_catalog_2026-10-15/drafts/KRW-RANGE-BB-MAP.md",
@@ -36,7 +37,7 @@
     "MyTradingSys/research/setup_catalog_2026-10-15/drafts/OPR-BB-MTF-CENTER.md",
     "MyTradingSys/research/setup_catalog_2026-10-15/drafts/KRW-RANGE-BB-MAP.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Check DEV 1m klines, taker volume and OI metrics coverage in the LAYERS.md:35 window; aggregate to 30m/1h with the forming-bar convention only for live, closed bars in the study; list gaps.",
     "Write the precondition (N closes below the mid, falling mid), the touch finder (wick / near / close variants), the fixed-level U/D/R classifier and the 30m centre-close and pressure-eases conditions, with a fail-first test on synthetic bars.",

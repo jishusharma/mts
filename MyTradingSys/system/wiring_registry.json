@@ -21,6 +21,14 @@
    "disp": "REPRO",
    "why": "Manually reproduces four synthetic witnesses and hashed source excerpts for the 2026-10-15 strategy audit revalidation; no market data or live imports; PASS recorded in the attached proof pack."
   },
+  "MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py": {
+   "disp": "REPRO",
+   "why": "G3 blind-chart marking pack (seeded windows, causal pre-filters, chart geometry); run by hand (counts | build | draw), reproduces WINDOWS.csv, the answer key and the PNGs; covered by test_g3_pack.py; DEV data only, no live imports."
+  },
+  "MyTradingSys/research/g3_marks_2026-10-16/render_png.ps1": {
+   "disp": "TOOL",
+   "why": "GDI+ renderer called by g3_pack.py draw (subprocess, no Pillow on JIS-NB); draws rect/line/text primitives from JSON to PNG."
+  },
   "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py": {
    "disp": "REPRO",
    "why": "Pre-registered DEV-only gross-effect screen (PRE_REG.md); run by hand (--count | --full), reproduces RESULT.md/decay.csv/ledger.csv; covered by test_screen.py; no live imports."
@@ -689,6 +697,14 @@
   "MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/study.py": {
    "disp": "REPRO",
    "why": "Pre-registered DEV-only chart-read G5 screen (mal_bb_mid_engulf_2026-10-16); run by hand (--count | --full), reproduces its RESULT.md/trials.csv/ledger.csv; covered by its test file; no live imports. Screen, ran before G3 marks by operator decision 2026-10-16."
+  },
+  "MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py": {
+   "disp": "REPRO",
+   "why": "Pre-registered DEV-only chart-read G5 screen (opr_bb_mtf_center_2026-10-16); run by hand (--count | --full), reproduces its RESULT.md/trials.csv/ledger.csv; covered by its test file; no live imports. Screen, ran before G3 marks by operator decision 2026-10-16."
+  },
+  "MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/study.py": {
+   "disp": "REPRO",
+   "why": "Pre-registered DEV-only chart-read G5 screen (opr_weekly_low_round_sweep_2026-10-16); run by hand (--count | --full), reproduces its RESULT.md/trials.csv/ledger.csv; covered by its test file; no live imports. Screen, ran before G3 marks by operator decision 2026-10-16."
   },
   "MyTradingSys/research/krown_ta101_2026-10-13/tools/fetch_daily_majors.py": {
    "disp": "REPRO",
