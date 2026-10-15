@@ -1,20 +1,27 @@
 """gate_select: path -> gate steps. Fail closed on live-path and unmapped code."""
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import gate_select as gs
 
-STEPS = [("1", "python scripts/dev/run_staged_tests.py MyTradingSys/execution -- test_risk_guard"), ("3k", "python scripts/dev/test_sync.py"),
-         ("3ds", "python scripts/dev/test_dsa.py"), ("3tl", "python scripts/dev/tasks.py lint"), ("3q", "x"), ("3pc", "x"),
-         ("3c", "x"), ("3w", "x"), ("3x", "x"), ("3xt", "x"), ("4", "pytest MyTradingSys/tests"), ("4b", "pytest other"),
+STEPS = [("1", "python scripts/dev/run_staged_tests.py MyTradingSys/execution -- test_risk_guard"), ("3k", "python -m unittest (scripts/dev/test_sync.py, 3 shards)"),
+         ("3ds", "python -m unittest (scripts/dev/test_dsa.py, 2 shards)"), ("3tl", "python scripts/dev/tasks.py lint"), ("3q", "x"), ("3pc", "x"),
+         ("3c", "x"), ("3w", "x"), ("3x", "x"), ("3xt", "x"), ("4", "pytest MyTradingSys/tests/a"), ("4b", "pytest MyTradingSys/tests/b"),
          ("4d", "pytest MyTradingSys/tests/docs"), ("5b", "unittest"), ("5c", "pytest options")]
+MENTIONED = {("dsa", "4b")}   # the pytest shard whose tests mention the module `dsa`
+BS = chr(92)
+
+
+def mentioned(stem, cmd):
+    return (stem, next(n for n, c in STEPS if c == cmd)) in MENTIONED
 
 
 class Select(unittest.TestCase):
     def sel(self, *files):
-        return gs.select(list(files), STEPS)
+        return gs.select(list(files), STEPS, mentioned=mentioned)
 
     def test_nothing(self):
         self.assertEqual(self.sel(), ("none", []))
@@ -24,12 +31,21 @@ class Select(unittest.TestCase):
         self.assertEqual(mode, "docs")
         self.assertEqual(steps, ["3tl", "3q", "3pc", "3c", "4d"])
 
-    def test_non_live_code_is_smoke_with_its_own_test(self):
+    def test_non_live_code_is_smoke_with_its_own_test_and_the_shards_that_mention_it(self):
         mode, steps = self.sel("scripts/dev/dsa.py")
         self.assertEqual(mode, "smoke")
-        self.assertIn("3ds", steps)
+        self.assertIn("3ds", steps)          # name match survives the "(file, N shards)" command text
         self.assertNotIn("3k", steps)
-        self.assertTrue({"3w", "3x", "3tl", "4"} <= set(steps))
+        self.assertTrue({"3w", "3x", "3tl", "4b"} <= set(steps))
+        self.assertNotIn("4", steps)         # a shard none of whose tests mention the module is not run
+
+    def test_mentions_reads_the_tests_named_in_the_command(self):
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "t").mkdir()
+            (Path(d) / "t" / "test_a.py").write_text("import widget_core" + chr(10), encoding="utf-8")
+            self.assertTrue(gs.mentions("widget_core", "pytest t", root=d))
+            self.assertFalse(gs.mentions("other", "pytest t t/test_a.py", root=d))
+            self.assertFalse(gs.mentions("widget_core", "pytest missing_dir", root=d))
 
     def test_layer_code_runs_layer_tests(self):
         mode, steps = self.sel("MyTradingSys/backtest/layers/rsi/rsi.py")
@@ -58,7 +74,7 @@ class Select(unittest.TestCase):
         self.assertIn("3q", steps)
 
     def test_windows_separators(self):
-        self.assertEqual(self.sel("MyTradingSys\execution\auto_trader.py")[0], "full")
+        self.assertEqual(self.sel("MyTradingSys" + BS + "execution" + BS + "auto_trader.py")[0], "full")
 
 
 if __name__ == "__main__":

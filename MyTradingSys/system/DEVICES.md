@@ -43,14 +43,14 @@ exception: they appear and stay on screen until dismissed.
 - `mts.ps1` `Open-Window` (mts.ps1:69-71) still starts guard, runner, orderflow, auto-trader and position managers each in a visible pwsh window; making them hidden is owned by the thread "Fix desktop Claude app and flashing shells".
 - Alert popups stay in the operator's own sign-in session (the only session that can draw on his screen). Operator 2026-10-06: a second Windows account is fine if it helps, but he is never asked to switch profiles.
 
-## 3. Where the live loop runs (operator decision 2026-10-06) - OPEN DECISION
+## 3. Where the live loop runs (operator decision 2026-10-06) - OWNER GUARD DECIDED, MOVE OPEN
 
 The live loop moves to JIS-NUC IF performance does not degrade, and it must start by itself when the NUC is switched on. Until both conditions are proven it stays on JIS-NB, hidden (section 2).
 The move itself is a restart window the operator chooses (B137 Q5); nothing moves from this document. Not yet proven: execution speed on the NUC (Deribit order round-trip, Binance feed delay,
 bar-close-to-alert delay, same hour and code as the desktop); load (the NUC hit 98 C under continuous load, so backtests there are paused or capped to one worker while the loop is live, enforced in code);
 unattended start (a startup task that does not depend on the lock screen, see section 7). Feeds, auto_trader, position managers, loss monitor and runners talk through local files, so they move as one set.
 The loop can be started or stopped from the desktop, the laptop (RDP or the ssh gate) or the NUC, but it runs on exactly ONE machine at a time: two copies would place duplicate orders on the same testnet accounts.
-A start verb that checks a single owner marker (host + fresh heartbeat; unreadable = no start) is proposed, not built (card live-loop-one-owner-guard).
+DECIDED (OURS, card live-loop-one-owner-guard): `scripts/dev/live_owner.py` keeps one marker `live_owner.json` (host + utc heartbeat) in the directory named by env MTS_LIVE_OWNER_DIR (a share both hosts can read; default `runtime_data/` = single-host mode, so set it on BOTH hosts before the NUC is ever started). `mts start` and the loop-supervisor call `check` before any live process starts: a different host with a heartbeat younger than 180 s, an unreachable owner dir or an unreadable/corrupt marker refuses (fail closed); same host or a stale peer is allowed. The supervisor refreshes the heartbeat every 30 s tick. Not wired: a release on `mts stop` (the 180 s stale limit covers it). The NUC stays a cold standby; moving the loop is still a separate restart window.
 
 ## 4. Remote access
 
