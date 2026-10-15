@@ -79,5 +79,39 @@ Inputs: list_sessions (60, incl. archived), list_events on 10 sessions, get_usag
 | 11 | GPT lane after T2/T3: keep it only if T2 finds at least 1 catalogue error that Claude confirms; otherwise end before the 11-11 trial end | TRACK_RECORD | T2/T3 reports, astra-low token cost |
 | 12 | Fabio G1 coverage: are the 13 staged and 3 long sessions all extracted? If not, run a targeted extraction from A3's findings, as plan s6 item 7 says | Fabio row above | A3's list of missing concepts |
 
+## Coordinator decisions (2026-10-15, on the operator's behalf) and what the observer did
+| Item | Decision | Done in the observer's second commit |
+|---|---|---|
+| #1 red-gate owner rule | approved | LESSONS_DIGEST s5 (plus: at most 2 ship/gate runs per machine at once); story in LESSONS_LEARNED.md. Gate lock = fix-selftest-gate's call |
+| #3 shipped = empty `git cherry` | approved | `tasks.py brief` Close line, relay_session.md step 6, LESSONS_DIGEST s1, screenshot_intake 4b step 3 |
+| #4 park Krown Q65-Q69 | approved | NEXT_SESSION.md PARKED block, queue = plan s6 (R1-R4); OPERATOR_DECISIONS.md q-pause-krown-detectors; audit Q2 marked decided. The 3 cards set on hold (`tasks.py apply-op <id> hold`) |
+| #4 drop NOOP dispatcher | not now | card `dispatcher-t0-precheck`: measured 50 runs on 10-15 00:18-13:07Z, all 15-26 s NOOP; scheduled task not edited |
+| #5 / #8 gate board | approved | `make_status.py` "## Gate Board" from `system/gate_board.json` + 4 tests in test_make_status.py |
+| #7 Fabio holdout label | approved | layer_index.json -> LAYERS.md: "OOS FAIL (model C); holdout NOT read for Fabio" |
+| G3 | coordinator starts it after fix-selftest-gate and lab-unstall | brief below |
+
+## G3 brief (start as written; Sonnet session, one task)
+Goal: the first G3 marks. Two blind readers mark Tom's setups on BTC charts; then Fabio. G4 recall needs these marks; nothing else unblocks G5.
+- Rows (SETUP_CATALOG.md, columns "stop stated in words" and "BTC visible"):
+  - Tom first: TOM-2, TOM-4 and TOM-5 have stop stated Y and BTC visible YES. Add TOM-1 (stop Y, BTC PARTIAL), which has the most real trades (16).
+  - Then Fabio: FAB-4 and FAB-8 (BTC YES), and FAB-5 (PARTIAL, 11 real trades). No FAB row states a stop in his words. G3 marks the event only; the stop stays OURS for G5.
+- Charts: BTCUSDT from the public Binance 1m archive, resampled to the row's timeframe, in the DEV window only (never VALIDATION, never the sealed holdout).
+  - 30 windows per row, right edge at a random DEV time (seed recorded). No bars after the edge. Only the panels the row names (volume profile, VWAP, volume; Fabio rows add CVD from our engine).
+  - 4 Tom rows x 30 = 120 windows, then 90 for Fabio.
+- Readers:
+  - (1) The operator, on a phone page: an Artifact with the `db` capability. One window per screen; YES/NO, plus a tap on the bar where the setup triggers. About 10 s per window, so about 20 min for Tom.
+  - (2) A blind Sonnet subagent. It sees the same PNG and only the row's catalogue text (what you see, his words), never the operator's marks.
+- Output: `research/g3_marks_<date>/` holding:
+  - MARKS.csv (row, window, reader, yes/no, trigger bar UTC);
+  - WINDOWS.csv (seed, edges);
+  - G3_REPORT.md: per row, the yes-rate per reader and agreement (Cohen kappa). A row with kappa < 0.4 goes back to G2 with the disagreeing windows listed.
+  - PNGs are rebuilt from the seed and not committed.
+- Done when:
+  - both readers have marked all 120 Tom windows;
+  - G3_REPORT.md is on origin (`git cherry` empty);
+  - `gate_board.json` sets tom to G3, with proof G3_REPORT.md, in the same commit.
+  - Card `tom-btc-eye-read` is closed with `tasks.py done`.
+- Not in scope: encoding, event studies, any Krown or Malkan row (G2 first).
+
 ## How to tell the whole thing is working (daily, about 5 min, Haiku)
 Read the gate board line in STATUS.md, the SHIP_FAILED count (`git log --grep SHIP_FAILED --since=1.day`) and the shots line. The day is on track if one gate moved, there were 0 repeated ship failures, and no operator report needed correcting. If not, the coordinator gets one line naming the stuck gate.

@@ -10,8 +10,8 @@
   "id": "b172-trim",
   "lane": "SONNET",
   "live_path": false,
-  "note": "Alignment review 2026-10-13: every session re-reads 63-73k tokens of always-loaded context (TOKEN_AUDIT); this is the largest fixed cost of session switching.",
-  "pinned": true,
+  "note": "Relay queue = LAYER_REBUILD_PLAN s6 (coordinator 2026-10-15, observer). Release: tasks.py apply-op <id> release, then tasks.py check <id>",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "relay-sonnet-2026-10-12",
@@ -34,7 +34,7 @@
   "sources": [
     "MyTradingSys/research/TOKEN_AUDIT_2026-10-12.md"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Measure which sources load in a kick session (CLAUDE.md, memory index, skills list, MCP instructions) from one transcript's first turn.",
     "Add a relay-only trim: dispatcher/relay prompts cap tool output (tail/--quiet) and start from a lean profile where the App allows; record what cannot be trimmed.",
