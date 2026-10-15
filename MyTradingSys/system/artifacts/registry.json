@@ -24,12 +24,12 @@
       "urls": {
         "jishu.sharma": "https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN",
         "jishu.awgp": "https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su",
-        "jishusharma1985": "https://claude.ai/artifact/4D8YMxq5WeZagGnoHByXg9"
+        "jishusharma1985": ""
       },
       "last_published": {
         "jishu.sharma": "2026-10-15",
         "jishu.awgp": "2026-10-14",
-        "jishusharma1985": "2026-10-15"
+        "jishusharma1985": "deleted 2026-10-15"
       },
       "note": "One Inbox: the jishu.sharma page (q21; db seeded from OPERATOR_DECISIONS.md and OPERATOR_INBOX.md 2026-10-15, existing answers kept). Publish the other copies without writing to their db. Carries the Claude-GPT cycle section (system/RELAY_NOTES.md). Republished by the NUC pickup, built with the trade ledger. The jishusharma1985 copy is published WITHOUT capabilities (2026-10-14): the page's own code shows 'Read-only view', so that login has no second Inbox nobody picks up. Republish it without passing capabilities."
     },

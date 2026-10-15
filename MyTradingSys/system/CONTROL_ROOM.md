@@ -5,8 +5,7 @@ Page: https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN (jishu.sharma, NUC; the 
 `capabilities: {}`; Inbox seeded 2026-10-12 from OPERATOR_INBOX.md, 41 items, status answered/filed; 2026-10-15 (q21) the repo decisions
 and Inbox items missing from the db were added, existing answers kept). Until 2026-10-15 the repo filed this page under jishu.awgp: the login
 names of the two machines were swapped (a session signed in as jishu.sharma@gmail.com on JIS-NUC owns it).
-No second copy (operator 2026-10-15): https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su (jishu.awgp, JIS-NB) and
-https://claude.ai/artifact/4D8YMxq5WeZagGnoHByXg9 (jishusharma1985) carry only the pointer page `artifacts/cr_moved.html` (done for 1985 on 2026-10-15; awgp: `artifacts.py plan --account jishu.awgp`). Jis deletes them from the app menu; a session cannot.
+No second copy (operator 2026-10-15). The jishusharma1985 copy was deleted by Jis the same day. The jishu.awgp page (https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su, JIS-NB) gets the pointer page `artifacts/cr_moved.html` (`artifacts.py plan --account jishu.awgp`), then Jis deletes it from the app menu; a session cannot.
 Build from the NUC with a scratch `--data-root` holding BUGS.md, FINDINGS.md, STATUS.md and the pulled mirror ledger
 (`runtime_data/_mirror/MyTradingSys/execution/auto_trades.jsonl`, `live_mirror.py pull`).
 Built by `scripts/dev/make_control_room.py` from the repo; hand-kept content in `MyTradingSys/system/control_room.json`;
