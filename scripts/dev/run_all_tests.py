@@ -3,6 +3,8 @@
 Usage:
   python scripts/dev/run_all_tests.py         (run all steps)
   python scripts/dev/run_all_tests.py --quick (skip mvn and backtest)
+  python scripts/dev/run_all_tests.py --quick --smoke --changed-file F   (what `sync.py ship` runs: only the steps gate_select picks
+                                                                          for the paths listed in F; live-path or unknown paths = all)
 
 Steps that share no state run concurrently in MTS_GATE_JOBS worker threads (default min(4, cpu count); MTS_GATE_JOBS=1 runs
 one step at a time in definition order, the old behaviour). SERIAL_STEPS (they scan or write checkout state) and Maven run one
@@ -22,6 +24,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Path(__file__).resolve().parent))   # gate_select
 
 # Function-style pytest tests that step 5b (unittest) collects only partly: Fabio v3 + live writers (TF1, E7).
 PYTEST_LAYER_PATHS = [
@@ -36,11 +39,23 @@ PYTEST_LAYER_PATHS = [
     "MyTradingSys/observation/tests",
 ]
 
+# Function-style pytest tests of the backtest tree (shard 4e).
+BACKTEST_PYTEST_PATHS = [
+    "MyTradingSys/backtest/test_prob_table.py",
+    "MyTradingSys/backtest/test_prob_table_edge.py",
+    "MyTradingSys/backtest/test_tom_bt.py",
+    "MyTradingSys/backtest/test_tom_probe_diag.py",
+    "MyTradingSys/backtest/test_dax_data.py",
+    "MyTradingSys/backtest/test_tom_dax_recall.py",
+    "MyTradingSys/backtest/test_tom_v2_recall.py",
+    "MyTradingSys/backtest/test_tom_dax_bt.py",
+]
+
 # These steps scan or write checkout state (layer index, artifact registry, wiring --check, STATUS generator, group map), and
 # Step 4's tests drop fixtures in the tree, so they never run beside the pool. Maven (step 5) is serial as well.
 SERIAL_STEPS = ("3ly", "3af", "3x", "3ms", "3mg", "5")
 # Submitted first so the pool's last step is not the slowest one (measured: 4, 3xt, 5b, 3k, 3ds, 3dk, 3bk, 3w).
-SLOWEST_FIRST = ("4", "3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
+SLOWEST_FIRST = ("4", "4b", "4c", "4e", "4f", "3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
 _LOCK = threading.Lock()
 
 
@@ -147,6 +162,31 @@ def exec_layer_chunks(modules, jobs):
     return False, "\n".join(keep)
 
 
+def exec_unittest_shards(script, jobs):
+    """Run one slow unittest script as `jobs` concurrent processes (its test ids split round-robin; union = every test, each once).
+    cwd stays the repo root and scripts/dev goes on PYTHONPATH, as when the script runs directly. Returns (ok, output)."""
+    import importlib
+    import unittest
+    mod_dir = str(REPO / Path(script).parent)
+    sys.path.insert(0, mod_dir)
+    try:
+        suite = unittest.defaultTestLoader.loadTestsFromModule(importlib.import_module(Path(script).stem))
+    finally:
+        sys.path.remove(mod_dir)
+
+    def ids(t):
+        return [i for x in t for i in (ids(x) if isinstance(x, unittest.TestSuite) else [x.id()])]
+
+    chunks = split_modules(ids(suite), jobs)
+    env = dict(os.environ, PYTHONPATH=os.pathsep.join([mod_dir, os.environ.get("PYTHONPATH", "")]).rstrip(os.pathsep))
+    procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                              text=True, errors="replace", env=env) for c in chunks]
+    outs = [p.communicate()[0] for p in procs]
+    ok = all(p.returncode == 0 for p in procs)
+    keep = outs if ok else [o if os.environ.get("CI") else "\n".join(o.splitlines()[-15:]) for p, o in zip(procs, outs) if p.returncode != 0]
+    return ok, "\n".join(keep)
+
+
 def isolate_pytest_tmp():
     """Give every pytest child of this gate its own fresh temp root (inherited via env). A stale pytest-of-<user>/pytest-current link in
     %TEMP% that cannot be unlinked (WinError 5, seen 2026-10-11 after the ESET removal reboot) makes pytest exit 1 even when every test passes,
@@ -215,7 +255,7 @@ def build_plan(quick):
     add("3r", "Alert rate checker tests", [sys.executable, "scripts/dev/test_alert_rate_check.py"], "Step 3r: Alert rate checker tests")
     add("3s", "Testnet status summary tests", [sys.executable, "scripts/dev/test_testnet_status.py"], "Step 3s: Testnet status tests")
     add("3f", "Funnel report tests", [sys.executable, "scripts/dev/test_funnel_report.py"], "Step 3f: Funnel report tests")
-    add("3dk", "Desk board tests", [sys.executable, "scripts/dev/test_desk.py"], "Step 3dk: Desk board tests")
+    plan.append(Step("3dk", "Desk board tests", "Step 3dk: Desk board tests", run=lambda: exec_unittest_shards("scripts/dev/test_desk.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_desk.py, 2 shards)", tail=None))
     add("3tk", "Task card tests", [sys.executable, "scripts/dev/test_tasks.py"], "Step 3tk: Task card tests")
     add("3td", "Tom ledger date tests", [sys.executable, "scripts/dev/test_tom_ledger_dates.py"], "Step 3td: Tom ledger date tests")   # Tom ledger date column: observed or empty (RV01 D4)
     add("3hs", "Tom holdout split tests", [sys.executable, "scripts/dev/test_tom_holdout_split.py"], "Step 3hs: Tom holdout split tests")   # Tom holdout clean split, dates only
@@ -229,7 +269,9 @@ def build_plan(quick):
     add("3d", "Extract quote checker tests", [sys.executable, "scripts/dev/test_verify_extract_quotes.py"], "Step 3d: Quote checker tests")
     add("3h", "Launcher verb static tests (runner, orphans)", [sys.executable, "scripts/dev/test_mts_launcher.py"], "Step 3h: Launcher static tests")
     add("3g", "Gate coverage tests (Fabio v3 + live writers)", [sys.executable, "scripts/dev/test_run_all_tests.py"], "Step 3g: Gate coverage tests")
-    add("3k", "sync.py parallel ship tests", [sys.executable, "scripts/dev/test_sync.py"], "Step 3k: sync.py tests")
+    plan.append(Step("3k", "sync.py parallel ship tests", "Step 3k: sync.py tests", run=lambda: exec_unittest_shards("scripts/dev/test_sync.py", gate_jobs() if gate_jobs() == 1 else 3), cmd_text="python -m unittest (scripts/dev/test_sync.py, 3 shards)", tail=None))
+    add("3gs", "Gate selector tests (path -> smoke steps, fail closed)", [sys.executable, "scripts/dev/test_gate_select.py"], "Step 3gs: Gate selector tests")
+    add("3rc", "Red CI task card tests (one card per red run)", [sys.executable, "scripts/dev/test_ci_red_card.py"], "Step 3rc: Red CI card tests")
     add("3sg", "Stop guard tests (a session cannot end holding unshipped work)", [sys.executable, "scripts/dev/test_stop_guard.py"], "Step 3sg: Stop guard tests")
     add("3e", "DSA browser worker + queue lane tests", [sys.executable, "scripts/worker/test_dsa_worker.py"], "Step 3e: DSA worker tests")
     add("3sh", "Screenshot intake tests (save, classify, read, close gates)", [sys.executable, "scripts/dev/test_shot.py"], "Step 3sh: Screenshot intake tests")
@@ -240,35 +282,39 @@ def build_plan(quick):
     add("3ms", "STATUS.md generator tests (commit-dated reports, CI green line)", [sys.executable, "scripts/dev/test_make_status.py"], "Step 3ms: make_status tests")
     add("3cs", "Cloud SessionStart hook tests (no-op off cloud)", [sys.executable, "scripts/dev/test_cloud_setup.py"], "Step 3cs: Cloud setup hook tests")
     add("3pc", "Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)", [sys.executable, "scripts/dev/test_prompt_contract.py"], "Step 3pc: Prompt contract tests")
-    add("3ds", "DSA helper CLI tests (dsa.py)", [sys.executable, "scripts/dev/test_dsa.py"], "Step 3ds: DSA helper CLI tests")   # dsa.py: DSA one-call helpers (put/edit/commit/begin/end/host)
+    plan.append(Step("3ds", "DSA helper CLI tests (dsa.py)", "Step 3ds: DSA helper CLI tests", run=lambda: exec_unittest_shards("scripts/dev/test_dsa.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_dsa.py, 2 shards)", tail=None))   # dsa.py: DSA one-call helpers (put/edit/commit/begin/end/host)
     add("3cr", "Control Room page generator tests", [sys.executable, "scripts/dev/test_make_control_room.py"], "Step 3cr: Control Room tests")
     add("3lh", "GPT lane health tests (down/up rules, reroute, pause, resume, DSA prompt)", [sys.executable, "scripts/dev/test_lane_health.py"], "Step 3lh: GPT lane health tests")
     add("3rb", "Claude-GPT relay board tests (shared notes, lanes, pack)", [sys.executable, "scripts/dev/test_relay_board.py"], "Step 3rb: Relay board tests")
     add("3af", "Artifact registry tests (one url per page per account)", [sys.executable, "scripts/dev/test_artifacts.py"], "Step 3af: Artifact registry tests")
-    add("3bk", "Backup snapshot tests (dirty/untracked work reaches the remote)", [sys.executable, "scripts/dev/test_backup_snapshot.py"], "Step 3bk: Backup snapshot tests")
+    plan.append(Step("3bk", "Backup snapshot tests (dirty/untracked work reaches the remote)", "Step 3bk: Backup snapshot tests", run=lambda: exec_unittest_shards("scripts/dev/test_backup_snapshot.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_backup_snapshot.py, 2 shards)", tail=None))
     add("3lm", "Live mirror tests (read-only desktop->work-tree data, fail-closed)", [sys.executable, "scripts/dev/test_live_mirror.py"], "Step 3lm: Live mirror tests")
 
     # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
     add("3w", "Wiring gate tests", [sys.executable, "scripts/dev/test_wiring_scan.py"], "Step 3w: Wiring gate tests")
     add("3x", "Wiring check: no undeclared unwired code (wiring_scan.py --check)", [sys.executable, "scripts/dev/wiring_scan.py", "--check"], "Step 3x: Wiring check")
 
-    # Step 4: pytest (math + doc tests)
-    cmd4 = [sys.executable, "-m", "pytest", "MyTradingSys/tests", "-q",
-            # function-style tests that unittest-based steps 5b/6 do not collect
-            # one entry per line: parallel sessions append here (a shared line is a guaranteed conflict)
-            "MyTradingSys/backtest/test_prob_table.py",
-            "MyTradingSys/backtest/test_prob_table_edge.py",
-            "MyTradingSys/backtest/test_tom_bt.py",
-            "MyTradingSys/backtest/test_tom_probe_diag.py",
-            "MyTradingSys/backtest/test_dax_data.py",
-            "MyTradingSys/backtest/test_tom_dax_recall.py",
-            "MyTradingSys/backtest/test_tom_v2_recall.py",
-            "MyTradingSys/backtest/test_tom_dax_bt.py",
-            ] + PYTEST_LAYER_PATHS
-    # Own basetemp: parallel gates share %TEMP%/pytest-of-<user>/pytest-current and its cleanup raises
-    # PermissionError after all tests pass (JIS-NB 2026-10-14, six ships at once); same fix as run_extra_tests.py.
-    cmd4 += ["-p", "no:cacheprovider", f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s4_')) / 'bt'}"]
-    add(4, "Pytest (math + doc tests)", cmd4, "Step 4: Pytest tests")
+    # Step 4: pytest (math + doc tests), sharded so the slowest step no longer sets the gate's wall time (2026-10-16: one process
+    # took 919 s of a 15 min gate). 4/4b/4c = MyTradingSys/tests files round-robin, 4d = doc size/contract tests, 4e = backtest
+    # files, 4f = layer/live-writer paths. Every shard gets its own basetemp: parallel pytest processes share %TEMP%/pytest-of-<user>
+    # and its cleanup raises PermissionError after all tests pass (JIS-NB 2026-10-14, six ships at once).
+    def pytest_cmd(targets):
+        return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider",
+                f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s4_')) / 'bt'}"]
+
+    tests_dir = REPO / "MyTradingSys" / "tests"
+    doc_shard = ["MyTradingSys/tests/docs", "MyTradingSys/tests/test_relay_prompts.py"]
+    top = sorted(f"MyTradingSys/tests/{f.name}" for f in tests_dir.glob("test_*.py")) if tests_dir.exists() else []
+    top = [f for f in top if f not in doc_shard]
+    # a new test subfolder under MyTradingSys/tests is collected wholesale, as before the split
+    top += sorted(f"MyTradingSys/tests/{d.name}" for d in tests_dir.iterdir()
+                  if d.is_dir() and d.name not in ("docs", "fixtures", "__pycache__") and any(d.rglob("test_*.py"))) if tests_dir.exists() else []
+    for i, (num, chunk) in enumerate(zip(("4", "4b", "4c"), (top[k::3] for k in range(3)))):
+        if chunk:
+            add(num, f"Pytest shard {i + 1}/3 (MyTradingSys/tests, {len(chunk)} files)", pytest_cmd(chunk), f"Step {num}: Pytest tests")
+    add("4d", "Pytest doc size/contract tests", pytest_cmd(doc_shard), "Step 4d: Pytest doc tests")
+    add("4e", "Pytest backtest function-style tests", pytest_cmd(BACKTEST_PYTEST_PATHS), "Step 4e: Pytest backtest tests")
+    add("4f", "Pytest layer + live-writer tests", pytest_cmd(PYTEST_LAYER_PATHS), "Step 4f: Pytest layer tests")
 
     # Step 5: mvn test (unless --quick)
     if not quick:
@@ -351,6 +397,25 @@ def run_plan(plan, jobs, out=None):
     return results
 
 
+def apply_selection(plan, args):
+    """--changed-file F (one path per line, vs origin/fast-track) with --smoke: skip the steps gate_select.select does not pick.
+    --smoke without --changed-file, or an unreadable file, runs everything (fail closed). Returns (plan, mode or None)."""
+    if "--smoke" not in args or "--changed-file" not in args:
+        return plan, None
+    try:
+        files = Path(args[args.index("--changed-file") + 1]).read_text(encoding="utf-8").splitlines()
+    except (OSError, IndexError):
+        return plan, None
+    import gate_select
+    mode, nums = gate_select.select([f.strip() for f in files if f.strip()], [(s.num, s.cmd_text) for s in plan])
+    if mode == "full":
+        return plan, mode
+    for s in plan:
+        if s.num not in nums and not s.skip:
+            s.skip = f"not selected by the {mode} gate (CI runs it)"
+    return plan, mode
+
+
 def main(argv=None):
     args = sys.argv[1:] if argv is None else argv
     unbuffer()
@@ -358,6 +423,9 @@ def main(argv=None):
     quick = "--quick" in args
 
     plan = build_plan(quick)
+    plan, mode = apply_selection(plan, args)
+    if mode:
+        print(f"Gate mode: {mode} ({sum(1 for s in plan if not s.skip)} steps); CI runs the full suite behind the push", flush=True)
     results = run_plan(plan, gate_jobs())
 
     # Summary

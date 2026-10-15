@@ -26,19 +26,34 @@ def commit(repo, name, text):
 
 
 class SyncTest(unittest.TestCase):
-    def setUp(self):
-        self.tmp = Path(tempfile.mkdtemp())
-        origin = self.tmp / "origin.git"
-        sh(self.tmp, "init", "-q", "--bare", str(origin))
+    # The origin + two clones are built ONCE per run and copied per test: ~25 git calls per test became 2 (the step took 852 s on a
+    # loaded machine, mostly fixture time). Each copy gets its own origin url; tests still mutate only their copy.
+    @classmethod
+    def setUpClass(cls):
+        cls.tpl = Path(tempfile.mkdtemp())
+        origin = cls.tpl / "origin.git"
+        sh(cls.tpl, "init", "-q", "--bare", str(origin))
         sh(origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")  # git < 2.28 has no init -b
-        self.a, self.b = self.tmp / "a", self.tmp / "b"
-        for c in (self.a, self.b):
-            sh(self.tmp, "clone", "-q", str(origin), str(c))
+        a, b = cls.tpl / "a", cls.tpl / "b"
+        for c in (a, b):
+            sh(cls.tpl, "clone", "-q", str(origin), str(c))
             sh(c, "config", "user.email", "t@t")
             sh(c, "config", "user.name", "t")
-        commit(self.a, "README.md", "x\n")
-        sh(self.a, "push", "-q", "origin", "HEAD:fast-track")
-        sh(self.b, "pull", "-q", "origin", "fast-track")
+        commit(a, "README.md", "x\n")
+        sh(a, "push", "-q", "origin", "HEAD:fast-track")
+        sh(b, "pull", "-q", "origin", "fast-track")
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tpl, ignore_errors=True)
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        shutil.copytree(self.tpl, self.tmp, dirs_exist_ok=True)
+        origin = self.tmp / "origin.git"
+        self.a, self.b = self.tmp / "a", self.tmp / "b"
+        for c in (self.a, self.b):
+            sh(c, "remote", "set-url", "origin", str(origin))
         self.gated = []
 
     def tearDown(self):
@@ -52,6 +67,35 @@ class SyncTest(unittest.TestCase):
         r = subprocess.run(["git", "ls-tree", "--name-only", "origin/fast-track"], cwd=repo,
                            capture_output=True, text=True)
         return set(r.stdout.split())
+
+    def test_gate_with_files_param_gets_the_changed_paths_and_docs_get_the_docs_gate(self):
+        seen, docs = [], []
+        commit(self.a, "NOTE.md", "n\n")
+        sync.ship(self.a, gate=self.gate, docs_gate=lambda repo, files: docs.append(files))
+        self.assertEqual(docs, [["NOTE.md"]])
+        commit(self.a, "d.py", "d\n")
+        sync.ship(self.a, gate=lambda repo, files: seen.append(files), docs_gate=lambda r, f: docs.append(f))
+        self.assertEqual(seen, [["d.py"]])
+        self.assertEqual(len(docs), 1)
+
+    def test_run_gate_picks_smoke_and_full_flag_forces_everything(self):
+        calls = []
+        real = sync.subprocess.run
+        def fake(cmd, **k):
+            if any(str(c).endswith("run_all_tests.py") for c in cmd):   # only the gate; git calls stay real
+                calls.append(cmd)
+                return type("R", (), {"returncode": 0})()
+            return real(cmd, **k)
+        sync.subprocess.run = fake
+        try:
+            sync.run_gate(self.a, ["MyTradingSys/system/X.md"])
+            self.assertIn("--smoke", calls[-1])
+            os.environ["SYNC_FULL_GATE"] = "1"
+            sync.run_gate(self.a, ["MyTradingSys/system/X.md"])
+            self.assertNotIn("--smoke", calls[-1])
+        finally:
+            sync.subprocess.run = real
+            os.environ.pop("SYNC_FULL_GATE", None)
 
     def test_concurrent_ships_both_land(self):
         commit(self.a, "a.py", "a\n")
