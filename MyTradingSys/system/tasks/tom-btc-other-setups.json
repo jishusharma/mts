@@ -16,7 +16,8 @@
     "tom"
   ],
   "live_path": false,
-  "note": "ROUTED 2026-10-13 (operator: GPT + DSA do the work, Claude economy): GPT lab, after T4.",
+  "note": "PARKED 2026-10-15 (lab-unstall, TRACK_RECORD.md item 1-2): data-bound card (BTC klines / Tom frames after the 2026-10-12 copy) not verified on JIS-NUC; sibling Tom BTC cards ended BLOCKED at 230-485k tokens for zero output. Release (apply-op release) only after a pre-flight confirms every input path",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
@@ -35,7 +36,7 @@
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Reuse chart_lab.py with a setup switch; then the event study table."
   ],
