@@ -694,6 +694,10 @@
   "MyTradingSys/research/krown_ta101_2026-10-13/tools/build_data_coverage.py": {
    "disp": "REPRO",
    "why": "Builds weekly bars from the daily files and writes DATA_COVERAGE.md; run by hand after fetch_daily_majors.py; reads timestamps and DEV-window OHLC equality only."
+  },
+  "MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py": {
+   "disp": "REPRO",
+   "why": "DEV-only event counts and MDE for KR-S1, KR-S8, MAL-2/5/16/17 (EVENT_COUNTS.md); run by hand, reproduces event_counts.csv; computes no forward return."
   }
  }
 }
