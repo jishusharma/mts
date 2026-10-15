@@ -1,0 +1,4 @@
+study,run_utc,data_source,window_read,split,rule_sha256,verdict,decision_informed
+gross_effect_screen_2026-10-15,2026-10-15T19:08Z,F:/MTS/data/tom_raw/klines 1m,2022-01-01..2024-06-30,DEV,64297bd97bb66322829788d7d3a4ddc52286172d226b18d597ebb30b807d75b7,INCONCLUSIVE,whether session-extreme fade with 1m delta flow has a gross effect above 0.14 %
+orderflow_views_2026-10-14/study.py,2026-10-14,klines 1m + fapi top-up,"2022-2024 DEV, 2025 VAL, 2026 HOLDOUT",DEV+VAL+HOLDOUT,prior,published (RESULT.md:37-42),divergence rule; all three splits published
+tom_btc_2026-10-13/chart_lab.py,2026-10-13,BTC charts,"80 charts, window per charts/index.csv (not read here)",unknown,prior,n/a,chart reading for Tom layer

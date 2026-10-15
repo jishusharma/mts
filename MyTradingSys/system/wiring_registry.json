@@ -9,6 +9,10 @@
    "disp": "REPRO",
    "why": "Manually reproduces four synthetic witnesses and hashed source excerpts for the 2026-10-15 strategy audit revalidation; no market data or live imports; PASS recorded in the attached proof pack."
   },
+  "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py": {
+   "disp": "REPRO",
+   "why": "Pre-registered DEV-only gross-effect screen (PRE_REG.md); run by hand (--count | --full), reproduces RESULT.md/decay.csv/ledger.csv; covered by test_screen.py; no live imports."
+  },
   "MyTradingSys/research/orderflow_views_2026-10-14/study.py": {
    "disp": "REPRO",
    "why": "Reproduces research/orderflow_views_2026-10-14/results.json and today.json cited in RESULT.md (operator shots c688/a18c/8adf); run by hand (fetch|today|bt), no live process imports it."
