@@ -1,6 +1,6 @@
 # MTS feed watchdog (D4): one-shot, run every 60 s by scheduled task MTS-Feed-Watchdog.
 # Logs snapshot age + state_code age to runtime_data\feed_watchdog.log; WARN above threshold.
-# Keeps the HTF context writer (htf_context_live --loop) alive: starts it if absent. Never touches java.
+# Keeps the HTF context writer (htf_context_live --loop) and the order-flow writer (orderflow_live) alive: starts them if absent. Never touches java.
 param([int]$MaxSnapshotAgeSec = 180, [int]$MaxStateAgeSec = 180)
 $root = "C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"
 $log  = "$root\runtime_data\feed_watchdog.log"
@@ -19,4 +19,14 @@ if (-not $htf) {
          -RedirectStandardOutput "$root\runtime_data\htf_context_live.out.txt" -RedirectStandardError "$root\runtime_data\htf_context_live.err.txt" -PassThru
     $htfNote = "htf_started_pid=$($p.Id)"
 }
-Add-Content -Path $log -Value ("{0} {1} snapshot_age_s={2} state_code_age_s={3} {4}" -f $now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"), $lvl, $sAge, $cAge, $htfNote)
+$of = Get-CimInstance Win32_Process -Filter "Name='python.exe' OR Name='pythonw.exe'" | Where-Object { $_.CommandLine -match 'fabio\.orderflow_live' } | Select -First 1
+$ofNote = "of_pid=$($of.ProcessId)"
+if (-not $of) {
+    # 2026-10-14: the writer died and nothing restarted it; live health stayed RED on orderflow for 1.4 days. Resumes from _state.json.
+    $py2 = (Get-Command pythonw).Source
+    if (-not $py2) { $py2 = (Get-Command python).Source }
+    $p2 = Start-Process $py2 -ArgumentList "-m","MyTradingSys.backtest.layers.fabio.orderflow_live" -WorkingDirectory $root -WindowStyle Hidden `
+         -RedirectStandardOutput "$rootuntime_data\orderflow_live.out.txt" -RedirectStandardError "$rootuntime_data\orderflow_live.err.txt" -PassThru
+    $ofNote = "of_started_pid=$($p2.Id)"
+}
+Add-Content -Path $log -Value ("{0} {1} snapshot_age_s={2} state_code_age_s={3} {4}" -f $now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"), $lvl, $sAge, $cAge, "$htfNote $ofNote")
