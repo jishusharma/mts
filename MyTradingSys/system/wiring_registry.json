@@ -686,6 +686,10 @@
   "MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py": {
    "disp": "REPRO",
    "why": "Pre-registered DEV-only chart-read G5 screen (opr_preopen_tops_2026-10-16); run by hand (--count | --full), reproduces its RESULT.md/trials.csv/ledger.csv; covered by its test file; no live imports. Screen, ran before G3 marks by operator decision 2026-10-16."
+  },
+  "MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/study.py": {
+   "disp": "REPRO",
+   "why": "Pre-registered DEV-only chart-read G5 screen (mal_bb_mid_engulf_2026-10-16); run by hand (--count | --full), reproduces its RESULT.md/trials.csv/ledger.csv; covered by its test file; no live imports. Screen, ran before G3 marks by operator decision 2026-10-16."
   }
  }
 }

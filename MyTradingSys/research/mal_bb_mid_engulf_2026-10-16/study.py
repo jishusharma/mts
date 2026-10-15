@@ -166,7 +166,7 @@ def full(A, st, S):
         for htf in (True, False):
             for x in XS:
                 m = st["fall"] & st["bounce"][x] & st["eng"][en] & (st["htf_on"] if htf else True)
-                nm = f"engulf {en} | HTF {'on' if htf else 'off'} | x={x}"
+                nm = f"engulf {en}, HTF {'on' if htf else 'off'}, x={x}"
                 grid.append((nm, arm(nm, ledger(m), 0, np.array([], np.int64), 0, PRIMARY_H)))
     # placebo, MFE/MAE, Wilson, flow 2x2
     t1, G1, d1 = gset(S["e1"], 0)
