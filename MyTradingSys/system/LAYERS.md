@@ -234,9 +234,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Tracks: Claude, Codex lab (scoring)
 - Spec / sources: `MyTradingSys/items/B162_qriptal_signal_layer.md`
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-14_qriptal-score-binance.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_qriptal-score-binance.md`
-- Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `qriptal-score-binance` raw p1 CODEX: Qriptal: score his posted calls on Binance candles (B162)
-  - `qriptal-call-ledger` blocked p2 CODEX: Qriptal: build the call ledger from the 22 staged transcripts (B162 step 1)
+- Open cards: none
 
 ## Krown (TA 101: zones, volume, candles, averages, ranges) (`krown`)
 - Status: Spec v0.2 + 120-rule ledger from 15 of 19 reachable TA 101 videos (14 TA + 1 fees). 4 videos blocked on YouTube captions (429). One structural stop (compression breakout), no stop distance or size rule: the rest is OURS. Not built, not backtested.
@@ -248,7 +246,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `krown-catalogue-gpt-audit` ready p1 CODEX: Krown G2 catalogue: GPT audit of NOT STATED cells, quote support and BTC-visible calls for S1-S9
-  - `krown-data-daily-majors` blocked p2 DSA: Krown data: BTCUSDT spot 1d/1w from 2017-08 plus ETH/BNB/SOL majors and Coinbase BTC-USD daily volume, checksu
   - `krown-dev-event-study` blocked p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `krown-layer-v0-detectors` blocked p2 SONNET: Krown layer v0 detectors: swings, zones, volume, candles, averages, range/coil as pure functions + params file
   - `krown-recall-check` blocked p2 SONNET: Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_RE
