@@ -1,25 +1,22 @@
-﻿# BLOCKED — LC1 UTC-day level hold test (2026-10-14)
+# LC1 levels hold — DEV result
 
-**Verdict: BLOCKED.** The required Binance BTCUSDT perpetual 1-minute DEV bars for 2024-12 through 2025-03 are not present in this environment. Without those bars, no empirical level-hold result can be calculated; no family is labeled KEEP or DROP.
+**KEEP: prior_day_high, prior_day_low, prior_day_poc, naked_poc, 4h_fractal_low, 4h_fractal_high, round_1000, prior_week_high. DROP: prior_day_vah, prior_day_val, daily_open, prior_week_low. L2 reached: 83.8%.** Each KEEP family has a positive lower 95% day-bootstrap CI bound. L2 candidates are restricted to KEEP families.
 
-## What was checked
+Implemented the causal level set and touch/random-line/pair measurement in `MyTradingSys/research/levels_confluence_2026-10-14/levels.py` and `levels_hold.py`; added synthetic coverage in `test_levels.py`. The full family table, pair count, and reproduction command are in [levels_hold.md](../../levels_confluence_2026-10-14/levels_hold.md).
 
-- Task scope/data window: `MyTradingSys/research/levels_confluence_2026-10-14/PLAN.md` (LC1 and “Data and windows” sections; DEV is 2024-12..2025-03).
-- Kline loader expects CSVs under `<root>/klines`: `MyTradingSys/backtest/bt/bt_data.py:9-14`.
-- Data inventory command: `python -c "from pathlib import Path; p=Path('F:/MTS/data/binance_raw'); print('binance_raw exists',p.exists()); print('children', [(str(x),sum(1 for _ in x.rglob('*.csv'))) for x in p.iterdir()] if p.exists() else []); print('repo Dumps',Path('Dumps').exists())"`
-- Result: `binance_raw exists True`; its only child is `F:\MTS\data\binance_raw\aggTrades` with **0 CSV files**; repository `Dumps` does not exist. There is no `<root>/klines` dataset available for `load_klines`.
+## Evidence
+
+- Data: `F:/MTS/data/tom_raw/klines/BTCUSDT-1m-YYYY-MM.csv`; loader `MyTradingSys/backtest/bt/bt_data.py:10-48`. Loaded 188,640 bars, 2024-11-21 00:00 through 2025-03-31 23:59 UTC; measured DEV 2024-12-01 through 2025-03-31.
+- Formula source: `MyTradingSys/backtest/layers/FORMULAS.md:414-428` (10 USD-bin profile and 70% value area).
+- Verification: `python -m pytest MyTradingSys/research/levels_confluence_2026-10-14/test_levels.py -q` — **3 passed** (pytest cache warning only).
+- Analysis: 12 families, 1,504 first-touch events; 1,279 L1→KEEP-family-L2 pairs, of which 1,072 reached L2 (83.8%); 917/1,072 (85.5%) revisited L1 after reaching L2. All detail is tabulated in the linked study report.
 
 ## Findings
 
-| Severity | Evidence | Finding | Status |
+| Severity | File:line | Finding | Evidence |
 |---|---|---|---|
-| HIGH | `F:/MTS/data/binance_raw/aggTrades` has 0 CSV files; `Dumps` absent; `bt_data.py:9-14` loads only `<root>/klines/*.csv` | DEV OHLCV input is unavailable. Per-day levels, touches, five matched-distance random lines, day-block bootstrap CIs, and L1→L2 outcomes cannot be measured. | NOT_IN_DATA |
-| HIGH | `PLAN.md`, LC1 steps 1–4 | Required outcomes are empirical and cannot be replaced by synthetic fixtures or inferred from another period. No KEEP/DROP list or L2 reached percentage is supportable. | BLOCKED |
+| LOW | `levels_hold.py` (`analyze`) | L2 results are descriptive: the KEEP label is based on the pooled DEV touch sample and is not validation evidence. | The study is restricted to DEV; validation and holdout were not read. |
 
-## Parameters / provenance
+**Claude spot-check: MATCH** (2026-10-15, Claude session lab-unstall). Recomputed `prior_day_high` and `prior_day_low` from raw public Binance USD-M BTCUSDT 1m klines (data.binance.vision futures/um monthly files 2024-11..2025-03, 217,440 bars), written from the levels_hold.md method text without importing the lab code (level = prior UTC day high/low, first bar of the day whose low-high range contains it, width = max(0.40% of 00:00 open, 0.10% of level), BREAK first/same-bar, HOLD, else NEITHER). `prior_day_high`: 57 touches, 32 HOLD (56.1%), 24 BREAK, 1 NEITHER = the report's 57 and 56.1%. `prior_day_low`: 60 touches, 38 HOLD (63.3%) = the report's 60 and 63.3%. Not rechecked: the random-line controls, the bootstrap CIs, the other ten families, the L1-L2 pairs.
 
-The plan specifies the scope and level families. The task’s stop width is `max(0.40% of price, 0.10% level buffer)`; volume-profile bins are $10 and 70% value area. These are not run here. Validation (2025-04..2025-06) and holdout (2025-07+) were not accessed.
-
-## Required to resume
-
-Provide the BTCUSDT 1-minute kline CSV dataset for DEV 2024-12..2025-03 at a readable `<root>/klines` path (compatible with `bt_data.load_klines`). Then build and test the scoped implementation and compute the registered DEV comparisons. The card was not marked done.
+No follow-up card created.
