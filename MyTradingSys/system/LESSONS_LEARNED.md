@@ -460,7 +460,7 @@ What happened: DSA composed a TF4 prompt at roughly 60 lines. CLAUDE.md says "Pr
 
 Rule: the 30-line cap is read from RELAY.md "Task list standard" at compose time, not from memory. Count the prompt lines before printing. If a prompt carries inherited hard rules or restated state, that is a defect: CLAUDE.md and STATUS.md already have them.
 
-Where the rule lives: RELAY.md "Task list standard" (block <= 30 lines, enforced by `relay.py lint`); DSA_SESSION_PROMPT.md section 9. (CLAUDE.md "What a CL prompt carries" was folded into these on 2026-10-15.)
+Where the rule lives: RELAY.md "Task list standard" (block <= 30 lines, enforced by `relay.py lint`). (CLAUDE.md "What a CL prompt carries" was folded into these on 2026-10-15.)
 
 Receipt: operator 2026-10-03.
 
