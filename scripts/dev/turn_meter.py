@@ -24,8 +24,8 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-TOOL_CAP = 15      # CLAUDE.md SHORT SESSIONS: 15 tool turns
-USER_CAP = 5       # CLAUDE.md SHORT SESSIONS: 5 turns with the operator
+TOOL_CAP = 40      # CLAUDE.md SHORT SESSIONS: 40 tool turns (operator q20, 2026-10-15; was 15)
+USER_CAP = 10      # CLAUDE.md SHORT SESSIONS: 10 turns with the operator (was 5)
 NAG_EVERY = 5      # after the cap, repeat every 5 tool turns (once is easy to ignore mid-step)
 PRUNE_DAYS = 7
 TAIL_START = 1 << 17   # transcript bytes read from the end to find a tool call's message (grows if big results push it out)

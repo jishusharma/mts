@@ -45,6 +45,8 @@ def problems(reg, repo=REPO):
             p.append(f"{s}: canonical page with no url on any account")
         if pg["status"] == "needs-url" and any(pg["urls"].values()):
             p.append(f"{s}: has a url, status should be canonical")
+        if pg.get("pointer_html") and not (Path(repo) / pg["pointer_html"]).is_file():
+            p.append(f"{s}: pointer_html {pg['pointer_html']} missing")
         if pg.get("html") and not (Path(repo) / pg["html"]).is_file():
             p.append(f"{s}: html {pg['html']} missing")
         g = pg.get("generator") or ""
@@ -66,7 +68,13 @@ def plan(reg, account):
     out = [f"ACCOUNT {account}: align artifacts with registry.json, republish over the existing url, never publish a second copy."]
     for pg in reg["pages"]:
         u = pg["urls"].get(account, "")
-        if pg["status"] == "retire":
+        if pg.get("single_owner") and account != pg["single_owner"]:
+            # one live copy only (operator 2026-10-15: no duplicate Control Room): other logins hold a pointer page, never a copy
+            if u:
+                out.append(f"  REPLACE      {pg['title']} <- {pg['pointer_html']} (pointer, no capabilities)  url={u}; OPERATOR: delete it from the app menu, then blank urls.{account}")
+            else:
+                out.append(f"  NO COPY      {pg['title']}: single copy on {pg['single_owner']}")
+        elif pg["status"] == "retire":
             out.append(f"  OPERATOR UNPIN+DELETE  {pg['title']}  {u or '(not on this account)'}  ({pg['note']})")
         elif pg["status"] == "needs-url":
             out.append(f"  RECORD URL   {pg['title']}: read it from the Artifacts list, put it in registry.json urls.{account}")

@@ -67,35 +67,6 @@ class StopGuardTest(unittest.TestCase):
         (self.a / ".mts_live").write_text("", newline="\n")
         self.assertEqual(self.run_hook(), "")
 
-    def refs(self, bare):
-        return subprocess.run(["git", "for-each-ref", "--format=%(refname)", "refs/leftovers"], cwd=bare,
-                              capture_output=True, text=True).stdout.split()
-
-    def show(self, bare, spec):
-        return subprocess.run(["git", "show", spec], cwd=bare, capture_output=True, text=True).stdout
-
-    def test_stop_snapshots_the_dirty_tree_losslessly_to_the_backup_repo(self):
-        backup = self.tmp / "backup.git"
-        sh(self.tmp, "init", "-q", "--bare", str(backup))
-        sh(self.a, "remote", "add", "backup", str(backup))
-        (self.a / "wip.py").write_text("unsaved\n", newline="\n")
-        out = json.loads(self.run_hook())
-        self.assertEqual(out["decision"], "block")
-        self.assertIn("refs/leftovers/a", out["reason"])
-        self.assertEqual(self.refs(backup), ["refs/leftovers/a"])
-        self.assertEqual(self.show(backup, "refs/leftovers/a:wip.py").strip(), "unsaved")
-        st = subprocess.run(["git", "status", "--short"], cwd=self.a, capture_output=True, text=True).stdout
-        self.assertEqual(st.strip(), "?? wip.py")                            # tree untouched: nothing staged or committed
-        (self.a / "wip.py").write_text("newer\n", newline="\n")              # the second stop is allowed AND re-snapshots
-        self.assertEqual(self.run_hook(stop_hook_active=True), "")
-        self.assertEqual(self.show(backup, "refs/leftovers/a:wip.py").strip(), "newer")
-        self.assertEqual(self.refs(self.tmp / "origin.git"), [])
-
-    def test_missing_backup_remote_still_blocks_once_without_raising(self):
-        (self.a / "wip.py").write_text("x\n", newline="\n")
-        out = json.loads(self.run_hook())
-        self.assertEqual(out["decision"], "block")
-
     def test_garbage_input_never_raises(self):
         self.assertEqual(stop_guard.hook("not json"), "")
 

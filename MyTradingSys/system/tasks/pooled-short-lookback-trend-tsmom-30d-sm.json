@@ -14,7 +14,7 @@
     "volume_candles_ma"
   ],
   "live_path": false,
-  "note": "",
+  "note": "2026-10-15 q-pub-trend-holdout answered Yes: one pooled pre-registered hypothesis, holdout read once. Pre-register first (item 0a-0f gate, q13), then run.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

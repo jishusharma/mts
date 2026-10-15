@@ -4,6 +4,18 @@ Source: research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md section 6
 Copy this file next to a layer's pre-registration (or HOME_FIT_AUDIT_<layer>.md) and fill every slot BEFORE any backtest run.
 An item with no answer or no evidence line is `NOT_ANSWERED`; the run does not start. Missing data is `NOT_IN_DATA`, never 0.
 
+## 0. Pre-build gate (items 0a-0f; decision q13, 2026-10-14: adopted, "be flexible")
+
+Answer all six in writing before anything is built. A "no" stops the build unless the pre-registration states why it is waived.
+Source: research/mts_flow_audit_2026-10-13/REPORT.md section 3.
+
+- 0a Cost: smallest stop or target this idea uses? On BTC fees stay under 0.25 R only with a stop of at least 0.40 % (taker legs) or 0.20 % (maker entry).
+- 0b Gross: does a cheap fixed-horizon check on existing data show a raw move of at least 2x the round-trip cost?
+- 0c Record: does the source have dated calls or trades we can score on BTC data? Score them first (B162 is the template). No record: hypothesis, never a core.
+- 0d Data: does BTC history hold every input the source reads? A missing input is NOT_IN_DATA; nothing is built on it.
+- 0e Power: trades in the dev window and the detectable edge; if larger than the claimed edge, write INCONCLUSIVE in advance or do not run (backtest/power_mde.py).
+- 0f Kill: which result ends this source for good, and how many redesigns are allowed before it?
+
 ## 1. Source home: market, timeframe, session, holding period (with quote + file:line).
 
 Answer: TODO

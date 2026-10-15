@@ -306,9 +306,9 @@ Applied: 2026-10-13: rule stands; this session republishes the Control Room at h
 Spend the sealed 2025-07..2026-09 BTC holdout once on the short-lookback trend family (30-100 d)?
 
 Recommended: Yes, once, one pooled pre-registered hypothesis
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Yes, once, one pooled pre-registered hypothesis (Control Room db, 2026-10-14/15)
+Operator note (verbatim): (none)
+Applied: 2026-10-15 card pooled-short-lookback-trend-tsmom-30d-sm noted: pre-register one pooled hypothesis (gate 0a-0f), then read the 2025-07..2026-09 holdout once. Not run in this pickup.
 
 ```json
 {
@@ -370,9 +370,9 @@ Audit note (2026-10-14, supersedes the 2026-10-13 flow-audit recommendation to p
 Re-order the queue: crypto-native sources first?
 
 Recommended: Qriptal scoring (B162) and cryptocred-home-fit-audit to priority 1; pause the Tom v2 and Fabio v2 home-market chains
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+Answer: Qriptal scoring (B162) and cryptocred-home-fit-audit to priority 1; pause the Tom v2 and Fabio v2 home-market chains (Control Room db, 2026-10-14/15)
+Operator note (verbatim): (none)
+Applied: 2026-10-15 cryptocred-home-fit-audit p4 -> p1 (qriptal-score-binance already p1); paused at p5: fabio-layer-v2-markets, fabio-layer-v2-spec, tom-v2-btc-min-stop-width, tom-v2-dax-dev-backtest (done Tom v2 cards untouched).
 
 ```json
 {
@@ -397,9 +397,9 @@ Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h def
 Adopt the six-line pre-build gate as items 0a-0f of PRE_REG_TEMPLATE?
 
 Recommended: Yes
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+Answer: Yes (Control Room db, 2026-10-14/15)
+Operator note (verbatim): be flexible
+Applied: 2026-10-15 items 0a-0f added ahead of item 1 in backtest/PRE_REG_TEMPLATE.md; "be flexible": a "no" stops the build unless the pre-registration states why it is waived.
 
 ```json
 {
@@ -451,9 +451,9 @@ Applied: 2026-10-14 JIS-NB on Jis's OK in chat ("Yes - go ahead from me - do not
 Merge TRANSLATION_POSTMORTEM_2026-10-12.md into fast-track?
 
 Recommended: Yes
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+Answer: Yes (Control Room db, 2026-10-14/15)
+Operator note (verbatim): (none)
+Applied: 2026-10-15 research/TRANSLATION_POSTMORTEM_2026-10-12.md taken from origin/claude/sharp-carson-3xkd36 (commit 45fa300e) into fast-track.
 
 ```json
 {
@@ -477,9 +477,9 @@ Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h def
 File the simulator-validation card: planted edge in tom_bt/sim, a null that includes fees, a trade-list diff?
 
 Recommended: Yes
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+Answer: Yes (Control Room db, 2026-10-14/15)
+Operator note (verbatim): (none)
+Applied: 2026-10-15 card simulator-validation-planted-edge filed (raw) for the refiner.
 
 ```json
 {
@@ -503,9 +503,9 @@ Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h def
 Simplify how MTS runs: apply proposals P1-P5 in system/HOW_MTS_RUNS.md (one account per job, one machine starts sessions, one work list, bookkeeping out of git history, three pages)?
 
 Recommended: Yes, all five
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h default)
+Answer: Yes, all five (Control Room db, 2026-10-14/15)
+Operator note (verbatim): I will add one more a/c in future. I need flexibility to run any a/c on any machine. 
+Applied: 2026-10-15 HOW_MTS_RUNS.md proposals marked adopted with the operator note: P1/P2 are defaults, not locks (any account runs on any machine, a third account is expected). Cards filed for P3, P4, P5 and P1-P2 config (raw, for the refiner); nothing structural changed in this pickup.
 
 ```json
 {
@@ -529,9 +529,9 @@ Applied: (not yet; direction change, waits for Jis's explicit answer, no 24h def
 Is an underpowered FAIL on the DAX dev run INCONCLUSIVE (sample extended) instead of final STOP?
 
 Recommended: Keep the frozen bar, add an MDE line
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Keep the frozen bar, add an MDE line (Control Room db, 2026-10-14/15)
+Operator note (verbatim): (none)
+Applied: 2026-10-15 no change to the stop rule; the frozen bar stays. power_mde.py (card gap-g1-power-mde-helper, done) prints the MDE line.
 
 ```json
 {
@@ -552,9 +552,9 @@ Applied: (not yet)
 Should GO_LIVE_BAR count shadow fills from the real tape instead of testnet fills?
 
 Recommended: No change, report both
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: No change, report both (Control Room db, 2026-10-14/15)
+Operator note (verbatim): (none)
+Applied: 2026-10-15 GO_LIVE_BAR unchanged; card gap-g3-shadow-fills reports shadow-fill and testnet numbers side by side.
 
 ```json
 {
@@ -575,9 +575,9 @@ Applied: (not yet)
 May sessions read Deribit public mainnet candles (no account) for a venue-parity check?
 
 Recommended: No
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Yes, public market data only (Control Room db, 2026-10-14/15)
+Operator note (verbatim): What is this check and why it is needed? i do not know why this exists ->  'never mainnet' is a standing rule, so default is No. -  do what makes sence to achive your goals. we will do trading on mainnet so what is the confusion?
+Applied: 2026-10-15 CLAUDE.md testnet rule now allows public mainnet market data (no account, no orders); card gap-g8-deribit-parity unblocked. Why the check exists: backtests use Binance prices, execution is Deribit, so parity tells whether Binance results transfer.
 
 ```json
 {
@@ -598,9 +598,9 @@ Applied: (not yet)
 How do we get the captions for the 4 unextracted Krown TA 101 videos?
 
 Recommended: Retry once a day for 3 days, then ask me
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Retry once a day for 3 days, then ask me (2026-10-15)
+Operator note (verbatim): Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.
+Applied: 2026-10-15 card krown-ta101-extract-remaining-10 set ready (no cookies)
 
 ```json
 {
@@ -767,9 +767,9 @@ Applied: (not yet)
 One long-lived worktree per machine/lane, a branch per task?
 
 Recommended: Yes, adopt it
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Yes, adopt it (chat 2026-10-15)
+Operator note (verbatim): decide as per the goals of the task from where this question originates (no stale trees left behind, lower cost, same performance)
+Applied: 2026-10-15 sync.py start <slug> in a lane tree (mts-app/mts-relay/mts-dsa) switches to <host>/<slug>; claims block only on overlapping --area; SHORT SESSIONS 10 operator / 40 tool turns (CLAUDE.md, turn_meter.py, RELAY.md); tidy keeps mts-app; PARALLEL.md
 
 ```json
 {
@@ -777,13 +777,14 @@ Applied: (not yet)
  "stage": "Process",
  "refs": "system/PARALLEL.md, scripts/dev/stop_guard.py",
  "title": "One long-lived worktree per machine/lane, a branch per task?",
- "why": "26 stale worktrees piled up on JIS-NB because every session makes its own tree and ends before shipping. Safety net shipped 2026-10-15: the Stop hook and the daily hygiene run now park any dirty or unshipped tree at refs/leftovers/<tree> on the private F:/MTS_backup.git, so nothing is lost even when a session crashes. The cause is still one tree per session. Proposal: one persistent worktree per machine and lane (JIS-NB: app, relay, dsa; NUC: relay), a fresh branch per task inside it (sync.py start <slug> switches to host/<slug> off origin/fast-track), claims only when the claimed areas overlap with an open claim (health already reports overlaps), and the session cap raised from 5 operator / 15 tool turns to 10 / 40 for one task. CLAUDE.md rules 'work only in the printed WORKTREE' and 'SHORT SESSIONS' would change; nothing is changed until you answer.",
+ "why": "26 stale worktrees piled up on JIS-NB because every session makes its own tree and ends before shipping. Data is already safe: the MTS-Backup task snapshots every tree every 15 min to the private F:/MTS_backup.git. The cause is still one tree per session. Proposal: one persistent worktree per machine and lane (JIS-NB: app, relay, dsa; NUC: relay), a fresh branch per task inside it (sync.py start <slug> switches to host/<slug> off origin/fast-track), claims only when the claimed areas overlap with an open claim (health already reports overlaps), and the session cap raised from 5 operator / 15 tool turns to 10 / 40 for one task. CLAUDE.md rules 'work only in the printed WORKTREE' and 'SHORT SESSIONS' would change; nothing is changed until you answer.",
  "options": [
   "Yes, adopt it",
   "Only the longer session cap",
   "No, keep one tree per session"
  ],
- "recommended": "Yes, adopt it"
+ "recommended": "Yes, adopt it",
+ "answer": "Yes, adopt it"
 }
 ```
 
@@ -794,7 +795,13 @@ Which login owns the Control Room page and its Inbox/decisions database?
 Recommended: jishu.sharma (the account with the GitHub identity)
 Answer: jishu.sharma (chat 2026-10-15)
 Operator note (verbatim): there is no 1 place for me to record decisons? i need all artifacts to be associated with the jishu.sharma a/c - it is the main a/c that has my GitHub.
-Applied: (pending) needs a session signed in as jishu.sharma; q1-one-control-room (jishu.awgp) is superseded once it is done.
+Operator 2026-10-15 (chat): do not wait for or copy answers still in the jishu.awgp db; seed from the repo only, ask later if something was missed.
+Applied: 2026-10-15 (JIS-NUC, session signed in as jishu.sharma@gmail.com): no move was needed. Artifact list on this login shows it already owns
+the Control Room Ep6gA5 (and the other pages the repo filed under jishu.awgp), and it cannot read EoHi2q: the repo had the two logins' names swapped.
+Ep6gA5 stays the one Control Room (a new page would split the Inbox again). Its db was seeded from the repo only: the 11 decisions and 1 Inbox item
+in OPERATOR_DECISIONS.md / OPERATOR_INBOX.md that it lacked were added; nothing was overwritten or deleted. Registry keys, CONTROL_ROOM.md,
+CLOUD_ACCOUNTS.md, HOW_MTS_RUNS.md, ACCOUNT_SYNC.md, INSTALL.md and mts-control-room.SKILL.md now name jishu.sharma. q1-one-control-room is superseded.
+Closed 2026-10-15: the 9 answers were copied and applied (Control Room pickup, JIS-NUC).
 
 ```json
 {

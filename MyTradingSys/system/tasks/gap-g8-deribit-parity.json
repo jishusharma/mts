@@ -12,7 +12,7 @@
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "2026-10-15 q-gap-c answered Yes: public market data only, no account, no orders.",
   "prio": 5,
   "refine_tries": 0,
   "refined_by": "",
@@ -27,5 +27,5 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "G8 Deribit vs Binance venue parity (blocked on operator D-c)"
+  "title": "G8 Deribit vs Binance venue parity (public mainnet candles allowed, q-gap-c 2026-10-15)"
 }

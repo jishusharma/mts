@@ -1,10 +1,11 @@
 # CONTROL ROOM - the operator's one page, and how Claude keeps it alive
 
 Pages are listed in `system/artifacts/registry.json` (one url per page per account; `scripts/dev/artifacts.py`).
-Page: https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN (jishu.awgp, NUC; the Inbox and decisions db owner; it declares `db` + `user`, republish keeps them, never pass
-`capabilities: {}`; Inbox seeded 2026-10-12 from OPERATOR_INBOX.md, 41 items, status answered/filed).
-Copies, view only, never queried: https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su (jishu.sharma, pinned in the operator's sidebar) and
-https://claude.ai/artifact/4D8YMxq5WeZagGnoHByXg9 (jishusharma1985, 2026-10-14; published WITHOUT capabilities, shows "Read-only view": republish it the same way).
+Page: https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN (jishu.sharma, NUC; the Inbox and decisions db owner, decision q21; it declares `db` + `user`, republish keeps them, never pass
+`capabilities: {}`; Inbox seeded 2026-10-12 from OPERATOR_INBOX.md, 41 items, status answered/filed; 2026-10-15 (q21) the repo decisions
+and Inbox items missing from the db were added, existing answers kept). Until 2026-10-15 the repo filed this page under jishu.awgp: the login
+names of the two machines were swapped (a session signed in as jishu.sharma@gmail.com on JIS-NUC owns it).
+One copy of every page, on jishu.sharma, linked from the Control Room section Pages (built from registry.json, operator 2026-10-15: "all in one place, no duplicates, only the latest relevant"). Other logins hold at most a pointer page (`artifacts.py plan --account <login>`); the Control Room copy on jishusharma1985 was deleted by Jis the same day. The jishu.awgp page (https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su, JIS-NB) gets the pointer page `artifacts/cr_moved.html` (`artifacts.py plan --account jishu.awgp`), then Jis deletes it from the app menu; a session cannot.
 Build from the NUC with a scratch `--data-root` holding BUGS.md, FINDINGS.md, STATUS.md and the pulled mirror ledger
 (`runtime_data/_mirror/MyTradingSys/execution/auto_trades.jsonl`, `live_mirror.py pull`).
 Built by `scripts/dev/make_control_room.py` from the repo; hand-kept content in `MyTradingSys/system/control_room.json`;
@@ -50,8 +51,8 @@ The operator has two inputs on the page, both stored in the artifact's db (not i
 6. Ship repo changes (OPERATOR_INBOX.md, BUGS.md, control_room.json) with `sync.py ship` from a worktree.
 
 ## Rules
-- One page takes questions and Inbox (decision q1-one-control-room, 2026-10-13): the jishu.awgp page. The other account's page is a view;
-  its db is separate and a session on this account cannot read it.
+- One page takes questions and Inbox (decisions q1-one-control-room 2026-10-13, q21 2026-10-15): the jishu.sharma page. The other logins' pages are views;
+  their dbs are separate and a session on another login cannot read this one.
 - Republish at the end of every session that shipped (CLAUDE.md 'Pages follow builds'), not only at the daily pickup.
 - 'Sessions: what each one did' is `scripts/dev/session_log.py` over origin/fast-track (claim..release pairs and Result lines, last 48 h).
   A commit with no `Result:` line shows as 'Result not stated': write the line.

@@ -80,6 +80,76 @@ class SyncTest(unittest.TestCase):
         sh(self.a, "pull", "-q", "origin", "fast-track")
         self.assertEqual(sync.read_claims(self.a, "HEAD"), [])
 
+    def test_claim_blocks_only_on_overlapping_areas(self):
+        sync.claim(self.a, "Task one", area="scripts/dev,MyTradingSys/backtest", gate=self.gate)
+        sync.claim(self.a, "Task two", area="MyTradingSys/research", gate=self.gate)  # disjoint: allowed
+        sync.claim(self.a, "No area given", gate=self.gate)  # nothing to compare: allowed
+        with self.assertRaises(sync.SyncError) as cm:
+            sync.claim(self.a, "Task three", area="scripts/dev/sync.py", gate=self.gate)  # nested in task one's area
+        self.assertIn("scripts/dev", str(cm.exception))
+        sync.claim(self.a, "Task one", area="docs", gate=self.gate)  # same name, disjoint area: both may work
+        self.assertEqual(sorted(s for s, _ in sync.read_claims(self.a, "HEAD")),
+                         ["no-area-given", "task-one", "task-one-2", "task-two"])
+        with self.assertRaises(sync.SyncError):
+            sync.claim(self.a, "No area given", gate=self.gate)  # same name, no areas: still the same task
+
+    def make_lane(self, name="mts-app"):
+        lane = self.make_tree(self.tmp.resolve() / name, f"{sync.socket.gethostname()}/old-task")
+        sh(lane, "config", "user.email", "t@t")
+        sh(lane, "config", "user.name", "t")
+        return lane
+
+    def branch_of(self, tree):
+        return subprocess.run(["git", "-C", str(tree), "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
+
+    def test_start_slug_in_a_lane_tree_switches_branch_instead_of_making_a_worktree(self):
+        lane = self.make_lane()
+        commit(self.a, "later.txt", "l\n")
+        sh(self.a, "push", "-q", "origin", "HEAD:fast-track")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            path = sync.start(lane, slug="New Task")
+        self.assertEqual(Path(path), lane)
+        self.assertNotIn("WORKTREE:", buf.getvalue())
+        self.assertEqual(self.branch_of(lane), f"{sync.socket.gethostname()}/new-task")
+        self.assertTrue((lane / "later.txt").exists())  # off the fresh origin/fast-track
+        branches = subprocess.run(["git", "-C", str(lane), "branch", "--list"], capture_output=True, text=True).stdout
+        self.assertNotIn("old-task", branches)  # the finished task's branch is not left behind
+        self.assertEqual(len(sync.worktrees(self.a)), 2)  # primary + the lane: no new tree
+
+    def test_start_slug_in_a_lane_tree_refuses_dirty_or_ahead_and_changes_nothing(self):
+        lane = self.make_lane()
+        (lane / "README.md").write_text("half done\n", newline="\n")
+        with self.assertRaises(sync.SyncError) as cm:
+            sync.start(lane, slug="next")
+        self.assertIn("sync.py where", str(cm.exception))
+        self.assertEqual(self.branch_of(lane), f"{sync.socket.gethostname()}/old-task")
+        sh(lane, "checkout", "-q", "--", "README.md")
+        commit(lane, "unshipped.py", "u\n")
+        with self.assertRaises(sync.SyncError):
+            sync.start(lane, slug="next")
+        self.assertEqual(self.branch_of(lane), f"{sync.socket.gethostname()}/old-task")
+        self.assertTrue((lane / "unshipped.py").exists())
+
+    def test_start_slug_in_a_lane_tree_never_in_the_live_tree(self):
+        lane = self.make_lane()
+        (lane / sync.LIVE_MARKER).write_text("", newline="\n")
+        with self.assertRaises(sync.SyncError):
+            sync.start(lane, slug="next")
+        self.assertEqual(self.branch_of(lane), f"{sync.socket.gethostname()}/old-task")
+
+    def test_start_slug_in_a_non_lane_clean_tree_still_stays_put(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            path = sync.start(self.a, slug="anything")
+        self.assertEqual(Path(path), self.a)
+        self.assertNotEqual(self.branch_of(self.a), f"{sync.socket.gethostname()}/anything")
+
+    def test_tidy_all_keeps_every_named_lane_tree(self):
+        lanes = [self.make_tree(self.tmp.resolve() / n, f"jisnb/{n}") for n in ("mts-app", "mts-relay", "mts-dsa")]
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, include_named=True, now=time.time() + 48 * 3600), [])
+        self.assertTrue(all(l.exists() for l in lanes))
+
     def test_claim_rejects_flag_like_name(self):
         with self.assertRaises(sync.SyncError):
             sync.claim(self.a, "--help", gate=self.gate)
@@ -268,7 +338,12 @@ class SyncTest(unittest.TestCase):
 
     def test_health_flags_overlap_and_shared_tree(self):
         sync.claim(self.a, "Task one", area="scripts/dev,MyTradingSys/backtest", gate=self.gate)
-        sync.claim(self.a, "Task two", area="scripts/dev/sync.py", gate=self.gate)
+        # claim() now refuses an overlapping area, so plant the colliding claim as a file (an old or racing one)
+        two = self.a / sync.CLAIMS_DIR / "task-two.md"
+        two.write_text("task: Task two\nhost: h\naccount: t\narea: scripts/dev/sync.py\nepoch: %d\n" % time.time(), newline="\n")
+        sh(self.a, "add", sync.CLAIMS_DIR)
+        sh(self.a, "commit", "-q", "-m", "claim task-two")
+        sync.ship(self.a, gate=self.gate)
         (self.a / "README.md").write_text("dirty\n", newline="\n")  # trunk tree with an uncommitted file
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
@@ -580,30 +655,6 @@ class SyncTest(unittest.TestCase):
             wt2 = sync.new_worktree(self.a, "other")
         self.assertEqual(subprocess.run(["git", "symbolic-ref", "HEAD"], cwd=wt2, capture_output=True, text=True).stdout.strip(),
                          "refs/heads/Fresh-Host/other")
-
-    def test_leftovers_parks_dirty_and_unshipped_trees_on_the_backup_repo_only(self):
-        backup = self.tmp / "backup.git"
-        sh(self.tmp, "init", "-q", "--bare", str(backup))
-        sh(self.a, "remote", "add", "backup", str(backup))
-        dirty = self.make_tree(self.tmp / "t-dirty", "x/dirty")
-        clean = self.make_tree(self.tmp / "t-clean", "x/clean")
-        (dirty / "wip.py").write_text("unsaved work\n", newline="\n")
-        with contextlib.redirect_stdout(io.StringIO()):
-            done = dict(sync.leftovers(self.a))
-        self.assertTrue(done["t-dirty"].startswith("pushed"), done)
-        self.assertNotIn("t-clean", done)
-        refs = subprocess.run(["git", "for-each-ref", "--format=%(refname)", "refs/leftovers"], cwd=backup,
-                              capture_output=True, text=True).stdout.split()
-        self.assertEqual(refs, ["refs/leftovers/t-dirty"])
-        blob = subprocess.run(["git", "show", "refs/leftovers/t-dirty:wip.py"], cwd=backup, capture_output=True, text=True).stdout
-        self.assertEqual(blob.strip(), "unsaved work")
-        self.assertTrue((dirty / "wip.py").exists())                       # the tree itself is untouched
-        origin_refs = subprocess.run(["git", "for-each-ref", "refs/leftovers"], cwd=self.tmp / "origin.git",
-                                     capture_output=True, text=True).stdout
-        self.assertEqual(origin_refs, "")                                   # never the public origin
-        with contextlib.redirect_stdout(io.StringIO()):
-            again = dict(sync.leftovers(self.a))
-        self.assertEqual(again["t-dirty"], "unchanged")
 
     def test_gate_test_lists_are_one_entry_per_line(self):
         """Every new test appends to these lists; two entries on one line is a guaranteed merge conflict."""

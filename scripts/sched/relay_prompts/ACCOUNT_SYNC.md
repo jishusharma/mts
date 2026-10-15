@@ -8,7 +8,7 @@ What is per machine and what is per login decides who must do what:
 | Task Scheduler jobs (AutoDeploy, DailyHygiene, CodexLab) | machine | register scripts |
 | `mts-dispatcher` routine (hourly fallback: refine + housekeep) | login | paste the prompt below, signed in as that login |
 | `mts-lane-watch` routine | login, one host is enough | INSTALL.md |
-| Pages, pins, Control Room Inbox | login (Inbox only on jishu.awgp) | CONTROL_ROOM.md |
+| Pages, pins, Control Room Inbox | login (Inbox only on jishu.sharma, q21) | CONTROL_ROOM.md |
 
 The relay lock (`~/.claude/mts-relay-lock.json`) is per machine, so a gate tick and any login's routine tick never launch twice.
 

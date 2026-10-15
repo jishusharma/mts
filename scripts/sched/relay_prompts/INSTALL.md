@@ -18,7 +18,7 @@ It is the second line: `codex_run.py tick` on JIS-NUC already runs `lane_health.
 (no heartbeat for 3 h). The frontmatter model is only a request (Q40: the App default decides); the task is two Bash calls either way. Not registered on JIS-NB (2026-10-15): register it where it is wanted.
 
 ## Control Room inbox pickup
-`mts-control-room.SKILL.md` is not scheduled and the dispatcher no longer polls it. The Inbox db lives on the jishu.awgp page (CONTROL_ROOM.md); only a session signed in as that
+`mts-control-room.SKILL.md` is not scheduled and the dispatcher no longer polls it. The Inbox db lives on the jishu.sharma page (CONTROL_ROOM.md, q21); only a session signed in as that
 account can read it. Run it by hand from there, or give that host's dispatcher an inbox step on purpose (operator decision).
 
 ## Model-free gate (2026-10-15)

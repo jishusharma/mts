@@ -6,8 +6,8 @@
 
 | Login | GitHub identity | Machines (relay_runs.jsonl, artifacts/registry.json) | Claude GitHub App | Role |
 |---|---|---|---|---|
-| A: jishu.sharma@gmail.com | jishusharma (repo owner) | JIS-NB | installed, cloud sessions only | first login; pinned pages |
-| B: jishu.awgp | jishu-awgp (write collaborator, checked 2026-10-14) | JIS-NUC | not installed yet | Control Room Inbox and decisions owner |
+| A: jishu.sharma@gmail.com | jishusharma (repo owner) | JIS-NUC (checked 2026-10-15) | installed, cloud sessions only | Control Room Inbox and decisions owner (q21); all artifacts belong here |
+| B: jishu.awgp | jishu-awgp (write collaborator, checked 2026-10-14) | JIS-NB (inferred 2026-10-15, not checked) | not installed yet | second login; its pages are read-only copies |
 | C: jishusharma1985@gmail.com (Claude Max, 2026-10-14) | jishusharma1985 (write invite sent 2026-10-14, accept pending) | JIS-NB and JIS-NUC | not installed yet | third login, same queue and ritual |
 
 Repo owned by: jishusharma/mts (GitHub user jishusharma). One repo. Never duplicate the repo. Never fork for a second login.
@@ -52,7 +52,13 @@ Used from JIS-NB and JIS-NUC (Claude Code Win App), same queue and ritual as A a
      Accept the e-mailed invite as that user, then add the login to the table above.
   3. Cloud sessions only: in the Claude app on login C, Connectors -> GitHub, install the Claude GitHub App for that user, scoped to jishusharma/mts.
 - Pages: login C has its own pins (artifacts/registry.json key `jishusharma1985`). Its Control Room copy is a read-only mirror
-  (published without capabilities); the one Inbox stays on jishu.awgp.
+  (published without capabilities); the one Inbox is on jishu.sharma (q21).
 - Claude routines (scheduled tasks) are per login: A's paused routines do not show on C. To run the relay on C's budget,
   recreate mts-dispatcher on that host from scripts/sched/relay_prompts/INSTALL.md, signed in as C.
 - How a session knows it is on C: `Artifact read` of a jishu.sharma or jishu.awgp page url says "not found".
+
+## Which login is on which machine (checked 2026-10-15, decision q21)
+Until 2026-10-15 the repo put A on JIS-NB and B on JIS-NUC. A session on JIS-NUC whose Claude login is jishu.sharma@gmail.com
+owns the Control Room Ep6gA5 and the other pages then filed under jishu.awgp, and cannot read EoHi2q (then filed under jishu.sharma).
+So the NUC app runs login A and the JIS-NB pages belong to another login (B by elimination; a session on JIS-NB confirms with `Artifact list`).
+Check before trusting a label: the session's own account email and `Artifact list` decide, not this table.

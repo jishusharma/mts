@@ -13,7 +13,10 @@ system, so the running system gets its own checkout that no session works in.
 Last 7 days: 200 merge commits on fast-track, 29 needed a hand edit; the repeat offenders were NEXT_SESSION.md,
 the one-line test list in run_all_tests.py and BUGS.md. Cause: sessions sharing a tree (the main folder holds
 other sessions' uncommitted files and unshipped commits) and a handful of hot files everyone edits.
-- `sync.py start [slug]`: in a tree that is dirty or ahead of origin it does NOT work there; it makes
+- `sync.py start <slug>` inside a persistent lane tree (`mts-app`, `mts-relay`, `mts-dsa`; see Lane trees below) switches to a fresh branch
+  `<host>/<slug>` off origin/fast-track and works there: no new worktree. It refuses when the lane tree is dirty or ahead (`sync.py where`
+  shows what is unshipped) and never runs in the live tree. The previous task's branch is deleted once it is fully on origin/fast-track.
+- `sync.py start [slug]` elsewhere: in a tree that is dirty or ahead of origin it does NOT work there; it makes
   `../mts-<host>-<slug>` off origin/fast-track and prints `WORKTREE: <path>`; work only there. `--here` opts out.
 - `ship`: a collision confined to NEXT_SESSION.md, STATUS.md or BUILD_REPORT.md resolves to origin's text and says so
   (re-apply your edit if it mattered); a collision anywhere else still stops for a human.
@@ -34,7 +37,8 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
 1. `python scripts/dev/sync.py start` (from a work tree, never the live tree) - pull everyone else's work; it prints the open claims.
 2. Pick ONE task not in the claims list (`system/NEXT_SESSION.md`, or `tasks.py next`) and
    `python scripts/dev/sync.py claim "<task>" --area <paths>`: it ships a one-file claim at once, so a parallel session on any
-   login or device sees it; a second claim of the same task is refused; a claim older than 24 h shows STALE: ask, then release.
+   login or device sees it. A claim is refused only when its `--area` paths overlap an open claim's (equal or nested), or the same
+   task name is claimed again with no areas to compare; disjoint areas never block. A claim older than 24 h shows STALE: ask, then release.
 3. Work. Commit small and often, trailer `MTS-Session: <ID>` (that is the session record; commit history is the registry).
    The body has one line `Result: <what works now, or the number it produced>`. A question for the operator:
    `Operator: <question>`. Other sessions' uncommitted files are not yours - never stash, clean or report them.
@@ -105,4 +109,7 @@ Never from the live tree (the folder holding `.mts_live`). `git worktree add ../
 take origin's, regenerate), `python scripts/dev/run_all_tests.py --quick` there, then `git -C ../mts-push push origin <branch>:fast-track`.
 `sync.py ship` does the same plus the retry and the NEXT_SESSION/STATUS/BUILD_REPORT collision rule above.
 
-> Proposal pending (OPERATOR_DECISIONS.md q20, 2026-10-15): one persistent worktree per machine/lane with a branch per task, claims only on overlapping areas, longer session cap. Not in force until answered.
+## Lane trees (operator q20, 2026-10-15)
+One persistent worktree per lane: JIS-NB `mts-app`, `mts-relay`, `mts-dsa`; NUC `mts-relay`. A task is a branch inside it (`sync.py start <slug>`), not a tree,
+so no stale per-session trees pile up (reason: 26 did on JIS-NB). `tidy` never removes a named lane tree, with or without `--all`. The turn cap
+for one task is 10 operator / 40 tool turns (CLAUDE.md SHORT SESSIONS, `turn_meter.py`). MTS-Backup still snapshots every tree every 15 minutes.
