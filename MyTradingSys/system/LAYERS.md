@@ -26,7 +26,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv`; `MyTradingSys/research/tom_transfer_2026-10-11/TOM_LEDGER_CANONICAL_GROUPS.csv`
 - Other results: `MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md`
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`; `MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md`
-- Codex lab reports (newest 4 of 17): `MyTradingSys/research/layer_lab/reports/2026-10-15_tom-btc-event-study.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_tom-v2-btc-min-stop-width.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_tom-btc-event-study.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_tom-profile-shape-parity.md`
+- Codex lab reports (newest 4 of 18): `MyTradingSys/research/layer_lab/reports/2026-10-15_tom-btc-event-study.md`; `MyTradingSys/research/layer_lab/reports/2026-10-15_gap-g4-through-ticks-flag.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_tom-v2-btc-min-stop-width.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_tom-btc-event-study.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `rv02-fix-dax-full-dev-authorization` blocked p1 SONNET: RV02 R3: require complete DAX sampling and bind holdout authorization
   - `rv02-fix-dax-preprocessing-isolation` blocked p1 SONNET: RV02 R1: isolate DAX preprocessing and report metadata before holdout
