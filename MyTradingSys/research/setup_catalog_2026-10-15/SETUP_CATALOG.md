@@ -1,7 +1,7 @@
 # SETUP CATALOG: every trade setup Tom and Fabio describe, in plain chart terms (2026-10-15)
 
 Status: consolidation of what the repo already holds, extended 2026-10-15 by a line-by-line pass over the 26 never-extracted Tom
-transcripts (batches 1+2: 19 of 26 read, section 6.1a; the other 7 are still open). Before that pass: no new extraction, no test design, no fees, no stop-size math, no
+transcripts (batches 1-3: all 26 read, section 6.1a). Before that pass: no new extraction, no test design, no fees, no stop-size math, no
 backtest, no VALIDATION/HOLDOUT read. Operator decision 2026-10-15: identify all bare setups first (what the naked eye sees on a
 BTC chart and how the trader applies it) before any further test design. This file is the base for: filling gaps from unread
 transcripts, blind eye-read marking on BTC charts by two readers, then stops/fees/code. Fable 5.1 audits it against raw
@@ -46,6 +46,8 @@ A day or session boundary on BTC (UTC day, a chosen "open") is OURS; where a set
 | TOM-12 | Break-in: price returns into the old balance after outside prices fail to hold | Tom | P or B outside the old value area with no volume base, then a fast return inside, enter the pullback with the move, target the start of the outside impulse | N | YES | 0 |
 | TOM-13 | Route to the unfair prices: single prints and the gap between two POCs get revisited | Tom | a single print area, or two POCs with a low-volume gap (double distribution), weak highs/lows next to strong tails; price is expected to come back and fill the empty zone | N | YES | 0 |
 | TOM-14 | After a news shock: counter trade back to the origin of the move (V reversal) | Tom | a fast news move with no base, an inside bar, then a reaction back toward where the shock started | N | PARTIAL | 0 |
+| TOM-15 | Candle formations at a range edge: three in a line, inside bar, outside bar | Tom | after a compression or at a support/resistance area: three same-colour candles, an inside bar after an impulse, or an outside bar that clears both sides | N | YES | 0 |
+| TOM-16 | Top after forced hedger buying: short when the large volumes break down | Tom | price and volume far above average, large volume at the high, an aggressive seller appears, trade the break below the last big buyers | N | PARTIAL | 0 |
 | FAB-1 | Balance with CVD pressure, break on volume ("sell model day") | Fabio | flat balance while CVD runs hard one way, first candle where price follows the volume out of balance with big trades | N | PARTIAL | 1 (FL F2) |
 | FAB-2 | Absorbed push, rewarded effort ("punch to the wall") | Fabio | one side's aggression hits a wall (big delta, no price result), the other side's aggression moves price: trade with the side that gets the result | N | PARTIAL | 1 (FL F1) |
 | FAB-3 | Failed auction of one side, then aggression of the other at the level | Fabio | consolidation where one side was absorbed, then the other side aggresses at that level with big trades: enter with the aggressor | N | PARTIAL | 2 (FL F3c, F5) |
@@ -55,7 +57,7 @@ A day or session boundary on BTC (UTC day, a chosen "open") is OURS; where a set
 | FAB-7 | Heat-map liquidity: reload, protection wall, break and protect, book sweep | Fabio | resting order walls on the heat map get hit, absorb, reload; trade the reload or the break that is protected | N | NO | 0 (1 hypothetical, ANG R35) |
 | FAB-8 | Volume-defined fair value gap rejection | Fabio | the lowest-volume price inside the value area of a swing; price rejects there | N | YES | 0 |
 
-Counts: Tom 14 setups (10 + TOM-11, TOM-12 from batch 1 + TOM-13, TOM-14 from batch 2 of the 2026-10-15 never-extracted pass), 4 with a stop stated in words (TOM-1, -2, -5 and TOM-4, which gained "below the last volumes" in batch 2; no price or distance stop found in either batch), BTC visible YES 8 / PARTIAL 2 / NO 4. Fabio 8 setups, 0 with an initial
+Counts: Tom 16 setups (10 + TOM-11, TOM-12 from batch 1 + TOM-13, TOM-14 from batch 2 + TOM-15, TOM-16 from batch 3 of the 2026-10-15 never-extracted pass), 4 with a stop stated in words (TOM-1, -2, -5 and TOM-4, which gained "below the last volumes" in batch 2; no price or distance stop found in any of the three batches), BTC visible YES 9 / PARTIAL 3 / NO 4. Fabio 8 setups, 0 with an initial
 stop stated in words (his management rules are stated; the initial stop is always "here" on the chart), BTC visible YES 2 /
 PARTIAL 5 / NO 1. Real trades: Tom 22 assigned (21 + viT_ lost counter trade in TOM-2) + 1 unassigned (ANG R20) + 2 anti-examples; Fabio 17 FL entry rows assigned (F1, F2,
 F3a-c, F4a-b, F5, F6-F14; F15 never filled), 2 unassigned trade groups (ANG R31, R33).
@@ -324,6 +326,19 @@ rules with a quote; whether they carry to his other setups is NOT STATED):
    - Stop tighter "depending on the setup" (STR 4.7, BVpY): no rule.
    - OURS: engine `ct_short`/`ct_long` at VAH/VAL zones and the "3 proofs" bar.
 
+   - Added 2026-10-15 from never-extracted videos (batch 3, section 6.1a), the counter-trade rule and its proof (4VXpUjhKG2U, VxN5IxTwpbE). No stop, no target distance: NOT STATED.
+
+> "you go short at the top and long at the bottom and that's it and everything in between is just noise"
+**Source GPS: 4VXpUjhKG2U | MIDDLE**
+
+> "But what does it look like at the top? Do I have unfinished auctions there or do I have finished auctions, meaning completed auctions?"
+**Source GPS: VxN5IxTwpbE | END**
+
+> "Now I'm gathering the necessary proof whether it actually makes sense to do a counter trade here."
+**Source GPS: VxN5IxTwpbE | END**
+
+   Wording slip in VxN5IxTwpbE: "phase two is counter setups and phase one is breakout setups" (raw) contradicts the same passage (counter trades work in the 70 % balance phase, breakouts in the 30 % trend phase). Read as balance = counter, trend = breakout, like every other video; the slip is recorded here, not used.
+
 ### TOM-3 Limit sell below the last volume step
 1. **Name / trader.** Tom (yRvMW6lgN1o, one taken trade: risk $250, gain about $1,212).
 2. **What you see.** A trend that flattens into a range; an inside day (the whole day inside the previous day's range) near the high; a spike lower that leaves "stability in trading volume"; the profile has a step (a sharp edge of volume); below it price can move fast.
@@ -530,6 +545,22 @@ rules with a quote; whether they carry to his other setups is NOT STATED):
 5. **BTC visibility: YES.** Balances, overlaps, ledges, VWAP shift, buying/selling speed (aggTrades).
 6. **Evidence.** 0 standalone trades; the 4MoN add (TOM-5) is the only taken instance.
 7. **Gaps.** Entry trigger, speed threshold, stop: NOT STATED. Never-extracted `uk4PZV59nYw` ("his EXACT breakout setup") and `gFJBg8Bsw68` ("BEST breakout strategy") are the obvious sources (section 6).
+
+   - Added 2026-10-15 from never-extracted videos (batch 3, section 6.1a), the second attempt, the early entry and the tested-level rule (4VXpUjhKG2U, Sy-x5AQ9-Pk). No stop: NOT STATED.
+
+> "Breakout trading only works when a market is out of balance."
+**Source GPS: 4VXpUjhKG2U | MIDDLE**
+
+> "And on the second run, the probability is even greater that the market will continue to push higher after a small pullback."
+**Source GPS: 4VXpUjhKG2U | MIDDLE**
+
+> "I can already trade a breakout before it takes out the high"
+**Source GPS: Sy-x5AQ9-Pk | END**
+
+> "should it return there, the probability is higher that it will fall through"
+**Source GPS: Sy-x5AQ9-Pk | END**
+
+   Reading: untested impulse and sideways zones are reaction zones; a zone that was tested once is "checked off" and more likely to break on the next return. The early entry before the old high is his wording; its size is NOT STATED.
 
 ### TOM-7 Scalp in balance around VWAP
 1. **Name / trader.** Tom, "dynamic scalping".
@@ -815,9 +846,99 @@ rules with a quote; whether they carry to his other setups is NOT STATED):
 > "when unpredictable movements occur, always wait to see what happens next. Does a V reversal follow or does a balance form?"
 **Source GPS: 6BAzqewtPUk | END**
 
+   Context filter (15JoLK0PbMU, VIX video; the 20 is his number, SOURCED): political news moves are overreactions that reverse; the VIX level decides whether institutions invest.
+
+> "political markets have short legs"
+**Source GPS: 15JoLK0PbMU | MIDDLE**
+
+> "So, for us, the absolutely most important figure in the volatility index is the 20."
+**Source GPS: 15JoLK0PbMU | END**
+
+   Below 20: steady inflow, "relaxed balance trading"; above 20 sustained: large swings, strong breakouts or counter trades (paraphrase). BTC has no VIX; any BTC volatility gauge would be OURS.
 5. **BTC visibility: PARTIAL.** Fast shocks, inside bars, volume spikes and the origin of the move are visible in klines; whether the cause was a political headline is not (news timestamps would need a source).
 6. **Evidence.** 0 trades. Crude oil and DAX-future chart illustrations after a political message (video context 2026 Middle East), no dates or prices given.
 7. **Gaps.** Entry trigger beyond "after the reaction", stop, how far a move counts as an overreaction, time frame: NOT STATED. Close to TOM-1 (counter trade of an exhausted push) and TOM-11 (news regime); listed apart because the target is the origin of a news shock.
+
+### TOM-15 Candle formations at a range edge: three in a line, inside bar, outside bar
+1. **Name / trader.** Tom, "three in a line", inside bar, outside bar (2xnNPIyHGQ4, "less is more"). Candle patterns are his only taught ones; he says they work only with location and volume.
+2. **What you see.** (a) Three candles of the same colour in one direction, ideally with spikes, at a breakout level after a real compression (range or support area); the next move is often extreme and the fourth strong impulse is the excess that ends the run. (b) An inside bar after an impulse: a stopping point where balance starts, a place to look for a reversal. (c) An outside bar that trades above and below the previous candle: stops and equilibrium are cleared, an impulse often follows.
+
+> "Three candlesticks of the same color in one direction."
+**Source GPS: 2xnNPIyHGQ4 | MIDDLE**
+
+> "I should only look for it when a market is at a so-called breakout level."
+**Source GPS: 2xnNPIyHGQ4 | MIDDLE**
+
+> "always make sure to check beforehand whether a compression has built up in whatever form"
+**Source GPS: 2xnNPIyHGQ4 | MIDDLE**
+
+> "When this fourth strong impulse comes, it's always the excess."
+**Source GPS: 2xnNPIyHGQ4 | MIDDLE**
+
+> "And such outside bars often give me an indication that the market has now made a decision."
+**Source GPS: 2xnNPIyHGQ4 | END**
+
+3. **Entry, stop, target, management (his words).**
+   - Entry: for the inside bar, look for the reversal; for the three in a line, the third move after it. Trigger candle and price: NOT STATED.
+
+> "And I then look to see if there's an opportunity for a reversal here."
+**Source GPS: 2xnNPIyHGQ4 | MIDDLE**
+
+> "The third move after the three in a line is often an extreme move."
+**Source GPS: 2xnNPIyHGQ4 | MIDDLE**
+
+   - Stop: NOT STATED. Target: the next support or resistance area.
+
+> "where is my next interesting support or resistance area"
+**Source GPS: 2xnNPIyHGQ4 | END**
+
+   - Management: NOT STATED.
+4. **Context he requires.** A support or resistance area or a compression beforehand; in the middle of a range the formation does not help. Volume: falling volumes with room below let him treat a three in a line as trend continuation instead of an S/R trade.
+
+> "And it's also absolutely essential to check whether there was a resistance or support area beforehand where this candlestick formation could give me an advantage."
+**Source GPS: 2xnNPIyHGQ4 | MIDDLE**
+
+> "markets always tend to move toward areas of high trading volume"
+**Source GPS: 2xnNPIyHGQ4 | END**
+
+5. **BTC visibility: YES.** Candle bodies, ranges and volume from klines at any time frame (the time frame is not fixed in the video; 30-minute and 5-minute shown).
+6. **Evidence.** 0 trades. He says the three patterns can be back tested "with the relevant previous support and resistance levels" (paraphrase); he gives no results.
+7. **Gaps.** Time frame, trigger candle, stop, target distance, volume threshold: NOT STATED. Overlaps TOM-6 (breakout level) in location; separate because the signal is the candle pattern.
+
+### TOM-16 Top after forced hedger buying: short when the large volumes break down
+1. **Name / trader.** Tom, no name of his own (cw8LWQmec1E, gold and silver futures, "shorting the tops").
+2. **What you see.** A market far above its average: volume is much larger than average and traded at much higher prices. The volume at the top is hedging (industrial buyers who had to buy after the breakout from the old balance), not trader conviction. Then an aggressive seller appears and the hedgers who bought near the high are underwater.
+
+> "This volume isn't created by us traders, but by so-called hedging transactions."
+**Source GPS: cw8LWQmec1E | MIDDLE**
+
+> "At this precise moment, we can see that an aggressive seller finally comes in to drive the price."
+**Source GPS: cw8LWQmec1E | MIDDLE**
+
+> "if it's much lower, well, then simply no one is interested anymore. And then there's a high probability that the market will return to its average."
+**Source GPS: cw8LWQmec1E | BEGIN**
+
+3. **Entry, stop, target, management (his words).**
+   - Entry: when price goes below the level of the last big buyers (large volumes break downward); intraday: heavy selling after heavy buying, then watch the price range below.
+
+> "Where were the last big buyers? And then you'll see when the market goes below that. Then the probability is high that sales will increase, and then you have the big short."
+**Source GPS: cw8LWQmec1E | END**
+
+> "we're waiting for the moment when large volumes break downward"
+**Source GPS: cw8LWQmec1E | END**
+
+> "And then you have a price range here where you can watch what happens if we drop below it."
+**Source GPS: cw8LWQmec1E | END**
+
+   - Stop: NOT STATED. Target: NOT STATED (the hedgers' entry area is the pressure zone, no price named as target). Management: NOT STATED.
+
+> "And that's the moment where you're usually even in earlier than if you analyze the volume the way I just showed you."
+**Source GPS: cw8LWQmec1E | END**
+
+4. **Context he requires.** Compare current volume with the product's average liquidity; prices far above where the main volume traded. The hedging story applies to commodity futures (producers, expiry months).
+5. **BTC visibility: PARTIAL.** Volume by price, a large volume node under the high and the break below it are visible in klines and aggTrades; hedgers and expiries are not (perpetuals have no hedging buyers of this kind).
+6. **Evidence.** 0 trades. Gold and silver chart illustrations (the TL T8 gold short is the same context, section 6.1).
+7. **Gaps.** Stop, target, how much above the average counts, how large the volume must be: NOT STATED.
 
 ### Tom: unassigned and anti-examples
 - ANG R20 (wPMiyJXL0zU): ANG infers a short counter trade, but the target he names reads like a long: "In this case, for example, I take the value area high of the current day as my target area." (MIDDLE) followed by "the market can continue to rise" (context window, same passage). Side is unresolved; not assigned. Stated risk:
@@ -1023,16 +1144,16 @@ FABIO_TRADE_LEDGER.md:48 and :90.
 | 0CrkbfuIhkc | Crash or All-In? THIS is What Volume Profile Tells Us NOW! | context reading, HTF value **(READ 2026-10-15, see 6.1a)** |
 | lO-Iptd29t4 | The ONLY Newstrading-Video you'll EVER need | partly read by GAP (G01-G18); TOM-1 A-C4 news, TOM-8/9 **(READ 2026-10-15, see 6.1a)** |
 | 6BAzqewtPUk | Forget newstrading! THIS is the strategy of the trading world champion! | TOM-1 news condition **(READ 2026-10-15, see 6.1a)** |
-| 9VN9y2DVtGQ | Forget Technical Analysis! THIS is the strategy of the World Trading Champion! | unknown |
-| 2xnNPIyHGQ4 | Trading World Champions show: THIS strategy wins EVERY time! | unknown |
-| 4VXpUjhKG2U | How to Always Win as a Trader! (3 Mistakes Every...) | management, mistakes (entry too early, TOM-1) |
-| Sy-x5AQ9-Pk | The Only Technical Analysis Guide You'll Ever Need | unknown, beginner |
-| VxN5IxTwpbE | How I Would Start Trading in 2026 (Beginner's Blueprint) | unknown, beginner |
-| 15JoLK0PbMU | VIX Strategy revealed | day selection / volatility context |
-| cw8LWQmec1E | Gold & Silver Bubble WARNING | TL T8 gold short context |
+| 9VN9y2DVtGQ | Forget Technical Analysis! THIS is the strategy of the World Trading Champion! | unknown **(READ 2026-10-15, see 6.1a)** |
+| 2xnNPIyHGQ4 | Trading World Champions show: THIS strategy wins EVERY time! | unknown **(READ 2026-10-15, see 6.1a)** |
+| 4VXpUjhKG2U | How to Always Win as a Trader! (3 Mistakes Every...) | management, mistakes (entry too early, TOM-1) **(READ 2026-10-15, see 6.1a)** |
+| Sy-x5AQ9-Pk | The Only Technical Analysis Guide You'll Ever Need | unknown, beginner **(READ 2026-10-15, see 6.1a)** |
+| VxN5IxTwpbE | How I Would Start Trading in 2026 (Beginner's Blueprint) | unknown, beginner **(READ 2026-10-15, see 6.1a)** |
+| 15JoLK0PbMU | VIX Strategy revealed | day selection / volatility context **(READ 2026-10-15, see 6.1a)** |
+| cw8LWQmec1E | Gold & Silver Bubble WARNING | TL T8 gold short context **(READ 2026-10-15, see 6.1a)** |
 
 ### 6.1a Pass status (2026-10-15, line by line from raw_transcripts_canonical/<id>_raw.txt)
-Read in inventory order: 19 of 26 (batch 1: 12, batch 2: 7). NOT yet read: 9VN9y2DVtGQ, 2xnNPIyHGQ4, 4VXpUjhKG2U, Sy-x5AQ9-Pk, VxN5IxTwpbE, 15JoLK0PbMU, cw8LWQmec1E (7).
+Read in inventory order: 26 of 26 (batch 1: 12, batch 2: 7, batch 3: 7). Pass complete.
 Result of the 12 (no fees, no backtest, no VALIDATION/HOLDOUT; any number added is OURS or his, labelled where used):
 | id | read | what it gave |
 |---|---|---|
@@ -1055,8 +1176,16 @@ Result of the 12 (no fees, no backtest, no VALIDATION/HOLDOUT; any number added 
 | 0CrkbfuIhkc | READ | index, Bitcoin and Mag 7 level reads; fast re-entry into old balance as risk sign (TOM-12 note); acceptance levels are states, no stops (batch 2) |
 | lO-Iptd29t4 | READ | news gaps: gaps are not always closed; trade the gap or the trend only after a range forms and leaves; breakaway gaps stay open (TOM-8/9 notes) (batch 2) |
 | 6BAzqewtPUk | READ | news shock then inside bar then reaction to the origin: new TOM-14 (batch 2) |
+| 9VN9y2DVtGQ | READ | against trend lines and indicators; order of reading (who dominates, then dynamic setup, then order book). No setup, no stop, no quote used (batch 3) |
+| 2xnNPIyHGQ4 | READ | new TOM-15: three in a line, inside bar, outside bar, each with location and volume conditions (batch 3) |
+| 4VXpUjhKG2U | READ | TOM-2 and TOM-6 notes: counter only in balance ("short at the top and long at the bottom"), breakout needs imbalance, the second attempt; against moving averages and Bollinger bands. No stop (batch 3) |
+| Sy-x5AQ9-Pk | READ | TOM-6 notes: dynamic impulse then sideways phase, tested zones are checked off, early breakout entry before the old high. No stop (batch 3) |
+| VxN5IxTwpbE | READ | TOM-2 proof (finished vs unfinished auctions); 70/30 balance vs trend; one wording slip recorded under TOM-2. Trader-type content ignored (batch 3) |
+| 15JoLK0PbMU | READ | VIX 20 as regime figure and "political markets have short legs" (TOM-14 context); "buy when the cannons thunder" is a market saying, no setup. BTC has no VIX (batch 3) |
+| cw8LWQmec1E | READ | new TOM-16: hedger-driven top in gold and silver, short on the break below the last big buyers. No stop (batch 3) |
 Setups that gained a stated stop from batch 1: 0 (the invalidation exit in viT_ is a state, not a price; recorded under TOM-2). New setups: 2 (TOM-11, TOM-12).
 Batch 2 (7 videos): setups that gained a stated stop: 1 (TOM-4, location only: below the last volumes). New setups: 2 (TOM-13, TOM-14). Numbers added: none.
+Batch 3 (7 videos): setups that gained a stated stop: 0. New setups: 2 (TOM-15, TOM-16). Numbers added: none (the VIX 20 is his, quoted). Pass total: 26/26 videos read, 6 new setups (TOM-11 to TOM-16), 1 setup gained a stated stop (TOM-4, location only).
 
 ### 6.2 Tom, V1 only (47): the ones that carry setup fields above
 Every STR quote (TOM-2, -4, -6, -7) comes from V1 extracts whose gate FAILS with NO-GPS (BVpYGKz9PBU 0/35, 43JaKHRvxHk 0/25,
