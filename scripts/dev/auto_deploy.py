@@ -18,6 +18,8 @@ Result of the last run: MyTradingSys/runtime/sched/auto_deploy_last.json (gitign
 Usage: python scripts/dev/auto_deploy.py [--check]   (--check: decide and report, change nothing)
 Exit 0 = deployed / up to date / not live; 1 = stopped (red gate, not ff, dirty, fetch failed): look at the json.
 """
+import nowin  # B173: no console flash from git/python children under pythonw
+nowin.install()
 import json
 import os
 import re

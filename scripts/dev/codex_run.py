@@ -13,6 +13,8 @@ spend guard (LAB_WINDOW_PTS, LAB_RUNS_PER_WINDOW, ASTRA_RUNS_PER_WINDOW, LAB_WEE
 Environment (all optional): CODEX_HOME (F:/codex_home), MTS_CODEX_LAB_WT (F:/MTS/mts-codex-lab), MTS_CODEX_EXE,
 MTS_CODEX_SANDBOX (workspace-write), MTS_CODEX_TIMEOUT_MIN (60).
 """
+import nowin  # B173: no console flash from git/python children under pythonw
+nowin.install()
 import argparse
 import glob
 import json
