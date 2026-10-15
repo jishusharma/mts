@@ -63,6 +63,11 @@ EST_WEEK_RATIO = 0.17     # week points per window point (13 / 81 and 1 / 7 on 2
 MEASURED_RUNS = 8         # the cost of a setting is the max of its latest runs that carry a measurement
 USAGE = "MyTradingSys/system/codex_usage.json"   # shipped with the run: what the Control Room "Claude-GPT cycle" shows
 USAGE_RUNS = 10
+# Time boxes (2026-10-15): JSON is not doc-only for sync.py ship, so every lane-state or usage commit runs the quick gate (minutes, and a hung
+# pytest child never ends). A tick that waited on it never reached `next`: no card ran for 15 h. On expiry the whole process tree is killed; the commit
+# stays on the lab branch and the next successful ship pushes it, so nothing is lost.
+SWEEP_TIMEOUT_S = 10 * 60
+SHIP_TIMEOUT_S = 25 * 60
 
 TEMPLATES = {
     "audit": {
@@ -550,6 +555,34 @@ def sh(wt, *args):
     return subprocess.run([sys.executable, *args], cwd=str(wt), capture_output=True, text=True)
 
 
+def boxed(cmd, cwd, timeout_s):
+    """subprocess.run with a hard time box. On expiry the whole process tree is killed (a gate's pytest children hold the pipes, so killing
+    only the parent would leave communicate() waiting) and the result has returncode 124 and a TIMEOUT line on stderr."""
+    nt = os.name == "nt"
+    p = subprocess.Popen(cmd, cwd=str(cwd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding="utf-8", errors="replace",
+                         start_new_session=not nt)
+    try:
+        out, err = p.communicate(timeout=timeout_s)
+        return subprocess.CompletedProcess(cmd, p.returncode, out, err)
+    except subprocess.TimeoutExpired:
+        if nt:
+            subprocess.run(["taskkill", "/PID", str(p.pid), "/T", "/F"], capture_output=True)   # only the PID started here
+        else:
+            os.killpg(p.pid, 9)
+        try:
+            out, err = p.communicate(timeout=30)
+        except subprocess.TimeoutExpired:
+            out, err = "", ""
+        return subprocess.CompletedProcess(cmd, 124, out or "", (err or "") + f"\nTIMEOUT after {timeout_s}s: process tree killed\n")
+
+
+def run_sweep(wt, runs, *flags):
+    """lane_health sweep for the tick, time-boxed. Its outcome goes to last_lane.txt; a failing or hung sweep must not stop the lab."""
+    sw = boxed([sys.executable, str(wt / "scripts/dev/lane_health.py"), "sweep", *flags], wt, SWEEP_TIMEOUT_S)
+    (runs / "last_lane.txt").write_text(sw.stdout + sw.stderr, encoding="utf-8", newline="\n")
+    return sw
+
+
 def refresh(wt):
     """Bring the lab work tree to origin/fast-track on its own branch. Refuses a dirty tree: unfinished work is never touched."""
     if git(wt, "status", "--porcelain").stdout.strip():
@@ -656,7 +689,7 @@ def run_card(card, dry=False, env=os.environ, probing=False):
             git(wt, "add", "-A")
             result = now.get("result") if outcome == "DONE" else f"BLOCKED, card stays ready: see {reports[-1]}"
             git(wt, "commit", "-q", "-m", commit_message(card, outcome, result, when))
-            s = sh(wt, "scripts/dev/sync.py", "ship")
+            s = boxed([sys.executable, "scripts/dev/sync.py", "ship"], wt, SHIP_TIMEOUT_S)
             if s.returncode:
                 outcome, note = "SHIP_FAILED", (s.stdout + s.stderr).strip()[-300:]
                 Path(str(log) + ".ship.txt").write_text(s.stdout + s.stderr, encoding="utf-8", newline="\n")   # which gate step failed
@@ -736,13 +769,11 @@ def cmd_tick(a):
     runs.mkdir(parents=True, exist_ok=True)
     try:
         refresh(wt)
-        sw = subprocess.run([sys.executable, str(wt / "scripts/dev/lane_health.py"), "sweep", "--apply", "--ship", "--beat"], cwd=str(wt), capture_output=True, text=True)
-        (runs / "last_lane.txt").write_text(sw.stdout + sw.stderr, encoding="utf-8", newline="\n")   # sweep failing must not stop the lab
+        run_sweep(wt, runs, "--apply", "--ship", "--beat")   # failing or hung: the tick goes on to `next`
         r = subprocess.run([sys.executable, str(wt / "scripts/dev/codex_run.py"), "next"], cwd=str(wt), capture_output=True, text=True)
         code, line = r.returncode, (r.stdout.strip().splitlines() or [r.stderr.strip()[-300:] or "no output"])[-1]
         if "lane marked down" in line:   # next just found the window spent: reroute now, not at the next tick
-            sw = subprocess.run([sys.executable, str(wt / "scripts/dev/lane_health.py"), "sweep", "--apply", "--ship"], cwd=str(wt), capture_output=True, text=True)
-            (runs / "last_lane.txt").write_text(sw.stdout + sw.stderr, encoding="utf-8", newline="\n")
+            run_sweep(wt, runs, "--apply", "--ship")
     except SystemExit as e:
         code, line = 1, str(e)
     except subprocess.CalledProcessError as e:
