@@ -32,6 +32,9 @@ def run(home, *args, now="2026-10-15T10:00:00Z", host="JIS-NB", cwd=None, extra=
     env = {k: v for k, v in os.environ.items() if not k.startswith("MTS_RELAY")}
     env.update({"MTS_RELAY_HOME": str(home), "MTS_RELAY_NOW": now, "MTS_RELAY_NOLINT": "1", "MTS_RELAY_HOST": host,
                 "MTS_RELAY_ACCOUNT": "acct", "MTS_RELAY_NOCODEX": "1", **(extra or {})})
+    for who in ("AUTHOR", "COMMITTER"):   # CI runners have no git identity; the desk commit inside tick needs one
+        env.setdefault(f"GIT_{who}_NAME", "t")
+        env.setdefault(f"GIT_{who}_EMAIL", "t@t")
     return subprocess.run([sys.executable, str(SCRIPT), *args], capture_output=True, text=True, env=env, cwd=str(cwd) if cwd else None)
 
 

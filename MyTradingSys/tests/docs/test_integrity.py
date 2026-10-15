@@ -144,5 +144,5 @@ def test_7_size_cap(rel):
     it (OPERATOR_INBOX.md: CONTROL_ROOM.md step 3) instead of raising the number."""
     p = REPO / rel
     assert p.exists(), f"{rel} is missing"
-    size = p.stat().st_size
+    size = len(p.read_bytes().replace(b"\r\n", b"\n"))   # a Windows runner checks out CRLF; the cap is on the committed LF bytes
     assert size <= SIZE_CAPS[rel], f"{rel} is {size} B, cap {SIZE_CAPS[rel]} B"
