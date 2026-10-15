@@ -1,21 +1,21 @@
 # Development Status
 
-Generated: 2026-10-15 11:11:22
+Generated: 2026-10-15 12:36:47
 
 ## Git Status
-CI green: 71a3c75e (2026-10-15 10:52:21 +0530) = origin/fast-track: OK
+CI green: a9cc1b01 (2026-10-15 12:00:49 +0530) = origin/fast-track: OK
 LESSONS: digest in sync
 
 **Last 3 commits on origin/fast-track:**
 ```
-71a3c75e ci: make the offline gate hermetic (CI env, CRLF checkout, git identity)
-683435fc Merge remote-tracking branch 'origin/fast-track' into jisnb/dsa-b185
-4e2eaba9 bug B186: write discipline - stray .bak and duplicate section passed all write checks
+a9cc1b01 hygiene: snapshot dirty trees to the private backup repo on Stop and daily; exact-case worktree branch
+b87ab559 LEFTOVERS doc: no raw git checkout line (docs integrity rule)
+70382f92 hygiene: Stop guard, tidy repairs case-broken HEADs and runs daily, leftovers ledger
 ```
 
 ## In-Flight .new Files
-- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (111.3h)
-- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (111.3h)
+- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (112.8h)
+- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (112.8h)
 
 ## Recent Reports (newest 5, last 3 days)
 - MyTradingSys/research/pivot_pattern_audit_2026-10-14/REPORT.md (2026-10-14 19:56) # Pivot-pattern scope audit — 2026-10-14
@@ -31,7 +31,7 @@ SHOTS landed 48: new 2, classified 0, read 0, done 46 | overdue(>24h) 0 | claims
 
 ## Layer Lab (Codex)
 ```
-Layer lab (Codex) at 2026-10-15 05:41Z: on
+Layer lab (Codex) at 2026-10-15 07:06Z: on
   This machine does not run the lab (it runs on JIS-NUC): the queue below is from the repo; allowance, runs and what needs a look are only known there.
   Queue: 6 ready
     tom-btc-event-study [build, gpt-6-luna / medium]

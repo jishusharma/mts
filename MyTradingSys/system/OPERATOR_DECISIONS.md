@@ -786,3 +786,28 @@ Applied: (not yet)
  "recommended": "Yes, adopt it"
 }
 ```
+
+## q21-artifacts-on-sharma | asked 2026-10-15 | Process
+
+Which login owns the Control Room page and its Inbox/decisions database?
+
+Recommended: jishu.sharma (the account with the GitHub identity)
+Answer: jishu.sharma (chat 2026-10-15)
+Operator note (verbatim): there is no 1 place for me to record decisons? i need all artifacts to be associated with the jishu.sharma a/c - it is the main a/c that has my GitHub.
+Applied: (pending) needs a session signed in as jishu.sharma; q1-one-control-room (jishu.awgp) is superseded once it is done.
+
+```json
+{
+ "order": 21,
+ "stage": "Process",
+ "refs": "system/CONTROL_ROOM.md, system/artifacts/registry.json, system/CLOUD_ACCOUNTS.md",
+ "title": "Control Room, Inbox and decisions on the jishu.sharma account",
+ "why": "Operator 2026-10-15: one place for decisions, and every artifact under jishu.sharma. A session cannot move a page between logins or read another login's page or db, so the move is: a session signed in as jishu.sharma (1) runs artifacts.py build, (2) publishes the Control Room with capabilities db + user to the jishu.sharma url (or a new url), (3) seeds decisions/<id> from OPERATOR_DECISIONS.md json blocks and feedback/<id> from OPERATOR_INBOX.md, answers included, (4) updates registry.json, CONTROL_ROOM.md, CLOUD_ACCOUNTS.md and HOW_MTS_RUNS.md, republishes the other pages under jishu.sharma, and the jishu.awgp and jishusharma1985 pages become read-only copies or are retired by the operator. The repo files are the durable record; answers still in the old jishu.awgp db that are not in OPERATOR_DECISIONS.md must be copied over first by a session on that login.",
+ "options": [
+  "jishu.sharma",
+  "Keep jishu.awgp"
+ ],
+ "recommended": "jishu.sharma",
+ "answer": "jishu.sharma"
+}
+```
