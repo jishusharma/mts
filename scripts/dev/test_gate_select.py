@@ -3,6 +3,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import gate_select as gs
@@ -46,6 +47,37 @@ class Select(unittest.TestCase):
             self.assertTrue(gs.mentions("widget_core", "pytest t", root=d))
             self.assertFalse(gs.mentions("other", "pytest t t/test_a.py", root=d))
             self.assertFalse(gs.mentions("widget_core", "pytest missing_dir", root=d))
+
+    def refs(self, body, stem="widget_core"):
+        """mentions(stem, ...) for a one-file pytest command whose test file holds `body`."""
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "t").mkdir()
+            (Path(d) / "t" / "test_a.py").write_text(body, encoding="utf-8")
+            return gs.mentions(stem, "pytest t/test_a.py", root=d)
+
+    def test_a_bare_word_is_not_a_reference(self):
+        # the old bare-word match pulled the shard in for each of these (dsa: 3 of 5 pytest shards)
+        for body in ("# widget_core is what we test elsewhere", "widget_core = 1", 'names = ["widget_core-card", "x"]',
+                     '"""test_widget_core.py - guards the widget_core docs"""', "import widget_core_extra", "from other import widget_core_helper",
+                     "import os  # widget_core", "x = other.widget_core_value", 'p = "docs/widget_core/notes.md"',
+                     'assert "widget_core.py boot" in doc_text'):   # the filename inside a doc-text assertion, not a use of the module
+            self.assertFalse(self.refs(body), body)
+
+    def test_real_references_select_the_shard(self):
+        for body in ("import widget_core", "import os, widget_core", "import widget_core as wc", "from widget_core import run",
+                     "from scripts.dev.widget_core import run", "from scripts.dev import widget_core",
+                     "from scripts.dev import (a,\n    widget_core)", "def f():\n    import widget_core\n",
+                     'subprocess.run(["python", "scripts/dev/widget_core.py", "x"])', 'run("python widget_core.py boot")',
+                     'p = ROOT / "scripts" / "dev" / "widget_core.py"', 'p = "scripts" + chr(92) + "dev" + chr(92) + "widget_core.py"',
+                     'cmd = "python scripts/dev/widget_core"', 'with patch("widget_core.subprocess.run"):',
+                     'm = importlib.import_module("scripts.dev.widget_core")', 'spec_from_file_location("widget_core", p)'):
+            self.assertTrue(self.refs(body), body)
+
+    def test_unreadable_test_file_counts_as_a_mention(self):
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "test_a.py").write_text("x = 1", encoding="utf-8")
+            with mock.patch.object(Path, "read_text", side_effect=OSError("locked")):
+                self.assertTrue(gs.mentions("widget_core", "pytest test_a.py", root=d))
 
     def test_layer_code_runs_layer_tests(self):
         mode, steps = self.sel("MyTradingSys/backtest/layers/rsi/rsi.py")

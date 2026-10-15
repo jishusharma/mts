@@ -9,9 +9,11 @@ Expected values come from the task spec (operator ask 2026-10-14), not from the 
   host   - says OTHER HOST when the live tree's BUILD_REPORT.md was written by another machine.
 Temp paths are resolved (os.path.realpath): Windows 8.3 short names break git's path comparison.
 """
+import atexit
 import contextlib
 import io
 import os
+import shutil
 import socket
 import stat
 import subprocess
@@ -50,38 +52,75 @@ def call(argv, stdin=b""):
     return code, out.getvalue()
 
 
+def clone(tmp, name):
+    d = tmp / "ip" / name
+    sh(tmp, "clone", "-q", (tmp / "origin.git").as_posix(), str(d))      # forward slashes: copy_fixture rewrites them in the config
+    sh(d, "config", "user.email", "t@t")
+    sh(d, "config", "user.name", "t")
+    return d
+
+
+def build_fixture(tmp):
+    """bare origin + the live clone + one ordinary worktree of it, all under tmp (the same repos every test starts from)."""
+    (tmp / "ip").mkdir()                                # stands for IdeaProjects
+    origin = tmp / "origin.git"
+    sh(tmp, "init", "-q", "--bare", str(origin))
+    sh(origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")
+    live = clone(tmp, "live")
+    (live / ".gitignore").write_text(".mts_live\nignored.log\n")
+    (live / "README.md").write_text("x\n")
+    (live / "runtime_data" / "_mirror").mkdir(parents=True)
+    (live / "runtime_data" / "_mirror" / "m.txt").write_text("m0\n")
+    (live / "MyTradingSys" / "system" / "claims").mkdir(parents=True)
+    (live / "MyTradingSys" / "system" / "claims" / ".gitkeep").write_text("")
+    sh(live, "checkout", "-q", "-b", "fast-track")
+    sh(live, "add", "-A")
+    sh(live, "commit", "-q", "-m", "init")
+    sh(live, "push", "-q", "origin", "HEAD:fast-track")
+    sh(live, "branch", "-q", "--set-upstream-to=origin/fast-track")
+    (live / ".mts_live").write_text("live\n")
+    sh(live, "worktree", "add", "-q", str(tmp / "ip" / "work"), "-b", "work", "origin/fast-track")   # an ordinary (non-live) worktree
+
+
+_TEMPLATE = []
+
+
+def template():
+    """The fixture, built once per process: init + clone + push + worktree add cost ~2 s, and every test used to pay it (2026-10-16 profile:
+    24 of the 74 s of this file, step 3ds)."""
+    if not _TEMPLATE:
+        root = Path(os.path.realpath(tempfile.mkdtemp(prefix="dsa_tpl_")))
+        build_fixture(root)
+        _TEMPLATE.append(root)
+        atexit.register(rmtree, root)
+    return _TEMPLATE[0]
+
+
+def copy_fixture(dest):
+    """Copy the template into the empty dir `dest` and repoint the three files that hold absolute paths (origin url, the worktree's
+    .git file and the admin dir's gitdir file); git on Windows writes them with forward slashes."""
+    src = template()
+    shutil.copytree(src, dest, dirs_exist_ok=True)
+    old, new = src.as_posix().encode(), dest.as_posix().encode()
+    for rel in ("ip/live/.git/config", "ip/work/.git", "ip/live/.git/worktrees/work/gitdir"):
+        f = dest / rel
+        data = f.read_bytes()
+        assert old in data, (rel, data)
+        os.chmod(f, stat.S_IWRITE | stat.S_IREAD)       # git leaves some of these read-only/hidden on Windows: replace, not rewrite
+        f.unlink()
+        f.write_bytes(data.replace(old, new))
+
+
 class Base(unittest.TestCase):
     def setUp(self):
         self.cwd0 = os.getcwd()
         self.tmp = Path(os.path.realpath(tempfile.mkdtemp()))
-        self.ip = self.tmp / "ip"                       # stands for IdeaProjects
-        self.ip.mkdir()
+        copy_fixture(self.tmp)
+        self.ip = self.tmp / "ip"
         self.origin = self.tmp / "origin.git"
-        sh(self.tmp, "init", "-q", "--bare", str(self.origin))
-        sh(self.origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")
-        self.live = self.clone("live")
-        (self.live / ".gitignore").write_text(".mts_live\nignored.log\n")
-        (self.live / "README.md").write_text("x\n")
-        (self.live / "runtime_data" / "_mirror").mkdir(parents=True)
-        (self.live / "runtime_data" / "_mirror" / "m.txt").write_text("m0\n")
-        (self.live / "MyTradingSys" / "system" / "claims").mkdir(parents=True)
-        (self.live / "MyTradingSys" / "system" / "claims" / ".gitkeep").write_text("")
-        sh(self.live, "checkout", "-q", "-b", "fast-track")
-        sh(self.live, "add", "-A")
-        sh(self.live, "commit", "-q", "-m", "init")
-        sh(self.live, "push", "-q", "origin", "HEAD:fast-track")
-        sh(self.live, "branch", "-q", "--set-upstream-to=origin/fast-track")
-        (self.live / ".mts_live").write_text("live\n")
-        self.work = self.ip / "work"                    # an ordinary (non-live) worktree of the live tree's repo
-        sh(self.live, "worktree", "add", "-q", str(self.work), "-b", "work", "origin/fast-track")
+        self.live = self.ip / "live"
+        self.work = self.ip / "work"
         os.chdir(self.work)
-
-    def clone(self, name):
-        d = self.ip / name
-        sh(self.tmp, "clone", "-q", str(self.origin), str(d))
-        sh(d, "config", "user.email", "t@t")
-        sh(d, "config", "user.name", "t")
-        return d
 
     def tearDown(self):
         os.chdir(self.cwd0)
