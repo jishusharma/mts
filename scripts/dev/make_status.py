@@ -319,7 +319,14 @@ def main():
 
     # Git status: trunk, not this host's branch (the old Branch line named the generating host's checkout)
     output.append("## Git Status")
-    output.append(get_ci_line())
+    ci_line = get_ci_line()
+    output.append(ci_line)
+    if "RED" in ci_line and not os.environ.get("MTS_NO_CI_CARD"):   # red CI files ONE "fix CI <sha>" card (ci_red_card.py); ship it with your next ship
+        try:
+            import ci_red_card
+            output.append("CI card: " + "; ".join(ci_red_card.run(os.getcwd(), apply=True)))
+        except Exception as e:   # never block the status page
+            output.append(f"CI card: not filed ({type(e).__name__}); run scripts/dev/ci_red_card.py --apply")
     output.append(get_lessons_line())
     output.append("")
 
