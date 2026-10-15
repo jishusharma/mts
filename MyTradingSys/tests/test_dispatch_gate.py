@@ -59,6 +59,14 @@ class GateTest(unittest.TestCase):
         self.gate("TICK KICK depth=3 id=aaaa1111 | route=none", rc="3")
         self.assertTrue((self.d / "unlocked").exists())   # else the next ticks wait out the lock for a session that never ran
 
+    def test_missing_launcher_does_not_tick(self):
+        env = {**os.environ, "STUB_TICK": "TICK KICK x", "STUB_DIR": str(self.d), "MTS_RELAY_HOME": str(self.d / "home"),
+               "MTS_GATE_RELAY": str(self.d / "relay.py")}
+        r = subprocess.run([sys.executable, str(GATE), "--root", str(self.d), "--launcher", "no_such_claude_binary -p"],
+                           capture_output=True, text=True, env=env)
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertFalse((self.d / "tick_args.txt").exists())   # tick never ran, so no lock was taken for a session that cannot start
+
     def test_unparsable_tick_never_launches(self):
         r = self.gate("Traceback: boom")
         self.assertEqual(r.returncode, 1)

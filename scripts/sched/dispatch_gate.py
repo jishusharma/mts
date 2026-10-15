@@ -7,7 +7,7 @@ the gate passes a huge --hourly-min and the `mts-dispatcher` App routine (cron `
 
   python scripts/sched/dispatch_gate.py [--root <live tree>] [--peer-quiet-min 90] [--launcher "<argv>"] [--dry-run]
 
-Log: ~/.claude/mts-dispatch-gate.log (one line per run). Exit 0 always except an unparsable tick (1).
+Log: ~/.claude/mts-dispatch-gate.log (one line per run). Exit 0; 1 = unparsable tick; 2 = no launcher binary (claude missing: the gate does nothing, so it never strands the lock).
 Test hooks: MTS_GATE_RELAY (path of the relay.py to run), MTS_GATE_LAUNCHER (launcher argv, prompt on stdin), MTS_RELAY_HOME.
 """
 import argparse
@@ -83,6 +83,11 @@ def main(argv=None):
     ap.add_argument("--launcher", help="argv of the session launcher, prompt on stdin (default: claude -p, Haiku)")
     ap.add_argument("--dry-run", action="store_true", help="decide and print, never launch")
     a = ap.parse_args(argv)
+    argv0 = launcher_argv(a.launcher)[0]
+    if not (shutil.which(argv0) or Path(argv0).is_file()):   # tick would take the launch lock and strand it: leave the App routine in charge
+        log("NO_LAUNCHER %s: gate idle, the App routine keeps ticking" % argv0)
+        print("GATE NO_LAUNCHER", argv0)
+        return 2
     relay = fetch_scripts(a.root)
     r = subprocess.run([sys.executable, str(relay), "tick", "--root", a.root, "--peer-quiet-min", a.peer_quiet_min,
                         "--hourly-min", HOURLY_OFF], capture_output=True, text=True, encoding="utf-8", timeout=300)
