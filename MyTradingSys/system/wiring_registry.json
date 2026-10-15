@@ -686,6 +686,14 @@
   "MyTradingSys/research/video_priority_2026-10-15/apply_selection.py": {
    "disp": "TOOL",
    "why": "One-shot: writes the selected ids into the Malkan caption card and the NOT SELECTED rows into transcript_inventory_2026-10-09.md; named in video_priority_2026-10-15/METHOD.md pipeline step 5; already applied."
+  },
+  "MyTradingSys/research/chart_read_g5_2026-10-16/common.py": {
+   "disp": "REPRO",
+   "why": "Shared helpers (template costs, day-clustered SE, verdict rule) for the four chart-read G5 screens; imported by their study.py files and covered by test_common.py; no live imports."
+  },
+  "MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py": {
+   "disp": "REPRO",
+   "why": "Pre-registered DEV-only chart-read G5 screen (opr_preopen_tops_2026-10-16); run by hand (--count | --full), reproduces its RESULT.md/trials.csv/ledger.csv; covered by its test file; no live imports. Screen, ran before G3 marks by operator decision 2026-10-16."
   }
  }
 }
