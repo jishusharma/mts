@@ -38,7 +38,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 10-15 (BTC minimum stop width)",
     "MyTradingSys/backtest/layers/FORMULAS.md (RSI, value area, Bollinger)"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Bias arms B1 value-area side, B2 swing structure, B3 close vs EMA20 on 1h, 4h, 6h, 12h, 1D (closed bars only).",
     "Entry features E1 RSI(14) holding 40/60 (layers/rsi/malkan_40_60.py), E2 RSI vs its MA (rsi_ma.py), E3 5m CVD slope sign (kline proxy; footprint where it exists, both columns), E4 Bollinger(20,2) position.",
