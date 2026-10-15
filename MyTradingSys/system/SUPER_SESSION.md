@@ -50,7 +50,8 @@ first: a stop starting `super-session` with a heartbeat missing, malformed or ol
 
 ## End
 Drain: every worker shipped (`git cherry` empty) or its partial work handed over in NEXT_SESSION.md; archive finished workers;
-`get_usage` written into the hand-over note; `python scripts/sched/relay.py resume`; one line to the operator.
+`get_usage` written into the hand-over note; refresh the operator's Research Map (`system/artifacts/research_map.html`, edit its DATA,
+republish to claude.ai/artifact/9nqpZeMeEehadoBoYopZU3 from the jishusharma1985 login); `python scripts/sched/relay.py resume`; one line to the operator.
 
 ## Pacing (when no super session runs) - state from the weekly meter
 `f` = fraction of the week elapsed since the last weekly reset, `U` = Weekly all-models % used.
