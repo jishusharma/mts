@@ -1,0 +1,30 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-15T22:50:49Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "fable-audit-e1-count-before-freeze",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "PRE_REG gate: count-only pass prints n and MDE; refuse to freeze when MDE + cost exceeds a plausible gross effect; one verdict per arm"
+}
