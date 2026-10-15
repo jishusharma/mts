@@ -19,7 +19,7 @@
   "refine_tries": 0,
   "refined_by": "sonnet-2026-10-13 gap review G1-G8",
   "refs": [],
-  "result": "",
+  "result": "BLOCKED: no frozen tom_bt BTC 1m fixture/golden output is present; report MyTradingSys/research/layer_lab/reports/2026-10-15_gap-g4-through-ticks-flag.md",
   "scope_in": [
     "MyTradingSys/backtest/tom_bt.py",
     "MyTradingSys/tests/",
