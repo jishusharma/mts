@@ -91,6 +91,19 @@ def decision_for_source(source, entries, grandfather):
     return "trade" if any(source.startswith(p) for p in grandfather) else "unregistered"
 
 
+def size_entry(v, ceiling=10000):
+    """Shared size_overrides entry check (auto_trader.size_override and promote.has_testnet_flag): -> (size_usd,
+    max_loss_usd), or raises ValueError. size: int (not bool), 0 < size <= ceiling, a multiple of 10 (Deribit contract);
+    max_loss_usd: a positive finite number. Pure."""
+    size = v.get("size_usd") if isinstance(v, dict) else None
+    loss = v.get("max_loss_usd") if isinstance(v, dict) else None
+    if not (isinstance(size, int) and not isinstance(size, bool) and 0 < size <= ceiling and size % 10 == 0):
+        raise ValueError("size_usd %r" % (size,))
+    if not (isinstance(loss, (int, float)) and not isinstance(loss, bool) and loss > 0 and loss != float("inf")):
+        raise ValueError("max_loss_usd %r" % (loss,))
+    return size, loss
+
+
 def make_collection_only(alert, why):
     """Strip the tradable side (kept as shadow_side) and tag the alert collection-only. Returns a new dict."""
     a = dict(alert)
