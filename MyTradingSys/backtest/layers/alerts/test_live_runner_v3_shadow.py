@@ -120,7 +120,9 @@ class TestSourceSignal(unittest.TestCase):
             self.assertNotIn("collection_only", a)
             self.assertNotIn("shadow_side", a)
             self.assertEqual((a["layer"], a["sub"], a["tf"]), ("fabio", "v3_grid", "1m"))
-            sig = at.layer_signal(a, at.DEFAULT_CONFIG, now)
+            cfg = json.loads(json.dumps(at.DEFAULT_CONFIG))   # fable H1: fabio is grandfathered in the shipped config
+            cfg["pre_pipeline_sources"] = {"layer:fabio:": {"reason": "fixture", "review_by": "2026-10-23"}}
+            sig = at.layer_signal(a, cfg, now)
             self.assertEqual(sig["side"], "long")
             self.assertNotIn("reject", sig)
             self.assertEqual(sig["plan_args"][:2], ["--side", "long"])
