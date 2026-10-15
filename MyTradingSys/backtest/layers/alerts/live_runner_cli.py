@@ -331,6 +331,10 @@ def poll_once(registry: dict, symbol: str, tfs: list, fetch_fn, state: dict, lim
     from MyTradingSys.backtest.layers.alerts.live_runner_core import run_registry
     
     result = run_registry(registry, bars_by_tf, state)
+    # Promotion gate (system/PROMOTION_PIPELINE.md): a shadow registry entry, or an unreadable registry, makes the
+    # alert collection-only. Empty registry = no change.
+    from MyTradingSys.backtest.layers.promotion.registry import apply_promotion_gate
+    result["alerts"] = apply_promotion_gate(result["alerts"])
     
     return {
         "alerts": result["alerts"],

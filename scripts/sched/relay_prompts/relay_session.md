@@ -11,6 +11,7 @@ MODEL: the routine's App setting decides it (JIS-NB: Haiku 5.5 since 2026-10-14;
 HAIKU/SONNET lane says how much checking it needs, not which model runs it: take it and run the tests it names; if its brief
 leaves a design choice open, `begin --skip <card>` and take the next.
 
+0. Meter first: call `get_usage` (App tool) and record it: `python scripts/sched/budget.py write --weekly-all-pct <all-models %> --weekly-resets-at <ISO UTC reset> --five-hour-pct <5h %>` (the gate reads ~/.claude/mts-budget.json; no get_usage: skip, go on).
 1. Run the `NEXT:` line tick printed (`relay.py begin --root <repo folder>`; without it: `python scripts/sched/relay.py begin`
    from the repo folder you start in). One call: relay worktree `../mts-relay` (fast-forwarded), `sync.py start`, first ready
    non-OPUS card no claim holds, claim, and that card's brief (the card is the whole brief). Work ONLY in the `worktree:` path it
