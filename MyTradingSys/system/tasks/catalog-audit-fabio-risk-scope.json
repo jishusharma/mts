@@ -1,0 +1,30 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-15T19:07:20Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "catalog-audit-fabio-risk-scope",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/layer_lab/gpt-catalog-notstated-audit/CATALOG_AUDIT.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Catalog audit H2: scope Fabio zero-day-loss rule to fZ session; F5 trades after drawdown; see finding H2"
+}
