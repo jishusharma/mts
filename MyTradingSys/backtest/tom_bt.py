@@ -173,8 +173,11 @@ from MyTradingSys.backtest.fees import FEES_DERIBIT, FEES_ALL_TAKER, FEES_FDAX  
 
 
 def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fees=FEES_DERIBIT,
-                    stop_first=True, slip=0.0, slip_pts=0.0):
-    """Limit entry at `entry`, first eligible 1m bar index i0 (the bar opening at the signal time)."""
+                    stop_first=True, slip=0.0, slip_pts=0.0, through_ticks=0.0):
+    """Limit entry at `entry`, first eligible 1m bar index i0 (the bar opening at the signal time).
+
+    through_ticks is a price offset applied to entry and target triggers; zero preserves touch fills.
+    """
     sgn = 1.0 if side == "long" else -1.0
     if not (sgn * (stop - entry) < 0 and sgn * (target - entry) > 0):
         return dict(filled=False, reason="bad_geometry")
@@ -183,10 +186,10 @@ def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fe
     fill_i = None
     for i in range(i0, min(i0 + fill_window, n)):
         lo, hi = b.l[i], b.h[i]
-        if (lo <= entry) if sgn > 0 else (hi >= entry):
+        if (lo <= entry - through_ticks) if sgn > 0 else (hi >= entry + through_ticks):
             fill_i = i
             break
-        if (hi >= target) if sgn > 0 else (lo <= target):
+        if (hi >= target + through_ticks) if sgn > 0 else (lo <= target - through_ticks):
             return dict(filled=False, reason="ran")
     if fill_i is None:
         return dict(filled=False, reason="no_fill" if i0 + fill_window <= n else "open_at_end")
@@ -209,7 +212,7 @@ def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fe
         if j >= n:
             return dict(filled=True, reason="open_at_end", fill_i=fill_i)
         s_hit = (b.l[j] <= stop) if sgn > 0 else (b.h[j] >= stop)
-        t_hit = (b.h[j] >= target) if sgn > 0 else (b.l[j] <= target)
+        t_hit = (b.h[j] >= target + through_ticks) if sgn > 0 else (b.l[j] <= target - through_ticks)
         if s_hit and t_hit:
             amb += 1
         if s_hit and (stop_first or not t_hit):

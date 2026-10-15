@@ -14,7 +14,8 @@
     "callers"
   ],
   "live_path": false,
-  "note": "",
+  "note": "PARKED 2026-10-15 (lab-unstall, TRACK_RECORD.md item 1-2): input data/ledger is not on JIS-NUC; the 2026-10-13 qriptal-score-binance runs ended BLOCKED at 320-474k tokens for zero output. Release (apply-op release) only after the Qriptal ledger is copied to F:/MTS/data and a pre-flight script confir",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-14 (split after lab BLOCKED twice)",
@@ -38,7 +39,7 @@
     "MyTradingSys/research/layer_lab/reports/2026-10-14_qriptal-score-binance.md",
     "MyTradingSys/items/B162_qriptal_signal_layer.md"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "ledger.py: read extracts/_staged_2026-09-27/raw/qriptal_*_raw.txt; for each candidate statement write a row: file, line, verbatim quote (<= 40 words), asset, side, entry, stop, targets, call time and its source, ELIGIBLE / NOT_ELIGIBLE with the rule that decided it.",
     "Cross-check the one structured extraction (extracts/_staged_2026-09-27/extracts/qriptal/trade_log/2026-09-20_ZPFK3ZsLwoo.md): every row there maps to a ledger row or a stated reason.",
