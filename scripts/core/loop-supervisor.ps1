@@ -11,7 +11,7 @@
 param(
     [int]$CheckIntervalSec        = 30,
     [int]$SnapshotStaleSec        = 150,
-    [int]$RestartGraceSec         = 180,
+    [int]$RestartGraceSec         = 420,
     [int]$StaleDebounce           = 2,
     [int]$CircuitBreakerRestarts  = 5,
     [int]$CircuitBreakerWindowMin = 15,
@@ -123,6 +123,7 @@ SupLog "startup: grace clock set, ${RestartGraceSec}s grace before any restart"
 
 $restartTimes = New-Object System.Collections.Generic.List[datetime]
 $staleStrikes = 0
+$startedPid = 0
 
 while ($true) {
     if (Test-Path $StopFlag) {
@@ -169,8 +170,12 @@ while ($true) {
     $needKill = $false
     $needRestart = $false
 
+    # A just-started wrapper holds no lock until pwsh start, warmup (up to ~2 min) and lock create finish;
+    # on a loaded host that took minutes and the old 180 s grace restarted it over and over (restart storm,
+    # 8-14 per hour on 2026-10-15). While the PID we started is alive and young, it is starting, not dead.
+    $starting = ($startedPid -gt 0 -and $sinceRestart -lt ($RestartGraceSec * 2) -and (Get-Process -Id $startedPid -ErrorAction SilentlyContinue))
     if (-not $loopAlive) {
-        if ($inGrace) {
+        if ($inGrace -or $starting) {
             $action = "grace"
             $reason = "wrapper_dead_in_grace oldPid=$loopPid"
             SupLog "$reason ${sinceRestart}s/${RestartGraceSec}s"
@@ -264,6 +269,7 @@ while ($true) {
         )
         $new = Start-Process pwsh.exe -ArgumentList $loopArgs -PassThru -WindowStyle Hidden
         $nid = $new.Id
+        $startedPid = $nid
         SupLog "  started new wrapper PID=$nid"
         $lastRestartUtc = [DateTime]::UtcNow
         $restartTimes.Add([DateTime]::UtcNow) | Out-Null
