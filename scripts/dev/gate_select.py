@@ -4,14 +4,16 @@
     files: paths changed vs origin/fast-track; steps: [(num, cmd_text)] of the plan (run_all_tests.build_plan).
     mode  none   nothing changed: no steps
           docs   only docs/data: the cheap doc invariants (DOC_STEPS), no gate slot needed
-          smoke  code outside the live path: steps whose test file matches a changed file, the shards of the tests that import
-                 it, plus ALWAYS (wiring, task-card DoR); CI runs everything behind the push
+          smoke  code outside the live path: steps whose test file matches a changed file, the pytest shards whose tests mention
+                 its module name, plus ALWAYS (wiring, task-card DoR); CI runs everything behind the push
           full   any live-path file, or ANY path no rule knows (fail closed): every step, the old --quick gate
 
 Nothing here decides what is safe to deploy: CI on both OSes does, and auto_deploy only takes green/fast-track.
 """
 import re
-from pathlib import PurePosixPath
+from pathlib import Path, PurePosixPath
+
+REPO = Path(__file__).resolve().parents[2]
 
 DOC_SUFFIXES = (".md", ".txt")
 # data/docs folders: json/csv/html in here is content, not code
@@ -46,10 +48,31 @@ def _name_matches(f, steps):
     """Steps whose command names this file or its test_<file>.py counterpart (by basename)."""
     base = PurePosixPath(f).name
     pair = {base, base[5:] if base.startswith("test_") else "test_" + base}
-    return [n for n, cmd in steps if any(re.search(r"(^|[\s/\\])" + re.escape(p) + r"(\s|$)", cmd) for p in pair)]
+    return [n for n, cmd in steps if any(re.search(r"(^|[\s/\\(])" + re.escape(p) + r"(?![\w.])", cmd) for p in pair)]
 
 
-def select(files, steps):
+def mentions(stem, cmd_text, root=REPO):
+    """True when a test file named in cmd_text (or any test_*.py under a directory it names) mentions `stem` as a word: the pytest shard
+    that imports or runs the changed module. Unreadable = True (fail closed)."""
+    pat = re.compile(r"\b" + re.escape(stem) + r"\b")
+    for tok in cmd_text.replace("\\", "/").split():
+        p = Path(root) / tok
+        if tok.endswith(".py") and p.is_file():
+            files = [p]
+        elif p.is_dir():
+            files = list(p.rglob("test_*.py"))
+        else:
+            continue
+        for f in files:
+            try:
+                if pat.search(f.read_text(encoding="utf-8", errors="ignore")):
+                    return True
+            except OSError:
+                return True
+    return False
+
+
+def select(files, steps, mentioned=mentions):
     files = [f.replace("\\", "/") for f in files if f]
     all_nums = _nums(steps)
     if not files:
@@ -66,6 +89,8 @@ def select(files, steps):
         picked.update(_name_matches(f, steps))
         if f.startswith("MyTradingSys/backtest/layers/"):
             picked.add("5b")
-        if f.startswith(("MyTradingSys/backtest/", "MyTradingSys/research/", "MyTradingSys/tests/", "scripts/dev/")):
-            picked.update(n for n in all_nums if n.startswith(SHARD_PREFIX) and n != "4d" or n == "3xt")
+        stem = PurePosixPath(f).stem
+        picked.update(n for n, cmd in steps if n.startswith(SHARD_PREFIX) and n != "4d" and mentioned(stem, cmd))
+        if f.startswith(("MyTradingSys/backtest/", "MyTradingSys/research/")) and "3xt" in all_nums:
+            picked.add("3xt")
     return "smoke", [n for n in all_nums if n in picked]

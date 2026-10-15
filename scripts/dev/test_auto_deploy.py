@@ -156,6 +156,28 @@ class TestRun(unittest.TestCase):
         self.assertEqual(len(saved), 1)
         self.assertEqual(saved[0].read_text(encoding="utf-8"), "live-host edit")
 
+    def test_dirty_live_input_keeps_live_content_after_merge_but_status_takes_committed(self):
+        htf = "MyTradingSys/research/htf_context/ctx.json"
+        st = "MyTradingSys/research/STATUS.md"
+        for rel in (htf, st):
+            f = self.root / rel
+            f.parent.mkdir(parents=True, exist_ok=True)
+            f.write_text("live-written", encoding="utf-8")
+        root = self.root
+
+        class MergeOps(FakeOps):
+            def git(self, *a, timeout=300):
+                if a[0] in ("checkout", "merge"):   # checkout (that file only) and merge both leave the committed copy
+                    for rel in ((htf, st) if a[0] == "merge" else (a[-1],)):
+                        (root / rel).write_text("committed", encoding="utf-8")
+                return super().git(*a, timeout=timeout)
+        ops = MergeOps(changed=[htf, st], dirty=[htf, st])
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["action"], "DEPLOYED")
+        self.assertEqual((root / htf).read_text(encoding="utf-8"), "live-written")
+        self.assertEqual((root / st).read_text(encoding="utf-8"), "committed")
+        self.assertEqual(r["live_inputs_restored"], [htf])
+
     def test_dirty_non_allowlisted_file_still_stops(self):
         ops = FakeOps(changed=["MyTradingSys/execution/auto_trader.py"], dirty=["MyTradingSys/execution/auto_trader.py"])
         self.assertEqual(ad.run(ops)["action"], "STOP_DIRTY")
@@ -259,6 +281,12 @@ class StaleOps(FakeOps):
     def __init__(self, green_age_s, trunk="d" * 40, **kw):
         super().__init__(**kw)
         self.green_age_s, self.trunk = green_age_s, trunk
+        self.runs = [{"status": "completed", "conclusion": "success", "headSha": "d" * 40, "databaseId": 1}]
+
+    def ci_runs(self):
+        if isinstance(self.runs, Exception):
+            raise self.runs
+        return self.runs
 
     def git(self, *a, timeout=300):
         if a[0] == "rev-parse" and a[1] == "origin/fast-track":
@@ -282,6 +310,47 @@ class TestStaleGreenFallback(TestRun):
         self.assertEqual(r["branch"], "fast-track")
         self.assertEqual(ops.gated, ["d" * 40])      # same local gate, on the fast-track SHA
         self.assertEqual(self.merges(ops), [("merge", "--ff-only", "origin/fast-track")])
+
+    def _run(self, runs):
+        ops = StaleOps(green_age_s=3 * 3600)
+        ops.runs = runs
+        return ops, ad.run(ops, save=False)
+
+    def test_red_newest_completed_ci_refuses_fallback(self):
+        red = {"status": "completed", "conclusion": "failure", "headSha": "d" * 40, "databaseId": 3}
+        ok = {"status": "completed", "conclusion": "success", "headSha": "c" * 40, "databaseId": 2}
+        ops, r = self._run([red, ok])
+        self.assertEqual(r["branch"], "green/fast-track")
+        self.assertEqual(r["fallback"], "FALLBACK_REFUSED_CI_RED")
+        self.assertEqual(ops.gated, [T])
+
+    def test_red_ignores_in_progress_newer_run(self):
+        prog = {"status": "in_progress", "conclusion": None, "headSha": "e" * 40, "databaseId": 4}
+        red = {"status": "completed", "conclusion": "timed_out", "headSha": "d" * 40, "databaseId": 3}
+        ops, r = self._run([prog, red])
+        self.assertEqual(r["fallback"], "FALLBACK_REFUSED_CI_RED")
+
+    def test_green_newest_completed_allows_fallback(self):
+        prog = {"status": "in_progress", "conclusion": None, "headSha": "e" * 40, "databaseId": 4}
+        ok = {"status": "completed", "conclusion": "success", "headSha": "d" * 40, "databaseId": 3}
+        old = {"status": "completed", "conclusion": "failure", "headSha": "c" * 40, "databaseId": 2}
+        ops, r = self._run([prog, ok, old])
+        self.assertEqual(r["branch"], "fast-track")
+        self.assertNotIn("fallback", r)
+
+    def test_unknown_ci_refuses_fallback_fail_closed(self):
+        for runs in (None, [], RuntimeError("gh auth"), "garbage",
+                     [{"status": "in_progress", "conclusion": None, "headSha": "e" * 40, "databaseId": 4}]):
+            ops, r = self._run(runs)
+            self.assertEqual(r["branch"], "green/fast-track", runs)
+            self.assertEqual(r["fallback"], "FALLBACK_REFUSED_CI_UNKNOWN", runs)
+
+    def test_fresh_green_never_consults_ci(self):
+        ops = StaleOps(green_age_s=600)
+        ops.runs = RuntimeError("must not be called")
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["branch"], "green/fast-track")
+        self.assertNotIn("fallback", r)
 
     def test_stale_fallback_still_stops_on_red(self):
         ops = StaleOps(green_age_s=3 * 3600, gate_rc=1)

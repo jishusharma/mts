@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T20:08:39Z",
   "commands": [],
   "created": "2026-10-15T19:38:36Z",
   "depends_on": [],
@@ -17,7 +18,7 @@
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST; independent DEV recount matches counts (40/1400/1440) and T primary n=40, mean_G=-0.055276%, t_cost=-1.509456; MED frozen-manifest guard finding in report",
   "scope_in": [
     "MyTradingSys/research/gross_effect_screen_2026-10-15/PRE_REG.md",
     "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
@@ -33,7 +34,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read PRE_REG.md sections 2, 4, 5, 7 first; RESULT.md after. screen.py only in step 3, so your recount does not copy it.",
     "Recount n_T, n_notF, n_C with your own script under MyTradingSys/research/layer_lab/, from PRE_REG sections 2 and 5 only, on F:/MTS/data/tom_raw/klines BTCUSDT-1m-2022-01..2024-06 (SHA256 must match DATA_MANIFEST.csv). Never read a bar >= 2024-07-01.",

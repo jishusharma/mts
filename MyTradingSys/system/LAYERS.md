@@ -225,7 +225,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `chart-verify-py-recompute-bb-rsi-stochrs` raw p2 SONNET: chart_verify.py: recompute BB/RSI/StochRSI/volume/OI/delta-step for any CoinGlass timeframe from fapi at the s
   - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
   - `live-loop-one-owner-guard` ready p2 JIS-NB: Live loop one-owner guard: start verb refuses when another host's heartbeat is fresh, fails closed (DEVICES.md
-  - `live-mirror-stale-published-2026-10-11-2` ready p2 JIS-NB: Live mirror stale: published 2026-10-11 20:09Z, 19 h old at 15:25Z 10-12; NUC reads cannot check HALT, layer f
   - `identify-the-coinglass-net-delta-panel-u` raw p3 SONNET: Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 1
   - `live-orderflow-state-line-1m-5m-15m-pric` raw p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
   - `mts-cbp-integration-land-one-cbp-candida` blocked p3 SONNET: MTS-CBP integration: land one CBP candidate on the real queue
