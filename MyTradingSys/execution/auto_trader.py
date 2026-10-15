@@ -387,13 +387,13 @@ def size_override(source: str, cfg: dict):
     if not hits:
         return None
     v = table[max(hits, key=len)]
-    size = v.get("size_usd") if isinstance(v, dict) else None
-    loss = v.get("max_loss_usd") if isinstance(v, dict) else None
-    if not (isinstance(size, int) and not isinstance(size, bool) and 0 < size <= SIZE_CEILING_USD and size % 10 == 0):
-        raise ValueError(f"size_usd {size!r} for {max(hits, key=len)}")
-    if not (isinstance(loss, (int, float)) and not isinstance(loss, bool) and loss > 0):
-        raise ValueError(f"max_loss_usd {loss!r} for {max(hits, key=len)}")
-    return size, loss
+    spec = importlib.util.spec_from_file_location("_mts_promotion_registry", REGISTRY_PY)
+    reg = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(reg)
+    try:
+        return reg.size_entry(v, SIZE_CEILING_USD)       # one shared validator with promote.has_testnet_flag (L7)
+    except ValueError as e:
+        raise ValueError(f"{e} for {max(hits, key=len)}")
 
 
 def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
