@@ -383,6 +383,16 @@
    "ref": "MyTradingSys/archive/worker_roadmap_2026-10-15/WORKER_ROADMAP.md row 16",
    "why": "UNSURE: independent ladder cross-check oracle whose Qwen tests were weakened (MyTradingSys/archive/worker_roadmap_2026-10-15/WORKER_ROADMAP.md:70 row 16: \"not trusted until rewritten from spec 021\"); nothing compares it to bt_ladder."
   },
+  "MyTradingSys/research/levels_confluence_2026-10-14/levels.py": {
+   "disp": "REPRO",
+   "ref": "lc-levels-hold",
+   "why": "Causal UTC-day level builder for the LC1 DEV hold study (GPT lab card lc-levels-hold); run through levels_hold.py by the reproduction command in levels_hold.md; research only, no live import."
+  },
+  "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py": {
+   "disp": "REPRO",
+   "ref": "lc-levels-hold",
+   "why": "Reproduces research/levels_confluence_2026-10-14/levels_hold.md (12 level families vs distance-matched random lines, DEV 2024-12..2025-03, seed 20261014); run by hand with the command in that file, no live import. Tested by test_levels.py."
+  },
   "MyTradingSys/research/levels_sizing_2026-10-14/probe.py": {
    "disp": "REPRO",
    "ref": "LC-SIZING-QUICK-20261014",

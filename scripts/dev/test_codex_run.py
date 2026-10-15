@@ -359,6 +359,20 @@ class SpendGuardTest(unittest.TestCase):
         rl = {"primary": {"used_percent": 99.0, "resets_at": 5000}, "secondary": {"used_percent": 20.0, "resets_at": 1000000}}
         self.assertEqual(R.budget_hold("gpt-6-luna", "medium", rl, [], self.NOW), ("", 0))
 
+    def test_a_stale_reading_does_not_pin_the_window_to_its_old_reset(self):
+        # JIS-NUC 2026-10-15: the newest reading's 5-hour reset was 10-14 17:01Z and no run could refresh it, so every run since
+        # that reset counted as "this window" (7/4 runs) and the lab sat idle for 14 h. Past a window length, only the last 5 h count.
+        stale_end = self.NOW - 3 * R.WINDOW_S
+        rl = {"primary": {"used_percent": 47.0, "resets_at": stale_end}, "secondary": {"used_percent": 20.0, "resets_at": 1000000}}
+        old = [self.run_row(self.stamp(stale_end + 60 * i), "gpt-6-luna", "medium", pts=0.0) for i in range(1, R.LAB_RUNS_PER_WINDOW + 3)]
+        self.assertEqual(R.budget_hold("gpt-6-luna", "medium", rl, old, self.NOW), ("", 0))
+        new = [self.run_row(self.stamp(self.NOW - 60 * i), "gpt-6-luna", "medium", pts=0.0) for i in range(1, R.LAB_RUNS_PER_WINDOW + 1)]
+        self.assertIn("runs in this window", R.budget_hold("gpt-6-luna", "medium", rl, new, self.NOW)[0])
+        recent_end = self.NOW - 600   # reset 10 minutes ago: the new window starts at that reset
+        rl["primary"]["resets_at"] = recent_end
+        before = [self.run_row(self.stamp(recent_end - 60 * i), "gpt-6-luna", "medium", pts=0.0) for i in range(1, R.LAB_RUNS_PER_WINDOW + 3)]
+        self.assertEqual(R.budget_hold("gpt-6-luna", "medium", rl, before, self.NOW), ("", 0))
+
     def test_no_reading_still_applies_the_lab_caps(self):
         rows = [self.run_row(self.stamp(self.NOW - 60), "gpt-6-luna", "low", pts=0.0) for _ in range(R.LAB_RUNS_PER_WINDOW)]
         self.assertIn("runs in this window", R.budget_hold("gpt-6-luna", "low", None, rows, self.NOW)[0])
