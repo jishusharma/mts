@@ -231,7 +231,7 @@ def build_plan(quick):
         sys.executable, "scripts/dev/run_staged_tests.py",
         "MyTradingSys/execution", "MyTradingSys/execution/testnet/offline",
         "--",
-        "test_daily_loss_guard", "test_daily_loss_monitor", "test_mainnet_flag_offline", "test_gh_executor_offline",
+        "test_daily_loss_guard", "test_daily_loss_monitor", "test_mainnet_flag_offline", "test_gh_executor_offline", "test_settlement_skip_offline",
         "test_gh_retry_offline", "test_halt_preflight_offline", "test_kill_switch", "test_kill_switch_account", "test_premainnet1_offline",
         "test_risk_guard", "test_s1_cap_offline", "test_s3_unprotected_offline",
         "test_s6_orphan_offline", "test_triggered_stop_offline", "test_soak_report", "test_fix3_offline", "test_fix4_offline",
