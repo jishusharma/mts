@@ -1,6 +1,5 @@
 # RELAY - how one session starts the next with no operator input (operator ask 2026-10-10)
 
-While a super session runs (SUPER_SESSION.md) the relay is paused with `relay.py stop`; its coordinator is the dispatcher.
 Retired text (B164, 30-min era, `gate`, `run_scheduled_task`): `MyTradingSys/archive/relay_2026-10-15/RELAY_HISTORY.md`.
 
 ## Pieces
