@@ -1,21 +1,21 @@
 # Development Status
 
-Generated: 2026-10-15 02:08:07
+Generated: 2026-10-15 11:11:22
 
 ## Git Status
-CI green: 7700efa1 (2026-10-15 00:37:36 +0530), 15 docs-only commit(s) ahead (no CI-gated path changed): OK
+CI green: 71a3c75e (2026-10-15 10:52:21 +0530) = origin/fast-track: OK
 LESSONS: digest in sync
 
 **Last 3 commits on origin/fast-track:**
 ```
-64e8590f claim revalidate-strategy-audit-with-counterev
-c0269ef0 release audit-both-research-tracks-and-order-flo
-40c22019 Merge remote-tracking branch 'origin/fast-track' into nuc/codex-strategy-audit
+71a3c75e ci: make the offline gate hermetic (CI env, CRLF checkout, git identity)
+683435fc Merge remote-tracking branch 'origin/fast-track' into jisnb/dsa-b185
+4e2eaba9 bug B186: write discipline - stray .bak and duplicate section passed all write checks
 ```
 
 ## In-Flight .new Files
-- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (102.3h)
-- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (102.3h)
+- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (111.3h)
+- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (111.3h)
 
 ## Recent Reports (newest 5, last 3 days)
 - MyTradingSys/research/pivot_pattern_audit_2026-10-14/REPORT.md (2026-10-14 19:56) # Pivot-pattern scope audit — 2026-10-14
@@ -31,7 +31,7 @@ SHOTS landed 48: new 2, classified 0, read 0, done 46 | overdue(>24h) 0 | claims
 
 ## Layer Lab (Codex)
 ```
-Layer lab (Codex) at 2026-10-14 20:38Z: on
+Layer lab (Codex) at 2026-10-15 05:41Z: on
   This machine does not run the lab (it runs on JIS-NUC): the queue below is from the repo; allowance, runs and what needs a look are only known there.
   Queue: 6 ready
     tom-btc-event-study [build, gpt-6-luna / medium]
@@ -44,7 +44,7 @@ Layer lab (Codex) at 2026-10-14 20:38Z: on
 
 ## Project Groups
 ```
-GROUPS DATA open 5 (HIGH 0) closed 29 | SRC open 4 (HIGH 0) closed 9 | CORE open 4 (HIGH 0) closed 30 | LAYR open 8 (HIGH 1) closed 7 | EVID open 14 (HIGH 2) closed 4 | EXEC open 7 (HIGH 3) closed 10 | VIS open 1 (HIGH 0) closed 1 | DESK open 2 (HIGH 1) closed 9 | OPS open 16 (HIGH 4) closed 25 | INFRA open 7 (HIGH 3) closed 12
+GROUPS DATA open 5 (HIGH 0) closed 29 | SRC open 4 (HIGH 0) closed 9 | CORE open 4 (HIGH 0) closed 30 | LAYR open 8 (HIGH 1) closed 7 | EVID open 14 (HIGH 2) closed 4 | EXEC open 7 (HIGH 3) closed 10 | VIS open 1 (HIGH 0) closed 1 | DESK open 2 (HIGH 1) closed 9 | OPS open 17 (HIGH 5) closed 25 | INFRA open 7 (HIGH 3) closed 12
 ```
 
 ## Open Findings
