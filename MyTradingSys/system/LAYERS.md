@@ -219,17 +219,14 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/system/NEXT_SESSION.md`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-13_rv06-live-read-claims.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `exec-halt-entry-10031` ready p1 JIS-NB: HALT since 2026-10-12 09:46Z: entry_market rejected 10031 invalid_args_for_instrument (plan L-mkt-1012-0945, j
   - `blind-monitor-halt-recovery` raw p2 JIS-NB: Blind-monitor halt auto-recovery on testnet (operator policy)
   - `chart-verify-py-recompute-bb-rsi-stochrs` raw p2 SONNET: chart_verify.py: recompute BB/RSI/StochRSI/volume/OI/delta-step for any CoinGlass timeframe from fapi at the s
   - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
-  - `live-loop-one-owner-guard` ready p2 JIS-NB: Live loop one-owner guard: start verb refuses when another host's heartbeat is fresh, fails closed (DEVICES.md
   - `identify-the-coinglass-net-delta-panel-u` raw p3 SONNET: Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 1
   - `live-orderflow-state-line-1m-5m-15m-pric` raw p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
   - `mts-cbp-integration-land-one-cbp-candida` blocked p3 SONNET: MTS-CBP integration: land one CBP candidate on the real queue
   - `score-context-reads-automatically-carrie` raw p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
   - `state-machine-vwap-cvd-vs-klines` raw p3 SONNET: State machine session VWAP/CVD disagree with klines: 2026-10-12 13:08Z state_code.json cum_pv/cum_vol gives 83
-  - `wlow-bounce-shadow-emitter` ready p3 JIS-NB: wire wlow-bounce detector as collection-only shadow emitter in live_runner_cli after fable-h1 ships
   - `one-timeframe-map-for-the-whole-toolchai` raw p4 SONNET: One timeframe map for the whole toolchain: capture.TF_MINUTES lacked 8h (CoinGlass button) while holding 7h; g
 
 ## Callers (posted trade calls: Qriptal) (`callers`)

@@ -174,3 +174,6 @@ MyTradingSys/research/htf_context/*_summary.json
 MyTradingSys/runtime/orderflow_live/*.csv
 MyTradingSys/runtime/orderflow_live/_qhist/*.json
 MyTradingSys/runtime/oi_live/*.csv
+
+# wlow-bounce forward sample (runtime readings, never committed)
+MyTradingSys/runtime/wlow_bounce_forward.jsonl
