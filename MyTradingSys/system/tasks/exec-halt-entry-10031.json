@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T22:10:57Z",
   "commands": [
     "grep -n L-mkt-1012-0945 C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/MyTradingSys/execution/auto_trades.jsonl  (live tree, read-only, never write there)",
     "grep -l order_rejected C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/MyTradingSys/execution/journal/*.jsonl  (live tree, read-only)",
@@ -25,7 +26,7 @@
   "refine_tries": 0,
   "refined_by": "claude JIS-NB 2026-10-14 (docs+cards pass)",
   "refs": [],
-  "result": "",
+  "result": "Closed with evidence, no code change: root cause unprovable (likely transient exchange reject); 10031 keeps halting fail-closed; test_executor_reject_diag pins it",
   "scope_in": [
     "MyTradingSys/execution/executor.py (entry order_rejected journal call at line 413; target rejects at 508 and 515) and journal.py",
     "one offline test in MyTradingSys/execution/testnet/offline (next to test_fix3_offline.py), gated in scripts/dev/run_all_tests.py step 1",
@@ -42,7 +43,7 @@
     "auto_trades.jsonl line 4068: entry_failed, HALTED: flattened + halted, account jishu_1; executor.fail_closed confirmed flat",
     "Same shape filled on jishu_1: L-mkt-1012-0915 (BUY 20, 09:15:29Z) and S-mkt-1012-0930 (SELL 20, 09:30:55Z); the only order_rejected in the plan journals (1 of 758 plan journals, read 2026-10-14)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Compare the rejected request with the two fills of the same shape (L-mkt-1012-0915 at 09:15:29Z, S-mkt-1012-0930 at 09:30:55Z): intent journal, mark price, instrument state at 09:46:00Z, Deribit meaning of 10031. Name the cause with file:line or write UNPROVABLE.",
     "Request-param journaling on order_rejected is built on branch jis-nb/fix-exec-reject-diag (commit 26b0956c, test red-first; reaches the live tree only through the supervisor deploy). Check it is on origin/fast-track; if the cause step needs more fields, add them the same way.",
