@@ -53,3 +53,7 @@ Trading software exists, but the profitable published work is mostly latency, ma
 ## Shared-channel notice
 
 CLOUD_INBOX.md is not tracked on origin/fast-track (its last tracked commit is older than the current tree). This document is the notice: GPT's inbox note should point here so the Cloud side can read it from the repository.
+
+## Operator decision (2026-10-15)
+
+Venue: Binance tape is the research target; a separate Deribit execution check gates any fill or profit claim. Q2 (pause Krown Q65-Q69) and Q3 (holdout A7) are still open.
