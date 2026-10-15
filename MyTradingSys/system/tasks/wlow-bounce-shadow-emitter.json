@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T22:10:53Z",
   "commands": [
     "python -m unittest MyTradingSys.backtest.layers.wlow_bounce.test_detector",
     "python -m MyTradingSys.backtest.layers.wlow_bounce.status",
@@ -27,7 +28,7 @@
     "MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/RESULT.md",
     "MyTradingSys/system/PROMOTION_PIPELINE.md"
   ],
-  "result": "",
+  "result": "d2be783f: collection-only shadow emitter in live_runner_cli; forward rows with OI/CVD/net delta; 13/14 new tests fail on old code; live after next deploy",
   "scope_in": [
     "MyTradingSys/backtest/layers/alerts/live_runner_cli.py: add a layer factory next to the Fabio v3 emitter and register it in build_default_registry on tf 1h",
     "MyTradingSys/backtest/layers/alerts/test_live_runner_cli.py: tests",
@@ -44,7 +45,7 @@
     "live_runner_cli.py: Fabio v3 SHADOW cells already emit {'collection_only': True, 'shadow_side': side} with no 'side' (the pattern to copy); poll_once passes alerts through apply_promotion_gate (line ~337)",
     "RESULT.md: DEV verdict INCONCLUSIVE n=8; promote.py check REJECT; the setup is UNVALIDATED so collection-only is the only allowed mode"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Wait until fable-h1-promotion-default-deny is on origin/fast-track (git cherry), then re-read live_runner_cli.py poll_once and the Fabio v3 emitter.",
     "Add make_wlow_bounce_layer(): from the closed 1h bars build candles {t,o,h,l,c,v,tbv} (tbv = taker-buy volume; if the bars lack it, return [] and log wlow_no_tbv once), call detector.status_now(candles). Return one event only when state == ACTIVE and the trigger bar is the LAST bar (dedupe through the runner's state dict keyed by trigger bar t).",
