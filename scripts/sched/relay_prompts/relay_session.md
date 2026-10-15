@@ -29,6 +29,7 @@ leaves a design choice open, `begin --skip <card>` and take the next.
 5. Do NOT start another scheduled task: the App asks a human to approve a session starting another one, so unattended launch
    chains die (B164). Instead free the launch lock with the `UNLOCK:` command tick printed (`python <worktree>/scripts/sched/relay.py
    unlock` if there is none) so the next tick starts the next handoff at once. Skip this after `--stop`.
-6. Reply with one line: task, result, go/stop. End.
+6. Reply with one line: task, result, go/stop, and the ship proof: `git cherry origin/fast-track <sha>` printed nothing
+   (a non-empty line = not shipped; say so). End.
 
 Blocked call or a failure you cannot fix in two tries: `handoff --stop "<exact reason>"`, ship, end.

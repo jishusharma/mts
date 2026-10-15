@@ -15,7 +15,8 @@
     "tom"
   ],
   "live_path": false,
-  "note": "",
+  "note": "G3: the coordinator starts it from research/observer_2026-10-15/OBSERVER_REPORT.md G3 brief (needs the operator as reader 1); not a relay card. Release: apply-op release + check",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
@@ -35,7 +36,7 @@
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Claude reader marks all 80 from the PNGs only.",
     "Jis marks the 20 seed-chosen charts (sheet from index.csv).",

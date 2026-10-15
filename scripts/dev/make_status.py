@@ -1,19 +1,24 @@
 #!/usr/bin/env python3
 """
 Generate MyTradingSys/research/STATUS.md (the boot read: keep it short, one home per fact).
-Gathers: the CI green line, trunk tip, in-flight .new files, the 5 newest reports, screenshots, the layer lab, the
+Gathers: the CI green line, the layer x gate board, trunk tip, in-flight .new files, the 5 newest reports, screenshots, the layer lab, the
 hygiene report when this host has one, project groups, open findings. Lists that other indexes already hold (queue
 status of the retired NUC worker, 10 commits, delivered lab cards) are not repeated here.
 """
+import json
 import subprocess
 import os
 import sys
+import time
 from pathlib import Path
 from datetime import datetime, timedelta
 import re
 
 TRUNK = "origin/fast-track"
 TRUNK_COMMITS = 3
+GATE_BOARD = "MyTradingSys/system/gate_board.json"
+RESEARCH_PATHS = ("MyTradingSys/research/", "MyTradingSys/methodology/", "MyTradingSys/extracts/", "MyTradingSys/backtest/")
+INFRA_CAP_PCT = 30
 RECENT_REPORTS = 5
 RECENT_REPORT_DAYS = 3
 
@@ -241,6 +246,68 @@ def get_open_findings():
 
     return findings
 
+def _git(args, cwd=None):
+    """git stdout as text, "" on any error (list form: no shell quoting of paths)."""
+    try:
+        r = subprocess.run(["git", *args], capture_output=True, text=True, cwd=cwd)
+        return r.stdout.strip() if r.returncode == 0 else ""
+    except Exception:
+        return ""
+
+
+def get_commit_mix(ref, cwd=None, now=None, hours=24):
+    """Non-merge commits on ref in the last `hours`: claim/release, research (touches RESEARCH_PATHS, STATUS.md aside) or
+    other (infra, process, pings). Observer 2026-10-15: other was 40% over 3 days; the board flags it above INFRA_CAP_PCT."""
+    since = (now or time.time()) - hours * 3600
+    n = {"research": 0, "claim/release": 0, "other": 0}
+    for block in _git(["log", ref, "--no-merges", "-n", "3000", "--format=@@%ct %s", "--name-only"], cwd).split("@@")[1:]:
+        lines = [ln for ln in block.splitlines() if ln.strip()]
+        if not lines:
+            continue
+        ts, _, subj = lines[0].partition(" ")
+        if not ts.isdigit() or int(ts) < since:
+            continue
+        if re.match(r"(claim|release) ", subj):
+            n["claim/release"] += 1
+        elif any(f.startswith(RESEARCH_PATHS) and not f.endswith("/STATUS.md") for f in lines[1:]):
+            n["research"] += 1
+        else:
+            n["other"] += 1
+    tot = sum(n.values())
+    if not tot:
+        return f"commits {hours}h: 0"
+    pct = {k: round(100 * v / tot) for k, v in n.items()}
+    flag = f"  OVER {INFRA_CAP_PCT}% CAP" if pct["other"] > INFRA_CAP_PCT else ""
+    return f"commits {hours}h: {tot} = research {pct['research']}% | claim/release {pct['claim/release']}% | other {pct['other']}%{flag}"
+
+
+def get_gate_board(cwd=None, now=None, board=GATE_BOARD):
+    """Layer x gate board (LAYER_REBUILD_PLAN_2026-10-15 s5): per layer its gate, the hours since its proof file last changed on
+    the trunk, the next gate; then the 24 h commit mix. No proof changed in 24 h = the next spawn targets a gate."""
+    now = now or time.time()
+    p = Path(cwd or ".") / board
+    if not p.exists():
+        return [f"(no {board})"]
+    ref = TRUNK if _git(["rev-parse", "--verify", "--quiet", TRUNK], cwd) else "HEAD"
+    out, ages = [], []
+    for row in json.loads(p.read_text(encoding="utf-8")).get("layers", []):
+        proof = row.get("proof", [])
+        ts = [_git(["log", "-1", "--format=%ct", ref, "--", f], cwd) for f in proof]
+        ts = [int(t) for t in ts if t.isdigit()]
+        if ts:
+            age = (now - max(ts)) / 3600
+            ages.append(age)
+            moved = f"proof changed {age:.0f}h ago"
+        else:
+            moved = "proof not on trunk"
+        out.append(f"{row.get('layer', '?'):<7} {row.get('gate', '?'):<3} {moved} | next: {row.get('next', '?')} | "
+                   f"proof: {', '.join(proof) or '(none)'}")
+    if not ages or min(ages) > 24:
+        out.append("NO GATE MOVED IN 24h: the next spawn targets a gate (LAYER_REBUILD_PLAN s5)")
+    out.append(get_commit_mix(ref, cwd=cwd, now=now))
+    return out
+
+
 def main():
     os.chdir(os.path.dirname(os.path.abspath(__file__)) + "/../..")
 
@@ -254,6 +321,13 @@ def main():
     output.append("## Git Status")
     output.append(get_ci_line())
     output.append(get_lessons_line())
+    output.append("")
+
+    # Gate board: which gate each layer is at and when its proof last moved (LAYER_REBUILD_PLAN_2026-10-15 s5; gate_board.json)
+    output.append("## Gate Board")
+    output.append("```")
+    output.extend(get_gate_board())
+    output.append("```")
     output.append("")
     label, log = get_trunk_log()
     output.append(f"**Last {TRUNK_COMMITS} commits on {label}:**")

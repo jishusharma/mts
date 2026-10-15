@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T14:32:07Z",
   "commands": [],
   "created": "2026-10-13T14:40:00Z",
   "depends_on": [],
@@ -19,7 +20,7 @@
   "refine_tries": 0,
   "refined_by": "sonnet-2026-10-13 gap review G1-G8",
   "refs": [],
-  "result": "",
+  "result": "30 passed; MyTradingSys/research/layer_lab/reports/2026-10-15_gap-g4-through-ticks-flag.md",
   "scope_in": [
     "MyTradingSys/backtest/tom_bt.py",
     "MyTradingSys/tests/",
@@ -36,7 +37,7 @@
   "sources": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read sim_limit_trade and bt_ladder through_ticks.",
     "Test red first, add the argument, run existing tom_bt tests."

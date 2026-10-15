@@ -15,7 +15,8 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "",
+  "note": "Relay queue = LAYER_REBUILD_PLAN s6 (coordinator 2026-10-15, observer). Release: tasks.py apply-op <id> release, then tasks.py check <id>",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -36,7 +37,7 @@
   "sources": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md (candidate ids line)"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Download each candidate as f398 720p video-only mp4 + en vtt into F:/MTS/data/fabio_videos (default android client gives 360p, unreadable).",
     "Make 30 s contact sheets with sheets.py, read them, add one CSV row per entry/management action with the frame file named.",
