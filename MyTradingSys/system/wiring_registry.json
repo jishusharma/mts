@@ -721,6 +721,11 @@
   "MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py": {
    "disp": "REPRO",
    "why": "DEV-only event counts and MDE for KR-S1, KR-S8, MAL-2/5/16/17 (EVENT_COUNTS.md); run by hand, reproduces event_counts.csv; computes no forward return."
+  },
+  "MyTradingSys/backtest/research_kit.py": {
+   "disp": "TOOL",
+   "ref": "research-kit",
+   "why": "Shared screen statistics for research studies (day-clustered SE, clustered difference, MDE, power check, Holm, cost in R); imported by hand-run studies, tested by test_research_kit.py, no live imports."
   }
  }
 }

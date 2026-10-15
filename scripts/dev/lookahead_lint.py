@@ -12,7 +12,7 @@ Scans MyTradingSys/research/**/*.py and MyTradingSys/backtest/**/*.py (AST based
                                column or keyword like fwd / forward / outcome / ret(urn) / exit, or sits in a function so named
   fwd-index              FAIL  x[i+k] (k > 0 or a name), x[i+1:], x[:i+k] (k > 1) under the same exemption; x[:i+1] is not a hit
   pivot-right-neighbour  FAIL  one expression reads x[i-a] and x[i+b] of the same series: a pivot whose right neighbour can be the
-                               decision bar (setup_alpha_beta_2026-10-10/beta_sweep.py:177: i+1 of the last bar of the previous day)
+                               decision bar (the setup_alpha_beta_2026-10-10 sweep study, line 177: i+1 of the last bar of the previous day)
   fullsample-quantile    WARN  quantile / percentile / qcut over a whole array or frame used for an arm or threshold. OURS-on-DEV
                                and acceptable only if the cut-offs are frozen before VALIDATION; rolling/expanding and sliced
                                windows are not hits
