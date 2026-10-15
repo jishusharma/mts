@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T21:13:59Z",
   "commands": [],
   "created": "2026-10-15T19:40:00Z",
   "depends_on": [],
@@ -17,7 +18,7 @@
   "refine_tries": 0,
   "refined_by": "fable-testnet-adversarial-review",
   "refs": [],
-  "result": "",
+  "result": "H2 already on origin/fast-track in 644ca8b6 (demote off -> trade_blocklist + reason; verify flags sized prefixes); test_promote 45 OK",
   "scope_in": [
     "MyTradingSys/backtest/layers/promotion/promote.py (demote, verify)",
     "MyTradingSys/backtest/layers/promotion/test_promote.py",
@@ -31,7 +32,7 @@
   "sources": [
     "MyTradingSys/research/fable_audit_2026-10-16/PROMOTION_REVIEW.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "demote --to off: also write setup_id into auto_trader_config.json trade_blocklist_parked with reason 'demoted off <utc>' (or refuse when the config is unreadable).",
     "verify(): add a problem for every size_overrides prefix (longer than 'layer:') that has neither a registry entry nor a trade_blocklist/parked entry.",
