@@ -58,10 +58,18 @@ SERIAL_STEPS = ("3ly", "3af", "3x", "3ms", "3mg", "5")
 # Pytest shards of MyTradingSys/tests and the measured seconds of its slow files (2026-10-16 profile, loaded machine); the rest ~2 s each.
 PYTEST_SHARD_NUMS = ("4", "4b", "4c", "4g", "4h")
 TEST_FILE_DEFAULT_S = 2
-TEST_FILE_SECONDS = {"test_turn_meter.py": 150, "test_aibridge_payload.py": 95, "test_b091_build_check_tiers.py": 60,
-                     "test_build_check_report_reasons.py": 32, "test_relay_tick.py": 32, "test_relay.py": 25,
-                     "test_tom_profile_parity.py": 12, "test_net_rr_floor_single_source.py": 8, "test_sync_where_unborn.py": 6,
-                     "test_dsa_direct_mode.py": 6}
+TEST_FILE_SECONDS = {
+    "test_turn_meter.py": 150,
+    "test_aibridge_payload.py": 95,
+    "test_b091_build_check_tiers.py": 60,
+    "test_build_check_report_reasons.py": 32,
+    "test_relay_tick.py": 32,
+    "test_relay.py": 25,
+    "test_tom_profile_parity.py": 12,
+    "test_net_rr_floor_single_source.py": 8,
+    "test_sync_where_unborn.py": 6,
+    "test_dsa_direct_mode.py": 6,
+}
 SLOWEST_FIRST = ("4", "4b", "4c", "4g", "4h", "4e", "4f","3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
 _LOCK = threading.Lock()
 
@@ -190,7 +198,12 @@ def exec_unittest_shards(script, jobs):
                               text=True, errors="replace", env=env) for c in chunks]
     outs = [p.communicate()[0] for p in procs]
     ok = all(p.returncode == 0 for p in procs)
-    keep = outs if ok else [o if os.environ.get("CI") else "\n".join(o.splitlines()[-15:]) for p, o in zip(procs, outs) if p.returncode != 0]
+    def failing(o):   # from the first FAIL/ERROR header (a plain tail is only the tests' own prints), capped
+        lines = o.splitlines()
+        first = next((i for i, l in enumerate(lines) if l.startswith(("FAIL:", "ERROR:"))), max(len(lines) - 15, 0))
+        return "\n".join(lines[first:first + 60])
+
+    keep = outs if ok else [o if os.environ.get("CI") else failing(o) for p, o in zip(procs, outs) if p.returncode != 0]
     return ok, "\n".join(keep)
 
 
