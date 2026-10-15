@@ -697,6 +697,18 @@
   "MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/study.py": {
    "disp": "REPRO",
    "why": "Pre-registered DEV-only chart-read G5 screen (mal_bb_mid_engulf_2026-10-16); run by hand (--count | --full), reproduces its RESULT.md/trials.csv/ledger.csv; covered by its test file; no live imports. Screen, ran before G3 marks by operator decision 2026-10-16."
+  },
+  "MyTradingSys/research/krown_ta101_2026-10-13/tools/fetch_daily_majors.py": {
+   "disp": "REPRO",
+   "why": "Public-data fetch for the Krown studies (Binance spot monthly klines checked against published SHA256, Coinbase BTC-USD candles); run by hand, reproduces DATA_MANIFEST.csv; no orders, no account, no secrets."
+  },
+  "MyTradingSys/research/krown_ta101_2026-10-13/tools/build_data_coverage.py": {
+   "disp": "REPRO",
+   "why": "Builds weekly bars from the daily files and writes DATA_COVERAGE.md; run by hand after fetch_daily_majors.py; reads timestamps and DEV-window OHLC equality only."
+  },
+  "MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py": {
+   "disp": "REPRO",
+   "why": "DEV-only event counts and MDE for KR-S1, KR-S8, MAL-2/5/16/17 (EVENT_COUNTS.md); run by hand, reproduces event_counts.csv; computes no forward return."
   }
  }
 }
