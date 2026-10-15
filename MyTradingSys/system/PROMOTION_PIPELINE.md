@@ -30,7 +30,13 @@ Manifest format: docstring at the top of `promote.py`.
 - `live_runner_cli.poll_once` passes every alert through `apply_promotion_gate`: an alert whose source (`layer:<layer>:<sub>:<tf>`)
   starts with a `shadow` entry loses `side` (kept as `shadow_side`) and gets `collection_only: true`; it is still logged and
   collected. `auto_trader.layer_signal` also rejects `collection_only` alerts, because a layer_rules entry could map a side-less alert.
-- Not in the registry, or mode `testnet` = today's behaviour, unchanged. Empty registry = no change.
+- DEFAULT-DENY (fable H1, enforced in `auto_trader.promotion_reject`, for layer signals and Tom as source `tom`): a source with no
+  registry entry trades only if it starts with a prefix in `pre_pipeline_sources` in `auto_trader_config.json`
+  (`{prefix: {reason, review_by}}`, the operator's explicit grandfather list for the pre-pipeline testnet calibration); otherwise it is
+  rejected `unregistered (promotion pipeline)`. Mode `testnet` trades, mode `shadow` never trades (it beats a grandfathered prefix).
+  A fresh layer wired only through `layer_rules`/`size_overrides`/`accounts` therefore cannot reach `place()`.
+- Unreadable/malformed registry, malformed or None `pre_pipeline_sources`, or an unreadable auto_trader config = FAIL CLOSED in
+  auto_trader too: every layer signal and Tom is rejected. `review_by` is informational (not enforced: expiry would silently halt trading).
 - Missing, unreadable or malformed registry = FAIL CLOSED: every alert becomes collection-only (nothing trades until fixed). The file is
   re-read on every poll, so a restart, demotion or edit takes effect on the next poll.
 
