@@ -46,7 +46,9 @@ def card(no=44, setup="ct_short", entry=83537.3, stop=83704.37, target=82985.43,
 
 
 def cfg():
-    return json.loads(json.dumps(at.DEFAULT_CONFIG))
+    c = json.loads(json.dumps(at.DEFAULT_CONFIG))
+    c["pre_pipeline_sources"] = {"layer:": {"reason": "test fixture", "review_by": "2026-10-23"}, "tom": {"reason": "test fixture", "review_by": "2026-10-23"}}   # fable H1: not testing the promotion gate here
+    return c
 
 
 def signal(**kw):

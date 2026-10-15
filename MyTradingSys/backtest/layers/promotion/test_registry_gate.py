@@ -136,7 +136,9 @@ class AutoTraderRejectsCollectionOnly(unittest.TestCase):
     def sig(self, **kw):
         a = {"layer": "rsi", "sub": "rsi_events", "event": "support", "tf": "15m", "t_close": self.T15}
         a.update(kw)
-        return at.layer_signal(a, json.loads(json.dumps(at.DEFAULT_CONFIG)), self.NOW)
+        c = json.loads(json.dumps(at.DEFAULT_CONFIG))
+        c["pre_pipeline_sources"] = {"layer:rsi:": {"reason": "fixture", "review_by": "2026-10-23"}}   # fable H1 default-deny
+        return at.layer_signal(a, c, self.NOW)
 
     def test_rule_mapped_alert_still_trades_when_not_collection_only(self):
         self.assertNotIn("reject", self.sig())
@@ -145,6 +147,26 @@ class AutoTraderRejectsCollectionOnly(unittest.TestCase):
         # layer_rules maps rsi:support -> long even without "side": stripping side alone would not stop it
         s = self.sig(collection_only=True)
         self.assertIn("collection_only", s["reject"])
+
+
+class DecisionForSourceTest(unittest.TestCase):
+    """Pure default-deny lookup (fable H1). Hand-written expectations."""
+    GF = {"layer:old:": {"reason": "r", "review_by": "2026-10-23"}}
+
+    def test_decisions(self):
+        e = [entry("layer:new:", "testnet"), entry("layer:old:x:", "shadow")]
+        d = reg.decision_for_source
+        self.assertEqual(d("layer:new:a:15m", e, self.GF), "trade")
+        self.assertEqual(d("layer:old:x:15m", e, self.GF), "shadow")      # entry beats grandfather
+        self.assertEqual(d("layer:old:y:15m", e, self.GF), "trade")       # grandfathered, no entry
+        self.assertEqual(d("layer:other:a:15m", e, self.GF), "unregistered")
+        self.assertEqual(d("layer:other:a:15m", [], {}), "unregistered")
+
+    def test_errors_fail_closed(self):
+        d = reg.decision_for_source
+        self.assertEqual(d("layer:old:a:1h", None, self.GF), "registry_error")
+        for bad in (None, [], {"layer:old:": {"reason": "r"}}, {"": {"reason": "r", "review_by": "2026-10-23"}}):
+            self.assertEqual(d("layer:old:a:1h", [], bad), "registry_error")
 
 
 if __name__ == "__main__":
