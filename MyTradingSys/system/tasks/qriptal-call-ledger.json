@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T21:31:48Z",
   "commands": [],
   "created": "2026-10-14T05:28:38Z",
   "depends_on": [],
@@ -20,7 +21,7 @@
   "refine_tries": 0,
   "refined_by": "opus-2026-10-14 (split after lab BLOCKED twice)",
   "refs": [],
-  "result": "",
+  "result": "70 candidates, 2 ELIGIBLE (both ZPFK3ZsLwoo weekly-plan variants, HOLDOUT window; 0 in DEV). CALL_LEDGER.csv + LEDGER_NOTES.md + ledger.py + 18 tests; call times from YouTube metadata.",
   "scope_in": [
     "MyTradingSys/research/qriptal_2026-10-10/ledger.py",
     "MyTradingSys/research/qriptal_2026-10-10/test_ledger.py",
@@ -39,7 +40,7 @@
     "MyTradingSys/research/layer_lab/reports/2026-10-14_qriptal-score-binance.md",
     "MyTradingSys/items/B162_qriptal_signal_layer.md"
   ],
-  "state": "blocked",
+  "state": "done",
   "steps": [
     "ledger.py: read extracts/_staged_2026-09-27/raw/qriptal_*_raw.txt; for each candidate statement write a row: file, line, verbatim quote (<= 40 words), asset, side, entry, stop, targets, call time and its source, ELIGIBLE / NOT_ELIGIBLE with the rule that decided it.",
     "Cross-check the one structured extraction (extracts/_staged_2026-09-27/extracts/qriptal/trade_log/2026-09-20_ZPFK3ZsLwoo.md): every row there maps to a ledger row or a stated reason.",
