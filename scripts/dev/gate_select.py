@@ -11,6 +11,7 @@
 Nothing here decides what is safe to deploy: CI on both OSes does, and auto_deploy only takes green/fast-track.
 """
 import re
+from functools import lru_cache
 from pathlib import Path, PurePosixPath
 
 REPO = Path(__file__).resolve().parents[2]
@@ -51,10 +52,32 @@ def _name_matches(f, steps):
     return [n for n, cmd in steps if any(re.search(r"(^|[\s/\\(])" + re.escape(p) + r"(?![\w.])", cmd) for p in pair)]
 
 
+@lru_cache(maxsize=None)
+def _reference_re(stem):
+    """A real reference to module `stem` in test source (2026-10-16: the bare word `dsa` pulled in 3 of 5 pytest shards through a variable
+    name, a card id and a doc assertion on the text "dsa.py boot"): an import of it, the script run or opened (`.../<stem>.py`,
+    `"<stem>.py"`, `python <stem>.py`), or a dotted string naming it (`patch("dsa.x")`, `import_module("scripts.dev.dsa")`).
+    A comment, a longer name (`dsa_tools`, `test_dsa.py`), a directory or the filename inside a longer prose string is not."""
+    s = re.escape(stem)
+    return re.compile("|".join((
+        rf"^[ \t]*import[ \t]+[^\n#;]*\b{s}\b",                                              # import s / import a, pkg.s as x
+        rf"^[ \t]*from[ \t]+[\w.]*?\b{s}\b[\w.]*[ \t]+import\b",                             # from s import / from pkg.s import
+        rf"^[ \t]*from[ \t]+[\w.]+[ \t]+import[ \t]+(?:\([^)]*|[^\n#;(]*)\b{s}\b",           # from pkg import s / import (a,\n s)
+        rf"[/\\]{s}(?![\w/\\-])",                                                            # scripts/dev/s, ../s.py (a file, not a directory)
+        rf"['\"]{s}\.py['\"]",                                                               # ROOT / "scripts" / "dev" / "s.py"
+        rf"\bpython[\w.]*[ \t]+{s}\.py\b",                                                   # "python s.py boot"; "s.py boot" alone is prose
+        rf"(?:import_module|__import__|spec_from_file_location|find_spec)\([ \t]*[rbf]?['\"](?:\w+\.)*{s}['\"]",
+        rf"['\"](?:\w+\.)*{s}\.[A-Za-z_]\w*(?:\.\w+)*['\"]",                                 # "s.attr" for patch()/setattr()
+    )), re.M)
+
+
 def mentions(stem, cmd_text, root=REPO):
-    """True when a test file named in cmd_text (or any test_*.py under a directory it names) mentions `stem` as a word: the pytest shard
-    that imports or runs the changed module. Unreadable = True (fail closed)."""
-    pat = re.compile(r"\b" + re.escape(stem) + r"\b")
+    """True when a test file named in cmd_text (or any test_*.py under a directory it names) really references the module `stem`
+    (_reference_re), or is that file: the pytest shard that imports or runs the changed module. Unreadable = True (fail closed), and
+    so is a module name no import can name (`__init__`, `conftest`: they act on every test beside them)."""
+    if stem.startswith("__") or stem == "conftest":
+        return True
+    pat = _reference_re(stem)
     for tok in cmd_text.replace("\\", "/").split():
         p = Path(root) / tok
         if tok.endswith(".py") and p.is_file():
@@ -64,6 +87,8 @@ def mentions(stem, cmd_text, root=REPO):
         else:
             continue
         for f in files:
+            if f.stem == stem:
+                return True
             try:
                 if pat.search(f.read_text(encoding="utf-8", errors="ignore")):
                     return True
