@@ -189,7 +189,7 @@ def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fe
         if (lo <= entry - through_ticks) if sgn > 0 else (hi >= entry + through_ticks):
             fill_i = i
             break
-        if (hi >= target) if sgn > 0 else (lo <= target):
+        if (hi >= target + through_ticks) if sgn > 0 else (lo <= target - through_ticks):
             return dict(filled=False, reason="ran")
     if fill_i is None:
         return dict(filled=False, reason="no_fill" if i0 + fill_window <= n else "open_at_end")
