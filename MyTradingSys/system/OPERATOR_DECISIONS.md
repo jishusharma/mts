@@ -767,9 +767,9 @@ Applied: (not yet)
 One long-lived worktree per machine/lane, a branch per task?
 
 Recommended: Yes, adopt it
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Yes, adopt it (chat 2026-10-15)
+Operator note (verbatim): decide as per the goals of the task from where this question originates (no stale trees left behind, lower cost, same performance)
+Applied: (pending) CLAUDE.md boot + SHORT SESSIONS, sync.py start <slug> in a lane tree, PARALLEL.md
 
 ```json
 {
@@ -783,7 +783,8 @@ Applied: (not yet)
   "Only the longer session cap",
   "No, keep one tree per session"
  ],
- "recommended": "Yes, adopt it"
+ "recommended": "Yes, adopt it",
+ "answer": "Yes, adopt it"
 }
 ```
 
