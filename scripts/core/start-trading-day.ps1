@@ -827,7 +827,7 @@ print("logged")
         Start-Sleep -Seconds $sleepSec
     }
 } catch {
-    Log-Line "APPARATUS ERROR phase=$exitPhase : $_"
+    Log-Line "APPARATUS ERROR phase=$exitPhase : $_ @ $(($_.InvocationInfo.PositionMessage -replace "\s+"," "))"
 } finally {
     if ($StateMachinePID) { try { & taskkill.exe /F /T /PID $StateMachinePID 2>&1 | Out-Null } catch {} }
     Remove-Item (Join-Path $R "runtime_data\loop_stop.flag") -ErrorAction SilentlyContinue

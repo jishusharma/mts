@@ -666,6 +666,10 @@
    "disp": "REPRO",
    "why": "Manually reproduces rsi_divergence_mtf_checks_output.txt (5m legend of shot 8fc58204ee18, RSI14 regular bullish divergence on 1m/2m/3m/5m, 5m upper-band walk, taker delta from public Binance 1m klines) for drafts/OPR-RSI-DIV-SWEEP-BAND-WALK.md."
   },
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/vtt_to_canonical.py": {
+   "disp": "TOOL",
+   "why": "Converts a YouTube .en.vtt caption file into raw_transcripts_canonical/<id>_raw.txt (one cue per line as [m:ss] text) so quotes pass verify_extract_quotes.py; `check` compares the other Fabio vtt files with their canonical copies; output in vtt_to_canonical_output.txt; run by hand, named in setup_catalog_2026-10-15/SETUP_CATALOG.md header."
+  },
   "MyTradingSys/research/video_priority_2026-10-15/fetch_meta.py": {
    "disp": "TOOL",
    "why": "Anonymous metadata-only fetch (playlists, per-video detail; 5 s spacing, no cookies) for the video priority method; run by hand, named in video_priority_2026-10-15/METHOD.md pipeline step 1 and 4."
