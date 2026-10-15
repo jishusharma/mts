@@ -13,7 +13,7 @@
     "krown"
   ],
   "live_path": false,
-  "note": "2026-10-14: 7 of 11 transcripts fetched, 4 got HTTP 429 (intermittent). LESSONS_DIGEST s6: STOP on a bot check, no cookies, tokens or third-party sites, no YouTube watch pages in the in-app browser (autoplays audio). Operator options in decision q-krown-captions: retry daily for 3 days, paste the 4 transcripts, or skip. 2026-10-15: operator 2026-10-15: \"Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.\" Answered q-krown-captions with the default: retry once a day for 3 days (no cookies), then NOT AVAILABLE.",
+  "note": "2026-10-14: 7 of 11 transcripts fetched, 4 got HTTP 429 (intermittent). LESSONS_DIGEST s6: STOP on a bot check, no cookies, tokens or third-party sites, no YouTube watch pages in the in-app browser (autoplays audio). Operator options in decision q-krown-captions: retry daily for 3 days, paste the 4 transcripts, or skip. 2026-10-15: operator 2026-10-15: \"Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.\" Answered q-krown-captions with the default: retry once a day for 3 days (no cookies), then NOT AVAILABLE. 2026-10-15 (video-priority session): fetch ORDER (nothing cut, operator's playlist): hNfjyrJEytI, fMRvOt26xcA, LB3DRYxnA0A, _JoJbu_Ug-A (research/video_priority_2026-10-15/RANKED_KROWN.csv). The two long ones (1202 s, 1774 s) carry the method content; the other two are 255 s and 314 s clips. Metadata check: the options-list priority ids UHY740h3e-Y and SOaAP9vBgM4 are 41 s and 54 s Shorts (low caption value), -9rAJNUpMsk and EQy4HouRMMk are Cointelegraph interviews.",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
