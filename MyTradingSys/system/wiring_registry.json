@@ -29,6 +29,10 @@
    "disp": "TOOL",
    "why": "GDI+ renderer called by g3_pack.py draw (subprocess, no Pillow on JIS-NB); draws rect/line/text primitives from JSON to PNG."
   },
+  "MyTradingSys/research/context_null_2026-10-16/context_null.py": {
+   "disp": "TOOL",
+   "why": "Context-matched null (hour/vol tercile/trend/level controls) a future PRE_REG names as its control arm; library imported by research scripts, covered by test_context_null.py; DEV arrays only, no live imports."
+  },
   "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py": {
    "disp": "REPRO",
    "why": "Pre-registered DEV-only gross-effect screen (PRE_REG.md); run by hand (--count | --full), reproduces RESULT.md/decay.csv/ledger.csv; covered by test_screen.py; no live imports."
@@ -721,6 +725,11 @@
   "MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py": {
    "disp": "REPRO",
    "why": "DEV-only event counts and MDE for KR-S1, KR-S8, MAL-2/5/16/17 (EVENT_COUNTS.md); run by hand, reproduces event_counts.csv; computes no forward return."
+  },
+  "MyTradingSys/backtest/research_kit.py": {
+   "disp": "TOOL",
+   "ref": "research-kit",
+   "why": "Shared screen statistics for research studies (day-clustered SE, clustered difference, MDE, power check, Holm, cost in R); imported by hand-run studies, tested by test_research_kit.py, no live imports."
   }
  }
 }
