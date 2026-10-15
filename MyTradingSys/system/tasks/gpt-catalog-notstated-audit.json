@@ -7,14 +7,14 @@
   "depends_on": [],
   "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
   "from_inbox": "",
-  "goal": "Check 10 trade setups (TOM-1,-2,-3,-5,-8; FAB-1..FAB-5) in SETUP_CATALOG against raw_transcripts_canonical: (a) NOT STATED cells the trader does state; (b) quotes not supporting the row; (c) mis-assigned trades. Done when all 10 covered, each finding has file:line and a verbatim quote of 25 words or fewer, verify_extract_quotes.py passes. Output CATALOG_AUDIT.md. Scope_out: any catalogue edit.",
+  "goal": "Check 12 trade setups (TOM-1..5, TOM-8, FAB-1..5, FAB-8) in SETUP_CATALOG against raw_transcripts_canonical: (a) NOT STATED cells the trader does state; (b) quotes not supporting the row; (c) mis-assigned trades. Done when all 12 covered, each finding has file:line and a verbatim quote of 25 words or fewer, verify_extract_quotes.py passes. Output CATALOG_AUDIT.md. Scope_out: any catalogue edit.",
   "id": "gpt-catalog-notstated-audit",
   "kind": "audit",
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
   "note": "",
-  "prio": 2,
+  "prio": 1,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refs": [],
@@ -39,5 +39,5 @@
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
   "tests": "",
-  "title": "GPT audit of SETUP_CATALOG NOT STATED cells and quote support, 10 setups with real trades"
+  "title": "GPT audit of SETUP_CATALOG NOT STATED cells and quote support, 12 setups with real trades"
 }
