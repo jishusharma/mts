@@ -10,7 +10,7 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 5. SHORT SESSIONS (operator 2026-10-09): one session = one task; hand over when it is done, after 10 operator turns or 40 tool turns, whichever first (commit, then steps 3-4, one line, stop). Live market threads: after 5 screenshot reads. Hook `turn_meter.py`: a turn = one assistant message.
 
 ## Cost and routing (operator 2026-10-09)
-- Interactive sessions and subagents: Sonnet (implementations, spec-derived tests), Opus only when the operator names it (enforced: `model_guard.py`); relay/dispatcher sessions run on the routine model (App setting; `get_session`). Haiku for status/mechanical work; subagents only if clearly needed. Wait on a queue with one background shell, never a polling agent; spot-check one worker claim.
+- Interactive sessions and subagents: Sonnet (implementations, spec-derived tests), Opus only when the operator names it; relay/dispatcher sessions run on the routine model (App setting; `get_session`). Haiku for status/mechanical work; subagents only if clearly needed. Wait on a queue with one background shell, never a polling agent; spot-check one worker claim.
 - Do not ask routine questions: pick the default, finish end to end; free public market data and YouTube videos are pre-approved (operator 2026-10-11).
 - T0 script first, then by card lane (HOW_MTS_RUNS.md): run-and-report goes to DSA (`desk.py post ... --target DSA`; low on budget: post the rest to DSA, then hand over).
 - Logins share one repo and queue (CLOUD_ACCOUNTS.md): whoever has budget takes NEXT_SESSION.md; never idle for a weekly reset.
