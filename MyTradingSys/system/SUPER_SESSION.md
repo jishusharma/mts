@@ -44,6 +44,10 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 The coordinator, on its first turn: `get_usage` (stop if the Pacing state is THROTTLE), `python scripts/sched/relay.py stop
 "super-session <session id>"` on this machine, read STATUS.md and NEXT_SESSION.md, then spawn.
 
+Heartbeat (watchdog): on every wake the coordinator runs `python scripts/sched/relay.py heartbeat "<session id>" --note "<what>"`
+(rewrites `~/.claude/mts-super-heartbeat.json`: coordinator, host, utc, note; not in git). MTS-DispatchGate runs `relay.py watchdog`
+first: a stop starting `super-session` with a heartbeat missing, malformed or older than 60 min is resumed (logged `watchdog_resume`); any other stop never.
+
 ## End
 Drain: every worker shipped (`git cherry` empty) or its partial work handed over in NEXT_SESSION.md; archive finished workers;
 `get_usage` written into the hand-over note; `python scripts/sched/relay.py resume`; one line to the operator.
