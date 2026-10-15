@@ -39,6 +39,7 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_live_owner.py",
     "scripts/dev/test_loop_supervisor_grace.py",
     "scripts/dev/test_nowin.py",
+    "scripts/dev/test_feed_watchdog_script.py",
     "MyTradingSys/observation/tests",
 ]
 
