@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T19:11:25Z",
   "commands": [],
   "created": "2026-10-15T12:47:15Z",
   "crucial": true,
@@ -18,7 +19,7 @@
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST: 12 setups; 13 findings (2 HIGH); quote verifier PASS; MyTradingSys/research/layer_lab/reports/2026-10-15_gpt-catalog-notstated-audit.md",
   "scope_in": [
     "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",
     "raw_transcripts_canonical"
@@ -30,7 +31,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
