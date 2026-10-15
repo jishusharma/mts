@@ -761,3 +761,28 @@ Applied: (not yet)
  "recommended": "Yes, switch them off on all three logins"
 }
 ```
+
+## q20-persistent-worktrees | asked 2026-10-15 | Process
+
+One long-lived worktree per machine/lane, a branch per task?
+
+Recommended: Yes, adopt it
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet)
+
+```json
+{
+ "order": 20,
+ "stage": "Process",
+ "refs": "system/PARALLEL.md, scripts/dev/stop_guard.py",
+ "title": "One long-lived worktree per machine/lane, a branch per task?",
+ "why": "26 stale worktrees piled up on JIS-NB because every session makes its own tree and ends before shipping. Safety net shipped 2026-10-15: the Stop hook and the daily hygiene run now park any dirty or unshipped tree at refs/leftovers/<tree> on the private F:/MTS_backup.git, so nothing is lost even when a session crashes. The cause is still one tree per session. Proposal: one persistent worktree per machine and lane (JIS-NB: app, relay, dsa; NUC: relay), a fresh branch per task inside it (sync.py start <slug> switches to host/<slug> off origin/fast-track), claims only when the claimed areas overlap with an open claim (health already reports overlaps), and the session cap raised from 5 operator / 15 tool turns to 10 / 40 for one task. CLAUDE.md rules 'work only in the printed WORKTREE' and 'SHORT SESSIONS' would change; nothing is changed until you answer.",
+ "options": [
+  "Yes, adopt it",
+  "Only the longer session cap",
+  "No, keep one tree per session"
+ ],
+ "recommended": "Yes, adopt it"
+}
+```

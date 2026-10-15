@@ -104,3 +104,5 @@ Never from the live tree (the folder holding `.mts_live`). `git worktree add ../
 `git -C ../mts-push merge origin/fast-track` (the Bash settings deny a bare `git merge`; docs conflicts: take origin's text; STATUS.md:
 take origin's, regenerate), `python scripts/dev/run_all_tests.py --quick` there, then `git -C ../mts-push push origin <branch>:fast-track`.
 `sync.py ship` does the same plus the retry and the NEXT_SESSION/STATUS/BUILD_REPORT collision rule above.
+
+> Proposal pending (OPERATOR_DECISIONS.md q20, 2026-10-15): one persistent worktree per machine/lane with a branch per task, claims only on overlapping areas, longer session cap. Not in force until answered.
