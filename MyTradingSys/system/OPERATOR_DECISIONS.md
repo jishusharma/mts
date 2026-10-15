@@ -598,9 +598,9 @@ Applied: (not yet)
 How do we get the captions for the 4 unextracted Krown TA 101 videos?
 
 Recommended: Retry once a day for 3 days, then ask me
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Retry once a day for 3 days, then ask me (2026-10-15)
+Operator note (verbatim): Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.
+Applied: 2026-10-15 card krown-ta101-extract-remaining-10 set ready (no cookies)
 
 ```json
 {
