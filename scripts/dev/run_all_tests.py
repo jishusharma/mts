@@ -55,7 +55,14 @@ BACKTEST_PYTEST_PATHS = [
 # Step 4's tests drop fixtures in the tree, so they never run beside the pool. Maven (step 5) is serial as well.
 SERIAL_STEPS = ("3ly", "3af", "3x", "3ms", "3mg", "5")
 # Submitted first so the pool's last step is not the slowest one (measured: 4, 3xt, 5b, 3k, 3ds, 3dk, 3bk, 3w).
-SLOWEST_FIRST = ("4", "4b", "4c", "4e", "4f", "3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
+# Pytest shards of MyTradingSys/tests and the measured seconds of its slow files (2026-10-16 profile, loaded machine); the rest ~2 s each.
+PYTEST_SHARD_NUMS = ("4", "4b", "4c", "4g", "4h")
+TEST_FILE_DEFAULT_S = 2
+TEST_FILE_SECONDS = {"test_turn_meter.py": 150, "test_aibridge_payload.py": 95, "test_b091_build_check_tiers.py": 60,
+                     "test_build_check_report_reasons.py": 32, "test_relay_tick.py": 32, "test_relay.py": 25,
+                     "test_tom_profile_parity.py": 12, "test_net_rr_floor_single_source.py": 8, "test_sync_where_unborn.py": 6,
+                     "test_dsa_direct_mode.py": 6}
+SLOWEST_FIRST = ("4", "4b", "4c", "4g", "4h", "4e", "4f","3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
 _LOCK = threading.Lock()
 
 
@@ -309,9 +316,15 @@ def build_plan(quick):
     # a new test subfolder under MyTradingSys/tests is collected wholesale, as before the split
     top += sorted(f"MyTradingSys/tests/{d.name}" for d in tests_dir.iterdir()
                   if d.is_dir() and d.name not in ("docs", "fixtures", "__pycache__") and any(d.rglob("test_*.py"))) if tests_dir.exists() else []
-    for i, (num, chunk) in enumerate(zip(("4", "4b", "4c"), (top[k::3] for k in range(3)))):
+    # Greedy balance by measured seconds (heaviest first into the lightest shard); an unlisted file counts TEST_FILE_DEFAULT_S.
+    bins = [[0, []] for _ in PYTEST_SHARD_NUMS]
+    for f in sorted(top, key=lambda f: -TEST_FILE_SECONDS.get(Path(f).name, TEST_FILE_DEFAULT_S)):
+        b = min(bins, key=lambda b: b[0])
+        b[0] += TEST_FILE_SECONDS.get(Path(f).name, TEST_FILE_DEFAULT_S)
+        b[1].append(f)
+    for i, (num, (_, chunk)) in enumerate(zip(PYTEST_SHARD_NUMS, bins)):
         if chunk:
-            add(num, f"Pytest shard {i + 1}/3 (MyTradingSys/tests, {len(chunk)} files)", pytest_cmd(chunk), f"Step {num}: Pytest tests")
+            add(num, f"Pytest shard {i + 1}/{len(bins)} (MyTradingSys/tests, {len(chunk)} files)", pytest_cmd(sorted(chunk)), f"Step {num}: Pytest tests")
     add("4d", "Pytest doc size/contract tests", pytest_cmd(doc_shard), "Step 4d: Pytest doc tests")
     add("4e", "Pytest backtest function-style tests", pytest_cmd(BACKTEST_PYTEST_PATHS), "Step 4e: Pytest backtest tests")
     add("4f", "Pytest layer + live-writer tests", pytest_cmd(PYTEST_LAYER_PATHS), "Step 4f: Pytest layer tests")

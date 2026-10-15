@@ -150,7 +150,7 @@ class TestGateKeepsEveryStep(unittest.TestCase):
 
     def test_pytest_steps_that_run_beside_others_have_own_basetemp_and_no_cache(self):
         plan = {s.num: s for s in rat.build_plan(True)}
-        for num in ("4", "4b", "4c", "4d", "4e", "4f", "5c"):
+        for num in rat.PYTEST_SHARD_NUMS + ("4d", "4e", "4f", "5c"):
             cmd = " ".join(plan[num].cmd_text.split())
             self.assertIn("--basetemp=", cmd, num)
             self.assertIn("no:cacheprovider", cmd, num)
@@ -159,7 +159,7 @@ class TestGateKeepsEveryStep(unittest.TestCase):
 class TestShardedPytest(unittest.TestCase):
     def test_every_test_file_of_the_tests_dir_is_in_exactly_one_shard(self):
         plan = {s.num: s for s in rat.build_plan(True)}
-        shards = [plan[n].cmd_text for n in ("4", "4b", "4c", "4d")]
+        shards = [plan[n].cmd_text for n in rat.PYTEST_SHARD_NUMS + ("4d",)]
         for f in (rat.REPO / "MyTradingSys" / "tests").glob("test_*.py"):
             hits = sum(f"MyTradingSys/tests/{f.name}" in c.split() or f"MyTradingSys/tests/{f.name}" in c for c in shards)
             self.assertEqual(hits, 1, f.name)
