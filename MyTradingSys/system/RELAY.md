@@ -1,6 +1,6 @@
 # RELAY - how one session starts the next with no operator input (operator ask 2026-10-10)
 
-Retired text (B164, 30-min era, `gate`, `run_scheduled_task`): `MyTradingSys/archive/relay_2026-10-15/RELAY_HISTORY.md`.
+Super session: relay paused. `budget.py` THROTTLE: tick prints `NOOP | budget=THROTTLE`. History: `archive/relay_2026-10-15/`.
 
 ## Pieces
 | Piece | Role |
