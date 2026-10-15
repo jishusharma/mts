@@ -1,0 +1,2 @@
+study,run_utc,data_source,window_read,split,rule_sha256,verdict,decision_informed
+opr_preopen_tops_2026-10-16,2026-10-15T21:25Z,F:/MTS/data/tom_raw/klines 1m,2022-01-01..2024-06-30,DEV,e18b53b84dd61746eaeee95a023020fdb4279717491374c042a5f8ede38a905e,INCONCLUSIVE,whether pre-open top break speed has a gross effect above 0.14 % (screen before G3 marks)
