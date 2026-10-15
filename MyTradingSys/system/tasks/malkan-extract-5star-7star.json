@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-10-15",
   "asks": "",
+  "closed": "2026-10-15T21:19:32Z",
   "commands": [],
   "created": "2026-10-15T09:05:39Z",
   "depends_on": [],
@@ -24,7 +25,7 @@
     "MyTradingSys/research/rsi_2a_2026-10-09/RSI_2A_SPEC.md",
     "MyTradingSys/research/krown_ta101_2026-10-13/PROTOCOL.md"
   ],
-  "result": "",
+  "result": "Result: extracts for A-CQiV_UFB4 and W1HrDl70Lhk already on disk and pass verify_extract_quotes (0 problems). New COMPARE.md quotes each 5-star/7-star rule with extract line, vs WEB_RESEARCH, RSI_2A_SPEC and code (malkan_mtf.py). SETUP_SUMMARY.md: Source lines item on all rows plus MAL-20 (star grade, conditions withheld). Finding: his 7-star (Wvq1) = monthly>60 + daily<40 + divergence; the web 7-star (all three >60) is a screener's, not his.",
   "scope_in": [
     "MyTradingSys/research/malkan_extract_2026-10-15/"
   ],
@@ -35,7 +36,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "one fresh Sonnet worker per video, clean slate, using the Krown method: MyTradingSys/research/krown_ta101_2026-10-13/PROTOCOL.md s3 and EXTRACT_TEMPLATE.md (do not read other Malkan extracts or the web research first)",
     "for each setup he names: what you SEE on the chart (timeframes, RSI levels, price action), entry, stop, target and management in his words, NOT STATED where silent; Hindi quotes kept in the original with the English line beside it",
