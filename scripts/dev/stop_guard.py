@@ -4,6 +4,10 @@ Sessions kept leaving work behind (2026-10-15: 26 trees held unshipped work). Cl
 when the session tries to stop and `sync.py where` logic says its tree holds real work, block ONCE with the instruction to
 commit and `sync.py ship`. A second stop in the same turn (stop_hook_active) is always allowed: a stuck gate must not trap a
 session in a loop. Never raises. Ignores the live tree (.mts_live), trunk checkouts and regenerable noise.
+Safety net (2026-10-15): on every stop that finds work, before blocking or not, the tree is snapshotted losslessly to
+refs/leftovers/<tree> on the private local backup repo (remote `backup`, F:/MTS_backup.git; backup_snapshot.leftovers_snapshot:
+temp index + commit-tree, the tree itself is never touched, never the public origin). A crash that skips this hook is covered
+by daily_hygiene.py, which snapshots every dirty idle tree the same way.
 Env: MTS_STOP_GUARD=off disables.
 Run by hand: python scripts/dev/stop_guard.py check   (prints the reason, or nothing)
 """
@@ -15,22 +19,33 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 
-def reason(path):
-    """Why `path` may not stop yet, or None."""
+def reason(path, with_top=False):
+    """Why `path` may not stop yet, or None (with_top: (reason, toplevel))."""
     import sync
     top = sync.toplevel(Path(path))
-    if (top / sync.LIVE_MARKER).exists():
-        return None
-    branch = sync.git(top, "branch", "--show-current", check=False).stdout.strip()
-    if branch in (sync.TRUNK, "master", "main"):
-        return None
-    state = sync.tree_state(top)
-    t = dict(path=str(top), name=top.name, branch=branch, ahead=state[0], work=state[1], noise=state[2], fix="")
-    return sync.unshipped_reason(t)
+    why = None
+    if not (top / sync.LIVE_MARKER).exists():
+        branch = sync.git(top, "branch", "--show-current", check=False).stdout.strip()
+        if branch not in (sync.TRUNK, "master", "main"):
+            state = sync.tree_state(top)
+            t = dict(path=str(top), name=top.name, branch=branch, ahead=state[0], work=state[1], noise=state[2], fix="")
+            why = sync.unshipped_reason(t)
+    return (why, top) if with_top else why
 
 
-def message(why):
-    return (f"STOP GUARD: this worktree still holds work ({why}). Commit it (body ends `Result: ...`) and run "
+def snapshot(top):
+    """Park the tree on the private backup repo; -> a short note for the block message (never raises)."""
+    try:
+        import backup_snapshot
+        ref, what = backup_snapshot.leftovers_snapshot(top)
+        return f"{ref}: {what}"
+    except Exception as e:
+        return f"snapshot failed: {e}"
+
+
+def message(why, snap=""):
+    saved = f" A lossless copy is parked at {snap} (backup repo only)." if snap else ""
+    return (f"STOP GUARD: this worktree still holds work ({why}).{saved} Commit it (body ends `Result: ...`) and run "
             f"`python scripts/dev/sync.py ship`; if the files are scratch, delete them or add them to .gitignore. "
             f"Then end the session.")
 
@@ -41,10 +56,13 @@ def hook(stdin_text):
         if os.environ.get("MTS_STOP_GUARD", "").lower() == "off":
             return ""
         data = json.loads(stdin_text or "{}")
-        if data.get("stop_hook_active"):
+        why, top = reason(data.get("cwd") or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd(), with_top=True)
+        if not why:
             return ""
-        why = reason(data.get("cwd") or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd())
-        return json.dumps({"decision": "block", "reason": message(why)}) if why else ""
+        snap = snapshot(top)              # every stop with work, including the second one that is allowed through
+        if data.get("stop_hook_active"):
+            return ""                     # never a loop
+        return json.dumps({"decision": "block", "reason": message(why, snap)})
     except Exception:
         return ""
 
