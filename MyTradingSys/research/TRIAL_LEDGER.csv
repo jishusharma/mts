@@ -1,0 +1,9 @@
+study,variant,run_utc,split,data_source,description,status
+wlow_bounce_bbrsi60_2026-10-16,V1_primary,2026-10-16,DEV,F:/MTS/data/tom_raw/klines 1m->1h,ISO prior-week low K=4 primary,pre-registered
+wlow_bounce_bbrsi60_2026-10-16,V2_roll168,2026-10-16,DEV,F:/MTS/data/tom_raw/klines 1m->1h,rolling prior 168 bars low,pre-registered
+wlow_bounce_bbrsi60_2026-10-16,V3_K3,2026-10-16,DEV,F:/MTS/data/tom_raw/klines 1m->1h,hold K=3,pre-registered
+wlow_bounce_bbrsi60_2026-10-16,V4_K6,2026-10-16,DEV,F:/MTS/data/tom_raw/klines 1m->1h,hold K=6,pre-registered
+wlow_bounce_bbrsi60_2026-10-16,L2_cvd_sign,2026-10-16,DEV,F:/MTS/data/tom_raw/klines 1m->1h,layer CVD change break->trigger sign split,pre-registered
+wlow_bounce_bbrsi60_2026-10-16,L2_cvd_median,2026-10-16,DEV,F:/MTS/data/tom_raw/klines 1m->1h,layer CVD change median split,pre-registered
+wlow_bounce_bbrsi60_2026-10-16,L3_netdelta_sign,2026-10-16,DEV,F:/MTS/data/tom_raw/klines 1m->1h,layer net delta hold window sign split,pre-registered
+wlow_bounce_bbrsi60_2026-10-16,L3_netdelta_median,2026-10-16,DEV,F:/MTS/data/tom_raw/klines 1m->1h,layer net delta hold window median split,pre-registered
