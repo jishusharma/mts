@@ -789,6 +789,15 @@ def hourly_bundle(a, root):
     return refine_status(root, a.refiner_tree), housekeep
 
 
+def _budget_state():
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import budget
+        return budget.state(now())
+    except Exception as e:   # pacing must never take the tick down
+        return "NORMAL", "budget error %s" % type(e).__name__
+
+
 def cmd_tick(a):
     """The dispatcher's whole idle path in one call: fetch, route, kick, the QUEUE line, prompt drift and (once per hour, only when
     this host is not waiting on a peer and no session was kicked) the refiner status. Prints ONE `TICK NOOP|KICK ...` line (plus an
@@ -804,9 +813,13 @@ def cmd_tick(a):
     route = re.sub(r"^ROUTE ", "", (route_out.splitlines() or ["?"])[0])[:160]
     if route_rc and last_line(route_child, 100):
         route += " [" + last_line(route_child, 100) + "]"   # why a post or ship failed: the child's last line
-    rc, kick_out, _ = captured(cmd_kick, ns)
-    kick_lines = kick_out.splitlines()
-    verdict = kick_lines[0] if kick_lines else "ERROR kick printed nothing"
+    bstate, _bwhy = _budget_state()
+    if bstate == "THROTTLE":   # SUPER_SESSION.md Pacing: the weekly meter says wait; kick would record a launch nobody makes
+        rc, kick_lines, verdict = 0, [], "IDLE budget=THROTTLE"
+    else:
+        rc, kick_out, _ = captured(cmd_kick, ns)
+        kick_lines = kick_out.splitlines()
+        verdict = kick_lines[0] if kick_lines else "ERROR kick printed nothing"
     queue = next((ln[len("QUEUE "):] for ln in kick_lines if ln.startswith("QUEUE ")), "")   # absent on the early IDLEs (stop flag, no header)
     is_kick = rc == 0 and verdict.startswith("KICK ")
     drift = prompt_drift(root, a.prompt_file)
@@ -824,6 +837,7 @@ def cmd_tick(a):
                 todo.append("housekeep=yes")
             if todo:
                 extra.append("HOURLY " + " ".join(todo))
+    flags.append("budget=" + bstate)
     head = "TICK " + (verdict if is_kick else "NOOP | " + re.sub(r"^IDLE ", "", verdict))
     print(" | ".join([head, "route=" + route] + flags + (["queue=" + queue] if queue else [])))
     me = Path(__file__).resolve().as_posix()
