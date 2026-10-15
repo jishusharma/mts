@@ -16,7 +16,7 @@
     "krown"
   ],
   "live_path": false,
-  "note": "waits on its depends_on cards; release when they are done",
+  "note": "PARKED until Krown G2+G3 (LAYER_REBUILD_PLAN s3; coordinator 2026-10-15, OPERATOR_DECISIONS q-pause-krown-detectors)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,

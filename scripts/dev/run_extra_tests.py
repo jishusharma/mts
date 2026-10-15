@@ -20,6 +20,7 @@ EXTRA = [
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_study.py",
     "scripts/dev/test_suplock.py",
     "MyTradingSys/research/mfe_exit_2026-10-13/test_mfe_exit_study.py",
+    "MyTradingSys/research/malkan_extract_2026-10-15/tools/test_check_numbers.py",
     "scripts/dev/test_make_layer_map.py",
     "scripts/dev/test_make_layers_board.py",
     "scripts/dev/test_session_log.py",

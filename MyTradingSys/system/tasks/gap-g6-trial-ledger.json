@@ -14,7 +14,8 @@
     "tom"
   ],
   "live_path": false,
-  "note": "",
+  "note": "PARKED: mechanical CSV builder; reopen on lane SONNET when the first layer reaches G5 (trial ledger needed then). LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "sonnet-2026-10-13 gap review G1-G8",
@@ -36,7 +37,7 @@
   "sources": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "List registries by glob TRIAL*REGISTRY*; read their columns; normalise.",
     "Write ledger, count line, test."

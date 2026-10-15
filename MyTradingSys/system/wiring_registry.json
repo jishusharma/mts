@@ -1,6 +1,10 @@
 {
  "_doc": "Files the wiring scan finds unrun (TEST-ONLY/ORPHAN), each declared with a disposition and evidence. Checked by scripts/dev/wiring_scan.py --check in the gate. Dispositions: TOOL, REPRO, PARKED, WIRE. A file that becomes LIVE/DEV-TOOL or disappears must be removed from here.",
  "entries": {
+  "MyTradingSys/research/setup_catalog_2026-10-15/malkan/tools/build_glossary.py": {
+   "disp": "REPRO",
+   "why": "Regenerates MALKAN_DIVERGENCE_GLOSSARY.md from GLOSSARY_SRC.md, locating each quote in raw_transcripts_canonical for file:line and timestamp; run manually from repo root."
+  },
   "MyTradingSys/research/layer_lab/reports/revalidate_strategy_proofs.py": {
    "disp": "REPRO",
    "why": "Manually reproduces four synthetic witnesses and hashed source excerpts for the 2026-10-15 strategy audit revalidation; no market data or live imports; PASS recorded in the attached proof pack."
@@ -609,6 +613,26 @@
   "MyTradingSys/research/krown_ta101_2026-10-13/tools/build_setup_catalog.py": {
    "disp": "REPRO",
    "why": "Rebuilds research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md (G2 catalogue, KR-S1..KR-S16 + cross-trader overlap) by copying every quote and its Source GPS from the extracts and failing on any lookup that does not match one line; cited in KROWN_SETUP_CATALOG.md header; run by hand after an extract changes, no live process imports it."
+  },
+  "MyTradingSys/research/video_priority_2026-10-15/fetch_meta.py": {
+   "disp": "TOOL",
+   "why": "Anonymous metadata-only fetch (playlists, per-video detail; 5 s spacing, no cookies) for the video priority method; run by hand, named in video_priority_2026-10-15/METHOD.md pipeline step 1 and 4."
+  },
+  "MyTradingSys/research/video_priority_2026-10-15/score.py": {
+   "disp": "TOOL",
+   "why": "Video priority scoring (every weight OURS) -> RANKED_MALKAN.csv; run by hand, named in video_priority_2026-10-15/METHOD.md (Rerun); krown_rank.py and sensitivity.py import it."
+  },
+  "MyTradingSys/research/video_priority_2026-10-15/krown_rank.py": {
+   "disp": "TOOL",
+   "why": "Orders the pending Krown caption ids -> RANKED_KROWN.csv; run by hand, named in video_priority_2026-10-15/METHOD.md (Krown, Rerun)."
+  },
+  "MyTradingSys/research/video_priority_2026-10-15/sensitivity.py": {
+   "disp": "TOOL",
+   "why": "Weight-perturbation check of the validation ranks (data/sensitivity.txt); run by hand, named in video_priority_2026-10-15/METHOD.md pipeline step 6."
+  },
+  "MyTradingSys/research/video_priority_2026-10-15/apply_selection.py": {
+   "disp": "TOOL",
+   "why": "One-shot: writes the selected ids into the Malkan caption card and the NOT SELECTED rows into transcript_inventory_2026-10-09.md; named in video_priority_2026-10-15/METHOD.md pipeline step 5; already applied."
   }
  }
 }

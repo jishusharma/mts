@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-15T14:29:34Z",
+  "crucial": true,
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "effort": "low",
+  "from_inbox": "",
+  "goal": "Second model family on KROWN_SETUP_CATALOG.md (krown-g2) before G3 marks: per S1-S9 list (a) NOT STATED cells the transcripts state, (b) quotes not supporting the row, (c) BTC-visible Y/P/N calls the transcript contradicts, (d) numbers not his (OURS passed as SOURCED). Each finding: file:line + verbatim quote of 25 words or fewer. Report only; no catalogue edit.",
+  "id": "krown-catalogue-gpt-audit",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "model": "gpt-6-astra",
+  "note": "ready now: p3 behind 3 astra cards at 1 astra run per 5 h window; krown-g2 KROWN_SETUP_CATALOG.md (f4a5182a) is in its ship gate. If it is still absent at run time the run BLOCKs (free bail retry).",
+  "pinned": false,
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/transcripts/ (read only)",
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv (read only)"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "Krown G2 catalogue: GPT audit of NOT STATED cells, quote support and BTC-visible calls for S1-S9"
+}
