@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T19:08:51Z",
   "commands": [
     "python MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py",
     "python MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py --count",
@@ -23,7 +24,7 @@
     "MyTradingSys/research/layer_lab/reports/2026-10-15_revalidate-strategy-audit-with-counterev.md",
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md:117-128"
   ],
-  "result": "",
+  "result": "INCONCLUSIVE n_T=40; MyTradingSys/research/gross_effect_screen_2026-10-15/RESULT.md",
   "scope_in": [
     "MyTradingSys/research/gross_effect_screen_2026-10-15/ (screen.py, test_screen.py, DATA_MANIFEST.csv, ledger.csv, decay.csv, EXPOSURE_LEDGER.csv, RESULT.md)",
     "F:/MTS/data/tom_raw/klines/BTCUSDT-1m-*.csv read only (2022-01..2024-06 files)"
@@ -38,7 +39,7 @@
     "MyTradingSys/research/layer_lab/reports/2026-10-15_claude-side-audit.md:29-46",
     "MyTradingSys/research/orderflow_views_2026-10-14/study.py:8-26 (loader and the prior pre-registered horizon)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write test_screen.py first (fails: screen.py absent): fixture of synthetic 1m bars with planted session-extreme encounters; asserts delta = 2*tbv - v, L1-L4 and F flags, shared-ledger cooldown, p_in = open[t+1+d], p_out = open[t+1+d+h], day-clustered SE, verdict PASS_FLOW on a planted +0.5% fade and FAIL on a flat fixture; loader raises on a bar >= 2024-07-01.",
     "Write screen.py per PRE_REG sections 2-3 and 5-6; `--count` prints SHA256 manifest, bar/gap counts, n_T, n_notF, n_C and encounters per day with no outcome column; commit that output (RESULT.md head) before the outcome run.",
