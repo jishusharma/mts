@@ -192,5 +192,28 @@ Captions only (yt-dlp 2026.08.19, no video). Both videos are Hindi speech; the `
 | Malkan | A-CQiV_UFB4 | raw_transcripts_canonical/A-CQiV_UFB4_raw.txt (+ _hi_raw.txt) | not-yet (no extract) | 8. RSI Reverse Divergence, 3X3 Swing Trading (Malkansview, 2025-03-11), hi, 2643 words en |
 | Malkan | N7r3v7plqZM | - | NOT AVAILABLE | yt-dlp: Private video |
 | Malkan | dXxQOnK2jhQ | - | NOT AVAILABLE | yt-dlp: members-only (Join this channel) |
-| Malkan | fgN6QBFY3Ss, kVIvcn7T44o, FHEoMmD6xKM, TYB7GJODt-k, WBByyLBp8-c | - | PENDING_CAPTIONS | HTTP 429 Too Many Requests on the caption fetch (2026-10-15 12:18Z still 429, anonymous, one request); retry once a day, 3 days max, then NOT AVAILABLE |
-| Malkan | Hindi RSI/divergence picks (max 10) | - | PENDING_CAPTIONS | channel listed 2026-10-15 (876 videos, UCKxWWqBQZYKTA01GkyQdMHA); shortlist in research/malkan_extract_2026-10-15/CHANNEL_LIST.md; captions not fetched (429) |
+| Malkan | -2uZSqKKrFQ, fgN6QBFY3Ss, gfr5n6B5QJk, TYB7GJODt-k, 07aqVQ9GNh8, sPu2SnAFEIY, TrZQ4Xat_sQ, RUKGEMdVNYA, v8pCR_bA0_0, WBByyLBp8-c, kVIvcn7T44o, U12jz3LQhy0 | - | PENDING_CAPTIONS | SELECTED by video_priority_2026-10-15 (ranked top 12; HTTP 429 still the blocker, anonymous, no cookies); retry once a day, 3 days max, then NOT AVAILABLE; order = RANKED_MALKAN.csv |
+| Malkan | other shortlisted ids (below) and the rest of the channel | - | NOT SELECTED | not in the ranked top; score and rank in the rows below; full pool scores in video_priority_2026-10-15/RANKED_MALKAN.csv; the other ~815 channel videos scored below the detail cut (flat score < 4.7) |
+| Malkan | 5Aoyw_sG_88 | - | NOT SELECTED | score 7.42 (rank 38 of 61); RSI - Set up 1 - Targets |
+| Malkan | kL7_ybtI_Fc | - | NOT SELECTED | score 9.87 (rank 22 of 61); RSI-???? 5 ?????-????? |
+| Malkan | GbXnw_tNMtw | - | NOT SELECTED | score 8.06 (rank 35 of 61); Reverse Divergence-Positive & Negative Divergence! |
+| Malkan | TO3pLafk7Us | - | NOT SELECTED | score 11.79 (rank 11 of 61); RSI Divergence ???? ?? ??????  Class A/B/C I Tuesday Technical Talk /  |
+| Malkan | hGPqIpWRUMQ | - | NOT SELECTED | score 3.24 (flat score only, below the detail cut); Pullback Trading Using Unconventional RSI - Part 1 |
+| Malkan | pdDwUMVi6MA | - | NOT SELECTED | score 2.88 (flat score only, below the detail cut); RSI PRD - How To Identify Trend-Following Entries / Weekly market upda |
+| Malkan | qES8tmcq520 | - | NOT SELECTED | score 2.38 (flat score only, below the detail cut); Back to Basics - RSI |
+| Malkan | 13QOxEJBG2w | - | NOT SELECTED | score 6.93 (rank 42 of 61); GFS Magic on 3 Stocks ? / 6 Powerful Setups Explained / Diwali Special |
+| Malkan | hc5t_ckZoEg | - | NOT SELECTED | score 2.95 (flat score only, below the detail cut); Big Move Coming in NIFTY? RSI + GFS Breakdown Explained! / Vishal Malk |
+| Malkan | ccCcuGWZQRI | - | NOT SELECTED | score 3.18 (flat score only, below the detail cut); 4 Risk Setups Every Trader MUST Know! I Tuesday Technical Talk I Visha |
+| Malkan | ctBtClaBdk0 | - | NOT SELECTED | score 5.84 (rank 50 of 61); Exit Strategies / Tuesday Technical Talk / Vishal B Malkan |
+| Malkan | v5hoPMN2RP0 | - | NOT SELECTED | score 4.19 (flat score only, below the detail cut); RSI Options Strategy Explained Simply I Tuesday Technical Talk I Visha |
+| Malkan | tp4zg8-V7qM | - | NOT SELECTED | score 1.08 (flat score only, below the detail cut); Expiry Setup for Beginners I Options Simplified Ep 6 I Vishal B Malkan |
+| Malkan | lgyI-GOWZUE | - | NOT SELECTED | score -0.25 (flat score only, below the detail cut); Option Buying vs Selling (Simple Difference) I Options Simplified Ep 4 |
+| Malkan | fya-UAJAIFg | - | NOT SELECTED | score 0.80 (flat score only, below the detail cut); 90% Traders Fail ? Aap Kyun Nahi? I Options Simplified Ep 2 I Vishal M |
+| Malkan | RPmxr3c8mso | - | NOT SELECTED | score 8.12 (rank 34 of 61); RSI Se Trend Kaise Samjhe? / Find The Bottom Series I Vishal B Malkan |
+| Malkan | qbx6lnPb4kA | - | NOT SELECTED | score 6.64 (rank 46 of 61); RSI Se Entry Kaise Pakde? I Options Simplified Ep 5 I Vishal B Malkan |
+| Malkan | 4uiBvqei6CI | - | NOT SELECTED | score 4.22 (flat score only, below the detail cut); Simple RSI Se Option Trading / Tuesday Technical Talk / Vishal B. Malk |
+| Malkan | qqKt3Ulmc3g | - | NOT SELECTED | score 2.75 (flat score only, below the detail cut); Bollinger Bands Ka Complete Trading Guide / Vishal B Malkan |
+| Malkan | Z2zJo7QFk0o | - | NOT SELECTED | score -0.94 (flat score only, below the detail cut); 4 Mahine Mein 50% Up! Kaise Stocks Choose Karein Using Top-Down Approa |
+| Malkan | kd0xQ-zP9BQ | - | NOT SELECTED | score 0.02 (flat score only, below the detail cut); Banking Sector Mein Big Breakout! I Tuesday Technical Talk I Vishal B  |
+| Malkan | xBd5iG7g51w | - | NOT SELECTED | score 3.33 (flat score only, below the detail cut); Charts Ka Simple Logic / Aasaan Tarika Samjho / Tuesday Technical Talk |
+| Malkan | Q2ikog1RFbQ | - | NOT SELECTED | score 2.63 (flat score only, below the detail cut); Tips Se Nahi, System Se Trading Karo I Tuesday Technical Talk I Vishal |

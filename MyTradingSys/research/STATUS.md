@@ -1,21 +1,21 @@
 # Development Status
 
-Generated: 2026-10-15 12:36:47
+Generated: 2026-10-15 20:58:10
 
 ## Git Status
-CI green: a9cc1b01 (2026-10-15 12:00:49 +0530) = origin/fast-track: OK
+CI green: 86ee2701 (2026-10-15 16:20:57 +0530, 4.6 h old), 16 trunk landing(s) / 118 commit(s) behind origin/fast-track: RED: oldest ungreen commit is 3.2 h old - CI is failing, auto-deploy is idle; fix CI first
 LESSONS: digest in sync
 
 **Last 3 commits on origin/fast-track:**
 ```
-a9cc1b01 hygiene: snapshot dirty trees to the private backup repo on Stop and daily; exact-case worktree branch
-b87ab559 LEFTOVERS doc: no raw git checkout line (docs integrity rule)
-70382f92 hygiene: Stop guard, tidy repairs case-broken HEADs and runs daily, leftovers ledger
+4408f0a1 release video-priority-malkan-caption-selection
+ed0f503c Merge remote-tracking branch 'origin/fast-track' into claude/unruffled-goldberg-0d2e71
+12a11c6f claim gate-slot-limit
 ```
 
 ## In-Flight .new Files
-- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (112.8h)
-- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (112.8h)
+- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (121.1h)
+- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (121.1h)
 
 ## Recent Reports (newest 5, last 3 days)
 - MyTradingSys/research/pivot_pattern_audit_2026-10-14/REPORT.md (2026-10-14 19:56) # Pivot-pattern scope audit — 2026-10-14
@@ -26,20 +26,37 @@ b87ab559 LEFTOVERS doc: no raw git checkout line (docs integrity rule)
 
 ## Screenshots
 ```
-SHOTS landed 48: new 2, classified 0, read 0, done 46 | overdue(>24h) 0 | claims MATCH 437 MISMATCH 69 NOT_IN_DATA 107 | filed 2
+SHOTS landed 18: new 9, classified 2, read 0, done 7 | overdue(>24h) 10 | claims MATCH 31 MISMATCH 5 NOT_IN_DATA 10 | filed 3
+  OVERDUE fdaf61046aae classified app                                  | DeepSeek DSA chat with AIBridge panel 'waiting for DSA after #2', auto-run 1/50, Run block not executed; operator reports bridge stuck
+  OVERDUE ca93edd5a668 new        -                                    | 
+  OVERDUE 7d9e56172f38 new        -                                    | i restarted - now i see this. Wjat needs to be done?
+  OVERDUE f35e98c02d0c new        -                                    | We needed sreen-shots and chart related work - things were pending on me like tr
+  OVERDUE 25050b52c03d new        -                                    | i need to know what is going on right now?
+  OVERDUE c0b4ba1b62f9 new        -                                    | i need to know what is going on right now?
+  OVERDUE bf07502e25bf new        -                                    | keeping in mind what we are doing on NUC - what to do with this? I need actions.
+  OVERDUE 0a687a5cdc7e new        -                                    | <pasted_content id="cdc4"> it installed - computed restarted but it failed. i ah
+  OVERDUE 616ec264d2e2 new        -                                    | 
+  OVERDUE be93c2b8ab49 new        -                                    |
 ```
 
 ## Layer Lab (Codex)
 ```
-Layer lab (Codex) at 2026-10-15 07:06Z: on
-  This machine does not run the lab (it runs on JIS-NUC): the queue below is from the repo; allowance, runs and what needs a look are only known there.
-  Queue: 6 ready
-    tom-btc-event-study [build, gpt-6-luna / medium]
-    lc-levels-hold [build, gpt-6-luna / medium]
-    gap-g4-through-ticks-flag [build, gpt-6-luna / medium]
+Layer lab (Codex) at 2026-10-15 15:28Z: on
+  Codex allowance (plus): 5-hour window 1% used (resets 10-15 19:03Z); week 0% used (resets 10-22 14:03Z)
+  Lab spend guard: window 1/50 pts, 1/4 runs (astra 0/1); week 0/35 pts; resets 19:03Z
+  Last check by the scheduler: 2026-10-15T15:00Z IDLE no CODEX card to run (2 ready; claimed or out of tries are skipped)
+  Queue: 2 ready
+    tom-btc-event-study [build, gpt-6-luna / medium] SKIPPED after failed tries
     gap-g6-trial-ledger [build, gpt-6-luna / medium]
-    qriptal-call-ledger [build, gpt-6-luna / medium]
-    tom-btc-other-setups [build, gpt-6-luna / medium]
+  Last runs:
+    2026-10-14 19:05Z tom-btc-event-study BLOCKED (gpt-6-luna / medium, 428k tokens, window +0 pts, 60s)
+    2026-10-14 22:33Z lc-levels-hold BLOCKED (gpt-6-luna / medium, 275k tokens, window +0 pts, 42s)
+    2026-10-14 23:00Z lc-levels-hold SHIP_FAILED (gpt-6-luna / medium, 2.7M tokens, window +1 pts, 378s)
+    2026-10-15 14:03Z gap-g4-through-ticks-flag BLOCKED (gpt-6-luna / medium, 1.4M tokens, window +0 pts, 154s)
+    2026-10-15 14:30Z gap-g4-through-ticks-flag DONE (gpt-6-luna / medium, 982k tokens, window +1 pts, 125s)
+  NEEDS A LOOK: 
+    - tom-btc-event-study failed 2 times and is skipped: read its report and run log, then fix the card
+    - only 1 card(s) left in the queue: add scoped cards (LAYER_LAB.md, Allowance)
 ```
 
 ## Project Groups

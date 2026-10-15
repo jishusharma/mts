@@ -13,7 +13,8 @@
   "lane": "DSA-NUC",
   "layers": [],
   "live_path": false,
-  "note": "klines present (primary tree Dumps/backtest/raw_1m_2022/klines). Use that absolute path as the runner klines_dir; a worktree has no Dumps/. Independent re-run is still wanted: JIS-NUC session got byte-identical MATRIX_CELLS.csv + MATRIX_SUMMARY.json.",
+  "note": "PARKED: guidance matrix layer is parked (plan s3 Parked) and the 1m perp fetch is heavy. LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -30,7 +31,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Run the commands in order, each inside the 300 s bridge cap.",
     "Paste the output tail into the chat; if a command fails twice close the task --failed with the error text.",

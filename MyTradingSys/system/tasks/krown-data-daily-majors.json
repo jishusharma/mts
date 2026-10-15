@@ -18,7 +18,8 @@
     "krown"
   ],
   "live_path": false,
-  "note": "",
+  "note": "PARKED until Krown G2+G3 (LAYER_REBUILD_PLAN s3; coordinator 2026-10-15, OPERATOR_DECISIONS q-pause-krown-detectors)",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -38,7 +39,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "add --market spot and --symbol to fetch_binance_archive.py (defaults unchanged: futures, BTCUSDT) with a test that the default URL is byte-identical",
     "run the commands for BTC, ETH, BNB, SOL (spot 1d from the listing date); build weekly bars; fetch Coinbase BTC-USD daily candles in pages",
