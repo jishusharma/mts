@@ -81,7 +81,12 @@ class SyncTest(unittest.TestCase):
     def test_run_gate_picks_smoke_and_full_flag_forces_everything(self):
         calls = []
         real = sync.subprocess.run
-        sync.subprocess.run = lambda cmd, **k: calls.append(cmd) or type("R", (), {"returncode": 0})()
+        def fake(cmd, **k):
+            if any(str(c).endswith("run_all_tests.py") for c in cmd):   # only the gate; git calls stay real
+                calls.append(cmd)
+                return type("R", (), {"returncode": 0})()
+            return real(cmd, **k)
+        sync.subprocess.run = fake
         try:
             sync.run_gate(self.a, ["MyTradingSys/system/X.md"])
             self.assertIn("--smoke", calls[-1])
