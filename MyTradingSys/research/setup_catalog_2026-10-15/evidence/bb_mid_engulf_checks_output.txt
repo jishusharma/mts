@@ -1,0 +1,33 @@
+== closed 5m bars 13:25-13:50 on 2026-10-15 (O H L C, colour, BB at each bar close, RSI, delta)
+13:25 O80412.0 H80412.0 L80155.5 C80192.6 RED body 219.4 | BB 80233.5/80742.8/81252.2 | RSI 29.09 SMA 40.39 | delta -1313
+13:30 O80192.6 H80453.1 L80027.0 C80338.1 GREEN body 145.5 | BB 80187.4/80708.5/81229.6 | RSI 36.20 SMA 38.97 | delta 339
+13:35 O80338.0 H80659.9 L80091.2 C80654.5 GREEN body 316.5 | BB 80183.8/80694.1/81204.3 | RSI 48.34 SMA 38.81 | delta 448
+13:40 O80654.4 H80719.4 L80505.0 C80680.0 GREEN body 25.6 | BB 80180.4/80685.6/81190.8 | RSI 49.18 SMA 39.71 | delta -660
+13:45 O80680.0 H80743.5 L80273.7 C80342.4 RED body 337.6 | BB 80140.1/80659.6/81179.1 | RSI 39.93 SMA 38.90 | delta -197
+13:50 O80342.3 H80355.0 L79818.0 C79842.4 RED body 499.9 | BB 79993.0/80603.8/81214.5 | RSI 30.72 SMA 37.86 | delta -1321
+
+== engulf test (operator wording: red 5m candle closes below the OPEN of the previous green candle)
+previous green 13:40: open 80654.4 close 80680.0 body 25.6; red 13:45: open 80680.0 close 80342.4 body 337.6
+close < previous open: True (by 312.0); red open >= previous close (strict classic engulf): True; body ratio 13.2
+marked line 80654.5 vs previous green open 80654.4 and 13:35 bar close 80654.5
+red 13:45 high 80743.5, low 80273.7
+
+== forming-bar legends at the two shots (1m bars closed before the shot; forming close = last closed 1m close)
+shot 1 ~13:52:41 (bars through 13:52): forming 5m 13:50 O80342.3 H80355.0 L80053.7 C80144.1 | BB 80072.6/80618.9/81165.1 | RSI 35.69 SMA 38.22 | CVD since 13:50 -280
+shot 2 ~13:54:05 (bars through 13:53): forming 5m 13:50 O80342.3 H80355.0 L79831.4 C79916.0 | BB 80014.5/80607.4/81200.4 | RSI 31.80 SMA 37.94 | CVD since 13:50 -1260
+image legends: shot 1 BB 80058.5/80615.8/81173.2 (O80342.3 H80355.0 L80053.7 C80083.6), RSI 34.56 SMA 38.14, CVD -11.14K, OI 94.14K;
+               shot 2 BB 80015.7/80607.7/81199.7 (L79831.4 C79920.3), RSI 31.86 SMA 37.94, CVD -11.938K, OI 94.174K
+
+== swept low: 5m 13:30 bar low and 1m lows 13:25-13:40
+5m 13:30 low 80027.0 ; 1m lows: [('13:31', 80027.0), ('13:36', 80091.2)]
+
+== higher timeframes at ~13:54 (forming bar = bars closed through 13:53)
+15m bar 13:45: close 79916.0 | BB 80179.9/80881.5/81583.1 | price below mid: True (by 965.5) | RSI 31.64 SMA 40.69
+1h bar 13:00: close 79916.0 | BB 80262.2/81260.7/82259.2 | price below mid: True (by 1344.7) | RSI 29.77 SMA 35.80
+4h bar 12:00: close 79916.0 | BB 80286.4/82490.1/84693.8 | price below mid: True (by 2574.1) | RSI 31.22 SMA 43.95
+
+== what price did after the signals (one instance, after the fact, NOT a result)
+after first confirmation (engulf closed 13:50:00): entry at open 80342.3 (13:50); to the last closed 1m (13:55): max high 80355.0 (adverse 12.7), min low 79732.3 (favourable 610.0); 12 bp round trip = 96 pts
+after second confirmation (13:50 bar closed 13:55:00): entry at open 79842.4 (13:55); to the last closed 1m (13:55): max high 80155.6 (adverse 313.2), min low 79732.3 (favourable 110.1); 12 bp round trip = 96 pts
+
+== OI recorder rows 13:20-13:56 (sparse): [('13:21', 92496), ('13:22', 92500), ('13:22', 92505), ('13:24', 92511), ('13:24', 92541), ('13:26', 92579), ('13:35', 93106), ('13:55', 94010)]

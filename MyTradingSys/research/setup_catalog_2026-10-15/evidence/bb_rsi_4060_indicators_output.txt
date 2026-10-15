@@ -1,0 +1,45 @@
+V1 12:39       bar 12:39 O80799.9 H81041.3 L80793.8 C81033.9 | BB lo 80624.9 mid 80902.7 up 81180.5 %B 0.74 | RSI 57.30 SMA14 45.87 | netdelta 153.8 CVD(from 11:30) -463
+V2 12:51       bar 12:51 O80761.9 H80886.7 L80757.7 C80851.3 | BB lo 80667.7 mid 80843.7 up 81019.7 %B 0.52 | RSI 48.94 SMA14 48.69 | netdelta 23.4 CVD(from 11:30) -573
+V3 13:15       bar 13:15 O80515.0 H80535.9 L80459.7 C80473.2 | BB lo 80391.5 mid 80525.7 up 80659.9 %B 0.30 | RSI 40.81 SMA14 37.22 | netdelta 67.4 CVD(from 11:30) -892
+shot1 last     bar 13:22 O80362.9 H80392.0 L80333.0 C80348.7 | BB lo 80330.3 mid 80464.5 up 80598.7 %B 0.07 | RSI 34.72 SMA14 37.66 | netdelta -16.4 CVD(from 11:30) -956
+shot2 last     bar 13:28 O80267.7 H80290.5 L80155.5 C80243.5 | BB lo 80254.2 mid 80402.8 up 80551.4 %B -0.04 | RSI 30.75 SMA14 37.59 | netdelta -516.2 CVD(from 11:30) -2156
+--- bars 13:20-13:31 (break)
+               bar 13:20 O80423.1 H80423.1 L80354.5 C80359.3 | BB lo 80356.0 mid 80487.9 up 80619.9 %B 0.01 | RSI 35.23 SMA14 37.71 | netdelta -66.8 CVD(from 11:30) -940
+               bar 13:21 O80359.3 H80406.0 L80350.0 C80362.9 | BB lo 80342.5 mid 80476.7 up 80610.8 %B 0.08 | RSI 35.62 SMA14 37.49 | netdelta -0.2 CVD(from 11:30) -940
+               bar 13:22 O80362.9 H80392.0 L80333.0 C80348.7 | BB lo 80330.3 mid 80464.5 up 80598.7 %B 0.07 | RSI 34.72 SMA14 37.66 | netdelta -16.4 CVD(from 11:30) -956
+               bar 13:23 O80348.1 H80400.0 L80348.1 C80400.0 | BB lo 80324.3 mid 80458.3 up 80592.3 %B 0.28 | RSI 40.54 SMA14 38.09 | netdelta 9.5 CVD(from 11:30) -947
+               bar 13:24 O80399.9 H80417.9 L80367.8 C80412.1 | BB lo 80323.2 mid 80451.2 up 80579.3 %B 0.35 | RSI 41.86 SMA14 38.66 | netdelta -2.5 CVD(from 11:30) -949
+               bar 13:25 O80412.0 H80412.0 L80333.0 C80346.1 | BB lo 80315.4 mid 80440.4 up 80565.3 %B 0.12 | RSI 37.04 SMA14 39.18 | netdelta -17.6 CVD(from 11:30) -967
+               bar 13:26 O80346.1 H80349.3 L80300.0 C80300.4 | BB lo 80300.9 mid 80427.4 up 80553.8 %B -0.00 | RSI 34.11 SMA14 39.19 | netdelta -157.1 CVD(from 11:30) -1124
+               bar 13:27 O80300.3 H80332.4 L80213.3 C80267.8 | BB lo 80282.6 mid 80413.0 up 80543.4 %B -0.06 | RSI 32.16 SMA14 38.52 | netdelta -515.3 CVD(from 11:30) -1639
+               bar 13:28 O80267.7 H80290.5 L80155.5 C80243.5 | BB lo 80254.2 mid 80402.8 up 80551.4 %B -0.04 | RSI 30.75 SMA14 37.59 | netdelta -516.2 CVD(from 11:30) -2156
+               bar 13:29 O80243.4 H80268.0 L80176.5 C80192.6 | BB lo 80217.8 mid 80389.0 up 80560.3 %B -0.07 | RSI 27.98 SMA14 36.67 | netdelta -106.7 CVD(from 11:30) -2262
+               bar 13:30 O80192.6 H80231.1 L80120.0 C80129.0 | BB lo 80170.5 mid 80372.7 up 80574.9 %B -0.10 | RSI 24.95 SMA14 35.74 | netdelta -242.6 CVD(from 11:30) -2505
+               bar 13:31 O80129.0 H80282.2 L80027.0 C80279.7 | BB lo 80161.5 mid 80367.7 up 80573.9 %B 0.29 | RSI 41.19 SMA14 35.54 | netdelta 107.3 CVD(from 11:30) -2398
+--- bars 12:36-12:42
+               bar 12:36 O80753.4 H80850.0 L80732.1 C80837.3 | BB lo 80644.9 mid 80917.6 up 81190.2 %B 0.35 | RSI 47.01 SMA14 47.67 | netdelta -9.3 CVD(from 11:30) -594
+               bar 12:37 O80837.3 H80908.4 L80832.0 C80832.1 | BB lo 80636.7 mid 80910.0 up 81183.3 %B 0.36 | RSI 46.74 SMA14 47.33 | netdelta 18.6 CVD(from 11:30) -575
+               bar 12:38 O80832.0 H80834.6 L80753.9 C80799.9 | BB lo 80626.4 mid 80899.2 up 81172.1 %B 0.32 | RSI 45.02 SMA14 45.74 | netdelta -42.2 CVD(from 11:30) -617
+               bar 12:39 O80799.9 H81041.3 L80793.8 C81033.9 | BB lo 80624.9 mid 80902.7 up 81180.5 %B 0.74 | RSI 57.30 SMA14 45.87 | netdelta 153.8 CVD(from 11:30) -463
+               bar 12:40 O81033.8 H81046.0 L80929.8 C81003.5 | BB lo 80624.6 mid 80904.5 up 81184.3 %B 0.68 | RSI 55.57 SMA14 45.98 | netdelta -39.1 CVD(from 11:30) -502
+               bar 12:41 O81003.5 H81046.0 L80950.0 C80966.9 | BB lo 80624.6 mid 80903.8 up 81183.0 %B 0.61 | RSI 53.47 SMA14 45.95 | netdelta -31.7 CVD(from 11:30) -534
+               bar 12:42 O80966.9 H80993.4 L80882.1 C80882.2 | BB lo 80621.9 mid 80898.6 up 81175.3 %B 0.47 | RSI 48.86 SMA14 45.26 | netdelta -18.3 CVD(from 11:30) -553
+--- bars 12:48-12:54
+               bar 12:48 O80851.0 H80859.1 L80777.0 C80823.8 | BB lo 80631.6 mid 80847.0 up 81062.3 %B 0.45 | RSI 46.13 SMA14 48.76 | netdelta 14.2 CVD(from 11:30) -523
+               bar 12:49 O80823.8 H80830.4 L80750.5 C80766.7 | BB lo 80633.0 mid 80833.9 up 81034.7 %B 0.33 | RSI 43.06 SMA14 48.83 | netdelta -24.0 CVD(from 11:30) -547
+               bar 12:50 O80766.7 H80773.6 L80736.9 C80762.0 | BB lo 80628.8 mid 80831.7 up 81034.6 %B 0.33 | RSI 42.81 SMA14 48.53 | netdelta -49.4 CVD(from 11:30) -596
+               bar 12:51 O80761.9 H80886.7 L80757.7 C80851.3 | BB lo 80667.7 mid 80843.7 up 81019.7 %B 0.52 | RSI 48.94 SMA14 48.69 | netdelta 23.4 CVD(from 11:30) -573
+               bar 12:52 O80852.0 H80867.2 L80793.7 C80804.4 | BB lo 80685.2 mid 80849.1 up 81012.9 %B 0.36 | RSI 46.14 SMA14 48.77 | netdelta -11.8 CVD(from 11:30) -585
+               bar 12:53 O80804.4 H80827.4 L80766.8 C80768.1 | BB lo 80678.4 mid 80845.9 up 81013.4 %B 0.27 | RSI 44.04 SMA14 47.82 | netdelta -14.0 CVD(from 11:30) -599
+               bar 12:54 O80768.1 H80783.9 L80669.2 C80669.2 | BB lo 80670.3 mid 80844.2 up 81018.0 %B -0.00 | RSI 38.86 SMA14 46.63 | netdelta -126.2 CVD(from 11:30) -725
+--- bars 13:12-13:18
+               bar 13:12 O80380.1 H80429.8 L80341.9 C80417.6 | BB lo 80373.2 mid 80557.8 up 80742.4 %B 0.12 | RSI 34.00 SMA14 36.17 | netdelta -42.1 CVD(from 11:30) -1030
+               bar 13:13 O80417.7 H80491.9 L80366.4 C80491.8 | BB lo 80384.8 mid 80544.0 up 80703.2 %B 0.34 | RSI 41.58 SMA14 36.81 | netdelta 74.2 CVD(from 11:30) -956
+               bar 13:14 O80491.9 H80518.1 L80469.1 C80515.0 | BB lo 80387.5 mid 80536.3 up 80685.1 %B 0.43 | RSI 43.75 SMA14 37.10 | netdelta -3.7 CVD(from 11:30) -959
+               bar 13:15 O80515.0 H80535.9 L80459.7 C80473.2 | BB lo 80391.5 mid 80525.7 up 80659.9 %B 0.30 | RSI 40.81 SMA14 37.22 | netdelta 67.4 CVD(from 11:30) -892
+               bar 13:16 O80473.3 H80500.0 L80431.0 C80431.0 | BB lo 80385.8 mid 80515.2 up 80644.6 %B 0.17 | RSI 38.02 SMA14 37.13 | netdelta -0.6 CVD(from 11:30) -893
+               bar 13:17 O80431.0 H80506.8 L80422.0 C80491.8 | BB lo 80384.4 mid 80511.0 up 80637.5 %B 0.42 | RSI 43.95 SMA14 37.71 | netdelta 20.6 CVD(from 11:30) -872
+               bar 13:18 O80491.8 H80495.8 L80431.4 C80468.1 | BB lo 80383.0 mid 80504.6 up 80626.1 %B 0.35 | RSI 42.26 SMA14 38.00 | netdelta 6.4 CVD(from 11:30) -866
+--- legend check (screenshot legend: shot1 BB 80458.0/80592.2/80323.7 RSI 39.05 SMA 37.98; shot2 BB 80402.8/80552.9/80252.6 RSI 29.95 SMA 37.46)
+shot 9317fd8402ed: forming bar 13:23 close 80388.0 -> BB lo 80322.5 mid 80457.7 up 80592.8 | RSI 39.27 SMA14 38.00
+shot 672453a288eb: forming bar 13:28 close 80234.1 -> BB lo 80251.7 mid 80402.3 up 80553.0 | RSI 30.24 SMA14 37.55

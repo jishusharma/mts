@@ -56,4 +56,4 @@ CLOUD_INBOX.md is not tracked on origin/fast-track (its last tracked commit is o
 
 ## Operator decision (2026-10-15)
 
-Venue: Binance tape is the research target; a separate Deribit execution check gates any fill or profit claim. Q2 (pause Krown Q65-Q69) and Q3 (holdout A7) are still open.
+Venue: Binance tape is the research target; a separate Deribit execution check gates any fill or profit claim. Q2 (pause Krown Q65-Q69): DECIDED yes by the coordinator on the operator's behalf 2026-10-15 (OPERATOR_DECISIONS.md q-pause-krown-detectors; reopens when krown-g2 catalogue rows pass G3). Q3 (holdout A7) is still open.

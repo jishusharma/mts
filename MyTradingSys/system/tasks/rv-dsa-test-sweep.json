@@ -16,7 +16,8 @@
   "lane": "DSA-NUC",
   "layers": [],
   "live_path": false,
-  "note": "host=JIS-NUC",
+  "note": "PARKED: every ship already runs these tests (run_all_tests --quick); a second sweep adds no information. LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -32,7 +33,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Run the commands in order, each inside the 300 s bridge cap.",
     "Paste the output tail into the chat; if a command fails twice close the task --failed with the error text.",

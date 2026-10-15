@@ -3,7 +3,7 @@
 Source: `MyTradingSys/system/LESSONS_LEARNED.md` (38 KB, append-only history). This file is the RULE line of every entry,
 grouped by who needs it; `[A]`..`[G]` = lettered section there, `[10-03 title]` = dated entry. Read the full entry when a
 rule touches your task. Adding a lesson: append the story to LESSONS_LEARNED.md AND one rule line here, same commit.
-Synced with LESSONS_LEARNED.md at blob: d21b79e8 (STATUS.md flags this file STALE when that blob changes).
+Synced with LESSONS_LEARNED.md at blob: c5767610 (STATUS.md flags this file STALE when that blob changes).
 Hard rules and gates live only in CLAUDE.md and are not repeated here; prompt-composition rules for the chat surface live in DSA_SESSION_PROMPT.md and RELAY.md.
 
 ## 1. Accuracy (every session)
@@ -16,6 +16,7 @@ Hard rules and gates live only in CLAUDE.md and are not repeated here; prompt-co
 - Edit by matching text, never by a line number from an earlier read. [G]
 - No claim that a file exists / was written without a same-turn disk read; read cited paths and lines before quoting them. [10-02 prompt delivery; 10-02 DSA list]
 - "Not on disk" checks all branches and refs; cross-branch diffs use three dots; "is it merged" uses `git cherry`. [10-01 lessons; 10-02 DSA list]
+- A "shipped" claim (worker report, relay line, message to the operator) quotes an empty `git cherry origin/fast-track <sha>`. [10-15 observer]
 - Recursive file searches scope to src/ explicitly; backup_session/ copies shadow real files. [10-02 DSA list]
 - If an instruction references advice not found in repo or memory, ask in the first reply. [E]
 - Check the observable result before re-asking the operator for a task. [F]
@@ -54,6 +55,8 @@ Hard rules and gates live only in CLAUDE.md and are not repeated here; prompt-co
 
 ## 5. Workers, cost, tokens
 - Spot-check one concrete claim per worker report; never merge a worker's change without reading its diff. [B]
+- Two sessions report the same red gate test: the coordinator starts a Sonnet fixer within the hour. [10-15 observer]
+- At most 2 `sync.py ship` / `run_all_tests.py` runs per machine at once; 3 at once collided on the AIBridge selftest. [10-15 observer]
 - When a worker says "wait"/"blocked", ask whether a cheaper route exists (e.g. older history from data.binance.vision). [B]
 - Expected values are hand-derived from the spec; a test fixed "to match the implementation" can turn tautological. [B]
 - EXPECT lines name text that is NEW in the change; read verify's `+N -M` count. [B]
