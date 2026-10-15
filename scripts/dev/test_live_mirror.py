@@ -213,6 +213,27 @@ class MirrorTest(unittest.TestCase):
         manifest = json.loads((self.nuc / lm.MIRROR_DIR / "manifest.json").read_text())
         self.assertEqual(manifest["version"], m2["version"])
 
+    def test_failed_publish_is_recorded_and_shown_in_brief_then_cleared(self):
+        self.pulled()
+        bad = put(self.live, "MyTradingSys/execution/plans/x.secret.json", "{}")
+        with self.assertRaises(lm.MirrorError):
+            lm.publish_recorded(self.live, self.root, now=T0 + dt.timedelta(minutes=5))
+        with self.assertRaises(lm.MirrorError):
+            lm.publish_recorded(self.live, self.root, now=T0 + dt.timedelta(minutes=10))
+        line = lm.publish_fail_line(self.root, now=T0 + dt.timedelta(minutes=12))
+        self.assertIn("PUBLISHER FAILING for 7 min", line)
+        out = lm.brief(self.nuc, self.root, now=T0 + dt.timedelta(minutes=12))
+        self.assertTrue(any("PUBLISHER FAILING" in l for l in out))
+        bad.unlink()
+        lm.publish_recorded(self.live, self.root, now=T0 + dt.timedelta(minutes=15))
+        self.assertIsNone(lm.publish_fail_line(self.root))
+
+    def test_main_publish_unexpected_error_exits_nonzero_and_records(self):
+        with mock.patch.object(lm, "publish", side_effect=OSError("disk full")):
+            rc = lm.main(["publish", "--repo", str(self.live), "--root", str(self.root)])
+        self.assertEqual(rc, 3)
+        self.assertIn("disk full", lm.publish_fail_line(self.root))
+
     def test_brief_does_not_pull_while_the_copy_is_fresh(self):
         now = lm.utcnow()
         lm.publish(self.live, self.root, now=now - dt.timedelta(minutes=3))
