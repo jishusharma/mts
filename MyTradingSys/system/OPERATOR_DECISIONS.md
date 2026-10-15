@@ -686,3 +686,53 @@ Applied: (not yet)
  "recommended": "Test both: Binance and Coinbase daily volume"
 }
 ```
+## q-host-worktree-tidy | asked 2026-10-15 | Process | NO AUTO-APPLY
+
+Remove 39 finished worktrees on JIS-NB (about 750 MB) and repair 23 broken ones?
+
+Recommended: Yes: fix tidy's idle clock, protect mts-control-room, remove the 39 finished trees, repair the 23 broken HEADs
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet; waits for Jis's explicit answer, no 24h default)
+Page db: not yet a doc (asked from the jishusharma1985 login, which cannot write the jishu.awgp db); the next jishu.awgp pickup creates it from the JSON below. Apply on JIS-NB only.
+
+```json
+{
+ "order": 17,
+ "stage": "Process",
+ "refs": "system/HOST_WORKTREES_2026-10-15.md",
+ "title": "Remove 39 finished worktrees on JIS-NB (about 750 MB) and repair 23 broken ones?",
+ "why": "`sync.py tidy --all` (dry run, 2026-10-15) checked 101 worktrees on JIS-NB and would remove only 2. A git cleanup at 03:07 today rewrote every tree's history file, so tidy thinks 32 more finished trees were used 5 h ago; they are clean, fully on origin and idle 32-140 h (18 old relay trees, 13 App trees, mts-sup). 5 App trees with a detached HEAD are clean with nothing unshipped. 23 trees are broken: HEAD names jis-nb/x but the branch is JIS-NB/x, so git shows every file as new; after a one-line repair 17 of them are clean and shipped. Kept whatever you answer: 12 trees with uncommitted work, 8 with unshipped commits (incl. BinanceDataFeed.registry, which MTS-Live-Health runs from), 14 used in the last 24 h, 4 named lanes, and mts-control-room (the mts-control-room routine works there). The tree-by-tree list is in the refs file.",
+ "options": [
+  "Yes: fix tidy's idle clock, protect mts-control-room, remove the 39 finished trees, repair the 23 broken HEADs",
+  "Only the 2 trees tidy removes today",
+  "Not now"
+ ],
+ "recommended": "Yes: fix tidy's idle clock, protect mts-control-room, remove the 39 finished trees, repair the 23 broken HEADs"
+}
+```
+## q-host-sched-tasks | asked 2026-10-15 | Process | NO AUTO-APPLY
+
+Retire 4 legacy Windows tasks on JIS-NB and re-point MTS-Live-Health?
+
+Recommended: Yes: disable Tick and both Audit tasks (unregister after 7 quiet days), unregister Monitor_4h, point Live-Health at the live tree, fix MTS-Backup
+Answer: (none yet)
+Operator note (verbatim): (none yet)
+Applied: (not yet; waits for Jis's explicit answer, no 24h default)
+Page db: not yet a doc (asked from the jishusharma1985 login, which cannot write the jishu.awgp db); the next jishu.awgp pickup creates it from the JSON below. Apply on JIS-NB only.
+
+```json
+{
+ "order": 18,
+ "stage": "Process",
+ "refs": "system/HOST_TASKS_2026-10.md",
+ "title": "Retire 4 legacy Windows tasks on JIS-NB and re-point MTS-Live-Health?",
+ "why": "21 MTS tasks run on JIS-NB. MTS-Scheduler-Tick still runs the old tick.py clock every 15 min; only the retired NUC worker read its reports. MTS_Monitor_4h points at a script that no longer exists. MTS-Audit-Digest and MTS-Audit-Rotation were built for the NUC Qwen queue retired on 2026-10-01. MTS-Live-Health runs its checker from BinanceDataFeed.registry, a checkout 1621 commits behind (the checker file itself is current). MTS-Backup failed at 08:22 (exit 1). Nothing was changed or unregistered.",
+ "options": [
+  "Yes: disable Tick and both Audit tasks (unregister after 7 quiet days), unregister Monitor_4h, point Live-Health at the live tree, fix MTS-Backup",
+  "Only unregister MTS_Monitor_4h",
+  "Not now"
+ ],
+ "recommended": "Yes: disable Tick and both Audit tasks (unregister after 7 quiet days), unregister Monitor_4h, point Live-Health at the live tree, fix MTS-Backup"
+}
+```
