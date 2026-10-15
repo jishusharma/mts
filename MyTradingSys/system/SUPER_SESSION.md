@@ -64,11 +64,14 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   Cards that change the live tree or scheduled tasks (nb-*) are operator-side.
 - Verify a worker ship: `git cherry origin/fast-track <sha>` prints nothing. CI state: `origin/green/fast-track` moved past it.
 - Usage: `get_usage` (ccd_session_mgmt) once per wake; NUC/Fable sessions share the same Max weekly meter.
+- Research Map: read the artifact first (`Artifact read`), edit DATA in the saved copy with a script (json load/dump of the
+  one `const DATA = ` line), write it to `system/artifacts/research_map.html`, republish with `url`.
 
 ## Session log (newest first; one line each, last 5)
 - 2026-10-16 super-2 (JIS-NB, Opus coordinator, Agent workers): boot ~25 tool turns, ~10 of them lookups now in Boot facts
-  (live tree path, start_session refusal, deploy/HALT state, wake mechanism). 16 workers, weekly +6 by 20:35Z. Learned: coordinator
-  wakes dominate cost; three double-ship wakes; one worker skipped the old-code test proof (rule 8).
+  (live tree path, start_session refusal, deploy/HALT state, wake mechanism). 18 workers, 14 ships, weekly +9 (shared meter).
+  Learned: coordinator wakes dominate cost; three double-ship wakes; one worker skipped the old-code test proof (rule 8); an
+  Agent's first 'finished' notice can be interim while its ship gate runs - verify with git cherry before logging.
 
 ## Start (operator: open a new session, model Opus, paste the prompt below)
 The coordinator, on its first turn: `get_usage` (stop if the Pacing state is THROTTLE), `python scripts/sched/relay.py stop
