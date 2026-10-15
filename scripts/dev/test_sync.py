@@ -179,6 +179,23 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(ahead.exists())
         self.assertTrue(self.a.exists())  # primary tree never touched
 
+    def test_tidy_apply_repairs_a_case_broken_head(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "casey")
+        branch = subprocess.run(["git", "-C", str(wt), "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
+        sh(self.a, "pack-refs", "--all")                           # packed refs are matched case-sensitively even on Windows
+        wrong = branch.upper()
+        sh(wt, "symbolic-ref", "HEAD", f"refs/heads/{wrong}")      # what a case-insensitive FS left behind
+        broken = [t for t in sync.survey(self.a) if t["path"] == str(wt) or Path(t["path"]) == wt]
+        if not broken or broken[0]["ahead"] is not None:
+            self.skipTest("this filesystem still resolves the wrong-case ref")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.repair_heads(self.a, apply=False), [broken[0]["path"]])   # dry run moves nothing
+            sync.tidy(self.a, apply=True)
+        head = subprocess.run(["git", "-C", str(wt), "symbolic-ref", "HEAD"], capture_output=True, text=True).stdout.strip()
+        self.assertEqual(head, f"refs/heads/{branch}")
+        self.assertEqual(subprocess.run(["git", "-C", str(wt), "rev-parse", "--verify", "-q", "HEAD"]).returncode, 0)
+
     def test_tidy_keeps_a_just_started_worktree(self):
         with contextlib.redirect_stdout(io.StringIO()):
             fresh = sync.new_worktree(self.a, "fresh")      # clean and on origin, but a session may be about to use it

@@ -691,9 +691,9 @@ Applied: (not yet)
 Remove 39 finished worktrees on JIS-NB (about 750 MB) and repair 23 broken ones?
 
 Recommended: Yes: fix tidy's idle clock, protect mts-control-room, remove the 39 finished trees, repair the 23 broken HEADs
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet; waits for Jis's explicit answer, no 24h default)
+Answer: Yes (chat 2026-10-15: "clean everything, do not leave anything behind")
+Operator note (verbatim): Commit all your changes and clean everything. Do not leave anything behind.
+Applied: 2026-10-15 on JIS-NB: 23 broken HEADs repaired, 34 finished trees retired by tidy, 30 more swept with copies in F:/MTS_backup.git (LEFTOVERS_2026-10-15.md)
 Page db: not yet a doc (asked from the jishusharma1985 login, which cannot write the jishu.awgp db); the next jishu.awgp pickup creates it from the JSON below. Apply on JIS-NB only.
 
 ```json

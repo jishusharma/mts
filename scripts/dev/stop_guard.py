@@ -1,0 +1,73 @@
+"""Stop guard: a session may not end with uncommitted files or unshipped commits in its own worktree.
+
+Sessions kept leaving work behind (2026-10-15: 26 trees held unshipped work). Claude Code Stop hook (.claude/settings.json):
+when the session tries to stop and `sync.py where` logic says its tree holds real work, block ONCE with the instruction to
+commit and `sync.py ship`. A second stop in the same turn (stop_hook_active) is always allowed: a stuck gate must not trap a
+session in a loop. Never raises. Ignores the live tree (.mts_live), trunk checkouts and regenerable noise.
+Env: MTS_STOP_GUARD=off disables.
+Run by hand: python scripts/dev/stop_guard.py check   (prints the reason, or nothing)
+"""
+import json
+import os
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+
+def reason(path):
+    """Why `path` may not stop yet, or None."""
+    import sync
+    top = sync.toplevel(Path(path))
+    if (top / sync.LIVE_MARKER).exists():
+        return None
+    branch = sync.git(top, "branch", "--show-current", check=False).stdout.strip()
+    if branch in (sync.TRUNK, "master", "main"):
+        return None
+    state = sync.tree_state(top)
+    t = dict(path=str(top), name=top.name, branch=branch, ahead=state[0], work=state[1], noise=state[2], fix="")
+    return sync.unshipped_reason(t)
+
+
+def message(why):
+    return (f"STOP GUARD: this worktree still holds work ({why}). Commit it (body ends `Result: ...`) and run "
+            f"`python scripts/dev/sync.py ship`; if the files are scratch, delete them or add them to .gitignore. "
+            f"Then end the session.")
+
+
+def hook(stdin_text):
+    """-> JSON string for Claude Code, or '' to allow the stop."""
+    try:
+        if os.environ.get("MTS_STOP_GUARD", "").lower() == "off":
+            return ""
+        data = json.loads(stdin_text or "{}")
+        if data.get("stop_hook_active"):
+            return ""
+        why = reason(data.get("cwd") or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd())
+        return json.dumps({"decision": "block", "reason": message(why)}) if why else ""
+    except Exception:
+        return ""
+
+
+def main(argv):
+    if argv[:1] == ["hook"]:
+        out = hook(sys.stdin.read())
+        if out:
+            print(out)
+        return 0
+    if argv[:1] == ["check"]:
+        try:
+            why = reason(Path.cwd())
+        except Exception as e:
+            print(f"stop_guard: {e}", file=sys.stderr)
+            return 1
+        if why:
+            print(message(why))
+            return 1
+        return 0
+    print(__doc__)
+    return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
