@@ -237,8 +237,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Tracks: Claude, Codex lab (scoring)
 - Spec / sources: `MyTradingSys/items/B162_qriptal_signal_layer.md`
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-14_qriptal-score-binance.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_qriptal-score-binance.md`
-- Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `qriptal-score-binance` raw p1 CODEX: Qriptal: score his posted calls on Binance candles (B162)
+- Open cards: none
 
 ## Krown (TA 101: zones, volume, candles, averages, ranges) (`krown`)
 - Status: Spec v0.2 + 120-rule ledger from 15 of 19 reachable TA 101 videos (14 TA + 1 fees). 4 videos blocked on YouTube captions (429). One structural stop (compression breakout), no stop distance or size rule: the rest is OURS. Not built, not backtested.

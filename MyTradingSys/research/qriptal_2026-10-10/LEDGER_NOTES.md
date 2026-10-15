@@ -107,3 +107,14 @@ Missing video ids for the daily retry (YouTube captions returned HTTP 429 this w
 
 More valuable than those 19: the **Sunday live streams** (the weekly plans with levels, e.g. the 2026-08-23 stream drawn in RrCbiOqXLRg and the 2026-09-13 plan in t5xiPuo3yuc).
 Only one is staged, and it holds the only eligible calls. The upload list `q_list.txt` does not enumerate the channel's /streams tab; add it to the retry list.
+
+## Scorer (card qriptal-score-binance) decisions
+
+Result: scored n = 0 on DEV, see `SCORECARD.md`; code `score_calls.py`, tests `test_score_calls.py` (26 with the committed-ledger checks).
+
+- DECISION (OURS): one claim for both cards. `sync.py claim` refuses a second claim over the same area as the first (`qriptal-call-ledger`, same session),
+  so card `qriptal-score-binance` was worked under that claim and the claim is released once, at the end.
+- DECISION (OURS): the holdout is not read. The two ELIGIBLE rows (one weekly plan, 2026-09-21) are listed in SCORECARD.md as unscored; `--allow-holdout`
+  exists, is off by default and has only been exercised on synthetic candles in the tests. Scoring them would give n = 1 plan and power 0.
+- DECISION (OURS): in the fill candle only the stop is checked (the order of entry and target inside one 1m candle is unknown); a target counts from the next candle.
+- The 7 PLAN rows with an entry and a target but no stop are not scored: any stop would be invented (NO-SOURCE, card scope-out).
