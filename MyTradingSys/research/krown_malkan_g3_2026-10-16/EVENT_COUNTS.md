@@ -4,9 +4,16 @@ Session `krown-malkan-p6` (Fable P6, CATALOGUE_AUDIT.md). **Counts and geometry 
 Data: Binance spot daily files from `F:/MTS/data/krown_daily` (DATA_COVERAGE.md), cut to bars opened before 2024-07-01 (DEV) before any indicator was built.
 Reproduce: `python MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py --data F:/MTS/data/krown_daily --out MyTradingSys/research/krown_malkan_g3_2026-10-16` (full per-asset, per-year table: `event_counts.csv`).
 
+## Answer
+
+- **Enough events on BTC alone (MDE <= 0.30R net):** KR-S1 1d.
+- **Too few on BTC alone but MARGINAL when pooled over BTC, ETH, BNB, SOL (MDE in brackets, assumes independent events, so optimistic):** KR-S8 1d (0.35R), KR-S8-high 1d (0.37R), KR-S1 1w (0.39R), MAL-5 1d (0.49R), MAL-17 1d (0.41R), MAL-16 1d (0.35R).
+- **Too few even pooled (descriptive reading only, no G5 test):** KR-S8 1w, KR-S8-high 1w, MAL-2 1d, MAL-10 1d, MAL-17 1w, MAL-16 1w.
+- No row can confirm a +0.10R net edge: that needs about 1655 independent events. The question G5 can answer is whether a large effect is present, not a small one.
+
 ## How to read it
 
-- Every pre-filter is **OURS** (written down before any outcome was looked at); it is a cheap stand-in for the trader's chart reading, not the rule itself. Where a leg of his rule cannot be computed from OHLC alone it is dropped and the count is an upper bound.
+- Every pre-filter is **OURS** (written down before any outcome was looked at); it is a cheap stand-in for the trader's chart reading, not the rule itself. Where a leg of his rule cannot be computed from OHLC alone it is dropped, so the count is an order of magnitude, not a guaranteed upper bound.
 - `n` = events after merging events closer than 5 bars on the same side (OURS; neighbours share one move). `bars` = DEV bars in the series.
 - Stop geometry is read from the event bar itself (never the future): stop % = distance from the planned entry to the stated stop reference; cost in R = round trip taker fee 0.10% / stop %. Fees are the Deribit taker rate (`fees.py:23`), both sides.
 - **MDE** = smallest mean net R per trade the sample could detect with 80% power at a two-sided 95% test, from `MyTradingSys/backtest/power_mde.py` with a +2R / -1R payoff (OURS), variance taken at the break-even win rate. 'Win-rate pp' is the same MDE as extra win rate over break-even.
@@ -55,5 +62,7 @@ Pooling adds events but the four coins move together, so the MDE below is **opti
 - A row whose BTC MDE is above 0.60R cannot reject 'no edge' on BTC alone unless the trader's claimed edge is large; on DEV it can only be **described** (does the pattern look like his chart), not **tested**. Pool it with the other coins, or widen the pre-filter and say so, before spending a G5 slot.
 - MAL-2 and MAL-10 are small because the 'weekly and monthly RSI both above 60' gate is true in only a few bull stretches of BTC; the monthly RSI(14) also needs 14 closed months, so the gate is blank before late 2018.
 - Weekly rows hold under 40 events on BTC; they are descriptive only. The weekly stops are wide (see the stop column), which makes fees negligible but the sample tiny.
-- No pre-filter here uses the 'with the trend' leg (KR-S1) or the 5-star timeframe pairing that is garbled in the transcript (MAL-2, MAL-5); the counts are upper bounds on what the trader's full rule would flag.
+- No pre-filter here uses the 'with the trend' leg (KR-S1) or the 5-star timeframe pairing that is garbled in the transcript (MAL-2, MAL-5), so those counts are likely above what the trader's full rule would flag.
+- KR-S8 weekly shows a median stop of 87% because a 10-week range on BTC is that wide: that row is not tradeable as written, whatever its count.
+- MAL-2 and MAL-5 are two readings of the same sentence (RSI back at the sixty line while weekly and monthly are above 60); the support event is the narrower one. The timeframe of that sixty line is NOT STATED in the transcript (see malkan_extract_2026-10-15/COMPARE.md s1.2).
 
