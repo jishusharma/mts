@@ -161,3 +161,4 @@ B157 | CLOSED  | B157_screenshot_read_starts_cold.md | prior-context slot + prio
 B158 | CLOSED  | B158_session_state_thesis_dead.md | thesis line removed from the card (D13); landed 2026-10-10
 B160 | CLOSED  | B160_engine_state_at_screenshot_time.md | shot.py engine replays the engine at the shot minute; landed 2026-10-10
 B185 | OPEN    | B185_silent_malformed_bugs_row.md | malformed BUGS.md row passes the parser silently; restore B141 + reject over-wide rows
+B186 | OPEN    | B186_write_discipline_stray_backup_and_dup_section.md | stray .bak + duplicate section passed all write checks; fix is one-line backup rule + post-write stray scan

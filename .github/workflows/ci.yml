@@ -50,6 +50,10 @@ jobs:
         with:
           python-version: "3.12"
 
+      # Tests that commit in temp repos need an identity; a fresh runner has none.
+      - name: Git identity
+        run: git config --global user.name ci && git config --global user.email ci@users.noreply.github.com
+
       - name: Install pytest
         run: python -m pip install pytest numpy tzdata
 

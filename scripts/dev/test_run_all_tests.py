@@ -258,12 +258,12 @@ class TestConcurrentGate(unittest.TestCase):
 
     def test_failure_shows_the_tail_and_ci_shows_everything(self):
         out = "\n".join(f"line {i}" for i in range(40))
-        block = "\n".join(rat.format_step("3a", "d", "c", False, out, 1.0))
-        self.assertIn("line 39", block)
-        self.assertNotIn("line 10\n", block)
-        old = os.environ.get("CI")
-        os.environ["CI"] = "1"
+        old = os.environ.pop("CI", None)   # GitHub sets CI=true; the tail view is only asserted with it unset
         try:
+            block = "\n".join(rat.format_step("3a", "d", "c", False, out, 1.0))
+            self.assertIn("line 39", block)
+            self.assertNotIn("line 10\n", block)
+            os.environ["CI"] = "1"
             self.assertIn("line 0\n", "\n".join(rat.format_step("3a", "d", "c", False, out, 1.0)) + "\n")
         finally:
             os.environ.pop("CI", None)
