@@ -42,7 +42,7 @@ class TestHygiene(unittest.TestCase):
         self.assertIn("STATUS: GREEN", md)
         self.assertIn("GATE: PASS", md)
         self.assertEqual(js["utc"], "2026-10-10T06:30:00Z")
-        self.assertEqual([s["step"] for s in js["steps"]], ["gate", "leftovers", "tidy", "where", "health", "declutter_dry_run", "desk_assign", "status"])
+        self.assertEqual([s["step"] for s in js["steps"]], ["gate", "tidy", "where", "health", "declutter_dry_run", "desk_assign", "status"])
 
     def test_red_gate_is_red_and_shows_the_failing_tail(self):
         status, md, js, _ = self.go(gate_rc=1)

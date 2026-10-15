@@ -581,30 +581,6 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(subprocess.run(["git", "symbolic-ref", "HEAD"], cwd=wt2, capture_output=True, text=True).stdout.strip(),
                          "refs/heads/Fresh-Host/other")
 
-    def test_leftovers_parks_dirty_and_unshipped_trees_on_the_backup_repo_only(self):
-        backup = self.tmp / "backup.git"
-        sh(self.tmp, "init", "-q", "--bare", str(backup))
-        sh(self.a, "remote", "add", "backup", str(backup))
-        dirty = self.make_tree(self.tmp / "t-dirty", "x/dirty")
-        clean = self.make_tree(self.tmp / "t-clean", "x/clean")
-        (dirty / "wip.py").write_text("unsaved work\n", newline="\n")
-        with contextlib.redirect_stdout(io.StringIO()):
-            done = dict(sync.leftovers(self.a))
-        self.assertTrue(done["t-dirty"].startswith("pushed"), done)
-        self.assertNotIn("t-clean", done)
-        refs = subprocess.run(["git", "for-each-ref", "--format=%(refname)", "refs/leftovers"], cwd=backup,
-                              capture_output=True, text=True).stdout.split()
-        self.assertEqual(refs, ["refs/leftovers/t-dirty"])
-        blob = subprocess.run(["git", "show", "refs/leftovers/t-dirty:wip.py"], cwd=backup, capture_output=True, text=True).stdout
-        self.assertEqual(blob.strip(), "unsaved work")
-        self.assertTrue((dirty / "wip.py").exists())                       # the tree itself is untouched
-        origin_refs = subprocess.run(["git", "for-each-ref", "refs/leftovers"], cwd=self.tmp / "origin.git",
-                                     capture_output=True, text=True).stdout
-        self.assertEqual(origin_refs, "")                                   # never the public origin
-        with contextlib.redirect_stdout(io.StringIO()):
-            again = dict(sync.leftovers(self.a))
-        self.assertEqual(again["t-dirty"], "unchanged")
-
     def test_gate_test_lists_are_one_entry_per_line(self):
         """Every new test appends to these lists; two entries on one line is a guaranteed merge conflict."""
         import re

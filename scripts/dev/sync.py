@@ -7,7 +7,6 @@
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once)
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
   python scripts/dev/sync.py where [--all]  # trees holding work not on origin/fast-track (nothing lost?); --all lists every tree
-  python scripts/dev/sync.py leftovers  # park every tree holding work (dirty or unshipped) at refs/leftovers/<tree> on the private backup repo; trees untouched
   python scripts/dev/sync.py tidy [--apply] [--all]  # retire finished worktrees (session, App-named, mts-relay-*; clean + fully on origin/fast-track + idle 24 h); dry run by default
 
 Rules live in MyTradingSys/system/PARALLEL.md. The live tree (a checkout holding the gitignored marker
@@ -595,25 +594,6 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
     return out
 
 
-def leftovers(repo, remote="backup"):
-    """Park every tree that holds work (uncommitted files or commits not on origin/fast-track) at refs/leftovers/<tree> on the
-    private backup repo, so a crashed or killed session loses nothing even though its Stop hook never ran. Lossless, trees are
-    never touched (backup_snapshot.leftovers_snapshot). Skips the live tree and trunk checkouts. Returns [(tree, status)]."""
-    import backup_snapshot
-    done = []
-    for t in survey(repo):
-        p = Path(t["path"])
-        if not p.exists() or (p / LIVE_MARKER).exists() or t["branch"] in (TRUNK, "master", "main"):
-            continue
-        if not unshipped_reason(t):
-            continue
-        ref, what = backup_snapshot.leftovers_snapshot(p, remote)
-        done.append((t["name"], what))
-        print(f"{t['name']} -> {ref}: {what}")
-    print(f"leftovers: {len(done)} tree(s) with work; {sum(w.startswith('pushed') for _, w in done)} new snapshot(s)")
-    return done
-
-
 def release(repo, slug, gate=run_gate):
     refuse_live(repo)
     merge_trunk(repo)
@@ -633,13 +613,6 @@ def main(argv):
     if argv and argv[0] == "where" and set(argv[1:]) <= {"--all"}:
         try:
             where(toplevel(Path.cwd()), "--all" in argv)
-        except SyncError as e:
-            print(f"sync: {e}", file=sys.stderr)
-            return 1
-        return 0
-    if argv == ["leftovers"]:
-        try:
-            leftovers(toplevel(Path.cwd()))
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1

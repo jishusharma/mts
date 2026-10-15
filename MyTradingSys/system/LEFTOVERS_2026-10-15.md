@@ -28,10 +28,8 @@ Left alone on purpose: the live tree, `mts-control-room`, named lanes (`mts-dsa`
   commit and `sync.py ship`. A second stop is allowed so a stuck gate cannot trap it. `MTS_STOP_GUARD=off` disables.
 - `sync.py tidy --apply` now repairs case-broken HEADs (`jis-nb/x` vs `JIS-NB/x`, the cause of 23 invisible trees) before it
   looks at anything, and `daily_hygiene.py` runs it every morning (06:30), so finished trees retire without a session.
-- Safety net that does not rely on sessions behaving (same day): every Stop that finds work, and `sync.py leftovers` (step 2 of
-  `daily_hygiene.py`, before tidy), park the tree at `refs/leftovers/<tree>` on `F:/MTS_backup.git` with temp index +
-  commit-tree (HEAD is the 2nd parent, tree/index never touched, never the public origin). So a crashed or killed session, or a
-  dirty tree that tidy only reports, is still in the backup. Gaps left: other machines need their own `backup` remote; Codex and
-  cloud containers run neither hook. `sync.py new_worktree` now names the branch in the case the ref store already uses.
+- Data safety is the existing `MTS-Backup` task: every 15 min it snapshots every worktree (dirty and untracked files too) to
+  `refs/heads/backup/<host>/<tree>` on `F:/MTS_backup.git`, never the public origin. Gap: other machines need their own `backup`
+  remote. `sync.py new_worktree` now names the branch in the case the ref store already uses.
 - Already on fast-track from the token-optimization work: the pulled mirror is untracked and ignored, `where`/`health` print real
   work only, `tidy` retires App and relay trees.
