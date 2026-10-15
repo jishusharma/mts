@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T19:17:26Z",
   "commands": [],
   "created": "2026-10-15T18:22:10Z",
   "depends_on": [],
@@ -16,7 +17,7 @@
   "refine_tries": 0,
   "refined_by": "W8 orderflow-stall",
   "refs": [],
-  "result": "",
+  "result": "RESTART_MAP: fabio/orderflow_live.py + orderflow_bars.py -> restart 'orderflow_live'; 47 test_auto_deploy tests pass, new one fails on old map",
   "scope_in": [
     "scripts/dev/auto_deploy.py",
     "scripts/dev/test_auto_deploy.py"
@@ -27,7 +28,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Wait until the live-reliability worker has shipped (it owns auto_deploy.py).",
     "Add (re.compile(r'^MyTradingSys/backtest/layers/fabio/orderflow_live\\.py'), 'orderflow_live.py') to RESTART_MAP, before the generic fabio rule.",

@@ -49,6 +49,8 @@ GENERATED_RE = re.compile(
 RESTART_MAP = [
     (re.compile(r"^MyTradingSys/execution/(auto_trader|auto_trader_config|executor|plan_compiler|mainnet_plan_check|risk_guard|journal|deribit_orders)\b"), "auto_trader.py"),
     (re.compile(r"^MyTradingSys/execution/(daily_loss_monitor|mainnet_pnl|kill_switch|deribit_orders)\b"), "daily_loss_monitor.py"),
+    # recorder: launched as `python -m MyTradingSys.backtest.layers.fabio.orderflow_live` (command line has no .py); loop-supervisor relaunches it.
+    (re.compile(r"^MyTradingSys/backtest/layers/fabio/(orderflow_live|orderflow_bars)\.py$"), "orderflow_live"),
     (re.compile(r"^MyTradingSys/backtest/layers/(alerts|rsi|fabio|session|positioning|cryptocred|turn_of_candle|tick|timeframe|consensus)/"), "live_runner_cli.py"),
     (re.compile(r"^MyTradingSys/backtest/(bt/|fees)"), "live_runner_cli.py"),
 ]
