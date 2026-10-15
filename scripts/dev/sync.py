@@ -3,7 +3,7 @@
   python scripts/dev/sync.py start [slug]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
                                            # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
-  python scripts/dev/sync.py ship    # merge origin/fast-track, gate, push HEAD to origin/fast-track
+  python scripts/dev/sync.py ship [--full]  # merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once); refused only when --area overlaps an open claim
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
@@ -17,7 +17,9 @@ the supervisor deploy (stop, ff-merge, gate, restart).
 import os
 import re
 import socket
+import inspect
 import subprocess
+import tempfile
 import time
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -198,9 +200,33 @@ class gate_slot:
         return False
 
 
-def run_gate(repo):
-    with gate_slot(repo):
-        r = subprocess.run([sys.executable, "scripts/dev/run_all_tests.py", "--quick"], cwd=repo)
+def run_gate(repo, files=None):
+    """The ship gate. files = paths changed vs origin/fast-track: run the smoke gate (scripts/dev/gate_select.py picks the steps; live-path
+    or unknown paths = every --quick step). files=None, or SYNC_FULL_GATE=1 (`ship --full`), runs the whole --quick gate. Docs-only
+    selections take no gate slot: they are seconds. The full suite runs behind in CI; auto_deploy only takes green/fast-track."""
+    cmd = [sys.executable, "scripts/dev/run_all_tests.py", "--quick"]
+    list_file = None
+    slot = True
+    if files and not os.environ.get("SYNC_FULL_GATE"):
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import gate_select
+        fd, list_file = tempfile.mkstemp(prefix="mts_changed_", suffix=".txt")
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as f:
+            f.write("\n".join(files) + "\n")
+        cmd += ["--smoke", "--changed-file", list_file]
+        slot = gate_select.select(files, [])[0] != "docs"
+    try:
+        if slot:
+            with gate_slot(repo):
+                r = subprocess.run(cmd, cwd=repo)
+        else:
+            r = subprocess.run(cmd, cwd=repo)
+    finally:
+        if list_file:
+            try:
+                os.unlink(list_file)
+            except OSError:
+                pass
     if r.returncode != 0:
         raise SyncError("offline gate (--quick) failed; nothing pushed")
 
@@ -375,7 +401,23 @@ def pull_mirror(repo):
         print(f"live mirror: skipped ({type(e).__name__}); run live_mirror.py pull by hand")
 
 
-def ship(repo, gate=run_gate):
+def call_gate(gate, repo, files):
+    """Older gates take (repo); the default takes (repo, files)."""
+    try:
+        n = len(inspect.signature(gate).parameters)
+    except (TypeError, ValueError):
+        n = 1
+    return gate(repo, files) if n >= 2 else gate(repo)
+
+
+def run_docs_gate(repo, files):
+    """Docs/data-only ship: the cheap doc invariants (task cards, INDEX/BUGS, doc size and contract tests), no gate slot.
+    Skipped where the repo has no gate script (throwaway repos)."""
+    if (Path(repo) / "scripts" / "dev" / "run_all_tests.py").exists() and not os.environ.get("SYNC_NO_DOCS_GATE"):
+        run_gate(repo, files)
+
+
+def ship(repo, gate=run_gate, docs_gate=run_docs_gate):
     refuse_live(repo)  # only commits are pushed; uncommitted files stay where they are
     for attempt in range(1, PUSH_TRIES + 1):
         merge_trunk(repo)
@@ -383,8 +425,11 @@ def ship(repo, gate=run_gate):
         if not files:
             print("nothing to ship")
             return
-        if attempt == 1 and needs_gate(files):
-            gate(repo)
+        if attempt == 1:
+            if needs_gate(files):
+                call_gate(gate, repo, files)
+            elif docs_gate:
+                docs_gate(repo, files)
         r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{TRUNK}", check=False)
         if r.returncode == 0:
             print(f"shipped {len(files)} file(s) to origin/{TRUNK}")
@@ -785,6 +830,9 @@ def main(argv):
             print(f"sync: {e}", file=sys.stderr)
             return 1
         return 0
+    if argv == ["ship", "--full"]:
+        os.environ["SYNC_FULL_GATE"] = "1"
+        argv = ["ship"]
     if not argv or argv[0] not in cmds or (argv[0] != "news" and len(argv) != 1):
         print(__doc__)
         return 2

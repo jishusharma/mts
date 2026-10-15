@@ -17,7 +17,8 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 - Surface (operator 2026-10-08): Claude Code Win App only; never tell the operator to "use the CLI" or hand work back. A permission block is not a reason to stop: report the exact blocked call, try the allowed equivalent.
 
 ## Gates (before any commit touching the area)
-- `python scripts/dev/run_all_tests.py` (all offline; `--quick` skips Maven + backtest). Extractions: `python scripts/dev/verify_extract_quotes.py <extract.md>`.
+- `sync.py ship` runs a SMOKE gate (steps for the changed paths; live-path or unknown paths = all `--quick`; `ship --full` forces it); CI runs the full suite behind and AutoDeploy takes green only. Red CI = one pinned `ci-<sha>` card, first job.
+- `python scripts/dev/run_all_tests.py` (all offline; `--quick` skips Maven + backtest) before a risky commit. Extractions: `python scripts/dev/verify_extract_quotes.py <extract.md>`.
 - New tests must fail on the pre-change code at least once.
 - Formulas: expected numbers come from `MyTradingSys/backtest/layers/FORMULAS.md`, computed independently, never from existing code. OUTPUT_TOKENS must fit the whole reply.
 
