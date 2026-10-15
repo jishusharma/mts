@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1792677805,
-  "week_used": 16.0,
+  "week_used": 17.0,
   "window_resets": 1792109026,
-  "window_used": 60.0
+  "window_used": 63.0
  },
- "at": "2026-10-15T19:11:32Z",
+ "at": "2026-10-15T19:39:35Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 16.0,
-  "window_pts": 0.0,
-  "window_runs": 0
+  "window_pts": 1.0,
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-15T19:30:02Z",
+   "card": "lc-event-table",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 565,
+   "tokens_out": 24242,
+   "tokens_total": 6270260,
+   "tokens_uncached": 127106,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-15T19:03:26Z",
    "card": "gpt-catalog-notstated-audit",
@@ -155,21 +170,6 @@
    "tokens_out": 3033,
    "tokens_total": 484726,
    "tokens_uncached": 56221,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-14T17:30:03Z",
-   "card": "tom-v2-btc-min-stop-width",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 62,
-   "tokens_out": 1449,
-   "tokens_total": 232015,
-   "tokens_uncached": 30630,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
