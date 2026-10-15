@@ -57,7 +57,10 @@ class Registry(unittest.TestCase):
         with contextlib.redirect_stdout(out):
             af.cmd_list(self.reg)
         self.assertIn("jishusharma1985=4D8YMxq5WeZagGnoHByXg9", out.getvalue())
-        self.assertIn("REPUBLISH    MTS Control Room", "\n".join(af.plan(self.reg, "jishusharma1985")))
+        # single live Control Room (operator 2026-10-15): other logins get a pointer page, never a republish of the real one
+        plan = "\n".join(af.plan(self.reg, "jishusharma1985"))
+        self.assertIn("REPLACE      MTS Control Room <- MyTradingSys/system/artifacts/cr_moved.html", plan)
+        self.assertNotIn("REPUBLISH    MTS Control Room", plan)
 
 
 if __name__ == "__main__":

@@ -13,7 +13,9 @@
       "pinned": true,
       "generator": "scripts/dev/make_control_room.py",
       "html": "MyTradingSys/system/artifacts/mts_control_room.html",
-      "owner_app": "jishu.sharma (Inbox and decisions owner, decision q21, 2026-10-15); the jishu.awgp and jishusharma1985 copies are read-only views",
+      "single_owner": "jishu.sharma",
+      "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
+      "owner_app": "jishu.sharma (Inbox and decisions owner, decision q21, 2026-10-15); one live copy only: the jishu.awgp and jishusharma1985 urls hold a pointer page until Jis deletes them",
       "refresh": "every session that ships (artifacts.py build, then plan --account); Inbox pickup by hand from a jishu.sharma session (relay_prompts/INSTALL.md)",
       "db": [
         "decisions",
