@@ -171,8 +171,8 @@ def full(A, ev, cnt, aux):
     sec = []
     for lab, grp in (("S1", S1g), ("S2", S2g), ("S3", S3g), ("S1 median split", S1m)):
         for h in HS:
-            sec.append((f"{lab} quick SHORT h={h}", arm(f"{lab} quick SHORT h={h}", grp == "quick", grp != "quick", -1, False)))
-            sec.append((f"{lab} slow LONG h={h}", arm(f"{lab} slow LONG h={h}", grp == "slow", grp != "slow", 1, False)))
+            sec.append((f"{lab} quick SHORT h={h}", arm(f"{lab} quick SHORT h={h}", grp == "quick", grp != "quick", -1, h, False)))
+            sec.append((f"{lab} slow LONG h={h}", arm(f"{lab} slow LONG h={h}", grp == "slow", grp != "slow", 1, h, False)))
     # all groups x sides x horizons, mean G (decay table)
     decay = []
     for lab, grp in (("S1", S1g), ("S2", S2g), ("S3", S3g)):
