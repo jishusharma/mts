@@ -1,4 +1,4 @@
-"""scripts/dev/turn_meter.py: the SHORT SESSIONS cap (15 tool / 5 operator turns, CLAUDE.md) fires as a hook, resets on compact,
+"""scripts/dev/turn_meter.py: the SHORT SESSIONS cap (40 tool / 10 operator turns, CLAUDE.md) fires as a hook, resets on compact,
 skips subagents (shared session_id), counts parallel tool calls of one assistant message once, and nags in <= 250 bytes."""
 import json
 import os
@@ -51,8 +51,8 @@ class TurnMeterTest(unittest.TestCase):
         for _ in range(30):
             self.assertEqual(fire(self.home, "PostToolUse", extra={"agent_id": "a1", "agent_type": "workflow-subagent"}), "")
         self.assertFalse((self.home / "s1.json").exists())
-        fired = [n for n in range(1, 16) if fire(self.home, "PostToolUse")]
-        self.assertEqual(fired, [15])  # the parent's own counter was untouched by the 30 subagent calls
+        fired = [n for n in range(1, 41) if fire(self.home, "PostToolUse")]
+        self.assertEqual(fired, [40])  # the parent's own counter was untouched by the 30 subagent calls
 
     def test_subagent_detected_by_transcript_path(self):
         for tp in ("C:/u/.claude/projects/p/s1/subagents/workflows/wf_1/agent-a1.jsonl",
@@ -63,20 +63,20 @@ class TurnMeterTest(unittest.TestCase):
 
     def test_agent_type_alone_is_the_main_thread(self):
         # a session started with --agent sends agent_type on the main thread, without agent_id: it must still be metered
-        fired = [n for n in range(1, 16) if fire(self.home, "PostToolUse", extra={"agent_type": "reviewer"})]
-        self.assertEqual(fired, [15])
+        fired = [n for n in range(1, 41) if fire(self.home, "PostToolUse", extra={"agent_type": "reviewer"})]
+        self.assertEqual(fired, [40])
 
     def test_parallel_calls_in_one_message_count_once(self):
         tp = self.home / "t.jsonl"
-        msgs = [(f"msg_{m}", [f"toolu_{m}_{k}" for k in range(3)]) for m in range(1, 18)]
+        msgs = [(f"msg_{m}", [f"toolu_{m}_{k}" for k in range(3)]) for m in range(1, 43)]
         write_transcript(tp, msgs)
         fired = []
         for m, (mid, ids) in enumerate(msgs, 1):
             for tid in ids:
                 if fire(self.home, "PostToolUse", extra={"tool_use_id": tid, "transcript_path": str(tp)}):
                     fired.append((m, tid))
-        self.assertEqual(fired, [(15, "toolu_15_0")])  # 51 calls = 17 turns; the 3 calls of message 15 are one turn
-        self.assertEqual(self.counts()["tool"], 17)
+        self.assertEqual(fired, [(40, "toolu_40_0")])  # 126 calls = 42 turns; the 3 calls of message 40 are one turn
+        self.assertEqual(self.counts()["tool"], 42)
 
     def test_message_beyond_first_tail_window_is_found(self):
         tp = self.home / "t.jsonl"
@@ -99,7 +99,7 @@ class TurnMeterTest(unittest.TestCase):
         self.assertEqual({sid: self.counts(sid)["tool"] for sid in cases}, {sid: 2 for sid in cases})
 
     def test_nag_is_short_and_names_the_handoff(self):
-        for name, state in (("s1", {"tool": 14, "user": 0}), ("s2", {"tool": 1999, "user": 99})):
+        for name, state in (("s1", {"tool": 39, "user": 0}), ("s2", {"tool": 1999, "user": 99})):
             (self.home / f"{name}.json").write_text(json.dumps(state), encoding="utf-8")
         post = json.loads(fire(self.home, "PostToolUse", sid="s1"))["hookSpecificOutput"]["additionalContext"]
         prompt = fire(self.home, "UserPromptSubmit", sid="s2")
@@ -109,43 +109,43 @@ class TurnMeterTest(unittest.TestCase):
             self.assertIn("RELAY.md", text)
             self.assertIn("relay.py handoff", text)
 
-    def test_tool_cap_fires_at_15_then_every_5(self):
-        fired = [n for n in range(1, 26) if fire(self.home, "PostToolUse")]
-        self.assertEqual(fired, [15, 20, 25])
+    def test_tool_cap_fires_at_40_then_every_5(self):
+        fired = [n for n in range(1, 51) if fire(self.home, "PostToolUse")]
+        self.assertEqual(fired, [40, 45, 50])
 
     def test_post_tool_output_is_additional_context_json(self):
-        for _ in range(14):
+        for _ in range(39):
             fire(self.home, "PostToolUse")
         out = json.loads(fire(self.home, "PostToolUse"))
         ctx = out["hookSpecificOutput"]["additionalContext"]
         self.assertEqual(out["hookSpecificOutput"]["hookEventName"], "PostToolUse")
-        self.assertIn("15 tool turns", ctx)
+        self.assertIn("cap 40 / 10", ctx)
         self.assertIn("relay.py handoff", ctx)
 
-    def test_operator_turns_over_5_fire(self):
-        fired = [n for n in range(1, 8) if fire(self.home, "UserPromptSubmit")]
-        self.assertEqual(fired, [6, 7])
+    def test_operator_turns_over_10_fire(self):
+        fired = [n for n in range(1, 13) if fire(self.home, "UserPromptSubmit")]
+        self.assertEqual(fired, [11, 12])
 
     def test_prompt_after_tool_cap_fires(self):
-        for _ in range(15):
+        for _ in range(40):
             fire(self.home, "PostToolUse")
         self.assertIn("[TURN METER]", fire(self.home, "UserPromptSubmit"))
 
     def test_compact_resets(self):
-        for _ in range(16):
+        for _ in range(41):
             fire(self.home, "PostToolUse")
         fire(self.home, "SessionStart", extra={"source": "compact"})
         self.assertEqual(fire(self.home, "UserPromptSubmit"), "")
-        self.assertEqual([n for n in range(1, 16) if fire(self.home, "PostToolUse")], [15])
+        self.assertEqual([n for n in range(1, 41) if fire(self.home, "PostToolUse")], [40])
 
     def test_resume_keeps_counts(self):
-        for _ in range(15):
+        for _ in range(40):
             fire(self.home, "PostToolUse")
         fire(self.home, "SessionStart", extra={"source": "resume"})
         self.assertIn("[TURN METER]", fire(self.home, "UserPromptSubmit"))
 
     def test_sessions_are_separate(self):
-        for _ in range(15):
+        for _ in range(40):
             fire(self.home, "PostToolUse", sid="a")
         self.assertEqual(fire(self.home, "UserPromptSubmit", sid="b"), "")
 

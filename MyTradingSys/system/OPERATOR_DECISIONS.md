@@ -769,7 +769,7 @@ One long-lived worktree per machine/lane, a branch per task?
 Recommended: Yes, adopt it
 Answer: Yes, adopt it (chat 2026-10-15)
 Operator note (verbatim): decide as per the goals of the task from where this question originates (no stale trees left behind, lower cost, same performance)
-Applied: (pending) CLAUDE.md boot + SHORT SESSIONS, sync.py start <slug> in a lane tree, PARALLEL.md
+Applied: 2026-10-15 sync.py start <slug> in a lane tree (mts-app/mts-relay/mts-dsa) switches to <host>/<slug>; claims block only on overlapping --area; SHORT SESSIONS 10 operator / 40 tool turns (CLAUDE.md, turn_meter.py, RELAY.md); tidy keeps mts-app; PARALLEL.md
 
 ```json
 {
