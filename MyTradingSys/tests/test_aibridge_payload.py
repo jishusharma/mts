@@ -3,7 +3,7 @@ import sys; sys.dont_write_bytecode = True
 
 Expected behaviour comes from the DSA coordinator field reports of 2026-10-12 and 2026-10-14 (multi-line blocks, deterministic
 auto-run, no cached result, PS 5.1 stated, fresh environment, parallel chats), not from the code under test.
-The live agent test starts a scratch agent on port 7199 (Windows only) and drives it over HTTP; the node test covers the extension helpers.
+The live agent test starts a scratch agent on a free local port (Windows only) and drives it over HTTP; the node test covers the extension helpers.
 """
 import os
 import re
@@ -59,3 +59,28 @@ def test_agent_live_selftest():
     fails = [ln for ln in r.stdout.splitlines() if ln.startswith("FAIL")]
     assert r.returncode == 0 and not fails, "\n".join(fails)[:3000] or r.stderr[-2000:]
     assert re.search(r"\d+ passed, 0 failed", r.stdout)
+
+
+@pytest.mark.skipif(os.name != "nt" or shutil.which("powershell.exe") is None, reason="needs Windows PowerShell")
+def test_agent_live_selftest_concurrent_and_port_clash():
+    """Gate failure 2026-10-15: the selftest used fixed port 7199, so sessions shipping at the same time (or any
+    listener on 7199) made it fail with ConnectionResetError. Two runs at once next to a squatter on 7199 must pass."""
+    import socket
+    squat = socket.socket()
+    try:
+        squat.bind(("127.0.0.1", 7199))
+        squat.listen(5)
+    except OSError:
+        squat.close()
+        squat = None   # someone else already holds 7199: the clash is already in place
+    try:
+        cmd = [sys.executable, "tests/agent_live_selftest.py"]
+        procs = [subprocess.Popen(cmd, cwd=PAYLOAD, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) for _ in range(2)]
+        outs = [p.communicate(timeout=280)[0] for p in procs]
+    finally:
+        if squat:
+            squat.close()
+    for p, out in zip(procs, outs):
+        fails = [ln for ln in out.splitlines() if ln.startswith("FAIL")]
+        assert p.returncode == 0 and not fails, "\n".join(fails)[:3000] or out[-2000:]
+        assert re.search(r"\d+ passed, 0 failed", out)
