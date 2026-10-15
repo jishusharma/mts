@@ -76,6 +76,11 @@ def classify_exit(events, exits, plan_max_hold_min, hold_min):
     for e in events or []:
         if e.get("event_type") == "reconciliation":
             d = e.get("data") or {}
+            if d.get("stop_state") == "triggered_by_fills":
+                # position_manager folds the plan's reduce-side fill total (the STOP's own fill) into target_filled
+                # on this fallback path, so target_filled is not evidence of a target: decide from the fill label.
+                lab = str((exits[-1] if exits else {}).get("label") or "")
+                return ("target" if ":target" in lab else "stop"), "journal"
             if d.get("target_filled"):
                 return "target", "journal"
             if d.get("stop_state") not in (None, "time_exit"):

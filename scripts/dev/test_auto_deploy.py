@@ -57,6 +57,20 @@ class TestDecide(unittest.TestCase):
         self.assertNotIn("position_manager.py", r["restarts"])
         self.assertEqual(r["restarts"], [])
 
+    def test_orderflow_recorder_restarts_when_its_code_changes(self):
+        r = d(changed=["MyTradingSys/backtest/layers/fabio/orderflow_live.py"])
+        self.assertIn("orderflow_live", r["restarts"])
+        r = d(changed=["MyTradingSys/backtest/layers/fabio/orderflow_bars.py"])
+        self.assertIn("orderflow_live", r["restarts"])
+        self.assertNotIn("orderflow_live", d(changed=["MyTradingSys/research/x.md", "MyTradingSys/execution/daily_loss_monitor.py"])["restarts"])
+        self.assertNotIn("orderflow_live", d(changed=["MyTradingSys/backtest/layers/fabio/htf_context_live.py"])["restarts"])
+        self.assertNotIn("orderflow_live", d(changed=["MyTradingSys/execution/position_manager.py"])["restarts"])
+
+    def test_orderflow_restart_name_is_in_the_module_command_line_and_supervisor_relaunches(self):
+        sup = (Path(ad.__file__).resolve().parents[1] / "core" / "loop-supervisor.ps1").read_text(encoding="utf-8")
+        self.assertIn("launch-orderflow-live.vbs", sup)
+        self.assertIn("orderflow_live", "python -m MyTradingSys.backtest.layers.fabio.orderflow_live")
+
     def test_java_is_reported_not_deployed_by_restart(self):
         r = d(changed=["src/main/java/datafeed/MarketDataSnapshot.java", "pom.xml", "MyTradingSys/x.md"])
         self.assertEqual(r["java_pending"], ["src/main/java/datafeed/MarketDataSnapshot.java", "pom.xml"])
