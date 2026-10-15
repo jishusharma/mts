@@ -1,0 +1,53 @@
+== levels (1m lows/highs, closed bars)
+prior week Mon 10-05 .. Sun 10-11 low: (80344.8, '10-08 17:26')
+prior week high: (86976.1, '10-05 01:28')
+this week Mon 10-12 00:00 .. 13:30 low: (80155.5, '10-15 13:28')
+today 00:00 .. 13:30 low: (80155.5, '10-15 13:28')  | today low up to 13:36: (80027.0, '10-15 13:31')
+yesterday 10-14 low/high: (81401.0, '10-14 22:43') (84117.6, '10-14 08:10')
+sweep low 13:30-14:14: (79732.3, '10-15 13:55')
+
+== first 1m close below each level (13:00 onward) and first 1m low below
+80393: first close below 10-15 13:11 (80380.1); first low below 10-15 13:11 (80366.0)
+80091: first close below 10-15 13:53 (79916.0); first low below 10-15 13:31 (80027.0)
+80027: first close below 10-15 13:53 (79916.0); first low below 10-15 13:53 (79831.4)
+80000: first close below 10-15 13:53 (79916.0); first low below 10-15 13:53 (79831.4)
+79900: first close below 10-15 13:54 (79842.4); first low below 10-15 13:53 (79831.4)
+depth under 80000 at the low: 267.7 pts = 0.335 %
+
+== reclaim: first 1m close above 80000 after the low, and minutes since the low / since the first low below 80000
+first low below 80000: 10-15 13:53 79831.4 | lowest: 10-15 13:55 79732.3 | first close back above 80000: 10-15 13:56 80229.9 | minutes from the lowest bar: 1 | from the first break: 3
+first close back above 80027.0: 10-15 13:56 80229.9
+
+== top break: 81146.6 (12:25 top) and day high
+first 1m high above 81146.6: ('10-15 14:10', 81390.5) | first close above: ('10-15 14:10', 81242.6)
+high 13:54-14:14: (81390.5, '10-15 14:10')
+
+== RSI14 (Wilder, 1m), taker net delta and CVD since the low
+10-15 13:50 O80342.3 H80355.0 L80203.7 C80220.6 | RSI 40.3 | delta 17 | CVD since 13:50 17
+10-15 13:51 O80220.6 H80228.0 L80151.0 C80167.7 | RSI 38.4 | delta -88 | CVD since 13:50 -71
+10-15 13:52 O80167.7 H80167.7 L80053.7 C80144.1 | RSI 37.6 | delta -209 | CVD since 13:50 -280
+10-15 13:53 O80144.1 H80231.0 L79831.4 C79916.0 | RSI 30.7 | delta -980 | CVD since 13:50 -1260
+10-15 13:54 O79916.1 H80006.2 L79818.0 C79842.4 | RSI 28.9 | delta -61 | CVD since 13:50 -1321
+10-15 13:55 O79842.4 H80155.6 L79732.3 C80144.6 | RSI 43.8 | delta -91 | CVD since 13:50 -1412
+10-15 13:56 O80144.5 H80241.2 L80038.2 C80229.9 | RSI 47.1 | delta 205 | CVD since 13:50 -1207
+10-15 13:57 O80229.8 H80249.4 L80076.0 C80114.1 | RSI 43.3 | delta -74 | CVD since 13:50 -1281
+10-15 13:58 O80114.1 H80263.4 L80108.3 C80193.3 | RSI 46.5 | delta 57 | CVD since 13:50 -1225
+10-15 13:59 O80193.4 H80196.5 L80129.8 C80164.5 | RSI 45.5 | delta 17 | CVD since 13:50 -1208
+10-15 14:00 O80164.6 H80179.5 L80066.2 C80109.8 | RSI 43.6 | delta -204 | CVD since 13:50 -1412
+10-15 14:01 O80109.8 H80282.9 L80109.8 C80282.8 | RSI 50.7 | delta 110 | CVD since 13:50 -1302
+10-15 14:02 O80282.9 H80382.5 L80235.0 C80382.5 | RSI 54.2 | delta 120 | CVD since 13:50 -1182
+10-15 14:03 O80382.6 H80437.5 L80341.8 C80437.4 | RSI 56.1 | delta 93 | CVD since 13:50 -1089
+10-15 14:04 O80437.5 H80523.3 L80437.4 C80484.1 | RSI 57.7 | delta 150 | CVD since 13:50 -939
+10-15 14:05 O80484.1 H80569.6 L80466.5 C80556.9 | RSI 60.1 | delta 27 | CVD since 13:50 -912
+10-15 14:06 O80557.0 H80662.0 L80556.9 C80596.8 | RSI 61.4 | delta 147 | CVD since 13:50 -765
+10-15 14:07 O80596.9 H80686.0 L80548.8 C80685.3 | RSI 64.2 | delta 88 | CVD since 13:50 -677
+10-15 14:08 O80685.3 H80837.1 L80679.4 C80823.0 | RSI 68.1 | delta 340 | CVD since 13:50 -337
+10-15 14:09 O80823.1 H80950.0 L80812.4 C80950.0 | RSI 71.2 | delta 322 | CVD since 13:50 -15
+10-15 14:10 O80949.9 H81390.5 L80949.9 C81242.6 | RSI 76.8 | delta 1026 | CVD since 13:50 1010
+10-15 14:11 O81242.6 H81293.8 L81190.6 C81250.4 | RSI 76.9 | delta -51 | CVD since 13:50 959
+10-15 14:12 O81250.3 H81300.0 L81155.0 C81197.4 | RSI 73.9 | delta -120 | CVD since 13:50 839
+10-15 14:13 O81197.3 H81199.9 L81090.4 C81137.0 | RSI 70.5 | delta -108 | CVD since 13:50 731
+10-15 14:14 O81137.0 H81165.9 L81026.9 C81032.0 | RSI 65.0 | delta -375 | CVD since 13:50 356
+
+== OI (recorder 1m, sparse) 13:20-14:15
+[('13:21', 92496), ('13:22', 92500), ('13:22', 92505), ('13:24', 92511), ('13:24', 92541), ('13:26', 92579), ('13:35', 93106), ('13:55', 94010), ('14:00', 93877), ('14:00', 93920), ('14:01', 93997), ('14:02', 93999), ('14:07', 93939)]
