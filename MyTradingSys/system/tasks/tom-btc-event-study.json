@@ -16,7 +16,8 @@
     "tom"
   ],
   "live_path": false,
-  "note": "ROUTED 2026-10-13 (operator: GPT + DSA do the work, Claude economy): GPT lab builds + runs the event study once eye-read labels exist.",
+  "note": "coordinator 2026-10-15: blocked twice for missing reader marks (A-P10 NOT_IN_DATA), about 700k GPT tokens spent for no result; unblock only after G3 eye-read marks exist (LAYER_REBUILD_PLAN gate G3)",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
@@ -37,7 +38,7 @@
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Concept flags from footprint/klines: A-C3 thin top, A-P1 finished auction, A-P6 delta surplus/absorption, A-P3, A-P4, A-P5, A-P7, A-P10 long/short extreme (OURS thresholds = session rank, printed).",
     "Per concept: n, mean net R (taker 0.10 % RT and maker-in), 95 % CI, minus random; trial rows to TRIAL_REGISTRY."

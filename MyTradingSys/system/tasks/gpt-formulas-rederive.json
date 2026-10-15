@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-15T12:47:16Z",
+  "crucial": true,
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "from_inbox": "",
+  "goal": "From FORMULAS.md sections 7, 12, 13, 17 definitions only (no code), recompute worked examples and expected numbers; code (mts_math.py calculate_net_rr, trade_costs.py, runner.py) only for comparison. Done when table example x FORMULAS x GPT x repo x match exists; each mismatch cites its deciding definition line. Output FORMULAS_REDERIVE.md + stdlib rederive.py. Mismatches become B-items, no edits.",
+  "id": "gpt-formulas-rederive",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/runtime/mts_math.py",
+    "MyTradingSys/backtest/layers/positioning/trade_costs.py",
+    "MyTradingSys/backtest/layers/runner.py"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "GPT re-derivation of FORMULAS.md sections 7, 12, 13, 17"
+}
