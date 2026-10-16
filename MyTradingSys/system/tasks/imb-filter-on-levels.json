@@ -6,10 +6,10 @@
   "depends_on": [],
   "done_when": "RESULT.md in research/imbalance_qriptal_2026-10-16/filter/ with net R per level-layer trade with vs without the imbalance condition (DEV only), declared trial count, test red first.",
   "from_inbox": "",
-  "goal": "Test Qriptal's full rule (level + imbalance + reaction) the only honest way left: take an existing level layer's DEV trades (lc-levels-hold or pit-levels) and compare fee-net R for trades with vs without a volume-anomaly imbalance candle (imb.py rel_volume >= 2, same TF) at the level, plus the veto 'do not fade a high-volume large-body candle'. Pre-register before reading results. Brief: research/imbalance_qriptal_2026-10-16/README.md s5.",
+  "goal": "Test Qriptal's full rule (level + imbalance + reaction): on an existing level layer's DEV trades (lc-levels-hold or pit-levels), compare fee-net R with vs without a volume-anomaly candle at the level, plus the large-body no-fade veto. PRE_REG first. Brief: research/imbalance_qriptal_2026-10-16/README.md s5.",
   "id": "imb-filter-on-levels",
   "kind": "build",
-  "lane": "APP-BLD",
+  "lane": "SONNET",
   "layers": [
     "callers"
   ],
