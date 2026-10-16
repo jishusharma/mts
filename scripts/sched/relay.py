@@ -774,14 +774,16 @@ def hourly_bundle(a, root):
     """(refine, housekeep) once per HOURLY_MIN, else None. refine = REFINE_OK | REFINE_NEEDED | SKIPPED | ERROR <why>; housekeep = bool
     (due once per HOUSEKEEP_H). The state is written before the answer, so a slow or failed model step never repeats within the hour."""
     st = read_hourly()
-    since = minutes_since(st.get("last_utc"))
+    gate = getattr(a, "gate", False)   # model-free gate (dispatch_gate.py): own clock, never takes the App routine's housekeeping slot
+    key = "last_gate_utc" if gate else "last_utc"
+    since = minutes_since(st.get(key))
     if since is not None and since < a.hourly_min:
         return None
-    st["last_utc"] = now().strftime(TS)
+    st[key] = now().strftime(TS)
     hk_since = minutes_since(st.get("last_housekeep_utc"))
-    housekeep = hk_since is None or hk_since >= HOUSEKEEP_H * 60
+    housekeep = not gate and (hk_since is None or hk_since >= HOUSEKEEP_H * 60)
     if housekeep:
-        st["last_housekeep_utc"] = st["last_utc"]
+        st["last_housekeep_utc"] = st[key]
     try:
         home().mkdir(parents=True, exist_ok=True)
         (home() / HOURLY_NAME).write_text(json.dumps(st, sort_keys=True), encoding="utf-8", newline="\n")
@@ -967,6 +969,7 @@ def main(argv=None):
     ti.add_argument("--peer-quiet-min", type=int, default=0,
                     help="IDLE while another host wrote the current handoff less than this many minutes ago (0 = off)")
     ti.add_argument("--hourly-min", type=int, default=HOURLY_MIN, help="minutes between two hourly bundles (refiner status, housekeeping)")
+    ti.add_argument("--gate", action="store_true", help="called by dispatch_gate.py: hourly refiner status on its own clock, no housekeeping")
     ti.add_argument("--no-ship", action="store_true", help="route: commit the row/card but do not run sync.py ship (tests)")
     ti.add_argument("--refiner-tree", help="refiner worktree (default: ../mts-refiner)")
     ti.add_argument("--prompt-file", help="repo copy of the dispatcher prompt for the drift check (default: origin's, via git show)")
