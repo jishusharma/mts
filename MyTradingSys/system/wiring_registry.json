@@ -830,6 +830,10 @@
     "MyTradingSys/research/fabio_transfer/ledger_stats.py": {
       "disp": "REPRO",
       "why": "Defines the Fabio ledger inventory (parent trade vs fill vs management, membership P1-P15) and computes the stop-width stats from FABIO_TRADE_LEDGER.csv; its render() output is the H4 section of FABIO_TRADE_LEDGER.md, asserted by test_ledger_audit.py; run by hand (python ledger_stats.py), named in FABIO_TRADE_LEDGER.md."
+    },
+    "MyTradingSys/research/layer_lab/session_levels_event_table/event_table.py": {
+      "disp": "REPRO",
+      "why": "Rebuilds a DEV-only failed-break event table from BTCUSDT 1m archives with four-hour MFE/MAE in R; run by hand with event_table.py --output; test_event_table.py covers synthetic detector join and horizon boundaries."
     }
   },
   "MyTradingSys/research/layer_lab/volume_event_table/event_table.py": {
