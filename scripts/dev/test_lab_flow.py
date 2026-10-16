@@ -127,3 +127,21 @@ def test_runner_requires_valid_receipt_even_if_card_json_says_done(repo, monkeyp
     assert R.judge(done, [done["flow_receipt"]["report"]], "audit", []) == "DONE"
     done.pop("flow_receipt")
     assert R.judge(done, ["report.md"], "audit", []) == "BLOCKED"
+
+
+def test_editing_current_goal_or_model_cannot_silently_change_recipe(repo):
+    a, _ = F.launch(repo, spec())
+    a["goal"] = "A different task"
+    assert F.gate(a, tasks.load_all(repo), repo)
+    a["goal"] = a["flow"]["goal"]
+    a["model"] = "gpt-6-luna"
+    assert F.gate(a, tasks.load_all(repo), repo)
+
+
+def test_effective_model_mismatch_revokes_receipt_and_holds_child(repo):
+    a, b = F.launch(repo, spec())
+    complete(repo, a)
+    assert tasks.get(repo, b["id"])["state"] == "ready"
+    F.reject_run(repo, a["id"], "CLI used a different model")
+    assert tasks.ready_cards(repo)[0] == []
+    assert "flow_receipt" not in tasks.get(repo, a["id"])

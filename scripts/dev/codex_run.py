@@ -682,6 +682,10 @@ def run_card(card, dry=False, env=os.environ, probing=False):
         bad = setting_mismatch((model, effort), hdr)
         if bad:
             note = (note + " | " if note else "") + bad
+            if card.get("flow"):
+                import lab_flow
+                now = lab_flow.reject_run(wt, cid, bad)
+                outcome = "BLOCKED" if reports else "INCOMPLETE"
         m = re.search(r"tokens used\s*\n\s*([\d,]+)", logtext)
 
         def make_row():

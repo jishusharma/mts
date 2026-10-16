@@ -55,6 +55,19 @@ def accepted(card, repo):
         return False
 
 
+def reject_run(repo, cid, reason):
+    """A runner-observed model mismatch cannot leave a valid receipt or runnable child."""
+    card = tasks.get(repo, cid)
+    card.update(state="blocked", result=reason)
+    card.pop("flow_receipt", None)
+    tasks.save(repo, card)
+    for child in tasks.load_all(repo):
+        if child.get("flow", {}).get("id") == card["flow"]["id"] and cid in child.get("depends_on", []):
+            child["state"] = "blocked"
+            tasks.save(repo, child)
+    return card
+
+
 def gate(card, cards, repo):
     """Receipt and artifact checks supplement the ordinary dependency state check."""
     flow = card.get("flow")
@@ -63,6 +76,14 @@ def gate(card, cards, repo):
     errors = []
     if flow.get("contract") != contract(flow):
         errors.append("flow contract changed; launch a new flow")
+    if card.get("goal") != flow["goal"] or card.get("scope_in") != flow["scope_in"]:
+        errors.append("flow card goal/scope drifted from the shared contract")
+    try:
+        _, kind, model, effort, lens = RECIPES[flow["recipe"]][flow["stage"] - 1]
+        if flow["stage"] < 1 or card.get("kind") != kind or tasks.codex_setting(card) != (model, effort) or flow.get("lens") != lens:
+            errors.append("flow kind/model/lens drifted from the recipe")
+    except (KeyError, IndexError, TypeError):
+        errors.append("flow recipe/stage is invalid")
     prev = card.get("depends_on", [])
     byid = {c["id"]: c for c in cards}
     for cid in prev:
