@@ -46,6 +46,10 @@ PAGE = 1000
 # Pages per cycle. aggTrades weight 20, Binance limit 2400/min, one cycle per 20 s: 25 x 20 x 3 = 1500/min.
 # 200 hit HTTP 429 on a 15 h backfill (2026-10-07) and, all-or-nothing, never advanced.
 MAX_PAGES = 25
+# One minute with more than MAX_PAGES * PAGE trades (2026-10-14 12:30Z: 39,420 trades) can never complete in a normal cycle:
+# the backfill chunk keeps only whole minutes before the last fetched one, so it stayed empty and next_ms never moved
+# (writer silent 2 days, live health RED). Such a minute is refetched once with this bigger page budget.
+OVERFLOW_PAGES = 50
 MIN_MS = 60000
 
 
@@ -198,6 +202,12 @@ def run_cycle(out, fetch_fn, symbol="BTCUSDT", now_ms=None, since_ms=None, hist_
     except Exception as exc:  # noqa: BLE001 - any network/parse error: write nothing, retry next cycle
         res["error"] = repr(exc)
         return res
+    if capped and trades and trades[-1][5] // MIN_MS * MIN_MS <= nxt // MIN_MS * MIN_MS and max_pages < OVERFLOW_PAGES:
+        try:  # the first minute alone fills the page budget: refetch it with the overflow budget
+            trades, capped, res["error"] = fetch_trades(fetch_fn, symbol, nxt, cur_min, OVERFLOW_PAGES)
+        except Exception as exc:  # noqa: BLE001
+            res["error"] = repr(exc)
+            return res
     if capped and trades:  # backfill chunk: only whole minutes strictly before the last fetched one
         cut = trades[-1][5] // MIN_MS * MIN_MS
         trades = [t for t in trades if t[5] < cut]
