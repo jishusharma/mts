@@ -437,6 +437,11 @@
    "ref": "lc-levels-hold",
    "why": "Reproduces research/levels_confluence_2026-10-14/levels_hold.md (12 level families vs distance-matched random lines, DEV 2024-12..2025-03, seed 20261014); run by hand with the command in that file, no live import. Tested by test_levels.py."
   },
+  "MyTradingSys/research/levels_confluence_2026-10-14/event_table.py": {
+   "disp": "REPRO",
+   "ref": "lc-event-table",
+   "why": "Reproduces research/levels_confluence_2026-10-14/event_table.csv (1,278 first touches, DEV 2024-12..2025-03) cited in research/layer_lab/reports/2026-10-15_lc-event-table.md; run by hand, no live import. Tested by test_event_table.py."
+  },
   "MyTradingSys/research/levels_sizing_2026-10-14/probe.py": {
    "disp": "REPRO",
    "ref": "LC-SIZING-QUICK-20261014",

@@ -51,6 +51,7 @@ EXTRA = [
     "MyTradingSys/research/volume_2026-10-09/test_volume.py",
     "MyTradingSys/research/tom_btc_2026-10-13/test_chart_lab.py",
     "MyTradingSys/research/levels_confluence_2026-10-14/test_levels.py",
+    "MyTradingSys/research/levels_confluence_2026-10-14/test_event_table.py",
     "MyTradingSys/runtime/test_update_market_state.py",
     "scripts/dev/test_testnet_canary.py",
     "scripts/worker/test_audit_digest.py",
