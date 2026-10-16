@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T05:33:16Z",
   "commands": [],
   "created": "2026-10-16T00:44:06Z",
   "depends_on": [],
@@ -17,7 +18,7 @@
   "refine_tries": 0,
   "refined_by": "codex-feed 2026-10-16 (sonnet worker)",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST; report MyTradingSys/research/layer_lab/reports/2026-10-16_gpt-fable-economics-recheck.md",
   "scope_in": [
     "MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md",
     "MyTradingSys/research/gross_effect_screen_2026-10-15/RESULT.md",
@@ -39,7 +40,7 @@
     "MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md",
     "MyTradingSys/research/gross_effect_screen_2026-10-15/RESULT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List every numeric or quoted claim in FABLE_RUNS_AUDIT.md sections 1.2, 1.4, 1.5, 2.2 and 3.2 (the lines marked RE-DERIVED plus the unmarked arithmetic beside them) with its line number.",
     "Recompute each from the committed inputs only (RESULT.md, decay.csv, the PRE_REG pass rule, promote.py, power_mde.py) with a stdlib script saved as MyTradingSys/research/layer_lab/gpt-fable-economics-recheck/recompute.py.txt; write your value down before you read the audit's number.",
