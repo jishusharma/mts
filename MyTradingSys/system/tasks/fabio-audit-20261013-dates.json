@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T21:53:05Z",
   "commands": [],
   "created": "2026-10-13T05:09:07Z",
   "depends_on": [],
@@ -20,7 +21,7 @@
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md"
   ],
-  "result": "",
+  "result": "H3: all 72 date cells UNKNOWN with partial evidence kept (F2 Dec 30 tentative VTT 826-842, DyS Oct 15 DyS.txt 80-81, F4 filename = save time), timezone source per entry row, universal US-cash claim removed. UNRESOLVED: calendar date/year of every execution; F1 chart clock 02/12 not re-verified",
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
@@ -36,7 +37,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md H3 row; F:/MTS/data/fabio_videos/0jM5Y31YJak.en.vtt:82-90,826-842; DyS79Eb92Ug.txt:66-80"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read VTT 82-90, 826-842 and DyS.txt 66-80 for the exact words",
     "set date to UNKNOWN or partial text per row group (NQ-202512 is a contract, not a date)",

@@ -25,9 +25,9 @@ Result: Daily P/L 6468 -> 28485 = +22017$ (exit fill not on a frame). Stop width
 Narrative labels on chart: punch to the wall (absorbed effort), re entry, rewarded effort, failed auction on Cash session sensitive high, 0 doubt, squeeze.
 Stop moves only in steps behind structure as price falls; TP fixed far; size 10 on the re-entry funded by day profit.
 
-## 9IliXww64uM (read 2026-10-11 relay, sheets 00-06, ES, Jan 2026)
+## 9IliXww64uM (read 2026-10-11 relay, sheets 00-06, ES, date UNKNOWN [H3])
 Mostly talk: Schwab account page (value 217,392; equity curve jumped from ~61k on Nov 24 2025 to 210k on Jan 27 2026), ES 5-min and 1-min footprint charts with CVD/delta tables (no order labels),
-and two pasted trade screenshots (file 2026-01-30 214344): F4a short 1 @ 6986.75, F4b short 1 @ 6977.5 (ES, 1 lot, no stops visible). Hand-drawn schematic at t=780 (balance -> failed breakout -> reversal).
+and two pasted trade screenshots (file name 2026-01-30 214344 = screenshot creation time, not an entry date [H3]): F4a short 1 @ 6986.75, F4b short 1 @ 6977.5 (ES, 1 lot, no stops visible). Hand-drawn schematic at t=780 (balance -> failed breakout -> reversal).
 No stop/TP prices on any frame, so no stop-width stat from this video. Ledger now 17 rows: 7 entries (F1, F2, F3a-c, F4a-b) plus management/exit rows.
 
 
@@ -37,7 +37,7 @@ Management: stop tightened to 24961.50 then 24961.25 (above avg entry), scale-in
 at t=630 stop trailed to 24925.00 (locks 12330$) and TP pulled 24910.25 -> 24917.00. Flat by t=660, Daily P/L +2331.50 (+11909$ on the trade). Exit fill not on a frame.
 
 ## Final stats (8 entries, 5 videos; video count is the limit, teaching videos show ~1.6 trades each)
-Markets: NQ 7 entries (F1, F2, F3a-c, F5; F2 levels approximate), ES 2 (F4a-b, 1 lot, no stops). Sessions: NY/US cash session for all frames with a clock.
+Markets: NQ 7 entries (F1, F2, F3a-c, F5; F2 levels approximate), ES 2 (F4a-b, 1 lot, no stops). Sessions: UNKNOWN per execution [H3]; see the H3 section.
 Stop width on NQ (points / % of price): F1 15.75 / 0.061, F3b 8.88 / 0.036, F3c 3.38 / 0.014, F5 9.47 / 0.038 (and 2.07 / 0.008 after tighten). Median 9.2pt ~ 0.037%.
 Target distance: 138pt (8.8R), 107pt (12R), 87pt (25.9R), 50pt (5.3R): R-multiples far above 3 on every labelled trade.
 Management (all four labelled trades): stop moves only toward profit (breakeven or beyond) in steps; TP is pulled in late (F3c, F5); scale-in on confirmation (F3, F5: 12/14/18 lots) funded by day P/L.
@@ -52,7 +52,7 @@ Downloaded f398 720p (no en vtt exists for these): DyS79Eb92Ug (8500 s), Is1Hvdf
 
 ## DyS79Eb92Ug (read 2026-10-11 relay, JIS-NB, frames t=380-1100 + captions)
 2.4 h interview (Tradezella journal, Alpha Capital sponsor); at t=380-1000 it replays the SAME live NQ session as Jpd96Fl qr5M (Daily P/L 10922 at start): F6 long 4->6 lots avg 24914.38, stop 24883.50 (-2460$ at 4 lots, 'risking 2,000'), TP 25001.00.
-Outcome now resolved: stop trailed to 24971.00 (6780$ locked) at t=960, TP filled ~25001.00, Daily P/L 10922 -> 21290 (+10368$) at t=1000 (frames lowres/DyS79Eb92Ug_w2_00/01.jpg). Caption quotes: 'risk 2,000 to make eight' (t=772), setup = buyers protecting the gap/value-area low, 'tight stop' (t=821).
+Outcome now resolved: stop trailed to 24971.00 (6780$ locked) at t=960, flat by t=1000 with Daily P/L 10922 -> 21290 (+10368$); a TP fill near 25001 is INFERRED, not shown [H2] (frames lowres/DyS79Eb92Ug_w2_00/01.jpg). Caption quotes: 'risk 2,000 to make eight' (t=772), setup = buyers protecting the gap/value-area low, 'tight stop' (t=821).
 Captions F:/MTS/data/fabio_videos/DyS79Eb92Ug.txt (flattened, 3530 lines): other trade stories at t=1196 ('only risking 1,500'), 1289 ('risking $20 to make 3,000'), 2790 ('risking 800'), 6992 ('risking exactly 2,000'), 7598 ('10,000 risking 1,500'): each a candidate to read next (one window per session, tool: python -I scripts/dev/fabio_window_sheet.py <id> <t0> <t1> <step> <tag> writes lowres sheets; copy it into the tree if reused).
 Status: still 9 entries (F1-F6 families); 20-trade goal not met, remaining unread: DyS79Eb92Ug t>1100, Is1HvdfQm5c (2.5 h), xUyqIjCfZzg (3.8 h).
 
@@ -63,26 +63,26 @@ Setup in his words: buyers 'protecting the level', squeeze against trapped selle
 Entry prices are derived (stop +/- risk/(qty*20)), flagged in the notes. Ledger now 11 entries (F1-F8). Still < 20: unread DyS79Eb92Ug t>1360 (captions: 2790, 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
 
 ## DyS79Eb92Ug t=1350-1600 (read 2026-10-11 relay, JIS-NB; sheets lowres/DyS79Eb92Ug_w4_00/01/02.jpg, step 25 s)
-F8 (8 lots) was stopped out by t=1400 (Daily P/L 21252 -> 19131, -2121$; stop 25021.75, risk 2040$). Captions: 'we give back 2,500 ... auction is slow', 'this is the last trade for the day' (t=1410), yet he re-entered: F9 long 8 lots avg ~25034.25 [H1-corrected] with a 4-lot buy limit add, initial stop preview ~25019.44 [H1: not ~25010.4] then 25019.50 on 4 lots, flat by t=1550 for +259$ net (Daily 19390). F10 long 4 lots avg ~25040.00 [H1-corrected from ~25040.5] at t=1575, stop 25019.50 (-1600$), outcome not read.
+F8 (8 lots) was flat by t=1400 (Daily P/L 21252 -> 19131, -2121$; stop label 25021.75, risk 2040$); a stop fill is INFERRED, the extra 81$ is unattributed [H2]. Captions: 'we give back 2,500 ... auction is slow', 'this is the last trade for the day' (t=1410), yet he re-entered: F9 long 8 lots avg ~25034.25 [H1-corrected] with a 4-lot buy limit add, initial stop preview ~25019.44 [H1: not ~25010.4] then 25019.50 on 4 lots, flat by t=1550 for +259$ net (Daily 19390). F10 long 4 lots avg ~25040.00 [H1-corrected from ~25040.5] at t=1575, stop 25019.50 (-1600$), outcome not read.
 Pattern: after a loss he re-enters the same protection-level squeeze three times in 5 minutes (F7 scratch -38$, F8 -2121$, F9 +259$): stop widths 12.75-21pt = 0.05-0.08%. Entry/stop values here are low-res reads, flagged approximate in the CSV.
 Ledger now 14 entries (F1-F10 + sub-rows). Still < 20 trades: unread DyS79Eb92Ug t>1600 (captions 2790, 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
 
 ## DyS79Eb92Ug t=1575-1775 (read 2026-10-11 relay, JIS-NB; sheets lowres/DyS79Eb92Ug_w5_00/01.jpg, step 25 s)
-F10 long (4 lots avg ~25040.00 [H1], stop 25019.5) scaled to 8 lots avg 25043.00, stop raised to 25038 then 25051.50 (+1360$ locked), sell LMT TP 25074.25 (5000$). Flat by t=1700, Daily P/L 19390 -> 24354 = +4964$ (TP hit, minus costs). Session sequence F7-F10: -38$, -2121$, +259$, +4964$. Stop 21pt (0.084%).
+F10 long (4 lots avg ~25040.00 [H1], stop 25019.5) scaled to 8 lots avg 25043.00, stop raised to 25038 then 25051.50 (+1360$ locked), sell LMT TP 25074.25 (5000$). Flat by t=1700, Daily P/L 19390 -> 24354 = +4964$ (a TP fill is INFERRED from the 5000$ label, not shown; cost split unknown) [H2]. Session sequence F7-F10: -38$, -2121$, +259$, +4964$. Stop 21pt (0.084%).
 Ledger: 13 entry rows / 40 lines (F1-F10 incl. F3a-c, F4a-b). Still < 20: unread DyS79Eb92Ug t>1775 (captions 2790, 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
 
-F11 (DyS79Eb92Ug t=2775-3000): NQ long 4 lots ~25104.75 after the squeeze above 25110, stop ~10pt (0.04%), scaled to 8 lots (stop 25094.25, 13pt = 0.052%), no TP reached, stopped out: Daily P/L 24354 -> 22239 = -2115$. Ledger 14 trades / 43 rows. Still < 20: unread DyS79Eb92Ug t>=3025 (captions 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
-F12 (DyS79Eb92Ug t=3025-3275): NQ long 6 lots, avg 25105.78 at t=3100 [H1-corrected], stop read ~25105.50 at t=3075 then 25089.75 at t=3100 (16.03pt) [H1: not 25085.75], scaled to 8 (stop 25098.50, 9pt) and 10 (avg 25108.50, stop 25098.75 at t=3150, TP sell LMT 25148.75 ~40pt [H1: not 25098.25 / 25140.75; a later frame shows 25098.25]); outcome not shown (t=3175 intro/ad, 3225+ talking head). Ledger 15 trades / 46 rows. Still < 20: next window t=3275+, then Is1HvdfQm5c, xUyqIjCfZzg.
-F13 (DyS79Eb92Ug t=3525-3775): NQ long 8->10 lots avg 25108.90 then 25108.05 [H1-corrected from ~25104], stop 25097.00 (11.9pt = 0.047%); the +2 order at 25104.75 is a buy add [H1], stopped out between t=3550 and 3575: Daily P/L 20668 -> 17758 = -2910$. Then flat, no trade through t=3750 (the window ends t=3775; sheet shows 3725-3750 only). Sequence after F10 (+4964$): F11 -2115$, F12 -1525$, F13 -2910$, three chase longs near the 25110 prior high in ~9 chart minutes with stops 7-21pt. Ledger 16 trades / 52 rows (>= 20 trades not yet). Still < 20: next window t=3775+, then Is1HvdfQm5c, xUyqIjCfZzg.
+F11 (DyS79Eb92Ug t=2775-3000): NQ long 4 lots ~25104.75 after the squeeze above 25110, stop ~10pt (0.04%), scaled to 8 lots (stop 25094.25, 13pt = 0.052%), no TP reached, flat with Daily P/L 24354 -> 22239.02 = -2115$ (stop INFERRED; a further -46.02 follows to 22193 at t=3025, unexplained) [H2]. Ledger 14 trades / 43 rows. Still < 20: unread DyS79Eb92Ug t>=3025 (captions 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
+F12 (DyS79Eb92Ug t=3025-3275): NQ long 6 lots, avg 25105.78 at t=3100 [H1-corrected], stop read ~25105.50 at t=3075 then 25089.75 at t=3100 (16.03pt) [H1: not 25085.75], scaled to 8 (stop 25098.50, 9pt) and 10 (avg 25108.50, stop 25098.75 at t=3150, TP sell LMT 25148.75 ~40pt [H1: not 25098.25 / 25140.75; a later frame shows 25098.25]); outcome not on those frames (t=3175 intro/ad, 3225+ talking head); later frames show flat with Daily P/L 22193 -> 20668 = -1525$, cause INFERRED [H2]. Ledger 15 trades / 46 rows. Still < 20: next window t=3275+, then Is1HvdfQm5c, xUyqIjCfZzg.
+F13 (DyS79Eb92Ug t=3525-3775): NQ long 8->10 lots avg 25108.90 then 25108.05 [H1-corrected from ~25104], stop 25097.00 (11.9pt = 0.047%); the +2 order at 25104.75 is a buy add [H1], flat between t=3550 and 3575 (stop INFERRED): Daily P/L 20668 -> 17758 = -2910$, larger than the -1760 stop label [H2]. Then flat, no trade through t=3750 (the window ends t=3775; sheet shows 3725-3750 only). Sequence after F10 (+4964$): F11 -2115$, F12 -1525$, F13 -2910$, three chase longs near the 25110 prior high in ~9 chart minutes with stops 7-21pt. Ledger 16 trades / 52 rows (>= 20 trades not yet). Still < 20: next window t=3775+, then Is1HvdfQm5c, xUyqIjCfZzg.
 
-F14 (DyS79Eb92Ug t=3775-4025): NQ long 8 lots ~25101.4, stop 25086.25 (~15pt = 0.060%), target label 25186.75 (+13600$), stopped out between t=3925 and t=3950: Daily P/L 17758 -> 15147 = -2611$. A 10-lot preview order near 25109 at t=3800 was not filled. Talking-head at t=3850. Flat t=3975-4000. Sequence F10 +4964, F11 -2115, F12 -1525, F13 -2910, F14 -2611: four chase longs near the 25110 prior high. Ledger 17 trades / 53 rows (>= 20 not yet). Next window t=4025+, then Is1HvdfQm5c, xUyqIjCfZzg.
+F14 (DyS79Eb92Ug t=3775-4025): NQ long 8 lots ~25101.4, stop 25086.25 (~15pt = 0.060%), target label 25186.75 (+13600$), flat between t=3925 and t=3950 (stop INFERRED): Daily P/L 17758 -> 15147 = -2611$ [H2]. A 10-lot preview order near 25109 at t=3800 was not filled. Talking-head at t=3850. Flat t=3975-4000. Sequence F10 +4964, F11 -2115, F12 -1525, F13 -2910, F14 -2611: four chase longs near the 25110 prior high. Ledger 17 trades / 53 rows (>= 20 not yet). Next window t=4025+, then Is1HvdfQm5c, xUyqIjCfZzg.
 
 ## DyS79Eb92Ug t=8275-8493 (read 2026-10-12 relay, JIS-NB; sheets lowres/DyS79Eb92Ug_w30_00/01/02.jpg) - VIDEO FINISHED
 Flat, no trade (Daily P/L 15147$ unchanged); chart at t=8300 shows low ~24880 then bounce ~24940; talking heads to the end (video ends ~8493). Ledger 70 rows.
 
 ## FINAL stats (all five downloaded videos read end to end; closes card fabio-trade-ledger)
 Filled trades: 14 (F1-F6 from 5 videos, F7-F14 from DyS79Eb92Ug). F15 (t=6775-7025) was an order ticket that never filled. Goal of >= 20 not reached: "all available" per the card (video count is the limit).
-Markets: NQ 13, ES 1 (F4, 1 lot, no stops). Session: US cash for every frame with a clock.
+Markets: NQ 13, ES 1 (F4, 1 lot, no stops). Session/timezone: sourced per row only (H3 section), no universal US-cash claim.
 Stop width, 13 NQ stops with a read stop (points / % of ~25000): median 10.75pt = 0.043%, mean 13.6pt, min 1.5pt (0.006%), max 30.83pt (0.123%).
 DyS79Eb92Ug day: F7-F10 won/ended +4964$ at F10, then F11 -2115$, F12 -1525$, F13 -2910$, F14 -2611$ (four consecutive same-range longs stopped), then flat for 4400 s; day ended Daily P/L +15147$.
 Management as before: stops move only toward profit, TP pulled in late, scale-in on confirmation (4 -> 8 -> 10 lots).
@@ -92,7 +92,7 @@ Is1HvdfQm5c t=0-250 (w00, 25 s steps) read: black intro, Excalidraw board (agend
 ## Minute timestamps (card fabio-ledger-minute-timestamps, 2026-10-14)
 Replay-ready rows (date + minute, convertible to UTC): **0 of 18 entry rows**. Columns `entry_time_utc` + `entry_time_src` added to the CSV.
 - Read this pass: F1 crop (no clock), fZlNGWvd2Ko sheets (no axis, no date), 9IliXww64uM t=630 (only the pasted screenshot's file name 2026-01-30 214344 = save time, not fill time), DyS79Eb92Ug t=1150-1225 (axis minutes 15:55-15:56 chart time, no date).
-- DyS79Eb92Ug / Jpd96fLqr5M (F6-F15) trade NQ-202512, so the session is 2025-09..12, not "2026" as the date column says; minutes are on the time axis but the day is not on screen. Dating it needs a price-path match (F6 24914 -> TP 25001, F11-F14 25095-25110 range) against NQ 1m history: follow-up card fabio-session-date-price-match.
+- DyS79Eb92Ug / Jpd96fLqr5M (F6-F15) trade NQ-202512, so the session is 2025-09..12, not "2026" as the date column said before the H3 correction; minutes are on the time axis but the day is not on screen. Dating it needs a price-path match (F6 24914 -> TP 25001, F11-F14 25095-25110 range) against NQ 1m history: follow-up card fabio-session-date-price-match.
 - Chart time zone: the axis puts the US open at 15:30, i.e. CET/CEST; UTC needs the date (DST), so no UTC value is written without it.
 - Times never come from transcripts (card rule); every unknown carries its reason.
 
@@ -112,3 +112,22 @@ Source: layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md H1 row (fu
 | F13-m1 entry | ~25105 | 25108.05 avg | matches the line above |
 | F13 +2 LMT 25104.75 | sell partial | buy add | green order |
 UNRESOLVED (H1): the F12-m2 label STP -2050$ ties to 25098.25 (10 x 10.25 x 20), not 25098.75 (1950$); F12 -1860$ and F13 -1520$ cash labels do not tie to the corrected averages. Labels are kept as observed; platform accounting is not reconciled (audit M2). Stop widths for F9, F10, F12, F13 in the old stats above are stale; H4 recomputes them.
+
+## Audit correction H2 (card fabio-audit-20261013-exits, 2026-10-17)
+Rule from the audit: a flat position and a Daily P/L delta are observations; the exit price, whether a stop or a TP filled, and the slippage/cost share are INFERRED or UNKNOWN until a fill record or a continuous frame sequence shows them. Exit rows F3c-x, F5-x..F14-x are relabelled `*_cause_inferred` / `*_cause_unknown` and their notes keep only the observed numbers.
+- F6 +10368 and F10 +4964 are visible differences only; exact fills are absent.
+- F12 -1525 is smaller than the displayed -2050 stop risk; F13 -2910 is larger than the -1760 stop label with 8 covered vs 10 open. Unreconciled, no transaction list exists in the repo.
+- Omitted interval: Daily P/L 22239.02 (t=3000) -> 22193 (t=3025) = -46.02 between the F11 and F12 frames, unexplained.
+- Interval totals (M4): F10 +4964 and F11 -2115 sum to +2849; F7-F10 sum to -38-2121+259+4964 = +3064; neither is the day P/L.
+UNRESOLVED (H2): the exit fill prices and causes, the 81$ (F8), 36$ (F10), 35$ (F11) label differences and the -46.02 need a fill/transaction record that is not in the repo.
+
+## Audit correction H3 (card fabio-audit-20261013-dates, 2026-10-17)
+The date column no longer carries any 2026 or month value that no source states. Every row is `UNKNOWN (...)` with the partial evidence kept separate: a contract suffix (NQ-202512) is not a date; the F4 screenshot file name is the save time, not the entry time; recording, upload, screenshot and trade dates are not interchangeable.
+| Evidence | Where | Used for |
+|---|---|---|
+| "30 of December", tentative ("if I'm not wrong"), no year | 0jM5Y31YJak.en.vtt:826-842 | F2 rows, partial only |
+| "central European time" before the session | 0jM5Y31YJak.en.vtt:82-90 | F2 timezone |
+| "Today it's day 15 of October", year absent; New York session begins | DyS79Eb92Ug.txt:66-81 | DyS79Eb92Ug rows (F7-F15, no-trade rows); F6 shares the session per the earlier pass |
+| chart axis puts the US open at 15:30 (CET/CEST) | 2026-10-14 minute-timestamp pass (below) | DyS/Jpd chart clocks, no UTC without a date |
+Rows with no date and no zone evidence (F1, F3, F5, F4, Is1H) stay UNKNOWN; the earlier "NY session" time labels were removed from F3 and F5. Link exact frame clock, date and timezone per execution before any replay or design/check split.
+UNRESOLVED (H3): the calendar date of every execution (year absent everywhere in the repo sources read); DyS is Oct 15 of an unstated year; the F1 chart-clock 02/12 reading was not re-verified (no frame re-read in this card).
