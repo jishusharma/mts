@@ -225,3 +225,24 @@ def test_planted_lookahead_is_caught(tape60, plant):
         CA.PLANT.clear()
     assert caught, f"plant {plant} not caught"
     print(plant, "caught via", sorted(set(caught))[:6])
+
+
+# ------------------------------------------------------------------ angle d: red-team RT-1 (prior bucket at a bucket close)
+def test_rt1_day_close_grid_uses_the_day_that_just_closed():
+    """At the 23:59 grid point the day that just closed is closed information: the ledger's prior-day high/low and the
+    ladder's prior daily candle must be THAT day, in both builds (first draft used the day before it: RT-1 in ANGLES.md)."""
+    bars = synth(12, seed=9)
+    fund = synth_funding(12)
+    t = 9 * 1440 + 1439
+    d = slice(9 * 1440, 10 * 1440)
+    hi, lo = float(np.max(bars["H"][d])), float(np.min(bars["L"][d]))
+    for impl in ("vec", "replay"):
+        f = CA.context_at(CA.slice_bars(bars, t + 1), t, "long", impl, fund)
+        assert f["c_1d"] == (float(bars["O"][9 * 1440]), hi, lo, float(bars["C"][t])), impl
+        assert f["stop_d_pct"] == (f["price"] - lo) / f["price"] * 100 or f["stop_d_pct"] != f["stop_d_pct"], impl
+    CA.PRIOR_RULE = "cur_k_minus_1"
+    try:
+        g = CA.context_at(CA.slice_bars(bars, t + 1), t, "long", "vec", fund)
+    finally:
+        CA.PRIOR_RULE = "last_closed"
+    assert g["stop_d_pct"] != f["stop_d_pct"] or (g["stop_d_pct"] != g["stop_d_pct"]), "the old rule must differ at a day close"
