@@ -791,6 +791,14 @@
   "MyTradingSys/research/context_factors_2026-10-16/build_frames.py": {
    "disp": "REPRO",
    "why": "Wrapper around the frozen run_dev.py vec that only swaps the funding loader to F:/MTS/Dumps/backtest/raw/fundingRate (the PRE_REG archive path is absent on JIS-NB); builds the DEV frames study.py reads; run by hand, DEV only."
+  },
+  "MyTradingSys/research/level_ledger_2026-10-16/level_ledger.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds LEVEL_LEDGER.csv (prior-day levels with available_at, PIT_CONTRACT s.1) from the DEV 1m archive; run by hand, see README.md."
+  },
+  "MyTradingSys/research/level_ledger_2026-10-16/java_zone_check.py": {
+   "disp": "REPRO",
+   "why": "Compares live Java buildVp with vp_pivot_probe.build_profile on sampled DEV days (ZONE_CHECK.csv); needs a JDK, run by hand, see README.md."
   }
  }
 }
