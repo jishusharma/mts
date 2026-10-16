@@ -6,7 +6,7 @@
   "window_resets": 1792195230,
   "window_used": 1.0
  },
- "at": "2026-10-16T20:33:07Z",
+ "at": "2026-10-16T21:00:50Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,17 +20,32 @@
   "astra_runs": 0,
   "week_pts": 19.0,
   "window_pts": 1.0,
-  "window_runs": 3
+  "window_runs": 4
  },
  "runs": [
+  {
+   "at": "2026-10-16T21:00:02Z",
+   "card": "g3-pack-audit-rerun",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 41,
+   "tokens_out": 2908,
+   "tokens_total": 361929,
+   "tokens_uncached": 49773,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-16T20:32:13Z",
    "card": "gptb-forward-excursion-helper",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": "Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n=========================================================",
+   "outcome": "SHIP_FAILED",
    "seconds": 47,
    "tokens_out": 4314,
    "tokens_total": 308126,
@@ -157,21 +172,6 @@
    "tokens_uncached": 80000,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T16:30:03Z",
-   "card": "gptb-context-v2-fix1-stop-strata",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": " Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n======================================================================\nFAILED: 3 st",
-   "outcome": "SHIP_FAILED",
-   "seconds": 230,
-   "tokens_out": 14684,
-   "tokens_total": 1347400,
-   "tokens_uncached": 65388,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
