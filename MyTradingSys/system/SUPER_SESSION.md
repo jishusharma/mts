@@ -100,6 +100,10 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 - Workers are sessions, started directly with `start_session`, never cards: the operator is often away. The app refuses
   `start_session` on turns a side-session note or an event started, so on every OPERATOR turn start all workers the next stretch
   needs (max 4 at once) and brief each to chain its follow-ups, so no spawn is needed between operator turns.
+  NEVER make the operator click a card for work already handed to the session (operator 2026-10-16, said twice: "a waste of time
+  and a waste of resources ... No other session should do this"). On an event turn where `start_session` is refused, run the
+  worker as a background Agent subagent at once (rule above) instead of proposing an `own_initiative` card. Applies to every
+  coordinator and worker.
 - Pacing on the Pro login: 5-hour window, `get_usage` on every wake. Under 60 %: normal; 60-70 %: crucial work only; 70-80 %:
   coordinator only; 80 % and up: stop. In the last ~15 min before a reset, spend what is left on workers that finish real items.
 - Keep the GPT lab busy: `codex_run.py status` on every wake; keep 8+ ready luna/medium build cards; repair skipped or BLOCKED
