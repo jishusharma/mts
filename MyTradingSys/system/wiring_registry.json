@@ -5,6 +5,10 @@
    "disp": "REPRO",
    "why": "Rebuilds research/qriptal_2026-10-10/CALL_LEDGER.csv from ledger_rows.json, verifying every quote against the staged raw transcripts (ledger.py build | check); run by hand, named in LEDGER_NOTES.md."
   },
+  "MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py": {
+   "disp": "REPRO",
+   "why": "Qriptal-style volume-anomaly imbalance: label check against labels.json and fee-net fade test on Binance BTCUSDT (verify-labels | fetch | parity | label-check | backtest); writes LABEL_CHECK.md, BACKTEST.md; holdout outcomes not read; run by hand, named in README.md."
+  },
   "MyTradingSys/research/qriptal_2026-10-10/score_calls.py": {
    "disp": "REPRO",
    "why": "Scores the ELIGIBLE rows of CALL_LEDGER.csv on Binance BTCUSDT 1m klines (0.05% per side) and rewrites research/qriptal_2026-10-10/SCORECARD.md (score_calls.py run | check); DEV only, holdout refused unless --allow-holdout; run by hand, named in SCORECARD.md."

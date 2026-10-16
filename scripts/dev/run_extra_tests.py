@@ -19,6 +19,7 @@ REPO = Path(__file__).resolve().parents[2]
 EXTRA = [
     "MyTradingSys/research/qriptal_2026-10-10/test_ledger.py",
     "MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/test_imb.py",
     "MyTradingSys/research/chart_read_g5_2026-10-16/test_common.py",
     "MyTradingSys/research/opr_preopen_tops_2026-10-16/test_study.py",
     "MyTradingSys/research/krown_malkan_g3_2026-10-16/test_event_counts.py",

@@ -36,3 +36,7 @@ MyTradingSys/system/OPERATOR_INBOX.md under that id.
 ## 2026-10-10 Control Room D21
 Operator: "Follow his channel into my server; set up a read-only bot" (note: "Also read youtube trasncripts").
 Applied: DSA desk task 20261009-231508 (captions + scorecard). Bot: operator steps (Follow the announcement channel into their own server, create a bot with read-only Message Content scope, keep the token outside the repo); session builds a read-only logger that writes calls to a jsonl, token from an env var the session never reads. No trades until the scorecard exists.
+
+## 2026-10-16 imbalance definition from his transcripts
+His imbalance construct is now written down with quotes and tested on Binance (MyTradingSys/research/imbalance_qriptal_2026-10-16/README.md): volume-anomaly family confirmed above chance on 22 named candles, exact indicator not reproducible from public material, mechanical fade NO EDGE after fees. More labelled candles (Discord feed / Sunday streams, D21) are what would pin his threshold.
+
