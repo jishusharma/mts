@@ -58,7 +58,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "Independently try to falsify the prior findings; reproduce one material claim and resolve disagreements against sources.",
     "Read original sources before the prior report; report C1..Cn as PASS, REWORK or BLOCKED with file/command evidence."

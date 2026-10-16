@@ -56,7 +56,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "blocked",
+  "state": "ready",
   "steps": [
     "Map claims to source evidence; expose missing inputs and assumptions.",
     "Read original sources before the prior report; report C1..Cn as PASS, REWORK or BLOCKED with file/command evidence."
