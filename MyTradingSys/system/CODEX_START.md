@@ -7,7 +7,7 @@ Codex is one more work-tree session. It meets Claude only through `origin/fast-t
 ## Zero-conflict rules (all already in PARALLEL.md; Codex adds none)
 1. Own checkout: a work tree, never the live tree (`BinanceDataFeed` on JIS-NB, marked `.mts_live`). Never add that folder as a Codex project.
 2. Own branch prefix `<host>/codex-<slug>`; shares work only by `sync.py ship` (merge, never rebase or force-push).
-3. The claim is the lock: `sync.py claim "<task>"` before work, `sync.py release` after. Take no card another session holds.
+3. The claim is the lock: `sync.py claim "<task>"` before work, `sync.py ship --release <slug>` after. Take no card another session holds.
 4. Codex does not touch `NEXT_SESSION.md`, the relay scripts or the Claude scheduled tasks (`mts-relay-*`, dispatcher). It works cards one at a time.
 5. Codex never restarts processes, touches HALT files, opens trades, or reads `.secrets/` / `.env`. Testnet only.
 Cards that need `OPUS` (they need `approved_by`) stay with Claude; Claude refines cards and spot-checks one claim per Codex report. CI gates Codex code exactly like Claude code.
@@ -29,7 +29,7 @@ MyTradingSys/research/STATUS.md, MyTradingSys/system/PARALLEL.md, MyTradingSys/s
 0. `python scripts/dev/sync.py start`, `sync.py where`. Push fails: say so in one line, stop.
 1. `python scripts/dev/tasks.py next --lane CODEX`: take the first ready card nobody has claimed.
    `tasks.py brief <card>` is the whole task. `sync.py claim "<card>"`, work, tests (new test red before the fix), `tasks.py done <card> --result "<number/file>"`.
-2. `sync.py ship`, `sync.py release <slug>`, `sync.py where` clean.
+2. `sync.py ship --release <slug>`, `sync.py where` clean.
 Commit trailer `MTS-Session: MTS-<UTC date>-<HHMMZ>-COD-BLD-<slug>`, body line `Result: <what works now / the number>`.
 Provenance rule applies: label every parameter SOURCED (trader's quote + file:line) or OURS (CLAUDE.md Hard rules).
 Skip OPUS cards; do not touch NEXT_SESSION.md or the relay. One card per session, then stop with a one-line summary.
