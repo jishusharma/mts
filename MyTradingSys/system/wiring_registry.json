@@ -743,6 +743,34 @@
    "disp": "TOOL",
    "ref": "research-kit",
    "why": "Shared screen statistics for research studies (day-clustered SE, clustered difference, MDE, power check, Holm, cost in R); imported by hand-run studies, tested by test_research_kit.py, no live imports."
+  },
+  "MyTradingSys/research/context_factors_2026-10-16/context_asof.py": {
+   "disp": "TOOL",
+   "why": "Point-in-time context factors F1-F7 (replay context_at + vectorised context_frame) for BTC 1h decisions; library for the context-composite-dev-read card, covered by test_context_asof.py; DEV loader refuses bars >= 2024-07-01; no live imports."
+  },
+  "MyTradingSys/research/context_factors_2026-10-16/synth.py": {
+   "disp": "TOOL",
+   "why": "Synthetic 5m tape fixture for test_context_asof.py (no market data)."
+  },
+  "MyTradingSys/research/context_factors_2026-10-16/run_dev.py": {
+   "disp": "REPRO",
+   "why": "Builds the DEV factor frames, the full replay and the replay-vs-vectorised comparison (ANGLES.md a); run by hand."
+  },
+  "MyTradingSys/research/context_factors_2026-10-16/counts.py": {
+   "disp": "REPRO",
+   "why": "Rewrites COUNTS.md, trials.csv, events_dev.csv from the DEV frames (counts only, no outcome); run by hand."
+  },
+  "MyTradingSys/research/context_factors_2026-10-16/angle_b.py": {
+   "disp": "REPRO",
+   "why": "Trader-eye check: 12 seeded DEV hours rebuilt from the 1m archive next to the builder rows (ANGLES.md b); run by hand."
+  },
+  "MyTradingSys/research/context_factors_2026-10-16/angle_c.py": {
+   "disp": "REPRO",
+   "why": "Hand-arithmetic ingredients for one DEV hour (ANGLES.md c); run by hand."
+  },
+  "MyTradingSys/research/context_factors_2026-10-16/redteam.py": {
+   "disp": "REPRO",
+   "why": "Red-team checks R1-R3 on real DEV data (ANGLES.md d): boundary truncation, wrong side, vanishing levels; run by hand."
   }
  }
 }
