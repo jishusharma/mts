@@ -39,6 +39,7 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_live_owner.py",
     "scripts/dev/test_loop_supervisor_grace.py",
     "scripts/dev/test_nowin.py",
+    "scripts/dev/test_gate_priority.py",
     "scripts/dev/test_feed_watchdog_script.py",
     "MyTradingSys/observation/tests",
 ]
@@ -452,9 +453,28 @@ def apply_selection(plan, args):
     return plan, mode
 
 
+def lower_priority():
+    """Run the gate (and every child it starts, which inherit the class) below normal priority on Windows.
+    2026-10-16: parallel sessions' gates (4 steps at a time each) kept the 8-core live host at 100% CPU; the loop's mvn
+    snapshot then took > 90 s, the supervisor restarted the loop over and over and live health went RED. The live loop
+    and its feeds run at normal priority, so they now win against any gate. MTS_GATE_PRIORITY=normal opts out."""
+    if sys.platform != "win32" or os.environ.get("MTS_GATE_PRIORITY", "").lower() == "normal":
+        return False
+    try:
+        import ctypes
+        from ctypes import wintypes
+        k = ctypes.WinDLL("kernel32", use_last_error=True)
+        k.GetCurrentProcess.restype = wintypes.HANDLE
+        k.SetPriorityClass.argtypes = [wintypes.HANDLE, wintypes.DWORD]
+        return bool(k.SetPriorityClass(k.GetCurrentProcess(), 0x00004000))   # BELOW_NORMAL_PRIORITY_CLASS
+    except Exception:
+        return False
+
+
 def main(argv=None):
     args = sys.argv[1:] if argv is None else argv
     unbuffer()
+    lower_priority()
     isolate_pytest_tmp()
     quick = "--quick" in args
 
