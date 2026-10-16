@@ -48,7 +48,11 @@ class TestDecide(unittest.TestCase):
         r = d(changed=["MyTradingSys/execution/daily_loss_monitor.py", "MyTradingSys/system/net_rr_floor.json"])
         self.assertEqual(r["restarts"], ["daily_loss_monitor.py"])
         r = d(changed=["MyTradingSys/backtest/layers/cryptocred/cc_setups.py"])
-        self.assertEqual(r["restarts"], ["live_runner_cli.py"])
+        self.assertEqual(r["restarts"], [ad.RUNNER_PROC])
+        # the kill pattern must occur in the real command line of the runner (it has no ".py": started with -m)
+        cmdline = "python -m MyTradingSys.backtest.layers.alerts.live_runner_cli --poll-seconds 60"
+        self.assertIn(ad.RUNNER_PROC, cmdline)
+        self.assertNotIn("live_runner_cli.py", cmdline)
         self.assertEqual(d(changed=["MyTradingSys/research/x.md"])["restarts"], [])
 
     def test_shared_module_restarts_both_trading_processes_once(self):
