@@ -13,6 +13,7 @@ a redirected or backgrounded run shows progress; the SUMMARY lists every step in
 at 600 s: start the gate (and `sync.py ship`, which calls it) in the background and read the output once.
 """
 import glob
+import json
 import os
 import shutil
 import subprocess
@@ -80,6 +81,33 @@ TEST_FILE_SECONDS = {
 SLOWEST_FIRST = ("4", "4b", "4c", "4g", "4h", "4e", "4f","3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
 _LOCK = threading.Lock()
 
+# Why gate_select chose the plan (set by apply_selection) and the mode, for the timing log.
+gate_reason = None
+gate_mode = None
+TIMING_FILE = Path("runtime_data") / "gate_timing.jsonl"   # gitignored: per-step timings, nothing sensitive
+
+
+def _short_sha():
+    try:
+        r = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=str(REPO), capture_output=True, text=True, timeout=10)
+        return r.stdout.strip() or "?"
+    except Exception:
+        return "?"
+
+
+def record_timing(num, name, seconds, ok, mode, path=None):
+    """Append one JSON line {step, name, secs, ok, mode, utc, sha} to the untracked timing log (MTS_GATE_TIMING overrides the path).
+    Never raises: a log that cannot be written must not fail the gate."""
+    try:
+        path = Path(path or os.environ.get("MTS_GATE_TIMING") or REPO / TIMING_FILE)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        row = {"step": str(num), "name": name, "secs": round(seconds, 2), "ok": ok, "mode": mode,
+               "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "sha": _short_sha()}
+        with open(path, "a", encoding="utf-8", newline="\n") as fh:
+            fh.write(json.dumps(row) + "\n")
+    except Exception:
+        pass
+
 
 def transient_ignore_glob(root=REPO):
     """pytest `--ignore-glob` for tempfile's default scratch dirs ("tmp" + 8 of [a-z0-9_]) anywhere under `root`. On Windows pytest
@@ -126,7 +154,7 @@ def ci_annotation(num, description, output, limit=3000):
         return None
     lines = output.splitlines()
     first = next((i for i, ln in enumerate(lines) if ln.lstrip().startswith(("FAIL", "ERROR", "E  ", "Traceback"))), max(len(lines) - 25, 0))
-    body = "\n".join(lines[first:])[-limit:]
+    body = "\n".join(lines[first:])[-limit:] or "(no output)"
     body = body.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
     return f"::error title=Step {num} FAIL::{description} | {body}"
 
@@ -140,9 +168,10 @@ def format_step(num, description, cmd_text, ok, output, elapsed, progress="", ta
     lines.append(f"  Elapsed: {elapsed:.1f}s" + (f" ({progress})" if progress else ""))
     lines.append(f"Step {num}: {'PASS' if ok else 'FAIL'}")
     out = output.splitlines()
-    if not ok and out:
-        lines.append("  Last output:")
-        lines += [f"    {ln}" for ln in (out if (os.environ.get("CI") or tail is None) else out[-tail:])]
+    if not ok:
+        if out:
+            lines.append("  Last output:")
+            lines += [f"    {ln}" for ln in (out if (os.environ.get("CI") or tail is None) else out[-tail:])]
         note = ci_annotation(num, description, output)
         if note:
             lines.append(note)
@@ -443,6 +472,7 @@ def run_plan(plan, jobs, out=None):
         except Exception:   # a crashing step is a failed step, not a dead gate
             ok, output = False, traceback.format_exc()
         elapsed = time.monotonic() - t0
+        record_timing(s.num, s.desc, elapsed, ok, gate_mode)
         with _LOCK:
             finished[0] += 1
             progress = f"{finished[0]}/{len(todo)} done, +{time.monotonic() - t_start:.0f}s"
@@ -473,7 +503,9 @@ def apply_selection(plan, args):
     except (OSError, IndexError):
         return plan, None
     import gate_select
-    mode, nums = gate_select.select([f.strip() for f in files if f.strip()], [(s.num, s.cmd_text) for s in plan])
+    global gate_reason, gate_mode
+    mode, nums, gate_reason = gate_select.explain([f.strip() for f in files if f.strip()], [(s.num, s.cmd_text) for s in plan])
+    gate_mode = mode
     if mode == "full":
         return plan, mode
     for s in plan:
@@ -538,6 +570,7 @@ def main(argv=None):
     plan, mode = apply_selection(plan, args)
     if mode:
         print(f"Gate mode: {mode} ({sum(1 for s in plan if not s.skip)} steps); CI runs the full suite behind the push", flush=True)
+        print(f"Gate reason: {gate_reason}", flush=True)
     results = run_plan(plan, gate_jobs())
 
     # Summary
@@ -560,6 +593,8 @@ def main(argv=None):
         print(f"FAILED: {len(failed)} step(s)")
         for f in failed:
             print(f"  - {f}")
+        if os.environ.get("GITHUB_ACTIONS"):   # one line that names every failed step, whatever the per-step annotations were (cap: 10 per step)
+            print(f"::error title=Gate FAIL::{len(failed)} step(s) failed: " + "; ".join(failed).replace("%", "%25"))
         return 1
     else:
         print("ALL TESTS PASSED")

@@ -138,13 +138,19 @@ def pid_alive(pid):
     return True
 
 
-class gate_slot:
-    """Machine-wide limit on concurrent ship gates: at most GATE_SLOTS slot files under <git common dir>/gate-slots/, each
-    holding its owner's PID, created with O_EXCL. A slot whose PID is dead is reclaimed. Released on exit, whatever raised."""
+class GateSlotTimeout(Exception):
+    """No gate slot came free within the caller's wait budget (auto_deploy treats this as 'do not deploy', never as a green gate)."""
 
-    def __init__(self, repo, slots=GATE_SLOTS, alive=pid_alive, sleep=time.sleep, note_every=GATE_WAIT_NOTE_S, poll=2.0):
+
+class gate_slot:
+    """Machine-wide limit on concurrent gates (ship gates and the auto_deploy gate): at most GATE_SLOTS slot files under
+    <git common dir>/gate-slots/, each holding its owner's PID, created with O_EXCL. A slot whose PID is dead is reclaimed.
+    Released on exit, whatever raised. timeout=None waits forever (ship); a number of seconds raises GateSlotTimeout when no slot
+    came free in that time (deploy: fail closed)."""
+
+    def __init__(self, repo, slots=GATE_SLOTS, alive=pid_alive, sleep=time.sleep, note_every=GATE_WAIT_NOTE_S, poll=2.0, timeout=None):
         self.repo, self.slots, self.alive, self.sleep = repo, slots, alive, sleep
-        self.note_every, self.poll, self.path = note_every, poll, None
+        self.note_every, self.poll, self.path, self.timeout = note_every, poll, None, timeout
 
     def _dir(self):
         common = Path(git(self.repo, "rev-parse", "--git-common-dir").stdout.strip())
@@ -180,15 +186,18 @@ class gate_slot:
 
     def __enter__(self):
         d = self._dir()
-        last = time.monotonic()
+        start = last = time.monotonic()
         while True:
             self.path, busy = self._try(d)
             if self.path:
                 return self
+            left = None if self.timeout is None else self.timeout - (time.monotonic() - start)
+            if left is not None and left <= 0:
+                raise GateSlotTimeout(f"no gate slot free after {self.timeout:g}s ({busy}/{self.slots} busy)")
             if time.monotonic() - last >= self.note_every:
                 print(f"gate slot busy ({busy}/{self.slots}), waiting")
                 last = time.monotonic()
-            self.sleep(self.poll)
+            self.sleep(self.poll if left is None else max(0.0, min(self.poll, left)))
 
     def __exit__(self, *exc):
         if self.path:

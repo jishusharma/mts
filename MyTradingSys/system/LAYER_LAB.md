@@ -45,7 +45,7 @@ astra); a card that names astra without the flag runs on luna (tasks.codex_setti
 ## Asks typed in the Codex app (project "MTS Layer Lab", folder `F:\MTS\mts-codex`, created 2026-10-12)
 The operator types what they want checked or run. Codex then: `python scripts/dev/sync.py start`; writes the card with
 `codex_run.py ask ... --kind <audit|run|build> --scope <path>`; `sync.py claim "<card>"`; does it by the same rules and report
-format as an unattended run; `tasks.py done`, `codex_run.py index`, commit, `sync.py ship`, `sync.py release`. The app session
+format as an unattended run; `tasks.py done`, `codex_run.py index`, commit, `sync.py ship --release <slug>`. The app session
 has full access (operator's setting), so it does its own git steps; everything else in this file applies unchanged.
 
 ## Report format

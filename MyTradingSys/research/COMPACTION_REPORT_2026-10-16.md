@@ -32,3 +32,10 @@ Rule: if the session will end in under 15 turns, hand off or stop instead of com
 - Costs are modelled from transcript token counts, not billed amounts.
 - Three events show 0 turns after because the transcript ended or has not continued yet; the 03:26Z `03f2a64b` event had a parsing quirk (post-context 0, 64 turns after), which makes its cost slightly understated.
 - The one caveat on "later is better": the turns just before a late compaction ran at ~270k per turn. Going past ~300k (several reached 300-375k) gives diminishing returns. A target of 220-280k looks like the sweet spot.
+
+## Update 2026-10-17 (12 more compactions, through 2026-10-16 17:12Z)
+
+After the audit: 32 compactions in 16 sessions (31 manual, 1 auto). Avg context at compaction 250k, after 78k. Median 46.5 turns afterwards. Saving per unit of cost 4.4x (was 4.5x, was 1.8x before the audit). 4 of 32 lost money (was 3 of 20).
+
+The 12 new ones: 9 clearly paid (27 to 113 turns left each). Not paid: 08:26Z (Opus, only 7 turns left), 08:18Z (`6a545399`, ended right after). 16:35Z was the only auto compaction (Fable session `4b37f3f9`, at 246k), harmless, still 50 turns afterwards.
+Trend: the 09:20Z and 15:57Z ones fired at 154k to 170k (earlier than the 220k to 280k target) but still had 54 to 90 turns left, so they paid too.
