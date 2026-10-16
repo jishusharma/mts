@@ -11,7 +11,7 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "Operator priority high. Opus not required.",
+  "note": "Operator priority high. Private input: C:/Users/E-ngineers/Downloads/transaction_log-75513-BTC-10_10_2026, 12_00_00 AM_10_17_2026, 6_34_06 PM.csv (never commit it or its numbers). Opus not required.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -19,7 +19,8 @@
     "MyTradingSys/methodology/operator_chart_checklist.md",
     "MyTradingSys/research/screenshots/2026-10-16_BTCUSDT_c5e7b5c17d90.md",
     "MyTradingSys/research/fast_track_2026-09-27/RSI_TF_LAYER_DESIGN.md",
-    "MyTradingSys/research/event_probability_layer_DESIGN.md"
+    "MyTradingSys/research/event_probability_layer_DESIGN.md",
+    "MyTradingSys/methodology/operator_chart_checklist.md items 10-12"
   ],
   "result": "",
   "scope_in": [
@@ -36,6 +37,7 @@
   ],
   "state": "ready",
   "steps": [
+    "Ground truth: the operator's own 2026-10-10..17 transaction log (path in note; PRIVATE, never commit, no numbers in tracked files). Match each entry/exit time to 1m/5m bars and the checklist items; say which items were present at entry and at exit.",
     "Read the refs. List which checklist items 1-8 already have a coded layer or a failed backtest (VERDICTS.csv), and how each was tested (alone or combined, which TF, fee-net).",
     "Diagnose: single-filter tests vs ordered sequence (divergence, then MA press, then 60 rejection); lagging confirmation; entry after the move; EV after fees. State the cause per case with numbers.",
     "Pick one sequence from the 2026-10-16 walk-through (top 82,900 down-leg), write the event definition with every threshold labelled SOURCED or OURS, and count it on DEV 1m/5m BTC data.",

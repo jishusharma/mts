@@ -13,3 +13,6 @@
 | 7 | Ladder channel | Equal small candles, same angle, parallel lines (bear flag / controlled drift); what kind of flow | c5e7b5c17d90 |
 | 8 | Bottom before spike | Where the low formed before the move and what the RSI/CVD did there | c5e7b5c17d90 |
 | 9 | Confluence count | How many of 1-8 line up at the same bar; then what price did next (the data for the probability layer) | operator 2026-10-17 |
+| 10 | Multi-TF band-dance propagation | Upper-band (or lower-band) touching starts on 1m, then 3m, 5m, 10m, 15m: a rally that spreads up the timeframes is the exit signal for a short (and the reverse). Not every bar touches; "in the vicinity" counts. Define vicinity as a fraction of band width: OURS, to be tested | operator 2026-10-17 (own trades) |
+| 11 | RSI beyond 3 standard deviations | A pop with RSI beyond its own 3rd standard deviation in a falling market is sold. The operator's exact definition (3 sigma of which RSI series, which window) is not stated: ask before coding | operator 2026-10-17 |
+| 12 | Spike down is not a stop | A spike through a level is first measured: CVD build, OI behaviour, RSI, band dance across TFs, candle patterns, MAs, Tom/Fabio layers, pivots; exit only on sustained opposite behaviour | operator 2026-10-17 |
