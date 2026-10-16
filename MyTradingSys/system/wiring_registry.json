@@ -816,8 +816,7 @@
   "MyTradingSys/research/layer_lab/context_fix2_mde_rule/mde_rule.py": {
    "disp": "TOOL",
    "why": "Pure realised-MDE and day/week-clustered verdict helper plus n_needed planning calculation for context composite V2; covered by test_mde_rule.py; no live imports."
-  }
- },
+  },
   "MyTradingSys/research/krown_capture_2026-10-16/check_quotes.py": {
     "disp": "REPRO",
     "why": "Verifies every quote in RULES_DRAFT.md against transcripts/<id>_timed.txt (normalised match, caption timestamp, --fix rewrites @ts); run by hand, named in INVENTORY.md."
@@ -834,4 +833,5 @@
     "disp": "REPRO",
     "why": "Converts YouTube VTT captions to the timed transcript format; run by hand, named in INVENTORY.md."
   }
+ }
 }
