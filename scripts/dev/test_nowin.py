@@ -44,6 +44,11 @@ class NoWin(unittest.TestCase):
         r = subprocess.run([sys.executable, "-c", "print(1)"], capture_output=True, text=True)
         self.assertEqual(r.stdout.strip(), "1")
 
+    def test_backup_snapshot_forces_the_shim(self):
+        # B190: MTS-Backup runs python.exe through launch-backup.vbs, never pythonw, so plain install() was a no-op there.
+        src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "backup_snapshot.py"), encoding="utf-8").read()
+        self.assertIn("nowin.install(force=", src)
+
 
 if __name__ == "__main__":
     unittest.main()
