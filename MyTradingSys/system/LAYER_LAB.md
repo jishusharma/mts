@@ -86,7 +86,7 @@ has full access (operator's setting), so it does its own git steps; everything e
 - Spend guard (2026-10-13; `codex_run.py`): the 85% pre-check only sees what is already used, so it cannot stop a card that starts at
   16% and moves the window 80 points. Each run is estimated (measured max of the setting's latest runs, else the table
   `EST_WINDOW_PTS`) and starts only if it fits under 100 minus a 10-point reserve, the lab's own spend stays under `LAB_WINDOW_PTS`
-  (50) of the window and `LAB_WEEK_PTS` (35) of the week, at most `LAB_RUNS_PER_WINDOW` (4) runs and 1 astra run per window, one
+  (50) of the window and `LAB_WEEK_PTS` (60; 35 until 2026-10-16) of the week, at most `LAB_RUNS_PER_WINDOW` (10; 4 until 2026-10-16) runs and 1 astra run per window, one
   card per tick with `MIN_GAP_S` (20 min) between starts, and a card that ended INCOMPLETE waits `COOLDOWN_S` (2 h). When it is
   spent the tick prints `IDLE lab budget: ...` and waits for the reset; it does not mark the lane down or reroute cards. A cheaper
   card behind a held one still runs. `codex_run.py run <card> --force` is the operator's way past it.
