@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-16T18:33:52Z",
+  "depends_on": [],
+  "done_when": "DIAGNOSIS.md plus PRE_REG.md shipped; the run card exists.",
+  "from_inbox": "",
+  "goal": "Operator: the chart is full of Bollinger-dance + RSI divergence + RSI 40/60 + OI-vs-price setups, yet every backtest fails. Find out why, then encode one confluence event as a pre-registered DEV test.",
+  "id": "confluence-read-encode",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "Operator priority high. Opus not required.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/methodology/operator_chart_checklist.md",
+    "MyTradingSys/research/screenshots/2026-10-16_BTCUSDT_c5e7b5c17d90.md",
+    "MyTradingSys/research/fast_track_2026-09-27/RSI_TF_LAYER_DESIGN.md",
+    "MyTradingSys/research/event_probability_layer_DESIGN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/confluence_read_2026-10-17/"
+  ],
+  "scope_out": [
+    "live path",
+    "no VALIDATION or HOLDOUT reads",
+    "no lowered pre-registered bars"
+  ],
+  "size": "M",
+  "sources": [
+    "operator chat 2026-10-17"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the refs. List which checklist items 1-8 already have a coded layer or a failed backtest (VERDICTS.csv), and how each was tested (alone or combined, which TF, fee-net).",
+    "Diagnose: single-filter tests vs ordered sequence (divergence, then MA press, then 60 rejection); lagging confirmation; entry after the move; EV after fees. State the cause per case with numbers.",
+    "Pick one sequence from the 2026-10-16 walk-through (top 82,900 down-leg), write the event definition with every threshold labelled SOURCED or OURS, and count it on DEV 1m/5m BTC data.",
+    "Write PRE_REG.md (DEV only, trial ledger entry, bar fixed before the run) and stop; the run is a separate card.",
+    "Feed the counts to card prob-dist-layer-design-brief as data for the confluence-count item."
+  ],
+  "tests": "Event counter test fails on pre-change code at least once; pre-reg bar is written before any outcome is computed.",
+  "title": "Encode the operator's discretionary chart confluence (BB dance, RSI 40/60 + divergence, OI vs price, liquidity rays) as testable events; find why backtests keep failing"
+}

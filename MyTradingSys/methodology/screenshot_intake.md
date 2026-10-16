@@ -52,6 +52,7 @@ The operator's TradingView charts are one question seen at several timeframes. `
 (chart_read_protocol layers 3-4: the same level on another panel, and on a higher timeframe). One timeframe only = the read is context, not a read.
 
 ## 4 READ - the procedure that already worked
+Checklist (operator 2026-10-17): every read answers every line of `operator_chart_checklist.md` (present / absent / panel missing). A thing discussed on one chart is looked for on all charts.
 Copy `MyTradingSys/research/screenshots/TEMPLATE.md`. Carried context first (B157): a chart extract needs a `Prior:` line (the previous read's extract, or `Prior: none`) or `shot.py read` refuses it; `read` prints that read's Invalidation/Falsify lines, each scored HELD / BROKEN / UNTESTED against the new chart.
 Per image: pre-read gate (VVP-002 F.1), then each claim on the chart gets one row classed:
 - MATCH: reproduced from files on disk (give file and numbers).
