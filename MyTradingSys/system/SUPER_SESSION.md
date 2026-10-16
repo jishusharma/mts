@@ -104,10 +104,14 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   and a waste of resources ... No other session should do this"). On an event turn where `start_session` is refused, run the
   worker as a background Agent subagent at once (rule above) instead of proposing an `own_initiative` card. Applies to every
   coordinator and worker.
-- Worker type by size (operator 2026-10-16, hard rule): work that fits well within about 80k-100k tokens (one card, fix, check
-  or doc) goes to a fresh background Agent subagent (`run_in_background`, Sonnet), used once and never reused (no SendMessage
-  follow-ups: a new task gets a new agent). It needs no click and no compaction. Long or open-ended work (multi-hour watch, a
-  build wave) goes to a `start_session` session. Goal: economical and fast at once.
+- Worker type by size (operator 2026-10-16, hard rule, dynamic): cap one worker at 100k tokens of context. Estimate the task
+  first. Fits under 100k (one card, fix, check or doc): fresh background Agent (`run_in_background`, Sonnet), used once and
+  never reused (new task = new agent, no SendMessage follow-ups). Over 100k, or likely to need one or two compactions
+  (multi-hour watch, build wave, open-ended work): `start_session`, because compaction is only worth paying for in a session.
+  Never use a session for work that would not compact, never an agent for work that would. No click either way.
+- Thread cleanup (operator 2026-10-16, hard rule, all sessions): a finished session marks itself completed in the sidebar
+  (`mark_completed`; `archive_session` too when allowed; archive refuses while Remote Control or a client is attached, so the
+  completed mark is the reliable one). The coordinator marks every worker it started the moment its ship is verified.
 - Pacing on the Pro login: 5-hour window, `get_usage` on every wake. Under 60 %: normal; 60-70 %: crucial work only; 70-80 %:
   coordinator only; 80 % and up: stop. In the last ~15 min before a reset, spend what is left on workers that finish real items.
 - Keep the GPT lab busy: `codex_run.py status` on every wake; keep 8+ ready luna/medium build cards; repair skipped or BLOCKED
