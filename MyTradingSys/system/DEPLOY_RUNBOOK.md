@@ -13,6 +13,7 @@ What the job does, in order; it stops at the first failure and writes the reason
    A tracked file that another session edited and the deploy would change = `STOP_DIRTY` (never merge or stash over someone's edits).
 4. **Gate the candidate** in a throwaway detached worktree (`../mts-deploy-gate`): `python scripts/dev/run_all_tests.py --quick`.
    Red = `STOP_RED`; the live tree is untouched; the same SHA is not re-gated until a newer green SHA appears (`RED_KNOWN`).
+   `auto_deploy_last.json` then holds `gate_failed`: the failing step blocks of that run (test names, assertion), so a red gate can be traced without a rerun.
 5. **Copy the untracked runtime state first** (B152): `MyTradingSys/runtime/orderflow_live/_state.json` is written by the recorder and was untracked by
    af91b21. A `git merge --ff-only` aborts when the recorder has modified it, or deletes it when the target commit drops it; without it
    `orderflow_live.py` restarts at the current minute and the minutes since the last write are never fetched. The copy goes to
