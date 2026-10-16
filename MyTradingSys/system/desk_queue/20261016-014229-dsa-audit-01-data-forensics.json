@@ -1,0 +1,11 @@
+{
+  "card": "dsa-audit-01-data-forensics",
+  "done_when": "T01_data_forensics.md shipped with data_inventory.csv, invariant counts, the loader x defect table, one impact recount, leads L4/L10 resolved, S1/S2 carded.",
+  "from": "JIS-NB",
+  "id": "20261016-014229-dsa-audit-01-data-forensics",
+  "need": "python scripts/dev/sync.py claim \"dsa-audit-01-data-forensics\"; python scripts/dev/tasks.py take dsa-audit-01-data-forensics; git grep -n -E \"def load_|read_csv|loadtxt\" -- MyTradingSys/backtest MyTradingSys/research; git grep -c \"taker_buy\" -- \"*.py\"; python scripts/dev/tasks.py done dsa-audit-01-data-forensics --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"; # AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty) (full brief: python scripts/dev/tasks.py brief dsa-audit-01-data-forensics)",
+  "posted": "2026-10-16T01:42:29Z",
+  "status": "pending",
+  "target": "DSA-NB",
+  "title": "DSA audit T01: data forensics of every backtest input"
+}
