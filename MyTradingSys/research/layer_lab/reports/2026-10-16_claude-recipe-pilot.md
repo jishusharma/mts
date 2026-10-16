@@ -1,6 +1,6 @@
 # Claude spot-check of the reusable lab recipes (2026-10-16)
 
-Reviewer: Claude (Sonnet 5.5) in session autopilot-3, JIS-NB, 07:15Z to 07:35Z. No subagents, no UI control, no
+Reviewer: Claude (Sonnet 5.5) in session autopilot-3, JIS-NB, 07:11Z to 07:16Z. No subagents, no UI control, no
 holdout or market data, no model stage re-run. Read: `LAB_RECIPES.md`, `lab_flow.py`, `test_lab_flow.py`, both pilot
 reports, the pilot summary, both card receipts.
 
