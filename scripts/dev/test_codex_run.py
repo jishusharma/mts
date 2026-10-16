@@ -142,6 +142,14 @@ class JudgeTest(unittest.TestCase):
         self.assertEqual(R.judge({"state": "done"}, [self.REP], "build", [self.REP, self.CARD, code]), "DONE")
         self.assertEqual(R.out_of_scope("run", [self.REP, "MyTradingSys/research/layer_lab/TRIALS.md", "MyTradingSys/system/tasks/new.json"]), [])
 
+    def test_the_generated_layers_page_is_not_out_of_scope(self):
+        # tasks.py rewrites LAYERS.md after every card change, so closing a krown-/malkan-/tom-... card always dirties it
+        # (malkan-hindi-rows-gpt-read, 2026-10-15 16:00Z: OUT_OF_SCOPE, 41 window points spent, nothing shipped)
+        layers = "MyTradingSys/system/LAYERS.md"
+        for kind in ("audit", "run"):
+            self.assertEqual(R.judge({"state": "done"}, [self.REP], kind, [self.REP, self.CARD, layers]), "DONE")
+        self.assertEqual(R.out_of_scope("audit", [layers, "MyTradingSys/system/NEXT_SESSION.md"]), ["MyTradingSys/system/NEXT_SESSION.md"])
+
     def test_out_of_scope_and_ship_failures_count_as_tries(self):
         with tempfile.TemporaryDirectory() as d:
             p = Path(d) / "lab_runs"

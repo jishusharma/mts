@@ -17,6 +17,11 @@ class LoopSupervisorGrace(unittest.TestCase):
         m = re.search(r"\$RestartGraceSec\s*=\s*(\d+)", self.src)
         self.assertGreaterEqual(int(m.group(1)), 360)
 
+    def test_stale_limit_tolerates_slow_snapshot_cycle(self):
+        # mvn_snapshot timeouts (90 s) + the 60 s retry sleep make a 150 s gap normal on this host (139 timeouts 2026-10-15)
+        m = re.search(r"\$SnapshotStaleSec\s*=\s*(\d+)", self.src)
+        self.assertGreaterEqual(int(m.group(1)), 300)
+
     def test_started_wrapper_alive_is_not_dead(self):
         self.assertIn("$startedPid = $nid", self.src)
         self.assertRegex(self.src, r"if \(\$inGrace -or \$starting\)")
