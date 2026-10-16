@@ -4,9 +4,9 @@
   "week_resets": 1792677804,
   "week_used": 24.0,
   "window_resets": 1792177228,
-  "window_used": 0
+  "window_used": 1.0
  },
- "at": "2026-10-16T14:04:53Z",
+ "at": "2026-10-16T14:32:25Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,18 +19,33 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 19.0,
-  "window_pts": 0.0,
-  "window_runs": 0
+  "window_pts": 1.0,
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-16T14:30:02Z",
+   "card": "gptb-candle-pattern-event-table",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 137,
+   "tokens_out": 6886,
+   "tokens_total": 830514,
+   "tokens_uncached": 50636,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-16T14:00:11Z",
    "card": "gptb-bigtrade-event-table",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": ": Options tests: SKIP\nStep 6: Backtest tests: SKIP\n======================================================================\nFAILED: 4 step(s)\n  - Step 3xt: Extra ",
+   "outcome": "SHIP_FAILED",
    "seconds": 274,
    "tokens_out": 9950,
    "tokens_total": 1124460,
@@ -157,21 +172,6 @@
    "tokens_uncached": 52091,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T05:30:08Z",
-   "card": "gpt-fable-economics-recheck",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 189,
-   "tokens_out": 17426,
-   "tokens_total": 1448113,
-   "tokens_uncached": 75551,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
