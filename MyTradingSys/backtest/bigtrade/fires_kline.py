@@ -83,8 +83,11 @@ B2_KEYS = {
     "levels|confluence|1m": "needs 17 days of 1m history (HistoryStore), not the 99-bar window",
 }
 
-# PLAN section 4 splits (by fire time, UTC). POST = after the stated range (data runs to 2026-10-07).
-SPLITS = (("TRAIN", "2022-01-01", "2025-01-01"), ("VALIDATE", "2025-01-01", "2025-07-01"),
+# Repo split (OPERATOR_DECISIONS.md:878): DEV 2022-01-01..2024-06-30, VALIDATION 2024-07-01..2025-06-30, HOLDOUT after.
+# Label names kept (TRAIN = DEV, VALIDATE = VALIDATION) because the fire CSV "split" column and callers use them.
+# DECISION (OURS) 2026-10-17: the old PLAN-section-4 split (TRAIN to 2025-01-01) leaked 2024-07..12 VALIDATION into TRAIN
+# (see SPLIT_ALIGNMENT_2026-10-17.md). POST = after the stated range (data runs to 2026-10-07).
+SPLITS = (("TRAIN", "2022-01-01", "2024-07-01"), ("VALIDATE", "2024-07-01", "2025-07-01"),
           ("HOLDOUT", "2025-07-01", "2026-10-01"))
 
 CSV_COLUMNS = [

@@ -51,6 +51,7 @@ second read, plus a search for other instances. Fix = code or doc change with a 
 
 ## 4. Splits and anti-overfit rules
 - TRAIN 2022-01..2024-12, VALIDATE 2025-01..2025-06, HOLDOUT 2025-07..2026-09 (do not open until one frozen candidate per layer).
+  SUPERSEDED 2026-10-17 (DECISION OURS): repo split applies, TRAIN to 2024-06-30, VALIDATE 2024-07-01..2025-06-30; see backtest/bigtrade/SPLIT_ALIGNMENT_2026-10-17.md.
 - Every grid cell is a registered trial: append to research/fast_track_2026-09-27/bt_runs/TRIAL_REGISTRY.csv (existing format).
 - A tuned value needs: IS and VALIDATE net expectancy > 0 with the same sign, PBO (CSCV, MyTradingSys/backtest/bt/bt_stats.py or
   ref_pbo.py) < 0.5, n >= 30 trades in each split, then one look at HOLDOUT. FAIL closes the candidate; no re-tuning on HOLDOUT.
