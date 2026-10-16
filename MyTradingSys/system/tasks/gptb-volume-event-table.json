@@ -5,18 +5,21 @@
   "created": "2026-10-16T13:48:06Z",
   "depends_on": [],
   "done_when": "tests green (red first), REPORT written, missing inputs NOT_IN_DATA, trial rows in TRIALS.md if any run.",
+  "effort": "medium",
   "from_inbox": "",
-  "goal": "Build layer_lab/volume_event_table/event_table.py: relative volume = volume / median of same hour-of-week over prior N weeks (PIT, no current bar in the baseline), rows for spikes >= 2x on 1h/4h DEV klines with forward MFE/MAE in R. Definitions from research/volume_2026-10-09 read-only. No rules; HOLDOUT sealed.",
+  "goal": "Build layer_lab/volume_event_table/event_table.py: relative volume = volume / median of same hour-of-week over prior N weeks (PIT, no current bar in the baseline), rows for spikes >= 2x on 1h/4h DEV klines with forward MFE/MAE in R. Definitions from research/volume_2026-10-09 read-only. No rules; HOLDOUT sealed. Data: F:/MTS/data/bigtrade/cache/perp/klines_1h.npz (DEV = open < 2024-07-01).",
   "id": "gptb-volume-event-table",
   "kind": "build",
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
-  "note": "Filled by gpt-feed-builds 2026-10-16; research only, flag off.",
+  "model": "gpt-6-luna",
+  "note": "Filled by gpt-feed-builds 2026-10-16; research only, flag off. Data and 4h rule: runner prompt DATA line (codex_run.py DATA_HINT); blocked 4x before this because the brief named no data path.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
+  "reopened": "2026-10-16T19:56:19Z",
   "result": "",
   "scope_in": [
     "MyTradingSys/research/layer_lab/volume_event_table/event_table.py",
@@ -43,7 +46,5 @@
     "Write REPORT.md (what was built, row counts, test output) and the result line."
   ],
   "tests": "synthetic volume series: baseline excludes the current bar (hand-computed ratio); a spike at a known bar is flagged; fewer than N prior weeks = NOT_IN_DATA.",
-  "title": "Volume layer: time-adjusted relative-volume spike event table on DEV with forward R",
-  "model": "gpt-6-luna",
-  "effort": "medium"
+  "title": "Volume layer: time-adjusted relative-volume spike event table on DEV with forward R"
 }

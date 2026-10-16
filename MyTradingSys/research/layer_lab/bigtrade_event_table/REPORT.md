@@ -1,5 +1,7 @@
 # Bigtrade forward event table
 
+**CONTAMINATED (DEV read VALIDATION 2024-07..12)** - the numbers below (DEV ended 2024-12-31, 153,685 rows) read six months of VALIDATION. Fixed 2026-10-17, now DEV = 2022-01-01..2024-06-30, 128,078 rows (5,685 OK). See DEV_BOUNDARY_FIX_2026-10-17.md. Text below is the original, kept for the record.
+
 Build result: `event_table.py`, `test_event_table.py`, and `event_table.csv`; the CSV contains 153,685 TRAIN/DEV fire rows measured against the existing cached klines.
 
 ## What was built
