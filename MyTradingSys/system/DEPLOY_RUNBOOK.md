@@ -85,6 +85,7 @@ operator-side session runs them as the logged-in user):
   pool; each finished step prints its block with `Elapsed:` and a progress count. Quick gate 677 s -> 289 s on JIS-NB.
   Step 5b module list: `split_modules` partitions `find_layer_modules()` and `test_quick_gate_runs_every_layer_module` fails if one is dropped.
   Largest steps on JIS-NUC (warm): step 4 pytest 51 s, 3xt 26 s, 3k 16 s, 3dk 10 s; step 4 is the next cut (xdist or per-path processes).
+- Always-run steps `3gd` (B150: every test file is gated) and `3dl` (`ci_deps_lint.py`, ~5 s): no gated test may hard-import (also through a sibling module) a package the `pip install` line of ci.yml lacks; fix = add it to that line and `cloud_setup.GATE_DEPS`, or guard it (try/except ImportError, find_spec flag, `pytest.importorskip`).
 - MTS-Backup moved to :07/:22/:37/:52 (`install_backup_task.ps1`, offset 7 min past midnight + 15 min repeat) so it no longer
   starts in the same minute as MTS-AutoDeploy (:00/:15/:30/:45). Not re-registered by this session; on each host run
   `powershell -File scripts\dev\install_backup_task.ps1 -Repo <path>` (the tree the task runs from today: runtime_data\launch-backup.vbs names it).
