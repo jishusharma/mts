@@ -3,7 +3,7 @@
   "accounts": {
     "jishu.sharma": "login A (jishu.sharma@gmail.com, GitHub jishusharma), JIS-NUC; owns the Control Room with the Inbox and decisions db (q21). Until 2026-10-15 these urls were filed under jishu.awgp: checked 2026-10-15: a session whose Claude login is jishu.sharma@gmail.com on JIS-NUC owns Ep6gA5 and the other pages filed until then under 'jishu.awgp' (Artifact list), and cannot read EoHi2q. Pins: Control Room, MTS Layers, Tom and Fabio, CBP Consensus Desk, CBP Monday Desk",
     "jishu.awgp": "the JIS-NB login that published the pages filed until 2026-10-15 under jishu.sharma (pins 2026-10-14: Control Room, MTS Layers, CBP Desk = consensus desk, CBP Monday Desk). Which login it is was inferred, not checked: a session on JIS-NB confirms with Artifact list",
-    "jishusharma1985": "third account (Claude Max, added 2026-10-14), JIS-NB and JIS-NUC; pins 2026-10-14: Control Room (read-only mirror, no db), MTS Layers, CBP Desk = consensus desk, CBP Monday Desk"
+    "jishusharma1985": "HOME login (2026-10-16): owns MTS Home, MTS Research Map (db requests) and MTS Session Planner (db selection). Third account (Claude Max, added 2026-10-14), JIS-NB and JIS-NUC; runs the super sessions. Checked 2026-10-16 by Artifact list from a session on this login: it owns 9nqpZe, 2Ti4CG and three 'Moved to Control Room' stubs, and cannot read Ep6gA5 (not shared with it yet)."
   },
   "pages": [
     {
@@ -31,7 +31,9 @@
         "jishu.awgp": "2026-10-14",
         "jishusharma1985": "deleted 2026-10-15"
       },
-      "note": "One Inbox: the jishu.sharma page (q21; db seeded from OPERATOR_DECISIONS.md and OPERATOR_INBOX.md 2026-10-15, existing answers kept). Publish the other copies without writing to their db. Carries the Claude-GPT cycle section (system/RELAY_NOTES.md). Republished by the NUC pickup, built with the trade ledger. The jishusharma1985 copy is published WITHOUT capabilities (2026-10-14): the page's own code shows 'Read-only view', so that login has no second Inbox nobody picks up. Republish it without passing capabilities."
+      "note": "One Inbox: the jishu.sharma page (q21; db seeded from OPERATOR_DECISIONS.md and OPERATOR_INBOX.md 2026-10-15, existing answers kept). Publish the other copies without writing to their db. Carries the Claude-GPT cycle section (system/RELAY_NOTES.md). Republished by the NUC pickup, built with the trade ledger. The jishusharma1985 copy is published WITHOUT capabilities (2026-10-14): the page's own code shows 'Read-only view', so that login has no second Inbox nobody picks up. Republish it without passing capabilities.",
+      "purpose": "Decisions waiting on you (Inbox), testnet health, road to profitability.",
+      "notes_go_to": "Inbox answers save to this page's decisions list. One Inbox only (q21)."
     },
     {
       "slug": "mts_layer_map",
@@ -55,7 +57,9 @@
         "jishu.awgp": "2026-10-14",
         "jishusharma1985": "2026-10-15"
       },
-      "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins."
+      "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
+      "purpose": "Every trading layer's road and where it is stuck.",
+      "notes_go_to": "Read only. Put notes on the Research Map."
     },
     {
       "slug": "tom_fabio_deck",
@@ -79,7 +83,9 @@
         "jishu.awgp": "never",
         "jishusharma1985": "never"
       },
-      "note": "Slides type: no repo HTML. Share the link; do not copy to the other account."
+      "note": "Slides type: no repo HTML. Share the link; do not copy to the other account.",
+      "purpose": "Slides: what Tom and Fabio taught.",
+      "notes_go_to": "Read only."
     },
     {
       "slug": "cbp_monday_desk",
@@ -103,7 +109,9 @@
         "jishu.awgp": "unknown",
         "jishusharma1985": "2026-10-14"
       },
-      "note": "Repo HTML is a 2026-10-09 snapshot; the live content comes from CBP."
+      "note": "Repo HTML is a 2026-10-09 snapshot; the live content comes from CBP.",
+      "purpose": "Weekly CBP crypto desk, every Monday.",
+      "notes_go_to": "Read only."
     },
     {
       "slug": "cbp_consensus_desk",
@@ -127,7 +135,9 @@
         "jishu.awgp": "unknown",
         "jishusharma1985": "2026-10-14"
       },
-      "note": "Repo HTML is a snapshot of F:/CryptoScrapper/cbp_v2/dashboard.html (refreshed 2026-10-14 10:49 IST build); the live content comes from the CBP daily workflow. Not in the pinned list of the JIS-NB app (screenshot 2026-10-12): pin it or retire it there."
+      "note": "Repo HTML is a snapshot of F:/CryptoScrapper/cbp_v2/dashboard.html (refreshed 2026-10-14 10:49 IST build); the live content comes from the CBP daily workflow. Not in the pinned list of the JIS-NB app (screenshot 2026-10-12): pin it or retire it there.",
+      "purpose": "Daily CBP consensus desk.",
+      "notes_go_to": "Read only."
     },
     {
       "slug": "cbp_desk",
@@ -148,7 +158,90 @@
         "jishu.awgp": "2026-10-12 (viewed 2 h ago in the app)",
         "jishusharma1985": "never"
       },
-      "note": "Pinned only on the JIS-NB app (key jishu.awgp since the 2026-10-15 relabel); its URL is in no repo file. 2026-10-14: on that login the page titled \"CBP Desk\" IS cbp_consensus_desk (same url V1d9xSL9...); no separate page."
+      "note": "Pinned only on the JIS-NB app (key jishu.awgp since the 2026-10-15 relabel); its URL is in no repo file. 2026-10-14: on that login the page titled \"CBP Desk\" IS cbp_consensus_desk (same url V1d9xSL9...); no separate page.",
+      "purpose": "Same page as the CBP Consensus Desk on the JIS-NB login.",
+      "notes_go_to": "Read only."
+    },
+    {
+      "slug": "mts_home",
+      "status": "canonical",
+      "pinned": true,
+      "generator": "scripts/dev/make_home.py",
+      "single_owner": "jishusharma1985",
+      "urls": {
+        "jishu.sharma": "",
+        "jishu.awgp": "",
+        "jishusharma1985": "https://claude.ai/artifact/8hKA1rhNRo6RAEdt5mtLg3"
+      },
+      "last_published": {
+        "jishu.sharma": "never",
+        "jishu.awgp": "never",
+        "jishusharma1985": "2026-10-16"
+      },
+      "title": "MTS Home",
+      "html": "MyTradingSys/system/artifacts/mts_home.html",
+      "owner_app": "jishusharma1985 (built from this registry: artifacts.py build, then republish over the url)",
+      "refresh": "whenever registry.json changes (artifacts.py build)",
+      "db": [],
+      "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
+      "notes_go_to": "Nothing to write here.",
+      "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login."
+    },
+    {
+      "slug": "research_map",
+      "status": "canonical",
+      "pinned": true,
+      "generator": null,
+      "single_owner": "jishusharma1985",
+      "urls": {
+        "jishusharma1985": "https://claude.ai/artifact/9nqpZeMeEehadoBoYopZU3",
+        "jishu.sharma": "",
+        "jishu.awgp": ""
+      },
+      "last_published": {
+        "jishusharma1985": "2026-10-16",
+        "jishu.sharma": "never",
+        "jishu.awgp": "never"
+      },
+      "title": "MTS Research Map",
+      "html": "MyTradingSys/system/artifacts/research_map.html",
+      "banner": true,
+      "owner_app": "super sessions on jishusharma1985 (or a login with edit access): edit the DATA line of the live page, republish over the url (SUPER_SESSION.md)",
+      "refresh": "each super session",
+      "db": [
+        "requests"
+      ],
+      "purpose": "Where the research stands: what was tested, each trader's gate, what you can change.",
+      "notes_go_to": "the Note / ask button. It saves to this page's own list (db \"requests\"); the next super session answers there.",
+      "note": "Capabilities db + user (keep them: republish without passing capabilities). Other sessions edit DATA: read the live version first, never an old saved copy."
+    },
+    {
+      "slug": "session_planner",
+      "status": "canonical",
+      "pinned": true,
+      "generator": null,
+      "single_owner": "jishusharma1985",
+      "urls": {
+        "jishusharma1985": "https://claude.ai/artifact/2Ti4CGqsFwhWpP1jwmw7UU",
+        "jishu.sharma": "",
+        "jishu.awgp": ""
+      },
+      "last_published": {
+        "jishusharma1985": "2026-10-16",
+        "jishu.sharma": "never",
+        "jishu.awgp": "never"
+      },
+      "title": "MTS Session Planner",
+      "html": "MyTradingSys/system/artifacts/session_planner.html",
+      "banner": true,
+      "owner_app": "jishusharma1985; DATA line from scripts/dev/make_planner_data.py --html",
+      "refresh": "when task cards change (make_planner_data.py)",
+      "db": [
+        "selection"
+      ],
+      "purpose": "Builds the prompt for the next super session: pick a goal and hours, copy, paste into a new session.",
+      "notes_go_to": "nothing to send. Copy the prompt; your ticks and goal stay saved on this page.",
+      "note": "Capability db (keep it: republish without passing capabilities)."
     }
   ],
   "unpinned_old": {
@@ -178,5 +271,8 @@
   },
   "_retired": {
     "cbp_dashboard": "deleted by Jis 2026-10-12 (one-off 2026-10-07 snapshot, https://claude.ai/artifact/SYxhvYx9iTBp2UeGs9X4XS)"
-  }
+  },
+  "home_login": "jishusharma1985",
+  "home_slug": "mts_home",
+  "access_model": "DECISION (OURS, 2026-10-16, mts-home): ONE live copy of every page, at ONE url, owned by one login. MTS Home (owned by the home login jishusharma1985) lists them all. The owner shares each page once (Share menu: invite the other logins' emails with edit access); then every login opens the SAME url, notes land in that page's one database whatever login writes them, and a session on any login with edit access (Artifact read says 'writer') republishes over that url. Never publish a second copy; a page that cannot be opened is not shared yet. Home login = jishusharma1985 because it runs the super sessions, holds the Research Map requests db and the Session Planner, and has the Max budget. Control Room, MTS Layers, the Tom and Fabio deck and the CBP desks stay on jishu.sharma (one Inbox, q21; the CBP routine publishes there)."
 }
