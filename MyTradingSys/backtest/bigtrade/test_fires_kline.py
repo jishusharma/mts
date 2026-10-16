@@ -431,12 +431,27 @@ class TestRowsAndCsv(unittest.TestCase):
         ms = lambda s: int(__import__("datetime").datetime.strptime(s, "%Y-%m-%d").replace(
             tzinfo=__import__("datetime").timezone.utc).timestamp() * 1000)
         self.assertEqual(fk.split_of(ms("2022-01-01")), "TRAIN")
-        self.assertEqual(fk.split_of(ms("2024-12-31")), "TRAIN")
+        self.assertEqual(fk.split_of(ms("2024-06-30")), "TRAIN")
+        self.assertEqual(fk.split_of(ms("2024-07-01")), "VALIDATE")
+        self.assertEqual(fk.split_of(ms("2024-12-31")), "VALIDATE")
         self.assertEqual(fk.split_of(ms("2025-01-01")), "VALIDATE")
         self.assertEqual(fk.split_of(ms("2025-06-30")), "VALIDATE")
         self.assertEqual(fk.split_of(ms("2025-07-01")), "HOLDOUT")
         self.assertEqual(fk.split_of(ms("2026-09-30")), "HOLDOUT")
         self.assertEqual(fk.split_of(ms("2026-10-01")), "POST")
+
+    def test_repo_split_2024_07_01_is_not_train(self):
+        """Repo split: DEV ends 2024-06-30, VALIDATION starts 2024-07-01 (OPERATOR_DECISIONS.md:878)."""
+        import datetime as _dt
+        ms = lambda y, m, d, h=0, mi=0: int(_dt.datetime(y, m, d, h, mi, tzinfo=_dt.timezone.utc).timestamp() * 1000)
+        self.assertNotEqual(fk.split_of(ms(2024, 7, 1)), "TRAIN")
+        self.assertNotEqual(fk.split_of(ms(2024, 9, 15)), "TRAIN")
+        self.assertEqual(fk.split_of(ms(2024, 6, 30, 23, 59)), "TRAIN")
+        self.assertEqual(dict((n, (lo, hi)) for n, lo, hi in fk.SPLITS)["TRAIN"], ("2022-01-01", "2024-07-01"))
+
+    def test_exit_policies_train_end_matches_repo_split(self):
+        from MyTradingSys.backtest.bigtrade import exit_policies as ep
+        self.assertEqual(ep.TRAIN_END, 1719792000000)             # 2024-07-01 00:00 UTC
 
     def test_module_does_not_write_bytecode_into_live_tree(self):
         self.assertTrue(sys.dont_write_bytecode)

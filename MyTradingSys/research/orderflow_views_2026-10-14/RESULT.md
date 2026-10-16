@@ -1,3 +1,5 @@
+> **CONTAMINATED (DEV read VALIDATION 2024-07..12)** - study.py split_of() is year-based (DEV = year <= 2024), so DEV includes 2024-07..12 (own copy, not fires_kline). See MyTradingSys/backtest/bigtrade/SPLIT_ALIGNMENT_2026-10-17.md. Numbers below are kept as originally run, not recomputed.
+
 # Price vs CVD divergence on 1m and 5m, with an OI split (BTCUSDT, 2022-01..2026-10-14)
 
 Ask (operator, 2026-10-14, shots c688fa7b068c / a18c65f081d5 / 8adf02ce149d): "The buy in 1 min is quite visible as
