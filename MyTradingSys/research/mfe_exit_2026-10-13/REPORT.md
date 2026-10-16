@@ -1,3 +1,5 @@
+> **CONTAMINATED (DEV read VALIDATION 2024-07..12)** - TRAIN = fire-file split column (to 2025-01-01): 17,658 / 105,190 turn_of_candle_1m, 631 / 3,911 sr_flip_15m, 550 / 3,234 rsi_events_5m TRAIN fires are 2024-07..12; rule choice on TRAIN therefore saw VALIDATION data. See MyTradingSys/backtest/bigtrade/SPLIT_ALIGNMENT_2026-10-17.md. Numbers below are kept as originally run, not recomputed.
+
 # MFE exit study: can exits be reverse-engineered from the peak-profit bar? (2026-10-13, JIS-NUC)
 
 **Answer: no. Nothing survives.** The three most-traded setups have no entry edge before fees, so there is no profit
