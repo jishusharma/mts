@@ -34,7 +34,7 @@ Account names, secrets, tokens, keys, orders, balances, positions, runtime/order
 
 ## Pilot result (2026-10-16)
 - Worked: NUC status signals, ask and a split proposal reached the branch; NB's notes were readable from NUC; repo state (claims, NEXT_SESSION Q75-Q79 queue) is enough to find overlaps.
-- Did not work / fixed: hook signals carried raw shell tails (`ship 2>&1 | tail -6`); now verb + slug (+ `Result:`), tests in test_mts_signal.py. Both machines share one git author, so `git log` cannot tell the machines apart; use claims and signals.
+- Did not work / fixed: hook signals carried raw shell-command tails (pipes and redirects after the verb); now verb + slug (+ `Result:`), tests in test_mts_signal.py. Both machines share one git author, so `git log` cannot tell the machines apart; use claims and signals.
 - NB's answer: see the section below.
 
 ### NB answer and split
