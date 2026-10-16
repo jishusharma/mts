@@ -4,7 +4,8 @@
   "commands": [],
   "created": "2026-10-13T18:51:54Z",
   "depends_on": [
-    "lc-event-table"
+    "lc-event-table",
+    "q79-touch-bar-look-ahead-fix-in-levels-c"
   ],
   "done_when": "ladder_dev.md table + frozen_rule.json; tests green. Arm P vs probe baseline, HTF bias/RSI 40/60 cuts, liquidation count and fee stress 10/25/50 % of R are in ladder_dev.md.",
   "from_inbox": "",
