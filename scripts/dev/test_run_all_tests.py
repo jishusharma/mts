@@ -12,6 +12,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import run_all_tests as rat
 
+# tests that run fake plans must not append to the real runtime_data/gate_timing.jsonl
+os.environ["MTS_GATE_TIMING"] = os.path.join(tempfile.mkdtemp(prefix="gate_timing_test_"), "t.jsonl")
+
 
 class GateCoverage(unittest.TestCase):
     def test_pytest_paths_cover_v3_and_live_writers(self):
@@ -391,7 +394,7 @@ class TestGateTimingLog(unittest.TestCase):
         self.assertFalse(rows[1]["ok"])
 
     def test_record_timing_never_breaks_the_gate(self):
-        rat.record_timing("1", "x", 1.0, True, None, path=Path(__file__))   # a file where a directory is needed: swallowed
+        rat.record_timing("1", "x", 1.0, True, None, path=Path(__file__) / "t.jsonl")   # a file where a directory is needed: swallowed
 
     def test_run_plan_logs_every_finished_step(self):
         import json
