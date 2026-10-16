@@ -30,6 +30,7 @@ import math
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import time
@@ -78,7 +79,7 @@ RESTART_MAP = [
 ]
 
 
-def decide(*, is_live, head, target, is_ff, changed, dirty, last_red_sha=None):
+def decide(*, is_live, head, target, is_ff, changed, dirty, last_red_sha=None, ws_only=()):
     """Pure decision -> dict(action, reason, restarts, java_pending).
     action: NOT_LIVE | UP_TO_DATE | STOP_NOT_FF | STOP_DIRTY | RED_KNOWN | DEPLOY (the gate still has to run)."""
     out = dict(action="", reason="", restarts=[], java_pending=[], regenerate=[])
@@ -92,7 +93,9 @@ def decide(*, is_live, head, target, is_ff, changed, dirty, last_red_sha=None):
         out.update(action="STOP_NOT_FF", reason=f"HEAD {head[:7]} is not an ancestor of {BRANCH} {target[:7]}; never reset or rebase: a human decides")
         return out
     clash = sorted(set(changed) & set(dirty))
-    regen = [p for p in clash if GENERATED_RE.match(p)]
+    # ws_only: dirty files the caller verified differ from HEAD by trailing whitespace / EOL only (Q75): handled like generated files
+    # (backed up, `git checkout -- <file>`). Anything the caller did not verify stays a clash (fail closed).
+    regen = [p for p in clash if GENERATED_RE.match(p) or p in set(ws_only)]
     clash = [p for p in clash if p not in regen]
     if clash:
         out.update(action="STOP_DIRTY", reason="uncommitted edits by another session on files the deploy changes: " + ", ".join(clash[:8]))
@@ -129,16 +132,41 @@ def _text(x):
     return x.decode("utf-8", "replace") if isinstance(x, bytes) else x
 
 
-def sh(argv, cwd=REPO, timeout=300):
+def kill_tree(proc):
+    """Kill `proc` and every process it started (Q75: subprocess.run(timeout) kills only the direct child, so the gate's pytest/maven/java
+    grandchildren kept the 8 CPUs busy and held the output pipe open). Windows: taskkill /T /F; elsewhere: the child's own process group."""
     try:
-        p = subprocess.run(argv, cwd=cwd, capture_output=True, text=True, timeout=timeout)
-        return p.returncode, (p.stdout or "") + (p.stderr or "")
-    except subprocess.TimeoutExpired as e:
-        # keep what the child printed before the kill: a timed-out gate's tail then shows the step it reached (2026-10-16 04:45Z: only 'timed out')
-        partial = _text(e.stdout) + _text(e.stderr)
-        return 124, partial if partial.strip() else "timed out"
+        if os.name == "nt":
+            subprocess.run(["taskkill", "/T", "/F", "/PID", str(proc.pid)], capture_output=True, timeout=30)
+        else:
+            os.killpg(proc.pid, signal.SIGKILL)
+    except (OSError, subprocess.SubprocessError):
+        pass
+    try:
+        proc.kill()   # the direct child too, if taskkill / killpg did not get it
+    except OSError:
+        pass
+
+
+def sh(argv, cwd=REPO, timeout=300):
+    kw = {"start_new_session": True} if os.name != "nt" else {}
+    try:
+        proc = subprocess.Popen(argv, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, **kw)
     except OSError as e:
         return 127, f"could not start: {e}"
+    try:
+        out, err = proc.communicate(timeout=timeout)
+        return proc.returncode, (out or "") + (err or "")
+    except subprocess.TimeoutExpired as e:
+        kill_tree(proc)
+        # keep what the child printed before the kill: a timed-out gate's tail then shows the step it reached (2026-10-16 04:45Z: only 'timed out')
+        partial = _text(e.stdout) + _text(e.stderr)
+        try:
+            out, err = proc.communicate(timeout=30)   # the tree is dead: the pipes close
+            partial = (out or "") + (err or "") if (out or err) else partial
+        except (subprocess.TimeoutExpired, OSError, ValueError):
+            pass
+        return 124, partial if partial.strip() else "timed out"
 
 
 def kill_process(script_name):
@@ -209,6 +237,10 @@ class Ops:
 
     def is_live(self):
         return (REPO / ".mts_live").exists()
+
+    def whitespace_only(self, rel):
+        """True only when git confirms `rel` differs from HEAD by trailing whitespace / EOL alone (exit 0 of --quiet). Any error = False."""
+        return self.git("diff", "--ignore-space-at-eol", "--quiet", "HEAD", "--", rel)[0] == 0
 
     def gate(self, sha):
         wt = REPO.parent / "mts-deploy-gate"
@@ -358,8 +390,15 @@ def run(ops=None, check=False, state=None, save=True):
     is_ff = ops.git("merge-base", "--is-ancestor", head, target)[0] == 0
     changed = [p for p in ops.git("diff", "--name-only", head, target)[1].splitlines() if p.strip()] if is_ff else []
     dirty = [ln[3:].strip().strip('"') for ln in ops.git("status", "--porcelain", "--untracked-files=no")[1].splitlines() if ln[:2].strip()]
+    ws = []
+    for rel in sorted(set(changed) & set(dirty)):   # Q75: an EOL / trailing-space-only edit is no other session's work
+        try:
+            if not GENERATED_RE.match(rel) and ops.whitespace_only(rel):
+                ws.append(rel)
+        except Exception:   # fail closed: unknown = still a clash
+            pass
     d = decide(is_live=True, head=head, target=target, is_ff=is_ff, changed=changed, dirty=dirty,
-               last_red_sha=state.get("last_red_sha"))
+               last_red_sha=state.get("last_red_sha"), ws_only=ws)
     res.update(action=d["action"], reason=d["reason"], restarts=d["restarts"], java_pending=d["java_pending"])
     if d["action"] != "DEPLOY":
         return _finish(res, save)
@@ -408,6 +447,8 @@ def run(ops=None, check=False, state=None, save=True):
             return _finish(res, save, state)
     if regen:
         res["regenerated"] = regen
+    if ws:
+        res["whitespace_only_reset"] = [p for p in ws if p in regen]
     for rel in uclear:   # generated CI card filed on the live host and also shipped to the trunk: keep a copy, remove only that file
         src = REPO / rel
         if backup is None:

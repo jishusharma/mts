@@ -867,3 +867,28 @@ Applied: 2026-10-16 session fabio-transcribe: faster-whisper small.en in a venv 
  "answer": "YES: local open-source transcriber on JIS-NB, low priority, then extract both"
 }
 ```
+
+## D3-dev-ext | asked 2026-10-16 | Research
+
+Add 2020-2021 BTCUSDT 1m data to DEV as a separate DEV_EXT segment so single context factors become testable?
+
+Recommended: Yes, as a separate segment read only by DEV-stage work
+Answer: Yes, as a separate segment read only by DEV-stage work (DECISION (OURS), operator may overrule)
+Operator note (verbatim): (none; free public market data is pre-approved, defaults chosen without asking)
+Applied: 2026-10-16 session d3-dev-ext. DECISION (OURS): segment DEV_EXT = Binance USD-M BTCUSDT 1m klines, bar open 2020-01-01 .. 2021-12-31 (731 days, 1,052,640 minutes, 24 monthly zips, SHA256 matches the .CHECKSUM files, 0 duplicate minutes, 0 gaps, all UTC-aligned, OHLC sane). The REPORT.md D3 proposal said 2019-09; the public perp 1m archive starts 2019-12-31 (daily) and 2020-01 (monthly), so 2019 is NOT filled, and 2019 spot is NOT mixed in (different venue, basis). Stored outside the repo: F:/MTS/data/dev_ext_2019_2021/ (klines, funding, zips). DEV (2022-01-01..2024-06-30), VALIDATION (2024-07-01..2025-06-30) and HOLDOUT are unchanged. Loader: research/context_factors_2026-10-16/dev_ext.py, OFF unless include_dev_ext=True, never returns a bar at/after 2024-07-01 (test_dev_ext.py). Only DEV-stage reads may use it. Counts: research/context_factors_2026-10-16/COUNTS_DEV_EXT.md.
+
+```json
+{
+ "order": 24,
+ "stage": "Research",
+ "refs": "research/context_factors_2026-10-16/REPORT.md D3, research/context_factors_2026-10-16/COUNTS_DEV_EXT.md",
+ "title": "Add 2020-2021 BTCUSDT 1m data to DEV as a separate DEV_EXT segment so single context factors become testable?",
+ "why": "The context-factors study found only the composite is powered on 821 DEV days. Free public Binance USD-M data for 2020-2021 adds 731 days. It is kept as its own segment (DEV_EXT) that only DEV-stage reads may use, so VALIDATION and HOLDOUT are never touched.",
+ "options": [
+  "Yes, as a separate segment read only by DEV-stage work",
+  "No: keep DEV at 2022-01-01 .. 2024-06-30"
+ ],
+ "recommended": "Yes, as a separate segment read only by DEV-stage work",
+ "answer": "Yes, as a separate segment read only by DEV-stage work (DECISION (OURS), operator may overrule)"
+}
+```
