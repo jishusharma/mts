@@ -66,7 +66,7 @@ def stamp(dt=None):
 
 def git(cwd, *args, check=True, timeout=20):
     r = subprocess.run(["git", "-C", str(cwd), *args], capture_output=True, text=True, encoding="utf-8",
-                       errors="replace", timeout=timeout)
+                       errors="replace", timeout=timeout, creationflags=0x08000000 if os.name == "nt" else 0)
     if check and r.returncode:
         raise RuntimeError("git %s: %s" % (" ".join(args), r.stderr.strip()))
     return r
@@ -171,7 +171,9 @@ def spawn_send(text, kind, cwd):
     if os.environ.get("MTS_SIGNALS_SYNC"):
         send(text, kind=kind, cwd=cwd)
         return
-    flags = 0x00000008 | 0x08000000 if os.name == "nt" else 0       # DETACHED_PROCESS | CREATE_NO_WINDOW
+    # CREATE_NO_WINDOW only: with DETACHED_PROCESS Windows ignores it, the sender has no console and every git.exe it starts
+    # opens its own visible window (the NB git-window flashing, 2026-10-17: 4-5 windows per hook event).
+    flags = 0x08000000 if os.name == "nt" else 0
     subprocess.Popen([sys.executable, str(Path(__file__).resolve()), "send", text, "--kind", kind],
                      cwd=cwd or None, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                      creationflags=flags, close_fds=True)
