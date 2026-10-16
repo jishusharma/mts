@@ -204,6 +204,13 @@ def min_n_for_power(target=0.8, p0=P0, p1=P1, alpha=ALPHA, max_n=2000):
 
 # ---------------------------------------------------------------- the whole ledger
 
+def read_committed_text(path):
+    """A committed artefact as UTF-8 text with LF line ends. The renderers always write LF, but a Windows checkout with
+    core.autocrlf=true (the Git for Windows default, so the windows-latest CI runner) stores the same file with CRLF.
+    Only the line-end convention of the checkout is normalised; every other byte is still compared."""
+    return Path(path).read_bytes().decode("utf-8").replace("\r\n", "\n")
+
+
 def _summarize(results, col):
     xs = [r[col] for r in results if r["status"] == "SCORED"]
     wins = [x for x in xs if x["r_net"] > 0]
@@ -380,7 +387,7 @@ def main(argv):
             f.write(text)
         print(f"wrote {SCORECARD.name}")
         return 0
-    same = SCORECARD.exists() and SCORECARD.read_bytes().decode("utf-8") == text
+    same = SCORECARD.exists() and read_committed_text(SCORECARD) == text
     print("SCORECARD.md matches a rerun" if same else "SCORECARD.md DIFFERS from a rerun: run `run`")
     return 0 if same else 1
 

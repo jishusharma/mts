@@ -37,7 +37,8 @@ import tasks  # noqa: E402
 
 REPO = tasks.REPO
 LAB = "MyTradingSys/research/layer_lab"
-BAIL_S = 180              # a BLOCKED/INCOMPLETE run this short with no report is the model bailing, not the card failing
+GENERATED = ("MyTradingSys/system/LAYERS.md",)   # tasks.py rewrites it after every card change (make_layers_md): closing a krown-/malkan-/tom-... card always dirties it
+BAIL_S = 180             # a BLOCKED/INCOMPLETE run this short with no report is the model bailing, not the card failing
 BAIL_FREE = 2             # such bails per card that are not charged as tries (a fresh run usually gets through)
 STALL_S = 3 * 3600        # ready cards, lane up, no hold, and no run for this long = the lab is stalled (watchdog)
 READING_STALE_S = 2 * 3600  # an allowance reading older than this may undercount (other machines spend the same week)
@@ -531,10 +532,11 @@ def changed_files(wt):
 
 
 def out_of_scope(kind, files):
-    """Files an audit or run card may not have written: those two kinds only report, log trials and capture follow-up cards."""
+    """Files an audit or run card may not have written: those two kinds only report, log trials and capture follow-up cards.
+    The generated LAYERS.md is allowed: without it every audit of a layer-family card ended OUT_OF_SCOPE (JIS-NUC 2026-10-15 16:00Z)."""
     if kind == "build":
         return []
-    return [f for f in files if not (f.startswith(LAB + "/") or f.startswith(tasks.DIR + "/"))]
+    return [f for f in files if not (f.startswith(LAB + "/") or f.startswith(tasks.DIR + "/") or f in GENERATED)]
 
 
 def judge(card_now, reports, kind, files):

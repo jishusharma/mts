@@ -16,7 +16,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "coordinator 2026-10-15: blocked twice for missing reader marks (A-P10 NOT_IN_DATA), about 700k GPT tokens spent for no result; unblock only after G3 eye-read marks exist (LAYER_REBUILD_PLAN gate G3)",
+  "note": "RETIRED 2026-10-16 (codex-feed): BLOCKED twice (~700k tokens): its inputs never existed (no T3 reader marks, no A-P10 sentiment series; depends_on omitted tom-btc-eye-read). Superseded by the rebuild plan: no event study before G3 marks + G4 recall; re-card Tom G5 from the catalogue rows then.",
   "pinned": false,
   "prio": 1,
   "refine_tries": 0,
@@ -38,7 +38,7 @@
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
   ],
-  "state": "blocked",
+  "state": "dropped",
   "steps": [
     "Concept flags from footprint/klines: A-C3 thin top, A-P1 finished auction, A-P6 delta surplus/absorption, A-P3, A-P4, A-P5, A-P7, A-P10 long/short extreme (OURS thresholds = session rank, printed).",
     "Per concept: n, mean net R (taker 0.10 % RT and maker-in), 95 % CI, minus random; trial rows to TRIAL_REGISTRY."
