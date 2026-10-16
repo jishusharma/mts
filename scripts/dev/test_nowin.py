@@ -44,6 +44,19 @@ class NoWin(unittest.TestCase):
         r = subprocess.run([sys.executable, "-c", "print(1)"], capture_output=True, text=True)
         self.assertEqual(r.stdout.strip(), "1")
 
+    def test_hidden_console_counts_as_windowless(self):
+        # B190: wscript launchers run python.exe with a hidden console; the shim must engage there, not only under pythonw.
+        os.environ.pop("MTS_NOWIN", None)
+        with mock.patch.object(sys, "platform", "win32"), mock.patch.object(nowin, "_console_hidden", return_value=True):
+            self.assertTrue(nowin.wanted())
+        with mock.patch.object(sys, "platform", "win32"), mock.patch.object(nowin, "_console_hidden", return_value=False):
+            self.assertFalse(nowin.wanted())
+
+    def test_git_callers_install_the_shim(self):
+        d = os.path.dirname(os.path.abspath(__file__))
+        for name in ("make_status.py", "testnet_canary.py", "auto_deploy.py", "live_mirror.py"):
+            self.assertIn("nowin.install(", open(os.path.join(d, name), encoding="utf-8").read(), name)
+
     def test_backup_snapshot_forces_the_shim(self):
         # B190: MTS-Backup runs python.exe through launch-backup.vbs, never pythonw, so plain install() was a no-op there.
         src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "backup_snapshot.py"), encoding="utf-8").read()
