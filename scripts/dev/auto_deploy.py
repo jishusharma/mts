@@ -69,13 +69,16 @@ LIVE_INPUT_RE = re.compile(r"^MyTradingSys/(runtime/oi_live/[^/]+\.csv|research/
 UNTRACKED_CLEARABLE_RE = re.compile(r"^MyTradingSys/system/tasks/ci-([0-9a-f]+)\.json$")
 _BLOB_RE = re.compile(r"^[0-9a-f]{40,64}$", re.M)
 # (regex on a changed path, script name to restart). A process is listed once. position_manager is deliberately absent.
+# The alert runner is launched as `python -m MyTradingSys.backtest.layers.alerts.live_runner_cli` (loop-supervisor / mts.ps1): its command line has
+# no ".py", so the old name "live_runner_cli.py" matched nothing and a deploy never restarted it (2026-10-16: W3 layers stayed unloaded for hours).
+RUNNER_PROC = "layers.alerts.live_runner_cli"
 RESTART_MAP = [
     (re.compile(r"^MyTradingSys/execution/(auto_trader|auto_trader_config|executor|plan_compiler|mainnet_plan_check|risk_guard|journal|deribit_orders)\b"), "auto_trader.py"),
     (re.compile(r"^MyTradingSys/execution/(daily_loss_monitor|mainnet_pnl|kill_switch|deribit_orders)\b"), "daily_loss_monitor.py"),
     # recorder: launched as `python -m MyTradingSys.backtest.layers.fabio.orderflow_live` (command line has no .py); loop-supervisor relaunches it.
     (re.compile(r"^MyTradingSys/backtest/layers/fabio/(orderflow_live|orderflow_bars)\.py$"), "orderflow_live"),
-    (re.compile(r"^MyTradingSys/backtest/layers/(alerts|rsi|fabio|session|positioning|cryptocred|turn_of_candle|tick|timeframe|consensus)/"), "live_runner_cli.py"),
-    (re.compile(r"^MyTradingSys/backtest/(bt/|fees)"), "live_runner_cli.py"),
+    (re.compile(r"^MyTradingSys/backtest/layers/(alerts|rsi|fabio|session|positioning|cryptocred|turn_of_candle|tick|timeframe|consensus)/"), RUNNER_PROC),
+    (re.compile(r"^MyTradingSys/backtest/(bt/|fees)"), RUNNER_PROC),
 ]
 
 

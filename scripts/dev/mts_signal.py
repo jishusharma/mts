@@ -24,6 +24,7 @@ import json
 import os
 import random
 import re
+import shlex
 import socket
 import subprocess
 import sys
@@ -176,11 +177,25 @@ def spawn_send(text, kind, cwd):
                      creationflags=flags, close_fds=True)
 
 
-CMD = re.compile(r"sync\.py\s+(claim|release|ship|start)\b\s*(.*)", re.S)
+CMD = re.compile(r"sync\.py\s+(claim|release|ship|start)\b([^|;&>\n]*)")      # stops at pipes, chains, redirects, newlines
+SLUG = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,60}$")
+
+
+def last_result(cwd):
+    """The `Result:` line of the newest commit in cwd (what a ship delivered), else ''."""
+    try:
+        r = git(cwd, "log", "-1", "--format=%B", check=False, timeout=5)
+    except (OSError, subprocess.SubprocessError, RuntimeError):
+        return ""
+    for ln in r.stdout.splitlines():
+        if ln.startswith("Result:"):
+            return ln.strip()
+    return ""
 
 
 def auto_send_text(payload):
-    """(text, kind) for the tool calls and events that are worth a signal, else None."""
+    """(text, kind) for the tool calls and events that are worth a signal, else None.
+    Command signals carry the verb and the slug only (never the shell tail); a ship adds its Result: line."""
     ev = payload.get("hook_event_name")
     cwd = payload.get("cwd") or ""
     if ev == "SessionStart" and payload.get("source") in (None, "startup"):
@@ -189,9 +204,29 @@ def auto_send_text(payload):
         cmd = str((payload.get("tool_input") or {}).get("command") or "")
         m = CMD.search(cmd)
         if m:
-            verb, rest = m.group(1), m.group(2).strip().split("\n")[0]
+            verb = m.group(1)
+            toks = [t.strip("\"'`") for t in m.group(2).split()]
+            slug = ""
+            if verb == "ship":
+                if "--release" in toks and toks.index("--release") + 1 < len(toks):
+                    slug = toks[toks.index("--release") + 1]
+            elif verb == "claim":                       # the task text is the point of a claim: its first argument
+                try:
+                    args = [a for a in shlex.split(m.group(2)) if not a.startswith("-")]
+                except ValueError:
+                    args = toks
+                slug = " ".join(args[:1])[:80]
+            else:
+                slug = next((t for t in toks if not t.startswith("-")), "")
+            if verb != "claim":
+                slug = slug if SLUG.match(slug) else ""
             kind = {"claim": "claim", "ship": "done", "release": "done", "start": "note"}[verb]
-            return ("%s %s" % (verb, rest)).strip(), kind
+            text = ("%s %s" % (verb, slug)).strip()
+            if verb == "ship":
+                res = last_result(cwd)
+                if res:
+                    text += " " + res
+            return text, kind
     return None
 
 

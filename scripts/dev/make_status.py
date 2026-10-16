@@ -5,6 +5,8 @@ Gathers: the CI green line, the layer x gate board, trunk tip, in-flight .new fi
 hygiene report when this host has one, project groups, open findings. Lists that other indexes already hold (queue
 status of the retired NUC worker, 10 commits, delivered lab cards) are not repeated here.
 """
+import nowin  # B190: scheduled run (hidden console) must not flash git windows
+nowin.install()
 import json
 import subprocess
 import os

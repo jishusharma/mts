@@ -28,7 +28,7 @@ What the job does, in order; it stops at the first failure and writes the reason
    (checked before the gate and again after it, nothing removed). 2026-10-16: `make_status.py` filed such a card in the live tree and the deploy stopped;
    it no longer files the card there (`CI card: not filed (live tree)`).
 7. Restart only what changed (`RESTART_MAP` in auto_deploy.py): execution/auto_trader*, executor, deribit_orders ... -> `auto_trader.py`;
-   daily_loss_monitor, mainnet_pnl, kill_switch, deribit_orders -> `daily_loss_monitor.py`; backtest/layers/alerts and the layer packages, bt/, fees -> `live_runner_cli.py`.
+   daily_loss_monitor, mainnet_pnl, kill_switch, deribit_orders -> `daily_loss_monitor.py`; backtest/layers/alerts and the layer packages, bt/, fees -> `layers.alerts.live_runner_cli` (module name: the runner runs with -m, no .py in its command line).
    loop-supervisor revives them in about a minute. **position_manager is never killed** (it guards an open position; new managers load the new code).
 8. Java (`src/main/java`, `pom.xml`) is listed under `java_pending` in the result: it needs `mvn compile` and a JVM restart window, which the job does not do.
 

@@ -778,6 +778,10 @@
   "MyTradingSys/research/level_ledger_2026-10-16/java_zone_check.py": {
    "disp": "REPRO",
    "why": "Compares live Java buildVp with vp_pivot_probe.build_profile on sampled DEV days (ZONE_CHECK.csv); needs a JDK, run by hand, see README.md."
+  },
+  "MyTradingSys/research/level_ledger_2026-10-16/zone_mismatch_classify.py": {
+   "disp": "REPRO",
+   "why": "Classifies the java_zone_check mismatches by cause (edge/grid/weighting) with a Java port checked against compiled Java; needs a JDK, run by hand, result in research/pit_levels_2026-10-16/ZONE_MISMATCH.md."
   }
  }
 }
