@@ -31,6 +31,12 @@ Searched, no usable source found: batching tool calls (no solid source), shallow
 - Better metrics than commit share: ship-to-green time (push to the `green/fast-track` advance) and red-CI hours. CI coalesces runs (50 runs for 862 commits), so commit count is not CI load; green did not advance for 5.5 h on 2026-10-16 while commit share looked fine.
 - Landing today from sibling sessions (check the log before relying on them): gate `explain()` + persisted step timings; `auto_deploy.py` takes a gate slot; `scripts/dev/trace.py` and `research_kit_lint.py`; the CI root-cause fix.
 
+## Follow-up results 2026-10-17 (speed-followup-1017)
+- CI: last 3 completed fast-track runs are green: 9894d9f2 success, ea530850 success, 790257cb success (earlier 204ac612/0e85eaa1/95fbea27 were cancelled by coalescing; 82dc8f27 was the last failure). origin/green/fast-track = 9894d9f2 (advanced). a84b90b3 was still in progress at check time.
+- Deploy-slot merge: `pytest scripts/dev/test_auto_deploy.py scripts/dev/test_sync.py -q` = 163 passed in 85.66s (the task's path scripts/sched/test_auto_deploy.py does not exist).
+- traffic_report 24 (849 commits): merge 321 (38%), claim 110 (13%), release 110 (13%), other 308 (36%), overhead 541 (64%). Baseline 2026-10-16: 890 commits, merge 40%, claim 14%, release 14%, overhead 68%. Small gain (-4 pts overhead); the window still contains pre-B1 commits, so the ship --release effect is not yet visible. Re-measure on a window starting after 2026-10-16 12:00Z.
+- DECISION (OURS): no code fix needed (no red CI in the last 3 runs, no test failures).
+
 ## Rejected ideas (2026-10-16), do not re-propose without new evidence
 | Idea | Why rejected |
 |---|---|
