@@ -5,6 +5,7 @@ KROWN 2026-10-15: Q65-Q69 PARKED until G2-G3 (coordinator for the operator; card
 WAITING ON JIS (all four old items re-checked 2026-10-15, nothing open): HALT and HALT_DAILY_LOSS cleared 2026-10-14 (execution/halt_history, no HALT file); logon catch-up triggers on the daily tasks, MTS-LiveMirror and AIBridge-Agent are registered; mts-dispatcher runs every 10 min (operator 2026-10-14); JIS-NB is off ~02:00-10:30 IST. AutoDeploy deploys every 15 min since 2026-10-14 16:30Z; a STOP_NOT_FF line in MyTradingSys/runtime/sched/auto_deploy.log (seen 19:30Z: live HEAD not an ancestor of green/fast-track) needs a supervisor session, as the 2bf0d6ac ancestry merge did.
 GitHub: jishusharma1985 invited as write collaborator 2026-10-14 (accept pending). Pages for that login: artifacts/registry.json key jishusharma1985.
 
+CI-FIX 2026-10-16 (JIS-NUC, project-health): CI was RED since 1bb1b396 (B150: research/context_null_2026-10-16/test_context_null.py unregistered; second time in 3 h). 02a477d9 registers it and adds gate step 3gd (B150 discovery) to gate_select.ALWAYS, so every smoke ship now catches an unregistered test file. Ship gate saw one 4f (layer/live pytest) failure that passed alone and on re-run: flaky under parallel load, not chased.
 ```
 MTS builder session. Read CLAUDE.md and STATUS.md (regenerate first). One task per session; ship, overwrite this file, `sync.py where` clean.
 0. `python scripts/dev/sync.py start` from a worktree; `tasks.py next` now skips claimed cards.
