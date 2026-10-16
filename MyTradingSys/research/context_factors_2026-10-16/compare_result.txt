@@ -1,0 +1,4 @@
+points=128736 mismatching_fields=3
+bb_4h_pctb	704
+n_layers	1
+n_layers_4hrule	1
