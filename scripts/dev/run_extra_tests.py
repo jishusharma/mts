@@ -33,6 +33,7 @@ EXTRA = [
     "MyTradingSys/research/context_null_2026-10-16/test_context_null.py",
     "MyTradingSys/research/context_factors_2026-10-16/test_context_asof.py",
     "MyTradingSys/research/context_factors_2026-10-16/test_study.py",
+    "MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py",
     "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py",
     "MyTradingSys/research/level_ledger_2026-10-16/test_level_ledger.py",
     "scripts/dev/test_suplock.py",
