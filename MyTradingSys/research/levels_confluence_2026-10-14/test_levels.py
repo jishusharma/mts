@@ -35,3 +35,28 @@ def test_break_before_favorable_move_is_break():
     # A touch at 100, then price penetrates to 99 before a one-width reaction to 101.
     bars = [bar(0, 100, 100, 100, 100, 1), bar(1, 100, 100, 99, 99, 1)]
     assert outcome(bars, 100, 1) == 'BREAK'
+
+
+# --- Q79: touch-bar look-ahead (side from previous close, no touch-bar target credit) ---
+
+def test_touch_bar_close_does_not_set_side_or_credit_target():
+    # Previous close 105 is above level 100 -> long side (support). The touch bar dips to 99.5,
+    # spikes to 101.5 (>= level+width) and closes at 101: old code read close>=level => long and
+    # credited the in-bar spike as HOLD. New rule: no favourable credit inside the touch bar.
+    touch = bar(1, 105, 101.5, 99.5, 101, 1)
+    nxt = bar(2, 101, 100.8, 100.2, 100.5, 1)
+    assert outcome([touch, nxt], 100, 1, prev_close=105) == 'NEITHER'
+
+
+def test_side_comes_from_previous_close_not_touch_close():
+    # Prev close 95 below level -> short side. Touch bar closes ABOVE level (old code: long).
+    # A later bar falls to 98.9 (favourable for a short, width 1) -> HOLD only under the new side.
+    touch = bar(1, 95, 100.5, 94.9, 100.2, 1)
+    later = bar(2, 100.2, 100.3, 98.9, 99.0, 1)
+    assert outcome([touch, later], 100, 1, prev_close=95) == 'HOLD'
+
+
+def test_touch_bar_adverse_still_counts_as_break():
+    touch = bar(1, 105, 105, 98.9, 101, 1)
+    later = bar(2, 101, 102, 100.5, 101.5, 1)
+    assert outcome([touch, later], 100, 1, prev_close=105) == 'BREAK'
