@@ -4,6 +4,8 @@ SUPER-2 2026-10-16 (JIS-NB): 14 ships (promotion pipeline, Fable H1/H2/H3/M4/L6/
 KROWN 2026-10-15: Q65-Q69 PARKED until G2-G3 (card text: this file at 072fd85c). Q70 DONE as HTTP_429 (4 captions ids stay PENDING_CAPTIONS, LESSONS_DIGEST s6). State: research/krown_ta101_2026-10-13/STATE.md.
 WAITING ON JIS: HALT is in place again (since 10-15 08:00:19Z, operator clears it); mts-dispatcher runs every 10 min; JIS-NB is off ~02:00-10:30 IST. AutoDeploy gates every 15 min; a gate under CPU load (ASR, parallel ship gates) times out, so start no heavy worker while auto_deploy.lock exists.
 GitHub: jishusharma1985 invited as write collaborator 2026-10-14 (accept pending). Pages for that login: artifacts/registry.json key jishusharma1985.
+AI-HEALTH 2026-10-16 (JIS-NUC): ubuntu CI job is still RED on 049a5a96/ad995eb5 (windows green; last green d12b29a5); job logs need a login, so the cause is unread. This ship makes run_all_tests print a public ::error annotation per failed step (read: api.github.com/repos/jishusharma/mts/check-runs/<job id>/annotations) - NEXT: read the annotation of the first run after it, fix that step. Also removed a duplicate pit_levels entry in run_extra_tests.EXTRA (ran twice, ~70 s each) + guard test. Lab: gptb-oi-delta-event-table skipped after 2 failed ships, 3 lab SHIP_FAILED rows today (offline gate), claim/release commits are 42% of 24h (cap 30%).
+
 ```
 MTS builder session. Read CLAUDE.md and STATUS.md (regenerate first). One task per session; ship, overwrite this file, `sync.py where` clean.
 0. `python scripts/dev/sync.py start` from a worktree; `tasks.py next` now skips claimed cards.

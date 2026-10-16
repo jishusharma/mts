@@ -75,7 +75,6 @@ EXTRA = [
     "scripts/dev/test_sched_scripts.py",
     "scripts/dev/test_run_extra_tests.py",
     "scripts/dev/test_ci_deps_lint.py",
-    "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py",
 ]
 
 
