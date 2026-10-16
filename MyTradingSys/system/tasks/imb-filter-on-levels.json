@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T05:43:43Z",
   "commands": [],
   "created": "2026-10-16T06:30:00Z",
   "depends_on": [],
@@ -22,7 +23,7 @@
     "MyTradingSys/research/imbalance_qriptal_2026-10-16/README.md",
     "MyTradingSys/items/B171_imbalance_indicator_end_to_end.md"
   ],
-  "result": "",
+  "result": "FAIL: imbalance filter lifts +0.10 R (-0.366 vs -0.467 R net/trade, Holm p 0.017) but layer -0.06 R gross vs 0.35 R fee; large-body veto +0.009 R (t 0.27); MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md",
   "scope_in": [
     "MyTradingSys/research/imbalance_qriptal_2026-10-16",
     "F:/MTS/data/tom_raw/klines (read only)"
@@ -34,7 +35,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write PRE_REG.md (level source, k, TFs, trial count) and commit it before any run.",
     "Write the test first and see it fail.",
