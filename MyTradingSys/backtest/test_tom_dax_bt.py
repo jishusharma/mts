@@ -22,6 +22,10 @@ import fees as F  # noqa: E402
 import tom_bt as T  # noqa: E402
 import tom_dax_bt as D  # noqa: E402
 
+# Scratch dirs go to the system temp dir, never into MyTradingSys/backtest: step 4f's pytest collects under that folder at the same
+# time as step 4e, and on Windows it lstat()s every entry beside the path it descends into (2026-10-16 CI run 38825784050 failed
+# collecting "...\MyTradingSys\backtest\tmppuq59r8k" after this file removed it). Guard: MyTradingSys/tests/test_gate_scratch_outside_checkout.py.
+
 
 def mk(bars, t0=0):
     o, h, l, c, v, tbv = (array("d") for _ in range(6))
@@ -72,7 +76,7 @@ class TestFees(unittest.TestCase):
 # ------------------------------------------------------------------ b) loader
 class TestGapLoader(unittest.TestCase):
     def setUp(self):
-        self.td = tempfile.TemporaryDirectory(dir=D.HERE)
+        self.td = tempfile.TemporaryDirectory(prefix="mts_dax_bt_")
         self.dir = Path(self.td.name)
         t0 = 1_700_000_000_000 - (1_700_000_000_000 % 60000)
         self.t0 = t0
@@ -226,7 +230,7 @@ class TestClosedExecutions(unittest.TestCase):
     def test_missing_download_is_rejected_before_archive_read(self):
         # Completed empty days are coverage evidence; absent files are not closures.
         from types import SimpleNamespace
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             raw = Path(td)
             start, end = dt.date(2026, 1, 1), dt.date(2026, 1, 3)
             for d in (start, end):
@@ -249,7 +253,7 @@ class TestClosedExecutions(unittest.TestCase):
 # ------------------------------------------------------------------ c) market-open filter
 class TestOpenFilter(unittest.TestCase):
     def setUp(self):
-        self.td = tempfile.TemporaryDirectory(dir=D.HERE)
+        self.td = tempfile.TemporaryDirectory(prefix="mts_dax_bt_")
         self.dir = Path(self.td.name)
         t0 = 1_700_000_040_000 - (1_700_000_040_000 % 60000)
         self.t0 = t0
@@ -545,7 +549,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
         # Synthetic dates only. Signal fills at H-60; the first target is at H.
         # EXPECT: that unresolved dev outcome is dropped, never counted as a win.
         h = D.T_DAX_HOLD
-        with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parent) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             root = Path(td)
             (root / "klines").mkdir()
             write_klines(root / "klines" / "synthetic.csv", [
@@ -603,7 +607,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
                 D.build_report(a)
 
     def test_invalid_manifest_and_forward_boundary(self):
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             for changes in [dict(embargo_s=-1), dict(embargo_s=True), dict(embargo_s=float("nan")),
                             dict(embargo_s=121), dict(holdout_start_utc="2026-04-10T23:58:00Z"),
                             dict(design_end_utc="2026-04-10T23:58:00"),
@@ -618,7 +622,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
 
     def test_prices_after_cutoff_not_parsed_and_partial_minute_excluded(self):
         h = D.T_DAX_HOLD
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             p = Path(td) / "a.csv"
             write_klines(p, [(int((h-120)*1000), 100, 100, 100, 100, 1),
                              (int((h-60)*1000), 100, 102, 100, 101, 1)])
@@ -632,7 +636,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
 
     def test_real_row_envelopes_counted_without_loading_holdout_payload(self):
         h = D.T_DAX_HOLD
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td, patch.object(D, "WORK", Path(td)):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
             split = D.load_split(self.manifest(td, embargo_s=60))
             out = Path(td) / "rows_dax"
             out.mkdir()
@@ -656,7 +660,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
 
     def test_pending_orders_dropped_and_resolved_dev_kept_in_stress(self):
         h = D.T_DAX_HOLD
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             split = D.load_split(self.manifest(td))
             r = dict(t=h-60, verdict="SETUP_FORMING", setup="ct_long", dir="long",
                      zone="vwap", ztype="vwap", zprice=100., stop=99., target=101.)
@@ -674,7 +678,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
             self.assertEqual(trades[0]["gross_r"], -2.)
 
     def test_full_dev_guard_and_failed_read_remains_reserved(self):
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td, patch.object(D, "REPORT", Path(td)/"report.md"), \
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "REPORT", Path(td)/"report.md"), \
              patch.object(D, "HOLDOUT_MARKER", Path(td)/"read.json"):
             path = self.manifest(td)
             split = D.load_split(path)
@@ -714,7 +718,7 @@ class TestSessionNull(unittest.TestCase):
                         dict(timezone="UTC", start="25:00", end="12:00")]:
             with self.subTest(session=session), self.assertRaisesRegex(ValueError, "null session"):
                 D.random_entry_null([], b, session=session)
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             p = Path(td)/"session.json"
             p.write_text(json.dumps(dict(timezone="UTC", start="10:00", end="12:00")),
                          encoding="utf-8", newline="\n")
@@ -824,7 +828,7 @@ class TestSessionNull(unittest.TestCase):
 
 class TestDriver(unittest.TestCase):
     def test_h8_generation_freezes_producer_and_refuses_changed_archive(self):
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             root = Path(td)
             archive, snaps = root / "archive", root / "snaps"
             (archive / "klines").mkdir(parents=True)
@@ -860,7 +864,7 @@ class TestDriver(unittest.TestCase):
     def test_h8_cached_rows_refuse_changed_mask_shift_or_floor(self):
         import verdict  # establishes the existing runtime import path
         import net_rr_floor
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td, patch.object(D, "WORK", Path(td)):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
             root = Path(td)
             out_dir = root / "rows_btc"
             out_dir.mkdir()
@@ -912,7 +916,7 @@ class TestDriver(unittest.TestCase):
 
     def test_h8_dax_producer_and_development_bar_identity(self):
         from snapshots import parse_ts
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td, patch.object(D, "WORK", Path(td)):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
             root = Path(td)
             out_dir = root / "rows_dax"
             out_dir.mkdir()
@@ -947,7 +951,7 @@ class TestDriver(unittest.TestCase):
 
     def test_current_rows_written_reused_and_loaded(self):
         # Synthetic current-Java input only; no archive or holdout loader.
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td, patch.object(D, "WORK", Path(td)):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
             out_dir = Path(td) / "rows_btc"
             out_dir.mkdir()
             source = Path(td) / "2026-01.jsonl.gz"
@@ -976,7 +980,7 @@ class TestDriver(unittest.TestCase):
                 D._rows_month(job)
 
     def test_old_rows_rejected_on_load_and_cache_reuse(self):
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td, patch.object(D, "WORK", Path(td)):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
             out_dir = Path(td) / "rows_dax"
             out_dir.mkdir()
             out = out_dir / "2026-01.rows.jsonl"
@@ -988,7 +992,7 @@ class TestDriver(unittest.TestCase):
                 D._rows_month(("dax", "2026-01.jsonl.gz", out_dir, (0,), D.MASK_OF, None))
 
     def test_complete_months(self):
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             raw = Path(td)
             d = dt.date(2026, 1, 1)
             while d <= dt.date(2026, 2, 10):
@@ -1021,7 +1025,7 @@ class TestDriver(unittest.TestCase):
         self.assertEqual(D.btc_period(ts(2026, 6, 26)), "burned")
 
     def test_holdout_needs_flag_and_reads_once(self):
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             marker = Path(td) / "HOLDOUT_READ_DAX.json"
             rows = [{"t": dt.datetime(2026, 3, 1, tzinfo=dt.timezone.utc).timestamp()},
                     {"t": dt.datetime(2026, 5, 1, tzinfo=dt.timezone.utc).timestamp()}]
@@ -1038,7 +1042,7 @@ class TestDriver(unittest.TestCase):
 
     def test_null_draws_only_real_minutes(self):
         # Real bars only in minutes 600..659; no next-bar-real requirement.
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             day0 = 1_700_006_400_000 - (1_700_006_400_000 % 86400000)
             rows = [(day0 + (600 + i) * 60000, 100 + i % 3, 101 + i % 3, 99, 100.5, 1.0) for i in range(60)]
             write_klines(Path(td) / "a.csv", rows)
@@ -1066,7 +1070,7 @@ def readiness_fixture(root):
 
 class TestReadinessGate(unittest.TestCase):
     def test_h8_second_arm_same_day_is_counted_and_rerender_is_idempotent(self):
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             root = Path(td)
             p = readiness_fixture(root)
             split = root / "split.json"
@@ -1115,7 +1119,7 @@ class TestReadinessGate(unittest.TestCase):
                     D.main(args + ["--shifts", shift])
 
     def test_missing_partial_or_unanswered_manifest_before_any_simulation(self):
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             p = readiness_fixture(td)
             complete = json.loads(p.read_text(encoding="utf-8"))
             cases = [("missing", None), ("absent file", Path(td)/"absent.json")]
@@ -1153,7 +1157,7 @@ class TestReadinessGate(unittest.TestCase):
     def test_complete_manifest_and_dax_cli_with_btc_cache(self):
         # Exercise the real CLI -> cmd_report -> build_report path. All data,
         # report and registry paths are local fixtures; git is never executed.
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             root = Path(td)
             p = readiness_fixture(root)
             split = root/"split.json"
@@ -1192,7 +1196,7 @@ class TestReadinessGate(unittest.TestCase):
                     self.assertIn("Synthetic Owner" if waived else "Synthetic protocol answer", text)
 
     def test_malformed_manifest_and_no_holdout_reservation(self):
-        with tempfile.TemporaryDirectory(dir=D.HERE) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             p = readiness_fixture(td)
             complete = json.loads(p.read_text(encoding="utf-8"))
             cases = ["{", "null", "[]", '{}', '{"items": []}']
