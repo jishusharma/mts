@@ -6,7 +6,7 @@
   "depends_on": [],
   "done_when": "BRIEF.md is shipped and the operator can start the design talk from it.",
   "from_inbox": "",
-  "goal": "Operator 2026-10-16 wants a probability-distribution layer (peer layer, PROJECT_VISION layer 2) and a design talk. Prepare a brief with the session's own design ideas; build nothing.",
+  "goal": "Operator 2026-10-16 wants a probability-distribution layer (a peer layer, PROJECT_VISION.md:94 and :103) and a design talk. Prepare a brief with the session's own design ideas; build nothing.",
   "id": "prob-dist-layer-design-brief",
   "lane": "SONNET",
   "layers": [],
@@ -39,7 +39,7 @@
   "state": "ready",
   "steps": [
     "Read the refs. Search git log, research/ and system/ for every other probability talk (6f904aa6 close signatures, VISION_GAP_2026-10-10 line 23, the 2026-09-12 four-AI study).",
-    "Check what exists: prob_table.py, label counts, the outcome labeler, and why the 09-13 parked design never shipped.",
+    "Check what exists: prob_table.py, label counts, the outcome labeler, and why the 09-13 parked design never shipped (prob_table.py and its tests exist and passed the 09-29 gate, GATE_REPORT_2026-09-29.md:19; what is missing is a run on current labels and any VERDICTS row).",
     "Read screenshot c5e7b5c17d90 notes (shot.py) as a worked case: spike, CVD jump, OI drop, then a ladder channel.",
     "Write BRIEF.md: what exists, what failed, 3 candidate designs (frequency table by state, outcome-after-event table, EV/Kelly sizing for leverage), aims, data needs, power, risks, and 8 open questions for the operator.",
     "Ship, then stop; the operator opens a design talk in a new session."

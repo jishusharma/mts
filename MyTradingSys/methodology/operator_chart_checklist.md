@@ -13,3 +13,10 @@
 | 7 | Ladder channel | Equal small candles, same angle, parallel lines (bear flag / controlled drift); what kind of flow | c5e7b5c17d90 |
 | 8 | Bottom before spike | Where the low formed before the move and what the RSI/CVD did there | c5e7b5c17d90 |
 | 9 | Confluence count | How many of 1-8 line up at the same bar; then what price did next (the data for the probability layer) | operator 2026-10-17 |
+| 10 | Multi-TF band-dance propagation | Upper-band (or lower-band) touching starts on 1m, then 3m, 5m, 10m, 15m: a rally that spreads up the timeframes is the exit signal for a short (and the reverse). Not every bar touches; "in the vicinity" counts. Define vicinity as a fraction of band width: OURS, to be tested | operator 2026-10-17 (own trades) |
+| 11 | Pop into the upper Bollinger band | A pop that reaches or passes the upper band of the chart's BB(20,2) in an already falling market, after levels broke, is sold. 'Third band' = the top one of three lines (lower, middle, upper), NOT a 3-sigma band (operator, 2026-10-17, twice) | operator 2026-10-17 |
+| 12 | Spike down is not a stop | A spike through a level is first measured: CVD build, OI behaviour, RSI, band dance across TFs, candle patterns, MAs, Tom/Fabio layers, pivots; exit only on sustained opposite behaviour | operator 2026-10-17 |
+| 13 | Context before signal | Phase and speed of the market, sentiment (greed or fear), absorption or distribution, macro phase | operator 2026-10-17 |
+| 14 | Higher-horizon context | What happened yesterday, the day before, the 5-day, the weekly and bi-weekly picture | operator 2026-10-17 |
+Order of work (operator 2026-10-17): describe context first, then decide what to test. No backtest on a chart pattern before its context is written down.
+Labels: items 2 and 6 are textbook conventions, OPERATOR (paraphrase), not quoted words. Items 1-12 overlap (4/5, 3/10, 1/12): count families, not items, as evidence. Item 12 is a discretionary note, not testable as written. Review: research/review_chart_cards_2026-10-17/REVIEW.md.

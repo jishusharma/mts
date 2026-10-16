@@ -62,6 +62,13 @@ class NoWin(unittest.TestCase):
         src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "backup_snapshot.py"), encoding="utf-8").read()
         self.assertIn("nowin.install(force=", src)
 
+    def test_signal_hook_never_detaches_its_console(self):
+        # B192: DETACHED_PROCESS makes Windows ignore CREATE_NO_WINDOW; every git.exe of the hook sender then flashed a window.
+        src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "mts_signal.py"), encoding="utf-8").read()
+        self.assertNotIn("0x00000008", src)
+        self.assertIn("flags = 0x08000000 if os.name", src)
+        self.assertIn("creationflags=0x08000000 if os.name", src)
+
 
 if __name__ == "__main__":
     unittest.main()
