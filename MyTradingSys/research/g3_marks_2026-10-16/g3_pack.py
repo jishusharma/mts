@@ -627,9 +627,8 @@ def intra_chart(code, cx, i, blind_id):
     day_k = {}
     for k, b in enumerate(vis):
         day_k.setdefault(b["t"] // DAY, []).append(k)
-        if (b["t"] // HOUR) % 6 == 0 and b["t"] % HOUR == 0:
-            ch.line([(ch.x(k), ch.top), (ch.x(k), ch.top + ch.h)], "#233140", 1)
-            ch.text(ch.x(k) - 14, ch.top + ch.h + 2, f"{(b['t'] // HOUR) % 24:02d}:00", 10, GREY)
+        if k % 24 == 0:  # bar offsets from the right edge, never a clock time (the edge's time of day is a side channel)
+            ch.text(ch.x(k) - 8, ch.top + ch.h + 2, str(k - n + 1), 10, GREY)
         if b["t"] % DAY == 0:
             ch.line([(ch.x(k), ch.top), (ch.x(k), ch.top + ch.h)], "#7a6a2f", 1)
     if code in ("TOM4", "TOM6"):
@@ -655,10 +654,9 @@ def intra_chart(code, cx, i, blind_id):
         d0 = vis[-1]["t"] // DAY
         draw_profile(ch, hist_closes([b["c"] for b in B[:i + 1] if b["t"] // DAY == d0]), pct, "#e6c76a")
     if code == "TOM15":
-        ok, lo_, hi_ = bal_run(B, i - 12, i - 1, 1.5)
-        if ok:
-            ch.seg(n - 13, n - 2, pct(hi_), "#d98b65", "balance hi")
-            ch.seg(n - 13, n - 2, pct(lo_), "#d98b65", "balance lo")
+        win = [b["c"] for b in B[i - 12:i]]  # always drawn: drawing only when a balance exists would disclose the pre-filter
+        ch.seg(n - 13, n - 2, pct(max(win)), "#d98b65", "range hi (12 closes)")
+        ch.seg(n - 13, n - 2, pct(min(win)), "#d98b65", "range lo (12 closes)")
     if code == "FAB5":
         end = vis[-1]["t"] + cx.tf_ms
         prof = cx.profile(end - DAY, end)

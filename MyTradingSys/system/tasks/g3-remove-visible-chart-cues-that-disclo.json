@@ -1,28 +1,44 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T21:37:53Z",
   "commands": [],
   "created": "2026-10-16T17:17:54Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "test_g3_pack.py passes (14 tests) and the three new tests fail on the previous g3_pack.py.",
   "from_inbox": "",
-  "goal": "",
+  "goal": "No chart, file or README shows which G3 windows were pre-filter selected; merges cards g3-assess-and-remove-visible-chart-side- (duplicate).",
   "id": "g3-remove-visible-chart-cues-that-disclo",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "note": "",
-  "prio": 3,
+  "prio": 1,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "claude",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "G3 remove visible chart cues that disclose enriched selections and filter tags"
+  "result": "chart cues removed (TOM-15 range always drawn, no clock labels, selection rules moved to ANSWER_KEY_CLOSED); 14 tests pass",
+  "scope_in": [
+    "MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py",
+    "MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py",
+    "MyTradingSys/research/g3_marks_2026-10-16/README.md"
+  ],
+  "scope_out": [
+    "the answer key and KEY.csv",
+    "any VALIDATION or HOLDOUT read",
+    "new backtest or study",
+    "draw rebuild (audit rerun decides)"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-16_gpt-g3-pack-audit.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Tests first: chart overlays independent of pre-filter state, no clock time labels, README without selection rules",
+    "Always draw the TOM-15 range edges; replace hour labels by bar offsets",
+    "Move the selection table to ANSWER_KEY_CLOSED/SELECTION_RULES.md"
+  ],
+  "tests": "test_chart_drawing_never_depends_on_the_pre_filter_state, test_intraday_chart_shows_no_clock_time_of_the_right_edge, test_readme_does_not_publish_the_enrichment_rules fail on pre-change g3_pack.py.",
+  "title": "G3 blindness: remove chart cues and side channels that disclose the enriched half or filter tag"
 }

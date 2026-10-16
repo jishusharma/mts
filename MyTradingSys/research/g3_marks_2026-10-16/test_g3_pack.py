@@ -198,3 +198,36 @@ def test_load_intraday_drops_rows_after_the_final_allowed_day(tmp_path):
     with gzip.open(tmp_path / f"{d.isoformat()}.csv.gz", "wt", encoding="utf-8", newline="") as f:
         f.write(cols + f"{ms(d)},1,2,0.5,1.5,1,1,0,0,0,0,10:1:1\n" + f"{ms(d) + g.DAY},1,2,0.5,1.5,1,1,0,0,0,0,10:1:1\n")
     assert [g.iso(r["t"]) for r in g.load_intraday(tmp_path)] == ["2025-03-31T00:00:00Z"]
+
+
+# ---- blindness cards g3-remove-visible-chart-cues-that-disclo + g3-assess-and-remove-visible-chart-side- (GPT audit 2026-10-16 HIGH)
+def _labels(ch):
+    return sorted(p["s"] for p in ch.p if p["k"] == "text" and not re.fullmatch(r"[-+\d.:%\s]+", p["s"]))
+
+
+def test_chart_drawing_never_depends_on_the_pre_filter_state():
+    """An overlay drawn only when the pre-filter condition holds tells the reader which half a window is in."""
+    rows = fake_rows()
+    cx = g.Intra(rows, 30)
+    ok_seen, no_seen = set(), set()
+    for i in range(250, len(cx.bars) - 1, 5):
+        ok = g.bal_run(cx.bars, i - 12, i - 1, 1.5)[0]
+        (ok_seen if ok else no_seen).add(tuple(_labels(g.intra_chart("TOM15", cx, i, "W-1"))))
+    assert ok_seen and no_seen, "fixture must cover balance and no-balance edges"
+    assert ok_seen == no_seen and len(ok_seen) == 1
+
+
+def test_intraday_chart_shows_no_clock_time_of_the_right_edge():
+    rows = fake_rows()
+    for code, u in g.UNITS.items():
+        if u["fam"] != "intra":
+            continue
+        cx = g.Intra(rows, u["tf"])
+        ch = g.intra_chart(code, cx, len(cx.bars) - 20, "W-1")
+        assert not [p["s"] for p in ch.p if p["k"] == "text" and re.search(r"\d\d:\d\d(?! UTC)", p["s"])], code
+
+
+def test_readme_does_not_publish_the_enrichment_rules():
+    txt = (HERE / "README.md").read_text(encoding="utf-8").lower()
+    assert "enriched" not in txt and "pre-filter" not in txt and "prefilter" not in txt and "10 random" not in txt
+    assert (HERE / "ANSWER_KEY_CLOSED" / "SELECTION_RULES.md").exists()
