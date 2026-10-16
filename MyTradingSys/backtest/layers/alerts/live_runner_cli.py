@@ -243,6 +243,10 @@ def make_fabio_v3_layer(grid=None, decisions=None, fixed=None, run_fn=None, flow
 WLOW_PARAMS_ID = "wlow_bounce_bbrsi60_2026-10-16"
 WLOW_EVENT = "wlow_bounce_bbrsi60_active"
 WLOW_LOG_DEFAULT = "MyTradingSys/runtime/wlow_bounce_forward.jsonl"
+# Operator 2026-10-16 (all-layers-on-testnet direction): with the flag ON the event carries side "long" and is NOT
+# collection_only, so the auto-trader may sample it on testnet (calibration data, NOT an edge claim; setup still
+# INCONCLUSIVE). Flag OFF = the old shadow behaviour (shadow_side only, no side). The forward log is written either way.
+WLOW_EMIT_LONG = True
 WLOW_MIN_BARS = 169   # at least one full week + 1 bar (the weekly low needs a complete prior ISO week); the runner's 100-bar window is too short
 
 
@@ -256,13 +260,14 @@ def _wlow_default_oi(k):
     return S.fetch_oi(k)
 
 
-def make_wlow_bounce_layer(fetch_candles=None, fetch_oi=None, log_path=WLOW_LOG_DEFAULT, params=None):
+def make_wlow_bounce_layer(fetch_candles=None, fetch_oi=None, log_path=WLOW_LOG_DEFAULT, params=None, emit_long=None):
     """Layer function fn(bars) -> events. Candles come from its own fetch (injectable; default = public USD-M 1h klines,
     closed bars only) because the weekly low needs >100 bars. Any fetch/compute error -> [] (logged to stderr), never raises.
     ARMED/ACTIVE readings are appended once per (bar, state) to `log_path`; only a NEW ACTIVE trigger on the last bar is an event."""
     from MyTradingSys.backtest.layers.wlow_bounce import detector as D
     logged = set()
     P = params or D.PARAMS
+    long_on = WLOW_EMIT_LONG if emit_long is None else bool(emit_long)
 
     def _err(msg):
         print(json.dumps({"key": "wlow_bounce", "error": msg}), file=sys.stderr, flush=True)
@@ -318,11 +323,17 @@ def make_wlow_bounce_layer(fetch_candles=None, fetch_oi=None, log_path=WLOW_LOG_
             _log_row(row)
             if st["state"] != "ACTIVE" or e["trigger"] != i:
                 return []
-            return [{"t": candles[i]["t"], "event": WLOW_EVENT, "collection_only": True, "shadow_side": "long",
-                     "prior_weekly_low": e["W"], "rsi14": rsi[i], "gap_to_upper_pct": gap,
-                     "net_delta_hold": D.delta_sum(candles, i - K + 1, i),
-                     "episode_cvd": D.delta_sum(candles, e["start"], e["trigger"]),
-                     "oi_now": oi_now, "oi_change_last_K_h": oi_chg}]
+            ev = {"t": candles[i]["t"], "event": WLOW_EVENT, "shadow_side": "long",
+                  "prior_weekly_low": e["W"], "rsi14": rsi[i], "gap_to_upper_pct": gap,
+                  "net_delta_hold": D.delta_sum(candles, i - K + 1, i),
+                  "episode_cvd": D.delta_sum(candles, e["start"], e["trigger"]),
+                  "oi_now": oi_now, "oi_change_last_K_h": oi_chg}
+            if long_on:
+                ev["side"] = "long"
+                ev["sampling"] = True
+            else:
+                ev["collection_only"] = True
+            return [ev]
         except Exception as exc:  # noqa: BLE001 - fail closed: no event, runner keeps running
             _err("wlow_error: %s" % exc)
             return []
@@ -330,7 +341,95 @@ def make_wlow_bounce_layer(fetch_candles=None, fetch_oi=None, log_path=WLOW_LOG_
     return _layer
 
 
-def build_default_registry(fetch_funding=None) -> dict:
+# ---- History for adapters that need more than the runner's 99-bar window ---------------------------------------------
+# The runner fetches `--limit` (100) bars per timeframe. The wave-1/2 adapters of session_levels (previous UTC day),
+# candle_close (week arm) and levels confluence (14 UTC days) read days of 1m history, so they get it from a small
+# per-process store that pages public Binance klines forward from its last bar (cold start = a few dozen requests, then
+# one small request per new bar). Fail closed: any fetch error, gap, or mismatch against the bars the runner supplied
+# -> no events (stderr line), never a partial window.
+HIST_SYMBOL = "BTCUSDT"                      # the runner default; a different --symbol fails the overlap check below
+HIST_TF_MS = {"1m": 60000, "5m": 300000, "15m": 900000, "1h": 3600000}
+HIST_PAGE = 1000
+HIST_NEED_BARS = {"session_levels": 2900, "candle_close": 10200, "levels_confluence": 24480}  # 2 d / 7.1 d / 17 d of 1m
+
+
+def _hist_default_page(symbol, interval, start_ms, limit):
+    url = "https://api.binance.com/api/v3/klines?" + urllib.parse.urlencode(
+        {"symbol": symbol, "interval": interval, "startTime": int(start_ms), "limit": int(limit)})
+    with urllib.request.urlopen(url, timeout=10) as resp:
+        return json.loads(resp.read())
+
+
+class HistoryStore:
+    """Closed-bar history per timeframe, grown forward from the last cached bar. `get(tf, bars, need)` returns the last
+    `need` closed bars ending at bars[-1] (contiguous, equal to `bars` on the overlap) or None. Never raises."""
+
+    def __init__(self, fetch_page=None, symbol=HIST_SYMBOL):
+        self.fetch_page, self.symbol, self.cache = fetch_page or _hist_default_page, symbol, {}
+
+    def _err(self, msg):
+        print(json.dumps({"key": "history", "error": msg}), file=sys.stderr, flush=True)
+
+    def get(self, tf, bars, need):
+        try:
+            step = HIST_TF_MS[tf]
+            if not bars:
+                return None
+            last = bars[-1]["t"]
+            if len(bars) >= need:
+                return list(bars)
+            have = self.cache.get(tf) or []
+            first_wanted = last - (need - 1) * step
+            if have and (have[-1]["t"] > last or have[0]["t"] > first_wanted):
+                have = []                            # cache does not cover the window (clock went back / bigger need)
+            start = have[-1]["t"] + step if have else first_wanted
+            pages = 0
+            while start <= last:
+                pages += 1
+                if pages > need // HIST_PAGE + 5:
+                    raise ValueError("history paging did not converge")
+                page = klines_to_bars(self.fetch_page(self.symbol, tf, start, HIST_PAGE))
+                page = [b for b in page if start <= b["t"] <= last]
+                if not page:
+                    break
+                have = have + page
+                start = have[-1]["t"] + step
+            if not have or have[-1]["t"] != last:
+                raise ValueError("history behind the runner window (last %s vs %s)"
+                                 % (have[-1]["t"] if have else None, last))
+            have = have[-(max(need, len(bars)) + 1):]
+            self.cache[tf] = have
+            for a, b in zip(have, have[1:]):
+                if b["t"] - a["t"] != step:
+                    self.cache[tf] = []
+                    raise ValueError("history gap at %s" % a["t"])
+            by_t = {b["t"]: b for b in have}
+            for b in bars:
+                h = by_t.get(b["t"])
+                if h is None or abs(h["c"] - b["c"]) > 1e-9 * max(1.0, abs(b["c"])):
+                    self.cache[tf] = []
+                    raise ValueError("history does not match the runner bars at %s (symbol?)" % b["t"])
+            if len(have) < need or have[-need]["t"] != first_wanted:
+                raise ValueError("history shorter than the %d bars asked for" % need)
+            return have[-need:]
+        except Exception as exc:  # noqa: BLE001 - fail closed
+            self._err("history_%s: %s" % (tf, exc))
+            return None
+
+
+def make_history_layer(adapter, tf, need, store):
+    """fn(bars) -> events: runs `adapter` on `need` bars of history from `store`; no history -> []. `adapter` stays on
+    the returned function as `.raw` (the rate watchdog replays it on its own long window)."""
+    def _layer(bars):
+        win = store.get(tf, bars, need)
+        if not win:
+            return []
+        return adapter(win)
+    _layer.raw = adapter
+    return _layer
+
+
+def build_default_registry(fetch_funding=None, history_fetch=None) -> dict:
     """
     Builds and returns a registry for two registered layers: RSI and FABIO CVD.
     More layers can be added in the same way in future work.
@@ -402,9 +501,26 @@ def build_default_registry(fetch_funding=None) -> dict:
     # Fabio v3: one key, all grid cells inside (a SHADOW cell is collection-only, see FABIO_V3_DECISIONS)
     entries.append({"layer": "fabio", "sub": "v3_grid", "tf": "1m", "fn": make_fabio_v3_layer(),
                     "params_id": FABIO_V3_PARAMS_ID, "confirm_lag_bars": 0})
-    # Weekly-low bounce: collection-only shadow (never a side, never promoted)
+    # Weekly-low bounce: long side while WLOW_EMIT_LONG (operator 2026-10-16, testnet calibration); shadow when OFF
     entries.append({"layer": "wlow_bounce", "sub": "bbrsi60", "tf": "1h", "fn": make_wlow_bounce_layer(),
                     "params_id": WLOW_PARAMS_ID, "confirm_lag_bars": 0})
+    # W3 (operator 2026-10-16: every layer available on testnet as a calibration/data source, NOT an edge claim). Each
+    # adapter puts "side" on its own events (sampling=True); one key per layer, routed by event.
+    # Handoffs: research/layer_readiness_2026-10-16/HANDOFF_W1a.md, HANDOFF_W1b.md, HANDOFF_W2a.md.
+    from MyTradingSys.backtest.layers.alerts import live_rsi_divergence as lrd, live_session_levels as lsl
+    from MyTradingSys.backtest.layers.alerts import live_bb_top_reversal as lbt, live_candle_close as lcc
+    from MyTradingSys.backtest.layers.alerts import live_levels_confluence as llc
+    store = HistoryStore(history_fetch)
+    for layer, sub, tf, fn, need in [
+        ("rsi_divergence", "rsi_divergence", "1h", lrd.adapter, None),
+        ("bb_top_reversal", "bb_top_reversal", "15m", lbt.bb_top_reversal_layer, None),
+        ("session_levels", "session_levels", "1m", lsl.adapter, HIST_NEED_BARS["session_levels"]),
+        ("candle_close", "candle_close", "1m", lcc.candle_close_layer, HIST_NEED_BARS["candle_close"]),
+        ("levels", "confluence", "1m", llc.levels_confluence_layer, HIST_NEED_BARS["levels_confluence"]),
+    ]:
+        entries.append({"layer": layer, "sub": sub, "tf": tf,
+                        "fn": make_history_layer(fn, tf, need, store) if need else fn,
+                        "params_id": sub + "_w3_2026-10-16", "confirm_lag_bars": 0})
     
     # Import here to avoid circular dependency
     from MyTradingSys.backtest.layers.alerts.live_runner_core import build_registry
