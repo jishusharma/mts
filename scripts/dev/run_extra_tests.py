@@ -27,6 +27,7 @@ EXTRA = [
     "MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/test_study.py",
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_study.py",
     "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py",
+    "MyTradingSys/research/context_null_2026-10-16/test_context_null.py",
     "scripts/dev/test_suplock.py",
     "MyTradingSys/research/mfe_exit_2026-10-13/test_mfe_exit_study.py",
     "MyTradingSys/research/malkan_extract_2026-10-15/tools/test_check_numbers.py",
@@ -56,6 +57,8 @@ EXTRA = [
     "tests/test_worker_prefix_hash.py",
     "scripts/dev/test_fabio_prescreen.py",
     "scripts/dev/test_sched_scripts.py",
+    "scripts/dev/test_run_extra_tests.py",
+    "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py",
 ]
 
 
@@ -75,7 +78,17 @@ def run_one(rel, basetemp):
         return False, "missing"
     r = subprocess.run([sys.executable, "-m", "pytest", p.name, "-q", "-p", "no:cacheprovider", f"--basetemp={basetemp}"],
                        cwd=p.parent, capture_output=True, text=True, errors="replace")
-    return r.returncode == 0, (r.stdout.strip().splitlines() or ["(no output)"])[-1]
+    tail = (r.stdout.strip().splitlines() or ["(no output)"])[-1]
+    if r.returncode != 0:
+        tail += failure_detail(r.stdout, r.stderr)
+    return r.returncode == 0, tail
+
+
+def failure_detail(stdout, stderr, n=30):
+    """Last `n` lines of a failed file's pytest output, indented under its FAIL line, so a CI log shows the cause (2026-10-16:
+    five files failed on the runners with only '1 error in 0.6s' in the log and passed on every desktop)."""
+    lines = (stdout or "").strip().splitlines()[-n:] + (stderr or "").strip().splitlines()[-10:]
+    return "".join(chr(10) + "        | " + ln[:300] for ln in lines)
 
 
 def run_files(rels, n_jobs, one=run_one, tmp=None):
