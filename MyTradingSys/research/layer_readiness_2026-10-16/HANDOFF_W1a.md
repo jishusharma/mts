@@ -9,3 +9,4 @@ Registry lines (key `layer:<layer>:<sub>:<tf>`), proposed size OURS 20/2, both S
 Notes: one adapter emits both sides, so W3 may register once per layer and route by event; session_levels needs 1m bars with >=1400 bars of the
 previous UTC day (else no events); grep every TF/family map for tf `1m` + family `session_levels`/`rsi_divergence` (CLAUDE.md rule).
 Tests: test_live_rsi_divergence.py, test_live_session_levels.py auto-collected by run_all_tests (layers rglob), 17 tests.
+Registry: W1a added 2 WIRE entries in wiring_registry.json (gate requires it); W3 must delete them when wiring.

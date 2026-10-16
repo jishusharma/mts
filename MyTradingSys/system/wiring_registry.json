@@ -1,6 +1,16 @@
 {
  "_doc": "Files the wiring scan finds unrun (TEST-ONLY/ORPHAN), each declared with a disposition and evidence. Checked by scripts/dev/wiring_scan.py --check in the gate. Dispositions: TOOL, REPRO, PARKED, WIRE. A file that becomes LIVE/DEV-TOOL or disappears must be removed from here.",
  "entries": {
+  "MyTradingSys/backtest/layers/alerts/live_rsi_divergence.py": {
+   "disp": "WIRE",
+   "why": "W1a adapter for rsi_divergence 1h, tested, not yet registered in live_runner_cli/live_layers (W3 owns wiring). W3: remove this entry when wiring it.",
+   "ref": "research/layer_readiness_2026-10-16/HANDOFF_W1a.md"
+  },
+  "MyTradingSys/backtest/layers/alerts/live_session_levels.py": {
+   "disp": "WIRE",
+   "why": "W1a adapter for session_levels 1m, tested, not yet registered in live_runner_cli/live_layers (W3 owns wiring). W3: remove this entry when wiring it.",
+   "ref": "research/layer_readiness_2026-10-16/HANDOFF_W1a.md"
+  },
   "MyTradingSys/research/qriptal_2026-10-10/ledger.py": {
    "disp": "REPRO",
    "why": "Rebuilds research/qriptal_2026-10-10/CALL_LEDGER.csv from ledger_rows.json, verifying every quote against the staged raw transcripts (ledger.py build | check); run by hand, named in LEDGER_NOTES.md."
