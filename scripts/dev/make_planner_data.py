@@ -46,6 +46,18 @@ def clip(s, n):
     return s if len(s) <= n else s[: n - 1] + "…"
 
 
+def block_reason(c):
+    """Why a blocked card is blocked: the note sentences that say so, else the note head; plus open asks."""
+    note = (c.get("note") or "").strip()
+    parts = re.split(r"(?<=[.;])\s+", note)
+    hits = [x for x in parts if re.search(r"block|wait|paus|fix.first|needs|until|held|hold", x, re.I)]
+    why = " ".join(hits) if hits else note
+    asks = c.get("asks") or []
+    if asks:
+        why += " Open asks: " + "; ".join(str(a) for a in asks)
+    return clip(why.strip() or "state is blocked (no reason written on the card)", 320)
+
+
 def build(cards):
     states = {c["id"]: c.get("state", "") for c in cards}
     kept = [c for c in cards if c.get("state") in KEEP]
@@ -55,6 +67,20 @@ def build(cards):
         for d in c.get("depends_on") or []:
             if states.get(d) != "done":
                 unblocks[d] = unblocks.get(d, 0) + 1
+    by_id = {c["id"]: c for c in cards}
+
+    def blocked_up(i, seen):
+        """Open ancestors of i (excluding i) whose state is blocked."""
+        out = []
+        for d in by_id.get(i, {}).get("depends_on") or []:
+            if d in seen or states.get(d) == "done":
+                continue
+            seen.add(d)
+            if states.get(d) == "blocked":
+                out.append(d)
+            out += blocked_up(d, seen)
+        return out
+
     tasks = []
     for c in kept:
         deps = [{"id": d, "state": states.get(d, "missing")} for d in (c.get("depends_on") or [])]
@@ -63,7 +89,11 @@ def build(cards):
             "id": c["id"], "title": c.get("title") or clip(c.get("goal", ""), 90),
             "state": c["state"], "lane": c.get("lane", ""), "group": group_of(c.get("lane")),
             "prio": c.get("prio"), "size": c.get("size", ""),
-            "deps": deps, "blockers": blockers, "isolated": not blockers,
+            "deps": deps, "blockers": blockers,
+            "blocked": c["state"] == "blocked",
+            "block_reason": block_reason(c) if c["state"] == "blocked" else "",
+            "waits_on_blocked": [{"id": d, "reason": block_reason(by_id[d])} for d in blocked_up(c["id"], set())],
+            "isolated": not blockers and c["state"] != "blocked",
             "unblocks": unblocks.get(c["id"], 0),
             "goal": clip(c.get("goal"), 900), "done_when": clip(c.get("done_when"), 700),
             "scope_in": [clip(x, 200) for x in (c.get("scope_in") or [])][:10],
