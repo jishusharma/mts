@@ -35,7 +35,7 @@ def test_later_day_bar_cannot_change_an_available_row():
     A["V"][:] = 1.0
     A["H"] = A["L"] + 2
     before = LL.build(A, 2, _bp, "t")
-    A["H"][N + 7] = 10_000.0          # planted: a day-1 high
+    A["H"][N:][7] = 10_000.0          # planted: a day-1 high
     after = LL.build(A, 2, _bp, "t")
     day0 = [r for r in before if r["available_at"] == LL.TS0 + LL.DAY_MS]
     assert day0 == [r for r in after if r["available_at"] == LL.TS0 + LL.DAY_MS]
