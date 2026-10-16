@@ -32,7 +32,18 @@ Rule from the task: time a 5-minute slice with medium.en and small.en; medium.en
 - small.en, beam 5: 0.299 (best) to 2.06 (worst load) -> 1.9 h to 13 h projected. Chosen: **small.en, beam 5**. Text quality on the slice read fine (jargon: "absorbed", "naked POC", "squeeze", contract counts correct).
 
 ## 3. Full run
-(filled when the run ends: see section 5)
+| video | audio | model | transcribe time | RTF | job cores (avg) | segments / words | state |
+|---|---|---|---|---|---|---|---|
+| Is1HvdfQm5c | 8,881 s (2.47 h) | small.en beam 5 | 15,366 s (4.27 h) | 1.73 | 0.66 | 997 / 17,283 | DONE 2026-10-16 08:49 IST (3 low-confidence segments, 0 dropped credit lines) |
+| xUyqIjCfZzg | 13,777 s (3.83 h) | small.en beam 5 | running | about 1.0 to 1.7 expected (4 to 6.5 h) | | | restarted 10:43 IST after a machine restart killed the first job; resumable |
+
+Contention: the RTF swings with what else the machine runs (the 5-minute benchmark gave 0.30 idle and 2.06 loaded); the job got 0.66 of a core on average over Is1H because the shipping gate and other sessions ran at the same time.
+
+Convert xUyqIjCfZzg when `F:/MTS/data/fabio_videos/asr/xUyqIjCfZzg.jsonl.summary.jsonl` exists (the job is done):
+```
+python scripts/dev/asr_to_canonical.py --jsonl F:/MTS/data/fabio_videos/asr/xUyqIjCfZzg.jsonl --id xUyqIjCfZzg --title "Trading LIVE with TWO World Class Order Flow Scalpers (FT Fabio Valentini & Carmine Rosato)" --published 2026-05-17 --uploader "Chart Fanatics" --model small.en --date 2026-10-16 --note "two speakers (Fabio Valentini and Carmine Rosato); ASR has no speaker labels" --out raw_transcripts_canonical/xUyqIjCfZzg_raw.txt
+```
+If the job died (restart), start the same command again WITHOUT --fresh (section 1): it resumes from the last written segment. Card: fabio-xuyq-asr-extract.
 
 ## 4. Limits of this transcript (read before quoting)
 - Machine transcription, not captions: numbers, tickers and contract counts can be misheard; every quote from it is labelled ASR and the frames stay the arbiter for prices.
@@ -40,5 +51,10 @@ Rule from the task: time a 5-minute slice with medium.en and small.en; medium.en
 - Whisper hallucinates credit lines on silence ("Subs by www..."); `asr_to_canonical.py` drops them and counts them in the header (`# ASR QA`).
 - Stream audio with chat/music gaps: VAD drops non-speech, so line timestamps are speech-only, but they stay on the original video timeline.
 
-## 5. Result
-(filled at the end)
+## 5. Result (2026-10-16)
+- model small.en (beam 5, int8, VAD on, word timestamps), RTF 1.73 on Is1HvdfQm5c.
+- audio transcribed and extracted so far: 2.47 h (Is1HvdfQm5c); 3.83 h (xUyqIjCfZzg) still to do.
+- Is1HvdfQm5c: raw_transcripts_canonical/Is1HvdfQm5c_raw.txt (932 lines, 17,227 words) and extracts/v2/fabio/Is1HvdfQm5c_v2.md (333 decision rows, 9 trade blocks, quote checker PASS). Finding: mostly teaching and viewer Q&A; no confirmed live fill with stated entry and stop.
+- Catalogue: ASR quotes added to FAB-1 (momentum entry at a wall: worst case), FAB-2 (absorbed buyers, small stop above the area, 1 to 4.5 [ASR number]), FAB-4 (counter-trend reversal declined), FAB-5 ("the squeeze setup", stop below the area), FAB-8 (micro gap = inefficient volume), plus the names 'virgin POC test', 'last sniper', 'deep effort' under Fabio: unassigned. No new FAB row: no second video states entry, stop and target.
+- Commits: c2e2f6ce (tooling), c2c555b1 (transcript + addendum), 0b4240ec (extract); the catalogue and card commit follows (see git log of this folder).
+
