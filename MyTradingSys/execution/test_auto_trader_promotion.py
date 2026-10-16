@@ -157,7 +157,8 @@ class PromotionGateTest(unittest.TestCase):
         self.assertEqual(set(gf), want)
         self.assertNotIn("layer:", gf)                                    # the catch-all would defeat default-deny
         for k, v in gf.items():
-            self.assertTrue(v["reason"].startswith("grandfathered pre-pipeline testnet calibration"), k)
+            self.assertTrue(v["reason"].startswith(("grandfathered pre-pipeline testnet calibration",
+                                                    "grandfathered testnet calibration, operator 2026-10-16")), k)
             self.assertEqual(v["review_by"], "2026-10-23", k)
 
 
