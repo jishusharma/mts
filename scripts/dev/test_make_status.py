@@ -136,6 +136,64 @@ class CiLine(Base):
         self.assertIn("5.0 h old", line)
 
 
+class CiCardLine(unittest.TestCase):
+    """2026-10-16: make_status.py ran in the live tree while CI was red and filed an untracked ci-<sha>.json there; the same card shipped to
+    fast-track then blocked the deploy merge. The live tree (marker FILE .mts_live) never files the card; builders' trees still do."""
+    RED = "CI green: abc1234 (2026-10-15 20:00:00 +0000, 9.0 h old), 3 trunk landing(s) / 9 commit(s) behind origin/fast-track: RED: oldest ungreen commit is 5.0 h old - CI is failing"
+
+    def setUp(self):
+        import ci_red_card
+        self.calls = []
+        self.orig = ci_red_card.run
+        ci_red_card.run = lambda root, apply: (self.calls.append((root, apply)), ("FILED", "filed ci-abc1234"))[1]
+        self.addCleanup(lambda: setattr(ci_red_card, "run", self.orig))
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = self.tmp.name
+
+    def test_live_tree_does_not_file_the_card_and_says_so(self):
+        (Path(self.root) / ".mts_live").write_text("", encoding="utf-8")
+        self.assertEqual(ms.get_ci_card_line(self.RED, root=self.root, env={}), "CI card: not filed (live tree)")
+        self.assertEqual(self.calls, [])
+        self.assertEqual(list(Path(self.root).glob("MyTradingSys/**/*.json")), [])
+
+    def test_builder_tree_still_files_the_card(self):
+        line = ms.get_ci_card_line(self.RED, root=self.root, env={})
+        self.assertEqual(line, "CI card: FILED; filed ci-abc1234")
+        self.assertEqual(self.calls, [(str(Path(self.root).resolve()), True)])
+
+    def test_nothing_to_say_when_ci_is_not_red_in_either_tree(self):
+        ok = "CI green: abc1234 (2026-10-16 01:00:00 +0000) = origin/fast-track: OK"
+        self.assertIsNone(ms.get_ci_card_line(ok, root=self.root, env={}))
+        (Path(self.root) / ".mts_live").write_text("", encoding="utf-8")
+        self.assertIsNone(ms.get_ci_card_line(ok, root=self.root, env={}))
+        self.assertEqual(self.calls, [])
+
+    def test_opt_out_env_keeps_the_line_out_entirely(self):
+        self.assertIsNone(ms.get_ci_card_line(self.RED, root=self.root, env={"MTS_NO_CI_CARD": "1"}))
+        self.assertEqual(self.calls, [])
+
+    def test_a_filing_error_never_blocks_the_status_page(self):
+        import ci_red_card
+
+        def boom(root, apply):
+            raise RuntimeError("gh")
+        ci_red_card.run = boom
+        self.assertIn("not filed (RuntimeError)", ms.get_ci_card_line(self.RED, root=self.root, env={}))
+
+    def test_live_marker_is_a_file_at_the_root_not_a_nested_one(self):
+        self.assertFalse(ms.is_live_tree(self.root))
+        (Path(self.root) / "sub").mkdir()
+        (Path(self.root) / "sub" / ".mts_live").write_text("", encoding="utf-8")
+        self.assertFalse(ms.is_live_tree(self.root))
+        (Path(self.root) / ".mts_live").write_text("", encoding="utf-8")
+        self.assertTrue(ms.is_live_tree(self.root))
+
+    def test_main_builds_its_card_line_through_get_ci_card_line(self):
+        import inspect
+        self.assertIn("get_ci_card_line(ci_line)", inspect.getsource(ms.main))
+
+
 class TrunkLog(Base):
     def test_log_is_origin_fast_track_not_local_head(self):
         commit_file(self.repo, "a.txt", self.now - 3 * DAY)

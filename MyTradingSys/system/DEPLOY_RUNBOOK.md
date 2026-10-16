@@ -17,7 +17,11 @@ What the job does, in order; it stops at the first failure and writes the reason
    af91b21. A `git merge --ff-only` aborts when the recorder has modified it, or deletes it when the target commit drops it; without it
    `orderflow_live.py` restarts at the current minute and the minutes since the last write are never fetched. The copy goes to
    `runtime_data/deploy_backup/<stamp>/_state.json` and is put back if the merge removed the file.
-6. `git merge --ff-only origin/green/fast-track`.
+6. `git merge --ff-only origin/green/fast-track`. An untracked file in the live tree that the merge would create makes git refuse (`STOP_MERGE`). Only a machine-generated
+   CI card (`MyTradingSys/system/tasks/ci-<sha>.json`, same bytes as the incoming file or the shape `ci_red_card.py` writes) is copied to
+   `runtime_data/deploy_backup/<stamp>/untracked/<path>` and removed (`untracked_cleared` in the result); any other untracked clash stays `STOP_MERGE`
+   (checked before the gate and again after it, nothing removed). 2026-10-16: `make_status.py` filed such a card in the live tree and the deploy stopped;
+   it no longer files the card there (`CI card: not filed (live tree)`).
 7. Restart only what changed (`RESTART_MAP` in auto_deploy.py): execution/auto_trader*, executor, deribit_orders ... -> `auto_trader.py`;
    daily_loss_monitor, mainnet_pnl, kill_switch, deribit_orders -> `daily_loss_monitor.py`; backtest/layers/alerts and the layer packages, bt/, fees -> `live_runner_cli.py`.
    loop-supervisor revives them in about a minute. **position_manager is never killed** (it guards an open position; new managers load the new code).

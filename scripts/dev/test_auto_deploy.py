@@ -1,6 +1,8 @@
 """auto_deploy.py: the scheduled deploy stops on a red gate, never touches a tree it should not, restarts only what changed.
 Expected outcomes come from the recipe in the module docstring / DEPLOY_RUNBOOK.md (DEPLOY_RUNBOOK.md Manual fallback), not from the code."""
 import json
+import os
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -416,6 +418,266 @@ class TestRunLock(unittest.TestCase):
         self.assertEqual(rc, 0)
         self.assertEqual(called, [])
         self.assertTrue(self.lock.exists(), "skipped start must not delete the owner's lock")
+
+
+CARD_SHA = "1bb1b39"
+CARD = f"MyTradingSys/system/tasks/ci-{CARD_SHA}.json"
+
+
+def real_card_text(run_id=77, sha=CARD_SHA):
+    """The card exactly as ci_red_card.card_for + tasks.save write it (so a change of the generated shape breaks these tests, not the deploy)."""
+    import ci_red_card
+    card = ci_red_card.card_for({"headSha": sha + "0" * (40 - len(sha)), "databaseId": run_id, "url": "https://ci.example/run", "createdAt": "2026-10-16T01:00:00Z"})
+    return json.dumps(card, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+
+
+class UntrackedOps(FakeOps):
+    """FakeOps + the untracked listing and blob ids. incoming: {path: blob id in the target commit}; local: {path: blob id of the untracked file}."""
+
+    def __init__(self, untracked=(), incoming=None, local=None, ls_rc=0, **kw):
+        super().__init__(**kw)
+        self.untracked, self.incoming, self.local, self.ls_rc = list(untracked), dict(incoming or {}), dict(local or {}), ls_rc
+
+    def git(self, *a, timeout=300):
+        if a[:3] == ("ls-files", "--others", "--exclude-standard"):
+            self.calls.append(a)
+            return (self.ls_rc, "\n".join(self.untracked) if not self.ls_rc else "fatal: not a git repository")
+        if a[0] == "rev-parse" and ":" in a[1]:
+            self.calls.append(a)
+            blob = self.incoming.get(a[1].split(":", 1)[1])
+            return (0, blob + "\n") if blob else (128, "fatal: path does not exist in the commit")
+        if a[0] == "hash-object":
+            self.calls.append(a)
+            return 0, self.local.get(a[-1], "0" * 40) + "\n"
+        return super().git(*a, timeout=timeout)
+
+
+class TestUntrackedClash(unittest.TestCase):
+    """2026-10-16: the gated merge stopped with STOP_MERGE 'untracked working tree files would be overwritten' (ci-1bb1b39.json, a card make_status.py
+    filed in the live tree and a builder shipped to fast-track). Generated CI cards are backed up and cleared; every other untracked clash still stops."""
+    setUp = TestRun.setUp
+    merges = TestRun.merges
+
+    def put(self, rel, text):
+        f = self.root / rel
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text(text, encoding="utf-8", newline="\n")
+        return f
+
+    def test_generated_ci_card_clash_is_backed_up_removed_before_the_merge_and_deploy_goes_on(self):
+        old = real_card_text(run_id=77)
+        f = self.put(CARD, old)
+        seen = []
+
+        class SeeOps(UntrackedOps):
+            def git(self, *a, timeout=300):
+                if a[0] == "merge":
+                    seen.append(f.exists())
+                return super().git(*a, timeout=timeout)
+        ops = SeeOps(untracked=[CARD], incoming={CARD: "1" * 40}, local={CARD: "2" * 40}, changed=[CARD, "README.md"])
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["action"], "DEPLOYED")
+        self.assertEqual(r["untracked_cleared"], [CARD])
+        self.assertEqual(seen, [False])          # gone when `git merge` ran
+        saved = list((self.root / "runtime_data" / "deploy_backup").glob("*/untracked/" + CARD))
+        self.assertEqual(len(saved), 1)
+        self.assertEqual(saved[0].read_text(encoding="utf-8"), old)
+
+    def test_card_with_the_incoming_content_is_cleared_even_when_it_is_not_card_shaped(self):
+        f = self.put(CARD, "hand edited, but byte-identical to what the trunk ships\n")
+        ops = UntrackedOps(untracked=[CARD], incoming={CARD: "a1" * 20}, local={CARD: "a1" * 20}, changed=[CARD])
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["action"], "DEPLOYED")
+        self.assertEqual(r["untracked_cleared"], [CARD])
+        self.assertFalse(f.exists())
+
+    def test_card_path_with_other_content_stops_and_is_left_alone(self):
+        f = self.put(CARD, json.dumps({"id": "mine", "title": "someone's own notes"}))
+        ops = UntrackedOps(untracked=[CARD], incoming={CARD: "1" * 40}, local={CARD: "2" * 40}, changed=[CARD])
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["action"], "STOP_MERGE")
+        self.assertIn(CARD, r["reason"])
+        self.assertEqual((self.merges(ops), ops.gated, ops.killed), ([], [], []))
+        self.assertTrue(f.exists())
+        self.assertFalse((self.root / "runtime_data").exists())
+
+    def test_any_other_untracked_clash_stays_stop_merge_and_costs_no_gate_run(self):
+        other = "MyTradingSys/execution/new_module.py"
+        f = self.put(other, "print('mine')\n")
+        ops = UntrackedOps(untracked=[other], incoming={other: "1" * 40}, local={other: "1" * 40}, changed=[other])   # even identical content: not a card
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["action"], "STOP_MERGE")
+        self.assertIn("untracked working tree files would be overwritten", r["reason"])
+        self.assertEqual((self.merges(ops), ops.gated, ops.killed), ([], [], []))
+        self.assertTrue(f.exists())
+
+    def test_near_miss_card_names_are_not_cleared(self):
+        for rel in ("MyTradingSys/system/tasks/ci-1bb1b39.json.bak", "MyTradingSys/system/tasks/B059.json", "MyTradingSys/system/tasks/ci-XYZ.json",
+                    "MyTradingSys/system/tasks/sub/ci-1bb1b39.json", "other/MyTradingSys/system/tasks/ci-1bb1b39.json"):
+            self.put(rel, real_card_text())
+            ops = UntrackedOps(untracked=[rel], incoming={rel: "1" * 40}, local={rel: "1" * 40}, changed=[rel])
+            self.assertEqual(ad.run(ops, save=False)["action"], "STOP_MERGE", rel)
+            self.assertEqual(self.merges(ops), [], rel)
+
+    def test_a_blocking_clash_removes_nothing_not_even_the_clearable_card(self):
+        other = "MyTradingSys/execution/new_module.py"
+        f = self.put(CARD, real_card_text())
+        self.put(other, "x\n")
+        ops = UntrackedOps(untracked=[CARD, other], incoming={CARD: "1" * 40, other: "3" * 40}, changed=[CARD, other])
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["action"], "STOP_MERGE")
+        self.assertIn(other, r["reason"])
+        self.assertNotIn("untracked_cleared", r)
+        self.assertTrue(f.exists())
+        self.assertEqual(self.merges(ops), [])
+
+    def test_untracked_files_outside_the_incoming_diff_are_left_alone(self):
+        f = self.put(CARD, real_card_text())
+        ops = UntrackedOps(untracked=[CARD, "scratch.txt"], changed=["README.md"])
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["action"], "DEPLOYED")
+        self.assertNotIn("untracked_cleared", r)
+        self.assertTrue(f.exists())
+
+    def test_check_mode_reports_the_card_it_would_clear_and_removes_nothing(self):
+        f = self.put(CARD, real_card_text())
+        ops = UntrackedOps(untracked=[CARD], incoming={CARD: "1" * 40}, changed=[CARD])
+        r = ad.run(ops, check=True, save=False)
+        self.assertEqual(r["action"], "WOULD_DEPLOY")
+        self.assertEqual(r["untracked_would_clear"], [CARD])
+        self.assertTrue(f.exists())
+        self.assertEqual((ops.gated, self.merges(ops)), ([], []))
+
+    def test_unreadable_untracked_listing_fails_closed(self):
+        ops = UntrackedOps(ls_rc=128, changed=["README.md"])
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["action"], "STOP_MERGE")
+        self.assertEqual((self.merges(ops), ops.gated), ([], []))
+
+    def test_card_filed_while_the_gate_runs_is_cleared_too(self):
+        outer = self
+
+        class LateOps(UntrackedOps):
+            def gate(self, sha):
+                outer.put(CARD, real_card_text())     # make_status.py ran on the live host during the gate
+                self.untracked.append(CARD)
+                return super().gate(sha)
+        ops = LateOps(incoming={CARD: "1" * 40}, local={CARD: "2" * 40}, changed=[CARD])
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["action"], "DEPLOYED")
+        self.assertEqual(r["untracked_cleared"], [CARD])
+        self.assertFalse((self.root / CARD).exists())
+
+    def test_generated_shape_follows_ci_red_card_and_rejects_variants(self):
+        self.assertTrue(ad.is_generated_ci_card(CARD, real_card_text()))
+        good = json.loads(real_card_text())
+        for key, val in (("pinned", False), ("id", "ci-0000000"), ("title", "fix CI 1bb1b39: something else"), ("sources", []),
+                         ("sources", ["CI run 1", "CI run 2"]), ("sources", ["note"]), ("goal", "my own goal")):
+            bad = dict(good, **{key: val})
+            self.assertFalse(ad.is_generated_ci_card(CARD, json.dumps(bad)), key)
+        self.assertFalse(ad.is_generated_ci_card(CARD, "[]"))
+        self.assertFalse(ad.is_generated_ci_card(CARD, "not json"))
+        self.assertFalse(ad.is_generated_ci_card("MyTradingSys/system/tasks/ci-2222222.json", real_card_text()))   # id names another sha
+        self.assertFalse(ad.is_generated_ci_card("MyTradingSys/system/tasks/B059.json", real_card_text()))
+
+
+def _git(repo, *args):
+    env = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t")
+    return subprocess.run(["git", *args], cwd=str(repo), env=env, check=True, capture_output=True, text=True).stdout.strip()
+
+
+class RealGitOps(ad.Ops):
+    """Real git in a temp 'live' clone; gate, kill and clock are fakes."""
+
+    def __init__(self, repo):
+        self.repo = str(repo)
+
+    def git(self, *a, timeout=300):
+        return ad.sh(["git", *a], cwd=self.repo, timeout=timeout)
+
+    def is_live(self):
+        return True
+
+    def gate(self, sha):
+        return 0, "ALL TESTS PASSED"
+
+    def kill(self, script):
+        return 0
+
+    def now(self):
+        return datetime(2026, 10, 16, 2, 45, tzinfo=timezone.utc)
+
+
+class TestUntrackedClashRealGit(unittest.TestCase):
+    """The incident itself with real git: the same untracked card in the live tree and in the commit the deploy merges."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        root = Path(self.tmp.name)
+        self.src, self.live = root / "origin", root / "live"
+        self.src.mkdir()
+        _git(self.src, "init", "-q")
+        (self.src / "README.md").write_text("one\n", encoding="utf-8", newline="\n")
+        _git(self.src, "add", "-A")
+        _git(self.src, "commit", "-q", "-m", "c1")
+        self.publish()
+        self.live.mkdir()
+        _git(self.live, "init", "-q")
+        _git(self.live, "remote", "add", "origin", str(self.src))
+        _git(self.live, "fetch", "-q", "origin")
+        _git(self.live, "checkout", "-q", "-B", "livebranch", "origin/green/fast-track")
+        self.saved_repo = ad.REPO
+        ad.REPO = self.live
+        self.addCleanup(lambda: setattr(ad, "REPO", self.saved_repo))
+
+    def publish(self):
+        _git(self.src, "update-ref", "refs/heads/fast-track", "HEAD")
+        _git(self.src, "update-ref", "refs/heads/green/fast-track", "HEAD")
+
+    def ship(self, rel, text):
+        f = self.src / rel
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text(text, encoding="utf-8", newline="\n")
+        _git(self.src, "add", "-A")
+        _git(self.src, "commit", "-q", "-m", "c2 " + rel)
+        self.publish()
+
+    def untracked(self, rel, text):
+        f = self.live / rel
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text(text, encoding="utf-8", newline="\n")
+        return f
+
+    def test_untracked_generated_ci_card_that_the_trunk_also_ships_no_longer_stops_the_deploy(self):
+        mine = self.untracked(CARD, real_card_text(run_id=1))
+        self.ship(CARD, real_card_text(run_id=2))
+        r = ad.run(RealGitOps(self.live), state={}, save=False)
+        self.assertEqual(r["action"], "DEPLOYED", r)
+        self.assertEqual(r["untracked_cleared"], [CARD])
+        self.assertEqual(_git(self.live, "rev-parse", "HEAD"), _git(self.src, "rev-parse", "HEAD"))
+        self.assertEqual(mine.read_text(encoding="utf-8"), real_card_text(run_id=2))        # the trunk's copy is checked out
+        self.assertEqual(_git(self.live, "status", "--porcelain", "--untracked-files=no"), "")
+        saved = list((self.live / "runtime_data" / "deploy_backup").glob("*/untracked/" + CARD))
+        self.assertEqual([p.read_text(encoding="utf-8") for p in saved], [real_card_text(run_id=1)])
+
+    def test_identical_untracked_copy_is_cleared_and_checked_out_from_the_trunk(self):
+        self.untracked(CARD, "same bytes\n")
+        self.ship(CARD, "same bytes\n")
+        r = ad.run(RealGitOps(self.live), state={}, save=False)
+        self.assertEqual(r["action"], "DEPLOYED", r)
+        self.assertEqual(r["untracked_cleared"], [CARD])
+
+    def test_any_other_untracked_clash_still_stops_with_real_git_and_keeps_the_file(self):
+        other = "MyTradingSys/execution/new_module.py"
+        mine = self.untracked(other, "mine\n")
+        self.ship(other, "theirs\n")
+        head = _git(self.live, "rev-parse", "HEAD")
+        r = ad.run(RealGitOps(self.live), state={}, save=False)
+        self.assertEqual(r["action"], "STOP_MERGE", r)
+        self.assertEqual(_git(self.live, "rev-parse", "HEAD"), head)
+        self.assertEqual(mine.read_text(encoding="utf-8"), "mine\n")
+        self.assertFalse((self.live / "runtime_data").exists())
 
 
 if __name__ == "__main__":
