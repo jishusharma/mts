@@ -61,11 +61,6 @@
    "disp": "TOOL",
    "why": "Backtest C (PLAN.md section 2): exit policies on fires_spot; run by hand, output research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md."
   },
-  "MyTradingSys/backtest/bigtrade/fires_kline.py": {
-   "disp": "REPRO",
-   "ref": "bigtrade-2026-10-09",
-   "why": "Worker B1 fire history of the kline-only live layers on current live parameters (PLAN.md 2B); read-only import of the live registry; run by hand or a desk task, covered by test_fires_kline.py."
-  },
   "MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py": {
    "disp": "TOOL",
    "ref": "bigtrade-2026-10-09",
@@ -75,11 +70,6 @@
    "disp": "REPRO",
    "ref": "bigtrade-2026-10-09",
    "why": "Worker C F-BT-08 check: reproduces Java buildVp volume weighting against the trade-level profile; read-only, run by hand, output cited in SCREENSHOT_OBSERVATIONS.md."
-  },
-  "MyTradingSys/backtest/bigtrade/parity_kline.py": {
-   "disp": "REPRO",
-   "ref": "bigtrade-2026-10-09",
-   "why": "Parity gate of worker B1: replay vs the live runner's logged alerts per registry key (95 percent rule); run by hand, covered through fires_kline tests."
   },
   "MyTradingSys/backtest/bigtrade/report_bigmoves.py": {
    "disp": "REPRO",
@@ -814,6 +804,18 @@
   "MyTradingSys/research/level_ledger_2026-10-16/zone_mismatch_classify.py": {
    "disp": "REPRO",
    "why": "Classifies the java_zone_check mismatches by cause (edge/grid/weighting) with a Java port checked against compiled Java; needs a JDK, run by hand, result in research/pit_levels_2026-10-16/ZONE_MISMATCH.md."
+  },
+  "MyTradingSys/research/layer_lab/candle_pattern_event_table/patterns.py": {
+   "disp": "TOOL",
+   "why": "Pure closed-bar pattern predicates for the candle_pattern_event_table research build; covered by test_patterns.py; no live imports."
+  },
+  "MyTradingSys/research/layer_lab/context_fix1_stop_strata/stop_strata.py": {
+   "disp": "TOOL",
+   "why": "Count-only V2 stop geometry summaries, relative stop-gap flag and f3_stop_tf-stratified E helper; covered by test_stop_strata.py; no live imports."
+  },
+  "MyTradingSys/research/layer_lab/context_fix2_mde_rule/mde_rule.py": {
+   "disp": "TOOL",
+   "why": "Pure realised-MDE and day/week-clustered verdict helper plus n_needed planning calculation for context composite V2; covered by test_mde_rule.py; no live imports."
   }
  }
 }
