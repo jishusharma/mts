@@ -5,6 +5,9 @@ Run: python MyTradingSys/research/qriptal_2026-10-10/test_ledger.py
 """
 import sys
 sys.dont_write_bytecode = True
+import contextlib
+import io
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -122,6 +125,28 @@ class TestReviewedRows(unittest.TestCase):
 
     def test_csv_matches_rebuild(self):
         self.assertEqual(L.read_csv_text(), L.render_csv(L.build_rows()))
+
+    def test_crlf_checkout_of_the_csv_matches_but_a_content_change_does_not(self):
+        # windows-latest checks the file out with core.autocrlf=true: same content, CRLF line ends
+        want = L.render_csv(L.build_rows())
+        tampered = want.replace("QRP-", "QRX-", 1)
+        self.assertNotEqual(tampered, want)
+
+        def check(content):
+            """-> (read_csv_text() of a file holding `content`, exit code of `ledger.py check` on it)"""
+            real = L.CSV_PATH
+            try:
+                with tempfile.TemporaryDirectory() as d:
+                    L.CSV_PATH = Path(d, "CALL_LEDGER.csv")
+                    L.CSV_PATH.write_bytes(content.encode("utf-8"))
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        return L.read_csv_text(), L.main(["ledger.py", "check"])
+            finally:
+                L.CSV_PATH = real
+
+        self.assertEqual(check(want), (want, 0))
+        self.assertEqual(check(want.replace("\n", "\r\n")), (want, 0))
+        self.assertEqual(check(tampered.replace("\n", "\r\n")), (tampered, 1))
 
     def test_eligible_rows_have_all_three_fields_and_a_time(self):
         for r in L.build_rows():
