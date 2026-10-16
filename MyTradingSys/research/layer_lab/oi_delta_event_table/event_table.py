@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 DEV_START_MS = 1640995200000
-DEV_END_MS = 1735689600000
+DEV_END_MS = 1719792000000  # 2024-07-01 UTC exclusive (OPERATOR_DECISIONS.md:878)
 STATES = {
     (1, 1): ("aggressive_long", 1),
     (1, -1): ("divergence_bearish", -1),

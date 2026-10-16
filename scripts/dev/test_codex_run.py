@@ -127,6 +127,12 @@ class CommandTest(unittest.TestCase):
             self.assertIn(want, p)
         self.assertNotIn("sync.py claim \"", p)
 
+    def test_prompt_names_the_dev_kline_source_so_cards_do_not_block_on_missing_data(self):
+        # gptb-volume / gptb-candle ended BLOCKED 4x: the brief named no data path and Codex looked in Dumps/backtest and binance_tf (2025+ only)
+        p = R.prompt(card(kind="build"), "F:/wt", "F:/home/packs/lab-a.md", datetime(2026, 10, 17, 9, 5, tzinfo=timezone.utc))
+        for want in ("F:/MTS/data/bigtrade/cache/perp/klines_1h.npz", "2024-07-01", "NOT the DEV source"):
+            self.assertIn(want, p)
+
     def test_commit_message_has_result_and_session_trailer(self):
         m = R.commit_message(card(), "DONE", "FIX-FIRST, 2 HIGH", datetime(2026, 10, 12, 9, 5, tzinfo=timezone.utc))
         self.assertIn("Result: FIX-FIRST, 2 HIGH", m)

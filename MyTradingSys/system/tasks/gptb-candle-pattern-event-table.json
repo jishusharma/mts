@@ -5,18 +5,21 @@
   "created": "2026-10-16T13:48:05Z",
   "depends_on": [],
   "done_when": "tests green (red first), REPORT written, missing inputs NOT_IN_DATA, trial rows in TRIALS.md if any run.",
+  "effort": "medium",
   "from_inbox": "",
-  "goal": "Build layer_lab/candle_pattern_event_table/patterns.py + event_table.py: pure-function detectors (engulfing, pin bar, inside bar, doji) on closed bars with definitions from research/candle_patterns_2026-10-04 (cite file:line), event table with forward MFE/MAE in R on DEV klines (F:/MTS/data/binance_tf/um 1h,4h). Detectors only, no rules, no tuning.",
+  "goal": "Build layer_lab/candle_pattern_event_table/patterns.py + event_table.py: pure-function detectors (engulfing, pin bar, inside bar, doji) on closed bars with definitions from research/candle_patterns_2026-10-04 (cite file:line), event table with forward MFE/MAE in R on DEV klines. Detectors only, no rules, no tuning. Data: F:/MTS/data/bigtrade/cache/perp/klines_1h.npz (DEV = open < 2024-07-01).",
   "id": "gptb-candle-pattern-event-table",
   "kind": "build",
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
-  "note": "Filled by gpt-feed-builds 2026-10-16; research only, flag off.",
+  "model": "gpt-6-luna",
+  "note": "Filled by gpt-feed-builds 2026-10-16; research only, flag off. Data and 4h rule: runner prompt DATA line (codex_run.py DATA_HINT); blocked 4x before this because the brief named no data path.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
+  "reopened": "2026-10-16T19:56:19Z",
   "result": "",
   "scope_in": [
     "MyTradingSys/research/layer_lab/candle_pattern_event_table/patterns.py",
@@ -44,7 +47,5 @@
     "Write REPORT.md (what was built, row counts, test output) and the result line."
   ],
   "tests": "synthetic bars: each pattern fires on a hand-built example and not on its near-miss; the event is stamped at the closing bar, forward path starts the next bar.",
-  "title": "Candle patterns: detector + event table on DEV klines with forward R",
-  "model": "gpt-6-luna",
-  "effort": "medium"
+  "title": "Candle patterns: detector + event table on DEV klines with forward R"
 }
