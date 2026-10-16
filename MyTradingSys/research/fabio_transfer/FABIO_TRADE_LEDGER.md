@@ -1,4 +1,4 @@
-# FABIO TRADE LEDGER (card fabio-trade-ledger) - Status: DONE 2026-10-11 (8 entries F1, F2, F3a-c, F4a-b, F5 from the first 5 videos) + 2026-10-11 find-more pass: 9 entries (F6 added from Jpd96fLqr5M)
+# FABIO TRADE LEDGER (card fabio-trade-ledger) - current inventory: see "Audit correction H4 - inventory" at the end (2026-10-17); every paragraph below is a dated historical changelog, superseded where marked [L1]
 
 Goal (card): >= 20 trades (or all available) with frame evidence. Reached: F1 full (frame-read order labels), F2 approximate (no order labels in the video),
 F3 transcript only. Rows are in FABIO_TRADE_LEDGER.csv. Read 2026-10-11 relay, JIS-NB.
@@ -23,7 +23,7 @@ Result: Daily P/L 6468 -> 28485 = +22017$ (exit fill not on a frame). Stop width
 
 ## Management pattern seen (his words + frames)
 Narrative labels on chart: punch to the wall (absorbed effort), re entry, rewarded effort, failed auction on Cash session sensitive high, 0 doubt, squeeze.
-Stop moves only in steps behind structure as price falls; TP fixed far; size 10 on the re-entry funded by day profit.
+Observed per event (not rules): F1 stop moved in steps behind structure as price fell and its TP read 25513.25 at t=210 then 25514.75 at t=330 (not fixed); F12 stop read ~25105.50 at t=3075 then 25089.75 at t=3100 (away from the entry); the earlier pass noted size 10 on the re-entry funded by day profit (not re-verified). No universal management rule is claimed [H5].
 
 ## 9IliXww64uM (read 2026-10-11 relay, sheets 00-06, ES, date UNKNOWN [H3])
 Mostly talk: Schwab account page (value 217,392; equity curve jumped from ~61k on Nov 24 2025 to 210k on Jan 27 2026), ES 5-min and 1-min footprint charts with CVD/delta tables (no order labels),
@@ -36,11 +36,11 @@ F5 short 15 @ 24960.28, stop 24969.75 (9.47pt = 0.038%, risk 2850$), TP 24910.25
 Management: stop tightened to 24961.50 then 24961.25 (above avg entry), scale-in to 18 lots avg 24959.18 (risk 720$), held through a pullback (open P/L 6629 -> 4559 -> 11129),
 at t=630 stop trailed to 24925.00 (locks 12330$) and TP pulled 24910.25 -> 24917.00. Flat by t=660, Daily P/L +2331.50 (+11909$ on the trade). Exit fill not on a frame.
 
-## Final stats (8 entries, 5 videos; video count is the limit, teaching videos show ~1.6 trades each)
+## Historical stats (SUPERSEDED by the H4 inventory; 8 entries, 5 videos; video count is the limit, teaching videos show ~1.6 trades each)
 Markets: NQ 7 entries (F1, F2, F3a-c, F5; F2 levels approximate), ES 2 (F4a-b, 1 lot, no stops). Sessions: UNKNOWN per execution [H3]; see the H3 section.
 Stop width on NQ (points / % of price): F1 15.75 / 0.061, F3b 8.88 / 0.036, F3c 3.38 / 0.014, F5 9.47 / 0.038 (and 2.07 / 0.008 after tighten). Median 9.2pt ~ 0.037%.
 Target distance: 138pt (8.8R), 107pt (12R), 87pt (25.9R), 50pt (5.3R): R-multiples far above 3 on every labelled trade.
-Management (all four labelled trades): stop moves only toward profit (breakeven or beyond) in steps; TP is pulled in late (F3c, F5); scale-in on confirmation (F3, F5: 12/14/18 lots) funded by day P/L.
+Management observed on the labelled trades (per event, [H5]): F1, F3c, F5, F6 stops were raised in steps while in profit; F3c and F5 TPs were pulled in at the events noted in their rows; F1 TP and the F12 stop moved otherwise (see Audit correction H5). F3/F5 size grew 12/14/18 lots; the "funded by day P/L" wording is not sourced for each.
 Gap to the 20-trade goal: the 5 downloaded videos are exhausted; more recap videos need a new search (follow-up card).
 
 ## Find-more pass (card find-more-fabio-trade-recap-videos-yt-dl, relay 2026-10-11, JIS-NB) - PARTIAL, 9 entries now
@@ -75,17 +75,17 @@ F11 (DyS79Eb92Ug t=2775-3000): NQ long 4 lots ~25104.75 after the squeeze above 
 F12 (DyS79Eb92Ug t=3025-3275): NQ long 6 lots, avg 25105.78 at t=3100 [H1-corrected], stop read ~25105.50 at t=3075 then 25089.75 at t=3100 (16.03pt) [H1: not 25085.75], scaled to 8 (stop 25098.50, 9pt) and 10 (avg 25108.50, stop 25098.75 at t=3150, TP sell LMT 25148.75 ~40pt [H1: not 25098.25 / 25140.75; a later frame shows 25098.25]); outcome not on those frames (t=3175 intro/ad, 3225+ talking head); later frames show flat with Daily P/L 22193 -> 20668 = -1525$, cause INFERRED [H2]. Ledger 15 trades / 46 rows. Still < 20: next window t=3275+, then Is1HvdfQm5c, xUyqIjCfZzg.
 F13 (DyS79Eb92Ug t=3525-3775): NQ long 8->10 lots avg 25108.90 then 25108.05 [H1-corrected from ~25104], stop 25097.00 (11.9pt = 0.047%); the +2 order at 25104.75 is a buy add [H1], flat between t=3550 and 3575 (stop INFERRED): Daily P/L 20668 -> 17758 = -2910$, larger than the -1760 stop label [H2]. Then flat, no trade through t=3750 (the window ends t=3775; sheet shows 3725-3750 only). Sequence after F10 (+4964$): F11 -2115$, F12 -1525$, F13 -2910$, three chase longs near the 25110 prior high in ~9 chart minutes with stops 7-21pt. Ledger 16 trades / 52 rows (>= 20 trades not yet). Still < 20: next window t=3775+, then Is1HvdfQm5c, xUyqIjCfZzg.
 
-F14 (DyS79Eb92Ug t=3775-4025): NQ long 8 lots ~25101.4, stop 25086.25 (~15pt = 0.060%), target label 25186.75 (+13600$), flat between t=3925 and t=3950 (stop INFERRED): Daily P/L 17758 -> 15147 = -2611$ [H2]. A 10-lot preview order near 25109 at t=3800 was not filled. Talking-head at t=3850. Flat t=3975-4000. Sequence F10 +4964, F11 -2115, F12 -1525, F13 -2910, F14 -2611: four chase longs near the 25110 prior high. Ledger 17 trades / 53 rows (>= 20 not yet). Next window t=4025+, then Is1HvdfQm5c, xUyqIjCfZzg.
+F14 (DyS79Eb92Ug t=3775-4025): NQ long 8 lots ~25101.4, stop 25086.25 (~15pt = 0.060%), target label 25186.75 (+13600$), flat between t=3925 and t=3950 (stop INFERRED): Daily P/L 17758 -> 15147 = -2611$ [H2]. A 10-lot preview near 25109 at t=3800 is a preview, not a submitted order proven, and no fill was seen [H5]. Talking-head at t=3850. Flat t=3975-4000. Sequence F10 +4964, F11 -2115, F12 -1525, F13 -2910, F14 -2611: four chase longs near the 25110 prior high. Ledger 17 trades / 53 rows (>= 20 not yet). Next window t=4025+, then Is1HvdfQm5c, xUyqIjCfZzg.
 
 ## DyS79Eb92Ug t=8275-8493 (read 2026-10-12 relay, JIS-NB; sheets lowres/DyS79Eb92Ug_w30_00/01/02.jpg) - VIDEO FINISHED
 Flat, no trade (Daily P/L 15147$ unchanged); chart at t=8300 shows low ~24880 then bounce ~24940; talking heads to the end (video ends ~8493). Ledger 70 rows.
 
-## FINAL stats (all five downloaded videos read end to end; closes card fabio-trade-ledger)
-Filled trades: 14 (F1-F6 from 5 videos, F7-F14 from DyS79Eb92Ug). F15 (t=6775-7025) was an order ticket that never filled. Goal of >= 20 not reached: "all available" per the card (video count is the limit).
-Markets: NQ 13, ES 1 (F4, 1 lot, no stops). Session/timezone: sourced per row only (H3 section), no universal US-cash claim.
-Stop width, 13 NQ stops with a read stop (points / % of ~25000): median 10.75pt = 0.043%, mean 13.6pt, min 1.5pt (0.006%), max 30.83pt (0.123%).
+## Historical stats paragraph (SUPERSEDED by the H4 inventory; was headed FINAL / "read end to end")
+SUPERSEDED (H4): Filled trades: 14 (F1-F6 from 5 videos, F7-F14 from DyS79Eb92Ug). F15 (t=6775-7025) is a chart drawing, not a submitted order ("I will not execute it", DyS79Eb92Ug.txt:2854-2855) [H5]. Goal of >= 20 not reached: "all available" per the card (video count is the limit).
+SUPERSEDED (H4): Markets: NQ 13, ES 1 (F4, 1 lot, no stops). Session/timezone: sourced per row only (H3 section), no universal US-cash claim.
+SUPERSEDED (H4; the min 1.5pt came from the rejected F12 initial stop read): Stop width, 13 NQ stops with a read stop (points / % of ~25000): median 10.75pt = 0.043%, mean 13.6pt, min 1.5pt (0.006%), max 30.83pt (0.123%).
 DyS79Eb92Ug day: F7-F10 won/ended +4964$ at F10, then F11 -2115$, F12 -1525$, F13 -2910$, F14 -2611$ (four consecutive same-range longs stopped), then flat for 4400 s; day ended Daily P/L +15147$.
-Management as before: stops move only toward profit, TP pulled in late, scale-in on confirmation (4 -> 8 -> 10 lots).
+Management as observed [H5]: per-event stop/TP/size changes are in the CSV management rows; no "stops only toward profit" or "TP pulled in late" rule is claimed (F12 stop moved away from the entry at t=3100).
 
 Is1HvdfQm5c t=0-250 (w00, 25 s steps) read: black intro, Excalidraw board (agenda: Mental Models, Live Charting, Execution Method Trick), no chart, no trade. Ledger +1 no-trade row (71 lines), still 14 trades. Next: t=250+ (w01), one 250 s window per session; the Live Charting part is likely later, so a coarse 120 s sample of the whole video may find it faster.
 
@@ -131,3 +131,43 @@ The date column no longer carries any 2026 or month value that no source states.
 | chart axis puts the US open at 15:30 (CET/CEST) | 2026-10-14 minute-timestamp pass (below) | DyS/Jpd chart clocks, no UTC without a date |
 Rows with no date and no zone evidence (F1, F3, F5, F4, Is1H) stay UNKNOWN; the earlier "NY session" time labels were removed from F3 and F5. Link exact frame clock, date and timezone per execution before any replay or design/check split.
 UNRESOLVED (H3): the calendar date of every execution (year absent everywhere in the repo sources read); DyS is Oct 15 of an unstated year; the F1 chart-clock 02/12 reading was not re-verified (no frame re-read in this card).
+
+## Audit correction H4 - inventory (card fabio-audit-20261013-counts, 2026-10-17)
+Definitions. PARENT TRADE = one position from flat to flat (scale-ins and re-sizing inside it are fills/management of the same parent). FILL = an entry row (a label with a quantity and price). MANAGEMENT = a `-m` row (stop/TP/size change on an open parent). FLAT-STATE OBSERVATION = an `-x` row (position 0 and Daily P/L, not an exit fill, see H2). TEACHING EXAMPLE = a row from a commentary video with approximate levels (F2). A drawing is none of these.
+
+| Parent | Market | Member entry rows | Initial stop width used | Status |
+|---|---|---|---|---|
+| P1 | NQ | F1 | 15.75 pt = 0.061% (row F1) | frame-read entry/stop/TP |
+| P2 | NQ | F2 | none read | PARTIAL: teaching example, levels approximate; transcript says 3 positions closed (0jM5Y31YJak.en.vtt:1026-1058) and 5+ more with another later (:1234-1258): one row cannot represent them |
+| P3 | NQ | F3a, F3b | 8.88 pt = 0.036% (row F3b) | F3b scales F3a (no flat frame between); stop read only on F3b |
+| P4 | NQ | F3c | 3.38 pt = 0.014% (row F3c) | re-entry after the first leg closed (flat frame at t=180 per note) |
+| P5 | ES | F4a, F4b | none read | UNRESOLVED grouping: two screenshot fills, order -1@6977.5 is left of -1@6986.75, continuity not shown; counts as 1 or 2 parents; no stop |
+| P6 | NQ | F5 | 9.47 pt = 0.038% (row F5) | frame-read; scaled 15 -> 18 within the position |
+| P7 | NQ | F6 | 30.83 pt = 0.124% (row F6) | frame-read; scaled 4 -> 6 within the position |
+| P8 | NQ | F7 | 19.50 pt = 0.078% (row F7) | entry derived from risk (approximate) |
+| P9 | NQ | F8 | 12.78 pt = 0.051% (row F8) | frame-read average |
+| P10 | NQ | F9 | 14.81 pt = 0.059% (row F9) | frame-read average ~ |
+| P11 | NQ | F10 | 20.50 pt = 0.082% (row F10) | frame-read average ~ |
+| P12 | NQ | F11 | 10.00 pt = 0.040% (row F11) | entry and stop both approximate (~) |
+| P13 | NQ | F12 | 16.03 pt = 0.064% (row F12) | frame-read average and stop at t=3100 |
+| P14 | NQ | F13 | 11.90 pt = 0.047% (row F13) | frame-read average |
+| P15 | NQ | F14 | 15.13 pt = 0.060% (row F14) | frame-read |
+
+Excluded from every count: F15-draft-6975-7025: drawing (DyS79Eb92Ug.txt:2854-2855), not a submitted order, no fill.
+
+Counts (replace the earlier "14 filled trades, 13 NQ / 1 ES" and "all available"): 15 parent rows listed = 13 with a frame-read initial stop (NQ), 1 partial teaching example (P2, NQ), 1 unresolved ES grouping (P5: 1 or 2 parents). So NQ frame-read parent trades = 13; ES = 1-2 parents with no stop; total 14 to 15 parents.
+Row classes in the CSV (72 rows): drawing 1; fill (entry row) 17; flat-state observation (exit) 13; management observation 21; no-trade window (sampled frames only) 20.
+
+Stop-width statistic (initial stop, 13 NQ parents with a read stop; entry/stop = first number of the CSV cells, so F7 and F11 are approximate): median 14.81 pt, mean 14.54 pt, min 3.38 pt, max 30.83 pt.
+The old "min 1.5pt (0.006%)" came from the F12 initial stop read (~25105.50 vs ~25107) that the audit rejects (F12 stop is 25089.75 at t=3100); tightened management stops (F5 2.07 pt after the tighten, F12-m1 8.83 pt) are management rows, not initial stops, and are not in this statistic. Members of the statistic: F1=15.75, F3b=8.88, F3c=3.38, F5=9.47, F6=30.83, F7=19.5, F8=12.78, F9=14.81, F10=20.5, F11=10.0, F12=16.03, F13=11.9, F14=15.13.
+
+Coverage is PARTIAL, not "all available": 8CWKfoSJu3c, fZlNGWvd2Ko, jasv3L-d8ZE, Jpd96fLqr5M sheets read; 0jM5Y31YJak sheets 00/03/04 were unread in the first pass; 9IliXww64uM has no stop/TP labels; DyS79Eb92Ug read in 250 s windows where each no-trade window cites only 2-4 sampled frames, so "no trade" holds for the sampled frames only; Is1HvdfQm5c has frames to t=500 and an ASR extract with no confirmed live position; xUyqIjCfZzg (3.8 h) is unread in this ledger and 9I5vTvwsMBk was never downloaded. F2 omits at least the positions named in 0jM5Y31YJak.en.vtt:1026-1058 and 1234-1258.
+UNRESOLVED (H4): the P3/P5 grouping rule for F3b/F4 (no flat frame between fills), the F2 position count and prices, and the unread videos; counts above are a definition applied to the current rows, not ground truth.
+
+## Audit correction H5 (card fabio-audit-20261013-rules, 2026-10-17)
+Rule: describe each observed change per event; distinguish preview, drawing, submitted order and fill; reserve universal rules for direct sourced statements (none are claimed here).
+- F1: TP read 25513.25 (sheet01 t210) then 25514.75 (sheet02 t330): contradicts "fixed TP".
+- F12: stop read ~25105.50 (t3075) then 25089.75 (t3100): contradicts "stops move only toward profit".
+- F11: the two +2 adds at t2825/2850 are green STP orders, not LMT; the sell order is a target preview.
+- F15 and the 7025-7275 window: a drawing the speaker will not execute (DyS79Eb92Ug.txt:2854-2855); hypothetical, not a submitted ticket.
+UNRESOLVED (H5): the F1 sheet01/sheet02 TP reads and the F11 STP typing are the audit's reads; no frame was re-read in this card.

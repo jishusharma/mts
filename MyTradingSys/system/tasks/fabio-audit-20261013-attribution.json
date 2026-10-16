@@ -25,7 +25,9 @@
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
     "MyTradingSys/research/fabio_transfer/test_ledger_audit.py",
-    "scripts/dev/run_extra_tests.py"
+    "scripts/dev/run_extra_tests.py",
+    "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",
+    "MyTradingSys/research/layer_readiness_2026-10-16/BIGTRADE_SPEC.md"
   ],
   "scope_out": [
     "any code, backtest, study or holdout read",

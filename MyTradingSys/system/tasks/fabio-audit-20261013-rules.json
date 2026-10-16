@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T22:04:24Z",
   "commands": [],
   "created": "2026-10-13T05:09:07Z",
   "depends_on": [],
@@ -20,7 +21,7 @@
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md"
   ],
-  "result": "",
+  "result": "H5: management generalisations replaced by per-event observations (F1 TP 25513.25->25514.75, F12 stop 25105.50->25089.75); F11 adds typed STP; F15 and the 7025 window labelled a drawing (DyS.txt:2854-2855). UNRESOLVED: F1/F11 reads are the audit's, no frame re-read",
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
@@ -36,7 +37,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md H5 row; F:/MTS/data/fabio_videos/DyS79Eb92Ug.txt:2854-2855"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "edit MD management/final sentences to per-event wording",
     "CSV F11 note: +2 orders are green STP; F15 and F-noTrade-7025 family/note: drawing, not submitted ticket",

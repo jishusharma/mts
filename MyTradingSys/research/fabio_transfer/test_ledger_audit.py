@@ -97,5 +97,46 @@ class TestH3(unittest.TestCase):
         self.assertIn('Audit correction H3', t)
 
 
+class TestH4(unittest.TestCase):
+    def test_inventory_section_matches_computation(self):
+        import sys
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import ledger_stats
+        md = MD.read_text(encoding='utf-8')
+        self.assertIn(ledger_stats.render(), md)
+        s = ledger_stats.stats()
+        self.assertEqual(s['n'], 13)
+        self.assertAlmostEqual(s['min'], 3.38, places=2)   # F3c: 24568.38 - 24565.00, from the CSV cells
+        self.assertAlmostEqual(s['max'], 30.83, places=2)  # F6: 24914.33 - 24883.50
+
+    def test_old_final_claims_are_superseded(self):
+        md = MD.read_text(encoding='utf-8')
+        self.assertNotIn('Status: DONE 2026-10-11', md)
+        self.assertNotIn('## FINAL stats (all five downloaded videos read end to end', md)
+        self.assertIn('SUPERSEDED (H4; the min 1.5pt', md)
+        self.assertIn('PARTIAL, not "all available"', md)
+        self.assertIn('0jM5Y31YJak.en.vtt:1026-1058', md)
+
+
+class TestH5(unittest.TestCase):
+    def test_no_universal_management_rules(self):
+        md = MD.read_text(encoding='utf-8')
+        self.assertNotIn('stop moves only toward profit', md)
+        self.assertNotIn('stops move only toward profit,', md)
+        self.assertNotIn('TP fixed far', md)
+        self.assertNotIn('was an order ticket that never filled', md)
+        self.assertIn('Audit correction H5', md)
+        self.assertIn('25513.25', md)
+
+    def test_row_semantics(self):
+        r = rows()
+        self.assertIn('STP', r['F11']['note'])
+        self.assertNotIn('two buy LMT +2 orders', r['F11']['note'])
+        self.assertIn('drawing', r['F15-draft-6975-7025']['family'])
+        self.assertNotIn('not_filled', r['F15-draft-6975-7025']['family'])
+        self.assertIn('25513.25', r['F1-m2']['note'])
+        self.assertIn('25089.75', r['F12']['note'])
+
+
 if __name__ == '__main__':
     unittest.main()
