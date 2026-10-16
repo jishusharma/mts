@@ -27,7 +27,10 @@ class NoWin(unittest.TestCase):
 
     def test_inactive_under_plain_python(self):
         os.environ.pop("MTS_NOWIN", None)
-        self.assertFalse(nowin.wanted())
+        # B193: the gate itself runs hidden on the live host (AutoDeploy), where the real console probe is True and this test
+        # went red on every deploy since B190b; pin the probe so the result no longer depends on who launched the gate.
+        with mock.patch.object(nowin, "_console_hidden", return_value=False):
+            self.assertFalse(nowin.wanted())
 
     def test_never_active_off_windows(self):
         # Production callers use install() without force: a Linux/macOS process (cloud container, CI) must never get the shim,
