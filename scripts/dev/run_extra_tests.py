@@ -19,6 +19,7 @@ REPO = Path(__file__).resolve().parents[2]
 EXTRA = [
     "MyTradingSys/research/qriptal_2026-10-10/test_ledger.py",
     "MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/test_imb.py",
     "MyTradingSys/research/chart_read_g5_2026-10-16/test_common.py",
     "MyTradingSys/research/opr_preopen_tops_2026-10-16/test_study.py",
     "MyTradingSys/research/krown_malkan_g3_2026-10-16/test_event_counts.py",
@@ -28,6 +29,7 @@ EXTRA = [
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_study.py",
     "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py",
     "MyTradingSys/research/context_null_2026-10-16/test_context_null.py",
+    "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py",
     "scripts/dev/test_suplock.py",
     "MyTradingSys/research/mfe_exit_2026-10-13/test_mfe_exit_study.py",
     "MyTradingSys/research/malkan_extract_2026-10-15/tools/test_check_numbers.py",
