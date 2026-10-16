@@ -16,6 +16,8 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 - Writing tasks into NEXT_SESSION.md: RELAY.md "Task list standard" (curated, one session each, `DONE when:`); `relay.py handoff` refuses a list that fails `relay.py lint`.
 - Surface fallback (operator 2026-10-08): only if a task truly cannot run in the Claude Code Win App (e.g. needs a process this App cannot reach) file a card (lane JIS-NB) or a desk row with the exact commands, why forced and the expected result, and say so in one line. Never stay silent.
 - Archive backups/rejects with `python scripts/dev/declutter_backups.py --apply` (moves, never deletes).
+- "What did study X lead to?" (its card, VERDICTS.csv row, pre-registration, follow-up cards, commits, LAYERS.md, open claim): `python scripts/dev/trace.py <study_dir | card id | layer id>`; one read-only call, report only (T043 stays WONTFIX).
+- "Is this stat already in research_kit?" (Holm, day-clustered SE): `MyTradingSys/backtest/research_kit.py` (tests: `test_research_kit.py`); `python scripts/dev/research_kit_lint.py` lists scripts that re-implement it (new ones under NEW; known ones in `research_kit_lint_allow.tsv`); report only.
 
 ## Layers
 - Layers (Tom, Fabio, RSI, CryptoCred, positioning, session, ...): ONE index per layer with spec, code, ledger, latest results, roadmap and open cards, for Claude and Codex sessions: `MyTradingSys/system/LAYERS.md` (pointers in `system/layer_index.json`; regenerate `python scripts/dev/make_layers_md.py`). Same commit: a new backtest is a row in `system/layer_map.json`, a new layer joins a family in `layer_index.json`, a layer card gets `tasks.py new ... --layer <family>` (gate step 3ly fails on a dead pointer or an unowned layer).
