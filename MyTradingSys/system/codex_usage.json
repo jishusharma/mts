@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1792677805,
-  "week_used": 17.0,
-  "window_resets": 1792137625,
-  "window_used": 1.0
+  "week_used": 23.0,
+  "window_resets": 1792157428,
+  "window_used": 0
  },
- "at": "2026-10-16T06:01:07Z",
+ "at": "2026-10-16T08:34:43Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,11 +18,56 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 16.0,
-  "window_pts": 1.0,
-  "window_runs": 4
+  "week_pts": 18.0,
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-10-16T08:30:09Z",
+   "card": "lab-flow-contract-hardening",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 263,
+   "tokens_out": 8023,
+   "tokens_total": 1681279,
+   "tokens_uncached": 53544,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-10-16T07:05:26Z",
+   "card": "recipe-pilot-2-challenge",
+   "effort": "low",
+   "kind": "audit",
+   "model": "gpt-6-astra",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 115,
+   "tokens_out": 2606,
+   "tokens_total": 439278,
+   "tokens_uncached": 39232,
+   "week_pts": 1.0,
+   "window_pts": 10.0
+  },
+  {
+   "at": "2026-10-16T07:03:02Z",
+   "card": "recipe-pilot-1-map",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6.1-sol",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 73,
+   "tokens_out": 2031,
+   "tokens_total": 271628,
+   "tokens_uncached": 51997,
+   "week_pts": 1.0,
+   "window_pts": 3.0
+  },
   {
    "at": "2026-10-16T06:00:03Z",
    "card": "gpt-verdict-registry-audit",
@@ -127,51 +172,6 @@
    "tokens_uncached": 198085,
    "week_pts": 9.0,
    "window_pts": 60.0
-  },
-  {
-   "at": "2026-10-15T16:00:03Z",
-   "card": "malkan-hindi-rows-gpt-read",
-   "effort": "low",
-   "kind": "audit",
-   "model": "gpt-6-astra",
-   "note": "5 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/system/LAYERS.md",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 436,
-   "tokens_out": 11022,
-   "tokens_total": 2330221,
-   "tokens_uncached": 164191,
-   "week_pts": 7.0,
-   "window_pts": 41.0
-  },
-  {
-   "at": "2026-10-15T14:30:02Z",
-   "card": "gap-g4-through-ticks-flag",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 125,
-   "tokens_out": 7743,
-   "tokens_total": 982938,
-   "tokens_uncached": 61275,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-15T14:03:08Z",
-   "card": "gap-g4-through-ticks-flag",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 154,
-   "tokens_out": 9634,
-   "tokens_total": 1449330,
-   "tokens_uncached": 79568,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }

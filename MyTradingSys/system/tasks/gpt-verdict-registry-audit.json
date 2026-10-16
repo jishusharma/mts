@@ -12,7 +12,8 @@
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
-  "note": "codex-feed 2026-10-16: luna/medium on purpose (about 1 window point); the registry is a gate, so a wrong or UNPARSED row blocks or waves through a PRE_REG. Scripts are .py.txt, never .py (LAYER_LAB.md Guards).",
+  "note": "superseded by gpt-verdict-registry-audit-a (rows 1-10) and -b (rows 11-20)",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex-feed 2026-10-16 (sonnet worker)",
@@ -34,7 +35,7 @@
   "sources": [
     "MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md (section 1.3, verdict per arm)"
   ],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Read the verdicts.py docstring (parsing rules) and VERDICTS.csv. For each of the 20 rows list the study files you will read; every row must be covered.",
     "Per row fill split_read (DEV before 2024-07-01, VALIDATION to 2025-06-30, HOLDOUT after), n, gross_mean_pct, se_pct, verdict, one_run and kill_scope from the RESULT and PRE_REG text with file:line. Parsed fields: MATCH or MISMATCH against the source. A field the files do not give is NOT_IN_DATA (never guess).",

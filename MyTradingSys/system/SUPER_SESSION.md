@@ -46,6 +46,13 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 8. **Agent workers (2026-10-16).** Briefs ask for: ship once then stop (a second `sync.py ship` only re-wakes the coordinator),
    the proof that new tests fail on the old code (run them against `git show <sha>^:<file>` copies), a final reply of at most
    N lines, long notes in the shared notes folder. Tasks touching the same file run one after the other; others run in parallel.
+9. **Compaction by context share (operator 2026-10-16).** `.claude/settings.json` sets `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=25`, so every
+   session and agent in this repo auto-compacts at 25 % of its window, between tool calls, even mid-task. A model cannot run
+   `/compact` itself (a `/compact` sent by `send_message` arrives as plain text, tested 2026-10-16), so the setting is the only
+   automatic route. Working bands: under ~18 % keep going; 18-20 % finish the current task, then end it (ship, release, hand off)
+   rather than start another; 20-25 % finish only if the task is crucial and nearly done, else commit and let the compaction run.
+   Before a compaction is likely, keep the working state in files (NEXT_SESSION.md, notes folder, task card), not in the context.
+   Override: set the env var in the session's own settings; the break-even rule 1 above still applies to manual compacts.
 
 ## Boot facts (read, do not re-look-up; every super session corrects this list)
 - Live tree = the main checkout `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed` (`.mts_live` there is a marker FILE, not a
@@ -67,6 +74,9 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 - Research Map: read the artifact first (`Artifact read`), edit DATA in the saved copy with a script (json load/dump of the
   one `const DATA = ` line), write it to `system/artifacts/research_map.html`, republish with `url`. Another session may have
   edited it since (commit 338e365b did): read the current version, never the old saved copy.
+  The Tom/Fabio story and per-setup requests live in the map tab "Setups & story" (DATA.story, source SETUP_CATALOG.md); a
+  request there has kind question|task|backtest and a `setupId` (catalogue id); there is no second request store. Backtest =
+  fee check at the stated stop first (fee R = 0.14% / stop%), then PRE_REG on DEV only. Fabio home-market chain stays paused.
 - CI: `gh run list -R jishusharma/mts --branch fast-track --limit 5` on EVERY wake and after every ship wave (CI sat red 2 h
   unnoticed on 10-16 while a coordinator wrote prompts). New research test files must be registered in run_all_tests /
   run_extra_tests.EXTRA or skipped with a reason (B150, gate step 3gd); study scripts need a `wiring_registry.json` entry.

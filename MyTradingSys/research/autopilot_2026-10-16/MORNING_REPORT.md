@@ -1,6 +1,6 @@
 # Morning report - autopilot-3 (JIS-NB), 2026-10-16 00:10Z to 06:30Z
 
-1. **CI is green and the latest code is on testnet.** CI went green at 02:04Z after 4 h red and stayed green; AutoDeploy put live on `32077514` at 06:01:49Z (gate ALL TESTS PASSED, 144 files). The testnet system is still HALTed (your step 2), so nothing trades.
+1. **CI is green and the latest code is on testnet.** CI went green at 02:04Z after 4 h red and stayed green; AutoDeploy put live on `32077514` at 06:01:49Z (gate ALL TESTS PASSED, 144 files) and on the newer green `5793636a` at the 06:15Z tick (18 files, no restarts). The testnet system is still HALTed (your step 2), so nothing trades.
 2. **No edge found, nothing promoted.** Imbalance filter on levels: FAIL (filter lifts +0.10 R, the layer is still -0.37 R net). Context composite: INCONCLUSIVE (only 241 of 1,010 events had enough controls). Pit levels: audit FIX-FIRST, card held.
 3. **You still have to do:** HALT clear, orderflow recorder restart, the grandfather list by 10-23, paste the DSA audits and the NUC hang prompt, G3 chart marks (list at the bottom).
 
@@ -9,7 +9,8 @@ Coordinator: autopilot-3 (Sonnet, started by local_1c4041fd, successor of local_
 ## CI and deploy state
 - CI: red since 22:08Z 10-15 (three groups: G5 collect, qriptal windows, nowin on Linux). All three fixed by 02:04Z (run 38837946760, both runners); CI has stayed green on every fast-track run since (last checked: runs 38857042435, 38858497534, 38858588036 success, 6-10 min each).
 - Green pointer at the end: `5793636a` (origin/green/fast-track). Fast-track tip at the end: `35f26782 (06:18Z)`.
-- Deployed sha: **`32077514`** (live HEAD `32077514`, `last_deployed_sha` in auto_deploy_state.json). `auto_deploy_last.json` at 06:01:49Z: action DEPLOYED, `dc216e9 -> 3207751, 144 file(s)`, gate tail "ALL TESTS PASSED", restarts [] (no process restart was needed by the allowlist), STATUS.md regenerated.
+- FINAL (checked 06:36Z): live HEAD and `auto_deploy_last.json` are on **`5793636a`**: action DEPLOYED at the 06:15:00Z tick, `3207751 -> 5793636, 18 file(s)`, restarts []; no gate is running. The two paragraphs below describe the first deploy (`32077514`, 06:01:49Z) and the state when the body of this report was written.
+- Deployed sha earlier: **`32077514`** (live HEAD `32077514`, `last_deployed_sha` in auto_deploy_state.json). `auto_deploy_last.json` at 06:01:49Z: action DEPLOYED, `dc216e9 -> 3207751, 144 file(s)`, gate tail "ALL TESTS PASSED", restarts [] (no process restart was needed by the allowlist), STATUS.md regenerated.
 - Last action in `auto_deploy_last.json` when this report was written: `DEPLOYED at 06:01:49Z (target 32077514); a gate on the newer green 5793636a (4f race fix + timeout/diagnostics + context study) started at 06:15:00Z and was still running when this was written, so the live tree will move to it on success`.
 - Why it took until 06:01Z (all fixed in code except the last item):
   1. 04:45Z gate on `d938be1a` and 05:15Z gate on `53011f35` both timed out (25 min cap) because JIS-NB was saturated by faster-whisper ASR, parallel worker ship gates and heavy pytest extras. Mitigations: ASR job stopped, worker ships held during the gate, then quiet machine. Lesson: do not start CPU-heavy workers during a deploy gate.
@@ -18,7 +19,7 @@ Coordinator: autopilot-3 (Sonnet, started by local_1c4041fd, successor of local_
 - Shipped for the next window: gate pytest steps ignore transient tmp dirs (4f race), 4b AIBridge selftest no longer races itself, the gate runs at BelowNormal (typed ctypes), and `auto_deploy.py` now has a 2700 s gate limit (`MTS_DEPLOY_GATE_TIMEOUT`), keeps the last 6 lines of a timed-out gate and records `gate_secs`. The live tree runs the old `auto_deploy.py` until its next deploy.
 
 ## Ships (sha, what, Result)
-Times are UTC. Every sha below was checked with `git cherry origin/fast-track <sha>` (prints nothing), except the two imbalance-filter rows (NOT on fast-track at the 06:27Z hard stop: worker abd48d4b had merged the two registry conflicts into branch `worktree-agent-abd48d4b23b601f51` (worktree `.claude/worktrees/agent-abd48d4b23b601f51`, head 7ee1b423, tree clean) and its `sync.py ship` smoke gate was queued behind four other sessions' ship gates on the same machine; run `git cherry origin/fast-track f34607d0` to see if it landed, if not run `sync.py ship` in that worktree) and other sessions' commits, which I only read.
+Times are UTC. Every sha below was checked with `git cherry origin/fast-track <sha>` (prints nothing), except the two imbalance-filter rows (these were NOT on fast-track at the 06:27Z hard stop, queued behind four other sessions' ship gates; they LANDED before 06:36Z: `git cherry origin/fast-track b4d4e287` prints nothing and the worker released its claim in 5a9a23a6) and other sessions' commits, which I only read.
 
 ### CI red to green
 | sha | UTC | what | Result |
@@ -84,7 +85,7 @@ Times are UTC. Every sha below was checked with `git cherry origin/fast-track <s
 | a6a5ad5ea | 10-16 06:04Z | research: compaction effectiveness report 2026-10-16 | compactions after the 2026-10-15 audit saved 4.5x their cost (was 1.8x); 3 of 20 lost money (was 39 of 70). |
 
 ## Research results
-- **imb-filter-on-levels** (Qriptal candle imbalance as a filter on the 1,278 first touches of the levels table; DEV only, one run): **FAIL** on DEV, one run, VALIDATION and HOLDOUT unread. The layer alone (5,976 first touches of the 8 KEEP families) nets -0.412 R per trade after the 0.14 % round-trip fee; with Qriptal's small-body volume-anomaly candle at the level (n 3,271) -0.366 R, without it (n 2,705) -0.467 R. The candle lifts the layer by +0.101 R (t +3.27, Holm p 0.017) but it stays deep negative (maker entry -0.242 R). The large-body veto does nothing (+0.009 R, t +0.27). Details: `research/imbalance_qriptal_2026-10-16/filter/RESULT.md` (lands with the worker's ship; commits f34607d0, 6871846b, b4d4e287).
+- **imb-filter-on-levels** (Qriptal candle imbalance as a filter on the 1,278 first touches of the levels table; DEV only, one run): **FAIL** on DEV, one run, VALIDATION and HOLDOUT unread. The layer alone (5,976 first touches of the 8 KEEP families) nets -0.412 R per trade after the 0.14 % round-trip fee; with Qriptal's small-body volume-anomaly candle at the level (n 3,271) -0.366 R, without it (n 2,705) -0.467 R. The candle lifts the layer by +0.101 R (t +3.27, Holm p 0.017) but it stays deep negative (maker entry -0.242 R). The large-body veto does nothing (+0.009 R, t +0.27). Details: `research/imbalance_qriptal_2026-10-16/filter/RESULT.md` (on fast-track; commits f34607d0, 6871846b, b4d4e287). **Defect found by the worker, not fixed (Q79):** the levels study's `event_table.py:134` sets the trade side from the CLOSE of the touch bar, and `levels_hold.py` (`_touch_side`, `outcome()`) does the same and credits a favourable move inside the touch bar, so LC1's HOLD rates (54-69 %) are inflated; with the side taken from the previous bar and no credit for the touch bar the layer hits its target 46 % and its stop 53 %. The lc `event_table.csv` also carries VALIDATION outcomes (the lc DEV 2024-12..2025-03 lies inside the standard VALIDATION window); the imbalance study did not read them.
 - **context-composite-dev-read** (one frozen DEV read): INCONCLUSIVE. Matched controls: 241 of 1,010 C events found at least 10 controls on 164 days, the PRE_REG needs 387, so the verdict follows from the counts alone (a random-P&L plumbing run printed the same 241 / 164). Trigger effect E = -0.023 R (t -0.32); mean net_R of C = -0.137 R over all 1,010 trades. Planted bug (stop-first swapped for target-first) is caught by `test_study.py`. Kills nothing. Successor needs a larger control pool and a fresh VALIDATION read (Q77).
 - **context-factors**: 24 PIT factors in 7 families, 8 planted leaks caught, replay == vectorised on 39,458 DEV rows; DEV is too short for single-factor tests (0 of 86 buckets reach 1,242 days).
 - **pit-prior-va-failed-auction-dev**: audit (01f0f56b) says FIX-FIRST (4 items); the card stays held until PRE_REG_V2.md exists (Q76).
@@ -98,7 +99,7 @@ Times are UTC. Every sha below was checked with `git cherry origin/fast-track <s
 
 ## Usage
 - Start (00:10Z): 5-hour 43 %, weekly 48 %.
-- End: 5-hour 31 % (resets 09:40Z), weekly all models 57 % (Fable weekly 14 %), read 06:19Z. Weekly cap I set for new workers was 60 %; it was not reached.
+- End: 5-hour 31 % (resets 09:40Z), weekly all models 57 % (Fable weekly 14 %), read 06:19Z (not re-read after). Weekly cap I set for new workers was 60 %; it was not reached.
 
 ## DECISIONS (OURS)
 - pandas is installed in CI and the five G5 test files lost their skip guards (coordinator local_62faa820 decision) instead of skipping them.

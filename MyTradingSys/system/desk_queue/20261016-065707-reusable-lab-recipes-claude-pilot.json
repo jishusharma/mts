@@ -1,0 +1,13 @@
+{
+  "done_when": "Claude pilot report shipped with test totals, one recomputed claim/hash, verdict and any reproduced findings; record PENDING if model stages or Claude allowance remain unavailable.",
+  "finished": "2026-10-16T07:14:11Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NB",
+  "id": "20261016-065707-reusable-lab-recipes-claude-pilot",
+  "need": "Read MyTradingSys/research/layer_lab/CLAUDE_RECIPE_PILOT_HANDOFF.md and execute its Sonnet pilot in your own worktree; no operator input or UI control. Already-launched flow: recipe-pilot. Check evidence, not just done flags.",
+  "posted": "2026-10-16T06:57:07Z",
+  "result": "Claude spot-check done: plumbing PASS, FIX-FIRST for real use; 4 gaps reproduced (commands/tests outside contract, depends_on removable, stage report reusable, status-only report accepted); report research/layer_lab/reports/2026-10-16_claude-recipe-pilot.md; follow-up card lab-flow-contract-hardening",
+  "status": "done",
+  "target": "CLAUDE",
+  "title": "Reusable lab recipes Claude pilot"
+}
