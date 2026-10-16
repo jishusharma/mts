@@ -1,0 +1,10 @@
+{
+  "done_when": "Claude pickup is recorded and wavetrend-priority-source-parity is completed or has a precise source/fixture dependency with an owner.",
+  "from": "JIS-NUC",
+  "id": "20261016-212148-operator-priority-claude-pickup-of-wavet",
+  "need": "Operator explicitly asked delivery to Claude and priority progress. Read MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_HANDOFF.md and REPORT.md. Take ready SONNET priority-1 card wavetrend-priority-source-parity (T061). Reconcile old parked policy with the new request and report source/parity progress separately from trading edge.",
+  "posted": "2026-10-16T21:21:48Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Operator priority: Claude pickup of WaveTrend research"
+}
