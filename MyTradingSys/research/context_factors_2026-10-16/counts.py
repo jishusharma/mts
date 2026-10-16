@@ -158,12 +158,16 @@ def trials(fr, ev):
             ("F3 armed", "partial-day extreme past the prior D open", s, "events armed", int(e["f3_armed_B"].sum())),
             ("F3 W_max", "1.0 x ATR14(D) (CHOSEN)", s, "events with a stop", int((e["f3_stop_tf"] != "none").sum())),
             ("F3 W_max", "fixed 3.0 %", s, "events with a stop", int(_ladder_fixed(e, 3.0).ne("none").sum())),
-            ("F4 engulf (D)", "classic body engulf (CHOSEN)", s, "events with D engulf on the trade side",
+            ("F4 engulf (D)", "operator: colour flip + close past previous open (CHOSEN)", s, "events with D engulf on the trade side",
              int((e["f4_D_cat"] == ("bull_engulf" if s == "long" else "bear_engulf")).sum())),
-            ("F4 engulf (D)", "operator: close past previous open", s, "events with D engulf on the trade side",
-             int((e["f4_D_eng_opr"] == ("bull" if s == "long" else "bear")).sum())),
+            ("F4 engulf (D)", "classic body engulf incl. open <= previous close", s, "events with D engulf on the trade side",
+             int((e["f4_D_eng_cls"] == ("bull" if s == "long" else "bear")).sum())),
             ("F5 at the band", "close at/beyond the band (CHOSEN)", s, "events in a 1h walk (either band)", int(e["f5_1h"].str.startswith("walk").sum())),
             ("F5 at the band", "%b cushion 0.05", s, "events in a 1h walk (either band)", int(e["f5_1h_cush"].str.startswith("walk").sum())),
+            ("F5 veto", "prompt: walk on the band against the trade (CHOSEN)", s, "events vetoed", int(e["f5_veto"].sum())),
+            ("F5 veto", "operator 'dance' reading: any close at/below the lower band (short) / upper (long), last 2 bars", s,
+             "events vetoed", int(e["f5_1h"].isin(("walk_lower", "break_lower", "reenter_lower") if s == "short"
+                                                   else ("walk_upper", "break_upper", "reenter_upper")).sum())),
         ]
         for ph in ("f6_phaseA", "f6_phaseB"):
             lab = "weekly close vs SMA10(W) + slope (CHOSEN)" if ph == "f6_phaseA" else "30 d trend tag + 90 d range position"

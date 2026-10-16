@@ -85,8 +85,10 @@ def test_planted_leak_is_caught(leak):
 def test_candle_hand_values():
     # bull engulf: red 100->95, then green 94->101 (opens below the red close, closes above the red open)
     assert C._candle_cat([90, 100, 94], [91, 101, 102], [89, 94, 93], [91, 95, 101]) == "bull_engulf"
-    # operator variant needs only the close past the previous open
-    assert C._engulf_opr([100, 100, 96], [100, 95, 101]) == "bull"
+    # classic variant also needs the open at/below the previous close; with a 0.1 tick gap up it fails
+    assert C._engulf_cls([90, 100, 94], [91, 95, 101]) == "bull"
+    assert C._engulf_cls([90, 100, 95.1], [91, 95, 101]) == "none"
+    assert C._candle_cat([90, 100, 95.1], [91, 101, 102], [89, 94, 93], [91, 95, 101]) == "bull_engulf"
     # inside bar: high 104 <= 105, low 99 >= 98, body not small enough for a pin
     assert C._candle_cat([90, 100, 100], [91, 105, 104], [89, 98, 99], [91, 101, 103]) == "inside"
     # pin bull: range 10, lower wick 7 (>= 6), body 1 (<= 3)

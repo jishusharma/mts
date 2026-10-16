@@ -64,10 +64,12 @@ APPROACH_N, APPROACH_FAST = 3, 1.5   # OURS: move over the last 3 1h bars toward
 HTF_SMA = 20               # OURS: D and 4h close vs their SMA20 for alignment
 FUND_BASE = 0.0001         # SOURCED: Binance default 0.01 % per 8 h (the base rate in the archive, e.g. 2022-01 rows)
 
-LAYERS = ("prior_dw", "pd_va", "pw_va", "krown", "vwap", "round", "bb4h")   # tie order for equal prices
-TAGS = {"prior_dw": ("prior_dw",), "pd_va": ("tom", "fabio"), "pw_va": ("tom", "vp"), "krown": ("krown",),
+LAYERS = ("prior_dw", "session", "pd_va", "pw_va", "krown", "vwap", "round", "bb4h")   # tie order for equal prices
+TAGS = {"prior_dw": ("prior_dw",), "session": ("session",), "pd_va": ("tom", "fabio"), "pw_va": ("tom", "vp"), "krown": ("krown",),
         "vwap": ("vwap",), "round": ("round",), "bb4h": ("operator",)}
-DYNAMIC = ("vwap", "bb4h")
+DYNAMIC = ("session", "vwap", "bb4h")
+VWAP_MIN_D = 4 * 3_600_000   # OURS (angle b/c fix): session VWAP and session high/low count only after 4 h of the session
+VWAP_MIN_W = 86_400_000      # OURS (angle b fix): a weekly VWAP only after the first day of the week
 TF4 = ("D", "12h", "8h", "4h")
 BULL, BEAR = ("bull_engulf", "pin_bull"), ("bear_engulf", "pin_bear")
 LEAKS = ("f1_future_close", "f2_future_touches", "f3_final_day", "f4_partial_candle", "f5_next_bar",
@@ -85,9 +87,9 @@ def _candle_cat(o, h, l, c):
     """Pattern category of the last completed candle (index -1) given the last 3 candles as lists. OURS definitions."""
     o0, h0, l0, c0 = o[-1], h[-1], l[-1], c[-1]
     o1, h1, l1, c1 = o[-2], h[-2], l[-2], c[-2]
-    if c1 < o1 and c0 > o0 and o0 <= c1 and c0 >= o1 and (o0 < c1 or c0 > o1):
+    if c1 < o1 and c0 > o0 and c0 > o1:          # operator (MAL-BB-MID-ENGULF M2, mirrored for bull)
         return "bull_engulf"
-    if c1 > o1 and c0 < o0 and o0 >= c1 and c0 <= o1 and (o0 > c1 or c0 < o1):
+    if c1 > o1 and c0 < o0 and c0 < o1:
         return "bear_engulf"
     if h0 > h1 and l0 < l1:
         return "outside"
@@ -111,11 +113,12 @@ def _candle_cat(o, h, l, c):
     return "none"
 
 
-def _engulf_opr(o, c):
-    """Operator variant (MAL-BB-MID-ENGULF M2 mirror): colours flip and the close passes the previous open."""
-    if c[-2] < o[-2] and c[-1] > o[-1] and c[-1] > o[-2]:
+def _engulf_cls(o, c):
+    """Classic body engulf (variant, logged in trials.csv): the body covers the previous body, open included."""
+    o0, c0, o1, c1 = o[-1], c[-1], o[-2], c[-2]
+    if c1 < o1 and c0 > o0 and o0 <= c1 and c0 >= o1 and (o0 < c1 or c0 > o1):
         return "bull"
-    if c[-2] > o[-2] and c[-1] < o[-1] and c[-1] < o[-2]:
+    if c1 > o1 and c0 < o0 and o0 >= c1 and c0 <= o1 and (o0 > c1 or c0 < o1):
         return "bear"
     return "none"
 
@@ -344,10 +347,12 @@ def _replay_both(bars, t):
             lv.append((px, "krown", cr))
     day0 = (T // DAY) * DAY
     m = ot5 >= day0
-    if m.any() and v5[m].sum() > 0:
+    if T - day0 >= VWAP_MIN_D and m.any():      # angle c fix: early-session extremes are just the last bars' range
+        lv += [(float(h5[m].max()), "session", None), (float(l5[m].min()), "session", None)]
+    if T - day0 >= VWAP_MIN_D and m.any() and v5[m].sum() > 0:
         lv.append((float(((h5[m] + l5[m] + c5[m]) / 3 * v5[m]).sum() / v5[m].sum()), "vwap", None))
     m = ot5 >= week_start(T)
-    if T != week_start(T) and m.any() and v5[m].sum() > 0:
+    if T - week_start(T) >= VWAP_MIN_W and m.any() and v5[m].sum() > 0:
         lv.append((float(((h5[m] + l5[m] + c5[m]) / 3 * v5[m]).sum() / v5[m].sum()), "vwap", None))
     below = np.floor(c_t / ROUND_STEP) * ROUND_STEP
     if below == c_t:
@@ -460,9 +465,12 @@ def _replay_both(bars, t):
             wv = ((c_t - A[k].l[jj]) if side == "long" else (A[k].h[jj] - c_t)) / c_t * 100
             widths[k] = wv if wv > 0 else float("nan")
         stf = "none"
-        for k in ("D", "12h", "8h"):
-            if widths[k] == widths[k] and wmax == wmax and W_MIN <= widths[k] <= wmax:
-                stf = k; break
+        for k in ("D", "12h", "8h"):          # refine only a stop that is too wide (operator: "if it is too much")
+            if widths[k] != widths[k] or wmax != wmax or widths[k] < W_MIN:
+                break
+            if widths[k] <= wmax:
+                stf = k
+                break
         r.update(f3_armed=armA, f3_armed_B=armB, f3_w_D=widths["D"], f3_w_12h=widths["12h"], f3_w_8h=widths["8h"],
                  f3_wmax=wmax, f3_stop_tf=stf, f3_stop_pct=widths[stf] if stf != "none" else float("nan"),
                  f3_cost_R=COST_PCT / widths[stf] if stf != "none" else float("nan"))
@@ -471,9 +479,9 @@ def _replay_both(bars, t):
             if k in o3:
                 oo, hh, ll, cc = o3[k]
                 cat = _candle_cat(oo, hh, ll, cc)
-                r[f"f4_{k}_cat"] = cat; r[f"f4_{k}_align"] = _align(cat, side); r[f"f4_{k}_eng_opr"] = _engulf_opr(oo, cc)
+                r[f"f4_{k}_cat"] = cat; r[f"f4_{k}_align"] = _align(cat, side); r[f"f4_{k}_eng_cls"] = _engulf_cls(oo, cc)
             else:
-                r[f"f4_{k}_cat"] = "na"; r[f"f4_{k}_align"] = "na"; r[f"f4_{k}_eng_opr"] = "na"
+                r[f"f4_{k}_cat"] = "na"; r[f"f4_{k}_align"] = "na"; r[f"f4_{k}_eng_cls"] = "na"
         # F5
         r.update(f5_1h=bb1, f5_1h_cush=bb1c, f5_4h=bb4,
                  f5_veto=bool(bb1 == ("walk_lower" if side == "short" else "walk_upper")),
@@ -594,8 +602,8 @@ def _cat_frame(a):
     lw, uw = np.minimum(o, c) - l, h - np.maximum(o, c)
     green, red = c > o, c < o
     conds = [
-        ("bull_engulf", (c1 < o1) & green & (o <= c1) & (c >= o1) & ((o < c1) | (c > o1))),
-        ("bear_engulf", (c1 > o1) & red & (o >= c1) & (c <= o1) & ((o > c1) | (c < o1))),
+        ("bull_engulf", (c1 < o1) & green & (c > o1)),
+        ("bear_engulf", (c1 > o1) & red & (c < o1)),
         ("outside", (h > h1) & (l < l1)),
         ("inside", (h <= h1) & (l >= l1)),
         ("pin_bull", (rng > 0) & (lw >= PIN_WICK * rng) & (body <= PIN_BODY * rng)),
@@ -606,7 +614,9 @@ def _cat_frame(a):
     ]
     cat = np.select([cv.fillna(False).to_numpy(bool) for _, cv in conds], [k for k, _ in conds], "none").astype(object)
     cat[:2] = "na"
-    eng = np.where((c1 < o1) & green & (c > o1), "bull", np.where((c1 > o1) & red & (c < o1), "bear", "none")).astype(object)
+    bull_c = (c1 < o1) & green & (o <= c1) & (c >= o1) & ((o < c1) | (c > o1))
+    bear_c = (c1 > o1) & red & (o >= c1) & (c <= o1) & ((o > c1) | (c < o1))
+    eng = np.where(bull_c, "bull", np.where(bear_c, "bear", "none")).astype(object)
     eng[:2] = "na"
     return pd.Series(cat, index=a.index), pd.Series(eng, index=a.index)
 
@@ -621,7 +631,7 @@ def _leak_fwd_next(series):
     return series.shift(-1)
 
 
-def context_frame(bars, side, leak=None, decisions=None):
+def context_frame(bars, side, leak=None, decisions=None, keep_levels=False):
     """VECTORISED build: DataFrame (index = decision time T ms) with the same keys as context_at.
     decisions: optional array of T values (whole hours) to emit; default every 1h bar end."""
     if leak is not None and leak not in LEAKS:
@@ -765,9 +775,12 @@ def context_frame(bars, side, leak=None, decisions=None):
                 for px, cr in _cluster_np(np.array(pp), np.array(cc), KROWN_TOL * ad):
                     lv.append((px, "krown", cr))
         k5 = int(i5[q])
-        if T % DAY and k5 >= 0 and dkey[k5] == T // DAY and cs_d_v[k5] > 0:
+        in_day = bool(T % DAY) and k5 >= 0 and dkey[k5] == T // DAY
+        if in_day and T % DAY >= VWAP_MIN_D:
+            lv += [(float(part_h_all[k5]), "session", None), (float(part_l_all[k5]), "session", None)]
+        if in_day and T % DAY >= VWAP_MIN_D and cs_d_v[k5] > 0:
             lv.append((float(cs_d_tpv[k5] / cs_d_v[k5]), "vwap", None))
-        if T != week_start(T) and k5 >= 0 and wkey[k5] == week_start(T) and cs_w_v[k5] > 0:
+        if (T - week_start(T)) >= VWAP_MIN_W and k5 >= 0 and wkey[k5] == week_start(T) and cs_w_v[k5] > 0:
             lv.append((float(cs_w_tpv[k5] / cs_w_v[k5]), "vwap", None))
         rb = np.floor(c / ROUND_STEP) * ROUND_STEP
         rb = rb - ROUND_STEP if rb == c else rb
@@ -781,6 +794,8 @@ def context_frame(bars, side, leak=None, decisions=None):
         mine = [x for x in lv if (x[0] < c_side if side == "long" else x[0] > c_side)]
         mine4 = [x for x in mine if (x[0] < c4 if side == "long" else x[0] > c4)]
         r = {"T": T, "side": side, "close": c, "atr1h": a1, "f1_n_levels": len(mine), "f1_n_levels_v4h": len(mine4)}
+        if keep_levels:                      # debug output for redteam.py R3 (all levels, both sides)
+            r["levels"] = [(x[0], x[1]) for x in lv]
         near = mine[_near_np([x[0] for x in mine], [LAYERS.index(x[1]) for x in mine], side)] if mine else None
         if near is None or a1 != a1:
             r.update(f1_near_px=np.nan, f1_near_layer="none", f1_dist_atr=np.nan, f1_at_level=False,
@@ -815,7 +830,15 @@ def context_frame(bars, side, leak=None, decisions=None):
                 widths[k] = np.nan; continue
             wv = ((c - agg[k]["l"].iat[jj]) if side == "long" else (agg[k]["h"].iat[jj] - c)) / c * 100
             widths[k] = float(wv) if wv > 0 else np.nan
-        stf = next((k for k in ("D", "12h", "8h") if widths[k] == widths[k] and wmax == wmax and W_MIN <= widths[k] <= wmax), "none")
+        stf, ladder = "none", ["D", "12h", "8h"]
+        while ladder and wmax == wmax:
+            k = ladder.pop(0)
+            wk_ = widths[k]
+            if not (wk_ >= W_MIN):           # NaN or too tight: no refinement, no stop
+                break
+            if wk_ <= wmax:
+                stf = k
+                break
         r.update(f3_armed=armA, f3_armed_B=armB, f3_w_D=widths["D"], f3_w_12h=widths["12h"], f3_w_8h=widths["8h"],
                  f3_wmax=wmax, f3_stop_tf=stf, f3_stop_pct=widths[stf] if stf != "none" else np.nan,
                  f3_cost_R=COST_PCT / widths[stf] if stf != "none" else np.nan)
@@ -824,9 +847,9 @@ def context_frame(bars, side, leak=None, decisions=None):
             jj = int(idx[k][q]) + (1 if leak == "f4_partial_candle" and int(idx[k][q]) + 1 < len(agg[k]) else 0)
             if jj >= 2:
                 cat = cats[k][0].iat[jj]
-                r[f"f4_{k}_cat"] = cat; r[f"f4_{k}_align"] = _ALIGN[side].get(cat, "none"); r[f"f4_{k}_eng_opr"] = cats[k][1].iat[jj]
+                r[f"f4_{k}_cat"] = cat; r[f"f4_{k}_align"] = _ALIGN[side].get(cat, "none"); r[f"f4_{k}_eng_cls"] = cats[k][1].iat[jj]
             else:
-                r[f"f4_{k}_cat"] = "na"; r[f"f4_{k}_align"] = "na"; r[f"f4_{k}_eng_opr"] = "na"
+                r[f"f4_{k}_cat"] = "na"; r[f"f4_{k}_align"] = "na"; r[f"f4_{k}_eng_cls"] = "na"
         # F5
         s1 = bb1.iat[j] if isinstance(bb1.iat[j], str) else "na"
         r.update(f5_1h=s1, f5_1h_cush=bb1c.iat[j], f5_4h=bb4.iat[j4] if j4 >= 0 else "na",

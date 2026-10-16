@@ -7,20 +7,20 @@ Built by `counts.py` from the vectorised frames (`run_dev.py vec`), DEV decision
 | step | long | short |
 |---|---|---|
 | DEV decision hours | 19729 | 19729 |
-| at a same-side level (nearest within 1.0 x ATR14 1h) | 16834 | 16707 |
-| after the 4 h same-side cooldown | 3713 | 3702 |
-| with a valid ladder stop (stop_tf != none): **tradeable ledger** | **3018** | **3005** |
-| distinct UTC days in the tradeable ledger | 800 | 796 |
+| at a same-side level (nearest within 1.0 x ATR14 1h) | 17802 | 17851 |
+| after the 4 h same-side cooldown | 3814 | 3817 |
+| with a valid ladder stop (stop_tf != none): **tradeable ledger** | **2817** | **2781** |
+| distinct UTC days in the tradeable ledger | 769 | 754 |
 
 ## Power: n needed for a decisive test (research_kit)
 
 - Outcome unit R (the PRE_REG trade: ladder stop, fixed 2 R target, all-taker cost). Per-trade sd = 1.5 R (OURS: a 1 R stop / 2 R target trade at the break-even hit rate 1/3 has sd 3 x sqrt(2/9) = 1.41 R; rounded up).
-- Cross-check with FABLE_RUNS_AUDIT 1.5: per-trade sd 1.97 % at a 4 h hold. Divided by the median ladder stop (1.64 %) that is 1.20 R per trade, below 1.5 R, so 1.5 R is the conservative choice.
-- Cost in R: median of the tradeable ledger = 0.14 % / stop % = **0.085 R** (all-taker); maker-in 0.09 % gives 0.055 R.
+- Cross-check with FABLE_RUNS_AUDIT 1.5: per-trade sd 1.97 % at a 4 h hold. Divided by the median ladder stop (1.73 %) that is 1.14 R per trade, below 1.5 R, so 1.5 R is the conservative choice.
+- Cost in R: median of the tradeable ledger = 0.14 % / stop % = **0.081 R** (all-taker); maker-in 0.09 % gives 0.052 R.
 - Plausible effect of one context filter = 0.2 R (OURS: about a quarter of the best SOURCED whole-setup expectancy, +0.75 R gross, CATALOGUE T-3 quoted in FABLE_RUNS_AUDIT 3.2).
-- `research_kit.power_check`: MDE = 2.8 x sd / sqrt(n) must satisfy MDE + cost <= 0.2 R  =>  **n_needed = 1338 independent units** per bucket and side. Units are UTC days (day-clustered SE), so a bucket is flagged LOW when its distinct-day count is below n_needed. The matched-baseline difference adds about sqrt(1 + 1/K) = 1.025 to the SE at K = 20 controls; ignored here (within rounding).
+- `research_kit.power_check`: MDE = 2.8 x sd / sqrt(n) must satisfy MDE + cost <= 0.2 R  =>  **n_needed = 1242 independent units** per bucket and side. Units are UTC days (day-clustered SE), so a bucket is flagged LOW when its distinct-day count is below n_needed. The matched-baseline difference adds about sqrt(1 + 1/K) = 1.025 to the SE at K = 20 controls; ignored here (within rounding).
 
-- Check: power_check(n=1338, sd=1.5, plausible=0.2, cost=0.085) -> mde 0.115 R, needed 0.200 R, proceed=True.
+- Check: power_check(n=1242, sd=1.5, plausible=0.2, cost=0.081) -> mde 0.119 R, needed 0.200 R, proceed=True.
 
 ## Per factor value (tradeable ledger)
 
@@ -28,91 +28,92 @@ n = events, d = distinct UTC days; per-year columns are events. LOW = d < n_need
 
 | factor | value | long n | long d | short n | short d | 2022 (Apr-Dec) | 2023 | 2024H1 | flag |
 |---|---|---|---|---|---|---|---|---|---|
-| f1_near_layer | bb4h | 173 | 140 | 165 | 133 | 110 | 162 | 66 | LOW |
-| f1_near_layer | krown | 106 | 84 | 124 | 103 | 92 | 83 | 55 | LOW |
-| f1_near_layer | pd_va | 884 | 510 | 856 | 492 | 614 | 793 | 333 | LOW |
-| f1_near_layer | prior_dw | 281 | 210 | 268 | 202 | 227 | 207 | 115 | LOW |
-| f1_near_layer | pw_va | 209 | 136 | 211 | 155 | 143 | 219 | 58 | LOW |
-| f1_near_layer | round | 398 | 282 | 429 | 301 | 234 | 248 | 345 | LOW |
-| f1_near_layer | vwap | 967 | 573 | 952 | 548 | 637 | 899 | 383 | LOW |
-| f2_conf_obj | 1 | 1303 | 633 | 1293 | 653 | 916 | 1157 | 523 | LOW |
-| f2_conf_obj | 2 | 1199 | 624 | 1208 | 626 | 800 | 1065 | 542 | LOW |
-| f2_conf_obj | 3+ | 516 | 340 | 504 | 336 | 341 | 389 | 290 | LOW |
-| f2_touch_cat | dynamic | 1140 | 621 | 1117 | 587 | 747 | 1061 | 449 | LOW |
-| f2_touch_cat | first | 199 | 176 | 165 | 151 | 145 | 151 | 68 | LOW |
-| f2_touch_cat | retest | 1467 | 693 | 1495 | 679 | 1002 | 1200 | 760 | LOW |
-| f2_touch_cat | untested | 212 | 188 | 228 | 189 | 163 | 199 | 78 | LOW |
-| f3_armed | False | 1409 | 475 | 1295 | 457 | 918 | 1182 | 604 | LOW |
-| f3_armed | True | 1609 | 516 | 1710 | 517 | 1139 | 1429 | 751 | LOW |
-| f3_stop_tf | 12h | 401 | 236 | 397 | 225 | 282 | 327 | 189 | LOW |
-| f3_stop_tf | 8h | 235 | 178 | 213 | 164 | 162 | 172 | 114 | LOW |
-| f3_stop_tf | D | 2382 | 700 | 2395 | 704 | 1613 | 2112 | 1052 | LOW |
-| f4_D_align | against | 373 | 103 | 407 | 112 | 295 | 333 | 152 | LOW |
-| f4_D_align | none | 2193 | 583 | 2170 | 577 | 1395 | 1922 | 1046 | LOW |
-| f4_D_align | with | 452 | 114 | 428 | 107 | 367 | 356 | 157 | LOW |
-| f4_12h_align | against | 397 | 194 | 383 | 200 | 278 | 330 | 172 | LOW |
-| f4_12h_align | none | 2166 | 717 | 2176 | 709 | 1457 | 1909 | 976 | LOW |
-| f4_12h_align | with | 455 | 216 | 446 | 202 | 322 | 372 | 207 | LOW |
-| f4_8h_align | against | 407 | 257 | 420 | 261 | 278 | 373 | 176 | LOW |
-| f4_8h_align | none | 2108 | 749 | 2100 | 742 | 1440 | 1799 | 969 | LOW |
-| f4_8h_align | with | 503 | 296 | 485 | 291 | 339 | 439 | 210 | LOW |
-| f4_4h_align | against | 450 | 368 | 443 | 364 | 303 | 399 | 191 | LOW |
-| f4_4h_align | none | 2069 | 761 | 2057 | 764 | 1431 | 1764 | 931 | LOW |
-| f4_4h_align | with | 499 | 391 | 505 | 400 | 323 | 448 | 233 | LOW |
-| f5_1h | break_lower | 51 | 50 | 118 | 112 | 60 | 83 | 26 | LOW |
-| f5_1h | break_upper | 139 | 131 | 46 | 45 | 57 | 84 | 44 | LOW |
-| f5_1h | inside | 2611 | 797 | 2594 | 783 | 1783 | 2252 | 1170 | LOW |
-| f5_1h | reenter_lower | 62 | 59 | 123 | 113 | 70 | 74 | 41 | LOW |
-| f5_1h | reenter_upper | 116 | 110 | 60 | 58 | 55 | 73 | 48 | LOW |
-| f5_1h | walk_lower | 8 | 8 | 52 | 52 | 23 | 24 | 13 | LOW |
-| f5_1h | walk_upper | 31 | 31 | 12 | 12 | 9 | 21 | 13 | LOW |
-| f5_4h | break_lower | 65 | 55 | 129 | 100 | 71 | 83 | 40 | LOW |
-| f5_4h | break_upper | 98 | 76 | 40 | 36 | 39 | 73 | 26 | LOW |
-| f5_4h | inside | 2573 | 761 | 2534 | 753 | 1750 | 2199 | 1158 | LOW |
-| f5_4h | reenter_lower | 99 | 94 | 110 | 102 | 76 | 80 | 53 | LOW |
-| f5_4h | reenter_upper | 89 | 86 | 86 | 84 | 47 | 91 | 37 | LOW |
-| f5_4h | walk_lower | 46 | 35 | 58 | 47 | 46 | 40 | 18 | LOW |
-| f5_4h | walk_upper | 48 | 39 | 48 | 43 | 28 | 45 | 23 | LOW |
-| f5_veto | False | 2987 | 799 | 2953 | 794 | 2030 | 2576 | 1334 | LOW |
-| f5_veto | True | 31 | 31 | 52 | 52 | 27 | 35 | 21 | LOW |
-| f5_conf | False | 2956 | 800 | 2945 | 795 | 2012 | 2566 | 1323 | LOW |
-| f5_conf | True | 62 | 59 | 60 | 58 | 45 | 45 | 32 | LOW |
-| f6_phaseA | accumulation | 280 | 74 | 278 | 75 | 115 | 281 | 162 | LOW |
-| f6_phaseA | distribution | 326 | 89 | 321 | 88 | 148 | 300 | 199 | LOW |
-| f6_phaseA | markdown | 1016 | 269 | 1026 | 270 | 1573 | 422 | 47 | LOW |
-| f6_phaseA | markup | 1396 | 368 | 1380 | 363 | 221 | 1608 | 947 | LOW |
-| f6_phaseB | accumulation | 350 | 95 | 330 | 94 | 470 | 210 | 0 | LOW |
-| f6_phaseB | balance | 399 | 111 | 403 | 112 | 189 | 384 | 229 | LOW |
-| f6_phaseB | distribution | 364 | 97 | 366 | 96 | 15 | 366 | 349 | LOW |
-| f6_phaseB | markdown | 799 | 209 | 815 | 210 | 1119 | 266 | 229 | LOW |
-| f6_phaseB | markup | 1106 | 288 | 1091 | 284 | 264 | 1385 | 548 | LOW |
-| f6_intraday | balance | 2405 | 752 | 2391 | 759 | 1617 | 2102 | 1077 | LOW |
-| f6_intraday | trend_down | 239 | 146 | 370 | 213 | 270 | 220 | 119 | LOW |
-| f6_intraday | trend_up | 374 | 227 | 244 | 162 | 170 | 289 | 159 | LOW |
-| f7_volreg | high | 925 | 400 | 933 | 393 | 521 | 907 | 430 | LOW |
-| f7_volreg | low | 1130 | 437 | 1072 | 438 | 957 | 781 | 464 | LOW |
-| f7_volreg | mid | 961 | 500 | 998 | 496 | 575 | 923 | 461 | LOW |
-| f7_volreg | na | 2 | 1 | 2 | 1 | 4 | 0 | 0 | LOW |
-| f7_squeeze | normal | 2368 | 673 | 2321 | 663 | 1529 | 2078 | 1082 | LOW |
-| f7_squeeze | squeeze | 650 | 247 | 684 | 243 | 528 | 533 | 273 | LOW |
-| f7_session | asia | 1008 | 678 | 1005 | 667 | 686 | 859 | 468 | LOW |
-| f7_session | late | 375 | 361 | 365 | 353 | 250 | 325 | 165 | LOW |
-| f7_session | london | 650 | 650 | 634 | 634 | 443 | 560 | 281 | LOW |
-| f7_session | ny | 985 | 700 | 1001 | 693 | 678 | 867 | 441 | LOW |
-| f7_weekend | weekday | 2125 | 593 | 2182 | 599 | 1464 | 1888 | 955 | LOW |
-| f7_weekend | weekend | 893 | 248 | 823 | 234 | 593 | 723 | 400 | LOW |
-| f7_approach | away | 1679 | 755 | 1686 | 757 | 1135 | 1463 | 767 | LOW |
-| f7_approach | fast | 104 | 99 | 80 | 79 | 72 | 67 | 45 | LOW |
-| f7_approach | slow | 1235 | 676 | 1239 | 655 | 850 | 1081 | 543 | LOW |
-| f7_sweep | False | 1867 | 764 | 1913 | 768 | 1264 | 1672 | 844 | LOW |
-| f7_sweep | True | 1151 | 624 | 1092 | 605 | 793 | 939 | 511 | LOW |
-| f7_htf_align | 0 | 962 | 317 | 968 | 321 | 623 | 856 | 451 | LOW |
-| f7_htf_align | 1 | 988 | 394 | 1004 | 396 | 759 | 837 | 396 | LOW |
-| f7_htf_align | 2 | 1068 | 333 | 1033 | 330 | 675 | 918 | 508 | LOW |
-| f7_funding | base | 1100 | 379 | 1092 | 379 | 534 | 1036 | 622 | LOW |
-| f7_funding | high | 280 | 91 | 288 | 90 | 0 | 179 | 389 | LOW |
-| f7_funding | low | 1258 | 466 | 1265 | 465 | 1080 | 1139 | 304 | LOW |
-| f7_funding | neg | 380 | 184 | 360 | 176 | 443 | 257 | 40 | LOW |
+| f1_near_layer | bb4h | 151 | 128 | 163 | 138 | 115 | 136 | 63 | LOW |
+| f1_near_layer | krown | 95 | 81 | 100 | 84 | 76 | 69 | 50 | LOW |
+| f1_near_layer | pd_va | 817 | 478 | 805 | 498 | 571 | 727 | 324 | LOW |
+| f1_near_layer | prior_dw | 214 | 168 | 193 | 146 | 158 | 162 | 87 | LOW |
+| f1_near_layer | pw_va | 192 | 130 | 176 | 138 | 124 | 192 | 52 | LOW |
+| f1_near_layer | round | 333 | 243 | 336 | 237 | 189 | 201 | 279 | LOW |
+| f1_near_layer | session | 253 | 208 | 283 | 220 | 175 | 255 | 106 | LOW |
+| f1_near_layer | vwap | 762 | 477 | 725 | 448 | 487 | 698 | 302 | LOW |
+| f2_conf_obj | 1 | 1072 | 571 | 1053 | 576 | 741 | 965 | 419 | LOW |
+| f2_conf_obj | 2 | 1184 | 614 | 1178 | 609 | 773 | 1040 | 549 | LOW |
+| f2_conf_obj | 3+ | 561 | 366 | 550 | 366 | 381 | 435 | 295 | LOW |
+| f2_touch_cat | dynamic | 1166 | 605 | 1171 | 593 | 777 | 1089 | 471 | LOW |
+| f2_touch_cat | first | 232 | 199 | 194 | 172 | 165 | 177 | 84 | LOW |
+| f2_touch_cat | retest | 1253 | 612 | 1286 | 619 | 844 | 1035 | 660 | LOW |
+| f2_touch_cat | untested | 166 | 165 | 130 | 130 | 109 | 139 | 48 | LOW |
+| f3_armed | False | 1210 | 417 | 1106 | 398 | 767 | 1021 | 528 | LOW |
+| f3_armed | True | 1607 | 524 | 1675 | 510 | 1128 | 1419 | 735 | LOW |
+| f3_stop_tf | 12h | 255 | 139 | 251 | 125 | 177 | 214 | 115 | LOW |
+| f3_stop_tf | 8h | 130 | 95 | 103 | 70 | 76 | 94 | 63 | LOW |
+| f3_stop_tf | D | 2432 | 698 | 2427 | 707 | 1642 | 2132 | 1085 | LOW |
+| f4_D_align | against | 404 | 115 | 447 | 129 | 282 | 399 | 170 | LOW |
+| f4_D_align | none | 1844 | 507 | 1831 | 497 | 1212 | 1573 | 890 | LOW |
+| f4_D_align | with | 569 | 147 | 503 | 128 | 401 | 468 | 203 | LOW |
+| f4_12h_align | against | 435 | 210 | 428 | 212 | 306 | 356 | 201 | LOW |
+| f4_12h_align | none | 1822 | 634 | 1814 | 628 | 1199 | 1635 | 802 | LOW |
+| f4_12h_align | with | 560 | 259 | 539 | 242 | 390 | 449 | 260 | LOW |
+| f4_8h_align | against | 426 | 264 | 445 | 273 | 279 | 394 | 198 | LOW |
+| f4_8h_align | none | 1824 | 699 | 1817 | 683 | 1251 | 1562 | 828 | LOW |
+| f4_8h_align | with | 567 | 325 | 519 | 319 | 365 | 484 | 237 | LOW |
+| f4_4h_align | against | 477 | 384 | 498 | 389 | 325 | 426 | 224 | LOW |
+| f4_4h_align | none | 1785 | 710 | 1740 | 690 | 1203 | 1515 | 807 | LOW |
+| f4_4h_align | with | 555 | 429 | 543 | 424 | 367 | 499 | 232 | LOW |
+| f5_1h | break_lower | 45 | 44 | 122 | 114 | 56 | 80 | 31 | LOW |
+| f5_1h | break_upper | 136 | 126 | 38 | 38 | 49 | 78 | 47 | LOW |
+| f5_1h | inside | 2439 | 754 | 2388 | 735 | 1651 | 2087 | 1089 | LOW |
+| f5_1h | reenter_lower | 43 | 43 | 137 | 125 | 66 | 78 | 36 | LOW |
+| f5_1h | reenter_upper | 112 | 107 | 37 | 36 | 40 | 71 | 38 | LOW |
+| f5_1h | walk_lower | 8 | 8 | 48 | 48 | 24 | 20 | 12 | LOW |
+| f5_1h | walk_upper | 34 | 34 | 11 | 11 | 9 | 26 | 10 | LOW |
+| f5_4h | break_lower | 35 | 31 | 136 | 108 | 59 | 80 | 32 | LOW |
+| f5_4h | break_upper | 103 | 79 | 20 | 18 | 32 | 70 | 21 | LOW |
+| f5_4h | inside | 2446 | 727 | 2377 | 715 | 1638 | 2075 | 1110 | LOW |
+| f5_4h | reenter_lower | 66 | 66 | 109 | 100 | 68 | 66 | 41 | LOW |
+| f5_4h | reenter_upper | 86 | 83 | 57 | 56 | 40 | 75 | 28 | LOW |
+| f5_4h | walk_lower | 24 | 19 | 59 | 48 | 37 | 32 | 14 | LOW |
+| f5_4h | walk_upper | 57 | 46 | 23 | 20 | 21 | 42 | 17 | LOW |
+| f5_veto | False | 2783 | 768 | 2733 | 752 | 1867 | 2404 | 1245 | LOW |
+| f5_veto | True | 34 | 34 | 48 | 48 | 28 | 36 | 18 | LOW |
+| f5_conf | False | 2774 | 768 | 2744 | 751 | 1866 | 2410 | 1242 | LOW |
+| f5_conf | True | 43 | 43 | 37 | 36 | 29 | 30 | 21 | LOW |
+| f6_phaseA | accumulation | 267 | 73 | 256 | 69 | 111 | 263 | 149 | LOW |
+| f6_phaseA | distribution | 301 | 87 | 299 | 83 | 131 | 285 | 184 | LOW |
+| f6_phaseA | markdown | 933 | 256 | 955 | 259 | 1440 | 398 | 50 | LOW |
+| f6_phaseA | markup | 1316 | 353 | 1271 | 343 | 213 | 1494 | 880 | LOW |
+| f6_phaseB | accumulation | 325 | 91 | 307 | 89 | 431 | 201 | 0 | LOW |
+| f6_phaseB | balance | 380 | 106 | 376 | 105 | 186 | 350 | 220 | LOW |
+| f6_phaseB | distribution | 363 | 94 | 334 | 92 | 12 | 351 | 334 | LOW |
+| f6_phaseB | markdown | 731 | 198 | 767 | 201 | 1031 | 251 | 216 | LOW |
+| f6_phaseB | markup | 1018 | 280 | 997 | 267 | 235 | 1287 | 493 | LOW |
+| f6_intraday | balance | 2260 | 721 | 2242 | 723 | 1520 | 1960 | 1022 | LOW |
+| f6_intraday | trend_down | 173 | 113 | 366 | 212 | 234 | 211 | 94 | LOW |
+| f6_intraday | trend_up | 384 | 240 | 173 | 115 | 141 | 269 | 147 | LOW |
+| f7_volreg | high | 842 | 365 | 842 | 370 | 470 | 824 | 390 | LOW |
+| f7_volreg | low | 1078 | 421 | 1005 | 408 | 887 | 742 | 454 | LOW |
+| f7_volreg | mid | 896 | 457 | 932 | 467 | 535 | 874 | 419 | LOW |
+| f7_volreg | na | 1 | 1 | 2 | 1 | 3 | 0 | 0 | LOW |
+| f7_squeeze | normal | 2218 | 642 | 2137 | 623 | 1411 | 1942 | 1002 | LOW |
+| f7_squeeze | squeeze | 599 | 233 | 644 | 232 | 484 | 498 | 261 | LOW |
+| f7_session | asia | 1016 | 683 | 989 | 664 | 675 | 855 | 475 | LOW |
+| f7_session | late | 334 | 329 | 332 | 326 | 226 | 293 | 147 | LOW |
+| f7_session | london | 595 | 595 | 590 | 590 | 399 | 525 | 261 | LOW |
+| f7_session | ny | 872 | 611 | 870 | 602 | 595 | 767 | 380 | LOW |
+| f7_weekend | weekday | 1951 | 571 | 2024 | 568 | 1328 | 1759 | 888 | LOW |
+| f7_weekend | weekend | 866 | 242 | 757 | 218 | 567 | 681 | 375 | LOW |
+| f7_approach | away | 1570 | 702 | 1553 | 694 | 1033 | 1390 | 700 | LOW |
+| f7_approach | fast | 81 | 78 | 76 | 73 | 56 | 53 | 48 | LOW |
+| f7_approach | slow | 1166 | 642 | 1152 | 623 | 806 | 997 | 515 | LOW |
+| f7_sweep | False | 1787 | 721 | 1772 | 713 | 1195 | 1586 | 778 | LOW |
+| f7_sweep | True | 1030 | 584 | 1009 | 574 | 700 | 854 | 485 | LOW |
+| f7_htf_align | 0 | 853 | 288 | 842 | 292 | 532 | 761 | 402 | LOW |
+| f7_htf_align | 1 | 905 | 363 | 913 | 355 | 694 | 766 | 358 | LOW |
+| f7_htf_align | 2 | 1059 | 333 | 1026 | 323 | 669 | 913 | 503 | LOW |
+| f7_funding | base | 1035 | 354 | 995 | 354 | 488 | 943 | 599 | LOW |
+| f7_funding | high | 257 | 89 | 263 | 80 | 0 | 170 | 350 | LOW |
+| f7_funding | low | 1163 | 433 | 1176 | 435 | 984 | 1074 | 281 | LOW |
+| f7_funding | neg | 362 | 173 | 347 | 166 | 423 | 253 | 33 | LOW |
 
 ## Pairs (operator-named factors; events, long / short)
 
@@ -120,103 +121,103 @@ n = events, d = distinct UTC days; per-year columns are events. LOW = d < n_need
 
 | f2_conf_obj | f6_phaseA | long | short | flag |
 |---|---|---|---|---|
-| 1 | accumulation | 119 | 102 | LOW |
-| 1 | distribution | 160 | 147 | LOW |
-| 1 | markdown | 434 | 464 | LOW |
-| 1 | markup | 590 | 580 | LOW |
-| 2 | accumulation | 110 | 117 | LOW |
-| 2 | distribution | 131 | 128 | LOW |
-| 2 | markdown | 410 | 405 | LOW |
-| 2 | markup | 548 | 558 | LOW |
-| 3+ | accumulation | 51 | 59 | LOW |
-| 3+ | distribution | 35 | 46 | LOW |
-| 3+ | markdown | 172 | 157 | LOW |
-| 3+ | markup | 258 | 242 | LOW |
+| 1 | accumulation | 101 | 79 | LOW |
+| 1 | distribution | 132 | 128 | LOW |
+| 1 | markdown | 342 | 397 | LOW |
+| 1 | markup | 497 | 449 | LOW |
+| 2 | accumulation | 118 | 125 | LOW |
+| 2 | distribution | 136 | 121 | LOW |
+| 2 | markdown | 393 | 383 | LOW |
+| 2 | markup | 537 | 549 | LOW |
+| 3+ | accumulation | 48 | 52 | LOW |
+| 3+ | distribution | 33 | 50 | LOW |
+| 3+ | markdown | 198 | 175 | LOW |
+| 3+ | markup | 282 | 273 | LOW |
 
 ### f3_armed x f4_D_align
 
 | f3_armed | f4_D_align | long | short | flag |
 |---|---|---|---|---|
-| False | against | 272 | 277 | LOW |
-| False | none | 1008 | 947 | LOW |
-| False | with | 129 | 71 | LOW |
-| True | against | 101 | 130 | LOW |
-| True | none | 1185 | 1223 | LOW |
-| True | with | 323 | 357 | LOW |
+| False | against | 299 | 312 | LOW |
+| False | none | 782 | 718 | LOW |
+| False | with | 129 | 76 | LOW |
+| True | against | 105 | 135 | LOW |
+| True | none | 1062 | 1113 | LOW |
+| True | with | 440 | 427 | LOW |
 
 ### f5_1h x f6_phaseA
 
 | f5_1h | f6_phaseA | long | short | flag |
 |---|---|---|---|---|
-| break_lower | accumulation | 5 | 14 | LOW |
-| break_lower | distribution | 2 | 8 | LOW |
-| break_lower | markdown | 17 | 39 | LOW |
-| break_lower | markup | 27 | 57 | LOW |
-| break_upper | accumulation | 18 | 1 | LOW |
-| break_upper | distribution | 20 | 5 | LOW |
-| break_upper | markdown | 38 | 18 | LOW |
-| break_upper | markup | 63 | 22 | LOW |
-| inside | accumulation | 236 | 232 | LOW |
-| inside | distribution | 284 | 290 | LOW |
-| inside | markdown | 892 | 883 | LOW |
-| inside | markup | 1199 | 1189 | LOW |
-| reenter_lower | accumulation | 5 | 14 | LOW |
-| reenter_lower | distribution | 4 | 8 | LOW |
-| reenter_lower | markdown | 21 | 42 | LOW |
-| reenter_lower | markup | 32 | 59 | LOW |
-| reenter_upper | accumulation | 11 | 11 | LOW |
-| reenter_upper | distribution | 13 | 6 | LOW |
-| reenter_upper | markdown | 36 | 20 | LOW |
-| reenter_upper | markup | 56 | 23 | LOW |
-| walk_lower | accumulation | 1 | 4 | LOW |
-| walk_lower | distribution | 0 | 3 | LOW |
-| walk_lower | markdown | 3 | 20 | LOW |
-| walk_lower | markup | 4 | 25 | LOW |
-| walk_upper | accumulation | 4 | 2 | LOW |
+| break_lower | accumulation | 4 | 12 | LOW |
+| break_lower | distribution | 1 | 11 | LOW |
+| break_lower | markdown | 18 | 41 | LOW |
+| break_lower | markup | 22 | 58 | LOW |
+| break_upper | accumulation | 19 | 4 | LOW |
+| break_upper | distribution | 19 | 1 | LOW |
+| break_upper | markdown | 40 | 9 | LOW |
+| break_upper | markup | 58 | 24 | LOW |
+| inside | accumulation | 225 | 216 | LOW |
+| inside | distribution | 265 | 263 | LOW |
+| inside | markdown | 813 | 826 | LOW |
+| inside | markup | 1136 | 1083 | LOW |
+| reenter_lower | accumulation | 4 | 16 | LOW |
+| reenter_lower | distribution | 1 | 16 | LOW |
+| reenter_lower | markdown | 14 | 42 | LOW |
+| reenter_lower | markup | 24 | 63 | LOW |
+| reenter_upper | accumulation | 8 | 5 | LOW |
+| reenter_upper | distribution | 12 | 5 | LOW |
+| reenter_upper | markdown | 35 | 9 | LOW |
+| reenter_upper | markup | 57 | 18 | LOW |
+| walk_lower | accumulation | 2 | 3 | LOW |
+| walk_lower | distribution | 0 | 2 | LOW |
+| walk_lower | markdown | 2 | 23 | LOW |
+| walk_lower | markup | 4 | 20 | LOW |
+| walk_upper | accumulation | 5 | 0 | LOW |
 | walk_upper | distribution | 3 | 1 | LOW |
-| walk_upper | markdown | 9 | 4 | LOW |
+| walk_upper | markdown | 11 | 5 | LOW |
 | walk_upper | markup | 15 | 5 | LOW |
 
 ### f4_D_align x f5_1h
 
 | f4_D_align | f5_1h | long | short | flag |
 |---|---|---|---|---|
-| against | break_lower | 4 | 10 | LOW |
-| against | break_upper | 20 | 4 | LOW |
-| against | inside | 332 | 373 | LOW |
-| against | reenter_lower | 4 | 14 | LOW |
-| against | reenter_upper | 9 | 4 | LOW |
-| against | walk_lower | 1 | 2 | LOW |
-| against | walk_upper | 3 | 0 | LOW |
-| none | break_lower | 40 | 97 | LOW |
-| none | break_upper | 104 | 34 | LOW |
-| none | inside | 1884 | 1849 | LOW |
-| none | reenter_lower | 47 | 96 | LOW |
-| none | reenter_upper | 87 | 48 | LOW |
-| none | walk_lower | 7 | 38 | LOW |
-| none | walk_upper | 24 | 8 | LOW |
-| with | break_lower | 7 | 11 | LOW |
-| with | break_upper | 15 | 8 | LOW |
-| with | inside | 395 | 372 | LOW |
-| with | reenter_lower | 11 | 13 | LOW |
-| with | reenter_upper | 20 | 8 | LOW |
-| with | walk_lower | 0 | 12 | LOW |
-| with | walk_upper | 4 | 4 | LOW |
+| against | break_lower | 1 | 18 | LOW |
+| against | break_upper | 28 | 2 | LOW |
+| against | inside | 352 | 395 | LOW |
+| against | reenter_lower | 2 | 23 | LOW |
+| against | reenter_upper | 17 | 5 | LOW |
+| against | walk_lower | 0 | 4 | LOW |
+| against | walk_upper | 4 | 0 | LOW |
+| none | break_lower | 31 | 88 | LOW |
+| none | break_upper | 83 | 31 | LOW |
+| none | inside | 1598 | 1560 | LOW |
+| none | reenter_lower | 29 | 95 | LOW |
+| none | reenter_upper | 74 | 21 | LOW |
+| none | walk_lower | 6 | 32 | LOW |
+| none | walk_upper | 23 | 4 | LOW |
+| with | break_lower | 13 | 16 | LOW |
+| with | break_upper | 25 | 5 | LOW |
+| with | inside | 489 | 433 | LOW |
+| with | reenter_lower | 12 | 19 | LOW |
+| with | reenter_upper | 21 | 11 | LOW |
+| with | walk_lower | 2 | 12 | LOW |
+| with | walk_upper | 7 | 7 | LOW |
 
 ## Stop ladder (F3): widths and cost in R per timeframe (tradeable ledger; widths only)
 
 | side | stop tf | n | stop % p10 | p50 | p90 | cost R p10 | p50 | p90 |
 |---|---|---|---|---|---|---|---|---|
-| long | D | 2382 | 0.78 | 1.65 | 3.56 | 0.039 | 0.085 | 0.179 |
-| long | 12h | 401 | 0.78 | 1.69 | 3.82 | 0.037 | 0.083 | 0.179 |
-| long | 8h | 235 | 0.66 | 1.27 | 2.97 | 0.047 | 0.111 | 0.212 |
-| short | D | 2395 | 0.79 | 1.69 | 3.72 | 0.038 | 0.083 | 0.177 |
-| short | 12h | 397 | 0.68 | 1.63 | 4.00 | 0.035 | 0.086 | 0.206 |
-| short | 8h | 213 | 0.67 | 1.27 | 3.57 | 0.039 | 0.110 | 0.208 |
+| long | D | 2432 | 0.78 | 1.66 | 3.57 | 0.039 | 0.085 | 0.180 |
+| long | 12h | 255 | 0.98 | 2.06 | 3.96 | 0.035 | 0.068 | 0.143 |
+| long | 8h | 130 | 0.99 | 2.20 | 3.79 | 0.037 | 0.064 | 0.141 |
+| short | D | 2427 | 0.79 | 1.69 | 3.75 | 0.037 | 0.083 | 0.178 |
+| short | 12h | 251 | 0.78 | 2.10 | 4.51 | 0.031 | 0.067 | 0.180 |
+| short | 8h | 103 | 1.00 | 2.16 | 4.04 | 0.035 | 0.065 | 0.141 |
 
 Ladder outcome on the cooled-down ledger before the stop filter (why events have no stop):
 
 | side | D | 12h | 8h | none | of none: some width > W_max | all valid widths < W_min |
 |---|---|---|---|---|---|---|
-| long | 2382 | 401 | 235 | 695 | 203 | 492 |
-| short | 2395 | 397 | 213 | 697 | 153 | 544 |
+| long | 2432 | 255 | 130 | 997 | 214 | 535 |
+| short | 2427 | 251 | 103 | 1036 | 170 | 619 |
