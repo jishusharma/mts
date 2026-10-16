@@ -65,9 +65,30 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 - Verify a worker ship: `git cherry origin/fast-track <sha>` prints nothing. CI state: `origin/green/fast-track` moved past it.
 - Usage: `get_usage` (ccd_session_mgmt) once per wake; NUC/Fable sessions share the same Max weekly meter.
 - Research Map: read the artifact first (`Artifact read`), edit DATA in the saved copy with a script (json load/dump of the
-  one `const DATA = ` line), write it to `system/artifacts/research_map.html`, republish with `url`.
+  one `const DATA = ` line), write it to `system/artifacts/research_map.html`, republish with `url`. Another session may have
+  edited it since (commit 338e365b did): read the current version, never the old saved copy.
+- CI: `gh run list -R jishusharma/mts --branch fast-track --limit 5` on EVERY wake and after every ship wave (CI sat red 2 h
+  unnoticed on 10-16 while a coordinator wrote prompts). New research test files must be registered in run_all_tests /
+  run_extra_tests.EXTRA or skipped with a reason (B150, gate step 3gd); study scripts need a `wiring_registry.json` entry.
+- AutoDeploy gate (`MyTradingSys/runtime/sched/auto_deploy_last.json`, lock in `runtime/sched/locks/`): about 5 min on an idle
+  host, 16+ min under load, and it times out (25 min, old live copy) when workers, ASR or pytest extras saturate the 8 CPUs.
+  Start NO CPU-heavy worker while a gate runs; a red sha is not re-gated (RED_KNOWN) until a newer green exists; STOP_DIRTY names
+  the live file (`git --no-optional-locks -C <live> status --short --untracked-files=no`); only the session that owns live-tree
+  actions may clean it. A new auto_deploy.py runs live only after a deploy.
+- NUC lab status: `printf 'Set-Location F:/MTS/mts-codex-lab; python scripts/dev/codex_run.py status\n' | ssh -i ~/.ssh/nuc_gate
+  -o BatchMode=yes e-ngineers@192.168.29.110 ps` (stdin goes to PowerShell; stderr carries post-quantum warnings).
+- Task card JSON can hold a hidden HOLD `note` that `tasks.py brief` does not print: read the card file before running a refined card.
+- Bash tool: a `cd` persists between calls and some `cd x && git ...` chains are denied; use `git -C <dir>` and absolute paths.
 
 ## Session log (newest first; one line each, last 5)
+- 2026-10-16 autopilot-3 (JIS-NB, Sonnet coordinator, 00:10Z-06:30Z, Agent workers, started by local_1c4041fd): CI red 4 h -> green
+  02:04Z, 4b/4f gate races fixed, live deployed to 32077514 at 06:01:49Z after two load timeouts and a STOP_DIRTY; imb filter FAIL,
+  context composite INCONCLUSIVE, pit audit FIX-FIRST. Weekly 48 -> 55 %. Learned: heavy workers during a deploy gate cost two
+  gates; check `gh run list` and `auto_deploy_last.json` on every wake; a worker that merges late hits VERDICTS.csv and
+  wiring_registry.json conflicts (union both).
+- 2026-10-15 22:00Z to 10-16 00:20Z super-3 (local_62faa820, Opus coordinator): DSA backtest audit pack (10 cards dsa-audit-01..10,
+  AUDIT_BRIEF.md, cd5c6b3c), NUC hang forensics prompt (F:\MTS\NUC_HANG_FORENSICS_PROMPT.md), Research Map v7. Learned: CI stayed red
+  for 2 h unnoticed while it wrote prompts, so check `gh run list` on every wake.
 - 2026-10-16 super-2 (JIS-NB, Opus coordinator, Agent workers): boot ~25 tool turns, ~10 of them lookups now in Boot facts
   (live tree path, start_session refusal, deploy/HALT state, wake mechanism). 18 workers, 14 ships, weekly +9 (shared meter).
   Learned: coordinator wakes dominate cost; three double-ship wakes; one worker skipped the old-code test proof (rule 8); an
