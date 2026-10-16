@@ -1,0 +1,10 @@
+{
+  "done_when": "Claude pilot report shipped with test totals, one recomputed claim/hash, verdict and any reproduced findings; record PENDING if model stages or Claude allowance remain unavailable.",
+  "from": "JIS-NUC",
+  "id": "20261016-065707-reusable-lab-recipes-claude-pilot",
+  "need": "Read MyTradingSys/research/layer_lab/CLAUDE_RECIPE_PILOT_HANDOFF.md and execute its Sonnet pilot in your own worktree; no operator input or UI control. Already-launched flow: recipe-pilot. Check evidence, not just done flags.",
+  "posted": "2026-10-16T06:57:07Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "Reusable lab recipes Claude pilot"
+}
