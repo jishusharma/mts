@@ -11,7 +11,8 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "superseded by g3-pack-code-fixes",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -21,7 +22,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "G3 intraday loader must enforce timestamp fence within final dated file"
