@@ -35,7 +35,9 @@ Account names, secrets, tokens, keys, orders, balances, positions, runtime/order
 ## Pilot result (2026-10-16)
 - Worked: NUC status signals, ask and a split proposal reached the branch; NB's notes were readable from NUC; repo state (claims, NEXT_SESSION Q75-Q79 queue) is enough to find overlaps.
 - Did not work / fixed: hook signals carried raw shell-command tails (pipes and redirects after the verb); now verb + slug (+ `Result:`), tests in test_mts_signal.py. Both machines share one git author, so commit authors cannot tell the machines apart; use claims and signals.
-- NB's answer: see the section below.
+- NB did not answer the signals within 60 minutes (its hook shows signals only on its next prompt or tool turn, and its sessions ran older hook code). Fallback worked: NB state read from the repo.
 
 ### NB answer and split
-(filled in at the end of the pilot run)
+No signal answer, so this is from the repo at 2026-10-16 ~15:00Z: NB is active on live-path work (692afe63 auto_deploy: alert runner restarted by its -m module name, i.e. the Q75 area; B190b shim). No claim files exist for Q75-Q79.
+Split NUC proposed (signal, claim kind): NB keeps Q75 (live path, auto_deploy, mode.ps1). NUC takes Q76, Q77, Q78 and Q79 (research and docs, data at F:/MTS). Whoever claims a Q first with `sync.py claim` owns it; the other skips it.
+Next time: the coordinator on each side reads `mts_signal.py read --hours 3` at the start of a turn and answers `ask` lines within its next turn; a silent side is read from the repo after 60 minutes (do not block longer).
