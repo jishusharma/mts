@@ -46,6 +46,13 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 8. **Agent workers (2026-10-16).** Briefs ask for: ship once then stop (a second `sync.py ship` only re-wakes the coordinator),
    the proof that new tests fail on the old code (run them against `git show <sha>^:<file>` copies), a final reply of at most
    N lines, long notes in the shared notes folder. Tasks touching the same file run one after the other; others run in parallel.
+9. **Compaction by context share (operator 2026-10-16).** `.claude/settings.json` sets `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=25`, so every
+   session and agent in this repo auto-compacts at 25 % of its window, between tool calls, even mid-task. A model cannot run
+   `/compact` itself (a `/compact` sent by `send_message` arrives as plain text, tested 2026-10-16), so the setting is the only
+   automatic route. Working bands: under ~18 % keep going; 18-20 % finish the current task, then end it (ship, release, hand off)
+   rather than start another; 20-25 % finish only if the task is crucial and nearly done, else commit and let the compaction run.
+   Before a compaction is likely, keep the working state in files (NEXT_SESSION.md, notes folder, task card), not in the context.
+   Override: set the env var in the session's own settings; the break-even rule 1 above still applies to manual compacts.
 
 ## Boot facts (read, do not re-look-up; every super session corrects this list)
 - Live tree = the main checkout `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed` (`.mts_live` there is a marker FILE, not a
