@@ -4,9 +4,9 @@
   "week_resets": 1792677805,
   "week_used": 17.0,
   "window_resets": 1792137625,
-  "window_used": 0
+  "window_used": 1.0
  },
- "at": "2026-10-16T04:00:35Z",
+ "at": "2026-10-16T05:33:25Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 16.0,
-  "window_pts": 0.0,
-  "window_runs": 2
+  "window_pts": 1.0,
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-10-16T05:30:08Z",
+   "card": "gpt-fable-economics-recheck",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 189,
+   "tokens_out": 17426,
+   "tokens_total": 1448113,
+   "tokens_uncached": 75551,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-16T04:00:02Z",
    "card": "gpt-verdict-registry-audit",
@@ -157,21 +172,6 @@
    "tokens_uncached": 148561,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-14T22:33:22Z",
-   "card": "lc-levels-hold",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 42,
-   "tokens_out": 2402,
-   "tokens_total": 275975,
-   "tokens_uncached": 42917,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }

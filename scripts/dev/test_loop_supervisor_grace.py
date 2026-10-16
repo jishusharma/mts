@@ -26,6 +26,14 @@ class LoopSupervisorGrace(unittest.TestCase):
         self.assertIn("$startedPid = $nid", self.src)
         self.assertRegex(self.src, r"if \(\$inGrace -or \$starting\)")
 
+    def test_no_launcher_overrides_grace_below_default(self):
+        # 2026-10-16: mode.ps1 and the generated launchers passed -RestartGraceSec 180, which silently beat the script default
+        root = SUP.parents[2]
+        for rel in ("scripts/core/mode.ps1", "runtime_data/launch-supervisor.vbs", "runtime_data/launch-supervisor.ps1"):
+            txt = (root / rel).read_text(encoding="utf-8")
+            for m in re.finditer(r"-RestartGraceSec\s+(\d+)", txt):
+                self.assertGreaterEqual(int(m.group(1)), 360, rel)
+
     def test_parses(self):
         ps = shutil.which("pwsh") or shutil.which("powershell")
         if not ps:

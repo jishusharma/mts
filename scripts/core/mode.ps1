@@ -100,7 +100,7 @@ if (Test-Path $supLock) {
 if (-not $supRunning) {
     $vbsPath   = Join-Path $R "runtime_data\launch-supervisor.vbs"
     $supScript = Join-Path $R "scripts\core\loop-supervisor.ps1"
-    $supCmd    = '"{0}" -NoProfile -ExecutionPolicy Bypass -File "{1}" -Mode {2} -IntervalMin 1 -RestartGraceSec 180' -f $pwshExe, $supScript, $M
+    $supCmd    = '"{0}" -NoProfile -ExecutionPolicy Bypass -File "{1}" -Mode {2} -IntervalMin 1' -f $pwshExe, $supScript, $M
     $supCmdVbs = $supCmd -replace '"', '""'
     $vbs = @(
         'Set sh = CreateObject("WScript.Shell")'
