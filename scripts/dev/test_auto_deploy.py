@@ -363,6 +363,110 @@ class TestRun(unittest.TestCase):
         self.assertEqual(ad.main(["--check"]) in (0, 1), True)
 
 
+class SlotOps(ad.Ops):
+    """The real Ops.gate with git and the gate run stubbed, so only the gate-slot behaviour is under test."""
+
+    def __init__(self, on_gate):
+        self.on_gate = on_gate
+
+    def git(self, *a, timeout=300):
+        return 0, ""
+
+
+class TestDeployGateSlot(unittest.TestCase):
+    """The deploy gate takes a machine-wide gate slot (same files as sync.gate_slot) so a ship gate and a deploy gate do not run together."""
+
+    def setUp(self):
+        import shutil
+        import sync
+        self.sync = sync
+        self.tmp = Path(tempfile.mkdtemp())
+        subprocess.run(["git", "-C", str(self.tmp), "init", "-q"], check=True)
+        self.slots = self.tmp / ".git" / "gate-slots"
+        p = mock.patch.object(ad, "REPO", self.tmp)
+        p.start()
+        self.addCleanup(p.stop)
+        self.addCleanup(shutil.rmtree, self.tmp, True)
+
+    def run_gate(self, on_gate):
+        ops = SlotOps(on_gate)
+        with mock.patch.object(ad, "sh", side_effect=lambda *a, **k: on_gate()):
+            return ops.gate(T)
+
+    def test_ship_gate_waits_while_a_deploy_holds_a_slot(self):
+        class Stop(Exception):
+            pass
+
+        def stop(_):
+            raise Stop
+
+        def during_deploy_gate():
+            # one slot held by another ship gate + one by this deploy = full: a new ship gate must wait
+            with self.sync.gate_slot(self.tmp, alive=lambda p: True):
+                with self.assertRaises(Stop):
+                    with self.sync.gate_slot(self.tmp, alive=lambda p: True, sleep=stop, note_every=0):
+                        self.fail("ship gate got a slot while the deploy gate and another gate held both")
+            return 0, "ALL TESTS PASSED"
+        self.assertEqual(self.run_gate(during_deploy_gate)[0], 0)
+
+    def test_slot_is_held_during_the_gate_and_released_when_it_raises(self):
+        seen = []
+
+        def boom():
+            seen.append(len(list(self.slots.iterdir())) if self.slots.exists() else 0)
+            raise RuntimeError("gate blew up")
+        with self.assertRaises(RuntimeError):
+            self.run_gate(boom)
+        self.assertEqual(seen, [1])
+        self.assertEqual(list(self.slots.iterdir()), [])
+
+    def test_slot_is_released_after_a_normal_gate(self):
+        self.assertEqual(self.run_gate(lambda: (0, "ok"))[0], 0)
+        self.assertEqual(list(self.slots.iterdir()), [])
+
+    def test_dead_pid_slots_are_reclaimed_by_the_deploy_gate(self):
+        dead = subprocess.Popen([sys.executable, "-c", "pass"])
+        dead.wait()
+        self.slots.mkdir()
+        for i in (0, 1):
+            (self.slots / f"slot-{i}").write_text(str(dead.pid))
+        seen = []
+
+        def during():
+            seen.append(sorted(f.read_text() for f in self.slots.iterdir()))
+            return 0, "ok"
+        self.assertEqual(self.run_gate(during)[0], 0)
+        self.assertEqual(seen, [sorted([str(dead.pid), str(os.getpid())])])   # one stale file reclaimed by us, the other untouched
+        self.assertEqual([f.read_text() for f in self.slots.iterdir()], [str(dead.pid)])
+
+    def test_no_slot_within_the_timeout_means_no_gate_run(self):
+        self.slots.mkdir()
+        for i in (0, 1):
+            (self.slots / f"slot-{i}").write_text(str(os.getpid()))   # both held by a live process
+        ran = []
+        with mock.patch.dict(os.environ, {ad.GATE_TIMEOUT_ENV: "0.2"}):
+            with self.assertRaises(self.sync.GateSlotTimeout):
+                self.run_gate(lambda: ran.append(1) or (0, "ok"))
+        self.assertEqual(ran, [])
+        self.assertEqual(len(list(self.slots.iterdir())), 2)   # the holders' slots are not touched
+
+    def test_run_with_no_slot_is_a_stop_that_never_deploys_and_is_retried_next_tick(self):
+        import sync
+
+        class NoSlot(FakeOps):
+            def gate(self, sha):
+                self.gated.append(sha)
+                raise sync.GateSlotTimeout("no gate slot free after 2700s (2/2 busy)")
+        ops = NoSlot(changed=["MyTradingSys/execution/auto_trader.py"])
+        st = {}
+        r = ad.run(ops, state=st, save=False)
+        self.assertEqual(r["action"], "STOP_SLOT")
+        self.assertIn("no gate slot", r["reason"])
+        self.assertEqual([c for c in ops.calls if c[0] == "merge"], [])
+        self.assertEqual(ops.killed, [])
+        self.assertNotIn("last_red_sha", st)   # not red: the same SHA is gated again on the next tick
+
+
 class ClockOps(FakeOps):
     """FakeOps whose gate takes the seconds given (the clock reads before and after ops.gate)."""
 
@@ -409,11 +513,11 @@ class TestGateTimeAndTimeout(unittest.TestCase):
                 return 0, ""
 
         ad.sh = lambda argv, cwd=None, timeout=300: (seen.append((argv[1:], timeout)) or (0, "ALL TESTS PASSED"))
-        self.assertEqual(Quiet().gate(T), (0, "ALL TESTS PASSED"))   # worktree path = ad.REPO.parent / mts-deploy-gate: inside the temp dir
+        self.assertEqual(Quiet()._gate_in_worktree(T), (0, "ALL TESTS PASSED"))   # worktree path = ad.REPO.parent / mts-deploy-gate: inside the temp dir
         self.assertEqual(seen, [(["scripts/dev/run_all_tests.py", "--quick"], 2700)])
         os.environ["MTS_DEPLOY_GATE_TIMEOUT"] = "120"
         seen.clear()
-        Quiet().gate(T)
+        Quiet()._gate_in_worktree(T)   # the slot wrapper is covered by TestDeployGateSlot
         self.assertEqual([t for _, t in seen], [120])
 
     def test_sh_keeps_what_the_child_printed_before_the_timeout(self):
