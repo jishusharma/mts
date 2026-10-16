@@ -5,7 +5,7 @@
     mode  none   nothing changed: no steps
           docs   only docs/data: the cheap doc invariants (DOC_STEPS), no gate slot needed
           smoke  code outside the live path: steps whose test file matches a changed file, the pytest shards whose tests mention
-                 its module name, plus ALWAYS (wiring, task-card DoR, B150 discovery); CI runs everything behind the push
+                 its module name, plus ALWAYS (wiring, task-card DoR, B150 discovery, CI deps lint); CI runs everything behind the push
           full   any live-path file, or ANY path no rule knows (fail closed): every step, the old --quick gate
 
 Nothing here decides what is safe to deploy: CI on both OSes does, and auto_deploy only takes green/fast-track.
@@ -30,7 +30,7 @@ FULL_RE = re.compile(
 CODE_DIRS = ("scripts/dev/", "scripts/worker/", "MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/research/",
              "MyTradingSys/options/", "MyTradingSys/observation/")
 
-ALWAYS = ("3w", "3x", "3tl", "3gd")   # wiring, task-card DoR, test-file discovery (B150): seconds, catch the usual merge-time breaks
+ALWAYS = ("3w", "3x", "3tl", "3gd", "3dl")   # wiring, task-card DoR, test-file discovery (B150), CI deps lint: seconds, catch the usual merge-time breaks
 DOC_STEPS = ("3tl", "3q", "3pc", "3c", "4d")   # task cards, INDEX/BUGS, prompt contract, guide sync, doc size/contract pytest
 SHARD_PREFIX = "4"                    # every pytest shard is numbered 4, 4b, 4c ...
 

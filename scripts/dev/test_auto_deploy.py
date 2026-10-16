@@ -281,6 +281,7 @@ class StaleOps(FakeOps):
     def __init__(self, green_age_s, trunk="d" * 40, **kw):
         super().__init__(**kw)
         self.green_age_s, self.trunk = green_age_s, trunk
+        self.live_head = ""      # "" = HEAD unknown to the fake: never "ahead of green"
         self.runs = [{"status": "completed", "conclusion": "success", "headSha": "d" * 40, "databaseId": 1}]
 
     def ci_runs(self):
@@ -295,6 +296,8 @@ class StaleOps(FakeOps):
         if a[0] == "log":
             self.calls.append(a)
             return 0, str(int(self.now().timestamp()) - self.green_age_s) + "\n"
+        if a[:2] == ("rev-parse", "HEAD"):
+            return 0, self.live_head + "\n"
         return super().git(*a, timeout=timeout)
 
 
@@ -310,6 +313,13 @@ class TestStaleGreenFallback(TestRun):
         self.assertEqual(r["branch"], "fast-track")
         self.assertEqual(ops.gated, ["d" * 40])      # same local gate, on the fast-track SHA
         self.assertEqual(self.merges(ops), [("merge", "--ff-only", "origin/fast-track")])
+
+    def test_live_ahead_of_green_uses_gated_fast_track_even_when_green_is_fresh(self):
+        # 2026-10-16: live HEAD came from an earlier fast-track deploy, green is its ancestor -> was STOP_NOT_FF forever
+        ops = StaleOps(green_age_s=600)
+        ops.live_head = "e" * 40
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["branch"], "fast-track")
 
     def _run(self, runs):
         ops = StaleOps(green_age_s=3 * 3600)
