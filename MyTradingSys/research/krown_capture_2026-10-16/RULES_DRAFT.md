@@ -20,7 +20,7 @@ Source: wvu0onib6WU @00:03:37
 Source: wvu0onib6WU @00:04:03
 OURS: construct = event (first bar where condition becomes true after a reset), outcome = sign and size of return at +21/+42/+63 calendar days. P(green) and median are both reported.
 
-**A2. He reports two medians, all history and since 2018, and trusts the second.** SOURCED. The old sample is "unrealistic".
+**A2. He reports two medians, all history and since 2018.** SOURCED. He concedes the pre-2018 returns can be called unrealistic, yet says he would "prefer the previous ones": he reports both and flags the gap; he does not drop the old sample.
 > "median of returns for the totality of results going back all the way to 2011"
 Source: wvu0onib6WU @00:01:41
 > "if we just looked at the results pertaining to 2018 and beyond so I would say that would be you know, more modern results"
@@ -29,6 +29,8 @@ Source: wvu0onib6WU @00:01:50
 Source: wvu0onib6WU @00:02:08
 > "I just want to show you how people can kind of fool you with data."
 Source: SOaAP9vBgM4 @00:00:10
+> "I would prefer the previous ones, personally"
+Source: V0gjxlaW2Qk @00:08:08
 OURS: the study must report pre-2018 and post-2018 separately; our DEV/VALIDATION/HOLDOUT split replaces his choice of window.
 
 **A3. The median is used as a target-price generator, with a band.** SOURCED.
@@ -59,7 +61,7 @@ Source: wvu0onib6WU @00:06:34
 
 ## B. Setups with a trigger definition
 
-**B1. Weekly stochastic crosses above 80 for the first time after 10+ weeks below.** SOURCED. Same family on the 10-day timeframe (first time above 80 "in a long time"; 19 prior cases).
+**B1. Stochastic above 80 for the first time after a long spell below.** SOURCED. Two separate studies: weekly (V0g: first time above 80 after 10 or more weeks below; 12 of the past 13 times) and 10-day timeframe (wvu: 19 prior cases, 79% green at one month).
 > "weekly stochastic also to get above 80"
 Source: V0gjxlaW2Qk @00:00:16
 > "12 of the past 13 times"
@@ -70,7 +72,9 @@ Parameters NOT given: oscillator length and smoothing ("stochastic momentum osci
 His own undo condition for the 10-day signal:
 > "for that signal to be undone"
 Source: wvu0onib6WU @00:01:34
-(price level said just after that: roughly 80,000 to 81,000; the signal depends on the close of the 10-day bar.)
+> "come down below about 81 or at least 80,000 bucks"
+Source: wvu0onib6WU @00:01:30
+OURS: "the signal depends on the close of the 10-day bar" is our reading; he gives only a price level, and in BvxLX8FL3bg admits he has no backward calculation for it.
 
 **B2. Corrective setup: 5 EMA crosses below 21 EMA, minimum target the 55 EMA.** SOURCED. Hit-rate varies by timeframe (6h in the CBP video: 72% within 4 bars, see KROWN_FREE_VS_PAID s1d).
 > "82% um you know, probability to test the 55 EMA within 10 days"
@@ -81,7 +85,7 @@ Source: BvxLX8FL3bg @00:05:09
 Source: wvu0onib6WU @00:08:50
 > "less than a 10% probability"
 Source: wvu0onib6WU @00:09:25
-OURS: target is the 55 EMA value at test time (moving), not the value at the cross. Failure tail: not tested within 10 bars, about 10% quoted.
+OURS: target is the 55 EMA value at test time (moving), not the value at the cross. His unit is days on the daily chart, not bars of any timeframe. Tail: outliers take 30 to 40 days, "less than a 10% probability".
 Follow-on: after the test, next day green 70%, 5 days 60%, returns "less than a percent":
 > "the next day is very likely to be green 70"
 Source: BvxLX8FL3bg @00:14:31
@@ -110,7 +114,11 @@ OURS: filter = sign of the 200 SMA slope over N bars (N not given).
 **B6. Three green weeks / three green months.** SOURCED (stated in V0g: 13 prior monthly cases, 77% green at 1, 3 and 6 months).
 > "there are 13 previous times"
 Source: V0gjxlaW2Qk @00:06:52
-All-history medians 14.25 / 60 / 44.7 %, and since 2018 about 8 %: he says so himself ("those returns get sliced and diced"), so the post-2018 numbers are the real claim.
+> "77 % of the time, time, literally for all three of those timeframes"
+Source: V0gjxlaW2Qk @00:06:58
+> "the median returns there is is over 14 and a quarter percent"
+Source: V0gjxlaW2Qk @00:07:25
+77% of 13 cases is 10 cases (our arithmetic). All-history medians 14.25 / 60 / 44.7 % at 1, 3, 6 months; since 2018 about 8 % (OURS reading of his "plus 8%, plus 7%, plus 8.5%").
 
 ## C. Levels, supports, invalidation
 
@@ -150,9 +158,15 @@ Source: BvxLX8FL3bg @00:08:48
 Source: BvxLX8FL3bg @00:08:31
 
 **D2. Prediction markets as a probability cross-check.** SOURCED (he trades small, "fun money").
+> "I did very, very, very small dollar amounts"
+Source: V0gjxlaW2Qk @00:01:31
 OURS: free read of implied probabilities is an optional context input; no trading of it.
 
-**D3. Sentiment index.** SOURCED: his own indicator ranges -100 to +100; "at negative 25 pessimism, you have no edge there".
+**D3. "Krown optimism index" (proprietary).** SOURCED: ranges -100 to +100; he says it is not a buy/sell signal.
+> "I would argue at negative 25 pessimism, you have no edge"
+Source: V0gjxlaW2Qk @00:08:50
+> "it's not telling you to buy or sell"
+Source: V0gjxlaW2Qk @00:08:56
 
 ## E. Stops and false breakouts (dzH7m9cQeZA, microstructure series)
 
@@ -166,7 +180,11 @@ Source: dzH7m9cQeZA @00:12:18
 OURS: breakout confirmed = 3 consecutive closes beyond the boundary; sweep = wick beyond with a close back inside within 1 to 3 bars. Test: fire rate and forward move for confirmed vs swept.
 
 **E2. Stop placement: where the idea is wrong, not where the crowd parks.**
-OURS: "a few percent" past a cluster (equal highs/lows, round numbers) is the only stop-distance number in the pilot; value unspecified. Treat as a parameter on DEV.
+> "pull your stop where the idea is wrong, not where the crowd parks"
+Source: dzH7m9cQeZA @00:18:45
+> "go a few percent above that or below that"
+Source: dzH7m9cQeZA @00:18:54
+SOURCED: the principle and "a few percent" past the pile. OURS: "a few percent" is a vague range; we must choose a number on DEV. It is the only stop-distance language in the pilot. His "invalidation" elsewhere (C1) is a level, not a stop order.
 
 ## F. Not rules (recorded so nobody re-reads them as such)
 - Daily DCA buys, Coinbase fee-discount referral, TradingView lifetime-indicator sale (code word and 20% off), Kalshi referral credit: sales, not method.

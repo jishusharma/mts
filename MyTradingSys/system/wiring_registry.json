@@ -817,5 +817,21 @@
    "disp": "TOOL",
    "why": "Pure realised-MDE and day/week-clustered verdict helper plus n_needed planning calculation for context composite V2; covered by test_mde_rule.py; no live imports."
   }
- }
+ },
+  "MyTradingSys/research/krown_capture_2026-10-16/check_quotes.py": {
+    "disp": "REPRO",
+    "why": "Verifies every quote in RULES_DRAFT.md against transcripts/<id>_timed.txt (normalised match, caption timestamp, --fix rewrites @ts); run by hand, named in INVENTORY.md."
+  },
+  "MyTradingSys/research/krown_capture_2026-10-16/classify_channel.py": {
+    "disp": "REPRO",
+    "why": "Title/playlist classifier: raw channel lists to VIDEO_LIST.csv and class counts; run by hand, named in INVENTORY.md."
+  },
+  "MyTradingSys/research/krown_capture_2026-10-16/enumerate_channel.py": {
+    "disp": "REPRO",
+    "why": "Enumerates Krown playlists and samples upload dates with yt-dlp (metadata only); run by hand, named in INVENTORY.md."
+  },
+  "MyTradingSys/research/krown_capture_2026-10-16/vtt_to_timed.py": {
+    "disp": "REPRO",
+    "why": "Converts YouTube VTT captions to the timed transcript format; run by hand, named in INVENTORY.md."
+  }
 }
