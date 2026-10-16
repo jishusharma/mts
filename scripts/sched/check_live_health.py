@@ -4,7 +4,7 @@ Read-only on the live system (never starts, stops or edits a process or a live f
 Detector contract (_common): line 1 `live_health <OK|WARN|RED> <reason>`, line 2 `HASH ...`, exit 0/1/2.
 
 Stale files (newest matching file's mtime older than the limit -> RED):
-  snapshots, state_code  150 s   loop-supervisor.ps1 $SnapshotStaleSec (same rule the supervisor restarts on)
+  snapshots, state_code  300 s   loop-supervisor.ps1 $SnapshotStaleSec (same rule the supervisor restarts on)
   orderflow day csv      300 s   one row per closed UTC minute (orderflow_live.py docstring); 5 missed minutes
   oi_1m.csv              300 s   1-minute live OI rows (oi_recorder.py); 5 missed minutes
   htf_context jsonl    15000 s   one row 90 s after each 4H close (htf_context_live.py --loop) + 10 min slack
@@ -30,8 +30,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _common import REPO, emit, run, state_hash
 
 FILES = [  # (name, glob relative to root, stale seconds)
-    ("snapshots", "runtime_data/snapshots/BTCUSDT_*.json", 150),
-    ("state_code", "MyTradingSys/runtime/state_code.json", 150),
+    ("snapshots", "runtime_data/snapshots/BTCUSDT_*.json", 300),
+    ("state_code", "MyTradingSys/runtime/state_code.json", 300),
     ("orderflow", "MyTradingSys/runtime/orderflow_live/????-??-??.csv", 300),
     ("oi_1m", "MyTradingSys/runtime/oi_live/oi_1m.csv", 300),
     ("htf_context", "MyTradingSys/research/htf_context/????-??-??.jsonl", 15000),

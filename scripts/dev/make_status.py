@@ -198,6 +198,29 @@ def get_ci_line(cwd=None, now=None):
             f"origin/fast-track: {tag}")
 
 
+LIVE_MARKER = ".mts_live"   # marker FILE at the root of the live tree (auto_deploy.Ops.is_live)
+
+
+def is_live_tree(root="."):
+    return (Path(root) / LIVE_MARKER).exists()
+
+
+def get_ci_card_line(ci_line, root=".", env=None):
+    """The "CI card: ..." status line, or None when there is nothing to say (CI not red, or MTS_NO_CI_CARD set).
+
+    Red CI files ONE "fix CI <sha>" card (ci_red_card.py); a builder ships it with the next ship. The LIVE tree never files it: this script runs
+    there on a schedule, the untracked card then clashed with the same card shipped to fast-track and stopped the deploy merge (2026-10-16)."""
+    if "RED" not in ci_line or (os.environ if env is None else env).get("MTS_NO_CI_CARD"):
+        return None
+    if is_live_tree(root):
+        return "CI card: not filed (live tree)"
+    try:
+        import ci_red_card
+        return "CI card: " + "; ".join(ci_red_card.run(str(Path(root).resolve()), apply=True))
+    except Exception as e:   # never block the status page
+        return f"CI card: not filed ({type(e).__name__}); run scripts/dev/ci_red_card.py --apply"
+
+
 LESSONS = "MyTradingSys/system/LESSONS_LEARNED.md"
 DIGEST = "MyTradingSys/system/LESSONS_DIGEST.md"
 
@@ -321,12 +344,9 @@ def main():
     output.append("## Git Status")
     ci_line = get_ci_line()
     output.append(ci_line)
-    if "RED" in ci_line and not os.environ.get("MTS_NO_CI_CARD"):   # red CI files ONE "fix CI <sha>" card (ci_red_card.py); ship it with your next ship
-        try:
-            import ci_red_card
-            output.append("CI card: " + "; ".join(ci_red_card.run(os.getcwd(), apply=True)))
-        except Exception as e:   # never block the status page
-            output.append(f"CI card: not filed ({type(e).__name__}); run scripts/dev/ci_red_card.py --apply")
+    card_line = get_ci_card_line(ci_line)
+    if card_line:
+        output.append(card_line)
     output.append(get_lessons_line())
     output.append("")
 

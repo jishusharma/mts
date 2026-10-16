@@ -10,6 +10,10 @@ Runs where the file `.mts_live` exists (JIS-NB). Anywhere else it reports NOT_LI
   3b. Dirty GENERATED files (GENERATED_RE) are backed up to runtime_data/deploy_backup/<stamp>/regenerated/ and restored by `git checkout -- <file>`.
   3c. Fast-track fallback (stale green) only while the newest COMPLETED CI run on fast-track is green; red = FALLBACK_REFUSED_CI_RED, unknown
      (gh missing / auth / parse error / no completed run) = FALLBACK_REFUSED_CI_UNKNOWN (fail closed): both stay on green/fast-track.
+  3d. Untracked files in the live tree that the merge would create make `git merge --ff-only` refuse. Only machine-generated CI cards
+     (UNTRACKED_CLEARABLE_RE: make_status.py filed MyTradingSys/system/tasks/ci-<sha>.json while CI was red, then a builder shipped the same card)
+     whose content equals the incoming blob or has the generated card shape are backed up to runtime_data/deploy_backup/<stamp>/untracked/<path>
+     and removed (result key untracked_cleared). Any other untracked clash = STOP_MERGE, nothing removed (fail closed).
   4. Copy orderflow _state.json away (B152), `git merge --ff-only`, restore _state.json if the merge dropped it. Live INPUTS among the
      regenerated files (LIVE_INPUT_RE: htf_context, oi_live) are put back from the backup after the merge (L6); STATUS.md etc. stay committed.
   5. Restart only the processes whose files changed (loop-supervisor revives them in about a minute). position_manager is never killed (it
@@ -53,6 +57,10 @@ GENERATED_RE = re.compile(
 # Subset of GENERATED_RE that the live runner / health check READS: the checked-out committed copy would be a stale input, so the live-written
 # copy is restored after the merge. STATUS.md, AUDIT_DIGEST, T0_CHECKS, BUILD_REPORT are outputs only and take the committed version.
 LIVE_INPUT_RE = re.compile(r"^MyTradingSys/(runtime/oi_live/[^/]+\.csv|research/htf_context/[^/]+\.(jsonl|json))$")
+# UNTRACKED files the incoming diff would create: only the machine-generated CI card may be cleared (2026-10-16: make_status.py on the live host
+# filed ci-1bb1b39.json untracked, a builder shipped the same card, the gated merge stopped). Everything else untracked stays STOP_MERGE.
+UNTRACKED_CLEARABLE_RE = re.compile(r"^MyTradingSys/system/tasks/ci-([0-9a-f]+)\.json$")
+_BLOB_RE = re.compile(r"^[0-9a-f]{40,64}$", re.M)
 # (regex on a changed path, script name to restart). A process is listed once. position_manager is deliberately absent.
 RESTART_MAP = [
     (re.compile(r"^MyTradingSys/execution/(auto_trader|auto_trader_config|executor|plan_compiler|mainnet_plan_check|risk_guard|journal|deribit_orders)\b"), "auto_trader.py"),
@@ -118,6 +126,55 @@ def kill_process(script_name):
         return 0
 
 
+def is_generated_ci_card(rel, text):
+    """True when `text` has the shape ci_red_card.card_for writes for the card file `rel` (MyTradingSys/system/tasks/ci-<sha>.json): id and title
+    name the file's sha, pinned, goal and sources in the generated wording. Shape only: a hand-written card or any other JSON is False."""
+    m = UNTRACKED_CLEARABLE_RE.match(rel)
+    if not m:
+        return False
+    sha = m.group(1)
+    try:
+        c = json.loads(text)
+    except ValueError:
+        return False
+    if not isinstance(c, dict):
+        return False
+    src = c.get("sources")
+    return (c.get("id") == f"ci-{sha}" and c.get("title") == f"fix CI {sha}: fast-track is red" and c.get("pinned") is True
+            and str(c.get("goal", "")).startswith(f"CI on fast-track is red since commit {sha} (run ")
+            and isinstance(src, list) and len(src) == 1 and re.fullmatch(r"CI run \d+", str(src[0])) is not None)
+
+
+def _blob_id(out):
+    ids = _BLOB_RE.findall(out or "")
+    return ids[-1] if ids else ""
+
+
+def plan_untracked(ops, target, changed):
+    """Untracked files of the live tree that the incoming diff creates (the ff-only merge refuses to overwrite them). Read-only.
+    -> (clear, blocking). clear: generated CI cards (UNTRACKED_CLEARABLE_RE) whose content equals the incoming blob or has the generated card
+    shape: safe to back up and remove. blocking: every other clash, or `git ls-files` failing (fail closed)."""
+    rc, out = ops.git("ls-files", "--others", "--exclude-standard")
+    if rc != 0:
+        return [], ["(git ls-files --others failed: " + out.strip()[-120:] + ")"]
+    untracked = {ln.strip().strip('"') for ln in out.splitlines() if ln.strip()}
+    clear, blocking = [], []
+    for rel in sorted(set(changed) & untracked):
+        if not UNTRACKED_CLEARABLE_RE.match(rel):
+            blocking.append(rel)
+            continue
+        irc, iout = ops.git("rev-parse", f"{target}:{rel}")
+        incoming = _blob_id(iout) if irc == 0 else ""
+        same = bool(incoming) and incoming == _blob_id(ops.git("hash-object", "--", rel)[1])
+        if not same:
+            try:
+                same = is_generated_ci_card(rel, (REPO / rel).read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                same = False
+        (clear if same else blocking).append(rel)
+    return clear, blocking
+
+
 class Ops:
     """The side effects, injectable for tests."""
 
@@ -166,6 +223,30 @@ def _write(path, text):
     Path(path).write_text(text, encoding="utf-8", newline="\n")
 
 
+GATE_FAILED_CHARS = 4000
+
+
+def failed_step_blocks(gout, limit=GATE_FAILED_CHARS):
+    """The failing steps of a run_all_tests.py transcript: each 'Step N: FAIL' line with the 'Last output:' lines under it (the failed
+    pytest test names, the assertion), up to the next step block. 2026-10-16: the record kept only the last 6 summary lines, so a red
+    Step 4b could not be traced to a test afterwards. Capped at `limit` characters, the end kept; never raises (a parse slip must not stop
+    the red-gate record)."""
+    try:
+        blocks, cur = [], None
+        for ln in gout.splitlines():
+            if re.match(r"Step \S+: FAIL\b", ln):   # not the summary's 'Step 4b: Pytest tests: FAIL'
+                cur = [ln]
+                blocks.append(cur)
+            elif cur is not None and (ln.startswith("[Step ") or ln.startswith("=" * 10)):
+                cur = None
+            elif cur is not None and ln.strip():
+                cur.append(ln)
+        text = "\n".join("\n".join(b) for b in blocks)
+        return text[-limit:]
+    except Exception:   # noqa: BLE001
+        return ""
+
+
 def _finish(res, save, state=None):
     if save:
         _write(LAST, json.dumps(res, indent=1) + "\n")
@@ -206,7 +287,11 @@ def pick_branch(ops, note=None):
         age = ops.now().timestamp() - int(ops.git("log", "-1", "--format=%ct", f"origin/{BRANCH}")[1].strip())
     except ValueError:
         return BRANCH
-    if age <= GREEN_STALE_S:
+    # The live tree can be AHEAD of green (an earlier fallback deploy of fast-track): green is then an ancestor of HEAD, never
+    # fast-forwardable, and every later deploy stopped with STOP_NOT_FF until CI re-marked green (2026-10-16). Same CI check below.
+    head = ops.git("rev-parse", "HEAD")[1].strip()
+    live_ahead = bool(head) and ops.git("merge-base", "--is-ancestor", green, head)[0] == 0         and ops.git("merge-base", "--is-ancestor", head, trunk)[0] == 0
+    if age <= GREEN_STALE_S and not live_ahead:
         return BRANCH
     st = ci_state(ops)
     if st != "GREEN":
@@ -244,14 +329,25 @@ def run(ops=None, check=False, state=None, save=True):
     res.update(action=d["action"], reason=d["reason"], restarts=d["restarts"], java_pending=d["java_pending"])
     if d["action"] != "DEPLOY":
         return _finish(res, save)
+    uclear, ublock = plan_untracked(ops, target, changed)   # before the gate: a clash that cannot be cleared must not cost a gate run
+    if ublock:
+        res.update(action="STOP_MERGE", reason="untracked working tree files would be overwritten by merge: " + ", ".join(ublock[:8]))
+        return _finish(res, save)
     if check:
+        if uclear:
+            res["untracked_would_clear"] = uclear
         res["action"] = "WOULD_DEPLOY"
         return _finish(res, save)
     grc, gout = ops.gate(target)
     res["gate_tail"] = [ln for ln in gout.splitlines() if ln.strip()][-6:]
     if grc != 0:
+        res["gate_failed"] = failed_step_blocks(gout)
         state["last_red_sha"] = target
         res.update(action="STOP_RED", reason=f"gate red on {target[:7]}; live tree untouched")
+        return _finish(res, save, state)
+    uclear, ublock = plan_untracked(ops, target, changed)   # the gate takes minutes: read the live tree again (a card may have been filed since)
+    if ublock:
+        res.update(action="STOP_MERGE", reason="untracked working tree files would be overwritten by merge: " + ", ".join(ublock[:8]))
         return _finish(res, save, state)
     backup = None
     sp = REPO / ORDERFLOW_STATE
@@ -275,6 +371,19 @@ def run(ops=None, check=False, state=None, save=True):
             return _finish(res, save, state)
     if regen:
         res["regenerated"] = regen
+    for rel in uclear:   # generated CI card filed on the live host and also shipped to the trunk: keep a copy, remove only that file
+        src = REPO / rel
+        if backup is None:
+            backup = REPO / "runtime_data" / "deploy_backup" / ops.now().strftime("%Y%m%dT%H%M%SZ")
+        dst = backup / "untracked" / rel
+        try:
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst)
+            src.unlink()
+        except OSError as e:
+            res.update(action="STOP_MERGE", reason=f"could not back up and clear untracked {rel}: {e}")
+            return _finish(res, save, state)
+        res.setdefault("untracked_cleared", []).append(rel)
     mrc, mout = ops.git("merge", "--ff-only", f"origin/{branch}")
     if mrc != 0:
         res.update(action="STOP_MERGE", reason="ff-only merge refused: " + mout.strip()[-200:])

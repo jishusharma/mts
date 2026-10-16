@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/pit_levels_2026-10-16/count_prior_va.py > MyTradingSys/research/pit_levels_2026-10-16/COUNT.txt",
+    "python MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py",
+    "python MyTradingSys/research/pit_levels_2026-10-16/run_prereg.py --count",
+    "python MyTradingSys/research/pit_levels_2026-10-16/run_prereg.py --outcomes"
+  ],
+  "created": "2026-10-15T23:40:22Z",
+  "depends_on": [],
+  "done_when": "COUNT.txt committed before any outcome code; re-count within 1 % of n_T 1,835 and MDE + cost <= 0.75 R (else BLOCKED.md, PRE_REG.md untouched); run_prereg.py + fail-first tests; ledger.csv, EXPOSURE_LEDGER.csv, RESULT.md starting 'T: <verdict>' / 'C: <verdict>'; no VALIDATION/HOLDOUT bar; no production code.",
+  "from_inbox": "",
+  "goal": "Run research/pit_levels_2026-10-16/PRE_REG.md as frozen: prior-day VAH/VAL failed auction on BTCUSDT 5m, probe-extreme stop, other-edge target, stop >= 0.40 % subset, DEV only; control = first touch. Count, freeze gate, ONE outcome run, RESULT.md with one verdict per arm.",
+  "id": "pit-prior-va-failed-auction-dev",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "HOLD 2026-10-16 audit FIX-FIRST (4): research/pit_levels_2026-10-16/AUDIT_BEFORE_RUN.md. Do not run. Needs PRE_REG_V2.md first: T-minus-C paired difference in PASS_T; MDE on days at the Holm z (m=39); plausible <=0.3 R; card step verdicts.py backfill. Then set ready.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "fable pit-levels session 2026-10-16",
+  "refs": [
+    "MyTradingSys/research/pit_levels_2026-10-16/PRE_REG.md",
+    "MyTradingSys/research/pit_levels_2026-10-16/PIT_CONTRACT.md",
+    "MyTradingSys/research/pit_levels_2026-10-16/REPORT.md",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/pit_levels_2026-10-16/run_prereg.py (new: outcomes per PRE_REG.md section 3, day-block bootstrap per FORMULAS 18.7, seed 20261016)",
+    "MyTradingSys/research/pit_levels_2026-10-16/test_run_prereg.py (new)",
+    "MyTradingSys/research/pit_levels_2026-10-16/COUNT.txt, ledger.csv, EXPOSURE_LEDGER.csv, RESULT.md",
+    "MyTradingSys/system/wiring_registry.json entry for run_prereg.py (REPRO)"
+  ],
+  "scope_out": [
+    "PRE_REG.md and PIT_CONTRACT.md (frozen; a needed change = BLOCKED, not an edit)",
+    "any bar with open >= 2024-07-01 (VALIDATION/HOLDOUT)",
+    "backtest/, execution/, runtime/ (no production code)",
+    "any second parameter set, horizon, stop or target variant"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "refined",
+  "steps": [
+    "sync.py start pit-prereg-run; claim this card; read PRE_REG.md sections 0-8 and PIT_CONTRACT.md D-LEVELS, D-SESSION, D-STOPFLOOR",
+    "run count_prior_va.py into COUNT.txt; commit it alone (message: 'pit-prereg count only') before writing any outcome code",
+    "compare the re-count with PRE_REG.md section 4 (n_T feasible 1,835 +- 1 %, MDE + cost <= 0.75 R); if it fails, write BLOCKED.md with the numbers, ship, stop",
+    "write run_prereg.py importing count_prior_va (loader, levels, events) and adding: fills at open[t+1], stop-first per 5m bar, gap-through-stop at the open, one open trade per side, time stop at the day's last 5m close, gross_R / net_R (taker 0.14 %, maker-in 0.09 %), day-block bootstrap SE",
+    "write test_run_prereg.py; each test must fail on a planted bug first (record the fail in the test docstring), then pass",
+    "one outcome run: ledger.csv, EXPOSURE_LEDGER.csv (rule_sha256 of PRE_REG.md at this commit), RESULT.md with 'T: <verdict>' and 'C: <verdict>' first",
+    "add run_prereg.py to wiring_registry.json (REPRO); sync.py ship with Result: '<T verdict>, <C verdict>, n_T=<n>, n_C=<n>, net R taker T=<x>, C=<y>'; release"
+  ],
+  "tests": "test_run_prereg.py (new, fails first on planted bugs: gap-through-stop fill at the open, stop-before-target on a bar holding both, second trigger while a trade is open is skipped, loader raises on a bar >= 2024-07-01); test_pit_leakage.py must still pass",
+  "title": "Run PRE_REG pit_levels_2026-10-16: prior-day VA failed auction on DEV (count, freeze gate, one outcome run, RESULT.md)"
+}

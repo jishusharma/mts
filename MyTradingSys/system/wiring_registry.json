@@ -5,6 +5,10 @@
    "disp": "REPRO",
    "why": "Rebuilds research/qriptal_2026-10-10/CALL_LEDGER.csv from ledger_rows.json, verifying every quote against the staged raw transcripts (ledger.py build | check); run by hand, named in LEDGER_NOTES.md."
   },
+  "MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py": {
+   "disp": "REPRO",
+   "why": "Qriptal-style volume-anomaly imbalance: label check against labels.json and fee-net fade test on Binance BTCUSDT (verify-labels | fetch | parity | label-check | backtest); writes LABEL_CHECK.md, BACKTEST.md; holdout outcomes not read; run by hand, named in README.md."
+  },
   "MyTradingSys/research/qriptal_2026-10-10/score_calls.py": {
    "disp": "REPRO",
    "why": "Scores the ELIGIBLE rows of CALL_LEDGER.csv on Binance BTCUSDT 1m klines (0.05% per side) and rewrites research/qriptal_2026-10-10/SCORECARD.md (score_calls.py run | check); DEV only, holdout refused unless --allow-holdout; run by hand, named in SCORECARD.md."
@@ -29,9 +33,17 @@
    "disp": "TOOL",
    "why": "GDI+ renderer called by g3_pack.py draw (subprocess, no Pillow on JIS-NB); draws rect/line/text primitives from JSON to PNG."
   },
+  "MyTradingSys/research/context_null_2026-10-16/context_null.py": {
+   "disp": "TOOL",
+   "why": "Context-matched null (hour/vol tercile/trend/level controls) a future PRE_REG names as its control arm; library imported by research scripts, covered by test_context_null.py; DEV arrays only, no live imports."
+  },
   "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py": {
    "disp": "REPRO",
    "why": "Pre-registered DEV-only gross-effect screen (PRE_REG.md); run by hand (--count | --full), reproduces RESULT.md/decay.csv/ledger.csv; covered by test_screen.py; no live imports."
+  },
+  "MyTradingSys/research/pit_levels_2026-10-16/count_prior_va.py": {
+   "disp": "REPRO",
+   "why": "Count-only pass (no outcome column) of the prior-day value-area failed auction named in pit_levels_2026-10-16/PRE_REG.md section 4; run by hand, reproduces COUNT.txt; DEV loader refuses bars >= 2024-07-01; imports vp_pivot_probe.build_profile and power_mde only; card pit-prior-va-failed-auction-dev runs it first."
   },
   "MyTradingSys/research/orderflow_views_2026-10-14/study.py": {
    "disp": "REPRO",
@@ -425,6 +437,11 @@
    "ref": "lc-levels-hold",
    "why": "Reproduces research/levels_confluence_2026-10-14/levels_hold.md (12 level families vs distance-matched random lines, DEV 2024-12..2025-03, seed 20261014); run by hand with the command in that file, no live import. Tested by test_levels.py."
   },
+  "MyTradingSys/research/levels_confluence_2026-10-14/event_table.py": {
+   "disp": "REPRO",
+   "ref": "lc-event-table",
+   "why": "Reproduces research/levels_confluence_2026-10-14/event_table.csv (1,278 first touches, DEV 2024-12..2025-03) cited in research/layer_lab/reports/2026-10-15_lc-event-table.md; run by hand, no live import. Tested by test_event_table.py."
+  },
   "MyTradingSys/research/levels_sizing_2026-10-14/probe.py": {
    "disp": "REPRO",
    "ref": "LC-SIZING-QUICK-20261014",
@@ -721,6 +738,39 @@
   "MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py": {
    "disp": "REPRO",
    "why": "DEV-only event counts and MDE for KR-S1, KR-S8, MAL-2/5/16/17 (EVENT_COUNTS.md); run by hand, reproduces event_counts.csv; computes no forward return."
+  },
+  "MyTradingSys/backtest/research_kit.py": {
+   "disp": "TOOL",
+   "ref": "research-kit",
+   "why": "Shared screen statistics for research studies (day-clustered SE, clustered difference, MDE, power check, Holm, cost in R); imported by hand-run studies, tested by test_research_kit.py, no live imports."
+  },
+  "MyTradingSys/research/context_factors_2026-10-16/context_asof.py": {
+   "disp": "TOOL",
+   "why": "Point-in-time context factors F1-F7 (replay context_at + vectorised context_frame) for BTC 1h decisions; library for the context-composite-dev-read card, covered by test_context_asof.py; DEV loader refuses bars >= 2024-07-01; no live imports."
+  },
+  "MyTradingSys/research/context_factors_2026-10-16/synth.py": {
+   "disp": "TOOL",
+   "why": "Synthetic 5m tape fixture for test_context_asof.py (no market data)."
+  },
+  "MyTradingSys/research/context_factors_2026-10-16/run_dev.py": {
+   "disp": "REPRO",
+   "why": "Builds the DEV factor frames, the full replay and the replay-vs-vectorised comparison (ANGLES.md a); run by hand."
+  },
+  "MyTradingSys/research/context_factors_2026-10-16/counts.py": {
+   "disp": "REPRO",
+   "why": "Rewrites COUNTS.md, trials.csv, events_dev.csv from the DEV frames (counts only, no outcome); run by hand."
+  },
+  "MyTradingSys/research/context_factors_2026-10-16/angle_b.py": {
+   "disp": "REPRO",
+   "why": "Trader-eye check: 12 seeded DEV hours rebuilt from the 1m archive next to the builder rows (ANGLES.md b); run by hand."
+  },
+  "MyTradingSys/research/context_factors_2026-10-16/angle_c.py": {
+   "disp": "REPRO",
+   "why": "Hand-arithmetic ingredients for one DEV hour (ANGLES.md c); run by hand."
+  },
+  "MyTradingSys/research/context_factors_2026-10-16/redteam.py": {
+   "disp": "REPRO",
+   "why": "Red-team checks R1-R3 on real DEV data (ANGLES.md d): boundary truncation, wrong side, vanishing levels; run by hand."
   }
  }
 }
