@@ -1165,6 +1165,15 @@ Branch two, the market arrives at the low-volume area at a constantly high speed
 6. **Evidence.** 1: FL F2 (+ F2-m1 second balance box continuation); ANG R26, R27 (positions 1-5 in the same session).
 7. **Gaps.** Initial stop (a chart point in 0jM5), balance length: NOT STATED. What counts as "big" is SOURCED for NQ (30 contracts, 20 in London: section 2.2, DyS79Eb92Ug); the BTC equivalent is OURS. OURS (V3 s7.1): N {60,120,240} bars, k_bal 0.8, POC band 0.25, pressure p {0.05,0.10}, drift 0.25, big trade = prior-30-day 99th/99.9th percentile, tier VR 1.5, S4 window m, S8(a) 15 bars, NY window 390 bars / cutoff 330, 13:30 UTC mapping, BE distance be_k, stop floor f, Dmax 1 %, -3R daily stop, 10 first legs.
 
+**ASR addition 2026-10-16 (Is1HvdfQm5c).** Condition on momentum entries in a balance (live Q&A, one video, ASR; the speaker is Fabio by first-person answering, not by label). A momentum breakout exactly at the value-area low, where a resting limit wall sits, is the case he rejects; he would consider the sell continuation only if the level breaks (rows 1.108, 1.109 of the V2 extract). Stop and target NOT STATED.
+
+> "this is the worst case that you can have for a momentum trade"
+**Source GPS: Is1HvdfQm5c | MIDDLE** (ASR, Is1HvdfQm5c_raw.txt:318, [48:36])
+
+> "it's the limit price wall on the top or on the bottom it's giving keeping you in consolidation"
+**Source GPS: Is1HvdfQm5c | MIDDLE** (ASR, Is1HvdfQm5c_raw.txt:317, [48:25])
+
+
 ### FAB-2 Absorbed push, rewarded effort ("punch to the wall"), incl. the failed auction of one side then the other side's aggression (former FAB-3)
 1. **Name / trader.** Fabio, "punch to the wall", "rewarded effort".
 2. **What you see.** One side's aggression is absorbed: big delta, almost zero price result ("punching a wall"); the other side's aggression moves price (effort with result) and controls the auction; trade with the side that gets the result, usually with the day's trend.
@@ -1224,6 +1233,15 @@ Merged into FAB-2 on 2026-10-16 (D3). The field numbers below are the old FAB-3'
 5. **BTC visibility: PARTIAL.** Consolidation, absorption by side, aggression, level break: YES. Big trades in the candle body: derivable from aggTrades but not in our bars (V3 s1, M10). "Buyers wall": NO (L2). Dealer gamma: NO (no options history; V3 dropped it).
 6. **Evidence.** 2: FL F3c (fZ long re-entry, risk $980 to make $25,000), F5 (jasv3L short 15->18 lots after a losing start). ANG R32 = F3; R34 = F5.
 7. **Gaps and contradictions.** LBL s4: the V1 extract atomized this sequence (R2 "failed auction plus buyer aggression" lost the side relation), and turned the scratch plan into a BE rule that FR-12 then merged with 0jM5's opposite trigger (BE after success vs BE on failure). "Failed auction" has no mechanical definition (FR s4). OURS: V3 S5D/model D (rest 3 bars, limit at the edge), M9 re-pivot not applied.
+
+**ASR addition 2026-10-16 (Is1HvdfQm5c).** Fresh read of the 2.5 h session (extracts/v2/fabio/Is1HvdfQm5c_v2.md, ASR). He walks one setup as an illustration/hypothetical (no live fill with a stated entry): absorption at the top, then aggressive sellers with a result, short on the test of the level; stop NOT a distance but a small one above the area; target stated as a multiple (the number is an ASR number: check frames before using it). Speaker not labelled by ASR; first-person teaching style.
+
+> "the trade that in 2025 gave me the most amount of money is the test of this level with"
+**Source GPS: Is1HvdfQm5c | BEGIN** (ASR, Is1HvdfQm5c_raw.txt:139, [20:10])
+
+> "to jump in with a super small stop loss okay you can cover yourself above the area and shoot for a 1 to 4.5"
+**Source GPS: Is1HvdfQm5c | BEGIN** (ASR, Is1HvdfQm5c_raw.txt:145, [21:14])
+
 
 ### FAB-4 Failed breakout back into balance (reversal at the edge of the previous day's value area)
 1. **Name / trader.** Fabio ("failed breakout", "clear failed auction"; 9IliXww64uM, an ES session, "a little over $4,000"). Rewritten 2026-10-16 from the caption file converted in P2 (`9IliXww64uM_raw.txt`); the old row held only OURS structure, the FL schematic note and a rulebook paraphrase (FR-19, FR-86, source `o-w5Gxss6T0`, still without a transcript). Merged files: section 1.
@@ -1294,6 +1312,15 @@ Target: the other side of the range, and an early exit when a strong impulse sta
 6. **Evidence.** 2, weak: FL F4a, F4b (ES shorts from pasted screenshots, 1 lot, no stops visible). The words show three trades: two reversals (a long at the bottom after absorbed sellers, a short at the top = the failed auction) and one continuation short (B15). Which FL row is which trade is not re-checked here (frame review needed).
 7. **Gaps.** The stop is a chart point; entry order type; how far a probe goes before it counts as an attempt; "relevant news": NOT STATED. OURS (V3 model B, not his): reclaim within 5 bars, limit valid 3 bars, stop beyond the probe extreme + 1 tick, target the opposite balance edge (or a trail variant).
 
+**ASR addition 2026-10-16 (Is1HvdfQm5c).** Condition (live Q&A): the reversal short at an edge is declined when it is counter trend; he states the filter as a model line (candidate E of section 5 of the V2 extract). Entry, stop, target NOT STATED here.
+
+> "but these are counter trend trade and I don't like to take them"
+**Source GPS: Is1HvdfQm5c | BEGIN** (ASR, Is1HvdfQm5c_raw.txt:279, [42:22])
+
+> "the model is saying that I only enter in profile framing In in trend condition and I execute"
+**Source GPS: Is1HvdfQm5c | BEGIN** (ASR, Is1HvdfQm5c_raw.txt:53, [6:44])
+
+
 ### FAB-5 Buyers protect a level: long, squeeze trapped sellers
 1. **Name / trader.** Fabio ("protection wall", "buyers protecting the level", FL).
 2. **What you see.** Price comes down into a level (a value-area low, a gap, a resting "protection wall"); selling is absorbed there (struck several times, absorbed each time); buyers defend it; long, expecting a squeeze of trapped sellers; in line with the day's main direction.
@@ -1350,6 +1377,18 @@ Target: the other side of the range, and an early exit when a strong impulse sta
 6. **Evidence.** 11 entry rows (2 + 9; the earlier "13" was a miscount, GPT M6): FL F3a, F3b (fZ, protection wall buy), F6, F7, F8, F9, F10 (DyS79/Jpd96 protection-level squeeze longs), F11, F12, F13, F14 (four chase longs near the 25,110 prior high, all stopped). Outcomes in FL: F6 TP hit; F7 scratch; F8 stopped; F9 small win; F10 TP hit; F11-F14 stopped.
 7. **Gaps and contradictions.** F11-F14 are labelled "chase long after squeeze above prior high"; whether they are this setup or a breakout chase is NOT STATED (FL assigns them by sequence). DyS79Eb92Ug is a canonical transcript since 2026-10-16 (stop location, names, session rules); Jpd96fLqr5M has no captions on disk. His live reading of the wall uses the heat map (section 4.1), which is not on disk. Contradiction in management: 8CWK says adding "low in the curve" is not the best idea (V3 P11) while F7-F9 re-enter the same level three times in five minutes after losses (FL:67).
 
+**ASR addition 2026-10-16 (Is1HvdfQm5c).** Names and stop words for the same family (live Q&A, ASR). He calls the third-touch long "the squeeze setup" and covers himself below the area; the buyers' reload on a held level is the proof. This adds a second transcript to the stop-below-the-protection-level words above; the price and the multiple he quotes are ASR numbers (check frames).
+
+> "covering yourself below the area this is the squeeze setup"
+**Source GPS: Is1HvdfQm5c | BEGIN** (ASR, Is1HvdfQm5c_raw.txt:221, [33:03])
+
+> "they are reloading to protect this level"
+**Source GPS: Is1HvdfQm5c | MIDDLE** (ASR, Is1HvdfQm5c_raw.txt:312, [47:45])
+
+> "they try to break three four five times and they always hold this level that"
+**Source GPS: Is1HvdfQm5c | MIDDLE** (ASR, Is1HvdfQm5c_raw.txt:289, [43:57])
+
+
 ### FAB-6 IVB: first 30 minutes of the US open
 1. **Name / trader.** Fabio ("the IVB"; LQvv5xgy_ik).
 2. **What you see.** The first 30 minutes of the US equity open; its range (bottom/top) sets the day's direction.
@@ -1372,6 +1411,12 @@ Target: the other side of the range, and an early exit when a strong impulse sta
 6. **Evidence.** 0 trades.
 7. **Gaps.** Source transcript o-w5Gxss6T0 is not in raw_transcripts_canonical: no quote can be verified. Swing selection, bin size, timeframe UNDEFINED (FR s4).
 
+**ASR addition 2026-10-16 (Is1HvdfQm5c).** A gap read from a transcript we hold (Is1HvdfQm5c, ASR): he calls a small gap between two candles "inefficient volume" and a place to reload. This is the candle-gap reading, not the volume-defined fair value gap of this row's source (o-w5Gxss6T0); keep it as supporting colour only. Entry, stop, target NOT STATED.
+
+> "this is inefficient volume because it created a micro gap"
+**Source GPS: Is1HvdfQm5c | BEGIN** (ASR, Is1HvdfQm5c_raw.txt:266, [40:17])
+
+
 ### Fabio: unassigned
 - ANG R31 (fZ): two "continuation short" trades that failed; setup not described: "The first trades that we took was a continuation short and we gave back two trades inside here." (fZ BEGIN, ANG R31).
 - ANG R33 (jasv3L): a "trend following model" that took stops on a compression day:
@@ -1381,6 +1426,18 @@ Target: the other side of the range, and an early exit when a strong impulse sta
 
   His trend-following model is never described in the transcripts we hold. FR-20 "Trend-following entry: absorption of counter-trend aggression inside momentum" (source o-w5Gxss6T0, not verified) may be it; it would then be FAB-2.
 - OURS-only model: V3 model A "LVN pullback trend" (enter a pullback to a low-volume node of the breakout leg). V3 P35: "not in these transcripts (FBR:28-29)". Not a Fabio setup until a source is found.
+
+**ASR addition 2026-10-16 (Is1HvdfQm5c).** Names from the 2.5 h live session (Is1HvdfQm5c, ASR; one video each, no filled trade with entry and stop, so none becomes a FAB row). "Virgin POC test" inside profile framing (long bias); "last sniper" (a resting long at the last point of aggression of the sellers, removed when not filled); "deep effort" (his proprietary book-thickness study that marks who controls the auction). Candidates for a later row if a second video states entry, stop and target.
+
+> "to capitalize is the virgin POC test"
+**Source GPS: Is1HvdfQm5c | MIDDLE** (ASR, Is1HvdfQm5c_raw.txt:548, [1:24:51])
+
+> "I try to make another last sniper, but we didn't got field."
+**Source GPS: Is1HvdfQm5c | END** (ASR, Is1HvdfQm5c_raw.txt:766, [2:01:39])
+
+> "now we are on the top of the range the deep effort it's a proprietary study and it's based on the thickness of the book so"
+**Source GPS: Is1HvdfQm5c | END** (ASR, Is1HvdfQm5c_raw.txt:832, [2:12:20])
+
 
 ### 4.1 Tool family, not a setup: heat-map liquidity (was FAB-7)
 Moved out of the setup list on 2026-10-16 (D3): the heat map is a tool; its only tradeable pattern (the protection wall and the reload) is FAB-5, the rest needs L2 history we do not hold.
@@ -1505,8 +1562,8 @@ Status 2026-10-16 (Fable audit section 3): `G0CiJcuXCRs` -> TOM-17; `3o1VVsfBmmU
 | 9IliXww64uM, DyS79Eb92Ug | canonical transcripts since P2 (2026-10-16), used in FAB-4, FAB-5, FAB-1 and section 2.2 | done for the quoted passages; the rest of DyS79 (2.4 h) is not line-by-line read |
 | Jpd96fLqr5M, gLHd20jE8UQ | frames read, no captions on disk | the big-trade size slide "30 to 40 on NQ" (gLHd, FL:50) |
 | 9I5vTvwsMBk | not downloaded (f398 not available, FL:48) | unknown live session |
-| Is1HvdfQm5c | 2.5 h; only t=0-500 read (FL:90 and CSV) | "Live Charting" and "Execution Method Trick" agenda items: entry/stop rules |
-| xUyqIjCfZzg | 3.8 h; unread (FL:57) | live session: more FAB-3/FAB-5 trades |
+| Is1HvdfQm5c | ASR transcript (faster-whisper small.en, 2026-10-16, raw_transcripts_canonical) read in full, V2 extract extracts/v2/fabio/Is1HvdfQm5c_v2.md (333 rows, 9 blocks: 0 confirmed live fills with stated entry and stop; mostly illustration and viewer Q&A) | done; numbers are ASR numbers, frames are the arbiter |
+| xUyqIjCfZzg | 3.8 h; unread (FL:57); ASR transcription started 2026-10-16 (resumable job, see research/fabio_asr_2026-10-16/ASR_RUN.md); two speakers (Fabio and Carmine Rosato) | live session: more FAB-2/FAB-5 trades |
 
 ## 7. What this catalog does not settle (for the next steps)
 1. Initial stop in words (a location, never a distance as a rule): Tom 5 of 16 rows (TOM-1a, 1b, 2, 3, 4), Fabio 1 of 6 (FAB-5, below the protection level). Every other stop is a chart point ("here") or a frame value. The blind eye-read marking should record where each reader would put the stop and the next extraction should search for it.

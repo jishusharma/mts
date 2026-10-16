@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T05:13:53Z",
   "commands": [],
   "created": "2026-10-16T00:52:36Z",
   "depends_on": [],
@@ -18,7 +19,7 @@
   "refs": [
     "MyTradingSys/research/context_factors_2026-10-16/PRE_REG.md"
   ],
-  "result": "",
+  "result": "INCONCLUSIVE: matched days 164 < 387 (241/1010 C events matched); E=-0.023 R t=-0.32; mean net_R of C -0.137 R over 1010; MyTradingSys/research/context_factors_2026-10-16/RESULT.md",
   "scope_in": [
     "MyTradingSys/research/context_factors_2026-10-16/study.py",
     "MyTradingSys/research/context_factors_2026-10-16/test_study.py",
@@ -38,7 +39,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read PRE_REG.md s.0-8 in full; check `git log` shows PRE_REG.md committed before any outcome file; record the sha of context_asof.py and PRE_REG.md.",
     "Build the frames with run_dev.py vec and the ledger with counts.py (no edits); form C exactly as PRE_REG s.2; print n events/days per side and pooled BEFORE any outcome (must match PRE_REG: 554/254 long, 456/202 short, 1,010/456 pooled; a mismatch = BLOCKED).",
