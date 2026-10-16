@@ -745,7 +745,8 @@
   },
   "MyTradingSys/research/context_factors_pit_2026-10-16/episode_counts.py": {
    "disp": "REPRO",
-   "why": "Rebuilds EPISODE_COUNTS.md (PRE_REG section 3 power table); run by hand and by card context-factors-one-run.",
+   "why": "Rebuilds EPISODE_COUNTS.md (PRE_REG section 3 power table); run by hand and by card context-factors-one-run."
+  },
   "MyTradingSys/research/context_factors_2026-10-16/context_asof.py": {
    "disp": "TOOL",
    "why": "Point-in-time context factors F1-F7 (replay context_at + vectorised context_frame) for BTC 1h decisions; library for the context-composite-dev-read card, covered by test_context_asof.py; DEV loader refuses bars >= 2024-07-01; no live imports."
