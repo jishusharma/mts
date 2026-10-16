@@ -152,3 +152,5 @@ Where this disagrees with earlier audits: the observer's G3 brief (rows TOM-2, 4
 
 ## 7. Usage
 Start: 5-hour 22 %, weekly all-models 35 %, weekly Fable 4 % (2026-10-15 19:31Z). End: see CATALOGUE_USAGE.md (same folder). Guard (6-point rise or 95 %) not reached.
+
+Update 2026-10-16: D2 is flipped to YES by the operator (OPERATOR_DECISIONS q-fabio-asr-d2); the frames-only notes above are superseded for Is1HvdfQm5c (ASR transcript + V2 extract shipped, research/fabio_asr_2026-10-16/ASR_RUN.md); xUyqIjCfZzg transcription was still running at that time.
