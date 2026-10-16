@@ -830,6 +830,10 @@
     "MyTradingSys/research/layer_lab/dev_split_guard/event_table.py": {
       "disp": "TOOL",
       "why": "Pure DEV timestamp filter and assertion imported by test_event_table.py; no market data access or live imports."
+    },
+    "MyTradingSys/research/layer_lab/forward_excursion/event_table.py": {
+      "disp": "TOOL",
+      "why": "Pure forward MFE/MAE-in-R helper for caller-provided OHLC bars; covered by test_event_table.py; no market data access or live imports."
     }
   },
   "MyTradingSys/research/layer_lab/volume_event_table/event_table.py": {

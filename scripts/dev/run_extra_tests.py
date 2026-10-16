@@ -26,6 +26,7 @@ EXTRA = [
     "MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py",
     "MyTradingSys/research/layer_lab/oi_delta_event_table/test_event_table.py",
     "MyTradingSys/research/layer_lab/volume_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/forward_excursion/test_event_table.py",
     "scripts/dev/test_lab_flow.py",
     "MyTradingSys/research/qriptal_2026-10-10/test_ledger.py",
     "MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py",
