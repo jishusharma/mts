@@ -864,6 +864,20 @@ def run_line(r):
     return f"{str(r.get('at', ''))[:16].replace('T', ' ')}Z {r.get('card')} {r.get('outcome')} ({m} / {e}, {tok}{pts}, {r.get('seconds', '?')}s)"
 
 
+def reopened(ready, rows):
+    """Ready cards a session reset (field `reopened`, UTC ISO) after their last run: that BLOCKED/failed run is dealt with."""
+    at = {}
+    for r in rows:
+        if not r.get("dry"):
+            at[r.get("card")] = r.get("at") or ""
+    return {c["id"] for c in ready if c.get("reopened") and c["reopened"] > at.get(c["id"], "")}
+
+
+def guard_hold(last_tick):
+    """The spend guard is a hold too: the scheduler's own last line says so, and that is not a stall."""
+    return "IDLE lab budget" if "IDLE lab budget" in (last_tick or "") else ""
+
+
 def needs_look(ready, tried, rows, unshipped=0, stopped="", held="", closed=(), watch=()):
     """What the lab cannot fix by itself, in plain words. [] = nothing to do. Read by the operator and by STATUS.md."""
     L = []
@@ -908,8 +922,8 @@ def status_text(ready, done, tried, rows, rl, now, last_tick="", unshipped=0, st
     if host_has_lab:
         L.append("  Last runs:")
         L += ["    " + run_line(r) for r in rows[-5:]] or ["    none"]
-        look = needs_look(ready, tried, rows, unshipped, stopped, hold(rl, now), {c['id'] for c in done},
-                          stall_findings(rows, ready, tried, lane_up, hold(rl, now), now, age))
+        look = needs_look(ready, tried, rows, unshipped, stopped, hold(rl, now), {c['id'] for c in done} | reopened(ready, rows),
+                          stall_findings(rows, ready, tried, lane_up, hold(rl, now) or guard_hold(last_tick), now, age))
         L.append("  NEEDS A LOOK: " + ("nothing" if not look else ""))
         L += [f"    - {x}" for x in look]
     return "\n".join(L)
