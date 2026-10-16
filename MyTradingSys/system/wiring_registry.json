@@ -771,6 +771,14 @@
   "MyTradingSys/research/context_factors_2026-10-16/redteam.py": {
    "disp": "REPRO",
    "why": "Red-team checks R1-R3 on real DEV data (ANGLES.md d): boundary truncation, wrong side, vanishing levels; run by hand."
+  },
+  "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py": {
+   "disp": "TOOL",
+   "why": "Library for the imbalance filter on the lc-levels-hold level layer (PRE_REG.md in its folder): causal imbalance-candle join, first-touch fade trade, stop-first bracket, net R, DEV guard, pre-registered decisions; covered by test_filter_join.py; DEV loader refuses bars >= 2024-07-01; no live imports."
+  },
+  "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/run_filter.py": {
+   "disp": "REPRO",
+   "why": "Counts (no outcome) then the one DEV outcome run for the imbalance filter and veto on lc-levels-hold (counts | run); reproduces COUNTS.md, events_dev.csv, trades_dev.csv, trials.csv, RESULT.md; run by hand, named in PRE_REG.md section 8."
   }
  }
 }

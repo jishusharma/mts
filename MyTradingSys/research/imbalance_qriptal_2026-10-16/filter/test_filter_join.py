@@ -158,6 +158,11 @@ def test_bracket_long_target_ignores_touch_bar_move():
     # touch bar reaches 101.2 (>= target 101) but that may precede the fill: not credited; bar 2 hits the target
     bars = [bar(100.5, 101.2, 99.5, 100.8), bar(100.8, 100.9, 100.1, 100.5), bar(100.5, 101.0, 100.4, 100.9)]
     assert run_bracket(1, 100.0, 1.0, 1.0, bars) == (101.0, "target")
+    # a target move that exists ONLY in the touch bar earns nothing: the trade runs to the time exit
+    bars = [bar(100.5, 101.2, 99.5, 100.8), bar(100.8, 100.9, 100.1, 100.5)]
+    assert run_bracket(1, 100.0, 1.0, 1.0, bars) == (100.5, "time")
+    bars = [bar(99.5, 100.4, 98.7, 99.2), bar(99.2, 99.6, 99.1, 99.4)]      # short mirror: low 98.7 <= target 99 in the touch bar only
+    assert run_bracket(-1, 100.0, 1.0, 1.0, bars) == (99.4, "time")
 
 
 def test_bracket_stop_first_when_one_bar_holds_both():
@@ -319,3 +324,62 @@ def test_decide_h2_branches():
 def test_holm_over_m16():
     p = F.holm_p([0.001, 0.02], m=16)
     assert p[0] == pytest.approx(0.016) and p[1] == pytest.approx(0.30)         # 16 x .001, then max(.016, 15 x .02)
+
+
+# ---------------------------------------------------------------- end to end on a synthetic tape (independent reference simulation)
+def ref_trade(side, level, width, rr, o, h, l, c):
+    """Slow bar-by-bar reference written from the PRE_REG exit rules, not from filter_join.bracket."""
+    stop, target = level - side * width, level + side * rr * width
+    for j in range(len(h)):
+        hit_stop = (l[j] <= stop) if side > 0 else (h[j] >= stop)
+        hit_tgt = j > 0 and ((h[j] >= target) if side > 0 else (l[j] <= target))
+        if hit_stop:
+            gap = j > 0 and ((o[j] <= stop) if side > 0 else (o[j] >= stop))
+            return (o[j] if gap else stop), "stop"
+        if hit_tgt:
+            return target, "target"
+    return c[-1], "time"
+
+
+def test_build_events_and_simulate_on_synthetic_tape():
+    df = synth_days(30)
+    d0 = int(df.t.iloc[0] // DAY)
+    ev, skips = F.build_events(df, first_day=d0 + 17, last_day=d0 + 29, block=5)
+    assert len(ev) > 20 and skips["incomplete_day"] == 0 and skips["touched"] == len(ev)
+    assert set(ev["side"]) <= {1, -1} and (ev["width"] > 0).all()
+    assert not ev.duplicated(["day", "level"]).any()                       # one trade per level and day
+    o, h, l, c, t = (df[x].to_numpy() for x in ("o", "h", "l", "c", "t"))
+    for r in ev.itertuples():
+        a = int(np.searchsorted(t, r.day * DAY))
+        assert l[r.gidx] <= r.level <= h[r.gidx] and t[r.gidx] == r.t
+        assert not ((l[a:r.gidx] <= r.level) & (r.level <= h[a:r.gidx])).any()      # first touch of the day
+        assert r.side == (1 if c[r.gidx - 1] > r.level else -1)                      # side from the bar before
+        assert r.eidx == int(np.searchsorted(t, (r.day + 1) * DAY))
+        assert r.width == pytest.approx(max(0.004 * o[a], 0.001 * r.level))
+    sim = F.simulate(ev, df, rrs=(1.0, 2.0))
+    for rr in (1.0, 2.0):
+        for r in sim.itertuples():
+            i, e = r.gidx, r.eidx
+            px, kind = ref_trade(r.side, r.level, r.width, rr, o[i:e], h[i:e], l[i:e], c[i:e])
+            row = sim.loc[r.Index]
+            assert row[f"exit_{rr:g}"] == pytest.approx(px) and row[f"kind_{rr:g}"] == kind
+            assert row[f"net_{rr:g}"] == pytest.approx(r.side * (px - r.level) / r.width - 0.0007 * (r.level + px) / r.width)
+            assert row[f"net_m_{rr:g}"] == pytest.approx(r.side * (px - r.level) / r.width - (0.0002 * r.level + 0.0007 * px) / r.width)
+    assert set(sim["kind_1"]) <= {"stop", "target", "time"}
+
+
+def test_run_filter_smoke_on_synthetic_tape(tmp_path):
+    """The two commands run end to end on a synthetic tape: counts has no outcome column, run writes RESULT.md and refuses a second run."""
+    import run_filter as R
+    df = synth_days(30)
+    d0 = int(df.t.iloc[0] // DAY)
+    R.counts(df=df, out=tmp_path, first_day=d0 + 17, last_day=d0 + 29, block=5)
+    ev = pd.read_csv(tmp_path / "events_dev.csv")
+    assert len(ev) > 20 and (tmp_path / "COUNTS.md").exists()
+    assert not any(c.startswith(("net", "gross", "exit", "kind", "cost")) for c in ev.columns)
+    R.run(df=df, out=tmp_path)
+    res = (tmp_path / "RESULT.md").read_text(encoding="utf-8")
+    assert res.splitlines()[0] in ("PASS", "FAIL", "INCONCLUSIVE") and "## Verdict arms" in res and "Declared trial count" in res
+    assert (tmp_path / "trades_dev.csv").exists() and (tmp_path / "trials.csv").exists()
+    with pytest.raises(SystemExit):
+        R.run(df=df, out=tmp_path)
