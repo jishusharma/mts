@@ -166,6 +166,30 @@ def _write(path, text):
     Path(path).write_text(text, encoding="utf-8", newline="\n")
 
 
+GATE_FAILED_CHARS = 4000
+
+
+def failed_step_blocks(gout, limit=GATE_FAILED_CHARS):
+    """The failing steps of a run_all_tests.py transcript: each 'Step N: FAIL' line with the 'Last output:' lines under it (the failed
+    pytest test names, the assertion), up to the next step block. 2026-10-16: the record kept only the last 6 summary lines, so a red
+    Step 4b could not be traced to a test afterwards. Capped at `limit` characters, the end kept; never raises (a parse slip must not stop
+    the red-gate record)."""
+    try:
+        blocks, cur = [], None
+        for ln in gout.splitlines():
+            if re.match(r"Step \S+: FAIL\b", ln):   # not the summary's 'Step 4b: Pytest tests: FAIL'
+                cur = [ln]
+                blocks.append(cur)
+            elif cur is not None and (ln.startswith("[Step ") or ln.startswith("=" * 10)):
+                cur = None
+            elif cur is not None and ln.strip():
+                cur.append(ln)
+        text = "\n".join("\n".join(b) for b in blocks)
+        return text[-limit:]
+    except Exception:   # noqa: BLE001
+        return ""
+
+
 def _finish(res, save, state=None):
     if save:
         _write(LAST, json.dumps(res, indent=1) + "\n")
@@ -254,6 +278,7 @@ def run(ops=None, check=False, state=None, save=True):
     grc, gout = ops.gate(target)
     res["gate_tail"] = [ln for ln in gout.splitlines() if ln.strip()][-6:]
     if grc != 0:
+        res["gate_failed"] = failed_step_blocks(gout)
         state["last_red_sha"] = target
         res.update(action="STOP_RED", reason=f"gate red on {target[:7]}; live tree untouched")
         return _finish(res, save, state)

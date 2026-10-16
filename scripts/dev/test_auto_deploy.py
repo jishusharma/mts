@@ -77,8 +77,43 @@ class TestDecide(unittest.TestCase):
         self.assertEqual(r["restarts"], [])
 
 
+# A red run_all_tests.py transcript in its real format (format_step blocks, then the SUMMARY): one failing pytest shard.
+RED_GATE_OUT = "\n".join([
+    "Gate: 3 steps, 4 at a time",
+    "",
+    "[Step 4c] Pytest shard 3/5 (MyTradingSys/tests, 17 files)",
+    "  Command: python -m pytest MyTradingSys/tests/test_a.py -q",
+    "  Elapsed: 50.1s (1/3 done, +50s)",
+    "Step 4c: PASS",
+    "",
+    "[Step 4b] Pytest shard 2/5 (MyTradingSys/tests, 1 files)",
+    "  Command: python -m pytest MyTradingSys/tests/test_aibridge_payload.py -q",
+    "  Elapsed: 359.0s (2/3 done, +359s)",
+    "Step 4b: FAIL",
+    "  Last output:",
+    "    =========================== short test summary info ===========================",
+    "    FAILED MyTradingSys/tests/test_aibridge_payload.py::test_agent_live_selftest_concurrent_and_port_clash - AssertionError: FAIL registry change is visible without an agent restart",
+    "    1 failed, 4 passed in 359.00s",
+    "",
+    "[Step 5c] Options module tests",
+    "  Command: python x.py",
+    "Step 5c: PASS",
+    "",
+    "======================================================================",
+    "SUMMARY",
+    "======================================================================",
+    "Step 4c: Pytest tests: PASS",
+    "Step 4b: Pytest tests: FAIL",
+    "Step 5c: Options tests: PASS",
+    "======================================================================",
+    "FAILED: 1 step(s)",
+    "  - Step 4b: Pytest tests",
+])
+
+
 class FakeOps:
-    def __init__(self, live=True, head=H, target=T, ff=True, changed=("README.md",), dirty=(), gate_rc=0, merge_rc=0, fetch_rc=0):
+    def __init__(self, live=True, head=H, target=T, ff=True, changed=("README.md",), dirty=(), gate_rc=0, merge_rc=0, fetch_rc=0, gate_out=None):
+        self.gate_out = gate_out
         self.live, self.head, self.target, self.ff = live, head, target, ff
         self.changed, self.dirty, self.gate_rc, self.merge_rc, self.fetch_rc = list(changed), list(dirty), gate_rc, merge_rc, fetch_rc
         self.calls, self.killed, self.gated = [], [], []
@@ -107,6 +142,8 @@ class FakeOps:
 
     def gate(self, sha):
         self.gated.append(sha)
+        if self.gate_out is not None:
+            return self.gate_rc, self.gate_out
         return self.gate_rc, "Step 1: PASS\nALL TESTS PASSED" if not self.gate_rc else "Step 4: FAIL\nFAILED: 1 step(s)"
 
     def kill(self, script):
@@ -205,6 +242,24 @@ class TestRun(unittest.TestCase):
         self.assertEqual(ops2.gated, [])
         ops3 = FakeOps(target="c" * 40)   # a newer green SHA is tried again
         self.assertEqual(ad.run(ops3)["action"], "DEPLOYED")
+
+    def test_red_gate_record_names_the_failed_step_and_test(self):
+        """2026-10-16: STOP_RED kept only the last 6 summary lines, so Step 4b could never be traced to a test. The record now carries
+        the failing step's own block (format: run_all_tests.format_step)."""
+        ops = FakeOps(gate_rc=1, gate_out=RED_GATE_OUT)
+        r = ad.run(ops)
+        self.assertEqual(r["action"], "STOP_RED")
+        self.assertIn("Step 4b: FAIL", r["gate_failed"])
+        self.assertIn("test_agent_live_selftest_concurrent_and_port_clash", r["gate_failed"])
+        self.assertIn("registry change is visible without an agent restart", r["gate_failed"])
+        self.assertNotIn("Step 4c", r["gate_failed"])   # passing steps stay out
+        last = json.loads(ad.LAST.read_text(encoding="utf-8"))
+        self.assertEqual(last["gate_failed"], r["gate_failed"])
+
+    def test_green_gate_record_has_no_failed_detail(self):
+        r = ad.run(FakeOps(changed=["README.md"]))
+        self.assertEqual(r["action"], "DEPLOYED")
+        self.assertNotIn("gate_failed", r)
 
     def test_not_live_does_nothing(self):
         ops = FakeOps(live=False)

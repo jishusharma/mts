@@ -56,6 +56,36 @@ def test_extension_helpers_node():
 # 159 s quiet for two concurrent runs; 280 s timed out with six ship gates on one machine (2026-10-15). OURS: room for that load.
 SELFTEST_TIMEOUT_S = 900
 
+
+def _kill_tree(p):
+    """Stop a still-running child and everything it started (the selftest's PowerShell agent). No-op once it has exited."""
+    if p.poll() is None:
+        subprocess.call(["taskkill", "/T", "/F", "/PID", str(p.pid)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        p.communicate()
+
+
+def _selftest_env_name():
+    """The registry variable name one selftest run would use (--print-env-name prints it and exits without starting an agent)."""
+    p = subprocess.Popen([sys.executable, "tests/agent_live_selftest.py", "--print-env-name"], cwd=PAYLOAD,
+                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    try:
+        return p.communicate(timeout=30)[0].strip()
+    except subprocess.TimeoutExpired:
+        _kill_tree(p)
+        pytest.fail("agent_live_selftest.py has no --print-env-name mode: it started the full run instead")
+
+
+@pytest.mark.skipif(os.name != "nt", reason="the selftest drives the HKCU Environment registry key (winreg)")
+def test_selftest_registry_variable_is_unique_per_run():
+    """Gate failure 2026-10-16 (Step 4b): the selftest writes its fresh-environment variable under the HKCU Environment key, which every
+    process of the user shares, and deletes it when done. With one fixed name, two runs at once (the concurrent test below, or two
+    ship gates) deleted each other's value before the agent read it. Two runs must never pick the same name."""
+    names = [_selftest_env_name() for _ in range(3)]
+    for n in names:
+        assert re.fullmatch(r"AIB_SELFTEST_[0-9A-F]{12}", n), names
+    assert len(set(names)) == 3, names
+
+
 @pytest.mark.skipif(os.name != "nt" or shutil.which("powershell.exe") is None, reason="needs Windows PowerShell")
 def test_agent_live_selftest():
     r = subprocess.run([sys.executable, "tests/agent_live_selftest.py"], cwd=PAYLOAD, capture_output=True, text=True, timeout=SELFTEST_TIMEOUT_S)
@@ -76,6 +106,7 @@ def test_agent_live_selftest_concurrent_and_port_clash():
     except OSError:
         squat.close()
         squat = None   # someone else already holds 7199: the clash is already in place
+    procs = []
     try:
         cmd = [sys.executable, "tests/agent_live_selftest.py"]
         procs = [subprocess.Popen(cmd, cwd=PAYLOAD, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) for _ in range(2)]
@@ -83,6 +114,8 @@ def test_agent_live_selftest_concurrent_and_port_clash():
     finally:
         if squat:
             squat.close()
+        for p in procs:   # a timed-out run must not leave its python + PowerShell agent holding a port and CPU
+            _kill_tree(p)
     for p, out in zip(procs, outs):
         fails = [ln for ln in out.splitlines() if ln.startswith("FAIL")]
         assert p.returncode == 0 and not fails, "\n".join(fails)[:3000] or out[-2000:]
