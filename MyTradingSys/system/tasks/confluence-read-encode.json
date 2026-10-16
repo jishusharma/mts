@@ -4,9 +4,9 @@
   "commands": [],
   "created": "2026-10-16T18:33:52Z",
   "depends_on": [],
-  "done_when": "DIAGNOSIS.md plus PRE_REG.md shipped; the run card exists.",
+  "done_when": "CONTEXT_FIRST.md shipped for the operator to read; no backtest run.",
   "from_inbox": "",
-  "goal": "Operator: the chart is full of Bollinger-dance + RSI divergence + RSI 40/60 + OI-vs-price setups, yet every backtest fails. Find out why, then encode one confluence event as a pre-registered DEV test.",
+  "goal": "Operator 2026-10-17: no backtest before context (phase, speed, sentiment, absorption/distribution, yesterday, 5-day, weekly, bi-weekly). Describe the context around each operator read from data on disk, then diagnose the backtest apparatus. No returns, no pre-registered bar, no event counts used as evidence.",
   "id": "confluence-read-encode",
   "lane": "SONNET",
   "layers": [],
@@ -37,13 +37,12 @@
   ],
   "state": "ready",
   "steps": [
-    "Ground truth: the operator's own 2026-10-10..17 transaction log (path in note; PRIVATE, never commit, no numbers in tracked files). Match each entry/exit time to 1m/5m bars and the checklist items; say which items were present at entry and at exit.",
-    "Read the refs. List which checklist items 1-8 already have a coded layer or a failed backtest (VERDICTS.csv), and how each was tested (alone or combined, which TF, fee-net).",
-    "Diagnose: single-filter tests vs ordered sequence (divergence, then MA press, then 60 rejection); lagging confirmation; entry after the move; EV after fees. State the cause per case with numbers.",
-    "Pick one sequence from the 2026-10-16 walk-through (top 82,900 down-leg), write the event definition with every threshold labelled SOURCED or OURS, and count it on DEV 1m/5m BTC data.",
-    "Write PRE_REG.md (DEV only, trial ledger entry, bar fixed before the run) and stop; the run is a separate card.",
-    "Feed the counts to card prob-dist-layer-design-brief as data for the confluence-count item."
+    "Ground truth: the operator's private transaction log (path in note; never commit, no numbers in tracked files). Match each entry and exit time to 1m/5m bars and to checklist items 1-12; say which were present at entry and at exit.",
+    "Context sheet per trade day and the 2 days before: daily and weekly structure (prior-day high/low/VA, 5-day and 10-day range and drift), macro phase, speed (range per hour vs recent norm), sentiment proxies on disk (funding, OI trend, long/short, liquidations if any), absorption or distribution signs (CVD vs price, OI vs price). Descriptive only; each field names its file or says NOT_IN_DATA.",
+    "Check what context machinery exists (pit_levels, context_factors, session frame) and what it already says for those days; list gaps as feature hypotheses.",
+    "Diagnose the backtest apparatus before any new test: which dsa-audit-01..10 findings already explain the 'nothing works' result, which known-answer canaries pass or fail. No new numbers.",
+    "Write CONTEXT_FIRST.md with an operator question list; stop. A pre-registered test comes only after the operator has read it."
   ],
-  "tests": "Event counter test fails on pre-change code at least once; pre-reg bar is written before any outcome is computed.",
-  "title": "Encode the operator's discretionary chart confluence (BB dance, RSI 40/60 + divergence, OI vs price, liquidity rays) as testable events; find why backtests keep failing"
+  "tests": "Every context field cites a file and number or says NOT_IN_DATA; no outcome statistics appear.",
+  "title": "Context first: build the market-context picture around the operator's chart reads, then diagnose why backtests fail (no backtest yet)"
 }
