@@ -131,7 +131,8 @@ def blank(cid, title, **kw):
 def problems(card, cards=None, reg=None):
     """Definition of Ready: [] when a session can run the card with no question to anyone. Every miss is named."""
     p = []
-    cards = {c["id"]: c for c in (cards or [])}
+    card_list = cards or []
+    cards = {c["id"]: c for c in card_list}
     reg = reg or {}
     for k in TEXT[:3]:
         if not str(card.get(k, "")).strip():
@@ -181,6 +182,9 @@ def problems(card, cards=None, reg=None):
                 p.append(f"depends_on {d} is {c['state']}")
         elif reg.get(d) not in ("CLOSED", "WONTFIX"):
             p.append(f"depends_on {d} is {reg.get(d, 'unknown')}")
+    if card.get("flow"):
+        import lab_flow
+        p += lab_flow.gate(card, card_list, REPO)
     if len(brief(card).splitlines()) > MAX_BRIEF:
         p.append(f"brief is over {MAX_BRIEF} lines: fewer steps or split the card")
     return sorted(set(p))
@@ -203,9 +207,17 @@ def brief(card):
         L.append(f"Registry: {' '.join(card['refs'])}")
     if card.get("layers"):
         L.append(f"Layer: {', '.join(card['layers'])}: read its section of MyTradingSys/system/LAYERS.md (spec, ledger, backtests, cards)")
+    if card.get("flow"):
+        f = card["flow"]
+        L.append(f"Flow {f['id']} stage {f['stage']} ({f['recipe']}): {f['lens']}")
+        L += [f"C{i + 1}: {criterion}" for i, criterion in enumerate(f["criteria"])]
+        L.append("Predecessor receipt/report: " + ", ".join(card.get("depends_on", [])) + "; read its card JSON for the report path.")
     if card.get("lane") == "CODEX":
         L.append(f"Report: {LAB_REPORTS}/<UTC date>_{card['id']}.md (findings or numbers, each with file:line or command)")
-    L.append(f"Close: sync.py claim, work, tasks.py done {card['id']} --result \"<number/file>\", sync.py ship, sync.py release; report it shipped only with an empty `git cherry origin/fast-track <sha>`.")
+    if card.get("flow"):
+        L.append(f"Close: python scripts/dev/lab_flow.py finish {card['id']} --report REPORT_PATH --verdict PASS|REWORK|BLOCKED --result \"evidence summary\"; runner ships.")
+    else:
+        L.append(f"Close: sync.py claim, work, tasks.py done {card['id']} --result \"<number/file>\", sync.py ship, sync.py release; report it shipped only with an empty `git cherry origin/fast-track <sha>`.")
     return "\n".join(L)
 
 
@@ -413,6 +425,8 @@ def cmd_tried(a):
 
 def cmd_done(a):
     c = get(REPO, a.id)
+    if c.get("flow"):
+        raise SystemExit("tasks: flow cards close through lab_flow.py finish (evidence receipt required)")
     c.update(state="done", result=a.result, closed=now())
     save(REPO, c)
     print(f"{a.id}: done")

@@ -1,5 +1,9 @@
 # Layer lab: Codex as the independent checker of the Tom and Fabio layers (operator 2026-10-12)
 
+Reusable ordered recipes (operator 2026-10-16): see `LAB_RECIPES.md` and `scripts/dev/lab_flow.py`.
+Critical audits/builds use Sol 6.1 then Astra; evidence receipts gate advancement. Recipe cards optimize
+tokens without the older lab-share/run-count caps; actual plan headroom and safety gates still apply.
+
 Layer context for every card: `MyTradingSys/system/LAYERS.md` (per family: spec, ledger, backtests, lab reports, open cards); a card's `layers` field names its section, and its brief says so.
 
 Why: Claude wrote the encoding, its tests and its backtests, and the coded Tom still fired on 0 of 7 of his own trades

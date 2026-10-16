@@ -284,24 +284,24 @@ def windows(rl, now):
     return tuple(res)
 
 
-def budget_hold(model, effort, rl, rows, now):
+def budget_hold(model, effort, rl, rows, now, optimization=False):
     """Why one run of model/effort may not start now ('' = it may), and the epoch when the limiting window resets.
     Plain text; the lane is NOT marked down for this (no card is rerouted: the lab just waits for the window)."""
     est_w, est_k = est_pts(model, effort, rows)
     used_w, w_start, w_end, used_k, k_start, k_end = windows(rl, now)
     spent_w, spent_k = lab_spend(rows, w_start), lab_spend(rows, k_start)
     name = f"{model}/{effort}"
-    if spent_w["runs"] >= LAB_RUNS_PER_WINDOW:
+    if not optimization and spent_w["runs"] >= LAB_RUNS_PER_WINDOW:
         return f"{spent_w['runs']} lab runs in this window (cap {LAB_RUNS_PER_WINDOW})", int(w_end)
-    if model == "gpt-6-astra" and spent_w["astra_runs"] >= ASTRA_RUNS_PER_WINDOW:
+    if not optimization and model == "gpt-6-astra" and spent_w["astra_runs"] >= ASTRA_RUNS_PER_WINDOW:
         return f"astra already ran {spent_w['astra_runs']}x in this window (cap {ASTRA_RUNS_PER_WINDOW})", int(w_end)
     if used_w + est_w > 100 - WINDOW_RESERVE:
         return f"{name} needs about {est_w:.0f} points of the 5-hour window and {used_w:.0f}% is used (keeps {WINDOW_RESERVE} free)", int(w_end)
-    if spent_w["window_pts"] + est_w > LAB_WINDOW_PTS:
+    if not optimization and spent_w["window_pts"] + est_w > LAB_WINDOW_PTS:
         return f"lab share of this 5-hour window: {spent_w['window_pts']:.0f} spent + {name} about {est_w:.0f} > {LAB_WINDOW_PTS}", int(w_end)
     if used_k + est_k > 100 - WEEK_RESERVE:
         return f"{name} would take the week past {100 - WEEK_RESERVE}% ({used_k:.0f}% used)", int(k_end)
-    if spent_k["week_pts"] + est_k > LAB_WEEK_PTS:
+    if not optimization and spent_k["week_pts"] + est_k > LAB_WEEK_PTS:
         return f"lab share of this week: {spent_k['week_pts']:.0f} spent + {name} about {est_k:.1f} > {LAB_WEEK_PTS}", int(k_end)
     return "", 0
 
@@ -331,7 +331,7 @@ def choose(cards, claimed, tried, rows, rl, now, probe=False):
         if not c:
             return None, first
         model, effort = tasks.codex_setting(c)
-        why, _ = budget_hold(model, effort, rl, rows, now)
+        why, _ = budget_hold(model, effort, rl, rows, now, optimization=bool(c.get("flow")))
         if not why:
             return c, ""
         first = first or f"{c['id']}: {why}"
@@ -467,7 +467,8 @@ def prompt(card, wt, pack, when):
         "do NOT run git, sync.py claim/ship/release or anything that pushes. Write files only.",
         "1. Do the task below. It is the whole task.",
         f"2. Write the report {LAB}/reports/{d}_{cid}.md (LAYER_LAB.md, Report format).",
-        f"3. python scripts/dev/tasks.py done {cid} --result \"<verdict or number + report file>\"",
+        (f"3. Close with lab_flow.py finish as the brief specifies; its criterion receipt is required." if card.get("flow") else
+         f"3. python scripts/dev/tasks.py done {cid} --result \"<verdict or number + report file>\""),
         "Blocked (data missing, rule conflict, test cannot pass): write the report with verdict BLOCKED and the exact reason,",
         "and do NOT mark the card done.",
         f"Final line: `lab: {cid} <DONE|BLOCKED> <one-line result>`.",
@@ -543,6 +544,10 @@ def judge(card_now, reports, kind, files):
     """Outcome of a run from what is in the work tree afterwards. Fail closed: only DONE and BLOCKED are shipped."""
     if out_of_scope(kind, files):
         return "OUT_OF_SCOPE"
+    if card_now.get("flow") and card_now.get("state") == "done":
+        import lab_flow
+        if not lab_flow.accepted(card_now, REPO):
+            return "BLOCKED" if reports else "INCOMPLETE"
     if card_now.get("state") == "done" and reports:
         return "DONE"
     return "BLOCKED" if reports else "INCOMPLETE"
@@ -761,7 +766,7 @@ def cmd_run(a):
     if card.get("lane") != "CODEX" or card["state"] != "ready" or miss:
         raise SystemExit(f"codex_run: {a.card} must be a ready CODEX card: " + ("; ".join(miss) or f"lane {card.get('lane')}, state {card['state']}"))
     if not (a.dry or a.force):
-        why, _ = budget_hold(*tasks.codex_setting(card), budget(codex_home()), run_rows(codex_home()), time.time())
+        why, _ = budget_hold(*tasks.codex_setting(card), budget(codex_home()), run_rows(codex_home()), time.time(), optimization=bool(card.get("flow")))
         if why:
             raise SystemExit(f"codex_run: lab budget: {why}. Wait for the window, or pass --force (operator decision).")
     return run_card(card, a.dry)
