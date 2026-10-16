@@ -1,4 +1,5 @@
 """Fail-first tests for the OPR-BB-MTF-CENTER screen + Krown M tests (synthetic bars, hand-computed). Run: python test_study.py"""
+import importlib.util
 import sys
 import unittest
 from pathlib import Path
@@ -8,7 +9,13 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "chart_read_g5_2026-10-16"))
-import study as B  # noqa: E402
+HAS_PANDAS = importlib.util.find_spec("pandas") is not None
+# The offline CI runners install only pytest, numpy, tzdata (.github/workflows/ci.yml); common.py / study.py import pandas at module
+# level, so without it collection died with ModuleNotFoundError. A module-level skip would exit 5 (no tests collected), which
+# run_extra_tests.py counts as FAIL, so every class skips instead (exit 0, reason shown with -rs).
+needs_pandas = unittest.skipUnless(HAS_PANDAS, "pandas not installed on the CI runners (they install pytest, numpy, tzdata)")
+if HAS_PANDAS:
+    import study as B  # noqa: E402
 
 
 def lower_trend_bars():
@@ -21,6 +28,7 @@ def idx(ev):
     return list(np.nonzero(ev["event"])[0])
 
 
+@needs_pandas
 class TestTouch(unittest.TestCase):
     def test_wick_event_after_n_closes_below_not_under_close_rule(self):
         C, H, L, mid, hw = lower_trend_bars()
@@ -56,6 +64,7 @@ class TestTouch(unittest.TestCase):
         self.assertEqual(idx(B.touch_events(C, H, L, mid, np.full(16, 2.0), N=6, rule="wick", side=1)), [9])
 
 
+@needs_pandas
 class TestUDR(unittest.TestCase):
     def test_classification(self):
         Hw = np.array([[1.0, 2, 3, 12], [1, 2, 3, 12], [11, 1, 1, 1], [1, 2, 3, 4], [1, np.nan, 3, 4]])
@@ -66,6 +75,7 @@ class TestUDR(unittest.TestCase):
         self.assertEqual(list(B.classify_udr(Hw, Lw, up, lo)), ["U", "D", "B", "R", "X"])
 
 
+@needs_pandas
 class TestRanges(unittest.TestCase):
     def test_range_detector_needs_two_reactions_each_side(self):
         H = np.array([10.0, 9, 10, 9, 10, 9, 9, 9])
