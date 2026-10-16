@@ -4,9 +4,9 @@
   "commands": [],
   "created": "2026-10-13T05:09:07Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "MD has a membership table (id -> class) and recomputed counts/stop stats from the corrected CSV; no FINAL all-available claim; min stop sourced or removed; test_ledger_audit TestH4 passes",
   "from_inbox": "",
-  "goal": "",
+  "goal": "Define parent trade vs fill vs management vs teaching example; list membership of each count and stop statistic; label coverage partial (F2 omissions, unread long sessions); recompute counts and the 1.5pt minimum from corrected prices or drop it.",
   "id": "fabio-audit-20261013-counts",
   "lane": "SONNET",
   "layers": [
@@ -16,17 +16,34 @@
   "note": "",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "worker-sonnet",
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+    "MyTradingSys/research/fabio_transfer/test_ledger_audit.py",
+    "scripts/dev/run_extra_tests.py"
+  ],
+  "scope_out": [
+    "any code, backtest, study or holdout read",
+    "new web or video downloads",
+    "numbers not traceable to the audit report or the cited frames/captions"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md H4 and L1 rows; F:/MTS/data/fabio_videos/0jM5Y31YJak.en.vtt:1026-1058,1234-1258"
+  ],
+  "state": "ready",
+  "steps": [
+    "define the four classes in the MD",
+    "tabulate every F-id with its class and parent",
+    "recompute stop widths from the corrected CSV with a script that prints members",
+    "mark F2 (VTT 1026-1058, 1234-1258) and F3b/F4 grouping as partial/unresolved",
+    "replace stale FINAL/status paragraphs with a dated inventory, tests, ship"
+  ],
+  "tests": "test_ledger_audit.py::TestH4 fails first: old MD claims 14 filled trades and min stop 1.5pt with no membership table",
   "title": "H4: Rebuild Fabio parent-trade inventory coverage and stop statistics"
 }
