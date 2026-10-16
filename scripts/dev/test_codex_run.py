@@ -8,6 +8,7 @@ import sys
 import tempfile
 import time
 import unittest
+import unittest.mock
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -611,6 +612,36 @@ class TimeBoxTest(unittest.TestCase):
             self.assertEqual(sw.returncode, 124)
             self.assertLess(time.time() - t0, 60)
             self.assertIn("TIMEOUT", (runs / "last_lane.txt").read_text(encoding="utf-8"))
+
+
+class ShipHoldTest(unittest.TestCase):
+    """lab-ship-failed-poisons-branch: a gate-red SHIP_FAILED commit stays on the lab branch; new runs must stop (no git reset)."""
+    GATE_RED = "Step 4c: Pytest tests: FAIL" + chr(10) + "Step 5: Maven tests: SKIP" + chr(10)
+
+    def test_gate_red_ship_writes_hold_and_next_refuses(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.assertTrue(R.record_ship_failure(d, "lab-a", self.GATE_RED))
+            hold = (Path(d) / "lab.hold").read_text(encoding="utf-8")
+            self.assertIn("lab-a", hold)
+            self.assertIn("Step 4c", hold)
+            out = io.StringIO()
+            with unittest.mock.patch.dict(os.environ, {"CODEX_HOME": d}), contextlib.redirect_stdout(out):
+                self.assertNotEqual(R.cmd_next(type("A", (), {"dry": False})()), 0)
+            self.assertIn("HOLD", out.getvalue())
+            self.assertIn("lab-a", R.needs_look([card()], {}, [], lab_hold=R.read_hold(d))[0])
+
+    def test_timeout_ship_writes_no_hold(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.assertFalse(R.record_ship_failure(d, "lab-a", "partial" + chr(10) + "TIMEOUT after 1500s: process tree killed"))
+            self.assertFalse((Path(d) / "lab.hold").exists())
+            self.assertEqual(R.read_hold(d), "")
+
+    def test_hold_survives_restart_and_clears_by_deleting_the_file(self):
+        with tempfile.TemporaryDirectory() as d:
+            R.record_ship_failure(d, "lab-a", "no step lines at all")   # unknown step still fails closed
+            self.assertIn("step unknown", R.read_hold(d))
+            (Path(d) / "lab.hold").unlink()
+            self.assertEqual(R.read_hold(d), "")
 
 
 if __name__ == "__main__":
