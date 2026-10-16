@@ -57,7 +57,7 @@ update that worktree (`git -C <wt> fetch -q origin`, then `git -C <wt> merge -q 
    - Needs a fact only the operator has: `tasks.py tried <id> --asks "<one short question>"`; the page shows it, the answer comes in the Inbox.
    - Needs numbers from a run: post a DSA desk task (DSA_DELEGATION.md) and leave the card `refined` with the desk id in `note`; do not run it yourself.
    - Size L: split into S/M cards (`tasks.py new`), drop the parent with a note. A new defect or task still gets its BUGS.md row under that file's rules.
-4. Product code is out of scope for the refiner (cards, docs, desk posts only). `tasks.py lint`, `sync.py ship`, `sync.py release <slug>`.
+4. Product code is out of scope for the refiner (cards, docs, desk posts only). `tasks.py lint`, `sync.py ship --release <slug>`.
 5. One pass per HOURLY line, 3 cards max, routine model. The brake: a card gets 2 tries, a question parks it at once, and parked cards do not count toward REFINE_NEEDED.
 
 ## Operator controls (Control Room > Backlog; no other page)

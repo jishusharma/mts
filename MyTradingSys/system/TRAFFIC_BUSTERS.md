@@ -25,6 +25,20 @@ Cause: every claim and every release ran a full `ship()` (fetch, merge commit wh
 
 Searched, no usable source found: batching tool calls (no solid source), shallow / partial fetch (not covered by results; our repo fetch is small, untested).
 
+## Re-measure 2026-10-16 (after B1/B4) and adoption
+- The 24 h window is mostly pre-B1: 685 of 862 commits predate B1 (landed 10:09Z). Post-B4 (10:57Z) the overhead is ~51% (merge 34%, claim 8%, release 9%), not the 65% the full window shows.
+- Release is still 9% because sessions were never told: CLAUDE.md boot step 3, PARALLEL.md step 4 and ~16 other docs/prompts said `ship` then a separate `release`. Fixed 2026-10-16: they now say `sync.py ship --release <slug>`; standalone `release` stays for 'nothing to ship'. Test: `MyTradingSys/tests/docs/test_ship_release_contract.py` (failed on the old text: 6 of 7 cases).
+- Better metrics than commit share: ship-to-green time (push to the `green/fast-track` advance) and red-CI hours. CI coalesces runs (50 runs for 862 commits), so commit count is not CI load; green did not advance for 5.5 h on 2026-10-16 while commit share looked fine.
+- Landing today from sibling sessions (check the log before relying on them): gate `explain()` + persisted step timings; `auto_deploy.py` takes a gate slot; `scripts/dev/trace.py` and `research_kit_lint.py`; the CI root-cause fix.
+
+## Rejected ideas (2026-10-16), do not re-propose without new evidence
+| Idea | Why rejected |
+|---|---|
+| `sync.py` skips claims automatically when the task looks safe (auto B2) | Removes the duplicate-task guard: 13 tasks were claimed more than once. B2 stays a policy the session applies. |
+| Windows CI job non-blocking | `mark-green` needs both OSes green; a non-blocking Windows job would publish `green/fast-track` for SHAs Windows rejects. |
+| Quarantine gate step 4f (layer / live-writer paths) | It holds live-path execution tests; skipping it must fail closed, not open. |
+| New gate-busy lock file | `gate_slot` (GATE_SLOTS=2) already limits concurrent gates; a second lock adds a stale-lock failure mode. |
+
 ## How to claim a result
 Rerun `traffic_report.py 24` a day after a buster ships; write the overhead % in the Session log line of SUPER_SESSION.md.
 Target after B1: claim + release near 0% of commits (merge share falls with them). B4 (shipped) saves one more push per task.

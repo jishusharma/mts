@@ -242,7 +242,7 @@ Close, in this order:
 2. `python scripts/dev/dsa.py commit "<Tnn> backtest audit: <headline>" --result "<same line>" --files <report> <scripts> <csv files> MyTradingSys/system/tasks/<card id>.json MyTradingSys/system/LAYERS.md <new raw cards>`
 3. `# AIRUN task=mts-ship repo=<WORKTREE> timeout=1800` must end in TASK RESULT: PASS.
 4. `git fetch origin`, then `git cherry origin/fast-track HEAD`. It must print nothing. Only then is the report shipped.
-5. `python scripts/dev/sync.py release <slug>`.
+5. `python scripts/dev/sync.py release <slug>` only if step 3 shipped without `--release`.
 
 ## 7. Chat limit and order
 - One chat runs at most 2 audit cards, or about 60 bridge results, whichever comes first. Then it follows DSA_SESSION_PROMPT.md section 12, with progress files current and every claim released.
