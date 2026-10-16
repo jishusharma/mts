@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1792677805,
-  "week_used": 30.0,
+  "week_used": 31.0,
   "window_resets": 1792195230,
-  "window_used": 34.0
+  "window_used": 43.0
  },
- "at": "2026-10-16T21:36:01Z",
+ "at": "2026-10-16T23:01:34Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,17 +20,32 @@
   "astra_runs": 0,
   "week_pts": 20.0,
   "window_pts": 1.0,
-  "window_runs": 5
+  "window_runs": 6
  },
  "runs": [
+  {
+   "at": "2026-10-16T23:00:10Z",
+   "card": "gptb-session-levels-event-table",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 78,
+   "tokens_out": 5999,
+   "tokens_total": 403487,
+   "tokens_uncached": 33328,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-16T21:33:21Z",
    "card": "gptb-rsi-divergence-event-table",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": "s; resolve, `git commit`, then run ship again.\nAuto-merging MyTradingSys/system/wiring_registry.json\nCONFLICT (content): Merge conflict in MyTradingSys/system/w",
+   "outcome": "SHIP_FAILED",
    "seconds": 153,
    "tokens_out": 12561,
    "tokens_total": 1300295,
@@ -157,21 +172,6 @@
    "tokens_uncached": 86850,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": null,
-   "card": "gptb-candle-pattern-event-table",
-   "effort": null,
-   "kind": null,
-   "model": null,
-   "note": "both earlier tries were SHIP_FAILED gate failures (steps 3w/3x/4c), fixed in 049a5a96 and shipped; reset by NUC session 2026-10-16",
-   "outcome": "REOPENED",
-   "seconds": null,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
   }
  ]
 }
