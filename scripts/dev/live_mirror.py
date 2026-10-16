@@ -10,6 +10,8 @@ Design, review (Opus, 2026-10-10) and fail-closed rules: MyTradingSys/system/LIV
 The mirror is data, never authority: no trading, gating or pause code may read runtime_data/_mirror.
 runtime_data/_mirror* is git-ignored: the share is the only channel, so a pull never dirties a tree.
 """
+import nowin  # B173: no console flash from git/python children under pythonw
+nowin.install()
 import argparse
 import datetime as dt
 import fnmatch

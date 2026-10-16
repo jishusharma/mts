@@ -15,6 +15,19 @@ import winreg
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 args = sys.argv[1:]
+
+
+def _unique_env_name():
+    """Registry variable for the fresh-environment check. One name per run: the check writes it under HKCU\\Environment, which every
+    process of the user shares, so two selftests at once (concurrent ship gates, or the concurrent pytest) used to delete each other's
+    value before the agent read it (FAIL 'registry change is visible without an agent restart')."""
+    return 'AIB_SELFTEST_' + os.urandom(6).hex().upper()
+
+
+if '--print-env-name' in args:   # lets the pytest guard prove two runs never share the name, without starting an agent
+    print(_unique_env_name())
+    sys.exit(0)
+
 SRC = os.path.normpath(args[args.index('--src') + 1]) if '--src' in args else os.path.normpath(os.path.join(HERE, '..', 'src'))
 def _free_port():
     import socket
@@ -69,10 +82,10 @@ def http(method, path, body=None, timeout=60):
         return e.code, json.loads(e.read().decode() or '{}')
 
 
-def run(cmd, auto=True, **kw):
+def run(cmd, auto=True, http_timeout=60, **kw):
     b = {'cmd': cmd, 'cwd': work, 'token': TOKEN, 'auto': auto}
     b.update(kw)
-    return http('POST', '/run', b)
+    return http('POST', '/run', b, timeout=http_timeout)
 
 
 def check(name, cond, detail=''):
@@ -151,7 +164,7 @@ try:
     check('secrets stay denied', st == 403 and 'denied_path' in r['reason'], r)
 
     # fresh environment: a variable written to the registry AFTER the agent started is visible to the next command
-    name = 'AIB_SELFTEST_VAR'
+    name = _unique_env_name()
     k = winreg.OpenKey(winreg.HKEY_CURRENT_USER, 'Environment', 0, winreg.KEY_SET_VALUE)
     try:
         winreg.SetValueEx(k, name, 0, winreg.REG_SZ, 'fresh42')
@@ -164,21 +177,37 @@ try:
             pass
         winreg.CloseKey(k)
 
-    # parallel chats: a slow command must not block a quick one
+    # parallel chats: a slow command must not block a quick one. Ordering, not wall time: a blocking agent answers quick only after
+    # slow ends. A fixed seconds bound tripped under ship-time load (4.4-4.5 s, 2026-10-15) and so did a 6 s sleep (the quick command
+    # needs its own PowerShell start, which outlasts 5 s on a starved host), so the slow command now HOLDS until the test releases it
+    # after quick has answered: slow is provably still running whatever either latency was.
+    started_flag = os.path.join(work, 'slow_started.flag')
+    release_flag = os.path.join(work, 'slow_release.flag')
+    slow_cmd = ("Set-Content -LiteralPath '%s' -Value 1; $until = (Get-Date).AddSeconds(200); "
+                "while (-not (Test-Path -LiteralPath '%s') -and (Get-Date) -lt $until) { Start-Sleep -Milliseconds 200 }; "
+                "Write-Output slow" % (started_flag, release_flag))
     res = {}
-    t = threading.Thread(target=lambda: res.update(slow=run('Start-Sleep -Seconds 6; Write-Output slow', timeout_s=30)))
+    t = threading.Thread(target=lambda: res.update(slow=run(slow_cmd, timeout_s=280, http_timeout=300)))   # the reply comes after the release
     t.start()
-    time.sleep(1)
-    t0 = time.time()
-    st, r = run('Write-Output quick')
-    quick = time.time() - t0
-    # ordering, not wall time: a blocking agent answers quick only after slow ends;
-    # a fixed seconds bound tripped under ship-time load (4.4-4.5s, 2026-10-15)
-    slow_running = t.is_alive()
+    st, r, slow_running, quick = 0, {}, False, 0.0
+    try:
+        wait_until = time.time() + 240   # until the slow command reports it is running (a starved PowerShell start can take a while)
+        while not os.path.exists(started_flag) and t.is_alive() and time.time() < wait_until:
+            time.sleep(0.2)
+        t0 = time.time()
+        try:
+            st, r = run('Write-Output quick')
+        except Exception as e:   # a blocking agent never answers quick while slow holds: report it as this check's failure
+            st, r = 0, {'error': repr(e)}
+        quick = time.time() - t0
+        slow_running = t.is_alive()
+    finally:
+        open(release_flag, 'w').write('1')
     check('parallel: quick command answers while a slow one runs', st == 200 and slow_running,
           'took %.1fs, slow still running=%s' % (quick, slow_running))
     t.join()
-    check('parallel: the slow one still completes', res['slow'][0] == 200 and res['slow'][1]['out'].strip() == 'slow')
+    slow = res.get('slow', (0, {}))
+    check('parallel: the slow one still completes', slow[0] == 200 and slow[1].get('out', '').strip() == 'slow', slow)
 
     st, r = run('', task='list')
     check('task=list shows the playbook', st == 200 and 'demo:' in r['out'] and 'who=<required>' in r['out'], r)

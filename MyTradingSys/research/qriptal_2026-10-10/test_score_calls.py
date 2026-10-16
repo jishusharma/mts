@@ -5,6 +5,8 @@ Run: python MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py
 """
 import sys
 sys.dont_write_bytecode = True
+import contextlib
+import io
 import tempfile
 import unittest
 from datetime import datetime, timezone
@@ -237,7 +239,29 @@ class TestCommittedLedger(unittest.TestCase):
 
     def test_scorecard_matches_a_rerun(self):
         out = S.run(S.LEDGER, S.KLINE_DIR)
-        self.assertEqual(S.SCORECARD.read_bytes().decode("utf-8"), S.render_scorecard(out))
+        self.assertEqual(S.read_committed_text(S.SCORECARD), S.render_scorecard(out))
+
+    def test_crlf_checkout_of_the_scorecard_matches_but_a_content_change_does_not(self):
+        # windows-latest checks the file out with core.autocrlf=true: same content, CRLF line ends
+        want = S.render_scorecard(S.run(S.LEDGER, S.KLINE_DIR))
+        tampered = want.replace("scored n = 0", "scored n = 1", 1)
+        self.assertNotEqual(tampered, want)
+
+        def check(content):
+            """-> exit code of `score_calls.py check` against a SCORECARD.md holding `content`"""
+            real = S.SCORECARD
+            try:
+                with tempfile.TemporaryDirectory() as d:
+                    S.SCORECARD = Path(d, "SCORECARD.md")
+                    S.SCORECARD.write_bytes(content.encode("utf-8"))
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        return S.main(["score_calls.py", "check"])
+            finally:
+                S.SCORECARD = real
+
+        self.assertEqual(check(want), 0)
+        self.assertEqual(check(want.replace("\n", "\r\n")), 0)
+        self.assertEqual(check(tampered.replace("\n", "\r\n")), 1)
 
     def test_claim_arithmetic(self):
         c = S.claimed()

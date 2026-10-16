@@ -13,6 +13,8 @@ unless --allow-origin is given.
 
 Usage: python scripts/dev/backup_snapshot.py [--repo DIR] [--remote backup] [--allow-origin] [--dry-run]
 """
+import nowin  # B173: no console flash from git/python children under pythonw
+nowin.install()
 import argparse
 import os
 import re

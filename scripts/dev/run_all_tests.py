@@ -37,6 +37,10 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_dax_engine_flag.py",
     "scripts/dev/test_check_handoff.py",
     "scripts/dev/test_live_owner.py",
+    "scripts/dev/test_loop_supervisor_grace.py",
+    "scripts/dev/test_nowin.py",
+    "scripts/dev/test_gate_priority.py",
+    "scripts/dev/test_feed_watchdog_script.py",
     "MyTradingSys/observation/tests",
 ]
 
@@ -314,6 +318,12 @@ def build_plan(quick):
     # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
     add("3w", "Wiring gate tests", [sys.executable, "scripts/dev/test_wiring_scan.py"], "Step 3w: Wiring gate tests")
     add("3x", "Wiring check: no undeclared unwired code (wiring_scan.py --check)", [sys.executable, "scripts/dev/wiring_scan.py", "--check"], "Step 3x: Wiring check")
+    # Step 3gd: B150 discovery in every ship (2026-10-16: two research test files shipped unregistered and turned CI red twice in 3 h;
+    # the smoke gate never picked the pytest shard that holds this test)
+    add("3gd", "Gate discovery: every tracked test file is gated (B150)", [sys.executable, "MyTradingSys/tests/test_gate_discovery_b150.py"], "Step 3gd: Gate discovery")
+    # Step 3dl: CI deps lint (2026-10-16: pandas imported by research tests, missing from the ci.yml pip line; the desktop has every package, so
+    # only CI saw ModuleNotFoundError at collection, three red rounds in 3 h). Always runs, ~5 s.
+    add("3dl", "CI deps lint: no gated test hard-imports a package the ci.yml pip line lacks", [sys.executable, "scripts/dev/ci_deps_lint.py"], "Step 3dl: CI deps lint")
 
     # Step 4: pytest (math + doc tests), sharded so the slowest step no longer sets the gate's wall time (2026-10-16: one process
     # took 919 s of a 15 min gate). 4/4b/4c = MyTradingSys/tests files round-robin, 4d = doc size/contract tests, 4e = backtest
@@ -443,9 +453,28 @@ def apply_selection(plan, args):
     return plan, mode
 
 
+def lower_priority():
+    """Run the gate (and every child it starts, which inherit the class) below normal priority on Windows.
+    2026-10-16: parallel sessions' gates (4 steps at a time each) kept the 8-core live host at 100% CPU; the loop's mvn
+    snapshot then took > 90 s, the supervisor restarted the loop over and over and live health went RED. The live loop
+    and its feeds run at normal priority, so they now win against any gate. MTS_GATE_PRIORITY=normal opts out."""
+    if sys.platform != "win32" or os.environ.get("MTS_GATE_PRIORITY", "").lower() == "normal":
+        return False
+    try:
+        import ctypes
+        from ctypes import wintypes
+        k = ctypes.WinDLL("kernel32", use_last_error=True)
+        k.GetCurrentProcess.restype = wintypes.HANDLE
+        k.SetPriorityClass.argtypes = [wintypes.HANDLE, wintypes.DWORD]
+        return bool(k.SetPriorityClass(k.GetCurrentProcess(), 0x00004000))   # BELOW_NORMAL_PRIORITY_CLASS
+    except Exception:
+        return False
+
+
 def main(argv=None):
     args = sys.argv[1:] if argv is None else argv
     unbuffer()
+    lower_priority()
     isolate_pytest_tmp()
     quick = "--quick" in args
 

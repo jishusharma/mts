@@ -180,5 +180,21 @@ class OiParseTests(unittest.TestCase):
             hc.oi_delta_pct([{"sumOpenInterest": "0", "timestamp": 1}, {"sumOpenInterest": "5", "timestamp": 2}])
 
 
+class RowWrittenRetryTest(unittest.TestCase):
+    """2026-10-15: one OI hiccup left the 20:00Z row missing for 4 h (loop slept to the next close). The loop now asks
+    row_written() and retries after RETRY_MS."""
+
+    def test_row_written_false_until_row_exists_then_true(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.assertFalse(hc.row_written(B + 5 * MIN, d))
+            row = hc.run_once(B + 5 * MIN, feed(), lambda end: 1.5, d)
+            self.assertIsNotNone(row)
+            self.assertTrue(hc.row_written(B + 5 * MIN, d))
+            self.assertFalse(hc.row_written(B + H4 + 5 * MIN, d))
+
+    def test_retry_is_two_minutes(self):
+        self.assertEqual(hc.RETRY_MS, 120000)
+
+
 if __name__ == "__main__":
     unittest.main()

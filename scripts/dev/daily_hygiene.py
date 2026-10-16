@@ -10,6 +10,8 @@ task card to the desk board once, B180), and make_status.py. Writes one file a s
 Exit 0 when every step passed, 1 when any failed (the gate being red is the case that matters).
 Schedule: scripts/sched/register_cicd_tasks.ps1 (Windows Task Scheduler, 06:30 local). Run by hand: python scripts/dev/daily_hygiene.py
 """
+import nowin  # B173: no console flash from git/python children under pythonw
+nowin.install()
 import json
 import os
 import platform
