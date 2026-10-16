@@ -3,7 +3,7 @@
 Before, every 10-minute tick was a full Haiku session whose only job was to run this one script and print `TICK NOOP`.
 Now the gate runs the same call in plain python: NOOP costs nothing; KICK launches ONE headless relay session with the tick
 output (NEXT / UNLOCK commands and relay_session.md) as its prompt. The hourly refine and housekeep items need App-only tools, so
-the gate passes a huge --hourly-min and the `mts-dispatcher` App routine (cron `7 * * * *`, 60 min) stays as that fallback.
+the gate runs the refiner status itself (tick --gate, own clock) and launches a session only for REFINE_NEEDED. Housekeep needs App-only tools, so the `mts-dispatcher` App routine runs once a day (cron `7 3 * * *`).
 
   python scripts/sched/dispatch_gate.py [--root <live tree>] [--peer-quiet-min 90] [--launcher "<argv>"] [--dry-run]
 
@@ -21,7 +21,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 CLAUDE_FALLBACK = r"C:\Users\E-ngineers\.local\bin\claude.exe"
-HOURLY_OFF = "1000000"   # minutes: the App fallback routine owns refine + housekeep
+HOURLY_MIN = "60"   # minutes: the gate runs the refiner status itself (model-free); the App routine only does the daily housekeep
+REFINE_PREAMBLE = (
+    "MTS refiner run (started headless by dispatch_gate.py, unattended, never ask). The hourly tick found cards to refine. Do "
+    "MyTradingSys/system/TASK_REFINEMENT.md 'Refiner run' step 3 inside ../mts-refiner (beside the live tree), nothing else, and keep output "
+    "short. Do NOT run `relay.py tick` or `kick`. CLAUDE.md hard rules apply.\n\n"
+)
 PREAMBLE = (
     "MTS dispatcher KICK (started headless by dispatch_gate.py, unattended, never ask). You are the relay session. The tick already ran "
     "and took the launch lock: do NOT run `relay.py tick` or `kick` again. Follow the text below exactly, run the UNLOCK command last "
@@ -93,7 +98,7 @@ def main(argv=None):
     if "RESUMED" in w.stdout:   # a dead super-session coordinator left the relay stopped; relay.py logged who/why/age
         log(w.stdout.strip())
     r = subprocess.run([sys.executable, str(relay), "tick", "--root", a.root, "--peer-quiet-min", a.peer_quiet_min,
-                        "--hourly-min", HOURLY_OFF], capture_output=True, text=True, encoding="utf-8", timeout=300)
+                        "--hourly-min", HOURLY_MIN, "--gate"], capture_output=True, text=True, encoding="utf-8", timeout=300)
     verdict, line = decide(r.stdout)
     if verdict == "ERROR":
         log("ERROR tick: %s | rc=%s %s" % (line, r.returncode, (r.stderr.strip().splitlines() or [""])[-1]))
@@ -101,6 +106,14 @@ def main(argv=None):
         return 1
     if verdict == "NOOP":
         log(line)
+        hourly = next((ln for ln in r.stdout.splitlines() if ln.startswith("HOURLY ")), "")
+        if "refine=REFINE_NEEDED" in hourly and not a.dry_run:   # the only hourly item that needs a model; an idle hour launches nothing
+            try:
+                p = subprocess.run(launcher_argv(a.launcher), input=REFINE_PREAMBLE + hourly, capture_output=True, text=True,
+                                   encoding="utf-8", timeout=3600, cwd=a.root)
+                log("REFINE launched rc=%s" % p.returncode)
+            except (OSError, subprocess.SubprocessError) as e:
+                log("REFINE launch FAILED (%s): %s" % (type(e).__name__, e))
         print("GATE NOOP", line)
         return 0
     if a.dry_run:

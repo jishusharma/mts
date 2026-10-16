@@ -174,6 +174,14 @@ class HourlyGateTest(TickBase):
         day = self.lines(self.tick("--refiner-tree", str(tree), now="2026-10-16T10:01:00Z"))
         self.assertEqual(day[1:], ["HOURLY refine=REFINE_NEEDED housekeep=yes"], day)
 
+    def test_gate_clock_is_separate_and_leaves_housekeeping_to_the_app_routine(self):
+        tree = str(self.refiner("REFINE_NEEDED refinable=1"))
+        g = self.lines(self.tick("--gate", "--refiner-tree", tree, now="2026-10-15T10:00:00Z"))
+        self.assertEqual(g[1:], ["HOURLY refine=REFINE_NEEDED"], g)   # no housekeep=yes from the gate
+        self.assertEqual(len(self.lines(self.tick("--gate", "--refiner-tree", tree, now="2026-10-15T10:10:00Z"))), 1)   # own 60 min clock
+        app = self.lines(self.tick("--refiner-tree", tree, now="2026-10-15T10:20:00Z"))
+        self.assertEqual(app[1:], ["HOURLY refine=REFINE_NEEDED housekeep=yes"], app)   # the gate did not eat the App slot
+
     def test_refiner_error_is_reported_never_forced(self):
         out = self.lines(self.tick("--refiner-tree", str(self.tmp / "no-such-tree")))
         self.assertTrue(out[1].startswith("HOURLY refine=ERROR worktree add:"), out)
