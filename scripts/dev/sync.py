@@ -417,22 +417,33 @@ def run_docs_gate(repo, files):
         run_gate(repo, files)
 
 
-def ship(repo, gate=run_gate, docs_gate=run_docs_gate):
+def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None):
+    """release_slug (traffic buster B4): the claim file is deleted in a commit on this branch, so the release rides the
+    same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release."""
     refuse_live(repo)  # only commits are pushed; uncommitted files stay where they are
+    rel = f"{CLAIMS_DIR}/{release_slug}.md" if release_slug else None
+    released = False
     for attempt in range(1, PUSH_TRIES + 1):
         merge_trunk(repo)
         files = outgoing_files(repo)
         if not files:
-            print("nothing to ship")
+            if release_slug:
+                release(repo, release_slug)
+            else:
+                print("nothing to ship")
             return
         if attempt == 1:
             if needs_gate(files):
                 call_gate(gate, repo, files)
             elif docs_gate:
                 docs_gate(repo, files)
+        if rel and git(repo, "cat-file", "-e", f"HEAD:{rel}", check=False).returncode == 0:
+            git(repo, "rm", "--quiet", "-f", rel)
+            git(repo, "commit", "--quiet", "-m", f"release {release_slug}" + chr(10) * 2 + f"Result: claim {release_slug} closed with the ship")
+            released = True
         r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{TRUNK}", check=False)
         if r.returncode == 0:
-            print(f"shipped {len(files)} file(s) to origin/{TRUNK}")
+            print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
             return
         print(f"push rejected (someone shipped first), retry {attempt}/{PUSH_TRIES}")
     raise SyncError(f"push still rejected after {PUSH_TRIES} tries:\n{r.stderr}")
@@ -857,6 +868,18 @@ def main(argv):
             here = "--here" in argv
             rest = [a for a in argv[1:] if a != "--here"]
             start(toplevel(Path.cwd()), rest[0] if rest else None, here)
+        except SyncError as e:
+            print(f"sync: {e}", file=sys.stderr)
+            return 1
+        return 0
+    if argv and argv[0] == "ship" and "--release" in argv:
+        try:
+            i = argv.index("--release")
+            if i + 1 >= len(argv):
+                raise SyncError("usage: sync.py ship [--full] --release <slug>")
+            if "--full" in argv:
+                os.environ["SYNC_FULL_GATE"] = "1"
+            ship(toplevel(Path.cwd()), release_slug=argv[i + 1])
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1
