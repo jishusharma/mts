@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T05:14:26Z",
   "commands": [],
   "created": "2026-10-13T06:40:58Z",
   "depends_on": [],
@@ -21,7 +22,7 @@
   "refs": [
     "fabio-video-prescreen"
   ],
-  "result": "",
+  "result": "Superseded 2026-10-16: Is1HvdfQm5c was read from a local ASR transcript (D2 flipped to YES) and fully extracted (extracts/v2/fabio/Is1HvdfQm5c_v2.md). The session has no confirmed live fill with stated entry and stop (ledger +0 rows), so a frame-layout cue for its zone-box screen is not needed; fabio_prescreen.py stays calibrated on DyS79Eb92Ug only.",
   "scope_in": [
     "scripts/dev/fabio_prescreen.py",
     "scripts/dev/test_fabio_prescreen.py",
@@ -35,7 +36,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "blocked",
+  "state": "done",
   "steps": [
     "Read 3 flagged 'candidate' windows (first_hit_frame column) from PRESCREEN_Is1HvdfQm5c.csv and 1 'no-hit' window; write down what an open position or order looks like in this layout (or that no trade is ever drawn).",
     "Add the cue as a per-video profile in fabio_prescreen.py; test: a synthetic zone-box frame is NOT flagged, a synthetic frame with the cue IS (fails first).",
