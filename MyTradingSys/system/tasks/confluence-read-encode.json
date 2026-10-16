@@ -11,7 +11,7 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "Operator priority high. Private input: C:/Users/E-ngineers/Downloads/transaction_log-75513-BTC-10_10_2026, 12_00_00 AM_10_17_2026, 6_34_06 PM.csv (never commit it or its numbers). Opus not required.",
+  "note": "Operator priority high. Private input: the operator transaction-log CSV in his Downloads folder (ask the coordinator for the exact name; path withheld because the repo is public) (never commit it or its numbers). Opus not required.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
