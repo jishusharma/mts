@@ -11,7 +11,7 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 
 ## Cost and routing
 - Interactive sessions and subagents: Sonnet (implementations, spec-derived tests), Opus only when the operator names it; relay/dispatcher sessions run on the routine model. Haiku for mechanical work; workers = sessions (`start_session`). Wait on a queue with one background shell, never a polling agent; spot-check one worker claim.
-- Do not ask routine questions: pick the default, finish end to end; free public market data and YouTube videos are pre-approved.
+- No routine questions or "want me to?" offers for implied work: do it now, full depth. Free public market data and YouTube: pre-approved.
 - T0 script first, then by card lane (HOW_MTS_RUNS.md): run-and-report goes to DSA (`desk.py post ... --target DSA`; low on budget: post the rest to DSA, then hand over).
 - Logins share one repo and queue (CLOUD_ACCOUNTS.md): whoever has budget takes NEXT_SESSION.md; never idle for a weekly reset.
 - Surface: Claude Code Win App only; never tell the operator to "use the CLI" or hand work back. A permission block is not a reason to stop: report the exact blocked call, try the allowed equivalent.

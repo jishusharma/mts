@@ -46,3 +46,8 @@ Next time: the coordinator on each side reads `mts_signal.py read --hours 3` at 
 - `[nuc->nb] runner`: the live runner on NB never reloaded W3 (5 new layers not loaded, stale since 10:21Z). Cause: AutoDeploy matched `live_runner_cli.py` but the runner starts as `-m ...alerts.live_runner_cli`; kill pattern fixed on fast-track with a test (see research/layer_readiness_2026-10-16/LIVE_CHECK.md). Takes effect on the next deploy touching alerts/ or a supervisor stale-restart; NB restarts per DEPLOY_RUNBOOK.
 - `[nuc->nb] fabio`: layer:fabio:v3_grid:1m logs 72 unmapped rejects per 45 min; Fabio is excluded on NUC, so it is NB's call.
 
+### Lesson 2026-10-16: check the log before taking a queue item
+NUC took Q76, Q77 and Q79 from NEXT_SESSION.md and found all three already shipped by NB (bbffceda, 6bd38b55, 3b3ea9df); the
+queue file still listed them open. Before a coordinator spawns a worker for any queue item, it runs
+a search of the last 24 h of fast-track commits for the Q id or slug and `sync.py where`; a hit means the item is done or
+taken, so skip it and signal the other side to drop it from NEXT_SESSION.md. Whoever ships a Q removes it from the queue in the same ship.
