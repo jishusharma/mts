@@ -69,6 +69,17 @@ study tests context FILTERS on the ladder trade: a different family, kill scopes
 | 4 | zone width for "at a level" | 0.5 x ATR14(4h) | 1.0 x ATR (T2: 21,610 vs 20,688 long events) |
 | 5 | plausible filter effect for the power bar | 0.15 R (n_min 572 for a cost-free contrast; a net claim would need 5,943 episodes and is not pre-registered) | none |
 
+## Comparison with the Opus run of the same prompt (added 2026-10-16, after the first ship)
+
+The same prompt ran on Opus 5.5 earlier the same day (`research/context_factors_2026-10-16/`, shipped 00:59Z; its card read one
+composite cell: INCONCLUSIVE, VERDICTS.csv row 24). `COMPARISON.md` sets the two studies side by side. What survives both
+engines: PIT rebuild works, "at a level" alone selects nothing (90 % / 94.5 % of hours), no single factor is testable on DEV in
+day units, directional candle patterns at a level are rare. What does not: the band-walk veto (2 % vs 26 % of events), the phase
+object, the ladder width, and the power verdict. **The counts verdict above ("9 of 14 cells") rests on episode units; in the
+trunk's adopted day units it is 4 of 14 (F1 and F2, both sides).** PRE_REG.md is therefore never run; `PRE_REG_V2.md` (day units,
+Holm m = 59, realised-MDE rule, a cross-engine agreement step, an audit card first) replaces it, and card `context-factors-one-run`
+now points there and depends on `context-factors-pit-audit`.
+
 ## Next step
 Run card `context-factors-one-run` (SONNET): episode ledger committed first, then one run of the 14 cells, `RESULT.md`,
 14 `verdicts.py add` rows. A PASS on any cell earns a single VALIDATION read by a separate card; nothing adopts a rule.
