@@ -80,6 +80,16 @@ def uniform_on_grid(h, l, v, bs, org, nb):
     return org + ip * bs, org + hi_ * bs, org + lo_ * bs
 
 
+def standard_profile(h, l, v, w=W):
+    """FORMULAS 18.1 reference profile (decision OURS, ZONE_MISMATCH.md): fixed w-USDT grid anchored at multiples of w,
+    uniform overlap weighting, poc_price = bin centre, vah = top edge, val = bottom edge. Returns a dict."""
+    h = np.asarray(h, float); l = np.asarray(l, float); v = np.asarray(v, float)
+    org = np.floor(float(l.min()) / w) * w
+    nb = max(0, int(np.ceil((float(h.max()) - org) / w)) - 1)
+    poc, vah, val = uniform_on_grid(h, l, v, w, org, nb)
+    return {"poc_price": poc + w / 2, "vah": vah + w, "val": val}
+
+
 def conv(poc, vah, val, bs):
     return {"poc": poc + bs / 2, "vah": vah + bs, "val": val}
 

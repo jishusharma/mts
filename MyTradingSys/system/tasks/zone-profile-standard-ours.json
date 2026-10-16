@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T20:56:06Z",
   "commands": [],
   "created": "2026-10-16T16:01:26Z",
   "depends_on": [],
@@ -16,7 +17,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "VP standard recorded as OURS (18.1) and pinned by test_zone_standard.py",
   "scope_in": [
     "MyTradingSys/research/pit_levels_2026-10-16/ZONE_MISMATCH.md",
     "MyTradingSys/research/level_ledger_2026-10-16/zone_mismatch_classify.py",
@@ -32,7 +33,7 @@
   "sources": [
     "MyTradingSys/backtest/layers/FORMULAS.md 18.1; ZONE_MISMATCH.md counts (51 of 65 mismatches are grid and weighting)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read ZONE_MISMATCH.md and classify main()",
     "write test_zone_standard.py: java_port on a synthetic day with the 18.1 settings (fixed=10, uniform, 18.1 edges) equals uniform_on_grid levels",

@@ -46,6 +46,7 @@ EXTRA = [
     "MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py",
     "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py",
     "MyTradingSys/research/level_ledger_2026-10-16/test_level_ledger.py",
+    "MyTradingSys/research/level_ledger_2026-10-16/test_zone_standard.py",
     "scripts/dev/test_suplock.py",
     "MyTradingSys/research/mfe_exit_2026-10-13/test_mfe_exit_study.py",
     "MyTradingSys/research/malkan_extract_2026-10-15/tools/test_check_numbers.py",
