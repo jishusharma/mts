@@ -33,12 +33,12 @@ class ProfileParityTest(unittest.TestCase):
         # EXPECT: point masses at 100,101,102,103,150 have volume 1,2,10,4,3.
         # Range=50, engine minimum 50 bins => width=1. Total=20, 70%=14.
         # POC=102 (10); add upper 103 (4) rather than lower 101 (2).
-        # Engine reports bin keys, so VAL=102, VAH=103, POC=102.
+        # FORMULAS 18.1 edge convention: POC = bin centre (102.5), VAH = top edge of bin 103 (104), VAL = bottom edge of bin 102 (102).
         rows = [[i*60000, p,p,p,p,v] for i,(p,v) in
                 enumerate(zip([100,101,102,103,150],[1,2,10,4,3]))]
         with EngineProfile() as engine:
             levels = engine.profile(rows)
-        self.assertEqual(levels, {"poc":102.0,"vah":103.0,"val":102.0})
+        self.assertEqual(levels, {"poc":102.5,"vah":104.0,"val":102.0})
 
     def test_explicit_window_excludes_forming_and_future_bars(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -61,7 +61,7 @@ class ProfileParityTest(unittest.TestCase):
                   "--at","1970-01-01T00:05:00Z","--out",str(out)])
             result=json.loads(out.read_text())
             self.assertEqual(result["bar_count"],5)
-            self.assertEqual(result["levels"],{"poc":102.0,"vah":103.0,"val":102.0})
+            self.assertEqual(result["levels"],{"poc":102.5,"vah":104.0,"val":102.0})
             self.assertEqual(len(result["engine_sha256"]),64)
             self.assertEqual(result["as_of_utc"],"1970-01-01T00:05:00Z")
 
