@@ -59,11 +59,14 @@ def iso(ms):
 def load_intraday(data_dir=INTRA_DIR):
     rows = []
     d = INTRA_FIRST
+    end_ms = int(datetime(INTRA_LAST.year, INTRA_LAST.month, INTRA_LAST.day, tzinfo=timezone.utc).timestamp() * 1000) + DAY
     while d <= INTRA_LAST:  # the date loop is the DEV fence: no file past INTRA_LAST is ever opened
         p = Path(data_dir) / f"{d.isoformat()}.csv.gz"
         if p.exists():
             with gzip.open(p, "rt", encoding="utf-8", newline="") as f:
                 for r in csv.DictReader(f):
+                    if int(r["t"]) >= end_ms:  # timestamp fence (audit HIGH): a file may hold rows past the last allowed day
+                        continue
                     rows.append(dict(t=int(r["t"]), o=float(r["o"]), h=float(r["h"]), l=float(r["l"]), c=float(r["c"]),
                                      buy=float(r["buy_vol"]), sell=float(r["sell_vol"]), delta=float(r["delta"]),
                                      cvd=float(r["cvd_day"]), bbn=int(r["b999_buy_n"]), bsn=int(r["b999_sell_n"]), fp=r["fp"]))
@@ -251,7 +254,7 @@ def pf_fab4(B, i, cx):
     run, k = 0, i - 1
     while k >= j0 and ((B[k]["c"] > vah) if above else (B[k]["c"] < val)):
         run, k = run + 1, k - 1
-    return ("down" if above else "up") if 2 <= run <= 24 else None
+    return ("down" if above else "up") if run >= 4 else None  # READER_PROTOCOL sec.1 "outside P / break-in": at least 4 closes outside
 
 
 def pf_fab5(B, i, cx):
@@ -417,15 +420,17 @@ def pf_mal1617(D, i):
     if i < 80 or r[i] is None:
         return None
     hi20, lo20 = max(c[i - 19:i + 1]), min(c[i - 19:i + 1])
-    for b in range(i, i - 4, -1):
-        if c[b] == hi20:
-            a = max(range(i - 60, b - 4), key=lambda k: c[k])
-            if c[a] < c[b] and r[a] is not None and r[b] is not None and r[a] > r[b] + 2 and d[i]["c"] < d[i]["o"]:
-                return "bear"
-        if c[b] == lo20:
-            a = min(range(i - 60, b - 4), key=lambda k: c[k])
-            if c[a] > c[b] and r[a] is not None and r[b] is not None and r[a] < r[b] - 2 and d[i]["c"] > d[i]["o"]:
-                return "bull"
+    # READER_PROTOCOL sec.1 RSI row: highest (lowest) close of the last 20 bars vs the highest (lowest) close in bars 5..60 before it
+    bh = max(k for k in range(i - 19, i + 1) if c[k] == hi20)
+    bl = max(k for k in range(i - 19, i + 1) if c[k] == lo20)
+    if bh - 60 >= 0:
+        a = max(range(bh - 60, bh - 4), key=lambda k: c[k])
+        if c[a] < c[bh] and r[a] is not None and r[bh] is not None and r[a] > r[bh] + 2 and d[i]["c"] < d[i]["o"]:
+            return "bear"
+    if bl - 60 >= 0:
+        a = min(range(bl - 60, bl - 4), key=lambda k: c[k])
+        if c[a] > c[bl] and r[a] is not None and r[bl] is not None and r[a] < r[bl] - 2 and d[i]["c"] > d[i]["o"]:
+            return "bull"
     return None
 
 
