@@ -1,5 +1,6 @@
 """Fail-first tests for the pre-open tops screen (synthetic bars, hand-computed). Run: python test_study.py"""
 import datetime as dt
+import importlib.util
 import sys
 import unittest
 from pathlib import Path
@@ -9,10 +10,17 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "chart_read_g5_2026-10-16"))
-import study as P  # noqa: E402
-import common as K  # noqa: E402
+HAS_PANDAS = importlib.util.find_spec("pandas") is not None
+# The offline CI runners install only pytest, numpy, tzdata (.github/workflows/ci.yml); common.py / study.py import pandas at module
+# level, so without it collection died with ModuleNotFoundError. A module-level skip would exit 5 (no tests collected), which
+# run_extra_tests.py counts as FAIL, so every class skips instead (exit 0, reason shown with -rs).
+needs_pandas = unittest.skipUnless(HAS_PANDAS, "pandas not installed on the CI runners (they install pytest, numpy, tzdata)")
+if HAS_PANDAS:
+    import study as P  # noqa: E402
+    import common as K  # noqa: E402
 
 
+@needs_pandas
 class TestOpen(unittest.TestCase):
     def test_dst_open_utc(self):
         ms = lambda d, h, m: int(dt.datetime(d.year, d.month, d.day, h, m, tzinfo=dt.timezone.utc).timestamp() * 1000)
@@ -20,6 +28,7 @@ class TestOpen(unittest.TestCase):
             self.assertEqual(P.open_idx(d), (ms(d, hh, 30) - K.TS0) // K.MS, str(d))
 
 
+@needs_pandas
 class TestSwing(unittest.TestCase):
     def test_swing_tie_first_wins(self):
         H = np.array([1, 2, 3, 10, 4, 3, 2, 1, 1, 1], float)
@@ -33,6 +42,7 @@ class TestSwing(unittest.TestCase):
         self.assertFalse(P.unbroken(H, 3, 9))       # bar 7 is 11 > 10
 
 
+@needs_pandas
 class TestBreakAndSpeed(unittest.TestCase):
     def setUp(self):
         n = 40
@@ -69,6 +79,7 @@ class TestBreakAndSpeed(unittest.TestCase):
         self.assertGreater(s3, 2)
 
 
+@needs_pandas
 class TestTertiles(unittest.TestCase):
     def test_groups(self):
         s = np.array([3, 3, 6, 9, 12, 30, 60, 90, 120], float)

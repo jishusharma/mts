@@ -1,4 +1,5 @@
 """Fail-first tests for the MAL-BB-MID-ENGULF screen (synthetic 5m bars, hand-computed). Run: python test_study.py"""
+import importlib.util
 import sys
 import unittest
 from pathlib import Path
@@ -8,9 +9,16 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "chart_read_g5_2026-10-16"))
-import study as M  # noqa: E402
+HAS_PANDAS = importlib.util.find_spec("pandas") is not None
+# The offline CI runners install only pytest, numpy, tzdata (.github/workflows/ci.yml); common.py / study.py import pandas at module
+# level, so without it collection died with ModuleNotFoundError. A module-level skip would exit 5 (no tests collected), which
+# run_extra_tests.py counts as FAIL, so every class skips instead (exit 0, reason shown with -rs).
+needs_pandas = unittest.skipUnless(HAS_PANDAS, "pandas not installed on the CI runners (they install pytest, numpy, tzdata)")
+if HAS_PANDAS:
+    import study as M  # noqa: E402
 
 
+@needs_pandas
 class TestEngulf(unittest.TestCase):
     def setUp(self):
         #            0 green      1 red full engulf   2 green        3 red, opens inside the body   4 green     5 red, close above prev open
@@ -30,6 +38,7 @@ class TestEngulf(unittest.TestCase):
         self.assertEqual(list(M.engulf_c(self.O, self.C, 2.0)), [False] * 6)
 
 
+@needs_pandas
 class TestState(unittest.TestCase):
     def test_bounce_window_and_grid(self):
         H = np.array([10.0, 10, 10, 12, 10, 10, 10, 10])
@@ -53,6 +62,7 @@ class TestState(unittest.TestCase):
         self.assertEqual(list(M.htf_idx(t, 240)), [-1, -1, -1, 0])   # 5m bar 59 closes at minute 300 -> 4h bar 0 closed at 240
 
 
+@needs_pandas
 class TestSecondBreak(unittest.TestCase):
     def test_next_bar_trades_below_engulf_low(self):
         L = np.array([5.0, 4.0, 3.9, 4.1, 3.0])

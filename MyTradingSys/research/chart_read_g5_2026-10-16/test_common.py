@@ -1,4 +1,5 @@
 """Tests for common.py. Expected numbers are hand-computed from FORMULAS.md (RSI s.1, ATR s.12, s.13 costs) or by hand below."""
+import importlib.util
 import math
 import sys
 import unittest
@@ -7,9 +8,16 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import common as K  # noqa: E402
+HAS_PANDAS = importlib.util.find_spec("pandas") is not None
+# The offline CI runners install only pytest, numpy, tzdata (.github/workflows/ci.yml); common.py / study.py import pandas at module
+# level, so without it collection died with ModuleNotFoundError. A module-level skip would exit 5 (no tests collected), which
+# run_extra_tests.py counts as FAIL, so every class skips instead (exit 0, reason shown with -rs).
+needs_pandas = unittest.skipUnless(HAS_PANDAS, "pandas not installed on the CI runners (they install pytest, numpy, tzdata)")
+if HAS_PANDAS:
+    import common as K  # noqa: E402
 
 
+@needs_pandas
 class TestIndicators(unittest.TestCase):
     def test_rsi_worked_example(self):
         # FORMULAS.md s.1 worked example, period=3, closes [10,12,11,14] -> rsi[3] = 100 - 100/6
@@ -37,6 +45,7 @@ class TestIndicators(unittest.TestCase):
         self.assertTrue(np.isnan(mid[:3]).all())
 
 
+@needs_pandas
 class TestAgg(unittest.TestCase):
     def test_agg_and_incomplete_bar(self):
         A = {k: np.array([1.0, 2, 3, 4, 5, 6]) for k in ("O", "H", "L", "C", "V", "TBV", "QV")}
@@ -54,6 +63,7 @@ class TestAgg(unittest.TestCase):
         self.assertTrue(np.isnan(b["O"][1]) and np.isnan(b["C"][1]) and not np.isnan(b["O"][0]))
 
 
+@needs_pandas
 class TestStats(unittest.TestCase):
     def test_wilson(self):
         lo, hi = K.wilson(5, 10)
@@ -76,6 +86,7 @@ class TestStats(unittest.TestCase):
         self.assertAlmostEqual(K.max_dd(np.array([1.0, -3.0, 1.0, -1.0, 4.0])), 3.0)
 
 
+@needs_pandas
 class TestTrade(unittest.TestCase):
     def test_gross_delay_and_side(self):
         O = np.array([100.0, 100, 100, 110, 110, 110, 90, 90])
@@ -97,6 +108,7 @@ class TestTrade(unittest.TestCase):
         self.assertEqual(list(keep), [True, False, True, True, True])    # 61 is 61 > 60 after 0 (kept); 10 dropped; 62 other side
 
 
+@needs_pandas
 class TestVerdict(unittest.TestCase):
     def test_inconclusive_small_n(self):
         rng = np.random.default_rng(1)

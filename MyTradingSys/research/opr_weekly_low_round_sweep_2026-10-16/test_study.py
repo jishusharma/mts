@@ -1,4 +1,5 @@
 """Fail-first tests for the OPR-WEEKLY-LOW-ROUND-SWEEP screen (synthetic 1m bars, hand-computed). Run: python test_study.py"""
+import importlib.util
 import sys
 import unittest
 from pathlib import Path
@@ -8,9 +9,16 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "chart_read_g5_2026-10-16"))
-import study as W  # noqa: E402
+HAS_PANDAS = importlib.util.find_spec("pandas") is not None
+# The offline CI runners install only pytest, numpy, tzdata (.github/workflows/ci.yml); common.py / study.py import pandas at module
+# level, so without it collection died with ModuleNotFoundError. A module-level skip would exit 5 (no tests collected), which
+# run_extra_tests.py counts as FAIL, so every class skips instead (exit 0, reason shown with -rs).
+needs_pandas = unittest.skipUnless(HAS_PANDAS, "pandas not installed on the CI runners (they install pytest, numpy, tzdata)")
+if HAS_PANDAS:
+    import study as W  # noqa: E402
 
 
+@needs_pandas
 class TestWeekLow(unittest.TestCase):
     def test_prior_monday_sunday_week_low(self):
         # day 0 = Saturday 2022-01-01; days 2..8 = Mon 01-03 .. Sun 01-09 (week 1); days 9..15 = week 2; days 16..22 = week 3
@@ -24,6 +32,7 @@ class TestWeekLow(unittest.TestCase):
         self.assertTrue((out[16 * 1440:23 * 1440] == 95.0).all())  # week 3 sees week 2's low
 
 
+@needs_pandas
 class TestBreak(unittest.TestCase):
     def test_first_break_needs_previous_closes_above_and_penetration(self):
         Cl = np.array([101.0, 101, 101, 101, 101, 99, 99])
@@ -34,6 +43,7 @@ class TestBreak(unittest.TestCase):
         self.assertEqual(list(W.break_candidates(Lo, Cl, lvl, 0.0, prev=3)), [4, 5])
 
 
+@needs_pandas
 class TestClassify(unittest.TestCase):
     def test_abc(self):
         n, w = 5, 61
@@ -56,6 +66,7 @@ class TestClassify(unittest.TestCase):
         self.assertEqual(W.classify_abc(Cw, lvl, k=5, m=5)[0], "A")   # reclaim at 4 <= 5, acceptance (5 below) never happened
 
 
+@needs_pandas
 class TestTradeIndex(unittest.TestCase):
     def test_reclaim_and_acceptance_entries(self):
         Cw = np.full((3, 61), 101.0)
