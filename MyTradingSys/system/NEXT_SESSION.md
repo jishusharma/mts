@@ -8,6 +8,8 @@ AI-HEALTH 2026-10-16 (JIS-NUC): the ubuntu CI job was red on 049a5a96 and ad995e
 
 CHANGE NOTICE 2026-10-16 (B4 adoption): close every task with `sync.py ship --release <slug>` (one push; CLAUDE.md and PARALLEL.md now say so; standalone `release` only for 'nothing to ship'). Landing today from sibling sessions, see TRAFFIC_BUSTERS.md: gate explain() + persisted step timings, auto_deploy takes a gate slot, scripts/dev/trace.py and research_kit_lint.py, CI root-cause fix. Rejected, do not re-propose: auto-skipping claims in sync.py (duplicate-task guard; B2 stays policy), Windows non-blocking CI (mark-green needs both OSes), quarantining step 4f (live-path tests, fail closed), a gate-busy lock file (gate_slot exists).
 
+- SPEED-FOLLOWUP 2026-10-17 (JIS-NUC, speed-review): CI cause found via the new annotations: mts_signal file names sorted same-second signals by a random tail (ubuntu red); fixed 3acc181d. FIRST: confirm CI is green on 3+ consecutive pushes (api.github.com/repos/jishusharma/mts/actions/runs?branch=fast-track), then re-run traffic_report.py 24 (B1/B4 effect; check releases fell now that docs say ship --release). Open: deploy-slot (95fbea27) merged result not re-tested for test_auto_deploy + test_sync; claim candle-close-corrected-rerun is 55h stale; q17 claims-off-trunk held back.
+
 ```
 MTS builder session. Read CLAUDE.md and STATUS.md (regenerate first). One task per session; ship, overwrite this file, `sync.py where` clean.
 0. `python scripts/dev/sync.py start` from a worktree; `tasks.py next` now skips claimed cards.
