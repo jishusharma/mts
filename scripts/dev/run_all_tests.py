@@ -459,7 +459,10 @@ def lower_priority():
         return False
     try:
         import ctypes
-        k = ctypes.windll.kernel32
+        from ctypes import wintypes
+        k = ctypes.WinDLL("kernel32", use_last_error=True)
+        k.GetCurrentProcess.restype = wintypes.HANDLE
+        k.SetPriorityClass.argtypes = [wintypes.HANDLE, wintypes.DWORD]
         return bool(k.SetPriorityClass(k.GetCurrentProcess(), 0x00004000))   # BELOW_NORMAL_PRIORITY_CLASS
     except Exception:
         return False

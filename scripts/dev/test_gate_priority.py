@@ -7,8 +7,9 @@ import unittest
 
 CODE = (
     "import sys, ctypes; sys.path.insert(0, 'scripts/dev'); import run_all_tests as r;"
-    "k = ctypes.windll.kernel32; before = k.GetPriorityClass(k.GetCurrentProcess()); r.lower_priority();"
-    "print(before, k.GetPriorityClass(k.GetCurrentProcess()))"
+    "from ctypes import wintypes; k = ctypes.WinDLL('kernel32'); k.GetCurrentProcess.restype = wintypes.HANDLE;"
+    "k.GetPriorityClass.argtypes = [wintypes.HANDLE]; before = k.GetPriorityClass(k.GetCurrentProcess());"
+    "ok = r.lower_priority(); print(before, k.GetPriorityClass(k.GetCurrentProcess()))"
 )
 
 
