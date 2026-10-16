@@ -18,7 +18,7 @@ Coordinator: autopilot-3 (Sonnet, started by local_1c4041fd, successor of local_
 - Shipped for the next window: gate pytest steps ignore transient tmp dirs (4f race), 4b AIBridge selftest no longer races itself, the gate runs at BelowNormal (typed ctypes), and `auto_deploy.py` now has a 2700 s gate limit (`MTS_DEPLOY_GATE_TIMEOUT`), keeps the last 6 lines of a timed-out gate and records `gate_secs`. The live tree runs the old `auto_deploy.py` until its next deploy.
 
 ## Ships (sha, what, Result)
-Times are UTC. Every sha below was checked with `git cherry origin/fast-track <sha>` (prints nothing), except the two imbalance-filter rows (worker abd48d4b was still merging two registry conflicts when this was written: run `git cherry origin/fast-track f34607d0` to see if they landed) and other sessions' commits, which I only read.
+Times are UTC. Every sha below was checked with `git cherry origin/fast-track <sha>` (prints nothing), except the two imbalance-filter rows (NOT on fast-track at the 06:27Z hard stop: worker abd48d4b had merged the two registry conflicts into branch `worktree-agent-abd48d4b23b601f51` (worktree `.claude/worktrees/agent-abd48d4b23b601f51`, head 7ee1b423, tree clean) and its `sync.py ship` smoke gate was queued behind four other sessions' ship gates on the same machine; run `git cherry origin/fast-track f34607d0` to see if it landed, if not run `sync.py ship` in that worktree) and other sessions' commits, which I only read.
 
 ### CI red to green
 | sha | UTC | what | Result |
