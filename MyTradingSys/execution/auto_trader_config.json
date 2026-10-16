@@ -100,6 +100,34 @@
   "layer:cryptocred:fib_pullback:1h": {
    "size_usd": 800,
    "max_loss_usd": 16
+  },
+  "layer:rsi_divergence:": {
+   "size_usd": 20,
+   "max_loss_usd": 2
+  },
+  "layer:session_levels:": {
+   "size_usd": 20,
+   "max_loss_usd": 2
+  },
+  "layer:bb_top_reversal:": {
+   "size_usd": 20,
+   "max_loss_usd": 2
+  },
+  "layer:candle_close:": {
+   "size_usd": 20,
+   "max_loss_usd": 2
+  },
+  "layer:levels:": {
+   "size_usd": 20,
+   "max_loss_usd": 2
+  },
+  "layer:wlow_bounce:": {
+   "size_usd": 20,
+   "max_loss_usd": 2
+  },
+  "layer:cryptocred:failed_msb:": {
+   "size_usd": 200,
+   "max_loss_usd": 4
   }
  },
  "trade_blocklist": [],
@@ -189,6 +217,34 @@
    "review_by": "2026-10-23"
   },
   "tom": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:rsi_divergence:": {
+   "reason": "grandfathered testnet calibration, operator 2026-10-16 all-layers direction; not an edge claim",
+   "review_by": "2026-10-23"
+  },
+  "layer:session_levels:": {
+   "reason": "grandfathered testnet calibration, operator 2026-10-16 all-layers direction; not an edge claim",
+   "review_by": "2026-10-23"
+  },
+  "layer:bb_top_reversal:": {
+   "reason": "grandfathered testnet calibration, operator 2026-10-16 all-layers direction; not an edge claim",
+   "review_by": "2026-10-23"
+  },
+  "layer:candle_close:": {
+   "reason": "grandfathered testnet calibration, operator 2026-10-16 all-layers direction; not an edge claim",
+   "review_by": "2026-10-23"
+  },
+  "layer:levels:": {
+   "reason": "grandfathered testnet calibration, operator 2026-10-16 all-layers direction; not an edge claim",
+   "review_by": "2026-10-23"
+  },
+  "layer:wlow_bounce:": {
+   "reason": "grandfathered testnet calibration, operator 2026-10-16 all-layers direction; not an edge claim",
+   "review_by": "2026-10-23"
+  },
+  "layer:cryptocred:failed_msb:": {
    "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
    "review_by": "2026-10-23"
   }

@@ -138,6 +138,31 @@ class SyncTest(unittest.TestCase):
         self.assertNotIn("unshipped.py", self.head_files(self.a))
         self.assertEqual(len(self.gated), gated_before)
 
+    def test_ship_release_drops_the_claim_in_the_same_push_as_the_work(self):
+        # Traffic buster B4: release rides the last ship, one push less per task.
+        sync.claim(self.a, "Task y", area="scripts/dev", gate=self.gate)
+        commit(self.a, "y.py", "y"+chr(10))
+        pushes = []
+        real = sync.git
+        def spy(repo, *args, **k):
+            if args and args[0] == "push":
+                pushes.append(args)
+            return real(repo, *args, **k)
+        sync.git = spy
+        try:
+            sync.ship(self.a, gate=self.gate, release_slug="task-y")
+        finally:
+            sync.git = real
+        self.assertEqual(len(pushes), 1)
+        self.assertIn("y.py", self.head_files(self.a))
+        self.assertEqual(sync.read_claims(self.a, "origin/fast-track"), [])
+
+    def test_ship_release_with_nothing_to_ship_still_releases(self):
+        sync.claim(self.a, "Task z", area="scripts/dev", gate=self.gate)
+        sync.ship(self.a, gate=self.gate, release_slug="task-z")
+        sh(self.a, "fetch", "-q", "origin")
+        self.assertEqual(sync.read_claims(self.a, "origin/fast-track"), [])
+
     def test_claim_blocks_only_on_overlapping_areas(self):
         sync.claim(self.a, "Task one", area="scripts/dev,MyTradingSys/backtest", gate=self.gate)
         sync.claim(self.a, "Task two", area="MyTradingSys/research", gate=self.gate)  # disjoint: allowed

@@ -95,8 +95,25 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   -o BatchMode=yes e-ngineers@192.168.29.110 ps` (stdin goes to PowerShell; stderr carries post-quantum warnings).
 - Task card JSON can hold a hidden HOLD `note` that `tasks.py brief` does not print: read the card file before running a refined card.
 - Bash tool: a `cd` persists between calls and some `cd x && git ...` chains are denied; use `git -C <dir>` and absolute paths.
+- App worktrees can be stale (cut from 2026-10-02, no sync.py). Workers run `python <main checkout>/scripts/dev/sync.py start <slug>`
+  from the main checkout and work only in the printed WORKTREE.
+- Workers are sessions, started directly with `start_session`, never cards: the operator is often away. The app refuses
+  `start_session` on turns a side-session note or an event started, so on every OPERATOR turn start all workers the next stretch
+  needs (max 4 at once) and brief each to chain its follow-ups, so no spawn is needed between operator turns.
+- Pacing on the Pro login: 5-hour window, `get_usage` on every wake. Under 60 %: normal; 60-70 %: crucial work only; 70-80 %:
+  coordinator only; 80 % and up: stop. In the last ~15 min before a reset, spend what is left on workers that finish real items.
+- Keep the GPT lab busy: `codex_run.py status` on every wake; keep 8+ ready luna/medium build cards; repair skipped or BLOCKED
+  cards. Its spend guard was the real throttle; raised to 10 runs/window and 60 week points on 2026-10-16 (e6955a8f).
+- Fix, don't analyse: when the operator complains, fix the cause in the same turn and report the result in 1-2 lines. Never send
+  an analysis-only reply. Put this rule in every worker brief.
+- Live watch: one watcher session covers the whole market window (a background shell waits until each check time), within the
+  5-screenshot-read cap per thread.
 
 ## Session log (newest first; one line each, last 5)
+- 2026-10-16 JIS-NUC lagging-tasks super session: layer readiness census; 5 live adapters plus wlow side wired (W3, live in
+  28ca4005/fc9794f4); D3 power result (no factor powered at Holm m=37); Java buildVp edge fix (62.5% zone match); GPT lab
+  unthrottled with 6 build cards; bigtrade reclassified as a build; HALT still on (operator clears it); grandfather review_by 2026-10-23.
+- 2026-10-16 busters-b4 (JIS-NB, Sonnet): B4 `sync.py ship --release <slug>` shipped + B9-B12 added to TRAFFIC_BUSTERS.md. `traffic_report.py 24`: 890 commits, merge 40%, claim 14%, release 14%, overhead 68% (still the pre-B1 baseline: the 24 h window is mostly before B1); rerun on 2026-10-17.
 - 2026-10-16 autopilot-3 (JIS-NB, Sonnet coordinator, 00:10Z-06:30Z, Agent workers, started by local_1c4041fd): CI red 4 h -> green
   02:04Z, 4b/4f gate races fixed, live deployed to 32077514 at 06:01:49Z after two load timeouts and a STOP_DIRTY; imb filter FAIL,
   context composite INCONCLUSIVE, pit audit FIX-FIRST. Weekly 48 -> 55 %. Learned: heavy workers during a deploy gate cost two
