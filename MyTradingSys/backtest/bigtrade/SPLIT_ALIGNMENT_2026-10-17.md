@@ -1,7 +1,7 @@
 # bigtrade split alignment (2026-10-17)
 
 ## History found
-- `SPLITS` entered with `e31bc290` (2026-10-11, first commit of the bigtrade harness); no earlier commit changes it (`git log -S SPLITS`).
+- `SPLITS` entered with `e31bc290` (2026-10-11, first commit of the bigtrade harness); no earlier commit changes it (history search for the SPLITS string).
 - Source comment: "PLAN section 4": `research/bigtrade_2026-10-09/PLAN.md:53`, TRAIN 2022-01..2024-12, VALIDATE 2025-01..2025-06, HOLDOUT 2025-07..2026-09. PLAN.md was written by worker session MTS-2026-10-08-1933Z-APP-ANA-bigtrade-bt. The only operator text it cites is the 2026-10-09 directive allowing tuning; no operator decision on the split boundaries exists in OPERATOR_DECISIONS.md, TRIALS.md or any PRE_REG. The repo split (DEV to 2024-06-30, VALIDATION 2024-07-01..2025-06-30) is the documented one.
 - DECISION (OURS): no documented operator decision supports the old split, so it is aligned to the repo split.
 
