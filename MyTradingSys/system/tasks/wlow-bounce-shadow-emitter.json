@@ -52,7 +52,7 @@
     "Event shape: {'t': bar t, 'event': 'wlow_bounce_bbrsi60_active', 'collection_only': True, 'shadow_side': 'long', 'prior_weekly_low': W, 'rsi14': .., 'gap_to_upper_pct': .., 'net_delta_hold': delta_sum(K bars), 'episode_cvd': delta_sum(break..trigger)}; NO 'side' key. OI: see status.fetch_oi, None if no network.",
     "Register it in build_default_registry as layer 'wlow_bounce', sub 'bbrsi60', tf '1h' (alert source layer:wlow_bounce:bbrsi60:1h). Do NOT add a promoted_setups entry.",
     "Tests (red first): synthetic candles from wlow_bounce/test_detector.py shape() -> exactly one collection_only event with no 'side'; a second poll on the same bar -> none; a fresh state dict re-emits at most once per trigger bar (restart/reset state); fetch error, missing tbv or too few bars -> [] and no exception (fail closed); auto_trader.layer_signal rejects the alert.",
-    "Run python scripts/dev/run_all_tests.py --quick, sync.py ship, release. Tell the operator it is observation only: logs, no trades."
+    "Run python scripts/dev/run_all_tests.py --quick, sync.py ship --release <slug>. Tell the operator it is observation only: logs, no trades."
   ],
   "tests": "test_live_runner_cli.py: the new tests in step 5; they fail on the current file (no wlow layer registered).",
   "title": "wire wlow-bounce detector as collection-only shadow emitter in live_runner_cli after fable-h1 ships"
