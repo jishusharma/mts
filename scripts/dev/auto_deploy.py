@@ -206,7 +206,11 @@ def pick_branch(ops, note=None):
         age = ops.now().timestamp() - int(ops.git("log", "-1", "--format=%ct", f"origin/{BRANCH}")[1].strip())
     except ValueError:
         return BRANCH
-    if age <= GREEN_STALE_S:
+    # The live tree can be AHEAD of green (an earlier fallback deploy of fast-track): green is then an ancestor of HEAD, never
+    # fast-forwardable, and every later deploy stopped with STOP_NOT_FF until CI re-marked green (2026-10-16). Same CI check below.
+    head = ops.git("rev-parse", "HEAD")[1].strip()
+    live_ahead = bool(head) and ops.git("merge-base", "--is-ancestor", green, head)[0] == 0         and ops.git("merge-base", "--is-ancestor", head, trunk)[0] == 0
+    if age <= GREEN_STALE_S and not live_ahead:
         return BRANCH
     st = ci_state(ops)
     if st != "GREEN":
