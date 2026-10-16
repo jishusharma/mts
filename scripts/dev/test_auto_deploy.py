@@ -48,7 +48,11 @@ class TestDecide(unittest.TestCase):
         r = d(changed=["MyTradingSys/execution/daily_loss_monitor.py", "MyTradingSys/system/net_rr_floor.json"])
         self.assertEqual(r["restarts"], ["daily_loss_monitor.py"])
         r = d(changed=["MyTradingSys/backtest/layers/cryptocred/cc_setups.py"])
-        self.assertEqual(r["restarts"], ["live_runner_cli.py"])
+        self.assertEqual(r["restarts"], [ad.RUNNER_PROC])
+        # the kill pattern must occur in the real command line of the runner (it has no ".py": started with -m)
+        cmdline = "python -m MyTradingSys.backtest.layers.alerts.live_runner_cli --poll-seconds 60"
+        self.assertIn(ad.RUNNER_PROC, cmdline)
+        self.assertNotIn("live_runner_cli.py", cmdline)
         self.assertEqual(d(changed=["MyTradingSys/research/x.md"])["restarts"], [])
 
     def test_shared_module_restarts_both_trading_processes_once(self):
@@ -152,6 +156,14 @@ class FakeOps:
     def kill(self, script):
         self.killed.append(script)
         return 1
+
+    ws_only = ()
+    ws_raises = False
+
+    def whitespace_only(self, rel):
+        if self.ws_raises:
+            raise RuntimeError("git failed")
+        return rel in self.ws_only
 
 
 class TestRun(unittest.TestCase):
@@ -288,6 +300,45 @@ class TestRun(unittest.TestCase):
         ops = FakeOps(ff=False)
         self.assertEqual(ad.run(ops)["action"], "STOP_NOT_FF")
 
+    def test_whitespace_only_dirty_file_is_backed_up_reset_and_deployed(self):
+        f = self.root / "a.py"
+        f.write_bytes(b"x = 1  \r\n")
+        ops = FakeOps(changed=["a.py"], dirty=["a.py"])
+        ops.ws_only = ("a.py",)
+        r = ad.run(ops, save=False)
+        self.assertEqual(r["action"], "DEPLOYED", r)
+        order = [c[0] for c in ops.calls if c[0] in ("checkout", "merge")]
+        self.assertEqual(order, ["checkout", "merge"])                 # reset first, then the merge
+        self.assertIn(("checkout", "--", "a.py"), ops.calls)
+        saved = list((self.root / "runtime_data" / "deploy_backup").glob("*/regenerated/a.py"))
+        self.assertEqual([p.read_bytes() for p in saved], [b"x = 1  \r\n"])
+
+    def test_whitespace_check_failing_or_raising_keeps_stop_dirty_without_a_gate(self):
+        for raises in (False, True):
+            ops = FakeOps(changed=["a.py"], dirty=["a.py"])
+            ops.ws_raises = raises
+            self.assertEqual(ad.run(ops, save=False)["action"], "STOP_DIRTY")
+            self.assertEqual((ops.gated, self.merges(ops)), ([], []))
+
+    def test_whitespace_only_file_that_cannot_be_reset_stops_the_merge(self):
+        class NoCheckout(FakeOps):
+            def git(self, *a, timeout=300):
+                if a[0] == "checkout":
+                    return 1, "error: cannot checkout"
+                return super().git(*a, timeout=timeout)
+        (self.root / "a.py").write_bytes(b"x\r\n")
+        ops = NoCheckout(changed=["a.py"], dirty=["a.py"])
+        ops.ws_only = ("a.py",)
+        self.assertEqual(ad.run(ops, save=False)["action"], "STOP_MERGE")
+        self.assertEqual(self.merges(ops), [])
+
+    def test_a_timed_out_gate_is_red_nothing_merged_or_restarted(self):
+        ops = FakeOps(gate_rc=124, gate_out="Step 5: running", changed=["MyTradingSys/execution/auto_trader.py"])
+        st = {}
+        r = ad.run(ops, state=st, save=False)
+        self.assertEqual(r["action"], "STOP_RED")
+        self.assertEqual((self.merges(ops), ops.killed, st.get("last_red_sha")), ([], [], T))
+
     def test_merge_refusal_is_a_stop_and_nothing_is_killed(self):
         ops = FakeOps(merge_rc=1, changed=["MyTradingSys/execution/auto_trader.py"])
         self.assertEqual(ad.run(ops)["action"], "STOP_MERGE")
@@ -375,6 +426,31 @@ class TestGateTimeAndTimeout(unittest.TestCase):
     def test_sh_timeout_with_no_output_still_says_timed_out(self):
         rc, out = ad.sh([sys.executable, "-c", "import time; time.sleep(60)"], timeout=2)
         self.assertEqual((rc, out), (124, "timed out"))
+
+    def test_sh_timeout_kills_the_whole_process_tree_not_only_the_direct_child(self):
+        """Q75 (b): the gate child starts its own children (pytest, maven); they must die with it and must not hold the pipe open."""
+        import time
+        pidf = Path(tempfile.mkdtemp()) / "grandchild.pid"
+        gc = "import os,time,pathlib; pathlib.Path(r'%s').write_text(str(os.getpid())); time.sleep(40)" % pidf
+        parent = "import subprocess,sys,time; subprocess.Popen([sys.executable,'-c',%r]); time.sleep(40)" % gc
+        t0 = time.monotonic()
+        rc, out = ad.sh([sys.executable, "-c", parent], timeout=3)
+        took = time.monotonic() - t0
+        pid = int(pidf.read_text()) if pidf.exists() else 0
+
+        def reap():
+            if pid and os.name == "nt":
+                subprocess.run(["taskkill", "/F", "/PID", str(pid)], capture_output=True)
+            elif pid:
+                try:
+                    os.kill(pid, 9)
+                except OSError:
+                    pass
+        self.addCleanup(reap)
+        self.assertEqual(rc, 124)
+        self.assertLess(took, 20, "sh waited for the surviving grandchild")
+        time.sleep(1)
+        self.assertTrue(pid and not ad._pid_alive(pid), "grandchild still alive after the timeout")
 
     def test_timed_out_gate_record_holds_the_last_six_lines_and_says_so(self):
         lines = [f"[Step {i}] something" for i in range(1, 10)] + ["", "  Elapsed: 1.0s (9/56 done, +90s)", "Step 9: PASS"]
@@ -831,6 +907,59 @@ class TestUntrackedClashRealGit(unittest.TestCase):
         self.assertEqual(_git(self.live, "rev-parse", "HEAD"), head)
         self.assertEqual(mine.read_text(encoding="utf-8"), "mine\n")
         self.assertFalse((self.live / "runtime_data").exists())
+
+
+    # ---- Q75 (a): a live file that differs from HEAD only by trailing whitespace / EOL is no other session's work ----
+    def dirty_file(self, rel, raw):
+        _git(self.live, "config", "core.autocrlf", "false")     # else git may normalise CRLF away and see no edit at all
+        f = self.live / rel
+        f.write_bytes(raw)
+        return f
+
+    def test_eol_only_edit_on_a_file_the_deploy_changes_is_backed_up_and_the_deploy_goes_on(self):
+        crlf = b"one\r\n"                       # HEAD has b"one\n": line ending only
+        self.dirty_file("README.md", crlf)
+        self.ship("README.md", "two\n")
+        r = ad.run(RealGitOps(self.live), state={}, save=False)
+        self.assertEqual(r["action"], "DEPLOYED", r)
+        self.assertEqual(r["whitespace_only_reset"], ["README.md"])
+        self.assertEqual(_git(self.live, "rev-parse", "HEAD"), _git(self.src, "rev-parse", "HEAD"))
+        saved = list((self.live / "runtime_data" / "deploy_backup").glob("*/regenerated/README.md"))
+        self.assertEqual([p.read_bytes() for p in saved], [crlf])      # the live copy was kept before the reset
+
+    def test_trailing_space_and_missing_final_newline_count_as_whitespace_only(self):
+        self.dirty_file("README.md", b"one   ")
+        self.ship("README.md", "two\n")
+        self.assertEqual(ad.run(RealGitOps(self.live), state={}, save=False)["action"], "DEPLOYED")
+
+    def test_a_real_edit_still_stops_dirty_and_is_kept(self):
+        f = self.dirty_file("README.md", b"one changed\r\n")
+        self.ship("README.md", "two\n")
+        head = _git(self.live, "rev-parse", "HEAD")
+        r = ad.run(RealGitOps(self.live), state={}, save=False)
+        self.assertEqual(r["action"], "STOP_DIRTY", r)
+        self.assertEqual(_git(self.live, "rev-parse", "HEAD"), head)
+        self.assertEqual(f.read_bytes(), b"one changed\r\n")
+        self.assertFalse((self.live / "runtime_data").exists())
+
+    def test_whitespace_only_is_false_when_git_fails(self):
+        class Broken(RealGitOps):
+            def git(self, *a, timeout=300):
+                return 128, "fatal: bad revision"
+        self.assertFalse(Broken(self.live).whitespace_only("README.md"))
+        self.assertTrue(RealGitOps(self.live).whitespace_only("README.md"))      # clean file: no difference at all
+
+
+class TestModePs1(unittest.TestCase):
+    """Q75 (a): mode.ps1 rewrote the tracked launch-*.vbs with CRLF and no final newline, so git showed them modified on the live host and the
+    deploy stopped. The committed copies are LF with a final newline; the generator must write that form."""
+    SRC = (Path(__file__).resolve().parents[1] / "core" / "mode.ps1").read_text(encoding="utf-8")
+
+    def test_vbs_files_are_written_lf_with_a_trailing_newline(self):
+        self.assertNotIn('-join "`r`n"', self.SRC)
+        self.assertEqual(self.SRC.count(') -join "`n"'), 2)
+        self.assertIn('WriteAllText($vbsPath, ($vbs + "`n"), $enc)', self.SRC)
+        self.assertIn('WriteAllText($wrapVbs, ($wvbs + "`n"), $enc)', self.SRC)
 
 
 if __name__ == "__main__":

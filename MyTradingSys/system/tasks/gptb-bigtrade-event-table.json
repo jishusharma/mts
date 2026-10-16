@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T14:04:35Z",
+  "commands": [],
+  "created": "2026-10-16T13:48:05Z",
+  "depends_on": [],
+  "done_when": "tests green (red first), REPORT written, missing inputs NOT_IN_DATA, trial rows in TRIALS.md if any run.",
+  "effort": "medium",
+  "from_inbox": "",
+  "goal": "Build research/layer_lab/bigtrade_event_table/event_table.py: one row per bigtrade fire (F:/MTS/data/bigtrade/fires, cache klines) with side, TF, forward MFE/MAE in R and first-hit level on DEV bars only. Reuse backtest/bigtrade/fires_kline.py read-only. No trading rules; missing inputs = NOT_IN_DATA.",
+  "id": "gptb-bigtrade-event-table",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "model": "gpt-6-luna",
+  "note": "Filled by gpt-feed-builds 2026-10-16; research only, flag off.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "153685 rows; 6748 OK, 146937 NOT_IN_DATA; report MyTradingSys/research/layer_lab/reports/2026-10-16_gptb-bigtrade-event-table.md",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/bigtrade_event_table/event_table.py",
+    "MyTradingSys/research/layer_lab/bigtrade_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/bigtrade_event_table/REPORT.md",
+    "MyTradingSys/system/wiring_registry.json",
+    "scripts/dev/run_extra_tests.py",
+    "MyTradingSys/backtest/bigtrade/ (read only)",
+    "MyTradingSys/research/bigtrade_2026-10-09/ (read only)"
+  ],
+  "scope_out": [
+    "live path (alerts/live_*, execution/)",
+    "shared engine files",
+    "VALIDATION and HOLDOUT bars",
+    "Tom/Fabio layer code",
+    "trading rules or tuning"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read scope_in sources and write the test file first; run it and confirm it fails (red).",
+    "Implement the module in research/layer_lab only; DEV data only, missing input = NOT_IN_DATA.",
+    "Run the card's own test file until green; register test in scripts/dev/run_extra_tests.py EXTRA and new non-test .py in wiring_registry.json.",
+    "Write REPORT.md (what was built, row counts, test output) and the result line."
+  ],
+  "tests": "synthetic klines: a fire at a known bar gets hand-computed MFE/MAE in R; bars after the fire never feed its features; NOT_IN_DATA row for a fire without klines.",
+  "title": "Bigtrade fires: research-side event table of fires with forward MFE/MAE in R on DEV"
+}

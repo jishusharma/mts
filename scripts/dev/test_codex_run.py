@@ -100,6 +100,15 @@ class PickTest(unittest.TestCase):
             self.assertEqual(R.attempts(d), {"x": 2})
             self.assertEqual(R.attempts(Path(d) / "none"), {})
 
+    def test_reopened_stamp_resets_earlier_failed_tries_only(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "lab_runs"
+            p.mkdir()
+            rows = [{"card": "x", "outcome": "SHIP_FAILED"}, {"card": "x", "outcome": "SHIP_FAILED"},
+                    {"card": "x", "outcome": "REOPENED"}, {"card": "x", "outcome": "BLOCKED"}, {"card": "y", "outcome": "BLOCKED"}]
+            (p / "runs.jsonl").write_text(chr(10).join(json.dumps(r) for r in rows) + chr(10), encoding="utf-8")
+            self.assertEqual(R.attempts(d), {"x": 1, "y": 1})
+
 
 class CommandTest(unittest.TestCase):
     def test_model_effort_and_sandbox_reach_the_command_line(self):
@@ -555,6 +564,11 @@ class WatchdogTest(unittest.TestCase):
         for want in ("STALLED", "nothing ran for", "reading is 3.0 h old"):
             self.assertIn(want, text)
         self.assertEqual(R.stall_findings(old, ready, {}, True, "window full", self.NOW), [])   # a hold is not a stall
+        self.assertEqual(R.stall_findings(old, ready, {}, True, R.guard_hold("2026-10-16T13:30Z IDLE lab budget: x: 4 lab runs"), self.NOW), [])   # the spend guard is a hold
+        rows = [{"card": "x", "at": "2026-10-16T10:30:00Z", "outcome": "BLOCKED"}]
+        self.assertEqual(R.reopened([{"id": "x", "reopened": "2026-10-16T14:00:00Z"}], rows), {"x"})
+        self.assertEqual(R.reopened([{"id": "x", "reopened": "2026-10-16T09:00:00Z"}, {"id": "y"}], rows), set())
+        self.assertEqual(R.guard_hold("2026-10-16T13:30Z DONE card"), "")
         self.assertEqual(R.stall_findings(old, ready, {}, False, "", self.NOW), [])             # lane down is lane_health's job
         bails = [self.ROW | {"card": c, "at": "2026-10-14T00:00:00Z"} for c in ("a", "b", "c")]
         self.assertIn("bailed early 3 runs in a row", " | ".join(R.stall_findings(bails, [], {}, True, "", self.NOW)))

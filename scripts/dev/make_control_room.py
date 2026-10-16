@@ -192,7 +192,7 @@ def render(data, tpl_text):
     blob = json.dumps(data, ensure_ascii=True).replace("</", "<\\/")
     if "/*__DATA__*/null" not in tpl_text:
         raise SystemExit("template has no /*__DATA__*/null slot")
-    return tpl_text.replace("/*__DATA__*/null", blob)
+    return af.put_banner(tpl_text.replace("/*__DATA__*/null", blob), af.load(), "mts_control_room", strict=False)
 
 
 def main(argv=None):

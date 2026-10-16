@@ -28,6 +28,7 @@ sys.dont_write_bytecode = True
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import make_layers_md  # noqa: E402  (card_family, load)
+import artifacts as af  # noqa: E402  (MTS Home banner)
 
 REPO = HERE.parents[1]
 SYS = "MyTradingSys/system"
@@ -259,7 +260,7 @@ def build(repo=REPO, now=None):
 
 
 def render(data):
-    return TPL.read_text(encoding="utf-8").replace("__DATA__", json.dumps(data, ensure_ascii=False).replace("</", "<\\/"))
+    return af.put_banner(TPL.read_text(encoding="utf-8").replace("__DATA__", json.dumps(data, ensure_ascii=False).replace("</", "<\\/")), af.load(), "mts_layer_map", strict=False)
 
 
 def main(argv=None):

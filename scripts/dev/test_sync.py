@@ -124,6 +124,45 @@ class SyncTest(unittest.TestCase):
         sh(self.a, "pull", "-q", "origin", "fast-track")
         self.assertEqual(sync.read_claims(self.a, "HEAD"), [])
 
+    def test_claim_and_release_make_no_merge_commit_and_ship_nothing_else(self):
+        # Traffic buster 2026-10-16: 246 of 600 daily commits were claim/release, each with a merge commit.
+        commit(self.b, "b.py", "b\n")
+        sync.ship(self.b, gate=self.gate)       # a is now behind origin
+        commit(self.a, "unshipped.py", "u\n")   # and holds work of its own: a claim must not ship it
+        gated_before = len(self.gated)
+        sync.claim(self.a, "Task x", area="scripts/dev", gate=self.gate)
+        sync.release(self.a, "task-x", gate=self.gate)
+        merges = subprocess.run(["git", "rev-list", "--merges", "origin/fast-track"], cwd=self.a,
+                                capture_output=True, text=True).stdout.split()
+        self.assertEqual(merges, [])
+        self.assertNotIn("unshipped.py", self.head_files(self.a))
+        self.assertEqual(len(self.gated), gated_before)
+
+    def test_ship_release_drops_the_claim_in_the_same_push_as_the_work(self):
+        # Traffic buster B4: release rides the last ship, one push less per task.
+        sync.claim(self.a, "Task y", area="scripts/dev", gate=self.gate)
+        commit(self.a, "y.py", "y"+chr(10))
+        pushes = []
+        real = sync.git
+        def spy(repo, *args, **k):
+            if args and args[0] == "push":
+                pushes.append(args)
+            return real(repo, *args, **k)
+        sync.git = spy
+        try:
+            sync.ship(self.a, gate=self.gate, release_slug="task-y")
+        finally:
+            sync.git = real
+        self.assertEqual(len(pushes), 1)
+        self.assertIn("y.py", self.head_files(self.a))
+        self.assertEqual(sync.read_claims(self.a, "origin/fast-track"), [])
+
+    def test_ship_release_with_nothing_to_ship_still_releases(self):
+        sync.claim(self.a, "Task z", area="scripts/dev", gate=self.gate)
+        sync.ship(self.a, gate=self.gate, release_slug="task-z")
+        sh(self.a, "fetch", "-q", "origin")
+        self.assertEqual(sync.read_claims(self.a, "origin/fast-track"), [])
+
     def test_claim_blocks_only_on_overlapping_areas(self):
         sync.claim(self.a, "Task one", area="scripts/dev,MyTradingSys/backtest", gate=self.gate)
         sync.claim(self.a, "Task two", area="MyTradingSys/research", gate=self.gate)  # disjoint: allowed

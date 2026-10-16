@@ -867,3 +867,54 @@ Applied: 2026-10-16 session fabio-transcribe: faster-whisper small.en in a venv 
  "answer": "YES: local open-source transcriber on JIS-NB, low priority, then extract both"
 }
 ```
+
+## D3-dev-ext | asked 2026-10-16 | Research
+
+Add 2020-2021 BTCUSDT 1m data to DEV as a separate DEV_EXT segment so single context factors become testable?
+
+Recommended: Yes, as a separate segment read only by DEV-stage work
+Answer: Yes, as a separate segment read only by DEV-stage work (DECISION (OURS), operator may overrule)
+Operator note (verbatim): (none; free public market data is pre-approved, defaults chosen without asking)
+Applied: 2026-10-16 session d3-dev-ext. DECISION (OURS): segment DEV_EXT = Binance USD-M BTCUSDT 1m klines, bar open 2020-01-01 .. 2021-12-31 (731 days, 1,052,640 minutes, 24 monthly zips, SHA256 matches the .CHECKSUM files, 0 duplicate minutes, 0 gaps, all UTC-aligned, OHLC sane). The REPORT.md D3 proposal said 2019-09; the public perp 1m archive starts 2019-12-31 (daily) and 2020-01 (monthly), so 2019 is NOT filled, and 2019 spot is NOT mixed in (different venue, basis). Stored outside the repo: F:/MTS/data/dev_ext_2019_2021/ (klines, funding, zips). DEV (2022-01-01..2024-06-30), VALIDATION (2024-07-01..2025-06-30) and HOLDOUT are unchanged. Loader: research/context_factors_2026-10-16/dev_ext.py, OFF unless include_dev_ext=True, never returns a bar at/after 2024-07-01 (test_dev_ext.py). Only DEV-stage reads may use it. Counts: research/context_factors_2026-10-16/COUNTS_DEV_EXT.md.
+
+```json
+{
+ "order": 24,
+ "stage": "Research",
+ "refs": "research/context_factors_2026-10-16/REPORT.md D3, research/context_factors_2026-10-16/COUNTS_DEV_EXT.md",
+ "title": "Add 2020-2021 BTCUSDT 1m data to DEV as a separate DEV_EXT segment so single context factors become testable?",
+ "why": "The context-factors study found only the composite is powered on 821 DEV days. Free public Binance USD-M data for 2020-2021 adds 731 days. It is kept as its own segment (DEV_EXT) that only DEV-stage reads may use, so VALIDATION and HOLDOUT are never touched.",
+ "options": [
+  "Yes, as a separate segment read only by DEV-stage work",
+  "No: keep DEV at 2022-01-01 .. 2024-06-30"
+ ],
+ "recommended": "Yes, as a separate segment read only by DEV-stage work",
+ "answer": "Yes, as a separate segment read only by DEV-stage work (DECISION (OURS), operator may overrule)"
+}
+```
+
+## D6-two-context-engines | asked 2026-10-16 | Research
+
+Two independent context-factor engines exist (Opus and Fable, same prompt). Adopt day units + Holm + the realised-MDE rule for the Fable study and run its cross-engine agreement count before any outcome read?
+
+Recommended: Yes: PRE_REG_V2 (day units, m = 59, realised-MDE rule), audit card first, cross-engine count first, then one read of the 14 cells
+Answer: Yes: PRE_REG_V2 (day units, m = 59, realised-MDE rule), audit card first, cross-engine count first, then one read of the 14 cells (DECISION (OURS), operator may overrule)
+Operator note (verbatim): (none; routine research default, logged without asking)
+Applied: 2026-10-16 Fable session context-factors: PRE_REG_V2.md written, card context-factors-one-run rescoped to it, card context-factors-pit-audit added, queue Q87/Q88.
+
+```json
+{
+ "order": 25,
+ "stage": "Research",
+ "refs": "research/context_factors_pit_2026-10-16/COMPARISON.md, research/context_factors_pit_2026-10-16/PRE_REG_V2.md, research/context_factors_2026-10-16/REPORT.md D4",
+ "title": "Two independent context-factor engines exist (Opus and Fable, same prompt). Adopt day units + Holm + the realised-MDE rule for the Fable study and run its cross-engine agreement count before any outcome read?",
+ "why": "The same prompt ran twice on 2026-10-16 (research/context_factors_2026-10-16 on Opus, research/context_factors_pit_2026-10-16 on Fable). Their PRE_REGs count power in different units (days vs episodes), so the Fable claim '9 of 14 cells powered' becomes '4 of 14' under the trunk's day convention (Opus D4, both AUDIT_BEFORE_RUN files). Two conventions in VERDICTS.csv would make verdict words incomparable. The comparison itself is new evidence: factors where the two engines disagree (band veto 2 % vs 26 % of events, phase object, ladder width) are definition-fragile and any verdict on them is a verdict on the definition. Defaults taken in the Fable study, now logged: W = 2.5 % of price, target 1.5 R, PRIOR_RULE last_closed, K_ZONE 0.5 x ATR14(4h), plausible 0.15 R for a cost-free filter contrast. Also logged here because it was never recorded: Opus D4 (units = distinct UTC days, Holm) is applied de facto by both audits.",
+ "options": [
+  "Yes: PRE_REG_V2 (day units, m = 59, realised-MDE rule), audit card first, cross-engine count first, then one read of the 14 cells",
+  "No: run the Fable PRE_REG.md as written (episode units, 9 of 14 cells)",
+  "Park the Fable card; keep only the Opus composite chain"
+ ],
+ "recommended": "Yes: PRE_REG_V2 (day units, m = 59, realised-MDE rule), audit card first, cross-engine count first, then one read of the 14 cells",
+ "answer": "Yes: PRE_REG_V2 (day units, m = 59, realised-MDE rule), audit card first, cross-engine count first, then one read of the 14 cells (DECISION (OURS), operator may overrule)"
+}
+```

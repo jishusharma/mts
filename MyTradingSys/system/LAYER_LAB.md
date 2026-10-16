@@ -1,6 +1,13 @@
 # Layer lab: Codex as the independent checker of the Tom and Fabio layers (operator 2026-10-12)
 
-Layer context for every card: `MyTradingSys/system/LAYERS.md` (per family: spec, ledger, backtests, lab reports, open cards); a card's `layers` field names its section, and its brief says so.
+Reusable ordered recipes (operator 2026-10-16): see `LAB_RECIPES.md` and `scripts/dev/lab_flow.py`.
+Critical audits/builds use Sol 6.1 then Astra; evidence receipts gate advancement. Recipe cards optimize
+tokens without the older lab-share/run-count caps; actual plan headroom and safety gates still apply.
+
+Layer context for a card with a nonempty `layers` field: read its named sections of `MyTradingSys/system/LAYERS.md`
+(spec, ledger, backtests, lab reports, open cards), not the whole catalogue. A generic infrastructure or synthetic-fixture
+card with no named layer does not need LAYERS.md. Use documented lab utilities directly; inspect their implementation
+when the task audits them or a command fails, rather than rereading the same helper on every stage.
 
 Why: Claude wrote the encoding, its tests and its backtests, and the coded Tom still fired on 0 of 7 of his own trades
 (research/tom_transfer_2026-10-11/ROADMAP.md F1). A different model checks the same work. Rules are not copied here:
@@ -38,7 +45,7 @@ astra); a card that names astra without the flag runs on luna (tasks.codex_setti
 ## Asks typed in the Codex app (project "MTS Layer Lab", folder `F:\MTS\mts-codex`, created 2026-10-12)
 The operator types what they want checked or run. Codex then: `python scripts/dev/sync.py start`; writes the card with
 `codex_run.py ask ... --kind <audit|run|build> --scope <path>`; `sync.py claim "<card>"`; does it by the same rules and report
-format as an unattended run; `tasks.py done`, `codex_run.py index`, commit, `sync.py ship`, `sync.py release`. The app session
+format as an unattended run; `tasks.py done`, `codex_run.py index`, commit, `sync.py ship --release <slug>`. The app session
 has full access (operator's setting), so it does its own git steps; everything else in this file applies unchanged.
 
 ## Report format
@@ -79,7 +86,7 @@ has full access (operator's setting), so it does its own git steps; everything e
 - Spend guard (2026-10-13; `codex_run.py`): the 85% pre-check only sees what is already used, so it cannot stop a card that starts at
   16% and moves the window 80 points. Each run is estimated (measured max of the setting's latest runs, else the table
   `EST_WINDOW_PTS`) and starts only if it fits under 100 minus a 10-point reserve, the lab's own spend stays under `LAB_WINDOW_PTS`
-  (50) of the window and `LAB_WEEK_PTS` (35) of the week, at most `LAB_RUNS_PER_WINDOW` (4) runs and 1 astra run per window, one
+  (50) of the window and `LAB_WEEK_PTS` (60; 35 until 2026-10-16) of the week, at most `LAB_RUNS_PER_WINDOW` (10; 4 until 2026-10-16) runs and 1 astra run per window, one
   card per tick with `MIN_GAP_S` (20 min) between starts, and a card that ended INCOMPLETE waits `COOLDOWN_S` (2 h). When it is
   spent the tick prints `IDLE lab budget: ...` and waits for the reset; it does not mark the lane down or reroute cards. A cheaper
   card behind a held one still runs. `codex_run.py run <card> --force` is the operator's way past it.

@@ -40,6 +40,7 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_live_owner.py",
     "scripts/dev/test_loop_supervisor_grace.py",
     "scripts/dev/test_nowin.py",
+    "scripts/dev/test_wrapper_load_resilience.py",
     "scripts/dev/test_gate_priority.py",
     "scripts/dev/test_feed_watchdog_script.py",
     "MyTradingSys/observation/tests",
@@ -118,6 +119,18 @@ def exec_step(cmd, cwd=None):
     return result.returncode == 0, result.stdout + result.stderr
 
 
+def ci_annotation(num, description, output, limit=3000):
+    """A GitHub Actions ::error line for a failed step, or None off Actions. Job logs need a login even on a public repo (2026-10-16: the
+    ubuntu job failed three times and no session could read why); annotations are public through the check-runs API."""
+    if not os.environ.get("GITHUB_ACTIONS"):
+        return None
+    lines = output.splitlines()
+    first = next((i for i, ln in enumerate(lines) if ln.lstrip().startswith(("FAIL", "ERROR", "E  ", "Traceback"))), max(len(lines) - 25, 0))
+    body = "\n".join(lines[first:])[-limit:]
+    body = body.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+    return f"::error title=Step {num} FAIL::{description} | {body}"
+
+
 def format_step(num, description, cmd_text, ok, output, elapsed, progress="", tail=15):
     """The block one finished step prints. tail = how many output lines a failure shows (None = all; CI always shows all)."""
     lines = [f"\n[Step {num}] {description}", f"  Command: {cmd_text}"]
@@ -130,6 +143,9 @@ def format_step(num, description, cmd_text, ok, output, elapsed, progress="", ta
     if not ok and out:
         lines.append("  Last output:")
         lines += [f"    {ln}" for ln in (out if (os.environ.get("CI") or tail is None) else out[-tail:])]
+        note = ci_annotation(num, description, output)
+        if note:
+            lines.append(note)
     elif ok:
         lines += [f"  {ln}" for ln in out if ln.startswith("WARN")][:5]   # a passing step can still warn (wiring NO-READER)
     return lines
@@ -315,6 +331,7 @@ def build_plan(quick):
     add("3gs", "Gate selector tests (path -> smoke steps, fail closed)", [sys.executable, "scripts/dev/test_gate_select.py"], "Step 3gs: Gate selector tests")
     add("3rc", "Red CI task card tests (one card per red run)", [sys.executable, "scripts/dev/test_ci_red_card.py"], "Step 3rc: Red CI card tests")
     add("3sg", "Stop guard tests (a session cannot end holding unshipped work)", [sys.executable, "scripts/dev/test_stop_guard.py"], "Step 3sg: Stop guard tests")
+    add("3sig", "Signals between logins (mts_signal.py)", [sys.executable, "scripts/dev/test_mts_signal.py"], "Step 3sig: Signals tests")
     add("3e", "DSA browser worker + queue lane tests", [sys.executable, "scripts/worker/test_dsa_worker.py"], "Step 3e: DSA worker tests")
     add("3sh", "Screenshot intake tests (save, classify, read, close gates)", [sys.executable, "scripts/dev/test_shot.py"], "Step 3sh: Screenshot intake tests")
     add("3mg", "Project group map tests (every row and file has one group)", [sys.executable, "scripts/dev/test_make_groups.py"], "Step 3mg: Project group map tests")
@@ -478,7 +495,34 @@ def lower_priority():
         k = ctypes.WinDLL("kernel32", use_last_error=True)
         k.GetCurrentProcess.restype = wintypes.HANDLE
         k.SetPriorityClass.argtypes = [wintypes.HANDLE, wintypes.DWORD]
-        return bool(k.SetPriorityClass(k.GetCurrentProcess(), 0x00004000))   # BELOW_NORMAL_PRIORITY_CLASS
+        ok = bool(k.SetPriorityClass(k.GetCurrentProcess(), 0x00004000))   # BELOW_NORMAL_PRIORITY_CLASS
+        reserve_cores(k)
+        return ok
+    except Exception:
+        return False
+
+
+RESERVED_CPUS = 2
+
+
+def reserve_cores(k=None):
+    """B191: priority only orders who runs first; it cannot stop a gate from filling every logical CPU. Pin the gate (children
+    inherit the mask) off the top RESERVED_CPUS logical CPUs, so the live loop's snapshot JVM always has one physical core
+    (i7-4770K: 4 cores / 8 threads, cpus 6-7 are one core) no matter how many sessions gate at once. MTS_GATE_RESERVE=0 opts out."""
+    n = os.cpu_count() or 1
+    try:
+        reserve = int(os.environ.get("MTS_GATE_RESERVE", RESERVED_CPUS))
+    except ValueError:
+        reserve = RESERVED_CPUS
+    if sys.platform != "win32" or reserve <= 0 or n < reserve + 2:
+        return False
+    try:
+        import ctypes
+        from ctypes import wintypes
+        k = k or ctypes.WinDLL("kernel32", use_last_error=True)
+        k.GetCurrentProcess.restype = wintypes.HANDLE
+        k.SetProcessAffinityMask.argtypes = [wintypes.HANDLE, ctypes.c_size_t]
+        return bool(k.SetProcessAffinityMask(k.GetCurrentProcess(), (1 << (n - reserve)) - 1))
     except Exception:
         return False
 

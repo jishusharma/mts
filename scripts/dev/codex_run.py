@@ -51,8 +51,8 @@ WEEK_STOP = 85            # % of the week used: the rest stays with the operator
 WINDOW_S = 5 * 3600
 WEEK_S = 7 * 86400
 LAB_WINDOW_PTS = 50       # points of one 5-hour window the lab may spend (the rest stays with the operator's own sessions)
-LAB_WEEK_PTS = 35         # points of the week the lab may spend
-LAB_RUNS_PER_WINDOW = 4   # cards started per 5-hour window
+LAB_WEEK_PTS = 60         # points of the week the lab may spend (operator 2026-10-16: was 35; GPT sat at 24% of the week while dev waited)
+LAB_RUNS_PER_WINDOW = 10  # cards started per 5-hour window (operator 2026-10-16: was 4; luna/medium runs move 0-3 window pts, the 30-min tick allows 10)
 ASTRA_RUNS_PER_WINDOW = 1
 WINDOW_RESERVE = 10       # points of the window never planned away: a card starts only if its estimate fits below 100 - this
 WEEK_RESERVE = 15
@@ -137,7 +137,11 @@ def attempts(home):
                 r = json.loads(line)
             except ValueError:
                 continue
-            if r.get("outcome") not in ("DONE", "LIMIT") and not r.get("dry"):
+            if r.get("outcome") == "REOPENED" and not r.get("dry"):
+                # a session fixed the cause (e.g. a red gate) and stamped the card: earlier failed tries no longer count
+                out.pop(r["card"], None)
+                bails.pop(r["card"], None)
+            elif r.get("outcome") not in ("DONE", "LIMIT") and not r.get("dry"):
                 if is_bail(r):
                     bails[r["card"]] = bails.get(r["card"], 0) + 1
                     if bails[r["card"]] <= BAIL_FREE:
@@ -284,24 +288,24 @@ def windows(rl, now):
     return tuple(res)
 
 
-def budget_hold(model, effort, rl, rows, now):
+def budget_hold(model, effort, rl, rows, now, optimization=False):
     """Why one run of model/effort may not start now ('' = it may), and the epoch when the limiting window resets.
     Plain text; the lane is NOT marked down for this (no card is rerouted: the lab just waits for the window)."""
     est_w, est_k = est_pts(model, effort, rows)
     used_w, w_start, w_end, used_k, k_start, k_end = windows(rl, now)
     spent_w, spent_k = lab_spend(rows, w_start), lab_spend(rows, k_start)
     name = f"{model}/{effort}"
-    if spent_w["runs"] >= LAB_RUNS_PER_WINDOW:
+    if not optimization and spent_w["runs"] >= LAB_RUNS_PER_WINDOW:
         return f"{spent_w['runs']} lab runs in this window (cap {LAB_RUNS_PER_WINDOW})", int(w_end)
-    if model == "gpt-6-astra" and spent_w["astra_runs"] >= ASTRA_RUNS_PER_WINDOW:
+    if not optimization and model == "gpt-6-astra" and spent_w["astra_runs"] >= ASTRA_RUNS_PER_WINDOW:
         return f"astra already ran {spent_w['astra_runs']}x in this window (cap {ASTRA_RUNS_PER_WINDOW})", int(w_end)
     if used_w + est_w > 100 - WINDOW_RESERVE:
         return f"{name} needs about {est_w:.0f} points of the 5-hour window and {used_w:.0f}% is used (keeps {WINDOW_RESERVE} free)", int(w_end)
-    if spent_w["window_pts"] + est_w > LAB_WINDOW_PTS:
+    if not optimization and spent_w["window_pts"] + est_w > LAB_WINDOW_PTS:
         return f"lab share of this 5-hour window: {spent_w['window_pts']:.0f} spent + {name} about {est_w:.0f} > {LAB_WINDOW_PTS}", int(w_end)
     if used_k + est_k > 100 - WEEK_RESERVE:
         return f"{name} would take the week past {100 - WEEK_RESERVE}% ({used_k:.0f}% used)", int(k_end)
-    if spent_k["week_pts"] + est_k > LAB_WEEK_PTS:
+    if not optimization and spent_k["week_pts"] + est_k > LAB_WEEK_PTS:
         return f"lab share of this week: {spent_k['week_pts']:.0f} spent + {name} about {est_k:.1f} > {LAB_WEEK_PTS}", int(k_end)
     return "", 0
 
@@ -331,7 +335,7 @@ def choose(cards, claimed, tried, rows, rl, now, probe=False):
         if not c:
             return None, first
         model, effort = tasks.codex_setting(c)
-        why, _ = budget_hold(model, effort, rl, rows, now)
+        why, _ = budget_hold(model, effort, rl, rows, now, optimization=bool(c.get("flow")))
         if not why:
             return c, ""
         first = first or f"{c['id']}: {why}"
@@ -467,7 +471,8 @@ def prompt(card, wt, pack, when):
         "do NOT run git, sync.py claim/ship/release or anything that pushes. Write files only.",
         "1. Do the task below. It is the whole task.",
         f"2. Write the report {LAB}/reports/{d}_{cid}.md (LAYER_LAB.md, Report format).",
-        f"3. python scripts/dev/tasks.py done {cid} --result \"<verdict or number + report file>\"",
+        (f"3. Close with lab_flow.py finish as the brief specifies; its criterion receipt is required." if card.get("flow") else
+         f"3. python scripts/dev/tasks.py done {cid} --result \"<verdict or number + report file>\""),
         "Blocked (data missing, rule conflict, test cannot pass): write the report with verdict BLOCKED and the exact reason,",
         "and do NOT mark the card done.",
         f"Final line: `lab: {cid} <DONE|BLOCKED> <one-line result>`.",
@@ -543,6 +548,10 @@ def judge(card_now, reports, kind, files):
     """Outcome of a run from what is in the work tree afterwards. Fail closed: only DONE and BLOCKED are shipped."""
     if out_of_scope(kind, files):
         return "OUT_OF_SCOPE"
+    if card_now.get("flow") and card_now.get("state") == "done":
+        import lab_flow
+        if not lab_flow.accepted(card_now, REPO):
+            return "BLOCKED" if reports else "INCOMPLETE"
     if card_now.get("state") == "done" and reports:
         return "DONE"
     return "BLOCKED" if reports else "INCOMPLETE"
@@ -677,6 +686,10 @@ def run_card(card, dry=False, env=os.environ, probing=False):
         bad = setting_mismatch((model, effort), hdr)
         if bad:
             note = (note + " | " if note else "") + bad
+            if card.get("flow"):
+                import lab_flow
+                now = lab_flow.reject_run(wt, cid, bad)
+                outcome = "BLOCKED" if reports else "INCOMPLETE"
         m = re.search(r"tokens used\s*\n\s*([\d,]+)", logtext)
 
         def make_row():
@@ -761,7 +774,7 @@ def cmd_run(a):
     if card.get("lane") != "CODEX" or card["state"] != "ready" or miss:
         raise SystemExit(f"codex_run: {a.card} must be a ready CODEX card: " + ("; ".join(miss) or f"lane {card.get('lane')}, state {card['state']}"))
     if not (a.dry or a.force):
-        why, _ = budget_hold(*tasks.codex_setting(card), budget(codex_home()), run_rows(codex_home()), time.time())
+        why, _ = budget_hold(*tasks.codex_setting(card), budget(codex_home()), run_rows(codex_home()), time.time(), optimization=bool(card.get("flow")))
         if why:
             raise SystemExit(f"codex_run: lab budget: {why}. Wait for the window, or pass --force (operator decision).")
     return run_card(card, a.dry)
@@ -855,6 +868,20 @@ def run_line(r):
     return f"{str(r.get('at', ''))[:16].replace('T', ' ')}Z {r.get('card')} {r.get('outcome')} ({m} / {e}, {tok}{pts}, {r.get('seconds', '?')}s)"
 
 
+def reopened(ready, rows):
+    """Ready cards a session reset (field `reopened`, UTC ISO) after their last run: that BLOCKED/failed run is dealt with."""
+    at = {}
+    for r in rows:
+        if not r.get("dry"):
+            at[r.get("card")] = r.get("at") or ""
+    return {c["id"] for c in ready if c.get("reopened") and c["reopened"] > at.get(c["id"], "")}
+
+
+def guard_hold(last_tick):
+    """The spend guard is a hold too: the scheduler's own last line says so, and that is not a stall."""
+    return "IDLE lab budget" if "IDLE lab budget" in (last_tick or "") else ""
+
+
 def needs_look(ready, tried, rows, unshipped=0, stopped="", held="", closed=(), watch=()):
     """What the lab cannot fix by itself, in plain words. [] = nothing to do. Read by the operator and by STATUS.md."""
     L = []
@@ -899,8 +926,8 @@ def status_text(ready, done, tried, rows, rl, now, last_tick="", unshipped=0, st
     if host_has_lab:
         L.append("  Last runs:")
         L += ["    " + run_line(r) for r in rows[-5:]] or ["    none"]
-        look = needs_look(ready, tried, rows, unshipped, stopped, hold(rl, now), {c['id'] for c in done},
-                          stall_findings(rows, ready, tried, lane_up, hold(rl, now), now, age))
+        look = needs_look(ready, tried, rows, unshipped, stopped, hold(rl, now), {c['id'] for c in done} | reopened(ready, rows),
+                          stall_findings(rows, ready, tried, lane_up, hold(rl, now) or guard_hold(last_tick), now, age))
         L.append("  NEEDS A LOOK: " + ("nothing" if not look else ""))
         L += [f"    - {x}" for x in look]
     return "\n".join(L)

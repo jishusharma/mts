@@ -88,9 +88,30 @@ Net R per trade at 2R, k = 2 (design / check; n in brackets):
 1. The imbalance concept people actually trade (Qriptal's F) is a **context/location** tool in his own process: level + imbalance + reaction (wick), with HTF imbalances as bias. Tested alone as a mechanical fade on Binance it has no edge after fees. That matches all earlier imbalance tests (E, D).
 2. Not tested here, and the only remaining honest routes:
    - his full three-part rule (pre-planned level + imbalance + wick reaction), which needs a level source; MTS levels exist (`lc-levels-hold`, pit-levels). Candidate: imbalance as a filter on an existing level layer, with fee-net DEV and a declared trial count. Task card `imb-filter-on-levels`.
+     **Done 2026-10-16 (`filter/RESULT.md`, DEV 2022-04..2024-06, 5,976 first-touch fades of the 8 lc KEEP families, 28 declared cells): FAIL.** A closed small-body volume-anomaly candle at the level lifts fee-net R by +0.10 R (-0.366 vs -0.467 R per trade, Holm p 0.017, same sign in both halves, k = 3: +0.14 R) but the layer is -0.06 R gross and the fee is 0.35 R at the 0.40 % width, so the best cell is still -0.32 R. The large-body veto adds nothing on this layer (+0.009 R, t 0.27).
    - more labelled candles from his Discord / Sunday streams to pin his threshold (B162 D21 feed). Until then, a detector claiming to be "his" indicator is REJECT tier.
    - a footprint-imbalance (C) check needs aggTrades, which exist only for some periods (`F:/MTS/data/binance_raw/aggTrades`).
 3. Layer status: no imbalance layer is promoted. `imb_large` (do not fade high-volume large-body candles) is offered as a veto candidate only, to be tested on an existing layer's trades, never as an entry.
+
+## 6. Audit follow-up (2026-10-16, after the DSA audit brief, the lab audit and Q79)
+
+- **Split exposure.** The main split (`dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md` section 1a): DEV before 2024-07-01, VALIDATION 2024-07-01..2025-06-30, HOLDOUT 2025-07-01..2026-09-30 (sealed, operator only). Section 4 used the Qriptal/Tom protocol instead. Its design window (2022-01..2025-08) crosses main VALIDATION and two months of main HOLDOUT, and its check window (2025-09..2026-06-25) lies inside main HOLDOUT. Fee-net returns for those windows are published in `BACKTEST.md` / `BACKTEST_k3.md`.
+  - Logged in `EXPOSURE_LEDGER.csv`.
+  - Registered as 20 FAIL rows in `research/VERDICTS.csv` (study_dir `imbalance_qriptal_2026-10-16`, split_read DEV+VALIDATION+HOLDOUT). `verdicts.py check` now blocks a re-run of the fade.
+  - Consequence: no later imbalance-candle test may call 2024-07..2026-06-25 clean out-of-sample. A PRE_REG in this family must state this.
+- **Trial count.** The filter study took Holm m = 16 before these 20 fade cells were registered. With them, m = 36. The H1 raw p of 0.0011 becomes about 0.040 at the first Holm step. The verdict does not change: FAIL rests on IMB net R > 0, which fails at -0.366 R.
+- **imb_large net R is not meaningful.** The net values (-5 to -18 R) are driven by events whose next-bar open sits next to the stop after a large body; there is no minimum-risk floor, so the fee in R explodes. Gross R is bounded in [-1, R], so the gross claim (-0.10 to -0.42 R) stands. Read gross only for that class.
+- **Q79 (touch-bar look-ahead in lc, fixed in `3b3ea9df`).**
+  - The lc HOLD rates fell 15-25 points once the side came from the previous close (for example prior_day_high 62.1 to 37.6 %). All 8 KEEP families still beat their control.
+  - The filter study already used the causal side and gave no touch-bar credit, so its numbers stand (46.2 % target, in line with the corrected HOLD rates).
+  - The LC1 control itself is still under audit (AUDIT_BRIEF lead L8, card dsa-audit-05).
+- **Lab audit `imb-filter-audit-1-map`** (Codex, `layer_lab/reports/2026-10-16_imb-filter-audit-1-map.md`):
+  - C1 PASS: the headline -0.366 / -0.467 / +0.101 R recomputes exactly from the committed CSVs.
+  - C2 and C3 BLOCKED as NOT_IN_DATA. The six scoped files have no loader manifest, previous close, touch OHLC or exit time.
+  - The criteria were rewritten to accept a documented gap (`d52132b8`), and the card is ready again. Stage 2 (challenge) waits on it.
+- **The suggested wide-stop retest is partly answered already.** The 4h fade cells here have median stops of 120-228 bp (near the 1.4 % fee-share target) and gross -0.08 to +0.02 R (n 248 at k = 2, 113 at k = 3; only the k = 3 check cell, n 22, is lower at -0.47 R). A wide stop alone does not create a gross edge.
+  - The only positive signal in this family is the +0.10 R level-plus-imbalance lift, on a layer that is -0.06 R gross.
+  - A new PRE_REG is worth writing only if a level layer first shows a gross edge at a 1.4 %+ width, DEV only, with m counted from VERDICTS.csv.
 
 ## Reproduce
 

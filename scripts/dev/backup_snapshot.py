@@ -14,9 +14,10 @@ unless --allow-origin is given.
 Usage: python scripts/dev/backup_snapshot.py [--repo DIR] [--remote backup] [--allow-origin] [--dry-run]
 """
 import nowin  # B173: no console flash from git/python children under pythonw
-nowin.install()
-import argparse
 import os
+# B190: the live task runs python.exe (Store alias, via launch-backup.vbs), not pythonw, so wanted() was False and every git child flashed.
+nowin.install(force=(os.name == "nt"))
+import argparse
 import re
 import socket
 import subprocess
