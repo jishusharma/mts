@@ -18,6 +18,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 EXTRA = [
     "scripts/dev/test_trace.py",
+    "scripts/dev/test_prereg_gate.py",
     "scripts/dev/test_research_kit_lint.py",
     "MyTradingSys/research/layer_lab/context_fix2_mde_rule/test_mde_rule.py",
     "MyTradingSys/research/layer_lab/candle_pattern_event_table/test_patterns.py",
