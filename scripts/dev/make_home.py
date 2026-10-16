@@ -5,10 +5,13 @@
 
 Operator 2026-10-16: "all my artifacts available from one place, and how to access them explained". Each row says what the page is for,
 which login owns it, where notes go and when it was last published; a box says how to open the pages from any login; a list names the
-stale copies only Jis can delete. Publish: Artifact tool, url = registry urls[home_login] of mts_home (never a second copy).
+stale copies only Jis can delete. Operator 2026-10-17: "all my questions and the decisions waiting for me available there":
+a "Waiting for you" list reads the open questions from the repo record (OPERATOR_DECISIONS.md: no answer yet; task cards: `asks`
+set, not done) and says where to answer them (the Control Room, the one place for answers, q1/q21). Publish: Artifact tool, url = registry urls[home_login] of mts_home (never a second copy).
 """
 import argparse
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -20,9 +23,40 @@ import artifacts as af  # noqa: E402
 
 OUT = af.REPO / "MyTradingSys" / "system" / "artifacts" / "mts_home.html"
 WRITE_FIRST = ("research_map", "mts_control_room", "session_planner")  # pages where Jis writes, shown first
+DECISIONS = "MyTradingSys/system/OPERATOR_DECISIONS.md"
+TASKS = "MyTradingSys/system/tasks"
+NO_ANSWER = ("", "(none yet)")
 
 
-def build(reg, now=None):
+def waiting(repo):
+    """Open questions for Jis: decisions in OPERATOR_DECISIONS.md with no answer, and task cards parked on an `asks` question."""
+    repo, out = Path(repo), []
+    dec = repo / DECISIONS
+    text = dec.read_text(encoding="utf-8") if dec.is_file() else ""
+    for sec in re.split(r"(?m)^## ", text)[1:]:
+        head, _, body = sec.partition("\n")
+        ans = re.search(r"(?m)^Answer: *(.*)$", body)
+        if (ans and ans.group(1).strip() not in NO_ANSWER) or '"answer"' in body:
+            continue
+        parts = [x.strip() for x in head.split("|")]
+        title = next((ln.strip() for ln in body.splitlines() if ln.strip()), "")
+        rec = re.search(r"(?m)^Recommended: *(.*)$", body)
+        out.append({"id": parts[0], "kind": "decision", "title": title, "recommended": rec.group(1).strip() if rec else "",
+                    "asked": parts[1].replace("asked", "").strip() if len(parts) > 1 else "",
+                    "topic": parts[2] if len(parts) > 2 else "", "explicit": "NO AUTO-APPLY" in head})
+    tdir = repo / TASKS
+    for f in sorted(tdir.glob("*.json")) if tdir.is_dir() else []:
+        try:
+            c = json.loads(f.read_text(encoding="utf-8"))
+        except ValueError:
+            continue
+        if c.get("asks") and c.get("state") not in ("done", "dropped"):
+            out.append({"id": c.get("id", f.stem), "kind": "task", "title": c["asks"], "recommended": "",
+                        "asked": str(c.get("created", ""))[:10], "topic": c.get("title", ""), "explicit": True})
+    return out
+
+
+def build(reg, now=None, repo=None):
     now = now or datetime.now(timezone.utc)
     home = reg["home_login"]
     pages, retire = [], []
@@ -46,8 +80,10 @@ def build(reg, now=None):
     owners = sorted({p["owner"] for p in pages} | {home})
     share = [{"owner": o, "titles": [p["title"] for p in pages if p["owner"] == o] + (["MTS Home"] if o == home else []),
               "invite": [a for a in reg["accounts"] if a != o]} for o in owners]
+    cr = next((pg for pg in reg["pages"] if pg["slug"] == "mts_control_room"), None)
+    answer = {"title": cr["title"], "url": cr["urls"].get(af.owner(cr), ""), "owner": af.owner(cr)} if cr else None
     return {"generated": now.strftime("%Y-%m-%d %H:%M UTC"), "home": home, "homeUrl": af.home_url(reg), "pages": pages,
-            "retire": retire, "share": share, "logins": list(reg["accounts"])}
+            "retire": retire, "share": share, "logins": list(reg["accounts"]), "waiting": waiting(repo or af.REPO), "answerAt": answer}
 
 
 TPL = r"""<title>MTS Home</title>
@@ -126,6 +162,12 @@ ol.steps li::marker{font-weight:700;color:var(--accent)}
 .ritem{display:grid;gap:2px;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:10px}
 .ritem .rt{font-weight:700}
 .ritem .rw{font-size:.92rem;color:var(--muted)}
+.wait{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--warn);border-radius:var(--r);padding:16px 20px;display:grid;gap:8px}
+.wait .wq{font-weight:700;font-size:1.05rem}
+.wait .wr{font-size:.95rem}
+.wait .wr b{font:700 .72rem var(--f-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.wmeta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.where{background:var(--warn-soft);border-radius:var(--r);padding:16px 20px;display:grid;gap:8px}
 .foot{border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:.92rem;display:grid;gap:8px}
 @media (max-width:560px){
   h1{font-size:1.7rem}
@@ -149,6 +191,12 @@ ol.steps li::marker{font-weight:700;color:var(--accent)}
     <p id="rule"></p>
     <p class="who" id="who"></p>
   </div>
+
+  <section aria-labelledby="h-wait">
+    <h2 id="h-wait">Waiting for you</h2>
+    <div class="where" id="where"></div>
+    <div class="list" id="wait"></div>
+  </section>
 
   <section aria-labelledby="h-pages">
     <h2 id="h-pages">Your pages</h2>
@@ -226,6 +274,16 @@ $("retire").innerHTML = Object.keys(byLogin).length ? Object.entries(byLogin).ma
   <div class="rgroup"><h3>On ${esc(l)} <span class="pill old">${rows.length} to delete</span></h3>
   ${rows.map(r => `<div class="ritem"><a class="rt" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a><span class="rw">${esc(r.why)}</span><span class="url">${esc(r.url)}</span></div>`).join("")}</div>`).join("")
   : `<p class="sub">Nothing to delete.</p>`;
+const A = DATA.answerAt;
+$("where").innerHTML = (A ? `<p><b>Answer in the ${esc(A.title)}</b>: <a href="${esc(A.url)}" target="_blank" rel="noopener">${esc(A.url)}</a>, Decisions tab (pick an option, add a note). It is owned by <b>${esc(A.owner)}</b>: it opens on that login, or on another login once ${esc(A.owner)} has shared it with edit access. It is the one place answers are stored.</p>` : "")
+  + `<p class="sub">Cannot open it on the login you are on? Tell any Claude session the id and your answer (for example "${esc((DATA.waiting[0] || {id: "q-id"}).id)}: yes"); it writes your words to the repo record, and the next Control Room pickup applies them.</p>`
+  + `<p class="sub">This list is the repo record at build time (${esc(DATA.generated)}). An answer you gave on the page in the last hours shows here until a pickup copies it in.</p>`;
+$("wait").innerHTML = DATA.waiting.length ? DATA.waiting.map(w => `
+  <article class="wait">
+    <div class="wmeta"><span class="pill">${esc(w.id)}</span>${w.topic ? `<span class="pill">${esc(w.topic)}</span>` : ""}${w.explicit ? `<span class="pill old">Needs your answer, no default</span>` : ""}<span class="url">asked ${esc(w.asked)}</span></div>
+    <p class="wq">${esc(w.title)}</p>
+    ${w.recommended ? `<p class="wr"><b>Recommended</b>${esc(w.recommended)}</p>` : ""}
+  </article>`).join("") : `<p class="sub">Nothing is waiting for you.</p>`;
 $("who").textContent = "";
 (async () => {
   try {
@@ -251,7 +309,7 @@ def main(argv=None):
     data = build(af.load())
     out = Path(a.out)
     out.write_text(render(data), encoding="utf-8", newline="\n")
-    print(f"wrote {out} ({len(data['pages'])} pages, {len(data['retire'])} old copies to delete)")
+    print(f"wrote {out} ({len(data['pages'])} pages, {len(data['waiting'])} questions waiting, {len(data['retire'])} old copies to delete)")
     return 0
 
 

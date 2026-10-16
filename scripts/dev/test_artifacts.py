@@ -133,6 +133,27 @@ class Home(unittest.TestCase):
         self.assertIn("<title>MTS Home</title>", html)
         self.assertNotIn("</script><", html.split("const DATA = ")[1].split(";\n")[0])
 
+    def test_hub_lists_open_questions_and_where_to_answer(self):
+        """Operator 2026-10-17: every question waiting for Jis on MTS Home, with the place to answer it."""
+        import tempfile
+        import make_home as mh
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "MyTradingSys/system/tasks").mkdir(parents=True)
+            (root / mh.DECISIONS).write_text(
+                "# OPERATOR DECISIONS\n\n"
+                "## q-open | asked 2026-10-15 | Process | NO AUTO-APPLY\n\nRetire old tasks?\n\nRecommended: Yes\nAnswer: (none yet)\n\n"
+                "## q-done | asked 2026-10-13 | Process\n\nDone one?\n\nRecommended: Yes\nAnswer: Yes\n\n"
+                "## q-json | asked 2026-10-16 | Research\n\nOnly json?\n\n```json\n{\"answer\": \"No\"}\n```\n", encoding="utf-8")
+            (root / mh.TASKS / "c1.json").write_text('{"id": "c1", "state": "raw", "asks": "May the monitor clear it?", "title": "Halt"}', encoding="utf-8")
+            (root / mh.TASKS / "c2.json").write_text('{"id": "c2", "state": "done", "asks": "Old?", "title": "x"}', encoding="utf-8")
+            d = mh.build(self.reg, repo=root)
+        self.assertEqual([w["id"] for w in d["waiting"]], ["q-open", "c1"])
+        self.assertEqual(d["waiting"][0]["title"], "Retire old tasks?")
+        self.assertTrue(d["waiting"][0]["explicit"])
+        self.assertEqual(d["answerAt"]["owner"], "jishu.sharma")
+        self.assertIn("Waiting for you", mh.render(d))
+
 
 if __name__ == "__main__":
     unittest.main()
