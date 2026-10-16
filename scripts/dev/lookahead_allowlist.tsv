@@ -152,3 +152,4 @@ MyTradingSys/research/volume_2026-10-09/vstats.py	fwd-index	sa, sb = (psa[starts
 MyTradingSys/research/volume_2026-10-09/vstats.py	fwd-index	sf = (ps[starts + block] - ps[starts]).sum(axis=1)	pre-existing, unreviewed
 MyTradingSys/research/vpin_dayclustered_2026-10-10.py	fwd-index	if i+h < len(bt): o[n] = abs(ca[bt[i+h]]-c0)/c0*100	pre-existing, unreviewed
 MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py	fwd-index	r4 = [(closes[i + 4] / closes[i] - 1) * 100 for i in range(len(closes) - 4)]	pre-existing, unreviewed
+MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py	fwd-index	near = w2.iloc[max(0, j - 1): j + 2]	reviewed 2026-10-16: negative-label check reads the low bar +-1; every bar in w2 closed before the video publish time, no trade decision uses it
