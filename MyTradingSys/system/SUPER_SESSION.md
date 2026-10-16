@@ -97,6 +97,7 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 - Bash tool: a `cd` persists between calls and some `cd x && git ...` chains are denied; use `git -C <dir>` and absolute paths.
 
 ## Session log (newest first; one line each, last 5)
+- 2026-10-16 busters-b4 (JIS-NB, Sonnet): B4 `sync.py ship --release <slug>` shipped + B9-B12 added to TRAFFIC_BUSTERS.md. `traffic_report.py 24`: 890 commits, merge 40%, claim 14%, release 14%, overhead 68% (still the pre-B1 baseline: the 24 h window is mostly before B1); rerun on 2026-10-17.
 - 2026-10-16 autopilot-3 (JIS-NB, Sonnet coordinator, 00:10Z-06:30Z, Agent workers, started by local_1c4041fd): CI red 4 h -> green
   02:04Z, 4b/4f gate races fixed, live deployed to 32077514 at 06:01:49Z after two load timeouts and a STOP_DIRTY; imb filter FAIL,
   context composite INCONCLUSIVE, pit audit FIX-FIRST. Weekly 48 -> 55 %. Learned: heavy workers during a deploy gate cost two

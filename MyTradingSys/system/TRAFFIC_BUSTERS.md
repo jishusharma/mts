@@ -13,15 +13,21 @@ Cause: every claim and every release ran a full `ship()` (fetch, merge commit wh
 | B1 | `sync.py claim` / `release` push ONE plumbing commit on origin's tip (`push_claim_commit`): no merge commit, no gate, works from a dirty or ahead tree, and no longer ships the tree's unrelated unshipped commits as a side effect. Re-checks area overlap on every push retry. Test: `test_claim_and_release_make_no_merge_commit_and_ship_nothing_else` (fails on the old code). | DONE 2026-10-16 |
 | B2 | Skip claim + release when the task writes only NEW files under its own dated folder (a report, a lab run): nothing to collide on. Claim when the area can overlap another session's (shared code, NEXT_SESSION.md, registries). | POLICY, in force |
 | B3 | One ship per task: commit small, but run `sync.py ship` once at the end (each ship adds a merge commit while origin moves). Mid-task ships only for a hand-off the next session needs. | POLICY, in force |
-| B4 | `release` rides the last ship: `sync.py ship --release <slug>` (saves one push and one fetch per task). | CARD: not built |
+| B4 | `release` rides the last ship: `sync.py ship --release <slug>` deletes the claim file in a commit on the branch, so it goes out in the same push as the work (one push and one fetch less per task; nothing to ship falls back to the B1 plumbing release). Tests: `test_ship_release_drops_the_claim_in_the_same_push_as_the_work`, `test_ship_release_with_nothing_to_ship_still_releases` (fail on the old code: no `release_slug`). Est. saving: 1 of ~3 pushes per claimed task (OURS). | DONE 2026-10-16 |
 | B5 | Read less at boot: STATUS.md head only (first 40 lines), tail files with `-n`/offset, one `Grep` instead of reading a file to find a line. | POLICY |
 | B6 | Run a test file, not the suite, while iterating (`pytest path -k name`); the full gate runs once in `ship`, CI repeats it. | POLICY |
 | B7 | Never poll: one background shell per wait (`run_in_background`), results come back as a notification. | POLICY (CLAUDE.md) |
 | B8 | Mechanical work (renames, table rewrites, report counting) goes to a script in T0, not to model turns. | POLICY |
+| B9 | CI: keep `paths` filter on the workflow and `cancel-in-progress` on non-trunk refs (already in ci.yml); add job-level change detection (dorny/paths-filter) only if a docs-only push still starts the heavy job. Est. saving: the Maven/backtest job on docs pushes, unmeasured (SOURCED: dorny/paths-filter README, path filters apply per workflow, not per job). | CHECK ci.yml |
+| B10 | `git config pull.ff only` / `merge --ff-only` where a tree only follows trunk (live mirror pulls, relay lanes): a diverged pull fails loudly instead of making a merge commit. Est. saving: part of the 40% merge share (SOURCED: git docs `pull.ff`; Git merge-commit churn threads). | POLICY |
+| B11 | Keep the context prefix stable: CLAUDE.md short and edited rarely, MCP tools deferred, `/compact` before auto-compact. Cached input costs ~0.1x, a cache write ~1.25x, so an edit to the prefix mid-day re-bills the whole session. Est. saving: large on long sessions, unmeasured (SOURCED: Anthropic prompt caching docs as relayed by yudiz/kdnuggets posts; vendor figures of 60-90% not trusted). | POLICY |
+| B12 | Boot in one message: the independent boot reads (sync start, STATUS head, claims) go out as parallel tool calls, not one turn each. Est. saving: 3-4 turns per session (OURS). | POLICY |
+
+Searched, no usable source found: batching tool calls (no solid source), shallow / partial fetch (not covered by results; our repo fetch is small, untested).
 
 ## How to claim a result
 Rerun `traffic_report.py 24` a day after a buster ships; write the overhead % in the Session log line of SUPER_SESSION.md.
-Target after B1: claim + release near 0% of commits (merge share falls with them). B4 would save one more push per task.
+Target after B1: claim + release near 0% of commits (merge share falls with them). B4 (shipped) saves one more push per task.
 
 ## NUC (JIS-NUC) and other hosts
 Nothing to install: the change is in `scripts/dev/sync.py`, and every host gets it with its next `sync.py start` (git is the channel, PARALLEL.md).
