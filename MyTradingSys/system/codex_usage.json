@@ -1,17 +1,17 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1792677805,
+  "week_resets": 1792677804,
   "week_used": 24.0,
-  "window_resets": 1792157428,
-  "window_used": 4.0
+  "window_resets": 1792177228,
+  "window_used": 0
  },
- "at": "2026-10-16T10:32:31Z",
+ "at": "2026-10-16T14:04:53Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
-  "runs_per_window": 4,
-  "week_pts": 35,
+  "runs_per_window": 10,
+  "week_pts": 60,
   "window_pts": 50,
   "window_reserve": 10
  },
@@ -19,10 +19,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 19.0,
-  "window_pts": 4.0,
-  "window_runs": 4
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-10-16T14:00:11Z",
+   "card": "gptb-bigtrade-event-table",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 274,
+   "tokens_out": 9950,
+   "tokens_total": 1124460,
+   "tokens_uncached": 47886,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-16T10:30:13Z",
    "card": "imb-filter-audit-1-map",
@@ -157,21 +172,6 @@
    "tokens_uncached": 75551,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-16T04:00:02Z",
-   "card": "gpt-verdict-registry-audit",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "INCOMPLETE",
-   "seconds": 26,
-   "tokens_out": 1435,
-   "tokens_total": 249793,
-   "tokens_uncached": 57382,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
