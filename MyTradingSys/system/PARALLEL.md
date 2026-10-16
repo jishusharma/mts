@@ -18,6 +18,9 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
   shows what is unshipped) and never runs in the live tree. The previous task's branch is deleted once it is fully on origin/fast-track.
 - `sync.py start [slug]` elsewhere: in a tree that is dirty or ahead of origin it does NOT work there; it makes
   `../mts-<host>-<slug>` off origin/fast-track and prints `WORKTREE: <path>`; work only there. `--here` opts out.
+- `sync.py start <slug>` also prints trunk study folders (`research/`, `research/layer_lab/`) and task cards whose names hold
+  every slug word: same task already done = read it and compare, never rebuild or overwrite (2026-10-16: one prompt ran on two
+  machines; the second session, in an app worktree that skipped `sync.py start`, found the first one's folder only at ship time).
 - `ship`: a collision confined to NEXT_SESSION.md, STATUS.md or BUILD_REPORT.md resolves to origin's text and says so
   (re-apply your edit if it mattered); a collision anywhere else still stops for a human.
 - Lists that every session appends to (run_all_tests.py test lists) are one entry per line; a test enforces it.

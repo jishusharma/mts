@@ -76,3 +76,42 @@ if the full context is worth at least about 0.35 R per trade (operator decision 
 Card `context-composite-dev-read` (lane SONNET, READY): one outcome read of the composite under PRE_REG.md, then
 `verdicts.py add`. If D3 is accepted, add a HAIKU card for the 2019-2021 data first. Every per-factor question waits for
 that data.
+
+## 6. After the run and the second engine (2026-10-17, session context-compare-close)
+
+What happened since: the card ran (RESULT.md: INCONCLUSIVE, 241 of 1,010 C events matched, 164 days < 387); a V2 PRE_REG
+widened the control pool (974 events / 452 days); an independent audit said FIX-FIRST (stop comparability, realised-MDE
+rule); D3 added DEV_EXT 2020-2021. The same prompt also ran on Fable 5.1 (`research/context_factors_pit_2026-10-16/`,
+COMPARISON.md there). I checked its Opus-side numbers against this folder (1,010 / 456, 241 / 164, -0.137 R,
+974 / 452, 63 vetoed per side); they match. Its Fable-side counts (e.g. 4 of 14 cells powered) were not recounted here.
+
+**What both engines agree on (robust):** the context rebuilds point in time; "at a level" alone selects nothing (90 % /
+94.5 % of hours); no single factor is testable on DEV in day units; candle patterns at a level are rare; the
+eur_low_us_sweep HOLDOUT read is real.
+
+**What depends on the definition:** band-walk veto (2 % of my events, 26 % of Fable short episodes), the phase object
+(weekly SMA slope vs daily pivots), the ladder width (1 x ATR(D) vs 2.5 % of price). One correction to COMPARISON.md s.3:
+its "D in 86-87 % (Opus) vs 59 % (Fable)" compares ledger events with all grid rows; on comparable rows my D share is
+82-83 % for C and 87-88 % for the at-level pool (fix-1 draft counts), so the gap is smaller than that line suggests.
+
+**The composite cannot get a decisive DEV verdict (counts only, `counts_v3.py`):**
+
+| design | matched events / days | median stop C vs controls (long, short) | reachable verdicts |
+|---|---|---|---|
+| V2 pool (as frozen) | 974 / 452 (reproduced) | 2.086 vs 1.560 %, 2.165 vs 1.670 % (gap 25.2 %, 22.9 %) | INCONCLUSIVE only: PASS needs mean net_R of C > 0 (V1 printed -0.137 R on the same trades); FAIL is forbidden by the >25 % stop-gap rule |
+| V2 pool + stop caliper (control stop within 1/1.25 .. 1.25 x the C stop, OURS) | 241 / 165 | 1.561 vs 1.487 %, 1.759 vs 1.645 % (4.7 %, 6.5 %) | INCONCLUSIVE only: 165 < 393 days |
+
+With DEV_EXT the caliper design would reach about 310 days (estimate at the same rate, not counted), still under 393.
+So card `context-composite-v2-dev-read` is on hold (OPERATOR_DECISIONS D8); D1-D5 are logged as D7. The descriptive
+fact stays: the whole composite averaged -0.137 R per trade all-taker on DEV (1,010 trades), so nothing here argues for
+more composite work.
+
+**What changes going forward:**
+1. `sync.py start <slug>` now prints the trunk's study folders and task cards whose names hold every slug word, so a
+   second session on the same task sees the first one at boot, not at ship time (test_sync.py).
+2. Every PRE_REG counts power in UTC days with Holm (D4, logged); a factor that the two engines define differently gets a
+   cross-engine agreement count before any verdict (Fable card `context-factors-one-run`, step 1).
+3. A PRE_REG must check that the verdict it can reach is not fixed in advance (PASS blocked by an already-read gate, FAIL
+   blocked by a comparability rule) before a card is spent on it.
+4. Next context work is the Fable chain (Q87 audit, then Q88 one run, 4 of 14 cells powered); this folder's composite
+   chain is closed on DEV.

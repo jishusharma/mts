@@ -743,6 +743,10 @@
       "disp": "REPRO",
       "why": "Counts only (PRE_REG_V2 s.2): matched C events/days under the wider control pool; no outcome column; run by hand."
     },
+    "MyTradingSys/research/context_factors_2026-10-16/counts_v3.py": {
+      "disp": "REPRO",
+      "why": "Counts only (REPORT.md s.6, D8): V2 pool vs stop-width-caliper matching, matched days and stop medians; no outcome column; run by hand."
+    },
     "MyTradingSys/research/context_factors_2026-10-16/dev_ext.py": {
       "disp": "REPRO",
       "why": "DEV_EXT loader (2020-2021 BTCUSDT perp 1m, DEV-stage only, flag off by default); read by count_ext.py and any later per-factor DEV study; test_dev_ext.py."

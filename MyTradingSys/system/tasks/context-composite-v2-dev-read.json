@@ -10,7 +10,8 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "PRE_REG_V2.md s.3: the mean-net_R-of-C gate already failed in V1 (-0.137 R), so PASS is unreachable; expect FAIL or INCONCLUSIVE. Operator D1 (0.375 R) unchanged.",
+  "note": "On hold (D8-context-composite-hold, 2026-10-17): with the audit's two fixes no verdict but INCONCLUSIVE is reachable. PASS: C mean net_R already -0.137 R in V1. FAIL: control stops 23-25 % narrower; stop-matched controls leave 165 days < 393 (counts_v3.py).",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -42,7 +43,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Read PRE_REG_V2.md in full; check git log shows it committed before any outcome file; record the sha of context_asof.py (must be efa3513f...) and of PRE_REG_V2.md.",
     "Run counts_v2.py (counts only): C 554/254 long, 456/202 short, matched with the s.1 pool 546/254 long, 428/198 short, pooled 974/452; any mismatch = BLOCKED.md. Commit this before any outcome code.",

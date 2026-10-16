@@ -306,6 +306,26 @@ def new_worktree(repo, slug=None):
     return path
 
 
+PRIOR_DIRS = ("MyTradingSys/research", "MyTradingSys/research/layer_lab", "MyTradingSys/system/tasks")
+PRIOR_STOP = {"the", "and", "for", "run", "fix", "new", "dev"}
+
+
+def prior_work(repo, slug, ref=f"origin/{TRUNK}"):
+    """Study folders and task cards on the trunk whose name holds every word of the slug (2026-10-16: the same prompt ran
+    twice and the second session found the first one's folder only at ship time). Names only; [] when nothing matches."""
+    words = [w for w in re.split(r"[-_\s]+", (slug or "").lower()) if len(w) >= 3 and w not in PRIOR_STOP]
+    if not words:
+        return []
+    hits = []
+    for d in PRIOR_DIRS:
+        r = git(repo, "ls-tree", "--full-tree", "--name-only", f"{ref}:{d}", check=False)  # --full-tree: same answer from a subdir
+        for name in (r.stdout or "").split():
+            parts = set(re.split(r"[-_.\s]+", name.lower()))
+            if all(w in parts for w in words):
+                hits.append(f"{d}/{name}")
+    return hits
+
+
 def start(repo, slug=None, here=False):
     """Bring a tree up to date. Returns the tree the session must work in: `repo` when it is clean, else a
     fresh worktree off origin/fast-track (printed as `WORKTREE: <path>`); never touches the other files."""
@@ -325,6 +345,11 @@ def start(repo, slug=None, here=False):
     branch = git(repo, "branch", "--show-current").stdout.strip() or "(detached)"
     print(f"host={socket.gethostname()} branch={branch} pulled={n} head={git(repo, 'rev-parse', '--short', 'HEAD').stdout.strip()}")
     print_claims(repo)
+    prior = prior_work(repo, slug)
+    if prior:
+        print(f"prior work on {TRUNK} matching '{slug}' (read it before building; same task twice = compare, never overwrite):")
+        for p in prior[:12]:
+            print(f"  {p}")
     pull_mirror(repo)
     return repo
 

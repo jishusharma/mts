@@ -294,6 +294,21 @@ class SyncTest(unittest.TestCase):
         self.assertTrue((self.b / "a.py").exists())
 
 
+    def test_start_names_prior_work_on_the_trunk_for_the_slug(self):
+        # 2026-10-16: the same prompt ran twice; the second session saw the first one's folder only at ship time.
+        d = self.a / "MyTradingSys" / "research" / "context_factors_2026-10-16"
+        d.mkdir(parents=True)
+        commit(self.a, "MyTradingSys/research/context_factors_2026-10-16/REPORT.md", "r\n")
+        sync.ship(self.a, gate=self.gate)
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            sync.start(self.b, slug="context-factors")
+        self.assertIn("prior work on fast-track matching 'context-factors'", buf.getvalue())
+        self.assertIn("MyTradingSys/research/context_factors_2026-10-16", buf.getvalue())
+        self.assertEqual(sync.prior_work(self.b, "context-null"), [])      # every slug word must match
+        self.assertEqual(sync.prior_work(self.b, "factors"), ["MyTradingSys/research/context_factors_2026-10-16"])
+        self.assertEqual(sync.prior_work(self.b, "fix"), [])               # stop words alone never match
+
     # ---- per-session tree, hot files, health (parallel-health task) ----
     def test_start_in_dirty_shared_tree_makes_fresh_worktree(self):
         (self.a / "README.md").write_text("another session's half-done edit\n", newline="\n")
