@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1792677804,
+  "week_resets": 1792677805,
   "week_used": 23.0,
   "window_resets": 1792157428,
   "window_used": 1.0
  },
- "at": "2026-10-16T09:32:27Z",
+ "at": "2026-10-16T10:03:18Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 18.0,
   "window_pts": 1.0,
-  "window_runs": 2
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-10-16T10:00:07Z",
+   "card": "gpt-verdict-registry-audit-b",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 173,
+   "tokens_out": 13061,
+   "tokens_total": 1058954,
+   "tokens_uncached": 70917,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-16T09:30:12Z",
    "card": "gpt-verdict-registry-audit-a",
@@ -155,21 +170,6 @@
    "tokens_out": 2619,
    "tokens_total": 195834,
    "tokens_uncached": 50239,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T03:00:09Z",
-   "card": "gpt-fable-economics-recheck",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "INCOMPLETE",
-   "seconds": 46,
-   "tokens_out": 3085,
-   "tokens_total": 427226,
-   "tokens_uncached": 49357,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
