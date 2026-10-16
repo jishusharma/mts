@@ -56,6 +56,11 @@ issue and launch a new flow id against the new evidence; no automatic repair/ret
 PASS accepts that stage's stated deliverable; it is not a trading recommendation or proof of profitability.
 Criterion lines are model attestations backed by the report, not a machine proof of their truth.
 
+The gate also enforces four integrity checks: nonempty `commands` and `tests` are part of the launch
+contract; every stage after the first must depend on exactly the preceding card; a report cannot be reused
+by another flow receipt and must include a line naming its card id; and each criterion must have a
+`path:line` reference or fenced command as report evidence, in addition to its status line.
+
 ## Economy and operations
 
 Use deterministic checks first; launch multiple lenses only when the independent check can affect a
