@@ -16,7 +16,7 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "Zero-judgement contract: PRE_REG.md section 0. If a number is missing the card is BLOCKED, nothing is chosen. The kill scope on FAIL_T is this family only (FAB-4 / TOM-12 as encoded). Data: F:/MTS/data/tom_raw/klines/BTCUSDT-1m-2022-01..2024-06 (30 files, all present on JIS-NB per COUNT.txt). Reuse count_prior_va.py's loader and event logic for run_prereg.py (import it; do not copy). Expected runtime: count about 90 s, outcomes under 5 min.",
+  "note": "HOLD 2026-10-16 audit FIX-FIRST (4): research/pit_levels_2026-10-16/AUDIT_BEFORE_RUN.md. Do not run. Needs PRE_REG_V2.md first: T-minus-C paired difference in PASS_T; MDE on days at the Holm z (m=39); plausible <=0.3 R; card step verdicts.py backfill. Then set ready.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "fable pit-levels session 2026-10-16",
@@ -41,7 +41,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "refined",
   "steps": [
     "sync.py start pit-prereg-run; claim this card; read PRE_REG.md sections 0-8 and PIT_CONTRACT.md D-LEVELS, D-SESSION, D-STOPFLOOR",
     "run count_prior_va.py into COUNT.txt; commit it alone (message: 'pit-prereg count only') before writing any outcome code",
