@@ -4,9 +4,9 @@
   "week_resets": 1792677805,
   "week_used": 24.0,
   "window_resets": 1792195230,
-  "window_used": 0
+  "window_used": 1.0
  },
- "at": "2026-10-16T19:31:38Z",
+ "at": "2026-10-16T20:00:55Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 19.0,
-  "window_pts": 0.0,
-  "window_runs": 1
+  "window_pts": 1.0,
+  "window_runs": 2
  },
  "runs": [
+  {
+   "at": "2026-10-16T20:00:03Z",
+   "card": "gptb-dev-split-guard",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 46,
+   "tokens_out": 4240,
+   "tokens_total": 192998,
+   "tokens_uncached": 27862,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-16T19:30:12Z",
    "card": "gptb-volume-event-table",
@@ -155,21 +170,6 @@
    "tokens_out": 3505,
    "tokens_total": 459405,
    "tokens_uncached": 45276,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T15:30:02Z",
-   "card": "gptb-oi-delta-event-table",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": " Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n======================================================================\nFAILED: 3 st",
-   "outcome": "SHIP_FAILED",
-   "seconds": 98,
-   "tokens_out": 8571,
-   "tokens_total": 1052585,
-   "tokens_uncached": 80558,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
