@@ -138,5 +138,22 @@ class TestH5(unittest.TestCase):
         self.assertIn('25089.75', r['F12']['note'])
 
 
+class TestH6(unittest.TestCase):
+    ROOT = Path(__file__).resolve().parents[3]
+
+    def test_ledger_labels_secondary_source(self):
+        md = MD.read_text(encoding='utf-8')
+        self.assertIn('SECONDARY_NOT_SOURCED', md)
+        self.assertNotIn('His stated settings', md)
+        self.assertIn('Audit correction H6', md)
+
+    def test_citing_docs_do_not_call_it_his_own(self):
+        cat = (self.ROOT / 'MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md').read_text(encoding='utf-8')
+        self.assertNotIn('FL:50 already holds the gLHd slide', cat)
+        self.assertIn('SECONDARY_NOT_SOURCED, H6', cat)
+        spec = (self.ROOT / 'MyTradingSys/research/layer_readiness_2026-10-16/BIGTRADE_SPEC.md').read_text(encoding='utf-8')
+        self.assertIn('gLHd "30 to 40 on NQ" slide is secondary', spec)
+
+
 if __name__ == '__main__':
     unittest.main()

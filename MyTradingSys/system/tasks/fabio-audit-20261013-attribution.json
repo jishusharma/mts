@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T22:21:39Z",
   "commands": [],
   "created": "2026-10-13T05:09:08Z",
   "depends_on": [],
@@ -20,7 +21,7 @@
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md"
   ],
-  "result": "",
+  "result": "H6: gLHd20jE8UQ ES 50 / NQ 30-40 / aggregation labelled SECONDARY_NOT_SOURCED in the ledger, SETUP_CATALOG.md and BIGTRADE_SPEC.md; Fabio's own words found in-repo: DyS79Eb92Ug_raw.txt:681-683 NQ 30 contracts, London 20 (speaker inferred from turn order). UNRESOLVED: no Fabio quote for ES 50 or aggregation mode",
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
@@ -38,7 +39,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md H6 row (gLHd20jE8UQ_03 t420)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep repo for ES 50 / NQ 30-40 / size filter citations",
     "edit the MD line and any doc that treats it as Fabio own",

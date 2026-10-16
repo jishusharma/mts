@@ -263,7 +263,7 @@ and in DyS79Eb92Ug (added 2026-10-16) he states day-level limits in dollars, a d
 > "My rule was three losing trades to stop is exactly what we did here"
 **Source GPS: DyS79Eb92Ug | MIDDLE** (DyS79Eb92Ug_raw.txt:2013-2015, [1:19:13])
 
-**Big-trade filter (F-2b, SOURCED, NQ).** The size of a "big trade" bubble is his own number, not OURS (FL:50 already holds the gLHd slide "30 to 40 on NQ"). The BTC equivalent stays OURS (the 99th-percentile rule of V3):
+**Big-trade filter (F-2b, SOURCED, NQ).** The size of a "big trade" bubble is his own number, not OURS (the gLHd slide "30 to 40 on NQ" is a different presenter's slide about Fabio: SECONDARY_NOT_SOURCED, H6; the SOURCED words are the quote below, 30 contracts, London 20). The BTC equivalent stays OURS (the 99th-percentile rule of V3):
 
 > "What was the minimum contract? >> Always the same. It's 30 contracts. >> If you are in London, I use 20."
 **Source GPS: DyS79Eb92Ug | BEGIN** (DyS79Eb92Ug_raw.txt:682-684, [27:14])
@@ -1560,7 +1560,7 @@ Status 2026-10-16 (Fable audit section 3): `G0CiJcuXCRs` -> TOM-17; `3o1VVsfBmmU
 | fZlNGWvd2Ko | V1 + LBL (read line by line) | done |
 | o-w5Gxss6T0 | extract exists, no raw transcript | FAB-4, FAB-8, FR-16..20, FR-93..96: needs the transcript |
 | 9IliXww64uM, DyS79Eb92Ug | canonical transcripts since P2 (2026-10-16), used in FAB-4, FAB-5, FAB-1 and section 2.2 | done for the quoted passages; the rest of DyS79 (2.4 h) is not line-by-line read |
-| Jpd96fLqr5M, gLHd20jE8UQ | frames read, no captions on disk | the big-trade size slide "30 to 40 on NQ" (gLHd, FL:50) |
+| Jpd96fLqr5M, gLHd20jE8UQ | frames read, no captions on disk | the big-trade size slide "30 to 40 on NQ" (gLHd, FL:50; secondary presenter, not Fabio's own words, H6) |
 | 9I5vTvwsMBk | not downloaded (f398 not available, FL:48) | unknown live session |
 | Is1HvdfQm5c | ASR transcript (faster-whisper small.en, 2026-10-16, raw_transcripts_canonical) read in full, V2 extract extracts/v2/fabio/Is1HvdfQm5c_v2.md (333 rows, 9 blocks: 0 confirmed live fills with stated entry and stop; mostly illustration and viewer Q&A) | done; numbers are ASR numbers, frames are the arbiter |
 | xUyqIjCfZzg | 3.8 h; unread (FL:57); ASR transcription started 2026-10-16 (resumable job, see research/fabio_asr_2026-10-16/ASR_RUN.md); two speakers (Fabio and Carmine Rosato) | live session: more FAB-2/FAB-5 trades |
