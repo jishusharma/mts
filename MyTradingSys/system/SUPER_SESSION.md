@@ -67,6 +67,9 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 - Research Map: read the artifact first (`Artifact read`), edit DATA in the saved copy with a script (json load/dump of the
   one `const DATA = ` line), write it to `system/artifacts/research_map.html`, republish with `url`. Another session may have
   edited it since (commit 338e365b did): read the current version, never the old saved copy.
+  The Tom/Fabio story and per-setup requests live in the map tab "Setups & story" (DATA.story, source SETUP_CATALOG.md); a
+  request there has kind question|task|backtest and a `setupId` (catalogue id); there is no second request store. Backtest =
+  fee check at the stated stop first (fee R = 0.14% / stop%), then PRE_REG on DEV only. Fabio home-market chain stays paused.
 - CI: `gh run list -R jishusharma/mts --branch fast-track --limit 5` on EVERY wake and after every ship wave (CI sat red 2 h
   unnoticed on 10-16 while a coordinator wrote prompts). New research test files must be registered in run_all_tests /
   run_extra_tests.EXTRA or skipped with a reason (B150, gate step 3gd); study scripts need a `wiring_registry.json` entry.
