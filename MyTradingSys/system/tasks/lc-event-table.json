@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T19:39:25Z",
   "commands": [],
   "created": "2026-10-13T18:51:53Z",
   "depends_on": [
@@ -19,7 +20,7 @@
   "refine_tries": 0,
   "refined_by": "opus-2026-10-14 (LC PLAN.md, operator chat)",
   "refs": [],
-  "result": "",
+  "result": "1278 first touches; MyTradingSys/research/levels_confluence_2026-10-14/event_table.csv",
   "scope_in": [
     "MyTradingSys/research/levels_confluence_2026-10-14/event_table.py",
     "MyTradingSys/research/levels_confluence_2026-10-14/test_event_table.py",
@@ -38,7 +39,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 10-15 (BTC minimum stop width)",
     "MyTradingSys/backtest/layers/FORMULAS.md (RSI, value area, Bollinger)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Bias arms B1 value-area side, B2 swing structure, B3 close vs EMA20 on 1h, 4h, 6h, 12h, 1D (closed bars only).",
     "Entry features E1 RSI(14) holding 40/60 (layers/rsi/malkan_40_60.py), E2 RSI vs its MA (rsi_ma.py), E3 5m CVD slope sign (kline proxy; footprint where it exists, both columns), E4 Bollinger(20,2) position.",
