@@ -100,6 +100,7 @@ OURS (fixed in PRE_REG.md before the run): k 2 (3 sensitivity), body 0.30 / 0.70
 - The flag is common (SMALL k2 on 54.7 % of touches, 45 % of touches via a 1h candle alone), because a 7-day window of 1h candles puts many midpoints within 0.25 % of a level. Part of the contrast is therefore "busy price area vs quiet" rather than Qriptal's single marked imbalance; the k = 3 and 4h/12h/1d rows are closer to his use and show the same sign.
   Volume anomalies cluster in active periods; the halves and the shape-only control do not remove that confound. No regime control was pre-registered.
 - Touch fill at the level is the lc assumption and the optimistic one; stops are filled stop-first. Cost uses 0.14 % round trip; at a 0.40 % width that is 0.35 R, so the result is about the layer's width as much as the filter.
+- PRE_REG section 6 guessed about 20 touches per day; the count was 7.3 per day (5,976 on 818 days: levels per day are fewer after the KEEP filter and the price dedup, and only the first touch counts). No gate depended on that guess.
 - Overlapping trades of one day are separate observations; every SE and t is day-clustered (818 days). Day-clustering treats days as independent, and 2022-2024 BTC regimes were not.
 - The third part of his rule (a wick reaction before entry) is NOT tested: here the entry is at the touch and the reaction is the outcome. A wick-confirmation entry, imbalance mid/open as the level source, other exchanges (he reads Coinbase and Bybit separately) and his undisclosed threshold remain untested.
 
