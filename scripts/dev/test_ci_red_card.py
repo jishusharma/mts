@@ -1,11 +1,13 @@
 """ci_red_card: red CI on fast-track -> one pinned fix card naming the first failing commit; none when green; never twice."""
 import json
+import re
 import shutil
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 
+CI_YML = Path(__file__).resolve().parents[2] / ".github" / "workflows" / "ci.yml"
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ci_red_card as crc
 import tasks
@@ -54,6 +56,35 @@ class RedCard(unittest.TestCase):
         self.assertFalse((self.tmp / tasks.DIR).exists())
         crc.fetch_runs = lambda repo, limit=30: None
         self.assertEqual(crc.run(self.tmp, True)[0], "UNKNOWN")
+
+
+def cancel_in_progress(ref):
+    """Evaluate the cancel-in-progress line of ci.yml's top-level concurrency block for a ref (a true/false literal or one github.ref comparison)."""
+    text = CI_YML.read_text(encoding="utf-8")
+    block = re.search(r"^concurrency:\n((?:[ \t]+.*\n)+)", text, re.M).group(1)
+    val = re.search(r"^\s+cancel-in-progress:\s*(.+?)\s*$", block, re.M).group(1)
+    if val in ("true", "false"):
+        return val == "true"
+    m = re.fullmatch(r"\$\{\{\s*github\.ref\s*(==|!=)\s*'([^']+)'\s*\}\}", val)
+    assert m, f"cancel-in-progress is not a literal or a github.ref comparison: {val}"
+    return (ref == m.group(2)) == (m.group(1) == "==")
+
+
+class CiConcurrency(unittest.TestCase):
+    """fast-track gets a merge every few minutes and a run takes ~6 min: cancelling the running push job starved mark-green
+    (runs 38825243976 and 38824936295 were cancelled). A fast-track run now finishes; GitHub keeps only the newest pending one."""
+
+    def test_running_fast_track_run_is_not_cancelled_but_other_refs_still_are(self):
+        self.assertFalse(cancel_in_progress("refs/heads/fast-track"))
+        self.assertTrue(cancel_in_progress("refs/pull/123/merge"))
+        self.assertTrue(cancel_in_progress("refs/heads/some-branch"))
+
+    def test_group_is_per_ref_and_green_mark_still_waits_for_the_gate_on_fast_track(self):
+        text = CI_YML.read_text(encoding="utf-8")
+        self.assertIn("group: ci-${{ github.ref }}", text)   # a PR run never queues behind (or cancels) a fast-track run
+        mark = text[text.index("\n  mark-green:"):]
+        self.assertIn("needs: offline-gate", mark)
+        self.assertIn("github.ref == 'refs/heads/fast-track'", mark)
 
 
 if __name__ == "__main__":

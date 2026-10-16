@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T01:04:54Z",
   "commands": [],
   "created": "2026-10-16T00:50:38Z",
   "depends_on": [],
@@ -16,7 +17,7 @@
   "refine_tries": 0,
   "refined_by": "codex-feed 2026-10-16 (sonnet worker)",
   "refs": [],
-  "result": "",
+  "result": "1,278 first touches (event_table.csv) landed on trunk with gate entries (EXTRA + wiring_registry REPRO); wiring gate and test_gate_discovery_b150 pass",
   "scope_in": [
     "MyTradingSys/research/levels_confluence_2026-10-14/ (event_table.py, test_event_table.py, event_table.csv, separation.md) and layer_lab/reports/2026-10-15_lc-event-table.md, all from commit 6a2b227a",
     "scripts/dev/run_extra_tests.py (EXTRA)",
@@ -33,7 +34,7 @@
     "MyTradingSys/system/LAYER_LAB.md (Guards: gate registration)",
     "MyTradingSys/research/layer_lab/INDEX.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "On JIS-NUC: sync.py start lc-event-table-land (own work tree). Then git -C <tree> fetch F:/MTS/mts-codex-lab jis-nuc/codex-lab and git -C <tree> cherry-pick 6a2b227a (10 files). A clash in layer_lab/INDEX.md, system/codex_usage.json or system/lane_state.json: take trunk's copy (the lab regenerates them); in layer_lab/TRIALS.md: keep both rows.",
     "Add MyTradingSys/research/levels_confluence_2026-10-14/test_event_table.py to run_extra_tests.EXTRA (next to test_levels.py) and event_table.py to wiring_registry.json (disp REPRO, why: reproduces event_table.csv cited in layer_lab/reports/2026-10-15_lc-event-table.md, run by hand).",
