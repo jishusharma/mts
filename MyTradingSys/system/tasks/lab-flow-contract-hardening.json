@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T09:51:43Z",
   "commands": [],
   "created": "2026-10-16T07:14:09Z",
   "depends_on": [],
@@ -18,7 +19,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "BLOCKED: temp worktree cleanup test denied by Windows sandbox; see MyTradingSys/research/layer_lab/reports/2026-10-16_lab-flow-contract-hardening.md",
+  "result": "Hardening already on fast-track (e677a279); verified: 4 new tests fail on e677a279^ lab_flow.py, 20 pass now, run_all_tests --quick green, 4 repro cases refused (reports/2026-10-16_lab-flow-repro-after-fix.md)",
   "scope_in": [
     "scripts/dev/lab_flow.py",
     "scripts/dev/test_lab_flow.py",
@@ -35,7 +36,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-16_claude-recipe-pilot.md"
   ],
-  "state": "blocked",
+  "state": "done",
   "steps": [
     "Read the report's Findings G1-G4 and its repro. Write 4 tests that FAIL on current code first; keep the 104 existing tests green.",
     "G1: add commands and tests to the flow contract only when non-empty, so the stored recipe-pilot contract hashes stay valid. G2: for stage > 1 require depends_on to equal the previous stage card id. G3: finish refuses a report already used by another flow_receipt and requires a line naming the card id. G4: finish needs at least one evidence token (path:line or fenced command) per criterion.",
