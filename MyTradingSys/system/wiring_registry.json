@@ -834,6 +834,10 @@
     "MyTradingSys/research/layer_lab/forward_excursion/event_table.py": {
       "disp": "TOOL",
       "why": "Pure forward MFE/MAE-in-R helper for caller-provided OHLC bars; covered by test_event_table.py; no market data access or live imports."
+    },
+    "MyTradingSys/research/layer_lab/rsi_divergence_event_table/event_table.py": {
+      "disp": "TOOL",
+      "why": "Research-only RSI divergence event table; imports the read-only RSI detector and reads DEV BTCUSDT klines for 1h/4h forward MFE/MAE in R; covered by test_event_table.py."
     }
   },
   "MyTradingSys/research/layer_lab/volume_event_table/event_table.py": {
