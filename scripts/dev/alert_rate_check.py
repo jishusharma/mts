@@ -88,7 +88,7 @@ def expected_per_day(registry, root, days, now_ms):
             cache[tf] = aggregate(m1, TF_MIN[tf])
         bars = cache[tf]
         try:
-            fn = e["fn"]
+            fn = getattr(e["fn"], "raw", e["fn"])   # history-wrapped W3 layers: replay the bare adapter on the long window
             if e["sub"] == "funding_cvd_fade":
                 from MyTradingSys.backtest.layers.alerts import live_layers as ll
                 funding = load_funding(root)

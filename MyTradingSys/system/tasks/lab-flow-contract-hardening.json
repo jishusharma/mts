@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T09:51:43Z",
+  "commands": [],
+  "created": "2026-10-16T07:14:09Z",
+  "depends_on": [],
+  "done_when": "All four tests fail before the change and pass after; the 104 prior tests and lab_flow.accepted on both recipe-pilot cards stay green; LAB_RECIPES.md lists the four checks; shipped.",
+  "from_inbox": "",
+  "goal": "Close four gaps in scripts/dev/lab_flow.py reproduced by the Claude pilot (reports/2026-10-16_claude-recipe-pilot.md): G1 commands/tests outside the contract; G2 depends_on removable; G3 stage report reusable; G4 status-lines-only report passes.",
+  "id": "lab-flow-contract-hardening",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "pinned": true,
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "Hardening already on fast-track (e677a279); verified: 4 new tests fail on e677a279^ lab_flow.py, 20 pass now, run_all_tests --quick green, 4 repro cases refused (reports/2026-10-16_lab-flow-repro-after-fix.md)",
+  "scope_in": [
+    "scripts/dev/lab_flow.py",
+    "scripts/dev/test_lab_flow.py",
+    "MyTradingSys/system/LAB_RECIPES.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-16_claude-recipe-pilot.md"
+  ],
+  "scope_out": [
+    "live tree",
+    "holdout reads",
+    "relay and scheduled tasks",
+    "changing existing recipe-pilot cards or their receipts"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-16_claude-recipe-pilot.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read the report's Findings G1-G4 and its repro. Write 4 tests that FAIL on current code first; keep the 104 existing tests green.",
+    "G1: add commands and tests to the flow contract only when non-empty, so the stored recipe-pilot contract hashes stay valid. G2: for stage > 1 require depends_on to equal the previous stage card id. G3: finish refuses a report already used by another flow_receipt and requires a line naming the card id. G4: finish needs at least one evidence token (path:line or fenced command) per criterion.",
+    "Document the four checks in LAB_RECIPES.md under Evidence and advancement; no new caps, no new CLI flags."
+  ],
+  "tests": "pytest scripts/dev/test_lab_flow.py: edited run-card commands -> gate error; stage-2 with depends_on cleared -> gate error; stage-2 finish with stage-1 report -> ValueError; report of only C1/C2 lines -> ValueError. recipe-pilot-1-map and -2-challenge still pass lab_flow.accepted.",
+  "title": "Lab flow: put commands/tests in the contract, pin stage order, reject reused reports"
+}

@@ -842,3 +842,53 @@ Page db: not yet a doc; the next Control Room pickup creates it from the JSON be
  "recommended": "Yes: park Q65-Q69 until G2-G3"
 }
 ```
+
+## q-fabio-asr-d2 | asked 2026-10-16 | Research
+
+Speech-to-text on Fabio's two long uncaptioned sessions (Is1HvdfQm5c 2.5 h, xUyqIjCfZzg 3.8 h)?
+
+Recommended: NO for now (Fable 5.1 default D2, research/fable_audit_2026-10-16/CATALOGUE_AUDIT.md s6: frames-only cards stay parked)
+Answer: YES: local open-source transcriber on JIS-NB, low priority, then extract both (operator 2026-10-16; flips D2)
+Operator note (verbatim): Yes: install a local open-source transcriber on JIS-NB, run it at low priority on Fabio's two long sessions (Is1HvdfQm5c, xUyqIjCfZzg), and extract them.
+Applied: 2026-10-16 session fabio-transcribe: faster-whisper small.en in a venv outside the repo (F:/MTS/tools/asr-venv), BELOW_NORMAL, 4 threads, one video at a time. DECISION (OURS) model = small.en: medium.en beam 5 projects to 11.0 h for the 6.29 h of audio (> the 8 h gate), medium.en greedy is faster but drops speech. Figures and limits: research/fabio_asr_2026-10-16/ASR_RUN.md. Extraction and card updates follow in the same session (research/fabio_asr_2026-10-16/ASR_RUN.md s5 lists the shipped result).
+
+```json
+{
+ "order": 23,
+ "stage": "Research",
+ "refs": "research/fabio_asr_2026-10-16/ASR_RUN.md, research/fable_audit_2026-10-16/CATALOGUE_AUDIT.md s6 D2",
+ "title": "Speech-to-text on Fabio's two long uncaptioned sessions (Is1HvdfQm5c 2.5 h, xUyqIjCfZzg 3.8 h)?",
+ "why": "Both videos were downloaded video-only (f398), so they had no words at all: Fable's catalogue audit (D2) left them frames-only because a local transcription run was not available. The operator approved a local open-source transcriber on JIS-NB at low priority. Result: machine transcripts (ASR, small.en) in raw_transcripts_canonical, fresh single-video extractions, and catalogue rows or quotes for Fabio's setups.",
+ "options": [
+  "YES: local open-source transcriber on JIS-NB, low priority, then extract both",
+  "NO for now: keep them frames-only"
+ ],
+ "recommended": "NO for now: keep them frames-only",
+ "answer": "YES: local open-source transcriber on JIS-NB, low priority, then extract both"
+}
+```
+
+## D3-dev-ext | asked 2026-10-16 | Research
+
+Add 2020-2021 BTCUSDT 1m data to DEV as a separate DEV_EXT segment so single context factors become testable?
+
+Recommended: Yes, as a separate segment read only by DEV-stage work
+Answer: Yes, as a separate segment read only by DEV-stage work (DECISION (OURS), operator may overrule)
+Operator note (verbatim): (none; free public market data is pre-approved, defaults chosen without asking)
+Applied: 2026-10-16 session d3-dev-ext. DECISION (OURS): segment DEV_EXT = Binance USD-M BTCUSDT 1m klines, bar open 2020-01-01 .. 2021-12-31 (731 days, 1,052,640 minutes, 24 monthly zips, SHA256 matches the .CHECKSUM files, 0 duplicate minutes, 0 gaps, all UTC-aligned, OHLC sane). The REPORT.md D3 proposal said 2019-09; the public perp 1m archive starts 2019-12-31 (daily) and 2020-01 (monthly), so 2019 is NOT filled, and 2019 spot is NOT mixed in (different venue, basis). Stored outside the repo: F:/MTS/data/dev_ext_2019_2021/ (klines, funding, zips). DEV (2022-01-01..2024-06-30), VALIDATION (2024-07-01..2025-06-30) and HOLDOUT are unchanged. Loader: research/context_factors_2026-10-16/dev_ext.py, OFF unless include_dev_ext=True, never returns a bar at/after 2024-07-01 (test_dev_ext.py). Only DEV-stage reads may use it. Counts: research/context_factors_2026-10-16/COUNTS_DEV_EXT.md.
+
+```json
+{
+ "order": 24,
+ "stage": "Research",
+ "refs": "research/context_factors_2026-10-16/REPORT.md D3, research/context_factors_2026-10-16/COUNTS_DEV_EXT.md",
+ "title": "Add 2020-2021 BTCUSDT 1m data to DEV as a separate DEV_EXT segment so single context factors become testable?",
+ "why": "The context-factors study found only the composite is powered on 821 DEV days. Free public Binance USD-M data for 2020-2021 adds 731 days. It is kept as its own segment (DEV_EXT) that only DEV-stage reads may use, so VALIDATION and HOLDOUT are never touched.",
+ "options": [
+  "Yes, as a separate segment read only by DEV-stage work",
+  "No: keep DEV at 2022-01-01 .. 2024-06-30"
+ ],
+ "recommended": "Yes, as a separate segment read only by DEV-stage work",
+ "answer": "Yes, as a separate segment read only by DEV-stage work (DECISION (OURS), operator may overrule)"
+}
+```

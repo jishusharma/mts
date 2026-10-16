@@ -537,7 +537,14 @@ public class MarketDataSnapshot {
     // post_funding_vp only.
     private ObjectNode buildVp(List<JsonNode> bars, boolean includeHvnsLvns, double fixedBinSize) {
         ObjectNode node = mapper.createObjectNode();
-        if (bars.isEmpty()) {
+        // Fail closed: a non-finite OHLCV value (NaN/Inf) gives the empty profile, never a guessed level.
+        boolean finite = true;
+        for (JsonNode bar : bars) {
+            for (int k = 2; k <= 5; k++) {
+                if (!Double.isFinite(bar.get(k).asDouble())) finite = false;
+            }
+        }
+        if (bars.isEmpty() || !finite) {
             node.put("poc", 0.0);
             node.put("vah", 0.0);
             node.put("val", 0.0);
@@ -623,8 +630,11 @@ public class MarketDataSnapshot {
             else if (lower > 0) { lower--; accVol += profile.get(prices.get(lower)); }
             else break;
         }
-        double vah = prices.get(upper);
+        // FORMULAS 18.1 edge convention: map keys are bin lower edges; POC = bin centre, VAH = top edge of its
+        // bin, VAL = bottom edge of its bin.
+        double vah = prices.get(upper) + binSize;
         double val = prices.get(lower);
+        double pocPrice = poc + binSize / 2.0;
 
         // shape heuristic
         double maxVol = profile.get(poc), secondPeakVol = 0;
@@ -646,7 +656,7 @@ public class MarketDataSnapshot {
             shape = (ratio > 0.8 && ratio < 1.2) ? "D" : "P";
         }
 
-        node.put("poc", Math.round(poc*100.0)/100.0);
+        node.put("poc", Math.round(pocPrice*100.0)/100.0);
         node.put("vah", Math.round(vah*100.0)/100.0);
         node.put("val", Math.round(val*100.0)/100.0);
         node.put("shape", shape);

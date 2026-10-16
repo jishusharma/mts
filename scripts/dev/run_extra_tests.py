@@ -17,8 +17,11 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 EXTRA = [
+    "scripts/dev/test_lab_flow.py",
     "MyTradingSys/research/qriptal_2026-10-10/test_ledger.py",
     "MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/test_imb.py",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/test_filter_join.py",
     "MyTradingSys/research/chart_read_g5_2026-10-16/test_common.py",
     "MyTradingSys/research/opr_preopen_tops_2026-10-16/test_study.py",
     "MyTradingSys/research/krown_malkan_g3_2026-10-16/test_event_counts.py",
@@ -28,6 +31,12 @@ EXTRA = [
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_study.py",
     "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py",
     "MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py",
+    "MyTradingSys/research/context_null_2026-10-16/test_context_null.py",
+    "MyTradingSys/research/context_factors_2026-10-16/test_context_asof.py",
+    "MyTradingSys/research/context_factors_2026-10-16/test_study.py",
+    "MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py",
+    "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py",
+    "MyTradingSys/research/level_ledger_2026-10-16/test_level_ledger.py",
     "scripts/dev/test_suplock.py",
     "MyTradingSys/research/mfe_exit_2026-10-13/test_mfe_exit_study.py",
     "MyTradingSys/research/malkan_extract_2026-10-15/tools/test_check_numbers.py",
@@ -49,6 +58,7 @@ EXTRA = [
     "MyTradingSys/research/volume_2026-10-09/test_volume.py",
     "MyTradingSys/research/tom_btc_2026-10-13/test_chart_lab.py",
     "MyTradingSys/research/levels_confluence_2026-10-14/test_levels.py",
+    "MyTradingSys/research/levels_confluence_2026-10-14/test_event_table.py",
     "MyTradingSys/runtime/test_update_market_state.py",
     "scripts/dev/test_testnet_canary.py",
     "scripts/worker/test_audit_digest.py",
@@ -56,7 +66,11 @@ EXTRA = [
     "scripts/worker/test_audit_t0_checks.py",
     "tests/test_worker_prefix_hash.py",
     "scripts/dev/test_fabio_prescreen.py",
+    "scripts/dev/test_asr_to_canonical.py",
     "scripts/dev/test_sched_scripts.py",
+    "scripts/dev/test_run_extra_tests.py",
+    "scripts/dev/test_ci_deps_lint.py",
+    "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py",
 ]
 
 
@@ -76,7 +90,17 @@ def run_one(rel, basetemp):
         return False, "missing"
     r = subprocess.run([sys.executable, "-m", "pytest", p.name, "-q", "-p", "no:cacheprovider", f"--basetemp={basetemp}"],
                        cwd=p.parent, capture_output=True, text=True, errors="replace")
-    return r.returncode == 0, (r.stdout.strip().splitlines() or ["(no output)"])[-1]
+    tail = (r.stdout.strip().splitlines() or ["(no output)"])[-1]
+    if r.returncode != 0:
+        tail += failure_detail(r.stdout, r.stderr)
+    return r.returncode == 0, tail
+
+
+def failure_detail(stdout, stderr, n=30):
+    """Last `n` lines of a failed file's pytest output, indented under its FAIL line, so a CI log shows the cause (2026-10-16:
+    five files failed on the runners with only '1 error in 0.6s' in the log and passed on every desktop)."""
+    lines = (stdout or "").strip().splitlines()[-n:] + (stderr or "").strip().splitlines()[-10:]
+    return "".join(chr(10) + "        | " + ln[:300] for ln in lines)
 
 
 def run_files(rels, n_jobs, one=run_one, tmp=None):

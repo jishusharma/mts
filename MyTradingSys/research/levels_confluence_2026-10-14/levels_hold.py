@@ -12,33 +12,46 @@ def stop_width(price, level):
     return max(.004 * float(price), .001 * abs(float(level)))
 
 
-def _touch_side(bar, level):
+def _touch_side(bar, level, prev_close=None):
+    """Side from the PREVIOUS bar's close (Q79: the touch bar's own close is look-ahead).
+
+    Price above the level before the touch => level is support => side +1.
+    No previous bar (first bar of the day): fall back to the touch bar's open.
+    """
     if float(bar['l']) <= level <= float(bar['h']):
-        return 1 if float(bar['c']) >= level else -1
+        ref = float(prev_close) if prev_close is not None else float(bar['o'])
+        return 1 if ref >= level else -1
     return None
 
 
-def outcome(bars, level, width):
-    """HOLD if a full width reaction precedes a full width penetration."""
+def outcome(bars, level, width, prev_close=None):
+    """HOLD if a full width reaction precedes a full width penetration.
+
+    Q79: side comes from the previous bar's close; the touch bar itself earns no
+    favourable (HOLD) credit, only adverse (BREAK) credit.
+    """
     touched = False
     side = None
     for b in bars:
         h, lo = float(b['h']), float(b['l'])
+        first_bar = False
         if not touched:
-            side = _touch_side(b, level)
+            side = _touch_side(b, level, prev_close)
             if side is None:
                 continue
             touched = True
-            # Same-bar ordering is unknowable: count a bar spanning both thresholds as BREAK.
+            first_bar = True
         favorable = (h >= level + width) if side == 1 else (lo <= level - width)
         adverse = (lo <= level - width) if side == 1 else (h >= level + width)
-        if favorable and adverse:
-            return 'BREAK'
         if adverse:
             return 'BREAK'
-        if favorable:
+        if favorable and not first_bar:
             return 'HOLD'
     return 'NEITHER'
+
+
+def _prev_close(rows, i):
+    return float(rows[i - 1]['c']) if i > 0 else None
 
 
 def _bootstrap_ci(day_diffs, seed=SEED, iterations=BOOTSTRAPS):
@@ -78,7 +91,7 @@ def analyze(bars, levels, seed=SEED):
             if first is None:
                 continue
             width = stop_width(midnight, price)
-            res = outcome(rows[first:], price, width)
+            res = outcome(rows[first:], price, width, _prev_close(rows, first))
             dist = abs(price - midnight)
             controls = []
             for _ in range(5):
@@ -86,7 +99,8 @@ def analyze(bars, levels, seed=SEED):
                 random_price = midnight + sign * dist
                 rand_first = next((i for i, b in enumerate(rows)
                                    if float(b['l']) <= random_price <= float(b['h'])), None)
-                controls.append(outcome(rows[rand_first:], random_price, stop_width(midnight, random_price))
+                controls.append(outcome(rows[rand_first:], random_price, stop_width(midnight, random_price),
+                                        _prev_close(rows, rand_first))
                                 if rand_first is not None else 'NO_TOUCH')
             real_hold = int(res == 'HOLD')
             # A control line never touched in the day is NEITHER, hence not a hold.

@@ -42,6 +42,7 @@ def runner_bars(c):
 
 
 def layer(c, log_path=None, oi=(93670.0, 12.0), **kw):
+    kw.setdefault("emit_long", False)   # these tests pin the SHADOW (flag OFF) contract; the ON contract is in test_w3_wiring
     return cli.make_wlow_bounce_layer(fetch_candles=lambda: c, fetch_oi=lambda k: oi, log_path=log_path, params=LOOSE, **kw)
 
 
@@ -146,7 +147,7 @@ class TestFailClosed(unittest.TestCase):
         def boom():
             raise RuntimeError("x")
         reg = build_registry([{"layer": "wlow_bounce", "sub": "bbrsi60", "tf": "1h",
-                               "fn": cli.make_wlow_bounce_layer(fetch_candles=boom, log_path=None),
+                               "fn": cli.make_wlow_bounce_layer(fetch_candles=boom, log_path=None, emit_long=False),
                                "params_id": "p", "confirm_lag_bars": 0}])
         c = candles()
         r = run_registry(reg, {"1h": runner_bars(c)}, empty_state())
@@ -181,9 +182,9 @@ class TestNoOrderPath(unittest.TestCase):
         self.assertIn("reject", sig)
         self.assertNotIn("plan_args", sig)
 
-    def test_source_not_whitelisted_anywhere(self):
-        cfg = at.DEFAULT_CONFIG
-        self.assertNotIn("wlow_bounce", json.dumps(cfg))
+    def test_source_not_whitelisted_in_the_built_in_defaults(self):
+        # the built-in defaults never whitelist it; the shipped file does (operator 2026-10-16), see test_w3_wiring
+        self.assertNotIn("wlow_bounce", json.dumps(at.DEFAULT_CONFIG))
 
 
 if __name__ == "__main__":

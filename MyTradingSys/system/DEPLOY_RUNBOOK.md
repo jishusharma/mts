@@ -13,13 +13,22 @@ What the job does, in order; it stops at the first failure and writes the reason
    A tracked file that another session edited and the deploy would change = `STOP_DIRTY` (never merge or stash over someone's edits).
 4. **Gate the candidate** in a throwaway detached worktree (`../mts-deploy-gate`): `python scripts/dev/run_all_tests.py --quick`.
    Red = `STOP_RED`; the live tree is untouched; the same SHA is not re-gated until a newer green SHA appears (`RED_KNOWN`).
+   `auto_deploy_last.json` then holds `gate_failed`: the failing step blocks of that run (test names, assertion), so a red gate can be traced without a rerun.
+   Gate time limit: 2700 s (env `MTS_DEPLOY_GATE_TIMEOUT`, seconds); an idle host needs ~290 s, but 2026-10-16 04:45Z the old 1500 s limit ended STOP_RED
+   with `gate_tail ['timed out']` while parallel sessions held the CPUs at 100%. A timed-out gate keeps what it printed (`gate_tail` = its last 6 non-empty lines,
+   the reason says `timed out after <N>s`), and every gated result records `gate_secs` (rounded elapsed): watch it creep up before it times out.
+   Keep long CPU jobs (watchers, polling scripts, transcription) off the host around the :00/:15/:30/:45 gate runs. Live tree runs the older auto_deploy.py until its next deploy.
 5. **Copy the untracked runtime state first** (B152): `MyTradingSys/runtime/orderflow_live/_state.json` is written by the recorder and was untracked by
    af91b21. A `git merge --ff-only` aborts when the recorder has modified it, or deletes it when the target commit drops it; without it
    `orderflow_live.py` restarts at the current minute and the minutes since the last write are never fetched. The copy goes to
    `runtime_data/deploy_backup/<stamp>/_state.json` and is put back if the merge removed the file.
-6. `git merge --ff-only origin/green/fast-track`.
+6. `git merge --ff-only origin/green/fast-track`. An untracked file in the live tree that the merge would create makes git refuse (`STOP_MERGE`). Only a machine-generated
+   CI card (`MyTradingSys/system/tasks/ci-<sha>.json`, same bytes as the incoming file or the shape `ci_red_card.py` writes) is copied to
+   `runtime_data/deploy_backup/<stamp>/untracked/<path>` and removed (`untracked_cleared` in the result); any other untracked clash stays `STOP_MERGE`
+   (checked before the gate and again after it, nothing removed). 2026-10-16: `make_status.py` filed such a card in the live tree and the deploy stopped;
+   it no longer files the card there (`CI card: not filed (live tree)`).
 7. Restart only what changed (`RESTART_MAP` in auto_deploy.py): execution/auto_trader*, executor, deribit_orders ... -> `auto_trader.py`;
-   daily_loss_monitor, mainnet_pnl, kill_switch, deribit_orders -> `daily_loss_monitor.py`; backtest/layers/alerts and the layer packages, bt/, fees -> `live_runner_cli.py`.
+   daily_loss_monitor, mainnet_pnl, kill_switch, deribit_orders -> `daily_loss_monitor.py`; backtest/layers/alerts and the layer packages, bt/, fees -> `layers.alerts.live_runner_cli` (module name: the runner runs with -m, no .py in its command line).
    loop-supervisor revives them in about a minute. **position_manager is never killed** (it guards an open position; new managers load the new code).
 8. Java (`src/main/java`, `pom.xml`) is listed under `java_pending` in the result: it needs `mvn compile` and a JVM restart window, which the job does not do.
 
@@ -29,12 +38,14 @@ Read the last result any time: `python -c "import json;print(open('MyTradingSys/
 Register (once per host, as the logged-in user): `powershell -File scripts/sched/register_cicd_tasks.ps1 -Trigger` (add `-SkipDeploy` on hosts that are not the live tree).
 
 ## CI starvation fallback (2026-10-10)
-The GitHub token on the builder machines has no `workflow` scope, so `.github/workflows/ci.yml` cannot be changed from here.
-ci.yml cancels the running push job on every new push, so during a burst `green/fast-track` stops advancing (it sat at 24197c4 for
-a day). `auto_deploy.py` therefore falls back: when `origin/green/fast-track` is older than 90 min and is an ancestor of
-`origin/fast-track`, it gates and fast-forwards `origin/fast-track` instead. The local gate in the throwaway worktree is the
-safety; red still stops. The root fix is `cancel-in-progress` only for PRs in ci.yml (the patch file was archived 2026-10-15 under
-`MyTradingSys/archive/`): the operator applies it once from an account with workflow scope, or adds the `workflow` scope to the token.
+ci.yml used to cancel the running push job on every new push, so during a burst `green/fast-track` stopped advancing (it sat at
+24197c4 for a day; runs 38825243976 and 38824936295 were cancelled 2026-10-16). Fixed 2026-10-16 (ci-nowin-conc): `cancel-in-progress` is
+`${{ github.ref != 'refs/heads/fast-track' }}`, so the run in progress on fast-track finishes and `mark-green` publishes its SHA (GitHub keeps only
+the newest pending run, runs go one at a time in push order, so green never moves backwards; every marked SHA was a fast-track head and fast-track is
+never rewritten). PR and other-ref runs are still cancelled when superseded. `scripts/dev/test_ci_red_card.py` (CiConcurrency) pins it; the old
+`system/ci_concurrency_fix.patch` is superseded. `auto_deploy.py` keeps its fallback as a safety net: when `origin/green/fast-track` is older than
+90 min and is an ancestor of `origin/fast-track`, it gates and fast-forwards `origin/fast-track` instead. The local gate in the throwaway
+worktree is the safety; red still stops.
 
 ## Daily hygiene (moved here from CLAUDE.md 2026-10-11)
 Task `MTS-DailyHygiene` (06:30) runs `scripts/dev/daily_hygiene.py` (quick gate, `sync.py where`, declutter DRY run, STATUS) ->
@@ -83,6 +94,7 @@ operator-side session runs them as the logged-in user):
   pool; each finished step prints its block with `Elapsed:` and a progress count. Quick gate 677 s -> 289 s on JIS-NB.
   Step 5b module list: `split_modules` partitions `find_layer_modules()` and `test_quick_gate_runs_every_layer_module` fails if one is dropped.
   Largest steps on JIS-NUC (warm): step 4 pytest 51 s, 3xt 26 s, 3k 16 s, 3dk 10 s; step 4 is the next cut (xdist or per-path processes).
+- Always-run steps `3gd` (B150: every test file is gated) and `3dl` (`ci_deps_lint.py`, ~5 s): no gated test may hard-import (also through a sibling module) a package the `pip install` line of ci.yml lacks; fix = add it to that line and `cloud_setup.GATE_DEPS`, or guard it (try/except ImportError, find_spec flag, `pytest.importorskip`).
 - MTS-Backup moved to :07/:22/:37/:52 (`install_backup_task.ps1`, offset 7 min past midnight + 15 min repeat) so it no longer
   starts in the same minute as MTS-AutoDeploy (:00/:15/:30/:45). Not re-registered by this session; on each host run
   `powershell -File scripts\dev\install_backup_task.ps1 -Repo <path>` (the tree the task runs from today: runtime_data\launch-backup.vbs names it).

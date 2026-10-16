@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T05:13:53Z",
+  "commands": [],
+  "created": "2026-10-16T00:52:36Z",
+  "depends_on": [],
+  "done_when": "RESULT.md holds one verdict word (PASS | INCONCLUSIVE | FAIL) for C pooled computed by the frozen rule, every other cell listed as REFUSED_POWER without numbers, VERDICTS.csv has the row, and the ship gate is green.",
+  "from_inbox": "",
+  "goal": "One outcome read of the frozen PRE_REG: does the operator's context composite C (side-aware support/resistance confluence >= 2 layers, daily-candle ladder armed, no band-walk veto, weekly phase on the trade side) beat context-matched controls on the daily-candle stop-ladder trade (2 R target, 24 h time stop, 0.14 % all-taker + funding), BTCUSDT 1h decisions, DEV only.",
+  "id": "context-composite-dev-read",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "Operator decision D1 in REPORT.md: the composite is powered only if its plausible effect is >= about 0.35 R (written after counts, before outcomes). If the operator overrules D1 before this card runs, mark it parked, do not run.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/context_factors_2026-10-16/PRE_REG.md"
+  ],
+  "result": "INCONCLUSIVE: matched days 164 < 387 (241/1010 C events matched); E=-0.023 R t=-0.32; mean net_R of C -0.137 R over 1010; MyTradingSys/research/context_factors_2026-10-16/RESULT.md",
+  "scope_in": [
+    "MyTradingSys/research/context_factors_2026-10-16/study.py",
+    "MyTradingSys/research/context_factors_2026-10-16/test_study.py",
+    "MyTradingSys/research/context_factors_2026-10-16/ledger_C.csv",
+    "MyTradingSys/research/context_factors_2026-10-16/controls.csv",
+    "MyTradingSys/research/context_factors_2026-10-16/EXPOSURE_LEDGER.csv",
+    "MyTradingSys/research/context_factors_2026-10-16/RESULT.md",
+    "MyTradingSys/research/VERDICTS.csv"
+  ],
+  "scope_out": [
+    "MyTradingSys/research/context_factors_2026-10-16/context_asof.py",
+    "MyTradingSys/research/context_factors_2026-10-16/PRE_REG.md",
+    "MyTradingSys/research/context_factors_2026-10-16/CONTEXT_FACTORS_SPEC.md",
+    "MyTradingSys/research/context_null_2026-10-16/",
+    "any VALIDATION or HOLDOUT bar",
+    "every REFUSED_POWER cell of PRE_REG s.4"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read PRE_REG.md s.0-8 in full; check `git log` shows PRE_REG.md committed before any outcome file; record the sha of context_asof.py and PRE_REG.md.",
+    "Build the frames with run_dev.py vec and the ledger with counts.py (no edits); form C exactly as PRE_REG s.2; print n events/days per side and pooled BEFORE any outcome (must match PRE_REG: 554/254 long, 456/202 short, 1,010/456 pooled; a mismatch = BLOCKED).",
+    "Write test_study.py first: trade simulator on a hand fixture (stop first in a bar holding both, gap through the stop fills at the open, target, 24 h time stop, funding sign, cost 7 bp per side in R); it must fail on a planted bug (e.g. target-first) at least once.",
+    "Write study.py: 1m entry at T + 60 s, ladder stop, 2 R target, 24 h stop, net_R per PRE_REG s.1; controls via context_null.context_key (hour, vol, trend; Config(bar_min=60, cooldown=4, seed=0), K=20, kmin=10, pool = same-side ledger events not in C and not within 24 h of a C event).",
+    "Run once. Compute ONLY the READ cell (C pooled) and the report-only rows in PRE_REG s.4; apply the verdict rule verbatim (Holm m = 37, |t| >= 3.205, per-year sign, MDD).",
+    "Write RESULT.md (verdict line first), ledger_C.csv, controls.csv, EXPOSURE_LEDGER.csv; verdicts.py add one row with the kill scope of PRE_REG s.5; run lookahead_lint.py on the folder and run_all_tests.py --quick; ship."
+  ],
+  "tests": "test_study.py (hand fixture: stop-first, gap fill, target, time stop, funding sign, cost in R) fails on a planted target-first bug, passes on the real code; registered in scripts/dev/run_extra_tests.py.",
+  "title": "Context factors: run PRE_REG (operator context composite vs context-matched baseline, DEV, one read)"
+}

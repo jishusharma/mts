@@ -1,6 +1,13 @@
 # Layer lab: Codex as the independent checker of the Tom and Fabio layers (operator 2026-10-12)
 
-Layer context for every card: `MyTradingSys/system/LAYERS.md` (per family: spec, ledger, backtests, lab reports, open cards); a card's `layers` field names its section, and its brief says so.
+Reusable ordered recipes (operator 2026-10-16): see `LAB_RECIPES.md` and `scripts/dev/lab_flow.py`.
+Critical audits/builds use Sol 6.1 then Astra; evidence receipts gate advancement. Recipe cards optimize
+tokens without the older lab-share/run-count caps; actual plan headroom and safety gates still apply.
+
+Layer context for a card with a nonempty `layers` field: read its named sections of `MyTradingSys/system/LAYERS.md`
+(spec, ledger, backtests, lab reports, open cards), not the whole catalogue. A generic infrastructure or synthetic-fixture
+card with no named layer does not need LAYERS.md. Use documented lab utilities directly; inspect their implementation
+when the task audits them or a command fails, rather than rereading the same helper on every stage.
 
 Why: Claude wrote the encoding, its tests and its backtests, and the coded Tom still fired on 0 of 7 of his own trades
 (research/tom_transfer_2026-10-11/ROADMAP.md F1). A different model checks the same work. Rules are not copied here:
@@ -79,7 +86,7 @@ has full access (operator's setting), so it does its own git steps; everything e
 - Spend guard (2026-10-13; `codex_run.py`): the 85% pre-check only sees what is already used, so it cannot stop a card that starts at
   16% and moves the window 80 points. Each run is estimated (measured max of the setting's latest runs, else the table
   `EST_WINDOW_PTS`) and starts only if it fits under 100 minus a 10-point reserve, the lab's own spend stays under `LAB_WINDOW_PTS`
-  (50) of the window and `LAB_WEEK_PTS` (35) of the week, at most `LAB_RUNS_PER_WINDOW` (4) runs and 1 astra run per window, one
+  (50) of the window and `LAB_WEEK_PTS` (60; 35 until 2026-10-16) of the week, at most `LAB_RUNS_PER_WINDOW` (10; 4 until 2026-10-16) runs and 1 astra run per window, one
   card per tick with `MIN_GAP_S` (20 min) between starts, and a card that ended INCOMPLETE waits `COOLDOWN_S` (2 h). When it is
   spent the tick prints `IDLE lab budget: ...` and waits for the reset; it does not mark the lane down or reroute cards. A cheaper
   card behind a held one still runs. `codex_run.py run <card> --force` is the operator's way past it.
@@ -103,6 +110,12 @@ every git step, and it ships only a run that ended DONE or BLOCKED. An `audit` o
 A `build` card runs only its own test file: the quick gate cannot pass inside the sandbox (tests that create git repositories are
 refused; measured 2026-10-12, lab-dax-proof-parity), so `sync.py ship` in the runner is the gate. A failed ship leaves `<run log>.ship.txt`.
 Claude spot-checks one claim per lab report (CLAUDE.md Cost and routing).
+Gate registration (JIS-NUC 2026-10-15: lc-event-table ended SHIP_FAILED on steps 3w, 3x and 4b; the finished work stayed on the lab branch): the runner's `sync.py ship` runs the quick gate.
+A `build` card that adds a `test_*.py` must list it in `scripts/dev/run_extra_tests.py` EXTRA (test_gate_discovery_b150), and each new non-test `.py` that only a test calls needs an entry in
+`MyTradingSys/system/wiring_registry.json` (disp TOOL or REPRO, plus why); name both files in the card's scope_in. An `audit` or `run` card saves any script as `<name>.py.txt`
+(precedent `layer_lab/gross_screen_independent_recount.py.txt`), so neither check sees it.
+The generated `MyTradingSys/system/LAYERS.md` is the one file outside `research/layer_lab/` and `system/tasks/` an audit or run card may change (`codex_run.GENERATED`): `tasks.py done` rewrites it for
+every card whose id matches a layer family. Before 2026-10-16 that made `malkan-hindi-rows-gpt-read` OUT_OF_SCOPE (41 window points, nothing shipped).
 CI gates every push exactly as for Claude code. The trial ends about 2026-11-11: nothing else may depend on the lab.
 
 ## GPT lane health, reroute and pause (operator 2026-10-12)

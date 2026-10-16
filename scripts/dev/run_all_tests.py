@@ -12,6 +12,7 @@ at a time after the pool. Each step prints its block when it finishes, line-buff
 a redirected or backgrounded run shows progress; the SUMMARY lists every step in definition order. A foreground tool call dies
 at 600 s: start the gate (and `sync.py ship`, which calls it) in the background and read the output once.
 """
+import glob
 import os
 import shutil
 import subprocess
@@ -39,6 +40,8 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_live_owner.py",
     "scripts/dev/test_loop_supervisor_grace.py",
     "scripts/dev/test_nowin.py",
+    "scripts/dev/test_wrapper_load_resilience.py",
+    "scripts/dev/test_gate_priority.py",
     "scripts/dev/test_feed_watchdog_script.py",
     "MyTradingSys/observation/tests",
 ]
@@ -76,6 +79,22 @@ TEST_FILE_SECONDS = {
 }
 SLOWEST_FIRST = ("4", "4b", "4c", "4g", "4h", "4e", "4f","3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
 _LOCK = threading.Lock()
+
+
+def transient_ignore_glob(root=REPO):
+    """pytest `--ignore-glob` for tempfile's default scratch dirs ("tmp" + 8 of [a-z0-9_]) anywhere under `root`. On Windows pytest
+    lstat()s every directory entry beside each path it descends into, so a tmpXXXXXXXX dir that another gate step creates and removes
+    in the same folder raised FileNotFoundError at collection (2026-10-16: step 4f in CI run 38825784050, the JIS-NB deploy gate on
+    50f8f6b). An ignored entry never becomes a collection node. The set [/\\] is the path separator (pytest runs the pattern through
+    os.path.abspath, which turns / into \\ on Windows); tmp_fixtures-style folders and test_tmp_* names do not match."""
+    return "--ignore-glob=" + glob.escape(str(root)) + "*[/\\]tmp" + "[a-z0-9_]" * 8
+
+
+def pytest_cmd(targets, root=REPO):
+    """One gate pytest step: own basetemp (parallel pytest processes share %TEMP%/pytest-of-<user> and its cleanup raises PermissionError
+    after all tests pass: JIS-NB 2026-10-14, six ships at once), no cache dir, and transient tmp dirs ignored (transient_ignore_glob)."""
+    return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider", transient_ignore_glob(root),
+            f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s4_')) / 'bt'}"]
 
 
 def unbuffer(stream=None):
@@ -297,6 +316,7 @@ def build_plan(quick):
     add("3gs", "Gate selector tests (path -> smoke steps, fail closed)", [sys.executable, "scripts/dev/test_gate_select.py"], "Step 3gs: Gate selector tests")
     add("3rc", "Red CI task card tests (one card per red run)", [sys.executable, "scripts/dev/test_ci_red_card.py"], "Step 3rc: Red CI card tests")
     add("3sg", "Stop guard tests (a session cannot end holding unshipped work)", [sys.executable, "scripts/dev/test_stop_guard.py"], "Step 3sg: Stop guard tests")
+    add("3sig", "Signals between logins (mts_signal.py)", [sys.executable, "scripts/dev/test_mts_signal.py"], "Step 3sig: Signals tests")
     add("3e", "DSA browser worker + queue lane tests", [sys.executable, "scripts/worker/test_dsa_worker.py"], "Step 3e: DSA worker tests")
     add("3sh", "Screenshot intake tests (save, classify, read, close gates)", [sys.executable, "scripts/dev/test_shot.py"], "Step 3sh: Screenshot intake tests")
     add("3mg", "Project group map tests (every row and file has one group)", [sys.executable, "scripts/dev/test_make_groups.py"], "Step 3mg: Project group map tests")
@@ -317,15 +337,16 @@ def build_plan(quick):
     # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
     add("3w", "Wiring gate tests", [sys.executable, "scripts/dev/test_wiring_scan.py"], "Step 3w: Wiring gate tests")
     add("3x", "Wiring check: no undeclared unwired code (wiring_scan.py --check)", [sys.executable, "scripts/dev/wiring_scan.py", "--check"], "Step 3x: Wiring check")
+    # Step 3gd: B150 discovery in every ship (2026-10-16: two research test files shipped unregistered and turned CI red twice in 3 h;
+    # the smoke gate never picked the pytest shard that holds this test)
+    add("3gd", "Gate discovery: every tracked test file is gated (B150)", [sys.executable, "MyTradingSys/tests/test_gate_discovery_b150.py"], "Step 3gd: Gate discovery")
+    # Step 3dl: CI deps lint (2026-10-16: pandas imported by research tests, missing from the ci.yml pip line; the desktop has every package, so
+    # only CI saw ModuleNotFoundError at collection, three red rounds in 3 h). Always runs, ~5 s.
+    add("3dl", "CI deps lint: no gated test hard-imports a package the ci.yml pip line lacks", [sys.executable, "scripts/dev/ci_deps_lint.py"], "Step 3dl: CI deps lint")
 
     # Step 4: pytest (math + doc tests), sharded so the slowest step no longer sets the gate's wall time (2026-10-16: one process
     # took 919 s of a 15 min gate). 4/4b/4c = MyTradingSys/tests files round-robin, 4d = doc size/contract tests, 4e = backtest
-    # files, 4f = layer/live-writer paths. Every shard gets its own basetemp: parallel pytest processes share %TEMP%/pytest-of-<user>
-    # and its cleanup raises PermissionError after all tests pass (JIS-NB 2026-10-14, six ships at once).
-    def pytest_cmd(targets):
-        return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider",
-                f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s4_')) / 'bt'}"]
-
+    # files, 4f = layer/live-writer paths. Every shard gets its own basetemp and ignores transient tmp dirs: see pytest_cmd above.
     tests_dir = REPO / "MyTradingSys" / "tests"
     doc_shard = ["MyTradingSys/tests/docs", "MyTradingSys/tests/test_relay_prompts.py"]
     top = sorted(f"MyTradingSys/tests/{f.name}" for f in tests_dir.glob("test_*.py")) if tests_dir.exists() else []
@@ -365,7 +386,7 @@ def build_plan(quick):
 
     # Step 5c: options module (own pytest run: its bare module names, e.g. fees.py, collide with other packages); own basetemp and
     # no cache dir because it runs beside other pytest processes
-    cmd5c = [sys.executable, "-m", "pytest", "MyTradingSys/options/tests", "-q", "-p", "no:cacheprovider",
+    cmd5c = [sys.executable, "-m", "pytest", "MyTradingSys/options/tests", "-q", "-p", "no:cacheprovider", transient_ignore_glob(),
              f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s5c_')) / 'bt'}"]
     add("5c", "Options module tests", cmd5c, "Step 5c: Options tests")
 
@@ -446,9 +467,55 @@ def apply_selection(plan, args):
     return plan, mode
 
 
+def lower_priority():
+    """Run the gate (and every child it starts, which inherit the class) below normal priority on Windows.
+    2026-10-16: parallel sessions' gates (4 steps at a time each) kept the 8-core live host at 100% CPU; the loop's mvn
+    snapshot then took > 90 s, the supervisor restarted the loop over and over and live health went RED. The live loop
+    and its feeds run at normal priority, so they now win against any gate. MTS_GATE_PRIORITY=normal opts out."""
+    if sys.platform != "win32" or os.environ.get("MTS_GATE_PRIORITY", "").lower() == "normal":
+        return False
+    try:
+        import ctypes
+        from ctypes import wintypes
+        k = ctypes.WinDLL("kernel32", use_last_error=True)
+        k.GetCurrentProcess.restype = wintypes.HANDLE
+        k.SetPriorityClass.argtypes = [wintypes.HANDLE, wintypes.DWORD]
+        ok = bool(k.SetPriorityClass(k.GetCurrentProcess(), 0x00004000))   # BELOW_NORMAL_PRIORITY_CLASS
+        reserve_cores(k)
+        return ok
+    except Exception:
+        return False
+
+
+RESERVED_CPUS = 2
+
+
+def reserve_cores(k=None):
+    """B191: priority only orders who runs first; it cannot stop a gate from filling every logical CPU. Pin the gate (children
+    inherit the mask) off the top RESERVED_CPUS logical CPUs, so the live loop's snapshot JVM always has one physical core
+    (i7-4770K: 4 cores / 8 threads, cpus 6-7 are one core) no matter how many sessions gate at once. MTS_GATE_RESERVE=0 opts out."""
+    n = os.cpu_count() or 1
+    try:
+        reserve = int(os.environ.get("MTS_GATE_RESERVE", RESERVED_CPUS))
+    except ValueError:
+        reserve = RESERVED_CPUS
+    if sys.platform != "win32" or reserve <= 0 or n < reserve + 2:
+        return False
+    try:
+        import ctypes
+        from ctypes import wintypes
+        k = k or ctypes.WinDLL("kernel32", use_last_error=True)
+        k.GetCurrentProcess.restype = wintypes.HANDLE
+        k.SetProcessAffinityMask.argtypes = [wintypes.HANDLE, ctypes.c_size_t]
+        return bool(k.SetProcessAffinityMask(k.GetCurrentProcess(), (1 << (n - reserve)) - 1))
+    except Exception:
+        return False
+
+
 def main(argv=None):
     args = sys.argv[1:] if argv is None else argv
     unbuffer()
+    lower_priority()
     isolate_pytest_tmp()
     quick = "--quick" in args
 

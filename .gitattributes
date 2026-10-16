@@ -1,2 +1,4 @@
 # Files whose exact bytes matter (hashed or compared) are pinned to LF on every host.
 MyTradingSys/system/sched/worker_prefix.md text eol=lf
+# The csv module writes CRLF; the Codex lab tree commits these exact bytes. Pinned so no host converts them and the lab merge sees one blob.
+MyTradingSys/research/levels_confluence_2026-10-14/event_table.csv -text

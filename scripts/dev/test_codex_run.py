@@ -142,6 +142,14 @@ class JudgeTest(unittest.TestCase):
         self.assertEqual(R.judge({"state": "done"}, [self.REP], "build", [self.REP, self.CARD, code]), "DONE")
         self.assertEqual(R.out_of_scope("run", [self.REP, "MyTradingSys/research/layer_lab/TRIALS.md", "MyTradingSys/system/tasks/new.json"]), [])
 
+    def test_the_generated_layers_page_is_not_out_of_scope(self):
+        # tasks.py rewrites LAYERS.md after every card change, so closing a krown-/malkan-/tom-... card always dirties it
+        # (malkan-hindi-rows-gpt-read, 2026-10-15 16:00Z: OUT_OF_SCOPE, 41 window points spent, nothing shipped)
+        layers = "MyTradingSys/system/LAYERS.md"
+        for kind in ("audit", "run"):
+            self.assertEqual(R.judge({"state": "done"}, [self.REP], kind, [self.REP, self.CARD, layers]), "DONE")
+        self.assertEqual(R.out_of_scope("audit", [layers, "MyTradingSys/system/NEXT_SESSION.md"]), ["MyTradingSys/system/NEXT_SESSION.md"])
+
     def test_out_of_scope_and_ship_failures_count_as_tries(self):
         with tempfile.TemporaryDirectory() as d:
             p = Path(d) / "lab_runs"
@@ -547,6 +555,11 @@ class WatchdogTest(unittest.TestCase):
         for want in ("STALLED", "nothing ran for", "reading is 3.0 h old"):
             self.assertIn(want, text)
         self.assertEqual(R.stall_findings(old, ready, {}, True, "window full", self.NOW), [])   # a hold is not a stall
+        self.assertEqual(R.stall_findings(old, ready, {}, True, R.guard_hold("2026-10-16T13:30Z IDLE lab budget: x: 4 lab runs"), self.NOW), [])   # the spend guard is a hold
+        rows = [{"card": "x", "at": "2026-10-16T10:30:00Z", "outcome": "BLOCKED"}]
+        self.assertEqual(R.reopened([{"id": "x", "reopened": "2026-10-16T14:00:00Z"}], rows), {"x"})
+        self.assertEqual(R.reopened([{"id": "x", "reopened": "2026-10-16T09:00:00Z"}, {"id": "y"}], rows), set())
+        self.assertEqual(R.guard_hold("2026-10-16T13:30Z DONE card"), "")
         self.assertEqual(R.stall_findings(old, ready, {}, False, "", self.NOW), [])             # lane down is lane_health's job
         bails = [self.ROW | {"card": c, "at": "2026-10-14T00:00:00Z"} for c in ("a", "b", "c")]
         self.assertIn("bailed early 3 runs in a row", " | ".join(R.stall_findings(bails, [], {}, True, "", self.NOW)))

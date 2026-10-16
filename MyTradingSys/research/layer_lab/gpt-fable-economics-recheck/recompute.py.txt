@@ -1,0 +1,46 @@
+﻿from pathlib import Path
+import csv
+from statistics import NormalDist
+from math import sqrt
+ROOT = Path(__file__).resolve().parents[4]
+BASE = ROOT / 'MyTradingSys/research/gross_effect_screen_2026-10-15'
+result = (BASE / 'RESULT.md').read_text(encoding='utf-8')
+pre = (BASE / 'PRE_REG.md').read_text(encoding='utf-8')
+with (BASE / 'decay.csv').open(newline='', encoding='utf-8') as f:
+    decay = list(csv.DictReader(f))
+
+# Pre-audit calculations, run before opening FABLE_RUNS_AUDIT.md.
+z975, z80 = NormalDist().inv_cdf(.975), NormalDist().inv_cdf(.80)
+sd_t = .1304 * sqrt(40)
+se_n200 = sd_t / sqrt(200)
+mde_n200 = (z975 + z80) * se_n200
+print('PRE-AUDIT POWER RECOMPUTATION')
+print(f'T per-encounter sd = .1304*sqrt(40) = {sd_t:.6f} %-points')
+print(f'T MDE per PRE_REG rule from T arm SE = 2.8*.1304 = {2.8*.1304:.6f} %-points')
+print(f'At n=200: SE={se_n200:.6f}; MDE above cost={mde_n200:.6f}; gross threshold={.14+mde_n200:.6f}; threshold/per-encounter sd={(.14+mde_n200)/sd_t:.6f} SD')
+print(f'At n=40, true mean=C, chance observed mean exceeds C+2SE = {1-NormalDist().cdf(2):.6%}')
+print('PASS_FLOW: n_T=40, mean_T=-.0568, C=.14, t_cost=-1.51, DIFF=-.0500, t_DIFF=-.37 => fails')
+print('PASS_CONTROL: n_C=1439, mean_C=-.0081, C=.14, t_cost=-6.03 => fails')
+print('PRE-AUDIT DECAY RECOMPUTATION')
+for arm, side, d, h in [('C','ALL','1','5'),('C','ALL','1','15'),('C','ALL','1','60'),('C','ALL','1','240'),('C','ALL','5','5'),('C','ALL','5','15'),('C','ALL','5','60'),('C','ALL','5','240')]:
+    r=next(x for x in decay if (x['arm'],x['side'],x['d'],x['h'])==(arm,side,d,h))
+    print(f"C ALL d={d} h={h}: gross={r['mean_G']}%, SE={r['se']}%, t(gross/SE)={float(r['mean_G'])/float(r['se']):.4f}")
+
+# Gate / trial arithmetic, following power_mde.py's documented two-point payoff.
+p, rr, cost_r, n = .35, 4, 0.0, 30
+mean_net = p*(rr-cost_r)+(1-p)*(-1-cost_r)
+var_net = p*((rr-cost_r)-mean_net)**2+(1-p)*((-1-cost_r)-mean_net)**2
+mde_r = (z975+z80)*sqrt(var_net)/sqrt(n)
+print('PRE-AUDIT VARIANT ARITHMETIC')
+print(f'1-.975**10 = {1-.975**10:.8%}')
+print(f'power_mde inputs p=.35, RR=4, cost_R=0 (no stop size in committed inputs), n=30 => mean_net={mean_net:.6f}R, MDE={mde_r:.6f}R')
+print('promote.py gate: fee-net net_r>0, ci_low>0, n_trades>=30; variant count only checked against ledger rows')
+
+print('PRE-AUDIT COST-IN-R ARITHMETIC')
+tom3_stop_pct=3/6768*100
+print(f'TOM-3 stop={tom3_stop_pct:.8f}%; all-taker R={.14/tom3_stop_pct:.8f}; maker-in R={.09/tom3_stop_pct:.8f}')
+print(f'TOM-1 stop range={20/24000*100:.8f}% to {20/15000*100:.8f}%; cost R={.14/(20/15000*100):.8f} to {.14/(20/24000*100):.8f}')
+print(f'T-3 expectancy=.35*4-.65={.35*4-.65:.8f}R; stop breakeven against expectancy=.14/.75={.14/.75:.8f}%')
+print('Audit numeric source fields were not read by this computation; only RESULT/PRE_REG/decay and power/gate code inputs above.')
+
+

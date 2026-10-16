@@ -4,7 +4,6 @@
   "commands": [],
   "created": "2026-10-13T06:33:20Z",
   "depends_on": [
-    "tom-v2-dax-dev-backtest"
   ],
   "done_when": "The worked example of spec section 11.4 passes as a test, min_width off leaves an existing tom_bt fixture run unchanged, and the lookback 10/20/40 floors for 2026-06-25 are one line in the card result.",
   "from_inbox": "",

@@ -196,7 +196,10 @@ def render_csv(rows):
 
 
 def read_csv_text():
-    return CSV_PATH.read_bytes().decode("utf-8")
+    """The committed CSV as UTF-8 text with LF line ends. render_csv() always writes LF, but a Windows checkout with
+    core.autocrlf=true (the Git for Windows default, so the windows-latest CI runner) stores the same file with CRLF.
+    Only the line-end convention of the checkout is normalised; every other byte is still compared."""
+    return CSV_PATH.read_bytes().decode("utf-8").replace("\r\n", "\n")
 
 
 def summary(rows):

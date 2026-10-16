@@ -1,0 +1,11 @@
+{
+  "card": "dsa-audit-02-lookahead-time",
+  "done_when": "T02_lookahead_time.md shipped: every detector PASS/FAIL on truncation and poison, static sweep table, clock table with changed-label counts, entry timing, lead L6 resolved, S1/S2 carded.",
+  "from": "JIS-NB",
+  "id": "20261016-014229-dsa-audit-02-lookahead-time",
+  "need": "python scripts/dev/sync.py claim \"dsa-audit-02-lookahead-time\"; python scripts/dev/tasks.py take dsa-audit-02-lookahead-time; git grep -n -E \"resample\\(|center=True|shift\\(-|iloc\\[i ?\\+ ?1\\]|merge_asof|find_peaks|argrelextrema\" -- \"MyTradingSys/*.py\"; git grep -n -E \"ZoneInfo|tz_convert|America/New_York|Europe/London|14:00|13:30\" -- \"MyTradingSys/*.py\"; python scripts/dev/tasks.py done dsa-audit-02-lookahead-time --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"; # AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty) (full brief: python scripts/dev/tasks.py brief dsa-audit-02-lookahead-time)",
+  "posted": "2026-10-16T01:43:23Z",
+  "status": "pending",
+  "target": "DSA-NB",
+  "title": "DSA audit T02: truncation and poison tests for look-ahead, plus session clocks"
+}

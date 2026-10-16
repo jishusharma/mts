@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T05:33:16Z",
+  "commands": [],
+  "created": "2026-10-16T00:44:06Z",
+  "depends_on": [],
+  "done_when": "Report with the claim table, the verdict on the 'loses by construction' sentence and one verdict line (SOUND / FIX-FIRST / BLOCKED); recompute.py.txt saved beside it.",
+  "from_inbox": "",
+  "goal": "FABLE_RUNS_AUDIT.md moves the plan (cost-in-R gate before G3, power before freeze) on numbers an Opus session derived itself. Recompute independently from the committed inputs: s1.2 PASS probability and MDE, s1.4-1.5 decay and sd figures, s2.2 variant arithmetic, s3.2 cost-in-R table including the stop quotes it uses. Table: claim x inputs x GPT value x audit value x match.",
+  "id": "gpt-fable-economics-recheck",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "note": "codex-feed 2026-10-16: luna/medium on purpose (about 1 window point); every G5 power line and the cost-in-R gate (E3) rest on these numbers. Scripts are saved as .py.txt, never .py: a new .py or test file fails the runner's ship gate (3w, 3x, 4b), see LAYER_LAB.md Guards.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex-feed 2026-10-16 (sonnet worker)",
+  "refs": [],
+  "result": "FIX-FIRST; report MyTradingSys/research/layer_lab/reports/2026-10-16_gpt-fable-economics-recheck.md",
+  "scope_in": [
+    "MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/RESULT.md",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/PRE_REG.md",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/decay.csv",
+    "MyTradingSys/research/fable_audit_2026-10-16/CATALOGUE_AUDIT.md (the lines FABLE_RUNS_AUDIT s3.2 cites; read only)",
+    "MyTradingSys/backtest/layers/promotion/promote.py (lines 30-40 and 185-211; read only)",
+    "MyTradingSys/backtest/power_mde.py (read only)",
+    "raw_transcripts_canonical/ (the transcripts CATALOGUE_AUDIT.md cites for the TOM-3 and TOM-1 stops; read only)"
+  ],
+  "scope_out": [
+    "editing FABLE_RUNS_AUDIT.md or any file it cites",
+    "live-path files (execution/, auto_trader*): the s2.3 counts are not part of this card",
+    "new backtests, screens or holdout reads",
+    "judging the recommendations E1-E7 and D1-D3: numbers and quotes only"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/RESULT.md"
+  ],
+  "state": "done",
+  "steps": [
+    "List every numeric or quoted claim in FABLE_RUNS_AUDIT.md sections 1.2, 1.4, 1.5, 2.2 and 3.2 (the lines marked RE-DERIVED plus the unmarked arithmetic beside them) with its line number.",
+    "Recompute each from the committed inputs only (RESULT.md, decay.csv, the PRE_REG pass rule, promote.py, power_mde.py) with a stdlib script saved as MyTradingSys/research/layer_lab/gpt-fable-economics-recheck/recompute.py.txt; write your value down before you read the audit's number.",
+    "Cost-in-R table (s3.2): open raw_transcripts_canonical/yRvMW6lgN1o_raw.txt (TOM-3 stop), k0zm5NYn0IQ_raw.txt (TOM-1 stop) and hQ8sOq67x5o_raw.txt (T-3 swing numbers); check each quote says what the table uses (12 ticks, 20 points, 35 % and 4 R, the 6,768 level, ES tick 0.25), then the arithmetic. A quote you cannot find is NOT_IN_DATA, not BLOCKED.",
+    "Report: table claim (file:line) x inputs (file:line) x GPT value x audit value x MATCH / MISMATCH / NOT_IN_DATA, then the sentence 'every intraday Tom/Fabio row at the stop he states loses on Binance by construction' tested against the table (HOLDS / OVERSTATED / WRONG, with the numbers).",
+    "For each MISMATCH that changes a recommendation capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "Fable runs audit: GPT recompute of its RE-DERIVED economics numbers (power, variant maths, cost-in-R) and their quotes"
+}

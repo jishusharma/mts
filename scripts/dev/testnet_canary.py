@@ -23,6 +23,8 @@ MyTradingSys/research/testnet_status/CANARY_<YYYY-MM-DD>.md.  Exit code 0 GREEN,
 Usage (repo root): python scripts/dev/testnet_canary.py [--repo .] [--now ISO] [--no-proc] [--proc-json F]
                    [--run-gates] [--write-state] [--out-dir D]
 """
+import nowin  # B190: scheduled run (hidden console) must not flash git windows
+nowin.install()
 import argparse
 import json
 import pathlib

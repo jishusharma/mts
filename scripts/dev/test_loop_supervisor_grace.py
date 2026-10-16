@@ -17,9 +17,22 @@ class LoopSupervisorGrace(unittest.TestCase):
         m = re.search(r"\$RestartGraceSec\s*=\s*(\d+)", self.src)
         self.assertGreaterEqual(int(m.group(1)), 360)
 
+    def test_stale_limit_tolerates_slow_snapshot_cycle(self):
+        # mvn_snapshot timeouts (90 s) + the 60 s retry sleep make a 150 s gap normal on this host (139 timeouts 2026-10-15)
+        m = re.search(r"\$SnapshotStaleSec\s*=\s*(\d+)", self.src)
+        self.assertGreaterEqual(int(m.group(1)), 300)
+
     def test_started_wrapper_alive_is_not_dead(self):
         self.assertIn("$startedPid = $nid", self.src)
         self.assertRegex(self.src, r"if \(\$inGrace -or \$starting\)")
+
+    def test_no_launcher_overrides_grace_below_default(self):
+        # 2026-10-16: mode.ps1 and the generated launchers passed -RestartGraceSec 180, which silently beat the script default
+        root = SUP.parents[2]
+        for rel in ("scripts/core/mode.ps1", "runtime_data/launch-supervisor.vbs", "runtime_data/launch-supervisor.ps1"):
+            txt = (root / rel).read_text(encoding="utf-8")
+            for m in re.finditer(r"-RestartGraceSec\s+(\d+)", txt):
+                self.assertGreaterEqual(int(m.group(1)), 360, rel)
 
     def test_parses(self):
         ps = shutil.which("pwsh") or shutil.which("powershell")
