@@ -90,6 +90,30 @@ function Log-Line {
     Add-Content -LiteralPath $LogFile -Value $line -Encoding UTF8
 }
 
+$script:CpRetryAfter = [datetime]::MinValue
+function Get-DirectSnapshotCmd {
+    # B191: returns the cmd line that runs the snapshot with plain java, or $null (caller falls back to Maven).
+    # The runtime classpath is built once by `mvn dependency:build-classpath` and cached in runtime_data\snapshot.cp,
+    # rebuilt when pom.xml is newer. A failed build is not retried for 30 min, so a broken Maven never costs every cycle.
+    try {
+        $cpFile = Join-Path $R "runtime_data\snapshot.cp"
+        $pom = Join-Path $R "pom.xml"
+        if (-not (Test-Path (Join-Path $R "target\classes\datafeed\Main.class"))) { return $null }
+        $stale = (-not (Test-Path $cpFile)) -or ((Get-Item $cpFile).LastWriteTime -lt (Get-Item $pom).LastWriteTime)
+        if ($stale) {
+            if ((Get-Date) -lt $script:CpRetryAfter) { return $null }
+            $script:CpRetryAfter = (Get-Date).AddMinutes(30)
+            $gen = 'mvn -q dependency:build-classpath "-Dmdep.outputFile=runtime_data\snapshot.cp" > NUL 2>&1'
+            $g = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $gen) -TimeoutSec 180 -Tag "build_classpath" -WorkDir $R
+            if ($g -ne 0 -or -not (Test-Path $cpFile)) { Log-Line ("build_classpath failed exit=" + $g + ", using mvn"); return $null }
+            Log-Line "build_classpath ok (direct java snapshot enabled)"
+        }
+        $cp = (Get-Content -LiteralPath $cpFile -Raw).Trim()
+        if (-not $cp) { return $null }
+        return ('java -cp "target\classes;' + $cp + '" datafeed.Main snapshot ' + $Symbol + ' > NUL 2>&1')
+    } catch { return $null }
+}
+
 function Invoke-WithTimeout {
     param(
         [Parameter(Mandatory=$true)][string]$File,
@@ -449,7 +473,17 @@ try {
     
         Write-Host "[apparatus] fetching snapshot..."
         $mvnCmd = 'mvn -q exec:java "-Dexec.mainClass=datafeed.Main" "-Dexec.args=snapshot ' + $Symbol + '" > NUL 2>&1'
-        $rc = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $mvnCmd) -TimeoutSec 180 -Tag "mvn_snapshot" -WorkDir $R
+        # B191: direct java on the cached runtime classpath (no cmd+Maven+plugin JVM start every cycle: that cold start is what
+        # starved under host load). Any miss falls back to the Maven command above, so behaviour never gets worse.
+        $rc = $null
+        $directCmd = Get-DirectSnapshotCmd
+        if ($directCmd) {
+            $rc = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $directCmd) -TimeoutSec 120 -Tag "java_snapshot" -WorkDir $R
+            if ($rc -ne 0) { Log-Line ("direct snapshot failed exit=" + $rc + ", falling back to mvn"); $rc = $null }
+        }
+        if ($null -eq $rc) {
+            $rc = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $mvnCmd) -TimeoutSec 180 -Tag "mvn_snapshot" -WorkDir $R
+        }
         if ($rc -ne 0) {
             Log-Line ("SNAPSHOT_FAIL exit=" + $rc)
             if ($Once) { break }
