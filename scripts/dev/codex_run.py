@@ -137,7 +137,11 @@ def attempts(home):
                 r = json.loads(line)
             except ValueError:
                 continue
-            if r.get("outcome") not in ("DONE", "LIMIT") and not r.get("dry"):
+            if r.get("outcome") == "REOPENED" and not r.get("dry"):
+                # a session fixed the cause (e.g. a red gate) and stamped the card: earlier failed tries no longer count
+                out.pop(r["card"], None)
+                bails.pop(r["card"], None)
+            elif r.get("outcome") not in ("DONE", "LIMIT") and not r.get("dry"):
                 if is_bail(r):
                     bails[r["card"]] = bails.get(r["card"], 0) + 1
                     if bails[r["card"]] <= BAIL_FREE:
