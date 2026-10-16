@@ -10,7 +10,7 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 5. SHORT SESSIONS: one session = one task; hand over when it is done, after 10 operator turns or 40 tool turns, whichever first (commit, then steps 3-4, one line, stop). Live market threads: after 5 screenshot reads. Hook `turn_meter.py`: a turn = one assistant message.
 
 ## Cost and routing
-- Interactive sessions and subagents: Sonnet (implementations, spec-derived tests), Opus only when the operator names it; relay/dispatcher sessions run on the routine model. Haiku for status/mechanical work; subagents only if clearly needed. Wait on a queue with one background shell, never a polling agent; spot-check one worker claim.
+- Interactive sessions and subagents: Sonnet (implementations, spec-derived tests), Opus only when the operator names it; relay/dispatcher sessions run on the routine model. Haiku for mechanical work; workers = sessions (`start_session`). Wait on a queue with one background shell, never a polling agent; spot-check one worker claim.
 - Do not ask routine questions: pick the default, finish end to end; free public market data and YouTube videos are pre-approved.
 - T0 script first, then by card lane (HOW_MTS_RUNS.md): run-and-report goes to DSA (`desk.py post ... --target DSA`; low on budget: post the rest to DSA, then hand over).
 - Logins share one repo and queue (CLOUD_ACCOUNTS.md): whoever has budget takes NEXT_SESSION.md; never idle for a weekly reset.
@@ -29,7 +29,7 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 - The live tree (`.mts_live`, JIS-NB) runs the testnet system and changes only by MTS-AutoDeploy (manual fallback: DEPLOY_RUNBOOK.md). Builders never deploy, stop/restart processes, touch HALT files or open trades. "Supervisor" = the MTS-Supervisor task (process revival only).
 - Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety checks fail closed. New timeframe or layer family: grep every TF/family map. Whoever sets AUTO_PAUSE logs owner + expected end in SUPERVISOR_LOG; each wake clears or escalates an overdue pause.
 - Layers (operator 2026-10-13, replaces "Tom is core"): no fixed core. Tom, Fabio and every other system are layers (combine, filter or switch off); fee-net out-of-sample results decide what trades, never doctrine (PROJECT_VISION).
-- Numbers (operator 2026-10-13, replaces the 2026-09-30 provenance ban): label each parameter SOURCED (trader's words, quote + file:line) or OURS (judgement or tuned). OURS is allowed: chosen on DEV, checked once on VALIDATION, holdout read once, variants in the trial ledger. Never call OURS the trader's.
+- Numbers (operator 2026-10-13): label each parameter SOURCED (trader's words, quote + file:line) or OURS (judgement or tuned). OURS is allowed: chosen on DEV, checked once on VALIDATION, holdout read once, variants in the trial ledger. Never call OURS the trader's.
 - Anything off: report -> independent audit -> fix. Never conclude from truncated output (`cut`, `head`, log tails); parse the real format, then count.
 - Windows: write files with `newline='\n'`; long patches go in a .py script, not a heredoc. The Bash tool strips backslashes: write paths/regexes with Write/Edit; Write decodes backslash-u escapes: use `chr()`; check CR with python bytes, not `grep -c`.
 - Never add to `.git/info/exclude`: an ignore that matters goes in `.gitignore`.
@@ -38,6 +38,7 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 | Need | Read |
 |---|---|
 | start, ship, claims, push fallback; hand-over, task cards | PARALLEL.md; RELAY.md, TASK_REFINEMENT.md |
+| dev-time waste | TRAFFIC_BUSTERS.md |
 | machines, logins, lanes, who may touch what; surfaces, names | HOW_MTS_RUNS.md, DEVICES.md, CLOUD_ACCOUNTS.md; SURFACE_POLICY.md |
 | deploy, CI/CD | DEPLOY_RUNBOOK.md |
 | layers (index); Codex lab | LAYERS.md; CODEX_START.md, LAYER_LAB.md |

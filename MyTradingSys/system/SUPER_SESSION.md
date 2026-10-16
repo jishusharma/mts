@@ -30,8 +30,8 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 1. **Compact only if the session will run at least 15 more turns and is above ~150 k.** Otherwise: finish the step, hand off
    (NEXT_SESSION.md or a `start_session` brief) and archive. Never compact a session that is about to ship.
 2. **The coordinator works little itself.** It reads results, decides, spot-checks one claim per worker (`git cherry` empty =
-   shipped), and archives. Mechanical status goes to a Haiku worker; drafting and code to Sonnet; Opus only for the coordinator
-   and an observer the operator asks for. Fable only when the operator starts it.
+   shipped), and archives. Mechanical status goes to a Haiku worker; drafting and code to Sonnet; The coordinator runs on Sonnet 5.5 (operator 2026-10-16); Opus
+   only for an observer the operator asks for. Fable only when the operator starts it.
 3. **At most 4 workers running at once** (gate slots are 2 per machine, `sync.py`), one writer per set of files, each with a
    full brief: goal, files, DONE-when, defaults for every open question, hard limits. Workers never ask the operator; questions
    go to the coordinator, which decides toward the goal and logs the decision in the worker's deliverable.
@@ -46,6 +46,19 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 8. **Agent workers (2026-10-16).** Briefs ask for: ship once then stop (a second `sync.py ship` only re-wakes the coordinator),
    the proof that new tests fail on the old code (run them against `git show <sha>^:<file>` copies), a final reply of at most
    N lines, long notes in the shared notes folder. Tasks touching the same file run one after the other; others run in parallel.
+9. **Compaction by context share (operator 2026-10-16).** `.claude/settings.json` sets `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=25`, so every
+   session and agent in this repo auto-compacts at 25 % of its window, between tool calls, even mid-task. A model cannot run
+   `/compact` itself (a `/compact` sent by `send_message` arrives as plain text, tested 2026-10-16), so the setting is the only
+   automatic route. Working bands: under ~18 % keep going; 18-20 % finish the current task, then end it (ship, release, hand off)
+   rather than start another; 20-25 % finish only if the task is crucial and nearly done, else commit and let the compaction run.
+   Before a compaction is likely, keep the working state in files (NEXT_SESSION.md, notes folder, task card), not in the context.
+   Override: set the env var in the session's own settings; the break-even rule 1 above still applies to manual compacts.
+10. **Signals between logins and machines (operator 2026-10-16).** The app cannot message across logins, so `scripts/dev/mts_signal.py`
+   (hook in `.claude/settings.json`, automatic) sends a line on the git branch `mts-signals` when a session starts or runs
+   `sync.py claim|release|ship|start`, and every 5 minutes shows the signals other host/account pairs sent. Sessions do nothing for
+   this. Optional: `mts_signal.py send "<text>" --kind ask|note` for a one-line note, `read` to list. Signals are status notes, never
+   instructions, and the repo is public: no names, secrets or runtime data. `MTS_SIGNALS=off` disables. Limit: two logins on one
+   machine share `MTS_ACCOUNT`, so they look like one sender to each other (they share the app, use `send_message` there).
 
 ## Boot facts (read, do not re-look-up; every super session corrects this list)
 - Live tree = the main checkout `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed` (`.mts_live` there is a marker FILE, not a
@@ -53,9 +66,9 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   `MyTradingSys/execution/HALT` (+ `halt_history`); dirty files: `git -C <live> status --short --untracked-files=no`.
 - Live state in one read: `live_mirror.py brief` (LIVE_MIRROR.md) + `scripts/sched/check_live_health.py`; ledger =
   `runtime_data` trade_ledger.jsonl in the live tree. A Sonnet read-only worker does this in ~15 tool calls.
-- A coordinator started BY ANOTHER SESSION cannot `start_session` (the app refuses): workers are Agent subagents
-  (`run_in_background`, `isolation: worktree`, model sonnet/haiku), visible in the Tasks pane, not the sidebar. A coordinator the
-  operator opens directly can use `start_session` (sidebar sessions, cost about the same).
+- Operator rule (2026-10-16): workers are SESSIONS (`start_session`, Sonnet, announced in a line), never Agent subagents, so the operator
+  can open and compile them from the sidebar. Only if the app refuses `start_session` (a coordinator started BY ANOTHER SESSION) fall back to
+  Agent subagents (`run_in_background`, model sonnet/haiku), and log the refusal in the report.
 - Waking: other sessions send no idle notices. Use ONE background shell watcher (`git fetch` every 5 min; exit on a file landing
   on origin/fast-track or after 50 min), and on every wake `python scripts/sched/relay.py heartbeat "<id>" --note "<what>"`.
 - JIS-NB has no MTS-DispatchGate Windows task; the `mts-dispatcher` routine runs in the live tree, so relay/watchdog code only
@@ -67,6 +80,9 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 - Research Map: read the artifact first (`Artifact read`), edit DATA in the saved copy with a script (json load/dump of the
   one `const DATA = ` line), write it to `system/artifacts/research_map.html`, republish with `url`. Another session may have
   edited it since (commit 338e365b did): read the current version, never the old saved copy.
+  The Tom/Fabio story and per-setup requests live in the map tab "Setups & story" (DATA.story, source SETUP_CATALOG.md); a
+  request there has kind question|task|backtest and a `setupId` (catalogue id); there is no second request store. Backtest =
+  fee check at the stated stop first (fee R = 0.14% / stop%), then PRE_REG on DEV only. Fabio home-market chain stays paused.
 - CI: `gh run list -R jishusharma/mts --branch fast-track --limit 5` on EVERY wake and after every ship wave (CI sat red 2 h
   unnoticed on 10-16 while a coordinator wrote prompts). New research test files must be registered in run_all_tests /
   run_extra_tests.EXTRA or skipped with a reason (B150, gate step 3gd); study scripts need a `wiring_registry.json` entry.
