@@ -104,7 +104,7 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   and a waste of resources ... No other session should do this"). On an event turn where `start_session` is refused, run the
   worker as a background Agent subagent at once (rule above) instead of proposing an `own_initiative` card. Applies to every
   coordinator and worker.
-- Worker type by size (operator 2026-10-16, hard rule): work that fits well within about 80k-200k tokens (one card, fix, check
+- Worker type by size (operator 2026-10-16, hard rule): work that fits well within about 80k-100k tokens (one card, fix, check
   or doc) goes to a fresh background Agent subagent (`run_in_background`, Sonnet), used once and never reused (no SendMessage
   follow-ups: a new task gets a new agent). It needs no click and no compaction. Long or open-ended work (multi-hour watch, a
   build wave) goes to a `start_session` session. Goal: economical and fast at once.
