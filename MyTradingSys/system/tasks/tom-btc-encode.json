@@ -4,7 +4,6 @@
   "commands": [],
   "created": "2026-10-13T17:31:44Z",
   "depends_on": [
-    "tom-btc-event-study",
     "tom-btc-eye-read"
   ],
   "done_when": "Tests green; rule list with SOURCED/OURS labels in TOM_ON_BTC.md section 6.",
