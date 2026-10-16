@@ -179,3 +179,4 @@ Lead with: "Run with zero operator input: never ask; on any open question take t
 (testnet only, no secrets, no live tree or processes, no VALIDATION/HOLDOUT reads unless the card says so), a budget stop
 (+N weekly points), and a reply limit (at most 5 lines). Model and effort are set in the App before pasting; the prompt cannot set them.
 Used for the Fable pilot 2026-10-15 (FABLE_PILOT_PROMPT.md).
+- SUPER-NB-1017 (2026-10-17, Sonnet coordinator, 6 Agent workers because start_session is refused for a session started by another session): 14 cards shipped, weekly 66 -> 67%; Agents fit the 100k rule; compound `cd && git`/merge commands were denied, use git -C.
