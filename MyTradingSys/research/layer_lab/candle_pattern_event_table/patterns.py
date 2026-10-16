@@ -1,4 +1,4 @@
-﻿"""Causal candle pattern predicates. Definitions: PRE_REG_CANDLE_PILOT.md:41-56."""
+"""Causal candle pattern predicates. Definitions: PRE_REG_CANDLE_PILOT.md:41-56."""
 def _bar(b):
     o,h,l,c=(float(b[k]) for k in ('o','h','l','c'))
     return o,h,l,c,abs(c-o),h-l

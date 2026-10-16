@@ -1,4 +1,4 @@
-﻿from stop_strata import summarize_stop_geometry, stratified_e, stop_comparability
+from stop_strata import summarize_stop_geometry, stratified_e, stop_comparability
 
 
 def test_stop_shares_and_median_p90_are_hand_computable():

@@ -1,4 +1,4 @@
-﻿"""Forward excursion table; signal timestamp is close and forward bars begin at i+1."""
+"""Forward excursion table; signal timestamp is close and forward bars begin at i+1."""
 def build_event_table(events, bars, horizon=20):
     rows=[]
     for event in events:
