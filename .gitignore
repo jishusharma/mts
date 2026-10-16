@@ -46,6 +46,7 @@ runtime_data/speed_baselines/*.json
 Dumps/SESSION_PASTE.txt
 
 runtime_data/live_tape.md
+runtime_data/gate_timing.jsonl
 runtime_data/last_tape_alert.json
 runtime_data/mts-watch.log
 runtime_data/mts-watch.out.txt
