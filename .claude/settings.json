@@ -15,6 +15,11 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/turn_meter.py\" hook",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/mts_signal.py\" hook",
+            "timeout": 12
           }
         ]
       }
@@ -31,6 +36,11 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/turn_meter.py\" hook",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/mts_signal.py\" hook",
+            "timeout": 12
           }
         ]
       }
@@ -42,6 +52,11 @@
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/turn_meter.py\" hook",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/dev/mts_signal.py\" hook",
+            "timeout": 12
           }
         ]
       }

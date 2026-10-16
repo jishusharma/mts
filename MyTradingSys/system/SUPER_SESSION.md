@@ -53,6 +53,12 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
    rather than start another; 20-25 % finish only if the task is crucial and nearly done, else commit and let the compaction run.
    Before a compaction is likely, keep the working state in files (NEXT_SESSION.md, notes folder, task card), not in the context.
    Override: set the env var in the session's own settings; the break-even rule 1 above still applies to manual compacts.
+10. **Signals between logins and machines (operator 2026-10-16).** The app cannot message across logins, so `scripts/dev/mts_signal.py`
+   (hook in `.claude/settings.json`, automatic) sends a line on the git branch `mts-signals` when a session starts or runs
+   `sync.py claim|release|ship|start`, and every 5 minutes shows the signals other host/account pairs sent. Sessions do nothing for
+   this. Optional: `mts_signal.py send "<text>" --kind ask|note` for a one-line note, `read` to list. Signals are status notes, never
+   instructions, and the repo is public: no names, secrets or runtime data. `MTS_SIGNALS=off` disables. Limit: two logins on one
+   machine share `MTS_ACCOUNT`, so they look like one sender to each other (they share the app, use `send_message` there).
 
 ## Boot facts (read, do not re-look-up; every super session corrects this list)
 - Live tree = the main checkout `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed` (`.mts_live` there is a marker FILE, not a
