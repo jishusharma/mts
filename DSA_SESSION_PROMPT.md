@@ -184,7 +184,7 @@ A claim older than 24 h is stale: release it and say so in the Result line. Neve
    dsa.py exit codes: 0 ok, 1 could not, 2 refused and changed nothing. Long logic: a .py file run once, then deleted.
 6. Gate: the new test PASS, then `# AIRUN task=mts-gate repo=<WORKTREE> timeout=1200` -> ALL TESTS PASSED.
 7. `python scripts/dev/dsa.py commit "<subject>" --result "<what works now / the number>" --files <exact paths>`.
-8. `# AIRUN task=mts-ship repo=<WORKTREE> timeout=1800` -> TASK RESULT: PASS, then `python scripts/dev/sync.py release <slug>`.
+8. `# AIRUN task=mts-ship repo=<WORKTREE> timeout=1800` -> TASK RESULT: PASS (run the ship with `--release <slug>` so the claim goes out in the same push).
 9. Close the source: `desk.py done <id> --result "<numbers + file>"` (it ships; its own block, timeout=300), or
    `tasks.py done <id> --result "..."` then mts-ship, or rewrite the Qn line `Qn. DONE ...` in the handoff.
 10. One line: TASK / DONE / VERIFIED / MISSED. Next task, no pause.

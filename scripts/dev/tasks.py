@@ -217,7 +217,7 @@ def brief(card):
     if card.get("flow"):
         L.append(f"Close: python scripts/dev/lab_flow.py finish {card['id']} --report REPORT_PATH --verdict PASS|REWORK|BLOCKED --result \"evidence summary\"; runner ships.")
     else:
-        L.append(f"Close: sync.py claim, work, tasks.py done {card['id']} --result \"<number/file>\", sync.py ship, sync.py release; report it shipped only with an empty `git cherry origin/fast-track <sha>`.")
+        L.append(f"Close: sync.py claim, work, tasks.py done {card['id']} --result \"<number/file>\", sync.py ship --release <slug>; report it shipped only with an empty `git cherry origin/fast-track <sha>`.")
     return "\n".join(L)
 
 

@@ -26,7 +26,7 @@ leaves a design choice open, `begin --skip <card>` and take the next.
    DONE, put the next step in its line). Do not append `## Update` sections: the outcome goes in the commit body `Result:` line.
 4. `python scripts/sched/relay.py handoff --file MyTradingSys/system/NEXT_SESSION.md --go --session "<this session's title>"`
    when another unblocked non-OPUS task remains, else `--stop "<reason>"`. Commit (body carries `Result:`),
-   `python scripts/dev/sync.py ship`, `sync.py release <slug>`, `sync.py where`.
+   `python scripts/dev/sync.py ship --release <slug>`, `sync.py where`.
 5. Do NOT start another scheduled task: the App asks a human to approve a session starting another one, so unattended launch
    chains die (B164). Instead free the launch lock with the `UNLOCK:` command tick printed (`python <worktree>/scripts/sched/relay.py
    unlock` if there is none) so the next tick starts the next handoff at once. Skip this after `--stop`.
