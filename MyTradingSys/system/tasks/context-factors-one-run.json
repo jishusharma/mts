@@ -52,7 +52,7 @@
     "research/context_null_2026-10-16/context_null.py:163-276 run()",
     "backtest/research_kit.py:102-146 power_check, holm"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Confirm AUDIT_BEFORE_RUN.md exists in the folder with the word OK (card context-factors-pit-audit); on FIX-FIRST write BLOCKED.md and stop. Record the sha of context_asof.py and PRE_REG_V2.md.",
     "python run_compare.py (grid_context.csv, gitignored) and python episode_counts.py; counts must equal EPISODE_COUNTS.md; print the day table and check it equals PRE_REG_V2.md s.2 (a mismatch = BLOCKED).",
