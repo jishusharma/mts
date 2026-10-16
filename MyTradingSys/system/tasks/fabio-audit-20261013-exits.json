@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T21:53:04Z",
   "commands": [],
   "created": "2026-10-13T05:09:07Z",
   "depends_on": [],
@@ -20,7 +21,7 @@
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md"
   ],
-  "result": "",
+  "result": "H2: exit rows relabelled inferred/unknown, observed flat + Daily P/L deltas kept, -46.02 interval (22239.02 -> 22193) added, M4 interval totals fixed. UNRESOLVED: exit fill prices/causes and F8 81$/F10 36$/F11 35$/F12/F13 label gaps need a fill record not in repo",
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
@@ -36,7 +37,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md H2 row and per-row table EX column"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list exit rows F6-x,F8-x,F10-x,F11-x,F12-x,F13-x,F14-x and their causal wording",
     "relabel family to *_inferred and note to observed daily P/L delta only, keep the observed numbers",

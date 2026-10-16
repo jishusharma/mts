@@ -76,8 +76,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `fabio-audit-20261013-attribution` ready p2 SONNET: H6: Separate secondary presenter settings from Fabio direct parameters
   - `fabio-audit-20261013-counts` ready p2 SONNET: H4: Rebuild Fabio parent-trade inventory coverage and stop statistics
-  - `fabio-audit-20261013-dates` ready p2 SONNET: H3: Replace unsupported Fabio dates and source each execution timezone
-  - `fabio-audit-20261013-exits` ready p2 SONNET: H2: Reconcile Fabio exit causes and daily PnL deltas with fills
   - `fabio-audit-20261013-rules` ready p2 SONNET: H5: Correct Fabio management generalizations and distinguish order drawings
   - `fabio-xuyq-asr-extract` ready p2 JIS-NB: Fabio xUyqIjCfZzg: finish ASR transcription (JIS-NB, resumable) then canonical transcript + V2 extract + FAB c
   - `fabio-ledger-f13-outcome-provenance-2910` raw p3 SONNET: fabio-ledger: F13 outcome provenance (-2910 vs stop -1760)
