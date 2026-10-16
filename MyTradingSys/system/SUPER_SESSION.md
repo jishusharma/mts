@@ -30,8 +30,8 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 1. **Compact only if the session will run at least 15 more turns and is above ~150 k.** Otherwise: finish the step, hand off
    (NEXT_SESSION.md or a `start_session` brief) and archive. Never compact a session that is about to ship.
 2. **The coordinator works little itself.** It reads results, decides, spot-checks one claim per worker (`git cherry` empty =
-   shipped), and archives. Mechanical status goes to a Haiku worker; drafting and code to Sonnet; Opus only for the coordinator
-   and an observer the operator asks for. Fable only when the operator starts it.
+   shipped), and archives. Mechanical status goes to a Haiku worker; drafting and code to Sonnet; The coordinator runs on Sonnet 5.5 (operator 2026-10-16); Opus
+   only for an observer the operator asks for. Fable only when the operator starts it.
 3. **At most 4 workers running at once** (gate slots are 2 per machine, `sync.py`), one writer per set of files, each with a
    full brief: goal, files, DONE-when, defaults for every open question, hard limits. Workers never ask the operator; questions
    go to the coordinator, which decides toward the goal and logs the decision in the worker's deliverable.
