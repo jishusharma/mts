@@ -799,5 +799,9 @@
  "MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py": {
   "disp": "TOOL",
   "why": "Forward MFE/MAE in signal-range R for research events, starting strictly after the signal close; covered by test_patterns.py; no live imports."
+ },
+ "MyTradingSys/research/layer_lab/context_fix1_stop_strata/stop_strata.py": {
+  "disp": "TOOL",
+  "why": "Count-only V2 stop geometry summaries, relative stop-gap flag and f3_stop_tf-stratified E helper; covered by test_stop_strata.py; no live imports."
  }
 }
