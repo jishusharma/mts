@@ -48,3 +48,19 @@ def test_first_hit_ambiguity_prefers_stop_conservatively():
             "price": 100, "stop": 98, "split": "TRAIN"}
     bars = {"t": [1640995200000, 1640995260000], "h": [100, 103], "l": [100, 97], "c": [100, 100]}
     assert event_table.measure_fire(fire, bars, horizon=1)["first_hit"] == "stop_1R"
+
+
+def test_dev_end_is_2024_07_01_and_no_fire_or_bar_at_or_after_it():
+    cut = 1719792000000  # 2024-07-01 00:00 UTC, computed independently
+    assert event_table.DEV_END_MS == cut
+    m = 60000
+    bars = {"t": [cut - 2 * m, cut - m, cut, cut + m, cut + 2 * m],
+            "h": [100, 101, 500, 500, 500], "l": [100, 99, 1, 1, 1], "c": [100] * 5}
+    fire = {"key": "a", "tf": "1m", "side": "long", "t_fire_ms": cut - 2 * m,
+            "price": 100, "stop": 98, "split": "TRAIN"}
+    row = event_table.measure_fire(fire, bars, horizon=5)
+    assert row["status"] == "OK" and row["bars_forward"] == 1  # only the bar before the cut
+    assert row["mfe_R"] == 0.5 and row["mae_R"] == 0.5
+    late = dict(fire, t_fire_ms=cut)
+    assert event_table.measure_fire(late, bars, horizon=5)["status"] == "NOT_IN_DATA"
+    assert event_table.build_event_table([late, dict(fire, t_fire_ms=cut + m)], {"1m": bars}) == []
