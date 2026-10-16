@@ -36,7 +36,7 @@ no answer; the conservative reading was chosen each time.
 | Stop | the ladder stop of the episode row: long = low of the rung candle (1d, else 12h, else 8h; `CONTEXT_FACTORS_SPEC.md` F3), short = its high | SOURCED (operator: "the stop would be below the previous daily candle ... refined for 12 hours or 8 hours") |
 | Risk R | `abs(entry - stop)`; an episode whose `open[t+1]` is already at or beyond the stop is DROPPED (counted, not traded) | DECISION (OURS) |
 | Target | entry + 1.5 R (long) / entry - 1.5 R (short), fixed | DECISION (OURS); TARGET_R 1.5 as in `COUNTS.md` section 0 |
-| Exit rule on 1m bars after the fill bar | a bar whose low <= stop (long) is a stop exit at `min(open, stop)`; a bar whose high >= target is a target exit at the target; a bar that touches both is a STOP (conservative). Fill bar: stop only (`backtest/tom_bt.py:203-206`) | SOURCED gap rule (`tom_bt.py:203-204`), both-touched = stop DECISION (OURS) |
+| Exit rule on 1m bars after the fill bar | a bar whose low <= stop (long) is a stop exit at `min(open, stop)`; a bar whose high >= target is a target exit at the target; a bar that touches both is a STOP (conservative). Fill bar: stop only (`backtest/tom_bt.py:205-208`) | SOURCED gap rule (`tom_bt.py:207`), both-touched = stop DECISION (OURS) |
 | Max hold | 1440 bars (24 h) after the fill, then exit at that bar's close | DECISION (OURS) |
 | Gross outcome | `gross_r = sgn x (exit - entry) / R` | arithmetic |
 | Cost | all-taker round trip 0.14 % of entry: `cost_r = 0.14 / stop_pct` with `stop_pct = R / entry x 100`; maker-in readout 0.09 % reported beside it, never a verdict | SOURCED (`backtest/research_kit.py:21-22`, `TOM_LAYER_V2_SPEC.md:331-332` rule) |
@@ -109,7 +109,7 @@ message `context-factors: episode ledger (no outcome)` before `outcome.py` runs.
 ## 7. Known traps (each one is a check in the script or a test)
 1. The prior candle at a bucket close (RT-1): `PRIOR_RULE = "last_closed"` in both builds, `test_rt1_day_close_grid_uses_the_day_that_just_closed`.
 2. Stop from the partial day's low: plant `ladder_final_day` caught; the ladder reads only closed candles.
-3. Gap through the stop: fill at `min(open, stop)` (long), stop-only on the fill bar (`tom_bt.py:203-206`); test case in `test_outcome.py`.
+3. Gap through the stop: fill at `min(open, stop)` (long), stop-only on the fill bar (`tom_bt.py:205-208`); test case in `test_outcome.py`.
 4. Both target and stop inside one 1m bar: stop (conservative); test case.
 5. Entry already beyond the stop: dropped, counted; test case.
 6. Overlapping trades: day-clustered SE; controls never inside an event window (`context_null` forbid mask).

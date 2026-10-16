@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/research/context_factors_2026-10-16 -q",
+    "python -m pytest MyTradingSys/research/context_null_2026-10-16 -q",
+    "python scripts/dev/lookahead_lint.py",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-16T16:47:31Z",
+  "depends_on": [],
+  "done_when": "RESULT.md with the 14-cell verdict table (PASS/FAIL/INCONCLUSIVE, Holm m=36, sub-period signs), episodes.csv committed before the outcome commit, 14 VERDICTS.csv rows, lint and quick gate green, shipped.",
+  "from_inbox": "",
+  "goal": "Run research/context_factors_2026-10-16/PRE_REG.md once, as written: ladder outcome per episode (sections 1-2), 14 cells (section 3) against context_null matched controls (section 4), RESULT.md + 14 verdicts.py rows.",
+  "id": "context-factors-one-run",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "Zero operator input: PRE_REG section 0 names every default. Five of the 14 cells are INCONCLUSIVE by count before the run (F4, F5 both sides, F6 short); compute and print them anyway. No net-of-cost claim is pre-registered.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "research/context_factors_2026-10-16/PRE_REG.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/context_factors_2026-10-16/ (outcome.py, test_outcome.py, episodes.csv, RESULT.md)",
+    "MyTradingSys/research/context_null_2026-10-16/context_null.py: ONE optional outcome= argument to run() + test",
+    "scripts/dev/run_extra_tests.py: add test_outcome.py",
+    "MyTradingSys/research/VERDICTS.csv via verdicts.py add"
+  ],
+  "scope_out": [
+    "any parameter change in context_asof.py or PRE_REG.md",
+    "VALIDATION/HOLDOUT bars",
+    "pit_levels_2026-10-16/",
+    "pairs, thresholds or fields beyond the 14 cells",
+    "live-path code",
+    "a second run"
+  ],
+  "size": "M",
+  "sources": [
+    "research/context_factors_2026-10-16/PRE_REG.md (sections 0-9)",
+    "research/context_factors_2026-10-16/CONTEXT_FACTORS_SPEC.md",
+    "research/context_factors_2026-10-16/EPISODE_COUNTS.md",
+    "research/context_null_2026-10-16/context_null.py:163-276 run()",
+    "backtest/research_kit.py:102-146 power_check, holm"
+  ],
+  "state": "ready",
+  "steps": [
+    "python run_compare.py to regenerate grid_context.csv (gitignored), then python episode_counts.py; counts must equal EPISODE_COUNTS.md",
+    "write episodes.csv (section 5), commit 'context-factors: episode ledger (no outcome)'",
+    "outcome.py + test_outcome.py (sections 2, 7); the test fails on a stub first; add it to run_extra_tests.py",
+    "context_null.run(outcome=) + a test that outcome=None reproduces the existing test numbers",
+    "one run per cell and side (section 4); RESULT.md verdict table first, secondary rows after",
+    "verdicts.py add 14 rows; lookahead_lint.py clean; run_all_tests.py --quick; sync.py ship"
+  ],
+  "tests": "test_outcome.py: stop exit with a gap (fill at min(open, stop)), target exit, both-touched bar = stop, 24h time exit, dropped entry, hand numbers; test_context_null: outcome=None unchanged; the 18 test_context_asof tests stay green",
+  "title": "Context factors: one-run filter verdicts vs context_null (PRE_REG frozen)"
+}
