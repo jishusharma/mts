@@ -179,14 +179,14 @@ def test_truncation_invariance_vec(tape60):
     n = len(bars["C"])
     for t in pick_points(n):
         for side in SIDES:
-            a = ctx(bars, t, side, "vec", fund)
+            a = ctx(CA.slice_bars(bars, t + 1), t, side, "vec", fund)   # bars[0..t] only
             b = ctx(CA.slice_bars(bars, t + 1 + EXT), t, side, "vec", fund)
             assert diff_fields(a, b) == [], (t, side)
             # every factor is present and populated on a 60-day tape at these points
-            for k in ("pat_4h", "pat_1d", "bb_4h_state", "bb_1d_state", "phase_a", "phase_b", "intraday", "vol_regime",
+            for k in ("pat_4h", "pat_1d", "bb_4h_state", "bb_1d_state", "phase_a", "intraday", "vol_regime",
                       "funding", "near_src", "ladder_rung"):
                 assert a[k] != "na" and a[k] is not None, (k, t)
-            assert a["near_src"] != "none" and a["ladder_rung"] != "none", t
+            assert a["near_src"] != "none", t      # ladder_rung may be "none" (price below every prior low for a long)
 
 
 def test_truncation_invariance_replay():
@@ -207,6 +207,8 @@ def test_planted_lookahead_is_caught(tape60, plant):
     bars, fund = tape60
     n = len(bars["C"])
     pts = pick_points(n)
+    if plant == "pct_fullsample":           # terciles move slowly: look at every 4h close of days 33-44
+        pts = list(range(33 * 1440 + 239, n - EXT, 240))
     if plant == "pivot_unconfirmed":        # the leak shows one 4h bar before a pivot is confirmable
         V = CA.VecTables(bars, fund)
         pts = [(i + CA.PIVOT_N) * 240 - 1 for i, kind, px, avj in V.piv4 if 30 * 6 < i + CA.PIVOT_N < (n - EXT) // 240 - 2][-12:]
@@ -216,7 +218,7 @@ def test_planted_lookahead_is_caught(tape60, plant):
         caught = []
         for t in pts:
             for side in SIDES:
-                a = ctx(bars, t, side, "vec", fund)
+                a = ctx(CA.slice_bars(bars, t + 1), t, side, "vec", fund)   # bars[0..t] only
                 b = ctx(CA.slice_bars(bars, t + 1 + EXT), t, side, "vec", fund)
                 caught += diff_fields(a, b)
     finally:

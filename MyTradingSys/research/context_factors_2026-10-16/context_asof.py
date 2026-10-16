@@ -684,7 +684,7 @@ class VecTables:
         atr = float(self.atr4[j4]) if j4 >= 0 else float("nan")
         levels = self.levels_at(t)
         a, bsel = nearest_side(levels, side, price, c1, c4)
-        f = {}
+        f = {"n_levels": len(levels), "n_krown": sum(1 for lv in levels if lv[1] == "krown_zone")}   # ledger size (counts)
         if a is None or atr != atr:
             f.update(near_price=float("nan"), near_src="none", near_dist_atr=float("nan"), level_age_h=float("nan"),
                      touch_count=-1, first_touch=False, at_level=False, n_layers=0, n_layers_k1=0, n_layers_4hrule=0)
@@ -1210,7 +1210,7 @@ class Replay:
         atr = self.atr4
         levels = self.levels
         a, bsel = nearest_side(levels, side, price, c1, c4)
-        f = {}
+        f = {"n_levels": len(levels), "n_krown": sum(1 for lv in levels if lv[1] == "krown_zone")}   # ledger size (counts)
         if a is None or atr != atr:
             f.update(near_price=float("nan"), near_src="none", near_dist_atr=float("nan"), level_age_h=float("nan"),
                      touch_count=-1, first_touch=False, at_level=False, n_layers=0, n_layers_k1=0, n_layers_4hrule=0)
@@ -1275,20 +1275,25 @@ def context_at(bars, t, side, impl="vec", funding=None):
     """All factors as of the close of 1m bar t for `side` in {long, short}, built only from bars[0..t].
     impl = 'vec' (all-at-once on bars[:t+1]) or 'replay' (state machine fed bars 0..t)."""
     assert side in ("long", "short")
-    sub = slice_bars(bars, t + 1)
+    n = len(bars["C"])
+    assert 0 <= t < n
     if funding is not None and len(funding[0]):
-        # the funding archive is point-in-time too: only settlements at/before the close of bar t exist
-        end_ms = TS0 + (t + 1) * MS
+        # the funding archive is point-in-time too: only settlements at/before the close of the LAST bar given exist
+        # (bar t's own PIT-ness is the VEC build's job: it must not read past t whatever the array holds)
+        end_ms = TS0 + n * MS
         m = funding[0] <= end_ms
         funding = (funding[0][m], funding[1][m])
     if impl == "vec":
-        key = (id(bars), t + 1, float(sub["C"][0]), float(sub["C"][-1]), tuple(sorted(PLANT.items())))
+        # the VEC build sees the WHOLE array passed in; a look-ahead would read bars after t. The truncation tests
+        # compare context_at(bars[0..t], t) with context_at(bars[0..t+N], t): they are only meaningful because of this.
+        key = (id(bars), n, float(bars["C"][0]), float(bars["C"][-1]), tuple(sorted(PLANT.items())))
         V = _VEC_CACHE.get(key)
         if V is None:
-            V = VecTables(sub, funding)
+            V = VecTables(bars, funding)
             _VEC_CACHE.clear()
             _VEC_CACHE[key] = V
         return V.context(t, side)
+    sub = slice_bars(bars, t + 1)       # the replay is truncated by construction: it is fed bars 0..t and nothing else
     R = Replay(funding)
     for i in range(t + 1):
         R.feed(i, float(sub["O"][i]), float(sub["H"][i]), float(sub["L"][i]), float(sub["C"][i]), float(sub["V"][i]))
