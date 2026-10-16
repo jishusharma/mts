@@ -101,6 +101,9 @@ MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py	fwd-index	missi
 MyTradingSys/research/levels_confluence_2026-10-14/levels.py	pivot-right-neighbour	if pivot['h'] > max(x['h'] for x in h4[i - 2:i] + h4[i + 1:i + 3]):	pre-existing, unreviewed
 MyTradingSys/research/levels_confluence_2026-10-14/levels.py	pivot-right-neighbour	if pivot['l'] < min(x['l'] for x in h4[i - 2:i] + h4[i + 1:i + 3]):	pre-existing, unreviewed
 MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py	fwd-index	back = any(float(b['l']) <= e['level'] <= float(b['h']) for b in later[l2_idx + 1:])	pre-existing, unreviewed
+MyTradingSys/research/levels_confluence_2026-10-14/event_table.py	fwd-index	for b in path[stopped_at+1:]:	pre-existing, unreviewed
+MyTradingSys/research/levels_confluence_2026-10-14/event_table.py	pivot-right-neighbour	if closed[i]['h']>max(x['h'] for x in closed[i-2:i]+closed[i+1:i+3]): hs.append((i,closed[i]['h']))	pre-existing, unreviewed
+MyTradingSys/research/levels_confluence_2026-10-14/event_table.py	pivot-right-neighbour	if closed[i]['l']<min(x['l'] for x in closed[i-2:i]+closed[i+1:i+3]): ls.append((i,closed[i]['l']))	pre-existing, unreviewed
 MyTradingSys/research/levels_sizing_2026-10-14/probe.py	fullsample-quantile	ci = np.percentile((values-baseline)[indices].mean(axis=1), [2.5, 97.5])	pre-existing, unreviewed
 MyTradingSys/research/levels_sizing_2026-10-14/probe.py	fwd-index	entry = a[i+1, 1]	pre-existing, unreviewed
 MyTradingSys/research/levels_sizing_2026-10-14/probe.py	fwd-index	right = volumes[hi+1] if hi+1 < len(prices) else -1	pre-existing, unreviewed
