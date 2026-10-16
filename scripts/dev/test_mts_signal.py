@@ -90,7 +90,7 @@ class SignalTest(unittest.TestCase):
         S.handle(self.payload("PostToolUse", sid="s9", tool_name="Bash", tool_input={"command": "ls"}))      # not a signal
         self.machine("jis-nuc", "sharma")
         texts = [(r["kind"], r["text"]) for r in S.load(S.ensure())]
-        self.assertEqual(texts, [("claim", 'claim "Q73 move files"'), ("done", "ship")])
+        self.assertEqual(texts, [("claim", "claim Q73 move files"), ("done", "ship")])
 
     def test_session_start_signal_and_subagent_and_off_are_silent(self):
         self.machine("jis-nb", "pro")
@@ -118,6 +118,42 @@ class SignalTest(unittest.TestCase):
         cwd.mkdir()
         self.assertFalse(S.send("x", cwd=cwd))
         self.assertEqual(S.handle(self.payload("UserPromptSubmit", cwd=str(cwd))), "")
+
+    def bash(self, cmd, cwd=None):
+        return {"hook_event_name": "PostToolUse", "tool_name": "Bash", "tool_input": {"command": cmd}, "cwd": cwd or str(self.tmp)}
+
+    def test_hook_text_drops_shell_tail(self):
+        cases = [
+            ("python scripts/dev/sync.py ship 2>&1 | tail -6", ("ship", "done")),
+            ("python scripts/dev/sync.py start my-slug 2>&1 | grep -E \"WORKTREE|branch\"", ("start my-slug", "note")),
+            ("python scripts/dev/sync.py claim fix-x \"long task text\" 2>&1 | tail -3", ("claim fix-x", "claim")),
+            ("python scripts/dev/sync.py ship --release nuc-slug 2>&1 | tail -8; echo hi", ("ship nuc-slug", "done")),
+            ("python scripts/dev/sync.py release s1 2>&1 | tail -3", ("release s1", "done")),
+            ("cd x && python scripts/dev/sync.py ship && sync.py release gpt-fix", ("ship", "done")),
+        ]
+        orig = S.last_result
+        S.last_result = lambda cwd: ""
+        try:
+            for cmd, want in cases:
+                self.assertEqual(S.auto_send_text(self.bash(cmd)), want, cmd)
+        finally:
+            S.last_result = orig
+
+    def test_ship_signal_carries_result_line(self):
+        sh(self.tmp, "init", "-q", "repo")
+        repo = self.tmp / "repo"
+        sh(repo, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", "feat" + chr(10) * 2 + "Result: 5 layers live")
+        text, kind = S.auto_send_text(self.bash("python scripts/dev/sync.py ship 2>&1 | tail -6", cwd=str(repo)))
+        self.assertEqual((text, kind), ("ship Result: 5 layers live", "done"))
+        self.assertNotIn("tail", text)
+
+    def test_odd_slug_is_dropped(self):
+        orig = S.last_result
+        S.last_result = lambda cwd: ""
+        try:
+            self.assertEqual(S.auto_send_text(self.bash("sync.py start $(whoami)"))[0], "start")
+        finally:
+            S.last_result = orig
 
 
 if __name__ == "__main__":
