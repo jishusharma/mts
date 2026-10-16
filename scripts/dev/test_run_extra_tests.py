@@ -21,6 +21,12 @@ def test_failure_detail_includes_stderr_tail_and_truncates_long_lines():
     assert PIPE + "a" in d
 
 
+def test_no_test_file_is_listed_twice():
+    # 2026-10-16: two sessions registered the same ~70 s research test; every gate run (and both CI OSes) ran it twice
+    dup = sorted({p for p in rx.EXTRA if rx.EXTRA.count(p) > 1})
+    assert not dup, dup
+
+
 def test_failure_detail_empty_output_is_empty():
     assert rx.failure_detail("", "") == ""
     assert rx.failure_detail(None, None) == ""
