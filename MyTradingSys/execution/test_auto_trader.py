@@ -186,6 +186,32 @@ class LayerSignalTest(unittest.TestCase):
         s = at.layer_signal({"layer": "rsi", "kind": "wiggle", "tf": "15m", "t_close": self.T15}, cfg(), NOW)
         self.assertEqual(s["reject"], "unmapped rsi:wiggle (add a layer_rules entry)")
 
+    def test_collection_only_without_side_is_shadow_not_unmapped(self):
+        # fabio v3_grid emits shadow events with shadow_side and no side: they must read as shadow, never "unmapped"
+        a = {"layer": "fabio", "kind": "v3_grid", "tf": "1m", "t_close": self.T15,
+             "collection_only": True, "shadow_side": "long"}
+        s = at.layer_signal(a, cfg(), NOW)
+        self.assertTrue(s["reject"].startswith("collection_only fabio:v3_grid"), s["reject"])
+        self.assertNotIn("plan_args", s)
+
+    def test_non_collection_alert_without_side_is_still_unmapped(self):
+        s = at.layer_signal({"layer": "rsi", "kind": "wiggle", "tf": "15m", "t_close": self.T15,
+                             "collection_only": False}, cfg(), NOW)
+        self.assertTrue(s["reject"].startswith("unmapped"), s["reject"])
+
+    def test_collection_only_with_side_is_rejected(self):
+        s = at.layer_signal({"layer": "rsi", "sub": "rsi_events", "event": "support", "tf": "15m",
+                             "t_close": self.T15, "collection_only": True}, cfg(), NOW)
+        self.assertTrue(s["reject"].startswith("collection_only"), s["reject"])
+        self.assertNotIn("plan_args", s)
+
+    def test_disabled_layer_beats_collection_only(self):
+        c = cfg()
+        c["disabled_layers"] = ["fabio"]
+        s = at.layer_signal({"layer": "fabio", "kind": "v3_grid", "tf": "1m", "t_close": self.T15,
+                             "collection_only": True}, c, NOW)
+        self.assertEqual(s["reject"], "layer disabled")
+
     def test_max_hold_is_8_bars_of_signal_tf(self):
         for tf, mins in (("15m", "120"), ("1h", "480")):
             t = self.T15 if tf == "15m" else int(datetime(2026, 9, 28, 23, 0, tzinfo=timezone.utc).timestamp() * 1000)

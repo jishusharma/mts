@@ -480,7 +480,34 @@ def lower_priority():
         k = ctypes.WinDLL("kernel32", use_last_error=True)
         k.GetCurrentProcess.restype = wintypes.HANDLE
         k.SetPriorityClass.argtypes = [wintypes.HANDLE, wintypes.DWORD]
-        return bool(k.SetPriorityClass(k.GetCurrentProcess(), 0x00004000))   # BELOW_NORMAL_PRIORITY_CLASS
+        ok = bool(k.SetPriorityClass(k.GetCurrentProcess(), 0x00004000))   # BELOW_NORMAL_PRIORITY_CLASS
+        reserve_cores(k)
+        return ok
+    except Exception:
+        return False
+
+
+RESERVED_CPUS = 2
+
+
+def reserve_cores(k=None):
+    """B191: priority only orders who runs first; it cannot stop a gate from filling every logical CPU. Pin the gate (children
+    inherit the mask) off the top RESERVED_CPUS logical CPUs, so the live loop's snapshot JVM always has one physical core
+    (i7-4770K: 4 cores / 8 threads, cpus 6-7 are one core) no matter how many sessions gate at once. MTS_GATE_RESERVE=0 opts out."""
+    n = os.cpu_count() or 1
+    try:
+        reserve = int(os.environ.get("MTS_GATE_RESERVE", RESERVED_CPUS))
+    except ValueError:
+        reserve = RESERVED_CPUS
+    if sys.platform != "win32" or reserve <= 0 or n < reserve + 2:
+        return False
+    try:
+        import ctypes
+        from ctypes import wintypes
+        k = k or ctypes.WinDLL("kernel32", use_last_error=True)
+        k.GetCurrentProcess.restype = wintypes.HANDLE
+        k.SetProcessAffinityMask.argtypes = [wintypes.HANDLE, ctypes.c_size_t]
+        return bool(k.SetProcessAffinityMask(k.GetCurrentProcess(), (1 << (n - reserve)) - 1))
     except Exception:
         return False
 

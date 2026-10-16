@@ -408,11 +408,12 @@ def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
     sig["side"] = side
     if not c["enabled"] or layer in cfg["disabled_layers"]:
         sig["reject"] = "layer disabled"
+    elif alert.get("collection_only") is True:
+        # promotion pipeline: shadow setups (and any alert while the promoted_setups registry is unreadable) never trade;
+        # checked before the side so side-less shadow events (fabio v3_grid) are not logged as unmapped
+        sig["reject"] = f"collection_only {layer}:{event} (shadow)"
     elif side is None:
         sig["reject"] = f"unmapped {layer}:{event} (add a layer_rules entry)"
-    elif alert.get("collection_only") is True:
-        # promotion pipeline: shadow setups (and any alert while the promoted_setups registry is unreadable) never trade
-        sig["reject"] = f"collection_only {layer}:{event} (shadow)"
     elif (why := promotion_reject(sig["source"], cfg)):
         sig["reject"] = why                      # default-deny: unregistered and not grandfathered, or registry error
     else:
