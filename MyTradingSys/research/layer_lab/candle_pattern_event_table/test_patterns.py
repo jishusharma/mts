@@ -1,4 +1,4 @@
-﻿from patterns import engulfing, pin_bar, inside_bar, doji
+from patterns import engulfing, pin_bar, inside_bar, doji
 from event_table import build_event_table
 
 
@@ -34,3 +34,12 @@ def test_event_stamped_close_forward_begins_next_bar():
     assert row['event_time']==10
     assert row['mfe_R']==2.0
     assert row['bars_forward']==2
+
+
+def test_short_event_excursions_use_favorable_low_and_adverse_high():
+    bars=[b(10,12,8,10,10),b(10,11,7,8,20)]
+    row=build_event_table([{'pattern':'bear','index':0,'side':-1}],bars,horizon=1)[0]
+    assert row['event_time']==10
+    assert row['mfe_R']==0.75
+    assert row['mae_R']==0.25
+    assert row['bars_forward']==1

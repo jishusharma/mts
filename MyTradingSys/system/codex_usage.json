@@ -6,7 +6,7 @@
   "window_resets": 1792177228,
   "window_used": 1.0
  },
- "at": "2026-10-16T14:32:25Z",
+ "at": "2026-10-16T15:04:58Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,17 +20,32 @@
   "astra_runs": 0,
   "week_pts": 19.0,
   "window_pts": 1.0,
-  "window_runs": 1
+  "window_runs": 2
  },
  "runs": [
   {
-   "at": "2026-10-16T14:30:02Z",
+   "at": "2026-10-16T15:02:28Z",
    "card": "gptb-candle-pattern-event-table",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
    "note": "",
    "outcome": "BLOCKED",
+   "seconds": 144,
+   "tokens_out": 5335,
+   "tokens_total": 857147,
+   "tokens_uncached": 49252,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-10-16T14:30:02Z",
+   "card": "gptb-candle-pattern-event-table",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": " Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n======================================================================\nFAILED: 3 st",
+   "outcome": "SHIP_FAILED",
    "seconds": 137,
    "tokens_out": 6886,
    "tokens_total": 830514,
@@ -157,21 +172,6 @@
    "tokens_uncached": 51997,
    "week_pts": 1.0,
    "window_pts": 3.0
-  },
-  {
-   "at": "2026-10-16T06:00:03Z",
-   "card": "gpt-verdict-registry-audit",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 56,
-   "tokens_out": 4559,
-   "tokens_total": 357706,
-   "tokens_uncached": 52091,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
