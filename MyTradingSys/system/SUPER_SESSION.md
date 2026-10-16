@@ -109,6 +109,9 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   never reused (new task = new agent, no SendMessage follow-ups). Over 100k, or likely to need one or two compactions
   (multi-hour watch, build wave, open-ended work): `start_session`, because compaction is only worth paying for in a session.
   Never use a session for work that would not compact, never an agent for work that would. No click either way.
+- Thread cleanup (operator 2026-10-16, hard rule, all sessions): a finished session marks itself completed in the sidebar
+  (`mark_completed`; `archive_session` too when allowed; archive refuses while Remote Control or a client is attached, so the
+  completed mark is the reliable one). The coordinator marks every worker it started the moment its ship is verified.
 - Pacing on the Pro login: 5-hour window, `get_usage` on every wake. Under 60 %: normal; 60-70 %: crucial work only; 70-80 %:
   coordinator only; 80 % and up: stop. In the last ~15 min before a reset, spend what is left on workers that finish real items.
 - Keep the GPT lab busy: `codex_run.py status` on every wake; keep 8+ ready luna/medium build cards; repair skipped or BLOCKED
