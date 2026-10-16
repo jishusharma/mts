@@ -12,6 +12,7 @@ at a time after the pool. Each step prints its block when it finishes, line-buff
 a redirected or backgrounded run shows progress; the SUMMARY lists every step in definition order. A foreground tool call dies
 at 600 s: start the gate (and `sync.py ship`, which calls it) in the background and read the output once.
 """
+import glob
 import os
 import shutil
 import subprocess
@@ -77,6 +78,22 @@ TEST_FILE_SECONDS = {
 }
 SLOWEST_FIRST = ("4", "4b", "4c", "4g", "4h", "4e", "4f","3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
 _LOCK = threading.Lock()
+
+
+def transient_ignore_glob(root=REPO):
+    """pytest `--ignore-glob` for tempfile's default scratch dirs ("tmp" + 8 of [a-z0-9_]) anywhere under `root`. On Windows pytest
+    lstat()s every directory entry beside each path it descends into, so a tmpXXXXXXXX dir that another gate step creates and removes
+    in the same folder raised FileNotFoundError at collection (2026-10-16: step 4f in CI run 38825784050, the JIS-NB deploy gate on
+    50f8f6b). An ignored entry never becomes a collection node. The set [/\\] is the path separator (pytest runs the pattern through
+    os.path.abspath, which turns / into \\ on Windows); tmp_fixtures-style folders and test_tmp_* names do not match."""
+    return "--ignore-glob=" + glob.escape(str(root)) + "*[/\\]tmp" + "[a-z0-9_]" * 8
+
+
+def pytest_cmd(targets, root=REPO):
+    """One gate pytest step: own basetemp (parallel pytest processes share %TEMP%/pytest-of-<user> and its cleanup raises PermissionError
+    after all tests pass: JIS-NB 2026-10-14, six ships at once), no cache dir, and transient tmp dirs ignored (transient_ignore_glob)."""
+    return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider", transient_ignore_glob(root),
+            f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s4_')) / 'bt'}"]
 
 
 def unbuffer(stream=None):
@@ -327,12 +344,7 @@ def build_plan(quick):
 
     # Step 4: pytest (math + doc tests), sharded so the slowest step no longer sets the gate's wall time (2026-10-16: one process
     # took 919 s of a 15 min gate). 4/4b/4c = MyTradingSys/tests files round-robin, 4d = doc size/contract tests, 4e = backtest
-    # files, 4f = layer/live-writer paths. Every shard gets its own basetemp: parallel pytest processes share %TEMP%/pytest-of-<user>
-    # and its cleanup raises PermissionError after all tests pass (JIS-NB 2026-10-14, six ships at once).
-    def pytest_cmd(targets):
-        return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider",
-                f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s4_')) / 'bt'}"]
-
+    # files, 4f = layer/live-writer paths. Every shard gets its own basetemp and ignores transient tmp dirs: see pytest_cmd above.
     tests_dir = REPO / "MyTradingSys" / "tests"
     doc_shard = ["MyTradingSys/tests/docs", "MyTradingSys/tests/test_relay_prompts.py"]
     top = sorted(f"MyTradingSys/tests/{f.name}" for f in tests_dir.glob("test_*.py")) if tests_dir.exists() else []
@@ -372,7 +384,7 @@ def build_plan(quick):
 
     # Step 5c: options module (own pytest run: its bare module names, e.g. fees.py, collide with other packages); own basetemp and
     # no cache dir because it runs beside other pytest processes
-    cmd5c = [sys.executable, "-m", "pytest", "MyTradingSys/options/tests", "-q", "-p", "no:cacheprovider",
+    cmd5c = [sys.executable, "-m", "pytest", "MyTradingSys/options/tests", "-q", "-p", "no:cacheprovider", transient_ignore_glob(),
              f"--basetemp={Path(tempfile.mkdtemp(prefix='mts_s5c_')) / 'bt'}"]
     add("5c", "Options module tests", cmd5c, "Step 5c: Options tests")
 

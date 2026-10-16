@@ -8,6 +8,7 @@ import tempfile
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import auto_deploy as ad
@@ -309,6 +310,103 @@ class TestRun(unittest.TestCase):
 
     def test_exit_code_is_one_only_for_stops(self):
         self.assertEqual(ad.main(["--check"]) in (0, 1), True)
+
+
+class ClockOps(FakeOps):
+    """FakeOps whose gate takes the seconds given (the clock reads before and after ops.gate)."""
+
+    def __init__(self, secs, **kw):
+        super().__init__(**kw)
+        self.ticks = iter([100.0, 100.0 + secs])
+
+    def clock(self):
+        return next(self.ticks)
+
+
+class TestGateTimeAndTimeout(unittest.TestCase):
+    """2026-10-16 04:45Z: the gate on green d938be1a ended STOP_RED with gate_tail ['timed out'] after the hard-coded 1500 s while parallel
+    sessions held the 8 CPUs at 100% (a quiet quick gate is ~290 s, DEPLOY_RUNBOOK Quick-gate speed). Now: 2700 s default, env override,
+    the partial output survives the timeout, and every gated result records gate_secs."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name)
+        saved = (ad.REPO, ad.SCHED, ad.STATE, ad.LAST, ad.LOG, ad.sh)
+        ad.REPO, ad.SCHED = self.root / "repo", self.root / "sched"
+        ad.STATE, ad.LAST, ad.LOG = ad.SCHED / "s.json", ad.SCHED / "last.json", ad.SCHED / "deploy.log"
+        self.addCleanup(lambda: (setattr(ad, "REPO", saved[0]), setattr(ad, "SCHED", saved[1]), setattr(ad, "STATE", saved[2]),
+                                 setattr(ad, "LAST", saved[3]), setattr(ad, "LOG", saved[4]), setattr(ad, "sh", saved[5])))
+        env = mock.patch.dict(os.environ)
+        env.start()
+        self.addCleanup(env.stop)
+        os.environ.pop("MTS_DEPLOY_GATE_TIMEOUT", None)
+
+    def test_gate_timeout_default_is_2700_seconds(self):
+        self.assertEqual(ad.gate_timeout(), 2700)
+
+    def test_gate_timeout_env_override_and_bad_values_fall_back(self):
+        for raw, want in (("900", 900), ("3600.5", 3600.5), ("abc", 2700), ("0", 2700), ("-5", 2700), ("nan", 2700), ("inf", 2700), ("", 2700)):
+            os.environ["MTS_DEPLOY_GATE_TIMEOUT"] = raw
+            self.assertEqual(ad.gate_timeout(), want, raw)
+
+    def test_ops_gate_runs_the_quick_gate_with_that_timeout(self):
+        seen = []
+
+        class Quiet(ad.Ops):
+            def git(self, *a, timeout=300):
+                return 0, ""
+
+        ad.sh = lambda argv, cwd=None, timeout=300: (seen.append((argv[1:], timeout)) or (0, "ALL TESTS PASSED"))
+        self.assertEqual(Quiet().gate(T), (0, "ALL TESTS PASSED"))   # worktree path = ad.REPO.parent / mts-deploy-gate: inside the temp dir
+        self.assertEqual(seen, [(["scripts/dev/run_all_tests.py", "--quick"], 2700)])
+        os.environ["MTS_DEPLOY_GATE_TIMEOUT"] = "120"
+        seen.clear()
+        Quiet().gate(T)
+        self.assertEqual([t for _, t in seen], [120])
+
+    def test_sh_keeps_what_the_child_printed_before_the_timeout(self):
+        code = "import time; print('Step 4: PASS', flush=True); print('Step 5b: running', flush=True); time.sleep(60)"
+        rc, out = ad.sh([sys.executable, "-c", code], timeout=3)
+        self.assertEqual(rc, 124)
+        self.assertIn("Step 4: PASS", out)
+        self.assertIn("Step 5b: running", out)
+
+    def test_sh_timeout_with_no_output_still_says_timed_out(self):
+        rc, out = ad.sh([sys.executable, "-c", "import time; time.sleep(60)"], timeout=2)
+        self.assertEqual((rc, out), (124, "timed out"))
+
+    def test_timed_out_gate_record_holds_the_last_six_lines_and_says_so(self):
+        lines = [f"[Step {i}] something" for i in range(1, 10)] + ["", "  Elapsed: 1.0s (9/56 done, +90s)", "Step 9: PASS"]
+        ops = FakeOps(gate_rc=124, gate_out="\n".join(lines))
+        r = ad.run(ops)
+        self.assertEqual(r["action"], "STOP_RED")
+        self.assertEqual(r["gate_tail"], [ln for ln in lines if ln.strip()][-6:])
+        self.assertIn("timed out after 2700s", r["reason"])
+        self.assertEqual([c for c in ops.calls if c[0] == "merge"], [])
+
+    def test_a_plain_red_gate_reason_is_unchanged(self):
+        r = ad.run(FakeOps(gate_rc=1))
+        self.assertEqual(r["reason"], f"gate red on {T[:7]}; live tree untouched")
+
+    def test_gate_secs_is_recorded_for_green_and_red_gates(self):
+        green = ad.run(ClockOps(1237.4, changed=["README.md"]))
+        self.assertEqual(green["action"], "DEPLOYED")
+        self.assertEqual(green["gate_secs"], 1237)
+        red = ad.run(ClockOps(2700.6, gate_rc=124, gate_out="Step 4: PASS", target="c" * 40))
+        self.assertEqual(red["action"], "STOP_RED")
+        self.assertEqual(red["gate_secs"], 2701)
+        last = json.loads(ad.LAST.read_text(encoding="utf-8"))
+        self.assertEqual(last["gate_secs"], 2701)
+
+    def test_gate_secs_is_recorded_when_the_merge_stops_after_the_gate(self):
+        r = ad.run(ClockOps(300.2, merge_rc=1, changed=["README.md"]))
+        self.assertEqual(r["action"], "STOP_MERGE")
+        self.assertEqual(r["gate_secs"], 300)
+
+    def test_no_gate_no_gate_secs(self):
+        for ops in (FakeOps(live=False), FakeOps(head=T), FakeOps(ff=False)):
+            self.assertNotIn("gate_secs", ad.run(ops))
 
 
 class TestSchedule(unittest.TestCase):
