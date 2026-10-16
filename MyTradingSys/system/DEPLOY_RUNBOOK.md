@@ -14,6 +14,10 @@ What the job does, in order; it stops at the first failure and writes the reason
 4. **Gate the candidate** in a throwaway detached worktree (`../mts-deploy-gate`): `python scripts/dev/run_all_tests.py --quick`.
    Red = `STOP_RED`; the live tree is untouched; the same SHA is not re-gated until a newer green SHA appears (`RED_KNOWN`).
    `auto_deploy_last.json` then holds `gate_failed`: the failing step blocks of that run (test names, assertion), so a red gate can be traced without a rerun.
+   Gate time limit: 2700 s (env `MTS_DEPLOY_GATE_TIMEOUT`, seconds); an idle host needs ~290 s, but 2026-10-16 04:45Z the old 1500 s limit ended STOP_RED
+   with `gate_tail ['timed out']` while parallel sessions held the CPUs at 100%. A timed-out gate keeps what it printed (`gate_tail` = its last 6 non-empty lines,
+   the reason says `timed out after <N>s`), and every gated result records `gate_secs` (rounded elapsed): watch it creep up before it times out.
+   Keep long CPU jobs (watchers, polling scripts, transcription) off the host around the :00/:15/:30/:45 gate runs. Live tree runs the older auto_deploy.py until its next deploy.
 5. **Copy the untracked runtime state first** (B152): `MyTradingSys/runtime/orderflow_live/_state.json` is written by the recorder and was untracked by
    af91b21. A `git merge --ff-only` aborts when the recorder has modified it, or deletes it when the target commit drops it; without it
    `orderflow_live.py` restarts at the current minute and the minutes since the last write are never fetched. The copy goes to
