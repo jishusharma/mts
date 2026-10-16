@@ -13,7 +13,21 @@ import sys
 def wanted():
     if sys.platform != "win32":
         return False
-    return os.path.basename(sys.executable or "").lower() == "pythonw.exe" or os.environ.get("MTS_NOWIN") == "1"
+    if os.path.basename(sys.executable or "").lower() == "pythonw.exe" or os.environ.get("MTS_NOWIN") == "1":
+        return True
+    return _console_hidden()
+
+
+def _console_hidden():
+    """B190: the wscript launchers start python.exe with a hidden console (style 0). Console children of such a process were
+    still seen flashing on JIS-NB, so treat 'console window exists but is not visible' like pythonw. An interactive terminal
+    (visible console) is untouched, so output of children that inherit the console still shows."""
+    try:
+        import ctypes
+        hwnd = ctypes.windll.kernel32.GetConsoleWindow()
+        return bool(hwnd) and not ctypes.windll.user32.IsWindowVisible(hwnd)
+    except Exception:
+        return False
 
 
 def install(force=False):
