@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T20:43:41Z",
+  "commands": [],
+  "created": "2026-10-15T19:40:00Z",
+  "depends_on": [],
+  "done_when": "A fresh layer wired only through layer_rules/size_overrides/accounts cannot reach place(); the grandfather list is explicit in the config; run_all_tests --quick green.",
+  "from_inbox": "",
+  "goal": "Finding H1 (MyTradingSys/research/fable_audit_2026-10-16/PROMOTION_REVIEW.md): the promotion gate is opt-in. Unregistered sources and Tom trade with no PRE_REG/screen/fee-net OOS. Make auto_trader read the registry and reject unregistered sources unless on an explicit pre_pipeline_sources grandfather list.",
+  "id": "fable-h1-promotion-default-deny",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "DECISION (OURS): live_path=false because the card is code+tests shipped via fast-track/AutoDeploy, not a live-tree touch; CLAUDE.md live-path rules (restart/reset state, API errors, fail closed) still apply to auto_trader.py edits. Operator asked lane SONNET.",
+  "pinned": true,
+  "prio": 0,
+  "refine_tries": 0,
+  "refined_by": "fable-testnet-adversarial-review",
+  "refs": [],
+  "result": "already on origin/fast-track as 8254ece6 (default-deny gate, grandfather list, registry_error fail-closed); tests test_auto_trader_promotion + test_registry_gate spot-checked",
+  "scope_in": [
+    "MyTradingSys/execution/auto_trader.py (layer_signal, tom_signal, load_config)",
+    "MyTradingSys/execution/auto_trader_config.json (new key pre_pipeline_sources: {prefix: {reason, review_by}})",
+    "MyTradingSys/backtest/layers/promotion/registry.py (lookup helper)",
+    "MyTradingSys/system/PROMOTION_PIPELINE.md"
+  ],
+  "scope_out": [
+    "executor.py, position_manager.py, deribit_orders.py",
+    "live tree, processes, deploys",
+    "any registry entry (registry stays empty)"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/fable_audit_2026-10-16/PROMOTION_REVIEW.md",
+    "MyTradingSys/system/GO_LIVE_BAR.md line 1"
+  ],
+  "state": "done",
+  "steps": [
+    "Add registry.decision_for_source(source, entries, grandfather) -> trade | shadow | unregistered | registry_error (pure).",
+    "auto_trader.layer_signal: load the registry each cycle (fail closed: error = reject all layer signals), reject 'unregistered (promotion pipeline)' unless the source matches a pre_pipeline_sources prefix; keep the existing collection_only reject.",
+    "tom_signal: same lookup under source 'tom' (grandfathered explicitly in the config with reason + review_by).",
+    "Seed pre_pipeline_sources with every prefix that has size_overrides + accounts today (DECISION OURS: keep calibration trades running; the list is the operator's to prune) and reason 'pre-pipeline testnet calibration, operator 2026-10-07'.",
+    "PROMOTION_PIPELINE.md: replace 'not in the registry = today's behaviour' with the default-deny rule."
+  ],
+  "tests": "test_registry_gate: new source with layer_rules+size_overrides but no registry entry and no grandfather -> signal_rejected 'unregistered'; grandfathered prefix -> trades; unreadable registry -> every layer signal AND tom rejected; all three fail on the current auto_trader.",
+  "title": "Promotion gate default-deny: unregistered sources and Tom are collection-only"
+}

@@ -3,6 +3,7 @@ must PASS. Uses a throwaway git repo with dated commits (PRE_REG committed 2026-
 Also the CI hook: every entry of the shipped registry must pass `check` (shipped registry is empty)."""
 import copy
 import csv
+import datetime as dt
 import json
 import os
 import subprocess
@@ -243,9 +244,80 @@ class Register(Base):
         self.reg("testnet", dict(self.m, requested_mode="testnet"))
         self.assertTrue(pm.demote(SID, "shadow", self.regp)[0])
         self.assertEqual(self.entries()[0]["mode"], "shadow")
-        self.assertTrue(pm.demote(SID, "off", self.regp)[0])
+        self.assertTrue(pm.demote(SID, "off", self.regp, self.cfg)[0])
         self.assertEqual(self.entries(), [])
-        self.assertFalse(pm.demote(SID, "off", self.regp)[0])
+        self.assertFalse(pm.demote(SID, "off", self.regp, self.cfg)[0])
+
+    def test_demote_off_blocks_in_the_list_auto_trader_enforces(self):
+        """H2: off must not return a sized, rule-mapped setup to trading."""
+        import importlib.util
+        import sys
+        self.reg()
+        self.reg("testnet", dict(self.m, requested_mode="testnet"))
+        self.assertTrue(pm.demote(SID, "off", self.regp, self.cfg, now=dt.datetime(2026, 10, 16, tzinfo=dt.timezone.utc))[0])
+        cfg = json.loads(self.cfg.read_text(encoding="utf-8"))
+        self.assertIn(SID, cfg["trade_blocklist"])
+        self.assertIn("demoted off 2026-10-16", cfg["trade_blocklist_reasons"][SID])
+        spec = importlib.util.spec_from_file_location("_at", pm.REPO / "MyTradingSys" / "execution" / "auto_trader.py")
+        sys.path.insert(0, str(pm.REPO / "MyTradingSys" / "execution"))
+        try:
+            at = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(at)
+        finally:
+            sys.path.pop(0)
+        self.assertTrue(at.trade_block_reason(SID + "15m", cfg))
+
+    def test_demote_off_grandfathered_source_without_entry_blocks(self):
+        gf = "layer:fabio:volume_fvg:"
+        self.assertTrue(pm.demote(gf, "off", self.regp, self.cfg)[0])
+        self.assertIn(gf, json.loads(self.cfg.read_text(encoding="utf-8"))["trade_blocklist"])
+        self.assertFalse(pm.demote(gf, "off", self.regp, self.cfg)[0])     # already blocked, nothing to do
+        self.assertFalse(pm.demote(gf, "shadow", self.regp, self.cfg)[0])
+
+    def test_demote_off_refuses_when_config_unwritable_registry_untouched(self):
+        self.reg()
+        self.cfg.write_text("{broken", encoding="utf-8")
+        ok, msg = pm.demote(SID, "off", self.regp, self.cfg)
+        self.assertFalse(ok)
+        self.assertEqual([x["setup_id"] for x in self.entries()], [SID])
+        self.cfg.write_text(json.dumps({"trade_blocklist": "oops"}), encoding="utf-8")
+        self.assertFalse(pm.demote(SID, "off", self.regp, self.cfg)[0])
+        self.assertEqual([x["setup_id"] for x in self.entries()], [SID])
+
+    def test_verify_flags_sized_prefix_without_registry_grandfather_or_block(self):
+        self.assertTrue(any(SID in x for x in pm.verify(self.repo, self.regp, self.cfg)))     # sized, nothing covers it
+        c = json.loads(self.cfg.read_text(encoding="utf-8"))
+        c["pre_pipeline_sources"] = {SID: {"reason": "r", "review_by": "2026-10-23"}}
+        self.cfg.write_text(json.dumps(c), encoding="utf-8")
+        self.assertEqual(pm.verify(self.repo, self.regp, self.cfg), [])                        # grandfathered
+        c["pre_pipeline_sources"] = {}
+        c["trade_blocklist"] = [SID]
+        self.cfg.write_text(json.dumps(c), encoding="utf-8")
+        self.assertEqual(pm.verify(self.repo, self.regp, self.cfg), [])                        # blocked
+        self.cfg.write_text("{bad", encoding="utf-8")
+        self.assertTrue(pm.verify(self.repo, self.regp, self.cfg))                             # fail closed
+
+    def test_pre_reg_edited_after_registration_rejects(self):
+        """M4: the PRE_REG blob at git_sha must equal HEAD's."""
+        self.assertEqual(self.chk()["result"], "PASS")
+        commit(self.repo, "2026-01-15T10:00:00+00:00", "quiet edit", {"r/PRE_REG.md": "pre-registration, edited\n"})
+        r = self.chk()
+        self.assertEqual(r["result"], "REJECT")
+        self.assertTrue(any("edited after registration" in x for x in r["reasons"]), r["reasons"])
+
+    def test_has_testnet_flag_validates_like_auto_trader(self):
+        """L7: one validator; a size auto_trader would raise on (not a 10 multiple, over ceiling, no max_loss) is no flag."""
+        for bad in ({"size_usd": 55, "max_loss_usd": 2}, {"size_usd": 50}, {"size_usd": 20000, "max_loss_usd": 2},
+                    {"size_usd": 50, "max_loss_usd": -1}, {"size_usd": True, "max_loss_usd": 2}):
+            self.cfg.write_text(json.dumps({"size_overrides": {SID: bad}}), encoding="utf-8")
+            self.assertFalse(pm.has_testnet_flag(SID, self.cfg), bad)
+        self.cfg.write_text(json.dumps({"size_overrides": {SID: {"size_usd": 50, "max_loss_usd": 2}}}), encoding="utf-8")
+        self.assertTrue(pm.has_testnet_flag(SID, self.cfg))
+
+    def test_size_ceiling_matches_auto_trader(self):
+        import re
+        src = (pm.REPO / "MyTradingSys" / "execution" / "auto_trader.py").read_text(encoding="utf-8")
+        self.assertEqual(int(re.search(r"^SIZE_CEILING_USD = (\d+)", src, re.M).group(1)), pm.SIZE_CEILING_USD)
 
     def test_verify_green_then_red_when_evidence_breaks(self):
         self.reg()

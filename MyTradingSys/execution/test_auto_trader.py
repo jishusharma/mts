@@ -16,7 +16,12 @@ NOW = datetime(2026, 9, 29, 0, 0, 0, tzinfo=timezone.utc)
 
 
 def cfg():
-    return json.loads(json.dumps(at.DEFAULT_CONFIG))
+    """Default config with the promotion default-deny (fable H1) grandfathering everything: these tests are about
+    sizing/stops/brackets, not the promotion gate (that is test_auto_trader_promotion.py)."""
+    c = json.loads(json.dumps(at.DEFAULT_CONFIG))
+    gf = {"reason": "test fixture", "review_by": "2026-10-23"}
+    c["pre_pipeline_sources"] = {"layer:": dict(gf), "tom": dict(gf)}
+    return c
 
 
 def tom_alert(no=44, verdict="SETUP_FORMING", setup="ct_short", entry=83537.3, stop=83704.37, target=82985.43,

@@ -1,6 +1,18 @@
 {
  "_doc": "Files the wiring scan finds unrun (TEST-ONLY/ORPHAN), each declared with a disposition and evidence. Checked by scripts/dev/wiring_scan.py --check in the gate. Dispositions: TOOL, REPRO, PARKED, WIRE. A file that becomes LIVE/DEV-TOOL or disappears must be removed from here.",
  "entries": {
+  "MyTradingSys/research/qriptal_2026-10-10/ledger.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds research/qriptal_2026-10-10/CALL_LEDGER.csv from ledger_rows.json, verifying every quote against the staged raw transcripts (ledger.py build | check); run by hand, named in LEDGER_NOTES.md."
+  },
+  "MyTradingSys/research/qriptal_2026-10-10/score_calls.py": {
+   "disp": "REPRO",
+   "why": "Scores the ELIGIBLE rows of CALL_LEDGER.csv on Binance BTCUSDT 1m klines (0.05% per side) and rewrites research/qriptal_2026-10-10/SCORECARD.md (score_calls.py run | check); DEV only, holdout refused unless --allow-holdout; run by hand, named in SCORECARD.md."
+  },
+  "MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py": {
+   "disp": "REPRO",
+   "why": "Pre-registered DEV-only study (PRE_REG.md); run by hand (--counts | --run), reproduces RESULT.md and events.csv; imports the detector only."
+  },
   "MyTradingSys/research/setup_catalog_2026-10-15/malkan/tools/build_glossary.py": {
    "disp": "REPRO",
    "why": "Regenerates MALKAN_DIVERGENCE_GLOSSARY.md from GLOSSARY_SRC.md, locating each quote in raw_transcripts_canonical for file:line and timestamp; run manually from repo root."
@@ -8,6 +20,18 @@
   "MyTradingSys/research/layer_lab/reports/revalidate_strategy_proofs.py": {
    "disp": "REPRO",
    "why": "Manually reproduces four synthetic witnesses and hashed source excerpts for the 2026-10-15 strategy audit revalidation; no market data or live imports; PASS recorded in the attached proof pack."
+  },
+  "MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py": {
+   "disp": "REPRO",
+   "why": "G3 blind-chart marking pack (seeded windows, causal pre-filters, chart geometry); run by hand (counts | build | draw), reproduces WINDOWS.csv, the answer key and the PNGs; covered by test_g3_pack.py; DEV data only, no live imports."
+  },
+  "MyTradingSys/research/g3_marks_2026-10-16/render_png.ps1": {
+   "disp": "TOOL",
+   "why": "GDI+ renderer called by g3_pack.py draw (subprocess, no Pillow on JIS-NB); draws rect/line/text primitives from JSON to PNG."
+  },
+  "MyTradingSys/research/context_null_2026-10-16/context_null.py": {
+   "disp": "TOOL",
+   "why": "Context-matched null (hour/vol tercile/trend/level controls) a future PRE_REG names as its control arm; library imported by research scripts, covered by test_context_null.py; DEV arrays only, no live imports."
   },
   "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py": {
    "disp": "REPRO",
@@ -646,6 +670,10 @@
    "disp": "REPRO",
    "why": "Manually reproduces rsi_divergence_mtf_checks_output.txt (5m legend of shot 8fc58204ee18, RSI14 regular bullish divergence on 1m/2m/3m/5m, 5m upper-band walk, taker delta from public Binance 1m klines) for drafts/OPR-RSI-DIV-SWEEP-BAND-WALK.md."
   },
+  "MyTradingSys/research/setup_catalog_2026-10-15/evidence/vtt_to_canonical.py": {
+   "disp": "TOOL",
+   "why": "Converts a YouTube .en.vtt caption file into raw_transcripts_canonical/<id>_raw.txt (one cue per line as [m:ss] text) so quotes pass verify_extract_quotes.py; `check` compares the other Fabio vtt files with their canonical copies; output in vtt_to_canonical_output.txt; run by hand, named in setup_catalog_2026-10-15/SETUP_CATALOG.md header."
+  },
   "MyTradingSys/research/video_priority_2026-10-15/fetch_meta.py": {
    "disp": "TOOL",
    "why": "Anonymous metadata-only fetch (playlists, per-video detail; 5 s spacing, no cookies) for the video priority method; run by hand, named in video_priority_2026-10-15/METHOD.md pipeline step 1 and 4."
@@ -665,6 +693,43 @@
   "MyTradingSys/research/video_priority_2026-10-15/apply_selection.py": {
    "disp": "TOOL",
    "why": "One-shot: writes the selected ids into the Malkan caption card and the NOT SELECTED rows into transcript_inventory_2026-10-09.md; named in video_priority_2026-10-15/METHOD.md pipeline step 5; already applied."
+  },
+  "MyTradingSys/research/chart_read_g5_2026-10-16/common.py": {
+   "disp": "REPRO",
+   "why": "Shared helpers (template costs, day-clustered SE, verdict rule) for the four chart-read G5 screens; imported by their study.py files and covered by test_common.py; no live imports."
+  },
+  "MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py": {
+   "disp": "REPRO",
+   "why": "Pre-registered DEV-only chart-read G5 screen (opr_preopen_tops_2026-10-16); run by hand (--count | --full), reproduces its RESULT.md/trials.csv/ledger.csv; covered by its test file; no live imports. Screen, ran before G3 marks by operator decision 2026-10-16."
+  },
+  "MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/study.py": {
+   "disp": "REPRO",
+   "why": "Pre-registered DEV-only chart-read G5 screen (mal_bb_mid_engulf_2026-10-16); run by hand (--count | --full), reproduces its RESULT.md/trials.csv/ledger.csv; covered by its test file; no live imports. Screen, ran before G3 marks by operator decision 2026-10-16."
+  },
+  "MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py": {
+   "disp": "REPRO",
+   "why": "Pre-registered DEV-only chart-read G5 screen (opr_bb_mtf_center_2026-10-16); run by hand (--count | --full), reproduces its RESULT.md/trials.csv/ledger.csv; covered by its test file; no live imports. Screen, ran before G3 marks by operator decision 2026-10-16."
+  },
+  "MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/study.py": {
+   "disp": "REPRO",
+   "why": "Pre-registered DEV-only chart-read G5 screen (opr_weekly_low_round_sweep_2026-10-16); run by hand (--count | --full), reproduces its RESULT.md/trials.csv/ledger.csv; covered by its test file; no live imports. Screen, ran before G3 marks by operator decision 2026-10-16."
+  },
+  "MyTradingSys/research/krown_ta101_2026-10-13/tools/fetch_daily_majors.py": {
+   "disp": "REPRO",
+   "why": "Public-data fetch for the Krown studies (Binance spot monthly klines checked against published SHA256, Coinbase BTC-USD candles); run by hand, reproduces DATA_MANIFEST.csv; no orders, no account, no secrets."
+  },
+  "MyTradingSys/research/krown_ta101_2026-10-13/tools/build_data_coverage.py": {
+   "disp": "REPRO",
+   "why": "Builds weekly bars from the daily files and writes DATA_COVERAGE.md; run by hand after fetch_daily_majors.py; reads timestamps and DEV-window OHLC equality only."
+  },
+  "MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py": {
+   "disp": "REPRO",
+   "why": "DEV-only event counts and MDE for KR-S1, KR-S8, MAL-2/5/16/17 (EVENT_COUNTS.md); run by hand, reproduces event_counts.csv; computes no forward return."
+  },
+  "MyTradingSys/backtest/research_kit.py": {
+   "disp": "TOOL",
+   "ref": "research-kit",
+   "why": "Shared screen statistics for research studies (day-clustered SE, clustered difference, MDE, power check, Holm, cost in R); imported by hand-run studies, tested by test_research_kit.py, no live imports."
   }
  }
 }

@@ -61,3 +61,6 @@ into `research/missed_trades/observations/<host>_<date>.jsonl` for the next `syn
 8. Publish is a separate process outside the trading loop, installed by desk task `install-live-mirror-on-jis-nb`; it reaches the live tree by the normal MTS-AutoDeploy (DEPLOY_RUNBOOK.md; task MTS-LiveMirror every 5 min, `register_live_mirror.ps1`).
 9. `sync.py start` runs `live_mirror.py pull` (45 s cap, never fatal) in any work tree.
 10. Known and left open: Control Room (ArtifactData) is readable only from its owning account; screenshot stores and `shot.py status` differ per machine.
+
+## Publish failure record (2026-10-15)
+A failing scheduled publish writes `<root>/PUBLISH_FAIL.json` (since, last, error) and exits 3; a good publish clears it. `live_mirror.py brief` prints `PUBLISHER FAILING for N min` when it exists. Task MTS-LiveMirror is registered (launcher F:\MTS\launchers\launch-live-mirror.vbs, 5-min repeat, 5-min limit).

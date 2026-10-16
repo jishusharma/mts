@@ -36,6 +36,10 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_market_guide.py",
     "scripts/dev/test_dax_engine_flag.py",
     "scripts/dev/test_check_handoff.py",
+    "scripts/dev/test_live_owner.py",
+    "scripts/dev/test_loop_supervisor_grace.py",
+    "scripts/dev/test_nowin.py",
+    "scripts/dev/test_feed_watchdog_script.py",
     "MyTradingSys/observation/tests",
 ]
 
@@ -55,7 +59,22 @@ BACKTEST_PYTEST_PATHS = [
 # Step 4's tests drop fixtures in the tree, so they never run beside the pool. Maven (step 5) is serial as well.
 SERIAL_STEPS = ("3ly", "3af", "3x", "3ms", "3mg", "5")
 # Submitted first so the pool's last step is not the slowest one (measured: 4, 3xt, 5b, 3k, 3ds, 3dk, 3bk, 3w).
-SLOWEST_FIRST = ("4", "4b", "4c", "4e", "4f", "3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
+# Pytest shards of MyTradingSys/tests and the measured seconds of its slow files (2026-10-16 profile, loaded machine); the rest ~2 s each.
+PYTEST_SHARD_NUMS = ("4", "4b", "4c", "4g", "4h")
+TEST_FILE_DEFAULT_S = 2
+TEST_FILE_SECONDS = {
+    "test_turn_meter.py": 150,
+    "test_aibridge_payload.py": 95,
+    "test_b091_build_check_tiers.py": 60,
+    "test_build_check_report_reasons.py": 32,
+    "test_relay_tick.py": 32,
+    "test_relay.py": 25,
+    "test_tom_profile_parity.py": 12,
+    "test_net_rr_floor_single_source.py": 8,
+    "test_sync_where_unborn.py": 6,
+    "test_dsa_direct_mode.py": 6,
+}
+SLOWEST_FIRST = ("4", "4b", "4c", "4g", "4h", "4e", "4f","3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
 _LOCK = threading.Lock()
 
 
@@ -183,7 +202,12 @@ def exec_unittest_shards(script, jobs):
                               text=True, errors="replace", env=env) for c in chunks]
     outs = [p.communicate()[0] for p in procs]
     ok = all(p.returncode == 0 for p in procs)
-    keep = outs if ok else [o if os.environ.get("CI") else "\n".join(o.splitlines()[-15:]) for p, o in zip(procs, outs) if p.returncode != 0]
+    def failing(o):   # from the first FAIL/ERROR header (a plain tail is only the tests' own prints), capped
+        lines = o.splitlines()
+        first = next((i for i, l in enumerate(lines) if l.startswith(("FAIL:", "ERROR:"))), max(len(lines) - 15, 0))
+        return "\n".join(lines[first:first + 60])
+
+    keep = outs if ok else [o if os.environ.get("CI") else failing(o) for p, o in zip(procs, outs) if p.returncode != 0]
     return ok, "\n".join(keep)
 
 
@@ -235,7 +259,7 @@ def build_plan(quick):
         "test_gh_retry_offline", "test_halt_preflight_offline", "test_kill_switch", "test_kill_switch_account", "test_premainnet1_offline",
         "test_risk_guard", "test_s1_cap_offline", "test_s3_unprotected_offline",
         "test_s6_orphan_offline", "test_triggered_stop_offline", "test_soak_report", "test_fix3_offline", "test_fix4_offline",
-        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_dlm_aggregate", "test_b148_reauth_account", "test_b146_fee_to_stop", "test_dlm_failure_cap", "test_auto_trader_blocklist", "test_auto_trader_sizes", "test_auto_trader_confirm", "test_orphan_sweep_loop", "test_fabio_slot", "test_fix3_mutants_offline", "test_capture_txlog_settlement", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry", "test_r2_runner_exit", "test_r2_breakeven_move",  # W2 R2: execution-math tests (FORMULAS.md 11)
+        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_dlm_aggregate", "test_b148_reauth_account", "test_b146_fee_to_stop", "test_dlm_failure_cap", "test_auto_trader_blocklist", "test_auto_trader_sizes", "test_auto_trader_confirm", "test_auto_trader_promotion", "test_orphan_sweep_loop", "test_fabio_slot", "test_fix3_mutants_offline", "test_capture_txlog_settlement", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry", "test_r2_runner_exit", "test_r2_breakeven_move",  # W2 R2: execution-math tests (FORMULAS.md 11)
     ]
     add(1, "Execution module tests", cmd1, "Step 1: Execution tests")
 
@@ -309,9 +333,15 @@ def build_plan(quick):
     # a new test subfolder under MyTradingSys/tests is collected wholesale, as before the split
     top += sorted(f"MyTradingSys/tests/{d.name}" for d in tests_dir.iterdir()
                   if d.is_dir() and d.name not in ("docs", "fixtures", "__pycache__") and any(d.rglob("test_*.py"))) if tests_dir.exists() else []
-    for i, (num, chunk) in enumerate(zip(("4", "4b", "4c"), (top[k::3] for k in range(3)))):
+    # Greedy balance by measured seconds (heaviest first into the lightest shard); an unlisted file counts TEST_FILE_DEFAULT_S.
+    bins = [[0, []] for _ in PYTEST_SHARD_NUMS]
+    for f in sorted(top, key=lambda f: -TEST_FILE_SECONDS.get(Path(f).name, TEST_FILE_DEFAULT_S)):
+        b = min(bins, key=lambda b: b[0])
+        b[0] += TEST_FILE_SECONDS.get(Path(f).name, TEST_FILE_DEFAULT_S)
+        b[1].append(f)
+    for i, (num, (_, chunk)) in enumerate(zip(PYTEST_SHARD_NUMS, bins)):
         if chunk:
-            add(num, f"Pytest shard {i + 1}/3 (MyTradingSys/tests, {len(chunk)} files)", pytest_cmd(chunk), f"Step {num}: Pytest tests")
+            add(num, f"Pytest shard {i + 1}/{len(bins)} (MyTradingSys/tests, {len(chunk)} files)", pytest_cmd(sorted(chunk)), f"Step {num}: Pytest tests")
     add("4d", "Pytest doc size/contract tests", pytest_cmd(doc_shard), "Step 4d: Pytest doc tests")
     add("4e", "Pytest backtest function-style tests", pytest_cmd(BACKTEST_PYTEST_PATHS), "Step 4e: Pytest backtest tests")
     add("4f", "Pytest layer + live-writer tests", pytest_cmd(PYTEST_LAYER_PATHS), "Step 4f: Pytest layer tests")
