@@ -28,7 +28,7 @@ def repo(tmp_path, monkeypatch):
 def complete(repo, card, verdict="PASS"):
     p = repo / tasks.LAB_REPORTS / (card["id"] + ".md")
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text("Evidence source.md:1\nC1: PASS\nC2: PASS\n", encoding="utf-8")
+    p.write_text(f"Report for card {card['id']}\nEvidence source.md:1 source.md:2\nC1: PASS\nC2: PASS\n", encoding="utf-8")
     return F.finish(repo, card["id"], str(p.relative_to(repo)), verdict, "evidence checked")
 
 
@@ -62,7 +62,7 @@ def test_rework_and_missing_criterion_cannot_advance(repo):
     complete(repo, a, "REWORK")
     assert tasks.ready_cards(repo)[0] == []
     report = repo / tasks.LAB_REPORTS / (a["id"] + ".md")
-    report.write_text("C1: PASS", encoding="utf-8")
+    report.write_text(f"Report for card {a['id']}\nC1: PASS", encoding="utf-8")
     with pytest.raises(ValueError, match="C2"):
         F.finish(repo, a["id"], str(report.relative_to(repo)), "PASS", "check")
 
@@ -145,3 +145,37 @@ def test_effective_model_mismatch_revokes_receipt_and_holds_child(repo):
     F.reject_run(repo, a["id"], "CLI used a different model")
     assert tasks.ready_cards(repo)[0] == []
     assert "flow_receipt" not in tasks.get(repo, a["id"])
+
+
+def test_run_commands_are_part_of_contract(repo):
+    run_spec = spec() | {"id": "run", "recipe": "run-review", "commands": ["python study.py"]}
+    cards = F.launch(repo, run_spec)
+    cards[0]["commands"] = ["python study.py --range holdout"]
+    assert any("contract" in e for e in F.gate(cards[0], tasks.load_all(repo), repo))
+    build_spec = spec() | {"id": "build", "recipe": "build-review", "tests": "pytest scripts/dev/test_x.py"}
+    build_cards = F.launch(repo, build_spec)
+    build_cards[0]["tests"] = "pytest scripts/dev/test_other.py"
+    assert any("contract" in e for e in F.gate(build_cards[0], tasks.load_all(repo), repo))
+
+
+def test_stage_two_cannot_clear_previous_dependency(repo):
+    a, b = F.launch(repo, spec())
+    b["depends_on"] = []
+    b["state"] = "ready"
+    assert any("depends_on" in e for e in F.gate(b, [a, b], repo))
+
+
+def test_stage_two_cannot_reuse_stage_one_report(repo):
+    a, b = F.launch(repo, spec())
+    complete(repo, a)
+    with pytest.raises(ValueError, match="already used"):
+        F.finish(repo, b["id"], tasks.get(repo, a["id"])["flow_receipt"]["report"], "PASS", "copied")
+
+
+def test_status_lines_without_evidence_are_rejected(repo):
+    a, _ = F.launch(repo, spec())
+    p = repo / tasks.LAB_REPORTS / (a["id"] + ".md")
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(f"Report for card {a['id']}\nC1: PASS\nC2: PASS\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="evidence"):
+        F.finish(repo, a["id"], str(p.relative_to(repo)), "PASS", "no evidence")
