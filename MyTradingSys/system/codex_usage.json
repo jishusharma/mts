@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1792677805,
-  "week_used": 17.0,
-  "window_resets": 1792137625,
-  "window_used": 1.0
+  "week_resets": 1792677804,
+  "week_used": 21.0,
+  "window_resets": 1792137624,
+  "window_used": 23.0
  },
- "at": "2026-10-16T06:01:07Z",
+ "at": "2026-10-16T07:04:39Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,11 +18,26 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 16.0,
-  "window_pts": 1.0,
-  "window_runs": 4
+  "week_pts": 17.0,
+  "window_pts": 4.0,
+  "window_runs": 5
  },
  "runs": [
+  {
+   "at": "2026-10-16T07:03:02Z",
+   "card": "recipe-pilot-1-map",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6.1-sol",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 73,
+   "tokens_out": 2031,
+   "tokens_total": 271628,
+   "tokens_uncached": 51997,
+   "week_pts": 1.0,
+   "window_pts": 3.0
+  },
   {
    "at": "2026-10-16T06:00:03Z",
    "card": "gpt-verdict-registry-audit",
@@ -157,21 +172,6 @@
    "tokens_uncached": 61275,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-15T14:03:08Z",
-   "card": "gap-g4-through-ticks-flag",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 154,
-   "tokens_out": 9634,
-   "tokens_total": 1449330,
-   "tokens_uncached": 79568,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
