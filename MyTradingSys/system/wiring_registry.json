@@ -37,6 +37,10 @@
    "disp": "REPRO",
    "why": "Pre-registered DEV-only gross-effect screen (PRE_REG.md); run by hand (--count | --full), reproduces RESULT.md/decay.csv/ledger.csv; covered by test_screen.py; no live imports."
   },
+  "MyTradingSys/research/pit_levels_2026-10-16/count_prior_va.py": {
+   "disp": "REPRO",
+   "why": "Count-only pass (no outcome column) of the prior-day value-area failed auction named in pit_levels_2026-10-16/PRE_REG.md section 4; run by hand, reproduces COUNT.txt; DEV loader refuses bars >= 2024-07-01; imports vp_pivot_probe.build_profile and power_mde only; card pit-prior-va-failed-auction-dev runs it first."
+  },
   "MyTradingSys/research/orderflow_views_2026-10-14/study.py": {
    "disp": "REPRO",
    "why": "Reproduces research/orderflow_views_2026-10-14/results.json and today.json cited in RESULT.md (operator shots c688/a18c/8adf); run by hand (fetch|today|bt), no live process imports it."
