@@ -60,9 +60,9 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   `MyTradingSys/execution/HALT` (+ `halt_history`); dirty files: `git -C <live> status --short --untracked-files=no`.
 - Live state in one read: `live_mirror.py brief` (LIVE_MIRROR.md) + `scripts/sched/check_live_health.py`; ledger =
   `runtime_data` trade_ledger.jsonl in the live tree. A Sonnet read-only worker does this in ~15 tool calls.
-- A coordinator started BY ANOTHER SESSION cannot `start_session` (the app refuses): workers are Agent subagents
-  (`run_in_background`, `isolation: worktree`, model sonnet/haiku), visible in the Tasks pane, not the sidebar. A coordinator the
-  operator opens directly can use `start_session` (sidebar sessions, cost about the same).
+- Operator rule (2026-10-16): workers are SESSIONS (`start_session`, Sonnet, announced in a line), never Agent subagents, so the operator
+  can open and compile them from the sidebar. Only if the app refuses `start_session` (a coordinator started BY ANOTHER SESSION) fall back to
+  Agent subagents (`run_in_background`, model sonnet/haiku), and log the refusal in the report.
 - Waking: other sessions send no idle notices. Use ONE background shell watcher (`git fetch` every 5 min; exit on a file landing
   on origin/fast-track or after 50 min), and on every wake `python scripts/sched/relay.py heartbeat "<id>" --note "<what>"`.
 - JIS-NB has no MTS-DispatchGate Windows task; the `mts-dispatcher` routine runs in the live tree, so relay/watchdog code only
