@@ -37,11 +37,11 @@
   ],
   "state": "ready",
   "steps": [
-    "Ground truth: the operator's private transaction log (path in note; never commit, no numbers in tracked files). Match each entry and exit time to 1m/5m bars and to checklist items 1-12; say which were present at entry and at exit.",
+    "Operator's private trade log (path comes from the coordinator in a side note, never written to the repo): use it ONLY to check which checklist items were visible at his entries and exits. Output aggregate counts only: no per-trade timestamps or prices, no PnL (public repo). It shows item visibility, not edge (survivorship, discretionary exits).",
     "Context sheet per trade day and the 2 days before: daily and weekly structure (prior-day high/low/VA, 5-day and 10-day range and drift), macro phase, speed (range per hour vs recent norm), sentiment proxies on disk (funding, OI trend, long/short, liquidations if any), absorption or distribution signs (CVD vs price, OI vs price). Descriptive only; each field names its file or says NOT_IN_DATA.",
     "Check what context machinery exists (pit_levels, context_factors, session frame) and what it already says for those days; list gaps as feature hypotheses.",
     "Diagnose the backtest apparatus before any new test: which dsa-audit-01..10 findings already explain the 'nothing works' result, which known-answer canaries pass or fail. No new numbers.",
-    "Write CONTEXT_FIRST.md with an operator question list; stop. A pre-registered test comes only after the operator has read it."
+    "Write CONTEXT_FIRST.md with an operator question list; stop. A pre-registered test comes only after the operator has read it. Before any later test: write the rules blind to 2026-10-16 prices, count correlated items as families (band, RSI, flow, levels), list prior VERDICTS rows (mal_bb_mid_engulf, opr_bb_mtf_center, rsi_divergence_mtf, orderflow_views, PRE_REG_OI_DIVERGENCE) and the 0.14% round-trip cost at 20-50x; see research/review_chart_cards_2026-10-17/REVIEW.md findings 11-14."
   ],
   "tests": "Every context field cites a file and number or says NOT_IN_DATA; no outcome statistics appear.",
   "title": "Context first: build the market-context picture around the operator's chart reads, then diagnose why backtests fail (no backtest yet)"

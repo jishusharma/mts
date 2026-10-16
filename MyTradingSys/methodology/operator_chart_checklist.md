@@ -19,3 +19,4 @@
 | 13 | Context before signal | Phase and speed of the market, sentiment (greed or fear), absorption or distribution, macro phase | operator 2026-10-17 |
 | 14 | Higher-horizon context | What happened yesterday, the day before, the 5-day, the weekly and bi-weekly picture | operator 2026-10-17 |
 Order of work (operator 2026-10-17): describe context first, then decide what to test. No backtest on a chart pattern before its context is written down.
+Labels: items 2 and 6 are textbook conventions, OPERATOR (paraphrase), not quoted words. Items 1-12 overlap (4/5, 3/10, 1/12): count families, not items, as evidence. Item 12 is a discretionary note, not testable as written. Review: research/review_chart_cards_2026-10-17/REVIEW.md.
