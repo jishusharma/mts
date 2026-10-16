@@ -324,6 +324,12 @@ class TestCiAnnotation(unittest.TestCase):
         self.assertNotIn("noise", notes[0])
         self.assertNotIn("\n", notes[0])
 
+    def test_failed_step_with_empty_output_is_still_annotated(self):
+        os.environ["GITHUB_ACTIONS"] = "true"
+        notes = [ln for ln in rat.format_step("4f", "d", "c", False, "", 1.0) if ln.startswith("::error ")]
+        self.assertEqual(len(notes), 1)
+        self.assertIn("(no output)", notes[0])
+
     def test_passing_step_has_no_annotation(self):
         os.environ["GITHUB_ACTIONS"] = "true"
         self.assertFalse(any(ln.startswith("::error") for ln in rat.format_step("4f", "d", "c", True, "all ok", 1.0)))

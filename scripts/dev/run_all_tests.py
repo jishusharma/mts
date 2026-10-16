@@ -126,7 +126,7 @@ def ci_annotation(num, description, output, limit=3000):
         return None
     lines = output.splitlines()
     first = next((i for i, ln in enumerate(lines) if ln.lstrip().startswith(("FAIL", "ERROR", "E  ", "Traceback"))), max(len(lines) - 25, 0))
-    body = "\n".join(lines[first:])[-limit:]
+    body = "\n".join(lines[first:])[-limit:] or "(no output)"
     body = body.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
     return f"::error title=Step {num} FAIL::{description} | {body}"
 
@@ -140,9 +140,10 @@ def format_step(num, description, cmd_text, ok, output, elapsed, progress="", ta
     lines.append(f"  Elapsed: {elapsed:.1f}s" + (f" ({progress})" if progress else ""))
     lines.append(f"Step {num}: {'PASS' if ok else 'FAIL'}")
     out = output.splitlines()
-    if not ok and out:
-        lines.append("  Last output:")
-        lines += [f"    {ln}" for ln in (out if (os.environ.get("CI") or tail is None) else out[-tail:])]
+    if not ok:
+        if out:
+            lines.append("  Last output:")
+            lines += [f"    {ln}" for ln in (out if (os.environ.get("CI") or tail is None) else out[-tail:])]
         note = ci_annotation(num, description, output)
         if note:
             lines.append(note)
@@ -560,6 +561,8 @@ def main(argv=None):
         print(f"FAILED: {len(failed)} step(s)")
         for f in failed:
             print(f"  - {f}")
+        if os.environ.get("GITHUB_ACTIONS"):   # one line that names every failed step, whatever the per-step annotations were (cap: 10 per step)
+            print(f"::error title=Gate FAIL::{len(failed)} step(s) failed: " + "; ".join(failed).replace("%", "%25"))
         return 1
     else:
         print("ALL TESTS PASSED")
