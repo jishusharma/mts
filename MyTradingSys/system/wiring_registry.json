@@ -761,12 +761,12 @@
    "why": "Counts only (PRE_REG_V2 s.2): matched C events/days under the wider control pool; no outcome column; run by hand."
   },
   "MyTradingSys/research/context_factors_2026-10-16/dev_ext.py": {
-    "disp": "REPRO",
-    "why": "DEV_EXT loader (2020-2021 BTCUSDT perp 1m, DEV-stage only, flag off by default); read by count_ext.py and any later per-factor DEV study; test_dev_ext.py."
+   "disp": "REPRO",
+   "why": "DEV_EXT loader (2020-2021 BTCUSDT perp 1m, DEV-stage only, flag off by default); read by count_ext.py and any later per-factor DEV study; test_dev_ext.py."
   },
   "MyTradingSys/research/context_factors_2026-10-16/count_ext.py": {
-    "disp": "REPRO",
-    "why": "Rebuilds COUNTS_DEV_EXT.md and counts_dev_ext.csv (count-only power check on DEV + DEV_EXT); python count_ext.py frames, then counts; named in OPERATOR_DECISIONS.md D3."
+   "disp": "REPRO",
+   "why": "Rebuilds COUNTS_DEV_EXT.md and counts_dev_ext.csv (count-only power check on DEV + DEV_EXT); python count_ext.py frames, then counts; named in OPERATOR_DECISIONS.md D3."
   },
   "MyTradingSys/research/context_factors_2026-10-16/counts.py": {
    "disp": "REPRO",
@@ -807,6 +807,16 @@
   "MyTradingSys/research/level_ledger_2026-10-16/java_zone_check.py": {
    "disp": "REPRO",
    "why": "Compares live Java buildVp with vp_pivot_probe.build_profile on sampled DEV days (ZONE_CHECK.csv); needs a JDK, run by hand, see README.md."
+  },
+  "MyTradingSys/backtest/layers/alerts/live_bb_top_reversal.py": {
+   "disp": "WIRE",
+   "ref": "research/layer_readiness_2026-10-16/HANDOFF_W1b.md",
+   "why": "bb_top_reversal 15m short (card bb-top-reversal-candle-backtest, E2) adapter built and tested by W1b 2026-10-16; W3 wires it in live_runner_cli.py and removes this entry."
+  },
+  "MyTradingSys/backtest/layers/alerts/live_candle_close.py": {
+   "disp": "WIRE",
+   "ref": "research/layer_readiness_2026-10-16/HANDOFF_W1b.md",
+   "why": "candle_close 1m sampling arms (layer_lab/candle_close_2026-10-14) adapter built and tested by W1b 2026-10-16; W3 wires it in live_runner_cli.py and removes this entry."
   }
  }
 }
