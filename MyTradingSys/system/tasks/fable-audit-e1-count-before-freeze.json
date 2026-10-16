@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T19:57:23Z",
   "commands": [],
   "created": "2026-10-15T22:50:49Z",
   "depends_on": [],
@@ -18,7 +19,7 @@
   "refs": [
     "MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md"
   ],
-  "result": "",
+  "result": "prereg_gate.py + 3 tests (module absent = red); n=1835 sd=1.46 m=42 MDE 0.139; n=200 exit 1",
   "scope_in": [
     "scripts/dev/prereg_gate.py",
     "scripts/dev/test_prereg_gate.py",
@@ -33,7 +34,7 @@
   "sources": [
     "FABLE_RUNS_AUDIT.md line 175 (E1); numbers from pit_levels_2026-10-16/PRE_REG_V2.md item 2; OURS: 0.30 R, power z 0.84"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write test_prereg_gate.py first",
     "implement mde() and a CLI: prereg_gate.py --n --sd --cost --m",
