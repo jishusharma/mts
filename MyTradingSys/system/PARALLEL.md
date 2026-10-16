@@ -64,6 +64,8 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
    the main/live tree. Fetched datasets belong in the primary tree's Dumps/ (never tidied), not in a session
    worktree. 2026-10-12: tidy without these guards removed 15 worktrees on JIS-NUC (see RV03 report).
 
+Claim/release (2026-10-16, TRAFFIC_BUSTERS B1) push one plumbing commit on origin's tip: no merge commit, no gate, never ships your other unshipped commits.
+
 Cloud sessions with a harness branch (`claude/...`) open a PR instead; CI auto-merges it when green.
 
 ## Needing the desktop (desk board)

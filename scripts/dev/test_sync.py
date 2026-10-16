@@ -124,6 +124,20 @@ class SyncTest(unittest.TestCase):
         sh(self.a, "pull", "-q", "origin", "fast-track")
         self.assertEqual(sync.read_claims(self.a, "HEAD"), [])
 
+    def test_claim_and_release_make_no_merge_commit_and_ship_nothing_else(self):
+        # Traffic buster 2026-10-16: 246 of 600 daily commits were claim/release, each with a merge commit.
+        commit(self.b, "b.py", "b\n")
+        sync.ship(self.b, gate=self.gate)       # a is now behind origin
+        commit(self.a, "unshipped.py", "u\n")   # and holds work of its own: a claim must not ship it
+        gated_before = len(self.gated)
+        sync.claim(self.a, "Task x", area="scripts/dev", gate=self.gate)
+        sync.release(self.a, "task-x", gate=self.gate)
+        merges = subprocess.run(["git", "rev-list", "--merges", "origin/fast-track"], cwd=self.a,
+                                capture_output=True, text=True).stdout.split()
+        self.assertEqual(merges, [])
+        self.assertNotIn("unshipped.py", self.head_files(self.a))
+        self.assertEqual(len(self.gated), gated_before)
+
     def test_claim_blocks_only_on_overlapping_areas(self):
         sync.claim(self.a, "Task one", area="scripts/dev,MyTradingSys/backtest", gate=self.gate)
         sync.claim(self.a, "Task two", area="MyTradingSys/research", gate=self.gate)  # disjoint: allowed

@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1792677804,
-  "week_used": 23.0,
+  "week_resets": 1792677805,
+  "week_used": 24.0,
   "window_resets": 1792157428,
-  "window_used": 1.0
+  "window_used": 4.0
  },
- "at": "2026-10-16T09:32:27Z",
+ "at": "2026-10-16T10:32:31Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,11 +18,41 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 18.0,
-  "window_pts": 1.0,
-  "window_runs": 2
+  "week_pts": 19.0,
+  "window_pts": 4.0,
+  "window_runs": 4
  },
  "runs": [
+  {
+   "at": "2026-10-16T10:30:13Z",
+   "card": "imb-filter-audit-1-map",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6.1-sol",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 129,
+   "tokens_out": 4938,
+   "tokens_total": 390494,
+   "tokens_uncached": 45460,
+   "week_pts": 1.0,
+   "window_pts": 3.0
+  },
+  {
+   "at": "2026-10-16T10:00:07Z",
+   "card": "gpt-verdict-registry-audit-b",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 173,
+   "tokens_out": 13061,
+   "tokens_total": 1058954,
+   "tokens_uncached": 70917,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-16T09:30:12Z",
    "card": "gpt-verdict-registry-audit-a",
@@ -140,36 +170,6 @@
    "tokens_out": 1435,
    "tokens_total": 249793,
    "tokens_uncached": 57382,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T03:30:02Z",
-   "card": "gpt-verdict-registry-audit",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 40,
-   "tokens_out": 2619,
-   "tokens_total": 195834,
-   "tokens_uncached": 50239,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T03:00:09Z",
-   "card": "gpt-fable-economics-recheck",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "INCOMPLETE",
-   "seconds": 46,
-   "tokens_out": 3085,
-   "tokens_total": 427226,
-   "tokens_uncached": 49357,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
