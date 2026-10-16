@@ -68,6 +68,16 @@ class WiringGate(unittest.TestCase):
             self.assertEqual(rc, 1)
             self.assertIn('STALE MyTradingSys/runtime/live_mod.py: now LIVE', out)
 
+    def test_lab_entry_now_live_does_not_fail_the_gate(self):
+        lab = 'MyTradingSys/research/layer_lab/x/event_table.py'
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_root(tmp)
+            write(root, lab)
+            write(root, 'scripts/live/runner.py', 'import MyTradingSys.runtime.live_mod\nimport MyTradingSys.research.layer_lab.x.event_table\n')
+            write(root, REG, json.dumps({'entries': {ORPHAN: {'disp': 'TOOL', 'why': 'x'}, lab: {'disp': 'TOOL', 'why': 'x'}}}))
+            rc, out = run_check(root)
+            self.assertEqual(rc, 0, out)
+
     def test_bad_disposition_empty_why_and_wire_without_ref_fail(self):
         with tempfile.TemporaryDirectory() as tmp:
             for e, needle in (({'disp': 'MAYBE', 'why': 'x'}, 'BAD'), ({'disp': 'TOOL', 'why': ' '}, 'why is empty'),
