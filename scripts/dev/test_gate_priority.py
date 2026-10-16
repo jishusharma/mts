@@ -33,7 +33,8 @@ AFF = (
     "from ctypes import wintypes; k = ctypes.WinDLL('kernel32'); k.GetCurrentProcess.restype = wintypes.HANDLE;"
     "m = ctypes.c_size_t(); s = ctypes.c_size_t();"
     "k.GetProcessAffinityMask.argtypes = [wintypes.HANDLE, ctypes.POINTER(ctypes.c_size_t), ctypes.POINTER(ctypes.c_size_t)];"
-    "r.lower_priority(); k.GetProcessAffinityMask(k.GetCurrentProcess(), ctypes.byref(m), ctypes.byref(s)); print(m.value, s.value)"
+    "k.GetProcessAffinityMask(k.GetCurrentProcess(), ctypes.byref(m), ctypes.byref(s)); before = m.value;"
+    "r.lower_priority(); k.GetProcessAffinityMask(k.GetCurrentProcess(), ctypes.byref(m), ctypes.byref(s)); print(m.value, before)"
 )
 
 
@@ -47,12 +48,12 @@ class GateReservesCores(unittest.TestCase):
         return [int(x) for x in subprocess.run([sys.executable, "-c", AFF], capture_output=True, text=True, cwd=self.root, env=e).stdout.split()]
 
     def test_top_two_cpus_left_free(self):
-        mask, system = self.run_aff(MTS_GATE_RESERVE="2")
-        self.assertEqual(mask, system & ((1 << ((os.cpu_count() or 1) - 2)) - 1))
+        mask, before = self.run_aff(MTS_GATE_RESERVE="2")   # `before` = what this process inherited (the gate may already be pinned)
+        self.assertEqual(mask, before & ((1 << ((os.cpu_count() or 1) - 2)) - 1))
 
     def test_opt_out_keeps_every_cpu(self):
-        mask, system = self.run_aff(MTS_GATE_RESERVE="0")
-        self.assertEqual(mask, system)
+        mask, before = self.run_aff(MTS_GATE_RESERVE="0")
+        self.assertEqual(mask, before)
 
 
 if __name__ == "__main__":
