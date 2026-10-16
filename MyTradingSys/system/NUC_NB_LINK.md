@@ -41,3 +41,8 @@ Account names, secrets, tokens, keys, orders, balances, positions, runtime/order
 No signal answer, so this is from the repo at 2026-10-16 ~15:00Z: NB is active on live-path work (692afe63 auto_deploy: alert runner restarted by its -m module name, i.e. the Q75 area; B190b shim). No claim files exist for Q75-Q79.
 Split NUC proposed (signal, claim kind): NB keeps Q75 (live path, auto_deploy, mode.ps1). NUC takes Q76, Q77, Q78 and Q79 (research and docs, data at F:/MTS). Whoever claims a Q first with `sync.py claim` owns it; the other skips it.
 Next time: the coordinator on each side reads `mts_signal.py read --hours 3` at the start of a turn and answers `ask` lines within its next turn; a silent side is read from the repo after 60 minutes (do not block longer).
+
+### First cross-machine hand-offs (2026-10-16)
+- `[nuc->nb] runner`: the live runner on NB never reloaded W3 (5 new layers not loaded, stale since 10:21Z). Cause: AutoDeploy matched `live_runner_cli.py` but the runner starts as `-m ...alerts.live_runner_cli`; kill pattern fixed on fast-track with a test (see research/layer_readiness_2026-10-16/LIVE_CHECK.md). Takes effect on the next deploy touching alerts/ or a supervisor stale-restart; NB restarts per DEPLOY_RUNBOOK.
+- `[nuc->nb] fabio`: layer:fabio:v3_grid:1m logs 72 unmapped rejects per 45 min; Fabio is excluded on NUC, so it is NB's call.
+
