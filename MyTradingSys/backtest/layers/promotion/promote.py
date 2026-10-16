@@ -24,10 +24,12 @@ import argparse
 import csv
 import datetime as dt
 import json
+import math
 import re
 import subprocess
 import sys
 from pathlib import Path
+from statistics import NormalDist
 
 from MyTradingSys.backtest.layers.promotion import registry as reg
 
@@ -35,6 +37,8 @@ REPO = Path(__file__).resolve().parents[4]
 CONFIG_PATH = REPO / "MyTradingSys" / "execution" / "auto_trader_config.json"
 MIN_TRADES = 30        # OURS: sanity floor on the OOS sample (GO_LIVE_BAR needs 200 testnet trades later); not from a trader
 SIZE_CEILING_USD = 10000   # = auto_trader.SIZE_CEILING_USD (test_promote asserts they match)
+POWER_Z = 0.84         # OURS: z for 80% power in the MDE trade floor
+MDE_SAFETY = 4         # OURS: safety factor on the MDE-based trade floor
 LABEL = "BT-TUNED"
 REQUIRED = ("setup_id", "layer", "pre_reg", "screen_verdict", "backtest", "oos", "trial_ledger",
             "validation_reads", "holdout_reads", "requested_mode")
@@ -42,6 +46,18 @@ REQUIRED = ("setup_id", "layer", "pre_reg", "screen_verdict", "backtest", "oos",
 
 def _num(x):
     return isinstance(x, (int, float)) and not isinstance(x, bool) and x == x and abs(x) != float("inf")
+
+
+def holm_z(variants):
+    """OURS: two-sided 5% Holm/Bonferroni critical z for `variants` trials in the ledger (z=1.96 for 1)."""
+    return NormalDist().inv_cdf(1 - 0.025 / max(1, int(variants)))
+
+
+def mde_floor(o, z):
+    """OURS: n >= max(MIN_TRADES, 4*((z+0.84)*sd/net_r)^2), sd = se*sqrt(n), se = (ci_high-ci_low)/3.92."""
+    se = (o["ci_high"] - o["ci_low"]) / 3.92
+    sd = se * math.sqrt(max(o["n_trades"], 0))
+    return max(MIN_TRADES, MDE_SAFETY * ((z + POWER_Z) * sd / o["net_r"]) ** 2)
 
 
 def _git(repo, *args):
@@ -188,6 +204,17 @@ def check(manifest, repo=REPO, config_path=None):
                 reasons.append("95%% CI low %s is not above 0" % o["ci_low"])
             if not o["ci_low"] <= o["net_r"] <= o["ci_high"]:
                 reasons.append("net_r outside its own CI (ci_low <= net_r <= ci_high)")
+            elif o["net_r"] > 0:
+                tlv = sub("trial_ledger")
+                var = tlv.get("variants") if tlv else None
+                if isinstance(var, int) and not isinstance(var, bool) and var >= 1:
+                    z = holm_z(var)
+                    se = (o["ci_high"] - o["ci_low"]) / 3.92
+                    if o["net_r"] - z * se <= 0:
+                        reasons.append("Holm-adjusted CI low %.4f (z=%.3f for %d variants) is not above 0" % (o["net_r"] - z * se, z, var))
+                    floor = mde_floor(o, z)
+                    if o["n_trades"] < floor:
+                        reasons.append("n_trades %s below the MDE-based floor of %d (z=%.3f)" % (o["n_trades"], math.ceil(floor), z))
             if int(o["n_trades"]) != o["n_trades"] or o["n_trades"] < MIN_TRADES:
                 reasons.append("n_trades %s below the floor of %d" % (o["n_trades"], MIN_TRADES))
 
@@ -219,6 +246,8 @@ def check(manifest, repo=REPO, config_path=None):
             reasons.append("%s must hold exactly one read record (found %s)" % (key, len(recs) if isinstance(recs, list) else "non-list"))
         elif not (isinstance(recs[0], dict) and _is_str(recs[0].get("at")) and _is_str(recs[0].get("ref"))):
             reasons.append("%s record needs non-empty at and ref" % key)
+        elif key == "validation_reads" and not _rel_file(repo, recs[0]["ref"]):
+            reasons.append("validation_reads ref %r is not an existing repo file (the logged VALIDATION read)" % recs[0]["ref"])
 
     # G7: layer not on the trade blocklist or parked list
     if sid:

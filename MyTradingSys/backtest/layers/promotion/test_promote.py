@@ -45,7 +45,9 @@ class Base(unittest.TestCase):
         commit(self.repo, "2026-02-01T10:00:00+00:00", "screen", {
             "r/screen.json": json.dumps({"verdict": "PASS"}),
             "r/bt.md": "# report\nLabel: BT-TUNED\n",
-            "r/ledger.csv": "study,variant,date,window,verdict\nS1,a,d,w,v\nS1,b,d,w,v\nS1,c,d,w,v\nS2,z,d,w,v\n"})
+            "r/ledger.csv": "study,variant,date,window,verdict\nS1,a,d,w,v\nS1,b,d,w,v\nS1,c,d,w,v\nS2,z,d,w,v\n",
+            "r/val_read.md": "VALIDATION read log\n",
+            "r/ledger40.csv": "study,variant,date,window,verdict\n" + "".join("S40,v%d,d,w,v\n" % i for i in range(40))})
         self.cfg = self.repo / "cfg.json"
         self.cfg.write_text(json.dumps({"trade_blocklist": [], "trade_blocklist_parked": {"layer:session:": "x"},
                                         "size_overrides": {SID: {"size_usd": 50, "max_loss_usd": 2}}}), encoding="utf-8")
@@ -55,9 +57,9 @@ class Base(unittest.TestCase):
                   "pre_reg": {"path": "r/PRE_REG.md", "git_sha": self.pre_sha},
                   "screen_verdict": {"path": "r/screen.json"},
                   "backtest": {"report_path": "r/bt.md", "label": "BT-TUNED"},
-                  "oos": {"fee_net": True, "net_r": 0.12, "ci_low": 0.03, "ci_high": 0.21, "n_trades": 250},
+                  "oos": {"fee_net": True, "net_r": 0.12, "ci_low": 0.09, "ci_high": 0.15, "n_trades": 250},
                   "trial_ledger": {"path": "r/ledger.csv", "entry_id": "S1", "variants": 3},
-                  "validation_reads": [{"at": "2026-02-10", "ref": "v1"}],
+                  "validation_reads": [{"at": "2026-02-10", "ref": "r/val_read.md"}],
                   "holdout_reads": [{"at": "2026-02-11", "ref": "h1"}],
                   "requested_mode": "shadow"}
 
@@ -82,6 +84,19 @@ class Gates(Base):
     def test_good_manifest_passes(self):
         r = self.chk()
         self.assertEqual((r["result"], r["reasons"]), ("PASS", []))
+
+    def test_holm_adjusted_ci_for_many_variants(self):
+        def f(m):
+            m["trial_ledger"].update(path="r/ledger40.csv", entry_id="S40", variants=40)
+            m["oos"].update(ci_low=0.02, ci_high=0.22)
+        self.rejected(f, "Holm")
+
+    def test_validation_read_ref_must_be_a_logged_file(self):
+        self.rejected(lambda m: m["validation_reads"][0].update(ref="no/such/log.md"), "validation_reads ref")
+        self.rejected(lambda m: m["validation_reads"][0].update(ref="  "), "validation_reads")
+
+    def test_trade_floor_is_mde_based(self):
+        self.rejected(lambda m: m["oos"].update(ci_low=0.02, ci_high=0.22, n_trades=31), "MDE")
 
     def test_unreadable_manifest_rejects(self):
         r = pm.check(self.repo / "nope.json", repo=self.repo, config_path=self.cfg)

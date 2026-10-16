@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T20:00:28Z",
   "commands": [],
   "created": "2026-10-15T22:50:49Z",
   "depends_on": [],
@@ -18,7 +19,7 @@
   "refs": [
     "MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md"
   ],
-  "result": "",
+  "result": "promote.check G4 now Holm-adjusts CI low (z=3.227 for variants=40, 1.96 for 1), validation_reads ref must be an existing repo file, trade floor = max(30, 4*((z+0.84)*sd/net_r)^2); 3 new tests fail on old code, 64 promotion tests pass",
   "scope_in": [
     "MyTradingSys/backtest/layers/promotion/promote.py",
     "MyTradingSys/backtest/layers/promotion/test_promote.py"
@@ -31,7 +32,7 @@
   "sources": [
     "MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md line 178 (E4); OURS parameters: 0.84 power z, 4x safety factor"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read promote.py G4/G5 and test_promote.py fixtures",
     "write the 3 tests first and watch them fail on current code",
