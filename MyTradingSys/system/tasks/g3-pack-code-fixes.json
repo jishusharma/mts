@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T19:53:47Z",
   "commands": [],
   "created": "2026-10-16T18:53:09Z",
   "depends_on": [],
@@ -19,7 +20,7 @@
     "MyTradingSys/research/layer_lab/reports/2026-10-16_gpt-g3-pack-audit.md",
     "MyTradingSys/research/g3_marks_2026-10-16/READER_PROTOCOL.md"
   ],
-  "result": "",
+  "result": "3 HIGH code fixes + 3 red-first tests; 11 tests pass; draw NOT rebuilt (blindness open); rerun card g3-pack-audit-rerun",
   "scope_in": [
     "MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py",
     "MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py"
@@ -34,7 +35,7 @@
   "sources": [
     "gpt-g3-pack-audit FIX-FIRST 2026-10-16"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write three red tests first: FAB4 outside run of 2 closes must not tag; a divergence with the 20-bar extremum older than 3 bars must tag per protocol; load_intraday must drop rows after the final allowed date.",
     "Fix each in g3_pack.py to the protocol text (cite protocol line); keep causality tests green.",
