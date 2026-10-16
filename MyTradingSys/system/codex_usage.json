@@ -6,7 +6,7 @@
   "window_resets": 1792137625,
   "window_used": 0
  },
- "at": "2026-10-16T03:01:03Z",
+ "at": "2026-10-16T03:30:50Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 16.0,
   "window_pts": 0.0,
-  "window_runs": 0
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-16T03:30:02Z",
+   "card": "gpt-verdict-registry-audit",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 40,
+   "tokens_out": 2619,
+   "tokens_total": 195834,
+   "tokens_uncached": 50239,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-16T03:00:09Z",
    "card": "gpt-fable-economics-recheck",
@@ -157,21 +172,6 @@
    "tokens_uncached": 58784,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-14T18:30:03Z",
-   "card": "tom-btc-event-study",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 46,
-   "tokens_out": 2843,
-   "tokens_total": 274488,
-   "tokens_uncached": 47133,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
