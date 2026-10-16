@@ -1,36 +1,25 @@
-# OI Delta Event Table
+# BLOCKED — empirical OI inputs are missing
 
-**BLOCKED — 0 local OI data files were found, so no DEV event rows or forward outcomes can be computed.** Funding files exist (78); whale data files found: 0. OI-dependent periods remain `NOT_IN_DATA`.
+## Built and verified
 
-## Built
+The DEV-only table implementation classifies the four price/OI sign states, computes forward return, MFE and MAE in stop-risk units from bars strictly after each event, and emits `NOT_IN_DATA` when OI is absent. Its synthetic test file passes: `python -m pytest MyTradingSys/research/layer_lab/oi_delta_event_table/test_event_table.py -q -p no:cacheprovider` -> `3 passed`.
 
-- `event_table.py` inventories candidate local inputs and builds a CSV table from supplied event and bar CSVs. It applies the four directional sign states recorded by the 2026-10-10 classifier, computes forward return/MFE/MAE in R, and prevents bars at or before the event timestamp from entering forward outcomes.
-- Missing OI is an explicit `NOT_IN_DATA` status with blank outcome fields. Flat-sign inputs are not one of the four directional events.
-- DEV window is 2022-01-01 through 2024-12-31, exclusive of 2025-01-01. No VALIDATION or HOLDOUT data is read.
+The test is registered in `scripts/dev/run_extra_tests.py` (`EXTRA`, OI event-table entry), and the implementation is declared `REPRO` in `MyTradingSys/system/wiring_registry.json` (OI event-table entry).
 
-## Inventory and rows
+## Input inventory and result
 
 Command: `python MyTradingSys/research/layer_lab/oi_delta_event_table/event_table.py --inventory`
 
-| Source category | Matching local files | Event rows computed |
+| Category | Candidate files | Empirical rows |
 |---|---:|---:|
 | OI | 0 | 0 |
 | Funding | 78 | 0 |
 | Whale | 0 | 0 |
 
-The reusable table function is covered by synthetic fixtures only. There are no empirical OI event rows to report because neither full-precision OI data nor the old snapshot/label inputs are present in this checkout. The referenced 2026-10-10 script points to `runtime_data/snapshots` and `runtime_data/outcome_labels.json` under the JIS-NB checkout; these paths are not local inputs here.
+No empirical events or forward outcomes can be produced. The 2026-10-10 read-only study uses snapshot files under `runtime_data/snapshots` and `runtime_data/outcome_labels.json` (`MyTradingSys/research/oi_event_study_2026-10-10.py`, `SNAPS`/`LABELS` assignments); those raw inputs are not present in this checkout. Funding archives do not supply OI. The affected period is `NOT_IN_DATA`.
 
-## Tests
+## Test-first record
 
-- Red first: `python -m pytest MyTradingSys/research/layer_lab/oi_delta_event_table/test_event_table.py -q` failed at collection because `event_table.py` did not yet exist.
-- Green: `python -m pytest MyTradingSys/research/layer_lab/oi_delta_event_table/test_event_table.py -q -p no:cacheprovider` → `3 passed`.
-- Tests verify four labels, hand-computed R/MFE/MAE, missing OI as `NOT_IN_DATA`, and event labeling from as-of fields only.
+At task start, `event_table.py`, `test_event_table.py`, and the initial reports already existed in the workspace. Therefore a genuine pre-implementation red run cannot be established from this session; the prior draft's claim that collection failed because the module did not exist is not independently supported. The current implementation's synthetic tests were rerun and pass as noted above.
 
-## Findings
-
-| Severity | Finding | Evidence | Action |
-|---|---|---|---|
-| HIGH | Empirical OI event table cannot be populated in this environment. | Inventory returned 0 candidate OI files; the prior study's runtime snapshots and labels are absent. | Supply the local DEV OI plus price bars before computing event rows. |
-| LOW | Funding archives are present but do not substitute for OI. | Inventory returned 78 funding files and no OI files. | Keep funding separate until an OI event dataset is available. |
-
-No trial row was added: no empirical run took place. No follow-up card was created.
+No DEV empirical trial was run, so no row was added to `TRIALS.md`. No `tasks.py done` action was taken because the empirical input requirement is blocked by missing OI data.

@@ -1,12 +1,20 @@
 # BLOCKED — OI data unavailable locally
 
-The four-state DEV event-table implementation and its synthetic tests are complete, but empirical rows cannot be produced: the local inventory found 0 OI files, 78 funding files and 0 whale files. The OI-dependent period is `NOT_IN_DATA`; the card is not marked done.
+The synthetic event-table implementation is present and its tests pass, but the requested empirical DEV table cannot be populated: local inventory found 0 OI files, 78 funding files and 0 whale files. Missing OI remains `NOT_IN_DATA`; there are zero empirical rows.
+
+## Checked
+
+- Inventory command: `python MyTradingSys/research/layer_lab/oi_delta_event_table/event_table.py --inventory` -> `oi: []`, 78 funding candidates, `whale: []`.
+- Test command: `python -m pytest MyTradingSys/research/layer_lab/oi_delta_event_table/test_event_table.py -q -p no:cacheprovider` -> `3 passed`.
+- The 2026-10-10 study source is read-only; it points to `runtime_data/snapshots` and `runtime_data/outcome_labels.json` in its `SNAPS` and `LABELS` assignments. These inputs are unavailable in this checkout.
+- Implementation: `MyTradingSys/research/layer_lab/oi_delta_event_table/event_table.py` (`inventory`, `classify`, `build_event_table`). Test registration: `scripts/dev/run_extra_tests.py` (`EXTRA`). Wiring: `MyTradingSys/system/wiring_registry.json` (REPRO entry).
+
+## Findings
 
 | Severity | Finding | Evidence | Action |
 |---|---|---|---|
-| HIGH | Empirical OI event rows and forward outcomes are unavailable. | `python MyTradingSys/research/layer_lab/oi_delta_event_table/event_table.py --inventory` returned `oi: []`; prior study source points to JIS-NB `runtime_data/snapshots` and `outcome_labels.json`. | Provide DEV OI and aligned price bars, then rerun this table. |
-| LOW | Synthetic implementation tests pass. | `python -m pytest MyTradingSys/research/layer_lab/oi_delta_event_table/test_event_table.py -q -p no:cacheprovider` → `3 passed`. | No code change required for the tested behaviors. |
+| HIGH | Empirical OI event rows and forward outcomes cannot be calculated here. | Inventory command returned zero OI candidates; prior-study raw snapshots and outcome labels are missing. | Supply local DEV OI and aligned price bars, then rerun. |
+| LOW | Synthetic logic checks pass. | Test command returned `3 passed`, covering four labels, hand-computed R/MFE/MAE, missing OI, and as-of labeling. | Preserve the current test coverage. |
+| MED | The required red-first run is not evidenced by this session. | The module and test file were already present at task start; the draft's earlier collection-failure claim cannot be independently confirmed. | Record the limitation; do not claim red-first completion. |
 
-Files: `oi_delta_event_table/event_table.py`, `test_event_table.py`, `REPORT.md`; test registration in `scripts/dev/run_extra_tests.py`; REPRO declaration in `system/wiring_registry.json`. The referenced 2026-10-10 study is read-only. No trial row was added because no empirical run occurred.
-
-Follow-up cards: none.
+No empirical trial was run and no `TRIALS.md` row was added. Per the task's blocked-input instruction, the card was not marked done. No shipping or release is claimed.
