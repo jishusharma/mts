@@ -356,6 +356,7 @@ blockquote{margin:0;padding:10px 14px;border-left:4px solid var(--accent);backgr
     <nav class="tabs" role="tablist" id="tabs"></nav>
   </div>
 </header>
+<div class="wrap" style="padding-block:0"><!--mts-home:start--><aside class="mts-home" role="note" style="display:block;margin:12px 0 0;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--accent-soft);color:var(--ink);font-size:.92rem;line-height:1.5;max-width:75ch;overflow-wrap:anywhere">Part of <a href="https://claude.ai/artifact/8hKA1rhNRo6RAEdt5mtLg3" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">MTS Home</a>, the one list of every MTS page. Owner login: <b>jishusharma1985</b>. Any of your logins opens this same link once the owner has shared it with that login. Your notes: the Note / ask button. It saves to this page&#x27;s own list (db &quot;requests&quot;); the next super session answers there.</aside><!--mts-home:end--></div>
 <main class="wrap" id="main"></main>
 <button type="button" class="btn primary notebtn" id="notebtn" hidden>Note / ask</button>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
@@ -962,3 +963,4 @@ if (!RENDER[start]) { start = lsGet("mts-map-tab") || "overview"; }
 show(start);
 ready.then(() => { refresh(); });
 </script>
+
