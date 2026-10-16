@@ -103,6 +103,12 @@ every git step, and it ships only a run that ended DONE or BLOCKED. An `audit` o
 A `build` card runs only its own test file: the quick gate cannot pass inside the sandbox (tests that create git repositories are
 refused; measured 2026-10-12, lab-dax-proof-parity), so `sync.py ship` in the runner is the gate. A failed ship leaves `<run log>.ship.txt`.
 Claude spot-checks one claim per lab report (CLAUDE.md Cost and routing).
+Gate registration (JIS-NUC 2026-10-15: lc-event-table ended SHIP_FAILED on steps 3w, 3x and 4b; the finished work stayed on the lab branch): the runner's `sync.py ship` runs the quick gate.
+A `build` card that adds a `test_*.py` must list it in `scripts/dev/run_extra_tests.py` EXTRA (test_gate_discovery_b150), and each new non-test `.py` that only a test calls needs an entry in
+`MyTradingSys/system/wiring_registry.json` (disp TOOL or REPRO, plus why); name both files in the card's scope_in. An `audit` or `run` card saves any script as `<name>.py.txt`
+(precedent `layer_lab/gross_screen_independent_recount.py.txt`), so neither check sees it.
+The generated `MyTradingSys/system/LAYERS.md` is the one file outside `research/layer_lab/` and `system/tasks/` an audit or run card may change (`codex_run.GENERATED`): `tasks.py done` rewrites it for
+every card whose id matches a layer family. Before 2026-10-16 that made `malkan-hindi-rows-gpt-read` OUT_OF_SCOPE (41 window points, nothing shipped).
 CI gates every push exactly as for Claude code. The trial ends about 2026-11-11: nothing else may depend on the lab.
 
 ## GPT lane health, reroute and pause (operator 2026-10-12)
