@@ -5,8 +5,9 @@ Runs where the file `.mts_live` exists (JIS-NB). Anywhere else it reports NOT_LI
   1. git fetch origin green/fast-track (the SHA CI gated on ubuntu AND windows); fetch failure = stop, nothing changed.
   2. same SHA = UP_TO_DATE. Not a fast-forward of HEAD = STOP_NOT_FF (never reset, rebase or force). A tracked file that other sessions
      edited and the deploy would change = STOP_DIRTY (never merge or stash over another session's edits).
-  3. Gate the candidate in a throwaway detached worktree (run_all_tests.py --quick). Red = STOP_RED: the live tree is never touched, and the same
-     SHA is not re-gated every cycle (the state file remembers it).
+  3. Gate the candidate in a throwaway detached worktree (run_all_tests.py --quick, limit GATE_TIMEOUT_S = 2700 s, env MTS_DEPLOY_GATE_TIMEOUT). Red =
+     STOP_RED: the live tree is never touched, and the same SHA is not re-gated every cycle (the state file remembers it). A timed-out gate keeps its
+     partial output in gate_tail; every gated result records gate_secs.
   3b. Dirty GENERATED files (GENERATED_RE) are backed up to runtime_data/deploy_backup/<stamp>/regenerated/ and restored by `git checkout -- <file>`.
   3c. Fast-track fallback (stale green) only while the newest COMPLETED CI run on fast-track is green; red = FALLBACK_REFUSED_CI_RED, unknown
      (gh missing / auth / parse error / no completed run) = FALLBACK_REFUSED_CI_UNKNOWN (fail closed): both stay on green/fast-track.
@@ -25,6 +26,7 @@ Exit 0 = deployed / up to date / not live; 1 = stopped (red gate, not ff, dirty,
 import nowin  # B173: no console flash from git/python children under pythonw
 nowin.install()
 import json
+import math
 import os
 import re
 import shutil
@@ -44,6 +46,10 @@ LOCK_STALE_S = 30 * 60
 BRANCH = "green/fast-track"
 FALLBACK_BRANCH = "fast-track"   # gated here by the same local gate when CI has not advanced green for GREEN_STALE_S
 GREEN_STALE_S = 90 * 60
+# The quick gate takes ~290 s on an idle host (DEPLOY_RUNBOOK Quick-gate speed). 2026-10-16 04:45Z it hit the old 1500 s while parallel sessions kept
+# the 8 CPUs at 100% (STOP_RED, gate_tail ['timed out']). Env override: MTS_DEPLOY_GATE_TIMEOUT (seconds).
+GATE_TIMEOUT_S = 2700
+GATE_TIMEOUT_ENV = "MTS_DEPLOY_GATE_TIMEOUT"
 ORDERFLOW_STATE = "MyTradingSys/runtime/orderflow_live/_state.json"
 JAVA_RE = re.compile(r"^(src/main/java/|src/test/java/|pom\.xml$)")
 NEVER_KILL = ("position_manager",)
@@ -105,12 +111,32 @@ def decide(*, is_live, head, target, is_ff, changed, dirty, last_red_sha=None):
     return out
 
 
+def gate_timeout():
+    """Seconds the gate may run: MTS_DEPLOY_GATE_TIMEOUT (a positive finite number) or GATE_TIMEOUT_S."""
+    try:
+        v = float(os.environ.get(GATE_TIMEOUT_ENV, ""))
+    except ValueError:
+        return GATE_TIMEOUT_S
+    if not (math.isfinite(v) and v > 0):
+        return GATE_TIMEOUT_S
+    return int(v) if v == int(v) else v
+
+
+def _text(x):
+    """subprocess hands back None, str or (after a timeout, even in text mode) bytes."""
+    if x is None:
+        return ""
+    return x.decode("utf-8", "replace") if isinstance(x, bytes) else x
+
+
 def sh(argv, cwd=REPO, timeout=300):
     try:
         p = subprocess.run(argv, cwd=cwd, capture_output=True, text=True, timeout=timeout)
         return p.returncode, (p.stdout or "") + (p.stderr or "")
-    except subprocess.TimeoutExpired:
-        return 124, "timed out"
+    except subprocess.TimeoutExpired as e:
+        # keep what the child printed before the kill: a timed-out gate's tail then shows the step it reached (2026-10-16 04:45Z: only 'timed out')
+        partial = _text(e.stdout) + _text(e.stderr)
+        return 124, partial if partial.strip() else "timed out"
     except OSError as e:
         return 127, f"could not start: {e}"
 
@@ -193,10 +219,13 @@ class Ops:
         if rc != 0:
             return 125, "could not create gate worktree: " + out[-300:]
         try:
-            return sh([sys.executable, "scripts/dev/run_all_tests.py", "--quick"], cwd=wt, timeout=1500)
+            return sh([sys.executable, "scripts/dev/run_all_tests.py", "--quick"], cwd=wt, timeout=gate_timeout())
         finally:
             self.git("worktree", "remove", "--force", str(wt))
             shutil.rmtree(wt, ignore_errors=True)
+
+    def clock(self):
+        return time.monotonic()
 
     def kill(self, script):
         return kill_process(script)
@@ -301,6 +330,11 @@ def pick_branch(ops, note=None):
     return FALLBACK_BRANCH
 
 
+def _clock(ops):
+    """Monotonic seconds from the ops (a test injects its own); an ops without a clock uses time.monotonic."""
+    return getattr(ops, "clock", time.monotonic)()
+
+
 def run(ops=None, check=False, state=None, save=True):
     ops = ops or Ops()
     state = _load_state() if state is None else state
@@ -338,12 +372,15 @@ def run(ops=None, check=False, state=None, save=True):
             res["untracked_would_clear"] = uclear
         res["action"] = "WOULD_DEPLOY"
         return _finish(res, save)
+    t0 = _clock(ops)
     grc, gout = ops.gate(target)
+    res["gate_secs"] = round(_clock(ops) - t0)   # every gated result carries it: a slow gate shows up before it times out
     res["gate_tail"] = [ln for ln in gout.splitlines() if ln.strip()][-6:]
     if grc != 0:
         res["gate_failed"] = failed_step_blocks(gout)
         state["last_red_sha"] = target
-        res.update(action="STOP_RED", reason=f"gate red on {target[:7]}; live tree untouched")
+        why = f" (timed out after {gate_timeout():g}s)" if grc == 124 else ""
+        res.update(action="STOP_RED", reason=f"gate red on {target[:7]}{why}; live tree untouched")
         return _finish(res, save, state)
     uclear, ublock = plan_untracked(ops, target, changed)   # the gate takes minutes: read the live tree again (a card may have been filed since)
     if ublock:
