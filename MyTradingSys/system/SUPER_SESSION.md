@@ -30,8 +30,8 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 1. **Compact only if the session will run at least 15 more turns and is above ~150 k.** Otherwise: finish the step, hand off
    (NEXT_SESSION.md or a `start_session` brief) and archive. Never compact a session that is about to ship.
 2. **The coordinator works little itself.** It reads results, decides, spot-checks one claim per worker (`git cherry` empty =
-   shipped), and archives. Mechanical status goes to a Haiku worker; drafting and code to Sonnet; Opus only for the coordinator
-   and an observer the operator asks for. Fable only when the operator starts it.
+   shipped), and archives. Mechanical status goes to a Haiku worker; drafting and code to Sonnet; The coordinator runs on Sonnet 5.5 (operator 2026-10-16); Opus
+   only for an observer the operator asks for. Fable only when the operator starts it.
 3. **At most 4 workers running at once** (gate slots are 2 per machine, `sync.py`), one writer per set of files, each with a
    full brief: goal, files, DONE-when, defaults for every open question, hard limits. Workers never ask the operator; questions
    go to the coordinator, which decides toward the goal and logs the decision in the worker's deliverable.
@@ -60,9 +60,9 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   `MyTradingSys/execution/HALT` (+ `halt_history`); dirty files: `git -C <live> status --short --untracked-files=no`.
 - Live state in one read: `live_mirror.py brief` (LIVE_MIRROR.md) + `scripts/sched/check_live_health.py`; ledger =
   `runtime_data` trade_ledger.jsonl in the live tree. A Sonnet read-only worker does this in ~15 tool calls.
-- A coordinator started BY ANOTHER SESSION cannot `start_session` (the app refuses): workers are Agent subagents
-  (`run_in_background`, `isolation: worktree`, model sonnet/haiku), visible in the Tasks pane, not the sidebar. A coordinator the
-  operator opens directly can use `start_session` (sidebar sessions, cost about the same).
+- Operator rule (2026-10-16): workers are SESSIONS (`start_session`, Sonnet, announced in a line), never Agent subagents, so the operator
+  can open and compile them from the sidebar. Only if the app refuses `start_session` (a coordinator started BY ANOTHER SESSION) fall back to
+  Agent subagents (`run_in_background`, model sonnet/haiku), and log the refusal in the report.
 - Waking: other sessions send no idle notices. Use ONE background shell watcher (`git fetch` every 5 min; exit on a file landing
   on origin/fast-track or after 50 min), and on every wake `python scripts/sched/relay.py heartbeat "<id>" --note "<what>"`.
 - JIS-NB has no MTS-DispatchGate Windows task; the `mts-dispatcher` routine runs in the live tree, so relay/watchdog code only
