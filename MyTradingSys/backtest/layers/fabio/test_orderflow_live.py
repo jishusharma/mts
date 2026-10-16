@@ -117,6 +117,23 @@ class TestWriter(unittest.TestCase):
             self.assertEqual([b["t"] for b in ol.load_live_bars(d)], [T0, T0 + 60000])
             self.assertAlmostEqual(ol.load_live_bars(d)[1]["cvd_day"], 0.299)
 
+    def test_minute_larger_than_page_budget_still_advances(self):
+        """2026-10-14: one minute held 39,420 trades (> 25 pages); the chunk kept only minutes before the last fetched
+        one, so it was empty forever and the writer never moved. The overflow budget completes that minute."""
+        n = 7
+        trades = [raw(i + 1, 80000, 0.01, T0 + i, bool(i % 2)) for i in range(n)] + [raw(n + 1, 80001, 0.01, T0 + 61000, False)]
+        with tempfile.TemporaryDirectory() as d:
+            prior_hist(d)
+            old = (ol.PAGE, ol.MAX_PAGES, ol.OVERFLOW_PAGES)
+            ol.PAGE, ol.MAX_PAGES, ol.OVERFLOW_PAGES = 1, 3, 12   # minute 0 = 7 trades > 3 pages
+            try:
+                r = self.cycle(d, FakeExchange(trades), max_pages=3)
+            finally:
+                ol.PAGE, ol.MAX_PAGES, ol.OVERFLOW_PAGES = old
+            self.assertGreaterEqual(r["rows"], 1)
+            self.assertGreater(ol.load_state(d)["next_ms"], T0)
+            self.assertEqual(ol.load_live_bars(d)[0]["t"], T0)
+
     def test_default_page_budget_stays_under_binance_weight_limit(self):
         # aggTrades weight 20, limit 2400/min; one cycle every 20 s -> 3 cycles/min
         self.assertLessEqual(ol.MAX_PAGES * 20 * 3, 2400)
