@@ -61,11 +61,6 @@
    "disp": "TOOL",
    "why": "Backtest C (PLAN.md section 2): exit policies on fires_spot; run by hand, output research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md."
   },
-  "MyTradingSys/backtest/bigtrade/fires_kline.py": {
-   "disp": "REPRO",
-   "ref": "bigtrade-2026-10-09",
-   "why": "Worker B1 fire history of the kline-only live layers on current live parameters (PLAN.md 2B); read-only import of the live registry; run by hand or a desk task, covered by test_fires_kline.py."
-  },
   "MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py": {
    "disp": "TOOL",
    "ref": "bigtrade-2026-10-09",
@@ -75,11 +70,6 @@
    "disp": "REPRO",
    "ref": "bigtrade-2026-10-09",
    "why": "Worker C F-BT-08 check: reproduces Java buildVp volume weighting against the trade-level profile; read-only, run by hand, output cited in SCREENSHOT_OBSERVATIONS.md."
-  },
-  "MyTradingSys/backtest/bigtrade/parity_kline.py": {
-   "disp": "REPRO",
-   "ref": "bigtrade-2026-10-09",
-   "why": "Parity gate of worker B1: replay vs the live runner's logged alerts per registry key (95 percent rule); run by hand, covered through fires_kline tests."
   },
   "MyTradingSys/backtest/bigtrade/report_bigmoves.py": {
    "disp": "REPRO",
@@ -715,6 +705,38 @@
    "ref": "research-kit",
    "why": "Shared screen statistics for research studies (day-clustered SE, clustered difference, MDE, power check, Holm, cost in R); imported by hand-run studies, tested by test_research_kit.py, no live imports."
   },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py": {
+   "disp": "REPRO",
+   "why": "PIT context engine (replay + vectorised builds) for the context-factors study; imported by test_context_asof.py (gated) and by the REPRO scripts below; named in CONTEXT_FACTORS_SPEC.md."
+  },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/run_compare.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds compare_result.txt and grid_context.csv (replay vs vec at every 1h close of DEV); run by hand, named in ANGLES.md (a)."
+  },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/counts.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds COUNTS.md and trials.csv from grid_context.csv (counts only); run by hand, named in COUNTS.md."
+  },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/indep_pandas.py": {
+   "disp": "REPRO",
+   "why": "Independent pandas arithmetic for hand_check.py and trader_eye.py (angles b, c); named in ANGLES.md."
+  },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/hand_check.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds hand_check.md (angle c); run by hand, named in ANGLES.md."
+  },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/trader_eye.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds trader_eye.md (angle b); run by hand, named in ANGLES.md."
+  },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/prior_rule_count.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds prior_rule_count.md and trials.csv row T8 (RT-1); run by hand, named in ANGLES.md (d)."
+  },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/episode_counts.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds EPISODE_COUNTS.md (PRE_REG section 3 power table); run by hand and by card context-factors-one-run."
+  },
   "MyTradingSys/research/context_factors_2026-10-16/context_asof.py": {
    "disp": "TOOL",
    "why": "Point-in-time context factors F1-F7 (replay context_at + vectorised context_frame) for BTC 1h decisions; library for the context-composite-dev-read card, covered by test_context_asof.py; DEV loader refuses bars >= 2024-07-01; no live imports."
@@ -782,6 +804,34 @@
   "MyTradingSys/research/level_ledger_2026-10-16/zone_mismatch_classify.py": {
    "disp": "REPRO",
    "why": "Classifies the java_zone_check mismatches by cause (edge/grid/weighting) with a Java port checked against compiled Java; needs a JDK, run by hand, result in research/pit_levels_2026-10-16/ZONE_MISMATCH.md."
+  },
+  "MyTradingSys/research/layer_lab/candle_pattern_event_table/patterns.py": {
+   "disp": "TOOL",
+   "why": "Pure closed-bar pattern predicates for the candle_pattern_event_table research build; covered by test_patterns.py; no live imports."
+  },
+  "MyTradingSys/research/layer_lab/context_fix1_stop_strata/stop_strata.py": {
+   "disp": "TOOL",
+   "why": "Count-only V2 stop geometry summaries, relative stop-gap flag and f3_stop_tf-stratified E helper; covered by test_stop_strata.py; no live imports."
+  },
+  "MyTradingSys/research/layer_lab/context_fix2_mde_rule/mde_rule.py": {
+   "disp": "TOOL",
+   "why": "Pure realised-MDE and day/week-clustered verdict helper plus n_needed planning calculation for context composite V2; covered by test_mde_rule.py; no live imports."
+  },
+  "MyTradingSys/research/krown_capture_2026-10-16/check_quotes.py": {
+    "disp": "REPRO",
+    "why": "Verifies every quote in RULES_DRAFT.md against transcripts/<id>_timed.txt (normalised match, caption timestamp, --fix rewrites @ts); run by hand, named in INVENTORY.md."
+  },
+  "MyTradingSys/research/krown_capture_2026-10-16/classify_channel.py": {
+    "disp": "REPRO",
+    "why": "Title/playlist classifier: raw channel lists to VIDEO_LIST.csv and class counts; run by hand, named in INVENTORY.md."
+  },
+  "MyTradingSys/research/krown_capture_2026-10-16/enumerate_channel.py": {
+    "disp": "REPRO",
+    "why": "Enumerates Krown playlists and samples upload dates with yt-dlp (metadata only); run by hand, named in INVENTORY.md."
+  },
+  "MyTradingSys/research/krown_capture_2026-10-16/vtt_to_timed.py": {
+    "disp": "REPRO",
+    "why": "Converts YouTube VTT captions to the timed transcript format; run by hand, named in INVENTORY.md."
   }
  }
 }

@@ -1,0 +1,799 @@
+# Video ID: dzH7m9cQeZA
+# Published: 2026-09-27
+# Title: Stop Hunting Is Real: Who Actually Runs Your Stop Loss
+# ---
+[00:00:00] So, when your stop gets swept, you
+[00:00:01] weren't necessarily targeted. You were
+[00:00:02] just parked, you know, around that
+[00:00:04] landmark, and you were effectively
+[00:00:06] collateral damage. You know, they're not
+[00:00:07] coming for you, they're coming for where
+[00:00:08] you're standing.
+[00:00:10] I'm about to present you with an
+[00:00:12] all-too-familiar situation in which I'm
+[00:00:14] sure everyone who's been trading for
+[00:00:15] realistically any amount of time, even
+[00:00:16] like a couple weeks, probably has
+[00:00:18] experienced. I know I've experienced
+[00:00:19] myself, and of course, it goes something
+[00:00:20] like this. Your stop gets hit at the
+[00:00:23] exact low, like literally the tick, the
+[00:00:25] tick of the low. Then of course, what
+[00:00:27] happens? Price action reverses and runs
+[00:00:29] without you, naturally. No news, no
+[00:00:32] reason, no nothing like that, just your
+[00:00:33] stop being harvested. And everyone calls
+[00:00:35] this or refers to this as stop hunting.
+[00:00:38] And after years inside the machine as a
+[00:00:39] market maker authorized trader on the
+[00:00:41] floor of New Stock Exchange Arca, here
+[00:00:43] is what I can tell you. It is real,
+[00:00:44] actually. It's just probably not what
+[00:00:46] you think. At least from what I see on
+[00:00:48] most social media venues, the way that
+[00:00:50] people sort of conceptualize these ideas
+[00:00:51] is incorrect and actually massively
+[00:00:54] misguided, too. Nobody was hunting you,
+[00:00:57] and in the next 15 minutes, we're going
+[00:00:58] to go over who the hunter actually is.
+[00:01:00] Like, who you should be directing all of
+[00:01:01] your anger towards. And realistically,
+[00:01:03] you really shouldn't be directing your
+[00:01:04] anger towards anyone, but we should be
+[00:01:06] going over how to avoid such things. The
+[00:01:08] four-stage effectively anatomy of every
+[00:01:11] stop hunt. How to tell a sweep instead
+[00:01:14] of like a real breakout, and how to stop
+[00:01:16] donating your damn stop loss to people
+[00:01:17] with more money than you. With all that
+[00:01:19] said, let's go inside the machine over
+[00:01:21] here into our nice little Yes, our nice
+[00:01:23] little presentation. You weren't
+[00:01:24] unlucky, you just feel Yeah, that makes
+[00:01:26] you feel a lot better, doesn't it?
+[00:01:27] Anyways, I do want to let you know that
+[00:01:29] if you're finding this video completely
+[00:01:30] out of context or randomly, this is a
+[00:01:31] part of a a greater series, greater
+[00:01:33] playlist here of Inside the Machine. And
+[00:01:36] honestly, this is the one that the whole
+[00:01:37] series really been building towards.
+[00:01:39] Episode number one, we went over the
+[00:01:40] job, which was the market maker is not
+[00:01:43] your hunter, they're just literally
+[00:01:44] quoting the market based off of their
+[00:01:45] model. Episode number two is the engine,
+[00:01:47] which effectively account equates to
+[00:01:50] Market order is the only thing that can
+[00:01:51] actually move price. Or in other words,
+[00:01:53] another conception of this would be
+[00:01:55] aggression is what moves price.
+[00:01:57] Aggressive orders, which are market
+[00:01:59] orders by definition. And then this
+[00:02:00] episode number three was the pools,
+[00:02:02] effectively clustered orders bend price
+[00:02:04] towards them like gravity, and also why
+[00:02:06] as well. And today, the question you've
+[00:02:08] probably been screaming since episode
+[00:02:09] one, I think, is who drives price into
+[00:02:12] these pools on purpose? Like why would
+[00:02:14] they do this? Who are they? I need to
+[00:02:15] know their name, I need to know where
+[00:02:17] they live, and also their social
+[00:02:18] security number, and uh I don't know,
+[00:02:19] credit card number, too.
+[00:02:20] &gt;&gt; [laughter]
+[00:02:21] &gt;&gt; Um
+[00:02:21] Same rules as always, by the way,
+[00:02:22] nothing here predicts price, it explains
+[00:02:24] it, that's the whole purpose of this
+[00:02:26] playlist. If you want to go deeper into
+[00:02:28] trading and technical analysis, check
+[00:02:29] out the TA foundation, that is for
+[00:02:30] extreme, extreme, extreme beginners, it
+[00:02:32] is free. And then if you do want to go a
+[00:02:34] little bit deeper than that, of course,
+[00:02:35] you can go to the TA 101 playlist, which
+[00:02:37] is uh a little bit more dedicated
+[00:02:39] towards actually how to create and test
+[00:02:41] a strategy, and then, well, execute it
+[00:02:43] as well. Anyways, today, you're going to
+[00:02:45] meet that hunter um that we've been
+[00:02:46] talking about for quite some time now.
+[00:02:48] So, so who is it? Episode one, I
+[00:02:50] promised to you, uh it's not the market
+[00:02:52] maker, or at least not in the way that
+[00:02:53] people think of a market maker. Your $50
+[00:02:56] stop is invisible, by the way, to well,
+[00:02:58] to everyone, uh especially the market
+[00:03:00] makers, and hunting it isn't the job,
+[00:03:02] anyways. Their job is to quote things
+[00:03:03] and pull in a small amount of arbitrage
+[00:03:06] as many times as possible without
+[00:03:08] playing direction. The hunter, however,
+[00:03:10] is anyone with size that actually needs
+[00:03:13] the fill. So, think about it this way,
+[00:03:15] like as always, put yourself in the
+[00:03:17] shoes of who these players might be.
+[00:03:19] It's hard for us, regular pubs, to um to
+[00:03:22] identify with someone who might have
+[00:03:25] hundreds of millions or billions of
+[00:03:26] dollars, in which case, when you're
+[00:03:28] playing with a billion dollars, you
+[00:03:30] can't just go in and market buy a
+[00:03:32] billion dollars of Bitcoin or most
+[00:03:34] assets. You need to engineer that
+[00:03:37] liquidity for yourself.
+[00:03:39] And that is effectively who the hunter
+[00:03:40] is. Now, who typically has these bigger,
+[00:03:43] you know, account sizes? Well, quant
+[00:03:44] firms running execution algorithms. Uh
+[00:03:46] these are going to be ones that are
+[00:03:48] typically going to be, you know, your
+[00:03:50] villain, if you will. Um funds moving
+[00:03:52] positions so big they can't fill
+[00:03:53] mid-range. Of course, you know, they're
+[00:03:54] dealing with humongous numbers. Uh,
+[00:03:56] remember episode number three as well.
+[00:03:58] Size cannot fill in thin air, obviously.
+[00:04:00] Otherwise, you cause a [&nbsp;__&nbsp;] ton of
+[00:04:01] slippage and price starts to run away
+[00:04:02] significantly. And uh, and that is the,
+[00:04:05] you know, that is their issue that
+[00:04:06] they're dealing with. And it is an
+[00:04:07] issue, of course. Anyways, the reframe
+[00:04:09] that changes, or hopefully will change
+[00:04:10] everything, is that the hunt is not a
+[00:04:12] personality. It's not like a [&nbsp;__&nbsp;]
+[00:04:14] boogeyman. It's the footprint of just
+[00:04:17] big execution. That's all that it is.
+[00:04:19] When you need a hundred million dollars
+[00:04:20] of fills or more, and the only
+[00:04:22] guaranteed liquidity on the map is the
+[00:04:24] pool under the low or above the previous
+[00:04:26] high, well, where do you think you're
+[00:04:28] going to go to?
+[00:04:29] Duh. It's it's it's not rocket science.
+[00:04:32] It's not also evil. It's just it's just
+[00:04:34] someone trying to earn their salary,
+[00:04:36] realistically speaking. And uh, and they
+[00:04:38] are just dealing with more money than
+[00:04:40] you and I. So, they need to do that for
+[00:04:41] themselves. Now, of course, I'm not
+[00:04:43] saying it's good or bad. I'm saying that
+[00:04:44] we should understand it so that we can
+[00:04:46] then take advantage of it. Flip flip the
+[00:04:47] script here. Take advantage of it. Hell
+[00:04:49] yeah, that is the purpose of this.
+[00:04:51] Well, of this whole, you know, of this
+[00:04:53] whole series and all of the all of the
+[00:04:54] series that we go over in this uh, in
+[00:04:56] this channel. Anyways,
+[00:04:58] so why hunt at all? So, why is price
+[00:05:00] driving into a pool? Like, why why why
+[00:05:04] why do they even want to do that to
+[00:05:05] begin with? Because the pool will pay
+[00:05:08] you kind of in two ways. So, payoff
+[00:05:10] number one is going to be the fills,
+[00:05:11] obviously. So, your so your stop loss is
+[00:05:13] a forced market order, you know, once
+[00:05:15] your stock gets hit, you are forced to
+[00:05:17] market out of that position or just
+[00:05:18] leave that position. Thus, you create
+[00:05:20] the liquidity for these players. And
+[00:05:21] when price touches the pool, thousands
+[00:05:23] of stops typically fire at once. Because
+[00:05:25] not just you, like there's a [&nbsp;__&nbsp;] ton of
+[00:05:26] people there. I mean, like I said, uh,
+[00:05:28] for these sort of areas, it's
+[00:05:31] it's no surprise. Like, it's really no
+[00:05:33] surprise, believe me. If you're thinking
+[00:05:34] something, I can assure you other people
+[00:05:35] are thinking it as well. It's like the
+[00:05:36] first way that everyone learns how to
+[00:05:38] manage their positions. And of course,
+[00:05:40] if you want a better way of doing this,
+[00:05:42] check out the TA 101 playlist. Again,
+[00:05:44] that is completely free. And then if you
+[00:05:45] want to go super super deep, check out
+[00:05:47] the Crown Trading Bible, but that is a
+[00:05:48] paid program, not relevant to
+[00:05:51] the overwhelming majority of people
+[00:05:52] watching this. Uh but yes, if you're a
+[00:05:53] true like TA nerd and really want want
+[00:05:55] to like go extremely deep, probably
+[00:05:57] deeper than really you is necessary,
+[00:05:59] then yes, that is available for people.
+[00:06:00] Anyways, uh there is just one moment of
+[00:06:03] effectively enormous liquidity, and the
+[00:06:04] hunter takes the other side of every
+[00:06:07] forced exit, of course. You know, that's
+[00:06:08] what they're collecting effectively. Uh
+[00:06:10] so, your panic sell is their patient
+[00:06:12] buy, in other words. And phase number
+[00:06:14] phase number two here is the ignition.
+[00:06:16] So, remember, breakout traders will see
+[00:06:19] the level break. They will They They
+[00:06:21] They They will look at like price going
+[00:06:23] above a previous high, for example, and
+[00:06:24] say, "Oh, I'm aggressive. I'm willing to
+[00:06:26] take more risk. I'm going to market buy
+[00:06:28] into this." That's if they're like more
+[00:06:29] sophisticated. If they're just you know,
+[00:06:31] a regular pleb gambling, then they'd
+[00:06:33] just be like, "I think price is going
+[00:06:34] up. I should buy now." You know,
+[00:06:35] something like that, right? But anyways,
+[00:06:37] that's the ignition. Breakout traders
+[00:06:38] see the level and they chase, and their
+[00:06:40] chasing orders push price further, which
+[00:06:43] means better fills or an exit. So, one
+[00:06:46] push effectively equates to two harvests
+[00:06:48] here.
+[00:06:49] Um and notice, nothing new was invented
+[00:06:52] to hunt you. Episode two is aggression,
+[00:06:54] again, those market orders. Episode
+[00:06:56] three's pools. The machine just runs off
+[00:06:58] of natural dynamics. I mean, dynamics
+[00:07:00] that are, I guess,
+[00:07:02] &gt;&gt; [laughter]
+[00:07:03] &gt;&gt; should be obvious, but we just don't
+[00:07:04] really think about them uh until we have
+[00:07:06] been hurt enough, in which case we're
+[00:07:08] forced to think about them. Anyways, so
+[00:07:09] here is the anatomy of every stop hunt
+[00:07:11] you've ever seen. Let me just run this
+[00:07:12] uh this again while I narrate it. So,
+[00:07:14] say age one, the setup is an obvious
+[00:07:17] level forms, like a like a major high or
+[00:07:19] major low. Everyone sees that, and then
+[00:07:20] the pool underneath grows for days. You
+[00:07:22] know, as people uh align their stops
+[00:07:24] there or position, you know, um stop
+[00:07:26] limit orders or stop market orders to
+[00:07:28] chase a breakout or breakdown from
+[00:07:29] those. Then, of course, stage number two
+[00:07:31] is the push into that level. Aggressive
+[00:07:33] selling drives price into a level if
+[00:07:35] it's a support or a previous um low, for
+[00:07:37] example. Again, this is not random. It's
+[00:07:39] just deliberate pressure towards the
+[00:07:40] pool. Stage number three, however, is
+[00:07:42] going to be that harvest.
+[00:07:44] The fun time, if you will. We're all
+[00:07:45] [&nbsp;__&nbsp;] farmers here, aren't we? Uh
+[00:07:47] price touches the pool and every stop
+[00:07:48] fires more or less at once. I mean,
+[00:07:51] again, they're not all going to be
+[00:07:52] exactly on the same price, but around
+[00:07:54] there within a reasonable degree. And a
+[00:07:55] burst of forced market orders, uh you
+[00:07:57] know, gets gets set off and you
+[00:08:00] effectively get maximum liquidity for,
+[00:08:02] you know, a short amount of time. And
+[00:08:03] the hunter is very likely on the other
+[00:08:05] side of these, uh you know, buying your
+[00:08:07] capitulation, uh more or less. So, stage
+[00:08:09] number four is of course the snapback.
+[00:08:11] The pool is spent, nothing's behind it.
+[00:08:14] Price, you know, does the only thing
+[00:08:15] that it can, it comes back. That should
+[00:08:17] sound familiar because, like I said, if
+[00:08:19] you've been in this market, you know,
+[00:08:20] even for a couple of weeks, you've
+[00:08:21] probably experienced this at least once.
+[00:08:23] Anyways, that's episode three's wick, by
+[00:08:25] the way, too, um now, however, with the
+[00:08:27] motive attached. So,
+[00:08:29] a stop hunt really is just a fill
+[00:08:31] strategy for a bigger player who needs
+[00:08:33] to engineer liquidity for themselves.
+[00:08:35] It's not like a vendetta. They don't
+[00:08:36] know who you are. I've I can assure you,
+[00:08:38] I've never known who is my counterpart
+[00:08:40] on any one trade. The only time that you
+[00:08:42] actually know your counterpart is if
+[00:08:43] you're, you know, dealing in black or
+[00:08:45] dark pools, not black pools, but dark
+[00:08:46] pools. Similar Similar idea though.
+[00:08:48] Anyways, real quick, if those four
+[00:08:49] stages just explained a loss you've been
+[00:08:51] carrying, hit the like button. Yes,
+[00:08:53] indeed, it is the cringey part of the
+[00:08:54] video.
+[00:08:55] It'll help It'll help get more content
+[00:08:57] like this into your inbox for YouTube uh
+[00:08:59] when it is most relevant, when it drops.
+[00:09:01] Anyways, let's go over the
+[00:09:04] the structure here. So, let's make Let's
+[00:09:07] make Let's actually make this personal
+[00:09:08] for a moment uh by proving, honestly, by
+[00:09:11] by by proving the opposite, it's not.
+[00:09:13] So, nobody at a quant firm knows your
+[00:09:16] name, at least to my knowledge as of
+[00:09:17] right now. That's not how it was when I
+[00:09:19] was there. I've also known people who
+[00:09:21] are uh higher-ups in in in mid-level or
+[00:09:23] mid-tier quant firms.
+[00:09:25] They don't have access to that, I can
+[00:09:26] assure you of that. Um but nobody pulled
+[00:09:29] Nobody's like pulling up your account
+[00:09:30] and like saw your stop and said, "Get
+[00:09:32] him, you know, that that [&nbsp;__&nbsp;] guy,
+[00:09:34] hate him." Uh here's what they can see,
+[00:09:36] however. Let me just go into it right
+[00:09:38] here.
+[00:09:39] They can see the pile. So, thousands of
+[00:09:41] stops clustered under the same obvious
+[00:09:43] low, that's going to be visible in
+[00:09:44] aggregate, of course. Uh, in the way
+[00:09:46] price behaves near the level, as well.
+[00:09:48] Like, all these things you can see in
+[00:09:50] real time by watching the order book and
+[00:09:51] watching the tape, as well. So, your
+[00:09:53] individual your individual stop is more
+[00:09:55] or less invisible, but the pile is a is
+[00:09:58] like a landmark, if you will. It's on
+[00:10:00] every serious pair players' map, you
+[00:10:01] know, the way like a gas station is on a
+[00:10:03] trucker's map. So, when your stop gets
+[00:10:05] swept, you weren't necessarily targeted.
+[00:10:06] You were just parked, you know, around
+[00:10:08] that landmark, and you were effectively
+[00:10:10] collateral damage. You know, they're not
+[00:10:11] coming for you, they're coming for where
+[00:10:12] you're standing, uh, is what I'm trying
+[00:10:14] to work towards here.
+[00:10:16] Um, but yeah, you know, like I said,
+[00:10:18] I've dealt with this myself, especially
+[00:10:19] early in my career. And And look, you
+[00:10:20] still see this, you know, further out,
+[00:10:22] &gt;&gt; [laughter]
+[00:10:23] &gt;&gt; you know, throughout your whole career,
+[00:10:24] no matter what, cuz they're always going
+[00:10:25] to happen. It's just you learn how to
+[00:10:26] avoid them. Again, that's that's a topic
+[00:10:28] of It's a topic outside of the scope of
+[00:10:30] this conversation, but you can check out
+[00:10:31] the TA 101 for specifically that. Uh,
+[00:10:34] but anyways,
+[00:10:35] well, you know, like like I said, I've
+[00:10:36] dealt with this, too. You know, I
+[00:10:37] remember when I was first, um, getting
+[00:10:39] into, uh, trading, and I was on the
+[00:10:42] floor of the exchange, and I was
+[00:10:43] learning from my mentor, and I remember
+[00:10:45] I kept on getting what's called picked
+[00:10:47] off, picked off,
+[00:10:49] um, in which case, you know, I would be
+[00:10:51] the one who's like trying to play those
+[00:10:52] breakouts by also buying into them. And,
+[00:10:55] uh, and and it happened so [&nbsp;__&nbsp;] much
+[00:10:57] that [laughter]
+[00:10:58] my my mentor one time, like, he
+[00:11:00] [clears throat] kind of I mean, he he
+[00:11:01] embarrassed me like a lot of times, but
+[00:11:03] you like it was all it was all for good.
+[00:11:05] Uh, but I remember he turned to like
+[00:11:06] someone else on the floor
+[00:11:08] who I didn't know that well, he's like,
+[00:11:10] "This guy keeps on getting [&nbsp;__&nbsp;]
+[00:11:11] picked off by Citadel. Can you teach him
+[00:11:12] like how not to do this?" And And he
+[00:11:14] comes over and he kind of shows me,
+[00:11:16] "Hey, like, look look what's going on
+[00:11:17] here. Uh, the This is just a range.
+[00:11:20] You're getting swept up in this range.
+[00:11:21] Like, all you need to do is wait for
+[00:11:23] actual confirmation. Don't try to get
+[00:11:25] too aggressive in these scenarios, and
+[00:11:27] you're not going to be giving your all
+[00:11:28] your [&nbsp;__&nbsp;] money to to Citadel, or
+[00:11:29] whatever quant firm or major investment
+[00:11:31] firm, you know, is on the other side of
+[00:11:33] that. He was just assuming it was
+[00:11:34] Citadel. I mean, it could have been
+[00:11:35] anyone realistically. Anyways, let's go
+[00:11:37] over the signature here. So, hopefully
+[00:11:39] this will be a very, very useful chart
+[00:11:40] for you and perhaps even the most useful
+[00:11:42] chart in this entire series telling how
+[00:11:44] to tell a sweep from a real break. A
+[00:11:46] sweep effectively means just like a
+[00:11:47] quick, in this case, wick above the top
+[00:11:50] side resistance
+[00:11:51] and then back down incredibly quickly. A
+[00:11:53] break, obviously, is it goes above the
+[00:11:55] top side resistance and then continues
+[00:11:57] above the top side resistance. So,
+[00:11:59] on the left-hand side, obviously, that
+[00:12:00] is your sweep
+[00:12:01] sweep. On the right-hand side, that is
+[00:12:03] your actual breakout. On the sweep
+[00:12:05] example, price will stab through the
+[00:12:06] level on a spike. It gets rejected and
+[00:12:09] you get a long wick. So, that is the key
+[00:12:12] right there. A long wick with a fast
+[00:12:14] reclaim back below, in this case, that
+[00:12:16] you know, that top side boundary. If
+[00:12:17] you're going to get a rejected,
+[00:12:18] typically happens within one to three
+[00:12:19] candles.
+[00:12:20] So, when you see a breakout,
+[00:12:23] one one easy rule is just wait for three
+[00:12:26] consecutive candles above, in this case,
+[00:12:29] the upside boundary. Now, again, works
+[00:12:30] the same
+[00:12:31] to the downside as well. If you had like
+[00:12:33] a bottom side support, three closures
+[00:12:35] below that level or an opening closure
+[00:12:38] above the level over here.
+[00:12:40] And of course, zooming out to higher
+[00:12:41] time frames can also get rid of a lot of
+[00:12:43] the noise with this, too. But, that is
+[00:12:45] the thing. Those sweeps, they are very
+[00:12:48] short-lived. So, if you simply just wait
+[00:12:50] a few periods, you know, a few closures,
+[00:12:52] you'll usually avoid them and they and
+[00:12:54] you'll see them right in real time.
+[00:12:55] They'll you know, they'll turn into a
+[00:12:56] wick and if you really want to, you can
+[00:12:58] join the other side of it. Which again,
+[00:13:00] keeps open that opportunity cost for
+[00:13:01] yourself to take advantage of, you know,
+[00:13:03] a real opportunity there.
+[00:13:04] On the other side, of course, if you
+[00:13:06] start to see candles really close above
+[00:13:08] and it's maintaining above there for
+[00:13:09] three or especially more, then
+[00:13:12] the likelihood of that breakout failing
+[00:13:13] becomes significantly reduced. Now, it
+[00:13:15] is not zero. Weird things do happen,
+[00:13:17] absolutely, but it gets significantly
+[00:13:18] reduced. Again, assuming that you are
+[00:13:19] marking off your boundaries
+[00:13:21] in the proper way. And again, that's
+[00:13:22] that's part of TA 101 and also the Crown
+[00:13:24] Trading Bible. Anyways, yes.
+[00:13:27] All right. So, one picture is is is is
+[00:13:30] effectively a refuel over here. The
+[00:13:32] other is a trend beginning. And one
+[00:13:34] question at every broken level is did it
+[00:13:36] close and hold or did it stab and come
+[00:13:38] home? Again, these sweeps, they happen
+[00:13:40] very quickly. These over here, these get
+[00:13:42] drawn out typically. Yes, you might miss
+[00:13:44] that first initial move, but in my
+[00:13:46] experience and in my opinion, uh it's
+[00:13:48] better to have a high probability trade
+[00:13:49] rather than, you know, a few extra
+[00:13:51] percent uh from a from a slightly better
+[00:13:54] entry. Again, personal personal thing
+[00:13:56] here, uh but I prefer to reduce uh
+[00:13:59] losses as much as possible.
+[00:14:01] Um anyways,
+[00:14:02] let's go into a real chart example. Um
+[00:14:05] let me go over here and let's
+[00:14:08] Uh do we have a good example right here?
+[00:14:10] Um
+[00:14:12] Yeah, we do in fact. Uh yeah, actually
+[00:14:14] we do have a really good example. I know
+[00:14:15] exactly which one I will highlight right
+[00:14:17] exact here. Okay.
+[00:14:20] So, let me bring you to Bitcoin's uh
+[00:14:22] cur- current or previous bear market,
+[00:14:24] depending upon when you're kind of
+[00:14:25] viewing this. Um this is the period from
+[00:14:28] uh effectively the beginning of 2026
+[00:14:29] through the midpoint of 2026. You will
+[00:14:31] see this first major move to the
+[00:14:32] downside right here. Uh where Bitcoin
+[00:14:34] made that first initial low in February,
+[00:14:36] and that was on this wick pertaining to
+[00:14:40] the price about 60,132.
+[00:14:42] You will then see a couple months later,
+[00:14:44] actually, Bitcoin not only rallies
+[00:14:46] significantly from there, but then comes
+[00:14:47] back down. When it comes back down, you
+[00:14:49] can see that it stabs through that low
+[00:14:51] once, twice, thrice, four times.
+[00:14:54] But all of these are wicks. So, simply
+[00:14:57] just by waiting for one candle closure,
+[00:15:00] you could have avoided all these. And
+[00:15:01] more importantly, you could have
+[00:15:02] actually even bought, you know, the lows
+[00:15:03] of these two, which uh so far would have
+[00:15:05] been up uh significantly, you know, more
+[00:15:06] than 30%. Um
+[00:15:09] Uh but uh but yes, you know, just
+[00:15:11] waiting for those closures would have
+[00:15:12] helped you avoid this. So,
+[00:15:14] first things first, wait for the candle
+[00:15:16] closures. Three periods is kind of like
+[00:15:18] a good um gauge, if you will, if it's
+[00:15:20] going to fail within three periods, you
+[00:15:22] know, that's that that's like the most
+[00:15:23] likely time for that. And of course, if
+[00:15:25] it were to actually have closed below
+[00:15:26] that for a few periods, well, we very
+[00:15:29] likely would have seen a real breakdown.
+[00:15:30] Of course, it didn't happen in this
+[00:15:32] case. Uh but yes, you know, that's
+[00:15:34] that's effectively what we're looking
+[00:15:35] for.
+[00:15:36] Anyways,
+[00:15:37] um I think that's good for that and
+[00:15:39] let's continue to move on through our
+[00:15:41] nice little slideshow here. Beautiful.
+[00:15:44] All right. Crypto is hunt heaven. Indeed
+[00:15:46] it is. So, where do hunts arrive? Um of
+[00:15:48] course, we got three different scenarios
+[00:15:51] here. One is going to be crowded obvious
+[00:15:53] levels. That's going to be your major
+[00:15:54] high, major low, or if you're in a very
+[00:15:56] obvious uh trading range. Um the cleaner
+[00:15:58] the level looks, the bigger the pile
+[00:15:59] typically is behind it. More and more
+[00:16:01] liquidity is built up there. Episode 3's
+[00:16:03] equal highs are hunt magnets as well as
+[00:16:06] equal lows, too. Uh precisely because
+[00:16:08] everyone agrees on them. And we just
+[00:16:09] looked at an example uh kind of more
+[00:16:11] relevant to the current session of
+[00:16:12] Bitcoin. Uh number two is going to be
+[00:16:14] thin sessions. So, the weekend times or
+[00:16:16] holiday times, typically you see a lot
+[00:16:19] less uh orders in the order book. So,
+[00:16:21] those weekend books are what we call uh
+[00:16:22] thin. There's shallow liquidity there,
+[00:16:24] which means a smaller push can can
+[00:16:26] effectively reach a pool. So, you'll see
+[00:16:28] those a lot uh you know, very very often
+[00:16:30] over the weekends. That's why you see
+[00:16:31] like kind of fake moves, if you will, on
+[00:16:33] Saturday especially because pushing into
+[00:16:35] those levels is cheaper. You don't need
+[00:16:36] to chew up as many um uh orders in the
+[00:16:39] order book on a weekend in comparison to
+[00:16:41] a weekday
+[00:16:42] almost always. Uh and then of course,
+[00:16:44] number three is going to be leverage.
+[00:16:45] And this is why crypto is hunt heaven
+[00:16:46] because you got 24/7 markets with retail
+[00:16:49] leverage the [&nbsp;__&nbsp;] wazoo and force
+[00:16:51] liquidations stacked at, you know, noble
+[00:16:53] levels is extremely common. So, when
+[00:16:55] leverage joins a pool, the harvest is
+[00:16:58] not necessarily just stops anymore. It's
+[00:17:00] liquidations, force liquidations, like
+[00:17:01] literal force selling. Um
+[00:17:04] and that is going to be the full cascade
+[00:17:06] uh
+[00:17:07] pretty much
+[00:17:08] pretty much in essence. Um and that's
+[00:17:10] why crypto can drop 10% in minutes. And
+[00:17:13] that is actually the topic of episode
+[00:17:14] number seven. Anyways, um let's go over
+[00:17:18] the false breakout connection. So,
+[00:17:20] here's a part very few people I see
+[00:17:22] actually connect, um, which is the false
+[00:17:24] breakout, the bull trap, the bear trap,
+[00:17:26] whatever. It's the same event seen from,
+[00:17:28] you know, different sides of, you know,
+[00:17:30] of the spectrum. When price stabs above
+[00:17:32] the high, two groups get harvested at
+[00:17:34] once, right? Group number one is the
+[00:17:36] shorts whose stops above the high, uh,
+[00:17:39] are are are are are forced as or sorry,
+[00:17:41] as
+[00:17:43] Once Once their stops are taken above
+[00:17:45] that previous high, they are now forced
+[00:17:47] buyers. That's what I'm trying to say.
+[00:17:48] Group number two is going to be the
+[00:17:49] breakout traders who see a break and
+[00:17:51] they chase it, uh, I would dare say
+[00:17:53] prematurely. And this is actually why I
+[00:17:55] do not like being a breakout trader
+[00:17:56] myself.
+[00:17:57] Um, and, uh, and again, they are going
+[00:18:00] to be chasing something and if they just
+[00:18:01] would have waited, you know, three
+[00:18:02] candles, they probably could have
+[00:18:04] avoided being, uh, hunted there.
+[00:18:06] Um, their chase is, in other words, the
+[00:18:07] second harvest. It hands the hunter
+[00:18:09] extra liquidity to finish their filling
+[00:18:11] or the extra liquidity to leave if they
+[00:18:12] if they do want to do that as well. Then
+[00:18:14] the snapback, of course, as well.
+[00:18:17] And, uh, and chasers are trapped holding
+[00:18:19] the top. So, when you hear false
+[00:18:20] breakout, hear it like think about it
+[00:18:22] mechanically. A sweep that collected two
+[00:18:24] piles instead of one. Prey number one
+[00:18:27] donates the stop. Prey number two,
+[00:18:28] they're donating their entry, actually.
+[00:18:31] Um, kind of funny how that works,
+[00:18:32] honestly. Anyways, let's go over defense
+[00:18:35] number one and defense number two. If
+[00:18:37] you've been paying attention thus far,
+[00:18:38] you already know where I'm going with
+[00:18:39] this one. So, how do you stop donating
+[00:18:41] your, you know, your money to these
+[00:18:43] people? Uh, rule number one, the oldest
+[00:18:45] rule in the series, pull your stop where
+[00:18:47] the idea is wrong, not where the crowd
+[00:18:49] parks. So, if your invalidation sits in
+[00:18:52] a pile, you know, size down and give it
+[00:18:54] room past the pile. You know, go a few
+[00:18:56] percent above that or below that if it
+[00:18:58] was a higher or a low.
+[00:18:59] Or just skip the trade entirely. Uh, the
+[00:19:01] two ticks under the low stop is a
+[00:19:03] donation with paperwork, in other words.
+[00:19:05] So, rule number two is thinking
+[00:19:07] closures, again, not touches. A wick
+[00:19:08] through level doesn't really matter.
+[00:19:10] It's It's more or less noise as we've
+[00:19:12] gone over in previous um playlist. Uh
+[00:19:14] you just watched an entire episode about
+[00:19:15] why wicks happen as well in this in this
+[00:19:17] series uh here, too. So, a candle close
+[00:19:19] beyond a level with acceptance, that is
+[00:19:21] information. And again, we go through a
+[00:19:24] lot you know, a lot of this in TA
+[00:19:25] Foundations and TA 101. You want to see
+[00:19:27] that supported by other indicators as
+[00:19:28] well like volume and perhaps a
+[00:19:30] volatility indicator, for example.
+[00:19:33] But uh but we want to filter every level
+[00:19:35] break through the close and and most
+[00:19:37] sweeps, you know, stop touching your
+[00:19:39] account entirely. If you do just that,
+[00:19:41] very very simple fix right there. The
+[00:19:43] complete stop placement uh the the
+[00:19:45] complete method, however, like I said,
+[00:19:47] is uh is in TA 101. It's free. It's
+[00:19:49] linked below as well. And like I said,
+[00:19:50] if you want to go super deep, then you
+[00:19:51] can go into the Crown Trading Bible
+[00:19:53] where we go over even more uh intense
+[00:19:55] case studies. You can you can uh involve
+[00:19:58] other indicators for this. I actually
+[00:19:59] find, you know, volatility indicators
+[00:20:00] are really, really good for this, too.
+[00:20:02] But anyways,
+[00:20:03] let's go into this to uh to defense
+[00:20:05] number three here. Rule so, rule three,
+[00:20:07] the mindset flip. Um expect the sweep.
+[00:20:10] Like
+[00:20:11] here's where we can really turn things
+[00:20:12] around and actually use it to your own
+[00:20:13] benefit. At every obvious level, the
+[00:20:15] stab through should be your base case.
+[00:20:18] Like that is in in a way likely to
+[00:20:20] happen. You kind of know that those
+[00:20:23] liquidity pools are targets.
+[00:20:26] It shouldn't be a nightmare. It should
+[00:20:27] be like an opportunity in in other
+[00:20:28] words. So, price approaching yesterday's
+[00:20:29] low with a fat pool under it, like
+[00:20:31] assume the pool gets tapped before
+[00:20:32] anything else happens.
+[00:20:34] That is quite normal, in fact. And that
+[00:20:36] one expectation will naturally kill your
+[00:20:38] panic, I would hope. And after the
+[00:20:40] sweep, you can just read the
+[00:20:41] information. If that, you know, if a
+[00:20:43] level got swept and then reclaimed,
+[00:20:45] guess what? You can join on that side.
+[00:20:48] The four sellers are now out anyways.
+[00:20:49] So, nothing here predicts price. Again,
+[00:20:51] same rule as always, but the fuel gauge
+[00:20:54] can and will change. And now you can
+[00:20:56] read it more importantly. So, same
+[00:20:58] chart, same wick, one trader panics, one
+[00:20:59] trader nods. And, you know, if you
+[00:21:02] really want to, you can take advantage
+[00:21:03] of that.
+[00:21:04] Um the difference is, of course, this
+[00:21:06] episode. All right. so let's lock this
+[00:21:07] in.
+[00:21:08] Uh the hunter again
+[00:21:10] look, no one's a villain. Everyone's
+[00:21:12] just representing their own interest. We
+[00:21:14] just don't might We just don't might
+[00:21:15] have shared interests as them. Although,
+[00:21:17] if you can read things in the way that
+[00:21:19] we presented here and combine these
+[00:21:20] tools, well, you can actually use them
+[00:21:23] as an ally in a way. [laughter]
+[00:21:25] Um
+[00:21:26] So, again, the hunter is just someone
+[00:21:28] who has a lot of size that just needs
+[00:21:30] filled. That's all. The anatomy is a
+[00:21:32] setup, push, harvest, snapback. Again,
+[00:21:34] we went over that you know that
+[00:21:36] illustration earlier. Your stop is
+[00:21:38] effectively the product. Um that is what
+[00:21:40] we do not want to happen, of course. And
+[00:21:42] the defense stops effectively where the
+[00:21:45] idea dies. Like
+[00:21:47] as always, when you are creating a
+[00:21:49] strategy,
+[00:21:50] we want to get out of that strategy. We
+[00:21:53] want to take the loss at a point where
+[00:21:55] that trade is so unlikely to work out
+[00:21:58] that it is only going to get much much
+[00:22:00] much worse if we just keep on holding it
+[00:22:02] and thus we should take the loss right
+[00:22:03] now to avoid that and also uh put
+[00:22:07] opportunity cost back in our pocket,
+[00:22:08] meaning that we could take advantage of
+[00:22:09] a different opportunity that may very
+[00:22:10] well be going our way. That is always
+[00:22:12] going to be the better uh decision in my
+[00:22:14] experience.
+[00:22:15] So, like I said, stop hunts are not the
+[00:22:17] market cheating. They're just a machine
+[00:22:18] doing exactly what it knows to do and
+[00:22:20] you know, again, it's just just just our
+[00:22:21] interest. That's all. Anyways, a little
+[00:22:23] bit of homework for you as always. Uh
+[00:22:25] after today, it it'll literally just
+[00:22:26] take 5 minutes. Open any chart, any
+[00:22:28] asset, any timeframe. Find one sweep, a
+[00:22:30] wick that stabbed through an obvious
+[00:22:31] level. Um could be a prior high, could
+[00:22:33] be a prior low, could be you know, a a
+[00:22:35] nice trading range, uh you know, like a
+[00:22:37] nice box if you will.
+[00:22:39] And uh and and and find the reclaim.
+[00:22:42] Then comment three things. The asset,
+[00:22:43] the level it swept, and what price did
+[00:22:46] after the reclaim. Like you could say
+[00:22:48] Bitcoin swept last Tuesday's low,
+[00:22:50] reclaimed in two candles, rallied. Nice.
+[00:22:52] Then I'm going to have Claude grade the
+[00:22:54] first 50. It's going to be a real sweep
+[00:22:56] or just a breakout, you know, you're mad
+[00:22:58] at. That is you you what we're going to
+[00:23:00] be grading here or what Claude's we're
+[00:23:02] going to be grading. And I might feature
+[00:23:03] the uh the cleanest ones next episode if
+[00:23:05] this listen time. I don't know if that
+[00:23:07] actually will happen. But one wick,
+[00:23:09] three details. Once you find your first
+[00:23:11] one, you will never stop seeing them. I
+[00:23:13] mean, it's Like I said, these things are
+[00:23:14] typically like rather obvious. Anyways,
+[00:23:17] let's go into the final slide here. So,
+[00:23:19] next episode, we're going to cross a
+[00:23:20] line. Everything so far,
+[00:23:22] you know, this the hunts included has
+[00:23:24] been legal, brutal, but legal. You know,
+[00:23:27] all of this stuff is fair game. But some
+[00:23:30] of what you call manipulation is
+[00:23:32] actually real and it does have a name
+[00:23:34] and some of it is actually very much
+[00:23:36] illegal. So, spoofing like giant orders
+[00:23:38] placed to be seen and never filled,
+[00:23:40] icebergs, you know, this is size hiding
+[00:23:42] in plain sight, painting the tape. Next
+[00:23:44] week, I'm going to show you what each
+[00:23:46] trick looks like on a live order book,
+[00:23:48] which ones are also illegal and which
+[00:23:50] ones are actually just
+[00:23:52] legal and I would say clever in a way
+[00:23:55] and how to spot every one of them from
+[00:23:57] your side of the screen most
+[00:23:58] importantly. That's That's going to be
+[00:24:00] episode number five, the tricks. It's
+[00:24:01] coming at you next week. Other than
+[00:24:02] that, I would say if you found this
+[00:24:04] content valuable and you want more like
+[00:24:06] it, consider subscribing. It's the best
+[00:24:07] way to let YouTube know to give these
+[00:24:09] videos to you at the most relevant time.
+[00:24:12] Other than that, wish you the best as
+[00:24:13] always. Take care and much love.

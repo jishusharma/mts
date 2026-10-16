@@ -892,3 +892,29 @@ Applied: 2026-10-16 session d3-dev-ext. DECISION (OURS): segment DEV_EXT = Binan
  "answer": "Yes, as a separate segment read only by DEV-stage work (DECISION (OURS), operator may overrule)"
 }
 ```
+
+## D6-two-context-engines | asked 2026-10-16 | Research
+
+Two independent context-factor engines exist (Opus and Fable, same prompt). Adopt day units + Holm + the realised-MDE rule for the Fable study and run its cross-engine agreement count before any outcome read?
+
+Recommended: Yes: PRE_REG_V2 (day units, m = 59, realised-MDE rule), audit card first, cross-engine count first, then one read of the 14 cells
+Answer: Yes: PRE_REG_V2 (day units, m = 59, realised-MDE rule), audit card first, cross-engine count first, then one read of the 14 cells (DECISION (OURS), operator may overrule)
+Operator note (verbatim): (none; routine research default, logged without asking)
+Applied: 2026-10-16 Fable session context-factors: PRE_REG_V2.md written, card context-factors-one-run rescoped to it, card context-factors-pit-audit added, queue Q87/Q88.
+
+```json
+{
+ "order": 25,
+ "stage": "Research",
+ "refs": "research/context_factors_pit_2026-10-16/COMPARISON.md, research/context_factors_pit_2026-10-16/PRE_REG_V2.md, research/context_factors_2026-10-16/REPORT.md D4",
+ "title": "Two independent context-factor engines exist (Opus and Fable, same prompt). Adopt day units + Holm + the realised-MDE rule for the Fable study and run its cross-engine agreement count before any outcome read?",
+ "why": "The same prompt ran twice on 2026-10-16 (research/context_factors_2026-10-16 on Opus, research/context_factors_pit_2026-10-16 on Fable). Their PRE_REGs count power in different units (days vs episodes), so the Fable claim '9 of 14 cells powered' becomes '4 of 14' under the trunk's day convention (Opus D4, both AUDIT_BEFORE_RUN files). Two conventions in VERDICTS.csv would make verdict words incomparable. The comparison itself is new evidence: factors where the two engines disagree (band veto 2 % vs 26 % of events, phase object, ladder width) are definition-fragile and any verdict on them is a verdict on the definition. Defaults taken in the Fable study, now logged: W = 2.5 % of price, target 1.5 R, PRIOR_RULE last_closed, K_ZONE 0.5 x ATR14(4h), plausible 0.15 R for a cost-free filter contrast. Also logged here because it was never recorded: Opus D4 (units = distinct UTC days, Holm) is applied de facto by both audits.",
+ "options": [
+  "Yes: PRE_REG_V2 (day units, m = 59, realised-MDE rule), audit card first, cross-engine count first, then one read of the 14 cells",
+  "No: run the Fable PRE_REG.md as written (episode units, 9 of 14 cells)",
+  "Park the Fable card; keep only the Opus composite chain"
+ ],
+ "recommended": "Yes: PRE_REG_V2 (day units, m = 59, realised-MDE rule), audit card first, cross-engine count first, then one read of the 14 cells",
+ "answer": "Yes: PRE_REG_V2 (day units, m = 59, realised-MDE rule), audit card first, cross-engine count first, then one read of the 14 cells (DECISION (OURS), operator may overrule)"
+}
+```

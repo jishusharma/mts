@@ -100,6 +100,15 @@ class PickTest(unittest.TestCase):
             self.assertEqual(R.attempts(d), {"x": 2})
             self.assertEqual(R.attempts(Path(d) / "none"), {})
 
+    def test_reopened_stamp_resets_earlier_failed_tries_only(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "lab_runs"
+            p.mkdir()
+            rows = [{"card": "x", "outcome": "SHIP_FAILED"}, {"card": "x", "outcome": "SHIP_FAILED"},
+                    {"card": "x", "outcome": "REOPENED"}, {"card": "x", "outcome": "BLOCKED"}, {"card": "y", "outcome": "BLOCKED"}]
+            (p / "runs.jsonl").write_text(chr(10).join(json.dumps(r) for r in rows) + chr(10), encoding="utf-8")
+            self.assertEqual(R.attempts(d), {"x": 1, "y": 1})
+
 
 class CommandTest(unittest.TestCase):
     def test_model_effort_and_sandbox_reach_the_command_line(self):
