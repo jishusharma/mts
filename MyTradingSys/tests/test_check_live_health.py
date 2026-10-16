@@ -9,8 +9,8 @@ REPO = Path(__file__).resolve().parents[2]
 SCRIPT = REPO / "scripts" / "sched" / "check_live_health.py"
 NOW = 2_000_000_000.0
 FILES = {  # path -> stale limit (s), from the script docstring sources
-    "runtime_data/snapshots/BTCUSDT_1.json": 150,
-    "MyTradingSys/runtime/state_code.json": 150,
+    "runtime_data/snapshots/BTCUSDT_1.json": 300,
+    "MyTradingSys/runtime/state_code.json": 300,
     "MyTradingSys/runtime/orderflow_live/2033-05-18.csv": 300,
     "MyTradingSys/runtime/oi_live/oi_1m.csv": 300,
     "MyTradingSys/research/htf_context/2033-05-18.jsonl": 15000,
