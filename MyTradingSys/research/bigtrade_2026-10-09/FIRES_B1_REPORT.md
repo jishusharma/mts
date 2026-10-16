@@ -1,3 +1,5 @@
+> **CONTAMINATED (DEV read VALIDATION 2024-07..12)** - the split column (TRAIN to 2025-01-01) puts 25,607 of 153,685 TRAIN fires in 2024-07..12. See MyTradingSys/backtest/bigtrade/SPLIT_ALIGNMENT_2026-10-17.md. Numbers below are kept as originally run, not recomputed.
+
 # FIRES_B1_REPORT - fire history of the kline-only live layers (worker B1, 2026-10-09)
 
 Session MTS-2026-10-08-1933Z-APP-ANA-bigtrade-bt. Code: `MyTradingSys/backtest/bigtrade/fires_kline.py`, `parity_kline.py`, `test_fires_kline.py` (36 tests, all pass; new files only, not committed).
