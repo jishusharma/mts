@@ -6,8 +6,8 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 1. `python scripts/dev/sync.py start <slug>`: in a lane tree (mts-app/relay/dsa) it switches to branch <host>/<slug>; elsewhere it prints `WORKTREE: <path>` (work only there, never the live tree).
 2. Read `MyTradingSys/research/STATUS.md` (regenerate: `python scripts/dev/make_status.py`), not what it summarises; `LESSONS_DIGEST.md` only for live-path or backtest work. RED `CI green:` line: fix CI first (pinned `ci-<sha>` card).
 3. ONE task from NEXT_SESSION.md (relay KICK: `relay_prompts/relay_session.md`) or `tasks.py next`; `sync.py claim "<task>"`, work, `sync.py ship`, `sync.py release <slug>`, `sync.py where` (own tree clean).
-4. Hand-over (RELAY.md): after overwriting NEXT_SESSION.md run `python scripts/sched/relay.py handoff --file MyTradingSys/system/NEXT_SESSION.md --go` (or `--stop "<why>"`), `sync.py ship`, `relay.py unlock` (not after `--stop`); the dispatcher tick starts the next one. The block must run with zero operator input (operator 2026-10-10: defaults for open questions, tasks in order, Control Room checked by the session); no stop between tasks.
-5. SHORT SESSIONS: one session = one task; hand over when it is done, after 10 operator turns or 40 tool turns, whichever first (commit, then steps 3-4, one line, stop). Live market threads: after 5 screenshot reads. Hook `turn_meter.py`: a turn = one assistant message.
+4. Hand-over (RELAY.md): after overwriting NEXT_SESSION.md run `python scripts/sched/relay.py handoff --file MyTradingSys/system/NEXT_SESSION.md --go` (or `--stop "<why>"`), `sync.py ship`, `relay.py unlock` (not after `--stop`). The block must run with zero operator input (defaults for open questions); no stop between tasks.
+5. SHORT SESSIONS: one session = one task; hand over when it is done, after 10 operator turns or 40 tool turns, whichever first (commit, then steps 3-4, one line, stop). Live market threads: after 5 screenshot reads.
 6. Task shipped: mark your own session completed in the sidebar (`mark_completed`); coordinators mark their workers (SUPER_SESSION.md).
 
 ## Cost and routing
