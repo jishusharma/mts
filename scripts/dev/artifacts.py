@@ -4,12 +4,15 @@
   python scripts/dev/artifacts.py list                      # table: page, status, urls, last published
   python scripts/dev/artifacts.py plan --account jishu.sharma   # what a session on that account must publish / pin / record
   python scripts/dev/artifacts.py build                     # regenerate every page that has a generator in this repo
+  python scripts/dev/artifacts.py banner --slug research_map [--file live.html]   # insert/refresh the "Part of MTS Home" line
 
 Pages are republished over their existing url (Artifact tool: `url` = the account's url), which keeps the link and the pin.
 A session cannot delete or unpin an artifact: `plan` prints those as a list for the operator.
 """
 import argparse
+import html
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -21,8 +24,48 @@ STATUSES = ("canonical", "retire", "needs-url")
 URL_PREFIX = "https://claude.ai/artifact/"
 
 
+BANNER_START, BANNER_END = "<!--mts-home:start-->", "<!--mts-home:end-->"
+
+
 def load(path=REG):
     return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def owner(pg):
+    return pg.get("single_owner") or next((a for a, u in pg["urls"].items() if u), "")
+
+
+def home_url(reg):
+    pg = next((p for p in reg["pages"] if p["slug"] == reg.get("home_slug")), None)
+    return pg["urls"].get(owner(pg), "") if pg else ""
+
+
+def banner(reg, slug):
+    """The 'Part of MTS Home' line every page carries at its top (operator 2026-10-16: how to open it, explained on the page itself)."""
+    pg = next(p for p in reg["pages"] if p["slug"] == slug)
+    url = home_url(reg)
+    link = (f'<a href="{html.escape(url)}" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">MTS Home</a>'
+            if url else "<b>MTS Home</b>")
+    style = ("display:block;margin:12px 0 0;padding:10px 14px;border:1px solid var(--line);border-radius:10px;"
+             "background:var(--accent-soft);color:var(--ink);font-size:.92rem;line-height:1.5;max-width:75ch;overflow-wrap:anywhere")
+    return (f'{BANNER_START}<aside class="mts-home" role="note" style="{style}">Part of {link}, the one list of every MTS page. '
+            f'Owner login: <b>{html.escape(owner(pg))}</b>. Any of your logins opens this same link once the owner has shared it with that login. '
+            f'Your notes: {html.escape(pg.get("notes_go_to", ""))}</aside>{BANNER_END}')
+
+
+def put_banner(text, reg, slug, strict=True):
+    """Insert or refresh the banner: between its markers, else before <main class="wrap" id="main">, else just inside the first <div class="wrap">."""
+    b = banner(reg, slug)
+    if BANNER_START in text:
+        return re.sub(re.escape(BANNER_START) + ".*?" + re.escape(BANNER_END), lambda m: b, text, count=1, flags=re.S)
+    main = '<main class="wrap" id="main">'
+    if main in text:
+        return text.replace(main, f'<div class="wrap" style="padding-block:0">{b}</div>\n{main}', 1)
+    if '<div class="wrap">' in text:
+        return text.replace('<div class="wrap">', '<div class="wrap">\n' + b, 1)
+    if strict:
+        raise SystemExit(f"artifacts: no place for the MTS Home banner in {slug}")
+    return text  # a test fragment with no page wrapper
 
 
 def problems(reg, repo=REPO):
@@ -52,9 +95,22 @@ def problems(reg, repo=REPO):
         g = pg.get("generator") or ""
         if g.startswith("scripts/") and not (Path(repo) / g).is_file():
             p.append(f"{s}: generator {g} missing")
-        for k in ("owner_app", "refresh", "last_published"):
+        for k in ("owner_app", "refresh", "last_published", "purpose", "notes_go_to"):
             if k not in pg:
                 p.append(f"{s}: no {k}")
+        if pg.get("single_owner") and pg["single_owner"] not in accounts:
+            p.append(f"{s}: single_owner {pg['single_owner']} is not an account")
+        if pg.get("banner") and pg.get("html") and (Path(repo) / pg["html"]).is_file() \
+                and BANNER_START not in (Path(repo) / pg["html"]).read_text(encoding="utf-8"):
+            p.append(f"{s}: html has no MTS Home banner (artifacts.py banner --slug {s})")
+    # one hub, owned by the home login (DECISION 2026-10-16, access_model)
+    if reg.get("home_login") not in accounts:
+        p.append(f"home_login {reg.get('home_login')!r} is not an account")
+    hub = next((pg for pg in reg["pages"] if pg["slug"] == reg.get("home_slug")), None)
+    if not hub:
+        p.append(f"home_slug {reg.get('home_slug')!r} names no page")
+    elif hub.get("single_owner") != reg.get("home_login") or not home_url(reg):
+        p.append(f"{hub['slug']}: the hub must be owned by home_login and have its url")
     for a, rows in reg.get("unpinned_old", {}).items():
         for r in rows if isinstance(rows, list) else []:
             if r["url"] in seen:
@@ -73,7 +129,9 @@ def plan(reg, account):
             if u:
                 out.append(f"  REPLACE      {pg['title']} <- {pg['pointer_html']} (pointer, no capabilities)  url={u}; OPERATOR: delete it from the app menu, then blank urls.{account}")
             else:
-                out.append(f"  NO COPY      {pg['title']}: single copy on {pg['single_owner']}")
+                live = pg["urls"].get(pg["single_owner"], "")
+                out.append(f"  NO COPY      {pg['title']}: single copy on {pg['single_owner']} {live}; open that link (shared with this login), "
+                           f"republish only over it and only with edit access (Artifact read says 'writer')")
         elif pg["status"] == "retire":
             out.append(f"  OPERATOR UNPIN+DELETE  {pg['title']}  {u or '(not on this account)'}  ({pg['note']})")
         elif pg["status"] == "needs-url":
@@ -108,10 +166,20 @@ def cmd_build(reg):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("cmd", choices=["check", "list", "plan", "build"])
+    ap.add_argument("cmd", choices=["check", "list", "plan", "build", "banner"])
     ap.add_argument("--account", default="jishu.sharma")
+    ap.add_argument("--slug", help="banner: the registry page")
+    ap.add_argument("--file", help="banner: html to update in place (default: the page's repo html)")
     a = ap.parse_args(argv)
     reg = load()
+    if a.cmd == "banner":
+        pg = next((p for p in reg["pages"] if p["slug"] == a.slug), None)
+        if not pg:
+            raise SystemExit(f"artifacts: no page {a.slug!r}")
+        f = Path(a.file or REPO / pg["html"])
+        f.write_text(put_banner(f.read_text(encoding="utf-8"), reg, a.slug), encoding="utf-8", newline="\n")
+        print(f"banner: {a.slug} -> {f}")
+        return 0
     if a.cmd == "check":
         p = problems(reg)
         print("\n".join(p) if p else f"artifacts: {len(reg['pages'])} pages ok")

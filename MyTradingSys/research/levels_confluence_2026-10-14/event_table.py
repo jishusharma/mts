@@ -131,8 +131,8 @@ def make_events(bars, keep=KEEP, horizon=1440, footprint=None):
         for lev in levs:
             px=float(lev['price']); i=next((j for j,b in enumerate(daybars) if float(b['l'])<=px<=float(b['h'])),None)
             if i is None: continue
-            b=daybars[i]; side=1 if float(b['c'])>=px else -1; R=max(.004*float(b['o']),.001*px)
-            future=daybars[i:min(len(daybars),i+horizon+1)]; mfe=max([side*(float(x['h'] if side>0 else x['l'])-px)/R for x in future] or [0]); mae=max([-side*(float(x['l'] if side>0 else x['h'])-px)/R for x in future] or [0])
+            b=daybars[i]; side=1 if (float(daybars[i-1]['c']) if i else float(b['o']))>=px else -1; R=max(.004*float(b['o']),.001*px)
+            future=daybars[i:min(len(daybars),i+horizon+1)]; mfe=max([side*(float(x['h'] if side>0 else x['l'])-px)/R for x in future[1:]] or [0]); mae=max([-side*(float(x['l'] if side>0 else x['h'])-px)/R for x in future] or [0])
             other=sorted([float(x['price']) for x in levs if (float(x['price'])-px)*side>0],key=lambda x:abs(x-px))
             opp=other[0] if other else None; hit=next((x for x in future[1:] if opp is not None and float(x['l'])<=opp<=float(x['h'])),None)
             feats=_features(daybars,i,side); ref=float(daybars[i-1]['c']) if i else float(b['o']); bias=_bias_at(bars,int(b['t']),pd,aggregate_cache,ref)

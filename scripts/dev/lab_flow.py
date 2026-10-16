@@ -38,7 +38,11 @@ def fingerprint(repo, scope):
 
 
 def contract(flow):
-    return digest({k: flow[k] for k in ("id", "recipe", "goal", "criteria", "scope_in")})
+    value = {k: flow[k] for k in ("id", "recipe", "goal", "criteria", "scope_in")}
+    for key in ("commands", "tests"):
+        if flow.get(key):
+            value[key] = flow[key]
+    return digest(value)
 
 
 def accepted(card, repo):
@@ -78,12 +82,23 @@ def gate(card, cards, repo):
         errors.append("flow contract changed; launch a new flow")
     if card.get("goal") != flow["goal"] or card.get("scope_in") != flow["scope_in"]:
         errors.append("flow card goal/scope drifted from the shared contract")
+    for key in ("commands", "tests"):
+        if flow.get(key) and card.get("kind") == ("run" if key == "commands" else "build") and card.get(key) != flow[key]:
+            errors.append(f"flow contract {key} changed; launch a new flow")
     try:
         _, kind, model, effort, lens = RECIPES[flow["recipe"]][flow["stage"] - 1]
         if flow["stage"] < 1 or card.get("kind") != kind or tasks.codex_setting(card) != (model, effort) or flow.get("lens") != lens:
             errors.append("flow kind/model/lens drifted from the recipe")
     except (KeyError, IndexError, TypeError):
         errors.append("flow recipe/stage is invalid")
+    expected = []
+    try:
+        if flow["stage"] > 1:
+            expected = [f'{flow["id"]}-{flow["stage"] - 1}-{RECIPES[flow["recipe"]][flow["stage"] - 2][0]}']
+    except (KeyError, IndexError, TypeError):
+        pass
+    if "depends_on" in card and card.get("depends_on", []) != expected:
+        errors.append(f"flow depends_on must equal {expected}")
     prev = card.get("depends_on", [])
     byid = {c["id"]: c for c in cards}
     for cid in prev:
@@ -118,6 +133,9 @@ def launch(repo, spec, preview=False):
         raise ValueError("criterion exceeds card text size; use a source reference")
     fingerprint(repo, spec["scope_in"])
     flow = {k: spec[k] for k in ("id", "recipe", "goal", "criteria", "scope_in")}
+    for key in ("commands", "tests"):
+        if spec.get(key):
+            flow[key] = spec[key]
     flow["contract"] = contract(flow)
     out = []
     for index, (name, kind, model, effort, lens) in enumerate(stages):
@@ -166,13 +184,22 @@ def finish(repo, cid, report, verdict, result):
     rel = p.relative_to(Path(repo).resolve()).as_posix()
     if not rel.startswith(tasks.LAB_REPORTS + "/"):
         raise ValueError("report must be under lab reports")
+    for other in tasks.load_all(repo):
+        receipt = other.get("flow_receipt", {})
+        if other["id"] != cid and receipt.get("report") == rel:
+            raise ValueError(f"report already used by {other['id']}")
     text = p.read_text(encoding="utf-8")
+    if not re.search(rf"(?m)^.*\b{re.escape(cid)}\b.*$", text):
+        raise ValueError(f"report must contain a line naming card id {cid}")
     statuses = []
     for i in range(len(flow["criteria"])):
         matches = re.findall(rf"^C{i + 1}: (PASS|REWORK|BLOCKED)\s*$", text, re.M)
         if len(matches) != 1:
             raise ValueError(f"report needs one C{i + 1}: PASS|REWORK|BLOCKED line")
         statuses.extend(matches)
+    evidence = len(re.findall(r"(?m)(?:\b[\w./-]+\.\w+:\d+\b|```[^\n]*\n[\s\S]*?\n```)", text))
+    if evidence < len(flow["criteria"]):
+        raise ValueError("report needs at least one path:line or fenced command evidence token per criterion")
     if verdict == "PASS" and any(s != "PASS" for s in statuses):
         raise ValueError("PASS contradicts criterion results")
     card.update(state="done" if verdict == "PASS" else "blocked", result=result, closed=tasks.now(),
