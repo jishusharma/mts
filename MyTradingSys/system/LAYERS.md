@@ -74,12 +74,11 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`
 - Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md`; `MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `fabio-audit-20261013-attribution` raw p2 SONNET: H6: Separate secondary presenter settings from Fabio direct parameters
-  - `fabio-audit-20261013-counts` raw p2 SONNET: H4: Rebuild Fabio parent-trade inventory coverage and stop statistics
-  - `fabio-audit-20261013-dates` raw p2 SONNET: H3: Replace unsupported Fabio dates and source each execution timezone
-  - `fabio-audit-20261013-exits` raw p2 SONNET: H2: Reconcile Fabio exit causes and daily PnL deltas with fills
-  - `fabio-audit-20261013-prices` raw p2 SONNET: H1: Correct Fabio F8-F13 frame prices and buy-add order sides
-  - `fabio-audit-20261013-rules` raw p2 SONNET: H5: Correct Fabio management generalizations and distinguish order drawings
+  - `fabio-audit-20261013-attribution` ready p2 SONNET: H6: Separate secondary presenter settings from Fabio direct parameters
+  - `fabio-audit-20261013-counts` ready p2 SONNET: H4: Rebuild Fabio parent-trade inventory coverage and stop statistics
+  - `fabio-audit-20261013-dates` ready p2 SONNET: H3: Replace unsupported Fabio dates and source each execution timezone
+  - `fabio-audit-20261013-exits` ready p2 SONNET: H2: Reconcile Fabio exit causes and daily PnL deltas with fills
+  - `fabio-audit-20261013-rules` ready p2 SONNET: H5: Correct Fabio management generalizations and distinguish order drawings
   - `fabio-xuyq-asr-extract` ready p2 JIS-NB: Fabio xUyqIjCfZzg: finish ASR transcription (JIS-NB, resumable) then canonical transcript + V2 extract + FAB c
   - `fabio-ledger-f13-outcome-provenance-2910` raw p3 SONNET: fabio-ledger: F13 outcome provenance (-2910 vs stop -1760)
   - `fabio-ledger-recompute-entry-from-stp-la` raw p3 SONNET: fabio-ledger: recompute entry from STP label for F8 F12-m2 F13 F13-m1
@@ -244,6 +243,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `krown-catalogue-gpt-audit` ready p1 CODEX: Krown G2 catalogue: GPT audit of NOT STATED cells, quote support and BTC-visible calls for S1-S9
+  - `trendline-priority-drawing-contract` ready p1 SONNET: Priority trend-line drawing contract and BTC observation plan
   - `krown-dev-event-study` blocked p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `krown-layer-v0-detectors` blocked p2 SONNET: Krown layer v0 detectors: swings, zones, volume, candles, averages, range/coil as pure functions + params file
   - `krown-recall-check` blocked p2 SONNET: Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_RE

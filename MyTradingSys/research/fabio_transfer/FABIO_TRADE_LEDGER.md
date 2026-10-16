@@ -58,22 +58,22 @@ Status: still 9 entries (F1-F6 families); 20-trade goal not met, remaining unrea
 
 ## DyS79Eb92Ug t=1150-1350 (read 2026-10-11 relay, JIS-NB; sheets lowres/DyS79Eb92Ug_w3_00/01.jpg, step 25 s)
 Two more trades in the same live NQ session as F6 (Daily P/L 21290 at start). F7 long 4 lots ~25022.75 (derived from risk), stop 25003.25 (19.5pt = 0.078%, risk 1560$), TP sell limit 25067.32 (2.3R);
-stop raised to 25006.75, flat by t=1300 at about breakeven (Daily P/L 21290 -> 21252, -38$). F8 long 8 lots ~25032.5, stop 25021.75 (12.75pt = 0.051%, risk 2040$), TP not on frame.
+stop raised to 25006.75, flat by t=1300 at about breakeven (Daily P/L 21290 -> 21252, -38$). F8 long 8 lots avg 25034.53 [H1-corrected from ~25032.5], stop 25021.75 (12.78pt = 0.051%, risk 2040$), TP not on frame.
 Setup in his words: buyers 'protecting the level', squeeze against trapped sellers, stop sized to a fixed dollar risk (1,500-2,000). Management: stop to ~zero risk fast, scratch if the auction fails, re-enter ('can try another time').
 Entry prices are derived (stop +/- risk/(qty*20)), flagged in the notes. Ledger now 11 entries (F1-F8). Still < 20: unread DyS79Eb92Ug t>1360 (captions: 2790, 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
 
 ## DyS79Eb92Ug t=1350-1600 (read 2026-10-11 relay, JIS-NB; sheets lowres/DyS79Eb92Ug_w4_00/01/02.jpg, step 25 s)
-F8 (8 lots) was stopped out by t=1400 (Daily P/L 21252 -> 19131, -2121$; stop 25021.75, risk 2040$). Captions: 'we give back 2,500 ... auction is slow', 'this is the last trade for the day' (t=1410), yet he re-entered: F9 long 8 lots ~25034.5 (derived) with a 4-lot limit add, stop 25019.50 on 4 lots (low-res), flat by t=1550 for +259$ net (Daily 19390). F10 long 4 lots ~25040.5 at t=1575, stop 25019.50 (-1600$), outcome not read.
+F8 (8 lots) was stopped out by t=1400 (Daily P/L 21252 -> 19131, -2121$; stop 25021.75, risk 2040$). Captions: 'we give back 2,500 ... auction is slow', 'this is the last trade for the day' (t=1410), yet he re-entered: F9 long 8 lots avg ~25034.25 [H1-corrected] with a 4-lot buy limit add, initial stop preview ~25019.44 [H1: not ~25010.4] then 25019.50 on 4 lots, flat by t=1550 for +259$ net (Daily 19390). F10 long 4 lots avg ~25040.00 [H1-corrected from ~25040.5] at t=1575, stop 25019.50 (-1600$), outcome not read.
 Pattern: after a loss he re-enters the same protection-level squeeze three times in 5 minutes (F7 scratch -38$, F8 -2121$, F9 +259$): stop widths 12.75-21pt = 0.05-0.08%. Entry/stop values here are low-res reads, flagged approximate in the CSV.
 Ledger now 14 entries (F1-F10 + sub-rows). Still < 20 trades: unread DyS79Eb92Ug t>1600 (captions 2790, 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
 
 ## DyS79Eb92Ug t=1575-1775 (read 2026-10-11 relay, JIS-NB; sheets lowres/DyS79Eb92Ug_w5_00/01.jpg, step 25 s)
-F10 long (4 lots ~25040.5, stop 25019.5) scaled to 8 lots avg 25043.00, stop raised to 25038 then 25051.50 (+1360$ locked), sell LMT TP 25074.25 (5000$). Flat by t=1700, Daily P/L 19390 -> 24354 = +4964$ (TP hit, minus costs). Session sequence F7-F10: -38$, -2121$, +259$, +4964$. Stop 21pt (0.084%).
+F10 long (4 lots avg ~25040.00 [H1], stop 25019.5) scaled to 8 lots avg 25043.00, stop raised to 25038 then 25051.50 (+1360$ locked), sell LMT TP 25074.25 (5000$). Flat by t=1700, Daily P/L 19390 -> 24354 = +4964$ (TP hit, minus costs). Session sequence F7-F10: -38$, -2121$, +259$, +4964$. Stop 21pt (0.084%).
 Ledger: 13 entry rows / 40 lines (F1-F10 incl. F3a-c, F4a-b). Still < 20: unread DyS79Eb92Ug t>1775 (captions 2790, 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
 
 F11 (DyS79Eb92Ug t=2775-3000): NQ long 4 lots ~25104.75 after the squeeze above 25110, stop ~10pt (0.04%), scaled to 8 lots (stop 25094.25, 13pt = 0.052%), no TP reached, stopped out: Daily P/L 24354 -> 22239 = -2115$. Ledger 14 trades / 43 rows. Still < 20: unread DyS79Eb92Ug t>=3025 (captions 6992, 7598), Is1HvdfQm5c, xUyqIjCfZzg.
-F12 (DyS79Eb92Ug t=3025-3275): NQ long 6 lots ~25107 right after F11 stop, stop ~25105.50 then 25085.75 (21pt), scaled to 8 (stop 25098.50, 9pt) and 10 (stop 25098.25, TP sell LMT 25140.75 ~40pt); outcome not shown (t=3175 intro/ad, 3225+ talking head). Ledger 15 trades / 46 rows. Still < 20: next window t=3275+, then Is1HvdfQm5c, xUyqIjCfZzg.
-F13 (DyS79Eb92Ug t=3525-3775): NQ long 8->10 lots ~25104, stop 25097.00 (7pt = 0.028%), stopped out between t=3550 and 3575: Daily P/L 20668 -> 17758 = -2910$. Then flat, no trade through t=3750 (the window ends t=3775; sheet shows 3725-3750 only). Sequence after F10 (+4964$): F11 -2115$, F12 -1525$, F13 -2910$, three chase longs near the 25110 prior high in ~9 chart minutes with stops 7-21pt. Ledger 16 trades / 52 rows (>= 20 trades not yet). Still < 20: next window t=3775+, then Is1HvdfQm5c, xUyqIjCfZzg.
+F12 (DyS79Eb92Ug t=3025-3275): NQ long 6 lots, avg 25105.78 at t=3100 [H1-corrected], stop read ~25105.50 at t=3075 then 25089.75 at t=3100 (16.03pt) [H1: not 25085.75], scaled to 8 (stop 25098.50, 9pt) and 10 (avg 25108.50, stop 25098.75 at t=3150, TP sell LMT 25148.75 ~40pt [H1: not 25098.25 / 25140.75; a later frame shows 25098.25]); outcome not shown (t=3175 intro/ad, 3225+ talking head). Ledger 15 trades / 46 rows. Still < 20: next window t=3275+, then Is1HvdfQm5c, xUyqIjCfZzg.
+F13 (DyS79Eb92Ug t=3525-3775): NQ long 8->10 lots avg 25108.90 then 25108.05 [H1-corrected from ~25104], stop 25097.00 (11.9pt = 0.047%); the +2 order at 25104.75 is a buy add [H1], stopped out between t=3550 and 3575: Daily P/L 20668 -> 17758 = -2910$. Then flat, no trade through t=3750 (the window ends t=3775; sheet shows 3725-3750 only). Sequence after F10 (+4964$): F11 -2115$, F12 -1525$, F13 -2910$, three chase longs near the 25110 prior high in ~9 chart minutes with stops 7-21pt. Ledger 16 trades / 52 rows (>= 20 trades not yet). Still < 20: next window t=3775+, then Is1HvdfQm5c, xUyqIjCfZzg.
 
 F14 (DyS79Eb92Ug t=3775-4025): NQ long 8 lots ~25101.4, stop 25086.25 (~15pt = 0.060%), target label 25186.75 (+13600$), stopped out between t=3925 and t=3950: Daily P/L 17758 -> 15147 = -2611$. A 10-lot preview order near 25109 at t=3800 was not filled. Talking-head at t=3850. Flat t=3975-4000. Sequence F10 +4964, F11 -2115, F12 -1525, F13 -2910, F14 -2611: four chase longs near the 25110 prior high. Ledger 17 trades / 53 rows (>= 20 not yet). Next window t=4025+, then Is1HvdfQm5c, xUyqIjCfZzg.
 
@@ -98,3 +98,17 @@ Replay-ready rows (date + minute, convertible to UTC): **0 of 18 entry rows**. C
 
 ## Update 2026-10-16 (fabio-transcribe): Is1HvdfQm5c read from audio
 D2 was flipped to YES by the operator (OPERATOR_DECISIONS q-fabio-asr-d2). Is1HvdfQm5c now has a canonical ASR transcript (raw_transcripts_canonical/Is1HvdfQm5c_raw.txt, faster-whisper small.en) and a full V2 extract (extracts/v2/fabio/Is1HvdfQm5c_v2.md, 333 decision rows, 9 trade blocks). Result for the ledger: the session is mostly teaching and viewer Q&A; it holds NO confirmed live Fabio position with a stated entry and stop (one live order, 'the last sniper', was never filled). No row is added to the 14-trade ledger from it. xUyqIjCfZzg: ASR transcription is running (research/fabio_asr_2026-10-16/ASR_RUN.md); the frames-only reading of these two videos is superseded, not needed.
+
+## Audit correction H1 (card fabio-audit-20261013-prices, 2026-10-17)
+Source: layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md H1 row (full-res pixel reads) applied to the CSV rows below. The old approximate values are superseded; nothing here is a new frame read.
+| Row | Old | Corrected | Check |
+|---|---|---|---|
+| F8 entry | ~25032.5 (derived) | 25034.53 avg (w3_01 t1325) | 25021.75+2040/(8*20)=25034.50 |
+| F9 initial stop | ~25010.4 | ~25019.44 preview, then 25019.50 | width ~14.75pt |
+| F10 entry | ~25040.5 | ~25040.00 avg (w4_02 t1575) | width ~20.5pt |
+| F12 entry/stop (t3100) | ~25107 / ~25085.75 | 25105.78 / 25089.75 | width 16.03pt |
+| F12-m2 (t3150) | ~25100 / 25098.25 / ~25140.75 | 25108.50 / 25098.75 / 25148.75 | later w9_00 stop 25098.25 not backdated |
+| F13 entry | ~25104 | 25108.90 avg | 8 x 25108.90 + 2 x 25104.75 = 10 x 25108.07 |
+| F13-m1 entry | ~25105 | 25108.05 avg | matches the line above |
+| F13 +2 LMT 25104.75 | sell partial | buy add | green order |
+UNRESOLVED (H1): the F12-m2 label STP -2050$ ties to 25098.25 (10 x 10.25 x 20), not 25098.75 (1950$); F12 -1860$ and F13 -1520$ cash labels do not tie to the corrected averages. Labels are kept as observed; platform accounting is not reconciled (audit M2). Stop widths for F9, F10, F12, F13 in the old stats above are stale; H4 recomputes them.

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T20:00:50Z",
   "commands": [],
   "created": "2026-10-16T16:10:00Z",
   "depends_on": [],
@@ -19,7 +20,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "4 tests passed; MyTradingSys/research/layer_lab/reports/2026-10-16_gptb-dev-split-guard.md",
   "scope_in": [
     "MyTradingSys/research/layer_lab/dev_split_guard/event_table.py",
     "MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py",
@@ -36,7 +37,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read scope_in sources and write the test file first; run it and confirm it fails (red).",
     "Implement the module in research/layer_lab only; DEV data only, missing input = NOT_IN_DATA.",
