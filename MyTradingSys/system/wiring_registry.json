@@ -705,6 +705,38 @@
    "ref": "research-kit",
    "why": "Shared screen statistics for research studies (day-clustered SE, clustered difference, MDE, power check, Holm, cost in R); imported by hand-run studies, tested by test_research_kit.py, no live imports."
   },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py": {
+   "disp": "REPRO",
+   "why": "PIT context engine (replay + vectorised builds) for the context-factors study; imported by test_context_asof.py (gated) and by the REPRO scripts below; named in CONTEXT_FACTORS_SPEC.md."
+  },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/run_compare.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds compare_result.txt and grid_context.csv (replay vs vec at every 1h close of DEV); run by hand, named in ANGLES.md (a)."
+  },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/counts.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds COUNTS.md and trials.csv from grid_context.csv (counts only); run by hand, named in COUNTS.md."
+  },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/indep_pandas.py": {
+   "disp": "REPRO",
+   "why": "Independent pandas arithmetic for hand_check.py and trader_eye.py (angles b, c); named in ANGLES.md."
+  },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/hand_check.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds hand_check.md (angle c); run by hand, named in ANGLES.md."
+  },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/trader_eye.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds trader_eye.md (angle b); run by hand, named in ANGLES.md."
+  },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/prior_rule_count.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds prior_rule_count.md and trials.csv row T8 (RT-1); run by hand, named in ANGLES.md (d)."
+  },
+  "MyTradingSys/research/context_factors_pit_2026-10-16/episode_counts.py": {
+   "disp": "REPRO",
+   "why": "Rebuilds EPISODE_COUNTS.md (PRE_REG section 3 power table); run by hand and by card context-factors-one-run."
+  },
   "MyTradingSys/research/context_factors_2026-10-16/context_asof.py": {
    "disp": "TOOL",
    "why": "Point-in-time context factors F1-F7 (replay context_at + vectorised context_frame) for BTC 1h decisions; library for the context-composite-dev-read card, covered by test_context_asof.py; DEV loader refuses bars >= 2024-07-01; no live imports."
