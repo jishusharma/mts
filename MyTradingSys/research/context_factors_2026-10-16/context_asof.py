@@ -510,6 +510,43 @@ def context_at(bars, t, side):
 
 
 # ================================================================== VECTORISED (full arrays, one row per decision hour)
+
+# ------------------------------------------------------------------ VECTORISED-side helpers (written separately from the
+# scalar helpers above so that no factor logic is shared between the two builds; only constants and build_profile are)
+_SESSION_OF_HOUR = np.array(["asia"] * 8 + ["london"] * 5 + ["ny"] * 8 + ["late"] * 3, dtype=object)
+_ALIGN = {"long": {"bull_engulf": "with", "pin_bull": "with", "bear_engulf": "against", "pin_bear": "against"},
+          "short": {"bear_engulf": "with", "pin_bear": "with", "bull_engulf": "against", "pin_bull": "against"}}
+
+
+def _cluster_np(price, conf, tol):
+    """Krown chaining with numpy: split the price-sorted pivots where the gap exceeds tol."""
+    if len(price) == 0:
+        return []
+    order = np.lexsort((conf, price))
+    p, cf = np.asarray(price, float)[order], np.asarray(conf, np.int64)[order]
+    cuts = np.flatnonzero(np.diff(p) > tol) + 1
+    res = []
+    for a, b in zip(np.r_[0, cuts], np.r_[cuts, len(p)]):
+        if b - a >= KROWN_MIN:
+            res.append((sum(p[a:b].tolist()) / (b - a), int(np.partition(cf[a:b], 1)[1])))
+    return res
+
+
+def _near_np(px, layer_rank, side):
+    """Index of the nearest level: max price below (long) / min price above (short); ties -> lowest layer rank."""
+    px = np.asarray(px, float); lr = np.asarray(layer_rank)
+    key = np.lexsort((lr, -px)) if side == "long" else np.lexsort((lr, px))
+    return int(key[0])
+
+
+def _phase_a_np(cw, slope):
+    return np.select([(cw >= 0) & (slope > 0), cw >= 0, slope < 0], ["markup", "distribution", "markdown"], "accumulation")
+
+
+def _fund_np(r):
+    r = np.asarray(r, float)
+    return np.select([np.isnan(r), r < 0, r < FUND_BASE - 1e-9, r <= FUND_BASE + 1e-9], ["na", "neg", "low", "base"], "high")
+
 def _agg_frame(df5, key):
     g = df5.groupby(key, sort=True)
     a = pd.DataFrame({"o": g["o"].first(), "h": g["h"].max(), "l": g["l"].min(), "c": g["c"].last(), "v": g["v"].sum()})
@@ -687,6 +724,9 @@ def context_frame(bars, side, leak=None, decisions=None):
     if "fund_t" in bars:
         ft = np.asarray(bars["fund_t"]); fr = np.asarray(bars["fund_r"], float)
         kf = np.searchsorted(ft, Ts, "left") - 1
+        fund_all = _fund_np(np.where(kf >= 0, fr[np.maximum(kf, 0)], np.nan))
+    cwW, slW = (Wk["c"] - smaW).to_numpy(), slopeW.to_numpy()
+    phaseA_all = np.where(np.isnan(slW), "na", _phase_a_np(np.nan_to_num(cwW), np.nan_to_num(slW))).astype(object)
     rows = []
     for q, T in enumerate(Ts):
         T = int(T)
@@ -720,8 +760,10 @@ def context_frame(bars, side, leak=None, decisions=None):
                 cand = np.arange(max(lo_i, KROWN_N), max(min(j4 + 1, n4 - KROWN_N), 0))
             piv = [(float(f4h[i]), int(conf_ms[i])) for i in cand if ph[i]] + \
                   [(float(f4l[i]), int(conf_ms[i])) for i in cand if pl[i]]
-            for px, cr in _cluster(piv, KROWN_TOL * ad):
-                lv.append((px, "krown", cr))
+            if piv:
+                pp, cc = zip(*piv)
+                for px, cr in _cluster_np(np.array(pp), np.array(cc), KROWN_TOL * ad):
+                    lv.append((px, "krown", cr))
         k5 = int(i5[q])
         if T % DAY and k5 >= 0 and dkey[k5] == T // DAY and cs_d_v[k5] > 0:
             lv.append((float(cs_d_tpv[k5] / cs_d_v[k5]), "vwap", None))
@@ -739,7 +781,7 @@ def context_frame(bars, side, leak=None, decisions=None):
         mine = [x for x in lv if (x[0] < c_side if side == "long" else x[0] > c_side)]
         mine4 = [x for x in mine if (x[0] < c4 if side == "long" else x[0] > c4)]
         r = {"T": T, "side": side, "close": c, "atr1h": a1, "f1_n_levels": len(mine), "f1_n_levels_v4h": len(mine4)}
-        near = _pick_near(mine, side)
+        near = mine[_near_np([x[0] for x in mine], [LAYERS.index(x[1]) for x in mine], side)] if mine else None
         if near is None or a1 != a1:
             r.update(f1_near_px=np.nan, f1_near_layer="none", f1_dist_atr=np.nan, f1_at_level=False,
                      f2_conf_obj=0, f2_conf_name=0, f2_age_h=np.nan, f2_touches=-1, f2_touch_cat="na")
@@ -756,7 +798,7 @@ def context_frame(bars, side, leak=None, decisions=None):
                 lo_j = max(0, j - ROUND_TOUCH_WIN + 1) if near[2] is None else int(np.searchsorted(hstart, near[2], "left"))
                 seg = slice(lo_j, hi_j + 1)
                 nt = int(np.count_nonzero((hl[seg] <= L) & (L <= hh[seg])))
-                r.update(f2_age_h=np.nan if near[2] is None else (T - near[2]) / HOUR, f2_touches=nt, f2_touch_cat=_touch_cat(nt))
+                r.update(f2_age_h=np.nan if near[2] is None else (T - near[2]) / HOUR, f2_touches=nt, f2_touch_cat=("untested", "first", "retest")[min(nt, 2)])
         # F3
         pd_o = float(Dg["o"].iat[jd_f3]) if jd_f3 >= 0 else np.nan
         if T % DAY and k5 >= 0 and dkey[k5] == T // DAY:
@@ -782,7 +824,7 @@ def context_frame(bars, side, leak=None, decisions=None):
             jj = int(idx[k][q]) + (1 if leak == "f4_partial_candle" and int(idx[k][q]) + 1 < len(agg[k]) else 0)
             if jj >= 2:
                 cat = cats[k][0].iat[jj]
-                r[f"f4_{k}_cat"] = cat; r[f"f4_{k}_align"] = _align(cat, side); r[f"f4_{k}_eng_opr"] = cats[k][1].iat[jj]
+                r[f"f4_{k}_cat"] = cat; r[f"f4_{k}_align"] = _ALIGN[side].get(cat, "none"); r[f"f4_{k}_eng_opr"] = cats[k][1].iat[jj]
             else:
                 r[f"f4_{k}_cat"] = "na"; r[f"f4_{k}_align"] = "na"; r[f"f4_{k}_eng_opr"] = "na"
         # F5
@@ -791,10 +833,7 @@ def context_frame(bars, side, leak=None, decisions=None):
                  f5_veto=bool(s1 == ("walk_lower" if side == "short" else "walk_upper")),
                  f5_conf=bool(s1 == ("reenter_lower" if side == "long" else "reenter_upper")))
         # F6
-        if jw_ph >= 0 and slopeW.iat[jw_ph] == slopeW.iat[jw_ph]:
-            phA = _phase_a(float(Wk["c"].iat[jw_ph] - smaW.iat[jw_ph]), float(slopeW.iat[jw_ph]))
-        else:
-            phA = "na"
+        phA = phaseA_all[jw_ph] if jw_ph >= 0 else "na"
         if jd >= PH_D_RANGE - 1 and jd >= PH_D_RET:
             rr = float(r30.iat[jd])
             phB = "markup" if rr >= PH_D_THR else "markdown" if rr <= -PH_D_THR else \
@@ -825,8 +864,8 @@ def context_frame(bars, side, leak=None, decisions=None):
             htf = str(int(sgn * (Dg["c"].iat[jd] - smaD[jd]) > 0) + int(sgn * (F4["c"].iat[j4] - sma4[j4]) > 0))
         else:
             htf = "na"
-        fund = _fund_cat(float(fr[kf[q]])) if "fund_t" in bars and kf[q] >= 0 else "na"
-        r.update(f7_volreg=volreg, f7_squeeze=sq, f7_session=_session((hr_open % DAY) // HOUR),
+        fund = fund_all[q] if "fund_t" in bars else "na"
+        r.update(f7_volreg=volreg, f7_squeeze=sq, f7_session=_SESSION_OF_HOUR[(hr_open % DAY) // HOUR],
                  f7_weekend="weekend" if ((hr_open // DAY) + 3) % 7 >= 5 else "weekday", f7_approach=appr,
                  f7_sweep=bool(sw), f7_htf_align=htf, f7_funding=fund)
         rows.append(r)
