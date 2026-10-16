@@ -10,7 +10,7 @@
 
 param(
     [int]$CheckIntervalSec        = 30,
-    [int]$SnapshotStaleSec        = 150,
+    [int]$SnapshotStaleSec        = 300,
     [int]$RestartGraceSec         = 420,
     [int]$StaleDebounce           = 2,
     [int]$CircuitBreakerRestarts  = 5,
