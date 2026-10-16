@@ -590,38 +590,82 @@ def print_claims(repo, ref=None):
               f"[area: {kv.get('area','-')}] {age_h:.0f}h old{stale}")
 
 
+def push_claim_commit(repo, rel, text, msg):
+    """Traffic buster (2026-10-16): put ONE claim-file change on origin/fast-track as a commit built with plumbing on
+    top of origin's tip: no merge commit, no gate, no dependence on this tree's state (dirty or ahead is fine). text=None
+    removes the file. Returns the pushed sha. Afterwards this branch is fast-forwarded to it when it can be (never a merge)."""
+    for attempt in range(1, PUSH_TRIES + 1):
+        git(repo, "fetch", "--quiet", "origin", TRUNK)
+        parent = git(repo, "rev-parse", f"origin/{TRUNK}").stdout.strip()
+        idx = Path(git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()) / f"claim-index-{os.getpid()}"
+        env = {**os.environ, "GIT_INDEX_FILE": str(idx)}
+
+        def plumb(*args, stdin=None):
+            r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, env=env, input=stdin)
+            if r.returncode != 0:
+                raise SyncError(f"git {' '.join(args)} failed:" + chr(10) + f"{r.stdout}{r.stderr}".rstrip())
+            return r.stdout.strip()
+        try:
+            plumb("read-tree", parent)
+            if text is None:
+                plumb("update-index", "--force-remove", rel)
+            else:
+                blob = plumb("hash-object", "-w", "--stdin", stdin=text)
+                plumb("update-index", "--add", "--cacheinfo", f"100644,{blob},{rel}")
+            commit = plumb("commit-tree", plumb("write-tree"), "-p", parent, "-m", msg)
+        finally:
+            idx.unlink(missing_ok=True)
+        if git(repo, "push", "--quiet", "origin", f"{commit}:refs/heads/{TRUNK}", check=False).returncode == 0:
+            git(repo, "merge", "--ff-only", "--quiet", commit, check=False)  # only when this branch has nothing unshipped
+            return commit
+        print(f"push rejected (someone shipped first), retry {attempt}/{PUSH_TRIES}")
+    raise SyncError(f"claim push still rejected after {PUSH_TRIES} tries")
+
+
 def claim(repo, task, area="-", gate=run_gate):
     if str(task).startswith("--"):
         raise SyncError(f"claim name {task!r} looks like a flag, not a task name; usage: sync.py claim \"<task>\" [--area <paths>]")
     refuse_live(repo)
-    git(repo, "fetch", "--quiet", "origin", TRUNK)
-    slug = slugify(task)
-    open_claims = read_claims(repo, f"origin/{TRUNK}")
+    slug0 = slugify(task)
     mine = claim_areas({"area": area})
-    for other, kv in open_claims:
-        # With areas on both sides a claim blocks only on overlap (operator q20); a claim without --area cannot be compared,
-        # so there only the same task name blocks.
-        theirs = claim_areas(kv)
-        hit = area_overlap(mine, theirs) if mine and theirs else None
-        if hit or (other == slug and not (mine and theirs)):
-            raise SyncError(f"already claimed by {kv.get('host')} / {kv.get('account')}: {kv.get('task')}"
-                            + (f" (area {hit[0]} ~ {hit[1]})" if hit else "") + ". Pick another task or area, or ask them (a claim over 24 h old is stale: release it).")
-    taken = {s for s, _ in open_claims}
-    base, n = slug, 1
-    while slug in taken:  # same task name, disjoint areas: both may work
-        n += 1
-        slug = f"{base}-{n}"
-    path = repo / CLAIMS_DIR / f"{slug}.md"
-    path.parent.mkdir(parents=True, exist_ok=True)
     NL = chr(10)
-    path.write_text(NL.join([f"task: {task}", f"host: {socket.gethostname()}", f"account: {account(repo)}",
-                             f"area: {area}", f"epoch: {int(time.time())}", ""]), newline=chr(10))
-    rel = f"{CLAIMS_DIR}/{slug}.md"  # relative: a 8.3 short temp path is "outside repository" to git
-    git(repo, "add", rel)
-    msg = NL.join([f"claim {slug}", "", f"Result: {account(repo)} on {socket.gethostname()} works on: {task}"])
-    git(repo, "commit", "-q", "-m", msg, "--", rel)
-    ship(repo, gate=gate)
-    print(f"claimed {slug}; release with: sync.py release {slug}")
+    for attempt in range(1, PUSH_TRIES + 1):  # re-check on every retry: a racing claim may have landed
+        git(repo, "fetch", "--quiet", "origin", TRUNK)
+        open_claims = read_claims(repo, f"origin/{TRUNK}")
+        for other, kv in open_claims:
+            # With areas on both sides a claim blocks only on overlap (operator q20); a claim without --area cannot be compared,
+            # so there only the same task name blocks.
+            theirs = claim_areas(kv)
+            hit = area_overlap(mine, theirs) if mine and theirs else None
+            if hit or (other == slug0 and not (mine and theirs)):
+                raise SyncError(f"already claimed by {kv.get('host')} / {kv.get('account')}: {kv.get('task')}"
+                                + (f" (area {hit[0]} ~ {hit[1]})" if hit else "") + ". Pick another task or area, or ask them (a claim over 24 h old is stale: release it).")
+        taken = {s for s, _ in open_claims}
+        slug, n = slug0, 1
+        while slug in taken:  # same task name, disjoint areas: both may work
+            n += 1
+            slug = f"{slug0}-{n}"
+        body = NL.join([f"task: {task}", f"host: {socket.gethostname()}", f"account: {account(repo)}",
+                        f"area: {area}", f"epoch: {int(time.time())}", ""])
+        msg = NL.join([f"claim {slug}", "", f"Result: {account(repo)} on {socket.gethostname()} works on: {task}"])
+        try:
+            push_claim_commit(repo, f"{CLAIMS_DIR}/{slug}.md", body, msg)
+        except SyncError:
+            if attempt == PUSH_TRIES:
+                raise
+            continue
+        print(f"claimed {slug}; release with: sync.py release {slug}")
+        return
+
+
+def release(repo, slug, gate=run_gate):
+    refuse_live(repo)
+    git(repo, "fetch", "--quiet", "origin", TRUNK)
+    rel = f"{CLAIMS_DIR}/{slug}.md"
+    if git(repo, "cat-file", "-e", f"origin/{TRUNK}:{rel}", check=False).returncode != 0:
+        raise SyncError(f"no claim {slug} on origin/{TRUNK}")
+    push_claim_commit(repo, rel, None, f"release {slug}" + chr(10) * 2 + f"Result: claim {slug} closed")
+    print(f"released {slug}")
 
 
 # Fixed lanes other tooling points at (dispatcher prompts, codex lab, push recipe): `tidy --all` still keeps them.
@@ -777,19 +821,6 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
     print(f"{'removed' if apply else 'would remove'} {len(out)}; kept {sum(kept.values())}" + (f" ({counts})" if kept else "")
           + ("" if apply else "; `sync.py tidy --apply` removes, `--all` also tries hand-named trees"))
     return out
-
-
-def release(repo, slug, gate=run_gate):
-    refuse_live(repo)
-    merge_trunk(repo)
-    path = repo / CLAIMS_DIR / f"{slug}.md"
-    if not path.exists():
-        raise SyncError(f"no claim {slug} on origin/{TRUNK}")
-    rel = f"{CLAIMS_DIR}/{slug}.md"
-    git(repo, "rm", "-q", rel)
-    git(repo, "commit", "-q", "-m", f"release {slug}"+chr(10)*2+f"Result: claim {slug} closed", "--", rel)
-    ship(repo, gate=gate)
-    print(f"released {slug}")
 
 
 def main(argv):
