@@ -78,6 +78,10 @@ if (-not $NoBeep) {
     }
 }
 
+# B189: the host runs backtests, test gates and ASR at 100% CPU; at Normal priority the snapshot JVM starved and mvn_snapshot hit its
+# timeout, which the supervisor read as a dead loop (restart storm). AboveNormal here is inherited by every child (cmd, mvn, java, python).
+try { (Get-Process -Id $PID).PriorityClass = 'AboveNormal' } catch { }
+
 function Log-Line {
     param([string]$msg)
     $stamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")
@@ -445,7 +449,7 @@ try {
     
         Write-Host "[apparatus] fetching snapshot..."
         $mvnCmd = 'mvn -q exec:java "-Dexec.mainClass=datafeed.Main" "-Dexec.args=snapshot ' + $Symbol + '" > NUL 2>&1'
-        $rc = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $mvnCmd) -TimeoutSec 90 -Tag "mvn_snapshot" -WorkDir $R
+        $rc = Invoke-WithTimeout -File "cmd.exe" -ArgList @("/c", $mvnCmd) -TimeoutSec 180 -Tag "mvn_snapshot" -WorkDir $R
         if ($rc -ne 0) {
             Log-Line ("SNAPSHOT_FAIL exit=" + $rc)
             if ($Once) { break }
