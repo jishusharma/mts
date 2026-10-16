@@ -320,6 +320,9 @@ def build_plan(quick):
     # Step 3gd: B150 discovery in every ship (2026-10-16: two research test files shipped unregistered and turned CI red twice in 3 h;
     # the smoke gate never picked the pytest shard that holds this test)
     add("3gd", "Gate discovery: every tracked test file is gated (B150)", [sys.executable, "MyTradingSys/tests/test_gate_discovery_b150.py"], "Step 3gd: Gate discovery")
+    # Step 3dl: CI deps lint (2026-10-16: pandas imported by research tests, missing from the ci.yml pip line; the desktop has every package, so
+    # only CI saw ModuleNotFoundError at collection, three red rounds in 3 h). Always runs, ~5 s.
+    add("3dl", "CI deps lint: no gated test hard-imports a package the ci.yml pip line lacks", [sys.executable, "scripts/dev/ci_deps_lint.py"], "Step 3dl: CI deps lint")
 
     # Step 4: pytest (math + doc tests), sharded so the slowest step no longer sets the gate's wall time (2026-10-16: one process
     # took 919 s of a 15 min gate). 4/4b/4c = MyTradingSys/tests files round-robin, 4d = doc size/contract tests, 4e = backtest

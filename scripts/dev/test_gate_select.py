@@ -10,7 +10,7 @@ import gate_select as gs
 
 STEPS = [("1", "python scripts/dev/run_staged_tests.py MyTradingSys/execution -- test_risk_guard"), ("3k", "python -m unittest (scripts/dev/test_sync.py, 3 shards)"),
          ("3ds", "python -m unittest (scripts/dev/test_dsa.py, 2 shards)"), ("3tl", "python scripts/dev/tasks.py lint"), ("3q", "x"), ("3pc", "x"),
-         ("3c", "x"), ("3w", "x"), ("3x", "x"), ("3gd", "x"), ("3xt", "x"), ("4", "pytest MyTradingSys/tests/a"), ("4b", "pytest MyTradingSys/tests/b"),
+         ("3c", "x"), ("3w", "x"), ("3x", "x"), ("3gd", "x"), ("3dl", "x"), ("3xt", "x"), ("4", "pytest MyTradingSys/tests/a"), ("4b", "pytest MyTradingSys/tests/b"),
          ("4d", "pytest MyTradingSys/tests/docs"), ("5b", "unittest"), ("5c", "pytest options")]
 MENTIONED = {("dsa", "4b")}   # the pytest shard whose tests mention the module `dsa`
 BS = chr(92)
@@ -84,6 +84,12 @@ class Select(unittest.TestCase):
         mode, steps = self.sel("MyTradingSys/research/x_2026-10-16/test_x.py")
         self.assertEqual(mode, "smoke")
         self.assertIn("3gd", steps)
+
+    def test_a_new_research_test_file_runs_the_ci_deps_lint(self):
+        # 2026-10-16: research tests imported pandas, ci.yml did not install it; only CI saw it (the desktop has every package)
+        mode, steps = self.sel("MyTradingSys/research/x_2026-10-16/test_x.py")
+        self.assertEqual(mode, "smoke")
+        self.assertIn("3dl", steps)
 
     def test_always_steps_exist_in_the_real_plan(self):
         import run_all_tests
