@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T17:18:14Z",
   "commands": [],
   "created": "2026-10-16T00:44:21Z",
   "depends_on": [],
@@ -17,7 +18,7 @@
   "refine_tries": 0,
   "refined_by": "codex-feed 2026-10-16 (sonnet worker)",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST 2026-10-16_gpt-g3-pack-audit.md",
   "scope_in": [
     "MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py",
     "MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py",
@@ -38,7 +39,7 @@
     "MyTradingSys/research/observer_2026-10-15/OBSERVER_REPORT.md (G3 brief, revised 2026-10-16)",
     "MyTradingSys/research/fable_audit_2026-10-16/CATALOGUE_AUDIT.md (P3, P4)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read READER_PROTOCOL.md sections 1-3, then g3_pack.py in full. Run python -m pytest MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py -q (synthetic data, writes nothing into the pack folder); report passed/failed/skipped.",
     "Causality (a): for each pf_* pre-filter, chart builder and aggregate (weekly, monthly, 4h blocks, session VWAP and profile, rolling percentiles, RSI, BBWP) list the bars read relative to the edge index i. MATCH = only bars closed at the edge, else MISMATCH with file:line. Probe by poisoning later bars in a stdlib script saved as MyTradingSys/research/layer_lab/gpt-g3-pack-audit/probe.py.txt.",

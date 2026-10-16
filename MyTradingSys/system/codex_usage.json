@@ -4,9 +4,9 @@
   "week_resets": 1792677804,
   "week_used": 24.0,
   "window_resets": 1792177228,
-  "window_used": 2.0
+  "window_used": 3.0
  },
- "at": "2026-10-16T17:01:47Z",
+ "at": "2026-10-16T17:18:24Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,18 +19,48 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 19.0,
-  "window_pts": 2.0,
-  "window_runs": 6
+  "window_pts": 3.0,
+  "window_runs": 7
  },
  "runs": [
+  {
+   "at": "2026-10-16T17:13:23Z",
+   "card": "gpt-g3-pack-audit",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 294,
+   "tokens_out": 25354,
+   "tokens_total": 1630284,
+   "tokens_uncached": 86850,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": null,
+   "card": "gptb-candle-pattern-event-table",
+   "effort": null,
+   "kind": null,
+   "model": null,
+   "note": "both earlier tries were SHIP_FAILED gate failures (steps 3w/3x/4c), fixed in 049a5a96 and shipped; reset by NUC session 2026-10-16",
+   "outcome": "REOPENED",
+   "seconds": null,
+   "tokens_out": null,
+   "tokens_total": null,
+   "tokens_uncached": null,
+   "week_pts": null,
+   "window_pts": null
+  },
   {
    "at": "2026-10-16T17:00:05Z",
    "card": "gptb-context-v2-fix2-mde-rule",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": " Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n======================================================================\nFAILED: 3 st",
+   "outcome": "SHIP_FAILED",
    "seconds": 94,
    "tokens_out": 5035,
    "tokens_total": 341035,
@@ -142,36 +172,6 @@
    "tokens_uncached": 45460,
    "week_pts": 1.0,
    "window_pts": 3.0
-  },
-  {
-   "at": "2026-10-16T10:00:07Z",
-   "card": "gpt-verdict-registry-audit-b",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 173,
-   "tokens_out": 13061,
-   "tokens_total": 1058954,
-   "tokens_uncached": 70917,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T09:30:12Z",
-   "card": "gpt-verdict-registry-audit-a",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 115,
-   "tokens_out": 7672,
-   "tokens_total": 804231,
-   "tokens_uncached": 114447,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
