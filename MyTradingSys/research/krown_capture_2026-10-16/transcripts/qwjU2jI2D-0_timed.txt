@@ -1,0 +1,698 @@
+# Video ID: qwjU2jI2D-0
+# Published: 2026-10-11
+# Title: The Boring Chart Is Where the Whales Are Buying (Accumulation Explained)
+# ---
+[00:00:00] And one day, of course, what happens?
+[00:00:02] The range breaks. Everyone calls it
+[00:00:03] sudden, and you know better, of course.
+[00:00:05] Nothing about it was sudden. The buying
+[00:00:08] happened weeks ago. That's what the
+[00:00:09] whole range was about.
+[00:00:12] Imagine you have to buy a hundred
+[00:00:13] million dollars of Bitcoin today. Now,
+[00:00:15] this might be a very real situation for
+[00:00:16] some people, but if it's not, what do
+[00:00:18] you think's going to happen if you just
+[00:00:20] hit market buy? You're probably going to
+[00:00:21] lose millions before you finish. Why?
+[00:00:23] Because your own order is moving the
+[00:00:24] price against you with each and every
+[00:00:26] passing fill. Now, this cost does have a
+[00:00:28] name, and it's very important to
+[00:00:29] understand the dynamics of it, and it is
+[00:00:31] known as slippage. And avoiding it is an
+[00:00:33] entire hidden profession, which
+[00:00:35] effectively is the art of the order
+[00:00:37] execution. And this is the part that I
+[00:00:39] see pretty much never spoken about on
+[00:00:40] YouTube, especially, or just really any
+[00:00:42] social media venue. Um but, that is
+[00:00:45] typically because, you know, people
+[00:00:46] think, "Oh, it's just reserved for
+[00:00:47] whales, you know, I don't need to worry
+[00:00:48] about that." But, look, if you can
+[00:00:50] understand what's going on behind the
+[00:00:51] scenes, then you can repurpose it to
+[00:00:54] take advantage of it, which you actually
+[00:00:56] do have a major advantage here. Anyways,
+[00:00:57] last episode, I showed you the tricks
+[00:00:59] that fake size. Today, we're going to go
+[00:01:01] over how real size actually gets in. You
+[00:01:03] know, all of the all of the sort of
+[00:01:05] hidden and untimed themes, and why the
+[00:01:08] biggest buying you'll ever witness looks
+[00:01:10] like the most boring chart you probably
+[00:01:12] ever skipped past, as well. Anyways, I'm
+[00:01:14] going to rerun this animation right
+[00:01:15] here, and we'll also go over, like I
+[00:01:17] said, the one advantage you actually do
+[00:01:19] have over every whale on Earth, by the
+[00:01:21] way, too. And with that all said, we're
+[00:01:24] going to go deep inside that machine
+[00:01:25] today. Anyways, if you are finding this
+[00:01:27] video out of context, or just randomly
+[00:01:29] here on YouTube, it's part of a greater
+[00:01:31] playlist called Inside the Machine. This
+[00:01:33] is episode number six. The score so far
+[00:01:35] has been number one, the job. Number
+[00:01:37] two, the engine. Number three, the
+[00:01:39] pools. Number four, the hunt. Number
+[00:01:41] five, the tricks. And last week ended on
+[00:01:43] a puzzle, as well. Faking size is, of
+[00:01:46] course, illegal, as we know. There are
+[00:01:47] laws against this, and showing size, of
+[00:01:50] course, can get you hunted, you know, if
+[00:01:51] you show big size in the order books,
+[00:01:53] what do you think's going to happen?
+[00:01:53] Everyone can see that. So, how does real
+[00:01:56] money, real big money, I should say, get
+[00:01:58] in? That puzzle, like I said, is today's
+[00:02:00] whole episode. So, we're going to flip
+[00:02:02] up these seats and of course,
+[00:02:04] we've gone over four episodes already
+[00:02:06] watching what big players do to the
+[00:02:07] market. Today, you're going to sit in
+[00:02:09] their chair and feel their actual
+[00:02:11] problem. That is the idea here and
+[00:02:13] again, it's very important to understand
+[00:02:15] what these people are doing and their
+[00:02:16] reality because then you can, like I
+[00:02:19] said, turn it around, maybe even take
+[00:02:20] advantage of it. Anyway, same rules as
+[00:02:22] always here. Nothing here is going to
+[00:02:24] predict price, it explains it. We are
+[00:02:26] going to welcome you into the fill,
+[00:02:28] effectively the execution. So, let's
+[00:02:30] move into our next little slide right
+[00:02:32] here and let's go over the whales
+[00:02:33] problem. So, here's a problem nobody
+[00:02:36] without money typically, you know,
+[00:02:38] bothers thinking about because people,
+[00:02:39] you know, typically don't even think
+[00:02:41] past their own, you know, issues on a
+[00:02:43] day-to-day basis, of course. But, we
+[00:02:45] need to understand the meta game going
+[00:02:46] on here because that can help us gain a
+[00:02:49] better, you know, a better understanding
+[00:02:51] of the market in general. Anyways, your
+[00:02:53] your your order, you know, if you're
+[00:02:55] just like a regular pleb like me, you
+[00:02:57] know, you're playing with less than
+[00:02:58] hundreds of millions of dollars, let's
+[00:02:59] say,
+[00:03:00] your order is basically a drop in the
+[00:03:02] ocean. You click buy, you get filled at
+[00:03:03] the price you saw and no problem. You
+[00:03:06] don't think about it really much more
+[00:03:07] than that. But, at real size, that stops
+[00:03:10] being true and your order is the market.
+[00:03:13] You are actually the one who is moving
+[00:03:15] the markets quite literally. So, episode
+[00:03:17] three showed you the book only holds so
+[00:03:19] much at each shelf. A hundred
+[00:03:20] million-dollar market order doesn't have
+[00:03:22] a price. It is effectively going to
+[00:03:25] create the price. It has It's It's It's
+[00:03:27] It's like a price journey, if you will.
+[00:03:29] It It's going to eat that first shelf.
+[00:03:30] Let me just show it to you over here,
+[00:03:32] just so you have a visual on this one in
+[00:03:33] the order book. Again, there's only so
+[00:03:35] much offered at the current best offer
+[00:03:37] right there. You know, it's literally,
+[00:03:38] you know, a quarter or sorry, not even a
+[00:03:40] quarter of Bitcoin. I
+[00:03:41] spot 0.25 of a Bitcoin. So, of course,
+[00:03:44] if you need to get filled on big
+[00:03:46] amounts, you, if you market order, you
+[00:03:49] are going to chew through all these and
+[00:03:51] your effective fill price is going to be
+[00:03:52] not 79703, it's going to be like 79
+[00:03:56] 79800 maybe. I mean, might might even be
+[00:03:58] more than that, might be a little bit
+[00:03:59] less than that. But again,
+[00:04:01] um as I work through my notes here, like
+[00:04:03] I said, it's going to eat the first
+[00:04:04] shelf, the second shelf, the third shelf
+[00:04:06] until it finds all of the liquidity for
+[00:04:09] whatever you are trying to get in. So,
+[00:04:11] what do you think a big whale or just
+[00:04:13] anyone with big amounts of money that
+[00:04:14] that they're playing with? What do you
+[00:04:15] think they're going to do in order to
+[00:04:17] get their fills? Are they just going to
+[00:04:17] market order like that? No, of course
+[00:04:19] not. It's going to be a humongous cost
+[00:04:21] you know to them and ultimately get me
+[00:04:24] pretty bad fills just in general.
+[00:04:25] Anyways, it gets worse however. The
+[00:04:27] moment the marks the market smells
+[00:04:29] urgency, the market the like like
+[00:04:31] basically the other people figure out,
+[00:04:33] oh [&nbsp;__&nbsp;] someone's trying to get filled
+[00:04:34] on a big order, like a big buyer who has
+[00:04:37] to finish getting filled, everyone
+[00:04:39] re-prices ahead of you. Sellers pull
+[00:04:41] back, algos will front run, your urgency
+[00:04:43] is everyone else's payday. And look,
+[00:04:45] these things, they happen faster than
+[00:04:47] you can react because they're pretty
+[00:04:48] much all done by bots and algos anyways.
+[00:04:50] You know, it's a lot of people just kind
+[00:04:51] of taking advantage of each other.
+[00:04:52] Anyways, back into our presentation
+[00:04:53] right here. Let's go over the whale tax
+[00:04:56] or like I said, slippage. So,
+[00:04:58] the cost has a name which is again
+[00:05:01] slippage. The gap between the price you
+[00:05:02] saw in the average price you actually
+[00:05:04] paid to get filled. For you, that's
+[00:05:07] probably fraction of a percent if
+[00:05:08] anything at all. It's annoying, but it's
+[00:05:10] not going to like ruin your day. But if
+[00:05:13] you're dealing with big size, millions
+[00:05:14] and millions and millions and millions
+[00:05:16] of dollars, in some cases even billions,
+[00:05:18] that can be ruinous of course. Millions
+[00:05:20] are going to evaporate before the
+[00:05:21] position even exists. So,
+[00:05:23] &gt;&gt; [laughter]
+[00:05:23] &gt;&gt; you're purely I mean, you you are
+[00:05:25] shooting yourself in the foot if you
+[00:05:27] market order, you know, on a humongous
+[00:05:28] order like that. You are ultimately just
+[00:05:30] giving away such needless money. And
+[00:05:32] here is why this number runs the whole
+[00:05:34] episode as well because every tool
+[00:05:36] you're about to see, the slicing, the
+[00:05:37] hiding, the hunting, these all exist
+[00:05:40] to shrink like this one number
+[00:05:42] basically. Execution is a profession
+[00:05:45] because slippage is a tax. That is a
+[00:05:47] really, really good way to conceptualize
+[00:05:49] this whole concept. And the whales hire
+[00:05:51] the best accounts in the world to deal
+[00:05:53] with this, too. Anyways, like I said,
+[00:05:55] these are things that most people just
+[00:05:56] don't even think about at all. But, like
+[00:05:59] I said, this is for market nerds, which
+[00:06:02] perhaps you are. Anyways,
+[00:06:04] tool number one is slicing. Let me just
+[00:06:06] run this animation again. So, you never
+[00:06:09] send the 100 million as one order, of
+[00:06:11] course. You can send it as thousands of
+[00:06:13] small ones. That is
+[00:06:15] the most common sort of tactic that big
+[00:06:18] accounts will use. You'll have
+[00:06:19] effectively one parent and thousands of
+[00:06:21] children, you know, spread across hours
+[00:06:23] or days. The two famous recipes here, in
+[00:06:26] plain language, are going to be TWAP,
+[00:06:27] which is time-weighted average price.
+[00:06:30] And that is effectively you are going to
+[00:06:32] bid, bid, bid, or market buy, market
+[00:06:34] buy, market buy small amounts at some
+[00:06:37] sort of a regular time interval. It
+[00:06:39] might be every second, it might be every
+[00:06:40] five minutes, might be every hour, might
+[00:06:41] be every day, whatever, something like
+[00:06:43] that. Again, time-weighted average
+[00:06:45] price. Um,
+[00:06:47] now, the next one is going to be
+[00:06:48] volume-weighted average price, VWAP,
+[00:06:51] VWAP. It's also an indicator by the same
+[00:06:53] name, as well. Don't, you know, get
+[00:06:54] these two things confused. They are They
+[00:06:57] have literally the exact same name, but
+[00:06:59] but they are different concepts here.
+[00:07:01] Anyways, volume-weighted average price.
+[00:07:03] So, that is where the slices are sized
+[00:07:05] to where the market's volume already
+[00:07:07] lives. So, you're buying hides inside
+[00:07:09] everyone else's activity. This one, I
+[00:07:11] think, is a little more common. TWAP got
+[00:07:13] a lot more popularized in the last,
+[00:07:15] like, I don't know, five years or so,
+[00:07:16] but VWAP is the one that I've always
+[00:07:19] been a lot more familiar with. Again,
+[00:07:20] being on the other side of things. I
+[00:07:21] used to be a market maker authorized
+[00:07:22] trader, so I actually got to respond and
+[00:07:24] be, you know, in in the middle of open
+[00:07:26] outcry. So, yes, I've actually seen
+[00:07:28] these things go down, and that seemed to
+[00:07:30] be a little bit more common, again. But,
+[00:07:33] you know, this was like ancient times
+[00:07:34] now. I mean,
+[00:07:35] &gt;&gt; [laughter]
+[00:07:35] &gt;&gt; this was like almost 10 years ago now
+[00:07:37] since I've been doing that. So, notice
+[00:07:38] what both of these are doing, both TWAP
+[00:07:41] and VWAP, Making a hundred million
+[00:07:43] dollars look like noise or just
+[00:07:46] basically trying to hide it in a way.
+[00:07:47] Each child that they, you know, each
+[00:07:49] order effectively, each child is too
+[00:07:51] small to move anything, too regular to
+[00:07:54] look urgent as well, and by the time the
+[00:07:56] tape's done printing, the position
+[00:07:57] exists and almost nobody saw it built
+[00:07:59] and they're not going to incur slippage
+[00:08:00] like that. They're going to get their
+[00:08:01] prices that they want and ultimately
+[00:08:04] it's like a stealth way of getting
+[00:08:05] filled which, look, if you are a big
+[00:08:07] account, what do you like what would you
+[00:08:08] do? Of course, you're going to employ
+[00:08:10] some sort of tactics like this. So,
+[00:08:11] let's go into our next slide right here.
+[00:08:14] And let's go over the tide of basically
+[00:08:16] how money moves. So, now watch what
+[00:08:18] slicing looks like from your side of the
+[00:08:19] screen. Let me just run this animation
+[00:08:21] one more time. Boom.
+[00:08:23] Here's a chart. A range sideways boring,
+[00:08:25] of course, we all know this. The kind of
+[00:08:27] chart you scroll past without a second
+[00:08:28] thought or, you know, if you are looking
+[00:08:29] at it, you're probably just tearing your
+[00:08:31] hair out cuz you are extremely uh
+[00:08:33] extremely not stimulated, I'll put it
+[00:08:35] that way. Anyways,
+[00:08:36] but here's what you can't see. Under
+[00:08:38] that flat dead-looking price, that nice
+[00:08:40] little range, there's a position bar
+[00:08:42] filling. Day one, day two, day five, day
+[00:08:45] ten, day, you know, this this thing can
+[00:08:46] go on for months. You've seen ranges
+[00:08:48] that go on for months, especially in
+[00:08:49] Bitcoin and traditional markets even
+[00:08:50] longer as well, too. I mean, you've seen
+[00:08:52] yearly ranges. Anyways, the same patient
+[00:08:55] buying absorbs everything sellers throw
+[00:08:57] at it is what's typically going on here
+[00:08:59] if this is going to be a support range
+[00:09:00] on, you know, on the low side. Um now,
+[00:09:04] uh these people are not going to chase,
+[00:09:05] they're not going to spike. They are
+[00:09:06] going to effectively hold that range
+[00:09:08] flat on purpose. They are not in a hurry
+[00:09:11] because again, they don't want to let
+[00:09:12] you know that they are urgent because,
+[00:09:14] well, in this case, they're probably
+[00:09:15] just not urgent. Flat is the whole
+[00:09:16] point. Flat means the tax isn't being
+[00:09:19] paid, that slippage tax. Then one day,
+[00:09:22] of course, what happens? The range
+[00:09:24] breaks. Everyone calls it sudden and you
+[00:09:26] know better after, you know,
+[00:09:27] understanding a little bit of this going
+[00:09:29] on here.
+[00:09:30] &gt;&gt; [snorts]
+[00:09:31] &gt;&gt; And of course, nothing about it was
+[00:09:33] sudden. The buying happened weeks ago.
+[00:09:35] That's what the whole range was about.
+[00:09:37] That is effectively accumulation.
+[00:09:40] So, I don't want you to think of
+[00:09:41] accumulation as just like one [&nbsp;__&nbsp;]
+[00:09:43] candle, if you will. It's more so like a
+[00:09:45] tide. It's a tide of action. Anyways, by
+[00:09:48] the way, real quick, this is of course
+[00:09:50] the cringey part of the video where I
+[00:09:52] will humbly request that if you do find
+[00:09:53] this content valuable and you want more
+[00:09:55] like it, more importantly, hit the like
+[00:09:56] button, hit the subscribe button. It'll
+[00:09:57] get more of this content into your inbox
+[00:09:59] at the most opportune time when they
+[00:10:01] actually release. Anyways, let's go into
+[00:10:03] of course Actually, maybe I tell one of
+[00:10:06] my old stories right now. So,
+[00:10:07] back when uh back when I actually was a
+[00:10:10] market maker authorized trader on the on
+[00:10:11] the floor of the New York Stock Exchange
+[00:10:12] ARCA,
+[00:10:13] uh there would be regular sort of
+[00:10:15] customers that would come in through the
+[00:10:17] through the brokers on the floor who
+[00:10:18] would be consistently putting in orders.
+[00:10:20] And I didn't really understand what the
+[00:10:21] hell they were doing at first because
+[00:10:23] they would come at us like over the
+[00:10:25] course of days and sometimes weeks with
+[00:10:28] very similar orders, very similar
+[00:10:29] orders, you know, just it seemed super
+[00:10:31] repetitive to me and I didn't understand
+[00:10:33] why would you continue to do that. And
+[00:10:35] of course, I didn't understand because I
+[00:10:36] didn't think about the issue. These
+[00:10:38] people were asking for astronomical
+[00:10:40] levels of size. Like basically, they
+[00:10:42] were trying to do, you know, 10,000 all
+[00:10:45] the way up to 100,000 uh options
+[00:10:47] contracts in one you know, in one go,
+[00:10:51] but they would spread this out over
+[00:10:52] time. So, sorry, actually not in one go,
+[00:10:54] but they would they they they they they
+[00:10:56] would go for that as a total, but they
+[00:10:57] would continue to do like the same
+[00:10:59] trade, same trade, same trade, and they
+[00:11:00] would offer, you know, like 10,000
+[00:11:02] contracts at a time, and they would
+[00:11:03] build up these positions like 100,000
+[00:11:06] uh over the course of a few weeks. And
+[00:11:08] to me, I was like, why are like did this
+[00:11:10] person just, you know,
+[00:11:12] &gt;&gt; [laughter]
+[00:11:12] &gt;&gt; is is it is this person like not
+[00:11:14] understand that they already got filled
+[00:11:15] on this or something? No, it's like they
+[00:11:17] were actually just working with such
+[00:11:18] bigger magnitudes of order than myself
+[00:11:21] that I couldn't conceptualize that until
+[00:11:23] I had the the experience of letting go
+[00:11:26] of my ego for a moment and just saying,
+[00:11:28] "Hey, uh mentor, um
+[00:11:31] what the [&nbsp;__&nbsp;] going on with these
+[00:11:32] guys? Are they Do they just not like
+[00:11:33] realize that they got filled before or
+[00:11:35] like what's going [laughter] on here?
+[00:11:36] I've seen the same order come through
+[00:11:38] now. You You've been taking the same
+[00:11:39] trade now uh multiple times in the past
+[00:11:41] couple weeks. And he's And then he looks
+[00:11:43] at me and it's like, "Duh. Uh you can't
+[00:11:46] just get filled on 200,000 contracts of
+[00:11:49] options
+[00:11:50] um right now, especially like super out
+[00:11:52] of the money ones, at a decent price.
+[00:11:55] You got to spread it out over time so
+[00:11:56] that the market can absorb it." It's
+[00:11:57] like, "Oh, duh." Anyways, let's go into
+[00:11:59] our next slide right here.
+[00:12:01] Anyways, okay, yes. All right. So, tool
+[00:12:03] number two is going to be hiding
+[00:12:04] effectively. Um hiding is something that
+[00:12:07] you actually uh met last episode. That
+[00:12:09] was the iceberg order. Um that was the
+[00:12:12] level that effectively keeps refilling
+[00:12:13] but only showing a very small amount of
+[00:12:15] size. Today, you're going to own this
+[00:12:18] one. So, display a ba- basically just a
+[00:12:21] sliver of your order and hide the mass.
+[00:12:24] Let the market come to you. That is your
+[00:12:27] iceberg order. And that last part is the
+[00:12:29] key to the whole sweep flip as well
+[00:12:31] because the whale would rather rest than
+[00:12:33] chase, of course. A resting order or
+[00:12:36] resting limit order, should say, doesn't
+[00:12:38] pay the spread. Now, we've already gone
+[00:12:39] over that in episode one. Remember the
+[00:12:41] toll booths? Yes, that was effectively
+[00:12:43] the same concept. The resting side is
+[00:12:45] going to collect it. Patience isn't just
+[00:12:47] safer at size. Patience is literally the
+[00:12:49] paid side of every trade. If you're
+[00:12:52] going to get market rebates, of course,
+[00:12:53] as well. Or you just get lower fees,
+[00:12:55] which is the case for most exchanges at
+[00:12:57] this point. But the aggressor, of
+[00:12:59] course, the market order is going to pay
+[00:13:00] the toll. They're going to pay the
+[00:13:01] bigger fee, of course. The whale,
+[00:13:04] whenever possible, is the toll booth.
+[00:13:06] They want to be, again, resting in that
+[00:13:08] way. And I remember I you know, I even
+[00:13:10] I've even had an example of this myself.
+[00:13:12] Even though we weren't trading like a
+[00:13:13] humongous portfolio between myself and
+[00:13:15] my mentor. Um but he would ask me to do
+[00:13:18] uh iceberg orders at certain you know,
+[00:13:20] at certain times, especially when the
+[00:13:22] market was kind of dull. And he
+[00:13:25] effectively would see like these other
+[00:13:27] big players um you know accumulating at
+[00:13:29] certain levels. Well, he would start to
+[00:13:31] tell me
+[00:13:32] you might want to put a little bit of an
+[00:13:33] order in right there, you know, play
+[00:13:34] along with them. And the better way to
+[00:13:36] do that is with an iceberg order, not to
+[00:13:38] show your size, not to show effectively
+[00:13:40] what you want to do, but to hide it, you
+[00:13:42] know, operate operate in the showers,
+[00:13:44] you know, a little showers shadows,
+[00:13:45] [laughter]
+[00:13:46] you know, stealth mode basically. But
+[00:13:49] yes, uh that was a tactic even though we
+[00:13:51] probably didn't have to do it. Uh it was
+[00:13:53] it was in hindsight a really good
+[00:13:55] lesson. Anyways, number uh tool number
+[00:13:57] three I should say is hunting. So,
+[00:14:00] uh
+[00:14:00] &gt;&gt; [sighs]
+[00:14:00] &gt;&gt; this one again, you probably already
+[00:14:02] know or you probably already deduce what
+[00:14:05] it is. You spent a whole episode being
+[00:14:07] angry about it as well by the way
+[00:14:09] previously. When patience won't work,
+[00:14:11] when the fill is needed now, there is
+[00:14:13] exactly one place enormous liquidity
+[00:14:16] exists on demand and that is of course
+[00:14:18] the pools of liquidity pools which we've
+[00:14:20] gone over in previous episodes. You
+[00:14:21] drive price into those into the stops,
+[00:14:23] you harvest the for- the force orders
+[00:14:25] that come alongside that, and then you
+[00:14:27] fill in one violent heartbeat. That uh
+[00:14:30] sorry, episode four was more or less on
+[00:14:33] that exact topic. So, the hunt was
+[00:14:35] execution all along. Remember, those
+[00:14:38] people are engineering liquidity for
+[00:14:40] themselves is the right way to think
+[00:14:41] about it. And the impatient tool in the
+[00:14:43] same toolbox actually can be incredibly
+[00:14:46] uh useful in this regard. So, here's the
+[00:14:48] whale's complete kit. Remember, slice
+[00:14:50] when the time is cheap, hide when
+[00:14:53] patience can be digested when you're in
+[00:14:54] a nice easy range, hunt when the fill
+[00:14:57] can't wait. Now, you have three tools,
+[00:14:59] and of course, the goal here is just,
+[00:15:01] you know, move millions without paying
+[00:15:03] that massive marketing market and
+[00:15:05] slippage tax, market fee tax and
+[00:15:07] slippage tax. Again, you're getting hit
+[00:15:08] on both sides. First, you pay a higher
+[00:15:10] market fee, then you pay, you know,
+[00:15:11] slippage, so even more. You're just
+[00:15:13] compounding the losses basically or
+[00:15:15] just, you know, giving up money
+[00:15:16] unnecessarily. So, patience can
+[00:15:18] absolutely massively massively increase
+[00:15:21] your P&amp;L, especially when dealing with
+[00:15:22] bigger orders, and especially over time
+[00:15:24] as well. Let's Let's take another gander
+[00:15:26] at the order book right now. I just want
+[00:15:27] you to understand what's going on here.
+[00:15:30] So, I am going to change the um the size
+[00:15:34] like uh conglomerate here to not just 1
+[00:15:36] cent, but I'm going to change it to
+[00:15:37] $100.
+[00:15:39] So, that means you're going to see the
+[00:15:40] size offered at every $100 in the order
+[00:15:43] book. And when you look at it from this
+[00:15:45] lens, you can see at 79,000 um 700 right
+[00:15:49] here, there's only 2 and 1/2 Bitcoin
+[00:15:51] offered for a whole $100 between there
+[00:15:53] and 78 uh sorry, 79,800. Through that
+[00:15:56] $100 spread, you can only get filled at
+[00:15:58] market for now just less than 2 Bitcoin.
+[00:16:00] So, again, if you are dealing with
+[00:16:02] billions and billions, or even hundreds
+[00:16:03] of millions, or even just millions, uh
+[00:16:05] even just millions, right? Um
+[00:16:07] you know, you can see
+[00:16:09] just marketing into that position, it is
+[00:16:11] going to absolutely decapitate you. I
+[00:16:13] mean, realistically, in order to get If
+[00:16:15] you want to get filled on let's call it,
+[00:16:18] you know,
+[00:16:19] close to 40 Bitcoin here, you're going
+[00:16:21] to have to incur $200 of slippage plus
+[00:16:24] market fees. So, you're going to not be
+[00:16:26] buying here at 79,683 cuz that is the
+[00:16:28] current price. You're going to be buying
+[00:16:30] closer to like 79,800.
+[00:16:32] That changes the game significantly, of
+[00:16:34] course. And And of course, you know, if
+[00:16:36] you want to be a seller, you know, same
+[00:16:37] thing to the downside. You only got
+[00:16:38] about uh what, 23 Bitcoin offered for
+[00:16:41] the next $100 uh down to 79,600.
+[00:16:45] You know, yeah, there's There's going to
+[00:16:46] be sometimes when you need to get in or
+[00:16:48] or get out, and there's just not the
+[00:16:50] size available to you there. Anyways,
+[00:16:52] moving on from there,
+[00:16:54] let's go to your actual advantage here,
+[00:16:56] because you do have a You do have an
+[00:16:58] advantage, in fact. So, this is the part
+[00:17:01] of the episode that I think is the most
+[00:17:02] important, because after six episodes of
+[00:17:03] what the big players can do, here is
+[00:17:06] what you can do that they physically
+[00:17:08] cannot. You can get fills instantly.
+[00:17:10] Again, I'm assuming that you're probably
+[00:17:11] not dealing with hundreds of millions of
+[00:17:13] dollars. If you are,
+[00:17:14] well, you should be paying attention to
+[00:17:15] the previous tips because those are very
+[00:17:17] very useful for you. Anyways,
+[00:17:19] uh like I said, if you're just regular
+[00:17:21] pleb retail like myself, you can get
+[00:17:23] filled more or less instantly at the
+[00:17:25] price on your screen with very little to
+[00:17:27] zero market impact. The whale, however,
+[00:17:30] needs 3 weeks and a math department for
+[00:17:31] that. And you have no deadline, of
+[00:17:34] course, too. No fund mandate, no like
+[00:17:36] quarter end, no client screaming. You
+[00:17:39] can wait for your level more or less for
+[00:17:41] forever if you really want, and you are
+[00:17:43] basically invisible. Nobody's going to
+[00:17:45] front run nobody hunts your entry,
+[00:17:47] nobody knows you exist. And I know this
+[00:17:49] goes contra to what many people think uh
+[00:17:51] is going on behind the scenes, but I can
+[00:17:53] assure you
+[00:17:54] if you're not dealing with, you know, at
+[00:17:55] least like $50 million, this is not
+[00:17:58] enough for you pretty much at all
+[00:18:00] whatsoever. Um anyways,
+[00:18:02] every constraint this episode has showed
+[00:18:04] you, you don't have. Small is your is
+[00:18:07] not your weakness. Small is, in your
+[00:18:09] case, a superpower. If you stop trading
+[00:18:11] like you have the, you know, the whale's
+[00:18:13] position, you are [clears throat] going
+[00:18:14] to be in a strong position there. So,
+[00:18:17] again, instant plus invisible, no
+[00:18:19] deadline, and their constraints is not
+[00:18:22] equal to yours. In fact, quite literally
+[00:18:23] the opposite. So, what does this even
+[00:18:25] mean for you? Well,
+[00:18:27] three upgrades take you out of this
+[00:18:29] seat. One, stop reading every big candle
+[00:18:32] as if the whales are buying. Today, you
+[00:18:34] learned their real work is the quiet
+[00:18:36] part, you know, the tide, not the
+[00:18:38] splash. These are, of course, more
+[00:18:40] semantic arguments here, but yes, many
+[00:18:43] people just they they don't even
+[00:18:44] understand that. Like, look, if you're
+[00:18:46] dealing with big amounts of money,
+[00:18:47] you're not going to be obviously doing
+[00:18:50] that. I mean, what would you do in that
+[00:18:51] situation? What would you do? It's
+[00:18:52] always good question to ask. Anyways,
+[00:18:54] number two, respect the boring range
+[00:18:56] because, especially after a decline, you
+[00:18:58] don't have to trade it. You can just
+[00:19:00] stop dismissing it because flat is where
+[00:19:03] positions get built. And what you should
+[00:19:05] do is you should recognize what those
+[00:19:07] big players are doing because they're
+[00:19:08] the ones who actually do move the
+[00:19:09] markets. And guess what? You can play
+[00:19:11] alongside them.
+[00:19:12] At number three, steal the one habit
+[00:19:14] that scales down perfectly, which is the
+[00:19:16] limit order. Let price come to you at
+[00:19:18] the level you choose. You will have to
+[00:19:20] be a little bit patient, yes, but you'll
+[00:19:22] feel calmer, often better, at lower
+[00:19:24] fees, too. And of course, that's just
+[00:19:27] more more money in your pocket over
+[00:19:28] time. By the way, this is a good chance
+[00:19:29] as well for me to tell you about the
+[00:19:31] Coinbase link in the description below.
+[00:19:32] That one specifically reduces your
+[00:19:34] trading fees even more. For spot
+[00:19:36] trading, it gets rid of 80% of your
+[00:19:37] trading fees, and for derivative
+[00:19:39] trading, it gets rid of 10% of your
+[00:19:40] fees, too. Both for market and limit
+[00:19:42] orders. So again, just more money in
+[00:19:44] your pocket. And Coinbase is probably
+[00:19:46] the best retail exchange, you know, that
+[00:19:48] you can actually go from bank account to
+[00:19:50] Bitcoin at this point. Anyways, moving
+[00:19:52] on from there, let's go over
+[00:19:54] &gt;&gt; [sighs and gasps]
+[00:19:56] &gt;&gt; the locking in.
+[00:19:57] So, the problem is at size, your order
+[00:20:00] is the market, and slippage is the tax
+[00:20:02] on urgency. The toolbox, of course, is
+[00:20:04] slice it into noise. Hide it in icebergs
+[00:20:07] and resting orders. Hunt the pools when
+[00:20:09] it can't wait. And your edge is instant,
+[00:20:11] invisible, deadline-free. The whale
+[00:20:14] would trade his entire amounts
+[00:20:15] department for your fill quality.
+[00:20:17] Because I mean, ultimately, that's just
+[00:20:18] going to add there
+[00:20:19] &gt;&gt; [laughter]
+[00:20:19] &gt;&gt; to there
+[00:20:21] to there to their cost of doing
+[00:20:22] business, of course.
+[00:20:23] So, six episodes in now, you now know
+[00:20:25] how price moves, where it's drawn, who
+[00:20:27] pushes it, and how real money gets in.
+[00:20:30] Next week, we're going to go over what
+[00:20:31] happens when nobody gets to choose,
+[00:20:33] which is actually going to be an
+[00:20:35] incredibly fun one. Anyways, your
+[00:20:36] homework before we move on, of course,
+[00:20:38] this one might save you some money
+[00:20:40] forever, by the way, too. This week, for
+[00:20:41] one trade you were going to make
+[00:20:43] anyways, any size, any asset, use a
+[00:20:45] limit order instead of a market order.
+[00:20:47] Pick your price, place it, walk away,
+[00:20:48] then look at the confirmation screen,
+[00:20:50] and comment two things. Did it fill at
+[00:20:52] your price or better? And what fee rate
+[00:20:55] did you see versus what the taker side
+[00:20:57] would have paid? The fee line is on your
+[00:21:00] screen right now, and most people have
+[00:21:01] never once read it. I mean, most people
+[00:21:03] don't even bother reading the contract
+[00:21:04] specs for what they're actually trading,
+[00:21:06] which is
+[00:21:07] sad and hilarious. Uh Alex quad Alex
+[00:21:10] grade the first 50 fills, patient or
+[00:21:12] panicked, and the best maker discipline
+[00:21:14] gets a shout out next episode. Anyways,
+[00:21:16] everything in this episode assumed one
+[00:21:18] luxury, the players choose when to
+[00:21:20] trade, the whale picks his moment, you
+[00:21:22] pick your level. Next week that luxury
+[00:21:24] dies. Leverage. When a leverage position
+[00:21:26] hits its liquidation price, a computer
+[00:21:28] close it by contract at market
+[00:21:30] immediately. No patience, no slicing, no
+[00:21:33] choice. And those forced exits cluster
+[00:21:36] at levels everyone can calculate, which
+[00:21:38] means one dip can trigger a chain
+[00:21:40] reaction, the liquidation cascade. Why
+[00:21:43] crypto can drop 10% in minutes, and what
+[00:21:45] funny rates and open interest tells you
+[00:21:47] about that about when the market is
+[00:21:49] loaded for one as well. So you can
+[00:21:50] actually kind of have like, you know,
+[00:21:52] guestimate when this is more likely. And
+[00:21:54] who is also calmly buying while everyone
+[00:21:56] else is forced to sell. That's episode
+[00:21:58] 7, the cascade, and I will see you in
+[00:21:59] there. Take care and much love.

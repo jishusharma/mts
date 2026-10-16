@@ -296,6 +296,39 @@ class TestConcurrentGate(unittest.TestCase):
                 os.environ["CI"] = old
 
 
+class TestCiAnnotation(unittest.TestCase):
+    """2026-10-16: job logs need a login even on a public repo, so a red ubuntu job could not be read by any session; an ::error
+    annotation is public through the check-runs API."""
+
+    def setUp(self):
+        self.old = os.environ.get("GITHUB_ACTIONS")
+
+    def tearDown(self):
+        os.environ.pop("GITHUB_ACTIONS", None)
+        if self.old is not None:
+            os.environ["GITHUB_ACTIONS"] = self.old
+
+    def test_off_actions_there_is_no_annotation(self):
+        os.environ.pop("GITHUB_ACTIONS", None)
+        self.assertIsNone(rat.ci_annotation("4f", "d", "FAIL: x"))
+        self.assertFalse(any(ln.startswith("::error") for ln in rat.format_step("4f", "d", "c", False, "FAIL: x", 1.0)))
+
+    def test_failed_step_on_actions_emits_one_escaped_error_line_from_the_first_failure(self):
+        os.environ["GITHUB_ACTIONS"] = "true"
+        out = "noise 1\nnoise 2\nFAIL: test_a (m.T)\nAssertionError: 100% wrong\n"
+        lines = rat.format_step("4f", "Pytest layer tests", "c", False, out, 1.0)
+        notes = [ln for ln in lines if ln.startswith("::error ")]
+        self.assertEqual(len(notes), 1)
+        self.assertIn("title=Step 4f FAIL", notes[0])
+        self.assertIn("100%25 wrong", notes[0])
+        self.assertNotIn("noise", notes[0])
+        self.assertNotIn("\n", notes[0])
+
+    def test_passing_step_has_no_annotation(self):
+        os.environ["GITHUB_ACTIONS"] = "true"
+        self.assertFalse(any(ln.startswith("::error") for ln in rat.format_step("4f", "d", "c", True, "all ok", 1.0)))
+
+
 class TestExtraTestsRunConcurrently(unittest.TestCase):
     def test_files_overlap_each_gets_own_basetemp_and_failures_keep_list_order(self):
         import threading

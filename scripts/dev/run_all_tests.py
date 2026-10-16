@@ -119,6 +119,18 @@ def exec_step(cmd, cwd=None):
     return result.returncode == 0, result.stdout + result.stderr
 
 
+def ci_annotation(num, description, output, limit=3000):
+    """A GitHub Actions ::error line for a failed step, or None off Actions. Job logs need a login even on a public repo (2026-10-16: the
+    ubuntu job failed three times and no session could read why); annotations are public through the check-runs API."""
+    if not os.environ.get("GITHUB_ACTIONS"):
+        return None
+    lines = output.splitlines()
+    first = next((i for i, ln in enumerate(lines) if ln.lstrip().startswith(("FAIL", "ERROR", "E  ", "Traceback"))), max(len(lines) - 25, 0))
+    body = "\n".join(lines[first:])[-limit:]
+    body = body.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+    return f"::error title=Step {num} FAIL::{description} | {body}"
+
+
 def format_step(num, description, cmd_text, ok, output, elapsed, progress="", tail=15):
     """The block one finished step prints. tail = how many output lines a failure shows (None = all; CI always shows all)."""
     lines = [f"\n[Step {num}] {description}", f"  Command: {cmd_text}"]
@@ -131,6 +143,9 @@ def format_step(num, description, cmd_text, ok, output, elapsed, progress="", ta
     if not ok and out:
         lines.append("  Last output:")
         lines += [f"    {ln}" for ln in (out if (os.environ.get("CI") or tail is None) else out[-tail:])]
+        note = ci_annotation(num, description, output)
+        if note:
+            lines.append(note)
     elif ok:
         lines += [f"  {ln}" for ln in out if ln.startswith("WARN")][:5]   # a passing step can still warn (wiring NO-READER)
     return lines

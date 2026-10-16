@@ -1,0 +1,597 @@
+# Video ID: hNfjyrJEytI
+# Title: Most Traders Do Technical Analysis in the Wrong Order. Here's the Fix.
+# Source: yt_dlp en-orig auto captions, fetched 2026-10-16
+# ---
+[00:00:00] I can tell you directly they don't blow
+[00:00:03] up the same way that retail does. It's
+[00:00:05] not because they have like better
+[00:00:06] indicators. I mean in some cases they do
+[00:00:08] have better uh studies and whatnot and
+[00:00:10] indicators but it's because they have
+[00:00:11] order. They basically have what we refer
+[00:00:13] to as a strategy. You check things in a
+[00:00:16] sequence and the sequence is the edge
+[00:00:19] that whenever I'm considering to make a
+[00:00:21] trade or a new investment decision,
+[00:00:22] there are four layers of a framework, a
+[00:00:24] very specific framework that I go
+[00:00:26] through before ever risking a single
+[00:00:28] dollar. This framework can work on
+[00:00:30] Bitcoin. It can work on gold, other
+[00:00:32] commodities like oil and of course
+[00:00:34] traditional markets as well. Because
+[00:00:35] honestly, this framework was developed
+[00:00:37] when I was a market maker authorized
+[00:00:39] trader on the floor of New York exchange
+[00:00:40] ARCA, which is naturally traditional
+[00:00:43] markets, meaning that I learned this and
+[00:00:44] developed this while trading traditional
+[00:00:46] markets and then I appropriated it to
+[00:00:47] Bitcoin. And you can take the same sort
+[00:00:49] of framework as well and appropriate it
+[00:00:51] to whatever you want. You might have to
+[00:00:52] change a few settings here and there.
+[00:00:53] That is expected, but the overall
+[00:00:55] framework will certainly hold. Anyways,
+[00:00:57] before we go any further, but here's the
+[00:00:58] thing. Most people, and I'm speaking
+[00:01:00] from experience here, because honestly,
+[00:01:02] all of these mistakes I've made myself.
+[00:01:04] That's how I know that they exist.
+[00:01:05] [laughter] I mean, just just to be just
+[00:01:07] to be [&nbsp;__&nbsp;] blunt. Most people just
+[00:01:08] check one thing. They have a bunch of,
+[00:01:10] you know, indicators on the screen. And
+[00:01:11] then when one starts to, you know, blink
+[00:01:13] and flash a signal, they think, "Oh, I
+[00:01:16] should go long here because the RSI is
+[00:01:18] below 30 and I read on Investopedia that
+[00:01:20] that means it's oversold and thus it
+[00:01:21] must go up." And obviously that doesn't
+[00:01:23] [&nbsp;__&nbsp;] work because if it did we'd all
+[00:01:24] have figured that out many many aons ago
+[00:01:26] and we'd all be setting our own bots on
+[00:01:29] that and of course we would all be
+[00:01:31] quadrillion million
+[00:01:33] quad million billion jillionaires and
+[00:01:37] that's not a real word because that's
+[00:01:38] also not a real concept. It doesn't
+[00:01:40] happen obviously. Um, but there is a
+[00:01:43] framework that you can employ to
+[00:01:44] increase your probabilistic outlook
+[00:01:46] whenever you take a trade or investment
+[00:01:48] decision, and that's what I want to be
+[00:01:50] going over in detail on this video.
+[00:01:52] Anyways, the and also just just an
+[00:01:55] aside, I've seen institutions before,
+[00:01:57] and the first layer, the most important
+[00:01:59] layer, absolutely in my opinion, and if
+[00:02:01] you've been watching my channel for any
+[00:02:02] amount of time, you already know what
+[00:02:03] I'm going with, but it is absolutely
+[00:02:05] 100% trend. the trend is your friend
+[00:02:07] until the end of the trend, in which
+[00:02:09] case you make a new friend with a new
+[00:02:10] trend or at least you should hope to or
+[00:02:13] recognize that as soon as possible
+[00:02:15] because that is where you can make a ton
+[00:02:18] of money. Anyways, the reason why it's
+[00:02:20] really important to understand what the
+[00:02:21] trend is is because the trend is
+[00:02:24] effectively going to give you a higher
+[00:02:26] probability in terms of what direction
+[00:02:29] price is going to move in. Like I said,
+[00:02:31] the trend is your friend until the end
+[00:02:32] of the trend. Basically, a trend in
+[00:02:34] motion does not stop until acted upon by
+[00:02:37] another motion or something like that.
+[00:02:39] It's it's one of those old like
+[00:02:40] Michelangelo quotes or some [&nbsp;__&nbsp;] like
+[00:02:41] that. My mentor used to always say this
+[00:02:43] and it used to really piss me off cuz I
+[00:02:44] didn't like truly understand it, but now
+[00:02:46] I get it. Trends basically continue
+[00:02:48] until they don't. And so to follow a
+[00:02:50] trend is almost always going to be a
+[00:02:53] good idea. Now, trends are specific to
+[00:02:55] their time frames. Naturally, a weekly
+[00:02:57] time frame like what we're looking at
+[00:02:58] right here, which has a very obvious
+[00:02:59] downtrend, is going to have a or can
+[00:03:01] have sometimes they do a line, but can
+[00:03:03] have uh a different trend than a 5minute
+[00:03:06] time frame. Why? Because you have like
+[00:03:08] hundreds of 5minut, you know, intervals
+[00:03:10] that go in one daily candle. So, you can
+[00:03:12] see right here, five-minute time frame
+[00:03:13] is very much to the upside. Weekly time
+[00:03:15] frame is very much to the downside since
+[00:03:17] October of last year. That is okay.
+[00:03:20] Again, you choose a trend of whatever
+[00:03:22] time frame that you are on and you are,
+[00:03:24] you know, want to trade. Now, of course,
+[00:03:26] I should also say that there is a
+[00:03:28] hierarchy in this because higher term
+[00:03:29] time frames dominate lower term time
+[00:03:32] frames. So, the reason why you kind of
+[00:03:33] want to know what the dominant time
+[00:03:35] frame trend is, like a weekly, in this
+[00:03:37] case, it is to the downside is that your
+[00:03:38] fiveminute trend while it is in an
+[00:03:40] uptren while it is in an uptrend right
+[00:03:41] here, it it's liable to fail at any
+[00:03:44] moment because the weekly trend can just
+[00:03:46] force things in that direction. It is
+[00:03:48] stronger. In other words, it is stronger
+[00:03:50] and it takes precedence. Anyways, when
+[00:03:53] it comes to trend, honestly, you don't
+[00:03:54] need any indicators. You can use
+[00:03:55] indicators if you want. You can use
+[00:03:56] moving average. You can look at like
+[00:03:58] five versus 21 EMA cross. You can look
+[00:03:59] at a 50 55 and a 21 or a 50 and a 200.
+[00:04:02] All these things are fine and and well
+[00:04:04] and dandy. And and there's many other
+[00:04:05] combinations as well. We go over these
+[00:04:07] in the Crown Trading Bible, but that's
+[00:04:08] that's for like very very advanced
+[00:04:10] people want to go very advanced, I would
+[00:04:11] I should say. Um, but honestly, you
+[00:04:14] don't need an indicator. you need two
+[00:04:16] [&nbsp;__&nbsp;] eyeballs or [&nbsp;__&nbsp;] you only need
+[00:04:18] one eyeball, honestly. Or if you have
+[00:04:20] like braille on your screen, I guess
+[00:04:21] maybe you could figure out that way. I
+[00:04:23] don't know. Like it just go down, I
+[00:04:24] guess. [laughter]
+[00:04:26] Something like that. Anyways, uh it
+[00:04:28] should be quite obvious. And if it's not
+[00:04:30] obvious, you're probably looking at a
+[00:04:31] nothing burger, in which case you should
+[00:04:34] wait for the obvious thing. In this
+[00:04:36] case, if I show you this, if I showed
+[00:04:38] this to my 4-year-old niece, she should
+[00:04:40] be able to figure it out very quickly.
+[00:04:42] You have a high, you have a low, you
+[00:04:44] have a lower high and a lower low. If we
+[00:04:46] were to draw these out, I'll just make
+[00:04:47] them very uh succinct right here. High,
+[00:04:50] low, lower high, lower low. What is
+[00:04:52] this? A downtrend. And what's this over
+[00:04:54] here? Probably another lower high. Um,
+[00:04:56] of which probably should be getting
+[00:04:58] ready for some more downside. So, we
+[00:04:59] should expect that price is going to
+[00:05:01] continue to the downside here,
+[00:05:04] fulfilling this trend. That is the bias
+[00:05:05] at least. It is possible at some point
+[00:05:07] it puts in a higher low. typically how
+[00:05:09] trends reverse first if it's going to be
+[00:05:10] a downtrend to an uptrend but for right
+[00:05:12] now it is still in a downtrending
+[00:05:14] fashion. The next question however comes
+[00:05:17] off the back of trend. If you know which
+[00:05:20] direction is more likely
+[00:05:22] then we now need to understand when it
+[00:05:25] is likely to move in that direction and
+[00:05:27] for that we can reference a volatility
+[00:05:30] indicator. Now you don't need to use the
+[00:05:31] same one that I'm using but I love the
+[00:05:33] BBWP indicator. It is freely available
+[00:05:35] on Trading View. It looks like this. All
+[00:05:37] you need to do is go over here to the
+[00:05:38] Trading View uh library, type in BBWP.
+[00:05:40] It's the first one by the caretaker.
+[00:05:42] He's a good friend, by the way, and this
+[00:05:43] guy is just so [&nbsp;__&nbsp;] meticulous and
+[00:05:44] autistic, and I use this in the in the
+[00:05:47] most in the most uh comforting of ways.
+[00:05:50] Um, you know, this guy, he's truly
+[00:05:52] amazing. Uh, he's been recognized by
+[00:05:53] Trading View, and basically, this is my
+[00:05:56] preferred volatility indicator. But
+[00:05:58] look, if you wanted to use an ATR, for
+[00:05:59] example, that's fine. Or regular
+[00:06:01] Ballinger bands, that's fine. All this
+[00:06:03] stuff is well and dandy. Pick one that
+[00:06:05] speaks to you, that you understand well,
+[00:06:06] stick with it, learn it well, and then
+[00:06:08] appropriate it in the ways that you so
+[00:06:10] like. But the reason why I love this one
+[00:06:12] in particular is because it is actually
+[00:06:14] a volatility and statistics indicator
+[00:06:17] baked into one. It's actually the name
+[00:06:18] stands for Ballinger band with
+[00:06:20] percentile. So you're getting a sort of
+[00:06:21] statistical um breakdown as to how high
+[00:06:25] or low current volatility is relative to
+[00:06:28] the look back period or just the past
+[00:06:29] price action. So in this case when
+[00:06:32] volatility is very very low or I should
+[00:06:34] first explain volatility is mean
+[00:06:36] reverting. So when volatility is very
+[00:06:38] high we can always assume that it is a
+[00:06:41] mathematical certainty volatility will
+[00:06:43] come down. However and just like that on
+[00:06:46] the other side when volatility is very
+[00:06:48] very low meaning that price is very
+[00:06:50] boring very tight very close ranges you
+[00:06:52] are very likely setting up for another
+[00:06:54] major massive move. That is when you can
+[00:06:56] kind of time these next major legs
+[00:06:58] happening. So in this particular
+[00:07:00] instance right here, we can see that
+[00:07:01] there was very low volatility on the
+[00:07:03] BBWP. Oh, actually you can't see my face
+[00:07:05] right there. There you go. There's very
+[00:07:07] low volatility right here on this sort
+[00:07:09] of high being formed. And once
+[00:07:11] volatility started to expand, price
+[00:07:14] action breaks down, comes down to this
+[00:07:16] next low and you can see volatility
+[00:07:18] spikes up over here, gets quite high.
+[00:07:20] This was 89 percentile and then it forms
+[00:07:22] a low. So when volatility gets very very
+[00:07:24] high, you're probably near or at the end
+[00:07:28] of your current trending move. Meaning
+[00:07:31] that you shouldn't be getting too
+[00:07:32] greedy, you know, shorting in this area
+[00:07:34] right here. Yeah, you might have another
+[00:07:36] short opportunity, but you want to let
+[00:07:37] price action once again form a range,
+[00:07:40] form a structure, and then ideally in
+[00:07:42] this case, if you're going to trade to
+[00:07:43] the downside, form another lower high,
+[00:07:44] which does right here on low volatility.
+[00:07:47] Critical point. Once volatility is very
+[00:07:49] very low and it starts to expand then we
+[00:07:51] have a high probability of a
+[00:07:53] continuation of the current trend and
+[00:07:54] the trend is indeed to the downside.
+[00:07:56] Thus price finds its way down here and
+[00:07:59] once again volatility spikes up on that
+[00:08:01] low letting you know hey this move is
+[00:08:04] very likely done to the downside. Don't
+[00:08:05] need to go don't need to go um any more
+[00:08:07] crazy than that. That is the beauty of
+[00:08:10] understanding volatility. kind of tells
+[00:08:11] you when to expect a breakout move and
+[00:08:15] also when to expect that move to find
+[00:08:17] its final resolution. Now, it doesn't
+[00:08:19] always work perfectly like this. No
+[00:08:21] indicator is perfect, obviously, but
+[00:08:23] these can be incredibly useful for
+[00:08:25] timing. But anyways, from there, we
+[00:08:28] should get into layer three, which is
+[00:08:29] structure. And that is effectively being
+[00:08:31] able to mark off the levels that
+[00:08:33] actually matter, like support and
+[00:08:34] resistance, and understand, you know, if
+[00:08:37] and when that level flips, basically. So
+[00:08:39] when it comes to supporting resistance,
+[00:08:40] this is a concept that I think most
+[00:08:41] people are very familiar with. But
+[00:08:44] because there's no like dictionary
+[00:08:45] definition of it, I feel like one, it's
+[00:08:48] usually, at least in my opinion, not
+[00:08:50] done properly, and then two, it's also
+[00:08:52] just misinterpreted to begin with. So
+[00:08:54] when we're talking about structure, all
+[00:08:55] we're doing is we're marking off the the
+[00:08:58] range
+[00:09:00] of a current consolidation. So in this
+[00:09:02] case, we have range high and then over
+[00:09:04] here, we have range low. And what this
+[00:09:08] is telling you is potential reversals
+[00:09:11] into an upside breakout or continuation
+[00:09:15] moves into a downside breakdown.
+[00:09:18] Whichever way that price closes above or
+[00:09:21] below this range is likely the next
+[00:09:24] major direction. So in this case, we
+[00:09:26] would have known that even though
+[00:09:28] Bitcoin rallied up here and put a wick
+[00:09:30] above the topside boundary of this
+[00:09:31] range, it did not close above that
+[00:09:34] range. Thus, the structure remains
+[00:09:36] intact. And what does this end up doing?
+[00:09:38] It ends up forming a lower high. And
+[00:09:40] then you get the real breakdown over
+[00:09:42] here with Bitcoin closing below the
+[00:09:44] lower range boundary. And you get your
+[00:09:47] full continuation for another well, I
+[00:09:49] guess this was like another $25,000 to
+[00:09:52] new lows. You get the idea. Generally
+[00:09:55] speaking, former range lows become new
+[00:09:58] range highs. You can see that actually
+[00:09:59] exactly right here. This was your former
+[00:10:01] range low on this particular
+[00:10:03] consolidation here. And what do you
+[00:10:05] know? Bitcoin on the most recent rally
+[00:10:06] popped up relatively close to it and
+[00:10:08] thus far has rejected from it. So still
+[00:10:11] it gets respected over time and you can
+[00:10:13] kind of look at that area as you know a
+[00:10:15] potential lower high area of interest or
+[00:10:17] somewhere around there especially as
+[00:10:18] long as Bitcoin's closing below it.
+[00:10:20] [snorts] Anyways, moving on from there.
+[00:10:22] The last layer that I look at when
+[00:10:25] making uh trade or investment decisions
+[00:10:27] is and and by the way, all these are in
+[00:10:29] order of importance. It's this one's
+[00:10:31] still important, but it's the least
+[00:10:32] important of the four. And it needs to
+[00:10:34] be absolutely interpreted in the context
+[00:10:36] of the previous three. Again, number
+[00:10:38] one, trend tells you where or which
+[00:10:40] direction. Two, volatility tells you
+[00:10:42] when. And three, structure tells you
+[00:10:45] about how things are likely to evolve
+[00:10:47] from there, if they're actually
+[00:10:48] changing. And then four is going to be
+[00:10:50] momentum. So, for this I'm going to use
+[00:10:52] a very simple and very um well-known
+[00:10:55] momentum oscillator called the RSI. This
+[00:10:57] one's a special one also by the
+[00:10:59] caretaker. This one actually not free,
+[00:11:00] but it basically tells you about
+[00:11:01] divergences. Anyways, when you get
+[00:11:04] signals here or when the RSI is in
+[00:11:07] certain areas, it can tell you about the
+[00:11:09] current momentum. So, I like to
+[00:11:10] specifically use the RSI for divergences
+[00:11:14] and a divergence on the RSI. And again,
+[00:11:16] this is explained in significant detail,
+[00:11:17] uh, one in the TA11, but really, really
+[00:11:20] in detail with actual trade setups and
+[00:11:23] whatnot in, of course, the Crown Trading
+[00:11:25] Bible, which is like my penultimate just
+[00:11:27] educational program. But of course,
+[00:11:29] that's, you know, it's not really going
+[00:11:30] to be relevant for most. Those are
+[00:11:31] that's for people who really like want
+[00:11:33] to do this as a living. Uh, but anyways,
+[00:11:35] for people just look, you know, learning
+[00:11:36] to learn uh looking to learn a few
+[00:11:38] things to help them in their investment
+[00:11:40] decisions especially, this can be very
+[00:11:42] very powerful. So when you have a
+[00:11:43] divergence between price and your
+[00:11:45] momentum oscillator, you typically have
+[00:11:47] a high probability sort of extra timing
+[00:11:50] layer as to when and where a move is
+[00:11:53] going to go. Why? Because the RSI or
+[00:11:56] momentum oscillators in general, they
+[00:11:57] one give you an indication of how fast
+[00:12:01] you are going to be moving like the it's
+[00:12:02] a sort of gas that's in your or no your
+[00:12:05] sort of accelerator like how far down is
+[00:12:08] your foot pressing on the accelerator.
+[00:12:10] um versus what direction as well. So in
+[00:12:13] this case you have m you have a
+[00:12:15] divergence between momentum here as the
+[00:12:18] moment the bulls were using more power
+[00:12:21] on the RSI but got lower on price action
+[00:12:25] right here. Thus there's a divergence
+[00:12:26] lower highs on price action higher highs
+[00:12:28] on the RSI oscillator within the context
+[00:12:30] of a downtrend. So bulls are not able to
+[00:12:34] push price action even back up towards
+[00:12:35] that previous high using more power over
+[00:12:38] here. Thus the move weakens and we do
+[00:12:41] see in this case the beginnings of a
+[00:12:43] breakdown. On the other side it works
+[00:12:44] the same works the same way too. Um you
+[00:12:47] know if we were looking at bear or just
+[00:12:49] regular bearish divergence over here we
+[00:12:51] can see price is making higher highs
+[00:12:52] higher highs higher highs but the RSI
+[00:12:55] oscillator is making lower highs as
+[00:12:57] evidenced by these red lines. When the
+[00:13:00] RSI is making lower highs but price
+[00:13:01] actually making higher highs. What does
+[00:13:02] that tell you? Price is moving higher
+[00:13:04] but the momentum is waning. And if the
+[00:13:07] momentum is getting weaker while price
+[00:13:09] goes higher, what should we expect? A
+[00:13:11] counter move. And that's exactly what
+[00:13:13] happens here as Bitcoin comes down uh
+[00:13:15] after playing out many drives of those
+[00:13:17] bearish divergences. So that's that's
+[00:13:19] the beauty of an RSI. Of course, you
+[00:13:20] could use the stocast. You can use any
+[00:13:22] momentum indicator. They all have their
+[00:13:24] own sort of pros and cons. Pick one that
+[00:13:27] is relevant to you. Um generally like to
+[00:13:29] use the RSI for more longerterm
+[00:13:31] investments. when it comes to
+[00:13:32] shorterterm trading, you know, the RSI
+[00:13:34] is still valuable, but I find that
+[00:13:35] stochastic oscillator is, you know, can
+[00:13:37] be better for more like short-term
+[00:13:38] scalping, for example. But there's a
+[00:13:40] million and one different momentum
+[00:13:42] oscillators and there and you probably
+[00:13:44] even created your own by this point,
+[00:13:46] too. You know, vibe coding it out. Um,
+[00:13:48] but ultimately ultimately uh just choose
+[00:13:51] one. Just choose one. Don't be like one
+[00:13:52] of these people I see on [&nbsp;__&nbsp;] YouTube
+[00:13:54] or Twitter, you know, having like five
+[00:13:55] different momentum oscillators open at
+[00:13:57] the same time. That's just confusion.
+[00:13:58] You don't need that. It's not going to
+[00:14:00] help that much. or really help at all
+[00:14:02] unless if you really like design a
+[00:14:03] strategy around that, but I would say
+[00:14:04] you could probably get it done with
+[00:14:05] less. Anyways, um anyways, quick thing
+[00:14:08] before before we move on um and put this
+[00:14:10] all together, I do want to show you a
+[00:14:13] dashboard that I that I've invested in
+[00:14:15] and that I'm a part of the team on,
+[00:14:16] which is Central Command. This is
+[00:14:18] incredibly incredibly cool because one,
+[00:14:20] I mean, you can just go to the terminal
+[00:14:22] over here and you can I mean, you
+[00:14:24] basically get like your own Trading View
+[00:14:26] uh subscription, you know, you get a lot
+[00:14:28] of access to a lot of cool tools. You
+[00:14:30] got all sorts of uh unique, you know, uh
+[00:14:32] overlays and whatnot, too. As well as uh
+[00:14:35] you can even just create your own
+[00:14:36] indicators here if you really want. You
+[00:14:37] there is an AI uh uh uh indicator
+[00:14:40] creator. And then of course, you also
+[00:14:42] got, you know, crazy amounts of
+[00:14:44] different market datas and whatnot,
+[00:14:45] funny rates across the board,
+[00:14:46] liquidation, heat maps, open interest,
+[00:14:48] fear and greed, all that good stuff and
+[00:14:50] significantly more. But most
+[00:14:51] importantly, the most important thing is
+[00:14:54] that it has a feature called agents that
+[00:14:56] you can see in the top right hand side
+[00:14:58] over here that allows you to build an AI
+[00:15:01] agent that will effectively create or
+[00:15:05] you create a strategy with it and then
+[00:15:06] it goes and executes that strategy all
+[00:15:09] on your own behalf. And the best thing
+[00:15:10] about this is you don't need to know any
+[00:15:12] coding or anything like this. It's been
+[00:15:13] a major hang-up in the past. I totally
+[00:15:15] get it. Learning how to code is
+[00:15:16] difficult and [&nbsp;__&nbsp;] man. I don't even
+[00:15:18] [&nbsp;__&nbsp;] know myself really. So
+[00:15:20] ultimately, the reason why this is
+[00:15:22] different is because when you're
+[00:15:23] creating a strategy, all you need to do
+[00:15:25] is be able to type it out. You need to
+[00:15:27] be able to type out your strategy in
+[00:15:29] English. Uh, ideally, actually, it might
+[00:15:31] it might actually work with other
+[00:15:32] languages. I'm not so I'm not so sure,
+[00:15:33] but this is what it looks like right
+[00:15:34] here. You need to be able to find your
+[00:15:35] entry method. Then you need need to
+[00:15:38] define your position management, your
+[00:15:39] stop-loss and take profit method, and
+[00:15:41] then also any potential extra rules that
+[00:15:43] you may have. If you can type those out,
+[00:15:44] you put those into into English or just
+[00:15:45] into words, text on a screen. Yes, you
+[00:15:49] can use this. And the best thing about
+[00:15:50] this, it's [&nbsp;__&nbsp;] free. And there's
+[00:15:51] also a free tutorial as well in the link
+[00:15:54] description below right here that'll run
+[00:15:56] you through exactly that process, how to
+[00:15:57] set it all up. It's really, really cool
+[00:15:59] stuff. And again, it's like literally
+[00:16:00] [&nbsp;__&nbsp;] free. So, there you go. All
+[00:16:02] right, cool. So, now let's put this all
+[00:16:04] together for just a moment and then
+[00:16:06] we'll close this video out. So, we've
+[00:16:07] gone over four different things. We've
+[00:16:09] gone over trend, structure, volatility,
+[00:16:11] and momentum. Let's now put them
+[00:16:12] together and see how they kind of work
+[00:16:14] uh work hand in hand. So, I'm bring my
+[00:16:16] BBWP back here and let's go over this.
+[00:16:19] So, we have, of course, let's actually
+[00:16:23] go to a different time frame. Let's do
+[00:16:24] something a little bit newer. So, let's
+[00:16:26] start it from the top. From the top, uh
+[00:16:28] from the top of the 2020 uh 2021 cycle,
+[00:16:31] Bitcoin tops right here. You see your
+[00:16:33] first move down. Boom. So, we got high,
+[00:16:36] we got low, lower high, lower low, lower
+[00:16:39] high. We're in a downtrend from here. We
+[00:16:41] can just expect more continuation. And
+[00:16:43] by the way, it was already confirmed a
+[00:16:44] downtrend when you're back breaking to
+[00:16:47] new lows on that first lower low over
+[00:16:49] here, just so you know. But anyways,
+[00:16:51] we're going to bring it over here
+[00:16:52] because this just more interesting price
+[00:16:54] action, honestly. [laughter] Um, then we
+[00:16:57] see volatility base out at very low
+[00:17:00] levels during this consolidation in this
+[00:17:02] area right here. Bitcoin puts in another
+[00:17:05] lower high on hidden bearish divergence
+[00:17:08] within the context of a downtrend. And
+[00:17:10] what do you know? Volatility goes up
+[00:17:11] from there. Boom. all the way here and
+[00:17:14] price continues in the same direction of
+[00:17:16] the trend and volatility once again gets
+[00:17:18] very high in this case all the way up to
+[00:17:20] 90 percentile and what do you know price
+[00:17:22] action stalls there basically forming a
+[00:17:24] low for a while this one takes about 6
+[00:17:26] months or sorry about 4 to 5 months to
+[00:17:29] play out volatility once resets all the
+[00:17:32] way down here and from there things get
+[00:17:35] really interesting because yes you do
+[00:17:37] have trend continuation you do make new
+[00:17:39] lows here but on this trend continuation
+[00:17:42] which again did have hidden bullish
+[00:17:44] divergence plus again low voltage
+[00:17:46] expanding from that low. This new low
+[00:17:48] some new things start to occur. Well, as
+[00:17:51] you can see on character RSI several
+[00:17:53] drives of bullish averance here that
+[00:17:55] green sort of line intersecting on the
+[00:17:57] chart over here uh occur while
+[00:17:59] volatility resets again. And during
+[00:18:02] this, if we zoom in a little bit, we can
+[00:18:06] see that the low that was right here was
+[00:18:11] lower than this low right here. So, what
+[00:18:13] do we have? We have a higher low. Now, a
+[00:18:16] higher a higher low is a prereic kicate
+[00:18:18] to the trend shifting and changing, but
+[00:18:21] it is not confirmed until you get a
+[00:18:22] higher high. And how do we how do we
+[00:18:24] define a higher high? Well, Bitcoin must
+[00:18:25] break the structure of the last previous
+[00:18:27] high, the rejective high right here,
+[00:18:29] which was that previous breakdown. So
+[00:18:31] once Bitcoin reclaims that on a weekly
+[00:18:33] closing basis or even a daily closing
+[00:18:35] basis in this point, you have a
+[00:18:38] confirmed trend reversal. Volatility
+[00:18:40] explodes to the upside, trend continues.
+[00:18:42] You get basically a new cycle beginning.
+[00:18:44] I mean just basically, you know, up only
+[00:18:46] from there. you know, you have several
+[00:18:48] resets in between, but again, just
+[00:18:50] following these signals all the way
+[00:18:51] through keeps you in that same uh you
+[00:18:53] know, keeps you in the same side of the
+[00:18:54] current trend. This one going on for
+[00:18:56] another year and a half to two years.
+[00:18:58] So, anyways, that is the four layers
+[00:19:00] that I look at before ever taking a
+[00:19:01] trade or investment. Uh it's been
+[00:19:03] incredibly incredibly incredibly
+[00:19:05] profitable me over my career. I've
+[00:19:07] refined it over time. Again, if you do
+[00:19:08] want to take this to other assets, you
+[00:19:10] might want to change some settings here
+[00:19:12] and there. Um, I give out my settings in
+[00:19:14] the TI 101 program for these things, but
+[00:19:16] naturally you can also just appropriate
+[00:19:17] them for your own preferences. But the
+[00:19:19] general framework will hold up. You
+[00:19:21] know, this is this is more or less
+[00:19:23] ancient stuff for the most part. Um, but
+[00:19:25] that is how I've appropriated it to
+[00:19:26] Bitcoin and how you can also use it as
+[00:19:28] well. And from there, I'll give the keys
+[00:19:31] over to you. You can use this however
+[00:19:32] you want. Hopefully use it for good. You
+[00:19:33] know, if you make some money, like do
+[00:19:35] some [&nbsp;__&nbsp;] good things with it, right?
+[00:19:37] But hey, at the end of the day, that's
+[00:19:38] up to you. I can't control that either.
+[00:19:40] So other than that, I want to wish you
+[00:19:42] the best. Take care. Much love and see
+[00:19:45] you hopefully next time.
