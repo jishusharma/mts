@@ -461,6 +461,13 @@ def pick(cards, claimed, tried, probe=False):
     return ok[0] if ok else None
 
 
+DATA_HINT = ("Market data on this machine (read-only; look here BEFORE you call an input missing): perp 1h/15m klines 2022-01-01..2026-10-07 "
+             "(arrays t,o,h,l,c,v,tbv,n,atr; t = bar open ms) in F:/MTS/data/bigtrade/cache/perp/klines_1h.npz and klines_15m.npz; BTC 1m DEV zips in "
+             "F:/MTS/data/candle_close_dev_2022_2024/; funding zips in the same folder; other archives under F:/MTS/data. 4h = 4 consecutive 1h bars at "
+             "00/04/08/12/16/20 UTC, complete buckets only. `Dumps/backtest` and F:/MTS/data/binance_tf (2025-11..2026-09 only) are NOT the DEV source here. "
+             "Only DEV bars (open before 2024-07-01) may be read; slice them out, never inspect later bars.")
+
+
 def prompt(card, wt, pack, when):
     d, cid = when.strftime("%Y-%m-%d"), card["id"]
     return "\n".join([
@@ -473,6 +480,7 @@ def prompt(card, wt, pack, when):
         f"2. Write the report {LAB}/reports/{d}_{cid}.md (LAYER_LAB.md, Report format).",
         (f"3. Close with lab_flow.py finish as the brief specifies; its criterion receipt is required." if card.get("flow") else
          f"3. python scripts/dev/tasks.py done {cid} --result \"<verdict or number + report file>\""),
+        DATA_HINT,
         "Blocked (data missing, rule conflict, test cannot pass): write the report with verdict BLOCKED and the exact reason,",
         "and do NOT mark the card done.",
         f"Final line: `lab: {cid} <DONE|BLOCKED> <one-line result>`.",
