@@ -756,6 +756,10 @@
    "disp": "REPRO",
    "why": "Builds the DEV factor frames, the full replay and the replay-vs-vectorised comparison (ANGLES.md a); run by hand."
   },
+  "MyTradingSys/research/context_factors_2026-10-16/counts_v2.py": {
+   "disp": "REPRO",
+   "why": "Counts only (PRE_REG_V2 s.2): matched C events/days under the wider control pool; no outcome column; run by hand."
+  },
   "MyTradingSys/research/context_factors_2026-10-16/counts.py": {
    "disp": "REPRO",
    "why": "Rewrites COUNTS.md, trials.csv, events_dev.csv from the DEV frames (counts only, no outcome); run by hand."
