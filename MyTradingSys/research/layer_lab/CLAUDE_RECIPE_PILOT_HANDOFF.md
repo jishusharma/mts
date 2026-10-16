@@ -31,5 +31,7 @@ Defaults: retain Astra low effort pending measured evidence; no holdout or marke
 If a material flaw is found, file one scoped follow-up card and keep the conclusion FIX-FIRST. Do not redesign
 the relay or scheduled tasks. No operator answers are required. One report per pilot is enough.
 
-At handoff preparation Claude's app displayed weekly all-model usage at 100%; reset was about two hours away.
-Codex did not obtain a Claude review at that point. The desk row is a request, not an execution receipt.
+The headless Sonnet attempt returned HTTP 429 `usage_limit_reached`, resetting 2026-10-16 at 14:30 IST,
+with zero model tokens consumed. Codex did not obtain a Claude review. The desk row is a request, not an execution receipt.
+Both real GPT stages have since delivered and shipped. Their measured results and independent receipt checks are in
+`reports/2026-10-16_recipe-pilot-summary.md`; the next action is your spot-check, not relaunching either stage.
