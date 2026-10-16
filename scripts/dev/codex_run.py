@@ -12,6 +12,8 @@ luna low/medium by default, astra only for a `crucial` card. One card per tick, 
 spend guard (LAB_WINDOW_PTS, LAB_RUNS_PER_WINDOW, ASTRA_RUNS_PER_WINDOW, LAB_WEEK_PTS): when it is spent the lab idles until the reset.
 Environment (all optional): CODEX_HOME (F:/codex_home), MTS_CODEX_LAB_WT (F:/MTS/mts-codex-lab), MTS_CODEX_EXE,
 MTS_CODEX_SANDBOX (workspace-write), MTS_CODEX_TIMEOUT_MIN (60).
+lab.hold (in CODEX_HOME): written when a ship fails on a gate (no TIMEOUT line); `next` refuses new runs while it exists and `status` lists it under
+NEEDS A LOOK. The operator clears it by deleting CODEX_HOME/lab.hold after the stuck commit in the lab work tree is fixed or shipped.
 """
 import nowin  # B173: no console flash from git/python children under pythonw
 nowin.install()
@@ -102,6 +104,31 @@ def utc():
 
 def codex_home(env=os.environ):
     return Path(env.get("CODEX_HOME") or "F:/codex_home")
+
+
+def gate_step(text):
+    """The last `Step N: ... FAIL` line of a sync.py ship log ('' if none)."""
+    steps = re.findall(r"^(Step \S+: .*?: FAIL)\s*$", text or "", re.M)
+    return steps[-1] if steps else ""
+
+
+def record_ship_failure(home, cid, text):
+    """A gate-red SHIP_FAILED leaves the run commit on the lab branch, where it makes every later lab ship fail. git reset is forbidden,
+    so write `lab.hold` (card id + gate step): cmd_next refuses new runs and `status` prints it under NEEDS A LOOK. The operator clears
+    it by deleting lab.hold once the commit is fixed or shipped. A TIMEOUT ship (the box killed the gate) keeps the old behaviour: the
+    next successful ship pushes the commit. Returns True when a hold was written."""
+    if "TIMEOUT" in (text or ""):
+        return False
+    home = Path(home)
+    home.mkdir(parents=True, exist_ok=True)
+    (home / "lab.hold").write_text(f"{cid}: ship gate failed ({gate_step(text) or 'step unknown, see log.ship.txt'}); delete lab.hold to clear" + chr(10),
+                                   encoding="utf-8", newline=chr(10))
+    return True
+
+
+def read_hold(home):
+    f = Path(home) / "lab.hold"
+    return f.read_text(encoding="utf-8").strip() or "lab.hold present" if f.is_file() else ""
 
 
 def lab_wt(env=os.environ):
@@ -742,6 +769,10 @@ def cmd_next(a):
     if stop.is_file():
         print("IDLE stopped: " + stop.read_text(encoding="utf-8").strip())
         return 0
+    held = read_hold(home)
+    if held:
+        print("HOLD " + held)
+        return 1
     cards, _ = tasks.ready_cards(REPO, "CODEX")
     claimed = {slug for slug, _ in sync.read_claims(REPO, f"origin/{sync.TRUNK}")}
     lane = lane_health.load(REPO)
@@ -890,11 +921,13 @@ def guard_hold(last_tick):
     return "IDLE lab budget" if "IDLE lab budget" in (last_tick or "") else ""
 
 
-def needs_look(ready, tried, rows, unshipped=0, stopped="", held="", closed=(), watch=()):
+def needs_look(ready, tried, rows, unshipped=0, stopped="", held="", closed=(), watch=(), lab_hold=""):
     """What the lab cannot fix by itself, in plain words. [] = nothing to do. Read by the operator and by STATUS.md."""
     L = []
     if stopped:
         L.append(f"the lab is switched off: {stopped} (`codex_run.py resume` turns it on)")
+    if lab_hold:
+        L.append(f"new runs are refused (lab.hold): {lab_hold}")
     if unshipped:
         L.append(f"the lab work tree holds {unshipped} unshipped file(s) or commit(s); it stays idle until a session checks and ships them")
     L += [f"{c['id']} failed {tried[c['id']]} times and is skipped: read its report and run log, then fix the card" for c in ready if tried.get(c["id"], 0) >= MAX_ATTEMPTS]
@@ -918,7 +951,7 @@ def guard_line(rows, rl, now):
             f"resets {datetime.fromtimestamp(w_end, timezone.utc).strftime('%H:%MZ')}")
 
 
-def status_text(ready, done, tried, rows, rl, now, last_tick="", unshipped=0, stopped="", host_has_lab=True, age=None, lane_up=True, brief=False):
+def status_text(ready, done, tried, rows, rl, now, last_tick="", unshipped=0, stopped="", host_has_lab=True, age=None, lane_up=True, brief=False, lab_hold=""):
     """brief=True (STATUS.md) leaves out the Delivered block: those results are in layer_lab/INDEX.md."""
     L = [f"Layer lab (Codex) at {datetime.fromtimestamp(now, timezone.utc).strftime('%Y-%m-%d %H:%MZ')}: {'OFF' if stopped else 'on'}"]
     if not host_has_lab:
@@ -935,7 +968,7 @@ def status_text(ready, done, tried, rows, rl, now, last_tick="", unshipped=0, st
         L.append("  Last runs:")
         L += ["    " + run_line(r) for r in rows[-5:]] or ["    none"]
         look = needs_look(ready, tried, rows, unshipped, stopped, hold(rl, now), {c['id'] for c in done} | reopened(ready, rows),
-                          stall_findings(rows, ready, tried, lane_up, hold(rl, now) or guard_hold(last_tick), now, age))
+                          stall_findings(rows, ready, tried, lane_up, hold(rl, now) or guard_hold(last_tick), now, age), lab_hold=lab_hold)
         L.append("  NEEDS A LOOK: " + ("nothing" if not look else ""))
         L += [f"    - {x}" for x in look]
     return "\n".join(L)
@@ -955,7 +988,7 @@ def cmd_status(a):
     print(status_text(cards, done, attempts(home), run_rows(home), budget(home), time.time(),
                       tick.read_text(encoding="utf-8").strip() if tick.is_file() else "", unshipped,
                       stop.read_text(encoding="utf-8").strip() if stop.is_file() else "", here,
-                      reading_age(home, time.time()), lane_health.allow(lane_health.load(REPO), utc()) != "", brief=a.brief))
+                      reading_age(home, time.time()), lane_health.allow(lane_health.load(REPO), utc()) != "", brief=a.brief, lab_hold=read_hold(home)))
     return 0
 
 

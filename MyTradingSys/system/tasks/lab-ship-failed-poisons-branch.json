@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T21:07:16Z",
   "commands": [],
   "created": "2026-10-16T00:50:39Z",
   "depends_on": [],
@@ -16,7 +17,7 @@
   "refine_tries": 0,
   "refined_by": "codex-feed 2026-10-16 (sonnet worker)",
   "refs": [],
-  "result": "",
+  "result": "gate-red SHIP_FAILED writes lab.hold; next refuses, status lists it",
   "scope_in": [
     "scripts/dev/codex_run.py",
     "scripts/dev/test_codex_run.py"
@@ -29,7 +30,7 @@
   "sources": [
     "evidence: card note, lab_runs/20261015T1930Z_lc-event-table.log.ship.txt"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write the 2 tests first (fail now)",
     "in the SHIP_FAILED branch classify via TIMEOUT marker, write lab.hold for the gate-red case",
