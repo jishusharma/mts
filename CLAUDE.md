@@ -29,7 +29,7 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 - The live tree (`.mts_live`, JIS-NB) runs the testnet system and changes only by MTS-AutoDeploy (manual fallback: DEPLOY_RUNBOOK.md). Builders never deploy, stop/restart processes, touch HALT files or open trades. "Supervisor" = the MTS-Supervisor task (process revival only).
 - Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety checks fail closed. New timeframe or layer family: grep every TF/family map. Whoever sets AUTO_PAUSE logs owner + expected end in SUPERVISOR_LOG; each wake clears or escalates an overdue pause.
 - Layers (operator 2026-10-13, replaces "Tom is core"): no fixed core. Tom, Fabio and every other system are layers (combine, filter or switch off); fee-net out-of-sample results decide what trades, never doctrine (PROJECT_VISION).
-- Numbers (operator 2026-10-13, replaces the 2026-09-30 provenance ban): label each parameter SOURCED (trader's words, quote + file:line) or OURS (judgement or tuned). OURS is allowed: chosen on DEV, checked once on VALIDATION, holdout read once, variants in the trial ledger. Never call OURS the trader's.
+- Numbers (operator 2026-10-13): label each parameter SOURCED (trader's words, quote + file:line) or OURS (judgement or tuned). OURS is allowed: chosen on DEV, checked once on VALIDATION, holdout read once, variants in the trial ledger. Never call OURS the trader's.
 - Anything off: report -> independent audit -> fix. Never conclude from truncated output (`cut`, `head`, log tails); parse the real format, then count.
 - Windows: write files with `newline='\n'`; long patches go in a .py script, not a heredoc. The Bash tool strips backslashes: write paths/regexes with Write/Edit; Write decodes backslash-u escapes: use `chr()`; check CR with python bytes, not `grep -c`.
 - Never add to `.git/info/exclude`: an ignore that matters goes in `.gitignore`.
@@ -38,7 +38,7 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 | Need | Read |
 |---|---|
 | start, ship, claims, push fallback; hand-over, task cards | PARALLEL.md; RELAY.md, TASK_REFINEMENT.md |
-| dev-time waste (claim only where areas can overlap, one ship per task); `traffic_report.py` | TRAFFIC_BUSTERS.md |
+| dev-time waste | TRAFFIC_BUSTERS.md |
 | machines, logins, lanes, who may touch what; surfaces, names | HOW_MTS_RUNS.md, DEVICES.md, CLOUD_ACCOUNTS.md; SURFACE_POLICY.md |
 | deploy, CI/CD | DEPLOY_RUNBOOK.md |
 | layers (index); Codex lab | LAYERS.md; CODEX_START.md, LAYER_LAB.md |
