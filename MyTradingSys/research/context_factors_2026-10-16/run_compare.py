@@ -116,10 +116,11 @@ def main():
     keys = sorted({k for _, _, f in rows_v for k in f})
     with open(a.out, "w", newline="\n", encoding="utf-8") as fh:
         w = csv.writer(fh)
-        w.writerow(["side"] + keys)
+        w.writerow(["t", "utc_close", "side"] + keys)
         for t, side, f in rows_v:
             if t % 60 == 59:
-                w.writerow([side] + [f.get(k) for k in keys])
+                w.writerow([t, time.strftime("%Y-%m-%d %H:%M", time.gmtime((CA.TS0 + (t + 1) * CA.MS) // 1000)), side]
+                           + [f.get(k) for k in keys])
     print("wrote", a.out)
     with open(os.path.join(os.path.dirname(a.out), "compare_result.txt"), "w", newline="\n", encoding="utf-8") as fh:
         fh.write(f"points={len(rows_v)} mismatching_fields={len(bad)}\n")

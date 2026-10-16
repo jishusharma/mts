@@ -16,7 +16,10 @@ Monday 2022-01-03 00:00 UTC = minute 2880 for 1w) covers 1m bars [off + k P, off
   cur_k    = (t - off) // P                      the bucket holding bar t ("partial" candle, complete at its last bar)
   complete = (t + 1 - off) % P == 0              bar t is the bucket's last bar
   last closed candle (F4, F5, ATR, pivots) = cur_k if complete else cur_k - 1
-  ladder "prior" candle (F3)               = cur_k - 1 always (the candle before the one that holds bar t)
+  ledger "prior" day/week and ladder "prior" candle (F1, F3) = the same last closed bucket (PRIOR_RULE = "last_closed").
+  Red-team finding RT-1 (ANGLES.md): the first draft used cur_k - 1 for the ledger and the ladder, which at a bucket-close
+  grid point (23:59 for the day) ignores the candle that has just closed although the fill happens at the open of the
+  next bar, i.e. inside the next bucket. PRIOR_RULE = "cur_k_minus_1" keeps the old rule for the count in trials.csv.
 """
 import csv
 import glob
@@ -67,6 +70,7 @@ SOURCES = ("prior_d_hl", "prior_w_hl", "fabio_vp_day", "tom_vp_week", "krown_zon
            "vwap_session", "vwap_week", "round_1k")
 
 PLANT = {}   # name -> True plants that look-ahead in the VEC build (tests only; see leak_plants.py)
+PRIOR_RULE = "last_closed"   # or "cur_k_minus_1" (RT-1 alternative, counted only); honoured by BOTH builds
 
 
 # ================================================================= data
@@ -426,6 +430,12 @@ class VecTables:
     def complete(t, tf):
         return (t + 1 - TF_OFF[tf]) % TF_P[tf] == 0
 
+    def prior_k(self, t, tf):
+        """The ledger/ladder 'prior' bucket at bar t (PRIOR_RULE)."""
+        if PRIOR_RULE == "cur_k_minus_1":
+            return self.cur_k(t, tf) - 1
+        return self.last_closed(t, tf)
+
     def last_closed(self, t, tf):
         k = self.cur_k(t, tf)
         j = k if self.complete(t, tf) else k - 1
@@ -617,7 +627,7 @@ class VecTables:
     def levels_at(self, t):
         """List of (price, source, avail_min) available at bar t (t on the 1h grid)."""
         out = []
-        jd = self.cur_k(t, "1d") - 1
+        jd = self.prior_k(t, "1d")
         if jd >= 0:
             T = self.tf["1d"]
             av = (jd + 1) * 1440 - 1
@@ -627,7 +637,7 @@ class VecTables:
             if vp:
                 for px in vp:
                     out.append((float(px), "fabio_vp_day", av))
-        jw = self.cur_k(t, "1w") - 1
+        jw = self.prior_k(t, "1w")
         if jw >= 0:
             T = self.tf["1w"]
             av = WEEK_OFF + (jw + 1) * 10080 - 1
@@ -716,9 +726,9 @@ class VecTables:
             f["approach"] = "na"
             f["sweep"] = False
         # ladder
-        pd = self.cur_k(t, "1d") - 1
-        p12 = self.cur_k(t, "12h") - 1
-        p8 = self.cur_k(t, "8h") - 1
+        pd = self.prior_k(t, "1d")
+        p12 = self.prior_k(t, "12h")
+        p8 = self.prior_k(t, "8h")
         cd = self.candle("1d", pd) if pd >= 0 else None
         if PLANT.get("ladder_final_day"):
             k = self.cur_k(t, "1d")
@@ -1044,7 +1054,7 @@ class Replay:
             r = cds[-1] / cds[-31] - 1.0
             sma = sum(cds[-SMA_PHASE:]) / SMA_PHASE
             self.phase_b = "markup" if r >= RET30_THR else "markdown" if r <= -RET30_THR else ("distribution" if cds[-1] > sma else "accumulation")
-        # day profile (keep the previous one: at a day close the ledger's "prior day" is the day before this one)
+        # day profile (keep the previous one for the old PRIOR_RULE)
         self._vp_day_prior = self.vp_day
         self.vp_day = profile_replay(self.day_L, self.day_H, self.day_V)
         self.vp_day_avail = t
@@ -1064,31 +1074,31 @@ class Replay:
     def _refresh_levels(self, t):
         out = []
         bd = self.bk["1d"]
-        # ladder-style "prior day" = the day before the one holding t; at a day close that is the one just closed
         complete_d = (t + 1) % 1440 == 0
-        # when the day is complete at t, last(0) IS the day holding t, so the prior day is last(1)
-        prior_d = bd.last(1) if complete_d else bd.last(0)
+        old = PRIOR_RULE == "cur_k_minus_1"
+        # last closed day = bd.last(0) (when the day is complete at t, that IS the day holding t); the old rule skips it then
+        prior_d = bd.last(1) if (old and complete_d) else bd.last(0)
         if prior_d is not None:
-            jd = (t // 1440) - 1
+            jd = (t // 1440) - 1 if old else (t + 1) // 1440 - 1
             av = (jd + 1) * 1440 - 1
             out.append((prior_d[1], "prior_d_hl", av))
             out.append((prior_d[2], "prior_d_hl", av))
-            # the prior day's profile: at a day close the just-finished profile belongs to the day holding t, so
-            # the prior day's is the one computed a day earlier -> keep two
-            vp = self.vp_day_prior if complete_d else self.vp_day
+            # the profile of that day: _on_1d has already run for a day that completed at t (feed order), so vp_day is
+            # the just-closed day's; the old rule wants the one before it -> vp_day_prior
+            vp = self.vp_day_prior if (old and complete_d) else self.vp_day
             if vp:
                 for px in vp:
                     out.append((px, "fabio_vp_day", av))
         bw = self.bk["1w"]
         if t >= WEEK_OFF:
             complete_w = (t + 1 - WEEK_OFF) % 10080 == 0
-            prior_w = bw.last(1) if complete_w else bw.last(0)
+            prior_w = bw.last(1) if (old and complete_w) else bw.last(0)
             if prior_w is not None:
-                jw = (t - WEEK_OFF) // 10080 - 1
+                jw = (t - WEEK_OFF) // 10080 - 1 if old else (t + 1 - WEEK_OFF) // 10080 - 1
                 av = WEEK_OFF + (jw + 1) * 10080 - 1
                 out.append((prior_w[1], "prior_w_hl", av))
                 out.append((prior_w[2], "prior_w_hl", av))
-                vp = self.vp_week_prior if complete_w else self.vp_week
+                vp = self.vp_week_prior if (old and complete_w) else self.vp_week
                 if vp:
                     for px in vp:
                         out.append((px, "tom_vp_week", av))
@@ -1134,13 +1144,14 @@ class Replay:
         return None if r is None else r[:4]
 
     def _prior_candle(self, tf):
-        """The candle before the one holding bar t (ladder convention)."""
+        """The ladder's 'prior' candle (PRIOR_RULE): the last closed one, or under the old rule the candle before the
+        one holding bar t (which skips a candle that completes at t)."""
         bk = self.bk[tf]
         t = self.t
         if t < bk.off:
             return None
         complete = (t + 1 - bk.off) % bk.P == 0
-        r = bk.last(1) if complete else bk.last(0)
+        r = bk.last(1) if (PRIOR_RULE == "cur_k_minus_1" and complete) else bk.last(0)
         return None if r is None else r[:4]
 
     def context(self, side):
