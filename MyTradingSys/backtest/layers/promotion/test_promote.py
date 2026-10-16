@@ -6,6 +6,7 @@ import csv
 import datetime as dt
 import json
 import os
+import random
 import subprocess
 import tempfile
 import unittest
@@ -45,7 +46,15 @@ class Base(unittest.TestCase):
         commit(self.repo, "2026-02-01T10:00:00+00:00", "screen", {
             "r/screen.json": json.dumps({"verdict": "PASS"}),
             "r/bt.md": "# report\nLabel: BT-TUNED\n",
-            "r/ledger.csv": "study,variant,date,window,verdict\nS1,a,d,w,v\nS1,b,d,w,v\nS1,c,d,w,v\nS2,z,d,w,v\n"})
+            "r/ledger.csv": "study,variant,date,window,verdict\nS1,a,d,w,v\nS1,b,d,w,v\nS1,c,d,w,v\nS2,z,d,w,v\n",
+            "r/val_read.md": "VALIDATION read log\n",
+            "r/ledger40.csv": "study,variant,date,window,verdict\n" + "".join("S40,v%d,d,w,v\n" % i for i in range(40))})
+        rng = random.Random(7)
+        raw = [rng.gauss(0, 1) for _ in range(250)]
+        mu = sum(raw) / 250
+        sd = (sum((x - mu) ** 2 for x in raw) / 249) ** 0.5
+        self.trades = [round(0.12 + 0.2417 * (x - mu) / sd, 6) for x in raw]       # mean 0.12 +- rounding, n=250
+        (self.repo / "r" / "oos_trades.csv").write_text("net_r\n" + "".join("%r\n" % x for x in self.trades), encoding="utf-8", newline="\n")
         self.cfg = self.repo / "cfg.json"
         self.cfg.write_text(json.dumps({"trade_blocklist": [], "trade_blocklist_parked": {"layer:session:": "x"},
                                         "size_overrides": {SID: {"size_usd": 50, "max_loss_usd": 2}}}), encoding="utf-8")
@@ -55,9 +64,9 @@ class Base(unittest.TestCase):
                   "pre_reg": {"path": "r/PRE_REG.md", "git_sha": self.pre_sha},
                   "screen_verdict": {"path": "r/screen.json"},
                   "backtest": {"report_path": "r/bt.md", "label": "BT-TUNED"},
-                  "oos": {"fee_net": True, "net_r": 0.12, "ci_low": 0.03, "ci_high": 0.21, "n_trades": 250},
+                  "oos": {"fee_net": True, "net_r": 0.12, "ci_low": 0.09, "ci_high": 0.15, "n_trades": 250, "trades_csv": "r/oos_trades.csv"},
                   "trial_ledger": {"path": "r/ledger.csv", "entry_id": "S1", "variants": 3},
-                  "validation_reads": [{"at": "2026-02-10", "ref": "v1"}],
+                  "validation_reads": [{"at": "2026-02-10", "ref": "r/val_read.md"}],
                   "holdout_reads": [{"at": "2026-02-11", "ref": "h1"}],
                   "requested_mode": "shadow"}
 
@@ -82,6 +91,47 @@ class Gates(Base):
     def test_good_manifest_passes(self):
         r = self.chk()
         self.assertEqual((r["result"], r["reasons"]), ("PASS", []))
+
+    def test_holm_adjusted_ci_for_many_variants(self):
+        def f(m):
+            m["trial_ledger"].update(path="r/ledger40.csv", entry_id="S40", variants=40)
+            m["oos"].update(ci_low=0.02, ci_high=0.22)
+        self.rejected(f, "Holm")
+
+    def test_validation_read_ref_must_be_a_logged_file(self):
+        self.rejected(lambda m: m["validation_reads"][0].update(ref="no/such/log.md"), "validation_reads ref")
+        self.rejected(lambda m: m["validation_reads"][0].update(ref="  "), "validation_reads")
+
+    def test_trade_floor_is_mde_based(self):
+        self.rejected(lambda m: m["oos"].update(ci_low=0.02, ci_high=0.22, n_trades=31), "MDE")
+
+    def test_recompute_matches_manifest_numbers(self):
+        n, mean, lo, hi = pm.recompute_oos(self.repo / "r" / "oos_trades.csv")
+        self.assertEqual(n, 250)
+        self.assertAlmostEqual(mean, sum(self.trades) / 250, places=9)
+        self.assertLess(lo, mean)
+        self.assertGreater(hi, mean)
+        self.assertEqual(pm.recompute_oos(self.repo / "r" / "oos_trades.csv"), (n, mean, lo, hi))    # seeded: deterministic
+
+    def test_typed_net_r_far_from_trades_csv_rejects(self):
+        # manifest says 0.5 R (CI around it) but the csv mean is 0.12
+        self.rejected(lambda m: m["oos"].update(net_r=0.5, ci_low=0.45, ci_high=0.55), "recompute")
+
+    def test_missing_trades_csv_rejects(self):
+        def f(m):
+            del m["oos"]["trades_csv"]
+        self.rejected(f, "trades_csv")
+        self.rejected(lambda m: m["oos"].update(trades_csv="r/none.csv"), "trades_csv")
+
+    def test_trades_count_must_match_within_five_percent(self):
+        self.rejected(lambda m: m["oos"].update(n_trades=300), "recompute")
+
+    def test_matching_trades_csv_passes_and_legacy_is_check_only_flag(self):
+        self.assertEqual(self.chk()["result"], "PASS")
+        m = copy.deepcopy(self.m)
+        del m["oos"]["trades_csv"]
+        self.assertEqual(pm.check(m, repo=self.repo, config_path=self.cfg, legacy=True)["result"], "PASS")
+        self.assertEqual(pm.check(m, repo=self.repo, config_path=self.cfg)["result"], "REJECT")
 
     def test_unreadable_manifest_rejects(self):
         r = pm.check(self.repo / "nope.json", repo=self.repo, config_path=self.cfg)
@@ -324,6 +374,18 @@ class Register(Base):
         self.assertEqual(pm.verify(self.repo, self.regp, self.cfg), [])
         (self.repo / "r" / "screen.json").write_text(json.dumps({"verdict": "FAIL"}), encoding="utf-8")
         self.assertTrue(pm.verify(self.repo, self.regp, self.cfg))
+
+    def test_verify_grandfathers_registered_entry_without_trades_csv(self):
+        self.reg()
+        mp = self.repo / "m" / "manifest.json"
+        m = json.loads(mp.read_text(encoding="utf-8"))
+        del m["oos"]["trades_csv"]
+        mp.write_text(json.dumps(m), encoding="utf-8")
+        self.assertEqual(pm.verify(self.repo, self.regp, self.cfg), [])          # legacy entry: no csv, still green
+        m["oos"]["trades_csv"] = "r/oos_trades.csv"
+        m["oos"].update(net_r=0.5, ci_low=0.45, ci_high=0.55)
+        mp.write_text(json.dumps(m), encoding="utf-8")
+        self.assertTrue(pm.verify(self.repo, self.regp, self.cfg))               # with a csv it is recomputed: red
 
     def test_verify_red_on_hand_inserted_entry(self):
         e = {"setup_id": SID, "mode": "shadow", "manifest": "m/none.json", "promoted_at": "2026-10-15T00:00:00Z", "commit": "x"}

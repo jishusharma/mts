@@ -6,10 +6,14 @@ import sys
 import tempfile
 import time
 import unittest
+from unittest import mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import run_all_tests as rat
+
+# tests that run fake plans must not append to the real runtime_data/gate_timing.jsonl
+os.environ["MTS_GATE_TIMING"] = os.path.join(tempfile.mkdtemp(prefix="gate_timing_test_"), "t.jsonl")
 
 
 class GateCoverage(unittest.TestCase):
@@ -324,6 +328,12 @@ class TestCiAnnotation(unittest.TestCase):
         self.assertNotIn("noise", notes[0])
         self.assertNotIn("\n", notes[0])
 
+    def test_failed_step_with_empty_output_is_still_annotated(self):
+        os.environ["GITHUB_ACTIONS"] = "true"
+        notes = [ln for ln in rat.format_step("4f", "d", "c", False, "", 1.0) if ln.startswith("::error ")]
+        self.assertEqual(len(notes), 1)
+        self.assertIn("(no output)", notes[0])
+
     def test_passing_step_has_no_annotation(self):
         os.environ["GITHUB_ACTIONS"] = "true"
         self.assertFalse(any(ln.startswith("::error") for ln in rat.format_step("4f", "d", "c", True, "all ok", 1.0)))
@@ -374,5 +384,48 @@ class TestExtraTestsRunConcurrently(unittest.TestCase):
                 os.environ["MTS_GATE_JOBS"] = old
 
 
+class TestGateTimingLog(unittest.TestCase):
+    """Per-step timings persist as JSON lines in an untracked file (2026-10-16: no gate timing was kept anywhere)."""
+
+    def test_record_timing_writes_one_valid_json_line(self):
+        import json
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "sub" / "gate_timing.jsonl"
+            rat.record_timing("3w", "Wiring", 1.234, True, "smoke", path=path)
+            rat.record_timing("4", "Pytest", 9.0, False, "full", path=path)
+            rows = [json.loads(ln) for ln in path.read_text(encoding="utf-8").splitlines()]
+        self.assertEqual(len(rows), 2)
+        self.assertEqual({"step", "name", "secs", "ok", "mode", "utc", "sha"}, set(rows[0]))
+        self.assertEqual((rows[0]["step"], rows[0]["name"], rows[0]["secs"], rows[0]["ok"], rows[0]["mode"]), ("3w", "Wiring", 1.23, True, "smoke"))
+        self.assertFalse(rows[1]["ok"])
+
+    def test_record_timing_never_breaks_the_gate(self):
+        rat.record_timing("1", "x", 1.0, True, None, path=Path(__file__) / "t.jsonl")   # a file where a directory is needed: swallowed
+
+    def test_run_plan_logs_every_finished_step(self):
+        import json
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "t.jsonl"
+            with mock.patch.dict(os.environ, {"MTS_GATE_TIMING": str(path)}):
+                plan = [rat.Step("9a", "A", "Step 9a", run=lambda: (True, "")), rat.Step("9b", "B", "Step 9b", run=lambda: (False, "boom"))]
+                rat.run_plan(plan, 1, out=io.StringIO())
+            rows = [json.loads(ln) for ln in path.read_text(encoding="utf-8").splitlines()]
+        self.assertEqual([(r["step"], r["ok"]) for r in rows], [("9a", True), ("9b", False)])
+
+    def test_timing_file_is_gitignored(self):
+        import subprocess
+        r = subprocess.run(["git", "check-ignore", "-q", "runtime_data/gate_timing.jsonl"], cwd=str(rat.REPO))
+        self.assertEqual(r.returncode, 0)
+
+    def test_plan_reason_is_printed_for_a_ship(self):
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / "c.txt"
+            f.write_text("src/x.java" + chr(10), encoding="utf-8")
+            plan, mode = rat.apply_selection(rat.build_plan(True), ["--smoke", "--changed-file", str(f)])
+            self.assertEqual(mode, "full")
+            self.assertIn("src/x.java", rat.gate_reason)
+
+
 if __name__ == "__main__":
     unittest.main()
+{"step": "1", "name": "x", "secs": 1.0, "ok": true, "mode": null, "utc": "2026-10-16T18:14:55Z", "sha": "53981671"}

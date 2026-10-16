@@ -14,7 +14,8 @@ Manifest (JSON), all keys required:
   pre_reg             {"path": repo-relative PRE_REG file, "git_sha": commit that holds it}
   screen_verdict      {"path": repo-relative file; JSON {"verdict": "PASS"} or a line "VERDICT: PASS"}
   backtest            {"report_path": repo-relative report that carries the BT-TUNED label, "label": "BT-TUNED"}
-  oos                 {"fee_net": true, "net_r": x, "ci_low": a, "ci_high": b, "n_trades": n}   (fee-net, out of sample)
+  oos                 {"fee_net": true, "net_r": x, "ci_low": a, "ci_high": b, "n_trades": n, "trades_csv": repo-relative csv, column net_r}
+                      (fee-net, out of sample; net_r/CI/n are recomputed from trades_csv, seed 20261016, 2000 draws, tolerance 0.01 R / 5% n)
   trial_ledger        {"path": CSV with a "study" column, "entry_id": study id, "variants": N}
   validation_reads    [exactly one {"at": ISO date, "ref": where it was read}]
   holdout_reads       [exactly one {"at": ISO date, "ref": ...}]
@@ -24,10 +25,13 @@ import argparse
 import csv
 import datetime as dt
 import json
+import math
+import random
 import re
 import subprocess
 import sys
 from pathlib import Path
+from statistics import NormalDist
 
 from MyTradingSys.backtest.layers.promotion import registry as reg
 
@@ -35,6 +39,12 @@ REPO = Path(__file__).resolve().parents[4]
 CONFIG_PATH = REPO / "MyTradingSys" / "execution" / "auto_trader_config.json"
 MIN_TRADES = 30        # OURS: sanity floor on the OOS sample (GO_LIVE_BAR needs 200 testnet trades later); not from a trader
 SIZE_CEILING_USD = 10000   # = auto_trader.SIZE_CEILING_USD (test_promote asserts they match)
+POWER_Z = 0.84         # OURS: z for 80% power in the MDE trade floor
+MDE_SAFETY = 4         # OURS: safety factor on the MDE-based trade floor
+BOOT_SEED = 20261016   # OURS: bootstrap seed for the OOS recompute
+BOOT_DRAWS = 2000      # OURS
+TOL_R = 0.01           # OURS: max |manifest - recompute| for net_r and both CI ends, in R
+TOL_N = 0.05           # OURS: max relative |n_trades - rows in trades_csv|
 LABEL = "BT-TUNED"
 REQUIRED = ("setup_id", "layer", "pre_reg", "screen_verdict", "backtest", "oos", "trial_ledger",
             "validation_reads", "holdout_reads", "requested_mode")
@@ -42,6 +52,39 @@ REQUIRED = ("setup_id", "layer", "pre_reg", "screen_verdict", "backtest", "oos",
 
 def _num(x):
     return isinstance(x, (int, float)) and not isinstance(x, bool) and x == x and abs(x) != float("inf")
+
+
+def holm_z(variants):
+    """OURS: two-sided 5% Holm/Bonferroni critical z for `variants` trials in the ledger (z=1.96 for 1)."""
+    return NormalDist().inv_cdf(1 - 0.025 / max(1, int(variants)))
+
+
+def mde_floor(o, z):
+    """OURS: n >= max(MIN_TRADES, 4*((z+0.84)*sd/net_r)^2), sd = se*sqrt(n), se = (ci_high-ci_low)/3.92."""
+    se = (o["ci_high"] - o["ci_low"]) / 3.92
+    sd = se * math.sqrt(max(o["n_trades"], 0))
+    return max(MIN_TRADES, MDE_SAFETY * ((z + POWER_Z) * sd / o["net_r"]) ** 2)
+
+
+def recompute_oos(path):
+    """(n, mean, ci_low, ci_high) from a trades csv with a net_r column: percentile bootstrap (95%) of the mean, seeded.
+    Raises ValueError on an empty file, a missing column or a non-finite value (callers REJECT)."""
+    with open(path, newline="", encoding="utf-8") as f:
+        rd = csv.DictReader(f)
+        if not rd.fieldnames or "net_r" not in rd.fieldnames:
+            raise ValueError("no net_r column")
+        xs = []
+        for row in rd:
+            x = float(row["net_r"])
+            if not _num(x):
+                raise ValueError("non-finite net_r")
+            xs.append(x)
+    if not xs:
+        raise ValueError("no trades")
+    n = len(xs)
+    rng = random.Random(BOOT_SEED)
+    means = sorted(sum(rng.choices(xs, k=n)) / n for _ in range(BOOT_DRAWS))
+    return n, sum(xs) / n, means[int(0.025 * BOOT_DRAWS)], means[int(0.975 * BOOT_DRAWS) - 1]
 
 
 def _git(repo, *args):
@@ -97,8 +140,9 @@ def _blocked(setup_id, layer, cfg_path):
     return bad
 
 
-def check(manifest, repo=REPO, config_path=None):
-    """-> {"result": "PASS"|"REJECT", "reasons": [...], "setup_id": ..., "mode": ...}. `manifest` is a dict or a path."""
+def check(manifest, repo=REPO, config_path=None, legacy=False):
+    """legacy=True (verify() only, for entries already registered) skips the trades_csv recompute when the csv is absent.
+    -> {"result": "PASS"|"REJECT", "reasons": [...], "setup_id": ..., "mode": ...}. `manifest` is a dict or a path."""
     repo = Path(repo)
     reasons = []
     m = manifest
@@ -182,12 +226,41 @@ def check(manifest, repo=REPO, config_path=None):
         elif not all(_num(o.get(k)) for k in ("net_r", "ci_low", "ci_high", "n_trades")):
             reasons.append("oos needs numeric net_r, ci_low, ci_high, n_trades")
         else:
+            tc = o.get("trades_csv")
+            if tc is None and legacy:
+                pass
+            else:
+                cfile = _rel_file(repo, tc)
+                if not cfile:
+                    reasons.append("oos.trades_csv missing or unreadable (the OOS number is recomputed from it)")
+                else:
+                    try:
+                        n2, mean2, lo2, hi2 = recompute_oos(cfile)
+                    except (OSError, ValueError, csv.Error) as e:
+                        reasons.append("oos.trades_csv unusable: %r" % (e,))
+                    else:
+                        if abs(o["net_r"] - mean2) > TOL_R or abs(o["ci_low"] - lo2) > TOL_R or abs(o["ci_high"] - hi2) > TOL_R:
+                            reasons.append("manifest oos differs from the recompute by more than %.2f R: manifest net_r %s CI [%s, %s], "
+                                           "trades_csv net_r %.4f CI [%.4f, %.4f]" % (TOL_R, o["net_r"], o["ci_low"], o["ci_high"], mean2, lo2, hi2))
+                        if abs(o["n_trades"] - n2) > TOL_N * n2:
+                            reasons.append("manifest oos n_trades %s differs from the recompute (%d rows) by more than %d%%" % (o["n_trades"], n2, round(TOL_N * 100)))
             if not o["net_r"] > 0:
                 reasons.append("fee-net OOS net R %s is not above 0" % o["net_r"])
             if not o["ci_low"] > 0:
                 reasons.append("95%% CI low %s is not above 0" % o["ci_low"])
             if not o["ci_low"] <= o["net_r"] <= o["ci_high"]:
                 reasons.append("net_r outside its own CI (ci_low <= net_r <= ci_high)")
+            elif o["net_r"] > 0:
+                tlv = sub("trial_ledger")
+                var = tlv.get("variants") if tlv else None
+                if isinstance(var, int) and not isinstance(var, bool) and var >= 1:
+                    z = holm_z(var)
+                    se = (o["ci_high"] - o["ci_low"]) / 3.92
+                    if o["net_r"] - z * se <= 0:
+                        reasons.append("Holm-adjusted CI low %.4f (z=%.3f for %d variants) is not above 0" % (o["net_r"] - z * se, z, var))
+                    floor = mde_floor(o, z)
+                    if o["n_trades"] < floor:
+                        reasons.append("n_trades %s below the MDE-based floor of %d (z=%.3f)" % (o["n_trades"], math.ceil(floor), z))
             if int(o["n_trades"]) != o["n_trades"] or o["n_trades"] < MIN_TRADES:
                 reasons.append("n_trades %s below the floor of %d" % (o["n_trades"], MIN_TRADES))
 
@@ -219,6 +292,8 @@ def check(manifest, repo=REPO, config_path=None):
             reasons.append("%s must hold exactly one read record (found %s)" % (key, len(recs) if isinstance(recs, list) else "non-list"))
         elif not (isinstance(recs[0], dict) and _is_str(recs[0].get("at")) and _is_str(recs[0].get("ref"))):
             reasons.append("%s record needs non-empty at and ref" % key)
+        elif key == "validation_reads" and not _rel_file(repo, recs[0]["ref"]):
+            reasons.append("validation_reads ref %r is not an existing repo file (the logged VALIDATION read)" % recs[0]["ref"])
 
     # G7: layer not on the trade blocklist or parked list
     if sid:
@@ -353,7 +428,7 @@ def verify(repo=REPO, registry_path=None, config_path=None):
         return [err]
     problems = []
     for e in entries:
-        r = check(Path(repo) / e["manifest"], repo=repo, config_path=config_path)
+        r = check(Path(repo) / e["manifest"], repo=repo, config_path=config_path, legacy=True)    # legacy: entries without trades_csv stay green
         if r["result"] != "PASS":
             problems.append("%s: %s" % (e["setup_id"], "; ".join(r["reasons"])))
         elif r["setup_id"] != e["setup_id"]:

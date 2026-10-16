@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T19:53:47Z",
+  "commands": [],
+  "created": "2026-10-16T18:53:09Z",
+  "depends_on": [],
+  "done_when": "Three fixes shipped with tests; card for audit rerun created; unit counts reported.",
+  "from_inbox": "",
+  "goal": "G3 blocker: fix the three code HIGH findings in g3_pack.py so the pack matches READER_PROTOCOL, then rebuild the draw. Blind marking stays off until the audit is rerun.",
+  "id": "g3-pack-code-fixes",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "Do not mark or read the key. Blindness cards g3-assess-and-remove-... and g3-remove-visible-chart-cues-... follow.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-16_gpt-g3-pack-audit.md",
+    "MyTradingSys/research/g3_marks_2026-10-16/READER_PROTOCOL.md"
+  ],
+  "result": "3 HIGH code fixes + 3 red-first tests; 11 tests pass; draw NOT rebuilt (blindness open); rerun card g3-pack-audit-rerun",
+  "scope_in": [
+    "MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py",
+    "MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py"
+  ],
+  "scope_out": [
+    "the answer key and KEY.csv",
+    "reader sheets",
+    "any VALIDATION or HOLDOUT read",
+    "blindness redesign (separate cards)"
+  ],
+  "size": "M",
+  "sources": [
+    "gpt-g3-pack-audit FIX-FIRST 2026-10-16"
+  ],
+  "state": "done",
+  "steps": [
+    "Write three red tests first: FAB4 outside run of 2 closes must not tag; a divergence with the 20-bar extremum older than 3 bars must tag per protocol; load_intraday must drop rows after the final allowed date.",
+    "Fix each in g3_pack.py to the protocol text (cite protocol line); keep causality tests green.",
+    "Rebuild with python g3_pack.py draw only if the audit says it is safe; never open the key; ship and report the changed row counts."
+  ],
+  "tests": "The three new tests fail on current g3_pack.py and pass after; the 8 existing tests stay green.",
+  "title": "G3 pack: fix 3 HIGH code mismatches from the GPT audit (fab4 min run, mal divergence window, intraday date fence)"
+}

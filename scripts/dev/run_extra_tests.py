@@ -18,12 +18,14 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 EXTRA = [
     "scripts/dev/test_trace.py",
+    "scripts/dev/test_prereg_gate.py",
     "scripts/dev/test_research_kit_lint.py",
     "MyTradingSys/research/layer_lab/context_fix2_mde_rule/test_mde_rule.py",
     "MyTradingSys/research/layer_lab/candle_pattern_event_table/test_patterns.py",
     "MyTradingSys/research/layer_lab/context_fix1_stop_strata/test_stop_strata.py",
     "MyTradingSys/research/layer_lab/bigtrade_event_table/test_event_table.py",
     "MyTradingSys/research/layer_lab/oi_delta_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/volume_event_table/test_event_table.py",
     "scripts/dev/test_lab_flow.py",
     "MyTradingSys/research/qriptal_2026-10-10/test_ledger.py",
     "MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py",
@@ -44,6 +46,7 @@ EXTRA = [
     "MyTradingSys/research/context_factors_2026-10-16/test_dev_ext.py",
     "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py",
     "MyTradingSys/research/level_ledger_2026-10-16/test_level_ledger.py",
+    "MyTradingSys/research/level_ledger_2026-10-16/test_zone_standard.py",
     "scripts/dev/test_suplock.py",
     "MyTradingSys/research/mfe_exit_2026-10-13/test_mfe_exit_study.py",
     "MyTradingSys/research/malkan_extract_2026-10-15/tools/test_check_numbers.py",

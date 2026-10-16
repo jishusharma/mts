@@ -3,10 +3,10 @@
   "plan": "plus",
   "week_resets": 1792677805,
   "week_used": 24.0,
-  "window_resets": 1792177228,
-  "window_used": 3.0
+  "window_resets": 1792195230,
+  "window_used": 0
  },
- "at": "2026-10-16T18:31:29Z",
+ "at": "2026-10-16T19:31:38Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,40 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 19.0,
-  "window_pts": 3.0,
-  "window_runs": 9
+  "window_pts": 0.0,
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-16T19:30:12Z",
+   "card": "gptb-volume-event-table",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 80,
+   "tokens_out": 7113,
+   "tokens_total": 427736,
+   "tokens_uncached": 36879,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-10-16T19:00:02Z",
+   "card": "gptb-volume-event-table",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 169,
+   "tokens_out": 13176,
+   "tokens_total": 1221897,
+   "tokens_uncached": 57617,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-16T18:30:14Z",
    "card": "gptb-candle-pattern-event-table",
@@ -142,36 +172,6 @@
    "tokens_uncached": 80558,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T15:02:28Z",
-   "card": "gptb-candle-pattern-event-table",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": " Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n======================================================================\nFAILED: 3 st",
-   "outcome": "SHIP_FAILED",
-   "seconds": 144,
-   "tokens_out": 5335,
-   "tokens_total": 857147,
-   "tokens_uncached": 49252,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T14:30:02Z",
-   "card": "gptb-candle-pattern-event-table",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": " Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n======================================================================\nFAILED: 3 st",
-   "outcome": "SHIP_FAILED",
-   "seconds": 137,
-   "tokens_out": 6886,
-   "tokens_total": 830514,
-   "tokens_uncached": 50636,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }

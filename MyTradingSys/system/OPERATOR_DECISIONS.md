@@ -918,3 +918,54 @@ Applied: 2026-10-16 Fable session context-factors: PRE_REG_V2.md written, card c
  "answer": "Yes: PRE_REG_V2 (day units, m = 59, realised-MDE rule), audit card first, cross-engine count first, then one read of the 14 cells (DECISION (OURS), operator may overrule)"
 }
 ```
+
+## D7-context-opus-defaults | asked 2026-10-17 | Research
+
+Log the five operator decisions of the Opus context-factors REPORT (D1-D5) with the default each one took?
+
+Recommended: Yes: D1 ran, D2 walk veto kept, D3 applied, D4 days + Holm, D5 no flag
+Answer: Yes: D1 ran, D2 walk veto kept, D3 applied, D4 days + Holm, D5 no flag (DECISION (OURS), operator may overrule)
+Operator note (verbatim): (none; operator 2026-10-17: "do everything end to end ... do not wait for any further input")
+Applied: 2026-10-17 session context-compare-close. D1: card context-composite-dev-read ran once (RESULT.md: INCONCLUSIVE, 241 of 1,010 C events matched, 164 days < 387). D2: the 1h band-walk veto stays in the frozen composite; the operator's 'dance' reading (any close at/below the lower band in the last 2 bars) is a variant only, and COMPARISON.md shows the veto is definition-fragile (2 % of Opus events, 26 % of Fable short episodes). D3: applied 2026-10-16 (D3-dev-ext). D4: every PRE_REG counts power in distinct UTC days with Holm-adjusted z (already enforced by both AUDIT_BEFORE_RUN files and by D6). D5: no 'undone by the partial candle' flag until a candle factor gets a powered test.
+
+```json
+{
+ "order": 26,
+ "stage": "Research",
+ "refs": "research/context_factors_2026-10-16/REPORT.md s.4, research/context_factors_2026-10-16/RESULT.md, research/context_factors_pit_2026-10-16/COMPARISON.md s.3 and s.5",
+ "title": "Log the five operator decisions of the Opus context-factors REPORT (D1-D5) with the default each one took?",
+ "why": "The Opus REPORT listed D1-D5 with defaults, but only D3 reached this log; COMPARISON.md s.5 found D1, D2, D4 and D5 recorded nowhere but the REPORT. A default that is not logged is a habit, not a record, so the next study cannot cite it.",
+ "options": [
+  "Yes: D1 ran, D2 walk veto kept, D3 applied, D4 days + Holm, D5 no flag",
+  "No: leave them in REPORT.md only"
+ ],
+ "recommended": "Yes: D1 ran, D2 walk veto kept, D3 applied, D4 days + Holm, D5 no flag",
+ "answer": "Yes: D1 ran, D2 walk veto kept, D3 applied, D4 days + Holm, D5 no flag (DECISION (OURS), operator may overrule)"
+}
+```
+
+## D8-context-composite-hold | asked 2026-10-17 | Research
+
+Hold card context-composite-v2-dev-read, since under its audit's two fixes the only reachable verdict is INCONCLUSIVE?
+
+Recommended: Yes: hold the card; the composite stays INCONCLUSIVE on DEV; no further composite read until new data or a new design
+Answer: Yes: hold the card; the composite stays INCONCLUSIVE on DEV; no further composite read until new data or a new design (DECISION (OURS), operator may overrule)
+Operator note (verbatim): (none; operator 2026-10-17: "do everything end to end ... do not wait for any further input")
+Applied: 2026-10-17 session context-compare-close: card state blocked (tasks.py apply-op hold), NEXT_SESSION Q86 updated, counts in research/context_factors_2026-10-16/counts_v3.py and REPORT.md s.6.
+
+```json
+{
+ "order": 27,
+ "stage": "Research",
+ "refs": "research/context_factors_2026-10-16/AUDIT_BEFORE_RUN.md items 1-2, layer_lab/context_fix1_stop_strata and context_fix2_mde_rule PRE_REG_V3_ADDENDUM_DRAFT.md, research/context_factors_2026-10-16/counts_v3.py, REPORT.md s.6",
+ "title": "Hold card context-composite-v2-dev-read, since under its audit's two fixes the only reachable verdict is INCONCLUSIVE?",
+ "why": "Counts only, no outcome read. PASS cannot happen: PRE_REG_V2 keeps the gate 'mean net_R of C > 0' and V1 already printed -0.137 R on the same 1,010 trades. FAIL cannot happen: the audit fix forbids FAIL when C and control stops differ by > 25 % relative; the matched V2 controls have median stop 1.560 % vs C 2.086 % (long, 25.2 %) and 1.670 vs 2.165 % (short, 22.9 %), the pool medians 22.5 % / 25.1 % (fix-1 draft), so the bound is crossed on one side either way. Matching controls on stop width (each within 1/1.25 .. 1.25 x the C stop) makes the R units comparable (gap 4.7 % / 6.5 %) but leaves 241 matched events on 165 days, below the 393-day gate. So every DEV design tried so far returns INCONCLUSIVE, and running the card spends an M card for a known word.",
+ "options": [
+  "Yes: hold the card; the composite stays INCONCLUSIVE on DEV; no further composite read until new data or a new design",
+  "No: run PRE_REG_V2 as written (audit said FIX-FIRST)",
+  "Assemble PRE_REG_V3 from the two drafts and run it (expected word: INCONCLUSIVE)"
+ ],
+ "recommended": "Yes: hold the card; the composite stays INCONCLUSIVE on DEV; no further composite read until new data or a new design",
+ "answer": "Yes: hold the card; the composite stays INCONCLUSIVE on DEV; no further composite read until new data or a new design (DECISION (OURS), operator may overrule)"
+}
+```

@@ -92,6 +92,25 @@ class SignalTest(unittest.TestCase):
         texts = [(r["kind"], r["text"]) for r in S.load(S.ensure())]
         self.assertEqual(texts, [("claim", "claim Q73 move files"), ("done", "ship")])
 
+    def test_two_signals_in_one_second_load_in_send_order(self):
+        # 2026-10-16: names were second-stamp + random tail, so same-second signals sorted by chance (ubuntu CI red)
+        from datetime import datetime, timezone
+        self.machine("jis-nb", "pro")
+        base = datetime.now(timezone.utc).replace(microsecond=0)
+        clock = [base]
+        orig_now, orig_rand = S.now, S.random.randrange
+        S.now = lambda: clock[0]
+        vals = iter([0xFFFF, 0x0000])                       # the later signal gets the smaller random tail
+        S.random.randrange = lambda n: next(vals)
+        try:
+            clock[0] = base.replace(microsecond=100)
+            S.send("first", kind="claim")
+            clock[0] = base.replace(microsecond=200)
+            S.send("second", kind="done")
+        finally:
+            S.now, S.random.randrange = orig_now, orig_rand
+        self.assertEqual([r["text"] for r in S.load(S.ensure())], ["first", "second"])
+
     def test_session_start_signal_and_subagent_and_off_are_silent(self):
         self.machine("jis-nb", "pro")
         S.handle(self.payload("SessionStart", source="startup"))

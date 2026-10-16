@@ -127,8 +127,10 @@ def send(text, to="all", kind="note", cwd=None):
     h = ensure(cwd)
     if h is None:
         return False
-    rec = {"t": stamp(), "from": who(), "to": to, "kind": kind, "text": clean(text)}
-    name = "%s-%s-%04x.json" % (rec["t"], re.sub(r"[^a-z0-9]+", "", host())[:12], random.randrange(1 << 16))
+    dt = now()
+    rec = {"t": stamp(dt), "from": who(), "to": to, "kind": kind, "text": clean(text)}
+    # microseconds right after the 16-char second stamp: two signals in one second sort in send order, not by the random tail
+    name = "%s%06d-%s-%04x.json" % (rec["t"], dt.microsecond, re.sub(r"[^a-z0-9]+", "", host())[:12], random.randrange(1 << 16))
     for _ in range(4):
         (h / name).write_text(json.dumps(rec, ensure_ascii=False), encoding="utf-8", newline="\n")
         prune(h)

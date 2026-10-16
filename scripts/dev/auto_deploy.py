@@ -8,6 +8,8 @@ Runs where the file `.mts_live` exists (JIS-NB). Anywhere else it reports NOT_LI
   3. Gate the candidate in a throwaway detached worktree (run_all_tests.py --quick, limit GATE_TIMEOUT_S = 2700 s, env MTS_DEPLOY_GATE_TIMEOUT). Red =
      STOP_RED: the live tree is never touched, and the same SHA is not re-gated every cycle (the state file remembers it). A timed-out gate keeps its
      partial output in gate_tail; every gated result records gate_secs.
+     The gate holds one machine-wide gate slot (sync.gate_slot, GATE_SLOTS=2, shared with the ship gates; waits at most gate_timeout()). No slot in time =
+     STOP_SLOT: nothing was tested so nothing is deployed, it is not red, the next tick retries the same SHA.
   3b. Dirty GENERATED files (GENERATED_RE) are backed up to runtime_data/deploy_backup/<stamp>/regenerated/ and restored by `git checkout -- <file>`.
   3c. Fast-track fallback (stale green) only while the newest COMPLETED CI run on fast-track is green; red = FALLBACK_REFUSED_CI_RED, unknown
      (gh missing / auth / parse error / no completed run) = FALLBACK_REFUSED_CI_UNKNOWN (fail closed): both stay on green/fast-track.
@@ -36,6 +38,9 @@ import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from sync import GateSlotTimeout
 
 REPO = Path(__file__).resolve().parents[2]
 SCHED = REPO / "MyTradingSys" / "runtime" / "sched"
@@ -246,6 +251,15 @@ class Ops:
         return self.git("diff", "--ignore-space-at-eol", "--quiet", "HEAD", "--", rel)[0] == 0
 
     def gate(self, sha):
+        """Run the quick gate on `sha` while holding one machine-wide gate slot (sync.gate_slot: the same slots the ship gates use, dead-PID
+        slots reclaimed, released in the with-exit whatever raised). No slot within gate_timeout() raises sync.GateSlotTimeout: the caller
+        must not deploy (fail closed)."""
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import sync
+        with sync.gate_slot(REPO, timeout=gate_timeout()):
+            return self._gate_in_worktree(sha)
+
+    def _gate_in_worktree(self, sha):
         wt = REPO.parent / "mts-deploy-gate"
         if wt.exists():
             self.git("worktree", "remove", "--force", str(wt))
@@ -415,7 +429,11 @@ def run(ops=None, check=False, state=None, save=True):
         res["action"] = "WOULD_DEPLOY"
         return _finish(res, save)
     t0 = _clock(ops)
-    grc, gout = ops.gate(target)
+    try:
+        grc, gout = ops.gate(target)
+    except GateSlotTimeout as e:   # no free gate slot: nothing was tested, so nothing is deployed; not red, so the same SHA is gated on the next tick
+        res.update(action="STOP_SLOT", reason=f"{e}; nothing deployed, the next tick retries {target[:7]}", gate_secs=round(_clock(ops) - t0))
+        return _finish(res, save)
     res["gate_secs"] = round(_clock(ops) - t0)   # every gated result carries it: a slow gate shows up before it times out
     res["gate_tail"] = [ln for ln in gout.splitlines() if ln.strip()][-6:]
     if grc != 0:

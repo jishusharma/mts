@@ -126,5 +126,49 @@ class Select(unittest.TestCase):
         self.assertEqual(self.sel("MyTradingSys" + BS + "execution" + BS + "auto_trader.py")[0], "full")
 
 
+class Explain(unittest.TestCase):
+    """explain() = select() plus the reason (2026-10-16: no record of WHY the ship gate chose full vs smoke)."""
+
+    def ex(self, *files):
+        return gs.explain(list(files), STEPS, mentioned=mentioned)
+
+    def test_select_signature_and_return_unchanged(self):
+        import inspect
+        self.assertEqual(list(inspect.signature(gs.select).parameters), ["files", "steps", "mentioned"])
+        self.assertEqual(len(self.sel_all("src/x.java")), 2)
+
+    def sel_all(self, *files):
+        return gs.select(list(files), STEPS, mentioned=mentioned)
+
+    def test_full_names_the_file_that_forced_it(self):
+        mode, nums, reason = self.ex("README.md", "scripts/dev/dsa.py", "src/x.java")
+        self.assertEqual(mode, "full")
+        self.assertEqual(nums, [n for n, _ in STEPS])
+        self.assertIn("src/x.java", reason)
+        self.assertIn("live path", reason)
+
+    def test_full_for_unknown_path_says_so(self):
+        mode, _, reason = self.ex("tools/odd.rb")
+        self.assertEqual(mode, "full")
+        self.assertIn("tools/odd.rb", reason)
+        self.assertIn("no rule", reason)
+
+    def test_smoke_names_the_always_steps(self):
+        mode, nums, reason = self.ex("scripts/dev/dsa.py")
+        self.assertEqual(mode, "smoke")
+        self.assertTrue(reason.startswith("smoke"))
+        for n in gs.ALWAYS:
+            self.assertIn(n, reason)
+
+    def test_explain_agrees_with_select(self):
+        for files in ([], ["a.md"], ["scripts/dev/dsa.py"], ["src/x.java"], ["x.rb"]):
+            mode, nums, _ = self.ex(*files)
+            self.assertEqual((mode, nums), self.sel_all(*files))
+
+    def test_none_and_docs_have_reasons(self):
+        self.assertIn("nothing", self.ex()[2])
+        self.assertIn("docs", self.ex("a.md")[2])
+
+
 if __name__ == "__main__":
     unittest.main()

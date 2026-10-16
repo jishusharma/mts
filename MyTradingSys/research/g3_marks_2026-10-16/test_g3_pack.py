@@ -155,3 +155,46 @@ def test_published_window_list_does_not_reveal_the_half():
     first, last = date(2021, 3, 1), date(2025, 3, 31)
     assert all(first <= datetime.strptime(w["right_edge_utc"][:10], "%Y-%m-%d").date() <= last for w in wins)
     assert all(not (date(2024, 6, 30) < datetime.strptime(w["right_edge_utc"][:10], "%Y-%m-%d").date() < date(2024, 12, 2)) for w in wins)
+
+
+# ---- GPT audit 2026-10-16 HIGH findings (READER_PROTOCOL.md section 1 rows "outside P / break-in" and "RSI divergence")
+def test_fab4_break_in_needs_at_least_four_closes_outside():
+    from types import SimpleNamespace as NS
+
+    def run_case(n_out):
+        B = [dict(t=T0 + k * 5 * g.MIN, c=100.0) for k in range(12)]
+        i = 11
+        for k in range(i - n_out, i):
+            B[k]["c"] = 150.0  # above the old VAH (110)
+        cx = NS(va_prior=lambda t: (90.0, 110.0, 100.0), day_first={B[0]["t"] // g.DAY: 0})
+        return g.pf_fab4(B, i, cx)
+    assert run_case(2) is None and run_case(3) is None  # protocol: at least 4 closes outside before the break-in
+    assert run_case(4) == "down" and run_case(6) == "down"
+
+
+def test_divergence_prefilter_takes_a_20_bar_extremum_older_than_3_bars():
+    from types import SimpleNamespace as NS
+    n, i, a, b = 100, 90, 40, 80  # b is 10 bars before i but still the highest close of the last 20
+    c, r = [100.0] * n, [50.0] * n
+    c[a], c[b] = 120.0, 130.0  # ref high 5..60 bars before b, lower than b
+    r[a], r[b] = 70.0, 60.0  # RSI lower at the new high
+    d = [dict(o=100.0, c=99.0) for _ in range(n)]  # red trigger candle at i
+    assert g.pf_mal1617(NS(c=c, rsi=r, d=d), i) == "bear"
+    # mirror: lowest close of the last 20 is 10 bars old, RSI higher there
+    c2, r2 = [100.0] * n, [50.0] * n
+    c2[a], c2[b] = 80.0, 70.0
+    r2[a], r2[b] = 30.0, 40.0
+    d2 = [dict(o=100.0, c=101.0) for _ in range(n)]
+    assert g.pf_mal1617(NS(c=c2, rsi=r2, d=d2), i) == "bull"
+    # the reference window moves with b: a high 61+ bars before b does not count
+    c3 = list(c); c3[a] = 100.0; c3[b - 61] = 120.0
+    assert g.pf_mal1617(NS(c=c3, rsi=r, d=d), i) is None
+
+
+def test_load_intraday_drops_rows_after_the_final_allowed_day(tmp_path):
+    ms = lambda d: int(datetime(d.year, d.month, d.day, tzinfo=timezone.utc).timestamp() * 1000)
+    cols = "t,o,h,l,c,buy_vol,sell_vol,delta,cvd_day,b999_buy_n,b999_sell_n,fp\n"
+    d = date(2025, 3, 31)
+    with gzip.open(tmp_path / f"{d.isoformat()}.csv.gz", "wt", encoding="utf-8", newline="") as f:
+        f.write(cols + f"{ms(d)},1,2,0.5,1.5,1,1,0,0,0,0,10:1:1\n" + f"{ms(d) + g.DAY},1,2,0.5,1.5,1,1,0,0,0,0,10:1:1\n")
+    assert [g.iso(r["t"]) for r in g.load_intraday(tmp_path)] == ["2025-03-31T00:00:00Z"]

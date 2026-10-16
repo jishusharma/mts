@@ -57,7 +57,7 @@ update that worktree (`git -C <wt> fetch -q origin`, then `git -C <wt> merge -q 
    - Needs a fact only the operator has: `tasks.py tried <id> --asks "<one short question>"`; the page shows it, the answer comes in the Inbox.
    - Needs numbers from a run: post a DSA desk task (DSA_DELEGATION.md) and leave the card `refined` with the desk id in `note`; do not run it yourself.
    - Size L: split into S/M cards (`tasks.py new`), drop the parent with a note. A new defect or task still gets its BUGS.md row under that file's rules.
-4. Product code is out of scope for the refiner (cards, docs, desk posts only). `tasks.py lint`, `sync.py ship`, `sync.py release <slug>`.
+4. Product code is out of scope for the refiner (cards, docs, desk posts only). `tasks.py lint`, `sync.py ship --release <slug>`.
 5. One pass per HOURLY line, 3 cards max, routine model. The brake: a card gets 2 tries, a question parks it at once, and parked cards do not count toward REFINE_NEEDED.
 
 ## Operator controls (Control Room > Backlog; no other page)
@@ -70,4 +70,4 @@ pickup turns it into a raw card and replies with the card id. The operator never
 - The card text is the contract: a builder that needs to ask a question hands the card back as `refined` with the question in `note`.
 - Cost: capture costs nothing, refinement is Sonnet/Haiku/DSA, builders get a <= 30-line prompt. Nobody pays to re-derive scope.
 - Numbers rule (2026-10-13): a card that sets a parameter labels it SOURCED (quote + file:line in `sources`) or OURS (chosen on DEV, checked once on VALIDATION).
-- PRE_REG template (`research/gross_effect_screen_2026-10-15/PRE_REG.md`): before freezing, run `python scripts/dev/verdicts.py check "<family words>"` and paste its output; append your row after RESULT (`verdicts.py backfill`; `verdicts.py count --split DEV` is the m for a Holm adjustment). Registry: `research/VERDICTS.csv`; exit 1 = a one_run PRE_REG or a FAIL already covers this family.
+- PRE_REG template (`research/gross_effect_screen_2026-10-15/PRE_REG.md`): before freezing, run `python scripts/dev/verdicts.py check "<family words>"` and paste its output; append your row after RESULT (`verdicts.py backfill`; `verdicts.py count --split DEV` is the m for a Holm adjustment). Then run `python scripts/dev/prereg_gate.py --n <days> --sd <sd R> --cost <R> --m <m>`: exit 1 = MDE + cost exceeds the 0.30 R plausible gross (OURS), so do not freeze. Registry: `research/VERDICTS.csv`; exit 1 = a one_run PRE_REG or a FAIL already covers this family.

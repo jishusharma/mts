@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Session log: what each work session did, read from the trunk history (no model, no transcript).
 
-A session opens with `sync.py claim <slug>` and closes with `sync.py release <slug>`; both are commits.
+A session opens with `sync.py claim <slug>` and closes with `sync.py ship --release <slug>` (or `release` when nothing shipped); the claim is a commit.
 Everything shipped in between carries a `Result:` line. This module turns that history into
   units   - one row per claim..release pair: slug, host, opened, closed, minutes, empty (nothing shipped by anyone in the window)
   shipped - one row per work commit (bookkeeping removed): when, subject, result

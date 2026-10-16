@@ -1,5 +1,7 @@
 # Bigtrade event table — 2026-10-16
 
+**CONTAMINATED (DEV read VALIDATION 2024-07..12)**: DEV end was 2025-01-01; corrected in bigtrade_event_table/DEV_BOUNDARY_FIX_2026-10-17.md (128,078 rows, 5,685 OK).
+
 **Build result:** 153,685 DEV fire rows; 6,748 measured and 146,937 marked `NOT_IN_DATA`. Test suite: 4 passed.
 
 ## Work and evidence

@@ -23,3 +23,14 @@ Order: edge, then grid, then weighting, then remainder; a level is counted in th
 - Grid and weighting: 51 of 65. FORMULAS 18.1 itself marks the 10 USDT grid NO-SOURCE and the weighting difference as "accepted"; Java's ~5 grid and triangular weights are NO-SOURCE too. Neither side is defined by the trader's words, so neither is "wrong" against a source.
 DECISION (OURS): ambiguous, report only. No Java or research code changed; changing live `buildVp` on an unsourced choice would alter live behaviour without evidence it is more right.
 Follow-up for the owner: pick one sourced profile definition for both sides (the W2a adapter already uses the Python reference), then port it to Java with the live-path gate.
+
+## DECISION (OURS) - single volume-profile definition (card zone-profile-standard-ours, 2026-10-17)
+Label: OURS (NO-SOURCE; chosen for reproducibility, not for edge). The one profile definition for research is FORMULAS 18.1:
+1. Grid: fixed 10 USDT bins anchored at multiples of 10 (bin k = [10k, 10k+10)).
+2. Weighting: uniform overlap spread of each bar's volume over its high-low (point mass if high == low).
+3. Edge convention: POC = bin centre, VAH = top edge of the top value-area bin, VAL = bottom edge of the bottom bin.
+Pinned by `level_ledger_2026-10-16/test_zone_standard.py` (3 hand-computed days; `standard_profile()` in the classifier;
+registered in run_extra_tests.py). No Java file changed.
+Follow-up Q for NB (JIS-NB live-path item, not done here): port this definition to `MarketDataSnapshot.buildVp` (10 USDT fixed grid,
+uniform weights, 18.1 edges) with the live-path gate (restart/reset state, API errors), or keep Java's ~5 USDT triangular profile and
+accept that live zones differ from research zones (51 of 65 mismatching levels are grid and weighting, 13 are edges). Default if no answer: keep Java as is.

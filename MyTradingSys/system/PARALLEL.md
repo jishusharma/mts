@@ -18,6 +18,9 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
   shows what is unshipped) and never runs in the live tree. The previous task's branch is deleted once it is fully on origin/fast-track.
 - `sync.py start [slug]` elsewhere: in a tree that is dirty or ahead of origin it does NOT work there; it makes
   `../mts-<host>-<slug>` off origin/fast-track and prints `WORKTREE: <path>`; work only there. `--here` opts out.
+- `sync.py start <slug>` also prints trunk study folders (`research/`, `research/layer_lab/`) and task cards whose names hold
+  every slug word: same task already done = read it and compare, never rebuild or overwrite (2026-10-16: one prompt ran on two
+  machines; the second session, in an app worktree that skipped `sync.py start`, found the first one's folder only at ship time).
 - `ship`: a collision confined to NEXT_SESSION.md, STATUS.md or BUILD_REPORT.md resolves to origin's text and says so
   (re-apply your edit if it mattered); a collision anywhere else still stops for a human.
 - Lists that every session appends to (run_all_tests.py test lists) are one entry per line; a test enforces it.
@@ -48,7 +51,7 @@ other sessions' uncommitted files and unshipped commits) and a handful of hot fi
    the tests of the changed files + the pytest shards + wiring + task cards; live-path files (execution, runtime, scripts/sched, src, .github,
    sync.py, run_all_tests.py, auto_deploy.py) or any path no rule knows = every `--quick` step (fail closed); `--full` forces that.
    Start `ship` with run_in_background and read the output once (a foreground tool call dies at 600 s). A rejected push means
-   someone shipped first; it re-merges and retries. A real conflict stops and asks you to resolve it. Then `sync.py release <slug>`;
+   someone shipped first; it re-merges and retries. A real conflict stops and asks you to resolve it. Ship the last task with `sync.py ship --release <slug>` (the claim file is deleted in the same push; a standalone `sync.py release <slug>` is only for 'nothing to ship');
    `sync.py where` must be clean; overwrite NEXT_SESSION.md if you are the last session of the day (hand-over: RELAY.md; session length: CLAUDE.md SHORT SESSIONS).
 5. CI (`.github/workflows/ci.yml`) runs the full gate on both OSes after every push and publishes the passing SHA as `green/fast-track`;
    MTS-AutoDeploy (`scripts/dev/auto_deploy.py`) deploys only that branch (fast-track only after 90 min without a green advance, gated by the
