@@ -1,4 +1,5 @@
 """DEV-only time-adjusted volume spike table for 1h and 4h klines."""
+import argparse
 import csv
 from pathlib import Path
 
@@ -38,7 +39,6 @@ def build_event_table(bars, timeframe, n_weeks=8, horizon=6, threshold=2.0,
         except (TypeError, ValueError):
             continue
     times = sorted(data)
-    by_index = {t: i for i, t in enumerate(times)}
     volumes = []
     for t in times:
         try:
@@ -74,7 +74,7 @@ def build_event_table(bars, timeframe, n_weeks=8, horizon=6, threshold=2.0,
                "relative_volume": rv if rv is not None else "",
                "is_spike": bool(is_spike), "direction": "", "risk_range": "", "forward_return_R": "",
                "mfe_R": "", "mae_R": "", "bars_forward": 0,
-               "status": "OK" if base is not None else "NOT_IN_DATA"}
+               "status": "OK" if rv is not None else "NOT_IN_DATA"}
         if is_spike:
             try:
                 o, h, low, c = (_number(bar, *names) for names in (("open", "o"), ("high", "h"), ("low", "l"), ("close", "c")))
@@ -82,8 +82,8 @@ def build_event_table(bars, timeframe, n_weeks=8, horizon=6, threshold=2.0,
                 direction = 1 if c > o else -1 if c < o else 0
                 next_i = i + 1
                 end_i = min(len(times), next_i + int(horizon))
-                # Do not bridge missing candles or use bars beyond DEV.
-                valid = end_i > next_i and all(times[j] == times[j - 1] + step for j in range(next_i, end_i))
+                # Do not bridge missing candles or use a partial horizon / bars beyond DEV.
+                valid = end_i == next_i + int(horizon) and all(times[j] == times[j - 1] + step for j in range(next_i, end_i))
                 if risk <= 0 or not direction or next_i >= len(times) or times[next_i] != t + step or not valid:
                     row["status"] = "NOT_IN_DATA"
                 else:
@@ -92,8 +92,8 @@ def build_event_table(bars, timeframe, n_weeks=8, horizon=6, threshold=2.0,
                     highs = [_number(x, "high", "h") for x in future]
                     lows = [_number(x, "low", "l") for x in future]
                     exit_close = _number(future[-1], "close", "c")
-                    favorable = (max(highs) - entry) * direction
-                    adverse = (entry - min(lows)) * direction
+                    favorable = max(highs) - entry if direction > 0 else entry - min(lows)
+                    adverse = entry - min(lows) if direction > 0 else max(highs) - entry
                     row.update({"direction": "up" if direction > 0 else "down", "risk_range": risk,
                                 "forward_return_R": round(direction * (exit_close - entry) / risk, 8),
                                 "mfe_R": round(max(0.0, favorable / risk), 8),
