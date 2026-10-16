@@ -29,12 +29,14 @@ Read the last result any time: `python -c "import json;print(open('MyTradingSys/
 Register (once per host, as the logged-in user): `powershell -File scripts/sched/register_cicd_tasks.ps1 -Trigger` (add `-SkipDeploy` on hosts that are not the live tree).
 
 ## CI starvation fallback (2026-10-10)
-The GitHub token on the builder machines has no `workflow` scope, so `.github/workflows/ci.yml` cannot be changed from here.
-ci.yml cancels the running push job on every new push, so during a burst `green/fast-track` stops advancing (it sat at 24197c4 for
-a day). `auto_deploy.py` therefore falls back: when `origin/green/fast-track` is older than 90 min and is an ancestor of
-`origin/fast-track`, it gates and fast-forwards `origin/fast-track` instead. The local gate in the throwaway worktree is the
-safety; red still stops. The root fix is `cancel-in-progress` only for PRs in ci.yml (the patch file was archived 2026-10-15 under
-`MyTradingSys/archive/`): the operator applies it once from an account with workflow scope, or adds the `workflow` scope to the token.
+ci.yml used to cancel the running push job on every new push, so during a burst `green/fast-track` stopped advancing (it sat at
+24197c4 for a day; runs 38825243976 and 38824936295 were cancelled 2026-10-16). Fixed 2026-10-16 (ci-nowin-conc): `cancel-in-progress` is
+`${{ github.ref != 'refs/heads/fast-track' }}`, so the run in progress on fast-track finishes and `mark-green` publishes its SHA (GitHub keeps only
+the newest pending run, runs go one at a time in push order, so green never moves backwards; every marked SHA was a fast-track head and fast-track is
+never rewritten). PR and other-ref runs are still cancelled when superseded. `scripts/dev/test_ci_red_card.py` (CiConcurrency) pins it; the old
+`system/ci_concurrency_fix.patch` is superseded. `auto_deploy.py` keeps its fallback as a safety net: when `origin/green/fast-track` is older than
+90 min and is an ancestor of `origin/fast-track`, it gates and fast-forwards `origin/fast-track` instead. The local gate in the throwaway
+worktree is the safety; red still stops.
 
 ## Daily hygiene (moved here from CLAUDE.md 2026-10-11)
 Task `MTS-DailyHygiene` (06:30) runs `scripts/dev/daily_hygiene.py` (quick gate, `sync.py where`, declutter DRY run, STATUS) ->

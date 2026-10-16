@@ -23,7 +23,9 @@ permissions:
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # fast-track gets a merge every few minutes and a run takes ~6 min: cancelling the running push job starved mark-green.
+  # A fast-track run finishes (GitHub keeps only the newest pending one); PR and other-ref runs are still superseded.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/fast-track' }}
 
 jobs:
   offline-gate:
