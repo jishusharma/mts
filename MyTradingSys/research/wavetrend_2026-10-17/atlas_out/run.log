@@ -1,0 +1,14 @@
+W01 5m A1_L53 trend:trend_with n 3893 mean -1.43 rc -0.11 z -0.91 holm False pass False counts_match True
+W02 5m A1_L53 htf:htf_mid n 4196 mean -0.78 rc -0.18 z -0.46 holm False pass False counts_match True
+W03 5m A2_L53 trend:trend_with n 3509 mean -0.43 rc 0.03 z -0.32 holm False pass False counts_match True
+W04 15m A2_L53 trend:trend_with n 1154 mean -2.09 rc 0.08 z -0.49 holm False pass False counts_match True
+W05 15m B2 htf:htf_mid n 788 mean -5.78 rc 0.17 z -1.27 holm False pass False counts_match True
+W06 15m B2 trend:trend_with n 538 mean -4.22 rc 0.3 z -0.81 holm False pass False counts_match True
+W07 1h C1 trend:trend_with n 298 mean -2.95 rc -0.07 z -0.15 holm False pass False counts_match True
+W08 1h C1 htf:htf_mid n 271 mean 8.97 rc -1.38 z 0.61 holm False pass False counts_match True
+W09 1h B1 htf:htf_mid n 947 mean 2.41 rc -0.79 z 0.41 holm False pass False counts_match True
+{"5m": {"valid_module": 262456, "valid_ref": 262456, "valid_both": 262456, "max_abs_diff_wt1": 0.0, "max_abs_diff_wt2": 1.4210854715202004e-14}, "15m": {"valid_module": 87352, "valid_ref": 87352, "valid_both": 87352, "max_abs_diff_wt1": 0.0, "max_abs_diff_wt2": 1.4210854715202004e-14}, "1h": {"valid_module": 21688, "valid_ref": 21688, "valid_both": 21688, "max_abs_diff_wt1": 0.0, "max_abs_diff_wt2": 1.4210854715202004e-14}, "4h": {"valid_module": 5272, "valid_ref": 5272, "valid_both": 5272, "max_abs_diff_wt1": 0.0, "max_abs_diff_wt2": 1.4210854715202004e-14}}
+
+real	0m54.373s
+user	0m0.000s
+sys	0m0.046s
