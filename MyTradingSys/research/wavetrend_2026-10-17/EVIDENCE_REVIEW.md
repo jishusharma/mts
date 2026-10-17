@@ -12,7 +12,7 @@ For this review, effectiveness requires exact formula/version, exchange and inst
 
 ### Crypto futures: T3 negative backtest with disclosed limitations
 
-[Freqle's WaveTrend run](https://freqle.org/strategy/87e4dcbb8940491a), observed 2026-10-17, reports its own test of adevrent's strategy: 33-pair futures universe, configured 2022-01-01 to 2025-01-01, 7,893 trades, -90.18%, PF 0.75 despite 81.1% wins, 0.05% fee per side. Trading ends July 2023, not 2025. Its sandbox supplied 5m because code omitted a timeframe. OOS, executable lookahead and recursive analyses were not run; funding/slippage treatment was not established. This is not BTC-only evidence.
+[Freqle's WaveTrend run](https://freqle.org/strategy/87e4dcbb8940491a), observed 2026-10-17, reports its own test of adevrent's strategy: 33-pair futures universe, configured 2022-01-01 to 2025-01-01, 7,893 trades, -90.18%, PF 0.75 despite 81.1% wins, 0.05% fee per side. Its last ledger trades are 2023-06-30 / 2023-07-01, not 2025. Its sandbox supplied 5m because code omitted a timeframe. OOS, executable lookahead and recursive analyses were not run; funding/slippage treatment was not established. This is not BTC-only evidence.
 
 Reproducible hypothesis from displayed code: HLC3, EMA lengths 9/12, normalization 0.015, SMA signal length 3; cross up with WT2 below -80 enters long, mirrored +80 short; opposite crosses beyond +/-60 exit. Replication also requires its ROI/trailing/stop rules. These are derivative choices. The page says not rated yet and no discussion yet; neither GitHub stars nor downloads are reviews. Cached versions differed; use this observed run.
 
@@ -31,7 +31,6 @@ This is a concrete candidate for replication, not evidence of a BTC edge. Its mi
 The following URLs were attempted but could not be reliably opened. They are REJECTED as evidentiary sources in this report; search snippets are not substituted for inspection. Titles and URLs are retained only for a future source-retrieval pass.
 
 - [WaveTrend with Pump Candle Rejection, Reuter](https://www.tradingview.com/script/aQrcWpF8-WaveTrend-with-Pump-Candle-Rejection-Reuter/).
-- [Wave Trend with VWMA overlay, jadamcraig](https://www.tradingview.com/script/Tts2YhVP-Wave-Trend-w-VWMA-overlay/).
 - [WaveTrend indicator strategy on gold, RipBacktest](https://ripbacktest.com/posts/wavetrend-indicator-strategy-gold/).
 
 No performance claims, rules or engagement counts from these excluded leads enter the verdict or proposed replication candidates.

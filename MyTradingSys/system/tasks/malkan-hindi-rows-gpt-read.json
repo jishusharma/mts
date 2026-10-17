@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T12:06:25Z",
   "commands": [],
   "created": "2026-10-15T14:29:33Z",
   "crucial": true,
@@ -12,6 +13,28 @@
   "id": "malkan-hindi-rows-gpt-read",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "report MyTradingSys/research/layer_lab/reports/2026-10-17_malkan-hindi-rows-gpt-read.md: v",
+      "ref": "55696cf3",
+      "utc": "2026-10-17T12:06:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Malkan 5-star/7-star: COMPARE.md with extract lines vs web/spec/code, Source lines on SETU",
+      "ref": "ecc5bebc038b",
+      "utc": "2026-10-15T21:19:33Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "ecc5bebc038b Malkan 5-star/7-star: COMPARE.md with extract lines vs web/spec/code, Source ",
+      "ref": "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md",
+      "utc": "2026-10-15T21:19:33Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "model": "gpt-6-astra",
@@ -19,8 +42,9 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-17T07:24:59Z",
   "refs": [],
-  "result": "",
+  "result": "report MyTradingSys/research/layer_lab/reports/2026-10-17_malkan-hindi-rows-gpt-read.md: verdict SOUND, 0 HIGH, 3 MED (stop recoverable below candle low, '100' is 60, 2068 unresolved); 5/7-star not in W, grades-only in A",
   "scope_in": [
     "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md",
     "MyTradingSys/research/malkan_extract_2026-10-15/extracts/extract_W1HrDl70Lhk.md",
@@ -33,9 +57,10 @@
     "holdout reads",
     "BTC runs of the current encoding (ROADMAP section 2)"
   ],
+  "scope_sha": "ecc5bebc038b",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",

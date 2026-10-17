@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-17T12:20:31Z",
+  "depends_on": [],
+  "done_when": "a dated note in MyTradingSys/research/ with the counts and one card per defect",
+  "est_turns": 12,
+  "from_inbox": "",
+  "goal": "One read-only report: are live-loop timeouts gone after B191, plus wrapper priority and snapshot.cp state.",
+  "id": "live-loop-timeouts-b191",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T12:20:50Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "runtime_data/live_runner.log",
+    "the wrapper that starts the live loop",
+    "snapshot.cp"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "count timeout lines before and after the B191 deploy (parse the real format)",
+    "report wrapper priority and snapshot.cp state",
+    "file one card per real defect"
+  ],
+  "tests": "none (report only; no code change)",
+  "title": "Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)",
+  "worker": "agent"
+}

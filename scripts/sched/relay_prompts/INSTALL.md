@@ -1,5 +1,7 @@
 # Install and verify the relay prompts on a host
 
+> **RETIRED 2026-10-17**: see ACCOUNT_SYNC.md.
+
 One App task per host, `mts-dispatcher`; its prompt is `mts-dispatcher.SKILL.md` here (a ~2 KB stub: ONE Bash call to `relay.py tick`). The
 behaviour lives in git (`relay.py`, `relay_session.md`), so the stub rarely changes. Rules and recovery: `TWO_HOST.md`.
 

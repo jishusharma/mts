@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T12:25:37Z",
   "commands": [],
   "created": "2026-10-16T13:48:05Z",
   "depends_on": [],
@@ -11,6 +12,28 @@
   "id": "gptb-candle-pattern-event-table",
   "kind": "build",
   "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DEV 1h 12219 rows (12195 OK) / 4h 3308 (3298 OK), 11 tests green; layer_lab/reports/2026-1",
+      "ref": "ff039771",
+      "utc": "2026-10-17T12:25:37Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wavetrend-priority-source-parity: register parity ref + test in wiring and extra gate",
+      "ref": "515d07a91407",
+      "utc": "2026-10-17T06:23:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "26c6f3a837e8 bigtrade: relabel fire CSV split column to repo split; DEV-only reruns of con",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-10-17T03:31:53Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "model": "gpt-6-luna",
@@ -18,9 +41,10 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:24:47Z",
   "refs": [],
   "reopened": "2026-10-17T03:45:00Z",
-  "result": "",
+  "result": "DEV 1h 12219 rows (12195 OK) / 4h 3308 (3298 OK), 11 tests green; layer_lab/reports/2026-10-17_gptb-candle-pattern-event-table.md",
   "scope_in": [
     "MyTradingSys/research/layer_lab/candle_pattern_event_table/patterns.py",
     "MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py",
@@ -39,9 +63,10 @@
     "Tom/Fabio layer code",
     "trading rules or tuning"
   ],
+  "scope_sha": "515d07a91407",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the BRIEF.md in scope_in and the existing module and test file; add a failing test for the DEV npz loader and the DEV slice (red first).",
     "Add the loader + CLI (--input default the npz path in the brief; DEV slice before bars are built; dev_only/assert_dev) and fix gaps the tests expose; gap or missing input = NOT_IN_DATA, never 0.",

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T12:05:15Z",
   "commands": [],
   "created": "2026-10-15T14:29:34Z",
   "crucial": true,
@@ -12,6 +13,28 @@
   "id": "krown-catalogue-gpt-audit",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND: quotes verbatim, 0 HIGH, 2 MED 5 LOW; MyTradingSys/research/layer_lab/reports/2026-",
+      "ref": "78402f22",
+      "utc": "2026-10-17T12:05:15Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "krown-g2: KROWN_SETUP_CATALOG.md, S1-S9 rewritten into the G2 catalogue format",
+      "ref": "f4a5182a9735",
+      "utc": "2026-10-15T13:40:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f4a5182a9735 krown-g2: KROWN_SETUP_CATALOG.md, S1-S9 rewritten into the G2 catalogue forma",
+      "ref": "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md",
+      "utc": "2026-10-15T13:40:28Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "model": "gpt-6-astra",
@@ -20,8 +43,9 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-17T07:24:56Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND: quotes verbatim, 0 HIGH, 2 MED 5 LOW; MyTradingSys/research/layer_lab/reports/2026-10-17_krown-catalogue-gpt-audit.md",
   "scope_in": [
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md",
     "MyTradingSys/research/krown_ta101_2026-10-13/transcripts/ (read only)",
@@ -32,9 +56,10 @@
     "holdout reads",
     "BTC runs of the current encoding (ROADMAP section 2)"
   ],
+  "scope_sha": "f4a5182a9735",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",

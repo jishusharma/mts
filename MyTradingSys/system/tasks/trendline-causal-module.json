@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T08:57:58Z",
   "commands": [],
   "created": "2026-10-17T03:55:01Z",
   "depends_on": [
@@ -12,30 +13,40 @@
   "goal": "Implement the contract as a causal, versioned trend-line module that cannot look ahead or repaint, reusing existing pivot and closed-bar resample code.",
   "id": "trendline-causal-module",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "trendline_core.py + 29 look-ahead tests shipped (signal 0753Z)",
+      "ref": "d9ccc589",
+      "utc": "2026-10-17T08:57:58Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
   "live_path": false,
-  "note": "Filed by trendlines-verify 2026-10-17 after CLAUDE_VERIFY.md (FIX-FIRST). Gate order: contract, causal module, count-only, then PRE_REG; no backtest study yet. Stays refined until its depends_on card is done, then flip to ready.",
+  "note": "Filed by trendlines-verify 2026-10-17. Contract shipped (trendline-contract-spec done 2026-10-17, lint rows=48 problems=0); scope_in path fixed to MyTradingSys/ prefix and card promoted by backlog-refine-1017. Claim is held by JIS-NUC.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:44:14Z",
   "refs": [],
-  "result": "",
+  "result": "trendline_core.py + 29 look-ahead tests shipped (signal 0753Z)",
   "scope_in": [
-    "backtest/layers/trendlines/trendline_core.py plus test_trendline_core.py: pivot at close(i+k), immutable line versions, touch episodes, break/retest states",
+    "MyTradingSys/backtest/layers/trendlines/trendline_core.py plus test_trendline_core.py: pivot at close(i+k), immutable line versions, touch episodes, break/retest states",
     "Reuse layers/timeframe/tf_resample.py; read cc_structure.py and bigmoves.py pivot code first and say why not reused"
   ],
   "scope_out": [
     "Backtest, fees, P&L, live path, any real-data study, eye-read selector"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "MyTradingSys/research/trendlines_2026-10-17/CLAUDE_VERIFY.md",
     "MyTradingSys/research/trendlines_2026-10-17/TRENDLINE_CONTRACT.md",
     "MyTradingSys/backtest/layers/timeframe/tf_resample.py"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Write tests first from TRENDLINE_CONTRACT.md worked examples",
     "Truncation test: lines built on data cut at t equal those built on all data (also at a pivot-confirm bar)",

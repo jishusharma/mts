@@ -622,9 +622,9 @@ Applied: 2026-10-15 card krown-ta101-extract-remaining-10 set ready (no cookies)
 Waive the 20-video saturation gate for a descriptive Krown layer?
 
 Recommended: Yes: detectors and a DEV study only, no engine setup file
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Yes: detectors and a DEV study only, no engine setup file
+Operator note (verbatim): (none)
+Applied: 2026-10-17: waiver recorded. Cards krown-layer-v0-detectors and krown-recall-check unparked (state raw, the refiner re-scopes them) and krown-dev-event-study follows them. Scope stays descriptive detectors, recall and a DEV event study; no engine setup file, nothing reaches the engine or live without you. q-pause-krown-detectors no longer holds these cards.
 
 ```json
 {
@@ -637,7 +637,8 @@ Applied: (not yet)
   "Yes: detectors and a DEV study only, no engine setup file",
   "No: wait for more Krown content"
  ],
- "recommended": "Yes: detectors and a DEV study only, no engine setup file"
+ "recommended": "Yes: detectors and a DEV study only, no engine setup file",
+ "answer": "Yes: detectors and a DEV study only, no engine setup file"
 }
 ```
 ## q-krown-stop | asked 2026-10-14 | Research
@@ -645,9 +646,9 @@ Applied: (not yet)
 May any live Krown use run without a resting protective stop (his style)?
 
 Recommended: No: a protective stop always; his close-based exit is a backtest arm only
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Yes, on the testnet only
+Operator note (verbatim): (none)
+Applied: 2026-10-17: recorded. A Krown use on the testnet may run without a resting protective stop (his close-based exit, KR-X01); the house rule (protective stop on every position) stays for anything beyond the testnet. No Krown layer is in the engine yet, so no code changed; the detector and event-study cards carry the close-based exit as a testnet arm.
 
 ```json
 {
@@ -660,7 +661,8 @@ Applied: (not yet)
   "No: a protective stop always; his close-based exit is a backtest arm only",
   "Yes, on the testnet only"
  ],
- "recommended": "No: a protective stop always; his close-based exit is a backtest arm only"
+ "recommended": "No: a protective stop always; his close-based exit is a backtest arm only",
+ "answer": "Yes, on the testnet only"
 }
 ```
 ## q-krown-volume-venue | asked 2026-10-14 | Research
@@ -668,9 +670,9 @@ Applied: (not yet)
 Which volume series counts for Krown's volume rules?
 
 Recommended: Test both: Binance and Coinbase daily volume
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Test both: Binance and Coinbase daily volume
+Operator note (verbatim): Include CME
+Applied: 2026-10-17: Binance and Coinbase BTC-USD daily are already on F: (krown-data-daily-majors, done). CME added as a third arm: card krown-data-cme-btc-volume (DSA, public data only, NOT AVAILABLE if no free source).
 
 ```json
 {
@@ -683,7 +685,8 @@ Applied: (not yet)
   "Test both: Binance and Coinbase daily volume",
   "Binance only"
  ],
- "recommended": "Test both: Binance and Coinbase daily volume"
+ "recommended": "Test both: Binance and Coinbase daily volume",
+ "answer": "Test both: Binance and Coinbase daily volume"
 }
 ```
 ## q-host-worktree-tidy | asked 2026-10-15 | Process | NO AUTO-APPLY
@@ -716,8 +719,8 @@ Page db: not yet a doc (asked from the jishusharma1985 login, which cannot write
 Retire 4 legacy Windows tasks on JIS-NB and re-point MTS-Live-Health?
 
 Recommended: Yes: disable Tick and both Audit tasks (unregister after 7 quiet days), unregister Monitor_4h, point Live-Health at the live tree, fix MTS-Backup
-Answer: (none yet)
-Operator note (verbatim): (none yet)
+Answer: Yes: disable Tick and both Audit tasks (unregister after 7 quiet days), unregister Monitor_4h, point Live-Health at the live tree, fix MTS-Backup
+Operator note (verbatim): remove comnpletely - no mure schedulars in any device - no routines - we have super sessions now.. they run for the drfined timelines.. 
 Applied: (not yet; waits for Jis's explicit answer, no 24h default)
 Page db: not yet a doc (asked from the jishusharma1985 login, which cannot write the jishu.awgp db); the next jishu.awgp pickup creates it from the JSON below. Apply on JIS-NB only.
 
@@ -733,7 +736,8 @@ Page db: not yet a doc (asked from the jishusharma1985 login, which cannot write
   "Only unregister MTS_Monitor_4h",
   "Not now"
  ],
- "recommended": "Yes: disable Tick and both Audit tasks (unregister after 7 quiet days), unregister Monitor_4h, point Live-Health at the live tree, fix MTS-Backup"
+ "recommended": "Yes: disable Tick and both Audit tasks (unregister after 7 quiet days), unregister Monitor_4h, point Live-Health at the live tree, fix MTS-Backup",
+ "answer": "Yes: disable Tick and both Audit tasks (unregister after 7 quiet days), unregister Monitor_4h, point Live-Health at the live tree, fix MTS-Backup"
 }
 ```
 
@@ -742,9 +746,9 @@ Page db: not yet a doc (asked from the jishusharma1985 login, which cannot write
 Switch off the add-ons MTS sessions never use?
 
 Recommended: Yes, switch them off on all three logins
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Yes, switch them off on all three logins
+Operator note (verbatim): (none)
+Applied: 2026-10-17: decided. The four switches in CONTEXT_BASELINE.md (computer use, Claude in Chrome, Claude Docs and visualize connectors, 9 file skills) are app settings that only you can change, once per login; then run token_audit.py --days 7 to re-measure.
 
 ```json
 {
@@ -758,7 +762,8 @@ Applied: (not yet)
   "Only computer use and Claude in Chrome",
   "No, keep everything"
  ],
- "recommended": "Yes, switch them off on all three logins"
+ "recommended": "Yes, switch them off on all three logins",
+ "answer": "Yes, switch them off on all three logins"
 }
 ```
 
@@ -967,5 +972,84 @@ Applied: 2026-10-17 session context-compare-close: card state blocked (tasks.py 
  ],
  "recommended": "Yes: hold the card; the composite stays INCONCLUSIVE on DEV; no further composite read until new data or a new design",
  "answer": "Yes: hold the card; the composite stays INCONCLUSIVE on DEV; no further composite read until new data or a new design (DECISION (OURS), operator may overrule)"
+}
+```
+
+## blind-monitor-halt-recovery | asked 2026-10-17 | Process
+
+Blind-monitor HALT_DAILY_LOSS on testnet: may the monitor clear its own blind halt?
+
+Recommended: Monitor clears only its own blind halt after the account reads cleanly for 30 minutes
+Answer: Monitor clears only its own blind halt after the account reads cleanly for 30 minutes
+Operator note (verbatim): For now - see what should be done for future - the correct impellentatin and then adopt that pilicy 
+Applied: 2026-10-17: 30 minutes is the interim rule. A session designs the correct long-term rule from the halt history (3 blind halts in 7 days), then adopts it, tests first; a real daily-loss halt is never auto-cleared and mainnet stays fail-closed. Builders still never touch HALT files by hand.
+
+```json
+{
+ "order": 28,
+ "stage": "Process",
+ "refs": "blind-monitor-halt-recovery",
+ "title": "Blind-monitor HALT_DAILY_LOSS on testnet: may the monitor clear its own blind halt?",
+ "why": "Three blind halts in 7 days (10-06 Deribit 502, 10-07, 10-12; 20 consecutive read failures, last HTTP 502). Testnet only. A real daily-loss halt is never auto-cleared and mainnet stays fail-closed.",
+ "options": [
+  "Monitor clears only its own blind halt after the account reads cleanly for 30 minutes",
+  "Monitor clears it after 10 minutes of clean reads",
+  "I clear every one myself (no auto-recovery)"
+ ],
+ "recommended": "Monitor clears only its own blind halt after the account reads cleanly for 30 minutes",
+ "answer": "Monitor clears only its own blind halt after the account reads cleanly for 30 minutes"
+}
+```
+
+## q-sched-scope | asked 2026-10-17 | Process | NO AUTO-APPLY
+
+Your note on q-host-sched-tasks said "no more schedulers in any device, no routines, super sessions now". How far does that go?
+
+Recommended: Remove the legacy tasks now; keep AutoDeploy, Supervisor and the dispatcher until a super-session replacement for each is built and tested
+Answer: Remove every scheduled task on every device now (deploys, revival and the relay stop until super sessions cover them)
+Operator note (verbatim): "q-sched-scope: remove every scheduled task on every device now, accepting that deploys, revival and the relay stop."
+Applied: 2026-10-17: JIS-NUC: MTS-CodexLab, MTS-DailyHygiene, MTS-DispatchGate unregistered (XML backups in F:/MTS/backups/sched_tasks_2026-10-17_NUC; re-register with Register-ScheduledTask -Xml); MTS-NUC-Worker is disabled and refused deletion (access denied), left disabled. JIS-NB: card host-legacy-tasks-unregister widened to every MTS task there (export first). Stopped by this: auto-deploy, process revival, relay dispatch, the Codex lab runner.
+
+```json
+{
+ "order": 29,
+ "stage": "Process",
+ "refs": "system/HOST_TASKS_2026-10.md, q-host-sched-tasks",
+ "title": "How far does 'no more schedulers' go?",
+ "why": "Four legacy tasks go now (Tick, Audit-Digest, Audit-Rotation, Monitor_4h). The rest are not legacy: AutoDeploy is the only thing that changes the live tree, the Supervisor revives dead processes, the dispatcher starts the next relay session, Live-Health and Backup watch and save the live system. Removing them with nothing in their place stops deploys, revival and backups.",
+ "options": [
+  "Remove the legacy tasks now; keep AutoDeploy, Supervisor and the dispatcher until a super-session replacement for each is built and tested",
+  "Remove the legacy tasks and Live-Health and Backup too; keep only AutoDeploy, Supervisor and the dispatcher",
+  "Remove every scheduled task on every device now (deploys, revival and the relay stop until super sessions cover them)"
+ ],
+ "recommended": "Remove the legacy tasks now; keep AutoDeploy, Supervisor and the dispatcher until a super-session replacement for each is built and tested",
+ "answer": "Remove every scheduled task on every device now (deploys, revival and the relay stop until super sessions cover them)"
+}
+```
+
+## q-pit-power-gate | asked 2026-10-17 | Research
+
+Q76 PIT price-level study (pit-prior-va-failed-auction-dev): overrule the power gate and run underpowered, or keep it BLOCKED?
+
+Recommended: Keep BLOCKED; get the data from a trusted source first
+Answer: Get the data from a trusted source where it can be had; if it cannot, keep it blocked or remove it, so it does not come back. Other sessions work on it.
+Operator note (verbatim): "This is also a data related question. It must also be answered in the same way. Uh, get the data from where you can get it, the source that you can trust. And if you cannot do it, then uh, keep it blocked, or better to remove it, so that uh, you do not uh, come back here. We need to close things." Then: "We do not need to do anything right now. Just record my decision and uh, let other sessions work on it."
+Applied: 2026-10-17: recorded only. No overrule written; the card stays BLOCKED (BLOCKED.md). Data path for other sessions: data.binance.vision serves the monthly BTCUSDT 1m klines and aggTrades zips (HTTP 200 for 2021-01 when checked 2026-10-17). Public market data only, no account. If no trusted source closes the gap, remove the card and B187 instead of re-asking.
+
+```json
+{
+ "order": 30,
+ "stage": "Research",
+ "refs": "research/pit_levels_2026-10-16/BLOCKED.md, research/pit_levels_2026-10-16/PRE_REG_V2.md, research/BUGS.md B187, research/pit_levels_2026-10-16/bug_b187_evidence.txt",
+ "title": "Q76 PIT power gate: overrule and run underpowered, or keep it BLOCKED?",
+ "why": "The PIT study fails its frozen power gate: MDE plus cost 0.411 R against a plausible 0.30 R, and 662 feasible DEV days against 2,427 needed. Only a written overrule lets it run. The operator asked for trusted data first, and if none closes the gap, to keep it blocked or remove it so it does not come back.",
+ "options": [
+  "Get the data from a trusted source where it can be had; if it cannot, keep it blocked or remove it. Other sessions work on it.",
+  "Overrule the plausible effect and run it underpowered",
+  "Keep BLOCKED with no further data work"
+ ],
+ "recommended": "Keep BLOCKED; get the data from a trusted source first",
+ "answer": "Get the data from a trusted source where it can be had; if it cannot, keep it blocked or remove it, so it does not come back. Other sessions work on it.",
+ "no_auto_apply": true
 }
 ```

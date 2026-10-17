@@ -36,6 +36,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 RESEARCH = REPO / "MyTradingSys" / "research"
 CSV_PATH = RESEARCH / "VERDICTS.csv"
+OVERRIDES_PATH = RESEARCH / "VERDICTS_OVERRIDES.csv"
+OVERRIDE_COLS = ["study_dir", "arm", "column", "value", "source"]
 COLS = ["study_dir", "family", "arm", "split_read", "n", "gross_mean_pct", "se_pct", "cost_pct",
         "verdict", "kill_scope", "one_run", "commit", "date"]
 UNP = "UNPARSED"
@@ -263,11 +265,48 @@ def save(path, rows):
             w.writerow({c: r.get(c, UNP) for c in COLS})
 
 
+def load_overrides(path):
+    """Hand-sourced corrections that survive backfill. arm '*' = every arm of the study; source (file:line) required."""
+    out = []
+    for i, r in enumerate(load(path), start=2):
+        if not (r.get("source") or "").strip():
+            raise ValueError(f"{path} line {i}: override without a source")
+        if r.get("column") not in COLS or r["column"] in ("study_dir", "arm"):
+            raise ValueError(f"{path} line {i}: unknown or non-overridable column {r.get('column')!r}")
+        if not (r.get("study_dir") or "").strip() or not (r.get("arm") or "").strip():
+            raise ValueError(f"{path} line {i}: study_dir and arm are required")
+        out.append(r)
+    return out
+
+
+def apply_overrides(rows, overrides):
+    for o in overrides:
+        hit = [r for r in rows if r["study_dir"] == o["study_dir"] and o["arm"] in ("*", r["arm"])]
+        for r in hit:
+            r[o["column"]] = o["value"]
+            if o["column"] == "verdict" and r.get("kill_scope") == UNP and o["value"] == "INCONCLUSIVE":
+                r["kill_scope"] = "none"        # same rule as parse_study
+    return rows
+
+
+def cmd_apply_overrides(a):
+    """Patch only the overridden cells of the existing registry (no re-parse: backfill would rewrite curated rows)."""
+    rows = load(a.csv)
+    ov = load_overrides(a.overrides)
+    missing = [o["study_dir"] for o in ov if not any(r["study_dir"] == o["study_dir"] for r in rows)]
+    if missing:
+        raise ValueError(f"override study not in {a.csv}: {sorted(set(missing))}")
+    apply_overrides(rows, ov)
+    save(a.csv, rows)
+    print(f"{a.csv}: {len(ov)} override(s) applied to {len(rows)} rows")
+
+
 def cmd_backfill(a):
     root = Path(a.root)
     new, studies = [], study_dirs(root)
     for d in studies:
         new.extend(parse_study(d))
+    apply_overrides(new, load_overrides(getattr(a, "overrides", None) or OVERRIDES_PATH))
     names = {d.name for d in studies}
     kept = [r for r in load(a.csv) if r["study_dir"] not in names]
     save(a.csv, kept + new)
@@ -351,8 +390,10 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--root", default=str(RESEARCH))
     p.add_argument("--csv", default=str(CSV_PATH))
+    p.add_argument("--overrides", default=str(OVERRIDES_PATH))
     sub = p.add_subparsers(dest="cmd", required=True)
     sub.add_parser("backfill")
+    sub.add_parser("apply-overrides")
     c = sub.add_parser("check")
     c.add_argument("words")
     n = sub.add_parser("count")
@@ -360,7 +401,7 @@ def main(argv=None):
     ad = sub.add_parser("add")
     ad.add_argument("pairs", nargs="+")
     a = p.parse_args(argv)
-    return {"backfill": cmd_backfill, "check": cmd_check, "count": cmd_count, "add": cmd_add}[a.cmd](a) or 0
+    return {"backfill": cmd_backfill, "apply-overrides": cmd_apply_overrides, "check": cmd_check, "count": cmd_count, "add": cmd_add}[a.cmd](a) or 0
 
 
 if __name__ == "__main__":

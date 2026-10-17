@@ -482,6 +482,68 @@ resampled with replacement (2000 resamples, numpy `default_rng(20261009)`), stat
 divided by the number of events in them (difference: both streams use the same resampled days). Percentiles 2.5 / 97.5.
 *Worked:* two days, day A events R = [1, 3], day B events R = [-2]; resample (A, A): mean 2.0; (B, B): -2.0; (A, B): 0.6667.
 
+## 19. Trend-line contract formulas (`research/trendlines_2026-10-17/TRENDLINE_CONTRACT.md`) - added 2026-10-17
+
+All numbers below are computed by hand from the definitions, not from code. Parameters (k=3, tolerances, ATR length 14) are OURS; see the contract.
+
+**19.1 Pivot with k bars each side, strict.** Swing low at bar i iff `low[i] < low[j]` for every j in `i-k..i-1` and `i+1..i+k`. Available at close of bar `i+k`.
+Worked (k=3): lows by bar 0..6 = [9,8,7,5,6,7,8]: bar 3 is 5 < 9,8,7 and < 6,7,8, so pivot, available_at = close(bar 6). Ties, lows [9,8,7,5,5,7,8,9] (k=3): bar 3 fails (bar 4 equals 5), bar 4 fails (bar 3 equals 5), no pivot. Bars with fewer than 3 bars on a side (bars 0-2 and 5-7) are never pivots.
+
+**19.2 Line through anchors (ia,pa), (ib,pb).** Linear: `L(t) = pa + (pb-pa)*(t-ia)/(ib-ia)`. Log: `L(t) = exp(ln pa + (ln pb - ln pa)*(t-ia)/(ib-ia))`.
+Worked linear: ia=10, pa=100, ib=20, pb=110: `L(25) = 100 + 10*15/10 = 115`. Worked log: pa=100, pb=121, ib-ia=2, t-ia=3: `L = 100*(121/100)^(3/2) = 100*1.21^1.5 = 100*1.1^3 = 133.1` (linear on the same anchors: `100 + 21*3/2 = 131.5`, so the geometries differ).
+
+**19.3 ATR for the contract.** Plain SMA of True Range, section 12, length 14 (OURS). Numeric example of the SMA form is in section 12 (period 3, ATR 2.1667); the line uses ATR_b fixed at the close of bar ib.
+
+**19.4 Slope.** `slope_atr = (L(ib)-L(ia))/(ib-ia)/ATR_b`; `slope_log = (ln pb - ln pa)/(ib-ia)`.
+Worked: pa=100, pb=110, ib-ia=10, ATR_b=4: `slope_atr = 10/10/4 = 0.25`; `slope_log = ln(1.1)/10 = 0.0953102/10 = 0.00953102`.
+
+**19.5 Touch, penetration, break (support; resistance mirrors).** With L(25)=115 and ATR_b=4: touch tolerance 0.25*4 = 1, so contact iff `low <= 116`: low 115.8 contacts, low 116.5 does not. Poke tolerance 0.10*4 = 0.4: low 114.5 (< 114.6) with close 115.2 is a poke, still a contact, not a break. Break iff `close < 115`: close 114.9 breaks, close 115.0 does not.
+Strict penetration test (L6): anchor-segment bar with L(j)=105 and low 104.7 passes (104.7 >= 105 - 0.4 = 104.6); low 104.5 fails.
+
+**19.6 Contact episode and reset.** Reset distance 1.0*ATR_b = 4: after a contact, the episode ends on the first bar with `low > L + 4` (here `low > 119`). Lows [115.5, 116.0, 120.0, 115.9] against L=115 on four consecutive bars: bars 1,2 are one episode (episode 1), bar 3 (120.0 > 119) ends it, bar 4 contacts again = episode 2. Eligibility (arm A) is at bar 3.
+
+**19.7 Volume anchor test.** Anchor bar volume V, mean of the 20 prior bars M: pass iff `V >= 2*M`. Worked: M=140: V=300 gives ratio 2.143, pass; V=270 gives 1.929, fail; V=280 gives exactly 2.0, pass.
+
+**19.8 Arm B third anchor.** Third pivot c at ic=30 with price 119.5; L(30) = 100 + 10*20/10 = 120; |119.5-120| = 0.5 <= 0.25*4 = 1, so c is an anchor within tolerance; eligible at close(ic+3 = 33). A third pivot at 118.5 (|diff| 1.5) is not.
+
+## 20. WaveTrend observation (`layers/wavetrend/wavetrend.py`) - added 2026-10-17
+
+Source (SOURCED): LazyBear "WaveTrend with Crosses", `research/wavetrend_2026-10-17/source_snapshot/WT_Crosses_lonestar108_jFQn4jYZ.pine.txt:14-21` (identical math in `LB_WaveTrend_marketcalls_gist.pine.txt:14-21`); bands `:9-12`, centre `:23`. Re-implemented from the formula, no Pine text copied. Contract: `PARITY_CONTRACT.md` s2-s3.
+
+**20.1 Formula (SOURCED, :14-21).** `ap=(h+l+c)/3; esa=EMA(ap,10); d=EMA(|ap-esa|,10); ci=(ap-esa)/(0.015*d); wt1=EMA(ci,21); wt2=SMA(wt1,4)`. EMA alpha = 2/(n+1).
+
+**20.2 Conventions the source does not state (OURS, PARITY_CONTRACT s3).** EMA seeded with the first valid source value; output used only after WARMUP=200 bars from series start, from any gap or from any NaN `ci`. `ci` is NaN when `d <= 1e-9*|ap|` (never 0, never inf) and propagates to no event. wt2 is NaN until 4 valid wt1. Cross "le": an event fires at the first bar strictly on the opposite side of the last strict side of `wt1-wt2`; a tie bar is skipped; above-tie-above is no cross; sides reset at NaN. Zones from wt1: `ob2 >= 60`, `ob1 >= 53`, `os2 <= -60`, `os1 <= -53`, else `mid` (boundary inclusive; OURS tag names). `available_at = bar_open + timeframe`. HTF value at time t = last HTF bar with `open + htf_tf <= t`.
+
+**20.3 Worked, by hand.** Two bars, h=l=c: ap = [10, 12].
+- Bar 0: `esa=10`, `|ap-esa|=0`, `d=0` -> `ci` NaN (flat window).
+- Bar 1: `alpha=2/11`; `esa = 10 + (2/11)*2 = 114/11 = 10.363636`; `|ap-esa| = 18/11 = 1.636364`; `d = 0 + (2/11)*(18/11) = 36/121 = 0.297521`; `ci = (18/11)/(0.015*36/121) = (18/11)*(121/36)/0.015 = 5.5/0.015 = 366.6667`. `wt1[1]` = first valid `ci` = 366.6667 (seed); `wt2` NaN (needs 4 wt1).
+- wt2 with wt1 = [10, 20, 30, 40]: `wt2[3] = (10+20+30+40)/4 = 25`; with wt1 = [10,20,30,40,50]: `wt2[4] = 35`.
+- Cross, wt1-wt2 signs [+, 0, +] -> no event; [+, 0, -] -> one down-cross at the last bar; [-, +] -> up-cross at the second.
+
+**20.4 Golden series.** `wavetrend/golden_wt_btcusdt_1h_dev_2022-01.csv`: 400 BTCUSDT 1h bars (2022-01-01 00:00 UTC onward, DEV period), wt1/wt2 and "le" events from `wavetrend/make_golden.py` (pandas ewm/rolling recursion of 20.1, not the module). Compared at 1e-9 (OURS) after bar 200. Spreadsheet-style parity only; no TradingView export, so NOT Pine-runtime parity.
+
+## 21. Krown layer v0 detectors (`layers/krown/krown_core.py`, `krown_events.py`) - added 2026-10-17
+
+Sources: ledger `research/krown_ta101_2026-10-13/KROWN_RULES.csv` (ids KR-xxx), spec `KROWN_LAYER_SPEC.md` s2-s3. Each number is SOURCED (ledger id) or OURS in `layers/krown/params/krown_params.json`. All detectors are pure functions of closed bars; a value at bar t uses bars <= t only. Descriptive only: no P&L, no live wiring, default OFF. Hand values below are computed from the definitions, not from the code.
+
+**21.1 Zone (KR-Z01, SOURCED).** Pivot bar with wick extreme E and close c: zone = [min(c,E), max(c,E)]. Swing-low pivot o=100 h=110 l=90 c=104: zone [90, 104]. Swing-high pivot h=120 l=108 c=112: zone [112, 120]. A swing at bar i with k bars each side (OURS k=3) is known at bar i+k (KR-Z05, confirm after a later close); a zone is never used before i+k. Turns (KR-Z02) = confirmed same-kind pivots whose wick extreme lies inside the zone, the origin included; a zone qualifies at turns >= 2, or at 1 when the pivot volume ratio >= 2 (KR-Z04). Ranked by (heavy, turns, recency), at most 5 (KR-Z03).
+
+**21.2 Volume (KR-V01, KR-V02, KR-V10; baseline OURS).** ratio = V / mean of the n=20 PRIOR volumes (the current bar is excluded: OURS, so a spike does not inflate its own baseline). Prior mean M=100: V=250 gives 2.5 (flag 2x); V=200 gives exactly 2.0 (flag 2x, boundary inclusive); V=50 gives 0.5 (half flag, KR-V10 observation, boundary inclusive). Same-slot arm (OURS, KROWN spec C5/C10): mean of the same slot (index mod 7 for 1d) over the previous m weeks (production default m=8 in params/krown_params.json; the example below uses m=2); v[0]=100, v[7]=300, v[14]=400: baseline 200, ratio 2.0.
+
+**21.3 Strict engulfing (KR-C06, SOURCED).** Bullish: low < prior low AND close > prior HIGH. Bearish: high > prior high AND close < prior LOW. Prior h=105 l=100: bar l=99 c=106 is bullish; l=99 c=104 is not (loose textbook form); bar h=106 c=99 is bearish. Hammer / shooting star / doji ratios are OURS: hammer = lower wick >= 0.6 of range and (c-l)/range >= 0.7 (bar o=100 h=101 l=90 c=100.5: wick 10/11 = 0.909, close position 0.955: hammer); shooting star mirrors (bar o=100 h=110 l=99 c=100.5: upper wick 9.5/11 = 0.864, (h-c)/range 0.864: shooting star); doji = |c-o| <= 0.1 range. Confirmation (KR-C08): first close within H=3 bars (KR-C03 says 3-5) beyond the pattern's wick high (bullish) or low (bearish).
+
+**21.4 Dominant low / dominant lower high (KR-L10, SOURCED structure; k, tolerance OURS).** Swing high at i: h[i] > h of k bars each side (strict); swing low mirror; known at i+k. State per bar t, after the swings confirming at t: structural s = up if the last two swing highs AND the last two swing lows both rise by more than tol (OURS 0.01), down if both fall, else range. Rules: from range/None, s in (up, down) is taken; from up or down, s differing from the state gives range (a short counter-swing that takes no level is just a range). In up, dominant low = min low between the two latest swing-high indices; in down, dominant high = max high between the two latest swing-low indices. A reversal needs a bar that trades through AND closes beyond the level: in up, low < dominant low and close < dominant low gives down, with dominant lower high = price of the latest swing high; mirror gives up with dominant low = latest swing-low price. Worked, k=1, tol=0, bars (h, l, c): 0:(10,8,9) 1:(12,9,11) 2:(11,7,8) 3:(14,9,13) 4:(13,10,12) 5:(12,8,9) 6:(17,11,16) 7:(15,12,13) 8:(13,6,7.5). Swing highs at 1 (12), 3 (14), 6 (17); swing lows at 2 (7), 5 (8). Known at: high1 t=2, low2 t=3, high3 t=4, low5 t=6, high6 t=7. States t=0..5: range (fewer than two swing lows until t=6). t=6: highs 12,14 rise, lows 7,8 rise: up, dominant low = min(l1..l3) = 7. t=7: highs 14,17: up, dominant low = min(l3..l6) = min(9,10,8,11) = 8. t=8: low 6 < 8 and close 7.5 < 8: down, dominant lower high = 17.
+
+**21.5 BBWP (KR-Q01 basis 7 and lookback 100, close: SOURCED; the rest OURS).** bbw[t] = (upper - lower) / basis = 2*mult*std/SMA with basis SMA over the last `basis` closes, population std, mult = 2 (OURS), so bbw = 4*std/SMA. BBWP[t] = 100 * (number of the previous `lookback` bbw values strictly below bbw[t]) / lookback (OURS percentile formula, current value excluded). First value at t = basis-1+lookback. Regime (KR-Q02): expansion >= 85; compression <= 30 (OURS pick inside the sourced 25-35); confirm > 50. Worked with basis=2, lookback=3, closes [10,10,12,11,15,15,14]: bbw[t] = 4|a-b|/(a+b) with a,b the last two closes: t1 0; t2 8/22 = 0.363636; t3 4/23 = 0.173913; t4 16/26 = 0.615385; t5 0; t6 4/29 = 0.137931. BBWP[4]: previous (t1..t3) = 0, 0.3636, 0.1739 all below 0.6154: 100. BBWP[5]: previous (t2..t4) none below 0: 0. BBWP[6]: previous (t3..t5) = 0.1739, 0.6154, 0; only 0 is below 0.1379: 33.3333.
+
+**21.6 Moving averages and leash (KR-M01, KR-M06; seeding OURS).** EMA(n) seeded with the SMA of the first n values, alpha = 2/(n+1); EMA(5) of [1,2,3,4,5,6] = seed 3 at index 4, alpha 1/3, index 5 = 3 + (6-3)/3 = 4. Leash (KR-M06): a close with candle low above the 5 EMA counts as disconnected; a run of >= 3 (SOURCED "late at about 3 closes") ends at the first bar whose low touches the EMA: event "leash long" at that bar (mirror with the high below the EMA: short). low = [-,11,12,13,12.5,11], ema = [-,9,9.5,10,11,12]: run of 4 closes (idx 1-4), idx 5 low 11 <= 12 touches: one leash at idx 5 (run 4).
+
+**21.7 RSI and zones (KR-S02, KR-S03; period OURS 14).** Wilder RSI: first average gain/loss = simple mean of the first `period` changes, then avg = (avg*(period-1) + x)/period. Period 2, closes [10,11,10,12]: changes +1,-1,+2; seed gain (1+0)/2 = 0.5, loss (0+1)/2 = 0.5: RSI[2] = 50; next avg gain (0.5+2)/2 = 1.25, avg loss (0.5+0)/2 = 0.25: RS 5, RSI[3] = 100 - 100/6 = 83.3333. Zone state (SOURCED 40/60): rsi > 60 bull, < 40 bear, 40-60 inclusive range.
+
+**21.8 Range and coil (KR-R01, KR-R07; windows OURS).** Over the n=20 PRIOR bars: top = max high, bottom = min low, height = top - bottom (the KR-R07 projection), exists when height / midpoint <= 0.25 (OURS). Position = (close - bottom)/height; edge when <= 0.2 or >= 0.8 (KR-R01: edges only, never the middle). Breakout close: close above top or below bottom. Highs [10,11,10.5,11], lows [9,9.5,9,9.5] (n=4): top 11, bottom 9, height 2, midpoint 10, width 0.2: range. Close 9.4: position 0.2, low edge. Close 11.5: breakout up. Coil score = mean(h-l over the last 5 bars) / mean(h-l over the n bars before them); compression when < 0.7 (OURS).
+
+**21.9 Tops (KR-P01, KR-V02, KR-Q02).** Signals per bar: reversal candle (shooting star, strict bearish engulfing or three black crows), volume ratio >= 2 vs the 30-bar mean (SOURCED TOP-05), BBWP > 85, momentum (bearish RSI divergence between the two latest swing highs, or MACD(12,26,9) bearish cross; periods OURS). Fires at t when at least 3 of the 4 have a signal inside bars t-w+1..t (w = 3, OURS "a few bars") and the count was < 3 at t-1. Candle at 5, volume at 6, BBWP at 7, no momentum: count at t=7 is 3: one fire at 7; at t=8 the window 6..8 holds 2: none.
+
 ## Verification note (this audit, 2026-09-28)
 
 Every case number in `layers/timeframe/TEST_PLAN.md`, `layers/rsi/TEST_PLAN.md`,

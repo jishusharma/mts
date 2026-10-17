@@ -12,6 +12,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import tasks as T
 
 
+NL = chr(10)
+
+
 def good(cid="B900", **kw):
     c = T.blank(cid, "Run the 28 cells")
     c.update(lane="SONNET", size="S", goal="Runner for 28 pre-registered cells", scope_in=["MyTradingSys/backtest/htf/"],
@@ -55,7 +58,8 @@ class DefinitionOfReadyTest(unittest.TestCase):
 
     def test_opus_needs_operator_approval(self):
         self.assertTrue(any("approved_by" in m for m in T.problems(good(lane="OPUS"))))
-        self.assertEqual(T.problems(good(lane="OPUS", approved_by="operator")), [])
+        self.assertTrue(any("crucial" in m for m in T.problems(good(lane="OPUS", approved_by="operator"))))
+        self.assertEqual(T.problems(good(lane="OPUS", approved_by="operator", crucial="rewrites live order state, no undo")), [])
 
     def test_live_path_never_goes_to_a_relay_lane(self):
         self.assertTrue(any("live_path" in m for m in T.problems(good(live_path=True))))
@@ -336,6 +340,113 @@ class NextSkipsClaimedTest(unittest.TestCase):
         self.assertIn("NO_READY_CARD", out)
         self.assertIn("1 ready card(s) held by an open claim", out)
         self.assertNotIn("B1 [", out)
+
+
+class StateTagTest(NextSkipsClaimedTest):
+    """TASK_REFINEMENT.md "State tag": a card carries pointers to its latest ship/report/audit; stale pointers are named, and lint
+    fails a ready card whose scope changed more than the grace ago without a refresh."""
+    def commit(self, rel, text, when="2026-10-01T00:00:00+00:00", msg=None):
+        p = self.repo / rel
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(text, encoding="utf-8", newline=chr(10))
+        self.git("add", rel)
+        env = {**__import__("os").environ, "GIT_COMMITTER_DATE": when, "GIT_AUTHOR_DATE": when}
+        subprocess.run(["git", "-c", "user.email=t@t", "-c", "user.name=t", "-C", str(self.repo), "commit", "-q", "-m", msg or f"edit {rel}"],
+                       check=True, capture_output=True, env=env)
+
+    def card(self, **kw):
+        c = good("TS1", scope_in=["src/a.py (the module)"], refs=["B900"])
+        c.update(kw)
+        T.save(self.repo, c)
+        return c
+
+    def test_tag_refresh_records_ship_and_audit_pointers(self):
+        self.commit("src/a.py", "x=1" + NL, msg="a: first")
+        self.commit("MyTradingSys/research/B900_audit.md", "# audit" + NL, "2026-10-02T00:00:00+00:00", "audit B900")
+        self.card()
+        rc, out = self.run_cli("tag", "TS1", "--refresh")
+        self.assertEqual(rc, 0)
+        self.assertIn("STATE READY", out)
+        self.assertIn("LATEST ship", out)
+        self.assertIn("LATEST audit MyTradingSys/research/B900_audit.md", out)
+        c = T.get(self.repo, "TS1")
+        self.assertTrue(c["refreshed"] and c["scope_sha"])
+
+    def test_scope_change_makes_card_stale_and_refresh_clears_it(self):
+        self.commit("src/a.py", "x=1" + NL)
+        self.card()
+        self.run_cli("tag", "TS1", "--refresh")
+        self.assertEqual(self.run_cli("stale")[0], 0)
+        self.commit("src/a.py", "x=2" + NL, "2026-10-02T00:00:00+00:00")
+        rc, out = self.run_cli("stale")
+        self.assertEqual(rc, 1)
+        self.assertIn("scope changed", out)
+        self.assertIn("STATE STALE:scope changed", self.run_cli("tag", "TS1")[1])
+        rc, out = self.run_cli("stale", "--refresh")
+        self.assertEqual(rc, 0)
+        self.assertEqual(self.run_cli("stale")[0], 0)
+
+    def test_lint_only_warns_about_stale_ready_cards(self):
+        """A stale pointer is reported, never fatal: lint feeds the ship gate and trunk CI, which every session shares."""
+        self.commit("src/a.py", "x=1" + NL)
+        self.card()
+        rc, out = self.run_cli("lint")
+        self.assertEqual(rc, 0)          # never refreshed
+        self.assertIn("WARN TS1", out)
+        self.assertIn("never refreshed", out)
+        self.run_cli("tag", "TS1", "--refresh")
+        rc, out = self.run_cli("lint")
+        self.assertEqual((rc, "WARN" in out), (0, False))
+        self.commit("src/a.py", "x=2" + NL, "2026-10-02T00:00:00+00:00")          # long ago: past the grace
+        rc, out = self.run_cli("lint")
+        self.assertEqual(rc, 0)
+        self.assertIn("scope changed", out)
+        self.assertEqual(self.run_cli("stale")[0], 1)          # the explicit command still exits 1
+        self.run_cli("stale", "--refresh")
+        self.commit("src/a.py", "x=3" + NL, T.now())                              # just now: inside the grace
+        self.assertEqual(self.run_cli("lint")[1].count("WARN"), 0)
+
+    def test_shallow_clone_never_reports_stale(self):
+        """CI checks out depth 1: git log then names HEAD for every path, so staleness cannot be judged there."""
+        import task_state
+        self.commit("src/a.py", "x=1" + NL)
+        self.card()
+        self.run_cli("tag", "TS1", "--refresh")
+        self.commit("src/a.py", "x=2" + NL, "2026-10-02T00:00:00+00:00")
+        c = T.get(self.repo, "TS1")
+        real = task_state.is_shallow
+        task_state.is_shallow = lambda repo: True
+        try:
+            self.assertEqual(task_state.overdue(c, self.repo), "")
+            self.assertEqual(task_state.stale_reason(c, self.repo), "")
+        finally:
+            task_state.is_shallow = real
+        self.assertTrue(task_state.overdue(c, self.repo))
+
+    def test_check_promotion_refreshes_and_done_records_ship(self):
+        self.commit("src/a.py", "x=1" + NL)
+        self.card(state="refined")
+        self.run_cli("check", "TS1")
+        c = T.get(self.repo, "TS1")
+        self.assertEqual(c["state"], "ready")
+        self.assertTrue(c["refreshed"])
+        self.run_cli("done", "TS1", "--result", "9 rows")
+        c = T.get(self.repo, "TS1")
+        self.assertEqual(c["latest"][0]["kind"], "ship")
+        self.assertIn("9 rows", c["latest"][0]["line"])
+        self.git("add", "-A")
+        self.git("commit", "-q", "-m", "ship TS1")
+        self.assertRegex(self.run_cli("tag", "TS1")[1], r"STATE SHIPPED@[0-9a-f]+")
+
+    def test_manual_pointer_survives_refresh_and_brief_prints_latest(self):
+        self.commit("src/a.py", "x=1" + NL)
+        self.card()
+        self.run_cli("tag", "TS1", "--add", "decision:MyTradingSys/system/CONTROL_ROOM.md", "--line", "operator chose X")
+        self.run_cli("tag", "TS1", "--refresh")
+        rc, out = self.run_cli("brief", "TS1")
+        self.assertEqual(rc, 0)
+        self.assertIn("LATEST decision MyTradingSys/system/CONTROL_ROOM.md", out)
+        self.assertIn("LATEST ship", out)
 
 
 class RepoDataTest(unittest.TestCase):

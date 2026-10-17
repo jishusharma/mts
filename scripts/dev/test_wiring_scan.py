@@ -78,6 +78,24 @@ class WiringGate(unittest.TestCase):
             rc, out = run_check(root)
             self.assertEqual(rc, 0, out)
 
+    def test_study_scripts_never_fail_the_gate_declared_or_not(self):
+        """Run-once study scripts need no registry entry; a stale or gone entry for one is not a failure either."""
+        study = 'MyTradingSys/research/study_x/run_it.py'
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_root(tmp)
+            write(root, study)
+            write(root, 'MyTradingSys/research/study_x/test_run_it.py', 'import run_it\n')
+            write(root, REG, json.dumps({'entries': {ORPHAN: {'disp': 'TOOL', 'why': 'x'},
+                                                       'MyTradingSys/research/study_x/gone.py': {'disp': 'REPRO', 'why': 'x'}}}))
+            rc, out = run_check(root)
+            self.assertEqual(rc, 0, out)
+        with tempfile.TemporaryDirectory() as tmp:       # outside research/ the same file still has to be declared
+            root = make_root(tmp)
+            write(root, 'MyTradingSys/backtest/study_x/run_it.py')
+            write(root, 'MyTradingSys/backtest/study_x/test_run_it.py', 'import run_it\n')
+            write(root, REG, json.dumps({'entries': {ORPHAN: {'disp': 'TOOL', 'why': 'x'}}}))
+            self.assertEqual(run_check(root)[0], 1)
+
     def test_bad_disposition_empty_why_and_wire_without_ref_fail(self):
         with tempfile.TemporaryDirectory() as tmp:
             for e, needle in (({'disp': 'MAYBE', 'why': 'x'}, 'BAD'), ({'disp': 'TOOL', 'why': ' '}, 'why is empty'),

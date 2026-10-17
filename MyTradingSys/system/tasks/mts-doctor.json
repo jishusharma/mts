@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T18:14:54Z",
+  "commands": [
+    "python scripts/dev/tasks.py check mts-doctor",
+    "python scripts/dev/mts_doctor.py --ai-health"
+  ],
+  "created": "2026-10-17T08:30:00Z",
+  "depends_on": [],
+  "done_when": "A repeatable MTS doctor run exists: one command that reads the AI-facing files (CLAUDE.md, memory index and files, system docs, task cards, handoff notes, skills) and writes one dated AI-health report: a short list of findings (stale, conflicting, duplicate, missing), each with the file and a suggested fix. Running it twice on the same day gives the same report.",
+  "est_turns": 6,
+  "from_inbox": "",
+  "goal": "Create the MTS doctor: a repeatable AI-health check of the AI-facing files (CLAUDE.md, memory, system rules, task cards, handoff notes, skills) for stale, conflicting, duplicate or missing guidance. Project health (CI, trading, halts) is out of scope. Reports only; never edits rules, clears halts or deploys.",
+  "id": "mts-doctor",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Shipped 614bbc88 (mts_doctor.py, MTS_DOCTOR.md, first report REPORT_2026-10-17.md) + 1a850",
+      "ref": "4ab57337",
+      "utc": "2026-10-17T18:14:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "operator-guide: subnote on stop-loss and same-asset questions",
+      "ref": "00d0a090f840",
+      "utc": "2026-10-17T08:24:54Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "Coined by the operator 2026-10-17. Scope is reporting, not fixing.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T08:29:15Z",
+  "refs": [],
+  "result": "Shipped 614bbc88 (mts_doctor.py, MTS_DOCTOR.md, first report REPORT_2026-10-17.md) + 1a8508f8 follow-up; on origin/fast-track",
+  "scope_in": [
+    "scripts/dev/ (new mts_doctor.py that collects the signals and writes the report)",
+    "MyTradingSys/system/ (a short MTS_DOCTOR.md that says what it checks and how to run it)",
+    "MyTradingSys/research/mts_doctor/ (dated reports)"
+  ],
+  "scope_out": [
+    "CLAUDE.md, memory files and system rules (findings only, never edits)",
+    "live tree, HALT files, deploy, trading settings",
+    "any .secrets/ or .env file"
+  ],
+  "scope_sha": "00d0a090f840",
+  "size": "M",
+  "sources": [
+    "operator message 2026-10-17: name MTS doctor, repeatable AI-help and project-health check, file as a bug"
+  ],
+  "state": "done",
+  "steps": [
+    "Write MTS_DOCTOR.md: the checks, inputs, and the report format (date, findings, owner, next step).",
+    "Write scripts/dev/mts_doctor.py that gathers the signals read-only and writes the dated report.",
+    "Add a test that runs it on a fixture folder and checks the report shape and that it writes nothing outside research/mts_doctor/.",
+    "Run it once; commit the report; ship."
+  ],
+  "tests": "python -m pytest scripts/dev/tests -k mts_doctor (new test)",
+  "title": "MTS doctor: repeatable AI-health check of the AI-facing files (report only)",
+  "worker": ""
+}

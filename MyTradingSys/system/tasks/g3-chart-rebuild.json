@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T09:00:58Z",
+  "commands": [
+    "python MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py draw",
+    "python -c \"import hashlib;print(hashlib.sha256(open('MyTradingSys/research/g3_marks_2026-10-16/ANSWER_KEY_CLOSED/KEY.csv','rb').read()).hexdigest())\""
+  ],
+  "created": "2026-10-17T07:27:32Z",
+  "depends_on": [],
+  "done_when": "F:/MTS/data/g3_pack_2026-10-16/charts holds 213 PNGs newer than the g3_pack.py commit, printed drawn=213, KEY.csv sha256 still 0bfdf336...9402e6, README.md line 3 status flipped to READY TO MARK.",
+  "est_turns": 12,
+  "from_inbox": "",
+  "goal": "The 213 G3 chart PNGs predate the blindness fixes (198c1aed); regenerate all of them from the current g3_pack.py so the operator can mark (README.md:3 gates marking on this; audit 2026-10-17_g3-blindness-audit-rerun.md says Draw rebuild: YES).",
+  "id": "g3-chart-rebuild",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "drawn=213 charts, KEY.csv sha unchanged 0bfdf336...9402e6, README READY TO MARK",
+      "ref": "83d4e006",
+      "utc": "2026-10-17T09:00:58Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "g3 pack blindness: remove chart cues and side channels that disclose the enriched half",
+      "ref": "198c1aed2c3e",
+      "utc": "2026-10-16T21:57:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "198c1aed2c3e g3 pack blindness: remove chart cues and side channels that disclose the enri",
+      "ref": "MyTradingSys/research/g3_marks_2026-10-16/README.md",
+      "utc": "2026-10-16T21:57:16Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "Filed by backlog-refine-1017: g3-pack-code-fixes and g3-remove-visible-chart-cues were done but the charts were never redrawn. Run on NUC (data on F:). Do not open KEY.csv beyond hashing it. Then operator Reader 1 marks.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T07:44:12Z",
+  "refs": [],
+  "result": "drawn=213 charts, KEY.csv sha unchanged 0bfdf336...9402e6, README READY TO MARK",
+  "scope_in": [
+    "MyTradingSys/research/g3_marks_2026-10-16/README.md (status line only); output folder F:/MTS/data/g3_pack_2026-10-16/charts (not in git)"
+  ],
+  "scope_out": [
+    "g3_pack.py edits, build (rewrites WINDOWS.csv and the key), ANSWER_KEY_CLOSED, any marking, VALIDATION and HOLDOUT"
+  ],
+  "scope_sha": "198c1aed2c3e",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-17_g3-blindness-audit-rerun.md",
+    "MyTradingSys/research/g3_marks_2026-10-16/README.md"
+  ],
+  "state": "done",
+  "steps": [
+    "python -m pytest test_g3_pack.py -q -p no:cacheprovider: 14 pass",
+    "delete old PNGs in the charts folder, then run draw (draw reads WINDOWS.csv, never build)",
+    "count 213 PNGs, confirm key sha unchanged, edit README line 3 to READY TO MARK, ship"
+  ],
+  "tests": "test_g3_pack.py (14 tests, already red-first when the blindness fixes shipped); no new code, so no new test.",
+  "title": "G3 chart rebuild: regenerate all 213 charts with the fixed g3_pack.py before any marks",
+  "worker": "agent"
+}

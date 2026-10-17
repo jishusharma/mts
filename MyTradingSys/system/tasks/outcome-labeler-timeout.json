@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-17T12:20:31Z",
+  "depends_on": [],
+  "done_when": "measured run time is below the limit with margin, test passes",
+  "est_turns": 12,
+  "from_inbox": "",
+  "goal": "outcome_labeler finishes inside its time limit in the live loop.",
+  "id": "outcome-labeler-timeout",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T12:20:50Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "outcome_labeler (grep the script)",
+    "its caller in the live loop"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read the 30 s timeout path and the log line that reports it",
+    "measure the real run time on the snapshot input",
+    "fix the slow step or raise the limit with the number as evidence"
+  ],
+  "tests": "a fail-first test for the timeout path (slow input -> reported, not silent)",
+  "title": "Network: outcome_labeler hits its 30 s timeout in the live loop (find cause, raise or fix)",
+  "worker": "agent"
+}

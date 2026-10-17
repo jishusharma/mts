@@ -1,5 +1,7 @@
 # PARALLEL - how any number of sessions on any machine work at once
 
+> Scheduled tasks (`MTS-AutoDeploy` etc.) are RETIRED 2026-10-17, see SCHEDULING_POLICY.md: deploys are manual or coordinator-run.
+
 Replaces: commit-only-from-the-desktop (DEVICES section 5), ownership claims in SUPERVISOR_LOG,
 `.new` staging, per-session registration in sessions/, and the inbox-per-surface handoffs
 (SURFACE_POLICY section 2). Older records stay as history.

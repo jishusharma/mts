@@ -34,7 +34,8 @@ import tasks  # noqa: E402
 REPO = tasks.REPO
 STATE = "MyTradingSys/system/lane_state.json"
 HEARTBEAT_DOWN_S = 3 * 3600     # the lab ticks every 30 min: 6 missed ticks = down
-HEARTBEAT_WRITE_S = 3600        # a heartbeat is committed at most hourly (git noise)
+HEARTBEAT_WRITE_S = 3600        # a heartbeat is pushed at most hourly
+HB_REF = "lane-heartbeat"       # B17: heartbeats go to this side branch (never trunk): 55 of 1822 commits in 72 h were an hourly heartbeat-only edit of lane_state.json
 PROBE_S = 3600                  # a down lane lets one card try again this often
 OVERRIDE_S = 3 * 3600            # operator "GPT is back": the allowance reading is not trusted for this long
 FAILS_DOWN = 3                  # runs in a row that wrote nothing and hit no known error
@@ -90,6 +91,44 @@ def load(repo=REPO):
         return {**blank(), **json.loads(p.read_text(encoding="utf-8"))}
     except (OSError, ValueError):
         return blank()
+
+
+def remote_heartbeat(repo, fetch=False):
+    """Newest heartbeat on origin's HB_REF side branch ('' when there is none or git cannot say). Fail open: no signal is never 'down'."""
+    try:
+        if fetch:
+            git(repo, "fetch", "--quiet", "origin", HB_REF, check=False)
+        r = git(repo, "show", f"origin/{HB_REF}:heartbeat", check=False)
+        return r.stdout.strip() if r.returncode == 0 and epoch(r.stdout.strip()) else ""
+    except OSError:
+        return ""
+
+
+def push_heartbeat(repo, ts):
+    """Write one heartbeat as a plumbing commit on the side branch HB_REF (parent = its tip) and push it. True when pushed."""
+    try:
+        def g(*args, stdin=None):
+            r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, input=stdin)
+            if r.returncode != 0:
+                raise OSError(r.stderr)
+            return r.stdout.strip()
+        blob = g("hash-object", "-w", "--stdin", stdin=ts)
+        tree = g("mktree", "-z", stdin=f"100644 blob {blob}" + chr(9) + "heartbeat" + chr(0))   # -z: text-mode stdin would turn the newline into CRLF on Windows
+        parent = subprocess.run(["git", "-C", str(repo), "rev-parse", "--verify", "-q", f"origin/{HB_REF}"], capture_output=True, text=True)
+        args = ["commit-tree", tree, "-m", f"heartbeat {ts}"] + (["-p", parent.stdout.strip()] if parent.returncode == 0 else [])
+        commit = subprocess.run(["git", "-C", str(repo), "-c", "user.name=lane-health", "-c", "user.email=lane-health@local", *args],
+                                capture_output=True, text=True)
+        if commit.returncode != 0:
+            return False
+        return git(repo, "push", "--quiet", "origin", f"{commit.stdout.strip()}:refs/heads/{HB_REF}", check=False).returncode == 0
+    except OSError:
+        return False
+
+
+def newest_heartbeat(st, repo):
+    """The state's heartbeat, or the side branch's when that is newer (a fetched copy; no network call here)."""
+    hb = remote_heartbeat(repo)
+    return hb if epoch(hb) > epoch(st["heartbeat"]) else st["heartbeat"]
 
 
 def save(repo, st):
@@ -291,6 +330,7 @@ def view(repo=REPO, cards=None, desk_rows=None, now=None):
     """JSON for the Control Room relay section."""
     import desk
     st, now = load(repo), now or utc()
+    st["heartbeat"] = newest_heartbeat(st, repo)
     cards = tasks.load_all(repo) if cards is None else cards
     rows = {r["id"]: r for r in desk.tasks(repo)} if desk_rows is None else desk_rows
     pl = plan(st, cards, rows, set())
@@ -351,9 +391,13 @@ def sweep(repo=REPO, now=None, do_apply=False, do_ship=False, beating=False):
     import desk
     now = now or utc()
     old = load(repo)
-    st = sweep_state(old, now)
-    if beating and (epoch(old["heartbeat"]) + HEARTBEAT_WRITE_S <= now.timestamp() or st["status"] != old["status"]):
+    remote_hb = remote_heartbeat(repo, fetch=True)
+    seen = dict(old, heartbeat=remote_hb if epoch(remote_hb) > epoch(old["heartbeat"]) else old["heartbeat"])
+    st = sweep_state(seen, now)
+    hb_in_file = False   # a heartbeat that is not on the side branch has to go through the state file (no remote: tests, fresh clone)
+    if beating and (epoch(seen["heartbeat"]) + HEARTBEAT_WRITE_S <= now.timestamp() or st["status"] != old["status"]):
         st = beat(st, now)
+        hb_in_file = not push_heartbeat(repo, st["heartbeat"])
     cards = tasks.load_all(repo)
     pl = plan(st, cards, {r["id"]: r for r in desk.tasks(repo)}, read_claimed(repo))
     changed, lines = [], []
@@ -361,7 +405,7 @@ def sweep(repo=REPO, now=None, do_apply=False, do_ship=False, beating=False):
         changed, lines = apply_plan(repo, pl, st, now)
     else:
         lines = [f"{c['id']} would go to {to}" for c, to in pl["reroute"]] + [f"{c['id']} PAUSED" for c, _ in pl["paused"]]
-    if st != old:
+    if {k: v for k, v in st.items() if k != "heartbeat"} != {k: v for k, v in old.items() if k != "heartbeat"}             or (hb_in_file and st["heartbeat"] != old["heartbeat"]):
         changed.append(str(save(repo, st).relative_to(repo)))
     elif git(repo, "status", "--porcelain", "--", STATE, check=False).stdout.strip():
         changed.append(STATE)   # state written by codex_run (window spent): ship it too, a dirty tree would stop the next tick

@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T10:12:13Z",
+  "commands": [],
+  "created": "2026-10-17T09:02:17Z",
+  "depends_on": [],
+  "done_when": "LEDGER_FEASIBILITY.md with the count and SCORABLE/HYPOTHESIS verdict, quoted with file:line.",
+  "est_turns": 12,
+  "from_inbox": "",
+  "goal": "Gate 0c for CryptoCred: find whether any dated CryptoCred trades or calls exist (repo extracts, public chart posts already saved) that can be scored on BTC data. If none, record the layer as a hypothesis, not a core.",
+  "id": "cryptocred-ledger-feasibility",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "0 dated CryptoCred trades/calls in 5 extracts (2 undated chart examples): HYPOTHESIS, rese",
+      "ref": "5ce36f98",
+      "utc": "2026-10-17T10:12:13Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "g3 chart rebuild: 213 charts redrawn from fixed g3_pack.py, README READY TO MARK",
+      "ref": "bbe64cea648e",
+      "utc": "2026-10-17T09:01:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d7749d092236 Control Room pickup 2026-10-15: copy and apply 9 operator decisions (q-gap-a/",
+      "ref": "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+      "utc": "2026-10-15T09:54:44Z"
+    }
+  ],
+  "layers": [
+    "cryptocred"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "cryptocred-home-fit-audit 2026-10-17",
+  "refreshed": "2026-10-17T09:02:34Z",
+  "refs": [],
+  "result": "0 dated CryptoCred trades/calls in 5 extracts (2 undated chart examples): HYPOTHESIS, research/cryptocred_ledger_2026-10/LEDGER_FEASIBILITY.md",
+  "scope_in": [
+    "extracts/processed/cryptocred/",
+    "MyTradingSys/research/",
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md"
+  ],
+  "scope_out": [
+    "any P&L backtest run",
+    "tuning",
+    "edits to live-path code"
+  ],
+  "scope_sha": "bbe64cea648e",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md"
+  ],
+  "state": "done",
+  "steps": [
+    "List every dated trade/call in the 5 CryptoCred extracts and any saved sources (quote + file:line); count them.",
+    "Write MyTradingSys/research/cryptocred_ledger_2026-10/LEDGER_FEASIBILITY.md: N found, minute timestamps possible or not, design/check split possible or not, verdict SCORABLE / HYPOTHESIS.",
+    "If SCORABLE, write the ledger csv; no backtest."
+  ],
+  "tests": "test_pre_reg_template.py stays green; new LEDGER_FEASIBILITY.md has the counts and a verdict line (fails before the file exists).",
+  "title": "CryptoCred: does any dated trade or call record exist to score on BTC (gate 0c, items 2/3/5)",
+  "worker": "agent"
+}

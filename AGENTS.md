@@ -6,3 +6,5 @@ Reference answers (push fallback, CI/CD, Codex status): `MyTradingSys/system/QUI
 
 Codex entry point and first-message prompt: `MyTradingSys/system/CODEX_START.md`. Protocol: `MyTradingSys/system/PARALLEL.md`.
 Layer lab (lane `CODEX`, the Codex app project "MTS Layer Lab", unattended runs): `MyTradingSys/system/LAYER_LAB.md`.
+
+Gemini (Antigravity, JIS-NUC) has its own entry point: `GEMINI.md` -> `MyTradingSys/system/GEMINI_START.md`.

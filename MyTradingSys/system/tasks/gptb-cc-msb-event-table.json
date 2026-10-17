@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T12:29:11Z",
   "commands": [],
   "created": "2026-10-17T03:40:00Z",
   "depends_on": [],
@@ -11,6 +12,28 @@
   "id": "gptb-cc-msb-event-table",
   "kind": "build",
   "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DEV 1h 831 MSB rows (830 OK, 1 NOT_IN_DATA), mean MFE 3.340R / MAE 3.109R; 8 tests green; ",
+      "ref": "4d4f8b3e",
+      "utc": "2026-10-17T12:29:11Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wavetrend-priority-source-parity: register parity ref + test in wiring and extra gate",
+      "ref": "515d07a91407",
+      "utc": "2026-10-17T06:23:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c768076dcafe trendline-contract-spec: apply review fixes (L6 scope, E9-E11 gaps, tie examp",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-17T04:42:49Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "model": "gpt-6-luna",
@@ -18,8 +41,9 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "lab-cards-1017",
+  "refreshed": "2026-10-17T07:24:48Z",
   "refs": [],
-  "result": "",
+  "result": "DEV 1h 831 MSB rows (830 OK, 1 NOT_IN_DATA), mean MFE 3.340R / MAE 3.109R; 8 tests green; cc_msb_event_table/REPORT.md",
   "scope_in": [
     "MyTradingSys/research/layer_lab/cc_msb_event_table/event_table.py",
     "MyTradingSys/research/layer_lab/cc_msb_event_table/test_event_table.py",
@@ -42,9 +66,10 @@
     "trading rules, tuning or net-of-cost claims",
     "editing dev_split_guard or forward_excursion (import read only)"
   ],
+  "scope_sha": "515d07a91407",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the BRIEF.md named in scope_in, then write the test file first; run it and confirm it fails (red).",
     "Implement event_table.py in MyTradingSys/research/layer_lab/cc_msb_event_table/ only: DEV data only, gap or missing input = NOT_IN_DATA (never 0); use the two helpers named in the brief (read only).",

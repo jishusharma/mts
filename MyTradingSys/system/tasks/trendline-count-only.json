@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T09:10:38Z",
   "commands": [
     "python MyTradingSys/research/trendlines_2026-10-17/count_only.py --split DEV"
   ],
@@ -14,6 +15,14 @@
   "goal": "Count lines, touch episodes and breaks per TF and arm on DEV only, with no returns or outcomes, to size the cells before any PRE_REG is frozen.",
   "id": "trendline-count-only",
   "lane": "DSA",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "1h arm A touch/break + arm B break carried (3 of 18 pooled cells, Holm m=3, MDE 0.19-0.24 ",
+      "ref": "694dacfc",
+      "utc": "2026-10-17T09:10:38Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
@@ -22,8 +31,9 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T08:58:04Z",
   "refs": [],
-  "result": "",
+  "result": "1h arm A touch/break + arm B break carried (3 of 18 pooled cells, Holm m=3, MDE 0.19-0.24 SD); 4h/1d and arm V underpowered; counts/CELLS.csv + PRE_REG_TRENDLINES.md",
   "scope_in": [
     "Run trendline_core on BTCUSDT 1m/1h/1d for 2022-01-01..2024-06-30 (repo DEV split, SPLIT_ALIGNMENT_2026-10-17.md); write counts, effective n by day, MDE per cell",
     "Write PRE_REG_TRENDLINES.md: primary question, arms (line, context, both, horizontal, placebo), Holm family, costs, horizon; log the read in gross_effect_screen_2026-10-15/EXPOSURE_LEDGER.csv"
@@ -31,13 +41,14 @@
   "scope_out": [
     "Forward returns, MFE/MAE, fees, any date after 2024-06-30, live path"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "MyTradingSys/research/trendlines_2026-10-17/CLAUDE_VERIFY.md",
     "MyTradingSys/backtest/bigtrade/SPLIT_ALIGNMENT_2026-10-17.md",
     "MyTradingSys/research/layer_rebuild_2026-10-15/LAYER_REBUILD_PLAN_2026-10-15.md"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Run the module on DEV only; table lines, contact episodes, breaks per TF/arm/slope tercile",
     "Drop cells below the MDE rule from the PRE_REG; list them as underpowered",
