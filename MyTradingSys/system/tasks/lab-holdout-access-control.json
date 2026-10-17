@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T20:41:20Z",
   "commands": [],
   "created": "2026-10-18T00:00:00Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "27 tests pass (2 new fail on 919cc0f2); lab_flow.safe_file fails closed on unsupported for",
+      "ref": "f708bf78",
+      "utc": "2026-10-17T20:41:20Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "test_lab_flow: spend guard test uses 10 runs (guard raised to 10/window in e6955a8f); unbl",
@@ -22,13 +29,13 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use] | cross-vendor review owed (independent Claude review 2026-10-18 found 2 defects; reopened for fixes). No REVIEWED stamp added: lab start does not use tasks.py take (codex_run has no review_gate).",
+  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use] | cross-vendor review owed (independent Claude review 2026-10-18 found 2 defects; reopened for fixes). No REVIEWED stamp added: lab start does not use tasks.py take (codex_run has no review_gate). REVIEWED: sonnet-reviewer 2026-10-18 ACCEPT (Claude diff review + Claude re-derivation; C2 cross-vendor review owed)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-17T19:58:49Z",
   "refs": [],
-  "result": "",
+  "result": "27 tests pass (2 new fail on 919cc0f2); lab_flow.safe_file fails closed on unsupported formats, normalises seconds, refuses bars >= 1719792000000 ms",
   "scope_in": [
     "scripts/dev/lab_flow.py (safe_file and fingerprint)",
     "scripts/dev/test_lab_flow.py"
@@ -41,7 +48,7 @@
   "scope_sha": "9649674dccbb",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "BUILD ALREADY EXISTS (origin/fast-track 919cc0f2: safe_file guards .npz/.csv/.zip by bound 2024-07-01 = 1719792000000 ms); continue from it, do not rewrite",
     "defect 1 (fail closed): any file under DATA_ROOT whose extension cannot be time-checked (e.g. .parquet, .json, .bin) is refused in safe_file; max_open=None must never pass",
