@@ -50,8 +50,7 @@
   "steps": [
     "plant one error per shadow card: wrong data copy, one-bar shift, holdout leak, expected value copied from code, deleted trials, zero slippage, edited gate constant, mislabelled SOURCED number",
     "run the cheap stack (machine checks + Haiku independent re-derivation + GPT-OSS or Flash) and the expensive stack (Argon or GPT high)",
-    "record catches per class, tokens and effort in the findings ledger",
-    "optional: operator runs the same prompt by hand in free GitHub Copilot (pasted evidence only, no repo access), result goes in the ledger as a third-vendor lens; never used for C2/C3"
+    "record catches per class, tokens and effort in the findings ledger"
   ],
   "tests": "shadow cards must be rejected by at least one stack or the trial is invalid",
   "title": "Lab: planted-error trial on 10 finished cards, cheap stack vs Argon/GPT high",
