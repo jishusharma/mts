@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-17T09:02:21Z",
+  "depends_on": [
+    "cryptocred-htf-count-power"
+  ],
+  "done_when": "PRE_REG_CRYPTOCRED_HTF.md complete; operator can approve the backtest card from it.",
+  "est_turns": 12,
+  "from_inbox": "",
+  "goal": "Fill backtest/PRE_REG_TEMPLATE.md for a CryptoCred 4h/1d redesign: invalidation-based stop with an OURS buffer in noise units, trailing/FTA exits next to the fixed bracket, sealed holdout, trial ledger, regime stratification and the kill rule (gate 0f). No backtest.",
+  "id": "cryptocred-prereg-4h-1d",
+  "lane": "SONNET",
+  "layers": [
+    "cryptocred"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "cryptocred-home-fit-audit 2026-10-17",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md",
+    "MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md"
+  ],
+  "scope_out": [
+    "any P&L backtest run",
+    "tuning",
+    "edits to live-path code"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Write MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md with all 12 items and gates 0a-0f answered; label every number SOURCED or OURS.",
+    "State which result ends the source (kill rule) and the redesign budget.",
+    "Run test_pre_reg_template.py; create no further cards."
+  ],
+  "tests": "test_pre_reg_template.py passes for the new file (fails if any item is unanswered).",
+  "title": "CryptoCred: pre-registration for the 4h/1d redesign (items 6/8/11/12)",
+  "worker": "agent"
+}

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T09:02:48Z",
   "commands": [],
   "created": "2026-10-11T18:00:25Z",
   "depends_on": [
@@ -14,6 +15,12 @@
   "id": "cryptocred-home-fit-audit",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "HOME_FIT_AUDIT_CRYPTOCRED.md: 12 items answered, 2 FAIR / 9 UNFAIR (+1 split), 3 follow-up",
+      "ref": "0d5e1951",
+      "utc": "2026-10-17T09:02:48Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,7 @@
   "refined_by": "cloud-research 2026-10-11 (C-Cloud BACKTEST_FAILURES_RESEARCH.md; operator: 'get this into action')",
   "refreshed": "2026-10-17T07:44:09Z",
   "refs": [],
-  "result": "",
+  "result": "HOME_FIT_AUDIT_CRYPTOCRED.md: 12 items answered, 2 FAIR / 9 UNFAIR (+1 split), 3 follow-up cards",
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md",
     "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
@@ -55,7 +62,7 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md section 4, 6, 7"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Answer each of the 12 checklist items for this layer with evidence (file:line, quote) or NOT_IN_DATA.",
     "Write MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md: verdict FAIR / UNFAIR per item, the cheapest fix, and the order of cards it would need.",
