@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T18:19:26Z",
   "commands": [
     "python -c \"import csv;r=list(csv.DictReader(open('MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv',encoding='utf-8')));print(sum(not x['date'].startswith('UNKNOWN') for x in r[23:70]))\""
   ],
@@ -13,6 +14,12 @@
   "id": "rv05-h1-date-evidence",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "CSV 25-71 date fields non-UNKNOWN=0; RV05 H1 date evidence section appended (47 ids) to FA",
+      "ref": "262f3b72",
+      "utc": "2026-10-17T18:19:26Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,7 @@
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md"
   ],
-  "result": "",
+  "result": "CSV 25-71 date fields non-UNKNOWN=0; RV05 H1 date evidence section appended (47 ids) to FABIO_TRADE_LEDGER.md",
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md (append one section)",
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv (only if the command prints above 0)"
@@ -56,7 +63,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run the command in commands; note the printed count (expected 0).",
     "If the count is above 0, set each non-UNKNOWN date on lines 25-71 to UNKNOWN with a reason; a contract name like NQ-202512 or a 2026 file name is not a session date.",

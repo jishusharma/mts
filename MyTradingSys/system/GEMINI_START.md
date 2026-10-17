@@ -13,6 +13,12 @@ The tool actually installed on the NUC (2026-10-17) is the **Google Antigravity 
 - Model: use a Flash model for routine cards; Gemini 4 Argon has a separate weekly-only quota, keep it for hard cards.
 - No plugins or delegation tools (community Claude-to-agy bridges exist; not installed). Revisit only after one card has shipped cleanly.
 
+## Antigravity facts and first run (2026-10-17, operator screenshot + dry run)
+- Model menu (one Pro login): Gemini 4 Argon, Gemini 3.8 Flash (default for routine cards), Claude Opus 5.5, Claude Sonnet 5.5, GPT-OSS 120B. Limits shown: Gemini models weekly + five-hour; Claude and GPT models weekly + five-hour; Argon weekly only (all 100% at first look). `View Usage` in the model menu shows them.
+- Claude models inside Antigravity are Gemini's lane, not Claude's: CLAUDE.md model rules still apply (Opus only when the operator names it; Sonnet for routine). Prefer Flash; check View Usage before a long card.
+- Dry run passed: Gemini ran `sync.py start`, `sync.py where`, `tasks.py next --lane CODEX` (returned `dsa-audit-08-split-trials`, size M, p1), asked before each command, edited nothing, committed nothing.
+- Dry-run slip: it read GEMINI.md and GEMINI_START.md before syncing, so they were missing (the tree was behind). The paste block now syncs first.
+
 ## Zero-conflict rules (all already in PARALLEL.md; Gemini adds none)
 1. Own checkout: the work tree `F:\MTS\mts-gemini`, never the live tree (`BinanceDataFeed` on JIS-NB, marked `.mts_live`) and never another session's tree (`mts-codex`, `mts-codex-lab`, `mts-dsa`, `mts-jis-nuc-*`). the IDE opens only `F:\MTS\mts-gemini`.
 2. Own branch prefix `<host>/gemini-<slug>`; shares work only by `sync.py ship` (merge, never rebase, reset, stash or force-push; never commit to master).
@@ -39,10 +45,9 @@ The tool actually installed on the NUC (2026-10-17) is the **Google Antigravity 
 
 ## Paste into Gemini
 ```
-You are an MTS builder session (surface GEM, Gemini). Read GEMINI.md (-> AGENTS.md -> CLAUDE.md), then
-MyTradingSys/research/STATUS.md, MyTradingSys/system/PARALLEL.md, MyTradingSys/system/GEMINI_START.md.
-Work only in this folder. Never read .secrets/, .env or keys; never run or stop live processes.
-0. `python scripts/dev/sync.py start gemini-<slug>`, `sync.py where`. Push fails: say so in one line, stop.
+You are an MTS builder session (surface GEM, Gemini). Work only in this folder. Never read .secrets/, .env or keys; never run or stop live processes.
+0. FIRST, before reading any file: `python scripts/dev/sync.py start gemini-<slug>`, `sync.py where` (the tree is often behind origin; files below may not exist until this runs). Push fails: say so in one line, stop.
+   Then read GEMINI.md (-> AGENTS.md -> CLAUDE.md), MyTradingSys/research/STATUS.md, MyTradingSys/system/PARALLEL.md, MyTradingSys/system/GEMINI_START.md.
 1. `python scripts/dev/tasks.py next --lane CODEX`: take the first ready card nobody has claimed.
    `tasks.py brief <card>` is the whole task. `sync.py claim "<card>"`, work, tests (new test red before the fix), `tasks.py done <card> --result "<number/file>"`.
 2. `sync.py ship --release <slug>`, `sync.py where` clean.
