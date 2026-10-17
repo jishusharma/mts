@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-17T03:55:03Z",
+  "depends_on": [
+    "trendline-contract-spec"
+  ],
+  "done_when": "Pack on fast-track with WINDOWS.csv, two blank marking sheets, closed answer key, exposure ledger line; sync.py ship green.",
+  "from_inbox": "",
+  "goal": "Build the G3 pack so two readers mark 'obvious legitimate trend line' on BTC charts blind to what came next, giving the selector a reproducibility number.",
+  "id": "trendline-g3-marks-pack",
+  "lane": "SONNET",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "note": "Filed by trendlines-verify 2026-10-17 after CLAUDE_VERIFY.md (FIX-FIRST). Gate order: contract, causal module, count-only, then PRE_REG; no backtest study yet. Stays refined until its depends_on card is done, then flip to ready.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "Pack under research/trendlines_2026-10-17/g3_pack/: WINDOWS.csv, charts cut at the decision bar, marking sheets, closed answer key; copy g3_marks_2026-10-16 structure",
+    "Half random windows, half from a written pre-filter; definitions go into READER_PROTOCOL.md as OURS once"
+  ],
+  "scope_out": [
+    "Marking itself (operator + second reader)",
+    "Backtest, live path"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/trendlines_2026-10-17/CLAUDE_VERIFY.md",
+    "MyTradingSys/research/layer_rebuild_2026-10-15/READER_PROTOCOL.md",
+    "MyTradingSys/research/g3_marks_2026-10-16/README.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read READER_PROTOCOL.md and g3_marks_2026-10-16/g3_pack.py",
+    "Generate windows from DEV only using the contract's pivot rule; render charts with no later bars",
+    "Add a test that no chart contains a bar after its decision time"
+  ],
+  "tests": "test_g3_pack.py new case fails on the old pack code if a chart includes a bar after decision time; passes on the new builder.",
+  "title": "Trend-line G3 blind marks pack for the obvious-line selector"
+}
