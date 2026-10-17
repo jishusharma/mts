@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "codex-runner",
+  "closed": "2026-10-17T22:55:02Z",
   "commands": [],
   "created": "2026-10-17T22:50:31Z",
   "depends_on": [],
@@ -13,6 +15,14 @@
   "id": "lab-vendor-gate-harden",
   "kind": "build",
   "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "32 passed; MyTradingSys/research/layer_lab/reports/2026-10-17_lab-vendor-gate-harden.md",
+      "ref": "72a453fe",
+      "utc": "2026-10-17T22:55:02Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py::test_shuffled_rsi_closes_are_rejected",
@@ -21,7 +31,7 @@
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
   "refs": [],
-  "result": "",
+  "result": "32 passed; MyTradingSys/research/layer_lab/reports/2026-10-17_lab-vendor-gate-harden.md",
   "scope_in": [
     "scripts/dev/lab_flow.py",
     "scripts/dev/test_lab_flow.py"
@@ -33,13 +43,14 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the test named in Tests first and see it fail on the current code.",
     "Implement the goal inside scope_in only; new behaviour sits behind a flag that is off by default.",
     "Before finishing run `python scripts/dev/lookahead_lint.py --new`; fix FAIL hits on your files: write forward bars as zip(times, times[1:]), not times[i + 1]; a truly causal pair gets one reviewed row in scripts/dev/lookahead_allowlist.tsv (name it in scope_in).",
     "Run the test file you changed (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: tests that create git repositories are refused in the sandbox; the runner runs the quick gate when it ships."
   ],
+  "taken": "2026-10-17T22:55:01Z",
   "tests": "empty vendor, case variant, label/model mismatch and C1 override each fail on current code first",
   "title": "Vendor gate hardening: allowlist, normalise, fail closed, C0-override tests",
   "weight": "",

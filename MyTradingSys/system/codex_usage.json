@@ -4,9 +4,9 @@
   "week_resets": 1792874520,
   "week_used": 0,
   "window_resets": 1792287720,
-  "window_used": 2.0
+  "window_used": 3.0
  },
- "at": "2026-10-17T22:51:14Z",
+ "at": "2026-10-17T22:55:08Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,40 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 0.0,
-  "window_pts": 2.0,
-  "window_runs": 5
+  "window_pts": 3.0,
+  "window_runs": 6
  },
  "runs": [
+  {
+   "at": "2026-10-17T22:52:47Z",
+   "card": "lab-vendor-gate-harden",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 134,
+   "tokens_out": 10248,
+   "tokens_total": 1381514,
+   "tokens_uncached": 60930,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": null,
+   "card": "lab-review-gate-harden",
+   "effort": null,
+   "kind": null,
+   "model": null,
+   "note": "hardening shipped; only lane_health.py close path left, done by a Claude session (lane-health-gate); closing card by NUC coordinator",
+   "outcome": "REOPENED",
+   "seconds": null,
+   "tokens_out": null,
+   "tokens_total": null,
+   "tokens_uncached": null,
+   "week_pts": null,
+   "window_pts": null
+  },
   {
    "at": "2026-10-17T22:48:24Z",
    "card": "lab-review-gate-harden",
@@ -142,36 +172,6 @@
    "tokens_uncached": 74514,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-17T20:37:59Z",
-   "card": "lab-holdout-access-control",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 92,
-   "tokens_out": 5641,
-   "tokens_total": 938722,
-   "tokens_uncached": 44505,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": null,
-   "card": "lab-holdout-access-control",
-   "effort": null,
-   "kind": null,
-   "model": null,
-   "note": "card extended with 2 review defects (unsupported extension fail-closed, seconds epoch); reset by NUC session 2026-10-18",
-   "outcome": "REOPENED",
-   "seconds": null,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
   }
  ]
 }

@@ -29,6 +29,9 @@ def repo(tmp_path, monkeypatch):
 
 
 def complete(repo, card, verdict="PASS"):
+    card = tasks.get(repo, card["id"])
+    card["state"] = "active"
+    tasks.save(repo, card)
     p = repo / tasks.LAB_REPORTS / (card["id"] + ".md")
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(f"Report for card {card['id']}\nEvidence source.md:1 source.md:2\nC1: PASS\nC2: PASS\n", encoding="utf-8")
@@ -87,6 +90,76 @@ def test_same_vendor_different_model_requires_c0_override(repo, monkeypatch):
     assert cards[1]["flow"]["same_vendor_override"] is True
 
 
+def test_hardened_vendor_gate_rejects_empty_case_alias_and_model_mismatch(repo, monkeypatch):
+    base = spec() | {"vendor_gate_hardened": True}
+    recipe = [
+        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Producer."),
+        ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Reviewer."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "hardened-vendor-fixture", recipe)
+    assert F.launch(repo, base | {"id": "hardened-valid", "recipe": "hardened-vendor-fixture"})
+
+    bad_rows = [
+        ("empty", ("challenge", "", "audit", "gemini-2.5-pro", "low", "Reviewer.")),
+        ("unknown", ("challenge", "vendorx", "audit", "vendorx-model", "low", "Reviewer.")),
+        ("label-model-mismatch", ("challenge", "gemini", "audit", "gpt-6-astra", "low", "Reviewer.")),
+        ("normalized-same-vendor", ("challenge", " Codex ", "audit", "gpt-6-astra", "low", "Reviewer.")),
+    ]
+    for flow_id, row in bad_rows:
+        recipe[1] = row
+        with pytest.raises(ValueError):
+            F.launch(repo, base | {"id": flow_id, "recipe": "hardened-vendor-fixture"})
+
+
+def test_hardened_vendor_gate_normalizes_case_vendor(repo, monkeypatch):
+    recipe = [
+        ("producer", " CODEX ", "audit", "gpt-6.1-sol", "medium", "Producer."),
+        ("challenge", " GEMINI ", "audit", "gemini-2.5-pro", "low", "Reviewer."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "normalized-vendor-fixture", recipe)
+    cards = F.launch(repo, spec() | {"id": "normalized-vendor", "recipe": "normalized-vendor-fixture",
+                                     "vendor_gate_hardened": True})
+    assert [card["vendor"] for card in cards] == ["codex", "gemini"]
+
+
+def test_same_vendor_override_is_c0_only_and_boolean(repo, monkeypatch):
+    recipe = [
+        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Producer."),
+        ("challenge", "codex", "audit", "gpt-6-astra", "low", "Reviewer."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "override-fixture", recipe)
+    # The opt-in contract flag must survive launch so gate checks cannot silently turn off.
+    monkeypatch.setitem(F.RECIPES, "override-crossvendor-fixture", [
+        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Producer."),
+        ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Reviewer."),
+    ])
+    baseline = F.launch(repo, spec() | {"id": "override-contract", "recipe": "override-crossvendor-fixture",
+                                       "vendor_gate_hardened": True})
+    assert baseline[0]["flow"]["vendor_gate_hardened"] is True
+    for flow_id, risk, override in (("override-c1", "C1", True), ("override-string", "C0", "true")):
+        flow_spec = spec() | {"id": flow_id, "recipe": "override-fixture", "risk_class": risk,
+                              "same_vendor_override": override, "vendor_gate_hardened": True}
+        with pytest.raises(ValueError):
+            F.launch(repo, flow_spec)
+
+    allowed = spec() | {"id": "override-c0", "recipe": "override-fixture", "risk_class": "C0",
+                        "same_vendor_override": True, "vendor_gate_hardened": True}
+    cards = F.launch(repo, allowed)
+    assert cards[1]["flow"]["same_vendor_override"] is True
+
+
+def test_vendor_hardening_is_opt_in_and_critical_audit_restores_crucial(repo, monkeypatch):
+    recipe = [
+        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Producer."),
+        ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Reviewer."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "opt-in-fixture", recipe)
+    cards = F.launch(repo, spec() | {"id": "opt-in-default", "recipe": "opt-in-fixture"})
+    assert "vendor_gate_hardened" not in cards[0]["flow"]
+    critical = F.launch(repo, spec() | {"id": "critical-flag", "recipe": "critical-audit"})
+    assert all(card["crucial"] is True for card in critical)
+
+
 def test_finish_receipt_records_stage_model_id(repo, monkeypatch):
     recipe = [
         ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Producer."),
@@ -120,6 +193,9 @@ def test_rework_and_missing_criterion_cannot_advance(repo):
     assert tasks.ready_cards(repo)[0] == []
     report = repo / tasks.LAB_REPORTS / (a["id"] + ".md")
     report.write_text(f"Report for card {a['id']}\nC1: PASS", encoding="utf-8")
+    active = tasks.get(repo, a["id"])
+    active["state"] = "active"
+    tasks.save(repo, active)
     with pytest.raises(ValueError, match="C2"):
         F.finish(repo, a["id"], str(report.relative_to(repo)), "PASS", "check")
 
@@ -228,6 +304,9 @@ def test_stage_two_cannot_clear_previous_dependency(repo):
 def test_stage_two_cannot_reuse_stage_one_report(repo):
     a, b = F.launch(repo, spec())
     complete(repo, a)
+    b = tasks.get(repo, b["id"])
+    b["state"] = "active"
+    tasks.save(repo, b)
     with pytest.raises(ValueError, match="already used"):
         F.finish(repo, b["id"], tasks.get(repo, a["id"])["flow_receipt"]["report"], "PASS", "copied")
 
@@ -237,6 +316,9 @@ def test_status_lines_without_evidence_are_rejected(repo):
     p = repo / tasks.LAB_REPORTS / (a["id"] + ".md")
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(f"Report for card {a['id']}\nC1: PASS\nC2: PASS\n", encoding="utf-8")
+    active = tasks.get(repo, a["id"])
+    active["state"] = "active"
+    tasks.save(repo, active)
     with pytest.raises(ValueError, match="evidence"):
         F.finish(repo, a["id"], str(p.relative_to(repo)), "PASS", "no evidence")
 
