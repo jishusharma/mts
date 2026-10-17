@@ -24,6 +24,7 @@ EXTRA = [
     "MyTradingSys/research/layer_lab/candle_pattern_event_table/test_patterns.py",
     "MyTradingSys/research/layer_lab/context_fix1_stop_strata/test_stop_strata.py",
     "MyTradingSys/research/layer_lab/bigtrade_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/funding_extreme_event_table/test_event_table.py",
     "MyTradingSys/research/layer_lab/dev_split_guard/test_event_table.py",
     "MyTradingSys/research/layer_lab/oi_delta_event_table/test_event_table.py",
     "MyTradingSys/research/layer_lab/volume_event_table/test_event_table.py",

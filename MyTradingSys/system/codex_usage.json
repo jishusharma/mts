@@ -6,7 +6,7 @@
   "window_resets": 1792213232,
   "window_used": 15.0
  },
- "at": "2026-10-17T01:04:10Z",
+ "at": "2026-10-17T01:32:55Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,17 +20,32 @@
   "astra_runs": 1,
   "week_pts": 22.0,
   "window_pts": 12.0,
-  "window_runs": 2
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-10-17T01:30:03Z",
+   "card": "gptb-funding-extreme-event-table",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 166,
+   "tokens_out": 15432,
+   "tokens_total": 1366022,
+   "tokens_uncached": 58814,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-17T01:00:10Z",
    "card": "gptb-bb-top-reversal-event-table",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": "test layer tests: SKIP\nStep 5: Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n==========================",
+   "outcome": "SHIP_FAILED",
    "seconds": 234,
    "tokens_out": 11539,
    "tokens_total": 1571155,
@@ -157,21 +172,6 @@
    "tokens_uncached": 27862,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-16T19:30:12Z",
-   "card": "gptb-volume-event-table",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 80,
-   "tokens_out": 7113,
-   "tokens_total": 427736,
-   "tokens_uncached": 36879,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
