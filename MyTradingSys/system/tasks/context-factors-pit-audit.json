@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-10-17T07:29:29Z",
   "commands": [],
   "created": "2026-10-16T16:47:31Z",
   "depends_on": [],
@@ -25,7 +25,7 @@
     "research/context_factors_2026-10-16/AUDIT_BEFORE_RUN.md",
     "research/pit_levels_2026-10-16/AUDIT_BEFORE_RUN.md"
   ],
-  "result": "",
+  "result": "FIX-FIRST on items 1 (stop gap F3 +43/45%, F5 +44/130%) and 2 (n_needed uses z 2.8 vs PASS z 3.337; Holm-z n 1274/983/2775 > 700 days); items 3-6 OK; m=59",
   "scope_in": [
     "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md"
   ],
@@ -38,7 +38,7 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read PRE_REG_V2.md, COMPARISON.md s.3-4, EPISODE_COUNTS.md and the two prior audits named in refs.",
     "Item 1: is the context_null match key (hour, vol, trend) enough for a filter contrast whose arms share the ladder stop? Recompute the stop_pct medians per arm from grid_context.csv (python run_compare.py, count-only) for the four design-powered cells; flag > 25 % relative gaps.",

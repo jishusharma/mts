@@ -5,8 +5,7 @@
   "created": "2026-10-11T18:00:25Z",
   "depends_on": [
     "backtest-readiness-template",
-    "tom-layer-v2-cost",
-    "fabio-layer-v2-markets"
+    "tom-layer-v2-cost"
   ],
   "done_when": "HOME_FIT_AUDIT_CRYPTOCRED.md with 12 answered items and follow-up cards, each passing tasks.py check.",
   "est_turns": 12,
@@ -18,7 +17,7 @@
     "cryptocred"
   ],
   "live_path": false,
-  "note": "2026-10-15 q12: raised p4 -> p1 (operator answer).",
+  "note": "2026-10-15 q12: raised p4 -> p1 (operator answer). backlog-refine-1017: removed the dep on fabio-layer-v2-markets (p5, paused, OPUS) - it deadlocked this p1 card; default taken, revert if the audit needs Fabio part B.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "cloud-research 2026-10-11 (C-Cloud BACKTEST_FAILURES_RESEARCH.md; operator: 'get this into action')",
@@ -38,7 +37,7 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md section 4, 6, 7"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Answer each of the 12 checklist items for this layer with evidence (file:line, quote) or NOT_IN_DATA.",
     "Write MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md: verdict FAIR / UNFAIR per item, the cheapest fix, and the order of cards it would need.",
