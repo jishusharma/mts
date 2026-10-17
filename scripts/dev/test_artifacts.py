@@ -154,6 +154,14 @@ class Home(unittest.TestCase):
         self.assertEqual(d["answerAt"]["owner"], "jishu.sharma")
         self.assertIn("Waiting for you", mh.render(d))
 
+    def test_hub_explains_failing_links_first(self):
+        """Operator 2026-10-17: links to pages owned by another login fail; the reason and fix come before the lists."""
+        import make_home as mh
+        html = mh.render(mh.build(self.reg))
+        self.assertLess(html.index('id="h-how"'), html.index('id="h-wait"'))
+        self.assertIn("Link fails? Why, and the one-time fix", html)
+        self.assertIn("only after", html)
+
 
 if __name__ == "__main__":
     unittest.main()
