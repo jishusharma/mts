@@ -28,6 +28,7 @@ def digest(value):
 
 
 def safe_file(repo, rel):
+    """Resolve an allowed file; only DATA_ROOT files get content timestamp checks."""
     root = Path(repo).resolve()
     requested = Path(rel)
     data_root = Path(DATA_ROOT).resolve()
@@ -54,14 +55,14 @@ def safe_file(repo, rel):
                 with np.load(p, allow_pickle=False) as data:
                     if "t" not in data.files or data["t"].size == 0:
                         raise ValueError("missing open-time axis t")
-                    max_open = int(data["t"].max())
+                    max_open = _epoch_ms(data["t"].max())
             elif p.suffix.lower() == ".csv":
                 with p.open(newline="", encoding="utf-8-sig") as f:
                     reader = csv.DictReader(f)
                     key = next((k for k in (reader.fieldnames or []) if k.lower() in ("t", "open_time", "timestamp")), None)
                     if key is None:
                         raise ValueError("missing open-time column (t/open_time/timestamp)")
-                    times = [int(row[key]) for row in reader if row.get(key)]
+                    times = [_epoch_ms(row[key]) for row in reader if row.get(key)]
                     if not times:
                         raise ValueError("empty open-time column")
                     max_open = max(times)
@@ -77,15 +78,23 @@ def safe_file(repo, rel):
                             key = next((k for k in (reader.fieldnames or []) if k.lower() in ("t", "open_time", "timestamp")), None)
                             if key is None:
                                 raise ValueError(f"missing open-time column in {name}")
-                            max_open = max(max_open, *(int(row[key]) for row in reader if row.get(key)))
+                            times = [_epoch_ms(row[key]) for row in reader if row.get(key)]
+                            if not times:
+                                raise ValueError(f"empty open-time column in {name}")
+                            max_open = max(max_open, max(times))
             else:
-                # Non-market artifacts can be scoped as source files, but are not candle inputs.
-                max_open = None
+                raise ValueError(f"unsupported data format for timestamp verification: {p.suffix or '<none>'}")
         except (OSError, ValueError, KeyError) as e:
             raise ValueError(f"cannot verify data timestamps: {rel}: {e}") from e
         if max_open is not None and max_open >= DEV_CUTOFF_MS:
             raise ValueError(f"post-cutoff data refused (max open {max_open}): {rel}")
     return p
+
+
+def _epoch_ms(value):
+    """Normalize Unix seconds to milliseconds; candle open times use either epoch scale."""
+    timestamp = int(value)
+    return timestamp * 1000 if abs(timestamp) < 100_000_000_000 else timestamp
 
 
 def fingerprint(repo, scope, data_scope=None):
