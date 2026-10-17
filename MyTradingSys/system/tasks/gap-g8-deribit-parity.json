@@ -1,72 +1,72 @@
 {
- "approved_by": "",
- "asks": "",
- "commands": [],
- "created": "2026-10-14T11:26:02Z",
- "depends_on": [],
- "done_when": "PARITY.md with the hourly basis table (24 rows, n per hour), the stop-bar agreement % over all event_table.csv rows, the verdict line, TRIALS.md row; test passes.",
- "effort": "medium",
- "est_turns": 30,
- "from_inbox": "",
- "goal": "Measure Binance-vs-Deribit venue parity on public mainnet 1m candles over DEV days: close basis in bp (median, p90 by UTC hour) and how often the first 1m bar that reaches a K1 stop of an lc-event-table touch is the same bar on both venues. Public data only, no account.",
- "id": "gap-g8-deribit-parity",
- "kind": "build",
- "lane": "SONNET",
- "latest": [
-  {
-   "auto": true,
-   "kind": "ship",
-   "line": "event_table.csv: store the lab's exact CRLF bytes, pinned with -text (lab merge clash)",
-   "ref": "7d378015a98b",
-   "utc": "2026-10-16T02:29:35Z"
-  },
-  {
-   "auto": true,
-   "kind": "report",
-   "line": "5a839bfb4430 gap review follow-up: sources checked, G2 spread measured, cards G1-G8 filed",
-   "ref": "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
-   "utc": "2026-10-14T11:26:35Z"
-  }
- ],
- "layers": [],
- "live_path": false,
- "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium+Haiku re-derive HOLD A-20261018-5: reads levels_confluence event_table.csv, an untagged lab table. Also its rows start 2024-11 (VALIDATION, after the 2024-07-01 DEV cut), so as written zero DEV rows exist. DECISION (OURS): state refined; to unblock, restrict the stop-bar check to DEV rows (touch_t < 2024-07-01) from a tagged DEV table, or drop that half and keep the basis table only (Deribit vs Binance 1m, DEV 2022-01-01..2024-06-30). LANE moved CODEX->SONNET 2026-10-18: Needs network (Deribit public candles); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT venue verdict. 2026-10-15 q-gap-c answered Yes: public market data only, no account, no orders. DISPATCH lane CODEX (JIS-NUC lab): Binance 1m on NUC (tom_raw), Deribit candles fetched public at run time. Verify: sha + empty git cherry + ls-tree lists files.",
- "prio": 5,
- "refine_tries": 0,
- "refined_by": "",
- "refreshed": "2026-10-17T20:21:38Z",
- "refs": [
-  "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
- ],
- "result": "",
- "scope_in": [
-  "MyTradingSys/research/deribit_api_research.md",
-  "MyTradingSys/research/levels_confluence_2026-10-14/event_table.csv",
-  "MyTradingSys/backtest/bt/bt_data.py",
-  "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
- ],
- "scope_out": [
-  "any Deribit account, key, order or private endpoint",
-  "days outside DEV 2024-12-01..2025-03-31",
-  "execution/ code",
-  "live tree"
- ],
- "scope_sha": "7d378015a98b",
- "size": "M",
- "sources": [
-  "q-gap-c 2026-10-15: Yes, public market data only (card note)",
-  "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md section 5 G8 (tom_bt_report.py:229 not modelled)"
- ],
- "state": "refined",
- "steps": [
-  "Tests first (red): parse a get_tradingview_chart_data reply (ticks, open, high, low, close arrays) into bars; basis_bp on a hand pair (100000 vs 100010 = 1.0 bp); first_stop_bar on a hand path for a long and a short.",
-  "Fetch BTC-PERPETUAL 1m for 2024-12-01..2025-03-31 from the public endpoint www.deribit.com/api/v2/public/get_tradingview_chart_data in <= 9000-bar chunks to F:/MTS/data/deribit_1m (off-repo, cached).",
-  "Join to Binance 1m (bt_data.load_klines on F:/MTS/data/tom_raw) on open time; write basis_bp median/p90 per UTC hour and the share of minutes with |basis| > 5 bp.",
-  "For event_table.csv rows (touch_t, side, stop_K1): first 1m bar at or after touch_t whose range reaches the stop, on each venue; report agreement % and median bar difference.",
-  "Write research/gap_g8_deribit_parity_2026-10-18/PARITY.md with both tables and a one-line verdict on whether Binance-built signals transfer to Deribit fills; one row in layer_lab/TRIALS.md."
- ],
- "tests": "test_parity.py (new, in the output folder) fails before parity.py exists, passes after: python -m pytest MyTradingSys/research/gap_g8_deribit_parity_2026-10-18/test_parity.py -q",
- "title": "G8 Deribit vs Binance venue parity (public mainnet candles allowed, q-gap-c 2026-10-15)",
- "weight": "IMPORTANT",
- "worker": "session"
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-14T11:26:02Z",
+  "depends_on": [],
+  "done_when": "PARITY.md with the hourly basis table (24 rows, n per hour), the stop-bar agreement % over all event_table.csv rows, the verdict line, TRIALS.md row; test passes.",
+  "effort": "medium",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "Measure Binance-vs-Deribit venue parity on public mainnet 1m candles over DEV days: close basis in bp (median, p90 by UTC hour) and how often the first 1m bar that reaches a K1 stop of an lc-event-table touch is the same bar on both venues. Public data only, no account.",
+  "id": "gap-g8-deribit-parity",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "event_table.csv: store the lab's exact CRLF bytes, pinned with -text (lab merge clash)",
+      "ref": "7d378015a98b",
+      "utc": "2026-10-16T02:29:35Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "5a839bfb4430 gap review follow-up: sources checked, G2 spread measured, cards G1-G8 filed",
+      "ref": "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
+      "utc": "2026-10-14T11:26:35Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium+Haiku re-derive HOLD A-20261018-5: reads levels_confluence event_table.csv, an untagged lab table. Also its rows start 2024-11 (VALIDATION, after the 2024-07-01 DEV cut), so as written zero DEV rows exist. DECISION (OURS): state refined; to unblock, restrict the stop-bar check to DEV rows (touch_t < 2024-07-01) from a tagged DEV table, or drop that half and keep the basis table only (Deribit vs Binance 1m, DEV 2022-01-01..2024-06-30). LANE moved CODEX->SONNET 2026-10-18: Needs network (Deribit public candles); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT venue verdict. 2026-10-15 q-gap-c answered Yes: public market data only, no account, no orders. DISPATCH lane CODEX (JIS-NUC lab): Binance 1m on NUC (tom_raw), Deribit candles fetched public at run time. Verify: sha + empty git cherry + ls-tree lists files.",
+  "prio": 5,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T21:35:20Z",
+  "refs": [
+    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/deribit_api_research.md",
+    "MyTradingSys/research/levels_confluence_2026-10-14/event_table.csv",
+    "MyTradingSys/backtest/bt/bt_data.py",
+    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
+  ],
+  "scope_out": [
+    "any Deribit account, key, order or private endpoint",
+    "days outside DEV 2024-12-01..2025-03-31",
+    "execution/ code",
+    "live tree"
+  ],
+  "scope_sha": "7d378015a98b",
+  "size": "M",
+  "sources": [
+    "q-gap-c 2026-10-15: Yes, public market data only (card note)",
+    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md section 5 G8 (tom_bt_report.py:229 not modelled)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Tests first (red): parse a get_tradingview_chart_data reply (ticks, open, high, low, close arrays) into bars; basis_bp on a hand pair (100000 vs 100010 = 1.0 bp); first_stop_bar on a hand path for a long and a short.",
+    "Fetch BTC-PERPETUAL 1m for 2024-12-01..2025-03-31 from the public endpoint www.deribit.com/api/v2/public/get_tradingview_chart_data in <= 9000-bar chunks to F:/MTS/data/deribit_1m (off-repo, cached).",
+    "Join to Binance 1m (bt_data.load_klines on F:/MTS/data/tom_raw) on open time; write basis_bp median/p90 per UTC hour and the share of minutes with |basis| > 5 bp.",
+    "For event_table.csv rows (touch_t, side, stop_K1): first 1m bar at or after touch_t whose range reaches the stop, on each venue; report agreement % and median bar difference.",
+    "Write research/gap_g8_deribit_parity_2026-10-18/PARITY.md with both tables and a one-line verdict on whether Binance-built signals transfer to Deribit fills; one row in layer_lab/TRIALS.md."
+  ],
+  "tests": "test_parity.py (new, in the output folder) fails before parity.py exists, passes after: python -m pytest MyTradingSys/research/gap_g8_deribit_parity_2026-10-18/test_parity.py -q",
+  "title": "G8 Deribit vs Binance venue parity (public mainnet candles allowed, q-gap-c 2026-10-15)",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
