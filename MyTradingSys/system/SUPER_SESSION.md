@@ -83,6 +83,9 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once). Numbe
   The Tom/Fabio story and per-setup requests live in the map tab "Setups & story" (DATA.story, source SETUP_CATALOG.md); a
   request there has kind question|task|backtest and a `setupId` (catalogue id); there is no second request store. Backtest =
   fee check at the stated stop first (fee R = 0.14% / stop%), then PRE_REG on DEV only. Fabio home-market chain stays paused.
+- CI red is announced by a hook (operator 2026-10-18): `ci_watch.py` prints `CI RED: ...` at session start and on every turn when the newest 2 finished
+  runs failed (public API, no `gh`). The STATUS `CI green:` line missed 10 red runs because the green ref kept moving. A `CI RED` line means: stop spawning,
+  fix CI first (one worker, card `ci-<sha>`), re-check with `python scripts/dev/ci_watch.py`.
 - CI: `gh run list -R jishusharma/mts --branch fast-track --limit 5` on EVERY wake and after every ship wave (CI sat red 2 h
   unnoticed on 10-16 while a coordinator wrote prompts). New research test files must be registered in run_all_tests /
   run_extra_tests.EXTRA or skipped with a reason (B150, gate step 3gd); study scripts need a `wiring_registry.json` entry.
