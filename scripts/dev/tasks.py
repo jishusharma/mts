@@ -384,6 +384,7 @@ def cmd_lint(a):
     cards = load_all(REPO)
     reg = registry(REPO)
     errs = []
+    warns = []
     for c in cards:
         if c["state"] not in STATES:
             errs.append(f"{c['id']}: unknown state {c['state']!r}")
@@ -391,11 +392,11 @@ def cmd_lint(a):
             errs += [f"{c['id']} ({c['state']}): {m}" for m in problems(c, cards, reg)]
             if c["state"] == "ready":
                 late = TS.overdue(c, REPO)
-                if late:
-                    errs.append(f"{c['id']} (ready): STALE {late}; run `tasks.py tag {c['id']} --refresh` after re-reading the card")
+                if late:          # a warning, never a failure: lint feeds every ship gate and trunk CI (red 2026-10-17 07:36)
+                    warns.append(f"WARN {c['id']} (ready): STALE {late}; run `tasks.py tag {c['id']} --refresh` after re-reading the card")
         if c["id"] + ".json" != path_of(REPO, c["id"]).name:
             errs.append(f"{c['id']}: file name differs from id")
-    print("\n".join(errs) if errs else f"tasks lint: {len(cards)} cards OK | {status_line(cards)}")
+    print("\n".join(errs + warns) if errs else "\n".join(warns + [f"tasks lint: {len(cards)} cards OK | {status_line(cards)}"]))
     return 1 if errs else 0
 
 

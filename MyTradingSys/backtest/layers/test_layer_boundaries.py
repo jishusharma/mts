@@ -78,6 +78,17 @@ class TestLayerBoundaries(unittest.TestCase):
             f"Execution imports found in layers:\n" + "\n".join(failures),
         )
 
+    def test_wavetrend_is_observation_only_stdlib(self):
+        """wavetrend/ is observation-only: stdlib imports only (no execution, no other layer, no numpy)."""
+        allowed = {"math", "collections", "csv", "sys", "unittest", "pathlib", "numpy", "pandas", "wavetrend"}
+        failures = []
+        for py_file in (self.layers_dir / "wavetrend").glob("*.py"):
+            for imp in self.get_imports(py_file):
+                root = imp.split(".")[0]
+                if root not in allowed or (root in {"numpy", "pandas"} and py_file.name != "make_golden.py"):
+                    failures.append(f"{py_file.name} imports {imp}")
+        self.assertFalse(failures, "; ".join(failures))
+
     def test_execution_doesnt_import_layer_backtest(self):
         """Verify no .py under execution/ imports MyTradingSys.backtest.layers."""
         failures = []
