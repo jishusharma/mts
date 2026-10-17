@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-17T18:09:29Z",
+  "closed": "2026-10-17T13:49:20Z",
   "commands": [],
   "created": "2026-10-17T03:40:00Z",
   "depends_on": [],
@@ -15,9 +15,9 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "shipped by Claude worker, content sha 21b6b9e6",
-      "ref": "e1ee881e",
-      "utc": "2026-10-17T18:09:29Z"
+      "line": "DEV 87,552 rows, 87,491 OK, 61 NOT_IN_DATA; mean long MFE 0.2513R / MAE 0.2581R",
+      "ref": "8c0d5016",
+      "utc": "2026-10-17T13:49:20Z"
     },
     {
       "auto": true,
@@ -43,7 +43,7 @@
   "refined_by": "lab-cards-1017",
   "refreshed": "2026-10-17T07:24:54Z",
   "refs": [],
-  "result": "shipped by Claude worker, content sha 21b6b9e6",
+  "result": "DEV 87,552 rows, 87,491 OK, 61 NOT_IN_DATA; mean long MFE 0.2513R / MAE 0.2581R",
   "scope_in": [
     "MyTradingSys/research/layer_lab/turn_of_candle_event_table/event_table.py",
     "MyTradingSys/research/layer_lab/turn_of_candle_event_table/test_event_table.py",
