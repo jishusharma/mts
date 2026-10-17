@@ -549,10 +549,40 @@ def cmd_stale(a):
     return 1 if hit and not a.refresh else 0
 
 
+REVIEW_WEIGHTS = ("CRUCIAL", "CRITICAL")   # lab_guy v3.1: these weights (or class C2/C3) need a reviewer stamp before start and finish
+REVIEWED_RE = re.compile(r"REVIEWED:\s*\S")
+
+
+def card_class(card):
+    """C0-C3: the card's own `class` field, else `class=Cn` in the planner's note stamp."""
+    c = str(card.get("class") or "").strip().upper()
+    if re.fullmatch(r"C[0-3]", c):
+        return c
+    m = re.search(r"\bclass=(C[0-3])\b", str(card.get("note") or ""), re.I)
+    return m.group(1).upper() if m else ""
+
+
+def review_gate(card, finishing=False, result=""):
+    """Problems stopping a crucial/critical (or C2/C3) card from being taken or marked done. routine/important pass.
+    The weight itself is set by the reviewer/planner (the note stamp), never by the producer."""
+    w = str(card.get("weight") or "").upper()
+    if w not in REVIEW_WEIGHTS and card_class(card) not in ("C2", "C3"):
+        return []
+    p = []
+    if not REVIEWED_RE.search(str(card.get("note") or "")):
+        p.append("weight/class needs review: add 'REVIEWED: <reviewer> <date>' to the note first")
+    if finishing and not str(result or "").strip():
+        p.append("a result receipt is required (--result with the evidence)")
+    return p
+
+
 def cmd_take(a):
     c = get(REPO, a.id)
     if c["state"] != "ready":
         raise SystemExit(f"tasks: {a.id} is {c['state']}, only a ready card can be taken")
+    gate = review_gate(c)
+    if gate:
+        raise SystemExit(f"tasks: {a.id} cannot be taken: " + "; ".join(gate))
     miss = problems(c, load_all(REPO), registry(REPO))
     if miss:
         raise SystemExit(f"tasks: {a.id} fails the Definition of Ready: " + "; ".join(miss))
@@ -575,6 +605,9 @@ def cmd_done(a):
     c = get(REPO, a.id)
     if c.get("flow"):
         raise SystemExit("tasks: flow cards close through lab_flow.py finish (evidence receipt required)")
+    gate = review_gate(c, finishing=True, result=a.result)
+    if gate:
+        raise SystemExit(f"tasks: {a.id} cannot be marked done: " + "; ".join(gate))
     c.update(state="done", result=a.result, closed=now())
     head = TS.git(REPO, "rev-parse", "--short", "HEAD")
     if head:   # base the work was done on; the ship commit that carries this card becomes the tag (SHIPPED@<sha>)

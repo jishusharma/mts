@@ -539,3 +539,19 @@ class LabMachineChecksTest(unittest.TestCase):
         self.assertEqual(T.problems(card), [])
         probe.write_text("def test_dummy_output_rejected():\n    assert output == 'normal'\n", encoding="utf-8")
         self.assertTrue(any("assert rejection" in e for e in T.problems(card)))
+
+
+class ReviewGateTest(unittest.TestCase):
+    def test_crucial_needs_reviewed_stamp_to_take_and_receipt_to_finish(self):
+        c = good(weight="CRUCIAL", note="[PLAN weight=CRUCIAL]")
+        self.assertTrue(any("REVIEWED" in e for e in T.review_gate(c)))
+        self.assertTrue(any("receipt" in e for e in T.review_gate(dict(c, note="REVIEWED: Argon 2026-10-18"), True, "")))
+        self.assertEqual(T.review_gate(dict(c, note="REVIEWED: Argon 2026-10-18"), True, "tests 5/5"), [])
+
+    def test_class_c2_c3_gated_even_with_routine_weight(self):
+        self.assertTrue(T.review_gate(good(weight="ROUTINE", note="class=C2")))
+        self.assertTrue(T.review_gate(good(weight="IMPORTANT", **{"class": "C3"})))
+
+    def test_routine_important_c0_c1_not_blocked(self):
+        for w, n in (("ROUTINE", ""), ("IMPORTANT", "class=C1"), ("", "class=C0")):
+            self.assertEqual(T.review_gate(good(weight=w, note=n), True, ""), [])

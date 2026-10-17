@@ -11,9 +11,9 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
+  "note": "PARKED 2026-10-18 (not stamped): target repo is F:/AIBridge (outside this repo; no scope_in path can exist here) plus an NB extension release; only F7 (DSA_SESSION_PROMPT.md wording) is in-repo.",
   "prio": 3,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [
     "B184"

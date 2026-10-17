@@ -4,10 +4,10 @@
   "commands": [],
   "created": "2026-10-12T13:15:48Z",
   "depends_on": [],
-  "done_when": "AUDIT.md lists a cause per mismatch with file:line, the recomputed klines numbers, and the ids of the fix cards filed.",
-  "est_turns": 22,
+  "done_when": "MyTradingSys/research/audits/state_cvd_vwap_audit_2026-10-18.md exists with 2 mismatch rows (cause or UNKNOWN with evidence), a consumers table, and 1-2 follow-up card ids filed via tasks.py new.",
+  "est_turns": 25,
   "from_inbox": "",
-  "goal": "Read-only audit: find why state_code.json session VWAP/CVD disagree with klines (2026-10-12 and 2026-10-15 reads) and why session.vwap_anchor_utc was in the future; say which consumers read each. No code change.",
+  "goal": "Read-only audit of two live-field mismatches: (1) state_code.json session_cvd and cum_pv differ from klines (10-12 13:08Z VWAP 83498.0 vs 83577.0; 10-15 12:41Z CVD -6549.7 vs -6182.3, row L-13); (2) vwap_anchor_utc is a future 13:30Z stamp, value fits 00:00Z (L-14). Name causes and consumers.",
   "id": "state-machine-vwap-cvd-vs-klines",
   "kind": "audit",
   "lane": "SONNET",
@@ -31,34 +31,40 @@
     "live_engine"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT [PLAN 2026-10-18 weight=IMPORTANT lab-touch: no, protocol skipped] Also covers audit-state-code-cvd-and-vwap-anchor (same fields, 2026-10-15 evidence); refine that card after this audit lands.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none (read-only audit, no live-path edit; the fix cards it files go to JIS-NB with a CRITICAL review slot). Merges audit-state-code-cvd-and-vwap-anchor (same L-13/L-14 symptom). DECISION (OURS): one audit covers both.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T20:21:24Z",
-  "refs": [],
+  "refreshed": "2026-10-17T20:25:24Z",
+  "refs": [
+    "MyTradingSys/research/screenshots/2026-10-15_BTCUSDT_set_7f3698134541.md"
+  ],
   "result": "",
   "scope_in": [
-    "src/main/java/datafeed/StateCodeEmitter.java (read)",
-    "src/main/java/datafeed/MarketDataSnapshot.java (read)",
-    "MyTradingSys/research/screenshots/2026-10-15_BTCUSDT_set_7f3698134541.md (read)",
-    "MyTradingSys/research/state_code_audit_2026-10-18/AUDIT.md (new)"
+    "src/main/java/datafeed/StateCodeEmitter.java",
+    "src/main/java/datafeed/MarketDataSnapshot.java",
+    "src/test/java/datafeed/StateCodeEmitterTest.java",
+    "src/test/java/datafeed/MarketDataSnapshotTest.java",
+    "MyTradingSys/research/screenshots/2026-10-15_BTCUSDT_set_7f3698134541.md"
   ],
   "scope_out": [
-    "any code edit",
-    "live tree and restarts",
-    "HALT files"
+    "any edit under src/ (read-only audit)",
+    "live tree, restart, deploy, HALT files",
+    "runtime_data files except read"
   ],
   "scope_sha": "d8efebc2e1ed",
   "size": "M",
-  "sources": [],
+  "sources": [
+    "MyTradingSys/research/screenshots/2026-10-15_BTCUSDT_set_7f3698134541.md"
+  ],
   "state": "ready",
   "steps": [
-    "Quote both mismatches (values, times) from the card title and the 2026-10-15 set file.",
-    "Trace cum_pv, cum_vol, session_cvd and vwap_anchor_utc in the two Java files: what resets them, what backfills on restart.",
-    "Recompute day VWAP and CVD from klines for the two instants with an independent script; write AUDIT.md with file:line causes and one fix card per cause."
+    "Read StateCodeEmitter.java lines 175-190 (sessionCvd/sessionCumPV accumulation and reset) and 465-480 (restore from file after restart), and MarketDataSnapshot.java lines 830-865 (nyOpenUtc and vwap_anchor_utc).",
+    "Compare each mismatch with the klines archive over the same window; test the restart-without-backfill hypothesis (state restored from file, ticks missed while down) against the state file's saved-at time.",
+    "grep consumers of session_cvd, session_cum_pv and vwap_anchor_utc (src/, scripts/, MyTradingSys/) and list which read each.",
+    "Write MyTradingSys/research/audits/state_cvd_vwap_audit_2026-10-18.md: cause per mismatch, consumers, a proposed fix card each (not built here)."
   ],
-  "tests": "Audit card: no code change; each cause cites file:line and the recomputed numbers; any fix card gets its own fail-first test.",
+  "tests": "Read-only audit: no code test. Check line: every number in the report is recomputed from klines or quoted with file:line.",
   "title": "State machine session VWAP/CVD disagree with klines: 2026-10-12 13:08Z state_code.json cum_pv/cum_vol gives 83498.0 on 53825 BTC and session_cvd -4786.8; klines day VWAP 83577.0 on 73527 BTC and CVD -4314.456 (snapshot cvd.value matches klines). Also session.vwap_anchor_utc reads 2026-10-12T13:30:00Z (future) at 13:09Z. Find why (restart without backfill?) and which consumers read each",
   "weight": "IMPORTANT",
   "worker": "session"
