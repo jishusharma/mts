@@ -30,6 +30,10 @@ SLIP_RT = 0.0002         # 2 x 1 bp assumed
 COST = FEE_RT + SLIP_RT
 TRAIN_END = dt.datetime(2024, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000
 VALID_END = dt.datetime(2025, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000
+DEV_ONLY = os.environ.get("EXIT_POLICIES_DEV_ONLY") == "1"   # rerun 2026-10-17: DEV (TRAIN) only, VALIDATE column not read
+if DEV_ONLY:
+    VALID_END = TRAIN_END
+    OUT = OUT.with_name("EXIT_POLICIES_RERUN_DEV_2026-10-17.md")
 
 # name -> dict(kind, stop (ATR or fraction of price), target (ATR/fraction or None), hold (bars), pct (bool))
 POLICIES = {

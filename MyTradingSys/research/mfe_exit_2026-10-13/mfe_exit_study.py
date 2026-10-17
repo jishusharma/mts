@@ -24,6 +24,8 @@ from numpy.lib.stride_tricks import sliding_window_view as swv
 D = "F:/MTS/data/bigtrade"
 FUND = "C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/Dumps/backtest/raw_fund/fundingRate"
 FEE_RT = 0.0010
+DEV_ONLY = os.environ.get("MFE_DEV_ONLY") == "1"   # rerun 2026-10-17 on relabelled fires: only split == TRAIN rows are loaded
+RUN_ID = "MFEX-RERUN-DEV-2026-10-17" if DEV_ONLY else "MFEX-2026-10-13"
 K = 32                      # max hold in signal-TF bars (fixed, declared before any result)
 STOP_ATR = 2.0              # wide protective stop, same in every arm
 SETUPS = [                  # top 3 by tradable entries (counted 2026-10-13)
@@ -181,7 +183,7 @@ def read_fires(fname):
     out = []
     with open(os.path.join(D, "fires", fname), newline="") as fh:
         for r in csv.DictReader(fh):
-            if r["tradable"] == "1" and r["side"] in ("long", "short") and r["split"] in ("TRAIN", "VALIDATE", "HOLDOUT"):
+            if r["tradable"] == "1" and r["side"] in ("long", "short") and r["split"] in (("TRAIN",) if DEV_ONLY else ("TRAIN", "VALIDATE", "HOLDOUT")):
                 out.append((int(r["t_fire_ms"]), 1 if r["side"] == "long" else -1, float(r["atr"]), r["split"]))
     out.sort()
     return out
@@ -442,7 +444,7 @@ def main(out_dir):
                                         "t_vs_time": v.get("t_vs_time")}
             off = sig[sel][0]
             res["placebo_p_train"] = placebo_p(tm["net"], off, tmask["TRAIN"])
-            res["placebo_p_validate"] = placebo_p(tm["net"], off, tmask["VALIDATE"])
+            res["placebo_p_validate"] = placebo_p(tm["net"], off, tmask["VALIDATE"]) if tmask["VALIDATE"].any() else None
             if res["advance_to_holdout"]:
                 mk = tmask["HOLDOUT"]
                 net = tm["net"][rows, off]
@@ -468,7 +470,7 @@ def main(out_dir):
                 continue
             t = d.get("t_vs_time", d.get("t_net", 0.0))
             p = min(1.0, two_sided_p(t) * (n_var * len(SETUPS) if arm not in ("time_exit",) else 1))
-            w.writerow(["MFEX-2026-10-13", "2026-10-13", "MFEX", f"{name}:{arm}", name.split("_")[-1], h, 0, s,
+            w.writerow([RUN_ID, "2026-10-17" if DEV_ONLY else "2026-10-13", "MFEX", f"{name}:{arm}", name.split("_")[-1], h, 0, s,
                         d["n"], round(d["net_bp"], 1), round(p, 4), "design" if s == "TRAIN" else "check"])
     print("done", flush=True)
     return results

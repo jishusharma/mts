@@ -31,6 +31,7 @@ import csv
 import datetime as dt
 import gzip
 import json
+import os
 import sys
 import time
 import urllib.request
@@ -86,7 +87,7 @@ def fetch():
 
 def load_1m():
     rows = {}
-    files = sorted(ARCH.glob("BTCUSDT-1m-*.csv")) + [TOPUP / "klines_1m.csv"]
+    files = sorted(ARCH.glob("BTCUSDT-1m-*.csv")) + ([TOPUP / "klines_1m.csv"] if (TOPUP / "klines_1m.csv").exists() or not DEV_ONLY else [])
     for f in files:
         with open(f, newline="", encoding="utf-8") as fh:
             for r in csv.reader(fh):
@@ -210,6 +211,11 @@ def trade(A1, e, ext, side):
     return fw + [res - FEE_RT]
 
 
+# Rerun 2026-10-17 (OFV_DEV_ONLY=1): repo split, DEV = before 2024-07-01. Later rows (VALIDATION, HOLDOUT) are never evaluated.
+DEV_ONLY = os.environ.get("OFV_DEV_ONLY") == "1"
+DEV_END_MS = int(dt.datetime(2024, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)
+
+
 def split_of(ms):
     y = dt.datetime.fromtimestamp(ms / 1000, dt.timezone.utc).year
     return "DEV" if y <= 2024 else ("VAL" if y == 2025 else "HOLDOUT")
@@ -231,6 +237,8 @@ def run_bt():
                     if close_ms - last < 120 * MIN:
                         continue
                     e = (t + 1) * step
+                    if DEV_ONLY and close_ms >= DEV_END_MS:
+                        continue
                     r = trade(A1, e, ext[t], side)
                     if r is None:
                         continue
@@ -241,7 +249,7 @@ def run_bt():
                     if close_ms >= T_END - 16 * 60 * MIN and arm == "DIV":
                         out["today"].append({"scale": scale, "side": side, "bar_close": iso(close_ms), "oi": oid,
                                              "r30": round(r[0], 3), "r60": round(r[1], 3), "trade": round(r[3], 3)})
-                for sp in ("DEV", "VAL", "HOLDOUT", "ALL"):
+                for sp in (("DEV",) if DEV_ONLY else ("DEV", "VAL", "HOLDOUT", "ALL")):
                     for oo in (None, "UP", "DOWN"):
                         sel = [x for x in recs if (sp == "ALL" or x[1] == sp) and (oo is None or x[2] == oo)]
                         if oo is not None and not sel:
@@ -260,7 +268,7 @@ def run_bt():
         for side in ("long", "short"):
             for oo in ("any", "UP", "DOWN"):
                 line = {"scale": scale, "side": side, "oi": oo}
-                for sp in ("DEV", "VAL", "HOLDOUT"):
+                for sp in (("DEV",) if DEV_ONLY else ("DEV", "VAL", "HOLDOUT")):
                     g = {r["arm"]: r for r in out["rows"] if r["scale"] == scale and r["side"] == side and r["split"] == sp and r["oi"] == oo}
                     if "DIV" not in g or "CONTROL" not in g or g["DIV"]["n"] < 3:
                         line[sp] = None
@@ -276,7 +284,7 @@ def run_bt():
     for r in out["rows"]:
         r.pop("_r60")
     out["edge"] = edge
-    (HERE / "results.json").write_text(json.dumps(out, indent=1), encoding="utf-8", newline="\n")
+    (HERE / ("results_dev_rerun_2026-10-17.json" if DEV_ONLY else "results.json")).write_text(json.dumps(out, indent=1), encoding="utf-8", newline="\n")
     for r in out["rows"]:
         if r["oi"] == "any":
             print(r["scale"], r["side"], r["arm"], r["split"], r["n"], "r60", r["r60"], r["r60_t"], "trade", r["trade"], r["trade_t"])

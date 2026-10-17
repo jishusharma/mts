@@ -25,3 +25,12 @@ Old TRAIN fires 153,685 (19 files), of which 25,607 are 2024-07..12. mfe_exit: t
 - research/orderflow_views_2026-10-14 (own year-based DEV; VERDICTS.csv row says DEV, FAIL)
 - bigtrade_event_table: already marked in DEV_BOUNDARY_FIX_2026-10-17.md.
 Other bigtrade artifacts using the fires split column (CAPTURE_MATRIX*, BIGMOVES) were checked: no split use found by grep. Not rerun: HOLDOUT untouched; no recompute done (full reruns exceed the cheap budget). Logged in layer_lab/TRIALS.md.
+
+## Rerun status (card split-relabel-fires, 2026-10-17)
+- Relabel done: `relabel_fires_split.py` rewrote the `split` column of all 38 fire CSVs (F:/MTS/data/bigtrade/fires and fires_spot) from `fires_kline.split_of(t_fire_ms)`; originals saved in F:/MTS/data/bigtrade/fires_presplit_backup_2026-10-17/{fires,fires_spot}. Rows unchanged (asserted per file). Totals over both dirs, before -> after: TRAIN 308,560 -> 257,371; VALIDATE 50,990 -> 102,179; HOLDOUT 129,013 -> 129,013; POST 1,905 -> 1,905 (51,189 rows moved TRAIN -> VALIDATE). Perp turn_of_candle_1m TRAIN 105,209 -> 87,545.
+- Reruns, all DEV only (HOLDOUT never read; VALIDATION not read because every spent check was partly contaminated and none has a pre-registered single re-check):
+  - EXIT_POLICIES_REPORT: EXIT_POLICIES_RERUN_DEV_2026-10-17.md. TRAIN-positive cells 9 -> 11; only old BOTH+ cell (sr_flip_1h time_96_wide_stop_2atr) TRAIN +9.8 -> +7.6 bp. Verdict unchanged.
+  - mfe_exit: rerun_dev_2026-10-17/. Same rule chosen in all 3 setups; verdict unchanged (nothing survives).
+  - orderflow_views: results_dev_rerun_2026-10-17.json. 0 of 4 pass, as before; verdict unchanged (NEGATIVE).
+  - FIRES_B1_REPORT: no split-based result (per-year counts by t_fire_ms); banner only, nothing to rerun.
+- Not rerun: VALIDATE columns of EXIT_POLICIES and mfe_exit (reason above; they need a new pre-registration). bigtrade_event_table was already regenerated in 5b1bdc27. The 114 EXIT_POLICIES VALIDATE-column cells and the mfe_exit HOLDOUT gate are untouched. Rerun code runs through env switches EXIT_POLICIES_DEV_ONLY, MFE_DEV_ONLY, OFV_DEV_ONLY (default behaviour unchanged).

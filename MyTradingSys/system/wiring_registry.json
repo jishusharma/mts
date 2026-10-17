@@ -795,7 +795,7 @@
       "disp": "REPRO",
       "why": "Compares live Java buildVp with vp_pivot_probe.build_profile on sampled DEV days (ZONE_CHECK.csv); needs a JDK, run by hand, see README.md."
     },
-    "MyTradingSys/research/level_ledger_2026-10-16/zone_mismatch_classify.py": {
+    "MyTradingSys/backtest/bigtrade/relabel_fires_split.py": {"disp": "REPRO", "why": "One-off: rewrites the split column of F: bigtrade fire CSVs from fires_kline.split_of (repo split, 2026-10-17 alignment) after backing them up; run by hand, tested by test_relabel_fires_split.py."}, "MyTradingSys/research/level_ledger_2026-10-16/zone_mismatch_classify.py": {
       "disp": "REPRO",
       "why": "Classifies the java_zone_check mismatches by cause (edge/grid/weighting) with a Java port checked against compiled Java; needs a JDK, run by hand, result in research/pit_levels_2026-10-16/ZONE_MISMATCH.md."
     },
