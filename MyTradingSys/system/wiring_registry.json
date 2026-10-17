@@ -904,5 +904,9 @@
   "MyTradingSys/research/layer_lab/cc_msb_event_table/event_table.py": {
     "disp": "TOOL",
     "why": "DEV-only 1h CryptoCred MSB event table (find_swings + classify_msb, read only) with 24-bar forward MFE/MAE in ATR14 R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; no live imports."
+  },
+  "MyTradingSys/research/layer_lab/fabio_escalation_event_table/event_table.py": {
+    "disp": "TOOL",
+    "why": "DEV-only 1h Fabio escalation/absorption (FAB-002/003) event table with 24-bar forward MFE/MAE in ATR14 R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; read-only imports of the fabio layer; no live imports."
   }
 }
