@@ -249,6 +249,8 @@ def apply_plan(repo, pl, st, now):
             lines.append(f"{c['id']} -> DSA desk row {rid}")
         else:
             c.update(lane=to, reroute={"to": to, "from": "CODEX", "at": iso(now), "why": st["reason"]})
+            if to in tasks.CODE_LANES and not c.get("worker"):
+                c["est_turns"], c["worker"] = tasks.default_worker(c)
             if not str(c.get("tests", "")).strip():   # lane SONNET needs a test to be ready (Definition of Ready); undone on restore
                 c["tests"] = REPORT_TEST
                 c["reroute"]["added_tests"] = True

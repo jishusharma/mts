@@ -5,6 +5,7 @@
   "created": "2026-10-14T12:10:19Z",
   "depends_on": [],
   "done_when": "PHASE_ENCOUNTER_PRE_REG.md answers all readiness slots, freezes exact features/controls/trial family and names any unresolved blockers before an executable build.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Write a runnable preregistration for causal joint phase labels and opportunity-matched encounter controls; no performance run.",
   "id": "candle-close-phase-encounter-design",
@@ -42,5 +43,6 @@
     "Freeze a small joint-context family, null, uncertainty, power, full trial lineage and 12-slot readiness assessment. No outcome run or holdout read."
   ],
   "tests": "Spec audit: each feature has equation, availability time and UNKNOWN behavior; signals/controls share opportunity timing; all variants and label-boundary purging are explicit.",
-  "title": "Candle research: preregister joint phases and fair encounter controls before rerun"
+  "title": "Candle research: preregister joint phases and fair encounter controls before rerun",
+  "worker": "session"
 }

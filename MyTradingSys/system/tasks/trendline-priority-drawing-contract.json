@@ -5,6 +5,7 @@
   "created": "2026-10-17T00:00:00+05:30",
   "depends_on": [],
   "done_when": "A source/OURS drawing contract, causal replay fixture plan, daily public-chart ledger schema and bounded detector/event-study follow-up cards are saved and reviewed against Krown KR-S10/S11.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Specify reproducible BTC trend lines and prospective daily chart observation before testing conditional breaks, bounces and confluence.",
   "id": "trendline-priority-drawing-contract",
@@ -39,5 +40,6 @@
     "Issue bounded descriptive detector and BTC context study cards; identify dataset/exposure dependencies before preregistration."
   ],
   "tests": "Spec review: each rule SOURCED with locator or OURS; fixtures cover delayed pivots, clustered touches, stale HTF, future retests and edited public charts.",
-  "title": "Priority trend-line drawing contract and BTC observation plan"
+  "title": "Priority trend-line drawing contract and BTC observation plan",
+  "worker": "session"
 }

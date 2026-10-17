@@ -9,6 +9,7 @@
     "tom-holdout-clean-split"
   ],
   "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md with DAX and matched-proof BTC rows (n, gross R, net R, CI, null), holdout read once, TRIAL_REGISTRY rows added, branch named.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Run the frozen Tom rules unchanged on DAX 1m history and rerun BTC with the same reduced proof set, so H5 (transfer) is tested like for like.",
   "id": "tom-dax-backtest",
@@ -48,5 +49,6 @@
     "Holdout = HOLDOUT_CLEAN.json clean days plus the forward holdout (from 2026-10-10), read once; fills reported touch AND trade-through; null drawn from the same session window and order type."
   ],
   "tests": "test_tom_bt_symbol.py: a 20-bar synthetic DAX series with a known stop hit gives the hand-computed R (fails until tom_bt takes symbol/fees as input).",
-  "title": "Untuned Tom backtest on DAX vs matched-proof BTC rerun"
+  "title": "Untuned Tom backtest on DAX vs matched-proof BTC rerun",
+  "worker": "session"
 }

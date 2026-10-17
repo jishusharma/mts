@@ -5,6 +5,7 @@
   "created": "2026-10-13T05:23:56Z",
   "depends_on": [],
   "done_when": "4 extracts pass verify_extract_quotes.py (0 problems) AND check_numbers.py (0 not found); MANIFEST.csv shows 19 of 19 reachable EXTRACTED; python tools/build_ledger.py rebuilds KROWN_RULES.csv with 0 dead pointers (add their amendments to the batch-3 block); reflexivity_log.md has a batch 3 entry",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Finish the Krown TA 101 playlist extraction: get timed captions for the 4 reachable videos still missing (hNfjyrJEytI fMRvOt26xcA LB3DRYxnA0A _JoJbu_Ug-A; MANIFEST.csv), then extract each with a fresh single-video worker per PROTOCOL.md s3 (clean slate, EXTRACT_TEMPLATE.md), both gates, rebuild the ledger.",
   "id": "krown-ta101-extract-remaining-10",
@@ -45,5 +46,6 @@
     "update MANIFEST.csv, STATE.md and reflexivity_log.md; read the Gaps: do stops, targets or sizes appear now?"
   ],
   "tests": "docs lane, no code: verify_extract_quotes.py is the gate",
-  "title": "Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass both gates, MANIFEST.csv shows 19 of 19 reachable, ledger rebuilt"
+  "title": "Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass both gates, MANIFEST.csv shows 19 of 19 reachable, ledger rebuilt",
+  "worker": "session"
 }

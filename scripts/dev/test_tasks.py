@@ -16,7 +16,7 @@ def good(cid="B900", **kw):
     c = T.blank(cid, "Run the 28 cells")
     c.update(lane="SONNET", size="S", goal="Runner for 28 pre-registered cells", scope_in=["MyTradingSys/backtest/htf/"],
              steps=["write runner", "run once on holdout"], tests="test_runner fails on old code", done_when="results.csv has 28 rows",
-             state="ready")
+             state="ready", est_turns=12, worker="agent")
     c.update(kw)
     return c
 
@@ -29,6 +29,21 @@ class DefinitionOfReadyTest(unittest.TestCase):
         for k, empty in (("goal", ""), ("done_when", " "), ("scope_in", []), ("steps", []), ("size", ""), ("lane", "")):
             with self.subTest(k=k):
                 self.assertTrue(T.problems(good(**{k: empty})), k)
+
+    def test_worker_type_is_set_up_front_and_consistent(self):
+        """WORKERS.md: agent = size S and est_turns <= 15, session otherwise; code lanes only."""
+        has = lambda c, w: any(w in m for m in T.problems(c))
+        self.assertTrue(has(good(est_turns=None), "est_turns"))
+        self.assertTrue(has(good(est_turns=0), "est_turns"))
+        self.assertTrue(has(good(est_turns="12"), "est_turns"))
+        self.assertTrue(has(good(worker=""), "worker"))
+        self.assertTrue(has(good(worker="subagent"), "worker"))
+        self.assertTrue(has(good(est_turns=30), "session"))          # too long for an agent
+        self.assertTrue(has(good(size="M"), "session"))              # M is never an agent
+        self.assertEqual(T.problems(good(size="M", est_turns=30, worker="session")), [])
+        self.assertEqual(T.problems(good(est_turns=5, worker="session")), [])   # a session may take a small card
+        self.assertTrue(has(good(est_turns=41, worker="session"), "split"))   # over the 40-turn cap: split
+        self.assertEqual(T.problems(good(lane="DSA-NB", tests="", commands=["x"], est_turns=None, worker="")), [])   # run lanes exempt
 
     def test_size_L_must_be_split(self):
         self.assertTrue(any("split" in m for m in T.problems(good(size="L"))))

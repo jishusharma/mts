@@ -5,6 +5,7 @@
   "created": "2026-10-12T19:46:12Z",
   "depends_on": [],
   "done_when": "Linked HIGH finding has a synthetic red/green regression; focused harness/data tests pass and development isolation is preserved.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Enforce the authorized development interval before conversion, generation, hashing, snapshot decoding and report accounting; prevent future metadata from changing a development result.",
   "id": "rv02-fix-dax-preprocessing-isolation",
@@ -44,5 +45,6 @@
     "Fix within the approved scope, invalidate incompatible caches, and run the focused tests."
   ],
   "tests": "Synthetic all/gen sentinels reject missing manifests before subprocess/data access; future payload and metadata mutations do not affect development identities or accounting.",
-  "title": "RV02 R1: isolate DAX preprocessing and report metadata before holdout"
+  "title": "RV02 R1: isolate DAX preprocessing and report metadata before holdout",
+  "worker": "session"
 }

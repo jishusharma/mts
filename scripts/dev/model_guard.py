@@ -8,7 +8,7 @@ Claude Code PreToolUse hook (project .claude/settings.json), on the calls that s
   mcp__ccd_session__start_session       same; `proposal_id` alone (starting a proposal already checked) and cloud starts pass
   mcp__ccd_session_mgmt__set_session_model   only sonnet or haiku
 Anything else passes. A blocked call gets a deny with the fix in the reason, so the model retries with model=sonnet.
-Opus is still possible: the operator picks it in the app's model menu (the hook never sees that) or sets MTS_ALLOW_OPUS=1.
+Worker type and model rule: MyTradingSys/system/WORKERS.md. Opus is still possible: the operator picks it in the app's model menu (the hook never sees that) or sets MTS_ALLOW_OPUS=1.
 
   python scripts/dev/model_guard.py check '<tool_input json>' <tool_name> [parent_model]   prints the decision (debug)
 """

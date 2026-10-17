@@ -12,6 +12,7 @@
     "context-factors-pit-audit"
   ],
   "done_when": "CROSS_ENGINE.md and episodes.csv committed before any outcome file; RESULT.md with the 14-cell table (verdict words per PRE_REG_V2 s.4, day- and week-clustered t, MDE_real, kappa); 14 VERDICTS.csv rows; lint and quick gate green; shipped.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Run research/context_factors_pit_2026-10-16/PRE_REG_V2.md once, as written: count-only cross-engine agreement with the Opus frames first (CROSS_ENGINE.md), then the ladder outcome per episode and the 14 cells against context_null matched controls in day units with the realised-MDE verdict rule; RESULT.md + 14 verdicts.py rows.",
   "id": "context-factors-one-run",
@@ -64,5 +65,6 @@
     "Write RESULT.md (verdict table first), EXPOSURE_LEDGER.csv; verdicts.py add 14 rows with the s.4 kill scope; lookahead_lint.py on the folder; run_all_tests.py --quick; ship."
   ],
   "tests": "test_outcome.py: stop exit with a gap (fill at min(open, stop)), target exit, both-touched bar = stop, 24h time exit, dropped entry, hand numbers; test_context_null: outcome=None unchanged; the 18 test_context_asof tests stay green",
-  "title": "Context factors: one-run filter verdicts vs context_null (PRE_REG frozen)"
+  "title": "Context factors: one-run filter verdicts vs context_null (PRE_REG frozen)",
+  "worker": "session"
 }

@@ -8,6 +8,7 @@
     "tom-profile-shape-parity"
   ],
   "done_when": "The three profile items appear in the proof JSON with arm = profile, the thirds test passes with the hand numbers, PRICE-arm candidates are unchanged on the card-1 fixture.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Add the PROFILE arm to fade_short behind the same flag: A-C3 thin top, A-P3 failed P breakout, A-P8 lower b-shape, each from the session volume profile, as a separate arm label so PRICE results stay comparable.",
   "id": "tom-encode-fade-profile-proofs",
@@ -49,5 +50,6 @@
     "Arm label price / profile on every candidate; flag-off output unchanged."
   ],
   "tests": "Java: leg 24010-24110, volume by third 500 / 300 / 100, POC in the bottom third -> thin = true; top third 400 -> false; POC in the top third -> false. Flag off -> identical output. Fails before the code exists.",
-  "title": "Tom v2: encode the PROFILE arm of the fade (thin top, failed P breakout, lower b-shape)"
+  "title": "Tom v2: encode the PROFILE arm of the fade (thin top, failed P breakout, lower b-shape)",
+  "worker": "session"
 }
