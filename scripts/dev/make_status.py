@@ -74,6 +74,16 @@ def get_hygiene_status(sched_dir=None):
     return chr(10).join(lines[:12])
 
 
+def get_stale_pages():
+    """(count, lines) for the published claude.ai pages whose repo build differs from the last publish (artifacts.py stale)."""
+    try:
+        import artifacts as af
+        lines = af.stale_lines(af.load())
+    except Exception as e:  # a broken generator must not stop STATUS.md
+        return 0, [f"(stale check failed: {e})"]
+    return len(lines), lines
+
+
 def get_group_line():
     """Open / HIGH / closed registry rows per project group; never fails the status build."""
     try:
@@ -350,6 +360,9 @@ def main():
     if card_line:
         output.append(card_line)
     output.append(get_lessons_line())
+    n_stale, stale_lines = get_stale_pages()
+    output.append(f"Pages stale: {n_stale}")
+    output.extend(stale_lines)
     output.append("")
 
     # Gate board: which gate each layer is at and when its proof last moved (LAYER_REBUILD_PLAN_2026-10-15 s5; gate_board.json)

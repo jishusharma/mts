@@ -453,6 +453,20 @@ def run_docs_gate(repo, files):
         run_gate(repo, files)
 
 
+def warn_stale_pages(repo):
+    """Warning only (never a block): published pages whose repo build differs from the last publish."""
+    try:
+        r = subprocess.run([sys.executable, str(Path(repo) / "scripts" / "dev" / "artifacts.py"), "stale"],
+                           capture_output=True, text=True, timeout=300)
+        lines = [l for l in r.stdout.splitlines() if l.startswith("STALE ")]
+    except Exception as e:
+        print(f"WARNING: stale-page check failed: {e}")
+        return
+    if lines:
+        print(f"WARNING: {len(lines)} published page(s) lag the repo (republish, then artifacts.py publish-record --slug X):")
+        print("\n".join("  " + l for l in lines))
+
+
 def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None):
     """release_slug (traffic buster B4): the claim file is deleted in a commit on this branch, so the release rides the
     same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release."""
@@ -480,6 +494,7 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None):
         r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{TRUNK}", check=False)
         if r.returncode == 0:
             print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
+            warn_stale_pages(repo)
             return
         print(f"push rejected (someone shipped first), retry {attempt}/{PUSH_TRIES}")
     raise SyncError(f"push still rejected after {PUSH_TRIES} tries:\n{r.stderr}")
