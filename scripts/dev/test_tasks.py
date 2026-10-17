@@ -385,21 +385,25 @@ class StateTagTest(NextSkipsClaimedTest):
         self.assertEqual(rc, 0)
         self.assertEqual(self.run_cli("stale")[0], 0)
 
-    def test_lint_fails_old_stale_ready_card_but_not_a_fresh_one(self):
+    def test_lint_only_warns_about_stale_ready_cards(self):
+        """A stale pointer is reported, never fatal: lint feeds the ship gate and trunk CI, which every session shares."""
         self.commit("src/a.py", "x=1" + NL)
         self.card()
         rc, out = self.run_cli("lint")
-        self.assertEqual(rc, 1)          # never refreshed
+        self.assertEqual(rc, 0)          # never refreshed
+        self.assertIn("WARN TS1", out)
         self.assertIn("never refreshed", out)
         self.run_cli("tag", "TS1", "--refresh")
-        self.assertEqual(self.run_cli("lint")[0], 0)
+        rc, out = self.run_cli("lint")
+        self.assertEqual((rc, "WARN" in out), (0, False))
         self.commit("src/a.py", "x=2" + NL, "2026-10-02T00:00:00+00:00")          # long ago: past the grace
         rc, out = self.run_cli("lint")
-        self.assertEqual(rc, 1)
+        self.assertEqual(rc, 0)
         self.assertIn("scope changed", out)
+        self.assertEqual(self.run_cli("stale")[0], 1)          # the explicit command still exits 1
         self.run_cli("stale", "--refresh")
         self.commit("src/a.py", "x=3" + NL, T.now())                              # just now: inside the grace
-        self.assertEqual(self.run_cli("lint")[0], 0)
+        self.assertEqual(self.run_cli("lint")[1].count("WARN"), 0)
 
     def test_shallow_clone_never_reports_stale(self):
         """CI checks out depth 1: git log then names HEAD for every path, so staleness cannot be judged there."""
