@@ -31,6 +31,8 @@ The older note said "28 listed / 18 reachable / 10 to do". That was wrong: 11 id
   `transcripts/<id>_timed.txt` (plain text is fine); (c) skip them: 14 TA videos are the corpus.
 - Their titles (content unread): top-down method order, "you don't need chart patterns", building a system, beginners adding indicators.
 
+- 2026-10-17 (card krown-ta101-extract-remaining-10): the one allowed retry from JIS-NUC returned HTTP 429 on all 4 ids (4 backoff attempts each, no file written). Stopped per rule. Still open: operator paste (b) or a later retry from another IP; extraction, gates and ledger rebuild not started.
+
 ## Next steps, in order
 1. Layer v0: detectors + recall check on his dated examples (cards `krown-layer-v0-detectors`, `krown-data-daily-majors`, `krown-recall-check`),
    then one pre-registered DEV event study (card `krown-dev-event-study`). Scope now includes the volatility, RSI and top modules.
