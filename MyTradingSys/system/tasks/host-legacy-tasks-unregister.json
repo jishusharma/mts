@@ -6,16 +6,16 @@
   ],
   "created": "2026-10-17T04:34:46Z",
   "depends_on": [],
-  "done_when": "Get-ScheduledTask for the four names returns nothing, a list of the remaining MTS tasks is in HOST_TASKS_2026-10.md with the date, and Live-Health, Backup, AutoDeploy, Supervisor and the dispatcher are untouched (they wait on q-sched-scope).",
+  "done_when": "Get-ScheduledTask | ? TaskName -match MTS|Alert-Rate|Audit|Declutter|Orphan|Retention returns nothing; XML exports of every task are in F:/MTS/backups/sched_tasks_2026-10-17_NB; the list and date are appended to HOST_TASKS_2026-10.md.",
   "est_turns": null,
   "from_inbox": "",
-  "goal": "On JIS-NB, MTS-Scheduler-Tick, MTS-Audit-Digest, MTS-Audit-Rotation and MTS_Monitor_4h no longer exist as Windows scheduled tasks (operator q-host-sched-tasks 2026-10-17: remove completely, no waiting 7 days).",
+  "goal": "On JIS-NB no MTS Windows scheduled task remains (operator q-sched-scope 2026-10-17: every task on every device, accepting that deploys, revival and the relay stop).",
   "id": "host-legacy-tasks-unregister",
   "kind": "build",
   "lane": "JIS-NB",
   "layers": [],
   "live_path": false,
-  "note": "Runs on JIS-NB only (the tasks live there). Do not touch MTS-Live-Health, MTS-Backup, MTS-AutoDeploy, MTS-Supervisor or the dispatcher: decision q-sched-scope is open. Export each task (Export-ScheduledTask) to the scratchpad before unregistering.",
+  "note": "Operator override: this now covers AutoDeploy, Supervisor, dispatcher, Live-Health and Backup too. Export-ScheduledTask each to F:/MTS/backups/sched_tasks_2026-10-17_NB first (reversible). Do not stop running processes; unregistering does not kill them. A task that refuses deletion stays disabled and is reported.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -24,16 +24,19 @@
   ],
   "result": "",
   "scope_in": [],
-  "scope_out": [],
+  "scope_out": [
+    "stopping or restarting any running process",
+    "editing HALT files"
+  ],
   "size": "S",
   "sources": [],
   "state": "raw",
   "steps": [
-    "Export the 4 tasks to XML in a scratchpad (backup first).",
-    "Unregister the 4 tasks with Unregister-ScheduledTask -Confirm:$false.",
-    "Append the result and remaining task list to MyTradingSys/system/HOST_TASKS_2026-10.md."
+    "Export every matching task to XML (backup first).",
+    "Unregister each with Unregister-ScheduledTask -Confirm:$false; disable any that refuse.",
+    "Append the result to HOST_TASKS_2026-10.md."
   ],
   "tests": "read-only check after the change: the Get-ScheduledTask command above prints no rows",
-  "title": "Unregister 4 legacy Windows tasks on JIS-NB (Tick, Audit-Digest, Audit-Rotation, Monitor_4h)",
+  "title": "Unregister every MTS scheduled task on JIS-NB (operator q-sched-scope 2026-10-17)",
   "worker": ""
 }
