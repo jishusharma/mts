@@ -203,11 +203,12 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-13_rv06-live-read-claims.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
+  - `state-code-accumulator-backfill` raw p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
   - `identify-the-coinglass-net-delta-panel-u` raw p3 SONNET: Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 1
   - `live-loop-timeouts-b191` ready p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
   - `live-orderflow-state-line-1m-5m-15m-pric` raw p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
   - `score-context-reads-automatically-carrie` raw p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
-  - `state-machine-vwap-cvd-vs-klines` ready p3 SONNET: State machine session VWAP/CVD disagree with klines: 2026-10-12 13:08Z state_code.json cum_pv/cum_vol gives 83
+  - `snapshot-vwap-anchor-label` raw p3 JIS-NB: MarketDataSnapshot: vwap_anchor_utc must be the UTC day start used by the VWAP, not today's NY open (audit M3)
   - `one-timeframe-map-for-the-whole-toolchai` ready p4 CODEX: One timeframe map for the whole toolchain: capture.TF_MINUTES lacked 8h (CoinGlass button) while holding 7h; g
 
 ## Callers (posted trade calls: Qriptal) (`callers`)
