@@ -35,6 +35,7 @@
   "sources": [],
   "state": "ready",
   "steps": [
+    "ORDER (run 3): the previous run only drafted spec text and built NO generator or test. This run MUST first create gen_examples.py, examples.json and test_formula_spec.py, run the test against the CURRENT spec and quote the failure, and only then edit FORMULAS_SPEC.md. If you run out of room, deliver the generator and test (fail-first shown) and say so; do not rewrite spec text without them",
     "REOPENED: independent review REJECTED the first FORMULAS_SPEC.md (it is on trunk; edit it, do not restart). Defect (a): worked examples in F01, F07, F13, F14, F17 use closes/opens 62724, 62780, 62820, 62750, 62679.99 and changes +56/+40/-70 that are NOT in the DEV tape F:/MTS/data/bigtrade/cache/perp/klines_1h.npz (DEV = open before 2024-07-01), so the 'DEV bars only' header claim is false",
     "Defect (b) wrong arithmetic: F01 RSI must be 57.8313 (spec 57.8125); F11.4 and F11.5 average fill 62751.9875 (spec 62751.992997); F11.6 stop loss -0.399847 USD (spec -0.400484). Defect (c): the old coverage check only greps the word 'Worked'; the reviewer never recomputed the F18 volume-profile or hard-case ids",
     "write MyTradingSys/research/layer_lab/formula_spec_text/gen_examples.py: read the DEV tape (assert every row t < 1719792000000 ms), pick tape rows, recompute EVERY worked number of every id F01-F23 and sub-ids (F11.1-8, F18.1-7, F19.1-8, F20.1-4, F21.1-9) from FORMULAS.md rules only (never producer code); write examples.json (id -> bar open times, inputs, expected value)",
