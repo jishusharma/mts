@@ -26,12 +26,12 @@
     "krown"
   ],
   "live_path": false,
-  "note": "Unparked 2026-10-17 (q-krown-saturation waiver). depends_on layer-v0-detectors: ready. Raw -> refined by backlog-refine-1017; builder runs it after the detectors card.",
+  "note": "REVIEWED:2026-10-17 ACCEPT. WEIGHT:IMPORTANT recall result gates the Krown G3 step. Unparked 2026-10-17 (q-krown-saturation waiver). Verify (worker): content commit sha, `git cherry origin/fast-track <sha>` empty AND `git ls-tree -r origin/fast-track --name-only` lists the delivered files.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T14:09:54Z",
+  "refreshed": "2026-10-17T18:15:48Z",
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
@@ -40,7 +40,8 @@
   "result": "",
   "scope_in": [
     "MyTradingSys/research/krown_ta101_2026-10-13/",
-    "MyTradingSys/backtest/layers/krown/"
+    "MyTradingSys/backtest/layers/krown/",
+    "MyTradingSys/research/TRIAL_LEDGER.csv (append recall iterations)"
   ],
   "scope_out": [
     "any P&L",

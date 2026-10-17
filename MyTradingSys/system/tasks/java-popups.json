@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "Coordinator: java.exe is started by scripts/core/*.ps1 (live path); route to a JIS-NB desk task or leave parked?",
   "commands": [],
   "created": "2026-10-17T12:20:31Z",
   "depends_on": [],
@@ -20,8 +20,8 @@
     }
   ],
   "layers": [],
-  "live_path": false,
-  "note": "",
+  "live_path": true,
+  "note": "REVIEWED:2026-10-17 FIX-NEEDED. Real launcher is PowerShell (scripts/core/start-trading-day.ps1 and the supervisor), live path: JIS-NB lane only, not a builder card. Re-scope as a JIS-NB desk task.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -40,7 +40,7 @@
   "scope_sha": "aa7c0490db08",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "refined",
   "steps": [
     "find the caller that starts java.exe with a visible console",
     "hide it (nowin shim or CREATE_NO_WINDOW)",
