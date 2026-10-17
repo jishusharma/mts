@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T00:00:00Z",
+  "depends_on": [],
+  "done_when": "test_formula_spec.py passes with no echo fallback and failed first; every sub-id has its own recount; run_all_tests --quick passes; no REVIEWED stamp",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "test_formula_spec.py independently recomputes every sub-id F11.1-8, F18.1-7, F19.1-8, F20.1-4, F21.1-9 from FORMULAS.md rules on the DEV tape; no fallback that echoes the expected value",
+  "id": "lab-formula-spec-recount",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab lab-formula-spec-text: BLOCKED (build)",
+      "ref": "3c4addfa2e35",
+      "utc": "2026-10-17T21:58:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3c4addfa2e35 lab lab-formula-spec-text: BLOCKED (build)",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS_SPEC.md",
+      "utc": "2026-10-17T21:58:07Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py::test_shuffled_rsi_closes_are_rejected",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive] | follow-up of lab-formula-spec-text run 3 (partial: families F01-F10 recounted, sub-ids F11/F18-F21 echo expected)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T22:16:18Z",
+  "refs": [],
+  "scope_in": [
+    "MyTradingSys/backtest/layers/FORMULAS.md (read)",
+    "MyTradingSys/backtest/layers/FORMULAS_SPEC.md",
+    "MyTradingSys/research/layer_lab/formula_spec_text/"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys"
+  ],
+  "scope_sha": "3c4addfa2e35",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "REMOVE the fallback 'else: got=val' in test_formula_spec.py first and run it: it must fail (sub-id rows in examples.json copy their parent row); quote the failure",
+    "fix gen_examples.py so each sub-id has its own tape inputs and expected value computed from FORMULAS.md rules only (never producer code); regenerate examples.json",
+    "extend test_formula_spec.py with an independent recount per sub-id (F18 anchored profile, F19 trend-line contract, F20 WaveTrend, F21 Krown detectors); unknown names must raise, never fall back",
+    "update FORMULAS_SPEC.md worked examples for those sub-ids from examples.json (cite bar open UTC); scope: files under MyTradingSys/research/layer_lab/formula_spec_text/, FORMULAS_SPEC.md, report; FORMULAS.md read-only; no REVIEWED stamp"
+  ],
+  "tests": "remove the echo fallback first: the test must fail on the current examples.json, then pass after the fix",
+  "title": "Lab: write the spec text of each FORMULAS.md entry a re-deriver needs (inputs, bar alignment, rounding, edge cases)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

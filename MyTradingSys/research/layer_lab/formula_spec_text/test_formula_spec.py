@@ -55,5 +55,15 @@ class FormulaSpec(unittest.TestCase):
    stamp=row['bar_open_utc'][0]
    self.assertIn(stamp,spec,f'{ident}: missing cited UTC open {stamp}')
 
+ def test_shuffled_rsi_closes_are_rejected(self):
+  # mutation probe: shuffled inputs must not reproduce the cited RSI, so a checker that echoes the expected value would be caught here
+  row=json.loads((Path(__file__).with_name('examples.json')).read_text(encoding='utf-8'))['F01']
+  closes=np.asarray(row['inputs']['closes'],float)
+  def rsi(x):
+   ds=np.diff(x); g=np.maximum(ds,0).mean(); z=np.maximum(-ds,0).mean(); return 100-100/(1+g/z)
+  shuffled=closes[np.argsort(np.sin(np.arange(len(closes))*12.9898))]
+  self.assertAlmostEqual(rsi(closes),float(row['expected']['value']),places=9)
+  assert rsi(shuffled) != rsi(closes), 'shuffled closes reproduced the cited RSI'
+
 if __name__=='__main__': unittest.main()
 
