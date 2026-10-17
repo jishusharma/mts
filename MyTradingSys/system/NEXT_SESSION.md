@@ -10,3 +10,5 @@ NOT DONE:
 5. Write research/lab_guy/FLOW_2026-10-18.md (Lab_Guy flow table) at the end of the block; lab findings today: Claude spot-check caught real defects 3 of 5 times (same-vendor gate, holdout gaps, formula spec) that the lab's own self-check passed.
 
 Usage at 21:15Z: Pro login 5h about 45%, week 58%. GPT lab: 6 runs in this window of 10. Next SYNC signal due ~21:45Z; mts_signal.py send "SYNC ...". Leftover worktrees (safe to ignore): mts-jis-nuc-vendor-gate-card, mts-jis-nuc-formula-spec-close-2.
+
+LAB_GUY-1018 (NB): ledger research/lab_guy/FLOW_2026-10-18.md; 2 defect cards filed (raw, need refine): stamps missing on lab-trust-tag / lab-crossvendor-same-vendor-gate / q76; gap-g1-prereg-power under-classified C0->C1. Haiku re-derivation of power_mde.py: 8/8 match (MACHINE-OK).
