@@ -506,6 +506,22 @@ Strict penetration test (L6): anchor-segment bar with L(j)=105 and low 104.7 pas
 
 **19.8 Arm B third anchor.** Third pivot c at ic=30 with price 119.5; L(30) = 100 + 10*20/10 = 120; |119.5-120| = 0.5 <= 0.25*4 = 1, so c is an anchor within tolerance; eligible at close(ic+3 = 33). A third pivot at 118.5 (|diff| 1.5) is not.
 
+## 20. WaveTrend observation (`layers/wavetrend/wavetrend.py`) - added 2026-10-17
+
+Source (SOURCED): LazyBear "WaveTrend with Crosses", `research/wavetrend_2026-10-17/source_snapshot/WT_Crosses_lonestar108_jFQn4jYZ.pine.txt:14-21` (identical math in `LB_WaveTrend_marketcalls_gist.pine.txt:14-21`); bands `:9-12`, centre `:23`. Re-implemented from the formula, no Pine text copied. Contract: `PARITY_CONTRACT.md` s2-s3.
+
+**20.1 Formula (SOURCED, :14-21).** `ap=(h+l+c)/3; esa=EMA(ap,10); d=EMA(|ap-esa|,10); ci=(ap-esa)/(0.015*d); wt1=EMA(ci,21); wt2=SMA(wt1,4)`. EMA alpha = 2/(n+1).
+
+**20.2 Conventions the source does not state (OURS, PARITY_CONTRACT s3).** EMA seeded with the first valid source value; output used only after WARMUP=200 bars from series start, from any gap or from any NaN `ci`. `ci` is NaN when `d <= 1e-9*|ap|` (never 0, never inf) and propagates to no event. wt2 is NaN until 4 valid wt1. Cross "le": an event fires at the first bar strictly on the opposite side of the last strict side of `wt1-wt2`; a tie bar is skipped; above-tie-above is no cross; sides reset at NaN. Zones from wt1: `ob2 >= 60`, `ob1 >= 53`, `os2 <= -60`, `os1 <= -53`, else `mid` (boundary inclusive; OURS tag names). `available_at = bar_open + timeframe`. HTF value at time t = last HTF bar with `open + htf_tf <= t`.
+
+**20.3 Worked, by hand.** Two bars, h=l=c: ap = [10, 12].
+- Bar 0: `esa=10`, `|ap-esa|=0`, `d=0` -> `ci` NaN (flat window).
+- Bar 1: `alpha=2/11`; `esa = 10 + (2/11)*2 = 114/11 = 10.363636`; `|ap-esa| = 18/11 = 1.636364`; `d = 0 + (2/11)*(18/11) = 36/121 = 0.297521`; `ci = (18/11)/(0.015*36/121) = (18/11)*(121/36)/0.015 = 5.5/0.015 = 366.6667`. `wt1[1]` = first valid `ci` = 366.6667 (seed); `wt2` NaN (needs 4 wt1).
+- wt2 with wt1 = [10, 20, 30, 40]: `wt2[3] = (10+20+30+40)/4 = 25`; with wt1 = [10,20,30,40,50]: `wt2[4] = 35`.
+- Cross, wt1-wt2 signs [+, 0, +] -> no event; [+, 0, -] -> one down-cross at the last bar; [-, +] -> up-cross at the second.
+
+**20.4 Golden series.** `wavetrend/golden_wt_btcusdt_1h_dev_2022-01.csv`: 400 BTCUSDT 1h bars (2022-01-01 00:00 UTC onward, DEV period), wt1/wt2 and "le" events from `wavetrend/make_golden.py` (pandas ewm/rolling recursion of 20.1, not the module). Compared at 1e-9 (OURS) after bar 200. Spreadsheet-style parity only; no TradingView export, so NOT Pine-runtime parity.
+
 ## Verification note (this audit, 2026-09-28)
 
 Every case number in `layers/timeframe/TEST_PLAN.md`, `layers/rsi/TEST_PLAN.md`,
