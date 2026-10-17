@@ -19,7 +19,7 @@ class Registry(unittest.TestCase):
 
     def test_duplicate_url_and_status_caught(self):
         r = copy.deepcopy(self.reg)
-        r["pages"][1]["urls"]["jishu.awgp"] = r["pages"][0]["urls"]["jishu.awgp"]
+        r["pages"][1]["urls"]["jishu.sharma"] = r["pages"][0]["urls"]["jishu.sharma"]
         r["pages"][2]["status"] = "maybe"
         p = "\n".join(af.problems(r))
         self.assertIn("also used by", p)
@@ -37,8 +37,8 @@ class Registry(unittest.TestCase):
         text = "\n".join(af.plan(self.reg, "jishu.sharma"))
         self.assertIn("REPUBLISH    MTS Control Room", text)
         self.assertIn("RECORD URL   CBP Desk", text)
-        # q21 (2026-10-15): the Inbox page Ep6gA5 belongs to jishu.sharma; Tom and Fabio has no copy on the other login
-        self.assertIn("MTS Control Room <- MyTradingSys/system/artifacts/mts_control_room.html  url=https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN", text)
+        # q21 (2026-10-15; 2026-10-17 Ep6gA5 opens on no login, so EoHi2q is the page): the Inbox page belongs to jishu.sharma; Tom and Fabio has no copy on the other login
+        self.assertIn("MTS Control Room <- MyTradingSys/system/artifacts/mts_control_room.html  url=https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su", text)
         self.assertIn("NO COPY      Tom and Fabio", "\n".join(af.plan(self.reg, "jishu.awgp")))
         self.assertNotIn("CBP Dashboard", text)
         r = copy.deepcopy(self.reg)
@@ -66,7 +66,7 @@ class Registry(unittest.TestCase):
         self.assertNotIn("REPUBLISH    MTS Layers", plan)
         self.assertIn("REPUBLISH    MTS Research Map", plan)
         awgp = "\n".join(af.plan(self.reg, "jishu.awgp"))
-        self.assertIn("REPLACE      MTS Control Room <- MyTradingSys/system/artifacts/cr_moved.html", awgp)
+        self.assertIn("NO COPY      MTS Control Room", awgp)  # 2026-10-17: EoHi2q is now the live page on jishu.sharma
 
     def test_pages_index_one_link_per_page(self):
         import make_control_room as mc
@@ -126,7 +126,7 @@ class Home(unittest.TestCase):
         self.assertEqual(titles[:3], ["MTS Research Map", "MTS Control Room", "MTS Session Planner"])  # where Jis writes, first
         self.assertNotIn("MTS Home", titles)
         urls = {r["url"] for r in d["retire"]}
-        self.assertIn("https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su", urls)  # old Control Room copy on jishu.awgp
+        self.assertNotIn("https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su", urls)  # 2026-10-17: now the live Control Room, not a copy to delete
         self.assertIn("https://claude.ai/artifact/La75j7gM19pxiQKCpVjJcW", urls)  # 'Moved' stub on jishusharma1985
         self.assertFalse(urls & {p["url"] for p in d["pages"]})
         html = mh.render(d)

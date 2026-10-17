@@ -15,20 +15,20 @@
       "html": "MyTradingSys/system/artifacts/mts_control_room.html",
       "single_owner": "jishu.sharma",
       "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
-      "owner_app": "jishu.sharma (Inbox and decisions owner, decision q21, 2026-10-15); one live copy only: the jishu.awgp and jishusharma1985 urls hold a pointer page until Jis deletes them",
+      "owner_app": "jishu.sharma (Inbox and decisions owner, decision q21, 2026-10-15); one live copy only: the jishu.awgp and jishusharma1985 urls hold a pointer page until Jis deletes them; 2026-10-17: Ep6gA5 opens on no login (NUC and notebook both get not found), so EoHi2q is the live Control Room on jishu.sharma (operator go 2026-10-17); db carries the 24 answered decisions + 6 open + 43 Inbox items",
       "refresh": "every session that ships (artifacts.py build, then plan --account); Inbox pickup by hand from a jishu.sharma session (relay_prompts/INSTALL.md)",
       "db": [
         "decisions",
         "feedback"
       ],
       "urls": {
-        "jishu.sharma": "https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN",
-        "jishu.awgp": "https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su",
+        "jishu.sharma": "https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su",
+        "jishu.awgp": "",
         "jishusharma1985": ""
       },
       "last_published": {
-        "jishu.sharma": "2026-10-15",
-        "jishu.awgp": "2026-10-14",
+        "jishu.sharma": "2026-10-17",
+        "jishu.awgp": "moved 2026-10-17",
         "jishusharma1985": "deleted 2026-10-15"
       },
       "note": "One Inbox: the jishu.sharma page (q21; db seeded from OPERATOR_DECISIONS.md and OPERATOR_INBOX.md 2026-10-15, existing answers kept). Publish the other copies without writing to their db. Carries the Claude-GPT cycle section (system/RELAY_NOTES.md). Republished by the NUC pickup, built with the trade ledger. The jishusharma1985 copy is published WITHOUT capabilities (2026-10-14): the page's own code shows 'Read-only view', so that login has no second Inbox nobody picks up. Republish it without passing capabilities.",
