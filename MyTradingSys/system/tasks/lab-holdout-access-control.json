@@ -4,7 +4,7 @@
   "commands": [],
   "created": "2026-10-18T00:00:00Z",
   "depends_on": [],
-  "done_when": "test_lab_flow.py passes with the renamed-copy fixture",
+  "done_when": "test_lab_flow.py passes incl. renamed-copy, unsupported-extension and seconds-epoch tests (each fails on 919cc0f2); docstring states DATA_ROOT-only coverage",
   "est_turns": 18,
   "from_inbox": "",
   "goal": "A renamed or copied file with bars at or after 2024-07-01 is refused by the lab runner before any analysis reads it.",
@@ -22,7 +22,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
+  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use] | cross-vendor review owed (independent Claude review 2026-10-18 found 2 defects; reopened for fixes). No REVIEWED stamp added: lab start does not use tasks.py take (codex_run has no review_gate).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -43,10 +43,13 @@
   "sources": [],
   "state": "ready",
   "steps": [
-    "add a check that the max open time of every data input in scope is before 2024-07-01 unless the card is explicitly VALIDATION or HOLDOUT",
-    "test: a copy of a DEV file renamed, with one later bar appended, is refused"
+    "BUILD ALREADY EXISTS (origin/fast-track 919cc0f2: safe_file guards .npz/.csv/.zip by bound 2024-07-01 = 1719792000000 ms); continue from it, do not rewrite",
+    "defect 1 (fail closed): any file under DATA_ROOT whose extension cannot be time-checked (e.g. .parquet, .json, .bin) is refused in safe_file; max_open=None must never pass",
+    "defect 2 (seconds): a t/open_time/timestamp value below a plausible millisecond epoch (< 1e11, i.e. seconds) is refused, or normalised seconds->ms before the bound check; 1735689600 (2025) must be refused",
+    "state in the safe_file docstring and in the report: the time check covers only files under DATA_ROOT; repo files are covered by the path rules only",
+    "keep the existing renamed-copy test; add the two fail-first tests below"
   ],
-  "tests": "fail-first test: renamed file with a post-cutoff bar is refused",
+  "tests": "fail-first on the 919cc0f2 code: (a) a .parquet (or other unsupported extension) file under DATA_ROOT is refused; (b) a csv/npz with t=1735689600 (seconds, 2025) is refused; existing renamed-copy test still passes",
   "title": "Lab: refuse VALIDATION and HOLDOUT data by content (timestamp bounds), not only by path",
   "weight": "CRUCIAL",
   "worker": "session"
