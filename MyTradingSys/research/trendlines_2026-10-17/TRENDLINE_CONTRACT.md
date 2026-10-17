@@ -130,4 +130,4 @@ Every row above has a value and a tag. Parameters with no external number (k, to
 ## 10. Verification
 
 - Quotes: `python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_14bxwxC8gBQ.md` PASS (no new transcript quote introduced; all quoted text is already in that extract).
-- Spec lint: `scripts/dev/` lint run recorded in the commit body.
+- Spec lint: `python MyTradingSys/research/trendlines_2026-10-17/lint_contract.py` (every parameter row has a tag, none unset).
