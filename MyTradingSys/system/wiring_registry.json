@@ -877,6 +877,10 @@
       "why": "Causal trend-line detector built and tested (test_trendline_core.py, TRENDLINE_CONTRACT.md v1); nothing runs it yet: the count-only card (DEV counts, no backtest) is the first caller."
     }
   },
+  "MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py": {
+    "disp": "TOOL",
+    "why": "DEV-only candle pattern event table (npz loader, 4h from 1h, detectors, close-stamped forward MFE/MAE in R); covered by test_patterns.py, no live imports."
+  },
   "MyTradingSys/research/layer_lab/volume_event_table/event_table.py": {
     "disp": "TOOL",
     "why": "DEV-only same-hour-of-week relative-volume spike event table with forward R summaries; covered by test_event_table.py, no live imports."

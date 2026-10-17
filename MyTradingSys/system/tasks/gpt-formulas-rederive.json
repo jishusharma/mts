@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T12:27:46Z",
   "commands": [],
   "created": "2026-10-15T12:47:16Z",
   "crucial": true,
@@ -12,6 +13,18 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND: 10/13 rows match, 2 LOW (S13 example vs B103 span guard), 1 NOT_IN_DATA (S12 ATR Ja",
+      "ref": "da8f9bb8",
+      "utc": "2026-10-17T12:27:46Z"
+    },
+    {
+      "kind": "ship",
+      "line": "SOUND: 11/13 rows match; 2 LOW (S13 example vs B103 span guard), S12 ATR NOT_IN_DATA; laye",
+      "ref": "da8f9bb8",
+      "utc": "2026-10-17T12:27:41Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -35,7 +48,7 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-17T07:24:47Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND: 10/13 rows match, 2 LOW (S13 example vs B103 span guard), 1 NOT_IN_DATA (S12 ATR Java absent); layer_lab/gpt-formulas-rederive/FORMULAS_REDERIVE.md",
   "scope_in": [
     "MyTradingSys/backtest/layers/FORMULAS.md",
     "MyTradingSys/runtime/mts_math.py",
@@ -50,7 +63,7 @@
   "scope_sha": "c768076dcafe",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "From FORMULAS.md sections 7, 12, 13 and 17 only (no code yet) write down each worked example and recompute its expected number; record your value before opening any code.",
     "Then read mts_math.py calculate_net_rr, trade_costs.py and runner.py and evaluate the same inputs: repo value per example. Table columns: example, FORMULAS value, GPT value, repo value, match; every mismatch cites the deciding definition line (file:line).",
