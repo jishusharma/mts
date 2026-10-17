@@ -26,11 +26,13 @@ def good(cid="B900", **kw):
 
 def run_cli(*argv):
     out = io.StringIO()
-    with contextlib.redirect_stdout(out):
+    with contextlib.redirect_stdout(out), contextlib.redirect_stderr(out):
         try:
             rc = T.main(list(argv))
         except SystemExit as e:
             rc = e.code if isinstance(e.code, int) else 1
+            if isinstance(e.code, str):
+                print(e.code)  # SystemExit(msg) prints to stderr at interpreter exit
     return rc, out.getvalue()
 
 
@@ -494,10 +496,6 @@ class RepoDataTest(unittest.TestCase):
                     self.assertEqual(T.problems(c, cards, reg), [])
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class LabMachineChecksTest(unittest.TestCase):
     def setUp(self):
         self.d = tempfile.TemporaryDirectory()
@@ -606,3 +604,7 @@ class ReviewGateTest(unittest.TestCase):
         finally:
             T.REPO = previous
             d.cleanup()
+
+
+if __name__ == "__main__":
+    unittest.main()
