@@ -35,7 +35,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T18:15:08Z",
+  "refreshed": "2026-10-17T21:35:26Z",
   "refs": [
     "q-host-sched-tasks"
   ],
@@ -51,7 +51,7 @@
   "scope_sha": "312d69da7728",
   "size": "S",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Export every matching task to XML (backup first).",
     "Unregister each with Unregister-ScheduledTask -Confirm:$false; disable any that refuse.",

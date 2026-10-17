@@ -30,11 +30,11 @@
  ],
  "layers": [],
  "live_path": false,
- "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium+Haiku re-derive STOPPED by A-20261018-6, re-scoped here but kept refined until the JIS-NB desk fetch row is done (`desk.py post ... --target JIS-NB`, operator/coordinator). DECISION (OURS): DEV-only dates 2023-07..2024-06 (pre-2024-07-01, outside PRE_REG_DAX dev, so no pre-reg day is read); spread is a cost measure, no outcome read. LANE moved CODEX->SONNET 2026-10-18: G2 card conflict: the requested 2024-11..2026-04 window breaks the DEV-only rule (open before 2024-07-01); Claude worker must measure the spread on a DEV-only sample and drop the later window. ASK URL/parser code is already in dax_data.py (lab commit 934e5bd0). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT feeds DAX cost table proposal. DISPATCH lane CODEX (JIS-NUC lab): DAX BID raw is on NUC (F:/MTS/data/dax_raw); ASK comes from the free Dukascopy feed, reachable from NUC (REPORT 10.2). Shares dax_data.py with no other open card. Verify: sha + empty git cherry + ls-tree lists files.",
+ "note": "HELD 2026-10-18: STOP A-20261018-6 (dates after DEV cutoff, sandbox blocks Dukascopy). Re-scope to DEV-only dates and route the fetch as a JIS-NB desk task before it is ready.",
  "prio": 1,
  "refine_tries": 0,
  "refined_by": "",
- "refreshed": "2026-10-17T20:21:40Z",
+ "refreshed": "2026-10-17T21:39:04Z",
  "refs": [
   "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
  ],
