@@ -68,6 +68,28 @@ class ModelGuardTest(unittest.TestCase):
         self.assertEqual(fire("Agent", {"description": "d", "prompt": "p", "model": "sonnet"}), "allow")
         self.assertEqual(fire("Task", {"description": "d", "prompt": "p", "model": "haiku"}), "allow")
 
+    def named_transcript(self, *humans, model="claude-sonnet-5-5"):
+        p = Path(self.tmp.name) / "n.jsonl"
+        with open(p, "w", encoding="utf-8", newline="\n") as f:
+            for h in humans:
+                f.write(json.dumps({"type": "user", "message": {"content": h}}) + "\n")
+                f.write(json.dumps({"type": "user", "message": {"content": [{"type": "tool_result", "content": "opus"}]}}) + "\n")
+            f.write(json.dumps({"type": "assistant", "message": {"model": model, "content": []}}) + "\n")
+        return p
+
+    def test_operator_naming_opus_lets_the_explicit_model_through(self):
+        inp = {"initiation": "user_asked", "title": "x", "prompt": "p", "background": "b", "model": "claude-opus-5-5"}
+        self.assertEqual(fire(START, inp, self.named_transcript("spawn an Opus session for this")), "allow")
+        self.assertEqual(fire("Agent", {"description": "d", "prompt": "p", "model": "opus"}, self.named_transcript("use Opus")), "allow")
+        self.assertEqual(fire(SET_MODEL, {"session_id": "a", "model": "claude-opus-5-5"}, self.named_transcript("use opus")), "allow")
+
+    def test_opus_not_named_or_named_long_ago_or_only_in_tool_output_still_denied(self):
+        inp = {"initiation": "user_asked", "title": "x", "prompt": "p", "background": "b", "model": "claude-opus-5-5"}
+        self.assertEqual(fire(START, inp, self.named_transcript("fix the report")), "deny")
+        self.assertEqual(fire(START, inp, self.named_transcript("use opus", "a", "b", "c")), "deny")
+        noreply = {k: v for k, v in inp.items() if k != "model"}
+        self.assertEqual(fire(START, noreply, self.named_transcript("use opus")), "deny")  # still must give a model, never inherit
+
     def test_set_session_model_only_cheap(self):
         self.assertEqual(fire(SET_MODEL, {"session_id": "a", "model": "claude-opus-5-5"}), "deny")
         self.assertEqual(fire(SET_MODEL, {"session_id": "a", "model": "claude-sonnet-5-5"}), "allow")

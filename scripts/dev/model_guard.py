@@ -8,7 +8,9 @@ Claude Code PreToolUse hook (project .claude/settings.json), on the calls that s
   mcp__ccd_session__start_session       same; `proposal_id` alone (starting a proposal already checked) and cloud starts pass
   mcp__ccd_session_mgmt__set_session_model   only sonnet or haiku
 Anything else passes. A blocked call gets a deny with the fix in the reason, so the model retries with model=sonnet.
-Worker type and model rule: MyTradingSys/system/WORKERS.md. Opus is still possible: the operator picks it in the app's model menu (the hook never sees that) or sets MTS_ALLOW_OPUS=1.
+Opus is still possible: when one of the operator's last 3 typed messages names it ("opus"/"fable", operator 2026-10-17: "whenever I say
+use Opus, it must be done"), the hook lets the explicit model through. Naming nothing still blocks, so an inherited model can never
+slip in. Whether Opus is worth it (cost vs the weekly pace) is the session's judgement, not the hook's. MTS_ALLOW_OPUS=1 allows all.
 
   python scripts/dev/model_guard.py check '<tool_input json>' <tool_name> [parent_model]   prints the decision (debug)
 """
@@ -48,6 +50,40 @@ def parent_model(transcript_path):
     return None
 
 
+NAMED = ("opus", "fable")
+SKIP_PREFIX = ("<system-reminder>", "<local-command", "<command-name>", "[SIGNALS", "<task-notification", "<side-sessions-event")
+
+
+def operator_named_opus(transcript_path, last=3):
+    """True when one of the last `last` typed operator messages in the transcript tail mentions opus/fable."""
+    try:
+        with open(transcript_path, "rb") as f:
+            f.seek(0, 2)
+            f.seek(max(0, f.tell() - (1 << 20)))
+            lines = f.read().decode("utf-8", "replace").splitlines()
+    except (OSError, TypeError, ValueError):
+        return False
+    seen = 0
+    for line in reversed(lines):
+        try:
+            d = json.loads(line)
+        except ValueError:
+            continue
+        if d.get("type") != "user" or d.get("isMeta"):
+            continue
+        c = (d.get("message") or {}).get("content")
+        parts = [c] if isinstance(c, str) else [b.get("text", "") for b in (c or []) if isinstance(b, dict) and b.get("type") == "text"]
+        text = " ".join(t for t in parts if t and not t.lstrip().startswith(SKIP_PREFIX))
+        if not text.strip():
+            continue
+        if any(n in text.lower() for n in NAMED):
+            return True
+        seen += 1
+        if seen >= last:
+            return False
+    return False
+
+
 def decide(tool, inp, parent):
     """None = allow, else the deny reason."""
     if os.environ.get("MTS_ALLOW_OPUS") == "1":
@@ -84,6 +120,8 @@ def hook():
     if tool not in AGENT_TOOLS + (START, SET_MODEL):
         return 0
     inp = ev.get("tool_input") or {}
+    if inp.get("model") and operator_named_opus(ev.get("transcript_path")):
+        return 0
     needs_parent = inp.get("subagent_type") == "fork" or inp.get("context") == "fork"
     reason = decide(tool, inp, parent_model(ev.get("transcript_path")) if needs_parent else None)
     if reason:
