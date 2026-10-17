@@ -9,6 +9,7 @@
     "fabio-layer-v2-markets"
   ],
   "done_when": "HOME_FIT_AUDIT_CRYPTOCRED.md with 12 answered items and follow-up cards, each passing tasks.py check.",
+  "est_turns": 12,
   "from_inbox": "",
   "goal": "Apply the 12-point checklist to the CryptoCred layer so its 'no edge' is read as measuring the encoding or the trader. He is the one trader layer whose home market is BTC: needs no transfer, only his timeframe (daily/4h), invalidation stops, his targets and trade-through fills.",
   "id": "cryptocred-home-fit-audit",
@@ -44,5 +45,6 @@
     "Create at most 3 follow-up Sonnet cards via tasks.py new; no backtest here."
   ],
   "tests": "test_pre_reg_template.py passes for the new HOME_FIT_AUDIT file (all 12 items answered; fails before the file exists).",
-  "title": "Home-fit audit of the CryptoCred layer against the readiness checklist"
+  "title": "Home-fit audit of the CryptoCred layer against the readiness checklist",
+  "worker": "agent"
 }

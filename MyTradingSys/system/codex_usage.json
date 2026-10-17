@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1792677805,
-  "week_used": 33.0,
+  "week_used": 34.0,
   "window_resets": 1792213232,
-  "window_used": 15.0
+  "window_used": 20.0
  },
- "at": "2026-10-17T01:32:55Z",
+ "at": "2026-10-17T04:01:31Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,17 +20,62 @@
   "astra_runs": 1,
   "week_pts": 22.0,
   "window_pts": 12.0,
-  "window_runs": 3
+  "window_runs": 4
  },
  "runs": [
+  {
+   "at": "2026-10-17T04:00:10Z",
+   "card": "g3-blindness-audit-rerun",
+   "effort": "low",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 75,
+   "tokens_out": 6895,
+   "tokens_total": 575288,
+   "tokens_uncached": 57289,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": null,
+   "card": "gptb-volume-event-table",
+   "effort": null,
+   "kind": null,
+   "model": null,
+   "note": "cards fixed in lab-cards-1017 (data path, loader scope, brief); earlier BLOCKED tries had no data path; reset by NUC session 2026-10-17",
+   "outcome": "REOPENED",
+   "seconds": null,
+   "tokens_out": null,
+   "tokens_total": null,
+   "tokens_uncached": null,
+   "week_pts": null,
+   "window_pts": null
+  },
+  {
+   "at": null,
+   "card": "gptb-candle-pattern-event-table",
+   "effort": null,
+   "kind": null,
+   "model": null,
+   "note": "cards fixed in lab-cards-1017 (data path, loader scope, brief); earlier BLOCKED tries had no data path; reset by NUC session 2026-10-17",
+   "outcome": "REOPENED",
+   "seconds": null,
+   "tokens_out": null,
+   "tokens_total": null,
+   "tokens_uncached": null,
+   "week_pts": null,
+   "window_pts": null
+  },
   {
    "at": "2026-10-17T01:30:03Z",
    "card": "gptb-funding-extreme-event-table",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": "test layer tests: SKIP\nStep 5: Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n==========================",
+   "outcome": "SHIP_FAILED",
    "seconds": 166,
    "tokens_out": 15432,
    "tokens_total": 1366022,
@@ -127,51 +172,6 @@
    "tokens_uncached": 48822,
    "week_pts": 1.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T21:00:02Z",
-   "card": "g3-pack-audit-rerun",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n=========================================================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 41,
-   "tokens_out": 2908,
-   "tokens_total": 361929,
-   "tokens_uncached": 49773,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T20:32:13Z",
-   "card": "gptb-forward-excursion-helper",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n=========================================================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 47,
-   "tokens_out": 4314,
-   "tokens_total": 308126,
-   "tokens_uncached": 34500,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T20:00:03Z",
-   "card": "gptb-dev-split-guard",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n=========================================================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 46,
-   "tokens_out": 4240,
-   "tokens_total": 192998,
-   "tokens_uncached": 27862,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }

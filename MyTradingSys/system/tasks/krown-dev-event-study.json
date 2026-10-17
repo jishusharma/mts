@@ -7,6 +7,7 @@
     "krown-recall-check"
   ],
   "done_when": "research/krown_ta101_2026-10-13/DEV_RESULTS.md: per H-id N, power or MDE, effect with CI, placebo, strata; 'underpowered' where N < 100; every variant in research/TRIAL_LEDGER (or the registry); no VALIDATION or HOLDOUT bar opened",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Pre-register and run the DEV event studies H-V1..H-T1 (KROWN_CONSOLIDATED.md) on BTC DEV 2017-08..2024-06: power and expected N first (backtest/power_mde.py), fee-net, same-window placebo drawn without replacement, stratified by mode, top-down agreement, volume flag, year.",
   "id": "krown-dev-event-study",
@@ -45,5 +46,6 @@
     "write DEV_RESULTS.md; a hypothesis suggested by DEV is tested once on VALIDATION as one pooled trial (a separate card), never promoted on its DEV p-value"
   ],
   "tests": "docs/run lane: DEV_RESULTS.md plus the frozen-config hash; the runner reuses layers/runner.py forward_return_stats",
-  "title": "Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: DEV_RESULTS.md with N, power, CI per H-id and every variant in the trial ledger"
+  "title": "Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: DEV_RESULTS.md with N, power, CI per H-id and every variant in the trial ledger",
+  "worker": "session"
 }

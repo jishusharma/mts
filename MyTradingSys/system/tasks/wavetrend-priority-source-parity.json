@@ -5,6 +5,7 @@
   "created": "2026-10-16T21:18:44Z",
   "depends_on": [],
   "done_when": "Saved source or precise access blocker, updated ER-07 parity checklist, and a bounded BTC behavior-atlas/confluence study card with causal event/outcome definitions exist.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Deliver pinned WaveTrend source/parity contract and BTC behavior-atlas study plan: bands, center, structures, divergence and confluence by timeframe/regime.",
   "id": "wavetrend-priority-source-parity",
@@ -39,5 +40,6 @@
     "Specify BTC behavior atlas and matched confluence controls before strategy selection; issue bounded observation/study implementation card."
   ],
   "tests": "Document/source review: every numeric rule is SOURCED with location or OURS; fixtures have explicit availability times.",
-  "title": "Priority WaveTrend source parity and BTC context study"
+  "title": "Priority WaveTrend source parity and BTC context study",
+  "worker": "session"
 }

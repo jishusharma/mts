@@ -11,7 +11,7 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 6. Task shipped: mark your own session completed in the sidebar (`mark_completed`); coordinators mark their workers (SUPER_SESSION.md).
 
 ## Cost and routing
-- Interactive sessions and subagents: Sonnet (implementations, spec-derived tests), Opus only when the operator names it; relay/dispatcher sessions run on the routine model. Haiku for mechanical work; workers: one-use Agent under 100k tokens, else a session (SUPER_SESSION.md). Wait on a queue with one background shell; spot-check one worker claim.
+- Interactive sessions and subagents: Sonnet (implementations, spec-derived tests), Opus only when the operator names it; relay/dispatcher sessions run on the routine model. Haiku for mechanical work; worker type + model: WORKERS.md (card fields `worker`, `est_turns`). Wait on a queue with one background shell; spot-check one worker claim.
 - No routine questions or "want me to?" offers for implied work: do it now, full depth. Free public market data and YouTube: pre-approved.
 - T0 script first, then by card lane (HOW_MTS_RUNS.md): run-and-report goes to DSA (`desk.py post ... --target DSA`; low on budget: post the rest to DSA, then hand over).
 - Logins share one repo and queue (CLOUD_ACCOUNTS.md): whoever has budget takes NEXT_SESSION.md; never idle for a weekly reset.

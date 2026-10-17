@@ -5,6 +5,7 @@
   "created": "2026-10-16T18:33:52Z",
   "depends_on": [],
   "done_when": "CONTEXT_FIRST.md shipped for the operator to read; no backtest run.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Operator 2026-10-17: no backtest before context (phase, speed, sentiment, absorption/distribution, yesterday, 5-day, weekly, bi-weekly). Describe the context around each operator read from data on disk, then diagnose the backtest apparatus. No returns, no pre-registered bar, no event counts used as evidence.",
   "id": "confluence-read-encode",
@@ -45,5 +46,6 @@
     "Before any later test follow REVIEW.md findings 11-14 (research/review_chart_cards_2026-10-17): rules blind to 10-16 prices, count families not items, list prior VERDICTS rows, cost at 20-50x."
   ],
   "tests": "Every context field cites a file and number or says NOT_IN_DATA; no outcome statistics appear.",
-  "title": "Context first: build the market-context picture around the operator's chart reads, then diagnose why backtests fail (no backtest yet)"
+  "title": "Context first: build the market-context picture around the operator's chart reads, then diagnose why backtests fail (no backtest yet)",
+  "worker": "session"
 }

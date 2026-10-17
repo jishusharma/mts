@@ -5,6 +5,7 @@
   "created": "2026-10-14T05:30:13Z",
   "depends_on": [],
   "done_when": "DSA_STANDIN_PROMPT.md shipped; one trial card refined by DSA passes tasks.py lint; card result = \"trial: <card> lint PASS/FAIL\".",
+  "est_turns": 12,
   "from_inbox": "",
   "goal": "Second DSA prompt (DSA_STANDIN_PROMPT.md) for roles a script can check afterwards: refine raw cards to Ready (gate: tasks.py lint), spot-check one number per GPT lab report against raw bars, write the NEXT_SESSION.md handoff (gate: relay.py lint), Control Room pickup. NOT for: live-path code, git ship, decisions for the operator, research verdicts. Operator ask 2026-10-14.",
   "id": "dsa-claude-standin-prompt",
@@ -41,5 +42,6 @@
     "Trial: give DSA one raw card (lc-event-table) to refine; Claude checks the result once."
   ],
   "tests": "If desk.py changes: test_desk.py case that a standin post carries the prompt name; red first. Else none (doc card); trial result is the check.",
-  "title": "DSA stand-in prompt: let DSA Bridge take the cheap Claude roles while Claude budget is low"
+  "title": "DSA stand-in prompt: let DSA Bridge take the cheap Claude roles while Claude budget is low",
+  "worker": "agent"
 }

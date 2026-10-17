@@ -9,6 +9,7 @@
     "tom-probe-diag-btc"
   ],
   "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_ARMS.md frozen (arms, source status, trial count, holdouts) and a runner card exists.",
+  "est_turns": 12,
   "from_inbox": "",
   "goal": "Freeze the arms that survived the diagnostics, recall and DAX run into one pre-registration with an honest trial count, then capture the runner as a new card.",
   "id": "tom-probe-prereg",
@@ -47,5 +48,6 @@
     "N5: re-measure MFE/MAE for the M arms only after the stop-width transfer rule exists (0.084 % stops are noise-level); an M arm is per trader, never global. Null is session-matched (N7); report touch and trade-through fills; stratify by session/regime (B154); n < 100 = 'underpowered', never 'no edge'."
   ],
   "tests": "python scripts/dev/tasks.py lint stays green with the new runner card (fails if the card misses tests/done_when).",
-  "title": "Pre-register the surviving S/Q/M/F arms and write their runner card"
+  "title": "Pre-register the surviving S/Q/M/F arms and write their runner card",
+  "worker": "agent"
 }

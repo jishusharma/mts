@@ -7,6 +7,7 @@
     "tom-v2-recall-fire-rate"
   ],
   "done_when": "Paths A2 and A3 emitted on their synthetic series, third attempt suppressed, restart test green, flag-off output identical, DESIGN recall for T2b/T3/T3b reported as a new trial row.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Add the two other entry paths of family A behind the same flag: A2 pullback after proof (sell limit) and A3 break of the top balance (stop-market), with at most one re-entry per session on a fresh signal (A-M5) and stop rule A-S3.",
   "id": "tom-encode-fade-entry-paths",
@@ -47,5 +48,6 @@
     "Re-run the DESIGN recall of card tom-v2-recall-fire-rate for T2b, T3, T3b only as a new TRIAL_REGISTRY row; CHECK is not re-read."
   ],
   "tests": "Java: balance 24090-24110 after the extreme; 1m close 24088 -> path A3 candidate, entry at the next open; second stop-out then a third signal in the same session -> suppressed; state restored after a simulated restart. Fails before the paths exist.",
-  "title": "Tom v2: encode fade entry paths A2 (pullback) and A3 (range break) with one re-entry per session"
+  "title": "Tom v2: encode fade entry paths A2 (pullback) and A3 (range break) with one re-entry per session",
+  "worker": "session"
 }

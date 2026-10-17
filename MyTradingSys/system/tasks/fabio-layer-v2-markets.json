@@ -8,6 +8,7 @@
     "fabio-ledger-minute-timestamps"
   ],
   "done_when": "FABIO_LAYER_V2_SPEC.md part B: per-market proof/cost/stop-width table, recall-harness decision, flag plan (default off), session-matched null + fill rules, NQ-tick-data cost as a Control Room decision with a default, AND the Sonnet recall/encode cards, each passing tasks.py check.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Decide what can be tested where: recall harness on free NQ/US100 1m (price-only proofs), which order-flow proofs need aggressor data (BTC has it, CFD does not), cost and stop width in points and % for NQ versus BTC, and the Sonnet cards that build the recall harness and the encoding.",
   "id": "fabio-layer-v2-markets",
@@ -43,5 +44,6 @@
     "State per N4/N7: stops 0.014-0.061 % make BTC fees worse than Tom's; BTC has aggressor side (order-flow proofs testable), no NY-open analogue; NQ with aggressor needs paid CME tick data = decision (default: do not buy; price-only proofs on free NQ, order-flow on BTC); null drawn from the NY session window with the same fill mechanics."
   ],
   "tests": "Every created card passes tasks.py check.",
-  "title": "Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)"
+  "title": "Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)",
+  "worker": "session"
 }

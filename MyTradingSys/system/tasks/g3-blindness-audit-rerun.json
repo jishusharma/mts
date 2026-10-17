@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T04:01:27Z",
   "commands": [],
   "created": "2026-10-17T03:40:00Z",
   "depends_on": [],
@@ -19,7 +20,7 @@
   "refine_tries": 0,
   "refined_by": "lab-cards-1017",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST; Draw rebuild YES; 2026-10-17_g3-blindness-audit-rerun.md",
   "scope_in": [
     "MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py",
     "MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py",
@@ -41,7 +42,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-16_gpt-g3-pack-audit.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read section (b) of the 2026-10-16 audit (HIGH: last-bar pattern and pre-filter tag; MED: IDs/titles, right-edge time of day), then `git show 198c1aed` for g3_pack.py and README.md to see what changed.",
     "Run python -m pytest MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py -q (synthetic data, writes nothing into the pack folder); report passed/failed/skipped.",

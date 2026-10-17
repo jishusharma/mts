@@ -1,6 +1,6 @@
 # SUPER SESSION - one coordinator, many workers, hours of continuous work (operator term, 2026-10-15)
 
-A **super session** is one coordinator session in the Claude Code Win App that spawns, steers, checks and archives worker sessions
+A **super session** is one coordinator session in the Claude Code Win App that spawns, steers, checks and archives workers (WORKERS.md: sessions or one-use Agents)
 (`start_session`) for several hours, with the operator in the loop only for direction. Max plan only, and only when the weekly
 meter has headroom (Pacing below). First one: 2026-10-15, coordinator local_62faa820 (Opus), about 20 linked workers, an Opus
 observer, and a second coordinator (coord-2) that drained the ship queue at the end.
@@ -27,11 +27,11 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 - Compaction never goes below the ~70-80 k fixed floor, so on a 1 M window a session at 120 k gains little from it.
 
 ## Rules (from the audit)
-1. **Compact only if the session will run at least 15 more turns and is above ~150 k.** Otherwise: finish the step, hand off
-   (NEXT_SESSION.md or a `start_session` brief) and archive. Never compact a session that is about to ship.
+1. **Compaction and workers: see WORKERS.md** (canonical; measured numbers there). Short form: never compact by hand a session that will
+   ship soon; compact only with 15+ turns left and above ~150k, else hand off (NEXT_SESSION.md or a `start_session` brief) and archive.
 2. **The coordinator works little itself.** It reads results, decides, spot-checks one claim per worker (`git cherry` empty =
-   shipped), and archives. Mechanical status goes to a Haiku worker; drafting and code to Sonnet; The coordinator runs on Sonnet 5.5 (operator 2026-10-16); Opus
-   only for an observer the operator asks for. Fable only when the operator starts it.
+   shipped), and archives. Model: the one the operator started it on (WORKERS.md rule 6); workers Sonnet, Haiku for mechanical status.
+   Fable only when the operator starts it.
 3. **At most 4 workers running at once** (gate slots are 2 per machine, `sync.py`), one writer per set of files, each with a
    full brief: goal, files, DONE-when, defaults for every open question, hard limits. Workers never ask the operator; questions
    go to the coordinator, which decides toward the goal and logs the decision in the worker's deliverable.
@@ -46,13 +46,10 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 8. **Agent workers (2026-10-16).** Briefs ask for: ship once then stop (a second `sync.py ship` only re-wakes the coordinator),
    the proof that new tests fail on the old code (run them against `git show <sha>^:<file>` copies), a final reply of at most
    N lines, long notes in the shared notes folder. Tasks touching the same file run one after the other; others run in parallel.
-9. **Compaction by context share (operator 2026-10-16).** `.claude/settings.json` sets `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=25`, so every
-   session and agent in this repo auto-compacts at 25 % of its window, between tool calls, even mid-task. A model cannot run
-   `/compact` itself (a `/compact` sent by `send_message` arrives as plain text, tested 2026-10-16), so the setting is the only
-   automatic route. Working bands: under ~18 % keep going; 18-20 % finish the current task, then end it (ship, release, hand off)
-   rather than start another; 20-25 % finish only if the task is crucial and nearly done, else commit and let the compaction run.
-   Before a compaction is likely, keep the working state in files (NEXT_SESSION.md, notes folder, task card), not in the context.
-   Override: set the env var in the session's own settings; the break-even rule 1 above still applies to manual compacts.
+9. **Compaction by context share (operator 2026-10-16).** `.claude/settings.json` sets `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=25`: a backstop, not a
+   plan (WORKERS.md rule 5). A model cannot run `/compact` itself. Working bands: under ~18 % keep going; 18-20 % finish the current task,
+   then end it (ship, release, hand off); 20-25 % finish only if crucial and nearly done, else commit and let it run. Keep working state in
+   files (NEXT_SESSION.md, notes folder, task card), not in the context.
 10. **Signals between logins and machines (operator 2026-10-16).** The app cannot message across logins, so `scripts/dev/mts_signal.py`
    (hook in `.claude/settings.json`, automatic) sends a line on the git branch `mts-signals` when a session starts or runs
    `sync.py claim|release|ship|start`, and every 5 minutes shows the signals other host/account pairs sent. Sessions do nothing for
@@ -67,10 +64,9 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   `MyTradingSys/execution/HALT` (+ `halt_history`); dirty files: `git -C <live> status --short --untracked-files=no`.
 - Live state in one read: `live_mirror.py brief` (LIVE_MIRROR.md) + `scripts/sched/check_live_health.py`; ledger =
   `runtime_data` trade_ledger.jsonl in the live tree. A Sonnet read-only worker does this in ~15 tool calls.
-- Workers (operator prompt 2026-10-17, supersedes the 10-16 'always sessions' rule): bounded work (< ~100k tokens) = one-use
-  background Agent (Sonnet, medium); long work = session (`start_session`, visible in the sidebar). Agents are invisible in the
-  sidebar, so name each one in a line. Sizes seen 10-17: count-only PRE_REG read 78k (Agent ok); 7 lab cards + 3 card fixes 178k
-  and relabel + 3 study reruns 122k (both should have been sessions).
+- Workers: WORKERS.md is the rule (operator 2026-10-17, replaces the 10-16 "always sessions" and "100k" rules): the card carries `worker` and
+  `est_turns`; session by default, one-use Agent only for size S <= 15 turns. Agents are invisible in the sidebar, so name each in one line.
+  Sizes seen 10-17: count-only PRE_REG read 78k / 11 calls (Agent ok); 7 lab cards + 3 card fixes 178k / 44 calls and relabel + 3 reruns 122k / 27 (sessions).
 - NUC lab: codex_run.py merges origin/fast-track before it picks (line ~646), so new cards need no lab-tree pull. A skipped card
   is un-skipped by a REOPENED row in F:/codex_home/lab_runs/runs.jsonl (outside git), not by the card JSON. `traffic_report.py`
   takes only an hours number (no --since): for 'after 12:00Z' use the hours since then.
@@ -102,18 +98,10 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 - Bash tool: a `cd` persists between calls and some `cd x && git ...` chains are denied; use `git -C <dir>` and absolute paths.
 - App worktrees can be stale (cut from 2026-10-02, no sync.py). Workers run `python <main checkout>/scripts/dev/sync.py start <slug>`
   from the main checkout and work only in the printed WORKTREE.
-- Workers are sessions, started directly with `start_session`, never cards: the operator is often away. The app refuses
-  `start_session` on turns a side-session note or an event started, so on every OPERATOR turn start all workers the next stretch
-  needs (max 4 at once) and brief each to chain its follow-ups, so no spawn is needed between operator turns.
-  NEVER make the operator click a card for work already handed to the session (operator 2026-10-16, said twice: "a waste of time
-  and a waste of resources ... No other session should do this"). On an event turn where `start_session` is refused, run the
-  worker as a background Agent subagent at once (rule above) instead of proposing an `own_initiative` card. Applies to every
-  coordinator and worker.
-- Worker type by size (operator 2026-10-16, hard rule, dynamic): cap one worker at 100k tokens of context. Estimate the task
-  first. Fits under 100k (one card, fix, check or doc): fresh background Agent (`run_in_background`, Sonnet), used once and
-  never reused (new task = new agent, no SendMessage follow-ups). Over 100k, or likely to need one or two compactions
-  (multi-hour watch, build wave, open-ended work): `start_session`, because compaction is only worth paying for in a session.
-  Never use a session for work that would not compact, never an agent for work that would. No click either way.
+- Starting workers: WORKERS.md rules 2, 3, 7. `start_session` is refused on turns a side-session note or event started, so on every OPERATOR
+  turn start all workers the next stretch needs (max 4 at once) and brief each to chain its follow-ups. NEVER make the operator click a card for
+  work already handed to the session (operator 2026-10-16: "a waste of time and a waste of resources"). On an event turn where `start_session`
+  is refused, a size-S card runs as a background Agent at once; a size-M card waits for the next operator turn (brief it in NEXT_SESSION.md).
 - Thread cleanup (operator 2026-10-16, hard rule, all sessions): a finished session marks itself completed in the sidebar
   (`mark_completed`; `archive_session` too when allowed; archive refuses while Remote Control or a client is attached, so the
   completed mark is the reliable one). The coordinator marks every worker it started the moment its ship is verified.
@@ -168,8 +156,8 @@ Wiring that file into `dispatch_gate.py` is a SONNET card (not built yet).
 You are the MTS super-session coordinator (MyTradingSys/system/SUPER_SESSION.md). Run for hours with zero operator input except direction I give.
 Goal today: <one line, e.g. "rebuild layers setups-first: catalogue -> PRE_REG -> screens">.
 First turn: get_usage (THROTTLE -> tell me and stop), relay.py stop "super-session", read STATUS.md and NEXT_SESSION.md, pick the tasks that serve the goal.
-Spawn workers with start_session (Sonnet; Haiku for mechanical status), at most 4 running, each with a full brief: goal, files, DONE when, defaults for open questions, hard limits from CLAUDE.md. Workers never ask me; you decide toward the goal and log it.
-Verify every ship with git cherry, archive finished workers, compact only per SUPER_SESSION.md rule 1, hand the tail to a second coordinator per rule 5.
+Spawn workers per WORKERS.md (session by default, Agent only for size S; Sonnet; Haiku for mechanical status), at most 4 running, each with a full brief: goal, files, DONE when, defaults for open questions, hard limits from CLAUDE.md. Workers never ask me; you decide toward the goal and log it.
+Verify every ship with git cherry, mark finished workers completed, compact only per WORKERS.md rule 5, hand the tail to a second coordinator per rule 5 above.
 End: drain, hand-over note with get_usage, relay.py resume, one line to me.
 ```
 
