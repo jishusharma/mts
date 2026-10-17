@@ -86,6 +86,8 @@ MTS has already done useful definition and audit work: T061, the T065 survey, an
 4. **Use the actual MTS study discipline.** Inspect verdict aliases and prior data exposure; follow current chronological split policy rather than T061's old 70/30 shorthand. Use the Binance research contract and a separate Deribit execution check where applicable. Include realistic fees, spread/slippage, funding exposure, linear/inverse accounting, gap fills and same-bar stop/target ambiguity. Funding and fee assumptions require current venue verification. Published gross moves or a fixed 0.10% cost alone cannot settle the question.
 5. **Admit only what passes.** Compare WT alone against each companion on the same eligible events, with exposure/turnover-matched baselines. Report net expectancy and uncertainty, drawdown, trade count, side/regime, costs and missed opportunities. Control multiple trials and overlapping observations; use power checks and selection-aware analysis. Read validation once after DEV selection, preserve holdout integrity, then collect forward paper/testnet evidence. Insufficient data means inconclusive, not fail or pass.
 
+Added by the parity card (CLAUDE_VERIFY D1-D2): every DEV read of the atlas is logged in `research/gross_effect_screen_2026-10-15/EXPOSURE_LEDGER.csv`, and every cell carries a random-clock control arm besides "context alone". Source pin and conventions: PARITY_CONTRACT.md; event/outcome definitions: ATLAS_STUDY_SPEC.md.
+
 The priority-1 SONNET task `wavetrend-priority-source-parity` is ready and references this research. It delivers the source/parity/study contract and a bounded implementation task. This research does not supply an invented economic pass threshold or claim deployment readiness.
 
 ## Package and limitations

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T06:33:46Z",
   "commands": [],
   "created": "2026-10-16T21:18:44Z",
   "depends_on": [],
@@ -19,7 +20,7 @@
   "refs": [
     "T061"
   ],
-  "result": "",
+  "result": "PARITY_CONTRACT.md + ATLAS_STUDY_SPEC.md; source saved; seed diff <1e-3 after bar 144",
   "scope_in": [
     "T061 and ER-07 source/version/attribution reconciliation",
     "BTC conditional behavior atlas: excursions, reversals, centerline, divergence, structure and confluence"
@@ -32,7 +33,7 @@
     "MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_HANDOFF.md",
     "MyTradingSys/items/T061_wavetrend_lazybear.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read research/wavetrend_2026-10-17/CLAUDE_HANDOFF.md and both blind external reports.",
     "Reconcile the operator priority request with parked policy; pin exact source and source terms.",
