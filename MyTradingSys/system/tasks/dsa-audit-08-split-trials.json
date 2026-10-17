@@ -15,11 +15,11 @@
   "from_inbox": "",
   "goal": "Map every split scheme and the windows each study has actually read, find every read of VALIDATION or HOLDOUT outside the rules, and count the variants really tried per study against the trial ledgers.",
   "id": "dsa-audit-08-split-trials",
-  "lane": "DSA-NB",
+  "lane": "CODEX",
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "WEIGHT:IMPORTANT audit; repo-doc analysis, no 1m data needed; moved to GPT lane 2026-10-17 (operator: use GPT)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -54,5 +54,6 @@
     "True trial count per study from git history vs TRIAL_LEDGER.csv and trials files; haircut bar sqrt(2 ln N) vs t used."
   ],
   "tests": "",
-  "title": "DSA audit T08: split map, contamination calendar, HOLDOUT seal check and the true trial count"
+  "title": "DSA audit T08: split map, contamination calendar, HOLDOUT seal check and the true trial count",
+  "kind": "audit"
 }
