@@ -93,7 +93,7 @@ Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new rec
   The operator does NUC-side key and gate changes; never touch keys or `.secrets`.
 - How to run a job by hand: SSH sessions have no share credentials, so wrap the job in a one-shot scheduled task for E-ngineers (principal LogonType Interactive; the auto sign-in session holds the share credential),
   write a transcript to F:\MTS\_in\*.log, poll it, delete the task after. Pattern: F:\MTS\_in\bt.ps1. Paths with backslashes get mangled in transit: build them with [char]92.
-- Qwen lane ended 2026-10-01; both Ollama models were removed 2026-10-06 (Ollama stays installed). Leftovers: `C:\MTS-Worker\` and task MTS-NUC-Worker (shown Disabled; inert, operator removes it elevated, SCHEDULING_POLICY.md); read items/T049_nuc_worker_v2.md before changing either.
+- Qwen lane ended 2026-10-01; both Ollama models were removed 2026-10-06 (Ollama stays installed). Leftovers: `C:\MTS-Worker\` and task MTS-NUC-Worker (unregistered 2026-10-17, SCHEDULING_POLICY.md); read items/T049_nuc_worker_v2.md before changing either.
 - Stored credential: cmdkey entry for JIS-NB, user JIS-NB\mtsworker (fixed 2026-09-25). Automatic sign-in: ON (2026-09-26) but the operator reports (2026-10-06) a lock screen needing one click after power-on, so that line is NOT VERIFIED.
   Anything that must run unattended after power-on (the live loop, section 3) cannot assume a signed-in desktop; a startup task that runs whether or not a user is logged on needs a password on the account (the operator sets it once, never written here). Do not change this until the operator approves.
   BIOS power-on-after-power-failure is deliberately NOT set (operator switches both machines off/on manually).

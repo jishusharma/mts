@@ -26,7 +26,7 @@ A one-shot task created by `scripts/dev/nuc_wake.py` to wake a headless worker f
 ## 5. Current state (update this table whenever it changes)
 | Device | State |
 |---|---|
-| JIS-NUC | `MTS-CodexLab`, `MTS-DailyHygiene`, `MTS-DispatchGate` unregistered 2026-10-17. XML backups: `F:/MTS/backups/sched_tasks_2026-10-17_NUC` (restore with `Register-ScheduledTask -Xml`, only on operator say-so). `MTS-NUC-Worker` and nine `MTS-Wake-*` (cfpa chf g3 refine t1 tcm tco wda wom) remain: no trigger (inert), Windows refuses delete/disable without an elevated shell. Operator removes them once, elevated PowerShell: `Get-ScheduledTask 'MTS-Wake-*','MTS-NUC-Worker' \| Unregister-ScheduledTask -Confirm:$false` |
+| JIS-NUC | none (0 MTS scheduled tasks, verified 2026-10-17 after the operator removed `MTS-NUC-Worker` and the nine `MTS-Wake-*`). `MTS-CodexLab`, `MTS-DailyHygiene`, `MTS-DispatchGate` were unregistered earlier the same day; XML backups: `F:/MTS/backups/sched_tasks_2026-10-17_NUC` (restore with `Register-ScheduledTask -Xml`, only on operator say-so) |
 | JIS-NB | still running until card `host-legacy-tasks-unregister` is executed on that machine. Do not touch the live tree from another host |
 
 A Windows task registered by hand again must be reported in this table. Someone re-registered `MTS-CodexLab` on 2026-10-17 ~15:00 IST; it was unregistered again.
