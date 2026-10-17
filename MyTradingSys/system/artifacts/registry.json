@@ -67,23 +67,23 @@
       "status": "canonical",
       "pinned": true,
       "generator": null,
-      "html": null,
-      "single_owner": "jishu.sharma",
+      "html": "MyTradingSys/system/artifacts/tom_fabio_deck.html",
+      "single_owner": "jishusharma1985",
       "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
-      "owner_app": "jishu.sharma (slides authored in claude.ai, B179)",
+      "owner_app": "jishusharma1985 (rebuilt from the repo 2026-10-17; the old jishu.sharma slides page is gone)",
       "refresh": "manual",
       "db": [],
       "urls": {
         "jishu.sharma": "https://claude.ai/artifact/2DXWotLraL8te3xNqo4hWV",
         "jishu.awgp": "",
-        "jishusharma1985": ""
+        "jishusharma1985": "https://claude.ai/artifact/B1h2wkC9xd56fVmp8DdwcJ"
       },
       "last_published": {
         "jishu.sharma": "2026-10-12",
         "jishu.awgp": "never",
-        "jishusharma1985": "never"
+        "jishusharma1985": "2026-10-17"
       },
-      "note": "Slides type: no repo HTML. Share the link; do not copy to the other account.",
+      "note": "Rebuilt from TOM_FABIO_STORY_2026-10-05.md and tom_fabio_guidance_2026-10-12/. Old jishu.sharma url 2DXWot is an old copy and not found.",
       "purpose": "Slides: what Tom and Fabio taught.",
       "notes_go_to": "Read only."
     },
