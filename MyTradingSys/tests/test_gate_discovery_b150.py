@@ -27,7 +27,7 @@ def tracked_tests():
 class GateDiscoveryTest(unittest.TestCase):
     def test_every_tracked_test_file_is_gated_or_skipped_with_a_reason(self):
         gate = (ROOT / "scripts" / "dev" / "run_all_tests.py").read_text(encoding="utf-8")
-        extra = set(run_extra_tests.EXTRA)
+        extra = set(run_extra_tests.all_tests())          # EXTRA plus every study-folder test (discovered, no entry to keep)
         missing = []
         for rel in tracked_tests():
             stem = Path(rel).stem

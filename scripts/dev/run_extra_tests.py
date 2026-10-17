@@ -90,6 +90,22 @@ EXTRA = [
     "scripts/dev/test_run_extra_tests.py",
     "scripts/dev/test_ci_deps_lint.py",
 ]
+STUDY_ROOT = "MyTradingSys/research/"
+
+
+def discovered(repo=None):
+    """Tracked test_*.py under a study folder that EXTRA does not list and run_all_tests.py does not name: they run
+    without a hand-kept entry (2026-10-17 audit: the two-list registration cost ~100 commits and several red gates in 72 h)."""
+    repo = Path(repo or REPO)
+    out = subprocess.run(["git", "ls-files", "--", STUDY_ROOT], cwd=repo, capture_output=True, text=True).stdout.splitlines()
+    gate_py = repo / "scripts" / "dev" / "run_all_tests.py"
+    gate = gate_py.read_text(encoding="utf-8") if gate_py.exists() else ""
+    return sorted(p for p in out if p.endswith(".py") and Path(p).name.startswith("test_") and "archive" not in p.lower()
+                  and p not in EXTRA and f'"{Path(p).stem}"' not in gate and f"{Path(p).stem}.py" not in gate)
+
+
+def all_tests(repo=None):
+    return EXTRA + discovered(repo)
 
 
 def jobs():
@@ -148,7 +164,7 @@ def main():
     except (AttributeError, ValueError):
         pass
     tmp = Path(tempfile.mkdtemp(prefix="mts_xt_"))
-    bad = run_files(EXTRA, jobs(), tmp=tmp)
+    bad = run_files(all_tests(), jobs(), tmp=tmp)
     shutil.rmtree(tmp, ignore_errors=True)
     print("extra tests: " + ("FAIL " + ", ".join(bad) if bad else "PASS"))
     return 1 if bad else 0
