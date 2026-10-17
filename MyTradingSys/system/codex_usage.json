@@ -6,7 +6,7 @@
   "window_resets": 1792281070,
   "window_used": 3.0
  },
- "at": "2026-10-17T20:34:53Z",
+ "at": "2026-10-17T20:39:39Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,39 @@
   "astra_runs": 0,
   "week_pts": 23.0,
   "window_pts": 2.0,
-  "window_runs": 7
+  "window_runs": 8
  },
  "runs": [
+  {
+   "at": "2026-10-17T20:37:59Z",
+   "card": "lab-holdout-access-control",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 92,
+   "tokens_out": 5641,
+   "tokens_total": 938722,
+   "tokens_uncached": 44505,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": null,
+   "card": "lab-holdout-access-control",
+   "effort": null,
+   "kind": null,
+   "model": null,
+   "note": "card extended with 2 review defects (unsupported extension fail-closed, seconds epoch); reset by NUC session 2026-10-18",
+   "outcome": "REOPENED",
+   "seconds": null,
+   "tokens_out": null,
+   "tokens_total": null,
+   "tokens_uncached": null,
+   "week_pts": null,
+   "window_pts": null
+  },
   {
    "at": "2026-10-17T20:33:20Z",
    "card": "lab-holdout-access-control",
@@ -142,36 +172,6 @@
    "tokens_uncached": 36648,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-17T18:50:56Z",
-   "card": "gap-g2-dax-ask-candles",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 68,
-   "tokens_out": 5368,
-   "tokens_total": 501142,
-   "tokens_uncached": 44958,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-17T04:30:03Z",
-   "card": "gptb-candle-pattern-event-table",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n=========================================================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 130,
-   "tokens_out": 10724,
-   "tokens_total": 1144673,
-   "tokens_uncached": 47997,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }

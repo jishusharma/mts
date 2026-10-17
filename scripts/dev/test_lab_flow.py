@@ -258,3 +258,23 @@ def test_renamed_dev_copy_with_post_cutoff_bar_is_refused(repo, monkeypatch, tmp
     with pytest.raises(ValueError, match="post-cutoff"):
         F.safe_file(repo, str(copied))
 
+
+def test_unsupported_data_extension_is_refused(repo, monkeypatch, tmp_path):
+    data_root = tmp_path / "data"
+    opaque = data_root / "renamed.parquet"
+    opaque.parent.mkdir(parents=True)
+    opaque.write_bytes(b"opaque data")
+    monkeypatch.setattr(F, "DATA_ROOT", data_root, raising=False)
+    with pytest.raises(ValueError, match="cannot verify data timestamps"):
+        F.safe_file(repo, str(opaque))
+
+
+def test_seconds_epoch_after_cutoff_is_refused(repo, monkeypatch, tmp_path):
+    data_root = tmp_path / "data"
+    seconds = data_root / "renamed.csv"
+    seconds.parent.mkdir(parents=True)
+    seconds.write_text("timestamp,close\n1735689600,1.0\n", encoding="utf-8")
+    monkeypatch.setattr(F, "DATA_ROOT", data_root, raising=False)
+    with pytest.raises(ValueError, match="post-cutoff"):
+        F.safe_file(repo, str(seconds))
+
