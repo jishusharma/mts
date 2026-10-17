@@ -8,3 +8,8 @@
 - Steps 4-10: open.
 
 Result: operator decision on HALT recorded; no live state changed.
+
+## Subnote 2026-10-17: two questions for the operator's confirmation
+
+1. Does every trade get a stop loss? Code reading (MyTradingSys/execution/executor.py header, R2/R7): each entry places a server-side stop_market covering the full filled size on the first fill. If the stop cannot be confirmed after a fill, the code closes the position and halts. Code says yes; NOT confirmed on the exchange. Needs a check on the Deribit testnet: one trade, stop order visible, size equal to position.
+2. Can one account hold two positions in the same asset (two longs, or a long and a short)? Code reading (executor.py R8 and M8): NO. Pre-flight refuses a new plan if the instrument already has a position or open orders. M8 says two plans on one instrument need per-plan position accounting first. Not confirmed on the exchange; check the testnet with one position open, then try a second order.
