@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-17T20:35:39Z",
+  "closed": "2026-10-17T20:31:44Z",
   "commands": [],
   "created": "2026-10-12T13:15:48Z",
   "depends_on": [],
@@ -15,9 +15,9 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "audit shipped 5f464c1f, 2 fix cards filed, no code edited",
-      "ref": "f2b7efc3",
-      "utc": "2026-10-17T20:35:39Z"
+      "line": "MyTradingSys/research/audits/state_cvd_vwap_audit_2026-10-18.md: M1/M2 = ticks missed on r",
+      "ref": "677f4cda",
+      "utc": "2026-10-17T20:31:44Z"
     },
     {
       "auto": true,
@@ -46,7 +46,7 @@
   "refs": [
     "MyTradingSys/research/screenshots/2026-10-15_BTCUSDT_set_7f3698134541.md"
   ],
-  "result": "audit shipped 5f464c1f, 2 fix cards filed, no code edited",
+  "result": "MyTradingSys/research/audits/state_cvd_vwap_audit_2026-10-18.md: M1/M2 = ticks missed on restart/reconnect (control test 10-17 exact to 0.001%), M3 = NY-open label; cards state-code-accumulator-backfill, snapshot-vwap-anchor-label",
   "scope_in": [
     "src/main/java/datafeed/StateCodeEmitter.java",
     "src/main/java/datafeed/MarketDataSnapshot.java",

@@ -1,10 +1,11 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T20:29:24Z",
   "commands": [],
   "created": "2026-10-17T19:01:22Z",
   "depends_on": [],
-  "done_when": "test_lab_flow.py passes with a gemini stage fixture",
+  "done_when": "test_lab_flow.py passes with a gemini stage fixture; FOLLOW-UP: test_lab_flow.py also has fail-first tests that a stage prompt containing the claim under test is refused and an image-read schema without an unreadable/null option is refused",
   "est_turns": 30,
   "from_inbox": "",
   "goal": "A recipe stage can be a Gemini or Claude lens and records which model ran it.",
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "24 passed; MyTradingSys/research/layer_lab/reports/2026-10-17_lab-crossvendor-stage.md",
+      "ref": "6fa3617b",
+      "utc": "2026-10-17T20:29:24Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -29,13 +36,13 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use] [FOLLOW-UP 2026-10-18 from Gemini image pilot: two machine checks to add to lab_flow.py: (1) the stage refuses a prompt containing the claim under test; (2) an image-read schema must include the unreadable/null option. DECISION (OURS): kept on this done card as a follow-up in note and done_when, state unchanged; build is carried by card lab-crossvendor-same-vendor-gate if reopening is refused.]",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-17T19:01:23Z",
   "refs": [],
-  "result": "",
+  "result": "24 passed; MyTradingSys/research/layer_lab/reports/2026-10-17_lab-crossvendor-stage.md",
   "scope_in": [
     "scripts/dev/lab_flow.py",
     "scripts/dev/test_lab_flow.py",
@@ -49,7 +56,7 @@
   "scope_sha": "9649674dccbb",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add a vendor field to each stage tuple and allow a gemini stage using agy.exe --print with the report inlined (headless cannot read files)",
     "finish writes model id into the receipt",

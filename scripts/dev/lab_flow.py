@@ -1,8 +1,10 @@
 """Reusable ordered lab recipes. launch SPEC.json [--preview]; finish CARD --report PATH --verdict PASS|REWORK|BLOCKED --result TEXT; status ID."""
 import argparse
 import hashlib
+import csv
 import json
 import re
+import zipfile
 from pathlib import Path
 
 import tasks
@@ -10,13 +12,14 @@ import tasks
 FLOWS = "MyTradingSys/research/layer_lab/flows"
 DATA_ROOT = Path("F:/MTS/data")
 HOLDOUT_PARTS = {"holdout", "holdouts", "validation_holdout", "test_holdout"}
+DEV_CUTOFF_MS = 1719792000000  # 2024-07-01T00:00:00Z
 RECIPES = {
-    "critical-audit": [("map", "audit", "gpt-6.1-sol", "medium", "Map claims to source evidence; expose missing inputs and assumptions."),
-                       ("challenge", "audit", "gpt-6-astra", "low", "Independently try to falsify the prior findings; reproduce one material claim and resolve disagreements against sources.")],
-    "build-review": [("build", "build", "gpt-6.1-sol", "medium", "Implement the scoped contract with spec-derived fail-first tests."),
-                     ("challenge", "audit", "gpt-6-astra", "low", "Review the resulting diff and reproduce failure modes; independently check goal coverage.")],
-    "run-review": [("run", "run", "gpt-6-luna", "low", "Execute only the supplied development-data commands and record inputs, trial identity and numbers."),
-                   ("verify", "audit", "gpt-6.1-sol", "medium", "Independently reproduce a headline number and check leakage, fees, trial accounting and missing data.")],
+    "critical-audit": [("map", "codex", "audit", "gpt-6.1-sol", "medium", "Map claims to source evidence; expose missing inputs and assumptions."),
+                       ("challenge", "codex", "audit", "gpt-6-astra", "low", "Independently try to falsify the prior findings; reproduce one material claim and resolve disagreements against sources.")],
+    "build-review": [("build", "codex", "build", "gpt-6.1-sol", "medium", "Implement the scoped contract with spec-derived fail-first tests."),
+                     ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Review the resulting diff and reproduce failure modes; independently check goal coverage.")],
+    "run-review": [("run", "codex", "run", "gpt-6-luna", "low", "Execute only the supplied development-data commands and record inputs, trial identity and numbers."),
+                   ("verify", "codex", "audit", "gpt-6.1-sol", "medium", "Independently reproduce a headline number and check leakage, fees, trial accounting and missing data.")],
 }
 
 
@@ -25,6 +28,7 @@ def digest(value):
 
 
 def safe_file(repo, rel):
+    """Resolve an allowed file; only DATA_ROOT files get content timestamp checks."""
     root = Path(repo).resolve()
     requested = Path(rel)
     data_root = Path(DATA_ROOT).resolve()
@@ -43,7 +47,54 @@ def safe_file(repo, rel):
     parts = [x.lower() for x in (p.relative_to(root).parts if p.is_relative_to(root) else p.relative_to(data_root).parts)]
     if any(x in (".secrets", ".git", "execution", "alerts") or x.startswith(".env") for x in parts):
         raise ValueError(f"protected scope: {rel}")
+    # Timestamp gate applies to data inputs by content, including renamed/copied files.
+    if p.is_relative_to(data_root):
+        try:
+            if p.suffix.lower() == ".npz":
+                import numpy as np
+                with np.load(p, allow_pickle=False) as data:
+                    if "t" not in data.files or data["t"].size == 0:
+                        raise ValueError("missing open-time axis t")
+                    max_open = _epoch_ms(data["t"].max())
+            elif p.suffix.lower() == ".csv":
+                with p.open(newline="", encoding="utf-8-sig") as f:
+                    reader = csv.DictReader(f)
+                    key = next((k for k in (reader.fieldnames or []) if k.lower() in ("t", "open_time", "timestamp")), None)
+                    if key is None:
+                        raise ValueError("missing open-time column (t/open_time/timestamp)")
+                    times = [_epoch_ms(row[key]) for row in reader if row.get(key)]
+                    if not times:
+                        raise ValueError("empty open-time column")
+                    max_open = max(times)
+            elif p.suffix.lower() == ".zip":
+                with zipfile.ZipFile(p) as archive:
+                    csv_names = [name for name in archive.namelist() if name.lower().endswith(".csv")]
+                    if not csv_names:
+                        raise ValueError("zip has no CSV timestamp source")
+                    max_open = 0
+                    for name in csv_names:
+                        with archive.open(name) as raw:
+                            reader = csv.DictReader((line.decode("utf-8-sig") for line in raw))
+                            key = next((k for k in (reader.fieldnames or []) if k.lower() in ("t", "open_time", "timestamp")), None)
+                            if key is None:
+                                raise ValueError(f"missing open-time column in {name}")
+                            times = [_epoch_ms(row[key]) for row in reader if row.get(key)]
+                            if not times:
+                                raise ValueError(f"empty open-time column in {name}")
+                            max_open = max(max_open, max(times))
+            else:
+                raise ValueError(f"unsupported data format for timestamp verification: {p.suffix or '<none>'}")
+        except (OSError, ValueError, KeyError) as e:
+            raise ValueError(f"cannot verify data timestamps: {rel}: {e}") from e
+        if max_open is not None and max_open >= DEV_CUTOFF_MS:
+            raise ValueError(f"post-cutoff data refused (max open {max_open}): {rel}")
     return p
+
+
+def _epoch_ms(value):
+    """Normalize Unix seconds to milliseconds; candle open times use either epoch scale."""
+    timestamp = int(value)
+    return timestamp * 1000 if abs(timestamp) < 100_000_000_000 else timestamp
 
 
 def fingerprint(repo, scope, data_scope=None):
@@ -72,7 +123,9 @@ def accepted(card, repo):
     try:
         flow, receipt = card["flow"], card["flow_receipt"]
         report = safe_file(repo, receipt["report"])
+        stage = RECIPES[flow["recipe"]][flow["stage"] - 1]
         return (receipt["verdict"] == "PASS" and receipt["contract"] == contract(flow) == flow["contract"]
+                and receipt.get("vendor") == stage[1] and receipt.get("model") == stage[3]
                 and receipt["criteria"] == ["PASS"] * len(flow["criteria"])
                 and receipt["sources"] == fingerprint(repo, flow["scope_in"], flow.get("data_scope"))
                 and receipt["report_sha256"] == hashlib.sha256(report.read_bytes()).hexdigest()
@@ -108,9 +161,13 @@ def gate(card, cards, repo):
         if flow.get(key) and card.get("kind") == ("run" if key == "commands" else "build") and card.get(key) != flow[key]:
             errors.append(f"flow contract {key} changed; launch a new flow")
     try:
-        _, kind, model, effort, lens = RECIPES[flow["recipe"]][flow["stage"] - 1]
-        if flow["stage"] < 1 or card.get("kind") != kind or tasks.codex_setting(card) != (model, effort) or flow.get("lens") != lens:
-            errors.append("flow kind/model/lens drifted from the recipe")
+        _, vendor, kind, model, effort, lens = RECIPES[flow["recipe"]][flow["stage"] - 1]
+        producer_model = RECIPES[flow["recipe"]][0][3]
+        stage_lens = f"{vendor}/{model}: {lens}"
+        if flow["stage"] < 1 or card.get("vendor") != vendor or card.get("kind") != kind or tasks.codex_setting(card) != (model, effort) or flow.get("lens") != stage_lens:
+            errors.append("flow vendor/kind/model/lens drifted from the recipe")
+        if flow["stage"] > 1 and model == producer_model:
+            errors.append("flow reviewer model must differ from producer model")
     except (KeyError, IndexError, TypeError):
         errors.append("flow recipe/stage is invalid")
     expected = []
@@ -164,19 +221,22 @@ def launch(repo, spec, preview=False):
             flow[key] = spec[key]
     flow["contract"] = contract(flow)
     out = []
-    for index, (name, kind, model, effort, lens) in enumerate(stages):
+    for index, (name, vendor, kind, model, effort, lens) in enumerate(stages):
         key = f"{cid}-{index + 1}-{name}"
+        stage_lens = f"{vendor}/{model}: {lens}"
         c = tasks.blank(key, f"{cid}: {name}", lane="CODEX", prio=spec.get("prio", 3), layers=spec.get("layers", []))
-        c.update(kind=kind, model=model, effort=effort, size="S", goal=flow["goal"], scope_in=flow["scope_in"],
-                 flow={**flow, "stage": index + 1, "lens": lens}, gpt_only=True,
+        c.update(vendor=vendor, kind=kind, model=model, effort=effort, size="S", goal=flow["goal"], scope_in=flow["scope_in"],
+                 flow={**flow, "stage": index + 1, "vendor": vendor, "model": model, "lens": stage_lens}, gpt_only=True,
                  crucial=model == "gpt-6-astra", state="ready" if index == 0 else "blocked",
                  depends_on=[out[-1]["id"]] if out else [],
                  scope_out=["live path, secrets, holdout data, relay and unrelated files"],
-                 steps=[lens, "Read original sources before the prior report; report C1..Cn as PASS, REWORK or BLOCKED with file/command evidence."],
+                 steps=[stage_lens, "Read original sources before the prior report; report C1..Cn as PASS, REWORK or BLOCKED with file/command evidence."],
                  commands=spec.get("commands", []) if kind == "run" else [],
                  tests=spec.get("tests", "") if kind == "build" else "",
                  mutation_check=spec.get("mutation_check", "") if kind == "build" else "",
                  done_when="Each criterion has evidence; finish through lab_flow.py finish; failed criteria stop the flow.")
+        if vendor == "gemini":
+            c["steps"].append("Run agy.exe --print for this lens. Inline the complete report text in the prompt because headless agy cannot read report files.")
         if kind == "run":
             c["steps"].append("Append one row per execution to layer_lab/TRIALS.md with command, DEV range and result; missing inputs are NOT_IN_DATA.")
         if kind == "build":
@@ -231,6 +291,7 @@ def finish(repo, cid, report, verdict, result):
         raise ValueError("PASS contradicts criterion results")
     card.update(state="done" if verdict == "PASS" else "blocked", result=result, closed=tasks.now(),
                 flow_receipt={"verdict": verdict, "contract": flow["contract"], "report": rel,
+                              "vendor": card["vendor"], "model": card["model"],
                               "report_sha256": hashlib.sha256(p.read_bytes()).hexdigest(),
                               "sources": fingerprint(repo, flow["scope_in"], flow.get("data_scope")), "criteria": statuses})
     tasks.save(repo, card)

@@ -63,6 +63,15 @@ First test (all three reviewers proposed it): planted-error trial on 10 finished
 - No formula spec text for re-derivation (FORMULAS.md holds ids, a re-deriver needs prose): card `lab-formula-spec-text`. Holdout is refused by path only, a renamed copy defeats it: card `lab-holdout-access-control`.
 - Claude-written code is reviewed by Claude only; the lab's original purpose (LAYER_LAB.md) is the cross-model check, wired for GPT audits only.
 
+## Using Gemini (or any non-producer model) to read images
+Evidence (one pilot, not a measured catch rate): Flash (3.8-flash-low), 7 hard frames, `research/lab_guy/pilots/2026-10-18_gemini_frame_read/`. Blind read mostly honest: nulls on T6hDJcHrVBM_0520, zQTbdEweG3c_0370, SANOimk8M9o_0270 (it did not invent the ledger's 24220 stop). One inferred value: T6hDJcHrVBM_0550 stop 24690, which our audit says is not readable and which is also what we inferred ourselves. One panel mix-up: k0zm_1510_1720.png gave 25349 (earlier 2-lot state, top panel) where the later state (bottom panel) is 25310. Verify mode weak: confirmed stop 25400 on zQTbdEweG3c_0370 although its own blind read was null; confirmed target 25206 on k0zm_1510_1720.png although its blind read said 25200; on T6hDJcHrVBM_0520 it refuted the claim but also called the correct entry 24690 wrong. Not done: Argon on the same 7 frames; a larger crop to settle 25200 vs 25206 and the 0550 stop.
+- (a) Use the model as a BLIND READER only; never show it our claim and ask whether it is right: in verify mode it agreed with the claim given and used the 'unreadable' answer 0 times in 7 calls.
+- (b) Every image-read schema has a required null/'unreadable' option; a number returned for a field our audit marked hidden counts as an invented value.
+- (c) Crop two-panel images into separate panels before sending.
+- (d) Compare the model's output to our records in code, not by asking the model.
+- (e) Contested values (e.g. 25200 vs 25206) get a larger crop and a human or Argon read; the model's own answer never settles them.
+- Machine checks (follow-up on cards `lab-crossvendor-stage` / `argon-blind-read-7-frames`): the stage refuses a prompt containing the claim under test; an image-read schema must include the unreadable/null option.
+
 ## Boot and channels
 Boot: `python scripts/dev/codex_run.py status`, `python scripts/dev/tasks.py list`, `python scripts/dev/mts_signal.py read`; read LAYER_LAB.md, LAB_RECIPES.md, GEMINI_START.md once.
 Output: dated flow table (above) via `sync.py ship`; a defect = `tasks.py new` card; one line `mts_signal.py send` when a foundational card is blocked or an error escaped.
