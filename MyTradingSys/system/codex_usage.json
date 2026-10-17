@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1792677805,
-  "week_used": 31.0,
-  "window_resets": 1792195230,
-  "window_used": 44.0
+  "week_used": 32.0,
+  "window_resets": 1792213232,
+  "window_used": 3.0
  },
- "at": "2026-10-16T23:30:55Z",
+ "at": "2026-10-17T00:02:17Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,19 +18,34 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 20.0,
-  "window_pts": 1.0,
-  "window_runs": 7
+  "week_pts": 21.0,
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-10-17T00:00:09Z",
+   "card": "imb-filter-audit-1-map",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6.1-sol",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 122,
+   "tokens_out": 7344,
+   "tokens_total": 594269,
+   "tokens_uncached": 67629,
+   "week_pts": 1.0,
+   "window_pts": 3.0
+  },
   {
    "at": "2026-10-16T23:30:03Z",
    "card": "gpt-confluence-card-audit",
    "effort": "medium",
    "kind": "audit",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": "Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n=========================================================",
+   "outcome": "SHIP_FAILED",
    "seconds": 46,
    "tokens_out": 3659,
    "tokens_total": 366000,
@@ -155,21 +170,6 @@
    "tokens_out": 4495,
    "tokens_total": 305548,
    "tokens_uncached": 63485,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T18:00:02Z",
-   "card": "gptb-candle-pattern-event-table",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 75,
-   "tokens_out": 6249,
-   "tokens_total": 413651,
-   "tokens_uncached": 33002,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
