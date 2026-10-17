@@ -11,7 +11,7 @@
   "goal": "Measure BTCUSDT stop-order slippage proxy from public aggTrades: price of the first trade at or beyond a level minus the level, per volatility bucket (low/mid/high day range), in bp and in R, so backtests can replace slip=0.0 (tom_bt.py:176) with a measured median.",
   "id": "gap-g7-stop-slippage",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -38,6 +38,12 @@
   "refs": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
   ],
+  "reroute": {
+    "at": "2026-10-17T18:47:40Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "heartbeat"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/backtest/tom_bt.py",
@@ -67,5 +73,6 @@
     "Write research/gap_g7_stop_slippage_2026-10-18/SLIPPAGE.md + events summary: n, median, p90 per bucket; name it a trade-through proxy (no own-size impact); propose a default, label OURS; one row per run in layer_lab/TRIALS.md."
   ],
   "tests": "test_slippage.py (new, in the output folder) fails before slippage.py exists, passes after: python -m pytest MyTradingSys/research/gap_g7_stop_slippage_2026-10-18/test_slippage.py -q",
-  "title": "G7 measure BTC stop slippage from aggTrades by volatility bucket"
+  "title": "G7 measure BTC stop slippage from aggTrades by volatility bucket",
+  "worker": "session"
 }

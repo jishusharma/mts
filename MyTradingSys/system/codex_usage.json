@@ -4,9 +4,9 @@
   "week_resets": 1792677805,
   "week_used": 34.0,
   "window_resets": 1792213232,
-  "window_used": 20.0
+  "window_used": 21.0
  },
- "at": "2026-10-17T04:01:31Z",
+ "at": "2026-10-17T04:32:18Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,25 @@
  "lab": {
   "astra_runs": 1,
   "week_pts": 22.0,
-  "window_pts": 12.0,
-  "window_runs": 4
+  "window_pts": 13.0,
+  "window_runs": 5
  },
  "runs": [
+  {
+   "at": "2026-10-17T04:30:03Z",
+   "card": "gptb-candle-pattern-event-table",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 130,
+   "tokens_out": 10724,
+   "tokens_total": 1144673,
+   "tokens_uncached": 47997,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-17T04:00:10Z",
    "card": "g3-blindness-audit-rerun",
@@ -156,21 +171,6 @@
    "tokens_total": 403487,
    "tokens_uncached": 33328,
    "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T21:33:21Z",
-   "card": "gptb-rsi-divergence-event-table",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "s; resolve, `git commit`, then run ship again.\nAuto-merging MyTradingSys/system/wiring_registry.json\nCONFLICT (content): Merge conflict in MyTradingSys/system/w",
-   "outcome": "SHIP_FAILED",
-   "seconds": 153,
-   "tokens_out": 12561,
-   "tokens_total": 1300295,
-   "tokens_uncached": 48822,
-   "week_pts": 1.0,
    "window_pts": 0.0
   }
  ]

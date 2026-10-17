@@ -6,12 +6,12 @@
   "depends_on": [],
   "done_when": "PARITY.md with the hourly basis table (24 rows, n per hour), the stop-bar agreement % over all event_table.csv rows, the verdict line, TRIALS.md row; test passes.",
   "effort": "medium",
-  "est_turns": 25,
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Measure Binance-vs-Deribit venue parity on public mainnet 1m candles over DEV days: close basis in bp (median, p90 by UTC hour) and how often the first 1m bar that reaches a K1 stop of an lc-event-table touch is the same bar on both venues. Public data only, no account.",
   "id": "gap-g8-deribit-parity",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -38,6 +38,12 @@
   "refs": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
   ],
+  "reroute": {
+    "at": "2026-10-17T18:47:40Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "heartbeat"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/deribit_api_research.md",
@@ -66,5 +72,6 @@
     "Write research/gap_g8_deribit_parity_2026-10-18/PARITY.md with both tables and a one-line verdict on whether Binance-built signals transfer to Deribit fills; one row in layer_lab/TRIALS.md."
   ],
   "tests": "test_parity.py (new, in the output folder) fails before parity.py exists, passes after: python -m pytest MyTradingSys/research/gap_g8_deribit_parity_2026-10-18/test_parity.py -q",
-  "title": "G8 Deribit vs Binance venue parity (public mainnet candles allowed, q-gap-c 2026-10-15)"
+  "title": "G8 Deribit vs Binance venue parity (public mainnet candles allowed, q-gap-c 2026-10-15)",
+  "worker": "session"
 }

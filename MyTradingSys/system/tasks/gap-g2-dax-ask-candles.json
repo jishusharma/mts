@@ -11,7 +11,7 @@
   "goal": "Add Dukascopy DEUIDXEUR ASK 1m candles to the DAX data layer and measure ask-bid spread by 15-minute Berlin bucket on DEV days, so short exits (buys) can be costed at the ask. Output a proposed cost-table row; PRE_REG_DAX.md is frozen and is not edited.",
   "id": "gap-g2-dax-ask-candles",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -38,6 +38,12 @@
   "refs": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
   ],
+  "reroute": {
+    "at": "2026-10-17T18:47:40Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "heartbeat"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/backtest/dax_data.py",
@@ -66,5 +72,6 @@
     "SPREADS.md ends with a Proposed cost-table row: ask allowance per hour for target legs, label OURS (measured); no engine change."
   ],
   "tests": "test_dax_data.py new cases fail on the old dax_data.py (no ask_url/spreads) and pass after: python -m pytest MyTradingSys/backtest/test_dax_data.py -q",
-  "title": "G2 DAX ASK candles: buy legs at ask, spread table (measured 1.15/1.65/2.65 pt by hour), cost-table update"
+  "title": "G2 DAX ASK candles: buy legs at ask, spread table (measured 1.15/1.65/2.65 pt by hour), cost-table update",
+  "worker": "session"
 }
