@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1792677805,
+  "week_resets": 1792677804,
   "week_used": 35.0,
   "window_resets": 1792281070,
   "window_used": 2.0
  },
- "at": "2026-10-17T20:23:29Z",
+ "at": "2026-10-17T20:25:39Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 23.0,
   "window_pts": 1.0,
-  "window_runs": 3
+  "window_runs": 4
  },
  "runs": [
+  {
+   "at": "2026-10-17T20:25:05Z",
+   "card": "lab-weight-enforce",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "INCOMPLETE",
+   "seconds": 27,
+   "tokens_out": 1620,
+   "tokens_total": 191587,
+   "tokens_uncached": 47247,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-17T20:19:57Z",
    "card": "lab-machine-checks-extra",
@@ -157,21 +172,6 @@
    "tokens_uncached": 58814,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-17T01:00:10Z",
-   "card": "gptb-bb-top-reversal-event-table",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "test layer tests: SKIP\nStep 5: Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n==========================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 234,
-   "tokens_out": 11539,
-   "tokens_total": 1571155,
-   "tokens_uncached": 67008,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
