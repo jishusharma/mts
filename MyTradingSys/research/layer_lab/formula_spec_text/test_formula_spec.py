@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 import json, re, unittest
 from pathlib import Path
 import numpy as np
@@ -29,6 +29,8 @@ class FormulaSpec(unittest.TestCase):
    self.assertTrue(np.all(t[indices]<CUTOFF),f'{ident}: post-cutoff timestamp')
    # Independent arithmetic from canonical rule families, using only cited candle fields.
    inp=row['inputs']; val=row['expected']['value']; name=row['expected']['name']
+   if ident.startswith(('F11.','F18.','F19.','F20.','F21.')):
+    self.assertEqual(row.get('formula_case'), ident, f'{ident}: copied parent row has no sub-id-specific formula case')
    if name=='Wilder RSI at index 14':
     ds=np.diff(np.asarray(inp['closes'],float)); g=np.maximum(ds,0).mean(); z=np.maximum(-ds,0).mean(); got=100 if z==0 and g>0 else 50 if z==0 else 100-100/(1+g/z)
    elif name in ('RMA SMA seed','SMA'): got=float(np.mean(inp['values']))
