@@ -11,7 +11,7 @@
   "goal": "Measure BTCUSDT stop-order slippage proxy from public aggTrades: price of the first trade at or beyond a level minus the level, per volatility bucket (low/mid/high day range), in bp and in R, so backtests can replace slip=0.0 (tom_bt.py:176) with a measured median.",
   "id": "gap-g7-stop-slippage",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -30,7 +30,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT proposes the BTC slippage default. DISPATCH lane CODEX (JIS-NUC lab), public fetch: aggTrades are NOT on the NUC (only tom_raw klines + orderflow_1m bars); data.binance.vision is public. If the fetch fails twice, reroute to DSA-NB (JIS-NB), do not force. Verify: sha + empty git cherry + ls-tree lists files.",
+  "note": "LANE moved CODEX->SONNET 2026-10-18: Needs network (aggTrades fetch); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT proposes the BTC slippage default. DISPATCH lane CODEX (JIS-NUC lab), public fetch: aggTrades are NOT on the NUC (only tom_raw klines + orderflow_1m bars); data.binance.vision is public. If the fetch fails twice, reroute to DSA-NB (JIS-NB), do not force. Verify: sha + empty git cherry + ls-tree lists files.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",

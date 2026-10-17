@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T00:00:00Z",
+  "depends_on": [],
+  "done_when": "all four checks refuse a seeded bad card and pass a good one",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "Cards fail fast, at zero token cost, on the cheap classes of fundamental error.",
+  "id": "lab-machine-checks-extra",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Opus gate: operator's latest message or an approved crucial OPUS card; Haiku rule for scop",
+      "ref": "1847cff89574",
+      "utc": "2026-10-17T11:34:43Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T19:21:15Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/lab_flow.py",
+    "scripts/dev/test_tasks.py",
+    "scripts/dev/test_lab_flow.py"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys",
+    "VALIDATION and HOLDOUT bars"
+  ],
+  "scope_sha": "1847cff89574",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "formula id on a card must exist in FORMULAS.md",
+    "trial-ledger count must equal runs in runs.jsonl for a run card",
+    "a card cited in another card's scope_in is raised to B-shared automatically",
+    "mutation check: a card's test suite must fail on dummy or shuffled output"
+  ],
+  "tests": "one fail-first test per check",
+  "title": "Lab: machine checks for formula id, trial ledger vs runs, auto B-shared on citation, mutation check of tests",
+  "worker": "session"
+}

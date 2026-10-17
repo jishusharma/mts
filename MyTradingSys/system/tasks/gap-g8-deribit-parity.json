@@ -11,7 +11,7 @@
   "goal": "Measure Binance-vs-Deribit venue parity on public mainnet 1m candles over DEV days: close basis in bp (median, p90 by UTC hour) and how often the first 1m bar that reaches a K1 stop of an lc-event-table touch is the same bar on both venues. Public data only, no account.",
   "id": "gap-g8-deribit-parity",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -30,7 +30,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT venue verdict. 2026-10-15 q-gap-c answered Yes: public market data only, no account, no orders. DISPATCH lane CODEX (JIS-NUC lab): Binance 1m on NUC (tom_raw), Deribit candles fetched public at run time. Verify: sha + empty git cherry + ls-tree lists files.",
+  "note": "LANE moved CODEX->SONNET 2026-10-18: Needs network (Deribit public candles); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT venue verdict. 2026-10-15 q-gap-c answered Yes: public market data only, no account, no orders. DISPATCH lane CODEX (JIS-NUC lab): Binance 1m on NUC (tom_raw), Deribit candles fetched public at run time. Verify: sha + empty git cherry + ls-tree lists files.",
   "prio": 5,
   "refine_tries": 0,
   "refined_by": "",

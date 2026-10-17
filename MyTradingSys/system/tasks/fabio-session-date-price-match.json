@@ -11,7 +11,7 @@
   "goal": "Date the Fabio NQ-202512 live session (videos DyS79Eb92Ug / Jpd96fLqr5M) by matching its price path (F6 long 24914 to TP 25001, F11-F14 range 25095-25110, spoken day 15 of October) against free Dukascopy Nasdaq-100 CFD 1m bars for 2025-09-15..2025-12-19. Report only; no ledger edit.",
   "id": "fabio-session-date-price-match",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -32,7 +32,7 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT feeds the Fabio ledger date repair. DISPATCH lane CODEX (JIS-NUC lab): NQ 1m history is NOT in the lab data; the free Dukascopy feed (pre-approved public market data, same code as DAX) is the route. Ledger fill is a later card. Verify: sha + empty git cherry + ls-tree lists files.",
+  "note": "LANE moved CODEX->SONNET 2026-10-18: Needs network (Dukascopy NQ 1m); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT feeds the Fabio ledger date repair. DISPATCH lane CODEX (JIS-NUC lab): NQ 1m history is NOT in the lab data; the free Dukascopy feed (pre-approved public market data, same code as DAX) is the route. Ledger fill is a later card. Verify: sha + empty git cherry + ls-tree lists files.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

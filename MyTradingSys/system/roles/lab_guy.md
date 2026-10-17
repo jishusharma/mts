@@ -1,4 +1,4 @@
-# Lab_Guy: quality owner of the Claude <-> lab flow (operator 2026-10-18; v2 after Opus + Argon review; PROPOSED, the error list needs operator OK)
+# Lab_Guy: quality owner of the Claude <-> lab flow (operator 2026-10-18; v2 after Opus + Argon review; PROPOSED, the error list needs operator OK; v3 cost design)
 
 The lab = the GPT/Codex lane (LAYER_LAB.md, LAB_RECIPES.md, lab_flow.py) and the Gemini/Antigravity lane (GEMINI_START.md), both on the NUC.
 Why this role: if something is wrong at the base, everything built on it is wrong. Lag is the price of review, so the review is
@@ -19,21 +19,28 @@ Axis 2, blast radius (how far a mistake spreads; sets how much review it earns, 
 - B-noundo: live money, order or balance state, HALT logic, deleting data.
 Foundational = Lab_Guy judges at review time that the card can contain E1-E7 AND has B-shared or B-noundo; the producer never sets the weight, and it is re-judged when a result is first read by another card, layer or the live path. Everything else is ordinary.
 
-## The protocol (v2: machines first, models only where a machine cannot check)
-1. Machine checks first, on every card: pin data by hash, assert split boundaries in code, formula id on the card, gate files in scope_in so the contract hash catches edits (cards below).
-2. R1+R2 merged, foundational cards only, before work: ONE different-vendor reviewer reads card + plan + fail-first tests (not the code) against E1-E7 and answers ACCEPT or FIX. Build foundational work as two cards: spec-test card, then implement card.
-3. R3 result check: mechanical reproduction by a Haiku Agent in a clean worktree (WORKERS.md rule 3a: rerun the tests, recompute the decision numbers from pinned data); a different-vendor lens re-derives only if the mechanical check disagrees or the result is first read by a layer or the live path (review on first use, not on production).
-4. Ordinary cards: refiner's reviewer (existing) plus a recipe receipt when one exists, plus R4.
-5. R4 Claude's spot-check: one claim per lab report, plus whatever R3 flagged.
-A reviewer sees task and evidence, not the producer's argument; a lens never reviews its own output (needs model identity recorded: card below); FIX or REWORK returns as a card note and the same lens re-checks. Lab down: a foundational card waits (no cheaper lens); Gemini Flash may do ordinary first-pass review only.
+## The protocol (v3, 2026-10-18: after Opus, Argon and Flash answered the cost question; Opus high, Argon low, Flash 3.8 medium)
+Principle: machines check what a machine can check (free, on every card); a model is used only for judgment (E2 meaning, E4, E5, adequacy of E6, is this the right data), and implementation independence (a second short script from the spec) is spent before vendor independence. Rerunning the producer's own code on the same data only proves the result repeats, not that it is right (a hash proves WHICH file, not that it is the RIGHT file); so the cheap re-check is an independent re-derivation by a Haiku Agent that writes its own short script from the spec and the pinned data, never the producer's code.
+
+Machine checks, every card, 0 tokens: data registry hash in the receipt fingerprint; holdout paths refused; split boundaries asserted in code; features timestamped at or before decision time; formula id exists in FORMULAS.md; gate and fee config files in scope_in (contract hash catches edits); trial-ledger count equals runs in runs.jsonl; producer vendor recorded and different from the reviewer's; weight field required; a card cited in another card's scope_in is automatically raised to B-shared (this fixes the timing gap: weight is re-judged when a result is first read).
+
+| Class | Examples | Checks (runs) |
+|---|---|---|
+| C0 ordinary | internal to the card | machine checks + Flash low first pass (0-1) |
+| C1 B-shared, data/feature results | a table or feature other cards read | different-vendor review of spec and tests, medium effort (GPT lab, GPT-OSS or Flash high) + Haiku independent re-derivation of 1-3 decision numbers (2) |
+| C2 base: definition, gate, registry entry, fill/fee model | what everything stands on | Argon or GPT at high effort on spec + tests + diff + Haiku independent re-derivation + a second vendor re-derives on first downstream use (3) |
+| C3 B-noundo: live path, money, HALT | | C2 + Claude Sonnet spot-check; Opus only per WORKERS.md rule 6 (4) |
+Routing: producer GPT -> Gemini reviews; producer Gemini -> GPT reviews; producer Claude -> either. Argon (weekly-only pool) only for C2/C3. Lab_Guy itself runs Sonnet from the Google pool so the Claude allowance is spared. Batch spec reviews: one run covers several cards. Expected average: 1-2 runs per card, not 3-5. Do not split a card into spec-test + implement unless it is C2 or C3 (the split doubles lifecycle cost).
+A reviewer sees task and evidence, not the producer's argument; a lens never reviews its own output (model identity is recorded in the receipt); FIX or REWORK returns as a card note and the same lens re-checks. Lab down: a C2/C3 card waits (no cheaper lens). Headless Antigravity cannot read files: paste the evidence into the prompt (about 30000 characters at most on the command line).
+Effort: medium by default; low for mechanical checks; high only for C2/C3 and only after a medium run was thin. Record model, effort and tokens per run (the findings ledger).
 
 ## Tuning (Lab_Guy measures, the operator sets the knobs)
-Keep a table in `MyTradingSys/research/lab_guy/FLOW_<date>.md`: per card weight, lenses used, FIX/REWORK count, whether the finding was real, hours
-the card waited, review tokens. Every week: (1) a lens that found nothing real over 20 cards drops to a 1-in-3 sample; (2) a fundamental error that
-escaped (found later) is added to E1-E7 as a new check and its card type moves up a weight; (3) a card waiting more than the lag budget (operator
-sets it, default 6 h) is reported with who it waits on. Review spend is capped by weight: foundational is the only class allowed two vendors.
+Findings ledger in `MyTradingSys/research/lab_guy/FLOW_<date>.md`: per run card id, class, lens (vendor, model, effort), tokens, hours waited, FIX/REWORK. A FIX counts as REAL only if fixing it changed a number, a test or a verdict. Track real findings per 1k tokens and the false-FIX rate.
+Planted errors: about 1 card in 10 gets a shadow copy with one known E-class error (a wrong data copy, a one-bar shift, a holdout leak, an expected value copied from the code under test, deleted trials, zero slippage, an edited gate constant, a mislabelled SOURCED number). Catch rate per lens and per class comes from these.
+Rules: a lens is dropped (to 1-in-3 sampling) for LOW CATCH RATE ON ITS CLASS over the planted errors, not for "found nothing" (a clean stretch looks the same); an error that escaped is attributed to the class and lens that let it through and becomes a machine check or a new class; lag budget (operator sets it, default 6 h) breaches are reported with who the card waits on.
+First test (all three reviewers proposed it): planted-error trial on 10 finished cards, cheap stack (machine + Haiku independent re-derivation + GPT-OSS or Flash) against Argon or GPT at high effort. Pass: machines catch every E1 and E7 seed, Haiku catches E3 seeds; if the cheap stack matches on E2/E4/E5, lower the effort for those classes (card `lab-planted-error-trial`).
 
-## Known gaps (2026-10-18 scan + Opus/Argon review). Cards filed: lab-data-pin-hash, lab-weight-enforce, lab-crossvendor-stage
+## Known gaps (2026-10-18 scan + Opus/Argon review). Cards filed: lab-data-pin-hash, lab-weight-enforce, lab-crossvendor-stage, lab-machine-checks-extra, lab-planted-error-trial
 - No data registry: the lab data on F:/MTS/data is not hashed into receipts (`safe_file` takes repo files only); `tom_snapshots*` has overlapping copies and `binance_raw` is empty.
 - `weight` (routine / important / crucial / critical) exists only as a note prefix (session_planner.md); `tasks.py` enforces only `crucial` on CODEX/OPUS.
 - The `REVIEWED:` stamp rule in session_planner.md has no check in `tasks.py`; TASK_REFINEMENT.md still describes no reviewer.
