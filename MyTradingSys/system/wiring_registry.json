@@ -878,6 +878,10 @@
     "disp": "TOOL",
     "why": "DEV-only funding extreme event table with trailing PIT 90-print 95th percentile and 24h forward MFE/MAE in ATR14 units; covered by test_event_table.py, no live imports."
   },
+  "MyTradingSys/research/layer_lab/malkan_rsi_event_table/event_table.py": {
+    "disp": "TOOL",
+    "why": "DEV-only 1h Malkan 40/60 RSI bounce event table with 24-bar forward MFE/MAE in ATR14 R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; read-only imports of the rsi layer; no live imports."
+  },
   "MyTradingSys/research/layer_lab/bb_top_reversal_event_table/event_table.py": {
     "disp": "TOOL",
     "why": "DEV-only 15m BB(20,2) top-reversal event table with forward short MFE/MAE in OURS-defined R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; no live imports."
