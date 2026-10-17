@@ -1,5 +1,7 @@
 # DEVICES
 
+> Scheduled tasks: none are allowed on any device (RETIRED 2026-10-17, see SCHEDULING_POLICY.md); mentions below of MTS-* tasks, dispatcher, AutoDeploy, Supervisor are the old design.
+
 Reference for every machine this project runs on: hostnames, addresses, disks, shares, and the rules that touch them. Read it before touching network
 paths, shares, scheduled tasks or the live loop. What each machine and login does, and what it may touch: HOW_MTS_RUNS.md (the one table).
 No fabricated values: an unconfirmed field says NOT CAPTURED; fill it from the command shown, then update this file.
@@ -63,7 +65,7 @@ DECIDED (OURS, card live-loop-one-owner-guard): `scripts/dev/live_owner.py` keep
 ## 5. Code sync (operator 2026-10-07, replaces the desktop-only push rule)
 
 GitHub jishusharma/mts `fast-track` is the hub. Any work tree on any machine (NUC, laptop, an App worktree on the desktop, cloud) ships with `scripts/dev/sync.py ship`; see system/PARALLEL.md.
-Only the live tree on JIS-NB (marked `.mts_live`) never ships; it changes only through MTS-AutoDeploy (DEPLOY_RUNBOOK.md).
+Only the live tree on JIS-NB (marked `.mts_live`) never ships; it changes only by manual or coordinator-run deploy (DEPLOY_RUNBOOK.md; MTS-AutoDeploy RETIRED 2026-10-17, see SCHEDULING_POLICY.md).
 Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new recordings, and parity is re-checked with `tom_bt_run.py rows` (section 7).
 
 ## 6. JIS-NB (desktop) - primary, source of truth for the repository
@@ -91,7 +93,7 @@ Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new rec
   The operator does NUC-side key and gate changes; never touch keys or `.secrets`.
 - How to run a job by hand: SSH sessions have no share credentials, so wrap the job in a one-shot scheduled task for E-ngineers (principal LogonType Interactive; the auto sign-in session holds the share credential),
   write a transcript to F:\MTS\_in\*.log, poll it, delete the task after. Pattern: F:\MTS\_in\bt.ps1. Paths with backslashes get mangled in transit: build them with [char]92.
-- Qwen lane ended 2026-10-01; both Ollama models were removed 2026-10-06 (Ollama stays installed). Leftovers: `C:\MTS-Worker\` and task MTS-NUC-Worker (shown Disabled); read items/T049_nuc_worker_v2.md before changing either.
+- Qwen lane ended 2026-10-01; both Ollama models were removed 2026-10-06 (Ollama stays installed). Leftovers: `C:\MTS-Worker\` and task MTS-NUC-Worker (unregistered 2026-10-17, SCHEDULING_POLICY.md); read items/T049_nuc_worker_v2.md before changing either.
 - Stored credential: cmdkey entry for JIS-NB, user JIS-NB\mtsworker (fixed 2026-09-25). Automatic sign-in: ON (2026-09-26) but the operator reports (2026-10-06) a lock screen needing one click after power-on, so that line is NOT VERIFIED.
   Anything that must run unattended after power-on (the live loop, section 3) cannot assume a signed-in desktop; a startup task that runs whether or not a user is logged on needs a password on the account (the operator sets it once, never written here). Do not change this until the operator approves.
   BIOS power-on-after-power-failure is deliberately NOT set (operator switches both machines off/on manually).

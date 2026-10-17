@@ -32,7 +32,7 @@ astra); a card that names astra without the flag runs on luna (tasks.codex_setti
 - Ask: `python scripts/dev/codex_run.py ask "<what you want checked or run>" --kind audit --scope <repo path>` writes a ready card
   (steps, scope_out and done_when come from the kind's template); commit and `sync.py ship`. Any Claude session does this for an Inbox item.
   In the Codex app (project folder `F:\MTS\mts-codex`) the operator can type the ask directly; Codex writes the card the same way, then works it.
-- Run: Windows task `MTS-CodexLab` on JIS-NUC runs `codex_run.py tick` (refresh `F:\MTS\mts-codex-lab` on branch `jis-nuc/codex-lab`,
+- Run: (RETIRED 2026-10-17, see SCHEDULING_POLICY.md: MTS-CodexLab is unregistered; the coordinator runs `codex_run.py tick` on every wake) formerly Windows task `MTS-CodexLab` on JIS-NUC ran `codex_run.py tick` (refresh `F:\MTS\mts-codex-lab` on branch `jis-nuc/codex-lab`,
   take the first ready unclaimed CODEX card, claim it, start `codex exec` with the card's model and effort, then commit, ship and
   release). No card = no Codex call, no cost. One run at a time (lock). A card that fails twice without ending `done` is STUCK
   and skipped until someone looks (`codex_run.py status`). A run that ends INCOMPLETE or OUT_OF_SCOPE leaves its files in the lab
@@ -129,5 +129,5 @@ Code: `scripts/dev/lane_health.py` (rules at the top of the file), state `MyTrad
   or to lane SONNET (kind `build`: needs a test, a relay session takes it). The card keeps a `reroute` field saying where it went and why.
 - **Pause**: a card flagged `crucial` or `gpt_only` (default off; `tasks.py flag <id> crucial`, or `tasks.py new ... --crucial`) is never moved. It waits, with the reason on the Control Room.
 - **Resume** (lane up): an untaken DSA row is cancelled and the card is back on CODEX; an unclaimed SONNET card goes back to CODEX; work already taken stays. A finished DSA row closes its card with `via DSA (row): result`. Paused cards run again by themselves.
-- **Who runs it**: `codex_run.py tick` (JIS-NUC, every 30 min, no model) and the Haiku watchdog `mts-lane-watch` (hourly; catches a NUC that is off; prompt in `scripts/sched/relay_prompts/mts-lane-watch.SKILL.md`; not registered on JIS-NB as of 2026-10-15, register it where the NUC is watched). Operator override: `lane_health.py down "<why>"` / `up "<why>"`, then `sweep --apply --ship`.
+- **Who runs it** (RETIRED 2026-10-17, see SCHEDULING_POLICY.md: no timers; the coordinator runs both on wake): `codex_run.py tick` (JIS-NUC, was every 30 min, no model) and the Haiku watchdog `mts-lane-watch` (was hourly; catches a NUC that is off; prompt in `scripts/sched/relay_prompts/mts-lane-watch.SKILL.md`; not registered on JIS-NB as of 2026-10-15, register it where the NUC is watched). Operator override: `lane_health.py down "<why>"` / `up "<why>"`, then `sweep --apply --ship`.
 - **See it**: Control Room, "Claude-GPT cycle", top box; `python scripts/dev/lane_health.py status`.

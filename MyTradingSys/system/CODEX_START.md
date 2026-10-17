@@ -8,7 +8,7 @@ Codex is one more work-tree session. It meets Claude only through `origin/fast-t
 1. Own checkout: a work tree, never the live tree (`BinanceDataFeed` on JIS-NB, marked `.mts_live`). Never add that folder as a Codex project.
 2. Own branch prefix `<host>/codex-<slug>`; shares work only by `sync.py ship` (merge, never rebase or force-push).
 3. The claim is the lock: `sync.py claim "<task>"` before work, `sync.py ship --release <slug>` after. Take no card another session holds.
-4. Codex does not touch `NEXT_SESSION.md`, the relay scripts or the Claude scheduled tasks (`mts-relay-*`, dispatcher). It works cards one at a time.
+4. Codex does not touch `NEXT_SESSION.md`, the relay scripts or the relay scripts (no scheduled tasks or dispatcher run: RETIRED 2026-10-17, see SCHEDULING_POLICY.md). It works cards one at a time.
 5. Codex never restarts processes, touches HALT files, opens trades, or reads `.secrets/` / `.env`. Testnet only.
 Cards that need `OPUS` (they need `approved_by`) stay with Claude; Claude refines cards and spot-checks one claim per Codex report. CI gates Codex code exactly like Claude code.
 Data-bound cards (1m klines, DAX archive, videos live on JIS-NB disks; the NUC copy is listed in LAYER_LAB.md): from another machine post a desk task

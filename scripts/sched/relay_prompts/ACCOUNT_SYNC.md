@@ -1,5 +1,7 @@
 # Keeping the three logins and two machines in one shape (2026-10-15)
 
+> **RETIRED 2026-10-17, see SCHEDULING_POLICY.md.** Do not install `mts-dispatcher` or any scheduled task; no routines on any device.
+
 What is per machine and what is per login decides who must do what:
 
 | Thing | Scope | Who sets it |
