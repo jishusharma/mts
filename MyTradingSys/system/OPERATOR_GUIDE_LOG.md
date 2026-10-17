@@ -13,3 +13,10 @@ Result: operator decision on HALT recorded; no live state changed.
 
 1. Does every trade get a stop loss? Code reading (MyTradingSys/execution/executor.py header, R2/R7): each entry places a server-side stop_market covering the full filled size on the first fill. If the stop cannot be confirmed after a fill, the code closes the position and halts. Code says yes; NOT confirmed on the exchange. Needs a check on the Deribit testnet: one trade, stop order visible, size equal to position.
 2. Can one account hold two positions in the same asset (two longs, or a long and a short)? Code reading (executor.py R8 and M8): NO. Pre-flight refuses a new plan if the instrument already has a position or open orders. M8 says two plans on one instrument need per-plan position accounting first. Not confirmed on the exchange; check the testnet with one position open, then try a second order.
+
+## 2026-10-17 session (Haiku handover): steps 1 and 4, mts-doctor shipped
+
+- mts-doctor card: goal shortened to 309 chars (lint was failing on 400). `tasks.py check mts-doctor` passes. Committed 9af5d872 with Result line, shipped to fast-track via sync.py ship (docs gate, all selected steps PASS).
+- Step 1 (context baseline, jishu.sharma): still open. Claude Docs and visualize off (earlier). Computer use, Claude in Chrome and the 9 skills cannot be read from the repo; operator to confirm in the app. `token_audit.py --days 1` ran: usage is recorded, no toggle state in it.
+- Step 4 (Q76 power-gate): the question is the pit-levels PRE_REG_V2 card (`pit-prior-va-failed-auction-dev`, state done, result BLOCKED). Gate fails: MDE+cost 0.411 R > 0.30 R; 662 days vs 2,427 needed. The card writes BLOCKED.md unless the operator overrules the plausible effect. Default stands: BLOCKED. Open decision for the operator: overrule the plausible effect and run, or keep BLOCKED.
+- Steps 2, 3, 5-10: unchanged from the handover (see entries above and the open list in this file).
