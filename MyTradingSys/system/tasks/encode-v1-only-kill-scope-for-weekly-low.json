@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "wavetrend-dev-atlas: single DEV atlas per PRE_REG, 9 frozen cells, 0 pass gross",
-      "ref": "249f01fd0af9",
-      "utc": "2026-10-17T09:04:47Z"
+      "line": "verdicts: sourced overrides file; eur one_run=yes, orderflow kill_scope, t090 split/verdic",
+      "ref": "a440450b50a9",
+      "utc": "2026-10-17T14:26:34Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
-  "refreshed": "2026-10-17T14:10:39Z",
+  "refreshed": "2026-10-17T18:15:07Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,7 +39,7 @@
     "PRE_REG.md and RESULT.md edits",
     "VALIDATION/HOLDOUT reads"
   ],
-  "scope_sha": "249f01fd0af9",
+  "scope_sha": "a440450b50a9",
   "size": "S",
   "sources": [
     "MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/PRE_REG.md:28-29",

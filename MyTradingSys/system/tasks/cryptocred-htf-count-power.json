@@ -32,17 +32,19 @@
     "cryptocred"
   ],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-17 ACCEPT. WEIGHT:IMPORTANT feeds the 4h/1d pre-registration. Verify (worker): content commit sha, `git cherry origin/fast-track <sha>` empty AND `git ls-tree -r origin/fast-track --name-only` lists the delivered files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "cryptocred-home-fit-audit 2026-10-17",
-  "refreshed": "2026-10-17T14:09:50Z",
+  "refreshed": "2026-10-17T18:15:46Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "MyTradingSys/backtest/layers/cryptocred/",
     "MyTradingSys/backtest/power_mde.py",
-    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md"
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+    "MyTradingSys/research/cryptocred_htf_2026-10/ (new: count_power.py, test_count_power.py, COUNT_POWER.md)",
+    "1d resample added beside the 15m/1h/4h frames of run_cc_setups.py (import only; do not edit that runner)"
   ],
   "scope_out": [
     "any P&L backtest run",

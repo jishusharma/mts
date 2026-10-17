@@ -16,27 +16,27 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "fabio ledger H6: gLHd settings are a secondary presenter, cite Fabio's own 30 contracts",
-      "ref": "3d8645f3d391",
-      "utc": "2026-10-16T22:21:39Z"
+      "line": "Fabio ledger: recompute four entries from STP labels; date card verified",
+      "ref": "f1a15ead05ce",
+      "utc": "2026-10-17T14:01:50Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "3d8645f3d391 fabio ledger H6: gLHd settings are a secondary presenter, cite Fabio's own 30",
+      "line": "f1a15ead05ce Fabio ledger: recompute four entries from STP labels; date card verified",
       "ref": "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
-      "utc": "2026-10-16T22:21:39Z"
+      "utc": "2026-10-17T14:01:50Z"
     }
   ],
   "layers": [
     "fabio"
   ],
   "live_path": false,
-  "note": "Checked 2026-10-17: all 72 date fields already start UNKNOWN, so the CSV repair looks applied; this card adds the evidence section. Does not depend on fabio-ledger-replace-date-2026-with-unkn (still raw). Refiner default: no change to dates unless the command prints above 0.",
+  "note": "REVIEWED:2026-10-17 T0-ONLY. WEIGHT:ROUTINE. Checked 2026-10-17: all 72 date fields already start UNKNOWN, so the CSV repair looks applied; this card adds the evidence section. Does not depend on fabio-ledger-replace-date-2026-with-unkn (still raw). Refiner default: no change to dates unless the command prints above 0.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T14:18:11Z",
+  "refreshed": "2026-10-17T18:15:59Z",
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md"
   ],
@@ -51,7 +51,7 @@
     "entry, stop or quantity values",
     "any backtest or code"
   ],
-  "scope_sha": "3d8645f3d391",
+  "scope_sha": "f1a15ead05ce",
   "size": "S",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md"
