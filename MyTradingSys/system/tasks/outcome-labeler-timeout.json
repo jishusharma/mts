@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T20:59:14Z",
   "commands": [
     "git -C C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed\\.claude\\worktrees\\mts-jis-nb-planner-runlanes-1018 grep -n -E \"outcome_labeler|-TimeoutSec 30\" -- scripts/core/start-trading-day.ps1 MyTradingSys/runtime/outcome_labeler.py",
     "python scripts/dev/test_outcome_labeler_incremental.py",
@@ -15,6 +16,12 @@
   "id": "outcome-labeler-timeout",
   "lane": "JIS-NB",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "labeler skips labeled snapshots (0.12s vs full scan on 3000 snaps), corrupt labels kept, 9",
+      "ref": "73e0ae45",
+      "utc": "2026-10-17T20:59:14Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T20:21:18Z",
   "refs": [],
-  "result": "",
+  "result": "labeler skips labeled snapshots (0.12s vs full scan on 3000 snaps), corrupt labels kept, 9 tests; review FIX items 2-4 applied; SLOW log follow-up (ps1 discards output)",
   "scope_in": [
     "MyTradingSys/runtime/outcome_labeler.py",
     "scripts/dev/test_outcome_labeler_incremental.py",
@@ -46,7 +53,7 @@
   "scope_sha": "c93b7ac29728",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run the grep commands: the 30 s call at start-trading-day.ps1:547 and load_snapshots()/main() in outcome_labeler.py.",
     "Write the fail-first test test_labeled_snapshots_are_not_reopened (synthetic dir, patched SNAPS/LABELS, 3000 labeled files, count opens) and test_slow_input_is_reported_not_silent; run it on the current code to see it fail.",
