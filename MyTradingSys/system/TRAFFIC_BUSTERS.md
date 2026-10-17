@@ -46,6 +46,11 @@ Searched, no usable source found: batching tool calls (no solid source), shallow
 - traffic_report 24 (849 commits): merge 321 (38%), claim 110 (13%), release 110 (13%), other 308 (36%), overhead 541 (64%). Baseline 2026-10-16: 890 commits, merge 40%, claim 14%, release 14%, overhead 68%. Small gain (-4 pts overhead); the window still contains pre-B1 commits, so the ship --release effect is not yet visible. Re-measure on a window starting after 2026-10-16 12:00Z.
 - DECISION (OURS): no code fix needed (no red CI in the last 3 runs, no test failures).
 
+## Gate and boot speed, 2026-10-18 (DOCTOR-NB-1018, measured locally, `pytest --durations`)
+- Done: `screen.py` `build_ledger` called `np.nanpercentile(axis=0)` per day (1440 Python-level column loops): 91 s per call, three tests, 295 s of step 3xt. `col_percentile` (one sort, numpy's own lerp) is bit-identical (test) and the file runs in 9 s. `test_pit_leakage.f4_planted` rescanned all earlier bars per bar (O(n^2)): 126 s -> under 9 s with `bisect`. Step 3xt serial sum fell by about 7 min; it was the slowest gate step and the Windows CI job's critical path.
+- Done: SUPER_SESSION.md 22.1 -> 19.0 KB (rules 11-13 moved out of the log, retired bullets and the 10-15 audit table cut): read by every coordinator boot.
+- Next levers, biggest first: (1) enforce B4 in `sync.py`: `ship` on a branch whose claim slug is known closes that claim itself (release 13% + claim 14% of commits; adoption 19%); (2) layer tests step 5b 207 s and `test_sync.py` 231 s serial (63 tests, 8-17 s each, git-bound) are the next slowest steps; (3) Windows CI 12-17 min vs Ubuntu 2-4 min gates mark-green: profile the Windows-only slow steps from `gate_timing.jsonl`; (4) 201 of 642 commits per day are `Merge remote-tracking branch` from ship merging trunk in: fewer, bigger ships per task.
+
 ## Rejected ideas (2026-10-16), do not re-propose without new evidence
 | Idea | Why rejected |
 |---|---|

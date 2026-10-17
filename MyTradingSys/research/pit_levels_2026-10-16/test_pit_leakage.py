@@ -9,6 +9,7 @@ caught, so a green row proves both the code and the test.
 Run:  python MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py   (unittest; prints one line per family)
 No production code is imported for side effects beyond module import; no market data is read (synthetic bars, seed 20261016).
 """
+import bisect
 import json
 import math
 import os
@@ -261,13 +262,13 @@ def f4_repo(B):
 
 def f4_planted(B):                     # leak: the partial trailing bucket is emitted (its running close/high/low)
     bars = as_dicts(B); n = len(bars); out = [None] * (n + 1)
+    ts = [b["t"] for b in bars]                                # ascending: bars[lo:j+1] == the O(n) filter t >= bs
     for j in range(n + 1):
-        sub = bars[:j + 1]                                     # peek: bar j itself (not closed at its open)
-        if not sub:
+        if not bars:
             out[j] = None; continue
         g = T0 + j * MIN
         bs = tfr.bucket_start(g, "1h", REG)
-        grp = [b for b in sub if b["t"] >= bs]
+        grp = bars[bisect.bisect_left(ts, bs):j + 1]           # peek: bar j itself (not closed at its open)
         out[j] = (bs, grp[-1]["c"], max(b["h"] for b in grp), min(b["l"] for b in grp)) if grp else None
     return out
 

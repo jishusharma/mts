@@ -71,6 +71,21 @@ def test_cooldown():
     assert out == [(100, -1), (161, -1), (170, 1)], out
 
 
+def test_col_percentile_equals_nanpercentile_bit_for_bit():
+    import warnings
+    rng = np.random.default_rng(3)
+    for rows in (1, 2, 5, 20):
+        ref = rng.standard_normal((rows, 300))
+        ref[rng.random(ref.shape) < 0.3] = np.nan
+        ref[:, 0] = np.nan                               # a column with no value -> NaN
+        ref[:, 1] = 2.5                                  # constant column
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            want = np.nanpercentile(ref, 80, axis=0)
+        got = S.col_percentile(ref, 80)
+        assert np.array_equal(got, want, equal_nan=True), (rows, np.nanmax(np.abs(got - want)))
+
+
 def test_loader_refuses_validation():
     with tempfile.TemporaryDirectory() as td:
         p = Path(td) / "BTCUSDT-1m-2024-07.csv"

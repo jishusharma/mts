@@ -79,6 +79,23 @@ def apply_cooldown(cands, cd=60):
     return out
 
 
+def col_percentile(ref, q):
+    """np.nanpercentile(ref, q, axis=0) (linear method, NaN where a column has no value) from one sort.
+    nanpercentile loops over the 1440 columns in Python: 90 s for a 330-day ledger, about 1 s here."""
+    s = np.sort(ref, axis=0)                                       # NaN sorts last
+    cnt = (~np.isnan(ref)).sum(0)
+    v = np.maximum(cnt - 1, 0) * (q / 100)
+    lo = np.floor(v).astype(np.int64)
+    hi = np.minimum(lo + 1, np.maximum(cnt - 1, 0))
+    t = v - lo
+    cols = np.arange(ref.shape[1])
+    a, b = s[lo, cols], s[hi, cols]
+    d = b - a
+    out = a + d * t
+    np.subtract(b, d * (1 - t), out=out, where=t >= 0.5)           # numpy's own two-sided lerp
+    return np.where(cnt > 0, out, np.nan)
+
+
 def build_ledger(A, ndays):
     O, H, L, V, TBV = A["O"], A["H"], A["L"], A["V"], A["TBV"]
     dl = delta(V, TBV)
@@ -111,10 +128,8 @@ def build_ledger(A, ndays):
         if len(ref) == 0:
             continue
         cnt = (~np.isnan(ref)).sum(0)
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            thr = np.nanpercentile(ref, 80, axis=0)
-        ok = (cnt >= 15) & ~np.isnan(thr) & pv & (j >= 60) & (legs[i] >= np.where(np.isnan(thr), np.inf, thr))
+        thr = col_percentile(ref, 80)
+        ok =(cnt >= 15) & ~np.isnan(thr) & pv & (j >= 60) & (legs[i] >= np.where(np.isnan(thr), np.inf, thr))
         short = ok & (seth >= j - 2) & (setl < seth)
         long_ = ok & (setl >= j - 2) & (seth < setl)
         for side, m in ((-1, short), (1, long_)):
