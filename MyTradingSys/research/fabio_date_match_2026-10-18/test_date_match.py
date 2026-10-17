@@ -24,10 +24,12 @@ def path(base):
             return base
         if i < 55:
             return base + (i - 45) * 8.7
+        if i < 65:
+            return base + 87 + (i - 55) * 7.5
         if i < 100:
-            return base + 87
+            return base + 162
         if i < 105:
-            return base + 87 + (i - 100) * 20.6
+            return base + 162 + (i - 100) * 5.6
         return base + 190
     return bars(f)
 
