@@ -17,12 +17,22 @@
   "id": "nb-sched-register-logon",
   "kind": "run",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sched: logon catch-up for the daily tasks, MTS-LiveMirror registrar, supervisor logon trig",
+      "ref": "fff6e557ae23",
+      "utc": "2026-10-14T12:26:23Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "claude JIS-NUC 2026-10-14 (ops follow-up, from NEXT_SESSION (c))",
+  "refreshed": "2026-10-17T07:25:00Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -34,6 +44,7 @@
     "editing the scripts (they shipped reviewed)",
     "restarting trading processes"
   ],
+  "scope_sha": "fff6e557ae23",
   "size": "S",
   "sources": [],
   "state": "ready",

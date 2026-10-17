@@ -13,12 +13,29 @@
   "goal": "The 213 G3 chart PNGs predate the blindness fixes (198c1aed); regenerate all of them from the current g3_pack.py so the operator can mark (README.md:3 gates marking on this; audit 2026-10-17_g3-blindness-audit-rerun.md says Draw rebuild: YES).",
   "id": "g3-chart-rebuild",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "g3 pack blindness: remove chart cues and side channels that disclose the enriched half",
+      "ref": "198c1aed2c3e",
+      "utc": "2026-10-16T21:57:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "198c1aed2c3e g3 pack blindness: remove chart cues and side channels that disclose the enri",
+      "ref": "MyTradingSys/research/g3_marks_2026-10-16/README.md",
+      "utc": "2026-10-16T21:57:16Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "Filed by backlog-refine-1017: g3-pack-code-fixes and g3-remove-visible-chart-cues were done but the charts were never redrawn. Run on NUC (data on F:). Do not open KEY.csv beyond hashing it. Then operator Reader 1 marks.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:44:12Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -27,6 +44,7 @@
   "scope_out": [
     "g3_pack.py edits, build (rewrites WINDOWS.csv and the key), ANSWER_KEY_CLOSED, any marking, VALIDATION and HOLDOUT"
   ],
+  "scope_sha": "198c1aed2c3e",
   "size": "S",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-17_g3-blindness-audit-rerun.md",

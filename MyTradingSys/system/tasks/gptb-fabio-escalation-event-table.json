@@ -11,6 +11,22 @@
   "id": "gptb-fabio-escalation-event-table",
   "kind": "build",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wavetrend-priority-source-parity: register parity ref + test in wiring and extra gate",
+      "ref": "515d07a91407",
+      "utc": "2026-10-17T06:23:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "26c6f3a837e8 bigtrade: relabel fire CSV split column to repo split; DEV-only reruns of con",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-10-17T03:31:53Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "model": "gpt-6-luna",
@@ -18,6 +34,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "lab-cards-1017",
+  "refreshed": "2026-10-17T07:24:49Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -43,6 +60,7 @@
     "trading rules, tuning or net-of-cost claims",
     "editing dev_split_guard or forward_excursion (import read only)"
   ],
+  "scope_sha": "515d07a91407",
   "size": "M",
   "sources": [],
   "state": "ready",

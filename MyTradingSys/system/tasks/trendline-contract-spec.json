@@ -11,6 +11,7 @@
   "goal": "Turn REPORT.md's plan into a codable contract: each parameter gets a value, tagged SOURCED (quote + file:line) or OURS; two coders would write the same detector.",
   "id": "trendline-contract-spec",
   "lane": "SONNET",
+  "latest": [],
   "layers": [
     "krown"
   ],
@@ -19,6 +20,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:16:44Z",
   "refs": [],
   "result": "TRENDLINE_CONTRACT.md + FORMULAS s19 on fast-track; lint_contract.py rows=48 problems=0 (re-verified by backlog-refine-1017)",
   "scope_in": [
@@ -30,6 +32,7 @@
     "Any market data read",
     "Backtest, fees, P&L, live path"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "MyTradingSys/research/trendlines_2026-10-17/CLAUDE_VERIFY.md",

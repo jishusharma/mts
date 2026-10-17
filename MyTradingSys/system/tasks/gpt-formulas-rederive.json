@@ -11,12 +11,29 @@
   "id": "gpt-formulas-rederive",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "trendline-contract-spec: apply review fixes (L6 scope, E9-E11 gaps, tie example)",
+      "ref": "c768076dcafe",
+      "utc": "2026-10-17T04:42:49Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c768076dcafe trendline-contract-spec: apply review fixes (L6 scope, E9-E11 gaps, tie examp",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-17T04:42:49Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "codex-feed 2026-10-16: output paths and .py.txt added; before this the card named no output folder (an audit may write only under research/layer_lab/, so the run would have ended OUT_OF_SCOPE on an astra run, about 60 window points).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-17T07:24:47Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -30,6 +47,7 @@
     "holdout reads",
     "BTC runs of the current encoding (ROADMAP section 2)"
   ],
+  "scope_sha": "c768076dcafe",
   "size": "S",
   "sources": [],
   "state": "ready",

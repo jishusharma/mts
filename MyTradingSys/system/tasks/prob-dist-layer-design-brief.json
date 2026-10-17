@@ -10,12 +10,14 @@
   "goal": "Operator 2026-10-16 wants a probability-distribution layer (a peer layer, PROJECT_VISION.md:94 and :103) and a design talk. Prepare a brief with the session's own design ideas; build nothing.",
   "id": "prob-dist-layer-design-brief",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "note": "Operator priority: high. Any session may take it.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:16:43Z",
   "refs": [
     "MyTradingSys/research/event_probability_layer_DESIGN.md",
     "MyTradingSys/PROJECT_VISION.md",
@@ -33,6 +35,7 @@
     "no VALIDATION or HOLDOUT reads",
     "no new gate numbers"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "operator chat 2026-10-16 (probability layer, screenshot c5e7b5c17d90)"

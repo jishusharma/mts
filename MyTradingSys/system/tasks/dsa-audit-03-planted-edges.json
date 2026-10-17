@@ -16,12 +16,14 @@
   "goal": "Run synthetic markets with known answers (zero edge, a planted +0.30% edge, moves inside the signal bar or after the exit, funding crossings, gap stops, same-bar stop and target) through each backtest harness, and rebuild the verdict statistics independently.",
   "id": "dsa-audit-03-planted-edges",
   "lane": "DSA-NB",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "note": "",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:27Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
     "MyTradingSys/backtest/bt/bt_engine.py",
@@ -39,6 +41,7 @@
     "F:/AIBridge and scripts/aibridge",
     "changing any verdict, ledger or pre-registered bar"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
   "state": "ready",
