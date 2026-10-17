@@ -896,5 +896,9 @@
   "MyTradingSys/research/layer_lab/rsi_reclaim_event_table/event_table.py": {
     "disp": "TOOL",
     "why": "DEV-only 1h RSI 40/60 reclaim event table (dwell/depth/band columns) with 24-bar forward MFE/MAE in ATR14 R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; read-only imports of the rsi layer; no live imports."
+  },
+  "MyTradingSys/research/layer_lab/cc_msb_event_table/event_table.py": {
+    "disp": "TOOL",
+    "why": "DEV-only 1h CryptoCred MSB event table (find_swings + classify_msb, read only) with 24-bar forward MFE/MAE in ATR14 R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; no live imports."
   }
 }
