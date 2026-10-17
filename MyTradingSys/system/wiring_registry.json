@@ -900,6 +900,7 @@
   "MyTradingSys/research/layer_lab/turn_of_candle_event_table/event_table.py": {
     "disp": "TOOL",
     "why": "DEV-only 1m turn-of-candle (T055 C3) per-quarter event table with 15-bar forward MFE/MAE both sides in ATR14(1h) R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; read-only imports of turn_of_candle, dev_split_guard, forward_excursion; no live imports."
+  },
   "MyTradingSys/research/layer_lab/fabio_lvn_touch_event_table/event_table.py": {
     "disp": "TOOL",
     "why": "DEV-only 1h Fabio volume-profile LVN touch event table (long and short columns) with 24-bar forward MFE/MAE in ATR14 R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; read-only imports of fabio_volume_fvg, dev_split_guard, forward_excursion; no live imports."
