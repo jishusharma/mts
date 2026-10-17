@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T10:00:47Z",
   "commands": [],
   "created": "2026-10-11T19:49:48Z",
   "depends_on": [],
@@ -11,6 +12,12 @@
   "id": "b172-trim",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "kick first-turn 35k median / cache-read 807803 vs 65188/1671109 baseline; TOKEN_AUDIT_2026",
+      "ref": "3f606a86",
+      "utc": "2026-10-17T10:00:47Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,7 @@
   "refs": [
     "B172"
   ],
-  "result": "",
+  "result": "kick first-turn 35k median / cache-read 807803 vs 65188/1671109 baseline; TOKEN_AUDIT_2026-10-17.md",
   "scope_in": [
     "scripts/sched/relay_prompts/*.SKILL.md",
     "scripts/sched/relay_prompts/relay_session.md",
@@ -53,7 +60,7 @@
   "sources": [
     "MyTradingSys/research/TOKEN_AUDIT_2026-10-12.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Measure which sources load in a kick session (CLAUDE.md, memory index, skills list, MCP instructions) from one transcript's first turn.",
     "Add a relay-only trim: dispatcher/relay prompts cap tool output (tail/--quiet) and start from a lean profile where the App allows; record what cannot be trimmed.",
