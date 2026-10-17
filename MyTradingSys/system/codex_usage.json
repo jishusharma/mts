@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1792677805,
-  "week_used": 35.0,
-  "window_resets": 1792281070,
-  "window_used": 3.0
+  "week_resets": 1792874520,
+  "week_used": 0,
+  "window_resets": 1792287720,
+  "window_used": 0
  },
- "at": "2026-10-17T20:39:39Z",
+ "at": "2026-10-17T20:44:26Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,11 +18,26 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 23.0,
-  "window_pts": 2.0,
-  "window_runs": 8
+  "week_pts": 0.0,
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-10-17T20:41:48Z",
+   "card": "lab-formula-spec-text",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 151,
+   "tokens_out": 15633,
+   "tokens_total": 993955,
+   "tokens_uncached": 74514,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-17T20:37:59Z",
    "card": "lab-holdout-access-control",
@@ -155,21 +170,6 @@
    "tokens_out": 6304,
    "tokens_total": 689101,
    "tokens_uncached": 50093,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-17T19:58:58Z",
-   "card": "q76-dev-ext-power-check",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 74,
-   "tokens_out": 4333,
-   "tokens_total": 443541,
-   "tokens_uncached": 36648,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
