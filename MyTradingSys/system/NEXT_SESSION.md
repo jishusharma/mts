@@ -12,3 +12,5 @@ NOT DONE:
 Usage at 21:15Z: Pro login 5h about 45%, week 58%. GPT lab: 6 runs in this window of 10. Next SYNC signal due ~21:45Z; mts_signal.py send "SYNC ...". Leftover worktrees (safe to ignore): mts-jis-nuc-vendor-gate-card, mts-jis-nuc-formula-spec-close-2.
 
 LAB_GUY-1018 (NB): ledger research/lab_guy/FLOW_2026-10-18.md; 2 defect cards filed (raw, need refine): stamps missing on lab-trust-tag / lab-crossvendor-same-vendor-gate / q76; gap-g1-prereg-power under-classified C0->C1. Haiku re-derivation of power_mde.py: 8/8 match (MACHINE-OK).
+
+LAB_GUY-GATE-1018: promotion gate shipped in tasks.py (HOLD + real-review stamp; see lab_guy.md). OWED: Lab_Guy batched pass on rv05-h2, rv05-h3, krown-dev-event-study (C2?), state-code-accumulator-backfill and snapshot-vwap-anchor-label (live_path => C3), indicator-values-multi-model-audit, cryptocred-prereg-4h-1d, gap-g8; gap-g1-prereg-power -> C1; 28 ready IMPORTANT+ cards carry T0-ONLY (CRUCIAL/CRITICAL already untakeable). Held cryptocred/gap-g8 reverted to refined.

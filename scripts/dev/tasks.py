@@ -437,6 +437,8 @@ def cmd_check(a):
         if (a.id and c["id"] != a.id) or c["state"] not in ("raw", "refined", "ready", "active"):
             continue
         miss = problems(c, cards, reg)
+        if not miss and c["state"] in ("raw", "refined"):
+            miss = promotion_problems(c)
         if not miss:
             if c["state"] in ("raw", "refined"):
                 c.update(state="ready", asks="")
@@ -549,28 +551,78 @@ def cmd_stale(a):
     return 1 if hit and not a.refresh else 0
 
 
-REVIEW_WEIGHTS = ("CRUCIAL", "CRITICAL")   # lab_guy v3.1: these weights (or class C2/C3) need a reviewer stamp before start and finish
-REVIEWED_RE = re.compile(r"\bREVIEWED:\s+\S+\s+\d{4}-\d{2}-\d{2}\b", re.I)
+REVIEW_WEIGHTS = ("CRUCIAL", "CRITICAL")   # lab_guy v3.1: these weights (or class C2/C3) need a real review stamp before start and finish
+SOFT_WEIGHTS = ("IMPORTANT",)              # IMPORTANT / class C1: a real review stamp is needed to be PROMOTED to ready (`check`), not to be taken
+# Two stamp formats are in use: planner `REVIEWED:<date> <ACCEPT|T0-ONLY>` (session_planner.md) and legacy `REVIEWED: <who> <date>`.
+STAMP_PLAN_RE = re.compile(r"REVIEWED:\s*(\d{4}-\d{2}-\d{2})\s+(ACCEPT|T0-ONLY)", re.I)
+REVIEWED_RE = re.compile(r"REVIEWED:\s+(?!\d{4}-\d{2}-\d{2})\S+\s+\d{4}-\d{2}-\d{2}", re.I)
+HOLD_RE = re.compile(r"HOLD[ :]+(A-\d{8}-\d+)")
+HOLD_CLEARED_RE = re.compile(r"HOLD-CLEARED[ :]+(A-\d{8}-\d+)")
+
+
+def stamp_kind(card):
+    """'real' (a reviewer or ACCEPT stamp), 't0' (T0-ONLY: machine checks only, no reviewer ran) or '' (none)."""
+    note = str(card.get("note") or "")
+    m = STAMP_PLAN_RE.search(note)
+    if m:
+        return "t0" if m.group(2).upper() == "T0-ONLY" else "real"
+    return "real" if REVIEWED_RE.search(note) else ""
 
 
 def card_class(card):
-    """C0-C3: the card's own `class` field, else `class=Cn` in the planner's note stamp."""
+    """C0-C3: the card's own `class` field, else `class=Cn` / `CLASS:Cn` in the note stamp; a live-path card is C3 at least."""
     c = str(card.get("class") or "").strip().upper()
-    if re.fullmatch(r"C[0-3]", c):
-        return c
-    m = re.search(r"\bclass=(C[0-3])\b", str(card.get("note") or ""), re.I)
-    return m.group(1).upper() if m else ""
+    if not re.fullmatch(r"C[0-3]", c):
+        m = re.search(r"class[=:]\s*(C[0-3])", str(card.get("note") or ""), re.I)
+        c = m.group(1).upper() if m else ""
+    if card.get("live_path") is True:
+        c = "C3"
+    return c
+
+
+def active_holds(repo=None):
+    """Announcement ids that are HOLD or STOP entries and not marked lifted/retired/closed."""
+    try:
+        text = ((repo or REPO) / "MyTradingSys" / "system" / "ANNOUNCEMENTS.md").read_text(encoding="utf-8")
+    except OSError:
+        return set()
+    return {m.group(1) for m in re.finditer(r"^### (A-\d{8}-\d+) (?:HOLD|STOP)(?!.*(?:LIFTED|RETIRED|CLOSED))", text, re.M)}
+
+
+def hold_problems(card, holds=None):
+    """Active announcement holds named in the note (`HOLD A-...`) and not cleared there (`HOLD-CLEARED A-...`)."""
+    note = str(card.get("note") or "")
+    held = {h for h in HOLD_RE.findall(note)} - set(HOLD_CLEARED_RE.findall(note))
+    held &= active_holds() if holds is None else set(holds)
+    return [f"held by {h}: stays refined until the announcement is lifted ('HOLD-CLEARED {h}' in the note)" for h in sorted(held)]
+
+
+def needs_review(card):
+    """'hard' (crucial/critical or C2/C3: needed to take and finish), 'soft' (important or C1: needed to promote), or ''."""
+    w = str(card.get("weight") or "").upper()
+    if w in REVIEW_WEIGHTS or card_class(card) in ("C2", "C3"):
+        return "hard"
+    if w in SOFT_WEIGHTS or card_class(card) == "C1":
+        return "soft"
+    return ""
+
+
+def promotion_problems(card, holds=None):
+    """Why `check` must not promote a raw/refined card to ready: an active hold, or no real review for important/crucial/critical or C1+."""
+    p = hold_problems(card, holds)
+    if needs_review(card) and stamp_kind(card) != "real":
+        p.append("needs a real review stamp (ACCEPT or 'REVIEWED: <reviewer> <date>'), not " + ("T0-ONLY" if stamp_kind(card) == "t0" else "none") + ": Lab_Guy pass (roles/lab_guy.md)")
+    return p
 
 
 def review_gate(card, finishing=False, result=""):
-    """Problems stopping a crucial/critical (or C2/C3) card from being taken or marked done. routine/important pass.
+    """Problems stopping a crucial/critical (or C2/C3, or live-path) card from being taken or marked done. routine/important pass.
     The weight itself is set by the reviewer/planner (the note stamp), never by the producer."""
-    w = str(card.get("weight") or "").upper()
-    if w not in REVIEW_WEIGHTS and card_class(card) not in ("C2", "C3"):
+    if needs_review(card) != "hard":
         return []
     p = []
-    if not REVIEWED_RE.search(str(card.get("note") or "")):
-        p.append("weight/class needs review: add 'REVIEWED: <reviewer> <date>' to the note first")
+    if stamp_kind(card) != "real":
+        p.append("weight/class needs a real review: add 'REVIEWED: <reviewer> <date>' or 'REVIEWED:<date> ACCEPT' to the note first (T0-ONLY is not a review)")
     if finishing and not str(result or "").strip():
         p.append("a result receipt is required (--result with the evidence)")
     return p

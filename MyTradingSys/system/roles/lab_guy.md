@@ -76,3 +76,9 @@ Evidence (one pilot, not a measured catch rate): Flash (3.8-flash-low), 7 hard f
 Boot: `python scripts/dev/codex_run.py status`, `python scripts/dev/tasks.py list`, `python scripts/dev/mts_signal.py read`; read LAYER_LAB.md, LAB_RECIPES.md, GEMINI_START.md once.
 Output: dated flow table (above) via `sync.py ship`; a defect = `tasks.py new` card; one line `mts_signal.py send` when a foundational card is blocked or an error escaped.
 Models: Sonnet for Lab_Guy; lenses as in the table (Sol/Astra, Gemini Flash, Sonnet; Opus only per WORKERS.md rule 6).
+
+## Promotion gate (tasks.py, 2026-10-18, Opus review of planner batch 3; Lab_Guy owns the stamp for C1+)
+- Stamp grammar (both accepted): `REVIEWED:<date> <ACCEPT|T0-ONLY>` (planner) and `REVIEWED: <reviewer> <date>` (legacy). T0-ONLY is machine checks only, not a review.
+- `tasks.py check` promotes a card to ready only if: no active HOLD/STOP announcement is named in the note (`HOLD A-...`; clear it with `HOLD-CLEARED A-...` once lifted), and IMPORTANT/C1+ cards carry a real stamp (ACCEPT or reviewer-date). ROUTINE/C0 may stay T0-ONLY.
+- `take` and `done` additionally refuse CRUCIAL/CRITICAL or C2/C3 cards without a real stamp; a `live_path: true` card counts as C3.
+- Order: planner drafts and proposes weight and class; ONE batched Lab_Guy pass (up to 5 cards, Sonnet, Google pool) confirms or raises the class and writes the real stamp; C2 also needs a non-Claude spec review; C3 also the coordinator. A random sample of C0 cards is checked for under-classification.
