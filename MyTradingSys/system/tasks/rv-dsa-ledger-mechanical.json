@@ -2,11 +2,13 @@
   "approved_by": "",
   "asks": "",
   "commands": [
-    "python scripts/dev/make_layers_md.py --help"
+    "python scripts/dev/make_layers_md.py --help",
+    "# AIRUN task=rv-dsa-ledger-mechanical repo=C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed\\.claude\\worktrees\\mts-jis-nb-planner-runlanes-1018 timeout=900"
   ],
   "created": "2026-10-12T17:50:00Z",
   "depends_on": [],
   "done_when": "RV_DSA_ledger_mechanical.md lists violations per check with row ids and counts, or 0.",
+  "est_turns": 8,
   "from_inbox": "",
   "goal": "Prompt MyTradingSys/system/revalidation/RV01_tom_ledger_repairs.md check 1 only (script it: ISO date vs trade_date_status, one date per canonical group, geometry, frame pointers exist) plus: every path in MyTradingSys/system/layer_index.json and layer_map.json exists. Print counts.",
   "id": "rv-dsa-ledger-mechanical",
@@ -29,7 +31,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "host=JIS-NUC",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none (coordinator spot-check) DECISION (OURS): writes counts only, no code or ledger edits. host=JIS-NUC",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -55,5 +57,7 @@
     "Write the numbers to the named file; change no code."
   ],
   "tests": "",
-  "title": "RV-DSA Tom ledger mechanical check and path audit of the layer index (host=JIS-NUC)"
+  "title": "RV-DSA Tom ledger mechanical check and path audit of the layer index (host=JIS-NUC)",
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

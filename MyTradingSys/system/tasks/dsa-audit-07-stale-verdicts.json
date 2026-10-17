@@ -12,6 +12,7 @@
   "created": "2026-10-15T23:28:58Z",
   "depends_on": [],
   "done_when": "T07_stale_verdicts.md shipped: provenance table with STALE-CANDIDATEs, rerun_diff.csv for ten results, determinism result, CI table, doc-drift list, lead L9 resolved, S1/S2 carded.",
+  "est_turns": 38,
   "from_inbox": "",
   "goal": "For every published verdict find the code it came from and every later change to that code or its imports, rerun ten results and diff every number, check determinism and CI coverage, and list where docs disagree with result files.",
   "id": "dsa-audit-07-stale-verdicts",
@@ -19,7 +20,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C2 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -54,5 +55,7 @@
     "Doc drift: LAYERS.md, layer_map.json, Research Map DATA, STATUS.md vs result files."
   ],
   "tests": "",
-  "title": "DSA audit T07: verdict-to-code provenance, rerun-and-diff of ten results, determinism, CI and doc drift"
+  "title": "DSA audit T07: verdict-to-code provenance, rerun-and-diff of ten results, determinism, CI and doc drift",
+  "weight": "CRUCIAL",
+  "worker": "session"
 }
