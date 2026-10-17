@@ -78,5 +78,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV you wrote; set the result line."
   ],
   "tests": "synthetic RSI series (inject via a function argument so the test needs no klines): a direct cross gives band_bars 0, a 4-bar below-run gives dwell_below 4, a band pop between two below-runs restarts dwell; the short side mirrors; None bars carry state; entry is next bar open; incomplete forward window = NOT_IN_DATA.",
-  "title": "RSI 40/60 reclaim (operator 2a): event table with dwell/depth buckets and forward MFE/MAE in R on 1h DEV"
+  "title": "RSI 40/60 reclaim (operator 2a): event table with dwell/depth buckets and forward MFE/MAE in R on 1h DEV",
+  "weight": "B-SHARED"
 }

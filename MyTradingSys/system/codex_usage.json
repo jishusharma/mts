@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1792677805,
-  "week_used": 34.0,
-  "window_resets": 1792281071,
-  "window_used": 1.0
+  "week_used": 35.0,
+  "window_resets": 1792281070,
+  "window_used": 2.0
  },
- "at": "2026-10-17T20:19:00Z",
+ "at": "2026-10-17T20:23:29Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,11 +18,26 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 22.0,
-  "window_pts": 0.0,
-  "window_runs": 2
+  "week_pts": 23.0,
+  "window_pts": 1.0,
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-10-17T20:19:57Z",
+   "card": "lab-machine-checks-extra",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 205,
+   "tokens_out": 14763,
+   "tokens_total": 1851658,
+   "tokens_uncached": 85471,
+   "week_pts": 1.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-17T20:17:35Z",
    "card": "lab-data-pin-hash",
@@ -157,21 +172,6 @@
    "tokens_uncached": 67008,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-17T00:30:02Z",
-   "card": "imb-filter-audit-2-challenge",
-   "effort": "low",
-   "kind": "audit",
-   "model": "gpt-6-astra",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 123,
-   "tokens_out": 5282,
-   "tokens_total": 409754,
-   "tokens_uncached": 54264,
-   "week_pts": 1.0,
-   "window_pts": 11.0
   }
  ]
 }

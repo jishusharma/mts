@@ -61,7 +61,7 @@ def contract(flow):
     value = {k: flow[k] for k in ("id", "recipe", "goal", "criteria", "scope_in")}
     if flow.get("data_scope"):
         value["data_scope"] = flow["data_scope"]
-    for key in ("commands", "tests"):
+    for key in ("commands", "tests", "mutation_check"):
         if flow.get(key):
             value[key] = flow[key]
     return digest(value)
@@ -104,7 +104,7 @@ def gate(card, cards, repo):
         errors.append("flow contract changed; launch a new flow")
     if card.get("goal") != flow["goal"] or card.get("scope_in") != flow["scope_in"]:
         errors.append("flow card goal/scope drifted from the shared contract")
-    for key in ("commands", "tests"):
+    for key in ("commands", "tests", "mutation_check"):
         if flow.get(key) and card.get("kind") == ("run" if key == "commands" else "build") and card.get(key) != flow[key]:
             errors.append(f"flow contract {key} changed; launch a new flow")
     try:
@@ -159,7 +159,7 @@ def launch(repo, spec, preview=False):
     flow = {k: spec[k] for k in ("id", "recipe", "goal", "criteria", "scope_in")}
     if spec.get("data_scope"):
         flow["data_scope"] = spec["data_scope"]
-    for key in ("commands", "tests"):
+    for key in ("commands", "tests", "mutation_check"):
         if spec.get(key):
             flow[key] = spec[key]
     flow["contract"] = contract(flow)
@@ -175,13 +175,14 @@ def launch(repo, spec, preview=False):
                  steps=[lens, "Read original sources before the prior report; report C1..Cn as PASS, REWORK or BLOCKED with file/command evidence."],
                  commands=spec.get("commands", []) if kind == "run" else [],
                  tests=spec.get("tests", "") if kind == "build" else "",
+                 mutation_check=spec.get("mutation_check", "") if kind == "build" else "",
                  done_when="Each criterion has evidence; finish through lab_flow.py finish; failed criteria stop the flow.")
         if kind == "run":
             c["steps"].append("Append one row per execution to layer_lab/TRIALS.md with command, DEV range and result; missing inputs are NOT_IN_DATA.")
         if kind == "build":
             c["steps"].append("New behavior stays off by default; register new tests and modules in the existing gates; run only the named tests (runner gates the ship).")
         # Downstream dependencies cannot pass yet; validate the rest before writing anything.
-        errors = tasks.problems({k: v for k, v in c.items() if k != "depends_on"}, tasks.load_all(repo))
+        errors = tasks.problems({k: v for k, v in c.items() if k != "depends_on"}, tasks.load_all(repo), repo=repo)
         if errors:
             raise ValueError("; ".join(errors))
         if tasks.path_of(repo, key).exists():
@@ -203,7 +204,7 @@ def finish(repo, cid, report, verdict, result):
     flow = card["flow"]
     if verdict not in ("PASS", "REWORK", "BLOCKED"):
         raise ValueError("unknown verdict")
-    errors = tasks.problems(card, tasks.load_all(repo), tasks.registry(repo))
+    errors = tasks.problems(card, tasks.load_all(repo), tasks.registry(repo), repo=repo)
     if errors:
         raise ValueError("; ".join(errors))
     p = safe_file(repo, report)
@@ -237,7 +238,7 @@ def finish(repo, cid, report, verdict, result):
         cards = tasks.load_all(repo)
         for nxt in cards:
             if nxt.get("flow", {}).get("id") == flow["id"] and nxt.get("depends_on") == [cid] and nxt["state"] == "blocked":
-                if not tasks.problems(nxt, cards, tasks.registry(repo)):
+                if not tasks.problems(nxt, cards, tasks.registry(repo), repo=repo):
                     nxt["state"] = "ready"
                     tasks.save(repo, nxt)
     return card

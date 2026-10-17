@@ -74,5 +74,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV; set the result line."
   ],
   "tests": "Existing 6 synthetic tests stay green; new red-first tests: the loader returns only bars with open < 2024-07-01 (a synthetic npz with a 2024-07-01 bar proves it is dropped); a 4h bucket with a missing 1h bar is skipped; each pattern fires on its example and not its near-miss; forward path starts the next bar; gap in forward window = NOT_IN_DATA.",
-  "title": "Candle patterns: detector + event table on DEV klines with forward R"
+  "title": "Candle patterns: detector + event table on DEV klines with forward R",
+  "weight": "B-SHARED"
 }

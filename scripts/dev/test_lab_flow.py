@@ -22,6 +22,9 @@ def spec():
 def repo(tmp_path, monkeypatch):
     monkeypatch.setattr(tasks, "REPO", tmp_path)
     (tmp_path / "source.md").write_text("original source", encoding="utf-8")
+    ledger = tmp_path / tasks.TRIALS
+    ledger.parent.mkdir(parents=True, exist_ok=True)
+    ledger.write_text("| date | card | command | data | result |\n|---|---|---|---|---|\n", encoding="utf-8")
     return tmp_path
 
 
@@ -152,7 +155,10 @@ def test_run_commands_are_part_of_contract(repo):
     cards = F.launch(repo, run_spec)
     cards[0]["commands"] = ["python study.py --range holdout"]
     assert any("contract" in e for e in F.gate(cards[0], tasks.load_all(repo), repo))
-    build_spec = spec() | {"id": "build", "recipe": "build-review", "tests": "pytest scripts/dev/test_x.py"}
+    mutation = repo / "scripts/dev/test_mutation.py"
+    mutation.parent.mkdir(parents=True, exist_ok=True)
+    mutation.write_text("def test_dummy_output_rejected():\n    assert output != 'dummy'\n", encoding="utf-8")
+    build_spec = spec() | {"id": "build", "recipe": "build-review", "tests": "pytest scripts/dev/test_x.py", "mutation_check": "scripts/dev/test_mutation.py::test_dummy_output_rejected"}
     build_cards = F.launch(repo, build_spec)
     build_cards[0]["tests"] = "pytest scripts/dev/test_other.py"
     assert any("contract" in e for e in F.gate(build_cards[0], tasks.load_all(repo), repo))

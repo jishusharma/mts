@@ -77,5 +77,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV you wrote; set the result line."
   ],
   "tests": "synthetic 1h bars with a hand-built lower-high then close above it: exactly one up-MSB row stamped on the break bar, the swing is not used before confirmed_i, each broken swing fires once, a close back inside gives no second row; entry is the next bar open; gap or short forward window = NOT_IN_DATA; MFE/MAE equal hand values.",
-  "title": "CryptoCred market-structure break: event table with forward MFE/MAE in R on 1h DEV"
+  "title": "CryptoCred market-structure break: event table with forward MFE/MAE in R on 1h DEV",
+  "weight": "B-SHARED"
 }

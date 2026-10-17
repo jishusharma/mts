@@ -54,8 +54,11 @@ CRUCIAL_SETTING = ("gpt-6-astra", "low")
 ASTRA_EFFORT = "low"   # operator 2026-10-13: astra at its lightest effort only, never medium or high, whatever the card says
 CODEX_EFFORTS = ("low", "medium", "high", "xhigh", "max")
 LAB_REPORTS = "MyTradingSys/research/layer_lab/reports"
+FORMULAS = "MyTradingSys/backtest/layers/FORMULAS.md"
+TRIALS = "MyTradingSys/research/layer_lab/TRIALS.md"
+RUNS_JSONL = Path("F:/codex_home/lab_runs/runs.jsonl")
 SIZES = ("S", "M", "L")
-WEIGHTS = ("ROUTINE", "IMPORTANT", "CRUCIAL", "CRITICAL")   # optional card field; Session_Planner Duty 5
+WEIGHTS = ("ROUTINE", "IMPORTANT", "CRUCIAL", "CRITICAL", "B-SHARED")   # optional card field; Session_Planner Duty 5
 WORKERS = ("agent", "session")                   # WORKERS.md: who runs the card; set during refinement
 AGENT_MAX_TURNS = 15                             # WORKERS.md: a one-use Agent only for <= 15 turns and size S
 SESSION_MAX_TURNS = 40                           # RELAY.md hand-over cap: a card needing more is split
@@ -80,10 +83,33 @@ def path_of(repo, cid):
     return tdir(repo) / f"{cid}.json"
 
 
+def promote_shared(repo):
+    """Mark a cited card B-SHARED when another card names it in scope_in."""
+    d = tdir(repo)
+    if not d.is_dir():
+        return
+    cards = [json.loads(p.read_text(encoding="utf-8")) for p in d.glob("*.json")]
+    by_id = {c.get("id"): c for c in cards}
+    cited = set()
+    for source in cards:
+        for item in source.get("scope_in", []):
+            text = str(item)
+            for cid in by_id:
+                if re.search(rf"(?<![A-Za-z0-9_-]){re.escape(cid)}(?![A-Za-z0-9_-])", text):
+                    cited.add(cid)
+    for cid in cited:
+        target = by_id[cid]
+        if target.get("weight") != "B-SHARED":
+            target["weight"] = "B-SHARED"
+            p = path_of(repo, cid)
+            p.write_text(json.dumps(target, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+
+
 def save(repo, card):
     p = path_of(repo, card["id"])
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(card, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+    promote_shared(repo)
     return p
 
 
@@ -132,7 +158,8 @@ def blank(cid, title, **kw):
     return {"id": cid, "title": title, "state": "raw", "prio": kw.get("prio", 3), "lane": kw.get("lane", ""), "size": "", "est_turns": None, "worker": "", "weight": "",
             "layers": kw.get("layers", []),
             "goal": "", "scope_in": [], "scope_out": [], "steps": [], "commands": [], "tests": "", "done_when": "",
-            "sources": [], "depends_on": [], "refs": kw.get("refs", []), "live_path": False, "approved_by": "",
+            "sources": [], "depends_on": [], "refs": kw.get("refs", []), "formula_id": kw.get("formula_id", ""), "formula_ids": kw.get("formula_ids", []),
+            "mutation_check": kw.get("mutation_check", ""), "live_path": False, "approved_by": "",
             "from_inbox": kw.get("from_inbox", ""), "refine_tries": 0, "asks": "", "created": now(), "refined_by": "", "note": "", "result": ""}
 
 
@@ -156,10 +183,11 @@ def default_worker(card):
     return (12, "agent") if card.get("size") == "S" else (30, "session")
 
 
-def problems(card, cards=None, reg=None):
+def problems(card, cards=None, reg=None, repo=None):
     """Definition of Ready: [] when a session can run the card with no question to anyone. Every miss is named."""
     p = []
-    card_list = cards or []
+    repo = Path(repo or REPO)
+    card_list = cards if cards is not None else load_all(repo)
     cards = {c["id"]: c for c in card_list}
     reg = reg or {}
     for k in TEXT[:3]:
@@ -168,6 +196,50 @@ def problems(card, cards=None, reg=None):
     for k in ("scope_in", "steps"):
         if not card.get(k):
             p.append(f"{k} is empty")
+    # Formula IDs are canonical section identifiers (for example s15) from FORMULAS.md.
+    formula_ids = list(card.get("formula_ids", []))
+    if card.get("formula_id"):
+        formula_ids.append(card["formula_id"])
+    if formula_ids:
+        formula_path = repo / FORMULAS
+        try:
+            formula_text = formula_path.read_text(encoding="utf-8-sig")
+            known = set(re.findall(r"(?im)^#{1,6}\s*(?:section\s+)?(\d+(?:\.\d+)*)\b", formula_text))
+            known |= {"s" + item for item in known}
+            known |= set(re.findall(r"(?im)\b(?:section\s+)?(s\d+(?:\.\d+)*)\b", formula_text))
+            for fid in formula_ids:
+                if str(fid) not in known:
+                    p.append(f"formula id {fid!r} not found in {FORMULAS}")
+        except OSError:
+            p.append(f"formula source missing: {FORMULAS}")
+    if card.get("lane") == "CODEX" and card.get("kind") == "run":
+        try:
+            ledger = (repo / TRIALS).read_text(encoding="utf-8-sig")
+            if not RUNS_JSONL.is_file():
+                raise OSError(f"missing {RUNS_JSONL}")
+            rows = [json.loads(line) for line in RUNS_JSONL.read_text(encoding="utf-8-sig").splitlines() if line.strip()]
+            runs = sum(row.get("card") == card.get("id") for row in rows)
+            trials = sum(bool(re.search(rf"(?<![A-Za-z0-9_-]){re.escape(card.get('id', ''))}(?![A-Za-z0-9_-])", line)) for line in ledger.splitlines() if line.lstrip().startswith("|"))
+            if trials != runs:
+                p.append(f"trial-ledger count {trials} != runs.jsonl count {runs} for {card.get('id')}")
+        except (OSError, ValueError, json.JSONDecodeError) as e:
+            p.append(f"run accounting unavailable: {e}")
+    if card.get("lane") == "CODEX" and card.get("kind") == "build" and "mutation_check" in card:
+        probe = str(card.get("mutation_check", "")).strip()
+        match = re.fullmatch(r"([^:]+\.py)::(test_[A-Za-z0-9_]+)", probe)
+        if not match:
+            p.append("mutation_check must name path/to/test.py::test_* for dummy or shuffled output")
+        else:
+            test_path = repo / match.group(1)
+            try:
+                test_source = test_path.read_text(encoding="utf-8-sig")
+                if not re.search(rf"(?m)^\s*def\s+{re.escape(match.group(2))}\s*\(", test_source):
+                    p.append(f"mutation_check test not found: {probe}")
+                elif (not re.search(r"(?i)(dummy|shuffl)", test_source)
+                      or not (re.search(r"(?i)raises|fail", test_source) or re.search(r"assert[^\n]*(?:!=|not in|is not)", test_source))):
+                    p.append("mutation_check test must assert rejection of dummy or shuffled output")
+            except OSError:
+                p.append(f"mutation_check test file missing: {match.group(1)}")
     w = card.get("weight") or ""
     if w and w not in WEIGHTS:
         p.append(f"weight {w!r} not one of {', '.join(WEIGHTS)}")

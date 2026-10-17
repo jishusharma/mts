@@ -486,3 +486,56 @@ class RepoDataTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class LabMachineChecksTest(unittest.TestCase):
+    def setUp(self):
+        self.d = tempfile.TemporaryDirectory()
+        self.repo = Path(self.d.name)
+        self._repo = T.REPO
+        self._runs = T.RUNS_JSONL
+        T.REPO = self.repo
+        T.RUNS_JSONL = self.repo / "runs.jsonl"
+        formula = self.repo / T.FORMULAS
+        formula.parent.mkdir(parents=True)
+        formula.write_text("## 1. Example\n## 2. Other\n", encoding="utf-8")
+        (self.repo / T.TRIALS).parent.mkdir(parents=True)
+        (self.repo / T.TRIALS).write_text("| date | card | command | data | result |\n|---|---|---|---|---|\n", encoding="utf-8")
+        T.RUNS_JSONL.write_text("", encoding="utf-8")
+
+    def tearDown(self):
+        T.REPO = self._repo
+        T.RUNS_JSONL = self._runs
+        self.d.cleanup()
+
+    def test_unknown_formula_id_refused_and_known_id_passes(self):
+        self.assertTrue(any("formula id" in e for e in T.problems(good(formula_ids=["s999"]))))
+        self.assertEqual(T.problems(good(formula_ids=["s1"])), [])
+
+    def test_run_trial_count_must_match_runner_rows(self):
+        import json
+        card = good(lane="CODEX", kind="run", formula_ids=[], commands=["python study.py"])
+        (self.repo / T.TRIALS).write_text("| date | card | command | data | result |\n|---|---|---|---|---|\n| 2026-01-01 | B900 | cmd | DEV | ok |\n", encoding="utf-8")
+        T.RUNS_JSONL.write_text("", encoding="utf-8")
+        self.assertTrue(any("trial-ledger count" in e for e in T.problems(card)))
+        T.RUNS_JSONL.write_text(json.dumps({"card": "B900"}) + "\n", encoding="utf-8")
+        self.assertEqual(T.problems(card), [])
+
+    def test_cited_scope_automatically_marks_source_b_shared(self):
+        source = good("BASE1")
+        citing = good("USE1", scope_in=["BASE1 results.md"])
+        T.save(self.repo, source)
+        T.save(self.repo, citing)
+        self.assertEqual(T.get(self.repo, "BASE1")["weight"], "B-SHARED")
+        self.assertEqual(T.problems(T.get(self.repo, "BASE1")), [])
+
+    def test_build_requires_a_dummy_or_shuffled_output_mutation_probe(self):
+        card = good(lane="CODEX", kind="build", mutation_check="")
+        self.assertTrue(any("mutation_check" in e for e in T.problems(card)))
+        probe = self.repo / "scripts/dev/test_mutation.py"
+        probe.parent.mkdir(parents=True)
+        probe.write_text("def test_dummy_output_rejected():\n    assert output != 'dummy'\n", encoding="utf-8")
+        card["mutation_check"] = "scripts/dev/test_mutation.py::test_dummy_output_rejected"
+        self.assertEqual(T.problems(card), [])
+        probe.write_text("def test_dummy_output_rejected():\n    assert output == 'normal'\n", encoding="utf-8")
+        self.assertTrue(any("assert rejection" in e for e in T.problems(card)))

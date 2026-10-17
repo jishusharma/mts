@@ -79,5 +79,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV you wrote; set the result line."
   ],
   "tests": "synthetic 1h bars with a hand-built RSI path: one bull bounce at 40 gives one long row, a bear reject at 60 one short row, a near-miss (RSI stops 3 points above the tolerance band) gives none; entry is the next bar open and no bar after the horizon is read; fewer than 15 prior bars or a gap inside the forward window = NOT_IN_DATA; MFE/MAE equal hand values.",
-  "title": "Malkan 40/60 RSI bounce: research-side event table with forward MFE/MAE in R on 1h DEV"
+  "title": "Malkan 40/60 RSI bounce: research-side event table with forward MFE/MAE in R on 1h DEV",
+  "weight": "B-SHARED"
 }
