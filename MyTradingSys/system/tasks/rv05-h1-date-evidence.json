@@ -1,32 +1,55 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/tasks.py check rv05-h1-date-evidence"
+  ],
   "created": "2026-10-13T05:35:47Z",
-  "depends_on": [],
-  "done_when": "Every affected row has dated execution evidence or an unknown execution date; do not infer recording date from contract expiry.",
+  "depends_on": [
+    "fabio-ledger-replace-date-2026-with-unkn"
+  ],
+  "done_when": "Every one of the 47 rows has dated execution evidence or an unknown execution date plus the evidence note; recording date separate; no date inferred from contract expiry.",
+  "est_turns": 22,
   "from_inbox": "",
-  "goal": "Integrate RV05 H1 with the existing date repair; separate execution date from recording or review date.",
+  "goal": "Add RV05 H1 evidence to the Fabio ledger date repair: all 47 rows CSV:25-71 carry a 2026-prefixed date with no dated execution source; 43 name contract NQ-202512 (expired 2025-12-19, per the report). Execution date stays unknown; recording/review date is kept in a separate field.",
   "id": "rv05-h1-date-evidence",
   "lane": "SONNET",
   "layers": [
     "fabio"
   ],
   "live_path": false,
-  "note": "Evidence follow-up to existing repair, not a parallel duplicate implementation. See RV05 report.",
+  "note": "WEIGHT:IMPORTANT Fabio ledger feeds later layer cards. Not dispatchable yet: parent fabio-ledger-replace-date-2026-with-unkn is raw and claimed by JIS-NB (0h old); dispatch after it is done. Executor session, Sonnet. Do not run in parallel with the other fabio-ledger-* cards (same CSV).",
   "prio": 3,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "RV05 H1: incorporate date revalidation evidence into existing Fabio ledger date repair"
+  "scope_in": [
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv (date columns, after the parent card's change)",
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md (companion)",
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md (read-only evidence: H1 row, 47-row list lines 48-52)"
+  ],
+  "scope_out": [
+    "H2 and H3 cards (rv05-h2/h3)",
+    "re-reading frames or captions",
+    "inferring a date from contract expiry",
+    "any backtest"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md:34 (H1 row)",
+    "same file:44 (H1 CONFIRMED / NOT_IN_DATA split)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Start only after fabio-ledger-replace-date-2026-with-unkn is done: read its commit so this card extends it, not duplicates it.",
+    "For each of the 47 rows (list in the report) confirm the date cell is 'unknown' (execution) and add the evidence note: NQ-202512 header seen / contract not exposed (Jpd sheet cropped) / no contract (CSV:25-28).",
+    "Keep recording/review date in its own column, never copied into the execution-date column.",
+    "Write a count check (47 rows touched, 0 rows with an invented date) and run it; Verify (coordinator): content commit sha; `git cherry origin/fast-track <sha>` empty AND `git ls-tree -r origin/fast-track --name-only` lists the delivered files."
+  ],
+  "tests": "A script test over FABIO_TRADE_LEDGER.csv: rows 25-71 have execution date 'unknown' and a non-empty evidence note (fails on current CSV).",
+  "title": "RV05 H1: incorporate date revalidation evidence into existing Fabio ledger date repair",
+  "worker": "session"
 }
