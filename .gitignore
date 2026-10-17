@@ -180,3 +180,5 @@ MyTradingSys/runtime/oi_live/*.csv
 # wlow-bounce forward sample (runtime readings, never committed)
 MyTradingSys/runtime/wlow_bounce_forward.jsonl
 MyTradingSys/research/imbalance_qriptal_2026-10-16/events_*.csv
+# stray empty file from a mistyped shell redirect (2026-10-17 overnight coordinator)
+/.py
