@@ -15,6 +15,9 @@ f = [100.0] * 80
 w1, w2 = wavetrend(f, f, f)
 assert all(math.isnan(v) for v in w1 + w2), "flat input must give NaN, not 0 or inf"
 assert not any(cross_events(w1, w2))
+f2 = [100.3] * 120   # non-representable flat price: EMA residue must still be treated as d == 0
+w1, w2 = wavetrend(f2, f2, f2)
+assert all(math.isnan(v) for v in w1 + w2), "float residue must not become a huge ci"
 
 # 2. seed sensitivity: first-value seed vs SMA seed converge; report the bar after which |diff| < 1e-3 WT points
 H, L, C = synth(1500)
@@ -22,13 +25,18 @@ a1, _ = wavetrend(H, L, C, seed="first"); b1, _ = wavetrend(H, L, C, seed="sma")
 bad = [i for i, (x, y) in enumerate(zip(a1, b1)) if not (math.isnan(x) or math.isnan(y)) and abs(x - y) > 1e-3]
 SETTLE = (max(bad) + 1) if bad else 0
 print("seed-difference settles (<1e-3 WT pts) after bar", SETTLE)
-assert SETTLE < 400, "warm-up discard of 400 bars must remove the seed choice"
+WARMUP = 200
+assert SETTLE < WARMUP, "WARMUP=200 bars must remove the seed choice"
 
 # 3. cross equality conventions differ only on ties
 t1 = [-5.0, -1.0, 0.0, 1.0, 1.0, 0.5]
 t2 = [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-assert cross_events(t1, t2, "le") ==     [0, 0, 0, 1, 0, 0]   # w1==w2 at t2: next bar >, prev<= -> up
+assert cross_events(t1, t2, "le") ==     [0, 0, 0, 1, 0, 0]   # tie at t2 skipped, first strict bar above fires once
 assert cross_events(t1, t2, "strict") == [0, 0, 0, 0, 0, 0]   # touch at t2 breaks the strict rule: no cross
+# touch-and-bounce on the same side is NOT a cross (above, tie, above)
+assert cross_events([1.0, 0.0, 1.0], [0.0, 0.0, 0.0], "le") == [0, 0, 0]
+# tie then move to the other side counts once
+assert cross_events([-1.0, 0.0, 1.0, 2.0], [0.0] * 4, "le") == [0, 0, 1, 0]
 # a sign flip with no tie is identical under both
 u1, u2 = [-1.0, 1.0, -1.0], [0.0, 0.0, 0.0]
 assert cross_events(u1, u2, "le") == cross_events(u1, u2, "strict") == [0, 1, -1]
@@ -46,4 +54,7 @@ Hn, Ln, Cn = list(H[:300]), list(L[:300]), list(C[:300])
 Hn[150] = Ln[150] = Cn[150] = NAN
 z1, z2 = wavetrend(Hn, Ln, Cn)
 assert math.isnan(z1[150]) and z1[149] == z1[149], "gap bar must be NaN; earlier bars untouched"
+assert z1[:150] == x1[:150], "bars before the gap must equal the gap-free run"
+assert all(math.isnan(v) for v in z2[150:153]), "wt2 (SMA 4) must be NaN for the 3 bars after the NaN bar"
+assert cross_events(z1, z2)[150] == 0 and cross_events(z1, z2)[151] == 0, "no event on or right after a NaN bar"
 print("OK")

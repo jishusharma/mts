@@ -45,24 +45,35 @@ def wavetrend(h, l, c, n1=10, n2=21, seed="first"):
     ap = [(a + b + d) / 3.0 for a, b, d in zip(h, l, c)]
     esa = ema(ap, n1, seed)
     dev = ema([abs(a - e) if not isnan(e) else NAN for a, e in zip(ap, esa)], n1, seed)
-    ci = [(a - e) / (0.015 * d) if (not isnan(d) and d != 0.0) else NAN
+    # d <= 1e-9*|ap| (OURS) counts as zero: float EMA of a flat price leaves ~1e-14 residue, not exact 0
+    ci = [(a - e) / (0.015 * d) if (not isnan(d) and d > 1e-9 * abs(a)) else NAN
           for a, e, d in zip(ap, esa, dev)]          # d==0 -> NaN (Pine: division by zero = na)
     wt1 = ema(ci, n2, seed)
     return wt1, sma(wt1, 4)
 
 
 def cross_events(wt1, wt2, mode="le"):
-    """+1 up-cross, -1 down-cross, 0 none, evaluated at bar t from bars t and t-1 only.
-    mode 'le' : up = w1>w2 and prev w1<=w2 ; down = w1<w2 and prev w1>=w2  (tie on prev bar counts as cross)
-    mode 'strict': prev must be strictly on the other side (a touch-and-leave is no cross)"""
+    """+1 up-cross, -1 down-cross, 0 none; evaluated at bar t from bars <= t only.
+    mode 'le'    : an event fires at the first bar strictly on the opposite side of the LAST strict side
+                   (a tie bar is skipped; touch-and-bounce on the same side is no cross; tie then move away counts once)
+    mode 'strict': both t-1 and t must be strictly on opposite sides (a cross through a tie bar is dropped)"""
     ev = [0]
+    last = 0  # last strict side: +1 wt1>wt2, -1 wt1<wt2, 0 unknown
+    if len(wt1) and not (isnan(wt1[0]) or isnan(wt2[0])):
+        last = (wt1[0] > wt2[0]) - (wt1[0] < wt2[0])
     for i in range(1, len(wt1)):
         a, b, pa, pb = wt1[i], wt2[i], wt1[i - 1], wt2[i - 1]
-        if any(isnan(v) for v in (a, b, pa, pb)):
-            ev.append(0); continue
+        if isnan(a) or isnan(b):
+            ev.append(0); last = 0; continue
+        side = (a > b) - (a < b)
         if mode == "le":
-            up, dn = a > b and pa <= pb, a < b and pa >= pb
+            e = side if (side != 0 and last != 0 and side != last) else 0
+            if side != 0:
+                last = side
         else:
-            up, dn = a > b and pa < pb, a < b and pa > pb
-        ev.append(1 if up else -1 if dn else 0)
+            e = 0
+            if not (isnan(pa) or isnan(pb)):
+                ps = (pa > pb) - (pa < pb)
+                e = side if (side != 0 and ps == -side) else 0
+        ev.append(e)
     return ev
