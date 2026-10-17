@@ -1,4 +1,4 @@
-# Krown recall check: RESULT (rules fixed before the run) (PRE_REG_KROWN item 3)
+# Krown recall check: RESULT (rules committed before the run in RECALL_PREREG.md, commit 86edce18; headline counts strictly within 2 bars) (PRE_REG_KROWN item 3)
 
 Data: Binance spot BTCUSDT 1d and 1w_from_1d, Coinbase BTC-USD 1d (weekly built Monday-start, full weeks), all from
 `F:/MTS/data/krown_daily` (DATA_MANIFEST.csv: every zip matched its published checksum). Only bars with open time before
@@ -31,13 +31,15 @@ reclaim given up in two closes: no date or price in the caption), KCM-15 (two BB
 
 ## Result
 
-Examples listed 12 (+5 dropped without a read). Verified: 3. Recall hits within 2 bars: **2** strict (of 3 verified), 2 of 3 covered (verified with a mapped v0 detector). Bar: >= 6 strict. **RECALL FAIL**.
+Deviation, stated: the pre-reg file gave R04 a coverage rule and R13 a window rule; PRE_REG_KROWN item 3 says 'fires within 2 bars', so the headline counts strictly within 2 bars and the lenient results are side notes in the last column.
+
+Examples listed 12 (+5 dropped without a read). Verified: 3. Recall hits within 2 bars: **0** strict (of 3 verified), 0 of 3 covered (verified with a mapped v0 detector). Bar: >= 6 strict. **RECALL FAIL**.
 
 | id | rule | extract cite | verdict | klines evidence | result | detector / note |
 |---|---|---|---|---|---|---|
 | R01 | VOL-13 | `extract_UqAvU1loT_k.md:120-130` | VERIFIED | BTCUSDT_1w_from_1d.csv open_time_ms=1583712000000 (2020-03-09) O=8034.76 H=8179.31 L=3782.13 C=5361.3 V=1224228; vol/mean20 = 3.36x (rule >= 2.5x) | MISS (chance baseline 25%) | any long S1-S8, 1w |
 | R03 | TRL-20 | `extract_14bxwxC8gBQ.md:183-192` | NOT VERIFIED | Dec 2018 BTCUSDT_1w_from_1d.csv open_time_ms=1544400000000 (2018-12-10) O=3548.49 H=3610 L=3156.26 C=3228.67 V=249792; vol 0.96x; Mar 2020 low 3782.13 (2020-03-09) | n/a | no trend-line detector in v0 |
-| R04 | RNG-05 | `extract_6aA-P4Gvhrc.md:50-57` | VERIFIED | BTCUSDT_1d.csv open_time_ms 1518652800000 (2018-02-15) .. 1542067200000 (2018-11-13); max/min close = 1.97 (rule <= 2.0) | HIT (range_state coverage) | range_state on 56% of 272 days (rule >= 50%); S3+S4 events in span: 10 |
+| R04 | RNG-05 | `extract_6aA-P4Gvhrc.md:50-57` | VERIFIED | BTCUSDT_1d.csv open_time_ms 1518652800000 (2018-02-15) .. 1542067200000 (2018-11-13); max/min close = 1.97 (rule <= 2.0) | MISS | strict MISS: a duration has no target bar for a within-2-bars hit. Side note (prereg coverage rule, not counted): range_state on 56% of 272 days (>= 50% would pass it); S3+S4 events in span: 10 |
 | R06a | MAV-16 | `extract_-NXzJs5JRks.md:157-165` | NOT_IN_DATA | 2015 cycle low precedes the first Coinbase week with a 200-week SMA (COINBASE_BTC-USD_1d.csv(weekly) row 200: open_time_ms=1557705600000, 2019-05-13); BTCUSDT_1d.csv starts 2017-08 | n/a |  |
 | R06b | MAV-16 | `extract_-NXzJs5JRks.md:157-165` | NOT_IN_DATA | 2018 cycle low precedes the first Coinbase week with a 200-week SMA (COINBASE_BTC-USD_1d.csv(weekly) row 200: open_time_ms=1557705600000, 2019-05-13); BTCUSDT_1d.csv starts 2017-08 | n/a |  |
 | R06c | MAV-16 | `extract_-NXzJs5JRks.md:157-165` | NOT VERIFIED | COINBASE_BTC-USD_1d.csv(weekly) open_time_ms=1583712000000 (2020-03-09) O=8037.73 H=8187.03 L=3858 C=5345.35 V=377127; SMA200w = 5512; low/SMA200w = 0.70 (rule within 0.85..1.15) | n/a | no weekly SMA200 touch detector in v0 |
@@ -46,7 +48,7 @@ Examples listed 12 (+5 dropped without a read). Verified: 3. Recall hits within 
 | R09 | TOP-12 | `extract_7IxfsuD2wCM.md:126-136` | NOT VERIFIED | COINBASE_BTC-USD_1d.csv(weekly) open_time_ms=1512950400000 (2017-12-11) O=15290 H=19892 L=15200 C=19379 V=202521; conditions a-e = [True, True, False, False, True]; BBWP>=85 weeks 14; vol/mean30 1.62; RSI 90.3 vs prior-12 max 87.2; MACD down-cross 2018-01-22 | n/a | S9 short, 1w, Coinbase weekly |
 | R10 | TOP-32 | `extract_7IxfsuD2wCM.md:343-350` | NOT VERIFIED | BTCUSDT_1w_from_1d.csv open_time_ms=1636329600000 (2021-11-08) O=63273.6 H=69000 L=62278 C=65519.1 V=294213; Apr-2021 high week 2021-04-12 H=64854; RSI 68.8 vs 67.6; conditions a-c = [False, False, True] | n/a | S9 short, 1w |
 | R12 | VJZ-50 | `extract_vjzy_KxJ_y8.md:458-476` | NOT VERIFIED | low week 2018-12-10 L=3156.26; reclaim BTCUSDT_1w_from_1d.csv open_time_ms=1556496000000 (2019-04-29) O=5309.81 H=5900 L=5178.8 C=5775.62 V=191972; EMA55w 5454; max high next 26 weeks 13970 | n/a | S2/S5 long, 1w |
-| R13 | VJZ-49 | `extract_vjzy_KxJ_y8.md:458-476` | VERIFIED | BTCUSDT_1d.csv open_time_ms=1705968000000 (2024-01-23) O=39568 H=40176.7 L=38555 C=39897.6 V=57957; max high next 30 days 52985 | HIT offset +16 (chance baseline 16%) | S2/S5/S8 long on any day low bar..first high >= 50,500 (window, not +-2) |
+| R13 | VJZ-49 | `extract_vjzy_KxJ_y8.md:458-476` | VERIFIED | BTCUSDT_1d.csv open_time_ms=1705968000000 (2024-01-23) O=39568 H=40176.7 L=38555 C=39897.6 V=57957; max high next 30 days 52985 | MISS (chance baseline 16%) | S2/S5/S8 long within 2 daily bars of the low bar; side note (prereg window rule, not counted): first S2/S5/S8 long in window at offset +16 |
 
 Dropped without a read: VOL-08 (HOLDOUT), SNR-17 (after 2024-07), MAV-11/MAV-15, VJZ-13, KCM-15 (no date or price); see rules above.
 

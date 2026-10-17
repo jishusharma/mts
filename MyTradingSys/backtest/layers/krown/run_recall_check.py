@@ -204,8 +204,9 @@ def main():
     s34 = sum(1 for e in d1.events if e["setup"] in ("S3", "S4") and idx[0] <= e["i"] <= idx[-1])
     out.append(row("R04", "RNG-05", "extract_6aA-P4Gvhrc.md:50-57", "VERIFIED" if ok else "NOT VERIFIED",
                    f"{FILE_SPAN(FILE=F1, rows=d1.rows, idx=idx)}; max/min close = {ratio:.2f} (rule <= 2.0)",
-                   ("RANGE" if frac >= 0.5 else None) if ok else None,
-                   f"range_state on {frac:.0%} of {len(idx)} days (rule >= 50%); S3+S4 events in span: {s34}"))
+                   None,
+                   f"strict MISS: a duration has no target bar for a within-2-bars hit. Side note (prereg coverage rule, not counted): "
+                   f"range_state on {frac:.0%} of {len(idx)} days (>= 50% would pass it); S3+S4 events in span: {s34}"))
     # R06 a-d
     sma200 = kc.sma(cw.c, 200)
     for eid, yr, lo, hi in (("R06a", 2015, None, None), ("R06b", 2018, None, None),
@@ -275,12 +276,14 @@ def main():
     hi = max(nxt)
     ok = 38000 <= d1.l[k] <= 42000 and 50500 <= hi <= 53500
     h = None
+    side = ""
     if ok:
+        h = d1.hit(k, ("S2", "S5", "S8"), "long")
         end = next(t for t in range(k + 1, k + 31) if d1.h[t] >= 50500)
         near = [i - k for i in d1.match(("S2", "S5", "S8"), "long") if k <= i <= end]
-        h = (near[0] if near else None, d1.baseline(("S2", "S5", "S8"), "long"))
+        side = f"; side note (prereg window rule, not counted): first S2/S5/S8 long in window at offset {near[0]:+d}" if near else "; side note: no event in the prereg window"
     out.append(row("R13", "VJZ-49", "extract_vjzy_KxJ_y8.md:458-476", "VERIFIED" if ok else "NOT VERIFIED",
-                   f"{kl(F1, d1.rows, k)}; max high next 30 days {hi:g}", h, "S2/S5/S8 long on any day low bar..first high >= 50,500 (window, not +-2)"))
+                   f"{kl(F1, d1.rows, k)}; max high next 30 days {hi:g}", h, "S2/S5/S8 long within 2 daily bars of the low bar" + side))
 
     ver = [r for r in out if r["verdict"].startswith("VERIFIED")]
     hits = [r for r in ver if r["hit"] not in (None, "none") and (r["hit"][0] is not None if isinstance(r["hit"], tuple) else r["hit"] == "RANGE")]
@@ -291,8 +294,8 @@ def main():
     for s in (d1, w1, cw):
         fc = ke.fire_counts(s.events, len(s.rows))
         fr[s.name] = (len(s.rows), fc, ke.over_ceiling(fc, 1.0))
-    L = [PREREG.replace("# Krown recall check: rules fixed before the run", "# Krown recall check: RESULT (rules fixed before the run)", 1), "",
-         "---", "", "## Result", "",
+    L = [PREREG.replace("# Krown recall check: rules fixed before the run", "# Krown recall check: RESULT (rules committed before the run in RECALL_PREREG.md, commit 86edce18; headline counts strictly within 2 bars)", 1), "",
+         "---", "", "## Result", "", "Deviation, stated: the pre-reg file gave R04 a coverage rule and R13 a window rule; PRE_REG_KROWN item 3 says 'fires within 2 bars', so the headline counts strictly within 2 bars and the lenient results are side notes in the last column.", "",
          f"Examples listed {len(out)} (+5 dropped without a read). Verified: {len(ver)}. Recall hits within 2 bars: "
          f"**{len(hits)}** strict (of {len(ver)} verified), {len(hits)} of {len(covered)} covered (verified with a mapped v0 detector). "
          f"Bar: >= 6 strict. **RECALL {'PASS' if passed else 'FAIL'}**.", "",

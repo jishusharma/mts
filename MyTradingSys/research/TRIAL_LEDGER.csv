@@ -16,5 +16,5 @@ wavetrend_2026-10-17,WT-A06_W06,2026-10-17,DEV,F:/MTS/data/tom_raw/klines 1m->15
 wavetrend_2026-10-17,WT-A07_W07,2026-10-17,DEV,F:/MTS/data/tom_raw/klines 1m->1h,1h C1 trend:trend_with primary 12-bar gross vs random clock (Holm m=9),pre-registered
 wavetrend_2026-10-17,WT-A08_W08,2026-10-17,DEV,F:/MTS/data/tom_raw/klines 1m->1h,1h C1 htf:htf_mid primary 12-bar gross vs random clock (Holm m=9),pre-registered
 wavetrend_2026-10-17,WT-A09_W09,2026-10-17,DEV,F:/MTS/data/tom_raw/klines 1m->1h,1h B1 htf:htf_mid primary 12-bar gross vs random clock (Holm m=9),pre-registered
-krown_recall_2026-10-18,RC-I1,2026-10-18,DEV,F:/MTS/data/krown_daily BTCUSDT 1d/1w + Coinbase BTC-USD 1d (<2024-07-01),recall iteration 1: v0 detectors unchanged; 12 listed examples 3 verified 2 hit; bar >=6 strict,FAIL (bar unreachable: 3 verified)
+krown_recall_2026-10-18,RC-I1,2026-10-18,DEV,F:/MTS/data/krown_daily BTCUSDT 1d/1w + Coinbase BTC-USD 1d (<2024-07-01),recall iteration 1: v0 detectors unchanged; 12 listed examples 3 verified 0 hit strict within 2 bars; bar >=6 strict,FAIL (bar unreachable: 3 verified)
 krown_recall_2026-10-18,RC-F1,2026-10-18,DEV,F:/MTS/data/krown_daily BTCUSDT 1d 2017-08..2024-06,fire rate per setup S1-S9 vs 1.0 per 10 daily bars ceiling,PASS (max S2 0.367)

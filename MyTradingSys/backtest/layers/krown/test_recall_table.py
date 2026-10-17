@@ -34,6 +34,15 @@ class RecallTable(unittest.TestCase):
         self.assertEqual((verified, hits), (int(m.group(1)), int(m.group(2))))
         self.assertIn("RECALL PASS" if hits >= 6 else "RECALL FAIL", text)
 
+    def test_hit_means_within_two_bars(self):
+        for r in rows():
+            m = re.match(r"HIT offset ([+-]\d+)", r[5])
+            if m:
+                self.assertLessEqual(abs(int(m.group(1))), 2, r[0])
+            self.assertNotIn("range_state coverage", r[5], r[0])
+        hits = sum(1 for r in rows() if r[3].startswith("VERIFIED") and r[5].startswith("HIT"))
+        self.assertRegex(RECALL.read_text(encoding="utf-8"), rf"hits within 2 bars: \*\*{hits}\*\* strict")
+
     def test_fire_rate_verdict_matches_ceiling(self):
         text = RECALL.read_text(encoding="utf-8")
         line = next(l for l in text.splitlines() if l.startswith("| BTCUSDT 1d |"))
