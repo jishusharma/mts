@@ -1,4 +1,4 @@
-# Lab_Guy: quality owner of the Claude <-> lab flow (operator 2026-10-18; v2 after Opus + Argon review; PROPOSED, the error list needs operator OK; v3 cost design)
+# Lab_Guy: quality owner of the Claude <-> lab flow (operator 2026-10-18; v2 after Opus + Argon review; PROPOSED, the error list needs operator OK; v3 cost design; v3.1 Claude's role)
 
 The lab = the GPT/Codex lane (LAYER_LAB.md, LAB_RECIPES.md, lab_flow.py) and the Gemini/Antigravity lane (GEMINI_START.md), both on the NUC.
 Why this role: if something is wrong at the base, everything built on it is wrong. Lag is the price of review, so the review is
@@ -34,6 +34,18 @@ Routing: producer GPT -> Gemini reviews; producer Gemini -> GPT reviews; produce
 A reviewer sees task and evidence, not the producer's argument; a lens never reviews its own output (model identity is recorded in the receipt); FIX or REWORK returns as a card note and the same lens re-checks. Lab down: a C2/C3 card waits (no cheaper lens). Headless Antigravity cannot read files: paste the evidence into the prompt (about 30000 characters at most on the command line).
 Effort: medium by default; low for mechanical checks; high only for C2/C3 and only after a medium run was thin. Record model, effort and tokens per run (the findings ledger).
 
+## Claude's role in the lab (v3.1, 2026-10-18; Opus 5.5 via Antigravity and GPT Sol 6.1 agreed; operator chose it)
+Option B first, C later only if measured: Claude is an INDEPENDENT VERIFIER of base and shared results (C2 and up; C1 when the card unlocks many cards), not a supervisor of everything (that makes the Claude allowance the bottleneck and a confident supervisor can ratify a wrong premise) and not an outsider. No vendor has final authority; trust attaches to evidence (source fidelity, an independent calculation, an executable counterexample, a recorded trial). Agreement between models is supporting evidence only.
+- Blind first: Claude gets the sources and the task, derives the answer from raw pinned data and the written definition, and only then sees the implementation; it never starts from the producer's tables, code or reasoning.
+- Disputes are settled by a calculation, a source or an executable test, never by another model's vote; a consequential disagreement blocks promotion.
+- Review packet (immutable): source material, spec, code revision, data version, commands, claimed result; the receipt records who produced it, who checked it and which pool paid.
+- Claude Code writes the questions and specs, so before a C2+ card runs a NON-Claude model reviews the question and the spec (E4); the same wrong spec can defeat all three vendors, so review sometimes challenges the source interpretation itself.
+- A small random sample of C0/C1 cards also gets the Claude check, to catch cards that were classified too low.
+- Claude through Antigravity pays from the Google shared pool; do not assume it shares or spares the Claude Code allowance (unverified, record quota per run).
+- Until measured, lab outputs are called "checked research artifacts with specified evidence"; no numeric confidence is claimed.
+- First experiment (cheaper than the planted-error trial, GPT Sol 6.1): one manual paired review of one real shared result (candidate: the output of `q76-dev-ext-power-check`) by Claude blind-then-reveal; record confirmed defects, false alarms and quota. It shows feasibility and incremental value, not a catch rate; the planted-error trial follows.
+- Moves to C (Claude stages inside the lab) when `lab-crossvendor-stage` is built and the experiment shows catches Gemini Flash did not get.
+
 ## Tuning (Lab_Guy measures, the operator sets the knobs)
 Findings ledger in `MyTradingSys/research/lab_guy/FLOW_<date>.md`: per run card id, class, lens (vendor, model, effort), tokens, hours waited, FIX/REWORK. A FIX counts as REAL only if fixing it changed a number, a test or a verdict. Track real findings per 1k tokens and the false-FIX rate.
 Planted errors: about 1 card in 10 gets a shadow copy with one known E-class error (a wrong data copy, a one-bar shift, a holdout leak, an expected value copied from the code under test, deleted trials, zero slippage, an edited gate constant, a mislabelled SOURCED number). Catch rate per lens and per class comes from these.
@@ -46,6 +58,7 @@ First test (all three reviewers proposed it): planted-error trial on 10 finished
 - The `REVIEWED:` stamp rule in session_planner.md has no check in `tasks.py`; TASK_REFINEMENT.md still describes no reviewer.
 - Recipes in `lab_flow.py` are GPT-only: Gemini and Claude cannot be a stage, so there is no cross-vendor receipt. Gemini output gets only Claude's spot-check.
 - Criterion PASS lines are attestations (LAB_RECIPES.md): a different model re-deriving one number (R3) is what makes them evidence.
+- No formula spec text for re-derivation (FORMULAS.md holds ids, a re-deriver needs prose): card `lab-formula-spec-text`. Holdout is refused by path only, a renamed copy defeats it: card `lab-holdout-access-control`.
 - Claude-written code is reviewed by Claude only; the lab's original purpose (LAYER_LAB.md) is the cross-model check, wired for GPT audits only.
 
 ## Boot and channels
