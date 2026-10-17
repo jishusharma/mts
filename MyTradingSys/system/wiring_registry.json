@@ -880,6 +880,10 @@
       "disp": "WIRE",
       "ref": "trendline-count-only",
       "why": "Causal trend-line detector built and tested (test_trendline_core.py, TRENDLINE_CONTRACT.md v1); nothing runs it yet: the count-only card (DEV counts, no backtest) is the first caller."
+    },
+    "MyTradingSys/backtest/layers/krown/run_recall_check.py": {
+      "disp": "REPRO",
+      "why": "Rebuilds research/krown_ta101_2026-10-13/RECALL.md (and RECALL_PREREG.md with --prereg) from the checksum-verified DEV daily klines and the Krown v0 detectors; cited in RECALL.md; run by hand, no live process imports it."
     }
   },
   "MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py": {

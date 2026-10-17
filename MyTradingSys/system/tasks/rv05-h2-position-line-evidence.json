@@ -4,30 +4,62 @@
   "commands": [],
   "created": "2026-10-13T05:35:47Z",
   "depends_on": [],
-  "done_when": "Entry and stop readings carry exact frame times; F13 replacement and F12-m2 stop are adjudicated; partial stop coverage and label conventions are explicit.",
+  "done_when": "Five rows adjudicated with exact frame times; no invented value for hidden fields; CSV and .md consistent. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 25,
   "from_inbox": "",
   "goal": "Integrate RV05 H2 with the existing entry repair; adjudicate all five rows from full-resolution position and order labels.",
   "id": "rv05-h2-position-line-evidence",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "RV05 H1: record date evidence for Fabio ledger CSV 25-71",
+      "ref": "61cf8a7d3634",
+      "utc": "2026-10-17T18:19:38Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "61cf8a7d3634 RV05 H1: record date evidence for Fabio ledger CSV 25-71",
+      "ref": "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+      "utc": "2026-10-17T18:19:38Z"
+    }
+  ],
   "layers": [
     "fabio"
   ],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] Evidence follow-up to existing repair, not a parallel duplicate implementation. See RV05 report.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium blind re-read of 2 frames WEIGHT:IMPORTANT. Fixes lab data (ledger); image-read rules A-7 apply. rv05-h3 follows in the same ledger.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T21:38:12Z",
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md"
+  ],
+  "scope_out": [
+    "backtests",
+    "engine code"
+  ],
+  "scope_sha": "61cf8a7d3634",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "read RV05 report H2 table (CSV:33,45,47,49,50) and the cited frames at full resolution, one panel crop each (A-20261018-7: blind read, unreadable allowed, no claim shown)",
+    "per row record position-line, stop and order label with frame time; null where unreadable",
+    "write the adjudication into the ledger .md: F13 replacement entry, F12-m2 stop, partial-coverage and label-denominator conventions explicit",
+    "script check: every changed CSV cell has a frame time or NOT_IN_DATA"
+  ],
+  "tests": "python check script counts changed cells vs evidence rows",
   "title": "RV05 H2: read position lines and stop prices before applying existing Fabio entry repair",
-  "weight": "IMPORTANT"
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
