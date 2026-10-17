@@ -550,7 +550,7 @@ def cmd_stale(a):
 
 
 REVIEW_WEIGHTS = ("CRUCIAL", "CRITICAL")   # lab_guy v3.1: these weights (or class C2/C3) need a reviewer stamp before start and finish
-REVIEWED_RE = re.compile(r"REVIEWED:\s*\S")
+REVIEWED_RE = re.compile(r"\bREVIEWED:\s+\S+\s+\d{4}-\d{2}-\d{2}\b", re.I)
 
 
 def card_class(card):

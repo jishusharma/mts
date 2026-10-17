@@ -24,6 +24,16 @@ def good(cid="B900", **kw):
     return c
 
 
+def run_cli(*argv):
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        try:
+            rc = T.main(list(argv))
+        except SystemExit as e:
+            rc = e.code if isinstance(e.code, int) else 1
+    return rc, out.getvalue()
+
+
 class DefinitionOfReadyTest(unittest.TestCase):
     def test_good_card_passes(self):
         self.assertEqual(T.problems(good()), [])
@@ -555,3 +565,44 @@ class ReviewGateTest(unittest.TestCase):
     def test_routine_important_c0_c1_not_blocked(self):
         for w, n in (("ROUTINE", ""), ("IMPORTANT", "class=C1"), ("", "class=C0")):
             self.assertEqual(T.review_gate(good(weight=w, note=n), True, ""), [])
+
+    def test_reviewed_stamp_requires_reviewer_and_iso_date(self):
+        c = good(weight="CRITICAL", note="REVIEWED: reviewer")
+        self.assertTrue(T.review_gate(c))
+        c["note"] = "REVIEWED: reviewer 2026-10-18"
+        self.assertEqual(T.review_gate(c), [])
+
+    def test_cli_take_and_done_refuse_unreviewed_crucial_card(self):
+        d = tempfile.TemporaryDirectory()
+        repo = Path(d.name)
+        previous = T.REPO
+        T.REPO = repo
+        try:
+            c = good("GATE1", weight="CRUCIAL", note="[PLAN weight=CRUCIAL]")
+            T.save(repo, c)
+            rc, out = run_cli("take", "GATE1", "--claim", "slug")
+            self.assertNotEqual(rc, 0, out)
+            self.assertIn("REVIEWED", out)
+            self.assertEqual(T.get(repo, "GATE1")["state"], "ready")
+            rc, out = run_cli("done", "GATE1", "--result", "receipt")
+            self.assertNotEqual(rc, 0, out)
+            self.assertIn("REVIEWED", out)
+            self.assertEqual(T.get(repo, "GATE1")["state"], "ready")
+        finally:
+            T.REPO = previous
+            d.cleanup()
+
+    def test_cli_done_requires_receipt_for_reviewed_c2(self):
+        d = tempfile.TemporaryDirectory()
+        repo = Path(d.name)
+        previous = T.REPO
+        T.REPO = repo
+        try:
+            T.save(repo, good("GATE2", weight="ROUTINE", note="class=C2 REVIEWED: reviewer 2026-10-18"))
+            rc, out = run_cli("done", "GATE2", "--result", "")
+            self.assertNotEqual(rc, 0, out)
+            self.assertIn("receipt", out)
+            self.assertEqual(T.get(repo, "GATE2")["state"], "ready")
+        finally:
+            T.REPO = previous
+            d.cleanup()

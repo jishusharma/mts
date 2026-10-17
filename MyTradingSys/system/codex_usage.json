@@ -6,7 +6,7 @@
   "window_resets": 1792281070,
   "window_used": 3.0
  },
- "at": "2026-10-17T20:29:44Z",
+ "at": "2026-10-17T20:31:44Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 23.0,
   "window_pts": 2.0,
-  "window_runs": 5
+  "window_runs": 6
  },
  "runs": [
+  {
+   "at": "2026-10-17T20:30:32Z",
+   "card": "lab-weight-enforce",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 66,
+   "tokens_out": 3876,
+   "tokens_total": 464446,
+   "tokens_uncached": 40090,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-17T20:26:24Z",
    "card": "lab-crossvendor-stage",
@@ -157,21 +172,6 @@
    "tokens_uncached": 57289,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": null,
-   "card": "gptb-volume-event-table",
-   "effort": null,
-   "kind": null,
-   "model": null,
-   "note": "cards fixed in lab-cards-1017 (data path, loader scope, brief); earlier BLOCKED tries had no data path; reset by NUC session 2026-10-17",
-   "outcome": "REOPENED",
-   "seconds": null,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
   }
  ]
 }
