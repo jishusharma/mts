@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T18:59:35Z",
   "commands": [],
   "created": "2026-10-14T15:00:06Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "BLOCKED: MDE 0.227R + cost 0.349R > 0.30R (research/bb_top_reversal_2026-10-18/BLOCKED.md)",
+      "ref": "0fb117d3",
+      "utc": "2026-10-17T18:59:35Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,7 @@
     "MyTradingSys/research/screenshots/2026-10-14_BTCUSDT_9fda889f1529.md",
     "MyTradingSys/research/bollinger_2026-10-14/SOURCES.md"
   ],
-  "result": "",
+  "result": "BLOCKED: MDE 0.227R + cost 0.349R > 0.30R (research/bb_top_reversal_2026-10-18/BLOCKED.md)",
   "scope_in": [
     "MyTradingSys/research/layer_lab/bb_top_reversal_event_table/event_table.py",
     "MyTradingSys/backtest/layers/alerts/live_bb_top_reversal.py",
@@ -65,7 +72,7 @@
     "MyTradingSys/research/bollinger_2026-10-14/SOURCES.md (24/7 BB candidates; later variant)",
     "MyTradingSys/research/layer_lab/bb_top_reversal_event_table/REPORT.md (1,577 DEV events, DEV = bar open 2022-01-01..2024-06-30)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run `python scripts/dev/verdicts.py check \"bollinger top reversal\"`, paste output in research/bb_top_reversal_2026-10-18/PRE_REG.md; freeze 12 variants (E1/E2/E3 x S1/S2 x exit 2R/middle band; BB 20/2 only), each number labelled SOURCED (quote + file:line) or OURS.",
     "Definitions (OURS; bb_top_bt.py re-detects the setup from 15m OHLC as event_table.py:46-68 and computes fills itself): E1 sell-stop at green open, filled when the red bar trades below it; E2 red close below green open, fill next open; E3 red close below green low, fill next open. S1 = max(green, red high) + 2 ticks; S2 = red open + 2 ticks. Cushion k = 0.",
