@@ -20,3 +20,9 @@ Source: `live_mirror.py brief` + _mirror files, all `mirror@2026-10-17 07:11Z` (
 ## Report-level marks
 - Layers applicable: turn_of_candle (fires, skipped by HALT), Tom (stale/unrecognised keys), Fabio cvd_absorption (silent), cryptocred (silent). Blind-marks: NONE placed (G3 audit rerun / draw rebuild pending). No claims row, no shots.
 - Defaults taken (logged, not asked): no screenshots read; HALT left as is; HALT_DAILY_LOSS self-clear not tested.
+
+## 10:00Z update (mirror@2026-10-17 10:01Z): 15m + 5m shots 8dc83a2a31ed / ac1adc2a255f
+- Read: SET_8dc83a2a31ed_ac1adc2a255f.md (13 MATCH, 0 MISMATCH, 2 NOT_IN_DATA). Last read id: ac1adc2a255f. Open MISMATCH cards: none new.
+- Moment: 09:59 flush 81,671 -> 81,550 in the last 19 s of the 15m bar (taker delta -158 BTC, OI +72), 5m RSI 35.18 under 40 with MA 51.4, price under 5m lower BB and day VWAP 81,574.9, under weekly VAL 81,603.5.
+- HALT + HALT_DAILY_LOSS still raised; rsi 5m short and turn_of_candle long both `skipped_halt` at 10:00:31Z. Tom rejected (tom#411 net_rr, tom#412 WAIT_PROOF).
+- Defaults taken (logged, not asked): shot.py engine not run (no scratch raw dir); fapi 1m klines fetched directly, closed bars + forming minute.
