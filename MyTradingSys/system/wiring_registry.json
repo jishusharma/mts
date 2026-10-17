@@ -842,6 +842,10 @@
     "MyTradingSys/research/trendlines_2026-10-17/lint_contract.py": {
       "disp": "TOOL",
       "why": "Spec lint for TRENDLINE_CONTRACT.md: every parameter row carries a value and a SOURCED/OURS tag, none unset; run by hand (python lint_contract.py), named in TRENDLINE_CONTRACT.md section 10."
+    },
+    "MyTradingSys/research/wavetrend_2026-10-17/wt_parity_ref.py": {
+      "disp": "TOOL",
+      "why": "Throw-away pure-python WaveTrend reference for the parity contract (seed sensitivity, d=0, cross equality, gap, look-ahead); covered by test_wt_parity_ref.py, no live imports; not a golden source."
     }
   },
   "MyTradingSys/research/layer_lab/volume_event_table/event_table.py": {
