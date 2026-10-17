@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-17T12:20:31Z",
+  "depends_on": [],
+  "done_when": "test passes and the launcher passes CREATE_NO_WINDOW without DETACHED_PROCESS",
+  "est_turns": 12,
+  "from_inbox": "",
+  "goal": "No visible java.exe console window appears on NB.",
+  "id": "java-popups",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B190b: shim also engages for hidden-console python.exe; make_status/testnet_canary install",
+      "ref": "aa7c0490db08",
+      "utc": "2026-10-16T13:59:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T12:20:49Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/nowin.py",
+    "the launcher that starts java (find it with grep java.exe/ProcessBuilder)"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys"
+  ],
+  "scope_sha": "aa7c0490db08",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "find the caller that starts java.exe with a visible console",
+    "hide it (nowin shim or CREATE_NO_WINDOW)",
+    "add a test that fails on the old flags"
+  ],
+  "tests": "a fail-first test in scripts/dev/test_nowin.py for the java launcher flags",
+  "title": "Network: java.exe console popups appear on NB (find the launcher, hide with nowin or headless)",
+  "worker": "agent"
+}
