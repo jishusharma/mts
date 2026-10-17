@@ -213,7 +213,7 @@ def main():
         if lo is None:
             out.append(row(eid, "MAV-16", "extract_-NXzJs5JRks.md:157-165", "NOT_IN_DATA",
                            f"{yr} cycle low precedes the first Coinbase week with a 200-week SMA "
-                           f"({day(cw.rows[199][0])}); Binance starts 2017-08", None, ""))
+                           f"({FC} row 200: open_time_ms={cw.rows[199][0]}, {day(cw.rows[199][0])}); BTCUSDT_1d.csv starts 2017-08", None, ""))
             continue
         k = argmin_low(cw.rows, lo, hi)
         ratio = cw.rows[k][3] / sma200[k]
@@ -316,6 +316,14 @@ def main():
                  + f" | {', '.join(over) if over else 'none'} |")
     L += ["", "Cells: events (per 10 bars). Ceiling applies to the Binance 1d row; weekly rows are for information.",
           f"**FIRE RATE {'PASS' if not fr['BTCUSDT 1d'][2] else 'FAIL: ' + ', '.join(fr['BTCUSDT 1d'][2])}** (Binance 1d pooled).", ""]
+    L += ["## Decision (OURS)", "",
+          f"Recall {'meets' if passed else 'misses'} the bar. Only {len(ver)} of {len(out)} listed examples verify against klines, "
+          f"so even a perfect encoding could reach {len(ver)} hits: the bar of 6 is unreachable on this check set, and the shortfall "
+          "comes from the examples (caption dates, prices and volume or slope claims that the klines do not show), not from the detectors. "
+          "Per the card, examples that do not verify are dropped, not fixed, and v0 parameters are NOT retuned to chase hits "
+          "(no encoding variant is run; the ledger records one iteration, RC-I1, v0 unchanged). Missing v0 detectors surfaced "
+          "(each needs its own spec and pre-registration before it exists): trend-line anchor (TRL-20), weekly 200 SMA touch (MAV-16), "
+          "50/200 SMA cross (MAV-21). Consequence for the Krown G3 step: the recall gate is FAIL on evidence, not a pass.", ""]
     (RES / "RECALL.md").write_text("\n".join(L) + "\n", encoding="utf-8", newline="\n")
     print("\n".join(L))
 
