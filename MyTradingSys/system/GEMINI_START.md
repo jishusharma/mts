@@ -23,7 +23,7 @@ The tool is whichever Google surface the Pro login unlocks in VS Code (Gemini Co
 - Approval: ask before every file write and every terminal command. Turn off any auto-apply, auto-run or "YOLO" mode.
 - Excludes: `.geminiignore` (Gemini CLI) and `.aiexclude` (Code Assist) are committed at the repo root and list `.secrets/`, `.env*`, `*.pem`, `*.key`, `runtime_data/`, `.mts_live`. Keep them; add to them, never remove.
 - Storage: keep the tool's data folder on F: so C: stays clean (CLI: `GEMINI_CLI_HOME`; extensions: check the settings page).
-- Tool-local folders (`.gemini/`, `.idx/`, `.vscode/`) are not committed; if one shows up in `git status`, add it to `.gitignore` (the one place ignores go, CLAUDE.md Hard rules).
+- Tool-local folders (`.gemini/`, `.idx/`, `.vscode/`) are not committed; if one shows up as an untracked file, add it to `.gitignore` (the one place ignores go, CLAUDE.md Hard rules).
 - Context file: Gemini reads `GEMINI.md` at the repo root (a one-line pointer to AGENTS.md -> CLAUDE.md). Do not copy rules into it.
 
 ## Setup (NUC, done 2026-10-17)
