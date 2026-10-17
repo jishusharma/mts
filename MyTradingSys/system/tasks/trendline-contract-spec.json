@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T07:27:32Z",
   "commands": [],
   "created": "2026-10-17T03:55:00Z",
   "depends_on": [],
@@ -19,7 +20,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "TRENDLINE_CONTRACT.md + FORMULAS s19 on fast-track; lint_contract.py rows=48 problems=0 (re-verified by backlog-refine-1017)",
   "scope_in": [
     "Write MyTradingSys/research/trendlines_2026-10-17/TRENDLINE_CONTRACT.md: pivot k and ties, anchor spacing and age, touch tolerance and distance-away reset, penetration test, break rule (close beyond line), TF, wick vs close, linear vs log, ATR length for slope",
     "Daily-ledger schema fix: per-post capture time, content hash, written selection string; image-read lines stay unscored until two readers agree"
@@ -35,7 +36,7 @@
     "MyTradingSys/research/trendlines_2026-10-17/REPORT.md",
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read CLAUDE_VERIFY.md and KROWN_RULES.csv rows KR-L01..L09, KR-Z05..Z09; keep quotes verbatim (verify_extract_quotes.py)",
     "Fix every parameter once; give 2-anchors+1-test and 3-anchors readings of KR-L02 as separate arms; list truncation-test cases",

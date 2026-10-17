@@ -7,13 +7,14 @@
     "wavetrend-priority-source-parity"
   ],
   "done_when": "Module and tests on fast-track; run_all_tests --quick green; every fixture value traced to FORMULAS.md, none produced by the module.",
+  "est_turns": 35,
   "from_inbox": "",
   "goal": "Build backtest/layers/wavetrend/ observation module: continuous WT1/WT2, zones, crosses with bar-close availability timestamps, matching hand-computed fixtures.",
   "id": "wavetrend-observation-module",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "Conventions pinned in PARITY_CONTRACT.md s3 (WARMUP 200, d=0 NaN, cross \"le\", closed-bar available_at); goldens from a spreadsheet, not wt_parity_ref.py.",
+  "note": "Conventions pinned in PARITY_CONTRACT.md s3 (WARMUP 200, d=0 NaN, cross \"le\", closed-bar available_at); goldens from a spreadsheet, not wt_parity_ref.py. backlog-refine-1017: added est_turns/worker (card failed the Ready gate on those fields only).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -32,7 +33,7 @@
     "MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_VERIFY.md",
     "MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Add the FORMULAS.md WaveTrend entry from the parity card.",
     "Write fixture tests first (golden values, d=0, flat input, NaN, equality, look-ahead).",
@@ -40,5 +41,6 @@
     "Run run_all_tests.py --quick."
   ],
   "tests": "New tests (golden values + look-ahead planted-spike) fail on the pre-change tree (module absent) and pass after.",
-  "title": "WaveTrend causal observation module + fixtures"
+  "title": "WaveTrend causal observation module + fixtures",
+  "worker": "session"
 }

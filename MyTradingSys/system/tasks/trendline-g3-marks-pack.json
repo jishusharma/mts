@@ -16,7 +16,7 @@
     "krown"
   ],
   "live_path": false,
-  "note": "Filed by trendlines-verify 2026-10-17 after CLAUDE_VERIFY.md (FIX-FIRST). Gate order: contract, causal module, count-only, then PRE_REG; no backtest study yet. Stays refined until its depends_on card is done, then flip to ready.",
+  "note": "Contract shipped; promoted by backlog-refine-1017 (steps now require the g3_pack blindness fixes so this pack is not rebuilt twice).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -36,11 +36,11 @@
     "MyTradingSys/research/layer_rebuild_2026-10-15/READER_PROTOCOL.md",
     "MyTradingSys/research/g3_marks_2026-10-16/README.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
-    "Read READER_PROTOCOL.md and g3_marks_2026-10-16/g3_pack.py",
-    "Generate windows from DEV only using the contract's pivot rule; render charts with no later bars",
-    "Add a test that no chart contains a bar after its decision time"
+    "Copy the g3_marks_2026-10-16 structure and apply its 2026-10-17 blindness fixes: ids <unit>-NN, no clock labels, unconditional overlays, selection rule only in the closed key",
+    "Half random windows, half from a written pre-filter; write the definitions into READER_PROTOCOL.md as OURS once, then build WINDOWS.csv, sheets, key and sha",
+    "Log the exposure ledger line; ship"
   ],
   "tests": "test_g3_pack.py new case fails on the old pack code if a chart includes a bar after decision time; passes on the new builder.",
   "title": "Trend-line G3 blind marks pack for the obvious-line selector",

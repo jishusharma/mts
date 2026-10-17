@@ -8,13 +8,14 @@
     "wavetrend-observation-module"
   ],
   "done_when": "RESULT.md with all frozen cells, controls and MDE; verdicts row appended; VALIDATION/HOLDOUT read count still zero.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Run the single pre-registered DEV atlas: gross conditional outcomes per frozen cell with random-clock and context-only control arms.",
   "id": "wavetrend-dev-atlas",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "Outcome definitions and arms: ATLAS_STUDY_SPEC.md s4-5.",
+  "note": "Outcome definitions and arms: ATLAS_STUDY_SPEC.md s4-5. backlog-refine-1017: added est_turns/worker (card failed the Ready gate on those fields only).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -40,5 +41,6 @@
     "State per cell: passes gross DEV or not, MDE honest."
   ],
   "tests": "Study script test: a cell not in PRE_REG raises; control arm present; fails on pre-change code (script absent).",
-  "title": "WaveTrend DEV atlas run per PRE_REG"
+  "title": "WaveTrend DEV atlas run per PRE_REG",
+  "worker": "session"
 }
