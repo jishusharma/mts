@@ -1,0 +1,46 @@
+import csv
+import hashlib
+import json
+from pathlib import Path
+from collections import Counter
+from datetime import datetime, timezone
+from statistics import mean
+
+p = Path('MyTradingSys/research/imbalance_qriptal_2026-10-16/filter')
+names = ['RESULT.md', 'PRE_REG.md', 'COUNTS.md', 'trades_dev.csv', 'events_dev.csv', 'trials.csv']
+for name in names:
+    raw = (p / name).read_bytes()
+    print('SHA256', name, hashlib.sha256(raw).hexdigest())
+def rows(name):
+    with (p / name).open(newline='') as f:
+        return list(csv.DictReader(f))
+t, e, trials = rows('trades_dev.csv'), rows('events_dev.csv'), rows('trials.csv')
+for name, data in [('trades_dev.csv', t), ('events_dev.csv', e), ('trials.csv', trials)]:
+    print('SCHEMA', name, ','.join(data[0]), 'rows', len(data))
+assert len(t) == len(e) == 5976
+assert all({k: r[k] for k in e[0]} == s for r, s in zip(t, e))
+print('Event/trade shared columns: all 5976 rows identical')
+for name, data in [('trades', t), ('events', e)]:
+    times = [int(r['t']) for r in data]
+    assert all(int(r['day']) == int(r['t']) // 86400000 for r in data)
+    assert all(1648771200000 <= x < 1719792000000 for x in times)
+    print('RANGE', name, *[datetime.fromtimestamp(x / 1000, timezone.utc).isoformat() for x in (min(times), max(times))], 'days', len({r['day'] for r in data}))
+print('Duplicate day/level', len(t) - len({(r['day'], r['level']) for r in t}))
+groups = {'IMB': [r for r in t if r['small'] == 'True'], 'NOIMB': [r for r in t if r['small'] == 'False'], 'ALL': t}
+def calc(r):
+    side, ex, level, width = [float(r[k]) for k in ['side', 'exit_1', 'level', 'width']]
+    return (side * (ex - level) - .0007 * (level + ex)) / width
+for name, data in groups.items():
+    print('GROUP', name, 'n', len(data), 'days', len({r['day'] for r in data}), 'net', mean(float(r['net_1']) for r in data), 'price_recomputed', mean(calc(r) for r in data))
+    for rr in [1, 2]:
+        counts = Counter(r[f'kind_{rr}'] for r in data)
+        print('OUTCOME', name, rr, dict(counts), {k: round(100*v/len(data), 6) for k, v in counts.items()})
+delta = mean(float(r['net_1']) for r in groups['IMB']) - mean(float(r['net_1']) for r in groups['NOIMB'])
+print('DELTA', delta, 'rounded', f'{delta:+.3f}')
+print('Max row net difference from rounded prices', max(abs(calc(r)-float(r['net_1'])) for r in t))
+for g, trial in zip(['IMB', 'NOIMB'], trials[:2]):
+    assert len(groups[g]) == int(trial['n'])
+    assert abs(mean(float(r['net_1']) for r in groups[g])-float(trial['net_R'])) < .0000005
+assert [f'{mean(float(r["net_1"]) for r in groups[g]):.3f}' for g in ['IMB', 'NOIMB']] == ['-0.366', '-0.467']
+assert f'{delta:+.3f}' == '+0.101'
+print('PASS headline assertions; no market files opened')

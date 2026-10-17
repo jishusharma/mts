@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1792677805,
-  "week_used": 32.0,
+  "week_resets": 1792677804,
+  "week_used": 33.0,
   "window_resets": 1792213232,
-  "window_used": 3.0
+  "window_used": 14.0
  },
- "at": "2026-10-17T00:02:17Z",
+ "at": "2026-10-17T00:32:11Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -17,12 +17,27 @@
  },
  "host": "JIS-NUC",
  "lab": {
-  "astra_runs": 0,
-  "week_pts": 21.0,
-  "window_pts": 0.0,
-  "window_runs": 0
+  "astra_runs": 1,
+  "week_pts": 22.0,
+  "window_pts": 11.0,
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-17T00:30:02Z",
+   "card": "imb-filter-audit-2-challenge",
+   "effort": "low",
+   "kind": "audit",
+   "model": "gpt-6-astra",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 123,
+   "tokens_out": 5282,
+   "tokens_total": 409754,
+   "tokens_uncached": 54264,
+   "week_pts": 1.0,
+   "window_pts": 11.0
+  },
   {
    "at": "2026-10-17T00:00:09Z",
    "card": "imb-filter-audit-1-map",
@@ -155,21 +170,6 @@
    "tokens_out": 13176,
    "tokens_total": 1221897,
    "tokens_uncached": 57617,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T18:30:14Z",
-   "card": "gptb-candle-pattern-event-table",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 66,
-   "tokens_out": 4495,
-   "tokens_total": 305548,
-   "tokens_uncached": 63485,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
