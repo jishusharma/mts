@@ -1317,5 +1317,31 @@ class TestPreprocessingIsolation(unittest.TestCase):
             self.assertEqual(D.load_rows("dax", "coded/0", split=split), [])
 
 
+class TestCutoffBoundary(unittest.TestCase):
+    def test_rows_at_cutoff_minus_equal_plus_one_ms(self):
+        from snapshots import parse_ts
+        cut = 1767225600 + 4 * 86400 + 10 * 3600     # 2026-01-05T10:00:00Z
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            root = Path(td)
+            out_dir = root / "rows_dax"
+            out_dir.mkdir()
+            source = root / "2026-01.jsonl.gz"
+            stamps = ("2026-01-05T09:59:59.999000Z", "2026-01-05T10:00:00Z", "2026-01-05T10:00:00.001000Z")
+            with gzip.open(source, "wt", encoding="utf-8") as fh:
+                for ts in stamps:
+                    fh.write(json.dumps(snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)], t=ts)) + "\n")
+            source.with_name("2026-01.inputs.json").write_text(json.dumps(dict(
+                codes=D.generation_codes(), snapshot_sha256=D.file_hash(source), data={"x": "y"},
+                command=["py", "gen", "--end", "2026-01-05T09:59:00Z"])), encoding="utf-8", newline="\n")
+            b = mk([(100.,) * 4] * 6, (cut - 120) * 1000)
+            b.real = bytearray([1] * 6)
+            with patch.object(D, "_BARS", b):
+                _, stats = D._rows_month(("dax", source, out_dir, (0,), D.MASK_OF, cut))
+            self.assertEqual((stats["rows"], stats["cut"]), (1, 2))
+            kept = [json.loads(x)["t"] for x in (out_dir / "2026-01.rows.jsonl").read_text().splitlines()]
+            self.assertEqual(kept, [parse_ts(stamps[0])])
+            self.assertLess(kept[0], cut)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -100,5 +100,10 @@ class TestParse(unittest.TestCase):
                 D.convert(raw, out, "GER40", end_ms=DAY_MS + 120000)
 
 
+    def test_cli_convert_refuses_without_explicit_bound(self):
+        with self.assertRaises(SystemExit):
+            D.main(["convert", "--raw", "r", "--out", "o"])
+
+
 if __name__ == "__main__":
     unittest.main()

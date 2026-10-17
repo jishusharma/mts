@@ -635,8 +635,7 @@ def cmd_gen(a):
     split = load_split(getattr(a, "split_manifest", None))   # manifest first: no conversion/data access without it
     cut_t = None if getattr(a, "read_holdout", False) else split["dev_end"]
     convert_cmd = [sys.executable, "-I", str(HERE / "dax_data.py"), "convert", "--raw", str(DAX_RAW), "--out", str(DAX_ARCHIVE)]
-    if cut_t is not None:
-        convert_cmd += ["--end-ms", str(int(cut_t * 1000))]
+    convert_cmd += ["--end-ms", str(int(cut_t * 1000))] if cut_t is not None else ["--read-holdout"]
     subprocess.run(convert_cmd, check=True)
     start = max(DAX_START, dt.date.fromisoformat(a.start)) if a.start else DAX_START
     end = min(DAX_END, dt.date.fromisoformat(a.end)) if a.end else DAX_END
