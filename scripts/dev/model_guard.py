@@ -8,9 +8,10 @@ Claude Code PreToolUse hook (project .claude/settings.json), on the calls that s
   mcp__ccd_session__start_session       same; `proposal_id` alone (starting a proposal already checked) and cloud starts pass
   mcp__ccd_session_mgmt__set_session_model   only sonnet or haiku
 Anything else passes. A blocked call gets a deny with the fix in the reason, so the model retries with model=sonnet.
-Opus is still possible: when one of the operator's last 3 typed messages names it ("opus"/"fable", operator 2026-10-17: "whenever I say
-use Opus, it must be done"), the hook lets the explicit model through. Naming nothing still blocks, so an inherited model can never
-slip in. Whether Opus is worth it (cost vs the weekly pace) is the session's judgement, not the hook's. MTS_ALLOW_OPUS=1 allows all.
+Opus is allowed in two cases only (operator 2026-10-17: "whenever I say use Opus, it must be done" and "only critical tasks, a little
+tighter"): (1) the operator's LATEST typed message names it ("opus"/"fable"); (2) the brief cites a task card that is lane OPUS,
+`approved_by` set and `crucial` filled (tasks.py lint enforces the pair). Everything else is denied, and a call without `model` is
+always denied, so an inherited model can never slip in. MTS_ALLOW_OPUS=1 allows all.
 
   python scripts/dev/model_guard.py check '<tool_input json>' <tool_name> [parent_model]   prints the decision (debug)
 """
@@ -54,8 +55,32 @@ NAMED = ("opus", "fable")
 SKIP_PREFIX = ("<system-reminder>", "<local-command", "<command-name>", "[SIGNALS", "<task-notification", "<side-sessions-event")
 
 
-def operator_named_opus(transcript_path, last=3):
-    """True when one of the last `last` typed operator messages in the transcript tail mentions opus/fable."""
+TASKS = os.environ.get("MTS_TASKS_DIR") or os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+                                                         "MyTradingSys", "system", "tasks")
+
+
+def crucial_card_cited(*texts):
+    """True when a brief cites a task card (its id, a file in system/tasks) that is lane OPUS, operator-approved and has a `crucial` reason.
+    A session may start Opus on its own only for such a card; the card gate is `tasks.py` lint (WORKERS.md rule 6)."""
+    blob = " ".join(str(t or "") for t in texts)
+    try:
+        names = [n[:-5] for n in os.listdir(TASKS) if n.endswith(".json")]
+    except OSError:
+        return False
+    for cid in names:
+        if cid in blob:
+            try:
+                with open(os.path.join(TASKS, cid + ".json"), encoding="utf-8") as f:
+                    c = json.load(f)
+            except (OSError, ValueError):
+                continue
+            if c.get("lane") == "OPUS" and c.get("approved_by") and str(c.get("crucial", "")).strip() and c.get("state") not in ("done", "dropped"):
+                return True
+    return False
+
+
+def operator_named_opus(transcript_path, last=1):
+    """True when the operator's latest typed message in the transcript tail mentions opus/fable."""
     try:
         with open(transcript_path, "rb") as f:
             f.seek(0, 2)
@@ -120,7 +145,8 @@ def hook():
     if tool not in AGENT_TOOLS + (START, SET_MODEL):
         return 0
     inp = ev.get("tool_input") or {}
-    if inp.get("model") and operator_named_opus(ev.get("transcript_path")):
+    if inp.get("model") and (operator_named_opus(ev.get("transcript_path"))
+                             or crucial_card_cited(inp.get("title"), inp.get("prompt"), inp.get("background"), inp.get("description"))):
         return 0
     needs_parent = inp.get("subagent_type") == "fork" or inp.get("context") == "fork"
     reason = decide(tool, inp, parent_model(ev.get("transcript_path")) if needs_parent else None)

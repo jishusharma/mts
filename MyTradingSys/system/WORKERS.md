@@ -21,14 +21,22 @@ Every other file points here. Numbers come from `python scripts/dev/worker_cost_
 3. **One-use Agent** (background, Sonnet, used once, never SendMessage'd) only for size S with `est_turns` <= 15: a read, a single
    fix, a card. The brief says "stop at 20 turns and report". Also the fallback on event turns where `start_session` is refused.
    Name every Agent in one line to the operator (invisible in the sidebar).
+3a. **Haiku for scoped work (operator 2026-10-17: Haiku is underused).** A task is *scoped* when the brief can name the files, the
+   exact change or command, and a check that says done (a test, a count, a diff to compare): mechanical edits, lookups, recomputing
+   numbers, spec-derived tests, doc and registry upkeep, running a script and reporting. Scoped work goes to a one-use Haiku Agent,
+   not to the session itself and not to Sonnet. Brief = files + change + done check + "stop at 15 turns and report". A session spawns
+   **at most 5 Haiku Agents at a time**; the session reads each result and spot-checks one claim (`git cherry`, a re-run). Needing
+   more than 5 in parallel means the work is a wave: make that session a super session (SUPER_SESSION.md), which compacts as in
+   rule 5. Unscoped or judgment work (design, a bug nobody has located, anything touching live money) is not Haiku work.
 4. **Over 40 expected turns: split the card.** A running worker hands over at the 40 tool-turn cap (RELAY.md) to a fresh worker;
    state lives in files (task card, notes folder), not context.
 5. **Compaction is a backstop.** `.claude/settings.json` keeps CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=25. Never compact by hand a worker
    that will ship soon; compact a long-lived coordinator only with 15+ turns left and above ~150k, else hand over.
-6. **Models.** Workers: Sonnet; Haiku for mechanical status/lookups; Opus only when the operator names it (card lane OPUS with
-   `approved_by`). The coordinator runs on the model the operator started it on (Sonnet default; Opus when the operator picks it for
-   judgment-heavy direction) and does little itself. Hook `model_guard.py` denies `Agent`/`start_session` without `model`, and Opus;
-   to use Opus for a named reason set `MTS_ALLOW_OPUS=1` in that session's environment or ask the operator to start it.
+6. **Models.** Workers: Sonnet; Haiku for mechanical status/lookups. **Opus is the tight exception** (operator 2026-10-17: a session-spawned
+   Opus can lose data on a bug or misreading, so only critical work): (a) the operator names it in their latest message, it is done;
+   (b) a session starts it only for a task card in lane OPUS with `approved_by` and `crucial` (one line: live money, irreversible data,
+   or a no-undo design call), cited by id in the brief. Nothing else, not "recommended" and not "better quality". Hook `model_guard.py`
+   enforces both, and always denies a call without `model`. A cheap model first: Opus is for what Sonnet already got wrong or cannot undo.
 7. **No clicks.** `start_session` with `initiation: "user_asked"` on operator turns (max 4 workers at once); on event turns where it is
    refused use rule 3's Agent. Never an `own_initiative` card for work already in scope.
 8. **Cleanup.** A finished session marks itself completed; the coordinator marks each worker once its ship is verified.

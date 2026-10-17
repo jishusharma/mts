@@ -195,6 +195,8 @@ def problems(card, cards=None, reg=None):
             p.append(f"layers: {x!r} is not a family in {LAYER_INDEX} ({', '.join(fams)})")
     if lane == "OPUS" and not card.get("approved_by"):
         p.append("lane OPUS needs approved_by (operator names Opus; CLAUDE.md)")
+    if lane == "OPUS" and not str(card.get("crucial", "")).strip():
+        p.append("lane OPUS needs crucial: one line on why only Opus fits (live money, irreversible data, or a no-undo design call; WORKERS.md rule 6)")
     if card.get("live_path") and lane != "JIS-NB":
         p.append("live_path card must be lane JIS-NB (desk task; builders never touch the live tree or restart)")
     for k in TEXT + LISTS:
