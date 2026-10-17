@@ -33,6 +33,22 @@ class TestParse(unittest.TestCase):
     def test_empty_day(self):
         self.assertEqual(D.parse_bi5(b"", DAY), [])
 
+    def test_ask_blob_uses_same_price_decode_and_filler_drop(self):
+        recs = [(0, 22001500, 22002500, 22001000, 22003000, 2.5),
+                (60, 22100000, 22100000, 22100000, 22100000, 0.0)]
+        self.assertEqual(D.parse_bi5(blob(recs), DAY, side="ASK"),
+                         [(DAY_MS, 22001.5, 22003.0, 22001.0, 22002.5, 2.5)])
+
+    def test_ask_url_and_side_fetch(self):
+        self.assertTrue(D.day_url(DAY, side="ASK").endswith("/ASK_candles_min_1.bi5"))
+
+    def test_spreads_join_exact_open_ms_without_forward_fill(self):
+        bid = [(1000, 100.0, 101.0, 99.0, 100.0, 1.0),
+               (3000, 101.0, 102.0, 100.0, 101.0, 1.0)]
+        ask = [(1000, 100.5, 101.5, 99.5, 100.25, 1.0),
+               (2000, 100.5, 101.5, 99.5, 100.75, 1.0)]
+        self.assertEqual(D.spreads(bid, ask), [(1000, 0.25)])
+
     def test_convert_neutral_taker_split(self):
         with tempfile.TemporaryDirectory() as td:
             raw, out = Path(td) / "raw", Path(td) / "out"
