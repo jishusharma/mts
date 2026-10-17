@@ -14,7 +14,7 @@
     "live_engine"
   ],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -27,5 +27,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the next read instead of by hand; T092 gap"
+  "title": "Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the next read instead of by hand; T092 gap",
+  "weight": "ROUTINE"
 }

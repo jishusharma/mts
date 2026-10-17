@@ -14,7 +14,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -41,5 +41,6 @@
   ],
   "tests": "a test that every formula id in FORMULAS.md has a spec entry in FORMULAS_SPEC.md",
   "title": "Lab: write the spec text of each FORMULAS.md entry a re-deriver needs (inputs, bar alignment, rounding, edge cases)",
+  "weight": "IMPORTANT",
   "worker": "session"
 }

@@ -13,7 +13,7 @@
     "volume_candles_ma"
   ],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers]",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
@@ -26,5 +26,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Funding carry with real spot basis, margin and borrow: net 15.4 -> 12.1 -> 6.2 %/yr decay in published_strats_2026-10-13/supp_carry.txt is funding only; model basis and 4-leg costs before any carry claim. host=any"
+  "title": "Funding carry with real spot basis, margin and borrow: net 15.4 -> 12.1 -> 6.2 %/yr decay in published_strats_2026-10-13/supp_carry.txt is funding only; model basis and 4-leg costs before any carry claim. host=any",
+  "weight": "IMPORTANT"
 }

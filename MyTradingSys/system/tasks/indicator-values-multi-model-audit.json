@@ -15,7 +15,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "Operator 2026-10-14: 'maybe this has been done in the past, but it needs different eyes'. The last formula audit was FORMULAS.md 'Verification note (this audit, 2026-09-28)'. Steps: (1) T0 script draws a seeded random sample of about 20 values from live snapshots and alert files (RSI, RSI-MA, ATR, VWAP and bands, Bollinger, CVD, net delta, VP POC/VAH/VAL, OI change, swing levels); (2) a packet per value with the raw 1m bars and the canonical definition only, never our value; (3) send the same packets to Haiku, Sonnet and Opus subagents (Opus is operator-named here), a CODEX card for GPT, and a desk.py post for DSA; (4) compare: agree within a stated tolerance, or a B-item with the packet attached. Bollinger is not in FORMULAS.md yet: add its canonical entry first.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] Operator 2026-10-14: 'maybe this has been done in the past, but it needs different eyes'. The last formula audit was FORMULAS.md 'Verification note (this audit, 2026-09-28)'. Steps: (1) T0 script draws a seeded random sample of about 20 values from live snapshots and alert files (RSI, RSI-MA, ATR, VWAP and bands, Bollinger, CVD, net delta, VP POC/VAH/VAL, OI change, swing levels); (2) a packet per value with the raw 1m bars and the canonical definition only, never our value; (3) send the same packets to Haiku, Sonnet and Opus subagents (Opus is operator-named here), a CODEX card for GPT, and a desk.py post for DSA; (4) compare: agree within a stated tolerance, or a B-item with the packet attached. Bollinger is not in FORMULAS.md yet: add its canonical entry first.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -30,5 +30,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus"
+  "title": "Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus",
+  "weight": "IMPORTANT"
 }

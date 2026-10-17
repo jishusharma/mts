@@ -77,5 +77,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV you wrote; set the result line."
   ],
   "tests": "synthetic 1h legs with a hand-built volume profile: the LVN price equals the hand value, the first touch bar gets the single row, a touch after a newer confirmed leg gives none, a touch before confirmed_i is ignored (no look-ahead), a leg whose profile is empty = NOT_IN_DATA; entry is the next bar open; long and short excursions equal hand values.",
-  "title": "Fabio volume-profile LVN touch: event table with forward MFE/MAE in R on 1h DEV"
+  "title": "Fabio volume-profile LVN touch: event table with forward MFE/MAE in R on 1h DEV",
+  "weight": "B-SHARED"
 }

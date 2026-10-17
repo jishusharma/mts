@@ -77,5 +77,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV you wrote; set the result line."
   ],
   "tests": "synthetic 5m day: first-30-minute return +0.4% gives one long row at the close of the 6th bar, -0.4% a short row, exactly 0 gives none; forward window ends at 24:00 UTC and never crosses into the next day; a day with a missing bar in the first 30 minutes = NOT_IN_DATA; MFE/MAE equal hand values; R uses only 1h bars closed at or before the entry bar open.",
-  "title": "Session momentum (T055 C2): daily event table with forward MFE/MAE in R on 5m DEV"
+  "title": "Session momentum (T055 C2): daily event table with forward MFE/MAE in R on 5m DEV",
+  "weight": "B-SHARED"
 }

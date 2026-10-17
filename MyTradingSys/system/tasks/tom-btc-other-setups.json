@@ -16,7 +16,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "PARKED 2026-10-15 (lab-unstall, TRACK_RECORD.md item 1-2): data-bound card (BTC klines / Tom frames after the 2026-10-12 copy) not verified on JIS-NUC; sibling Tom BTC cards ended BLOCKED at 230-485k tokens for zero output. Release (apply-op release) only after a pre-flight confirms every input path",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=Gemini Flash high + Haiku re-derive 1-3 numbers] PARKED 2026-10-15 (lab-unstall, TRACK_RECORD.md item 1-2): data-bound card (BTC klines / Tom frames after the 2026-10-12 copy) not verified on JIS-NUC; sibling Tom BTC cards ended BLOCKED at 230-485k tokens for zero output. Release (apply-op release) only after a pre-flight confirms every input path",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
@@ -41,5 +41,6 @@
     "Reuse chart_lab.py with a setup switch; then the event study table."
   ],
   "tests": "pytest: one synthetic pullback and one breakout candidate found",
-  "title": "Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, breakout/break-in)"
+  "title": "Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, breakout/break-in)",
+  "weight": "IMPORTANT"
 }

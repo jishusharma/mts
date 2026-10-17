@@ -11,7 +11,7 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -26,5 +26,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "P4 bookkeeping out of git history: claim, release and lane-health records to one uncommitted state file (q17)"
+  "title": "P4 bookkeeping out of git history: claim, release and lane-health records to one uncommitted state file (q17)",
+  "weight": "ROUTINE"
 }

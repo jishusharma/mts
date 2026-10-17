@@ -16,7 +16,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -49,5 +49,6 @@
   ],
   "tests": "Java: balance 24090-24110 after the extreme; 1m close 24088 -> path A3 candidate, entry at the next open; second stop-out then a third signal in the same session -> suppressed; state restored after a simulated restart. Fails before the paths exist.",
   "title": "Tom v2: encode fade entry paths A2 (pullback) and A3 (range break) with one re-entry per session",
+  "weight": "IMPORTANT",
   "worker": "session"
 }

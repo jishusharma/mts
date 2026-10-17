@@ -13,7 +13,7 @@
     "live_engine"
   ],
   "live_path": false,
-  "note": "CoinGlass chart VWAP/CVD levels anchor at the chart's first loaded bar (1m VWAP 82643 = 10:46Z start); print our 00:00Z VWAP and say CVD levels are chart-relative. Aggregated CVD and Net Longs/Shorts are not in our data (see card identify-the-coinglass-net-delta-panel-u).",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped] CoinGlass chart VWAP/CVD levels anchor at the chart's first loaded bar (1m VWAP 82643 = 10:46Z start); print our 00:00Z VWAP and say CVD levels are chart-relative. Aggregated CVD and Net Longs/Shorts are not in our data (see card identify-the-coinglass-net-delta-panel-u).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -29,5 +29,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descriptive only"
+  "title": "Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descriptive only",
+  "weight": "ROUTINE"
 }

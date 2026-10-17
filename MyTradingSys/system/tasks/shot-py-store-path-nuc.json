@@ -11,7 +11,8 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "store-path fix shipped in 514bb420; branch shots-inbox/2026-10-12-1532 no longer on origin (ls-remote empty), nothing left to land",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -21,7 +22,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "shot.py ingest fails on JIS-NUC (git-common-dir flag echoed into the store path); then land the 2 CoinGlass PNGs from branch shots-inbox/2026-10-12-1532 and delete that branch"

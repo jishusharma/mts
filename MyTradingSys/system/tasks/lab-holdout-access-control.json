@@ -22,7 +22,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -48,5 +48,6 @@
   ],
   "tests": "fail-first test: renamed file with a post-cutoff bar is refused",
   "title": "Lab: refuse VALIDATION and HOLDOUT data by content (timestamp bounds), not only by path",
+  "weight": "CRUCIAL",
   "worker": "session"
 }

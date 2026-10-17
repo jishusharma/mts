@@ -13,7 +13,7 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "Evidence follow-up to existing repair, not a parallel duplicate implementation. See RV05 report.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] Evidence follow-up to existing repair, not a parallel duplicate implementation. See RV05 report.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -28,5 +28,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "RV05 H2: read position lines and stop prices before applying existing Fabio entry repair"
+  "title": "RV05 H2: read position lines and stop prices before applying existing Fabio entry repair",
+  "weight": "IMPORTANT"
 }

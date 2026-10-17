@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T20:23:16Z",
   "commands": [],
   "created": "2026-10-18T00:00:00Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "4 machine checks; 73 tests passed; MyTradingSys/research/layer_lab/reports/2026-10-17_lab-",
+      "ref": "340541f0",
+      "utc": "2026-10-17T20:23:16Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Opus gate: operator's latest message or an approved crucial OPUS card; Haiku rule for scop",
@@ -22,13 +29,13 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-17T19:21:15Z",
   "refs": [],
-  "result": "",
+  "result": "4 machine checks; 73 tests passed; MyTradingSys/research/layer_lab/reports/2026-10-17_lab-machine-checks-extra.md",
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/lab_flow.py",
@@ -44,7 +51,7 @@
   "scope_sha": "1847cff89574",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "formula id on a card must exist in FORMULAS.md",
     "trial-ledger count must equal runs in runs.jsonl for a run card",
@@ -53,5 +60,6 @@
   ],
   "tests": "one fail-first test per check",
   "title": "Lab: machine checks for formula id, trial ledger vs runs, auto B-shared on citation, mutation check of tests",
+  "weight": "CRUCIAL",
   "worker": "session"
 }

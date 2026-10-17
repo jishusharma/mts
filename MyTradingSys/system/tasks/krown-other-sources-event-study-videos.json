@@ -16,7 +16,7 @@
     "krown"
   ],
   "live_path": false,
-  "note": "waits on its depends_on cards; release when they are done",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped] waits on its depends_on cards; release when they are done",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
@@ -46,5 +46,6 @@
   ],
   "tests": "docs lane: verify_extract_quotes.py is the gate",
   "title": "Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigger, target, hit rate as he states them); DONE when: a V2 extract per video passes the quote gate and a call ledger exists",
+  "weight": "ROUTINE",
   "worker": "session"
 }

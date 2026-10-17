@@ -11,7 +11,7 @@
   "lane": "OPUS",
   "layers": [],
   "live_path": false,
-  "note": "2026-10-15 q-gap-b answered: no change to GO_LIVE_BAR; report shadow-fill and testnet numbers side by side.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] 2026-10-15 q-gap-b answered: no change to GO_LIVE_BAR; report shadow-fill and testnet numbers side by side.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -26,5 +26,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "G3 GO_LIVE_BAR on shadow fills from the real tape (operator D-b)"
+  "title": "G3 GO_LIVE_BAR on shadow fills from the real tape (operator D-b)",
+  "weight": "IMPORTANT"
 }

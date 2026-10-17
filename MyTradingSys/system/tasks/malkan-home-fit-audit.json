@@ -18,7 +18,7 @@
     "rsi"
   ],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "cloud-research 2026-10-11 (C-Cloud BACKTEST_FAILURES_RESEARCH.md; operator: 'get this into action')",
@@ -46,5 +46,6 @@
   ],
   "tests": "test_pre_reg_template.py passes for the new HOME_FIT_AUDIT file (all 12 items answered; fails before the file exists).",
   "title": "Home-fit audit of the Malkan RSI layer against the readiness checklist",
+  "weight": "ROUTINE",
   "worker": "agent"
 }

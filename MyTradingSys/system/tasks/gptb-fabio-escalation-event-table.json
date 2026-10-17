@@ -78,5 +78,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV you wrote; set the result line."
   ],
   "tests": "synthetic 1h bars with tbv set so a record-delta bar breaks an absorbed swing level: one row on that bar, side in the aggressor's direction; a bar with delta below aggression_k times the average gives none; the swing is not used before confirmed_i; entry is the next bar open; gap or short forward window = NOT_IN_DATA.",
-  "title": "Fabio escalation/absorption: event table with forward MFE/MAE in R on 1h DEV"
+  "title": "Fabio escalation/absorption: event table with forward MFE/MAE in R on 1h DEV",
+  "weight": "B-SHARED"
 }

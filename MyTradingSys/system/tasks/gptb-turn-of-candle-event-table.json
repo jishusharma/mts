@@ -77,5 +77,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV you wrote; set the result line."
   ],
   "tests": "synthetic 1m bars: boundary rows exist only where the next bar has minute-of-quarter 0, entry is the close of the minute-14 bar, long and short MFE/MAE equal hand values (short MFE = long MAE in price terms), forward bars are exactly the next 15, a gap in them = NOT_IN_DATA; the first 14 bars of the series give no row.",
-  "title": "Turn-of-candle (T055 C3): per-quarter-hour event table with forward MFE/MAE in R on 1m DEV"
+  "title": "Turn-of-candle (T055 C3): per-quarter-hour event table with forward MFE/MAE in R on 1m DEV",
+  "weight": "B-SHARED"
 }

@@ -14,7 +14,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | operator q10 2026-10-13: add the profile arm; GPT luna lab takes it (Pillow on JIS-NUC)",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=Gemini Flash high + Haiku re-derive 1-3 numbers] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | operator q10 2026-10-13: add the profile arm; GPT luna lab takes it (Pillow on JIS-NUC)",
   "pinned": false,
   "prio": 1,
   "refine_tries": 0,
@@ -47,5 +47,6 @@
     "PASS = both frames within one histogram row height; else FAIL; unreadable = NOT_IN_DATA. Append the result and the verdict to PROFILE_PARITY.md."
   ],
   "tests": "pytest: synthetic histogram, visible range 25100-25400, widest row at 25220 -> f = 0.40; computed profile low 24870 high 25170 POC 24990 -> f = 0.40 -> match; POC 25050 -> f = 0.60 -> mismatch (row height 0.033). Fails before the function exists.",
-  "title": "Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)"
+  "title": "Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)",
+  "weight": "IMPORTANT"
 }
