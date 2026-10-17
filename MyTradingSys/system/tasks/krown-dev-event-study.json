@@ -1,6 +1,6 @@
 {
  "approved_by": "",
- "asks": "",
+ "asks": "krown-recall-check ended RECALL FAIL (0/3 strict; only 3 of 12 examples verify, so the bar of 6 is unreachable). Is the recall bar a gate for the DEV event study, or is it waived because the check set is too small? Default (OURS): waive as gate, run the DEV study only for H-ids whose detector does not need the failed examples, label it NO-RECALL-CLEARANCE.",
  "commands": [],
  "created": "2026-10-14T15:57:19Z",
  "depends_on": [
@@ -16,7 +16,7 @@
   "krown"
  ],
  "live_path": false,
- "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium WEIGHT:CRUCIAL. HELD refined: waits on krown-recall-check (depends_on). [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] Unparked 2026-10-17 by q-krown-saturation, q-krown-stop, q-krown-volume-venue. Was left blocked: moved to refined by backlog-refine-1017; waits on krown-recall-check (depends_on).",
+ "note": "BLOCKED 2026-10-18 by krown-recall-check result (RECALL.md line 36: RECALL FAIL, bar unreachable). REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium WEIGHT:CRUCIAL. HELD refined: waits on krown-recall-check (depends_on). [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] Unparked 2026-10-17 by q-krown-saturation, q-krown-stop, q-krown-volume-venue. Was left blocked: moved to refined by backlog-refine-1017; waits on krown-recall-check (depends_on).",
  "pinned": false,
  "prio": 2,
  "refine_tries": 0,
@@ -38,7 +38,7 @@
  ],
  "size": "M",
  "sources": [],
- "state": "refined",
+ "state": "blocked",
  "steps": [
   "freeze the study list and parameter grids in PRE_REG_KROWN.md (a dated addendum) before the first run",
   "compute expected N and MDE per H-id; mark underpowered ones and pool majors only if the data card landed",
