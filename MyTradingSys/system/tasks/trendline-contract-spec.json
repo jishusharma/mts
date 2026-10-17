@@ -5,6 +5,7 @@
   "created": "2026-10-17T03:55:00Z",
   "depends_on": [],
   "done_when": "TRENDLINE_CONTRACT.md is on fast-track with zero unset parameters, a SOURCED/OURS tag per row, FORMULAS.md entries and the revised ledger schema; sync.py ship green.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Turn REPORT.md's plan into a codable contract: each parameter gets a value, tagged SOURCED (quote + file:line) or OURS; two coders would write the same detector.",
   "id": "trendline-contract-spec",
@@ -41,5 +42,6 @@
     "Add formulas to backtest/layers/FORMULAS.md with worked numbers computed by hand"
   ],
   "tests": "Spec lint: every parameter row has a value and a SOURCED or OURS tag; each worked number is hand-computed, not copied from code; verify_extract_quotes.py PASS on any new quote.",
-  "title": "Trend-line contract: every parameter fixed, SOURCED or OURS"
+  "title": "Trend-line contract: every parameter fixed, SOURCED or OURS",
+  "worker": "session"
 }

@@ -7,6 +7,7 @@
     "trendline-contract-spec"
   ],
   "done_when": "Pack on fast-track with WINDOWS.csv, two blank marking sheets, closed answer key, exposure ledger line; sync.py ship green.",
+  "est_turns": 35,
   "from_inbox": "",
   "goal": "Build the G3 pack so two readers mark 'obvious legitimate trend line' on BTC charts blind to what came next, giving the selector a reproducibility number.",
   "id": "trendline-g3-marks-pack",
@@ -42,5 +43,6 @@
     "Add a test that no chart contains a bar after its decision time"
   ],
   "tests": "test_g3_pack.py new case fails on the old pack code if a chart includes a bar after decision time; passes on the new builder.",
-  "title": "Trend-line G3 blind marks pack for the obvious-line selector"
+  "title": "Trend-line G3 blind marks pack for the obvious-line selector",
+  "worker": "session"
 }

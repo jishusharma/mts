@@ -9,6 +9,7 @@
     "trendline-causal-module"
   ],
   "done_when": "counts CSV and PRE_REG_TRENDLINES.md on fast-track, EXPOSURE_LEDGER line added, underpowered cells named; sync.py ship green.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Count lines, touch episodes and breaks per TF and arm on DEV only, with no returns or outcomes, to size the cells before any PRE_REG is frozen.",
   "id": "trendline-count-only",
@@ -43,5 +44,6 @@
     "Check VERDICTS.csv for overlapping S/R studies; write PRE_REG; ship"
   ],
   "tests": "Script asserts no bar after 2024-06-30 is loaded and emits no price-change column; a unit test fails if an outcome column appears.",
-  "title": "Trend-line count-only run on DEV and PRE_REG"
+  "title": "Trend-line count-only run on DEV and PRE_REG",
+  "worker": "session"
 }
