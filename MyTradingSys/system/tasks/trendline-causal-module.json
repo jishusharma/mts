@@ -16,14 +16,14 @@
     "krown"
   ],
   "live_path": false,
-  "note": "Filed by trendlines-verify 2026-10-17 after CLAUDE_VERIFY.md (FIX-FIRST). Gate order: contract, causal module, count-only, then PRE_REG; no backtest study yet. Stays refined until its depends_on card is done, then flip to ready.",
+  "note": "Filed by trendlines-verify 2026-10-17. Contract shipped (trendline-contract-spec done 2026-10-17, lint rows=48 problems=0); scope_in path fixed to MyTradingSys/ prefix and card promoted by backlog-refine-1017. Claim is held by JIS-NUC.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
   "scope_in": [
-    "backtest/layers/trendlines/trendline_core.py plus test_trendline_core.py: pivot at close(i+k), immutable line versions, touch episodes, break/retest states",
+    "MyTradingSys/backtest/layers/trendlines/trendline_core.py plus test_trendline_core.py: pivot at close(i+k), immutable line versions, touch episodes, break/retest states",
     "Reuse layers/timeframe/tf_resample.py; read cc_structure.py and bigmoves.py pivot code first and say why not reused"
   ],
   "scope_out": [
@@ -35,7 +35,7 @@
     "MyTradingSys/research/trendlines_2026-10-17/TRENDLINE_CONTRACT.md",
     "MyTradingSys/backtest/layers/timeframe/tf_resample.py"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Write tests first from TRENDLINE_CONTRACT.md worked examples",
     "Truncation test: lines built on data cut at t equal those built on all data (also at a pivot-confirm bar)",
