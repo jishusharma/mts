@@ -4,6 +4,7 @@
   "created": "2026-10-16T08:30:00Z",
   "depends_on": [],
   "done_when": "RESULT_V2.md holds one verdict word (PASS | INCONCLUSIVE | FAIL) for C pooled computed by the PRE_REG_V2.md rule, every other cell listed REFUSED_POWER without numbers, matched events/days printed before any outcome and equal to PRE_REG_V2 s.2 (974 / 452) or BLOCKED.md, VERDICTS.csv has the row, ship gate green.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "One outcome read of PRE_REG_V2.md: the same frozen composite C (trigger of PRE_REG.md s.2, context_asof.py sha efa3513f) against context-matched controls drawn from every same-side at-level decision hour with a ladder stop (no ledger cooldown), so that 974 of 1,010 C events (452 days, gate 393) have >= 10 controls. BTCUSDT 1h decisions, daily-candle stop-ladder trade, DEV only, Holm m = 42.",
   "id": "context-composite-v2-dev-read",
@@ -53,5 +54,6 @@
     "Write RESULT_V2.md (verdict line first), ledger_C_v2.csv, controls_v2.csv, EXPOSURE_LEDGER.csv row (m = 42); verdicts.py add one row with the kill scope of PRE_REG_V2 s.3; lookahead_lint.py on the folder; run_all_tests.py --quick; ship."
   ],
   "tests": "test_study_v2.py (pool rule on a hand fixture + the V1 simulator checks) fails on the V1 pool, passes on the V2 pool; registered in scripts/dev/run_extra_tests.py.",
-  "title": "Context factors V2: run PRE_REG_V2 (operator context composite C vs wider-pool matched controls, DEV, one read)"
+  "title": "Context factors V2: run PRE_REG_V2 (operator context composite C vs wider-pool matched controls, DEV, one read)",
+  "worker": "session"
 }

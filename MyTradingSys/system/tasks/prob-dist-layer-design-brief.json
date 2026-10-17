@@ -5,6 +5,7 @@
   "created": "2026-10-16T18:15:20Z",
   "depends_on": [],
   "done_when": "BRIEF.md is shipped and the operator can start the design talk from it.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Operator 2026-10-16 wants a probability-distribution layer (a peer layer, PROJECT_VISION.md:94 and :103) and a design talk. Prepare a brief with the session's own design ideas; build nothing.",
   "id": "prob-dist-layer-design-brief",
@@ -45,5 +46,6 @@
     "Ship, then stop; the operator opens a design talk in a new session."
   ],
   "tests": "BRIEF.md exists, cites file:line for each prior claim, and lists the open questions.",
-  "title": "Probability distribution layer: gather prior work and arrive with own design ideas for an operator design discussion"
+  "title": "Probability distribution layer: gather prior work and arrive with own design ideas for an operator design discussion",
+  "worker": "session"
 }

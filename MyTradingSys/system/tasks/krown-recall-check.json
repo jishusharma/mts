@@ -8,6 +8,7 @@
     "krown-data-daily-majors"
   ],
   "done_when": "research/krown_ta101_2026-10-13/RECALL.md: per example verified/not verified (klines evidence), hit/miss with the bar offset, fire counts, pass bars stated before the run; examples that do not verify are listed and dropped, not fixed",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "PRE_REG_KROWN item 3: first verify each dated chart example from his videos against klines (captions are not evidence of dates or prices; includes the Bitcoin 2017 and 2021 weekly tops, TOP-12/TOP-32, and the VJZ examples), then run the detectors on them: recall within 2 bars, and fire rate per setup against the 1-in-10-daily-bars ceiling.",
   "id": "krown-recall-check",
@@ -44,5 +45,6 @@
     "report recall and fire rate; if recall fails fix the encoding (counts as a variant), never the example"
   ],
   "tests": "docs lane: the recall table is the result; every example row cites an extract line and a kline row",
-  "title": "Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_REG_KROWN item 3); DONE when: RECALL.md has per-example hit/miss and fire counts"
+  "title": "Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_REG_KROWN item 3); DONE when: RECALL.md has per-example hit/miss and fire counts",
+  "worker": "session"
 }

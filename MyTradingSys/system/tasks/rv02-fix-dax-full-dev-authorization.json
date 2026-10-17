@@ -5,6 +5,7 @@
   "created": "2026-10-12T19:46:13Z",
   "depends_on": [],
   "done_when": "Linked HIGH finding has a synthetic red/green regression; focused harness/data tests pass and development isolation is preserved.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Reject partial snapshot months as full development and bind holdout authorization to a durable completed run with its code, arms, data, session and readiness identities.",
   "id": "rv02-fix-dax-full-dev-authorization",
@@ -42,5 +43,6 @@
     "Fix within the approved scope, invalidate incompatible caches, and run the focused tests."
   ],
   "tests": "One evaluated snapshot over a complete 1440-minute day cannot certify 96 scheduled observations; reject missing edge coverage, stale producer ranges and changed-run authorization.",
-  "title": "RV02 R3: require complete DAX sampling and bind holdout authorization"
+  "title": "RV02 R3: require complete DAX sampling and bind holdout authorization",
+  "worker": "session"
 }

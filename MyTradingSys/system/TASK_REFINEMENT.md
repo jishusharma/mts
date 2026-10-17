@@ -18,7 +18,7 @@ Refinement moves that scoping work to a cheap, separate step that runs ahead of 
 New is only: `scripts/dev/tasks.py`, cards in `MyTradingSys/system/tasks/<id>.json`, and the Backlog section of the page.
 
 ## The card (one JSON per task, sorted keys, ships with `sync.py ship`)
-`id` (registry id, else a slug), `title`, `state`, `prio` 1-5, `lane`, `size` S|M, `goal`, `scope_in`, `scope_out`, `steps`, `commands`,
+`id` (registry id, else a slug), `title`, `state`, `prio` 1-5, `lane`, `size` S|M, `est_turns` (int), `worker` agent|session, `goal`, `scope_in`, `scope_out`, `steps`, `commands`,
 `tests`, `done_when`, `sources`, `depends_on`, `refs`, `live_path`, `approved_by`, `note`.
 - `refs` = registry rows this card closes while they are OPEN. A follow-up of a closed row (B160, B149) has NO refs: `sweep` retires a card whose refs are all closed.
 - States: `raw` (captured) -> `refined` (being scoped) -> `ready` (passes the gate) -> `active` -> `done`; `blocked` (operator hold) and `dropped`.
@@ -27,7 +27,7 @@ New is only: `scripts/dev/tasks.py`, cards in `MyTradingSys/system/tasks/<id>.js
 ## Definition of Ready (`tasks.py check`, fail closed; also in the offline gate as `tasks.py lint`)
 A card is `ready` only if all hold, and the tool names every miss:
 1. goal, done_when (an observable: file, row count, number), at least one scope_in and one step.
-2. lane valid; size S or M (an L card is split first: it must fit one ~50k-token session).
+2. lane valid; size S or M (an L card is split first); for SONNET/HAIKU/OPUS cards `est_turns` (whole number, <= 40, else split) and `worker`: agent only for size S and est_turns <= 15, else session (WORKERS.md; `tasks.py check` enforces it).
 3. Code lane: `tests` names the fail-first test. Run lane: copy-ready `commands`. OPUS: `approved_by`.
 4. `live_path` cards are lane JIS-NB only (builders never touch the live tree, restart, or open trades).
 5. No placeholder text (TBD/TODO/figure out), each field <= 400 chars, rendered brief <= 30 lines (CLAUDE.md prompt rule).

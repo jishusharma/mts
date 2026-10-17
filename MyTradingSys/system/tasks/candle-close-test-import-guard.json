@@ -5,6 +5,7 @@
   "created": "2026-10-14T12:10:19Z",
   "depends_on": [],
   "done_when": "A6 reproduction exits nonzero after fix; genuine dependency absence skips explicitly; eight numerical tests pass with pandas; research outputs unchanged.",
+  "est_turns": 12,
   "from_inbox": "",
   "goal": "Make an unexpected study import failure fail the research tests; distinguish missing optional pandas from broken application imports.",
   "id": "candle-close-test-import-guard",
@@ -42,5 +43,6 @@
     "Run real eight numerical tests with pandas and simulated missing-pandas skips; report which CI checks execute versus skip. Do not edit workflows or strategy outputs."
   ],
   "tests": "Subprocess with pandas present and forced ImportError for study must exit nonzero; fails on old code. Missing pandas remains explicit eight skips; numerical tests execute when pandas exists.",
-  "title": "Candle research: fail closed on study import errors and verify dependency coverage"
+  "title": "Candle research: fail closed on study import errors and verify dependency coverage",
+  "worker": "agent"
 }

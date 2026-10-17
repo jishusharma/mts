@@ -9,6 +9,7 @@
     "fabio-layer-v2-markets"
   ],
   "done_when": "HOME_FIT_AUDIT_POSITIONING.md with 12 answered items and follow-up cards, each passing tasks.py check.",
+  "est_turns": 12,
   "from_inbox": "",
   "goal": "Apply the 12-point checklist to the FlowHorse / whale positioning layer so its 'no edge' is read as measuring the encoding or the trader. Thresholds are UNDEFINED in source; decide: sourced threshold, or label as a NO-SOURCE research test (VISION exception 2).",
   "id": "positioning-home-fit-audit",
@@ -44,5 +45,6 @@
     "Create at most 3 follow-up Sonnet cards via tasks.py new; no backtest here."
   ],
   "tests": "test_pre_reg_template.py passes for the new HOME_FIT_AUDIT file (all 12 items answered; fails before the file exists).",
-  "title": "Home-fit audit of the FlowHorse / whale positioning layer against the readiness checklist"
+  "title": "Home-fit audit of the FlowHorse / whale positioning layer against the readiness checklist",
+  "worker": "agent"
 }

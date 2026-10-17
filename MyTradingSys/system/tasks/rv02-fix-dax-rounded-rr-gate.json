@@ -5,6 +5,7 @@
   "created": "2026-10-12T19:46:12Z",
   "depends_on": [],
   "done_when": "Linked HIGH finding has a synthetic red/green regression; focused harness/data tests pass and development isolation is preserved.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Reject exact net RR below 1.25 even when Java display serialization rounds it to 1.25; freeze decision geometry and fee assumptions and keep display rounding separate.",
   "id": "rv02-fix-dax-rounded-rr-gate",
@@ -42,5 +43,6 @@
     "Fix within the approved scope, invalidate incompatible caches, and run the focused tests."
   ],
   "tests": "Producer/consumer boundary fixture E=100 stop=99 target=101.25: exact 1249/1001 stays WAIT_RR after JSON serialization; test both sides and directions at the floor.",
-  "title": "RV02 R2: preserve exact DAX net RR through the decision boundary"
+  "title": "RV02 R2: preserve exact DAX net RR through the decision boundary",
+  "worker": "session"
 }

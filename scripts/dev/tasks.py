@@ -51,6 +51,9 @@ ASTRA_EFFORT = "low"   # operator 2026-10-13: astra at its lightest effort only,
 CODEX_EFFORTS = ("low", "medium", "high", "xhigh", "max")
 LAB_REPORTS = "MyTradingSys/research/layer_lab/reports"
 SIZES = ("S", "M", "L")
+WORKERS = ("agent", "session")                   # WORKERS.md: who runs the card; set during refinement
+AGENT_MAX_TURNS = 15                             # WORKERS.md: a one-use Agent only for <= 15 turns and size S
+SESSION_MAX_TURNS = 40                           # RELAY.md hand-over cap: a card needing more is split
 MAX_TRIES = 2                                    # refiner attempts per card; then it is parked, not retried every tick
 BUFFER = 3                                       # ready cards to keep in stock before the refiner stops
 MAX_BRIEF = 30                                   # RELAY.md Task list standard: block <= 30 lines
@@ -121,11 +124,26 @@ def refresh_layers(repo=REPO):
 
 
 def blank(cid, title, **kw):
-    return {"id": cid, "title": title, "state": "raw", "prio": kw.get("prio", 3), "lane": kw.get("lane", ""), "size": "",
+    return {"id": cid, "title": title, "state": "raw", "prio": kw.get("prio", 3), "lane": kw.get("lane", ""), "size": "", "est_turns": None, "worker": "",
             "layers": kw.get("layers", []),
             "goal": "", "scope_in": [], "scope_out": [], "steps": [], "commands": [], "tests": "", "done_when": "",
             "sources": [], "depends_on": [], "refs": kw.get("refs", []), "live_path": False, "approved_by": "",
             "from_inbox": kw.get("from_inbox", ""), "refine_tries": 0, "asks": "", "created": now(), "refined_by": "", "note": "", "result": ""}
+
+
+def worker_problems(card):
+    """WORKERS.md: the worker type is chosen up front from the estimated turns; agent only for size S and <= AGENT_MAX_TURNS."""
+    p = []
+    t, w = card.get("est_turns"), card.get("worker")
+    if not isinstance(t, int) or isinstance(t, bool) or t < 1:
+        p.append("est_turns must be a whole number of expected assistant turns (>= 1)")
+    elif t > SESSION_MAX_TURNS:
+        p.append(f"est_turns {t} > {SESSION_MAX_TURNS}: split the card (hand-over cap)")
+    if w not in WORKERS:
+        p.append(f"worker must be one of {', '.join(WORKERS)} (WORKERS.md)")
+    elif w == "agent" and isinstance(t, int) and (t > AGENT_MAX_TURNS or card.get("size") != "S"):
+        p.append(f"worker agent only for size S and est_turns <= {AGENT_MAX_TURNS}: make it a session")
+    return p
 
 
 def problems(card, cards=None, reg=None):
@@ -146,6 +164,8 @@ def problems(card, cards=None, reg=None):
     if card.get("size") not in ("S", "M"):
         p.append("size must be S or M (L = split it into cards that fit one session, ~50k tokens)" if card.get("size") == "L"
                  else "size is empty (S or M)")
+    if lane in CODE_LANES:
+        p.extend(worker_problems(card))
     if lane in CODE_LANES and not str(card.get("tests", "")).strip():
         p.append("tests is empty (code lane: name the fail-first test)")
     if lane in RUN_LANES and not card.get("commands"):
@@ -192,7 +212,7 @@ def problems(card, cards=None, reg=None):
 
 def brief(card):
     """The session prompt for one card. <= 30 lines by lint."""
-    L = [f"TASK {card['id']} [{card.get('lane', '?')}, size {card.get('size') or '?'}, prio {card.get('prio', '?')}]: {card['title']}",
+    L = [f"TASK {card['id']} [{card.get('lane', '?')}, size {card.get('size') or '?'}, {card.get('worker') or '?'} ~{card.get('est_turns') or '?'} turns, prio {card.get('prio', '?')}]: {card['title']}",
          f"Goal: {card.get('goal', '')}",
          f"Scope in: {'; '.join(card.get('scope_in', []))}" + (f" | out: {'; '.join(card['scope_out'])}" if card.get("scope_out") else "")]
     L += [f"{i}. {s}" for i, s in enumerate(card.get("steps", []), 1)]

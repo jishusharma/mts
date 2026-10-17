@@ -7,6 +7,7 @@
     "rv02-fix-dax-preprocessing-isolation"
   ],
   "done_when": "Linked HIGH finding has a synthetic red/green regression; focused harness/data tests pass and development isolation is preserved.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Before fresh row generation and simulation, verify that snapshot producer provenance and the authorized execution archive identify the same development data.",
   "id": "rv02-fix-dax-producer-data-binding",
@@ -43,5 +44,6 @@
     "Fix within the approved scope, invalidate incompatible caches, and run the focused tests."
   ],
   "tests": "Freeze synthetic snapshots at price 100, revise bars to 200 before fresh rows: reject and require regeneration; same data passes; no holdout bytes read or hashed.",
-  "title": "RV02 R4: reject DAX snapshots made from different execution data"
+  "title": "RV02 R4: reject DAX snapshots made from different execution data",
+  "worker": "session"
 }
