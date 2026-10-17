@@ -3,7 +3,15 @@
 Rules are not copied here: `GEMINI.md` -> `AGENTS.md` -> `CLAUDE.md` is the single source (Claude-only parts do not apply: screenshots, Control Room pages, DSA posting, relay hand-over); protocol is PARALLEL.md.
 Gemini is one more work-tree session, modelled on Codex (CODEX_START.md). It meets Claude only through `origin/fast-track` (commits, claims, task cards, desk board).
 **Gemini takes lane `CODEX` cards only** (audits, backtest runs, doc work, spec-derived tests), and only cards the Codex lab has not claimed: the claim is the lock. Machines and logins: `HOW_MTS_RUNS.md`.
-The tool is **Antigravity** (Google's IDE, a VS Code fork, and Antigravity CLI). Since 2026-06-18 Google no longer serves Gemini Code Assist for individuals, the VS Code extension or the old Gemini CLI to AI Pro logins (login error seen 2026-10-17: "This client is no longer supported ... migrate to the Antigravity suite"; developers.google.com/gemini-code-assist/docs/deprecations/code-assist-individuals). Install Antigravity from antigravity.google and sign in with the AI Pro Google account. Antigravity details below marked UNVERIFIED are to be confirmed on first use.
+The tool actually installed on the NUC (2026-10-17) is the **Google Antigravity extension 1.8.0 inside VS Code** (its backend `agy` v1.4.0 lives in `C:\Users\E-ngineers\.gemini\bin`); a standalone Antigravity IDE and a terminal `agy` also exist but are not needed. Since 2026-06-18 Google no longer serves the old Gemini Code Assist extension or Gemini CLI to AI Pro logins (error: 'This client is no longer supported ... migrate to the Antigravity suite'); `google.geminicodeassist` in VS Code is dead, ignore its crash log. Sign in through the Antigravity icon in the Activity Bar (Continue with Google). Open the folder with File > Open Folder; the path must be `F:\MTS\mts-gemini`, NOT the empty stray `F:\mts-gemini`.
+
+## Simple working model (how people run Claude and Gemini on one repo, researched 2026-10-17)
+- Two tools, never one folder: Claude works in its own work trees, Gemini only in `F:\MTS\mts-gemini`. They talk only through git, task cards and the desk board (no direct tool-to-tool link).
+- One rules file: `CLAUDE.md` is the source; `AGENTS.md` and `GEMINI.md` only point to it.
+- Role split: Gemini = audits, tests, docs, first-pass review (lane CODEX cards). Claude = live path, anything needing OPUS, final review of Gemini's claims.
+- Never write the same files at once: the card's scope_in list and the claim are the lock; `sync.py ship` and CI check every result.
+- Model: use a Flash model for routine cards; Gemini 4 Argon has a separate weekly-only quota, keep it for hard cards.
+- No plugins or delegation tools (community Claude-to-agy bridges exist; not installed). Revisit only after one card has shipped cleanly.
 
 ## Zero-conflict rules (all already in PARALLEL.md; Gemini adds none)
 1. Own checkout: the work tree `F:\MTS\mts-gemini`, never the live tree (`BinanceDataFeed` on JIS-NB, marked `.mts_live`) and never another session's tree (`mts-codex`, `mts-codex-lab`, `mts-dsa`, `mts-jis-nuc-*`). the IDE opens only `F:\MTS\mts-gemini`.
