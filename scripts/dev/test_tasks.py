@@ -75,6 +75,22 @@ class DefinitionOfReadyTest(unittest.TestCase):
         self.assertTrue(any("30 lines" in m for m in T.problems(c)))
         self.assertLessEqual(len(T.brief(good()).splitlines()), T.MAX_BRIEF)
 
+    def test_weight_field_is_validated_optional_and_shown_in_brief(self):
+        self.assertTrue(any("BOGUS" in m for m in T.problems(good(weight="BOGUS"))))
+        self.assertEqual(T.problems(good(weight="CRUCIAL")), [])
+        self.assertEqual(T.problems(good()), [])
+        self.assertEqual(T.problems(good(weight="")), [])
+        self.assertIn("Weight: CRUCIAL", T.brief(good(weight="CRUCIAL")))
+        self.assertNotIn("Weight:", T.brief(good()))
+        self.assertEqual(T.blank("B1", "t")["weight"], "")
+
+    def test_weight_line_counts_toward_the_30_line_brief(self):
+        base = len(T.brief(good(steps=["s0"])).splitlines())
+        steps = [f"step {i}" for i in range(T.MAX_BRIEF - base + 1)]
+        self.assertEqual(len(T.brief(good(steps=steps)).splitlines()), T.MAX_BRIEF)
+        self.assertEqual(T.problems(good(steps=steps)), [])
+        self.assertTrue(any("30 lines" in m for m in T.problems(good(steps=steps, weight="CRUCIAL"))))
+
     def test_dependencies_must_be_done_or_registry_closed(self):
         dep = good("B901", state="active")
         self.assertTrue(any("B901" in m for m in T.problems(good(depends_on=["B901"]), [dep])))
@@ -147,6 +163,13 @@ class QueueTest(unittest.TestCase):
         rc, out = self.run_cli("next")
         self.assertEqual(rc, 1)
         self.assertIn("NO_READY_CARD", out)
+
+    def test_check_cli_rejects_a_bogus_weight(self):
+        T.save(self.repo, good("B2", state="refined", weight="BOGUS"))
+        rc, out = self.run_cli("check", "B2")
+        self.assertIn("NOT READY", out)
+        self.assertIn("BOGUS", out)
+        self.assertEqual(T.get(self.repo, "B2")["state"], "refined")
 
     def test_check_promotes_only_when_it_passes(self):
         c = good("B1", state="refined", goal="")

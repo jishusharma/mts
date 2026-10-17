@@ -55,6 +55,7 @@ ASTRA_EFFORT = "low"   # operator 2026-10-13: astra at its lightest effort only,
 CODEX_EFFORTS = ("low", "medium", "high", "xhigh", "max")
 LAB_REPORTS = "MyTradingSys/research/layer_lab/reports"
 SIZES = ("S", "M", "L")
+WEIGHTS = ("ROUTINE", "IMPORTANT", "CRUCIAL", "CRITICAL")   # optional card field; Session_Planner Duty 5
 WORKERS = ("agent", "session")                   # WORKERS.md: who runs the card; set during refinement
 AGENT_MAX_TURNS = 15                             # WORKERS.md: a one-use Agent only for <= 15 turns and size S
 SESSION_MAX_TURNS = 40                           # RELAY.md hand-over cap: a card needing more is split
@@ -128,7 +129,7 @@ def refresh_layers(repo=REPO):
 
 
 def blank(cid, title, **kw):
-    return {"id": cid, "title": title, "state": "raw", "prio": kw.get("prio", 3), "lane": kw.get("lane", ""), "size": "", "est_turns": None, "worker": "",
+    return {"id": cid, "title": title, "state": "raw", "prio": kw.get("prio", 3), "lane": kw.get("lane", ""), "size": "", "est_turns": None, "worker": "", "weight": "",
             "layers": kw.get("layers", []),
             "goal": "", "scope_in": [], "scope_out": [], "steps": [], "commands": [], "tests": "", "done_when": "",
             "sources": [], "depends_on": [], "refs": kw.get("refs", []), "live_path": False, "approved_by": "",
@@ -167,6 +168,9 @@ def problems(card, cards=None, reg=None):
     for k in ("scope_in", "steps"):
         if not card.get(k):
             p.append(f"{k} is empty")
+    w = card.get("weight") or ""
+    if w and w not in WEIGHTS:
+        p.append(f"weight {w!r} not one of {', '.join(WEIGHTS)}")
     lane = card.get("lane", "")
     if lane not in LANES:
         p.append(f"lane {lane!r} not one of {', '.join(LANES)}")
@@ -226,6 +230,8 @@ def brief(card):
     L = [f"TASK {card['id']} [{card.get('lane', '?')}, size {card.get('size') or '?'}, {card.get('worker') or '?'} ~{card.get('est_turns') or '?'} turns, prio {card.get('prio', '?')}]: {card['title']}",
          f"Goal: {card.get('goal', '')}",
          f"Scope in: {'; '.join(card.get('scope_in', []))}" + (f" | out: {'; '.join(card['scope_out'])}" if card.get("scope_out") else "")]
+    if card.get("weight"):
+        L.insert(2, f"Weight: {card['weight']}")
     L += [f"{i}. {s}" for i, s in enumerate(card.get("steps", []), 1)]
     if card.get("commands"):
         L += ["Commands:"] + [f"  {c}" for c in card["commands"]]

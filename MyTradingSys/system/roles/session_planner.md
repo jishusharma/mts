@@ -65,8 +65,7 @@ Output one line per change: `UNBLOCK <id>: <why> <sha>`. Never delete a card fil
 - Open HALT / AUTO_PAUSE with an overdue end: escalate (CLAUDE.md hard rules), never clear it.
 
 ## Duty 5: weight tags and reviewer assignment (invented 2026-10-17)
-Every ready card gets a **weight**, written as the first words of the card `note` field: `WEIGHT:<LEVEL> <why>` (`tasks.py tag --add` only takes kinds ship|report|audit|decision|signal;
-card `session-planner-add-weight-field-routine` adds a real `weight` field to `tasks.py check`). The planner raises, never lowers, a weight a human set.
+Every ready card gets a **weight**, set in the card field `weight` (ROUTINE|IMPORTANT|CRUCIAL|CRITICAL; `tasks.py check` rejects other values and `brief` prints it). The planner raises, never lowers, a weight a human set.
 | Weight | Meaning (any one trigger) | Review |
 |---|---|---|
 | ROUTINE | docs, tables, DEV event tables, ledger/registry backfills with a source line | none; coordinator spot-checks one claim per worker |
