@@ -1,0 +1,1 @@
+{"t": "20261017T201443Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship 2>&1 | tail -2; git show origin/fast-track:MyTradingSys/research/lab_guy/TANDEM_PLAN_2026-10-18.md | grep -c \"Three logins\""}
