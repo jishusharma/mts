@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1792677804,
+  "week_resets": 1792677805,
   "week_used": 33.0,
   "window_resets": 1792213232,
-  "window_used": 14.0
+  "window_used": 15.0
  },
- "at": "2026-10-17T00:32:11Z",
+ "at": "2026-10-17T01:04:10Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,25 @@
  "lab": {
   "astra_runs": 1,
   "week_pts": 22.0,
-  "window_pts": 11.0,
-  "window_runs": 1
+  "window_pts": 12.0,
+  "window_runs": 2
  },
  "runs": [
+  {
+   "at": "2026-10-17T01:00:10Z",
+   "card": "gptb-bb-top-reversal-event-table",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 234,
+   "tokens_out": 11539,
+   "tokens_total": 1571155,
+   "tokens_uncached": 67008,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-17T00:30:02Z",
    "card": "imb-filter-audit-2-challenge",
@@ -155,21 +170,6 @@
    "tokens_out": 7113,
    "tokens_total": 427736,
    "tokens_uncached": 36879,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T19:00:02Z",
-   "card": "gptb-volume-event-table",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 169,
-   "tokens_out": 13176,
-   "tokens_total": 1221897,
-   "tokens_uncached": 57617,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
