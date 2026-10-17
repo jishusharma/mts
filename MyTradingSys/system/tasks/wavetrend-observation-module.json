@@ -12,12 +12,22 @@
   "goal": "Build backtest/layers/wavetrend/ observation module: continuous WT1/WT2, zones, crosses with bar-close availability timestamps, matching hand-computed fixtures.",
   "id": "wavetrend-observation-module",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "45769db88b5f claim wavetrend-observation-module",
+      "ref": "MyTradingSys/system/claims/wavetrend-observation-module.md",
+      "utc": "2026-10-17T07:37:51Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "Conventions pinned in PARITY_CONTRACT.md s3 (WARMUP 200, d=0 NaN, cross \"le\", closed-bar available_at); goldens from a spreadsheet, not wt_parity_ref.py. backlog-refine-1017: added est_turns/worker (card failed the Ready gate on those fields only).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:44:17Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -28,6 +38,7 @@
   "scope_out": [
     "Trade direction, execution, outcomes, backtests, live tree, other layers"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_VERIFY.md",
