@@ -29,6 +29,19 @@ Every brief the planner writes ends with the executor's verify line: content com
 `git ls-tree -r origin/fast-track --name-only` shows the delivered files (a bare `release` commit proves nothing).
 Cards that cannot pass the gate after one try: `tasks.py tried <id>`; never dispatch them.
 
+### Refinement runs in steps, and every refined card is reviewed before it is dispatched (operator 2026-10-17)
+| Step | Who / cost | What |
+|---|---|---|
+| 1 Draft | refiner Agent: Haiku for ROUTINE/S cards (docs, ledgers, event tables), Sonnet for IMPORTANT and up | fill the card from the registry row and repo evidence (Duty 1 above) |
+| 2 T0 gate | no model, ~0 tokens | `tasks.py check <id>` (Definition of Ready) + `tasks.py lint`; every `scope_in` path exists (`git ls-files`); no `scope_in` path is in another open claim; `done_when` names a file, row count or number; a code card names a fail-first test |
+| 3 Review | reviewer Agent, **Sonnet medium, a different agent from the drafter**, one call per batch of up to 5 cards | input is only each card's JSON plus the evidence lines it cites, never the drafter's reasoning; reply at most 2 lines per card: `ACCEPT` or `FIX: <what is wrong>`; checks: scope matches the goal, steps reach done_when, no hidden operator-only step, executor/est_turns plausible, weight not too low |
+| 4 Fix | the drafter, once | apply FIX lines, re-run step 2; a second FIX parks the card (`tasks.py tried`) |
+| 5 Stamp | planner | first words of `note`: `REVIEWED:<utc date> <ACCEPT|T0-ONLY>`; **a card without the stamp is not in the dispatch table** |
+Cost control: ROUTINE cards that pass step 2 with zero warnings take the stamp `T0-ONLY` (no reviewer call) and are spot-checked by the coordinator after
+the worker ships; IMPORTANT, CRUCIAL and CRITICAL cards always take step 3. Batching keeps it to one reviewer call per planner run (~one Sonnet call
+instead of one per card), and a card that already bounced a worker once is always reviewed. If reviewers BLOCK >30% of drafts over a week, the
+drafter model goes up one tier for that card class (log it in the Session log); if they ACCEPT >95% for a class, that class drops to `T0-ONLY`.
+
 ## Duty 2: fetch and rank pending work
 Return a **dispatch table** (max 15 lines): card id, weight (below), executor (agent|session), model, est_turns, file set, depends_on.
 Order: CI red first (pinned `ci-<sha>` card), then p1 by weight, then bottom-up (SUPER_SESSION rule 13: a defect blocks only cards that read its output).
