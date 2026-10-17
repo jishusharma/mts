@@ -11,6 +11,22 @@
   "id": "krown-layer-v0-detectors",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "trendline-contract-spec: apply review fixes (L6 scope, E9-E11 gaps, tie example)",
+      "ref": "c768076dcafe",
+      "utc": "2026-10-17T04:42:49Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c768076dcafe trendline-contract-spec: apply review fixes (L6 scope, E9-E11 gaps, tie examp",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-17T04:42:49Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
@@ -20,6 +36,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:24:57Z",
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
@@ -37,6 +54,7 @@
     "any backtest P&L",
     "live wiring"
   ],
+  "scope_sha": "c768076dcafe",
   "size": "M",
   "sources": [],
   "state": "ready",

@@ -16,12 +16,14 @@
   "goal": "List at least 30 ways a crypto-perp backtest can mislead from DeepSeek's own knowledge and published sources, score each against every study and testnet layer, demonstrate the 5 worst gaps on DEV, and merge the audits' bridge logs into a playbook.",
   "id": "dsa-audit-10-missing-aspects",
   "lane": "DSA-NB",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "note": "",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:29Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md"
   ],
@@ -37,6 +39,7 @@
     "F:/AIBridge and scripts/aibridge",
     "changing any verdict, ledger or pre-registered bar"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
   "state": "ready",

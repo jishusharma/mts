@@ -7,13 +7,14 @@
     "wavetrend-priority-source-parity"
   ],
   "done_when": "PRE_REG.md on fast-track with <=12 frozen cells, per-cell episode counts and MDE, control arm, aliases; EXPOSURE_LEDGER rows added; no outcome column anywhere.",
+  "est_turns": 20,
   "from_inbox": "",
   "goal": "Write research/wavetrend_2026-10-17/PRE_REG.md from a count-only DEV pass: no outcomes read, cells frozen before any return is computed.",
   "id": "wavetrend-prereg-counts",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "Event ids A1-C2, context, arms and bound are in ATLAS_STUDY_SPEC.md; this card sets R_out, c, k, G, bin edges from counts and freezes <=12 cells.",
+  "note": "Event ids A1-C2, context, arms and bound are in ATLAS_STUDY_SPEC.md; this card sets R_out, c, k, G, bin edges from counts and freezes <=12 cells. backlog-refine-1017: added est_turns/worker (card failed the Ready gate on those fields only).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -32,7 +33,7 @@
     "MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_VERIFY.md",
     "MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read CLAUDE_VERIFY.md sections C-D and the parity card output.",
     "Count events and episodes per TF/side on DEV; log each DEV read in gross_effect_screen_2026-10-15/EXPOSURE_LEDGER.csv.",
@@ -40,5 +41,6 @@
     "Write PRE_REG.md (cells, outcomes, controls, Holm, trial ids, verdicts.py aliases); run verdicts.py check."
   ],
   "tests": "Doc card; count script test must fail on pre-change code: counts use only bars <= t (synthetic series with a planted future spike).",
-  "title": "WaveTrend count-only PRE_REG (DEV)"
+  "title": "WaveTrend count-only PRE_REG (DEV)",
+  "worker": "session"
 }

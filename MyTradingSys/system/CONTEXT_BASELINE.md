@@ -26,3 +26,12 @@ Docs do not say each switch also drops the text from Code sessions; the re-measu
 
 Everything switches back on the same way; nothing is deleted. Decision: q-context-baseline (OPERATOR_DECISIONS.md).
 Re-measure: `python scripts/dev/token_audit.py --days 7` (first-turn input) after the clicks.
+
+## Applied status (2026-10-17, NB planning thread)
+Decision q-context-baseline = Yes, all three logins. Switches are per login, so status is per login:
+| Login | Claude Docs | visualize | Computer use | Claude in Chrome | 9 file skills |
+|---|---|---|---|---|---|
+| jishu.sharma (NB) | OFF (session tool, default for new sessions) | OFF (same) | operator | operator | operator |
+| jishu.awgp | operator | operator | operator | operator | operator |
+| jishusharma1985 | operator | operator | operator | operator | operator |
+Before any new session start on a login: `python scripts/dev/token_audit.py --days 1`; a first-turn median above 60k means a switch is still on. Check by opening the session's connector list (`session_connectors_status`) and switching off any of Claude Docs, visualize that show as connected.

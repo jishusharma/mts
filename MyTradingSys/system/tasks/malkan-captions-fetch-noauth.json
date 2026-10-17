@@ -10,6 +10,22 @@
   "goal": "Get the Malkan captions that matter, anonymously, with spaced retries: only the 12 ids ranked include=Y in MyTradingSys/research/video_priority_2026-10-15/RANKED_MALKAN.csv (method: METHOD.md). The other shortlisted ids are NOT SELECTED (score in transcript_inventory_2026-10-09.md); do not fetch them.",
   "id": "malkan-captions-fetch-noauth",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "malkan-captions-fetch-noauth: record attempt 4, HTTP 429 on -2uZSqKKrFQ",
+      "ref": "d51592785696",
+      "utc": "2026-10-15T19:41:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d51592785696 malkan-captions-fetch-noauth: record attempt 4, HTTP 429 on -2uZSqKKrFQ",
+      "ref": "MyTradingSys/research/transcript_inventory_2026-10-09.md",
+      "utc": "2026-10-15T19:41:19Z"
+    }
+  ],
   "layers": [
     "rsi"
   ],
@@ -18,6 +34,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:24:58Z",
   "refs": [
     "MyTradingSys/research/transcript_inventory_2026-10-09.md",
     "MyTradingSys/research/video_priority_2026-10-15/METHOD.md",
@@ -35,6 +52,7 @@
     "any backtest",
     "cookies or credentials"
   ],
+  "scope_sha": "d51592785696",
   "size": "S",
   "sources": [],
   "state": "ready",

@@ -10,6 +10,15 @@
   "goal": "Finish the Krown TA 101 playlist extraction: get timed captions for the 4 reachable videos still missing (hNfjyrJEytI fMRvOt26xcA LB3DRYxnA0A _JoJbu_Ug-A; MANIFEST.csv), then extract each with a fresh single-video worker per PROTOCOL.md s3 (clean slate, EXTRACT_TEMPLATE.md), both gates, rebuild the ledger.",
   "id": "krown-ta101-extract-remaining-10",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Krown data: BTC/ETH/BNB/SOL daily + BTC weekly (Binance spot) and Coinbase BTC-USD daily, ",
+      "ref": "d8a77746809b",
+      "utc": "2026-10-15T21:31:18Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
@@ -19,6 +28,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:24:57Z",
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/STATE.md",
     "MyTradingSys/research/krown_ta101_2026-10-13/PROTOCOL.md",
@@ -34,6 +44,7 @@
     "engine and layer code",
     "any backtest"
   ],
+  "scope_sha": "d8a77746809b",
   "size": "M",
   "sources": [
     "PLPEz1q0esi3gEd4DMbaGwFf3uqwAY6vTU"

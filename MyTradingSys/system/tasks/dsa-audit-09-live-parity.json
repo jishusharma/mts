@@ -16,12 +16,14 @@
   "goal": "Map each testnet layer to the backtest that justified it, replay 30 DEV days bar by bar through the live layer code in the worktree with no network, diff signals and exit rules against the backtest code, and explain the 97% time exits.",
   "id": "dsa-audit-09-live-parity",
   "lane": "DSA-NB",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "note": "",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:28Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
     "MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
@@ -39,6 +41,7 @@
     "F:/AIBridge and scripts/aibridge",
     "changing any verdict, ledger or pre-registered bar"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
   "state": "ready",

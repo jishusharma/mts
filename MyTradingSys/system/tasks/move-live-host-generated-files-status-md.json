@@ -14,12 +14,29 @@
   "id": "move-live-host-generated-files-status-md",
   "kind": "build",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/gate-observability",
+      "ref": "8d2549c885d7",
+      "utc": "2026-10-16T19:16:41Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "692afe6313f8 auto_deploy: restart the alert runner by its -m module name (kill pattern mat",
+      "ref": "MyTradingSys/system/DEPLOY_RUNBOOK.md",
+      "utc": "2026-10-16T13:55:54Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "make_status.py -> research/STATUS.md; scripts/worker/audit_digest.py -> audits/AUDIT_DIGEST.md; audit_t0_checks.py -> audits/T0_CHECKS.md; scripts/Build-Check.ps1 -> runtime/BUILD_REPORT.md; oi_recorder.py -> runtime/oi_live/*.csv; fabio/htf_context_live.py -> research/htf_context/*. | DECISION (OURS): lane JIS-NB because the generators run on the live host. Default: untrack, never delete files on disk.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "W9 orderflow-restart-map",
+  "refreshed": "2026-10-17T07:25:00Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -37,6 +54,7 @@
     "live_runner_cli.py",
     "scripts/sched/relay.py"
   ],
+  "scope_sha": "8d2549c885d7",
   "size": "M",
   "sources": [],
   "state": "ready",

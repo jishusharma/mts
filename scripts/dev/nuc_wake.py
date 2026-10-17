@@ -44,9 +44,15 @@ def build_script(model: str, prompt: str = PROMPT, name: str = "default") -> str
         prompt,
         "'@",
         '[IO.File]::WriteAllText("$d/prompt.txt", $p)',
-        f'Start-Process -FilePath (Get-Command claude.exe).Source -ArgumentList "-p","--model","{model}",'
-        '"--permission-mode","bypassPermissions" -WorkingDirectory F:/MTS -WindowStyle Hidden '
-        '-RedirectStandardInput "$d/prompt.txt" -RedirectStandardOutput "$d/out.log" -RedirectStandardError "$d/err.log"',
+        # A child of the ssh session dies when it disconnects (empty logs, no process). A one-shot interactive
+        # scheduled task for the logged-on user is not tied to the ssh session and needs no password.
+        '$c = (Get-Command claude.exe).Source',
+        f'$cmd = "Set-Location F:/MTS; Get-Content -Raw $d/prompt.txt | & \'$c\' -p --model {model} '
+        '--permission-mode bypassPermissions > $d/out.log 2> $d/err.log"',
+        '$a = New-ScheduledTaskAction -Execute "powershell.exe" -Argument ("-NoProfile -WindowStyle Hidden -Command `"" + $cmd + "`"")',
+        '$pr = New-ScheduledTaskPrincipal -UserId "e-ngineers" -LogonType Interactive',
+        f'Register-ScheduledTask -TaskName "MTS-Wake-{name}" -Action $a -Principal $pr -Force | Out-Null',
+        f'Start-ScheduledTask -TaskName "MTS-Wake-{name}"',
         '"started"',
     ]
     return "\n".join(lines) + "\n"

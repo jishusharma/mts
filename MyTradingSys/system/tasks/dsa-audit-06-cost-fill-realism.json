@@ -16,12 +16,14 @@
   "goal": "List every fee, slippage, funding and fill assumption across all studies and engines, rerun the recent screens with real signed funding, and give each arm's break-even cost and each testnet layer's fee-to-stop ratio.",
   "id": "dsa-audit-06-cost-fill-realism",
   "lane": "DSA-NB",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "note": "",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:28Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
     "MyTradingSys/backtest/fees.py",
@@ -39,6 +41,7 @@
     "F:/AIBridge and scripts/aibridge",
     "changing any verdict, ledger or pre-registered bar"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
   "state": "ready",
