@@ -1,7 +1,7 @@
 # CONTROL ROOM - the operator's one page, and how Claude keeps it alive
 
 Pages are listed in `system/artifacts/registry.json` (one url per page per account; `scripts/dev/artifacts.py`).
-Page: https://claude.ai/artifact/Ep6gA5vskLodMLEseyTnfN (jishu.sharma, NUC; the Inbox and decisions db owner, decision q21; it declares `db` + `user`, republish keeps them, never pass
+Page: https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su (2026-10-17: the live page; the earlier Ep6gA5 opens on no login, operator go; jishu.sharma, NUC; the Inbox and decisions db owner, decision q21; it declares `db` + `user`, republish keeps them, never pass
 `capabilities: {}`; Inbox seeded 2026-10-12 from OPERATOR_INBOX.md, 41 items, status answered/filed; 2026-10-15 (q21) the repo decisions
 and Inbox items missing from the db were added, existing answers kept). Until 2026-10-15 the repo filed this page under jishu.awgp: the login
 names of the two machines were swapped (a session signed in as jishu.sharma@gmail.com on JIS-NUC owns it).
