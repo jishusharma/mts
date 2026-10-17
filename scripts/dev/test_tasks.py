@@ -58,7 +58,8 @@ class DefinitionOfReadyTest(unittest.TestCase):
 
     def test_opus_needs_operator_approval(self):
         self.assertTrue(any("approved_by" in m for m in T.problems(good(lane="OPUS"))))
-        self.assertEqual(T.problems(good(lane="OPUS", approved_by="operator")), [])
+        self.assertTrue(any("crucial" in m for m in T.problems(good(lane="OPUS", approved_by="operator"))))
+        self.assertEqual(T.problems(good(lane="OPUS", approved_by="operator", crucial="rewrites live order state, no undo")), [])
 
     def test_live_path_never_goes_to_a_relay_lane(self):
         self.assertTrue(any("live_path" in m for m in T.problems(good(live_path=True))))
