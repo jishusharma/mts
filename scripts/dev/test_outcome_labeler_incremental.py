@@ -115,8 +115,48 @@ class Incremental(Base):
             write_snap(self.snaps, i)
         self.labels.write_text("{broken", encoding="utf-8")
         self.run_main()
-        self.assertEqual((self.root / "outcome_labels.json.corrupt").read_text(encoding="utf-8"), "{broken")
+        kept = list(self.root.glob("outcome_labels.json.corrupt*"))
+        self.assertEqual(len(kept), 1)
+        self.assertEqual(kept[0].read_text(encoding="utf-8"), "{broken")
         self.assertTrue(self.read_labels())
+
+    def test_second_corrupt_copy_does_not_overwrite_first(self):
+        for i in range(40):
+            write_snap(self.snaps, i)
+        self.labels.write_text("{first", encoding="utf-8")
+        self.run_main()
+        self.labels.write_text("{second", encoding="utf-8")
+        self.run_main()
+        texts = sorted(p.read_text(encoding="utf-8") for p in self.root.glob("outcome_labels.json.corrupt*"))
+        self.assertEqual(texts, ["{first", "{second"])
+
+    def test_label_entry_without_price_is_reopened_and_used_as_reference(self):
+        for i in range(40):
+            write_snap(self.snaps, i)
+        # snapshot 3 (+30m reference for snapshot 0) has a malformed label entry (no price)
+        self.labels.write_text(json.dumps({"version": "1.0.0", "labels": [
+            {"file": "BTCUSDT_000003.json", "ts": (BASE + timedelta(minutes=30)).isoformat()}]}), encoding="utf-8")
+        opened = self.run_main()
+        self.assertIn("BTCUSDT_000003.json", opened)
+        got = {l["file"]: l for l in self.read_labels()}
+        p = 100.0
+        self.assertEqual(got["BTCUSDT_000000.json"]["fwd_return_pct"]["30m"], round((103.0 - p) / p * 100, 4))
+        self.assertEqual(len([l for l in self.read_labels() if l["file"] == "BTCUSDT_000003.json"]), 1)
+
+    def test_equal_timestamp_reference_is_ordered_by_filename(self):
+        # two snapshots share the +30m timestamp; the lower filename must win, labeled or not
+        write_snap(self.snaps, 0, price=100.0)
+        a = write_snap(self.snaps, 3, price=110.0)
+        d = json.loads((self.snaps / a).read_text(encoding="utf-8"))
+        (self.snaps / "BTCUSDT_000003b.json").write_text(json.dumps(dict(d, current_price=120.0)), encoding="utf-8")
+        for i in range(4, 40):
+            write_snap(self.snaps, i)
+        # the lower filename (...03.json, 110) is the LABELED one: the unlabeled ...03b (120) must not jump ahead of it
+        self.labels.write_text(json.dumps({"version": "1.0.0", "labels": [
+            {"file": "BTCUSDT_000003.json", "ts": d["timestamp_utc"], "price": 110.0}]}), encoding="utf-8")
+        self.run_main()
+        got = {l["file"]: l for l in self.read_labels()}
+        self.assertEqual(got["BTCUSDT_000000.json"]["fwd_return_pct"]["30m"], 10.0)  # ...03.json (110) before ...03b (120)
 
     def test_write_error_leaves_existing_labels_intact(self):
         for i in range(40):

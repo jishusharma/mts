@@ -58,7 +58,8 @@ def load_labels():
         # fail closed: keep the unreadable file for inspection before it is rebuilt
         print(f"labels unreadable ({e}); kept as .corrupt, rebuilding")
         try:
-            shutil.copyfile(LABELS, LABELS.with_suffix(".json.corrupt"))
+            stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+            shutil.copyfile(LABELS, LABELS.with_suffix(f".json.corrupt.{stamp}"))
         except Exception as e2:
             print(f"could not back up labels: {e2}")
         return {"version": "1.0.0", "labels": []}
@@ -72,23 +73,29 @@ def write_labels(data):
 def main():
     t0 = time.monotonic()
     labels = load_labels()
-    done = {l["file"] for l in labels["labels"] if isinstance(l, dict) and "file" in l}
+    # an entry counts as done only if its file, ts AND price parse; otherwise the snapshot is reopened (old behaviour)
+    done = set()
+    labeled_names = {l["file"] for l in labels["labels"] if isinstance(l, dict) and "file" in l}
+    label_refs = []
+    for l in labels["labels"]:
+        try:
+            label_refs.append((parse_ts(l["ts"]), l["file"], float(l["price"])))
+            done.add(l["file"])
+        except Exception:
+            pass
     snaps = load_snapshots(done)  # unlabeled only: labeled files are never reopened
     if not snaps:
         print("no unlabeled snapshots")
         return
-    # forward references: unlabeled snapshots plus already-labeled ones (ts/price kept in the label entry)
-    refs = [(s["ts"], s["price"]) for s in snaps]
-    for l in labels["labels"]:
-        try:
-            refs.append((parse_ts(l["ts"]), float(l["price"])))
-        except Exception:
-            pass
-    refs.sort(key=lambda x: x[0])
+    # forward references: unlabeled snapshots plus already-labeled ones; (ts, filename) order is deterministic
+    refs = [(s["ts"], s["file"], s["price"]) for s in snaps] + label_refs
+    refs.sort(key=lambda x: (x[0], x[1]))
     ref_ts = [r[0] for r in refs]
     now = datetime.now(timezone.utc)
     added = 0
     for s in snaps:
+        if s["file"] in labeled_names:
+            continue  # labeled (entry unusable as a reference, so it was reopened): used as a reference only
         age_min = (now - s["ts"]).total_seconds() / 60
         if age_min < max(HORIZONS_MIN):
             continue  # too recent
@@ -104,7 +111,7 @@ def main():
             target_ts = s["ts"] + timedelta(minutes=h)
             j = bisect.bisect_left(ref_ts, target_ts)  # first snapshot >= target_ts
             if j < len(refs):
-                entry["fwd_return_pct"][f"{h}m"] = round((refs[j][1] - s["price"]) / s["price"] * 100.0, 4)
+                entry["fwd_return_pct"][f"{h}m"] = round((refs[j][2] - s["price"]) / s["price"] * 100.0, 4)
             else:
                 entry["fwd_return_pct"][f"{h}m"] = None
         if all(v is not None for v in entry["fwd_return_pct"].values()):
