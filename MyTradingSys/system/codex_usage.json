@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1792874520,
+  "week_resets": 1792874519,
   "week_used": 0,
-  "window_resets": 1792287720,
-  "window_used": 0
+  "window_resets": 1792287719,
+  "window_used": 1.0
  },
- "at": "2026-10-17T20:44:26Z",
+ "at": "2026-10-17T20:50:38Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,10 +19,40 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 0.0,
-  "window_pts": 0.0,
-  "window_runs": 0
+  "window_pts": 1.0,
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-17T20:48:18Z",
+   "card": "lab-formula-spec-text",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 132,
+   "tokens_out": 13054,
+   "tokens_total": 938362,
+   "tokens_uncached": 62716,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": null,
+   "card": "lab-formula-spec-text",
+   "effort": null,
+   "kind": null,
+   "model": null,
+   "note": "card rewritten after independent review REJECTED the spec (worked examples not from the DEV tape; F01 57.8313, F11.4/F11.5 62751.9875, F11.6 -0.399847 wrong; gr",
+   "outcome": "REOPENED",
+   "seconds": null,
+   "tokens_out": null,
+   "tokens_total": null,
+   "tokens_uncached": null,
+   "week_pts": null,
+   "window_pts": null
+  },
   {
    "at": "2026-10-17T20:41:48Z",
    "card": "lab-formula-spec-text",
@@ -140,36 +170,6 @@
    "tokens_out": 1620,
    "tokens_total": 191587,
    "tokens_uncached": 47247,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-17T20:19:57Z",
-   "card": "lab-machine-checks-extra",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 205,
-   "tokens_out": 14763,
-   "tokens_total": 1851658,
-   "tokens_uncached": 85471,
-   "week_pts": 1.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-17T20:17:35Z",
-   "card": "lab-data-pin-hash",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 79,
-   "tokens_out": 6304,
-   "tokens_total": 689101,
-   "tokens_uncached": 50093,
    "week_pts": 0.0,
    "window_pts": 0.0
   }

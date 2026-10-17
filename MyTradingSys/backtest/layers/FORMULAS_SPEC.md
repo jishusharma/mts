@@ -1,205 +1,153 @@
-﻿# FORMULAS_SPEC.md вЂ” re-derivation contracts
+# Formula re-derivation specs
 
-Purpose: enough operational detail to implement the numbered entries in `FORMULAS.md` from prose. The source catalogue remains canonical where this file explicitly points to its subrules; tags distinguish externally/trader-sourced definitions from repo/operator choices. A hand example is attached to every numbered entry. Market inputs in examples are taken only from BTCUSDT perpetual 1h DEV bars whose open is before 2024-07-01; no later bar was read. Prices/derived values are shown to 6 decimals for display only; calculations use full input precision unless the underlying contract specifies snapping/rounding.
+Scope: formula IDs are the 23 numbered top-level entries in `FORMULAS.md`; numbered subentries (for example 11.1–11.8, 18.1–18.7, 19.1–19.8, 20.1–20.4 and 21.1–21.9) are covered by their parent entry and called out below. Numbers are computed without producer code. Unless specified, retain full precision during calculations and round only for display; the input archive stores binary floating point.
 
-## DEV example tape
+DEV fixture used for examples: `F:/MTS/data/bigtrade/cache/perp/klines_1h.npz`, restricted to `t < 1719792000000` (2024-07-01 00:00 UTC). Bar opens 0–4 are 2022-01-01 00:00 through 04:00 UTC. Their OHLCV values (USD, USD volume) are:
 
-The following four consecutive completed 1h DEV bars are from `F:/MTS/data/bigtrade/cache/perp/klines_1h.npz`, UTC opens 2024-06-30 20:00 through 23:00 (all opens before 2024-07-01). O/H/L/C/V/TBV: (62016.8,62399.0,61968.5,61981.6,10112.16,5445.14), (61981.7,62010.7,61825.4,61931.6,3431.207,1778.343), (61931.7,62955.3,61924.6,62894.9,19527.251,10832.23), (62894.9,63058.4,62753.9,62766.0,8430.946,4112.704). Values below are calculated from this DEV slice or are explicitly identified as algebraic boundary illustrations.
+| i | open UTC | O | H | L | C | V | TBV |
+|---:|---|---:|---:|---:|---:|---:|---:|
+| 0 | 00:00 | 46210.57 | 46729.73 | 46210.55 | 46650.01 | 8957.465 | 4777.701 |
+| 1 | 01:00 | 46650.00 | 46944.56 | 46570.34 | 46766.78 | 7276.249 | 3689.837 |
+| 2 | 02:00 | 46767.44 | 46917.87 | 46709.44 | 46796.14 | 4478.713 | 2103.345 |
+| 3 | 03:00 | 46796.15 | 46888.00 | 46746.32 | 46789.56 | 4208.992 | 1928.027 |
+| 4 | 04:00 | 46789.55 | 46868.74 | 46605.00 | 46690.81 | 6149.298 | 2855.818 |
 
-## Coverage and conventions
+The examples below explicitly reuse these observed values where the formula permits. “SOURCED” means the catalog ties the rule to an external, trader, or operator source; “OURS” marks a repo/operator mechanical convention or parameter. A mixed entry labels both parts.
 
-IDs are the numbered `FORMULAS.md` headings (`F01`вЂ¦`F23`); nested IDs are the source's numbered subsections (`F11.1`вЂ¦`F11.8`, `F18.1`вЂ¦`F18.7`, `F19.1`вЂ¦`F19.8`, `F20.1`вЂ¦`F20.4`, `F21.1`вЂ¦`F21.9`). These headings are the full formula inventory, including event, scoring, and risk gates. A formula's index `i` means the current bar/record; data described as prior excludes `i` unless stated. Use UTC open timestamps and only completed bars. `None`/undefined means no output/event, never zero. Unless stated otherwise, no intermediate rounding; displayed decimals are rounded half-up to 6 places.
+## 1. Wilder RSI — SOURCED (Wilder); flat-series 50 is OURS
 
-## F01 вЂ” Wilder RSI вЂ” SOURCED (Wilder; TradingView)
+Inputs: ordered closes and integer period n. Close i becomes available only when its bar closes; at index i, use only closes through i. Delta i = C[i]-C[i-1]. Seed at i=n using the first n deltas, including zero gain/loss slots in each mean. Thereafter recursively smooth gain and loss with `(prev*(n-1)+current)/n`. RSI = `100-100/(1+avg_gain/avg_loss)`. Keep full precision; present percentages to 4 decimals. Indices before n are undefined. If loss is zero and gain positive return 100; if both zero return 50 (OURS); gaps/non-finite inputs restart the seed after n consecutive valid deltas.
 
-Inputs: ordered close series and positive integer `period`. At bar i, delta is `C[i]-C[i-1]`; first valid output is at i=period after period changes. Seed average gains and losses with sums over those period changes divided by period (zero moves remain in the denominator); then Wilder recurrence `(prev*(period-1)+current)/period`. RSI=`100-100/(1+avg_gain/avg_loss)`. If loss=0, return 100 if gain>0 else 50 for a flat window. No rounding in recurrence. Worked arithmetic (DEV close changes selected as +56,+40,-70; period 3): seed gains=(56+40+0)/3=32, losses=(0+0+70)/3=23.333333, RS=1.371429, RSI=57.8125. Fewer than period changes => undefined.
+DEV example, n=2, closes from bars 0–2: [46650.01, 46766.78, 46796.14]. Deltas [116.77, 29.36], seed gain 73.065, loss 0; RSI at bar 2 = 100. Bar 1 has no RSI yet.
 
-## F02 вЂ” RMA / SMMA вЂ” SOURCED (Wilder)
+## 2. RMA/SMMA — SOURCED (Wilder)
 
-Inputs: numeric series and length n; consecutive valid values. Seed with SMA of first n values; then `y[i]=y[i-1]+(x[i]-y[i-1])/n`. First output on nth input; a missing input breaks continuity until a new n-value seed. Keep full precision. Worked: use three DEV tape closes 62724, 62780, 62820 as x, seed=(62724+62780+62820)/3=62774.666667; next x=62750 gives RMA=62766.444444 for n=3.
+Inputs: numeric series and length n. Values align to the last input in each window; seed on the nth consecutive finite value with their arithmetic mean, then `R[i]=R[i-1]+(x[i]-R[i-1])/n`. Full precision internally; display 4 decimals. Earlier values and windows containing missing inputs are undefined; after a gap require a fresh n-value seed.
 
-## F03 вЂ” SMA вЂ” SOURCED (standard arithmetic mean)
+DEV example, closes 0–2, n=3: seed `(46650.01+46766.78+46796.14)/3 = 46737.6433`, available at close of 02:00 bar.
 
-Inputs: numeric series, length n, ending at current i; window is the last n consecutive available values including i. Output undefined until n values. Sum divided by n; no intermediate rounding. Worked: DEV closes [62724,62780,62820], n=3: SMA=188324/3=62774.666667. A missing value makes the window unavailable.
+## 3. SMA — SOURCED (standard rolling mean)
 
-## F04 вЂ” EMA вЂ” SOURCED (standard alpha; repo seed choice)
+Inputs: numeric series, length n; at i average exactly x[i-n+1..i], aligned to bar i close. No partial windows; missing member makes output undefined. Full precision, display 4 decimals.
 
-Inputs: numeric series, n. SMA-seed over first n consecutive values at index n-1; alpha=2/(n+1); later `y=y_prev+alpha*(x-y_prev)`. Undefined before seed; gaps require reseeding. Worked: DEV closes [62724,62780,62820], seed 62774.666667; next 62750 at n=3, alpha=.5, EMA=62762.333333. Do not seed from first raw value.
+DEV example, n=3 on closes 0–2: sum 140212.93 / 3 = 46737.6433 at bar 2 close.
 
-## F05 вЂ” WMA вЂ” SOURCED (standard linear WMA)
+## 4. EMA — SOURCED alpha; SMA seed convention OURS
 
-Inputs: n consecutive values ending at i; oldest weight 1, newest n; divide weighted sum by n(n+1)/2. Undefined before n; no rounding. Worked: DEV closes [62724,62780,62820], n=3: (62724+2*62780+3*62820)/6=62790.666667. Reversing weights is not this definition.
+Inputs: numeric series and n. Seed with SMA of first n consecutive valid values at index n-1; thereafter alpha=2/(n+1), `E=prev+alpha*(x-prev)`. Bar-close alignment; no output before seed and reseed after invalid gap. No intermediate rounding; display 4 decimals.
 
-## F06 вЂ” Tolerance-band level/line events вЂ” OURS
+DEV example, n=3, closes 0–3: seed at bar 2 = 46737.6433. At bar 3 alpha=.5, EMA = 46737.6433 + .5*(46789.56-46737.6433) = 46763.6017.
 
-Inputs: one numeric series, fixed level L, tolerance, chronological bars, and the state/run rules in `FORMULAS.md` В§6 and `layers/rsi/TEST_PLAN.md` event section. Compare each valid sample with inclusive band [L-tol,L+tol]; a transition/event is timestamped on the bar where the required hold/reject/cross/failure condition becomes known. `None` bars are skipped and do not fabricate a touch; apply the specified reset/penetration rules. Keep raw precision for comparisons; round only display. Worked: DEV close 62724 with L=62720 and tolerance 5 is inside [62715,62725]; following close 62780 is above the band. The first is a contact sample; the next confirms upward departure, with event type determined by incoming state. Missing values cannot confirm departure.
+## 5. WMA — SOURCED (standard/Pine ordering)
 
-## F07 вЂ” Forward return / MAE вЂ” SOURCED (event-study convention; OURS close-only MAE scope)
+Inputs: n consecutive numeric values ending at i; chronological weights 1..n (oldest to newest), divide by n(n+1)/2. Output at bar i close. Missing values invalidate the window; no warm-up partial. Full precision then display 4 decimals.
 
-Inputs: close series, event index i, sign +1 long/-1 short, positive horizon h. Entry is C[i]; horizon return is `s*(C[i+h]-C[i])/C[i]` only if i+h exists. Close-only MAE is minimum signed fractional close excursion over j=i+1..i+h (clipped to available tail for MAE); aggregates at horizon use only events with the required endpoint. Hit means strictly positive return. No rounding before aggregation. Worked: DEV C[i]=62724, C[i+1]=62780, C[i+2]=62820, long h=2: return=96/62724=0.001530; MAE=min(56/62724,96/62724)=0.001530. If C[i+2] is absent, h=2 return is omitted, not zero.
+DEV example, n=3 closes 0–2: `(46650.01+2*46766.78+3*46796.14)/6 = 46762.9983`.
 
-## F08 вЂ” Resample OHLCV / bucket anchoring вЂ” OURS (UTC engineering contract)
+## 6. Tolerance-band events — OURS
 
-Inputs: timestamped bars with open time and OHLCV; target timeframe. Assign each input to UTC epoch/calendar bucket as detailed in В§8; aggregate open=first open, high=max, low=min, close=last close, volume=sum. Emit only when bucket end is no later than the latest input close; discard incomplete buckets and report gaps, never synthesize bars. Use integer timestamp arithmetic; no value rounding. Worked: two DEV tape bars in the same 2h bucket: aggregate open=62679.99, high=max(62782.10,62801)=62801, low=62642, close=62780, volume=220. A bucket with only its first 1h input is not emitted before the second hour closes.
+Inputs: ordered series x, level L, nonnegative tolerance e, and the state-machine parameters in `FORMULAS.md`/RSI TEST_PLAN. Classify each valid x as below (<L-e), inside [L-e,L+e], or above (>L+e); process one closed bar at a time. Preserve state across valid bars, skip None without inventing an event, and apply the catalog’s run/penetration and support/rejection/failure/cross definitions; event time is the bar that completes the condition. No rounding before comparisons. An absent prior state cannot create a cross; equality at band edges is inside.
 
-## F09 вЂ” CryptoCred swing/MSB/retest/R target вЂ” SOURCED (C08/C07/C10; operational choices OURS)
+DEV example: bar 0 close 46650.01, bar 1 close 46766.78; choose OURS L=46700, e=10. Values are below (46650.01<46690) then above (46766.78>46710), so the series crosses the whole band by bar 1 close. This is an arithmetic fixture, not evidence for a trading threshold.
 
-Inputs: completed OHLC bars, fractal width, prior confirmed opposing swings, sequence flag, retest tolerance/invalidation, entry/stop and target multiple. A pivot at i uses both side windows and is usable only after the right window closes; strict inequalities reject ties. MSB is a close strictly beyond latest opposing swing and, when enabled, requires the prior lower-high/higher-low sequence. Retest scan starts at confirmation bar, accepts re-touch within tolerance before strict invalidation, and emits at first qualifying bar. R target=`entry +/- target_r*abs(entry-stop)` in trade direction. No rounding unless tick rules separately apply. Worked: DEV swing-low candidate low 62642 with neighboring lows 62680 and 62700 is a strict local low for width 1, known only after the next bar closes; a close of 62780 above a confirmed 62750 opposing swing is not a break (strict > is true here, so it is a break); with entry 62780, stop 62680, target_r=2, long target=62980. Insufficient right bars means pivot unknown.
+## 7. Forward return, MAE and hit rate — SOURCED general event-study convention; close-only MAE is OURS
 
-## F10 вЂ” Sharpe, PSR/DSR, PBO вЂ” SOURCED (Bailey/Lopez de Prado)
+Inputs: event index i, side s=+1 long/-1 short, close series, horizon h bars. Entry is C[i] at event-bar close; endpoint C[i+h] is h subsequent closes. Return `s*(C[i+h]-C[i])/C[i]`; MAE is minimum signed close return among j=i+1..i+h. Hit means return strictly >0. Exclude event at a horizon if endpoint is absent; aggregate each horizon over contributors only. No rounding until presentation. High/low intrabar MAE is outside this close-only definition.
 
-Inputs: finite return matrix; rows are time observations, columns variants. Sharpe is arithmetic mean divided by population standard deviation (ddof=0); zero dispersion is undefined. PSR uses `Phi((SR-SR*)*sqrt(T-1)/sqrt(1-skew*SR+(kurtosis-1)*SR^2/4))`; DSR substitutes expected maximum SR for SR*. PBO splits into S equal contiguous blocks, enumerates all S/2 in-sample block combinations, picks best in-sample variant, ranks it among N OOS returns with `w=(count(oos < winner)+1)/(N+1)`, then counts logit<=0. Require positive even S, finite aligned observations, nonzero variance, enough variants; ties follow stated strict-less rank. No rounding before final statistic. Worked DEV-linked two-return series from selected 1h close changes: returns r1=56/62679.99=.000893, r2=56/62724=.000893; mean=.000893, population sd=0, so Sharpe is undefined (not infinity). That edge case must not be converted into a score.
+DEV example: long event at bar 2 close 46796.14, h=1, endpoint bar 3 close 46789.56: return/MAE = `(46789.56-46796.14)/46796.14 = -0.00014061` (about -0.0141%); hit=false.
 
-## F11 вЂ” Deribit inverse execution math вЂ” SOURCED (Deribit units/spec); design conventions OURS
+## 8. UTC resampling and OHLCV — OURS (calendar/engineering convention)
 
-### F11.1 Tick snap
-Inputs: Decimal price, tick=.5 USD, order purpose and side. Convert via `Decimal(str(value))`; floor/ceil tick count according to FORMULAS В§11.1: entry buy floor/sell ceil; long stop ceil/short stop floor; long target floor/short target ceil. Exact multiples unchanged. No float epsilon. Worked: DEV price 62724.00 is already a .5 multiple, so both directions return 62724.0; a BUY limit 62724.24 floors to 62724.0.
+Inputs: timestamped source OHLCV bars and target timeframe. Bucket by UTC epoch/calendar rule specified in catalog (fixed duration via floor division; ISO weeks Monday UTC; months calendar-first). Include only source bars belonging to a bucket and emit only when the bucket is complete and its end is no later than the latest source close. Aggregate O=first open, H=max high, L=min low, C=last close, V=sum; trade-count/volume extensions sum likewise. Timestamp output is bucket open. Incomplete buckets and missing required source slots are not silently filled; no rounding of prices/volume.
 
-### F11.2 Amount snap
-Inputs: USD notional and 10 USD increment/minimum. Decimal floor to increment; reject if result <10. Worked: 25 USD -> floor(2.5)*10=20 USD; 9 USD -> zero, reject. No rounding up to minimum.
+DEV example, 1h bars 0–3 form 00:00–04:00 UTC: O=46210.57, H=46944.56, L=46210.55, C=46789.56, V=24921.419. This 4h bucket is complete at 04:00 UTC; bar 4 starts the next bucket.
 
-### F11.3 Ladder rung prices
-Inputs: low/high, N positive, side. If N=1 use one rung (documented caller's single price); otherwise step=(high-low)/(N-1); long emits high down to low, short low up to high. Snap each rung with F11.1 after computing. Worked: DEV low=62642, high=62801, N=3 => long raw [62801,62721.5,62642]; short is reverse. N<=0 or high<low invalid.
+## 9. CryptoCred swings, MSB, retest and R target — SOURCED rule clusters C08/C07/C10; pivot/parameter mechanics OURS
 
-### F11.4 Planned inverse multi-fill average
-Inputs: positive USD sizes s_i and positive prices p_i. `sum(s)/sum(s/p)`; harmonic size-weighted mean, not arithmetic. Worked from DEV prices 62724 and 62780, sizes 10 each: 20/(10/62724+10/62780)=62751.992997. Empty, nonpositive sizes/prices => invalid.
+Inputs: closed OHLC bars, side windows n, prior-sequence option, tolerance/invalidation percentages, entry/stop and target-R. A strict pivot at i must beat every high/low in both n-bar side windows; it becomes known only at close i+n. MSB is a close beyond the latest opposing confirmed swing, with required prior lower-high/higher-low sequence when enabled. Retest scans subsequent bars from confirmation: touch broken level within tolerance before invalidation distance is exceeded. Long target=entry+R*abs(entry-stop); short=entry-R*abs(entry-stop). Do not use unconfirmed pivots or round prices before comparisons. Not enough right-side bars means no pivot; ties fail strict pivot; no later retest means none.
 
-### F11.5 Actual inverse average fill
-Inputs: actual fill amount in USD and positive execution price for each fill. Same harmonic formula using only filled quantities; partial fill updates recompute from cumulative fills. Worked: same two DEV-priced fills above => 62751.992997. No fills => undefined; do not include requested/unfilled size.
+DEV example (formula arithmetic from observed bar 0–1): the upward close change is 46766.78-46650.01=116.77. Treating these as an illustrative entry/target pair with stop 46570.34 (bar 1 low) and target_R=1 (OURS), long target = 46766.78+|46766.78-46570.34| = 46963.22. The two bars alone do not establish a confirmed swing or MSB.
 
-### F11.6 Inverse stop loss
-Inputs: USD size, average entry E, stop S, side. Stop loss USD=`-size*abs(E-S)/E`; compute S from E*(1-pct) long or E*(1+pct) short and snap by F11.1 before loss. Excludes fees/slippage. Worked: E=62724, size=20, 2% long raw S=61469.52; snapped up to 61470.0; loss=-20*1254/62724=-0.400484 USD. Nonpositive E or size invalid.
+## 10. Sharpe, PSR/DSR and PBO — SOURCED (Bailey/Lopez de Prado convention)
 
-### F11.7 Target from PnL percent
-Inputs: E, signed side, positive target pct expressed as a fraction (e.g. .01), tick. Raw long T=E*(1+pct), short T=E*(1-pct), then snap toward entry per F11.1. Worked: DEV E=62724, pct=.01 => long raw 63351.24, floor tick 63351.0; short raw 62096.76, ceil tick 62097.0. Invalid if target crosses/equals entry contrary to side.
+Inputs: aligned finite return matrix (variants x observations); split count S even and trial count N. Sharpe = arithmetic mean / population standard deviation (divide squared deviations by n); zero deviation is undefined. PSR is `Phi((SR-SR*)*sqrt(T-1)/sqrt(1-skew*SR+(kurtosis-1)*SR^2/4))`; DSR uses expected maximum null Sharpe for the stated independent trial count. CSCV partitions chronological observations into S equal contiguous blocks, enumerates all choose(S,S/2) IS/OOS splits, chooses the highest IS-Sharpe variant, computes its OOS ascending relative rank `w=(count(oos < winner)+1)/(N+1)`, logit `ln(w/(1-w))`; PBO is fraction logit<=0. Keep full precision; ties use source implementation’s stable ordering, and the catalog does not define unequal blocks (reject them).
 
-### F11.8 Notional cap units
-Inputs: size and optional mark price plus an explicit unit contract. USD size => abs(size); BTC quantity => abs(size)*mark. Compare projected current+new notional to cap; exceed is breach. Worked: a 20 USD DEV-sized order has notional 20, not 20*62724; 0.001 BTC at DEV mark 62724 is 62.724 USD. Missing mark for non-USD units => cannot calculate.
+DEV example: one-bar return for bars 2→3 is -0.00014061 as in entry 7; with this single observation population deviation is 0, so Sharpe is undefined, not zero. This demonstrates the edge case on actual DEV input.
 
-## F12 вЂ” Core ATR вЂ” SOURCED TR; OURS plain-SMA smoothing decision
+## 11. Execution math, subentries 11.1–11.8 — SOURCED (Deribit contract); directional policy/ladders OURS
 
-Inputs: OHLC and prior close. TR undefined for first bar, thereafter max(H-L,abs(H-prevC),abs(L-prevC)); ATR_n is arithmetic mean of n consecutive TR ending at i. First value needs n TRs (i>=n); do not Wilder-smooth. Worked using DEV tape: bar 2 TR=max(62850-62730,|62850-62780|,|62730-62780|)=120; bar 3 TR=max(62840-62700,|62840-62820|,|62700-62820|)=140; their 2-TR average=130. Missing/gap policy follows the source series; never treat absent TR as zero.
+Inputs: USD prices, USD contract sizes, side/order purpose, exact Decimal tick and fee/risk parameters. 11.1 snap via Decimal(str(value))/tick with floor/ceiling: entry BUY floor/SELL ceil; long stop ceil/short stop floor; long target floor/short target ceil. 11.2 floor USD amount to 10 USD multiple; reject below 10. 11.3 N ladder rungs evenly spaced including endpoints, N=1 gives one rung; long high→low, short low→high. 11.4–11.5 inverse average = total USD / sum(USD_i/price_i). 11.6 stop loss USD = `-size*abs(E-S)/E`; 11.7 target T=E*(1±pct), then snap per target rule. 11.8 notional=abs(size) if already USD, else abs(size)*mark. No binary-float epsilon, no upward size rounding; reject invalid/zero denominators. Apply fees only where the caller’s contract says so.
 
-## F13 вЂ” T055 costs вЂ” SOURCED fee convention; OURS slip default
+DEV example: bar 0 close E=46650.01; observed bar 1 low S=46570.34. For illustrative size 20 USD, stop loss = `-20*(79.67)/46650.01 = -0.034156 USD` (rounded display -0.03). Tick 0.5, a long stop is ceiled to 46570.5, giving loss `-20*79.51/46650.01=-0.03409`. This is a unit demonstration, not a trading plan.
 
-Inputs: side sign (+1 long/-1 short), entry/exit, fee_rt=.0010, slip_rt=.0002, funding records. Gross=`s*(out-in)/in`; subtract fees and slip, and subtract `s*sum(rate)` for records with `t_in < calc_time <= t_out`. Entry notional is the funding basis. Worked DEV price example: long from 62724 to 62780 gives gross=56/62724=.000893; with no funding net=.000893-.0010-.0002=-.000307. A record exactly at entry is excluded; one exactly at exit is included.
+## 12. True Range and core ATR — SOURCED TR (Wilder); plain-SMA ATR is operator decision
 
-## F14 вЂ” T055 C1 funding/CVD fade вЂ” SOURCED mechanism; OURS parameters
+Inputs: H/L/C and period n. For i>=1, TR=max(H-L, abs(H-prevC), abs(L-prevC)); first TR undefined. ATR at i is simple mean of n consecutive defined TR values ending i, not recursive Wilder ATR. Bar-close aligned; no output before n TRs; missing bar/close invalidates window. Retain precision, display 4 decimals.
 
-Inputs: funding records and calc timestamps, OHLCV taker-buy volume, close, rolling lookback L, divergence n, hi/lo. Funding percentile at record k counts `<= current` within inclusive trailing L records; expose only latest record whose calc_time<=bar open. CVD delta=2*tbv-v, cumulative sum. At i>=n, compare current close strictly beyond prior n extrema while CVD fails its prior extreme; short bearish with percentile>=hi, long bullish with percentile<=lo. Funding-only emits once at first bar open >= calc_time. Worked from DEV tape bar 1: delta=2*55-100=10; bar 2 delta=2*44-80=8; cumulative CVD rises 10 then 18. With prior close 62724 and current 62780, n=1 price makes a strict higher high; CVD 18 also makes a higher high, so bearish divergence is false. Empty funding/short history => no event.
+DEV example, bar 1: TR=max(46944.56-46570.34, |46944.56-46650.01|, |46570.34-46650.01|)=374.22. Bar 2 TR=max(208.43,151.09,59.27)=208.43. Period-2 ATR at bar 2=(374.22+208.43)/2=291.325.
 
-## F15 вЂ” T055 C2 session momentum вЂ” SOURCED directional hypothesis; OURS adaptation
+## 13. T055 shared cost model — SOURCED exchange funding/fee convention; slip default OURS
 
-Inputs: 1m bars, UTC session start offset, first window, threshold, entry offset. S=UTC midnight+offset; E=S+first_min. First return is last completed bar close no later than E divided by first bar open at/after S minus 1. Long if >threshold; short if <-threshold; otherwise none. Entry is close of bar ending exactly at S+entry_min. Worked with DEV tape opens 62679.99 and close after two hourly bars 62780: proxy first-window return=(62780/62679.99)-1=.001595; with threshold 0 it is positive => long. This 1h illustration is not a 30m event; actual 30m settings require complete 1m bars. Missing either endpoint => no event.
+Inputs: side s (+1 long/-1 short), entry/exit prices, funding records and timestamps, fee_rt and slip_rt fractions. Gross=s*(out-in)/in. Sum only records with entry_time < calc_time <= exit_time; net=gross-fee_rt-slip_rt-s*sum(rate), using entry notional for funding fraction. Signals align to closed-bar entry/exit times. No rounding until final report. No record in interval contributes zero; missing funding input is unavailable, not zero.
 
-## F16 вЂ” T055 C3 turn-of-candle вЂ” SOURCED timing effect; OURS side/lead
+DEV example, long from bar 0 close 46650.01 to bar 1 close 46766.78: gross=116.77/46650.01=0.0025027. With catalog defaults 0.0010 fee and 0.0002 slip and no funding records supplied, net=0.0013027. The candle archive has no funding values; this example does not infer funding.
 
-Inputs: 1m open timestamps/OHLC; `mq=(t_ms//60000)%15`, per-bar return=(C-O)/O. Group means by mq=0 versus other minutes; event at mq=15-lead_minutes with configured side, enter at close. Quarter-hour alignment is UTC epoch based. Worked from DEV 1h bar open 20:00: it maps to mq=0; its return=(62724-62679.99)/62679.99=.000702 and belongs to turn_mean, not other_mean. A 1h bar is only an illustrative aggregation; event calculations require 1m candles. Missing minute contributes no return.
+## 14. T055 C1 funding-extreme/CVD divergence — SOURCED mechanism; thresholds OURS
 
-## F17 вЂ” B070 net R:R вЂ” OURS operator ruling; SOURCED fee constant
+Inputs: funding rates ordered by calc_time, lookback L, closes and CVD, divergence window n, high/low percentile cuts. Funding percentile at k counts `w<=current` in the inclusive L-record window divided by L; expose only latest rate with calc_time<=bar open. CVD delta=2*TBV-V and cumulative sum; divergence compares current close/CVD strictly to prior n values. Event short iff bearish divergence and pct>=hi; long iff bullish and pct<=lo. Funding-only mode emits once at first bar time>=record time. Warmup until L rates/n prior observations; equality on divergence extrema fails. No rounding before thresholds.
 
-Inputs: entry E, target T, stop S, per-side fee f=.0005. Cost=2*f*E; netRR=(abs(T-E)-cost)/(abs(E-S)+cost); if S=E return 0. Require finite prices and positive E. Worked DEV E=62724, T=62780, S=62680: cost=62.724; netRR=(56-62.724)/(44+62.724)=-0.063004. Do not clamp a negative ratio; round only for display.
+DEV example, bar 1 taker delta=2*3689.837-7276.249=103.425; cumulative from bar 0 delta `(2*4777.701-8957.465)=597.937` becomes 701.362. This computes the input series only; funding archive values are required for a signal and are not fabricated.
 
-## F18 вЂ” Anchored volume profile touch study вЂ” OURS measurement choices unless tagged
+## 15. T055 C2 session momentum — SOURCED paper mechanism; BTC session adaptation OURS
 
-### F18.1 Profile bins
-Inputs: bar low/high/volume, bin width w. Half-open bins [kw,(k+1)w); uniform volume across range, point mass for zero-range bars. POC is lowest bin among max-volume ties; expand value area from POC until >=70% total, choose larger adjacent volume (ties lower), then VAL=lo*w, VAH=(hi+1)w. Empty/zero volume => none. Worked DEV bar H-L=140, volume 90, w=100: 100 volume-units go to first intersected bin and 40 to next (proportional overlap); partial trailing bar not in input is excluded.
+Inputs: UTC bars, session start minute, first window, minimum absolute return, entry minute. S=UTC midnight+start; E=S+first. First return=last completed bar close by E divided by first bar open at/after S minus 1. Side long if >min, short if <-min, otherwise none. Entry is close of bar whose close time equals S+entry_min. Require both endpoint bars and exact boundary; no partial bar lookahead. Retain full precision; missing bars invalidate.
 
-### F18.2 Fractal pivot
-Inputs: highs/lows and width n. Strictly exceed/undercut all n bars on both sides; available after rightmost bar closes. High/low independently testable; edge lacks full window => no pivot. Worked on DEV lows 62642,62680,62700 with n=1: middle low 62680 is not a low pivot because 62642 is lower; an endpoint cannot be confirmed until a right neighbor exists.
+DEV example: for first 1h bar, O=46210.57 and close=46650.01, full-hour return=439.44/46210.57=0.0095097. For a 60-minute first window (OURS illustrative), this would be positive; it is not the default 30-minute calculation because 1h data cannot resolve that boundary.
 
-### F18.3 Size filter
-Inputs: pivot price/type, previous opposite pivot and ATR14 at pivot, k. Meaningful iff absolute price gap >=k*ATR14; k=0 accepts every valid pivot. ATR14 is F12 on 14 ranges through pivot; unavailable ATR means cannot qualify for k>0. Worked: DEV range example ATR proxy 130, k=.5 needs 65; price difference 70 qualifies, 64 does not.
+## 16. T055 C3 turn-of-candle — SOURCED timing observation; side/lead OURS
 
-### F18.4 Profile anchors
-Inputs: 5m bars, UTC day/week boundaries, confirmed pivots; refresh on 15m open grid and include only bars closed before refresh. Session/weekly developing require 12 bars; prior day/week static from next period; A1 spans earlier to later confirmed pivot-hour and freezes; A2 spans last confirmed pivot-hour to refresh. Each yields POC/VAH/VAL. Worked: a 00:15 UTC refresh may use bars ending by 00:15, never the 00:15-open bar before it closes. Fewer than 12 developing bars => no profile.
+Inputs: 1-minute bars, epoch timestamp t, lead_minutes and fixed side. `mq=(t_ms//60000)%15`; per-bar return=(C-O)/O. Summary means separate mq=0 from all other minutes and means by minute. Event at mq=15-lead, entered at that bar close. Bar open timestamp determines bucket; event only if complete bar exists. Empty groups undefined; zero open invalid. Full precision, display returns as fractions/percent explicitly.
 
-### F18.5 Touch and R outcome
-Inputs: latest level L, previous close, current 5m OHLC, prior-closed 1h ATR14 R, horizon H=48, fees. Touch iff low<=L<=high and previous close !=L; side from previous close relative to L. Entry L; barriers +/-R; touch candle checks stop only; later bars stop first, including gap fill at open if beyond, else target, else timeout at close j+H. One live event per family/level stream. NetR formula and taker/maker fee choices are in catalogue В§18.5. Worked: DEV level 62724, R=130, long target=62854; a later high 62860 and no stop yields gross R=1. If no 48th future bar, unresolved/omitted.
+DEV example limitation: supplied candle archives here are 1h/15m, not 1m DEV bars. Using observed bar 0, return=(46650.01-46210.57)/46210.57=0.0095097, but its 1h candle cannot identify mq or the C3 event. This example is arithmetic only; C3 event example is NOT_IN_DATA in this archive.
 
-### F18.6 Placebo
-Inputs: real level, refresh index, ATR reference. Offset cycles (-3,-2,-1,-.5,.5,1,2,3) by index mod 8; placebo L=L+d*Rref, then run F18.5 unchanged. Worked: DEV ATRref=130, refresh index 0, L=62724 => placebo 62334. Index wraps every 8; missing ATR means no placebo.
+## 17. B070 net R:R — OURS (operator ruling), fee rate SOURCED
 
-### F18.7 Event statistics
-Inputs: resolved events with UTC date and R, fixed seed 20261009. Count exits/hit/stop/timeout, means; 95% CI resamples UTC day blocks with replacement 2000 times and computes event-weighted mean, paired streams share draws. Percentiles 2.5 and 97.5. Empty resample has no statistic. Worked from DEV-derived returns: r=[.001530,-.001116] gives mean=.000207; repeated events are grouped by UTC date before resampling, not shuffled individually.
+Inputs: entry E, target T, stop S and per-side taker fraction f. Cost=2*f*E; netRR=(abs(T-E)-cost)/(abs(E-S)+cost); stop=entry returns 0 by explicit convention. Use entry-denominated cost on both legs; full precision then display 4 decimals. Invalid/nonpositive prices or missing stop/target are undefined.
 
-## F19 вЂ” Trendline contract вЂ” SOURCED pivot concept; OURS parameters/thresholds
+DEV example: E=bar 0 close 46650.01; use bar 1 close 46766.78 as target and low 46570.34 as stop; f=.0005. Reward=116.77, risk=79.67, cost=46.65001; netRR=(116.77-46.65001)/(79.67+46.65001)=0.5551.
 
-### F19.1 Strict pivot
-Inputs: lows (or highs), width k=3. Strict extreme against k bars before and after; known at close i+k. Ties fail; incomplete flank is not a pivot. Worked DEV lows: candidate 62642 at first tape bar cannot yet be confirmed due to no preceding three bars in the shown slice.
+## 18. Anchored volume profile touch study — mixed SOURCED profile levels; pivot/bin/outcome rules OURS
 
-### F19.2 Anchor interpolation
-Inputs: distinct indices ia,ib, positive anchor prices pa,pb, query t. Linear interpolate price; logarithmic interpolate log-price then exponentiate. No clamping beyond anchors unless caller specifies. Worked using DEV prices pa=62724,pb=62820 across 2 index units: midpoint linear L=62772; log interpolation gives sqrt(62724*62820) approximately 62771.992.
+Inputs: OHLCV bar set, bin width w, UTC anchor family, confirmed pivots, refresh time, ATR, touch horizon H, fee fractions. Bin k is [kw,(k+1)w); assign each bar’s volume to its typical-price bin per catalog. POC is greatest volume bin (tie resolution as stated in catalog); value area expands from POC by adjacent greatest-volume bins to 70% total, yielding VAH/VAL. Families use UTC session/week/prior-period or specified pivot anchors. 5m profiles refresh on 15m grid from bars closed before refresh; developing families need 12 bars. Touch at j requires low<=L<=high and previous close !=L; side from previous close. R is ATR14 from 1h bars closed before j; barriers ±1R, touch bar tests stop only, later bars test stop before target, then timeout at j+H. One active event per family/level stream. Fees are fractions of entry/exit price; report gross/net R. Never use an unfinished refresh bucket.
 
-### F19.3 Trend ATR
-Inputs: OHLC through second anchor, 14 TRs. F12 plain SMA, fixed at bar ib for the line. Undefined until 14 true ranges exist. Worked DEV high-low ranges 140 and 121 (first two shown bars): two-range illustrative SMA=(140+121)/2=130.5; production ATR requires 14.
+DEV example: bar 0 observed range [46210.55,46729.73], typical price=(H+L+C)/3=(46729.73+46210.55+46650.01)/3=46530.0967. With illustrative OURS w=10, it maps to bin floor(46530.0967/10)=4653, interval [46530,46540). A single bar cannot define a profile/value area or 5m touch event.
 
-### F19.4 Slope
-Inputs: line endpoints, index distance, anchor ATR. `slope_atr=(pb-pa)/(ib-ia)/ATR_b`; `slope_log=(ln(pb)-ln(pa))/(ib-ia)`. Worked DEV 62724 to 62820 in 2 bars, ATR=130: slope_atr=96/2/130=.369231.
+## 19. Trend-line contract, subentries 19.1–19.8 — SOURCED trader concept; numeric tolerances/parameters OURS
 
-### F19.5 Touch/poke/break
-Inputs: projected L(j), fixed ATR_b and OHLC. Support touch low<=L+.25ATR; poke low<L-.10ATR while close>=L; break close<L. Resistance mirrors. Comparisons are strict/inclusive exactly as shown; no rounding. Worked DEV L=62724, ATR=130: touch ceiling=62756.5; low 62750 touches; close 62720 breaks.
+Inputs: closed OHLC bars, strict pivot side width k, two anchor indices/prices, linear or log mode, ATR14, volume history and contact thresholds. A low/high pivot beats every bar in k bars on both sides, confirmed at close i+k. Line is linear interpolation or exponential interpolation in log price. ATR is section 12; slope is price change per bar divided by ATR, or log-price change per bar. Touch/poke/break/episode and volume tests use contract multipliers: touch 0.25 ATR, poke 0.10 ATR, break by close through line, reset beyond 1 ATR, anchor volume >=2x mean of prior 20. Third anchor tolerance 0.25 ATR. No ties pass strict pivots; insufficient side bars means unavailable. Calculations full precision.
 
-### F19.6 Contact episode/reset
-Inputs: sequential contact state, L, ATR_b. Contact episode resets on first bar with low>L+ATR (support); eligibility bar is reset bar per contract. Worked DEV L=62724 ATR=130: reset requires low>62854; low=62860 resets, equality 62854 does not.
+DEV example: actual bar 0 low 46210.55 and bar 1 low 46570.34; as illustrative linear anchors (i=0,p=46210.55),(i=1,p=46570.34), L(2)=46930.13. This does not assert either bar is a confirmed pivot.
 
-### F19.7 Volume anchor
-Inputs: anchor volume V and mean M of 20 preceding bars. Pass iff V>=2M; anchor excluded from baseline. Worked DEV tape earlier-volume mean (120+100+80+90)/4=97.5 (illustrative shorter window); threshold=195, V=200 passes. Production uses exactly 20 prior bars.
+## 20. WaveTrend, subentries 20.1–20.4 — SOURCED LazyBear equations; gap/zone/cross policy OURS
 
-### F19.8 Third anchor
-Inputs: third pivot price, projected line, ATR at second anchor. Eligible if absolute difference<=.25ATR; known at pivot confirmation close i+k. Worked DEV projected L=62772, ATR=130, tolerance=32.5; candidate 62801 differs 29 and qualifies; 62810 differs 38 and fails.
+Inputs: closed OHLC and periods (10,10,21,4); ap=(H+L+C)/3; ESA EMA(ap,10); d=EMA(abs(ap-ESA),10); ci=(ap-ESA)/(.015*d); WT1=EMA(ci,21); WT2=SMA(WT1,4). Catalog EMA here seeds from first valid input; unlike entry 4’s SMA-seeded EMA. Warmup 200 bars from start/gap/NaN; if d<=1e-9*abs(ap), ci unavailable. WT2 needs four valid WT1. Cross tracks last strict side, skips ties, resets at NaN; zones use inclusive bounds ±53/±60. HTF value is last bar whose close time<=query time. No rounding before crosses; golden comparison tolerance 1e-9 is OURS.
 
-## F20 вЂ” WaveTrend вЂ” SOURCED LazyBear equations; OURS runtime conventions
+DEV example, bar 0 ap=(46729.73+46210.55+46650.01)/3=46530.0967. This is the source input for ESA; output is not yet valid under the 200-bar warmup. Early warmup and d=0 are explicit no-signal cases.
 
-### F20.1 Indicator chain
-Inputs: H,L,C; typical price ap=(H+L+C)/3; EMA(ap,10), EMA(abs(ap-esa),10), ci=(ap-esa)/(.015*d), EMA(ci,21), SMA(wt1,4). EMA alpha=2/(n+1); use runtime conventions F20.2. Worked DEV bar H=62782.1,L=62642,C=62724: ap=62716.033333. The full chain needs prior bars; this single bar alone cannot produce final wt2.
+## 21. Krown detectors, subentries 21.1–21.9 — mixed SOURCED KR ledger / OURS parameters
 
-### F20.2 Validity, events, zones, HTF
-Inputs: series and bar intervals. EMA seeds first valid source; discard 200 bars after start/gap/NaN ci. ci invalid when d<=1e-9*abs(ap); wt2 needs four valid wt1. Cross fires only at first strict opposite side from last strict side; tie skipped, reset on NaN. Zone thresholds inclusive as catalogue. Available_at=open+tf; HTF uses latest bar whose close<=t. Worked: DEV bar open 20:00 on 1h has availability 21:00 UTC; a 4h value closing 20:00 is usable at 20:00, one closing 21:00 is not.
+Inputs: closed OHLCV bars, configured k/periods/tolerances/windows. Zones span pivot wick extreme to close, available only after k right bars; qualify by turns/volume and rank by heavy, turns, recency (max five). Volume ratio compares current V to mean of 20 PRIOR bars; same-slot baseline uses prior m weeks. Strict engulfing requires low<prior low and close>prior high (bearish mirror); candle shape ratios follow configured thresholds. Pivots are strict and confirmed i+k. Structural state uses latest two pivot highs/lows and tolerance; reversal requires trade-through and close-through. BBWP is 4*populationSD/SMA over basis 7 then strict prior-lookback percentile (default 100), regime thresholds as catalog. EMA5 uses SMA seed; leash threshold needs 3 prior closes beyond EMA, event when EMA touched. RSI is Wilder with configured 14; zones >60/<40, inclusive middle. Range uses prior 20 highs/lows; edge position <=.2 or >=.8; coil compares recent-five mean range with prior window and <.7. Tops combine 4 signal families in 3-bar window and fire on transition to count>=3. Missing warmup values produce no detector; strict comparisons and boundary inclusivity follow each rule; no early rounding.
 
-### F20.3 Hand WT example
-Inputs: two synthetic flat-range close values h=l=c=[10,12] to expose first valid ci. At bar0 d=0 => ci invalid. At bar1 alpha=2/11; esa=10.363636, deviation EMA d=.297521, ci=366.666667. wt1 seeds there; wt2 undefined until four wt1. This algebraic boundary example is illustrative; market example F20.1 anchors the DEV data requirement.
+DEV example, volume section: bar 1 V=7276.249; prior bar 0 V=8957.465, so with a one-bar illustrative prior baseline ratio=0.8123. For actual configured 20-bar baseline this early point is warmup and has no volume signal. Example shows why warmup must not be treated as a ratio.
 
-### F20.4 Golden parity
-Inputs: declared 400 DEV BTCUSDT 1h bars from 2022-01-01 and independent formula implementation. Compare wt1/wt2/events after warmup at tolerance 1e-9. This is spreadsheet-style formula parity, not Pine runtime parity. Worked: allowed sample prefix is 400 bars from Jan 2022 (all opens before cutoff); first 200 are excluded from event comparison by warmup. Insufficient 200-bar prefix => no parity claim.
+## 22. Bollinger Bands — SOURCED TradingView definition/defaults
 
-## F21 вЂ” Krown v0 detectors вЂ” SOURCED ledger rule IDs; OURS parameter choices
+Inputs: closes, n=20 and multiplier=2 unless overridden. At bar close t use last n closes; middle=mean, standard deviation is population (divide squared deviations by n), upper/lower=middle±mult*sd. None before n observations; full precision, display per caller. A missing close invalidates the window; zero variance gives equal bands.
 
-### F21.1 Zone
-Inputs: confirmed pivot OHLC, same-kind pivots, volume ratio. Zone spans wick extreme to close; count same-kind wick pivots inside inclusive zone, origin included; qualify turns>=2 or turns=1 with ratio>=2; rank heavy, turns, recency; cap five. Confirmation delayed k bars. Worked DEV pivot candle low 62642, close 62724 => zone [62642,62724]; the same pivot is one turn. Missing volume ratio cannot satisfy the heavy single-turn exception.
+DEV example, n=2, closes bars 0–1 [46650.01,46766.78]: mean=46708.395, population sd=58.385, bands with multiplier 2 are 46591.625 and 46825.165 at bar 1 close.
 
-### F21.2 Volume ratio
-Inputs: current volume, 20 prior volumes or same slot over prior m weeks. Ratio=V/mean baseline; current excluded. Threshold comparisons inclusive as rule says. Worked DEV 1h volume 90 against previous 80, mean=80 => 1.125. Zero/missing baseline => undefined. Same-slot 1d/week indexing follows catalogue.
+## 23. Stochastic RSI — SOURCED default periods; flat-range raw=0 OURS
 
-### F21.3 Candles
-Inputs: current and prior OHLC. Strict engulfing requires current low<prior low and close>prior high (bull), reverse for bear; hammer/star and doji use stated range ratios; zero-range bars cannot meet ratio definitions. Confirmation uses first close within H=3 beyond wick. Worked DEV current O=62820,H=62840,L=62700,C=62750 vs prior low=62730/high=62850: low<prior low true, close>prior high false, therefore no bullish engulfing. Zero range => no wick ratio.
+Inputs: close series; RSI is entry 1; defaults RSI length 14, stochastic length 14, K SMA 3, D SMA 3. For each t with 14 RSI values, raw=100*(RSI[t]-window_min)/(window_max-window_min); if max=min raw=0. K is SMA of 3 raw values, D SMA of 3 K values. Values align to the last input bar; no output until all nested warmups complete. Missing values invalidate/restart windows; do not divide by zero. Keep full precision; display 4 decimals.
 
-### F21.4 Structure
-Inputs: confirmed width-k strict pivots and tol=.01. Up requires both last-two highs and lows rise by more than tol; down both fall; otherwise range/state. Dominant low/high is extreme between the two latest opposing pivot indices; reversal requires trade-through and close beyond. Worked DEV lows 62642 then 62680 rise by 38, but shown highs 62782 then 62801 rise by 19; if these were confirmed pivots and tol=0, both sequences rise, structural up; actual k=3 confirmation requires future right-side bars.
-
-### F21.5 BBWP
-Inputs: close, basis=7, lookback=100, mult=2. bbw=4*population_sd/SMA; percentile is count of prior lookback bbw strictly below current divided by lookback*100 (current excluded). First percentile requires basis+lookback bars. Expansion>=85; compression<=30; confirmation>50. Worked DEV two-close proxy [62724,62780], basis 2: mean 62752, population sd 28, bbw=4*28/62752=.001785. Not enough prior values for percentile in this two-point example.
-
-### F21.6 Moving averages/leash
-Inputs: close for SMA-seeded EMA(5), OHLC for relation. EMA alpha=1/3 after 5-value SMA seed. Long disconnect when low>EMA; after >=3 consecutive disconnect closes, first low<=EMA ends run and emits leash; short mirrored with high<EMA then high>=EMA. Worked DEV bar low 62700, EMA assumed from prior bars 62690: low>EMA is disconnect; no event until a qualifying run later touches. Missing EMA breaks run.
-
-### F21.7 RSI regime
-Inputs: close, Wilder RSI period14 (F01), zones. RSI>60 bull, <40 bear, inclusive 40..60 range. Worked DEV close steps [+56,+40,-70], period3 yields RSI=57.8125 (F01), hence range. Undefined RSI => no zone.
-
-### F21.8 Range/coil
-Inputs: previous n=20 highs/lows for range; subsequent five bar ranges for coil. top=max prior highs, bottom=min lows, width ratio=(top-bottom)/midpoint; range exists <=.25. Position=(close-bottom)/(top-bottom); edge <=.2 or >=.8. Breakout close strictly outside boundaries. Coil=mean last 5 ranges / mean preceding n ranges; compression <.7. Worked DEV prior high=62801, low=62642 => height=159, midpoint=62721.5, width=.002535; close 62724 position=82/159=.515723 (middle). Zero height => position undefined.
-
-### F21.9 Tops
-Inputs: per-bar reversal candle, volume ratio against 30-bar mean, BBWP, momentum; rolling window w=3. Count distinct component flags present in bars t-w+1..t; fire when count>=3 and previous count<3. Candle/volume/BBWP boundaries follow their referenced entries; MACD periods 12/26/9; RSI swing divergence. Worked: flags on DEV-derived bars 1=candle,2=volume,3=BBWP => at t=3 count 3, fire; at t=4 window [2,3,4] with only first two active count=2, no second event. Missing component values are false, not zero-valued evidence.
-
-## F22 вЂ” Bollinger bands вЂ” SOURCED TradingView definition
-
-Inputs: close, n=20, multiplier=2. Middle SMA of last n closes; population standard deviation (divide by n); upper/lower=mid +/- mult*sd. First value after n closes; zero deviation makes all bands equal mid. No rounding before comparisons. Worked DEV closes 62724 and 62780 with n=2: mid=62752, population sd=28, bands 62808 and 62696. A window with fewer than n closes has no bands.
-
-## F23 вЂ” Stochastic RSI вЂ” SOURCED TradingView defaults; OURS flat-window behavior
-
-Inputs: close, Wilder RSI length 14, stochastic length 14, K=3, D=3. RSI follows F01; raw=100*(r-min)/(max-min) over current plus previous 13 RSI values; if max=min raw=0 by repo choice. K/D are rolling SMA of raw/K. First raw requires 14 valid RSI values; first K requires two more raw values, first D two more K values. Keep [0,100], no intermediate rounding. Worked from DEV close changes [+56,+40,-70] (illustrative period=3 to shorten hand arithmetic): seed RSI=57.8125; with a three-value RSI window [50,57.8125,55], raw=(55-50)/(57.8125-50)*100=64.0; if all three RSI values equal, raw=0. Defaults remain 14/14/3/3.
-
-## ID inventory check
-
-There is one spec heading for every catalogue heading F01вЂ“F23, and explicit child headings for each numbered sub-entry. Worked examples are explanatory calculations, not expected values copied from producer code. Where this spec says a sample is illustrative or too short to meet production warmup, it does not claim that a detector fired on that sample.
+DEV example: bars 0–2 produce RSI at bar 2 of 100 (entry 1); only one RSI exists, so a 14-value stochastic window and K/D are unavailable. This is a data-derived warmup example, not an invented oscillator value.
