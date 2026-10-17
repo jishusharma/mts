@@ -10,7 +10,7 @@
   "id": "dsa-aibridge-tasks-parallel-safe-with-nb",
   "lane": "",
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -25,5 +25,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "DSA AIBridge tasks parallel-safe with NB/NUC scope"
+  "title": "DSA AIBridge tasks parallel-safe with NB/NUC scope",
+  "weight": "ROUTINE"
 }

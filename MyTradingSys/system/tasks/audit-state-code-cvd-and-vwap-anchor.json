@@ -11,7 +11,7 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch: no, protocol skipped]",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -26,5 +26,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Audit two live-field mismatches from the 2026-10-15 live read: state_code.json session_cvd -6549.656 vs archive cumulative delta -6150.6..-6182.3 (rows L-13), and engine session.vwap_anchor_utc 2026-10-15T13:30Z with a value that fits the 00:00Z anchor (L-14). Read-only audit first, independent of the reader."
+  "title": "Audit two live-field mismatches from the 2026-10-15 live read: state_code.json session_cvd -6549.656 vs archive cumulative delta -6150.6..-6182.3 (rows L-13), and engine session.vwap_anchor_utc 2026-10-15T13:30Z with a value that fits the 00:00Z anchor (L-14). Read-only audit first, independent of the reader.",
+  "weight": "IMPORTANT"
 }

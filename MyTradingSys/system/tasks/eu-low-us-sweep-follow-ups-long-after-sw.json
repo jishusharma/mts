@@ -13,7 +13,7 @@
     "session_timing"
   ],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -28,5 +28,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "EU-low/US-sweep follow-ups: long after sweep+reclaim (stability test), LTF RSI-divergence short from daily high, pre-US double-top short; reuse eur_low_us_sweep study.py harness (ladder + leverage equity/DD)"
+  "title": "EU-low/US-sweep follow-ups: long after sweep+reclaim (stability test), LTF RSI-divergence short from daily high, pre-US double-top short; reuse eur_low_us_sweep study.py harness (ladder + leverage equity/DD)",
+  "weight": "IMPORTANT"
 }

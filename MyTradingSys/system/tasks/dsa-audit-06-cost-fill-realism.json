@@ -19,7 +19,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use]",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -54,5 +54,6 @@
     "Break-even cost per arm vs charged; fee-to-stop ratio for every stop-based testnet layer (extends E3)."
   ],
   "tests": "",
-  "title": "DSA audit T06: every cost, funding and fill assumption side by side, real funding rerun, break-even per arm"
+  "title": "DSA audit T06: every cost, funding and fill assumption side by side, real funding rerun, break-even per arm",
+  "weight": "IMPORTANT"
 }

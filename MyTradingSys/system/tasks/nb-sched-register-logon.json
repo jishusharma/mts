@@ -28,7 +28,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch: no, protocol skipped]",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "claude JIS-NUC 2026-10-14 (ops follow-up, from NEXT_SESSION (c))",
@@ -54,5 +54,6 @@
     "schtasks /query for the three names; trigger MTS-LiveMirror once and read live_mirror.py brief."
   ],
   "tests": "none (ops); evidence = schtasks output and mirror age",
-  "title": "JIS-NB: register logon catch-up, live-mirror and AIBridge scheduled tasks (NB is off 02:00-10:30, daily tasks never run)"
+  "title": "JIS-NB: register logon catch-up, live-mirror and AIBridge scheduled tasks (NB is off 02:00-10:30, daily tasks never run)",
+  "weight": "IMPORTANT"
 }

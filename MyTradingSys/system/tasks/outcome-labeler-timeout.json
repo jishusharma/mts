@@ -13,7 +13,7 @@
   "latest": [],
   "layers": [],
   "live_path": true,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=CRITICAL lab-touch: no, protocol skipped]",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -40,5 +40,6 @@
   ],
   "tests": "a fail-first test for the timeout path (slow input -> reported, not silent)",
   "title": "Network: outcome_labeler hits its 30 s timeout in the live loop (find cause, raise or fix)",
+  "weight": "CRITICAL",
   "worker": "agent"
 }

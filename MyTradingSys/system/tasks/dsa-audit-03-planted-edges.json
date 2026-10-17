@@ -19,7 +19,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers]",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -53,5 +53,6 @@
     "Rebuild mean, day-clustered SE, t, MDE and DIFF for mal_bb A1 and the gross screen T arm; test every pass-bar threshold at its exact boundary."
   ],
   "tests": "",
-  "title": "DSA audit T03: known-answer canaries through every simulator and the verdict statistics"
+  "title": "DSA audit T03: known-answer canaries through every simulator and the verdict statistics",
+  "weight": "IMPORTANT"
 }

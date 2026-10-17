@@ -23,7 +23,7 @@
     "krown"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-17 ACCEPT. WEIGHT:ROUTINE. Title says remaining 10 but goal is the 4 caption-missing ids; the other extracts exist. 429: STOP and mark PENDING_CAPTIONS, one retry per day; operator paste is the only other source (OPERATOR-ONLY).",
+  "note": "REVIEWED:2026-10-17 ACCEPT [PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped] . WEIGHT:ROUTINE. Title says remaining 10 but goal is the 4 caption-missing ids; the other extracts exist. 429: STOP and mark PENDING_CAPTIONS, one retry per day; operator paste is the only other source (OPERATOR-ONLY).",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
@@ -58,5 +58,6 @@
   ],
   "tests": "docs lane, no code: verify_extract_quotes.py is the gate",
   "title": "Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass both gates, MANIFEST.csv shows 19 of 19 reachable, ledger rebuilt",
+  "weight": "ROUTINE",
   "worker": "session"
 }

@@ -11,7 +11,7 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
@@ -24,5 +24,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Main tree BinanceDataFeed (JIS-NUC) diverged: 3 stale local commits + untracked copies of files origin now tracks; re-sync without reset"
+  "title": "Main tree BinanceDataFeed (JIS-NUC) diverged: 3 stale local commits + untracked copies of files origin now tracks; re-sync without reset",
+  "weight": "ROUTINE"
 }

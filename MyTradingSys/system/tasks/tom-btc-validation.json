@@ -15,7 +15,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "ROUTED 2026-10-13 (operator: GPT + DSA do the work, Claude economy): one frozen run, DSA runs the command and reports.",
+  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. ROUTED 2026-10-13 (operator: GPT + DSA do the work, Claude economy): one frozen run, DSA runs the command and reports.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
@@ -38,5 +38,6 @@
     "Run once, write the verdict line."
   ],
   "tests": "run lane",
-  "title": "Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config"
+  "title": "Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config",
+  "weight": "CRUCIAL"
 }

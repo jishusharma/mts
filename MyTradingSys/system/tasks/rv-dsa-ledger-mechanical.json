@@ -29,7 +29,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "host=JIS-NUC",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] host=JIS-NUC",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -55,5 +55,6 @@
     "Write the numbers to the named file; change no code."
   ],
   "tests": "",
-  "title": "RV-DSA Tom ledger mechanical check and path audit of the layer index (host=JIS-NUC)"
+  "title": "RV-DSA Tom ledger mechanical check and path audit of the layer index (host=JIS-NUC)",
+  "weight": "ROUTINE"
 }

@@ -19,7 +19,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass]",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -51,5 +51,6 @@
     "BRIDGE_PLAYBOOK.md from the bridge logs of every shipped T report (list the missing): patterns, failures and recoveries, 10 rules; DSA prompt changes proposed via desk.py --target CLAUDE."
   ],
   "tests": "",
-  "title": "DSA audit T10: 30+ backtest failure modes x every study, 5 demonstrations, and the DSA bridge playbook"
+  "title": "DSA audit T10: 30+ backtest failure modes x every study, 5 demonstrations, and the DSA bridge playbook",
+  "weight": "ROUTINE"
 }

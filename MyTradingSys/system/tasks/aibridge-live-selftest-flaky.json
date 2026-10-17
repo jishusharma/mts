@@ -12,7 +12,8 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "fixed by 3e9e1601 (per-run port test_agent_live_selftest_concurrent_and_port_clash), in origin/fast-track",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -22,7 +23,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "test_aibridge_payload.py::test_agent_live_selftest flakes in local ship gates when sessions run it concurrently (connection reset on port 7199, leftover task_*.json); seen 3 sessions on 2026-10-14. Make it use a per-run port and scratch dir, or serialize with a lock. Not fixed yet."

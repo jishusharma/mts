@@ -14,7 +14,7 @@
     "volume_candles_ma"
   ],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -27,5 +27,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-only market-guide field; VOLUME report recommendation (c)"
+  "title": "Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-only market-guide field; VOLUME report recommendation (c)",
+  "weight": "ROUTINE"
 }

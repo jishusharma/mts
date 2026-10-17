@@ -4,25 +4,55 @@
   "commands": [],
   "created": "2026-10-15T20:33:54Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "test_screen.py passes with the new test; git diff shows DATA_MANIFEST.csv unchanged.",
+  "est_turns": 12,
   "from_inbox": "",
-  "goal": "",
+  "goal": "screen.py manifest() rewrites DATA_MANIFEST.csv on every run. Make a run refuse (non-zero exit, names the file) when an input sha256 differs from the committed manifest, unless --accept-new-data is passed.",
   "id": "gross-screen-refuse-a-changed-data-manif",
-  "lane": "SONNET",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gross-effect screen: screen.py, tests, count section before outcome run",
+      "ref": "6cfe048a4c02",
+      "utc": "2026-10-15T19:05:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 ACCEPT [PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass]",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T20:21:22Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Gross screen: refuse a changed data manifest instead of overwriting it (GPT audit MED)"
+  "scope_in": [
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py"
+  ],
+  "scope_out": [
+    "DATA_MANIFEST.csv content",
+    "RESULT.md and ledger.csv",
+    "VALIDATION and HOLDOUT data",
+    "other studies",
+    "live tree"
+  ],
+  "scope_sha": "6cfe048a4c02",
+  "size": "S",
+  "sources": [
+    "GPT audit MED on the gross screen (card title)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Add test_manifest_refuses_changed_input: temp manifest, change one input byte, expect SystemExit naming the file (fails on the old overwrite code).",
+    "In manifest(): read the committed rows first; on a sha mismatch raise SystemExit unless the --accept-new-data flag is set; write only when equal or flagged.",
+    "Run test_screen.py; confirm the committed DATA_MANIFEST.csv is byte-identical."
+  ],
+  "tests": "test_screen.py::test_manifest_refuses_changed_input fails on the pre-change manifest() and passes after.",
+  "title": "Gross screen: refuse a changed data manifest instead of overwriting it (GPT audit MED)",
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

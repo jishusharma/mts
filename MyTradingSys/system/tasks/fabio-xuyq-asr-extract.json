@@ -32,7 +32,7 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -61,5 +61,6 @@
     "Add the new ASR quotes to the Fabio rows of SETUP_CATALOG.md (same pattern as the Is1HvdfQm5c additions) and update the unread-sources row; ship."
   ],
   "tests": "verify_extract_quotes.py PASS on the new extract; git cherry origin/fast-track empty after ship.",
-  "title": "Fabio xUyqIjCfZzg: finish ASR transcription (JIS-NB, resumable) then canonical transcript + V2 extract + FAB catalogue quotes"
+  "title": "Fabio xUyqIjCfZzg: finish ASR transcription (JIS-NB, resumable) then canonical transcript + V2 extract + FAB catalogue quotes",
+  "weight": "ROUTINE"
 }

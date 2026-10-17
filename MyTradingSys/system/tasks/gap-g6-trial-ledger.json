@@ -4,44 +4,51 @@
   "commands": [],
   "created": "2026-10-13T14:40:00Z",
   "depends_on": [],
-  "done_when": "script + test + generated ledger with a total row count that matches the per-registry counts.",
+  "done_when": "TRIAL_LEDGER_BUILT.csv exists, its row count equals the sum of rows over the 9 registries, test passes.",
+  "est_turns": 10,
   "from_inbox": "",
-  "goal": "Add scripts/dev/trial_ledger.py that scans the TRIAL_REGISTRY files listed in REPORT.md G6 and writes research/TRIAL_LEDGER.csv (study, variant, date, data window, verdict) plus a holdout_reads.csv skeleton for the sealed 2025-07..2026-09 BTC window. Count per study printed.",
+  "goal": "Add scripts/dev/trial_ledger.py that scans the 9 TRIAL_REGISTRY*.csv files and writes research/TRIAL_LEDGER_BUILT.csv (study, variant, date, split, verdict) plus a holdout_reads.csv skeleton; the hand-kept TRIAL_LEDGER.csv (18 rows) is never edited. Per-study counts printed.",
   "id": "gap-g6-trial-ledger",
   "kind": "build",
   "lane": "CODEX",
+  "latest": [],
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "PARKED: mechanical CSV builder; reopen on lane SONNET when the first layer reaches G5 (trial ledger needed then). LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)",
+  "note": "REVIEWED:2026-10-18 ACCEPT [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=Gemini Flash high + Haiku re-derive 1-3 numbers] DECISION (OURS) 2026-10-18: unblocked now because lab-machine-checks-extra (trial ledger vs runs) and the planted-error trial need a built ledger; output goes to a new file so the hand-kept TRIAL_LEDGER.csv is safe.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "sonnet-2026-10-13 gap review G1-G8",
+  "refreshed": "2026-10-17T20:21:23Z",
   "refs": [],
   "result": "",
   "scope_in": [
-    "scripts/dev/trial_ledger.py",
-    "scripts/dev/test_trial_ledger.py",
-    "MyTradingSys/research/TRIAL_LEDGER.csv",
-    "MyTradingSys/research/ (registries, read only)"
+    "scripts/dev/trial_ledger.py (new)",
+    "scripts/dev/test_trial_ledger.py (new)",
+    "MyTradingSys/research/TRIAL_LEDGER_BUILT.csv (new)",
+    "MyTradingSys/research/holdout_reads.csv (new)"
   ],
   "scope_out": [
-    "live tree",
-    "holdout reads",
-    "editing registries",
-    "tuning"
+    "TRIAL_LEDGER.csv",
+    "any TRIAL_REGISTRY file (read only)",
+    "verdicts",
+    "live tree"
   ],
+  "scope_sha": "",
   "size": "S",
   "sources": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
   ],
-  "state": "blocked",
+  "state": "ready",
   "steps": [
-    "List registries by glob TRIAL*REGISTRY*; read their columns; normalise.",
-    "Write ledger, count line, test."
+    "Write test_trial_ledger.py on two small temp registries: row counts per study, sort stable, rerun byte-identical, existing TRIAL_LEDGER.csv untouched (fails before the script exists).",
+    "Implement the scan (git ls-files glob of TRIAL_REGISTRY*.csv), write the built ledger and the holdout_reads.csv header.",
+    "Run it on the repo; print the per-study counts and the total."
   ],
-  "tests": "pytest on two tiny synthetic registries: rows merged, duplicate variant kept once with a dup flag, total count equals sum. Fails before the script exists.",
-  "title": "Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)"
+  "tests": "test_trial_ledger.py fails before trial_ledger.py exists; rerun gives a byte-identical file.",
+  "title": "Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

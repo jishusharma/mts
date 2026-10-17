@@ -29,7 +29,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -57,5 +57,6 @@
   ],
   "tests": "fail-first test: same-model stage refused, different-vendor stage accepted",
   "title": "Lab: allow a Gemini or Claude stage in lab_flow.py RECIPES with the same finish receipt, and record model identity per stage",
+  "weight": "IMPORTANT",
   "worker": "session"
 }

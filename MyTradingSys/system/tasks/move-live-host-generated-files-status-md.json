@@ -32,7 +32,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "make_status.py -> research/STATUS.md; scripts/worker/audit_digest.py -> audits/AUDIT_DIGEST.md; audit_t0_checks.py -> audits/T0_CHECKS.md; scripts/Build-Check.ps1 -> runtime/BUILD_REPORT.md; oi_recorder.py -> runtime/oi_live/*.csv; fabio/htf_context_live.py -> research/htf_context/*. | DECISION (OURS): lane JIS-NB because the generators run on the live host. Default: untrack, never delete files on disk.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch: no, protocol skipped] make_status.py -> research/STATUS.md; scripts/worker/audit_digest.py -> audits/AUDIT_DIGEST.md; audit_t0_checks.py -> audits/T0_CHECKS.md; scripts/Build-Check.ps1 -> runtime/BUILD_REPORT.md; oi_recorder.py -> runtime/oi_live/*.csv; fabio/htf_context_live.py -> research/htf_context/*. | DECISION (OURS): lane JIS-NB because the generators run on the live host. Default: untrack, never delete files on disk.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "W9 orderflow-restart-map",
@@ -66,5 +66,6 @@
     "Ship via sync.py; MTS-AutoDeploy applies it on JIS-NB; builders never deploy by hand."
   ],
   "tests": "test_auto_deploy: a dirty/untracked generated path no longer needs the allowlist and GENERATED_RE is gone (fails on the current allowlist code); test_live_mirror and test_make_status pass with the files untracked.",
-  "title": "Move live-host generated files (STATUS.md, AUDIT_DIGEST.md, T0_CHECKS.md, BUILD_REPORT.md, oi_live csv, htf_context) out of git tracking; auto_deploy GENERATED_RE allowlist is the stopgap. Update readers (live_mirror, cicd_run, make_status) first."
+  "title": "Move live-host generated files (STATUS.md, AUDIT_DIGEST.md, T0_CHECKS.md, BUILD_REPORT.md, oi_live csv, htf_context) out of git tracking; auto_deploy GENERATED_RE allowlist is the stopgap. Update readers (live_mirror, cicd_run, make_status) first.",
+  "weight": "IMPORTANT"
 }

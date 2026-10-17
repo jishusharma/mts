@@ -19,7 +19,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers]",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -53,5 +53,6 @@
     "LC1 (lead L8): fair touched-only control on the footprint window (exposure row); recompute the 12 hold rates and which KEEPs survive."
   ],
   "tests": "",
-  "title": "DSA audit T05: matched placebo distributions, overlap, best-of-N and a fair LC1 control"
+  "title": "DSA audit T05: matched placebo distributions, overlap, best-of-N and a fair LC1 control",
+  "weight": "IMPORTANT"
 }

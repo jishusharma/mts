@@ -19,7 +19,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers]",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -54,5 +54,6 @@
     "Doc drift: LAYERS.md, layer_map.json, Research Map DATA, STATUS.md vs result files."
   ],
   "tests": "",
-  "title": "DSA audit T07: verdict-to-code provenance, rerun-and-diff of ten results, determinism, CI and doc drift"
+  "title": "DSA audit T07: verdict-to-code provenance, rerun-and-diff of ten results, determinism, CI and doc drift",
+  "weight": "IMPORTANT"
 }

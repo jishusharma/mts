@@ -30,7 +30,7 @@
     "rsi"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-17 T0-ONLY. WEIGHT:ROUTINE. operator 2026-10-15: \"Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.\" NO cookies, browser cookies, tokens, impersonation or third-party caption sites (LESSONS_DIGEST s6); this supersedes the cookie plan in desk_queue/20261012-085022-d11b-follow-up-claude-malkan-captions-42.json. Never open YouTube watch pa",
+  "note": "REVIEWED:2026-10-17 T0-ONLY [PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped] . WEIGHT:ROUTINE. operator 2026-10-15: \"Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.\" NO cookies, browser cookies, tokens, impersonation or third-party caption sites (LESSONS_DIGEST s6); this supersedes the cookie plan in desk_queue/20261012-085022-d11b-follow-up-claude-malkan-captions-42.json. Never open YouTube watch pa",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -64,5 +64,6 @@
   ],
   "tests": "docs lane, no code: files present or NOT AVAILABLE line per id",
   "title": "Malkan: fetch captions for the 12 ranked-top videos only (video_priority_2026-10-15), no cookies, spaced retries; DONE when each is in raw_transcripts_canonical or has a NOT AVAILABLE line",
+  "weight": "ROUTINE",
   "worker": "agent"
 }

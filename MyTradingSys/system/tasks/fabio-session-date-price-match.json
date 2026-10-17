@@ -32,7 +32,7 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "LANE moved CODEX->SONNET 2026-10-18: Needs network (Dukascopy NQ 1m); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT feeds the Fabio ledger date repair. DISPATCH lane CODEX (JIS-NUC lab): NQ 1m history is NOT in the lab data; the free Dukascopy feed (pre-approved public market data, same code as DAX) is the route. Ledger fill is a later card. Verify: sha + empty git cherry + ls-tree lists files.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] LANE moved CODEX->SONNET 2026-10-18: Needs network (Dukascopy NQ 1m); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT feeds the Fabio ledger date repair. DISPATCH lane CODEX (JIS-NUC lab): NQ 1m history is NOT in the lab data; the free Dukascopy feed (pre-approved public market data, same code as DAX) is the route. Ledger fill is a later card. Verify: sha + empty git cherry + ls-tree lists files.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -64,5 +64,6 @@
   ],
   "tests": "test_date_match.py (new, in the output folder) fails before date_match.py exists, passes after: python -m pytest MyTradingSys/research/fabio_date_match_2026-10-18/test_date_match.py -q",
   "title": "Fabio: date the DyS79Eb92Ug/Jpd96fLqr5M NQ-202512 session by price-path match against NQ 1m history (F6 24914->25001, F11-F14 25095-25110), then fill entry_time_utc",
+  "weight": "IMPORTANT",
   "worker": "agent"
 }

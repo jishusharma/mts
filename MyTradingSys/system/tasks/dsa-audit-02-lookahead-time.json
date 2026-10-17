@@ -19,7 +19,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers]",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -53,5 +53,6 @@
     "Entry timing: entry index vs signal-bar close in every study, 10 events per study checked by hand."
   ],
   "tests": "",
-  "title": "DSA audit T02: truncation and poison tests for look-ahead, plus session clocks"
+  "title": "DSA audit T02: truncation and poison tests for look-ahead, plus session clocks",
+  "weight": "IMPORTANT"
 }

@@ -13,7 +13,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
@@ -27,5 +27,6 @@
   "state": "blocked",
   "steps": [],
   "tests": "",
-  "title": "Tom ledger: single trade_date_used column, blank date for non-observed rows (RV01 F1,F2)"
+  "title": "Tom ledger: single trade_date_used column, blank date for non-observed rows (RV01 F1,F2)",
+  "weight": "IMPORTANT"
 }

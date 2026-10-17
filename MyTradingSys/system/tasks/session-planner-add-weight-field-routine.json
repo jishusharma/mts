@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T20:21:26Z",
   "commands": [],
   "created": "2026-10-17T14:00:25Z",
   "depends_on": [],
@@ -11,6 +12,12 @@
   "id": "session-planner-add-weight-field-routine",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped 47644f10 (weight field in tasks.py check/brief), git cherry origin/fast-track empt",
+      "ref": "50ff8032",
+      "utc": "2026-10-17T20:21:26Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,7 +41,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T18:13:07Z",
   "refs": [],
-  "result": "",
+  "result": "shipped 47644f10 (weight field in tasks.py check/brief), git cherry origin/fast-track empty",
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py",
@@ -48,7 +55,7 @@
   "scope_sha": "227a7088268b",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add test cases to test_tasks.py first: weight BOGUS makes problems() name it; CRUCIAL and an absent weight pass; brief() of a weighted card contains 'Weight: CRUCIAL'. Run them: they fail on the current tasks.py.",
     "In tasks.py add a WEIGHTS tuple, a check in problems() (only when the field is present and non-empty), add weight to blank() as empty string, print 'Weight: X' in brief() after the Goal line (keep the 30-line brief rule). Add a test that a card with a full 30-line brief plus the Weight line is rejected or the Weight line replaces the blank one, so lint stays green.",

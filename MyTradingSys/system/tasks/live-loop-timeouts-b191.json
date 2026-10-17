@@ -13,7 +13,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch: no, protocol skipped]",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -41,5 +41,6 @@
   ],
   "tests": "none (report only; no code change)",
   "title": "Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)",
+  "weight": "IMPORTANT",
   "worker": "agent"
 }

@@ -30,7 +30,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "LANE moved CODEX->SONNET 2026-10-18: Needs network (aggTrades fetch); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT proposes the BTC slippage default. DISPATCH lane CODEX (JIS-NUC lab), public fetch: aggTrades are NOT on the NUC (only tom_raw klines + orderflow_1m bars); data.binance.vision is public. If the fetch fails twice, reroute to DSA-NB (JIS-NB), do not force. Verify: sha + empty git cherry + ls-tree lists files.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] LANE moved CODEX->SONNET 2026-10-18: Needs network (aggTrades fetch); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT proposes the BTC slippage default. DISPATCH lane CODEX (JIS-NUC lab), public fetch: aggTrades are NOT on the NUC (only tom_raw klines + orderflow_1m bars); data.binance.vision is public. If the fetch fails twice, reroute to DSA-NB (JIS-NB), do not force. Verify: sha + empty git cherry + ls-tree lists files.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
@@ -68,5 +68,6 @@
   ],
   "tests": "test_slippage.py (new, in the output folder) fails before slippage.py exists, passes after: python -m pytest MyTradingSys/research/gap_g7_stop_slippage_2026-10-18/test_slippage.py -q",
   "title": "G7 measure BTC stop slippage from aggTrades by volatility bucket",
+  "weight": "IMPORTANT",
   "worker": "session"
 }

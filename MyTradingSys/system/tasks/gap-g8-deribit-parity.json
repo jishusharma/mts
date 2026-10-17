@@ -30,7 +30,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "LANE moved CODEX->SONNET 2026-10-18: Needs network (Deribit public candles); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT venue verdict. 2026-10-15 q-gap-c answered Yes: public market data only, no account, no orders. DISPATCH lane CODEX (JIS-NUC lab): Binance 1m on NUC (tom_raw), Deribit candles fetched public at run time. Verify: sha + empty git cherry + ls-tree lists files.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. LANE moved CODEX->SONNET 2026-10-18: Needs network (Deribit public candles); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT venue verdict. 2026-10-15 q-gap-c answered Yes: public market data only, no account, no orders. DISPATCH lane CODEX (JIS-NUC lab): Binance 1m on NUC (tom_raw), Deribit candles fetched public at run time. Verify: sha + empty git cherry + ls-tree lists files.",
   "prio": 5,
   "refine_tries": 0,
   "refined_by": "",
@@ -67,5 +67,6 @@
   ],
   "tests": "test_parity.py (new, in the output folder) fails before parity.py exists, passes after: python -m pytest MyTradingSys/research/gap_g8_deribit_parity_2026-10-18/test_parity.py -q",
   "title": "G8 Deribit vs Binance venue parity (public mainnet candles allowed, q-gap-c 2026-10-15)",
+  "weight": "IMPORTANT",
   "worker": "session"
 }

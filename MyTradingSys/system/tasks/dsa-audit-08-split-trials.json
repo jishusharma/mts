@@ -20,7 +20,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "WEIGHT:IMPORTANT audit; repo-doc analysis, no 1m data needed; moved to GPT lane 2026-10-17 (operator: use GPT)",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=Gemini Flash high + Haiku re-derive 1-3 numbers] WEIGHT:IMPORTANT audit; repo-doc analysis, no 1m data needed; moved to GPT lane 2026-10-17 (operator: use GPT)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -55,5 +55,6 @@
     "True trial count per study from git history vs TRIAL_LEDGER.csv and trials files; haircut bar sqrt(2 ln N) vs t used."
   ],
   "tests": "",
-  "title": "DSA audit T08: split map, contamination calendar, HOLDOUT seal check and the true trial count"
+  "title": "DSA audit T08: split map, contamination calendar, HOLDOUT seal check and the true trial count",
+  "weight": "IMPORTANT"
 }

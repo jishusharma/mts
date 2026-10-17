@@ -27,7 +27,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers]",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -61,5 +61,6 @@
     "Impact per defect (studies and DEV events touched; one published count recounted) and the delta sign convention check."
   ],
   "tests": "",
-  "title": "DSA audit T01: data forensics of every backtest input"
+  "title": "DSA audit T01: data forensics of every backtest input",
+  "weight": "IMPORTANT"
 }

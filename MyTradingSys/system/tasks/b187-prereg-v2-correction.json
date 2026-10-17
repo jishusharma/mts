@@ -14,7 +14,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use]",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -42,5 +42,6 @@
   ],
   "tests": "the sentence matches a hand calculation; the 2,427 and 662 lines are unchanged",
   "title": "Fix PRE_REG_V2 power sentence (zero-cost n_needed is about 395 days, not about 1,000) and note the stop-basis event difference for B187",
+  "weight": "CRUCIAL",
   "worker": "session"
 }

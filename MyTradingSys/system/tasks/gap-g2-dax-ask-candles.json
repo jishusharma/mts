@@ -30,7 +30,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "LANE moved CODEX->SONNET 2026-10-18: G2 card conflict: the requested 2024-11..2026-04 window breaks the DEV-only rule (open before 2024-07-01); Claude worker must measure the spread on a DEV-only sample and drop the later window. ASK URL/parser code is already in dax_data.py (lab commit 934e5bd0). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT feeds DAX cost table proposal. DISPATCH lane CODEX (JIS-NUC lab): DAX BID raw is on NUC (F:/MTS/data/dax_raw); ASK comes from the free Dukascopy feed, reachable from NUC (REPORT 10.2). Shares dax_data.py with no other open card. Verify: sha + empty git cherry + ls-tree lists files.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] STOP A-20261018-6: do not rerun as written; re-scope to DEV-only dates first. LANE moved CODEX->SONNET 2026-10-18: G2 card conflict: the requested 2024-11..2026-04 window breaks the DEV-only rule (open before 2024-07-01); Claude worker must measure the spread on a DEV-only sample and drop the later window. ASK URL/parser code is already in dax_data.py (lab commit 934e5bd0). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT feeds DAX cost table proposal. DISPATCH lane CODEX (JIS-NUC lab): DAX BID raw is on NUC (F:/MTS/data/dax_raw); ASK comes from the free Dukascopy feed, reachable from NUC (REPORT 10.2). Shares dax_data.py with no other open card. Verify: sha + empty git cherry + ls-tree lists files.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -67,5 +67,6 @@
   ],
   "tests": "test_dax_data.py new cases fail on the old dax_data.py (no ask_url/spreads) and pass after: python -m pytest MyTradingSys/backtest/test_dax_data.py -q",
   "title": "G2 DAX ASK candles: buy legs at ask, spread table (measured 1.15/1.65/2.65 pt by hour), cost-table update",
+  "weight": "IMPORTANT",
   "worker": "session"
 }
