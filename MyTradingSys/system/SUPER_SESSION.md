@@ -5,8 +5,8 @@ A **super session** is one coordinator session in the Claude Code Win App that s
 meter has headroom (Pacing below). First one: 2026-10-15, coordinator local_62faa820 (Opus), about 20 linked workers, an Opus
 observer, and a second coordinator (coord-2) that drained the ship queue at the end.
 
-While a super session runs, the relay is paused: the coordinator IS the dispatcher. When none runs, the relay (MTS-DispatchGate +
-`mts-dispatcher` routine, RELAY.md) keeps the queue moving at the pace the meter allows.
+While a super session runs, the relay is paused: the coordinator IS the dispatcher. When none runs, nothing moves on its own: no relay, dispatcher or routine (MTS-DispatchGate and `mts-dispatcher` RETIRED 2026-10-17, see SCHEDULING_POLICY.md).
+For "schedule the next 5h/10h" the coordinator writes the card order into a plan file and works it.
 
 ## Audit of the first one (2026-10-15, 139 transcripts in the last ~24 h, scripts: transcript usage blocks)
 | What | Number |
@@ -72,7 +72,7 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   takes only an hours number (no --since): for 'after 12:00Z' use the hours since then.
 - Waking: other sessions send no idle notices. Use ONE background shell watcher (`git fetch` every 5 min; exit on a file landing
   on origin/fast-track or after 50 min), and on every wake `python scripts/sched/relay.py heartbeat "<id>" --note "<what>"`.
-- JIS-NB has no MTS-DispatchGate Windows task; the `mts-dispatcher` routine runs in the live tree, so relay/watchdog code only
+- (RETIRED 2026-10-17, see SCHEDULING_POLICY.md) JIS-NB has no MTS-DispatchGate Windows task; the `mts-dispatcher` routine runs in the live tree, so relay/watchdog code only
   takes effect after a deploy.
 - `tasks.py` has no host field: `lane` carries it (JIS-NB, CODEX, DSA-NUC, SONNET, HAIKU). Ready list: `tasks.py list | grep ready`.
   Cards that change the live tree or scheduled tasks (nb-*) are operator-side.
@@ -87,7 +87,7 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
 - CI: `gh run list -R jishusharma/mts --branch fast-track --limit 5` on EVERY wake and after every ship wave (CI sat red 2 h
   unnoticed on 10-16 while a coordinator wrote prompts). New research test files must be registered in run_all_tests /
   run_extra_tests.EXTRA or skipped with a reason (B150, gate step 3gd); study scripts need a `wiring_registry.json` entry.
-- AutoDeploy gate (`MyTradingSys/runtime/sched/auto_deploy_last.json`, lock in `runtime/sched/locks/`): about 5 min on an idle
+- (RETIRED 2026-10-17, see SCHEDULING_POLICY.md) AutoDeploy gate (`MyTradingSys/runtime/sched/auto_deploy_last.json`, lock in `runtime/sched/locks/`): about 5 min on an idle
   host, 16+ min under load, and it times out (25 min, old live copy) when workers, ASR or pytest extras saturate the 8 CPUs.
   Start NO CPU-heavy worker while a gate runs; a red sha is not re-gated (RED_KNOWN) until a newer green exists; STOP_DIRTY names
   the live file (`git --no-optional-locks -C <live> status --short --untracked-files=no`); only the session that owns live-tree
@@ -146,7 +146,7 @@ The coordinator, on its first turn: `get_usage` (stop if the Pacing state is THR
 "super-session <session id>"` on this machine, read STATUS.md and NEXT_SESSION.md, then spawn.
 
 Heartbeat (watchdog): on every wake the coordinator runs `python scripts/sched/relay.py heartbeat "<session id>" --note "<what>"`
-(rewrites `~/.claude/mts-super-heartbeat.json`: coordinator, host, utc, note; not in git). MTS-DispatchGate runs `relay.py watchdog`
+(rewrites `~/.claude/mts-super-heartbeat.json`: coordinator, host, utc, note; not in git). MTS-DispatchGate (RETIRED 2026-10-17, see SCHEDULING_POLICY.md) ran `relay.py watchdog`
 first: a stop starting `super-session` with a heartbeat missing, malformed or older than 60 min is resumed (logged `watchdog_resume`); any other stop never.
 
 ## End
@@ -159,7 +159,7 @@ republish to claude.ai/artifact/9nqpZeMeEehadoBoYopZU3 from the jishusharma1985 
 | State | Condition | What runs |
 |---|---|---|
 | SPEND | U < 100 f - 10, or less than 24 h to the reset with U < 85 | super session worth starting; relay on Sonnet; Fable cards allowed (operator starts them) |
-| NORMAL | between | relay on its normal cadence, Sonnet builders, Haiku dispatcher |
+| NORMAL | between | (relay and Haiku dispatcher RETIRED 2026-10-17, see SCHEDULING_POLICY.md) Sonnet builders, coordinator dispatches |
 | THROTTLE | U > 100 f + 5, or the 5-hour window > 80 % | only model-free work: Codex lab, DSA desk, CI; relay KICKs wait |
 Today (10-15 17:45Z): f = 0.27, U = 32 -> NORMAL. The meter is only readable from an App session (`get_usage`), so the
 coordinator (and any KICK session) writes it to `~/.claude/mts-budget.json` (not in git); the gate treats a reading older than 6 h as NORMAL.
