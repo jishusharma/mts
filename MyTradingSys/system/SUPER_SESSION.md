@@ -11,7 +11,7 @@ For "schedule the next 5h/10h" the coordinator writes the card order into a plan
 ## Audit of the first one (2026-10-15, 139 transcripts)
 4,077 turns / 8,252 tool calls / 3.2 M output tokens in ~24 h; coordinator alone 319 turns and 10 compactions (the costliest session).
 Fixed cost of every turn ~70-80 k tokens (tools 39 k, MCP 26 k, prompt 9 k, skills 6 k, memory 3 k). 68 compactions: 39 lost; one pays back
-only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once). Numbers and rules: WORKERS.md.
+only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); at ~120 k on a 1 M window it gains little. Rules: WORKERS.md rule 5.
 
 ## Rules (from the audit)
 1. **Compaction and workers: see WORKERS.md** (canonical; measured numbers there). Short form: never compact by hand a session that will
@@ -108,6 +108,7 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once). Numbe
   cards. Its spend guard was the real throttle; raised to 10 runs/window and 60 week points on 2026-10-16 (e6955a8f).
 - Fix, don't analyse: when the operator complains, fix the cause in the same turn and report the result in 1-2 lines. Never send
   an analysis-only reply. Put this rule in every worker brief.
+- A worker that merges late hits VERDICTS.csv and wiring_registry.json conflicts: union both sides.
 - Live watch: one watcher session covers the whole market window (a background shell waits until each check time), within the
   5-screenshot-read cap per thread.
 

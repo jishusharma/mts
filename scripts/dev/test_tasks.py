@@ -531,6 +531,12 @@ class LabMachineChecksTest(unittest.TestCase):
         T.RUNS_JSONL.write_text(json.dumps({"card": "B900"}) + "\n", encoding="utf-8")
         self.assertEqual(T.problems(card), [])
 
+    def test_run_accounting_is_skipped_when_the_lab_host_file_is_absent(self):
+        # CI runners and other machines have no F:/codex_home; a missing runs.jsonl must not fail every CODEX run card (CI red 2026-10-17)
+        card = good(lane="CODEX", kind="run", formula_ids=[], commands=["python study.py"])
+        T.RUNS_JSONL.unlink()
+        self.assertEqual(T.problems(card), [])
+
     def test_cited_scope_automatically_marks_source_b_shared(self):
         source = good("BASE1")
         citing = good("USE1", scope_in=["BASE1 results.md"])

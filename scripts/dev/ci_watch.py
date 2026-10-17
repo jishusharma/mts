@@ -20,7 +20,7 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-API = "https://api.github.com/repos/jishusharma/mts/actions/runs?branch=fast-track&per_page=30"
+API = "https://api.github.com/repos/jishusharma/mts/actions/workflows/ci.yml/runs?branch=fast-track&per_page=30"
 MIN_STREAK = 2
 CACHE_MIN = 5
 
@@ -31,10 +31,10 @@ def parse(ts):
 
 def streak(runs):
     """(failed_in_a_row, newest_failed_run, last_success_run) from runs newest first; cancelled and unfinished runs are skipped."""
-    finished = [r for r in runs if r.get("conclusion") in ("success", "failure")]
+    finished = [r for r in runs if r.get("conclusion") in ("success", "failure", "timed_out", "startup_failure")]
     n = 0
     for r in finished:
-        if r["conclusion"] != "failure":
+        if r["conclusion"] == "success":
             break
         n += 1
     ok = next((r for r in finished if r["conclusion"] == "success"), None)
@@ -57,7 +57,7 @@ def home():
 
 def fetch():
     req = urllib.request.Request(API, headers={"User-Agent": "mts-ci-watch"})
-    with urllib.request.urlopen(req, timeout=5) as r:
+    with urllib.request.urlopen(req, timeout=4) as r:
         return json.load(r)["workflow_runs"]
 
 
@@ -67,15 +67,21 @@ def current(use_cache=True):
         try:
             c = json.loads(cache.read_text(encoding="utf-8"))
             if time.time() - c["at"] < CACHE_MIN * 60:
-                return c["runs"]
+                return c["runs"] or []
         except (OSError, ValueError, KeyError):
             pass
-    runs = [{k: r.get(k) for k in ("conclusion", "head_sha", "created_at")} for r in fetch()]
+    try:
+        runs = [{k: r.get(k) for k in ("conclusion", "head_sha", "created_at")} for r in fetch()]
+        err = None
+    except Exception as e:      # offline / rate limited: remember it for the TTL so each prompt does not wait on the network
+        runs, err = None, e
     try:
         cache.parent.mkdir(parents=True, exist_ok=True)
-        cache.write_text(json.dumps({"at": time.time(), "runs": runs}), encoding="utf-8", newline="\n")
+        cache.write_text(json.dumps({"at": time.time(), "runs": runs}), encoding="utf-8", newline=chr(10))
     except OSError:
         pass
+    if err is not None:
+        raise err
     return runs
 
 
@@ -83,8 +89,11 @@ def hook():
     if os.environ.get("MTS_CI_WATCH", "").lower() == "off":
         return 0
     try:
-        if not sys.stdin.isatty():
-            sys.stdin.buffer.read()
+        try:
+            if not sys.stdin.isatty():
+                sys.stdin.buffer.read()     # drain the hook payload; its content is not needed
+        except (OSError, ValueError, AttributeError):
+            pass
         text = message(current())
         if text:
             if hasattr(sys.stdout, "reconfigure"):

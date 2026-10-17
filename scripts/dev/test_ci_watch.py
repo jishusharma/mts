@@ -48,3 +48,16 @@ def test_cache_avoids_a_second_call(monkeypatch, tmp_path):
     assert len(calls) == 1
     W.current(use_cache=False)
     assert len(calls) == 2
+
+
+def test_timeout_counts_as_failure():
+    assert "newest 2 finished" in W.message([run("a", "timed_out"), run("b", "failure"), run("c", "success")], NOW)
+
+
+def test_offline_is_remembered_so_the_next_prompt_does_not_wait(monkeypatch, tmp_path):
+    monkeypatch.setenv("MTS_CI_WATCH_HOME", str(tmp_path))
+    calls = []
+    monkeypatch.setattr(W, "fetch", lambda: calls.append(1) or (_ for _ in ()).throw(OSError("offline")))
+    for _ in range(3):
+        W.hook()
+    assert len(calls) == 1
