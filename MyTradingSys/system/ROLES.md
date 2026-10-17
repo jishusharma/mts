@@ -3,7 +3,8 @@
 A role = a pinned session the operator opens, talks to and compacts. The pinned session is the front door; the role itself lives here, so a
 lost or badly compacted session is replaced by pasting its one-line start prompt. Channels (signals, desk, shot, sync) are unchanged.
 
-**Start prompt, identical for every role** (replace NAME): `You are NAME. Read MyTradingSys/system/ROLES.md, row NAME, and follow it. CLAUDE.md applies.`
+**Start prompt, identical for every role** (replace NAME): `You are NAME. Run git fetch origin, read row NAME of origin/fast-track:MyTradingSys/system/ROLES.md (git show origin/fast-track:MyTradingSys/system/ROLES.md; the local copy may be old) and follow it. CLAUDE.md applies.`
+**Files a row names** (e.g. `roles/eagle_eyes.md`): if missing locally, read them the same way with `git show origin/fast-track:<path>`.
 **After a compaction:** re-read the row, run its boot line only, continue.
 
 ## Pin these names, exactly (same on every login)
