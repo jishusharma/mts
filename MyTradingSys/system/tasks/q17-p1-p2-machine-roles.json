@@ -11,9 +11,9 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
+  "note": "PARKED 2026-10-18 (not stamped): P2 RETIRED 2026-10-17 (SCHEDULING_POLICY.md), P1 conflicts with the desktop-relay request; needs a coordinator decision on the machine-role default before any scope exists.",
   "prio": 3,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [
     "q17"
