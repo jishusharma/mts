@@ -13,7 +13,7 @@
       "pinned": true,
       "generator": "scripts/dev/make_control_room.py",
       "html": "MyTradingSys/system/artifacts/mts_control_room.html",
-      "single_owner": "jishu.sharma",
+      "single_owner": "jishusharma1985",
       "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
       "owner_app": "jishu.sharma (Inbox and decisions owner, decision q21, 2026-10-15); one live copy only: the jishu.awgp and jishusharma1985 urls hold a pointer page until Jis deletes them; 2026-10-17: Ep6gA5 opens on no login (NUC and notebook both get not found), so EoHi2q is the live Control Room on jishu.sharma (operator go 2026-10-17); db carries the 24 answered decisions + 6 open + 43 Inbox items",
       "refresh": "every session that ships (artifacts.py build, then plan --account); Inbox pickup by hand from a jishu.sharma session (relay_prompts/INSTALL.md)",
@@ -24,7 +24,7 @@
       "urls": {
         "jishu.sharma": "https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su",
         "jishu.awgp": "",
-        "jishusharma1985": ""
+        "jishusharma1985": "https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp"
       },
       "last_published": {
         "jishu.sharma": "2026-10-17",
@@ -42,7 +42,7 @@
       "pinned": true,
       "generator": "scripts/dev/make_layers_board.py",
       "html": "MyTradingSys/system/artifacts/layers_board.html",
-      "single_owner": "jishu.sharma",
+      "single_owner": "jishusharma1985",
       "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
       "owner_app": "jishu.sharma (static, no db); one live copy, the other logins hold a pointer page until Jis deletes them",
       "refresh": "every session that ships, with the Control Room (zero tokens: artifacts.py build)",
@@ -50,7 +50,7 @@
       "urls": {
         "jishu.sharma": "https://claude.ai/artifact/QwsvsN3LaZKNPvD6zPTTAe",
         "jishu.awgp": "https://claude.ai/artifact/E4NKdbEH5CJkhax9rUeHVF",
-        "jishusharma1985": "https://claude.ai/artifact/La75j7gM19pxiQKCpVjJcW"
+        "jishusharma1985": "https://claude.ai/artifact/7eeXJJ9Sb44LaJeCu8jxfJ"
       },
       "last_published": {
         "jishu.sharma": "2026-10-13",
@@ -94,7 +94,7 @@
       "pinned": true,
       "generator": "CBP daily workflow routine (CryptoScrapper tree, not in this repo)",
       "html": "MyTradingSys/system/artifacts/cbp_monday_desk.html",
-      "single_owner": "jishu.sharma",
+      "single_owner": "jishusharma1985",
       "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
       "owner_app": "CBP (publishes to the jishu.sharma url only)",
       "refresh": "weekly, Monday",
@@ -102,7 +102,7 @@
       "urls": {
         "jishu.sharma": "https://claude.ai/artifact/7V5bKe7YYkYS32vbKc1Yn8",
         "jishu.awgp": "https://claude.ai/artifact/X8ZB1v6eSEcW14zV9orAK7",
-        "jishusharma1985": "https://claude.ai/artifact/2UmzNzM9aQ7s6m7TMbPPss"
+        "jishusharma1985": "https://claude.ai/artifact/Nt8bgshr2C5jGsViLYGoPy"
       },
       "last_published": {
         "jishu.sharma": "2026-10-09",
@@ -120,7 +120,7 @@
       "pinned": true,
       "generator": "CBP daily workflow routine (CryptoScrapper tree, not in this repo)",
       "html": "MyTradingSys/system/artifacts/cbp_consensus_desk.html",
-      "single_owner": "jishu.sharma",
+      "single_owner": "jishusharma1985",
       "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
       "owner_app": "CBP (publishes to the jishu.sharma url only)",
       "refresh": "daily",
@@ -128,7 +128,7 @@
       "urls": {
         "jishu.sharma": "https://claude.ai/artifact/4JZxNEPNYRMLrteBbcRrqD",
         "jishu.awgp": "https://claude.ai/artifact/V1d9xSL9fKQYtbWjrMqASU",
-        "jishusharma1985": "https://claude.ai/artifact/TzdcZtTBCvCyw158pSpzYf"
+        "jishusharma1985": "https://claude.ai/artifact/5Gw7HJF3eoEvbbUKhL52M1"
       },
       "last_published": {
         "jishu.sharma": "2026-10-09",
@@ -274,5 +274,5 @@
   },
   "home_login": "jishusharma1985",
   "home_slug": "mts_home",
-  "access_model": "DECISION (OURS, 2026-10-16, mts-home): ONE live copy of every page, at ONE url, owned by one login. MTS Home (owned by the home login jishusharma1985) lists them all. The owner shares each page once (Share menu: invite the other logins' emails with edit access); then every login opens the SAME url, notes land in that page's one database whatever login writes them, and a session on any login with edit access (Artifact read says 'writer') republishes over that url. Never publish a second copy; a page that cannot be opened is not shared yet. Home login = jishusharma1985 because it runs the super sessions, holds the Research Map requests db and the Session Planner, and has the Max budget. Control Room, MTS Layers, the Tom and Fabio deck and the CBP desks stay on jishu.sharma (one Inbox, q21; the CBP routine publishes there)."
+  "access_model": "DECISION (operator 2026-10-17, replaces the 2026-10-16 split): every page is published from the repo by the home login jishusharma1985, so every MTS Home link opens on that login with no Share step. Control Room (MNuodX, its Inbox db now lives here), MTS Layers, both CBP desks, Research Map and Session Planner are owned by jishusharma1985; the jishu.sharma copies are old copies to delete. Exception: the Tom and Fabio deck has no repo html, so it stays on jishu.sharma until re-made. Other logins open these pages only after jishusharma1985 shares them (Share menu, edit access). Never publish a second copy on another login."
 }
