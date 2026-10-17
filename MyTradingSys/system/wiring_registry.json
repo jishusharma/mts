@@ -847,6 +847,14 @@
       "disp": "TOOL",
       "why": "Throw-away pure-python WaveTrend reference for the parity contract (seed sensitivity, d=0, cross equality, gap, look-ahead); covered by test_wt_parity_ref.py, no live imports; not a golden source."
     },
+    "MyTradingSys/research/wavetrend_2026-10-17/count_events.py": {
+      "disp": "TOOL",
+      "why": "Count-only DEV pass for the WaveTrend PRE_REG (events, event-days, context bins; no outcomes); run by hand, covered by test_count_events.py, no live imports."
+    },
+    "MyTradingSys/research/wavetrend_2026-10-17/select_cells.py": {
+      "disp": "TOOL",
+      "why": "Deterministic selection of the frozen WaveTrend atlas cells from the count table (PRE_REG s4); run by hand, covered by test_count_events.py."
+    },
     "MyTradingSys/backtest/layers/wavetrend/wavetrend.py": {
       "disp": "PARKED",
       "ref": "wavetrend-dev-atlas",
