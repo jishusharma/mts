@@ -1,14 +1,14 @@
 {
-  "detail": "no heartbeat from the lab host since 2026-10-17T04:00:02Z",
+  "detail": "operator 2026-10-18: use GPT now; NUC lab tree merge fixed",
   "fails": 0,
   "heartbeat": "2026-10-17T18:47:40Z",
   "last_error": "2026-10-17T18:47:40Z",
-  "last_ok": "2026-10-17T04:30:03Z",
+  "last_ok": "2026-10-17T18:49:41Z",
   "last_probe": "",
-  "override": "",
-  "reason": "heartbeat",
-  "resumed": "2026-10-14T22:30:02Z",
-  "since": "2026-10-17T18:47:40Z",
-  "status": "down",
+  "override": "2026-10-17T21:49:41Z",
+  "reason": "",
+  "resumed": "2026-10-17T18:49:41Z",
+  "since": "",
+  "status": "up",
   "until": ""
 }

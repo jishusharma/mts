@@ -30,12 +30,6 @@
     "MyTradingSys/research/TRIAL_LEDGER.csv",
     "MyTradingSys/backtest/layers/run_t055.py"
   ],
-  "reroute": {
-    "at": "2026-10-17T18:47:40Z",
-    "desk": "20261017-184740-dsa-audit-08-split-trials",
-    "to": "DSA",
-    "why": "heartbeat"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T08_split_trials.md and MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T08/ (new files only)",
