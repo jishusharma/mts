@@ -33,7 +33,7 @@ A HALT change, any order or balance anomaly, a failed deploy gate, a ship gate r
 ## Who needs to know what (the board carries it)
 - All sessions: A-20261018-1 (workflow in force, weight tag, treat lab results as UNCHECKED), A-20261018-2 (Q76 numbers).
 - NUC super and Lab_Guy: A-20261018-3 (queue order). NB super: A-20261018-4 (routing), java/outcome cards are now JIS-NB desk tasks.
-- Needs the operator's OK before it applies: P-1 (hold new consumers of unchecked lab bases) and P-2 (do not rerun gap-g2 as written).
+- Operator OK 2026-10-18, now ACTIVE: A-20261018-5 (hold new consumers of unchecked lab bases) and A-20261018-6 (do not rerun gap-g2 as written).
 
 ## Start prompts (identical text on both machines; change MACHINE)
 ```
