@@ -487,7 +487,7 @@ divided by the number of events in them (difference: both streams use the same r
 All numbers below are computed by hand from the definitions, not from code. Parameters (k=3, tolerances, ATR length 14) are OURS; see the contract.
 
 **19.1 Pivot with k bars each side, strict.** Swing low at bar i iff `low[i] < low[j]` for every j in `i-k..i-1` and `i+1..i+k`. Available at close of bar `i+k`.
-Worked (k=3): lows by bar 0..6 = [9,8,7,5,6,7,8]: bar 3 is 5 < 9,8,7 and < 6,7,8, so pivot, available_at = close(bar 6). Ties, lows [9,8,5,5,6,7,8]: bar 3 fails (bar 2 equals 5), bar 2 fails (bar 3 equals 5), no pivot.
+Worked (k=3): lows by bar 0..6 = [9,8,7,5,6,7,8]: bar 3 is 5 < 9,8,7 and < 6,7,8, so pivot, available_at = close(bar 6). Ties, lows [9,8,7,5,5,7,8,9] (k=3): bar 3 fails (bar 4 equals 5), bar 4 fails (bar 3 equals 5), no pivot. Bars with fewer than 3 bars on a side (bars 0-2 and 5-7) are never pivots.
 
 **19.2 Line through anchors (ia,pa), (ib,pb).** Linear: `L(t) = pa + (pb-pa)*(t-ia)/(ib-ia)`. Log: `L(t) = exp(ln pa + (ln pb - ln pa)*(t-ia)/(ib-ia))`.
 Worked linear: ia=10, pa=100, ib=20, pb=110: `L(25) = 100 + 10*15/10 = 115`. Worked log: pa=100, pb=121, ib-ia=2, t-ia=3: `L = 100*(121/100)^(3/2) = 100*1.21^1.5 = 100*1.1^3 = 133.1` (linear on the same anchors: `100 + 21*3/2 = 131.5`, so the geometries differ).
