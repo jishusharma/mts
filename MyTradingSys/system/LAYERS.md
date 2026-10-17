@@ -238,14 +238,13 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `krown-catalogue-gpt-audit` ready p1 CODEX: Krown G2 catalogue: GPT audit of NOT STATED cells, quote support and BTC-visible calls for S1-S9
-  - `trendline-causal-module` ready p1 SONNET: Trend-line causal module with look-ahead tests
+  - `trendline-causal-module` refined p1 SONNET: Trend-line causal module with look-ahead tests
   - `trendline-contract-spec` ready p1 SONNET: Trend-line contract: every parameter fixed, SOURCED or OURS
-  - `trendline-priority-drawing-contract` ready p1 SONNET: Priority trend-line drawing contract and BTC observation plan
   - `krown-dev-event-study` blocked p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `krown-layer-v0-detectors` blocked p2 SONNET: Krown layer v0 detectors: swings, zones, volume, candles, averages, range/coil as pure functions + params file
   - `krown-recall-check` blocked p2 SONNET: Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_RE
-  - `trendline-count-only` ready p2 DSA: Trend-line count-only run on DEV and PRE_REG
-  - `trendline-g3-marks-pack` ready p2 SONNET: Trend-line G3 blind marks pack for the obvious-line selector
+  - `trendline-count-only` refined p2 DSA: Trend-line count-only run on DEV and PRE_REG
+  - `trendline-g3-marks-pack` refined p2 SONNET: Trend-line G3 blind marks pack for the obvious-line selector
   - `krown-other-sources-event-study-videos` blocked p3 SONNET: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
   - `krown-ta101-extract-remaining-10` ready p3 SONNET: Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass bo
 
