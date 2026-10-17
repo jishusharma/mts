@@ -1,56 +1,56 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-13T06:33:19Z",
-  "depends_on": [
-    "tom-encode-spike-fade",
-    "tom-profile-shape-parity"
-  ],
-  "done_when": "The three profile items appear in the proof JSON with arm = profile, the thirds test passes with the hand numbers, PRICE-arm candidates are unchanged on the card-1 fixture.",
-  "est_turns": 30,
-  "from_inbox": "",
-  "goal": "Add the PROFILE arm to fade_short behind the same flag: A-C3 thin top, A-P3 failed P breakout, A-P8 lower b-shape, each from the session volume profile, as a separate arm label so PRICE results stay comparable.",
-  "id": "tom-encode-fade-profile-proofs",
-  "lane": "SONNET",
-  "layers": [
-    "tom"
-  ],
-  "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
-  "pinned": false,
-  "prio": 2,
-  "refine_tries": 0,
-  "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
-  "refs": [],
-  "result": "",
-  "scope_in": [
-    "src/main/java/datafeed/SetupCandidatesBuilder.java",
-    "src/main/java/datafeed/MarketDataSnapshot.java (read only)",
-    "src/test/java/datafeed/",
-    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2.1, 2.2, 12, 13"
-  ],
-  "scope_out": [
-    "live tree / restarts",
-    "tuning on outcomes",
-    "reading any DAX holdout day (2026-04-11 on)",
-    "BTC runs",
-    "changing the PRICE arm",
-    "new thresholds"
-  ],
-  "size": "M",
-  "sources": [
-    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2.1, 2.2, 12, 13"
-  ],
-  "state": "blocked",
-  "steps": [
-    "If tom-profile-shape-parity is not PASS: build for BTC replays only and mark the DAX PROFILE arm NOT_IN_DATA in the proof JSON.",
-    "A-C3 per spec section 13: leg range in thirds, top-third volume below each lower third, session POC not in the top third.",
-    "A-P3 and A-P8 from Tom's words in spec section 2.2; any number they need that the spec lacks is NO-SOURCE: emit the raw measure, no gate.",
-    "Arm label price / profile on every candidate; flag-off output unchanged."
-  ],
-  "tests": "Java: leg 24010-24110, volume by third 500 / 300 / 100, POC in the bottom third -> thin = true; top third 400 -> false; POC in the top third -> false. Flag off -> identical output. Fails before the code exists.",
-  "title": "Tom v2: encode the PROFILE arm of the fade (thin top, failed P breakout, lower b-shape)",
-  "weight": "IMPORTANT",
-  "worker": "session"
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-13T06:33:19Z",
+ "depends_on": [
+  "tom-encode-spike-fade",
+  "tom-profile-shape-parity"
+ ],
+ "done_when": "The three profile items appear in the proof JSON with arm = profile, the thirds test passes with the hand numbers, PRICE-arm candidates are unchanged on the card-1 fixture.",
+ "est_turns": 30,
+ "from_inbox": "",
+ "goal": "Add the PROFILE arm to fade_short behind the same flag: A-C3 thin top, A-P3 failed P breakout, A-P8 lower b-shape, each from the session volume profile, as a separate arm label so PRICE results stay comparable.",
+ "id": "tom-encode-fade-profile-proofs",
+ "lane": "SONNET",
+ "layers": [
+  "tom"
+ ],
+ "live_path": false,
+ "note": "UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
+ "pinned": false,
+ "prio": 2,
+ "refine_tries": 0,
+ "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "src/main/java/datafeed/SetupCandidatesBuilder.java",
+  "src/main/java/datafeed/MarketDataSnapshot.java (read only)",
+  "src/test/java/datafeed/",
+  "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2.1, 2.2, 12, 13"
+ ],
+ "scope_out": [
+  "live tree / restarts",
+  "tuning on outcomes",
+  "reading any DAX holdout day (2026-04-11 on)",
+  "BTC runs",
+  "changing the PRICE arm",
+  "new thresholds"
+ ],
+ "size": "M",
+ "sources": [
+  "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2.1, 2.2, 12, 13"
+ ],
+ "state": "refined",
+ "steps": [
+  "If tom-profile-shape-parity is not PASS: build for BTC replays only and mark the DAX PROFILE arm NOT_IN_DATA in the proof JSON.",
+  "A-C3 per spec section 13: leg range in thirds, top-third volume below each lower third, session POC not in the top third.",
+  "A-P3 and A-P8 from Tom's words in spec section 2.2; any number they need that the spec lacks is NO-SOURCE: emit the raw measure, no gate.",
+  "Arm label price / profile on every candidate; flag-off output unchanged."
+ ],
+ "tests": "Java: leg 24010-24110, volume by third 500 / 300 / 100, POC in the bottom third -> thin = true; top third 400 -> false; POC in the top third -> false. Flag off -> identical output. Fails before the code exists.",
+ "title": "Tom v2: encode the PROFILE arm of the fade (thin top, failed P breakout, lower b-shape)",
+ "weight": "IMPORTANT",
+ "worker": "session"
 }
