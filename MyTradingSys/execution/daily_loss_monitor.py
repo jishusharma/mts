@@ -144,6 +144,104 @@ MAX_CONSECUTIVE_FAILURES_TESTNET = 20
 def failure_cap(env: str) -> int:
     return MAX_CONSECUTIVE_FAILURES if env == "mainnet" else MAX_CONSECUTIVE_FAILURES_TESTNET
 
+# BLIND-HALT RECOVERY (operator 2026-10-17, policy: MyTradingSys/system/BLIND_HALT_POLICY.md, labelled OURS).
+# Testnet only. The monitor clears ONLY a halt it wrote itself for blindness (kind "blind", owner below), after the
+# account reads cleanly for BLIND_CLEAN_SECONDS. Interim operator value 30 min; the flap guards are ours, not sourced.
+BLIND_CLEAN_SECONDS = 30 * 60
+BLIND_MAX_CLEARS_PER_DAY = 2
+BLIND_FLAP_SECONDS = 60 * 60       # a blind halt written within this long after a clear is never auto-cleared
+BLIND_OWNER = "daily_loss_monitor"
+HALT_HOLD_PATH = Path(__file__).resolve().parent / "HALT_DAILY_LOSS.hold"   # a human creates it to pin a halt
+
+
+def halt_kind(halt_path: Path) -> str:
+    """'none' (no file), 'blind' (written by this monitor for blindness), else 'loss'. Anything unreadable, torn,
+    untagged or owned by someone else is 'loss': fail closed, never auto-cleared."""
+    if not halt_path.exists():
+        return "none"
+    try:
+        j = json.loads(halt_path.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return "loss"
+    if isinstance(j, dict) and j.get("kind") == "blind" and j.get("owner") == BLIND_OWNER:
+        return "blind"
+    return "loss"
+
+
+def write_blind_halt(halt_path: Path, date: str, reason: str, now) -> bool:
+    """Testnet blind halt, tagged so it can be told from a loss halt. Never overwrites a loss halt (returns False)."""
+    if halt_kind(halt_path) == "loss":
+        return False
+    halt_path.write_text(json.dumps({
+        "date": date, "reason": reason, "ts_iso": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "kind": "blind", "owner": BLIND_OWNER,
+    }), encoding="utf-8")
+    return True
+
+
+class BlindRecovery:
+    """Counts clean reads after a blind halt and clears that halt (testnet only) when policy allows.
+    The clean window lives in memory only: a restart starts it again (fail closed)."""
+
+    def __init__(self, env, halt_path, state_path, clock=None, hold_path=None,
+                 clean_seconds=None, max_clears=None, flap_seconds=None):
+        self.env, self.halt_path, self.state_path = env, halt_path, state_path
+        self.clock = clock or _utc_now
+        self.hold_path = hold_path if hold_path is not None else HALT_HOLD_PATH
+        self.clean_seconds = BLIND_CLEAN_SECONDS if clean_seconds is None else clean_seconds
+        self.max_clears = BLIND_MAX_CLEARS_PER_DAY if max_clears is None else max_clears
+        self.flap_seconds = BLIND_FLAP_SECONDS if flap_seconds is None else flap_seconds
+        self.clean_since = None
+
+    def note_failure(self):
+        self.clean_since = None
+
+    def note_clean(self, result) -> str:
+        """Call after every successful run_once. Returns a status word; 'cleared' only when the file was removed."""
+        if self.env == "mainnet":
+            return "mainnet"
+        if halt_kind(self.halt_path) != "blind":
+            self.clean_since = None
+            return "none"
+        st = (result or {}).get("state") or {}
+        if not (result or {}).get("ok") or st.get("breached_today"):
+            self.clean_since = None
+            return "loss"
+        now = self.clock()
+        if self.clean_since is None:
+            self.clean_since = now
+        if (now - self.clean_since).total_seconds() < self.clean_seconds:
+            return "waiting"
+        if self.hold_path.exists():
+            return "held"
+        try:
+            state = load_state(self.state_path)
+        except StateUnreadable:
+            return "state"
+        clears = state.get("blind_clears")
+        clears = clears if isinstance(clears, list) else []
+        if len(clears) >= self.max_clears:
+            return "cap"
+        if clears:
+            try:
+                last = datetime.strptime(clears[-1], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+                halted = datetime.strptime(json.loads(self.halt_path.read_text(encoding="utf-8"))["ts_iso"],
+                                           "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+            except (ValueError, KeyError, OSError, TypeError):
+                return "flap"
+            if (halted - last).total_seconds() < self.flap_seconds:
+                return "flap"
+        if halt_kind(self.halt_path) != "blind":      # re-check right before removing (a loss halt may have landed)
+            return "none"
+        self.halt_path.unlink()
+        state["blind_clears"] = clears + [now.strftime("%Y-%m-%dT%H:%M:%SZ")]
+        save_state(state, self.state_path)
+        journal.append_event(JOURNAL_PLAN_ID, "reconciliation", {
+            "source": "daily_loss_monitor", "result": "blind halt auto-cleared",
+            "clean_seconds": int((now - self.clean_since).total_seconds()), "clears_today": len(clears) + 1})
+        self.clean_since = None
+        return "cleared"
+
 
 class StateUnreadable(Exception):
     """FIX3 H4: the state file exists but cannot be trusted - never re-baseline."""
@@ -402,6 +500,8 @@ def main(argv=None):
 
     failures = 0
     cap = failure_cap(_client_env(do))
+    env_now = _client_env(do)
+    recovery = BlindRecovery(env_now, *paths_for_env(env_now)[::-1]) if env_now != "mainnet" else None
     named = {}   # testnet: named subaccounts in the aggregate (mainnet: always empty)
     while True:
         # FIX3 H3: a transient error (ticker 10028, summary timeout, re-auth)
@@ -413,18 +513,31 @@ def main(argv=None):
                               cap_usd=args.cap_usd, pnl_source=args.pnl_source, accounts=named)
             failures = 0
             print(format_breach_report(result))
+            if recovery is not None and not args.once:
+                status = recovery.note_clean(result)
+                if status == "cleared":
+                    print("blind HALT_DAILY_LOSS auto-cleared after a clean read window (testnet policy)")
             if args.once:
                 return 0 if result["ok"] else 1
         except Exception as e:  # noqa: BLE001
             failures += 1
             print(f"daily_loss_monitor iteration failed ({failures}/{cap}): {e!r}")
+            if recovery is not None:
+                recovery.note_failure()
             if failures >= cap or args.once:
                 now = _utc_now()
                 blind_halt = paths_for_env(_client_env(do))[1]
-                write_halt(blind_halt, _today_str(now),
-                           f"daily_loss_monitor blind: {failures} consecutive failures, last {e!r}", now)
+                reason = f"daily_loss_monitor blind: {failures} consecutive failures, last {e!r}"
+                if recovery is None:
+                    write_halt(blind_halt, _today_str(now), reason, now)   # mainnet: untagged, never auto-cleared
+                else:
+                    written = write_blind_halt(blind_halt, _today_str(now), reason, now)
+                    if not written:
+                        print(f"{blind_halt.name} is a loss halt: left untouched")
                 print(f"{blind_halt.name} written: {blind_halt} - monitor cannot see the account")
-                return 1
+                if recovery is None or args.once:
+                    return 1
+                failures = 0   # testnet: stay alive and keep reading so the blind halt can clear itself
             named = {}   # re-authenticate the named accounts too
             try:
                 token = do.authenticate()
