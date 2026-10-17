@@ -1,54 +1,71 @@
 # Development Status
 
-Generated: 2026-10-16 05:46:00
+Generated: 2026-10-17 09:42:34
 
 ## Git Status
-CI green: 0d98cd25 (2026-10-16 02:36:19 +0530, 3.2 h old), 46 trunk landing(s) / 164 commit(s) behind origin/fast-track: RED: oldest ungreen commit is 3.1 h old - CI is failing, auto-deploy is idle; fix CI first
-CI card: FILED; filed ci-1bb1b39 (C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\.claude\worktrees\catalogue-p1-p2-830313\MyTradingSys\system\tasks\ci-1bb1b39.json); ship it: sync.py ship
+CI green: 618732f5 (2026-10-17 09:24:12 +0530, 0.3 h old), 3 trunk landing(s) / 13 commit(s) behind origin/fast-track: CI running
 LESSONS: digest in sync
 
 ## Gate Board
 ```
-tom     G2  proof changed 3h ago | next: G3 blind marks (READER_PROTOCOL.md + g3_marks_2026-10-16) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
-fabio   G2  proof changed 3h ago | next: G1 coverage check, then G3 | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
-malkan  G2  proof changed 3h ago | next: G3 blind marks MAL-2/5, MAL-16/17 (g3_marks_2026-10-16) | proof: MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md
-krown   G1  proof changed 31h ago | next: G2 (krown-g2: KROWN_SETUP_CATALOG.md) | proof: MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv
-commits 24h: 376 = research 23% | claim/release 44% | other 32%  OVER 30% CAP
+tom     G2  proof changed 6h ago | next: G3 blind marks (READER_PROTOCOL.md + g3_marks_2026-10-16) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
+fabio   G2  proof changed 6h ago | next: G1 coverage check, then G3 | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
+malkan  G2  proof changed 31h ago | next: G3 blind marks MAL-2/5, MAL-16/17 (g3_marks_2026-10-16) | proof: MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md
+krown   G1  proof changed 59h ago | next: G2 (krown-g2: KROWN_SETUP_CATALOG.md) | proof: MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv
+commits 24h: 439 = research 27% | claim/release 42% | other 31%  OVER 30% CAP
 ```
 
 **Last 3 commits on origin/fast-track:**
 ```
-7b5dbaf5 Merge remote-tracking branch 'origin/fast-track' into claude/fable-catalogue-audit-rebuild-679c65
-578031f1 release ci-red-gate-discovery
-139facc0 NEXT_SESSION: CI-FIX note (B150 step 3gd in every ship)
+32177383 Merge remote-tracking branch 'origin/fast-track' into claude/stoic-blackwell-636c3e
+5d057a40 release g3-blindness-audit-rerun
+a424e125 lab g3-blindness-audit-rerun: DONE (audit)
 ```
 
 ## In-Flight .new Files
-- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (129.9h)
-- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (129.9h)
+- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (157.9h)
+- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (157.9h)
 
 ## Recent Reports (newest 5, last 3 days)
-- MyTradingSys/research/pit_levels_2026-10-16/REPORT.md (2026-10-16 05:15) # Point-in-time levels, phases and cost: are the backtests reading what a trader could hav
-- MyTradingSys/research/overnight_2026-10-16/MORNING_REPORT.md (2026-10-16 03:41) # Morning report - overnight 2026-10-15 evening IST -> 2026-10-16 (super-2, JIS-NB)
-- MyTradingSys/research/observer_2026-10-15/OBSERVER_REPORT.md (2026-10-16 03:10) # Observer report, 2026-10-15 (cross-session alignment)
-- MyTradingSys/research/pivot_pattern_audit_2026-10-14/REPORT.md (2026-10-14 19:56) # Pivot-pattern scope audit — 2026-10-14
-- MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md (2026-10-14 17:41) # BTC candle-close research: first LAB result
+- MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md (2026-10-17 09:01) # EXIT POLICIES REPORT (backtest C), 2026-10-09
+- MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md (2026-10-17 09:01) # FIRES_B1_REPORT - fire history of the kline-only live layers (worker B1, 2026-10-09)
+- MyTradingSys/research/mfe_exit_2026-10-13/REPORT.md (2026-10-17 09:01) # MFE exit study: can exits be reverse-engineered from the peak-profit bar? (2026-10-13, J
+- MyTradingSys/research/layer_lab/funding_extreme_event_table/REPORT.md (2026-10-17 07:02) # Funding extreme event table
+- MyTradingSys/research/layer_lab/bb_top_reversal_event_table/REPORT.md (2026-10-17 06:34) # BB top-reversal 15m event table
 
 ## Screenshots
 ```
-SHOTS landed 81: new 1, classified 10, read 0, done 70 | overdue(>24h) 1 | claims MATCH 733 MISMATCH 125 NOT_IN_DATA 183 | filed 14
-  OVERDUE dfabf169cdc9 new        -                                    |
+SHOTS landed 85: new 1, classified 13, read 1, done 70 | overdue(>24h) 11 | claims MATCH 733 MISMATCH 125 NOT_IN_DATA 193 | filed 15
+  OVERDUE dfabf169cdc9 new        -                                    | 
+  OVERDUE 19f84e6aa598 classified app                                  | Claude app: Mts dispatcher session (Haiku 5.5) showing TICK NOOP; operator asks why idle dispatcher keeps running every 10 min
+  OVERDUE 11760405153e classified chart     BTCUSDT 1m   2026-10-15T14:13:00Z | Operator asks where a short with confluence/divergence would be: price spiked ~81,38x (upper BB) then slipped back under 81,146.6 top; OI 93.26K flat after drop, RSI 69 off 77, StochRSI crossing down
+  OVERDUE 1fdb4681c81e classified chart     BTCUSDT 1m   2026-10-15T14:15:00Z | Positioning panels after the 14:10 squeeze: Net Shorts collapsed ~1.3K->529, Net Longs(New) falling 1K->175, agg CVD rolling over -4.02K, OI flat 93.21K, price 81,025 under 81,146.6
+  OVERDUE 34a949f8dc68 classified chart     BTCUSDT 1m   2026-10-15T14:22:00Z | Operator marks 1m bearish RSI divergence: price equal/higher high ~81,3xx (14:10 vs 14:18) while RSI lower high 77->~68; CVD lower high, low volume retest; price back on 81,146.6
+  OVERDUE bfa91af3c34c classified other                                | Windows java.exe 0xc0000142 Application Error dialog; operator asked to investigate
+  OVERDUE ab7581a78683 classified other                                | Chrome performance settings page, Memory Saver already on Maximum; operator confirming it was already set
+  OVERDUE 9a9c9984cef2 classified other                                | Chrome Task Manager Browser tab: browser processes ~363MB total small; operator checking Chrome memory
+  OVERDUE 531f784f2aee classified other                                | Chrome Task Manager Tabs & extensions: Deribit tab 918MB, Subaccounts 480MB, Gmail 377MB, CoinGlass tabs ~200-310MB each; operator checking Chrome memory
+  OVERDUE 11a99a48fa09 classified app                                  | Task Manager: Defender 32% CPU, Claude 25%, PowerShell(7) 12.5%; operator says Defender spikes when Claude starts/stops
 ```
 
 ## Layer Lab (Codex)
 ```
-Layer lab (Codex) at 2026-10-16 00:16Z: on
+Layer lab (Codex) at 2026-10-17 04:12Z: on
   This machine does not run the lab (it runs on JIS-NUC): the queue below is from the repo; allowance, runs and what needs a look are only known there.
-  Queue: 4 ready
-    lc-event-table [build, gpt-6-luna / medium]
+  Queue: 13 ready
     malkan-hindi-rows-gpt-read [audit, gpt-6-astra / low]
     krown-catalogue-gpt-audit [audit, gpt-6-astra / low]
+    g3-blindness-audit-rerun [audit, gpt-6-luna / low]
     gpt-formulas-rederive [audit, gpt-6-astra / low]
+    gptb-candle-pattern-event-table [build, gpt-6-luna / medium]
+    gptb-volume-event-table [build, gpt-6-luna / medium]
+    gptb-malkan-rsi-event-table [build, gpt-6-luna / medium]
+    gptb-cc-msb-event-table [build, gpt-6-luna / medium]
+    gptb-fabio-escalation-event-table [build, gpt-6-luna / medium]
+    gptb-rsi-reclaim-event-table [build, gpt-6-luna / medium]
+    gptb-session-momentum-event-table [build, gpt-6-luna / medium]
+    gptb-fabio-lvn-touch-event-table [build, gpt-6-luna / medium]
+    gptb-turn-of-candle-event-table [build, gpt-6-luna / medium]
 ```
 
 ## Project Groups
