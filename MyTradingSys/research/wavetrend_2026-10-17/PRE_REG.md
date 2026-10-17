@@ -56,7 +56,7 @@ Independence note: 5m and 15m event-days saturate near 912 because many events s
 ## 3. TFs and events dropped (spec s1: "drops any TF whose independent episodes cannot reach its MDE")
 - 1d: no event reaches FLOOR (max 25 days). Dropped.
 - 4h: every A, B2 and C2 count is below FLOOR (A1 102, A2 85, B2 56, C2 21; C1 102, B1 205 but a context bin <= 3 splits B1 below FLOOR). Dropped from cells; 4h counts remain as descriptive controls only if the atlas runs them unconditioned, flagged "underpowered", never in Holm.
-- C2 (structure): reaches FLOOR unconditioned only on 5m and 15m, and no context bin reaches FLOOR once the TF cap and ranking below apply. **No C2 cell**; C2 is listed "underpowered, not tuned".
+- C2 (structure): reaches FLOOR unconditioned only on 5m and 15m, and its eligible bins (5m trend-with 611 days, 15m trend-with 287) are excluded by the section 4 rule (events are ranked before C2 take the 3-cells-per-TF slots on 5m and 15m). **No C2 cell**; C2 is listed "underpowered, not tuned".
 
 ## 4. Selection rule (written before `select_cells.py` was run)
 Eligible row: context bin (not ALL), event in {A1_L53, A2_L53, B2, C1, C2, B1}, bin event-days >= FLOOR, and the TF's unconditioned event-days >= FLOOR. In that event order: take the top 2 rows by event-days with distinct (TF, context variable); at most 3 cells per TF; at most 12 cells in total. Ties break on TF order then variable name. Effect: the largest eligible bins win, which are usually the broadest ("with trend", "mid" HTF); this is a power-first choice, disclosed, and means vol / participation / hour contexts are not in the 9 cells (they stay as stratifiers of the random-clock arm).

@@ -1,4 +1,4 @@
-"""Deterministic cell selection from the count table (no outcome data). Rule frozen in PRE_REG.md s5 before this runs.
+"""Deterministic cell selection from the count table (no outcome data). Rule frozen in PRE_REG.md s4 before this runs.
 
 Eligible row: var != ALL, event in PRIMARY, event_days >= FLOOR (n_days where the Holm(12) 80%-power MDE <= 0.30 SD),
 and the TF's unconditioned event also >= FLOOR. Per event take the top 2 by event_days with distinct (tf, var);
