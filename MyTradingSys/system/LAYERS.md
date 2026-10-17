@@ -111,8 +111,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md`; `MyTradingSys/backtest/layers/FORMULAS.md`
 - Code: `MyTradingSys/backtest/layers/rsi/malkan_40_60.py`; `MyTradingSys/backtest/layers/rsi/malkan_mtf.py`
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
+- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-17_malkan-hindi-rows-gpt-read.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `malkan-hindi-rows-gpt-read` ready p1 CODEX: Malkan Hindi rows: independent GPT reading of the GARBLED / NOT STATED entry, stop, target and the 5-star / 7-
   - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
   - `malkan-captions-fetch-noauth` ready p2 HAIKU: Malkan: fetch captions for the 12 ranked-top videos only (video_priority_2026-10-15), no cookies, spaced retri
   - `point-in-time-factor-design` raw p2 CODEX: Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-
