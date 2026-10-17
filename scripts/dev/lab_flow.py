@@ -8,6 +8,8 @@ from pathlib import Path
 import tasks
 
 FLOWS = "MyTradingSys/research/layer_lab/flows"
+DATA_ROOT = Path("F:/MTS/data")
+HOLDOUT_PARTS = {"holdout", "holdouts", "validation_holdout", "test_holdout"}
 RECIPES = {
     "critical-audit": [("map", "audit", "gpt-6.1-sol", "medium", "Map claims to source evidence; expose missing inputs and assumptions."),
                        ("challenge", "audit", "gpt-6-astra", "low", "Independently try to falsify the prior findings; reproduce one material claim and resolve disagreements against sources.")],
@@ -24,21 +26,41 @@ def digest(value):
 
 def safe_file(repo, rel):
     root = Path(repo).resolve()
-    p = (root / rel).resolve()
-    if not p.is_relative_to(root) or not p.is_file():
-        raise ValueError(f"not an existing repo file: {rel}")
-    parts = [x.lower() for x in p.relative_to(root).parts]
+    requested = Path(rel)
+    data_root = Path(DATA_ROOT).resolve()
+    if requested.is_absolute():
+        p = requested.resolve()
+        if not p.is_relative_to(data_root):
+            raise ValueError(f"not an existing repo or data file: {rel}")
+    else:
+        p = (root / requested).resolve()
+        if not p.is_relative_to(root):
+            raise ValueError(f"not an existing repo file: {rel}")
+    if not p.is_file():
+        raise ValueError(f"not an existing repo or data file: {rel}")
+    if any(part.lower() in HOLDOUT_PARTS for part in p.parts):
+        raise ValueError(f"holdout path refused: {rel}")
+    parts = [x.lower() for x in (p.relative_to(root).parts if p.is_relative_to(root) else p.relative_to(data_root).parts)]
     if any(x in (".secrets", ".git", "execution", "alerts") or x.startswith(".env") for x in parts):
         raise ValueError(f"protected scope: {rel}")
     return p
 
 
-def fingerprint(repo, scope):
-    return {rel: hashlib.sha256(safe_file(repo, rel).read_bytes()).hexdigest() for rel in scope}
+def fingerprint(repo, scope, data_scope=None):
+    hashes = {rel: hashlib.sha256(safe_file(repo, rel).read_bytes()).hexdigest() for rel in scope}
+    data_root = Path(DATA_ROOT).resolve()
+    for rel in data_scope or []:
+        requested = Path(rel)
+        p = safe_file(repo, str((data_root / requested).resolve()) if not requested.is_absolute() else str(requested))
+        key = "data:" + p.relative_to(data_root).as_posix()
+        hashes[key] = hashlib.sha256(p.read_bytes()).hexdigest()
+    return hashes
 
 
 def contract(flow):
     value = {k: flow[k] for k in ("id", "recipe", "goal", "criteria", "scope_in")}
+    if flow.get("data_scope"):
+        value["data_scope"] = flow["data_scope"]
     for key in ("commands", "tests"):
         if flow.get(key):
             value[key] = flow[key]
@@ -52,7 +74,7 @@ def accepted(card, repo):
         report = safe_file(repo, receipt["report"])
         return (receipt["verdict"] == "PASS" and receipt["contract"] == contract(flow) == flow["contract"]
                 and receipt["criteria"] == ["PASS"] * len(flow["criteria"])
-                and receipt["sources"] == fingerprint(repo, flow["scope_in"])
+                and receipt["sources"] == fingerprint(repo, flow["scope_in"], flow.get("data_scope"))
                 and receipt["report_sha256"] == hashlib.sha256(report.read_bytes()).hexdigest()
                 and not gate(card, tasks.load_all(repo), repo))
     except (KeyError, ValueError, OSError, TypeError):
@@ -108,7 +130,7 @@ def gate(card, cards, repo):
             errors.append(f"flow predecessor {cid} needs a PASS receipt for this contract")
             continue
         try:
-            if fingerprint(repo, flow["scope_in"]) != receipt["sources"]:
+            if fingerprint(repo, flow["scope_in"], flow.get("data_scope")) != receipt["sources"]:
                 errors.append(f"flow predecessor {cid} source changed; review again")
             report = safe_file(repo, receipt["report"])
             if hashlib.sha256(report.read_bytes()).hexdigest() != receipt["report_sha256"]:
@@ -131,8 +153,12 @@ def launch(repo, spec, preview=False):
         raise ValueError("criteria must be nonempty text items")
     if any(len(x) > tasks.MAX_FIELD for x in spec["criteria"]):
         raise ValueError("criterion exceeds card text size; use a source reference")
-    fingerprint(repo, spec["scope_in"])
+    if spec.get("data_scope") is not None and (not isinstance(spec["data_scope"], list) or any(not isinstance(x, str) or not x for x in spec["data_scope"])):
+        raise ValueError("data_scope must be a list of data file paths")
+    fingerprint(repo, spec["scope_in"], spec.get("data_scope"))
     flow = {k: spec[k] for k in ("id", "recipe", "goal", "criteria", "scope_in")}
+    if spec.get("data_scope"):
+        flow["data_scope"] = spec["data_scope"]
     for key in ("commands", "tests"):
         if spec.get(key):
             flow[key] = spec[key]
@@ -205,7 +231,7 @@ def finish(repo, cid, report, verdict, result):
     card.update(state="done" if verdict == "PASS" else "blocked", result=result, closed=tasks.now(),
                 flow_receipt={"verdict": verdict, "contract": flow["contract"], "report": rel,
                               "report_sha256": hashlib.sha256(p.read_bytes()).hexdigest(),
-                              "sources": fingerprint(repo, flow["scope_in"]), "criteria": statuses})
+                              "sources": fingerprint(repo, flow["scope_in"], flow.get("data_scope")), "criteria": statuses})
     tasks.save(repo, card)
     if verdict == "PASS":
         cards = tasks.load_all(repo)

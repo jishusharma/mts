@@ -21,7 +21,7 @@ Manifest format: docstring at the top of `promote.py`.
 ## Who may run what
 - Research / layer-lab sessions: write the manifest and run `check`. Nobody hand-inserts a registry entry.
 - A builder session: `promote.py register <manifest> --mode shadow`, then commits on fast-track. CI re-checks every entry
-  (`test_promote.ShippedRegistry`), so a bad entry makes the gate red and MTS-AutoDeploy refuses to deploy it. Never deploy by hand.
+  (`test_promote.ShippedRegistry`), so a bad entry makes the gate red and the deploy gate refuses it (MTS-AutoDeploy RETIRED 2026-10-17, see SCHEDULING_POLICY.md; deploys are manual or coordinator-run, DEPLOY_RUNBOOK.md).
 - `--mode testnet`: needs PASS, an existing shadow entry, AND a sized testnet flag (`size_overrides` prefix covering the setup in
   auto_trader_config.json). DEFAULT (DECISION, OURS): without that flag the setup stays shadow, because a testnet entry with no size
   would be an unsized order path. Setting the size flag is a live-path config change and follows the CLAUDE.md live-path rules.
@@ -45,5 +45,5 @@ Manifest format: docstring at the top of `promote.py`.
 `trade_blocklist` in auto_trader_config.json, the list auto_trader enforces, with a reason: off is blocked, never a return to trading;
 refused if the config cannot be written; works for a grandfathered source with no entry too). `verify` flags any sized
 `size_overrides` prefix with no registry, `pre_pipeline_sources` or `trade_blocklist` entry. `check` also rejects when the PRE_REG blob at
-`pre_reg.git_sha` differs from HEAD ("edited after registration"). Commit on fast-track; AutoDeploy ships it.
+`pre_reg.git_sha` differs from HEAD ("edited after registration"). Commit on fast-track; the next manual or coordinator-run deploy ships it (AutoDeploy RETIRED 2026-10-17, see SCHEDULING_POLICY.md).
 A failed `verify` (`promote.py verify`) means fix or demote the entry first.
