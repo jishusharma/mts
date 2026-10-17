@@ -1,33 +1,86 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T18:59:35Z",
   "commands": [],
   "created": "2026-10-14T15:00:06Z",
   "depends_on": [],
-  "done_when": "RESULT.md with every variant in the trial ledger, fee-net, DEV/VAL/HOLDOUT side by side, a layer_map.json row, and a one-line verdict the operator can read.",
+  "done_when": "research/bb_top_reversal_2026-10-18/PRE_REG.md (verdicts check + gate output pasted) AND either RESULT.md (12 variants fee-net DEV, trial rows, layer_map.json row, verdict line) or BLOCKED.md with the gate arithmetic; tests pass.",
+  "est_turns": 35,
   "from_inbox": "",
-  "goal": "Know, fee-net on DEV/VAL/HOLDOUT, whether the operator's 15m top-reversal short pays: price climbs into resistance at or near the upper Bollinger Band, the prior 15m candle is green, the next candle turns red and trades/closes below the green candle's open or low.",
+  "goal": "Pre-register, then run on DEV only (2022-01-01..2024-06-30), fee-net, whether the 15m top-reversal short pays: the shipped event table rows (green candle high at the upper BB(20,2), next candle red closing below the green open), with entry E1-E3, stop S1/S2, exits 2R or middle band. VAL/HOLDOUT are NOT read here.",
   "id": "bb-top-reversal-candle-backtest",
+  "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "BLOCKED: MDE 0.227R + cost 0.349R > 0.30R (research/bb_top_reversal_2026-10-18/BLOCKED.md)",
+      "ref": "0fb117d3",
+      "utc": "2026-10-17T18:59:35Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "verdicts: sourced overrides file; eur one_run=yes, orderflow kill_scope, t090 split/verdic",
+      "ref": "a440450b50a9",
+      "utc": "2026-10-17T14:26:34Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d7749d092236 Control Room pickup 2026-10-15: copy and apply 9 operator decisions (q-gap-a/",
+      "ref": "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+      "utc": "2026-10-15T09:54:44Z"
+    }
+  ],
   "layers": [
     "volume_candles_ma"
   ],
   "live_path": false,
-  "note": "Operator rule (2026-10-14, chat; screenshots 6b27526d76bd, 9fda889f1529; examples 08:00->08:15Z and 12:15->12:30Z on 14 Oct). Entry variants (all run, pre-registered): E0 short outside the upper band intrabar; E1 red candle trades below the prior green open; E2 closes below it; E3 closes below the prior green low. Lower-TF (1-3m) build-up is a later variant. Stop variants: S1 a few ticks above the top wick (default), S2 just above the red candle's open. Exits: 2R, VWAP/middle band, prior swing low, trail above each 15m high. Band 'touch' has a cushion (operator: close enough counts): high within k x bandwidth of the upper band, k from sources or OURS. Resistance filters, each alone and any-one: upper BB, RSI bearish divergence, CVD divergence, Tom level (VAH/prior high). BB settings: 20/2 vs the 24/7 candidates from research/bollinger_2026-10-14/SOURCES.md. The operator dismissed the clarifying questions, so these are defaults (OURS) until they answer. Resistance must be point-in-time (card point-in-time-factor-design). Leverage 5-20x and fixed-fixed-double-triple sizing read from the same trades, like research/eur_low_us_sweep_2026-10-14.",
+  "note": "REVIEWED:2026-10-18 ACCEPT WEIGHT:CRUCIAL pre-registration + verdict (review Agent pre-ship). DISPATCH SONNET session (JIS-NB). Input bigtrade klines_15m.npz. Cut 2026-10-18 from the operator grid to 12 variants; filters, 1-3m build-up, 24/7 BB, VAL/HOLDOUT become follow-up cards. Point-in-time per pit_levels_2026-10-16/PIT_CONTRACT.md. Verify: sha + empty git cherry + ls-tree lists files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T18:44:46Z",
   "refs": [
     "MyTradingSys/research/screenshots/2026-10-14_BTCUSDT_9fda889f1529.md",
     "MyTradingSys/research/bollinger_2026-10-14/SOURCES.md"
   ],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Backtest the 15m top-reversal candle short at the upper Bollinger Band (operator rule 2026-10-14) with a band cushion and BTC 24/7 BB settings"
+  "result": "BLOCKED: MDE 0.227R + cost 0.349R > 0.30R (research/bb_top_reversal_2026-10-18/BLOCKED.md)",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/bb_top_reversal_event_table/event_table.py",
+    "MyTradingSys/backtest/layers/alerts/live_bb_top_reversal.py",
+    "MyTradingSys/research/bollinger_2026-10-14/SOURCES.md",
+    "MyTradingSys/backtest/fees.py",
+    "MyTradingSys/backtest/power_mde.py",
+    "scripts/dev/prereg_gate.py",
+    "scripts/dev/verdicts.py",
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+    "MyTradingSys/system/layer_map.json"
+  ],
+  "scope_out": [
+    "VALIDATION and HOLDOUT bars (a follow-up card reads them once, after the freeze)",
+    "live tree",
+    "live_bb_top_reversal.py edits",
+    "lower-TF 1-3m build-up (later variant)"
+  ],
+  "scope_sha": "a440450b50a9",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/screenshots/2026-10-14_BTCUSDT_9fda889f1529.md (operator rule 2026-10-14)",
+    "MyTradingSys/research/bollinger_2026-10-14/SOURCES.md (24/7 BB candidates; later variant)",
+    "MyTradingSys/research/layer_lab/bb_top_reversal_event_table/REPORT.md (1,577 DEV events, DEV = bar open 2022-01-01..2024-06-30)"
+  ],
+  "state": "done",
+  "steps": [
+    "Run `python scripts/dev/verdicts.py check \"bollinger top reversal\"`, paste output in research/bb_top_reversal_2026-10-18/PRE_REG.md; freeze 12 variants (E1/E2/E3 x S1/S2 x exit 2R/middle band; BB 20/2 only), each number labelled SOURCED (quote + file:line) or OURS.",
+    "Definitions (OURS; bb_top_bt.py re-detects the setup from 15m OHLC as event_table.py:46-68 and computes fills itself): E1 sell-stop at green open, filled when the red bar trades below it; E2 red close below green open, fill next open; E3 red close below green low, fill next open. S1 = max(green, red high) + 2 ticks; S2 = red open + 2 ticks. Cushion k = 0.",
+    "Count-only gate: prereg_gate.py --n <DEV days with events> --sd <sd of a count-only R proxy: -1R stop / +2R target outcomes on the table rows, no PnL read> --cost <fees.py round-trip / median stop distance> --m <verdicts.py count --split DEV + 12>; write the choice in PRE_REG. Exit 1: BLOCKED.md with the arithmetic (see pit_levels_2026-10-16/BLOCKED.md), stop.",
+    "Exit 0: tests first (red) on hand paths, then bb_top_bt.py: fills, S1/S2 stops, 2R/middle-band exits, fees from fees.py, taker both legs; one run, day-block bootstrap CI per FORMULAS 18.7.",
+    "RESULT.md: per variant n, mean net R, CI, MDE, one verdict word (PASS/FAIL/INCONCLUSIVE) and a one-line operator verdict; every variant a trial row (verdicts.py backfill, layer_lab/TRIALS.md); add the layer_map.json row; register bb_top_bt.py in wiring_registry.json."
+  ],
+  "tests": "test_bb_top_bt.py (new, research/bb_top_reversal_2026-10-18/) hand paths: S1 stop hit = -1R minus fees, 2R target hit = +2R minus fees, middle-band exit; fails before bb_top_bt.py exists: python -m pytest MyTradingSys/research/bb_top_reversal_2026-10-18/test_bb_top_bt.py -q",
+  "title": "Backtest the 15m top-reversal candle short at the upper Bollinger Band (operator rule 2026-10-14) with a band cushion and BTC 24/7 BB settings",
+  "worker": "session"
 }

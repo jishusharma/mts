@@ -36,7 +36,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-profile-shape-parity` blocked p1 CODEX: Tom v2: basis-free profile shape parity on the T1/T2 frames (decides the DAX PROFILE arm)
   - `gap-g6-trial-ledger` blocked p2 CODEX: Gap G6: append-only research/TRIAL_LEDGER.csv builder + holdout-read log (no verdicts changed)
   - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
-  - `point-in-time-factor-design` raw p2 CODEX: Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-
   - `tom-btc-dev-backtest` raw p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` raw p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` raw p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
@@ -77,7 +76,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `fabio-xuyq-asr-extract` ready p2 JIS-NB: Fabio xUyqIjCfZzg: finish ASR transcription (JIS-NB, resumable) then canonical transcript + V2 extract + FAB c
   - `fabio-ledger-f13-outcome-provenance-2910` raw p3 SONNET: fabio-ledger: F13 outcome provenance (-2910 vs stop -1760)
   - `fabio-ledger-recompute-entry-from-stp-la` raw p3 SONNET: fabio-ledger: recompute entry from STP label for F8 F12-m2 F13 F13-m1
-  - `fabio-session-date-price-match` raw p3 CODEX: Fabio: date the DyS79Eb92Ug/Jpd96fLqr5M NQ-202512 session by price-path match against NQ 1m history (F6 24914-
+  - `fabio-session-date-price-match` ready p3 SONNET: Fabio: date the DyS79Eb92Ug/Jpd96fLqr5M NQ-202512 session by price-path match against NQ 1m history (F6 24914-
   - `rv05-h2-position-line-evidence` raw p3 SONNET: RV05 H2: read position lines and stop prices before applying existing Fabio entry repair
   - `rv05-h3-outcome-evidence` raw p3 SONNET: RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair
   - `fabio-ledger-get-9i5vtvwsmbk-f398-not-av` raw p4 SONNET: Fabio ledger: get 9I5vTvwsMBk (f398 not available; try another format/client) and read it for trades
@@ -111,7 +110,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `indicator-values-multi-model-audit` raw p2 SONNET: Audit our indicator values with fresh eyes: random sample recomputed blind by GPT, DSA, Haiku, Sonnet and Opus
   - `malkan-captions-fetch-noauth` ready p2 HAIKU: Malkan: fetch captions for the 12 ranked-top videos only (video_priority_2026-10-15), no cookies, spaced retri
-  - `point-in-time-factor-design` raw p2 CODEX: Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-
   - `malkan-home-fit-audit` refined p4 SONNET: Home-fit audit of the Malkan RSI layer against the readiness checklist
 
 ## CryptoCred setups (`cryptocred`)
@@ -190,8 +188,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/volume_2026-10-09`; `MyTradingSys/research/candle_patterns_2026-10-04`; `MyTradingSys/research/setup_alpha_beta_2026-10-10`; `MyTradingSys/research/bigtrade_2026-10-09`; `MyTradingSys/research/layer_lab/candle_close_2026-10-14`
 - Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-14_lab-candle-close-research.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_lab-candle-close-dev.md`; `MyTradingSys/research/layer_lab/reports/2026-10-14_candle-close-independent-audit.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `bb-top-reversal-candle-backtest` raw p2 SONNET: Backtest the 15m top-reversal candle short at the upper Bollinger Band (operator rule 2026-10-14) with a band 
-  - `point-in-time-factor-design` raw p2 CODEX: Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-
   - `pooled-short-lookback-trend-tsmom-30d-sm` raw p3 DSA: Pooled short-lookback trend (TSMOM 30d, SMA50/100, 4h Donchian 20/10) on sealed 2025-07..2026-09 BTC holdout: 
   - `time-adjusted-volume-context-line-for-th` raw p3 SONNET: Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-o
   - `fetch-ethusdt-perp-1h-klines-funding-202` raw p4 DSA: Fetch ETHUSDT perp 1h klines + funding 2020-2026 (fetch_binance_archive.py) and re-run research/published_stra
