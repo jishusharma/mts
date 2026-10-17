@@ -1,0 +1,10 @@
+cell,tf,event,context_var,bin,events,event_days,side_up,side_lo,mde_d_holm12
+W01,5m,A1_L53,trend,trend_with,3893,910,1969,1924,0.123
+W02,5m,A1_L53,htf,htf_mid,4196,908,2096,2100,0.123
+W03,5m,A2_L53,trend,trend_with,3509,904,1800,1709,0.123
+W04,15m,A2_L53,trend,trend_with,1155,716,598,557,0.139
+W05,15m,B2,htf,htf_mid,788,511,408,380,0.164
+W06,15m,B2,trend,trend_with,538,390,274,264,0.188
+W07,1h,C1,trend,trend_with,298,251,159,139,0.234
+W08,1h,C1,htf,htf_mid,271,239,134,137,0.24
+W09,1h,B1,htf,htf_mid,947,562,475,472,0.156
