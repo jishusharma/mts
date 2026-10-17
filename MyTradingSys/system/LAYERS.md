@@ -241,7 +241,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `trendline-contract-spec` ready p1 SONNET: Trend-line contract: every parameter fixed, SOURCED or OURS
   - `krown-data-cme-btc-volume` raw p2 DSA: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` blocked p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
-  - `krown-layer-v0-detectors` raw p2 SONNET: Krown layer v0 detectors: swings, zones, volume, candles, averages, range/coil as pure functions + params file
+  - `krown-layer-v0-detectors` ready p2 SONNET: Krown layer v0 detectors: swings, zones, volume, candles, averages, range/coil as pure functions + params file
   - `krown-recall-check` raw p2 SONNET: Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_RE
   - `trendline-count-only` refined p2 DSA: Trend-line count-only run on DEV and PRE_REG
   - `trendline-g3-marks-pack` refined p2 SONNET: Trend-line G3 blind marks pack for the obvious-line selector

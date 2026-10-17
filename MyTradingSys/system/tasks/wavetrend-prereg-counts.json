@@ -13,7 +13,7 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "Event ids A1-C2, context, arms and bound are in ATLAS_STUDY_SPEC.md; this card sets R_out, c, k, G, bin edges from counts and freezes <=12 cells.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -28,7 +28,9 @@
   ],
   "size": "M",
   "sources": [
-    "MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_VERIFY.md"
+    "MyTradingSys/research/wavetrend_2026-10-17/ATLAS_STUDY_SPEC.md",
+    "MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_VERIFY.md",
+    "MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md"
   ],
   "state": "refined",
   "steps": [

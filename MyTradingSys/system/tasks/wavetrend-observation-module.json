@@ -13,7 +13,7 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "Conventions pinned in PARITY_CONTRACT.md s3 (WARMUP 200, d=0 NaN, cross \"le\", closed-bar available_at); goldens from a spreadsheet, not wt_parity_ref.py.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -29,7 +29,8 @@
   ],
   "size": "M",
   "sources": [
-    "MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_VERIFY.md"
+    "MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_VERIFY.md",
+    "MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md"
   ],
   "state": "refined",
   "steps": [

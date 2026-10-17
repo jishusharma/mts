@@ -56,12 +56,12 @@ Machine-readable twin: `EVIDENCE_REGISTER.json`; check with `verify_register.py`
 - UNKNOWN: Frozen confluence definition (BB, CVD/OI, RSI-MA, speed trigger)
 - NEEDS: Preregistered hypothesis; untouched period or symbols
 
-**ER-07 WaveTrend with Crosses [LazyBear]**
-- UNKNOWN: Exact Pine version and licence terms
-- UNKNOWN: EMA seeding (Pine: first source value, to confirm against saved source)
-- UNKNOWN: Zero-deviation (d=0) behaviour
-- UNKNOWN: Which of layers/wavetrend/ vs layers/momentum/wavetrend.py owns it
-- NEEDS: Saved Pine source snapshot
+**ER-07 WaveTrend with Crosses [LazyBear]** (acceptance checklist updated 2026-10-17, card wavetrend-priority-source-parity; contract: `research/wavetrend_2026-10-17/PARITY_CONTRACT.md`)
+- DONE: Exact Pine version = lonestar108 republication of LazyBear (TV script 2295, created 2016-02-20), math identical to the plain WaveTrend gist; open source, no licence text, courtesy note only
+- DONE: Saved Pine source snapshot (`research/wavetrend_2026-10-17/source_snapshot/`, sha256 pinned)
+- DONE (contract): EMA seed, d=0 -> NaN no event, wt2 warm-up, cross equality "le", gap handling, WARMUP=200; PINE-UNVERIFIED stays for runtime seed/equality (not needed after warm-up)
+- DONE: Owner path = `backtest/layers/wavetrend/`; `layers/momentum/wavetrend.py` dropped
+- OPEN: golden fixtures from a spreadsheet on a real dated BTC 1h sequence, ideally a TradingView export (card wavetrend-observation-module); FORMULAS.md entry
 - NEEDS: Chart export for flat, trending, alternating and one real series
 
 **ER-08 Other LazyBear indicators (Squeeze, Better Volume, VFI)**
