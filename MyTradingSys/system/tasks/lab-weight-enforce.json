@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-17T19:01:21Z",
+  "depends_on": [],
+  "done_when": "test_tasks.py passes and a foundational card without stamps is refused",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "A card has an enforced weight, and a foundational card cannot be started or marked done without review stamps.",
+  "id": "lab-weight-enforce",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Opus gate: operator's latest message or an approved crucial OPUS card; Haiku rule for scop",
+      "ref": "1847cff89574",
+      "utc": "2026-10-17T11:34:43Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "987cb507d2b3 task-state-tags: card latest pointers + derived state tag, tasks.py tag/stale",
+      "ref": "MyTradingSys/system/TASK_REFINEMENT.md",
+      "utc": "2026-10-17T07:25:12Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T19:01:23Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py",
+    "MyTradingSys/system/TASK_REFINEMENT.md"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys"
+  ],
+  "scope_sha": "1847cff89574",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "add weight field ordinary|foundational set by the reviewer, not the producer",
+    "tasks.py check/done refuse a foundational card without a REVIEWED stamp and a result receipt",
+    "update TASK_REFINEMENT.md to describe the reviewer"
+  ],
+  "tests": "fail-first tests in test_tasks.py for both refusals",
+  "title": "Lab: enforce a weight field (ordinary/foundational) in tasks.py; foundational cannot start or finish without review stamps",
+  "worker": "session"
+}

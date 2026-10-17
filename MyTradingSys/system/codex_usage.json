@@ -3,10 +3,10 @@
   "plan": "plus",
   "week_resets": 1792677805,
   "week_used": 34.0,
-  "window_resets": 1792213232,
-  "window_used": 21.0
+  "window_resets": 1792281070,
+  "window_used": 0
  },
- "at": "2026-10-17T04:32:18Z",
+ "at": "2026-10-17T18:52:11Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -17,20 +17,35 @@
  },
  "host": "JIS-NUC",
  "lab": {
-  "astra_runs": 1,
+  "astra_runs": 0,
   "week_pts": 22.0,
-  "window_pts": 13.0,
-  "window_runs": 5
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-10-17T18:50:56Z",
+   "card": "gap-g2-dax-ask-candles",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 68,
+   "tokens_out": 5368,
+   "tokens_total": 501142,
+   "tokens_uncached": 44958,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-17T04:30:03Z",
    "card": "gptb-candle-pattern-event-table",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
+   "note": "Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n=========================================================",
+   "outcome": "SHIP_FAILED",
    "seconds": 130,
    "tokens_out": 10724,
    "tokens_total": 1144673,
@@ -155,21 +170,6 @@
    "tokens_out": 3659,
    "tokens_total": 366000,
    "tokens_uncached": 44773,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T23:00:10Z",
-   "card": "gptb-session-levels-event-table",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n=========================================================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 78,
-   "tokens_out": 5999,
-   "tokens_total": 403487,
-   "tokens_uncached": 33328,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
