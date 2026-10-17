@@ -1,28 +1,73 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_make_control_room.py -q",
+    "python scripts/dev/make_control_room.py",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
   "created": "2026-10-13T17:40:36Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "Control Room renders no layer table, shows one link to MTS Layers; test and quick gate green; CONTROL_ROOM.md and changelog updated.",
+  "est_turns": 14,
   "from_inbox": "",
-  "goal": "",
+  "goal": "The Control Room still carries its own Layer Board table (rows from control_room.json `layers`) while the MTS Layers page is the one layer view (ALIGNMENT_2026-10-13 s5: no extra view). Replace the table with a one-line link to the MTS Layers page URL taken from the artifact registry.",
   "id": "control-room-layer-board-link",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Publish every MTS page from the home login so MTS Home links open",
+      "ref": "863657c84f8d",
+      "utc": "2026-10-17T10:43:43Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "863657c84f8d Publish every MTS page from the home login so MTS Home links open",
+      "ref": "MyTradingSys/system/CONTROL_ROOM.md",
+      "utc": "2026-10-17T10:43:43Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "WEIGHT:ROUTINE operator page template, no decision numbers; coordinator spot-checks the test claim. File set: control-room files only (no overlap with the verdicts cluster).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refreshed": "2026-10-17T14:09:49Z",
+  "refs": [
+    "B177"
+  ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Control Room: replace the stale 4-row Layer Board with a link to the MTS Layers page (no duplicate layer view)"
+  "scope_in": [
+    "scripts/dev/control_room.tpl.html (section #layer-sec, JS line filling #layers)",
+    "scripts/dev/make_control_room.py (drop layer_board() and data['layers']; add data['layers_url'] from page_index() entry titled 'MTS Layers')",
+    "scripts/dev/test_make_control_room.py (replace LayerBoardTest)",
+    "MyTradingSys/system/CONTROL_ROOM.md (Layer Board bullet, line 62)",
+    "MyTradingSys/system/control_room.json (remove `layers` list and add a changelog line)"
+  ],
+  "scope_out": [
+    "MTS Layers page and make_layers_board.py",
+    "republishing the page (pickup does that)",
+    "the live tree"
+  ],
+  "scope_sha": "863657c84f8d",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/ALIGNMENT_2026-10-13.md:76 (no fifth layer view)",
+    "MyTradingSys/system/HOW_MTS_RUNS.md:13 (MTS Layers = the layer view)",
+    "scripts/dev/make_control_room.py:122,138 (layer_board, page_index)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Write the failing test first: build() output has layers_url equal to the MTS Layers canonical url and no 'layers' table; the template has no <table id=\"layers\">.",
+    "Change make_control_room.py and the template as in scope_in; keep section id layer-sec as a one-line panel 'Layers: see the MTS Layers page' with the link (esc() the url).",
+    "Delete the `layers` list from control_room.json and the B177 test that reads it; fix CONTROL_ROOM.md; add the changelog line.",
+    "Run the commands; Verify (coordinator): content commit sha; `git cherry origin/fast-track <sha>` empty AND `git ls-tree -r origin/fast-track --name-only` lists the delivered files."
+  ],
+  "tests": "scripts/dev/test_make_control_room.py: test_layer_board_is_a_link (fails on current code: layers table exists, layers_url missing).",
+  "title": "Control Room: replace the stale 4-row Layer Board with a link to the MTS Layers page (no duplicate layer view)",
+  "worker": "agent"
 }

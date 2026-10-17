@@ -14,7 +14,7 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 | CLD | cloud (claude.ai/code): pushed git refs only; no LAN, no gitignored files; ships by PR into fast-track (auto-merge on green) | offline research, specs, reviews, docs, backtests on committed data |
 | DSA | DeepSeek chat through AIBridge (F:\AIBridge, loopback 127.0.0.1:7181, AIBRIDGE_LANE.md); paste mode when the bridge is down | long-context reading, extraction, run-and-report jobs (DSA_DELEGATION.md) |
 | COD | Codex (CODEX_START.md, LAYER_LAB.md) | lane CODEX cards only |
-| GEM | Gemini in VS Code on JIS-NUC (GEMINI_START.md) | lane CODEX cards the lab has not claimed |
+| GEM | Gemini (Antigravity IDE) on JIS-NUC (GEMINI_START.md) | lane CODEX cards the lab has not claimed |
 Choose by what the task needs; state the reason when a surface other than the App is chosen. Builders work in a work tree, never the live tree; sharing and
 deploy: PARALLEL.md, DEPLOY_RUNBOOK.md. The ASK poller (`scripts/operator/inbox_poller.ps1`) is not registered on JIS-NB.
 
