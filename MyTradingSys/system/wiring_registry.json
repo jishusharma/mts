@@ -864,6 +864,18 @@
       "disp": "REPRO",
       "why": "Regenerates wavetrend/golden_wt_btcusdt_1h_dev_2022-01.csv from fixture_btcusdt_1h_dev_2022-01.csv with pandas (independent of wavetrend.py); run by hand (python make_golden.py), named in FORMULAS.md section 20.4."
     },
+    "MyTradingSys/backtest/layers/krown/krown_core.py": {
+      "disp": "TOOL",
+      "why": "Krown v0 detectors (swings, zones, volume, BBWP, candles, MAs, RSI, range, tops) as pure functions of closed bars; covered by test_krown_core.py, no live imports; flag-gated, alert-only, no live wiring (KROWN_LAYER_SPEC s2)."
+    },
+    "MyTradingSys/backtest/layers/krown/krown_events.py": {
+      "disp": "TOOL",
+      "why": "Krown v0 setup events S1-S9 ({i, side, setup, tags}) built on krown_core.py; covered by test_krown_events.py, no live imports; observation only."
+    },
+    "MyTradingSys/backtest/layers/krown/run_fire_counts.py": {
+      "disp": "REPRO",
+      "why": "Regenerates krown/FIRE_COUNTS_BTC_DEV.md (fire counts per detector and setup, BTCUSDT DEV only, no VALIDATION/HOLDOUT); run by hand (python run_fire_counts.py), named in FORMULAS.md section 21."
+    },
     "MyTradingSys/backtest/layers/trendlines/trendline_core.py": {
       "disp": "WIRE",
       "ref": "trendline-count-only",
@@ -878,12 +890,12 @@
     "disp": "TOOL",
     "why": "DEV-only funding extreme event table with trailing PIT 90-print 95th percentile and 24h forward MFE/MAE in ATR14 units; covered by test_event_table.py, no live imports."
   },
-  "MyTradingSys/research/layer_lab/malkan_rsi_event_table/event_table.py": {
-    "disp": "TOOL",
-    "why": "DEV-only 1h Malkan 40/60 RSI bounce event table with 24-bar forward MFE/MAE in ATR14 R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; read-only imports of the rsi layer; no live imports."
-  },
   "MyTradingSys/research/layer_lab/bb_top_reversal_event_table/event_table.py": {
     "disp": "TOOL",
     "why": "DEV-only 15m BB(20,2) top-reversal event table with forward short MFE/MAE in OURS-defined R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; no live imports."
+  },
+  "MyTradingSys/research/layer_lab/malkan_rsi_event_table/event_table.py": {
+    "disp": "TOOL",
+    "why": "DEV-only 1h Malkan 40/60 RSI bounce event table with 24-bar forward MFE/MAE in ATR14 R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; read-only imports of the rsi layer; no live imports."
   }
 }
