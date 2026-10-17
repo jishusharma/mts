@@ -67,9 +67,13 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   `MyTradingSys/execution/HALT` (+ `halt_history`); dirty files: `git -C <live> status --short --untracked-files=no`.
 - Live state in one read: `live_mirror.py brief` (LIVE_MIRROR.md) + `scripts/sched/check_live_health.py`; ledger =
   `runtime_data` trade_ledger.jsonl in the live tree. A Sonnet read-only worker does this in ~15 tool calls.
-- Operator rule (2026-10-16): workers are SESSIONS (`start_session`, Sonnet, announced in a line), never Agent subagents, so the operator
-  can open and compile them from the sidebar. Only if the app refuses `start_session` (a coordinator started BY ANOTHER SESSION) fall back to
-  Agent subagents (`run_in_background`, model sonnet/haiku), and log the refusal in the report.
+- Workers (operator prompt 2026-10-17, supersedes the 10-16 'always sessions' rule): bounded work (< ~100k tokens) = one-use
+  background Agent (Sonnet, medium); long work = session (`start_session`, visible in the sidebar). Agents are invisible in the
+  sidebar, so name each one in a line. Sizes seen 10-17: count-only PRE_REG read 78k (Agent ok); 7 lab cards + 3 card fixes 178k
+  and relabel + 3 study reruns 122k (both should have been sessions).
+- NUC lab: codex_run.py merges origin/fast-track before it picks (line ~646), so new cards need no lab-tree pull. A skipped card
+  is un-skipped by a REOPENED row in F:/codex_home/lab_runs/runs.jsonl (outside git), not by the card JSON. `traffic_report.py`
+  takes only an hours number (no --since): for 'after 12:00Z' use the hours since then.
 - Waking: other sessions send no idle notices. Use ONE background shell watcher (`git fetch` every 5 min; exit on a file landing
   on origin/fast-track or after 50 min), and on every wake `python scripts/sched/relay.py heartbeat "<id>" --note "<what>"`.
 - JIS-NB has no MTS-DispatchGate Windows task; the `mts-dispatcher` routine runs in the live tree, so relay/watchdog code only
@@ -123,6 +127,7 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   5-screenshot-read cap per thread.
 
 ## Session log (newest first; one line each, last 5)
+- 2026-10-17 super-nuc-1017b (JIS-NUC, Opus coordinator, 3 Agents, 03:20Z-03:50Z): boot 12 tool turns (prior session's NEXT_SESSION on origin, not the stale shared checkout); Q85 BLOCKED e5988045, fire CSVs relabelled + 3 DEV reruns (no verdict change) 450636f4, 7 luna cards + g3-blindness-audit-rerun 1d2c875f; T07/T08 still absent. Learned: two of three workers exceeded 100k (should have been sessions); the operator could not see Agents in the sidebar.
 - 2026-10-17 super-nuc-1017 (JIS-NUC, Sonnet coordinator + 3 Agents + 1 triage session, ~8 h): context-compare-close shipped; CI green x3, 163 tests pass; traffic 24 h = 849 commits, overhead 64% (was 68%; re-measure on a window after 2026-10-16 12:00Z); lab BLOCKED cause = no data path in the briefs (fixed, 6a9d63d3); bigtrade DEV leak (DEV_END_MS) fixed 5b1bdc27; fires_kline SPLITS aligned to the repo split 23fb3c7d (old TRAIN fires contaminated, F: CSVs still carry the old split column); lab unstuck (wiring-gate STALE rule 984dbe74, prompt lint line 7eb5b5c8). Weekly 29% at stop. T07/T08 verdicts never landed, so Q87/Q88/confluence-read-encode/prob-dist were NOT started.
 - 2026-10-16 JIS-NUC lagging-tasks super session: layer readiness census; 5 live adapters plus wlow side wired (W3, live in
   28ca4005/fc9794f4); D3 power result (no factor powered at Holm m=37); Java buildVp edge fix (62.5% zone match); GPT lab
@@ -133,13 +138,6 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   context composite INCONCLUSIVE, pit audit FIX-FIRST. Weekly 48 -> 55 %. Learned: heavy workers during a deploy gate cost two
   gates; check `gh run list` and `auto_deploy_last.json` on every wake; a worker that merges late hits VERDICTS.csv and
   wiring_registry.json conflicts (union both).
-- 2026-10-15 22:00Z to 10-16 00:20Z super-3 (local_62faa820, Opus coordinator): DSA backtest audit pack (10 cards dsa-audit-01..10,
-  AUDIT_BRIEF.md, cd5c6b3c), NUC hang forensics prompt (F:\MTS\NUC_HANG_FORENSICS_PROMPT.md), Research Map v7. Learned: CI stayed red
-  for 2 h unnoticed while it wrote prompts, so check `gh run list` on every wake.
-- 2026-10-16 super-2 (JIS-NB, Opus coordinator, Agent workers): boot ~25 tool turns, ~10 of them lookups now in Boot facts
-  (live tree path, start_session refusal, deploy/HALT state, wake mechanism). 18 workers, 14 ships, weekly +9 (shared meter).
-  Learned: coordinator wakes dominate cost; three double-ship wakes; one worker skipped the old-code test proof (rule 8); an
-  Agent's first 'finished' notice can be interim while its ship gate runs - verify with git cherry before logging.
 
 ## Start (operator: open a new session, model Opus, paste the prompt below)
 The coordinator, on its first turn: `get_usage` (stop if the Pacing state is THROTTLE), `python scripts/sched/relay.py stop
