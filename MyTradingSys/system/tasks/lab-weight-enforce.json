@@ -29,7 +29,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
+  "note": "REVIEWED: sonnet-reviewer 2026-10-18 ACCEPT (card+tasks.py diff, Claude only; C2 cross-vendor high-effort review still owed after the GPT run) [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
