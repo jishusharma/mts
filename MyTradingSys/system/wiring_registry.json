@@ -116,11 +116,6 @@
       "disp": "REPRO",
       "why": "Fabio v3 L3 pre-registered backtest, result L3-FAIL recorded in MyTradingSys/runtime/BUILD_PIPELINE.md:50 and PRE_REG_FABIO_V3.md; kept because that row lists an open follow-up (why models A, B, D almost never fire) that re-runs it."
     },
-    "MyTradingSys/backtest/layers/rsi/rsi_reclaim.py": {
-      "disp": "WIRE",
-      "ref": "RSI_2A_SPEC.md steps 4-5",
-      "why": "Operator RSI 2a context events (dwell/depth reclaim of 40/60, retest); built and tested 2026-10-09, to be called by run_rsi_backtest.py in the confluence-logging backtest (research/rsi_2a_2026-10-09/RSI_2A_SPEC.md). Not live."
-    },
     "MyTradingSys/backtest/layers/rsi/run_t090_anchor_probe.py": {
       "disp": "REPRO",
       "ref": "T090",
