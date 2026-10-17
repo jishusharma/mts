@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T18:20:20Z",
   "commands": [],
   "created": "2026-10-12T13:15:48Z",
   "depends_on": [],
@@ -11,7 +12,14 @@
   "id": "tom-direction-health-vs-sources",
   "kind": "audit",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/tom_direction_health_audit_2026-10-17/AUDIT.md: 5 rows, 3 CONFLICT 1",
+      "ref": "aff7309f",
+      "utc": "2026-10-17T18:20:20Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
@@ -22,7 +30,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T18:13:20Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/tom_direction_health_audit_2026-10-17/AUDIT.md: 5 rows, 3 CONFLICT 1 UNSOURCED 1 MATCH",
   "scope_in": [
     "MyTradingSys/research/tom_direction_health_audit_2026-10-17/AUDIT.md (new)"
   ],
@@ -34,7 +42,7 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read src/main/java/datafeed/SetupCandidatesBuilder.java classifyState (line ~253) and determineDirections (line ~274); the card's older line numbers have shifted.",
     "Find TOM-145, TOM-056, TOM-140 in the Tom rules ledger (grep the ids under MyTradingSys/) and open the quoted raw transcript line; run python scripts/dev/verify_extract_quotes.py on any quote reused.",
