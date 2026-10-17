@@ -14,7 +14,7 @@
     "krown"
   ],
   "live_path": false,
-  "note": "Operator 2026-10-17 requests priority Claude work. Drawing lines is first: known anchors, touch episodes, slopes, channels, phase/context and daily source checks. No visual-angle or viral-chart efficacy assumptions.",
+  "note": "Operator 2026-10-17 requests priority Claude work. Drawing lines is first: known anchors, touch episodes, slopes, channels, phase/context and daily source checks. No visual-angle or viral-chart efficacy assumptions. DROPPED 2026-10-17 by trendlines-verify: superseded by trendline-contract-spec, -causal-module, -count-only, -g3-marks-pack (see CLAUDE_VERIFY.md).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -32,7 +32,7 @@
     "MyTradingSys/research/trendlines_2026-10-17/CLAUDE_HANDOFF.md",
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_14bxwxC8gBQ.md"
   ],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Read the trend-line report and Krown KR-S10/S11; reconcile existing cards and claims.",
     "Specify immutable wick/close and log/linear line families, causal lifecycle and deterministic selection.",
