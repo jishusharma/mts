@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "powershell -NoProfile -Command \"Get-ScheduledTask -TaskName MTS-Scheduler-Tick,MTS-Audit-Digest,MTS-Audit-Rotation,MTS_Monitor_4h -ErrorAction SilentlyContinue | Select TaskName,State\""
+  ],
+  "created": "2026-10-17T04:34:46Z",
+  "depends_on": [],
+  "done_when": "Get-ScheduledTask | ? TaskName -match MTS|Alert-Rate|Audit|Declutter|Orphan|Retention returns nothing; XML exports of every task are in F:/MTS/backups/sched_tasks_2026-10-17_NB; the list and date are appended to HOST_TASKS_2026-10.md.",
+  "est_turns": null,
+  "from_inbox": "",
+  "goal": "On JIS-NB no MTS Windows scheduled task remains (operator q-sched-scope 2026-10-17: every task on every device, accepting that deploys, revival and the relay stop).",
+  "id": "host-legacy-tasks-unregister",
+  "kind": "build",
+  "lane": "JIS-NB",
+  "layers": [],
+  "live_path": false,
+  "note": "Operator override: this now covers AutoDeploy, Supervisor, dispatcher, Live-Health and Backup too. Export-ScheduledTask each to F:/MTS/backups/sched_tasks_2026-10-17_NB first (reversible). Do not stop running processes; unregistering does not kill them. A task that refuses deletion stays disabled and is reported.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "q-host-sched-tasks"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [
+    "stopping or restarting any running process",
+    "editing HALT files"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Export every matching task to XML (backup first).",
+    "Unregister each with Unregister-ScheduledTask -Confirm:$false; disable any that refuse.",
+    "Append the result to HOST_TASKS_2026-10.md."
+  ],
+  "tests": "read-only check after the change: the Get-ScheduledTask command above prints no rows",
+  "title": "Unregister every MTS scheduled task on JIS-NB (operator q-sched-scope 2026-10-17)",
+  "worker": ""
+}

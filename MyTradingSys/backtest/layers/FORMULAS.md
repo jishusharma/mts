@@ -482,6 +482,30 @@ resampled with replacement (2000 resamples, numpy `default_rng(20261009)`), stat
 divided by the number of events in them (difference: both streams use the same resampled days). Percentiles 2.5 / 97.5.
 *Worked:* two days, day A events R = [1, 3], day B events R = [-2]; resample (A, A): mean 2.0; (B, B): -2.0; (A, B): 0.6667.
 
+## 19. Trend-line contract formulas (`research/trendlines_2026-10-17/TRENDLINE_CONTRACT.md`) - added 2026-10-17
+
+All numbers below are computed by hand from the definitions, not from code. Parameters (k=3, tolerances, ATR length 14) are OURS; see the contract.
+
+**19.1 Pivot with k bars each side, strict.** Swing low at bar i iff `low[i] < low[j]` for every j in `i-k..i-1` and `i+1..i+k`. Available at close of bar `i+k`.
+Worked (k=3): lows by bar 0..6 = [9,8,7,5,6,7,8]: bar 3 is 5 < 9,8,7 and < 6,7,8, so pivot, available_at = close(bar 6). Ties, lows [9,8,7,5,5,7,8,9] (k=3): bar 3 fails (bar 4 equals 5), bar 4 fails (bar 3 equals 5), no pivot. Bars with fewer than 3 bars on a side (bars 0-2 and 5-7) are never pivots.
+
+**19.2 Line through anchors (ia,pa), (ib,pb).** Linear: `L(t) = pa + (pb-pa)*(t-ia)/(ib-ia)`. Log: `L(t) = exp(ln pa + (ln pb - ln pa)*(t-ia)/(ib-ia))`.
+Worked linear: ia=10, pa=100, ib=20, pb=110: `L(25) = 100 + 10*15/10 = 115`. Worked log: pa=100, pb=121, ib-ia=2, t-ia=3: `L = 100*(121/100)^(3/2) = 100*1.21^1.5 = 100*1.1^3 = 133.1` (linear on the same anchors: `100 + 21*3/2 = 131.5`, so the geometries differ).
+
+**19.3 ATR for the contract.** Plain SMA of True Range, section 12, length 14 (OURS). Numeric example of the SMA form is in section 12 (period 3, ATR 2.1667); the line uses ATR_b fixed at the close of bar ib.
+
+**19.4 Slope.** `slope_atr = (L(ib)-L(ia))/(ib-ia)/ATR_b`; `slope_log = (ln pb - ln pa)/(ib-ia)`.
+Worked: pa=100, pb=110, ib-ia=10, ATR_b=4: `slope_atr = 10/10/4 = 0.25`; `slope_log = ln(1.1)/10 = 0.0953102/10 = 0.00953102`.
+
+**19.5 Touch, penetration, break (support; resistance mirrors).** With L(25)=115 and ATR_b=4: touch tolerance 0.25*4 = 1, so contact iff `low <= 116`: low 115.8 contacts, low 116.5 does not. Poke tolerance 0.10*4 = 0.4: low 114.5 (< 114.6) with close 115.2 is a poke, still a contact, not a break. Break iff `close < 115`: close 114.9 breaks, close 115.0 does not.
+Strict penetration test (L6): anchor-segment bar with L(j)=105 and low 104.7 passes (104.7 >= 105 - 0.4 = 104.6); low 104.5 fails.
+
+**19.6 Contact episode and reset.** Reset distance 1.0*ATR_b = 4: after a contact, the episode ends on the first bar with `low > L + 4` (here `low > 119`). Lows [115.5, 116.0, 120.0, 115.9] against L=115 on four consecutive bars: bars 1,2 are one episode (episode 1), bar 3 (120.0 > 119) ends it, bar 4 contacts again = episode 2. Eligibility (arm A) is at bar 3.
+
+**19.7 Volume anchor test.** Anchor bar volume V, mean of the 20 prior bars M: pass iff `V >= 2*M`. Worked: M=140: V=300 gives ratio 2.143, pass; V=270 gives 1.929, fail; V=280 gives exactly 2.0, pass.
+
+**19.8 Arm B third anchor.** Third pivot c at ic=30 with price 119.5; L(30) = 100 + 10*20/10 = 120; |119.5-120| = 0.5 <= 0.25*4 = 1, so c is an anchor within tolerance; eligible at close(ic+3 = 33). A third pivot at 118.5 (|diff| 1.5) is not.
+
 ## Verification note (this audit, 2026-09-28)
 
 Every case number in `layers/timeframe/TEST_PLAN.md`, `layers/rsi/TEST_PLAN.md`,
