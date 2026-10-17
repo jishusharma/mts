@@ -1,12 +1,19 @@
+import os
+import subprocess
+import sys
 import unittest
 import numpy as np
 # CI image has no pandas. Skip the class, not the module: a module-level skip or sys.exit collects
 # zero tests, pytest exits 5 and run_extra_tests.py reports FAIL.
 try:
     import pandas as pd
-    import study
 except ImportError:
-    pd = study = None
+    pd = None
+# Outside the optional-dependency catch: a broken application import must fail the run (audit A6).
+if pd is None:
+    study = None
+else:
+    import study
 
 
 @unittest.skipIf(pd is None, 'pandas not installed')
@@ -86,6 +93,45 @@ class StudyTests(unittest.TestCase):
         op = np.arange(n)+100.
         return pd.DataFrame(dict(o=op, h=op+2, l=op-1, c=op+1, v=np.ones(n)),
                             index=pd.date_range('2022-01-01', periods=n, freq='min', tz='UTC'))
+
+
+
+HOOK = """
+import builtins, runpy
+original = builtins.__import__
+def hook(name, *args, **kwargs):
+    if name == %r:
+        raise ImportError('simulated import failure')
+    return original(name, *args, **kwargs)
+builtins.__import__ = hook
+runpy.run_path('test_study.py', run_name='__main__')
+"""
+
+
+@unittest.skipIf(os.environ.get('CANDLE_IMPORT_GUARD_CHILD'), 'nested run')
+class ImportGuardTests(unittest.TestCase):
+    """Run test_study.py in a subprocess with one import forced to fail."""
+    here = os.path.dirname(os.path.abspath(__file__))
+
+    def run_hooked(self, blocked):
+        return subprocess.run([sys.executable, '-c', HOOK % blocked], cwd=self.here,
+                              capture_output=True, text=True, timeout=120,
+                              env=dict(os.environ, CANDLE_IMPORT_GUARD_CHILD='1'))
+
+    @unittest.skipIf(pd is None, 'pandas not installed')
+    def test_broken_study_import_fails_closed(self):
+        r = self.run_hooked('study')
+        self.assertNotEqual(r.returncode, 0, r.stderr)
+        self.assertIn('simulated import failure', r.stderr)
+
+    @unittest.skipIf(pd is None, 'pandas not installed')
+    def test_missing_pandas_is_explicit_skips(self):
+        r = self.run_hooked('pandas')
+        self.assertEqual(r.returncode, 0, r.stderr)
+        dots = r.stderr.splitlines()[0]
+        # Every test skipped (StudyTests and the nested-run ImportGuardTests), none executed.
+        self.assertEqual(set(dots), {'s'}, r.stderr)
+        self.assertEqual(len(dots), 10, r.stderr)
 
 
 if __name__ == '__main__':
