@@ -1,33 +1,34 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-12T19:43:09Z",
-  "depends_on": [],
-  "done_when": "",
-  "from_inbox": "",
-  "goal": "",
-  "id": "tom-check-set-find-frames-only-tom-trade",
-  "lane": "SONNET",
-  "layers": [
-    "tom"
-  ],
-  "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
-  "pinned": false,
-  "prio": 2,
-  "refine_tries": 0,
-  "refined_by": "",
-  "refs": [
-    "TOM_LAYER_V2_SPEC.md section 7"
-  ],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "blocked",
-  "steps": [],
-  "tests": "",
-  "title": "Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set is 2 trades)"
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-12T19:43:09Z",
+ "depends_on": [],
+ "done_when": "",
+ "from_inbox": "",
+ "goal": "",
+ "id": "tom-check-set-find-frames-only-tom-trade",
+ "lane": "SONNET",
+ "layers": [
+  "tom"
+ ],
+ "live_path": false,
+ "note": "UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
+ "pinned": false,
+ "prio": 2,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refs": [
+  "TOM_LAYER_V2_SPEC.md section 7"
+ ],
+ "result": "",
+ "scope_in": [],
+ "scope_out": [],
+ "size": "",
+ "sources": [],
+ "state": "refined",
+ "steps": [],
+ "tests": "",
+ "title": "Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set is 2 trades)",
+ "weight": "ROUTINE"
 }

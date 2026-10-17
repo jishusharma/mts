@@ -10,7 +10,7 @@
   "id": "aibridge-auto-run-accepts-read-only-scri",
   "lane": "",
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -25,5 +25,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "AIBridge: auto-run accepts read-only script blocks; agent accept-loop timeout"
+  "title": "AIBridge: auto-run accepts read-only script blocks; agent accept-loop timeout",
+  "weight": "ROUTINE"
 }

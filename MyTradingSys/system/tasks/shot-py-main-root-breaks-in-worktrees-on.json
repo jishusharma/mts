@@ -12,7 +12,8 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "DUPLICATE of shipped fix 1d5d2ca2c (shot.py main_root handles git 2.24 echo; test_shot.py line 451 covers it) 2026-10-18 planner-batch2-1018",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -22,7 +23,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "shot.py main_root() breaks in worktrees on git < 2.31: --path-format=absolute is echoed as output, store path becomes garbage (OSError WinError 123)"

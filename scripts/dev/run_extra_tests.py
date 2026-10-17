@@ -17,6 +17,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 EXTRA = [
+    "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py",
     "MyTradingSys/research/wavetrend_2026-10-17/test_wt_parity_ref.py",
     "MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py",
     "scripts/dev/test_trace.py",
@@ -41,6 +42,9 @@ EXTRA = [
     "MyTradingSys/research/layer_lab/cc_msb_event_table/test_event_table.py",
     "MyTradingSys/research/layer_lab/fabio_escalation_event_table/test_event_table.py",
     "MyTradingSys/research/layer_lab/rsi_divergence_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/session_momentum_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/turn_of_candle_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/fabio_lvn_touch_event_table/test_event_table.py",
     "scripts/dev/test_lab_flow.py",
     "MyTradingSys/research/qriptal_2026-10-10/test_ledger.py",
     "MyTradingSys/research/qriptal_2026-10-10/test_score_calls.py",

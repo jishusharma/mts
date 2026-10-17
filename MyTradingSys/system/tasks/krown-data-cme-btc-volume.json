@@ -13,7 +13,7 @@
   "lane": "DSA",
   "layers": [],
   "live_path": false,
-  "note": "Public market data only (CLAUDE.md pre-approval). If no free source exists say so; do not scrape behind a login.",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] Public market data only (CLAUDE.md pre-approval). If no free source exists say so; do not scrape behind a login.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -33,5 +33,6 @@
   ],
   "tests": "",
   "title": "Krown CME BTC futures daily volume (public data only) as third volume arm",
+  "weight": "ROUTINE",
   "worker": ""
 }

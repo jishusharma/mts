@@ -1,49 +1,50 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-12T19:46:13Z",
-  "depends_on": [
-    "rv02-fix-dax-preprocessing-isolation"
-  ],
-  "done_when": "Linked HIGH finding has a synthetic red/green regression; focused harness/data tests pass and development isolation is preserved.",
-  "est_turns": 30,
-  "from_inbox": "",
-  "goal": "Before fresh row generation and simulation, verify that snapshot producer provenance and the authorized execution archive identify the same development data.",
-  "id": "rv02-fix-dax-producer-data-binding",
-  "lane": "SONNET",
-  "layers": [
-    "tom"
-  ],
-  "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | Captured by completed RV02 audit; raw SONNET follow-up for refinement. No implementation change made by the audit.",
-  "pinned": false,
-  "prio": 1,
-  "refine_tries": 0,
-  "refined_by": "",
-  "refs": [],
-  "result": "",
-  "scope_in": [
-    "MyTradingSys/backtest/tom_dax_bt.py",
-    "MyTradingSys/backtest/test_tom_dax_bt.py"
-  ],
-  "scope_out": [
-    "Live path and shared engine changes without owner approval",
-    "Specs, ledger and historical reports",
-    "Real-data/holdout reads and current-encoding BTC runs"
-  ],
-  "size": "M",
-  "sources": [
-    "MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md:46",
-    "MyTradingSys/system/revalidation/RV02_dax_harness_fixes.md"
-  ],
-  "state": "blocked",
-  "steps": [
-    "Read the linked RV02 finding and executable synthetic appendix.",
-    "Refine the implementation boundary and reproduce the finding red with synthetic data.",
-    "Fix within the approved scope, invalidate incompatible caches, and run the focused tests."
-  ],
-  "tests": "Freeze synthetic snapshots at price 100, revise bars to 200 before fresh rows: reject and require regeneration; same data passes; no holdout bytes read or hashed.",
-  "title": "RV02 R4: reject DAX snapshots made from different execution data",
-  "worker": "session"
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-12T19:46:13Z",
+ "depends_on": [
+  "rv02-fix-dax-preprocessing-isolation"
+ ],
+ "done_when": "Linked HIGH finding has a synthetic red/green regression; focused harness/data tests pass and development isolation is preserved.",
+ "est_turns": 30,
+ "from_inbox": "",
+ "goal": "Before fresh row generation and simulation, verify that snapshot producer provenance and the authorized execution archive identify the same development data.",
+ "id": "rv02-fix-dax-producer-data-binding",
+ "lane": "SONNET",
+ "layers": [
+  "tom"
+ ],
+ "live_path": false,
+ "note": "UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | Captured by completed RV02 audit; raw SONNET follow-up for refinement. No implementation change made by the audit.",
+ "pinned": false,
+ "prio": 1,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/backtest/tom_dax_bt.py",
+  "MyTradingSys/backtest/test_tom_dax_bt.py"
+ ],
+ "scope_out": [
+  "Live path and shared engine changes without owner approval",
+  "Specs, ledger and historical reports",
+  "Real-data/holdout reads and current-encoding BTC runs"
+ ],
+ "size": "M",
+ "sources": [
+  "MyTradingSys/research/layer_lab/reports/2026-10-12_rv02-dax-harness-fixes.md:46",
+  "MyTradingSys/system/revalidation/RV02_dax_harness_fixes.md"
+ ],
+ "state": "refined",
+ "steps": [
+  "Read the linked RV02 finding and executable synthetic appendix.",
+  "Refine the implementation boundary and reproduce the finding red with synthetic data.",
+  "Fix within the approved scope, invalidate incompatible caches, and run the focused tests."
+ ],
+ "tests": "Freeze synthetic snapshots at price 100, revise bars to 200 before fresh rows: reject and require regeneration; same data passes; no holdout bytes read or hashed.",
+ "title": "RV02 R4: reject DAX snapshots made from different execution data",
+ "weight": "CRUCIAL",
+ "worker": "session"
 }

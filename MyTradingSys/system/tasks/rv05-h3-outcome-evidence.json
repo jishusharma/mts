@@ -1,32 +1,47 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-13T05:35:47Z",
-  "depends_on": [],
-  "done_when": "Explain the -2910 daily delta versus -1760 partial-stop label with execution evidence, or retain an inferred outcome and unknown fill price.",
-  "from_inbox": "",
-  "goal": "Integrate RV05 H3 with the existing F13 outcome repair.",
-  "id": "rv05-h3-outcome-evidence",
-  "lane": "SONNET",
-  "layers": [
-    "fabio"
-  ],
-  "live_path": false,
-  "note": "Evidence follow-up to existing repair, not a parallel duplicate implementation. See RV05 report.",
-  "prio": 3,
-  "refine_tries": 0,
-  "refined_by": "",
-  "refs": [
-    "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md"
-  ],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair"
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-13T05:35:47Z",
+ "depends_on": [
+  "rv05-h2-position-line-evidence"
+ ],
+ "done_when": "F13 row and ledger note match the evidence, no fabricated fill. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+ "est_turns": 12,
+ "from_inbox": "",
+ "goal": "Integrate RV05 H3 with the existing F13 outcome repair.",
+ "id": "rv05-h3-outcome-evidence",
+ "lane": "SONNET",
+ "layers": [
+  "fabio"
+ ],
+ "live_path": false,
+ "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium WEIGHT:IMPORTANT. Small follow-on to rv05-h2; same files, so after it.",
+ "prio": 3,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refs": [
+  "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md"
+ ],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
+  "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md"
+ ],
+ "scope_out": [
+  "backtests",
+  "engine code"
+ ],
+ "size": "S",
+ "sources": [],
+ "state": "refined",
+ "steps": [
+  "read RV05 H3: F13 shows -1760 stop label at 25097 but Daily P/L delta -2910 (17758 vs 20668), gap 1150",
+  "mark exit mechanism inferred and fill price unknown unless a frame or caption (.txt:1455-1457) shows the cause",
+  "record the 1150 gap as NOT_IN_DATA, no cost or slippage assumed"
+ ],
+ "tests": "csv row for F13 has exit mechanism inferred and fill price blank/UNKNOWN",
+ "title": "RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair",
+ "weight": "IMPORTANT",
+ "worker": "agent"
 }

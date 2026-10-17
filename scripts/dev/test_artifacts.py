@@ -170,5 +170,62 @@ class Home(unittest.TestCase):
         self.assertIn("only after", html)
 
 
+class Stale(unittest.TestCase):
+    """Staleness check: a page whose repo build differs from published_sha is listed; a rebuild alone (new `generated`) is not."""
+
+    def setUp(self):
+        self.reg = copy.deepcopy(af.load())
+
+    def test_hash_ignores_generated_and_commit_only(self):
+        a = '{"generated": "2026-10-17 14:19 UTC", "commit": "56a493f3", "x": 1}'
+        self.assertEqual(af.content_hash(a), af.content_hash(a.replace("14:19", "15:00").replace("56a493f3", "abcdef01")))
+        self.assertNotEqual(af.content_hash(a), af.content_hash(a.replace('"x": 1', '"x": 2')))
+
+    def test_stale_lists_exactly_the_differing_pages(self):
+        pages = af.tracked(self.reg)
+        self.assertGreaterEqual(len(pages), 3)
+        built = {pg["slug"]: f"html of {pg['slug']}" for pg in pages}
+        for pg in pages:
+            pg["published_sha"] = af.content_hash(built[pg["slug"]])
+        builder = lambda pg: built[pg["slug"]]
+        self.assertEqual(af.stale(self.reg, builder), [])
+        built[pages[1]["slug"]] += " changed"
+        pages[2]["published_sha"] = None
+        got = af.stale(self.reg, builder)
+        self.assertEqual([g[0] for g in got], [pages[1]["slug"], pages[2]["slug"]])
+        self.assertIn(f"STALE {pages[1]['slug']} https://claude.ai/artifact/", "\n".join(af.stale_lines(self.reg, builder)))
+
+    def test_publish_record_makes_page_fresh(self):
+        pg = next(p for p in self.reg["pages"] if p["slug"] == "research_map")
+        sha = af.publish_record(self.reg, "research_map", today="2026-10-18")
+        self.assertEqual(pg["published_sha"], sha)
+        self.assertEqual(pg["last_published"][af.owner(pg)], "2026-10-18")
+        self.assertFalse(af.behind(self.reg, pg))
+        pg["published_sha"] = "0" * 64
+        self.assertTrue(af.behind(self.reg, pg))
+        with self.assertRaises(SystemExit):
+            af.publish_record(self.reg, "nope")
+
+    def test_every_page_has_generator_or_hand_made_mark(self):
+        for pg in self.reg["pages"]:
+            if pg.get("html") and pg["slug"] in ("research_map", "session_planner", "tom_fabio_deck"):
+                self.assertEqual(pg["generator"], "hand-made", pg["slug"])
+            self.assertIn("published_sha", pg)
+
+    def test_home_shows_behind_badge_and_published_date(self):
+        import make_home as mh
+        pages = {p["slug"]: p for p in mh.build(self.reg)["pages"]}
+        self.assertTrue(pages["research_map"]["behind"])  # no published_sha yet
+        af.publish_record(self.reg, "research_map", today="2026-10-18")
+        d = mh.build(self.reg)
+        self.assertFalse({p["slug"]: p for p in d["pages"]}["research_map"]["behind"])
+        self.assertIn("behind repo", mh.render(d))
+
+    def test_status_reports_pages_stale_line(self):
+        import make_status as ms
+        n, lines = ms.get_stale_pages()
+        self.assertEqual(n, len(lines))
+
+
 if __name__ == "__main__":
     unittest.main()

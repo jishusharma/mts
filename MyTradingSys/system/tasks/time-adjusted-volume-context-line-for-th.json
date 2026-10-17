@@ -1,31 +1,46 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-12T15:34:42Z",
-  "depends_on": [],
-  "done_when": "",
-  "from_inbox": "",
-  "goal": "",
-  "id": "time-adjusted-volume-context-line-for-th",
-  "kind": "build",
-  "lane": "SONNET",
-  "layers": [
-    "volume_candles_ma"
-  ],
-  "live_path": false,
-  "note": "",
-  "prio": 3,
-  "refine_tries": 0,
-  "refined_by": "",
-  "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-only market-guide field; VOLUME report recommendation (c)"
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-12T15:34:42Z",
+ "depends_on": [
+  "live-orderflow-state-line-1m-5m-15m-pric"
+ ],
+ "done_when": "market_guide prints the volume line on a fixture; test green; quick gate green. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+ "est_turns": 25,
+ "from_inbox": "",
+ "goal": "Add a read-only market-guide line: time-adjusted relative volume vs same-slot baseline (effort vs result) and OI scope. Descriptive only.",
+ "id": "time-adjusted-volume-context-line-for-th",
+ "kind": "build",
+ "lane": "SONNET",
+ "layers": [
+  "volume_candles_ma"
+ ],
+ "live_path": false,
+ "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Same file as live-orderflow card, so sequential.",
+ "prio": 3,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "scripts/dev/market_guide.py",
+  "scripts/dev/test_market_guide.py"
+ ],
+ "scope_out": [
+  "engine and layer code",
+  "any backtest"
+ ],
+ "size": "M",
+ "sources": [],
+ "state": "refined",
+ "steps": [
+  "read the same-slot relative-volume definition in the volume study feature code (do not copy numbers)",
+  "add one guide line with value, slot baseline n and label descriptive",
+  "test: synthetic slot history gives a ratio computed by hand in the test"
+ ],
+ "tests": "test_market_guide.py; fails before the function exists",
+ "title": "Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-only market-guide field; VOLUME report recommendation (c)",
+ "weight": "ROUTINE",
+ "worker": "session"
 }

@@ -28,5 +28,6 @@
   "state": "done",
   "steps": [],
   "tests": "",
-  "title": "28-cell runner for the pre-registered HTF replace test"
+  "title": "28-cell runner for the pre-registered HTF replace test",
+  "weight": "B-SHARED"
 }

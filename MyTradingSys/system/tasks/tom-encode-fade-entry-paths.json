@@ -12,15 +12,32 @@
   "goal": "Add the two other entry paths of family A behind the same flag: A2 pullback after proof (sell limit) and A3 break of the top balance (stop-market), with at most one re-entry per session on a fresh signal (A-M5) and stop rule A-S3.",
   "id": "tom-encode-fade-entry-paths",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "java buildVp: FORMULAS 18.1 edge convention (POC centre, VAH top edge, VAL bottom edge)",
+      "ref": "d8efebc2e1ed",
+      "utc": "2026-10-16T13:36:32Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b5c3e10e2a51 tom v2: DESIGN recall + fire rate of the fade encoding (FAIL, no k*), long 1m",
+      "ref": "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md",
+      "utc": "2026-10-13T08:01:30Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
   "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
+  "note": "UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
+  "refreshed": "2026-10-17T22:06:55Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -36,11 +53,12 @@
     "partials, adds, trailing (not modelled, spec section 13)",
     "changing path A1"
   ],
+  "scope_sha": "d8efebc2e1ed",
   "size": "M",
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2.3, 2.4, 2.6, 13"
   ],
-  "state": "blocked",
+  "state": "ready",
   "steps": [
     "A3: top balance = the range formed after the session extreme; a 1m close below it emits fade_short path A3, entry next bar open, stop above the last traded volume (A-S3).",
     "A2: after a rejection that traded through the first buying zone, sell limit at the pullback level; quote spec section 2.3 in the comment.",
@@ -49,5 +67,6 @@
   ],
   "tests": "Java: balance 24090-24110 after the extreme; 1m close 24088 -> path A3 candidate, entry at the next open; second stop-out then a third signal in the same session -> suppressed; state restored after a simulated restart. Fails before the paths exist.",
   "title": "Tom v2: encode fade entry paths A2 (pullback) and A3 (range break) with one re-entry per session",
+  "weight": "IMPORTANT",
   "worker": "session"
 }

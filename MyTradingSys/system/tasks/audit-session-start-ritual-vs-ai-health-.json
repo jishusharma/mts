@@ -10,7 +10,7 @@
   "id": "audit-session-start-ritual-vs-ai-health-",
   "lane": "",
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -25,5 +25,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Audit session start ritual vs AI-health token goals"
+  "title": "Audit session start ritual vs AI-health token goals",
+  "weight": "ROUTINE"
 }

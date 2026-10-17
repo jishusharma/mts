@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T13:44:50Z",
   "commands": [
     "python -m yt_dlp -f 398 --write-subs --sub-langs en -o \"F:/MTS/data/fabio_videos/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=DyS79Eb92Ug"
   ],
@@ -13,6 +14,12 @@
   "id": "find-more-fabio-trade-recap-videos-yt-dl",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "44 candidate ids in research/fabio_video_search_2026-10-17/candidates.csv, 14 new ranked f",
+      "ref": "8df19df3",
+      "utc": "2026-10-17T13:44:50Z"
+    },
     {
       "auto": true,
       "kind": "report",
@@ -34,7 +41,7 @@
   "refs": [
     "fabio-trade-ledger"
   ],
-  "result": "",
+  "result": "44 candidate ids in research/fabio_video_search_2026-10-17/candidates.csv, 14 new ranked for reading; old six already read",
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
@@ -49,7 +56,7 @@
   "sources": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md (candidate ids line)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Download each candidate as f398 720p video-only mp4 + en vtt into F:/MTS/data/fabio_videos (default android client gives 360p, unreadable).",
     "Make 30 s contact sheets with sheets.py, read them, add one CSV row per entry/management action with the frame file named.",

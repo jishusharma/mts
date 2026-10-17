@@ -14,6 +14,7 @@ outward-facing (delete, force-push, merge to main, live trading, HALT, orders) -
 | CLD | cloud (claude.ai/code): pushed git refs only; no LAN, no gitignored files; ships by PR into fast-track (auto-merge on green) | offline research, specs, reviews, docs, backtests on committed data |
 | DSA | DeepSeek chat through AIBridge (F:\AIBridge, loopback 127.0.0.1:7181, AIBRIDGE_LANE.md); paste mode when the bridge is down | long-context reading, extraction, run-and-report jobs (DSA_DELEGATION.md) |
 | COD | Codex (CODEX_START.md, LAYER_LAB.md) | lane CODEX cards only |
+| GEM | Gemini (Antigravity IDE) on JIS-NUC (GEMINI_START.md) | lane CODEX cards the lab has not claimed |
 Choose by what the task needs; state the reason when a surface other than the App is chosen. Builders work in a work tree, never the live tree; sharing and
 deploy: PARALLEL.md, DEPLOY_RUNBOOK.md. The ASK poller (`scripts/operator/inbox_poller.ps1`) is not registered on JIS-NB.
 
@@ -31,7 +32,7 @@ Cloud: no routines or always-on sessions; one session per task; nothing live dep
 
 ## 4. Naming
 Session ID: MTS-YYYY-MM-DD-HHMMZ-<SURF>-<ROLE>[-<slug>] (UTC start; slug <=20 chars, lowercase kebab).
-SURF: APP CLI CLD DSA COD. ROLE: SUP BLD ANA EXT MON COO WRK (SUP = operator-driven supervising session; it deploys nothing, MTS-AutoDeploy does). Chat title = session ID.
+SURF: APP CLI CLD DSA COD GEM. ROLE: SUP BLD ANA EXT MON COO WRK (SUP = operator-driven supervising session; it deploys nothing, MTS-AutoDeploy does). Chat title = session ID.
 Record: the commit trailer `MTS-Session: <ID>` (commit history is the registry; sessions/ is history, no new files).
 Cloud branch: the harness-assigned `claude/...` branch, started from origin/fast-track and shipped by PR (PARALLEL.md). Harness names are recorded as branch_alias, never reused.
 Subagents: <parent ID>/<tier>-<nn> (e.g. /sonnet-02).

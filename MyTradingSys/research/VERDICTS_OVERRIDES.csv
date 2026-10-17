@@ -1,0 +1,5 @@
+study_dir,arm,column,value,source
+eur_low_us_sweep_2026-10-14,*,one_run,yes,MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md:8
+orderflow_views_2026-10-14,*,kill_scope,"NEGATIVE: price-vs-CVD divergence on 1m/5m, with or without OI split, is not supported as a live signal (derived from RESULT.md Verdict). Untested, each needs its own PRE_REG: aggregated CVD, CoinGlass net longs/shorts, divergence at a level.",MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md:55-61
+t090_7h_2026-10-09,*,split_read,"ALL (2022-01..2026-10, no DEV/VAL/HOLDOUT cut)",MyTradingSys/research/t090_7h_2026-10-09/RESULT.md:12
+t090_7h_2026-10-09,*,verdict,INCONCLUSIVE,MyTradingSys/research/t090_7h_2026-10-09/RESULT.md:36

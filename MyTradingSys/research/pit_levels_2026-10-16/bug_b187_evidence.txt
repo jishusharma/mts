@@ -17,3 +17,7 @@ pit study with DEV_EXT added (estimate): 662 + 465 = 1,127 days, still < 2,427
 F:/MTS/data/dev_ext_2019_2021 exists: False  (dev_ext.py EXT_DIR points here)
 F:/MTS/data/binance_raw contents: ['aggTrades']
 F:/MTS/data/tom_raw/klines files: 89
+
+== ERRATUM 2026-10-18 (text only; the numbers above are unchanged) ==
+PRE_REG_V2.md said "even at zero cost n_needed is about 1,000 days"; hand value (4.083*1.46/0.30)^2 = 394.8 = about 395 days. The 2,427 line (cost 0.179 R) and 662 days stand.
+Q76 direct count (layer_lab/reports/2026-10-18_q76-dev-ext-power-check.md): 662 baseline + 545 DEV_EXT days = 1,207 of 2,427 (Haiku blind about 1,215), supersedes the +465 estimate above.

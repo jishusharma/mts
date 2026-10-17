@@ -73,5 +73,6 @@
     "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV; set the result line."
   ],
   "tests": "Existing 5 synthetic tests stay green; new red-first tests: loader drops bars with open >= 2024-07-01; the baseline never contains the current bar (hand ratio); fewer than N prior weeks = NOT_IN_DATA; a 4h bucket with a missing 1h bar is skipped; spike at a known bar is flagged with hand-computed forward MFE/MAE.",
-  "title": "Volume layer: time-adjusted relative-volume spike event table on DEV with forward R"
+  "title": "Volume layer: time-adjusted relative-volume spike event table on DEV with forward R",
+  "weight": "B-SHARED"
 }

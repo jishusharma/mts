@@ -13,7 +13,7 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
@@ -26,5 +26,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Fabio ledger: get 9I5vTvwsMBk (f398 not available; try another format/client) and read it for trades"
+  "title": "Fabio ledger: get 9I5vTvwsMBk (f398 not available; try another format/client) and read it for trades",
+  "weight": "ROUTINE"
 }

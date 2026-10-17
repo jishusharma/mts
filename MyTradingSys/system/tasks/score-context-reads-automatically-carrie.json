@@ -1,31 +1,47 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-12T15:34:43Z",
-  "depends_on": [],
-  "done_when": "",
-  "from_inbox": "",
-  "goal": "",
-  "id": "score-context-reads-automatically-carrie",
-  "kind": "build",
-  "lane": "SONNET",
-  "layers": [
-    "live_engine"
-  ],
-  "live_path": false,
-  "note": "",
-  "prio": 3,
-  "refine_tries": 0,
-  "refined_by": "",
-  "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the next read instead of by hand; T092 gap"
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-12T15:34:43Z",
+ "depends_on": [
+  "time-adjusted-volume-context-line-for-th"
+ ],
+ "done_when": "the next read prints a status for each carried falsifier; tests green. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+ "est_turns": 30,
+ "from_inbox": "",
+ "goal": "Compute carried falsifier lines (HELD/BROKEN/UNTESTED) from klines at the next live read instead of by hand (T092 gap).",
+ "id": "score-context-reads-automatically-carrie",
+ "kind": "build",
+ "lane": "SONNET",
+ "layers": [
+  "live_engine"
+ ],
+ "live_path": false,
+ "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Third market_guide.py card: sequential after the other two (one writer per file set).",
+ "prio": 3,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "scripts/dev/market_guide.py",
+  "scripts/dev/test_market_guide.py",
+  "scripts/dev/shot.py",
+  "scripts/dev/test_shot.py"
+ ],
+ "scope_out": [
+  "engine and layer code"
+ ],
+ "size": "M",
+ "sources": [],
+ "state": "refined",
+ "steps": [
+  "grep how a read stores falsifier lines (shot.py / live_reads) and the T092 note",
+  "function falsifier_status(line, klines_since) returns HELD|BROKEN|UNTESTED for price-level lines",
+  "tests: level held, level broken by a close, level not yet reached"
+ ],
+ "tests": "three fixture tests, fail first",
+ "title": "Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the next read instead of by hand; T092 gap",
+ "weight": "ROUTINE",
+ "worker": "session"
 }

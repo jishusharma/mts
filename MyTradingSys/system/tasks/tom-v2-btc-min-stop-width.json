@@ -3,8 +3,7 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-13T06:33:20Z",
-  "depends_on": [
-  ],
+  "depends_on": [],
   "done_when": "The worked example of spec section 11.4 passes as a test, min_width off leaves an existing tom_bt fixture run unchanged, and the lookback 10/20/40 floors for 2026-06-25 are one line in the card result.",
   "from_inbox": "",
   "goal": "Give BTC research replays the minimum stop width of spec section 11.4: noise unit N5, noise floor 0.88 x N5, fee floor round-turn cost / 0.25, no trade below the larger one. Research replays only; live BTC output unchanged. Start only if DAX_BT_V2.md says PASS.",
@@ -15,7 +14,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "2026-10-13 (operator chat q11): no longer waits for the DAX dev run (held). The 0.40 % taker / 0.20 % maker floor is used directly by tom-btc-event-study. | 2026-10-14 opus: moved to CODEX (Claude weekly budget 94%; GPT week 33%). 2026-10-15 q12: home-market chain paused (p5) per operator answer; raise again when crypto-native cards are done.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use] 2026-10-13 (operator chat q11): no longer waits for the DAX dev run (held). The 0.40 % taker / 0.20 % maker floor is used directly by tom-btc-event-study. | 2026-10-14 opus: moved to CODEX (Claude weekly budget 94%; GPT week 33%). 2026-10-15 q12: home-market chain paused (p5) per operator answer; raise again when crypto-native cards are done.",
   "prio": 5,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
@@ -48,5 +47,6 @@
     "Off by default (argument min_width=False): existing tom_bt outputs identical. Report the floor at lookback 10 and 40 beside 20; choose nothing."
   ],
   "tests": "pytest: entry 100000, N5 0.14 % -> W_noise 123.20, all-taker W_fee 400.00, W_min 400.00; stop 100399 dropped, 100400 kept with fee 0.25 R; FEES_DERIBIT W_fee 200.00. FORMULAS 12 example: true ranges 2, 2, 2.5 -> median 2. min_width off -> same trades as before. Fails before the function exists.",
-  "title": "Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)"
+  "title": "Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)",
+  "weight": "IMPORTANT"
 }

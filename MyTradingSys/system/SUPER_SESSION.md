@@ -117,6 +117,8 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once). Numbe
   28ca4005/fc9794f4); D3 power result (no factor powered at Holm m=37); Java buildVp edge fix (62.5% zone match); GPT lab
   unthrottled with 6 build cards; bigtrade reclassified as a build; HALT still on (operator clears it); grandfather review_by 2026-10-23.
 
+14. **Session_Planner (operator 2026-10-17).** The coordinator runs the Session_Planner role (`roles/session_planner.md`) as a foreground Sonnet Agent at boot and on every wake with a free worker slot: it refines raw cards, returns the dispatch table (agent vs session, model, file cluster, weight), lifts blocks that name no live defect and lists stale claims, idle sessions and shipped worktrees for cleanup. Never dispatch a `raw`/`refined` card (2026-10-17: three Haiku workers came back empty on raw cards). Weight CRUCIAL = rule 11 review Agent; CRITICAL = a review session spawned mid-session (plan) and pre-ship (diff), counted in the 4-session cap. Both coordinator prompts carry this line.
+
 ## Start (operator: open a new session, model Opus, paste the prompt below)
 The coordinator, on its first turn: `get_usage` (stop if the Pacing state is THROTTLE), `python scripts/sched/relay.py stop
 "super-session <session id>"` on this machine, read STATUS.md and NEXT_SESSION.md, then spawn.

@@ -12,14 +12,31 @@
   "goal": "Fill backtest/PRE_REG_TEMPLATE.md for a CryptoCred 4h/1d redesign: invalidation-based stop with an OURS buffer in noise units, trailing/FTA exits next to the fixed bracket, sealed holdout, trial ledger, regime stratification and the kill rule (gate 0f). No backtest.",
   "id": "cryptocred-prereg-4h-1d",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "COUNT_POWER: fix 1h reading",
+      "ref": "380ae4e3eacc",
+      "utc": "2026-10-17T18:24:17Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "380ae4e3eacc COUNT_POWER: fix 1h reading",
+      "ref": "MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md",
+      "utc": "2026-10-17T18:24:17Z"
+    }
+  ],
   "layers": [
     "cryptocred"
   ],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:GPT medium+Haiku re-derive HOLD A-20261018-5: reads COUNT_POWER.md (untagged lab count/power result) as its base; stays refined. DECISION (OURS): ready once cryptocred-htf-count-power carries a trust tag; the test must also glob PRE_REG_CRYPTOCRED_HTF.md (test_pre_reg_template.py only globs HOME_FIT_AUDIT_*) so it fails before the file exists.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "cryptocred-home-fit-audit 2026-10-17",
+  "refreshed": "2026-10-17T21:35:12Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -32,6 +49,7 @@
     "tuning",
     "edits to live-path code"
   ],
+  "scope_sha": "380ae4e3eacc",
   "size": "S",
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md"
@@ -44,5 +62,6 @@
   ],
   "tests": "test_pre_reg_template.py passes for the new file (fails if any item is unanswered).",
   "title": "CryptoCred: pre-registration for the 4h/1d redesign (items 6/8/11/12)",
+  "weight": "CRUCIAL",
   "worker": "agent"
 }
