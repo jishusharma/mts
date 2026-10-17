@@ -67,7 +67,8 @@ def build(reg, now=None, repo=None):
             continue
         pages.append({"slug": pg["slug"], "title": pg["title"], "url": url, "owner": own, "purpose": pg.get("purpose", ""),
                       "notes": pg.get("notes_go_to", ""), "db": bool(pg.get("db")), "refresh": pg["refresh"],
-                      "pub": str(pg["last_published"].get(own, ""))[:10], "write": pg["slug"] in WRITE_FIRST})
+                      "pub": str(pg["last_published"].get(own, ""))[:10], "write": pg["slug"] in WRITE_FIRST,
+                      "behind": af.behind(reg, pg, repo or af.REPO) if pg.get("html") else False})
         if pg.get("single_owner"):
             for a, u in pg["urls"].items():
                 if u and a != own:
@@ -247,12 +248,12 @@ $("pages").innerHTML = DATA.pages.map(p => `
   <article class="page${p.write ? " w" : ""}">
     <div class="ptop">
       <a class="ptitle" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>
-      <span class="pills"><span class="pill${p.owner === DATA.home ? " home" : ""}">Owner ${esc(p.owner)}</span>${p.db ? `<span class="pill db">Saves your notes</span>` : ""}${p.owner !== DATA.home ? `<span class="pill old">Opens on ${esc(DATA.home)} only after ${esc(p.owner)} shares it</span>` : ""}</span>
+      <span class="pills"><span class="pill${p.owner === DATA.home ? " home" : ""}">Owner ${esc(p.owner)}</span>${p.db ? `<span class="pill db">Saves your notes</span>` : ""}${p.behind ? `<span class="pill old">behind repo</span>` : ""}${p.owner !== DATA.home ? `<span class="pill old">Opens on ${esc(DATA.home)} only after ${esc(p.owner)} shares it</span>` : ""}</span>
     </div>
     <p>${esc(p.purpose)}</p>
     <dl class="kv">
       <dt>Your notes</dt><dd>${esc(p.notes)}</dd>
-      <dt>Updated</dt><dd>${esc(ago(p.pub))}; ${esc(p.refresh)}</dd>
+      <dt>Published</dt><dd>${esc(ago(p.pub))}${p.behind ? " - behind repo: the repo has a newer version, not yet published" : ""}; ${esc(p.refresh)}</dd>
     </dl>
     <span class="url">${esc(p.url)}</span>
   </article>`).join("");
