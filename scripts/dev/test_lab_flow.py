@@ -37,15 +37,14 @@ def complete(repo, card, verdict="PASS"):
 
 def test_launch_orders_models_and_lenses_without_duplicate_work(repo):
     cards = F.launch(repo, spec())
-    assert [tasks.codex_setting(c) for c in cards] == [("gpt-6.1-sol", "medium"), ("gpt-6-astra", "low")]
+    assert [tasks.codex_setting(c) for c in cards] == [("gpt-6.1-sol", "medium"), ("gemini-2.5-pro", "low")]
     assert cards[1]["depends_on"] == [cards[0]["id"]]
     assert tasks.ready_cards(repo)[0] == [cards[0]]
     assert all(len(tasks.brief(c).splitlines()) <= 30 for c in cards)
     assert "C1" in tasks.brief(cards[0])
 
 
-def test_same_model_stage_is_refused_but_gemini_stage_is_accepted(repo, monkeypatch):
-    # The producer and reviewer may share a vendor, but must not share a model.
+def test_cross_vendor_stage_is_accepted_and_same_vendor_stage_is_refused(repo, monkeypatch):
     recipe = [
         ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Produce the scoped implementation."),
         ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Independently challenge the report."),
@@ -60,9 +59,32 @@ def test_same_model_stage_is_refused_but_gemini_stage_is_accepted(repo, monkeypa
     cards = tasks.load_all(repo)
     assert not F.gate(cards[1], cards, repo)
 
-    recipe[1] = ("challenge", "gemini", "audit", "gpt-6.1-sol", "low", "Same model is forbidden.")
-    with pytest.raises(ValueError, match="producer model"):
+    recipe[1] = ("challenge", "codex", "audit", "gpt-6.1-sol", "low", "Same vendor is forbidden.")
+    with pytest.raises(ValueError, match="producer vendor"):
         F.launch(repo, spec() | {"id": "same-model", "recipe": "crossvendor-fixture"})
+
+
+def test_same_vendor_different_model_requires_c0_override(repo, monkeypatch):
+    recipe = [
+        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Produce the scoped implementation."),
+        ("challenge", "codex", "audit", "gpt-6-astra", "low", "Review independently."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "same-vendor-fixture", recipe)
+
+    with pytest.raises(ValueError, match="producer vendor"):
+        F.launch(repo, spec() | {"id": "same-vendor", "recipe": "same-vendor-fixture"})
+
+    cross_vendor = recipe.copy()
+    cross_vendor[1] = ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Review independently.")
+    monkeypatch.setitem(F.RECIPES, "cross-vendor-fixture", cross_vendor)
+    cards = F.launch(repo, spec() | {"id": "cross-vendor", "recipe": "cross-vendor-fixture"})
+    assert cards[1]["vendor"] == "gemini"
+
+    override = spec() | {"id": "same-vendor-c0", "recipe": "same-vendor-fixture",
+                         "risk_class": "C0", "same_vendor_override": True}
+    cards = F.launch(repo, override)
+    assert cards[1]["flow"]["risk_class"] == "C0"
+    assert cards[1]["flow"]["same_vendor_override"] is True
 
 
 def test_finish_receipt_records_stage_model_id(repo, monkeypatch):

@@ -15,11 +15,11 @@ HOLDOUT_PARTS = {"holdout", "holdouts", "validation_holdout", "test_holdout"}
 DEV_CUTOFF_MS = 1719792000000  # 2024-07-01T00:00:00Z
 RECIPES = {
     "critical-audit": [("map", "codex", "audit", "gpt-6.1-sol", "medium", "Map claims to source evidence; expose missing inputs and assumptions."),
-                       ("challenge", "codex", "audit", "gpt-6-astra", "low", "Independently try to falsify the prior findings; reproduce one material claim and resolve disagreements against sources.")],
+                       ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Independently try to falsify the prior findings; reproduce one material claim and resolve disagreements against sources.")],
     "build-review": [("build", "codex", "build", "gpt-6.1-sol", "medium", "Implement the scoped contract with spec-derived fail-first tests."),
                      ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Review the resulting diff and reproduce failure modes; independently check goal coverage.")],
     "run-review": [("run", "codex", "run", "gpt-6-luna", "low", "Execute only the supplied development-data commands and record inputs, trial identity and numbers."),
-                   ("verify", "codex", "audit", "gpt-6.1-sol", "medium", "Independently reproduce a headline number and check leakage, fees, trial accounting and missing data.")],
+                   ("verify", "gemini", "audit", "gemini-2.5-pro", "low", "Independently reproduce a headline number and check leakage, fees, trial accounting and missing data.")],
 }
 
 
@@ -110,6 +110,9 @@ def fingerprint(repo, scope, data_scope=None):
 
 def contract(flow):
     value = {k: flow[k] for k in ("id", "recipe", "goal", "criteria", "scope_in")}
+    for key in ("risk_class", "same_vendor_override"):
+        if key in flow:
+            value[key] = flow[key]
     if flow.get("data_scope"):
         value["data_scope"] = flow["data_scope"]
     for key in ("commands", "tests", "mutation_check"):
@@ -162,12 +165,19 @@ def gate(card, cards, repo):
             errors.append(f"flow contract {key} changed; launch a new flow")
     try:
         _, vendor, kind, model, effort, lens = RECIPES[flow["recipe"]][flow["stage"] - 1]
-        producer_model = RECIPES[flow["recipe"]][0][3]
+        producer_vendor = RECIPES[flow["recipe"]][0][1]
         stage_lens = f"{vendor}/{model}: {lens}"
         if flow["stage"] < 1 or card.get("vendor") != vendor or card.get("kind") != kind or tasks.codex_setting(card) != (model, effort) or flow.get("lens") != stage_lens:
             errors.append("flow vendor/kind/model/lens drifted from the recipe")
-        if flow["stage"] > 1 and model == producer_model:
-            errors.append("flow reviewer model must differ from producer model")
+        if flow.get("risk_class") not in (None, "C0", "C1", "C2", "C3"):
+            errors.append("flow risk_class must be C0, C1, C2 or C3")
+        if flow.get("same_vendor_override") is True and flow.get("risk_class") != "C0":
+            errors.append("same-vendor override is allowed only for C0 cards")
+        if "same_vendor_override" in flow and type(flow["same_vendor_override"]) is not bool:
+            errors.append("same_vendor_override must be a boolean")
+        if flow["stage"] > 1 and vendor == producer_vendor and not (
+                flow.get("risk_class") == "C0" and flow.get("same_vendor_override") is True):
+            errors.append("flow reviewer vendor must differ from producer vendor; explicit same_vendor_override is C0-only")
     except (KeyError, IndexError, TypeError):
         errors.append("flow recipe/stage is invalid")
     expected = []
@@ -214,6 +224,9 @@ def launch(repo, spec, preview=False):
         raise ValueError("data_scope must be a list of data file paths")
     fingerprint(repo, spec["scope_in"], spec.get("data_scope"))
     flow = {k: spec[k] for k in ("id", "recipe", "goal", "criteria", "scope_in")}
+    for key in ("risk_class", "same_vendor_override"):
+        if key in spec:
+            flow[key] = spec[key]
     if spec.get("data_scope"):
         flow["data_scope"] = spec["data_scope"]
     for key in ("commands", "tests", "mutation_check"):
