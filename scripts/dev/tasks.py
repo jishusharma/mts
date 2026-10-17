@@ -146,6 +146,11 @@ def worker_problems(card):
     return p
 
 
+def default_worker(card):
+    """(est_turns, worker) for a card that gets a Claude lane without refinement (CI red card, lane reroute); the refiner sets real ones."""
+    return (12, "agent") if card.get("size") == "S" else (30, "session")
+
+
 def problems(card, cards=None, reg=None):
     """Definition of Ready: [] when a session can run the card with no question to anyone. Every miss is named."""
     p = []
