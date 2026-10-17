@@ -849,6 +849,7 @@
     },
     "MyTradingSys/backtest/layers/wavetrend/wavetrend.py": {
       "disp": "PARKED",
+      "ref": "wavetrend-dev-atlas",
       "why": "WaveTrend causal observation module (wt1/wt2/zone/cross with bar-close available_at); tested against golden DEV fixtures, no caller yet: the DEV count/atlas study cards (research/wavetrend_2026-10-17/ATLAS_STUDY_SPEC.md) import it; observation only, no live path."
     },
     "MyTradingSys/backtest/layers/wavetrend/make_golden.py": {
