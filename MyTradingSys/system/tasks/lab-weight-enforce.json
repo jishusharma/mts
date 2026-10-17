@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T20:31:39Z",
   "commands": [],
   "created": "2026-10-17T19:01:21Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "47 tests OK; tasks.py check passes; report MyTradingSys/research/layer_lab/reports/2026-10",
+      "ref": "0980b743",
+      "utc": "2026-10-17T20:31:39Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -29,13 +36,13 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
+  "note": "REVIEWED: sonnet-reviewer 2026-10-18 ACCEPT (card+tasks.py diff, Claude only; C2 cross-vendor high-effort review still owed after the GPT run) [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-17T19:01:23Z",
   "refs": [],
-  "result": "",
+  "result": "47 tests OK; tasks.py check passes; report MyTradingSys/research/layer_lab/reports/2026-10-17_lab-weight-enforce.md",
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py",
@@ -49,7 +56,7 @@
   "scope_sha": "1847cff89574",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "tasks.py already has WEIGHTS (ROUTINE, IMPORTANT, CRUCIAL, CRITICAL, B-SHARED) and the OPUS-needs-crucial rule: keep both, add no new weight values",
     "add review_gate(card, finishing, result) used by cmd_take and cmd_done: crucial/critical weight or class C2/C3 (class field or note 'class=Cn') needs 'REVIEWED: <who> <date>' in the note; done also needs a non-empty --result",

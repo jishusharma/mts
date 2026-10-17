@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-17T20:32:10Z",
+  "depends_on": [],
+  "done_when": "test_lab_flow.py passes and a same-vendor/different-model pair (codex/gpt-6.1-sol reviewing codex/gpt-6-astra) is rejected",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The lab review gate rejects a review whose reviewer is the same vendor as the producer, as Lab_Guy requires, not only the same model id.",
+  "id": "lab-crossvendor-same-vendor-gate",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab lab-crossvendor-stage: DONE (build)",
+      "ref": "0c06863594a9",
+      "utc": "2026-10-17T20:29:44Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "lab-touch=yes class=C1 reviewer=Gemini Flash high",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T20:32:35Z",
+  "refs": [
+    "scripts/dev/lab_flow.py:118",
+    "MyTradingSys/system/roles/lab_guy.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/lab_flow.py",
+    "scripts/dev/test_lab_flow.py"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys"
+  ],
+  "scope_sha": "0c06863594a9",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read scripts/dev/lab_flow.py:118 (rejects only when producer and reviewer model ids are identical; found by Haiku check of commit 0c06863594a9) and roles/lab_guy.md ('producer vendor recorded and different from the reviewer's')",
+    "compare the vendor field (prefix before '/') instead of the model id; allow an explicit documented same-vendor override only for C0 cards",
+    "add a fail-first test: same-vendor/different-model pair is rejected on pre-change code; C0 override and cross-vendor pair still accepted"
+  ],
+  "tests": "fail-first test in scripts/dev/test_lab_flow.py: codex/gpt-6.1-sol reviewing codex/gpt-6-astra is rejected; different vendor accepted; C0 override accepted",
+  "title": "Lab: lab_flow gate must reject same-vendor producer/reviewer pairs (compare vendor, not model id)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

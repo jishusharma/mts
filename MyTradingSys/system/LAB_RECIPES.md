@@ -7,7 +7,7 @@ its scope, claims, data restrictions and ship gates still apply.
 | Recipe | Ordered lenses | Use |
 |---|---|---|
 | critical-audit | Sol 6.1 / medium evidence map -> Astra / low independent challenge | specs, source ledgers, formula or backtest-method audits |
-| build-review | Sol 6.1 / medium implementation -> Astra / low failure-mode review | scoped offline code with fail-first tests |
+| build-review | Sol 6.1 / medium implementation -> Gemini 2.5 Pro / low failure-mode review | scoped offline code with fail-first tests |
 | run-review | Luna / low mechanical run -> Sol 6.1 / medium numerical verification | supplied DEV commands, recall checks, counts and repeatable research |
 
 These are routing defaults, not claims that one model always wins. Astra retains the existing low-effort
@@ -15,6 +15,13 @@ policy; upgrade effort only with measured task evidence and a deliberate policy 
 https://developers.openai.com/api/docs/models (checked 2026-10-16). No voting or averaging verdicts:
 disagreements require a source reference or reproduction. Claude spot-checks one material claim and
 decides the next research/build action from the final report.
+
+Each recipe stage declares a vendor and model id. Supported vendor labels are `codex`, `gemini`, and
+`claude`; a reviewer stage is rejected when its model id equals stage one's producer model id, even when
+the vendor labels differ. Gemini stage instructions use `agy.exe --print` and require the complete report
+text to be included in the prompt because the headless command cannot read report files. The finish
+receipt stores the stage's vendor and model id, and runner acceptance checks them against the recipe.
+When adding a Claude stage, supply its model id and headless invocation in that stage's lens/instructions.
 
 ## Launch from Claude or Codex
 
@@ -50,7 +57,7 @@ python scripts/dev/lab_flow.py finish CARD_ID --report REPORT_PATH --verdict PAS
 
 Use REWORK for failed acceptance and BLOCKED for missing required evidence. PASS requires every criterion
 line PASS and an existing report under layer_lab/reports. It stores the contract hash, source hashes,
-report hash and criterion results on the card, then unlocks the next stage. A bare tasks.py done is refused.
+report hash, criterion results, vendor and model id on the card, then unlocks the next stage. A bare tasks.py done is refused.
 A changed goal, source file or prior report prevents the next stage from running. Correct the underlying
 issue and launch a new flow id against the new evidence; no automatic repair/retry loop burns sessions.
 PASS accepts that stage's stated deliverable; it is not a trading recommendation or proof of profitability.

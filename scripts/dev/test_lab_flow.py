@@ -44,6 +44,38 @@ def test_launch_orders_models_and_lenses_without_duplicate_work(repo):
     assert "C1" in tasks.brief(cards[0])
 
 
+def test_same_model_stage_is_refused_but_gemini_stage_is_accepted(repo, monkeypatch):
+    # The producer and reviewer may share a vendor, but must not share a model.
+    recipe = [
+        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Produce the scoped implementation."),
+        ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Independently challenge the report."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "crossvendor-fixture", recipe)
+    cards = F.launch(repo, spec() | {"id": "crossvendor", "recipe": "crossvendor-fixture"})
+    assert cards[1]["vendor"] == "gemini"
+    assert cards[1]["model"] == "gemini-2.5-pro"
+    assert "agy.exe --print" in " ".join(cards[1]["steps"])
+    assert "inline" in " ".join(cards[1]["steps"]).lower()
+    complete(repo, cards[0])
+    cards = tasks.load_all(repo)
+    assert not F.gate(cards[1], cards, repo)
+
+    recipe[1] = ("challenge", "gemini", "audit", "gpt-6.1-sol", "low", "Same model is forbidden.")
+    with pytest.raises(ValueError, match="producer model"):
+        F.launch(repo, spec() | {"id": "same-model", "recipe": "crossvendor-fixture"})
+
+
+def test_finish_receipt_records_stage_model_id(repo, monkeypatch):
+    recipe = [
+        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Producer."),
+        ("challenge", "gemini", "audit", "gemini-fixture-model", "low", "Reviewer."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "receipt-fixture", recipe)
+    cards = F.launch(repo, spec() | {"id": "receipt", "recipe": "receipt-fixture"})
+    done = complete(repo, cards[0])
+    assert done["flow_receipt"]["model"] == "gpt-6.1-sol"
+
+
 def test_done_alone_cannot_unlock_the_next_lens(repo):
     a, b = F.launch(repo, spec())
     a["state"] = "done"
@@ -191,11 +223,11 @@ def test_data_scope_hash_changes_when_data_file_changes(repo, monkeypatch, tmp_p
     data_root = tmp_path / "data"
     data_root.mkdir()
     data_file = data_root / "dev.csv"
-    data_file.write_text("first", encoding="utf-8")
+    data_file.write_text("t,c\n1719705600000,1\n", encoding="utf-8")
     monkeypatch.setattr(F, "DATA_ROOT", data_root, raising=False)
     scope = [str(data_file)]
     before = F.fingerprint(repo, ["source.md"], scope)
-    data_file.write_text("second", encoding="utf-8")
+    data_file.write_text("t,c\n1719705600000,2\n", encoding="utf-8")
     after = F.fingerprint(repo, ["source.md"], scope)
     assert before != after
     data_key = "data:dev.csv"
@@ -213,4 +245,16 @@ def test_holdout_data_path_is_refused(repo, monkeypatch, tmp_path):
     monkeypatch.setattr(F, "DATA_ROOT", data_root, raising=False)
     with pytest.raises(ValueError, match="holdout"):
         F.safe_file(repo, str(holdout))
+
+
+def test_renamed_dev_copy_with_post_cutoff_bar_is_refused(repo, monkeypatch, tmp_path):
+    import numpy as np
+    data_root = tmp_path / "data"
+    data_root.mkdir()
+    copied = data_root / "renamed.npz"
+    # 2024-07-01T00:00:00Z is the first disallowed open time.
+    np.savez(copied, t=np.array([1719792000000, 1720000000000], dtype=np.int64), c=np.array([1., 2.]))
+    monkeypatch.setattr(F, "DATA_ROOT", data_root, raising=False)
+    with pytest.raises(ValueError, match="post-cutoff"):
+        F.safe_file(repo, str(copied))
 
