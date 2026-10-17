@@ -38,6 +38,7 @@ EXTRA = [
     "MyTradingSys/research/layer_lab/bb_top_reversal_event_table/test_event_table.py",
     "MyTradingSys/research/layer_lab/malkan_rsi_event_table/test_event_table.py",
     "MyTradingSys/research/layer_lab/rsi_reclaim_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/cc_msb_event_table/test_event_table.py",
     "MyTradingSys/research/layer_lab/fabio_escalation_event_table/test_event_table.py",
     "MyTradingSys/research/layer_lab/rsi_divergence_event_table/test_event_table.py",
     "MyTradingSys/research/layer_lab/session_momentum_event_table/test_event_table.py",
