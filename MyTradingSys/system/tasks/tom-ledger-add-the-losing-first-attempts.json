@@ -1,34 +1,34 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-12T19:43:09Z",
-  "depends_on": [],
-  "done_when": "",
-  "from_inbox": "",
-  "goal": "",
-  "id": "tom-ledger-add-the-losing-first-attempts",
-  "lane": "SONNET",
-  "layers": [
-    "tom"
-  ],
-  "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
-  "pinned": false,
-  "prio": 2,
-  "refine_tries": 0,
-  "refined_by": "",
-  "refs": [
-    "TOM_LAYER_V2_SPEC.md section 3: n7ZSkjb7JXs:31-33, l8RZrBfzvp4:175-177"
-  ],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "blocked",
-  "steps": [],
-  "tests": "",
-  "title": "Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)",
-  "weight": "IMPORTANT"
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-12T19:43:09Z",
+ "depends_on": [],
+ "done_when": "",
+ "from_inbox": "",
+ "goal": "",
+ "id": "tom-ledger-add-the-losing-first-attempts",
+ "lane": "SONNET",
+ "layers": [
+  "tom"
+ ],
+ "live_path": false,
+ "note": "UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
+ "pinned": false,
+ "prio": 2,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refs": [
+  "TOM_LAYER_V2_SPEC.md section 3: n7ZSkjb7JXs:31-33, l8RZrBfzvp4:175-177"
+ ],
+ "result": "",
+ "scope_in": [],
+ "scope_out": [],
+ "size": "",
+ "sources": [],
+ "state": "refined",
+ "steps": [],
+ "tests": "",
+ "title": "Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)",
+ "weight": "IMPORTANT"
 }

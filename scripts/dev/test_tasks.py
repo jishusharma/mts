@@ -570,6 +570,28 @@ class ReviewGateTest(unittest.TestCase):
         c["note"] = "REVIEWED: reviewer 2026-10-18"
         self.assertEqual(T.review_gate(c), [])
 
+    def test_t0_only_stamp_is_not_a_review_for_crucial(self):
+        c = good(weight="CRUCIAL", note="REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1")
+        self.assertTrue(T.review_gate(c))
+        self.assertEqual(T.review_gate(dict(c, note="REVIEWED:2026-10-18 ACCEPT CLASS:C1")), [])
+
+    def test_planner_class_format_and_live_path_floor(self):
+        self.assertEqual(T.card_class(good(note="REVIEWED:2026-10-18 ACCEPT CLASS:C2")), "C2")
+        self.assertEqual(T.card_class(good(note="class=C1", live_path=True)), "C3")
+        self.assertTrue(T.review_gate(good(weight="IMPORTANT", note="REVIEWED:2026-10-18 T0-ONLY", live_path=True)))
+
+    def test_promotion_needs_real_review_for_important_and_c1(self):
+        t0 = good(weight="IMPORTANT", note="REVIEWED:2026-10-18 T0-ONLY CLASS:C1")
+        self.assertTrue(T.promotion_problems(t0, holds=()))
+        self.assertEqual(T.promotion_problems(dict(t0, note="REVIEWED:2026-10-18 ACCEPT CLASS:C1"), holds=()), [])
+        self.assertEqual(T.promotion_problems(good(weight="ROUTINE", note="REVIEWED:2026-10-18 T0-ONLY"), holds=()), [])
+
+    def test_active_hold_blocks_promotion_until_cleared(self):
+        c = good(weight="ROUTINE", note="HOLD A-20261018-5: reads unchecked base")
+        self.assertTrue(T.promotion_problems(c, holds={"A-20261018-5"}))
+        self.assertEqual(T.promotion_problems(c, holds=()), [])
+        self.assertEqual(T.promotion_problems(dict(c, note=c["note"] + " HOLD-CLEARED A-20261018-5"), holds={"A-20261018-5"}), [])
+
     def test_cli_take_and_done_refuse_unreviewed_crucial_card(self):
         d = tempfile.TemporaryDirectory()
         repo = Path(d.name)

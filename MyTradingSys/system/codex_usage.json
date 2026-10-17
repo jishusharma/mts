@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1792874519,
+  "week_resets": 1792874520,
   "week_used": 0,
-  "window_resets": 1792287719,
+  "window_resets": 1792287720,
   "window_used": 1.0
  },
- "at": "2026-10-17T20:50:38Z",
+ "at": "2026-10-17T21:58:07Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,39 @@
   "astra_runs": 0,
   "week_pts": 0.0,
   "window_pts": 1.0,
-  "window_runs": 1
+  "window_runs": 2
  },
  "runs": [
+  {
+   "at": "2026-10-17T21:53:35Z",
+   "card": "lab-formula-spec-text",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 265,
+   "tokens_out": 12274,
+   "tokens_total": 2223482,
+   "tokens_uncached": 66440,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": null,
+   "card": "lab-formula-spec-text",
+   "effort": null,
+   "kind": null,
+   "model": null,
+   "note": "run 2 drafted spec only, no generator/test; card now orders generator+test first; reset by NUC session 2026-10-18",
+   "outcome": "REOPENED",
+   "seconds": null,
+   "tokens_out": null,
+   "tokens_total": null,
+   "tokens_uncached": null,
+   "week_pts": null,
+   "window_pts": null
+  },
   {
    "at": "2026-10-17T20:48:18Z",
    "card": "lab-formula-spec-text",
@@ -142,36 +172,6 @@
    "tokens_uncached": 68970,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": null,
-   "card": "lab-weight-enforce",
-   "effort": null,
-   "kind": null,
-   "model": null,
-   "note": "card rewritten to the v3.1 weight vocabulary (routine/important/crucial/critical + class C0-C3) in weight-enforce-fix; reset by NUC session 2026-10-18",
-   "outcome": "REOPENED",
-   "seconds": null,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
-  },
-  {
-   "at": "2026-10-17T20:25:05Z",
-   "card": "lab-weight-enforce",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "INCOMPLETE",
-   "seconds": 27,
-   "tokens_out": 1620,
-   "tokens_total": 191587,
-   "tokens_uncached": 47247,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }

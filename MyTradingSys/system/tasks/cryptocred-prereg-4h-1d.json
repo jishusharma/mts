@@ -54,7 +54,7 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md"
   ],
-  "state": "ready",
+  "state": "refined",
   "steps": [
     "Write MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md with all 12 items and gates 0a-0f answered; label every number SOURCED or OURS.",
     "State which result ends the source (kill rule) and the redesign budget.",
