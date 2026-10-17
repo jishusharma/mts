@@ -16,12 +16,14 @@
   "goal": "Show mechanically, for every detector behind a published verdict and every testnet layer, that the signal at time t is the same whether or not the data after t exists; and find every session or bar-stamp convention that disagrees.",
   "id": "dsa-audit-02-lookahead-time",
   "lane": "DSA-NB",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "note": "",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:27Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
     "MyTradingSys/backtest/layers/alerts/live_runner_cli.py"
@@ -38,6 +40,7 @@
     "F:/AIBridge and scripts/aibridge",
     "changing any verdict, ledger or pre-registered bar"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
   "state": "ready",

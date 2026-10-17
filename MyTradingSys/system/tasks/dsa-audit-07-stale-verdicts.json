@@ -16,12 +16,14 @@
   "goal": "For every published verdict find the code it came from and every later change to that code or its imports, rerun ten results and diff every number, check determinism and CI coverage, and list where docs disagree with result files.",
   "id": "dsa-audit-07-stale-verdicts",
   "lane": "DSA-NB",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "note": "",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:28Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
     "MyTradingSys/system/LAYERS.md",
@@ -39,6 +41,7 @@
     "F:/AIBridge and scripts/aibridge",
     "changing any verdict, ledger or pre-registered bar"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
   "state": "ready",
