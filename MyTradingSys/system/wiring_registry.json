@@ -99,6 +99,11 @@
       "disp": "TOOL",
       "why": "Adapter imported by run_cc_setups.py:48 (the hand-run CryptoCred runner); its 1440-bar time exit is C25 NO-SOURCE in LAYER_PROVENANCE_AUDIT.md:110, provenance cleanup is separate."
     },
+    "MyTradingSys/backtest/layers/cryptocred/cc_htf_count.py": {
+      "disp": "REPRO",
+      "ref": "cryptocred-htf-count-power",
+      "why": "Offline count-only driver: 4h/1d CryptoCred signal, fill and power counts on DEV; regenerates research/cryptocred_htf_2026-10/count_power.json; run by hand, not by any loop."
+    },
     "MyTradingSys/backtest/layers/cryptocred/cc_stop_sweep.py": {
       "disp": "REPRO",
       "ref": "B143",
