@@ -243,7 +243,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `krown-layer-v0-detectors` ready p2 SONNET: Krown layer v0 detectors: swings, zones, volume, candles, averages, range/coil as pure functions + params file
   - `krown-recall-check` refined p2 SONNET: Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_RE
-  - `trendline-count-only` ready p2 DSA: Trend-line count-only run on DEV and PRE_REG
   - `trendline-g3-marks-pack` ready p2 SONNET: Trend-line G3 blind marks pack for the obvious-line selector
   - `krown-other-sources-event-study-videos` blocked p3 SONNET: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
   - `krown-ta101-extract-remaining-10` ready p3 SONNET: Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass bo
