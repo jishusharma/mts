@@ -81,7 +81,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `fabio-ledger-replace-date-2026-with-unkn` raw p3 SONNET: fabio-ledger: replace date 2026 with UNKNOWN for Jpd96/DyS79 session (contract NQ-202512)
   - `fabio-session-date-price-match` raw p3 CODEX: Fabio: date the DyS79Eb92Ug/Jpd96fLqr5M NQ-202512 session by price-path match against NQ 1m history (F6 24914-
   - `find-more-fabio-trade-recap-videos-yt-dl` ready p3 SONNET: Find more Fabio trade-recap videos (yt-dlp), ledger has only 8 entries vs goal 20
-  - `rv05-h1-date-evidence` raw p3 SONNET: RV05 H1: incorporate date revalidation evidence into existing Fabio ledger date repair
+  - `rv05-h1-date-evidence` refined p3 SONNET: RV05 H1: incorporate date revalidation evidence into existing Fabio ledger date repair
   - `rv05-h2-position-line-evidence` raw p3 SONNET: RV05 H2: read position lines and stop prices before applying existing Fabio entry repair
   - `rv05-h3-outcome-evidence` raw p3 SONNET: RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair
   - `fabio-ledger-get-9i5vtvwsmbk-f398-not-av` raw p4 SONNET: Fabio ledger: get 9I5vTvwsMBk (f398 not available; try another format/client) and read it for trades

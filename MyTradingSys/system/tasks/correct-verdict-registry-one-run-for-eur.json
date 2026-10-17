@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T14:27:13Z",
   "commands": [
     "python -m pytest scripts/dev/test_verdicts.py -q",
     "python scripts/dev/verdicts.py backfill",
@@ -17,6 +18,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "VERDICTS_OVERRIDES.csv + apply-overrides; commit a440450b",
+      "ref": "a440450b",
+      "utc": "2026-10-17T14:27:13Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "wavetrend-dev-atlas: single DEV atlas per PRE_REG, 9 frozen cells, 0 pass gross",
@@ -32,7 +39,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T14:09:50Z",
   "refs": [],
-  "result": "",
+  "result": "VERDICTS_OVERRIDES.csv + apply-overrides; commit a440450b",
   "scope_in": [
     "scripts/dev/verdicts.py (load overrides in cmd_backfill after parse_study)",
     "scripts/dev/test_verdicts.py (new)",
@@ -51,7 +58,7 @@
     "scripts/dev/verdicts.py:147 (one_run_of reads PRE_REG only)",
     "MyTradingSys/research/VERDICTS.csv:3"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write test_verdicts.py first: an override row (study_dir, arm *, column one_run, value yes, source <file:line>) must change the backfilled row; a row with empty source or unknown column must raise. Run it on the old code: it must fail.",
     "Implement load_overrides + apply in cmd_backfill (after rows are parsed, before save); columns limited to COLS; source required.",
