@@ -9,12 +9,15 @@ Read-only on markets. Never places orders. No live process imports it.
 """
 import datetime
 import json
+import os
 import sys
 from pathlib import Path
 
 sys.dont_write_bytecode = True
 
-DEFAULT_QUEUE = Path(r"F:\CryptoScrapper\mts_queue")
+# Operator 2026-10-14: F:\CryptoScrapper is authoritative. MTS_CBP_QUEUE overrides it on a host
+# whose CBP checkout lives elsewhere (the NUC keeps it under IdeaProjects).
+DEFAULT_QUEUE = Path(os.environ.get("MTS_CBP_QUEUE") or r"F:\CryptoScrapper\mts_queue")
 CONSUMER_ID = "MTS-consumer-v1"
 
 

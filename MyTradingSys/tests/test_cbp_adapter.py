@@ -50,3 +50,21 @@ def test_ingest_makes_untested_non_order_candidates_idempotently(tmp_path):
 def test_adapter_has_no_order_path():
     src = Path(cbp_adapter.__file__).read_text(encoding="utf-8")
     assert "auto_trader" not in src and "place_order" not in src
+
+
+def test_default_queue_is_f_tree_and_env_overrides(tmp_path):
+    import importlib
+    import os
+    import consumer
+    saved = os.environ.pop("MTS_CBP_QUEUE", None)
+    try:
+        importlib.reload(consumer)
+        assert str(consumer.DEFAULT_QUEUE) == r"F:\CryptoScrapper\mts_queue" or consumer.DEFAULT_QUEUE.as_posix() == "F:/CryptoScrapper/mts_queue"
+        os.environ["MTS_CBP_QUEUE"] = str(tmp_path)
+        importlib.reload(consumer)
+        assert consumer.DEFAULT_QUEUE == tmp_path
+    finally:
+        os.environ.pop("MTS_CBP_QUEUE", None)
+        if saved:
+            os.environ["MTS_CBP_QUEUE"] = saved
+        importlib.reload(consumer)
