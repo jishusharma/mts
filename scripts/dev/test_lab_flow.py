@@ -44,6 +44,38 @@ def test_launch_orders_models_and_lenses_without_duplicate_work(repo):
     assert "C1" in tasks.brief(cards[0])
 
 
+def test_same_model_stage_is_refused_but_gemini_stage_is_accepted(repo, monkeypatch):
+    # The producer and reviewer may share a vendor, but must not share a model.
+    recipe = [
+        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Produce the scoped implementation."),
+        ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Independently challenge the report."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "crossvendor-fixture", recipe)
+    cards = F.launch(repo, spec() | {"id": "crossvendor", "recipe": "crossvendor-fixture"})
+    assert cards[1]["vendor"] == "gemini"
+    assert cards[1]["model"] == "gemini-2.5-pro"
+    assert "agy.exe --print" in " ".join(cards[1]["steps"])
+    assert "inline" in " ".join(cards[1]["steps"]).lower()
+    complete(repo, cards[0])
+    cards = tasks.load_all(repo)
+    assert not F.gate(cards[1], cards, repo)
+
+    recipe[1] = ("challenge", "gemini", "audit", "gpt-6.1-sol", "low", "Same model is forbidden.")
+    with pytest.raises(ValueError, match="producer model"):
+        F.launch(repo, spec() | {"id": "same-model", "recipe": "crossvendor-fixture"})
+
+
+def test_finish_receipt_records_stage_model_id(repo, monkeypatch):
+    recipe = [
+        ("producer", "codex", "audit", "gpt-6.1-sol", "medium", "Producer."),
+        ("challenge", "gemini", "audit", "gemini-fixture-model", "low", "Reviewer."),
+    ]
+    monkeypatch.setitem(F.RECIPES, "receipt-fixture", recipe)
+    cards = F.launch(repo, spec() | {"id": "receipt", "recipe": "receipt-fixture"})
+    done = complete(repo, cards[0])
+    assert done["flow_receipt"]["model"] == "gpt-6.1-sol"
+
+
 def test_done_alone_cannot_unlock_the_next_lens(repo):
     a, b = F.launch(repo, spec())
     a["state"] = "done"

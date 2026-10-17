@@ -11,12 +11,12 @@ FLOWS = "MyTradingSys/research/layer_lab/flows"
 DATA_ROOT = Path("F:/MTS/data")
 HOLDOUT_PARTS = {"holdout", "holdouts", "validation_holdout", "test_holdout"}
 RECIPES = {
-    "critical-audit": [("map", "audit", "gpt-6.1-sol", "medium", "Map claims to source evidence; expose missing inputs and assumptions."),
-                       ("challenge", "audit", "gpt-6-astra", "low", "Independently try to falsify the prior findings; reproduce one material claim and resolve disagreements against sources.")],
-    "build-review": [("build", "build", "gpt-6.1-sol", "medium", "Implement the scoped contract with spec-derived fail-first tests."),
-                     ("challenge", "audit", "gpt-6-astra", "low", "Review the resulting diff and reproduce failure modes; independently check goal coverage.")],
-    "run-review": [("run", "run", "gpt-6-luna", "low", "Execute only the supplied development-data commands and record inputs, trial identity and numbers."),
-                   ("verify", "audit", "gpt-6.1-sol", "medium", "Independently reproduce a headline number and check leakage, fees, trial accounting and missing data.")],
+    "critical-audit": [("map", "codex", "audit", "gpt-6.1-sol", "medium", "Map claims to source evidence; expose missing inputs and assumptions."),
+                       ("challenge", "codex", "audit", "gpt-6-astra", "low", "Independently try to falsify the prior findings; reproduce one material claim and resolve disagreements against sources.")],
+    "build-review": [("build", "codex", "build", "gpt-6.1-sol", "medium", "Implement the scoped contract with spec-derived fail-first tests."),
+                     ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Review the resulting diff and reproduce failure modes; independently check goal coverage.")],
+    "run-review": [("run", "codex", "run", "gpt-6-luna", "low", "Execute only the supplied development-data commands and record inputs, trial identity and numbers."),
+                   ("verify", "codex", "audit", "gpt-6.1-sol", "medium", "Independently reproduce a headline number and check leakage, fees, trial accounting and missing data.")],
 }
 
 
@@ -72,7 +72,9 @@ def accepted(card, repo):
     try:
         flow, receipt = card["flow"], card["flow_receipt"]
         report = safe_file(repo, receipt["report"])
+        stage = RECIPES[flow["recipe"]][flow["stage"] - 1]
         return (receipt["verdict"] == "PASS" and receipt["contract"] == contract(flow) == flow["contract"]
+                and receipt.get("vendor") == stage[1] and receipt.get("model") == stage[3]
                 and receipt["criteria"] == ["PASS"] * len(flow["criteria"])
                 and receipt["sources"] == fingerprint(repo, flow["scope_in"], flow.get("data_scope"))
                 and receipt["report_sha256"] == hashlib.sha256(report.read_bytes()).hexdigest()
@@ -108,9 +110,13 @@ def gate(card, cards, repo):
         if flow.get(key) and card.get("kind") == ("run" if key == "commands" else "build") and card.get(key) != flow[key]:
             errors.append(f"flow contract {key} changed; launch a new flow")
     try:
-        _, kind, model, effort, lens = RECIPES[flow["recipe"]][flow["stage"] - 1]
-        if flow["stage"] < 1 or card.get("kind") != kind or tasks.codex_setting(card) != (model, effort) or flow.get("lens") != lens:
-            errors.append("flow kind/model/lens drifted from the recipe")
+        _, vendor, kind, model, effort, lens = RECIPES[flow["recipe"]][flow["stage"] - 1]
+        producer_model = RECIPES[flow["recipe"]][0][3]
+        stage_lens = f"{vendor}/{model}: {lens}"
+        if flow["stage"] < 1 or card.get("vendor") != vendor or card.get("kind") != kind or tasks.codex_setting(card) != (model, effort) or flow.get("lens") != stage_lens:
+            errors.append("flow vendor/kind/model/lens drifted from the recipe")
+        if flow["stage"] > 1 and model == producer_model:
+            errors.append("flow reviewer model must differ from producer model")
     except (KeyError, IndexError, TypeError):
         errors.append("flow recipe/stage is invalid")
     expected = []
@@ -164,19 +170,22 @@ def launch(repo, spec, preview=False):
             flow[key] = spec[key]
     flow["contract"] = contract(flow)
     out = []
-    for index, (name, kind, model, effort, lens) in enumerate(stages):
+    for index, (name, vendor, kind, model, effort, lens) in enumerate(stages):
         key = f"{cid}-{index + 1}-{name}"
+        stage_lens = f"{vendor}/{model}: {lens}"
         c = tasks.blank(key, f"{cid}: {name}", lane="CODEX", prio=spec.get("prio", 3), layers=spec.get("layers", []))
-        c.update(kind=kind, model=model, effort=effort, size="S", goal=flow["goal"], scope_in=flow["scope_in"],
-                 flow={**flow, "stage": index + 1, "lens": lens}, gpt_only=True,
+        c.update(vendor=vendor, kind=kind, model=model, effort=effort, size="S", goal=flow["goal"], scope_in=flow["scope_in"],
+                 flow={**flow, "stage": index + 1, "vendor": vendor, "model": model, "lens": stage_lens}, gpt_only=True,
                  crucial=model == "gpt-6-astra", state="ready" if index == 0 else "blocked",
                  depends_on=[out[-1]["id"]] if out else [],
                  scope_out=["live path, secrets, holdout data, relay and unrelated files"],
-                 steps=[lens, "Read original sources before the prior report; report C1..Cn as PASS, REWORK or BLOCKED with file/command evidence."],
+                 steps=[stage_lens, "Read original sources before the prior report; report C1..Cn as PASS, REWORK or BLOCKED with file/command evidence."],
                  commands=spec.get("commands", []) if kind == "run" else [],
                  tests=spec.get("tests", "") if kind == "build" else "",
                  mutation_check=spec.get("mutation_check", "") if kind == "build" else "",
                  done_when="Each criterion has evidence; finish through lab_flow.py finish; failed criteria stop the flow.")
+        if vendor == "gemini":
+            c["steps"].append("Run agy.exe --print for this lens. Inline the complete report text in the prompt because headless agy cannot read report files.")
         if kind == "run":
             c["steps"].append("Append one row per execution to layer_lab/TRIALS.md with command, DEV range and result; missing inputs are NOT_IN_DATA.")
         if kind == "build":
@@ -231,6 +240,7 @@ def finish(repo, cid, report, verdict, result):
         raise ValueError("PASS contradicts criterion results")
     card.update(state="done" if verdict == "PASS" else "blocked", result=result, closed=tasks.now(),
                 flow_receipt={"verdict": verdict, "contract": flow["contract"], "report": rel,
+                              "vendor": card["vendor"], "model": card["model"],
                               "report_sha256": hashlib.sha256(p.read_bytes()).hexdigest(),
                               "sources": fingerprint(repo, flow["scope_in"], flow.get("data_scope")), "criteria": statuses})
     tasks.save(repo, card)
