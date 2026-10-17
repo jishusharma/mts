@@ -12,6 +12,15 @@
   "goal": "Implement the contract as a causal, versioned trend-line module that cannot look ahead or repaint, reusing existing pivot and closed-bar resample code.",
   "id": "trendline-causal-module",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "trendline-causal-module: causal versioned trend-line detector with look-ahead tests",
+      "ref": "955bc0822888",
+      "utc": "2026-10-17T07:36:36Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
@@ -20,6 +29,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:42:22Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -29,6 +39,7 @@
   "scope_out": [
     "Backtest, fees, P&L, live path, any real-data study, eye-read selector"
   ],
+  "scope_sha": "955bc0822888",
   "size": "M",
   "sources": [
     "MyTradingSys/research/trendlines_2026-10-17/CLAUDE_VERIFY.md",

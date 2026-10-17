@@ -13,6 +13,22 @@
   "goal": "Apply the 12-point checklist to the CryptoCred layer so its 'no edge' is read as measuring the encoding or the trader. He is the one trader layer whose home market is BTC: needs no transfer, only his timeframe (daily/4h), invalidation stops, his targets and trade-through fills.",
   "id": "cryptocred-home-fit-audit",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Control Room pickup 2026-10-15: copy and apply 9 operator decisions (q-gap-a/b/c, q-pub-tr",
+      "ref": "d7749d092236",
+      "utc": "2026-10-15T09:54:44Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d7749d092236 Control Room pickup 2026-10-15: copy and apply 9 operator decisions (q-gap-a/",
+      "ref": "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+      "utc": "2026-10-15T09:54:44Z"
+    }
+  ],
   "layers": [
     "cryptocred"
   ],
@@ -21,6 +37,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "cloud-research 2026-10-11 (C-Cloud BACKTEST_FAILURES_RESEARCH.md; operator: 'get this into action')",
+  "refreshed": "2026-10-17T07:42:45Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -33,6 +50,7 @@
     "tuning",
     "new layers"
   ],
+  "scope_sha": "d7749d092236",
   "size": "S",
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md section 4, 6, 7"

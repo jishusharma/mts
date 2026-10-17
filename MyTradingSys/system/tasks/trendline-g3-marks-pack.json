@@ -12,6 +12,7 @@
   "goal": "Build the G3 pack so two readers mark 'obvious legitimate trend line' on BTC charts blind to what came next, giving the selector a reproducibility number.",
   "id": "trendline-g3-marks-pack",
   "lane": "SONNET",
+  "latest": [],
   "layers": [
     "krown"
   ],
@@ -20,6 +21,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:42:49Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -30,6 +32,7 @@
     "Marking itself (operator + second reader)",
     "Backtest, live path"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "MyTradingSys/research/trendlines_2026-10-17/CLAUDE_VERIFY.md",
