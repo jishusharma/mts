@@ -126,6 +126,12 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   context composite INCONCLUSIVE, pit audit FIX-FIRST. Weekly 48 -> 55 %. Learned: heavy workers during a deploy gate cost two
   gates; check `gh run list` and `auto_deploy_last.json` on every wake; a worker that merges late hits VERDICTS.csv and
   wiring_registry.json conflicts (union both).
+11. **Independent review agent (operator 2026-10-17).** Any diff touching the live path, gates (`run_all_tests.py`, `sync.py` gate),
+   `promote.py`, `prereg_gate.py` or decision numbers (thresholds, split dates, MDE/power) gets a second Sonnet Agent (medium) before
+   `sync.py ship`. It sees only the diff (`git diff <base>`), never the worker's reasoning or conclusion. Reply at most 5 lines:
+   verdict APPROVE or BLOCK, then the defects. Cap 30k tokens; if the diff is larger, review the hunks in the paths above only.
+   BLOCK means the worker fixes and re-submits once; a second BLOCK goes to the coordinator, who decides and logs it. The reviewer
+   edits nothing and the worker may not review its own diff. Both coordinator prompts (below) carry this line.
 
 ## Start (operator: open a new session, model Opus, paste the prompt below)
 The coordinator, on its first turn: `get_usage` (stop if the Pacing state is THROTTLE), `python scripts/sched/relay.py stop
@@ -157,6 +163,7 @@ You are the MTS super-session coordinator (MyTradingSys/system/SUPER_SESSION.md)
 Goal today: <one line, e.g. "rebuild layers setups-first: catalogue -> PRE_REG -> screens">.
 First turn: get_usage (THROTTLE -> tell me and stop), relay.py stop "super-session", read STATUS.md and NEXT_SESSION.md, pick the tasks that serve the goal.
 Spawn workers per WORKERS.md (session by default, Agent only for size S; Sonnet; Haiku for mechanical status), at most 4 running, each with a full brief: goal, files, DONE when, defaults for open questions, hard limits from CLAUDE.md. Workers never ask me; you decide toward the goal and log it.
+Rule 11: any diff touching the live path, gates, promote.py, prereg_gate.py or decision numbers gets an independent Sonnet review Agent (diff only, 5-line reply, 30k token cap) before ship.
 Verify every ship with git cherry, mark finished workers completed, compact only per WORKERS.md rule 5, hand the tail to a second coordinator per rule 5 above.
 End: drain, hand-over note with get_usage, relay.py resume, one line to me.
 ```
@@ -164,7 +171,7 @@ End: drain, hand-over note with get_usage, relay.py resume, one line to me.
 ## Prompt pattern: any worker or Fable session that must not stop
 Lead with: "Run with zero operator input: never ask; on any open question take the most conservative default, write it as
 `DECISION (OURS): ...` in the deliverable, and continue." Then: the task file on origin/fast-track, the DONE-when, the hard limits
-(testnet only, no secrets, no live tree or processes, no VALIDATION/HOLDOUT reads unless the card says so), a budget stop
+(testnet only, no secrets, no live tree or processes, no VALIDATION/HOLDOUT reads unless the card says so; rule 11 review Agent before ship when the diff touches live path, gates, promote.py, prereg_gate.py or decision numbers), a budget stop
 (+N weekly points), and a reply limit (at most 5 lines). Model and effort are set in the App before pasting; the prompt cannot set them.
 Used for the Fable pilot 2026-10-15 (FABLE_PILOT_PROMPT.md).
 - SUPER-NB-1017 (2026-10-17, Sonnet coordinator, 6 Agent workers because start_session is refused for a session started by another session): 14 cards shipped, weekly 66 -> 67%; Agents fit the 100k rule; compound `cd && git`/merge commands were denied, use git -C.
