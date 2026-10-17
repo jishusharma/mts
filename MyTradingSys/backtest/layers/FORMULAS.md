@@ -544,6 +544,18 @@ Sources: ledger `research/krown_ta101_2026-10-13/KROWN_RULES.csv` (ids KR-xxx), 
 
 **21.9 Tops (KR-P01, KR-V02, KR-Q02).** Signals per bar: reversal candle (shooting star, strict bearish engulfing or three black crows), volume ratio >= 2 vs the 30-bar mean (SOURCED TOP-05), BBWP > 85, momentum (bearish RSI divergence between the two latest swing highs, or MACD(12,26,9) bearish cross; periods OURS). Fires at t when at least 3 of the 4 have a signal inside bars t-w+1..t (w = 3, OURS "a few bars") and the count was < 3 at t-1. Candle at 5, volume at 6, BBWP at 7, no momentum: count at t=7 is 3: one fire at 7; at t=8 the window 6..8 holds 2: none.
 
+## 22. Bollinger Bands (`scripts/dev/chart_verify.py`; same maths as `layers/alerts/live_bb_top_reversal.bollinger`) - added 2026-10-17
+
+**Chosen definition (TradingView `ta.bb`):** mid[t] = SMA of the last n closes; sd[t] = POPULATION standard deviation of those n closes (divide by n, not n-1); upper = mid + mult*sd; lower = mid - mult*sd. Defaults n=20, mult=2 (SOURCED: standard Bollinger setting, TradingView default). `None` until n closes exist. Checked 2026-10-17 against `live_bb_top_reversal.py` lines 33-43: it divides by n (population), so the two agree. Sample sd (n-1) is the known variant: it widens the band by sqrt(n/(n-1)) (2.6% at n=20) and is NOT used.
+
+**Worked example (n=4, mult=2, 6 bars):** closes = [8, 10, 10, 12, 14, 12]. Last window (idx 2..5) = [10, 12, 14, 12]: mean 12; deviations -2, 0, 2, 0; squares sum 8; population variance 8/4 = 2, sd = 1.414214; upper = 12 + 2.828427 = 14.828427, lower = 9.171573. (Sample sd would give sqrt(8/3) = 1.632993, upper 15.265986: the variant, not used.) First window (idx 0..3) = [8,10,10,12]: mean 10, squares 4+0+0+4 = 8, sd 1.414214, upper 12.828427, lower 7.171573.
+
+## 23. Stochastic RSI (`scripts/dev/chart_verify.py`) - added 2026-10-17
+
+**Chosen definition (TradingView "Stoch RSI" defaults 3, 3, 14, 14):** r = Wilder RSI(rsi_len) from section 1; raw[t] = 100*(r[t] - min(r over the last stoch_len values)) / (max - min) over the same window (all values must exist; if max == min raw = 0 - OURS, avoids 0/0); K = SMA(raw, k_len); D = SMA(K, d_len). Defaults rsi_len 14, stoch_len 14, k_len 3, d_len 3 (SOURCED: TradingView defaults; CoinGlass shows the same pair, verified chart by chart with `chart_verify.py --seen`). First K at index rsi_len + stoch_len - 1 + k_len - 1.
+
+**Worked example (rsi_len 2, stoch_len 3, 6 bars):** closes = [10, 11, 10, 12, 11, 13]. Section 1 / 21.7 gives RSI[2] = 50, RSI[3] = 100 - 100/6 = 83.3333 (avg gain 1.25, avg loss 0.25). RSI[4]: change -1, avg gain 1.25/2 = 0.625, avg loss (0.25+1)/2 = 0.625, RS 1: 50. RSI[5]: change +2, avg gain (0.625+2)/2 = 1.3125, avg loss 0.625/2 = 0.3125, RS 4.2: 100 - 100/5.2 = 80.76923. raw[4]: window [50, 83.3333, 50]: (50-50)/33.3333 = 0. raw[5]: window [83.3333, 50, 80.76923]: (80.76923-50)/33.3333 = 12/13: 92.30769. With k_len 2: K[5] = (0 + 92.30769)/2 = 46.15385. With k_len 1, d_len 1, K = raw.
+
 ## Verification note (this audit, 2026-09-28)
 
 Every case number in `layers/timeframe/TEST_PLAN.md`, `layers/rsi/TEST_PLAN.md`,
