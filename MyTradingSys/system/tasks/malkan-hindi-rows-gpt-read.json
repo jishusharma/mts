@@ -12,6 +12,22 @@
   "id": "malkan-hindi-rows-gpt-read",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Malkan 5-star/7-star: COMPARE.md with extract lines vs web/spec/code, Source lines on SETU",
+      "ref": "ecc5bebc038b",
+      "utc": "2026-10-15T21:19:33Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "ecc5bebc038b Malkan 5-star/7-star: COMPARE.md with extract lines vs web/spec/code, Source ",
+      "ref": "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md",
+      "utc": "2026-10-15T21:19:33Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "model": "gpt-6-astra",
@@ -19,6 +35,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-17T07:24:59Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -33,6 +50,7 @@
     "holdout reads",
     "BTC runs of the current encoding (ROADMAP section 2)"
   ],
+  "scope_sha": "ecc5bebc038b",
   "size": "S",
   "sources": [],
   "state": "ready",

@@ -16,7 +16,7 @@
     "krown"
   ],
   "live_path": false,
-  "note": "UNPARKED 2026-10-17 by operator decisions q-krown-saturation (waiver: descriptive detectors, recall and DEV event study only, no engine setup file) and q-krown-stop (testnet may run without a resting stop; close-based exit is a testnet arm) and q-krown-volume-venue (Binance, Coinbase, CME). Refiner re-scopes it. Waits on its depends_on cards.",
+  "note": "Unparked 2026-10-17 by q-krown-saturation, q-krown-stop, q-krown-volume-venue. Was left blocked: moved to refined by backlog-refine-1017; waits on krown-recall-check (depends_on).",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -38,7 +38,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "freeze the study list and parameter grids in PRE_REG_KROWN.md (a dated addendum) before the first run",
     "compute expected N and MDE per H-id; mark underpowered ones and pool majors only if the data card landed",

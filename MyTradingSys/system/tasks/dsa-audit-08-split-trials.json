@@ -16,12 +16,14 @@
   "goal": "Map every split scheme and the windows each study has actually read, find every read of VALIDATION or HOLDOUT outside the rules, and count the variants really tried per study against the trial ledgers.",
   "id": "dsa-audit-08-split-trials",
   "lane": "DSA-NB",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "note": "",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:28Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
     "MyTradingSys/research/TRIAL_LEDGER.csv",
@@ -39,6 +41,7 @@
     "F:/AIBridge and scripts/aibridge",
     "changing any verdict, ledger or pre-registered bar"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
   "state": "ready",
