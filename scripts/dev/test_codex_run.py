@@ -24,6 +24,14 @@ def card(cid="lab-a", kind="audit", **kw):
     return c
 
 
+class BuildPromptLintTest(unittest.TestCase):
+    def test_build_steps_tell_the_lab_to_run_the_lookahead_lint(self):
+        text = " ".join(R.TEMPLATES["build"]["steps"])
+        self.assertIn("lookahead_lint.py --new", text)
+        self.assertIn("times[1:]", text)
+        self.assertIn("lookahead_allowlist.tsv", text)
+
+
 class LaneRulesTest(unittest.TestCase):
     def test_each_kind_template_meets_the_definition_of_ready(self):
         for kind in R.TEMPLATES:

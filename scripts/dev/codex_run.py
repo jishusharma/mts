@@ -92,6 +92,7 @@ TEMPLATES = {
     "build": {
         "steps": ["Write the test named in Tests first and see it fail on the current code.",
                   "Implement the goal inside scope_in only; new behaviour sits behind a flag that is off by default.",
+                  "Before finishing run `python scripts/dev/lookahead_lint.py --new` and fix every FAIL hit on your new files: write a forward bar as zip(times, times[1:]) or enumerate over a pre-shifted list instead of times[i + 1]; a pair index that is truly causal (signal stamped at the later bar) gets one reviewed row in scripts/dev/lookahead_allowlist.tsv (file, pattern, source line, reason), and the card names that file in scope_in.",
                   "Run the test file you changed (PYTHONPATH = the work tree root) until it passes. Do not run scripts/dev/run_all_tests.py: tests that create git repositories are refused in the sandbox; the runner runs the quick gate when it ships."],
         "scope_out": ["the live path", "holdout reads", "parameters without a trader quote (NO-SOURCE)"],
         "done_when": "The named test passes and the report lists the changed files and the red-then-green test output (the runner's ship runs the quick gate)."},
