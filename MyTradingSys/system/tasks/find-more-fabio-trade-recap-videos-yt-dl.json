@@ -12,6 +12,15 @@
   "goal": "Extend FABIO_TRADE_LEDGER from 8 entries toward 20 using the six candidate Fabio videos listed in FABIO_TRADE_LEDGER.md, without re-reading the 5 done videos.",
   "id": "find-more-fabio-trade-recap-videos-yt-dl",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3d8645f3d391 fabio ledger H6: gLHd settings are a secondary presenter, cite Fabio's own 30",
+      "ref": "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+      "utc": "2026-10-16T22:21:39Z"
+    }
+  ],
   "layers": [
     "fabio"
   ],
@@ -21,6 +30,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T08:59:00Z",
   "refs": [
     "fabio-trade-ledger"
   ],
@@ -34,11 +44,12 @@
     "Fabio layer v2 spec (card fabio-layer-v2-spec)",
     "any parameter or backtest"
   ],
+  "scope_sha": "",
   "size": "S",
   "sources": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md (candidate ids line)"
   ],
-  "state": "blocked",
+  "state": "ready",
   "steps": [
     "Download each candidate as f398 720p video-only mp4 + en vtt into F:/MTS/data/fabio_videos (default android client gives 360p, unreadable).",
     "Make 30 s contact sheets with sheets.py, read them, add one CSV row per entry/management action with the frame file named.",

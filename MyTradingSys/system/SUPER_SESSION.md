@@ -132,6 +132,14 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
    verdict APPROVE or BLOCK, then the defects. Cap 30k tokens; if the diff is larger, review the hunks in the paths above only.
    BLOCK means the worker fixes and re-submits once; a second BLOCK goes to the coordinator, who decides and logs it. The reviewer
    edits nothing and the worker may not review its own diff. Both coordinator prompts (below) carry this line.
+12. **Spend the window before it resets (operator 2026-10-17).** Every login's usage window is spent, not saved: when a login (NUC or NB) has
+   budget and its reset is near, pace workers so the meter reaches about 95% right as the window resets (NUC may go to 95%; NB weekly cap stays 75%).
+   Rule of thumb: remaining minutes / 40 = workers to launch in the window, staggered, one card each; re-check `get_usage` at each launch.
+   An idle login with ready cards is a defect. Wake an idle NUC with `python scripts/dev/nuc_wake.py --card <id> --name <n>`. Every coordinator
+   prompt carries this line.
+13. **Blockers go bottom-up (operator 2026-10-17).** A defect blocks only cards that read its output. Before holding a card, name the defect and
+   the file the card reads from it; if it reads nothing from it, it is not blocked. Holds with no named defect are released (`tasks.py apply-op <id> release`).
+   The GPT/Codex lane never idles while a gptb-* or gpt-* card is ready.
 
 ## Start (operator: open a new session, model Opus, paste the prompt below)
 The coordinator, on its first turn: `get_usage` (stop if the Pacing state is THROTTLE), `python scripts/sched/relay.py stop
