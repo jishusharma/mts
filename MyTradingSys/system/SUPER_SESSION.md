@@ -128,7 +128,7 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   wiring_registry.json conflicts (union both).
 11. **Independent review agent (operator 2026-10-17).** Any diff touching the live path, gates (`run_all_tests.py`, `sync.py` gate),
    `promote.py`, `prereg_gate.py` or decision numbers (thresholds, split dates, MDE/power) gets a second Sonnet Agent (medium) before
-   `sync.py ship`. It sees only the diff (`git diff <base>`), never the worker's reasoning or conclusion. Reply at most 5 lines:
+   `sync.py ship`. It sees only the diff (the diff against origin/fast-track), never the worker's reasoning or conclusion. Reply at most 5 lines:
    verdict APPROVE or BLOCK, then the defects. Cap 30k tokens; if the diff is larger, review the hunks in the paths above only.
    BLOCK means the worker fixes and re-submits once; a second BLOCK goes to the coordinator, who decides and logs it. The reviewer
    edits nothing and the worker may not review its own diff. Both coordinator prompts (below) carry this line.
