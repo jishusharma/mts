@@ -61,6 +61,7 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
    machine share `MTS_ACCOUNT`, so they look like one sender to each other (they share the app, use `send_message` there).
 
 ## Boot facts (read, do not re-look-up; every super session corrects this list)
+- NUC facts (super-nuc-1017): `gh` is NOT installed on JIS-NUC; read CI with the public API `api.github.com/repos/jishusharma/mts/actions/runs?branch=fast-track` (3 consecutive completed `success` = green). test_auto_deploy.py and test_sync.py live in `scripts/dev/`, not `scripts/sched/`. A Codex lab brief must name its data path (F:/MTS/data/bigtrade/cache/perp/klines_1h.npz), else the build ends BLOCKED. `codex_run.py status` run from a shared tree can show stale card states (the lab reads F:/MTS/mts-codex-lab). Compound `cd x && git ...` and heredocs in Bash get denied: use git -C and a .py file.
 - Live tree = the main checkout `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed` (`.mts_live` there is a marker FILE, not a
   folder). Read-only for sessions. Deploy result: `MyTradingSys/runtime/sched/auto_deploy_last.json`; HALT file:
   `MyTradingSys/execution/HALT` (+ `halt_history`); dirty files: `git -C <live> status --short --untracked-files=no`.
@@ -122,6 +123,7 @@ was negligible (about 1.8 k tokens per compaction: the summaries carried what th
   5-screenshot-read cap per thread.
 
 ## Session log (newest first; one line each, last 5)
+- 2026-10-17 super-nuc-1017 (JIS-NUC, Sonnet coordinator + 3 Agents + 1 triage session, ~8 h): context-compare-close shipped; CI green x3, 163 tests pass; traffic 24 h = 849 commits, overhead 64% (was 68%; re-measure on a window after 2026-10-16 12:00Z); lab BLOCKED cause = no data path in the briefs (fixed, 6a9d63d3); bigtrade DEV leak (DEV_END_MS) fixed 5b1bdc27; fires_kline SPLITS aligned to the repo split 23fb3c7d (old TRAIN fires contaminated, F: CSVs still carry the old split column); lab unstuck (wiring-gate STALE rule 984dbe74, prompt lint line 7eb5b5c8). Weekly 29% at stop. T07/T08 verdicts never landed, so Q87/Q88/confluence-read-encode/prob-dist were NOT started.
 - 2026-10-16 JIS-NUC lagging-tasks super session: layer readiness census; 5 live adapters plus wlow side wired (W3, live in
   28ca4005/fc9794f4); D3 power result (no factor powered at Holm m=37); Java buildVp edge fix (62.5% zone match); GPT lab
   unthrottled with 6 build cards; bigtrade reclassified as a build; HALT still on (operator clears it); grandfather review_by 2026-10-23.
