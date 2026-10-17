@@ -15,7 +15,7 @@
     "krown"
   ],
   "live_path": false,
-  "note": "PARKED until Krown G2+G3 (LAYER_REBUILD_PLAN s3; coordinator 2026-10-15, OPERATOR_DECISIONS q-pause-krown-detectors)",
+  "note": "UNPARKED 2026-10-17 by operator decisions q-krown-saturation (waiver: descriptive detectors, recall and DEV event study only, no engine setup file) and q-krown-stop (testnet may run without a resting stop; close-based exit is a testnet arm) and q-krown-volume-venue (Binance, Coinbase, CME). Refiner re-scopes it.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -39,7 +39,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "blocked",
+  "state": "raw",
   "steps": [
     "add a Krown section to FORMULAS.md: zone = [close, wick extreme] (KR-Z01), volume ratio (KR-V01/V02), strict engulfing (KR-C06), dominant low / dominant lower high (KR-L10), BBWP (KR-Q01: basis 7, lookback 100; multiplier 2 and the percentile formula are OURS, say so), leash (KR-M06), each with a hand-computed example",
     "write tests first from those examples (expected numbers independent of the code), run them against an empty module: all fail",
