@@ -223,11 +223,11 @@ def test_data_scope_hash_changes_when_data_file_changes(repo, monkeypatch, tmp_p
     data_root = tmp_path / "data"
     data_root.mkdir()
     data_file = data_root / "dev.csv"
-    data_file.write_text("first", encoding="utf-8")
+    data_file.write_text("t,c\n1719705600000,1\n", encoding="utf-8")
     monkeypatch.setattr(F, "DATA_ROOT", data_root, raising=False)
     scope = [str(data_file)]
     before = F.fingerprint(repo, ["source.md"], scope)
-    data_file.write_text("second", encoding="utf-8")
+    data_file.write_text("t,c\n1719705600000,2\n", encoding="utf-8")
     after = F.fingerprint(repo, ["source.md"], scope)
     assert before != after
     data_key = "data:dev.csv"
@@ -245,4 +245,16 @@ def test_holdout_data_path_is_refused(repo, monkeypatch, tmp_path):
     monkeypatch.setattr(F, "DATA_ROOT", data_root, raising=False)
     with pytest.raises(ValueError, match="holdout"):
         F.safe_file(repo, str(holdout))
+
+
+def test_renamed_dev_copy_with_post_cutoff_bar_is_refused(repo, monkeypatch, tmp_path):
+    import numpy as np
+    data_root = tmp_path / "data"
+    data_root.mkdir()
+    copied = data_root / "renamed.npz"
+    # 2024-07-01T00:00:00Z is the first disallowed open time.
+    np.savez(copied, t=np.array([1719792000000, 1720000000000], dtype=np.int64), c=np.array([1., 2.]))
+    monkeypatch.setattr(F, "DATA_ROOT", data_root, raising=False)
+    with pytest.raises(ValueError, match="post-cutoff"):
+        F.safe_file(repo, str(copied))
 

@@ -1,8 +1,10 @@
 """Reusable ordered lab recipes. launch SPEC.json [--preview]; finish CARD --report PATH --verdict PASS|REWORK|BLOCKED --result TEXT; status ID."""
 import argparse
 import hashlib
+import csv
 import json
 import re
+import zipfile
 from pathlib import Path
 
 import tasks
@@ -10,6 +12,7 @@ import tasks
 FLOWS = "MyTradingSys/research/layer_lab/flows"
 DATA_ROOT = Path("F:/MTS/data")
 HOLDOUT_PARTS = {"holdout", "holdouts", "validation_holdout", "test_holdout"}
+DEV_CUTOFF_MS = 1719792000000  # 2024-07-01T00:00:00Z
 RECIPES = {
     "critical-audit": [("map", "codex", "audit", "gpt-6.1-sol", "medium", "Map claims to source evidence; expose missing inputs and assumptions."),
                        ("challenge", "codex", "audit", "gpt-6-astra", "low", "Independently try to falsify the prior findings; reproduce one material claim and resolve disagreements against sources.")],
@@ -43,6 +46,45 @@ def safe_file(repo, rel):
     parts = [x.lower() for x in (p.relative_to(root).parts if p.is_relative_to(root) else p.relative_to(data_root).parts)]
     if any(x in (".secrets", ".git", "execution", "alerts") or x.startswith(".env") for x in parts):
         raise ValueError(f"protected scope: {rel}")
+    # Timestamp gate applies to data inputs by content, including renamed/copied files.
+    if p.is_relative_to(data_root):
+        try:
+            if p.suffix.lower() == ".npz":
+                import numpy as np
+                with np.load(p, allow_pickle=False) as data:
+                    if "t" not in data.files or data["t"].size == 0:
+                        raise ValueError("missing open-time axis t")
+                    max_open = int(data["t"].max())
+            elif p.suffix.lower() == ".csv":
+                with p.open(newline="", encoding="utf-8-sig") as f:
+                    reader = csv.DictReader(f)
+                    key = next((k for k in (reader.fieldnames or []) if k.lower() in ("t", "open_time", "timestamp")), None)
+                    if key is None:
+                        raise ValueError("missing open-time column (t/open_time/timestamp)")
+                    times = [int(row[key]) for row in reader if row.get(key)]
+                    if not times:
+                        raise ValueError("empty open-time column")
+                    max_open = max(times)
+            elif p.suffix.lower() == ".zip":
+                with zipfile.ZipFile(p) as archive:
+                    csv_names = [name for name in archive.namelist() if name.lower().endswith(".csv")]
+                    if not csv_names:
+                        raise ValueError("zip has no CSV timestamp source")
+                    max_open = 0
+                    for name in csv_names:
+                        with archive.open(name) as raw:
+                            reader = csv.DictReader((line.decode("utf-8-sig") for line in raw))
+                            key = next((k for k in (reader.fieldnames or []) if k.lower() in ("t", "open_time", "timestamp")), None)
+                            if key is None:
+                                raise ValueError(f"missing open-time column in {name}")
+                            max_open = max(max_open, *(int(row[key]) for row in reader if row.get(key)))
+            else:
+                # Non-market artifacts can be scoped as source files, but are not candle inputs.
+                max_open = None
+        except (OSError, ValueError, KeyError) as e:
+            raise ValueError(f"cannot verify data timestamps: {rel}: {e}") from e
+        if max_open is not None and max_open >= DEV_CUTOFF_MS:
+            raise ValueError(f"post-cutoff data refused (max open {max_open}): {rel}")
     return p
 
 

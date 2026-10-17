@@ -6,7 +6,7 @@
   "window_resets": 1792281070,
   "window_used": 3.0
  },
- "at": "2026-10-17T20:31:44Z",
+ "at": "2026-10-17T20:34:53Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 23.0,
   "window_pts": 2.0,
-  "window_runs": 6
+  "window_runs": 7
  },
  "runs": [
+  {
+   "at": "2026-10-17T20:33:20Z",
+   "card": "lab-holdout-access-control",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 86,
+   "tokens_out": 5728,
+   "tokens_total": 808669,
+   "tokens_uncached": 40317,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-17T20:30:32Z",
    "card": "lab-weight-enforce",
@@ -157,21 +172,6 @@
    "tokens_uncached": 47997,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-17T04:00:10Z",
-   "card": "g3-blindness-audit-rerun",
-   "effort": "low",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 75,
-   "tokens_out": 6895,
-   "tokens_total": 575288,
-   "tokens_uncached": 57289,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
