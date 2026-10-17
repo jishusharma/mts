@@ -13,6 +13,15 @@
   "goal": "PRE_REG_KROWN item 3: first verify each dated chart example from his videos against klines (captions are not evidence of dates or prices; includes the Bitcoin 2017 and 2021 weekly tops, TOP-12/TOP-32, and the VJZ examples), then run the detectors on them: recall within 2 bars, and fire rate per setup against the 1-in-10-daily-bars ceiling.",
   "id": "krown-recall-check",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Krown layer v0 detectors: core, events, params, tests, FORMULAS section",
+      "ref": "a9e179c7e27a",
+      "utc": "2026-10-17T11:24:08Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
@@ -22,6 +31,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T14:09:54Z",
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
@@ -36,9 +46,10 @@
     "any P&L",
     "VALIDATION and HOLDOUT bars"
   ],
+  "scope_sha": "a9e179c7e27a",
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "list the examples with extract line cites (PRE_REG_KROWN item 3) and check each date/price against the 1d/1w klines",
     "run the detectors on the verified examples; log every recall iteration to the trial ledger",
