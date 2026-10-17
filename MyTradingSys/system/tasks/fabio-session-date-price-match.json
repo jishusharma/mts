@@ -6,12 +6,12 @@
   "depends_on": [],
   "done_when": "research/fabio_date_match_2026-10-18/DATE_MATCH.md with a ranked table (5 rows) and a MATCH/AMBIGUOUS/NOT_IN_DATA verdict; test passes; the ledger is untouched.",
   "effort": "medium",
-  "est_turns": 18,
+  "est_turns": 12,
   "from_inbox": "",
   "goal": "Date the Fabio NQ-202512 live session (videos DyS79Eb92Ug / Jpd96fLqr5M) by matching its price path (F6 long 24914 to TP 25001, F11-F14 range 25095-25110, spoken day 15 of October) against free Dukascopy Nasdaq-100 CFD 1m bars for 2025-09-15..2025-12-19. Report only; no ledger edit.",
   "id": "fabio-session-date-price-match",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -38,6 +38,12 @@
   "refined_by": "",
   "refreshed": "2026-10-17T18:44:36Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-17T18:47:40Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "heartbeat"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
@@ -63,5 +69,6 @@
     "Write DATE_MATCH.md: top 5 day candidates with score, offset pt and minute of the F6 entry; verdict MATCH (best score clearly above second) / AMBIGUOUS / NOT_IN_DATA (instrument not served); state the CFD-vs-futures caveat."
   ],
   "tests": "test_date_match.py (new, in the output folder) fails before date_match.py exists, passes after: python -m pytest MyTradingSys/research/fabio_date_match_2026-10-18/test_date_match.py -q",
-  "title": "Fabio: date the DyS79Eb92Ug/Jpd96fLqr5M NQ-202512 session by price-path match against NQ 1m history (F6 24914->25001, F11-F14 25095-25110), then fill entry_time_utc"
+  "title": "Fabio: date the DyS79Eb92Ug/Jpd96fLqr5M NQ-202512 session by price-path match against NQ 1m history (F6 24914->25001, F11-F14 25095-25110), then fill entry_time_utc",
+  "worker": "agent"
 }

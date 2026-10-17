@@ -9,12 +9,12 @@
   ],
   "done_when": "ladder_dev.md table + frozen_rule.json; tests green. Arm P vs probe baseline, HTF bias/RSI 40/60 cuts, liquidation count and fee stress 10/25/50 % of R are in ladder_dev.md.",
   "effort": "medium",
-  "est_turns": 40,
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Simulate the pre-registered LC3 combinations (separation.md 'LC3 pre-registration': E1_rsi_holds_40_60, E4_outer_band on KEEP levels) x exits X0 fixed 1R/2R, X1 first opposing level, X2 CVD/Bollinger ladder, x scale-in S0-S3 x stops K1-K5 per PLAN.md, DEV only, fees both ways.",
   "id": "lc-ladder-dev",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -39,6 +39,12 @@
   "refined_by": "opus-2026-10-14 (LC PLAN.md, operator chat)",
   "refreshed": "2026-10-17T18:44:40Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-17T18:47:40Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "heartbeat"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/levels_confluence_2026-10-14/PLAN.md",
@@ -72,5 +78,6 @@
     "Freeze the single best DEV rule in frozen_rule.json (no edits after); one row per variant in research/layer_lab/TRIALS.md; write ladder_dev.md."
   ],
   "tests": "hand paths (test_ladder.py, red first): support long, first resistance half-close; CVD flat quarter; band rest. Scale-in L1+L2 then target = 2 fills, hand average, one stop; arm P 1:2:3 loss at stop == budget; liquidation fixture counted LIQUIDATED. python -m pytest research/levels_confluence_2026-10-14/test_ladder.py",
-  "title": "LC3 Levels Confluence: ladder-exit simulator (fixed vs first level vs CVD/Bollinger step-out) on the <= 6 LC2 combinations, DEV, maker+taker fees"
+  "title": "LC3 Levels Confluence: ladder-exit simulator (fixed vs first level vs CVD/Bollinger step-out) on the <= 6 LC2 combinations, DEV, maker+taker fees",
+  "worker": "session"
 }
