@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T18:32:25Z",
   "commands": [],
   "created": "2026-10-17T03:55:03Z",
   "depends_on": [
@@ -13,6 +14,12 @@
   "id": "trendline-g3-marks-pack",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "research/trendlines_2026-10-17/g3_pack: 40 blind windows (TL-4H 20, TL-1D 20), 2 blank she",
+      "ref": "77bb0d62",
+      "utc": "2026-10-17T18:32:25Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T18:15:55Z",
   "refs": [],
-  "result": "",
+  "result": "research/trendlines_2026-10-17/g3_pack: 40 blind windows (TL-4H 20, TL-1D 20), 2 blank sheets, closed key sha 26048af7, READER_PROTOCOL s4",
   "scope_in": [
     "Pack under research/trendlines_2026-10-17/g3_pack/: WINDOWS.csv, charts cut at the decision bar, marking sheets, closed answer key; copy g3_marks_2026-10-16 structure",
     "Half random windows, half from a written pre-filter; definitions go into READER_PROTOCOL.md as OURS once",
@@ -56,7 +63,7 @@
     "MyTradingSys/research/layer_rebuild_2026-10-15/READER_PROTOCOL.md",
     "MyTradingSys/research/g3_marks_2026-10-16/README.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Copy the g3_marks_2026-10-16 structure and apply its 2026-10-17 blindness fixes: ids <unit>-NN, no clock labels, unconditional overlays, selection rule only in the closed key",
     "Half random windows, half from a written pre-filter; write the definitions into READER_PROTOCOL.md as OURS once, then build WINDOWS.csv, sheets, key and sha",
