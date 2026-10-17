@@ -75,10 +75,12 @@ def get_hygiene_status(sched_dir=None):
 
 
 def get_stale_pages():
-    """(count, lines) for the published claude.ai pages whose repo build differs from the last publish (artifacts.py stale)."""
+    """(count, lines) for published claude.ai pages whose repo html differs from the last publish. Cheap form (no generator run: STATUS
+    is rebuilt on every boot and in many tests); `artifacts.py stale` is the full check that rebuilds each page."""
     try:
         import artifacts as af
-        lines = af.stale_lines(af.load())
+        reg = af.load()
+        lines = [f"STALE {pg['slug']} {pg['urls'][af.owner(pg)]}" for pg in af.tracked(reg) if af.behind(reg, pg)]
     except Exception as e:  # a broken generator must not stop STATUS.md
         return 0, [f"(stale check failed: {e})"]
     return len(lines), lines
