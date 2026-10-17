@@ -1,0 +1,8 @@
+.secrets/
+MyTradingSys/execution/.secrets/
+.env
+.env.*
+*.pem
+*.key
+runtime_data/
+.mts_live
