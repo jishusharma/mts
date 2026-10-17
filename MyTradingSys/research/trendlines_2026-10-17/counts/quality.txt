@@ -1,0 +1,17 @@
+1d: 912 closed bars, 0 missing 1m inside buckets, first 2022-01-01, last open 2024-06-30
+1d wick_log_age500: lines 57, pivots 181, rejects {'tie': 1, 'flat': 116, 'penetration': 689, 'spacing': 2421}, 0s
+1d wick_log_noage: lines 57, pivots 181, rejects {'tie': 1, 'flat': 116, 'penetration': 689, 'spacing': 2421}, 0s
+1d wick_linear_age500: lines 55, pivots 181, rejects {'tie': 1, 'flat': 116, 'penetration': 676, 'spacing': 2421}, 0s
+1d close_log_age500: lines 0, pivots 187, rejects {'tie': 0, 'flat': 167, 'penetration': 1579, 'spacing': 2616}, 0s
+4h: 5472 closed bars, 0 missing 1m inside buckets, first 2022-01-01, last open 2024-06-30
+4h wick_log_age500: lines 452, pivots 1166, rejects {'tie': 2, 'flat': 2276, 'penetration': 4384, 'spacing': 156248}, 3s
+4h wick_log_noage: lines 452, pivots 1166, rejects {'tie': 2, 'flat': 2276, 'penetration': 4384, 'spacing': 156248}, 3s
+4h wick_linear_age500: lines 451, pivots 1166, rejects {'tie': 2, 'flat': 2276, 'penetration': 4491, 'spacing': 156248}, 2s
+4h close_log_age500: lines 1, pivots 1131, rejects {'tie': 0, 'flat': 2242, 'penetration': 10523, 'spacing': 148208}, 1s
+1h: 21888 closed bars, 0 missing 1m inside buckets, first 2022-01-01, last open 2024-06-30
+1h wick_log_age500: lines 1836, pivots 4532, rejects {'tie': 46, 'flat': 16834, 'penetration': 16638, 'spacing': 2507963}, 71s
+1h wick_log_noage: lines 1836, pivots 4532, rejects {'tie': 46, 'flat': 16834, 'penetration': 16638, 'spacing': 2507963}, 106s
+1h wick_linear_age500: lines 1833, pivots 4532, rejects {'tie': 46, 'flat': 16834, 'penetration': 16710, 'spacing': 2507963}, 57s
+1h close_log_age500: lines 1, pivots 4691, rejects {'tie': 7, 'flat': 18665, 'penetration': 46736, 'spacing': 2696321}, 7s
+holm m=3, carried=3 of 18 primary cells
+total 269s

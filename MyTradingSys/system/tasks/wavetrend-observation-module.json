@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-17T07:47:58Z",
+  "closed": "2026-10-17T08:57:57Z",
   "commands": [],
   "created": "2026-10-17T03:54:24Z",
   "depends_on": [
@@ -14,6 +14,12 @@
   "id": "wavetrend-observation-module",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "backtest/layers/wavetrend shipped, 13 tests, goldens to 1e-9 (signal 0808Z)",
+      "ref": "d9ccc589",
+      "utc": "2026-10-17T08:57:57Z"
+    },
     {
       "kind": "ship",
       "line": "backtest/layers/wavetrend/ (wavetrend.py, 13 tests + boundary test); goldens 400 DEV 1h ba",
@@ -36,7 +42,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T07:44:17Z",
   "refs": [],
-  "result": "backtest/layers/wavetrend/ (wavetrend.py, 13 tests + boundary test); goldens 400 DEV 1h bars via pandas to 1e-9, spreadsheet-style not Pine parity; FORMULAS s20",
+  "result": "backtest/layers/wavetrend shipped, 13 tests, goldens to 1e-9 (signal 0808Z)",
   "scope_in": [
     "WT per parity spec: hlc3, EMA 10, EMA 21, SMA 4, 0.015, +/-53/60; d=0, warm-up, cross equality conventions",
     "Independent fixtures computed by hand/spreadsheet from FORMULAS.md entry, not from the module",

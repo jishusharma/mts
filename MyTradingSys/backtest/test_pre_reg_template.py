@@ -20,7 +20,8 @@ class PreRegTemplate(unittest.TestCase):
         self.assertTrue(TEMPLATE.exists(), "PRE_REG_TEMPLATE.md missing")
 
     def test_twelve_numbered_items(self):
-        self.assertEqual(item_numbers(TEMPLATE), list(range(1, 13)))
+        # section 0 is the pre-build gate (q13, 2026-10-14); 1-12 are the checklist
+        self.assertEqual(item_numbers(TEMPLATE), list(range(0, 13)))
 
     def test_every_item_has_answer_and_evidence_slot(self):
         t = TEMPLATE.read_text(encoding="utf-8")
