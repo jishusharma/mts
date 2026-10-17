@@ -88,7 +88,7 @@
     if (ls.reconnect && now - lastRecon > Math.max(2000, L.reconnectDelay(reconAttempt))) { lastRecon = now; reconAttempt = Math.max(reconAttempt, 1); connectTick(); }
     if (ui.box) {
       var lab = L.linkLabel(ls, document.hidden);
-      if (lab !== lastLinkLabel) { lastLinkLabel = lab; ui.box.dataset.link = ls.state; ui.box.title = lab; if (ui.link) { ui.link.textContent = ls.state === 'ok' ? '●' : (ls.state === 'degraded' ? '◐' : '○'); ui.link.title = lab; } }
+      if (lab !== lastLinkLabel) { lastLinkLabel = lab; ui.box.dataset.link = ls.state; ui.box.title = lab; if (ui.link) { ui.link.textContent = ls.state === 'ok' ? '\u25CF' : (ls.state === 'degraded' ? '\u25D0' : '\u25CB'); ui.link.title = lab; } }
     }
   }
   function onTick(fromPort) {
