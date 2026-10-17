@@ -5,6 +5,7 @@
   "created": "2026-10-16T13:48:05Z",
   "depends_on": [],
   "done_when": "tests green (red first), REPORT written, missing inputs NOT_IN_DATA, trial rows in TRIALS.md if any run.",
+  "effort": "medium",
   "from_inbox": "",
   "goal": "Build layer_lab/oi_delta_event_table/event_table.py: first inventory which OI/funding/whale files exist locally (F:/MTS/data, research/oi_*); for the data that exists, one row per OI-delta 4-state event with forward return/MFE/MAE in R on DEV. No OI data for a period = NOT_IN_DATA. Reuse the 2026-10-10 OI study definitions read-only.",
   "id": "gptb-oi-delta-event-table",
@@ -12,7 +13,8 @@
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
-  "note": "Filled by gpt-feed-builds 2026-10-16; research only, flag off.",
+  "model": "gpt-6-luna",
+  "note": "Dropped 2026-10-17 (lab-cards-1017): no DEV OI data exists. Searched F:/MTS/data (no OI/whale files; only funding zips 2022-2024 and klines) and the repo: OI exists only as the live recorder MyTradingSys/runtime/oi_live/oi_5m_30d.csv (last 30 days, recent weeks, not DEV) and runtime_data snapshots absent. Both lab runs ended BLOCKED/SHIP_FAILED (report 2026-10-16_gptb-oi-delta-event-table.md: 0 OI files, 78 funding files, 0 whale). Reopen only if a DEV OI history (2022-01..2024-06) is fetched; synthetic 4-state code and 3 tests remain in layer_lab/oi_delta_event_table.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -36,7 +38,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Read scope_in sources and write the test file first; run it and confirm it fails (red).",
     "Implement the module in research/layer_lab only; DEV data only, missing input = NOT_IN_DATA.",
@@ -44,7 +46,5 @@
     "Write REPORT.md (what was built, row counts, test output) and the result line."
   ],
   "tests": "synthetic OI + price series: the 4-state label and forward MFE/MAE match hand values; an event with no OI row is NOT_IN_DATA, never 0; no future bar in the label.",
-  "title": "OI-delta / whale: research-side event table from local OI data, DEV only",
-  "model": "gpt-6-luna",
-  "effort": "medium"
+  "title": "OI-delta / whale: research-side event table from local OI data, DEV only"
 }
