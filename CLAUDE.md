@@ -39,7 +39,7 @@ Already loaded: do not Read this again. Code mode only (DSA chat: `DSA_SESSION_P
 | Need | Read |
 |---|---|
 | start, ship, claims, push fallback; hand-over, task cards | PARALLEL.md; RELAY.md, TASK_REFINEMENT.md |
-| dev-time waste; speed/cost audit (`health_audit.py`) | TRAFFIC_BUSTERS.md; AUDIT_RUNBOOK.md |
+| dev-time waste; MTS doctor (`mts_doctor.py`) | TRAFFIC_BUSTERS.md; MTS_DOCTOR.md |
 | machines, logins, lanes, who may touch what; surfaces, names | HOW_MTS_RUNS.md, DEVICES.md, CLOUD_ACCOUNTS.md; SURFACE_POLICY.md |
 | deploy, CI/CD | DEPLOY_RUNBOOK.md |
 | layers (index); Codex lab | LAYERS.md; CODEX_START.md, LAYER_LAB.md |

@@ -1,10 +1,10 @@
-"""health_audit.py - the whole "is the dev process fast and cheap?" check in one command (AUDIT_RUNBOOK.md).
+"""health_audit.py - the "is the dev process fast and cheap?" check in one command (MTS_DOCTOR.md; mts_doctor.py wraps it).
 
-  python scripts/dev/health_audit.py [hours]      default 72; fetches origin first; read-only
+  python scripts/dev/health_audit.py [hours] [--no-fetch]      default 72; read-only; exit 1 when a flag fires
 
-Prints: commit mix, gate-bookkeeping share, B4 adoption (release folded into ship), recent CI with the failed step and its
-first annotation, stale claims, and the workflow-file commits of the window. Flags use the thresholds in FLAGS, so a person
-(or a model) reads verdicts, not raw numbers. Public GitHub API, unauthenticated (~60 calls/h): it uses 2 + one per red run.
+Prints: flags, commit mix, gate-bookkeeping share, B4 adoption (release folded into ship), recent CI with the failed step and its
+first annotation, stale claims, and the latest workflow-file commits. The METRICS line is what the next run diffs against.
+Public GitHub API, unauthenticated (~60 calls/h): one list call plus, per red run (max 3), 1 jobs call and up to 1 annotations call.
 """
 import json
 import re
@@ -20,13 +20,19 @@ REPO = Path(__file__).resolve().parents[2]
 API = "https://api.github.com/repos/jishusharma/mts/actions"
 WORKFLOW_PATHS = ["scripts/dev", "scripts/sched", ".github", "CLAUDE.md", ".claude", "MyTradingSys/system/TRAFFIC_BUSTERS.md",
                   "MyTradingSys/system/PARALLEL.md", "MyTradingSys/system/WORKERS.md", "MyTradingSys/system/RELAY.md"]
-# gate upkeep: registries, allowlists, size caps, "fix CI" commits (subjects of non-merge commits)
-BOOKKEEPING = re.compile(r"register|allowlist|wiring|CI red|gate entries|unblock|size cap|under .*cap|fit .*cap|\btrim\b", re.I)
-FLAGS = {"overhead_pct": 50, "bookkeeping_pct": 5, "b4_adoption_pct": 50, "ci_red_runs": 1}
+# Gate upkeep in non-merge subjects: a registry/wiring/gate declaration, an allowlist row, a size-cap trim, a CI-red fix.
+# Anchored on pairs so a feature commit that merely says "register" or "wiring" does not count (upper bound, still a regex).
+BOOKKEEPING = re.compile(r"\b(declare|register|registered)\b.*\b(wiring|registry|extra gate|gate)\b|^gate: register|allowlist"
+                         r"|\bsize cap\b|\b(under|fit|within) .*\bcap\b|\btrim to\b|\bCI red\b|\bunblocks? the (ship )?gate\b", re.I)
+FLAGS = {"overhead_pct": 50, "bookkeeping_pct": 5, "b4_adoption_pct": 50}
 
 
-def git(*a):
-    return subprocess.run(["git", "-C", str(REPO), *a], capture_output=True, text=True).stdout
+def git(*a, timeout=120):
+    try:
+        return subprocess.run(["git", "-C", str(REPO), *a], capture_output=True, text=True, encoding="utf-8", errors="replace",
+                              timeout=timeout).stdout
+    except (OSError, subprocess.TimeoutExpired):
+        return ""
 
 
 def fetch_json(url):
@@ -35,10 +41,6 @@ def fetch_json(url):
             return json.load(r)
     except Exception as e:  # rate limit, offline: report it, never fail the audit
         return {"_error": str(e)[:120]}
-
-
-def mix(hours):
-    return TR.report(hours)
 
 
 def bookkeeping(hours):
@@ -56,11 +58,13 @@ def b4_adoption(hours):
 
 
 def ci(limit=30):
+    """(counts, error, latest_conclusion, red) - red lists up to 3 failed runs, newest first, with failed steps + first annotation."""
     d = fetch_json(f"{API}/runs?branch=fast-track&per_page={limit}")
     if "workflow_runs" not in d:
-        return None, d.get("_error", "no data"), []
+        return None, d.get("_error", "no data"), "", []
     runs = d["workflow_runs"]
     counts = Counter(r["conclusion"] or r["status"] for r in runs)
+    latest = next((r["conclusion"] for r in runs if r["conclusion"] in ("success", "failure")), "")
     red = []
     for r in [r for r in runs if r["conclusion"] == "failure"][:3]:
         steps, note = [], ""
@@ -74,12 +78,15 @@ def ci(limit=30):
                     note = next((a["message"][:300] for a in ann if a.get("annotation_level") == "failure"
                                  and "exit code" not in a["message"]), "")
         red.append((r["created_at"][5:16], r["head_sha"][:8], sorted(set(steps)), note))
-    return counts, "", red
+    return counts, "", latest, red
 
 
 def stale_claims():
-    out = subprocess.run([sys.executable, str(REPO / "scripts" / "dev" / "sync.py"), "claims"], capture_output=True,
-                         text=True, cwd=REPO).stdout.splitlines()
+    try:
+        out = subprocess.run([sys.executable, str(REPO / "scripts" / "dev" / "sync.py"), "claims"], capture_output=True, text=True,
+                             encoding="utf-8", errors="replace", cwd=REPO, timeout=120).stdout.splitlines()
+    except (OSError, subprocess.TimeoutExpired):
+        return []
     return [ln.strip() for ln in out if "STALE" in ln]
 
 
@@ -91,42 +98,57 @@ def pct(n, d):
     return 100 * n / d if d else 0.0
 
 
-def build(hours=72):
-    git("fetch", "origin", "-q")
-    lines = [f"# health audit, last {hours} h", "", "## Commit mix", mix(hours)]
-    m = re.search(r"overhead \d+ \((\d+)%\)", lines[-1])
+def audit(hours=72, fetch=True):
+    """(markdown, flags). flags is empty when nothing needs action."""
+    fetched = "skipped (--no-fetch)"
+    if fetch:
+        fetched = "ok" if subprocess.run(["git", "-C", str(REPO), "fetch", "origin", "-q"], capture_output=True,
+                                         timeout=120).returncode == 0 else "FAILED: numbers may be stale"
+    mixline = TR.report(hours)
+    lines = [f"# health audit, last {hours} h (git fetch: {fetched})", "", "## Commit mix", mixline]
     flags = []
-    if m and int(m.group(1)) > FLAGS["overhead_pct"]:
-        flags.append(f"OVERHEAD {m.group(1)}% > {FLAGS['overhead_pct']}%: see B4 adoption and merge share (one ship per task)")
+    m = re.search(r"overhead \d+ \((\d+)%\)", mixline)
+    overhead = int(m.group(1)) if m else 0
+    if overhead > FLAGS["overhead_pct"]:
+        flags.append(f"OVERHEAD {overhead}% > {FLAGS['overhead_pct']}%: see B4 adoption and merge share (one ship per task)")
     n, total, hit = bookkeeping(hours)
-    lines += ["", "## Gate bookkeeping (registry/allowlist/size-cap/unblock commits)",
-              f"{n} of {total} non-merge commits ({pct(n, total):.0f}%)"] + [f"- {s[:110]}" for s in hit[:12]]
-    if pct(n, total) > FLAGS["bookkeeping_pct"]:
-        flags.append(f"BOOKKEEPING {pct(n, total):.0f}% > {FLAGS['bookkeeping_pct']}%: find the hand-kept list that keeps failing and auto-discover it")
+    book = pct(n, total)
+    lines += ["", "## Gate bookkeeping (registry/allowlist/size-cap/CI-red commits)", f"{n} of {total} non-merge commits ({book:.0f}%)"]
+    lines += [f"- {s[:110]}" for s in hit[:12]]
+    if book > FLAGS["bookkeeping_pct"]:
+        flags.append(f"BOOKKEEPING {book:.0f}% > {FLAGS['bookkeeping_pct']}%: find the hand-kept list that keeps failing and auto-discover it")
     alone, folded = b4_adoption(hours)
+    b4 = pct(folded, alone + folded)
     lines += ["", "## B4 adoption (release folded into ship)", f"standalone release commits {alone}, folded {folded}"]
-    if alone + folded and pct(folded, alone + folded) < FLAGS["b4_adoption_pct"]:
-        flags.append(f"B4 ADOPTION {pct(folded, alone + folded):.0f}% < {FLAGS['b4_adoption_pct']}%: enforce in sync.py, docs alone do not change behaviour")
-    counts, err, red = ci()
-    lines += ["", "## CI on fast-track (last 30 runs)"]
+    if alone + folded and b4 < FLAGS["b4_adoption_pct"]:
+        flags.append(f"B4 ADOPTION {b4:.0f}% < {FLAGS['b4_adoption_pct']}%: enforce in sync.py, docs alone do not change behaviour")
+    counts, err, latest, red = ci()
+    lines += ["", "## CI on fast-track"]
     if counts is None:
         lines.append(f"unavailable: {err}")
     else:
-        lines.append(", ".join(f"{k} {v}" for k, v in counts.most_common()))
+        lines.append(f"{sum(counts.values())} runs: " + ", ".join(f"{k} {v}" for k, v in counts.most_common()) + f" | newest finished: {latest or '?'}")
         lines += [f"- RED {t} {sha}: failed {', '.join(st) or '?'} | {note}" for t, sha, st, note in red]
-        if counts.get("failure", 0) >= FLAGS["ci_red_runs"]:
-            flags.append(f"CI RED {counts['failure']} of 30 runs: fix the step named above first (CLAUDE.md boot step 2)")
+        if latest == "failure":
+            flags.append("CI RED on the newest finished run: fix the step named above first (CLAUDE.md boot step 2)")
     stale = stale_claims()
     lines += ["", "## Stale claims"] + ([f"- {s}" for s in stale] or ["none"])
     if stale:
         flags.append(f"{len(stale)} STALE CLAIM(S): release or escalate")
     wf = workflow_commits(hours)
-    lines += ["", f"## Workflow-file commits ({len(wf)}, newest first, 40 shown)"] + [f"- {s[:120]}" for s in wf[:40]]
+    lines += ["", f"## Workflow-file commits ({len(wf)} in window, newest 10)"] + [f"- {s[:120]}" for s in wf[:10]]
+    lines += ["", f"METRICS overhead={overhead} bookkeeping={book:.0f} b4={b4:.0f} stale_claims={len(stale)} ci_latest={latest or '?'}"]
     lines[2:2] = ["## Flags"] + ([f"- {f}" for f in flags] or ["- none"]) + [""]
-    return "\n".join(lines)
+    return "\n".join(lines), flags
+
+
+def build(hours=72, fetch=True):
+    return audit(hours, fetch)[0]
 
 
 if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if re.fullmatch(r"\d+", a)]
     sys.stdout.reconfigure(errors="replace")
-    print(build(int(args[0]) if args else 72))
+    text, flags = audit(int(args[0]) if args else 72, "--no-fetch" not in sys.argv)
+    print(text)
+    sys.exit(1 if flags else 0)

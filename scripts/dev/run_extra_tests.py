@@ -21,6 +21,7 @@ EXTRA = [
     "MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py",
     "scripts/dev/test_trace.py",
     "scripts/dev/test_health_audit.py",
+    "scripts/dev/test_mts_doctor.py",
     "scripts/dev/test_prereg_gate.py",
     "scripts/dev/test_research_kit_lint.py",
     "MyTradingSys/research/layer_lab/context_fix2_mde_rule/test_mde_rule.py",
