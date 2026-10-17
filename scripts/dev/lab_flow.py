@@ -13,13 +13,14 @@ FLOWS = "MyTradingSys/research/layer_lab/flows"
 DATA_ROOT = Path("F:/MTS/data")
 HOLDOUT_PARTS = {"holdout", "holdouts", "validation_holdout", "test_holdout"}
 DEV_CUTOFF_MS = 1719792000000  # 2024-07-01T00:00:00Z
+VENDOR_MODEL_PREFIXES = {"codex": ("gpt-",), "gemini": ("gemini-",), "claude": ("claude-",)}
 RECIPES = {
     "critical-audit": [("map", "codex", "audit", "gpt-6.1-sol", "medium", "Map claims to source evidence; expose missing inputs and assumptions."),
-                       ("challenge", "codex", "audit", "gpt-6-astra", "low", "Independently try to falsify the prior findings; reproduce one material claim and resolve disagreements against sources.")],
+                       ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Independently try to falsify the prior findings; reproduce one material claim and resolve disagreements against sources.")],
     "build-review": [("build", "codex", "build", "gpt-6.1-sol", "medium", "Implement the scoped contract with spec-derived fail-first tests."),
                      ("challenge", "gemini", "audit", "gemini-2.5-pro", "low", "Review the resulting diff and reproduce failure modes; independently check goal coverage.")],
     "run-review": [("run", "codex", "run", "gpt-6-luna", "low", "Execute only the supplied development-data commands and record inputs, trial identity and numbers."),
-                   ("verify", "codex", "audit", "gpt-6.1-sol", "medium", "Independently reproduce a headline number and check leakage, fees, trial accounting and missing data.")],
+                   ("verify", "gemini", "audit", "gemini-2.5-pro", "low", "Independently reproduce a headline number and check leakage, fees, trial accounting and missing data.")],
 }
 
 
@@ -110,12 +111,40 @@ def fingerprint(repo, scope, data_scope=None):
 
 def contract(flow):
     value = {k: flow[k] for k in ("id", "recipe", "goal", "criteria", "scope_in")}
+    for key in ("risk_class", "same_vendor_override", "vendor_gate_hardened"):
+        if key in flow:
+            value[key] = flow[key]
     if flow.get("data_scope"):
         value["data_scope"] = flow["data_scope"]
     for key in ("commands", "tests", "mutation_check"):
         if flow.get(key):
             value[key] = flow[key]
     return digest(value)
+
+
+def normalize_vendor(vendor):
+    if not isinstance(vendor, str):
+        raise ValueError("vendor must be a nonempty string")
+    normalized = vendor.strip().lower()
+    if normalized not in VENDOR_MODEL_PREFIXES:
+        raise ValueError(f"unknown or empty vendor: {vendor!r}")
+    return normalized
+
+
+def validate_hardened_recipe(stages):
+    normalized = []
+    for stage in stages:
+        if len(stage) < 4:
+            raise ValueError("invalid recipe stage")
+        name, vendor, kind, model, *rest = stage
+        vendor = normalize_vendor(vendor)
+        if not isinstance(model, str) or not model.strip():
+            raise ValueError("vendor model must be a nonempty string")
+        model = model.strip().lower()
+        if not model.startswith(VENDOR_MODEL_PREFIXES[vendor]):
+            raise ValueError(f"vendor/model mismatch: {vendor} does not match {model}")
+        normalized.append((name, vendor, kind, model, *rest))
+    return normalized
 
 
 def accepted(card, repo):
@@ -162,12 +191,30 @@ def gate(card, cards, repo):
             errors.append(f"flow contract {key} changed; launch a new flow")
     try:
         _, vendor, kind, model, effort, lens = RECIPES[flow["recipe"]][flow["stage"] - 1]
-        producer_model = RECIPES[flow["recipe"]][0][3]
+        producer_vendor = RECIPES[flow["recipe"]][0][1]
+        if flow.get("vendor_gate_hardened") is True:
+            hardened_stages = validate_hardened_recipe(RECIPES[flow["recipe"]])
+            _, vendor, kind, model, effort, lens = hardened_stages[flow["stage"] - 1]
+            producer_vendor = hardened_stages[0][1]
         stage_lens = f"{vendor}/{model}: {lens}"
         if flow["stage"] < 1 or card.get("vendor") != vendor or card.get("kind") != kind or tasks.codex_setting(card) != (model, effort) or flow.get("lens") != stage_lens:
             errors.append("flow vendor/kind/model/lens drifted from the recipe")
-        if flow["stage"] > 1 and model == producer_model:
-            errors.append("flow reviewer model must differ from producer model")
+        if flow.get("risk_class") not in (None, "C0", "C1", "C2", "C3"):
+            errors.append("flow risk_class must be C0, C1, C2 or C3")
+        if flow.get("same_vendor_override") is True and flow.get("risk_class") != "C0":
+            errors.append("same-vendor override is allowed only for C0 cards")
+        if "same_vendor_override" in flow and type(flow["same_vendor_override"]) is not bool:
+            errors.append("same_vendor_override must be a boolean")
+        if flow.get("vendor_gate_hardened") is True:
+            vendor = normalize_vendor(vendor)
+            producer_vendor = normalize_vendor(producer_vendor)
+            if card.get("vendor") != vendor:
+                errors.append("flow vendor must use its normalized allowlisted value")
+        elif flow.get("vendor_gate_hardened") not in (None, False):
+            errors.append("vendor_gate_hardened must be a boolean")
+        if flow["stage"] > 1 and vendor == producer_vendor and not (
+                flow.get("risk_class") == "C0" and flow.get("same_vendor_override") is True):
+            errors.append("flow reviewer vendor must differ from producer vendor; explicit same_vendor_override is C0-only")
     except (KeyError, IndexError, TypeError):
         errors.append("flow recipe/stage is invalid")
     expected = []
@@ -203,6 +250,11 @@ def launch(repo, spec, preview=False):
         raise ValueError("flow id: 1-24 lower-case letters, digits or hyphens")
     recipe = spec["recipe"]
     stages = RECIPES[recipe]
+    hardened = spec.get("vendor_gate_hardened", False)
+    if type(hardened) is not bool:
+        raise ValueError("vendor_gate_hardened must be a boolean")
+    if hardened:
+        stages = validate_hardened_recipe(stages)
     for field in ("goal", "criteria", "scope_in"):
         if not spec.get(field):
             raise ValueError(f"{field} required")
@@ -214,6 +266,9 @@ def launch(repo, spec, preview=False):
         raise ValueError("data_scope must be a list of data file paths")
     fingerprint(repo, spec["scope_in"], spec.get("data_scope"))
     flow = {k: spec[k] for k in ("id", "recipe", "goal", "criteria", "scope_in")}
+    for key in ("risk_class", "same_vendor_override", "vendor_gate_hardened"):
+        if key in spec:
+            flow[key] = spec[key]
     if spec.get("data_scope"):
         flow["data_scope"] = spec["data_scope"]
     for key in ("commands", "tests", "mutation_check"):
@@ -227,7 +282,7 @@ def launch(repo, spec, preview=False):
         c = tasks.blank(key, f"{cid}: {name}", lane="CODEX", prio=spec.get("prio", 3), layers=spec.get("layers", []))
         c.update(vendor=vendor, kind=kind, model=model, effort=effort, size="S", goal=flow["goal"], scope_in=flow["scope_in"],
                  flow={**flow, "stage": index + 1, "vendor": vendor, "model": model, "lens": stage_lens}, gpt_only=True,
-                 crucial=model == "gpt-6-astra", state="ready" if index == 0 else "blocked",
+                 crucial=model == "gpt-6-astra" or recipe == "critical-audit", state="ready" if index == 0 else "blocked",
                  depends_on=[out[-1]["id"]] if out else [],
                  scope_out=["live path, secrets, holdout data, relay and unrelated files"],
                  steps=[stage_lens, "Read original sources before the prior report; report C1..Cn as PASS, REWORK or BLOCKED with file/command evidence."],
@@ -264,6 +319,11 @@ def finish(repo, cid, report, verdict, result):
     flow = card["flow"]
     if verdict not in ("PASS", "REWORK", "BLOCKED"):
         raise ValueError("unknown verdict")
+    gate = tasks.review_gate(card, finishing=True, result=result)
+    if gate:
+        raise ValueError("; ".join(gate))
+    if verdict == "PASS" and card.get("state") != "active":
+        raise ValueError("only an active flow card can be marked done")
     errors = tasks.problems(card, tasks.load_all(repo), tasks.registry(repo), repo=repo)
     if errors:
         raise ValueError("; ".join(errors))

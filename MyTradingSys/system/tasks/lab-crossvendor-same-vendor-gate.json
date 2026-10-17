@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T22:39:19Z",
   "commands": [],
   "created": "2026-10-17T20:32:10Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "PASS; 28 tests; MyTradingSys/research/layer_lab/reports/2026-10-17_lab-crossvendor-same-ve",
+      "ref": "bc1dbe2b",
+      "utc": "2026-10-17T22:39:19Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,7 @@
     "scripts/dev/lab_flow.py:118",
     "MyTradingSys/system/roles/lab_guy.md"
   ],
-  "result": "",
+  "result": "PASS; 28 tests; MyTradingSys/research/layer_lab/reports/2026-10-17_lab-crossvendor-same-vendor-gate.md",
   "scope_in": [
     "scripts/dev/lab_flow.py",
     "scripts/dev/test_lab_flow.py"
@@ -46,7 +53,7 @@
   "scope_sha": "0c06863594a9",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read scripts/dev/lab_flow.py:118 (rejects only when producer and reviewer model ids are identical; found by Haiku check of commit 0c06863594a9) and roles/lab_guy.md ('producer vendor recorded and different from the reviewer's')",
     "compare the vendor field (prefix before '/') instead of the model id; allow an explicit documented same-vendor override only for C0 cards",

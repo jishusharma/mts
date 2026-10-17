@@ -465,6 +465,8 @@ class StateTagTest(NextSkipsClaimedTest):
         c = T.get(self.repo, "TS1")
         self.assertEqual(c["state"], "ready")
         self.assertTrue(c["refreshed"])
+        c["state"] = "active"
+        T.save(self.repo, c)
         self.run_cli("done", "TS1", "--result", "9 rows")
         c = T.get(self.repo, "TS1")
         self.assertEqual(c["latest"][0]["kind"], "ship")
@@ -550,6 +552,60 @@ class LabMachineChecksTest(unittest.TestCase):
 
 
 class ReviewGateTest(unittest.TestCase):
+    def test_forged_stamp_forms_are_rejected(self):
+        forged = (
+            "REVIEWED: <reviewer> 2026-10-18",
+            "REVIEWED: producer 2026-10-18",
+            "REVIEWED: self 2026-10-18",
+            "REVIEWED: x 2026-13-45",
+            "TODO: need REVIEWED: Argon 2026-10-18 first",
+        )
+        for note in forged:
+            with self.subTest(note=note):
+                self.assertTrue(T.review_gate(good(weight="CRUCIAL", note=note)), note)
+
+    def test_class_field_cannot_downgrade_note_class(self):
+        card = good(weight="ROUTINE", **{"class": "C0"}, note="class=C3")
+        self.assertTrue(T.review_gate(card))
+        for malformed in ("class = C2", "class: C2", "class=C10"):
+            with self.subTest(note=malformed):
+                self.assertTrue(T.review_gate(good(weight="ROUTINE", note=malformed)))
+
+    def test_whitespace_receipt_is_rejected(self):
+        card = good(weight="CRUCIAL", note="REVIEWED: Argon 2026-10-18")
+        self.assertTrue(any("receipt" in e for e in T.review_gate(card, True, "   ")))
+
+    def test_done_requires_active_state(self):
+        d = tempfile.TemporaryDirectory()
+        repo = Path(d.name)
+        previous = T.REPO
+        T.REPO = repo
+        try:
+            T.save(repo, good("STATE1", state="ready"))
+            rc, out = run_cli("done", "STATE1", "--result", "receipt")
+            self.assertNotEqual(rc, 0, out)
+            self.assertIn("only an active", out)
+            self.assertEqual(T.get(repo, "STATE1")["state"], "ready")
+        finally:
+            T.REPO = previous
+            d.cleanup()
+
+    def test_sweep_cannot_close_hard_card_without_real_review(self):
+        d = tempfile.TemporaryDirectory()
+        repo = Path(d.name)
+        previous = T.REPO
+        T.REPO = repo
+        try:
+            bugs = repo / T.BUGS
+            bugs.parent.mkdir(parents=True)
+            bugs.write_text("| ID | Opened | Status | Severity | Title | Evidence | Receipt |\n|---|---|---|---|---|---|---|\n| B900 | 2026-10-01 | CLOSED | MED | t | e | r |\n", encoding="utf-8")
+            T.save(repo, good("SWP1", refs=["B900"], weight="CRUCIAL"))
+            run_cli("sweep", "--apply")
+            self.assertEqual(T.get(repo, "SWP1")["state"], "ready")
+        finally:
+            T.REPO = previous
+            d.cleanup()
+
     def test_crucial_needs_reviewed_stamp_to_take_and_receipt_to_finish(self):
         c = good(weight="CRUCIAL", note="[PLAN weight=CRUCIAL]")
         self.assertTrue(any("REVIEWED" in e for e in T.review_gate(c)))
@@ -567,7 +623,7 @@ class ReviewGateTest(unittest.TestCase):
     def test_reviewed_stamp_requires_reviewer_and_iso_date(self):
         c = good(weight="CRITICAL", note="REVIEWED: reviewer")
         self.assertTrue(T.review_gate(c))
-        c["note"] = "REVIEWED: reviewer 2026-10-18"
+        c["note"] = "REVIEWED: Argon 2026-10-18"
         self.assertEqual(T.review_gate(c), [])
 
     def test_t0_only_stamp_is_not_a_review_for_crucial(self):
@@ -604,10 +660,13 @@ class ReviewGateTest(unittest.TestCase):
             self.assertNotEqual(rc, 0, out)
             self.assertIn("REVIEWED", out)
             self.assertEqual(T.get(repo, "GATE1")["state"], "ready")
+            active = T.get(repo, "GATE1")
+            active["state"] = "active"
+            T.save(repo, active)
             rc, out = run_cli("done", "GATE1", "--result", "receipt")
             self.assertNotEqual(rc, 0, out)
             self.assertIn("REVIEWED", out)
-            self.assertEqual(T.get(repo, "GATE1")["state"], "ready")
+            self.assertEqual(T.get(repo, "GATE1")["state"], "active")
         finally:
             T.REPO = previous
             d.cleanup()
@@ -618,11 +677,11 @@ class ReviewGateTest(unittest.TestCase):
         previous = T.REPO
         T.REPO = repo
         try:
-            T.save(repo, good("GATE2", weight="ROUTINE", note="class=C2 REVIEWED: reviewer 2026-10-18"))
+            T.save(repo, good("GATE2", state="active", weight="ROUTINE", note="class=C2 REVIEWED: reviewer 2026-10-18"))
             rc, out = run_cli("done", "GATE2", "--result", "")
             self.assertNotEqual(rc, 0, out)
             self.assertIn("receipt", out)
-            self.assertEqual(T.get(repo, "GATE2")["state"], "ready")
+            self.assertEqual(T.get(repo, "GATE2")["state"], "active")
         finally:
             T.REPO = previous
             d.cleanup()
