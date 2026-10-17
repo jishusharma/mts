@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T20:00:14Z",
   "commands": [],
   "created": "2026-10-17T19:07:06Z",
   "depends_on": [],
@@ -11,7 +12,14 @@
   "id": "q76-dev-ext-power-check",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "1207 total vs 2427; 545 DEV_EXT days; MyTradingSys/research/layer_lab/reports/2026-10-18_q",
+      "ref": "c1e38e8a",
+      "utc": "2026-10-17T20:00:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "Operator 2026-10-18: nobody else will pick this up; filed so it is not lost. Rough prior (NOT a result): 2020-2021 is about 730 days, so the total is probably below 2,427.",
@@ -20,7 +28,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T19:07:06Z",
   "refs": [],
-  "result": "",
+  "result": "1207 total vs 2427; 545 DEV_EXT days; MyTradingSys/research/layer_lab/reports/2026-10-18_q76-dev-ext-power-check.md",
   "scope_in": [
     "MyTradingSys/research bug_b187_evidence.txt and PRE_REG_V2.md (read-only)",
     "F:/MTS/data/dev_ext_2019_2021 (read-only; DEV bars only, open before 2024-07-01)"
@@ -34,7 +42,7 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read B187 evidence for how feasible days were counted (662)",
     "count days in dev_ext_2019_2021 that meet the same feasibility rule",
