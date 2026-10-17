@@ -25,7 +25,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "Blocked until lab-data-pin-hash and lab-machine-checks-extra are done (its pass criteria need those machine checks); then tasks.py release.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -46,7 +46,7 @@
   "scope_sha": "e677a2790b09",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "plant one error per shadow card: wrong data copy, one-bar shift, holdout leak, expected value copied from code, deleted trials, zero slippage, edited gate constant, mislabelled SOURCED number",
     "run the cheap stack (machine checks + Haiku independent re-derivation + GPT-OSS or Flash) and the expensive stack (Argon or GPT high)",
