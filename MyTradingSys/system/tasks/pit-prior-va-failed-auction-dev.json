@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T03:26:37Z",
   "commands": [
     "python MyTradingSys/research/pit_levels_2026-10-16/count_prior_va.py > MyTradingSys/research/pit_levels_2026-10-16/COUNT.txt",
     "python MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py",
@@ -28,7 +29,7 @@
     "MyTradingSys/research/pit_levels_2026-10-16/REPORT.md",
     "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py"
   ],
-  "result": "",
+  "result": "BLOCKED: gate MDE+cost 0.411 R (m=42) / 0.417 R (m=62) > 0.30 R; 662 days < 2427/2559 needed; n_T 1835; see BLOCKED.md",
   "scope_in": [
     "MyTradingSys/research/pit_levels_2026-10-16/run_prereg.py (new: outcomes per PRE_REG.md section 3, day-block bootstrap per FORMULAS 18.7, seed 20261016)",
     "MyTradingSys/research/pit_levels_2026-10-16/test_run_prereg.py (new)",
@@ -45,7 +46,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "sync.py start pit-prereg-run; claim this card; read PRE_REG_V2.md items 1, 2, 4, 5 first, then PRE_REG.md sections 0-8 and PIT_CONTRACT.md D-LEVELS, D-SESSION, D-STOPFLOOR",
     "run count_prior_va.py into COUNT.txt; commit it alone (message: 'pit-prereg count only') before writing any outcome code",
