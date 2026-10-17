@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T00:00:00Z",
+  "depends_on": [],
+  "done_when": "test passes; every id has a spec entry with a worked example",
+  "est_turns": 18,
+  "from_inbox": "",
+  "goal": "An independent re-deriver can implement a formula from prose alone, without reading the producer code.",
+  "id": "lab-formula-spec-text",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T00:00:00Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/FORMULAS.md (read)",
+    "MyTradingSys/backtest/layers/FORMULAS_SPEC.md (new)"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list the formula ids used by event tables and gates",
+    "for each write inputs, bar alignment, rounding, edge cases and one worked example computed by hand from DEV data",
+    "mark each entry SOURCED or OURS"
+  ],
+  "tests": "a test that every formula id in FORMULAS.md has a spec entry in FORMULAS_SPEC.md",
+  "title": "Lab: write the spec text of each FORMULAS.md entry a re-deriver needs (inputs, bar alignment, rounding, edge cases)",
+  "worker": "session"
+}
