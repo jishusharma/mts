@@ -10,7 +10,7 @@
   "done_when": "A repeatable MTS doctor run exists: one command that reads the AI-facing files (CLAUDE.md, memory index and files, system docs, task cards, handoff notes, skills) and writes one dated AI-health report: a short list of findings (stale, conflicting, duplicate, missing), each with the file and a suggested fix. Running it twice on the same day gives the same report.",
   "est_turns": 6,
   "from_inbox": "",
-  "goal": "Create the MTS doctor: a recurring check of AI health only, meaning the AI-facing material (CLAUDE.md, memory index and files, system rules, task cards, handoff notes, skills) for stale, conflicting, duplicated or missing guidance, so the same check can be run again without rebuilding it. Project health (CI, trading, halts) is out of scope. It reports only; it never edits rules, clears halts, or deploys.",
+  "goal": "Create the MTS doctor: a recurring check of AI health only, meaning the AI-facing material (CLAUDE.md, memory index and files, system rules, task cards, handoff notes, skills) for stale, conflicting, duplicated or missing guidance, so the check can be rerun without rebuilding it. Project health (CI, trading, halts) is out of scope. It only reports: no rule edits, halt clears or deploys.",
   "id": "mts-doctor",
   "lane": "JIS-NB",
   "latest": [
