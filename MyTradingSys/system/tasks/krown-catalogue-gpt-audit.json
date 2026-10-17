@@ -12,6 +12,22 @@
   "id": "krown-catalogue-gpt-audit",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "krown-g2: KROWN_SETUP_CATALOG.md, S1-S9 rewritten into the G2 catalogue format",
+      "ref": "f4a5182a9735",
+      "utc": "2026-10-15T13:40:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f4a5182a9735 krown-g2: KROWN_SETUP_CATALOG.md, S1-S9 rewritten into the G2 catalogue forma",
+      "ref": "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md",
+      "utc": "2026-10-15T13:40:28Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "model": "gpt-6-astra",
@@ -20,6 +36,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-17T07:24:56Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -32,6 +49,7 @@
     "holdout reads",
     "BTC runs of the current encoding (ROADMAP section 2)"
   ],
+  "scope_sha": "f4a5182a9735",
   "size": "S",
   "sources": [],
   "state": "ready",

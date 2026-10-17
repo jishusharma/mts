@@ -10,12 +10,14 @@
   "goal": "Operator 2026-10-17: no backtest before context (phase, speed, sentiment, absorption/distribution, yesterday, 5-day, weekly, bi-weekly). Describe the context around each operator read from data on disk, then diagnose the backtest apparatus. No returns, no pre-registered bar, no event counts used as evidence.",
   "id": "confluence-read-encode",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "note": "Operator priority high. Private input: the operator transaction-log CSV in his Downloads folder (ask the coordinator for the exact name; path withheld because the repo is public) (never commit it or its numbers). Opus not required.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:16:27Z",
   "refs": [
     "MyTradingSys/methodology/operator_chart_checklist.md",
     "MyTradingSys/research/screenshots/2026-10-16_BTCUSDT_c5e7b5c17d90.md",
@@ -32,6 +34,7 @@
     "no VALIDATION or HOLDOUT reads",
     "no lowered pre-registered bars"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "operator chat 2026-10-17"

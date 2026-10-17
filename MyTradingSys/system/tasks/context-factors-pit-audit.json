@@ -11,12 +11,14 @@
   "goal": "Independent audit of research/context_factors_pit_2026-10-16/PRE_REG_V2.md with the 6 items of research/pit_levels_2026-10-16/AUDIT_BEFORE_RUN.md (location-only control, MDE under day clustering, Holm k, leakage, VERDICTS row, frozen trigger), counts only, no outcome read, no VALIDATION/HOLDOUT bar. Writes AUDIT_BEFORE_RUN.md with the verdict word OK or FIX-FIRST (per item, with the exact fix).",
   "id": "context-factors-pit-audit",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "note": "Same pattern as the Opus and pit_levels audits. Zero operator input. If FIX-FIRST, the one-run card stays blocked until a PRE_REG_V3.md carries the fix.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T07:16:27Z",
   "refs": [
     "research/context_factors_pit_2026-10-16/PRE_REG_V2.md",
     "research/context_factors_pit_2026-10-16/COMPARISON.md",
@@ -33,6 +35,7 @@
     "any VALIDATION or HOLDOUT bar",
     "any outcome computation"
   ],
+  "scope_sha": "",
   "size": "S",
   "sources": [],
   "state": "done",

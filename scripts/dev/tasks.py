@@ -9,6 +9,8 @@
   python scripts/dev/tasks.py next [--n 3] [--lane SONNET] [--all]   # the first ready cards no session holds, best first (--all: claimed too, marked)
   python scripts/dev/tasks.py brief <id>            # the <= 30 line session prompt for one card
   python scripts/dev/tasks.py take <id> [--claim <slug>] | done <id> --result "<what>" | apply-op <id> bump|hold|drop|approve [--note ..]
+  python scripts/dev/tasks.py tag <id> [--refresh] [--add kind:ref --line "<one line>"]   # state tag + LATEST pointers (TASK_REFINEMENT.md)
+  python scripts/dev/tasks.py stale [--refresh]     # ready/active cards whose scope paths changed after their pointers were refreshed
   python scripts/dev/tasks.py sweep [--apply]       # cards whose registry rows are all CLOSED/WONTFIX -> done
 
 One JSON file per card in MyTradingSys/system/tasks/ (no merge conflicts; ships with sync.py like claims and the desk board).
@@ -25,11 +27,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.dont_write_bytecode = True
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import task_state as TS
 REPO = Path(__file__).resolve().parents[2]
 DIR = "MyTradingSys/system/tasks"
 BUGS = "MyTradingSys/research/BUGS.md"
 LAYER_INDEX = "MyTradingSys/system/layer_index.json"
-MUTATING = ("new", "check", "take", "tried", "done", "apply-op", "sweep", "flag")
+MUTATING = ("new", "check", "take", "tried", "done", "apply-op", "sweep", "flag", "tag", "stale")
 
 STATES = ("raw", "refined", "ready", "active", "blocked", "done", "dropped")
 LIVE = ("ready", "active")                      # states that must satisfy the Definition of Ready
@@ -356,10 +360,15 @@ def cmd_check(a):
         if not miss:
             if c["state"] in ("raw", "refined"):
                 c.update(state="ready", asks="")
+                TS.refresh(c, REPO, now())
                 save(REPO, c)
                 print(f"{c['id']}: READY (promoted)")
-            elif a.id:
-                print(f"{c['id']}: {c['state']} and passes")
+            else:
+                late = TS.overdue(c, REPO)
+                if late and not a.id:
+                    bad += 1
+                if late or a.id:
+                    print(f"{c['id']}: {c['state']} and passes" + (f" but STALE: {late}" if late else ""))
         elif a.id or c["state"] in LIVE:
             bad += c["state"] in LIVE
             if c["state"] in LIVE and a.demote:
@@ -380,6 +389,10 @@ def cmd_lint(a):
             errs.append(f"{c['id']}: unknown state {c['state']!r}")
         elif c["state"] in LIVE:
             errs += [f"{c['id']} ({c['state']}): {m}" for m in problems(c, cards, reg)]
+            if c["state"] == "ready":
+                late = TS.overdue(c, REPO)
+                if late:
+                    errs.append(f"{c['id']} (ready): STALE {late}; run `tasks.py tag {c['id']} --refresh` after re-reading the card")
         if c["id"] + ".json" != path_of(REPO, c["id"]).name:
             errs.append(f"{c['id']}: file name differs from id")
     print("\n".join(errs) if errs else f"tasks lint: {len(cards)} cards OK | {status_line(cards)}")
@@ -424,6 +437,35 @@ def cmd_brief(a):
     if miss:
         raise SystemExit(f"tasks: {a.id} is not ready: " + "; ".join(miss))
     print(brief(c))
+    print(chr(10).join(TS.latest_block(c, REPO, TS.state_tag(c, REPO, claim_of(c, open_claims(REPO)), registry(REPO)))))
+
+
+def cmd_tag(a):
+    """Print the state tag + LATEST block; --refresh recomputes the pointers, --add records a manual one (decision, signal...)."""
+    c = get(REPO, a.id)
+    if a.add:
+        kind, _, ref = a.add.partition(":")
+        TS.add_entry(c, kind, ref, now(), a.line or "")
+    if a.refresh or a.add:
+        TS.refresh(c, REPO, now())
+        save(REPO, c)
+    print(chr(10).join(TS.latest_block(c, REPO, TS.state_tag(c, REPO, claim_of(c, open_claims(REPO)), registry(REPO)))))
+
+
+def cmd_stale(a):
+    """Ready/active cards whose scope changed after their pointers were refreshed (exit 1 when any are listed and not refreshed)."""
+    hit = 0
+    for c in load_all(REPO):
+        why = TS.stale_reason(c, REPO)
+        if why:
+            hit += 1
+            print(f"{c['id']} ({c['state']}): {why}" + (" -> refreshed" if a.refresh else ""))
+            if a.refresh:
+                TS.refresh(c, REPO, now())
+                save(REPO, c)
+    if not hit:
+        print("stale: every ready/active card's pointers match its scope")
+    return 1 if hit and not a.refresh else 0
 
 
 def cmd_take(a):
@@ -453,6 +495,9 @@ def cmd_done(a):
     if c.get("flow"):
         raise SystemExit("tasks: flow cards close through lab_flow.py finish (evidence receipt required)")
     c.update(state="done", result=a.result, closed=now())
+    head = TS.git(REPO, "rev-parse", "--short", "HEAD")
+    if head:   # base the work was done on; the ship commit that carries this card becomes the tag (SHIPPED@<sha>)
+        TS.add_entry(c, "ship", head, c["closed"], a.result)
     save(REPO, c)
     print(f"{a.id}: done")
 
@@ -559,6 +604,15 @@ def main(argv=None):
     o.add_argument("op", choices=("bump", "hold", "drop", "approve", "release", "retry"))
     o.add_argument("--note")
     o.set_defaults(f=cmd_apply_op)
+    tg = sp.add_parser("tag")
+    tg.add_argument("id")
+    tg.add_argument("--refresh", action="store_true")
+    tg.add_argument("--add", help="kind:ref, kind one of " + "|".join(TS.KINDS))
+    tg.add_argument("--line", help="one-line note for --add")
+    tg.set_defaults(f=cmd_tag)
+    st = sp.add_parser("stale")
+    st.add_argument("--refresh", action="store_true", help="recompute pointers of every stale card (after re-reading it)")
+    st.set_defaults(f=cmd_stale)
     s = sp.add_parser("sweep")
     s.add_argument("--apply", action="store_true")
     s.set_defaults(f=cmd_sweep)

@@ -16,12 +16,22 @@
   "goal": "Prove or disprove that the 1m klines, funding, footprint and daily files the studies read are complete, unique, internally consistent and read with the right time unit; measure what each defect does to published event counts.",
   "id": "dsa-audit-01-data-forensics",
   "lane": "DSA-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "0e8d687e claim dsa-audit-01-data-forensics",
+      "ref": "MyTradingSys/system/claims/dsa-audit-01-data-forensics.md",
+      "utc": "2026-10-16T06:29:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:27Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
     "MyTradingSys/backtest/bt/bt_data.py"
@@ -38,6 +48,7 @@
     "F:/AIBridge and scripts/aibridge",
     "changing any verdict, ledger or pre-registered bar"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
   "state": "ready",
