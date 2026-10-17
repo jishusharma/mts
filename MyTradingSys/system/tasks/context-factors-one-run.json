@@ -1,71 +1,71 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [
-    "python -m pytest MyTradingSys/research/context_factors_pit_2026-10-16 -q",
-    "python -m pytest MyTradingSys/research/context_null_2026-10-16 -q",
-    "python scripts/dev/lookahead_lint.py",
-    "python scripts/dev/run_all_tests.py --quick"
-  ],
-  "created": "2026-10-16T16:47:31Z",
-  "depends_on": [
-    "context-factors-pit-audit"
-  ],
-  "done_when": "CROSS_ENGINE.md and episodes.csv committed before any outcome file; RESULT.md with the 14-cell table (verdict words per PRE_REG_V2 s.4, day- and week-clustered t, MDE_real, kappa); 14 VERDICTS.csv rows; lint and quick gate green; shipped.",
-  "est_turns": 30,
-  "from_inbox": "",
-  "goal": "Run research/context_factors_pit_2026-10-16/PRE_REG_V2.md once, as written: count-only cross-engine agreement with the Opus frames first (CROSS_ENGINE.md), then the ladder outcome per episode and the 14 cells against context_null matched controls in day units with the realised-MDE verdict rule; RESULT.md + 14 verdicts.py rows.",
-  "id": "context-factors-one-run",
-  "lane": "SONNET",
-  "layers": [],
-  "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. Zero operator input: PRE_REG_V2 s.0-7 name every default. Four cells are powered by design (F1, F2 both sides); the other ten are computed and printed, INCONCLUSIVE or FAIL-by-realised-MDE only. PRE_REG.md (episode units) is frozen and is never run. The folder is context_factors_pit_2026-10-16 because research/context_factors_2026-10-16 on fast-track is the Opus run of the same prompt (its PRE_REG was read once); read it, never write there.",
-  "prio": 2,
-  "refine_tries": 0,
-  "refined_by": "",
-  "refs": [
-    "research/context_factors_pit_2026-10-16/PRE_REG_V2.md",
-    "research/context_factors_pit_2026-10-16/COMPARISON.md"
-  ],
-  "result": "",
-  "scope_in": [
-    "MyTradingSys/research/context_factors_pit_2026-10-16/ (outcome.py, test_outcome.py, episodes.csv, RESULT.md)",
-    "MyTradingSys/research/context_null_2026-10-16/context_null.py: ONE optional outcome= argument to run() + test",
-    "scripts/dev/run_extra_tests.py: add test_outcome.py",
-    "MyTradingSys/research/VERDICTS.csv via verdicts.py add",
-    "MyTradingSys/research/context_factors_pit_2026-10-16/CROSS_ENGINE.md"
-  ],
-  "scope_out": [
-    "any parameter change in context_asof.py or PRE_REG.md",
-    "VALIDATION/HOLDOUT bars",
-    "pit_levels_2026-10-16/",
-    "pairs, thresholds or fields beyond the 14 cells",
-    "live-path code",
-    "a second run",
-    "MyTradingSys/research/context_factors_2026-10-16/ (the Opus run: read-only; run_dev.py vec may be executed, nothing written)",
-    "PRE_REG.md and PRE_REG_V2.md of this folder (frozen)"
-  ],
-  "size": "M",
-  "sources": [
-    "research/context_factors_pit_2026-10-16/PRE_REG.md (sections 0-9)",
-    "research/context_factors_pit_2026-10-16/CONTEXT_FACTORS_SPEC.md",
-    "research/context_factors_pit_2026-10-16/EPISODE_COUNTS.md",
-    "research/context_null_2026-10-16/context_null.py:163-276 run()",
-    "backtest/research_kit.py:102-146 power_check, holm"
-  ],
-  "state": "blocked",
-  "steps": [
-    "Confirm AUDIT_BEFORE_RUN.md exists in the folder with the word OK (card context-factors-pit-audit); on FIX-FIRST write BLOCKED.md and stop. Record the sha of context_asof.py and PRE_REG_V2.md.",
-    "python run_compare.py (grid_context.csv, gitignored) and python episode_counts.py; counts must equal EPISODE_COUNTS.md; print the day table and check it equals PRE_REG_V2.md s.2 (a mismatch = BLOCKED).",
-    "Cross-engine step (PRE_REG_V2 s.5): rebuild the Opus frames read-only with `python MyTradingSys/research/context_factors_2026-10-16/run_dev.py vec` (never edit that folder), join on (utc_close, side), write CROSS_ENGINE.md with agreement % and kappa per factor pair; commit 'context-factors: cross-engine agreement (no outcome)'.",
-    "Write episodes.csv (PRE_REG.md s.5), commit 'context-factors: episode ledger (no outcome)'.",
-    "outcome.py + test_outcome.py (PRE_REG.md s.2, s.7): the test fails on a stub that returns target-first at least once, then passes; register test_outcome.py in scripts/dev/run_extra_tests.py.",
-    "context_null.py: ONE optional outcome= argument to run() + test; nothing else changes there.",
-    "Run once. For each of the 14 cells compute E, SE_day, SE_week, t, MDE_real, sub-period signs; apply PRE_REG_V2 s.4 verbatim (Holm m = 59 or the larger recount, z 3.34); add '(definition-fragile)' where kappa < 0.4.",
-    "Write RESULT.md (verdict table first), EXPOSURE_LEDGER.csv; verdicts.py add 14 rows with the s.4 kill scope; lookahead_lint.py on the folder; run_all_tests.py --quick; ship."
-  ],
-  "tests": "test_outcome.py: stop exit with a gap (fill at min(open, stop)), target exit, both-touched bar = stop, 24h time exit, dropped entry, hand numbers; test_context_null: outcome=None unchanged; the 18 test_context_asof tests stay green",
-  "title": "Context factors: one-run filter verdicts vs context_null (PRE_REG frozen)",
-  "weight": "CRUCIAL",
-  "worker": "session"
+ "approved_by": "",
+ "asks": "",
+ "commands": [
+  "python -m pytest MyTradingSys/research/context_factors_pit_2026-10-16 -q",
+  "python -m pytest MyTradingSys/research/context_null_2026-10-16 -q",
+  "python scripts/dev/lookahead_lint.py",
+  "python scripts/dev/run_all_tests.py --quick"
+ ],
+ "created": "2026-10-16T16:47:31Z",
+ "depends_on": [
+  "context-factors-pit-audit"
+ ],
+ "done_when": "CROSS_ENGINE.md and episodes.csv committed before any outcome file; RESULT.md with the 14-cell table (verdict words per PRE_REG_V2 s.4, day- and week-clustered t, MDE_real, kappa); 14 VERDICTS.csv rows; lint and quick gate green; shipped.",
+ "est_turns": 30,
+ "from_inbox": "",
+ "goal": "Run research/context_factors_pit_2026-10-16/PRE_REG_V2.md once, as written: count-only cross-engine agreement with the Opus frames first (CROSS_ENGINE.md), then the ladder outcome per episode and the 14 cells against context_null matched controls in day units with the realised-MDE verdict rule; RESULT.md + 14 verdicts.py rows.",
+ "id": "context-factors-one-run",
+ "lane": "SONNET",
+ "layers": [],
+ "live_path": false,
+ "note": "STAYS BLOCKED: defect, not a hold: its audit context-factors-pit-audit ended FIX-FIRST on items 1-2 (664cf00a). [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. Zero operator input: PRE_REG_V2 s.0-7 name every default. Four cells are powered by design (F1, F2 both sides); the other ten are computed and printed, INCONCLUSIVE or FAIL-by-realised-MDE only. PRE_REG.md (episode units) is frozen and is never run. The folder is context_factors_pit_2026-10-16 because research/context_factors_2026-10-16 on fast-track is the Opus run of the same prompt (its PRE_REG was read once); read it, never write there.",
+ "prio": 2,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refs": [
+  "research/context_factors_pit_2026-10-16/PRE_REG_V2.md",
+  "research/context_factors_pit_2026-10-16/COMPARISON.md"
+ ],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/research/context_factors_pit_2026-10-16/ (outcome.py, test_outcome.py, episodes.csv, RESULT.md)",
+  "MyTradingSys/research/context_null_2026-10-16/context_null.py: ONE optional outcome= argument to run() + test",
+  "scripts/dev/run_extra_tests.py: add test_outcome.py",
+  "MyTradingSys/research/VERDICTS.csv via verdicts.py add",
+  "MyTradingSys/research/context_factors_pit_2026-10-16/CROSS_ENGINE.md"
+ ],
+ "scope_out": [
+  "any parameter change in context_asof.py or PRE_REG.md",
+  "VALIDATION/HOLDOUT bars",
+  "pit_levels_2026-10-16/",
+  "pairs, thresholds or fields beyond the 14 cells",
+  "live-path code",
+  "a second run",
+  "MyTradingSys/research/context_factors_2026-10-16/ (the Opus run: read-only; run_dev.py vec may be executed, nothing written)",
+  "PRE_REG.md and PRE_REG_V2.md of this folder (frozen)"
+ ],
+ "size": "M",
+ "sources": [
+  "research/context_factors_pit_2026-10-16/PRE_REG.md (sections 0-9)",
+  "research/context_factors_pit_2026-10-16/CONTEXT_FACTORS_SPEC.md",
+  "research/context_factors_pit_2026-10-16/EPISODE_COUNTS.md",
+  "research/context_null_2026-10-16/context_null.py:163-276 run()",
+  "backtest/research_kit.py:102-146 power_check, holm"
+ ],
+ "state": "blocked",
+ "steps": [
+  "Confirm AUDIT_BEFORE_RUN.md exists in the folder with the word OK (card context-factors-pit-audit); on FIX-FIRST write BLOCKED.md and stop. Record the sha of context_asof.py and PRE_REG_V2.md.",
+  "python run_compare.py (grid_context.csv, gitignored) and python episode_counts.py; counts must equal EPISODE_COUNTS.md; print the day table and check it equals PRE_REG_V2.md s.2 (a mismatch = BLOCKED).",
+  "Cross-engine step (PRE_REG_V2 s.5): rebuild the Opus frames read-only with `python MyTradingSys/research/context_factors_2026-10-16/run_dev.py vec` (never edit that folder), join on (utc_close, side), write CROSS_ENGINE.md with agreement % and kappa per factor pair; commit 'context-factors: cross-engine agreement (no outcome)'.",
+  "Write episodes.csv (PRE_REG.md s.5), commit 'context-factors: episode ledger (no outcome)'.",
+  "outcome.py + test_outcome.py (PRE_REG.md s.2, s.7): the test fails on a stub that returns target-first at least once, then passes; register test_outcome.py in scripts/dev/run_extra_tests.py.",
+  "context_null.py: ONE optional outcome= argument to run() + test; nothing else changes there.",
+  "Run once. For each of the 14 cells compute E, SE_day, SE_week, t, MDE_real, sub-period signs; apply PRE_REG_V2 s.4 verbatim (Holm m = 59 or the larger recount, z 3.34); add '(definition-fragile)' where kappa < 0.4.",
+  "Write RESULT.md (verdict table first), EXPOSURE_LEDGER.csv; verdicts.py add 14 rows with the s.4 kill scope; lookahead_lint.py on the folder; run_all_tests.py --quick; ship."
+ ],
+ "tests": "test_outcome.py: stop exit with a gap (fill at min(open, stop)), target exit, both-touched bar = stop, 24h time exit, dropped entry, hand numbers; test_context_null: outcome=None unchanged; the 18 test_context_asof tests stay green",
+ "title": "Context factors: one-run filter verdicts vs context_null (PRE_REG frozen)",
+ "weight": "CRUCIAL",
+ "worker": "session"
 }
