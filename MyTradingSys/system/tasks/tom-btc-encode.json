@@ -16,7 +16,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "PARKED 2026-10-18 (not stamped): depends_on tom-btc-eye-read is blocked (operator is reader 1) and tom-btc-event-study (T4) was dropped, so no concept 'separated'. ROUTED 2026-10-13 to GPT lab; edits Java SpikeFadeDetector so the lab needs a build lane. Re-scope after T3.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=Gemini Flash high + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. PARKED 2026-10-18 (not stamped): depends_on tom-btc-eye-read is blocked (operator is reader 1) and tom-btc-event-study (T4) was dropped, so no concept 'separated'. ROUTED 2026-10-13 to GPT lab; edits Java SpikeFadeDetector so the lab needs a build lane. Re-scope after T3.",
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
@@ -41,5 +41,6 @@
     "Spec the rules from T3/T4 first, then code, flag-off output identical."
   ],
   "tests": "flag-off golden identical on BTC; one synthetic leg fires with each entry path",
-  "title": "Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at the level, targets node / impulse start)"
+  "title": "Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at the level, targets node / impulse start)",
+  "weight": "IMPORTANT"
 }

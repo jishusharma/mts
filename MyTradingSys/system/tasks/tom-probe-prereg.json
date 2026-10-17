@@ -18,7 +18,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | opus 2026-10-11: DIAG_BTC says S SKIP, Q SKIP (thin), M GO. Scope reduced to the M arms (partials, trail, re-entry, no timeout) with stops wide enough to clear BTC noise+fees per TOM_LAYER_V2_SPEC; S/Q arms parked until the v2 encoding exists.",
+  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | opus 2026-10-11: DIAG_BTC says S SKIP, Q SKIP (thin), M GO. Scope reduced to the M arms (partials, trail, re-entry, no timeout) with stops wide enough to clear BTC noise+fees per TOM_LAYER_V2_SPEC; S/Q arms parked until the v2 encoding exists.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -49,5 +49,6 @@
   ],
   "tests": "python scripts/dev/tasks.py lint stays green with the new runner card (fails if the card misses tests/done_when).",
   "title": "Pre-register the surviving S/Q/M/F arms and write their runner card",
+  "weight": "CRUCIAL",
   "worker": "agent"
 }

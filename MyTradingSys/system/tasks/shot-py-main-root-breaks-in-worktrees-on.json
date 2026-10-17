@@ -12,7 +12,8 @@
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "fixed by 514bb420 (main_root handles git<2.31 flag echo), in origin/fast-track",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -22,7 +23,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "shot.py main_root() breaks in worktrees on git < 2.31: --path-format=absolute is echoed as output, store path becomes garbage (OSError WinError 123)"

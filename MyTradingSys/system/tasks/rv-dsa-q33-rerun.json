@@ -13,7 +13,7 @@
   "lane": "DSA-NUC",
   "layers": [],
   "live_path": false,
-  "note": "PARKED: guidance matrix layer is parked (plan s3 Parked) and the 1m perp fetch is heavy. LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] PARKED: guidance matrix layer is parked (plan s3 Parked) and the 1m perp fetch is heavy. LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -38,5 +38,6 @@
     "Write the numbers to the named file; change no code."
   ],
   "tests": "",
-  "title": "RV-DSA Q33 matrix re-run on JIS-NUC and diff against the committed cells (host=JIS-NUC)"
+  "title": "RV-DSA Q33 matrix re-run on JIS-NUC and diff against the committed cells (host=JIS-NUC)",
+  "weight": "ROUTINE"
 }

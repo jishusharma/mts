@@ -15,7 +15,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch: no, protocol skipped]",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -31,5 +31,6 @@
   "steps": [],
   "tests": "",
   "title": "Audit Tom engine read 2026-10-17 10:03Z (alert #413): (1) ct_long @ weekly_val 81603.48 stays WAIT_PROOF while price 81537.8 is 66 pts BELOW the zone with new_shorts quad: should it read 'zone lost, unproven' instead of a pending long; (2) card says cvd_aligned True while snapshot conditions.cvd_trade_flow_aligned False and PROOF_DIR says contradiction; (3) structure 15m swing 81636.6/81630.1 (14 pts) and 1d swing flagged stale. Source: live_reads/2026-10-17_live_market_1017 TOM read. Report only, no live-code fix",
+  "weight": "IMPORTANT",
   "worker": ""
 }

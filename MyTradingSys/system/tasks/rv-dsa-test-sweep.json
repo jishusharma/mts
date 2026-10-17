@@ -16,7 +16,7 @@
   "lane": "DSA-NUC",
   "layers": [],
   "live_path": false,
-  "note": "PARKED: every ship already runs these tests (run_all_tests --quick); a second sweep adds no information. LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] PARKED: every ship already runs these tests (run_all_tests --quick); a second sweep adds no information. LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -40,5 +40,6 @@
     "Write the numbers to the named file; change no code."
   ],
   "tests": "",
-  "title": "RV-DSA test sweep: run the 7 revalidation test files and report counts (host=JIS-NUC)"
+  "title": "RV-DSA test sweep: run the 7 revalidation test files and report counts (host=JIS-NUC)",
+  "weight": "ROUTINE"
 }

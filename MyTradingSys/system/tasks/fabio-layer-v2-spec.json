@@ -16,7 +16,7 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "Alignment review 2026-10-13: ledger audit is FIX-FIRST (3 HIGH, 4 MED; 8 entries vs goal 20). Spec waits for the fabio-ledger-* fixes and minute timestamps, as Tom's spec waited for its ledger repairs. Release with apply-op release. 2026-10-15 q12: home-market chain paused (p5) per operator answer; raise again when crypto-native cards are done.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] Alignment review 2026-10-13: ledger audit is FIX-FIRST (3 HIGH, 4 MED; 8 entries vs goal 20). Spec waits for the fabio-ledger-* fixes and minute timestamps, as Tom's spec waited for its ledger repairs. Release with apply-op release. 2026-10-15 q12: home-market chain paused (p5) per operator answer; raise again when crypto-native cards are done.",
   "pinned": false,
   "prio": 5,
   "refine_tries": 0,
@@ -44,5 +44,6 @@
   ],
   "tests": "Spec maps 5 ledger trades to rule paths.",
   "title": "Fabio layer v2 spec, part A: setup families + sourced rules from his ledger (Opus research)",
+  "weight": "IMPORTANT",
   "worker": "session"
 }

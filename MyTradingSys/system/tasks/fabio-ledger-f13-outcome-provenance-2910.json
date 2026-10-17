@@ -13,7 +13,7 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers]",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -26,5 +26,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "fabio-ledger: F13 outcome provenance (-2910 vs stop -1760)"
+  "title": "fabio-ledger: F13 outcome provenance (-2910 vs stop -1760)",
+  "weight": "IMPORTANT"
 }

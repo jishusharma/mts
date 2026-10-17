@@ -16,7 +16,7 @@
     "krown"
   ],
   "live_path": false,
-  "note": "Unparked 2026-10-17 by q-krown-saturation, q-krown-stop, q-krown-volume-venue. Was left blocked: moved to refined by backlog-refine-1017; waits on krown-recall-check (depends_on).",
+  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] Unparked 2026-10-17 by q-krown-saturation, q-krown-stop, q-krown-volume-venue. Was left blocked: moved to refined by backlog-refine-1017; waits on krown-recall-check (depends_on).",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -47,5 +47,6 @@
   ],
   "tests": "docs/run lane: DEV_RESULTS.md plus the frozen-config hash; the runner reuses layers/runner.py forward_return_stats",
   "title": "Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: DEV_RESULTS.md with N, power, CI per H-id and every variant in the trial ledger",
+  "weight": "CRUCIAL",
   "worker": "session"
 }

@@ -14,7 +14,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=Gemini Argon high + Haiku re-derive + 2nd vendor on first use]",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -44,5 +44,6 @@
   ],
   "tests": "fail-first tests: citing card refused on UNCHECKED, allowed on VERIFIED-C1; tag expires on changed hash",
   "title": "Lab: a safe-to-build-on tag per lab result (UNCHECKED, MACHINE-OK, VERIFIED-C1, VERIFIED-C2, DISPUTED) read by tasks.py at card start",
+  "weight": "CRUCIAL",
   "worker": "session"
 }

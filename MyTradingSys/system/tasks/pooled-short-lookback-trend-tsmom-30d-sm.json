@@ -14,7 +14,7 @@
     "volume_candles_ma"
   ],
   "live_path": false,
-  "note": "2026-10-15 q-pub-trend-holdout answered Yes: one pooled pre-registered hypothesis, holdout read once. Pre-register first (item 0a-0f gate, q13), then run.",
+  "note": "[PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] 2026-10-15 q-pub-trend-holdout answered Yes: one pooled pre-registered hypothesis, holdout read once. Pre-register first (item 0a-0f gate, q13), then run.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -27,5 +27,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Pooled short-lookback trend (TSMOM 30d, SMA50/100, 4h Donchian 20/10) on sealed 2025-07..2026-09 BTC holdout: pre-register one hypothesis, run once. host=any. Waits on decision q-pub-trend-holdout. Source: research/published_strats_2026-10-13/RESULTS.md"
+  "title": "Pooled short-lookback trend (TSMOM 30d, SMA50/100, 4h Donchian 20/10) on sealed 2025-07..2026-09 BTC holdout: pre-register one hypothesis, run once. host=any. Waits on decision q-pub-trend-holdout. Source: research/published_strats_2026-10-13/RESULTS.md",
+  "weight": "CRUCIAL"
 }

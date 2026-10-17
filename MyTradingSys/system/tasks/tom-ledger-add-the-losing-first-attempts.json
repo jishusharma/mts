@@ -13,7 +13,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -29,5 +29,6 @@
   "state": "blocked",
   "steps": [],
   "tests": "",
-  "title": "Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)"
+  "title": "Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)",
+  "weight": "IMPORTANT"
 }

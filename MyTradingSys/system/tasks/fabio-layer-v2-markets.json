@@ -17,7 +17,7 @@
     "fabio"
   ],
   "live_path": false,
-  "note": "2026-10-15 q12: home-market chain paused (p5) per operator answer; raise again when crypto-native cards are done.",
+  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] 2026-10-15 q12: home-market chain paused (p5) per operator answer; raise again when crypto-native cards are done.",
   "prio": 5,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
@@ -45,5 +45,6 @@
   ],
   "tests": "Every created card passes tasks.py check.",
   "title": "Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)",
+  "weight": "IMPORTANT",
   "worker": "session"
 }

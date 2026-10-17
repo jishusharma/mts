@@ -13,7 +13,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -29,5 +29,6 @@
   "state": "blocked",
   "steps": [],
   "tests": "",
-  "title": "Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set is 2 trades)"
+  "title": "Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set is 2 trades)",
+  "weight": "ROUTINE"
 }

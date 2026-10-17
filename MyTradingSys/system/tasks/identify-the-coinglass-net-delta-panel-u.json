@@ -14,7 +14,7 @@
     "live_engine"
   ],
   "live_path": false,
-  "note": "",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch: no, protocol skipped]",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -27,5 +27,6 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 15m -2.257K vs perp delta); regress panel steps vs Binance perp/spot/aggregate delta"
+  "title": "Identify the CoinGlass Net Delta panel unit and scope: 4 reads in a row NOT_IN_DATA (8h 4.181K, 30m -8.366K, 15m -2.257K vs perp delta); regress panel steps vs Binance perp/spot/aggregate delta",
+  "weight": "ROUTINE"
 }
