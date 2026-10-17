@@ -846,6 +846,14 @@
     "MyTradingSys/research/wavetrend_2026-10-17/wt_parity_ref.py": {
       "disp": "TOOL",
       "why": "Throw-away pure-python WaveTrend reference for the parity contract (seed sensitivity, d=0, cross equality, gap, look-ahead); covered by test_wt_parity_ref.py, no live imports; not a golden source."
+    },
+    "MyTradingSys/backtest/layers/wavetrend/wavetrend.py": {
+      "disp": "PARKED",
+      "why": "WaveTrend causal observation module (wt1/wt2/zone/cross with bar-close available_at); tested against golden DEV fixtures, no caller yet: the DEV count/atlas study cards (research/wavetrend_2026-10-17/ATLAS_STUDY_SPEC.md) import it; observation only, no live path."
+    },
+    "MyTradingSys/backtest/layers/wavetrend/make_golden.py": {
+      "disp": "REPRO",
+      "why": "Regenerates wavetrend/golden_wt_btcusdt_1h_dev_2022-01.csv from fixture_btcusdt_1h_dev_2022-01.csv with pandas (independent of wavetrend.py); run by hand (python make_golden.py), named in FORMULAS.md section 20.4."
     }
   },
   "MyTradingSys/research/layer_lab/volume_event_table/event_table.py": {
