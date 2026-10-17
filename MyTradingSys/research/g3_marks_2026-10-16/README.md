@@ -1,6 +1,6 @@
 # G3 marking pack, first batch (built 2026-10-16)
 
-Status: NOT READY TO MARK until the blindness fixes are audited (g3-pack-audit-rerun) and the charts are rebuilt. 213 blind windows over 11 mark units (13 catalogue rows). Definitions: `../layer_rebuild_2026-10-15/READER_PROTOCOL.md` (read it first). Design: `../observer_2026-10-15/OBSERVER_REPORT.md` G3 brief (revised 2026-10-16).
+Status: READY TO MARK (blindness fixes audited, 213 charts rebuilt 2026-10-17 from the fixed g3_pack.py). 213 blind windows over 11 mark units (13 catalogue rows). Definitions: `../layer_rebuild_2026-10-15/READER_PROTOCOL.md` (read it first). Design: `../observer_2026-10-15/OBSERVER_REPORT.md` G3 brief (revised 2026-10-16).
 Data rule: DEV only. Footprint rows (Tom/Fabio) read F:/MTS/data/orderflow_1m 2024-12-02..2025-03-31, which is the Tom footprint track's DEV per the task brief but lies inside the standard VALIDATION dates (2024-07-01..2025-06-30); the exposure is logged in `gross_effect_screen_2026-10-15/EXPOSURE_LEDGER.csv`. Daily/weekly rows read daily klines 2021-03-01..2024-06-30 (standard DEV). The loaders cannot open a later file or row (test_dev_fences_never_read_later_data).
 
 ## Files

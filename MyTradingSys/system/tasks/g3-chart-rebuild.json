@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T09:00:58Z",
   "commands": [
     "python MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py draw",
     "python -c \"import hashlib;print(hashlib.sha256(open('MyTradingSys/research/g3_marks_2026-10-16/ANSWER_KEY_CLOSED/KEY.csv','rb').read()).hexdigest())\""
@@ -14,6 +15,12 @@
   "id": "g3-chart-rebuild",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "drawn=213 charts, KEY.csv sha unchanged 0bfdf336...9402e6, README READY TO MARK",
+      "ref": "83d4e006",
+      "utc": "2026-10-17T09:00:58Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T07:44:12Z",
   "refs": [],
-  "result": "",
+  "result": "drawn=213 charts, KEY.csv sha unchanged 0bfdf336...9402e6, README READY TO MARK",
   "scope_in": [
     "MyTradingSys/research/g3_marks_2026-10-16/README.md (status line only); output folder F:/MTS/data/g3_pack_2026-10-16/charts (not in git)"
   ],
@@ -50,7 +57,7 @@
     "MyTradingSys/research/layer_lab/reports/2026-10-17_g3-blindness-audit-rerun.md",
     "MyTradingSys/research/g3_marks_2026-10-16/README.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python -m pytest test_g3_pack.py -q -p no:cacheprovider: 14 pass",
     "delete old PNGs in the charts folder, then run draw (draw reads WINDOWS.csv, never build)",
