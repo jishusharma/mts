@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T20:29:24Z",
   "commands": [],
   "created": "2026-10-17T19:01:22Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "24 passed; MyTradingSys/research/layer_lab/reports/2026-10-17_lab-crossvendor-stage.md",
+      "ref": "6fa3617b",
+      "utc": "2026-10-17T20:29:24Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -35,7 +42,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T19:01:23Z",
   "refs": [],
-  "result": "",
+  "result": "24 passed; MyTradingSys/research/layer_lab/reports/2026-10-17_lab-crossvendor-stage.md",
   "scope_in": [
     "scripts/dev/lab_flow.py",
     "scripts/dev/test_lab_flow.py",
@@ -49,7 +56,7 @@
   "scope_sha": "9649674dccbb",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add a vendor field to each stage tuple and allow a gemini stage using agy.exe --print with the report inlined (headless cannot read files)",
     "finish writes model id into the receipt",
