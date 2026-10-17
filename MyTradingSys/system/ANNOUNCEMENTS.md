@@ -41,5 +41,10 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 - Applies to: the CODEX lane and anyone starting that card.
 - Until: the card is re-scoped (its requested dates are after the DEV cutoff and the sandbox blocks the Dukascopy download; DEV-only dates and the fetch as a JIS-NB desk task).
 
+### A-20261018-7 INFO Image reads by non-producer models (Gemini pilot 2026-10-18)
+- Applies to: any session that sends images to a non-producer model (Gemini, GPT, any vendor other than the one that made the claim).
+- What: (1) blind reader only, never show the model our claim and ask if it is right (it agreed with the claim given, 'unreadable' used 0 times in 7 calls); (2) every schema has a required null/'unreadable' option, a number for a hidden field is an invented value; (3) crop two-panel images into panels first; (4) compare model output to our records in code; (5) contested values (25200 vs 25206) get a larger crop and a human/Argon read.
+- Detail: `MyTradingSys/system/roles/lab_guy.md` ("Using Gemini ... to read images"); pilot data `research/lab_guy/pilots/2026-10-18_gemini_frame_read/`. One pilot, not a catch rate.
+
 ## EXPIRED
 (none yet)
