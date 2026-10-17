@@ -1006,9 +1006,9 @@ Applied: 2026-10-17: 30 minutes is the interim rule. A session designs the corre
 Your note on q-host-sched-tasks said "no more schedulers in any device, no routines, super sessions now". How far does that go?
 
 Recommended: Remove the legacy tasks now; keep AutoDeploy, Supervisor and the dispatcher until a super-session replacement for each is built and tested
-Answer: (none yet)
-Operator note (verbatim): (none yet)
-Applied: (not yet)
+Answer: Remove every scheduled task on every device now (deploys, revival and the relay stop until super sessions cover them)
+Operator note (verbatim): "q-sched-scope: remove every scheduled task on every device now, accepting that deploys, revival and the relay stop."
+Applied: 2026-10-17: JIS-NUC: MTS-CodexLab, MTS-DailyHygiene, MTS-DispatchGate unregistered (XML backups in F:/MTS/backups/sched_tasks_2026-10-17_NUC; re-register with Register-ScheduledTask -Xml); MTS-NUC-Worker is disabled and refused deletion (access denied), left disabled. JIS-NB: card host-legacy-tasks-unregister widened to every MTS task there (export first). Stopped by this: auto-deploy, process revival, relay dispatch, the Codex lab runner.
 
 ```json
 {
@@ -1022,6 +1022,7 @@ Applied: (not yet)
   "Remove the legacy tasks and Live-Health and Backup too; keep only AutoDeploy, Supervisor and the dispatcher",
   "Remove every scheduled task on every device now (deploys, revival and the relay stop until super sessions cover them)"
  ],
- "recommended": "Remove the legacy tasks now; keep AutoDeploy, Supervisor and the dispatcher until a super-session replacement for each is built and tested"
+ "recommended": "Remove the legacy tasks now; keep AutoDeploy, Supervisor and the dispatcher until a super-session replacement for each is built and tested",
+ "answer": "Remove every scheduled task on every device now (deploys, revival and the relay stop until super sessions cover them)"
 }
 ```
