@@ -1,4 +1,4 @@
-"""Reusable lab flows: ordered lenses, evidence gates and economical context."""
+﻿"""Reusable lab flows: ordered lenses, evidence gates and economical context."""
 import json
 import sys
 from pathlib import Path
@@ -179,3 +179,32 @@ def test_status_lines_without_evidence_are_rejected(repo):
     p.write_text(f"Report for card {a['id']}\nC1: PASS\nC2: PASS\n", encoding="utf-8")
     with pytest.raises(ValueError, match="evidence"):
         F.finish(repo, a["id"], str(p.relative_to(repo)), "PASS", "no evidence")
+
+
+def test_data_scope_hash_changes_when_data_file_changes(repo, monkeypatch, tmp_path):
+    data_root = tmp_path / "data"
+    data_root.mkdir()
+    data_file = data_root / "dev.csv"
+    data_file.write_text("first", encoding="utf-8")
+    monkeypatch.setattr(F, "DATA_ROOT", data_root, raising=False)
+    scope = [str(data_file)]
+    before = F.fingerprint(repo, ["source.md"], scope)
+    data_file.write_text("second", encoding="utf-8")
+    after = F.fingerprint(repo, ["source.md"], scope)
+    assert before != after
+    data_key = "data:dev.csv"
+    assert before[data_key] != after[data_key]
+    cards = F.launch(repo, spec() | {"data_scope": [str(data_file)]})
+    done = complete(repo, cards[0])
+    assert done["flow_receipt"]["sources"][data_key] == after[data_key]
+
+
+def test_holdout_data_path_is_refused(repo, monkeypatch, tmp_path):
+    data_root = tmp_path / "data"
+    holdout = data_root / "holdout" / "secret.csv"
+    holdout.parent.mkdir(parents=True)
+    holdout.write_text("not for lab", encoding="utf-8")
+    monkeypatch.setattr(F, "DATA_ROOT", data_root, raising=False)
+    with pytest.raises(ValueError, match="holdout"):
+        F.safe_file(repo, str(holdout))
+

@@ -3,10 +3,10 @@
   "plan": "plus",
   "week_resets": 1792677805,
   "week_used": 34.0,
-  "window_resets": 1792281070,
+  "window_resets": 1792281071,
   "window_used": 1.0
  },
- "at": "2026-10-17T20:00:19Z",
+ "at": "2026-10-17T20:19:00Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,9 +20,24 @@
   "astra_runs": 0,
   "week_pts": 22.0,
   "window_pts": 0.0,
-  "window_runs": 1
+  "window_runs": 2
  },
  "runs": [
+  {
+   "at": "2026-10-17T20:17:35Z",
+   "card": "lab-data-pin-hash",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 79,
+   "tokens_out": 6304,
+   "tokens_total": 689101,
+   "tokens_uncached": 50093,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-17T19:58:58Z",
    "card": "q76-dev-ext-power-check",
@@ -157,21 +172,6 @@
    "tokens_uncached": 54264,
    "week_pts": 1.0,
    "window_pts": 11.0
-  },
-  {
-   "at": "2026-10-17T00:00:09Z",
-   "card": "imb-filter-audit-1-map",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6.1-sol",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 122,
-   "tokens_out": 7344,
-   "tokens_total": 594269,
-   "tokens_uncached": 67629,
-   "week_pts": 1.0,
-   "window_pts": 3.0
   }
  ]
 }
