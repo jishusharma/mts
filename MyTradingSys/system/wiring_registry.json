@@ -854,6 +854,11 @@
     "MyTradingSys/research/wavetrend_2026-10-17/select_cells.py": {
       "disp": "TOOL",
       "why": "Deterministic selection of the frozen WaveTrend atlas cells from the count table (PRE_REG s4); run by hand, covered by test_count_events.py."
+    },
+    "MyTradingSys/backtest/layers/trendlines/trendline_core.py": {
+      "disp": "WIRE",
+      "ref": "trendline-count-only",
+      "why": "Causal trend-line detector built and tested (test_trendline_core.py, TRENDLINE_CONTRACT.md v1); nothing runs it yet: the count-only card (DEV counts, no backtest) is the first caller."
     }
   },
   "MyTradingSys/research/layer_lab/volume_event_table/event_table.py": {
