@@ -4,28 +4,65 @@
   "commands": [],
   "created": "2026-10-14T16:42:46Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "research/fabio_date_match_2026-10-18/DATE_MATCH.md with a ranked table (5 rows) and a MATCH/AMBIGUOUS/NOT_IN_DATA verdict; test passes; the ledger is untouched.",
+  "effort": "medium",
+  "est_turns": 12,
   "from_inbox": "",
-  "goal": "",
+  "goal": "Date the Fabio NQ-202512 live session (videos DyS79Eb92Ug / Jpd96fLqr5M) by matching its price path (F6 long 24914 to TP 25001, F11-F14 range 25095-25110, spoken day 15 of October) against free Dukascopy Nasdaq-100 CFD 1m bars for 2025-09-15..2025-12-19. Report only; no ledger edit.",
   "id": "fabio-session-date-price-match",
-  "kind": "run",
-  "lane": "CODEX",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "RV05 H1: record date evidence for Fabio ledger CSV 25-71",
+      "ref": "61cf8a7d3634",
+      "utc": "2026-10-17T18:19:38Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "61cf8a7d3634 RV05 H1: record date evidence for Fabio ledger CSV 25-71",
+      "ref": "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+      "utc": "2026-10-17T18:19:38Z"
+    }
+  ],
   "layers": [
     "fabio"
   ],
   "live_path": false,
-  "note": "",
+  "note": "LANE moved CODEX->SONNET 2026-10-18: Needs network (Dukascopy NQ 1m); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT feeds the Fabio ledger date repair. DISPATCH lane CODEX (JIS-NUC lab): NQ 1m history is NOT in the lab data; the free Dukascopy feed (pre-approved public market data, same code as DAX) is the route. Ledger fill is a later card. Verify: sha + empty git cherry + ls-tree lists files.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T18:44:36Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Fabio: date the DyS79Eb92Ug/Jpd96fLqr5M NQ-202512 session by price-path match against NQ 1m history (F6 24914->25001, F11-F14 25095-25110), then fill entry_time_utc"
+  "scope_in": [
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+    "MyTradingSys/backtest/dax_data.py",
+    "MyTradingSys/backtest/test_dax_data.py"
+  ],
+  "scope_out": [
+    "editing FABIO_TRADE_LEDGER.csv/.md or dax_data.py",
+    "BTC data",
+    "live tree"
+  ],
+  "scope_sha": "61cf8a7d3634",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv:25-28,31 (F6 24914.33 to 25001; F7 25022.75)",
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md:95 (price-path match follow-up)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Test first (red): match_score() on a synthetic 1m path that rises 87 pt in <= 40 min then reaches +181..196 pt scores top, and a flat path scores 0; levels are compared as offsets, not absolute (CFD vs Dec-futures basis).",
+    "Script research/fabio_date_match_2026-10-18/date_match.py imports parse_bi5/HEADERS from dax_data.py, fetches Dukascopy USATECHIDXUSD BID 1m for the weekdays (cache F:/MTS/data/nq_raw), checks 2025-10-15 first (the spoken day), then scans all days in 13:00-15:15 UTC.",
+    "Write DATE_MATCH.md: top 5 day candidates with score, offset pt and minute of the F6 entry; verdict MATCH (best score clearly above second) / AMBIGUOUS / NOT_IN_DATA (instrument not served); state the CFD-vs-futures caveat."
+  ],
+  "tests": "test_date_match.py (new, in the output folder) fails before date_match.py exists, passes after: python -m pytest MyTradingSys/research/fabio_date_match_2026-10-18/test_date_match.py -q",
+  "title": "Fabio: date the DyS79Eb92Ug/Jpd96fLqr5M NQ-202512 session by price-path match against NQ 1m history (F6 24914->25001, F11-F14 25095-25110), then fill entry_time_utc",
+  "worker": "agent"
 }
