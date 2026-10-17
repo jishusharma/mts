@@ -6,7 +6,9 @@ Status of this file: PROPOSED until the operator starts the sessions. Board: `My
 
 ## Quota rules (read `mcp__ccd_session_mgmt__get_usage` at boot and at every sync)
 - Reading on 2026-10-18 for the NUC login (Pro): 5-hour limit 24 % used (about 2 h 48 m to reset), weekly 54 % used, about 5 d 12 h left. NB login: read at its boot (not known here).
-- Weekly cap for this block: end at weekly use +12 points or 75 % absolute, whichever comes first (the NUC login: stop at 66 %). Throttle spawns at 60 % of the 5-hour window, coordinator-only at 70-80 %, stop at 80 % (memory five-hour-window-pacing).
+- Three logins (operator 2026-10-18): the Pro login (about 54 % of its week used), the AWGP login (its weekly limit resets tomorrow, 2026-10-19) and the Max login (resets Wednesday, 2026-10-21). So the weekly pool is not the constraint this week; the 5-hour windows and running out of READY WORK are. Spend order: AWGP and Max first where they fit the machine, the Pro login lightly; coordinators read `get_usage` for their own login at boot and every sync.
+- Pacing rule: keep working steadily through the crunch (slow beats stalled); never run the queue dry. Each coordinator keeps at least 8 ready cards in its lane (CODEX 7+ already) by asking the Session_Planner pass for more before the queue drops below 4; if a login hits 80 % of its 5-hour window it throttles to coordinator-only and the other login or machine takes the cards. Time the heavy phases so a login that resets soon (AWGP tomorrow, Max Wednesday) carries the later phases.
+- Throttle spawns at 60 % of the 5-hour window, coordinator-only at 70-80 %, stop at 80 % (memory five-hour-window-pacing).
 - Cheapest first: Haiku for mechanical checks, Sonnet for implementation, no Opus unless the operator names it (model_guard). GPT lab: 10 runs per 5-hour window, week 34 % used on the last reading; Gemini Flash for cheap passes, Argon (weekly-only pool) only for C2/C3.
 - If one machine runs low, it posts its remaining cards as desk rows for the other, and idles with a one-line signal; it never idles for a reset while the other has budget (CLAUDE.md).
 
