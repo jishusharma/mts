@@ -130,8 +130,8 @@ details.mini>summary{cursor:pointer;color:var(--muted,#6b7280);font-size:.82rem}
 </section>
 
 <section id="layer-sec">
-  <div class="sechead"><h2>Layer Board</h2><span class="muted" style="font-size:.85rem">Every layer being worked on: where it stands and what happens next. Layout waits for your approval.</span></div>
-  <div class="panel tw"><table id="layers"><thead><tr><th>Layer</th><th>Stage</th><th>Indicators</th><th>Setups</th><th>Open rows</th><th>Next</th></tr></thead><tbody></tbody></table></div>
+  <div class="sechead"><h2>Layer Board</h2><span class="muted" style="font-size:.85rem">Where every layer stands and what happens next lives on one page.</span></div>
+  <div class="panel"><a href="https://claude.ai/artifact/7eeXJJ9Sb44LaJeCu8jxfJ" target="_blank" rel="noopener">Open the MTS Layers page</a></div>
 </section>
 
 <section id="dec-sec">
@@ -258,7 +258,6 @@ function renderRoad(){
 }
 const sevRank = s => ({HIGH:0,MED:1,LOW:2,INFO:3,COSMETIC:4}[s] ?? 5);
 renderRoad();
-$("#layers tbody").innerHTML = (D.layers||[]).map(x => `<tr><td><b>${esc(x.name)}</b></td><td>${esc(x.stage)}</td><td>${esc(x.indicators)}</td><td>${esc(x.setups)}</td><td>${x.open_rows}${x.worst?" ("+esc(x.worst)+")":""}${x.open_ids.length?`<div class="muted" style="font-size:.78rem">${esc(x.open_ids.join(", "))}</div>`:""}</td><td>${esc(x.next)}<div class="muted" style="font-size:.78rem">${esc(x.src)}</div></td></tr>`).join("") || `<tr><td colspan="6" class="muted">No layer in active work is recorded.</td></tr>`;
 
 $("#pages tbody").innerHTML = (D.pages||[]).map(x => `<tr><td><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title)}</b></a></td><td class="muted">${esc(x.refresh)}</td><td class="muted">${esc(x.pub)}</td></tr>`).join("") || `<tr><td colspan="3" class="muted">No pages recorded.</td></tr>`;
 

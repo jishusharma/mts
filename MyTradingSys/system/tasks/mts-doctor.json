@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T18:14:54Z",
   "commands": [
     "python scripts/dev/tasks.py check mts-doctor",
     "python scripts/dev/mts_doctor.py --ai-health"
@@ -14,6 +15,12 @@
   "id": "mts-doctor",
   "lane": "JIS-NB",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Shipped 614bbc88 (mts_doctor.py, MTS_DOCTOR.md, first report REPORT_2026-10-17.md) + 1a850",
+      "ref": "4ab57337",
+      "utc": "2026-10-17T18:14:54Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +37,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T08:29:15Z",
   "refs": [],
-  "result": "",
+  "result": "Shipped 614bbc88 (mts_doctor.py, MTS_DOCTOR.md, first report REPORT_2026-10-17.md) + 1a8508f8 follow-up; on origin/fast-track",
   "scope_in": [
     "scripts/dev/ (new mts_doctor.py that collects the signals and writes the report)",
     "MyTradingSys/system/ (a short MTS_DOCTOR.md that says what it checks and how to run it)",
@@ -46,7 +53,7 @@
   "sources": [
     "operator message 2026-10-17: name MTS doctor, repeatable AI-help and project-health check, file as a bug"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write MTS_DOCTOR.md: the checks, inputs, and the report format (date, findings, owner, next step).",
     "Write scripts/dev/mts_doctor.py that gathers the signals read-only and writes the dated report.",
