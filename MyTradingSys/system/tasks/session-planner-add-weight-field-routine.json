@@ -1,61 +1,69 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-17T14:00:25Z",
-  "depends_on": [],
-  "done_when": "python scripts/dev/test_tasks.py passes with the 3 new cases; tasks.py lint OK; session_planner.md Duty 5 names the weight field.",
-  "est_turns": 14,
-  "from_inbox": "",
-  "goal": "tasks.py knows an optional card field weight (ROUTINE|IMPORTANT|CRUCIAL|CRITICAL): check rejects unknown values, brief prints it, so the Session_Planner stops hiding it in note.",
-  "id": "session-planner-add-weight-field-routine",
-  "lane": "SONNET",
-  "latest": [
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "Session_Planner: stepwise refinement with T0 gate and batched Sonnet review before dispatc",
-      "ref": "227a7088268b",
-      "utc": "2026-10-17T14:19:47Z"
-    },
-    {
-      "auto": true,
-      "kind": "report",
-      "line": "227a7088268b Session_Planner: stepwise refinement with T0 gate and batched Sonnet review b",
-      "ref": "MyTradingSys/system/roles/session_planner.md",
-      "utc": "2026-10-17T14:19:47Z"
-    }
-  ],
-  "layers": [],
-  "live_path": false,
-  "note": "REVIEWED:2026-10-17 ACCEPT. WEIGHT:CRUCIAL gate-adjacent (tasks lint feeds every ship gate): review Agent on the diff before ship; field is optional so no old card goes red. Verify (worker): content commit sha, `git cherry origin/fast-track <sha>` empty AND `git ls-tree -r origin/fast-track --name-only` lists the delivered files.",
-  "prio": 3,
-  "refine_tries": 0,
-  "refined_by": "",
-  "refreshed": "2026-10-17T18:13:07Z",
-  "refs": [],
-  "result": "",
-  "scope_in": [
-    "scripts/dev/tasks.py",
-    "scripts/dev/test_tasks.py",
-    "MyTradingSys/system/roles/session_planner.md (Duty 5 text only)"
-  ],
-  "scope_out": [
-    "making weight mandatory (old cards must still pass)",
-    "any other card field",
-    "sync.py or run_all_tests.py"
-  ],
-  "scope_sha": "227a7088268b",
-  "size": "S",
-  "sources": [],
-  "state": "ready",
-  "steps": [
-    "Add test cases to test_tasks.py first: weight BOGUS makes problems() name it; CRUCIAL and an absent weight pass; brief() of a weighted card contains 'Weight: CRUCIAL'. Run them: they fail on the current tasks.py.",
-    "In tasks.py add a WEIGHTS tuple, a check in problems() (only when the field is present and non-empty), add weight to blank() as empty string, print 'Weight: X' in brief() after the Goal line (keep the 30-line brief rule). Add a test that a card with a full 30-line brief plus the Weight line is rejected or the Weight line replaces the blank one, so lint stays green.",
-    "In session_planner.md Duty 5 replace the note-prefix workaround sentence with 'set the card field weight'.",
-    "Run python scripts/dev/test_tasks.py and python scripts/dev/tasks.py lint: both green."
-  ],
-  "tests": "New cases in scripts/dev/test_tasks.py (bogus weight rejected, brief shows weight) fail on the current tasks.py and pass after step 2.",
-  "title": "Session_Planner: add weight field (ROUTINE/IMPORTANT/CRUCIAL/CRITICAL) to tasks.py check and brief",
-  "worker": "agent"
+ "approved_by": "",
+ "asks": "",
+ "closed": "2026-10-17T20:19:31Z",
+ "commands": [],
+ "created": "2026-10-17T14:00:25Z",
+ "depends_on": [],
+ "done_when": "python scripts/dev/test_tasks.py passes with the 3 new cases; tasks.py lint OK; session_planner.md Duty 5 names the weight field.",
+ "est_turns": 14,
+ "from_inbox": "",
+ "goal": "tasks.py knows an optional card field weight (ROUTINE|IMPORTANT|CRUCIAL|CRITICAL): check rejects unknown values, brief prints it, so the Session_Planner stops hiding it in note.",
+ "id": "session-planner-add-weight-field-routine",
+ "lane": "SONNET",
+ "latest": [
+  {
+   "kind": "ship",
+   "line": "tasks.py WEIGHTS check + brief Weight line shipped in 47644f10 (git cherry empty); test_ta",
+   "ref": "e7aeed1c",
+   "utc": "2026-10-17T20:19:31Z"
+  },
+  {
+   "auto": true,
+   "kind": "ship",
+   "line": "Session_Planner: stepwise refinement with T0 gate and batched Sonnet review before dispatc",
+   "ref": "227a7088268b",
+   "utc": "2026-10-17T14:19:47Z"
+  },
+  {
+   "auto": true,
+   "kind": "report",
+   "line": "227a7088268b Session_Planner: stepwise refinement with T0 gate and batched Sonnet review b",
+   "ref": "MyTradingSys/system/roles/session_planner.md",
+   "utc": "2026-10-17T14:19:47Z"
+  }
+ ],
+ "layers": [],
+ "live_path": false,
+ "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:review Agent DONE: WEIGHTS check + brief line shipped in 47644f10 (git cherry empty); test_tasks.py 47 tests OK. WEIGHT:CRUCIAL gate-adjacent (tasks lint feeds every ship gate): review Agent on the diff before ship; field is optional so no old card goes red. Verify (worker): content commit sha, `git cherry origin/fast-track <sha>` empty AND `git ls-tree -r origin/fast-track --name-only` lists the delivered files.",
+ "prio": 3,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refreshed": "2026-10-17T18:13:07Z",
+ "refs": [],
+ "result": "tasks.py WEIGHTS check + brief Weight line shipped in 47644f10 (git cherry empty); test_tasks.py 47 OK incl. test_weight_field_is_validated_optional_and_shown_in_brief",
+ "scope_in": [
+  "scripts/dev/tasks.py",
+  "scripts/dev/test_tasks.py",
+  "MyTradingSys/system/roles/session_planner.md (Duty 5 text only)"
+ ],
+ "scope_out": [
+  "making weight mandatory (old cards must still pass)",
+  "any other card field",
+  "sync.py or run_all_tests.py"
+ ],
+ "scope_sha": "227a7088268b",
+ "size": "S",
+ "sources": [],
+ "state": "done",
+ "steps": [
+  "Add test cases to test_tasks.py first: weight BOGUS makes problems() name it; CRUCIAL and an absent weight pass; brief() of a weighted card contains 'Weight: CRUCIAL'. Run them: they fail on the current tasks.py.",
+  "In tasks.py add a WEIGHTS tuple, a check in problems() (only when the field is present and non-empty), add weight to blank() as empty string, print 'Weight: X' in brief() after the Goal line (keep the 30-line brief rule). Add a test that a card with a full 30-line brief plus the Weight line is rejected or the Weight line replaces the blank one, so lint stays green.",
+  "In session_planner.md Duty 5 replace the note-prefix workaround sentence with 'set the card field weight'.",
+  "Run python scripts/dev/test_tasks.py and python scripts/dev/tasks.py lint: both green."
+ ],
+ "tests": "New cases in scripts/dev/test_tasks.py (bogus weight rejected, brief shows weight) fail on the current tasks.py and pass after step 2.",
+ "title": "Session_Planner: add weight field (ROUTINE/IMPORTANT/CRUCIAL/CRITICAL) to tasks.py check and brief",
+ "weight": "CRUCIAL",
+ "worker": "agent"
 }

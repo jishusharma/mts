@@ -1,71 +1,72 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-14T11:26:01Z",
-  "depends_on": [],
-  "done_when": "research/gap_g2_dax_ask_2026-10-18/SPREADS.md + spreads.csv: one row per 15-min bucket (n >= 150 pairs or marked THIN); tests pass; 09:00-11:00 Berlin median within 0.3 pt of 1.15 or the gap explained.",
-  "effort": "medium",
-  "est_turns": 30,
-  "from_inbox": "",
-  "goal": "Add Dukascopy DEUIDXEUR ASK 1m candles to the DAX data layer and measure ask-bid spread by 15-minute Berlin bucket on DEV days, so short exits (buys) can be costed at the ask. Output a proposed cost-table row; PRE_REG_DAX.md is frozen and is not edited.",
-  "id": "gap-g2-dax-ask-candles",
-  "kind": "build",
-  "lane": "SONNET",
-  "latest": [
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "gap review follow-up: sources checked, G2 spread measured, cards G1-G8 filed",
-      "ref": "5a839bfb4430",
-      "utc": "2026-10-14T11:26:35Z"
-    },
-    {
-      "auto": true,
-      "kind": "report",
-      "line": "5a839bfb4430 gap review follow-up: sources checked, G2 spread measured, cards G1-G8 filed",
-      "ref": "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
-      "utc": "2026-10-14T11:26:35Z"
-    }
-  ],
-  "layers": [],
-  "live_path": false,
-  "note": "LANE moved CODEX->SONNET 2026-10-18: G2 card conflict: the requested 2024-11..2026-04 window breaks the DEV-only rule (open before 2024-07-01); Claude worker must measure the spread on a DEV-only sample and drop the later window. ASK URL/parser code is already in dax_data.py (lab commit 934e5bd0). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT feeds DAX cost table proposal. DISPATCH lane CODEX (JIS-NUC lab): DAX BID raw is on NUC (F:/MTS/data/dax_raw); ASK comes from the free Dukascopy feed, reachable from NUC (REPORT 10.2). Shares dax_data.py with no other open card. Verify: sha + empty git cherry + ls-tree lists files.",
-  "prio": 1,
-  "refine_tries": 0,
-  "refined_by": "",
-  "refreshed": "2026-10-17T18:44:18Z",
-  "refs": [
-    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
-  ],
-  "result": "",
-  "scope_in": [
-    "MyTradingSys/backtest/dax_data.py",
-    "MyTradingSys/backtest/test_dax_data.py",
-    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
-    "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md"
-  ],
-  "scope_out": [
-    "PRE_REG_DAX.md edits",
-    "dax_engine.py / tom_dax_bt.py",
-    "DAX days >= 2026-04-11 (holdout) and the dropped dev days",
-    "live tree"
-  ],
-  "scope_sha": "5a839bfb4430",
-  "size": "M",
-  "sources": [
-    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md section 10.2 (G2 RESULT, measured 1.15/1.65/2.65 pt)",
-    "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md:25 (dev window 2024-11-04..2026-04-10)"
-  ],
-  "state": "ready",
-  "steps": [
-    "Tests first (red): ask URL has ASK_candles_min_1; parse of an ASK blob; spread = ask_close - bid_close joined on open_ms with no forward fill; closed-market filler minutes dropped.",
-    "dax_data.py: add a side arg (default BID, existing callers unchanged) to day_url/fetch, a spreads(bid_raw, ask_raw) function and a `spread` CLI subcommand.",
-    "Fetch ASK and BID for every 5th weekday in 2024-11-04..2026-04-10 (OURS sampling, about 75 days; one worker, 429 backoff as in fetch()) into F:/MTS/data/dax_raw_ask and dax_raw; raw files stay off-repo.",
-    "Write research/gap_g2_dax_ask_2026-10-18/spreads.csv and SPREADS.md: median, p90 and n minute-pairs per 15-min Berlin bucket 07:00-17:30 (zoneinfo Europe/Berlin), in pt and in R at a 20 pt stop; compare with REPORT.md 10.2 (1.15/1.65/2.65 pt).",
-    "SPREADS.md ends with a Proposed cost-table row: ask allowance per hour for target legs, label OURS (measured); no engine change."
-  ],
-  "tests": "test_dax_data.py new cases fail on the old dax_data.py (no ask_url/spreads) and pass after: python -m pytest MyTradingSys/backtest/test_dax_data.py -q",
-  "title": "G2 DAX ASK candles: buy legs at ask, spread table (measured 1.15/1.65/2.65 pt by hour), cost-table update",
-  "worker": "session"
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-14T11:26:01Z",
+ "depends_on": [],
+ "done_when": "research/gap_g2_dax_ask_2026-10-18/SPREADS.md + spreads.csv: one row per 15-min Berlin bucket (n >= 150 pairs or THIN) from DEV days 2023-07-03..2024-06-28; tests pass; 09:00-11:00 Berlin median within 0.3 pt of 1.15 or the gap explained.",
+ "effort": "medium",
+ "est_turns": 30,
+ "from_inbox": "",
+ "goal": "Add Dukascopy DEUIDXEUR ASK 1m candles to the DAX data layer and measure ask-bid spread by 15-minute Berlin bucket on DEV days, so short exits (buys) can be costed at the ask. Output a proposed cost-table row; PRE_REG_DAX.md is frozen and is not edited.",
+ "id": "gap-g2-dax-ask-candles",
+ "kind": "build",
+ "lane": "SONNET",
+ "latest": [
+  {
+   "auto": true,
+   "kind": "ship",
+   "line": "lab gap-g2-dax-ask-candles: BLOCKED (build)",
+   "ref": "934e5bd05659",
+   "utc": "2026-10-17T18:52:11Z"
+  },
+  {
+   "auto": true,
+   "kind": "report",
+   "line": "934e5bd05659 lab gap-g2-dax-ask-candles: BLOCKED (build)",
+   "ref": "MyTradingSys/research/layer_lab/reports/2026-10-17_gap-g2-dax-ask-candles.md",
+   "utc": "2026-10-17T18:52:11Z"
+  }
+ ],
+ "layers": [],
+ "live_path": false,
+ "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium+Haiku re-derive STOPPED by A-20261018-6, re-scoped here but kept refined until the JIS-NB desk fetch row is done (`desk.py post ... --target JIS-NB`, operator/coordinator). DECISION (OURS): DEV-only dates 2023-07..2024-06 (pre-2024-07-01, outside PRE_REG_DAX dev, so no pre-reg day is read); spread is a cost measure, no outcome read. LANE moved CODEX->SONNET 2026-10-18: G2 card conflict: the requested 2024-11..2026-04 window breaks the DEV-only rule (open before 2024-07-01); Claude worker must measure the spread on a DEV-only sample and drop the later window. ASK URL/parser code is already in dax_data.py (lab commit 934e5bd0). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT feeds DAX cost table proposal. DISPATCH lane CODEX (JIS-NUC lab): DAX BID raw is on NUC (F:/MTS/data/dax_raw); ASK comes from the free Dukascopy feed, reachable from NUC (REPORT 10.2). Shares dax_data.py with no other open card. Verify: sha + empty git cherry + ls-tree lists files.",
+ "prio": 1,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refreshed": "2026-10-17T20:21:40Z",
+ "refs": [
+  "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
+ ],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/backtest/dax_data.py",
+  "MyTradingSys/backtest/test_dax_data.py",
+  "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
+  "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md"
+ ],
+ "scope_out": [
+  "PRE_REG_DAX.md edits",
+  "dax_engine.py / tom_dax_bt.py",
+  "any DAX day on or after 2024-07-01 (VALIDATION/HOLDOUT) and every PRE_REG_DAX dev day",
+  "live tree"
+ ],
+ "scope_sha": "934e5bd05659",
+ "size": "M",
+ "sources": [
+  "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md section 10.2 (G2 RESULT, measured 1.15/1.65/2.65 pt)",
+  "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md:25 (dev window 2024-11-04..2026-04-10)"
+ ],
+ "state": "refined",
+ "steps": [
+  "Tests first (red): ask URL has ASK_candles_min_1; parse of an ASK blob; spread = ask_close - bid_close joined on open_ms with no forward fill; closed-market filler minutes dropped.",
+  "dax_data.py: add a side arg (default BID, existing callers unchanged) to day_url/fetch, a spreads(bid_raw, ask_raw) function and a `spread` CLI subcommand.",
+  "JIS-NB desk dependency (sandbox blocks Dukascopy): fetch ASK and BID for every 5th weekday 2023-07-03..2024-06-28 (OURS, about 52 days, 429 backoff as in fetch()) into F:/MTS/data/dax_raw_ask and dax_raw; raw stays off-repo. Builder starts when the desk row is done.",
+  "Write research/gap_g2_dax_ask_2026-10-18/spreads.csv and SPREADS.md: median, p90 and n minute-pairs per 15-min Berlin bucket 07:00-17:30 (zoneinfo Europe/Berlin), in pt and in R at a 20 pt stop; compare with REPORT.md 10.2 (1.15/1.65/2.65 pt).",
+  "SPREADS.md ends with a Proposed cost-table row: ask allowance per hour for target legs, label OURS (measured); no engine change."
+ ],
+ "tests": "test_dax_data.py new cases fail on the old dax_data.py (no ask_url/spreads) and pass after: python -m pytest MyTradingSys/backtest/test_dax_data.py -q",
+ "title": "G2 DAX ASK candles: buy legs at ask, spread table (measured 1.15/1.65/2.65 pt by hour), cost-table update",
+ "weight": "IMPORTANT",
+ "worker": "session"
 }

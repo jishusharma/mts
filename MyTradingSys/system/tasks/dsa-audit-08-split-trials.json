@@ -12,6 +12,7 @@
   "created": "2026-10-15T23:28:58Z",
   "depends_on": [],
   "done_when": "T08_split_trials.md shipped: split map, dynamic window table, contamination calendar, seal-breach candidates, true-N table with haircut bars, lead L2 resolved, S1/S2 carded.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Map every split scheme and the windows each study has actually read, find every read of VALIDATION or HOLDOUT outside the rules, and count the variants really tried per study against the trial ledgers.",
   "id": "dsa-audit-08-split-trials",
@@ -20,7 +21,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "WEIGHT:IMPORTANT audit; repo-doc analysis, no 1m data needed; moved to GPT lane 2026-10-17 (operator: use GPT)",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C2 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report. WEIGHT:IMPORTANT audit; repo-doc analysis, no 1m data needed; moved to GPT lane 2026-10-17 (operator: use GPT)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -55,5 +56,7 @@
     "True trial count per study from git history vs TRIAL_LEDGER.csv and trials files; haircut bar sqrt(2 ln N) vs t used."
   ],
   "tests": "",
-  "title": "DSA audit T08: split map, contamination calendar, HOLDOUT seal check and the true trial count"
+  "title": "DSA audit T08: split map, contamination calendar, HOLDOUT seal check and the true trial count",
+  "weight": "CRUCIAL",
+  "worker": "session"
 }

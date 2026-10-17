@@ -4,26 +4,42 @@
   "commands": [],
   "created": "2026-10-18T00:00:00Z",
   "depends_on": [],
-  "done_when": "dated erratum in PRE_REG_V2.md and a B187 update",
+  "done_when": "PRE_REG_V2.md carries a dated 2026-10-18 erratum: zero-cost n_needed = 395 days ((4.083*1.46/0.30)^2, hand-computed) replaces 'about 1,000'; lines 2,427 and 662 unchanged; BUGS.md B187 row records 1,207 of 2,427 days (Haiku blind 1,215).",
   "est_turns": 10,
   "from_inbox": "",
   "goal": "The pre-registration states the zero-cost required days correctly and B187 records the Q76 verdict (1,207 of 2,427; Haiku blind 1,215).",
   "id": "b187-prereg-v2-correction",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab q76-dev-ext-power-check: DONE (audit)",
+      "ref": "48306e025f33",
+      "utc": "2026-10-17T20:00:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "48306e025f33 lab q76-dev-ext-power-check: DONE (audit)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-18_q76-dev-ext-power-check.md",
+      "utc": "2026-10-17T20:00:19Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:review Agent DECISION (OURS): the card is itself the hand re-derivation of the Q76 numbers, so it re-checks (not consumes) the untagged base; review Agent on the diff, no extra vendor run.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T00:00:00Z",
+  "refreshed": "2026-10-17T20:21:54Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "MyTradingSys/research/pit_levels_2026-10-16/PRE_REG_V2.md",
     "MyTradingSys/research/pit_levels_2026-10-16/bug_b187_evidence.txt",
+    "MyTradingSys/research/BUGS.md (B187 row only)",
     "MyTradingSys/research/layer_lab/reports/2026-10-18_q76-dev-ext-power-check.md (read)"
   ],
   "scope_out": [
@@ -31,7 +47,7 @@
     "HALT files",
     "deploys"
   ],
-  "scope_sha": "",
+  "scope_sha": "48306e025f33",
   "size": "S",
   "sources": [],
   "state": "ready",
@@ -42,5 +58,6 @@
   ],
   "tests": "the sentence matches a hand calculation; the 2,427 and 662 lines are unchanged",
   "title": "Fix PRE_REG_V2 power sentence (zero-cost n_needed is about 395 days, not about 1,000) and note the stop-basis event difference for B187",
+  "weight": "CRUCIAL",
   "worker": "session"
 }
