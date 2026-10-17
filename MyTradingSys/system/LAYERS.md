@@ -80,7 +80,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `fabio-ledger-recompute-entry-from-stp-la` raw p3 SONNET: fabio-ledger: recompute entry from STP label for F8 F12-m2 F13 F13-m1
   - `fabio-ledger-replace-date-2026-with-unkn` raw p3 SONNET: fabio-ledger: replace date 2026 with UNKNOWN for Jpd96/DyS79 session (contract NQ-202512)
   - `fabio-session-date-price-match` raw p3 CODEX: Fabio: date the DyS79Eb92Ug/Jpd96fLqr5M NQ-202512 session by price-path match against NQ 1m history (F6 24914-
-  - `find-more-fabio-trade-recap-videos-yt-dl` ready p3 SONNET: Find more Fabio trade-recap videos (yt-dlp), ledger has only 8 entries vs goal 20
   - `rv05-h1-date-evidence` raw p3 SONNET: RV05 H1: incorporate date revalidation evidence into existing Fabio ledger date repair
   - `rv05-h2-position-line-evidence` raw p3 SONNET: RV05 H2: read position lines and stop prices before applying existing Fabio entry repair
   - `rv05-h3-outcome-evidence` raw p3 SONNET: RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair
@@ -130,7 +129,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/cryptocred`
 - Other results: `MyTradingSys/research/cryptocred_stop_2026-10-10`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `cryptocred-htf-count-power` refined p2 SONNET: CryptoCred: count-only 4h/1d signals, fire rate, random-entry null spec and power (items 1/9/10)
+  - `cryptocred-htf-count-power` ready p2 SONNET: CryptoCred: count-only 4h/1d signals, fire rate, random-entry null spec and power (items 1/9/10)
   - `cryptocred-prereg-4h-1d` refined p3 SONNET: CryptoCred: pre-registration for the 4h/1d redesign (items 6/8/11/12)
 
 ## Positioning (funding, OI, whale / FlowHorse) (`positioning`)
@@ -239,7 +238,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `krown-data-cme-btc-volume` raw p2 DSA: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
-  - `krown-recall-check` refined p2 SONNET: Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_RE
+  - `krown-recall-check` ready p2 SONNET: Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_RE
   - `trendline-g3-marks-pack` ready p2 SONNET: Trend-line G3 blind marks pack for the obvious-line selector
   - `krown-other-sources-event-study-videos` blocked p3 SONNET: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
   - `krown-ta101-extract-remaining-10` ready p3 SONNET: Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass bo
