@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T18:24:07Z",
   "commands": [],
   "created": "2026-10-17T09:02:21Z",
   "depends_on": [
@@ -13,6 +14,12 @@
   "id": "cryptocred-htf-count-power",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md",
+      "ref": "22bdef4b",
+      "utc": "2026-10-17T18:24:07Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,7 @@
   "refined_by": "cryptocred-home-fit-audit 2026-10-17",
   "refreshed": "2026-10-17T18:15:46Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md",
   "scope_in": [
     "MyTradingSys/backtest/layers/cryptocred/",
     "MyTradingSys/backtest/power_mde.py",
@@ -56,7 +63,7 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Count signals per setup on 4h and 1d structure over the DEV window only (no VALIDATION/HOLDOUT read).",
     "Compute MDE and N-for-80%-power with power_mde.py for each count; write INCONCLUSIVE in advance where N < 100.",

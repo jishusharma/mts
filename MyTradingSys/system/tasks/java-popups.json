@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "Coordinator: java.exe is started by scripts/core/*.ps1 (live path); route to a JIS-NB desk task or leave parked?",
+  "asks": "JIS-NB desk: find the PowerShell/supervisor launcher of java.exe, add CREATE_NO_WINDOW; needs exact commands before ready",
   "commands": [],
   "created": "2026-10-17T12:20:31Z",
   "depends_on": [],
@@ -9,7 +9,7 @@
   "from_inbox": "",
   "goal": "No visible java.exe console window appears on NB.",
   "id": "java-popups",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
   "latest": [
     {
       "auto": true,
@@ -47,6 +47,6 @@
     "add a test that fails on the old flags"
   ],
   "tests": "a fail-first test in scripts/dev/test_nowin.py for the java launcher flags",
-  "title": "Network: java.exe console popups appear on NB (find the launcher, hide with nowin or headless)",
+  "title": "JIS-NB desk: java.exe console popups on NB (launcher is PowerShell, live path)",
   "worker": "agent"
 }

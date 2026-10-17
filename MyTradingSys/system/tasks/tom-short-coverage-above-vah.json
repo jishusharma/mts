@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "Same family as pit-prior-va-failed-auction-dev (BLOCKED: MDE+cost 0.41 R > 0.30 R, 662 days). Default: drop as covered; or overrule the gate / add pre-2022 days?",
   "commands": [],
   "created": "2026-10-14T14:37:40Z",
   "depends_on": [],
@@ -13,9 +13,9 @@
     "tom"
   ],
   "live_path": false,
-  "note": "Evidence 2026-10-14 (extract research/screenshots/2026-10-14_BTCUSDT_6b27526d76bd.md): 08:10Z day high 84062 above VAH, setup_candidates null; 08:38Z ct_short at daily VAH 83727, stop 83889, target POC 83406, gross RR 1.97, net 0.96 -> rejected; 12:13-12:30Z second top above VAH, null again; price then fell to 81850. One day is a story, not evidence: pre-register, DEV/VAL/HOLDOUT, all variants in the trial ledger. Pairs with card eu-low-us-sweep-follow-ups-long-after-sw leg (c).",
+  "note": "PARKED 2026-10-18 (not stamped): verdicts.py check matches family pit-prior-va-failed-auction-dev (BLOCKED.md power gate: MDE+cost 0.411-0.417 R > 0.30 R, 662 days vs 2427 needed). Variant (b) farther target = PRE_REG_V2 'other-edge target'. A new card needs more days or an operator overrule.",
   "prio": 2,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [
     "MyTradingSys/research/screenshots/2026-10-14_BTCUSDT_6b27526d76bd.md"

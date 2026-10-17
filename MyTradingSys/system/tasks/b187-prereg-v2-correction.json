@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T00:00:00Z",
+  "depends_on": [],
+  "done_when": "dated erratum in PRE_REG_V2.md and a B187 update",
+  "est_turns": 10,
+  "from_inbox": "",
+  "goal": "The pre-registration states the zero-cost required days correctly and B187 records the Q76 verdict (1,207 of 2,427; Haiku blind 1,215).",
+  "id": "b187-prereg-v2-correction",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T00:00:00Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/pit_levels_2026-10-16/PRE_REG_V2.md",
+    "MyTradingSys/research/pit_levels_2026-10-16/bug_b187_evidence.txt",
+    "MyTradingSys/research/layer_lab/reports/2026-10-18_q76-dev-ext-power-check.md (read)"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "recompute (z_holm+0.8416)*1.46/0.30 squared by hand and edit the sentence; the 2,427 line is unchanged",
+    "append the Q76 verdict and the 3.3 percent event-count difference (trigger-bar-high in stop basis untested) to B187",
+    "state it as a dated erratum, no outcome read"
+  ],
+  "tests": "the sentence matches a hand calculation; the 2,427 and 662 lines are unchanged",
+  "title": "Fix PRE_REG_V2 power sentence (zero-cost n_needed is about 395 days, not about 1,000) and note the stop-basis event difference for B187",
+  "worker": "session"
+}

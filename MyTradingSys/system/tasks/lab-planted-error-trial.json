@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T00:00:00Z",
+  "depends_on": [
+    "lab-data-pin-hash",
+    "lab-machine-checks-extra"
+  ],
+  "done_when": "a dated FLOW note with a catch table per class and per stack, and a recommendation on effort per class",
+  "est_turns": 25,
+  "from_inbox": "",
+  "goal": "Measure which review stack catches which class of planted error, and at what token cost.",
+  "id": "lab-planted-error-trial",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab lab-flow-contract-hardening: BLOCKED (build)",
+      "ref": "e677a2790b09",
+      "utc": "2026-10-16T08:34:43Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "Blocked until lab-data-pin-hash and lab-machine-checks-extra are done (its pass criteria need those machine checks); then tasks.py release.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T19:21:15Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/lab_guy/ (new)",
+    "scripts/dev/lab_flow.py (read-only)",
+    "10 finished cards copied as shadow cards"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys",
+    "VALIDATION and HOLDOUT bars"
+  ],
+  "scope_sha": "e677a2790b09",
+  "size": "M",
+  "sources": [],
+  "state": "blocked",
+  "steps": [
+    "plant one error per shadow card: wrong data copy, one-bar shift, holdout leak, expected value copied from code, deleted trials, zero slippage, edited gate constant, mislabelled SOURCED number",
+    "run the cheap stack (machine checks + Haiku independent re-derivation + GPT-OSS or Flash) and the expensive stack (Argon or GPT high)",
+    "record catches per class, tokens and effort in the findings ledger"
+  ],
+  "tests": "shadow cards must be rejected by at least one stack or the trial is invalid",
+  "title": "Lab: planted-error trial on 10 finished cards, cheap stack vs Argon/GPT high",
+  "worker": "session"
+}

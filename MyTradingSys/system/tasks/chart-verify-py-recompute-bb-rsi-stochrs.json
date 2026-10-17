@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T18:21:16Z",
   "commands": [],
   "created": "2026-10-12T15:34:42Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/chart_verify.py + 7 tests; BTCUSDT 1m/15m live ok; FORMULAS s22,s23",
+      "ref": "8663fdb7",
+      "utc": "2026-10-17T18:21:16Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T18:13:09Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/chart_verify.py + 7 tests; BTCUSDT 1m/15m live ok; FORMULAS s22,s23",
   "scope_in": [
     "scripts/dev/chart_verify.py (new)",
     "scripts/dev/test_chart_verify.py (new)",
@@ -52,7 +59,7 @@
   "scope_sha": "a9e179c7e27a",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add FORMULAS.md sections for Bollinger (20,2; check population vs sample sd against backtest/layers/alerts/live_bb_top_reversal.py bollinger) and StochRSI, each with a 6-bar worked example computed by hand.",
     "Write the test first on a fixed 40-bar fixture: RSI via the rsi_wilder function in MyTradingSys/backtest/layers/rsi/rsi_core.py (grep the exact name), BB and StochRSI against the hand-worked values; it fails because chart_verify.py does not exist.",

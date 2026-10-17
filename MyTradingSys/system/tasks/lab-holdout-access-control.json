@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T00:00:00Z",
+  "depends_on": [],
+  "done_when": "test_lab_flow.py passes with the renamed-copy fixture",
+  "est_turns": 18,
+  "from_inbox": "",
+  "goal": "A renamed or copied file with bars at or after 2024-07-01 is refused by the lab runner before any analysis reads it.",
+  "id": "lab-holdout-access-control",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "test_lab_flow: spend guard test uses 10 runs (guard raised to 10/window in e6955a8f); unbl",
+      "ref": "9649674dccbb",
+      "utc": "2026-10-16T14:09:12Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T19:58:49Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/lab_flow.py (safe_file and fingerprint)",
+    "scripts/dev/test_lab_flow.py"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys"
+  ],
+  "scope_sha": "9649674dccbb",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "add a check that the max open time of every data input in scope is before 2024-07-01 unless the card is explicitly VALIDATION or HOLDOUT",
+    "test: a copy of a DEV file renamed, with one later bar appended, is refused"
+  ],
+  "tests": "fail-first test: renamed file with a post-cutoff bar is refused",
+  "title": "Lab: refuse VALIDATION and HOLDOUT data by content (timestamp bounds), not only by path",
+  "worker": "session"
+}

@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-17T19:01:21Z",
+  "depends_on": [],
+  "done_when": "test_lab_flow.py passes and a receipt lists data hashes",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "A lab receipt records which data files were used, and holdout paths cannot be read.",
+  "id": "lab-data-pin-hash",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "test_lab_flow: spend guard test uses 10 runs (guard raised to 10/window in e6955a8f); unbl",
+      "ref": "9649674dccbb",
+      "utc": "2026-10-16T14:09:12Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T19:01:22Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/lab_flow.py (fingerprint, safe_file)",
+    "scripts/dev/test_lab_flow.py"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys"
+  ],
+  "scope_sha": "9649674dccbb",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "add optional data_scope (paths under F:/MTS/data) hashed like scope_in",
+    "refuse holdout directories in safe_file",
+    "write a fail-first test that a changed data file changes the fingerprint"
+  ],
+  "tests": "fail-first test in test_lab_flow.py: modify a data file, fingerprint differs; holdout path refused",
+  "title": "Lab: hash the F:/MTS/data inputs of a lab card into the receipt fingerprint and refuse holdout paths",
+  "worker": "session"
+}

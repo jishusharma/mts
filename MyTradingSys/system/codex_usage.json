@@ -3,10 +3,10 @@
   "plan": "plus",
   "week_resets": 1792677805,
   "week_used": 34.0,
-  "window_resets": 1792213232,
-  "window_used": 20.0
+  "window_resets": 1792281070,
+  "window_used": 1.0
  },
- "at": "2026-10-17T04:01:31Z",
+ "at": "2026-10-17T20:00:19Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -17,12 +17,57 @@
  },
  "host": "JIS-NUC",
  "lab": {
-  "astra_runs": 1,
+  "astra_runs": 0,
   "week_pts": 22.0,
-  "window_pts": 12.0,
-  "window_runs": 4
+  "window_pts": 0.0,
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-17T19:58:58Z",
+   "card": "q76-dev-ext-power-check",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 74,
+   "tokens_out": 4333,
+   "tokens_total": 443541,
+   "tokens_uncached": 36648,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-10-17T18:50:56Z",
+   "card": "gap-g2-dax-ask-candles",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 68,
+   "tokens_out": 5368,
+   "tokens_total": 501142,
+   "tokens_uncached": 44958,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-10-17T04:30:03Z",
+   "card": "gptb-candle-pattern-event-table",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n=========================================================",
+   "outcome": "SHIP_FAILED",
+   "seconds": 130,
+   "tokens_out": 10724,
+   "tokens_total": 1144673,
+   "tokens_uncached": 47997,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-17T04:00:10Z",
    "card": "g3-blindness-audit-rerun",
@@ -127,51 +172,6 @@
    "tokens_uncached": 67629,
    "week_pts": 1.0,
    "window_pts": 3.0
-  },
-  {
-   "at": "2026-10-16T23:30:03Z",
-   "card": "gpt-confluence-card-audit",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n=========================================================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 46,
-   "tokens_out": 3659,
-   "tokens_total": 366000,
-   "tokens_uncached": 44773,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T23:00:10Z",
-   "card": "gptb-session-levels-event-table",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n=========================================================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 78,
-   "tokens_out": 5999,
-   "tokens_total": 403487,
-   "tokens_uncached": 33328,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-16T21:33:21Z",
-   "card": "gptb-rsi-divergence-event-table",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "s; resolve, `git commit`, then run ship again.\nAuto-merging MyTradingSys/system/wiring_registry.json\nCONFLICT (content): Merge conflict in MyTradingSys/system/w",
-   "outcome": "SHIP_FAILED",
-   "seconds": 153,
-   "tokens_out": 12561,
-   "tokens_total": 1300295,
-   "tokens_uncached": 48822,
-   "week_pts": 1.0,
-   "window_pts": 0.0
   }
  ]
 }

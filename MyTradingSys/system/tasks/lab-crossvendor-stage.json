@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-17T19:01:22Z",
+  "depends_on": [],
+  "done_when": "test_lab_flow.py passes with a gemini stage fixture",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "A recipe stage can be a Gemini or Claude lens and records which model ran it.",
+  "id": "lab-crossvendor-stage",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "test_lab_flow: spend guard test uses 10 runs (guard raised to 10/window in e6955a8f); unbl",
+      "ref": "9649674dccbb",
+      "utc": "2026-10-16T14:09:12Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "e677a2790b09 lab lab-flow-contract-hardening: BLOCKED (build)",
+      "ref": "MyTradingSys/system/LAB_RECIPES.md",
+      "utc": "2026-10-16T08:34:43Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T19:01:23Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/lab_flow.py",
+    "scripts/dev/test_lab_flow.py",
+    "MyTradingSys/system/LAB_RECIPES.md"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys"
+  ],
+  "scope_sha": "9649674dccbb",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "add a vendor field to each stage tuple and allow a gemini stage using agy.exe --print with the report inlined (headless cannot read files)",
+    "finish writes model id into the receipt",
+    "gate refuses a stage whose model equals the producer's"
+  ],
+  "tests": "fail-first test: same-model stage refused, different-vendor stage accepted",
+  "title": "Lab: allow a Gemini or Claude stage in lab_flow.py RECIPES with the same finish receipt, and record model identity per stage",
+  "worker": "session"
+}

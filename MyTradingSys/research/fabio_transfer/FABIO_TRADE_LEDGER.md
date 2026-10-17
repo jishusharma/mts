@@ -193,3 +193,10 @@ Tests: test_ledger_audit.py asserts the new values for F8, F13 and F13-m1 (the a
 
 ## Card fabio-ledger-replace-date-2026-with-unkn (2026-10-17)
 Checked, no edit needed. Every date cell for the Jpd96fLqr5M and DyS79Eb92Ug rows (F6 to F15 and the no-trade rows) already reads UNKNOWN (...) with no 2026 value. The only 2026 strings left in the CSV sit inside UNKNOWN reasons or screenshot file names (F4a, F4b).
+
+## RV05 H1 date evidence (card rv05-h1-date-evidence, 2026-10-17)
+Scope: CSV lines 25-71 (47 rows). Count of non-UNKNOWN date fields on these lines: 0 (checked before and after; no CSV edit needed, the earlier card fabio-ledger-replace-date-2026-with-unkn already set them).
+Rule: execution date is UNKNOWN unless a same-session source is on screen. A 2026 file name, a 2026 upload or review year, and a contract name such as NQ-202512 are not session dates.
+Rows: F6, F6-m1, F6-m2, F6-m3, F6-x, F7, F7-m1, F7-x, F8, F8-x, F9, F9-m1, F9-x, F10, F10-m1, F10-x, F10-z, F11, F11-m1, F11-x, F12, F12-m1, F12-m2, F12-x, F13, F13-m1, F13-x, F-noTrade-3575-3750, F14, F14-x, F-noTrade-4025-4275, F-noTrade-4275-4525, F-noTrade-4775-5025, F-noTrade-5025-5275, F-noTrade-5275-5525, F-noTrade-5525-5775, F-noTrade-5775-6025, F-noTrade-6025-6275, F-noTrade-6275-6525, F-noTrade-6525-6775, F15-draft-6975-7025, F-noTrade-7025-7275, F-noTrade-7275-7525, F-noTrade-7525-7775, F-noTrade-7775-8025, F-noTrade-8025-8275, F-noTrade-8275-8493.
+Finding (RV05 report, H1, HIGH, CONFIRMED for the 47-row unsupported-date problem): the DyS frames show NQ-202512 (CSV lines 29-71 carry that contract); the Jpd sheet does not expose its contract header. Recording or review date is kept separate from execution date. The stronger claim that every source frame proves a pre-2026 date is NOT_IN_DATA.
+Source: MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md (H1 row, line 34; detail line 44).

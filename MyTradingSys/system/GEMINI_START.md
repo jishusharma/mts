@@ -13,6 +13,16 @@ The tool actually installed on the NUC (2026-10-17) is the **Google Antigravity 
 - Model: use a Flash model for routine cards; Gemini 4 Argon has a separate weekly-only quota, keep it for hard cards.
 - No plugins or delegation tools (community Claude-to-agy bridges exist; not installed). Revisit only after one card has shipped cleanly.
 
+## Antigravity facts and first run (2026-10-17, operator screenshot + dry run)
+- Model menu (one Pro login): Gemini 4 Argon, Gemini 3.8 Flash (default for routine cards), Claude Opus 5.5, Claude Sonnet 5.5, GPT-OSS 120B. Limits shown: Gemini models weekly + five-hour; Claude and GPT models weekly + five-hour; Argon weekly only (all 100% at first look). `View Usage` in the model menu shows them.
+- The Claude and GPT models in the menu are included in the Google AI Pro plan at no extra cost (operator 2026-10-18; not the Anthropic account). Use them, within quota. Opus use there is operator-approved (2026-10-18), recorded as `approved_by: operator` on any card that names it.
+- Three quota pools, each with weekly and five-hour limits except Argon: (1) Gemini 3.8 Flash; (2) Claude Opus/Sonnet 5.5 and GPT-OSS together; (3) Gemini 4 Argon, weekly only. `View Usage` in the model menu shows them. Opus very likely drains pool 2 faster than Sonnet (UNVERIFIED): read pool 2 before and after the first Opus card and note the drop here.
+- Routing (OURS, adjust after real numbers): Flash = routine audits, tests, docs, first-pass review. Sonnet 5.5 = spec-derived builds when Flash is not enough. Opus 5.5 = hard judgment only (independent challenge of critical work, blind setup discovery, design review), one card at a time. Argon = blind Tom/Fabio setup discovery and other heavy research. GPT-OSS = skip (GPT work stays in the Codex app).
+- Pacing: before a heavy card read the pool it draws on; do not start if the five-hour limit is under 30% or the weekly under 25% (OURS); drop to Flash or wait for the reset. Heavy cards go one at a time.
+- Claude (this repo's sessions) can delegate to the same login without the UI: `C:\Users\E-ngineers\.gemini\bin\agy.exe --print "<prompt>" --model <id>` (ids from `agy.exe models`: gemini-4-argon-{low,medium,high}, gemini-3.8-flash-*, claude-opus-5-5-*, claude-sonnet-5-5-*). Tested 2026-10-18 with flash-low: works, already signed in. Run it from a work tree or scratch folder, never the live tree, never with `--dangerously-skip-permissions`; the result returns as text and goes through a card or `sync.py ship` like any other.
+- Dry run passed: Gemini ran `sync.py start`, `sync.py where`, `tasks.py next --lane CODEX` (returned `dsa-audit-08-split-trials`, size M, p1), asked before each command, edited nothing, committed nothing.
+- Dry-run slip: it read GEMINI.md and GEMINI_START.md before syncing, so they were missing (the tree was behind). The paste block now syncs first.
+
 ## Zero-conflict rules (all already in PARALLEL.md; Gemini adds none)
 1. Own checkout: the work tree `F:\MTS\mts-gemini`, never the live tree (`BinanceDataFeed` on JIS-NB, marked `.mts_live`) and never another session's tree (`mts-codex`, `mts-codex-lab`, `mts-dsa`, `mts-jis-nuc-*`). the IDE opens only `F:\MTS\mts-gemini`.
 2. Own branch prefix `<host>/gemini-<slug>`; shares work only by `sync.py ship` (merge, never rebase, reset, stash or force-push; never commit to master).
@@ -39,10 +49,9 @@ The tool actually installed on the NUC (2026-10-17) is the **Google Antigravity 
 
 ## Paste into Gemini
 ```
-You are an MTS builder session (surface GEM, Gemini). Read GEMINI.md (-> AGENTS.md -> CLAUDE.md), then
-MyTradingSys/research/STATUS.md, MyTradingSys/system/PARALLEL.md, MyTradingSys/system/GEMINI_START.md.
-Work only in this folder. Never read .secrets/, .env or keys; never run or stop live processes.
-0. `python scripts/dev/sync.py start gemini-<slug>`, `sync.py where`. Push fails: say so in one line, stop.
+You are an MTS builder session (surface GEM, Gemini). Work only in this folder. Never read .secrets/, .env or keys; never run or stop live processes.
+0. FIRST, before reading any file: `python scripts/dev/sync.py start gemini-<slug>`, `sync.py where` (the tree is often behind origin; files below may not exist until this runs). Push fails: say so in one line, stop.
+   Then read GEMINI.md (-> AGENTS.md -> CLAUDE.md), MyTradingSys/research/STATUS.md, MyTradingSys/system/PARALLEL.md, MyTradingSys/system/GEMINI_START.md.
 1. `python scripts/dev/tasks.py next --lane CODEX`: take the first ready card nobody has claimed.
    `tasks.py brief <card>` is the whole task. `sync.py claim "<card>"`, work, tests (new test red before the fix), `tasks.py done <card> --result "<number/file>"`.
 2. `sync.py ship --release <slug>`, `sync.py where` clean.
