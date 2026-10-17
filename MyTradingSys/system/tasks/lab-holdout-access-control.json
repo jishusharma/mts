@@ -11,14 +11,22 @@
   "id": "lab-holdout-access-control",
   "kind": "build",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "test_lab_flow: spend guard test uses 10 runs (guard raised to 10/window in e6955a8f); unbl",
+      "ref": "9649674dccbb",
+      "utc": "2026-10-16T14:09:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-18T00:00:00Z",
+  "refreshed": "2026-10-17T19:58:49Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -30,7 +38,7 @@
     "HALT files",
     "deploys"
   ],
-  "scope_sha": "",
+  "scope_sha": "9649674dccbb",
   "size": "S",
   "sources": [],
   "state": "ready",

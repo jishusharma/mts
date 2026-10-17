@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T00:00:00Z",
+  "depends_on": [],
+  "done_when": "tests pass; a list of existing base results with their tag and a re-check card for each C2 candidate",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "A card that cites a lab result cannot start unless that result carries a tag at least as strong as the citing card class; the tag expires when data hash or code revision changes.",
+  "id": "lab-trust-tag",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T00:00:00Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/lab_flow.py",
+    "scripts/dev/test_tasks.py",
+    "MyTradingSys/system/roles/lab_guy.md"
+  ],
+  "scope_out": [
+    "live tree",
+    "HALT files",
+    "deploys"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "add a trust field (tag, checker model and effort, date, data hash, code revision, evidence path) to the result receipt",
+    "tasks.py: a card citing another card in scope_in needs the cited result tag >= its own class; a citation auto-raises the cited card to shared",
+    "expiry: tag invalid when hash or revision differs",
+    "audit pass: list past results (event tables, gates, power counts, fee/fill model, the Q76 chain) that base work stands on and are UNCHECKED; file one re-check card per base result"
+  ],
+  "tests": "fail-first tests: citing card refused on UNCHECKED, allowed on VERIFIED-C1; tag expires on changed hash",
+  "title": "Lab: a safe-to-build-on tag per lab result (UNCHECKED, MACHINE-OK, VERIFIED-C1, VERIFIED-C2, DISPUTED) read by tasks.py at card start",
+  "worker": "session"
+}
