@@ -36,7 +36,16 @@ class LaneRulesTest(unittest.TestCase):
     def test_each_kind_template_meets_the_definition_of_ready(self):
         for kind in R.TEMPLATES:
             with self.subTest(kind=kind):
-                self.assertEqual(T.problems(card(kind=kind)), [])
+                if kind != "build":
+                    self.assertEqual(T.problems(card(kind=kind)), [])
+                    continue
+                with tempfile.TemporaryDirectory() as tmp:
+                    repo = Path(tmp)
+                    probe = repo / "scripts/dev/test_mutation.py"
+                    probe.parent.mkdir(parents=True)
+                    probe.write_text("def test_dummy_output_rejected():\n    assert output != 'dummy'\n", encoding="utf-8")
+                    c = card(kind=kind, mutation_check="scripts/dev/test_mutation.py::test_dummy_output_rejected")
+                    self.assertEqual(T.problems(c, repo=repo), [])
 
     def test_build_template_leaves_the_gate_to_the_runner(self):
         text = " ".join(R.TEMPLATES["build"]["steps"]) + R.TEMPLATES["build"]["done_when"]
