@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T13:49:20Z",
   "commands": [],
   "created": "2026-10-17T03:40:00Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "DEV 87,552 rows, 87,491 OK, 61 NOT_IN_DATA; mean long MFE 0.2513R / MAE 0.2581R",
+      "ref": "8c0d5016",
+      "utc": "2026-10-17T13:49:20Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,7 @@
   "refined_by": "lab-cards-1017",
   "refreshed": "2026-10-17T07:24:54Z",
   "refs": [],
-  "result": "",
+  "result": "DEV 87,552 rows, 87,491 OK, 61 NOT_IN_DATA; mean long MFE 0.2513R / MAE 0.2581R",
   "scope_in": [
     "MyTradingSys/research/layer_lab/turn_of_candle_event_table/event_table.py",
     "MyTradingSys/research/layer_lab/turn_of_candle_event_table/test_event_table.py",
@@ -62,7 +69,7 @@
   "scope_sha": "515d07a91407",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the BRIEF.md named in scope_in, then write the test file first; run it and confirm it fails (red).",
     "Implement event_table.py in MyTradingSys/research/layer_lab/turn_of_candle_event_table/ only: DEV data only, gap or missing input = NOT_IN_DATA (never 0); use the two helpers named in the brief (read only). R needs klines_1h.npz (DEV); 1m is large: slice with numpy masks.",
