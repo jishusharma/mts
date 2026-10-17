@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T08:57:57Z",
   "commands": [],
   "created": "2026-10-17T03:54:23Z",
   "depends_on": [
@@ -13,6 +14,12 @@
   "id": "wavetrend-prereg-counts",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "PRE_REG.md frozen, 9 cells, counts + tests on fast-track (git cherry empty)",
+      "ref": "d9ccc589",
+      "utc": "2026-10-17T08:57:57Z"
+    },
     {
       "auto": true,
       "kind": "report",
@@ -29,7 +36,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T07:44:19Z",
   "refs": [],
-  "result": "",
+  "result": "PRE_REG.md frozen, 9 cells, counts + tests on fast-track (git cherry empty)",
   "scope_in": [
     "Compute WT (parity-card spec) on Binance BTCUSDT perp klines, DEV only (to 2024-06-30); count band arrival/overshoot/centre events per timeframe and side, with independent episodes",
     "Freeze <=12 cells, outcome definitions, random-clock control arm, MDE and Holm plan, aliases for verdicts.py"
@@ -44,7 +51,7 @@
     "MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_VERIFY.md",
     "MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read CLAUDE_VERIFY.md sections C-D and the parity card output.",
     "Count events and episodes per TF/side on DEV; log each DEV read in gross_effect_screen_2026-10-15/EXPOSURE_LEDGER.csv.",

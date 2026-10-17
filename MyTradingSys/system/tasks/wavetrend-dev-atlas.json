@@ -13,12 +13,14 @@
   "goal": "Run the single pre-registered DEV atlas: gross conditional outcomes per frozen cell with random-clock and context-only control arms.",
   "id": "wavetrend-dev-atlas",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "note": "Outcome definitions and arms: ATLAS_STUDY_SPEC.md s4-5. backlog-refine-1017: added est_turns/worker (card failed the Ready gate on those fields only).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-17T08:58:04Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -28,12 +30,13 @@
   "scope_out": [
     "VALIDATION and HOLDOUT; fees and strategies (later gate); changing cells after seeing results"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "MyTradingSys/research/wavetrend_2026-10-17/ATLAS_STUDY_SPEC.md",
     "MyTradingSys/research/wavetrend_2026-10-17/CLAUDE_VERIFY.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read PRE_REG.md; confirm it was committed before this run.",
     "Run the study once on DEV with the observation module; log DEV exposure.",
