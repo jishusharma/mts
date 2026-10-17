@@ -49,6 +49,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-probe-prereg` blocked p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
   - `tom-short-coverage-above-vah` raw p2 SONNET: Tom short coverage on trend-down days: no candidate above VAH, ct_short at VAH killed by POC-only target (2026
   - `tom-btc-other-setups` blocked p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
+  - `tom-ctlong-below-zone-cvd-aligned-audit` raw p3 SONNET: Audit Tom engine read 2026-10-17 10:03Z (alert #413): (1) ct_long @ weekly_val 81603.48 stays WAIT_PROOF while
   - `tom-ledger-single-trade-date-used-column` blocked p3 SONNET: Tom ledger: single trade_date_used column, blank date for non-observed rows (RV01 F1,F2)
   - `tom-v2-btc-min-stop-width` blocked p5 CODEX: Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)
   - `tom-v2-dax-dev-backtest` blocked p5 SONNET: Tom v2: DAX dev backtest of the fade under the part B protocol (both fills, session null)
@@ -130,7 +131,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/cryptocred_stop_2026-10-10`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `cryptocred-htf-count-power` refined p2 SONNET: CryptoCred: count-only 4h/1d signals, fire rate, random-entry null spec and power (items 1/9/10)
-  - `cryptocred-ledger-feasibility` ready p2 SONNET: CryptoCred: does any dated trade or call record exist to score on BTC (gate 0c, items 2/3/5)
   - `cryptocred-prereg-4h-1d` refined p3 SONNET: CryptoCred: pre-registration for the 4h/1d redesign (items 6/8/11/12)
 
 ## Positioning (funding, OI, whale / FlowHorse) (`positioning`)
