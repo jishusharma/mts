@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T10:05:28Z",
   "commands": [],
   "created": "2026-10-16T18:33:52Z",
   "depends_on": [],
@@ -10,7 +11,14 @@
   "goal": "Operator 2026-10-17: no backtest before context (phase, speed, sentiment, absorption/distribution, yesterday, 5-day, weekly, bi-weekly). Describe the context around each operator read from data on disk, then diagnose the backtest apparatus. No returns, no pre-registered bar, no event counts used as evidence.",
   "id": "confluence-read-encode",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "CONTEXT_FIRST.md: 3-day context sheet (10-14..16) from mirror data, 9 operator questions, ",
+      "ref": "0bcc41ff",
+      "utc": "2026-10-17T10:05:28Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "Operator priority high. Private input: the operator transaction-log CSV in his Downloads folder (ask the coordinator for the exact name; path withheld because the repo is public) (never commit it or its numbers). Opus not required.",
@@ -25,7 +33,7 @@
     "MyTradingSys/research/event_probability_layer_DESIGN.md",
     "MyTradingSys/methodology/operator_chart_checklist.md items 10-12"
   ],
-  "result": "",
+  "result": "CONTEXT_FIRST.md: 3-day context sheet (10-14..16) from mirror data, 9 operator questions, no backtest",
   "scope_in": [
     "MyTradingSys/research/confluence_read_2026-10-17/"
   ],
@@ -39,7 +47,7 @@
   "sources": [
     "operator chat 2026-10-17"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Operator's private trade log (path comes from the coordinator in a side note, never in the repo): use it ONLY to check which checklist items were visible at his entries and exits. Aggregate counts only: no per-trade times, prices or PnL (public repo).",
     "Context sheet per trade day and the 2 days before: daily and weekly structure (prior-day high/low/VA, 5-day and 10-day range and drift), macro phase, speed (range per hour vs recent norm), sentiment proxies on disk (funding, OI trend, long/short, liquidations if any), absorption or distribution signs (CVD vs price, OI vs price). Descriptive only; each field names its file or says NOT_IN_DATA.",
