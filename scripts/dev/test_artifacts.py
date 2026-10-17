@@ -74,7 +74,7 @@ class Registry(unittest.TestCase):
                                                       "CBP Consensus Desk", "MTS Home", "MTS Research Map", "MTS Session Planner"})
         own = {r["title"]: r["owner"] for r in rows}
         self.assertEqual(own["MTS Control Room"], "jishusharma1985")
-        self.assertEqual(own["Tom and Fabio: what they taught"], "jishu.sharma")
+        self.assertEqual(own["Tom and Fabio: what they taught"], "jishusharma1985")
         self.assertEqual(own["MTS Research Map"], "jishusharma1985")
         self.assertTrue(all("/artifact/" in r["url"] for r in rows))
 
@@ -159,7 +159,7 @@ class Home(unittest.TestCase):
         import make_home as mh
         d = mh.build(self.reg)
         off = [p["title"] for p in d["pages"] if p["owner"] != self.reg["home_login"]]
-        self.assertEqual(off, ["Tom and Fabio: what they taught"])  # no repo html to publish from
+        self.assertEqual(off, [])
 
     def test_hub_explains_failing_links_first(self):
         """Operator 2026-10-17: links to pages owned by another login fail; the reason and fix come before the lists."""
