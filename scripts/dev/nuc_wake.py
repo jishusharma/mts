@@ -25,14 +25,23 @@ PROMPT = (
 )
 
 
-def build_script(model: str) -> str:
+CARD_PROMPT = (
+    "You are a NUC worker for MTS. Follow CLAUDE.md in the repo. Boot: sync.py start {card}; python scripts/dev/mts_signal.py read; "
+    "python scripts/dev/tasks.py brief {card}; sync.py claim. Do exactly that one card in full. Rule 11: if the diff touches the live path, "
+    "gates, decision numbers, run a Sonnet review Agent in the foreground (diff only, 5-line reply) before ship and fix on BLOCK once. "
+    "No VALIDATION/HOLDOUT reads. sync.py ship --release {card} with a Result: line, confirm git cherry origin/fast-track HEAD is empty, "
+    "send one mts_signal done line, stop. Never ask the operator; take defaults and log them."
+)
+
+
+def build_script(model: str, prompt: str = PROMPT, name: str = "default") -> str:
     # `ps` runs as the logged-in user (the SYSTEM ps-bg job has no Claude login: "Not logged in").
     # Start-Process detaches the worker so it survives the ssh disconnect.
     lines = [
         '$env:Path += ";C:/Users/E-ngineers/.local/bin"',
-        '$d = "F:/MTS/nuc_wake"; New-Item -ItemType Directory -Force $d | Out-Null',
+        f'$d = "F:/MTS/nuc_wake/{name}"; New-Item -ItemType Directory -Force $d | Out-Null',
         "$p = @'",
-        PROMPT,
+        prompt,
         "'@",
         '[IO.File]::WriteAllText("$d/prompt.txt", $p)',
         f'Start-Process -FilePath (Get-Command claude.exe).Source -ArgumentList "-p","--model","{model}",'
@@ -47,8 +56,14 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--model", default="claude-sonnet-5-5")
+    ap.add_argument("--name", default="default", help="worker name: own log dir, lets several run in parallel")
+    ap.add_argument("--card", help="work exactly this task card id instead of the generic prompt")
+    ap.add_argument("--prompt-file", help="override the boot prompt (UTF-8 text file)")
     a = ap.parse_args()
-    script = build_script(a.model)
+    prompt = open(a.prompt_file, encoding="utf-8").read().strip() if a.prompt_file else PROMPT
+    if a.card:
+        prompt = CARD_PROMPT.format(card=a.card)
+    script = build_script(a.model, prompt, a.name)
     if a.dry:
         print(script)
         return 0
