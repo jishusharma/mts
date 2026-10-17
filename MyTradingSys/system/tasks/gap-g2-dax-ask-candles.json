@@ -11,7 +11,7 @@
   "goal": "Add Dukascopy DEUIDXEUR ASK 1m candles to the DAX data layer and measure ask-bid spread by 15-minute Berlin bucket on DEV days, so short exits (buys) can be costed at the ask. Output a proposed cost-table row; PRE_REG_DAX.md is frozen and is not edited.",
   "id": "gap-g2-dax-ask-candles",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -30,7 +30,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT feeds DAX cost table proposal. DISPATCH lane CODEX (JIS-NUC lab): DAX BID raw is on NUC (F:/MTS/data/dax_raw); ASK comes from the free Dukascopy feed, reachable from NUC (REPORT 10.2). Shares dax_data.py with no other open card. Verify: sha + empty git cherry + ls-tree lists files.",
+  "note": "LANE moved CODEX->SONNET 2026-10-18: G2 card conflict: the requested 2024-11..2026-04 window breaks the DEV-only rule (open before 2024-07-01); Claude worker must measure the spread on a DEV-only sample and drop the later window. ASK URL/parser code is already in dax_data.py (lab commit 934e5bd0). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT feeds DAX cost table proposal. DISPATCH lane CODEX (JIS-NUC lab): DAX BID raw is on NUC (F:/MTS/data/dax_raw); ASK comes from the free Dukascopy feed, reachable from NUC (REPORT 10.2). Shares dax_data.py with no other open card. Verify: sha + empty git cherry + ls-tree lists files.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
