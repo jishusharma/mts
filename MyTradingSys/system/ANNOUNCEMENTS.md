@@ -32,11 +32,6 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 - NUC (lab, GPT/Codex, Gemini/Antigravity, F:/MTS/data): lab cards, re-derivations, planted-error trial, retro-audit of past base results.
 - NB (live tree, JIS-NB lane, screenshots, deploy): live-path desk tasks (java-popups, outcome-labeler-timeout), deploys, live checks, Eagle_Eyes. Run-and-report work for the lab goes to the NUC by desk row `desk.py post --target DSA`; deploy asks go to NB by desk row `--target JIS-NB`. Plan: `research/lab_guy/TANDEM_PLAN_2026-10-18.md`.
 
-### A-20261018-5 HOLD No new consumers of unchecked lab bases (operator OK 2026-10-18)
-- Applies to: every session creating or starting a card that reads a lab event table, the Q76 / B187 chain or another lab result as its base.
-- Until: that result carries a trust tag at or above the card's class (card `lab-trust-tag`), or the operator lifts it.
-- What: running work finishes and ships. Not held: live trading operations, deploys, docs, tooling, hygiene, and the retro-audit and re-check cards themselves.
-
 ### A-20261018-6 STOP Do not rerun `gap-g2-dax-ask-candles` as written (operator OK 2026-10-18)
 - Applies to: the CODEX lane and anyone starting that card.
 - Until: the card is re-scoped (its requested dates are after the DEV cutoff and the sandbox blocks the Dukascopy download; DEV-only dates and the fetch as a JIS-NB desk task).
@@ -47,4 +42,8 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 - Detail: `MyTradingSys/system/roles/lab_guy.md` ("Using Gemini ... to read images"); pilot data `research/lab_guy/pilots/2026-10-18_gemini_frame_read/`. One pilot, not a catch rate.
 
 ## EXPIRED
-(none yet)
+### A-20261018-5 HOLD No new consumers of unchecked lab bases (operator OK 2026-10-18)
+- Applies to: every session creating or starting a card that reads a lab event table, the Q76 / B187 chain or another lab result as its base.
+- Until: that result carries a trust tag at or above the card's class (card `lab-trust-tag`), or the operator lifts it.
+- What: running work finishes and ships. Not held: live trading operations, deploys, docs, tooling, hygiene, and the retro-audit and re-check cards themselves.
+- LIFTED 2026-10-18 by the operator in chat ("remove all the holds, get the workflow going"). Results on lab bases stay labelled UNCHECKED.
