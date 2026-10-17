@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-17T09:02:21Z",
+  "depends_on": [
+    "cryptocred-ledger-feasibility"
+  ],
+  "done_when": "COUNT_POWER.md with N, fire rate, MDE per setup/timeframe and the null spec.",
+  "est_turns": 12,
+  "from_inbox": "",
+  "goal": "Count-only check for the trader's real timeframes: signals from structure on 4h and 1d (same-timeframe closes) with 1h entries, fire rate per month, power via backtest/power_mde.py, and the random-entry null spec. No P&L.",
+  "id": "cryptocred-htf-count-power",
+  "lane": "SONNET",
+  "layers": [
+    "cryptocred"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "cryptocred-home-fit-audit 2026-10-17",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/cryptocred/",
+    "MyTradingSys/backtest/power_mde.py",
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md"
+  ],
+  "scope_out": [
+    "any P&L backtest run",
+    "tuning",
+    "edits to live-path code"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Count signals per setup on 4h and 1d structure over the DEV window only (no VALIDATION/HOLDOUT read).",
+    "Compute MDE and N-for-80%-power with power_mde.py for each count; write INCONCLUSIVE in advance where N < 100.",
+    "Write MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md incl. the random-entry null spec (same fills, exits, fees)."
+  ],
+  "tests": "A unit test that the count script reproduces the 1h signal count of the existing runner on a fixed fixture; fails before the script exists.",
+  "title": "CryptoCred: count-only 4h/1d signals, fire rate, random-entry null spec and power (items 1/9/10)",
+  "worker": "agent"
+}
