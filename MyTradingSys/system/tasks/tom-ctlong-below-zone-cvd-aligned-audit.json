@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-17T23:07:50Z",
   "commands": [],
   "created": "2026-10-17T10:09:47Z",
   "depends_on": [],
@@ -11,6 +13,12 @@
   "id": "tom-ctlong-below-zone-cvd-aligned-audit",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "audit tom_ctlong_below_zone_2026-10-18.md: WAIT_PROOF as coded (no zone-lost state); cvdAl",
+      "ref": "cb638b70",
+      "utc": "2026-10-17T23:07:50Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -29,7 +37,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T21:38:56Z",
   "refs": [],
-  "result": "",
+  "result": "audit tom_ctlong_below_zone_2026-10-18.md: WAIT_PROOF as coded (no zone-lost state); cvdAligned direction-blind (probable defect); cards tom-cvd-aligned-direction-blind, tom-ctlong-zone-lost-state",
   "scope_in": [
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017",
     "MyTradingSys/research/audits/"
@@ -41,12 +49,13 @@
   "scope_sha": "5f464c1fe506",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the alert #413 TOM read and snapshot conditions",
     "answer (1) zone-lost state, (2) cvd_aligned True vs snapshot False and PROOF_DIR, (3) stale 15m/1d swing flags, each with file:line of the code path",
     "write MyTradingSys/research/audits/tom_ctlong_below_zone_2026-10-18.md; one B-item or card per real defect, or the line no defect"
   ],
+  "taken": "2026-10-17T23:07:45Z",
   "tests": "none (report only)",
   "title": "Tom engine read 2026-10-17 10:03Z (alert 413): ct_long below zone, cvd_aligned contradiction, stale swings: report only",
   "weight": "ROUTINE",
