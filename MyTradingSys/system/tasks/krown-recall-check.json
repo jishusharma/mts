@@ -17,7 +17,7 @@
     "krown"
   ],
   "live_path": false,
-  "note": "UNPARKED 2026-10-17 by operator decisions q-krown-saturation (waiver: descriptive detectors, recall and DEV event study only, no engine setup file) and q-krown-stop (testnet may run without a resting stop; close-based exit is a testnet arm) and q-krown-volume-venue (Binance, Coinbase, CME). Refiner re-scopes it.",
+  "note": "Unparked 2026-10-17 (q-krown-saturation waiver). depends_on layer-v0-detectors: ready. Raw -> refined by backlog-refine-1017; builder runs it after the detectors card.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -38,7 +38,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "list the examples with extract line cites (PRE_REG_KROWN item 3) and check each date/price against the 1d/1w klines",
     "run the detectors on the verified examples; log every recall iteration to the trial ledger",
