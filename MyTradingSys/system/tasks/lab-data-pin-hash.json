@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-17T20:18:52Z",
   "commands": [],
   "created": "2026-10-17T19:01:21Z",
   "depends_on": [],
@@ -12,6 +13,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "22 passed; MyTradingSys/research/layer_lab/reports/2026-10-17_lab-data-pin-hash.md",
+      "ref": "36a98a91",
+      "utc": "2026-10-17T20:18:52Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -28,7 +35,7 @@
   "refined_by": "",
   "refreshed": "2026-10-17T19:01:22Z",
   "refs": [],
-  "result": "",
+  "result": "22 passed; MyTradingSys/research/layer_lab/reports/2026-10-17_lab-data-pin-hash.md",
   "scope_in": [
     "scripts/dev/lab_flow.py (fingerprint, safe_file)",
     "scripts/dev/test_lab_flow.py"
@@ -41,7 +48,7 @@
   "scope_sha": "9649674dccbb",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add optional data_scope (paths under F:/MTS/data) hashed like scope_in",
     "refuse holdout directories in safe_file",

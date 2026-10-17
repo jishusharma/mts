@@ -26,12 +26,12 @@
     "krown"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-17 ACCEPT [PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] . WEIGHT:IMPORTANT recall result gates the Krown G3 step. Unparked 2026-10-17 (q-krown-saturation waiver). Verify (worker): content commit sha, `git cherry origin/fast-track <sha>` empty AND `git ls-tree -r origin/fast-track --name-only` lists the delivered files.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:GPT medium+Haiku re-derive DECISION (OURS): bases are checksum-verified public Binance klines (DATA_MANIFEST.csv all OK) and builder detectors, not an untagged lab table, so no HOLD; pass bars are decision numbers, hence CRUCIAL; any encoding fix needs a fail-first case in test_krown_core.py. WEIGHT:IMPORTANT recall result gates the Krown G3 step. Unparked 2026-10-17 (q-krown-saturation waiver). Verify (worker): content commit sha, `git cherry origin/fast-track <sha>` empty AND `git ls-tree -r origin/fast-track --name-only` lists the delivered files.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T18:15:48Z",
+  "refreshed": "2026-10-17T20:21:55Z",
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
@@ -56,8 +56,8 @@
     "run the detectors on the verified examples; log every recall iteration to the trial ledger",
     "report recall and fire rate; if recall fails fix the encoding (counts as a variant), never the example"
   ],
-  "tests": "docs lane: the recall table is the result; every example row cites an extract line and a kline row",
+  "tests": "docs lane for the recall table (every example row cites an extract line and a kline row); an encoding fix, if any, adds a fail-first case to MyTradingSys/backtest/layers/krown/test_krown_core.py",
   "title": "Krown recall check: verify his dated chart examples against klines, then detector recall and fire rate (PRE_REG_KROWN item 3); DONE when: RECALL.md has per-example hit/miss and fire counts",
-  "weight": "IMPORTANT",
+  "weight": "CRUCIAL",
   "worker": "session"
 }

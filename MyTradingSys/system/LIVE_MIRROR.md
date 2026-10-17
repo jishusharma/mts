@@ -58,7 +58,7 @@ into `research/missed_trades/observations/<host>_<date>.jsonl` for the next `syn
 5. Secrets: deny by path (fatal if an allowlisted file hits it); content match = the line is redacted and counted, never fatal (hashes and order ids pass).
 6. Brief reports two ages: manifest age (desktop clock vs now) and publish-minus-newest-snapshot (both desktop clock, skew-proof). STALE if either exceeds 60 min.
 7. The brief has no "open positions" line: positions come from the Deribit API and need secrets. Decisions come from auto_trades.jsonl instead.
-8. Publish is a separate process outside the trading loop, installed by desk task `install-live-mirror-on-jis-nb`; it reaches the live tree by the normal MTS-AutoDeploy (DEPLOY_RUNBOOK.md; task MTS-LiveMirror every 5 min, `register_live_mirror.ps1`).
+8. Publish is a separate process outside the trading loop, installed by desk task `install-live-mirror-on-jis-nb`; it reaches the live tree by the normal manual or coordinator-run deploy (DEPLOY_RUNBOOK.md; MTS-AutoDeploy RETIRED 2026-10-17, see SCHEDULING_POLICY.md; task MTS-LiveMirror was every 5 min, `register_live_mirror.ps1`).
 9. `sync.py start` runs `live_mirror.py pull` (45 s cap, never fatal) in any work tree.
 10. Known and left open: Control Room (ArtifactData) is readable only from its owning account; screenshot stores and `shot.py status` differ per machine.
 

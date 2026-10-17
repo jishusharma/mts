@@ -30,11 +30,11 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] LANE moved CODEX->SONNET 2026-10-18: Needs network (aggTrades fetch); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT proposes the BTC slippage default. DISPATCH lane CODEX (JIS-NUC lab), public fetch: aggTrades are NOT on the NUC (only tom_raw klines + orderflow_1m bars); data.binance.vision is public. If the fetch fails twice, reroute to DSA-NB (JIS-NB), do not force. Verify: sha + empty git cherry + ls-tree lists files.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium+Haiku re-derive DECISION (OURS): window moved from 2024-12-01..2025-03-31 (after the repo DEV cut 2024-07-01, i.e. VALIDATION) to DEV 2022-01-01..2024-06-30; inputs are raw public klines/aggTrades, not a derived lab base, so no HOLD; output is a new shared number (proposal, OURS). LANE moved CODEX->SONNET 2026-10-18: Needs network (aggTrades fetch); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT proposes the BTC slippage default. DISPATCH lane CODEX (JIS-NUC lab), public fetch: aggTrades are NOT on the NUC (only tom_raw klines + orderflow_1m bars); data.binance.vision is public. If the fetch fails twice, reroute to DSA-NB (JIS-NB), do not force. Verify: sha + empty git cherry + ls-tree lists files.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T18:44:24Z",
+  "refreshed": "2026-10-17T20:21:58Z",
   "refs": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
   ],
@@ -48,8 +48,7 @@
   ],
   "scope_out": [
     "tom_bt.py / maker_model.py edits (read only; the default change is a proposal)",
-    "days outside DEV 2024-12-01..2025-03-31",
-    "VALIDATION/HOLDOUT",
+    "any day on or after 2024-07-01 (VALIDATION/HOLDOUT)",
     "live tree"
   ],
   "scope_sha": "52530e64c23f",
@@ -61,7 +60,7 @@
   "state": "ready",
   "steps": [
     "Tests first (red): first_trade_beyond(trades, level, side) hand cases: gap through the level returns price - level, exact hit returns 0, no trade beyond returns None; bucket assignment by tercile.",
-    "From 1m klines (F:/MTS/data/tom_raw via bt_data.load_klines) compute daily range % for DEV days; sort; take 4 evenly spaced days per tercile (12 days, OURS) into days.csv.",
+    "From 1m klines (F:/MTS/data/tom_raw via bt_data.load_klines, end_ms=2024-07-01) compute daily range % for DEV days 2022-01-01..2024-06-30; sort; take 4 evenly spaced days per tercile (12 days, OURS) into days.csv.",
     "Fetch aggTrades for those 12 days with fetch_binance_archive.py --datasets aggTrades into a scratch dir (about 0.1-0.3 GB zipped/day); delete the raw after the summary is written.",
     "Per day, for every round-100 USD level crossed up or down (OURS proxy for stop levels): slip_bp = |first trade beyond - level| / level * 1e4 and slip in R at stop widths 0.20/0.40/0.80 %.",
     "Write research/gap_g7_stop_slippage_2026-10-18/SLIPPAGE.md + events summary: n, median, p90 per bucket; name it a trade-through proxy (no own-size impact); propose a default, label OURS; one row per run in layer_lab/TRIALS.md."

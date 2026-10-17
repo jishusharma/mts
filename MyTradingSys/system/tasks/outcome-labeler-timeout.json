@@ -1,45 +1,59 @@
 {
   "approved_by": "",
-  "asks": "Live-loop caller: JIS-NB desk task; needs exact commands and a measured run time before ready",
-  "commands": [],
+  "asks": "",
+  "commands": [
+    "git -C C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed\\.claude\\worktrees\\mts-jis-nb-planner-runlanes-1018 grep -n -E \"outcome_labeler|-TimeoutSec 30\" -- scripts/core/start-trading-day.ps1 MyTradingSys/runtime/outcome_labeler.py",
+    "python scripts/dev/test_outcome_labeler_incremental.py",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
   "created": "2026-10-17T12:20:31Z",
   "depends_on": [],
-  "done_when": "measured run time is below the limit with margin, test passes",
-  "est_turns": 12,
+  "done_when": "test_labeled_snapshots_are_not_reopened fails before and passes after; labeler on 3000 synthetic snapshots (all labeled) finishes under 3 s, number recorded in the Result line; run_all_tests --quick green.",
+  "est_turns": 25,
   "from_inbox": "",
-  "goal": "outcome_labeler finishes inside its time limit in the live loop.",
+  "goal": "outcome_labeler.py stays far below its 30 s timeout in the live loop as snapshots accumulate, by not re-reading snapshots that are already labeled.",
   "id": "outcome-labeler-timeout",
   "lane": "JIS-NB",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B191: loop snapshot runs java directly; gates keep off 2 reserved CPUs",
+      "ref": "c93b7ac29728",
+      "utc": "2026-10-16T15:36:57Z"
+    }
+  ],
   "layers": [],
   "live_path": true,
-  "note": "[PLAN 2026-10-18 weight=CRITICAL lab-touch: no, protocol skipped]",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C3 REVIEWER:review SESSION DECISION (OURS): cause hypothesis = main() opens and json-loads every snapshot file each cycle even when already labeled (unbounded growth vs the 30 s timeout at start-trading-day.ps1:547); fix = skip labeled files before opening, keep the timeout; tested on a synthetic dir (the script hardcodes the live path R, tests must patch SNAPS/LABELS, never read the live tree).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T12:20:50Z",
+  "refreshed": "2026-10-17T20:21:18Z",
   "refs": [],
   "result": "",
   "scope_in": [
-    "outcome_labeler (grep the script)",
-    "its caller in the live loop"
+    "MyTradingSys/runtime/outcome_labeler.py",
+    "scripts/dev/test_outcome_labeler_incremental.py",
+    "scripts/core/start-trading-day.ps1 (line 547 timeout only if the measurement needs it)"
   ],
   "scope_out": [
     "live tree",
     "HALT files",
-    "deploys"
+    "deploys",
+    "runtime_data (read only, never written by tests)"
   ],
-  "scope_sha": "",
-  "size": "S",
+  "scope_sha": "c93b7ac29728",
+  "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
-    "read the 30 s timeout path and the log line that reports it",
-    "measure the real run time on the snapshot input",
-    "fix the slow step or raise the limit with the number as evidence"
+    "Run the grep commands: the 30 s call at start-trading-day.ps1:547 and load_snapshots()/main() in outcome_labeler.py.",
+    "Write the fail-first test test_labeled_snapshots_are_not_reopened (synthetic dir, patched SNAPS/LABELS, 3000 labeled files, count opens) and test_slow_input_is_reported_not_silent; run it on the current code to see it fail.",
+    "Change load_snapshots to take the done set and skip labeled files without opening them; keep the atomic write_labels; measure time on the synthetic dir (record the number); run_all_tests --quick; ship. Deploy stays manual."
   ],
-  "tests": "a fail-first test for the timeout path (slow input -> reported, not silent)",
+  "tests": "scripts/dev/test_outcome_labeler_incremental.py::test_labeled_snapshots_are_not_reopened (fails on current load_snapshots, which opens every file)",
   "title": "Network: outcome_labeler hits its 30 s timeout in the live loop (find cause, raise or fix)",
   "weight": "CRITICAL",
-  "worker": "agent"
+  "worker": "session"
 }

@@ -1,67 +1,67 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-17T09:02:21Z",
-  "depends_on": [
-    "cryptocred-htf-count-power"
-  ],
-  "done_when": "PRE_REG_CRYPTOCRED_HTF.md complete; operator can approve the backtest card from it.",
-  "est_turns": 12,
-  "from_inbox": "",
-  "goal": "Fill backtest/PRE_REG_TEMPLATE.md for a CryptoCred 4h/1d redesign: invalidation-based stop with an OURS buffer in noise units, trailing/FTA exits next to the fixed bracket, sealed holdout, trial ledger, regime stratification and the kill rule (gate 0f). No backtest.",
-  "id": "cryptocred-prereg-4h-1d",
-  "lane": "SONNET",
-  "latest": [
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "COUNT_POWER: fix 1h reading",
-      "ref": "380ae4e3eacc",
-      "utc": "2026-10-17T18:24:17Z"
-    },
-    {
-      "auto": true,
-      "kind": "report",
-      "line": "380ae4e3eacc COUNT_POWER: fix 1h reading",
-      "ref": "MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md",
-      "utc": "2026-10-17T18:24:17Z"
-    }
-  ],
-  "layers": [
-    "cryptocred"
-  ],
-  "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use]",
-  "prio": 3,
-  "refine_tries": 0,
-  "refined_by": "cryptocred-home-fit-audit 2026-10-17",
-  "refreshed": "2026-10-17T20:18:53Z",
-  "refs": [],
-  "result": "",
-  "scope_in": [
-    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
-    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md",
-    "MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md"
-  ],
-  "scope_out": [
-    "any P&L backtest run",
-    "tuning",
-    "edits to live-path code"
-  ],
-  "scope_sha": "380ae4e3eacc",
-  "size": "S",
-  "sources": [
-    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md"
-  ],
-  "state": "ready",
-  "steps": [
-    "Write MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md with all 12 items and gates 0a-0f answered; label every number SOURCED or OURS.",
-    "State which result ends the source (kill rule) and the redesign budget.",
-    "Run test_pre_reg_template.py; create no further cards."
-  ],
-  "tests": "test_pre_reg_template.py passes for the new file (fails if any item is unanswered).",
-  "title": "CryptoCred: pre-registration for the 4h/1d redesign (items 6/8/11/12)",
-  "weight": "CRUCIAL",
-  "worker": "agent"
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-17T09:02:21Z",
+ "depends_on": [
+  "cryptocred-htf-count-power"
+ ],
+ "done_when": "PRE_REG_CRYPTOCRED_HTF.md complete; operator can approve the backtest card from it.",
+ "est_turns": 12,
+ "from_inbox": "",
+ "goal": "Fill backtest/PRE_REG_TEMPLATE.md for a CryptoCred 4h/1d redesign: invalidation-based stop with an OURS buffer in noise units, trailing/FTA exits next to the fixed bracket, sealed holdout, trial ledger, regime stratification and the kill rule (gate 0f). No backtest.",
+ "id": "cryptocred-prereg-4h-1d",
+ "lane": "SONNET",
+ "latest": [
+  {
+   "auto": true,
+   "kind": "ship",
+   "line": "COUNT_POWER: fix 1h reading",
+   "ref": "380ae4e3eacc",
+   "utc": "2026-10-17T18:24:17Z"
+  },
+  {
+   "auto": true,
+   "kind": "report",
+   "line": "380ae4e3eacc COUNT_POWER: fix 1h reading",
+   "ref": "MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md",
+   "utc": "2026-10-17T18:24:17Z"
+  }
+ ],
+ "layers": [
+  "cryptocred"
+ ],
+ "live_path": false,
+ "note": "REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:GPT medium+Haiku re-derive HOLD A-20261018-5: reads COUNT_POWER.md (untagged lab count/power result) as its base; stays refined. DECISION (OURS): ready once cryptocred-htf-count-power carries a trust tag; the test must also glob PRE_REG_CRYPTOCRED_HTF.md (test_pre_reg_template.py only globs HOME_FIT_AUDIT_*) so it fails before the file exists.",
+ "prio": 3,
+ "refine_tries": 0,
+ "refined_by": "cryptocred-home-fit-audit 2026-10-17",
+ "refreshed": "2026-10-17T20:21:41Z",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+  "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md",
+  "MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md"
+ ],
+ "scope_out": [
+  "any P&L backtest run",
+  "tuning",
+  "edits to live-path code"
+ ],
+ "scope_sha": "380ae4e3eacc",
+ "size": "S",
+ "sources": [
+  "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md"
+ ],
+ "state": "refined",
+ "steps": [
+  "Write MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md with all 12 items and gates 0a-0f answered; label every number SOURCED or OURS.",
+  "State which result ends the source (kill rule) and the redesign budget.",
+  "Run test_pre_reg_template.py; create no further cards."
+ ],
+ "tests": "test_pre_reg_template.py passes for the new file (fails if any item is unanswered).",
+ "title": "CryptoCred: pre-registration for the 4h/1d redesign (items 6/8/11/12)",
+ "weight": "CRUCIAL",
+ "worker": "agent"
 }

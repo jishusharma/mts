@@ -1,0 +1,10 @@
+{
+  "done_when": "F:/MTS/data/dax_raw_dev_bid and dax_raw_dev_ask both hold .bi5 files for the weekdays 2024-01-02..2024-06-28 (failures listed); then card gap-g2-dax-ask-candles is released (tasks.py apply-op gap-g2-dax-ask-candles release).",
+  "from": "JIS-NUC",
+  "id": "20261017-201758-fetch-dukascopy-dax-bid-ask-1m-candles-f",
+  "need": "Run on JIS-NB (open network; no secrets, free public data): python -I MyTradingSys/backtest/dax_data.py fetch --start 2024-01-02 --end 2024-06-28 --raw F:/MTS/data/dax_raw_dev_bid --side BID, then the same with --raw F:/MTS/data/dax_raw_dev_ask --side ASK. DEV only (open before 2024-07-01); raw stays off-repo, separate dirs so dax_raw/dax_archive are untouched. Reply with ok/fail/have counts and the last log line.",
+  "posted": "2026-10-17T20:17:58Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Fetch Dukascopy DAX BID+ASK 1m candles for DEV days (g2 rescope)"
+}

@@ -12,6 +12,7 @@
   "created": "2026-10-15T23:28:58Z",
   "depends_on": [],
   "done_when": "T02_lookahead_time.md shipped: every detector PASS/FAIL on truncation and poison, static sweep table, clock table with changed-label counts, entry timing, lead L6 resolved, S1/S2 carded.",
+  "est_turns": 30,
   "from_inbox": "",
   "goal": "Show mechanically, for every detector behind a published verdict and every testnet layer, that the signal at time t is the same whether or not the data after t exists; and find every session or bar-stamp convention that disagrees.",
   "id": "dsa-audit-02-lookahead-time",
@@ -19,7 +20,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers]",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "coordinator MTS super-session 2026-10-16",
@@ -54,5 +55,6 @@
   ],
   "tests": "",
   "title": "DSA audit T02: truncation and poison tests for look-ahead, plus session clocks",
-  "weight": "IMPORTANT"
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

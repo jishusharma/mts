@@ -1,36 +1,46 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/live_mirror.py pull"
+  ],
   "created": "2026-10-17T12:20:31Z",
   "depends_on": [],
-  "done_when": "a dated note in MyTradingSys/research/ with the counts and one card per defect",
+  "done_when": "MyTradingSys/research/live_loop_timeouts_2026-10-18/REPORT.md with timeout-line counts before and after c93b7ac2 (per key, per day), wrapper priority and snapshot.cp state, and one tasks.py card id per real defect (or the line 'no defect found').",
   "est_turns": 12,
   "from_inbox": "",
   "goal": "One read-only report: are live-loop timeouts gone after B191, plus wrapper priority and snapshot.cp state.",
   "id": "live-loop-timeouts-b191",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B191: loop snapshot runs java directly; gates keep off 2 reserved CPUs",
+      "ref": "c93b7ac29728",
+      "utc": "2026-10-16T15:36:57Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=IMPORTANT lab-touch: no, protocol skipped]",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none DECISION (OURS): split at the B191 commit c93b7ac2 (2026-10-16T15:37Z); data = runtime_data/_mirror/runtime_data/live_runner.log (mirror 2026-10-17T20:16Z, covers both sides; run `python scripts/dev/live_mirror.py pull` first); count lines whose json error contains 'timed out'.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-17T12:20:50Z",
+  "refreshed": "2026-10-17T20:21:53Z",
   "refs": [],
   "result": "",
   "scope_in": [
-    "runtime_data/live_runner.log",
-    "the wrapper that starts the live loop",
-    "snapshot.cp"
+    "runtime_data/_mirror/runtime_data/live_runner.log (read; git-ignored mirror)",
+    "scripts/core/loop-supervisor.ps1",
+    "scripts/core/start-trading-day.ps1 (snapshot.cp, lines 96-106)"
   ],
   "scope_out": [
     "live tree",
     "HALT files",
     "deploys"
   ],
-  "scope_sha": "",
+  "scope_sha": "c93b7ac29728",
   "size": "S",
   "sources": [],
   "state": "ready",
@@ -41,6 +51,6 @@
   ],
   "tests": "none (report only; no code change)",
   "title": "Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)",
-  "weight": "IMPORTANT",
+  "weight": "ROUTINE",
   "worker": "agent"
 }
