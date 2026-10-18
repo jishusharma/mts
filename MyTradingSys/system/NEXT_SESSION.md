@@ -2,7 +2,7 @@
 
 Fabio date-match card is done (DATE_MATCH.md verdict AMBIGUOUS; spoken day 2025-10-15 13:47 UTC scores 1.0, >=8 days tie). Next on this thread: a card that adds path constraints (F11-F14 range, 1m highs/lows ordering) or a video-frame date read to break the tie; ledger entry_time_utc stays empty until then.
 Tom raw cards tom-cvd-aligned-direction-blind and tom-ctlong-zone-lost-state were resolved and dropped with audit evidence in commit 7d30650a (ruling BUGS B054/T015 WONTFIX and tier trigger_ready exclusivity).
-Open next for SONNET: `rv02-fix-dax-producer-data-binding` (p1) / `tom-dax-backtest` (p2).
+DAX work is dropped (operator 2026-10-18, commit bf5dba20): RV02 R3 and R4 are on trunk (770a0ae9, 39da07e3); `tom-dax-backtest`, `gap-g2-dax-ask-candles`, `tom-v2-dax-dev-backtest` no longer exist. The 4-hour lane plan is `PLAN_4H_2026-10-18.md`; the third-login laptop setup is `LENOVO_SETUP.md`.
 
 ## Layers wave 1 (planner 2026-10-18): for the NUC (NB at 79% weekly, no new NB work)
 Kurisko Quad Rotation = John Kurisko's FOUR STOCHASTICS (9,3) (14,3) (40,4) (60,10,10), not RSI; the "4 RSI" memory is unsourced (transcript has 0 mentions of RSI). Spec `research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md` s5, extract `extracts/processed/kurisko/QUAD_ROTATION.md` (both on trunk).
