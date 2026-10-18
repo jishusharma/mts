@@ -12,7 +12,7 @@ Layer rules (operator 2026-10-13): no fixed core; Krown is a layer that may be c
    (unlike Tom and Fabio, who are futures order-flow traders). Tops are weekly/monthly (KR-P01).
 3. Holding period is days to weeks (tops: months), so fees are small next to a daily stop; the Tom/Fabio fee wall (stop under round-trip cost)
    should not apply. The cost is **sample size**: a daily layer gives tens, not thousands, of events per year.
-4. Of 120 consolidated rules: 99 READY, 6 BLOCKED, 15 REJECT (framing, claims, fees, options). 67 of the 105 non-reject rows come from fewer than 3 videos (PROVISIONAL).
+4. Of 131 consolidated rules: 109 READY, 6 BLOCKED, 16 REJECT (framing, claims, fees, options). 77 of the 115 non-reject rows come from fewer than 3 videos (PROVISIONAL).
 5. **Stops and sizes are still thin.** One structural stop exists (far side of the compression zone, a close beyond it, KR-Q05) and one structural
    exit rule (a close beyond a zone, KR-X01); targets are the range height (KR-R07) and a volatility peak (KR-Q06); size: "size down as volatility
    rises" and a 20-85 % scale-out at tops (KR-P02). No stop distance, no risk per trade. Everything else is an OURS arm.
@@ -89,6 +89,10 @@ back-test) are claims: hypotheses H-L1, H-Q1, H-M3, H-M2, never inputs.
 | `rsi` / Malkan (`rsi_levels` 40/60 tolerance study, `rsi_divergence` no edge) | KR-S03 is the same 40/60 regime: reuse that study's tolerance results; KR-S05 divergence overlaps a layer with no edge (C14): descriptive only. |
 | `session_levels`, LC (levels confluence) cards | zones are structural levels, not UTC-day levels; LC cards run 1m levels. Different object. |
 | options module (`options/`) | KR-Q11 (premium buying only at low implied volatility) belongs there, not here. |
+
+### 6.1 Market Microstructure & Liquidation Cascades (`Inside the Machine Ep 7`, `P3rDSh187TE`)
+- Sourced concepts: `KR-LQC01` (Anatomy of cascade / dominoes), `KR-LQC02` (Weather gauges: hot funding + stacked OI), `KR-LQC03` (Deleveraging flush vs market break; V-shaped recovery), `KR-LQC04` (Defense rules: keep liquidation price far from liquidity pools, never multiply by zero).
+- Layer disposition: Context/regime and execution risk filters only, not directional entry signals. Hot funding and high open interest define a high-risk regime (cascade vulnerability) where position sizing is throttled and liquidation prices must avoid obvious pool clusters. Deleveraging flushes provide context for sharp reclaim / V-reversal setups once forced selling concludes.
 
 ## 7. Build plan (cards)
 k0 `krown-data-daily-majors`: BTC spot 1d/1w from 2017-08 (+ ETH/BNB/SOL, Coinbase volume if q-krown-volume-venue allows). k1 `krown-layer-v0-detectors`
