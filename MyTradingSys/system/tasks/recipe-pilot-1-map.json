@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T07:04:26Z",
+  "commands": [],
+  "created": "2026-10-16T06:54:44Z",
+  "crucial": false,
+  "depends_on": [],
+  "done_when": "Each criterion has evidence; finish through lab_flow.py finish; failed criteria stop the flow.",
+  "effort": "medium",
+  "flow": {
+    "contract": "0eba7f538144824cdf140093366c25ce45fa32b1d87008a4d81882ac98345d51",
+    "criteria": [
+      "Independently compute sum 30 and mean 10 from the source observations and identify the sum claim as MISMATCH.",
+      "Label the unsupported net-after-fees claim NOT_IN_DATA; make no trading inference."
+    ],
+    "goal": "Verify that an ordered independent review catches a seeded numerical error and handles missing fees without inventing data.",
+    "id": "recipe-pilot",
+    "lens": "Map claims to source evidence; expose missing inputs and assumptions.",
+    "recipe": "critical-audit",
+    "scope_in": [
+      "MyTradingSys/research/layer_lab/examples/pilot-facts.md",
+      "MyTradingSys/research/layer_lab/examples/pilot-claims.md"
+    ],
+    "stage": 1
+  },
+  "flow_receipt": {
+    "contract": "0eba7f538144824cdf140093366c25ce45fa32b1d87008a4d81882ac98345d51",
+    "criteria": [
+      "PASS",
+      "PASS"
+    ],
+    "report": "MyTradingSys/research/layer_lab/reports/2026-10-16_recipe-pilot-1-map.md",
+    "report_sha256": "962df31fa815c0db018d2faaf75c2e05b1ab965fb71c2cf37cc5a90b45fa707a",
+    "sources": {
+      "MyTradingSys/research/layer_lab/examples/pilot-claims.md": "328a7c1c39c69ed26e7e1f6dfefc7b224e2fa27266d68f9054c30da4aea1a698",
+      "MyTradingSys/research/layer_lab/examples/pilot-facts.md": "68981aa107ea24d091091e65d1bfe36271a4052db267566f411f93e5a3bdc543"
+    },
+    "verdict": "PASS"
+  },
+  "from_inbox": "",
+  "goal": "Verify that an ordered independent review catches a seeded numerical error and handles missing fees without inventing data.",
+  "gpt_only": true,
+  "id": "recipe-pilot-1-map",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "model": "gpt-6.1-sol",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "C1 PASS: source sum 30, mean 10; A MISMATCH, B MATCH. C2 PASS: C NOT_IN_DATA, fees missing; no trading inference.",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/examples/pilot-facts.md",
+    "MyTradingSys/research/layer_lab/examples/pilot-claims.md"
+  ],
+  "scope_out": [
+    "live path, secrets, holdout data, relay and unrelated files"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Map claims to source evidence; expose missing inputs and assumptions.",
+    "Read original sources before the prior report; report C1..Cn as PASS, REWORK or BLOCKED with file/command evidence."
+  ],
+  "tests": "",
+  "title": "recipe-pilot: map"
+}

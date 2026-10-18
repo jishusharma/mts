@@ -1,0 +1,6 @@
+CARRY_always  DEV  net_ann=  15.4% sharpe=10.70 mdd= -0.4%  buy&hold ann=  10.6% mean_funding_ann= 15.4% min_30d_funding_ann= -3.9%
+CARRY_always  VAL  net_ann=  12.1% sharpe=18.65 mdd= -0.0%  buy&hold ann=  71.0% mean_funding_ann= 12.1% min_30d_funding_ann=  0.7%
+CARRY_always  HOLD net_ann=   6.2% sharpe=18.40 mdd= -0.1%  buy&hold ann=  59.2% mean_funding_ann=  6.2% min_30d_funding_ann= -0.9%
+CARRY_switch  DEV  net_ann=   9.1% sharpe= 4.09 mdd= -8.4%  buy&hold ann=  10.6% mean_funding_ann= 15.4% min_30d_funding_ann= -3.9%
+CARRY_switch  VAL  net_ann=   7.3% sharpe= 4.58 mdd= -4.5%  buy&hold ann=  71.0% mean_funding_ann= 12.1% min_30d_funding_ann=  0.7%
+CARRY_switch  HOLD net_ann=   1.5% sharpe= 1.06 mdd= -2.3%  buy&hold ann=  59.2% mean_funding_ann=  6.2% min_30d_funding_ann= -0.9%

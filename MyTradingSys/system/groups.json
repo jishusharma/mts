@@ -398,7 +398,6 @@
       "paths": [
         "scripts/dev/",
         "scripts/sched/",
-        "scripts/schedules/",
         "scripts/worker/",
         "scripts/tools/",
         "MyTradingSys/system/",

@@ -1,0 +1,75 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-14T11:26:02Z",
+  "depends_on": [],
+  "done_when": "SLIPPAGE.md: per bucket x delta (0, 250, 1000 ms) n events, n days, median and p90 in bp and R at the 0.40 % stop, bootstrap range, THIN if n < 500 after the 8-day cap; days.csv with zip sha256; TRIALS.md rows; test passes; no aggTrades zip left; no day on or after 2024-07-01; default labelled OURS. Verify: sha, empty git cherry, git ls-tree.",
+  "effort": "medium",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "Measure BTCUSDT stop-order slippage proxy from public aggTrades: price of the first trade at or beyond a level minus the level, per volatility bucket (low/mid/high day range), in bp and in R, so backtests can replace slip=0.0 (tom_bt.py:176) with a measured median.",
+  "id": "gap-g7-stop-slippage",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "dfb243d4cc83 labguy-pass-b: Lab_Guy ACCEPT stamps for 5 cards (b187 done, audit/rv05-h2/h3",
+      "ref": "MyTradingSys/research/lab_guy/specs/gap-g7-stop-slippage.md",
+      "utc": "2026-10-18T04:13:20Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab gap-g4-through-ticks-flag: DONE (build)",
+      "ref": "52530e64c23f",
+      "utc": "2026-10-15T14:32:14Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED: gemini-4-argon-low 2026-10-18 - Independent cross-vendor Lab_Guy(GEM-NUC) review (producer=SONNET, class=C2, weight=IMPORTANT): ACCEPT.",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T05:12:41Z",
+  "refs": [
+    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
+    "MyTradingSys/research/lab_guy/specs/gap-g7-stop-slippage.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/tom_bt.py",
+    "MyTradingSys/backtest/maker_model.py",
+    "MyTradingSys/backtest/fetch_binance_archive.py",
+    "MyTradingSys/backtest/bt/bt_data.py",
+    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
+  ],
+  "scope_out": [
+    "tom_bt.py / maker_model.py edits (read only; the default change is a proposal)",
+    "any day on or after 2024-07-01 (VALIDATION/HOLDOUT)",
+    "live tree"
+  ],
+  "scope_sha": "52530e64c23f",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md section 5 G7 (tom_bt.py:176 slip=0.0; maker_model.py:19 not modelled)",
+    "MyTradingSys/backtest/fetch_binance_archive.py:13 (aggTrades size)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Do steps 2-3 first. Do NOT fetch aggTrades (step 4) until the NUC spec review is in this note as a REVIEW-SPEC: ACCEPT|FIX|REWORK line (C2); apply a FIX before fetching.",
+    "Tests first (red), hand-computed numbers: first_trade_beyond (gap returns price-level, exact hit 0, none -> None, both directions), price_after(delta_ms) on a synthetic series (5 USD gap gives 5.0 at delta 0), tercile ties. Spec item 2.",
+    "Days: 1m klines via bt_data.load_klines (end_ms=2024-07-01, assert no later bar), DEV daily range % sorted, 4 evenly spaced days per tercile into days.csv (12, OURS). Extension fixed now: bucket < 500 events -> next 4 days of that tercile, cap 8 per tercile; counts only, never slippage values; each extension a TRIALS.md row. Spec item 3.",
+    "Fetch one day at a time (fetch_binance_archive.py --datasets aggTrades, scratch dir outside the repo), record the zip sha256 in days.csv, write that day's events file, delete that zip at once; no raw committed (public repo).",
+    "Per day, every round-100 USD level crossed (OURS proxy): signed adverse slip in bp at delta 0 ms (first trade at or beyond the level; tick-bounded, mostly 0) and delta 250 and 1000 ms (OURS: last trade at or before t_cross+delta, a stop-market fills after latency); R at stop widths 0.20/0.40/0.80 %. Spec item 5.",
+    "SLIPPAGE.md: n events, n days, median, p90 per bucket x delta, day-bootstrap range (OURS 1000 resamples, seed recorded); name it a Binance USD-M BTCUSDT trade-through/latency proxy (no own size, not Deribit, REPORT G8); propose default (OURS: delta 250 ms median, delta 0 optimistic bound), tag UNCHECKED; no tom_bt.py edit (adoption = own C2 card); TRIALS.md rows. Spec item 6."
+  ],
+  "tests": "test_slippage.py (new, in the output folder) fails before slippage.py exists, passes after: python -m pytest MyTradingSys/research/gap_g7_stop_slippage_2026-10-18/test_slippage.py -q; includes the synthetic 5 USD gap case at delta 0 and a hand value at delta 250 ms, and a check that a day on or after 2024-07-01 is refused",
+  "title": "G7 measure BTC stop slippage from aggTrades by volatility bucket",
+  "weight": "IMPORTANT",
+  "worker": "session",
+  "updated": "2026-10-18T10:00:00Z"
+}

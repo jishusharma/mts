@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [],
   "created": "2026-10-10T18:55:33Z",
   "depends_on": [
@@ -9,15 +10,37 @@
     "tom-probe-diag-btc"
   ],
   "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_ARMS.md frozen (arms, source status, trial count, holdouts) and a runner card exists.",
+  "est_turns": 12,
   "from_inbox": "",
   "goal": "Freeze the arms that survived the diagnostics, recall and DAX run into one pre-registration with an honest trial count, then capture the runner as a new card.",
   "id": "tom-probe-prereg",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jisnb/daxbt",
+      "ref": "ba5c008b9b1f",
+      "utc": "2026-10-10T20:52:38Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "1e67b85a3b41 tom-dax-backtest build: DAX driver, FDAX fees, gap-filling loader, open filte",
+      "ref": "MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md",
+      "utc": "2026-10-10T20:43:29Z"
+    }
+  ],
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
-  "note": "opus 2026-10-11: DIAG_BTC says S SKIP, Q SKIP (thin), M GO. Scope reduced to the M arms (partials, trail, re-entry, no timeout) with stops wide enough to clear BTC noise+fees per TOM_LAYER_V2_SPEC; S/Q arms parked until the v2 encoding exists.",
+  "note": "CHECKED 2026-10-18: waits only on tom-dax-backtest (ready, not done); then needs the real Lab_Guy stamp (CRUCIAL/C2). Order is by depends_on. | UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | opus 2026-10-11: DIAG_BTC says S SKIP, Q SKIP (thin), M GO. Scope reduced to the M arms (partials, trail, re-entry, no timeout) with stops wide enough to clear BTC noise+fees per TOM_LAYER_V2_SPEC; S/Q arms parked until the v2 encoding exists.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "opus-2026-10-11 (operator chat)",
+  "refined_by": "gemini-nuc",
+  "refreshed": "2026-10-18T05:12:53Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -30,6 +53,7 @@
     "running the arms",
     "live or testnet changes"
   ],
+  "scope_sha": "ba5c008b9b1f",
   "size": "S",
   "sources": [
     "operator chat 2026-10-11: queue DAX recall, gap rules, DAX backtest in that order; probe selection/management/session with options flagged up front",
@@ -43,5 +67,8 @@
     "N5: re-measure MFE/MAE for the M arms only after the stop-width transfer rule exists (0.084 % stops are noise-level); an M arm is per trader, never global. Null is session-matched (N7); report touch and trade-through fills; stratify by session/regime (B154); n < 100 = 'underpowered', never 'no edge'."
   ],
   "tests": "python scripts/dev/tasks.py lint stays green with the new runner card (fails if the card misses tests/done_when).",
-  "title": "Pre-register the surviving S/Q/M/F arms and write their runner card"
+  "title": "Pre-register the surviving S/Q/M/F arms and write their runner card",
+  "weight": "IMPORTANT",
+  "worker": "agent",
+  "updated": "2026-10-18T10:00:00Z"
 }

@@ -446,42 +446,56 @@ def cmd_lint(args):
 
 # ---------- status ----------
 
+HEARTBEAT_FRESH_S = 180  # a worker that has not beaten for 3 min is not running
+
+
+def read_heartbeat(path):
+    """(heartbeat, time, fresh). No file: (None, None, False). An unreadable file raises ValueError/OSError."""
+    if not path.exists():
+        return None, None, False
+    hb = json.loads(read_text(path))
+    t = parse_utc(hb.get("utc"))
+    return hb, t, bool(t and (utc_now() - t).total_seconds() < HEARTBEAT_FRESH_S)
+
+
+def last_beat(hb, t):
+    return f"; last heartbeat {hb.get('state', '?')} {age_text(t)}" if hb else ""
+
+
 def print_dsa_status():
-    hb_path = QUEUE / "heartbeat_dsa.json"
+    """Both lanes are dormant by design (Qwen retired 2026-10-01; DSA work goes through AIBridge + the desk board),
+    so only a fresh heartbeat is shown as a live worker; anything else is one honest 'dormant' line, never a fault."""
     waiting = len(list((QUEUE / "incoming_dsa").glob("*.task.json")))
     running = len(list((QUEUE / "claimed_dsa").glob("*.task.json")))
-    if hb_path.exists():
-        try:
-            hb = json.loads(read_text(hb_path))
-            t = parse_utc(hb.get("utc"))
-            task = f" task {hb['task']}" if hb.get("task") else ""
-            note = f" ({hb['note']})" if hb.get("note") else ""
-            print(f"DSA-WORKER {hb.get('state', '?')}{task}{note}, heartbeat {age_text(t)}; "
-                  f"incoming_dsa {waiting}; running {running}")
-            if hb.get("state") == "needs-human":
-                print("WARNING  DSA worker needs the operator (challenge, login or repeated errors)")
-        except (ValueError, OSError) as exc:
-            print(f"DSA-WORKER heartbeat unreadable: {exc}; incoming_dsa {waiting}")
-    else:
-        print(f"DSA-WORKER no heartbeat (not running); incoming_dsa {waiting}; running {running}")
+    try:
+        hb, t, fresh = read_heartbeat(QUEUE / "heartbeat_dsa.json")
+    except (ValueError, OSError) as exc:
+        print(f"DSA-WORKER heartbeat unreadable: {exc}; incoming_dsa {waiting}")
+        return
+    if not fresh:
+        print(f"DSA-WORKER dormant: DSA work goes through AIBridge + the desk board (DSA_DELEGATION.md){last_beat(hb, t)}; "
+              f"incoming_dsa {waiting}; running {running}")
+        return
+    task = f" task {hb['task']}" if hb.get("task") else ""
+    note = f" ({hb['note']})" if hb.get("note") else ""
+    print(f"DSA-WORKER {hb.get('state', '?')}{task}{note}, heartbeat {age_text(t)}; "
+          f"incoming_dsa {waiting}; running {running}")
+    if hb.get("state") == "needs-human":
+        print("WARNING  DSA worker needs the operator (challenge, login or repeated errors)")
 
 
 def cmd_status(args):
     ensure_dirs()
-    hb_path = QUEUE / "heartbeat.json"
-    if hb_path.exists():
-        try:
-            hb = json.loads(read_text(hb_path))
-            t = parse_utc(hb.get("utc"))
+    try:
+        hb, t, fresh = read_heartbeat(QUEUE / "heartbeat.json")
+        if fresh:
             task = f" task {hb['task']}" if hb.get("task") else ""
             print(f"WORKER   {hb.get('state', '?')}{task}, heartbeat {age_text(t)} "
                   f"(host {hb.get('host')}, worker {hb.get('worker')})")
-            if t and (utc_now() - t).total_seconds() > 180 and hb.get("state") != "running":
-                print("WARNING  heartbeat older than 3 min: NUC off, asleep, signed out, or share unreachable")
-        except (ValueError, OSError) as exc:
-            print(f"WORKER   heartbeat unreadable: {exc}")
-    else:
-        print("WORKER   no heartbeat yet (worker version 2 has not reached this queue)")
+        else:
+            print(f"WORKER   lane retired 2026-10-01 (Qwen NUC worker; scheduled task disabled on JIS-NUC; DEVICES.md){last_beat(hb, t)}")
+    except (ValueError, OSError) as exc:
+        print(f"WORKER   heartbeat unreadable: {exc}")
     incoming = sorted((QUEUE / "incoming").glob("*.task.json"))
     claimed = sorted((QUEUE / "claimed").glob("*.task.json"))
     replies = sorted((QUEUE / "done").glob("*.reply.json"))

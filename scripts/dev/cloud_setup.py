@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-GATE_DEPS = ("pytest", "numpy", "tzdata")
+GATE_DEPS = ("pytest", "numpy", "pandas", "tzdata")   # same order as the pip line in .github/workflows/ci.yml (test_cloud_setup checks it)
 
 
 def is_cloud(env=None):

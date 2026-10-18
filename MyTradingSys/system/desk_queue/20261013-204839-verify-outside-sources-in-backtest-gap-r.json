@@ -1,0 +1,15 @@
+{
+  "done_when": "Every section-3 source has a row marked 'verified 2026-10-13' or REJECT, and the table is in REPORT.md",
+  "finished": "2026-10-14T11:27:23Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NUC",
+  "id": "20261013-204839-verify-outside-sources-in-backtest-gap-r",
+  "need": "Open MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md section 3. For each outside source: open the URL, match title, authors, venue and year against what the report states. Write one row per source in a table appended to the report: verified 2026-10-13, or REJECT (a page that will not open counts as REJECT).",
+  "posted": "2026-10-13T20:48:39Z",
+  "result": "REPORT.md s10.1: 8 verified 2026-10-13, 4 REJECT (2x HTTP 403, 1x 404, 1x blocked)",
+  "status": "done",
+  "taken": "2026-10-14T11:27:23Z",
+  "taken_by": "JIS-NUC",
+  "target": "DSA-NUC",
+  "title": "Verify outside sources in backtest gap review section 3"
+}

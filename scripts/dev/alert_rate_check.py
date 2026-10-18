@@ -18,9 +18,11 @@ import time
 
 REPO = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
+sys.path.insert(0, str(REPO / "MyTradingSys" / "observation"))
+import capture
 
 DAY = 86400000
-TF_MIN = {"1m": 1, "3m": 3, "5m": 5, "15m": 15, "1h": 60, "4h": 240, "1d": 1440}
+TF_MIN = {k: capture.TF_MINUTES[k] for k in ("1m", "3m", "5m", "15m", "1h", "4h", "1d")}
 
 
 def aggregate(bars, tf_min):
@@ -88,7 +90,7 @@ def expected_per_day(registry, root, days, now_ms):
             cache[tf] = aggregate(m1, TF_MIN[tf])
         bars = cache[tf]
         try:
-            fn = e["fn"]
+            fn = getattr(e["fn"], "raw", e["fn"])   # history-wrapped W3 layers: replay the bare adapter on the long window
             if e["sub"] == "funding_cvd_fade":
                 from MyTradingSys.backtest.layers.alerts import live_layers as ll
                 funding = load_funding(root)

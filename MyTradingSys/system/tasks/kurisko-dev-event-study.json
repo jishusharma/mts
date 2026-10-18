@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T03:57:28Z",
+  "depends_on": [
+    "kurisko-prereg-fire-counts"
+  ],
+  "done_when": "RESULT.md with every frozen cell verdicted by the PRE_REG pass bars, run receipt, layer_map.json row, VERDICTS.csv backfilled; no unfrozen cell present; VALIDATION and HOLDOUT untouched. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The one DEV run of the frozen Kurisko PRE_REG cells: fee-net forward outcome against a same-window random-clock placebo, Holm over the frozen cells. No cell added or changed after the first outcome; VALIDATION and HOLDOUT untouched.",
+  "id": "kurisko-dev-event-study",
+  "lane": "SONNET",
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C2 REVIEWER:GPT high on spec+tests+diff via desk row (non-Claude) + Haiku re-derives 1-3 decision numbers (one cell's event-days, net mean and placebo mean) + Gemini Flash second look on RESULT.md; second vendor re-derives on first downstream use (the VALIDATION card) WEIGHT:IMPORTANT. Lab_Guy 2026-10-18 confirms C2: it writes registry rows (VERDICTS.csv, layer_map.json) and decides promote or close. Card fixes: cost model and funding rule are the PRE_REG's frozen ones (F:/MTS/Dumps/backtest/raw_fund does not exist, so no funding choice at run time); pass bars come only from the PRE_REG; INSUFFICIENT-N is not NO EDGE (E4/E5); the guard also checks data shas and refuses a second run (E7); loader refuses bars >= 2024-07-01 (E1); net-R fixture from FORMULAS 13. Stays refined until the fire-counts card is done. Holdout stays sealed. A result that contradicts the PRE_REG gets reported, not re-cut. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/kurisko_2026-10-18/",
+    "MyTradingSys/backtest/layers/kurisko/",
+    "MyTradingSys/system/layer_map.json",
+    "MyTradingSys/research/VERDICTS.csv"
+  ],
+  "scope_out": [
+    "VALIDATION and HOLDOUT reads",
+    "new cells or parameters",
+    "live wiring"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/kurisko_2026-10-18/PRE_REG.md (written by the previous card)",
+    "MyTradingSys/backtest/layers/FORMULAS.md section 13 (cost model and net formula, read only)"
+  ],
+  "state": "refined",
+  "steps": [
+    "read PRE_REG.md; the run script refuses to start if the PRE_REG commit does not precede this run, a cell differs from the frozen list, a data file sha differs from the PRE_REG, or a run receipt (PRE_REG sha, module sha, seed) already exists: one run only.",
+    "run each cell once: fee-net R with the cost model and funding rule exactly as frozen in the PRE_REG (no new choice here), MFE/MAE, 200 random-clock placebos with the PRE_REG seed, Holm over the frozen cells; DEV only (the loader refuses bars >= 2024-07-01).",
+    "RESULT.md: effect, CI, verdict per cell using ONLY the PRE_REG pass bars: PASS / FAIL / INSUFFICIENT-N (below the frozen event-day floor); verdicts.py backfill; add the layer_map.json row under family rsi.",
+    "if a cell passes DEV: create ONE VALIDATION card; if none passes, close as NO EDGE only the cells that reached the frozen floor and mark the rest INSUFFICIENT; a result that contradicts the PRE_REG is reported, not re-cut."
+  ],
+  "tests": "test_run_dev.py: the guard refuses a PRE_REG with a changed cell, a changed data sha and a second run on the same PRE_REG; the loader refuses bars >= 2024-07-01; net R of a one-trade fixture equals the hand value from FORMULAS 13 (written in the test, not taken from the run script); each fails before the guard exists.",
+  "title": "Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

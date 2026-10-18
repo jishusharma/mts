@@ -1,0 +1,83 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T12:04:56Z",
+  "commands": [],
+  "created": "2026-10-17T03:40:00Z",
+  "depends_on": [],
+  "done_when": "Named tests green (red first), REPORT.md written with row/OK/NOT_IN_DATA counts from the real DEV run, DEV row in TRIALS.md, nothing read on/after 2024-07-01, result line set.",
+  "effort": "medium",
+  "from_inbox": "",
+  "goal": "Build event_table.py: RSI14 (rsi_core) on 1h DEV, then rsi_reclaim_events from MyTradingSys/backtest/layers/rsi/rsi_reclaim.py with level 40 direction up (long) and level 60 direction down (short), clearance 2.0 (OURS, the module has no default on purpose) ... (rest: BRIEF.md). Input F:/MTS/data/bigtrade/cache/perp/klines_1h.npz, DEV open < 2024-07-01. Spec: brief in scope_in.",
+  "id": "gptb-rsi-reclaim-event-table",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "982 DEV 1h reclaim rows (504 long/478 short), 982 OK/0 NOT_IN_DATA, mean MFE 2.81R/MAE 2.8",
+      "ref": "2db571f9",
+      "utc": "2026-10-17T12:04:56Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wavetrend-priority-source-parity: register parity ref + test in wiring and extra gate",
+      "ref": "515d07a91407",
+      "utc": "2026-10-17T06:23:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "26c6f3a837e8 bigtrade: relabel fire CSV split column to repo split; DEV-only reruns of con",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-10-17T03:31:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "model": "gpt-6-luna",
+  "note": "lab-cards-1017 (NUC session). Research only, flag off. Operator RSI 2a context events have a detector but no outcome table. Params are OURS unless a source is named; horizon is OURS.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "lab-cards-1017",
+  "refreshed": "2026-10-17T07:24:52Z",
+  "refs": [],
+  "result": "982 DEV 1h reclaim rows (504 long/478 short), 982 OK/0 NOT_IN_DATA, mean MFE 2.81R/MAE 2.87R; MyTradingSys/research/layer_lab/rsi_reclaim_event_table/REPORT.md",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/rsi_reclaim_event_table/event_table.py",
+    "MyTradingSys/research/layer_lab/rsi_reclaim_event_table/test_event_table.py",
+    "MyTradingSys/research/layer_lab/rsi_reclaim_event_table/REPORT.md",
+    "MyTradingSys/research/layer_lab/TRIALS.md",
+    "MyTradingSys/system/wiring_registry.json",
+    "scripts/dev/run_extra_tests.py",
+    "MyTradingSys/research/layer_lab/dev_split_guard/event_table.py (read only)",
+    "MyTradingSys/research/layer_lab/forward_excursion/event_table.py (read only)",
+    "MyTradingSys/research/layer_lab/bb_top_reversal_event_table/event_table.py (template, read only)",
+    "MyTradingSys/backtest/layers/rsi/rsi_reclaim.py (read only)",
+    "MyTradingSys/backtest/layers/rsi/rsi_core.py (read only)",
+    "MyTradingSys/research/rsi_2a_2026-10-09/RSI_2A_SPEC.md (read only)",
+    "MyTradingSys/research/layer_lab/briefs/gptb-rsi-reclaim-event-table.md"
+  ],
+  "scope_out": [
+    "live path (alerts/live_*, execution/)",
+    "shared engine files",
+    "VALIDATION and HOLDOUT bars (open on/after 2024-07-01)",
+    "Tom/Fabio layer code (read only)",
+    "trading rules, tuning or net-of-cost claims",
+    "editing dev_split_guard or forward_excursion (import read only)"
+  ],
+  "scope_sha": "515d07a91407",
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read the BRIEF.md named in scope_in, then write the test file first; run it and confirm it fails (red).",
+    "Implement event_table.py in MyTradingSys/research/layer_lab/rsi_reclaim_event_table/ only: DEV data only, gap or missing input = NOT_IN_DATA (never 0); use the two helpers named in the brief (read only).",
+    "Run `python scripts/dev/lookahead_lint.py --new`, fix FAIL hits (forward bars as zip(times, times[1:])); run the test file until green; register it in scripts/dev/run_extra_tests.py EXTRA and event_table.py in MyTradingSys/system/wiring_registry.json.",
+    "Run the CLI once on the real DEV npz; put row/OK/NOT_IN_DATA counts and mean MFE/MAE in REPORT.md and one DEV row in TRIALS.md; delete any CSV you wrote; set the result line."
+  ],
+  "tests": "synthetic RSI series (inject via a function argument so the test needs no klines): a direct cross gives band_bars 0, a 4-bar below-run gives dwell_below 4, a band pop between two below-runs restarts dwell; the short side mirrors; None bars carry state; entry is next bar open; incomplete forward window = NOT_IN_DATA.",
+  "title": "RSI 40/60 reclaim (operator 2a): event table with dwell/depth buckets and forward MFE/MAE in R on 1h DEV",
+  "weight": "B-SHARED"
+}

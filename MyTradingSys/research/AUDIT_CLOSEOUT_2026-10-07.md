@@ -65,3 +65,5 @@ Command (from the repo root, read-only, script added this session):
 First result (run once 2026-10-08): SETUP_FORMING rows total old 19, new 0, differing in 15 months (2022-02 ... 2026-05, one or two rows each).
 Rows per month fall about 25 percent (e.g. 2022-02: 1856 -> 1264), WAIT_RR falls sharply (1147 -> 355) and WAIT_PROOF roughly doubles (264 -> 446). So the current Java emits fewer candidates, fewer fail on R:R, and more fail on proof: consistent with PR #12 (stop floor removed, book_imbalance null, net R:R gate from net_rr_floor.json) but not yet attributed.
 Next step: for 2022-02, join old and new rows on t and print proof, stop, gross_rr, net_rr for the one old SETUP_FORMING row; the field that moved is the cause.
+
+RESOLVED 2026-10-09 (MTS-2026-10-08-1933Z-APP-ANA-bigtrade-bt): join run on all 19 rows; cause is three-fold (7 candidates gone, proof 5 -> 1..4 on the other 12, stops collapsed to the zone edge so R:R is meaningless). Full numbers and fix path: research/bigtrade_2026-10-09/FINDINGS.md F-BT-01.

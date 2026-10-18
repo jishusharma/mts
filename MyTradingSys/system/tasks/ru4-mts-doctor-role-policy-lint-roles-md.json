@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T17:22:54Z",
+  "depends_on": [],
+  "done_when": "`role_loader.py lint` exits 1 on a fixture holding the eagle_eyes.md:35 vs ROLES.md:40 compaction contradiction and 0 on clean roles; test_role_lint.py passes.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add `role_loader.py lint`: policy contradictions across roles/*.md and ROLES.md, dead commands, missing files; fix mts_doctor guidance selector that skips roles/*.md (RU4).",
+  "id": "ru4-mts-doctor-role-policy-lint-roles-md",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "role_loader: per-prompt role reminder for sessions with a loaded role",
+      "ref": "91917641c6da",
+      "utc": "2026-10-18T17:18:47Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "Each new test fails on pre-change code.",
+  "note": " routed by Pipeliner 2026-10-18 (ROUTING.md)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T18:38:52Z",
+  "refs": [
+    "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/role_loader.py",
+    "MyTradingSys/tests/test_role_lint.py"
+  ],
+  "scope_out": [
+    "live tree, HALT files, trades",
+    "other scripts"
+  ],
+  "scope_sha": "91917641c6da",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read role_loader.py and mts_doctor.py:40",
+    "Implement lint: contradiction keywords, dead command paths, missing files",
+    "Fixture test with the known contradiction",
+    "Run run_all_tests.py --quick, ship"
+  ],
+  "tests": "MyTradingSys/tests/test_role_lint.py",
+  "title": "RU4 MTS_Doctor: role-policy lint (roles/*.md contradictions, dead commands) + CI-red owner line",
+  "weight": "",
+  "worker": "agent"
+}

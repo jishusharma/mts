@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T17:23:06Z",
+  "depends_on": [],
+  "done_when": "A fixture log with one answered and one open question lists only the open one; test_operator_questions_pending.py passes.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add `operator_questions.py pending`: typed operator questions with no recorded decision, ranked, pasted reports filtered out (RU7).",
+  "id": "ru7-q-a-helper-operator-questions-py-pen",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "qa: operator question log drops pasted text and harness events",
+      "ref": "592cb2c7e0d3",
+      "utc": "2026-10-17T12:56:13Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "Each new test fails on pre-change code.",
+  "note": " routed by Pipeliner 2026-10-18 (ROUTING.md)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T18:38:58Z",
+  "refs": [
+    "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/operator_questions.py",
+    "MyTradingSys/tests/test_operator_questions_pending.py"
+  ],
+  "scope_out": [
+    "live tree, HALT files, trades",
+    "other scripts"
+  ],
+  "scope_sha": "592cb2c7e0d3",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read operator_questions.py and OPERATOR_DECISIONS.md format",
+    "Implement pending with ranking and report filter",
+    "Fixture test",
+    "Run run_all_tests.py --quick, ship"
+  ],
+  "tests": "MyTradingSys/tests/test_operator_questions_pending.py",
+  "title": "RU7 Q&A_Helper: operator_questions.py pending",
+  "weight": "",
+  "worker": "agent"
+}

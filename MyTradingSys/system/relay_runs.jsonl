@@ -12,3 +12,40 @@
 {"account": "jishu.awgp", "depth": 57, "host": "JIS-NUC", "id": "c33330b1", "session": "mts-dispatcher relay JIS-NUC 2026-10-12", "state": "go", "utc": "2026-10-12T08:49:50Z"}
 {"account": "jishu.awgp", "depth": 58, "host": "JIS-NUC", "id": "560e47fc", "session": "mts-dispatcher relay JIS-NUC", "state": "go", "utc": "2026-10-12T09:19:52Z"}
 {"account": "jishu.awgp", "depth": 58, "host": "JIS-NUC", "id": "b1de4866", "session": "mts-dispatcher relay", "state": "stop", "utc": "2026-10-12T09:48:21Z"}
+{"account": "jishu.awgp", "depth": 59, "host": "JIS-NUC", "id": "a81cb159", "session": "", "state": "go", "utc": "2026-10-12T11:31:20Z"}
+{"account": "jishu.awgp", "depth": 60, "host": "JIS-NUC", "id": "5c2159e3", "session": "mts-dispatcher relay", "state": "go", "utc": "2026-10-12T11:48:54Z"}
+{"account": "jishu.awgp", "depth": 61, "host": "JIS-NUC", "id": "f85481c1", "session": "mts-dispatcher", "state": "go", "utc": "2026-10-12T12:18:16Z"}
+{"account": "jishu.awgp", "depth": 63, "host": "JIS-NUC", "id": "977fd9e4", "session": "mts-relay-a", "state": "go", "utc": "2026-10-12T13:21:19Z"}
+{"account": "jishu.awgp", "depth": 64, "host": "JIS-NUC", "id": "84ae28de", "session": "mts-dispatcher", "state": "go", "utc": "2026-10-12T13:50:00Z"}
+{"account": "jishu.awgp", "depth": 65, "host": "JIS-NUC", "id": "9762a22f", "session": "mts-relay-a", "state": "go", "utc": "2026-10-12T16:18:49Z"}
+{"account": "jishu.awgp", "depth": 66, "host": "JIS-NUC", "id": "02fe24d3", "session": "relay-b", "state": "go", "utc": "2026-10-12T16:49:55Z"}
+{"account": "jishu.awgp", "depth": 67, "host": "JIS-NUC", "id": "d26f0b34", "session": "mts-dispatcher relay JIS-NUC 2026-10-12", "state": "go", "utc": "2026-10-12T17:18:09Z"}
+{"account": "jishu.awgp", "depth": 68, "host": "JIS-NUC", "id": "f7bb8c16", "session": "relay-nuc", "state": "go", "utc": "2026-10-12T17:48:33Z"}
+{"account": "jishu.awgp", "depth": 70, "host": "JIS-NUC", "id": "3789584e", "session": "mts-relay-b", "state": "go", "utc": "2026-10-12T18:48:41Z"}
+{"account": "jishu.awgp", "depth": 71, "host": "JIS-NUC", "id": "1f6b548d", "session": "mts-relay-a", "state": "go", "utc": "2026-10-12T19:21:21Z"}
+{"account": "jishu.sharma", "depth": 73, "host": "JIS-NB", "id": "4b9cff05", "session": "", "state": "go", "utc": "2026-10-13T05:00:52Z"}
+{"account": "jishu.awgp", "depth": 69, "host": "JIS-NUC", "id": "dc5dcdee", "session": "relay JIS-NUC 2026-10-12", "state": "go", "utc": "2026-10-12T18:18:21Z"}
+{"account": "jishu.awgp", "depth": 72, "host": "JIS-NUC", "id": "26758a48", "session": "mts-relay-b", "state": "go", "utc": "2026-10-12T19:50:42Z"}
+{"account": "jishu.awgp", "depth": 62, "host": "JIS-NUC", "id": "18a31177", "session": "mts-dispatcher", "state": "go", "utc": "2026-10-12T12:48:39Z"}
+{"account": "jishu.awgp", "depth": 74, "host": "JIS-NUC", "id": "fc08bf70", "session": "relay: Haiku declined SONNET cards, rv07 next", "state": "go", "utc": "2026-10-13T06:18:41Z"}
+{"account": "jishu.sharma", "depth": 75, "host": "JIS-NB", "id": "8cc9b425", "session": "", "state": "go", "utc": "2026-10-13T18:20:34Z"}
+{"account": "jishu.sharma", "depth": 76, "host": "JIS-NB", "id": "6a06e56b", "session": "", "state": "go", "utc": "2026-10-13T18:21:58Z"}
+{"account": "jishu.sharma", "depth": 77, "host": "JIS-NB", "id": "185144df", "session": "", "state": "go", "utc": "2026-10-13T18:56:27Z"}
+{"account": "jishu.sharma", "depth": 78, "host": "JIS-NB", "id": "b9d2b59e", "session": "", "state": "go", "utc": "2026-10-13T19:09:22Z"}
+{"account": "jishu.sharma", "depth": 79, "host": "JIS-NB", "id": "c9c0fbe6", "session": "", "state": "go", "utc": "2026-10-14T05:18:30Z"}
+{"account": "jishu.sharma", "depth": 80, "host": "JIS-NB", "id": "96964592", "session": "JIS-NB ops: third Max account, CI green, deploy unblock", "state": "go", "utc": "2026-10-14T12:40:58Z"}
+{"account": "jishu.sharma", "depth": 81, "host": "JIS-NB", "id": "d2c9772b", "session": "", "state": "go", "utc": "2026-10-14T13:47:53Z"}
+{"account": "jishu.sharma", "depth": 82, "host": "JIS-NB", "id": "7cda2835", "session": "", "state": "go", "utc": "2026-10-14T14:44:27Z"}
+{"account": "jishu.sharma", "depth": 83, "host": "JIS-NB", "id": "9ac5886c", "session": "", "state": "go", "utc": "2026-10-14T15:43:31Z"}
+{"account": "jishu.sharma", "depth": 84, "host": "JIS-NB", "id": "7b4fd52c", "session": "", "state": "go", "utc": "2026-10-14T16:42:57Z"}
+{"account": "jishu.sharma", "depth": 85, "host": "JIS-NB", "id": "1b4ee087", "session": "", "state": "go", "utc": "2026-10-14T17:21:22Z"}
+{"account": "jishusharma1985", "depth": 87, "host": "JIS-NB", "id": "d26da8b5", "session": "", "state": "go", "utc": "2026-10-14T18:42:17Z"}
+{"account": "jishusharma1985", "depth": 0, "host": "JIS-NB", "id": "f7a6e2c3", "session": "", "state": "go", "utc": "2026-10-14T19:19:15Z"}
+{"account": "jishusharma1985", "depth": 2, "host": "JIS-NB", "id": "629f4743", "session": "", "state": "go", "utc": "2026-10-14T19:43:49Z"}
+{"account": "jishusharma1985", "depth": 3, "host": "JIS-NB", "id": "47ce6471", "session": "", "state": "go", "utc": "2026-10-14T21:20:37Z"}
+{"account": "jishu.sharma", "depth": 4, "host": "JIS-NUC", "id": "5dc1be2f", "session": "relay: fable-h2-demote-off-blocklist (already shipped)", "state": "go", "utc": "2026-10-15T21:14:14Z"}
+{"account": "jishusharma1985", "depth": 5, "host": "JIS-NB", "id": "873457b2", "session": "", "state": "go", "utc": "2026-10-16T06:20:06Z"}
+{"account": "jishu.sharma", "depth": 6, "host": "JIS-NB", "id": "02a91079", "session": "", "state": "go", "utc": "2026-10-16T22:27:49Z"}
+{"account": "jishu.sharma", "depth": 7, "host": "JIS-NB", "id": "b32bf3e0", "session": "", "state": "go", "utc": "2026-10-17T09:48:46Z"}
+{"account": "jishu.sharma", "depth": 8, "host": "JIS-NB", "id": "d8b43be1", "session": "", "state": "go", "utc": "2026-10-17T12:52:07Z"}
+{"account": "jishu.sharma", "depth": 8, "host": "JIS-NB", "id": "5e307c12", "session": "relay d8b43be1", "state": "stop", "utc": "2026-10-17T14:28:20Z"}

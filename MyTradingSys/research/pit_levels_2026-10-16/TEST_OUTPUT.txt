@@ -1,0 +1,20 @@
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 167.225s
+
+OK
+
+FAMILY RESULTS (PASS = repo identical on bars[:t] vs bars[:t+N] AND planted peek caught)
+PASS       F1 prior-period high/low                                repo_identical=True planted_caught=True | session_levels.py:43-52 day_levels; consumer :90-93 levels[d-1]
+PASS       F2a swing pivots (confirmed_i)                          repo_identical=True planted_caught=True | cc_structure.py:49,:57 confirmed_i=i+right; consumer :99 confirmed_i < k
+PASS       F2b fractal pivots + ATR14                              repo_identical=True planted_caught=True | vp_pivot_probe.py:130-141, :175-183 (+HOUR_MS), :116-127 atr_sma
+PASS       F3 volume profile session                               repo_identical=True planted_caught=True | vp_pivot_probe.py:403-429 developing (bars [anchor, refresh)), :431-453 static_levels, :456-484 family_levels
+PASS       F3 volume profile prior_day                             repo_identical=True planted_caught=True | vp_pivot_probe.py:403-429 developing (bars [anchor, refresh)), :431-453 static_levels, :456-484 family_levels
+PASS       F3 volume profile A1_n2_k0                              repo_identical=True planted_caught=True | vp_pivot_probe.py:403-429 developing (bars [anchor, refresh)), :431-453 static_levels, :456-484 family_levels
+PASS       F3 volume profile A2_n2_k0                              repo_identical=True planted_caught=True | vp_pivot_probe.py:403-429 developing (bars [anchor, refresh)), :431-453 static_levels, :456-484 family_levels
+PASS       F4 closed buckets tf_resample                           repo_identical=True planted_caught=True | tf_resample.py:114-116 skip bucket_end > last close
+PASS       F4b closed buckets tom_bt.resample_dicts                repo_identical=True planted_caught=True | tom_bt.py:105-116 while j0+tf <= n
+PASS       F5 regime trend_tag (ret30, data <= t)                  repo_identical=True planted_caught=True | tom_bt.py:256-268 i = idx(t)-1 (last closed bar)
+FAIL       F5 vol terciles (tom_bt_report.py:161 full-sample cuts) repo_identical=False planted_caught=True | cuts over all trades (0.0132, 0.024) vs over trades <= t (0.0126, 0.025); tag vol_high vs vol_high; descriptive split only, no decision reads it
+PASS       F6a screen L4 percentile (prior 20 days)                repo_identical=True planted_caught=True | screen.py:111-117 ref = legs[i-20:i]; planted legs[i-19:i+1] caught
+PASS       F6b orderflow big-trade 99th pct (prior 30 days)        repo_identical=True planted_caught=True | orderflow_bars.py:144-157 k in 1..window; own-day fallback flagged thr_days=0 (:236-241), excluded by day_gates.py:99

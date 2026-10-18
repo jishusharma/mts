@@ -67,8 +67,8 @@ Write-MarkdownDump "Java Core Dump ? BinanceDataFeed" $javaFiles (Join-Path $dum
 # 2. MODULE DUMPS
 # ------------------------------------------------------------
 $moduleMap = @{
-    "core"       = @("system\00_START_HERE.md", "system\01_AI_BEHAVIOR.md", "system\02a_CURRENT_STATUS.md", "system\03_FILE_INDEX.md")
-    "system_support" = @("system\04_PER_JSON_GUIDE.md", "system\05_NORMS.md", "system\06_SESSION_END_CHECKLIST.md", "system\COMPILED_DECISIONS.md", "system\CAPABILITIES.md")
+    "core"       = @("system\01_AI_BEHAVIOR.md", "system\03_FILE_INDEX.md")
+    "system_support" = @("system\COMPILED_DECISIONS.md")
     "runtime"    = @("mts\runtime\*")
     "conditions" = @("mts\conditions\*")
     "data"       = @("runtime_data\*")

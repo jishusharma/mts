@@ -1,0 +1,142 @@
+{
+  "files_read": [
+    "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_-NXzJs5JRks.md",
+    "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_14bxwxC8gBQ.md",
+    "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_6aA-P4Gvhrc.md",
+    "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_8MvxK_nxO-0.md",
+    "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract__t_XIBrcjRk.md",
+    "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_HhV4HI9p5Uw.md",
+    "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_qEfES84jwwo.md",
+    "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_UqAvU1loT_k.md"
+  ],
+  "terms": {
+    "close": {
+      "line_hits": 100,
+      "files": [
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_-NXzJs5JRks.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_14bxwxC8gBQ.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_6aA-P4Gvhrc.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_8MvxK_nxO-0.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_HhV4HI9p5Uw.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_UqAvU1loT_k.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract__t_XIBrcjRk.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_qEfES84jwwo.md"
+      ]
+    },
+    "support": {
+      "line_hits": 43,
+      "files": [
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_-NXzJs5JRks.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_14bxwxC8gBQ.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_6aA-P4Gvhrc.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_8MvxK_nxO-0.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_UqAvU1loT_k.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract__t_XIBrcjRk.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_qEfES84jwwo.md"
+      ]
+    },
+    "resistance": {
+      "line_hits": 32,
+      "files": [
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_-NXzJs5JRks.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_14bxwxC8gBQ.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_6aA-P4Gvhrc.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_8MvxK_nxO-0.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_UqAvU1loT_k.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_qEfES84jwwo.md"
+      ]
+    },
+    "reclaim": {
+      "line_hits": 7,
+      "files": [
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_-NXzJs5JRks.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_14bxwxC8gBQ.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_UqAvU1loT_k.md"
+      ]
+    },
+    "retest": {
+      "line_hits": 15,
+      "files": [
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_-NXzJs5JRks.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_6aA-P4Gvhrc.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_UqAvU1loT_k.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_qEfES84jwwo.md"
+      ]
+    },
+    "reversal": {
+      "line_hits": 32,
+      "files": [
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_-NXzJs5JRks.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_14bxwxC8gBQ.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_6aA-P4Gvhrc.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_8MvxK_nxO-0.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_UqAvU1loT_k.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract__t_XIBrcjRk.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_qEfES84jwwo.md"
+      ]
+    },
+    "wick": {
+      "line_hits": 56,
+      "files": [
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_-NXzJs5JRks.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_14bxwxC8gBQ.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_6aA-P4Gvhrc.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_8MvxK_nxO-0.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_UqAvU1loT_k.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_qEfES84jwwo.md"
+      ]
+    },
+    "zone": {
+      "line_hits": 63,
+      "files": [
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_-NXzJs5JRks.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_6aA-P4Gvhrc.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_UqAvU1loT_k.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_qEfES84jwwo.md"
+      ]
+    },
+    "lower high": {
+      "line_hits": 7,
+      "files": [
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_14bxwxC8gBQ.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_6aA-P4Gvhrc.md"
+      ]
+    },
+    "confirmation": {
+      "line_hits": 12,
+      "files": [
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_6aA-P4Gvhrc.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_8MvxK_nxO-0.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_qEfES84jwwo.md"
+      ]
+    },
+    "break": {
+      "line_hits": 90,
+      "files": [
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_14bxwxC8gBQ.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_6aA-P4Gvhrc.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_UqAvU1loT_k.md",
+        "MyTradingSys\\research\\krown_ta101_2026-10-13\\extracts\\extract_qEfES84jwwo.md"
+      ]
+    }
+  },
+  "passes": [
+    {
+      "matched_lines": 140,
+      "new_lines": 140
+    },
+    {
+      "matched_lines": 223,
+      "new_lines": 83
+    },
+    {
+      "matched_lines": 281,
+      "new_lines": 58
+    },
+    {
+      "matched_lines": 281,
+      "new_lines": 0
+    }
+  ],
+  "stop": "final pass 0 new lines; bounded to existing Krown extract corpus"
+}

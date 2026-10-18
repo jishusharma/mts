@@ -1,0 +1,13 @@
+{
+  "done_when": "result row with ACCEPT or FIX list",
+  "finished": "2026-10-18T16:17:45Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NUC",
+  "id": "20261018-065548-non-claude-review-kurisko-module-code-te",
+  "need": "Review MyTradingSys/backtest/layers/kurisko/ (stoch_core.py, quad_rotation.py, test_quad_rotation.py, make_golden.py) against FORMULAS.md section 24 and KURISKO_SPEC s5: event rule, D-line, NaN handling, no look-ahead, fixture independence. Reply ACCEPT or FIX lines.",
+  "posted": "2026-10-18T06:55:48Z",
+  "result": "Pipeliner drain 2026-10-18: wrong channel: card kurisko-module-crossvendor-review (CODEX audit, raw)",
+  "status": "failed",
+  "target": "DSA-NUC",
+  "title": "non-Claude review: kurisko module code+tests vs FORMULAS s24"
+}

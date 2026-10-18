@@ -1,0 +1,856 @@
+# Video ID: vjzy_KxJ_y8
+# Title: The Only Moving Average Setup That Actually Works
+# Published: 2026-03-31
+# Source: yt_dlp captions (auto); uploader: Krown
+# Analyst: Krown
+# Duration_s: 1710
+# Word count: 5610
+# ---
+[00:00:00] Most beginners use moving averages as a
+[00:00:02] tool to get entries and honestly, that
+[00:00:04] is perhaps one of the worst ways to use
+[00:00:05] moving averages. At least I don't find
+[00:00:07] that much value in it and I was actually
+[00:00:08] brought up on moving averages when I was
+[00:00:10] first learning how to trade as a
+[00:00:11] professional market maker authorized
+[00:00:12] trader. In fact, my mentor was probably
+[00:00:15] one of the first people actually using
+[00:00:16] moving averages way back when they were
+[00:00:18] kind of new and also generated freshly
+[00:00:20] by computers and he'd been using them
+[00:00:22] for more than 40 years. So, I can I feel
+[00:00:25] like I am confident enough to say that
+[00:00:26] that is not the right way to use them.
+[00:00:28] However, they are incredibly incredibly
+[00:00:30] valuable tools which will go over how to
+[00:00:31] use them in this video. Now, I want to
+[00:00:34] let you know that if you're just finding
+[00:00:34] this video kind of out of context, you
+[00:00:36] found it randomly on YouTube, it's
+[00:00:37] actually a part of a greater TA 101
+[00:00:39] playlist which you can find, by the way,
+[00:00:41] for free in that link in the description
+[00:00:43] below right here with Teachable. It'll
+[00:00:45] bring you to this page and you can
+[00:00:46] enroll in the course for free. You even
+[00:00:47] get a massive 20% discount on top of
+[00:00:50] free. So, literally your price is zero
+[00:00:51] and you get the full content which will
+[00:00:53] only be available right here and you
+[00:00:55] also get quizzes on top of that as well
+[00:00:57] where you can test yourself, validate
+[00:00:58] that you've actually learned something
+[00:01:00] and at the very very end, you will earn
+[00:01:01] a certificate of completion assuming
+[00:01:03] that you've actually passed all the
+[00:01:04] quizzes and download the content and a
+[00:01:05] few other bonuses as well which I'll
+[00:01:06] keep a bit of a secret for right now.
+[00:01:08] Anyways, let's get into our slideshow
+[00:01:11] right here going over moving averages
+[00:01:13] explaining these for beginners and
+[00:01:15] honestly, moving averages are incredibly
+[00:01:18] incredibly powerful but they cannot be a
+[00:01:20] a tool that is used in and of
+[00:01:21] themselves. Most people look for a
+[00:01:23] moving average to cross and and then
+[00:01:25] tell themselves, oh, I need to go long
+[00:01:27] or short whenever that cross happens and
+[00:01:29] that's just not going to work.
+[00:01:30] Obviously, if that worked, would have
+[00:01:31] already figured that out. They would
+[00:01:32] have put bots on those moving average
+[00:01:34] crosses and we'd all be quadrillion
+[00:01:36] gazillion trillionaires if that's even a
+[00:01:38] thing but you get my point. It's a
+[00:01:40] [&nbsp;__&nbsp;] fiction. It's it's fiction
+[00:01:42] basically. What moving averages are very
+[00:01:44] very good at, however, is automating a
+[00:01:46] filter of of of getting rid of bad
+[00:01:49] trades. Basically, filtering out the
+[00:01:51] noise in price action and you can also
+[00:01:53] use them as spotting and confirming
+[00:01:57] trend continuations or trend reversals
+[00:01:59] amongst other things as well. By the
+[00:02:01] way, before we go any further, I do want
+[00:02:02] to give a major shout out to the sponsor
+[00:02:04] of this playlist, Blofin Blofin. No,
+[00:02:07] yes, Blofin. Which you can find a link
+[00:02:09] to in the description below. They are
+[00:02:11] perhaps the best no KYC exchange that is
+[00:02:14] crypto native. So, if you do want to
+[00:02:15] trade crypto on leverage, they are the
+[00:02:17] best place that is no KYC. You can find
+[00:02:19] the link right here. It specifically
+[00:02:20] gives you 15% cash back, which is
+[00:02:22] effectively a 15% discount in your fees.
+[00:02:24] So, it is very very low fees compared to
+[00:02:26] other exchanges. And again, they are
+[00:02:28] sponsoring this playlist, so I want to
+[00:02:29] give them some love. And if you want to
+[00:02:30] support this content, the best way to do
+[00:02:31] that would be to lock in one of those
+[00:02:33] one of those accounts there. Can you
+[00:02:35] might not even use it at all, but just
+[00:02:37] lock it in in case you might want it
+[00:02:38] later. I think it's a good do because
+[00:02:40] you can or you will, I should say, lock
+[00:02:42] in those reduced fee rates, which is, I
+[00:02:44] don't know, pretty damn powerful, at
+[00:02:45] least in my opinion. Anyways, move on
+[00:02:47] now. Let's go into, of course,
+[00:02:50] how to use moving averages. Well, the
+[00:02:51] best way to use them, like I said
+[00:02:53] earlier, is more or less filters out the
+[00:02:55] noise. And how does it do that? It
+[00:02:56] smooths out price fluctuations. That's
+[00:02:58] what the average is telling you,
+[00:02:59] basically. It identifies short and
+[00:03:01] long-term trends, and you can do all
+[00:03:03] sorts of varying degrees of this in
+[00:03:05] between there as well. Apply to whatever
+[00:03:06] time frame that you want. It will work
+[00:03:09] more or less the same. It just, of
+[00:03:10] course, like with anything, lower term
+[00:03:12] time frames have less of an effect
+[00:03:14] compared to higher term time frames,
+[00:03:15] generally speaking. So, moving on from
+[00:03:17] there, I do want to really really really
+[00:03:21] acknowledge this point because a lot of
+[00:03:23] people a lot of the dissenters of moving
+[00:03:25] averages will say something like, "Well,
+[00:03:27] moving averages are a lagging indicator.
+[00:03:29] How could they possibly be useful?"
+[00:03:30] Well,
+[00:03:31] [&nbsp;__&nbsp;] Earth to Earth to Herpity Derp.
+[00:03:35] All most indicators, not all indicators,
+[00:03:37] but certainly most indicators are
+[00:03:38] lagging indicators. And that still
+[00:03:41] actually has a lot of value. Why?
+[00:03:42] Because you can confirm something. It
+[00:03:44] should be used in conjunction with other
+[00:03:46] things to confirm and give you a higher
+[00:03:49] probability of witnessing whatever the
+[00:03:52] move you are looking for to happen for
+[00:03:54] it to happen.
+[00:03:56] That is the value here. They are extra
+[00:03:58] confirmation and confidential tools.
+[00:04:00] Wow, crazy epiphany, but yes, indeed,
+[00:04:03] that is where the true value in these
+[00:04:04] things does come around. And of course,
+[00:04:06] you know, they can help you identify
+[00:04:07] trend very, very quickly, but as we went
+[00:04:10] over in the previous videos, you really
+[00:04:12] want to be able to identify trend by
+[00:04:15] your eyes, which we go over in video
+[00:04:17] number two of this series. So, if you're
+[00:04:18] not fully um you know, capable in that
+[00:04:21] way just yet, I would go back to that
+[00:04:22] cuz that is incredibly, incredibly
+[00:04:24] foundational, which makes everything
+[00:04:26] else, in my opinion, you know, viable,
+[00:04:28] basically. So,
+[00:04:29] let's go over some misconceptions here.
+[00:04:32] And actually, well, first let's go over
+[00:04:34] what a moving average, you know, looks
+[00:04:35] like. You know, something like this. The
+[00:04:36] 55 EMA. You can see that price, I mean,
+[00:04:39] generally does respect it. You can use
+[00:04:41] moving averages in more exotic, unique
+[00:04:42] ways as well as support and resistance,
+[00:04:44] bounce zones, and pullback zones, these
+[00:04:46] sort of things for sure. We go over a
+[00:04:48] lot more of that sort of nuanced way in
+[00:04:51] the Crown Trading Bible, but we save
+[00:04:52] that for like the super TA nerds who
+[00:04:54] really want to go like 10 levels deeper
+[00:04:56] where
+[00:04:57] I mean, realistically, unless you really
+[00:04:58] want to do this as a profession, it's
+[00:05:00] it's really not necessary. But, but in
+[00:05:02] this case, just looking at a simple 55
+[00:05:05] uh exponential moving average right
+[00:05:06] here, you can generally get what the
+[00:05:08] current trend is. Is it going to be
+[00:05:09] perfect? No. Is it going to work really
+[00:05:12] well when you understand how to identify
+[00:05:14] the actual trend? Hell yeah. Tells you
+[00:05:17] where you should be expecting support
+[00:05:18] and where you should be expecting
+[00:05:19] resistance more or less in an uptrend or
+[00:05:21] a downtrend, respectively.
+[00:05:23] So, what is a moving average um before
+[00:05:25] we go a little bit further? We got two
+[00:05:27] major uh types of moving averages. Yes,
+[00:05:29] there's a lot more than that, but I just
+[00:05:31] want to simplify things here for this
+[00:05:33] playlist because this is what most
+[00:05:34] people will encounter, which is first,
+[00:05:36] the simple moving average. That is the
+[00:05:38] most pure definition of moving average
+[00:05:41] that you're probably familiar with. It
+[00:05:43] is literally just the average of price
+[00:05:45] over a set number of periods. This, in
+[00:05:48] my experience, can be is is in my
+[00:05:51] opinion a little bit less a little bit
+[00:05:54] less valuable than what we'll go over
+[00:05:56] next with EMAs, but it still has value
+[00:05:58] and you can still make these work and
+[00:05:59] you know, it's just giving you a very
+[00:06:01] simple calculation. It's taking the
+[00:06:03] average of prices over a set amount of
+[00:06:05] period. So, if you have a 20-period
+[00:06:07] moving average, it's just going to be
+[00:06:08] looking at the past 20 bars and adding
+[00:06:10] those up, dividing it by 20, and that is
+[00:06:13] going to be your average for the current
+[00:06:14] bar. It's really is that simple as is
+[00:06:17] the name. The next one and the one that
+[00:06:18] I typically use myself and this is again
+[00:06:20] not say that you can't use other things.
+[00:06:22] You absolutely can. There is validity
+[00:06:24] and almost all of the other deviations
+[00:06:26] of these, but these are this is the one
+[00:06:27] that I personally have
+[00:06:29] mostly focused on throughout my career
+[00:06:31] and what I was brought up on which is
+[00:06:32] exponential moving averages or EMAs for
+[00:06:35] short. These give more weight to recent
+[00:06:38] price action and I find that more
+[00:06:39] valuable because recent price action
+[00:06:42] generally matters more than past price
+[00:06:44] action. But, the past price action still
+[00:06:46] matters, but it's just in terms of
+[00:06:48] waiting these things, the recent price
+[00:06:50] action, in my opinion, should be
+[00:06:51] weighted more. And I find that these
+[00:06:52] things just catch moves a little bit
+[00:06:54] faster, confirm things a little bit
+[00:06:56] quicker, and that is, in my opinion,
+[00:06:59] just more valuable. It's just more
+[00:07:00] responsive, basically. All right.
+[00:07:03] So, here's some big misconceptions and
+[00:07:06] you know,
+[00:07:07] bad things, bad conditioning to have
+[00:07:09] with regards to moving averages. So,
+[00:07:11] what moving averages are not. They are
+[00:07:12] not entry signals. No. Obviously, if
+[00:07:15] that worked, like I said earlier,
+[00:07:17] everyone would have figured this out by
+[00:07:18] now and we'd all be trading the exact
+[00:07:20] same thing. Doesn't work like that,
+[00:07:21] obviously. They are not predictive.
+[00:07:23] Again, they are a lagging indicator.
+[00:07:24] They are used as a secondary
+[00:07:26] confirmation tool, not a primary driver.
+[00:07:30] And they're absolutely not magical in
+[00:07:31] any way, shape, or form. It I mean, it's
+[00:07:33] quite crude calculation as we went over,
+[00:07:34] especially with simple moving averages.
+[00:07:36] If moving averages predicted price,
+[00:07:38] everyone would use the same one.
+[00:07:40] It's obviously not the case.
+[00:07:41] Do you think that we would have probably
+[00:07:43] figured this out since these things
+[00:07:44] became popularized back in the '70s or
+[00:07:46] '80s?
+[00:07:47] Again, not the case. Now, there are
+[00:07:49] certain periods of moving averages that
+[00:07:51] are very universal and generally sort of
+[00:07:53] respected
+[00:07:55] um by most people. And again, they don't
+[00:07:58] necessarily predict anything or anything
+[00:07:59] like that, but they do give some very
+[00:08:00] valuable information. Anyways, we'll go
+[00:08:02] over those later, but the power really
+[00:08:04] for moving averages comes from how
+[00:08:06] they're used,
+[00:08:08] not which ones you pick. You have to use
+[00:08:10] it within context. You have to use it
+[00:08:12] within the context of whatever strategy
+[00:08:14] that you're employing.
+[00:08:16] Everything really does come back to the
+[00:08:17] context of your strategy, but right now
+[00:08:19] we're just laying the foundations so
+[00:08:20] that we can get to the strategy stuff
+[00:08:22] later on, which will be primarily on
+[00:08:23] Teachable.
+[00:08:24] Anyways, moving on from there, let's go
+[00:08:26] into a quick chart demonstration. Or
+[00:08:30] oops,
+[00:08:31] going on the wrong way there. All right,
+[00:08:32] so let me just go back here and we are
+[00:08:35] going to put on just one moving average,
+[00:08:37] the green 55 EMA. We're going to be on
+[00:08:41] Let's go to the weekly time frame just
+[00:08:42] to prove a point here.
+[00:08:43] And
+[00:08:45] when we look at this chart,
+[00:08:48] you can quickly ascertain
+[00:08:51] the value of just paying attention to
+[00:08:53] this thing. Whenever Bitcoin's above it,
+[00:08:56] you're generally bullish. Whenever
+[00:08:57] Bitcoin's below it, you're generally
+[00:08:59] bearish. And by the way, this pertains
+[00:09:00] to most assets, not just Bitcoin, but
+[00:09:03] Bitcoin does seem to quite play quite
+[00:09:04] technically on it. Now, is it exactly
+[00:09:06] perfect? No. You can see in this
+[00:09:09] instance right here, Bitcoin got a
+[00:09:10] couple of closures above,
+[00:09:12] and then ultimately rejected and came
+[00:09:14] down.
+[00:09:15] So, of course, if you look at this as a
+[00:09:18] very rigid tool, it's not going to work
+[00:09:20] very well. You would have longed right
+[00:09:21] here, and this is your traditional bull
+[00:09:23] trap, really. So, I mean, it's really
+[00:09:25] designed to get you all on the wrong
+[00:09:27] side of these things.
+[00:09:28] Um and you would have been very quickly
+[00:09:30] dismayed because it gave that up just
+[00:09:33] two closures after be claiming it. And
+[00:09:35] that is a signal in and of itself that
+[00:09:37] hey, downside's are very likely, which
+[00:09:39] actually is very, very useful. Over
+[00:09:41] here, you know, you get a closure below,
+[00:09:42] you get a few weeks below, but
+[00:09:43] realistically, no opens and closes
+[00:09:45] below. That is important. And of course,
+[00:09:47] over here, you'll see Bitcoin kind of
+[00:09:49] bouncing off it, leveling out, and
+[00:09:51] putting in its higher lows around that
+[00:09:53] major moving average. Same thing over
+[00:09:54] here, same thing over here, and when it
+[00:09:56] breaks it over here, it uses it as
+[00:09:57] resistance on the downside. So,
+[00:10:01] again, these things need to be viewed in
+[00:10:03] terms of an art rather than a science.
+[00:10:05] It is not going to be perfect every
+[00:10:08] time, but it gives you a general insight
+[00:10:10] into what's going on, and that in and of
+[00:10:12] itself is actually incredibly valuable.
+[00:10:15] So,
+[00:10:16] again, when it comes to the weekly 55
+[00:10:18] EMA, you can look at that as generally
+[00:10:20] bullish, generally bearish, basically.
+[00:10:22] And of course, if you want to be a
+[00:10:23] little bit faster, you might employ
+[00:10:24] something um like the 21 EMA. The 21
+[00:10:27] EMA, another very common period for a
+[00:10:30] moving average. This one, obviously,
+[00:10:31] being a lower period, it's going to be a
+[00:10:32] lot more responsive. And if you look at
+[00:10:35] it here, you can see that it would have
+[00:10:37] kept you in these uh trades or gotten
+[00:10:40] you in these trades or filtered these
+[00:10:41] trades a little bit sooner rather than
+[00:10:43] that green 55 EMA, but there is more
+[00:10:46] noise here, naturally. And so, if you
+[00:10:48] want to trade a little bit more
+[00:10:50] actively, you might choose a lower
+[00:10:52] period moving average. And I'll just lay
+[00:10:54] out the different periods right now that
+[00:10:55] are generally used. Again, you might
+[00:10:57] find no value in this, you might find
+[00:10:59] complete value in this, but I would say,
+[00:11:01] start off with these ones as like a
+[00:11:03] general sort of rule of thumb. The first
+[00:11:05] one is the 5 EMA.
+[00:11:06] Uh this one's obviously a very, very
+[00:11:08] fast uh moving average, so it's going to
+[00:11:10] be filtering very quickly.
+[00:11:13] Again, take that as you will. Some
+[00:11:14] people want to be quicker, some people
+[00:11:16] don't want to be as quick. That is
+[00:11:17] completely fine. It just depends on what
+[00:11:20] you're trying to do.
+[00:11:21] Of course, the next one is going to be
+[00:11:22] the 21 EMA, which we just went over
+[00:11:24] right here. Then the 55 EMA. Then from
+[00:11:27] there, it does get a little bit more
+[00:11:29] into to weeds. So,
+[00:11:31] um a lot of people I I I don't use this
+[00:11:33] one myself, but a lot of people actually
+[00:11:35] do like the 34 EMA and the 89 EMA.
+[00:11:39] Again, they're just, you know, stock
+[00:11:41] standard Fibonacci numbers. I mean, in
+[00:11:42] fact, all of these are so far.
+[00:11:44] Um, and those, you know, some people
+[00:11:47] find a lot of value in those.
+[00:11:48] I don't use them myself, but that
+[00:11:50] doesn't mean that they're not valuable.
+[00:11:51] It's just I'm very comfortable using the
+[00:11:52] ones that I already use cuz I've been
+[00:11:53] using them for a long time. Uh, the next
+[00:11:55] one would be a 200 EMA or 200 SMA. Both
+[00:11:58] of these I find significant amounts of
+[00:12:00] value in. Uh,
+[00:12:01] an asset that is first testing a 200
+[00:12:04] moving average
+[00:12:05] after a long time of being away from it
+[00:12:07] almost always is going to find some sort
+[00:12:09] of a reaction around that moving
+[00:12:10] average, almost always. And the next big
+[00:12:13] one that I really focus on, which is a
+[00:12:15] very high period moving average, is a
+[00:12:17] 377 EMA. Um, that is about as high as I
+[00:12:21] personally go. If I go any higher than
+[00:12:23] that, if I want to go any higher than
+[00:12:24] that, I just put the time frame higher.
+[00:12:27] Like, I don't really see any reason to
+[00:12:28] just, you know, do like a 700 EMA. No,
+[00:12:30] just go to like double the time frame
+[00:12:33] whatever you're looking at right now.
+[00:12:34] So, those would be the main ones that I
+[00:12:36] would uh, traditionally focus on. If you
+[00:12:38] don't have a good starting place, 21 and
+[00:12:40] 55 are
+[00:12:41] very, very generic, but also, in my
+[00:12:43] experience, very valuable as well.
+[00:12:45] Almost every asset will play off of
+[00:12:46] those in some obvious manner.
+[00:12:49] Anyways, let's move on now and let's go
+[00:12:53] over um, let's actually go over some
+[00:12:55] some examples of support and resistance
+[00:12:56] here as well. So, while I did um,
+[00:12:59] acknowledge earlier that, yes, you know,
+[00:13:01] moving averages you don't want to be
+[00:13:04] super rigid with them, you can use them
+[00:13:07] as general areas, general, like very
+[00:13:11] general areas of support and resistance.
+[00:13:13] And it doesn't, again, need to be
+[00:13:14] perfect. You can see over here on the
+[00:13:15] downtrend, Bitcoin likes to sell off on
+[00:13:17] those tests of the 21 EMA. And during an
+[00:13:20] uptrend over here, Bitcoin likes to kind
+[00:13:21] of base off of them. Sometimes price
+[00:13:23] action chops around, in which case
+[00:13:24] that's actually kind of a signal in and
+[00:13:25] of itself that you are entering into a
+[00:13:27] sideways consolidation range. Again, if
+[00:13:29] you're not familiar with that concept,
+[00:13:31] check out the video previous to this one
+[00:13:33] on support and resistance.
+[00:13:35] Um
+[00:13:36] and uh and of course when Bitcoin's kind
+[00:13:38] of chopping around there, it's like
+[00:13:39] you're trendless and when you actually
+[00:13:41] do start to get close over closures plus
+[00:13:43] as we go over especially in the Crown
+[00:13:45] Trading Bible, the slope of the moving
+[00:13:48] average, that can also be indicative of
+[00:13:51] a confirmation of a trend continuation
+[00:13:54] or a trend reversal um depending upon
+[00:13:56] which way it breaks obviously. Anyways,
+[00:13:59] let's get back into our slideshow right
+[00:14:01] here.
+[00:14:02] And let's just kind of uh you know,
+[00:14:04] reiterate what we said. So, fast moving
+[00:14:06] averages crossing above a slow slow
+[00:14:08] moving average. We didn't really go over
+[00:14:09] crosses just yet. So, let's actually go
+[00:14:11] let's actually go over that right now.
+[00:14:12] So, um as I alluded to earlier, one of
+[00:14:14] my favorite or two of my favorite moving
+[00:14:16] averages are the 21 and the 55 EMAs
+[00:14:18] respectively. And generally, when you
+[00:14:21] see the lower period, the 21 EMA
+[00:14:24] crossing above the green 55 EMA, you're
+[00:14:27] generally entering into an uptrend. You
+[00:14:29] can see that right here in this
+[00:14:31] particular example. All right, let me
+[00:14:33] get rid of all these previous uh
+[00:14:34] circles. Boom, right there. You see the
+[00:14:37] opposite happening right here, the lower
+[00:14:38] period going below the higher period
+[00:14:41] entering into a downtrend and you see
+[00:14:43] some choppy action over here. So, yes,
+[00:14:45] sometimes it works out perfectly like
+[00:14:46] this
+[00:14:48] in which case
+[00:14:49] it's uh it's indicative of of of kind of
+[00:14:52] like a stronger trend emerging.
+[00:14:54] Of course, you do get instances like
+[00:14:55] this as well. That is the sort of
+[00:14:57] drawback by blindly following these
+[00:14:59] things. Thus, we really need to focus on
+[00:15:02] other forms of confirming these sort of
+[00:15:04] things or more importantly, I should
+[00:15:06] just using this to confirm the actual
+[00:15:09] structure and trend beforehand. That's
+[00:15:11] where the real magic does happen
+[00:15:12] obviously, but in this case, you know,
+[00:15:14] you can see a couple of chops around
+[00:15:16] right here and then you get your trend,
+[00:15:17] you know, your real trend emerging right
+[00:15:19] here. So, even if you did kind of
+[00:15:21] blindly play these,
+[00:15:23] it actually does work out quite well.
+[00:15:25] Not perfectly, but it does work out
+[00:15:27] quite well. And it keeps you on the same
+[00:15:29] side of the of the trend almost always.
+[00:15:33] Almost always, but not always. Let's say
+[00:15:35] more than 80% of the time, less than 95%
+[00:15:37] of the time. Something like that on a
+[00:15:39] daily time frame.
+[00:15:41] In this case right here, you can see
+[00:15:42] that this one's been having a downside
+[00:15:44] bias ever since middle of October, in
+[00:15:46] which case Bitcoin has now
+[00:15:48] fast-forwarded about 5 to 6 months from
+[00:15:50] now into middle of of March.
+[00:15:53] And it's still in a downtrend, to be
+[00:15:55] fair.
+[00:15:56] Um now, that can change, obviously, but,
+[00:15:58] you know, if you were following this,
+[00:16:00] again, the trend is your friend. The
+[00:16:01] trend is your friend until the end of
+[00:16:02] the trend, and the trend has not
+[00:16:03] necessarily ended just yet. So, moving
+[00:16:06] on from there
+[00:16:07] and getting into a little bit more of
+[00:16:09] the weeds here. Again, just a general
+[00:16:11] rule when you're looking at any moving
+[00:16:13] averages, the lower period moving
+[00:16:14] average, so a five versus a 21, if the
+[00:16:17] five is above the 21, you're probably in
+[00:16:20] a short-term uptrend, and vice versa if
+[00:16:23] it is below the 21. And of course, if
+[00:16:26] you do see I mean, this can not this can
+[00:16:28] apply to even much higher moving
+[00:16:29] averages as well. You could be using a
+[00:16:30] 200 versus a 377. If the 200 is above
+[00:16:33] the 377, then that very long-term trend
+[00:16:38] is probably still to the upside, and
+[00:16:40] vice versa if it's to the down. And
+[00:16:41] again, higher period moving averages
+[00:16:44] hold more weight over lower period
+[00:16:46] moving averages, but lower period moving
+[00:16:48] averages naturally are more responsive,
+[00:16:49] thus a more expedited um indication and
+[00:16:55] confirmation of any sort of reversal.
+[00:16:57] Again, the way that you apply these will
+[00:16:59] be primarily glued to your actual
+[00:17:03] strategy. Are you, you know, short-term
+[00:17:05] trend trading? Are you long-term trend
+[00:17:06] trading? Are you just trying to, you
+[00:17:07] know, find some short scalping moves?
+[00:17:09] These sort of things. That is going to
+[00:17:11] define which ones you actually use. But
+[00:17:13] if you don't know where to start, a 21
+[00:17:15] and a 55 is almost always a place to
+[00:17:17] kind of begin.
+[00:17:18] All right, cool. Let's see. Let's go
+[00:17:21] into how professionals use moving
+[00:17:22] averages. So, here is the best way that
+[00:17:25] I found to use moving averages myself,
+[00:17:26] which is one, to identify your bias. Are
+[00:17:29] you upside biased? Are you downside
+[00:17:31] biased? Are you sideways biased?
+[00:17:34] Filter bad trades, of course. If the If
+[00:17:36] the moving averages are showing an
+[00:17:38] uptrend and you are
+[00:17:41] in a short strategy you are employing a
+[00:17:44] short strategy, maybe just maybe you
+[00:17:47] don't want to be shorting when the trend
+[00:17:49] is up because the trend is your friend.
+[00:17:51] And if you're fighting your friend, you
+[00:17:53] can expect to lose more money than not.
+[00:17:56] And it also just helps you stay with the
+[00:17:57] trend. You know, a lot of the time in
+[00:17:59] big moves like this, it looks like it's
+[00:18:00] exaggerated. It looks like it's been
+[00:18:01] going on for so long. How could it go on
+[00:18:03] for any longer? But,
+[00:18:04] you never even got a a potential cross
+[00:18:08] to the upside this whole way down. So,
+[00:18:09] it keeps you honest. It keeps you in
+[00:18:11] that same sort of bias and again until
+[00:18:14] proven otherwise. So, it will come after
+[00:18:16] the fact when you do see a crossing of
+[00:18:18] the direction after the trend reverses.
+[00:18:21] That is okay. Again, you can afford to
+[00:18:23] give up a little bit of these profits if
+[00:18:25] you jump on the trend right here. And
+[00:18:26] then let's say it reverses, you know,
+[00:18:28] not
+[00:18:29] and it doesn't confirm until you're back
+[00:18:30] up like 80,000 bucks over here. You can
+[00:18:32] afford to give some up. That is the
+[00:18:34] essence of trend trading. Anyways,
+[00:18:37] moving averages help you avoid bad
+[00:18:38] trades more than they help you find good
+[00:18:40] ones. Or at least
+[00:18:42] I could say that they certainly help you
+[00:18:44] avoid bad trades. That is super super
+[00:18:45] valuable. But, they also help you
+[00:18:48] validate higher probability good trades
+[00:18:51] as well. So, it works on both sides
+[00:18:53] basically is the point that I'm trying
+[00:18:54] to make here.
+[00:18:56] Anyways,
+[00:18:57] the worst time to really be putting a
+[00:18:59] lot of focus on moving averages of
+[00:19:00] course during times of sideways chop.
+[00:19:03] So, let me go down to a lower term time
+[00:19:05] frame here.
+[00:19:06] In this instance, um
+[00:19:08] let's go off of the top right here
+[00:19:10] actually. This will be even more
+[00:19:11] pertinent. So, in this instance, when
+[00:19:13] you do see this sort of sideways
+[00:19:15] consolidation, these moving averages,
+[00:19:17] well, they you know, they do kind of
+[00:19:18] matter and they do kind of get your
+[00:19:20] moves right here, right here, right
+[00:19:21] here,
+[00:19:22] and right here. There's a lot of choppy
+[00:19:24] action going on. So, this is not the
+[00:19:25] ideal scenario to be using these things.
+[00:19:28] And again, if you want an insight into
+[00:19:31] when you're likely to range, check out
+[00:19:33] the volatility video and check out the
+[00:19:34] support and resistance video because
+[00:19:36] that is going to tell you basically when
+[00:19:38] not to protect to not when not to
+[00:19:41] um
+[00:19:42] put value on moving averages. Now, in
+[00:19:45] this case, if we were to combine the
+[00:19:46] previous video's knowledge with this
+[00:19:48] one, well, we have a very obvious range
+[00:19:49] right here, right? We have the top side
+[00:19:51] of your range, we have the bottom side
+[00:19:53] of your range right here. Okay? Well,
+[00:19:56] moving averages are up starting here, so
+[00:19:58] it actually kind of does alert you to
+[00:19:59] the potential breakout coming later. But
+[00:20:00] of course, you can't really validate
+[00:20:03] that breakout until price has closed
+[00:20:05] above the top side of the range, and
+[00:20:06] with those moving averages confirming
+[00:20:07] that same direction, okay, now you have
+[00:20:09] a high probability continuation move.
+[00:20:12] Whereas over here, you have a downside
+[00:20:14] cross, right?
+[00:20:16] But you don't have a range break to the
+[00:20:17] to the downside. Thus, there's no real
+[00:20:20] reversal, and it is more or less a range
+[00:20:22] play. Thus, you should be scalping this
+[00:20:24] range if you're going to be doing
+[00:20:26] anything at all, and not trying to trade
+[00:20:28] the trend reversal to the downside cuz
+[00:20:30] you just don't have that yet.
+[00:20:32] So, again, we need to combine or at
+[00:20:35] least the best results
+[00:20:37] happen when you combine the things that
+[00:20:39] we are speaking about in this TA 101
+[00:20:41] playlist. This is really meant to be
+[00:20:42] viewed all together and incorporated all
+[00:20:45] together as well, or at least as best as
+[00:20:47] possible.
+[00:20:48] All right.
+[00:20:49] So,
+[00:20:50] my point is is that when things are
+[00:20:52] trendless,
+[00:20:54] the context is against using moving
+[00:20:57] averages. You don't want to trust them
+[00:20:58] too much.
+[00:21:00] When things are trending, your moving
+[00:21:01] averages are incredibly, incredibly
+[00:21:03] valuable.
+[00:21:04] Incredibly valuable.
+[00:21:06] So again, if you're not if you're not
+[00:21:08] very solid on these concepts, definitely
+[00:21:09] watch video number two, definitely watch
+[00:21:11] video number three on trend and support
+[00:21:13] and resistance, and then the video after
+[00:21:15] a little bit later on volatility are
+[00:21:17] going to be integral to all of this.
+[00:21:20] All right, going back into our slideshow
+[00:21:21] right here.
+[00:21:22] So, here would be my sort of
+[00:21:26] general insight into a an easy way to
+[00:21:29] incorporate moving averages that will
+[00:21:32] increase your hit rate and generally
+[00:21:34] this is where moving averages shine.
+[00:21:36] This is where they show their value. So,
+[00:21:37] one, in trending markets, obviously.
+[00:21:39] Trending markets are where your moving
+[00:21:40] averages are actually doing what you
+[00:21:42] want them to do. They are showing you
+[00:21:44] the trend and where you should be
+[00:21:45] expecting the structure, which is the
+[00:21:47] next point. Do you want to see your
+[00:21:51] higher lows alongside one of your major
+[00:21:52] moving average? Generally, yes, in an
+[00:21:54] uptrend. In a downtrend, you generally
+[00:21:55] want to see your lower highs alongside
+[00:21:57] one of those major moving averages as
+[00:21:58] well.
+[00:21:59] Uh and these are also key levels. These
+[00:22:01] These key levels generally correlate
+[00:22:03] with previous highs, previous lows, or
+[00:22:05] just general areas of interest that
+[00:22:08] actually mark off a change in behavior
+[00:22:10] if reclaimed.
+[00:22:12] And of course, if they are rejected,
+[00:22:13] then well, you know, typically the
+[00:22:16] previous trend continues to prevail. And
+[00:22:18] then of course, the next thing that is
+[00:22:21] very rarely spoken about with moving
+[00:22:22] averages is analyzing the slope. So,
+[00:22:26] understand that when you're looking at a
+[00:22:27] moving average, the slope of it directly
+[00:22:29] correlates to the power of the trend,
+[00:22:32] the strength of the trend. If a moving
+[00:22:34] average is nearly vertical, like what
+[00:22:36] you see right here, that's a strong
+[00:22:38] trend emerging. And a strong trend is
+[00:22:41] likely to be get more trend. You can
+[00:22:43] think of it as like, you know, creating
+[00:22:46] some torque, which then gets some
+[00:22:47] momentum as your car starts moving. So,
+[00:22:49] it goes vertical right here. Bitcoin
+[00:22:51] then consolidates sideways, but hey,
+[00:22:52] that was a strong move. So, what's most
+[00:22:55] likely to happen after that?
+[00:22:56] Continuation in that same direction. And
+[00:22:58] hell yeah, we got a lot of continuation
+[00:23:00] right there to new all-time highs.
+[00:23:01] So, do be aware of that. That also means
+[00:23:05] when your slope is flattening or flat in
+[00:23:07] general, like you see right here, this
+[00:23:10] is a time where you don't really want to
+[00:23:11] pay too much attention to moving
+[00:23:13] averages. Why? Cuz you're chopping
+[00:23:14] around. So, you're chopping around
+[00:23:15] sideways, and this is just not where
+[00:23:17] moving averages shine. So, if anything,
+[00:23:19] you can still you can still take some
+[00:23:20] value from these moving averages even in
+[00:23:22] those contexts because it's telling you
+[00:23:24] not to trend trade. It's telling you not
+[00:23:26] to trend trade. Really, really, really,
+[00:23:28] really, really important.
+[00:23:32] So, here's the thing. When trend
+[00:23:33] structure and moving averages align,
+[00:23:35] probability improves.
+[00:23:37] Almost always.
+[00:23:39] And here's a good example right here.
+[00:23:40] You have your structure or your support
+[00:23:42] and resistance, uh your your sort of
+[00:23:43] support zone.
+[00:23:45] You can see Bitcoin was trading above
+[00:23:48] this green 55 the whole way through
+[00:23:49] here. It's using this zone as support
+[00:23:52] during that time. And then, when bit
+[00:23:54] once Bitcoin loses that moving average,
+[00:23:57] you can see that move into the support
+[00:23:59] zone fails and actually breaks. And
+[00:24:02] then, what happens after that? Your
+[00:24:04] moving average becomes resistance right
+[00:24:05] here, right here, right here, right
+[00:24:06] here. And then it breaks it whoops,
+[00:24:08] breaks above right here.
+[00:24:10] And then it finds that same previous
+[00:24:13] support zone
+[00:24:14] as an area of interest for the next
+[00:24:16] consolidation. And you can see again
+[00:24:18] price using that 55 EMA to base off of
+[00:24:20] later on, too.
+[00:24:21] Another example right here. In a
+[00:24:23] downtrend, Bitcoin obviously, you know,
+[00:24:25] the trend is the downside as of right
+[00:24:27] here. The price loses that green 55 EMA
+[00:24:31] right here. And from there,
+[00:24:35] price continues to the downside and your
+[00:24:36] corrective moves pop up to that green 55
+[00:24:38] and the rejection confirms the
+[00:24:40] continuation of that direction to the
+[00:24:41] downside.
+[00:24:43] Until here, where it claims and and
+[00:24:44] flatlines and lets you know, "Hey, a
+[00:24:46] consolidation is emerging. So, no more
+[00:24:48] trend trading for now."
+[00:24:50] Same thing over here. You got your
+[00:24:52] resistance or your previous resistance
+[00:24:54] zone in the downtrend.
+[00:24:56] The green 55 is governing, okay? That's
+[00:24:59] where we find high high high. And when
+[00:25:01] Bitcoin pops up over here, the first
+[00:25:03] test is pushed back. But, this is
+[00:25:05] objectively different. Why? Because
+[00:25:07] Bitcoin has reclaimed the green 55 EMA
+[00:25:09] right here.
+[00:25:11] And after it rejects that previous
+[00:25:13] resistance zone, it pops back down, puts
+[00:25:14] in a higher low on that 55 EMA, then
+[00:25:17] reclaims the zone, thus confirming the
+[00:25:20] reversal to the upside. You get a nice
+[00:25:21] move from about 40,000 bucks to 52,000
+[00:25:23] bucks. Not bad.
+[00:25:25] And then actually uses it later on for
+[00:25:26] support if we were to extend this over
+[00:25:28] here.
+[00:25:29] And then of course, another example
+[00:25:30] right here coming off the 2018 lows.
+[00:25:32] Again, price below the 55 EMA, obviously
+[00:25:35] a downtrend. Here's your resistance
+[00:25:37] zone. Gets this high, this high, this
+[00:25:39] high, this high. And then once Bitcoin
+[00:25:42] reclaims 55 EMA, accumulates some price
+[00:25:45] with some higher lows alongside of it,
+[00:25:46] and breaks right through that same
+[00:25:48] previous resistance zone.
+[00:25:50] There's your confirmed reversal. And
+[00:25:52] this was a move that went all the way
+[00:25:53] from about 4,000 bucks to 14,000
+[00:25:55] dollars. So, a big [&nbsp;__&nbsp;] move is kind
+[00:25:57] of the point that I'm making. And how
+[00:25:59] about another one? Same thing over here.
+[00:26:01] Price is a price is in an uptrend. It's
+[00:26:03] above the green 55 EMA. You got your
+[00:26:05] support zone coming in from this
+[00:26:07] accumulation of wicks over here. And
+[00:26:09] then in this current instance right
+[00:26:10] here, that's exactly where you get your
+[00:26:12] higher lows. So, your support zone
+[00:26:13] aligning with your support or resistance
+[00:26:16] zone aligning with a 55 EMA in general,
+[00:26:19] that's a really high quality bounce or
+[00:26:22] pullback zone. And if price obviously
+[00:26:25] reclaims it or or or reverses from it,
+[00:26:29] then you have a trending move likely
+[00:26:31] emerging.
+[00:26:33] So, what's next? We've gone through a
+[00:26:34] lot of things now.
+[00:26:36] Um let's go over what's next. So, we're
+[00:26:37] going to go over RSI momentum in the
+[00:26:39] next video. We're going to go over
+[00:26:41] confirmation versus signals. We're going
+[00:26:43] to go over why indicators alone fail.
+[00:26:45] These are a few videos down, I should
+[00:26:46] say.
+[00:26:47] And here's the thing, once trend and
+[00:26:48] structure are clear, momentum becomes
+[00:26:50] useful. And that's where we'll leave off
+[00:26:52] on this video. Moving averages don't
+[00:26:54] make you money. They keep you from
+[00:26:56] fighting the market, and they act as a
+[00:26:58] secondary confirmation tool in alignment
+[00:27:01] with your support and resistance zones,
+[00:27:03] and also with trend as well, to give you
+[00:27:05] high probability bounces and pullback
+[00:27:08] regions, as well as highly, highly
+[00:27:10] objective continuation or reversal zones
+[00:27:14] if you know, depending upon how price
+[00:27:16] reacts with that area. That is the true
+[00:27:19] value of moving averages. Anyways, in
+[00:27:21] the next video, we're going to go over
+[00:27:23] RSI and why overbought doesn't mean
+[00:27:25] sell, nor does oversold mean buy, or at
+[00:27:29] least generally speaking. So, we'll go
+[00:27:31] over that in the next video. I'll see
+[00:27:32] you there. Take care.

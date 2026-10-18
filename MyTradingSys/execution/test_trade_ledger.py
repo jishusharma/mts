@@ -63,6 +63,19 @@ class BuildRowTest(unittest.TestCase):
         self.assertEqual((r["exit_reason"], r["exit_reason_src"]), ("time_exit", "hold_time"))
         self.assertEqual(tl.build_row(ATT, trades, [], {"max_hold_minutes": 120})["exit_reason"], "manual")
 
+    def test_triggered_by_fills_stop_is_not_labelled_target(self):
+        # position_manager sets target_filled = reduce-side fills on the triggered_by_fills fallback (the stop's own fill)
+        ev = [{"event_type": "reconciliation", "data": {"result": "position_closed", "stop_state": "triggered_by_fills",
+                                                        "target_filled": 100}}]
+        stop = [fill(0, "sell", 80000, 100, "P1:entry1"), fill(5, "buy", 80800, 100, "P1:stop_order_pending_fill")]
+        r = tl.build_row(ATT, stop, ev)
+        self.assertLess(r["gross_pnl_usd"], 0)
+        self.assertEqual((r["exit_reason"], r["exit_reason_src"]), ("stop", "journal"))
+        tgt = [fill(0, "sell", 80000, 100, "P1:entry1"), fill(5, "buy", 79000, 100, "P1:target_1")]
+        self.assertEqual(tl.build_row(ATT, tgt, ev)["exit_reason"], "target")
+        ev2 = [{"event_type": "reconciliation", "data": {"stop_state": "filled", "target_filled": 100}}]
+        self.assertEqual(tl.build_row(ATT, tgt, ev2)["exit_reason"], "target")     # normal journal path unchanged
+
     def test_open_position_is_not_a_row_unless_forced(self):
         trades = [fill(0, "buy", 80000, 100, "P1:entry1"), fill(5, "sell", 81000, 40, "P1:target1")]
         self.assertIsNone(tl.build_row(ATT, trades))

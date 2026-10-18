@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/sync.py claim \"dsa-audit-09-live-parity\"",
+    "python scripts/dev/tasks.py take dsa-audit-09-live-parity",
+    "git -C C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed rev-parse HEAD",
+    "git grep -n -E \"def (build_default_registry|poll_once|fetch_closed_bars|default_fetch_klines)\" -- MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
+    "python scripts/dev/tasks.py done dsa-audit-09-live-parity --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"",
+    "# AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty)"
+  ],
+  "created": "2026-10-15T23:28:58Z",
+  "depends_on": [],
+  "done_when": "T09_live_parity.md shipped: layer map with parameter diffs, deployed sha, per-layer signal diff on 30 DEV days, exit-rule diff, the 97% time exits explained; live-path findings posted --target CLAUDE.",
+  "est_turns": 38,
+  "from_inbox": "",
+  "goal": "Map each testnet layer to the backtest that justified it, replay 30 DEV days bar by bar through the live layer code in the worktree with no network, diff signals and exit rules against the backtest code, and explain the 97% time exits.",
+  "id": "dsa-audit-09-live-parity",
+  "lane": "DSA-NB",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:28Z",
+  "refs": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
+    "MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
+    "MyTradingSys/execution/auto_trader.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md and MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/ (new files only)",
+    "read-only: repo code, result files, data under F:/MTS/data and Dumps (windows per brief section 5)"
+  ],
+  "scope_out": [
+    "fixing what you find (cards instead)",
+    "VALIDATION or HOLDOUT returns",
+    "writes to the live tree, F:/MTS/data or Dumps",
+    "F:/AIBridge and scripts/aibridge",
+    "changing any verdict, ledger or pre-registered bar"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T09' (full method).",
+    "Map every testnet account/layer to its live function (build_default_registry) and the backtest that justified it; parameter diff per layer.",
+    "Read-only: live tree HEAD sha and its diff vs origin/fast-track for layers/ and execution/; replay the deployed version.",
+    "Replay 30 fixed DEV days through poll_once in the worktree with a fake fetch_fn; every network fetch patched to raise; state paths in %TEMP%; record signals.",
+    "Run each layer's backtest on the same days; diff signals (same bar, off by one, live-only, backtest-only).",
+    "Exit-rule diff (auto_trader.py, position_manager.py, config) vs backtest exits; explain the 97% time exits with numbers."
+  ],
+  "tests": "",
+  "title": "DSA audit T09: replay DEV bars through the testnet layer code and diff signals and exits against the backtests",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

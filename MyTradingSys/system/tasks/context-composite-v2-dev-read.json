@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "created": "2026-10-16T08:30:00Z",
+  "depends_on": [],
+  "done_when": "RESULT_V2.md holds one verdict word (PASS | INCONCLUSIVE | FAIL) for C pooled computed by the PRE_REG_V2.md rule, every other cell listed REFUSED_POWER without numbers, matched events/days printed before any outcome and equal to PRE_REG_V2 s.2 (974 / 452) or BLOCKED.md, VERDICTS.csv has the row, ship gate green.",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "One outcome read of PRE_REG_V2.md: the same frozen composite C (trigger of PRE_REG.md s.2, context_asof.py sha efa3513f) against context-matched controls drawn from every same-side at-level decision hour with a ladder stop (no ledger cooldown), so that 974 of 1,010 C events (452 days, gate 393) have >= 10 controls. BTCUSDT 1h decisions, daily-candle stop-ladder trade, DEV only, Holm m = 42.",
+  "id": "context-composite-v2-dev-read",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "verdicts: sourced overrides file; eur one_run=yes, orderflow kill_scope, t090 split/verdic",
+      "ref": "a440450b50a9",
+      "utc": "2026-10-17T14:26:34Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=GPT medium + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. On hold (D8-context-composite-hold, 2026-10-17): with the audit's two fixes no verdict but INCONCLUSIVE is reachable. PASS: C mean net_R already -0.137 R in V1. FAIL: control stops 23-25 % narrower; stop-matched controls leave 165 days < 393 (counts_v3.py).",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T22:06:24Z",
+  "refs": [
+    "MyTradingSys/research/context_factors_2026-10-16/PRE_REG_V2.md",
+    "MyTradingSys/research/context_factors_2026-10-16/PRE_REG.md",
+    "MyTradingSys/research/context_factors_2026-10-16/RESULT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/context_factors_2026-10-16/study_v2.py",
+    "MyTradingSys/research/context_factors_2026-10-16/test_study_v2.py",
+    "MyTradingSys/research/context_factors_2026-10-16/ledger_C_v2.csv",
+    "MyTradingSys/research/context_factors_2026-10-16/controls_v2.csv",
+    "MyTradingSys/research/context_factors_2026-10-16/EXPOSURE_LEDGER.csv",
+    "MyTradingSys/research/context_factors_2026-10-16/RESULT_V2.md",
+    "MyTradingSys/research/VERDICTS.csv"
+  ],
+  "scope_out": [
+    "MyTradingSys/research/context_factors_2026-10-16/context_asof.py",
+    "MyTradingSys/research/context_factors_2026-10-16/PRE_REG.md",
+    "MyTradingSys/research/context_factors_2026-10-16/PRE_REG_V2.md",
+    "MyTradingSys/research/context_factors_2026-10-16/study.py",
+    "MyTradingSys/research/context_factors_2026-10-16/RESULT.md",
+    "MyTradingSys/research/context_factors_2026-10-16/CONTEXT_FACTORS_SPEC.md",
+    "MyTradingSys/research/context_null_2026-10-16/",
+    "any VALIDATION or HOLDOUT bar",
+    "every REFUSED_POWER cell of PRE_REG s.4"
+  ],
+  "scope_sha": "a440450b50a9",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read PRE_REG_V2.md in full; check git log shows it committed before any outcome file; record the sha of context_asof.py (must be efa3513f...) and of PRE_REG_V2.md.",
+    "Run counts_v2.py (counts only): C 554/254 long, 456/202 short, matched with the s.1 pool 546/254 long, 428/198 short, pooled 974/452; any mismatch = BLOCKED.md. Commit this before any outcome code.",
+    "Copy study.py to study_v2.py (do not edit study.py); change only the pool in run() (no ledger cooldown: all same-side f1_at_level frame rows with f3_stop_tf != none), m = 42, T_CRIT = 3.241, N_NEEDED_DAYS = 393, output file names *_v2 / RESULT_V2.md, add the control-reuse print.",
+    "Write test_study_v2.py first: the new pool contains an at-level hour that the ledger cooldown dropped, excludes C events and hours within 24 h of one; fails on the V1 pool; the V1 simulator fixture tests still pass (planted bug, fail first).",
+    "Run once. Compute ONLY the READ cell (C pooled) and the report-only rows; apply the PRE_REG_V2 s.3 verdict rule verbatim.",
+    "Write RESULT_V2.md (verdict line first), ledger_C_v2.csv, controls_v2.csv, EXPOSURE_LEDGER.csv row (m = 42); verdicts.py add one row with the kill scope of PRE_REG_V2 s.3; lookahead_lint.py on the folder; run_all_tests.py --quick; ship."
+  ],
+  "tests": "test_study_v2.py (pool rule on a hand fixture + the V1 simulator checks) fails on the V1 pool, passes on the V2 pool; registered in scripts/dev/run_extra_tests.py.",
+  "title": "Context factors V2: run PRE_REG_V2 (operator context composite C vs wider-pool matched controls, DEV, one read)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

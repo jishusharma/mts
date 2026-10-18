@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "Testnet only: after a blind-monitor HALT_DAILY_LOSS, may the monitor clear it itself once it reads the account cleanly for N minutes, or do you clear every one?",
+  "closed": "2026-10-17T04:43:21Z",
+  "commands": [],
+  "created": "2026-10-14T12:17:28Z",
+  "depends_on": [],
+  "done_when": "Jis decided the recovery rule (or decided there is none); if a rule exists: daily_loss_monitor clears only its own blind halt after the account reads cleanly, with offline tests for restart, a real loss halt, API errors and the mainnet path (unchanged).",
+  "from_inbox": "",
+  "goal": "On testnet, a blind-monitor HALT_DAILY_LOSS (daily_loss_monitor could not read the account after 20 consecutive failures, Deribit 502) clears itself under a rule Jis sets; mainnet stays fail-closed.",
+  "id": "blind-monitor-halt-recovery",
+  "lane": "JIS-NB",
+  "layers": [
+    "live_engine"
+  ],
+  "live_path": true,
+  "note": "Parked on the operator policy question (asks). Size, commands and tests are set after his answer; check then promotes it.",
+  "prio": 2,
+  "refine_tries": 1,
+  "refined_by": "claude JIS-NB 2026-10-14 (docs+cards pass)",
+  "refs": [],
+  "result": "Result: testnet blind HALT_DAILY_LOSS is cleared by daily_loss_monitor itself after 30 min of clean reads (own tagged halt only, max 2/day, 60 min flap guard, .hold pin); loss halts and mainnet never auto-cleared; 20 new tests failed on old code, run_all_tests --quick green; policy in system/BLIND_HALT_POLICY.md; live tree runs old code until supervisor deploy",
+  "scope_in": [
+    "MyTradingSys/execution/daily_loss_monitor.py (MAX_CONSECUTIVE_FAILURES_TESTNET = 20, blind halt write near line 423) and test_dlm_failure_cap.py",
+    "MyTradingSys/execution/halt_history (HALT_DAILY_LOSS_2026-10-06_deribit502, HALT_DAILY_LOSS_20261007_215040.txt) and the live HALT_DAILY_LOSS, read-only"
+  ],
+  "scope_out": [
+    "creating, editing or clearing HALT, HALT_DAILY_LOSS or AUTO_PAUSE files by hand: builders never do",
+    "mainnet behaviour (fail closed stays) and any real daily-loss halt (a loss halt is never auto-cleared)",
+    "restarting any process: the supervisor deploys"
+  ],
+  "size": "",
+  "sources": [
+    "HALT_DAILY_LOSS 2026-10-12T14:44:49Z: daily_loss_monitor blind, 20 consecutive failures, last public/auth HTTP 502; third blind halt in 7 days (halt_history 10-06 deribit502, 10-07 21:50:40)",
+    "Sibling of exec-halt-entry-10031 (entry reject halt policy)."
+  ],
+  "state": "done",
+  "steps": [
+    "Put the policy to Jis as a Control Room decision: after a blind halt, may the monitor clear it itself once it reads the account cleanly for N minutes, or does he clear every one? Evidence: 3 blind halts in 7 days (10-06, 10-07, 10-12).",
+    "After his answer: tests first (each fails on current code), then the change staged as .new for the supervisor deploy."
+  ],
+  "tests": "",
+  "title": "Blind-monitor halt auto-recovery on testnet (operator policy)"
+}

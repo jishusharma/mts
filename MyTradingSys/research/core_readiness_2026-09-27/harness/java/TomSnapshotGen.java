@@ -52,12 +52,14 @@ public class TomSnapshotGen {
             long m1 = Math.min(lastAsOf, ym.plusMonths(1).atDay(1).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli() - 1);
             // align to step grid anchored at start
             long t = start.toEpochMilli() + ((m0 - start.toEpochMilli() + stepMs - 1) / stepMs) * stepMs;
-            long eval = 0, kept = 0, err = 0;
+            long eval = 0, kept = 0, err = 0, firstT = -1, lastT = -1;
             Path tmp = out.resolve(ym + ".jsonl.gz.part");
             try (BufferedWriter w = new BufferedWriter(new OutputStreamWriter(
                     new GZIPOutputStream(Files.newOutputStream(tmp)), StandardCharsets.UTF_8), 1 << 16)) {
                 for (; t <= m1; t += stepMs) {
                     eval++;
+                    if (firstT < 0) firstT = t;
+                    lastT = t;
                     try {
                         ObjectNode s = mds.fetchHistoricalSnapshot(SYMBOL, Instant.ofEpochMilli(t));
                         s.remove("module_candidates");
@@ -74,7 +76,8 @@ public class TomSnapshotGen {
             }
             Files.move(tmp, f, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
             Files.writeString(meta, "{\"month\":\"" + ym + "\",\"step_min\":" + (stepMs / 60000) + ",\"evaluated\":" + eval
-                    + ",\"kept\":" + kept + ",\"errors\":" + err + "}\n");
+                    + ",\"kept\":" + kept + ",\"errors\":" + err
+                    + ",\"first_ms\":" + firstT + ",\"last_ms\":" + lastT + "}\n");
             System.out.println(ym + " eval=" + eval + " kept=" + kept + " err=" + err);
         }
     }

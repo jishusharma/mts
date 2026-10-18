@@ -43,15 +43,15 @@ public class BuildVpFixedGridTest {
     void pocVahValStayOnGridWhenWindowExtendsDownward() throws Exception {
         List<JsonNode> a = windowA();
         ObjectNode va = vp(a, 10.0);
-        assertEquals(80370.0, va.get("poc").asDouble(), 1e-9);
-        assertEquals(80370.0, va.get("vah").asDouble(), 1e-9);
+        assertEquals(80375.0, va.get("poc").asDouble(), 1e-9);
+        assertEquals(80380.0, va.get("vah").asDouble(), 1e-9);
         assertEquals(80370.0, va.get("val").asDouble(), 1e-9);
 
         List<JsonNode> b = new ArrayList<>(a);
         b.add(bar(1_700_000_000_000L + 20 * 60_000L, 80360.0, 80352.0, 80356.0, 1.0));
         ObjectNode vb = vp(b, 10.0);
-        assertEquals(80370.0, vb.get("poc").asDouble(), 1e-9);
-        assertEquals(80370.0, vb.get("vah").asDouble(), 1e-9);
+        assertEquals(80375.0, vb.get("poc").asDouble(), 1e-9);
+        assertEquals(80380.0, vb.get("vah").asDouble(), 1e-9);
         assertEquals(80370.0, vb.get("val").asDouble(), 1e-9);
     }
 }

@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-15T20:33:54Z",
+  "depends_on": [],
+  "done_when": "Run `python -m pytest MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py -q`: 9 existing + at least 3 new tests pass; git diff shows DATA_MANIFEST.csv unchanged (31 lines).",
+  "est_turns": 12,
+  "from_inbox": "",
+  "goal": "screen.py manifest() overwrites DATA_MANIFEST.csv before loading bars, so a changed archive silently replaces the frozen baseline (GPT audit MED, gross-screen-gpt-audit report line 32). Make it refuse a mismatch and keep the frozen file.",
+  "id": "gross-screen-refuse-a-changed-data-manif",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gross-effect screen: screen.py, tests, count section before outcome run",
+      "ref": "6cfe048a4c02",
+      "utc": "2026-10-15T19:05:25Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:data CLASS:C1 REVIEWER:lab_guy cross-vendor spec review (roles/lab_guy.md C1), no Claude slot. DECISION (OURS): guard only, no re-run, existing hashes untouched; the tests use temp dirs.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T20:25:07Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/DATA_MANIFEST.csv",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/ledger.csv",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/RESULT.md",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/PRE_REG.md",
+    "any re-run of --full (one-run PRE_REG, never re-run)",
+    "holdout bars >= 2024-07-01"
+  ],
+  "scope_sha": "6cfe048a4c02",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-15_gross-screen-gpt-audit.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Add check_manifest(files, path=None): if path exists, compare exact file-name set and sha256 per file to the stored rows; any difference raises SystemExit naming the file; else (no file) write it as today.",
+    "Call it from main() in place of the unconditional manifest(files); keep manifest() writing only when the file is absent.",
+    "Add tests in test_screen.py using tempfile dirs only (never the real manifest): matching hashes pass, one changed byte refuses, an extra or missing file refuses, and the stored file is unchanged after a refusal."
+  ],
+  "tests": "test_screen.py::test_manifest_refuses_changed_input and ::test_manifest_refuses_file_set_change fail on the current screen.py (manifest() overwrites, no check) and pass after the edit.",
+  "title": "Gross screen: refuse a changed data manifest instead of overwriting it (GPT audit MED)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

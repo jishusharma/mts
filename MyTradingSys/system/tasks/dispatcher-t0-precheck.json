@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-15T13:45:10Z",
+  "depends_on": [],
+  "done_when": "The result carries measured tokens per NOOP run and per day, before and after; the repo change and its test are on origin (empty `git cherry`); the coordinator has the one scheduled-task change to apply.",
+  "from_inbox": "",
+  "goal": "The hourly mts-dispatcher App task starts a Haiku session only when `relay.py tick` would print TICK KICK; a NOOP hour costs no model session. Measured 2026-10-15 (list_task_runs mts-dispatcher): 50 runs 00:18Z-13:07Z, every one 15-26 s long and NOOP (44 at the 10-min cadence until 07:38Z, then hourly); 91 runs on record. At the hourly cadence that is 24 sessions/day; each starts at about 65k context tokens (B172), about 2 turns, so roughly 3M input tokens/day, mostly cache reads (estimate; step 1 measures it). MTS-DispatchGate (Task Scheduler) already runs the 10-min tick model-free.",
+  "id": "dispatcher-t0-precheck",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "Finding: NOOP 10-min ticks were already model-free (MTS-DispatchGate, dispatch_gate.py; test_noop_launches_nothing exists). What still cost a model session was the hourly mts-dispatcher App routine (cron 7 * * * *): 24 NOOP sessions/day. Tokens NOT measured from transcripts (estimate from card: ~65k start context x ~2 turns, ~130k input/session, ~3.1M/day, mostly cache reads, output tiny); NOOP share of last 48h = 100% of 50 sampled runs (card measurement 2026-10-15). Repo fix (route a): relay.py tick --gate (own last_gate_utc clock, never consumes the App housekeeping slot); dispatch_gate.py passes --hourly-min 60 --gate, runs the refiner status model-free and launches ONE headless session only on HOURLY refine=REFINE_NEEDED. After: 0 sessions per idle hour; housekeep (App-only archive_session tools, due 24 h) is the only hourly-routine work left -> ~1 session/day (~0.13M tokens, -96%). Tests: test_relay_tick gate-clock test + 2 new test_dispatch_gate tests fail on pre-change relay.py/dispatch_gate.py (unrecognized --gate; --hourly-min 1000000). COORDINATOR ACTION (not applied): scheduled task id mts-dispatcher (App routine), field cron: `7 * * * *` -> `7 3 * * *` (daily). Deploy of the repo change to the live tree is via MTS-AutoDeploy; apply the cron change after that. Until then the gate hourly clock and the App clock are independent, so nothing breaks either way.",
+  "scope_in": [
+    "scripts/sched/relay.py tick/gate path",
+    "MTS-DispatchGate script",
+    "a test that a NOOP tick launches nothing"
+  ],
+  "scope_out": [
+    "editing the mts-dispatcher App task or any Task Scheduler entry (hand the exact change to the coordinator)"
+  ],
+  "size": "S",
+  "sources": [
+    "research/observer_2026-10-15/OBSERVER_REPORT.md W4",
+    "scripts/sched/relay_prompts/relay_session.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Measure: input/output tokens of 3 NOOP dispatcher runs (their transcripts' usage) and the NOOP share of the last 48 h of runs; put both numbers in the result.",
+    "Pick the cheaper route with those numbers: (a) MTS-DispatchGate also does the hourly refine/housekeep step model-free and the App task is retired, or (b) the App task's first and only call is the T0 tick, and NOOP ends the session in one turn.",
+    "Implement the repo side of the chosen route and a test that fails today: a NOOP tick launches no session (or exactly one 1-turn reply).",
+    "Write the one exact scheduled-task change for the coordinator (task id, field, new value); do not apply it."
+  ],
+  "tests": "",
+  "title": "Dispatcher T0 pre-check: no Claude session when the queue is empty"
+}

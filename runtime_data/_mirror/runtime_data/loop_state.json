@@ -1,1 +1,0 @@
-{"ts_utc":"2026-10-11T20:09:06.0520653Z","action":"ok","reason":"ok wrapper=9408 sm=5264 java=5264 snapAge=55s scAge=60s grace=False","wrapper_pid":9408,"java_pid":5264,"supervisor_pid":11296,"snapshot_age_sec":55,"state_code_age_sec":60,"stale_strikes":0,"restart_count_24h":0}

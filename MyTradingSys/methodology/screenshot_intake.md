@@ -19,7 +19,7 @@
 | 3 | SET | automatic | charts of one symbol within 10 min form a set; a set with one timeframe is flagged SINGLE-TF | `shot.py sets` |
 | 4 | READ | the session, chart sets by Sonnet or better | extract must name every shot id and carry claim rows `\| id \| class \| claim \| evidence \|` (B159: each row is stored on the manifest `read` event; a malformed row is refused with its line number) | `shot.py read --extract` |
 | 5 | REPORT | the session | every MISMATCH is filed or explained in 20+ characters; NOT_IN_DATA becomes a feature hypothesis | file in BUGS.md / PLAN.md |
-| 6 | CLOSE | the session | outcome must exist in the repo (`finding:B156`, `feature:FEAT-11`) or be a stated `noaction:`/`note:` | `shot.py done` |
+| 6 | CLOSE | the session | outcome must exist in the repo (`finding:B156`, `finding:card:<task id>`, `feature:FEAT-11`) or be a stated `noaction:`/`note:` | `shot.py done` |
 | 7 | MEASURE | STATUS.md, every build | `SHOTS ...` line; overdue count; claims MATCH/MISMATCH/NOT_IN_DATA; items filed | `shot.py status` |
 
 ## 1 LAND - how a session knows it was saved
@@ -52,6 +52,7 @@ The operator's TradingView charts are one question seen at several timeframes. `
 (chart_read_protocol layers 3-4: the same level on another panel, and on a higher timeframe). One timeframe only = the read is context, not a read.
 
 ## 4 READ - the procedure that already worked
+Checklist (operator 2026-10-17): every read answers every line of `operator_chart_checklist.md` (present / absent / panel missing). A thing discussed on one chart is looked for on all charts.
 Copy `MyTradingSys/research/screenshots/TEMPLATE.md`. Carried context first (B157): a chart extract needs a `Prior:` line (the previous read's extract, or `Prior: none`) or `shot.py read` refuses it; `read` prints that read's Invalidation/Falsify lines, each scored HELD / BROKEN / UNTESTED against the new chart.
 Per image: pre-read gate (VVP-002 F.1), then each claim on the chart gets one row classed:
 - MATCH: reproduced from files on disk (give file and numbers).
@@ -61,13 +62,20 @@ Rules learned from the first study: state the chart clock; compare CVD steps, ne
 no trade advice in an extract.
 Engine state at the shot (B160): `shot.py engine <id>` writes `research/screenshots/engine/<id>.json` (the engine's own snapshot rebuilt at the shot's minute from the 1m archive); a claim row about VWAP, VP, CVD or state cites that file instead of whatever snapshot is current. A read that names a setup also goes to `capture.py add --kind chart_read ... --image <shot id>` (invalidation required, six layers).
 
+### 4b PAIRED REVIEW (operator 2026-10-15: review runs side by side, different models, economical)
+Evidence: on set 7f3698134541 the serial Haiku review (run after the read) caught 5 WRONG + 1 UNSUPPORTED of 22 claims (`..._REVIEW.md`), which is worth keeping. Because it ran after the read, it added wall-clock, and it anchored on the draft.
+1. START TOGETHER: right after `classify` + `engine`, the reader (Sonnet) starts one Haiku subagent in the background (`run_in_background`). A spawned session cannot `start_session`, so a subagent is the route. That subagent is the BLIND reader. It gets the shot ids, image paths, `engine/<id>.json` and the 1m kline path, and never the reader's draft. It writes its own claim rows (`| id | class | claim | evidence |`) to `<set>_REVIEW.md` under `## Blind read`.
+2. RECONCILE: the reader diffs both claim lists. A claim only one side made, or any number that differs by more than the pixel error, is re-checked against raw data by the reader. Then the same subagent gets a second message to verify the reader's final rows. That message carries no new context, only the final extract. It records CONFIRMED / WRONG / UNSUPPORTED under `## Verdicts`.
+3. ONE SHIP: the extract and the REVIEW go in one `sync.py ship`. The verdict counts go on the commit's `Result:` line. A read counts as done only when `git cherry origin/fast-track <sha>` prints nothing. On 10-15 a read was reported "on fast-track" while its commit was local only.
+4. COST RULE: when 3 sets in a row get 0 WRONG, step 1 drops to a numbers-only check. When WRONG is above 15% for 3 sets, change the reading procedure (this file), not the reviewer.
+
 ## 5-6 REPORT AND CLOSE - the feedback loop
 | Claim class | Becomes | Owner group (PROJECT_MAP) |
 |---|---|---|
 | MISMATCH | a B-item (defect in data, engine or wiring) or an explained `noaction:` | the group that owns the field (DATA, CORE, LAYR) |
 | NOT_IN_DATA | a FEAT-hypothesis in the backtest plan (formula, causal at bar close, thresholds = analysis settings) | EVID |
 | MATCH | nothing; counted | none |
-`shot.py done --outcome finding:<id> | feature:<id> | noaction:<why> | note:<text>`. A chart cannot be closed unread; an id that is not in the repo is refused.
+`shot.py done --outcome finding:<id> | feature:<id> | noaction:<why> | note:<text>`. A chart cannot be closed unread; an id that is not in the repo is refused. A finding filed as a task card (`tasks.py new ... --layer <family>`) closes with `finding:card:<id>` and shows under its layer in `system/LAYERS.md`.
 
 ## 7 MEASURE
 `shot.py status` prints `SHOTS landed N: new, classified, read, done | overdue | claims | filed`; make_status.py puts it in STATUS.md, so every session reads it at boot.
@@ -75,7 +83,7 @@ Yield check: if 10 consecutive chart shots close with no finding and no feature,
 Recurring NOT_IN_DATA rows (operator drawings, net-delta series, footprint imbalance) are the standing list of what the data pipeline lacks.
 
 ## KNOWN LIMITS (open)
-- The hook only exists in checkouts that contain `.claude/settings.json`. Sessions opened in the live tree (every one of the 13 pastes so far had that as its working folder) get it only after the supervisor's deploy;
+- The hook only exists in checkouts that contain `.claude/settings.json`. Sessions opened in the live tree (every one of the 13 pastes so far had that as its working folder) get it only after MTS-AutoDeploy updates the live tree;
   until then run `python scripts/dev/shot.py ingest` yourself (idempotent, about 1 s).
 - A set is "within 10 minutes". Charts of one question pasted in two messages hours apart (the 2026-10-02 pair: 4h+1d at 18:23Z, two 15m at 20:17Z) are two sets; read them together by hand.
 - The SessionStart backlog reminder repeats at most every 6 hours, so a real backlog does not become wallpaper.

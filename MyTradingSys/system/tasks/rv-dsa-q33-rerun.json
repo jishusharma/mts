@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "class": "C1",
+  "commands": [
+    "python MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/Dumps/backtest/raw_1m_2022/klines <scratch-out-dir>"
+  ],
+  "created": "2026-10-12T17:50:00Z",
+  "depends_on": [],
+  "done_when": "RV_DSA_q33_rerun.md states row count (336?), status counts 186/89/61, survivors count, smallest q, or the exact fetch error.",
+  "from_inbox": "",
+  "goal": "Prompt MyTradingSys/system/revalidation/RV04_q33_matrix.md steps 1-2 only (fetch perp 1m klines if absent, run the runner to a scratch dir, diff counts). Chunk the fetch by year; output scratch files outside the repo.",
+  "id": "rv-dsa-q33-rerun",
+  "lane": "DSA-NUC",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "revalidation: 8 second-eyes prompts, 9 cards, 8 defects found (tidy deletes live sessions,",
+      "ref": "d0148cc63bc7",
+      "utc": "2026-10-12T17:20:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d0148cc63bc7 revalidation: 8 second-eyes prompts, 9 cards, 8 defects found (tidy deletes l",
+      "ref": "MyTradingSys/system/revalidation/RV04_q33_matrix.md",
+      "utc": "2026-10-12T17:20:07Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] PARKED: guidance matrix layer is parked (plan s3 Parked) and the 1m perp fetch is heavy. LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "gemini-nuc",
+  "refreshed": "2026-10-18T05:12:41Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/revalidation/RV04_q33_matrix.md",
+    "MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py"
+  ],
+  "scope_out": [
+    "editing code or ledgers",
+    "holdout reads",
+    "tidy --apply"
+  ],
+  "scope_sha": "d0148cc63bc7",
+  "size": "S",
+  "sources": [],
+  "state": "blocked",
+  "steps": [
+    "Run the commands in order, each inside the 300 s bridge cap.",
+    "Paste the output tail into the chat; if a command fails twice close the task --failed with the error text.",
+    "Write the numbers to the named file; change no code."
+  ],
+  "tests": "",
+  "title": "RV-DSA Q33 matrix re-run on JIS-NUC and diff against the committed cells (host=JIS-NUC)",
+  "weight": "IMPORTANT",
+  "updated": "2026-10-18T10:00:00Z"
+}

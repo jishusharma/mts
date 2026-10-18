@@ -2,6 +2,7 @@
 MyTradingSys/research/fast_track_2026-09-27/DSA_BROWSER_WORKER_PLAN.md
 (flow per task, ground rules, reply schema, lane isolation). No browser, no playwright.
 """
+import datetime as dt
 import io
 import json
 import shutil
@@ -448,6 +449,69 @@ class TestQueueTool(unittest.TestCase):
         line = [ln for ln in out.splitlines() if ln.startswith("DSA-WORKER")][0]
         self.assertIn("running", line)
         self.assertIn("900-dsa-hello", line)
+
+    # --- lane status: both lanes are dormant by design, so an absent or stale heartbeat is not an alarm
+    def beat(self, name, age_s, **kw):
+        t = queue_tool.utc_now() - dt.timedelta(seconds=age_s)
+        hb = {"host": "H", "state": "idle", "task": "", "utc": queue_tool.utc_stamp(t), "worker": "w"}
+        hb.update(kw)
+        (self.tmp / name).write_text(json.dumps(hb), encoding="utf-8")
+
+    def status_lines(self):
+        rc, out = self.run_tool("status")
+        self.assertEqual(rc, 0, out)
+        by = lambda prefix: [ln for ln in out.splitlines() if ln.startswith(prefix)]
+        return out, by("WORKER"), by("DSA-WORKER")
+
+    def test_status_without_heartbeats_says_the_lanes_are_retired_not_missing(self):
+        self.run_tool("pack", "--lane", "dsa", str(self.spec))
+        out, worker, dsa = self.status_lines()
+        self.assertEqual(len(worker), 1, out)
+        self.assertIn("retired 2026-10-01", worker[0])
+        self.assertIn("Qwen", worker[0])
+        self.assertEqual(len(dsa), 1, out)
+        self.assertIn("dormant", dsa[0])
+        self.assertIn("AIBridge", dsa[0])
+        self.assertIn("incoming_dsa 1; running 0", dsa[0])  # counts stay
+        for stale_wording in ("no heartbeat", "version 2", "not running", "WARNING"):
+            self.assertNotIn(stale_wording, out)
+        self.assertIn("QUEUE    waiting 0", out)
+
+    def test_status_with_old_heartbeats_is_dormant_and_names_the_last_beat(self):
+        self.beat("heartbeat.json", 7 * 86400, host="JIS-NUC")
+        self.beat("heartbeat_dsa.json", 3 * 86400, state="needs-human", worker="dsa-web")
+        out, worker, dsa = self.status_lines()
+        self.assertIn("retired 2026-10-01", worker[0])
+        self.assertIn("last heartbeat idle 168 h ago", worker[0])
+        self.assertIn("dormant", dsa[0])
+        self.assertIn("last heartbeat needs-human", dsa[0])
+        self.assertNotIn("WARNING", out)  # neither the NUC-off alarm nor the needs-human alarm: the lane is not supposed to run
+
+    def test_status_heartbeat_age_boundary_is_three_minutes(self):
+        self.beat("heartbeat.json", 150)
+        self.beat("heartbeat_dsa.json", 200)
+        out, worker, dsa = self.status_lines()
+        self.assertNotIn("retired", worker[0])
+        self.assertIn("idle", worker[0])
+        self.assertIn("dormant", dsa[0])
+
+    def test_status_fresh_heartbeats_print_the_live_lines(self):
+        self.beat("heartbeat.json", 5, state="running", task="777-x", host="JIS-NUC", worker="abc")
+        self.beat("heartbeat_dsa.json", 5, state="needs-human", note="challenge or login page; clear it by hand")
+        out, worker, dsa = self.status_lines()
+        self.assertIn("running task 777-x", worker[0])
+        self.assertIn("host JIS-NUC", worker[0])
+        self.assertNotIn("retired", worker[0])
+        self.assertIn("needs-human", dsa[0])
+        self.assertNotIn("dormant", dsa[0])
+        self.assertIn("WARNING  DSA worker needs the operator", out)
+
+    def test_status_unreadable_heartbeat_is_still_reported(self):
+        (self.tmp / "heartbeat.json").write_text("{not json", encoding="utf-8")
+        (self.tmp / "heartbeat_dsa.json").write_text("{not json", encoding="utf-8")
+        out, worker, dsa = self.status_lines()
+        self.assertIn("heartbeat unreadable", worker[0])
+        self.assertIn("heartbeat unreadable", dsa[0])
 
     def test_verify_accepts_dsa_reply_end_to_end(self):
         self.run_tool("pack", "--lane", "dsa", str(self.spec))

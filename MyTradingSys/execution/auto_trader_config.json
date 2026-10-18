@@ -100,6 +100,34 @@
   "layer:cryptocred:fib_pullback:1h": {
    "size_usd": 800,
    "max_loss_usd": 16
+  },
+  "layer:rsi_divergence:": {
+   "size_usd": 20,
+   "max_loss_usd": 2
+  },
+  "layer:session_levels:": {
+   "size_usd": 20,
+   "max_loss_usd": 2
+  },
+  "layer:bb_top_reversal:": {
+   "size_usd": 20,
+   "max_loss_usd": 2
+  },
+  "layer:candle_close:": {
+   "size_usd": 20,
+   "max_loss_usd": 2
+  },
+  "layer:levels:": {
+   "size_usd": 20,
+   "max_loss_usd": 2
+  },
+  "layer:wlow_bounce:": {
+   "size_usd": 20,
+   "max_loss_usd": 2
+  },
+  "layer:cryptocred:failed_msb:": {
+   "size_usd": 200,
+   "max_loss_usd": 4
   }
  },
  "trade_blocklist": [],
@@ -111,5 +139,116 @@
   "layer:fabio:escalation:": "FABIO_L1_REPORT (backtest/layers/fabio/FABIO_L1_REPORT.md): no edge; alerts kept for data collection",
   "layer:rsi:rsi_events:15m": "BACKTEST_L1_REPORT (backtest/layers/BACKTEST_L1_REPORT.md): PBO 0.79-0.91, overfit; alerts kept for data collection"
  },
+ "pre_pipeline_sources": {
+  "layer:cryptocred:": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:cryptocred:fib_pullback:15m": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:cryptocred:fib_pullback:1h": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:cryptocred:sr_flip:15m": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:cryptocred:sr_flip:1h": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:fabio:": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:fabio:cvd_absorption:15m": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:fabio:cvd_absorption:1h": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:fabio:escalation:": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:fabio:volume_fvg:": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:positioning:": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:rsi:malkan_": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:rsi:malkan_bear:": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:rsi:malkan_bull:": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:rsi:rsi_events:15m": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:rsi:rsi_events:1h": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:rsi:rsi_events:5m": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:session:": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:turn_of_candle:": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "tom": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  },
+  "layer:rsi_divergence:": {
+   "reason": "grandfathered testnet calibration, operator 2026-10-16 all-layers direction; not an edge claim",
+   "review_by": "2026-10-23"
+  },
+  "layer:session_levels:": {
+   "reason": "grandfathered testnet calibration, operator 2026-10-16 all-layers direction; not an edge claim",
+   "review_by": "2026-10-23"
+  },
+  "layer:bb_top_reversal:": {
+   "reason": "grandfathered testnet calibration, operator 2026-10-16 all-layers direction; not an edge claim",
+   "review_by": "2026-10-23"
+  },
+  "layer:candle_close:": {
+   "reason": "grandfathered testnet calibration, operator 2026-10-16 all-layers direction; not an edge claim",
+   "review_by": "2026-10-23"
+  },
+  "layer:levels:": {
+   "reason": "grandfathered testnet calibration, operator 2026-10-16 all-layers direction; not an edge claim",
+   "review_by": "2026-10-23"
+  },
+  "layer:wlow_bounce:": {
+   "reason": "grandfathered testnet calibration, operator 2026-10-16 all-layers direction; not an edge claim",
+   "review_by": "2026-10-23"
+  },
+  "layer:cryptocred:failed_msb:": {
+   "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
+   "review_by": "2026-10-23"
+  }
+ },
+ "_pre_pipeline_note": "Fable H1 2026-10-16: default-deny promotion gate. Sources not in promoted_setups.json trade only if listed here (prefix match). Derived from size_overrides + accounts (minus the catch-all layer:) + tom; unchanged for those; catch-all-only sources (no override, no own account) are now collection-only. List is the operator's to prune; review_by is not enforced (expiry would silently halt trading).",
  "_accounts_note": "2026-10-08: one account per layer group so one-position-per-account never blocks another layer; Tom stays on the main (default) slot; jishu_22 spare. A missing secret file falls back to the main slot (logged as <label>_account_missing)."
 }

@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-13T21:37:49Z",
+  "commands": [],
+  "created": "2026-10-13T17:31:44Z",
+  "depends_on": [],
+  "done_when": "charts/ has 80 PNGs + index.csv (blind ids) + _key.csv; tests green; candidate count per anchor printed in the card result.",
+  "from_inbox": "",
+  "goal": "Build research/tom_btc_2026-10-13/chart_lab.py: find oversized legs from a session start (00:00 UTC, 07:00 UTC, US cash open DST-aware) into a high/low beyond the prior day's value area, in DEV 2024-12..2025-03, and draw each at its decision bar. Every number is OURS and printed on the chart.",
+  "id": "tom-btc-chart-lab",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "ROUTED 2026-10-13 (operator: GPT + DSA do the work, Claude economy): GPT lab on JIS-NUC builds chart_lab.py next to the F: footprint bars.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
+  "refs": [],
+  "result": "105 candidates (00:00=35, 07:00=30, US_CASH=40); 80 charts; 1 test passed; MyTradingSys/research/layer_lab/reports/2026-10-13_tom-btc-chart-lab.md",
+  "scope_in": [
+    "MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py",
+    "MyTradingSys/research/tom_btc_2026-10-13/test_chart_lab.py",
+    "MyTradingSys/backtest/layers/fabio/orderflow_bars.py (parse_fp, read only)",
+    "F:\\MTS\\data\\orderflow_1m (JIS-NUC, read only)"
+  ],
+  "scope_out": [
+    "any bar after the decision bar on a chart",
+    "VALIDATION and HOLDOUT dates",
+    "live tree",
+    "trading rules or backtests"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
+  ],
+  "state": "done",
+  "steps": [
+    "Leg = extreme since anchor within 4 h; candidate when its size ranks above the median of the prior 20 same-anchor legs AND the extreme is beyond prior-day VAH/VAL (OURS).",
+    "Decision bar = 3rd 1m bar without a new extreme. Draw 5m candles anchor-2h..decision, session profile, delta per 5m bar, footprint text for the top 3 bars, prior-day VAH/VAL/POC.",
+    "Sample 60 candidates + 20 random same-window moments (seed 20261013) into charts/ with blind ids; keys in charts/_key.csv (not opened by readers)."
+  ],
+  "tests": "pytest test_chart_lab.py: synthetic day with a leg above the prior-20 median and above prior VAH -> one candidate at the 3rd stall bar; plotted data ends at the decision bar (no look-ahead). Fails before chart_lab.py exists.",
+  "title": "Tom on BTC T2: chart lab - 60 candidate + 20 random BTC charts (5m candles, session profile, delta, footprint at the top), DEV only, no outcome shown"
+}

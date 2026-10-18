@@ -537,7 +537,14 @@ public class MarketDataSnapshot {
     // post_funding_vp only.
     private ObjectNode buildVp(List<JsonNode> bars, boolean includeHvnsLvns, double fixedBinSize) {
         ObjectNode node = mapper.createObjectNode();
-        if (bars.isEmpty()) {
+        // Fail closed: a non-finite OHLCV value (NaN/Inf) gives the empty profile, never a guessed level.
+        boolean finite = true;
+        for (JsonNode bar : bars) {
+            for (int k = 2; k <= 5; k++) {
+                if (!Double.isFinite(bar.get(k).asDouble())) finite = false;
+            }
+        }
+        if (bars.isEmpty() || !finite) {
             node.put("poc", 0.0);
             node.put("vah", 0.0);
             node.put("val", 0.0);
@@ -623,8 +630,11 @@ public class MarketDataSnapshot {
             else if (lower > 0) { lower--; accVol += profile.get(prices.get(lower)); }
             else break;
         }
-        double vah = prices.get(upper);
+        // FORMULAS 18.1 edge convention: map keys are bin lower edges; POC = bin centre, VAH = top edge of its
+        // bin, VAL = bottom edge of its bin.
+        double vah = prices.get(upper) + binSize;
         double val = prices.get(lower);
+        double pocPrice = poc + binSize / 2.0;
 
         // shape heuristic
         double maxVol = profile.get(poc), secondPeakVol = 0;
@@ -646,7 +656,7 @@ public class MarketDataSnapshot {
             shape = (ratio > 0.8 && ratio < 1.2) ? "D" : "P";
         }
 
-        node.put("poc", Math.round(poc*100.0)/100.0);
+        node.put("poc", Math.round(pocPrice*100.0)/100.0);
         node.put("vah", Math.round(vah*100.0)/100.0);
         node.put("val", Math.round(val*100.0)/100.0);
         node.put("shape", shape);
@@ -1296,7 +1306,7 @@ public class MarketDataSnapshot {
         // ── Liquidation clusters (historical fallback) ──
 
         // ── Setup Candidates ──
-        ArrayNode setupCandidates = SetupCandidatesBuilder.build(mapper, root, mtf, klines1m);
+        ArrayNode setupCandidates = SetupCandidatesBuilder.build(mapper, root, mtf, klines1m, fadeSeries1m(symbol, asOf));
         ArrayNode extraCandidates = ExtraSetupBuilder.build(mapper, root, mtf, klines1m);
         double clusterAbovePrice = liquidationClusters.get("nearest_above").get("price").asDouble();
         double clusterBelowPrice = liquidationClusters.get("nearest_below").get("price").asDouble();
@@ -1347,6 +1357,27 @@ public class MarketDataSnapshot {
         for (Future<?> f : futures) { try { f.get(30, TimeUnit.SECONDS); } catch (Exception ignored) {} }
         pool.shutdownNow();
         return result;
+    }
+
+    /** Calendar days of 1m bars handed to the family A fade call: 20 prior sessions plus today with holiday margin. */
+    static final int FADE_SERIES_DAYS = 40;
+
+    /**
+     * Longer 1m series for SpikeFadeDetector (card tom-v2-recall-fire-rate): a snapshot's mtf 1m is 24 h, the detector
+     * needs 21 sessions. Only with -Dmts.spikeFade=true; null (flag off or no data) = the detector sees the 24 h series
+     * and fails closed. Used by this as-of path only; the live path is unchanged and research replays only reach it.
+     */
+    private JsonNode fadeSeries1m(String symbol, Instant asOf) {
+        if (!SpikeFadeDetector.enabled()) return null;
+        try {
+            long end = asOf.toEpochMilli();
+            JsonNode k = hist().klinesRange(symbol, "1m", end - FADE_SERIES_DAYS * 86_400_000L, end, FADE_SERIES_DAYS * 1440);
+            dropFormingBar(k, end);
+            return k;
+        } catch (IOException ex) {
+            System.err.println("[FADE] long 1m series failed: " + ex.getMessage());
+            return null;
+        }
     }
 
     private long getDurationMillis(String tf) {

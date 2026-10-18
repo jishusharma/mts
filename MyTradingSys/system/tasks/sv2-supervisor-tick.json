@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T19:30:00Z",
+  "depends_on": [],
+  "done_when": "supervisor.py tick --json prints all fields in under 20 s on JIS-NUC and its tests pass in the ship gate",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Cut the 482 status/verify/read/pacing turns (29% of coordinator turns, 9.7 M eq, SUPERVISOR.md table) to 1-2 calls per wake.",
+  "id": "sv2-supervisor-tick",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "kurisko: declare module files in wiring registry",
+      "ref": "c5ecc7d5df8c",
+      "utc": "2026-10-18T06:51:18Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: gpt-6-astra 2026-10-18 - cross-vendor read-only review of the SUPERVISOR.md design this card implements (12 findings, folded or rejected with reasons there): ACCEPT.",
+  "pinned": false,
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "supervisor-design (Opus, operator-named)",
+  "refreshed": "2026-10-18T18:46:54Z",
+  "refs": [
+    "MyTradingSys/system/SUPERVISOR.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/supervisor.py (new)",
+    "scripts/dev/test_supervisor.py (new)",
+    "MyTradingSys/system/wiring_registry.json"
+  ],
+  "scope_out": [
+    "live tree, processes, deploys, HALT files",
+    "ROUTING.md (Pipeliner owns it)",
+    "unrelated cleanups"
+  ],
+  "scope_sha": "c5ecc7d5df8c",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/SUPERVISOR.md (design 2026-10-18)"
+  ],
+  "state": "ready",
+  "steps": [
+    "git fetch, then one JSON: tasks.py dispatch top 8, desk.py sweep counts, ci_watch state, gate slots busy (sync.gate_slot dir), per --shas: is-ancestor of origin/fast-track and of origin/green/fast-track, codex/gemini ready depth, ~/.claude/mts-budget.json age",
+    "every sub-read fails closed: an error sets that field to {error: ...}, never to a success value",
+    "tests with fixtures for each field, register the test (run_all_tests or run_extra_tests.EXTRA)"
+  ],
+  "tests": "fixtures: sha not on trunk -> false; failing sub-command -> error field; CI red -> ci.red true; fails on pre-change code (file absent)",
+  "title": "Supervisor SV2: supervisor.py tick --json, one call per wake",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

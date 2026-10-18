@@ -30,6 +30,7 @@ TS_FMT = "%Y%m%dT%H%M%SZ"
 # (plan s9: verify their runtime and exit-code mapping before putting them on a 15-minute clock).
 CHECKS = [
     ("snapshot_age", [PY, "scripts/sched/check_snapshot_age.py"], "event"),
+    ("live_health", [PY, "scripts/sched/check_live_health.py"], "event"),  # stale recorder file / dropped process
     ("canary", [PY, "scripts/dev/testnet_canary.py"], "event"),
     ("autogo", [PY, "scripts/sched/autogo.py", "--tick"], "event"),
     ("sessions", [PY, "scripts/sched/check_sessions.py"], "digest"),

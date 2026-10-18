@@ -59,7 +59,7 @@ Playlists: tab not retrievable. Channel description (via sponsorradar): "Welcome
 - https://www.youtube.com/watch?v=fTTlpHRODfc "Master Your Options is **LIVE** (42 Modules Of Option MASTERY)" (channel Krown): course promo, date unverified. Not teaching.
 
 ### 1d. Verbatim numeric rules (all from CBP transcript; video dNlcBehUW9o, 2026-09-29; https://www.youtube.com/watch?v=dNlcBehUW9o)
-Locator = character offset in body of C:\Users\E-ngineers\IdeaProjects\CryptoScrapper\cbp_v2\inbox\Krown_dNlcBehUW9o.txt (21,917 chars; file has no timestamps). Every quote machine-matched.
+Locator = character offset in body of F:\CryptoScrapper\cbp_v2\inbox\Krown_dNlcBehUW9o.txt (21,917 chars; file has no timestamps). Every quote machine-matched.
 | # | Quote (<=15 words, verbatim incl. fillers) | Offset |
 |---|---|---|
 | Q1 | "one of our corrective setups on the 6-hour time frame" | 3098 |
@@ -142,7 +142,7 @@ Common to all: Deribit data per OPTIONS_PLAN (fees per leg, bid/ask, settlement)
 Prior ranking by external evidence: S2/S3/S4/S5 (short-vol, T2) > S1 (T3 signal) > S7 control > S8/S9. Our backtest overrides this.
 
 ## 6. Transcript tooling (what exists; NOT run, no cookies/secrets read)
-- C:\Users\E-ngineers\IdeaProjects\CryptoScrapper\cbp_v2\fetch_latest.ps1 -Only Krown [-PerAnalyst K -ScanDepth N]: yt-dlp.exe + cookies_utube_1.txt,
+- F:\CryptoScrapper\cbp_v2\fetch_latest.ps1 -Only Krown [-PerAnalyst K -ScanDepth N]: yt-dlp.exe + cookies_utube_1.txt,
   lists the newest N uploads (`--flat-playlist --print "%(id)s|%(title)s"`), downloads English subs only (`--skip-download --write-subs --write-auto-subs
   --sub-langs en-orig,en --sub-format vtt`), flattens to cbp_v2\inbox\Krown_<id>.txt (single line, timestamps dropped, header has publish_date and the title AT FETCH TIME).
 - Limits: only the newest ScanDepth uploads (default 12), so older/third-party videos (-9rAJNUpMsk, EQy4HouRMMk on Cointelegraph's channel) need a per-ID run of the same

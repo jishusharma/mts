@@ -1,0 +1,16 @@
+{
+  "card": "rv-dsa-test-sweep",
+  "done_when": "MyTradingSys/research/revalidation/RV_DSA_test_sweep.md lists passed/failed per file, and any failure verbatim.",
+  "finished": "2026-10-18T15:58:22Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NUC",
+  "id": "20261012-173924-rv-dsa-test-sweep",
+  "need": "python -m pytest -q scripts/dev/test_sync.py; python -m pytest -q scripts/dev/test_shot.py scripts/dev/test_tasks.py; python -m pytest -q MyTradingSys/tests/test_relay.py; python -m pytest -q MyTradingSys/backtest/test_tom_dax_bt.py (full brief: python scripts/dev/tasks.py brief rv-dsa-test-sweep)",
+  "posted": "2026-10-12T17:39:24Z",
+  "result": "Result: RV_DSA_test_sweep.md - test_sync 63 passed; test_shot+test_tasks 101 passed (365 subtests); test_relay 46 passed; test_tom_dax_bt 90 passed (132 subtests); 0 failures. Card named 7 files but listed 5 commands; ran the 5.",
+  "status": "done",
+  "taken": "2026-10-18T15:58:03Z",
+  "taken_by": "JIS-NUC",
+  "target": "DSA-NUC",
+  "title": "RV-DSA test sweep: run the 7 revalidation test files and report counts (host=JIS-NUC)"
+}

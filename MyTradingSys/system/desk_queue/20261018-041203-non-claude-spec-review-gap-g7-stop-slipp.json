@@ -1,0 +1,13 @@
+{
+  "done_when": "card gap-g7-stop-slippage note carries a line starting REVIEW-SPEC: ACCEPT, FIX or REWORK, shipped",
+  "finished": "2026-10-18T16:17:21Z",
+  "from": "JIS-NB",
+  "host": "JIS-NUC",
+  "id": "20261018-041203-non-claude-spec-review-gap-g7-stop-slipp",
+  "need": "Read MyTradingSys/system/tasks/gap-g7-stop-slippage.json (goal, steps, tests, done_when, note), MyTradingSys/research/lab_guy/specs/gap-g7-stop-slippage.md and MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md section 5 G7 (lines 158-162). Review the SPEC only (run no data, no code) against the error list E1-E7 in MyTradingSys/system/roles/lab_guy.md. Answer: (1) does the delta 0/250/1000 ms trade-through proxy measure stop-market slippage, or is it about 0 by construction; (2) are 12-24 DEV days x round-100 USD levels enough, are the extension and THIN rules sound; (3) any other E1-E7 defect. Reply in at most 10 lines, last line: REVIEW-SPEC: ACCEPT | FIX <what> | REWORK <what>. Append that line to the card note field in the JSON and ship.",
+  "posted": "2026-10-18T04:12:03Z",
+  "result": "Pipeliner drain 2026-10-18: done: af261250 card gap-g7-stop-slippage note carries REVIEWED: gemini-4-argon-low 2026-10-18 ACCEPT (cross-vendor Lab_Guy GEM-NUC)",
+  "status": "done",
+  "target": "DSA-NUC",
+  "title": "Non-Claude spec review: gap-g7-stop-slippage (C2)"
+}

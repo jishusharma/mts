@@ -1,0 +1,4 @@
+grid_context.csv
+_scratch/
+*.npz
+__pycache__/

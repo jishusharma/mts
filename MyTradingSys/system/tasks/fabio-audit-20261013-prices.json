@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T21:37:56Z",
+  "commands": [],
+  "created": "2026-10-13T05:09:07Z",
+  "depends_on": [],
+  "done_when": "CSV+MD carry F8 avg 25034.53, F9 stop 25019.44 preview, F10 avg 25040.00, F12 avg 25105.78 stop 25089.75, F12-m2 25108.50/25098.75/25148.75, F13 25108.90, F13-m1 25108.05, F13 +2 LMT 25104.75 = buy; test_ledger_audit TestH1 passes",
+  "from_inbox": "",
+  "goal": "Correct the H1 frame reads in the Fabio ledger (F8, F9, F10, F12, F12-m2, F13, F13-m1) to the audit values and fix the F13 +2 order side (buy add, not sell partial). Data correction, not a new study.",
+  "id": "fabio-audit-20261013-prices",
+  "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "worker-sonnet",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md"
+  ],
+  "result": "H1 corrected in CSV+MD per audit full-res reads (F8 25034.53, F9 stop 25019.44, F10 25040.00, F12 25105.78/25089.75, F12-m2 25108.50/25098.75/25148.75, F13 25108.90/25108.05, F13 +2 buy add); UNRESOLVED: F12-m2 -2050 label ties to 25098.25 not 25098.75; F12/F13 cash labels not reconciled",
+  "scope_in": [
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+    "MyTradingSys/research/fabio_transfer/test_ledger_audit.py",
+    "scripts/dev/run_extra_tests.py"
+  ],
+  "scope_out": [
+    "any code, backtest, study or holdout read",
+    "new web or video downloads",
+    "numbers not traceable to the audit report or the cited frames/captions"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md H1 row (frames w3_01 t1325, w4_01 t1450, w4_02 t1575, w8_00 t3100, w8_01 t3150, w9_01)"
+  ],
+  "state": "done",
+  "steps": [
+    "read report H1 row and per-row table (CSV lines 33-50)",
+    "edit CSV cells with the csv module (keep ids and the first t= in each note)",
+    "replace the stale numbers in the MD paragraphs, append an H1 section with formula checks (25021.75+2040/160=25034.50)",
+    "record the F12 -2050 label vs 25098.75 stop mismatch as UNRESOLVED",
+    "add H1 tests, register in run_extra_tests.py, ship"
+  ],
+  "tests": "test_ledger_audit.py::TestH1 fails first: old CSV has ~25032.5, ~25010.4, ~25040.5, ~25085.75 and a sell LMT for F13",
+  "title": "H1: Correct Fabio F8-F13 frame prices and buy-add order sides"
+}

@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T22:10:57Z",
+  "commands": [
+    "grep -n L-mkt-1012-0945 C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/MyTradingSys/execution/auto_trades.jsonl  (live tree, read-only, never write there)",
+    "grep -l order_rejected C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/MyTradingSys/execution/journal/*.jsonl  (live tree, read-only)",
+    "python scripts/dev/run_staged_tests.py MyTradingSys/execution MyTradingSys/execution/testnet/offline -- test_fix3_offline",
+    "python scripts/dev/run_all_tests.py --quick",
+    "python scripts/dev/tasks.py done exec-halt-entry-10031 --result \"cause + test + decision id\""
+  ],
+  "created": "2026-10-12T13:15:47Z",
+  "depends_on": [],
+  "done_when": "Cause named with file:line evidence or stated UNPROVABLE; executor journals request params on order_rejected (test fails on old code, passes on new); Jis decided the policy for flat-verified entry rejects; the HALT clear is done by the operator or on his explicit go, never by the builder.",
+  "from_inbox": "",
+  "goal": "Find why plan L-mkt-1012-0945 (jishu_1, BTC-PERPETUAL, market entry, amount 20) got Deribit 10031 invalid_args_for_instrument at 2026-10-12T09:46:00Z, and decide the halt policy for an entry reject on a flat-verified account.",
+  "id": "exec-halt-entry-10031",
+  "kind": "audit",
+  "lane": "JIS-NB",
+  "layers": [
+    "live_engine"
+  ],
+  "live_path": true,
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "claude JIS-NB 2026-10-14 (docs+cards pass)",
+  "refs": [],
+  "result": "Closed with evidence, no code change: root cause unprovable (likely transient exchange reject); 10031 keeps halting fail-closed; test_executor_reject_diag pins it",
+  "scope_in": [
+    "MyTradingSys/execution/executor.py (entry order_rejected journal call at line 413; target rejects at 508 and 515) and journal.py",
+    "one offline test in MyTradingSys/execution/testnet/offline (next to test_fix3_offline.py), gated in scripts/dev/run_all_tests.py step 1",
+    "evidence, read-only (live tree, gitignored): MyTradingSys/execution/auto_trades.jsonl line 4068, execution/plans/L-mkt-1012-0945.json, execution/journal/L-mkt-1012-0945.jsonl"
+  ],
+  "scope_out": [
+    "creating, editing or clearing HALT, HALT_DAILY_LOSS or AUTO_PAUSE files: the operator clears HALT, or the supervisor on his explicit go",
+    "restarting any process, opening trades, editing a file the running stack imports in place (stage .new; the supervisor deploys)",
+    "the daily_loss_monitor blind halt of 2026-10-12 14:44:49Z: separate card blind-monitor-halt-recovery"
+  ],
+  "size": "M",
+  "sources": [
+    "journal/L-mkt-1012-0945.jsonl: intent 09:45:59Z, order_rejected 09:46:00Z error 10031 invalid_args_for_instrument, mismatch_halt; no request params recorded (executor.py:413 writes label + error only)",
+    "auto_trades.jsonl line 4068: entry_failed, HALTED: flattened + halted, account jishu_1; executor.fail_closed confirmed flat",
+    "Same shape filled on jishu_1: L-mkt-1012-0915 (BUY 20, 09:15:29Z) and S-mkt-1012-0930 (SELL 20, 09:30:55Z); the only order_rejected in the plan journals (1 of 758 plan journals, read 2026-10-14)"
+  ],
+  "state": "done",
+  "steps": [
+    "Compare the rejected request with the two fills of the same shape (L-mkt-1012-0915 at 09:15:29Z, S-mkt-1012-0930 at 09:30:55Z): intent journal, mark price, instrument state at 09:46:00Z, Deribit meaning of 10031. Name the cause with file:line or write UNPROVABLE.",
+    "Request-param journaling on order_rejected is built on branch jis-nb/fix-exec-reject-diag (commit 26b0956c, test red-first; reaches the live tree only through the supervisor deploy). Check it is on origin/fast-track; if the cause step needs more fields, add them the same way.",
+    "Post one Control Room decision for Jis (CONTROL_ROOM.md): does a rejected entry on a flat-verified account halt the whole stack or only skip that fire? Give the evidence and your recommendation; do not act before the answer.",
+    "Record the cause, the test result and the decision in the card result; tell the operator the HALT stays until he clears it or says go. If Jis changes the policy, open a follow-up card with tasks.py new carrying the fail-closed, restart-state and API-error tests the live-path rule asks for."
+  ],
+  "tests": "MyTradingSys/execution/testnet/offline/test_fix3_offline.py: new test, entry DeribitError 10031 journals request params (fails on current executor.py, which writes label + error only); live-path rule: also a flat-verified reject leaves state unchanged.",
+  "title": "HALT since 2026-10-12 09:46Z: entry_market rejected 10031 invalid_args_for_instrument (plan L-mkt-1012-0945, jishu_1) fail-closed the stack; 9 layer fires skipped 12:01-13:00Z incl. shorts in the sell-off"
+}

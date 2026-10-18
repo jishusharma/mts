@@ -1,0 +1,33 @@
+{
+  "observed_utc": "2026-10-14T14:26:00.399943+00:00",
+  "source_root": "F:\\MTS\\mts-candle-research\\MyTradingSys\\research\\layer_lab\\candle_close_corrected_2026-10-14",
+  "hashes": {
+    "engine.py": "4fd0baec3b462aea4991e8ae57966102e1cd1edc1da7e3e78a1591b656e0d9ec",
+    "rules.py": "8818d4a0835bfbe4645091dfbdf38c7d82406c06c1eedf8809beeb64b2bdde55",
+    "verify.py": "5d3336a03bd835d8ba6ad7f5b21292ad842e05087cdbf99183c0769b3f7d833f",
+    "PRE_REG.md": "10fa96f36cc96b6ce75f91abb4393f9f245a0f06cbcfdbdd8ddaa063aa9b8d11",
+    "FROZEN.json": "556de9853318de74040f94b08e1647969531be46d672dbae5f5793970378cfc5",
+    "results.json": "d5fcc955a13c831b1bb8b3d5f1496207c6df21c8f2409f4205b21c53f7fbaa53"
+  },
+  "stable_during_snapshot": true,
+  "engine_rules_match_frozen": true,
+  "metadata": {
+    "bars": 1313280,
+    "ledger_rows": 79174,
+    "matched_pairs": 112606,
+    "registered_cells": 2016,
+    "inference_family": 6048,
+    "candidates": 0
+  },
+  "cells_zero_matched": 1074,
+  "cells_under100_matched": 1810,
+  "current_verification_present": false,
+  "research_gate_independent_invocation": "13 tests executed, no skips, PASS; synthetic/focused gate, not full historical reconstruction",
+  "midnight_example": {
+    "open": "2024-01-01 23:59 UTC",
+    "close": "2024-01-02 00:00 UTC",
+    "code_group_day": "2024-01-02",
+    "spec_open_day": "2024-01-01"
+  },
+  "thread_observation": "active/inProgress, output and frozen receipt advanced during audit"
+}

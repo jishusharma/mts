@@ -7,7 +7,7 @@ Path = bars of the fire's own TF; a stop and a target in the same bar -> stop fi
 R = 1 ATR(14, Wilder, own TF) at the fire bar unless the policy is a percent stop.
 Costs: taker both legs 5 bp + 1 bp slippage per leg = 12 bp of price round trip (fees.py DERIBIT_TAKER 0.0005; slippage is an
 assumption, printed). Funding is not modelled (holds <= 96 bars).
-Splits: TRAIN 2022-01..2024-12, VALIDATE 2025-01..2025-06. HOLDOUT (2025-07..) is NOT read. Every (key x policy) cell is a registered
+Splits (repo split, aligned 2026-10-17): TRAIN 2022-01..2024-06, VALIDATE 2024-07..2025-06. HOLDOUT (2025-07..) is NOT read. Every (key x policy) cell is a registered
 trial and is printed. Analysis settings, not live parameters; a positive cell is a candidate for D, not a rule.
 Usage: python MyTradingSys/backtest/bigtrade/exit_policies.py   -> research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md"""
 import csv
@@ -28,8 +28,12 @@ OUT = ROOT / "MyTradingSys" / "research" / "bigtrade_2026-10-09" / "EXIT_POLICIE
 FEE_RT = 0.0010          # 2 x 5 bp taker
 SLIP_RT = 0.0002         # 2 x 1 bp assumed
 COST = FEE_RT + SLIP_RT
-TRAIN_END = dt.datetime(2025, 1, 1, tzinfo=dt.timezone.utc).timestamp() * 1000
+TRAIN_END = dt.datetime(2024, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000
 VALID_END = dt.datetime(2025, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000
+DEV_ONLY = os.environ.get("EXIT_POLICIES_DEV_ONLY") == "1"   # rerun 2026-10-17: DEV (TRAIN) only, VALIDATE column not read
+if DEV_ONLY:
+    VALID_END = TRAIN_END
+    OUT = OUT.with_name("EXIT_POLICIES_RERUN_DEV_2026-10-17.md")
 
 # name -> dict(kind, stop (ATR or fraction of price), target (ATR/fraction or None), hold (bars), pct (bool))
 POLICIES = {

@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/shot.py ingest --inbox <scratch>"
+  ],
+  "created": "2026-10-13T05:55:06Z",
+  "depends_on": [],
+  "done_when": "manifest.jsonl gains exactly 2 rows (second ingest adds 0) and `git ls-remote origin shots-inbox/*` prints nothing.",
+  "est_turns": 10,
+  "from_inbox": "",
+  "goal": "The git 2.24 store-path bug is already fixed (1d5d2ca2c). Remaining: land the 2 CoinGlass PNGs from origin/shots-inbox/2026-10-12-1532 into the screenshot store and delete that branch.",
+  "id": "shot-py-store-path-nuc",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "ref": "6357d0548e5b",
+      "utc": "2026-10-13T19:05:04Z",
+      "line": "RV07 layer tooling revalidation; shot.py MISMATCH + whole-token guards",
+      "auto": true
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none (no code, no lab). DECISION (OURS): ingest into whichever machine's store runs it; the PNGs stay out of git.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C0 weight=ROUTINE); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
+  "pinned": false,
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "gemini-nuc",
+  "refreshed": "2026-10-18T10:02:34Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/shot.py",
+    "scripts/dev/test_shot.py"
+  ],
+  "scope_out": [
+    "editing shot.py (fix is shipped)",
+    "committing PNGs or runtime_data to git (repo is public)",
+    "other branches"
+  ],
+  "scope_sha": "6357d0548e5b",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "In a scratch dir: `git archive origin/shots-inbox/2026-10-12-1532 | tar -x -C <scratch>` (two PNGs: BTCUSDT_15m_coinglass_2026-10-12_1530Z.png and BTCUSDT_30m_coinglass_2026-10-12_1525Z.png).",
+    "Run `python scripts/dev/shot.py ingest --inbox <scratch>` from a worktree; count manifest.jsonl rows before and after.",
+    "Run it a second time: 0 new rows (sha256 de-dup). Then `git push origin --delete shots-inbox/2026-10-12-1532` (plain delete, no force)."
+  ],
+  "tests": "Existing: python -m pytest scripts/dev/test_shot.py -q passes (git 2.24 case at line 451); no new code.",
+  "title": "shot.py ingest fails on JIS-NUC (git-common-dir flag echoed into the store path); then land the 2 CoinGlass PNGs from branch shots-inbox/2026-10-12-1532 and delete that branch",
+  "updated": "2026-10-18T10:00:00Z",
+  "weight": "ROUTINE",
+  "worker": "agent",
+  "class": "C0"
+}

@@ -1,0 +1,7 @@
+cell,side,h,n,mean_G,se,net,t_net,diff_vs_ctrl,t_diff,verdict
+"AU: touch bar closes above its mid, LONG at its close, h=120",1,120,194,0.01958,0.08243,-0.12042,-1.461,0.00337,0.041,INCONCLUSIVE
+"AD: touch bar closes below its mid, SHORT at its close, h=120",-1,120,282,0.03218,0.03972,-0.10782,-2.714,0.07090,1.562,FAIL
+AU h=60,1,60,194,0.01209,0.05984,-0.12791,-2.137,0.00872,0.144,secondary
+AD h=60,-1,60,282,-0.00983,0.02659,-0.14983,-5.636,0.02153,0.712,secondary
+AU h=240,1,240,194,-0.01120,0.10942,-0.15120,-1.382,-0.03190,-0.294,secondary
+AD h=240,-1,240,282,0.02434,0.06442,-0.11566,-1.795,0.06765,0.952,secondary

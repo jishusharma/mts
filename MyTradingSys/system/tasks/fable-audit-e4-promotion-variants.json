@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T20:00:28Z",
+  "commands": [],
+  "created": "2026-10-15T22:50:49Z",
+  "depends_on": [],
+  "done_when": "the 3 new tests fail on the pre-change promote.py and pass after; test_good_manifest_passes still passes; Result line names the adjusted z for variants=40",
+  "from_inbox": "",
+  "goal": "promote.check G4 uses a 95% CI; with N variants in the trial ledger the CI is too narrow. Widen it with Holm (z = NormalDist().inv_cdf(1-0.025/variants)), require the validation read ref to be non-empty, and make the trade floor MDE-based. Defaults (OURS): se=(ci_high-ci_low)/3.92; floor n >= max(30, 4*((z+0.84)*sd/net_r)^2) with sd=se*sqrt(n).",
+  "id": "fable-audit-e4-promotion-variants",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md"
+  ],
+  "result": "promote.check G4 now Holm-adjusts CI low (z=3.227 for variants=40, 1.96 for 1), validation_reads ref must be an existing repo file, trade floor = max(30, 4*((z+0.84)*sd/net_r)^2); 3 new tests fail on old code, 64 promotion tests pass",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/promotion/promote.py",
+    "MyTradingSys/backtest/layers/promotion/test_promote.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/execution/",
+    "live runner and config files"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md line 178 (E4); OURS parameters: 0.84 power z, 4x safety factor"
+  ],
+  "state": "done",
+  "steps": [
+    "read promote.py G4/G5 and test_promote.py fixtures",
+    "write the 3 tests first and watch them fail on current code",
+    "implement Holm-adjusted ci_low, validation_reads ref check, MDE floor (keep MIN_TRADES=30 as the minimum)",
+    "python scripts/dev/run_all_tests.py --quick, ship"
+  ],
+  "tests": "test_promote.py: (a) variants=40 manifest with ci_low 0.02 REJECTs (passes today), (b) empty validation_reads ref REJECTs, (c) n_trades 31 with a wide CI REJECTs; the existing good-manifest test still PASSes",
+  "title": "Promotion gate: OOS CI adjusted for the trial-ledger variant count (Holm), OOS must be a logged VALIDATION read, MIN_TRADES from MDE"
+}

@@ -1,0 +1,27 @@
+{
+ "seed": 20261016,
+ "rows": [
+  {
+   "key": "rsi_divergence|rsi_divergence|1h",
+   "n_bars": 1600,
+   "cuts": 50,
+   "late": 0,
+   "repaint": 0,
+   "nan_diff": 0,
+   "x10_diff": 0,
+   "nan_err": 0,
+   "x10_err": 0,
+   "trunc_err": 0,
+   "max_lag": 0,
+   "n_events_full": 76,
+   "notes": "",
+   "lag_hist": {
+    "0": 2
+   },
+   "declared_lag": 0,
+   "secs": 4.2,
+   "verdict": "PASS"
+  }
+ ],
+ "detail": {}
+}

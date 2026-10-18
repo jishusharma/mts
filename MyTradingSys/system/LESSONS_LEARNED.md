@@ -74,7 +74,7 @@ top of the relevant section. Keep each entry to 3 lines.
 - 2026-10-09: a first placebo draw sampled lags with replacement from 9 values, so 4 of 20 runs were near-duplicates. RULE: placebo/permutation shifts are drawn without replacement and the lags are printed in the result.
 - 2026-09-30: Tom's stop floor 0.1%/0.2% fallback, 2-3.5R target window, 25% friction haircut and the TWOPEAK label were
   engineering choices with no Tom source; they cut his real trades (tight stops, 8R winners). RULE: parameters come only from
-  the trader's own words (CLAUDE.md Provenance); unsourced ones are flagged NO-SOURCE, never tuned. (CLAUDE.md hard rules)
+  the trader's own words (CLAUDE.md Provenance); unsourced ones are flagged NO-SOURCE, never tuned. (Replaced 2026-10-13 by the CLAUDE.md Numbers rule: SOURCED or OURS labels.)
 - Non-Tom systems (MalkanView RSI, CryptoCred, FlowHorse, probability, session frame) are separate
   layers per PROJECT_VISION, extracted and backtested on their own, never as filters on Tom.
   RULE: read PROJECT_VISION "INTEGRATIONS TRACKED" before framing any indicator work.
@@ -458,9 +458,9 @@ Receipt: commit 7a1749c.
 
 What happened: DSA composed a TF4 prompt at roughly 60 lines. CLAUDE.md says "Prompt <= 30 lines." DSA had quoted that line two turns earlier, then composed over it. Caught during the operator challenge pass, corrected to 28 lines before the prompt shipped.
 
-Rule: the 30-line cap is read from CLAUDE.md at compose time, not from memory. Count the prompt lines before printing. If a prompt carries inherited hard rules or restated state, that is a defect: CLAUDE.md already has them.
+Rule: the 30-line cap is read from RELAY.md "Task list standard" at compose time, not from memory. Count the prompt lines before printing. If a prompt carries inherited hard rules or restated state, that is a defect: CLAUDE.md and STATUS.md already have them.
 
-Where the rule lives: CLAUDE.md "What a CL prompt carries"; DSA_SESSION_PROMPT.md section 9.
+Where the rule lives: RELAY.md "Task list standard" (block <= 30 lines, enforced by `relay.py lint`). (CLAUDE.md "What a CL prompt carries" was folded into these on 2026-10-15.)
 
 Receipt: operator 2026-10-03.
 
@@ -582,3 +582,9 @@ Cost: the other session's edits are in my commit; working tree unchanged, nothin
 What happened: Tom/Fabio backtests on BTC were run and tuned while the encoding did not fire on the trader's own ledger trades, levels were not checked against drawn levels, and the source's home market/timeframe was not the tested one (BACKTEST_FAILURES_RESEARCH.md classes C1, C2, C8).
 Rule that prevents it: no layer backtest starts until the 12-item readiness template (encoding fidelity: recall AND fire rate on a held-back check set; extraction from frames: ledger with minute timestamps; market/timeframe transfer: home-fit and cost per instrument) is answered with file:line evidence.
 Where the rule lives: MyTradingSys/backtest/PRE_REG_TEMPLATE.md; test_pre_reg_template.py; PROJECT_VISION DIRECTION UPDATE.
+
+## 2026-10-15 observer: red gate without an owner, colliding gate runs, an unshipped "shipped"
+- The card aibridge-live-selftest-flaky was filed 2026-10-14 (d140cbaa). For about 13 h no session owned it, while live-read, gpt-cards and malkan-extract each lost 11-minute ship runs to it.
+- At 13:47Z three `run_all_tests.py --quick` runs from different sessions ran at once on JIS-NB. The failing selftest reads a shared task directory, and a different sub-check failed each time.
+- live-read reported afaf3dae "on fast-track". The coordinator relayed that to the operator. In fact `git cherry origin/fast-track afaf3dae` printed "+".
+RULE: two sessions report the same red gate test, so the coordinator starts a Sonnet fixer within the hour. At most 2 `sync.py ship` / `run_all_tests.py` runs per machine at once. A "shipped" claim quotes an empty `git cherry origin/fast-track <sha>`.

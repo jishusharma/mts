@@ -1,82 +1,72 @@
 # Development Status
 
-Generated: 2026-10-12 11:51:30
+Generated: 2026-10-18 01:47:26
 
 ## Git Status
-**Branch:** jis-nuc/codex-layer-lab (the host that generated this file; yours may differ)
+CI green: 51bcc4a0 (2026-10-18 01:30:56 +0530, 0.3 h old), 4 trunk landing(s) / 22 commit(s) behind origin/fast-track: CI running
+LESSONS: digest in sync
 
-CI green: 8d76d93 (2026-10-12 11:44:47 +0530), 1 commit(s) behind origin/fast-track: CI running
-LESSONS: digest STALE (synced de2de3a7, now ad79e76d): read the new LESSONS_LEARNED.md entries (git diff), add their rule lines to LESSONS_DIGEST.md, update the blob
-
-**Last 10 commits:**
+## Gate Board
 ```
-1fa1f0e claim codex-lab-status-for-operator-and-status
-8d76d93 Merge remote-tracking branch 'origin/fast-track' into jis-nuc/codex-layer-lab
-5f522b2 Merge remote-tracking branch 'origin/fast-track' into jisnb/nb-idle
-493a110 lab: build cards run their own tests, the runner's ship is the gate
-51adb23 declutter: archive superseded proof_direction_cases.py.new
-d315317 lab lab-dax-proof-parity: DONE after session check (build)
-b75bf76 release lab-dax-proof-parity
-5069e7c Merge remote-tracking branch 'origin/fast-track' into jis-nuc/codex-lab
-938205d Merge remote-tracking branch 'origin/fast-track' into jisnb/dsa
-2efe15c TWO_HOST: record JIS-NB idle-tick short-circuit and verified crons
+tom     G2  proof changed 22h ago | next: G3 blind marks (READER_PROTOCOL.md + g3_marks_2026-10-16) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
+fabio   G2  proof changed 22h ago | next: G1 coverage check, then G3 | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
+malkan  G2  proof changed 47h ago | next: G3 blind marks MAL-2/5, MAL-16/17 (g3_marks_2026-10-16) | proof: MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md
+krown   G1  proof changed 75h ago | next: G2 (krown-g2: KROWN_SETUP_CATALOG.md) | proof: MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv
+commits 24h: 408 = research 23% | claim/release 44% | other 33%  OVER 30% CAP
 ```
 
-## Queue Status
+**Last 3 commits on origin/fast-track:**
 ```
-WORKER   no heartbeat yet (worker version 2 has not reached this queue)
-QUEUE    waiting 0; running 0; replies 0; not yet verified 0
-DSA-WORKER no heartbeat (not running); incoming_dsa 0; running 0
+50ff8032 release session-planner-add-weight-field-routine
+469910bc Merge remote-tracking branch 'origin/fast-track' into JIS-NB/weight-field
+8250ad9f tandem plan: three logins (Pro, AWGP resets 10-19, Max resets 10-21); pace by 5-hour window and ready work, not the weekly pool
 ```
 
 ## In-Flight .new Files
-- MyTradingSys\backtest\layers\fabio\htf_context_live.py.new (10.5h)
-- MyTradingSys\backtest\layers\fabio\test_htf_context_live.py.new (10.5h)
+- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (173.9h)
+- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (173.9h)
 
-## Recent Reports (last 7 days)
-- MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md (2026-10-11 21:39) # BIGMOVES REPORT (big-move ground truth, backtest A)
-- MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md (2026-10-11 21:39) # FIRES_B1_REPORT - fire history of the kline-only live layers (worker B1, 2026-10-09)
-- MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md (2026-10-11 02:13) # DAX_BT_REPORT: untuned Tom core on DAX vs matched-proof BTC (card tom-dax-backtest)
-- MyTradingSys/research/screenshot_context_2026-10-10/REPORT.md (2026-10-10 02:22) # T092 REPORT - what context does a single screenshot read get? (2026-10-10, Opus, JIS-NUC)
-- MyTradingSys/research/rsi_divergence_mtf_2026-10-09/REPORT_T088.md (2026-10-09 21:25) # T089 RSI divergence on every timeframe (+ T091 operator long-range column)
-- MyTradingSys/research/rsi_divergence_mtf_2026-10-09/REPORT.md (2026-10-09 21:06) # T089 RSI divergence on every timeframe (+ T091 operator long-range column)
-- MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md (2026-10-09 09:09) # EXIT POLICIES REPORT (backtest C), 2026-10-09
-- MyTradingSys/research/volume_2026-10-09/VOLUME_RESEARCH_REPORT_2026-10-09.md (2026-10-09 07:01) # BTC volume research: buy volume, sell volume, exhaustion, patterns, time (2026-10-09)
+## Recent Reports (newest 5, last 3 days)
+- MyTradingSys/research/layer_lab/turn_of_candle_event_table/REPORT.md (2026-10-17 19:19) # Turn-of-candle (T055 C3) 1m event table
+- MyTradingSys/research/layer_lab/fabio_lvn_touch_event_table/REPORT.md (2026-10-17 19:18) # Fabio LVN touch event table (DEV, 1h)
+- MyTradingSys/research/mts_doctor/REPORT_2026-10-17.md (2026-10-17 18:13) # MTS doctor report 2026-10-17
+- MyTradingSys/research/layer_lab/cc_msb_event_table/REPORT.md (2026-10-17 17:59) # CryptoCred market-structure break (MSB) - DEV event table (1h)
+- MyTradingSys/research/layer_lab/fabio_escalation_event_table/REPORT.md (2026-10-17 17:58) # Fabio escalation/absorption 1h event table
 
 ## Screenshots
 ```
-SHOTS landed 0: new 0, classified 0, read 0, done 0 | overdue(>24h) 0 | claims MATCH 0 MISMATCH 0 NOT_IN_DATA 0 | filed 0
+SHOTS landed 96: new 1, classified 21, read 1, done 73 | overdue(>24h) 15 | claims MATCH 762 MISMATCH 125 NOT_IN_DATA 198 | filed 15
+  OVERDUE dfabf169cdc9 new        -                                    | 
+  OVERDUE 19f84e6aa598 classified app                                  | Claude app: Mts dispatcher session (Haiku 5.5) showing TICK NOOP; operator asks why idle dispatcher keeps running every 10 min
+  OVERDUE 11760405153e classified chart     BTCUSDT 1m   2026-10-15T14:13:00Z | Operator asks where a short with confluence/divergence would be: price spiked ~81,38x (upper BB) then slipped back under 81,146.6 top; OI 93.26K flat after drop, RSI 69 off 77, StochRSI crossing down
+  OVERDUE 1fdb4681c81e classified chart     BTCUSDT 1m   2026-10-15T14:15:00Z | Positioning panels after the 14:10 squeeze: Net Shorts collapsed ~1.3K->529, Net Longs(New) falling 1K->175, agg CVD rolling over -4.02K, OI flat 93.21K, price 81,025 under 81,146.6
+  OVERDUE 34a949f8dc68 classified chart     BTCUSDT 1m   2026-10-15T14:22:00Z | Operator marks 1m bearish RSI divergence: price equal/higher high ~81,3xx (14:10 vs 14:18) while RSI lower high 77->~68; CVD lower high, low volume retest; price back on 81,146.6
+  OVERDUE bfa91af3c34c classified other                                | Windows java.exe 0xc0000142 Application Error dialog; operator asked to investigate
+  OVERDUE ab7581a78683 classified other                                | Chrome performance settings page, Memory Saver already on Maximum; operator confirming it was already set
+  OVERDUE 9a9c9984cef2 classified other                                | Chrome Task Manager Browser tab: browser processes ~363MB total small; operator checking Chrome memory
+  OVERDUE 531f784f2aee classified other                                | Chrome Task Manager Tabs & extensions: Deribit tab 918MB, Subaccounts 480MB, Gmail 377MB, CoinGlass tabs ~200-310MB each; operator checking Chrome memory
+  OVERDUE 11a99a48fa09 classified app                                  | Task Manager: Defender 32% CPU, Claude 25%, PowerShell(7) 12.5%; operator says Defender spikes when Claude starts/stops
 ```
 
 ## Layer Lab (Codex)
 ```
-Layer lab (Codex) at 2026-10-12 06:21Z: on
-  Codex allowance (plus): 5-hour window 5% used (resets 10-12 10:47Z); week 12% used (resets 10-18 13:41Z)
-  Last check by the scheduler: 2026-10-12T06:02Z RAN lab-dax-proof-parity SHIP_FAILED model=gpt-6.1-sol effort=medium 452s report=MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-proof-parity.md note=sync: offline gate (--quick) failed; nothing pushed | release failed: sync: offline gate (--quick) failed; nothing pushed
-  Queue: 5 ready
-    lab-dax-closed-executions [build, gpt-6.1-sol / medium]
-    lab-dax-net-fee-verdict [build, gpt-6.1-sol / medium]
-    lab-dax-trial-identity [build, gpt-6.1-sol / medium]
-    lab-audit-fabio-ledger-frames [audit, gpt-6-astra / high]
-    lab-audit-tom-ledger-frames [audit, gpt-6-astra / high]
-  Delivered (latest 5; all in MyTradingSys/research/layer_lab/INDEX.md):
-    2026-10-12 lab-dax-proof-parity: H1 fixed: volume_spike no longer counted (Java B144), stale rows and snapshots refused, proof ceiling printed as 1; 33 harness tests pass, quick gate green outside the sandbox. reports/2026-10-12_lab-dax-proof-parity.md
-    2026-10-11 lab-audit-tom-dax-bt: FIX-FIRST: 8 HIGH + 6 MED in the DAX backtest harness (stale proof count, dev trades exiting on holdout bars, fills on closed-market bars, fee gate bypassed); 8 follow-up cards lab-dax-*; report layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md. Claude spot-check: H1 and H5 MATCH the code. Closed by Claude: Codex left it open only because video frames are not on the NUC.
-  Last runs:
-    2026-10-11 20:06Z lab-audit-tom-dax-bt INCOMPLETE (gpt-6-astra / high, 23k tokens, 38s)
-    2026-10-11 20:12Z lab-audit-tom-dax-bt BLOCKED (gpt-6-astra / high, 199k tokens, 512s)
-    2026-10-12 05:47Z lab-dax-proof-parity SHIP_FAILED (gpt-6.1-sol / medium, 94k tokens, 452s)
-  NEEDS A LOOK: nothing
-```
-
-## Daily Hygiene (scheduled)
-```
-(no hygiene run on this host yet: python scripts/dev/daily_hygiene.py, or register_cicd_tasks.ps1)
+Layer lab (Codex) at 2026-10-17 20:17Z: on
+  This machine does not run the lab (it runs on JIS-NUC): the queue below is from the repo; allowance, runs and what needs a look are only known there.
+  Queue: 9 ready
+    dsa-audit-08-split-trials [audit, gpt-6-luna / medium]
+    lc-ladder-dev [build, gpt-6-luna / medium]
+    lab-data-pin-hash [build, gpt-6-luna / medium]
+    lab-weight-enforce [build, gpt-6-luna / medium]
+    lab-crossvendor-stage [build, gpt-6-luna / medium]
+    lab-formula-spec-text [build, gpt-6-luna / medium]
+    lab-holdout-access-control [build, gpt-6-luna / medium]
+    lab-machine-checks-extra [build, gpt-6-luna / medium]
+    lab-trust-tag [build, gpt-6-luna / medium]
 ```
 
 ## Project Groups
 ```
-GROUPS DATA open 5 (HIGH 0) closed 29 | SRC open 4 (HIGH 0) closed 9 | CORE open 4 (HIGH 0) closed 30 | LAYR open 10 (HIGH 2) closed 5 | EVID open 13 (HIGH 2) closed 4 | EXEC open 7 (HIGH 3) closed 10 | VIS open 1 (HIGH 0) closed 1 | DESK open 2 (HIGH 1) closed 9 | OPS open 16 (HIGH 4) closed 24 | INFRA open 7 (HIGH 3) closed 12
+GROUPS DATA open 5 (HIGH 0) closed 29 | SRC open 4 (HIGH 0) closed 9 | CORE open 4 (HIGH 0) closed 30 | LAYR open 8 (HIGH 1) closed 7 | EVID open 14 (HIGH 2) closed 4 | EXEC open 7 (HIGH 3) closed 10 | VIS open 1 (HIGH 0) closed 1 | DESK open 2 (HIGH 1) closed 9 | OPS open 18 (HIGH 6) closed 25 | INFRA open 7 (HIGH 3) closed 12
 ```
 
 ## Open Findings

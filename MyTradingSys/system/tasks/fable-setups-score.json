@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T19:46:48Z",
+  "depends_on": [],
+  "done_when": "SCORE.md shipped; survivor PRE_REGs frozen or none",
+  "est_turns": "40",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Code angle 6 shortlist, ledger rows first, prereg_gate count-only, score BLIND DEV vs stated p(win) band and net R and placebo; PRE_REG survivors for one VALIDATION read.",
+  "id": "fable-setups-score",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Waits on fable-run4-setup-angles.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/fable_run_4_brief.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fable_setups_2026-10-19/"
+  ],
+  "scope_out": [
+    "VALIDATION and HOLDOUT reads (except the scored survivor PRE_REG)",
+    "live tree",
+    "code outside the study folder"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/fable_run_4_brief.md"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "Each setup function on a 3-bar fixture gives the hand-computed trigger; ledger rows exist before any score file.",
+  "title": "Score the Fable run 4 shortlist on BLIND DEV (2023-07..2024-06) against predefined bands",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

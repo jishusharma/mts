@@ -130,8 +130,8 @@ details.mini>summary{cursor:pointer;color:var(--muted,#6b7280);font-size:.82rem}
 </section>
 
 <section id="layer-sec">
-  <div class="sechead"><h2>Layer Board</h2><span class="muted" style="font-size:.85rem">Every layer being worked on: where it stands and what happens next. Layout waits for your approval.</span></div>
-  <div class="panel tw"><table id="layers"><thead><tr><th>Layer</th><th>Stage</th><th>Indicators</th><th>Setups</th><th>Open rows</th><th>Next</th></tr></thead><tbody></tbody></table></div>
+  <div class="sechead"><h2>Layer Board</h2><span class="muted" style="font-size:.85rem">Where every layer stands and what happens next lives on one page.</span></div>
+  <div class="panel"><a href="https://claude.ai/artifact/7eeXJJ9Sb44LaJeCu8jxfJ" target="_blank" rel="noopener">Open the MTS Layers page</a></div>
 </section>
 
 <section id="dec-sec">
@@ -139,11 +139,31 @@ details.mini>summary{cursor:pointer;color:var(--muted,#6b7280);font-size:.82rem}
   <div class="dgrid" id="decisions"><div class="empty">Decisions load from the shared store. Claude adds a decision here whenever work is blocked on your call; your answer is read at the next supervisor wake.</div></div>
 </section>
 
+<details class="fold" id="sess-sec" open>
+  <summary><h2>Sessions: what each one did</h2><span class="muted" style="font-size:.85rem" id="sessline"></span></summary>
+  <div class="goal muted" id="sessnote" style="margin-bottom:8px"></div>
+  <h3 style="margin:12px 0 6px">Shipped results (newest first)</h3>
+  <div class="items" id="sessship"></div>
+  <h3 style="margin:12px 0 6px">Sessions (claim to release)</h3>
+  <div class="panel tw"><table id="sessunits"><thead><tr><th>Opened</th><th>Machine</th><th>Task</th><th>Claim held</th><th>State</th></tr></thead><tbody></tbody></table></div>
+</details>
+
 <section id="bl-sec">
   <div class="sechead"><h2>Backlog</h2><span class="dstate" id="blstatus"></span></div>
   <div class="goal muted" id="blline" style="margin-bottom:8px"></div>
   <div class="items" id="bllist"></div>
 </section>
+
+<details class="fold" id="relay-sec" open>
+  <summary><h2>Claude-GPT cycle</h2><span class="muted" style="font-size:.85rem" id="relayline"></span></summary>
+  <div id="gptlane"></div>
+  <div class="dgrid" id="relaylanes"></div>
+  <h3 style="margin:12px 0 6px">Shared notes (relayed to both sides)</h3>
+  <div class="items" id="relaynotes"></div>
+  <h3 style="margin:12px 0 6px">Running now and recent</h3>
+  <div class="items" id="relayflow"></div>
+  <div class="muted" style="font-size:.8rem;margin-top:8px">Add a note: send an Inbox item of kind "Note for the relay"; the pickup copies it word for word into system/RELAY_NOTES.md, which Claude sessions and every GPT pack read.</div>
+</details>
 
 <section id="inbox-sec">
   <div class="sechead"><h2>Inbox</h2><span class="dstate" id="fbstatus"></span></div>
@@ -162,6 +182,11 @@ details.mini>summary{cursor:pointer;color:var(--muted,#6b7280);font-size:.82rem}
   <div class="filters" id="fbfilters"></div>
   <div class="items" id="fblist"></div>
 </section>
+
+<details class="fold" id="pages-sec" open>
+  <summary><h2>Pages</h2><span class="muted" style="font-size:.85rem">Every page we keep, one link each</span></summary>
+  <div class="panel tw"><table id="pages"><thead><tr><th>Page</th><th>Refreshed</th><th>Last published</th></tr></thead><tbody></tbody></table></div>
+</details>
 
 <details class="fold" id="evid-sec">
   <summary><h2>Evidence so far</h2><span class="muted" style="font-size:.85rem">What the backtests and research say about an edge</span></summary>
@@ -233,7 +258,8 @@ function renderRoad(){
 }
 const sevRank = s => ({HIGH:0,MED:1,LOW:2,INFO:3,COSMETIC:4}[s] ?? 5);
 renderRoad();
-$("#layers tbody").innerHTML = (D.layers||[]).map(x => `<tr><td><b>${esc(x.name)}</b></td><td>${esc(x.stage)}</td><td>${esc(x.indicators)}</td><td>${esc(x.setups)}</td><td>${x.open_rows}${x.worst?" ("+esc(x.worst)+")":""}${x.open_ids.length?`<div class="muted" style="font-size:.78rem">${esc(x.open_ids.join(", "))}</div>`:""}</td><td>${esc(x.next)}<div class="muted" style="font-size:.78rem">${esc(x.src)}</div></td></tr>`).join("") || `<tr><td colspan="6" class="muted">No layer in active work is recorded.</td></tr>`;
+
+$("#pages tbody").innerHTML = (D.pages||[]).map(x => `<tr><td><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title)}</b></a></td><td class="muted">${esc(x.refresh)}</td><td class="muted">${esc(x.pub)}</td></tr>`).join("") || `<tr><td colspan="3" class="muted">No pages recorded.</td></tr>`;
 
 $("#evidence tbody").innerHTML = D.evidence.map(e => `<tr><td><strong>${esc(e.test)}</strong></td><td>${esc(e.result)}</td><td><span class="pill v-${e.verdict}">${esc(e.verdict)}</span></td><td class="muted" style="font-size:.8rem">${esc(e.src)}</td></tr>`).join("");
 
@@ -299,6 +325,46 @@ function drawBacklog(){
 }
 drawBacklog();
 
+/* ---------- Claude-GPT cycle: view of system/RELAY_NOTES.md, task lanes, claims, relay runs, Codex lab reports */
+(function(){
+  const R = D.relay; if(!R){ $("#relay-sec").style.display="none"; return; }
+  const L = R.lanes || {}, nm = {claude:"Claude (Sonnet/Opus cards)", gpt:"GPT / Codex (lane CODEX)", desk:"Run lanes (DSA, JIS-NB)"};
+  $("#relayline").textContent = `${(R.notes_open||[]).length} open notes · ${(R.claims||[]).length} claimed tasks · ${(L.gpt||{ready:0}).ready} ready for GPT · GPT lane ${(R.gpt_lane||{}).status||"?"}`;
+  const G = R.gpt_lane || {status:"unknown", rerouted:[], paused:[]}, down = G.status === "down";
+  $("#gptlane").innerHTML = `<div class="dc" style="margin-bottom:10px;border-left:4px solid ${down?"#c0392b":G.status==="up"?"#2e7d32":"#999"}"><div class="t"><strong>GPT lane: ${esc(String(G.status).toUpperCase())}</strong>${down?` · ${esc(G.reason)} since ${esc((G.since||"").slice(0,16).replace("T"," "))}Z`:""}</div>`
+    + (G.detail ? `<div class="src">${esc(G.detail)}</div>` : "")
+    + (down && G.next_probe ? `<div class="src">Next probe (one card tries GPT again): ${esc(G.next_probe.slice(0,16).replace("T"," "))}Z</div>` : "")
+    + `<div class="src">${G.heartbeat_age_h!=null ? "Lab heartbeat " + G.heartbeat_age_h + " h ago" : "No heartbeat yet"}${!down && G.resumed ? " · back up since " + esc(G.resumed.slice(0,16).replace("T"," ")) + "Z" : ""}</div>`
+    + (G.rerouted||[]).map(m => `<div class="src">Moved to ${esc(m.to)}: ${esc(m.id)}${m.desk?` (desk row ${esc(m.desk_status||"missing")})`:""}</div>`).join("")
+    + (G.paused||[]).map(p => `<div class="src"><strong>Paused, waits for GPT:</strong> ${esc(p.id)} · ${esc(p.why)}</div>`).join("") + `</div>`;
+  $("#relaylanes").innerHTML = ["claude","gpt","desk"].map(k => { const x = L[k] || {ready:0, other:0, next:[]};
+    return `<div class="dc"><div class="src">${esc(nm[k])}</div><div class="t"><strong>${x.ready}</strong> ready · ${x.other} in refinement or hold</div>` +
+      x.next.map(n => `<div class="src">${esc(n.id)}: ${esc(n.title)} (p${esc(n.prio)})</div>`).join("") + `</div>`; }).join("");
+  $("#relaynotes").innerHTML = (R.notes_open||[]).map(n => `<div class="it" style="grid-template-columns:auto 1fr"><span class="id">${esc(n.id)}</span><div class="t">${esc(n.text)}<div class="src">${esc(n.frm)} to ${esc(n.to)} · ${esc(n.at)}</div></div></div>`).join("")
+    + (R.notes_done||[]).map(n => `<div class="it" style="grid-template-columns:auto 1fr;opacity:.65"><span class="id">${esc(n.id)}</span><div class="t">${esc(n.text)}${n.reply?`<div class="src">Reply: ${esc(n.reply)}</div>`:""}<div class="src">done · ${esc(n.frm)} to ${esc(n.to)}</div></div></div>`).join("")
+    || `<div class="empty">No notes.</div>`;
+  const flow = (R.claims||[]).map(c => `<div class="it" style="grid-template-columns:1fr"><div class="t">Claimed: ${esc(c.task)}<div class="src">${esc(c.host)} · ${esc(c.account)}${c.age_h!=null?" · "+c.age_h+" h ago":""}${c.age_h>24?" · stale, ask then release":""}</div></div></div>`)
+    .concat((R.runs||[]).map(r => `<div class="it" style="grid-template-columns:1fr"><div class="t">Relay ${esc(r.state)}: ${esc(r.session)}<div class="src">${esc(r.host)} · ${esc(r.account)} · ${esc((r.utc||"").slice(0,16).replace("T"," "))}</div></div></div>`))
+    .concat((R.gpt_reports||[]).map(f => `<div class="it" style="grid-template-columns:1fr"><div class="t">Codex lab report: ${esc(f)}</div></div>`));
+  const U = R.gpt_usage || {}, A = U.allowance || {}, B = U.lab || {}, C = U.caps || {};
+  const fmtT = n => n == null ? "?" : n >= 1e6 ? (n/1e6).toFixed(1) + "M" : Math.round(n/1e3) + "k";
+  const usage = U.runs ? [`<div class="dc" style="margin-bottom:10px"><div class="t"><strong>Codex allowance</strong> · 5-hour window ${esc(A.window_used)}% used, week ${esc(A.week_used)}% used${A.plan?` (${esc(A.plan)})`:""}</div>`
+    + `<div class="src">Lab spend guard: ${esc(B.window_pts)}/${esc(C.window_pts)} pts and ${esc(B.window_runs)}/${esc(C.runs_per_window)} runs this window · astra ${esc(B.astra_runs)}/${esc(C.astra_runs_per_window)} · week ${esc(B.week_pts)}/${esc(C.week_pts)} pts · updated ${esc((U.at||"").slice(0,16).replace("T"," "))}Z on ${esc(U.host||"?")}</div></div>`]
+    .concat(U.runs.map(r => `<div class="it" style="grid-template-columns:1fr"><div class="t">${esc(r.card)} · ${esc(r.outcome)}<div class="src">${esc(r.model)} / ${esc(r.effort)}${r.asked?` (card asked ${esc(r.asked)})`:""} · ${fmtT(r.tokens_total)} tokens · window ${r.window_pts==null?"?":"+"+esc(r.window_pts)} pts · week ${r.week_pts==null?"?":"+"+esc(r.week_pts)} pts · ${esc(r.seconds)} s · ${esc((r.at||"").slice(0,16).replace("T"," "))}Z</div></div></div>`)) : [];
+  $("#relayflow").innerHTML = usage.concat(flow).join("") || `<div class="empty">Nothing running.</div>`;
+})();
+
+/* ---------- Sessions: trunk history grouped by claim..release (scripts/dev/session_log.py); no transcript is read */
+(function(){
+  const S = D.sessions; if(!S){ $("#sess-sec").style.display="none"; return; }
+  const t = S.stats || {};
+  $("#sessline").textContent = `last ${S.hours} h · ${t.sessions||0} sessions · ${t.open||0} open · ${t.empty||0} ended with nothing shipped`;
+  $("#sessnote").textContent = `${t.commits||0} commits on the shared branch, ${t.bookkeeping||0} of them bookkeeping (claims, releases, desk rows). `
+    + `${t.no_result||0} work commits carry no Result line. A session that ended with nothing shipped still paid its start-up cost.`;
+  $("#sessship").innerHTML = (S.shipped||[]).map(w => `<div class="it" style="grid-template-columns:auto 1fr"><span class="id">${esc(w.when)}</span><div class="t">${esc(w.subject)}<div class="src">${w.result?esc(w.result):"Result not stated"} · ${esc(w.h)}</div></div></div>`).join("") || `<div class="empty">Nothing shipped in this window.</div>`;
+  $("#sessunits tbody").innerHTML = (S.units||[]).map(u => `<tr><td>${esc(u.opened)}</td><td>${esc(u.host)}</td><td>${esc(u.slug)}</td><td>${u.minutes} min</td><td>${u.closed ? (u.empty ? "Ended, nothing shipped" : "Done") : "Open"}</td></tr>`).join("");
+})();
+
 /* ---------- decisions (db) */
 (async function(){
   const st = $("#decstatus");
@@ -361,7 +427,7 @@ drawBacklog();
   /* inbox: {text (verbatim, never trimmed), kind: question|task|requirement|page, created_at,
      status: new|answered|filed|in_progress|done|declined, reply, ref (registry id once filed)} */
   const fbBtn = $("#fbsend"), fbTxt = $("#fbtext"), fbMsg = $("#fbmsg");
-  const KINDS = [["question","Question"],["task","Task"],["requirement","Requirement"],["page","Change this page"]];
+  const KINDS = [["question","Question"],["task","Task"],["requirement","Requirement"],["page","Change this page"],["note","Note for the relay"]];
   let kind = "question";
   const drawKinds = () => { $("#fbkinds").innerHTML = KINDS.map(([k,l]) => `<button class="opt ${kind===k?"on":""}" role="radio" aria-checked="${kind===k}" data-k="${k}">${l}</button>`).join("");
     document.querySelectorAll("#fbkinds .opt").forEach(b => b.onclick = () => { kind = b.dataset.k; drawKinds(); }); };

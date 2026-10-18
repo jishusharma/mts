@@ -1,0 +1,8 @@
+setup turn_of_candle_1m
+setup sr_flip_15m
+setup rsi_events_5m
+done
+
+real	1m5.219s
+user	0m0.000s
+sys	0m0.046s

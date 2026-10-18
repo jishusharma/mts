@@ -1,0 +1,37 @@
+{
+ "_doc": "Layer x gate board (LAYER_REBUILD_PLAN_2026-10-15 s2, s5). The commit that moves a gate edits 'gate' and 'proof' here; make_status.py prints it into STATUS.md with the hours since each proof last changed on the trunk.",
+ "layers": [
+  {
+   "layer": "tom",
+   "gate": "G2",
+   "proof": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md"
+   ],
+   "next": "G3 blind marks (READER_PROTOCOL.md + g3_marks_2026-10-16)"
+  },
+  {
+   "layer": "fabio",
+   "gate": "G2",
+   "proof": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md"
+   ],
+   "next": "G1 coverage check, then G3"
+  },
+  {
+   "layer": "malkan",
+   "gate": "G2",
+   "proof": [
+    "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md"
+   ],
+   "next": "G3 blind marks MAL-2/5, MAL-16/17 (g3_marks_2026-10-16)"
+  },
+  {
+   "layer": "krown",
+   "gate": "G1",
+   "proof": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv"
+   ],
+   "next": "G2 (krown-g2: KROWN_SETUP_CATALOG.md)"
+  }
+ ]
+}

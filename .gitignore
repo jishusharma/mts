@@ -14,6 +14,7 @@ target/
 runtime_data/snapshots/*.json
 runtime_data/snapshots/historical/
 runtime_data/apparatus.lock
+runtime_data/snapshot.cp
 
 # --- Dumps (except boot-critical BUILD_REPORT.md) ---
 Dumps/*
@@ -45,6 +46,7 @@ runtime_data/speed_baselines/*.json
 Dumps/SESSION_PASTE.txt
 
 runtime_data/live_tape.md
+runtime_data/gate_timing.jsonl
 runtime_data/last_tape_alert.json
 runtime_data/mts-watch.log
 runtime_data/mts-watch.out.txt
@@ -146,3 +148,41 @@ runtime_data/control_room/
 
 # Offline builder scratch: rebuilt feed and isolated profile compiler
 /work/
+
+# MTS-Live-Health popup payload (scripts/sched/check_live_health.py --alert)
+runtime_data/live_health_alert.json
+
+# Desktop live-state mirror pulled by scripts/dev/live_mirror.py (sync.py start / brief), its lock and staging dirs.
+# Published through the share, never through git: tracked, every pull dirtied every work tree.
+runtime_data/_mirror/
+runtime_data/_mirror.*
+
+# Tool and runtime droppings that are neither source nor reviewed output
+.pytest_tmp/
+.codex/
+*.bak
+*.bak_*
+runtime_data/deploy_backup/
+runtime_data/*.log
+runtime_data/*.out.txt
+runtime_data/*.err.txt
+runtime_data/*.gz
+MyTradingSys/system/*.gz
+MyTradingSys/runtime/consensus_hook_state.json
+MyTradingSys/execution/pm_heartbeats/
+# Dated recorder output (file patterns, not directories: oi_live/ also holds the tracked oi_recorder.py)
+MyTradingSys/research/htf_context/*.jsonl
+MyTradingSys/research/htf_context/*_summary.json
+MyTradingSys/runtime/orderflow_live/*.csv
+MyTradingSys/runtime/orderflow_live/_qhist/*.json
+MyTradingSys/runtime/oi_live/*.csv
+
+# wlow-bounce forward sample (runtime readings, never committed)
+MyTradingSys/runtime/wlow_bounce_forward.jsonl
+MyTradingSys/research/imbalance_qriptal_2026-10-16/events_*.csv
+# stray empty file from a mistyped shell redirect (2026-10-17 overnight coordinator)
+/.py
+# secrets never enter this PUBLIC repo (CLAUDE.md hard rules; checked by scripts/dev/test_config_check.py, gate step 3js)
+.secrets/
+.env
+.env.*

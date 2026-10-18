@@ -1,0 +1,1096 @@
+# Video ID: 6aA-P4Gvhrc
+# Title: Why the Boring Part of the Chart Makes the Most Money (Range Trading)
+# Published: 2026-10-10
+# Source: yt_dlp captions (manual); uploader: Krown
+# Analyst: Krown
+# Duration_s: 1982
+# Word count: 6342
+# ---
+[00:00:00] things do get boring
+[00:00:01] but important things happen
+[00:00:03] during the boring times
+[00:00:05] the crowd leaves during the range
+[00:00:08] and chases the trend
+[00:00:10] you see this almost always
+[00:00:13] This is the part of the market that nobody
+[00:00:13] makes videos about.
+[00:00:15] The trend will end.
+[00:00:16] Your friend, that trend, it always ends,
+[00:00:16] in which case you can make a new friend
+[00:00:16] with a new trend,
+[00:00:20] but in that intermediary period where
+[00:00:20] there is one trend ending and a new trend
+[00:00:20] beginning,
+[00:00:26] price more or less kind of just stops.
+[00:00:27] It goes sideways in a rectangle or in a
+[00:00:27] box, if you will, gets super boring,
+[00:00:32] and inside that boring box is where most
+[00:00:32] beginners typically get chopped to pieces.
+[00:00:35] In fact, even more advanced people get
+[00:00:35] chopped to pieces too.
+[00:00:38] Accounts get massacred, basically.
+[00:00:40] People don't recognize that the previous
+[00:00:40] trend has ended,
+[00:00:42] in which case we need to no longer invoke
+[00:00:42] trend trading strategies.
+[00:00:47] So here is what I rarely see being spoken
+[00:00:47] about.
+[00:00:51] The box that emerges after one trend ends
+[00:00:51] is not the market sleeping.
+[00:00:56] It's the market actually loading or
+[00:00:56] preparing for the next major move.
+[00:00:59] Boredom is how new trends began
+[00:00:59] effectively,
+[00:01:02] and big moves are almost always born from
+[00:01:02] prolonged, boring sideways periods.
+[00:01:07] So let's get into our nice little
+[00:01:07] presentation for today,
+[00:01:11] in which case we shall go to our next
+[00:01:11] slide right here.
+[00:01:14] And I should let you know that if you're
+[00:01:14] finding this video just completely
+[00:01:14] randomly,
+[00:01:17] this is actually a part of a greater
+[00:01:17] playlist, TA Foundations.
+[00:01:20] We're going over all of the foundational
+[00:01:20] concepts when it comes to technical
+[00:01:20] analysis and trading.
+[00:01:24] This is episode number seven.
+[00:01:26] So we've gone over candles, timeframes,
+[00:01:26] trend lines, levels, volume, moving
+[00:01:26] averages.
+[00:01:31] And if you're not really solid on those
+[00:01:31] concepts,
+[00:01:33] I would suggest you check out those videos
+[00:01:33] because we're going to be building upon
+[00:01:36] that knowledge for this particular video.
+[00:01:38] And hey, you can just pause this video
+[00:01:38] right now.
+[00:01:40] I'll be waiting here whenever you're
+[00:01:40] ready.
+[00:01:43] But if you already have those concepts
+[00:01:43] quite solidly in place,
+[00:01:46] then hey, let's get into it right now.
+[00:01:49] So we'll go to the next slide right here,
+[00:01:51] and we'll talk about two zones, one
+[00:01:51] trapped market.
+[00:01:54] Two zones and one trapped, two girls and
+[00:01:54] one cup.
+[00:01:58] Anyways, a range is price trapped beneath
+[00:01:58] a floor and a ceiling.
+[00:02:03] Effectively, boundaries.
+[00:02:05] Buyers own the low, sellers own the high.
+[00:02:08] Until one side effectively runs out of
+[00:02:08] ammunition,
+[00:02:11] in which case price zooms on through,
+[00:02:11] creating that new trend.
+[00:02:14] So look at the anatomy here.
+[00:02:16] The floor is the support zone, while the
+[00:02:16] ceiling is the resistance zone.
+[00:02:20] And again, go back to the support and
+[00:02:20] resistance module,
+[00:02:24] which I believe was video number four,
+[00:02:26] as we go over that in details as to how to
+[00:02:26] define those things.
+[00:02:29] And we also go over a lot of examples that
+[00:02:29] you'll probably have to build off of here.
+[00:02:34] And you already know how to draw both of
+[00:02:34] these.
+[00:02:36] Wick to close, episode four, again, that's
+[00:02:36] where all that information was.
+[00:02:40] A range is simply just two zones with a
+[00:02:40] market stuck between them.
+[00:02:43] That's all that it is.
+[00:02:44] So if you watch video four, you're just
+[00:02:44] looking at two different zones, that's it.
+[00:02:48] Really, it is that simple.
+[00:02:50] Nothing really new to learn here.
+[00:02:53] It's two old tools that we're going to be
+[00:02:53] using in this video,
+[00:02:56] facing each other effectively and playing
+[00:02:56] off of each other more importantly.
+[00:02:59] So let's get into our next little slide
+[00:02:59] right here.
+[00:03:02] Okay, so the most expensive thing nobody
+[00:03:02] tells beginners,
+[00:03:05] or at least from what I see, it's very
+[00:03:05] rarely spoken about.
+[00:03:07] The market has two modes, and every tool
+[00:03:07] you own
+[00:03:10] belongs to usually at least one of them.
+[00:03:12] In trend mode, everything from this series
+[00:03:12] sings.
+[00:03:16] Lines hold, averages carry, breakouts
+[00:03:16] follow through.
+[00:03:19] But in range mode, which is what we're
+[00:03:19] talking about here,
+[00:03:21] those same tools will, they don't
+[00:03:21] necessarily lie to you.
+[00:03:24] They're just not efficacious.
+[00:03:26] They just don't work that well.
+[00:03:27] The averages tangle, of course.
+[00:03:29] as we went over in episode six,
+[00:03:31] movement averages are not the tools you
+[00:03:31] want to use
+[00:03:33] when the market starts to go sideways,
+[00:03:35] and the chop machine eats your stops.
+[00:03:37] That's what it's designed to do.
+[00:03:38] And again, that was in episode number two.
+[00:03:40] Every breakout fires and every breakout
+[00:03:40] fails.
+[00:03:44] We've seen this so often.
+[00:03:45] I'm sure if you've been in markets for
+[00:03:45] any,
+[00:03:46] even like a couple months,
+[00:03:47] you've seen this before on some level.
+[00:03:51] So same tool, same chart, same you,
+[00:03:53] only the mode changed.
+[00:03:55] Now let's get into, oh, there it is.
+[00:03:59] Yes, trend mode, everything works.
+[00:04:01] Range mode, trend tool is not going to
+[00:04:01] work so well anymore.
+[00:04:04] The tell, flat tangled averages plus
+[00:04:04] shrinking volume.
+[00:04:08] That's episode five and six pointing at
+[00:04:11] what we're going over today.
+[00:04:12] Again, if you're looking at moving
+[00:04:12] averages going flat,
+[00:04:14] volume tailing off,
+[00:04:15] that's a damn good signal you're entering
+[00:04:17] into a sideways boxy period, if you want
+[00:04:17] to call it that.
+[00:04:21] Anyways, let's move on from there
+[00:04:22] into why price gets stuck into these
+[00:04:22] ranges to begin with.
+[00:04:26] So why does that even happen?
+[00:04:27] Because after every big move,
+[00:04:28] the market catches its breath, of course.
+[00:04:30] Winners will take profit, losers regroup,
+[00:04:33] and new buyers argue with old sellers
+[00:04:36] about what the thing is worth now,
+[00:04:38] like whatever asset you're looking at.
+[00:04:40] Until the argument settles,
+[00:04:41] price ping pongs between the two camps,
+[00:04:43] that's all a range is,
+[00:04:45] an unsettled argument effectively.
+[00:04:47] You got buyers, you got sellers,
+[00:04:49] we need to figure out who the hell has
+[00:04:49] more resolve
+[00:04:51] and realistically just deeper pockets.
+[00:04:54] Who has the will to win?
+[00:04:56] The market's searching for a fair price,
+[00:04:56] essentially.
+[00:04:59] And it doesn't resolve on a schedule.
+[00:05:00] It could be weeks, it could be months,
+[00:05:02] it could be minutes, it could be days,
+[00:05:05] depending upon your timeframe.
+[00:05:06] We've seen ranges in Bitcoin even go on
+[00:05:08] for six, seven, eight months.
+[00:05:10] That takes a lot of patience.
+[00:05:11] So patience is a position.
+[00:05:15] And sometimes it's actually the best
+[00:05:15] position,
+[00:05:17] as I'm sure many people will learn
+[00:05:20] if they haven't already.
+[00:05:21] Anyways, let's get into no man's land.
+[00:05:24] So if you're familiar with war,
+[00:05:26] there's a concept called no man's land.
+[00:05:28] I think it was kind of born from World War
+[00:05:28] I
+[00:05:30] in which you had like trench warfare,
+[00:05:32] you had one side which was trench,
+[00:05:33] the other side which was a trench.
+[00:05:36] They were opposing each other
+[00:05:37] and then there was all the space in
+[00:05:37] between,
+[00:05:38] which was no man's land
+[00:05:39] because basically anyone who left their
+[00:05:39] trench
+[00:05:42] and tried to approach the other one
+[00:05:43] would get the fucking head blown off
+[00:05:43] probably.
+[00:05:47] Not funny, but yeah, fucked up.
+[00:05:49] Anyways, let's go over a rule
+[00:05:51] that can most importantly help save your
+[00:05:51] account,
+[00:05:55] not necessarily make you a ton of money,
+[00:05:56] but stop you from losing money.
+[00:05:58] So inside a range, there are exactly two
+[00:05:58] places with an edge.
+[00:06:01] The floor and the ceiling.
+[00:06:03] At the floor, buyers have memory and
+[00:06:03] proof.
+[00:06:06] At the ceiling, sellers have that.
+[00:06:08] The middle, that's your no man's land.
+[00:06:11] No memory, no zone, no edge.
+[00:06:13] A coin flip with fees effectively
+[00:06:15] is what you're looking at right there
+[00:06:16] with very low probabilistic outcomes
+[00:06:19] for whatever indicators or strategies you
+[00:06:19] may be employing.
+[00:06:22] So that's what we're looking at.
+[00:06:23] You can look at the seller side,
+[00:06:26] that's Germany in World War I,
+[00:06:27] the buyer side, that's France.
+[00:06:28] Well, no, France is gonna lose.
+[00:06:31] That's England, England doing a little bit
+[00:06:31] better.
+[00:06:34] Anyone who gets in between these,
+[00:06:36] that's where your account gets massacred.
+[00:06:37] But over here, I got some good selling.
+[00:06:40] Over here, you got some good buying.
+[00:06:42] You can play both sides
+[00:06:43] and you probably should play both sides.
+[00:06:46] That is...
+[00:06:46] Okay, that is okay.
+[00:06:48] Anyways, like I said, the middle, no man's
+[00:06:48] land,
+[00:06:52] no memory, no zone, no edge.
+[00:06:54] That is where you are not having a
+[00:06:54] probabilistic outcome
+[00:06:58] in your favor.
+[00:06:59] That is where it gets actually massively
+[00:06:59] produced.
+[00:07:01] So the middle of the range is where money
+[00:07:02] effectively goes to die, if you will.
+[00:07:04] So the discipline is brutal and simple.
+[00:07:07] Trade the edges or don't trade at all.
+[00:07:09] Flat is again a position.
+[00:07:10] You got an edge up here,
+[00:07:12] because you know there are other sellers
+[00:07:12] to join with you.
+[00:07:15] You got an edge over here for playing
+[00:07:15] bounces.
+[00:07:17] Again, because you know other buyers are
+[00:07:17] there.
+[00:07:19] Now, do you want to try to hold onto that
+[00:07:19] trade for forever?
+[00:07:24] No, no, because during these ranges,
+[00:07:27] you're not going to go into a trending
+[00:07:27] move.
+[00:07:29] You're going to continue to remain in
+[00:07:29] those ranges
+[00:07:32] and you can scalp a lot there for sure.
+[00:07:34] But you don't want to be trading
+[00:07:35] at a trend trading strategy
+[00:07:37] when things are more or less stuck between
+[00:07:37] two boundaries.
+[00:07:39] And flat is a position and like I said,
+[00:07:42] very often flat is, it's never the worst
+[00:07:42] position
+[00:07:45] and sometimes it is the best position
+[00:07:45] actually.
+[00:07:47] But yeah, flat is never a bad position, I
+[00:07:47] would say.
+[00:07:50] Anyways, let's go over the coil here.
+[00:07:52] So, ah, yes, edges have memory,
+[00:07:54] the middle has fees, trade the edges or
+[00:07:54] stay flat.
+[00:07:56] There we go.
+[00:07:57] Okay, the coil.
+[00:07:59] So episode five, I told you declining
+[00:07:59] volume loads a move.
+[00:08:03] When you see volume declining over time,
+[00:08:05] it's telling you that a range
+[00:08:07] is becoming more and more mature.
+[00:08:08] And when that volume tails off all the way
+[00:08:10] to effectively nothingness
+[00:08:11] and wedges itself into a very small area,
+[00:08:14] that is when you become significantly more
+[00:08:14] likely
+[00:08:16] to see a real break of whatever range
+[00:08:19] or formation you were previously in.
+[00:08:21] So episode number six, of course,
+[00:08:23] for moving averages, tangled averages plus
+[00:08:23] shrinking volume
+[00:08:26] to make that case a little bit stronger.
+[00:08:28] Both times we said episode seven,
+[00:08:31] here is where everything comes
+[00:08:33] to fruition with each other.
+[00:08:34] So when a range runs on declining volume,
+[00:08:36] every bounce quieter than the last,
+[00:08:39] the market is effectively coiling.
+[00:08:41] That's what you're seeing right here.
+[00:08:42] And if you want to put a name on this
+[00:08:42] pattern,
+[00:08:44] that is a symmetrical triangle.
+[00:08:45] The upside bounces are getting less and
+[00:08:45] less over time.
+[00:08:50] And the downside pullbacks
+[00:08:53] are also getting less and less over time.
+[00:08:55] So both sides are competing with each
+[00:08:55] other.
+[00:08:56] And in this case, when they're
+[00:08:56] symmetrical,
+[00:08:58] you actually don't really have a strong
+[00:08:58] bias
+[00:09:00] as to which side is going to break first.
+[00:09:03] But if, for example,
+[00:09:07] the lows on this structure here
+[00:09:10] were a little bit higher
+[00:09:12] in comparison to the lower highs on the
+[00:09:12] upside here,
+[00:09:17] well, then you'd probably have a bias
+[00:09:19] on an upside resolution from this.
+[00:09:20] Again, still, in order to confirm a
+[00:09:20] resolution,
+[00:09:23] I'd go back to the support and resistance
+[00:09:23] video
+[00:09:25] because ultimately that would still hold,
+[00:09:27] but you'd start to get a bias
+[00:09:29] as to which side to position four,
+[00:09:30] which you can definitely make strategies
+[00:09:30] around as well.
+[00:09:33] When a range runs on a declining volume,
+[00:09:35] every bounce quieter than the last,
+[00:09:36] the market is coiling, right?
+[00:09:38] Participation effectively is drying up.
+[00:09:40] So the argument runs out of arguers.
+[00:09:42] Both sides get squeezed into a tighter and
+[00:09:42] tighter box,
+[00:09:45] and a market that quiet has one move left,
+[00:09:49] which is your explosion.
+[00:09:50] That is your resolution of that range,
+[00:09:52] which leads into a trending move.
+[00:09:53] We can call that a coil,
+[00:09:55] basically a range on declining volume.
+[00:09:57] That is coiling up.
+[00:09:59] and up and up and up and up.
+[00:10:00] As you can see, volume go down right here,
+[00:10:00] and price actually wedges into tighter and
+[00:10:05] tighter boundaries, you become
+[00:10:05] significantly more likely to break, again,
+[00:10:05] significantly
+[00:10:10] more likely to break.
+[00:10:11] The tighter it winds, the bigger the
+[00:10:11] release as well.
+[00:10:13] So there is thoughts and notions that I
+[00:10:13] actually happen to agree with very
+[00:10:13] strongly in that
+[00:10:20] the longer and more severe a price goes
+[00:10:20] into compression mode, like you see right
+[00:10:20] here,
+[00:10:27] basically in a range, the greater the
+[00:10:27] inevitable breakout will be.
+[00:10:32] The longer and tighter that you
+[00:10:32] consolidate for equals bigger breakout.
+[00:10:36] So shorter consolidation in a bigger
+[00:10:36] range, maybe not as big of a resolution.
+[00:10:42] Now longer consolidation in the same size
+[00:10:42] range, that will be a bigger resolution
+[00:10:42] almost always.
+[00:10:47] You can almost always count on that as a
+[00:10:47] rule.
+[00:10:49] I don't want to say always because nothing
+[00:10:49] is ever always, but it's damn close.
+[00:10:53] Anyways, okay, in this instance right
+[00:10:53] here, again, you're seeing a spring coil
+[00:10:53] up and
+[00:11:00] compress, and that compression is what
+[00:11:00] leads to the explosion.
+[00:11:04] I mean, just think about like a fucking
+[00:11:04] slinky, right?
+[00:11:06] You know, or just a spring, like you push
+[00:11:06] it together, what happens?
+[00:11:09] It creates all that energy that eventually
+[00:11:09] fucking explodes.
+[00:11:12] Like you can't handle it anymore, but if
+[00:11:12] you just compress it a little bit, well,
+[00:11:16] the difference between that and the
+[00:11:16] explosion, not so great.
+[00:11:19] That is another way to conceptualize this.
+[00:11:21] Let's now go to, yeah, let's go to the
+[00:11:21] charts here.
+[00:11:25] Okay, okay.
+[00:11:27] Yeah, actually, I think we've gone through
+[00:11:27] like great examples of this in the past,
+[00:11:32] in fact, but let's do one pertaining to,
+[00:11:32] where should we do this right here?
+[00:11:38] We have actually multiple examples, which
+[00:11:38] kind of makes this fun, I guess,
+[00:11:43] in the most nerdy of ways.
+[00:11:45] Here's a good one.
+[00:11:46] I'm going to go to a weekly time from as
+[00:11:46] well.
+[00:11:48] There we go.
+[00:11:50] Again, you can observe this on any
+[00:11:50] timeframe, but I just find that, you know,
+[00:11:53] higher timeframes during these more
+[00:11:53] fundamental videos,
+[00:11:57] easier to fall with.
+[00:11:58] These, again, play a little more
+[00:11:58] technically as well.
+[00:12:01] Anyways, as we went over in our range
+[00:12:01] video,
+[00:12:03] we actually do have a pretty easy and
+[00:12:03] simple range right here.
+[00:12:06] I'm going to mark it off with my raise and
+[00:12:06] then box.
+[00:12:08] So there is my wick high on this move.
+[00:12:12] There is the closure and I will pull up my
+[00:12:12] rectangular.
+[00:12:17] Whoops.
+[00:12:18] Don't want the question mark there.
+[00:12:19] I want my box.
+[00:12:20] There we go.
+[00:12:21] Box right there.
+[00:12:23] And then on the other side, we got a box
+[00:12:23] down here.
+[00:12:25] OK, lovely.
+[00:12:26] So that is your two range boundaries on
+[00:12:26] this move.
+[00:12:28] And by the way, that previous range high
+[00:12:28] right here,
+[00:12:32] that becomes your new range low right
+[00:12:32] here.
+[00:12:34] Amazing how these concepts work.
+[00:12:36] Anyways, you'll notice during this
+[00:12:36] consolidation right here,
+[00:12:40] volume, let me get out my brush, volume
+[00:12:40] starts tailing down, down, down, down,
+[00:12:46] down, down, down.
+[00:12:47] And as it tails down, what does price
+[00:12:47] actually do?
+[00:12:51] It's compressing in this range.
+[00:12:53] And once it gets super low, like you see
+[00:12:53] over here, in this case,
+[00:12:56] it becomes almost like 50% of the average.
+[00:12:59] That is when your breakout move actually
+[00:12:59] starts to occur right around here.
+[00:13:04] Now again, how do you resolve the
+[00:13:04] breakout?
+[00:13:05] You need to see a closure above, in this
+[00:13:05] case,
+[00:13:08] the wick high of that initial range.
+[00:13:10] We get that right there.
+[00:13:11] So there is your resolution.
+[00:13:14] Or below the wick low of the.
+[00:13:16] bottom side boundary but in this case
+[00:13:16] obviously the top side is one that wins
+[00:13:19] but yes you know we get that right there
+[00:13:19] super simple super easy what else do we
+[00:13:24] have do we have another example that is
+[00:13:24] worth discussing right here yeah in fact
+[00:13:28] we do this one coming off of the one of
+[00:13:28] the macro lows in bitcoins history we
+[00:13:32] have a couple of range boundaries here
+[00:13:32] again let me get out my rectangle there
+[00:13:37] we go range boundary to the upside range
+[00:13:37] boundary to the downside a little bit
+[00:13:44] lower than that there we go and again what
+[00:13:44] happens with that volume it goes
+[00:13:51] from extremely high to extremely low again
+[00:13:51] but like 50% of what the average is
+[00:13:56] right there that's not necessarily a rule
+[00:13:56] but once it starts to get super
+[00:13:59] super low like that the likelihood of it
+[00:13:59] breaking out and following through
+[00:14:04] becomes exponentially higher and that's
+[00:14:04] exactly what we see right here Bitcoin
+[00:14:08] close above that range boundary high boom
+[00:14:08] big move up and lots of
+[00:14:12] continuation on upwards and always later
+[00:14:12] on not bad not bad at all and
+[00:14:17] again the volume was kind of the tell in
+[00:14:17] that case should we go over one more
+[00:14:20] example here yeah let's go over one more
+[00:14:20] example this one we're actually not
+[00:14:25] gonna have a top side boundary because
+[00:14:25] it's just not super relevant but let's
+[00:14:29] pull it through right here another one
+[00:14:29] that we went over in a previous video
+[00:14:31] range lows for 2018 basically that you
+[00:14:31] know that previous cycle you can see
+[00:14:37] this one occurs over the course of nearly
+[00:14:37] a year from about February 2018
+[00:14:41] resolved over here in November of 2018 and
+[00:14:41] what do you know the volume
+[00:14:46] signature on this is what's telling you
+[00:14:46] that hey this this this was gonna take a
+[00:14:50] long time I mean shit if I was to draw
+[00:14:50] regression through here probably be
+[00:14:54] something more like this but yeah it
+[00:14:54] wasn't it took nearly a year to resolve
+[00:14:59] that one and when you see volume get
+[00:14:59] really really low like this yes of
+[00:15:03] course that is when things are most likely
+[00:15:03] to break now I want to add one
+[00:15:06] more feature onto this it's not gonna show
+[00:15:06] up in this you know in the written
+[00:15:12] documents on this video script but sorry I
+[00:15:12] don't mean my script but I mean my
+[00:15:16] presentation right here but the structure
+[00:15:16] during that consolidation does
+[00:15:23] matter and does give you a higher
+[00:15:23] probability of deciding which side is
+[00:15:28] most likely to win so when we have same
+[00:15:28] lows over here and declining highs
+[00:15:34] on the upside boundary what is that
+[00:15:34] telling you we've kind of gone over this
+[00:15:39] in previous videos it's telling you
+[00:15:39] sellers are getting more aggressive
+[00:15:42] while buyers are not and more importantly
+[00:15:42] the buyers are unable to
+[00:15:47] bounce the price higher on each and every
+[00:15:47] successive bounce so what can we
+[00:15:52] deduce from that it we can deduce that if
+[00:15:52] sellers getting stronger and buyers
+[00:15:56] getting weaker which side is likely to win
+[00:15:56] this the sell side of course over
+[00:16:00] here we get the opposite we get low number
+[00:16:00] one higher low number two and then
+[00:16:05] kind of a higher low along the way as well
+[00:16:05] which side is likely to win you got
+[00:16:09] same highs for sellers higher lows for
+[00:16:09] buyers buyers getting more strong thus
+[00:16:15] we have an upside breakout you got another
+[00:16:15] example well do we want to go
+[00:16:19] over that example I think I think we have
+[00:16:19] enough with it so I don't want to
+[00:16:22] bore you with the details here we can go
+[00:16:22] over this last one over here this
+[00:16:26] one gets a slightly higher low same highs
+[00:16:26] but even that was enough to get
+[00:16:31] this baby
+[00:16:34] Also, if you paid attention to the moving
+[00:16:34] average video,
+[00:16:36] you can see that on the weekly timeframe,
+[00:16:38] moving averages right here stayed
+[00:16:38] technically bullish,
+[00:16:40] you know, the whole way through.
+[00:16:42] So again, that can help you form a bias
+[00:16:44] as to which side is going to win.
+[00:16:46] But until you should get the range
+[00:16:46] resolution
+[00:16:47] with the closure above or below the range
+[00:16:47] boundaries,
+[00:16:51] you don't have confirmation of that.
+[00:16:52] But you can start to, you know,
+[00:16:54] get a higher probability of guessing
+[00:16:55] which direction is going to be correct
+[00:16:55] there.
+[00:16:57] Anyways, if you just watch four episodes
+[00:16:57] of tools
+[00:17:00] stack into one clean read, hit the like
+[00:17:00] button,
+[00:17:02] because it's the best way to let the
+[00:17:02] algorithm know
+[00:17:04] to send the next video directly to you.
+[00:17:06] That's a cringy part of the video, but
+[00:17:06] hey,
+[00:17:08] have to do it as always,
+[00:17:10] like and subscribe if you want more
+[00:17:10] content like this.
+[00:17:12] All right, sweet.
+[00:17:13] Let's get into the next one right here.
+[00:17:14] So, okay, trading the edges.
+[00:17:17] Okay, so how do the edges gets traded?
+[00:17:19] So at the floor, wait for the test,
+[00:17:22] demand proof and episode one candle,
+[00:17:22] basically,
+[00:17:26] like a hammer or an engulfing,
+[00:17:28] ideally on episode five volume at the
+[00:17:28] ceiling,
+[00:17:31] you know, same logic upside down,
+[00:17:31] basically,
+[00:17:34] and the trap you already know,
+[00:17:35] the edges essentially get hunted.
+[00:17:37] Now, episode four stop hunt lives at the
+[00:17:37] range extremes.
+[00:17:41] That's where you get a lot of those
+[00:17:41] instances at.
+[00:17:43] The quick poke below the floor
+[00:17:45] that snaps back inside the range is
+[00:17:45] signature fake out.
+[00:17:47] I mean, that is just classic.
+[00:17:49] It runs the stops is another way of saying
+[00:17:49] it.
+[00:17:52] Then price rips the other way.
+[00:17:54] So the veteran read is patience here.
+[00:17:57] Let the edge get tested.
+[00:17:58] Let the edge, let the first test into the
+[00:17:58] edge,
+[00:18:00] you know, play out.
+[00:18:02] That's okay.
+[00:18:03] You don't need to be involved in it.
+[00:18:04] Only act on the close back inside with
+[00:18:04] proof.
+[00:18:08] So if you see, quote unquote, a fake out,
+[00:18:10] and then price actually does reclaim
+[00:18:14] and start to go the other direction,
+[00:18:15] well, you can join that direction if you
+[00:18:15] really want.
+[00:18:17] The close is effectively your verdict.
+[00:18:19] Everything else is a rumor and well,
+[00:18:21] trading rumors usually not the best idea.
+[00:18:25] Anyways, moving on from there, money
+[00:18:25] movement,
+[00:18:27] little bit of staircase action right here.
+[00:18:29] So now zoom all the way out on most
+[00:18:29] charts,
+[00:18:32] on most like long-term assets that
+[00:18:32] generally go up,
+[00:18:36] good assets, what we call them.
+[00:18:39] This is how effectively you can see
+[00:18:43] or you can change how you see boring
+[00:18:43] markets forever.
+[00:18:46] Bitcoin's whole life is,
+[00:18:48] it's kind of a staircase if you really
+[00:18:48] zoom out.
+[00:18:50] Before the 2017 run,
+[00:18:51] it would be a long, dull sideways range.
+[00:18:55] Before the 2020 to 2021 run,
+[00:18:58] a year of sideways,
+[00:19:00] nothing that everyone called dead as well.
+[00:19:02] And before the last big run as well, same
+[00:19:02] story.
+[00:19:04] Like you get these stair steps,
+[00:19:06] you get long sideways consolidation
+[00:19:06] periods.
+[00:19:09] Let me just scroll out over here.
+[00:19:11] We're getting naked on these charts.
+[00:19:14] Let me go to a monthly timeframe.
+[00:19:16] Sideways, this again, takes about a year.
+[00:19:19] Boom, big step up, sideways, down,
+[00:19:22] sideways, up, sideways, up,
+[00:19:25] sideways, down, sideways, up,
+[00:19:28] sideways, up, sideways, up,
+[00:19:31] sideways, up again, sideways, down.
+[00:19:33] It's a stair step market is what it is.
+[00:19:35] That's how most of these things look.
+[00:19:37] I mean, even look at spy futures over
+[00:19:37] here.
+[00:19:39] Well, maybe better seen on a weekly
+[00:19:39] timeframe
+[00:19:41] for your sideways,
+[00:19:42] because just likes to go straight up.
+[00:19:44] apparently. But yes. Anyways, every trend
+[00:19:44] you wish you were in, I mean, especially
+[00:19:44] looking
+[00:19:51] at it from hindsight, was born in a box,
+[00:19:51] in a boring box, I should say, exactly
+[00:19:51] like the
+[00:19:56] one that bores you or probably was bored
+[00:19:56] you up until recently with Bitcoin, if
+[00:19:56] you've
+[00:20:00] been watching Bitcoin. Again, you can
+[00:20:00] apply this to any asset realistically, but
+[00:20:00] Bitcoin
+[00:20:04] was basically operating within a range for
+[00:20:04] the past couple months between about
+[00:20:04] $67,000
+[00:20:08] the upside versus $58,000 to the downside.
+[00:20:08] That took two and a half, three months to
+[00:20:13] effectively get resolved. These things
+[00:20:13] take time and a lot of patience
+[00:20:13] realistically,
+[00:20:16] but when you get that move, you get an
+[00:20:16] explosive move like this. So yes, things
+[00:20:20] do get boring, but important things happen
+[00:20:20] during the boring times. The crowd
+[00:20:24] effectively leaves during the range and
+[00:20:24] chases the trend. You see this almost
+[00:20:28] always, which is really, I mean, that is
+[00:20:28] like quite literally fucking backwards. So
+[00:20:33] the range is where positioning should
+[00:20:33] happen. The trend is effectively your
+[00:20:37] outcome. Panic ends trends, boredom builds
+[00:20:37] them. Alright, cool. So let's
+[00:20:43] work through that. Okay, beautiful. So the
+[00:20:43] resolution checklist, eventually the
+[00:20:47] argument settles and the box breaks.
+[00:20:47] Here's how you tell a real resolution from
+[00:20:52] just another, you know, stop hunt. And
+[00:20:52] it's everything you already own in order.
+[00:20:55] One, a close through the zone. Not a wick,
+[00:20:55] but a close. We've gone over this.
+[00:20:59] Episode four is close law. Two, fuel.
+[00:21:03] Real breakouts bring volume expansion.
+[00:21:03] That is another
+[00:21:07] confirmation tool here. The drought ends
+[00:21:07] loudly. Like it should be volatile. It
+[00:21:12] should be very, very violent effectively.
+[00:21:12] And that's episode five. Three, the
+[00:21:17] retest. Price comes back. The broken
+[00:21:17] ceiling acts as a floor if it does
+[00:21:23] come back. Now you don't always get a
+[00:21:23] retest. I really don't want you to be
+[00:21:26] to be held into the retest rule that every
+[00:21:26] breakout needs to be retest.
+[00:21:29] That is not true. The best breakouts do
+[00:21:29] not retest by the way. They do not now
+[00:21:34] just because you retest doesn't mean that
+[00:21:34] it's not going to be an okay
+[00:21:37] breakout, but a strong breakout does not
+[00:21:37] retest. That is a feature, not a bug.
+[00:21:42] And that's like, that's a good thing for
+[00:21:42] the trend. You know, it really
+[00:21:45] is anyways. Uh, yes. And that was episode
+[00:21:45] four is a one tactic, close fuel
+[00:21:51] retest, um, three checks, three episodes
+[00:21:51] and a bonus read the height of the
+[00:21:56] range often projects the first leg of the
+[00:21:56] move. This is not always, but this
+[00:22:01] is kind of like a general rule here. Um,
+[00:22:01] we go over this as well in the TA
+[00:22:04] program, but when you get a range, like
+[00:22:04] you see this one right here, this
+[00:22:10] range right here, the breakout that
+[00:22:10] emerges from there generally will at
+[00:22:15] least go, will like the, uh, the, the,
+[00:22:15] the, the price target from it will
+[00:22:20] at least be about the width of that range
+[00:22:20] or the height of the range.
+[00:22:23] Actually. So I drew a line right here from
+[00:22:23] the bottom of the range to the
+[00:22:26] top of the range. I'm going to apply that
+[00:22:26] to the breakouts, uh, trigger here.
+[00:22:30] And what do you know that that, that
+[00:22:30] target does get hit, uh, right around
+[00:22:34] here and Bitcoin does go sideways after
+[00:22:34] hitting that target too. Now, not
+[00:22:37] perfectly these do not need to be perfect,
+[00:22:37] but you know, in general, that
+[00:22:42] was a good area of interest to be
+[00:22:42] targeting for this move. And well,
+[00:22:45] Bitcoin does obviously, uh, you know,
+[00:22:45] continue more from there, but you do
+[00:22:49] see a two month long period of Bitcoin
+[00:22:49] going sideways around there.
+[00:22:52] So that was an area of interest for
+[00:22:52] another sideways market, in which case,
+[00:22:57] yeah, you got more.
+[00:22:57] But you know a good general target if you
+[00:22:57] will
+[00:23:01] Alright cool
+[00:23:02] So again, the spring releases about
+[00:23:02] roughly what it stored during this phase,
+[00:23:02] but that is a heuristic not a law
+[00:23:09] So it's it's kind of like your first major
+[00:23:09] useful target doesn't mean that things
+[00:23:09] absolutely have to stop there
+[00:23:14] It might be like slightly before might be
+[00:23:14] slightly later as you see right here a
+[00:23:14] little bit slightly after
+[00:23:18] But generally that will hold true
+[00:23:21] So just a good area first area of interest
+[00:23:21] for any, you know any breakout or
+[00:23:21] breakdown
+[00:23:26] All right, let's go over a trap the old
+[00:23:26] trap
+[00:23:29] So let me say this part very loudly ranges
+[00:23:29] are where beginner accounts typically get
+[00:23:29] just destroyed
+[00:23:37] And and I get it because you know you go
+[00:23:37] through these exciting training times and
+[00:23:37] you're like, oh my god
+[00:23:41] This is fucking easy
+[00:23:42] Like I just need to follow the trend and
+[00:23:42] then what happens well the inevitable
+[00:23:42] happens the trend ends because not
+[00:23:42] everything goes on
+[00:23:48] for forever
+[00:23:50] so
+[00:23:51] Yes, the problem beginners do is they
+[00:23:51] apply trend trading tools
+[00:23:55] To a ranging boring market they buy every
+[00:23:55] fake breakout because well
+[00:24:00] They don't know any better and there's no
+[00:24:00] fuel behind those breakouts. So of course,
+[00:24:00] they don't have any continuation
+[00:24:06] They're effectively just that stop hunt
+[00:24:06] yet again over and over and over
+[00:24:09] They trade the middle because waiting
+[00:24:09] feels like losing
+[00:24:11] This is again calling back to the art of
+[00:24:11] patience when it comes to trading when you
+[00:24:11] don't have an edge
+[00:24:16] When you don't have a higher probabilistic
+[00:24:16] outcome in your favor
+[00:24:19] It's best not to trade and where is the
+[00:24:19] worst place to employ that?
+[00:24:22] It's in the middle of the range now once
+[00:24:22] you start to get higher lows like you saw
+[00:24:28] Back here for example when start to get
+[00:24:28] higher lows and also if moving average
+[00:24:28] start to switch around into a bullish
+[00:24:28] posturing and that
+[00:24:34] Volume starts to tail off. Maybe then
+[00:24:34] yeah, you could you could position around
+[00:24:34] it
+[00:24:38] But until then, you know anything in
+[00:24:38] between here, that's kind of no man's land
+[00:24:43] And you don't have the best, you know, the
+[00:24:43] best probabilities in your favor around
+[00:24:43] there unless you're just scalping the
+[00:24:43] boundaries
+[00:24:50] But again, the middle is not the boundary
+[00:24:50] the boundaries are the boundaries
+[00:24:52] so take trades around there if you're
+[00:24:52] gonna take anything at all and don't be
+[00:24:52] looking for the home run effectively
+[00:24:52] because there ain't
+[00:24:57] No home run and usually they're you know
+[00:24:57] home runs very rarely happen to be going
+[00:24:57] with I mean shit
+[00:25:01] I'm like that's where they're fucking home
+[00:25:01] run. Anyways
+[00:25:04] All right. All right. All right. Let's get
+[00:25:04] back into this right here
+[00:25:07] Yes, fake breakouts middle trades and the
+[00:25:07] fix name the box or stay out edges only no
+[00:25:07] fuel
+[00:25:13] No belief and yes when things do you start
+[00:25:13] to put in consecutive higher highs or
+[00:25:13] sorry lower highs or higher lows
+[00:25:19] Then you start to maybe
+[00:25:21] Get an inkling towards the direction still
+[00:25:21] I would not suggest
+[00:25:24] Trading a breakout until you actually get
+[00:25:24] the full-on confirmation. But again
+[00:25:24] different stroke for different folks
+[00:25:29] Everyone has different, you know favorite
+[00:25:29] tools to use and everything like this. So
+[00:25:29] yes, anyways
+[00:25:35] Alright. Alright. Alright, we've kind of
+[00:25:35] gone through a lot of examples already,
+[00:25:35] but I want to go through maybe like a
+[00:25:35] couple more
+[00:25:42] Just to kind of hammer this one in so
+[00:25:42] let's go back to years yonder
+[00:25:46] We'll go over here to the end of the 2014
+[00:25:46] 2015 cycle
+[00:25:50] And again, you got your low you got your
+[00:25:50] closure right here. So let's make our
+[00:25:50] let's make our boxes
+[00:25:56] We got some good boxes going on right here
+[00:25:59] And then we got our high side box right
+[00:25:59] here is how we'll do it
+[00:26:02] Okay, so let me draw out my rectangles. We
+[00:26:02] like our boxes good old boxes
+[00:26:08] There we go. Boom and you got your box
+[00:26:08] right here, too. Basically something like
+[00:26:08] that. It's about right
+[00:26:14] All right, so market range and in a box,
+[00:26:14] you can see, again, volume tailing off
+[00:26:14] after
+[00:26:18] extreme volume on what was effectively the
+[00:26:18] macro low.
+[00:26:23] Volume just absolutely gets
+[00:26:23] catastrophically low right there.
+[00:26:25] People just getting shaken out of the
+[00:26:25] market, basically.
+[00:26:28] What happens in between here, you get
+[00:26:28] multiple tests to the top side and
+[00:26:28] multiple to the
+[00:26:31] downside.
+[00:26:32] In fact, you get, I mean, you get a lot of
+[00:26:32] opportunities to the downside, you even
+[00:26:34] get one wick, which is, I mean, that is
+[00:26:34] close to a new low, for fuck's sake.
+[00:26:40] But which side wins?
+[00:26:44] Once you start to see those volume tailing
+[00:26:44] off, and actually, let's put on our moving
+[00:26:46] average for this one, too, let's do a 21
+[00:26:46] and a 55, there we go.
+[00:26:51] Okay, so in this particular one, moving
+[00:26:51] averages remain in a bearish posturing.
+[00:26:56] Price is existing between these two
+[00:26:56] boundaries, volume is tailing off.
+[00:27:00] We see several same highs, several same
+[00:27:00] lows, but right around here, in August of
+[00:27:00] 2015,
+[00:27:05] you start to get your first few higher
+[00:27:05] lows.
+[00:27:09] And then when price action rallies back
+[00:27:09] right to that previous high, respectively
+[00:27:14] your top side boundary, you can see those
+[00:27:14] moving averages drawing closer and closer
+[00:27:17] together.
+[00:27:18] And once they turn, and once you get
+[00:27:18] volume on this breakout, and once you get
+[00:27:18] a
+[00:27:22] closure above the top end boundary, that
+[00:27:22] is when you do have a beautiful reversal.
+[00:27:27] In this case, it goes on for a very long
+[00:27:27] time.
+[00:27:31] Over here, again, for this example, you
+[00:27:31] got declining highs, major move never to
+[00:27:35] switch over into a bearish posturing, not
+[00:27:35] until October of that year, 2018, and
+[00:27:35] volume
+[00:27:40] again, tailing off the whole way through.
+[00:27:42] But if you were trying to time the
+[00:27:42] breakdown, which I remember I was, I was
+[00:27:46] doing this publicly on YouTube, it wasn't
+[00:27:46] until we got around here to like late
+[00:27:49] October slash early November, where we're
+[00:27:49] like, okay, this thing actually really
+[00:27:52] is in danger of breaking down like right
+[00:27:52] now.
+[00:27:55] But before that, it's like, yeah, it's
+[00:27:55] bearish because you got lower highs.
+[00:27:58] But is it ready to break down in any like
+[00:27:58] major fashion?
+[00:28:02] Probably not.
+[00:28:04] These sort of things can go on for a very
+[00:28:04] long time.
+[00:28:08] Similar thing over here.
+[00:28:10] We can get a similar thing, again, over
+[00:28:10] here.
+[00:28:13] Major move never to switch into a bullish
+[00:28:13] posturing, volume tails off, reclaims the
+[00:28:17] top end boundary, and major moving
+[00:28:17] averages, again, giving you that upside
+[00:28:17] buys plus the
+[00:28:22] higher low.
+[00:28:23] Beautiful.
+[00:28:24] Do we want to do another one here?
+[00:28:25] Yeah, we could do another one.
+[00:28:26] This one was tricky, by the way, too.
+[00:28:28] This is a very tricky one.
+[00:28:29] I remember this from 2024.
+[00:28:31] This took almost all of the year as well.
+[00:28:33] So we got this first upside boundary.
+[00:28:35] We got a bottom side boundary right here,
+[00:28:35] too.
+[00:28:37] It's effectively your previous high.
+[00:28:39] Something like that would be about
+[00:28:39] appropriate.
+[00:28:42] And I will draw my boxes now.
+[00:28:44] Boom.
+[00:28:44] And to the upside, we got boom right here.
+[00:28:47] And this one, like I said, tricky.
+[00:28:49] So the whole way through your major moving
+[00:28:49] averages, we're still in a bullish
+[00:28:54] posturing.
+[00:28:55] So were we looking for like a major
+[00:28:55] massive breakdown here?
+[00:28:59] Probably not.
+[00:29:00] But there were a lot.
+[00:29:02] First off, there was a lot of time here.
+[00:29:04] But second off, there were a lot of
+[00:29:04] downside moves.
+[00:29:07] I mean, it doesn't look like much on the
+[00:29:07] chart.
+[00:29:08] But from this high to this low, that was a
+[00:29:08] 22 plus percent move.
+[00:29:12] From this high to this low, that was a 25
+[00:29:12] and a half percent move.
+[00:29:16] From this high to the low that happened a
+[00:29:16] couple weeks later was 30
+[00:29:19] percent move almost.
+[00:29:20] And even right here, there's another like
+[00:29:20] 15 percent move.
+[00:29:23] But again, those moves, one, correlated
+[00:29:23] with lows on a major move
+[00:29:28] averages on the 55.
+[00:29:30] the weekly, so a major move average plus
+[00:29:30] the bottom side of boundary, the support
+[00:29:30] area, if you will.
+[00:29:36] And on top of this, the volume kind of
+[00:29:36] remains like somewhat not low, you know,
+[00:29:36] most of the way
+[00:29:44] through. It wasn't until you get over here
+[00:29:44] where volume actually spikes up on the
+[00:29:44] breakout. Do you
+[00:29:48] have a real breakout? And again, supported
+[00:29:48] by the moving averages and supported by
+[00:29:48] higher low number
+[00:29:53] one right here, followed by higher high
+[00:29:53] number number two over here. That was your
+[00:29:53] breakout.
+[00:29:59] So all of these things should be kind of
+[00:29:59] working with each other. There are
+[00:29:59] synergies here.
+[00:30:05] And those help you kind of guesstimate, I
+[00:30:05] would say, not necessarily guesstimate,
+[00:30:05] but get a better
+[00:30:10] probabilistic outcome betting on
+[00:30:10] direction. When you have moving averages
+[00:30:10] in the same direction,
+[00:30:15] and then you're also getting, you know, a
+[00:30:15] higher low, you know, alongside that
+[00:30:15] moving averages
+[00:30:19] are bullish, and Bitcoin's bouncing or
+[00:30:19] whatever is bouncing off of, you know, a
+[00:30:19] lower boundary.
+[00:30:25] Okay. And if it's moving to the top side
+[00:30:25] of the boundary and volume is very, very
+[00:30:25] low,
+[00:30:29] you have one of those instances where it
+[00:30:29] may be ready enough. Anyways. All right.
+[00:30:29] All right.
+[00:30:35] All right. So we've gone through that.
+[00:30:35] We've gone through that. The box decoded.
+[00:30:35] Let me just make
+[00:30:40] sure where I'm at. So lock it in two
+[00:30:40] modes. Read the mode before you read the
+[00:30:40] signal. A range is
+[00:30:46] two zones with a trapped market. Trade the
+[00:30:46] edges, never the middle. The middle is no
+[00:30:46] man's land.
+[00:30:50] That's where you get killed. That's where
+[00:30:50] you don't have high probabilistic
+[00:30:50] outcomes.
+[00:30:54] The coil is a range on declining volume,
+[00:30:54] and that is your spring compressing. Once
+[00:30:54] it gets
+[00:31:00] super, super, super, super low, that is
+[00:31:00] when your new trend may explicitly begin,
+[00:31:06] but not until then wait for that volume to
+[00:31:06] tail off because that is your best timing
+[00:31:06] factor
+[00:31:11] alongside another tool as well. But that's
+[00:31:11] for the TA 101. Anyway, also free by the
+[00:31:11] way,
+[00:31:15] I should say. Anyways, the resolution
+[00:31:15] checklist here. Close through the zone.
+[00:31:15] Remember,
+[00:31:22] we've gone through that many a time now.
+[00:31:22] Feel behind it with volume, and then if
+[00:31:22] you do get
+[00:31:26] a retest, obviously the retest must hold.
+[00:31:26] Three checks, three episodes, zero new
+[00:31:26] indicators,
+[00:31:30] all of this, basically the last few
+[00:31:30] videos. So again, all these build off of
+[00:31:30] each other,
+[00:31:35] all of these are synergistic. Anyways,
+[00:31:35] episode four, episode number eight, which
+[00:31:35] is coming up,
+[00:31:41] I want you to do one little piece of
+[00:31:41] homework here. Find one range on any
+[00:31:41] chart, any timeframe,
+[00:31:46] doesn't matter what it is. Again, all of
+[00:31:46] these tools apply more or less to just
+[00:31:46] about any
+[00:31:50] asset that has a trading history,
+[00:31:50] especially on trading view. If you're
+[00:31:50] going to use that,
+[00:31:55] free resource, pretty simple. Mark the
+[00:31:55] floor and the ceiling. Again, wait to
+[00:31:55] close and answer one
+[00:32:00] question. Is the volume draining? Is it
+[00:32:00] coiling? You can drop that ticker in
+[00:32:00] timeframe in the
+[00:32:05] comments and it'll have Claude grade the
+[00:32:05] first 50 and we'll bring it up on the next
+[00:32:05] video
+[00:32:10] if that comes out in time. Anyways,
+[00:32:10] everything so far reads the chart. Episode
+[00:32:10] eight, however,
+[00:32:17] opens the machine, the order book. So who
+[00:32:17] effectively is sitting at your levels?
+[00:32:21] What a market maker actually sees and why
+[00:32:21] price moves the way it moves. In fact,
+[00:32:26] I did that job and really, I don't really
+[00:32:26] see anyone teaching it because it's quite
+[00:32:26] boring as
+[00:32:33] well honestly, like reading the tape, but
+[00:32:33] hey, there is a lot of important
+[00:32:33] information in there.
+[00:32:37] Anyways, that's the next video. We'll be
+[00:32:37] going over that in episode number eight.
+[00:32:41] Hopefully I'll see you there until then
+[00:32:41] take care and much love.

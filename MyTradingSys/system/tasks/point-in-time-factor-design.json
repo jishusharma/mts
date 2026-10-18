@@ -1,0 +1,33 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-14T15:00:06Z",
+  "depends_on": [],
+  "done_when": "research/point_in_time_factors_2026-10-14/DESIGN.md with one row per factor (definition, lag, first usable bar, code location, look-ahead yes/no) and B-items filed for each yes.",
+  "from_inbox": "",
+  "goal": "A written design, element by element, of how each factor a backtest uses is computed only from data that existed at that bar: support/resistance, swing highs/lows, VP POC/VAH/VAL, prior day/week levels, RSI and CVD divergences, Bollinger touches, session levels.",
+  "id": "point-in-time-factor-design",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [
+    "tom",
+    "rsi",
+    "volume_candles_ma"
+  ],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-18 T0-ONLY DROPPED as covered: PIT_CONTRACT.md + REPORT.md (53034030, research/pit_levels_2026-10-16), level_ledger_2026-10-16 (b4fe8d20), context_factors_pit_2026-10-16 ANGLES.md/REPORT.md (664cf00a: bb_4h, RSI/CVD divergence, session) give per-factor definition, lag and code location; 12/13 PASS, 1 FAIL tom_bt_report.py:161 filed as a B-item there. Residual (Java zones, CVD level, VWAP) is ZONE_MISMATCH.md / B187.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "dropped",
+  "steps": [],
+  "tests": "",
+  "title": "Lab design: how every backtest factor (support/resistance, VP levels, divergences, band touches) is set point-in-time on history, element by element"
+}

@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-13T05:38:26Z",
+  "commands": [],
+  "created": "2026-10-12T17:18:12Z",
+  "crucial": true,
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "effort": "medium",
+  "from_inbox": "",
+  "goal": "Follow MyTradingSys/system/revalidation/RV05_fabio_ledger_frame_pass.md exactly; report per MyTradingSys/system/revalidation/_COMMON.md. host=JIS-NUC (frames on F:).",
+  "id": "rv05-fabio-ledger-frame-pass",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "model": "gpt-6-astra",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "result": "FIX-FIRST: 2 remaining rows checked, 3 HIGH carried forward and 2 MED; MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md",
+  "scope_in": [
+    "MyTradingSys/system/revalidation/RV05_fabio_ledger_frame_pass.md",
+    "MyTradingSys/system/revalidation/_COMMON.md",
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
+    "F:/MTS/data/fabio_videos"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "RV05 Fabio ledger frame-by-frame pass over unread rows (host=JIS-NUC)"
+}

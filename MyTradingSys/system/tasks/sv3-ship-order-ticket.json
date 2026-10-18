@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T19:30:00Z",
+  "depends_on": [],
+  "done_when": "sync.py ship --after X behaves as the tests say, review Agent APPROVE, shipped",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The supervisor stops shipping (115 of 418 active minutes) and ships stop dying in the gate queue: workers ship in the brief's order with a lapsing ticket.",
+  "id": "sv3-ship-order-ticket",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/dsa-nuc-rows-2",
+      "ref": "15b83a947571",
+      "utc": "2026-10-18T18:31:30Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: gpt-6-astra 2026-10-18 - cross-vendor read-only review of the SUPERVISOR.md design this card implements (12 findings, folded or rejected with reasons there): ACCEPT.",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "supervisor-design (Opus, operator-named)",
+  "refreshed": "2026-10-18T18:46:56Z",
+  "refs": [
+    "MyTradingSys/system/SUPERVISOR.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py (ship: --after <slug> waits for that slug's release signal or 60 min, then ships)",
+    "scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    "live tree, processes, deploys, HALT files",
+    "ROUTING.md (Pipeliner owns it)",
+    "unrelated cleanups"
+  ],
+  "scope_sha": "15b83a947571",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/SUPERVISOR.md (design 2026-10-18)"
+  ],
+  "state": "ready",
+  "steps": [
+    "read gate_slot and ship in sync.py; add --after <slug> that never holds a slot while waiting",
+    "lapse on predecessor failure, missing note or 60 min",
+    "diff-only review Agent before ship (gate change, SUPER_SESSION rule 11)"
+  ],
+  "tests": "fake clock: predecessor shipped -> go; predecessor failed -> go; 60 min no signal -> go; waiting holds no slot; fail first on old code",
+  "title": "Supervisor SV3: ship order tickets (after <slug>, cancellable, 60 min lapse) and ship --release in briefs",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

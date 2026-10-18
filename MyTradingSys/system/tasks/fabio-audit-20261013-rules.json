@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T22:04:24Z",
+  "commands": [],
+  "created": "2026-10-13T05:09:07Z",
+  "depends_on": [],
+  "done_when": "MD states observed events with the contradicting cases (F1 TP 25513.25->25514.75, F12 stop 25105.50->25089.75); F11 adds typed STP; F15 labelled drawing; test_ledger_audit TestH5 passes",
+  "from_inbox": "",
+  "goal": "Replace generalised management claims (stop only toward profit, TP fixed far, adds are LMT, F15 an unfilled ticket) with per-event observations; F15 is a drawing (DyS.txt:2854-2855).",
+  "id": "fabio-audit-20261013-rules",
+  "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "worker-sonnet",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md"
+  ],
+  "result": "H5: management generalisations replaced by per-event observations (F1 TP 25513.25->25514.75, F12 stop 25105.50->25089.75); F11 adds typed STP; F15 and the 7025 window labelled a drawing (DyS.txt:2854-2855). UNRESOLVED: F1/F11 reads are the audit's, no frame re-read",
+  "scope_in": [
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+    "MyTradingSys/research/fabio_transfer/test_ledger_audit.py",
+    "scripts/dev/run_extra_tests.py"
+  ],
+  "scope_out": [
+    "any code, backtest, study or holdout read",
+    "new web or video downloads",
+    "numbers not traceable to the audit report or the cited frames/captions"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md H5 row; F:/MTS/data/fabio_videos/DyS79Eb92Ug.txt:2854-2855"
+  ],
+  "state": "done",
+  "steps": [
+    "edit MD management/final sentences to per-event wording",
+    "CSV F11 note: +2 orders are green STP; F15 and F-noTrade-7025 family/note: drawing, not submitted ticket",
+    "keep universal rules only if directly quoted (none now)",
+    "tests, ship"
+  ],
+  "tests": "test_ledger_audit.py::TestH5 fails first: old MD says stops move only toward profit and F15 is an unfilled order ticket",
+  "title": "H5: Correct Fabio management generalizations and distinguish order drawings"
+}

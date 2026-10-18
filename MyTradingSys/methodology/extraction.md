@@ -121,7 +121,7 @@ For every READY rule:
   3. Regression test - run 3 snapshots through patched engine
   4. Update schema if new DSA fields required
   5. Update condition files (canonical documentation)
-  6. Log decision in 02b_DECISIONS_LOG.md
+  6. Log decision in OPERATOR_DECISIONS.md
 
 Post-integration: run 3 NEW live snapshots. Verify no contradictions between
 newly integrated rules and existing ones.

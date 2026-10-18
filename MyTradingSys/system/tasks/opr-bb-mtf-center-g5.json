@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T22:09:23Z",
+  "commands": [],
+  "created": "2026-10-15T14:45:12Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/opr_bb_mtf_center_<date>/REPORT.md with n, P(U/D/R) and close-side tables with Wilson CIs, 30m condition on/off, mirror control, fee-net R, M1-M4 tables; variants in the trial ledger.",
+  "from_inbox": "",
+  "goal": "Run the G5 DEV event study in drafts/OPR-BB-MTF-CENTER.md: after a 1h wick touch of the BB(20,2) mid in a lower-band trend, outcome U/D/R over the next 1-4h with the 30m centre-close condition, fee-net, plus the Krown range-vs-BB tests M1-M4 of drafts/KRW-RANGE-BB-MAP.md. Holdout sealed.",
+  "id": "opr-bb-mtf-center-g5",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "bb-rsi-40-60 setup draft session 2026-10-15",
+  "refs": [],
+  "result": "INCONCLUSIVE (screen, ran before G3 marks by operator decision 2026-10-16): 476 first-touch events; AU long n=194 (<200 bar) mean G +0.020%; AD short n=282 mean G +0.032% (net -0.108%, FAIL); Krown M1-M4 descriptive tables included; MyTradingSys/research/opr_bb_mtf_center_2026-10-16/RESULT.md",
+  "scope_in": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/drafts/OPR-BB-MTF-CENTER.md",
+    "MyTradingSys/research/setup_catalog_2026-10-15/drafts/KRW-RANGE-BB-MAP.md",
+    "MyTradingSys/research/setup_catalog_2026-10-15/sources/OPERATOR_2026-10-15_bb_mtf_center.md",
+    "MyTradingSys/research/setup_catalog_2026-10-15/evidence/bb_mtf_center_checks.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/research/levels_sizing_2026-10-14/METHOD.md"
+  ],
+  "scope_out": [
+    "HOLDOUT or VALIDATION reads",
+    "live tree",
+    "any trade call or live rule",
+    "editing SETUP_CATALOG.md"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/drafts/OPR-BB-MTF-CENTER.md",
+    "MyTradingSys/research/setup_catalog_2026-10-15/drafts/KRW-RANGE-BB-MAP.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Check DEV 1m klines, taker volume and OI metrics coverage in the LAYERS.md:35 window; aggregate to 30m/1h with the forming-bar convention only for live, closed bars in the study; list gaps.",
+    "Write the precondition (N closes below the mid, falling mid), the touch finder (wick / near / close variants), the fixed-level U/D/R classifier and the 30m centre-close and pressure-eases conditions, with a fail-first test on synthetic bars.",
+    "Run DEV only. Per event: P(U), P(D), P(R), close-side tables for the next 1-3 bars, MFE/MAE to +1/+2/+4h in ATR(14,1h), fee-net R for the two plain rules (METHOD.md fees), controls (mirror up-trend touch, 30m mid, random hours, no precondition), OI/delta/session splits. Print n and Wilson 95% CI; cells with n<10 are not read.",
+    "Run the Krown range tests M1-M4 from drafts/KRW-RANGE-BB-MAP.md on 1h and 4h as descriptive tables.",
+    "Choose the N, touch rule and H on DEV only, append every variant to the trial ledger, one look at VALIDATION, write REPORT.md."
+  ],
+  "tests": "Fail-first test on synthetic 1h bars: a bar whose high touches its own BB mid after N closes below the mid is an event under touch rule 'wick' and not under 'close above'; band values hand-computed from FORMULAS.md.",
+  "title": "OPR-BB-MTF-CENTER G5 DEV event study: 1h touch of the BB mid in a lower-band trend"
+}

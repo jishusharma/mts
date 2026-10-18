@@ -73,10 +73,21 @@ TF_MS = {"1m": 60000, "5m": 300000, "15m": 900000, "1h": 3600000}
 B2_KEYS = {
     "fabio|v3_grid|1m": "needs aggTrades order-flow columns (buy_vol, b99_*, thr_days, fp)",
     "positioning|funding_cvd_fade|1h": "needs funding history; live fetches it over the network (default_fetch_funding)",
+    # W3 2026-10-16: layers wired for testnet sampling; they read history beyond the 99-bar window (HistoryStore) or their
+    # own fetch (wlow), so a 99-bar replay would not reproduce them. Not part of the bigtrade kline replay.
+    "wlow_bounce|bbrsi60|1h": "own 1h candle + OI fetch (169+ bars), not the 99-bar window",
+    "rsi_divergence|rsi_divergence|1h": "wave-1 adapter, not in the kline replay (sampling layer, no parity run)",
+    "bb_top_reversal|bb_top_reversal|15m": "wave-1 adapter, not in the kline replay (sampling layer, no parity run)",
+    "session_levels|session_levels|1m": "needs 2 UTC days of 1m history (HistoryStore), not the 99-bar window",
+    "candle_close|candle_close|1m": "needs 7 days of 1m history (HistoryStore), not the 99-bar window",
+    "levels|confluence|1m": "needs 17 days of 1m history (HistoryStore), not the 99-bar window",
 }
 
-# PLAN section 4 splits (by fire time, UTC). POST = after the stated range (data runs to 2026-10-07).
-SPLITS = (("TRAIN", "2022-01-01", "2025-01-01"), ("VALIDATE", "2025-01-01", "2025-07-01"),
+# Repo split (OPERATOR_DECISIONS.md:878): DEV 2022-01-01..2024-06-30, VALIDATION 2024-07-01..2025-06-30, HOLDOUT after.
+# Label names kept (TRAIN = DEV, VALIDATE = VALIDATION) because the fire CSV "split" column and callers use them.
+# DECISION (OURS) 2026-10-17: the old PLAN-section-4 split (TRAIN to 2025-01-01) leaked 2024-07..12 VALIDATION into TRAIN
+# (see SPLIT_ALIGNMENT_2026-10-17.md). POST = after the stated range (data runs to 2026-10-07).
+SPLITS = (("TRAIN", "2022-01-01", "2024-07-01"), ("VALIDATE", "2024-07-01", "2025-07-01"),
           ("HOLDOUT", "2025-07-01", "2026-10-01"))
 
 CSV_COLUMNS = [

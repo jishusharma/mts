@@ -1,0 +1,11 @@
+{
+  "name": "mts-ship",
+  "description": "Gate then ship the work tree to fast-track, then confirm nothing is left unshipped",
+  "params": { "repo": "C:\\Users\\E-ngineers\\IdeaProjects\\mts-dsa" },
+  "steps": [
+    { "name": "status", "cmd": "git status -sb", "cwd": "{repo}", "show": 8 },
+    { "name": "gate", "cmd": "python scripts/dev/run_all_tests.py --quick", "cwd": "{repo}", "timeout_s": 900, "show": 4 },
+    { "name": "ship", "cmd": "python scripts/dev/sync.py ship", "cwd": "{repo}", "timeout_s": 900, "show": 6 },
+    { "name": "where", "cmd": "python scripts/dev/sync.py where", "cwd": "{repo}", "timeout_s": 120, "show": 6 }
+  ]
+}

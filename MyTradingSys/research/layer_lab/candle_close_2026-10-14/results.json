@@ -1,0 +1,6021 @@
+{
+  "data_start": "2022-01-01 00:00:00+00:00",
+  "data_end": "2024-06-30 23:59:00+00:00",
+  "bars": 1313280,
+  "calendar_days": 912,
+  "event_rows": 105541,
+  "arms": 126,
+  "candidates": 0,
+  "manifest": [
+    {
+      "month": "2022-01",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-01.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2022-01.zip",
+      "sha256": "9cdbcf68903434c850f9bec60d8174c2cfd105dd24a7566965b442ec15124e04",
+      "checksum": "9cdbcf68903434c850f9bec60d8174c2cfd105dd24a7566965b442ec15124e04"
+    },
+    {
+      "month": "2022-02",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-02.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2022-02.zip",
+      "sha256": "63672d552f98ec125ac4d90d82154313fb9832b7e1aaed196101816bd61bfb89",
+      "checksum": "63672d552f98ec125ac4d90d82154313fb9832b7e1aaed196101816bd61bfb89"
+    },
+    {
+      "month": "2022-03",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-03.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2022-03.zip",
+      "sha256": "4532faf2f92d205fac79b7d25327d2045843b60a4494e00b0962e6b7f028bc06",
+      "checksum": "4532faf2f92d205fac79b7d25327d2045843b60a4494e00b0962e6b7f028bc06"
+    },
+    {
+      "month": "2022-04",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-04.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2022-04.zip",
+      "sha256": "0f509e296da62eed5f4e903507ced0de9738ea96a7a885e76dd2394b8049e689",
+      "checksum": "0f509e296da62eed5f4e903507ced0de9738ea96a7a885e76dd2394b8049e689"
+    },
+    {
+      "month": "2022-05",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-05.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2022-05.zip",
+      "sha256": "768bdbbd11b08d935b3753ecfee7f1e351a346c71b11cf68a4a51296d694f368",
+      "checksum": "768bdbbd11b08d935b3753ecfee7f1e351a346c71b11cf68a4a51296d694f368"
+    },
+    {
+      "month": "2022-06",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2022-06.zip",
+      "sha256": "8587319eaf1b1f6d73fd34446acdecdc72c47b23ecfd2d88e2a6dd2a35470565",
+      "checksum": "8587319eaf1b1f6d73fd34446acdecdc72c47b23ecfd2d88e2a6dd2a35470565"
+    },
+    {
+      "month": "2022-07",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-07.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2022-07.zip",
+      "sha256": "6fc45fa135a6be85679a6ab0b1268fbd1f8258079295cd134b9a4c535c6b6b65",
+      "checksum": "6fc45fa135a6be85679a6ab0b1268fbd1f8258079295cd134b9a4c535c6b6b65"
+    },
+    {
+      "month": "2022-08",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-08.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2022-08.zip",
+      "sha256": "806ee1d6efa856984fe79453d17f04c0fb5e447413fe828cbd3ec2df9a1f5fc4",
+      "checksum": "806ee1d6efa856984fe79453d17f04c0fb5e447413fe828cbd3ec2df9a1f5fc4"
+    },
+    {
+      "month": "2022-09",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-09.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2022-09.zip",
+      "sha256": "fa1adecbe41b530c12f481882115511297ac7b78a9a7ae9d9d21b11c745649a4",
+      "checksum": "fa1adecbe41b530c12f481882115511297ac7b78a9a7ae9d9d21b11c745649a4"
+    },
+    {
+      "month": "2022-10",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-10.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2022-10.zip",
+      "sha256": "0f2d2cd67b30ab186bf3db5a07acfe835f1d74335c6493c80e9e4f0598e29b2c",
+      "checksum": "0f2d2cd67b30ab186bf3db5a07acfe835f1d74335c6493c80e9e4f0598e29b2c"
+    },
+    {
+      "month": "2022-11",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-11.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2022-11.zip",
+      "sha256": "96916aba47f230a9bc68cd3fd98d0d352e1fd8f23c16c515107c4d965a2067a3",
+      "checksum": "96916aba47f230a9bc68cd3fd98d0d352e1fd8f23c16c515107c4d965a2067a3"
+    },
+    {
+      "month": "2022-12",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2022-12.zip",
+      "sha256": "0f4788019cdb29f4db7b03d9efefce099d7adf49c0daf70a144b814b292bf577",
+      "checksum": "0f4788019cdb29f4db7b03d9efefce099d7adf49c0daf70a144b814b292bf577"
+    },
+    {
+      "month": "2023-01",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2023-01.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2023-01.zip",
+      "sha256": "b7b04483464b36c89f519bf35d6461d278c709577562108b6a00fb786b92e6a6",
+      "checksum": "b7b04483464b36c89f519bf35d6461d278c709577562108b6a00fb786b92e6a6"
+    },
+    {
+      "month": "2023-02",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2023-02.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2023-02.zip",
+      "sha256": "b62ca5df57b1715109cb1fd57097529b28410fb36b0db5bd41dbefe7e070db68",
+      "checksum": "b62ca5df57b1715109cb1fd57097529b28410fb36b0db5bd41dbefe7e070db68"
+    },
+    {
+      "month": "2023-03",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2023-03.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2023-03.zip",
+      "sha256": "1cb47aae71e941d3e9d333f9c96723eb35c8b4a7ec90e819c59a7c02f89b03bb",
+      "checksum": "1cb47aae71e941d3e9d333f9c96723eb35c8b4a7ec90e819c59a7c02f89b03bb"
+    },
+    {
+      "month": "2023-04",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2023-04.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2023-04.zip",
+      "sha256": "2c22e2e460bf0e41884bf71031eebf60224ba470b25777a4d17ddc9298390650",
+      "checksum": "2c22e2e460bf0e41884bf71031eebf60224ba470b25777a4d17ddc9298390650"
+    },
+    {
+      "month": "2023-05",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2023-05.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2023-05.zip",
+      "sha256": "cf9e0ab390e3872ddb9d807ad161933a28e374e09dbee2b9addf659856d1e656",
+      "checksum": "cf9e0ab390e3872ddb9d807ad161933a28e374e09dbee2b9addf659856d1e656"
+    },
+    {
+      "month": "2023-06",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2023-06.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2023-06.zip",
+      "sha256": "8dac3fe301198e752b257817542a7ded393dbe00b604f67aba6bc0090778ae95",
+      "checksum": "8dac3fe301198e752b257817542a7ded393dbe00b604f67aba6bc0090778ae95"
+    },
+    {
+      "month": "2023-07",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2023-07.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2023-07.zip",
+      "sha256": "5cc84c767c9f4d1fa3cb3d33bd009a0b5e3a445e9c89ad2ef259c90b0365cbc3",
+      "checksum": "5cc84c767c9f4d1fa3cb3d33bd009a0b5e3a445e9c89ad2ef259c90b0365cbc3"
+    },
+    {
+      "month": "2023-08",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2023-08.zip",
+      "sha256": "8d77e6f898fba3aa5bf643d128e0aaa1b722ea6881cd26a3d19088705117a1d7",
+      "checksum": "8d77e6f898fba3aa5bf643d128e0aaa1b722ea6881cd26a3d19088705117a1d7"
+    },
+    {
+      "month": "2023-09",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2023-09.zip",
+      "sha256": "ea43f6e612b54e165c47ea30955b8d9e825b1d3ad1846f12c03ad0f0fced9029",
+      "checksum": "ea43f6e612b54e165c47ea30955b8d9e825b1d3ad1846f12c03ad0f0fced9029"
+    },
+    {
+      "month": "2023-10",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2023-10.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2023-10.zip",
+      "sha256": "153f1322695d16a12cab261b7798045323d9f893b19d35d95ffe94a62530b4de",
+      "checksum": "153f1322695d16a12cab261b7798045323d9f893b19d35d95ffe94a62530b4de"
+    },
+    {
+      "month": "2023-11",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2023-11.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2023-11.zip",
+      "sha256": "63aa156170b2316927ae4c4928cc78866934a02b4bbc14c730b5fe4790383a80",
+      "checksum": "63aa156170b2316927ae4c4928cc78866934a02b4bbc14c730b5fe4790383a80"
+    },
+    {
+      "month": "2023-12",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2023-12.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2023-12.zip",
+      "sha256": "947ea9b1c5dfa301f1d5ff89d28f3ee49bc73eef2cfa1f0dc4024048458eb60b",
+      "checksum": "947ea9b1c5dfa301f1d5ff89d28f3ee49bc73eef2cfa1f0dc4024048458eb60b"
+    },
+    {
+      "month": "2024-01",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2024-01.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2024-01.zip",
+      "sha256": "21eeac04a76a7a35b10467e5e752fb2f8cff77cdeb57df6b50a23ce8d69bb190",
+      "checksum": "21eeac04a76a7a35b10467e5e752fb2f8cff77cdeb57df6b50a23ce8d69bb190"
+    },
+    {
+      "month": "2024-02",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2024-02.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2024-02.zip",
+      "sha256": "1407acbf8ad99911bdf582805699b7e85fdbc346dbe12618ce8b6369f0d8058d",
+      "checksum": "1407acbf8ad99911bdf582805699b7e85fdbc346dbe12618ce8b6369f0d8058d"
+    },
+    {
+      "month": "2024-03",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2024-03.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2024-03.zip",
+      "sha256": "040b8e448e4243072b88b0d9908dfebed91bba943b75f4e831fa5337a2e1dab9",
+      "checksum": "040b8e448e4243072b88b0d9908dfebed91bba943b75f4e831fa5337a2e1dab9"
+    },
+    {
+      "month": "2024-04",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2024-04.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2024-04.zip",
+      "sha256": "6a41f002da0c8e3f60bd46c841ea4ed766fb195764ad3b6b10e4f508d29c2eb7",
+      "checksum": "6a41f002da0c8e3f60bd46c841ea4ed766fb195764ad3b6b10e4f508d29c2eb7"
+    },
+    {
+      "month": "2024-05",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2024-05.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2024-05.zip",
+      "sha256": "42de617ed643def54b5a2c3fceb7cd2edec91aafaa01104a097b2ded5c5122d4",
+      "checksum": "42de617ed643def54b5a2c3fceb7cd2edec91aafaa01104a097b2ded5c5122d4"
+    },
+    {
+      "month": "2024-06",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2024-06.zip",
+      "path": "F:\\MTS\\data\\candle_close_dev_2022_2024\\BTCUSDT-1m-2024-06.zip",
+      "sha256": "93499da4990fec5471bb0d73c91116e7d20a8b2697d7a4491665d6d1b8e85c85",
+      "checksum": "93499da4990fec5471bb0d73c91116e7d20a8b2697d7a4491665d6d1b8e85c85"
+    }
+  ],
+  "rows": [
+    {
+      "tf": 1,
+      "family": "4h",
+      "signature": "rejection",
+      "n": 1749,
+      "days": 881,
+      "win": 0.5157232704402516,
+      "win_ci": [
+        0.496070284548077,
+        0.5351336986334538
+      ],
+      "win_bonf": [
+        0.4809976052938818,
+        0.5504489355866213
+      ],
+      "lift": -0.003247156665664023,
+      "lift_ci": [
+        -0.02055013591390288,
+        0.01395631858274068
+      ],
+      "lift_bonf": [
+        -0.03432738802731614,
+        0.0278330746959881
+      ],
+      "gross": 3.2264016915452655e-05,
+      "gross_ci": [
+        -0.0001683342769531506,
+        0.00021565486749321438
+      ],
+      "gross_bonf": [
+        -0.00032887957063569464,
+        0.00039340760446659995
+      ],
+      "return_lift": -8.283351502656398e-05,
+      "return_lift_ci": [
+        -0.0002502405781643775,
+        5.824453956154934e-05
+      ],
+      "return_lift_bonf": [
+        -0.0003648957524632054,
+        0.00019922872241007748
+      ],
+      "screen14_bps": -13.677359830845473,
+      "screen20_bps": -19.677359830845475,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "4h",
+      "signature": "break",
+      "n": 1761,
+      "days": 881,
+      "win": 0.48608745031232253,
+      "win_ci": [
+        0.4709561737866321,
+        0.5008538747180741
+      ],
+      "win_bonf": [
+        0.45909664986359244,
+        0.5130782507610526
+      ],
+      "lift": -0.025404714415303717,
+      "lift_ci": [
+        -0.038771621367182506,
+        -0.011799311740298813
+      ],
+      "lift_bonf": [
+        -0.05074735266496592,
+        -6.207616564151558e-05
+      ],
+      "gross": -3.1541609406567264e-05,
+      "gross_ci": [
+        -0.0002009469830684361,
+        0.0001591234984628344
+      ],
+      "gross_bonf": [
+        -0.0003630268462304535,
+        0.000299943627417319
+      ],
+      "return_lift": -0.0002908279361622653,
+      "return_lift_ci": [
+        -0.0004122924489538359,
+        -0.00016017192351716063
+      ],
+      "return_lift_bonf": [
+        -0.0005204835795870749,
+        -6.117229273745563e-05
+      ],
+      "screen14_bps": -14.315416094065673,
+      "screen20_bps": -20.31541609406567,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "4h",
+      "signature": "acceptance",
+      "n": 1758,
+      "days": 880,
+      "win": 0.48350398179749715,
+      "win_ci": [
+        0.46403369347432954,
+        0.5016782310967018
+      ],
+      "win_bonf": [
+        0.4500710728747818,
+        0.5169368907202125
+      ],
+      "lift": -0.03976821889630532,
+      "lift_ci": [
+        -0.05720959392567602,
+        -0.022249264608363482
+      ],
+      "lift_bonf": [
+        -0.07056483454095296,
+        -0.008971603251657686
+      ],
+      "gross": 3.8217694032754895e-05,
+      "gross_ci": [
+        -0.00015203166295624837,
+        0.000241851782636841
+      ],
+      "gross_bonf": [
+        -0.00030925959333779766,
+        0.0003856949814033074
+      ],
+      "return_lift": -0.0003405685622437182,
+      "return_lift_ci": [
+        -0.00048345423696265953,
+        -0.00018696432413856947
+      ],
+      "return_lift_bonf": [
+        -0.0006051973313201586,
+        -7.59397931672777e-05
+      ],
+      "screen14_bps": -13.617823059672451,
+      "screen20_bps": -19.61782305967245,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "4h",
+      "signature": "reclaim",
+      "n": 1691,
+      "days": 870,
+      "win": 0.4967474866942638,
+      "win_ci": [
+        0.4778636764625097,
+        0.5162896512414004
+      ],
+      "win_bonf": [
+        0.46212081888312395,
+        0.5313741545054036
+      ],
+      "lift": -0.023344221979462655,
+      "lift_ci": [
+        -0.039468500358697284,
+        -0.007197242661647991
+      ],
+      "lift_bonf": [
+        -0.05221027954248905,
+        0.005521835583563738
+      ],
+      "gross": -6.221780164852267e-05,
+      "gross_ci": [
+        -0.0002790540675805221,
+        0.00013870853223734027
+      ],
+      "gross_bonf": [
+        -0.0004245745079453239,
+        0.0003001389046482786
+      ],
+      "return_lift": -0.00016479810382513083,
+      "return_lift_ci": [
+        -0.00029119275183225386,
+        -3.364745706296495e-05
+      ],
+      "return_lift_bonf": [
+        -0.0004023099153720021,
+        7.271370772174044e-05
+      ],
+      "screen14_bps": -14.622178016485227,
+      "screen20_bps": -20.622178016485226,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "4h",
+      "signature": "retest",
+      "n": 1737,
+      "days": 881,
+      "win": 0.5302245250431779,
+      "win_ci": [
+        0.5077183745604487,
+        0.550742221907508
+      ],
+      "win_bonf": [
+        0.4907551564985558,
+        0.5696938935878
+      ],
+      "lift": 0.003214798167964114,
+      "lift_ci": [
+        -0.015557783622111729,
+        0.02128363253711963
+      ],
+      "lift_bonf": [
+        -0.0308708908587206,
+        0.037300487194648825
+      ],
+      "gross": 0.00012904316026388633,
+      "gross_ci": [
+        -0.0001122939394788404,
+        0.00036470549054733387
+      ],
+      "gross_bonf": [
+        -0.0003060617864003315,
+        0.0005641481069281042
+      ],
+      "return_lift": -7.2274822373181935e-06,
+      "return_lift_ci": [
+        -0.00019588393196569187,
+        0.00018235319293789383
+      ],
+      "return_lift_bonf": [
+        -0.0003479960941206132,
+        0.00033354112964597687
+      ],
+      "screen14_bps": -12.709568397361137,
+      "screen20_bps": -18.709568397361135,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "4h",
+      "signature": "strong_break",
+      "n": 1750,
+      "days": 878,
+      "win": 0.5,
+      "win_ci": [
+        0.48269589056382756,
+        0.518075421269132
+      ],
+      "win_bonf": [
+        0.4682793660217974,
+        0.5317206339782026
+      ],
+      "lift": -0.02422306059022241,
+      "lift_ci": [
+        -0.03949674362989468,
+        -0.007446488117366495
+      ],
+      "lift_bonf": [
+        -0.05291537150249219,
+        0.0044692503220473655
+      ],
+      "gross": -4.750961663741623e-06,
+      "gross_ci": [
+        -0.00017230242808784235,
+        0.00018178752745412458
+      ],
+      "gross_bonf": [
+        -0.00032499949257141077,
+        0.0003154975692439275
+      ],
+      "return_lift": -0.000332969216562057,
+      "return_lift_ci": [
+        -0.0004892084632113645,
+        -0.00018395372095595988
+      ],
+      "return_lift_bonf": [
+        -0.0006069144191428446,
+        -5.902401398126929e-05
+      ],
+      "screen14_bps": -14.047509616637416,
+      "screen20_bps": -20.047509616637416,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "day",
+      "signature": "rejection",
+      "n": 1089,
+      "days": 612,
+      "win": 0.47750229568411384,
+      "win_ci": [
+        0.4546883868748982,
+        0.5004431102685675
+      ],
+      "win_bonf": [
+        0.4359830694785025,
+        0.5190215218897252
+      ],
+      "lift": -0.05475979173541623,
+      "lift_ci": [
+        -0.07363338906710631,
+        -0.03851627370082313
+      ],
+      "lift_bonf": [
+        -0.08674596897125753,
+        -0.022773614499574935
+      ],
+      "gross": -0.00015269542122803685,
+      "gross_ci": [
+        -0.0005219872661587237,
+        0.0002289799226061563
+      ],
+      "gross_bonf": [
+        -0.0008350168385326492,
+        0.0005296259960765755
+      ],
+      "return_lift": -0.0005976045553159825,
+      "return_lift_ci": [
+        -0.0008225974973354175,
+        -0.00040159724146667387
+      ],
+      "return_lift_bonf": [
+        -0.0009800382293879935,
+        -0.0002151708812439715
+      ],
+      "screen14_bps": -15.52695421228037,
+      "screen20_bps": -21.52695421228037,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "day",
+      "signature": "break",
+      "n": 1170,
+      "days": 613,
+      "win": 0.4948717948717949,
+      "win_ci": [
+        0.4769874476987448,
+        0.5136105413863075
+      ],
+      "win_bonf": [
+        0.4622708104069188,
+        0.527472779336671
+      ],
+      "lift": -0.02972022779690613,
+      "lift_ci": [
+        -0.046366120295621746,
+        -0.012999632319027567
+      ],
+      "lift_bonf": [
+        -0.05970067559133109,
+        0.000260219997518827
+      ],
+      "gross": 0.0002096570913683103,
+      "gross_ci": [
+        -0.0001042065807846517,
+        0.0005488625435171641
+      ],
+      "gross_bonf": [
+        -0.0003793184680499393,
+        0.0007986326507865599
+      ],
+      "return_lift": -0.0003892563175713239,
+      "return_lift_ci": [
+        -0.0005999528578208269,
+        -0.00016481755609828894
+      ],
+      "return_lift_bonf": [
+        -0.0007929583916311822,
+        1.4445756488534441e-05
+      ],
+      "screen14_bps": -11.903429086316898,
+      "screen20_bps": -17.903429086316898,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "day",
+      "signature": "acceptance",
+      "n": 1087,
+      "days": 585,
+      "win": 0.48022079116835326,
+      "win_ci": [
+        0.4587227642276423,
+        0.5004555697369787
+      ],
+      "win_bonf": [
+        0.44202516090132704,
+        0.5184164214353795
+      ],
+      "lift": -0.060948684032448644,
+      "lift_ci": [
+        -0.0801049738256034,
+        -0.04347584296314448
+      ],
+      "lift_bonf": [
+        -0.09440283964727939,
+        -0.027494528417617903
+      ],
+      "gross": -0.0001408098786301496,
+      "gross_ci": [
+        -0.0004676386541804652,
+        0.00017604381505542655
+      ],
+      "gross_bonf": [
+        -0.0007235159357962082,
+        0.00044189617853590893
+      ],
+      "return_lift": -0.0008211161440949768,
+      "return_lift_ci": [
+        -0.0010136496293445072,
+        -0.0006298159265200108
+      ],
+      "return_lift_bonf": [
+        -0.001170000123077546,
+        -0.0004722321651124075
+      ],
+      "screen14_bps": -15.408098786301496,
+      "screen20_bps": -21.408098786301498,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "day",
+      "signature": "reclaim",
+      "n": 901,
+      "days": 509,
+      "win": 0.5027746947835738,
+      "win_ci": [
+        0.47756953737091024,
+        0.5294803985422399
+      ],
+      "win_bonf": [
+        0.4569578309577415,
+        0.5485915586094061
+      ],
+      "lift": -0.04175021940242248,
+      "lift_ci": [
+        -0.061152482319428735,
+        -0.021222739593512056
+      ],
+      "lift_bonf": [
+        -0.0779786797505842,
+        -0.005521759054260764
+      ],
+      "gross": 4.807285334446292e-05,
+      "gross_ci": [
+        -0.0003036188808707696,
+        0.00039347827928846725
+      ],
+      "gross_bonf": [
+        -0.0005557825715053768,
+        0.0006519282781943026
+      ],
+      "return_lift": -0.00047803021697361133,
+      "return_lift_ci": [
+        -0.0006925306032291276,
+        -0.00026543095482623347
+      ],
+      "return_lift_bonf": [
+        -0.0008533637785426229,
+        -0.00010269665540459973
+      ],
+      "screen14_bps": -13.51927146655537,
+      "screen20_bps": -19.51927146655537,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "day",
+      "signature": "retest",
+      "n": 1030,
+      "days": 598,
+      "win": 0.4815533980582524,
+      "win_ci": [
+        0.4551747567619002,
+        0.5071345585128856
+      ],
+      "win_bonf": [
+        0.43481797460670657,
+        0.5282888215097983
+      ],
+      "lift": -0.04871536542953887,
+      "lift_ci": [
+        -0.07036649283506895,
+        -0.02861097134704842
+      ],
+      "lift_bonf": [
+        -0.08679348197379834,
+        -0.010637248885279407
+      ],
+      "gross": -0.0003444230864517204,
+      "gross_ci": [
+        -0.0007709550795524317,
+        6.68860226071051e-05
+      ],
+      "gross_bonf": [
+        -0.0010987022322304766,
+        0.0004098560593270358
+      ],
+      "return_lift": -0.0005822560045302093,
+      "return_lift_ci": [
+        -0.0008491035557176942,
+        -0.00032294843730319874
+      ],
+      "return_lift_bonf": [
+        -0.001061090704980702,
+        -0.00010342130407971656
+      ],
+      "screen14_bps": -17.444230864517206,
+      "screen20_bps": -23.444230864517206,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "day",
+      "signature": "strong_break",
+      "n": 1034,
+      "days": 555,
+      "win": 0.49032882011605416,
+      "win_ci": [
+        0.47135907398413474,
+        0.5093323409045852
+      ],
+      "win_bonf": [
+        0.45558282982424264,
+        0.5250748104078657
+      ],
+      "lift": -0.037149521731978316,
+      "lift_ci": [
+        -0.052640706120112485,
+        -0.0202296231784824
+      ],
+      "lift_bonf": [
+        -0.06743089017072022,
+        -0.006868153293236413
+      ],
+      "gross": 3.920195172129955e-05,
+      "gross_ci": [
+        -0.00027916429792735167,
+        0.00035635612833890125
+      ],
+      "gross_bonf": [
+        -0.0005432429925266572,
+        0.0006216468959692563
+      ],
+      "return_lift": -0.0005112093381367033,
+      "return_lift_ci": [
+        -0.0007536001934081878,
+        -0.00027984495086062305
+      ],
+      "return_lift_bonf": [
+        -0.0009376232399089812,
+        -8.479543636442547e-05
+      ],
+      "screen14_bps": -13.607980482787005,
+      "screen20_bps": -19.607980482787003,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "week",
+      "signature": "rejection",
+      "n": 424,
+      "days": 245,
+      "win": 0.47877358490566035,
+      "win_ci": [
+        0.4406330200313302,
+        0.5150282756879575
+      ],
+      "win_bonf": [
+        0.4123821685384701,
+        0.5451650012728506
+      ],
+      "lift": -0.04915344644460429,
+      "lift_ci": [
+        -0.08203063342526434,
+        -0.020164819385712504
+      ],
+      "lift_bonf": [
+        -0.10540144936354995,
+        0.0070945564743413805
+      ],
+      "gross": -0.00031636314420326734,
+      "gross_ci": [
+        -0.0009809405939271677,
+        0.0003533511747241609
+      ],
+      "gross_bonf": [
+        -0.0015032870815150467,
+        0.000870560793108512
+      ],
+      "return_lift": -0.000687735702954378,
+      "return_lift_ci": [
+        -0.0011210636115703452,
+        -0.00034073287126065634
+      ],
+      "return_lift_bonf": [
+        -0.0014008262298751007,
+        2.5354823966344917e-05
+      ],
+      "screen14_bps": -17.163631442032674,
+      "screen20_bps": -23.163631442032674,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "week",
+      "signature": "break",
+      "n": 483,
+      "days": 255,
+      "win": 0.5134575569358178,
+      "win_ci": [
+        0.48974418848466944,
+        0.5363717362302268
+      ],
+      "win_bonf": [
+        0.4712529830107607,
+        0.555662130860875
+      ],
+      "lift": -0.006704710493334253,
+      "lift_ci": [
+        -0.025820445947376224,
+        0.012319240746003338
+      ],
+      "lift_bonf": [
+        -0.040995228110745026,
+        0.027585807124076524
+      ],
+      "gross": 0.00020899640929145056,
+      "gross_ci": [
+        -0.0002037849618165995,
+        0.0006800367538222359
+      ],
+      "gross_bonf": [
+        -0.0006182555657536869,
+        0.001036248384336588
+      ],
+      "return_lift": -0.0003999950852451717,
+      "return_lift_ci": [
+        -0.0006486797564341003,
+        -9.250111352925665e-05
+      ],
+      "return_lift_bonf": [
+        -0.0009176713088161405,
+        0.00011768113832579712
+      ],
+      "screen14_bps": -11.910035907085494,
+      "screen20_bps": -17.910035907085494,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "week",
+      "signature": "acceptance",
+      "n": 440,
+      "days": 242,
+      "win": 0.5022727272727273,
+      "win_ci": [
+        0.46924829157175396,
+        0.5351570323560897
+      ],
+      "win_bonf": [
+        0.44232541369571177,
+        0.5622200408497429
+      ],
+      "lift": -0.02564859999842112,
+      "lift_ci": [
+        -0.05322583935587375,
+        0.0028914682827440564
+      ],
+      "lift_bonf": [
+        -0.07618000504734858,
+        0.024882805050506333
+      ],
+      "gross": -5.292054166738946e-06,
+      "gross_ci": [
+        -0.000461402742745623,
+        0.00047123396003760415
+      ],
+      "gross_bonf": [
+        -0.0008821617633653,
+        0.0008715776550318221
+      ],
+      "return_lift": -0.0006637881789727439,
+      "return_lift_ci": [
+        -0.0009470553827845024,
+        -0.00038773268361644346
+      ],
+      "return_lift_bonf": [
+        -0.0011665986785085588,
+        -0.00016097767943692878
+      ],
+      "screen14_bps": -14.05292054166739,
+      "screen20_bps": -20.05292054166739,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "week",
+      "signature": "reclaim",
+      "n": 333,
+      "days": 196,
+      "win": 0.5285285285285285,
+      "win_ci": [
+        0.4872611464968153,
+        0.572465443774683
+      ],
+      "win_bonf": [
+        0.45437773541548426,
+        0.6026793216415727
+      ],
+      "lift": -0.015508948589810709,
+      "lift_ci": [
+        -0.05130045356153935,
+        0.021471688488656517
+      ],
+      "lift_bonf": [
+        -0.08215605303568443,
+        0.05113815585606302
+      ],
+      "gross": 0.0004455096242673233,
+      "gross_ci": [
+        -0.00010231868904315518,
+        0.000996391507777275
+      ],
+      "gross_bonf": [
+        -0.0005510979551435554,
+        0.001442117203678202
+      ],
+      "return_lift": -0.00031402625419252843,
+      "return_lift_ci": [
+        -0.0007292887408945619,
+        0.0001175397737337888
+      ],
+      "return_lift_bonf": [
+        -0.0010597698933369293,
+        0.0004317173849518724
+      ],
+      "screen14_bps": -9.544903757326768,
+      "screen20_bps": -15.544903757326768,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "week",
+      "signature": "retest",
+      "n": 399,
+      "days": 236,
+      "win": 0.48621553884711777,
+      "win_ci": [
+        0.4454573454825173,
+        0.5256610576923076
+      ],
+      "win_bonf": [
+        0.4125318371086036,
+        0.559899240585632
+      ],
+      "lift": -0.04889032789177731,
+      "lift_ci": [
+        -0.08468830436251795,
+        -0.014980597603751436
+      ],
+      "lift_bonf": [
+        -0.11219373643671007,
+        0.014413080653155462
+      ],
+      "gross": -0.00017591355014259604,
+      "gross_ci": [
+        -0.0008126959740858052,
+        0.0005030291174532884
+      ],
+      "gross_bonf": [
+        -0.0013705414727565918,
+        0.0010187143724713999
+      ],
+      "return_lift": -0.0005790300435833483,
+      "return_lift_ci": [
+        -0.0009901917675269492,
+        -0.00019692399454460834
+      ],
+      "return_lift_bonf": [
+        -0.0013230025456568862,
+        0.00016494245849018945
+      ],
+      "screen14_bps": -15.75913550142596,
+      "screen20_bps": -21.75913550142596,
+      "candidate": false
+    },
+    {
+      "tf": 1,
+      "family": "week",
+      "signature": "strong_break",
+      "n": 414,
+      "days": 227,
+      "win": 0.4806763285024155,
+      "win_ci": [
+        0.44854790699359387,
+        0.5118830566599325
+      ],
+      "win_bonf": [
+        0.4229718629092893,
+        0.5383807940955417
+      ],
+      "lift": -0.027995652952162258,
+      "lift_ci": [
+        -0.05649483121758102,
+        0.001070931283409977
+      ],
+      "lift_bonf": [
+        -0.0791258900643231,
+        0.023134584159998587
+      ],
+      "gross": -0.00032428526567204887,
+      "gross_ci": [
+        -0.0008037529960946996,
+        0.00014445193587528285
+      ],
+      "gross_bonf": [
+        -0.0011767899870960303,
+        0.0005282194557519324
+      ],
+      "return_lift": -0.0006300096281441483,
+      "return_lift_ci": [
+        -0.000873697686368883,
+        -0.0003853931567598681
+      ],
+      "return_lift_bonf": [
+        -0.0010691749104842492,
+        -0.00019084434580404736
+      ],
+      "screen14_bps": -17.242852656720487,
+      "screen20_bps": -23.242852656720487,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "4h",
+      "signature": "rejection",
+      "n": 1739,
+      "days": 881,
+      "win": 0.5146635997699828,
+      "win_ci": [
+        0.4946333312660787,
+        0.5333719696469267
+      ],
+      "win_bonf": [
+        0.47956584914731915,
+        0.5497613503926464
+      ],
+      "lift": -0.014026579116457202,
+      "lift_ci": [
+        -0.031376823779889554,
+        0.0017025860982609704
+      ],
+      "lift_bonf": [
+        -0.044712332702891655,
+        0.016659174469977247
+      ],
+      "gross": 0.00012806185662503667,
+      "gross_ci": [
+        -9.209668008762457e-05,
+        0.00035390821316427204
+      ],
+      "gross_bonf": [
+        -0.00025320094422798386,
+        0.0005093246574780573
+      ],
+      "return_lift": -8.086516176805248e-05,
+      "return_lift_ci": [
+        -0.00021765143257582406,
+        5.7082175959798795e-05
+      ],
+      "return_lift_bonf": [
+        -0.00033231326332289484,
+        0.0001705829397867899
+      ],
+      "screen14_bps": -12.719381433749634,
+      "screen20_bps": -18.719381433749632,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "4h",
+      "signature": "break",
+      "n": 1759,
+      "days": 881,
+      "win": 0.48038658328595796,
+      "win_ci": [
+        0.46308333039488786,
+        0.4974364186073566
+      ],
+      "win_bonf": [
+        0.44948936299843645,
+        0.5112838035734795
+      ],
+      "lift": -0.03358567353537992,
+      "lift_ci": [
+        -0.048629241215332485,
+        -0.017673950381140942
+      ],
+      "lift_bonf": [
+        -0.061768144952014624,
+        -0.005403202118745211
+      ],
+      "gross": -3.838387864049429e-05,
+      "gross_ci": [
+        -0.0001972010821661891,
+        0.00012932125306206837
+      ],
+      "gross_bonf": [
+        -0.0003426324598416591,
+        0.0002658647025606705
+      ],
+      "return_lift": -0.00035393862204497644,
+      "return_lift_ci": [
+        -0.000492897048235109,
+        -0.00020510694965028962
+      ],
+      "return_lift_bonf": [
+        -0.0006103689208061434,
+        -9.75083232838095e-05
+      ],
+      "screen14_bps": -14.383838786404944,
+      "screen20_bps": -20.383838786404944,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "4h",
+      "signature": "acceptance",
+      "n": 1743,
+      "days": 880,
+      "win": 0.4802065404475043,
+      "win_ci": [
+        0.4602500099890786,
+        0.4982850378058074
+      ],
+      "win_bonf": [
+        0.44477722250905893,
+        0.5156358583859497
+      ],
+      "lift": -0.05624713598553887,
+      "lift_ci": [
+        -0.0725744706511401,
+        -0.039222069311190245
+      ],
+      "lift_bonf": [
+        -0.0876100987339043,
+        -0.02488417323717345
+      ],
+      "gross": 0.00011389117863134525,
+      "gross_ci": [
+        -8.35719140069276e-05,
+        0.0003039845653299946
+      ],
+      "gross_bonf": [
+        -0.00022863241749731416,
+        0.00045641477476000467
+      ],
+      "return_lift": -0.00038090829325199225,
+      "return_lift_ci": [
+        -0.0004999901213034505,
+        -0.000263235425858484
+      ],
+      "return_lift_bonf": [
+        -0.0006031730477249414,
+        -0.0001586435387790431
+      ],
+      "screen14_bps": -12.861088213686548,
+      "screen20_bps": -18.861088213686546,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "4h",
+      "signature": "reclaim",
+      "n": 1612,
+      "days": 859,
+      "win": 0.5204714640198511,
+      "win_ci": [
+        0.5011844034834401,
+        0.5396253891622428
+      ],
+      "win_bonf": [
+        0.4862391991581526,
+        0.5547037288815496
+      ],
+      "lift": -0.012933369961531846,
+      "lift_ci": [
+        -0.029148677690105984,
+        0.003015370066041013
+      ],
+      "lift_bonf": [
+        -0.04244519128059323,
+        0.01657845135752954
+      ],
+      "gross": 0.00016643985135178605,
+      "gross_ci": [
+        -3.880031341549944e-05,
+        0.0003519254665003664
+      ],
+      "gross_bonf": [
+        -0.0001752981805567867,
+        0.0005081778832603588
+      ],
+      "return_lift": -0.00017308097443680494,
+      "return_lift_ci": [
+        -0.0003457903134865114,
+        -2.897500698462324e-05
+      ],
+      "return_lift_bonf": [
+        -0.0004588259947973695,
+        0.00011266404592375959
+      ],
+      "screen14_bps": -12.33560148648214,
+      "screen20_bps": -18.33560148648214,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "4h",
+      "signature": "retest",
+      "n": 1723,
+      "days": 881,
+      "win": 0.53047011027278,
+      "win_ci": [
+        0.5118249905693262,
+        0.5491561231797565
+      ],
+      "win_bonf": [
+        0.49654930665657854,
+        0.5643909138889815
+      ],
+      "lift": -0.0017263179235519597,
+      "lift_ci": [
+        -0.017875575793463543,
+        0.015079668248096352
+      ],
+      "lift_bonf": [
+        -0.03173511426233848,
+        0.02828247841523456
+      ],
+      "gross": -3.104409008727323e-05,
+      "gross_ci": [
+        -0.00028802749976854843,
+        0.00020924517468595875
+      ],
+      "gross_bonf": [
+        -0.0004862011193575313,
+        0.00042411293918298484
+      ],
+      "return_lift": -0.00010735286158132004,
+      "return_lift_ci": [
+        -0.0003110598678072183,
+        7.94891531026275e-05
+      ],
+      "return_lift_bonf": [
+        -0.00045060799510309303,
+        0.00023590227194045298
+      ],
+      "screen14_bps": -14.310440900872733,
+      "screen20_bps": -20.31044090087273,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "4h",
+      "signature": "strong_break",
+      "n": 1727,
+      "days": 879,
+      "win": 0.4939200926462073,
+      "win_ci": [
+        0.4727056380273817,
+        0.512310014722421
+      ],
+      "win_bonf": [
+        0.4588862839033708,
+        0.5289539013890439
+      ],
+      "lift": -0.02732742677076594,
+      "lift_ci": [
+        -0.04598561509553781,
+        -0.01095933888108791
+      ],
+      "lift_bonf": [
+        -0.059300860913700564,
+        0.004646007372168685
+      ],
+      "gross": -2.040314978110936e-05,
+      "gross_ci": [
+        -0.00021352422626043396,
+        0.00015791267468145953
+      ],
+      "gross_bonf": [
+        -0.00035646675159786733,
+        0.00031566045203564866
+      ],
+      "return_lift": -0.00034772452792743424,
+      "return_lift_ci": [
+        -0.00047695076562130563,
+        -0.0002245360109516293
+      ],
+      "return_lift_bonf": [
+        -0.0005782678052568495,
+        -0.00011718125059801893
+      ],
+      "screen14_bps": -14.204031497811094,
+      "screen20_bps": -20.204031497811094,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "day",
+      "signature": "rejection",
+      "n": 1040,
+      "days": 603,
+      "win": 0.4875,
+      "win_ci": [
+        0.4594848609143113,
+        0.514368600828682
+      ],
+      "win_bonf": [
+        0.43685993442792037,
+        0.5381400655720796
+      ],
+      "lift": -0.05292533915809716,
+      "lift_ci": [
+        -0.07453509190159781,
+        -0.032182041654592194
+      ],
+      "lift_bonf": [
+        -0.09209389987029942,
+        -0.013756778445894895
+      ],
+      "gross": -1.4765273377917336e-05,
+      "gross_ci": [
+        -0.000436041063377138,
+        0.0003810741915345006
+      ],
+      "gross_bonf": [
+        -0.0007658323246075423,
+        0.0007363017778517076
+      ],
+      "return_lift": -0.0005056313216686318,
+      "return_lift_ci": [
+        -0.0007447144585094881,
+        -0.00027050233584757023
+      ],
+      "return_lift_bonf": [
+        -0.0009404736909196861,
+        -7.07889524175776e-05
+      ],
+      "screen14_bps": -14.147652733779173,
+      "screen20_bps": -20.147652733779175,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "day",
+      "signature": "break",
+      "n": 1107,
+      "days": 590,
+      "win": 0.4995483288166215,
+      "win_ci": [
+        0.4805171696630771,
+        0.5188809051388992
+      ],
+      "win_bonf": [
+        0.46506751043695826,
+        0.5340291471962847
+      ],
+      "lift": -0.03156748253811319,
+      "lift_ci": [
+        -0.04816991501062068,
+        -0.013845892134910503
+      ],
+      "lift_bonf": [
+        -0.06311513052434245,
+        -1.98345518839238e-05
+      ],
+      "gross": 0.00011886806749236508,
+      "gross_ci": [
+        -0.00016171225062767196,
+        0.0003952383961464224
+      ],
+      "gross_bonf": [
+        -0.0003898779934494497,
+        0.0006276141284341798
+      ],
+      "return_lift": -0.0005242368522971336,
+      "return_lift_ci": [
+        -0.0007204689930914069,
+        -0.00035045121229301514
+      ],
+      "return_lift_bonf": [
+        -0.0008623858476494918,
+        -0.00018608785694477521
+      ],
+      "screen14_bps": -12.811319325076349,
+      "screen20_bps": -18.81131932507635,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "day",
+      "signature": "acceptance",
+      "n": 1007,
+      "days": 555,
+      "win": 0.4945382323733863,
+      "win_ci": [
+        0.46946267597529634,
+        0.5191957559382214
+      ],
+      "win_bonf": [
+        0.45020964685062576,
+        0.5388668178961469
+      ],
+      "lift": -0.05774217895941183,
+      "lift_ci": [
+        -0.07748921990242255,
+        -0.036309132660844116
+      ],
+      "lift_bonf": [
+        -0.09478085196227021,
+        -0.02070350595655346
+      ],
+      "gross": 0.00020485756136668262,
+      "gross_ci": [
+        -0.0001804309252751811,
+        0.0005708193973410037
+      ],
+      "gross_bonf": [
+        -0.00047391743453862017,
+        0.0008836325572719855
+      ],
+      "return_lift": -0.0007096362149438385,
+      "return_lift_ci": [
+        -0.0008834578409785268,
+        -0.000536701710902196
+      ],
+      "return_lift_bonf": [
+        -0.0010320926150696138,
+        -0.0003871798148180631
+      ],
+      "screen14_bps": -11.951424386333173,
+      "screen20_bps": -17.951424386333173,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "day",
+      "signature": "reclaim",
+      "n": 760,
+      "days": 457,
+      "win": 0.531578947368421,
+      "win_ci": [
+        0.5040647659854977,
+        0.5607748249116156
+      ],
+      "win_bonf": [
+        0.4801974592042318,
+        0.5829604355326102
+      ],
+      "lift": -0.018345758058939024,
+      "lift_ci": [
+        -0.041355902002960555,
+        0.003747654341076893
+      ],
+      "lift_bonf": [
+        -0.061189360427625086,
+        0.02449784430974704
+      ],
+      "gross": 0.00038688841005870043,
+      "gross_ci": [
+        8.444976212845516e-05,
+        0.0006821216894734321
+      ],
+      "gross_bonf": [
+        -0.00017532672044763667,
+        0.0009491035405650376
+      ],
+      "return_lift": -0.00025332093328350193,
+      "return_lift_ci": [
+        -0.00044243435862228173,
+        -6.292214959396226e-05
+      ],
+      "return_lift_bonf": [
+        -0.0006022283158146415,
+        9.558644924763761e-05
+      ],
+      "screen14_bps": -10.131115899412995,
+      "screen20_bps": -16.131115899412997,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "day",
+      "signature": "retest",
+      "n": 969,
+      "days": 575,
+      "win": 0.49948400412796695,
+      "win_ci": [
+        0.46604437570067686,
+        0.5328389830508474
+      ],
+      "win_bonf": [
+        0.4386125819052187,
+        0.5603554263507152
+      ],
+      "lift": -0.04148971509010618,
+      "lift_ci": [
+        -0.06475884207087454,
+        -0.016979056582866883
+      ],
+      "lift_bonf": [
+        -0.08602934615975096,
+        0.0030499159795385894
+      ],
+      "gross": -0.00014274604386754799,
+      "gross_ci": [
+        -0.0005459549197909412,
+        0.00024344179001948847
+      ],
+      "gross_bonf": [
+        -0.0008778779787335582,
+        0.0005923858909984623
+      ],
+      "return_lift": -0.00045910593274656707,
+      "return_lift_ci": [
+        -0.0007347986557495371,
+        -0.00017586120281367542
+      ],
+      "return_lift_bonf": [
+        -0.0009592704383481941,
+        4.1058572855060004e-05
+      ],
+      "screen14_bps": -15.42746043867548,
+      "screen20_bps": -21.42746043867548,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "day",
+      "signature": "strong_break",
+      "n": 937,
+      "days": 525,
+      "win": 0.4951974386339381,
+      "win_ci": [
+        0.469638739828572,
+        0.5227100899073199
+      ],
+      "win_bonf": [
+        0.44787617125231205,
+        0.5425187060155642
+      ],
+      "lift": -0.040598157833997166,
+      "lift_ci": [
+        -0.06168774864816843,
+        -0.019099207444226395
+      ],
+      "lift_bonf": [
+        -0.07937260274775053,
+        -0.001823712920243803
+      ],
+      "gross": 2.668399211472834e-05,
+      "gross_ci": [
+        -0.00028946495514112913,
+        0.0003745024472901862
+      ],
+      "gross_bonf": [
+        -0.0005955460488140428,
+        0.0006489140330434996
+      ],
+      "return_lift": -0.0005088661031551238,
+      "return_lift_ci": [
+        -0.0006884242387893886,
+        -0.0003346008053833126
+      ],
+      "return_lift_bonf": [
+        -0.0008314347099097046,
+        -0.00018629749640054305
+      ],
+      "screen14_bps": -13.733160078852716,
+      "screen20_bps": -19.733160078852716,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "week",
+      "signature": "rejection",
+      "n": 403,
+      "days": 237,
+      "win": 0.4913151364764268,
+      "win_ci": [
+        0.4479607142857143,
+        0.5303748266139119
+      ],
+      "win_bonf": [
+        0.4154434471925747,
+        0.5671868257602788
+      ],
+      "lift": -0.05008298482746984,
+      "lift_ci": [
+        -0.08642661243007828,
+        -0.016612983169670144
+      ],
+      "lift_bonf": [
+        -0.11352704186250381,
+        0.013361072207564134
+      ],
+      "gross": -0.00011289317055906801,
+      "gross_ci": [
+        -0.0007012846777938032,
+        0.00045385406267171554
+      ],
+      "gross_bonf": [
+        -0.0011874685795160757,
+        0.0009616822383979397
+      ],
+      "return_lift": -0.0005272347519384321,
+      "return_lift_ci": [
+        -0.0009248994115175046,
+        -0.00013414680891064417
+      ],
+      "return_lift_bonf": [
+        -0.0012690707427620777,
+        0.0002146012388852135
+      ],
+      "screen14_bps": -15.12893170559068,
+      "screen20_bps": -21.12893170559068,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "week",
+      "signature": "break",
+      "n": 453,
+      "days": 244,
+      "win": 0.5077262693156733,
+      "win_ci": [
+        0.4785144171779141,
+        0.5384666666666666
+      ],
+      "win_bonf": [
+        0.4555023793776259,
+        0.5599501592537208
+      ],
+      "lift": -0.016487720887167486,
+      "lift_ci": [
+        -0.039382766972204254,
+        0.008008052009510488
+      ],
+      "lift_bonf": [
+        -0.05879385401952503,
+        0.025818412245190058
+      ],
+      "gross": 0.00010307990927007489,
+      "gross_ci": [
+        -0.0003690524990418509,
+        0.0006616510094750123
+      ],
+      "gross_bonf": [
+        -0.0008135972609516712,
+        0.001019757079491821
+      ],
+      "return_lift": -0.0005567287212078358,
+      "return_lift_ci": [
+        -0.000808191194636562,
+        -0.00026801011782869765
+      ],
+      "return_lift_bonf": [
+        -0.0010288969931842708,
+        -8.456044923140074e-05
+      ],
+      "screen14_bps": -12.969200907299252,
+      "screen20_bps": -18.96920090729925,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "week",
+      "signature": "acceptance",
+      "n": 393,
+      "days": 226,
+      "win": 0.5038167938931297,
+      "win_ci": [
+        0.46206653715395823,
+        0.5442261062840978
+      ],
+      "win_bonf": [
+        0.4298469919076404,
+        0.577786595878619
+      ],
+      "lift": -0.039964312478585624,
+      "lift_ci": [
+        -0.07656396868498398,
+        -0.006110340839035575
+      ],
+      "lift_bonf": [
+        -0.10477972308360348,
+        0.02485109812643222
+      ],
+      "gross": 0.00012976866397401514,
+      "gross_ci": [
+        -0.00044809257285081564,
+        0.0007842836113586746
+      ],
+      "gross_bonf": [
+        -0.0009671105178607509,
+        0.001226647845808781
+      ],
+      "return_lift": -0.0004889206553626007,
+      "return_lift_ci": [
+        -0.0008368977310930668,
+        -0.00011254123403879958
+      ],
+      "return_lift_bonf": [
+        -0.0011316192868739382,
+        0.00015377797614873684
+      ],
+      "screen14_bps": -12.702313360259849,
+      "screen20_bps": -18.702313360259847,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "week",
+      "signature": "reclaim",
+      "n": 299,
+      "days": 184,
+      "win": 0.5418060200668896,
+      "win_ci": [
+        0.4969253098365381,
+        0.5850546279117708
+      ],
+      "win_bonf": [
+        0.4621571240788613,
+        0.621454916054918
+      ],
+      "lift": -0.001977142665963048,
+      "lift_ci": [
+        -0.041861754822160625,
+        0.037968727186544024
+      ],
+      "lift_bonf": [
+        -0.07511295737776123,
+        0.07115867204583513
+      ],
+      "gross": 0.00013596019465835337,
+      "gross_ci": [
+        -0.0004498944353187312,
+        0.0006489787201563347
+      ],
+      "gross_bonf": [
+        -0.0008599962542233345,
+        0.001131916643540041
+      ],
+      "return_lift": -0.00013755660061666328,
+      "return_lift_ci": [
+        -0.0004867697839638405,
+        0.00021614744816266337
+      ],
+      "return_lift_bonf": [
+        -0.0007815866997060023,
+        0.0005064734984726758
+      ],
+      "screen14_bps": -12.640398053416467,
+      "screen20_bps": -18.640398053416465,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "week",
+      "signature": "retest",
+      "n": 376,
+      "days": 228,
+      "win": 0.47606382978723405,
+      "win_ci": [
+        0.4304392293142128,
+        0.5207836695191524
+      ],
+      "win_bonf": [
+        0.39478462576873624,
+        0.5573430338057319
+      ],
+      "lift": -0.06741936391492447,
+      "lift_ci": [
+        -0.10496746718248771,
+        -0.03077193922015944
+      ],
+      "lift_bonf": [
+        -0.13683518808082956,
+        0.0019964602509806167
+      ],
+      "gross": -0.00044412189812073947,
+      "gross_ci": [
+        -0.0010016045712336946,
+        0.00019200088866793756
+      ],
+      "gross_bonf": [
+        -0.0015118605365611478,
+        0.0006236167403196689
+      ],
+      "return_lift": -0.0008310247961952523,
+      "return_lift_ci": [
+        -0.0012615783924076777,
+        -0.0003779859278424817
+      ],
+      "return_lift_bonf": [
+        -0.0016212399749521377,
+        -4.080961743836676e-05
+      ],
+      "screen14_bps": -18.441218981207395,
+      "screen20_bps": -24.441218981207395,
+      "candidate": false
+    },
+    {
+      "tf": 2,
+      "family": "week",
+      "signature": "strong_break",
+      "n": 374,
+      "days": 213,
+      "win": 0.4893048128342246,
+      "win_ci": [
+        0.450970942593905,
+        0.5294157179000633
+      ],
+      "win_bonf": [
+        0.4151466656291258,
+        0.5634629600393235
+      ],
+      "lift": -0.026775737732280668,
+      "lift_ci": [
+        -0.06043057840373286,
+        0.007100111241993377
+      ],
+      "lift_bonf": [
+        -0.08767069264076327,
+        0.03411921717620194
+      ],
+      "gross": 0.00015068445114806617,
+      "gross_ci": [
+        -0.00047917212319826803,
+        0.0007626387285114813
+      ],
+      "gross_bonf": [
+        -0.0009497230712706119,
+        0.0012510919735667443
+      ],
+      "return_lift": -0.00046211386688303687,
+      "return_lift_ci": [
+        -0.0008232833281754811,
+        -9.746320188951507e-05
+      ],
+      "return_lift_bonf": [
+        -0.0011051842659616173,
+        0.00018095653219554346
+      ],
+      "screen14_bps": -12.493155488519339,
+      "screen20_bps": -18.49315548851934,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "4h",
+      "signature": "rejection",
+      "n": 1739,
+      "days": 881,
+      "win": 0.5117883841288097,
+      "win_ci": [
+        0.49105053010407546,
+        0.5328297501452643
+      ],
+      "win_bonf": [
+        0.4740916130516697,
+        0.5494851552059496
+      ],
+      "lift": -0.023571441480198883,
+      "lift_ci": [
+        -0.04165705643149293,
+        -0.005456883516470028
+      ],
+      "lift_bonf": [
+        -0.05670017846626765,
+        0.009557295505869891
+      ],
+      "gross": 3.659309405917379e-05,
+      "gross_ci": [
+        -0.00017247256978344383,
+        0.0002416765799212087
+      ],
+      "gross_bonf": [
+        -0.0003388595077289532,
+        0.0004120456958473007
+      ],
+      "return_lift": -0.00011636519182158496,
+      "return_lift_ci": [
+        -0.00029127549782593886,
+        3.8526061894548165e-05
+      ],
+      "return_lift_bonf": [
+        -0.0004073080279156831,
+        0.00017457764427251322
+      ],
+      "screen14_bps": -13.634069059408262,
+      "screen20_bps": -19.63406905940826,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "4h",
+      "signature": "break",
+      "n": 1759,
+      "days": 881,
+      "win": 0.4752700397953383,
+      "win_ci": [
+        0.4562780269058296,
+        0.4924754814308364
+      ],
+      "win_bonf": [
+        0.4432683853715799,
+        0.5072716942190966
+      ],
+      "lift": -0.04159754050609741,
+      "lift_ci": [
+        -0.05787869862259087,
+        -0.025946354381872837
+      ],
+      "lift_bonf": [
+        -0.06993143235999666,
+        -0.013263648652198163
+      ],
+      "gross": -0.0001476593749201173,
+      "gross_ci": [
+        -0.00032946340197909725,
+        3.613482625011595e-05
+      ],
+      "gross_bonf": [
+        -0.0004912233252298234,
+        0.0001959045753895888
+      ],
+      "return_lift": -0.0004463923880261127,
+      "return_lift_ci": [
+        -0.0006015053856554082,
+        -0.0003084378762688235
+      ],
+      "return_lift_bonf": [
+        -0.0007129151318688988,
+        -0.00017986964418332656
+      ],
+      "screen14_bps": -15.476593749201173,
+      "screen20_bps": -21.47659374920117,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "4h",
+      "signature": "acceptance",
+      "n": 1737,
+      "days": 879,
+      "win": 0.48013816925734026,
+      "win_ci": [
+        0.4587144113588726,
+        0.5
+      ],
+      "win_bonf": [
+        0.44265094483520573,
+        0.5176253936794748
+      ],
+      "lift": -0.05650484098500384,
+      "lift_ci": [
+        -0.07542836565535024,
+        -0.03914810831858048
+      ],
+      "lift_bonf": [
+        -0.09008196869422123,
+        -0.02292771327578645
+      ],
+      "gross": 5.286271383277607e-05,
+      "gross_ci": [
+        -0.00013973084722420452,
+        0.0002439425520392449
+      ],
+      "gross_bonf": [
+        -0.00029947684446594375,
+        0.0004052022721314959
+      ],
+      "return_lift": -0.0003679538899128707,
+      "return_lift_ci": [
+        -0.000505927231106103,
+        -0.00023974957999319376
+      ],
+      "return_lift_bonf": [
+        -0.0006069901817166884,
+        -0.0001289175981090529
+      ],
+      "screen14_bps": -13.47137286167224,
+      "screen20_bps": -19.47137286167224,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "4h",
+      "signature": "reclaim",
+      "n": 1553,
+      "days": 843,
+      "win": 0.506117192530586,
+      "win_ci": [
+        0.482179476887598,
+        0.5300292673895703
+      ],
+      "win_bonf": [
+        0.4644079707658066,
+        0.5478264142953654
+      ],
+      "lift": -0.027199715813920923,
+      "lift_ci": [
+        -0.046012045198105436,
+        -0.0074985671598116485
+      ],
+      "lift_bonf": [
+        -0.06278644478573031,
+        0.008387013157888458
+      ],
+      "gross": -8.74515501475861e-05,
+      "gross_ci": [
+        -0.00035063118800538666,
+        0.0001663820903318785
+      ],
+      "gross_bonf": [
+        -0.0005712586392563342,
+        0.000396355538961162
+      ],
+      "return_lift": -0.00023793607616947842,
+      "return_lift_ci": [
+        -0.0003952492311570566,
+        -8.937710150502363e-05
+      ],
+      "return_lift_bonf": [
+        -0.0005210346419478059,
+        4.5162489608849054e-05
+      ],
+      "screen14_bps": -14.87451550147586,
+      "screen20_bps": -20.874515501475862,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "4h",
+      "signature": "retest",
+      "n": 1710,
+      "days": 881,
+      "win": 0.5327485380116959,
+      "win_ci": [
+        0.5119301204592863,
+        0.5536135577225543
+      ],
+      "win_bonf": [
+        0.49397516250484486,
+        0.5715219135185469
+      ],
+      "lift": -0.006678838304545554,
+      "lift_ci": [
+        -0.02537675989425135,
+        0.011718811189579683
+      ],
+      "lift_bonf": [
+        -0.040068050782562974,
+        0.026710374173471864
+      ],
+      "gross": 2.8773375764848996e-05,
+      "gross_ci": [
+        -0.0002244141655758315,
+        0.0002558839755856414
+      ],
+      "gross_bonf": [
+        -0.0004099967337419896,
+        0.0004675434852716876
+      ],
+      "return_lift": -9.661478710611719e-05,
+      "return_lift_ci": [
+        -0.0002927213121997403,
+        8.787250220296368e-05
+      ],
+      "return_lift_bonf": [
+        -0.00043246201140624953,
+        0.00023923243719401518
+      ],
+      "screen14_bps": -13.712266242351511,
+      "screen20_bps": -19.71226624235151,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "4h",
+      "signature": "strong_break",
+      "n": 1705,
+      "days": 876,
+      "win": 0.4873900293255132,
+      "win_ci": [
+        0.46622821377633855,
+        0.5072909002225322
+      ],
+      "win_bonf": [
+        0.4492448722081841,
+        0.5255351864428423
+      ],
+      "lift": -0.03696503061884112,
+      "lift_ci": [
+        -0.05470616868766158,
+        -0.020035237650269495
+      ],
+      "lift_bonf": [
+        -0.068655582462649,
+        -0.005274478775033245
+      ],
+      "gross": 4.8111128432232665e-06,
+      "gross_ci": [
+        -0.00019078701303885923,
+        0.0002227450787079573
+      ],
+      "gross_bonf": [
+        -0.00037239417032538917,
+        0.00038201639601183573
+      ],
+      "return_lift": -0.0004157960698297313,
+      "return_lift_ci": [
+        -0.0005846559454222045,
+        -0.0002577921798552378
+      ],
+      "return_lift_bonf": [
+        -0.0007041434164228508,
+        -0.00012744872323661188
+      ],
+      "screen14_bps": -13.951888871567768,
+      "screen20_bps": -19.951888871567768,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "day",
+      "signature": "rejection",
+      "n": 992,
+      "days": 580,
+      "win": 0.4969758064516129,
+      "win_ci": [
+        0.4667919825945481,
+        0.5278357304755638
+      ],
+      "win_bonf": [
+        0.44093946346216556,
+        0.5530121494410601
+      ],
+      "lift": -0.048712445240181104,
+      "lift_ci": [
+        -0.07049115647826829,
+        -0.028465206366507387
+      ],
+      "lift_bonf": [
+        -0.08794304173882334,
+        -0.00948184874153888
+      ],
+      "gross": -0.0004012736544956359,
+      "gross_ci": [
+        -0.0008953665234219681,
+        6.664895629823226e-05
+      ],
+      "gross_bonf": [
+        -0.001266612167548763,
+        0.000464064858557491
+      ],
+      "return_lift": -0.0007262590031234709,
+      "return_lift_ci": [
+        -0.0009726702929813248,
+        -0.0004933212622591856
+      ],
+      "return_lift_bonf": [
+        -0.0011673966791366304,
+        -0.0002851213271103114
+      ],
+      "screen14_bps": -18.01273654495636,
+      "screen20_bps": -24.01273654495636,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "day",
+      "signature": "break",
+      "n": 1084,
+      "days": 585,
+      "win": 0.48985239852398527,
+      "win_ci": [
+        0.469781131750946,
+        0.5092605524518933
+      ],
+      "win_bonf": [
+        0.4534047776938361,
+        0.5263000193541345
+      ],
+      "lift": -0.041292081326907336,
+      "lift_ci": [
+        -0.057704425034892134,
+        -0.02386369932871887
+      ],
+      "lift_bonf": [
+        -0.07254999431149388,
+        -0.010034168342320793
+      ],
+      "gross": 2.3887906687680458e-05,
+      "gross_ci": [
+        -0.0002741265794070544,
+        0.0003167660707328039
+      ],
+      "gross_bonf": [
+        -0.000515482326963329,
+        0.0005632581403386899
+      ],
+      "return_lift": -0.0006812141192381869,
+      "return_lift_ci": [
+        -0.0008398617500359569,
+        -0.0005205595973837038
+      ],
+      "return_lift_bonf": [
+        -0.0009717855498605674,
+        -0.0003906426886158064
+      ],
+      "screen14_bps": -13.761120933123195,
+      "screen20_bps": -19.761120933123195,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "day",
+      "signature": "acceptance",
+      "n": 956,
+      "days": 540,
+      "win": 0.4884937238493724,
+      "win_ci": [
+        0.46094375047019076,
+        0.5142422034392305
+      ],
+      "win_bonf": [
+        0.4406916626703764,
+        0.5362957850283684
+      ],
+      "lift": -0.06515816084405172,
+      "lift_ci": [
+        -0.08781817579301247,
+        -0.04381321143543143
+      ],
+      "lift_bonf": [
+        -0.10463261529412911,
+        -0.02568370639397434
+      ],
+      "gross": 9.923042470336942e-05,
+      "gross_ci": [
+        -0.0002454111815719988,
+        0.00045948666136907176
+      ],
+      "gross_bonf": [
+        -0.0005515227135202063,
+        0.0007499835629269451
+      ],
+      "return_lift": -0.0007340590522508419,
+      "return_lift_ci": [
+        -0.0009230344126169892,
+        -0.0005360021390990582
+      ],
+      "return_lift_bonf": [
+        -0.001083928381942065,
+        -0.00038418972255961875
+      ],
+      "screen14_bps": -13.007695752966306,
+      "screen20_bps": -19.007695752966306,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "day",
+      "signature": "reclaim",
+      "n": 703,
+      "days": 427,
+      "win": 0.5035561877667141,
+      "win_ci": [
+        0.47214204418062905,
+        0.535014666243856
+      ],
+      "win_bonf": [
+        0.44716176529944635,
+        0.5599506102339817
+      ],
+      "lift": -0.03517897667178196,
+      "lift_ci": [
+        -0.059883576533068326,
+        -0.010176201745113606
+      ],
+      "lift_bonf": [
+        -0.08181209759208088,
+        0.011454144248516977
+      ],
+      "gross": -0.0001848070805225806,
+      "gross_ci": [
+        -0.0005119272594257618,
+        0.00014372674242621778
+      ],
+      "gross_bonf": [
+        -0.0007938445704604834,
+        0.0004242304094153221
+      ],
+      "return_lift": -0.0004959080457335148,
+      "return_lift_ci": [
+        -0.0007083803431868317,
+        -0.00029666533295736236
+      ],
+      "return_lift_bonf": [
+        -0.0008768168553089894,
+        -0.00011499923615804024
+      ],
+      "screen14_bps": -15.848070805225806,
+      "screen20_bps": -21.848070805225806,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "day",
+      "signature": "retest",
+      "n": 908,
+      "days": 552,
+      "win": 0.5099118942731278,
+      "win_ci": [
+        0.4755302037170236,
+        0.5413450937155457
+      ],
+      "win_bonf": [
+        0.4493718193928846,
+        0.5704519691533709
+      ],
+      "lift": -0.04572731665296404,
+      "lift_ci": [
+        -0.07099147822265302,
+        -0.02235608126618921
+      ],
+      "lift_bonf": [
+        -0.09115714084756305,
+        -0.00029749245836502985
+      ],
+      "gross": -0.00020268580992163128,
+      "gross_ci": [
+        -0.0007283162733650358,
+        0.0002981446161086399
+      ],
+      "gross_bonf": [
+        -0.0011341004733046365,
+        0.0007287288534613739
+      ],
+      "return_lift": -0.0006055413201401675,
+      "return_lift_ci": [
+        -0.0008796719067755939,
+        -0.00033532487891533495
+      ],
+      "return_lift_bonf": [
+        -0.001093370549206337,
+        -0.00011771209107399802
+      ],
+      "screen14_bps": -16.026858099216312,
+      "screen20_bps": -22.026858099216312,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "day",
+      "signature": "strong_break",
+      "n": 884,
+      "days": 511,
+      "win": 0.4807692307692308,
+      "win_ci": [
+        0.45475612441931335,
+        0.5071525823539149
+      ],
+      "win_bonf": [
+        0.43304353753618924,
+        0.5284949240022724
+      ],
+      "lift": -0.05646067327472382,
+      "lift_ci": [
+        -0.07782139637048309,
+        -0.03382203183298535
+      ],
+      "lift_bonf": [
+        -0.09678840954685575,
+        -0.016132937002591892
+      ],
+      "gross": 0.00017857336390621485,
+      "gross_ci": [
+        -0.00014356517285151103,
+        0.0005634768752024096
+      ],
+      "gross_bonf": [
+        -0.0004426005803950013,
+        0.000799747308207431
+      ],
+      "return_lift": -0.0005271799878408745,
+      "return_lift_ci": [
+        -0.0007646585506797066,
+        -0.00029019898470706765
+      ],
+      "return_lift_bonf": [
+        -0.0009668372982765216,
+        -8.752267740522754e-05
+      ],
+      "screen14_bps": -12.214266360937852,
+      "screen20_bps": -18.214266360937852,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "week",
+      "signature": "rejection",
+      "n": 382,
+      "days": 232,
+      "win": 0.4895287958115183,
+      "win_ci": [
+        0.441388934076213,
+        0.5359128840804501
+      ],
+      "win_bonf": [
+        0.40680707362124746,
+        0.5722505180017892
+      ],
+      "lift": -0.06482038736445496,
+      "lift_ci": [
+        -0.1065112530222644,
+        -0.02521899879986658
+      ],
+      "lift_bonf": [
+        -0.1363516137260082,
+        0.00671083899709829
+      ],
+      "gross": 9.365715432032125e-05,
+      "gross_ci": [
+        -0.0005669529055939653,
+        0.0008727159504486292
+      ],
+      "gross_bonf": [
+        -0.0012023479213756924,
+        0.001389662230016335
+      ],
+      "return_lift": -0.0006943752030677344,
+      "return_lift_ci": [
+        -0.0010488447954913331,
+        -0.00034231983764275757
+      ],
+      "return_lift_bonf": [
+        -0.0013246001887917253,
+        -6.41502173437435e-05
+      ],
+      "screen14_bps": -13.063428456796787,
+      "screen20_bps": -19.06342845679679,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "week",
+      "signature": "break",
+      "n": 432,
+      "days": 236,
+      "win": 0.4837962962962963,
+      "win_ci": [
+        0.4532512930378784,
+        0.5128898733105725
+      ],
+      "win_bonf": [
+        0.4284602425277092,
+        0.5391323500648834
+      ],
+      "lift": -0.03816331657358079,
+      "lift_ci": [
+        -0.06291373999725501,
+        -0.016095258871369034
+      ],
+      "lift_bonf": [
+        -0.08123727240580617,
+        0.004910639258644586
+      ],
+      "gross": 0.0001490855993775167,
+      "gross_ci": [
+        -0.0003062694198076006,
+        0.000693134318560361
+      ],
+      "gross_bonf": [
+        -0.0007703674805267106,
+        0.001068538679281744
+      ],
+      "return_lift": -0.0006029641476049845,
+      "return_lift_ci": [
+        -0.0008723600473562531,
+        -0.00031319459283615846
+      ],
+      "return_lift_bonf": [
+        -0.0011005788525173992,
+        -0.0001053494426925698
+      ],
+      "screen14_bps": -12.509144006224833,
+      "screen20_bps": -18.509144006224833,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "week",
+      "signature": "acceptance",
+      "n": 365,
+      "days": 215,
+      "win": 0.5150684931506849,
+      "win_ci": [
+        0.4642707501995212,
+        0.5649721260621319
+      ],
+      "win_bonf": [
+        0.42702242363008197,
+        0.6031145626712879
+      ],
+      "lift": -0.03057371874740191,
+      "lift_ci": [
+        -0.06704855888680306,
+        0.009793855235676007
+      ],
+      "lift_bonf": [
+        -0.10102656438111604,
+        0.03987912688631221
+      ],
+      "gross": 0.00015895885448531438,
+      "gross_ci": [
+        -0.0003763560900147792,
+        0.0007082955918908142
+      ],
+      "gross_bonf": [
+        -0.0008167493716591801,
+        0.0011346670806298088
+      ],
+      "return_lift": -0.0005933681187152137,
+      "return_lift_ci": [
+        -0.0009483498912096453,
+        -0.0002691749628289912
+      ],
+      "return_lift_bonf": [
+        -0.0012012087830908132,
+        1.4472545660385873e-05
+      ],
+      "screen14_bps": -12.410411455146857,
+      "screen20_bps": -18.410411455146857,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "week",
+      "signature": "reclaim",
+      "n": 273,
+      "days": 166,
+      "win": 0.4981684981684982,
+      "win_ci": [
+        0.4486664632524371,
+        0.5468253126987492
+      ],
+      "win_bonf": [
+        0.40862472248927895,
+        0.5877122738477174
+      ],
+      "lift": -0.02768191197379539,
+      "lift_ci": [
+        -0.06837030001554065,
+        0.013716760228145572
+      ],
+      "lift_bonf": [
+        -0.10183786605674228,
+        0.04647404210915149
+      ],
+      "gross": -0.0002992136461670255,
+      "gross_ci": [
+        -0.0007967819037796482,
+        0.00018206086227685013
+      ],
+      "gross_bonf": [
+        -0.0012048137267178303,
+        0.0006063864343837795
+      ],
+      "return_lift": -0.000452285673169488,
+      "return_lift_ci": [
+        -0.0007547572665305785,
+        -0.0001251182902755007
+      ],
+      "return_lift_bonf": [
+        -0.0010153066808481297,
+        0.00011073533450915371
+      ],
+      "screen14_bps": -16.992136461670256,
+      "screen20_bps": -22.992136461670256,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "week",
+      "signature": "retest",
+      "n": 352,
+      "days": 225,
+      "win": 0.48295454545454547,
+      "win_ci": [
+        0.4375,
+        0.5263192703982177
+      ],
+      "win_bonf": [
+        0.4025744290848791,
+        0.5633346618242118
+      ],
+      "lift": -0.06568802366158068,
+      "lift_ci": [
+        -0.1039290614323628,
+        -0.02863090760182352
+      ],
+      "lift_bonf": [
+        -0.13334999900580588,
+        0.001973951682644526
+      ],
+      "gross": -0.00038603524505111277,
+      "gross_ci": [
+        -0.001132136641990909,
+        0.0003765957811416737
+      ],
+      "gross_bonf": [
+        -0.0017699288529560377,
+        0.0009978583628538122
+      ],
+      "return_lift": -0.0008743757213246192,
+      "return_lift_ci": [
+        -0.0012834645612413273,
+        -0.0005140331825701897
+      ],
+      "return_lift_bonf": [
+        -0.0015625551244785605,
+        -0.00018619631817067786
+      ],
+      "screen14_bps": -17.86035245051113,
+      "screen20_bps": -23.86035245051113,
+      "candidate": false
+    },
+    {
+      "tf": 3,
+      "family": "week",
+      "signature": "strong_break",
+      "n": 339,
+      "days": 199,
+      "win": 0.504424778761062,
+      "win_ci": [
+        0.45582905982905986,
+        0.5533758025682183
+      ],
+      "win_bonf": [
+        0.41408123301783345,
+        0.5947683245042905
+      ],
+      "lift": -0.03673557748360302,
+      "lift_ci": [
+        -0.0739759751831652,
+        -0.0008628889753428851
+      ],
+      "lift_bonf": [
+        -0.10193949467451927,
+        0.028468339707313238
+      ],
+      "gross": 0.0005411418863738345,
+      "gross_ci": [
+        -6.577888617113627e-05,
+        0.001198447006079659
+      ],
+      "gross_bonf": [
+        -0.0006754066666919808,
+        0.00175769043943965
+      ],
+      "return_lift": -0.00030795253320224544,
+      "return_lift_ci": [
+        -0.0006690862052894654,
+        5.828081951360228e-05
+      ],
+      "return_lift_bonf": [
+        -0.0009404218644200883,
+        0.0003245167980155975
+      ],
+      "screen14_bps": -8.588581136261656,
+      "screen20_bps": -14.588581136261656,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "4h",
+      "signature": "rejection",
+      "n": 1723,
+      "days": 880,
+      "win": 0.518282066163668,
+      "win_ci": [
+        0.4970874392794271,
+        0.5396491623130968
+      ],
+      "win_bonf": [
+        0.47991917876547663,
+        0.5566449535618594
+      ],
+      "lift": -0.023768362872946,
+      "lift_ci": [
+        -0.04258012765735296,
+        -0.005251456007381178
+      ],
+      "lift_bonf": [
+        -0.057196522407287,
+        0.009659796661395
+      ],
+      "gross": 0.00011232375340864962,
+      "gross_ci": [
+        -0.00017104634672409177,
+        0.00037054594014505177
+      ],
+      "gross_bonf": [
+        -0.0003827222149500874,
+        0.0006073697217673866
+      ],
+      "return_lift": -0.00019114337453255307,
+      "return_lift_ci": [
+        -0.0003884442003902836,
+        7.086582381751618e-06
+      ],
+      "return_lift_bonf": [
+        -0.0005613907370227553,
+        0.00017910398795764916
+      ],
+      "screen14_bps": -12.876762465913504,
+      "screen20_bps": -18.876762465913504,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "4h",
+      "signature": "break",
+      "n": 1751,
+      "days": 880,
+      "win": 0.4768703597944032,
+      "win_ci": [
+        0.4581860994143555,
+        0.49517128290813217
+      ],
+      "win_bonf": [
+        0.44339086242605075,
+        0.5103498571627556
+      ],
+      "lift": -0.04481747718631625,
+      "lift_ci": [
+        -0.061271035295024624,
+        -0.028823813263139916
+      ],
+      "lift_bonf": [
+        -0.07406177177537233,
+        -0.015573182597260163
+      ],
+      "gross": 4.914839139008679e-05,
+      "gross_ci": [
+        -0.00015333398102156457,
+        0.00026658539251770005
+      ],
+      "gross_bonf": [
+        -0.0003323865295756274,
+        0.00043068331235580096
+      ],
+      "return_lift": -0.0003519933969028611,
+      "return_lift_ci": [
+        -0.0005061783290815553,
+        -0.00018771472193433413
+      ],
+      "return_lift_bonf": [
+        -0.000639454908662388,
+        -6.453188514333417e-05
+      ],
+      "screen14_bps": -13.508516086099132,
+      "screen20_bps": -19.50851608609913,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "4h",
+      "signature": "acceptance",
+      "n": 1702,
+      "days": 875,
+      "win": 0.4764982373678026,
+      "win_ci": [
+        0.45366334930754837,
+        0.498225827991453
+      ],
+      "win_bonf": [
+        0.43664183849388066,
+        0.5163546362417245
+      ],
+      "lift": -0.07022252099923854,
+      "lift_ci": [
+        -0.0897080542550909,
+        -0.05291004542131001
+      ],
+      "lift_bonf": [
+        -0.10338158337767141,
+        -0.037063458620805664
+      ],
+      "gross": 5.549719916680577e-05,
+      "gross_ci": [
+        -0.0001494392359568722,
+        0.00026699557845311566
+      ],
+      "gross_bonf": [
+        -0.00032497622558800936,
+        0.0004359706239216209
+      ],
+      "return_lift": -0.000353151000412531,
+      "return_lift_ci": [
+        -0.0005223078825429736,
+        -0.0001925451060184942
+      ],
+      "return_lift_bonf": [
+        -0.0006481782898581517,
+        -5.8123710966910276e-05
+      ],
+      "screen14_bps": -13.445028008331942,
+      "screen20_bps": -19.445028008331942,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "4h",
+      "signature": "reclaim",
+      "n": 1453,
+      "days": 813,
+      "win": 0.4969029593943565,
+      "win_ci": [
+        0.47436607269894787,
+        0.5188081846824509
+      ],
+      "win_bonf": [
+        0.4567510914833255,
+        0.5370548273053876
+      ],
+      "lift": -0.04416546155371764,
+      "lift_ci": [
+        -0.06305417982780265,
+        -0.026326468605263845
+      ],
+      "lift_bonf": [
+        -0.07682874621461087,
+        -0.0115021768928244
+      ],
+      "gross": -6.382753476260987e-05,
+      "gross_ci": [
+        -0.00031550186447932237,
+        0.00015113055474664686
+      ],
+      "gross_bonf": [
+        -0.0004893325318752687,
+        0.00036167746235004895
+      ],
+      "return_lift": -0.0003367756342965185,
+      "return_lift_ci": [
+        -0.0004956681590867669,
+        -0.0001981697171592805
+      ],
+      "return_lift_bonf": [
+        -0.0006181185545328494,
+        -5.5432714060187614e-05
+      ],
+      "screen14_bps": -14.638275347626099,
+      "screen20_bps": -20.6382753476261,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "4h",
+      "signature": "retest",
+      "n": 1672,
+      "days": 877,
+      "win": 0.5442583732057417,
+      "win_ci": [
+        0.5216043599908327,
+        0.5669288919331751
+      ],
+      "win_bonf": [
+        0.5036883117914639,
+        0.5848284346200194
+      ],
+      "lift": -0.004698289679955251,
+      "lift_ci": [
+        -0.023331078934768414,
+        0.016599140009528206
+      ],
+      "lift_bonf": [
+        -0.040352741911469696,
+        0.03095616255155919
+      ],
+      "gross": 0.0002005031704438564,
+      "gross_ci": [
+        -9.239625229313159e-05,
+        0.0005011057299964466
+      ],
+      "gross_bonf": [
+        -0.0003331486583841259,
+        0.0007341549992718387
+      ],
+      "return_lift": -0.00011476907150246817,
+      "return_lift_ci": [
+        -0.00032884280878042347,
+        9.581354044812217e-05
+      ],
+      "return_lift_bonf": [
+        -0.0004998074129999994,
+        0.00027026926999506305
+      ],
+      "screen14_bps": -11.994968295561437,
+      "screen20_bps": -17.994968295561435,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "4h",
+      "signature": "strong_break",
+      "n": 1628,
+      "days": 857,
+      "win": 0.48955773955773957,
+      "win_ci": [
+        0.4697238436602864,
+        0.508306895564243
+      ],
+      "win_bonf": [
+        0.45488349857335725,
+        0.5242319805421218
+      ],
+      "lift": -0.04458571026952793,
+      "lift_ci": [
+        -0.06140623296615111,
+        -0.028323714727042048
+      ],
+      "lift_bonf": [
+        -0.07482906189958746,
+        -0.014342358639468387
+      ],
+      "gross": 8.870232814264377e-05,
+      "gross_ci": [
+        -0.00017481383666801426,
+        0.0003435739257691382
+      ],
+      "gross_bonf": [
+        -0.0003687265325125356,
+        0.0005461311887978231
+      ],
+      "return_lift": -0.0003576601941530265,
+      "return_lift_ci": [
+        -0.000555881740758173,
+        -0.00014843664879175873
+      ],
+      "return_lift_bonf": [
+        -0.000722653965273689,
+        7.333576967635987e-06
+      ],
+      "screen14_bps": -13.112976718573563,
+      "screen20_bps": -19.112976718573563,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "day",
+      "signature": "rejection",
+      "n": 935,
+      "days": 563,
+      "win": 0.506951871657754,
+      "win_ci": [
+        0.4764447617207509,
+        0.5383104321885431
+      ],
+      "win_bonf": [
+        0.4498825154784824,
+        0.5640212278370257
+      ],
+      "lift": -0.05184652486005913,
+      "lift_ci": [
+        -0.07889981518156743,
+        -0.027080133353716514
+      ],
+      "lift_bonf": [
+        -0.09846923223760978,
+        -0.005223817482508483
+      ],
+      "gross": 7.668932181099879e-05,
+      "gross_ci": [
+        -0.0002863816029605649,
+        0.0004336026532204619
+      ],
+      "gross_bonf": [
+        -0.0005915421028717551,
+        0.0007449207464937526
+      ],
+      "return_lift": -0.0005834925782705183,
+      "return_lift_ci": [
+        -0.0008628151454644291,
+        -0.00031541422432386143
+      ],
+      "return_lift_bonf": [
+        -0.0010833738398148209,
+        -8.361131672621582e-05
+      ],
+      "screen14_bps": -13.233106781890012,
+      "screen20_bps": -19.23310678189001,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "day",
+      "signature": "break",
+      "n": 1023,
+      "days": 554,
+      "win": 0.4887585532746823,
+      "win_ci": [
+        0.46938725094781,
+        0.5104592899970751
+      ],
+      "win_bonf": [
+        0.4509236834197752,
+        0.5265934231295895
+      ],
+      "lift": -0.04741375945882915,
+      "lift_ci": [
+        -0.06380927674017575,
+        -0.030186072052551628
+      ],
+      "lift_bonf": [
+        -0.07864374384055295,
+        -0.016183775077105347
+      ],
+      "gross": 1.0989736912752197e-05,
+      "gross_ci": [
+        -0.00030902542453350177,
+        0.00035018278400320013
+      ],
+      "gross_bonf": [
+        -0.0005978399349758787,
+        0.000619819408801383
+      ],
+      "return_lift": -0.0007136236661038355,
+      "return_lift_ci": [
+        -0.0009020760568955795,
+        -0.0005155859676408901
+      ],
+      "return_lift_bonf": [
+        -0.001059543771205382,
+        -0.00036770356100228915
+      ],
+      "screen14_bps": -13.890102630872478,
+      "screen20_bps": -19.890102630872477,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "day",
+      "signature": "acceptance",
+      "n": 872,
+      "days": 502,
+      "win": 0.4805045871559633,
+      "win_ci": [
+        0.4545379372556881,
+        0.5100128504672897
+      ],
+      "win_bonf": [
+        0.42905901792282064,
+        0.5319501563891059
+      ],
+      "lift": -0.0760287337145628,
+      "lift_ci": [
+        -0.09936296950904072,
+        -0.05157398125973003
+      ],
+      "lift_bonf": [
+        -0.11897141041598402,
+        -0.033086057013141566
+      ],
+      "gross": -0.0002128736095530943,
+      "gross_ci": [
+        -0.0005839498143751527,
+        0.0001482275966523255
+      ],
+      "gross_bonf": [
+        -0.0008829241225522921,
+        0.0004571769034461034
+      ],
+      "return_lift": -0.0009755590687639602,
+      "return_lift_ci": [
+        -0.0012542180313989712,
+        -0.0007351918970437768
+      ],
+      "return_lift_bonf": [
+        -0.001442593052922055,
+        -0.0005085250846058655
+      ],
+      "screen14_bps": -16.128736095530943,
+      "screen20_bps": -22.128736095530943,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "day",
+      "signature": "reclaim",
+      "n": 619,
+      "days": 398,
+      "win": 0.5008077544426495,
+      "win_ci": [
+        0.46719820069204154,
+        0.5383370799145779
+      ],
+      "win_bonf": [
+        0.43550186313202605,
+        0.5661136457532728
+      ],
+      "lift": -0.05410575451318627,
+      "lift_ci": [
+        -0.08388316771475647,
+        -0.02559379775451924
+      ],
+      "lift_bonf": [
+        -0.10706203445717886,
+        -0.0011494745691936759
+      ],
+      "gross": -9.173816815964263e-08,
+      "gross_ci": [
+        -0.0003817699974217446,
+        0.0004021148858740528
+      ],
+      "gross_bonf": [
+        -0.0007001660532561366,
+        0.0006999825769198173
+      ],
+      "return_lift": -0.0004817683503950248,
+      "return_lift_ci": [
+        -0.0007003759420977715,
+        -0.00024076762612273717
+      ],
+      "return_lift_bonf": [
+        -0.0008827935146240396,
+        -8.074318616600994e-05
+      ],
+      "screen14_bps": -14.000917381681596,
+      "screen20_bps": -20.000917381681596,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "day",
+      "signature": "retest",
+      "n": 848,
+      "days": 532,
+      "win": 0.5259433962264151,
+      "win_ci": [
+        0.4908663922469442,
+        0.5588997075123152
+      ],
+      "win_bonf": [
+        0.4655111350134394,
+        0.5863756574393908
+      ],
+      "lift": -0.03936712374480508,
+      "lift_ci": [
+        -0.06872781461831835,
+        -0.011640408467480712
+      ],
+      "lift_bonf": [
+        -0.08933052015679313,
+        0.010596272667182965
+      ],
+      "gross": 0.00020105492844083213,
+      "gross_ci": [
+        -0.0002047673826143934,
+        0.0006342804119880709
+      ],
+      "gross_bonf": [
+        -0.0005665958326975856,
+        0.0009687056895792499
+      ],
+      "return_lift": -0.0004135054766486959,
+      "return_lift_ci": [
+        -0.0006931601593920238,
+        -0.00011957585305104925
+      ],
+      "return_lift_bonf": [
+        -0.0009388386935957193,
+        0.00011182774029832752
+      ],
+      "screen14_bps": -11.989450715591678,
+      "screen20_bps": -17.98945071559168,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "day",
+      "signature": "strong_break",
+      "n": 777,
+      "days": 458,
+      "win": 0.4723294723294723,
+      "win_ci": [
+        0.4396182443632536,
+        0.5018549572031625
+      ],
+      "win_bonf": [
+        0.41551808001684215,
+        0.5291408646421024
+      ],
+      "lift": -0.05948893629057419,
+      "lift_ci": [
+        -0.08542161427841102,
+        -0.03507530185456643
+      ],
+      "lift_bonf": [
+        -0.10466178217579414,
+        -0.014316090405354247
+      ],
+      "gross": -0.00023659037611398965,
+      "gross_ci": [
+        -0.0006214769694776894,
+        0.00016130020896907226
+      ],
+      "gross_bonf": [
+        -0.0009334237222297492,
+        0.0004602429700017699
+      ],
+      "return_lift": -0.0006011032029256503,
+      "return_lift_ci": [
+        -0.0008044281585174597,
+        -0.00040133768096371975
+      ],
+      "return_lift_bonf": [
+        -0.0009692887869069133,
+        -0.0002329176189443873
+      ],
+      "screen14_bps": -16.365903761139897,
+      "screen20_bps": -22.365903761139897,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "week",
+      "signature": "rejection",
+      "n": 349,
+      "days": 219,
+      "win": 0.5501432664756447,
+      "win_ci": [
+        0.5029053250528541,
+        0.5955143505850847
+      ],
+      "win_bonf": [
+        0.4651021995118781,
+        0.6351843334394114
+      ],
+      "lift": -0.017065795407982434,
+      "lift_ci": [
+        -0.05534265656644432,
+        0.024281429010491472
+      ],
+      "lift_bonf": [
+        -0.0883261896314708,
+        0.05419459881550594
+      ],
+      "gross": 0.00023661389793455366,
+      "gross_ci": [
+        -0.00043611513657571455,
+        0.0008910819383049772
+      ],
+      "gross_bonf": [
+        -0.0009877328856926146,
+        0.0014609606815617219
+      ],
+      "return_lift": -0.0005673356819575744,
+      "return_lift_ci": [
+        -0.0010169478019919195,
+        -0.00014040793158916548
+      ],
+      "return_lift_bonf": [
+        -0.0013274796086803237,
+        0.00019280824476517497
+      ],
+      "screen14_bps": -11.633861020654464,
+      "screen20_bps": -17.633861020654464,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "week",
+      "signature": "break",
+      "n": 404,
+      "days": 220,
+      "win": 0.4876237623762376,
+      "win_ci": [
+        0.4571396250808015,
+        0.5191487928284662
+      ],
+      "win_bonf": [
+        0.4309219191141379,
+        0.5443256056383373
+      ],
+      "lift": -0.022241545425216332,
+      "lift_ci": [
+        -0.049855174640993795,
+        0.004214885538930822
+      ],
+      "lift_bonf": [
+        -0.07252132458171705,
+        0.028038233731284386
+      ],
+      "gross": -5.148004824967412e-05,
+      "gross_ci": [
+        -0.0004976306499915103,
+        0.0004510279374325394
+      ],
+      "gross_bonf": [
+        -0.000917828214120742,
+        0.0008148681176213937
+      ],
+      "return_lift": -0.0005116800220121124,
+      "return_lift_ci": [
+        -0.0008880313438960376,
+        -0.00017577432803226852
+      ],
+      "return_lift_bonf": [
+        -0.0011506974125564538,
+        0.00012733736853222908
+      ],
+      "screen14_bps": -14.51480048249674,
+      "screen20_bps": -20.514800482496742,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "week",
+      "signature": "acceptance",
+      "n": 325,
+      "days": 196,
+      "win": 0.5046153846153846,
+      "win_ci": [
+        0.4509596587879865,
+        0.5582957416095272
+      ],
+      "win_bonf": [
+        0.40545683979642033,
+        0.6037739294343488
+      ],
+      "lift": -0.048986284359899074,
+      "lift_ci": [
+        -0.09761051261319825,
+        -0.003169452179641017
+      ],
+      "lift_bonf": [
+        -0.13400566332069064,
+        0.036033094600892504
+      ],
+      "gross": 0.00018135242016593,
+      "gross_ci": [
+        -0.00038465990853560924,
+        0.0007434346721081314
+      ],
+      "gross_bonf": [
+        -0.0008440347577935635,
+        0.0012067395981254234
+      ],
+      "return_lift": -0.0004770924157333375,
+      "return_lift_ci": [
+        -0.0008444324980614247,
+        -0.00012731190719293304
+      ],
+      "return_lift_bonf": [
+        -0.0011389828720681434,
+        0.00018479804060146844
+      ],
+      "screen14_bps": -12.1864757983407,
+      "screen20_bps": -18.1864757983407,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "week",
+      "signature": "reclaim",
+      "n": 239,
+      "days": 153,
+      "win": 0.5230125523012552,
+      "win_ci": [
+        0.47285206718346257,
+        0.5727082793469811
+      ],
+      "win_bonf": [
+        0.43519310340411194,
+        0.6108320011983985
+      ],
+      "lift": -0.01952853598981859,
+      "lift_ci": [
+        -0.057334485497296875,
+        0.020478020684819128
+      ],
+      "lift_bonf": [
+        -0.08991273190356326,
+        0.050855659923926086
+      ],
+      "gross": 6.405250994776596e-05,
+      "gross_ci": [
+        -0.000533590241325294,
+        0.0006570032055682132
+      ],
+      "gross_bonf": [
+        -0.001002151537279012,
+        0.0011302565571745438
+      ],
+      "return_lift": -0.0002296753802233189,
+      "return_lift_ci": [
+        -0.0005985309092719666,
+        0.00010856984562500243
+      ],
+      "return_lift_bonf": [
+        -0.0008865547332837751,
+        0.00042720397283713726
+      ],
+      "screen14_bps": -13.35947490052234,
+      "screen20_bps": -19.35947490052234,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "week",
+      "signature": "retest",
+      "n": 307,
+      "days": 205,
+      "win": 0.5309446254071661,
+      "win_ci": [
+        0.4728935358626797,
+        0.5825301305657851
+      ],
+      "win_bonf": [
+        0.43364118118172246,
+        0.6282480696326098
+      ],
+      "lift": -0.030315083451948995,
+      "lift_ci": [
+        -0.07494323388541592,
+        0.014847610821738789
+      ],
+      "lift_bonf": [
+        -0.11142676359802416,
+        0.05079659669412616
+      ],
+      "gross": -0.00022864585916928837,
+      "gross_ci": [
+        -0.0010106255553817849,
+        0.0005008837745558206
+      ],
+      "gross_bonf": [
+        -0.001606248431937023,
+        0.0011489567135984462
+      ],
+      "return_lift": -0.0006990285510290341,
+      "return_lift_ci": [
+        -0.0012109149485100847,
+        -0.00022456555208134725
+      ],
+      "return_lift_bonf": [
+        -0.0015567145929330384,
+        0.0001586574908749702
+      ],
+      "screen14_bps": -16.286458591692885,
+      "screen20_bps": -22.286458591692885,
+      "candidate": false
+    },
+    {
+      "tf": 5,
+      "family": "week",
+      "signature": "strong_break",
+      "n": 311,
+      "days": 191,
+      "win": 0.4565916398713826,
+      "win_ci": [
+        0.41548769360348137,
+        0.49861898016997164
+      ],
+      "win_bonf": [
+        0.3817609386250484,
+        0.5314223411177169
+      ],
+      "lift": -0.058003472863626025,
+      "lift_ci": [
+        -0.0926719227014321,
+        -0.023660804409799747
+      ],
+      "lift_bonf": [
+        -0.12114694265151352,
+        0.00513999692426146
+      ],
+      "gross": -0.00011123126694328683,
+      "gross_ci": [
+        -0.0007819951181315764,
+        0.0005533755763652233
+      ],
+      "gross_bonf": [
+        -0.0013118725187495606,
+        0.0010894099848629871
+      ],
+      "return_lift": -0.0005876464648971561,
+      "return_lift_ci": [
+        -0.0010912106279863634,
+        -9.530956739735492e-05
+      ],
+      "return_lift_bonf": [
+        -0.0014707712659980192,
+        0.0002954783362037071
+      ],
+      "screen14_bps": -15.112312669432868,
+      "screen20_bps": -21.112312669432868,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "4h",
+      "signature": "rejection",
+      "n": 1621,
+      "days": 871,
+      "win": 0.5219000616903147,
+      "win_ci": [
+        0.49665831618989037,
+        0.5443267142647452
+      ],
+      "win_bonf": [
+        0.47909131172666963,
+        0.5647088116539597
+      ],
+      "lift": -0.037253733029300025,
+      "lift_ci": [
+        -0.05822628392624818,
+        -0.016765613426249396
+      ],
+      "lift_bonf": [
+        -0.07370357845548334,
+        -0.0008038876031167055
+      ],
+      "gross": 0.0001895748900848475,
+      "gross_ci": [
+        -3.1644521373226334e-05,
+        0.0003823218919506888
+      ],
+      "gross_bonf": [
+        -0.00019377134667223237,
+        0.0005729211268419274
+      ],
+      "return_lift": -0.00016224026240041711,
+      "return_lift_ci": [
+        -0.00032018835430717876,
+        -6.265576354470986e-06
+      ],
+      "return_lift_bonf": [
+        -0.0004504790650722811,
+        0.00012599854027144688
+      ],
+      "screen14_bps": -12.104251099151526,
+      "screen20_bps": -18.104251099151526,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "4h",
+      "signature": "break",
+      "n": 1689,
+      "days": 871,
+      "win": 0.4695085849615157,
+      "win_ci": [
+        0.44811264466159323,
+        0.48970222579908945
+      ],
+      "win_bonf": [
+        0.4326018065355728,
+        0.5064153633874586
+      ],
+      "lift": -0.060665092840435045,
+      "lift_ci": [
+        -0.07917303541418508,
+        -0.04466994713855857
+      ],
+      "lift_bonf": [
+        -0.09198358755792058,
+        -0.02934659812294952
+      ],
+      "gross": -1.9455108663999754e-05,
+      "gross_ci": [
+        -0.0002217389109169677,
+        0.00017387676588714323
+      ],
+      "gross_bonf": [
+        -0.00037698768824493426,
+        0.00033807747091693473
+      ],
+      "return_lift": -0.000479015503965762,
+      "return_lift_ci": [
+        -0.0006351190576931171,
+        -0.0003355441631934226
+      ],
+      "return_lift_bonf": [
+        -0.0007471817559823899,
+        -0.00021084925194913401
+      ],
+      "screen14_bps": -14.194551086639997,
+      "screen20_bps": -20.194551086639997,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "4h",
+      "signature": "acceptance",
+      "n": 1415,
+      "days": 814,
+      "win": 0.446643109540636,
+      "win_ci": [
+        0.4205391221374046,
+        0.4716082406405231
+      ],
+      "win_bonf": [
+        0.40125107201348026,
+        0.4920351470677918
+      ],
+      "lift": -0.09498473358002697,
+      "lift_ci": [
+        -0.1164016147052356,
+        -0.07407233549305481
+      ],
+      "lift_bonf": [
+        -0.13353294722694115,
+        -0.056436519933112814
+      ],
+      "gross": -0.00035627788331875923,
+      "gross_ci": [
+        -0.0006204803610474975,
+        -0.00014276145223401218
+      ],
+      "gross_bonf": [
+        -0.0007719529001003111,
+        5.9397133462792725e-05
+      ],
+      "return_lift": -0.0005894665239184723,
+      "return_lift_ci": [
+        -0.0007613304327424269,
+        -0.0004482758836143928
+      ],
+      "return_lift_bonf": [
+        -0.0008753253041195404,
+        -0.0003036077437174042
+      ],
+      "screen14_bps": -17.562778833187593,
+      "screen20_bps": -23.562778833187593,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "4h",
+      "signature": "reclaim",
+      "n": 1104,
+      "days": 701,
+      "win": 0.5045289855072463,
+      "win_ci": [
+        0.4773108697524077,
+        0.5309232341399607
+      ],
+      "win_bonf": [
+        0.45622763619307294,
+        0.5528303348214197
+      ],
+      "lift": -0.044476437199583156,
+      "lift_ci": [
+        -0.06584508514578283,
+        -0.022507538013069827
+      ],
+      "lift_bonf": [
+        -0.08436796877259256,
+        -0.004584905626573758
+      ],
+      "gross": -2.3358279327999433e-05,
+      "gross_ci": [
+        -0.00022704364933856812,
+        0.0001841020477661256
+      ],
+      "gross_bonf": [
+        -0.00038879425945379756,
+        0.0003420777007977987
+      ],
+      "return_lift": -0.00033468198380612573,
+      "return_lift_ci": [
+        -0.0004898728717254399,
+        -0.00018413967644817882
+      ],
+      "return_lift_bonf": [
+        -0.0006100643773582352,
+        -5.929959025401631e-05
+      ],
+      "screen14_bps": -14.233582793279995,
+      "screen20_bps": -20.233582793279993,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "4h",
+      "signature": "retest",
+      "n": 1528,
+      "days": 863,
+      "win": 0.5431937172774869,
+      "win_ci": [
+        0.51526823877363,
+        0.567464174222622
+      ],
+      "win_bonf": [
+        0.4957070056828619,
+        0.5906804288721118
+      ],
+      "lift": -0.022044198892654184,
+      "lift_ci": [
+        -0.045697597089213976,
+        -0.001530051304797363
+      ],
+      "lift_bonf": [
+        -0.06190119372389524,
+        0.01781279593858687
+      ],
+      "gross": 0.00021351589929318804,
+      "gross_ci": [
+        -3.9789615529005934e-05,
+        0.0004345394301794135
+      ],
+      "gross_bonf": [
+        -0.00022165326715788657,
+        0.0006486850657442627
+      ],
+      "return_lift": -0.00010488844285888546,
+      "return_lift_ci": [
+        -0.00028858831039706547,
+        4.815749016782261e-05
+      ],
+      "return_lift_bonf": [
+        -0.00041158045412260187,
+        0.00020180356840483098
+      ],
+      "screen14_bps": -11.864841007068119,
+      "screen20_bps": -17.86484100706812,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "4h",
+      "signature": "strong_break",
+      "n": 1245,
+      "days": 765,
+      "win": 0.4634538152610442,
+      "win_ci": [
+        0.4358974358974359,
+        0.48976908359590576
+      ],
+      "win_bonf": [
+        0.4147401096430847,
+        0.5121675208790036
+      ],
+      "lift": -0.07580455890164099,
+      "lift_ci": [
+        -0.10141337297574798,
+        -0.05238098990772397
+      ],
+      "lift_bonf": [
+        -0.11905826351783767,
+        -0.03255085428544431
+      ],
+      "gross": -3.5562289248678424e-05,
+      "gross_ci": [
+        -0.0002843313359504822,
+        0.00025066237724262496
+      ],
+      "gross_bonf": [
+        -0.0005145369612280889,
+        0.00044341238273073205
+      ],
+      "return_lift": -0.00046010602099050393,
+      "return_lift_ci": [
+        -0.0006629996524182008,
+        -0.00025161768065653253
+      ],
+      "return_lift_bonf": [
+        -0.0008253736697683123,
+        -9.483837221269554e-05
+      ],
+      "screen14_bps": -14.355622892486783,
+      "screen20_bps": -20.355622892486785,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "day",
+      "signature": "rejection",
+      "n": 759,
+      "days": 494,
+      "win": 0.5191040843214756,
+      "win_ci": [
+        0.48050389947277106,
+        0.5528339428979072
+      ],
+      "win_bonf": [
+        0.4541629635960357,
+        0.5840452050469155
+      ],
+      "lift": -0.056993926245702084,
+      "lift_ci": [
+        -0.08414153259739088,
+        -0.030625438586879203
+      ],
+      "lift_bonf": [
+        -0.10654470754333158,
+        -0.007443144948072591
+      ],
+      "gross": -8.365194613023987e-05,
+      "gross_ci": [
+        -0.0005455297294994255,
+        0.0003534455190479799
+      ],
+      "gross_bonf": [
+        -0.0008882651753202152,
+        0.0007209612830597354
+      ],
+      "return_lift": -0.00045711605819806164,
+      "return_lift_ci": [
+        -0.0006969586194700599,
+        -0.0002214219953403952
+      ],
+      "return_lift_bonf": [
+        -0.0008995042885778003,
+        -1.4727827818322974e-05
+      ],
+      "screen14_bps": -14.836519461302398,
+      "screen20_bps": -20.836519461302398,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "day",
+      "signature": "break",
+      "n": 867,
+      "days": 497,
+      "win": 0.49019607843137253,
+      "win_ci": [
+        0.46215441079058056,
+        0.5161327831957989
+      ],
+      "win_bonf": [
+        0.4397149394271065,
+        0.5406772174356386
+      ],
+      "lift": -0.0519366740669293,
+      "lift_ci": [
+        -0.07402705111455571,
+        -0.029390352242146398
+      ],
+      "lift_bonf": [
+        -0.09340665735610676,
+        -0.010466690777751829
+      ],
+      "gross": -0.00011168549347742831,
+      "gross_ci": [
+        -0.00047606324626422986,
+        0.0002599626541340603
+      ],
+      "gross_bonf": [
+        -0.0007885851627754336,
+        0.0005652141758205769
+      ],
+      "return_lift": -0.0007240507779854985,
+      "return_lift_ci": [
+        -0.0009561865162291038,
+        -0.0004962667699450939
+      ],
+      "return_lift_bonf": [
+        -0.0011483274354234336,
+        -0.00029977412054756324
+      ],
+      "screen14_bps": -15.116854934774283,
+      "screen20_bps": -21.116854934774285,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "day",
+      "signature": "acceptance",
+      "n": 603,
+      "days": 378,
+      "win": 0.47761194029850745,
+      "win_ci": [
+        0.44296197752541766,
+        0.5119672704996936
+      ],
+      "win_bonf": [
+        0.4148566894940495,
+        0.5403671911029654
+      ],
+      "lift": -0.09754132181471692,
+      "lift_ci": [
+        -0.12820284520744296,
+        -0.06873430956863913
+      ],
+      "lift_bonf": [
+        -0.15121503307574544,
+        -0.043867610553688395
+      ],
+      "gross": -8.404437856006563e-06,
+      "gross_ci": [
+        -0.0003838229009884585,
+        0.0003846258238395238
+      ],
+      "gross_bonf": [
+        -0.0007256582839487376,
+        0.0007088494082367244
+      ],
+      "return_lift": -0.000784649555174525,
+      "return_lift_ci": [
+        -0.0010266258579705563,
+        -0.000542020096342777
+      ],
+      "return_lift_bonf": [
+        -0.0012152477872449732,
+        -0.0003540513231040767
+      ],
+      "screen14_bps": -14.084044378560066,
+      "screen20_bps": -20.084044378560066,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "day",
+      "signature": "reclaim",
+      "n": 431,
+      "days": 312,
+      "win": 0.531322505800464,
+      "win_ci": [
+        0.48863375729774816,
+        0.5707557605610286
+      ],
+      "win_bonf": [
+        0.45691311666740464,
+        0.6057318949335234
+      ],
+      "lift": -0.05058203696333756,
+      "lift_ci": [
+        -0.08370673168899113,
+        -0.019609134211067226
+      ],
+      "lift_bonf": [
+        -0.10989628533054241,
+        0.008732211403867297
+      ],
+      "gross": 0.000687349909479889,
+      "gross_ci": [
+        0.00020979533007491231,
+        0.001171863102992489
+      ],
+      "gross_bonf": [
+        -0.00019503550517104397,
+        0.001569735324130822
+      ],
+      "return_lift": -0.00015727342884426463,
+      "return_lift_ci": [
+        -0.000413940071610545,
+        0.00011042608594199022
+      ],
+      "return_lift_bonf": [
+        -0.0006510709483998156,
+        0.0003365240907112863
+      ],
+      "screen14_bps": -7.12650090520111,
+      "screen20_bps": -13.126500905201109,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "day",
+      "signature": "retest",
+      "n": 642,
+      "days": 456,
+      "win": 0.5327102803738317,
+      "win_ci": [
+        0.4925038805970149,
+        0.5687300119446692
+      ],
+      "win_bonf": [
+        0.46526128704378267,
+        0.6001592737038808
+      ],
+      "lift": -0.04794716320397755,
+      "lift_ci": [
+        -0.07576384753258533,
+        -0.021089729654372415
+      ],
+      "lift_bonf": [
+        -0.09753533368383055,
+        0.0016410072758754543
+      ],
+      "gross": -0.00025351834870415935,
+      "gross_ci": [
+        -0.0007722326323678471,
+        0.00023551716022853408
+      ],
+      "gross_bonf": [
+        -0.0011675392347191133,
+        0.0006605025373107947
+      ],
+      "return_lift": -0.00048208645408996946,
+      "return_lift_ci": [
+        -0.0007425300207432565,
+        -0.0002214637588009823
+      ],
+      "return_lift_bonf": [
+        -0.0009781092546238442,
+        1.3936346443905122e-05
+      ],
+      "screen14_bps": -16.535183487041593,
+      "screen20_bps": -22.535183487041593,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "day",
+      "signature": "strong_break",
+      "n": 501,
+      "days": 351,
+      "win": 0.48902195608782434,
+      "win_ci": [
+        0.45121646950002436,
+        0.5274532652043868
+      ],
+      "win_bonf": [
+        0.41806346133637995,
+        0.5599804508392687
+      ],
+      "lift": -0.05664268591567177,
+      "lift_ci": [
+        -0.08529400116918089,
+        -0.02317910864476301
+      ],
+      "lift_bonf": [
+        -0.11311251417812088,
+        -0.00017285765322266888
+      ],
+      "gross": 1.984457512985454e-05,
+      "gross_ci": [
+        -0.0003958233861868083,
+        0.0004170524388376367
+      ],
+      "gross_bonf": [
+        -0.0007146769605541758,
+        0.0007543661108138849
+      ],
+      "return_lift": -0.0006338518285657744,
+      "return_lift_ci": [
+        -0.0009161891780692088,
+        -0.0003400244202557755
+      ],
+      "return_lift_bonf": [
+        -0.0011534792290335983,
+        -0.00011422442809795065
+      ],
+      "screen14_bps": -13.801554248701455,
+      "screen20_bps": -19.801554248701454,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "week",
+      "signature": "rejection",
+      "n": 288,
+      "days": 194,
+      "win": 0.46875,
+      "win_ci": [
+        0.41564247830279655,
+        0.5224576639166305
+      ],
+      "win_bonf": [
+        0.37214207848438463,
+        0.5653579215156154
+      ],
+      "lift": -0.08482257239795617,
+      "lift_ci": [
+        -0.13078192424216722,
+        -0.03771867637915616
+      ],
+      "lift_bonf": [
+        -0.16704615696787922,
+        -0.0025989878280331113
+      ],
+      "gross": -0.0003854313737703358,
+      "gross_ci": [
+        -0.0010714780306690628,
+        0.00027098528344599775
+      ],
+      "gross_bonf": [
+        -0.00159070011993988,
+        0.0008198373723992086
+      ],
+      "return_lift": -0.0007528736938851836,
+      "return_lift_ci": [
+        -0.0011503494047348576,
+        -0.00035122068907275677
+      ],
+      "return_lift_bonf": [
+        -0.00147686383031092,
+        -2.888355745944715e-05
+      ],
+      "screen14_bps": -17.854313737703357,
+      "screen20_bps": -23.854313737703357,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "week",
+      "signature": "break",
+      "n": 319,
+      "days": 188,
+      "win": 0.4482758620689655,
+      "win_ci": [
+        0.4039606275168426,
+        0.4934242359932088
+      ],
+      "win_bonf": [
+        0.36691302866640796,
+        0.5296386954715231
+      ],
+      "lift": -0.05933466506377526,
+      "lift_ci": [
+        -0.09811579435148865,
+        -0.01899554193164917
+      ],
+      "lift_bonf": [
+        -0.1285774346500089,
+        0.009908104522458383
+      ],
+      "gross": -0.0001602534865861136,
+      "gross_ci": [
+        -0.0008179843893617082,
+        0.00045050241826645823
+      ],
+      "gross_bonf": [
+        -0.0013175356511665212,
+        0.000997028677994294
+      ],
+      "return_lift": -0.0004168270979259368,
+      "return_lift_ci": [
+        -0.0008189315066605701,
+        -6.893536417152063e-05
+      ],
+      "return_lift_bonf": [
+        -0.0010900195658671442,
+        0.0002563653700152704
+      ],
+      "screen14_bps": -15.602534865861136,
+      "screen20_bps": -21.602534865861134,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "week",
+      "signature": "acceptance",
+      "n": 207,
+      "days": 138,
+      "win": 0.4396135265700483,
+      "win_ci": [
+        0.38219586585004445,
+        0.5
+      ],
+      "win_bonf": [
+        0.3330660101000485,
+        0.5461610430400482
+      ],
+      "lift": -0.10626456156451708,
+      "lift_ci": [
+        -0.15517228215499337,
+        -0.056338406607478485
+      ],
+      "lift_bonf": [
+        -0.1984835081573143,
+        -0.014045614971719841
+      ],
+      "gross": -0.0002966411255062861,
+      "gross_ci": [
+        -0.0009362951579351832,
+        0.00038839550100361797
+      ],
+      "gross_bonf": [
+        -0.0014829143016334427,
+        0.0008896320506208707
+      ],
+      "return_lift": -0.0007350168339858826,
+      "return_lift_ci": [
+        -0.0011519411698096224,
+        -0.00030982437227929
+      ],
+      "return_lift_bonf": [
+        -0.0015296418506264347,
+        5.960818265466933e-05
+      ],
+      "screen14_bps": -16.966411255062862,
+      "screen20_bps": -22.966411255062862,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "week",
+      "signature": "reclaim",
+      "n": 144,
+      "days": 106,
+      "win": 0.5277777777777778,
+      "win_ci": [
+        0.4615107913669065,
+        0.5928587231352718
+      ],
+      "win_bonf": [
+        0.40894977328291393,
+        0.6466057822726416
+      ],
+      "lift": -0.06160398033617287,
+      "lift_ci": [
+        -0.1130789960711645,
+        -0.008439123402058714
+      ],
+      "lift_bonf": [
+        -0.15590227765260692,
+        0.03269431698026118
+      ],
+      "gross": 0.0009322158277183261,
+      "gross_ci": [
+        0.00012423034196880673,
+        0.0017521184491241654
+      ],
+      "gross_bonf": [
+        -0.0005374320528814967,
+        0.0024018637083181487
+      ],
+      "return_lift": -0.0002119418081121464,
+      "return_lift_ci": [
+        -0.0006720353214627074,
+        0.00024729511941421275
+      ],
+      "return_lift_bonf": [
+        -0.0010256371397437318,
+        0.0006017535235194391
+      ],
+      "screen14_bps": -4.677841722816739,
+      "screen20_bps": -10.677841722816739,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "week",
+      "signature": "retest",
+      "n": 250,
+      "days": 177,
+      "win": 0.496,
+      "win_ci": [
+        0.43420431976166834,
+        0.555567081604426
+      ],
+      "win_bonf": [
+        0.3852260706575774,
+        0.6067739293424226
+      ],
+      "lift": -0.05950525978934244,
+      "lift_ci": [
+        -0.11653244371883949,
+        -0.001692996569728965
+      ],
+      "lift_bonf": [
+        -0.16213340749275934,
+        0.04312288791407447
+      ],
+      "gross": -0.0004439089464413315,
+      "gross_ci": [
+        -0.0011788343337425062,
+        0.00029390624963788255
+      ],
+      "gross_bonf": [
+        -0.0017918172598768577,
+        0.0009039993669941945
+      ],
+      "return_lift": -0.0006241506327099742,
+      "return_lift_ci": [
+        -0.0010719834170792406,
+        -0.0001591740089924935
+      ],
+      "return_lift_bonf": [
+        -0.0014281207929190492,
+        0.00017981952749910072
+      ],
+      "screen14_bps": -18.439089464413314,
+      "screen20_bps": -24.439089464413314,
+      "candidate": false
+    },
+    {
+      "tf": 15,
+      "family": "week",
+      "signature": "strong_break",
+      "n": 192,
+      "days": 134,
+      "win": 0.4583333333333333,
+      "win_ci": [
+        0.39211856617647056,
+        0.5291083099906629
+      ],
+      "win_bonf": [
+        0.3330587711360412,
+        0.5836078955306254
+      ],
+      "lift": -0.06053751703966972,
+      "lift_ci": [
+        -0.11656684811386638,
+        -0.0056442332067183415
+      ],
+      "lift_bonf": [
+        -0.1578832796141438,
+        0.036808245534804364
+      ],
+      "gross": 0.00036423786386230857,
+      "gross_ci": [
+        -0.0005274371975426446,
+        0.0013287918148842748
+      ],
+      "gross_bonf": [
+        -0.0012756917177055927,
+        0.00200416744543021
+      ],
+      "return_lift": -0.00010358413529158387,
+      "return_lift_ci": [
+        -0.0006495434646407528,
+        0.00043274434022983925
+      ],
+      "return_lift_bonf": [
+        -0.0011145320444636674,
+        0.0009073637738804997
+      ],
+      "screen14_bps": -10.357621361376914,
+      "screen20_bps": -16.357621361376914,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "4h",
+      "signature": "rejection",
+      "n": 1486,
+      "days": 845,
+      "win": 0.5161507402422612,
+      "win_ci": [
+        0.49032526049378794,
+        0.539936213350705
+      ],
+      "win_bonf": [
+        0.4716853853565153,
+        0.560616095128007
+      ],
+      "lift": -0.04624139879859933,
+      "lift_ci": [
+        -0.0647278654150673,
+        -0.026837344221752133
+      ],
+      "lift_bonf": [
+        -0.08134771594204421,
+        -0.011135081655154457
+      ],
+      "gross": 9.879651116741429e-05,
+      "gross_ci": [
+        -0.00012330641276829746,
+        0.00029555151511568553
+      ],
+      "gross_bonf": [
+        -0.00028209386143778826,
+        0.00047968688377261683
+      ],
+      "return_lift": -0.00018791153837845588,
+      "return_lift_ci": [
+        -0.0003567406416032677,
+        -3.105223898409637e-05
+      ],
+      "return_lift_bonf": [
+        -0.00047301963130219317,
+        9.719655454528141e-05
+      ],
+      "screen14_bps": -13.012034888325857,
+      "screen20_bps": -19.012034888325857,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "4h",
+      "signature": "break",
+      "n": 1541,
+      "days": 849,
+      "win": 0.4399740428293316,
+      "win_ci": [
+        0.4173379342431762,
+        0.46408365082775643
+      ],
+      "win_bonf": [
+        0.398418365809537,
+        0.48152971984912624
+      ],
+      "lift": -0.08364508625702656,
+      "lift_ci": [
+        -0.10368126450426664,
+        -0.06310177768470762
+      ],
+      "lift_bonf": [
+        -0.12039989286870201,
+        -0.046890279645351106
+      ],
+      "gross": -0.00023504463515303697,
+      "gross_ci": [
+        -0.0004520532678820147,
+        -1.5607131450006196e-05
+      ],
+      "gross_bonf": [
+        -0.0006259381078003266,
+        0.00015584883749425273
+      ],
+      "return_lift": -0.0005339699820974542,
+      "return_lift_ci": [
+        -0.0006769091537129428,
+        -0.000397443471610996
+      ],
+      "return_lift_bonf": [
+        -0.0007912505478552799,
+        -0.0002766894163396284
+      ],
+      "screen14_bps": -16.35044635153037,
+      "screen20_bps": -22.35044635153037,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "4h",
+      "signature": "acceptance",
+      "n": 1057,
+      "days": 708,
+      "win": 0.45506149479659413,
+      "win_ci": [
+        0.4285680433310765,
+        0.48184793665229436
+      ],
+      "win_bonf": [
+        0.40630112089935605,
+        0.5038218686938323
+      ],
+      "lift": -0.09798945666968371,
+      "lift_ci": [
+        -0.12025990164407739,
+        -0.07499802927743443
+      ],
+      "lift_bonf": [
+        -0.13838789265365406,
+        -0.057591020685713375
+      ],
+      "gross": -0.00025249232269287177,
+      "gross_ci": [
+        -0.0005378165865292698,
+        6.803562654656322e-06
+      ],
+      "gross_bonf": [
+        -0.000748744367155066,
+        0.00024375972176932245
+      ],
+      "return_lift": -0.0004902556286894291,
+      "return_lift_ci": [
+        -0.0006755888723863017,
+        -0.0002941368886949188
+      ],
+      "return_lift_bonf": [
+        -0.0008445628948791975,
+        -0.0001359483624996606
+      ],
+      "screen14_bps": -16.524923226928717,
+      "screen20_bps": -22.524923226928717,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "4h",
+      "signature": "reclaim",
+      "n": 787,
+      "days": 563,
+      "win": 0.5336721728081322,
+      "win_ci": [
+        0.5030694873242278,
+        0.5638775559394207
+      ],
+      "win_bonf": [
+        0.47816737346942173,
+        0.5891769721468426
+      ],
+      "lift": -0.03507451534770467,
+      "lift_ci": [
+        -0.0624201335200539,
+        -0.00793001493462221
+      ],
+      "lift_bonf": [
+        -0.08239028819541983,
+        0.012241257500010476
+      ],
+      "gross": 0.00014230384513674407,
+      "gross_ci": [
+        -9.810001140818649e-05,
+        0.0003835301704172992
+      ],
+      "gross_bonf": [
+        -0.00029657806865313226,
+        0.0005811857589266203
+      ],
+      "return_lift": -0.00037498256071172276,
+      "return_lift_ci": [
+        -0.0005463291731442621,
+        -0.00021019728523363423
+      ],
+      "return_lift_bonf": [
+        -0.0006731090172517533,
+        -7.68561041716922e-05
+      ],
+      "screen14_bps": -12.576961548632559,
+      "screen20_bps": -18.57696154863256,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "4h",
+      "signature": "retest",
+      "n": 1360,
+      "days": 828,
+      "win": 0.5345588235294118,
+      "win_ci": [
+        0.5086081470003402,
+        0.5590761910369754
+      ],
+      "win_bonf": [
+        0.48789236860934554,
+        0.581225278449478
+      ],
+      "lift": -0.03157581593243357,
+      "lift_ci": [
+        -0.051069992299156756,
+        -0.01142608331462659
+      ],
+      "lift_bonf": [
+        -0.06876223385453999,
+        0.00561060198967285
+      ],
+      "gross": 8.022309195427623e-05,
+      "gross_ci": [
+        -0.00012004712871710636,
+        0.00028617103173486104
+      ],
+      "gross_bonf": [
+        -0.0002939100930449851,
+        0.00045435627695353763
+      ],
+      "return_lift": -0.00016053791329318965,
+      "return_lift_ci": [
+        -0.0003167711709086817,
+        -8.511941165964789e-06
+      ],
+      "return_lift_bonf": [
+        -0.00042990219882463397,
+        0.00010882637223825467
+      ],
+      "screen14_bps": -13.197769080457238,
+      "screen20_bps": -19.19776908045724,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "4h",
+      "signature": "strong_break",
+      "n": 868,
+      "days": 608,
+      "win": 0.4216589861751152,
+      "win_ci": [
+        0.3861439437260157,
+        0.4576410932103571
+      ],
+      "win_bonf": [
+        0.35785388607728863,
+        0.4854640862729418
+      ],
+      "lift": -0.10474519719911424,
+      "lift_ci": [
+        -0.13191089323129443,
+        -0.07753873544134075
+      ],
+      "lift_bonf": [
+        -0.15368465703507855,
+        -0.05580573736314991
+      ],
+      "gross": -1.1124518519125068e-05,
+      "gross_ci": [
+        -0.0002918413300790655,
+        0.00025753590009545523
+      ],
+      "gross_bonf": [
+        -0.0005121836372457152,
+        0.0004899346002074651
+      ],
+      "return_lift": -0.0003876514984386725,
+      "return_lift_ci": [
+        -0.0005691116557462257,
+        -0.00019490223677611306
+      ],
+      "return_lift_bonf": [
+        -0.0007277124837907177,
+        -4.759051308662719e-05
+      ],
+      "screen14_bps": -14.111245185191251,
+      "screen20_bps": -20.11124518519125,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "day",
+      "signature": "rejection",
+      "n": 650,
+      "days": 457,
+      "win": 0.5384615384615384,
+      "win_ci": [
+        0.49915667692568483,
+        0.5760531226145712
+      ],
+      "win_bonf": [
+        0.46729291097040665,
+        0.6096301659526703
+      ],
+      "lift": -0.0458030858030858,
+      "lift_ci": [
+        -0.07434593675566015,
+        -0.017497970925629203
+      ],
+      "lift_bonf": [
+        -0.09610340281352556,
+        0.004497231207353958
+      ],
+      "gross": 8.699844378860707e-05,
+      "gross_ci": [
+        -0.00045486111431662006,
+        0.0005799641369026833
+      ],
+      "gross_bonf": [
+        -0.0008601058729777141,
+        0.0010341027605549283
+      ],
+      "return_lift": -0.0003249750223063477,
+      "return_lift_ci": [
+        -0.0005591872503913654,
+        -7.853441054082076e-05
+      ],
+      "return_lift_bonf": [
+        -0.0007642102164154834,
+        0.0001142601718027879
+      ],
+      "screen14_bps": -13.130015562113929,
+      "screen20_bps": -19.13001556211393,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "day",
+      "signature": "break",
+      "n": 710,
+      "days": 432,
+      "win": 0.46056338028169014,
+      "win_ci": [
+        0.42517136429800184,
+        0.494360733196524
+      ],
+      "win_bonf": [
+        0.39933218113380053,
+        0.5217945794295797
+      ],
+      "lift": -0.08248109871349307,
+      "lift_ci": [
+        -0.11096489042385499,
+        -0.056046105224080114
+      ],
+      "lift_bonf": [
+        -0.13211802815669227,
+        -0.03284416927029386
+      ],
+      "gross": -1.918596571802836e-05,
+      "gross_ci": [
+        -0.00043682237350283924,
+        0.00043724514289156615
+      ],
+      "gross_bonf": [
+        -0.0008282220003202875,
+        0.0007898500688842308
+      ],
+      "return_lift": -0.0006528706495408851,
+      "return_lift_ci": [
+        -0.0008854264552493623,
+        -0.0003944370644559612
+      ],
+      "return_lift_bonf": [
+        -0.0011073565862628476,
+        -0.00019838471281892272
+      ],
+      "screen14_bps": -14.191859657180284,
+      "screen20_bps": -20.191859657180284,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "day",
+      "signature": "acceptance",
+      "n": 418,
+      "days": 296,
+      "win": 0.4904306220095694,
+      "win_ci": [
+        0.44586682220159285,
+        0.5354339717832755
+      ],
+      "win_bonf": [
+        0.4080105935300083,
+        0.5728506504891304
+      ],
+      "lift": -0.08246727355579028,
+      "lift_ci": [
+        -0.11807641664529997,
+        -0.04824160016522256
+      ],
+      "lift_bonf": [
+        -0.1452031378789333,
+        -0.019731409232647254
+      ],
+      "gross": 0.00036847867009119715,
+      "gross_ci": [
+        -0.00015932251735499957,
+        0.0008967954964360303
+      ],
+      "gross_bonf": [
+        -0.0005503688015892437,
+        0.001287326141771638
+      ],
+      "return_lift": -0.0003010618595578642,
+      "return_lift_ci": [
+        -0.0006186828501797586,
+        -1.4642955610312747e-05
+      ],
+      "return_lift_bonf": [
+        -0.0008449921924166253,
+        0.00024286847330089683
+      ],
+      "screen14_bps": -10.315213299088029,
+      "screen20_bps": -16.31521329908803,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "day",
+      "signature": "reclaim",
+      "n": 320,
+      "days": 247,
+      "win": 0.53125,
+      "win_ci": [
+        0.4820787779103643,
+        0.5815620929222752
+      ],
+      "win_bonf": [
+        0.4383581835818289,
+        0.6241418164181711
+      ],
+      "lift": -0.06423227813852814,
+      "lift_ci": [
+        -0.10866407971767687,
+        -0.01851911100194069
+      ],
+      "lift_bonf": [
+        -0.14440544355152987,
+        0.015940887274473597
+      ],
+      "gross": 0.00027322683400084826,
+      "gross_ci": [
+        -0.00033201239876196634,
+        0.0009269809880411976
+      ],
+      "gross_bonf": [
+        -0.0008567101606307235,
+        0.00140316382863242
+      ],
+      "return_lift": -0.0005078553009854327,
+      "return_lift_ci": [
+        -0.0008964180318328443,
+        -9.64032616336097e-05
+      ],
+      "return_lift_bonf": [
+        -0.001227531448283345,
+        0.00021182084631247934
+      ],
+      "screen14_bps": -11.267731659991517,
+      "screen20_bps": -17.26773165999152,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "day",
+      "signature": "retest",
+      "n": 554,
+      "days": 416,
+      "win": 0.5451263537906137,
+      "win_ci": [
+        0.5036197167095895,
+        0.5841266540642722
+      ],
+      "win_bonf": [
+        0.4715668309312987,
+        0.6186858766499287
+      ],
+      "lift": -0.03819662587713129,
+      "lift_ci": [
+        -0.0680060494201704,
+        -0.008386131026473991
+      ],
+      "lift_bonf": [
+        -0.09283047074988869,
+        0.016437218995626113
+      ],
+      "gross": -3.030247743004586e-05,
+      "gross_ci": [
+        -0.0006153935425808416,
+        0.0005524178217073678
+      ],
+      "gross_bonf": [
+        -0.0010708088454023617,
+        0.00101020389054227
+      ],
+      "return_lift": -0.000292231914503953,
+      "return_lift_ci": [
+        -0.0005628496408607024,
+        6.4187611030122975e-06
+      ],
+      "return_lift_bonf": [
+        -0.0008180564327763598,
+        0.00023359260376845393
+      ],
+      "screen14_bps": -14.303024774300459,
+      "screen20_bps": -20.303024774300457,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "day",
+      "signature": "strong_break",
+      "n": 316,
+      "days": 246,
+      "win": 0.4208860759493671,
+      "win_ci": [
+        0.3705884283776095,
+        0.47058823529411764
+      ],
+      "win_bonf": [
+        0.3308184276212804,
+        0.5109537242774538
+      ],
+      "lift": -0.07813190677114727,
+      "lift_ci": [
+        -0.1213053816321058,
+        -0.037422721005341414
+      ],
+      "lift_bonf": [
+        -0.15547397476237007,
+        -0.0007898387799244871
+      ],
+      "gross": -7.19772545428184e-05,
+      "gross_ci": [
+        -0.0006867912458957461,
+        0.0005110970183668679
+      ],
+      "gross_bonf": [
+        -0.0011663464415014849,
+        0.001022391932415848
+      ],
+      "return_lift": -0.00031671766038850175,
+      "return_lift_ci": [
+        -0.0006601751341885853,
+        -1.5596515519308432e-05
+      ],
+      "return_lift_bonf": [
+        -0.0009105632137699925,
+        0.0002771278929929889
+      ],
+      "screen14_bps": -14.719772545428183,
+      "screen20_bps": -20.719772545428185,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "week",
+      "signature": "rejection",
+      "n": 244,
+      "days": 175,
+      "win": 0.5204918032786885,
+      "win_ci": [
+        0.4545350291909925,
+        0.5798279290964116
+      ],
+      "win_bonf": [
+        0.407204735076109,
+        0.633778871481268
+      ],
+      "lift": -0.03959974451777729,
+      "lift_ci": [
+        -0.09030221812302734,
+        0.011712378557744934
+      ],
+      "lift_bonf": [
+        -0.13350237511642493,
+        0.05430288608087034
+      ],
+      "gross": 0.00017034191429446808,
+      "gross_ci": [
+        -0.0006190520091420315,
+        0.0008850690938938799
+      ],
+      "gross_bonf": [
+        -0.0011618496965051619,
+        0.001502533525094098
+      ],
+      "return_lift": -8.71969331963126e-05,
+      "return_lift_ci": [
+        -0.0003746123949189427,
+        0.00019305776253483986
+      ],
+      "return_lift_bonf": [
+        -0.0006068094727649316,
+        0.0004324156063723065
+      ],
+      "screen14_bps": -12.29658085705532,
+      "screen20_bps": -18.296580857055318,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "week",
+      "signature": "break",
+      "n": 236,
+      "days": 146,
+      "win": 0.3855932203389831,
+      "win_ci": [
+        0.32335139207807123,
+        0.4444805194805194
+      ],
+      "win_bonf": [
+        0.2765486889043768,
+        0.4946377517735894
+      ],
+      "lift": -0.10020299850808324,
+      "lift_ci": [
+        -0.1522525271025271,
+        -0.04668968548845437
+      ],
+      "lift_bonf": [
+        -0.19463219466138512,
+        -0.0057738023547813655
+      ],
+      "gross": -0.0007324961710592337,
+      "gross_ci": [
+        -0.0013661081484429853,
+        -3.5433471508641916e-05
+      ],
+      "gross_bonf": [
+        -0.0019404147828917936,
+        0.00047542244077332623
+      ],
+      "return_lift": -0.0004839016189326759,
+      "return_lift_ci": [
+        -0.0008154975208012277,
+        -0.0001226877285808073
+      ],
+      "return_lift_bonf": [
+        -0.0011369525442085353,
+        0.00016914930634318346
+      ],
+      "screen14_bps": -21.324961710592337,
+      "screen20_bps": -27.324961710592337,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "week",
+      "signature": "acceptance",
+      "n": 159,
+      "days": 108,
+      "win": 0.4528301886792453,
+      "win_ci": [
+        0.3757952132792897,
+        0.5215192125237191
+      ],
+      "win_bonf": [
+        0.3167974606746352,
+        0.5888629166838554
+      ],
+      "lift": -0.09617423107989147,
+      "lift_ci": [
+        -0.15493065529242,
+        -0.03984257192460319
+      ],
+      "lift_bonf": [
+        -0.1994515440614003,
+        0.007103081901617375
+      ],
+      "gross": -0.0005339278440485998,
+      "gross_ci": [
+        -0.001401457071355668,
+        0.00024223675655157725
+      ],
+      "gross_bonf": [
+        -0.002050940504366207,
+        0.0009830848162690072
+      ],
+      "return_lift": -0.0004945309185094626,
+      "return_lift_ci": [
+        -0.0009774632877659283,
+        -1.5263070782681826e-05
+      ],
+      "return_lift_bonf": [
+        -0.001354443107986583,
+        0.00036538127096765783
+      ],
+      "screen14_bps": -19.339278440485998,
+      "screen20_bps": -25.339278440485998,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "week",
+      "signature": "reclaim",
+      "n": 87,
+      "days": 62,
+      "win": 0.5287356321839081,
+      "win_ci": [
+        0.4367816091954023,
+        0.6101749944970284
+      ],
+      "win_bonf": [
+        0.3743098676641349,
+        0.6831613967036813
+      ],
+      "lift": -0.011707385845316871,
+      "lift_ci": [
+        -0.08722063024482378,
+        0.055963072047000594
+      ],
+      "lift_bonf": [
+        -0.13994683177623898,
+        0.11653206008560525
+      ],
+      "gross": -2.450542225416109e-05,
+      "gross_ci": [
+        -0.0006510352184157455,
+        0.0006719016325090452
+      ],
+      "gross_bonf": [
+        -0.0012176297047237297,
+        0.0011686188602154075
+      ],
+      "return_lift": -0.0003264348210296162,
+      "return_lift_ci": [
+        -0.0007736987811932771,
+        0.00014406826503522168
+      ],
+      "return_lift_bonf": [
+        -0.0011433217189029828,
+        0.0004904520768437503
+      ],
+      "screen14_bps": -14.245054222541611,
+      "screen20_bps": -20.24505422254161,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "week",
+      "signature": "retest",
+      "n": 204,
+      "days": 159,
+      "win": 0.5490196078431373,
+      "win_ci": [
+        0.4788711054204012,
+        0.6195228414254962
+      ],
+      "win_bonf": [
+        0.42085671584030937,
+        0.6771824998459652
+      ],
+      "lift": -0.024484692867045802,
+      "lift_ci": [
+        -0.08065841874472493,
+        0.03482876177503597
+      ],
+      "lift_bonf": [
+        -0.13116885943013587,
+        0.08219947369604427
+      ],
+      "gross": 0.0006611804052987095,
+      "gross_ci": [
+        -0.00017614688352693815,
+        0.001473781137527859
+      ],
+      "gross_bonf": [
+        -0.0008456840755723994,
+        0.002168044886169818
+      ],
+      "return_lift": 2.999337629432007e-05,
+      "return_lift_ci": [
+        -0.00032390331257486297,
+        0.0003964970255932376
+      ],
+      "return_lift_bonf": [
+        -0.0006424473060741632,
+        0.0007024340586628034
+      ],
+      "screen14_bps": -7.388195947012905,
+      "screen20_bps": -13.388195947012905,
+      "candidate": false
+    },
+    {
+      "tf": 30,
+      "family": "week",
+      "signature": "strong_break",
+      "n": 122,
+      "days": 93,
+      "win": 0.4344262295081967,
+      "win_ci": [
+        0.34258633633633634,
+        0.5214363354037267
+      ],
+      "win_bonf": [
+        0.27177719760486596,
+        0.5970752614115274
+      ],
+      "lift": -0.059564911409173714,
+      "lift_ci": [
+        -0.1194258843242429,
+        -0.0011995404752866176
+      ],
+      "lift_bonf": [
+        -0.17056691932474155,
+        0.05143709650639413
+      ],
+      "gross": -0.0003148193899695274,
+      "gross_ci": [
+        -0.0012176271393634392,
+        0.0005283507678036155
+      ],
+      "gross_bonf": [
+        -0.001935264923453695,
+        0.0013056261435146401
+      ],
+      "return_lift": -0.00042591114866090174,
+      "return_lift_ci": [
+        -0.0009291256769176987,
+        9.50033203933309e-05
+      ],
+      "return_lift_bonf": [
+        -0.0013685484541187609,
+        0.0005167261567969573
+      ],
+      "screen14_bps": -17.148193899695276,
+      "screen20_bps": -23.148193899695276,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "4h",
+      "signature": "rejection",
+      "n": 1294,
+      "days": 816,
+      "win": 0.5293663060278208,
+      "win_ci": [
+        0.5029768866374279,
+        0.5574054810926005
+      ],
+      "win_bonf": [
+        0.48009327103187155,
+        0.57863934102377
+      ],
+      "lift": -0.03252189592993301,
+      "lift_ci": [
+        -0.05119323725488108,
+        -0.012240867066377904
+      ],
+      "lift_bonf": [
+        -0.066802163473383,
+        0.0017583716135169888
+      ],
+      "gross": 5.631802054071921e-05,
+      "gross_ci": [
+        -0.00017699328960996645,
+        0.00029147321915571755
+      ],
+      "gross_bonf": [
+        -0.0003757302702976686,
+        0.000488366311379107
+      ],
+      "return_lift": -0.00017667634309337382,
+      "return_lift_ci": [
+        -0.0003026735668030849,
+        -5.321727665219868e-05
+      ],
+      "return_lift_bonf": [
+        -0.000404694886818332,
+        5.134220063158441e-05
+      ],
+      "screen14_bps": -13.436819794592807,
+      "screen20_bps": -19.436819794592807,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "4h",
+      "signature": "break",
+      "n": 1278,
+      "days": 779,
+      "win": 0.40375586854460094,
+      "win_ci": [
+        0.3769942574257426,
+        0.43001404178528135
+      ],
+      "win_bonf": [
+        0.35454398901279777,
+        0.4529677480764041
+      ],
+      "lift": -0.10639019300991132,
+      "lift_ci": [
+        -0.1294749801669426,
+        -0.08492589917242503
+      ],
+      "lift_bonf": [
+        -0.1462254839797366,
+        -0.06655490204008604
+      ],
+      "gross": -0.00039389544498578017,
+      "gross_ci": [
+        -0.000652011768650943,
+        -0.00012830372917453688
+      ],
+      "gross_bonf": [
+        -0.0008632895315031512,
+        7.549864153159089e-05
+      ],
+      "return_lift": -0.00040435367140039837,
+      "return_lift_ci": [
+        -0.000561113513755372,
+        -0.00025606993257719666
+      ],
+      "return_lift_bonf": [
+        -0.0006827182019132031,
+        -0.0001259891408875936
+      ],
+      "screen14_bps": -17.938954449857803,
+      "screen20_bps": -23.938954449857803,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "4h",
+      "signature": "acceptance",
+      "n": 633,
+      "days": 514,
+      "win": 0.4707740916271722,
+      "win_ci": [
+        0.43177897893158684,
+        0.5086470258835242
+      ],
+      "win_bonf": [
+        0.39936087086909294,
+        0.5421873123852514
+      ],
+      "lift": -0.056924697209057386,
+      "lift_ci": [
+        -0.08550978371217748,
+        -0.026860373168189105
+      ],
+      "lift_bonf": [
+        -0.11168203386478232,
+        -0.0021673605533324633
+      ],
+      "gross": 9.245510912467618e-05,
+      "gross_ci": [
+        -0.000258425994932163,
+        0.00044294378408069
+      ],
+      "gross_bonf": [
+        -0.0005218019047689897,
+        0.000706712123018342
+      ],
+      "return_lift": -0.00027385002989091913,
+      "return_lift_ci": [
+        -0.00046577015375746234,
+        -8.936887066971326e-05
+      ],
+      "return_lift_bonf": [
+        -0.0006106573382555726,
+        6.295727847373424e-05
+      ],
+      "screen14_bps": -13.075448908753238,
+      "screen20_bps": -19.075448908753238,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "4h",
+      "signature": "reclaim",
+      "n": 471,
+      "days": 378,
+      "win": 0.5010615711252654,
+      "win_ci": [
+        0.4545355299722112,
+        0.5444746376811593
+      ],
+      "win_bonf": [
+        0.4161569712184132,
+        0.5859661710321176
+      ],
+      "lift": -0.08474876150035383,
+      "lift_ci": [
+        -0.12181979174019432,
+        -0.04626687988628286
+      ],
+      "lift_bonf": [
+        -0.1523516220934199,
+        -0.017145900907287764
+      ],
+      "gross": -0.00017931510084125515,
+      "gross_ci": [
+        -0.000551053146651742,
+        0.00018269865378519882
+      ],
+      "gross_bonf": [
+        -0.0008667886460498938,
+        0.0005081584443673835
+      ],
+      "return_lift": -0.00036826871447349924,
+      "return_lift_ci": [
+        -0.0006119304088497304,
+        -0.0001121143022502181
+      ],
+      "return_lift_bonf": [
+        -0.0008169135549188869,
+        8.037612597188842e-05
+      ],
+      "screen14_bps": -15.79315100841255,
+      "screen20_bps": -21.79315100841255,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "4h",
+      "signature": "retest",
+      "n": 1156,
+      "days": 776,
+      "win": 0.551038062283737,
+      "win_ci": [
+        0.5252380190385181,
+        0.580072879338351
+      ],
+      "win_bonf": [
+        0.5013679152649475,
+        0.6007082093025264
+      ],
+      "lift": -0.024192618223760086,
+      "lift_ci": [
+        -0.0418565944785399,
+        -0.005525483211763867
+      ],
+      "lift_bonf": [
+        -0.058449542183518076,
+        0.010064305735997904
+      ],
+      "gross": 3.968947538336896e-05,
+      "gross_ci": [
+        -0.00021367086836403227,
+        0.00027514299562325883
+      ],
+      "gross_bonf": [
+        -0.0004107006888571335,
+        0.0004900796396238715
+      ],
+      "return_lift": -0.0001872147491888682,
+      "return_lift_ci": [
+        -0.0003050976086024993,
+        -6.637382925635573e-05
+      ],
+      "return_lift_bonf": [
+        -0.0004049266626244996,
+        3.0497164246763206e-05
+      ],
+      "screen14_bps": -13.60310524616631,
+      "screen20_bps": -19.60310524616631,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "4h",
+      "signature": "strong_break",
+      "n": 499,
+      "days": 400,
+      "win": 0.3847695390781563,
+      "win_ci": [
+        0.33924471051336724,
+        0.42887967521600373
+      ],
+      "win_bonf": [
+        0.30468036609895527,
+        0.46485871205735735
+      ],
+      "lift": -0.08159652638610554,
+      "lift_ci": [
+        -0.11563174342105262,
+        -0.047074274973147145
+      ],
+      "lift_bonf": [
+        -0.14566763103990804,
+        -0.017525421732303037
+      ],
+      "gross": -0.0002723858650111647,
+      "gross_ci": [
+        -0.0007307813205187739,
+        0.00015298616648775438
+      ],
+      "gross_bonf": [
+        -0.0010512859025096318,
+        0.0005065141724873024
+      ],
+      "return_lift": -0.00020710850019284676,
+      "return_lift_ci": [
+        -0.0004393200317051016,
+        4.442969000990728e-05
+      ],
+      "return_lift_bonf": [
+        -0.0006623084039905913,
+        0.00024809140360489786
+      ],
+      "screen14_bps": -16.723858650111648,
+      "screen20_bps": -22.723858650111648,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "day",
+      "signature": "rejection",
+      "n": 507,
+      "days": 400,
+      "win": 0.5483234714003945,
+      "win_ci": [
+        0.5073246533524587,
+        0.5895990810730696
+      ],
+      "win_bonf": [
+        0.47174135769870024,
+        0.6249055851020888
+      ],
+      "lift": -0.03369493754109138,
+      "lift_ci": [
+        -0.0627144769866208,
+        -0.001036049836601306
+      ],
+      "lift_bonf": [
+        -0.08933058127413493,
+        0.021940706191952174
+      ],
+      "gross": 0.00011974471617259315,
+      "gross_ci": [
+        -0.0003484977014708653,
+        0.0006556440832863564
+      ],
+      "gross_bonf": [
+        -0.0007667117676448372,
+        0.0010062011999900234
+      ],
+      "return_lift": -0.00020886246899483297,
+      "return_lift_ci": [
+        -0.00042836569590695543,
+        4.415676024838376e-05
+      ],
+      "return_lift_bonf": [
+        -0.0006495528114840455,
+        0.00023182787349437957
+      ],
+      "screen14_bps": -12.80255283827407,
+      "screen20_bps": -18.802552838274067,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "day",
+      "signature": "break",
+      "n": 513,
+      "days": 345,
+      "win": 0.4191033138401559,
+      "win_ci": [
+        0.37693848724699125,
+        0.460955808782657
+      ],
+      "win_bonf": [
+        0.34391118632590084,
+        0.494295441354411
+      ],
+      "lift": -0.10753736192332682,
+      "lift_ci": [
+        -0.13754027278938427,
+        -0.07896738095238096
+      ],
+      "lift_bonf": [
+        -0.15982452147459175,
+        -0.05525020237206187
+      ],
+      "gross": 0.00011959433717556329,
+      "gross_ci": [
+        -0.00030681387819479815,
+        0.000572115100186081
+      ],
+      "gross_bonf": [
+        -0.0006516684328254858,
+        0.0008908571071766124
+      ],
+      "return_lift": -0.00046103621784699924,
+      "return_lift_ci": [
+        -0.0006959191950209125,
+        -0.00022081599687686013
+      ],
+      "return_lift_bonf": [
+        -0.0008990209354858788,
+        -2.3051500208119723e-05
+      ],
+      "screen14_bps": -12.804056628244368,
+      "screen20_bps": -18.804056628244368,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "day",
+      "signature": "acceptance",
+      "n": 262,
+      "days": 208,
+      "win": 0.49236641221374045,
+      "win_ci": [
+        0.4385245901639344,
+        0.5477310366164374
+      ],
+      "win_bonf": [
+        0.3961387305672719,
+        0.588594093860209
+      ],
+      "lift": -0.04103053435114503,
+      "lift_ci": [
+        -0.08637716421594555,
+        0.008011666666666669
+      ],
+      "lift_bonf": [
+        -0.12609447837139653,
+        0.04403340966910648
+      ],
+      "gross": -0.0001533018322280317,
+      "gross_ci": [
+        -0.0008385524757255714,
+        0.0005060216933396246
+      ],
+      "gross_bonf": [
+        -0.0013564987073264696,
+        0.0010498950428704061
+      ],
+      "return_lift": -0.00023694616394351618,
+      "return_lift_ci": [
+        -0.0005830785852389255,
+        0.00012845385927442714
+      ],
+      "return_lift_bonf": [
+        -0.0008940736788217889,
+        0.0004201813509347566
+      ],
+      "screen14_bps": -15.533018322280316,
+      "screen20_bps": -21.533018322280316,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "day",
+      "signature": "reclaim",
+      "n": 197,
+      "days": 152,
+      "win": 0.4619289340101523,
+      "win_ci": [
+        0.39380392699115047,
+        0.5300608544461004
+      ],
+      "win_bonf": [
+        0.33301993358952015,
+        0.5908379344307844
+      ],
+      "lift": -0.12368866328257191,
+      "lift_ci": [
+        -0.1785503244168458,
+        -0.0682796696197859
+      ],
+      "lift_bonf": [
+        -0.22257046568533306,
+        -0.02480686087981078
+      ],
+      "gross": -4.793826783174865e-05,
+      "gross_ci": [
+        -0.0007177418963642594,
+        0.000600157009419681
+      ],
+      "gross_bonf": [
+        -0.0012643238720927974,
+        0.0011684473364293
+      ],
+      "return_lift": -0.0006149350232728442,
+      "return_lift_ci": [
+        -0.0010081635803299393,
+        -0.0002613731130091393
+      ],
+      "return_lift_bonf": [
+        -0.0012958489966642095,
+        6.597895011852125e-05
+      ],
+      "screen14_bps": -14.479382678317487,
+      "screen20_bps": -20.479382678317485,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "day",
+      "signature": "retest",
+      "n": 409,
+      "days": 349,
+      "win": 0.5843520782396088,
+      "win_ci": [
+        0.5380925468128246,
+        0.6322754288561464
+      ],
+      "win_bonf": [
+        0.4978856552092563,
+        0.6708185012699612
+      ],
+      "lift": -0.03133659331703341,
+      "lift_ci": [
+        -0.06500665215287856,
+        0.0032654317584578435
+      ],
+      "lift_bonf": [
+        -0.09363459000325344,
+        0.030961403369186617
+      ],
+      "gross": 0.00029524913738872185,
+      "gross_ci": [
+        -0.00029805637182452407,
+        0.000844762698801956
+      ],
+      "gross_bonf": [
+        -0.0007306055614125525,
+        0.0013211038361899963
+      ],
+      "return_lift": -0.00025825231105197004,
+      "return_lift_ci": [
+        -0.0005091124648769914,
+        9.984773157099308e-06
+      ],
+      "return_lift_bonf": [
+        -0.0007321069819907651,
+        0.00021560235988682505
+      ],
+      "screen14_bps": -11.047508626112782,
+      "screen20_bps": -17.04750862611278,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "day",
+      "signature": "strong_break",
+      "n": 172,
+      "days": 152,
+      "win": 0.4011627906976744,
+      "win_ci": [
+        0.3259668508287293,
+        0.47778301886792457
+      ],
+      "win_bonf": [
+        0.26191449289045365,
+        0.5404110885048952
+      ],
+      "lift": -0.06860465116279069,
+      "lift_ci": [
+        -0.12908968627606124,
+        -0.015479845935101873
+      ],
+      "lift_bonf": [
+        -0.17058522178752727,
+        0.03337591946194589
+      ],
+      "gross": -0.00022102420753841788,
+      "gross_ci": [
+        -0.000846557453075129,
+        0.0004349851295260062
+      ],
+      "gross_bonf": [
+        -0.0014038611707587786,
+        0.0009618127556819428
+      ],
+      "return_lift": -0.0003352682406698981,
+      "return_lift_ci": [
+        -0.0008052777714106954,
+        9.453805902881071e-05
+      ],
+      "return_lift_bonf": [
+        -0.001162997013495112,
+        0.0004924605321553158
+      ],
+      "screen14_bps": -16.21024207538418,
+      "screen20_bps": -22.21024207538418,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "week",
+      "signature": "rejection",
+      "n": 175,
+      "days": 141,
+      "win": 0.5714285714285714,
+      "win_ci": [
+        0.5,
+        0.6432460782460783
+      ],
+      "win_bonf": [
+        0.441780256942836,
+        0.7010768859143068
+      ],
+      "lift": -0.01752380952380952,
+      "lift_ci": [
+        -0.06572735507246376,
+        0.03370359141791042
+      ],
+      "lift_bonf": [
+        -0.1100891016364849,
+        0.07504148258886585
+      ],
+      "gross": 0.0005946998934306943,
+      "gross_ci": [
+        -6.030638194477136e-05,
+        0.0012409085596598627
+      ],
+      "gross_bonf": [
+        -0.0005972490318378992,
+        0.0017866488186992877
+      ],
+      "return_lift": 0.00020161157929922874,
+      "return_lift_ci": [
+        -9.568026998358976e-05,
+        0.0005644479097581724
+      ],
+      "return_lift_bonf": [
+        -0.0003979487030963973,
+        0.0008011718616948548
+      ],
+      "screen14_bps": -8.053001065693056,
+      "screen20_bps": -14.053001065693056,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "week",
+      "signature": "break",
+      "n": 192,
+      "days": 122,
+      "win": 0.4010416666666667,
+      "win_ci": [
+        0.33950336700336703,
+        0.4679273544280097
+      ],
+      "win_bonf": [
+        0.2864390290548551,
+        0.5156443042784783
+      ],
+      "lift": -0.1052951388888889,
+      "lift_ci": [
+        -0.15016785552536233,
+        -0.06157709993600029
+      ],
+      "lift_bonf": [
+        -0.18842122244512977,
+        -0.02216905533264804
+      ],
+      "gross": -0.0006358646449468706,
+      "gross_ci": [
+        -0.0013299159884356405,
+        9.77962795718375e-05
+      ],
+      "gross_bonf": [
+        -0.0019679567546311972,
+        0.0006962274647374559
+      ],
+      "return_lift": -0.0005029203343617786,
+      "return_lift_ci": [
+        -0.0008921827377731664,
+        -0.00010005327745096093
+      ],
+      "return_lift_bonf": [
+        -0.0012002945968527573,
+        0.00019445392812920004
+      ],
+      "screen14_bps": -20.358646449468708,
+      "screen20_bps": -26.358646449468708,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "week",
+      "signature": "acceptance",
+      "n": 95,
+      "days": 81,
+      "win": 0.5263157894736842,
+      "win_ci": [
+        0.4273484848484848,
+        0.632183908045977
+      ],
+      "win_bonf": [
+        0.33807394396566687,
+        0.7145576349817016
+      ],
+      "lift": -0.046315789473684206,
+      "lift_ci": [
+        -0.12293245552020736,
+        0.039755434782608685
+      ],
+      "lift_bonf": [
+        -0.1909054880839774,
+        0.098273909136609
+      ],
+      "gross": 0.0005368260801488971,
+      "gross_ci": [
+        -0.0002174085714718614,
+        0.0014035744236515163
+      ],
+      "gross_bonf": [
+        -0.0009573578054785144,
+        0.0020310099657763086
+      ],
+      "return_lift": 0.0002724523624238345,
+      "return_lift_ci": [
+        -0.00020307600528795443,
+        0.0009074302127753747
+      ],
+      "return_lift_bonf": [
+        -0.0007271127068915685,
+        0.0012720174317392375
+      ],
+      "screen14_bps": -8.63173919851103,
+      "screen20_bps": -14.63173919851103,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "week",
+      "signature": "reclaim",
+      "n": 83,
+      "days": 65,
+      "win": 0.4457831325301205,
+      "win_ci": [
+        0.34370055379746833,
+        0.5479660875375877
+      ],
+      "win_bonf": [
+        0.26363220334395293,
+        0.6279340617162881
+      ],
+      "lift": -0.1538152610441767,
+      "lift_ci": [
+        -0.22818633344784153,
+        -0.06903375733855187
+      ],
+      "lift_bonf": [
+        -0.29615384063589495,
+        -0.011476681452458448
+      ],
+      "gross": -0.0010233344286779166,
+      "gross_ci": [
+        -0.002064553991344333,
+        -7.909510433068069e-05
+      ],
+      "gross_bonf": [
+        -0.002771244066257335,
+        0.0007245752089015019
+      ],
+      "return_lift": -0.0012384230491558617,
+      "return_lift_ci": [
+        -0.002094226505269739,
+        -0.0005013058209969339
+      ],
+      "return_lift_bonf": [
+        -0.0026721708301367195,
+        0.0001953247318249962
+      ],
+      "screen14_bps": -24.233344286779165,
+      "screen20_bps": -30.233344286779165,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "week",
+      "signature": "retest",
+      "n": 140,
+      "days": 122,
+      "win": 0.5571428571428572,
+      "win_ci": [
+        0.47825125048095424,
+        0.6304633867276888
+      ],
+      "win_bonf": [
+        0.41901603567614826,
+        0.695269678609566
+      ],
+      "lift": -0.045595238095238085,
+      "lift_ci": [
+        -0.10631254686914136,
+        0.007568901230705051
+      ],
+      "lift_bonf": [
+        -0.1505434332647415,
+        0.059352957074265335
+      ],
+      "gross": 0.0006601402320993853,
+      "gross_ci": [
+        -0.00010486864838145203,
+        0.0013932379466255966
+      ],
+      "gross_bonf": [
+        -0.0006913728678119354,
+        0.002011653332010706
+      ],
+      "return_lift": 8.205967647734998e-06,
+      "return_lift_ci": [
+        -0.0003267097792642708,
+        0.0003604641282907683
+      ],
+      "return_lift_bonf": [
+        -0.0005942310611282953,
+        0.0006106429964237653
+      ],
+      "screen14_bps": -7.398597679006147,
+      "screen20_bps": -13.398597679006148,
+      "candidate": false
+    },
+    {
+      "tf": 60,
+      "family": "week",
+      "signature": "strong_break",
+      "n": 59,
+      "days": 53,
+      "win": 0.3220338983050847,
+      "win_ci": [
+        0.21307534678436316,
+        0.44001694915254236
+      ],
+      "win_bonf": [
+        0.1235040306126213,
+        0.5205637659975482
+      ],
+      "lift": -0.10621468926553672,
+      "lift_ci": [
+        -0.17006698950766747,
+        -0.049999999999999996
+      ],
+      "lift_bonf": [
+        -0.21663662950101945,
+        0.004207250969946008
+      ],
+      "gross": -0.0012825364694837099,
+      "gross_ci": [
+        -0.002555851671685187,
+        -4.312318328587863e-05
+      ],
+      "gross_bonf": [
+        -0.0035965853981537368,
+        0.0010315124591863173
+      ],
+      "return_lift": -0.0005533367311997553,
+      "return_lift_ci": [
+        -0.0010529204766925903,
+        -4.205359281912408e-05
+      ],
+      "return_lift_bonf": [
+        -0.0014506337902406405,
+        0.0003439603278411297
+      ],
+      "screen14_bps": -26.8253646948371,
+      "screen20_bps": -32.8253646948371,
+      "candidate": false
+    }
+  ],
+  "code_sha256": "c6a4717acdf309dd789a5de90f52739671eb8fbbc08407addcccb8f2710880ad",
+  "method_sha256": "d36eaff25df9538592ef8d73a77c9bdfa12c4e16232b209ea05967950082f00c"
+}

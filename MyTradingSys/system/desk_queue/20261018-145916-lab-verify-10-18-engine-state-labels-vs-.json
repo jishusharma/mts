@@ -1,0 +1,13 @@
+{
+  "done_when": "Report with counts per flag and a Result line; findings filed as cards; no live change",
+  "finished": "2026-10-18T16:17:50Z",
+  "from": "JIS-NB",
+  "host": "JIS-NUC",
+  "id": "20261018-145916-lab-verify-10-18-engine-state-labels-vs-",
+  "need": "Verify two eye-read flags without touching live code: (1) mts_math.py:354-355 sets classification trend_healthy whenever price is outside the daily VA, while the 6h/1D show an 11-day balance 79,732-84,340; count on DEV how often trend_healthy is set inside a multi-day balance and what price did next. (2) Card tom-ctlong-below-zone-cvd-aligned-audit: ct_long stays pending after price accepted below the zone. Sources: research/live_reads/2026-10-17_live_market_1017/SHOT_2da0ed270ed8.md and READ.md",
+  "posted": "2026-10-18T14:59:16Z",
+  "result": "Pipeliner drain 2026-10-18: wrong channel: part 1 -> card lab-verify-trend-healthy-in-balance (SONNET, raw); part 2 done (card tom-ctlong-below-zone-cvd-aligned-audit, 7d30650a)",
+  "status": "failed",
+  "target": "DSA",
+  "title": "LAB-VERIFY 10-18: engine state labels vs chart (shot 2da0ed270ed8; also 10-17 ct_long zone)"
+}

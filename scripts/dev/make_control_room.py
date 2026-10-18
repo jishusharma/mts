@@ -21,7 +21,10 @@ sys.dont_write_bytecode = True
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 sys.path.insert(0, str(HERE))
+import artifacts as af  # noqa: E402
 import make_groups as mg  # noqa: E402
+import relay_board  # noqa: E402
+import session_log  # noqa: E402
 import tasks as task_cards  # noqa: E402
 
 CFG = REPO / "MyTradingSys" / "system" / "control_room.json"
@@ -129,6 +132,18 @@ def layer_board(cfg, items):
     return out
 
 
+def page_index():
+    """One row per kept page with its single live link (registry.json); a page with no url yet is left out."""
+    out = []
+    for pg in af.load()["pages"]:
+        own = pg.get("single_owner") or next((a for a, u in pg["urls"].items() if u), "")
+        url = pg["urls"].get(own, "")
+        if url and pg["status"] == "canonical":
+            out.append({"title": pg["title"], "url": url, "refresh": pg["refresh"], "owner": own,
+                        "pub": str(pg["last_published"].get(own, ""))[:10]})
+    return out
+
+
 def build(cfg, data_root, now=None):
     now = now or datetime.now(timezone.utc)
     # registry = this checkout's rows (origin, freshest status) plus rows only the data checkout has (filed there, not yet shipped)
@@ -161,10 +176,12 @@ def build(cfg, data_root, now=None):
             board.append({**it, "stage": stage_of.get(it["id"], "PLAT"), "open": it["status"] in OPEN})
     ledger, days, span, halts = load_ledger(data_root / LEDGER, now)
     st = data_root / STATUS
+    backlog = task_cards.summary(REPO)
     return {"generated": now.strftime("%Y-%m-%d %H:%M UTC"), "verdict": cfg.get("verdict", ""), "road": cfg["road"],
             "board": board, "layers": layer_board(cfg, items), "missing": missing, "ledger": ledger, "days": days, "ledger_span": span,
-            "backlog": task_cards.summary(REPO),
-            "evidence": cfg.get("evidence", []), "changelog": cfg.get("changelog", [])[-6:][::-1],
+            "backlog": backlog, "relay": relay_board.board(REPO, backlog["rows"], now),
+            "sessions": session_log.view(REPO, 48, now),
+            "pages": page_index(), "evidence": cfg.get("evidence", []), "changelog": cfg.get("changelog", [])[-6:][::-1],
             "health": health(cfg, span[1], halts, st.read_text(encoding="utf-8") if st.exists() else "", now),
             "groups": {g["code"]: g["name"] for g in gcfg["groups"]},
             # every row, closed too: an Inbox item shows the live status of the row it was filed as (its resolution)
@@ -175,7 +192,7 @@ def render(data, tpl_text):
     blob = json.dumps(data, ensure_ascii=True).replace("</", "<\\/")
     if "/*__DATA__*/null" not in tpl_text:
         raise SystemExit("template has no /*__DATA__*/null slot")
-    return tpl_text.replace("/*__DATA__*/null", blob)
+    return af.put_banner(tpl_text.replace("/*__DATA__*/null", blob), af.load(), "mts_control_room", strict=False)
 
 
 def main(argv=None):

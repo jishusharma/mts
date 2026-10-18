@@ -89,6 +89,8 @@ All five flow into the session-close operator decision block (Wave 9).
 - L98 wrapper died 2026-09-18: restarted; supervisor chain live.
 - L120 mojibake report: verified clean; Build-Check label corrected.
 
+- 2026-10-12 d9306fe relay host=<NAME> task tag: kick lints the committed handoff for its own host and IDLEs when every open task is another host's; handoff/lint ignore host unless --host. 29 relay tests green (tests/test_relay.py).
+
 ## LEARNED FACTS (documentation, not a fix queue)
 
 Worker W5 classified these as documentation or process rules. Kept for reference; no action expected.
@@ -103,3 +105,32 @@ Worker W5 classified these as documentation or process rules. Kept for reference
 - L114 log tail is not a health check: process rule.
 - L117 PowerShell quoting lesson: process rule.
 - L119 verify method lesson: process rule.
+
+## 2026-10-14 JIS-NB build defect and paste defects
+
+Build FAIL on JIS-NB: Maven ran under JDK 11 while pom.xml sets
+maven.compiler.source/target = 17. javac refused with
+'invalid target release: 17' before parsing any source. Not a code
+defect; the 2026-10-14 01:29 edit to SpikeFadeDetector,
+SetupCandidatesBuilder, MarketDataSnapshot and the two SpikeFade
+tests is not implicated.
+
+Fix landed on JIS-NB:
+- User and Machine JAVA_HOME -> C:\Users\E-ngineers\Java\jdk-17.0.20.1+1
+- Machine PATH: removed the jdk-11.0.7\bin entry
+- JDK 11 unregistered through its MSI (Java SE Development Kit
+  11.0.7 64-bit); folder C:\Program Files\Java\jdk-11.0.7 removed
+- Proof: mvn compile exit 0 with
+  C:\Users\E-ngineers\Maven\apache-maven-3.6.3\bin\mvn.cmd
+- Residue: a running AIBridge agent still holds the old JAVA_HOME
+  string in its inherited environment. Restart the agent, or set
+  JAVA_HOME at Process scope for the turn.
+
+Paste defects this session (boot paste carried a NUC report while
+the session ran on JIS-NB):
+- BUILD_REPORT.md header says host: JIS-NUC, bridge is JIS-NB.
+- Boot loop health line (java_absent, supervisor_absent, snapshot
+  missing) describes JIS-NUC, not JIS-NB.
+- section 9 gives Maven at D:\tools\apache-maven-3.9.14; that path
+  does not exist on JIS-NB. Actual Maven on JIS-NB:
+  C:\Users\E-ngineers\Maven\apache-maven-3.6.3\bin\mvn.cmd.

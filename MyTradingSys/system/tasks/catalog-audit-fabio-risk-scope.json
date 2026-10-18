@@ -1,0 +1,31 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T21:28:33Z",
+  "commands": [],
+  "created": "2026-10-15T19:07:20Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "catalog-audit-fabio-risk-scope",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/layer_lab/gpt-catalog-notstated-audit/CATALOG_AUDIT.md"
+  ],
+  "result": "Fixed in SETUP_CATALOG.md (catalogue-p1-p2, 2026-10-16): section 2.2 scopes the day-P&L-floor-at-0 and break-even-stops-the-session quotes to the fZlNGWvd2Ko session; F5 (jasv3L-d8ZE) is entered at a 9,000 drawdown for the day (quote gated); DyS79Eb92Ug day rules (10,000 max drawdown, 20,000 profit stop, three losing trades) added as a separate session-scoped rule; FAB-3 merged into FAB-2 with the scoped wording.",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "done",
+  "steps": [],
+  "tests": "",
+  "title": "Catalog audit H2: scope Fabio zero-day-loss rule to fZ session; F5 trades after drawdown; see finding H2"
+}

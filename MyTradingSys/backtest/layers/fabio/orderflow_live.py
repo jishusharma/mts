@@ -46,6 +46,10 @@ PAGE = 1000
 # Pages per cycle. aggTrades weight 20, Binance limit 2400/min, one cycle per 20 s: 25 x 20 x 3 = 1500/min.
 # 200 hit HTTP 429 on a 15 h backfill (2026-10-07) and, all-or-nothing, never advanced.
 MAX_PAGES = 25
+# One minute with more than MAX_PAGES * PAGE trades (2026-10-14 12:30Z: 39,420 trades) can never complete in a normal cycle:
+# the backfill chunk keeps only whole minutes before the last fetched one, so it stayed empty and next_ms never moved
+# (writer silent 2 days, live health RED). Such a minute is refetched once with this bigger page budget.
+OVERFLOW_PAGES = 50
 MIN_MS = 60000
 
 
@@ -198,6 +202,12 @@ def run_cycle(out, fetch_fn, symbol="BTCUSDT", now_ms=None, since_ms=None, hist_
     except Exception as exc:  # noqa: BLE001 - any network/parse error: write nothing, retry next cycle
         res["error"] = repr(exc)
         return res
+    if capped and trades and trades[-1][5] // MIN_MS * MIN_MS <= nxt // MIN_MS * MIN_MS and max_pages < OVERFLOW_PAGES:
+        try:  # the first minute alone fills the page budget: refetch it with the overflow budget
+            trades, capped, res["error"] = fetch_trades(fetch_fn, symbol, nxt, cur_min, OVERFLOW_PAGES)
+        except Exception as exc:  # noqa: BLE001
+            res["error"] = repr(exc)
+            return res
     if capped and trades:  # backfill chunk: only whole minutes strictly before the last fetched one
         cut = trades[-1][5] // MIN_MS * MIN_MS
         trades = [t for t in trades if t[5] < cut]
@@ -238,6 +248,80 @@ def run_cycle(out, fetch_fn, symbol="BTCUSDT", now_ms=None, since_ms=None, hist_
     return res
 
 
+# ---------------------------------------------------------------- stall guard + loop
+# OURS (2026-10-15): the recorder hung ~30 h with no log (fetch failures were swallowed, the process stayed alive, so
+# loop-supervisor never relaunched it). If next_ms has not advanced for this many wall-clock minutes the process logs
+# STALL and exits non-zero; loop-supervisor then relaunches it and it resumes from _state.json. A caught-up recorder
+# advances next_ms every minute, so 15 min is far beyond normal; backoff (<= BACKOFF_MAX_S) stays well inside it.
+STALL_MINUTES = 15
+BACKOFF_MAX_S = 300
+STALL_EXIT_CODE = 3
+LOG_FILE = REPO / "runtime_data" / "orderflow_live.log"
+
+
+def log_line(msg, path=None):
+    """Timestamped line to stdout and to the (git-ignored) log file; logging must never kill the recorder."""
+    line = f"{datetime.now(timezone.utc).isoformat(timespec='seconds')} {msg}"
+    try:
+        print(line, flush=True)
+    except (OSError, ValueError):
+        pass
+    try:
+        p = Path(path or LOG_FILE)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        with open(p, "a", encoding="utf-8", newline="\n") as f:
+            f.write(line + "\n")
+    except OSError:
+        pass
+
+
+def backoff_seconds(poll, errors):
+    """Poll interval after `errors` consecutive failed cycles: doubles per failure, capped at BACKOFF_MAX_S."""
+    if errors <= 0:
+        return poll
+    return min(BACKOFF_MAX_S, poll * (2 ** min(errors, 10)))
+
+
+class StallGuard:
+    """Progress = next_ms strictly greater than the best seen. Rewriting _state.json with the same next_ms is not progress."""
+
+    def __init__(self, now, stall_minutes=STALL_MINUTES):
+        self.best, self.since, self.limit = None, now, stall_minutes * 60
+
+    def update(self, next_ms, now):
+        """True while healthy, False once next_ms has not advanced for the limit."""
+        if next_ms is not None and (self.best is None or next_ms > self.best):
+            self.best, self.since = next_ms, now
+        return now - self.since <= self.limit
+
+
+def run_loop(out, fetch_fn, symbol, since_ms, keep_days, poll, once=False, sleep=time.sleep, clock=time.monotonic,
+             log=log_line, stall_minutes=STALL_MINUTES, max_cycles=None, cycle=None):
+    """The recorder loop. Returns the process exit code: 0/1 for --once, STALL_EXIT_CODE on a stall."""
+    cycle = cycle or run_cycle
+    if not load_state(out).get("next_ms") and since_ms is None:
+        log(f"WARN no readable next_ms in {out}/_state.json: starting from the current minute (existing behaviour)")
+    guard, errors, n = StallGuard(clock(), stall_minutes), 0, 0
+    while True:
+        n += 1
+        try:
+            r = cycle(out, fetch_fn, symbol, since_ms=since_ms, keep_days=keep_days)
+        except Exception as exc:  # noqa: BLE001 - never die silently, never swallow
+            r = {"rows": 0, "next_ms": None, "thr_days": None, "error": "cycle raised " + repr(exc)}
+        errors = errors + 1 if r["error"] else 0
+        log(f"{'ERROR' if r['error'] else 'ok'} rows={r['rows']} next_ms={r['next_ms']} thr_days={r['thr_days']} "
+            f"error={r['error']} consecutive_errors={errors}")
+        if once:
+            return 1 if r["error"] else 0
+        if not guard.update(r["next_ms"], clock()):
+            log(f"STALL next_ms={guard.best} has not advanced for {stall_minutes} min (consecutive_errors={errors}): "
+                f"exiting {STALL_EXIT_CODE} so loop-supervisor relaunches and resumes from _state.json")
+            return STALL_EXIT_CODE
+        if max_cycles is not None and n >= max_cycles:
+            return 0
+        sleep(backoff_seconds(poll, errors))
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--symbol", default="BTCUSDT")
@@ -250,14 +334,8 @@ def main(argv=None):
     since = None
     if a.since:
         since = int(datetime.fromisoformat(a.since).replace(tzinfo=timezone.utc).timestamp() * 1000)
-    while True:
-        r = run_cycle(a.out, lambda s, **kw: default_fetch(s, kw.get("start_ms"), kw.get("from_id"), kw.get("limit", PAGE)),
-                      a.symbol, since_ms=since, keep_days=a.keep_days)
-        print(f"{datetime.now(timezone.utc).isoformat(timespec='seconds')} rows={r['rows']} next_ms={r['next_ms']} "
-              f"thr_days={r['thr_days']} error={r['error']}", flush=True)
-        if a.once:
-            return 1 if r["error"] else 0
-        time.sleep(a.poll_seconds)
+    return run_loop(a.out, lambda s, **kw: default_fetch(s, kw.get("start_ms"), kw.get("from_id"), kw.get("limit", PAGE)),
+                    a.symbol, since, a.keep_days, a.poll_seconds, once=a.once)
 
 
 if __name__ == "__main__":

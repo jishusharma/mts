@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T20:53:31Z",
+  "commands": [],
+  "created": "2026-10-15T19:40:00Z",
+  "depends_on": [],
+  "done_when": "A commit whose newest fast-track CI run failed is never selected for deploy, even after GREEN_STALE_S; run_all_tests --quick green.",
+  "from_inbox": "",
+  "goal": "Finding H3 / Q4 (MyTradingSys/research/fable_audit_2026-10-16/PROMOTION_REVIEW.md): pick_branch falls back to origin/fast-track after 90 min of stale green, gated only by the local --quick gate (no Maven, no backtest, Windows only). Since ship is now a smoke gate, a CI-red commit that is locally green can reach the live tree. Consult CI before falling back.",
+  "id": "fable-h3-deploy-fallback-ci-check",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "DECISION (OURS): live_path=false: auto_deploy.py is edited and tested in a worktree and reaches JIS-NB through AutoDeploy itself; no builder touches the live tree. Operator asked lane SONNET.",
+  "pinned": true,
+  "prio": 0,
+  "refine_tries": 0,
+  "refined_by": "fable-testnet-adversarial-review",
+  "refs": [],
+  "result": "already shipped in 3c7dcf86 (origin/fast-track): ci_state gates the stale-green fallback; 54/54 test_auto_deploy pass; no new change",
+  "scope_in": [
+    "scripts/dev/auto_deploy.py (pick_branch, run)",
+    "scripts/dev/test_auto_deploy.py",
+    "scripts/dev/ci_red_card.py (reuse fetch_runs/first_failing, no behaviour change)"
+  ],
+  "scope_out": [
+    "the gate itself (run_all_tests.py, gate_select.py)",
+    "green/fast-track CI workflow",
+    "live tree, processes"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/fable_audit_2026-10-16/PROMOTION_REVIEW.md",
+    "scripts/dev/auto_deploy.py:163-176"
+  ],
+  "state": "done",
+  "steps": [
+    "pick_branch(ops): before returning FALLBACK_BRANCH call ci_red_card.first_failing(ci_red_card.fetch_runs(repo)); a failing newest completed run -> return BRANCH and record reason FALLBACK_REFUSED_CI_RED in the result/state; runs None (gh missing/offline) or in progress -> today's fallback (CI slow, not red).",
+    "Inject the run list through ops so tests need no gh.",
+    "Docstring step 1: 'fast-track fallback only while CI is not red'."
+  ],
+  "tests": "test_auto_deploy TestStaleGreenFallback: stale green + fast-track ahead + newest CI run failed -> BRANCH (fails on current code); same with runs None or in_progress -> FALLBACK_BRANCH (passes today, keep).",
+  "title": "auto_deploy: stale-green fallback refuses fast-track while CI is red"
+}

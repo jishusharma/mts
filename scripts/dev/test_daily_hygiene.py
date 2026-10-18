@@ -42,7 +42,7 @@ class TestHygiene(unittest.TestCase):
         self.assertIn("STATUS: GREEN", md)
         self.assertIn("GATE: PASS", md)
         self.assertEqual(js["utc"], "2026-10-10T06:30:00Z")
-        self.assertEqual([s["step"] for s in js["steps"]], ["gate", "where", "declutter_dry_run", "desk_assign", "status"])
+        self.assertEqual([s["step"] for s in js["steps"]], ["gate", "tidy", "where", "health", "declutter_dry_run", "desk_assign", "status"])
 
     def test_red_gate_is_red_and_shows_the_failing_tail(self):
         status, md, js, _ = self.go(gate_rc=1)
@@ -79,7 +79,7 @@ class TestHygiene(unittest.TestCase):
             text = ms.get_hygiene_status(Path(d))
             self.assertIn("STATUS: RED (failed: gate)", text)
             self.assertIn("2026-10-10T06:30:00Z", text)
-            self.assertIn("no hygiene run", ms.get_hygiene_status(Path(d) / "missing"))
+            self.assertEqual(ms.get_hygiene_status(Path(d) / "missing"), "")   # no report on this host: STATUS.md leaves the section out
 
 
 if __name__ == "__main__":

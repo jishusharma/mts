@@ -1,10 +1,13 @@
 {
   "done_when": "Get-ScheduledTask shows the mirror publish task; CURRENT on F:\\MTS\\Mirror advances within 10 min with no manual run; 'python scripts/dev/live_mirror.py pull' on JIS-NUC then reports 'mirror@<utc> OK: published <6 min ago'",
+  "finished": "2026-10-18T16:17:17Z",
   "from": "JIS-NUC",
+  "host": "JIS-NUC",
   "id": "20261011-201038-install-live-mirror-on-jis-nb",
   "need": "On JIS-NB register a scheduled task (VBS + schtasks, same pattern as the supervisor tasks in apparatus_fixes.md, under MTS-Supervisor) that runs 'python scripts/dev/live_mirror.py publish' every 5 minutes from the live tree. No --root flag: default_root already picks F:\\MTS\\Mirror when .mts_live is present. Run as the bridge identity ENG\\jis. Never stop trading processes or touch HALT files.",
   "posted": "2026-10-11T20:10:38Z",
-  "status": "pending",
+  "result": "Pipeliner drain 2026-10-18: done: fff6e557 MTS-LiveMirror registrar (register_live_mirror.ps1); mirror of JIS-NB pulled 2026-10-18T16:11Z; scheduled tasks are retired since (SCHEDULING_POLICY.md)",
+  "status": "done",
   "target": "JIS-NB",
   "title": "install-live-mirror-on-jis-nb"
 }

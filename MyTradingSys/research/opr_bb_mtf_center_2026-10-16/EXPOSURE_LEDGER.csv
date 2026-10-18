@@ -1,0 +1,2 @@
+study,run_utc,data_source,window_read,split,rule_sha256,verdict,decision_informed
+opr_bb_mtf_center_2026-10-16,2026-10-15T22:09Z,F:/MTS/data/tom_raw/klines 1m,2022-01-01..2024-06-30,DEV,b89d780d16fe1adb3a92073ee84c69b41a0682cd563836c918a74da99a83eeb8,INCONCLUSIVE,whether a 1h touch of the BB mid in a lower-band trend has a gross effect above 0.14 % (screen before G3 marks); Krown M1-M4 descriptive

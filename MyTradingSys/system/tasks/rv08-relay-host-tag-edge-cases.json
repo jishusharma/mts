@@ -1,0 +1,43 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-14T14:44:27Z",
+  "commands": [],
+  "created": "2026-10-12T17:18:21Z",
+  "depends_on": [],
+  "done_when": "Report with VERDICT line; every listed edge case has a test (pass or red-then-fixed); test_relay.py green.",
+  "from_inbox": "",
+  "goal": "Follow MyTradingSys/system/revalidation/RV08_relay_host_tag.md: write the missing host-tag cases as tests, report which fail, fix only failures.",
+  "id": "rv08-relay-host-tag-edge-cases",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "host=any",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "VERDICT FIX-FIRST->fixed: 3 findings (2 MED,1 LOW), 7 edge tests (5 red first), test_relay 48 green; MyTradingSys/research/revalidation/RV08_2026-10-14.md",
+  "scope_in": [
+    "scripts/sched/relay.py",
+    "scripts/sched/handoff_lint.py",
+    "MyTradingSys/tests/test_relay.py",
+    "MyTradingSys/system/revalidation/RV08_relay_host_tag.md",
+    "MyTradingSys/system/revalidation/_COMMON.md"
+  ],
+  "scope_out": [
+    "live path",
+    "holdout reads",
+    "running tidy --apply outside a throwaway test repo"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Write the cases as tests.",
+    "Run; list failures.",
+    "Fix, rerun, report."
+  ],
+  "tests": "MyTradingSys/tests/test_relay.py: one test per edge case in the prompt",
+  "title": "RV08 relay host= tag edge cases and dispatcher model evidence (host=any)"
+}

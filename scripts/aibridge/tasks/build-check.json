@@ -1,0 +1,8 @@
+{
+  "name": "build-check",
+  "description": "Java compile + registry checks without rewriting BUILD_REPORT.md",
+  "params": { "repo": "C:\\Users\\E-ngineers\\IdeaProjects\\mts-dsa" },
+  "steps": [
+    { "name": "build-check", "cmd": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\Build-Check.ps1 -Quick -ReadOnly", "cwd": "{repo}", "timeout_s": 600, "show": 30 }
+  ]
+}

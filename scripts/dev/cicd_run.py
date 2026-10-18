@@ -748,13 +748,13 @@ def stage_livepath(ctx):
     else:
         procs = list_processes(ctx)
         if procs is None:
-            checks.append(ck("livepath/L2-staging", WARN, "in-place edit of %s; process list unavailable, CLAUDE.md requires staging as .new" % ", ".join(inplace)))
+            checks.append(ck("livepath/L2-staging", WARN, "in-place edit of %s; process list unavailable, builders never edit imported live files" % ", ".join(inplace)))
         else:
             running = [p for p in inplace if any(Path(p).name in c for _, _, c in procs)]
             if running:
                 checks.append(ck("livepath/L2-staging", FAIL, "in-place edit of file(s) a running process names: %s" % ", ".join(running)))
             else:
-                checks.append(ck("livepath/L2-staging", WARN, "in-place edit of %s; no running command line names it, but CLAUDE.md requires staging as .new" % ", ".join(inplace)))
+                checks.append(ck("livepath/L2-staging", WARN, "in-place edit of %s; no running command line names it, but builders never edit imported live files" % ", ".join(inplace)))
     # L3 four-step proof: hash, edit, hash, diff
     crit_changed = [p for p in triggered if p in CRITICAL_PATHS]
     proof = bool(rec and re.search(r"hash", rec, re.I) and re.search(r"diff", rec, re.I))

@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T17:23:02Z",
+  "depends_on": [],
+  "done_when": "Changing an approved card's scope voids its stamp, an unchanged card keeps it, and a producer-signed stamp is rejected; test_review_receipts.py passes.",
+  "est_turns": 28,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Content-bound review receipts: a review stamp records hashes of card, spec, data and code reviewed; a later change voids it; producer cannot self-review (RU6).",
+  "id": "ru6-lab-guy-content-bound-review-receipt",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tasks.py dispatch: one ranked dispatch snapshot for Session_Planner (RU1)",
+      "ref": "93560b51e352",
+      "utc": "2026-10-18T18:24:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "Each new test fails on pre-change code.",
+  "note": " routed by Pipeliner 2026-10-18 (ROUTING.md); edits tasks.py: run after RU5 ships (same file)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T18:38:56Z",
+  "refs": [
+    "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "MyTradingSys/tests/test_review_receipts.py"
+  ],
+  "scope_out": [
+    "live tree, HALT files, trades",
+    "other scripts"
+  ],
+  "scope_sha": "93560b51e352",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read tasks.py stamp_kind/needs_review",
+    "Add hash fields to the stamp and verify on check/take",
+    "Reject producer==reviewer",
+    "Fixture tests for void/keep/self-review",
+    "Run run_all_tests.py --quick, ship"
+  ],
+  "tests": "MyTradingSys/tests/test_review_receipts.py",
+  "title": "RU6 Lab_Guy: content-bound review receipts in tasks.py",
+  "weight": "",
+  "worker": "session"
+}

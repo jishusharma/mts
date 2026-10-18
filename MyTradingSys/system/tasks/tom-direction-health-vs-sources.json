@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T18:20:20Z",
+  "commands": [],
+  "created": "2026-10-12T13:15:48Z",
+  "depends_on": [],
+  "done_when": "AUDIT.md exists with at least 3 rows (determineDirections, classifyState healthy, classifyState unhealthy), each marked MATCH/CONFLICT/UNSOURCED with both citations.",
+  "est_turns": 14,
+  "from_inbox": "",
+  "goal": "A sourced audit table of the Tom engine direction and health rules vs his words (determineDirections below_val gives long only; classifyState calls outside-VA trend_healthy), so tom-layer-v2 changes cite quotes, not memory.",
+  "id": "tom-direction-health-vs-sources",
+  "kind": "audit",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/tom_direction_health_audit_2026-10-17/AUDIT.md: 5 rows, 3 CONFLICT 1",
+      "ref": "aff7309f",
+      "utc": "2026-10-17T18:20:20Z"
+    }
+  ],
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-17 ACCEPT. WEIGHT:ROUTINE docs audit. Original title: Tom core direction/health rules vs his words: determineDirections gives below_val -> long only (SetupCandidatesBuilder.java:255-262, daily-VP VAL) but TOM-145 (BVpYGKz9PBU_raw.txt:19) says below YESTERDAY's VAL a short can be tried; classifyState (java:236-251) calls every outside-VA price trend_healthy and trend_unhealthy onl",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T18:13:20Z",
+  "refs": [],
+  "result": "MyTradingSys/research/tom_direction_health_audit_2026-10-17/AUDIT.md: 5 rows, 3 CONFLICT 1 UNSOURCED 1 MATCH",
+  "scope_in": [
+    "MyTradingSys/research/tom_direction_health_audit_2026-10-17/AUDIT.md (new)"
+  ],
+  "scope_out": [
+    "editing SetupCandidatesBuilder.java or any code",
+    "backtests",
+    "new Tom rules"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read src/main/java/datafeed/SetupCandidatesBuilder.java classifyState (line ~253) and determineDirections (line ~274); the card's older line numbers have shifted.",
+    "Find TOM-145, TOM-056, TOM-140 in the Tom rules ledger (grep the ids under MyTradingSys/) and open the quoted raw transcript line; run python scripts/dev/verify_extract_quotes.py on any quote reused.",
+    "Write AUDIT.md: one row per rule = engine behaviour (file:line) | trader words (quote + file:line) | MATCH / CONFLICT / UNSOURCED | one-line consequence for the 2026-10-12 13:13Z live case.",
+    "State which conflicts feed tom-layer-v2-spec; do not change code."
+  ],
+  "tests": "docs lane, no code: every table row has both a java file:line and a quote file:line, or the cell says NOT FOUND.",
+  "title": "Tom direction/health rules vs his words (below_val long-only, outside-VA = trend_healthy)",
+  "worker": "agent"
+}

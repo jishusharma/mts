@@ -35,3 +35,17 @@ tom_core_20261007,2026-10-07,p4_episode/base,59,-2.5917,-0.3270
 tom_core_20261007,2026-10-07,p4_episode/all_taker_0.05,59,-4.6048,-0.2958
 tom_core_20261007,2026-10-07,p4_episode/slip_5bps,59,-4.6054,-0.2958
 tom_core_20261007,2026-10-07,p4_episode/target_first,59,-2.5917,-0.3270
+tom_v2_recall_20261013,2026-10-13,v2_price/design/recall_iter1_literal_clock/k>=0/sessions_hit_0_of_5,0,,
+tom_v2_recall_20261013,2026-10-13,v2_price/design/recall_iter1_literal_clock/k>=1/sessions_hit_0_of_5,0,,
+tom_v2_recall_20261013,2026-10-13,v2_price/design/recall_iter1_literal_clock/k>=2/sessions_hit_0_of_5,0,,
+tom_v2_recall_20261013,2026-10-13,v2_price/design/recall_iter1_literal_clock/k>=3/sessions_hit_0_of_5,0,,
+tom_v2_recall_20261013,2026-10-13,v2_price/design/recall_iter1_literal_clock/k>=4/sessions_hit_0_of_5,0,,
+tom_v2_recall_20261013,2026-10-13,v2_price/design/recall_iter2_band_clock/k>=0/sessions_hit_4_of_5,0,,
+tom_v2_recall_20261013,2026-10-13,v2_price/design/recall_iter2_band_clock/k>=1/sessions_hit_2_of_5,0,,
+tom_v2_recall_20261013,2026-10-13,v2_price/design/recall_iter2_band_clock/k>=2/sessions_hit_1_of_5,0,,
+tom_v2_recall_20261013,2026-10-13,v2_price/design/recall_iter2_band_clock/k>=3/sessions_hit_0_of_5,0,,
+tom_v2_recall_20261013,2026-10-13,v2_price/design/recall_iter2_band_clock/k>=4/sessions_hit_0_of_5,0,,
+tom_v2_fade_paths_20261018,2026-10-18,v2_paths/design/T2b/A2_k>=0/hit_false,0,,
+tom_v2_fade_paths_20261018,2026-10-18,v2_paths/design/T2b/A3_k>=0/hit_false,0,,
+tom_v2_fade_paths_20261018,2026-10-18,v2_paths/design/T3/A2_A3_all_k/no_fire_A1_idea_fails_A-C2,0,,
+tom_v2_fade_paths_20261018,2026-10-18,v2_paths/design/T3b/A2_A3_all_k/no_fire_A1_idea_fails_A-C2,0,,

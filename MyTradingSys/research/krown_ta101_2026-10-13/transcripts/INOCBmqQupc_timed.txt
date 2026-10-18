@@ -1,0 +1,511 @@
+# Video ID: INOCBmqQupc
+# Title: RSI Is Lying to You — Here's How to Read It Right
+# Published: 2026-04-03
+# Source: yt_dlp captions (auto); uploader: Krown
+# Analyst: Krown
+# Duration_s: 1028
+# Word count: 3281
+# ---
+[00:00:00] If the RSI is overbought, should you
+[00:00:02] sell? This belief has likely caused
+[00:00:04] significant amounts of loss for maybe
+[00:00:06] you, but certainly many of the people
+[00:00:07] out there as well. I've seen many
+[00:00:09] technical analysis using MACD's, using
+[00:00:13] stochastic RSIs, using whatever to
+[00:00:17] effectively just wait for a cross and
+[00:00:18] then enter into a longer or short
+[00:00:20] position depending upon which direction
+[00:00:21] it crossed. That will not work.
+[00:00:23] Obviously, that will not work. If that
+[00:00:25] worked, everyone would do the same
+[00:00:26] thing. We'd all be millionaires. Just
+[00:00:27] like moving averages,
+[00:00:29] it is of course context-dependent. The
+[00:00:31] RSI is actually very, very, very
+[00:00:33] valuable. It provides a lot of valuable
+[00:00:34] information, but as a confirmation tool,
+[00:00:37] as a secondary confirmation tool, as a
+[00:00:39] momentum oscillator.
+[00:00:40] That is why I really want to go deep
+[00:00:43] into this video as to a lot of
+[00:00:45] misconceptions with the RSI as well as
+[00:00:46] the proper ways to use it. And honestly,
+[00:00:48] to answer that initial question, in a
+[00:00:50] strong trend, overbought RSI is a
+[00:00:53] feature,
+[00:00:54] not a warning. You actually expect
+[00:00:57] overbought RSIs. It is indicative of a
+[00:00:59] very strong trend that is likely to
+[00:01:01] continue in many cases as well. There
+[00:01:03] is, however, a very specific signal that
+[00:01:05] is indicative of a trend weakening and
+[00:01:08] thus it is time to be looking for a
+[00:01:10] pullback or reversal. Anyways, before we
+[00:01:13] go deep into this, I should let you know
+[00:01:14] that if you're just finding this video
+[00:01:15] out of context, it is a part of a
+[00:01:16] greater TA 101 playlist, of which you
+[00:01:18] can find the full TA 101 playlist here
+[00:01:21] in the link in the description below for
+[00:01:23] Teachable, which is right here. That'll
+[00:01:25] bring you to this page and you can
+[00:01:26] literally enroll for free. For the price
+[00:01:28] of $0.00, you get the full course, which
+[00:01:30] is actually only available on Teachable.
+[00:01:32] I'm only uploading about half of it here
+[00:01:33] on YouTube. On Teachable, you get
+[00:01:35] everything plus quizzes to validate that
+[00:01:37] you actually learn the material. And if
+[00:01:39] you do finish it, if you finish the
+[00:01:41] whole thing, then you will get a
+[00:01:43] certificate of completion as well as a
+[00:01:45] few other bonuses, which I'll keep a bit
+[00:01:47] of a secret for right now. Anyways,
+[00:01:48] cool. Let's go back into it right here
+[00:01:50] and let's explain why overbought doesn't
+[00:01:52] mean sell. The RSI, like we went over
+[00:01:54] earlier, is a momentum confirmation
+[00:01:56] tool, not buy or sell signals. If you
+[00:01:58] look at it like that, you will get
+[00:01:59] absolutely [&nbsp;__&nbsp;] wrecked. It is really
+[00:02:01] that simple, and I'm sure that you have
+[00:02:02] seen many people get wrecked doing
+[00:02:04] exactly that. So, in this video, I'll
+[00:02:05] show you how the RSI actually works, and
+[00:02:08] why most people you misuse it, and how
+[00:02:10] to actually employ it in the proper
+[00:02:11] context. That is the purpose here. Oh,
+[00:02:14] and by the way, before we continue as
+[00:02:16] well, I do want to give a major shoutout
+[00:02:17] to the sponsor of this playlist, Blofin
+[00:02:19] Blofin. The link is in the description
+[00:02:21] below. They are the best no KYC exchange
+[00:02:24] that is crypto native. So, if you want
+[00:02:26] to trade cryptos, and you don't want to
+[00:02:27] do KYC because maybe
+[00:02:29] whatever reasons, well, it's available
+[00:02:31] to you in in link in the description
+[00:02:33] below. That is up to you, of course, but
+[00:02:35] this link specifically will get you a
+[00:02:36] 15% cashback on all of your trades,
+[00:02:39] which is effectively a 15% discount,
+[00:02:42] which is humongous. So, that's why I
+[00:02:43] partnered with them because
+[00:02:45] they offer some of the best fee rates,
+[00:02:46] honestly. And of course, with most
+[00:02:48] people wanting someplace to to trade
+[00:02:50] futures, they are among the best
+[00:02:52] exchanges. And And if you're looking for
+[00:02:54] no KYC exchanges, they are the best that
+[00:02:56] I'm aware of as of this moment. All
+[00:02:58] right, cool. Let's get into the
+[00:02:59] presentation itself, and go over what
+[00:03:01] the RSI actually is. And I think when
+[00:03:03] you understand what the RSI actually is,
+[00:03:04] you'll start to understand why blindly
+[00:03:07] following its signals is a recipe for
+[00:03:09] disaster. Anyways, the RSI measures
+[00:03:12] momentum. It measures momentum, giving
+[00:03:14] you the speed of price movement, or the
+[00:03:16] strength, the strength of the movement,
+[00:03:19] but not the direction. I mean, you can
+[00:03:21] kind of deduce what direction is likely
+[00:03:23] happening, but it's not that that is not
+[00:03:25] its goal. It's telling you about the
+[00:03:27] strength of that movement. It's quite
+[00:03:28] literally the the name of the indicator,
+[00:03:30] relative strength index.
+[00:03:33] Anyways, RSI doesn't measure direction.
+[00:03:36] It measures strength.
+[00:03:38] Or momentum, and trend decides
+[00:03:40] direction. RSI tells you how hard price
+[00:03:43] is pushing.
+[00:03:45] And these two sentences alone should be
+[00:03:47] greatly insightful into how we're going
+[00:03:49] to employ this. Trend decides direction.
+[00:03:51] RSI tells you how hard price is pushing.
+[00:03:55] So, maybe if we have an example where
+[00:03:57] the trend is in an upside direction, but
+[00:04:00] the RSI is telling you that it's not
+[00:04:02] really pushing that hard right now, that
+[00:04:04] could be indicative of perhaps a trend
+[00:04:05] weakening. Maybe we should be looking
+[00:04:07] for a pullback. Maybe we should be
+[00:04:08] anticipating a reversal. We'll get into
+[00:04:10] what that looks like a little bit later.
+[00:04:13] All right, but first let's go over uh
+[00:04:15] let's go over of course some common RSI
+[00:04:18] misconceptions. So, RSI as a direct buy
+[00:04:21] sell signal, obviously not going to
+[00:04:23] [&nbsp;__&nbsp;] work. I mean, it only shows
+[00:04:24] momentum context. And by the way, you
+[00:04:26] can apply this to almost every other
+[00:04:28] momentum also. They all need some
+[00:04:30] context with trend, especially. And and
+[00:04:33] in many cases volatility as well.
+[00:04:36] Um
+[00:04:37] Of course,
+[00:04:38] one major feature of an uptrend is that
+[00:04:41] strong trends will stay stock strong
+[00:04:43] uptrends, I should say, will will stay
+[00:04:45] overbought. And weak weak uptrends,
+[00:04:49] usually start to see that RSI move down
+[00:04:51] and down. And of course, in a downtrend,
+[00:04:54] your downtrend staying oversold, the
+[00:04:56] exact same thing. Your oversold is
+[00:04:59] indicative of a strong downtrend.
+[00:05:02] It's [gasps] the context that makes this
+[00:05:04] thing works. If overbought meant sell,
+[00:05:06] strong trends wouldn't exist, or at
+[00:05:08] least your RSI would look at them as
+[00:05:10] significantly difference uh differently,
+[00:05:12] I should say.
+[00:05:13] RSI behaves differently depending on
+[00:05:15] market conditions.
+[00:05:17] That is important. We need to
+[00:05:19] effectively understand the market
+[00:05:21] regime. What sort of regime are we in?
+[00:05:24] What is the trend? What is the dominant
+[00:05:26] trend? These things matter, for sure.
+[00:05:29] So, let's go into
+[00:05:30] let's go into some of course examples,
+[00:05:34] which I'll go back here. All right. Got
+[00:05:36] my RSI right here, and let's go over an
+[00:05:40] uptrend. So,
+[00:05:42] obviously in this uptrend here, we see
+[00:05:44] many times where the RSI is overbought.
+[00:05:46] And by the way, if you're not familiar
+[00:05:47] with the RSI, overbought is anything
+[00:05:49] over 70, which I'm going to put in a red
+[00:05:51] line right here on the RSI. And let's
+[00:05:53] just mark off all the, you know,
+[00:05:55] instances where this is happening. Boom,
+[00:05:56] boom, boom, boom, boom. So, now let's go
+[00:06:00] into the chart. Where was this? This was
+[00:06:02] during this move right here. Was that a
+[00:06:03] good time to sell?
+[00:06:05] Well, it's a great time to sell if you
+[00:06:06] just don't like making more money on the
+[00:06:09] trend. Great idea.
+[00:06:10] >> [laughter]
+[00:06:11] >> This one continues on.
+[00:06:12] I mean, really continues on all the way
+[00:06:14] up here before its first real
+[00:06:15] correction.
+[00:06:17] And then from there, this first initial
+[00:06:19] move immediately is overbought on the
+[00:06:21] breakout.
+[00:06:22] By the way, that's a key.
+[00:06:24] A breakout to the upside in an uptrend,
+[00:06:27] you're almost always going to see
+[00:06:28] overbought RSI or very close to 70. And
+[00:06:31] sorry, I I don't even like using the
+[00:06:32] term overbought or oversold because
+[00:06:35] it it it doesn't exist. It's just strong
+[00:06:37] momentum. Strong momentum is what it
+[00:06:39] really is. Of course, you're going to
+[00:06:40] see a strong momentum in an upside
+[00:06:42] breakout. Duh.
+[00:06:44] >> [laughter]
+[00:06:44] >> Um And this one stays overbought all the
+[00:06:46] way until you're about here. So, you
+[00:06:48] would have missed this whole move if you
+[00:06:49] just immediately sold when it was
+[00:06:51] overbought. And then again, what do you
+[00:06:53] know? When price action breaks out of a
+[00:06:55] nearly 7-month-long consolidation right
+[00:06:57] here, it's overbought immediately.
+[00:07:01] And doesn't top until way over here. You
+[00:07:02] would have missed this whole move. Or
+[00:07:04] worse, you would have shorted right here
+[00:07:07] and not just missed that move, but
+[00:07:09] gotten absolutely run the [&nbsp;__&nbsp;] over
+[00:07:11] during that move as well. Not good. Not
+[00:07:13] good at all. Now, here's another thing.
+[00:07:17] The zones of the RSI matter a lot, too.
+[00:07:20] So, when you're in an uptrend, you
+[00:07:22] generally oscillate or you generally
+[00:07:24] stay above a 40 read on the RSI. And
+[00:07:29] when you're in a downtrend, you
+[00:07:30] generally stay below the 60 read on the
+[00:07:34] RSI.
+[00:07:35] So, you can come up with zones here. In
+[00:07:37] your uptrends, you basically want to see
+[00:07:40] the lows of the RSI come in around this
+[00:07:42] area right here. In an uptrend, or
+[00:07:44] sorry, in in a downtrend, you want to
+[00:07:45] see generally the highs of your RSI. By
+[00:07:48] the way, it doesn't need to be perfect,
+[00:07:49] but just somewhere around there, around
+[00:07:50] this the this this red line right here
+[00:07:52] at 60. So, that is kind of how you
+[00:07:54] should be looking at it. And stuff in
+[00:07:56] between there, you know, RSI reads in
+[00:07:57] between there, as you can see on the
+[00:07:59] chart, that generally correlates with
+[00:08:01] sideways range, trendless times. Which
+[00:08:04] again, is actually very useful
+[00:08:05] information. It's telling you not to do
+[00:08:06] trend trading strategies at that time.
+[00:08:07] If you want to trade at all, do a range
+[00:08:09] trading strategy. Do a scalping
+[00:08:10] strategy. Don't trade the trend cuz
+[00:08:11] you've got no trend. Duh.
+[00:08:14] >> [laughter]
+[00:08:15] >> It's a confirmation, not a trigger, is
+[00:08:17] the point that I'm really working
+[00:08:17] towards.
+[00:08:19] Anyways,
+[00:08:20] let's go back into our slideshow right
+[00:08:23] here, and let's go over some regimes. Or
+[00:08:26] let's go over some proper RSI use, then
+[00:08:28] we'll go over the regimes, which we kind
+[00:08:29] of already did, but first, we want to
+[00:08:32] analyze the trend. Are you in an uptrend
+[00:08:33] or a downtrend? That pertains to video
+[00:08:35] number one, and also the previous video
+[00:08:37] with moving averages, if you want
+[00:08:38] another easy way to kind of confirm
+[00:08:39] that. Then we use the RSI to confirm
+[00:08:42] momentum, and we look for overbought or
+[00:08:44] oversold in the context of the trend. If
+[00:08:46] the trend is up, and you're resolving a
+[00:08:48] range, and it's overbought, that is your
+[00:08:51] confirmation, it's breaking out. And
+[00:08:53] when the trend is down, or or if it's if
+[00:08:56] it's in a range and then breaking to the
+[00:08:57] downside, and moving below your most
+[00:09:00] support or your your your most recent
+[00:09:03] support zone, and the RSI's turning
+[00:09:05] oversold, that's a damn good indication
+[00:09:08] you're entering into a real reversal,
+[00:09:10] and you should be expecting more down.
+[00:09:13] Anyways, let's go over some regimes. So,
+[00:09:15] this is kind of putting it into terms
+[00:09:17] that I was um
+[00:09:18] alluding to earlier, but let's just put
+[00:09:20] it into writing here. And the RSI
+[00:09:23] behaves differently in different
+[00:09:24] markets. Duh. In an uptrend, your RSI
+[00:09:27] generally generally will hold between 40
+[00:09:30] and 80.
+[00:09:31] That sort of area right there is where
+[00:09:33] you kind of expect your RSI to hang out
+[00:09:35] around in your extreme uptrends. So,
+[00:09:38] your low should be coming in somewhere
+[00:09:39] around 40 to 50 on your on your higher
+[00:09:42] lows, and your high should be coming in,
+[00:09:44] you know, somewhere around like 70 to
+[00:09:45] 80-ish region, maybe even higher in some
+[00:09:47] cases. In a downtrend, you just kind of
+[00:09:49] flip that.
+[00:09:50] Um downtrends typically hold between 20
+[00:09:52] and 60.
+[00:09:54] And when you deviate a lot from that,
+[00:09:56] something else is typically going on. If
+[00:09:57] you deviate a lot more to the downside,
+[00:09:59] meaning that you get an RSI read of 10,
+[00:10:01] that's starting to look more and more
+[00:10:03] like a move is getting a bit
+[00:10:04] exaggerated, and you're probably going
+[00:10:06] to experience a bit of a snapback. And
+[00:10:08] likewise, when you get back above 60 and
+[00:10:10] start to hold above there, something
+[00:10:11] else is emerging, too.
+[00:10:13] And of course, you're ranging, generally
+[00:10:14] speaking, if you're oscillating in
+[00:10:16] between. I I put it as 30 and 70 here.
+[00:10:18] That is your textbook definition.
+[00:10:21] I would argue it's actually more
+[00:10:22] accurately, like we said before, between
+[00:10:24] 40 and 60. It's kind of where you expect
+[00:10:26] it, kind of where you expect it, but if
+[00:10:27] you want to go by te- you know,
+[00:10:29] dictionary uh definition, it'd be 30 to
+[00:10:31] 70. My personal experience and and
+[00:10:33] opinion would be more like 40 to 60.
+[00:10:36] Anyways, the RSI adapts to the market.
+[00:10:38] Most traders don't.
+[00:10:39] >> [laughter]
+[00:10:40] >> And so, it can really keep you honest if
+[00:10:41] you actually pay attention to it in the
+[00:10:43] proper context. But that's the issue.
+[00:10:45] Most people don't look at it in the
+[00:10:46] proper context.
+[00:10:48] Anyways,
+[00:10:49] let's go back to the chart here, and we
+[00:10:51] kind of we kind of did a sim- a similar
+[00:10:53] example to this, but I think it'll make
+[00:10:54] even more sense once you have read
+[00:10:56] through that previous slide. So, this
+[00:10:58] zone right here where the RSI really is
+[00:11:00] hanging out between 40 and 60 correlates
+[00:11:02] to this whole consolidation right here.
+[00:11:04] And what do you know? Price was more or
+[00:11:05] less going sideways. Yes, there was a
+[00:11:06] few dips above, few dips below, but they
+[00:11:08] didn't really stay much above there,
+[00:11:10] much below there. And again, if you do
+[00:11:12] employ the previous slides or the
+[00:11:14] previous um videos in this, then you
+[00:11:16] would have marked off your range as som-
+[00:11:17] something like this, and you would have
+[00:11:19] looked at that and said, "Hey, we don't
+[00:11:20] have any confirmations of breakout or
+[00:11:21] breakdown, so sideways is the name of
+[00:11:23] the game there."
+[00:11:24] Same thing if we go over here, over here
+[00:11:27] during these movements, we see a lot of
+[00:11:29] price action accumulating between the 40
+[00:11:31] and 60 reads.
+[00:11:33] And ultimately, that tells you right now
+[00:11:36] is not the time to be trading a trend
+[00:11:38] trading strategy. It's time to be
+[00:11:40] trading a if you want to be trading
+[00:11:41] anything at all, a range trading
+[00:11:43] strategy, you know, scalping the
+[00:11:45] peripheries of that range basically.
+[00:11:47] Anyways,
+[00:11:49] uh moving on from there, I just want to
+[00:11:50] hammer in the point that using RSI the
+[00:11:52] same way in every market is why most
+[00:11:54] people stay stuck.
+[00:11:55] You you can't do that. It just doesn't
+[00:11:57] work. You might get bailed out when it's
+[00:12:00] just a you know, a a parabolic bull
+[00:12:02] market and it's been going up and and up
+[00:12:03] for, you know, for years, but
+[00:12:06] it's going to it's going to switch
+[00:12:08] around at some point. And here's another
+[00:12:09] thing. Um and just like a very, very
+[00:12:12] quick tip. Again, we go into this in
+[00:12:13] much more detail in the Crown Trading
+[00:12:14] Bible, but just a quick tip here.
+[00:12:17] In general, the market can stay can, I'm
+[00:12:21] not saying will, but can stay overbought
+[00:12:25] a lot longer than it generally stays
+[00:12:28] oversold.
+[00:12:29] So, when you see very, [snorts] very
+[00:12:31] depreciated um RSI values, you know,
+[00:12:33] especially like in the teens or single
+[00:12:35] digits, which very rarely happens,
+[00:12:37] things typically do not stay down there
+[00:12:40] for that long, like you see right here,
+[00:12:41] actually, on this particular example.
+[00:12:43] Just a quick one bar movement there and
+[00:12:45] a quick reversal as well.
+[00:12:47] Whereas on the upside, you know, the RSI
+[00:12:49] stays overbought during this move for,
+[00:12:52] you know, many weeks, actually. This is
+[00:12:53] a daily time frame, so very long.
+[00:12:55] Anyways,
+[00:12:56] let's go back to our slideshow right
+[00:12:57] here and let's go over some divergences.
+[00:12:59] So, I want to give you a quick insight
+[00:13:01] into the primary value of an RSI or of
+[00:13:06] most momentum oscillators. Again, this
+[00:13:07] is done very much at length in the Crown
+[00:13:10] Trading Bible with examples, with
+[00:13:12] trading strategies.
+[00:13:14] And it is effectively looking for
+[00:13:15] divergences. You have four different
+[00:13:17] type of divergences. There is bullish
+[00:13:19] and and two different Well, there's four
+[00:13:21] different overall types. There's two
+[00:13:23] different categories. The two different
+[00:13:24] categories are bullish divergence
+[00:13:26] [snorts] and bearish divergence. Of the
+[00:13:28] bullish variety, you have bullish
+[00:13:30] regular divergence and what's called
+[00:13:33] hidden bullish divergence, which I
+[00:13:34] should think I think should be called
+[00:13:36] hidden or continuation divergence,
+[00:13:38] basically continuation of trend. Now,
+[00:13:40] regular bullish divergence happens when
+[00:13:43] your downtrend is weakening. How do you
+[00:13:45] know that? Because your trend is making
+[00:13:47] new lows on price, but your RSI is
+[00:13:50] making higher lows. So, what is that
+[00:13:52] telling you in essence?
+[00:13:54] The trend is going further down, price
+[00:13:56] is going further down, but the momentum
+[00:13:58] of that trend is waning to the downside.
+[00:14:00] Thus, what would happen what's most
+[00:14:02] likely to happen? It becomes a higher
+[00:14:04] probability situation to be looking for
+[00:14:07] a bounce. And of course, hidden bullish
+[00:14:09] divergence happens in uptrends and it is
+[00:14:13] effectively a continuation higher low,
+[00:14:15] in which the uptrend finds a higher low
+[00:14:19] compared to a previous low, but the RSI
+[00:14:24] is making a lower low compared to the
+[00:14:27] previous low.
+[00:14:28] And the way that this is interpreted is
+[00:14:30] that bears tried to use more strength
+[00:14:34] to the downside, but did not what were
+[00:14:37] not able to push price down further past
+[00:14:39] that previous low. Thus, the uptrend is
+[00:14:42] strengthening and we just found a new
+[00:14:43] higher low and you should be expecting
+[00:14:45] another move to the upside.
+[00:14:46] Bearish divergence, both regular and
+[00:14:48] hidden, same thing but opposite. So,
+[00:14:51] downtrend, new lows
+[00:14:53] with higher lows on the RSI equals trend
+[00:14:57] weakening, thus we look for a bounce.
+[00:14:59] And of course, hidden bearish divergence
+[00:15:01] is in the context of a downtrend. Your
+[00:15:04] lower high compared to another lower
+[00:15:06] high is producing a higher high on the
+[00:15:09] RSI compared to the previous lower high.
+[00:15:12] Thus, bulls tried harder, they they used
+[00:15:15] more force to to push price up, but they
+[00:15:18] were unable to get it past that previous
+[00:15:20] lower high. Thus,
+[00:15:22] the trend is strengthened to the
+[00:15:24] downside and we just got our next lower
+[00:15:25] high and I'd be expecting continuation
+[00:15:27] of downside move. All right.
+[00:15:29] >> [gasps]
+[00:15:30] >> Okay. Okay. Okay. So,
+[00:15:33] let's actually um before I go over
+[00:15:35] what's next,
+[00:15:36] let's stay here for a moment.
+[00:15:39] So, I do want to explain um just kind of
+[00:15:42] like a general top-down analysis of how
+[00:15:44] to use the RSI.
+[00:15:46] One, identify the trend first. Are you
+[00:15:48] in a upper uptrend or a downtrend? Two,
+[00:15:50] use the RSI for confirmation. If you're
+[00:15:52] in an uptrend and you're breaking out of
+[00:15:54] a range or continuing and you're seeing
+[00:15:56] the RSI move above 70, you just
+[00:15:58] confirmed the next leg to the upside
+[00:16:00] most likely.
+[00:16:01] You want to avoid signals in isolation
+[00:16:03] meaning that we do not look at only the
+[00:16:04] RSI. We must look at other tools in
+[00:16:07] conjunction with it. And then we can
+[00:16:09] combine it with structure, which is
+[00:16:11] effectively your range highs, your range
+[00:16:13] lows, the previous video or two videos
+[00:16:15] before this one. And these things all
+[00:16:18] together can support decisions mediated
+[00:16:21] by the RSI, but the RSI alone does not
+[00:16:24] make them. That is the key point here.
+[00:16:26] Anyways, what's next? So,
+[00:16:28] what's coming next in this playlist is
+[00:16:30] we are going to be going over, okay,
+[00:16:31] actually, we're not going over RSI, we
+[00:16:32] just did that right here, but we're
+[00:16:34] going to go over volatility next. And
+[00:16:37] again, if you want the full playlist
+[00:16:38] right now, go into the link in the
+[00:16:40] description below. It is 100% free. Just
+[00:16:42] click this guy right here. It'll bring
+[00:16:44] you to this page and you can enroll for
+[00:16:45] the price of $0.00. Anyways, I'll see
+[00:16:48] you there.
+[00:16:49] Take care.
+[00:16:50] And next video is volatility.

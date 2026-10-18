@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-15T22:10:55Z",
   "commands": [
     "python scripts/dev/sync.py start",
     "python scripts/dev/tasks.py brief live-loop-one-owner-guard",
@@ -15,6 +16,9 @@
   "goal": "The live testnet loop can never run on two hosts at once: a start refuses when another host's owner heartbeat is fresh or the marker is unreadable (fail closed), so JIS-NUC can stay a cold standby for JIS-NB without a duplicate-order risk.",
   "id": "live-loop-one-owner-guard",
   "lane": "JIS-NB",
+  "layers": [
+    "live_engine"
+  ],
   "live_path": true,
   "note": "Created from the operator question 2026-10-12. Live-path: supervisor deploy and an operator approval are required before it reaches JIS-NB; the builder session does not restart anything.",
   "prio": 2,
@@ -23,7 +27,7 @@
   "refs": [
     "DEVICES.md section 3"
   ],
-  "result": "",
+  "result": "ce7e74ad: scripts/dev/live_owner.py check/claim/release wired into loop-supervisor.ps1 and mts.ps1; MTS_LIVE_OWNER_DIR for a shared marker",
   "scope_in": [
     "scripts/dev/live_owner.py",
     "scripts/dev/test_live_owner.py",
@@ -41,7 +45,7 @@
     "MyTradingSys/system/DEVICES.md section 3 (operator decision 2026-10-06: loop runs on exactly ONE machine at a time; two copies place duplicate orders on the same testnet accounts; PROPOSED owner marker, fail closed)",
     "Checked 2026-10-12 on JIS-NUC: no live process running, no .mts_live, no live scheduled task; no owner-marker code in the repo (git grep live_owner/owner_marker empty)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Decide where the marker lives so both hosts can read it (open in DEVICES.md section 3: candidates are the git-tracked relay area or a share); record the choice in DEVICES.md.",
     "Write live_owner.py: marker = owner host + utc heartbeat; check() returns refuse when a different host's heartbeat is younger than the stale limit, or when the marker cannot be read; claim() refreshes it from the loop's own heartbeat tick.",

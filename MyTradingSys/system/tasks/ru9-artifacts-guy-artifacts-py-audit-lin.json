@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T17:23:14Z",
+  "depends_on": [],
+  "done_when": "A fixture registry with one dead link and one newer repo copy shows both in the table; test_artifacts_audit_links.py passes.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add `artifacts.py audit-links`: registry vs repo copy (newer?), every link opened, result table; replaces the history-search boot step (RU9).",
+  "id": "ru9-artifacts-guy-artifacts-py-audit-lin",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Artifacts_Guy: baseline published_sha for all 8 pages; stale check ignores clock fields",
+      "ref": "9469045808cf",
+      "utc": "2026-10-17T23:22:27Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "Each new test fails on pre-change code.",
+  "note": " routed by Pipeliner 2026-10-18 (ROUTING.md)",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T18:39:02Z",
+  "refs": [
+    "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/artifacts.py",
+    "MyTradingSys/tests/test_artifacts_audit_links.py"
+  ],
+  "scope_out": [
+    "live tree, HALT files, trades",
+    "other scripts"
+  ],
+  "scope_sha": "9469045808cf",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read artifacts.py and the Artifacts_Guy ROLES.md row",
+    "Implement audit-links with injectable fetcher",
+    "Fixture test",
+    "Run run_all_tests.py --quick, ship"
+  ],
+  "tests": "MyTradingSys/tests/test_artifacts_audit_links.py",
+  "title": "RU9 Artifacts_Guy: artifacts.py audit-links",
+  "weight": "",
+  "worker": "agent"
+}

@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/sync.py claim \"dsa-audit-01-data-forensics\"",
+    "python scripts/dev/tasks.py take dsa-audit-01-data-forensics",
+    "git grep -n -E \"def load_|read_csv|loadtxt\" -- MyTradingSys/backtest MyTradingSys/research",
+    "git grep -c \"taker_buy\" -- \"*.py\"",
+    "python scripts/dev/tasks.py done dsa-audit-01-data-forensics --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"",
+    "# AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty)"
+  ],
+  "created": "2026-10-15T23:28:58Z",
+  "depends_on": [],
+  "done_when": "T01_data_forensics.md shipped with data_inventory.csv, invariant counts, the loader x defect table, one impact recount, leads L4/L10 resolved, S1/S2 carded.",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "Prove or disprove that the 1m klines, funding, footprint and daily files the studies read are complete, unique, internally consistent and read with the right time unit; measure what each defect does to published event counts.",
+  "id": "dsa-audit-01-data-forensics",
+  "lane": "DSA-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "0e8d687e claim dsa-audit-01-data-forensics",
+      "ref": "MyTradingSys/system/claims/dsa-audit-01-data-forensics.md",
+      "utc": "2026-10-16T06:29:48Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:27Z",
+  "refs": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
+    "MyTradingSys/backtest/bt/bt_data.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md and MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T01/ (new files only)",
+    "read-only: repo code, result files, data under F:/MTS/data and Dumps (windows per brief section 5)"
+  ],
+  "scope_out": [
+    "fixing what you find (cards instead)",
+    "VALIDATION or HOLDOUT returns",
+    "writes to the live tree, F:/MTS/data or Dumps",
+    "F:/AIBridge and scripts/aibridge",
+    "changing any verdict, ledger or pre-registered bar"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T01' (full method).",
+    "Inventory every source in brief 1d (files, first/last stamp, rows, unique, time unit, gaps) into data_inventory.csv: counts only, all dates.",
+    "DEV 1m bar invariants (OHLC order, taker_buy <= volume, VWAP inside range, open/close jumps, frozen runs): counts plus the 20 worst.",
+    "Cross-source: 1m resampled vs raw_1d; footprint vs kline volume (footprint window, exposure row); funding stamps on DEV.",
+    "Loader torture test: every kline/funding loader fed crafted %TEMP% files (microsecond row, duplicate, gap, header, unsorted): raise/warn/silent. Leads L4, L10.",
+    "Impact per defect (studies and DEV events touched; one published count recounted) and the delta sign convention check."
+  ],
+  "tests": "",
+  "title": "DSA audit T01: data forensics of every backtest input",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

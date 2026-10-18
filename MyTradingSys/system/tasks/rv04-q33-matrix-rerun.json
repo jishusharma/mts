@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/backtest/fetch_binance_archive.py --help",
+    "python MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py Dumps/backtest/raw_1m_2022/klines <scratch-out-dir>"
+  ],
+  "created": "2026-10-12T17:18:13Z",
+  "depends_on": [],
+  "done_when": "The report has every command's headline numbers and TRIALS.md has one new row per run.",
+  "from_inbox": "",
+  "goal": "Follow MyTradingSys/system/revalidation/RV04_q33_matrix.md exactly (fetch the perp 1m klines first if absent); report per MyTradingSys/system/revalidation/_COMMON.md. host=JIS-NUC.",
+  "id": "rv04-q33-matrix-rerun",
+  "kind": "run",
+  "lane": "CODEX",
+  "layers": [
+    "guidance"
+  ],
+  "live_path": false,
+  "note": "closed 2026-10-12: same work as thread \"Fix tidy and recover lost data\" (re-fetch klines, confirm Q33 reproduces); independent check is rv-dsa-q33-rerun",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/revalidation/RV04_q33_matrix.md",
+    "MyTradingSys/research/tom_fabio_guidance_2026-10-12",
+    "MyTradingSys/backtest/fetch_binance_archive.py"
+  ],
+  "scope_out": [
+    "holdout reads",
+    "changing the code under test",
+    "tuning parameters"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "dropped",
+  "steps": [
+    "Run the commands exactly as written, on development data only; never read a holdout (ROADMAP section 2).",
+    "Append one row per run to MyTradingSys/research/layer_lab/TRIALS.md (date, card, command, data range, headline number): every run is a counted trial.",
+    "Report each number with the command and output file behind it; a missing input is NOT_IN_DATA, never 0."
+  ],
+  "tests": "",
+  "title": "RV04 re-run Q33 matrix to scratch dir and diff cells (host=JIS-NUC)"
+}

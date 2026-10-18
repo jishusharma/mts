@@ -4,6 +4,21 @@
 # Rule 52: this is a pointer for direction, not a spec.
 # Change rule: verbatim sections change only by operator edit. No agent rewrite.
 
+## DIRECTION UPDATE (2026-10-13, operator chat; supersedes the ARCHITECTURE DOCTRINE, PRINCIPLES and "Cores and layers" / "Provenance" below where they conflict)
+
+### OPERATOR STATEMENT (verbatim, 2026-10-13)
+"We need flexible system now that can adapt to whatever change we need to bring. So we have to remove all those uh, hard rules about layers and everything." ... "why do not we just apply our own brains rather than uh, depending on uh, what we find where we have the core idea and we have the chart we have the data so let us apply the core idea on the chart and uh, see how it needs to be adjusted in order to make profitable trades."
+Also: "Orderflow is real and works on all markets." and, on "Tom is core, non-negotiable": "It was a long time ago when we started - now it makes no sense to have anything like this."
+
+### INTERPRETATION (not verbatim)
+1. No fixed core. Tom, Fabio and every other system are layers. Layers may be combined or used as filters on each other; evidence
+   (fee-net, out of sample) decides what trades.
+2. Our own judgement is allowed. A number is SOURCED (trader's words, file:line) or OURS (our judgement or tuned). OURS numbers are
+   chosen on DEV, checked once on VALIDATION, and the holdout is read once; every variant is counted. That replaces the NO-SOURCE ban.
+3. Market: BTC. Tom's core idea (order flow + volume profile) is applied on BTC charts and BTC data, which carry the order flow the DAX
+   CFD feed lacked. The DAX chain is parked and no FDAX data is bought (q11). Plan: research/tom_btc_2026-10-13/TOM_ON_BTC.md.
+4. Unchanged: testnet only until the GO-LIVE BAR holds; live-tree and safety rules in CLAUDE.md.
+
 
 ## ARCHITECTURE DOCTRINE (locked 2026-09-23)
 
@@ -13,7 +28,7 @@
 
 ### INTERPRETATION (not verbatim)
 
-1. TOM IS CORE. Tom's rules are the core layer. Non-negotiable. Sourced from transcripts, cited per [TOM-NNN].
+1. [SUPERSEDED 2026-10-13: no fixed core, see DIRECTION UPDATE 2026-10-13] TOM IS CORE. Tom's rules are the core layer. Non-negotiable. Sourced from transcripts, cited per [TOM-NNN].
 2. EVERYTHING ELSE IS A MODULE. Modules are switchable: on for computation and/or integration, off for baseline operation. Or displayed alongside as complementary reading. Modules never gate core behavior.
 3. CORE GROWS. New Tom transcripts extend the core. Other analysts' rules may enter the core later, by the same admission gate.
 4. ADMISSION IS DEFERRED. New rules wait at the module layer until project maturity and backtesting justify promotion. No rule enters the core engine without that gate.
@@ -91,7 +106,7 @@ Note that we will integrate RSI - so it is momentum and it comes from a differen
 
 ## PRINCIPLES
 
-- Tom is core. Everything else is a module. Modules never gate core behavior.
+- [SUPERSEDED 2026-10-13] Tom is core. Everything else is a module. Modules never gate core behavior.
 - Modules are switchable: on for computation/integration, off for baseline. Or displayed alongside.
 - Add, do not modify. Core MTS logic not rewritten.
 - Isolate first. Combine only after each read is independently validated.

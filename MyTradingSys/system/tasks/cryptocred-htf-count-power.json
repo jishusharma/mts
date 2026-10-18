@@ -1,0 +1,75 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T18:24:07Z",
+  "commands": [],
+  "created": "2026-10-17T09:02:21Z",
+  "depends_on": [
+    "cryptocred-ledger-feasibility"
+  ],
+  "done_when": "COUNT_POWER.md with N, fire rate, MDE per setup/timeframe and the null spec.",
+  "est_turns": 12,
+  "from_inbox": "",
+  "goal": "Count-only check for the trader's real timeframes: signals from structure on 4h and 1d (same-timeframe closes) with 1h entries, fire rate per month, power via backtest/power_mde.py, and the random-entry null spec. No P&L.",
+  "id": "cryptocred-htf-count-power",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md",
+      "ref": "22bdef4b",
+      "utc": "2026-10-17T18:24:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Control Room pickup 2026-10-15: copy and apply 9 operator decisions (q-gap-a/b/c, q-pub-tr",
+      "ref": "d7749d092236",
+      "utc": "2026-10-15T09:54:44Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d7749d092236 Control Room pickup 2026-10-15: copy and apply 9 operator decisions (q-gap-a/",
+      "ref": "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+      "utc": "2026-10-15T09:54:44Z"
+    }
+  ],
+  "layers": [
+    "cryptocred"
+  ],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-17 ACCEPT. WEIGHT:IMPORTANT feeds the 4h/1d pre-registration. Verify (worker): content commit sha, `git cherry origin/fast-track <sha>` empty AND `git ls-tree -r origin/fast-track --name-only` lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "cryptocred-home-fit-audit 2026-10-17",
+  "refreshed": "2026-10-17T18:15:46Z",
+  "refs": [],
+  "result": "MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/cryptocred/",
+    "MyTradingSys/backtest/power_mde.py",
+    "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+    "MyTradingSys/research/cryptocred_htf_2026-10/ (new: count_power.py, test_count_power.py, COUNT_POWER.md)",
+    "1d resample added beside the 15m/1h/4h frames of run_cc_setups.py (import only; do not edit that runner)"
+  ],
+  "scope_out": [
+    "any P&L backtest run",
+    "tuning",
+    "edits to live-path code"
+  ],
+  "scope_sha": "d7749d092236",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_CRYPTOCRED.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Count signals per setup on 4h and 1d structure over the DEV window only (no VALIDATION/HOLDOUT read).",
+    "Compute MDE and N-for-80%-power with power_mde.py for each count; write INCONCLUSIVE in advance where N < 100.",
+    "Write MyTradingSys/research/cryptocred_htf_2026-10/COUNT_POWER.md incl. the random-entry null spec (same fills, exits, fees)."
+  ],
+  "tests": "A unit test that the count script reproduces the 1h signal count of the existing runner on a fixed fixture; fails before the script exists.",
+  "title": "CryptoCred: count-only 4h/1d signals, fire rate, random-entry null spec and power (items 1/9/10)",
+  "worker": "agent"
+}

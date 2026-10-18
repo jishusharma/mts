@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T18:39:24Z",
+  "depends_on": [],
+  "done_when": "A clean docs/script ship via `sync.py ship` finishes under 60 s on a fixture tree; a red `ci-<sha>` state makes the next ship refuse with the failing sha; CI still runs the whole suite; MyTradingSys/tests/test_ship_fast_path.py passes and GATE_SPEED.md has the after-numbers.",
+  "est_turns": 35,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add a fast ship mode to sync.py: run only tests affected by the diff, in parallel, leave the full suite to CI, and make a red CI on trunk block the next ship; target clean ship under 60 s (now about 544 s, GATE_SPEED.md). D1-D7 landed; this fast path did not (no trunk commit or branch found 2026-10-18).",
+  "id": "ship-gate-fast-path-under-60s",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "GATE_SPEED.md: after-numbers of the first ship",
+      "ref": "b1c928e5be23",
+      "utc": "2026-10-18T16:38:52Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b1c928e5be23 GATE_SPEED.md: after-numbers of the first ship",
+      "ref": "MyTradingSys/system/GATE_SPEED.md",
+      "utc": "2026-10-18T16:38:52Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "Each new test fails on pre-change sync.py.",
+  "note": "live-path-adjacent gate code; diff-only review Agent before ship. Routed by Pipeliner 2026-10-18",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T18:39:36Z",
+  "refs": [
+    "MyTradingSys/system/GATE_SPEED.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/run_all_tests.py",
+    "MyTradingSys/tests/test_ship_fast_path.py",
+    "MyTradingSys/system/GATE_SPEED.md"
+  ],
+  "scope_out": [
+    "CI workflow definitions",
+    "live tree, deploy, HALT files",
+    "skipping any test CI runs"
+  ],
+  "scope_sha": "b1c928e5be23",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read GATE_SPEED.md and gate_select in sync.py; ask NB signal first whether the NB Sonnet agent has an unshipped branch (reuse it if so)",
+    "Map changed files to affected tests (reuse targeted 4t selection) and run them in parallel",
+    "Add red-CI check using ci_watch state; refuse ship with sha when red",
+    "Fail-first tests, measure after-numbers",
+    "Run run_all_tests.py --full, ship"
+  ],
+  "tests": "MyTradingSys/tests/test_ship_fast_path.py",
+  "title": "Ship gate fast path: clean ship under 60 s",
+  "weight": "",
+  "worker": "session"
+}

@@ -1,4 +1,5 @@
-"""Tests for backup_snapshot.py: dirty + untracked work reaches the remote, the live tree is untouched."""
+"""Tests for backup_snapshot.py: dirty + untracked work reaches the remote, the live tree is untouched,
+and the public origin is never a target unless --allow-origin says so (the GitHub repo is public since 2026-10-11)."""
 import subprocess
 import sys
 import tempfile
@@ -29,7 +30,10 @@ class BackupSnapshotTest(unittest.TestCase):
         (self.repo / "a.txt").write_text("one\n", newline="\n")
         g(self.repo, "add", "-A")
         g(self.repo, "commit", "-q", "-m", "init")
-        g(self.repo, "remote", "add", "origin", str(self.remote))
+        g(self.repo, "remote", "add", "backup", str(self.remote))            # the default target: the local bare repo
+        self.public = root / "public.git"
+        g(root, "init", "-q", "--bare", str(self.public))
+        g(self.repo, "remote", "add", "origin", str(self.public))             # stands for the public GitHub repo
         self.wt = root / "wt"
         g(self.repo, "worktree", "add", "-q", "-b", "side", str(self.wt))
 
@@ -93,6 +97,33 @@ class BackupSnapshotTest(unittest.TestCase):
         (self.repo / "n.txt").write_text("2\n", newline="\n")
         self.assertEqual(bs.main(["--repo", str(self.repo)]), 0)
         g(self.remote, "merge-base", "--is-ancestor", tip, ref)
+
+    def public_refs(self):
+        return g(self.public, "for-each-ref", "--format=%(refname)", "refs/heads/backup")
+
+    def test_default_remote_is_backup_not_origin(self):
+        (self.repo / "n.txt").write_text("1\n", newline="\n")
+        self.assertEqual(bs.main(["--repo", str(self.repo)]), 0)
+        self.assertNotEqual(self.remote_refs(), "")
+        self.assertEqual(self.public_refs(), "")
+
+    def test_origin_is_refused_without_allow_origin(self):
+        (self.repo / "n.txt").write_text("1\n", newline="\n")
+        self.assertEqual(bs.main(["--repo", str(self.repo), "--remote", "origin"]), 2)
+        self.assertEqual(self.public_refs(), "")
+        self.assertEqual(self.remote_refs(), "")
+
+    def test_allow_origin_is_the_explicit_override(self):
+        (self.repo / "n.txt").write_text("1\n", newline="\n")
+        self.assertEqual(bs.main(["--repo", str(self.repo), "--remote", "origin", "--allow-origin"]), 0)
+        self.assertNotEqual(self.public_refs(), "")
+
+    def test_a_second_name_or_the_bare_url_of_origin_is_refused_too(self):
+        (self.repo / "n.txt").write_text("1\n", newline="\n")
+        g(self.repo, "remote", "add", "mirror", str(self.public))             # same URL as origin under another name
+        self.assertEqual(bs.main(["--repo", str(self.repo), "--remote", "mirror"]), 2)
+        self.assertEqual(bs.main(["--repo", str(self.repo), "--remote", str(self.public)]), 2)
+        self.assertEqual(self.public_refs(), "")
 
     def test_dry_run_pushes_nothing(self):
         (self.repo / "n.txt").write_text("1\n", newline="\n")

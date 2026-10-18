@@ -13,18 +13,18 @@
   },
   {
    "path": "DSA_SESSION_PROMPT.md",
-   "blob": "1e8f2381243eb15efb367eb0fdf16b4658e2126d",
-   "sha256_8": "ee9493b6",
+   "blob": "3ada1c22f336d0d6ad0ca2734ce073ce5ffc8082",
+   "sha256_8": "bda1c03a",
    "eol": "LF",
-   "approved_by": "pending",
+   "approved_by": "operator chat 2026-10-15 (JIS-NB): stale pointers after token-opt (MTS-AutoDeploy, STATUS.md/LESSONS_DIGEST.md)",
    "approved_commit": "pending"
   },
   {
    "path": "MyTradingSys/system/01_AI_BEHAVIOR.md",
-   "blob": "e7618d64c60803776fe9cdf0b93076cff24fe388",
-   "sha256_8": "dd54759c",
+   "blob": "030aa9954f886190bbacdf3dcd6b8fb8bd57b65d",
+   "sha256_8": "7a37085c",
    "eol": "LF",
-   "approved_by": "pending",
+   "approved_by": "operator chat 2026-10-15 (JIS-NB): stale pointers after token-opt (MTS-AutoDeploy, STATUS.md/LESSONS_DIGEST.md)",
    "approved_commit": "pending"
   },
   {

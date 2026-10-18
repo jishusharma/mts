@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T22:21:39Z",
+  "commands": [],
+  "created": "2026-10-13T05:09:08Z",
+  "depends_on": [],
+  "done_when": "MD gLHd20jE8UQ line says secondary source (presenter says what he runs on ES; footer attributes NQ 30-40 to Fabio), status SECONDARY_NOT_SOURCED; test_ledger_audit TestH6 passes",
+  "from_inbox": "",
+  "goal": "Label the gLHd20jE8UQ settings (ES filter 50, aggregate by order, NQ 30-40) as a secondary presenter statement, not Fabio direct parameters; a Fabio own quote is required before use as a layer parameter.",
+  "id": "fabio-audit-20261013-attribution",
+  "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "worker-sonnet",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md"
+  ],
+  "result": "H6: gLHd20jE8UQ ES 50 / NQ 30-40 / aggregation labelled SECONDARY_NOT_SOURCED in the ledger, SETUP_CATALOG.md and BIGTRADE_SPEC.md; Fabio's own words found in-repo: DyS79Eb92Ug_raw.txt:681-683 NQ 30 contracts, London 20 (speaker inferred from turn order). UNRESOLVED: no Fabio quote for ES 50 or aggregation mode",
+  "scope_in": [
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+    "MyTradingSys/research/fabio_transfer/test_ledger_audit.py",
+    "scripts/dev/run_extra_tests.py",
+    "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",
+    "MyTradingSys/research/layer_readiness_2026-10-16/BIGTRADE_SPEC.md"
+  ],
+  "scope_out": [
+    "any code, backtest, study or holdout read",
+    "new web or video downloads",
+    "numbers not traceable to the audit report or the cited frames/captions"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_lab-audit-fabio-ledger-frames.md H6 row (gLHd20jE8UQ_03 t420)"
+  ],
+  "state": "done",
+  "steps": [
+    "grep repo for ES 50 / NQ 30-40 / size filter citations",
+    "edit the MD line and any doc that treats it as Fabio own",
+    "state in the result that a Fabio quote is still owed (UNRESOLVED)",
+    "test, ship"
+  ],
+  "tests": "test_ledger_audit.py::TestH6 fails first: old MD attributes the filter settings to Fabio without a secondary-source label",
+  "title": "H6: Separate secondary presenter settings from Fabio direct parameters"
+}

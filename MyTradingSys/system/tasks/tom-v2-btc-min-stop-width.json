@@ -1,0 +1,75 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T06:33:20Z",
+  "depends_on": [],
+  "done_when": "test_worked_example and the off-by-default identity test pass; the lookback 10/20/40 floors for 2026-06-25 are one line in the card result (floor reported, nothing chosen). Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "effort": "medium",
+  "est_turns": 14,
+  "from_inbox": "",
+  "goal": "Give BTC research replays the minimum stop width of TOM_LAYER_V2_SPEC section 11.4: N5 = median true range of the trailing 20 UTC days of 5-minute bars, W_noise = 0.88 x N5, W_fee = round-turn cost / 0.25, no trade below the larger. Research replays only, off by default, live BTC output unchanged. The old DAX_BT_V2 gate no longer applies (operator q11, 2026-10-13).",
+  "id": "tom-v2-btc-min-stop-width",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Opus gate: operator's latest message or an approved crucial OPUS card; Haiku rule for scop",
+      "ref": "1847cff89574",
+      "utc": "2026-10-17T11:34:43Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c8996d95b189 lab tom-v2-btc-min-stop-width: BLOCKED (build)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-14_tom-v2-btc-min-stop-width.md",
+      "utc": "2026-10-14T18:06:24Z"
+    }
+  ],
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:definitions CLASS:C2 REVIEWER:Gemini Argon high + Haiku re-derive + 2nd vendor on first use WEIGHT:IMPORTANT. Unblocked 2026-10-18: the 2026-10-14 lab run ended BLOCKED only because DAX_BT_V2.md never existed (report 2026-10-14_tom-v2-btc-min-stop-width.md); operator q11 removed that gate. Files: n5 and min_stop_width in scripts/dev/tom_noise_units.py, optional min_width argument in tom_bt.run_variant. Run no BTC backtest. Prio raised 5 to 3 (DECISION OURS: lab capacity is free). HOLD-CLEARED A-20261018-5 (lifted by the operator).  Reviewed by a separate Sonnet Agent (FIX round 1 applied).",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-13 (TOM_LAYER_V2_SPEC part B)",
+  "refreshed": "2026-10-18T03:35:35Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/tom_bt.py",
+    "MyTradingSys/backtest/fees.py (read only)",
+    "scripts/dev/tom_noise_units.py",
+    "MyTradingSys/tests/",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md section 11"
+  ],
+  "scope_out": [
+    "live tree / restarts",
+    "tuning on outcomes",
+    "running a BTC backtest (needs its own pre-registration)",
+    "widening any stop",
+    "BTC holdout 2026-06-26 on (burned)"
+  ],
+  "scope_sha": "1847cff89574",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md section 11",
+    "MyTradingSys/PROJECT_VISION.md:234",
+    "MyTradingSys/backtest/layers/FORMULAS.md section 12",
+    "SOURCED 0.88: TOM_LAYER_V2_SPEC.md 11.4 (his 20-point stop, k0zm5NYn0IQ:22-24); SOURCED 0.25 R: PROJECT_VISION.md:234; OURS 20-day lookback (spec 11.4)"
+  ],
+  "state": "ready",
+  "steps": [
+    "n5(bars, asof) in scripts/dev/tom_noise_units.py: median true range (FORMULAS.md 12) of completed 5-minute bars of the trailing 20 UTC days as a fraction of close; reuse true_ranges and aggregate",
+    "min_stop_width(entry, n5, fees) = max(0.88 * n5, round-turn fee fraction / 0.25) * entry (fee = entry leg + stop leg of the fees dict, 0.05 pct for FEES_DERIBIT); a signal with a narrower stop is dropped with reason stop_below_min_width, never widened",
+    "tom_bt.run_variant: argument min_width=None (else a callable asof_ms -> n5); None keeps every existing output identical",
+    "floors: with the tom_noise_units loader on the BTC kline dir, as of 2026-06-25, compute the floor at lookback 10, 20 and 40 and write one line in the card result; choose nothing"
+  ],
+  "tests": "MyTradingSys/tests/test_tom_min_stop_width.py::test_worked_example (new): entry 100000, N5 0.14 pct: W_noise 123.20, taker W_fee 400.00, W_min 400.00; stop 100399 dropped (stop_below_min_width), 100400 kept at 0.25 R; FEES_DERIBIT W_fee 200.00; bars TR 2, 2, 2.5 give n5 0.190476 (true_ranges are fractions of close); min_width=None = old tom_bt run; fails first",
+  "title": "Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

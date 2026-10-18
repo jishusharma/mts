@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T19:08:51Z",
+  "commands": [
+    "python MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py",
+    "python MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py --count",
+    "python MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py --full"
+  ],
+  "created": "2026-10-15T17:42:59Z",
+  "depends_on": [],
+  "done_when": "RESULT.md starts with one verdict word from PRE_REG section 4, decay.csv has all 30 cells per arm, ledger.csv and EXPOSURE_LEDGER.csv exist, test_screen.py passes, and the PRE_REG.md commit precedes the result commit in git log.",
+  "from_inbox": "",
+  "goal": "Run MyTradingSys/research/gross_effect_screen_2026-10-15/PRE_REG.md sections 1-8 mechanically: one run, no parameter chosen by the session, DEV only (bar open 2022-01-01..2024-06-30). Verdict PASS_FLOW | PASS_CONTROL | INCONCLUSIVE | FAIL at d=1, h=60 against C=0.14%. FAIL means stop: no detector work follows.",
+  "id": "gross-effect-screen-dev",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "Queued behind Q65 (NEXT_SESSION.md Q72). Recommendation: Krown Q66-Q69 wait for this screen's verdict as well as G2-G3 (operator Q2, claude-side audit :51). Data lives on JIS-NB; if the klines folder is absent the card is BLOCKED naming fetch_binance_archive.py as producer. DEV only; VALIDATION/HOLDOUT untouched.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "fable-5.1 pilot 2026-10-15 (PRE_REG.md, zero operator input)",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-15_revalidate-strategy-audit-with-counterev.md",
+    "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md:117-128"
+  ],
+  "result": "INCONCLUSIVE n_T=40; MyTradingSys/research/gross_effect_screen_2026-10-15/RESULT.md",
+  "scope_in": [
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/ (screen.py, test_screen.py, DATA_MANIFEST.csv, ledger.csv, decay.csv, EXPOSURE_LEDGER.csv, RESULT.md)",
+    "F:/MTS/data/tom_raw/klines/BTCUSDT-1m-*.csv read only (2022-01..2024-06 files)"
+  ],
+  "scope_out": [
+    "VALIDATION (2024-07-01+) and HOLDOUT bars: the loader refuses them",
+    "any change to PRE_REG.md numbers, production code, live tree, stops, OI arms, tuning"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/PRE_REG.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-15_claude-side-audit.md:29-46",
+    "MyTradingSys/research/orderflow_views_2026-10-14/study.py:8-26 (loader and the prior pre-registered horizon)"
+  ],
+  "state": "done",
+  "steps": [
+    "Write test_screen.py first (fails: screen.py absent): fixture of synthetic 1m bars with planted session-extreme encounters; asserts delta = 2*tbv - v, L1-L4 and F flags, shared-ledger cooldown, p_in = open[t+1+d], p_out = open[t+1+d+h], day-clustered SE, verdict PASS_FLOW on a planted +0.5% fade and FAIL on a flat fixture; loader raises on a bar >= 2024-07-01.",
+    "Write screen.py per PRE_REG sections 2-3 and 5-6; `--count` prints SHA256 manifest, bar/gap counts, n_T, n_notF, n_C and encounters per day with no outcome column; commit that output (RESULT.md head) before the outcome run.",
+    "Run `--full`: decay.csv for the grid d in {0,1,2,5,15} x h in {5,15,30,60,120,240}, per-side rows, drawdown vs buy-and-hold DEV, benchmarks, participation, funding availability, maker readout; apply section 4 verbatim; verdict line first in RESULT.md.",
+    "Append the three EXPOSURE_LEDGER.csv rows of section 5.3 with rule_sha256 of PRE_REG.md at HEAD.",
+    "Ship. If the verdict is FAIL or INCONCLUSIVE write nothing else; if PASS_*, note in RESULT.md that a validation-read card and a Deribit execution-check card are the next steps (not created here)."
+  ],
+  "tests": "test_screen.py (pure numpy fixtures, no market data): fails before screen.py exists; planted-fade fixture -> PASS_FLOW, flat fixture -> FAIL, n<200 fixture -> INCONCLUSIVE, bar >= 2024-07-01 -> loader raises.",
+  "title": "Gross-effect screen on DEV: session-extreme fade with 1m delta flow vs plain location control, exactly as PRE_REG.md"
+}

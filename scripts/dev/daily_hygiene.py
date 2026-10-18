@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 """daily_hygiene.py - the scheduled daily hygiene run (Step 4, 2026-10-10). No Claude, no operator, no network beyond git.
 
-Runs, in order: the offline gate (run_all_tests.py --quick), `sync.py where` (worktrees holding work not on origin/fast-track),
+Runs, in order: the offline gate (run_all_tests.py --quick), `sync.py tidy --apply` (repairs case-broken worktree HEADs,
+retires finished clean worktrees), `sync.py where` (worktrees holding work not on origin/fast-track),
 declutter_backups.py in dry-run mode (never --apply), `desk.py assign` (the scheduled assigner: posts each ready DSA-lane
 task card to the desk board once, B180), and make_status.py. Writes one file a session reads at boot:
   MyTradingSys/runtime/sched/hygiene_latest.md   (gitignored; STATUS.md embeds its first lines via make_status.py)
@@ -9,6 +10,8 @@ task card to the desk board once, B180), and make_status.py. Writes one file a s
 Exit 0 when every step passed, 1 when any failed (the gate being red is the case that matters).
 Schedule: scripts/sched/register_cicd_tasks.ps1 (Windows Task Scheduler, 06:30 local). Run by hand: python scripts/dev/daily_hygiene.py
 """
+import nowin  # B173: no console flash from git/python children under pythonw
+nowin.install()
 import json
 import os
 import platform
@@ -23,7 +26,9 @@ OUT_DIR = REPO / "MyTradingSys" / "runtime" / "sched"
 PY = sys.executable
 STEPS = [
     ("gate", [PY, "scripts/dev/run_all_tests.py", "--quick"], 1500, True),
+    ("tidy", [PY, "scripts/dev/sync.py", "tidy", "--apply"], 900, False),
     ("where", [PY, "scripts/dev/sync.py", "where"], 120, False),
+    ("health", [PY, "scripts/dev/sync.py", "health"], 120, False),
     ("declutter_dry_run", [PY, "scripts/dev/declutter_backups.py"], 300, False),
     ("desk_assign", [PY, "scripts/dev/desk.py", "assign"], 1800, False),
     ("status", [PY, "scripts/dev/make_status.py"], 300, False),
@@ -66,6 +71,11 @@ def run(runner=subprocess_runner, now=None, out_dir=OUT_DIR):
           f"GATE: {'PASS' if gate['rc'] == 0 else 'FAIL'} ({gate['seconds']} s)", ""]
     if unshipped:
         md += ["Unshipped work (commit + `sync.py ship` it):"] + [f"- {u}" for u in unshipped] + [""]
+    health = next((r for r in results if r["step"] == "health"), None)
+    problems = [ln for ln in (health["tail"] if health else [])
+                if ln.split(" ", 1)[0] in ("STALE-CLAIM", "OVERLAP", "ORPHAN", "SHARED", "NEVER-SHIPPED")]
+    if problems:
+        md += ["Parallel-work collisions (`sync.py health`):"] + [f"- {u}" for u in problems] + [""]
     for r in results:
         md += [f"## {r['step']}: rc {r['rc']} ({r['seconds']} s)", "```"] + r["tail"] + ["```", ""]
     out_dir.mkdir(parents=True, exist_ok=True)

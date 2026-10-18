@@ -1,0 +1,80 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "class": "C1",
+  "closed": "2026-10-18T16:02:41Z",
+  "commands": [],
+  "created": "2026-10-18T15:39:59Z",
+  "depends_on": [],
+  "done_when": "the named test fails on the old code and passes on the new; `python scripts/dev/run_all_tests.py --quick` green; Result line in the commit body",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Stop a count-only BLOCK from ever reading as a family-wide FAIL: verdicts.py knows BLOCKED (never family-wide), reads kill_scope from BLOCKED.md, and Kurisko PRE_REG.md s7 + BLOCKED.md say the 8 counted cells only (sentence in GATE_AUDIT.md Q4).",
+  "id": "gate-fix-4-verdicts-blocked-scope",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "verdicts.py BLOCKED verdict + BLOCKED.md scope; Kurisko row fixed, check exits 0",
+      "ref": "bc3cef0e",
+      "utc": "2026-10-18T16:02:41Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gap-g1-prereg-power: print MDE80 and trades-for-80%-power in verdicts.py check",
+      "ref": "01ed161f4a92",
+      "utc": "2026-10-18T13:52:59Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "2362bbc7d8d3 kurisko-prereg-fire-counts: count-only Quad Rotation pre-registration, 0 of 8",
+      "ref": "MyTradingSys/research/kurisko_2026-10-18/PRE_REG.md",
+      "utc": "2026-10-18T12:28:31Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "From Fable run 1 GATE_AUDIT.md fix list; Claude Opus checked the audit arithmetic (z_holm m=8 2.734, MDE 0.137 at 678 days).\nREVIEWED:2026-10-18 ACCEPT class=C1 Lab_Guy blind review by Claude Sonnet 5.5 (different session from the Fable audit author; audit numbers re-read, not re-run).",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T15:49:45Z",
+  "refs": [
+    "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md"
+  ],
+  "result": "verdicts.py BLOCKED verdict + BLOCKED.md scope; Kurisko row fixed, check exits 0",
+  "scope_in": [
+    "scripts/dev/verdicts.py",
+    "scripts/dev/test_verdicts.py",
+    "MyTradingSys/research/kurisko_2026-10-18/PRE_REG.md",
+    "MyTradingSys/research/kurisko_2026-10-18/BLOCKED.md",
+    "MyTradingSys/research/VERDICTS.csv"
+  ],
+  "scope_out": [
+    "VALIDATION and HOLDOUT reads",
+    "live tree",
+    "any outcome study"
+  ],
+  "scope_sha": "01ed161f4a92",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md (Fable run 1, b63e8589)"
+  ],
+  "state": "done",
+  "steps": [
+    "write the named test first and watch it fail on current code",
+    "implement the change inside scope_in only",
+    "python scripts/dev/run_all_tests.py --quick, then sync.py ship with a Result line"
+  ],
+  "taken": "2026-10-18T16:02:38Z",
+  "tests": "A study dir with PRE_REG.md + BLOCKED.md and no RESULT parses to verdict BLOCKED with kill_scope = the sentence (today UNPARSED, UNPARSED); `verdicts.py check \"kurisko quad rotation\"` still exits 0. The test must fail on the pre-change code.",
+  "title": "verdicts.py: BLOCKED verdict word + kill_scope from BLOCKED.md; Kurisko PRE_REG s7 kill-scope sentence",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

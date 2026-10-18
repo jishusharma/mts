@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-14T16:42:47Z",
   "commands": [],
   "created": "2026-10-11T18:00:25Z",
   "depends_on": [],
@@ -9,13 +10,16 @@
   "goal": "Most Fabio ledger rows carry only a month or 'unknown'; a recall test needs the minute, read from the on-screen clock like Tom's ledger (N4 iii).",
   "id": "fabio-ledger-minute-timestamps",
   "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
   "live_path": false,
   "note": "JIS-NUC relay 2026-10-12: not runnable on JIS-NUC. The videos and old sheets are on F:, but python there has no cv2/ffmpeg/PIL so grab.py cannot cut full-res frames; the existing 960x540 sheet cells show minutes at best (DyS79Eb92Ug) and no date. Run on a host with cv2 (JIS-NB), grab 1280x720 frames at each entry t.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "cloud-research 2026-10-11 (C-Cloud BACKTEST_FAILURES_RESEARCH.md; operator: 'get this into action')",
   "refs": [],
-  "result": "",
+  "result": "replay-ready 0/18 entry rows: no frame shows the trade date; entry_time_utc+entry_time_src added with reasons (FABIO_TRADE_LEDGER.csv/.md); follow-up fabio-session-date-price-match",
   "scope_in": [
     "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
     "F:/MTS/data/fabio_videos (frames)"
@@ -29,7 +33,7 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md N4 (iii)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List the filled-trade rows with no minute timestamp.",
     "For each, open the frame at entry and read the platform clock and date off the chart; write entry_time_utc with a frame file reference and the time zone you assumed.",

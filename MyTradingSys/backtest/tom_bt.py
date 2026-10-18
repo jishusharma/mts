@@ -171,10 +171,18 @@ def signals(rows, variant):
 # ---------------------------------------------------------------- simulation
 from MyTradingSys.backtest.fees import FEES_DERIBIT, FEES_ALL_TAKER, FEES_FDAX  # noqa: E402  (single source of truth, B081)
 
+_DEV_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "scripts", "dev"))
+if _DEV_DIR not in sys.path:
+    sys.path.insert(0, _DEV_DIR)
+from tom_noise_units import min_stop_width
+
 
 def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fees=FEES_DERIBIT,
-                    stop_first=True, slip=0.0, slip_pts=0.0):
-    """Limit entry at `entry`, first eligible 1m bar index i0 (the bar opening at the signal time)."""
+                    stop_first=True, slip=0.0, slip_pts=0.0, through_ticks=0.0):
+    """Limit entry at `entry`, first eligible 1m bar index i0 (the bar opening at the signal time).
+
+    through_ticks is a price offset applied to entry and target triggers; zero preserves touch fills.
+    """
     sgn = 1.0 if side == "long" else -1.0
     if not (sgn * (stop - entry) < 0 and sgn * (target - entry) > 0):
         return dict(filled=False, reason="bad_geometry")
@@ -183,10 +191,10 @@ def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fe
     fill_i = None
     for i in range(i0, min(i0 + fill_window, n)):
         lo, hi = b.l[i], b.h[i]
-        if (lo <= entry) if sgn > 0 else (hi >= entry):
+        if (lo <= entry - through_ticks) if sgn > 0 else (hi >= entry + through_ticks):
             fill_i = i
             break
-        if (hi >= target) if sgn > 0 else (lo <= target):
+        if (hi >= target + through_ticks) if sgn > 0 else (lo <= target - through_ticks):
             return dict(filled=False, reason="ran")
     if fill_i is None:
         return dict(filled=False, reason="no_fill" if i0 + fill_window <= n else "open_at_end")
@@ -209,7 +217,7 @@ def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fe
         if j >= n:
             return dict(filled=True, reason="open_at_end", fill_i=fill_i)
         s_hit = (b.l[j] <= stop) if sgn > 0 else (b.h[j] >= stop)
-        t_hit = (b.h[j] >= target) if sgn > 0 else (b.l[j] <= target)
+        t_hit = (b.h[j] >= target + through_ticks) if sgn > 0 else (b.l[j] <= target - through_ticks)
         if s_hit and t_hit:
             amb += 1
         if s_hit and (stop_first or not t_hit):
@@ -222,8 +230,13 @@ def sim_limit_trade(b, i0, side, entry, stop, target, fill_window, hold_bars, fe
     return dict(filled=True, reason="open_at_end", fill_i=fill_i)
 
 
-def run_variant(sigs, b, fees=FEES_DERIBIT, stop_first=True, slip=0.0, one_at_a_time=True, slip_pts=0.0):
-    """One position/pending order at a time. Returns a list of trade dicts (unfilled orders included)."""
+def run_variant(sigs, b, fees=FEES_DERIBIT, stop_first=True, slip=0.0, one_at_a_time=True, slip_pts=0.0,
+                min_width=None):
+    """One position/pending order at a time. Returns a list of trade dicts (unfilled orders included).
+
+    min_width: None keeps every existing output identical; else a callable asof_ms -> n5 (TOM_LAYER_V2_SPEC.md 11.4).
+    A signal with a stop narrower than min_stop_width is dropped with reason stop_below_min_width, never widened.
+    """
     out = []
     busy_until_i = -1
     for r in sigs:
@@ -234,6 +247,16 @@ def run_variant(sigs, b, fees=FEES_DERIBIT, stop_first=True, slip=0.0, one_at_a_
             continue
         if one_at_a_time and i0 <= busy_until_i:
             continue
+        if min_width is not None:
+            asof_ms = int(round(r["t"] * 1000))
+            n5_val = min_width(asof_ms) if callable(min_width) else float(min_width)
+            w_min = min_stop_width(float(r["zprice"]), n5_val, fees)
+            if abs(float(r["zprice"]) - float(r["stop"])) < w_min:
+                t = dict(r)
+                t.update(filled=False, reason="stop_below_min_width")
+                t["zone_tf"] = tf
+                out.append(t)
+                continue
         res = sim_limit_trade(b, i0, r["dir"], float(r["zprice"]), float(r["stop"]), float(r["target"]),
                               8 * tfm, 8 * tfm, fees, stop_first, slip, slip_pts)
         if res["reason"] == "open_at_end":

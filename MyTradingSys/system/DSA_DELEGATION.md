@@ -27,6 +27,13 @@ judgment about code that trades, or a result DSA failed twice, it is Claude's.
 | Fetch public market data into F:\MTS\data (klines, funding) with the existing fetch scripts | scripts exist | file list + row counts |
 | Draft first version of an item file, a RESULT.md or a doc from numbers it ran | writing | file; Claude reviews only if it touches rules |
 
+## Builder roles: DSA does Claude's work too (operator 2026-10-14, one DSA prompt)
+`DSA_SESSION_PROMPT.md` section 5 (queue) and 5e (roles): besides this table DSA takes NEXT_SESSION.md tasks and HAIKU/SONNET
+cards that are not live-path (build with fail-first tests, refine cards, spot-check one number, write the handoff, file chat
+inbox items, extractions). A need text starting `STANDIN <role>` still works. Claude-only list: prompt section 5d;
+two gate failures go back `--target CLAUDE`. DSA, a Claude relay session (`relay.py begin`) and a hand-started session can all
+take the same HAIKU/SONNET card: the claim (`sync.py claim`) is the only lock. Lane CODEX is Codex's alone (CODEX_START.md).
+
 ## What stays with Claude
 Live-path code (auto_trader, position manager, Java), safety checks, new strategy logic, formula tests,
 anything touching the CLAUDE.md hard rules, and a DSA task that failed twice. Claude writes the test and the
@@ -48,7 +55,7 @@ spec; DSA may run them.
 | You want a backtest or inventory now | DeepSeek chat | Say what, in one line ("rerun T089 for 2024 only"). DSA runs it. No Claude needed. |
 | You want a decision asked of you | Control Room decisions | Answer there. Claude never asks in chat. |
 | Claude session is running low on budget | Claude | Say "post the rest to DSA". Claude posts desk tasks with `--target DSA` and ends the session. |
-| Weekly reset hold / both Claude accounts empty | DeepSeek chat | DSA keeps the queue moving: it takes any open `--target DSA` task. |
+| Weekly reset hold / every Claude login empty | DeepSeek chat | DSA keeps the queue moving: it takes any open `--target DSA` task. |
 | Something looks wrong (refusal, no result seen) | DeepSeek chat | Check the AIBridge extension is loaded and the tab is reloaded; DSA falls back to paste mode (prompt 0.7). |
 | A DSA result looks suspicious | Claude (Sonnet) | Ask for a spot check of one number. Do not ask for a redo. |
 
@@ -72,9 +79,9 @@ A second AIBridge + DeepSeek chat now runs on the NUC next to the one on the des
   (whichever bridge boots first takes it; the claim in the task row stops the second one).
 - NUC thermal rule (LESSONS_LEARNED F): hold at 98 C, no filler work. Long backtests on the NUC are chunked (per year) so a
   throttle only delays one chunk.
-- Division of labour, cheapest first: T0 script > DSA (extraction, preliminary checks, "dirty work that costs tokens", comparing
-  two result sets) > Haiku worker (classify, summarise one file) > Sonnet (spec, test, code) > Opus (safety diff, vision).
-  DSA does the first pass; Claude spot-checks ONE number per report (CLAUDE.md).
+- Division of labour, cheapest first (CLAUDE.md Cost and routing): T0 script, then DSA (extraction, preliminary checks, "dirty work that costs tokens",
+  comparing two result sets), then Claude (Haiku classify or summarise one file; Sonnet spec, test, code; Opus only when the operator names it).
+  DSA does the first pass; Claude spot-checks ONE number per report.
 - One chat per bridge; do not drive both from the same DeepSeek account at once if the second chat stops answering
   (open item ldkziormfnb5jzgtosjy: not yet reproduced; the bridge audit log at F:\AIBridge\src\audit.jsonl on each host shows
   the last call before a stop).

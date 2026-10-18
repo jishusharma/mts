@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T20:56:06Z",
+  "commands": [],
+  "created": "2026-10-16T16:01:26Z",
+  "depends_on": [],
+  "done_when": "ZONE_MISMATCH.md has a DECISION (OURS) section with grid, weighting, edge convention; test passes; no Java file changed",
+  "from_inbox": "",
+  "goal": "Close ZONE_MISMATCH.md follow-up with a defaulted choice: the single volume-profile definition is FORMULAS 18.1 (10 USDT fixed grid, uniform overlap weighting, POC = bin centre, VAH = top edge, VAL = bottom edge), recorded as OURS (NO-SOURCE, chosen for reproducibility, not edge). Pin it with a test; the Java port is a separate JIS-NB live-path item, not done here.",
+  "id": "zone-profile-standard-ours",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "VP standard recorded as OURS (18.1) and pinned by test_zone_standard.py",
+  "scope_in": [
+    "MyTradingSys/research/pit_levels_2026-10-16/ZONE_MISMATCH.md",
+    "MyTradingSys/research/level_ledger_2026-10-16/zone_mismatch_classify.py",
+    "MyTradingSys/research/level_ledger_2026-10-16/test_zone_standard.py",
+    "scripts/dev/run_extra_tests.py"
+  ],
+  "scope_out": [
+    "any Java file",
+    "auto_trader and execution code",
+    "backtest/layers/FORMULAS.md (read only)"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/backtest/layers/FORMULAS.md 18.1; ZONE_MISMATCH.md counts (51 of 65 mismatches are grid and weighting)"
+  ],
+  "state": "done",
+  "steps": [
+    "read ZONE_MISMATCH.md and classify main()",
+    "write test_zone_standard.py: java_port on a synthetic day with the 18.1 settings (fixed=10, uniform, 18.1 edges) equals uniform_on_grid levels",
+    "fix the classifier only if the test shows a gap",
+    "append a 'DECISION (OURS)' section to ZONE_MISMATCH.md naming the three settings and the follow-up Q for NB",
+    "register test, ship"
+  ],
+  "tests": "test_zone_standard.py: fails first because no such test or fixed-grid mode assertion exists; passes with the 18.1 settings on 3 hand-computed days (expected from FORMULAS 18.1 by hand)",
+  "title": "Zone profile standard: record the single VP definition as OURS and pin it with a test"
+}

@@ -1,0 +1,760 @@
+{
+ "ledger_sha256": "53015699279c60bdd295141aeeb2cf5c8f8664a772b51abbbbe23789341a3836",
+ "rows": {
+  "F1": {
+   "csv_line": 2,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/frames/8CWKfoSJu3c_0090_crop.png",
+     "exists": true,
+     "sha16": "33774461ef036e8c"
+    }
+   ]
+  },
+  "F1-m1": {
+   "csv_line": 3,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/frames/8CWKfoSJu3c_0240_crop.png",
+     "exists": true,
+     "sha16": "49c53d708082e384"
+    }
+   ]
+  },
+  "F1-m2": {
+   "csv_line": 4,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/8CWKfoSJu3c_02.jpg",
+     "exists": true,
+     "sha16": "38048b6860de1a62"
+    }
+   ]
+  },
+  "F1-m3": {
+   "csv_line": 5,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/8CWKfoSJu3c_03.jpg",
+     "exists": true,
+     "sha16": "4127276968875f1d"
+    }
+   ]
+  },
+  "F1-x": {
+   "csv_line": 6,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/8CWKfoSJu3c_04.jpg",
+     "exists": true,
+     "sha16": "701455e840cdfc4c"
+    }
+   ]
+  },
+  "F2": {
+   "csv_line": 7,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/0jM5Y31YJak_02.jpg",
+     "exists": true,
+     "sha16": "196462178d78d7c6"
+    },
+    {
+     "path": "F:/MTS/data/fabio_videos/frames/0jM5Y31YJak_0330_crop.png",
+     "exists": true,
+     "sha16": "37470bf6988fb11a"
+    }
+   ]
+  },
+  "F3a": {
+   "csv_line": 8,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/fZlNGWvd2Ko_00.jpg",
+     "exists": true,
+     "sha16": "3b4da063a559ecd5"
+    }
+   ]
+  },
+  "F3b": {
+   "csv_line": 9,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/fZlNGWvd2Ko_01.jpg",
+     "exists": true,
+     "sha16": "632f982cc530c992"
+    }
+   ]
+  },
+  "F3c": {
+   "csv_line": 10,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/fZlNGWvd2Ko_01.jpg",
+     "exists": true,
+     "sha16": "632f982cc530c992"
+    },
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/fZlNGWvd2Ko_02.jpg",
+     "exists": true,
+     "sha16": "231a5fe572a343cd"
+    }
+   ]
+  },
+  "F3c-m1": {
+   "csv_line": 11,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/fZlNGWvd2Ko_02.jpg",
+     "exists": true,
+     "sha16": "231a5fe572a343cd"
+    }
+   ]
+  },
+  "F3c-m2": {
+   "csv_line": 12,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/fZlNGWvd2Ko_02.jpg",
+     "exists": true,
+     "sha16": "231a5fe572a343cd"
+    }
+   ]
+  },
+  "F3c-m3": {
+   "csv_line": 13,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/fZlNGWvd2Ko_02.jpg",
+     "exists": true,
+     "sha16": "231a5fe572a343cd"
+    }
+   ]
+  },
+  "F3c-x": {
+   "csv_line": 14,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/fZlNGWvd2Ko_03.jpg",
+     "exists": true,
+     "sha16": "0859ea05e9a34574"
+    }
+   ]
+  },
+  "F2-m1": {
+   "csv_line": 15,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/0jM5Y31YJak_03.jpg",
+     "exists": true,
+     "sha16": "5d9ef1b3d5dd8690"
+    }
+   ]
+  },
+  "F2-x": {
+   "csv_line": 16,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/0jM5Y31YJak_04.jpg",
+     "exists": true,
+     "sha16": "7d6983e3a5df822c"
+    }
+   ]
+  },
+  "F4a": {
+   "csv_line": 17,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/9IliXww64uM_05.jpg",
+     "exists": true,
+     "sha16": "a4089ff4fecae250"
+    }
+   ]
+  },
+  "F4b": {
+   "csv_line": 18,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/9IliXww64uM_05.jpg",
+     "exists": true,
+     "sha16": "a4089ff4fecae250"
+    }
+   ]
+  },
+  "F5": {
+   "csv_line": 19,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/jasv3L-d8ZE_00.jpg",
+     "exists": true,
+     "sha16": "ad253d61a8673a0a"
+    },
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/jasv3L-d8ZE_01.jpg",
+     "exists": true,
+     "sha16": "d97458d36f63668f"
+    }
+   ]
+  },
+  "F5-m1": {
+   "csv_line": 20,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/jasv3L-d8ZE_02.jpg",
+     "exists": true,
+     "sha16": "751f44733f64f7e3"
+    }
+   ]
+  },
+  "F5-m2": {
+   "csv_line": 21,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/jasv3L-d8ZE_02.jpg",
+     "exists": true,
+     "sha16": "751f44733f64f7e3"
+    }
+   ]
+  },
+  "F5-m3": {
+   "csv_line": 22,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/jasv3L-d8ZE_03.jpg",
+     "exists": true,
+     "sha16": "ee6c1f0d4c5b3e2d"
+    },
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/jasv3L-d8ZE_04.jpg",
+     "exists": true,
+     "sha16": "ce5c247cb16ca375"
+    }
+   ]
+  },
+  "F5-m4": {
+   "csv_line": 23,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/jasv3L-d8ZE_05.jpg",
+     "exists": true,
+     "sha16": "b3d86663db7bf104"
+    }
+   ]
+  },
+  "F5-x": {
+   "csv_line": 24,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/jasv3L-d8ZE_05.jpg",
+     "exists": true,
+     "sha16": "b3d86663db7bf104"
+    }
+   ]
+  },
+  "F6": {
+   "csv_line": 25,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/Jpd96fLqr5M_02.jpg",
+     "exists": true,
+     "sha16": "3eccba7718fa7cbb"
+    }
+   ]
+  },
+  "F6-m1": {
+   "csv_line": 26,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/Jpd96fLqr5M_03.jpg",
+     "exists": true,
+     "sha16": "5819da4fe19f02cb"
+    }
+   ]
+  },
+  "F6-m2": {
+   "csv_line": 27,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/Jpd96fLqr5M_03.jpg",
+     "exists": true,
+     "sha16": "5819da4fe19f02cb"
+    },
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/Jpd96fLqr5M_04.jpg",
+     "exists": true,
+     "sha16": "da0a2087ed8b3320"
+    }
+   ]
+  },
+  "F6-m3": {
+   "csv_line": 28,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/Jpd96fLqr5M_04.jpg",
+     "exists": true,
+     "sha16": "da0a2087ed8b3320"
+    },
+    {
+     "path": "F:/MTS/data/fabio_videos/sheets/Jpd96fLqr5M_05.jpg",
+     "exists": true,
+     "sha16": "a9b0f6cf15ca8d57"
+    }
+   ]
+  },
+  "F6-x": {
+   "csv_line": 29,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w2_01.jpg",
+     "exists": true,
+     "sha16": "31e2e011bf79509f"
+    },
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w2_00.jpg",
+     "exists": true,
+     "sha16": "e72dc62bd48b4026"
+    }
+   ]
+  },
+  "F7": {
+   "csv_line": 30,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w3_00.jpg",
+     "exists": true,
+     "sha16": "c0c1517a5081943a"
+    }
+   ]
+  },
+  "F7-m1": {
+   "csv_line": 31,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w3_01.jpg",
+     "exists": true,
+     "sha16": "eb151f91d3421ed1"
+    }
+   ]
+  },
+  "F7-x": {
+   "csv_line": 32,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w3_01.jpg",
+     "exists": true,
+     "sha16": "eb151f91d3421ed1"
+    }
+   ]
+  },
+  "F8": {
+   "csv_line": 33,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w3_01.jpg",
+     "exists": true,
+     "sha16": "eb151f91d3421ed1"
+    }
+   ]
+  },
+  "F8-x": {
+   "csv_line": 34,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w4_00.jpg",
+     "exists": true,
+     "sha16": "3b26473c36e2187b"
+    }
+   ]
+  },
+  "F9": {
+   "csv_line": 35,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w4_01.jpg",
+     "exists": true,
+     "sha16": "f0c138e0f9e20a6e"
+    }
+   ]
+  },
+  "F9-m1": {
+   "csv_line": 36,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w4_01.jpg",
+     "exists": true,
+     "sha16": "f0c138e0f9e20a6e"
+    }
+   ]
+  },
+  "F9-x": {
+   "csv_line": 37,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w4_02.jpg",
+     "exists": true,
+     "sha16": "97879388da481751"
+    }
+   ]
+  },
+  "F10": {
+   "csv_line": 38,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w4_02.jpg",
+     "exists": true,
+     "sha16": "97879388da481751"
+    }
+   ]
+  },
+  "F10-m1": {
+   "csv_line": 39,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w5_00.jpg",
+     "exists": true,
+     "sha16": "6a74d509e9fd302d"
+    }
+   ]
+  },
+  "F10-x": {
+   "csv_line": 40,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w5_01.jpg",
+     "exists": true,
+     "sha16": "f3a7bdc323cbcf9c"
+    }
+   ]
+  },
+  "F10-z": {
+   "csv_line": 41,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w6_01.jpg",
+     "exists": true,
+     "sha16": "8ed6ea132f894305"
+    }
+   ]
+  },
+  "F11": {
+   "csv_line": 42,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w7_01.jpg",
+     "exists": true,
+     "sha16": "73106991c7493af6"
+    }
+   ]
+  },
+  "F11-m1": {
+   "csv_line": 43,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w7_01.jpg",
+     "exists": true,
+     "sha16": "73106991c7493af6"
+    }
+   ]
+  },
+  "F11-x": {
+   "csv_line": 44,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w7_02.jpg",
+     "exists": true,
+     "sha16": "79207d955dd4563a"
+    }
+   ]
+  },
+  "F12": {
+   "csv_line": 45,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w8_00.jpg",
+     "exists": true,
+     "sha16": "fa1c7fd4bc2e547c"
+    }
+   ]
+  },
+  "F12-m1": {
+   "csv_line": 46,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w8_01.jpg",
+     "exists": true,
+     "sha16": "063a39a24958c496"
+    }
+   ]
+  },
+  "F12-m2": {
+   "csv_line": 47,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w8_01.jpg",
+     "exists": true,
+     "sha16": "063a39a24958c496"
+    }
+   ]
+  },
+  "F12-x": {
+   "csv_line": 48,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w9_00.jpg",
+     "exists": true,
+     "sha16": "bcd107411f267283"
+    }
+   ]
+  },
+  "F13": {
+   "csv_line": 49,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w9_01.jpg",
+     "exists": true,
+     "sha16": "7aa4776ee5926945"
+    }
+   ]
+  },
+  "F13-m1": {
+   "csv_line": 50,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w9_01.jpg",
+     "exists": true,
+     "sha16": "7aa4776ee5926945"
+    }
+   ]
+  },
+  "F13-x": {
+   "csv_line": 51,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w10_00.jpg",
+     "exists": true,
+     "sha16": "329e9d5b3f10fa09"
+    }
+   ]
+  },
+  "F-noTrade-3575-3750": {
+   "csv_line": 52,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w10_02.jpg",
+     "exists": true,
+     "sha16": "e7b95dcc9647f7df"
+    }
+   ]
+  },
+  "F14": {
+   "csv_line": 53,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w11_01.jpg",
+     "exists": true,
+     "sha16": "58b77d476d2d7662"
+    }
+   ]
+  },
+  "F14-x": {
+   "csv_line": 54,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w11_01.jpg",
+     "exists": true,
+     "sha16": "58b77d476d2d7662"
+    }
+   ]
+  },
+  "F-noTrade-4025-4275": {
+   "csv_line": 55,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w12_01.jpg",
+     "exists": true,
+     "sha16": "e1dc816b5ca001b9"
+    }
+   ]
+  },
+  "F-noTrade-4275-4525": {
+   "csv_line": 56,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w13_00.jpg",
+     "exists": true,
+     "sha16": "577cbe2f82944fe0"
+    }
+   ]
+  },
+  "F-noTrade-4775-5025": {
+   "csv_line": 57,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w16_01.jpg",
+     "exists": true,
+     "sha16": "8fc2ec2a25f9e0b1"
+    }
+   ]
+  },
+  "F-noTrade-5025-5275": {
+   "csv_line": 58,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w17_01.jpg",
+     "exists": true,
+     "sha16": "b8126b675e5063dd"
+    }
+   ]
+  },
+  "F-noTrade-5275-5525": {
+   "csv_line": 59,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w18_00.jpg",
+     "exists": true,
+     "sha16": "9ee089d2809ddb94"
+    }
+   ]
+  },
+  "F-noTrade-5525-5775": {
+   "csv_line": 60,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w19_00.jpg",
+     "exists": true,
+     "sha16": "3f9200ee642de0dd"
+    }
+   ]
+  },
+  "F-noTrade-5775-6025": {
+   "csv_line": 61,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w20_01.jpg",
+     "exists": true,
+     "sha16": "9f21f20d230a28b7"
+    }
+   ]
+  },
+  "F-noTrade-6025-6275": {
+   "csv_line": 62,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w21_00.jpg",
+     "exists": true,
+     "sha16": "1e105d6da773bfaf"
+    }
+   ]
+  },
+  "F-noTrade-6275-6525": {
+   "csv_line": 63,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w22_01.jpg",
+     "exists": true,
+     "sha16": "7217d7e9679de4fe"
+    }
+   ]
+  },
+  "F-noTrade-6525-6775": {
+   "csv_line": 64,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w23_00.jpg",
+     "exists": true,
+     "sha16": "a32e80e66b801650"
+    }
+   ]
+  },
+  "F15-draft-6975-7025": {
+   "csv_line": 65,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w24_02.jpg",
+     "exists": true,
+     "sha16": "a16296d098e661cb"
+    }
+   ]
+  },
+  "F-noTrade-7025-7275": {
+   "csv_line": 66,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w25_00.jpg",
+     "exists": true,
+     "sha16": "d201af70be4eaa9c"
+    }
+   ]
+  },
+  "F-noTrade-7275-7525": {
+   "csv_line": 67,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w26_01.jpg",
+     "exists": true,
+     "sha16": "5a33d8f7f8d3b60b"
+    }
+   ]
+  },
+  "F-noTrade-7525-7775": {
+   "csv_line": 68,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w27_00.jpg",
+     "exists": true,
+     "sha16": "71b9b21fa7d1507a"
+    }
+   ]
+  },
+  "F-noTrade-7775-8025": {
+   "csv_line": 69,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w28_00.jpg",
+     "exists": true,
+     "sha16": "83bef81a6be57f64"
+    }
+   ]
+  },
+  "F-noTrade-8025-8275": {
+   "csv_line": 70,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w29_02.jpg",
+     "exists": true,
+     "sha16": "0cb31ad7fc7773dc"
+    }
+   ]
+  },
+  "F-noTrade-8275-8493": {
+   "csv_line": 71,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/DyS79Eb92Ug_w30_00.jpg",
+     "exists": true,
+     "sha16": "98459d5dc6ca64e6"
+    }
+   ]
+  },
+  "F-noTrade-Is1H-0-250": {
+   "csv_line": 72,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/Is1HvdfQm5c_w00_02.jpg",
+     "exists": true,
+     "sha16": "247f5f0571c590c0"
+    }
+   ]
+  },
+  "F-noTrade-Is1H-250-500": {
+   "csv_line": 73,
+   "frames": [
+    {
+     "path": "F:/MTS/data/fabio_videos/lowres/Is1HvdfQm5c_w01_02.jpg",
+     "exists": true,
+     "sha16": "21137bd11fe4b6c4"
+    }
+   ]
+  }
+ }
+}

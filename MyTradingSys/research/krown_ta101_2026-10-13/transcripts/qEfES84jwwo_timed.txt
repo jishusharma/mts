@@ -1,0 +1,1175 @@
+# Video ID: qEfES84jwwo
+# Title: The Market Has a Memory. Here's How to Trade It. (Support & Resistance)
+# Published: 2026-09-19
+# Source: yt_dlp captions (manual); uploader: Krown
+# Analyst: Krown
+# Duration_s: 2009
+# Word count: 6630
+# ---
+[00:00:00] one more thing lives at these levels
+[00:00:02] and I know this because I sat on the other
+[00:00:02] side of it
+[00:00:04] under every obvious floor
+[00:00:06] is a pile of stop losses
+[00:00:09] If you found this video, or perhaps if
+[00:00:09] this video has found you, it is highly
+[00:00:09] like that you are
+[00:00:12] learning technical analysis for the
+[00:00:12] purpose of trading and making the monies.
+[00:00:12] And in this video,
+[00:00:17] we're going to be going over perhaps one
+[00:00:17] of the most important concepts for that
+[00:00:17] purpose, which is
+[00:00:21] understanding how to effectively and most
+[00:00:21] importantly, accurately define supporting
+[00:00:27] resistance. And this is one of those
+[00:00:27] topics that I see a lot of people get lost
+[00:00:27] in the sauce on.
+[00:00:31] And honestly, with just a couple of
+[00:00:31] nuanced points that I hopefully can make
+[00:00:31] here in a
+[00:00:37] very short amount of time, you will be
+[00:00:37] able to avoid all of the terrible things
+[00:00:37] that I typically
+[00:00:41] see people go through, which is thinking,
+[00:00:41] you know, my support broke, but it didn't
+[00:00:41] actually
+[00:00:45] break. And then it bounces or my
+[00:00:45] resistance is breaking out and I need to
+[00:00:45] go along. But
+[00:00:49] what happens? You get a rejection, then it
+[00:00:49] comes back down. And then a lot of the
+[00:00:49] time it can
+[00:00:53] also be that the opposite happens. You
+[00:00:53] know, a breakout is happening when someone
+[00:00:53] thinks,
+[00:00:56] oh, no, I'll just short into this and not,
+[00:00:56] you know, no problem. But ultimately,
+[00:01:01] there are a few rules here that I really
+[00:01:01] want to be going over that I think can
+[00:01:01] provide a
+[00:01:04] lot of value, especially to do people so
+[00:01:04] that you avoid absolute rectum because
+[00:01:04] that's where
+[00:01:08] we don't want to be. Well, obviously
+[00:01:08] anyways, into the slideshow, we go. And I
+[00:01:08] should explain
+[00:01:14] that this is a part of the TA Foundation's
+[00:01:14] playlist here on YouTube. It is by the
+[00:01:14] way,
+[00:01:17] 100% free. And this is episode number
+[00:01:17] four. So if you missed episode number one
+[00:01:17] through three,
+[00:01:22] which is on candlesticks, timeframes,
+[00:01:22] trend lines, and those aren't like super
+[00:01:26] solid in your mind, because we, we will be
+[00:01:26] building off these. I would strongly
+[00:01:26] suggest
+[00:01:30] you go and check those out and it's going
+[00:01:30] to be all good. I'll be sitting right here
+[00:01:33] just waiting right for you. But anyways,
+[00:01:33] if you are also new to this channel and
+[00:01:33] you're
+[00:01:38] unfamiliar with who I am or where I come
+[00:01:38] from, my name is Eric Crown. I used to be
+[00:01:38] a market
+[00:01:41] maker, authorized trader on the floor of
+[00:01:41] New York Star Change Arca. And that was a
+[00:01:41] lifetime ago at
+[00:01:45] this point. And honestly, while that
+[00:01:45] sounds like, you know, kind of impressive,
+[00:01:45] I guess,
+[00:01:51] you don't need to have gone through all of
+[00:01:51] that and scored a 50, a serious 56 in
+[00:01:51] order to
+[00:01:56] understand supporting business. In fact,
+[00:01:56] you know, 99% of people who understand
+[00:01:56] supporting
+[00:01:59] resistance were not former market makers
+[00:01:59] and realistically, market making is like,
+[00:02:02] not, you're not really going to be
+[00:02:02] plotting those in that much really.
+[00:02:07] But it has given me a unique point of
+[00:02:07] view, which I hope to impart on the, on
+[00:02:07] this video
+[00:02:12] and on this video series. And by the way,
+[00:02:12] if all this content sounds like too simple
+[00:02:12] to you,
+[00:02:17] check out the TA one-on-one program. It's
+[00:02:17] also free and it goes over a lot more
+[00:02:20] in-depth things, a lot more nuances,
+[00:02:20] strategies, how to play things out, these
+[00:02:20] sort of things.
+[00:02:25] Anyways, this topic is, like I said, the
+[00:02:25] horizontal memory of every chart. That is
+[00:02:29] effectively what supporting resistance is.
+[00:02:29] So let's go over just an overview of kind
+[00:02:29] of like
+[00:02:35] what we are looking at. So support is a
+[00:02:35] zone where buyers stepped in before,
+[00:02:35] effectively the floor.
+[00:02:41] Resistance is also a zone, but that is
+[00:02:41] where sellers have stepped in before more
+[00:02:41] or less
+[00:02:46] a ceiling, if you will. And I want to
+[00:02:46] bring particular attention to the word
+[00:02:46] that I'm using
+[00:02:51] there is zone. Not price, not exact like
+[00:02:51] decimal price, not an exact number, but a
+[00:02:51] zone. The market
+[00:02:58] is effectively an auction of millions of
+[00:02:58] people. Their memory is fuzzy. So these
+[00:02:58] are as well. At
+[00:03:03] the end of the day, these are all people.
+[00:03:03] I mean, whether it's a ball or an alga put
+[00:03:03] in the trade,
+[00:03:06] it's still a person who programmed it. So
+[00:03:06] price doesn't remember exact numbers. It
+[00:03:06] remembers
+[00:03:12] areas of interest or zones, if you will.
+[00:03:12] These are interchangeable here. If you've
+[00:03:12] heard me say
+[00:03:16] that phrase on this channel a thousand
+[00:03:16] times, this is the video where it really
+[00:03:16] comes from
+[00:03:19] and where I want to explain it on. And
+[00:03:19] again, zone, not specific price. That is
+[00:03:19] the first major
+[00:03:26] nuance here. We are not interested in a
+[00:03:26] decimal point number because
+[00:03:30] Ultimately, that does not matter that much
+[00:03:30] and more important is we'll go over later
+[00:03:34] You're gonna miss a lot of things if you
+[00:03:34] look at it in you know in that way
+[00:03:39] Anyways moving from there. Let's go over
+[00:03:39] why it even exists
+[00:03:43] So why does the market remember these sort
+[00:03:43] of things and it's because real people are
+[00:03:43] stuck at these prices
+[00:03:48] Some people get trapped because they
+[00:03:48] bought the top and they go underwater, you
+[00:03:48] know praying to escape at break-even
+[00:03:53] And of course their selling becomes the
+[00:03:53] ceiling the regretful, you know, they miss
+[00:03:53] the low
+[00:03:59] They swore they'd buy the dip and their
+[00:03:59] bind is effectively the floor cuz there's
+[00:03:59] you know
+[00:04:03] Their orders are still gonna be there and
+[00:04:03] then of course the unfilled orders that
+[00:04:03] never got filled on the first visit
+[00:04:09] Still hang in there, you know people put
+[00:04:09] in a limit order and say hey, I want to
+[00:04:09] buy here
+[00:04:12] I want to sell there and price just
+[00:04:12] doesn't get to them. So none of this is
+[00:04:12] magic
+[00:04:16] It's regret wired into an order books what
+[00:04:16] you're I mean, that's really what you're
+[00:04:16] seeing
+[00:04:20] It's kind of sad like everyone's hopes and
+[00:04:20] dreams just in the order book there for
+[00:04:20] everyone to see but yes
+[00:04:26] That is one way of thinking about it
+[00:04:28] Anyways, here's where most beginners get
+[00:04:28] absolutely massacred. They draw a line
+[00:04:28] like one exact price a
+[00:04:34] Wick pokes, you know $2 through it and
+[00:04:34] they panic out and what happens after that
+[00:04:34] it bounces anyways
+[00:04:41] Levels are zones and here's the exact
+[00:04:41] convention
+[00:04:45] Anchor from the wick extreme to the candle
+[00:04:45] clothes. I just said like the most
+[00:04:45] important part of the video here
+[00:04:51] I just want to highlight again
+[00:04:53] The way that we draw the zones is we
+[00:04:53] anchor from a wick extreme
+[00:04:57] To the closure of that candle the wick is
+[00:04:57] the emotional overshoot
+[00:05:01] Because you know a lot of the times wicks
+[00:05:01] can be during like very volatile price
+[00:05:01] action
+[00:05:06] Maybe it's a liquidation these come at
+[00:05:06] like very, you know, weird weird angles
+[00:05:06] and whatnot
+[00:05:10] So it gives you an overshoot but the
+[00:05:10] clothes that's what the market actually
+[00:05:10] agrees on
+[00:05:15] By the end of that trading period and
+[00:05:15] again
+[00:05:17] If you're not familiar with why that
+[00:05:17] matters go back to the time frames video
+[00:05:17] because we explain it there
+[00:05:21] But basically the end of the time frame is
+[00:05:21] where all the Boston algos and people
+[00:05:21] effectively are trying to force
+[00:05:28] Right force price towards and that's
+[00:05:28] really all that we're trying to figure out
+[00:05:28] anyways
+[00:05:31] Is what are the major market movers trying
+[00:05:31] to do with price here?
+[00:05:35] Because if you're watching a video like
+[00:05:35] this, you're probably like me
+[00:05:37] You're just like a regular, you know plug,
+[00:05:37] you know
+[00:05:39] We don't have like hundreds of billions of
+[00:05:39] dollars and we're not moving the markets
+[00:05:39] or at least not yet
+[00:05:44] Anyways, the memory lives between these
+[00:05:44] two prices
+[00:05:48] That is our zone the wick extreme to the
+[00:05:48] count of clothes
+[00:05:51] That is the memory that is the zone that
+[00:05:51] exists between those two areas in real
+[00:05:51] talk
+[00:05:57] I've changed my mind on this over over my
+[00:05:57] career at the beginning. I started with
+[00:05:57] closures only and
+[00:06:03] It's pretty good. But then I started to
+[00:06:03] notice well mix wicks do matter as well
+[00:06:09] So then I started to switch over to that's
+[00:06:09] like well
+[00:06:11] I think actually wicks kind of make a
+[00:06:11] little more sense for certain things
+[00:06:14] But where I've actually landed over the
+[00:06:14] years in my most mature and most recent
+[00:06:14] updates to my own mental models
+[00:06:20] Is that both of them actually do matter
+[00:06:20] and this convention captures both?
+[00:06:25] Of course, so we want to stay consistent
+[00:06:25] with this and and look if you find a
+[00:06:25] better way of doing it
+[00:06:30] Let me know but this is what I've come to
+[00:06:30] over the years. Anyways moving on from
+[00:06:30] there
+[00:06:35] Let's go over
+[00:06:37] Yes, let's go over how to mark them. So
+[00:06:37] marking them. Honestly, it takes 30
+[00:06:37] seconds
+[00:06:41] Number one zoom out first daily and
+[00:06:41] weekly, although yes, you can go to lower
+[00:06:41] term conference
+[00:06:46] But I'll say if you're newer
+[00:06:47] you're gonna make things a lot easier for
+[00:06:47] yourself by focusing on the daily and the
+[00:06:47] weekly and you don't need to go lower if
+[00:06:52] You don't
+[00:06:54] want to. It's more fun. Sure. There's a
+[00:06:54] lot more things going on,
+[00:06:54] but you're going to get a lot more like
+[00:06:54] floaty,
+[00:06:56] flighty price action that sometimes just
+[00:06:56] does weird shit.
+[00:07:00] And when you're, you know, when you're in
+[00:07:00] the learning phase,
+[00:07:03] we don't need to deal with that. Anyways,
+[00:07:03] the bigger the timeframe,
+[00:07:07] the older the memory, the more important
+[00:07:07] it typically is,
+[00:07:09] the more presidents that it does hold as
+[00:07:09] we went over in the timeframes video,
+[00:07:12] again, higher term timeframes, basically
+[00:07:12] supersede lower term timeframes.
+[00:07:15] Let me just take a sip of this water.
+[00:07:18] Oh, okay. Beautiful. Now, number two, wake
+[00:07:18] to close again.
+[00:07:24] That's where the price turned at least
+[00:07:24] twice. One is an event twice as a memory.
+[00:07:29] Number three, three to five zones maximum.
+[00:07:29] If you're drawing more than that,
+[00:07:33] like you have fucking 10 plus zone. I
+[00:07:33] mean, even just more than a few,
+[00:07:37] honestly, uh, you are just confusing
+[00:07:37] yourself.
+[00:07:40] You're like Charlie from always sunny in
+[00:07:40] Philadelphia.
+[00:07:43] The meme where he's going crazy, like
+[00:07:43] trying to, you know,
+[00:07:45] map out everything in the background. It,
+[00:07:45] it,
+[00:07:47] it looks like you're doing some on your
+[00:07:47] chart,
+[00:07:48] but you're just making yourself confused.
+[00:07:48] It doesn't help. Um,
+[00:07:51] and number four zone stamped on heavy
+[00:07:51] volume, outrank everything else.
+[00:07:55] Nice little nuance right there. When you
+[00:07:55] do get a heavy volume bar,
+[00:07:58] you can almost always mark off that wick
+[00:07:58] and that closure as a zone to
+[00:08:03] be aware of. It usually is going to
+[00:08:03] matter,
+[00:08:05] especially on higher term timeframes.
+[00:08:06] Those are massively, massively important
+[00:08:06] and a lot of money can be made on
+[00:08:10] those anyways. Also, uh, of course,
+[00:08:14] episode number threes law still applies.
+[00:08:14] If it ain't obvious, it ain't there.
+[00:08:19] So when we're looking for these zones,
+[00:08:21] it should be painfully obvious after you
+[00:08:21] watch this video. Um,
+[00:08:25] obviously you haven't watched this video
+[00:08:25] yet,
+[00:08:27] or if you haven't watched any videos, you
+[00:08:27] just don't have the knowledge,
+[00:08:29] but after you have the knowledge, look, as
+[00:08:29] I always say, if my,
+[00:08:33] if my four year old niece can't do it,
+[00:08:33] it's probably nothing.
+[00:08:37] You're probably looking at a Phantom or a
+[00:08:37] figment of your imagination.
+[00:08:40] So let's actually go over some live
+[00:08:40] examples right here.
+[00:08:44] All right, let's get into it right now.
+[00:08:46] I'm going to go off of a weekly timeframe
+[00:08:46] and let's mark off some obvious
+[00:08:51] ones. Okay. All right. So now remember,
+[00:08:51] um,
+[00:08:54] we are looking for extreme wicks and we
+[00:08:54] especially are looking for big volume as
+[00:08:58] well. And what do you know? We have one
+[00:08:58] right here,
+[00:09:01] big volume bar on the top of what, what is
+[00:09:01] this rally?
+[00:09:05] And it also is, if you watch the
+[00:09:05] candlestick video, it is,
+[00:09:09] it's kind of like a long legged doji or
+[00:09:09] you could,
+[00:09:11] or you could call it a shooting star
+[00:09:11] either way,
+[00:09:14] damn good and indicative of a reversal
+[00:09:14] there anyways.
+[00:09:18] And we do get our reversal of course. Now
+[00:09:18] what happens after that?
+[00:09:21] Where does that one close? It closes
+[00:09:21] actually all the way down here.
+[00:09:26] So if we zoom out a little bit more,
+[00:09:29] we can see that we can actually look at
+[00:09:29] this whole area as a zone.
+[00:09:33] And until Bitcoin clears the top side
+[00:09:33] boundary of this zone with a closure,
+[00:09:37] this is the other major nuance in this
+[00:09:37] video.
+[00:09:40] We do not have a breakout. We have a stint
+[00:09:40] in it over here.
+[00:09:42] We have several rejections along the way,
+[00:09:44] but none of them are the big break that I
+[00:09:44] think a lot of people were really
+[00:09:47] waiting for until you actually close above
+[00:09:47] it right here. So first,
+[00:09:51] actually let me just even show you the
+[00:09:51] tool.
+[00:09:52] So I'm using the horizontal ray tool.
+[00:09:55] It's over here at the top left-hand side
+[00:09:55] of trading.
+[00:09:56] You just follow my cursor.
+[00:09:58] You hit this arrow out on the trend tools
+[00:09:58] and it is the horizontal ray.
+[00:10:01] I just find that these, you know, they
+[00:10:01] look good basically.
+[00:10:04] That's what I'm using right here.
+[00:10:06] Then what I'm going to do is I'm actually
+[00:10:06] going to draw a box to
+[00:10:09] represent the zone or, or, or a rectangle,
+[00:10:09] if you will.
+[00:10:12] So I go to over to geometric shape.
+[00:10:14] I hit that and I go over to rectangle
+[00:10:14] which brings me to this and then it gives
+[00:10:14] me this tool here of which I
+[00:10:20] will then
+[00:10:21] Pull to the best of my ability the box
+[00:10:25] from from boundary to boundary and we can
+[00:10:25] see if you were looking at this and
+[00:10:31] You had plotted this when this first
+[00:10:31] weekly happened over here
+[00:10:34] You would have had a lot of opportunities
+[00:10:34] to trade around this this well this
+[00:10:34] resistance
+[00:10:41] You had an opportunity to short many times
+[00:10:41] here here here
+[00:10:45] So it's three even a rejection right here
+[00:10:45] before the breakdown another one right
+[00:10:45] here
+[00:10:49] Even right here right before the Rona
+[00:10:49] dump, you know
+[00:10:51] If you're back in 2020, you know what I'm
+[00:10:51] talking about
+[00:10:54] Yeah, I'm sure a lot of people would say
+[00:10:54] well, of course, you know
+[00:10:56] You couldn't have guessed that but look
+[00:10:56] like when you have these rules
+[00:10:59] You can have things in place that allow
+[00:10:59] you to at the very least not be long
+[00:10:59] during this but more importantly
+[00:11:05] You know if you did want to short into it,
+[00:11:05] you could have Jordan into it
+[00:11:08] Now the rejection right here almost and
+[00:11:08] then you get some stints into this region,
+[00:11:08] but it's not until
+[00:11:14] again, you close above the wick high of
+[00:11:19] The initial area where you actually get a
+[00:11:19] confirmed breakout on that in this case,
+[00:11:19] you know price just goes up into the right
+[00:11:19] from there
+[00:11:26] beautiful, so
+[00:11:28] Again, I went over a lot of things here
+[00:11:28] and some of them were like maybe the most
+[00:11:28] important things
+[00:11:33] I just want to highlight them. You don't
+[00:11:33] have a resolution a break of this
+[00:11:38] Resistance range or zone or area of
+[00:11:38] interest whatever you want to call it
+[00:11:38] until
+[00:11:44] price closes above in this case the wick
+[00:11:44] high
+[00:11:48] Until then all price that goes into this
+[00:11:48] region is you know, you could take short
+[00:11:48] scalps on it
+[00:11:54] These sort of things or you could just
+[00:11:54] know not too long in this region because
+[00:11:54] you don't have it
+[00:11:58] you know, you're probably gonna turn down
+[00:11:58] and that worked for
+[00:12:01] Nearly a year all the way from June to
+[00:12:01] late in October. So yeah quite some time
+[00:12:07] Sorry, not a year but about half a year.
+[00:12:07] Oh, yeah still a long time and a lot of
+[00:12:07] opportunities to be had right there
+[00:12:13] Let's find another example. Let's find a
+[00:12:13] yeah, let's find a support. We got one
+[00:12:13] right here
+[00:12:19] Again, I'm looking at big volume bars and
+[00:12:19] let me get rid of the previous one big
+[00:12:19] volume bar right here
+[00:12:24] So let's pay attention to that and we can
+[00:12:24] mark off the wick low
+[00:12:28] Where did the candle close closed right
+[00:12:28] here?
+[00:12:31] Again, if you if you're not familiar with
+[00:12:31] closures check out the candlestick video.
+[00:12:31] We are building on that
+[00:12:35] We got those two boundaries set up. Okay,
+[00:12:35] beautiful
+[00:12:37] So let's put our nice box or rectangle in
+[00:12:37] there pull it through
+[00:12:42] And you can see once that first weekly set
+[00:12:42] in again on high volume you get once twice
+[00:12:42] thrice four times five times
+[00:12:51] Opportunity to buy which is beautiful. And
+[00:12:51] again, it's this one was never broken to
+[00:12:51] the downside
+[00:12:57] This is a good nuanced example right here
+[00:12:57] because look this week here
+[00:13:01] Traded lower than that initial wick low
+[00:13:03] But again, it's not about just trading
+[00:13:03] lower than the wick you need to close
+[00:13:03] below the wick
+[00:13:08] That is telling you that the big players
+[00:13:08] the big accounts are forcing price action
+[00:13:08] down in a continuation matter where things
+[00:13:08] are actually breaking
+[00:13:15] So you should be really be expecting lower
+[00:13:15] lower price action in this case. That's
+[00:13:15] not what happens
+[00:13:20] Instead you get many chances are about two
+[00:13:20] to three months of opportunity to buy what
+[00:13:20] effectively became the macro low
+[00:13:27] So not bad there. I would say about it all
+[00:13:27] in fact, and then by the way, let's go
+[00:13:27] over another example right here. Okay
+[00:13:35] Nice rally up, boom, boom, boom, boom,
+[00:13:35] boom.
+[00:13:37] We got up to this area right here.
+[00:13:38] This one, not on heavy volume, by the way.
+[00:13:40] You don't necessarily always need heavy
+[00:13:40] volume,
+[00:13:42] but when you get heavy volume, always pay
+[00:13:42] attention.
+[00:13:46] Okay, so I'm gonna mark off the top of
+[00:13:46] this guy,
+[00:13:48] and how did I know to mark off the top of
+[00:13:48] this guy?
+[00:13:51] So I wouldn't have known
+[00:13:53] on the exact week that that happened.
+[00:13:55] What I would have known is when it
+[00:13:55] confirmed
+[00:13:59] as a local high.
+[00:14:01] That confirmation of a local high happened
+[00:14:03] when the resulting candle closed as a
+[00:14:03] reversal like this.
+[00:14:09] That is how you know.
+[00:14:11] So I'm going to, again, mark off the big
+[00:14:11] high
+[00:14:14] and also the counter closure, beautiful.
+[00:14:17] Let's now pull this one through.
+[00:14:19] Obviously, you can already kind of see the
+[00:14:19] results here,
+[00:14:21] but again, pull it through the whole way
+[00:14:24] because those can and will come into
+[00:14:24] contact
+[00:14:27] with the price action again.
+[00:14:28] And in this case, you can see Bitcoin
+[00:14:31] rallies back up sharply into this region.
+[00:14:33] It looks really strong right there.
+[00:14:34] Again, wicks higher than the initial high.
+[00:14:36] And that happens for one, two, three,
+[00:14:36] four,
+[00:14:39] four weeks of poking holes in the top end
+[00:14:39] boundary.
+[00:14:42] But no closures above dust.
+[00:14:44] We do not have a break.
+[00:14:45] And what happens here?
+[00:14:46] You come all the way back down.
+[00:14:47] And by the way, on the other side, what do
+[00:14:47] you have?
+[00:14:51] You can play on both sides, by the way.
+[00:14:52] In fact, almost always, you will see
+[00:14:52] something like this.
+[00:14:55] We have a Wicklow right there and a
+[00:14:55] reversal off of this.
+[00:14:57] So again, you wouldn't have known to mark
+[00:14:57] this off
+[00:15:00] on this exact candlestick, although it was
+[00:15:00] a hammer,
+[00:15:02] so there was a sort of inkling of that
+[00:15:02] impending.
+[00:15:06] But once you get the resulting candle
+[00:15:06] right here,
+[00:15:08] that big move to the upside,
+[00:15:10] that confirms it as a short-term reversal.
+[00:15:12] And so then we can mark off the closure
+[00:15:12] right here
+[00:15:15] as a zone.
+[00:15:16] So again, what happens in this example?
+[00:15:20] Well, if we pull that through, you can see
+[00:15:23] it becomes relevant on the other side
+[00:15:23] right here.
+[00:15:26] And what do you know?
+[00:15:27] Of course, when it actually finally does
+[00:15:27] break,
+[00:15:28] you get a closure above the initial Wick
+[00:15:28] high.
+[00:15:31] Beautiful.
+[00:15:32] That is what we're looking for.
+[00:15:34] Again, should be obvious.
+[00:15:35] And sometimes you're not gonna know on the
+[00:15:35] exact candle
+[00:15:38] when it officially happens.
+[00:15:39] It might take one other candle to confirm
+[00:15:39] it
+[00:15:41] as a local low or local high.
+[00:15:44] Now, if you do have heavy volume on these,
+[00:15:44] then yes,
+[00:15:47] you can usually do it on that exact
+[00:15:47] candlestick as well.
+[00:15:52] Let's do one last one here.
+[00:15:53] So we have a, this, oh, this is a really
+[00:15:53] good example.
+[00:15:57] In fact, okay, big volume bars right here.
+[00:15:59] Big, big, big, big, big, big, big volume
+[00:15:59] bars right here.
+[00:16:02] And we can mark off the Wick low of this.
+[00:16:07] We can mark off the closure right here.
+[00:16:09] This was actually the official reversal.
+[00:16:12] So Wick low on heavy volume closure right
+[00:16:12] there
+[00:16:15] on basically a long legged doji.
+[00:16:17] Again, go to the candlestick video
+[00:16:19] if that doesn't make sense.
+[00:16:20] And then you get continuation over here.
+[00:16:21] So you could have confirmed it on the
+[00:16:21] first,
+[00:16:24] on this first candle right here,
+[00:16:26] but definitely absolutely no doubt in my
+[00:16:26] mind
+[00:16:29] once you get that resulting one after that
+[00:16:29] right here,
+[00:16:33] that's where you have full on confirmation
+[00:16:33] of continuation.
+[00:16:36] So this is a good pivot.
+[00:16:38] So we are gonna then draw our nice little
+[00:16:38] box through.
+[00:16:41] And what do you know?
+[00:16:43] Months later, months later,
+[00:16:45] you see price come back down
+[00:16:46] into this region multiple times.
+[00:16:48] And these were phenomenal buys
+[00:16:49] before Bitcoin went on to make new
+[00:16:49] all-time highs.
+[00:16:51] And by the way, if we drag this through
+[00:16:51] even further,
+[00:16:54] what do you know?
+[00:16:55] Bitcoin comes back down to it.
+[00:16:57] nearly a year later, like literally a year
+[00:16:57] later actually.
+[00:17:00] And initially it works well below
+[00:17:02] then kind of spend some time all sitting
+[00:17:02] between it.
+[00:17:04] And then you get your official break right
+[00:17:04] here
+[00:17:05] of which, yeah, bad news the other side.
+[00:17:08] And by the way, if I even extend this
+[00:17:08] further,
+[00:17:11] what do you know?
+[00:17:13] This area once again becomes relevant over
+[00:17:13] here.
+[00:17:16] Funny how that works out, but yeah,
+[00:17:18] it does seem to matter a lot actually.
+[00:17:20] Anyways, let's go back to our slideshow
+[00:17:20] here
+[00:17:23] and let's get into, of course, the next
+[00:17:23] thing.
+[00:17:28] All right, oh yes, let's move.
+[00:17:29] By the way, if you just watch the floor
+[00:17:29] appear
+[00:17:31] on your own chart, the like button is
+[00:17:31] right there
+[00:17:34] and that's how the next video in this
+[00:17:34] series will find you.
+[00:17:36] So if you want it at the most opportune
+[00:17:36] time,
+[00:17:38] look, this is the fucking cringy part of
+[00:17:38] all these videos.
+[00:17:41] Basically what I'm trying to say is if you
+[00:17:41] want these videos
+[00:17:42] in your inbox when they release and you
+[00:17:42] want
+[00:17:46] that information, then the best way to do
+[00:17:46] that
+[00:17:48] is to like and subscribe on these videos
+[00:17:50] so that YouTube algo basically brings it
+[00:17:50] to you
+[00:17:53] at those times and knows that you like it
+[00:17:53] basically.
+[00:17:55] All right, cool.
+[00:17:57] Let me take another sip of this before we
+[00:17:57] move on.
+[00:18:00] Mm, okay.
+[00:18:03] The flip, so we kind of went over some
+[00:18:03] examples here
+[00:18:06] just naturally, but when a floor finally
+[00:18:06] breaks,
+[00:18:09] it doesn't disappear.
+[00:18:10] It flips, so when I say it flips,
+[00:18:14] what I'm saying is that a previous support
+[00:18:14] here
+[00:18:17] then becomes resistance typically.
+[00:18:20] And we saw a few examples of this.
+[00:18:22] This previous support over here, right?
+[00:18:24] This becomes resistance over here.
+[00:18:26] That's again, where this current,
+[00:18:29] where that move was getting rejected at
+[00:18:29] first.
+[00:18:31] Now it did initially, it did inevitably
+[00:18:31] push through,
+[00:18:33] but yes, for about six months,
+[00:18:35] it was using that area still as
+[00:18:35] resistance.
+[00:18:38] So former support after broken,
+[00:18:42] after breaking former support becomes
+[00:18:42] resistance
+[00:18:45] and vice versa as well.
+[00:18:46] After a breakout, a former resistance
+[00:18:46] typically becomes support.
+[00:18:52] So anyways, yes, the zone, the same zone
+[00:18:56] that caught price from above now rejects
+[00:18:56] it from below.
+[00:18:59] That's the point that I'm working towards.
+[00:19:01] That's what we mean here
+[00:19:02] because everyone who bought that floor
+[00:19:04] is trapped above it, praying for bake even
+[00:19:06] and thus, they typically put their order
+[00:19:08] somewhere around there
+[00:19:09] and they're selling as a new ceiling.
+[00:19:11] Same zone, same people, opposite job.
+[00:19:13] Again, it's a memory.
+[00:19:14] Support becomes resistance.
+[00:19:15] Resistance becomes support.
+[00:19:17] The market does have a memory.
+[00:19:18] And if you think about it in those terms,
+[00:19:20] you can actually backwards understand the
+[00:19:20] logic.
+[00:19:23] I mean, it's just people continuing
+[00:19:24] to have their orders right there.
+[00:19:25] And I mean, fair enough.
+[00:19:27] You've probably done something similar
+[00:19:27] yourself.
+[00:19:28] I know I have.
+[00:19:30] Anyways, all right, okay, okay.
+[00:19:33] So yes, find the flip.
+[00:19:37] Yeah, well, we kind of already did this.
+[00:19:41] Could we do maybe one more?
+[00:19:43] Supporting resistance flip.
+[00:19:45] Let's see, yeah, we definitely got one
+[00:19:45] right here.
+[00:19:48] Okay, ooh, a really good one actually.
+[00:19:50] Okay, cool.
+[00:19:51] So I wanna bring your attention
+[00:19:52] to this candlestick right here.
+[00:19:54] Big wick to the upside
+[00:19:56] and price actually reverses after that.
+[00:19:58] And it's also on big volume.
+[00:20:00] Okay, whenever we see something like that,
+[00:20:02] it's almost always gonna be worth keeping
+[00:20:02] an eye on.
+[00:20:05] So I'm gonna mark off the high of that.
+[00:20:06] I'm gonna mark off the close of that
+[00:20:08] and I'm going to pull through what we got
+[00:20:08] going on here.
+[00:20:11] So this is obviously a resistance.
+[00:20:15] Not going incredibly well right there, but
+[00:20:15] there we go.
+[00:20:18] So this.
+[00:20:19] resistance holds price for what seems to
+[00:20:19] be like a year, maybe even more.
+[00:20:23] Hold on.
+[00:20:24] I'm a little bit, uh, uh, autistic about
+[00:20:24] getting these, uh, rectangles better.
+[00:20:29] There we go.
+[00:20:30] I think that looks okay.
+[00:20:31] Um, so this, this resistance zone started
+[00:20:31] in November, 2014, and then it revisited
+[00:20:36] in November, 2015 and lives within there
+[00:20:36] for like the next five months until May
+[00:20:40] of 2016, um, so price eventually does
+[00:20:40] break it again, closure above the top
+[00:20:46] side of it, big move up.
+[00:20:47] And then what do you know, price gets this
+[00:20:47] kind of flash dump over here, but
+[00:20:52] where does it find the low on that?
+[00:20:53] Where does it find support?
+[00:20:54] In other words, on that exact number, kind
+[00:20:54] of interesting how that works out.
+[00:20:58] Huh?
+[00:20:59] Um, we've already gone over a couple of
+[00:20:59] other examples, uh, over here, but
+[00:21:03] maybe there's one more.
+[00:21:04] Oh yeah, there is one more right here.
+[00:21:06] Okay.
+[00:21:07] Oh, so obvious.
+[00:21:08] Okay.
+[00:21:08] Um, weekly timeframe, massive long letter
+[00:21:08] doji right there, or you might
+[00:21:13] have been called a hammer regardless big
+[00:21:13] volume.
+[00:21:16] So we have candlestick formation plus
+[00:21:16] volume plus well price
+[00:21:20] reversed after that too.
+[00:21:21] So all of these things matter.
+[00:21:23] Then we effectively get this area.
+[00:21:26] That is your clothes.
+[00:21:27] After all, this one's a big one to be
+[00:21:27] fair, but yeah, uh, it does matter.
+[00:21:31] So Bitcoin finds this area as support for
+[00:21:31] the next year, basically, uh, all
+[00:21:36] the way from February, 2018 to November of
+[00:21:36] 2018, then it breaks through
+[00:21:41] there, just barely right there.
+[00:21:42] But yeah, that's all that it took to get
+[00:21:42] price down another, uh, 40 to actually
+[00:21:47] sorry, about 50%, then what happens after
+[00:21:47] that Bitcoin pops back up here and
+[00:21:53] it actually looks at it as resistance on
+[00:21:53] the first pass, not for that long,
+[00:21:56] but it does, it does happen to be fair.
+[00:21:59] Uh, 2024 Bitcoin puts in a big rally right
+[00:21:59] here.
+[00:22:02] Again, big doji on volume.
+[00:22:04] I'll just show you the volume by getting
+[00:22:04] rid of everything else.
+[00:22:06] Big, big volume bars right here.
+[00:22:08] Doji right there.
+[00:22:09] Okay.
+[00:22:09] Let's mark that off and let's get rid of
+[00:22:09] everything else.
+[00:22:11] Just too much going on the chart.
+[00:22:13] Then we mark off the closure right here.
+[00:22:15] We're going to draw a nice rectangle
+[00:22:15] through these.
+[00:22:17] Okay.
+[00:22:18] Simple.
+[00:22:19] Bitcoin lives under this area for seven,
+[00:22:19] seven, seven, seven or so months.
+[00:22:23] Breaks it over here.
+[00:22:24] And then what happens over here on this
+[00:22:24] pullback?
+[00:22:27] You retest there and it finds support.
+[00:22:29] Very nice.
+[00:22:30] Then over here, more recently, it's
+[00:22:30] actually kind of found it as
+[00:22:34] support yet again, a little bit less.
+[00:22:36] So, but you can understand that yes, in
+[00:22:36] this instance right here,
+[00:22:39] that first test into it, yeah, that was
+[00:22:39] your support.
+[00:22:42] Uh, overall though, is it perfect?
+[00:22:44] No, nothing's perfect.
+[00:22:46] Obviously, but you can see that this area
+[00:22:46] over here, it generally
+[00:22:50] was a bouncing zone to be fair.
+[00:22:52] Uh, but yeah, anyways, going back into our
+[00:22:52] slideshow right here and
+[00:22:55] moving onwards and forwards.
+[00:22:57] Okay.
+[00:22:58] So some levels, the market remembers
+[00:22:58] before every touching them.
+[00:23:03] A hundred thousand on Bitcoin, 3000 on
+[00:23:03] gold, these sort of things, you
+[00:23:06] know, these are round even numbers,
+[00:23:06] psychological numbers, what we call them.
+[00:23:10] The big round handles on the index, uh,
+[00:23:10] sorry, um, the bit, uh, the
+[00:23:15] big round handles effectively have some
+[00:23:15] sort of interrelationship with humans.
+[00:23:20] Um, human psychology.
+[00:23:21] anchoring to round numbers.
+[00:23:23] I don't know why this happens.
+[00:23:24] Humans just kind of have like a weird
+[00:23:26] proclivity towards this thing.
+[00:23:27] I can't explain why it happens.
+[00:23:29] I don't know why it happens,
+[00:23:30] but I do know that it happens
+[00:23:31] and that's good enough for me.
+[00:23:33] Anyways, so humans typically do anchor
+[00:23:33] towards these.
+[00:23:36] A lot of the time we'll put limit orders
+[00:23:36] around them,
+[00:23:38] you know, cluster around some like that.
+[00:23:41] Headlines will anchor there.
+[00:23:43] Option strikes stacked there typically.
+[00:23:45] You get support and resistance at prices
+[00:23:46] with no history at all, just psychology.
+[00:23:48] We saw that with a hundred thousand bucks
+[00:23:48] on Bitcoin,
+[00:23:50] by the way, back in 2024, 2025 now, I
+[00:23:50] think 2025.
+[00:23:55] Anyways, those are free levels.
+[00:23:58] They're not always like super, you know,
+[00:23:58] relevant,
+[00:24:00] but of course if you do see them
+[00:24:00] approaching
+[00:24:03] like gold at 5,000, for example,
+[00:24:06] that's something worth keeping in mind.
+[00:24:08] A lot of the time you will find
+[00:24:10] around that area some issues.
+[00:24:13] Anyways, you do want to mark the big ones
+[00:24:15] and I've lived the most famous one, at
+[00:24:15] least, okay,
+[00:24:18] to me it will always be legendary,
+[00:24:21] but if we go back to 2018,
+[00:24:24] there was the $6,000 psychological number
+[00:24:28] for Bitcoin right here.
+[00:24:29] Why was 6,000 bucks a support?
+[00:24:32] I don't fucking know, but it just was.
+[00:24:35] It just was.
+[00:24:37] And you can see Bitcoin was hanging out
+[00:24:37] there,
+[00:24:39] like I said, for about a year
+[00:24:40] is what we looked at earlier.
+[00:24:43] So these things certainly can and do
+[00:24:43] matter.
+[00:24:45] And then of course Bitcoin getting to a
+[00:24:45] hundred thousand bucks
+[00:24:47] for the first time, you know,
+[00:24:49] on the first test to a hundred thousand
+[00:24:49] bucks,
+[00:24:50] yeah, it got up a little bit above,
+[00:24:52] but it did basically put in a local high
+[00:24:52] there
+[00:24:54] and come back down here.
+[00:24:55] And that brings me to the next nuance
+[00:24:55] point
+[00:24:57] of round psychological numbers.
+[00:25:00] So round psychological numbers,
+[00:25:02] you're usually not gonna get exactly to
+[00:25:02] the number,
+[00:25:05] like a hundred thousand bucks
+[00:25:05] and then immediately turn down.
+[00:25:07] No, you almost always either slightly
+[00:25:07] overshoot it
+[00:25:10] or slightly undershoot it.
+[00:25:11] So in this case, you can see price action
+[00:25:11] got up to where?
+[00:25:13] It got up to like 108.
+[00:25:16] I mean, look, when we're talking about a
+[00:25:16] big number like this,
+[00:25:18] is that really a humongous deviation?
+[00:25:19] No, but yes, it did get a little bit more,
+[00:25:23] sometimes a little bit less as well,
+[00:25:24] but usually you'll see around these big
+[00:25:24] round even numbers.
+[00:25:30] A lot of the time price will find highs
+[00:25:30] and lows
+[00:25:32] around there, just whatever reason.
+[00:25:34] It's a strange thing and just one of those
+[00:25:34] things
+[00:25:37] that seems to work.
+[00:25:39] Anyways, let's now move to the next thing.
+[00:25:43] Oh, I didn't even go over this, sorry, my
+[00:25:43] apologies.
+[00:25:46] Yeah, a hundred thousand bucks, Bitcoin's
+[00:25:46] magnet,
+[00:25:48] 3,000 for gold or 5,000 more recently for
+[00:25:48] the high.
+[00:25:51] And yes, these sort of things, like I
+[00:25:51] said,
+[00:25:54] you will notice them yourself,
+[00:25:56] but don't be specifically married
+[00:25:59] to like the exact price number.
+[00:26:01] It's like, it's basically like around
+[00:26:01] there within,
+[00:26:03] I don't know, a few percent, let's say.
+[00:26:05] Anyways, okay, all right, great.
+[00:26:08] So here's one thing I see a lot of
+[00:26:08] beginner
+[00:26:13] videos get backwards when I'm doing
+[00:26:13] research
+[00:26:15] for these videos.
+[00:26:16] I like to look at other people's videos
+[00:26:17] and just see like what the hell,
+[00:26:19] how other people are kind of like talking
+[00:26:19] about these things.
+[00:26:21] And what I see a lot is that they'll tell
+[00:26:21] you
+[00:26:24] the more times a level is tested, the
+[00:26:24] stronger it is,
+[00:26:27] but that is absolutely not true in my
+[00:26:27] experience.
+[00:26:33] And also this actually more so comes from
+[00:26:33] my experience
+[00:26:36] as a professional market maker.
+[00:26:37] So when a level gets tested more times,
+[00:26:40] what is more or less happening?
+[00:26:43] You are eating into the resting orders
+[00:26:43] that exist there.
+[00:26:46] So the more times that you test it,
+[00:26:49] the more orders are getting chewed through
+[00:26:50] and the more likely it actually is to
+[00:26:50] break.
+[00:26:53] So your first test into a major level,
+[00:26:56] and again 2018 over here, great example of
+[00:26:56] this.
+[00:27:02] Your first test into, hey, get back over
+[00:27:02] here.
+[00:27:05] Your first test into 6,000 bucks,
+[00:27:05] humongous bounce.
+[00:27:08] Humongous bounce, like two bucks bounce
+[00:27:10] over the course of a month.
+[00:27:11] That's incredible.
+[00:27:13] Then you come back down to it over here
+[00:27:16] and you get a bounce, but it's not as big.
+[00:27:18] It's, I would say significantly lower
+[00:27:21] than another retest of 6,000 bucks and
+[00:27:21] another bounce,
+[00:27:24] but even lower, then again and lower,
+[00:27:26] then again and lower, and then again and
+[00:27:26] breaks.
+[00:27:29] The more times you test a level, the
+[00:27:29] weaker it gets.
+[00:27:33] If you're testing a level more than three
+[00:27:33] times,
+[00:27:35] understand that the probability of it
+[00:27:35] breaking
+[00:27:37] gets very much higher.
+[00:27:39] I wouldn't say exponentially higher, but
+[00:27:39] very much higher.
+[00:27:42] And things can obviously break before
+[00:27:42] three tests,
+[00:27:44] but I would say once you get to the third
+[00:27:44] test,
+[00:27:46] and especially if it's like four or five
+[00:27:46] or six,
+[00:27:50] it does get there every once in a while,
+[00:27:50] but yeah, rarer.
+[00:27:54] Those are usually very, very much mature
+[00:27:58] and ready to break.
+[00:28:00] You can think of it as like the floor is
+[00:28:00] being eaten
+[00:28:02] or the ceiling's being eaten, basically.
+[00:28:04] Anyways, let's move on from there
+[00:28:06] and go into the next one.
+[00:28:08] All right, your stop is there discount.
+[00:28:10] Another thing that I see a lot of people
+[00:28:12] get absolutely destroyed with.
+[00:28:13] One more thing lives at these levels,
+[00:28:15] and I know this because I sat on the other
+[00:28:15] side of it.
+[00:28:18] Under every obvious floor is a pile of
+[00:28:18] stop losses.
+[00:28:21] So what do people typically do when they
+[00:28:21] first learn TA?
+[00:28:25] They learn support and resistance.
+[00:28:27] And what do they do?
+[00:28:28] They say, well, my support is right here,
+[00:28:29] so I should put my stop loss just right
+[00:28:29] below it,
+[00:28:32] like $1 below it, good, you know, good,
+[00:28:32] great.
+[00:28:36] Well, as we went over earlier,
+[00:28:38] that's not gonna work too well.
+[00:28:39] Why?
+[00:28:40] Because it's a zone, in order to resolve
+[00:28:40] the zone,
+[00:28:42] you must get a closure, not a wick,
+[00:28:45] but a closure outside of that wick
+[00:28:45] boundary.
+[00:28:49] That's what resolves it,
+[00:28:50] and that's where you actually do wanna
+[00:28:50] take the loss
+[00:28:53] if you weren't a trade.
+[00:28:55] So what typically happens is, you know,
+[00:28:57] people have it like right below the level
+[00:28:57] like this,
+[00:28:59] and then their stops get taken
+[00:29:01] and then price bounces right back above,
+[00:29:02] intra-candle, it's like, it just makes you
+[00:29:02] furious.
+[00:29:06] It's what it really does.
+[00:29:09] And of course, why does that happen?
+[00:29:11] Because they fucking know what people are
+[00:29:11] thinking.
+[00:29:14] They've done their research too.
+[00:29:16] They've watched all these videos on
+[00:29:16] YouTube
+[00:29:18] where people tell them to put a stop loss
+[00:29:20] like right underneath the most recent low,
+[00:29:22] something like that.
+[00:29:22] It's like, eh, not ideal, not ideal.
+[00:29:26] But anyways, I should also explain,
+[00:29:30] that's the trap from the beginning of this
+[00:29:30] video,
+[00:29:32] the stop hunt, well, one of the traps I
+[00:29:32] should say,
+[00:29:35] it's exactly why we draw zones instead of
+[00:29:35] lines
+[00:29:38] and keep stops away from the obvious
+[00:29:38] price.
+[00:29:40] In fact, you really don't, if it can be
+[00:29:40] avoided,
+[00:29:43] I don't like having stop losses,
+[00:29:45] I like managing risk myself.
+[00:29:47] So if my zone is broken, okay, sure,
+[00:29:49] I'll just put in the order to lose money,
+[00:29:52] but I'd rather lose money than lose a
+[00:29:52] little bit of money
+[00:29:55] than lose a lot of money
+[00:29:56] because if my zone actually is breaking,
+[00:29:58] then price is very much likely to move
+[00:30:00] much more in that direction.
+[00:30:01] That's the idea.
+[00:30:02] We wanna minimize that loss once that
+[00:30:02] trade.
+[00:30:05] idea or trade hypothesis or just trade
+[00:30:05] setup fails.
+[00:30:09] That's all we're doing here.
+[00:30:10] And look, that's going to happen.
+[00:30:11] I mean, shit, man, you don't need a super
+[00:30:11] high win rate to be a profitable trader if
+[00:30:17] your risk management is good.
+[00:30:19] But I would also say, even if you are a
+[00:30:19] really good trader and you have like a 70%
+[00:30:19] win rate,
+[00:30:23] you're still going to be losing.
+[00:30:24] So you got to be okay with taking that
+[00:30:24] loss and taking a small loss is much
+[00:30:24] better than
+[00:30:28] taking a big loss.
+[00:30:30] Because the order book is effectively
+[00:30:30] giving you kind of like an x-ray vision on
+[00:30:30] these.
+[00:30:36] Not perfect, but it can help.
+[00:30:38] And that will be episode number eight in
+[00:30:38] this series, by the way.
+[00:30:40] But anyways, for now, the law that
+[00:30:40] protects you, same law as episode one, a
+[00:30:40] wick through
+[00:30:44] a level beats nothing.
+[00:30:46] Only a close beyond the zone breaks a
+[00:30:46] level.
+[00:30:49] No close outside.
+[00:30:50] We don't call it broken.
+[00:30:51] Period.
+[00:30:52] Doesn't matter.
+[00:30:53] A wick through can snap back like, I'm
+[00:30:53] sure you've seen it like a million times.
+[00:30:57] And as we also saw, you know, on charts
+[00:30:57] over here many times as well.
+[00:31:00] In fact, you see it right there anyways,
+[00:31:00] moving forwards, don't, don't trace, don't
+[00:31:00] chase
+[00:31:06] the break, wait for the retest.
+[00:31:07] So you can now see levels.
+[00:31:10] Here's the one move this episode really
+[00:31:10] hopefully gives you the retest step one,
+[00:31:10] the zone breaks
+[00:31:17] a candle closes through it wicks don't
+[00:31:17] count.
+[00:31:20] You just learned why in the previous
+[00:31:20] slides, step number two, you do nothing,
+[00:31:20] no chasing
+[00:31:25] a breakout without you as a free lesson.
+[00:31:26] No loss.
+[00:31:27] It's okay.
+[00:31:28] Mark's not going anywhere.
+[00:31:29] I can promise you step number three price
+[00:31:29] comes back to the zone from the other
+[00:31:29] side.
+[00:31:33] The flip you just learned and the reaction
+[00:31:33] there is your information holds as a new
+[00:31:33] support.
+[00:31:38] The break was real slices back through it.
+[00:31:42] Well, it was a harvest.
+[00:31:43] So stand down, uh, entry stops, targets,
+[00:31:43] the deeper mechanics that's T a one to one
+[00:31:48] again, free linked below as well.
+[00:31:50] Um, there's a full support and resistance
+[00:31:50] deep dive lesson lesson in there that
+[00:31:50] picks
+[00:31:53] up exactly where this one leads off.
+[00:31:55] I should let you know too.
+[00:31:56] Um, and again, if I didn't already say it
+[00:31:56] is 100% free anyways, okay, six more
+[00:31:56] episodes
+[00:32:02] in this foundation.
+[00:32:03] Volume is next and it is the lie detector
+[00:32:03] for every level that you, uh, that you
+[00:32:03] just
+[00:32:08] drew.
+[00:32:09] And we kind of went over a few examples
+[00:32:09] here to be fair, but Hey, I can't do it
+[00:32:09] without
+[00:32:12] it.
+[00:32:13] So fair enough.
+[00:32:14] Subscribe in episode five.
+[00:32:15] We'll find you on its own through the
+[00:32:15] magic of the YouTube algorithm anyways.
+[00:32:20] Five rules and one more zones, which close
+[00:32:20] regret, not magic the flip and touches
+[00:32:27] eat floors.
+[00:32:28] Yes.
+[00:32:29] These are the things lock it in zones,
+[00:32:29] which close levels exist because of
+[00:32:29] regret.
+[00:32:34] Not magic broken floors become ceilings.
+[00:32:37] Every touch eats the floor.
+[00:32:39] Remember that it though those orders are
+[00:32:39] getting chewed through there and the
+[00:32:42] obvious poke that snaps back is a harvest,
+[00:32:42] not a break.
+[00:32:45] That's all they're doing.
+[00:32:46] They're harvesting stop losses.
+[00:32:47] Their homework is to mark one zone on a
+[00:32:47] chart with to close at least two
+[00:32:51] reactions.
+[00:32:52] Ideally.
+[00:32:53] And if you have heavy volume, you can, you
+[00:32:53] can kind of get in there a little
+[00:32:56] bit earlier.
+[00:32:57] Um, and look, drop the ticker and
+[00:32:57] timeframe in the comments.
+[00:33:01] Uh, anyways, next episode of volume, like
+[00:33:01] I said, the lie detector that tells you
+[00:33:04] which of your levels are real and which
+[00:33:04] ones, uh, probably are worth thrown away.
+[00:33:09] As always, take care and much love.

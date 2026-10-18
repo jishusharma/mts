@@ -1,0 +1,78 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T18:51:54Z",
+  "depends_on": [
+    "lc-event-table",
+    "q79-touch-bar-look-ahead-fix-in-levels-c"
+  ],
+  "done_when": "ladder_dev.md table + frozen_rule.json; tests green. Arm P vs probe baseline, HTF bias/RSI 40/60 cuts, liquidation count and fee stress 10/25/50 % of R are in ladder_dev.md.",
+  "effort": "medium",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "Simulate the pre-registered LC3 combinations (separation.md 'LC3 pre-registration': E1_rsi_holds_40_60, E4_outer_band on KEEP levels) x exits X0 fixed 1R/2R, X1 first opposing level, X2 CVD/Bollinger ladder, x scale-in S0-S3 x stops K1-K5 per PLAN.md, DEV only, fees both ways.",
+  "id": "lc-ladder-dev",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Q79: fix touch-bar look-ahead in levels study; re-run KEEP on standard DEV",
+      "ref": "3b3ea9df400d",
+      "utc": "2026-10-16T08:28:46Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "2c307d62ff42 lab lc-event-table: DONE (build)",
+      "ref": "MyTradingSys/research/levels_confluence_2026-10-14/separation.md",
+      "utc": "2026-10-16T01:02:29Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-18 ACCEPT [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C1 reviewer=Gemini Flash high + Haiku re-derive 1-3 numbers] HOLD A-20261018-5: reads an unchecked lab base; start only when the base carries a trust tag >= its class (lab-trust-tag) or the operator lifts it. WEIGHT:CRUCIAL frozen rule, power/MDE, verdict (review Agent pre-ship). DISPATCH CODEX (JIS-NUC lab): lc-event-table ran there on the same tom_raw/orderflow_1m; missing input = NOT_IN_DATA. Split arm P out if over 40 turns. Verify: sha + empty git cherry + ls-tree lists files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-14 (LC PLAN.md, operator chat)",
+  "refreshed": "2026-10-17T18:44:40Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/PLAN.md",
+    "MyTradingSys/research/levels_confluence_2026-10-14/separation.md",
+    "MyTradingSys/research/levels_confluence_2026-10-14/event_table.py",
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels.py",
+    "MyTradingSys/research/levels_sizing_2026-10-14/METHOD.md",
+    "MyTradingSys/backtest/fees.py"
+  ],
+  "scope_out": [
+    "VALIDATION (2025-04..06) and HOLDOUT (2025-07+) bars, except card lc-validation",
+    "live tree",
+    "Tom/Fabio layer code (read only)",
+    "new/changed files outside research/levels_confluence_2026-10-14/ except TRIALS.md"
+  ],
+  "scope_sha": "3b3ea9df400d",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/PLAN.md (operator ask 2026-10-14, verbatim at top)",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 10-15 (BTC minimum stop width)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (RSI, value area, Bollinger)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Tests first (red): hand paths from the tests field; then ladder.py: per-leg fee simulator (fees.py), touches from event_table.csv, 1m bars via bt_data.load_klines('F:/MTS/data/tom_raw') as event_table.py:216. Stop beyond level by max(0.10 %, 0.40 % taker / 0.20 % maker).",
+    "Scale-in S0-S3 on the SAME trade ideas (S1: half at L1, half at L2, one stop for the set); report net R per idea, an unfilled half counts as zero.",
+    "Stop table per arm K1-K5: bad-stop rate, good-stop rate, net R after fees, fee share of R; choose the stop on net R.",
+    "Per combination x exit, also cut by HTF bias (event_table B1-B3 columns) and by E1_rsi_holds_40_60: n, mean net R with 95 % day-bootstrap CI, max drawdown, MDE via backtest/power_mde.py; power < 50 % reads INCONCLUSIVE.",
+    "Arm P per levels_sizing_2026-10-14/METHOD.md (one loss budget, capped 1:2:3, staged exits) vs probe baseline -0.216/-0.195/-0.210 R on the same signals (paired day-bootstrap), with E0/E1 and random-entry controls.",
+    "Arm P liquidation check (isolated margin, mark = bar low/high): max leverage, liquidation count (must be 0), stop-to-liquidation distance; fee stress 10/25/50 % of R and the break-even fee share.",
+    "Freeze the single best DEV rule in frozen_rule.json (no edits after); one row per variant in research/layer_lab/TRIALS.md; write ladder_dev.md."
+  ],
+  "tests": "hand paths (test_ladder.py, red first): support long, first resistance half-close; CVD flat quarter; band rest. Scale-in L1+L2 then target = 2 fills, hand average, one stop; arm P 1:2:3 loss at stop == budget; liquidation fixture counted LIQUIDATED. python -m pytest research/levels_confluence_2026-10-14/test_ladder.py",
+  "title": "LC3 Levels Confluence: ladder-exit simulator (fixed vs first level vs CVD/Bollinger step-out) on the <= 6 LC2 combinations, DEV, maker+taker fees",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

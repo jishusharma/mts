@@ -1,0 +1,13 @@
+{
+  "done_when": "Existing Control Room and Layers pages show CANDLE-CLOSE-DEV-20261014 and the ready independent-audit card; no duplicate page.",
+  "finished": "2026-10-18T16:17:36Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NUC",
+  "id": "20261014-064419-republish-candle-close-research-views-on",
+  "need": "After sync and only when candle_close_2026-10-14/REPORT.md exists: rebuild Control Room/Layer Map following CONTROL_ROOM.md with valid mirrored live data; do not publish a false empty ledger. Republish existing jishu.awgp registry URLs using Artifact publish. Codex has no publish connector.",
+  "posted": "2026-10-14T06:44:19Z",
+  "result": "Pipeliner drain 2026-10-18: wrong channel: DSA cannot publish pages; repo copy carries CANDLE-CLOSE-DEV-20261014 (LAYERS.md, artifacts/layer_map.html); Artifacts_Guy (NB home login) republishes per ROLES.md",
+  "status": "failed",
+  "target": "DSA-NUC",
+  "title": "Republish candle-close research views on existing Control Room and Layers pages"
+}

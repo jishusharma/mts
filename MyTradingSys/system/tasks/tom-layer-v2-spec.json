@@ -1,9 +1,14 @@
 {
   "approved_by": "operator (chat 2026-10-11: 'whatever research u need with Opus')",
   "asks": "",
+  "closed": "2026-10-12T19:43:09Z",
   "commands": [],
   "created": "2026-10-11T12:00:00Z",
   "depends_on": [
+    "tom-ledger-canonical-identities",
+    "tom-ledger-instrument-identity",
+    "tom-ledger-management-provenance",
+    "tom-ledger-time-provenance",
     "tom-trade-ledger"
   ],
   "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md part A: one section per ledger family with sourced rules, a keep/change/drop table vs the current engine, recall target per family, and 5 ledger trades each mapped to exactly one family. Part B (tom-layer-v2-cost) is NOT part of this card.",
@@ -11,13 +16,17 @@
   "goal": "Rewrite WHAT Tom trades: every setup family in TOM_TRADE_LEDGER with entry trigger, proofs, stop rule, target, management and session, each rule sourced (Tom quote + file:line) or NO-SOURCE; keep/change/drop versus the current engine candidate types.",
   "id": "tom-layer-v2-spec",
   "lane": "OPUS",
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
-  "note": " Codex ledger audits (lab-audit-tom-ledger-frames) and review 2026-10-12: 0/7 recall is provisional (3 NOT_IN_DATA, ledger date/price fixes); spec ALL families, spike-fade first; flag fixed brackets/100-trade bar as unproven; separate quote vs inferred.",
+  "note": "Operator named Opus 2026-10-12 19:11Z (thread 'Non-core layer audit handoff'): run now, one Opus session. Ledger repairs done 2026-10-12.",
+  "pinned": true,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "opus-2026-10-11 (operator chat: redefine Tom and Fabio layers from today's findings)",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md part A: family A imbalance fade (10 of 12 groups), 69/69 quotes verbatim, split frozen (5 design + 2 check sessions), fee-net test stated",
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/",
     "MyTradingSys/conditions/",
@@ -33,7 +42,7 @@
     "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md section 3",
     "MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read RECALL_DAX.md section 3, PROBE_PLAN.md, TOM_TRADE_LEDGER.*, conditions/gap_rules.md, TOM_VERBATIM_INDEX.md, and the current candidate types + proof list (SetupCandidatesBuilder.java:557-575).",
     "For each setup family in the ledger (spike fade first): entry trigger, proofs, stop rule, target, management (partials, stop moves, re-entry), session - each with a Tom quote + file:line or NO-SOURCE. Unsourced is flagged, never tuned.",

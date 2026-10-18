@@ -22,6 +22,10 @@ import fees as F  # noqa: E402
 import tom_bt as T  # noqa: E402
 import tom_dax_bt as D  # noqa: E402
 
+# Scratch dirs go to the system temp dir, never into MyTradingSys/backtest: step 4f's pytest collects under that folder at the same
+# time as step 4e, and on Windows it lstat()s every entry beside the path it descends into (2026-10-16 CI run 38825784050 failed
+# collecting "...\MyTradingSys\backtest\tmppuq59r8k" after this file removed it). Guard: MyTradingSys/tests/test_gate_scratch_outside_checkout.py.
+
 
 def mk(bars, t0=0):
     o, h, l, c, v, tbv = (array("d") for _ in range(6))
@@ -72,7 +76,7 @@ class TestFees(unittest.TestCase):
 # ------------------------------------------------------------------ b) loader
 class TestGapLoader(unittest.TestCase):
     def setUp(self):
-        self.td = tempfile.TemporaryDirectory()
+        self.td = tempfile.TemporaryDirectory(prefix="mts_dax_bt_")
         self.dir = Path(self.td.name)
         t0 = 1_700_000_000_000 - (1_700_000_000_000 % 60000)
         self.t0 = t0
@@ -226,7 +230,7 @@ class TestClosedExecutions(unittest.TestCase):
     def test_missing_download_is_rejected_before_archive_read(self):
         # Completed empty days are coverage evidence; absent files are not closures.
         from types import SimpleNamespace
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             raw = Path(td)
             start, end = dt.date(2026, 1, 1), dt.date(2026, 1, 3)
             for d in (start, end):
@@ -239,17 +243,18 @@ class TestClosedExecutions(unittest.TestCase):
             manifest.write_text(json.dumps(dict(design_end_utc="2026-04-10T23:59:00Z",
                 holdout_start_utc="2026-04-11T00:00:00Z", embargo_s=0)), encoding="utf-8", newline="\n")
             with patch.object(D, "DAX_RAW", raw), patch.object(T, "load_bars_1m") as load, \
+                 patch.object(D, "binding_identity", return_value={}), \
                  patch.object(D, "load_null_session", return_value=dict(timezone="UTC", start="10:00", end="12:00")):
                 with self.assertRaisesRegex(SystemExit, "incomplete DAX download coverage"):
                     D.build_report(SimpleNamespace(months=["2026-01"], shifts=[0], read_holdout=False,
-                                                   split_manifest=manifest))
+                                                   split_manifest=manifest, readiness_manifest=readiness_fixture(raw)))
                 load.assert_not_called()
 
 
 # ------------------------------------------------------------------ c) market-open filter
 class TestOpenFilter(unittest.TestCase):
     def setUp(self):
-        self.td = tempfile.TemporaryDirectory()
+        self.td = tempfile.TemporaryDirectory(prefix="mts_dax_bt_")
         self.dir = Path(self.td.name)
         t0 = 1_700_000_040_000 - (1_700_000_040_000 % 60000)
         self.t0 = t0
@@ -545,7 +550,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
         # Synthetic dates only. Signal fills at H-60; the first target is at H.
         # EXPECT: that unresolved dev outcome is dropped, never counted as a win.
         h = D.T_DAX_HOLD
-        with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parent) as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             root = Path(td)
             (root / "klines").mkdir()
             write_klines(root / "klines" / "synthetic.csv", [
@@ -562,7 +567,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
                        zone="vwap", ztype="vwap", zprice=100., stop=99., target=101.)
             rows = [row, dict(row, t=h), dict(row, t=h+60)]
             a = SimpleNamespace(read_holdout=False, shifts=[0, 1], months=None,
-                                split_manifest=manifest, market="dax", smoke=True)
+                                split_manifest=manifest, readiness_manifest=readiness_fixture(root), market="dax", smoke=True)
             seen = []
             summarize = T.summarize
             def capture(trades):
@@ -584,6 +589,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
             # Exercise report serialization with only synthetic, already computed
             # inputs. Git and hash probes are stubbed; outputs stay in this fixture.
             with patch.object(D, "build_report", return_value=result), \
+                 patch.object(D, "WORK", root), \
                  patch.object(D, "git", return_value="synthetic"), patch.object(D, "sha", return_value="fixture"), \
                  patch.object(D, "REPORT", root/"report.md"), patch.object(D, "REGISTRY", root/"trials.csv"):
                 D.cmd_report(a)
@@ -596,12 +602,13 @@ class TestHoldoutBoundaries(unittest.TestCase):
     def test_absent_manifest_refuses_before_data_read(self):
         a = SimpleNamespace(read_holdout=False, shifts=[0], months=None, market="dax", smoke=True)
         with patch.object(D, "require_download_coverage", side_effect=AssertionError("coverage read before manifest")), \
+             patch.object(D, "load_readiness", return_value={}), \
              patch.object(T, "load_bars_1m", side_effect=AssertionError("data read before manifest")):
             with self.assertRaisesRegex((ValueError, SystemExit), "split manifest"):
                 D.build_report(a)
 
     def test_invalid_manifest_and_forward_boundary(self):
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             for changes in [dict(embargo_s=-1), dict(embargo_s=True), dict(embargo_s=float("nan")),
                             dict(embargo_s=121), dict(holdout_start_utc="2026-04-10T23:58:00Z"),
                             dict(design_end_utc="2026-04-10T23:58:00"),
@@ -616,7 +623,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
 
     def test_prices_after_cutoff_not_parsed_and_partial_minute_excluded(self):
         h = D.T_DAX_HOLD
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             p = Path(td) / "a.csv"
             write_klines(p, [(int((h-120)*1000), 100, 100, 100, 100, 1),
                              (int((h-60)*1000), 100, 102, 100, 101, 1)])
@@ -630,7 +637,7 @@ class TestHoldoutBoundaries(unittest.TestCase):
 
     def test_real_row_envelopes_counted_without_loading_holdout_payload(self):
         h = D.T_DAX_HOLD
-        with tempfile.TemporaryDirectory() as td, patch.object(D, "WORK", Path(td)):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
             split = D.load_split(self.manifest(td, embargo_s=60))
             out = Path(td) / "rows_dax"
             out.mkdir()
@@ -643,12 +650,18 @@ class TestHoldoutBoundaries(unittest.TestCase):
             p.with_name("2026-04.rows.meta.json").write_text(json.dumps(dict(
                 proof_count_schema=D.PROOF_COUNT_SCHEMA)), encoding="utf-8", newline="\n")
             counts = {}
-            self.assertEqual(D.load_rows("dax", "coded/0", split=split, counts=counts), [{"t": h-120}])
+            # This test isolates timestamp selection; identity validation has its
+            # own real-cache fixtures and must no longer accept this bare cache.
+            for e in envelopes:
+                e["input_id"] = "synthetic"
+            p.write_text("".join(json.dumps(e)+"\n" for e in envelopes), encoding="utf-8", newline="\n")
+            with patch.object(D, "validate_cache", return_value=dict(input_id="synthetic", inputs=dict(market="dax"))):
+                self.assertEqual(D.load_rows("dax", "coded/0", split=split, counts=counts), [{"t": h-120}])
             self.assertEqual(counts, dict(dev=1, embargo=1, holdout=2))
 
     def test_pending_orders_dropped_and_resolved_dev_kept_in_stress(self):
         h = D.T_DAX_HOLD
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             split = D.load_split(self.manifest(td))
             r = dict(t=h-60, verdict="SETUP_FORMING", setup="ct_long", dir="long",
                      zone="vwap", ztype="vwap", zprice=100., stop=99., target=101.)
@@ -666,15 +679,22 @@ class TestHoldoutBoundaries(unittest.TestCase):
             self.assertEqual(trades[0]["gross_r"], -2.)
 
     def test_full_dev_guard_and_failed_read_remains_reserved(self):
-        with tempfile.TemporaryDirectory() as td, patch.object(D, "REPORT", Path(td)/"report.md"), \
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "REPORT", Path(td)/"report.md"), \
              patch.object(D, "HOLDOUT_MARKER", Path(td)/"read.json"):
             path = self.manifest(td)
             split = D.load_split(path)
-            a = SimpleNamespace(split_manifest=path, read_holdout=True, shifts=[0], months=None, smoke=False)
+            a = SimpleNamespace(split_manifest=path, readiness_manifest=readiness_fixture(td),
+                                read_holdout=True, shifts=[0], months=None, smoke=False)
             D.REPORT.write_text("A previous partial report", encoding="utf-8", newline="\n")
             with self.assertRaisesRegex(SystemExit, "full development"):
                 D.require_full_dev(a, split)
-            D.REPORT.write_text("Full development completed for split " + split["identity"],
+            D.REPORT.write_text("Full development completed for split %s run dax_bt_%s\n" % (split["identity"], "0" * 64),
+                                encoding="utf-8", newline="\n")
+            D.REPORT.write_text("Full development completed for split " + split["identity"] + "0 run dax_bt_" + "0" * 64 + "\n",
+                                encoding="utf-8", newline="\n")
+            with self.assertRaisesRegex(SystemExit, "full development"):
+                D.require_full_dev(a, split)    # a longer split id must not match as a prefix
+            D.REPORT.write_text("Full development completed for split %s run dax_bt_%s\n" % (split["identity"], "0" * 64),
                                 encoding="utf-8", newline="\n")
             a.months = ["2026-04"]
             with self.assertRaisesRegex(SystemExit, "full development"):
@@ -683,7 +703,17 @@ class TestHoldoutBoundaries(unittest.TestCase):
             def count(*args, counts, **kwargs):
                 counts["holdout"] = 2
                 return []
-            with patch.object(D, "load_rows", side_effect=count), patch.object(D, "require_download_coverage"), \
+            with patch.object(D, "binding_identity", return_value={}), \
+                 patch.object(D, "load_null_session", return_value=dict(timezone="UTC", start="23:00", end="01:00")), \
+                 patch.object(D, "require_download_coverage"), \
+                 patch.object(D, "require_run_binding", side_effect=SystemExit("holdout run differs")), \
+                 patch.object(D, "load_rows", side_effect=count) as loaded:
+                with self.assertRaisesRegex(SystemExit, "differs"):
+                    D.build_report(a)
+                loaded.assert_not_called()                  # nothing read, nothing reserved
+                self.assertFalse(D.HOLDOUT_MARKER.exists())
+            with patch.object(D, "binding_identity", return_value={}), patch.object(D, "require_run_binding"), \
+                 patch.object(D, "load_rows", side_effect=count), patch.object(D, "require_download_coverage"), \
                  patch.object(D, "load_null_session", return_value=dict(timezone="UTC", start="23:00", end="01:00")), \
                  patch.object(T, "load_bars_1m", side_effect=ValueError("synthetic outcome read failed")):
                 with self.assertRaisesRegex(ValueError, "synthetic outcome read failed"):
@@ -705,13 +735,14 @@ class TestSessionNull(unittest.TestCase):
                         dict(timezone="UTC", start="25:00", end="12:00")]:
             with self.subTest(session=session), self.assertRaisesRegex(ValueError, "null session"):
                 D.random_entry_null([], b, session=session)
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             p = Path(td)/"session.json"
             p.write_text(json.dumps(dict(timezone="UTC", start="10:00", end="12:00")),
                          encoding="utf-8", newline="\n")
             with self.assertRaisesRegex(ValueError, "trader quote"):
                 D.load_null_session(p)
         with patch.object(D, "load_split", return_value={}), \
+             patch.object(D, "load_readiness", return_value={}), \
              patch.object(D, "require_download_coverage", side_effect=AssertionError("data read")):
             with self.assertRaisesRegex(ValueError, "null session manifest required"):
                 D.build_report(SimpleNamespace(read_holdout=False))
@@ -813,15 +844,150 @@ class TestSessionNull(unittest.TestCase):
 
 
 class TestDriver(unittest.TestCase):
+    def test_h8_generation_freezes_producer_and_refuses_changed_archive(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
+            root = Path(td)
+            archive, snaps = root / "archive", root / "snaps"
+            (archive / "klines").mkdir(parents=True)
+            snaps.mkdir()
+            data = archive / "klines" / "synthetic.csv"
+            data.write_text("synthetic archive bytes\n", encoding="utf-8", newline="\n")
+            gen_bars = mk([(100.,) * 4] * 3, 1767225600000)
+            gen_bars.real = bytearray([1] * 3)
+            def fake_run(command, **kwargs):
+                if "dax_engine.py" not in str(command[2]):
+                    return
+                source = snaps / "2026-01.jsonl.gz"
+                if not source.exists():
+                    with gzip.open(source, "wt", encoding="utf-8") as fh:
+                        fh.write('{}\n')
+                    (snaps / "2026-01.meta.json").write_text('{"evaluated": 1}',
+                        encoding="utf-8", newline="\n")
+            split_path = root / "split.json"
+            split_path.write_text(json.dumps(dict(design_end_utc="2026-02-01T00:00:00Z",
+                holdout_start_utc="2026-06-01T00:00:00Z", embargo_s=0)), encoding="utf-8", newline="\n")
+            a = SimpleNamespace(start=None, end=None, months=["2026-01"], shards=1, read_holdout=False,
+                                split_manifest=split_path)
+            with patch.object(D, "DAX_ARCHIVE", archive), patch.object(D, "DAX_SNAPS", snaps), \
+                 patch.object(D, "DAX_RAW", root / "raw"), \
+                 patch.object(D, "generation_environment", return_value={"synthetic-JDK-and-jars": "fixture"}), \
+                 patch.object(D, "complete_months", return_value=["2026-01"]), \
+                 patch.object(D, "load_development_bars", return_value=gen_bars), \
+                 patch.object(D.subprocess, "run", side_effect=fake_run):
+                D.cmd_gen(a)
+                origin = json.loads((snaps / "2026-01.inputs.json").read_text(encoding="utf-8"))
+                self.assertEqual(origin["bars"], D.bars_identity(gen_bars))   # R4: execution data bound at generation
+                self.assertEqual(origin["codes"], D.generation_codes())
+                self.assertEqual(origin["environment"], {"synthetic-JDK-and-jars": "fixture"})
+                self.assertEqual(origin["data"][str(data)], D.file_hash(data))
+                self.assertEqual(origin["snapshot_sha256"], D.file_hash(snaps / "2026-01.jsonl.gz"))
+                D.cmd_gen(a)
+                data.write_text("changed archive\n", encoding="utf-8", newline="\n")
+                with self.assertRaisesRegex(ValueError, "provenance absent/stale"):
+                    D.cmd_gen(a)
+
+    def test_h8_cached_rows_refuse_changed_mask_shift_or_floor(self):
+        import verdict  # establishes the existing runtime import path
+        import net_rr_floor
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            root = Path(td)
+            out_dir = root / "rows_btc"
+            out_dir.mkdir()
+            source = root / "2026-01.jsonl.gz"
+            s = snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)])
+            with gzip.open(source, "wt", encoding="utf-8") as fh:
+                fh.write(json.dumps(s) + "\n")
+            source.with_name("2026-01.inputs.json").write_text(json.dumps(dict(
+                codes=D.generation_codes(), snapshot_sha256=D.file_hash(source), data={"synthetic": "fixture"})),
+                encoding="utf-8", newline="\n")
+            job = ("btc", source, out_dir, (0,), D.MASK_OF, None)
+            with patch.object(net_rr_floor, "load_floor", return_value=1.25):
+                D._rows_month(job)
+                self.assertEqual(D._rows_month(job), ("2026-01", None))
+                for changed in [(*job[:3], (0, 1), *job[4:]),
+                                (*job[:4], (), job[5])]:
+                    with self.subTest(job=changed), self.assertRaisesRegex(ValueError, "cache input"):
+                        D._rows_month(changed)
+            with patch.object(net_rr_floor, "load_floor", return_value=1.5):
+                with self.assertRaisesRegex(ValueError, "cache input"):
+                    D._rows_month(job)
+                with self.assertRaisesRegex(ValueError, "cache input"):
+                    D.load_rows("btc", "coded/0")
+            with patch.object(net_rr_floor, "load_floor", return_value=1.25):
+                codes = D.code_identity()
+                codes["MyTradingSys/backtest/verdict.py"] = "changed-engine-fixture"
+                with patch.object(D, "code_identity", return_value=codes):
+                    with self.assertRaisesRegex(ValueError, "cache input"):
+                        D._rows_month(job)
+                    with self.assertRaisesRegex(ValueError, "cache input"):
+                        D.load_rows("btc", "coded/0")
+                original = source.read_bytes()
+                with gzip.open(source, "wt", encoding="utf-8") as fh:
+                    fh.write(json.dumps(dict(s, current_price=123.)) + "\n")
+                with self.assertRaisesRegex(ValueError, "cache input"):
+                    D._rows_month(job)
+                source.write_bytes(original)
+                meta = root / "2026-01.meta.json"
+                meta.write_text('{"evaluated": 2}', encoding="utf-8", newline="\n")
+                with self.assertRaisesRegex(ValueError, "cache input"):
+                    D.load_rows("btc", "coded/0")
+                meta.unlink()
+                out = out_dir / "2026-01.rows.jsonl"
+                row = json.loads(out.read_text(encoding="utf-8"))
+                row["k"]["coded/0"]["proof"] = 999
+                out.write_text(json.dumps(row) + "\n", encoding="utf-8", newline="\n")
+                with self.assertRaisesRegex(ValueError, "cache input"):
+                    D.load_rows("btc", "coded/0")
+
+    def test_h8_dax_producer_and_development_bar_identity(self):
+        from snapshots import parse_ts
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            root = Path(td)
+            out_dir = root / "rows_dax"
+            out_dir.mkdir()
+            source = root / "2026-01.jsonl.gz"
+            s = snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)])
+            t = parse_ts(s["timestamp_utc"])
+            b = mk([(100.,)*4]*3, int(t*1000)-60000)
+            b.real = bytearray([1]*3)
+            with gzip.open(source, "wt", encoding="utf-8") as fh:
+                fh.write(json.dumps(s) + "\n")
+            job = ("dax", source, out_dir, (0,), D.MASK_OF, t+120)
+            with patch.object(D, "_BARS", b):
+                with self.assertRaisesRegex(ValueError, "provenance missing"):
+                    D._rows_month(job)
+                origin = root / "2026-01.inputs.json"
+                origin.write_text(json.dumps(dict(codes=D.generation_codes(),
+                    snapshot_sha256=D.file_hash(source), data={"synthetic": "fixture"},
+                    bars=D.bars_identity(b),
+                    command=["py", "dax_engine.py", "gen", "--end", "2026-01-05T10:00:00Z"])),
+                    encoding="utf-8", newline="\n")
+                D._rows_month(job)
+                self.assertEqual(D._rows_month(job), ("2026-01", None))
+                with patch.object(D, "load_development_bars", return_value=b):
+                    self.assertEqual(len(D.load_rows("dax", "coded/0")), 1)
+                    b.real[1] = 0
+                    with self.assertRaisesRegex(ValueError, "cache input|execution data differs"):
+                        D.load_rows("dax", "coded/0")
+                b.real[1] = 1
+                with self.assertRaisesRegex(ValueError, "cache input"):
+                    D._rows_month((*job[:5], t+60))
+                origin.write_text('{}', encoding="utf-8", newline="\n")
+                with self.assertRaisesRegex(ValueError, "producer mismatch"):
+                    D._rows_month(job)
+
     def test_current_rows_written_reused_and_loaded(self):
         # Synthetic current-Java input only; no archive or holdout loader.
-        with tempfile.TemporaryDirectory() as td, patch.object(D, "WORK", Path(td)):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
             out_dir = Path(td) / "rows_btc"
             out_dir.mkdir()
             source = Path(td) / "2026-01.jsonl.gz"
             s = snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)])
             with gzip.open(source, "wt", encoding="utf-8") as fh:
                 fh.write(json.dumps(s) + "\n")
+            source.with_name("2026-01.inputs.json").write_text(json.dumps(dict(
+                codes=D.generation_codes(), snapshot_sha256=D.file_hash(source), data={"synthetic": "fixture"})),
+                encoding="utf-8", newline="\n")
             job = ("btc", source, out_dir, (0,), D.MASK_OF, None)
             self.assertEqual(D._rows_month(job)[1]["rows"], 1)
             self.assertEqual(D._rows_month(job), ("2026-01", None))
@@ -830,6 +996,10 @@ class TestDriver(unittest.TestCase):
             row = json.loads(out.read_text(encoding="utf-8"))
             self.assertEqual(row.pop("proof_count_schema"), D.PROOF_COUNT_SCHEMA)
             out.write_text(json.dumps(row) + "\n", encoding="utf-8", newline="\n")
+            meta = out_dir / "2026-01.rows.meta.json"
+            metadata = json.loads(meta.read_text(encoding="utf-8"))
+            metadata["rows_sha256"] = D.file_hash(out)
+            meta.write_text(json.dumps(metadata), encoding="utf-8", newline="\n")
             # Even valid metadata cannot bless an old row envelope.
             with self.assertRaisesRegex(ValueError, "proof-count schema"):
                 D.load_rows("btc", "coded/0")
@@ -837,7 +1007,7 @@ class TestDriver(unittest.TestCase):
                 D._rows_month(job)
 
     def test_old_rows_rejected_on_load_and_cache_reuse(self):
-        with tempfile.TemporaryDirectory() as td, patch.object(D, "WORK", Path(td)):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
             out_dir = Path(td) / "rows_dax"
             out_dir.mkdir()
             out = out_dir / "2026-01.rows.jsonl"
@@ -849,7 +1019,7 @@ class TestDriver(unittest.TestCase):
                 D._rows_month(("dax", "2026-01.jsonl.gz", out_dir, (0,), D.MASK_OF, None))
 
     def test_complete_months(self):
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             raw = Path(td)
             d = dt.date(2026, 1, 1)
             while d <= dt.date(2026, 2, 10):
@@ -882,7 +1052,7 @@ class TestDriver(unittest.TestCase):
         self.assertEqual(D.btc_period(ts(2026, 6, 26)), "burned")
 
     def test_holdout_needs_flag_and_reads_once(self):
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             marker = Path(td) / "HOLDOUT_READ_DAX.json"
             rows = [{"t": dt.datetime(2026, 3, 1, tzinfo=dt.timezone.utc).timestamp()},
                     {"t": dt.datetime(2026, 5, 1, tzinfo=dt.timezone.utc).timestamp()}]
@@ -899,7 +1069,7 @@ class TestDriver(unittest.TestCase):
 
     def test_null_draws_only_real_minutes(self):
         # Real bars only in minutes 600..659; no next-bar-real requirement.
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
             day0 = 1_700_006_400_000 - (1_700_006_400_000 % 86400000)
             rows = [(day0 + (600 + i) * 60000, 100 + i % 3, 101 + i % 3, 99, 100.5, 1.0) for i in range(60)]
             write_klines(Path(td) / "a.csv", rows)
@@ -916,5 +1086,544 @@ class TestDriver(unittest.TestCase):
                         self.assertEqual(b.real[trade["fill_i"]], 1)
 
 
+def readiness_fixture(root):
+    """All twelve numbered PRE_REG_TEMPLATE headings; synthetic evidence only."""
+    p = Path(root) / "readiness.json"
+    p.write_text(json.dumps({"items": {str(i): dict(status="ANSWERED",
+        answer="Synthetic protocol answer", evidence="synthetic.md:1")
+        for i in range(1, 13)}}), encoding="utf-8", newline="\n")
+    return p
+
+
+class TestReadinessGate(unittest.TestCase):
+    def test_h8_second_arm_same_day_is_counted_and_rerender_is_idempotent(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
+            root = Path(td)
+            p = readiness_fixture(root)
+            split = root / "split.json"
+            split.write_text(json.dumps(dict(design_end_utc="2026-04-10T23:58:00Z",
+                holdout_start_utc="2026-04-11T00:00:00Z", embargo_s=0)), encoding="utf-8", newline="\n")
+            session = root / "session.json"
+            session.write_text(json.dumps(dict(timezone="UTC", start="10:00", end="12:00",
+                source="Synthetic quote, synthetic.md:1")), encoding="utf-8", newline="\n")
+            b = mk([(100.,)*4]*2, int(D.T_DAX_START*1000))
+            args = ["report", "--market", "dax", "--smoke", "--split-manifest", str(split),
+                    "--null-session", str(session), "--readiness-manifest", str(p)]
+            def synthetic_simulation(*args, **kwargs):
+                self.assertTrue(list((root / "runs").glob("*.json")), "inputs must be durable before outcomes")
+                return []
+            with patch.object(D, "WORK", root), patch.object(D, "DAX_SNAPS", root), \
+                 patch.object(D, "REPORT", root/"report.md"), patch.object(D, "REGISTRY", root/"trials.csv"), \
+                 patch.object(D, "git", return_value="synthetic"), \
+                 patch.object(D, "require_download_coverage"), \
+                 patch.object(D, "load_development_bars", return_value=b), \
+                 patch.object(D, "load_rows", return_value=[]), patch.object(D, "simulate", side_effect=synthetic_simulation):
+                D.main(args + ["--shifts", "0"])
+                D.main(args + ["--shifts", "1"])
+                registry = root / "TRIAL_REGISTRY_SMOKE.csv"
+                with registry.open(encoding="utf-8") as fh:
+                    rows = list(csv.DictReader(fh))
+                # EXPECT: four variants per look, two distinct identities today.
+                self.assertEqual(len(rows), 8)
+                self.assertEqual(len({r["run_id"] for r in rows}), 2)
+                D.main(args + ["--shifts", "1"])
+                with registry.open(encoding="utf-8") as fh:
+                    self.assertEqual(list(csv.DictReader(fh)), rows)
+                manifests = sorted((root / "runs").glob("*.json"))
+                self.assertEqual(len(manifests), 2)
+                frozen = json.loads(manifests[0].read_text(encoding="utf-8"))
+                self.assertIn("MyTradingSys/system/net_rr_floor.json", frozen["codes"])
+                self.assertEqual(frozen["seeds"]["bootstrap"], 12345)
+                self.assertEqual(frozen["split"]["identity"], D.load_split(split)["identity"])
+                D.main(args + ["--shifts", "1", "--look-id", "fresh-recall-design-look"])
+                with registry.open(encoding="utf-8") as fh:
+                    extra = list(csv.DictReader(fh))
+                self.assertEqual((len(extra), len({r["run_id"] for r in extra})), (12, 3))
+                # Editing an immutable manifest cannot bless an old result.
+                manifests[0].write_text('{}\n', encoding="utf-8", newline="\n")
+                shift = str(frozen["shifts"][0])
+                with self.assertRaisesRegex(ValueError, "immutable run manifest"):
+                    D.main(args + ["--shifts", shift])
+
+    def test_missing_partial_or_unanswered_manifest_before_any_simulation(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
+            p = readiness_fixture(td)
+            complete = json.loads(p.read_text(encoding="utf-8"))
+            cases = [("missing", None), ("absent file", Path(td)/"absent.json")]
+            for i in range(1, 13):
+                obj = copy.deepcopy(complete)
+                del obj["items"][str(i)]
+                cases.append(("missing item %d" % i, obj))
+                for changes in [dict(status="NOT_ANSWERED"), dict(answer="TODO"),
+                                dict(evidence=""), dict(evidence="NOT_IN_DATA"),
+                                dict(status="WAIVED", approver=" ")]:
+                    obj = copy.deepcopy(complete)
+                    obj["items"][str(i)].update(changes)
+                    cases.append(("item %d %s" % (i, changes), obj))
+            for label, obj in cases:
+                with self.subTest(case=label):
+                    path = obj
+                    if isinstance(obj, dict):
+                        p.write_text(json.dumps(obj), encoding="utf-8", newline="\n")
+                        path = p
+                    a = SimpleNamespace(readiness_manifest=path, read_holdout=False,
+                                        shifts=[0], months=None, market="dax")
+                    with patch.object(D, "load_split", return_value=dict(dev_end=D.T_DAX_HOLD)), \
+                         patch.object(D, "load_null_session", return_value={}), \
+                         patch.object(D, "require_download_coverage", side_effect=AssertionError("data accessed before readiness")) as coverage, \
+                         patch.object(D, "load_development_bars") as bars, \
+                         patch.object(D, "simulate") as sim, \
+                         patch.object(D, "mark_holdout_read") as reservation:
+                        with self.assertRaisesRegex(ValueError, "readiness manifest"):
+                            D.build_report(a)
+                        coverage.assert_not_called()
+                        bars.assert_not_called()
+                        sim.assert_not_called()
+                        reservation.assert_not_called()
+
+    def test_complete_manifest_and_dax_cli_with_btc_cache(self):
+        # Exercise the real CLI -> cmd_report -> build_report path. All data,
+        # report and registry paths are local fixtures; git is never executed.
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
+            root = Path(td)
+            p = readiness_fixture(root)
+            split = root/"split.json"
+            split.write_text(json.dumps(dict(design_end_utc="2026-04-10T23:58:00Z",
+                holdout_start_utc="2026-04-11T00:00:00Z", embargo_s=0)), encoding="utf-8", newline="\n")
+            session = root/"session.json"
+            session.write_text(json.dumps(dict(timezone="UTC", start="10:00", end="12:00",
+                source="Synthetic quote, synthetic.md:1")), encoding="utf-8", newline="\n")
+            (root/"rows_btc").mkdir()
+            (root/"rows_btc"/"2026-01.rows.meta.json").write_text(
+                '{"rows": 1, "mask_changed": 0, "cut": 0}', encoding="utf-8", newline="\n")
+            b = mk([(100.,)*4]*2, int(D.T_DAX_START*1000))
+            for waived in (False, True):
+                obj = json.loads(p.read_text(encoding="utf-8"))
+                if waived:
+                    obj["items"]["5"] = dict(status="WAIVED", answer="Synthetic price-only scope",
+                        evidence="synthetic-approval.md:1", approver="Synthetic Owner")
+                    p.write_text(json.dumps(obj), encoding="utf-8", newline="\n")
+                with self.subTest(waived=waived), \
+                     patch.object(D, "WORK", root), patch.object(D, "DAX_SNAPS", root), \
+                     patch.object(D, "REPORT", root/"report.md"), patch.object(D, "REGISTRY", root/"trials.csv"), \
+                     patch.object(D, "git", return_value="synthetic"), patch.object(D, "sha", return_value="fixture"), \
+                     patch.object(D, "require_download_coverage"), \
+                     patch.object(D, "load_development_bars", return_value=b), \
+                     patch.object(T, "load_bars_1m", side_effect=AssertionError("BTC data read")) as btc, \
+                     patch.object(D, "load_rows", return_value=[]) as rows, \
+                     patch.object(D, "simulate", return_value=[]) as sim:
+                    D.main(["report", "--market", "dax", "--smoke", "--split-manifest", str(split),
+                            "--null-session", str(session), "--readiness-manifest", str(p)])
+                    self.assertEqual([c.args[0] for c in sim.call_args_list], ["dax"]*4)
+                    self.assertEqual([c.args[0] for c in rows.call_args_list], ["dax"])
+                    btc.assert_not_called()
+                    self.assertIn("| DAX / coded / s0 / A |", D.REPORT.read_text(encoding="utf-8"))
+                    text = D.REPORT.read_text(encoding="utf-8")
+                    self.assertIn(D.load_readiness(p)["sha256"], text)
+                    self.assertIn("Synthetic Owner" if waived else "Synthetic protocol answer", text)
+
+    def test_malformed_manifest_and_no_holdout_reservation(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
+            p = readiness_fixture(td)
+            complete = json.loads(p.read_text(encoding="utf-8"))
+            cases = ["{", "null", "[]", '{}', '{"items": []}']
+            for change in [dict(answer=None), dict(evidence=False), dict(status="NOT_IN_DATA"),
+                           dict(status="WAIVED", approver="TODO"), dict(status="WAIVED", approver=7)]:
+                obj = copy.deepcopy(complete)
+                obj["items"]["3"].update(change)
+                cases.append(json.dumps(obj))
+            for raw in cases:
+                with self.subTest(raw=raw):
+                    p.write_text(raw, encoding="utf-8", newline="\n")
+                    with patch.object(D, "require_full_dev") as full, \
+                         patch.object(D, "load_rows") as rows, \
+                         patch.object(D, "mark_holdout_read") as reserve:
+                        with self.assertRaisesRegex(ValueError, "readiness manifest"):
+                            D.build_report(SimpleNamespace(readiness_manifest=p, read_holdout=True))
+                        full.assert_not_called()
+                        rows.assert_not_called()
+                        reserve.assert_not_called()
+
+
+class TestPreprocessingIsolation(unittest.TestCase):
+    """RV02 R1. Expected epochs are hand-derived: 2026-01-01Z = 1735689600 + 365*86400 = 1767225600;
+    2026-06-01Z = that + (31+28+31+30+31)*86400 = 1780272000."""
+    CUT = 1780272000
+
+    @staticmethod
+    def split_file(root, hold="2026-06-01T00:00:00Z"):
+        path = Path(root) / "split.json"
+        path.write_text(json.dumps(dict(design_end_utc="2026-02-01T00:00:00Z", holdout_start_utc=hold,
+                                        embargo_s=0)), encoding="utf-8", newline="\n")
+        return path
+
+    def test_gen_without_manifest_touches_no_subprocess_or_data(self):
+        with patch.object(D.subprocess, "run", side_effect=AssertionError("child process reached")) as run:
+            with self.assertRaisesRegex(ValueError, "split manifest"):
+                D.cmd_gen(SimpleNamespace(start=None, end=None, months=None, shards=1, read_holdout=False,
+                                          split_manifest=None))
+            with self.assertRaises(ValueError):
+                D.main(["all", "--market", "dax"])
+        run.assert_not_called()
+
+    def test_gen_convert_and_engine_end_are_clipped_to_development(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
+            root = Path(td)
+            calls = []
+            a = SimpleNamespace(start=None, end=None, months=None, shards=1, read_holdout=False,
+                                split_manifest=self.split_file(root))
+            with patch.object(D, "DAX_ARCHIVE", root / "a"), patch.object(D, "DAX_SNAPS", root / "s"), \
+                 patch.object(D, "DAX_RAW", root / "raw"), \
+                 patch.object(D, "complete_months", return_value=["2026-05"]), \
+                 patch.object(D, "generation_environment", return_value={"x": "y"}), \
+                 patch.object(D, "load_development_bars", return_value=mk([(100.,) * 4] * 3, 0)), \
+                 patch.object(D.subprocess, "run", side_effect=lambda c, **k: calls.append(c)):
+                D.cmd_gen(a)
+            convert, gen = calls[0], calls[1]
+            self.assertEqual(convert[convert.index("--end-ms") + 1], str(self.CUT * 1000))
+            self.assertEqual(gen[gen.index("--end") + 1], "2026-05-31T23:59:00Z")   # DAX_END is 2026-10-09
+
+    def test_gen_end_never_passes_last_complete_minute(self):
+        day = dt.date(2026, 1, 5)
+        cut = 1767225600 + 4 * 86400 + 10 * 3600     # 2026-01-05T10:00:00Z
+        self.assertEqual(D.gen_end(day, cut), "2026-01-05T09:59:00Z")
+        self.assertEqual(D.gen_end(day, None), "2026-01-05T23:59:00Z")
+
+    def test_future_snapshot_payload_is_not_decoded(self):
+        from snapshots import parse_ts
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            root = Path(td)
+            out_dir = root / "rows_dax"
+            out_dir.mkdir()
+            source = root / "2026-01.jsonl.gz"
+            good = snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)])
+            t = parse_ts(good["timestamp_utc"])
+            b = mk([(100.,) * 4] * 3, int(t * 1000) - 60000)
+            b.real = bytearray([1] * 3)
+            with gzip.open(source, "wt", encoding="utf-8") as fh:
+                fh.write(json.dumps(good) + "\n")
+                fh.write('{"timestamp_utc": "2026-01-05T10:30:00Z", "payload": <<not json, future>>\n')
+            source.with_name("2026-01.inputs.json").write_text(json.dumps(dict(
+                codes=D.generation_codes(), snapshot_sha256=D.file_hash(source), data={"x": "y"},
+                command=["py", "dax_engine.py", "gen", "--end", "2026-01-05T10:00:00Z"],
+                bars=D.bars_identity(b))),
+                encoding="utf-8", newline="\n")
+            with patch.object(D, "_BARS", b):
+                name, stats = D._rows_month(("dax", source, out_dir, (0,), D.MASK_OF, t + 120))
+            self.assertEqual(stats["cut"], 1)
+            self.assertEqual(stats["rows"], 1)
+
+    def test_snapshot_produced_past_cutoff_is_refused(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td:
+            source = Path(td) / "2026-01.jsonl.gz"
+            with gzip.open(source, "wt", encoding="utf-8") as fh:
+                fh.write("{}\n")
+            origin = source.with_name("2026-01.inputs.json")
+            for command, pattern in ((["gen", "--end", "2026-01-05T10:00:00Z"], "past the development cutoff"),
+                                     ([], "producer end absent")):
+                origin.write_text(json.dumps(dict(codes=D.generation_codes(), snapshot_sha256=D.file_hash(source),
+                                                  command=command)), encoding="utf-8", newline="\n")
+                with self.assertRaisesRegex(ValueError, pattern):
+                    D.cache_inputs("dax", source, (0,), D.MASK_OF, 1767225600 + 4 * 86400 + 10 * 3600, 1.0)
+
+    def test_month_scope_excludes_future_months_from_accounting_inputs(self):
+        self.assertTrue(D.month_in_scope("2026-05.meta.json", self.CUT))
+        self.assertFalse(D.month_in_scope("2026-06.meta.json", self.CUT))   # starts exactly at the cutoff
+        self.assertFalse(D.month_in_scope("2026-09.rows.jsonl", self.CUT))
+        self.assertTrue(D.month_in_scope("2099-01.meta.json", None))
+
+    def test_load_rows_does_not_open_future_month_caches(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            rows = Path(td) / "rows_dax"
+            rows.mkdir()
+            (rows / "2026-09.rows.jsonl").write_text("garbage", encoding="utf-8", newline="\n")
+            split = D.load_split(self.split_file(td))
+            self.assertEqual(D.load_rows("dax", "coded/0", split=split), [])
+
+
+class TestCutoffBoundary(unittest.TestCase):
+    def test_rows_at_cutoff_minus_equal_plus_one_ms(self):
+        from snapshots import parse_ts
+        cut = 1767225600 + 4 * 86400 + 10 * 3600     # 2026-01-05T10:00:00Z
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            root = Path(td)
+            out_dir = root / "rows_dax"
+            out_dir.mkdir()
+            source = root / "2026-01.jsonl.gz"
+            stamps = ("2026-01-05T09:59:59.999000Z", "2026-01-05T10:00:00Z", "2026-01-05T10:00:00.001000Z")
+            b = mk([(100.,) * 4] * 6, (cut - 120) * 1000)
+            b.real = bytearray([1] * 6)
+            with gzip.open(source, "wt", encoding="utf-8") as fh:
+                for ts in stamps:
+                    fh.write(json.dumps(snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)], t=ts)) + "\n")
+            source.with_name("2026-01.inputs.json").write_text(json.dumps(dict(
+                codes=D.generation_codes(), snapshot_sha256=D.file_hash(source), data={"x": "y"},
+                bars=D.bars_identity(b),
+                command=["py", "gen", "--end", "2026-01-05T09:59:00Z"])), encoding="utf-8", newline="\n")
+            with patch.object(D, "_BARS", b):
+                _, stats = D._rows_month(("dax", source, out_dir, (0,), D.MASK_OF, cut))
+            self.assertEqual((stats["rows"], stats["cut"]), (1, 2))
+            kept = [json.loads(x)["t"] for x in (out_dir / "2026-01.rows.jsonl").read_text().splitlines()]
+            self.assertEqual(kept, [parse_ts(stamps[0])])
+            self.assertLess(kept[0], cut)
+
+
+class TestProducerDataBinding(unittest.TestCase):
+    """RV02 R4. Snapshots frozen at execution price 100, then the execution bars are revised to 200: fresh rows and
+    reports must be refused until the snapshots are regenerated. Synthetic only; no archive or holdout bytes."""
+    CUT_OFFSET = 120
+
+    @staticmethod
+    def bars(price, t):
+        b = mk([(price,) * 4] * 3, int(t * 1000) - 60000)
+        b.real = bytearray([1] * 3)
+        return b
+
+    def build(self, td, producer_price):
+        from snapshots import parse_ts
+        root = Path(td)
+        out_dir = root / "rows_dax"
+        out_dir.mkdir()
+        source = root / "2026-01.jsonl.gz"
+        s = snap([cand(1, "short", "vwap", "vwap_band", proof_node(spike=True), 0)])
+        t = parse_ts(s["timestamp_utc"])
+        with gzip.open(source, "wt", encoding="utf-8") as fh:
+            fh.write(json.dumps(s) + "\n")
+        origin = dict(codes=D.generation_codes(), snapshot_sha256=D.file_hash(source), data={"synthetic": "fixture"},
+                      command=["py", "dax_engine.py", "gen", "--end", "2026-01-05T10:00:00Z"])
+        if producer_price is not None:
+            origin["bars"] = D.bars_identity(self.bars(producer_price, t))
+        source.with_name("2026-01.inputs.json").write_text(json.dumps(origin), encoding="utf-8", newline="\n")
+        return source, out_dir, t
+
+    def test_revised_execution_bars_refuse_fresh_rows_until_regenerated(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            source, out_dir, t = self.build(td, 100.)
+            job = ("dax", source, out_dir, (0,), D.MASK_OF, t + self.CUT_OFFSET)
+            with patch.object(D, "_BARS", self.bars(200., t)):
+                with self.assertRaisesRegex(ValueError, "execution data differs"):
+                    D._rows_month(job)
+            self.assertEqual(list(out_dir.iterdir()), [])             # nothing was built
+            with patch.object(D, "_BARS", self.bars(100., t)):
+                self.assertEqual(D._rows_month(job)[1]["rows"], 1)    # same data passes
+                self.assertEqual(D._rows_month(job), ("2026-01", None))
+            with patch.object(D, "_BARS", self.bars(200., t)):         # reuse of an existing cache is refused too
+                with self.assertRaisesRegex(ValueError, "execution data differs"):
+                    D._rows_month(job)
+
+    def test_producer_without_bars_identity_requires_regeneration(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            source, out_dir, t = self.build(td, None)
+            job = ("dax", source, out_dir, (0,), D.MASK_OF, t + self.CUT_OFFSET)
+            with patch.object(D, "_BARS", self.bars(100., t)):
+                with self.assertRaisesRegex(ValueError, "lacks the execution bars identity"):
+                    D._rows_month(job)
+
+    def test_report_stage_refuses_revised_bars_against_cached_rows(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            source, out_dir, t = self.build(td, 100.)
+            job = ("dax", source, out_dir, (0,), D.MASK_OF, t + self.CUT_OFFSET)
+            with patch.object(D, "_BARS", self.bars(100., t)):
+                D._rows_month(job)
+            with patch.object(D, "load_development_bars", return_value=self.bars(100., t)):
+                self.assertEqual(len(D.load_rows("dax", "coded/0")), 1)
+            with patch.object(D, "load_development_bars", return_value=self.bars(200., t)):
+                with self.assertRaisesRegex(ValueError, "execution data differs"):
+                    D.load_rows("dax", "coded/0")
+
+
+class TestExactNetRrGate(unittest.TestCase):
+    """RV02 R2. Hand arithmetic (FORMULAS.md section 17, FDAX fee 0.000005/side, entry 100 so cost = 2*0.000005*100 = 0.001):
+    target 101.25 -> (1.25-0.001)/(1+0.001) = 1249/1001 = 1.24775... (< 1.25, serialized as 1.25);
+    target 101.26 -> (1.26-0.001)/1.001 = 1259/1001 = 1.25774... (>= 1.25)."""
+
+    @staticmethod
+    def boundary_row(direction, move, shift=4):
+        from verdict import compute_verdict
+        target = round(100.0 + move if direction == "long" else 100.0 - move, 2)
+        stop = 99.0 if direction == "long" else 101.0
+        exact = (move - 0.001) / 1.001
+        c = cand(1, direction, "vwap", "vwap_band", proof_node("MODERATE"), 1, gross=move, net=round(exact, 2))
+        c["math"]["target"] = target
+        c["math"]["stop"] = stop
+        c["math"]["net_rr_sanity"] = round(exact, 2) >= 1.25
+        wire = json.loads(json.dumps(snap([c])))      # the real JSON producer/consumer boundary
+        exact_v = D.rows_for_snapshot(wire, parse_ts, aligned,
+            lambda s, pd: D.exact_rr_verdict(s, pd, 1.25, compute_verdict), shifts=(shift,))["coded/%d" % shift]["verdict"]
+        old_v = D.rows_for_snapshot(wire, parse_ts, aligned,
+            lambda s, pd: compute_verdict(s, pd, floor=1.25), shifts=(shift,))["coded/%d" % shift]["verdict"]
+        return exact, round(exact, 2), exact_v, old_v
+
+    def test_exact_value_matches_hand_arithmetic(self):
+        c = cand(1, "long", "vwap", "vwap_band", proof_node("MODERATE"), 1)
+        c["math"]["target"] = 101.25
+        self.assertAlmostEqual(D.exact_net_rr(c), 1249 / 1001, places=12)
+        c["math"]["target"] = 101.26
+        self.assertAlmostEqual(D.exact_net_rr(c), 1259 / 1001, places=12)
+
+    def test_below_floor_serialized_as_floor_stays_wait_rr_both_directions(self):
+        for direction in ("long", "short"):
+            exact, shown, exact_v, old_v = self.boundary_row(direction, 1.25)
+            self.assertLess(exact, 1.25)
+            self.assertEqual(shown, 1.25)                  # display rounding hides the shortfall
+            self.assertEqual(exact_v, "WAIT_RR", direction)
+            self.assertNotEqual(old_v, "WAIT_RR", direction)   # the pre-fix consumer let it through
+
+    def test_at_or_above_floor_stays_eligible_both_directions(self):
+        for direction in ("long", "short"):
+            exact, shown, exact_v, old_v = self.boundary_row(direction, 1.26)
+            self.assertGreater(exact, 1.25)
+            self.assertEqual(exact_v, old_v, direction)
+            self.assertNotEqual(exact_v, "WAIT_RR", direction)
+
+    def test_input_snapshot_is_not_modified_and_bad_geometry_changes_nothing(self):
+        from verdict import compute_verdict
+        c = cand(1, "long", "vwap", "vwap_band", proof_node("MODERATE"), 1, gross=1.25, net=1.25)
+        c["math"]["target"] = 101.25
+        s = snap([c])
+        before = json.dumps(s, sort_keys=True)
+        D.exact_rr_verdict(s, "aligned", 1.25, compute_verdict)
+        self.assertEqual(json.dumps(s, sort_keys=True), before)
+        del c["math"]["stop"]
+        self.assertIsNone(D.exact_net_rr(c))
+        self.assertEqual(D.exact_rr_verdict(s, "aligned", 1.25, compute_verdict)["net_rr"], 1.25)
+
+    def test_exact_equality_with_floor_is_eligible(self):
+        from verdict import compute_verdict
+        c = cand(1, "long", "vwap", "vwap_band", proof_node("MODERATE"), 1, gross=1.25, net=1.25)
+        c["math"]["target"] = 101.25
+        floor = D.exact_net_rr(c)                       # 1249/1001: exactly at the floor, so >= passes
+        s = snap([c])
+        v = D.exact_rr_verdict(s, "aligned", floor, compute_verdict)
+        self.assertNotEqual(v["verdict"], "WAIT_RR")
+        self.assertAlmostEqual(v["net_rr"], 1.25)       # not tightened: exact is not below the floor
+
+
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestFullDevAuthorization(unittest.TestCase):
+    """RV02 R3: one evaluated instant cannot certify a month; holdout authorization is bound to the completed run.
+    Expected counts by hand: 15-minute cadence = 96 instants per 1440-minute day; 2026-02 has 28 days -> 2688."""
+    CUT = dt.datetime(2026, 4, 11, tzinfo=dt.timezone.utc).timestamp()
+
+    @staticmethod
+    def ms(y, m, d, hh=0, mm=0):
+        return int(dt.datetime(y, m, d, hh, mm, tzinfo=dt.timezone.utc).timestamp() * 1000)
+
+    def feb(self, **over):
+        meta = dict(month="2026-02", step_min=15, evaluated=2688, kept=5, errors=0,
+                    first_ms=self.ms(2026, 2, 1), last_ms=self.ms(2026, 2, 28, 23, 45))
+        meta.update(over)
+        return meta
+
+    def check(self, meta, cut=None):
+        return D.snapshot_month_complete(meta, "2026-02", cut)
+
+    def test_complete_month_accepted(self):
+        self.assertTrue(self.check(self.feb()))
+
+    def test_single_evaluated_instant_does_not_certify_a_month(self):
+        t = self.ms(2026, 2, 1)
+        self.assertFalse(self.check(self.feb(evaluated=1, first_ms=t, last_ms=t)))
+
+    def test_missing_edge_coverage_rejected(self):
+        self.assertFalse(self.check(self.feb(first_ms=self.ms(2026, 2, 2), evaluated=2688 - 96)))
+        self.assertFalse(self.check(self.feb(last_ms=self.ms(2026, 2, 27, 23, 45), evaluated=2688 - 96)))
+
+    def test_legacy_meta_without_range_is_stale(self):
+        for key in ("first_ms", "last_ms", "step_min"):
+            meta = self.feb()
+            del meta[key]
+            self.assertFalse(self.check(meta), key)
+
+    def test_cadence_and_count_must_agree(self):
+        self.assertFalse(self.check(self.feb(evaluated=2687)))
+        self.assertFalse(self.check(self.feb(step_min=30, evaluated=1344)))
+
+    def test_cutoff_month_needs_coverage_to_the_last_complete_minute(self):
+        cut = self.ms(2026, 2, 10) / 1000      # development ends at the start of the 10th
+        part = self.feb(last_ms=self.ms(2026, 2, 9, 23, 45), evaluated=9 * 96)
+        self.assertTrue(self.check(part, cut))
+        self.assertFalse(self.check(self.feb(last_ms=self.ms(2026, 2, 5, 23, 45), evaluated=5 * 96), cut))
+        self.assertFalse(self.check(self.feb(), cut))   # beyond the cutoff
+
+    def test_months_set_requires_every_expected_month_complete(self):
+        metas = {"2026-02": self.feb()}
+        self.assertTrue(D.dev_months_complete(metas, {"2026-02"}, None))
+        self.assertFalse(D.dev_months_complete(metas, {"2026-02", "2026-03"}, None))
+        metas["2026-02"]["first_ms"] = self.ms(2026, 2, 3)
+        self.assertFalse(D.dev_months_complete(metas, {"2026-02"}, None))
+
+    def manifest(self, **over):
+        m = dict(schema="dax-run-v1", codes={"a.py": "1"}, floor=1.25, market=["dax"], split={"identity": "s1"},
+                 readiness={"sha256": "r"}, session={"timezone": "UTC"}, mask="all", shifts=[0], kinds=["coded"],
+                 variants=["A"], seeds={"null": 7}, fees={"dax": 1}, full_dev=True, read_holdout=False)
+        m.update(over)
+        return m
+
+    def authorize(self, td, manifest):
+        runs = Path(td) / "runs"
+        runs.mkdir()
+        run_id = "dax_bt_" + D.digest(manifest)
+        (runs / (run_id + ".json")).write_text(json.dumps(manifest, sort_keys=True), encoding="utf-8", newline="\n")
+        return "Full development completed for split s1 run %s\n" % run_id
+
+    def test_holdout_bound_to_completed_run_identity(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            done = self.manifest()
+            token = self.authorize(td, done)
+            D.require_run_binding(self.manifest(read_holdout=True, look_id="x"), token, "s1")   # same arms: ok
+            for key, val in [("shifts", [0, 4]), ("codes", {"a.py": "2"}), ("variants", ["A", "B"]), ("mask", "none"),
+                             ("session", {"timezone": "Europe/Berlin"}), ("readiness", {"sha256": "other"}),
+                             ("floor", 1.0), ("fees", {"dax": 2}), ("snapshots", {"2026-01": "x"}), ("dev_bars", {"sha256": "y"})]:
+                with self.subTest(changed=key), self.assertRaisesRegex(SystemExit, "differs"):
+                    D.require_run_binding(self.manifest(read_holdout=True, **{key: val}), token, "s1")
+
+    def test_holdout_refuses_token_without_a_durable_complete_run(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "WORK", Path(td)):
+            cur = self.manifest(read_holdout=True)
+            with self.assertRaisesRegex(SystemExit, "full development"):
+                D.require_run_binding(cur, "Full development completed for split s1\n", "s1")   # old, unbound token
+            with self.assertRaisesRegex(SystemExit, "full development"):
+                D.require_run_binding(cur, "Full development completed for split s1 run dax_bt_%s\n" % ("0" * 64), "s1")
+            token = self.authorize(td, self.manifest(full_dev=False))
+            with self.assertRaisesRegex(SystemExit, "full development"):
+                D.require_run_binding(cur, token, "s1")
+            Path(td, "runs").joinpath(token.split()[-1] + ".json").write_text(
+                json.dumps(self.manifest(tampered=1), sort_keys=True), encoding="utf-8", newline="\n")
+            with self.assertRaisesRegex(SystemExit, "full development"):
+                D.require_run_binding(cur, token, "s1")   # file does not hash to its run id
+
+
+class TestSnapshotIdentity(unittest.TestCase):
+    CUT = dt.datetime(2026, 4, 11, tzinfo=dt.timezone.utc).timestamp()
+
+    def month(self, td, name="2026-02", record=True, content=b"snap"):
+        (Path(td) / (name + ".jsonl.gz")).write_bytes(content)
+        (Path(td) / (name + ".meta.json")).write_text("{}", encoding="utf-8", newline="\n")
+        if record:
+            (Path(td) / (name + ".inputs.json")).write_text(json.dumps(dict(snapshot_sha256=D.file_hash(Path(td) / (name + ".jsonl.gz")))),
+                                                            encoding="utf-8", newline="\n")
+
+    def test_identity_is_the_verified_file_hash(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "DAX_SNAPS", Path(td)):
+            self.month(td)
+            ids = D.snapshot_identity(self.CUT)
+            self.assertEqual(ids["2026-02"], D.file_hash(Path(td) / "2026-02.jsonl.gz"))
+
+    def test_missing_provenance_or_tampered_file_is_unbound(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "DAX_SNAPS", Path(td)):
+            self.month(td, record=False)
+            self.assertIsNone(D.snapshot_identity(self.CUT)["2026-02"])      # no .inputs.json
+            self.month(td)
+            (Path(td) / "2026-02.jsonl.gz").write_bytes(b"truncated")        # changed after generation
+            self.assertIsNone(D.snapshot_identity(self.CUT)["2026-02"])
+            (Path(td) / "2026-02.jsonl.gz").unlink()
+            self.assertIsNone(D.snapshot_identity(self.CUT)["2026-02"])      # file missing
+
+    def test_out_of_scope_month_not_read(self):
+        with tempfile.TemporaryDirectory(prefix="mts_dax_bt_") as td, patch.object(D, "DAX_SNAPS", Path(td)):
+            self.month(td, "2026-05")
+            self.assertEqual(D.snapshot_identity(self.CUT), {})

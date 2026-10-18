@@ -1,0 +1,88 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T00:32:00Z",
+  "commands": [],
+  "created": "2026-10-16T09:35:17Z",
+  "crucial": true,
+  "depends_on": [
+    "imb-filter-audit-1-map"
+  ],
+  "done_when": "Each criterion has evidence; finish through lab_flow.py finish; failed criteria stop the flow.",
+  "effort": "low",
+  "flow": {
+    "contract": "211fb335f3d467b2caa8f5c8109d20fff796a1a03ec669d449bed8a19ecec1d8",
+    "criteria": [
+      "The headline cells -0.366 R / -0.467 R / +0.101 R reproduce from the committed counts and tables (file:line and recompute command shown).",
+      "The DEV-only statement is checked as far as the six scoped files allow: no VALIDATION or HOLDOUT file is among the inputs (file list and SHA256 shown); original-loader isolation is marked NOT_IN_DATA if the files cannot show it, and that gap alone does not fail this criterion.",
+      "The touch-bar look-ahead defect is documented from the six scoped files only: list the columns present, state which of previous close, touch OHLC and exit time are absent, give the outcome-rate counts the files do support, and name the exact fixture fields a later Claude-side card needs. If the files cannot reproduce the defect, mark the effect on the HOLD rates NOT_IN_DATA; PASS this criterion when that gap is stated with evidence. No bars are invented and no market data is read."
+    ],
+    "goal": "Audit research/imbalance_qriptal_2026-10-16/filter/RESULT.md from committed tables only: recompute the headline cells, confirm DEV-only inputs, reproduce the touch-bar look-ahead defect. No market rerun, no VALIDATION or HOLDOUT read.",
+    "id": "imb-filter-audit",
+    "lens": "Independently try to falsify the prior findings; reproduce one material claim and resolve disagreements against sources.",
+    "recipe": "critical-audit",
+    "scope_in": [
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/PRE_REG.md",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/COUNTS.md",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/trades_dev.csv",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/events_dev.csv",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/trials.csv"
+    ],
+    "stage": 2
+  },
+  "flow_receipt": {
+    "contract": "211fb335f3d467b2caa8f5c8109d20fff796a1a03ec669d449bed8a19ecec1d8",
+    "criteria": [
+      "PASS",
+      "PASS",
+      "PASS"
+    ],
+    "report": "MyTradingSys/research/layer_lab/reports/2026-10-17_imb-filter-audit-2-challenge.md",
+    "report_sha256": "bd0d82cd1b8b8201e9aa3e71dc77cd477b021a32fdbeaf0d86e1d9c24bfa642b",
+    "sources": {
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/COUNTS.md": "c86dfa848952f9cf56355a8c5be3a0693c3a9c806fe78499b7e3078476233070",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/PRE_REG.md": "54edb80ddb649fedfc723e5af398d6bd7eddd01dd646c3b73e5859b5512edb61",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md": "17bcf3b22c6d89ca39c8c783f89a295ff069c1e4a8cc71e3985c2f6370eab6f2",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/events_dev.csv": "b21c2b8e9007ad62a75a45c3e468e05e61af8e03d23d1f4520a3679d8dc72462",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/trades_dev.csv": "6ba7ced4f2c6a701f1dee5932ef5be3e291ce4db2bfb18ae37f34d23683e9c27",
+      "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/trials.csv": "537050806bf10598642e673e2bd3a1fc71d5066639c0ceb6a214641502cda55f"
+    },
+    "verdict": "PASS"
+  },
+  "from_inbox": "",
+  "goal": "Audit research/imbalance_qriptal_2026-10-16/filter/RESULT.md from committed tables only: recompute the headline cells, confirm DEV-only inputs, reproduce the touch-bar look-ahead defect. No market rerun, no VALIDATION or HOLDOUT read.",
+  "gpt_only": true,
+  "id": "imb-filter-audit-2-challenge",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "model": "gpt-6-astra",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "C1-C3 PASS: headline reproduced from stored returns and prices; six hashes and DEV touch dates verified; loader isolation and HOLD-rate defect effect NOT_IN_DATA, fixture fields specified.",
+  "scope_in": [
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/PRE_REG.md",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/COUNTS.md",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/trades_dev.csv",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/events_dev.csv",
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/trials.csv"
+  ],
+  "scope_out": [
+    "live path, secrets, holdout data, relay and unrelated files"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Independently try to falsify the prior findings; reproduce one material claim and resolve disagreements against sources.",
+    "Read original sources before the prior report; report C1..Cn as PASS, REWORK or BLOCKED with file/command evidence."
+  ],
+  "tests": "",
+  "title": "imb-filter-audit: challenge"
+}

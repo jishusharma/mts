@@ -1,0 +1,11 @@
+{
+  "card": "dsa-audit-05-placebo-nulls",
+  "done_when": "T05_placebo_nulls.md shipped: per-arm empirical p, SD ratio, overlap and bootstrap t; best-of-N bar per study; half-year signs; fair LC1 rerun; leads L7/L8 resolved; S1/S2 carded.",
+  "from": "JIS-NB",
+  "id": "20261016-014229-dsa-audit-05-placebo-nulls",
+  "need": "python scripts/dev/sync.py claim \"dsa-audit-05-placebo-nulls\"; python scripts/dev/tasks.py take dsa-audit-05-placebo-nulls; Get-ChildItem MyTradingSys/research -Recurse -Include trials.csv,TRIAL_REGISTRY.csv | Select-Object FullName,Length; Get-Content MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py; python scripts/dev/tasks.py done dsa-audit-05-placebo-nulls --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"; # AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty) (full brief: python scripts/dev/tasks.py brief dsa-audit-05-placebo-nulls)",
+  "posted": "2026-10-16T01:45:02Z",
+  "status": "pending",
+  "target": "DSA-NB",
+  "title": "DSA audit T05: matched placebo distributions, overlap, best-of-N and a fair LC1 control"
+}

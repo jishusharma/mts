@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T05:43:43Z",
+  "commands": [],
+  "created": "2026-10-16T06:30:00Z",
+  "depends_on": [],
+  "done_when": "RESULT.md in research/imbalance_qriptal_2026-10-16/filter/ with net R per level-layer trade with vs without the imbalance condition (DEV only), declared trial count, test red first.",
+  "from_inbox": "",
+  "goal": "Test Qriptal's full rule (level + imbalance + reaction): on an existing level layer's DEV trades (lc-levels-hold or pit-levels), compare fee-net R with vs without a volume-anomaly candle at the level, plus the large-body no-fade veto. PRE_REG first. Brief: research/imbalance_qriptal_2026-10-16/README.md s5.",
+  "id": "imb-filter-on-levels",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [
+    "callers"
+  ],
+  "live_path": false,
+  "note": "Operator 2026-10-16 asked for imbalance research end to end; standalone fade is NO EDGE, this is the follow-up. LAYER_REBUILD_PLAN s3 (no detectors before G2/G3) applies to new setup families: this reuses an existing level layer's trades, coordinator may still hold it.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/README.md",
+    "MyTradingSys/items/B171_imbalance_indicator_end_to_end.md"
+  ],
+  "result": "FAIL: imbalance filter lifts +0.10 R (-0.366 vs -0.467 R net/trade, Holm p 0.017) but layer -0.06 R gross vs 0.35 R fee; large-body veto +0.009 R (t 0.27); MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md",
+  "scope_in": [
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16",
+    "F:/MTS/data/tom_raw/klines (read only)"
+  ],
+  "scope_out": [
+    "the live path",
+    "holdout reads",
+    "new thresholds tuned on check data"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Write PRE_REG.md (level source, k, TFs, trial count) and commit it before any run.",
+    "Write the test first and see it fail.",
+    "Run on DEV only, write RESULT.md."
+  ],
+  "tests": "filter join test on hand-built level trades and imbalance candles, red first",
+  "title": "Imbalance as a filter on an existing level layer (B171 follow-up)"
+}

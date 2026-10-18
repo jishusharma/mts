@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-13T17:31:44Z",
+  "depends_on": [
+    "tom-btc-chart-lab"
+  ],
+  "done_when": "EVENT_STUDY.md table per concept with n, mean R, CI, vs random, and a power line.",
+  "from_inbox": "",
+  "goal": "On every DEV candidate from chart_lab.py, measure forward outcome in R with the stop above the leg extreme (at least 0.40 % away, fee floor, spec s11) and targets at the anchor open (A-T1) and the nearest volume node (A-T2); split by concept present; compare with random same-window moments.",
+  "id": "tom-btc-event-study",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "RETIRED 2026-10-16 (codex-feed): BLOCKED twice (~700k tokens): its inputs never existed (no T3 reader marks, no A-P10 sentiment series; depends_on omitted tom-btc-eye-read). Superseded by the rebuild plan: no event study before G3 marks + G4 recall; re-card Tom G5 from the catalogue rows then.",
+  "pinned": false,
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "opus-cloud-2026-10-13 (TOM_ON_BTC plan)",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_btc_2026-10-13/event_study.py",
+    "MyTradingSys/research/tom_btc_2026-10-13/EVENT_STUDY.md",
+    "MyTradingSys/backtest/fees.py (read only)"
+  ],
+  "scope_out": [
+    "tuning",
+    "VALIDATION and HOLDOUT dates",
+    "live tree"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
+  ],
+  "state": "dropped",
+  "steps": [
+    "Concept flags from footprint/klines: A-C3 thin top, A-P1 finished auction, A-P6 delta surplus/absorption, A-P3, A-P4, A-P5, A-P7, A-P10 long/short extreme (OURS thresholds = session rank, printed).",
+    "Per concept: n, mean net R (taker 0.10 % RT and maker-in), 95 % CI, minus random; trial rows to TRIAL_REGISTRY."
+  ],
+  "tests": "pytest: synthetic path hits stop first -> -1 R minus fee; hits A-T1 first -> reward/risk minus fee; random null draws stay in the same session window. Fails before event_study.py exists.",
+  "title": "Tom on BTC T4: event study - which Tom concepts separate winners on BTC (DEV only, fee-net, vs random same-window moments)"
+}

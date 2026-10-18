@@ -1,0 +1,1443 @@
+{
+  "F01": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000,
+      1641002400000,
+      1641006000000,
+      1641009600000,
+      1641013200000,
+      1641016800000,
+      1641020400000,
+      1641024000000,
+      1641027600000,
+      1641031200000,
+      1641034800000,
+      1641038400000,
+      1641042000000,
+      1641045600000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC",
+      "2022-01-01 04:00 UTC",
+      "2022-01-01 05:00 UTC",
+      "2022-01-01 06:00 UTC",
+      "2022-01-01 07:00 UTC",
+      "2022-01-01 08:00 UTC",
+      "2022-01-01 09:00 UTC",
+      "2022-01-01 10:00 UTC",
+      "2022-01-01 11:00 UTC",
+      "2022-01-01 12:00 UTC",
+      "2022-01-01 13:00 UTC",
+      "2022-01-01 14:00 UTC"
+    ],
+    "expected": {
+      "name": "Wilder RSI at index 14",
+      "unit": "percent",
+      "value": 56.16276802655401
+    },
+    "id": "F01",
+    "inputs": {
+      "closes": [
+        46650.01,
+        46766.78,
+        46796.14,
+        46789.56,
+        46690.81,
+        47184.18,
+        46972.19,
+        47186.83,
+        47117.84,
+        47137.37,
+        46864.09,
+        46755.01,
+        47062.37,
+        47005.55,
+        46909.2
+      ],
+      "period": 14
+    }
+  },
+  "F02": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000,
+      1641002400000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC"
+    ],
+    "expected": {
+      "name": "RMA SMA seed",
+      "unit": "number",
+      "value": 46737.64333333333
+    },
+    "id": "F02",
+    "inputs": {
+      "length": 3,
+      "values": [
+        46650.01,
+        46766.78,
+        46796.14
+      ]
+    }
+  },
+  "F03": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000,
+      1641002400000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC"
+    ],
+    "expected": {
+      "name": "SMA",
+      "unit": "number",
+      "value": 46737.64333333333
+    },
+    "id": "F03",
+    "inputs": {
+      "length": 3,
+      "values": [
+        46650.01,
+        46766.78,
+        46796.14
+      ]
+    }
+  },
+  "F04": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000,
+      1641002400000,
+      1641006000000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
+    ],
+    "expected": {
+      "name": "EMA",
+      "unit": "number",
+      "value": 46763.60166666667
+    },
+    "id": "F04",
+    "inputs": {
+      "length": 3,
+      "values": [
+        46650.01,
+        46766.78,
+        46796.14,
+        46789.56
+      ]
+    }
+  },
+  "F05": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000,
+      1641002400000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC"
+    ],
+    "expected": {
+      "name": "WMA",
+      "unit": "number",
+      "value": 46761.99833333333
+    },
+    "id": "F05",
+    "inputs": {
+      "length": 3,
+      "values": [
+        46650.01,
+        46766.78,
+        46796.14
+      ]
+    }
+  },
+  "F06": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "tolerance band transition",
+      "unit": "number",
+      "value": 116.7699999999968
+    },
+    "id": "F06",
+    "inputs": {
+      "level": 46708.395000000004,
+      "tolerance": 0.0,
+      "values": [
+        46650.01,
+        46766.78
+      ]
+    }
+  },
+  "F07": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000,
+      1641002400000,
+      1641006000000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
+    ],
+    "expected": {
+      "name": "forward return",
+      "unit": "number",
+      "value": -0.00014060988790959568
+    },
+    "id": "F07",
+    "inputs": {
+      "closes": [
+        46796.14,
+        46789.56
+      ],
+      "horizon": 1,
+      "side": 1
+    }
+  },
+  "F08": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000,
+      1641002400000,
+      1641006000000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC",
+      "2022-01-01 02:00 UTC",
+      "2022-01-01 03:00 UTC"
+    ],
+    "expected": {
+      "name": "4h close",
+      "unit": "number",
+      "value": 46789.56
+    },
+    "id": "F08",
+    "inputs": {
+      "bucket": "00:00-04:00 UTC",
+      "source_closes": [
+        46650.01,
+        46766.78,
+        46796.14,
+        46789.56
+      ]
+    }
+  },
+  "F09": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "long R target",
+      "unit": "number",
+      "value": 46963.22
+    },
+    "id": "F09",
+    "inputs": {
+      "R": 1,
+      "entry": 46766.78,
+      "stop": 46570.34
+    }
+  },
+  "F10": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "population Sharpe one-observation undefined",
+      "unit": "number",
+      "value": 0.0
+    },
+    "id": "F10",
+    "inputs": {
+      "returns": [
+        -0.00014060988790959568
+      ],
+      "sharpe": "undefined"
+    }
+  },
+  "F11": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "execution math",
+      "unit": "number",
+      "value": 46766.78
+    },
+    "id": "F11",
+    "inputs": {
+      "price": 46766.78,
+      "size_usd": 20,
+      "tick": 0.5
+    }
+  },
+  "F11.1": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "execution math",
+      "unit": "number",
+      "value": 46766.78
+    },
+    "id": "F11.1",
+    "inputs": {
+      "price": 46766.78,
+      "size_usd": 20,
+      "tick": 0.5
+    }
+  },
+  "F11.2": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "execution math",
+      "unit": "number",
+      "value": 46766.78
+    },
+    "id": "F11.2",
+    "inputs": {
+      "price": 46766.78,
+      "size_usd": 20,
+      "tick": 0.5
+    }
+  },
+  "F11.3": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "execution math",
+      "unit": "number",
+      "value": 46766.78
+    },
+    "id": "F11.3",
+    "inputs": {
+      "price": 46766.78,
+      "size_usd": 20,
+      "tick": 0.5
+    }
+  },
+  "F11.4": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "execution math",
+      "unit": "number",
+      "value": 46766.78
+    },
+    "id": "F11.4",
+    "inputs": {
+      "price": 46766.78,
+      "size_usd": 20,
+      "tick": 0.5
+    }
+  },
+  "F11.5": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "execution math",
+      "unit": "number",
+      "value": 46766.78
+    },
+    "id": "F11.5",
+    "inputs": {
+      "price": 46766.78,
+      "size_usd": 20,
+      "tick": 0.5
+    }
+  },
+  "F11.6": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "execution math",
+      "unit": "number",
+      "value": 46766.78
+    },
+    "id": "F11.6",
+    "inputs": {
+      "price": 46766.78,
+      "size_usd": 20,
+      "tick": 0.5
+    }
+  },
+  "F11.7": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "execution math",
+      "unit": "number",
+      "value": 46766.78
+    },
+    "id": "F11.7",
+    "inputs": {
+      "price": 46766.78,
+      "size_usd": 20,
+      "tick": 0.5
+    }
+  },
+  "F11.8": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "execution math",
+      "unit": "number",
+      "value": 46766.78
+    },
+    "id": "F11.8",
+    "inputs": {
+      "price": 46766.78,
+      "size_usd": 20,
+      "tick": 0.5
+    }
+  },
+  "F12": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "TR",
+      "unit": "number",
+      "value": 374.22000000000116
+    },
+    "id": "F12",
+    "inputs": {
+      "high": 46944.56,
+      "low": 46570.34,
+      "previous_close": 46650.01
+    }
+  },
+  "F13": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "gross return",
+      "unit": "number",
+      "value": 0.002503107716375555
+    },
+    "id": "F13",
+    "inputs": {
+      "entry": 46650.01,
+      "exit": 46766.78,
+      "fee_rt": 0.0,
+      "side": 1,
+      "slip_rt": 0.0
+    }
+  },
+  "F14": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "CVD cumulative input",
+      "unit": "number",
+      "value": 701.3620000000019
+    },
+    "id": "F14",
+    "inputs": {
+      "tbv": [
+        4777.701,
+        3689.837
+      ],
+      "volume": [
+        8957.464999999998,
+        7276.249
+      ]
+    }
+  },
+  "F15": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "session hourly return",
+      "unit": "number",
+      "value": 0.009509512650460756
+    },
+    "id": "F15",
+    "inputs": {
+      "close": 46650.01,
+      "open": 46210.57,
+      "window_minutes": 60
+    }
+  },
+  "F16": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "bar return",
+      "unit": "number",
+      "value": 0.009509512650460756
+    },
+    "id": "F16",
+    "inputs": {
+      "close": 46650.01,
+      "open": 46210.57,
+      "timeframe": "1h; cannot resolve 1m slot"
+    }
+  },
+  "F17": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "net reward risk",
+      "unit": "number",
+      "value": 0.5550980402866792
+    },
+    "id": "F17",
+    "inputs": {
+      "entry": 46650.01,
+      "fee_per_side": 0.0005,
+      "stop": 46570.34,
+      "target": 46766.78
+    }
+  },
+  "F18": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "typical price bin",
+      "unit": "number",
+      "value": 4653.0
+    },
+    "id": "F18",
+    "inputs": {
+      "bin_width": 10,
+      "close": 46650.01,
+      "high": 46729.73,
+      "low": 46210.55,
+      "typical_price": 46530.09666666667
+    }
+  },
+  "F18.1": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "typical price bin",
+      "unit": "number",
+      "value": 4653.0
+    },
+    "id": "F18.1",
+    "inputs": {
+      "bin_width": 10,
+      "close": 46650.01,
+      "high": 46729.73,
+      "low": 46210.55,
+      "typical_price": 46530.09666666667
+    }
+  },
+  "F18.2": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "typical price bin",
+      "unit": "number",
+      "value": 4653.0
+    },
+    "id": "F18.2",
+    "inputs": {
+      "bin_width": 10,
+      "close": 46650.01,
+      "high": 46729.73,
+      "low": 46210.55,
+      "typical_price": 46530.09666666667
+    }
+  },
+  "F18.3": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "typical price bin",
+      "unit": "number",
+      "value": 4653.0
+    },
+    "id": "F18.3",
+    "inputs": {
+      "bin_width": 10,
+      "close": 46650.01,
+      "high": 46729.73,
+      "low": 46210.55,
+      "typical_price": 46530.09666666667
+    }
+  },
+  "F18.4": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "typical price bin",
+      "unit": "number",
+      "value": 4653.0
+    },
+    "id": "F18.4",
+    "inputs": {
+      "bin_width": 10,
+      "close": 46650.01,
+      "high": 46729.73,
+      "low": 46210.55,
+      "typical_price": 46530.09666666667
+    }
+  },
+  "F18.5": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "typical price bin",
+      "unit": "number",
+      "value": 4653.0
+    },
+    "id": "F18.5",
+    "inputs": {
+      "bin_width": 10,
+      "close": 46650.01,
+      "high": 46729.73,
+      "low": 46210.55,
+      "typical_price": 46530.09666666667
+    }
+  },
+  "F18.6": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "typical price bin",
+      "unit": "number",
+      "value": 4653.0
+    },
+    "id": "F18.6",
+    "inputs": {
+      "bin_width": 10,
+      "close": 46650.01,
+      "high": 46729.73,
+      "low": 46210.55,
+      "typical_price": 46530.09666666667
+    }
+  },
+  "F18.7": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "typical price bin",
+      "unit": "number",
+      "value": 4653.0
+    },
+    "id": "F18.7",
+    "inputs": {
+      "bin_width": 10,
+      "close": 46650.01,
+      "high": 46729.73,
+      "low": 46210.55,
+      "typical_price": 46530.09666666667
+    }
+  },
+  "F19": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "linear trendline",
+      "unit": "number",
+      "value": 46930.12999999999
+    },
+    "id": "F19",
+    "inputs": {
+      "anchors": [
+        [
+          0,
+          46210.55
+        ],
+        [
+          1,
+          46570.34
+        ]
+      ],
+      "query_index": 2
+    }
+  },
+  "F19.1": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "linear trendline",
+      "unit": "number",
+      "value": 46930.12999999999
+    },
+    "id": "F19.1",
+    "inputs": {
+      "anchors": [
+        [
+          0,
+          46210.55
+        ],
+        [
+          1,
+          46570.34
+        ]
+      ],
+      "query_index": 2
+    }
+  },
+  "F19.2": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "linear trendline",
+      "unit": "number",
+      "value": 46930.12999999999
+    },
+    "id": "F19.2",
+    "inputs": {
+      "anchors": [
+        [
+          0,
+          46210.55
+        ],
+        [
+          1,
+          46570.34
+        ]
+      ],
+      "query_index": 2
+    }
+  },
+  "F19.3": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "linear trendline",
+      "unit": "number",
+      "value": 46930.12999999999
+    },
+    "id": "F19.3",
+    "inputs": {
+      "anchors": [
+        [
+          0,
+          46210.55
+        ],
+        [
+          1,
+          46570.34
+        ]
+      ],
+      "query_index": 2
+    }
+  },
+  "F19.4": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "linear trendline",
+      "unit": "number",
+      "value": 46930.12999999999
+    },
+    "id": "F19.4",
+    "inputs": {
+      "anchors": [
+        [
+          0,
+          46210.55
+        ],
+        [
+          1,
+          46570.34
+        ]
+      ],
+      "query_index": 2
+    }
+  },
+  "F19.5": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "linear trendline",
+      "unit": "number",
+      "value": 46930.12999999999
+    },
+    "id": "F19.5",
+    "inputs": {
+      "anchors": [
+        [
+          0,
+          46210.55
+        ],
+        [
+          1,
+          46570.34
+        ]
+      ],
+      "query_index": 2
+    }
+  },
+  "F19.6": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "linear trendline",
+      "unit": "number",
+      "value": 46930.12999999999
+    },
+    "id": "F19.6",
+    "inputs": {
+      "anchors": [
+        [
+          0,
+          46210.55
+        ],
+        [
+          1,
+          46570.34
+        ]
+      ],
+      "query_index": 2
+    }
+  },
+  "F19.7": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "linear trendline",
+      "unit": "number",
+      "value": 46930.12999999999
+    },
+    "id": "F19.7",
+    "inputs": {
+      "anchors": [
+        [
+          0,
+          46210.55
+        ],
+        [
+          1,
+          46570.34
+        ]
+      ],
+      "query_index": 2
+    }
+  },
+  "F19.8": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "linear trendline",
+      "unit": "number",
+      "value": 46930.12999999999
+    },
+    "id": "F19.8",
+    "inputs": {
+      "anchors": [
+        [
+          0,
+          46210.55
+        ],
+        [
+          1,
+          46570.34
+        ]
+      ],
+      "query_index": 2
+    }
+  },
+  "F20": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "WaveTrend ap",
+      "unit": "number",
+      "value": 46530.09666666667
+    },
+    "id": "F20",
+    "inputs": {
+      "close": 46650.01,
+      "high": 46729.73,
+      "low": 46210.55,
+      "output": "unavailable before warmup",
+      "warmup_bars": 200
+    }
+  },
+  "F20.1": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "WaveTrend ap",
+      "unit": "number",
+      "value": 46530.09666666667
+    },
+    "id": "F20.1",
+    "inputs": {
+      "close": 46650.01,
+      "high": 46729.73,
+      "low": 46210.55,
+      "output": "unavailable before warmup",
+      "warmup_bars": 200
+    }
+  },
+  "F20.2": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "WaveTrend ap",
+      "unit": "number",
+      "value": 46530.09666666667
+    },
+    "id": "F20.2",
+    "inputs": {
+      "close": 46650.01,
+      "high": 46729.73,
+      "low": 46210.55,
+      "output": "unavailable before warmup",
+      "warmup_bars": 200
+    }
+  },
+  "F20.3": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "WaveTrend ap",
+      "unit": "number",
+      "value": 46530.09666666667
+    },
+    "id": "F20.3",
+    "inputs": {
+      "close": 46650.01,
+      "high": 46729.73,
+      "low": 46210.55,
+      "output": "unavailable before warmup",
+      "warmup_bars": 200
+    }
+  },
+  "F20.4": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "WaveTrend ap",
+      "unit": "number",
+      "value": 46530.09666666667
+    },
+    "id": "F20.4",
+    "inputs": {
+      "close": 46650.01,
+      "high": 46729.73,
+      "low": 46210.55,
+      "output": "unavailable before warmup",
+      "warmup_bars": 200
+    }
+  },
+  "F21": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "volume ratio",
+      "unit": "number",
+      "value": 0.812311184023605
+    },
+    "id": "F21",
+    "inputs": {
+      "configured_prior_count": 20,
+      "current_volume": 7276.249,
+      "prior_count": 1,
+      "prior_volume": 8957.464999999998
+    }
+  },
+  "F21.1": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "volume ratio",
+      "unit": "number",
+      "value": 0.812311184023605
+    },
+    "id": "F21.1",
+    "inputs": {
+      "configured_prior_count": 20,
+      "current_volume": 7276.249,
+      "prior_count": 1,
+      "prior_volume": 8957.464999999998
+    }
+  },
+  "F21.2": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "volume ratio",
+      "unit": "number",
+      "value": 0.812311184023605
+    },
+    "id": "F21.2",
+    "inputs": {
+      "configured_prior_count": 20,
+      "current_volume": 7276.249,
+      "prior_count": 1,
+      "prior_volume": 8957.464999999998
+    }
+  },
+  "F21.3": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "volume ratio",
+      "unit": "number",
+      "value": 0.812311184023605
+    },
+    "id": "F21.3",
+    "inputs": {
+      "configured_prior_count": 20,
+      "current_volume": 7276.249,
+      "prior_count": 1,
+      "prior_volume": 8957.464999999998
+    }
+  },
+  "F21.4": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "volume ratio",
+      "unit": "number",
+      "value": 0.812311184023605
+    },
+    "id": "F21.4",
+    "inputs": {
+      "configured_prior_count": 20,
+      "current_volume": 7276.249,
+      "prior_count": 1,
+      "prior_volume": 8957.464999999998
+    }
+  },
+  "F21.5": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "volume ratio",
+      "unit": "number",
+      "value": 0.812311184023605
+    },
+    "id": "F21.5",
+    "inputs": {
+      "configured_prior_count": 20,
+      "current_volume": 7276.249,
+      "prior_count": 1,
+      "prior_volume": 8957.464999999998
+    }
+  },
+  "F21.6": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "volume ratio",
+      "unit": "number",
+      "value": 0.812311184023605
+    },
+    "id": "F21.6",
+    "inputs": {
+      "configured_prior_count": 20,
+      "current_volume": 7276.249,
+      "prior_count": 1,
+      "prior_volume": 8957.464999999998
+    }
+  },
+  "F21.7": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "volume ratio",
+      "unit": "number",
+      "value": 0.812311184023605
+    },
+    "id": "F21.7",
+    "inputs": {
+      "configured_prior_count": 20,
+      "current_volume": 7276.249,
+      "prior_count": 1,
+      "prior_volume": 8957.464999999998
+    }
+  },
+  "F21.8": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "volume ratio",
+      "unit": "number",
+      "value": 0.812311184023605
+    },
+    "id": "F21.8",
+    "inputs": {
+      "configured_prior_count": 20,
+      "current_volume": 7276.249,
+      "prior_count": 1,
+      "prior_volume": 8957.464999999998
+    }
+  },
+  "F21.9": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "volume ratio",
+      "unit": "number",
+      "value": 0.812311184023605
+    },
+    "id": "F21.9",
+    "inputs": {
+      "configured_prior_count": 20,
+      "current_volume": 7276.249,
+      "prior_count": 1,
+      "prior_volume": 8957.464999999998
+    }
+  },
+  "F22": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "population standard deviation",
+      "unit": "number",
+      "value": 58.3849999999984
+    },
+    "id": "F22",
+    "inputs": {
+      "closes": [
+        46650.01,
+        46766.78
+      ],
+      "length": 2
+    }
+  },
+  "F23": {
+    "bar_open_ms": [
+      1640995200000,
+      1640998800000
+    ],
+    "bar_open_utc": [
+      "2022-01-01 00:00 UTC",
+      "2022-01-01 01:00 UTC"
+    ],
+    "expected": {
+      "name": "RSI warmup",
+      "unit": "number",
+      "value": 56.16276802655401
+    },
+    "id": "F23",
+    "inputs": {
+      "close_count": 15,
+      "rsi": 56.16276802655401,
+      "rsi_period": 14,
+      "stoch": "unavailable before 14 RSI values"
+    }
+  }
+}

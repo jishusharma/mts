@@ -1,0 +1,233 @@
+MyTradingSys/research/b141_htf_stage2.py:81	fullsample-quantile	WARN	allowlisted	return float(np.percentile(ds, 2.5)), float(np.percentile(ds, 97.5))
+MyTradingSys/research/b141_htf_stage2.py:93	fullsample-quantile	WARN	allowlisted	q = np.quantile(vol, [1 / 3, 2 / 3])
+MyTradingSys/research/b141_htf_stage2.py:128	fullsample-quantile	WARN	allowlisted	p5 = float(np.percentile(pl, 5))
+MyTradingSys/research/candle_patterns_2026-10-04/d19_4h_test.py:92	fwd-index	FAIL	allowlisted	entry = bars4h[i+1]["o"]
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/candles.py:96	fwd-index	FAIL	allowlisted	mo, ins, brk = f[m], f[m + 1], f[m + 2]
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/op_rule.py:114	fwd-index	FAIL	allowlisted	s += side * (lc[start + L - 1] - lo[start])
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/run_p1.py:41	fwd-index	FAIL	allowlisted	return funding.sum(bars[i + 1]["t"], bars[i + 1 + h]["t"])
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/run_p1.py:82	fwd-index	FAIL	allowlisted	c += pc[a + block] - pc[a]
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/run_p1.py:83	fwd-index	FAIL	allowlisted	s += ps[a + block] - ps[a]
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/run_p1.py:135	fwd-index	FAIL	allowlisted	ratio.append(f[i + 1] / mean_prior if mean_prior > 0 else 1.0)
+MyTradingSys/research/candle_patterns_2026-10-04/pilot/run_p1.py:136	fwd-index	FAIL	allowlisted	absret.append(abs(math.log(bars[i + 1]["c"] / bars[i + 1]["o"])))
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:339	fwd-index	FAIL	allowlisted	conf = F4h.start[i + KROWN_N] + TF["4h"]
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:686	pivot-right-neighbour	FAIL	allowlisted	win_h = np.r_[f4h[i - KROWN_N:i], f4h[i + 1:i + KROWN_N + 1]]
+MyTradingSys/research/context_factors_2026-10-16/context_asof.py:687	pivot-right-neighbour	FAIL	allowlisted	win_l = np.r_[f4l[i - KROWN_N:i], f4l[i + 1:i + KROWN_N + 1]]
+MyTradingSys/research/context_factors_2026-10-16/counts.py:128	fullsample-quantile	WARN	allowlisted	q = x["f3_stop_pct"].quantile([.1, .5, .9]).to_numpy(); cr = x["f3_cost_R"].quantile([.1, .5, .9]).t
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:274	fwd-index	FAIL	allowlisted	vh = float(vol[hi + 1]) if hi < n - 1 else -1.0
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:500	pivot-right-neighbour	FAIL	allowlisted	hi[n:K - n] &= (H[n:K - n] > H[n - k:K - n - k]) & (H[n:K - n] > H[n + k:K - n + k])
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:501	pivot-right-neighbour	FAIL	allowlisted	lo[n:K - n] &= (L[n:K - n] < L[n - k:K - n - k]) & (L[n:K - n] < L[n + k:K - n + k])
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:518	pivot-right-neighbour	FAIL	allowlisted	if all(H[i] > H[i - k] and H[i] > H[i + k] for k in range(1, n + 1)):
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:520	pivot-right-neighbour	FAIL	allowlisted	if all(L[i] < L[i - k] and L[i] < L[i + k] for k in range(1, n + 1)):
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:553	fwd-index	FAIL	allowlisted	self.vp_day[k] = profile_vec(b["L"][s:s + 1440], b["H"][s:s + 1440], b["V"][s:s + 1440])
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:558	fwd-index	FAIL	allowlisted	self.vp_week[k] = profile_vec(b["L"][s:s + 10080], b["H"][s:s + 10080], b["V"][s:s + 10080])
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:624	fullsample-quantile	WARN	allowlisted	self.squeeze[j] = bw[j] <= np.percentile(wb, SQUEEZE_PCT)
+MyTradingSys/research/context_factors_pit_2026-10-16/context_asof.py:1015	fullsample-quantile	WARN	allowlisted	self.squeeze = bool(self.bw4_hist[-1] <= np.percentile(np.array(self.bw4_hist), SQUEEZE_PCT))
+MyTradingSys/research/context_factors_pit_2026-10-16/counts.py:146	fullsample-quantile	WARN	allowlisted	return float(np.percentile(v, q)) if len(v) else float("nan")
+MyTradingSys/research/context_factors_pit_2026-10-16/indep_pandas.py:171	fwd-index	FAIL	allowlisted	vh = vol[hi + 1] if hi < len(vol) - 1 else -1.0
+MyTradingSys/research/context_factors_pit_2026-10-16/indep_pandas.py:189	pivot-right-neighbour	FAIL	allowlisted	if all(H[i] > H[i - k] and H[i] > H[i + k] for k in range(1, n + 1)):
+MyTradingSys/research/context_factors_pit_2026-10-16/indep_pandas.py:191	pivot-right-neighbour	FAIL	allowlisted	if all(L[i] < L[i - k] and L[i] < L[i + k] for k in range(1, n + 1)):
+MyTradingSys/research/context_factors_pit_2026-10-16/indep_pandas.py:276	fullsample-quantile	WARN	allowlisted	f["squeeze"] = bool(len(wb) == PCT_WIN and bw4.iloc[-1] <= np.percentile(wb, SQUEEZE_PCT))
+MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py:68	fwd-index	FAIL	allowlisted	O[s:s + 240] = cs[k]
+MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py:69	fwd-index	FAIL	allowlisted	C[s:s + 240] = cs[k]
+MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py:70	fwd-index	FAIL	allowlisted	H[s:s + 240] = cs[k]
+MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py:71	fwd-index	FAIL	allowlisted	L[s:s + 240] = cs[k]
+MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py:72	fwd-index	FAIL	allowlisted	H[s + 10] = hs[k]
+MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py:73	fwd-index	FAIL	allowlisted	L[s + 20] = ls[k]
+MyTradingSys/research/core_readiness_2026-09-27/harness/core_invariants.py:135	fwd-index	FAIL	allowlisted	if any(raws[i] < raws[i + 1] for i in range(len(raws) - 1)):
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/t02_planted.py:21	pivot-right-neighbour	FAIL	NEW	if bars[i]["c"] > max(b["c"] for b in bars[i - 5:i]) and bars[i + 1]["c"] > bars[i]["c"]]
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/t02_planted.py:40	fwd-index	FAIL	NEW	if T.keyed(fn(bars[:k + 1] + T.poison(bars[k + 1:], mode)), Tk) != At:
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T02/t02_truncation.py:211	fwd-index	FAIL	NEW	pz = run_layer(reg, key, B[s:k + 1] + poison(B[k + 1:], mode), funding_box, wlow_box)
+MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py:84	fwd-index	FAIL	allowlisted	if np.isnan(ll).sum() > 30 or np.isnan(L[T0:T0 + 240]).sum() > 10:
+MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py:103	fwd-index	FAIL	allowlisted	w_l = L[T0:T0 + 240]; w_c = C[T0:T0 + 240]
+MyTradingSys/research/eur_low_us_sweep_2026-10-14/study.py:109	fwd-index	FAIL	allowlisted	after = C[T0 + b: T0 + b + 120]
+MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/followups.py:57	fwd-index	FAIL	allowlisted	if ei + h >= len(O) or math.isnan(O[ei]) or math.isnan(O[ei + h]):
+MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/followups.py:72	fwd-index	FAIL	allowlisted	return {"gross": side * (float(O[ei + h]) / entry - 1.0), "why": "time", "risk": risk}
+MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/followups.py:100	fwd-index	FAIL	allowlisted	above = np.where(C[b:b + RECLAIM_MIN] > lev)[0]
+MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/followups.py:149	fwd-index	FAIL	allowlisted	seg = H[p1 + TOP_GAP:T0]
+MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/followups.py:155	fwd-index	FAIL	allowlisted	if np.isnan(L[p1 + 1:p2]).all() or np.nanmin(L[p1 + 1:p2]) > H[p1] * (1 - TOP_VALLEY):
+MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/test_followups.py:30	fwd-index	FAIL	allowlisted	O[b + 1], H[b + 1], L[b + 1], C[b + 1] = 97.7, 97.8, 97.0, 97.5
+MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/test_followups.py:31	fwd-index	FAIL	allowlisted	O[b + 2], H[b + 2], L[b + 2], C[b + 2] = 97.5, 98.5, 97.4, 98.3
+MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/test_followups.py:34	fwd-index	FAIL	allowlisted	O[b + 4 + 120] = 100.0
+MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/test_followups.py:70	fwd-index	FAIL	allowlisted	O[T0 + 34] = 96.0 # fills under the stop
+MyTradingSys/research/fabio_date_match_2026-10-18/date_match.py:42	fwd-index	FAIL	allowlisted	w40 = [x for x in bars[i + 1:] if x[0] <= b[0] + TP_WINDOW_MIN * 60000]
+MyTradingSys/research/fabio_date_match_2026-10-18/date_match.py:49	fwd-index	FAIL	allowlisted	w120 = [x for x in bars[i + 1:] if x[0] <= b[0] + RANGE_WINDOW_MIN * 60000]
+MyTradingSys/research/fabio_date_match_2026-10-18/date_match.py:53	fwd-index	FAIL	allowlisted	mid = any(x[2] - e >= MID_PT for x in bars[i + 1:] if x[0] <= b[0] + MID_WINDOW_MIN * 60000)
+MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py:115	fwd-index	FAIL	allowlisted	upper = profile[prices[hi + 1]] if hi < len(prices) - 1 else -1
+MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py:391	pivot-right-neighbour	FAIL	allowlisted	if d[k]["l"] < min(x["l"] for x in d[k - 3:k]) and d[k]["l"] < min(x["l"] for x in d[k + 1:k + 4]) a
+MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py:393	pivot-right-neighbour	FAIL	allowlisted	if d[k]["h"] > max(x["h"] for x in d[k - 3:k]) and d[k]["h"] > max(x["h"] for x in d[k + 1:k + 4]) a
+MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py:729	fwd-index	FAIL	allowlisted	tmp.write_text(json.dumps([dict(out=str(j["out"]), w=W_PX, h=H_PX, prims=j["prims"]) for j in jobs[s
+MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py:75	fwd-index	FAIL	allowlisted	return D.d[i + 1]["c"] > D.d[i]["c"] if i + 1 < len(D.d) else None
+MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py:39	fwd-index	FAIL	allowlisted	o[b + jb], c[b + jb] = 100.0, p1
+MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py:40	fwd-index	FAIL	allowlisted	h[b + jb] = max(100.0, p1)
+MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py:41	fwd-index	FAIL	allowlisted	l[b + jb] = min(100.0, p1)
+MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py:50	fwd-index	FAIL	allowlisted	tbv[b:b + DAY] = agg
+MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py:84	fullsample-quantile	WARN	NEW	want = np.nanpercentile(ref, 80, axis=0)
+MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py:234	fwd-index	FAIL	allowlisted	near = w2.iloc[max(0, j - 1): j + 2]
+MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py:349	fullsample-quantile	WARN	NEW	return float(np.percentile(means, 2.5)), float(np.percentile(means, 97.5))
+MyTradingSys/research/krown_capture_2026-10-16/check_quotes.py:25	fwd-index	FAIL	allowlisted	s = re.match(r"^Source:\s*([A-Za-z0-9_-]{11}) @(\d\d:\d\d:\d\d)", lines[i+1])
+MyTradingSys/research/krown_capture_2026-10-16/check_quotes.py:29	fwd-index	FAIL	allowlisted	pos = next((j for j in range(len(words)-k+1) if words[j:j+k] == q), None)
+MyTradingSys/research/krown_capture_2026-10-16/check_quotes.py:34	fwd-index	FAIL	allowlisted	if fix: lines[i+1] = lines[i+1].replace("@"+s[2], "@"+real, 1)
+MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py:115	pivot-right-neighbour	FAIL	allowlisted	if all(s * v[i] < s * v[i - j] for j in range(1, k + 1)) and all(s * v[i] <= s * v[i + j] for j in r
+MyTradingSys/research/krown_malkan_g3_2026-10-16/event_counts.py:159	fwd-index	FAIL	allowlisted	for q in piv[x + 1:]:
+MyTradingSys/research/krown_ta101_2026-10-13/tools/build_setup_catalog.py:62	fwd-index	FAIL	allowlisted	return None if i is None else (vid, lines[i], lines[i + 1], i + 1)
+MyTradingSys/research/krown_ta101_2026-10-13/tools/build_setup_catalog.py:70	fwd-index	FAIL	allowlisted	return "<MISSING>" if i is None else f"\n{lines[i]}\n{lines[i + 1]}\n"
+MyTradingSys/research/layer_lab/bb_top_reversal_event_table/event_table.py:47	fwd-index	FAIL	allowlisted	green_t, red_t = times[green_i], times[green_i + 1]
+MyTradingSys/research/layer_lab/bigtrade_event_table/event_table.py:53	fwd-index	FAIL	allowlisted	hs = np.asarray(bars["h"][i + 1:end], dtype=float)
+MyTradingSys/research/layer_lab/bigtrade_event_table/event_table.py:54	fwd-index	FAIL	allowlisted	ls = np.asarray(bars["l"][i + 1:end], dtype=float)
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py:71	fwd-index	FAIL	allowlisted	audit = [dict(before=str(a.index[i]), after=str(a.index[i+1]),
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py:72	fwd-index	FAIL	allowlisted	missing=int((a.index[i+1]-a.index[i]).total_seconds()/60)-1) for i in gaps]
+MyTradingSys/research/layer_lab/candle_close_2026-10-14/study.py:186	fullsample-quantile	WARN	allowlisted	row[col+'_ci'] = np.quantile(draws, [.025, .975]).tolist()
+MyTradingSys/research/layer_lab/candle_pattern_event_table/event_table.py:23	fwd-index	FAIL	allowlisted	future=bars[i+1:end]
+MyTradingSys/research/layer_lab/formula_spec_text/gen_examples.py:1	parse-error	WARN	NEW	invalid non-printable character U+FEFF (<unknown>, line 1)
+MyTradingSys/research/layer_lab/funding_extreme_event_table/event_table.py:31	fullsample-quantile	WARN	NEW	q95 = float(np.quantile(np.asarray(prior), PERCENTILE / 100, method="linear"))
+MyTradingSys/research/layer_lab/session_levels_event_table/test_event_table.py:1	parse-error	WARN	NEW	invalid non-printable character U+FEFF (<unknown>, line 1)
+MyTradingSys/research/levels_confluence_2026-10-14/event_table.py:60	pivot-right-neighbour	FAIL	allowlisted	if closed[i]['h']>max(x['h'] for x in closed[i-2:i]+closed[i+1:i+3]): hs.append((i,closed[i]['h']))
+MyTradingSys/research/levels_confluence_2026-10-14/event_table.py:61	pivot-right-neighbour	FAIL	allowlisted	if closed[i]['l']<min(x['l'] for x in closed[i-2:i]+closed[i+1:i+3]): ls.append((i,closed[i]['l']))
+MyTradingSys/research/levels_confluence_2026-10-14/event_table.py:95	fwd-index	FAIL	allowlisted	for b in path[stopped_at+1:]:
+MyTradingSys/research/levels_confluence_2026-10-14/levels.py:112	pivot-right-neighbour	FAIL	allowlisted	if pivot['h'] > max(x['h'] for x in h4[i - 2:i] + h4[i + 1:i + 3]):
+MyTradingSys/research/levels_confluence_2026-10-14/levels.py:114	pivot-right-neighbour	FAIL	allowlisted	if pivot['l'] < min(x['l'] for x in h4[i - 2:i] + h4[i + 1:i + 3]):
+MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py:131	fwd-index	FAIL	allowlisted	back = any(float(b['l']) <= e['level'] <= float(b['h']) for b in later[l2_idx + 1:])
+MyTradingSys/research/levels_sizing_2026-10-14/probe.py:31	fwd-index	FAIL	allowlisted	right = volumes[hi+1] if hi+1 < len(prices) else -1
+MyTradingSys/research/levels_sizing_2026-10-14/probe.py:51	fwd-index	FAIL	allowlisted	entry = a[i+1, 1]
+MyTradingSys/research/levels_sizing_2026-10-14/probe.py:185	fullsample-quantile	WARN	allowlisted	ci = np.percentile((values-baseline)[indices].mean(axis=1), [2.5, 97.5])
+MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/study.py:158	fwd-index	FAIL	allowlisted	w = np.nonzero(a5["H"][i + 1:i + 1 + RETEST_BARS] >= st["mid"][i])[0]
+MyTradingSys/research/malkan_extract_2026-10-15/tools/check_hindi.py:45	fwd-index	FAIL	allowlisted	tail = lines[i + 1:i + 5]
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py:83	fwd-index	FAIL	allowlisted	out[i + 1] = 100.0 if al == 0 else 100 - 100 / (1 + ag / al)
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py:266	fwd-index	FAIL	allowlisted	lo, hi = k1["l"][i0:i0 + w], k1["h"][i0:i0 + w]
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py:280	fwd-index	FAIL	allowlisted	g, ex = s * (k1["c"][i0 + w - 1] / e - 1), i0 + w
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py:293	fwd-index	FAIL	allowlisted	sg = (sig_long if tm["s"][r] > 0 else sig_short)[j:j + K]
+MyTradingSys/research/mfe_exit_2026-10-13/mfe_exit_study.py:345	fwd-index	FAIL	allowlisted	w = arr[j0:j0 + K]
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py:242	fwd-index	FAIL	allowlisted	c = next((b + i for i in range(k) if b + i < len(C) and ((C[b + i] <= hi) if up_ else (C[b + i] >= l
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py:245	fwd-index	FAIL	allowlisted	w_l, w_h = L[c + 1:c + 1 + M_HH], H[c + 1:c + 1 + M_HH]
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py:259	fwd-index	FAIL	allowlisted	w_l, w_h = L[c + 1:c + 1 + M_HH], H[c + 1:c + 1 + M_HH]
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py:281	fwd-index	FAIL	allowlisted	cnt[i] += int(C[b + 1 + i] > m_)
+MyTradingSys/research/opr_bb_mtf_center_2026-10-16/study.py:369	fwd-index	FAIL	allowlisted	nxt = np.array([[a["C"][k + o] > p["mid"][k + o] if k + o < len(a["C"]) else np.nan for o in (1, 2, 
+MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py:38	pivot-right-neighbour	FAIL	allowlisted	left, right = H[k - w:k], H[k + 1:k + w + 1]
+MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py:47	fwd-index	FAIL	allowlisted	x = H[k + 1:end]
+MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py:68	fullsample-quantile	WARN	allowlisted	lo, hi = np.quantile(s[ok], [qlo, qhi])
+MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py:130	fullsample-quantile	WARN	allowlisted	q1, q2 = np.quantile(ev["S1"], [1 / 3, 2 / 3])
+MyTradingSys/research/opr_preopen_tops_2026-10-16/study.py:208	fwd-index	FAIL	allowlisted	hh, uu = a15["H"][m0:m0 + 26], up15[m0:m0 + 26]
+MyTradingSys/research/opr_preopen_tops_2026-10-16/test_study.py:76	fullsample-quantile	WARN	allowlisted	q1, q2 = np.quantile(s, [1 / 3, 2 / 3])
+MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/study.py:180	fwd-index	FAIL	allowlisted	post5 = np.array([dl[x:x + 5].sum() for x in j])
+MyTradingSys/research/orderflow_views_2026-10-14/study.py:190	fwd-index	FAIL	allowlisted	seg = A1[e:e + 120]
+MyTradingSys/research/orderflow_views_2026-10-14/study.py:312	fwd-index	FAIL	allowlisted	s = seg[k:k + 5]
+MyTradingSys/research/orderflow_views_2026-10-14/study.py:314	fwd-index	FAIL	allowlisted	"delta": round(float(d[k:k + 5].sum()), 1), "cvd22_close": round(float(cvd22[k + 4]), 1),
+MyTradingSys/research/p1_cost_floor/p1_cost_floor.py:51	fwd-index	FAIL	allowlisted	nxt_hit = lo[i+1] <= px if side==1 else hi[i+1] >= px
+MyTradingSys/research/p1_cost_floor/p1_cost_floor.py:52	fwd-index	FAIL	allowlisted	strict = lo[i+1] < px if side==1 else hi[i+1] > px
+MyTradingSys/research/p4_corrected.py:78	fullsample-quantile	WARN	allowlisted	return float(np.percentile(means, 2.5)), float(np.percentile(means, 97.5)), float(s.sum() / n.sum())
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py:54	fwd-index	FAIL	allowlisted	keep = [i for i in idx if i + n <= len(a) and key[i + n - 1] == key[i]]
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py:57	fwd-index	FAIL	allowlisted	s = a[i:i + n]
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py:94	fwd-index	FAIL	allowlisted	out[n - 1 + lag:] = v[:len(x) - n + 1 - lag] if lag else v
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py:117	fwd-index	FAIL	allowlisted	out[i + 1] = 100 if ad == 0 else 100 - 100 / (1 + au / ad)
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py:451	fwd-index	FAIL	allowlisted	samp = np.concatenate([r[s:s + blk] for s in st])[:len(r)]
+MyTradingSys/research/setup_alpha_beta_2026-10-10/beta_sweep.py:177	pivot-right-neighbour	FAIL	allowlisted	sh = [bars[i]["h"] for i in prev if bars[i]["h"] >= bars[i-1]["h"] and bars[i]["h"] >= bars[i+1]["h"
+MyTradingSys/research/setup_alpha_beta_2026-10-10/beta_sweep.py:178	pivot-right-neighbour	FAIL	allowlisted	sl = [bars[i]["l"] for i in prev if bars[i]["l"] <= bars[i-1]["l"] and bars[i]["l"] <= bars[i+1]["l"
+MyTradingSys/research/setup_catalog_2026-10-15/evidence/rsi_divergence_mtf_checks.py:79	pivot-right-neighbour	FAIL	allowlisted	w = cl[i - k:i + k + 1]
+MyTradingSys/research/tom_btc_2026-10-13/chart_lab.py:40	fwd-index	FAIL	allowlisted	upper = profile[prices[hi + 1]] if hi < len(prices) - 1 else -1
+MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py:147	pivot-right-neighbour	FAIL	allowlisted	pk = [i for i in range(1, len(sm) - 1) if sm[i] >= sm[i - 1] and sm[i] >= sm[i + 1] and sm[i] >= med
+MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py:151	fwd-index	FAIL	allowlisted	seg = sm[p0 + 1:p1]
+MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py:157	fwd-index	FAIL	allowlisted	while j + 1 < len(seg) and lowm[j + 1]: j += 1
+MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py:252	fwd-index	FAIL	allowlisted	rr = (C[pool + h] / O[pool + 1] - 1)
+MyTradingSys/research/trendlines_2026-10-17/g3_pack/g3_pack.py:150	fwd-index	FAIL	allowlisted	if line_ok(B, i, side, ia, ib, sw[x + 1:]):
+MyTradingSys/research/trendlines_2026-10-17/g3_pack/g3_pack.py:281	fwd-index	FAIL	allowlisted	tmp.write_text(json.dumps([dict(out=str(j["out"]), w=W_PX, h=H_PX, prims=j["prims"]) for j in jobs[s
+MyTradingSys/research/trendlines_2026-10-17/g3_pack/test_g3_pack.py:44	fwd-index	FAIL	allowlisted	poisoned = bars[:i + 1] + [dict(b, h=b["h"] * 3, l=b["l"] / 3, c=b["c"] * 2, o=b["o"] * 2, vol=b["vo
+MyTradingSys/research/trendlines_2026-10-17/g3_pack/test_g3_pack.py:60	fwd-index	FAIL	allowlisted	leaky = lambda B, i: B[i + 1]["c"] > B[i]["c"] if i + 1 < len(B) else None
+MyTradingSys/research/video_priority_2026-10-15/apply_selection.py:72	fwd-index	FAIL	allowlisted	keep[idx + 1:idx + 1] = new_rows
+MyTradingSys/research/volume_2026-10-09/run_v0.py:34	fullsample-quantile	WARN	allowlisted	return [np.percentile(x, k) for k in qs]
+MyTradingSys/research/volume_2026-10-09/run_v0.py:70	fullsample-quantile	WARN	allowlisted	rows.append([y, int(mk.sum()), "%.0f" % np.median(v), "%.0f" % np.percentile(v, 95), "%.0f" % v.max(
+MyTradingSys/research/volume_2026-10-09/run_v1.py:156	fwd-index	FAIL	allowlisted	out.append(float(1e4 * np.mean(sgn * np.log(b["o"][ii + 1 + h] / b["o"][ii + 1]))))
+MyTradingSys/research/volume_2026-10-09/run_v4.py:95	fwd-index	FAIL	allowlisted	fw = np.log(b["o"][idx + 1 + h] / b["o"][idx + 1]) * F.DIRS[nm]
+MyTradingSys/research/volume_2026-10-09/vstats.py:50	fwd-index	FAIL	allowlisted	S = starts[r0:r0 + chunk] # (R, nb)
+MyTradingSys/research/volume_2026-10-09/vstats.py:60	fwd-index	FAIL	allowlisted	boot[:, h, r0:r0 + R] = b
+MyTradingSys/research/volume_2026-10-09/vstats.py:100	fwd-index	FAIL	allowlisted	cnt = (pc[starts + block] - pc[starts]).sum(axis=1)
+MyTradingSys/research/volume_2026-10-09/vstats.py:101	fwd-index	FAIL	allowlisted	sf = (ps[starts + block] - ps[starts]).sum(axis=1)
+MyTradingSys/research/volume_2026-10-09/vstats.py:117	fwd-index	FAIL	allowlisted	ca, cb = (pa[starts + block] - pa[starts]).sum(axis=1), (pb[starts + block] - pb[starts]).sum(axis=1
+MyTradingSys/research/volume_2026-10-09/vstats.py:118	fwd-index	FAIL	allowlisted	sa, sb = (psa[starts + block] - psa[starts]).sum(axis=1), (psb[starts + block] - psb[starts]).sum(ax
+MyTradingSys/research/volume_2026-10-09/vstats.py:146	fwd-index	FAIL	allowlisted	ca, sa = (pcA[starts + block] - pcA[starts]).sum(axis=1), (psA[starts + block] - psA[starts]).sum(ax
+MyTradingSys/research/volume_2026-10-09/vstats.py:147	fwd-index	FAIL	allowlisted	cb, sb = (pcB[starts + block] - pcB[starts]).sum(axis=1), (psB[starts + block] - psB[starts]).sum(ax
+MyTradingSys/research/vpin_dayclustered_2026-10-10.py:17	fwd-index	FAIL	allowlisted	if i+h < len(bt): o[n] = abs(ca[bt[i+h]]-c0)/c0*100
+MyTradingSys/research/wavetrend_2026-10-17/atlas.py:188	fwd-index	FAIL	allowlisted	w1 = wt1[t + u]
+MyTradingSys/research/wavetrend_2026-10-17/atlas.py:189	fwd-index	FAIL	allowlisted	if cross[t + u] != 0 or (not np.isnan(w1) and s * w1 <= 0):
+MyTradingSys/research/wavetrend_2026-10-17/count_events.py:167	pivot-right-neighbour	FAIL	allowlisted	w = x[p - k:p + k + 1]
+MyTradingSys/research/wavetrend_2026-10-17/count_events.py:170	pivot-right-neighbour	FAIL	allowlisted	left, right = w[:k], w[k + 1:]
+MyTradingSys/research/wavetrend_2026-10-17/count_events.py:253	fullsample-quantile	WARN	NEW	return (float(np.quantile(v, 1 / 3)), float(np.quantile(v, 2 / 3))) if len(v) else (np.nan, np.nan)
+MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py:43	fwd-index	FAIL	allowlisted	S["H"][T + 1:T + 3] *= 5.0
+MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py:44	fwd-index	FAIL	allowlisted	S["C"][T + 1:T + 3] *= 4.0
+MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py:45	fwd-index	FAIL	allowlisted	S["L"][T + 1:T + 3] *= 0.2
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py:201	fwd-index	FAIL	allowlisted	r4 = [(closes[i + 4] / closes[i] - 1) * 100 for i in range(len(closes) - 4)]
+MyTradingSys/backtest/bigtrade/bigmoves.py:235	fwd-index	FAIL	allowlisted	e = imin + 1 + int(np.argmax(h_np[imin + 1:i + 1]))
+MyTradingSys/backtest/bigtrade/bigmoves.py:240	fwd-index	FAIL	allowlisted	e = imax + 1 + int(np.argmin(l_np[imax + 1:i + 1]))
+MyTradingSys/backtest/bigtrade/bigmoves.py:253	fwd-index	FAIL	allowlisted	e = e + 1 + int(np.argmin(l_np[e + 1:i + 1]))
+MyTradingSys/backtest/bigtrade/bigmoves.py:261	fwd-index	FAIL	allowlisted	e = e + 1 + int(np.argmax(h_np[e + 1:i + 1]))
+MyTradingSys/backtest/bigtrade/bigmoves.py:380	fwd-index	FAIL	allowlisted	if z - a > 1 and (l[a + 1:z].min() < legs["p0"][q] or h[a + 1:z].max() > legs["p1"][q]):
+MyTradingSys/backtest/bigtrade/bigmoves.py:387	fwd-index	FAIL	allowlisted	if z - a > 1 and (h[a + 1:z].max() > legs["p0"][q] or l[a + 1:z].min() < legs["p1"][q]):
+MyTradingSys/backtest/bigtrade/bigmoves.py:413	pivot-right-neighbour	FAIL	allowlisted	good = h[idx] > h[idx - n_side:idx].max() and h[idx] >= h[idx + 1:idx + n_side + 1].max()
+MyTradingSys/backtest/bigtrade/bigmoves.py:415	pivot-right-neighbour	FAIL	allowlisted	good = l[idx] < l[idx - n_side:idx].min() and l[idx] <= l[idx + 1:idx + n_side + 1].min()
+MyTradingSys/backtest/bigtrade/bigmoves.py:439	fullsample-quantile	WARN	allowlisted	stats["atr_sma_over_wilder"] = {q: float(np.percentile(ratio, p)) for q, p in (("p5", 5), ("p50", 50
+MyTradingSys/backtest/bigtrade/bigmoves.py:451	fullsample-quantile	WARN	allowlisted	stats["size_pct"][str(r)] = {"n": int(m.sum()), **{"p%d" % p: float(np.percentile(sz, p)) for p in (
+MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py:72	fwd-index	FAIL	allowlisted	sys.modules[PKG + n] = mod
+MyTradingSys/backtest/bigtrade/parity_kline.py:198	fullsample-quantile	WARN	allowlisted	"venue_rsi_diff_p90": float(np.percentile(diffs, 90)) if diffs else None, "venue_rsi_diff_max": nois
+MyTradingSys/backtest/bt/bt_stats.py:78	fwd-index	FAIL	allowlisted	blocks = [M[i:i+block_size] for i in range(0, truncated_T, block_size)]
+MyTradingSys/backtest/layers/alerts/live_levels_confluence.py:106	pivot-right-neighbour	FAIL	allowlisted	nb = h4[i - 2:i] + h4[i + 1:i + 3]
+MyTradingSys/backtest/layers/alerts/live_runner_core.py:35	fwd-index	FAIL	allowlisted	if bars[i]["t"] >= bars[i + 1]["t"]:
+MyTradingSys/backtest/layers/cryptocred/cc_setups.py:198	fwd-index	FAIL	allowlisted	window_bars = bars[c+1 : c+1+failure_lookback]
+MyTradingSys/backtest/layers/cryptocred/cc_setups.py:200	fwd-index	FAIL	allowlisted	window_bars = bars[c+1:]
+MyTradingSys/backtest/layers/cryptocred/cc_setups.py:221	fwd-index	FAIL	allowlisted	window_bars = bars[c+1 : c+1+failure_lookback]
+MyTradingSys/backtest/layers/cryptocred/cc_setups.py:223	fwd-index	FAIL	allowlisted	window_bars = bars[c+1:]
+MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py:142	fwd-index	FAIL	allowlisted	seq = [syn] + sim_bars[k + 1:]
+MyTradingSys/backtest/layers/fabio/fabio_of_model.py:88	fwd-index	FAIL	allowlisted	up = (v[z + 1] if z + 1 < n else 0.0) + (v[z + 2] if z + 2 < n else 0.0)
+MyTradingSys/backtest/layers/fabio/fabio_of_model.py:104	pivot-right-neighbour	FAIL	allowlisted	if v[i] < v[i - 1] and v[i] <= v[i + 1] and v[i] <= 0.5 * med]
+MyTradingSys/backtest/layers/fabio/fabio_of_model.py:107	pivot-right-neighbour	FAIL	allowlisted	if s[i] >= s[i - 1] and s[i] >= s[i + 1] and s[i] >= 0.6 * v[poc_i]})
+MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:42	fwd-index	FAIL	allowlisted	"b_i": swings[k+1]["i"],
+MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:44	fwd-index	FAIL	allowlisted	"b_price": swings[k+1]["price"],
+MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:45	fwd-index	FAIL	allowlisted	"confirmed_i": swings[k+1]["confirmed_i"]
+MyTradingSys/backtest/layers/fabio/fabio_volume_fvg.py:153	fwd-index	FAIL	allowlisted	vol_hi = profile["volumes"][hi_edge + 1] if hi_edge < len(profile["volumes"]) - 1 else 0
+MyTradingSys/backtest/layers/fabio/orderflow_bars.py:122	fwd-index	FAIL	allowlisted	a["big"][2 + side] += 1
+MyTradingSys/backtest/layers/fabio/orderflow_bars.py:124	fwd-index	FAIL	allowlisted	a["big"][4 + side] += q
+MyTradingSys/backtest/layers/fabio/orderflow_bars.py:125	fwd-index	FAIL	allowlisted	a["big"][6 + side] += 1
+MyTradingSys/backtest/layers/fabio/v3/manage.py:192	fwd-index	FAIL	allowlisted	return _closed(w, bars[i + 1]["o"], i + 1, "s8", "taker")
+MyTradingSys/backtest/layers/fabio/v3/models.py:113	fwd-index	FAIL	allowlisted	entry = bars[j + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/models.py:174	fwd-index	FAIL	allowlisted	entry = bars[j + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/models.py:205	fwd-index	FAIL	allowlisted	ib = bars[open_idx:open_idx + ib_len]
+MyTradingSys/backtest/layers/fabio/v3/models.py:223	fwd-index	FAIL	allowlisted	entry = bars[i + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/models.py:256	fwd-index	FAIL	allowlisted	entry = bars[k + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/models.py:308	fwd-index	FAIL	allowlisted	entry = bars[b + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/models.py:363	fwd-index	FAIL	allowlisted	entry = bars[j + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/models.py:391	fwd-index	FAIL	allowlisted	ib = bars[open_idx:open_idx + ib_len]
+MyTradingSys/backtest/layers/fabio/v3/models.py:418	fwd-index	FAIL	allowlisted	entry = bars[b + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/models.py:454	fwd-index	FAIL	allowlisted	entry = bars[b + 1]["o"]
+MyTradingSys/backtest/layers/fabio/v3/signals.py:144	fwd-index	FAIL	allowlisted	up = (v[z + 1] if z + 1 < n else 0.0) + (v[z + 2] if z + 2 < n else 0.0)
+MyTradingSys/backtest/layers/fabio/v3/signals.py:169	pivot-right-neighbour	FAIL	allowlisted	if v[k] < v[k - 1] and v[k] <= v[k + 1] and v[k] <= LVN_FRAC * med]
+MyTradingSys/backtest/layers/krown/krown_core.py:194	pivot-right-neighbour	FAIL	allowlisted	around_h = h[i - k:i] + h[i + 1:i + k + 1]
+MyTradingSys/backtest/layers/krown/krown_core.py:195	pivot-right-neighbour	FAIL	allowlisted	around_l = l[i - k:i] + l[i + 1:i + k + 1]
+MyTradingSys/backtest/layers/krown/krown_core.py:332	fwd-index	FAIL	allowlisted	sg[start + j] = x
+MyTradingSys/backtest/layers/krown/run_fire_counts.py:67	fwd-index	FAIL	allowlisted	if len(rows) == 7 and all(rows[i][0] + DAY == rows[i + 1][0] for i in range(6)):
+MyTradingSys/backtest/layers/krown/run_recall_check.py:267	fwd-index	FAIL	allowlisted	hi = max(w1.h[T + 1:T + 27]) if T is not None else None
+MyTradingSys/backtest/layers/krown/run_recall_check.py:275	fwd-index	FAIL	allowlisted	nxt = d1.h[k + 1:k + 31]
+MyTradingSys/backtest/layers/rsi/rsi_divergence.py:26	pivot-right-neighbour	FAIL	allowlisted	a, b, c = sign * vals[i - 1], sign * vals[i], sign * vals[i + 1]
+MyTradingSys/backtest/layers/rsi/rsi_divergence.py:54	fwd-index	FAIL	allowlisted	"t": ts[b + 1], "i": b + 1, "event": kind + "_divergence",
+MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py:97	fwd-index	FAIL	allowlisted	"t": ts[b + 1], "i": b + 1, "event": kind + "_divergence_long",
+MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py:122	fwd-index	FAIL	allowlisted	out[h] = (sum((closes[i + h] - closes[i]) / closes[i] for i in range(n)) / n) if n > 0 else None
+MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py:110	fwd-index	FAIL	allowlisted	bars[i + 1:i + 1 + max_bars], taker_fee=taker, maker_fee=maker, max_bars=max_bars)
+MyTradingSys/backtest/layers/run_t055_c3_imbalance.py:28	fwd-index	FAIL	allowlisted	w = bars[i:i + window]
+MyTradingSys/backtest/layers/run_t055_c3_imbalance.py:48	fwd-index	FAIL	allowlisted	if i < free or i + h >= len(bars) or bars[i + h]["t"] - bars[i]["t"] != h * BAR_MS:
+MyTradingSys/backtest/layers/test_run_bracket_grid.py:191	fwd-index	FAIL	allowlisted	self.bars[i + 1] = bar(i + 1, 100.0, 110.0, 100.0)
+MyTradingSys/backtest/layers/test_run_bracket_grid.py:243	fwd-index	FAIL	allowlisted	bars[i + 1] = bar(i + 1, 95.0, 100.0, 90.0)
+MyTradingSys/backtest/layers/tick/tick_extremes.py:126	fwd-index	FAIL	allowlisted	if values_desc[i] < values_desc[i + 1]:
+MyTradingSys/backtest/layers/tick/tick_extremes.py:131	fwd-index	FAIL	allowlisted	gap = values_desc[i] - values_desc[i + 1]
+MyTradingSys/backtest/layers/tick/tick_oi_extremes.py:95	fwd-index	FAIL	allowlisted	gaps = [values_desc[i] - values_desc[i+1] for i in range(len(values_desc)-1)]
+MyTradingSys/backtest/layers/tick/tick_oi_extremes.py:110	fwd-index	FAIL	allowlisted	tiers[i+1] = current_tier
+MyTradingSys/backtest/replay.py:35	fwd-index	FAIL	allowlisted	cov = sum(rows[i + 1]["t"] - rows[i]["t"] for i in range(len(rows) - 1) if rows[i + 1]["t"] - rows[i
+MyTradingSys/backtest/test_vp_pivot_probe.py:77	fwd-index	FAIL	allowlisted	open_use = int(t1[4 + n + 1]) # open of bar i+n+1
+MyTradingSys/backtest/test_vp_pivot_probe.py:80	fwd-index	FAIL	allowlisted	assert P.last_confirmed(piv, t1, n, int(t1[4 + n])) == -1 # open of bar i+n: bar not yet closed
+MyTradingSys/backtest/test_vp_pivot_probe.py:82	fwd-index	FAIL	allowlisted	assert P.last_confirmed(piv, t1, n, int(t1[9 + n + 1]) - 1) == 4
+MyTradingSys/backtest/test_vp_pivot_probe.py:83	fwd-index	FAIL	allowlisted	assert P.last_confirmed(piv, t1, n, int(t1[9 + n + 1])) == 9
+MyTradingSys/backtest/tom_bt_report.py:106	fwd-index	FAIL	allowlisted	e = b.o[k + 1]
+MyTradingSys/backtest/vp_pivot_probe.py:79	fwd-index	FAIL	allowlisted	vh = vol[hi + 1] if hi < last else -1.0
+MyTradingSys/backtest/vp_pivot_probe.py:139	fwd-index	FAIL	allowlisted	ok &= c > h[n + d:N - n + d]
+MyTradingSys/backtest/vp_pivot_probe.py:181	fwd-index	FAIL	allowlisted	act = np.asarray(t1)[piv + n] + HOUR_MS
+MyTradingSys/backtest/vp_pivot_probe.py:205	fwd-index	FAIL	allowlisted	sel = ok[s:s + chunk]
+MyTradingSys/backtest/vp_pivot_probe.py:220	fwd-index	FAIL	allowlisted	px = np.where(touch_stop, stop, np.where(stop_win, np.minimum(stop, gap_open), np.where(tgt_win, tgt
+MyTradingSys/backtest/vp_pivot_probe.py:536	fullsample-quantile	WARN	allowlisted	return [float(np.nanpercentile(x, 2.5)), float(np.nanpercentile(x, 97.5))]
+MyTradingSys/backtest/vp_pivot_probe.py:604	fullsample-quantile	WARN	allowlisted	return {"q1": float(np.percentile(x, 25)), "median": float(np.median(x)), "q3": float(np.percentile(
+lookahead_lint: 232 hits = 205 FAIL (202 allowlisted, 3 new) + 27 WARN (21 allowlisted, 6 new); 1 stale allowlist rows

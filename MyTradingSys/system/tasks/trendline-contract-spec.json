@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T07:27:32Z",
+  "commands": [],
+  "created": "2026-10-17T03:55:00Z",
+  "depends_on": [],
+  "done_when": "TRENDLINE_CONTRACT.md is on fast-track with zero unset parameters, a SOURCED/OURS tag per row, FORMULAS.md entries and the revised ledger schema; sync.py ship green.",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "Turn REPORT.md's plan into a codable contract: each parameter gets a value, tagged SOURCED (quote + file:line) or OURS; two coders would write the same detector.",
+  "id": "trendline-contract-spec",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "note": "Filed by trendlines-verify 2026-10-17 after CLAUDE_VERIFY.md (FIX-FIRST). Gate order: contract, causal module, count-only, then PRE_REG; no backtest study yet.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T07:16:44Z",
+  "refs": [],
+  "result": "TRENDLINE_CONTRACT.md + FORMULAS s19 on fast-track; lint_contract.py rows=48 problems=0 (re-verified by backlog-refine-1017)",
+  "scope_in": [
+    "Write MyTradingSys/research/trendlines_2026-10-17/TRENDLINE_CONTRACT.md: pivot k and ties, anchor spacing and age, touch tolerance and distance-away reset, penetration test, break rule (close beyond line), TF, wick vs close, linear vs log, ATR length for slope",
+    "Daily-ledger schema fix: per-post capture time, content hash, written selection string; image-read lines stay unscored until two readers agree"
+  ],
+  "scope_out": [
+    "Code",
+    "Any market data read",
+    "Backtest, fees, P&L, live path"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/trendlines_2026-10-17/CLAUDE_VERIFY.md",
+    "MyTradingSys/research/trendlines_2026-10-17/REPORT.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv"
+  ],
+  "state": "done",
+  "steps": [
+    "Read CLAUDE_VERIFY.md and KROWN_RULES.csv rows KR-L01..L09, KR-Z05..Z09; keep quotes verbatim (verify_extract_quotes.py)",
+    "Fix every parameter once; give 2-anchors+1-test and 3-anchors readings of KR-L02 as separate arms; list truncation-test cases",
+    "Add formulas to backtest/layers/FORMULAS.md with worked numbers computed by hand"
+  ],
+  "tests": "Spec lint: every parameter row has a value and a SOURCED or OURS tag; each worked number is hand-computed, not copied from code; verify_extract_quotes.py PASS on any new quote.",
+  "title": "Trend-line contract: every parameter fixed, SOURCED or OURS",
+  "worker": "session"
+}

@@ -29,7 +29,7 @@ question "unvalidated domain" and stop for operator review.
 | **REJECT** | Marketing/affiliate; no author, date or method; win-rate or profit claims without costs; any citation that cannot be opened and matched | Never used |
 
 Tom content: Tom's verified words = T3 primary source for Tom rules. AI interpolation of Tom = REJECT unless
-flagged "interpolation - requires validation". Tom is core; other systems are separate layers, never Tom filters.
+flagged "interpolation - requires validation". No fixed core (operator 2026-10-13): layers may combine or filter each other; results decide.
 
 ### STEP 3: EXECUTE
 a. **Citation check.** Open every cited source and match title, authors, venue, year; record URL/DOI and
@@ -48,7 +48,7 @@ Seed keywords -> grep -> harvest co-occurring terms from each hit's sentence -> 
 adds <10% new hits. Report every term, hits per term, files matched and files read.
 
 ### CONSEQUENCES
-- A rule built on unverified research = BLOCKER; log it in system/02b_DECISIONS_LOG.md.
+- A rule built on unverified research = BLOCKER; log it in system/OPERATOR_DECISIONS.md.
 - A system change backed only by T3 needs explicit operator approval.
 
 ---

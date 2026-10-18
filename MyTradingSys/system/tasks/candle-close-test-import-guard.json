@@ -1,0 +1,73 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T11:27:32Z",
+  "commands": [],
+  "created": "2026-10-14T12:10:19Z",
+  "depends_on": [],
+  "done_when": "A6 reproduction exits nonzero after fix; genuine dependency absence skips explicitly; eight numerical tests pass with pandas; research outputs unchanged.",
+  "est_turns": 12,
+  "from_inbox": "",
+  "goal": "Make an unexpected study import failure fail the research tests; distinguish missing optional pandas from broken application imports.",
+  "id": "candle-close-test-import-guard",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "test_study.py: pandas-only except, study import fails closed; A6 repro exit0->nonzero; 8 n",
+      "ref": "8d2625b4",
+      "utc": "2026-10-17T11:27:32Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/great-wiles-da606a",
+      "ref": "d2fd690ec733",
+      "utc": "2026-10-17T08:09:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "f12f53ab51b3 research: audit candle phase applicability and verification gaps",
+      "ref": "MyTradingSys/research/layer_lab/candle_close_2026-10-14/INDEPENDENT_AUDIT.md",
+      "utc": "2026-10-14T12:11:35Z"
+    }
+  ],
+  "layers": [
+    "volume_candles_ma"
+  ],
+  "live_path": false,
+  "note": "Relay queue = LAYER_REBUILD_PLAN s6 (coordinator 2026-10-15, observer). Release: tasks.py apply-op <id> release, then tasks.py check <id>",
+  "pinned": false,
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "Codex independent audit 2026-10-14",
+  "refreshed": "2026-10-17T08:58:57Z",
+  "refs": [],
+  "result": "test_study.py: pandas-only except, study import fails closed; A6 repro exit0->nonzero; 8 numerical tests pass, 2 subprocess guard tests",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/test_study.py",
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/INDEPENDENT_AUDIT.md",
+    "scripts/dev/run_extra_tests.py (read only)"
+  ],
+  "scope_out": [
+    "holdout or validation reads",
+    "live systems",
+    "changing historical strategy results"
+  ],
+  "scope_sha": "d2fd690ec733",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/INDEPENDENT_AUDIT.md",
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/AUDIT_REPRODUCTIONS.json"
+  ],
+  "state": "done",
+  "steps": [
+    "Reproduce A6: installed pandas plus ImportError for study currently exits 0 with eight skips.",
+    "Catch only optional pandas import failures; import study outside that catch. Add a subprocess regression that fails on the pre-change implementation.",
+    "Run real eight numerical tests with pandas and simulated missing-pandas skips; report which CI checks execute versus skip. Do not edit workflows or strategy outputs."
+  ],
+  "tests": "Subprocess with pandas present and forced ImportError for study must exit nonzero; fails on old code. Missing pandas remains explicit eight skips; numerical tests execute when pandas exists.",
+  "title": "Candle research: fail closed on study import errors and verify dependency coverage",
+  "worker": "agent"
+}

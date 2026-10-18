@@ -12,6 +12,11 @@ on:
       - 'MyTradingSys/runtime/**'
       - 'MyTradingSys/tests/**'
       - 'MyTradingSys/items/**'
+      - 'MyTradingSys/research/**/*.py'   # GATE_SPEED review: smoke ships under these folders defer tests to CI, so CI must run for them
+      - 'MyTradingSys/options/**'
+      - 'MyTradingSys/observation/**'
+      - '.gitignore'
+      - '.claude/settings.json'
       - 'scripts/**'
       - '.github/workflows/**'
   pull_request:
@@ -23,7 +28,9 @@ permissions:
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # fast-track gets a merge every few minutes and a run takes ~6 min: cancelling the running push job starved mark-green.
+  # A fast-track run finishes (GitHub keeps only the newest pending one); PR and other-ref runs are still superseded.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/fast-track' }}
 
 jobs:
   offline-gate:
@@ -50,8 +57,12 @@ jobs:
         with:
           python-version: "3.12"
 
+      # Tests that commit in temp repos need an identity; a fresh runner has none.
+      - name: Git identity
+        run: git config --global user.name ci && git config --global user.email ci@users.noreply.github.com
+
       - name: Install pytest
-        run: python -m pip install pytest numpy tzdata
+        run: python -m pip install pytest numpy pandas tzdata
 
       # Runtime folders the user guide points at; gitignored, so a fresh checkout lacks them.
       - name: Create runtime folders

@@ -1,0 +1,5 @@
+# Trend-line research method — 2026-10-17
+
+External practitioner definitions generate hypotheses; causal, chronological BTC perpetual event studies decide usefulness, with line construction and context frozen before validation and fees, funding, spread and slippage included for executable strategies. Measure conditional break/retest/bounce outcomes, MFE/MAE and uncertainty on a declared data period and event count; compare context alone, line alone and conjunction, control overlapping events and multiple trials, and reserve untouched out-of-sample data. First inventory external definitions without fitting them to MTS; then reconcile Krown extracts, implementation availability and bounded build tasks; chart examples and popularity are not evidence of edge.
+
+Fixed playbook tiers: T1 peer-reviewed/institutional method; T2 disclosed preprints/exchange data/replicated practitioner method; T3 practitioner definitions; inaccessible or unsupported performance claims excluded. Open each cited source; record scope and limitations. This is a validated research-method question, not a claim that trend-line profitability has been validated.

@@ -63,7 +63,7 @@ LAYER_PROVENANCE_AUDIT.md, CONTROL_ROOM.md, control_room.json, DEVICES.md, auto_
    today: Tom, Fabio, Malkan, CryptoCred, Kurisko, Qriptal (live calls via Discord, B162), chatbot handoffs (B163). No criterion for
    who enters, how a trader's track record is scored (B162 scorecard is the first), or when a source is retired.
 9. Objective function. 2026-10-09 directive: backtests exist so layers fire on big, profitable trades (CONSOLIDATED_ROADMAP:9-10;
-   memory note big-trade-backtest-purpose). The vision only speaks of "independent reads" and "confluence later".
+   PROJECT_VISION.md BT-TUNED, which holds that purpose now). The vision only speaks of "independent reads" and "confluence later".
 10. Confluence/consensus endpoint. Consensus row is defined (ARCHITECTURE_TWO_CORES:29-43) but the vision has no rule for when a
     confluence may influence a trade (today: never gates). Needed before S3 results can be combined.
 11. Research evidence standard. Only "Rule 32: 3-snapshot proof" (PROJECT_VISION.md:99). Practice is now pre-registration,

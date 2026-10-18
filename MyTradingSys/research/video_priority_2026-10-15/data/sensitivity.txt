@@ -1,0 +1,6 @@
+spread +/-30% A-CQiV_UFB4: median rank 6, top10 in 95%, worst 18
+spread +/-30% W1HrDl70Lhk: median rank 2, top10 in 100%, worst 8
+spread +/-30% Wvq1TZh8aF0: median rank 21, top10 in 3%, worst 34
+spread +/-50% A-CQiV_UFB4: median rank 7, top10 in 80%, worst 24
+spread +/-50% W1HrDl70Lhk: median rank 2, top10 in 96%, worst 23
+spread +/-50% Wvq1TZh8aF0: median rank 22, top10 in 9%, worst 46

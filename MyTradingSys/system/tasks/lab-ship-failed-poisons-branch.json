@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T21:07:16Z",
+  "commands": [],
+  "created": "2026-10-16T00:50:39Z",
+  "depends_on": [],
+  "done_when": "both tests fail before and pass after; status prints the hold under NEEDS A LOOK; the operator clears it by deleting lab.hold (documented in the codex_run docstring)",
+  "from_inbox": "",
+  "goal": "A SHIP_FAILED caused by a gate failure (log.ship.txt has no TIMEOUT line) must not leave the run commit on the lab branch. Default (OURS): on a gate-red ship, git reset is forbidden, so instead create a hold file lab.hold with the card id and gate step; cmd_next refuses new runs while it exists and prints it under NEEDS A LOOK; a TIMEOUT keeps the old behaviour.",
+  "id": "lab-ship-failed-poisons-branch",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex-feed 2026-10-16 (sonnet worker)",
+  "refs": [],
+  "result": "gate-red SHIP_FAILED writes lab.hold; next refuses, status lists it",
+  "scope_in": [
+    "scripts/dev/codex_run.py",
+    "scripts/dev/test_codex_run.py"
+  ],
+  "scope_out": [
+    "lane_health.py semantics",
+    "sync.py"
+  ],
+  "size": "S",
+  "sources": [
+    "evidence: card note, lab_runs/20261015T1930Z_lc-event-table.log.ship.txt"
+  ],
+  "state": "done",
+  "steps": [
+    "write the 2 tests first (fail now)",
+    "in the SHIP_FAILED branch classify via TIMEOUT marker, write lab.hold for the gate-red case",
+    "cmd_next/status read lab.hold",
+    "ship"
+  ],
+  "tests": "test_codex_run.py: a fake ship returning 1 without TIMEOUT creates lab.hold and the next cmd_next returns nonzero; a TIMEOUT ship creates none; both fail on current code",
+  "title": "codex_run: a gate-red SHIP_FAILED commit stays on the lab branch and makes every later lab ship fail; stop new runs or quarantine the commit"
+}

@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T11:21:03Z",
+  "commands": [],
+  "created": "2026-10-14T05:30:13Z",
+  "depends_on": [],
+  "done_when": "DSA_STANDIN_PROMPT.md shipped; one trial card refined by DSA passes tasks.py lint; card result = \"trial: <card> lint PASS/FAIL\".",
+  "est_turns": 12,
+  "from_inbox": "",
+  "goal": "Second DSA prompt (DSA_STANDIN_PROMPT.md) for roles a script can check afterwards: refine raw cards to Ready (gate: tasks.py lint), spot-check one number per GPT lab report against raw bars, write the NEXT_SESSION.md handoff (gate: relay.py lint), Control Room pickup. NOT for: live-path code, git ship, decisions for the operator, research verdicts. Operator ask 2026-10-14.",
+  "id": "dsa-claude-standin-prompt",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "trial: lc-event-table lint PASS (registry lint 287 cards OK; check rc=0) but NOT by DSA: d",
+      "ref": "fbfb9cb6",
+      "utc": "2026-10-17T11:21:03Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "machines/logins/lanes: one who-does-what table, one account page, one deploy rule, SURFACE",
+      "ref": "4526287295f0",
+      "utc": "2026-10-14T20:27:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "4526287295f0 machines/logins/lanes: one who-does-what table, one account page, one deploy ",
+      "ref": "MyTradingSys/system/DSA_DELEGATION.md",
+      "utc": "2026-10-14T20:27:06Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "Relay queue = LAYER_REBUILD_PLAN s6 (coordinator 2026-10-15, observer). Release: tasks.py apply-op <id> release, then tasks.py check <id>",
+  "pinned": false,
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-14",
+  "refreshed": "2026-10-17T08:58:59Z",
+  "refs": [],
+  "result": "trial: lc-event-table lint PASS (registry lint 287 cards OK; check rc=0) but NOT by DSA: desk row 20261014-134217 still pending, never taken. Prompt shipped then merged into DSA_SESSION_PROMPT 5e (DSA_STANDIN_PROMPT.md is a pointer stub); no desk.py change",
+  "scope_in": [
+    "MyTradingSys/system/DSA_STANDIN_PROMPT.md",
+    "MyTradingSys/system/DSA_DELEGATION.md",
+    "scripts/dev/desk.py (only if needed)",
+    "scripts/dev/test_desk.py (only if desk.py changes)"
+  ],
+  "scope_out": [
+    "live path",
+    "CLAUDE.md hard rules",
+    "any change to what DSA may push"
+  ],
+  "scope_sha": "4526287295f0",
+  "size": "S",
+  "sources": [
+    "operator chat 2026-10-14 (NB): \"Is it a good idea to build a second prompt fpr DSA Bridge to take up Claude roles when needed?\""
+  ],
+  "state": "done",
+  "steps": [
+    "Read DSA_SESSION_PROMPT.md and system/DSA_DELEGATION.md; list which Claude roles have a mechanical gate.",
+    "Write MyTradingSys/system/DSA_STANDIN_PROMPT.md (<= 60 lines): one section per role with its gate command and a STOP rule (output fails the gate twice -> post it back to the desk as needs-Claude).",
+    "Add a desk.py target or flag (--role standin) only if the existing --target DSA cannot carry the prompt name; test it.",
+    "Trial: give DSA one raw card (lc-event-table) to refine; Claude checks the result once."
+  ],
+  "tests": "If desk.py changes: test_desk.py case that a standin post carries the prompt name; red first. Else none (doc card); trial result is the check.",
+  "title": "DSA stand-in prompt: let DSA Bridge take the cheap Claude roles while Claude budget is low",
+  "worker": "agent"
+}

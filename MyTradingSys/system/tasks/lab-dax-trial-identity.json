@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-12T16:44:52Z",
   "commands": [],
   "created": "2026-10-11T20:16:34Z",
   "depends_on": [],
@@ -10,13 +11,16 @@
   "id": "lab-dax-trial-identity",
   "kind": "build",
   "lane": "CODEX",
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
   "note": "Captured by lab-audit-tom-dax-bt. Freeze code, config, data and arm identity; every new look is registered, rerender alone is idempotent. No holdout reads or BTC runs during the fix.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "JIS-NUC session 2026-10-12 from the lab audit report (operator: feed scoped tasks to Codex)",
   "refs": [],
-  "result": "",
+  "result": "H8 fixed; 62 synthetic harness tests pass (red first): MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-trial-identity.md",
   "scope_in": [
     "MyTradingSys/backtest/tom_dax_bt.py",
     "MyTradingSys/backtest/test_tom_dax_bt.py",
@@ -34,7 +38,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md finding H8"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read finding H8 in MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md (file legend, evidence, proposed fix) and the lines it cites.",
     "Write the test named in Tests in MyTradingSys/backtest/test_tom_dax_bt.py and see it fail on the current code.",

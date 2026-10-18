@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T18:19:56Z",
+  "commands": [],
+  "created": "2026-10-15T22:50:49Z",
+  "depends_on": [],
+  "done_when": "COST_GATE.csv has one row per section 0 row (22 today) with columns id,tf,stop_pct,cost_R_taker,cost_R_maker,sourced_hitrate_RR,gate and the CLEARS/FAILS/NOT_STATED counts are in the result; test passes.",
+  "est_turns": 26,
+  "from_inbox": "",
+  "goal": "A cost-in-R table for every catalogue setup (stop_pct, timeframe, cost_R taker and maker, sourced hit rate / RR) and a clear/not-clear flag, so G3 marks run only on rows that clear cost (audit E3, operator default D2 YES).",
+  "id": "fable-audit-e3-cost-in-r-gate",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "COST_GATE.csv 22 rows: CLEARS 0 / FAILS 0 / NOT_STATED 22 (catalogue states no stop distan",
+      "ref": "d5505cdd",
+      "utc": "2026-10-17T18:19:56Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-17 ACCEPT. WEIGHT:CRUCIAL decision numbers (cost_R, 0.40% threshold OURS, feeds which rows go to G3): review Agent on the diff before ship. Verify (worker): content commit sha, `git cherry origin/fast-track <sha>` empty AND `git ls-tree -r origin/fast-track --name-only` lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T18:13:08Z",
+  "refs": [
+    "MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md"
+  ],
+  "result": "COST_GATE.csv 22 rows: CLEARS 0 / FAILS 0 / NOT_STATED 22 (catalogue states no stop distance)",
+  "scope_in": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/COST_GATE.csv (new)",
+    "MyTradingSys/research/setup_catalog_2026-10-15/build_cost_gate.py (new)",
+    "MyTradingSys/research/setup_catalog_2026-10-15/test_build_cost_gate.py (new)"
+  ],
+  "scope_out": [
+    "editing SETUP_CATALOG.md rows",
+    "any backtest, VALIDATION or HOLDOUT read",
+    "inventing a stop or hit rate the trader did not state"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read FABLE_RUNS_AUDIT.md section 4 (E3, candidate order item 3) and FORMULAS.md fee lines (taker 0.0005 per side, maker 0.0002 per side, backtest/fees.py).",
+    "Write the test first: cost_R_taker = 2*0.0005/stop_pct and cost_R_maker = 2*0.0002/stop_pct, computed by hand in the test for stop_pct 0.004 (0.25 and 0.10); it fails because the builder does not exist.",
+    "Build COST_GATE.csv: one row per id in the SETUP_CATALOG.md section 0 table (22 rows today; count them, do not assume); stop_pct and sourced hit rate/RR only where a quote with file:line exists, else NOT STATED (cost_R blank); tf from the catalogue; gate = CLEARS if stop_pct >= 0.40% (OURS, from audit candidate-order item 3), NOT_STATED, or FAILS.",
+    "Print the counts CLEARS / FAILS / NOT_STATED into the card result. Run the test."
+  ],
+  "tests": "test_build_cost_gate.py: cost_R numbers for stop_pct 0.004 equal the hand values and the row count equals the number of rows in the section 0 table (22 today); fails before the builder exists.",
+  "title": "Setup catalogue: add stop_pct, timeframe, cost_R taker/maker and the trader's SOURCED hit-rate/RR per row; only rows that clear cost go to G3",
+  "worker": "session"
+}

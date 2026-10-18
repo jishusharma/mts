@@ -1,0 +1,43 @@
+import csv
+import hashlib
+from collections import Counter
+from datetime import datetime, timezone
+from pathlib import Path
+from statistics import mean
+
+base = Path("MyTradingSys/research/imbalance_qriptal_2026-10-16/filter")
+def read(name):
+    with (base / name).open(encoding="utf-8", newline="") as f:
+        reader = csv.DictReader(f)
+        return list(reader), reader.fieldnames
+trades, trade_fields = read("trades_dev.csv")
+events, event_fields = read("events_dev.csv")
+assert len(trades) == len(events) == 5976
+assert all(all(t[k] == e[k] for k in event_fields) for t, e in zip(trades, events))
+print("Shared event/trade fields: identical across 5976 rows")
+means = {}
+for name, flag in [("IMB", "True"), ("NOIMB", "False"), ("ALL", None)]:
+    rows = [r for r in trades if flag is None or r["small"] == flag]
+    values = [float(r["net_1"]) for r in rows]
+    means[name] = mean(values)
+    outcomes = Counter(r["kind_1"] for r in rows)
+    print(name, "n", len(rows), "days", len({r["day"] for r in rows}),
+          "sum_net", sum(values), "mean_net", means[name],
+          "gross_minus_cost", mean(float(r["gross_1"])-float(r["cost_1"]) for r in rows),
+          "outcomes", dict(outcomes), "target_pct", 100*outcomes["target"]/len(rows))
+print("Delta1", means["IMB"]-means["NOIMB"])
+for name, rows in [("events_dev.csv", events), ("trades_dev.csv", trades)]:
+    ts = [int(r["t"]) for r in rows]
+    print(name, "UTC_bounds", *[datetime.fromtimestamp(t/1000, timezone.utc).isoformat() for t in [min(ts), max(ts)]])
+    assert all(t < 1719792000000 for t in ts)
+    assert all(int(r["t"])//86400000 == int(r["day"]) for r in rows)
+    assert len({(r["day"], r["level"]) for r in rows}) == len(rows)
+    print("cutoff/day/unique-level checks PASS")
+print("event fields", event_fields)
+print("trade fields", trade_fields)
+for line in range(2, 7):
+    r = trades[line-2]
+    print("row", line, {k:r[k] for k in ["t", "level", "side", "width", "kind_1", "exit_1"]},
+          "previous close / touch OHLC / exit time: NOT_IN_DATA")
+for name in ["RESULT.md", "PRE_REG.md", "COUNTS.md", "trades_dev.csv", "events_dev.csv", "trials.csv"]:
+    print("SHA256", name, hashlib.sha256((base/name).read_bytes()).hexdigest())

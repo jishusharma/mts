@@ -1,0 +1,240 @@
+{
+ "as_of": "2026-10-15T13:42:00Z",
+ "at": "2026-10-15T13:42:00Z",
+ "engine": "SnapAt: MarketDataSnapshot(raw archive).fetchHistoricalSnapshot",
+ "git_head": "b6fa90c23ee8041535c945f47db5338b006a14b7",
+ "raw": "C:\\Users\\E-NGIN~1\\AppData\\Local\\Temp\\claude\\C--Users-E-ngineers-IdeaProjects-BinanceDataFeed--claude-worktrees-cool-diffie-647b42\\f6be9ce4-530b-4907-b0be-7cc1138858da\\scratchpad\\raw",
+ "shot": "d2d2f30fa142",
+ "snapshot": {
+  "alignment_pass": false,
+  "asset": "BTCUSDT",
+  "conditions": {
+   "book_imbalance": null,
+   "cvd_slope": "falling",
+   "cvd_trade_flow_aligned": false,
+   "funding_extreme": false,
+   "fvg_nearest_unfilled": {
+    "bottom": 80244.4,
+    "top": 80290.0,
+    "type": "bullish"
+   },
+   "fvg_unfilled_count": 1,
+   "oi_trend": "flat",
+   "price_vs_poc": "below",
+   "price_vs_va": "in_va",
+   "rejection_wick_at_zone": false,
+   "speed_picking_up": true,
+   "volume_spike_at_level": false,
+   "vp_shape": "TWOPEAK",
+   "vwap_slope": "falling"
+  },
+  "current_price": 80580.1,
+  "cvd": {
+   "confidence": "MEDIUM",
+   "cvd_recent": {
+    "delta_1h": -1414.381,
+    "delta_4h": -2605.384,
+    "slope_1h": "falling",
+    "slope_4h": "falling"
+   },
+   "gating_window": "rolling_1m",
+   "last_3_delta": [
+    "positive",
+    "positive",
+    "negative"
+   ],
+   "scope": "session",
+   "session_start_utc": "2026-10-15T00:00:00Z",
+   "slope": "falling",
+   "value": -7615.032
+  },
+  "daily_vp": {
+   "confidence": "MEDIUM",
+   "hvns": [
+    81523.44,
+    81223.15,
+    81208.14
+   ],
+   "lvns": [
+    80362.32,
+    80622.57,
+    80692.64
+   ],
+   "poc": 80857.8,
+   "shape": "TWOPEAK",
+   "vah": 81393.32,
+   "val": 80447.41
+  },
+  "data_quality": {
+   "reason": "historical reconstruction from klines only; live-only inputs are null/UNAVAILABLE, never 0.0",
+   "unavailable_fields": [
+    "spot_perp_basis",
+    "oi_breakdown",
+    "trade_flow.net_delta_1m",
+    "trade_flow.net_delta_5m",
+    "trade_flow.net_delta_15m",
+    "trade_flow.net_delta_1h",
+    "conditions.book_imbalance",
+    "order_book_depth.bid_ask_ratio",
+    "funding.current_rate"
+   ]
+  },
+  "funding": {
+   "confidence": "UNAVAILABLE",
+   "current_rate": null,
+   "extreme": false
+  },
+  "intraday_4h_vp": {
+   "confidence": "MEDIUM",
+   "poc": 80589.31,
+   "shape": "TWOPEAK",
+   "vah": 81011.04,
+   "val": 80363.38
+  },
+  "liquidation_clusters": {
+   "nearest_above": {
+    "price": 0.0
+   },
+   "nearest_below": {
+    "price": 0.0
+   },
+   "warning": false
+  },
+  "liquidation_warning": {
+   "nearest_cluster_distance_pct": null,
+   "note": "Historical snapshot; liquidation data not available.",
+   "status": "none"
+  },
+  "module_candidates": [],
+  "oi_breakdown": {
+   "confidence": "UNAVAILABLE",
+   "reason": "historical snapshot: no live long/short ratio data",
+   "retail": null,
+   "topAccounts": null,
+   "whale": null
+  },
+  "open_interest": {
+   "change_1h_pct": 0.0,
+   "confidence": "LOW",
+   "delta_state": "neutral",
+   "delta_state_price": "neutral",
+   "direction": "flat"
+  },
+  "order_book_depth": {
+   "bid_ask_ratio": null,
+   "confidence": "LOW"
+  },
+  "post_funding_vp": {
+   "confidence": "MEDIUM",
+   "poc": 81260.0,
+   "shape": "TWOPEAK",
+   "vah": 81380.0,
+   "val": 80550.0
+  },
+  "prior_day": {
+   "close": 81641.5,
+   "confidence": "MEDIUM",
+   "high": 84117.6,
+   "low": 81401.0,
+   "poc": 83407.18,
+   "shape": "TWOPEAK",
+   "vah": 84072.57,
+   "val": 81946.32
+  },
+  "session": {
+   "day_type": "balance",
+   "day_type_confidence": "provisional",
+   "gap_direction": "down",
+   "gap_from_prior_close": -1448.9,
+   "high": 80681.0,
+   "initial_balance_high": 80681.0,
+   "initial_balance_low": 80027.0,
+   "initial_balance_window_minutes": 30,
+   "liquidity_sweep_direction": "below",
+   "low": 80027.0,
+   "open_location": "below_value",
+   "open_price": 80192.6,
+   "range_position_pct": 84.57,
+   "sweep_flag": true,
+   "vwap_anchor_utc": "2026-10-15T13:30:00Z"
+  },
+  "session_timing": {
+   "current_session": "us_cash_open",
+   "funding_reset_window": false,
+   "us_equity_open_in_minutes": 1428,
+   "us_equity_open_window": true
+  },
+  "setup_candidates": [],
+  "spot_perp_basis": {
+   "basis_pct": null,
+   "confidence": "UNAVAILABLE",
+   "direction": "unknown",
+   "mark_price": null,
+   "reason": "historical snapshot: no live spot/mark data",
+   "spot_price": null
+  },
+  "structure": {
+   "15m": {
+    "stale": true,
+    "swing_high": 81029.2,
+    "swing_low": 80942.5
+   },
+   "1d": {
+    "stale": true,
+    "swing_high": 83125.7,
+    "swing_low": 81813.4
+   },
+   "1h": {
+    "stale": false,
+    "swing_high": 81492.5,
+    "swing_low": 80550.6
+   },
+   "1w": {
+    "stale": false,
+    "swing_high": 86976.1,
+    "swing_low": 80344.8
+   },
+   "4h": {
+    "stale": false,
+    "swing_high": 81720.9,
+    "swing_low": 80455.0
+   },
+   "5m": {
+    "stale": true,
+    "swing_high": 80515.0,
+    "swing_low": 80192.6
+   }
+  },
+  "timestamp_utc": "2026-10-15T13:42:00Z",
+  "trade_flow": {
+   "confidence": "UNAVAILABLE",
+   "net_delta_15m": null,
+   "net_delta_1h": null,
+   "net_delta_1m": null,
+   "net_delta_5m": null
+  },
+  "vwap": {
+   "bands": {
+    "+1s": 81426.87,
+    "+2s": 81832.9,
+    "-1s": 80614.8,
+    "-2s": 80208.77
+   },
+   "confidence": "MEDIUM",
+   "price": 81020.84,
+   "slope": "falling",
+   "slope_pct": -0.0027
+  },
+  "weekly_vp": {
+   "confidence": "MEDIUM",
+   "poc": 83419.71,
+   "prior_week_poc": 83005.32,
+   "shape": "TWOPEAK",
+   "two_week_ago_poc": 84777.8,
+   "vah": 84125.09,
+   "val": 81818.86
+  }
+ },
+ "symbol": "BTCUSDT",
+ "tf": "3m"
+}

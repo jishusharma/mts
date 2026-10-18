@@ -1,23 +1,21 @@
 # FILE: 01_AI_BEHAVIOR.md
-# READ ORDER: 2 of 8
+# READ ORDER: reference only; boot is CLAUDE.md (code) or DSA_SESSION_PROMPT.md (chat), then research/STATUS.md
 # PURPOSE: AI behavior rules + protocols + mistake prevention + JSON workflow
 # LAST UPDATED: 2026-08-31
 # SIZE: ~32KB
-# NEXT FILE: 02a_CURRENT_STATUS.md
-# PREVIOUS FILE: 00_START_HERE.md
+# STATE: MyTradingSys/research/STATUS.md; LESSONS: MyTradingSys/system/LESSONS_DIGEST.md
 # ---
 
 # =============================================================================
-# READ 00_START_HERE.md FIRST — THIS IS STEP 2 OF 9
+# BOOT: CLAUDE.md (code) or DSA_SESSION_PROMPT.md (chat), then research/STATUS.md
 # =============================================================================
 # Project: MTS (Real-Time Trading System)
 # Repo:    C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\
 # Status:  Phase 1 COMPLETE (47/47 FRESH extracts) | Phase 2 COMPLETE | Phase 3 COMPLETE | Phase 4 COMPLETE | v4.2.0-p5
 #
-# For session start flow, see system/00_START_HERE.md (read it FIRST).
-# This file is Step 2 in that order.
+# State: research/STATUS.md (generated). Lessons: system/LESSONS_DIGEST.md.
 #
-# NOTE: Folder structure reorganized 2026-08-26. See 05_NORMS.md for conventions.
+# NOTE: Folder structure reorganized 2026-08-26. Folder map: system/PROJECT_MAP.md.
 # CRITICAL RULES (violation = system error):
 #   - Read/write ONLY in C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\
 #   - NEVER use /mnt/agents/temp/ for project files. Temp is for session uploads ONLY.
@@ -35,7 +33,7 @@
 # Purpose: AI behavior rules + protocols + mistake prevention.
 #   -> Trading methodology: playbook.md (Part I, J, K, L)
 #   -> Session orchestration: 01_AI_BEHAVIOR.md Section 14
-#   -> System status: 02a_CURRENT_STATUS.md
+#   -> System status: research/STATUS.md
 #
 # GOAL: Single source of truth for AI BEHAVIOR.
 
@@ -56,7 +54,7 @@ sys_AI reads charts and outputs trade setups. Jishu decides on execution.
 - After adding any new rule, immediately validate: test integration, remove duplications, simplify, check for contradictions, flag issues.
 - Neutral language only — no "IMPORTANT!", "DIRECTLY CONTRADICTS!", "FRAMEWORK DISCOVERED!" or similar emotional framing.
 - sys_AI reads and writes directly to C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\. Use PowerShell commands for file ops.
-- **NEVER suggest AI picks trading targets, entries, stop levels, or any price levels.** All price levels — targets, stops, entries, zones — MUST come exclusively from Tom's transcripts/extracted rules. Never from AI reasoning, internet research, or "reasonable defaults." If a price level rule is unclear or missing from transcripts, FLAG it explicitly and SET IT ASIDE until properly extracted and validated. No fabrication, no inference, no interpolation for price levels.
+- [SUPERSEDED 2026-10-13, operator: our own judgement is allowed as OURS numbers checked out of sample; PROJECT_VISION DIRECTION UPDATE 2026-10-13] **NEVER suggest AI picks trading targets, entries, stop levels, or any price levels.** All price levels — targets, stops, entries, zones — MUST come exclusively from Tom's transcripts/extracted rules. Never from AI reasoning, internet research, or "reasonable defaults." If a price level rule is unclear or missing from transcripts, FLAG it explicitly and SET IT ASIDE until properly extracted and validated. No fabrication, no inference, no interpolation for price levels.
 - **NEVER ask JISHU to upload files that already exist in C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\.** Read them directly with read_file. This includes all condition files, extract files, and system files. Only ask for uploads of raw transcripts or new files JISHU creates locally.
 
 ---
@@ -145,21 +143,9 @@ During extraction, the AI produces NONE of the following:
 
 ## SECTION 5: SESSION WORKFLOW
 
-**Session start:** See 00_START_HERE.md for canonical load order. This file is Step 2 in that order.
+**Session start:** CLAUDE.md (code) or DSA_SESSION_PROMPT.md (chat), then research/STATUS.md; lessons in LESSONS_DIGEST.md.
 
-**Session end:**
-1. Update 02a_CURRENT_STATUS.md (Session Changes Log, current status)
-2. Update 03_FILE_INDEX.md (if files changed)
-3. Update 00_START_HERE.md (date, current phase, next goal)
-4. **Validation audit:** Cross-check all modified files for consistency
-   - Verify all files referenced in 02a/03 exist and match descriptions
-   - Verify 00_START_HERE.md status line is consistent with 02a_CURRENT_STATUS.md
-   - Verify 02b_DECISIONS_LOG.md newest entry matches 02a session changes
-   - Flag any inconsistencies before closing
-5. **Write next session starting prompt:** Document in 02a_CURRENT_STATUS.md under "NEXT SESSION STARTING PROMPT" what the next session should begin with (uploads needed, decisions pending, context to load)
-6. **Generate copy-pasteable session-start block:** At the very end of the session response, output a clean `=== NEXT SESSION START ===` block containing the exact text the user should copy-paste into the next AI session. This block must include: read order, current status summary, pending tasks, and the immediate next action.
-
-**Session ends when all 6 steps are complete. No external confirmation required.**
+**Session end:** commit with a `Result:` line, `sync.py ship`, then hand over per RELAY.md (NEXT_SESSION.md, `relay.py handoff`). STATUS.md is regenerated (`make_status.py`), never hand-edited.
 
 ---
 
@@ -167,8 +153,8 @@ During extraction, the AI produces NONE of the following:
 
 **Canonical source:** methodology/playbook.md Part G
 
-- All files written directly to `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\` (respect folder conventions per 05_NORMS.md)
-- Every session that modifies files MUST update `02a_CURRENT_STATUS.md` and `03_FILE_INDEX.md`
+- All files written directly to `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\` (folder map: PROJECT_MAP.md)
+- A session that modifies files commits them with a `Result:` line; STATUS.md is regenerated, never hand-edited
 - Default = KEEP. Only exclude files explicitly marked SUPERSEDED or confirmed done by user
 
 ---
@@ -186,7 +172,7 @@ During extraction, the AI produces NONE of the following:
 
 ## SECTION 8: SESSION START ORDER
 
-See 00_START_HERE.md for canonical load order. This file is Step 2 in that order.
+Boot per CLAUDE.md (code) or DSA_SESSION_PROMPT.md (chat), then research/STATUS.md.
 
 **Do not skip this file.** Do not load Tier 1/2 files before classification.
 
@@ -198,11 +184,11 @@ Classify input BEFORE loading files. Every action must have a Protocol ID.
 
 | Code | Type | Trigger | First File | Then | Action |
 |------|------|---------|-----------|------|--------|
-| I-01 | Session Start | "start session" or first message | 00_START_HERE.md | 01_AI_BEHAVIOR.md | Classify input -> load files per pipeline -> output: phase, blocker, goal |
+| I-01 | Session Start | "start session" or first message | research/STATUS.md | 01_AI_BEHAVIOR.md | Classify input -> load files per pipeline -> output: phase, blocker, goal |
 | I-02 | Transcript Upload | Raw transcript .txt uploaded | 01_AI_BEHAVIOR.md | methodology/playbook.md Part J + grounded_theory_protocol.md | Verify SINGLE transcript -> extract with tiers -> write extract_[ID]_fresh.md |
 | I-03 | Research Request | "search for..." or "research..." | 01_AI_BEHAVIOR.md | methodology/playbook.md Part I | State question + methodology + tier -> search -> tag results -> report |
-| I-04 | File Modification | Edit/create file requested | 01_AI_BEHAVIOR.md Section 10 | target file(s) | Evaluate goal -> edit -> validate -> write to mirror -> update 02a_CURRENT_STATUS.md + 03_FILE_INDEX.md |
-| I-05 | Session End | "end session" or token limit | 01_AI_BEHAVIOR.md | 02a_CURRENT_STATUS.md + 03_FILE_INDEX.md | Update status -> write all changes -> wait for JISHU "done" |
+| I-04 | File Modification | Edit/create file requested | 01_AI_BEHAVIOR.md Section 10 | target file(s) | Evaluate goal -> edit -> validate -> commit with a Result: line |
+| I-05 | Session End | "end session" or token limit | 01_AI_BEHAVIOR.md | RELAY.md | Commit + sync.py ship -> hand over (NEXT_SESSION.md, relay.py handoff) |
 | I-06 | Error / Bug | Something is wrong | 01_AI_BEHAVIOR.md | — | Acknowledge facts -> identify violated rule -> propose correction |
 | I-00 | Casual | "hi", "hello", simple chat | 01_AI_BEHAVIOR.md | — | Respond directly. No file loading needed. |
 
@@ -210,7 +196,7 @@ Classify input BEFORE loading files. Every action must have a Protocol ID.
 
 **Enforcement:**
 - If an action has no Protocol ID, STOP and ask JISHU.
-- New protocols require: Trigger + steps + enforcement + source. Log in 02a_CURRENT_STATUS.md Decisions Log.
+- New protocols require: Trigger + steps + enforcement + source. Log the decision in the commit body.
 - No implicit protocols.
 
 ---
@@ -219,7 +205,7 @@ Classify input BEFORE loading files. Every action must have a Protocol ID.
 
 Read these BEFORE any file modification.
 
-1. Edit files directly in `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\`. Respect folder conventions in 05_NORMS.md. Use PowerShell for file ops.
+1. Edit files directly in `C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed\MyTradingSys\`. Folder map: PROJECT_MAP.md. Use PowerShell for file ops.
 2. NEVER provide fake download links or claim a file was modified/hosted.
 3. NEVER print success unless proof from user-pasted output.
 4. `.Replace()` exact string matching may fail silently. Verify after replace.
@@ -245,8 +231,8 @@ Read these BEFORE any file modification.
 24. Never assume JISHU is uploading from the canonical repo folder. Always specify the exact full source path.
 25. NEVER use emoji characters in any system file. Use ASCII-only status markers: [OK], [WARN], [BLOCKED], [COMPLETE], [PENDING].
 26. Before using `edit_file`, check if the target file has CRLF line endings (`\r\n`). If yes, use `sed` or Python instead of `edit_file`. CRLF causes exact-string matches to fail silently.
-27. EVERY session start: Read 00_START_HERE.md first. It contains the canonical load order. No exceptions.
-28. EVERY session end: Update 00_START_HERE.md with current date, phase, and next goal. This is the entry point for the next session. Stale handoff = lost context.
+27. EVERY session start: boot per CLAUDE.md (code) or DSA_SESSION_PROMPT.md (chat), then research/STATUS.md. No exceptions.
+28. EVERY session end: hand over per RELAY.md (NEXT_SESSION.md, `relay.py handoff`). Stale handoff = lost context.
 29. When writing multi-line files with `write_file`, ALWAYS verify line count after write (use `wc -l` or Python). If line count is 0 or 1, the tool stripped newlines. Use `shell` with heredoc (`cat << 'EOF'`) instead.
 30. **HARD BAN — `write_file` and `append` for .md files:** These tools are PROHIBITED for markdown files. They silently strip newlines (M-028), producing unreadable 0-line or 1-line blobs. For ALL .md file writes, use ONLY the `ipython` Python tool with `open(path, 'w', encoding='utf-8')`. No exceptions. This rule overrides all other file-writing instructions.
 31. **VALIDATE BEFORE YOU FIX:** Before requesting any DSA field change or engine patch, test the CURRENT system against at least 1 live snapshot. If the current system produces the correct verdict, the "fix" is bloat, not a fix. Document the test result before proposing changes.
@@ -331,19 +317,18 @@ exceptions. A write that has not been retested has not been done.
 
 **Protocol ID:** I-07 (JSON Input)
 **Trigger:** JISHU pastes a JSON snapshot from DSA Java screener
-**Canonical quickref:** `system/04_PER_JSON_GUIDE.md`
+**Canonical quickref:** this section (the per-JSON guide was archived 2026-10-15)
 
 ### 14.1 Pre-Session Checks (Run Once Per Session)
 Before processing the first JSON:
-1. [ ] Read 00_START_HERE.md for current phase/blocker/goal
-2. [ ] Read 02a_CURRENT_STATUS.md for system status
+1. [ ] Read research/STATUS.md for current phase, blocker, goal and system status
 4. [ ] Confirm asset focus: BTCUSDT (P0) or ETHUSDT (P1)
 5. [ ] Confirm timeframe hierarchy: 1W/1D (macro) -> 4H (context) -> 1H (setup) -> 15m/5m (entry)
 6. [ ] Check daily loss limit: -3% = STOP
 7. [ ] Check max drawdown: -10% = SYSTEM HALT
 8. [ ] Verify no emoji in output (Rule 25)
 9. [ ] Verify no fabricated quotes (Rule 28)
-10. [ ] Load 04_PER_JSON_GUIDE.md
+10. [ ] Read LESSONS_DIGEST.md (live-path rules)
 11. [ ] Confirm trading_card_generator.md Section 1 (card principles)
 
 ### 14.2 Per-JSON Step Sequence — v4.2.0-p4 (4-Layer Workflow)

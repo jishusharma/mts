@@ -1,3 +1,7 @@
+> **RERUN 2026-10-17 (DEV only, new labels):** see EXIT_POLICIES_RERUN_DEV_2026-10-17.md (same code, TRAIN = 2022-01..2024-06 only; the VALIDATE column was NOT re-read). TRAIN-positive cells 9 -> 11; the single old BOTH+ cell (sr_flip_1h time_96_wide_stop_2atr) is TRAIN +9.8 bp (n 1024) -> +7.6 bp (n 878). Verdict unchanged: no policy rescues the layers. VALIDATION 2024-07..2025-06 stays unchecked for that cell.
+
+> **CONTAMINATED (DEV read VALIDATION 2024-07..12)** - TRAIN column ran to 2025-01-01 (exit_policies.py TRAIN_END), so it includes 2024-07..12; VALIDATE column is 2025-01..06 only (VALIDATION 2024-07..12 not in it). See MyTradingSys/backtest/bigtrade/SPLIT_ALIGNMENT_2026-10-17.md. Numbers below are kept as originally run, not recomputed.
+
 # EXIT POLICIES REPORT (backtest C), 2026-10-09
 
 Fires: F:\MTS\data\bigtrade\fires_spot. Bars: F:\MTS\data\bigtrade\cache\spot (spot). Entry = open of the bar after the fire bar closes. Costs 10.0 bp RT taker + 2.0 bp slippage (assumed). Stop-first on shared bars. HOLDOUT (2025-07..) not read. Policies:

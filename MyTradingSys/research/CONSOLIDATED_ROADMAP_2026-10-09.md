@@ -1,6 +1,6 @@
 # CONSOLIDATED ROADMAP AND STATE (2026-10-09)
 
-Built from: STATUS.md, PROJECT_VISION.md, WORKER_ROADMAP.md, SUPERVISOR_LOG/INBOX, AUDIT_MAJOR_GAPS_2026-10-09.md, BUGS.md,
+Built from: STATUS.md, PROJECT_VISION.md, MyTradingSys/archive/worker_roadmap_2026-10-15/WORKER_ROADMAP.md, SUPERVISOR_LOG/INBOX, AUDIT_MAJOR_GAPS_2026-10-09.md, BUGS.md,
 bigtrade PLAN/FINDINGS/BIGMOVES/FIRES_B1/CAPTURE_MATRIX_SPOT. Not a spec; a pointer. Verbatim operator text in PROJECT_VISION.md is untouched.
 
 ## 1. Corrected vision (one paragraph)
@@ -10,7 +10,7 @@ read-only module that never gates the core (PROJECT_VISION doctrine 2026-09-23, 
    (labelled BT-TUNED, never written to live files by a worker). It is no longer only a pass/fail edge gate.
 2. 2026-10-06 provenance ruling: the NO-SOURCE 0.1 % stop floor was removed. Nothing replaced it (B146). Provenance still applies to
    everything except the tuning override above.
-Stale doc to fix by operator edit: WORKER_ROADMAP.md still routes work to the decommissioned NUC/Qwen lane (decommissioned 2026-10-01);
+Stale doc, resolved 2026-10-15 (WORKER_ROADMAP.md archived to MyTradingSys/archive/worker_roadmap_2026-10-15/WORKER_ROADMAP.md): it routed work to the decommissioned NUC/Qwen lane (decommissioned 2026-10-01);
 what_is_next.md is from 2026-09-16 and open_loops_status.md from 2026-09-16 (both superseded by this file + BUGS.md).
 
 ## 2. What is being worked on right now

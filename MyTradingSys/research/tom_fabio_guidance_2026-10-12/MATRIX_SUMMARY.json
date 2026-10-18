@@ -1,0 +1,14 @@
+{
+ "events": {
+  "T1_cont": 8689,
+  "T1_fade": 8689,
+  "T2_cont": 1491,
+  "T2b_fade": 1275,
+  "T3_hold": 19282,
+  "T3b_through": 8427,
+  "T4_cont": 1870
+ },
+ "tested": 186,
+ "underpowered": 89,
+ "survivors": []
+}

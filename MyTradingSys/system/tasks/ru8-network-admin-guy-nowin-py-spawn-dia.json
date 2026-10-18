@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T17:23:10Z",
+  "depends_on": [],
+  "done_when": "A logged spawn without CREATE_NO_WINDOW appears in `nowin.py audit`, one with it does not; test_nowin_audit.py passes.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add opt-in spawn diagnostic log to nowin.py (parent, child, creation flags, elapsed) and `nowin.py audit` listing spawns without CREATE_NO_WINDOW (RU8).",
+  "id": "ru8-network-admin-guy-nowin-py-spawn-dia",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "nowin: hooks run windowless; a console-less python counts as windowless",
+      "ref": "c51c1a3aa6ce",
+      "utc": "2026-10-18T17:05:45Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "Each new test fails on pre-change code.",
+  "note": " routed by Pipeliner 2026-10-18 (ROUTING.md)",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T18:39:00Z",
+  "refs": [
+    "MyTradingSys/research/roles/ROLE_UPGRADES_2026-10-18.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/nowin.py",
+    "MyTradingSys/tests/test_nowin_audit.py"
+  ],
+  "scope_out": [
+    "live tree, HALT files, trades",
+    "other scripts"
+  ],
+  "scope_sha": "c51c1a3aa6ce",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read nowin.py",
+    "Add opt-in log line per spawn",
+    "Implement audit subcommand",
+    "Fixture test",
+    "Run run_all_tests.py --quick, ship"
+  ],
+  "tests": "MyTradingSys/tests/test_nowin_audit.py",
+  "title": "RU8 Network_Admin_Guy: nowin.py spawn diagnostic log + audit",
+  "weight": "",
+  "worker": "agent"
+}

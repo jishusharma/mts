@@ -26,6 +26,14 @@ class RetentionTest(unittest.TestCase):
         os.utime(d, (old, old))
         self.assertEqual([i for i in ret.plan(str(self.root)) if "NUC-QUEUE" in i[1]], [])
 
+    def test_policy_doc_does_not_promise_deleting_nuc_done(self):
+        # the code skips NUC-QUEUE/done on purpose (above); the policy row must say who reads it, not "delete after 14 days"
+        text = (ROOT / "MyTradingSys" / "system" / "RETENTION_POLICY.md").read_text(encoding="utf-8")
+        rows = [ln for ln in text.splitlines() if ln.startswith("|") and "NUC-QUEUE/done" in ln]
+        self.assertEqual(len(rows), 1)
+        self.assertNotIn("delete after", rows[0])
+        self.assertIn("audit_digest", rows[0])
+
     def test_subset_check_compares_content_not_only_size(self):
         a, b = self.root / "copy", self.root / "orig"
         a.mkdir(), b.mkdir()

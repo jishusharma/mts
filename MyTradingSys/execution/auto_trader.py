@@ -22,6 +22,7 @@ Stop it with Ctrl+C or by creating execution/HALT (mts pause); it then trades no
 To pause ONLY the auto-trader (e.g. while a testnet suite needs a flat account), create execution/AUTO_PAUSE.
 """
 import argparse
+import importlib.util
 import json
 import math
 import os
@@ -92,8 +93,16 @@ DEFAULT_CONFIG = {
     # loss. Testnet calibration spread (operator 2026-10-07: "Use amounts ranging from 20 to 1000 $"). A malformed
     # entry rejects the signal (no order at a guessed size).
     "size_overrides": {},
+    # Promotion pipeline default-deny (fable H1): a source with no promoted_setups.json entry trades only when it starts
+    # with a prefix here ({prefix: {"reason", "review_by": "YYYY-MM-DD"}}). Empty = every unregistered source is rejected.
+    "pre_pipeline_sources": {},
 }
 SECRETS_DIR = HERE / ".secrets"
+# Promotion registry: repo-root based (MTS_REPO_ROOT is set by run_staged_tests, whose temp copies of this module have
+# no sibling files), so a staged copy reads the real registry instead of failing closed.
+_ROOT = Path(os.environ.get("MTS_REPO_ROOT") or REPO)
+PROMOTED_SETUPS = _ROOT / "MyTradingSys" / "execution" / "promoted_setups.json"
+REGISTRY_PY = _ROOT / "MyTradingSys" / "backtest" / "layers" / "promotion" / "registry.py"
 _warned_missing = set()
 
 
@@ -212,6 +221,27 @@ def fee_to_stop_reject(entry: float, stop: float, cut):
     return None if ratio <= cut else f"fee/stop {ratio:.2f} R > {cut:g} R (stop {dist / float(entry) * 100:.3f} % of price)"
 
 
+def promotion_reject(source: str, cfg: dict, registry_path=None):
+    """Reject reason when `source` may not trade under the promotion pipeline, else None. Default-deny, fail closed:
+    the registry is re-read on every call (restart safe); unreadable/malformed registry or pre_pipeline_sources
+    (including None, set by load_config for an unreadable config) rejects everything, Tom included."""
+    try:
+        spec = importlib.util.spec_from_file_location("_mts_promotion_registry", REGISTRY_PY)
+        reg = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(reg)
+        entries, err = reg.load_registry(registry_path or PROMOTED_SETUPS)
+        d = reg.decision_for_source(source, None if err else entries, cfg.get("pre_pipeline_sources"))
+    except Exception as e:                       # any failure of the gate itself is a rejection, never a pass
+        return f"promotion registry error (fail closed): {e!r}"[:200]
+    if d == "trade":
+        return None
+    if d == "shadow":
+        return f"collection_only {source} (shadow)"
+    if d == "unregistered":
+        return "unregistered (promotion pipeline)"
+    return "promotion registry error (fail closed): registry or pre_pipeline_sources unreadable/malformed"
+
+
 def tom_signal(alert: dict, state: dict, cfg: dict, now: datetime):
     """New, fresh, actionable Tom alert -> order signal; else None. Marks the alert as seen in state."""
     c = cfg["tom"]
@@ -246,6 +276,8 @@ def tom_signal(alert: dict, state: dict, cfg: dict, now: datetime):
     wait = c.get("max_entry_seconds")
     if not reject and not (isinstance(wait, int) and not isinstance(wait, bool) and wait > 0):
         reject = f"bad tom.max_entry_seconds {wait!r}"     # config error: no order rather than a guessed wait
+    if not reject:
+        reject = promotion_reject("tom", cfg)
     sig = {"source": "tom", "key": f"tom#{p['alert_no']}", "side": p["side"], "detail": p}
     if reject:
         sig["reject"] = reject
@@ -355,13 +387,13 @@ def size_override(source: str, cfg: dict):
     if not hits:
         return None
     v = table[max(hits, key=len)]
-    size = v.get("size_usd") if isinstance(v, dict) else None
-    loss = v.get("max_loss_usd") if isinstance(v, dict) else None
-    if not (isinstance(size, int) and not isinstance(size, bool) and 0 < size <= SIZE_CEILING_USD and size % 10 == 0):
-        raise ValueError(f"size_usd {size!r} for {max(hits, key=len)}")
-    if not (isinstance(loss, (int, float)) and not isinstance(loss, bool) and loss > 0):
-        raise ValueError(f"max_loss_usd {loss!r} for {max(hits, key=len)}")
-    return size, loss
+    spec = importlib.util.spec_from_file_location("_mts_promotion_registry", REGISTRY_PY)
+    reg = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(reg)
+    try:
+        return reg.size_entry(v, SIZE_CEILING_USD)       # one shared validator with promote.has_testnet_flag (L7)
+    except ValueError as e:
+        raise ValueError(f"{e} for {max(hits, key=len)}")
 
 
 def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
@@ -376,8 +408,14 @@ def layer_signal(alert: dict, cfg: dict, now: datetime) -> dict:
     sig["side"] = side
     if not c["enabled"] or layer in cfg["disabled_layers"]:
         sig["reject"] = "layer disabled"
+    elif alert.get("collection_only") is True:
+        # promotion pipeline: shadow setups (and any alert while the promoted_setups registry is unreadable) never trade;
+        # checked before the side so side-less shadow events (fabio v3_grid) are not logged as unmapped
+        sig["reject"] = f"collection_only {layer}:{event} (shadow)"
     elif side is None:
         sig["reject"] = f"unmapped {layer}:{event} (add a layer_rules entry)"
+    elif (why := promotion_reject(sig["source"], cfg)):
+        sig["reject"] = why                      # default-deny: unregistered and not grandfathered, or registry error
     else:
         t_close = alert.get("t_close")
         bar = TF_SECONDS.get(tf)
@@ -450,6 +488,7 @@ def load_config(path: Path) -> dict:
         log({"event": "config_unreadable", "path": str(path), "error": repr(e)[:200],
              "action": "all layer trades blocked (fail closed); Tom unaffected"})
         cfg["trade_blocklist"] = None
+        cfg["pre_pipeline_sources"] = None       # promotion_reject: registry_error -> Tom and layers all rejected
         return cfg
     for k, v in raw.items():
         # accounts is an ordered prefix table (first match wins): the file replaces it, never overlays it, or a default

@@ -15,6 +15,7 @@ NOW = datetime.fromtimestamp(T_EVENT / 1000 + 3 * BAR + 60, timezone.utc)   # 1 
 def _cfg():
     import json
     c = json.loads(json.dumps(at.DEFAULT_CONFIG))
+    c["pre_pipeline_sources"] = {"layer:": {"reason": "test fixture", "review_by": "2026-10-23"}, "tom": {"reason": "test fixture", "review_by": "2026-10-23"}}   # fable H1: not testing the promotion gate here
     return c
 
 

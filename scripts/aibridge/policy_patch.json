@@ -1,0 +1,7 @@
+{
+  "auto_mode": "fluent",
+  "auto_confirm_regex": "(?i)(\\b(Remove-Item|ri|rm|rmdir|del|erase|rd)\\b[^\\n]*\\s-(Recurse|r|Force)\\b|\\brm\\s+-[a-z]*r[a-z]*f?\\b|\\brmdir\\s+/s\\b|\\bdel\\s+/[sfq]\\b|\\bgit\\s+(reset\\s+--hard|clean\\b|branch\\s+-D|checkout\\s+--\\s|stash\\s+(drop|clear)|push\\b[^\\n]*(--force|--force-with-lease|\\s-f\\b|--delete))|\\b(Format-Volume|Clear-Disk|Stop-Computer|Restart-Computer|shutdown)\\b|\\b(Stop-Process|taskkill|Stop-Service|Restart-Service)\\b)",
+  "max_parallel": 8,
+  "fresh_env": "true",
+  "timeout_task_s": 1800
+}

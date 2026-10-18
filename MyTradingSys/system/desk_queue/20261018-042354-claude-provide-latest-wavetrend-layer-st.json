@@ -1,0 +1,13 @@
+{
+  "done_when": "A repo-committed response is visible on origin/fast-track with current commit, file links, data ranges and split/read status, or a precise blocker.",
+  "finished": "2026-10-18T16:17:43Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NUC",
+  "id": "20261018-042354-claude-provide-latest-wavetrend-layer-st",
+  "need": "On the latest JIS-NB/NUC WaveTrend worktree, confirm current source/parity implementation, latest BTC DEV/VALIDATION results and any newly available data past the 2024-06-30 DEV cutoff. Include commit SHA and file paths; identify any unshipped work or access gaps. Do not open VALIDATION/HOLDOUT if pre-registration disallows it; state exact split/read status.",
+  "posted": "2026-10-18T04:23:54Z",
+  "result": "Pipeliner drain 2026-10-18: wrong channel: folded into card wavetrend-audit-c1-disposition (SONNET, raw)",
+  "status": "failed",
+  "target": "JIS-NB",
+  "title": "Claude: provide latest WaveTrend layer state and data"
+}

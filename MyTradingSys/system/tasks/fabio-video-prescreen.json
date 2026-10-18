@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-13T06:41:12Z",
+  "commands": [],
+  "created": "2026-10-12T19:27:04Z",
+  "depends_on": [],
+  "done_when": "Window lists with trade/no-trade flags for DyS79Eb92Ug and Is1HvdfQm5c are committed, recall on the 8 known trades is stated, and false-flag count on the 17 known-empty windows is stated.",
+  "from_inbox": "",
+  "goal": "Operator decision q3 (2026-10-13): pre-screen Fabio video windows with a script and read only windows that show a trade, instead of one model read per 250 s window (17 of 32 reads found nothing). Pillow 12.3.0 and opencv-python 5.0.0 are installed on JIS-NUC (q6).",
+  "id": "fabio-video-prescreen",
+  "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "note": "Released by operator answer q3 2026-10-13: Pre-screen windows with a script, read only those with a trade.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "scripts/dev/fabio_prescreen.py + test; DyS layout: recall 8/8 ledger trade sheets, 1/19 empty windows falsely flagged (the 7025 window, whose ticket is really on screen); DyS list = ledger truth (NUC mp4 is sparse, 16.7 MB of 250 MB); Is1H screened t=0-5250 but layout has zone boxes, 13/20 windows only 'candidate'; follow-up fabio-prescreen-is1h-layout",
+  "scope_in": [
+    "F:/MTS/data/fabio_videos (frames, sheets)",
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
+    "scripts/dev (new fabio_prescreen.py + test)"
+  ],
+  "scope_out": [
+    "engine code",
+    "backtests",
+    "new video downloads",
+    "reading trades into the ledger (windows are flagged only)"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Write the test first: a synthetic frame with an order-ticket or position-line region is flagged, a blank chart frame is not (fails on empty script).",
+    "Build scripts/dev/fabio_prescreen.py: per 250 s window of a video, sample frames with cv2 and flag order-ticket / position-line presence by colour+layout template; output a CSV window,flag,frame_ref.",
+    "Calibrate on the 8 ledger trades already known (all must be flagged) and on the 17 known-empty windows (report how many are wrongly flagged).",
+    "Run it on DyS79Eb92Ug and Is1HvdfQm5c; commit the window lists with trade/no-trade flags.",
+    "Point Q3 (ledger video windows) at flagged windows only."
+  ],
+  "tests": "scripts/dev/test_fabio_prescreen.py: flagged synthetic ticket frame, unflagged blank frame; the 8 known ledger trade windows are all flagged (recall 8/8) before the run.",
+  "title": "Fabio video pre-screen: list per 250 s window whether a frame shows an order ticket or position line, so only windows with a trade are read by a model"
+}

@@ -1,0 +1,637 @@
+# Video ID: 2ei4fj-Ba24
+# Title: The Levels Banks Trade That You're Ignoring
+# Published: 2026-03-23
+# Source: yt_dlp captions (auto); uploader: Krown
+# Analyst: Krown
+# Duration_s: 1281
+# Word count: 4165
+# ---
+[00:00:00] Support and resistance is one of the
+[00:00:01] first things that new traders typically
+[00:00:03] learn and it is also one of the fastest
+[00:00:05] ways they get extremely confused. At
+[00:00:06] least I know this from my own history
+[00:00:08] because when I first got into trading,
+[00:00:10] you learn how to mark up charts and
+[00:00:12] whatnot and soon your charts look like a
+[00:00:14] massive spider web, which is just not
+[00:00:16] helpful. And in fact, when I really
+[00:00:18] boiled it down, it's like how many of
+[00:00:19] those lines truly mattered? Maybe less
+[00:00:21] than 10% of them. In fact, very rarely
+[00:00:24] do you even get lines that matter to
+[00:00:25] begin with. So, I want to go deep into
+[00:00:28] detail in this video as to how to
+[00:00:30] properly and effectively plot support
+[00:00:33] and resistance. And this is going to
+[00:00:34] work hand-in-hand with the previous
+[00:00:35] video, the trend video in this TA 101
+[00:00:37] playlist. And by the way, if you're
+[00:00:38] finding this playlist or if you're
+[00:00:40] finding this video just completely out
+[00:00:41] of context or completely randomly on
+[00:00:42] YouTube, it's a part of a greater TA 101
+[00:00:45] playlist, which is fully available here
+[00:00:47] through the link in the description
+[00:00:49] below, right here for Teachable. It'll
+[00:00:51] bring you this page. You can literally
+[00:00:52] get it for the price of $0.00
+[00:00:54] plus a 100% discount, which is an
+[00:00:56] amazing deal. I mean, really. Anyways,
+[00:00:57] yes, you can enroll in it for free and
+[00:00:59] only the full content will be available
+[00:01:01] here on Teachable. I will only upload
+[00:01:03] about half of the videos on YouTube. The
+[00:01:06] rest of it is on Teachable. Plus, you'll
+[00:01:08] get quizzes on Teachable and even a
+[00:01:10] certificate of completion if if you
+[00:01:12] complete it. By the way, you need to
+[00:01:13] pass all the quizzes, but with at least
+[00:01:15] an 80 an 80% score or better. And
+[00:01:17] there's even some more important bonuses
+[00:01:19] on top of that as well if you so get
+[00:01:21] there. Anyways, let's go into the actual
+[00:01:23] slideshow right here and explain support
+[00:01:25] and resistance for beginners. How to
+[00:01:26] identify key levels that actually
+[00:01:28] matter. And by the way, before we go a
+[00:01:29] little bit further, I'm going to give a
+[00:01:31] major out to the sponsor of this
+[00:01:33] playlist, Blofin Blofin, however you
+[00:01:34] want to call it. They are perhaps the
+[00:01:36] best no KYC exchange available as of
+[00:01:39] right now to this market and I know a
+[00:01:41] lot of people love the no KYC. And also,
+[00:01:44] they will give you 15% off of your
+[00:01:46] trading fees in the form of cash back.
+[00:01:49] You can find that link right here and
+[00:01:50] even if you're not like that interested
+[00:01:52] in it right now, you may be interested
+[00:01:54] in it later. So, it'd be better to just
+[00:01:56] lock up that discount and those bonuses
+[00:01:59] by getting it while it's hot, I suppose,
+[00:02:01] because I don't know if I don't know how
+[00:02:02] long they're going to really have this,
+[00:02:04] but if you do get it right now, you will
+[00:02:05] lock that in for life, forever, at least
+[00:02:08] 15% cash back, maybe it even goes to
+[00:02:10] more over time, I don't know. Anyway, so
+[00:02:11] let's go into our slideshow right here
+[00:02:13] and go through the support and
+[00:02:15] resistance explained for beginners. And
+[00:02:16] in this video, I'll show you how to
+[00:02:17] identify support and resistance in a
+[00:02:19] simple, practical way without
+[00:02:21] overthinking, and that's that is a key
+[00:02:22] point, without [&nbsp;__&nbsp;] overthinking. I
+[00:02:23] mean, goddamn, like
+[00:02:25] it is a monstrosity what I see on a lot
+[00:02:27] of these charts with like these diagonal
+[00:02:29] trend lines going every which way from
+[00:02:31] [&nbsp;__&nbsp;] China to Japan to to to to Mars,
+[00:02:34] like it's just crazy.
+[00:02:36] This builds directly on trend and
+[00:02:38] structure from the previous video as
+[00:02:40] well. So, if you didn't see that one, I
+[00:02:41] would strongly suggest to see it because
+[00:02:43] we're going to be using a lot of the
+[00:02:44] same terminology with higher lows and
+[00:02:46] lower lows and lower highs and lower
+[00:02:47] lows and dominant highs and dominant
+[00:02:49] lows and all of these good things and
+[00:02:50] more. So, let's go into what support
+[00:02:54] and resistance really is.
+[00:02:56] What what actually are support and
+[00:02:57] resistance levels in essence from like a
+[00:02:59] definite a diction a dictionary
+[00:03:01] definition level? Support is really just
+[00:03:04] a level where a downtrend is likely to
+[00:03:06] pause
+[00:03:07] due to a concentration of demand. So,
+[00:03:10] typically you get bounces around that
+[00:03:12] support uh that support level.
+[00:03:14] Resistance is a level where an uptrend
+[00:03:15] is likely to pause due to a
+[00:03:18] concentration of supply, just basically
+[00:03:19] where you're likely to see a pullback
+[00:03:21] from. That's all it is in essence. It's
+[00:03:23] really it's actually really quite
+[00:03:25] simple.
+[00:03:26] And why do these work? Why, you know,
+[00:03:29] why is this even a thing? Well, one, you
+[00:03:31] have human psychology. Traders remember
+[00:03:33] past levels, past prices, and place
+[00:03:36] orders near them.
+[00:03:38] Of course, you got supply and demand,
+[00:03:39] which is a real thing. High demand
+[00:03:40] creates support, high supply creates
+[00:03:42] resistance. And then you got group
+[00:03:44] think, you got the self-fulfilling
+[00:03:45] prophecy. Traders act in similar ways.
+[00:03:47] If you, you know, if if you think
+[00:03:49] everyone else is playing some level as a
+[00:03:51] support or resistance,
+[00:03:53] you're probably going to play that as
+[00:03:54] well. The next guy's thinking the same
+[00:03:55] thing and thus it becomes actually like
+[00:03:57] a game theory that you're incentivized
+[00:03:59] to think to think the same
+[00:04:01] so that it actually ends up working. So,
+[00:04:03] all of these things are different
+[00:04:04] factors and features as to why this
+[00:04:06] works to begin with.
+[00:04:07] And if we go actually back to what are
+[00:04:09] support or resistance, I I do want to
+[00:04:10] flush this idea out a little bit better.
+[00:04:11] So, they are effectively areas where
+[00:04:13] price has reacted before. They are
+[00:04:15] zones, not lines.
+[00:04:18] And it is effectively a memory of the
+[00:04:20] market. I mean, that's really what it
+[00:04:22] is. It's the memory of the market. And I
+[00:04:24] really want to hammer in this point
+[00:04:26] right here. Zones, not lines. I see a
+[00:04:28] lot of people drawing [&nbsp;__&nbsp;] you know,
+[00:04:30] lines like this everywhere. It's like,
+[00:04:31] "Oh, that's a line. That's a That's a
+[00:04:33] high. That's a low. Okay, we got another
+[00:04:35] one right there. We got another one
+[00:04:36] right there." It's like that's all
+[00:04:37] technically correct, but is it useful?
+[00:04:38] [&nbsp;__&nbsp;] no. It's not useful at all. It's
+[00:04:40] all There's just confusion right here.
+[00:04:41] Doesn't do [&nbsp;__&nbsp;] But, zones can actually
+[00:04:45] be very, very useful, especially in
+[00:04:47] context of the previous videos
+[00:04:49] documenting highs and lows and and
+[00:04:51] dominant highs and dominant lows. These
+[00:04:53] things absolutely do matter. Anyway,
+[00:04:54] support is an area where buyers stepped
+[00:04:56] in before. Resistance is an is is where
+[00:04:58] the sellers stepped in before. That's
+[00:04:59] really all it is.
+[00:05:01] And price doesn't remember exact
+[00:05:02] numbers. It remembers areas of interest.
+[00:05:04] That's why we think in in terms of
+[00:05:06] zones, not lines. Zones, not lines. So,
+[00:05:10] if we were to accurately do this right
+[00:05:12] now to give you an idea of what it
+[00:05:13] should look like
+[00:05:15] for a trading range, um well,
+[00:05:17] we would do something like this. We
+[00:05:19] would take a zone of the lowest price
+[00:05:22] traded to typically the closure
+[00:05:26] of that candle as well.
+[00:05:28] And that should be your zone. And this
+[00:05:29] is your support zone right here. And you
+[00:05:31] can see that all all all subsequent
+[00:05:34] tests after this initial move on
+[00:05:36] February 5th
+[00:05:37] were Oh, I'm sorry. Let me make sure
+[00:05:39] that you can see this.
+[00:05:40] Um were
+[00:05:41] beautiful bounce areas.
+[00:05:44] Anyways, moving on from there,
+[00:05:46] let's go back into our slideshow and go
+[00:05:49] over the biggest beginner mistake.
+[00:05:52] So, why most people get this wrong? They
+[00:05:54] draw too many lines. They treat levels
+[00:05:57] as exact prices and they ignore trend. I
+[00:05:58] mean, all of these things are just
+[00:06:00] ghastly mistakes to possibly be making.
+[00:06:03] If your chart looks like a spider web,
+[00:06:05] if it looks like this,
+[00:06:06] that's a problem. Why? Because it's just
+[00:06:09] not useful. Like, how do you know, all
+[00:06:11] these lines might have
+[00:06:14] some validity, but to incorporate this
+[00:06:18] into a coherent strategy is just it's
+[00:06:20] it's [&nbsp;__&nbsp;] fubar. It makes no sense.
+[00:06:23] It's only going to confuse you and we
+[00:06:24] don't want confusion when we're actually
+[00:06:26] trading in the moment when our emotions
+[00:06:28] are naturally heightened because what
+[00:06:30] are we going to do? We're going to We're
+[00:06:31] going to freeze and the worst thing to
+[00:06:32] do in these situations is to
+[00:06:35] is to freeze. You need to take an action
+[00:06:38] if you are given a signal and the signal
+[00:06:40] should be obvious so that you don't have
+[00:06:41] to second-guess yourself in the moment
+[00:06:42] if you got a signal or not. That is the
+[00:06:44] essence of this whole thing.
+[00:06:46] Anyways,
+[00:06:47] more levels do not mean more accuracy.
+[00:06:50] They mean more hesitation. That's the
+[00:06:52] point that I'm really working towards.
+[00:06:55] So, here we go and just kind of focus on
+[00:06:56] this a little bit more. This is the
+[00:06:58] wrong way to do it. This is the big
+[00:06:59] mistake. Let's go over what this should
+[00:07:02] look like, which we kind of did a little
+[00:07:03] bit of it right there.
+[00:07:05] But, if we were to make
+[00:07:07] some zones,
+[00:07:09] let's just let's just plot out a few of
+[00:07:11] them. So, these would be the highs, like
+[00:07:14] the highest price traded, so that would
+[00:07:16] be your wick high versus
+[00:07:19] your closing price. And then you can
+[00:07:21] extend that out like you see right here.
+[00:07:24] So, this would be a resistance zone. If
+[00:07:26] price gets back up there, we should be
+[00:07:27] expecting a pullback.
+[00:07:28] Now, that's only if, right? I mean, it's
+[00:07:30] got to get up there as well.
+[00:07:32] Then, of course,
+[00:07:33] if we let's go let's go zoom out a
+[00:07:35] little bit more. Go to some different
+[00:07:38] Yeah, we got this one over here.
+[00:07:39] Boom. You got this one, so you got your
+[00:07:42] high and then the closing price is
+[00:07:43] actually lower on this one.
+[00:07:45] And if we extend that out, you get this
+[00:07:46] right here. And so, just by documenting
+[00:07:49] this stop reversal point, this is your
+[00:07:51] effectively dominant high.
+[00:07:54] Then, by extending that out, we get 1 2
+[00:07:58] or sorry, 1 2 3 I mean, many
+[00:08:00] many rejections right here, but I'm just
+[00:08:02] going to call it counted as 2 3 4 5 6
+[00:08:07] times of rejection with big moves to the
+[00:08:09] downside, big pullbacks after that.
+[00:08:11] That's definitely a level that matters.
+[00:08:13] And that also means if price reclaims it
+[00:08:16] by closing above the highest point
+[00:08:17] traded, like you see right here,
+[00:08:19] you got a real breakout. Like that's
+[00:08:21] where things are actually changing.
+[00:08:23] And then of course, we got this low over
+[00:08:25] here, which you can see
+[00:08:27] takes a lot of you know, a lot
+[00:08:30] a lot of meeting in this case.
+[00:08:32] This is a dominant higher low.
+[00:08:35] And if we extend that out, you can see
+[00:08:37] that's exactly where this or about where
+[00:08:39] this low was caught over here.
+[00:08:41] Beautiful. Absolutely beautiful. And
+[00:08:43] then same thing over here, right? We got
+[00:08:46] this as our nice low. We extend that
+[00:08:48] zone out. Boom, you got a few moves into
+[00:08:51] it. No closures below. Again, wicks
+[00:08:52] below, that's fine. Closures wouldn't
+[00:08:55] indicate something new is happening.
+[00:08:57] And these were good buying points
+[00:08:58] basically. And same thing for the top
+[00:09:00] side right here.
+[00:09:01] You get
+[00:09:02] this high with that closing price low
+[00:09:06] right there. Extend that out. Once you
+[00:09:07] close above there, your breakout's
+[00:09:09] confirmed. Beautiful.
+[00:09:10] And until you're above that, I mean, you
+[00:09:12] know, it's just a range basically.
+[00:09:13] You got same thing over here, right?
+[00:09:16] You got
+[00:09:17] your rejective high right here. Closes
+[00:09:20] down. Boom, if we extend that out,
+[00:09:21] that's your breakout point.
+[00:09:23] We got our low right here.
+[00:09:26] And we extend that out from the wick low
+[00:09:30] over from this closure right here. Boom,
+[00:09:33] again, bounce bounce.
+[00:09:35] And kind of a bounce right there as
+[00:09:36] well. Didn't quite get down to there.
+[00:09:39] Again, same thing over here. We go from
+[00:09:40] the closing price to the wick low,
+[00:09:42] extend that out. All of the moves into
+[00:09:44] this region. 1 2 3 4 5 6 I mean, many
+[00:09:47] over here.
+[00:09:48] 7 8 All of these were good bouncing
+[00:09:50] points. And then once you close below,
+[00:09:52] well, big continuation move to the
+[00:09:54] downside. Same thing over here.
+[00:09:57] We got our high and then the closure of
+[00:10:01] that. So, you trade into it a couple
+[00:10:02] more times right here and right here,
+[00:10:04] but it doesn't have to close above above
+[00:10:06] that wick high.
+[00:10:07] Thus, these are good selling points and
+[00:10:10] down it goes.
+[00:10:12] So, that's my point. Zones, not lines.
+[00:10:15] How do you define a zone? You define it
+[00:10:18] by the highest wick of a dominant higher
+[00:10:20] low and then the closing price of that
+[00:10:23] same candle or same period. If you're on
+[00:10:26] a line chart, same period, same same
+[00:10:28] candle, same bar, whatever you want to
+[00:10:30] call it.
+[00:10:31] That's the point that I'm trying to make
+[00:10:32] here.
+[00:10:33] Anyways,
+[00:10:35] let's now move on.
+[00:10:36] And let's go over some more common
+[00:10:38] mistakes to avoid. So, again, drawing
+[00:10:40] levels in the wrong place. Again, we
+[00:10:41] just really want to mark off the major
+[00:10:44] highs and major lows.
+[00:10:45] So, if you're referring to the previous
+[00:10:47] video, that'd be the dominant highs and
+[00:10:48] dominant lows are going to be the
+[00:10:49] absolute best ones to be aware of. So,
+[00:10:51] again, whenever you have a dominant
+[00:10:52] higher dominant low, start with the wick
+[00:10:54] higher the wick low, whichever one is
+[00:10:56] obviously, and then make create that
+[00:10:58] zone between the wick high and then the
+[00:11:00] closing price from that same candle.
+[00:11:03] Uh of course, ignoring the wicks. Um I
+[00:11:05] do think that that does matter. I used
+[00:11:07] to not think that that that uh that this
+[00:11:08] matters as much, but I after time, I do
+[00:11:11] think that it does matter. Um the the uh
+[00:11:15] the the wick high or the wick low is
+[00:11:18] your confirmation of continuation with a
+[00:11:19] closure above or below it. So, again,
+[00:11:22] when your range is resolved is only in
+[00:11:25] this case if you get a closure above
+[00:11:27] this initial wick right here. And by the
+[00:11:28] way, there is like this one right here.
+[00:11:31] When I put on the, you know, the zone
+[00:11:33] and you can't really see it as well but
+[00:11:34] you'd have to see a closure above that
+[00:11:36] number or sorry above that wick high in
+[00:11:38] order to confirm an upside reversal.
+[00:11:40] Whereas in this case
+[00:11:42] you get a couple of tests into this
+[00:11:43] zone.
+[00:11:44] But these are great selling points. Same
+[00:11:47] thing over here as well. You don't
+[00:11:48] confirm the breakdown until you close
+[00:11:49] below it over here.
+[00:11:51] And you don't confirm the breakout until
+[00:11:52] you close above it over here. So and so
+[00:11:54] forth. Again, it's not going to be
+[00:11:56] perfect every time but it's going to be
+[00:11:57] right more often than not.
+[00:11:59] Anyways, switching time frames too much.
+[00:12:01] Again, stick to one or two time frames
+[00:12:02] especially at the beginning. You want to
+[00:12:03] avoid excessive noise and confusion and
+[00:12:05] the best way to do that is just focus on
+[00:12:09] the time frame that you intend to trade.
+[00:12:12] And yes, you might want to incorporate
+[00:12:13] other time frames as well later on as
+[00:12:15] filters.
+[00:12:16] You know, be aware of what they're doing
+[00:12:18] to increase your hit rate but at the
+[00:12:20] beginning simplify, simplify, simplify.
+[00:12:22] It might not be super [&nbsp;__&nbsp;] optimal
+[00:12:23] but
+[00:12:25] you're very rarely going to find a
+[00:12:26] strategy that does not work on the time
+[00:12:29] frame that you're looking at
+[00:12:31] except without a higher term time frame
+[00:12:33] trend. It does happen but
+[00:12:35] it should work to like some you know
+[00:12:37] some degree. It's going to be a lower
+[00:12:38] degree obviously but it should work to
+[00:12:40] some degree. And then of course not
+[00:12:41] adjusting as time passes. I mean as as
+[00:12:44] we get more and more price action
+[00:12:45] history and information, you should
+[00:12:47] revisit the previous levels and see how
+[00:12:50] they hold up and also document the new
+[00:12:51] ones as well. You can extend left, you
+[00:12:53] can extend right.
+[00:12:55] And they should hold relevancy. So what
+[00:12:58] I mean by that is this this right here.
+[00:13:00] I should extend this left. Does it hold
+[00:13:02] relevancy? What do you know?
+[00:13:07] That's where this bottomed over here and
+[00:13:09] this bottomed over here and this and
+[00:13:11] this broke over here and also created a
+[00:13:12] high and then a high and then a high and
+[00:13:14] then broke out over here. It matters.
+[00:13:17] It absolutely matters.
+[00:13:20] So extend left, extend right. You should
+[00:13:22] see that it has also been respected in
+[00:13:24] the the as well.
+[00:13:27] Um anyways, moving onwards from there,
+[00:13:29] let's now put this in context of the
+[00:13:31] trend. So, context really matters when
+[00:13:33] it comes to support and resistance.
+[00:13:35] Um, support works best in an uptrend.
+[00:13:38] When you are in an uptrend, you want to
+[00:13:40] be plotting out your previous supports
+[00:13:43] because those are very likely going to
+[00:13:44] be at least at least a bouncing region.
+[00:13:47] Such as this.
+[00:13:49] Support right here in an uptrend. Okay,
+[00:13:51] where do we bounce over here? Right
+[00:13:52] here. I mean, you could also consider
+[00:13:53] this a bounce as well. It did try to
+[00:13:55] bounce on the first pass over here as
+[00:13:56] well.
+[00:13:57] Same thing on this one.
+[00:13:59] And same thing on this one as well for
+[00:14:01] this support right here. And this one,
+[00:14:03] once it goes into a downtrend, you know,
+[00:14:05] this becomes a resistance.
+[00:14:06] So, it works both ways.
+[00:14:09] Like I said, and it works both ways. So,
+[00:14:10] resistance works best in downtrends, of
+[00:14:13] course. And against trend levels are
+[00:14:15] weaker. That doesn't mean they don't
+[00:14:16] matter, they're just weaker. So, if you
+[00:14:18] have to bet on them, basically you're
+[00:14:20] trading counter trend, you're more
+[00:14:22] likely to get run over with potential
+[00:14:24] continuation breakout or breakdown move,
+[00:14:26] depending upon which side of the trend
+[00:14:28] it's on it's on. So, you know, if you're
+[00:14:30] trying to short an uptrend
+[00:14:32] uh, support or resistance level,
+[00:14:36] you have a higher degree of getting run
+[00:14:38] out run the [&nbsp;__&nbsp;] over trying to do that.
+[00:14:40] Support and resistance don't work in
+[00:14:41] isolation, they work within trend
+[00:14:43] context. So, again, respect your
+[00:14:46] supports in an uptrend, respect your
+[00:14:48] resistances in a downtrend. That does
+[00:14:50] correlate incredibly well to the
+[00:14:51] conversation of dominant highs and
+[00:14:53] dominant lows as we know as we went over
+[00:14:54] in the previous videos. And again,
+[00:14:57] when we extend this one over here now
+[00:14:58] that I recognize it, what do you know?
+[00:15:00] Gets respected right here more or less.
+[00:15:02] And on the way down over here, again
+[00:15:04] gets respected in this case now as
+[00:15:06] resistance in a downtrend.
+[00:15:08] And previously it was support, but this
+[00:15:11] downtrend was emerging, you know, way
+[00:15:12] back on over here. So, if you were to
+[00:15:14] buy this, you're trading counter trend.
+[00:15:16] That's exactly what I mean. And that
+[00:15:18] previous support very commonly becomes
+[00:15:21] new resistance and vice versa for a for
+[00:15:24] an uptrend.
+[00:15:26] Anyways, moving onwards. Let's go over
+[00:15:28] how to use support and resistance. So,
+[00:15:30] here's just some very simple rules to
+[00:15:32] follow. Identify your trend first. Will
+[00:15:34] be up or down or sideways. Mark only the
+[00:15:36] obvious areas. So, that would be your
+[00:15:37] dominant highs, dominant lows. Again,
+[00:15:39] the highest wick or the lowest wick on
+[00:15:42] the on it on a dominant high, the
+[00:15:43] highest wick plus the closing price of
+[00:15:45] that same period, that's where your zone
+[00:15:49] should be. And for a
+[00:15:51] for a dominant low, that would be the
+[00:15:53] lowest wick
+[00:15:55] plus the closing price. That is where
+[00:15:57] your zone should be drawn across.
+[00:16:00] Like I said, use zones, not lines.
+[00:16:02] And let price react before acting. So,
+[00:16:06] what do I mean by that? What I mean by
+[00:16:08] that is for
+[00:16:10] this example right here, where a
+[00:16:12] previous
+[00:16:13] uh you're you're in an uptrend and this
+[00:16:15] is now support,
+[00:16:17] let it bounce off first to tell you that
+[00:16:19] it's actually working.
+[00:16:21] And once you see things start to put in,
+[00:16:22] you know, a constructive move over here
+[00:16:24] with this higher low,
+[00:16:27] you can jump into that trade. I'm [&nbsp;__&nbsp;]
+[00:16:28] man. That was a great trade to jump
+[00:16:30] into. I mean, price goes from 84 to 126
+[00:16:33] overall. Not bad.
+[00:16:35] Anyways.
+[00:16:37] Okay, so how do I identify support and
+[00:16:39] resistance? Just kind of summarizing
+[00:16:40] this whole thing. Zoom out to the daily
+[00:16:42] weekly chart is always a good starting
+[00:16:44] point if you're not sure where to begin.
+[00:16:47] Daily and weekly are generally good if
+[00:16:49] you want to be more long-term, if you
+[00:16:50] want to be long-term investors, these
+[00:16:51] sort of things, or if you're just newer
+[00:16:53] and want to see things from a sort of
+[00:16:55] higher, easier view.
+[00:16:57] Mark significant highs and high and low
+[00:16:59] points. Again, that would be your
+[00:17:00] dominant high and dominant low to
+[00:17:01] reference the previous video.
+[00:17:03] Draw horizontal lines
+[00:17:05] and connect and draw a horizontal line
+[00:17:08] from the from the wick high to the
+[00:17:10] closure of that period or from the wick
+[00:17:12] low to the closure of that period. Draw
+[00:17:14] it out as a zone. And then confirm those
+[00:17:16] levels. Do they get tested in the future
+[00:17:19] or in the past? That is your further
+[00:17:21] confirmation that it actually matters.
+[00:17:23] It should also be respected in the past
+[00:17:24] as well if price has been there before.
+[00:17:28] And then of course, what do you do
+[00:17:29] there? You You You You just watch for
+[00:17:31] price to approach that level.
+[00:17:34] A little bit of waiting.
+[00:17:36] Does take a lot of patience, obviously.
+[00:17:38] Price reacts to the level. You You watch
+[00:17:40] it either bounce off of support or or
+[00:17:42] pull back from resistance on the first
+[00:17:43] pass, and then you validate. Are you
+[00:17:46] seeing some sort of reversal formation
+[00:17:48] or a reversal candle candlestick
+[00:17:50] pattern? Are you seeing um, you know,
+[00:17:52] volatility reverse signals or or
+[00:17:53] momentum signal uh that is also
+[00:17:55] confirming a reversal? These are the
+[00:17:58] next few videos that we should go over
+[00:17:59] as well to help confirm that. But before
+[00:18:02] we do that,
+[00:18:03] oops. Uh but before we do that, let's go
+[00:18:05] over actually, should we go over some
+[00:18:07] support and resistance tips? Uh stronger
+[00:18:09] with more touches. Okay.
+[00:18:11] I need to clarify this statement because
+[00:18:13] levels are more significant when price
+[00:18:15] touches them multiple times. They're
+[00:18:17] more significant, but they're not
+[00:18:18] actually stronger. They're just more
+[00:18:21] significant, and for whatever reason
+[00:18:22] when I fed my information to ChatGPT, it
+[00:18:26] didn't understand that point properly,
+[00:18:27] but I need to massively clarify that.
+[00:18:30] More touches on a support or resistance
+[00:18:33] does not mean it is stronger. It just
+[00:18:35] means it matters a lot, and when price
+[00:18:38] breaks out or breaks down from that
+[00:18:39] support or resistance, respectively, the
+[00:18:42] move will be stronger. The The The The
+[00:18:46] response will be stronger. Look left to
+[00:18:48] confirm levels. That just means, you
+[00:18:50] know, pulling it this way as well and
+[00:18:52] seeing was that respected in the past?
+[00:18:54] And, you know, for this case over here,
+[00:18:56] it obviously was, for example.
+[00:18:58] Uh consider recent price action. Of
+[00:18:59] course, focus more on recent touches and
+[00:19:02] bounces off the level, and don't force
+[00:19:04] levels. Just If it's not obvious, don't
+[00:19:06] [&nbsp;__&nbsp;] draw it. You don't need to draw
+[00:19:07] everyone anyways. Just the dominant
+[00:19:09] highs and dominant it Those are the ones
+[00:19:10] that are going to matter absolutely the
+[00:19:11] most. Everything else is, you know, if
+[00:19:14] you want to mark up your charts, go for
+[00:19:15] it. I think it's just more confusing.
+[00:19:17] Anyways, let's go over what's going to
+[00:19:18] come next in this playlist. Now that
+[00:19:20] we've gone over trend and support and
+[00:19:22] resistance, we will next go over trend
+[00:19:24] confirmation and confirmation tools in
+[00:19:25] the form of moving averages and why
+[00:19:28] indicators alone fail and confluence is
+[00:19:31] king. Confluence is the goal. And when
+[00:19:33] structure and levels are clear,
+[00:19:34] indicators finally really start to make
+[00:19:36] sense, at least in my experience.
+[00:19:38] Anyways, going back to the chart here,
+[00:19:40] if you need an indicator to tell you
+[00:19:41] where support and resistance is, you're
+[00:19:43] already late.
+[00:19:44] You can do that, for sure, but if you
+[00:19:46] can't quickly
+[00:19:48] visually identify it,
+[00:19:51] then it either doesn't exist or you
+[00:19:54] should go back to the beginning of this
+[00:19:56] video and rewatch this or maybe get the
+[00:19:58] Crown Trading Bible, which we go into
+[00:19:59] significant more detail on this concept.
+[00:20:02] However, like I say, for the Crown
+[00:20:03] Trading Bible, that is a paid program
+[00:20:06] and I should also add, it is absolutely
+[00:20:08] massive. I stand by it's my life's work,
+[00:20:10] but
+[00:20:11] at the same time, most people don't need
+[00:20:12] that. I mean, [&nbsp;__&nbsp;] if you're just
+[00:20:13] trying to learn the fundamentals of TA
+[00:20:14] and and trading,
+[00:20:15] this playlist will be fine. Just rewatch
+[00:20:17] this video. It's It's meant to be
+[00:20:18] watched more and more times. As you
+[00:20:20] learn more and as your understanding
+[00:20:23] deepens of the content, you will unlock
+[00:20:25] deeper and deeper meanings of what we
+[00:20:28] speak about here. It is intended to be
+[00:20:29] like that. So, anyways, next next video
+[00:20:32] we're going to use moving averages to
+[00:20:34] confirm trend, not chase price. I'll see
+[00:20:36] you in there. Take care.
+[00:21:20] >> Mhm.

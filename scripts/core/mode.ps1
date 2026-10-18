@@ -100,18 +100,24 @@ if (Test-Path $supLock) {
 if (-not $supRunning) {
     $vbsPath   = Join-Path $R "runtime_data\launch-supervisor.vbs"
     $supScript = Join-Path $R "scripts\core\loop-supervisor.ps1"
-    $supCmd    = '"{0}" -NoProfile -ExecutionPolicy Bypass -File "{1}" -Mode {2} -IntervalMin 1 -RestartGraceSec 180' -f $pwshExe, $supScript, $M
+    $supCmd    = '"{0}" -NoProfile -ExecutionPolicy Bypass -File "{1}" -Mode {2} -IntervalMin 1' -f $pwshExe, $supScript, $M
     $supCmdVbs = $supCmd -replace '"', '""'
     $vbs = @(
         'Set sh = CreateObject("WScript.Shell")'
         ('sh.CurrentDirectory = "{0}"' -f $R)
         ('sh.Run "{0}", 0, False' -f $supCmdVbs)
-    ) -join "`r`n"
+    ) -join "`n"
     $enc = New-Object System.Text.UTF8Encoding $false
-    [System.IO.File]::WriteAllText($vbsPath, $vbs, $enc)
+    [System.IO.File]::WriteAllText($vbsPath, ($vbs + "`n"), $enc)
     $act = New-ScheduledTaskAction -Execute "$env:windir\System32\wscript.exe" -Argument "//nologo ""$vbsPath""" -WorkingDirectory $R
+    # Two triggers: the far-future one only makes the task startable by hand (Start-ScheduledTask); the logon one (delay 90 s) is the stack's
+    # only boot recovery: without it the supervisor stays down after every reboot until someone runs mode.ps1.
     $trg = New-ScheduledTaskTrigger -Once -At (Get-Date).AddYears(10)
-    Register-ScheduledTask -TaskName 'MTS-Supervisor' -Action $act -Trigger $trg -Force | Out-Null
+    $trgLogon = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
+    $trgLogon.Delay = 'PT1M30S'
+    # No time limit (the default 72 h would kill a long-lived supervisor); battery never stops or blocks it; never two copies.
+    $supSet = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -MultipleInstances IgnoreNew -ExecutionTimeLimit ([TimeSpan]::Zero)
+    Register-ScheduledTask -TaskName 'MTS-Supervisor' -Action $act -Trigger @($trg, $trgLogon) -Settings $supSet -Force | Out-Null
     Start-ScheduledTask -TaskName 'MTS-Supervisor'
     Start-Sleep -Seconds 1
     Write-Host 'supervisor launched (hidden via VBS + scheduled task)'
@@ -139,8 +145,8 @@ $wvbs = @(
     'Set sh = CreateObject("WScript.Shell")'
     ('sh.CurrentDirectory = "{0}"' -f $R)
     ('sh.Run "{0}", 0, False' -f $wrapCmdVbs)
-) -join "`r`n"
-[System.IO.File]::WriteAllText($wrapVbs, $wvbs, $enc)
+) -join "`n"
+[System.IO.File]::WriteAllText($wrapVbs, ($wvbs + "`n"), $enc)
 $wact = New-ScheduledTaskAction -Execute "$env:windir\System32\wscript.exe" -Argument "//nologo ""$wrapVbs""" -WorkingDirectory $R
 $wtrg = New-ScheduledTaskTrigger -Once -At (Get-Date).AddYears(10)
 Register-ScheduledTask -TaskName 'MTS-Wrapper' -Action $wact -Trigger $wtrg -Force | Out-Null

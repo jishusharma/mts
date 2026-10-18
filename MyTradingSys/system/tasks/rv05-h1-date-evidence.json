@@ -1,0 +1,76 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T18:19:26Z",
+  "commands": [
+    "python -c \"import csv;r=list(csv.DictReader(open('MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv',encoding='utf-8')));print(sum(not x['date'].startswith('UNKNOWN') for x in r[23:70]))\""
+  ],
+  "created": "2026-10-13T05:35:47Z",
+  "depends_on": [],
+  "done_when": "The command in commands prints 0 (every date field on CSV lines 25-71 starts with UNKNOWN), and MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md has a section headed 'RV05 H1 date evidence' listing the 47 ids.",
+  "est_turns": 8,
+  "from_inbox": "",
+  "goal": "Record RV05 H1 date evidence for the Fabio ledger: the 47 rows on CSV lines 25-71 keep an UNKNOWN execution date (2026 is not a trade date), with the evidence path written down.",
+  "id": "rv05-h1-date-evidence",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "CSV 25-71 date fields non-UNKNOWN=0; RV05 H1 date evidence section appended (47 ids) to FA",
+      "ref": "262f3b72",
+      "utc": "2026-10-17T18:19:26Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Fabio ledger: recompute four entries from STP labels; date card verified",
+      "ref": "f1a15ead05ce",
+      "utc": "2026-10-17T14:01:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f1a15ead05ce Fabio ledger: recompute four entries from STP labels; date card verified",
+      "ref": "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md",
+      "utc": "2026-10-17T14:01:50Z"
+    }
+  ],
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-17 T0-ONLY. WEIGHT:ROUTINE. Checked 2026-10-17: all 72 date fields already start UNKNOWN, so the CSV repair looks applied; this card adds the evidence section. Does not depend on fabio-ledger-replace-date-2026-with-unkn (still raw). Refiner default: no change to dates unless the command prints above 0.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T18:15:59Z",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md"
+  ],
+  "result": "CSV 25-71 date fields non-UNKNOWN=0; RV05 H1 date evidence section appended (47 ids) to FABIO_TRADE_LEDGER.md",
+  "scope_in": [
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md (append one section)",
+    "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv (only if the command prints above 0)"
+  ],
+  "scope_out": [
+    "frame re-reads or new visual census",
+    "the existing repair cards fabio-ledger-*",
+    "entry, stop or quantity values",
+    "any backtest or code"
+  ],
+  "scope_sha": "f1a15ead05ce",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-13_rv05-fabio-ledger-frame-pass.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Run the command in commands; note the printed count (expected 0).",
+    "If the count is above 0, set each non-UNKNOWN date on lines 25-71 to UNKNOWN with a reason; a contract name like NQ-202512 or a 2026 file name is not a session date.",
+    "Append to FABIO_TRADE_LEDGER.md a section 'RV05 H1 date evidence (card rv05-h1-date-evidence, 2026-10-17)' listing the ids of CSV lines 25-71, the rule (execution date UNKNOWN unless a same-session source is on screen), and the H1 finding in the RV05 report.",
+    "Run the command again; it must print 0."
+  ],
+  "tests": "fail-first: grep -c \"RV05 H1 date evidence\" MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md prints 0 on the current file and 1 after step 3",
+  "title": "RV05 H1: incorporate date revalidation evidence into existing Fabio ledger date repair",
+  "worker": "agent"
+}

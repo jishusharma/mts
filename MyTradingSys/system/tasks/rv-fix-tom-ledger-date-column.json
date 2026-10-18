@@ -1,0 +1,43 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-12T19:59:32Z",
+  "commands": [],
+  "created": "2026-10-12T17:18:21Z",
+  "depends_on": [],
+  "done_when": "Every row: date is empty or ISO and equals the observed trade date; one date per canonical group; a mechanical check script prints 0 violations.",
+  "from_inbox": "",
+  "goal": "RV01 mechanical check: T9, T10, T11, T11-x carry prose or an ISO date in `date` while trade_date_status is NOT_IN_DATA/CONFLICT, and T6 (2026-06-02) and T10 (2026-06-08) of one canonical group disagree. Make `date` = observed trade date or empty, and keep the assumed value in trade_date_inferred. Confirm each row against RV01 report first if it exists.",
+  "id": "rv-fix-tom-ledger-date-column",
+  "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "host=any",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "date column empty on 37/37 rows (no observed trade date); 46 -> 0 violations via scripts/dev/tom_ledger_dates.py; assumed/inferred/legacy dates in trade_date_inferred + date_legacy_unverified; groups CSV has date_candidates_to_exclude",
+  "scope_in": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LEDGER_CANONICAL_GROUPS.csv"
+  ],
+  "scope_out": [
+    "live path",
+    "holdout reads",
+    "running tidy --apply outside a throwaway test repo"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Run the RV01 mechanical check.",
+    "Fix the column, keep inferred values in trade_date_inferred.",
+    "Add the check as a test."
+  ],
+  "tests": "scripts/dev/test_tom_ledger_dates.py (or an added check in an existing ledger test): red on 2868d6c, green after",
+  "title": "Tom ledger: date column must not carry assumed or prose dates (RV01 finding)"
+}

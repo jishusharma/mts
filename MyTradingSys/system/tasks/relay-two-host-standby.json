@@ -5,7 +5,7 @@
   "commands": [],
   "created": "2026-10-11T18:08:10Z",
   "depends_on": [],
-  "done_when": "relay_prompts/ in git and byte-equal to JIS-NB's live SKILL.md files; test_relay.py covers --standby-hours (fails on old code); NEXT_SESSION.md under 8 KB; relay_runs.jsonl gains a line from one real relay run; JIS-NUC list_scheduled_tasks shows mts-dispatcher-standby and a dry kick prints IDLE while JIS-NB is active.",
+  "done_when": "relay_prompts/ in git and byte-equal to JIS-NB's live SKILL.md files (superseded 2026-10-15 by relay.py tick drift=SKILL); test_relay.py covers --standby-hours (fails on old code); NEXT_SESSION.md under 8 KB; relay_runs.jsonl gains a line from one real relay run; JIS-NUC list_scheduled_tasks shows mts-dispatcher-standby and a dry kick prints IDLE while JIS-NB is active.",
   "from_inbox": "",
   "goal": "Relay survives one account/host being out: prompts live in git, JIS-NUC runs a standby dispatcher that fires only when JIS-NB is silent, the handoff file stays under 8 KB, and every launched session is listed in git. Findings in note.",
   "id": "relay-two-host-standby",
@@ -38,7 +38,7 @@
   ],
   "state": "done",
   "steps": [
-    "Copy the SKILL.md of mts-relay-a, mts-relay-b, mts-dispatcher, mts-control-room from JIS-NB into scripts/sched/relay_prompts/ (git), plus install_relay_tasks.md saying how a host recreates them with create_scheduled_task. Must run on JIS-NB (source files are there).",
+    "Copy the SKILL.md of mts-relay-a, mts-relay-b (archived 2026-10-15: MyTradingSys/archive/relay_2026-10-15/), mts-dispatcher, mts-control-room from JIS-NB into scripts/sched/relay_prompts/ (git), plus install_relay_tasks.md saying how a host recreates them with create_scheduled_task. Must run on JIS-NB (source files are there).",
     "relay.py kick --standby-hours N: IDLE unless origin/fast-track's NEXT_SESSION.md commit is older than N hours (primary host silent) and the header says go; tests for fresh/old/stop/no-header.",
     "relay.py handoff: refuse (or lint RED) a NEXT_SESSION.md over 8 KB; move the update history into system/handoff_history/<date>.md once.",
     "relay.py gate/kick append one line per launch to system/relay_runs.jsonl in git: utc, host, account label, task, handoff id, App session title. That is the cross-device list of session chats.",

@@ -1,4 +1,4 @@
-# PROJECT MAP (generated 2026-10-09, definitions as of 2026-10-09; do not hand-edit)
+# PROJECT MAP (generated 2026-10-15, definitions as of 2026-10-09; do not hand-edit)
 # Source of truth: MyTradingSys/system/groups.json (definitions, path claims, row assignments, focus lines) + MyTradingSys/research/BUGS.md (rows).
 # Regenerate: python scripts/dev/make_groups.py. Which group is a row in: python scripts/dev/make_groups.py --of B146.
 # Purpose: one answer to "which section does this belong to". Counts are registry rows, not percentages; they are not a measure of how finished a group is.
@@ -21,17 +21,17 @@
 ## Progress at a glance
 | Group | What it is | Open (HIGH) | Closed | Won't fix | Files | Live path |
 |---|---|---|---|---|---|---|
-| **DATA** | Market data and snapshot engine | 4 (1) | 26 | 16 | 74 | yes |
-| **SRC** | Rule sources and extraction | 3 (0) | 8 | 4 | 274 | no |
-| **CORE** | Tom core engine and verdicts | 8 (0) | 26 | 11 | 54 | yes |
-| **LAYR** | Independent layers (switchable modules) | 10 (2) | 2 | 3 | 210 | yes |
-| **EVID** | Backtest and evidence | 14 (2) | 2 | 8 | 66 | no |
-| **EXEC** | Execution and risk (Deribit testnet) | 11 (4) | 6 | 0 | 121 | yes |
-| **VIS** | Charts, screenshots and observation | 0 (0) | 0 | 0 | 21 | no |
-| **DESK** | Operator interface (DSA and live desk) | 1 (1) | 8 | 4 | 35 | no |
-| **OPS** | AI workforce and process | 9 (1) | 20 | 5 | 760 | no |
-| **INFRA** | Machines, runtime plumbing, housekeeping | 6 (2) | 10 | 3 | 107 | yes |
-| | all rows | 66 (13) | 108 | 54 | 1722 | |
+| **DATA** | Market data and snapshot engine | 5 (0) | 29 | 16 | 84 | yes |
+| **SRC** | Rule sources and extraction | 4 (0) | 9 | 4 | 293 | no |
+| **CORE** | Tom core engine and verdicts | 4 (0) | 30 | 11 | 55 | yes |
+| **LAYR** | Independent layers (switchable modules) | 8 (1) | 7 | 3 | 217 | yes |
+| **EVID** | Backtest and evidence | 14 (2) | 4 | 8 | 103 | no |
+| **EXEC** | Execution and risk (Deribit testnet) | 7 (3) | 10 | 0 | 124 | yes |
+| **VIS** | Charts, screenshots and observation | 1 (0) | 1 | 0 | 38 | no |
+| **DESK** | Operator interface (DSA and live desk) | 2 (1) | 9 | 4 | 35 | no |
+| **OPS** | AI workforce and process | 16 (4) | 25 | 5 | 1461 | no |
+| **INFRA** | Machines, runtime plumbing, housekeeping | 7 (3) | 12 | 3 | 147 | yes |
+| | all rows | 68 (14) | 136 | 54 | 2557 | |
 
 ## DATA - Market data and snapshot engine
 The Java feed and snapshot producer, kline / open-interest / order-flow recorders, funding, higher-timeframe context, and the volume profile, VWAP and CVD numbers the snapshot carries.
@@ -45,9 +45,10 @@ The Java feed and snapshot producer, kline / open-interest / order-flow recorder
 
 | Open item | Sev | Status | Title |
 |---|---|---|---|
-| B136 | HIGH | IN-FIX | BinanceClient /futures/data endpoints broken since acca1d0 (2026-09-24): OI, global/top long-short ratios, tak |
 | B141 | MED | OPEN | htf_context_live bal_4h / bal_1d are null on every row: NS-fixed k_bal 0.8 balance rule is satisfied by 0.4% ( |
+| B163 | MED | OPEN | operator pasted a 'Setup Alpha / Setup Beta' BTC perp handoff (daily SMA200 trend engine + 15m/1h liquidity sw |
 | T042 | MED | OPEN | Snapshot schema lacks 4h/daily/weekly structure and OI/CVD peak reference; producer gap feeding T041 |
+| B161 | LOW | OPEN | screenshot indicator header values (BB, RSI, VWAP) are hand-typed and recomputed ad hoc per read; no check too |
 | T044 | LOW | OPEN | Hybrid run mode divergence alert; REST vs WebSocket >3pt divergence must alert, not silently override |
 
 ## SRC - Rule sources and extraction
@@ -65,6 +66,7 @@ What the traders said and how it becomes a rule: transcripts, extracts, the verb
 | B119 | MED | OPEN | Revalidation items gated on desktop or operator: 9 papers unopened, W3 kappa has no clean reader, T2 run needs |
 | B120 | MED | OPEN | Tom provenance audit doc follow-ups from W3 and revalidation not delivered |
 | B139 | MED | OPEN | CBP adapter (queue/cbp_adapter.py) has no tracked item; candidates file never produced on the real queue; anal |
+| B167 | MED | OPEN | PROJECT_VISION.md is stale (last real edit 2026-09-28, 833 commits behind): what is missing from the vision |
 
 ## CORE - Tom core engine and verdicts
 The deterministic rule engine: compiled_engine, condition files, proof counting, setup states (WAIT_PROOF to SETUP_CONFIRMED), net_rr, the math object and start-trading-day.
@@ -78,14 +80,10 @@ The deterministic rule engine: compiled_engine, condition files, proof counting,
 
 | Open item | Sev | Status | Title |
 |---|---|---|---|
-| B059 | MED | OPEN | Rank-1 candidate zone price drifts with post-funding window; substate stays above/below on a zone that is 130  |
 | B063 | MED | OPEN | Divergence handling fragmented; no dictionary definition, no condition-file rule, no verdict consumer |
-| B066 | MED | CLOSED | Rank-1 candidate shown at trigger_ready tier while price is 150 pts away; substate and price disagree |
 | B117 | MED | OPEN | Unsourced proof bands 3 and 5 gate WAIT_PROOF, WATCH and SETUP_FORMING in start-trading-day.ps1 |
 | T052 | MED | OPEN | Define a Tom-cited trigger for SETUP_CONFIRMED, per operator D6b ruling (not removal) |
 | B074 | LOW | OPEN | Rule-order dependence in Compute-Verdict: contradiction cap runs before the broken-value override |
-| B135 | LOW | OPEN | B131 follow-up: start-trading-day.ps1 proof-count thresholds (L225 -lt 3, L227 -lt 5, L578 crossing 5) need a  |
-| B153 | LOW | OPEN | net_rr floor stays at NO-SOURCE 1.25 with no owner for the 'restore after P4' note; Python and Java net_rr hav |
 
 ## LAYR - Independent layers (switchable modules)
 Everything that sits on top of Tom and never gates it: RSI / Malkan, CryptoCred, Fabio, session frame, positioning, tick delta, timeframe layer, turn-of-candle, consensus, probability, options (Deribit), WaveTrend, alerts.
@@ -100,15 +98,13 @@ Everything that sits on top of Tom and never gates it: RSI / Malkan, CryptoCred,
 | Open item | Sev | Status | Title |
 |---|---|---|---|
 | T040 | HIGH | OPEN | Tick-based delta layer: standalone Python process subscribing to raw tick feed, computing fast deltas over rol |
-| T087 | HIGH | OPEN | Session-levels observation layer: MTS did not see today's failed first break of the prior-day high (83,499.9 v |
-| B125 | MED | OPEN | Consensus writer exists only as staged writer.py.new and test_writer.py.new; not promoted, so not live |
-| B142 | MED | OPEN | ExtraSetupBuilder stop is the previous 1m bar high/low with no trader source |
-| B143 | MED | OPEN | CryptoCred 0.1 percent stop buffer and 1.5R target are NO-SOURCE |
+| B143 | MED | BLOCKED | CryptoCred 0.1 percent stop buffer and 1.5R target are NO-SOURCE |
 | B144 | MED | OPEN | Exhaustion proxy (SCB volume 2.0x over 240 one-minute bars) is NO-SOURCE; tag SCREENER |
-| B156 | MED | OPEN | Tom alert card SSOT_THESIS text is stale: alert #273 (14:26Z, price 83106.5) still says "Price ~77600 never pr |
+| B162 | MED | OPEN | Qriptal (Habib) signal layer: operator asks for his Discord feed, his past record verified, and his calls trad |
+| B177 | MED | OPEN | operator: Control Room 'Layer Board' tab - per active layer: dev/test activity, combined indicators, step coun |
+| B179 | MED | OPEN | operator: turn the Tom and Fabio layers story (principles and concepts) into a slide deck artifact so the oper |
 | T034 | MED | OPEN | Add Net Longs / Net Shorts / (New) positioning states from OI + CVD cross |
 | T061 | MED | OPEN | WaveTrend with Crosses [LazyBear] integration as a separate indicator layer (module, never core, never a Tom f |
-| B145 | LOW | OPEN | classify_msb filter_range_noise is off in the live CryptoCred layer; no evidence it is neutral or better |
 
 ## EVID - Backtest and evidence
 The harness, trial registry, holdouts, the big-trade study and capture matrix, and the research questions we answer with data (hypothesis queue).
@@ -122,10 +118,10 @@ The harness, trial registry, holdouts, the big-trade study and capture matrix, a
 
 | Open item | Sev | Status | Title |
 |---|---|---|---|
-| B147 | HIGH | OPEN | Tom live-rule evidence is unreliable: rerun shows 0 SETUP_FORMING signals but the older run on the same histor |
+| B171 | HIGH | OPEN | operator: get a profitable imbalance indicator into the Armory (implement, backtest, run on testnet); repo sho |
 | T081 | HIGH | OPEN | Backtest D: walk-forward tuning of stop_buffer_atr (stop = structure +/- k x ATR) for Tom and every tight-stop |
-| B151 | MED | OPEN | CryptoCred limit-fill backtest fills on touch and drops signals by a future event, so its PASS numbers are upp |
 | B154 | MED | OPEN | No regime-stratified and no session-stratified backtest verdict exists; every reported edge is one aggregate n |
+| B185 | MED | OPEN | Build-Check passes an over-wide BUGS.md row silently: bars inside an evidence cell split it and Bugs still rep |
 | T051 | MED | BLOCKED | Backtest on MTS raw verdict done; parked by operator 2026-09-26; reopens only when T050 phase 4 + B071 fixed |
 | T053 | MED | OPEN | Two-account hedge / leveraged BTC scalping research (hedge thresholds, fee cover, trigger conditions) |
 | T054 | MED | OPEN | US session / pre-market alert, US-equity and BTC correlation, news sentiment research |
@@ -149,14 +145,10 @@ Everything that places or protects an order: auto_trader, position_manager, dail
 
 | Open item | Sev | Status | Title |
 |---|---|---|---|
-| B146 | HIGH | OPEN | No minimum stop width exists since 0c34a2d removed the NO-SOURCE 0.1 % floor and nothing replaced it: Tom back |
-| B148 | HIGH | OPEN | Daily-loss monitor re-authenticates as the MAIN account when a named subaccount token expires; it also silentl |
+| B148 | HIGH | IN-FIX | Daily-loss monitor re-authenticates as the MAIN account when a named subaccount token expires; it also silentl |
 | T048 | HIGH | OPEN | Satellite framework + exchange API layer; operator goal is API-ready trading with MTS |
 | T086 | HIGH | OPEN | Go-live bar for real money: written, operator-signed criteria (proposal = Control Room decision D06-gate) |
-| B118 | MED | OPEN | Layer bracket in auto_trader.py is a fixed unsourced stop_pct 1.0, targets 2, size 100 for every layer alert |
 | B123 | MED | OPEN | Zero-trade and QUIET family follow-ups from the 2026-09-30 maintainer report: Tom main and fabio jishu_3 after |
-| B124 | MED | OPEN | No check that execution/journal holds a file for each open plan; testnet_canary has no journal check |
-| B149 | MED | OPEN | L6 part 2 (daily-loss PnL source) is implemented but the tracker still says OPEN/DEFERRED, and the built sourc |
 | T085 | MED | OPEN | 97 % of testnet trades end on the time exit: find why targets/stops are almost never reached and fix exits so  |
 | B121 | LOW | OPEN | Bar-aligned polling and 5 s auto_trader poll not landed; live_runner_cli 60 s and auto_trader 20 s defaults un |
 | B122 | COSMETIC | OPEN | auto_trader.py reject text uses alert.get('event') instead of the fallback key |
@@ -171,7 +163,9 @@ The operator's eyes: TradingView and CoinGlass charts, footprint and heatmap pan
 - Progress is tracked in: the registry has no rows for this group yet: progress is `python scripts/dev/shot.py status` (also the Screenshots block of STATUS.md)
 - Focus (hand-written, as of 2026-10-09): Intake pipeline built 2026-10-09 (scripts/dev/shot.py, hook, template). 22 images recovered into the store: 9 non-charts closed, 13 charts classified and not closed (9 analysed by the bigtrade study but not yet linked, 4 from 2026-10-02 never read). Standing gaps: operator drawings are stored nowhere, T066 (read TradingView layouts) blocked since 2026-10-05, DSA chat cannot save images, the hook is active only after the supervisor deploys it to the live tree.
 
-No open registry items.
+| Open item | Sev | Status | Title |
+|---|---|---|---|
+| B159 | MED | OPEN | screenshot claim rows (MATCH/MISMATCH/NOT_IN_DATA) are kept only as counts; context reads without a side are n |
 
 ## DESK - Operator interface (DSA and live desk)
 How the operator talks to the system: the DSA chat surface and its prompt, the live-desk helper, session paste, trading cards, user guide, launcher commands.
@@ -186,6 +180,7 @@ How the operator talks to the system: the DSA chat surface and its prompt, the l
 | Open item | Sev | Status | Title |
 |---|---|---|---|
 | B132 | HIGH | OPEN | DSA is dispatching all work to Claude Code instead of doing quick wins and unblock work itself; the operator p |
+| B180 | MED | OPEN | operator: DSA picks its tasks by default from the machine it runs on, and something assigns DSA tasks on a sch |
 
 ## OPS - AI workforce and process
 How the work gets done: surfaces and session naming, scheduler and pick_task, sync.py and parallel worktrees, workers (NUC retired, AIBridge), cloud credits, test gate, CI, lessons learned, supervisor log, item registry.
@@ -193,21 +188,28 @@ How the work gets done: surfaces and session naming, scheduler and pick_task, sy
 - Operator's words: "sessions, workers, budget, who does what"
 - Start reading: `MyTradingSys/system/PARALLEL.md`, `MyTradingSys/system/SURFACE_POLICY.md`, `MyTradingSys/system/LESSONS_LEARNED.md`
 - Who works on it: Opus supervisor decides; Code sessions execute
-- Where it lives: `scripts/dev/`, `scripts/sched/`, `scripts/schedules/`, `scripts/worker/`, `scripts/tools/`, `MyTradingSys/system/`, `MyTradingSys/queue/`, `MyTradingSys/methodology/`, `MyTradingSys/items/`, `MyTradingSys/research/`, `MyTradingSys/tests/`, `tests/`, `AGENTS.md`, `CLAUDE.md`, `README.md`, `VERSION`, `WORKSTATION_MODES.md`, `.github/`, `.claude/`, `.gitignore`, `MyTradingSys/runtime/sched/`, `MyTradingSys/runtime/BUILD_PIPELINE.md`, `MyTradingSys/runtime/BUILD_REPORT.md`, `MyTradingSys/runtime/NEXT_SESSION_HANDOFF.md`, `MyTradingSys/runtime/SESSION_MANIFEST.json`, `MyTradingSys/runtime/SESSION_RESUME.md`, `MyTradingSys/runtime/session_log.json`, `MyTradingSys/runtime/RESEARCH_TASK_PREMARKET.md`, `MyTradingSys/runtime/live_session_journal.md`, `MyTradingSys/runtime/v4.2.0_optimization_spec.md`, `scripts/Build-Check.ps1`
+- Where it lives: `scripts/dev/`, `scripts/sched/`, `scripts/worker/`, `scripts/tools/`, `MyTradingSys/system/`, `MyTradingSys/queue/`, `MyTradingSys/methodology/`, `MyTradingSys/items/`, `MyTradingSys/research/`, `MyTradingSys/tests/`, `tests/`, `AGENTS.md`, `CLAUDE.md`, `README.md`, `VERSION`, `WORKSTATION_MODES.md`, `.github/`, `.claude/`, `.gitignore`, `MyTradingSys/runtime/sched/`, `MyTradingSys/runtime/BUILD_PIPELINE.md`, `MyTradingSys/runtime/BUILD_REPORT.md`, `MyTradingSys/runtime/NEXT_SESSION_HANDOFF.md`, `MyTradingSys/runtime/SESSION_MANIFEST.json`, `MyTradingSys/runtime/SESSION_RESUME.md`, `MyTradingSys/runtime/session_log.json`, `MyTradingSys/runtime/RESEARCH_TASK_PREMARKET.md`, `MyTradingSys/runtime/live_session_journal.md`, `MyTradingSys/runtime/v4.2.0_optimization_spec.md`, `scripts/Build-Check.ps1`
 - Progress is tracked in: registry rows; LESSONS_LEARNED.md; SUPERVISOR_LOG.md
 - Focus (hand-written, as of 2026-10-09): NUC/Qwen lane retired 2026-10-01; AIBridge is the run-command surface; every session works in its own worktree and ships with sync.py. Open: B150 test gate is a hand-kept allow-list, B090 cloud credit plan, B095 per-session cost not on disk. Freeze on new audit documents until B146-B148 report.
 
 | Open item | Sev | Status | Title |
 |---|---|---|---|
 | B090 | HIGH | OPEN | Cloud credit approval plan: two-bucket split of the ~$100 awgp spend, C1 audit-reconcile landed 2026-10-04 on  |
+| B172 | HIGH | OPEN | operator: the Sonnet ritual (relay/dispatcher sessions) uses a lot of tokens; investigate latest guidance and  |
+| B173 | HIGH | OPEN | operator: a terminal window flashes on screen (most likely Python, a scheduled job) and steals focus while typ |
+| B178 | HIGH | OPEN | operator: CI/CD end-to-end speed - deploy gate runs the full layer suite as one cold call; backup_snapshot com |
 | B095 | MED | OPEN | Per-session cost is visible only inside the Claude CLI Status panel and is never written to disk; no per-sessi |
 | B128 | MED | OPEN | Audit PARTIAL group (f): 18 findings where the code is partial or unwired and has no test; references T037 |
-| B150 | MED | OPEN | The test gate is a hand-maintained allow-list: new live-path safety tests (dlm_failure_cap, auto_trader_blockl |
-| B155 | MED | OPEN | Section 5d Claude-prompt contract is hand-checked; no executable gate for line count, three-block presence, op |
+| B168 | MED | IN-FIX | AI Bridge: auto-run stops between turns and is slow; second bridge (NUC) undocumented |
+| B176 | MED | OPEN | AIBridge (F:\AIBridge, outside MTS repo): auto-run refuses read-only python/node script blocks; agent.ps1 acce |
+| B181 | MED | OPEN | operator: Control Room Inbox shows no progress per item; an item without a registry ref shows nothing |
+| B182 | MED | OPEN | operator: design DSA AIBridge tasks so several sessions run in parallel and finish quickly, with NB/NUC scope  |
+| B183 | MED | OPEN | operator: sessions still run the start ritual after the AI-health changes; audit whether that is expected/opti |
+| B184 | MED | OPEN | AIBridge: multi-block replies are miscounted and half-run (first block runs, rest dropped, check runs after ex |
 | T046 | MED | OPEN | Stage 3 pending decisions bundle; five coordinator decisions gate Stage 4 |
 | T057 | MED | OPEN | Simplify architecture, optimise, declutter |
-| T088 | MED | OPEN | Timeframe registry: add 4m, 3h, 7h (7h does not divide 24h: epoch vs day-reset anchor) with fail-first tests;  |
 | B126 | LOW | OPEN | Cloud to SUP inbox consumption cannot be verified; SUPERVISOR_LOG.md:203 is still the last inbox line |
+| B170 | LOW | OPEN | GitHub emails every failed CI - fast-track run; green/fast-track is stuck at 24197c4 while fast-track is 6e66d |
 
 ## INFRA - Machines, runtime plumbing, housekeeping
 The computers and the plumbing under everything: desktop / NUC / laptop, supervisor and launchers, disk health, the Dumps share, retention, backups, archive.
@@ -222,13 +224,14 @@ The computers and the plumbing under everything: desktop / NUC / laptop, supervi
 | Open item | Sev | Status | Title |
 |---|---|---|---|
 | B138 | HIGH | OPEN | Dumps move to F: left C:\...\Dumps and F:\MTS\Dumps as two diverging copies; the \\JIS-NB\MTS-Queue share stil |
-| B140 | HIGH | OPEN | Desktop WHEA Id 1 "fatal hardware error" every 1-3 days since 2026-07-19 (43 events); every record names STORP |
+| B140 | HIGH | BLOCKED | Desktop WHEA Id 1 "fatal hardware error" every 1-3 days since 2026-07-19 (43 events); every record names STORP |
+| B175 | HIGH | OPEN | operator: Defender MsMpEng.exe holds ~0.94 CPU core on JIS-NB after ESET removal and exclusions |
 | B098 | MED | OPEN | Host CPU 79 percent from seven Python processes each spinning ~9 percent with zero disk and zero network; CLOS |
 | B137 | MED | OPEN | Device roles are undecided after the Qwen lane ended: open questions block the rethink of what runs on desktop |
-| B152 | MED | OPEN | retention.py deletes/trims files that other tools read (audit digest, supervisor canary), irreversibly; deploy |
+| B174 | MED | OPEN | Snapshot open_interest.change_1h_pct is a two-decimal gauge; the full-precision OI series exists on disk but i |
 | B069 | LOW | OPEN | STATE_UPDATE_WARN exit=1 under wrapper; update_market_state.py exits 0 when run directly |
 
 ## Checks
 - UNGROUPED registry rows: 0
-- Tracked files no group claims: 2 -> DSA_SESSION_PROMPT.md.pending_patch_2026-10-09.md (1), DSA_SESSION_PROMPT.md.pending_patch_2026-10-09_screenshots.md (1)
+- Tracked files no group claims: 21 -> scripts/aibridge (19), .gitattributes (1), DSA_SESSION_PROMPT.md.pending_patch_2026-10-09_screenshots.md (1)
 - Fix either by adding an "assign" entry or a keyword / path in groups.json.

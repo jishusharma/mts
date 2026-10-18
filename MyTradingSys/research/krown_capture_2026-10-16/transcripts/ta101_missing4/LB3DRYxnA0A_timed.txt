@@ -1,0 +1,146 @@
+# Video ID: LB3DRYxnA0A
+# Title: Stop Strategy-Hopping — Build a System You'll Actually Follow.
+# Source: yt_dlp en-orig auto captions, fetched 2026-10-16
+# ---
+[00:00:00] Here we have a great question from Mr.
+[00:00:01] Brook Diamond or I'm guessing Mr. Brook
+[00:00:03] Diamond. Anyways, he says I need to
+[00:00:05] develop a new strategy that I can
+[00:00:07] actually stick to and can you speak on
+[00:00:09] this for a minute or two? All right, so
+[00:00:10] while I can't give you a direct strategy
+[00:00:12] because I don't know who you are, I
+[00:00:14] don't know what you actually trade, I
+[00:00:15] don't know what time frames you want to
+[00:00:16] trade, I don't know what your lifestyle
+[00:00:18] looks like that actually even makes
+[00:00:20] those styles of trading relevant. So,
+[00:00:22] what I have to do here is I have to give
+[00:00:23] you a cookie-cutter generalized rules
+[00:00:25] that which you can then backwards
+[00:00:27] engineer and of course apply to
+[00:00:29] hopefully your life. So,
+[00:00:31] here's what I'd say. First things first,
+[00:00:33] try to figure out or if you haven't
+[00:00:35] already figured out what type of trader
+[00:00:37] are you? Are a Are you a long-term
+[00:00:39] trader? Are you a macro investor? Are
+[00:00:41] you a short-term time frame trader? Are
+[00:00:43] you looking to scalp? Are you looking to
+[00:00:44] trade trends? Are you looking to hold
+[00:00:45] things for a long time? All of these
+[00:00:47] things need to be defined by you. I
+[00:00:49] cannot answer that for you. I can only
+[00:00:51] tell you my own proclivities which
+[00:00:52] shouldn't matter anyways because you are
+[00:00:54] probably not me and as no one is. I
+[00:00:56] mean, we're all different, right? And
+[00:00:58] so, we all naturally have different
+[00:00:59] preferences. So, you need to first
+[00:01:01] figure out that because that is going to
+[00:01:03] make whatever style of trading that you
+[00:01:05] want to fully employ actually easy for
+[00:01:08] you to implement and then [&nbsp;__&nbsp;] follow
+[00:01:10] which is rather important. So,
+[00:01:13] once you have that, then you can
+[00:01:14] backwards engineer and that's going to
+[00:01:16] be a function of like how much time do
+[00:01:18] you have per day to trade? How much or
+[00:01:20] how much time do you even want to put
+[00:01:21] into trading per day if at all? You
+[00:01:23] know, maybe you just want to be looking
+[00:01:25] at like the weekly trend and just
+[00:01:26] trading that which means that you maybe
+[00:01:28] make a few trades a year. That's fair
+[00:01:29] enough. That's It's definitely fair
+[00:01:31] enough. It's just all personalized
+[00:01:32] stuff. So, you need to first figure out
+[00:01:34] that. If you haven't figured out that
+[00:01:35] out, the best way to do it is to just
+[00:01:37] try a bunch of different styles and just
+[00:01:39] figure out which one fits you and then
+[00:01:42] from there you can start to, you know,
+[00:01:43] construct a strategy that makes sense
+[00:01:45] with that. So, you know, let's say that
+[00:01:47] you are that you've decided that you're
+[00:01:49] you know, you want to trade the daily
+[00:01:51] trends and that means that, you know,
+[00:01:53] you probably make a few trades every
+[00:01:55] month perhaps Um, cuz the daily trend
+[00:01:57] doesn't really change all that often. I
+[00:01:58] mean, for example, Bitcoin reversed uh
+[00:02:01] below 63,500 and it's been the same way
+[00:02:03] for like the last 2 months, for example.
+[00:02:05] Uh, or a little bit more than 2 months
+[00:02:06] now, almost 2 and 1/2 months, actually.
+[00:02:08] And so, you'd say, "Okay, well, if I
+[00:02:10] want to trade the daily trend, maybe I
+[00:02:12] employ uh at most three different
+[00:02:14] indicators." Uh, in In fact, the less
+[00:02:16] the better. The less the better. And for
+[00:02:19] myself, you know, if I was going to
+[00:02:20] trade the daily trend, I don't want to
+[00:02:21] use moving averages cuz I like that for
+[00:02:23] a trend. I like volatility as always cuz
+[00:02:25] that always, you know, that always kind
+[00:02:27] of coincides and kind of help me uh
+[00:02:29] identify where we're at and and like
+[00:02:31] when to be a little bit more aggressive
+[00:02:32] and and things like that and when to
+[00:02:34] kind of expect breakdowns and whatnot as
+[00:02:35] well.
+[00:02:36] And then maybe maybe something for
+[00:02:37] momentum as well, just kind of like go
+[00:02:40] alongside volatility for a bias and
+[00:02:41] direction, but momentum is always like a
+[00:02:43] much distant third in uh at least in my
+[00:02:46] style, at least at least in my opinion.
+[00:02:47] But, overall, you know, that's that
+[00:02:49] would be kind of the way to go about
+[00:02:51] that. Then
+[00:02:53] Then, what you need to do is you need to
+[00:02:54] go ahead and you need to do the very,
+[00:02:56] very boring process, but very
+[00:02:58] enlightening process of back-testing
+[00:03:00] that [&nbsp;__&nbsp;] strategy because why would
+[00:03:01] you ever put any real money to a
+[00:03:04] strategy? Why would you ever allocate
+[00:03:05] real money to a strategy that is
+[00:03:06] untested, that is unproven? Like, for
+[00:03:08] for this example, I want to I just did
+[00:03:11] this on [&nbsp;__&nbsp;] Microsoft uh or sorry,
+[00:03:13] not Microsoft, but Google Sheets or
+[00:03:15] whatever. Anyways, Google Sheets, yeah.
+[00:03:18] And basically, what I did was is I went
+[00:03:20] through and I just started testing new
+[00:03:21] strategies. And And to get about 100
+[00:03:23] iterations of a strategy tested takes
+[00:03:26] about 2 hours, actually, if I really
+[00:03:28] like nail it down and get it right. And
+[00:03:30] yes, you know, this going to require
+[00:03:31] some time and it's probably going to be
+[00:03:32] worthwhile. And the problem is, or maybe
+[00:03:34] not the problem, but you're probably
+[00:03:35] going to want to, you know, reiterate
+[00:03:37] that as well, at least another few times
+[00:03:40] because you're probably not going to get
+[00:03:41] it right at first because how can you?
+[00:03:42] You don't have really have any base to
+[00:03:44] go off of. So, naturally, you will, as
+[00:03:46] you get more and more information
+[00:03:47] supporting or not supporting whatever
+[00:03:49] your theory or strategy or trading
+[00:03:51] strategy is, you will start to, you
+[00:03:53] know, change it a bit as well. So,
+[00:03:55] that's what I'd say about that, man.
+[00:03:56] Other than that, um
+[00:03:58] you know, it's uh it it you know, it
+[00:03:59] basically comes down to what can you
+[00:04:00] actually be accountable to towards
+[00:04:02] yourself for? What can you actually be
+[00:04:04] consistent with? And that it and that
+[00:04:06] usually just has to come with like a bit
+[00:04:08] of experience and knowing your your own
+[00:04:10] trading personality. So, hopefully that
+[00:04:12] was helpful and there you go for that,
+[00:04:13] uh Mr. Brooke Diamond.

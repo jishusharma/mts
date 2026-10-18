@@ -33,6 +33,7 @@ class Base(unittest.TestCase):
         for p in self.patches:
             p.start()
         self.cfg = json.loads(json.dumps(at.DEFAULT_CONFIG))
+        self.cfg["pre_pipeline_sources"] = {"layer:": {"reason": "test fixture", "review_by": "2026-10-23"}, "tom": {"reason": "test fixture", "review_by": "2026-10-23"}}   # fable H1: not testing the promotion gate here
         self.placed = []
 
     def tearDown(self):

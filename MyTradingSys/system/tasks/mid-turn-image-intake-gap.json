@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T15:30:42Z",
+  "depends_on": [],
+  "done_when": "Either a test that lands a mid-turn image from a transcript fixture, or a KNOWN LIMITS row plus a notice line telling the operator to re-paste.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Images the operator pastes while a turn is running (mid-turn message) are shown to the model but never written to Temp/uploads, so shot.py hook/ingest cannot land them. Find where the app keeps them (transcript jsonl?) and make ingest read that, or document the limit in screenshot_intake.md KNOWN LIMITS.",
+  "id": "mid-turn-image-intake-gap",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "score-context-reads-automatically-carrie: compute carried falsifiers from klines",
+      "ref": "bc97ca7421a9",
+      "utc": "2026-10-18T13:53:58Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9fe9d72d9e7c operator chart checklist + confluence-read-encode card; extract c5e7b5c17d90 ",
+      "ref": "MyTradingSys/methodology/screenshot_intake.md",
+      "utc": "2026-10-16T18:34:02Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Observed 2026-10-18: 5 shots pasted mid-turn ~14:57Z never reached disk; the operator re-pasted them as a normal prompt at 15:38Z and the hook landed all 5 (ffb3dd828daa, 5763ffcc7333, 33369d758139, df60707599d8, 4d1696e42656). Workaround confirmed: re-paste as a new prompt. Fix still open: the session should say 'NOT SAVED, re-paste' when it sees mid-turn images.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T15:47:01Z",
+  "refs": [
+    "MyTradingSys/methodology/screenshot_intake.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/shot.py",
+    "scripts/dev/test_shot.py",
+    "MyTradingSys/methodology/screenshot_intake.md"
+  ],
+  "scope_out": [
+    "live code",
+    "the Claude app itself",
+    "operator drawings"
+  ],
+  "scope_sha": "bc97ca7421a9",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/methodology/screenshot_intake.md:85 (KNOWN LIMITS section to extend)",
+    "scripts/dev/shot.py:246 (ingest_transcript reads user records with image blocks)",
+    "scripts/dev/shot.py:807 (hook: SessionStart/UserPromptSubmit)",
+    "scripts/dev/test_shot.py:83 (paste fixture pattern)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Find the 2026-10-18 14:57Z session transcript jsonl and check whether the 5 mid-turn images are in it (queued-command or attachment record type) and how they differ from the normal user record shot.py:246 accepts.",
+    "If present: extend ingest_transcript to land that record type, with a fixture test. If absent: add a KNOWN LIMITS row (mid-turn images never reach disk; re-paste as a new prompt, confirmed 2026-10-18) and the notice line.",
+    "Run python scripts/dev/test_shot.py; ship."
+  ],
+  "tests": "scripts/dev/test_shot.py: new test with a mid-turn image fixture lands one shot (fails before the ingest change); in the absent case a test that the notice text exists",
+  "title": "Intake gap: images pasted mid-turn never reach disk (5 shots 4h/1h/8h/12h/1D on 10-18 ~14:57Z lost; not in Temp, not ingested)",
+  "weight": "",
+  "worker": "agent"
+}

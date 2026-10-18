@@ -1,0 +1,9 @@
+trial_id,factor,primary,alternative,reason,n_primary_long,n_primary_short,n_alt_long,n_alt_short,outcome_read
+T1,F1 role rule,support iff last closed 1h close > level,last closed 4h close > level,the 1h close is the decision grid itself (no stale role up to 4 h); a 4h close flips later,21888,21888,16293,16528,no
+T2,F2 zone width,K_ZONE = 0.5 x ATR14(4h),1.0 x ATR14(4h),half an ATR keeps 'at the level' tighter than one 4h bar's typical range,20688,20687,21610,21594,no
+T3,F3 operator condition,close rule: current close past the prior daily open,touch rule: the partial day's extreme past the prior open,the operator says 'has moved past the opening' at a decision; a close is the PIT reading a trader quotes,10303,10629,14594,14676,no
+T4,F3 width W,W = 2.5 % of price,W = 1.5 %,2.5 % is about one DEV median daily range; 1.5 % pushes most days to the 12h/8h rungs,12558,12565,9365,9392,no
+T5,F5 short veto,"band walk down in progress (3+ closes beyond, bandwidth expanding)",%b <= 0 on the last closed 4h bar,"the operator's 'dance' is the walk, not a single close outside",0,426,0,1382,no
+T6,F6 phase,A: daily fractal pivots,B: 30-day return vs 7.5 % + SMA50 split,A is what a trader reads off swing highs/lows (markup = HH&HL); B is the repo's trend_tag reused,7505,7515,6815,6785,no
+T7,F6 intraday,24h range <= 1.5 ATR = balance,last 12 1h closes inside the prior 12 bars' range,range-vs-ATR is one number a trader checks; the inside-range rule needs two windows,2841,2837,8405,8412,no
+T8,F1/F3 prior bucket,last closed bucket (includes a candle completing at t),cur_k - 1 (skips a candle completing at t),the fill at open[t+1] lies in the next bucket; a candle closed at t is closed information (same as BB/ATR),2581,2612,2545,2584,no

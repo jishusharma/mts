@@ -1,0 +1,17 @@
+{
+  "card": "rv-dsa-q33-rerun",
+  "done_when": "RV_DSA_q33_rerun.md states row count (336?), status counts 186/89/61, survivors count, smallest q, or the exact fetch error.",
+  "finished": "2026-10-18T15:57:39Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NUC",
+  "id": "20261012-173924-rv-dsa-q33-rerun",
+  "need": "python MyTradingSys/backtest/fetch_binance_archive.py --help; python MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py Dumps/backtest/raw_1m_2022/klines <scratch-out-dir> (full brief: python scripts/dev/tasks.py brief rv-dsa-q33-rerun)",
+  "note": "klines re-fetched 2026-10-12 to C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/Dumps/backtest/raw_1m_2022/klines (2,512,800 bars, 0 gaps); JIS-NUC session already ran the matrix: cells+summary byte-identical to committed. Pass that path as klines_dir (worktrees have no Dumps/).",
+  "posted": "2026-10-12T17:39:24Z",
+  "result": "Result: RV_DSA_q33_rerun.md - 336 rows, status 186 tested/89 underpowered/61 n<20, 0 survivors, smallest q 0.620; CELLS.csv and SUMMARY.json byte-identical to committed.",
+  "status": "done",
+  "taken": "2026-10-18T15:57:17Z",
+  "taken_by": "JIS-NUC",
+  "target": "DSA-NUC",
+  "title": "RV-DSA Q33 matrix re-run on JIS-NUC and diff against the committed cells (host=JIS-NUC)"
+}

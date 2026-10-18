@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T14:32:07Z",
+  "commands": [],
+  "created": "2026-10-13T14:40:00Z",
+  "depends_on": [],
+  "done_when": "flag-off golden test identical on BTC fixture; through_ticks=1 test shows the touch-only fill no longer fills.",
+  "from_inbox": "",
+  "goal": "Add an optional through_ticks argument to sim_limit_trade so a limit fills only when price trades through by N ticks; default 0 leaves every output byte-identical. Copy the idea from bt/bt_ladder.py through_ticks.",
+  "id": "gap-g4-through-ticks-flag",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "2026-10-14 opus: moved to CODEX (Claude weekly budget 94%; GPT week 33%).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "sonnet-2026-10-13 gap review G1-G8",
+  "refs": [],
+  "result": "30 passed; MyTradingSys/research/layer_lab/reports/2026-10-15_gap-g4-through-ticks-flag.md",
+  "scope_in": [
+    "MyTradingSys/backtest/tom_bt.py",
+    "MyTradingSys/tests/",
+    "MyTradingSys/backtest/bt/bt_ladder.py (read only)"
+  ],
+  "scope_out": [
+    "live tree",
+    "holdout reads",
+    "tuning",
+    "changing defaults",
+    "tom_dax_bt.py"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read sim_limit_trade and bt_ladder through_ticks.",
+    "Test red first, add the argument, run existing tom_bt tests."
+  ],
+  "tests": "pytest: bar low touches entry exactly -> fills at through_ticks=0, no fill at 1; bar trades 1 tick through -> fills at both; target leg same; golden output for existing fixtures unchanged. Fails before the argument exists.",
+  "title": "Gap G4: through_ticks flag in tom_bt.sim_limit_trade (entry and target), default off, output identical"
+}

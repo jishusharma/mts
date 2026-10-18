@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-13T16:04:52Z",
+  "commands": [],
+  "created": "2026-10-13T14:40:00Z",
+  "depends_on": [],
+  "done_when": "power_mde.py plus test file; the six table rows of G1 reproduced within 2 points; no existing file changed.",
+  "from_inbox": "",
+  "goal": "Add MyTradingSys/backtest/power_mde.py: given win prob p, R:R, cost in R, N, return power of the two-sided 95 % CI-lower-bound>0 test, MDE and trades for 80 % power. Reproduce the REPORT.md section 5 G1 table.",
+  "id": "gap-g1-power-mde-helper",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "sonnet-2026-10-13 gap review G1-G8",
+  "refs": [],
+  "result": "six G1 rows within 2 points; 7 tests pass; MyTradingSys/research/layer_lab/reports/2026-10-13_gap-g1-power-mde-helper.md",
+  "scope_in": [
+    "MyTradingSys/backtest/power_mde.py",
+    "MyTradingSys/tests/test_power_mde.py",
+    "MyTradingSys/research/volume_2026-10-09/vstats.py (read only)"
+  ],
+  "scope_out": [
+    "live tree",
+    "holdout reads",
+    "editing existing harness files",
+    "tuning"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read REPORT.md section 5 G1 and section 9 script; write the module with a pure function API.",
+    "Test red first, then green."
+  ],
+  "tests": "pytest: p=0.45,R:R=1.5,cost=0.012,N=100 -> mean net R +0.11, power about 15 %; p=0.45,R:R=2.5,cost=0.062,N=100 -> power about 84 %; N for 80 % power within 5 % of 951 and 90 for rows 1 and 6. Fails before the module exists.",
+  "title": "Gap G1: power / MDE helper that every pre-registration prints (verdict INCONCLUSIVE when power < 80 %)"
+}

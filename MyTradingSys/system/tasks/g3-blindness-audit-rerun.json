@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T04:01:27Z",
+  "commands": [],
+  "created": "2026-10-17T03:40:00Z",
+  "depends_on": [],
+  "done_when": "Report with the Blindness table (surfaces: IDs/filenames/titles, bar count and spacing, right-edge time, last-bar pattern and pre-filter tag, README text), the test counts, and the final line `Draw rebuild: YES` or `Draw rebuild: NO` with the reason in one sentence.",
+  "effort": "low",
+  "from_inbox": "",
+  "goal": "Rerun ONLY the Blindness section (b) of reports/2026-10-16_gpt-g3-pack-audit.md against the CURRENT g3_pack.py. The earlier rerun (21:00Z 10-16) predates the blindness fix 198c1aed (22:57Z): can a reader still tell the enriched half or pre-filter tag, and must the draw be rebuilt before the 213 marks?",
+  "id": "g3-blindness-audit-rerun",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "model": "gpt-6-astra",
+  "note": "lab-cards-1017. Scripts are saved as .py.txt, never .py (new .py fails the lab ship gate, see LAYER_LAB.md Guards). Never open ANSWER_KEY_CLOSED/ (KEY.csv or SELECTION_RULES.md).",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "lab-cards-1017",
+  "refs": [],
+  "result": "FIX-FIRST; Draw rebuild YES; 2026-10-17_g3-blindness-audit-rerun.md",
+  "scope_in": [
+    "MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py",
+    "MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py",
+    "MyTradingSys/research/g3_marks_2026-10-16/README.md",
+    "MyTradingSys/research/g3_marks_2026-10-16/WINDOWS.csv",
+    "MyTradingSys/research/g3_marks_2026-10-16/render_png.ps1",
+    "MyTradingSys/research/layer_rebuild_2026-10-15/READER_PROTOCOL.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-16_gpt-g3-pack-audit.md (section (b) only)",
+    "MyTradingSys/research/layer_lab/reports/2026-10-16_g3-pack-audit-rerun.md (read only)"
+  ],
+  "scope_out": [
+    "ANSWER_KEY_CLOSED/ in the pack folder: never open KEY.csv or SELECTION_RULES.md or anything inside it",
+    "editing or rebuilding the pack: no g3_pack.py build or draw, no change to WINDOWS.csv or the marking sheets",
+    "any report line that names a window id together with its half or tag",
+    "sections (a) causality and (c) definitions of the old audit (not rerun here)",
+    "VALIDATION and HOLDOUT reads beyond the pack's own fences"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-16_gpt-g3-pack-audit.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read section (b) of the 2026-10-16 audit (HIGH: last-bar pattern and pre-filter tag; MED: IDs/titles, right-edge time of day), then `git show 198c1aed` for g3_pack.py and README.md to see what changed.",
+    "Run python -m pytest MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py -q (synthetic data, writes nothing into the pack folder); report passed/failed/skipped.",
+    "Re-assess each surface from code, WINDOWS.csv, README.md and chart builders only: IDs/titles, bar count, right-edge time and UTC day line, last-bar pattern and tag, README text. One row per surface: FIXED / RESIDUAL (severity) / NEW, file:line, aggregate evidence only.",
+    "Last line `Draw rebuild: YES` if any HIGH remains or the existing draw still carries a removed cue, else `Draw rebuild: NO`; one-sentence reason. Save any probe as MyTradingSys/research/layer_lab/g3-blindness-audit-rerun/probe.py.txt."
+  ],
+  "tests": "",
+  "title": "G3 pack: blindness-only audit rerun after fix 198c1aed, ends with Draw rebuild YES/NO"
+}

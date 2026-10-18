@@ -1,0 +1,808 @@
+{
+  "_doc": "Hand-kept pointers for LAYERS.md (scripts/dev/make_layers_md.py). One row per layer family. 'layers' lists the layer_map.json layer ids of the family: every layer_map layer belongs to exactly one family, and its backtest rows are listed under the family automatically, so 'results' holds only reports that are not layer_map backtest rows. Task cards join a family by their 'layers' field (tasks.py new --layer <family>); 'cards' globs only catch cards without that field (Codex lab cards). Every path must exist (scripts/dev/test_make_layers_md.py, gate step 3ly). 'path' (2026-10-13, MTS Layers page): the standard road every layer walks (idea, inputs, fees, charts, built, dev, oos, testnet), each step {s: done|now|planned|later|missing|failed|skip, note, cards}; 'plain' is one line in plain words. The page (scripts/dev/make_layers_board.py) reads it; keep it true when a card lands.",
+  "families": [
+    {
+      "id": "tom",
+      "name": "Tom (order flow + volume profile)",
+      "tracks": "Claude (spec/build), Codex lab (audits, DAX harness)",
+      "status": "Tom on BTC with our own judgement (operator 2026-10-13). DAX chain held, no FDAX data bought (q11). The old BTC encoding stays stopped.",
+      "spec": [
+        "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md",
+        "MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md",
+        "MyTradingSys/research/tom_fabio_guidance_2026-10-12/SOURCED_RULES.md",
+        "MyTradingSys/research/TOM_VERBATIM_INDEX.md"
+      ],
+      "code": [
+        "src/main/java/datafeed/SetupCandidatesBuilder.java",
+        "MyTradingSys/backtest/tom_dax_bt.py",
+        "MyTradingSys/backtest/verdict.py"
+      ],
+      "ledger": [
+        "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
+        "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LEDGER_CANONICAL_GROUPS.csv"
+      ],
+      "results": [
+        "MyTradingSys/research/tom_core_bt_2026-10-09/PHASE2_RESULT.md",
+        "MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md",
+        "MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md",
+        "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md"
+      ],
+      "roadmap": [
+        "MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md",
+        "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md"
+      ],
+      "cards": [
+        "tom-*",
+        "lab-dax-*",
+        "lab-audit-tom-*"
+      ],
+      "layers": [
+        "tom_core",
+        "tom_proofs",
+        "tom_vp_pivot"
+      ],
+      "plain": "Fade an oversized push into thin volume when sellers show at the top (and his other setups later), on BTC charts with real order flow.",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "TOM_ON_BTC.md inventory + TOM_LAYER_V2_SPEC (his words, families, proofs)"
+        },
+        "inputs": {
+          "s": "now",
+          "note": "footprint bars on JIS-NUC from 2024-12; check DEV + VALIDATION coverage",
+          "cards": [
+            "tom-btc-data-check"
+          ]
+        },
+        "fees": {
+          "s": "done",
+          "note": "spec s11: stop at least 0.40 % (taker) or 0.20 % (maker entry)",
+          "cards": [
+            "tom-v2-btc-min-stop-width"
+          ]
+        },
+        "charts": {
+          "s": "planned",
+          "note": "chart lab, then blind eye read by Claude and Jis",
+          "cards": [
+            "tom-btc-chart-lab",
+            "tom-btc-eye-read"
+          ]
+        },
+        "built": {
+          "s": "planned",
+          "note": "flag-gated BTC detector from the concepts that separate",
+          "cards": [
+            "tom-btc-encode"
+          ]
+        },
+        "dev": {
+          "s": "planned",
+          "note": "event study first, then DEV backtest with management arms",
+          "cards": [
+            "tom-btc-event-study",
+            "tom-btc-dev-backtest",
+            "tom-btc-other-setups"
+          ]
+        },
+        "oos": {
+          "s": "planned",
+          "note": "VALIDATION 2025-04..06 read once; HOLDOUT needs your decision (A7)",
+          "cards": [
+            "tom-btc-validation"
+          ]
+        },
+        "testnet": {
+          "s": "later",
+          "note": "after VALIDATION passes"
+        }
+      }
+    },
+    {
+      "id": "fabio",
+      "name": "Fabio (order-flow layer)",
+      "tracks": "Claude (spec/ledger), Codex lab (audits)",
+      "status": "v3 tried 2026-10-04: OOS FAIL (only model C evaluable, 79 trades, mean -0.1038R); holdout 2026-06-26.. NOT read for Fabio (P2_FABIO_V3_HOLDOUT_STATUS.md, B147); ledger audit FIX-FIRST; being redefined as Fabio v2 (waits on ledger repairs).",
+      "spec": [
+        "MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md",
+        "MyTradingSys/research/fast_track_2026-09-27/FABIO_RULEBOOK.md",
+        "MyTradingSys/research/fast_track_2026-09-27/FABIO_TRADE_MODEL.md",
+        "MyTradingSys/research/tom_fabio_guidance_2026-10-12/SOURCED_RULES.md"
+      ],
+      "code": [
+        "MyTradingSys/backtest/layers/fabio/fabio_v3.py",
+        "MyTradingSys/backtest/layers/fabio/fabio_of_model.py",
+        "MyTradingSys/backtest/layers/fabio/run_v3_l3.py"
+      ],
+      "ledger": [
+        "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv",
+        "MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md"
+      ],
+      "results": [
+        "MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md",
+        "MyTradingSys/backtest/layers/fabio/FABIO_OF_REPORT.md",
+        "MyTradingSys/research/P2_FABIO_V3_HOLDOUT_STATUS.md",
+        "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md",
+        "MyTradingSys/research/orderflow_views_2026-10-14"
+      ],
+      "roadmap": [
+        "MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md"
+      ],
+      "cards": [
+        "fabio-*",
+        "find-more-fabio-*",
+        "lab-audit-fabio-*"
+      ],
+      "layers": [
+        "fabio_cvd_absorption",
+        "fabio_escalation",
+        "fabio_volume_fvg",
+        "fabio_v3",
+        "fabio_of"
+      ],
+      "plain": "Order-flow pressure and absorption at the New York open (his home market is NQ futures).",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "FABIO_V3_SPEC, FABIO_RULEBOOK; v2 spec on hold (q4)"
+        },
+        "inputs": {
+          "s": "done",
+          "note": "BTC footprint and aggressor side exist (orderflow_bars.py)"
+        },
+        "fees": {
+          "s": "failed",
+          "note": "his stops 0.014-0.061 % of price: gross +0.13 R, fee drag 0.66 R (FABIO_OF_REPORT.md:127-128)"
+        },
+        "charts": {
+          "s": "missing",
+          "note": "never looked at his signals on BTC charts at a stop the fees allow (0.20 % maker or more). Suggested card: fabio-btc-wide-stop-retest, after Tom T4"
+        },
+        "built": {
+          "s": "done",
+          "note": "fabio_v3.py, fabio_of_model.py"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "0 of 64 order-flow variants net-positive out of sample"
+        },
+        "oos": {
+          "s": "failed",
+          "note": "v3 holdout FAIL (P2_FABIO_V3_HOLDOUT_STATUS.md)"
+        },
+        "testnet": {
+          "s": "skip"
+        }
+      }
+    },
+    {
+      "id": "guidance",
+      "name": "Tom/Fabio cross-guidance (BB, LVN, regime filters)",
+      "tracks": "Claude",
+      "status": "Q33 found no surviving cell: do not wire cross-guidance (Q34 skipped).",
+      "spec": [
+        "MyTradingSys/research/tom_fabio_guidance_2026-10-12/GUIDANCE_AUDIT.md",
+        "MyTradingSys/research/tom_fabio_guidance_2026-10-12/PRE_REG_Q33.md"
+      ],
+      "code": [
+        "MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py",
+        "MyTradingSys/backtest/layers/test_layer_boundaries.py"
+      ],
+      "ledger": [],
+      "results": [
+        "MyTradingSys/research/tom_fabio_guidance_2026-10-12/MATRIX_REPORT.md"
+      ],
+      "roadmap": [],
+      "cards": [],
+      "layers": [
+        "bb_lvn_triggers"
+      ],
+      "plain": "Cross-guidance filters (Bollinger, LVN, regime) stacked on Tom/Fabio triggers.",
+      "path": {
+        "idea": {
+          "s": "done"
+        },
+        "inputs": {
+          "s": "done"
+        },
+        "fees": {
+          "s": "failed",
+          "note": "best of 186 cells +0.058 % gross at 60 min against a 0.10 % round trip (layer_combo_verdict)"
+        },
+        "charts": {
+          "s": "skip"
+        },
+        "built": {
+          "s": "done",
+          "note": "matrix_q33.py"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "Q33: 336 cells, 0 survivors, smallest q 0.62"
+        },
+        "oos": {
+          "s": "skip"
+        },
+        "testnet": {
+          "s": "skip"
+        }
+      }
+    },
+    {
+      "id": "rsi",
+      "name": "RSI / Malkan / Kurisko",
+      "tracks": "Claude",
+      "status": "40/60 levels: tolerance study done; divergence: no edge on any TF.",
+      "spec": [
+        "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md",
+        "MyTradingSys/backtest/layers/FORMULAS.md"
+      ],
+      "code": [
+        "MyTradingSys/backtest/layers/rsi/malkan_40_60.py",
+        "MyTradingSys/backtest/layers/rsi/malkan_mtf.py",
+        "MyTradingSys/backtest/layers/kurisko/quad_rotation.py",
+        "MyTradingSys/backtest/layers/kurisko/stoch_core.py"
+      ],
+      "ledger": [],
+      "results": [
+        "MyTradingSys/research/rsi_divergence_mtf_2026-10-09"
+      ],
+      "roadmap": [],
+      "cards": [
+        "malkan-*"
+      ],
+      "layers": [
+        "rsi_levels",
+        "rsi_divergence"
+      ],
+      "plain": "RSI 40/60 regimes (Malkan), RSI divergence, Kurisko.",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "Malkan extracts; operator 40/60 directive 2026-09-28"
+        },
+        "inputs": {
+          "s": "done"
+        },
+        "fees": {
+          "s": "done",
+          "note": "daily/weekly swings have wide stops"
+        },
+        "charts": {
+          "s": "planned",
+          "note": "Malkan at his own timeframes (daily/weekly/monthly) was never tested",
+          "cards": [
+            "malkan-home-fit-audit"
+          ]
+        },
+        "built": {
+          "s": "done",
+          "note": "rsi layers + alerts"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "divergence: no edge on any timeframe (gross about 0). 40/60 tested on 1m-1h only; 4h n=17, 1d n=5 = no evidence either way"
+        },
+        "oos": {
+          "s": "skip"
+        },
+        "testnet": {
+          "s": "later"
+        }
+      }
+    },
+    {
+      "id": "cryptocred",
+      "name": "CryptoCred setups",
+      "tracks": "Claude",
+      "status": "S/R flip + fib pullback + failed MSB FAIL after trade-through rerun; stop buffer unsourced (B143).",
+      "spec": [
+        "MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md",
+        "MyTradingSys/backtest/layers/FORMULAS.md"
+      ],
+      "code": [
+        "MyTradingSys/backtest/layers/cryptocred"
+      ],
+      "ledger": [],
+      "results": [
+        "MyTradingSys/research/cryptocred_stop_2026-10-10"
+      ],
+      "roadmap": [],
+      "cards": [
+        "cryptocred-*"
+      ],
+      "layers": [
+        "cryptocred"
+      ],
+      "plain": "Price-structure swing setups (S/R flip, failed market-structure break, fib pullback) from a BTC-native trader.",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "5 CryptoCred extracts"
+        },
+        "inputs": {
+          "s": "done",
+          "note": "price only: klines"
+        },
+        "fees": {
+          "s": "done",
+          "note": "daily/4h invalidation stops are wide"
+        },
+        "charts": {
+          "s": "planned",
+          "note": "his own timeframe (daily/4h) was never tested; the 15m run was the wrong timeframe",
+          "cards": [
+            "cryptocred-home-fit-audit"
+          ]
+        },
+        "built": {
+          "s": "done",
+          "note": "15m adapter (wrong timeframe)"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "15m brackets FAIL after the trade-through rerun; daily/4h untested"
+        },
+        "oos": {
+          "s": "skip"
+        },
+        "testnet": {
+          "s": "skip"
+        }
+      }
+    },
+    {
+      "id": "positioning",
+      "name": "Positioning (funding, OI, whale / FlowHorse)",
+      "tracks": "Claude",
+      "status": "T055 C1 FAIL; OI/long-short unused as filters.",
+      "spec": [
+        "MyTradingSys/research/whale_positioning_evidence_2026-09-12.md",
+        "MyTradingSys/backtest/layers/FORMULAS.md"
+      ],
+      "code": [
+        "MyTradingSys/backtest/layers/positioning"
+      ],
+      "ledger": [],
+      "results": [
+        "MyTradingSys/research/OI_DIVERGENCE_V2_2026-10-10.md",
+        "MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md"
+      ],
+      "roadmap": [],
+      "cards": [
+        "positioning-*"
+      ],
+      "layers": [
+        "funding_cvd_fade",
+        "oi_delta"
+      ],
+      "plain": "Funding, open interest and whale positioning (FlowHorse).",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "FlowHorse extracts; thresholds not stated in the source"
+        },
+        "inputs": {
+          "s": "now",
+          "note": "Binance OI and long/short ratios 2020-09.. being fetched on JIS-NUC (gap G5 desk task)"
+        },
+        "fees": {
+          "s": "later"
+        },
+        "charts": {
+          "s": "planned",
+          "note": "home-fit audit",
+          "cards": [
+            "positioning-home-fit-audit"
+          ]
+        },
+        "built": {
+          "s": "done",
+          "note": "funding_cvd_fade"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "funding + CVD fade: out of sample -0.045 %"
+        },
+        "oos": {
+          "s": "skip"
+        },
+        "testnet": {
+          "s": "skip"
+        }
+      }
+    },
+    {
+      "id": "session_timing",
+      "name": "Session / timing (session levels, turn of candle, session momentum)",
+      "tracks": "Claude",
+      "status": "T055 C2/C3 closed; T087 failed prior-day-high fade FAIL.",
+      "spec": [
+        "MyTradingSys/research/TURN_OF_CANDLE_ORIGIN_2026-10-09.md"
+      ],
+      "code": [
+        "MyTradingSys/backtest/layers/session",
+        "MyTradingSys/backtest/layers/session_levels",
+        "MyTradingSys/backtest/layers/turn_of_candle"
+      ],
+      "ledger": [],
+      "results": [
+        "MyTradingSys/research/t087_session_levels_2026-10-09",
+        "MyTradingSys/research/eur_low_us_sweep_2026-10-14"
+      ],
+      "roadmap": [],
+      "cards": [],
+      "layers": [
+        "session_momentum",
+        "turn_of_candle",
+        "session_levels"
+      ],
+      "plain": "Session levels, turn of candle, session momentum.",
+      "path": {
+        "idea": {
+          "s": "done"
+        },
+        "inputs": {
+          "s": "done"
+        },
+        "fees": {
+          "s": "failed",
+          "note": "turn_of_candle gross +0.1 to +0.9 bp against 12 bp cost (EXIT_POLICIES_REPORT.md:140)"
+        },
+        "charts": {
+          "s": "skip"
+        },
+        "built": {
+          "s": "done"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "T055 C2/C3 no edge; T087 prior-day-high fade -0.036 %"
+        },
+        "oos": {
+          "s": "skip"
+        },
+        "testnet": {
+          "s": "now",
+          "note": "turn_of_candle still trades on testnet (79 % of trades) although its backtest failed: your yes/no on F-BT-02"
+        }
+      }
+    },
+    {
+      "id": "volume_candles_ma",
+      "name": "Volume, candle patterns, daily MA setups, bigtrade",
+      "tracks": "Claude",
+      "status": "No validated edge; volume HOLDOUT sealed; MA numbers NO-SOURCE.",
+      "spec": [
+        "MyTradingSys/backtest/layers/FORMULAS.md"
+      ],
+      "code": [
+        "MyTradingSys/backtest/bigtrade"
+      ],
+      "ledger": [],
+      "results": [
+        "MyTradingSys/research/volume_2026-10-09",
+        "MyTradingSys/research/candle_patterns_2026-10-04",
+        "MyTradingSys/research/setup_alpha_beta_2026-10-10",
+        "MyTradingSys/research/bigtrade_2026-10-09",
+        "MyTradingSys/research/layer_lab/candle_close_2026-10-14"
+      ],
+      "roadmap": [],
+      "cards": [],
+      "layers": [
+        "volume",
+        "candle_patterns",
+        "ma_daily",
+        "bigtrade_fires"
+      ],
+      "plain": "Volume flags, candle patterns, daily moving averages, big-trade fires (literature ideas, BTC-native).",
+      "path": {
+        "idea": {
+          "s": "done"
+        },
+        "inputs": {
+          "s": "done"
+        },
+        "fees": {
+          "s": "done"
+        },
+        "charts": {
+          "s": "skip"
+        },
+        "built": {
+          "s": "done"
+        },
+        "dev": {
+          "s": "failed",
+          "note": "553 volume trials and 0/108 candle cells survive; MA numbers NO-SOURCE"
+        },
+        "oos": {
+          "s": "done",
+          "note": "VALIDATION read; HOLDOUT 2025-07..2026-09 still sealed"
+        },
+        "testnet": {
+          "s": "skip"
+        }
+      }
+    },
+    {
+      "id": "live_engine",
+      "name": "Live engine, execution and live-market reads (feeds every layer)",
+      "tracks": "Claude (live reads on JIS-NB), supervisor for HALT/deploy",
+      "status": "Testnet HALT since 2026-10-12 09:46Z (executor fail_closed); supervisor clears it. Live-market screenshot reads file findings as task cards.",
+      "spec": [
+        "MyTradingSys/methodology/live_session_protocol.md",
+        "MyTradingSys/methodology/screenshot_intake.md",
+        "MyTradingSys/system/DEPLOY_RUNBOOK.md"
+      ],
+      "code": [
+        "MyTradingSys/execution"
+      ],
+      "ledger": [],
+      "results": [
+        "MyTradingSys/research/screenshots"
+      ],
+      "roadmap": [
+        "MyTradingSys/system/NEXT_SESSION.md"
+      ],
+      "cards": [
+        "exec-*",
+        "state-machine-*",
+        "live-*"
+      ],
+      "layers": [],
+      "plain": "The live engine, execution and live-market reads that feed every layer (infrastructure, not a strategy).",
+      "kind": "infrastructure"
+    },
+    {
+      "id": "callers",
+      "name": "Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman)",
+      "tracks": "Claude, Codex lab (scoring)",
+      "status": "Score the posted calls on Binance klines before anything else (B162 + multi-analyst ingestion). Self-reported 67.1 % wins, avg win 3.99 %, avg loss 0.63 %: unverified. Multi-provider parser + kline scorecard built (2026-10-18); 4 ingestion cards ready.",
+      "plain": "Traders who post entries, stops and targets: score their record first, then trade their calls on a testnet account.",
+      "spec": [
+        "MyTradingSys/items/B162_qriptal_signal_layer.md",
+        "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
+        "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md"
+      ],
+      "code": [
+        "MyTradingSys/research/analysts/schema.py",
+        "MyTradingSys/research/analysts/ingest_analysts.py",
+        "MyTradingSys/research/analysts/score_analysts.py",
+        "MyTradingSys/research/analysts/run_scorecard.py"
+      ],
+      "ledger": [
+        "MyTradingSys/research/analysts/SAMPLE_CALL_LEDGER.csv"
+      ],
+      "results": [
+        "MyTradingSys/research/analysts/SCORECARD.md"
+      ],
+      "roadmap": [
+        "MyTradingSys/research/analysts/ROADMAP.md"
+      ],
+      "cards": [
+        "qriptal-*",
+        "analyst-ingest-*"
+      ],
+      "layers": [],
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "B162 + 11-analyst imbalance survey (2026-10-18): calls carry entry, stop and targets"
+        },
+        "inputs": {
+          "s": "now",
+          "note": "Binance klines; 22 staged Qriptal transcripts; 4 ingestion cards ready",
+          "cards": [
+            "analyst-ingest-rlinda-tv",
+            "analyst-ingest-bennett-dpa",
+            "analyst-ingest-cryptochase-x",
+            "analyst-ingest-roman-x"
+          ]
+        },
+        "fees": {
+          "s": "done",
+          "note": "0.05 % per side (10 bps RT); average loss 0.63 % means fees cost about 0.16 R"
+        },
+        "charts": {
+          "s": "skip"
+        },
+        "built": {
+          "s": "done",
+          "note": "schema.py, ingest_analysts.py, score_analysts.py, run_scorecard.py (9 unit tests)"
+        },
+        "dev": {
+          "s": "planned",
+          "note": "the score is the test",
+          "cards": [
+            "qriptal-score-binance"
+          ]
+        },
+        "oos": {
+          "s": "later",
+          "note": "forward calls from his Discord"
+        },
+        "testnet": {
+          "s": "later",
+          "note": "own testnet account (B162 plan)"
+        }
+      }
+    },
+    {
+      "id": "krown",
+      "name": "Krown (TA 101: zones, volume, candles, averages, ranges)",
+      "tracks": "Claude (extraction, ledger, spec, detectors), DSA (data runs)",
+      "status": "Spec v0.2 + 120-rule ledger from 15 of 19 reachable TA 101 videos (14 TA + 1 fees). 4 videos blocked on YouTube captions (429). One structural stop (compression breakout), no stop distance or size rule: the rest is OURS. Not built, not backtested.",
+      "plain": "Daily and weekly BTC swing method: trend state from dominant highs and lows, levels from wick to close, volume at 2x its average, a volatility (BBWP) regime, RSI 40/60 zones as confirmation, four candle patterns, 21/55 EMA + 200 SMA; a close, not a wick, is the verdict.",
+      "spec": [
+        "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md",
+        "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md",
+        "MyTradingSys/research/krown_ta101_2026-10-13/PROTOCOL.md",
+        "MyTradingSys/research/krown_ta101_2026-10-13/STATE.md"
+      ],
+      "code": [
+        "MyTradingSys/research/krown_ta101_2026-10-13/tools/build_ledger.py",
+        "MyTradingSys/research/krown_ta101_2026-10-13/tools/check_numbers.py"
+      ],
+      "ledger": [
+        "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv",
+        "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_CONSOLIDATED.md",
+        "MyTradingSys/research/krown_ta101_2026-10-13/MANIFEST.csv"
+      ],
+      "results": [
+        "MyTradingSys/research/krown_ta101_2026-10-13/reflexivity_log.md",
+        "MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md",
+        "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md"
+      ],
+      "roadmap": [
+        "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md"
+      ],
+      "cards": [
+        "krown-*"
+      ],
+      "layers": [],
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "15 extracts, 120 consolidated rules, spec v0.2; 4 videos pending"
+        },
+        "inputs": {
+          "s": "now",
+          "note": "OHLCV 1d/1w only; volume venue and multi-asset data open; captions for 4 videos blocked",
+          "cards": [
+            "krown-ta101-extract-remaining-10",
+            "krown-data-daily-majors"
+          ]
+        },
+        "fees": {
+          "s": "planned",
+          "note": "expect fee share of R near 0.05 on daily stops; computed when detectors land",
+          "cards": [
+            "krown-layer-v0-detectors"
+          ]
+        },
+        "charts": {
+          "s": "planned",
+          "note": "recall on his dated examples, then blind eye read of zones",
+          "cards": [
+            "krown-recall-check"
+          ]
+        },
+        "built": {
+          "s": "planned",
+          "note": "flag-gated detectors, alert-only, params with a source per number",
+          "cards": [
+            "krown-layer-v0-detectors"
+          ]
+        },
+        "dev": {
+          "s": "planned",
+          "note": "event studies H-V1..H-T1, DEV only, fee-net, same-window placebo",
+          "cards": [
+            "krown-dev-event-study"
+          ]
+        },
+        "oos": {
+          "s": "later",
+          "note": "VALIDATION once, holdout sealed"
+        },
+        "testnet": {
+          "s": "later",
+          "note": "needs an operator ruling on no resting stop"
+        }
+      }
+    },
+    {
+      "id": "pitchfork",
+      "name": "Pitchfork (Andrews / Schiff / Morge median line)",
+      "tracks": "Gemini (study/detector), Claude",
+      "status": "Foundational study papers delivered (papers/01, 02, 03); detector, tests, and YouTube BTC evaluation benchmark built.",
+      "spec": [
+        "papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md",
+        "papers/02_PITCHFORK_APPLICATION_ON_BTC.md",
+        "MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md",
+        "papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md"
+      ],
+      "code": [
+        "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py"
+      ],
+      "ledger": [],
+      "results": [],
+      "roadmap": [],
+      "cards": [
+        "pitchfork-*"
+      ],
+      "layers": [
+        "pitchfork_swing"
+      ],
+      "plain": "Dynamic equilibrium channels from 3 swing pivots with median line reach (80% rule) and Hagopian failure breakout on BTC.",
+      "path": {
+        "idea": {
+          "s": "done",
+          "note": "01_MASTERS_PITCHFORK_FOUNDATIONS.md + 02_PITCHFORK_APPLICATION_ON_BTC.md + RESEARCH_PITCHFORK_LAYER.md"
+        },
+        "inputs": {
+          "s": "done",
+          "note": "4H / 1D klines on BTC"
+        },
+        "fees": {
+          "s": "done",
+          "note": "4H/1D stops 1.2-2.0%, targets 3.5-8.0%: fee drag < 5% of gross edge"
+        },
+        "charts": {
+          "s": "planned",
+          "note": "visual chart inspection on BTC swing structures"
+        },
+        "built": {
+          "s": "done",
+          "note": "pitchfork_detector.py + test_pitchfork_detector.py"
+        },
+        "dev": {
+          "s": "planned",
+          "note": "event study on BTC 4H/1D"
+        },
+        "oos": {
+          "s": "planned",
+          "note": "validation on holdout period"
+        },
+        "testnet": {
+          "s": "later"
+        }
+      }
+    }
+  ],
+  "cross_cutting": [
+    {
+      "what": "Every backtest row (layers on, params, verdict, report)",
+      "where": "MyTradingSys/system/layer_map.json (artifact: make_layer_map.py)"
+    },
+    {
+      "what": "Every trial count (multiple-testing ledger)",
+      "where": "MyTradingSys/research/fast_track_2026-09-27/bt_runs/TRIAL_REGISTRY.csv"
+    },
+    {
+      "what": "Formulas (canonical definitions)",
+      "where": "MyTradingSys/backtest/layers/FORMULAS.md"
+    },
+    {
+      "what": "Layer provenance (sourced vs NO-SOURCE parameters)",
+      "where": "MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md"
+    },
+    {
+      "what": "Codex layer lab deliveries and queue",
+      "where": "MyTradingSys/research/layer_lab/INDEX.md (spec: system/LAYER_LAB.md)"
+    },
+    {
+      "what": "Work queue (relay Qn tasks)",
+      "where": "MyTradingSys/system/NEXT_SESSION.md; cards: python scripts/dev/tasks.py list"
+    },
+    {
+      "what": "Group-level project map (DATA/CORE/LAYR/EVID...)",
+      "where": "MyTradingSys/system/PROJECT_MAP.md"
+    },
+    {
+      "what": "Backtest pre-registration template and 12-point readiness checklist",
+      "where": "MyTradingSys/backtest/PRE_REG_TEMPLATE.md"
+    }
+  ]
+}

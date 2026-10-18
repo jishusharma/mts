@@ -31,7 +31,7 @@ DEFAULT_LABEL = {"chart_read": "chart read", "trade_call": "chart read", "system
                  "question": "operator", "answer": "inferred", "note": "inferred", "correction": "inferred"}
 FORCED_LABEL = {"chart_read": "chart read", "system_quote": "system"}
 TF_MINUTES = {"1m": 1, "3m": 3, "4m": 4, "5m": 5, "15m": 15, "30m": 30, "1h": 60, "2h": 120, "3h": 180, "4h": 240,
-              "6h": 360, "7h": 420, "12h": 720, "1d": 1440, "1w": 10080}
+              "6h": 360, "7h": 420, "8h": 480, "12h": 720, "1d": 1440, "1w": 10080}
 SIDES = ("long", "short")
 SIX_LAYERS = ("panel", "neutral", "cross_view", "htf", "falsify", "invalidation")
 SETUP_COLUMNS = ("obs_id", "ts_market", "session", "kind", "symbol", "timeframe", "side", "entry", "stop",

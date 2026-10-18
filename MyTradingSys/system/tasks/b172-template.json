@@ -1,29 +1,46 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-13T16:49:03Z",
   "commands": [],
   "created": "2026-10-11T19:49:49Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "`python scripts/sched/relay.py begin` prints worktree path, sync state, claim slug and the single task brief in <=30 lines; relay_session.md steps 1-3 reduced to that call; mean ritual turns 21 -> <=12 over 3 kick sessions.",
   "from_inbox": "",
-  "goal": "",
+  "goal": "Collapse the relay ritual (worktree, sync start, claim, brief) into one script call so a kick session starts at the task (audit cut #2, #3).",
   "id": "b172-template",
   "lane": "SONNET",
   "live_path": false,
   "note": "",
-  "prio": 2,
+  "pinned": true,
+  "prio": 1,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "relay-sonnet-2026-10-12",
   "refs": [
     "B172"
   ],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "result": "begin already shipped in a0080f0; 36/36 relay tests pass (4 begin tests incl. fail-closed); relay_session.md steps 1-3 call begin; mean-turns metric pending 3 kick sessions",
+  "scope_in": [
+    "scripts/sched/relay.py",
+    "scripts/sched/relay_prompts/relay_session.md",
+    "scripts/sched/relay_prompts/TWO_HOST.md",
+    "scripts/sched/test_relay.py"
+  ],
+  "scope_out": [
+    "handoff/lint logic",
+    "live tree",
+    "NEXT_SESSION.md format"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/TOKEN_AUDIT_2026-10-12.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Add `relay.py begin`: create/ff ../mts-relay, run sync start quietly, pick first ready non-OPUS task, claim it, print its card brief.",
+    "Fail closed: on sync or claim error print one line and exit non-zero without a task.",
+    "Rewrite relay_session.md steps 1-3 to call begin; update TWO_HOST.md; keep the 15-turn cap text."
+  ],
+  "tests": "test_relay.py::test_begin_picks_ready_task_and_claims, ::test_begin_stops_on_sync_failure, ::test_begin_skips_opus_and_claimed (new, red before: no begin command).",
   "title": "B172 step 3: template the relay and dispatcher prompts (automatic accurate prompt creation) per TOKEN_AUDIT"
 }

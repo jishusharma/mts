@@ -1,0 +1,2 @@
+study,run_utc,data_source,window_read,split,rule_sha256,verdict,decision_informed
+opr_weekly_low_round_sweep_2026-10-16,2026-10-15T22:15Z,F:/MTS/data/tom_raw/klines 1m,2022-01-01..2024-06-30,DEV,7941db52dfc3079828e5149b7721cef52491c483f4f6dd270205ca7bc5edb875,FAIL,whether reclaim after a weekly-low / round-1000 break has a gross effect above 0.14 % (screen before G3 marks)

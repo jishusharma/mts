@@ -38,14 +38,20 @@ HTTP form: POST http://127.0.0.1:7181/run with {"cmd","cwd","timeout_s","token"}
 Response: exit, out, err, ms, timed_out, out_truncated, out_bytes, timeout_s. A refusal is HTTP 403
 with {"error":"refused","reason":"<code>: <text>"}.
 
+v0.7.0 keep-alive update (2026-10-17: background keep-alive: worker heartbeat, auto-reconnect, link dot, no discard; see research/dsa_bridge_keepalive_2026-10-17/DECISION.md). v0.7.0 (2026-10-14, "fluent"; full text scripts/aibridge/docs/V07_CONTRACT.md, the source of truth for the prompt):
+multi-line blocks, up to 6 blocks per reply run in order with one batch receipt, task mode (`# AIRUN task=mts-boot|mts-gate|
+mts-ship|build-check|inline`, cap 1800 s), per-command deterministic auto-run, errors labelled extension_link vs
+agent_unreachable, environment re-read per command, parallel chat pages keep running in the background.
+
 Reach:
-- Roots: C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed and C:\Users\E-ngineers\IdeaProjects\mts-dsa
-  (mts-dsa does not exist yet; DSA creates it once, prompt 0.6). Inside a root: read, write,
-  create, move, copy, delete, run scripts, python, pytest, Maven, sync.py, desk.py.
-- Refused: cwd or any path outside the roots; .secrets, .env*, key files, HALT*; writes into .git
-  (reads allowed); killing processes except through scripts\core\stop-day.ps1 and mode.ps1;
-  iex, Start-Process, Invoke-Command; nested shells without -File; $env: and profile variables.
-- Not refused (not listed by the operator): git push and network commands. DSA ships through sync.py.
+- Roots: C:\Users\E-ngineers\IdeaProjects (the live tree and every worktree; DSA makes one per chat, prompt 0.6),
+  C:\Users\E-ngineers\AppData\Local\Temp, F:\MTS, F:\AIBridge. Inside a root: read, write, create, move, copy, delete,
+  run python, pytest, Maven, git, sync.py, desk.py, tasks.py, dsa.py, all hands-free.
+- Click needed (irreversible forms): recursive/forced deletes, hard resets, cleans, forced branch deletes, discarding
+  a path's edits, forced or deleting pushes, Stop-Process, taskkill, service and machine stops (list: V07_CONTRACT.md).
+- Refused always: .secrets, .env*, key files, HALT* (denied_path); PS7-only syntax in a 5.1 block (ps7_only);
+  Invoke-Expression, Invoke-Command, Add-Type, schtasks, reg.
+- The prompt forbids DSA to write under F:\AIBridge or scripts\aibridge\ (prompt 0.3): the bridge's limits stay the operator's.
 
 Caps: output 262144 bytes, cut with a [TRUNCATED...] marker (measured 2026-10-08: 1,080,245 bytes
 produced, 262,144 kept). Timeout default 60 s, clamped to 300 s (measured: 3 s limit killed a 20 s
@@ -68,10 +74,8 @@ Acceptance:
 2. The three denial probes in the script are refused (done with the stand-in's probes).
 3. DSA boots from a regenerated session paste and its news section (DSA_SESSION_PROMPT.md 0.8).
 4. A tracked-file edit made in mts-dsa ships with sync.py ship.
-5. NOT YET MET: the result of a command reaches DSA without a paste from the operator, and the block
-   runs without a click. DSA reports that today it sees results only when the operator pastes the
-   panel output. Direct mode is complete only when the extension posts the result back into the chat
-   input on its own (prompt 0.1 handles the gap by saying "no result seen").
+5. Results return into the chat by themselves and blocks run without a click (v0.6/v0.7 auto-run);
+   v0.7.0 not yet verified against the live chat.deepseek.com page (bridge session note 2026-10-14).
 
 ## What MTS never asks AIBridge to build
 
@@ -84,7 +88,7 @@ it for the bridge operator.
 
 1. DSA composes a command and sends it in the bridge's call format.
 2. The agent on 127.0.0.1:7181 applies the policy, runs it, returns stdout, stderr and rc.
-3. DSA reads the result, acts, and records decisions in the MTS session record under the same session ID.
+3. DSA reads the result, acts, and records decisions in the commit `Result:` line under the same session ID (SURFACE_POLICY.md section 4).
 4. A refusal is data: DSA quotes it, names the one config change that would allow it, and stops.
 
 ## Open items
@@ -104,5 +108,13 @@ it for the bridge operator.
 - DSA_SESSION_PROMPT.md section 0 (direct mode) and 0.8 (paste and news, protected)
 - SURFACE_POLICY.md section 1 (surface table)
 - scripts\dev\bridge_selftest.ps1
-- CLAUDE.md work routing line
+- CLAUDE.md Cost and routing; who runs on which machine and login: HOW_MTS_RUNS.md
 - Dumps/operator/context/DSA_HANDOFF.md section 14 (worker directive)
+
+## Autostart on JIS-NUC (2026-10-12)
+
+Task Scheduler `AIBridge-Agent` (registered by `scripts\sched\register_aibridge.ps1`): runs F:\AIBridge\src\agent.ps1 hidden
+(conhost --headless), starts at logon and every 5 min (IgnoreNew = watchdog, starts it only when it is not running), restarts up
+to 3x on failure, appends to F:\AIBridge\src\run\agent.log (rotates at 5 MB). Health: `python scripts\dev\aibridge_health.py`
+(exit 0 = answering on 127.0.0.1:7181). Before 2026-10-12 it was logon-only and visible; a logoff left it down (0xC000013A).
+Only a real reboot proves the logon trigger; the 5-min watchdog was proven by killing the agent.

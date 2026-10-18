@@ -36,3 +36,11 @@ BTC holdout 2026-06-26.. is burned (B147): report dev only for BTC.
 ## Branch after the run (PROBE_PLAN section 4)
 DAX edge, BTC none -> transfer (S/F arms on BTC). No DAX edge -> discretionary edge (Q/M arms on DAX first) or encoding (if
 recall was poor). Trial registry: one row per variant x market x verdict-kind; counts go into the DSR of tom-probe-prereg.
+
+## Addendum 2026-10-13 (card tom-holdout-clean-split; original text above unchanged; dates only, no outcome read)
+- Ledger dates are not verified trade dates (card rv-fix-tom-ledger-date-column: `date` is empty on all rows), so every recording, inferred and legacy date of every ledger group is treated as a possible trade day (`TOM_LEDGER_CANONICAL_GROUPS.csv` column `date_candidates_to_exclude`).
+- Clean holdout: of the 156 archive days in 2026-04-11..2026-10-09, 26 are dropped (each candidate date inside the window +-1 trading day, Sunday session bars with their Monday); 130 remain. Lists: `HOLDOUT_CLEAN.json` (`dropped_days`, `remaining_holdout_days`). Rebuild: `python -I scripts/dev/tom_holdout_split.py`.
+- Forward holdout: DAX bars from 2026-10-10 on, read once, only at >= 100 trades; before that no look at any outcome.
+- Design/check split: not re-derived here. It is the session split already frozen in `TOM_LAYER_V2_SPEC.md` section 7: DESIGN = T1, T2, T2b, T3, T3b, T5, T6, T7 (sessions S1-S6); CHECK = T11, T12 (S7, S8; recall target 2 of 2 to pass, 1 of 2 inconclusive); T4 is family C (in neither set); T8 excluded. Copied into `HOLDOUT_CLEAN.json` under `split`.
+- Dev window: the same candidate dates +-1 trading day leave dev too (10 days listed in `dev_dropped_days`, window 2024-11-04..2026-04-10), as spec section 7 requires for all 9 sessions.
+- Every recall iteration on this ledger is a TRIAL_REGISTRY row (N2 iii).

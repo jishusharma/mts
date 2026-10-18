@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-12T16:10:55Z",
   "commands": [],
   "created": "2026-10-11T20:16:33Z",
   "depends_on": [],
@@ -10,13 +11,16 @@
   "id": "lab-dax-readiness-gate",
   "kind": "build",
   "lane": "CODEX",
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
   "note": "Captured by lab-audit-tom-dax-bt. Consume evidence from tom-encode-spike-fade, tom-profile-parity-check and tom-holdout-clean-split. No holdout reads or BTC runs during the fix. Manifest path and the twelve item keys come from backtest/PRE_REG_TEMPLATE.md headings. The runner only checks presence and status; it does not judge the evidence.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "JIS-NUC session 2026-10-12 (task refinement from the Codex status reply)",
   "refs": [],
-  "result": "",
+  "result": "H7 fixed; 3 readiness tests and 58 harness tests pass; MyTradingSys/research/layer_lab/reports/2026-10-12_lab-dax-readiness-gate.md",
   "scope_in": [
     "MyTradingSys/backtest/tom_dax_bt.py",
     "MyTradingSys/backtest/test_tom_dax_bt.py",
@@ -34,7 +38,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md finding H7"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read finding H7 in MyTradingSys/research/layer_lab/reports/2026-10-11_lab-audit-tom-dax-bt.md (file legend, evidence, proposed fix) and the lines it cites.",
     "Write the test named in Tests in MyTradingSys/backtest/test_tom_dax_bt.py and see it fail on the current code.",

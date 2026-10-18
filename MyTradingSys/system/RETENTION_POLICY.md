@@ -9,7 +9,7 @@ encodes the discard rules (dry run; `--apply` deletes). Run it weekly; it prints
 | `Dumps.pre_B138/` | B138 copy | nobody | delete once it is a strict subset of `Dumps/` (script checks) |
 | `backup_session/` | pre-git hand backups (09-16..09-26) | nobody | delete entries older than 14 days |
 | `Dumps/_archive/<date>/` | `declutter_backups.py` | nobody | delete after 14 days |
-| `Dumps/workers/NUC-QUEUE/done/` | NUC lane (decommissioned 2026-10-01) | nobody | delete after 14 days |
+| `Dumps/workers/NUC-QUEUE/done/` | NUC lane (decommissioned 2026-10-01) | `scripts/worker/audit_digest.py` (task/verdict/reply files) | never deleted: `retention.py` skips it on purpose (B152, `test_retention_b152.py`); it becomes a candidate only if audit_digest stops reading it |
 | `system/session_end_logs.md` | `StateCodeEmitter.appendTransitionLog` (one line per state transition) | nobody (grep: only the writer) | keep last 2000 lines; writer removed from source 2026-10-08 (running JVM still writes until its next restart/rebuild) |
 | `runtime_data/mts-watch.log`, `supervisor_log.txt` | watch / supervisor | nobody | keep last 2000 lines |
 | `*.pre_*` next to live files | promote step | nobody | `declutter_backups.py` moves them; retention deletes after 14 days |

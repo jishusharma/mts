@@ -7,10 +7,17 @@ Each run chains onto the previous backup commit (fast-forward pushes only, no fo
 HEAD as second parent, so unpushed commits are reachable too. Unchanged trees are skipped.
 Respects .gitignore; secrets-looking paths are dropped from the snapshot as well.
 
-Usage: python scripts/dev/backup_snapshot.py [--repo DIR] [--remote origin] [--dry-run]
+Remote: defaults to "backup" (a local bare repo, F:/MTS_backup.git on JIS-NB). The GitHub repo (origin) is PUBLIC since 2026-10-11 and a
+snapshot carries uncommitted and untracked files, so origin - by name, or by the same URL under another name - is refused (exit 2)
+unless --allow-origin is given.
+
+Usage: python scripts/dev/backup_snapshot.py [--repo DIR] [--remote backup] [--allow-origin] [--dry-run]
 """
-import argparse
+import nowin  # B173: no console flash from git/python children under pythonw
 import os
+# B190: the live task runs python.exe (Store alias, via launch-backup.vbs), not pythonw, so wanted() was False and every git child flashed.
+nowin.install(force=(os.name == "nt"))
+import argparse
 import re
 import socket
 import subprocess
@@ -70,6 +77,17 @@ def remote_tip(wt, remote, ref):
     return sha
 
 
+def targets_origin(repo, remote):
+    """True when `remote` is origin, by name or by URL (another remote name, or the bare URL, pointing at the same place)."""
+    if remote == "origin":
+        return True
+    o = git(["remote", "get-url", "--push", "origin"], repo, check=False)
+    if o.returncode != 0 or not o.stdout.strip():
+        return False
+    r = git(["remote", "get-url", "--push", remote], repo, check=False)
+    return (r.stdout.strip() if r.returncode == 0 else remote) == o.stdout.strip()
+
+
 def backup_one(wt, remote, host, dry_run):
     name = slug(wt.name)
     ref = "refs/heads/backup/%s/%s" % (slug(host), name)
@@ -94,10 +112,15 @@ def backup_one(wt, remote, host, dry_run):
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo", default=str(Path(__file__).resolve().parents[2]))
-    ap.add_argument("--remote", default="origin")
+    ap.add_argument("--remote", default="backup")
+    ap.add_argument("--allow-origin", action="store_true", help="permit pushing snapshots to the public origin remote")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args(argv)
     repo = Path(a.repo)
+    if not a.allow_origin and targets_origin(repo, a.remote):
+        print("REFUSED: remote %r is the public origin; snapshots hold uncommitted/untracked files. Use --remote backup "
+              "(or pass --allow-origin if you really mean it)" % a.remote, file=sys.stderr)
+        return 2
     host = socket.gethostname()
     failed = 0
     for wt in worktrees(repo):

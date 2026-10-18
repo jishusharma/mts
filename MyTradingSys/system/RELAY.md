@@ -1,82 +1,42 @@
-# RELAY - how one session starts the next with no operator input (operator ask 2026-10-10)
+# RELAY - how one session starts the next with no operator input
 
-Why: a long task in one session re-reads a growing context every turn. A short session that commits, writes the
-handoff and hands over to a fresh session costs far less (SHORT SESSIONS rule in CLAUDE.md). This makes the hand-over automatic.
+> RETIRED 2026-10-17, see SCHEDULING_POLICY.md: no relay or dispatcher runs, the coordinator starts sessions. History: `archive/relay_2026-10-15/`.
 
 ## Pieces
 | Piece | Role |
 |---|---|
-| `system/NEXT_SESSION.md` | the handoff (committed, so every machine/account sees it). Carries a header `<!-- relay: go\|stop depth=N id=xxxx -->` |
-| `scripts/sched/relay.py` | `handoff` stamps the header, `gate` decides GO/STOP and names the task to fire |
-| App scheduled tasks `mts-relay-a`, `mts-relay-b` | ad-hoc (no schedule). Each run = a new App session with the relay prompt. Alternate by depth parity: a task cannot be re-run while its own run is in progress |
-| `~/.claude/mts-relay-stop`, `-lock.json`, `-log.jsonl` | per-host stop flag, 20-minute double-launch lock, event log |
+| `system/NEXT_SESSION.md` | the handoff, committed; header `<!-- relay: go\|stop depth=N id=xxxx -->`, its first fenced block is the task list |
+| `scripts/sched/relay.py` | `tick begin brief handoff unlock lint route kick status stop resume` |
+| App task `mts-dispatcher`, one per host | JIS-NB: cron `*/10 * * * *`, Haiku 5.5 (set in the App). Prompt = the stub `relay_prompts/mts-dispatcher.SKILL.md` (install: INSTALL.md). On KICK it IS the relay session: a scheduled session cannot start another (B164) |
 
-## The loop (every relay session)
-1. Worktree from `origin/fast-track` (never the live tree), `sync.py start`, read the header id as STARTED_ID.
-2. Do ONE task from NEXT_SESSION.md (claim, work, tests, commit, `sync.py ship`, `sync.py release`).
-3. Overwrite NEXT_SESSION.md (queue, state, last commit). Build its TASK list from `python scripts/dev/tasks.py next --n 3` (each card's `brief` is the task text);
-   no ready card, or `tasks.py status` says REFINE_NEEDED: the next task is the refiner session (TASK_REFINEMENT.md), never a vague builder task. Found follow-up work this session: `tasks.py new`. Then `python scripts/sched/relay.py handoff --file MyTradingSys/system/NEXT_SESSION.md --go`
-   (more work, no operator question pending, no RED) or `--stop "<reason>"`; exit 2 = list failed the Task list standard below, fix and rerun. Commit and `sync.py ship`; `sync.py where` clean.
-4. `python scripts/sched/relay.py gate --file ... --started-id <STARTED_ID>`. GO line names the task: fire it with the
-   `run_scheduled_task` tool (load via ToolSearch). STOP: one line with the reason, end.
+## The loop (`relay_prompts/relay_session.md`, printed by `tick` on KICK)
+`tick` (`TICK NOOP` = reply, stop) -> `begin` (worktree `../mts-relay`, claim, brief) -> ONE task in <= 15 tool turns -> edit the NEXT_SESSION.md block -> `handoff --go` (or `--stop "<reason>"`) -> `sync.py ship`, `where` clean -> `unlock` (not after `--stop`).
+Next tasks come from `python scripts/dev/tasks.py next --n 3` (a card's `brief` is the task text). No ready card, or `tasks.py status` says REFINE_NEEDED: the next task is the refiner (TASK_REFINEMENT.md), never a vague builder task.
 
 ## Task list standard (operator 2026-10-10: "the tasks must be curated and scoped")
-The list is the product: the chain runs exactly what it says. `relay.py handoff` runs `relay.py lint` and REFUSES (exit 2, file untouched) a bad list;
-fix the list, run handoff again. Rules (code: scripts/sched/handoff_lint.py, tests: tests/test_relay.py LintTest):
-- Prompt block <= 30 lines; no restated hard rule or state (CLAUDE.md and STATUS.md carry them).
-- Tasks are `   Qn. <what>` lines. One task = one session (Sonnet, <= 15 tool turns, <= 6 lines): split anything bigger, e.g. one screenshot SET, one pre-registration.
-- Every open task has `DONE when: <something a reviewer can observe>`, names the exact item (no "next open item", "follow-ups", "as needed", "etc."),
-  and every path it names exists on origin. Output files that do not exist yet belong to an earlier task; the later one starts `Qn. (after Qm ...)`.
-- A finished task is rewritten `Qn. DONE ...`. `--go` needs at least one open unblocked task; `--stop` is refused while one exists, so "queue empty" cannot be
-  written while work waits. All tasks blocked: add the unblocking task (desk post, Control Room decision) first, then stop naming each blocker.
-- Curating when the list runs low: read STATUS.md, `shot.py status`, `desk.py list --all`, items/INDEX.md and Control Room; cut each candidate to one
-  session with a finish line BEFORE writing it. A candidate you cannot scope in one session becomes a scoping task ("write the next item as Qn").
-- Host tag: `   Qn. host=JIS-NB <what>` (a machine name or `any`; absent = any). `kick` lints the committed handoff for its own host and prints
-  `IDLE no unblocked task for host <name>` when every open task belongs to another host, so no session is launched just to find nothing runnable.
-  `handoff` and `lint` ignore the host unless `--host` is given (a NUC session must still be able to hand a go to NB). The tag is not a model
-  tag: OPUS-only work stays `(after ...)`.
-- `python scripts/sched/relay.py lint --file MyTradingSys/system/NEXT_SESSION.md [--want stop]` checks without writing.
+`relay.py handoff` runs `relay.py lint` and REFUSES (exit 2, file untouched) a bad list. Code: sched/handoff_lint.py.
+- Block <= 30 lines, no restated hard rule or state (CLAUDE.md and STATUS.md carry them); file <= 12288 bytes (old `## ` sections move to `handoff_history/`: edit the block, never append `## Update`).
+- Tasks are `   Qn. <what>` lines. One task = one session (<= 15 tool turns, <= 6 lines): split anything bigger.
+- Every open task has `DONE when: <something a reviewer can observe>`, names the exact item (lint rejects "next open item", "as needed", "etc.") and every path it names exists on origin; a task that needs an earlier task's output starts `Qn. (after Qm ...)`.
+- A finished task is rewritten `Qn. DONE ...`. `--go` needs one open unblocked task; `--stop` is refused while one exists. All blocked: add the unblocking task first, then `--stop` naming each blocker.
+- Curating when the list runs low: read STATUS.md, `shot.py status`, `desk.py list --all`, items/INDEX.md and Control Room; cut each candidate to one session with a finish line BEFORE writing it. A candidate you cannot scope in one session becomes a scoping task (write the next item as Qn).
+- Tags right after `Qn.`, either order, one of each: `host=<machine|any>` (absent = any; `handoff`/`lint` ignore it unless `--host`; `kick` says `IDLE no unblocked task for host X` when every open task is another host's; OPUS-only work stays `(after ...)`) and `lane=CODEX` (GPT / Codex Layer Lab, JIS-NUC) or `lane=DSA` (AI Bridge). Operator 2026-10-14, "GPT and DSA for as much as possible": when curating, tag every task a lane can do alone (a re-run of an existing script, an inventory, a CODEX audit card) instead of leaving it for a Claude session. A bad lane value fails lint.
+- `relay.py lint --file <handoff> [--want stop]` checks without writing. Write the header with `handoff` only: it also writes the `relay_runs.jsonl` row.
+- `begin` takes a HAIKU or SONNET card (`tasks.CODE_LANES` minus OPUS) that no open claim holds (`tasks.py next` hides claimed cards; `--all` shows them).
+
+## Turn meter (2026-10-14)
+The 40 tool / 10 operator turn cap (operator q20, 2026-10-15) is a hook, `scripts/dev/turn_meter.py`: at the cap and every 5 tool turns after, it injects a 1-line hand-off reminder (<= 250 B). One assistant message = one turn (parallel calls count once); subagents are skipped; clear resets. Per-model caps: WORKERS.md rule 5.
 
 ## Brakes (all fail closed)
-- no header, header says stop, or the id did not change (the handoff was not rewritten: would replay the same task) -> STOP
-- depth cap 6 chain links counted from the chain base (`handoff --reset-depth`, or `kick`, which records the base); a runaway chain is bounded
-- operator: `python scripts/sched/relay.py stop "<why>"` halts every host-local chain at its next gate; `... resume` clears it
-- a session that hits a blocker, RED hygiene it cannot fix, or an operator decision it needs writes `--stop` with the reason
-- the lock is keyed by handoff id (2026-10-10): the same id launched twice = double fire = STOP, a new id is always allowed (the old 20-minute clock killed the chain when a short session handed over after 15 min); no relay for live-path/Java restarts (those stay desk tasks)
-- App scheduled tasks run only while the Claude app is open; if it is closed the task runs on next launch
+- no header, header says stop, no task this host can run, or only lane work left -> `kick` IDLE; `handoff --stop` ends a chain
+- a launch under 45 min old, or the same handoff id launched under 1 h ago (a session is on it) -> IDLE; `unlock` frees it; after 1 h an unrewritten id retries
+- operator: `relay.py stop "<why>"` halts every tick on that host, `relay.py resume` clears it; log `~/.claude/mts-relay-log.jsonl`
+- a session that hits a blocker, RED hygiene it cannot fix, or an operator decision it needs writes `--stop` with the reason; no relay for live-path/Java restarts (desk tasks)
 
-## Operator controls
-Start the chain: any session (or the operator) runs `handoff --go --reset-depth` then the gate and fires `mts-relay-a`.
-Stop it: `relay.py stop "<why>"`. Look: `relay.py status --file MyTradingSys/system/NEXT_SESSION.md`; log `~/.claude/mts-relay-log.jsonl`.
-
-## Dispatcher (operator ask 2026-10-10: "a scheduled worker who starts the Sonnet agent to pick up the tasks asap")
-Nothing used to START a chain except a session or the operator, so tasks sat. App scheduled task `mts-dispatcher` (every 30 min,
-App must be open) is a timer, not a builder: it runs origin/fast-track's relay.py `kick` (copied to %TEMP%/mts_relay_kick.py with `git show`, because the live tree's relay.py lags origin and had no `kick`: B164) (reads the handoff from origin/fast-track),
-on `KICK task=mts-relay-a|b` it runs that task, and when the Control Room Inbox has an item with status `new` it runs `mts-control-room`.
-`kick` prints IDLE (exit 1) when: stop flag, no header, header says stop, any launch under 45 min ago (chain is moving), or the same
-handoff id launched under 3 h ago (a session is on it; after 3 h a retry fires, claims stop a double). Log: `~/.claude/mts-relay-log.jsonl`
-(`kick` / `idle` events). Its model is the App default; to make it Haiku set the model in the task's settings (the task tool cannot).
-Stop everything: `relay.py stop "<why>"` (the dispatcher honours the flag).
-
-## Launch never happened (B164, 2026-10-10 09:27Z -> 12:30Z)
-The gate writes its lock BEFORE the App starts the next task. An unattended session could not approve `run_scheduled_task`, so
-mts-relay-b never ran and the dispatcher idled 3 h on "session still on it". Fixes: `mcp__scheduled-tasks__run_scheduled_task`
-is in ~/.claude/settings.json allow (host-local); STALE_H 3 -> 1; `kick` IDLE lines carry `lock=<utc> task=<id>` and the dispatcher
-checks list_task_runs: no run since the lock = rescue-launch it.
-
-### Correction 2026-10-10 12:50Z: allow rules do NOT fix it
-Dispatcher runs are bypassPermissions yet `run_scheduled_task` from inside a scheduled session still needs a human click.
-So no session may launch another. The cron-fired mts-dispatcher is now the worker: on KICK it runs the relay task itself and
-deletes ~/.claude/mts-relay-lock.json at the end, so the next 30-min tick starts the next handoff. mts-relay-a/b remain for manual use.
-Chain latency <= 30 min. Prompt is host-local (~/.claude/scheduled-tasks/mts-dispatcher/SKILL.md; backup SKILL.md.bak_20261010).
-
-## Two hosts, any account (2026-10-12, card relay-two-host-standby)
-Every host runs an `mts-dispatcher` App task that is also the relay worker; its text and the recovery steps are in `scripts/sched/relay_prompts/TWO_HOST.md`,
-the session ritual in `scripts/sched/relay_prompts/relay_session.md` (hosts hold a stub that reads it from origin).
-- Nothing is keyed to an account. Sign either account into either App: the tasks run on that account's budget.
-- `handoff` appends host + signed-in account + session title to `system/relay_runs.jsonl` (ships with the handoff commit):
-  that is where to look up which App and account holds a relay chat.
-- `kick --peer-quiet-min N`: IDLE while ANOTHER host wrote the current handoff under N minutes ago; after N minutes of
-  silence the other host starts the chain. Rest a host on purpose with `relay.py stop "<why>"` on it.
-- `handoff` keeps NEXT_SESSION.md under 12 KB (`MTS_RELAY_MAX_BYTES`): old `## ` sections move to `system/handoff_history/<date>.md`.
-  Edit the block, do not append `## Update` sections.
+## Tick and queue (operator 2026-10-14)
+`relay.py tick` is the whole idle path, in T0: fetch, `route`, `kick`, the QUEUE line, a prompt drift check (installed vs origin) and, every 55 min (`mts-hourly.json`), the refiner status (`../mts-refiner`), housekeeping once per 24 h.
+It prints ONE line, `TICK NOOP | <why> | route=.. | queue=..`, or `TICK KICK ..` with the `NEXT:` command and relay_session.md; an `HOURLY refine=REFINE_NEEDED housekeep=yes` line only when the model has work, never while a peer moves the chain (`IDLE peer ..`). No Control Room inbox poll (INSTALL.md).
+- **QUEUE line** (tick, `kick`, `status`): task counts by why they wait (exclusive buckets, first match wins, `handoff_lint.parse_tasks`): DONE; `(after ..)` blocked; open `lane=` tasks; another host's; the rest = `runnable` here.
+- **`route`** files each open lane task once, as a desk row `--target DSA` or a raw lane-CODEX card, keyed `relay_key` = `<qn>-<hash of the text>` (edited text = new key; the other host answers `exists`).
+- **Results come back as `look=`**: the row is `done`/`failed` (or the card `done`) and its Qn is still open -> `look=1 [Q60 desk done]` and `kick` wakes a session: relay_session.md makes that read its task: row (`desk.py list --all`) or card (`tasks.py brief <id>`), spot-check ONE claim, rewrite the Qn as `DONE ...`. `codex_look=N` (JIS-NUC) counts `codex_run.py status` NEEDS A LOOK lines: information only, it does not wake kick.
+- **Peers**: `kick --peer-quiet-min N` waits only for a host named in a `relay_runs.jsonl` row (a hand-edited header is `unknown`). Both hosts run the same stub (TWO_HOST.md).

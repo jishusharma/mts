@@ -1,0 +1,13 @@
+{
+  "done_when": "Report in MyTradingSys/system/desk_queue reply lists each tree: N commits truly unshipped (subjects) or 'all on origin'; BROKEN trees: safe-to-remove yes/no",
+  "finished": "2026-10-18T16:17:38Z",
+  "from": "JIS-NB",
+  "host": "JIS-NUC",
+  "id": "20261013-181538-jis-nb-worktree-triage-which-unshipped-c",
+  "need": "From a JIS-NB work tree (not the live tree): python scripts/dev/sync.py where ; for every row with unshipped-commits>0 run: git -C <tree> cherry origin/fast-track HEAD ; report per tree the '+' commits (subject + files) that are NOT on origin by content. Read only: no commits, no removes. Also list the 7 BROKEN trees' modified files vs origin/fast-track that differ only in .claude/ (expected) vs anything else.",
+  "posted": "2026-10-13T18:15:38Z",
+  "result": "Pipeliner drain 2026-10-18: re-posted to DSA-NB (needs JIS-NB trees; NUC trees done in 511924a9 RV_DSA_nuc_worktree_triage_20261018.md)",
+  "status": "failed",
+  "target": "DSA",
+  "title": "JIS-NB worktree triage: which unshipped commits are already on origin by content"
+}

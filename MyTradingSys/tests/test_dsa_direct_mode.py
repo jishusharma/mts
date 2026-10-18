@@ -72,6 +72,18 @@ def test_prompt_names_both_protected_processes():
 
 
 # ------------------------------------------------------------------ the session paste
+def test_start_session_header_matches_prompt_v2():
+    # 2026-10-14: the paste header said "one block per reply", "writes run only on the operator's click",
+    # "stop if build is not PASS" and claimed to win over the prompt; v2 (bridge v0.7) says the opposite.
+    s = text(START)
+    for old in ("COORDINATOR or WORKER", "If build status is not PASS", "this block wins",
+                "run only on the operator's click", "One block per reply", "ask for one at a time",
+                "One decision per turn", "act on them, then write yours"):
+        assert old not in s, old
+    for new in ("section 0 wins", "task=mts-boot", "dsa.py boot", "Up to 6 blocks per reply", "counts only for the host"):
+        assert new in s, new
+
+
 def test_start_session_still_writes_the_paste_from_the_manifest():
     s = text(START)
     assert "Dumps\\SESSION_PASTE.txt" in s

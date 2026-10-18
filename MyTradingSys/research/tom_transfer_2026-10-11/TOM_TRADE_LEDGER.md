@@ -1,4 +1,21 @@
-# TOM TRADE LEDGER (card tom-trade-ledger) - PARTIAL, 10 trades / 19 rows, 2026-10-11
+# TOM TRADE LEDGER - REPAIRED 2026-10-12 (cards tom-ledger-canonical-identities, -instrument-identity, -time-provenance, -management-provenance)
+Source of every repair: audit report `research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md` (FIX-FIRST). No frame was re-audited here; no value was invented. Evidence classes: frame-observed / trader-quoted (AI-translated caption) / inferred. Unresolved items are written NOT_IN_DATA in the CSV columns `date_time_status`, `evidence_unresolved`.
+
+## Current counts (supersede the 10-trade/NOT DONE header and the "14 trade ids" totals below)
+- 37 rows preserved, all IDs and frame pointers kept. 14 headline IDs = **12 candidate trade groups** (see `TOM_LEDGER_CANONICAL_GROUPS.csv`), not 12 certified executions: no fill price, execution minute or timezone is certified for any group.
+- Duplicate aliases: T9 -> T4 (UOBgXV20yCM, 23887/23857/23962), T10 -> T6 (zQTbdEweG3c, 25344), T3-s -> T3, T3b-s/T3b-r -> T3b (second video SANOimk8M9o).
+- Do not use 14 / 12 / 7 / 4 as a recall denominator. Every inspected episode is EXPOSED for the holdout split; this repair does not touch the split manifest.
+
+## What changed (CSV)
+- New columns appended: canonical_id, row_kind, chart_symbol_observed, executed_contract, multiplier_tick_ccy, date_time_status, evidence_unresolved, prior_exposure.
+- T5 family: chart header reads Continuous(FDXM)@EUREX (_0520.jpg) while the ledger says FDAX; executed contract/multiplier/tick/currency are NOT_IN_DATA and no monetary risk may be computed from them.
+- T11: date no longer "trade day = recording day"; screenshots are titled 31.08, taskbar 01-Sep: UNRESOLVED (31-Aug likely, unverified).
+- T7: TP 6767.25 is frame-observed (was n/s). T3-s-p1: SL 24220 removed (unsupported); observed states 24265 then 24257. T3b-x: pointer moved to sheets/ujedEcmvBMk_02.jpg cells t=460-520. T5-m1: price 24493 (not ~24650); breakeven stays inferred. T12-m1: SL 25097 at _0900 then 25038 at _0990 (taskbar 08:54). T2b-p1/T1-m1/T1-p1: rounded/derived/position-vs-bracket qualifiers added.
+- TIME PROVENANCE (card tom-ledger-time-provenance, 2026-10-12): new CSV columns recording_date_observed, trade_date_status, trade_date_inferred, execution_minute_status, time_evidence_type, tz_status separate recording clock / chart / execution time. Every row: execution minute = UNKNOWN (no frame shows a fill or modification minute). T4/T9 are one trade (18-May INFERRED from caption 'yesterday', not observed); T6/T10 one trade, trade date NOT_IN_DATA; T11 31.08 chart title vs 01-Sep recording = CONFLICT, 2026-08-31 likely but unverified; T7 taskbar 19-Mar is recording clock; T12-m1 SL 25097 at t=900 then 25038 at t=990 (taskbar 08:54), modification minute unknown. CET/CEST in time_local is a typed label only (chart/recorder TZ NOT_IN_DATA). Date column values unchanged; no split created, no holdout read. Prior exposure stays EXPOSED for all rows (hand to the split owner tom-holdout-clean-split: group episodes by canonical id, not by row).
+- DATE COLUMN (card rv-fix-tom-ledger-date-column, 2026-10-13, RV01 D4/F1/F2): `date` = observed trade date or empty. No row has an observed trade date (no dated order frame), so `date` is empty on all 37 rows. Former `date` values moved: ASSUMED-same-day rows -> `trade_date_inferred` (status text still says ASSUMED); T11/T11-x `trade_date_inferred` = 2026-08-31 (status stays CONFLICT/UNRESOLVED); every blanked cell kept in new column `date_legacy_unverified` (ISO only; T5 2026-05-19, T6 2026-06-02, T10 2026-06-08 are contextual, not trade dates). One inferred date per canonical group; T5/T6/T7 groups have none. TOM_LEDGER_CANONICAL_GROUPS.csv gained `trade_date_observed`, `trade_date_inferred`, `date_candidates_to_exclude` (union of recording, inferred and legacy dates: the list a holdout split must drop, each +-1 trading day). Check: `python scripts/dev/tom_ledger_dates.py check` (0 violations; 46 before).
+- Taskbar clocks are recording/observation times, never execution times. T3b-r "after partial" does not exclude the trader-stated stop-out (ujedEcmvBMk.txt:142-149).
+
+Original header (obsolete, kept for history): TOM TRADE LEDGER (card tom-trade-ledger) - PARTIAL, 10 trades / 19 rows, 2026-10-11
 Status: NOT DONE (target >= 30 or every trade in every available video). 7 videos are on F:/MTS/data/tom_videos (l8RZrBfzvp4 now downloaded, video-only f398 mp4; no ffmpeg merge).
 Frame contact sheets (30 s spacing, 6 per sheet) are in F:/MTS/data/tom_videos/sheets (36 sheets); only l8RZrBfzvp4 sheet 00 has been read this session.
 Rows T1-T6 come from RECALL_DAX.md s1 (frames read earlier). T7 is new: ES short 6806.25, stop 6812.25 (frame l8RZrBfzvp4_0100.jpg, zoomed labels + taskbar clock 19.03.2026 08:48).
@@ -38,7 +55,7 @@ Remaining: read sheets of k0zm5NYn0IQ (10), n7ZSkjb7JXs (6), UOBgXV20yCM (5), T6
 - Remaining sheets: UOBgXV20yCM 03-04 (2), T6hDJcHrVBM (4), ujedEcmvBMk (4), zQTbdEweG3c (4), l8RZ 01-02 (2).
 
 ## Update 2026-10-11 ~01:30Z (relay via cron mts-dispatcher-night, JIS-NB): T6hDJcHrVBM sheets 00-03 all read
-- Only one trade in the video: T5 (FDAX 2026-05-19 open-range spike fade). Labels re-read at t=430 (zoom T6hDJcHrVBM_0430_crop.png): -3 @24690, SL 24753, TP 24184. MATCH with RECALL_DAX.
+- Only one trade in the video: T5 (ledger label FDAX; chart header observed `Continuous(FDXM)@EUREX` at _0520.jpg, executed contract/multiplier/tick/currency NOT_IN_DATA, instrument-identity audit 2026-10-12; 2026-05-19 open-range spike fade). Labels re-read at t=430 (zoom T6hDJcHrVBM_0430_crop.png): -3 @24690, SL 24753, TP 24184. MATCH with RECALL_DAX.
 - Management (new rows T5-m1, T5-p1, T5-a1): stop to breakeven 24690 by t=520 (SL label stacked behind the position tag, no printed value);
   one-lot partial by t=550 while price tags VWAP 24425/24435 (fill price not shown); t=610 hand-drawn "SL 650" above the broken range low. Final exit of 2 lots NOT shown.
 - Sheets 00-01 are teaching (BTC daily profile, FDAX TPO "Openrange" profiles 05-11..05-19), no orders.

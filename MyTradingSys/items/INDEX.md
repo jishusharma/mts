@@ -87,7 +87,7 @@ B121 | OPEN    | B121_poll_cadence_defaults.md | poll cadence: live_runner 60 s 
 B122 | OPEN    | B122_reject_text_event_fallback.md | auto_trader reject text uses alert.get('event') not the fallback; cosmetic
 B123 | OPEN    | B123_zero_trade_and_quiet_families.md | zero-trade after AUTO_PAUSE (cleared), 24 h re-run pending, jishu_4 QUIET to investigate
 B124 | CLOSED  | B124_journal_dir_open_plan_check.md | no check that execution/journal holds each open plan; canary has no journal check
-B125 | OPEN    | B125_consensus_writer_staged_only.md | consensus writer staged .new only, not promoted; Top-5 #3 acceptance absent
+B125 | CLOSED  | B125_consensus_writer_staged_only.md | 2026-10-10: 2fccf66 consensus writer + RSI observation wired into the live runner; 164 layer tests pass
 B126 | OPEN    | B126_supervisor_inbox_consumption.md | cloud to SUP inbox consumption unverifiable; no mechanism on disk
 B127 | CLOSED  | B127_partial_code_no_test.md | CLOSED 2026-10-08: 13 of 13 rows dispositioned; A11 reclassified TOM-CONCEPT-ONLY by operator
 B128 | OPEN    | B128_partial_code_partial_no_test.md | receipt 2026-10-08: 11 of 18 closed (rsi:cross side-by-level landed); residual RA-W2-N, TC-W2-MDS/SCE, TC-W1-10, M29-14, M30-04/11
@@ -137,3 +137,28 @@ B178 | OPEN    | B178.md | operator: CI/CD end-to-end speed - deploy gate runs t
 B179 | OPEN    | B179.md | operator: turn the Tom and Fabio layers story (principles and concepts) into a slide deck artifact so the operator can learn what they taught
 B180 | OPEN    | B180.md | operator: DSA picks its tasks by default from the machine it runs on, and something assigns DSA tasks on a schedule (cost)
 B181 | OPEN    | B181.md | operator: Control Room Inbox shows no progress per item; an item without a registry ref shows nothing
+T081 | OPEN    | T081_backtest_d_stop_tuning.md | Backtest D: walk-forward stop_buffer_atr; Tom part NO 2026-10-09, tight-stop layers blocked on B143
+T082 | OPEN    | T082_capture_matrix_rerun.md | re-run capture matrix + Tom core after Stage 1 data fixes
+T083 | OPEN    | T083_rsi_events_1h_lead_check.md | rsi_events 1h on full 2022-2026 history with fees
+T084 | OPEN    | T084_fabio_escalation_1h_lead_check.md | fabio escalation 1h walk-forward with fees
+T085 | OPEN    | T085_time_exit_dominates.md | 97pct of testnet trades end on the time exit; fix exits
+T086 | OPEN    | T086_go_live_bar.md | go-live bar for real money: operator-signed criteria
+T090 | OPEN    | T090_7h_timeframe_research.md | 7h timeframe research under playbook PART I
+B167 | OPEN    | B167_project_vision_stale.md | PROJECT_VISION.md stale; VISION_GAP report on disk, addendum awaits D23
+B168 | IN-FIX  | B168_aibridge_autorun_stops.md | AIBridge auto-run stops between turns + slow; content.js stay-armed landed, reload pending
+B170 | OPEN    | B170_github_ci_emails_and_stuck_green.md | GitHub CI emails + green/fast-track stuck; operator + workflow-scope token
+B172 | OPEN    | B172_sonnet_ritual_token_use.md | Sonnet ritual token use; measure, trim, templatize
+B173 | OPEN    | B173_terminal_window_flashes.md | terminal window flashes and steals focus; find visible-console starts
+B176 | OPEN    | B176_aibridge_autorun_readonly_scripts.md | AIBridge refuses read-only python/node blocks; policy.json + agent.ps1 (outside repo)
+T087 | CLOSED  | T087_session_levels_observation_layer.md | session-levels observation layer + failed first break base rates (71df3aa): 913 breaks 2022-2026, no edge
+T088 | CLOSED  | T088_all_timeframe_module.md | timeframe registry: 4m, 3h, 7h day-reset, 7h_epoch added (0aa8f56); 9 tests failed on old code, 152 pass
+B159 | OPEN    | B159_screenshot_claims_not_machine_readable.md | screenshot claim rows kept as counts only; store per-row
+B161 | OPEN    | B161_screenshot_header_values_hand_typed.md | screenshot header BB/RSI/VWAP hand-typed; no check tool
+T072 | QUEUED  | T072_volume_context_read_layer.md | time-adjusted volume read for the market guide (observation only)
+T073 | QUEUED  | T073_p06_volume_spike_time_bias.md | P06 volume-spike proof time-of-day bias and NO-SOURCE status; Java window only
+T092 | OPEN    | T092_screenshot_context_gap.md | what context does a single screenshot get; Opus session
+B157 | CLOSED  | B157_screenshot_read_starts_cold.md | prior-context slot + prior falsifier scoring; landed 2026-10-10
+B158 | CLOSED  | B158_session_state_thesis_dead.md | thesis line removed from the card (D13); landed 2026-10-10
+B160 | CLOSED  | B160_engine_state_at_screenshot_time.md | shot.py engine replays the engine at the shot minute; landed 2026-10-10
+B185 | OPEN    | B185_silent_malformed_bugs_row.md | malformed BUGS.md row passes the parser silently; restore B141 + reject over-wide rows
+B186 | OPEN    | B186_write_discipline_stray_backup_and_dup_section.md | stray .bak + duplicate section passed all write checks; fix is one-line backup rule + post-write stray scan

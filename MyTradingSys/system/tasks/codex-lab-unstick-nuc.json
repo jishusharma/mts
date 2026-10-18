@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-14T17:38:11Z",
+  "commands": [],
+  "created": "2026-10-14T14:34:05Z",
+  "depends_on": [],
+  "done_when": "`codex_run.py status` on JIS-NUC prints no ERROR and no NEEDS A LOOK, origin/fast-track carries the lab's tom-btc-chart-lab delivery, and a new test proves a dirty lab tree makes no claim commit.",
+  "from_inbox": "",
+  "goal": "The unattended Codex lab (MTS-CodexLab on JIS-NUC) runs cards again: its work tree F:/MTS/mts-codex-lab is clean, its real deliveries are on origin/fast-track, and the 30-minute tick no longer commits a fresh 'claim lc-levels-hold' without running the card.",
+  "id": "codex-lab-unstick-nuc",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "Found 2026-10-14 14:30Z over the NUC SSH gate: `codex_run.py status` on NUC says 'ERROR git: path MyTradingSys/research/layer_lab/INDEX.md is unmerged' every tick; branch jis-nuc/codex-lab is ahead 35 / behind 67, no MERGE_HEAD, UU INDEX.md plus 45 staged files (candle_close_2026-10-14 research, claims, LAYERS.md, NEXT_SESSION.md, control-room html, layer_map/index, wiring_registry, run_extra_tests.py). The 35 commits are: cc6d1b8 'lab tom-btc-chart-lab: DONE' (its ship failed 2026-10-13 21:33Z), 832deca release, then ~18 'claim lc-levels-hold' commits every 30 min 03:30-12:00 IST and lane-health rows. Allowance is fine (window 46%, week 40%). Do not touch F:/MTS/mts-candle-research: the operator's Codex chat 01a1390f owns claim candle-close-corrected-rerun.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "claude-opus-5-5 jis-nb 2026-10-14",
+  "refs": [
+    "MyTradingSys/system/LAYER_LAB.md"
+  ],
+  "result": "Lab unstuck: salvage clears unmerged/staged files, merge_trunk resolves the generated INDEX.md clash (worktree-safe MERGE_HEAD check), tom-btc-chart-lab delivery (80 charts) passes the gate and is on fast-track; NUC ticks 17:00Z and 17:30Z ran cards with no ERROR, tree level with origin; 3 new tests in test_codex_run.py (46 pass).",
+  "scope_in": [
+    "F:/MTS/mts-codex-lab (JIS-NUC)",
+    "scripts/dev/codex_run.py",
+    "scripts/dev/test_codex_run.py",
+    "MyTradingSys/research/layer_lab/INDEX.md"
+  ],
+  "scope_out": [
+    "F:/MTS/mts-candle-research and the candle-close-corrected-rerun claim (operator's Codex chat)",
+    "the live tree",
+    "NUC keys / scheduled-task registration"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "On JIS-NUC: `git -C F:/MTS/mts-codex-lab status`, `git -C F:/MTS/mts-codex-lab stash list`, `git -C F:/MTS/mts-codex-lab diff --cached --stat`; write down how the tree got into UU-without-MERGE_HEAD (stash pop or checkout -m) from codex_run.py's refresh step and runs.jsonl.",
+    "For each staged file: if origin/fast-track already holds the same content (git diff --cached origin/fast-track -- <path> empty or only regenerated pages), drop it from the index; otherwise keep it as a lab delivery. Never stash/clean/revert another session's tree; this tree belongs to the lab.",
+    "Resolve INDEX.md by regenerating it (`python scripts/dev/codex_run.py index`), commit the kept deliveries, then `python scripts/dev/sync.py ship` from that tree (merges origin/fast-track, gate, push).",
+    "Find why the tick claims lc-levels-hold every 30 min without running it (codex_run.py next/run path vs the dirty-tree guard); fix with a test that fails on the current code: a dirty or unmerged lab tree must stop before any claim commit.",
+    "`codex_run.py status` on NUC shows no ERROR line and no NEEDS A LOOK; the next tick runs the first ready card."
+  ],
+  "tests": "python -m pytest scripts/dev/test_codex_run.py -q; python scripts/dev/run_all_tests.py --quick",
+  "title": "Unstick the Codex lab tree on JIS-NUC: unmerged INDEX.md, unshipped lab commits, lc-levels-hold claim loop"
+}

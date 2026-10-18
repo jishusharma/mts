@@ -1,0 +1,11 @@
+{
+  "card": "dsa-audit-10-missing-aspects",
+  "done_when": "T10_missing_aspects.md shipped: 30+ failure modes with sources, matrix.csv with summaries, 5 DEV demonstrations with numbers, BRIDGE_PLAYBOOK.md from the shipped bridge logs, S1/S2 carded.",
+  "from": "JIS-NB",
+  "id": "20261016-014229-dsa-audit-10-missing-aspects",
+  "need": "python scripts/dev/sync.py claim \"dsa-audit-10-missing-aspects\"; python scripts/dev/tasks.py take dsa-audit-10-missing-aspects; Get-ChildItem MyTradingSys/research/dsa_backtest_audit_2026-10-16 -Filter \"T*_*.md\" | Select-Object Name,Length,LastWriteTime; git log --format=\"%h %ad %s\" --date=short -- MyTradingSys/research/dsa_backtest_audit_2026-10-16; python scripts/dev/tasks.py done dsa-audit-10-missing-aspects --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"; # AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty) (full brief: python scripts/dev/tasks.py brief dsa-audit-10-missing-aspects)",
+  "posted": "2026-10-16T01:45:26Z",
+  "status": "pending",
+  "target": "DSA-NB",
+  "title": "DSA audit T10: 30+ backtest failure modes x every study, 5 demonstrations, and the DSA bridge playbook"
+}

@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T23:30:48Z",
+  "commands": [],
+  "created": "2026-10-16T18:41:44Z",
+  "depends_on": [],
+  "done_when": "Report committed under layer_lab/reports.",
+  "from_inbox": "",
+  "goal": "Independent second-model audit of two just-written cards: do their steps diagnose why discretionary multi-signal chart setups fail backtests, and is anything wrong, unsourced or untestable.",
+  "id": "gpt-confluence-card-audit",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "note": "NUC lane. Second model family review of parent work.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/tasks/confluence-read-encode.json",
+    "MyTradingSys/system/tasks/prob-dist-layer-design-brief.json",
+    "MyTradingSys/methodology/operator_chart_checklist.md",
+    "MyTradingSys/research/event_probability_layer_DESIGN.md"
+  ],
+  "result": "FIX-FIRST; MyTradingSys/research/layer_lab/reports/2026-10-16_gpt-confluence-card-audit.md",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/"
+  ],
+  "scope_out": [
+    "live path",
+    "no VALIDATION or HOLDOUT reads",
+    "no private account files"
+  ],
+  "size": "S",
+  "sources": [
+    "operator 2026-10-17: reviews by one or two models"
+  ],
+  "state": "done",
+  "steps": [
+    "Read the refs and the VERDICTS.csv rows for RSI, Bollinger and OI studies.",
+    "Write the audit table with file:line for each claim.",
+    "Name what the cards miss."
+  ],
+  "tests": "Every verdict row cites a file and line.",
+  "title": "GPT audit of confluence-read-encode and prob-dist-layer-design-brief cards (second model)"
+}

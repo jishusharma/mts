@@ -114,6 +114,8 @@ switch ($Verb.ToLower()) {
     }
 
     "start" {
+        Py (Join-Path $Root "scripts\dev\live_owner.py") check
+        if ($LASTEXITCODE -ne 0) { Bad "live loop owned by another host or owner marker unreadable - not starting (DEVICES.md section 3)"; return }
         $null = . (Join-Path $Root "scripts\load.ps1")
         mts-up
     }

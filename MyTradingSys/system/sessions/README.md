@@ -1,14 +1,13 @@
 # Session registry
 
-One file per session: `<session ID>.md`, format in SURFACE_POLICY.md section 4. Create it at session start,
-update it at session end. Never delete a record; a finished session keeps `status: closed`.
+History only: no new files (the commit trailer and Result line are the record, SURFACE_POLICY.md section 4). Never delete a record.
 Find the predecessor: newest file whose name contains the same `-<SURF>-<ROLE>`, e.g.
 `ls MyTradingSys/system/sessions | grep -- '-CLI-SUP' | sort | tail -1`.
 
 ## Template
 ```
 # <session ID>
-surface: CLD | APP | CLI | LAP | DSA | ASK
+surface: APP | CLI | CLD | DSA | COD
 host: JIS-NB | JIS-NUC | DESKTOP-F7IU69N | cloud
 account: A | B | free-pool | none
 model: <model as reported by the surface>

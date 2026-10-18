@@ -1,0 +1,10 @@
+{
+  "done_when": "poller deleted; open items on MNuodX or listed in the desk row reply",
+  "from": "JIS-NB",
+  "id": "20261017-124448-stop-the-nuc-claude-ai-mts-inbox-poller-",
+  "need": "On the jishu.sharma login the claude.ai chat made an hourly MTS inbox poller (trig_01LLuDvg9ei5FCrkBZjbX73V) and inbox_index on the OLD Control Room EoHi2q. The live Inbox is now https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp on the home login. No scheduled routines are allowed on any device (SCHEDULING_POLICY.md). Delete the poller. Once jishu.sharma can open MNuodX (operator share step), re-add its 4 open Inbox items there by hand. See MyTradingSys/research/artifacts_guy/NOTE_2026-10-17.md",
+  "posted": "2026-10-17T12:44:48Z",
+  "status": "pending",
+  "target": "JIS-NUC",
+  "title": "Stop the NUC claude.ai MTS inbox poller that reads the old Control Room"
+}

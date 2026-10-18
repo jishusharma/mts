@@ -1,0 +1,1402 @@
+{
+ "_doc": "Hand-kept data for the Layer and Backtest Map (scripts/dev/make_layer_map.py -> MyTradingSys/system/artifacts/layer_map.html). One row per backtest or study; one row per layer. A field the repo does not record is null and the page prints 'not recorded'; never fill a guess. 'read' says how much of the source report was read when the row was written: summary = verdict and method read; header = only the top of the file. Append rows; set asof when you touch the file. Params carry src: sourced (trader's own words), grid (swept in the run), NO-SOURCE (flagged by the provenance rule), code (taken from the repo default).",
+ "asof": "2026-10-14",
+ "layers": [
+  {
+   "id": "tom_core",
+   "family": "Tom",
+   "name": "Tom core engine (setup candidates + proofs)",
+   "module": "src/main/java/datafeed/SetupCandidatesBuilder.java; backtest/verdict.py; backtest/tom_bt.py",
+   "status": "STOP: do not backtest or tune the current BTC encoding (tom_transfer ROADMAP section 2); being redefined as Tom v2",
+   "params": [
+    {
+     "k": "min_proof",
+     "label": "min proofs to fire",
+     "kind": "choice",
+     "values": [
+      "live SETUP_FORMING",
+      "3 (WATCH, sensitivity)",
+      "4 (p4, sensitivity)"
+     ],
+     "src": "code"
+    },
+    {
+     "k": "fee_model",
+     "label": "fee/slip variant",
+     "kind": "choice",
+     "values": [
+      "base",
+      "all_taker_0.05",
+      "slip_5bps",
+      "target_first"
+     ],
+     "src": "code"
+    },
+    {
+     "k": "market",
+     "label": "market",
+     "kind": "choice",
+     "values": [
+      "BTCUSDT (snapshots)",
+      "DAX / GER40 (FDAX fees)"
+     ],
+     "src": "code"
+    },
+    {
+     "k": "shift",
+     "label": "proof shift (DAX extension arms)",
+     "kind": "choice",
+     "values": [
+      "0 (pre-registered)",
+      "1",
+      "2",
+      "3"
+     ],
+     "src": "code"
+    }
+   ]
+  },
+  {
+   "id": "tom_proofs",
+   "family": "Tom",
+   "name": "Tom proofs: absorption, cvd_aligned, delta_flip, finished_auction, book_imbalance, volume spike (P06)",
+   "module": "SetupCandidatesBuilder.java (proof flags)",
+   "status": "book_imbalance never counts in historical snapshots (no raw source); P06 volume spike is NO-SOURCE",
+   "params": [
+    {
+     "k": "masked",
+     "label": "proofs masked off",
+     "kind": "text",
+     "values": [
+      "none",
+      "absorption, cvd_aligned, delta_flip, finished_auction (matched-proof BTC arm)"
+     ],
+     "src": "code"
+    }
+   ]
+  },
+  {
+   "id": "tom_vp_pivot",
+   "family": "Tom",
+   "name": "Anchored volume-profile touch (POC/VAH/VAL, pivot vs calendar anchors)",
+   "module": "backtest/vp_pivot_probe.py (FORMULAS 18)",
+   "status": "closed: no anchor beats placebo",
+   "params": [
+    {
+     "k": "anchor",
+     "label": "anchor",
+     "kind": "choice",
+     "values": [
+      "A1 pivot high to low",
+      "prior_day",
+      "weekly",
+      "calendar"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "pivot_n",
+     "label": "pivot width n (1h)",
+     "kind": "choice",
+     "values": [
+      "2",
+      "3",
+      "5"
+     ],
+     "src": "NO-SOURCE"
+    },
+    {
+     "k": "size_k",
+     "label": "size filter k",
+     "kind": "choice",
+     "values": [
+      "0",
+      "2"
+     ],
+     "src": "NO-SOURCE"
+    },
+    {
+     "k": "bin_usd",
+     "label": "bin width (USD)",
+     "kind": "text",
+     "values": [
+      "10"
+     ],
+     "src": "NO-SOURCE"
+    },
+    {
+     "k": "barrier",
+     "label": "R / barriers",
+     "kind": "text",
+     "values": [
+      "ATR14(1h), +-1R, timeout 48x5m"
+     ],
+     "src": "NO-SOURCE"
+    }
+   ]
+  },
+  {
+   "id": "fabio_cvd_absorption",
+   "family": "Fabio",
+   "name": "CVD absorption (FAB-007/008)",
+   "module": "backtest/layers/fabio/fabio_cvd_absorption.py",
+   "status": "L1 no edge / insufficient n",
+   "params": [
+    {
+     "k": "swing_lr",
+     "label": "swing width left=right",
+     "kind": "choice",
+     "values": [
+      "2",
+      "3",
+      "5"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "price_tol",
+     "label": "price tolerance %",
+     "kind": "choice",
+     "values": [
+      "0.05",
+      "0.1",
+      "0.2",
+      "0.5"
+     ],
+     "src": "grid"
+    }
+   ]
+  },
+  {
+   "id": "fabio_escalation",
+   "family": "Fabio",
+   "name": "Escalation breakout (FAB-002/003)",
+   "module": "backtest/layers/fabio/fabio_escalation.py",
+   "status": "L1 no edge / insufficient n",
+   "params": [
+    {
+     "k": "level_tol",
+     "label": "level tolerance %",
+     "kind": "choice",
+     "values": [
+      "0.1",
+      "0.2"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "aggr_k",
+     "label": "aggression k",
+     "kind": "choice",
+     "values": [
+      "1.5",
+      "2",
+      "3"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "lookback",
+     "label": "record lookback",
+     "kind": "choice",
+     "values": [
+      "20",
+      "50"
+     ],
+     "src": "grid"
+    }
+   ]
+  },
+  {
+   "id": "fabio_volume_fvg",
+   "family": "Fabio",
+   "name": "Volume FVG (lowest-volume bin in 70% value area)",
+   "module": "backtest/layers/fabio/fabio_volume_fvg.py",
+   "status": "L1 no edge",
+   "params": [
+    {
+     "k": "fvg_fixed",
+     "label": "fixed",
+     "kind": "text",
+     "values": [
+      "20 bins, 70% VA, swings 2/2, first touch within 200 bars; bounce vs through"
+     ],
+     "src": "NO-SOURCE"
+    }
+   ]
+  },
+  {
+   "id": "fabio_v3",
+   "family": "Fabio",
+   "name": "Fabio v3 variants A-D (layer 3)",
+   "module": "backtest/layers/fabio/fabio_v3*.py; run_v3_l3.py",
+   "status": "tried 2026-10-04; encoding being redefined (Fabio v2)",
+   "params": [
+    {
+     "k": "variant",
+     "label": "variant key",
+     "kind": "choice",
+     "values": [
+      "A|N60|p0.05|f0.003|rest|g0.8",
+      "B|N60|z2|f0.003|rest",
+      "C|m5|f0.005|rest|g0.8",
+      "D|N240|p0.05|f0.003|rest"
+     ],
+     "src": "grid"
+    }
+   ]
+  },
+  {
+   "id": "fabio_of",
+   "family": "Fabio",
+   "name": "Fabio on true order flow (aggTrades state/location/trigger/management)",
+   "module": "backtest/layers/fabio/fabio_of_model.py; orderflow_bars.py",
+   "status": "insufficient n; legacy fee pair",
+   "params": [
+    {
+     "k": "bigtrade_pctile",
+     "label": "big-trade size percentile (prior 30d)",
+     "kind": "choice",
+     "values": [
+      "99",
+      "99.9"
+     ],
+     "src": "code"
+    }
+   ]
+  },
+  {
+   "id": "rsi_levels",
+   "family": "RSI",
+   "name": "RSI 40 support / 60 rejection level events (Wilder RSI14)",
+   "module": "backtest/layers/rsi; rsi_events",
+   "status": "D3 tolerance study done",
+   "params": [
+    {
+     "k": "tol",
+     "label": "tolerance (RSI points)",
+     "kind": "text",
+     "values": [
+      "0.5 .. 5.0 step 0.5"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "tf",
+     "label": "timeframe",
+     "kind": "choice",
+     "values": [
+      "15m",
+      "1h",
+      "4h",
+      "1d"
+     ],
+     "src": "grid"
+    }
+   ]
+  },
+  {
+   "id": "rsi_divergence",
+   "family": "RSI",
+   "name": "RSI divergence (Malkan 3-10 bar; operator 11-60 bar)",
+   "module": "backtest/layers/rsi/run_divergence_mtf.py",
+   "status": "no edge, all TFs",
+   "params": [
+    {
+     "k": "rule",
+     "label": "rule",
+     "kind": "choice",
+     "values": [
+      "Malkan 3-10 bar (sourced)",
+      "operator 11-60 bar"
+     ],
+     "src": "sourced"
+    },
+    {
+     "k": "tf",
+     "label": "timeframe",
+     "kind": "choice",
+     "values": [
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "4h",
+      "6h",
+      "1d",
+      "2d"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "anchor_shift",
+     "label": "resample anchor shift (7h study)",
+     "kind": "choice",
+     "values": [
+      "00:00 UTC (NO-SOURCE)",
+      "18:00 NY = 22/23 UTC (sourced)"
+     ],
+     "src": "grid"
+    }
+   ]
+  },
+  {
+   "id": "cryptocred",
+   "family": "CryptoCred",
+   "name": "CryptoCred swing / MSB / retest / failed MSB setups",
+   "module": "backtest/layers/cryptocred/",
+   "status": "adapter + stop sweep run",
+   "params": [
+    {
+     "k": "stop_buffer",
+     "label": "stop buffer",
+     "kind": "text",
+     "values": [
+      "0.1% (NO-SOURCE)"
+     ],
+     "src": "NO-SOURCE"
+    },
+    {
+     "k": "target_r",
+     "label": "target R",
+     "kind": "choice",
+     "values": [
+      "1.5R trend-aligned (sourced)",
+      "2.0R counter-trend (sourced)"
+     ],
+     "src": "sourced"
+    }
+   ]
+  },
+  {
+   "id": "funding_cvd_fade",
+   "family": "Positioning (T055 C1)",
+   "name": "Funding-extreme reversion + CVD/price divergence fade",
+   "module": "backtest/layers/positioning/funding_cvd_fade.py",
+   "status": "FAIL, closed",
+   "params": [
+    {
+     "k": "lookback",
+     "label": "lookback",
+     "kind": "text",
+     "values": [
+      "180 (IS-chosen)"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "n",
+     "label": "n",
+     "kind": "text",
+     "values": [
+      "50"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "hi_lo",
+     "label": "hi / lo percentile",
+     "kind": "text",
+     "values": [
+      "0.99 / 0.01"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "use_div",
+     "label": "use divergence",
+     "kind": "choice",
+     "values": [
+      "true",
+      "false"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "horizon",
+     "label": "horizon (bars)",
+     "kind": "text",
+     "values": [
+      "48"
+     ],
+     "src": "grid"
+    }
+   ]
+  },
+  {
+   "id": "session_momentum",
+   "family": "Session (T055 C2)",
+   "name": "Intraday session momentum",
+   "module": "backtest/layers/session/session_momentum.py",
+   "status": "FAIL, closed",
+   "params": [
+    {
+     "k": "bar_min",
+     "label": "bar minutes",
+     "kind": "text",
+     "values": [
+      "5"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "first_min",
+     "label": "first N minutes",
+     "kind": "text",
+     "values": [
+      "30"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "entry_min",
+     "label": "entry minute",
+     "kind": "text",
+     "values": [
+      "30"
+     ],
+     "src": "grid"
+    }
+   ]
+  },
+  {
+   "id": "turn_of_candle",
+   "family": "Timing (T055 C3)",
+   "name": "Turn-of-candle + quarter-hour opening order imbalance",
+   "module": "backtest/layers/turn_of_candle/",
+   "status": "no edge, closed",
+   "params": [
+    {
+     "k": "lead",
+     "label": "lead minutes / hold bars",
+     "kind": "text",
+     "values": [
+      "lead 2, 2-bar hold (driver default)"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "imb_window",
+     "label": "imbalance window",
+     "kind": "choice",
+     "values": [
+      "1m",
+      "5m"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "imb_thr",
+     "label": "|imbalance| threshold",
+     "kind": "choice",
+     "values": [
+      "all",
+      "0.1"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "mode",
+     "label": "direction",
+     "kind": "choice",
+     "values": [
+      "momentum",
+      "contrarian"
+     ],
+     "src": "grid"
+    }
+   ]
+  },
+  {
+   "id": "session_levels",
+   "family": "Session",
+   "name": "Failed first break of prior-day high/low (T087)",
+   "module": "research/t087_session_levels_2026-10-09",
+   "status": "no edge",
+   "params": [
+    {
+     "k": "target",
+     "label": "target",
+     "kind": "choice",
+     "values": [
+      "Asia extreme",
+      "EU extreme"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "touch",
+     "label": "touch session filter",
+     "kind": "choice",
+     "values": [
+      "asia",
+      "eu",
+      "all"
+     ],
+     "src": "grid"
+    }
+   ]
+  },
+  {
+   "id": "volume",
+   "family": "Volume",
+   "name": "Volume intensity / exhaustion / time-of-day (V0-V4)",
+   "module": "research/volume_2026-10-09",
+   "status": "no validated edge; HOLDOUT sealed",
+   "params": [
+    {
+     "k": "baseline",
+     "label": "volume baseline",
+     "kind": "choice",
+     "values": [
+      "plain 20-bar",
+      "same-slot (time-adjusted)"
+     ],
+     "src": "grid"
+    }
+   ]
+  },
+  {
+   "id": "candle_patterns",
+   "family": "Candles",
+   "name": "Classical candle patterns (18 patterns x h 1,3,5; 1d and 1h)",
+   "module": "research/candle_patterns_2026-10-04",
+   "status": "pilot run",
+   "params": [
+    {
+     "k": "h",
+     "label": "hold bars",
+     "kind": "choice",
+     "values": [
+      "1",
+      "3",
+      "5"
+     ],
+     "src": "grid"
+    }
+   ]
+  },
+  {
+   "id": "bb_lvn_triggers",
+   "family": "Guidance (Q33)",
+   "name": "Triggers T1 BB-outside, T2 LVN traverse, T3 hold/through, T4 x context filters",
+   "module": "research/tom_fabio_guidance_2026-10-12/matrix_q33.py",
+   "status": "no cell survives",
+   "params": [
+    {
+     "k": "variant",
+     "label": "trigger variant",
+     "kind": "choice",
+     "values": [
+      "T1_cont",
+      "T1_fade",
+      "T2_cont",
+      "T2b_fade",
+      "T3_hold",
+      "T3b_through",
+      "T4_cont"
+     ],
+     "src": "grid"
+    },
+    {
+     "k": "horizon",
+     "label": "horizon",
+     "kind": "choice",
+     "values": [
+      "15m x H1,H4,H16 (primary 60 min)"
+     ],
+     "src": "grid"
+    }
+   ]
+  },
+  {
+   "id": "oi_delta",
+   "family": "Positioning",
+   "name": "OI delta 4-state classifier (volume-delta vs price school)",
+   "module": "research/OI_DELTA_4STATE_BACKTEST_2026-09-21.md",
+   "status": "descriptive study",
+   "params": [
+    {
+     "k": "school",
+     "label": "delta school",
+     "kind": "choice",
+     "values": [
+      "volume-delta (net_delta_1h sign)",
+      "price (T-60m)"
+     ],
+     "src": "grid"
+    }
+   ]
+  },
+  {
+   "id": "ma_daily",
+   "family": "Setup alpha/beta",
+   "name": "Daily long-flat MA setups (SMA200, EMA, RSI2, ADX, Supertrend)",
+   "module": "research/setup_alpha_beta_2026-10-10/alpha_backtest.py",
+   "status": "NO-SOURCE (chatbot handoff numbers)",
+   "params": [
+    {
+     "k": "setup",
+     "label": "variant",
+     "kind": "choice",
+     "values": [
+      "A SMA200+EMA7+RSI2>ADX2",
+      "B SMA200+EMA20+ADX14>20",
+      "C Supertrend(10,3)"
+     ],
+     "src": "NO-SOURCE"
+    }
+   ]
+  },
+  {
+   "id": "bigtrade_fires",
+   "family": "Bigtrade",
+   "name": "Layer fires x exit policies (layer key = layer:family:setup:tf)",
+   "module": "backtest/bigtrade; research/bigtrade_2026-10-09",
+   "status": "fires + exit policies run, HOLDOUT unread",
+   "params": [
+    {
+     "k": "exit",
+     "label": "exit policy",
+     "kind": "choice",
+     "values": [
+      "live_like_1pct_2pct_8bars",
+      "bracket_1atr_2atr_24",
+      "bracket_1.5atr_3atr_24",
+      "time_24_wide_stop_2atr",
+      "time_96_wide_stop_2atr",
+      "be1atr_trail2atr_96"
+     ],
+     "src": "grid"
+    }
+   ]
+  },
+  {
+   "id": "pitchfork_swing",
+   "family": "pitchfork",
+   "name": "Pitchfork swing dynamics (Andrews / Schiff / Modified Schiff ML & Hagopian failure)",
+   "module": "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py",
+   "status": "Foundational papers delivered; detector built with unit tests (100% pass)",
+   "params": [
+    {
+     "k": "variant",
+     "label": "pitchfork variant",
+     "kind": "choice",
+     "values": [
+      "standard",
+      "schiff",
+      "modified_schiff"
+     ],
+     "src": "sourced"
+    },
+    {
+     "k": "auto_schiff",
+     "label": "auto promote steep angles to modified schiff",
+     "kind": "choice",
+     "values": [
+      "true",
+      "false"
+     ],
+     "src": "sourced"
+    },
+    {
+     "k": "timeframe",
+     "label": "primary swing timeframe",
+     "kind": "choice",
+     "values": [
+      "4H",
+      "1D"
+     ],
+     "src": "code"
+    }
+   ]
+  }
+ ],
+ "backtests": [
+  {
+   "id": "L1-D3",
+   "title": "D3 RSI tolerance study + CryptoCred adapter (L1)",
+   "date": "2026-09-27",
+   "market": "BTCUSDT 1m 2022-01-01..2026-09-26, resampled 15m/1h/4h/1d",
+   "layers": [
+    "rsi_levels",
+    "cryptocred"
+   ],
+   "params": "tolerance 0.5..5.0 step 0.5; levels 40 support / 60 rejection; chosen by best IS mean at h=5 with >=5 IS events",
+   "split": "70% IS / 30% OOS chronological",
+   "fees": "none (forward-return study, gross)",
+   "interaction": "single layer each; no Malkan regime gate (caveat in report)",
+   "effects": "event counts only (e.g. 1h support OOS n=89)",
+   "n": "OOS n 8..767 per cell",
+   "verdict": "mixed: 1h support PBO 0.030, everything else PBO 0.39-0.91",
+   "report": "MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md",
+   "read": "summary"
+  },
+  {
+   "id": "L1-FABIO",
+   "title": "Fabio L1: CVD absorption, escalation, volume FVG",
+   "date": "2026-09-27",
+   "market": "BTCUSDT 1m 2022-01..2026-09-26 -> 5m/15m/1h",
+   "layers": [
+    "fabio_cvd_absorption",
+    "fabio_escalation",
+    "fabio_volume_fvg"
+   ],
+   "params": "12-variant grids (see layer rows); FVG fixed 20 bins/70% VA; frozen IS-best then OOS",
+   "split": "70% IS / 30% OOS",
+   "fees": "0.10% round trip",
+   "interaction": "each layer alone; no combinations; real VA bin vs random-bin control for FVG",
+   "effects": "escalation run in 1000-bar chunks (deviation from spec)",
+   "n": "OOS n >= 30 required",
+   "verdict": "no edge / insufficient n (rule: OOS n>=30, net>0, PBO<0.5)",
+   "report": "MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md",
+   "read": "summary"
+  },
+  {
+   "id": "FABIO-OF",
+   "title": "Fabio on true order flow (aggTrades), conditional model",
+   "date": "2026-10-06",
+   "market": "BTCUSDT aggTrades 2026-07-01..2026-09-28 (90 usable days)",
+   "layers": [
+    "fabio_of"
+   ],
+   "params": "big-trade threshold 99th/99.9th pctile of prior 30d; state/location/trigger/management cells",
+   "split": "IS 62 days / OOS 28 days",
+   "fees": "legacy pair 3.5bp taker / -1.5bp maker rebate (wrong; true Deribit taker 5bp maker 0); rerun needed",
+   "interaction": "state x location x trigger x management cells",
+   "effects": "not recorded",
+   "n": "OOS n 15-90, many below 30",
+   "verdict": "no edge / insufficient n (stands under correct fees; numbers not reusable)",
+   "report": "MyTradingSys/backtest/layers/fabio/FABIO_OF_REPORT.md",
+   "read": "header"
+  },
+  {
+   "id": "FABIO-V3",
+   "title": "Fabio v3 layer-3 variants A-D",
+   "date": "2026-10-04",
+   "market": "not recorded here",
+   "layers": [
+    "fabio_v3"
+   ],
+   "params": "variant keys A|N60|p0.05|f0.003|rest|g0.8, B|N60|z2|f0.003|rest, C|m5|f0.005|rest|g0.8, D|N240|p0.05|f0.003|rest",
+   "split": "oos_2bps rows in registry",
+   "fees": "2 bps (variant name oos_2bps)",
+   "interaction": "not recorded",
+   "effects": "not recorded",
+   "n": "see TRIAL_REGISTRY.csv",
+   "verdict": "not recorded in map",
+   "report": "MyTradingSys/research/fast_track_2026-09-27/bt_runs/TRIAL_REGISTRY.csv",
+   "read": "header"
+  },
+  {
+   "id": "T055-C1",
+   "title": "T055 C1 funding_cvd_fade",
+   "date": "2026-09-29, rerun 2026-10-07 (full funding)",
+   "market": "BTCUSDT 1m 2022-2026",
+   "layers": [
+    "funding_cvd_fade"
+   ],
+   "params": "IS-chosen lookback 180, n 50, hi .99, lo .01, use_divergence true, horizon 48; 108 variants",
+   "split": "70/30 single split; 2 OOS years",
+   "fees": "10 bps RT + 2 bps slip + funding (full 2020-01 funding in the rerun)",
+   "interaction": "single layer",
+   "effects": "09-29 run had 12 months of funding only; invalid, replaced",
+   "n": "rerun OOS n 76",
+   "verdict": "FAIL (rerun OOS net -0.0453%, Sharpe -0.035); closed",
+   "report": "MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md",
+   "read": "summary"
+  },
+  {
+   "id": "T055-C2",
+   "title": "T055 C2 session_momentum",
+   "date": "2026-09-29, rerun 2026-10-07",
+   "market": "BTCUSDT 5m bars",
+   "layers": [
+    "session_momentum"
+   ],
+   "params": "bar_min 5, session_start 0, first_min 30, entry_min 30, min_abs 0, horizon session; 16 variants",
+   "split": "70/30; IS 1211 / OOS 519 (09-29)",
+   "fees": "10 bps RT + 2 bps slip + funding",
+   "interaction": "single layer",
+   "effects": "rerun OOS n 299 after funding window fix",
+   "n": "OOS 299 (rerun)",
+   "verdict": "FAIL (rerun OOS net +0.0177%, Sharpe 0.0084, 1 of 2 years positive)",
+   "report": "MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md",
+   "read": "summary"
+  },
+  {
+   "id": "T055-C3",
+   "title": "T055 C3 turn-of-candle + quarter-hour imbalance",
+   "date": "2026-09-29",
+   "market": "BTCUSDT 1m 2022-01..2026 (2,491,200 bars)",
+   "layers": [
+    "turn_of_candle"
+   ],
+   "params": "part 1: lead 2 min, long, 2-bar hold; part 2: imbalance window 1m/5m, |imb| >= 0.1 or all, momentum/contrarian, horizons 1-5 bars and 4/8/12h",
+   "split": "IS 1,743,840 / OOS 747,360",
+   "fees": "10 bps RT + 2 bps slip + funding",
+   "interaction": "calendar entry alone, then calendar x imbalance signal",
+   "effects": "not recorded",
+   "n": "OOS 49,823 (part 1); 40,857 (part 2 short horizons)",
+   "verdict": "NO EDGE (gross OOS about 0 at every horizon)",
+   "report": "MyTradingSys/research/fast_track_2026-09-27/T055_BT_c3.md",
+   "read": "summary"
+  },
+  {
+   "id": "TOM-CORE-0929",
+   "title": "Tom core outcome backtest, first run (historical snapshots)",
+   "date": "2026-09-30",
+   "market": "BTCUSDT snapshots 15 min step",
+   "layers": [
+    "tom_core",
+    "tom_proofs"
+   ],
+   "params": "variants episode, A, watch_episode (proof>=3), p4_episode (proof>=4); stress: base, all_taker_0.05, slip_5bps, target_first",
+   "split": "periods + holdout 2026-06-26..",
+   "fees": "Deribit maker 0 / taker 0.0005, stress variants",
+   "interaction": "proof count threshold; Tom x Fabio confluence reported DESCRIPTIVE ONLY (tagged minus untagged, Bonferroni /8)",
+   "effects": "live SETUP_FORMING rule: only 17 filled trades (19 signals); book-imbalance proof never counts (max proof 6)",
+   "n": "17 live-rule trades; 4417 WATCH/SETUP episodes filled",
+   "verdict": "no edge: gross -0.07 R, net -0.30 R, holdout net -0.32 R (n=254)",
+   "report": "MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md",
+   "read": "summary"
+  },
+  {
+   "id": "TOM-CORE-1007",
+   "title": "Tom core rerun on current Java (stop floor removed, PR #12)",
+   "date": "2026-10-07",
+   "market": "BTCUSDT 2022-01-20..2026-09-26 snapshots, 164,257 evaluated",
+   "layers": [
+    "tom_core",
+    "tom_proofs"
+   ],
+   "params": "same four variants; run id tom_core_20261007",
+   "split": "holdout 2026-06-26.. (n=181)",
+   "fees": "Deribit as above; fee cost about 2.76 R per trade because stops became tiny",
+   "interaction": "as above",
+   "effects": "live rule SETUP_FORMING filled trades 17 -> 0; episodes 4417 -> 2880",
+   "n": "2880 episodes filled",
+   "verdict": "no edge: gross -0.15 R, net -2.91 R; holdout -2.80 R (mechanical: R tiny after floor removal)",
+   "report": "MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06.md",
+   "read": "summary"
+  },
+  {
+   "id": "TOM-VP-PHASE2",
+   "title": "Tom core phase 2: pivot-anchored volume profile touch study",
+   "date": "2026-10-09",
+   "market": "BTCUSDT 1m 2022-01-01..2026-10-07 (1741 days)",
+   "layers": [
+    "tom_vp_pivot"
+   ],
+   "params": "48 family x level streams; pivot n {2,3,5}, k {0,2}, bin 10 USD, +-1R ATR14(1h), timeout 48x5m, placebo offsets 0.5-3 ATR",
+   "split": "per-year 2022-2026",
+   "fees": "taker about 0.19 R per round trip; maker variant",
+   "interaction": "anchor family x POC/VAH/VAL level, each vs placebo",
+   "effects": "n >= 1055 per stream",
+   "n": "n >= 1055",
+   "verdict": "no anchor has an edge; 46/48 real-minus-placebo CIs straddle 0; every year negative",
+   "report": "MyTradingSys/research/tom_core_bt_2026-10-09/PHASE2_RESULT.md",
+   "read": "summary"
+  },
+  {
+   "id": "DAX-SMOKE",
+   "title": "Untuned Tom core on DAX vs matched-proof BTC (SMOKE only)",
+   "date": "2026-10-10",
+   "market": "GER40 snapshots 2026-01 (smoke); BTC 2025-09-01..2026-06-25 dev",
+   "layers": [
+    "tom_core",
+    "tom_proofs"
+   ],
+   "params": "PRE_REG_DAX frozen 2026-10-11; shifts 0..3; limit at zone price, stop/target from rank-1 candidate, 8 zone-tf bars",
+   "split": "dev only; DAX holdout NOT read; BTC holdout burned (B147)",
+   "fees": "FEES_FDAX 0.000005 per side per leg; BTC Deribit; arms daxfee vs coded",
+   "interaction": "BTC arm masks absorption, cvd_aligned, delta_flip, finished_auction (mask changed 1818 candidates)",
+   "effects": "Java kept 1453/2976 snapshots; market-open filter dropped 202; 438 errors; 1251 rows remain",
+   "n": "smoke, 1 month",
+   "verdict": "SMOKE: pipeline test, not a result; full dev + holdout run is Q7",
+   "report": "MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md",
+   "read": "header"
+  },
+  {
+   "id": "RSI-DIV-MTF",
+   "title": "RSI divergence on every timeframe (T089 + T091)",
+   "date": "2026-10-09",
+   "market": "BTCUSDT 1m 2022-01-01..2026-10-07",
+   "layers": [
+    "rsi_divergence"
+   ],
+   "params": "RSI 14 close-to-close; Malkan 3-10 bar vs operator 11-60 bar; 1m..2d; h 10 bars",
+   "split": "per-year",
+   "fees": "one taker round trip 0.10%",
+   "interaction": "single layer; 7h anchor-shift robustness (T090) on the operator bullish lead",
+   "effects": "32 cells reach n>=300; rest insufficient n",
+   "n": "32 cells with n>=300",
+   "verdict": "no edge on any timeframe that reached 300 events; 31 of 32 net negative; 6h and 2d leads have n 6-54",
+   "report": "MyTradingSys/research/rsi_divergence_mtf_2026-10-09/RESULT.md",
+   "read": "summary"
+  },
+  {
+   "id": "T087",
+   "title": "Failed first break of prior-day high/low, session targets",
+   "date": "2026-10-09",
+   "market": "BTCUSDT 1m 2022-01-01..2026-10-07",
+   "layers": [
+    "session_levels"
+   ],
+   "params": "touch before 14:00 UTC, close back within 60 min, stop = spike extreme, target = Asia/EU extreme, time exit 14:00 UTC (placeholder)",
+   "split": "not recorded",
+   "fees": "net column present; cost model not stated in the head of the file",
+   "interaction": "level touch x session of the touch x target session",
+   "effects": "events: high 466 / low 447",
+   "n": "911 (all/both)",
+   "verdict": "no edge (net -0.036%, t -1.72); EU-touch cells insufficient n",
+   "report": "MyTradingSys/research/t087_session_levels_2026-10-09/RESULT.md",
+   "read": "summary"
+  },
+  {
+   "id": "VOLUME",
+   "title": "BTC volume research V0-V4 (553 pre-registered trials)",
+   "date": "2026-10-09",
+   "market": "BTCUSDT; DEV then VALIDATION; HOLDOUT 2025-07..2026-09 sealed",
+   "layers": [
+    "volume"
+   ],
+   "params": "event studies, state variables, contrasts, time hypotheses; same-slot vs plain 20-bar baseline",
+   "split": "DEV / VALIDATION / sealed HOLDOUT",
+   "fees": "14 bp + funding; White Reality-Check, placebo calibration",
+   "interaction": "volume combined with candles, consolidation, Bollinger, RSI 40/60, exhaustion, time (per operator ask); details in V1-V4 files",
+   "effects": "not recorded",
+   "n": "553 trials",
+   "verdict": "no validated directional edge; volume gives intensity, not direction; 1 marginal DEV pass failed VALIDATION",
+   "report": "MyTradingSys/research/volume_2026-10-09/VOLUME_RESEARCH_REPORT_2026-10-09.md",
+   "read": "summary"
+  },
+  {
+   "id": "CANDLE-P1",
+   "title": "Classical candle patterns pilot P0/P1",
+   "date": "2026-10-07",
+   "market": "BTCUSDT 1d (n=1643) and 1h (n=21888), DEV",
+   "layers": [
+    "candle_patterns"
+   ],
+   "params": "18 patterns x h {1,3,5}; entry open(i+1), exit open(i+1+h)",
+   "split": "DEV only",
+   "fees": "14 bps + realised funding",
+   "interaction": "single layer; RC p over 54-trial family, BH q",
+   "effects": "18 INSUFFICIENT-N trials at 1d",
+   "n": "per pattern, e.g. bull_engulf 164",
+   "verdict": "1d engulfing rows read all FAIL; remaining rows and 1h table not read for this map",
+   "report": "MyTradingSys/research/candle_patterns_2026-10-04/P1_RESULTS.md",
+   "read": "header"
+  },
+  {
+   "id": "BIGTRADE-EXIT",
+   "title": "Bigtrade fires x exit policies (backtest C)",
+   "date": "2026-10-09",
+   "market": "spot bars, TRAIN/VALIDATE; HOLDOUT 2025-07.. not read",
+   "layers": [
+    "bigtrade_fires",
+    "cryptocred"
+   ],
+   "params": "6 exit policies (see layer row); entry open of bar after fire bar; stop-first on shared bars",
+   "split": "TRAIN / VALIDATE, BOTH+ flag needs n>=30 each",
+   "fees": "10 bp RT taker + 2 bp slippage (assumed)",
+   "interaction": "layer key x exit policy grid (first row shown: layer:cryptocred:failed_msb:15m)",
+   "effects": "not recorded",
+   "n": "e.g. 396 train / 57 validate",
+   "verdict": "first row negative both splits; full table not read for this map",
+   "report": "MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md",
+   "read": "header"
+  },
+  {
+   "id": "MARKET-GUIDE",
+   "title": "Market guide verdict table (which signals carry value)",
+   "date": "2026-10-07",
+   "market": "BTCUSDT 5m/15m/1h/4h",
+   "layers": [
+    "candle_patterns",
+    "rsi_levels"
+   ],
+   "params": "gate: OOS n>=30, OOS net>0, PBO<0.5; candle triage per PRE_REG_CANDLE_PILOT s5",
+   "split": "layer drivers' own splits",
+   "fees": "not recorded",
+   "interaction": "digest only (observation, never a Tom filter)",
+   "effects": "not recorded",
+   "n": "not recorded",
+   "verdict": "table in report not read for this map",
+   "report": "MyTradingSys/research/MARKET_GUIDE_RESULTS_2026-10-07.md",
+   "read": "header"
+  },
+  {
+   "id": "OI-DELTA",
+   "title": "OI delta 4-state classifier backtest",
+   "date": "2026-09-21",
+   "market": "6362 joined snapshot rows, 8 days (BTC)",
+   "layers": [
+    "oi_delta"
+   ],
+   "params": "volume-delta school vs price school; horizons 30m/60m/120m",
+   "split": "none (descriptive)",
+   "fees": "none (mean forward return %, day-clustered se)",
+   "interaction": "OI state x delta school",
+   "effects": "state counts per school recorded",
+   "n": "6362 rows",
+   "verdict": "descriptive; no verdict line in the head of the file",
+   "report": "MyTradingSys/research/OI_DELTA_4STATE_BACKTEST_2026-09-21.md",
+   "read": "header"
+  },
+  {
+   "id": "Q33",
+   "title": "Tom/Fabio guidance matrix: fee-net trigger x context event study",
+   "date": "2026-10-12",
+   "market": "BTCUSDT perp 1m 2022-01-01..2026-10-11 (2,512,800 bars) at 15m",
+   "layers": [
+    "bb_lvn_triggers"
+   ],
+   "params": "triggers T1_cont/T1_fade/T2_cont/T2b_fade/T3_hold/T3b_through/T4_cont; context filters F1.. (levels -1/0/1); H1/H4/H16, primary 60 min; entry open t+1",
+   "split": "halves h1/h2 sign check; placebo + BH-FDR",
+   "fees": "FEES_ALL_TAKER 0.10% round turn, no stop/target",
+   "interaction": "trigger x context filter cells (336 built); this is the layer-interaction study",
+   "effects": "336 cells; 186 tested (n>=300); 89 underpowered; rest n<20",
+   "n": "186 tested cells",
+   "verdict": "no cell survives (smallest q 0.62); do not wire cross-guidance",
+   "report": "MyTradingSys/research/tom_fabio_guidance_2026-10-12/MATRIX_REPORT.md",
+   "read": "summary"
+  },
+  {
+   "id": "ALPHA",
+   "title": "Setup alpha/beta: daily long-flat SMA200 variants",
+   "date": "2026-10-10",
+   "market": "BTCUSDT 1d",
+   "layers": [
+    "ma_daily"
+   ],
+   "params": "A SMA200+EMA7+RSI2>ADX2; B SMA200+EMA20+ADX14>20; C Supertrend(10,3)",
+   "split": "not recorded",
+   "fees": "0.05% per side + funding",
+   "interaction": "indicator stack per variant",
+   "effects": "A 42 trades, B 44, C 29, buy-and-hold 1",
+   "n": "29-44 trades",
+   "verdict": "NO-SOURCE; A CAGR 20.5% maxDD 49% vs buy-and-hold 43.8% / 76.7%; not a result",
+   "report": "MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md",
+   "read": "summary"
+  },
+  {
+   "id": "TOM-CORE-BT",
+   "title": "Tom core outcome backtest on historical snapshots (rerun 2026-10-06)",
+   "date": "2026-10-07",
+   "market": "BTCUSDT 1m, 4.7 years",
+   "layers": [
+    "tom_core",
+    "tom_proofs"
+   ],
+   "params": "live rule SETUP_FORMING (0 fills) and sensitivity proof>=3 WATCH+SETUP_FORMING; 36 trials registered",
+   "split": "holdout 2026-06-26..",
+   "fees": "Deribit-style fees",
+   "interaction": null,
+   "effects": "sensitivity n=2880 gross R -0.15, net R -2.91; holdout n=181 net R -2.80",
+   "n": "0 live-rule; 2880 sensitivity",
+   "verdict": "no edge shown; fees make it clearly negative",
+   "report": "MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06_full.md",
+   "read": "header"
+  },
+  {
+   "id": "TOM-DIAG-BTC",
+   "title": "Tom probe diagnostics on BTC backtest (selection / management / session)",
+   "date": "2026-10-11",
+   "market": "BTCUSDT 1m 2022-01..2026-06-25 (holdout burned, excluded)",
+   "layers": [
+    "tom_core"
+   ],
+   "params": "tom_bt.run_variant default fees; watch_episode variant",
+   "split": "hist 2022-01..2025-08 / dev 2025-09..2026-06",
+   "fees": "default tom_bt fees",
+   "interaction": null,
+   "effects": null,
+   "n": "2699 watch_episode",
+   "verdict": "descriptive only; no rule change",
+   "report": "MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md",
+   "read": "header"
+  },
+  {
+   "id": "VP-PIVOT-P2",
+   "title": "VP pivot probe phase 2 (POC/VAH/VAL by family)",
+   "date": "2026-10-09",
+   "market": "BTCUSDT 1m 2022-01-01..2026-10-08",
+   "layers": [
+    "tom_vp_pivot"
+   ],
+   "params": "w=10 USD, H=48x5m (NO-SOURCE default, not tuned), R=ATR14(1h)",
+   "split": "none; day-block bootstrap 2000, warmup 60d",
+   "fees": "taker 0.0005 / maker 0.0002",
+   "interaction": null,
+   "effects": "session POC n 9073 net R taker -0.199 CI -0.217..-0.179; VAH n 7039 -0.231",
+   "n": "thousands per family",
+   "verdict": "negative net R; no level beats placebo",
+   "report": "MyTradingSys/research/tom_core_bt_2026-10-09/phase2/results.md",
+   "read": "header"
+  },
+  {
+   "id": "BIGMOVES-A",
+   "title": "Big-move ground truth (ATR zigzag legs) coverage report",
+   "date": "2026-10-09",
+   "market": "BTCUSDT 1m 2022-01-01..2026-10-07, 2,507,040 bars",
+   "layers": [
+    "bigtrade_fires"
+   ],
+   "params": "legs r 1.5/2.0, k 3/5/8 ATR, TFs 5m/15m/1h/4h",
+   "split": null,
+   "fees": null,
+   "interaction": null,
+   "effects": "ground-truth legs only; no layer scored here",
+   "n": "all legs (ATR zigzag): 4h 1,930; 1h 8,173; 15m 33,790; 5m 105,235",
+   "verdict": "ground truth, no verdict",
+   "report": "MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md",
+   "read": "header"
+  },
+  {
+   "id": "FIRES-B1",
+   "title": "Fire history of the 19 kline-only live layers + parity replay",
+   "date": "2026-10-09",
+   "market": "BTCUSDT 1m 2022-01-01..2026-10-07 (perp, then spot rerun)",
+   "layers": [
+    "bigtrade_fires",
+    "fabio_cvd_absorption",
+    "fabio_escalation",
+    "fabio_volume_fvg",
+    "rsi_levels",
+    "cryptocred",
+    "session_momentum",
+    "turn_of_candle"
+   ],
+   "params": "19 live keys replayed",
+   "split": "none: fire history, no split-based result",
+   "fees": "none (fire counts and parity)",
+   "interaction": null,
+   "effects": "244,543 fires; spot rerun parity 92-100 %, turn_of_candle side mismatches 0",
+   "n": "244,543 fires",
+   "verdict": "parity PASS on spot rerun",
+   "report": "MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md",
+   "read": "header"
+  },
+  {
+   "id": "CAPTURE-MATRIX",
+   "title": "Big-move capture matrix: layer fires vs ATR legs (perp, spot)",
+   "date": "2026-10-09",
+   "market": "BTCUSDT 1m 2022-01-01..2026-10-08, 5m/15m/1h/4h",
+   "layers": [
+    "bigtrade_fires"
+   ],
+   "params": "r 1.5/2.0, k 3/5/8, H 24/96; fires from 19 layer files",
+   "split": null,
+   "fees": "round-trip 0.0010 of price",
+   "interaction": null,
+   "effects": "catch / lead / lift / feeDom per layer and TF (see report)",
+   "n": null,
+   "verdict": "see report; SYNTHETIC variant is a tool fixture, not layer output",
+   "report": "MyTradingSys/research/bigtrade_2026-10-09/CAPTURE_MATRIX_SPOT.md",
+   "read": "header"
+  },
+  {
+   "id": "CANDLE-D19",
+   "title": "D19 4h long-only bullish engulfing/kicker at support or 200d SMA",
+   "date": "2026-10-04",
+   "market": "BTCUSDT 1m 2022-01-01..2026-10-02, 4h",
+   "layers": [
+    "candle_patterns"
+   ],
+   "params": "NO-SOURCE research",
+   "split": null,
+   "fees": "0.05% and 0.10% round trip",
+   "interaction": null,
+   "effects": "n 192, win 38.0%, PF 1.10 (0.05%) / 1.06 (0.10%), net R 0.23 / 0.13 vs buy-and-hold 1.61",
+   "n": "192",
+   "verdict": "NO-SOURCE; below buy-and-hold",
+   "report": "MyTradingSys/research/candle_patterns_2026-10-04/D19_4H_RESULTS.md",
+   "read": "header"
+  },
+  {
+   "id": "CANDLE-P0",
+   "title": "P0 operator candle rule on DEV daily bars",
+   "date": "2026-10-04",
+   "market": "BTCUSDT perp daily 2020-01-01..2024-06-30",
+   "layers": [
+    "candle_patterns"
+   ],
+   "params": "variants P0a/c/s/e; exploratory, see PRE_REG_CANDLE_PILOT",
+   "split": "DEV only",
+   "fees": "5 bps fee + 2 bps slip per side + funding",
+   "interaction": null,
+   "effects": "P0a n 571 net -0.7 bps; P0s n 591 net -56.4 bps; p vs random null 0.79-0.98",
+   "n": "364-797 per variant",
+   "verdict": "exploratory; no edge vs random null",
+   "report": "MyTradingSys/research/candle_patterns_2026-10-04/P0_RESULTS.md",
+   "read": "header"
+  },
+  {
+   "id": "VOL-V1",
+   "title": "Volume event study V1 (1d/4h), White Reality-Check over 216 trials",
+   "date": "2026-10-09",
+   "market": "BTCUSDT perp 1d/4h DEV 2020-01-01..2024-06-30",
+   "layers": [
+    "volume"
+   ],
+   "params": "pre-registered PRE_REG_VOLUME_2026-10-09",
+   "split": "DEV only",
+   "fees": "14 bps + funding",
+   "interaction": null,
+   "effects": "1d: 0 of 216 trials pass triage",
+   "n": "96 live, 120 INSUFFICIENT-N",
+   "verdict": "0 pass triage",
+   "report": "MyTradingSys/research/volume_2026-10-09/V1_DEV_RESULTS.md",
+   "read": "header"
+  },
+  {
+   "id": "VOL-V2",
+   "title": "Volume STATE family on daily bars (V2)",
+   "date": "2026-10-09",
+   "market": "BTCUSDT perp daily DEV",
+   "layers": [
+    "volume"
+   ],
+   "params": "pre-registered PRE_REG_ADDENDUM_A; 96 trials",
+   "split": "DEV only",
+   "fees": "14 bps + funding",
+   "interaction": null,
+   "effects": "0 of 96 pass triage",
+   "n": "84 live, 12 INSUFFICIENT-N",
+   "verdict": "0 pass triage",
+   "report": "MyTradingSys/research/volume_2026-10-09/V2_DEV_RESULTS.md",
+   "read": "header"
+  },
+  {
+   "id": "VOL-V3",
+   "title": "Volume validation V3 (candidate R40D_N and TH1 replication)",
+   "date": "2026-10-09",
+   "market": "BTCUSDT 4h, validation 2024-07-01..2025-06-30",
+   "layers": [
+    "volume"
+   ],
+   "params": "frozen in PRE_REG_ADDENDUM_A; holdout never loaded",
+   "split": "validation window, run once",
+   "fees": null,
+   "interaction": null,
+   "effects": "R40D_N n 50 net -2 bp [-68,+64]",
+   "n": "50 (min 100)",
+   "verdict": "INSUFFICIENT-N; candidate stays unvalidated",
+   "report": "MyTradingSys/research/volume_2026-10-09/V3_VALIDATION_RESULTS.md",
+   "read": "header"
+  },
+  {
+   "id": "VOL-V4",
+   "title": "Pooled volume-confirmation premium (V4)",
+   "date": "2026-10-09",
+   "market": "BTCUSDT 4h h=18, 1d h=10; six event pairs",
+   "layers": [
+    "volume"
+   ],
+   "params": "pre-registered PRE_REG_ADDENDUM_B; Bonferroni alpha 0.025",
+   "split": "DEV prior / VALIDATION test",
+   "fees": "14 bps",
+   "interaction": null,
+   "effects": "4h DEV VCP +88 bp; VALIDATION VCP -13 bp [-109,+81] p 0.597",
+   "n": "286 confirmed vs 286 unconfirmed",
+   "verdict": "NOT SUPPORTED",
+   "report": "MyTradingSys/research/volume_2026-10-09/V4_RESULTS.md",
+   "read": "header"
+  },
+  {
+   "id": "LC-SIZING-QUICK-20261014",
+   "title": "Levels: eight staged sizing/exit diagnostics",
+   "date": "2026-10-14",
+   "market": "BTCUSDT footprint 1m",
+   "layers": [
+    "session_levels"
+   ],
+   "params": "OURS: prior-day H/L/POC/VA, 4 entry arms x 2 exits; $50 campaign risk, 2x notional cap",
+   "split": "DEV 2024-12-02..2025-03-31 only; no validation",
+   "fees": "6bp each fill + funding stress 1bp/8h",
+   "interaction": "Sizing and exit mechanics only; no HTF/RSI filter",
+   "effects": "All eight negative; mean net R -0.216 to -0.195",
+   "n": "117 paired signal days",
+   "verdict": "EXPLORATORY NEGATIVE; full LC hypothesis untested",
+   "report": "MyTradingSys/research/levels_sizing_2026-10-14/REPORT.md",
+   "read": "summary"
+  },
+  {
+   "id": "CANDLE-CLOSE-DEV-20261014",
+   "title": "Close sequences at prior 4h/day/week levels",
+   "date": "2026-10-14",
+   "market": "Binance BTCUSDT perpetual 1m",
+   "layers": [
+    "candle_patterns"
+   ],
+   "params": "OURS: six signatures x seven trigger TFs x three parent level families; 60min endpoint",
+   "split": "DEV 2022-01..2024-06; validation/holdout unread",
+   "fees": "14/20bp cost screen only; historical funding unmodeled",
+   "interaction": "Daily phase/trend and 4h direction; nearby-price controls",
+   "effects": "0/126 pooled arms pass; all mean 14bp cost screens negative",
+   "n": "105541 correlated event rows; 59-1761 per arm",
+   "verdict": "EXPLORATORY NEGATIVE; cycle outcomes untested",
+   "report": "MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md",
+   "read": "summary"
+  },
+  {
+   "id": "EUR-LOW-US-SWEEP-20261014",
+   "title": "Retested 24h low broken in the US window (short + 1-1-2-3 ladder, 5-20x)",
+   "date": "2026-10-14",
+   "market": "Binance BTCUSDT perpetual 1m",
+   "layers": [
+    "session_levels"
+   ],
+   "params": "OURS: retest within 0.20% after 0.6% bounce in 6h before T0=US open-90m; target L-0.3%; ladder +0.4% steps, stop +1.6%",
+   "split": "DEV 2022-2024 / VAL 2025 / HOLDOUT 2026 reported side by side, no tuning",
+   "fees": "taker 0.05%/side every fill; funding unmodeled",
+   "interaction": "distance-to-low buckets; placebo anchors -12/-6/+6h",
+   "effects": "break 57% vs 26% but equal inside distance buckets; short -0.02%/trade t-0.24; ladder -0.02% t-0.32; 20x maxDD 98%",
+   "n": "99 retested, 1027 single-low weekdays",
+   "verdict": "EXPLORATORY NEGATIVE (short leg); long-after-reclaim untested",
+   "report": "MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md",
+   "read": "summary"
+  },
+  {
+   "id": "EUR-LOW-US-SWEEP-FOLLOWUPS-20261018",
+   "title": "EU-low/US-sweep follow-ups: long after sweep+reclaim, 5m RSI-divergence short from the day high, pre-US double-top short",
+   "date": "2026-10-18",
+   "market": "Binance BTCUSDT perpetual 1m (5m built from 1m)",
+   "layers": [
+    "session_levels"
+   ],
+   "params": "OURS: reclaim = first 1m close > L within 120m of the break; stop sweep low/P1/day high +0.1%; RSI14 divergence >2 pts with prior RSI>=60; double-top tolerance 0.15%, valley 0.5%; time exit 120/120/240m",
+   "split": "DEV only (bars before 2024-07-01); VAL/HOLDOUT sealed, not read; no outcome computed",
+   "fees": "taker 0.05%/side; funding unmodeled",
+   "interaction": "none run (power gate)",
+   "effects": "none read; MDE+cost 0.47/0.47/0.51 R vs 0.30 R cap",
+   "n": "A 133, B 208, C 100 tradeable days",
+   "verdict": "BLOCKED by power gate (A, B, C); legs stay open",
+   "report": "MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/RESULT.md",
+   "read": "summary"
+  },
+  {
+   "id": "PRICE-CVD-DIV-1M5M-20261014",
+   "title": "Price lower low with CVD higher low (and mirror) on 1m and 5m, OI up/down split",
+   "date": "2026-10-14",
+   "market": "Binance BTCUSDT perpetual 1m (5m built from 1m); OI = Binance 5m metrics",
+   "layers": [
+    "fabio_cvd_absorption",
+    "oi_delta"
+   ],
+   "params": "OURS: halves 15x1m / 12x5m; at-the-low within 3 bars; falling context 0.25%/0.5% over 4 halves; stop 0.1% beyond extreme, 2R, 120m exit; cooldown 120m",
+   "split": "DEV 2022-2024 / VAL 2025 / HOLDOUT 2026; OI split only 2025-09+; no tuning",
+   "fees": "taker 0.05%/side; funding unmodeled",
+   "interaction": "DIV vs CONTROL (all lower lows at the low in a falling context) vs CONFIRM; OI up/down over 60m",
+   "effects": "DIV-CONTROL at 60m within +-0.04%, |t|<1.6 in every scale/side/split; all arms gross ~0, net ~-0.10% (the fee)",
+   "n": "S1 4933 long / 5434 short DIV events; S5 1411 / 1858",
+   "verdict": "NEGATIVE: CVD divergence adds nothing over price alone on 1m/5m",
+   "report": "MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md",
+   "read": "summary"
+  }
+ ]
+}

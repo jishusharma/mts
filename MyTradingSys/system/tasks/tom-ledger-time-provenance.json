@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-12T13:49:51Z",
   "commands": [],
   "created": "2026-10-12T08:16:24Z",
   "depends_on": [],
@@ -17,7 +18,7 @@
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md"
   ],
-  "result": "",
+  "result": "TOM_TRADE_LEDGER.csv +6 time-provenance columns, 37 rows, execution minute UNKNOWN on all, T4/T9 T6/T10 aliased dates, T11 conflict kept",
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.md",
@@ -30,7 +31,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Claim the shared ledger file area; serialize with other ledger repairs and respect the existing split owner's claim.",
     "Use report H2/M4 and its per-row missing-evidence table; separate timestamp types and timezone provenance.",

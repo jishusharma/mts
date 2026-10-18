@@ -1,6 +1,0 @@
-{
-  "title": "MTS #328 - VERDICT CHANGE",
-  "body": "NO_TRADE | - @ - | verdict WATCH -> NO_TRADE | STATE TWOPEAK/above_vah -> TWOPEAK/in_va",
-  "card_text": "ALERT #328\n---\nVERDICT: NO_TRADE\nWHY:     no candidates\nTIME:    2026-10-11T18:46:11Z\nPRICE:   83636.6\nSTATE:   TWOPEAK/in_va\n\nSETUP:   -\nPROOF_DIR: aligned \nQUAD: long_liquidation (1h price -0.33% | cvd -900 | oi -0.130% | nd15 -849.2)\nZONE:    - @ 0\nSESSION: us_core\nUS_OPEN: 1124 min\n",
-  "repo": "C:\\Users\\E-ngineers\\IdeaProjects\\BinanceDataFeed"
-}

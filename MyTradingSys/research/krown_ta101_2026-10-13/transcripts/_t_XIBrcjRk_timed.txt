@@ -1,0 +1,855 @@
+# Video ID: _t_XIBrcjRk
+# Title: You're Trading the Wrong Time Frame. Here's How the Market Chops You Up.
+# Published: 2026-09-05
+# Source: yt_dlp captions (manual); uploader: Krown
+# Analyst: Krown
+# Duration_s: 1371
+# Word count: 4740
+# ---
+[00:00:00] when you zoom in
+[00:00:01] you're not getting any more unique
+[00:00:01] information
+[00:00:06] you're just getting the same information
+[00:00:08] but it's louder
+[00:00:11] If you're finding this video, or perhaps
+[00:00:11] if this video
+[00:00:13] has found you, it is a sign from the
+[00:00:13] trading gods
+[00:00:14] that you are attempting to learn
+[00:00:16] technical analysis and trading.
+[00:00:17] And this is the TA Foundations program,
+[00:00:19] which we're gonna be going over timeframes
+[00:00:21] and the concept and the nuances
+[00:00:21] surrounding timeframes
+[00:00:24] so that you can not get lost in the sauce
+[00:00:26] with a bunch of noisy bullshit like a lot
+[00:00:26] of people
+[00:00:28] typically focus on, and instead focus on
+[00:00:31] the most important things that make making
+[00:00:31] money easier.
+[00:00:34] Not that it is easy when it comes to
+[00:00:34] trading
+[00:00:36] and investing, but it gets easier.
+[00:00:38] Anyways, I'm gonna bring you over
+[00:00:39] to my slideshow right here,
+[00:00:40] and I'm gonna show you four different
+[00:00:40] charts.
+[00:00:42] This chart over here, it's an hourly
+[00:00:42] chart.
+[00:00:44] It's crashing, oh my God, sell everything
+[00:00:44] right now.
+[00:00:47] The four hour chart, it's just chopping,
+[00:00:49] going sideways, going up and down in a
+[00:00:49] range more or less.
+[00:00:51] The daily chart is a clean up trend,
+[00:00:53] nice and simple in the weekly chart,
+[00:00:54] more or less unmoved, just a blimp on the
+[00:00:54] radar.
+[00:00:57] All of these charts are of the same asset,
+[00:01:00] the same market, same day, same price.
+[00:01:02] Nothing's different there, it's just
+[00:01:02] different lenses
+[00:01:04] that you're looking at this price action
+[00:01:04] through,
+[00:01:06] known as a timeframe.
+[00:01:08] One of these screens convinced someone to
+[00:01:08] panic sell
+[00:01:11] with the exact bottom.
+[00:01:12] Another one paid whoever kept their head
+[00:01:12] on that bottom.
+[00:01:15] And again, nothing here is lying.
+[00:01:16] You're just looking at time from a
+[00:01:16] different perspective.
+[00:01:19] That's all.
+[00:01:20] So in this particular video,
+[00:01:22] I want to help in the best way possible
+[00:01:25] with getting rid of a lot of this noisy
+[00:01:25] bullshit
+[00:01:27] and focusing on what's most important
+[00:01:29] and what makes things a little bit easier
+[00:01:29] for yourself.
+[00:01:31] Anyways, if you're finding this video
+[00:01:31] randomly,
+[00:01:33] like I said, it is a part of the TA
+[00:01:33] Foundation's program.
+[00:01:35] This is episode number two on timeframes.
+[00:01:37] Episode number one was all about how to
+[00:01:37] read
+[00:01:40] and understand candlesticks as well
+[00:01:41] as the most important candlestick
+[00:01:41] formations.
+[00:01:44] In today's video, we're going to be going
+[00:01:44] over timeframes
+[00:01:47] and how not to, like basically how not to
+[00:01:47] fuck it up
+[00:01:50] is a better way of saying that.
+[00:01:51] And by the way, if you're not familiar
+[00:01:51] with who I am,
+[00:01:53] where I come from, my name is Eric Crown.
+[00:01:54] I used to be a market maker, authorized
+[00:01:54] trader
+[00:01:56] on the floor of the Airsoft Change Arca
+[00:01:57] as an equity options market maker with a
+[00:01:57] Series 56.
+[00:02:00] It's a fucking mouthful at the end of the
+[00:02:00] day.
+[00:02:01] Look, do I need to have done all of that
+[00:02:05] in order to tell you about timeframes?
+[00:02:06] No, but it does give me a little bit of a
+[00:02:06] view
+[00:02:09] on price action and I'm doing this for
+[00:02:09] quite some time now.
+[00:02:11] So I think I can provide some value here.
+[00:02:14] That is the goal at least for today.
+[00:02:16] All right, so let's move on from there
+[00:02:17] and let's get into compression.
+[00:02:21] That is what all this is really about.
+[00:02:23] What people typically omit from
+[00:02:23] presentations like this
+[00:02:27] is a timeframe is just compression of
+[00:02:27] time.
+[00:02:30] So this daily candle right here,
+[00:02:32] it's not a different market
+[00:02:34] than what you're going to see right here,
+[00:02:35] which is just 24 one-hour candlesticks.
+[00:02:38] These 24 one-hour candlesticks are
+[00:02:38] effectively
+[00:02:41] unzipping the one daily candle.
+[00:02:44] Which one's easier to read?
+[00:02:45] Well, I would argue the one that has less
+[00:02:45] noise,
+[00:02:48] less things going on, less things going
+[00:02:48] on,
+[00:02:49] just less places to fuck up basically.
+[00:02:52] And that daily timeframe,
+[00:02:53] a lot more simple than 24 one-hour candles
+[00:02:57] or six four-hour candles, for example,
+[00:02:59] or God forbid using a 15-minute timeframe.
+[00:03:02] Look, I'm not saying that you can't do it,
+[00:03:03] but especially if you're just beginning.
+[00:03:05] I mean, there's no dishonor in looking at
+[00:03:05] the higher term timeframes because it does
+[00:03:08] make things a little bit simpler.
+[00:03:11] Anyways, every wick, every panic, every
+[00:03:11] fake out that you see over here, that's
+[00:03:11] all encompassed
+[00:03:17] in this one daily candle.
+[00:03:18] Anyways, again, when you zoom in, you're
+[00:03:18] not getting any more unique information.
+[00:03:25] You're just getting the same information,
+[00:03:25] but it's louder.
+[00:03:28] It's more noisy and it's kind of more
+[00:03:28] difficult to understand in my humble
+[00:03:28] opinion.
+[00:03:33] And I say that, you know, even, even to
+[00:03:33] today.
+[00:03:35] So so yes, we can look at the same year,
+[00:03:35] two different ways.
+[00:03:42] We could look at it in daily sentences.
+[00:03:44] So if that's, if that's going to be the
+[00:03:44] case, you're on a daily timeframe, then
+[00:03:44] you
+[00:03:48] will have 365 daily periods in a year, in
+[00:03:48] a year.
+[00:03:52] Now if you're looking at it from an hourly
+[00:03:52] perspective and you're zooming out to a
+[00:03:52] year's
+[00:03:56] worth of price action, you're going to see
+[00:03:56] 8,760 bars.
+[00:04:01] That's a lot more going on there than of
+[00:04:01] course a daily.
+[00:04:05] And is that easier or harder?
+[00:04:06] Well, of course that's a lot harder, at
+[00:04:06] least again, in my humble opinion.
+[00:04:10] So, but, but again, these are representing
+[00:04:10] the same, you're looking at the same
+[00:04:10] amount
+[00:04:14] of time going on, just encapsulated from
+[00:04:14] different points of view.
+[00:04:20] That's all.
+[00:04:21] When you're looking at it from an hourly,
+[00:04:21] the noise grows.
+[00:04:23] The signal, however, does not.
+[00:04:25] When you're looking at the daily, the
+[00:04:25] noise gets reduced, it gets dampened and
+[00:04:25] the signal
+[00:04:29] typically goes up.
+[00:04:30] Daily signals are almost always going to
+[00:04:30] be more powerful than an hourly signal or
+[00:04:34] any time frame that's under a daily
+[00:04:34] timeframe.
+[00:04:36] And also we can extrapolate that further
+[00:04:36] on.
+[00:04:38] If you're on a weekly timeframe, those
+[00:04:38] signals are almost always going to be more
+[00:04:38] powerful
+[00:04:42] than a daily timeframe.
+[00:04:44] It's all about the relationship.
+[00:04:46] And generally I like to go to the highest
+[00:04:46] timeframe for whatever asset that I'm
+[00:04:46] looking
+[00:04:50] at that has enough history to really
+[00:04:50] populate.
+[00:04:52] So let's say, you know, at least, I mean,
+[00:04:52] realistic, like at least, you know, 200
+[00:04:52] bars,
+[00:04:59] although more is better, more absolutely
+[00:04:59] is better anyways.
+[00:05:03] Let's move on from there and oh, I should
+[00:05:03] also let you know on chart here, one
+[00:05:03] little
+[00:05:08] quick nuance.
+[00:05:09] So when you're on trading view, I want to
+[00:05:09] highlight this.
+[00:05:12] No matter what timeframe you're on, you
+[00:05:12] will see over here on the price pane where
+[00:05:12] my cursor
+[00:05:17] is currently tracing right now, you will
+[00:05:17] see the price, the current price, the
+[00:05:17] asset,
+[00:05:23] and then of course some numbers
+[00:05:23] representing time.
+[00:05:25] And that time is how much time is in
+[00:05:25] between right now and the end of that
+[00:05:25] timeframe's
+[00:05:34] closing period.
+[00:05:35] So right now I'm on a daily timeframe.
+[00:05:37] So remember daily timeframes always close
+[00:05:37] at zero zero UTC.
+[00:05:42] No matter where you are in the world, it
+[00:05:42] is
+[00:05:44] zero zero UTC. So if you are in Eastern
+[00:05:44] time zone, that's gonna be 8 p.m. If
+[00:05:44] you're in
+[00:05:49] Asia, I don't know what it is, but it's
+[00:05:49] not a p.m. And it's not zero zero UTC is
+[00:05:49] whatever
+[00:05:53] the equivalent is for that timeframe. Now,
+[00:05:53] of course, when you're going over hourly
+[00:05:58] timeframes, you know, it's just at the end
+[00:05:58] of the hour. So a lot more simple there.
+[00:06:02] The daily one, again, zero zero UTC, that
+[00:06:02] is when you're 24 seven assets get their
+[00:06:07] new daily. If you're in traditional
+[00:06:07] markets, it's a little bit different, to
+[00:06:07] be fair,
+[00:06:11] because in traditional markets, you know,
+[00:06:11] you have a six and a half hour trading
+[00:06:14] day, but we're focusing on Bitcoin right
+[00:06:14] here. And again, zero zero UTC or 8 p.m.
+[00:06:20] Eastern time, that is what we're looking
+[00:06:20] at for the end of that daily period in
+[00:06:25] which a new one begins. And again, it
+[00:06:25] tells you exactly how much time until
+[00:06:29] that period ends right here on
+[00:06:29] Tradingview. And that will work on any
+[00:06:32] timeframe. If I go here to a six hour
+[00:06:32] timeframe, for example, this one has
+[00:06:36] another five hours and four minutes and
+[00:06:36] nine seconds left until it closes.
+[00:06:39] Hourly timeframe right here is going to be
+[00:06:39] four minutes and five seconds,
+[00:06:42] so on and so forth. I think you get the
+[00:06:42] idea. All right, back into our slideshow
+[00:06:46] usually right here is why you keep getting
+[00:06:46] chopped up. The five minute
+[00:06:50] timeframe is where so many people
+[00:06:50] gravitate towards when they first begin
+[00:06:53] because it's exciting. There's a lot going
+[00:06:53] on. You see what kind of appear
+[00:06:57] to be big moves just because, you know,
+[00:06:57] five minute timeframe, it's going
+[00:07:00] to show up a lot more on something like
+[00:07:00] that. And you'll end up buying the
+[00:07:03] pop. You'll sell, you know, you'll get
+[00:07:03] stopped out, you'll sell the dip,
+[00:07:06] you'll get stopped out again, and you get
+[00:07:06] stopped. You know, you're
+[00:07:10] getting in and out of trades on a five
+[00:07:10] minute timeframe, like several
+[00:07:13] times in an hour, and it's just noisy. And
+[00:07:13] underneath it all, the daily
+[00:07:17] trend never broke, as you can see right
+[00:07:17] here, not once. And so you
+[00:07:23] weren't necessarily wrong about the
+[00:07:23] market. When you were trading the
+[00:07:25] five minute timeframe, you were just
+[00:07:25] trading the noise and letting the
+[00:07:28] noise grade you when you could have just
+[00:07:28] zoomed out to the daily timeframe
+[00:07:32] and recognize, oh, this is actually a
+[00:07:32] pretty easy trend right here. What
+[00:07:35] should I be doing in an uptrend? Well,
+[00:07:35] maybe I should be buying on
+[00:07:37] support. That might be a good idea. But
+[00:07:37] anyways, let's be fair to the
+[00:07:41] minute chart. It is valid price action, or
+[00:07:41] even a second chart for
+[00:07:45] that matter. Like it is, it's all valid.
+[00:07:45] And for a full stop, full
+[00:07:49] time scalper, it can be like your full
+[00:07:49] time job. I mean, for real,
+[00:07:52] that can work. When I was trading Trisha
+[00:07:52] Marcus, I was on a five
+[00:07:56] minute timeframe, for example. But for
+[00:07:56] most people, if you haven't
+[00:08:00] really worked around a strategy with it,
+[00:08:00] it's closer to a slot
+[00:08:03] machine that it is like a real trading
+[00:08:03] job. Because what are you
+[00:08:06] doing? You're just gambling, you know,
+[00:08:06] you're looking for the
+[00:08:09] exciting stuff and not for the easy and
+[00:08:09] obvious stuff. And
+[00:08:11] again, trading and investing is already
+[00:08:11] difficult enough. So I
+[00:08:14] think anytime that we can make it more
+[00:08:14] simple, more easy,
+[00:08:16] that's better. I mean, there's no dishonor
+[00:08:16] in doing that
+[00:08:19] ultimately, like you don't you don't get
+[00:08:19] paid more for
+[00:08:21] taking harder trades or trades that have a
+[00:08:21] lower probability,
+[00:08:24] for example. So that is just a
+[00:08:27] such a simple way that anyone can make
+[00:08:27] things easier
+[00:08:29] for themselves is when in doubt, zoom out.
+[00:08:31] When in doubt, zoom out, you know, start
+[00:08:31] with a daily,
+[00:08:33] maybe go up to a weekly,
+[00:08:34] even in trash marks, a monthly timeframe
+[00:08:34] is very valid.
+[00:08:38] Now, of course, different things for
+[00:08:38] different purposes,
+[00:08:40] but I would say if you're beginning,
+[00:08:41] daily timeframe is a pretty damn good
+[00:08:41] place to be living on.
+[00:08:44] And if you really wanna go to a lower term
+[00:08:44] timeframe,
+[00:08:46] four hour or six hour is probably about as
+[00:08:46] low
+[00:08:48] as I really, truly would wanna go.
+[00:08:51] Anyways, let's go to the charts here.
+[00:08:54] All right.
+[00:08:55] And let's go over just different
+[00:08:55] timeframes.
+[00:08:58] I'll walk you through some of them right
+[00:08:58] here.
+[00:08:59] So right now, I'm at an hourly timeframe.
+[00:09:02] This is what price action looks like.
+[00:09:04] Let me just go actually for the last
+[00:09:04] couple of days here.
+[00:09:08] This is what price action looks like
+[00:09:09] over the past couple of days.
+[00:09:10] Interesting, right?
+[00:09:11] I mean, it's nice upside move, looks
+[00:09:11] fucking massive.
+[00:09:14] If we go down to a five minute timeframe,
+[00:09:15] how does it look now?
+[00:09:17] Now it looks absolutely, you know,
+[00:09:17] monstrous.
+[00:09:21] It is ginormous, if you will.
+[00:09:23] Absolutely ginormous.
+[00:09:25] Again, a lot of excitement right there.
+[00:09:27] But when we zoom out maybe to a 15 minute
+[00:09:27] timeframe, okay.
+[00:09:30] Still pretty impressive, but less so,
+[00:09:30] let's say.
+[00:09:34] Hourly timeframe, we've already seen this.
+[00:09:35] Again, makes that price action
+[00:09:37] just a little bit easier to read.
+[00:09:39] Four hour timeframe.
+[00:09:40] Now it's simply just a nice uptrending
+[00:09:40] move,
+[00:09:43] a lot more simple.
+[00:09:45] Six hour timeframe, even better.
+[00:09:47] 12 hour timeframe, real easy right there.
+[00:09:50] Again, this is just all of that price
+[00:09:50] action,
+[00:09:52] summarized in a couple of candlesticks.
+[00:09:54] And then the daily timeframe,
+[00:09:55] well, just two massive green candlesticks
+[00:09:55] right here,
+[00:09:58] represented in the past couple of days.
+[00:10:00] That's what I'm working towards.
+[00:10:01] All of this was represented in the same
+[00:10:01] price action,
+[00:10:04] but is this easier to read than a five
+[00:10:04] minute timeframe
+[00:10:07] that is going up and down a million times
+[00:10:07] per day?
+[00:10:09] This is the same price action right here.
+[00:10:12] You know, you can easily get faked out
+[00:10:14] on a chart like this if you're not paying
+[00:10:14] attention.
+[00:10:16] That's, again, the point that I really
+[00:10:16] want to ingrain
+[00:10:19] in your mind in this video presentation.
+[00:10:22] And by the way, we can take this, you
+[00:10:22] know,
+[00:10:23] much further by going to a weekly
+[00:10:23] timeframe,
+[00:10:25] in which case this is just one week,
+[00:10:25] right?
+[00:10:27] I mean, all of that is less than a week
+[00:10:29] that we just looked at, like much less
+[00:10:29] than a week in fact.
+[00:10:31] Anyways, back into our presentation.
+[00:10:34] And I do want to say,
+[00:10:36] if you just watch the same market tell
+[00:10:38] four different stories, that like button,
+[00:10:38] by the way,
+[00:10:40] genuinely helps the next chopped up
+[00:10:40] beginner
+[00:10:42] find this video before their fourth
+[00:10:42] stopped out of the week.
+[00:10:44] And more importantly to you,
+[00:10:45] you'll get the next video in this series
+[00:10:47] at the appropriate time.
+[00:10:48] And you can also get access to the TI 101
+[00:10:48] playlist as well.
+[00:10:51] Anyways, always the most cringy part of
+[00:10:51] the video,
+[00:10:53] but hey, it does help and it is
+[00:10:53] appreciated.
+[00:10:55] But look, at the end of the day, you don't
+[00:10:55] have to do it.
+[00:10:57] I'm not even going to know if you don't do
+[00:10:57] it.
+[00:10:58] And it doesn't honestly really even matter
+[00:10:58] that much.
+[00:11:01] All right, cool.
+[00:11:03] So which clock wins when they disagree?
+[00:11:07] Here is a very easy and simple rule
+[00:11:09] that you can almost always trust on.
+[00:11:12] The higher timeframe supersedes in
+[00:11:12] importance,
+[00:11:16] the lower term timeframes.
+[00:11:17] Always daily time frame signals more
+[00:11:17] important than a 12-hour signal 12-hour
+[00:11:17] signal more important than a 6-hour signal
+[00:11:17] 6-hour signal more important
+[00:11:24] They're for our signal for our signal more
+[00:11:24] important than an hourly signal hourly
+[00:11:24] signal more important than a 30-minute
+[00:11:24] signal 30-minute signal
+[00:11:29] More important than a 5-minute signal so
+[00:11:29] on and so forth to infinity and beyond now
+[00:11:29] there does come a time
+[00:11:36] With higher term conference where you just
+[00:11:36] don't even have enough data on chart for
+[00:11:36] it to really meal that much or matter
+[00:11:42] So they're it like I said, ideally you
+[00:11:42] want at least about 200 periods passing
+[00:11:42] for that time from it
+[00:11:49] And honestly, that's like a minimum
+[00:11:49] minimum realistically you want a lot more
+[00:11:52] But yeah, that is a pretty easy rule to
+[00:11:52] just apply in almost any scenario
+[00:11:57] Anyways, one daily close outweighs
+[00:12:00] 55 minute closures why because everyone
+[00:12:00] trading the small stuff eventually has to
+[00:12:00] answer to it
+[00:12:05] The daily time frame is where it all comes
+[00:12:05] back to a daily closes a verdict a
+[00:12:05] five-minute candle is more or less a rumor
+[00:12:12] You don't argue with verdicts you pay
+[00:12:12] attention to them because they're probably
+[00:12:12] telling you something damn important
+[00:12:17] Anyways, the rule by asset the daily is a
+[00:12:17] gold standard for most cryptos for slower
+[00:12:17] markets
+[00:12:22] Like equities the weekly earns the top
+[00:12:22] slot followed by the monthly and the
+[00:12:22] quarterly again
+[00:12:26] It just depends on the previous history
+[00:12:28] So I'd say at least 200 periods on the
+[00:12:28] highest time frame that on the highest
+[00:12:28] time frame that you have at least 200
+[00:12:28] periods
+[00:12:34] That's probably about the one that's gonna
+[00:12:34] matter most
+[00:12:37] Again more is better and honestly if
+[00:12:37] that's closer to like 500 for example
+[00:12:42] That that's that's about ideal. That's
+[00:12:42] about ideal. Anyways
+[00:12:47] By the way, just a little bit of a nuance
+[00:12:47] right here
+[00:12:50] The two-day and the three-day time frame
+[00:12:50] are really underrated time frames for 24 7
+[00:12:50] markets
+[00:12:55] Just as an aside if you made it this far a
+[00:12:55] little bits of a of a tip right there
+[00:13:00] Well amongst all the other tips, but you
+[00:13:00] know what I mean. Anyways moving on from
+[00:13:00] there. Let's go top down here
+[00:13:05] So the tide that the decision the timing
+[00:13:08] All right
+[00:13:08] The weekly the weekly time frame again in
+[00:13:08] general if it's if it's a much newer asset
+[00:13:12] This might not hold true and if it's much
+[00:13:12] older asset, it might be more like the
+[00:13:12] monthly
+[00:13:16] But the weekly time frame in general
+[00:13:16] that's gonna be your tide. Which way is
+[00:13:16] the ocean moving?
+[00:13:20] Where are you trending towards? You don't
+[00:13:20] want to fight that direction generally
+[00:13:23] You want to just take note of it the daily
+[00:13:23] time frame is generally where you're gonna
+[00:13:23] want to make that decision
+[00:13:29] However, is there actually a trade here?
+[00:13:29] This is where I like to live especially
+[00:13:29] when it comes to Bitcoin for example
+[00:13:35] And a lot of socks too, but Bitcoin and
+[00:13:35] cryptos daily time frame. That's I
+[00:13:41] Like that time frame good one four-hour
+[00:13:41] time frame. That's a good time frame for
+[00:13:41] timing
+[00:13:45] That is essentially where in the move you
+[00:13:45] want to ask you want to be precise, you
+[00:13:45] know precision marksman
+[00:13:51] That's the one or a six-hour time frame is
+[00:13:51] pretty good, too
+[00:13:54] very very similar time frames to be fair
+[00:13:54] and
+[00:13:57] Really you only want to act on a four-hour
+[00:13:57] time frame
+[00:14:00] Only after the first two agree the first
+[00:14:00] two being the weekly and the daily and if
+[00:14:00] you're in traditional markets
+[00:14:06] Maybe maybe make that a monthly and a
+[00:14:06] weekly some like that
+[00:14:10] So the order is the whole trick.
+[00:14:13] Never trade a timeframe you haven't zoomed
+[00:14:13] out from.
+[00:14:15] Start high, finish low.
+[00:14:17] Just easy, simple rule to be following
+[00:14:17] there.
+[00:14:20] The moment you skip the weekly
+[00:14:21] because the five minute looks exciting,
+[00:14:23] that's the moment the market
+[00:14:24] has you exactly where it wants you.
+[00:14:25] That's where you're gonna be most
+[00:14:25] emotional.
+[00:14:27] That's where you're gonna probably make
+[00:14:27] the most mistakes because when we're
+[00:14:27] emotional,
+[00:14:29] we are cut off from the logical portions
+[00:14:29] of our brain,
+[00:14:32] thus we make shit decisions to put it in a
+[00:14:32] succinct way.
+[00:14:35] And if the weekly and daily disagree with
+[00:14:35] your four hour idea,
+[00:14:38] you probably shouldn't be trading on that
+[00:14:38] side of the market
+[00:14:42] or maybe just no trade at all.
+[00:14:43] That's completely fine.
+[00:14:44] In fact, as a trader, again,
+[00:14:46] this is the most advanced tip I can give
+[00:14:46] you
+[00:14:49] in this video that it matters so fucking
+[00:14:49] much.
+[00:14:52] More often than not, there is not a trade
+[00:14:52] to be made.
+[00:14:54] You should be sitting on your hand more
+[00:14:54] often than not.
+[00:14:56] The best trades take patience and take
+[00:14:56] restraint.
+[00:15:00] You don't always need to be doing
+[00:15:00] something.
+[00:15:02] If it's not fucking obvious to you,
+[00:15:04] you probably, you almost always should not
+[00:15:04] be trading.
+[00:15:06] Just really, really, really, really,
+[00:15:08] really wanna hammer that in.
+[00:15:09] Anyways, that three step routine is worth
+[00:15:09] more
+[00:15:13] than most paid courses, in my humble
+[00:15:13] opinion.
+[00:15:15] And it's episode two of 10.
+[00:15:17] Subscribe, the rest of the series will
+[00:15:17] just find you
+[00:15:19] at the right time for when it comes out.
+[00:15:23] Anyways, moving on to the next one.
+[00:15:26] Let's make this fun.
+[00:15:27] Four hour timeframe.
+[00:15:29] Let's zoom back over here.
+[00:15:31] So I'm gonna choose some price action back
+[00:15:31] from,
+[00:15:34] I don't know, let's say, let's say
+[00:15:38] like January, February of this year,
+[00:15:40] we can see the four hour timeframe
+[00:15:42] is starting to set in a low
+[00:15:43] and is starting to rally back up.
+[00:15:45] Many people would have looked at this
+[00:15:45] timeframe
+[00:15:47] and been like, oh my God,
+[00:15:49] Bitcoin just had a major drawdown from its
+[00:15:49] previous high.
+[00:15:52] And now it's starting to go sideways
+[00:15:53] and it looks like the four hour timeframe
+[00:15:53] is trend
+[00:15:55] is starting to put in higher highs and
+[00:15:55] higher lows.
+[00:15:56] That's great, it's reversing, I should go
+[00:15:56] along.
+[00:15:58] I don't wanna miss a second of this move
+[00:15:59] because if I miss a second of this move,
+[00:16:01] then it's gonna run away to the upside
+[00:16:01] without me
+[00:16:03] and I'm gonna not make all the money
+[00:16:05] that I should be making.
+[00:16:06] Fair enough.
+[00:16:07] However, when we zoom out to a weekly
+[00:16:07] timeframe
+[00:16:10] and we look at that same piece of price
+[00:16:10] action,
+[00:16:12] which was effectively just this right
+[00:16:12] here,
+[00:16:13] this first leg down, boom, rally up,
+[00:16:16] second leg down right here.
+[00:16:17] That's where we were looking at right
+[00:16:17] here.
+[00:16:19] This rally up into this high.
+[00:16:21] Would that have been a good place
+[00:16:22] to go along for a long time?
+[00:16:23] Hell no.
+[00:16:25] Now for a short term trade, sure,
+[00:16:26] that could have been okay.
+[00:16:28] But for something that you wanna hold for
+[00:16:28] a while,
+[00:16:30] hell fucking no, that was a downtrend.
+[00:16:33] You basically bought a downtrend
+[00:16:34] and if you're looking at the four hour
+[00:16:34] timeframe
+[00:16:36] to hold something for a long time,
+[00:16:39] in this case, I think a lot of people
+[00:16:41] were probably buying down there
+[00:16:42] in anticipation of a major move back up
+[00:16:42] past 100,000 bucks,
+[00:16:47] you would have been very.
+[00:16:49] be dismayed, and well, also just bracked,
+[00:16:53] is a better way of saying it.
+[00:16:55] So yes, anyways, like I said, you have the
+[00:16:55] routine now,
+[00:17:00] so you tell me, is that something that you
+[00:17:00] wanna do?
+[00:17:04] Fuck no, man, of course not, of course
+[00:17:04] not.
+[00:17:06] We want to reduce doing dumb shit as much
+[00:17:06] as possible.
+[00:17:10] Anyways, let's go back into our
+[00:17:10] presentation right here,
+[00:17:15] and let's go over which clock is yours.
+[00:17:17] Match it to your life, realistically.
+[00:17:18] So here's the last piece,
+[00:17:19] which timeframe should you be using?
+[00:17:23] Honest answer solely, you can leave it
+[00:17:24] in the comment section, but what I would
+[00:17:24] say is,
+[00:17:27] is any timeframe can make sense for you.
+[00:17:31] It just depends on how you want to
+[00:17:31] backwards engineer
+[00:17:34] this whole equation, meaning if you want
+[00:17:34] to trade
+[00:17:37] on a minute timeframe, your full-time job
+[00:17:37] is gonna be,
+[00:17:41] it's gonna be watching the fucking charts,
+[00:17:43] is what it's gonna be.
+[00:17:44] You're gonna have the stress
+[00:17:44] of an air traffic control agent.
+[00:17:47] You're gonna have the most fees, the most
+[00:17:47] noise,
+[00:17:49] the least forgiveness, can it be done?
+[00:17:50] Absolutely, is it the most ideal way
+[00:17:52] for someone who perhaps works a normal job
+[00:17:54] or has a family or a life outside of
+[00:17:54] looking at charts
+[00:17:57] all day long, unlike me?
+[00:18:00] Maybe not, maybe not.
+[00:18:03] So if you're not that person,
+[00:18:05] probably not the right one for you.
+[00:18:06] Now, if you do have a full-time job
+[00:18:08] and you really only have a few hours
+[00:18:10] to look at charts per week,
+[00:18:12] what timeframe do you think
+[00:18:13] is gonna be best appropriate for that?
+[00:18:15] Well, maybe not even a daily.
+[00:18:16] It might be more like a weekly timeframe
+[00:18:18] because you can only make a decision
+[00:18:20] a few times a week if you only have a few
+[00:18:20] hours.
+[00:18:22] Realistically, if you're gonna trade a
+[00:18:22] daily,
+[00:18:24] you wanna be able to look at the charts
+[00:18:25] at least once per day on the close
+[00:18:28] because that's generally
+[00:18:29] when you're gonna be making decisions
+[00:18:29] anyway.
+[00:18:30] So I'm not saying that any one of these is
+[00:18:30] right or wrong,
+[00:18:33] but there is certainly a right or wrong
+[00:18:33] answer for you.
+[00:18:35] If you are newer,
+[00:18:36] I would strongly suggest to live on the
+[00:18:36] daily timeframe.
+[00:18:39] Again, the daily closes once per day.
+[00:18:41] If you can check in around that time,
+[00:18:42] maybe like 30 minutes before, 30 minutes
+[00:18:42] after
+[00:18:44] for that one hour period and watch price,
+[00:18:47] you'll learn a lot.
+[00:18:48] And that can also just be where you live
+[00:18:50] for the rest of your life.
+[00:18:51] It's completely fine.
+[00:18:53] If you wanna use a four hour timeframe,
+[00:18:55] you better be able to watch your charts
+[00:18:55] for most of the day.
+[00:18:59] You don't even glue to your chart all day,
+[00:19:00] but you certainly wanna be seen
+[00:19:01] when those four hour timeframes close.
+[00:19:03] So every four hours on that cadence,
+[00:19:05] you wanna be kind of watching charts
+[00:19:07] around that open and close for the next
+[00:19:07] period.
+[00:19:10] So you don't need to be watching them
+[00:19:11] like the whole intra time,
+[00:19:13] but you do wanna be watching them,
+[00:19:15] like I said, at least like about 20, 30
+[00:19:15] minutes
+[00:19:17] before the close and about 20, 30 minutes
+[00:19:17] after the open,
+[00:19:20] that can probably be like the minimal
+[00:19:20] amount I would say.
+[00:19:24] But anyways, like I said, there's not a
+[00:19:24] right or wrong.
+[00:19:26] There's a right or wrong for you.
+[00:19:28] Weekly timeframe, that's if, you know,
+[00:19:29] realistically you're only looking at
+[00:19:29] charts
+[00:19:31] a few times a week, that would make most
+[00:19:31] sense.
+[00:19:34] But that again is not to say
+[00:19:38] you can't do a low term timeframe.
+[00:19:40] You can, you just need to make sure
+[00:19:42] You have the lifestyle and time available
+[00:19:42] for that
+[00:19:45] because it certainly will eat a lot into
+[00:19:45] that,
+[00:19:47] which might be fine.
+[00:19:48] Anyways, beginner traders typically zoom
+[00:19:48] in
+[00:19:50] from what I see.
+[00:19:51] They're looking for more action.
+[00:19:52] They're looking for more phone.
+[00:19:54] More experienced traders zoom out,
+[00:19:56] looking for more obvious things,
+[00:19:59] more simplicity, more truth.
+[00:20:00] Again, you don't get paid more
+[00:20:02] for taking on more difficult low
+[00:20:02] probability trades.
+[00:20:05] When in doubt, zoom out.
+[00:20:07] That rule is older than every indicator
+[00:20:09] you'll probably look at on trading view
+[00:20:11] and it'll probably also outlive them all
+[00:20:11] as well.
+[00:20:14] It's really, really, really, really
+[00:20:14] important.
+[00:20:16] My mentors tell me this all the time when
+[00:20:16] I was new
+[00:20:18] and I just kind of discounted it
+[00:20:21] because it's like, well, what does that
+[00:20:21] even mean?
+[00:20:23] It's like, get an idea of what the higher
+[00:20:23] term
+[00:20:25] time frame trends are doing.
+[00:20:26] Align yourself with that.
+[00:20:27] When you align yourself with the higher
+[00:20:27] term
+[00:20:28] time frame trend, you can work your way.
+[00:20:30] You can trade in that same direction.
+[00:20:32] You're gonna be right more often than not,
+[00:20:32] basically.
+[00:20:34] Anyways, lower time frames are gonna sell
+[00:20:34] you action.
+[00:20:36] Higher time frames are gonna sell you the
+[00:20:36] truth.
+[00:20:38] I, and I think most people, wanna go with
+[00:20:38] the truth.
+[00:20:41] So anyways, let's do a quick little recap
+[00:20:41] right here.
+[00:20:44] Four things, a candle is effectively
+[00:20:44] compression.
+[00:20:47] Zooming in will add more noise, not more
+[00:20:47] information.
+[00:20:50] When the clock disagrees,
+[00:20:51] when the time frames disagree with each
+[00:20:51] other,
+[00:20:52] the higher time frame, it takes precedence
+[00:20:52] there.
+[00:20:55] Verdicts over rumors and the routine is
+[00:20:55] top down.
+[00:21:00] Tide, decision, timing, never skip the
+[00:21:00] zoom
+[00:21:03] and your clock is generally gonna be the
+[00:21:03] daily
+[00:21:05] until further notice, especially if you're
+[00:21:05] newer.
+[00:21:07] That's gonna be time literacy and I think
+[00:21:07] you have it now.
+[00:21:10] Anyways, let's close off this loop
+[00:21:13] and hand you off to the next episode.
+[00:21:15] So those four screens from the open,
+[00:21:17] you can read every one of them now
+[00:21:19] and you know which one holds the verdict.
+[00:21:21] But here's the next video's problem.
+[00:21:23] You'll zoom out to the daily just like we
+[00:21:23] went through
+[00:21:26] and you'll draw a line on it.
+[00:21:27] A nice little trend line, you might call
+[00:21:27] it.
+[00:21:29] And that line, probably gonna be wrong.
+[00:21:32] Because almost everyone draws trend lines
+[00:21:32] fucking wrong.
+[00:21:34] I swear this is amongst the most
+[00:21:34] frustrating things
+[00:21:38] to witness online.
+[00:21:40] Even though it's not my money,
+[00:21:41] I don't know for whatever reason I get
+[00:21:41] pissed off by it.
+[00:21:44] It's probably a me problem, not a them
+[00:21:44] problem.
+[00:21:46] But yes, if I'm being honest,
+[00:21:48] for whatever reason it makes me fucking
+[00:21:48] anxious.
+[00:21:50] But anyways, most people draw them wrong.
+[00:21:53] They force the line through the price they
+[00:21:53] want
+[00:21:55] rather than what actually is going on.
+[00:21:58] They ignore the obvious things in favor
+[00:22:01] of the fun and exciting things.
+[00:22:03] Anyways, next episode, trend lines, two
+[00:22:03] points in the truth
+[00:22:07] and why yours keep breaking, it'll be
+[00:22:07] right here.
+[00:22:09] Like I said, subscribe to this channel
+[00:22:11] if you want that video in your inbox at
+[00:22:11] the perfect time.
+[00:22:14] And of course, if all of this sounds very
+[00:22:14] fun,
+[00:22:17] sorry, very basic to you,
+[00:22:19] check out the TA 101 program.
+[00:22:20] That's where we go a little bit deeper in
+[00:22:20] this.
+[00:22:21] It's also, by the way,
+[00:22:23] one humps and free just like this.
+[00:22:25] And it will go over strategy creation,
+[00:22:25] ideation,
+[00:22:28] how to back test and also give you
+[00:22:29] a few cookie cutter strategies too.
+[00:22:31] All right, cool, that's where we're gonna
+[00:22:31] end this one
+[00:22:33] and I'll see you in the next one.
+[00:22:34] Take care.

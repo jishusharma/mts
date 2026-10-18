@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T14:20:14Z",
+  "commands": [
+    "python -m pytest scripts/dev/test_make_control_room.py -q"
+  ],
+  "created": "2026-10-13T17:40:36Z",
+  "depends_on": [],
+  "done_when": "Built MyTradingSys/system/artifacts/mts_control_room.html has no id=\"layers\" table and links to the MTS Layers page URL; scripts/dev/test_make_control_room.py passes.",
+  "est_turns": 12,
+  "from_inbox": "",
+  "goal": "Replace the stale 4-row Layer Board table in the Control Room with a link to the MTS Layers page, so the layer view lives in one place.",
+  "id": "control-room-layer-board-link",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Layer Board table removed from control_room.tpl.html; replaced by link to MTS Layers page;",
+      "ref": "56a493f3",
+      "utc": "2026-10-17T14:20:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Artifacts_Guy: republish Control Room and Layers from the newer repo build",
+      "ref": "7733c655db7c",
+      "utc": "2026-10-17T12:45:00Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "Control Room is generated: edit scripts/dev/control_room.tpl.html, not the built html. Layer state stays on the MTS Layers page (layers_board). Refiner default: link only, no new layer view. Publishing is not part of this card.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T14:18:02Z",
+  "refs": [],
+  "result": "Layer Board table removed from control_room.tpl.html; replaced by link to MTS Layers page; test_control_room_links_layers_page added (failed before); 27/27 control room tests pass; artifacts build ran",
+  "scope_in": [
+    "scripts/dev/control_room.tpl.html (section id layer-sec, around line 132-135; JS filling #layers tbody, around line 261)",
+    "scripts/dev/make_control_room.py (only if it feeds D.layers to the removed table)",
+    "scripts/dev/test_make_control_room.py",
+    "MyTradingSys/system/artifacts/mts_control_room.html (rebuilt output)"
+  ],
+  "scope_out": [
+    "scripts/dev/layers_board.tpl.html and make_layers_board.py",
+    "registry.json page entries",
+    "republishing the artifact",
+    "any other Control Room section"
+  ],
+  "scope_sha": "7733c655db7c",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "In scripts/dev/test_make_control_room.py add test_control_room_links_layers_page: the real template has no id=\"layers\" table and contains a link to the MTS Layers page. Run it; it must fail before step 2.",
+    "In scripts/dev/control_room.tpl.html replace the Layer Board table in section layer-sec with a heading and one line linking to the MTS Layers page URL from the pages entry titled 'MTS Layers' in MyTradingSys/system/artifacts/registry.json.",
+    "Delete the JS that fills #layers tbody (around line 261) and any D.layers use that only fed it.",
+    "Update or delete test_layer_board_one_row_per_active_layer (around line 162) to match the removed table.",
+    "Run the commands, then python scripts/dev/artifacts.py build (build only; do not republish)."
+  ],
+  "tests": "scripts/dev/test_make_control_room.py::test_control_room_links_layers_page (fails on the current template)",
+  "title": "Control Room: replace the stale 4-row Layer Board with a link to the MTS Layers page (no duplicate layer view)",
+  "worker": "agent"
+}

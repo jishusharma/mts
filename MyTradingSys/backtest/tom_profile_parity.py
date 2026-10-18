@@ -26,6 +26,23 @@ REPO = Path(__file__).resolve().parents[2]
 SOURCE = REPO / "src/main/java/datafeed/MarketDataSnapshot.java"
 
 
+def profile_shape_fraction(low, high, widest_price):
+    """Return the widest/POC price position within a profile's own range."""
+    low, high, widest_price = float(low), float(high), float(widest_price)
+    if high <= low:
+        raise ValueError("profile high must be greater than profile low")
+    if not low <= widest_price <= high:
+        raise ValueError("widest price must lie within the profile range")
+    return (widest_price - low) / (high - low)
+
+
+def profile_shape_matches(drawn_fraction, computed_fraction, row_fraction):
+    """Compare normalized histogram shapes within one drawn-row height."""
+    if row_fraction < 0:
+        raise ValueError("row fraction must be non-negative")
+    return abs(float(drawn_fraction) - float(computed_fraction)) <= float(row_fraction)
+
+
 def engine_source():
     text = SOURCE.read_text(encoding="utf-8")
     start = text.index("    private ObjectNode buildVp(List<JsonNode> bars, boolean includeHvnsLvns) {")

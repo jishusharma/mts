@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T10:03:12Z",
+  "commands": [],
+  "created": "2026-10-16T00:44:32Z",
+  "depends_on": [],
+  "done_when": "Report with a row-by-row table for rows 11-20 and one verdict line (SOUND / FIX-FIRST / BLOCKED); VERDICTS_CHECKED_b.csv saved beside it with no UNPARSED left that the study files can answer.",
+  "from_inbox": "",
+  "goal": "VERDICTS.csv (20 rows, 15 studies) gates new PRE_REGs (verdicts.py check) but 11 rows have UNPARSED split_read, n, verdict or one_run (14 an UNPARSED kill_scope). For rows 11-20 only, per row read the study's RESULT and PRE_REG, fill those fields with file:line and check the parsed ones. Output a corrected CSV copy; edit no registry file.",
+  "id": "gpt-verdict-registry-audit-b",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "note": "codex-feed 2026-10-16: luna/medium on purpose (about 1 window point); the registry is a gate, so a wrong or UNPARSED row blocks or waves through a PRE_REG. Scripts are .py.txt, never .py (LAYER_LAB.md Guards). Split 2026-10-16 from gpt-verdict-registry-audit (blocked twice for size); rows 11-20 only.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex-feed 2026-10-16 (sonnet worker)",
+  "refs": [],
+  "result": "FIX-FIRST; report MyTradingSys/research/layer_lab/reports/2026-10-16_gpt-verdict-registry-audit-b.md; checked copy MyTradingSys/research/layer_lab/gpt-verdict-registry-audit/VERDICTS_CHECKED_b.csv",
+  "scope_in": [
+    "MyTradingSys/research/VERDICTS.csv",
+    "scripts/dev/verdicts.py (parsing rules in its docstring; read only)",
+    "MyTradingSys/research/<study_dir>/ for each study_dir named in VERDICTS.csv: RESULT.md, RESULTS.md, PRE_REG.md, REPORT.md (read only)",
+    "MyTradingSys/research/volume_2026-10-09/PRE_REG_VOLUME_2026-10-09.md (section 1: the split dates)"
+  ],
+  "scope_out": [
+    "editing VERDICTS.csv or verdicts.py (follow-up cards only)",
+    "running any study, loading market data, or analysing study code for split reads or trial counts (dsa-audit-08 and dsa-audit-07 own those)",
+    "holdout reads",
+    "changing a verdict: report what the study file says and label any disagreement MISMATCH"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md (section 1.3, verdict per arm)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read the verdicts.py docstring (parsing rules) and VERDICTS.csv. For each of rows 11-20 list the study files you will read; every row must be covered.",
+    "For rows 11-20 only, per row fill split_read (DEV before 2024-07-01, VALIDATION to 2025-06-30, HOLDOUT after), n, gross_mean_pct, se_pct, verdict, one_run and kill_scope from the RESULT and PRE_REG text with file:line. Parsed fields: MATCH or MISMATCH against the source. A field the files do not give is NOT_IN_DATA (never guess).",
+    "Name every row where the study text reports VALIDATION or HOLDOUT numbers, and every row whose one_run or kill_scope would change what `verdicts.py check` prints for a new PRE_REG in that family.",
+    "Write MyTradingSys/research/layer_lab/gpt-verdict-registry-audit/VERDICTS_CHECKED_b.csv (the same columns with your values, plus a source column). No registry file is edited.",
+    "For each MISMATCH capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "",
+  "title": "Verdict registry audit rows 11-20: fill UNPARSED fields of VERDICTS.csv from each study's own result files and check the parsed ones"
+}

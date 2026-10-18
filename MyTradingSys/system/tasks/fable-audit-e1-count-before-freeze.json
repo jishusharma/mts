@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T19:57:23Z",
+  "commands": [],
+  "created": "2026-10-15T22:50:49Z",
+  "depends_on": [],
+  "done_when": "CLI exits 0/1 as tested, test registered in run_extra_tests.py, TASK_REFINEMENT.md names the command, ship gate green",
+  "from_inbox": "",
+  "goal": "Add scripts/dev/prereg_gate.py: from a count (n events, n days, sd of R, cost R, Holm m) print MDE = (z_holm+0.84)*sd/sqrt(n) and exit 1 when MDE+cost exceeds MAX_PLAUSIBLE_GROSS (default 0.30 R, OURS, same as the pit PRE_REG_V2 item 2). Document the call in the PRE_REG template line of TASK_REFINEMENT.md.",
+  "id": "fable-audit-e1-count-before-freeze",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/fable_audit_2026-10-16/FABLE_RUNS_AUDIT.md"
+  ],
+  "result": "prereg_gate.py + 3 tests (module absent = red); n=1835 sd=1.46 m=42 MDE 0.139; n=200 exit 1",
+  "scope_in": [
+    "scripts/dev/prereg_gate.py",
+    "scripts/dev/test_prereg_gate.py",
+    "scripts/dev/run_extra_tests.py",
+    "MyTradingSys/system/TASK_REFINEMENT.md"
+  ],
+  "scope_out": [
+    "existing PRE_REG files (frozen)",
+    "verdicts.py"
+  ],
+  "size": "S",
+  "sources": [
+    "FABLE_RUNS_AUDIT.md line 175 (E1); numbers from pit_levels_2026-10-16/PRE_REG_V2.md item 2; OURS: 0.30 R, power z 0.84"
+  ],
+  "state": "done",
+  "steps": [
+    "write test_prereg_gate.py first",
+    "implement mde() and a CLI: prereg_gate.py --n --sd --cost --m",
+    "list the test in run_extra_tests.py EXTRA",
+    "one sentence in TASK_REFINEMENT.md PRE_REG bullet",
+    "ship"
+  ],
+  "tests": "test_prereg_gate.py: n=1835 sd=1.46 cost=0.179 m=42 gives MDE about 0.15 and exit 0 only when under the limit; n=200 exits 1; fails first because the module does not exist",
+  "title": "PRE_REG gate: count-only pass prints n and MDE; refuse to freeze when MDE + cost exceeds a plausible gross effect; one verdict per arm"
+}

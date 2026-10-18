@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T21:58:15Z",
+  "commands": [],
+  "created": "2026-10-15T14:02:17Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/mal_bb_mid_engulf_<date>/REPORT.md with n, outcome frequencies and fee-net R with Wilson CIs per entry variant, HTF filter on/off, flow bin; variants in the trial ledger.",
+  "from_inbox": "",
+  "goal": "Build and run the G5 DEV event study in drafts/MAL-BB-MID-ENGULF.md: for each 5m bounce to the BB(20,2) midline in a falling market, outcome of the bearish engulf (first confirmation) and the second break, with HTF momentum and OI/CVD/net-delta covariates. Holdout sealed.",
+  "id": "mal-bb-mid-engulf-g5-dev-event-study",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "bb-rsi-40-60 setup draft session 2026-10-15",
+  "refs": [],
+  "result": "FAIL (screen, ran before G3 marks by operator decision 2026-10-16): engulf (a) close SHORT h=60 n=1179 mean G +0.012% (net -0.128%, t -6.0); second-break arm n=807 mean +0.014% (net -0.126%); MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/RESULT.md",
+  "scope_in": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/drafts/MAL-BB-MID-ENGULF.md",
+    "MyTradingSys/research/setup_catalog_2026-10-15/sources/OPERATOR_2026-10-15_bb_mid_engulf.md",
+    "MyTradingSys/research/setup_catalog_2026-10-15/evidence/bb_mid_engulf_checks.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/research/levels_sizing_2026-10-14/METHOD.md"
+  ],
+  "scope_out": [
+    "HOLDOUT or VALIDATION reads",
+    "live tree",
+    "any trade call or live rule",
+    "editing SETUP_CATALOG.md"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/drafts/MAL-BB-MID-ENGULF.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Check DEV 1m klines, taker volume and OI metrics coverage in the LAYERS.md:35 window; list gaps.",
+    "Write the bounce finder (OURS slope + mid-touch test), the engulf test variants (a)-(c), the second-break test and the HTF filter (1h/4h RSI<50, price below 1h mid) with a fail-first test on synthetic 5m bars.",
+    "Run DEV only. Outcomes per instance: MAE/MFE to +6/+12/+24 bars in ATR(14,5m); fee-net R for entry at engulf close vs second-break close vs midline retest (METHOD.md fees); controls: bounce without engulf, random time shift in the same day, HTF filter on/off, OI/CVD/net-delta 2x2 splits. Print n and Wilson 95% CI; cells with n<10 are not read.",
+    "Choose the engulf definition and body ratio on DEV only, append every variant to the trial ledger, one look at VALIDATION, write REPORT.md."
+  ],
+  "tests": "Fail-first test on synthetic 5m bars: a bar that closes below the previous green bar's open is an engulf under variant (a) and not under (b) when its open is below the previous close; values hand-computed from FORMULAS.md.",
+  "title": "MAL-BB-MID-ENGULF G5 DEV event study: midline bounce, engulf, second break"
+}

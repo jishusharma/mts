@@ -110,6 +110,17 @@ def _write(path, text, mode):
         f.write(text)
 
 
+RETRY_MS = 120000
+
+
+def row_written(now_ms, out_dir):
+    """True when the row for the last 4H close <= now_ms is already on disk."""
+    close_ms = (now_ms // H4_MS) * H4_MS
+    f = Path(out_dir) / (_day(close_ms - 1) + ".jsonl")
+    ts = _iso(close_ms)
+    return f.exists() and any(json.loads(x).get("timestamp") == ts for x in f.read_text(encoding="utf-8").splitlines() if x)
+
+
 def run_once(now_ms, fetch_klines_fn, fetch_oi_fn, out_dir):
     """Write the row for the last 4H close <= now_ms. Returns the row, or None (no bars / OI error / already written)."""
     close_ms = (now_ms // H4_MS) * H4_MS
@@ -147,11 +158,17 @@ def main(argv=None):
     while True:
         now = int(time.time() * 1000)
         t0 = time.time()
-        row = run_once(now, fetch_klines, fetch_oi, a.out_dir)
+        try:
+            row = run_once(now, fetch_klines, fetch_oi, a.out_dir)
+        except Exception as e:                                  # transient network error: retry below, never die
+            row = None
+            print("htf_context: run failed: %r" % (e,), file=sys.stderr)
         print(json.dumps({"row": row, "runtime_s": round(time.time() - t0, 3)}, sort_keys=True))
         if not a.loop:
             return 0
         nxt = (now // H4_MS + 1) * H4_MS + 90000
+        if not row_written(now, a.out_dir):                     # 2026-10-15: one OI hiccup left the 20:00Z row missing for 4 h
+            nxt = min(nxt, int(time.time() * 1000) + RETRY_MS)
         time.sleep(max(60, (nxt - int(time.time() * 1000)) / 1000))
 
 

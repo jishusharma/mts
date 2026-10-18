@@ -1,0 +1,75 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-17T18:32:25Z",
+  "commands": [],
+  "created": "2026-10-17T03:55:03Z",
+  "depends_on": [
+    "trendline-contract-spec"
+  ],
+  "done_when": "Pack on fast-track with WINDOWS.csv, two blank marking sheets, closed answer key, exposure ledger line; sync.py ship green.",
+  "est_turns": 35,
+  "from_inbox": "",
+  "goal": "Build the G3 pack so two readers mark 'obvious legitimate trend line' on BTC charts blind to what came next, giving the selector a reproducibility number.",
+  "id": "trendline-g3-marks-pack",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "research/trendlines_2026-10-17/g3_pack: 40 blind windows (TL-4H 20, TL-1D 20), 2 blank she",
+      "ref": "77bb0d62",
+      "utc": "2026-10-17T18:32:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "G3 reader protocol + first marking pack (213 blind windows, 13 catalogue rows)",
+      "ref": "2fbfec28db81",
+      "utc": "2026-10-15T21:40:24Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "2fbfec28db81 G3 reader protocol + first marking pack (213 blind windows, 13 catalogue rows",
+      "ref": "MyTradingSys/research/layer_rebuild_2026-10-15/READER_PROTOCOL.md",
+      "utc": "2026-10-15T21:40:24Z"
+    }
+  ],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-17 ACCEPT. WEIGHT:IMPORTANT. Release commit 7e9ba622 is a bare release: the pack is NOT on trunk. Marking by two readers is OPERATOR-ONLY and out of scope. Verify (worker): content commit sha, `git cherry origin/fast-track <sha>` empty AND `git ls-tree -r origin/fast-track --name-only` lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-17T18:15:55Z",
+  "refs": [],
+  "result": "research/trendlines_2026-10-17/g3_pack: 40 blind windows (TL-4H 20, TL-1D 20), 2 blank sheets, closed key sha 26048af7, READER_PROTOCOL s4",
+  "scope_in": [
+    "Pack under research/trendlines_2026-10-17/g3_pack/: WINDOWS.csv, charts cut at the decision bar, marking sheets, closed answer key; copy g3_marks_2026-10-16 structure",
+    "Half random windows, half from a written pre-filter; definitions go into READER_PROTOCOL.md as OURS once",
+    "MyTradingSys/research/layer_rebuild_2026-10-15/READER_PROTOCOL.md (add the OURS definitions)",
+    "copy g3_pack.py and test_g3_pack.py from research/g3_marks_2026-10-16/ into research/trendlines_2026-10-17/g3_pack/; the exposure-ledger line goes in that folder"
+  ],
+  "scope_out": [
+    "Marking itself (operator + second reader)",
+    "Backtest, live path"
+  ],
+  "scope_sha": "2fbfec28db81",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/trendlines_2026-10-17/CLAUDE_VERIFY.md",
+    "MyTradingSys/research/layer_rebuild_2026-10-15/READER_PROTOCOL.md",
+    "MyTradingSys/research/g3_marks_2026-10-16/README.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Copy the g3_marks_2026-10-16 structure and apply its 2026-10-17 blindness fixes: ids <unit>-NN, no clock labels, unconditional overlays, selection rule only in the closed key",
+    "Half random windows, half from a written pre-filter; write the definitions into READER_PROTOCOL.md as OURS once, then build WINDOWS.csv, sheets, key and sha",
+    "Log the exposure ledger line; ship"
+  ],
+  "tests": "test_g3_pack.py new case fails on the old pack code if a chart includes a bar after decision time; passes on the new builder.",
+  "title": "Trend-line G3 blind marks pack for the obvious-line selector",
+  "worker": "session"
+}

@@ -1,11 +1,21 @@
-# test_integrity.py - 5 doc/project integrity checks
+# test_integrity.py - doc/project integrity checks (test_6: no bannered docs in system/; test_7: size caps)
 # Run: python -m pytest MyTradingSys/tests/docs -v
 import re
 from pathlib import Path
 
+import pytest
+
 REPO = Path(__file__).resolve().parents[3]
 MTS = REPO / "MyTradingSys"
 INDEX_CEILING_KB = 100
+# Bytes. Files read at every session boot or on every pickup: a cap stops them growing back (token cost per session).
+SIZE_CAPS = {
+    "CLAUDE.md": 7168,   # B18 (2026-10-17): was 6144; 7 "trim to size cap" commits in 72 h cost more than ~250 cached tokens do
+    "MyTradingSys/system/SURFACE_POLICY.md": 4096,
+    "MyTradingSys/system/OPERATOR_INBOX.md": 30720,
+    "MyTradingSys/system/RELAY.md": 6656,
+}
+BANNER_RE = re.compile(r"\b(SUPERSEDED|HISTORICAL|STALE)\b")
 
 
 def _live_files(extensions):
@@ -66,8 +76,6 @@ def test_2_no_forbidden_refs():
 def test_3_version_consistency():
     version_re = re.compile(r"v4\.\d+\.\d+(?:-p\d+)?")
     files = [
-        MTS / "system" / "00_START_HERE.md",
-        MTS / "system" / "02a_CURRENT_STATUS.md",
         MTS / "system" / "03_FILE_INDEX.md",
         MTS / "runtime" / "compiled_engine.md",
         MTS / "system" / "COMPILED_DECISIONS.md",
@@ -114,3 +122,44 @@ def test_5_no_stray_cleanup_candidates():
     if weird.exists():
         bad.append("stray '=' file at project root")
     assert not bad, f"Stray cleanup candidates: {bad}"
+
+
+def test_6_no_banner_docs_in_system():
+    """A system/ doc that opens with a SUPERSEDED / HISTORICAL / STALE banner is dead weight in every glob, grep and
+    accidental Read. Move it with git mv to MyTradingSys/archive/<topic>_<date>/ (archive/ is skipped by _live_files)
+    instead of leaving it bannered."""
+    hits = []
+    for p in sorted((MTS / "system").glob("*.md")):
+        head = p.read_text(encoding="utf-8", errors="ignore").splitlines()[:5]
+        for i, line in enumerate(head, 1):
+            if BANNER_RE.search(line):
+                hits.append(f"{p.relative_to(MTS)}:{i}: {line.strip()[:80]}")
+                break
+    assert not hits, "Bannered docs in system/ (git mv them to MyTradingSys/archive/<topic>_<date>/):\n" + "\n".join(hits)
+
+
+def test_7b_nothing_else_depends_on_the_claude_md_cap_number():
+    """B18: the CLAUDE.md cap lives in SIZE_CAPS only. No prompt, script or doc may quote the number next to CLAUDE.md
+    (that is what made a cap change a multi-file edit); this test is the proof that raising it is safe."""
+    import subprocess
+    files = subprocess.run(["git", "-C", str(REPO), "ls-files", "*.py", "*.md", "*.yml", "*.ps1", "*.json"], capture_output=True, text=True).stdout.split()
+    quoted = re.compile(r"CLAUDE\.md[^\n]{0,80}\b(6144|6138|7168)\b|\b(6144|6138|7168)\b[^\n]{0,80}CLAUDE\.md")
+    hits = []
+    for rel in files:
+        if rel.startswith(("MyTradingSys/archive", "MyTradingSys/research", "runtime_data")) or rel.endswith("test_integrity.py"):
+            continue
+        p = REPO / rel
+        if p.is_file() and quoted.search(p.read_text(encoding="utf-8", errors="replace")):
+            hits.append(rel)
+    assert not hits, f"CLAUDE.md cap number quoted outside SIZE_CAPS: {hits}"
+
+
+@pytest.mark.parametrize("rel", sorted(SIZE_CAPS))
+def test_7_size_cap(rel):
+    """Boot and pickup files stay small. Over the cap: trim the file (CLAUDE.md, SURFACE_POLICY.md, RELAY.md) or rotate
+    it (OPERATOR_INBOX.md: CONTROL_ROOM.md step 3) instead of raising the number; CLAUDE.md moves detail into a system/ doc
+    before it grows, it is not word-trimmed one line at a time (B18)."""
+    p = REPO / rel
+    assert p.exists(), f"{rel} is missing"
+    size = len(p.read_bytes().replace(b"\r\n", b"\n"))   # a Windows runner checks out CRLF; the cap is on the committed LF bytes
+    assert size <= SIZE_CAPS[rel], f"{rel} is {size} B, cap {SIZE_CAPS[rel]} B"

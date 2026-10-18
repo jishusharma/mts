@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T16:28:30Z",
+  "depends_on": [],
+  "done_when": "Social call ingestion utility supports Roman Trading volume-absorption calls; real sourced setups ingested into MyTradingSys/research/analysts/roman/CALL_LEDGER.csv with verbatim source_url and published_utc; unit tests passing.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Implement Roman Trading (@Roman_Trading) Volume Absorption / CVD divergence call ingestion (Construct 1 direct peer to Habib/Qriptal). Parse public calls with parse_social_call and log verified records into MyTradingSys/research/analysts/roman/CALL_LEDGER.csv.",
+  "id": "analyst-ingest-roman-x",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "review-imbalance-analysts-report-and-imp: evaluation, ingestion pipeline and scorecard eng",
+      "ref": "1e405a57e967",
+      "utc": "2026-10-18T13:52:59Z"
+    }
+  ],
+  "layers": [
+    "callers"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Drafted by analysts-roadmap following survey recommendation (Construct 1 Volume Absorption peer to Habib). REVIEWED:2026-10-18 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "gemini-4-argon",
+  "refreshed": "2026-10-18T16:30:17Z",
+  "refs": [
+    "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
+    "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md",
+    "MyTradingSys/research/analysts/ROADMAP.md",
+    "MyTradingSys/research/analysts/schema.py",
+    "MyTradingSys/research/analysts/ingest_analysts.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/analysts/roman/",
+    "MyTradingSys/research/analysts/ingest_analysts.py"
+  ],
+  "scope_out": [
+    "live order execution",
+    "paid Twitter API credentials",
+    "fabricated or unverified sample calls"
+  ],
+  "scope_sha": "1e405a57e967",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:116-135"
+  ],
+  "state": "ready",
+  "steps": [
+    "Implement ingest adapter reading Roman Trading public calls (or operator inbox pastes) with verbatim source_url and published_utc.",
+    "Extract entry, stop loss (below volume-anomaly wick), and targets using parse_social_call with ImbalanceConstruct.VOLUME_ABSORPTION.",
+    "Append verified calls into MyTradingSys/research/analysts/roman/CALL_LEDGER.csv and verify with unit tests."
+  ],
+  "tests": "python -m unittest MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py",
+  "title": "Implement Roman Trading volume-absorption social call listener",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

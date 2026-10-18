@@ -54,6 +54,15 @@ public class SetupCandidatesBuilder {
     }
 
     public static ArrayNode build(ObjectMapper mapper, ObjectNode root, Map<String, JsonNode> mtf, JsonNode klines1m) {
+        return build(mapper, root, mtf, klines1m, null);
+    }
+
+    /**
+     * @param fadeKlines1m optional longer 1m series for the family A fade call only (card tom-v2-recall-fire-rate: the
+     *                     detector needs 21 sessions, a snapshot carries 24 h). Null = use klines1m. Nothing else reads it.
+     */
+    public static ArrayNode build(ObjectMapper mapper, ObjectNode root, Map<String, JsonNode> mtf, JsonNode klines1m,
+                                  JsonNode fadeKlines1m) {
         ArrayNode candidatesArray = mapper.createArrayNode();
         if (root == null || klines1m == null || klines1m.size() < 20) {
             return candidatesArray; // empty
@@ -224,6 +233,39 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
             scoreNode.put("confidence", c.confidence);
             scoreNode.put("proof_count", c.proofCount);
             scoreNode.put("confluence_bonus", c.confluenceBonus);
+        }
+        // Card tom-encode-spike-fade (TOM_LAYER_V2_SPEC section 15): family A fade_short, PRICE arm; flag off = untouched.
+        if (SpikeFadeDetector.enabled()) {
+            JsonNode fadeSeries = fadeKlines1m != null ? fadeKlines1m : klines1m;
+            ObjectNode fade = SpikeFadeDetector.detect(mapper, root, fadeSeries, state, sym);
+            if (fade != null) {
+                ObjectNode ranked = mapper.createObjectNode();
+                ranked.put("rank", candidatesArray.size() + 1);
+                ranked.setAll(fade);
+                ranked.put("arm", "price");
+                candidatesArray.add(ranked);
+                // Card tom-encode-fade-profile-proofs (spec 12): PROFILE arm beside the PRICE arm, a separate candidate.
+                if (fadeSeries != null) {
+                    ObjectNode prof = SpikeFadeProfile.build(mapper, fade, new SpikeFadeDetector.Bars(fadeSeries), sym);
+                    if (prof != null) {
+                        ObjectNode pr = mapper.createObjectNode();
+                        pr.put("rank", candidatesArray.size() + 1);
+                        pr.setAll(prof);
+                        candidatesArray.add(pr);
+                    }
+                }
+            }
+            // Card tom-encode-fade-entry-paths (spec 2.3, 2.6 A-M5): paths A2 / A3 beside A1, gated by the session attempt state.
+            if (fadeSeries != null && fadeSeries.size() >= 2) {
+                for (ObjectNode path : SpikeFadePaths.detect(mapper, root, new SpikeFadeDetector.Bars(fadeSeries), state, sym,
+                        SpikeFadeSessionState.shared())) {
+                    ObjectNode ranked = mapper.createObjectNode();
+                    ranked.put("rank", candidatesArray.size() + 1);
+                    ranked.setAll(path);
+                    ranked.put("arm", "price");
+                    candidatesArray.add(ranked);
+                }
+            }
         }
         return candidatesArray;
     }

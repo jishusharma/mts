@@ -1,21 +1,27 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-12T20:12:54Z",
   "commands": [],
   "created": "2026-10-11T18:00:25Z",
-  "depends_on": [],
+  "depends_on": [
+    "rv-fix-tom-ledger-date-column"
+  ],
   "done_when": "MyTradingSys/research/tom_transfer_2026-10-11/HOLDOUT_CLEAN.json and the PRE_REG_DAX.md addendum committed before tom-encode-spike-fade starts; design/check lists named.",
   "from_inbox": "",
   "goal": "Stop the spike-fade encoding from being scored on days it was built from: drop ledger days from the holdout, add a forward holdout, split the ledger (N1, N2).",
   "id": "tom-holdout-clean-split",
   "lane": "SONNET",
+  "layers": [
+    "tom"
+  ],
   "live_path": false,
-  "note": "",
+  "note": "Alignment review 2026-10-13: stale JIS-NB claim (30 h) released; runs on any host (ledger CSV is in the repo, F:/MTS/data/dax_archive exists on JIS-NUC). Needs the ledger date column fixed first (RV01 D4: T5/T6/T7/T9/T10/T11 dates are assumed or prose), because the split and the dropped holdout days are computed from that column.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "cloud-research 2026-10-11 (C-Cloud BACKTEST_FAILURES_RESEARCH.md; operator: 'get this into action')",
   "refs": [],
-  "result": "",
+  "result": "HOLDOUT_CLEAN.json: 156 holdout days, 26 dropped (+-1 trading day of every candidate date), 130 remain, 10 dev days dropped; split = TOM_LAYER_V2_SPEC section 7 (design 8 groups, check T11+T12); PRE_REG_DAX addendum",
   "scope_in": [
     "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv",
@@ -30,7 +36,7 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md N1, N2"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Use dates only: list ledger days inside the holdout 2026-04-11..2026-10-09; drop each +-1 trading day.",
     "Write HOLDOUT_CLEAN.json: dropped days, remaining holdout days, count dropped. Forward holdout = DAX bars from 2026-10-10 on, read once at >= 100 trades.",

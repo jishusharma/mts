@@ -27,16 +27,43 @@ $lines.Add("host: $env:COMPUTERNAME")
 $lines.Add("")
 
 $overallFail = $false
+$failAxes = [System.Collections.Generic.List[string]]::new()
+function Add-FailAxis { param([string]$Name) if (-not $failAxes.Contains($Name)) { $failAxes.Add($Name) } }
+
+# Why-it-failed helpers: first $Max lines matching $Pattern (else first non-empty lines), indented 4 spaces.
+function Get-FailSnippet {
+    param($Text, [string]$Pattern, [int]$Max = 5)
+    $all = @($Text | ForEach-Object { "$_" -split "`r?`n" } | ForEach-Object { $_.TrimEnd() } | Where-Object { $_.Trim() -ne "" })
+    $hit = @($all | Where-Object { $_ -match $Pattern })
+    if ($hit.Count -eq 0) { $hit = $all }
+    $out = @()
+    foreach ($h in ($hit | Select-Object -First $Max)) {
+        $t = $h.Trim(); if ($t.Length -gt 300) { $t = $t.Substring(0, 300) + "..." }
+        $out += ("    " + $t)
+    }
+    return $out
+}
+function Get-ToolchainLine {
+    $jv = "not found"
+    try { $jo = @(& java -version 2>&1 | ForEach-Object { "$_" }); if ($jo.Count -gt 0) { $jv = $jo[0].Trim() } } catch { }
+    $mv = "not found"
+    $mc = Get-Command mvn -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($mc) { $mv = $mc.Source; if (-not $mv) { $mv = $mc.Definition } }
+    return "  java: $jv  mvn: $mv"
+}
 
 # 1. Java compile
 $t0 = Get-Date
-& mvn -q -DskipTests compile 2>&1 | Out-Null
+$compOut = @(& mvn -q -DskipTests compile 2>&1 | ForEach-Object { "$_" })
+$compRc = $LASTEXITCODE
 $dur = [math]::Round(((Get-Date) - $t0).TotalSeconds, 1)
-if ($LASTEXITCODE -eq 0) {
+if ($compRc -eq 0) {
     $lines.Add("Java compile:  PASS ($dur s)")
 } else {
     $lines.Add("Java compile:  FAIL ($dur s)")
-    $overallFail = $true
+    foreach ($cl in (Get-FailSnippet $compOut '\[ERROR\]' 5)) { $lines.Add($cl) }
+    $lines.Add((Get-ToolchainLine))
+    $overallFail = $true; Add-FailAxis "Java compile"
 }
 
 # 1b. Java tests (T037): full tier runs mvn -q test; -Quick stays compile-only
@@ -58,8 +85,9 @@ if ($Quick) {
         $lines.Add("Java tests:    PASS $($jrun - $jskip)/$jrun run, $jskip skipped ($dur s)")
     } else {
         $lines.Add("Java tests:    FAIL ($dur s)")
-        foreach ($jl in ($jtestOut -split "`n" | Where-Object { $_ -match "FAIL|ERROR|Tests run:.*(Failures|Errors): [1-9]" } | Select-Object -First 5)) { $lines.Add("  - " + $jl.Trim()) }
-        $overallFail = $true
+        foreach ($jl in (Get-FailSnippet $jtestOut '\[ERROR\]|FAILED|Tests run:.*(Failures|Errors): [1-9]' 5)) { $lines.Add($jl) }
+        $lines.Add((Get-ToolchainLine))
+        $overallFail = $true; Add-FailAxis "Java tests"
     }
 }
 
@@ -68,14 +96,14 @@ $t0 = Get-Date
 if ($Quick) {
     $lines.Add("Math tests:    SKIP (quick tier; full pass is the release gate)")
 } else {
-$mtestOut = (& python -m pytest MyTradingSys/tests --ignore=MyTradingSys/tests/docs -q 2>&1 | Out-String)
+$mtestOut = (& python -m pytest MyTradingSys/tests --ignore=MyTradingSys/tests/docs -q --basetemp=$env:TEMP/mts_pytest_math 2>&1 | Out-String)
 $dur = [math]::Round(((Get-Date) - $t0).TotalSeconds, 1)
 $m = [regex]::Match($mtestOut, "(\d+) passed")
 if ($LASTEXITCODE -eq 0 -and $m.Success) {
     $lines.Add("Math tests:    PASS $($m.Groups[1].Value)/$($m.Groups[1].Value) ($dur s)")
 } else {
     $lines.Add("Math tests:    FAIL ($dur s)")
-    $overallFail = $true
+    $overallFail = $true; Add-FailAxis "Math tests"
 }
 }
 
@@ -83,7 +111,7 @@ if ($LASTEXITCODE -eq 0 -and $m.Success) {
 $docsDir = "MyTradingSys/tests/docs"
 if (Test-Path $docsDir) {
     $t0 = Get-Date
-    $dtestOut = (& python -m pytest $docsDir -q 2>&1 | Out-String)
+    $dtestOut = (& python -m pytest $docsDir -q --basetemp=$env:TEMP/mts_pytest_docs 2>&1 | Out-String)
     $dur = [math]::Round(((Get-Date) - $t0).TotalSeconds, 1)
     $dm = [regex]::Match($dtestOut, "(\d+) passed")
     $df = [regex]::Match($dtestOut, "(\d+) failed")
@@ -92,7 +120,7 @@ if (Test-Path $docsDir) {
     } else {
         $failedN = if ($df.Success) { $df.Groups[1].Value } else { "?" }
         $lines.Add("Doc tests:     FAIL $failedN failed ($dur s)")
-        $overallFail = $true
+        $overallFail = $true; Add-FailAxis "Doc tests"
     }
 } else {
     $lines.Add("Doc tests:     SKIP (no docs dir)")
@@ -101,13 +129,25 @@ if (Test-Path $docsDir) {
 $lines.Add("")
 
 # In-flight .new files (parallel work visibility)
-$inFlight = @(Get-ChildItem "MyTradingSys" -Recurse -File -Filter "*.new" -ErrorAction SilentlyContinue |
+$allNew = @(Get-ChildItem "MyTradingSys" -Recurse -File -Filter "*.new" -ErrorAction SilentlyContinue |
   Where-Object { $_.FullName -notmatch "\\archive\\" })
+$staleCut = (Get-Date).AddHours(-48)
+$inFlight = @($allNew | Where-Object { $_.LastWriteTime -ge $staleCut })
+$staleNew = @($allNew | Where-Object { $_.LastWriteTime -lt $staleCut })
 $lines.Add("In-flight .new files: " + $inFlight.Count)
 foreach ($f in $inFlight) {
     $rel = $f.FullName.Substring((Resolve-Path "MyTradingSys").Path.Length + 1)
     $age = [int]((Get-Date) - $f.LastWriteTime).TotalMinutes
     $lines.Add("  - $rel (age ${age}m)")
+}
+if ($staleNew.Count -gt 0) {
+    $lines.Add("")
+    $lines.Add("Stale .new files (older than 48 h; archive with python scripts/dev/declutter_backups.py --apply):")
+    foreach ($f in $staleNew) {
+        $rel = $f.FullName.Substring((Resolve-Path "MyTradingSys").Path.Length + 1)
+        $ageH = [int]((Get-Date) - $f.LastWriteTime).TotalHours
+        $lines.Add("  - $rel (age ${ageH}h)")
+    }
 }
 $lines.Add("")
 
@@ -204,7 +244,7 @@ if (Test-Path $bugsPath) {
   if ($bugFail.Count -gt 0) {
     $lines.Add("Bugs: FAIL (" + $bugFail.Count + " issues)")
     foreach ($bf in $bugFail) { $lines.Add("  - $bf") }
-    $overallFail = $true
+    $overallFail = $true; Add-FailAxis "Bugs"
   } else {
     $lines.Add("Bugs: OK (" + $bugRows + " rows)")
   }
@@ -220,13 +260,13 @@ if (Test-Path $bugsPath) {
     if ($idxMiss.Count -gt 0) {
       $lines.Add("Index: FAIL (" + $idxMiss.Count + " IDs not in INDEX.md)")
       foreach ($k in $idxMiss) { $lines.Add("  - $k missing from items/INDEX.md") }
-      $overallFail = $true
+      $overallFail = $true; Add-FailAxis "Index"
     } else {
       $lines.Add("Index: OK (" + $openIds.Count + " open IDs in items/INDEX.md)")
     }
   } else {
     $lines.Add("Index: file missing ($idxPath)")
-    $overallFail = $true
+    $overallFail = $true; Add-FailAxis "Index"
   }
 } else {
   $lines.Add("Bugs: file missing ($bugsPath)")
@@ -265,7 +305,7 @@ if ((Test-Path $itemsDir2) -and (Test-Path $idxPath2)) {
     if ($idxFail2.Count -gt 0) {
         $lines.Add("Index (files cross-check): FAIL (" + $idxFail2.Count + " issues)")
         foreach ($x2 in $idxFail2) { $lines.Add("  - $x2") }
-        $overallFail = $true
+        $overallFail = $true; Add-FailAxis "Index (files cross-check)"
     } else {
         $lines.Add("Index (files cross-check): OK (" + $itemFiles2.Count + " item files, " + $idxIds2.Count + " INDEX rows)")
     }
@@ -306,15 +346,21 @@ foreach ($df in $dispatchFiles) {
 if ($dispatchFail.Count -gt 0) {
   $lines.Add("Dispatches: FAIL (" + $dispatchFail.Count + " issues)")
   foreach ($dd in $dispatchFail) { $lines.Add("  - $dd") }
-  $overallFail = $true
+  $overallFail = $true; Add-FailAxis "Dispatches"
 } else {
   $lines.Add("Dispatches: OK (" + $dispatchFiles.Count + " files)")
 }
 $lines.Add("")
-if ($bomHits.Count -gt 0 -or $nonAsciiHits.Count -gt 0) { $overallFail = $true }
+if ($bomHits.Count -gt 0) { $overallFail = $true; Add-FailAxis "BOM files" }
+if ($nonAsciiHits.Count -gt 0) { $overallFail = $true; Add-FailAxis "Cyrillic codepoints" }
+# The one STATUS line sits right after the host line (lines[0] title, [1] host, [2] blank) and names the failing axes.
 $tier = if ($Quick) { " (QUICK: math tests and Java tests not run)" } else { "" }
-if ($overallFail) { $lines.Add("STATUS: FAIL$tier") } else { $lines.Add("STATUS: PASS$tier") }
-$lines.Add("")
+if ($overallFail) {
+    $axes = if ($failAxes.Count -gt 0) { " (" + ($failAxes -join ", ") + ")" } else { "" }
+    $lines.Insert(2, "STATUS: FAIL$axes$tier")
+} else {
+    $lines.Insert(2, "STATUS: PASS$tier")
+}
 $lines.Add("Pastes for this session:")
 $lines.Add("  Always:   MyTradingSys/runtime/BUILD_REPORT.md")
 $lines.Add("  JSON:     Dumps/dump_core.md + dump_runtime.md")

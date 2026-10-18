@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-14T23:06:19Z",
+  "commands": [],
+  "created": "2026-10-13T18:51:53Z",
+  "depends_on": [],
+  "done_when": "levels_hold.md lists every family with hold rate vs random and KEEP/DROP, plus the L1->L2 table; tests green; card result = \"families KEEP: <list>; DROP: <list>; L2 reached <x> %\".",
+  "from_inbox": "",
+  "goal": "Build levels.py (causal level set known at 00:00 UTC) and levels_hold.py: for every first touch of every level family per day, did price move 1 x stop width away before breaking through by 1 x stop width? Compare each family with random price lines at matched distance.",
+  "id": "lc-levels-hold",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "note": "Operator idea 2026-10-14; own layer (research only until LC3 passes); numbers OURS, printed in each report.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "opus-2026-10-14 (LC PLAN.md, operator chat)",
+  "refs": [],
+  "result": "families KEEP: prior_day_high, prior_day_low, prior_day_poc, naked_poc, 4h_fractal_low, 4h_fractal_high, round_1000, prior_week_high; DROP: prior_day_vah, prior_day_val, daily_open, prior_week_low; L2 reached 83.8% - MyTradingSys/research/layer_lab/reports/2026-10-14_lc-levels-hold.md. Claude spot-check: MATCH prior_day_high touches 57, hold 32/57 = 56.1% and prior_day_low 60 touches, hold 38/60 = 63.3%, recomputed independently from public data.binance.vision futures/um BTCUSDT 1m klines 2024-12-01..2025-03-31.",
+  "scope_in": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels.py",
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py",
+    "MyTradingSys/research/levels_confluence_2026-10-14/test_levels.py",
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.md",
+    "MyTradingSys/backtest/bt/bt_data.py (read only)",
+    "MyTradingSys/backtest/layers/session_levels/session_levels.py (read only, reuse day_levels)"
+  ],
+  "scope_out": [
+    "VALIDATION (2025-04..06) and HOLDOUT (2025-07+) bars, except card lc-validation",
+    "live tree",
+    "Tom/Fabio layer code (read only)",
+    "indicators, bias, entries or exits (later cards)"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/PLAN.md (operator ask 2026-10-14, verbatim at top)",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 10-15 (BTC minimum stop width)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (RSI, value area, Bollinger)"
+  ],
+  "state": "done",
+  "steps": [
+    "levels.py: per UTC day, from data before 00:00 only: prior-day high/low, prior-day POC/VAH/VAL (70 % value area from 1m volume, bins 10 USD OURS), naked POCs of the last 10 days, daily open, prior-week high/low, 4h 5-bar fractal pivots of the last 10 days, round 1000s. Each level row: price, family, source tag TOM/FABIO/CONSENSUS/OURS.",
+    "levels_hold.py: stop width w = max(0.40 % of price, 0.10 % level buffer); first touch per level per day; outcome HOLD / BREAK / NEITHER by end of UTC day; same for 5 random lines per real level at the same distance from the 00:00 price (seed 20261014).",
+    "Pairs: for every touch of L1, the next same-side KEEP-candidate level L2 (distance in %), whether L2 was touched before the end of the UTC day, and whether price then came back to L1. Gives how often a second level is reached (the operator scale-in case).",
+    "Report levels_hold.md: per family n touches, hold rate, random hold rate, difference with 95 % CI (bootstrap by day). Families with CI touching 0 are marked DROP."
+  ],
+  "tests": "pytest test_levels.py: synthetic 2-day bars with known volume -> day-2 POC/VAH/VAL equal the hand-computed values from FORMULAS.md; no level of day 2 uses a bar at or after 00:00 of day 2 (look-ahead check); a touch that breaks by w before moving w away is BREAK. Fails before levels.py exists.",
+  "title": "LC1 Levels Confluence: do the UTC-day levels hold on BTC at all (vs random lines), DEV 2024-12..2025-03"
+}

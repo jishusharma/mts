@@ -1,0 +1,14 @@
+{
+  "done_when": "a committed DATA_COVERAGE.md next to MANIFEST.csv in the Krown research folder lists per series first/last bar, bar count, gaps, SHA256, and weekly bars built by tf_resample.py start Monday 00:00 UTC.",
+  "finished": "2026-10-18T16:17:32Z",
+  "from": "JIS-NB",
+  "host": "JIS-NUC",
+  "id": "20261014-212853-q65-card-krown-data-daily-majors-s-tasks",
+  "need": "Q65. lane=DSA host=any Card krown-data-daily-majors (S): `tasks.py brief krown-data-daily-majors`, run its commands (adds `--market spot --symbol` to fetch_binance_archive.py). DONE when: a committed DATA_COVERAGE.md next to MANIFEST.csv in the Krown research folder lists per series first/last bar, bar count, gaps, SHA256, and weekly bars built by tf_resample.py start Monday 00:00 UTC.",
+  "posted": "2026-10-14T21:28:53Z",
+  "relay_key": "q65-2cb7d335",
+  "result": "Pipeliner drain 2026-10-18: duplicate of 20261015-010523-krown-data-daily-majors (done d8a77746)",
+  "status": "failed",
+  "target": "DSA",
+  "title": "Q65 Card krown-data-daily-majors (S): `tasks.py brief krown-data-daily-maj"
+}

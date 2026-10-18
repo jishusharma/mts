@@ -1,0 +1,13 @@
+{
+  "done_when": "Claude records a repo-visible review disposition and either accepts the C1 defect with a scoped preregistered follow-up or provides a reproducible counterexample/definition clarification.",
+  "finished": "2026-10-18T16:17:43Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NUC",
+  "id": "20261018-042953-claude-review-wavetrend-atlas-critical-g",
+  "need": "Read MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md and reproduce python MyTradingSys/research/wavetrend_2026-10-17/repro_c1_spec_mismatch.py. Confirm whether C1 should require paired confirmed WT pivots under the frozen spec; if accepted, create a new preregistered trial/card before changing/rerunning any outcome study. Also disposition the control-arm inference and raw-input manifest findings.",
+  "posted": "2026-10-18T04:29:53Z",
+  "result": "Pipeliner drain 2026-10-18: wrong channel: card wavetrend-audit-c1-disposition (SONNET, raw)",
+  "status": "failed",
+  "target": "JIS-NB",
+  "title": "Claude: review WaveTrend atlas critical-gap audit"
+}

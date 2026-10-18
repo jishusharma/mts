@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T13:07:06Z",
+  "depends_on": [],
+  "done_when": "Scraper implemented or tested with mock HTML/feed; valid calls parsed into MyTradingSys/research/analysts/rlinda/CALL_LEDGER.csv; unit tests passing.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Implement an automated TradingView idea scraper for RLinda (https://www.tradingview.com/u/RLinda/). Parse published Bitcoin ideas using MyTradingSys/research/analysts/ingest_analysts.py (parse_tradingview_idea) and write normalized records to MyTradingSys/research/analysts/rlinda/CALL_LEDGER.csv.",
+  "id": "analyst-ingest-rlinda-tv",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "review-imbalance-analysts-report-and-imp: evaluation, ingestion pipeline and scorecard eng",
+      "ref": "1e405a57e967",
+      "utc": "2026-10-18T13:52:59Z"
+    }
+  ],
+  "layers": [
+    "callers"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Drafted by review-imbalance-analysts-report-and-imp following survey recommendation. REVIEWED:2026-10-18 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "gemini-4-argon",
+  "refreshed": "2026-10-18T16:30:08Z",
+  "refs": [
+    "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
+    "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md",
+    "MyTradingSys/research/analysts/ROADMAP.md",
+    "MyTradingSys/research/analysts/schema.py",
+    "MyTradingSys/research/analysts/ingest_analysts.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/analysts/rlinda/",
+    "MyTradingSys/research/analysts/ingest_analysts.py"
+  ],
+  "scope_out": [
+    "live order execution",
+    "paid TradingView API subscription"
+  ],
+  "scope_sha": "1e405a57e967",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:244-261"
+  ],
+  "state": "ready",
+  "steps": [
+    "Inspect public TradingView profile structure for RLinda.",
+    "Implement fetch/parser invoking parse_tradingview_idea on published ideas.",
+    "Append newly discovered setups into MyTradingSys/research/analysts/rlinda/CALL_LEDGER.csv."
+  ],
+  "tests": "python -m unittest MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py",
+  "title": "Implement automated TradingView idea scraper for RLinda setups",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

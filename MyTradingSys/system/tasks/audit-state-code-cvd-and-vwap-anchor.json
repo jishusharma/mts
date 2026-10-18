@@ -1,0 +1,31 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-15T12:53:52Z",
+  "depends_on": [],
+  "done_when": "",
+  "from_inbox": "",
+  "goal": "",
+  "id": "audit-state-code-cvd-and-vwap-anchor",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "note": "MERGED into state-machine-vwap-cvd-vs-klines (same session_cvd / vwap_anchor symptom; L-13/L-14 evidence now in that card's goal) 2026-10-18 planner-batch2-1018",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/screenshots/2026-10-15_BTCUSDT_set_7f3698134541.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "dropped",
+  "steps": [],
+  "tests": "",
+  "title": "Audit two live-field mismatches from the 2026-10-15 live read: state_code.json session_cvd -6549.656 vs archive cumulative delta -6150.6..-6182.3 (rows L-13), and engine session.vwap_anchor_utc 2026-10-15T13:30Z with a value that fits the 00:00Z anchor (L-14). Read-only audit first, independent of the reader.",
+  "weight": "IMPORTANT"
+}

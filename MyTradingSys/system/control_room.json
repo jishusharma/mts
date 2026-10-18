@@ -1,8 +1,8 @@
 {
   "_doc": "Hand-kept content of the MTS Control Room page (scripts/dev/make_control_room.py). Edit HERE, never the page. Process: MyTradingSys/system/CONTROL_ROOM.md. Item ids: registry rows (B/T), bigtrade findings (F-BT-NN), or X- road tasks defined below. When an X- task gets a registry row, replace the X- id with the row id.",
-  "artifact_url": "https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su",
-  "asof": "2026-10-09",
-  "verdict": "The system runs and trades on testnet, but no source has shown a real edge after fees. Stage 1 data fixes are now live (volume profile, naked POC); Stage 2 results are in and negative for Tom: a wider stop or maker orders only shrink fees, because gross R is already negative. Next: re-run the backtests on the fixed data (T082) and look for gross edge elsewhere.",
+  "artifact_url": "https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp",
+  "asof": "2026-10-13",
+  "verdict": "The system runs on testnet, but trading has been halted since 12 Oct 09:46Z and no source has shown a real edge after fees. The plan of 11 Oct stands: rebuild Tom and Fabio from their own trades, test Tom on his home market first, and stop re-testing the old encodings on BTC. Tom is the furthest along: trade ledger built and repaired, test harness fixed, spec part A written 13 Oct (TOM_LAYER_V2_SPEC.md). The 13 Oct review found the plan right and the pace on that one chain too slow: about 80 sessions in 30 hours, one step forward on Tom. See research/ALIGNMENT_2026-10-13.md.",
   "road": [
     {
       "id": "S1",
@@ -150,6 +150,18 @@
       "result": "Already one slot; research found no gross edge; pays its fees and nothing else (-11 bp vs 12 bp cost)",
       "verdict": "fail",
       "src": "TURN_OF_CANDLE_ORIGIN_2026-10-09.md"
+    },
+    {
+      "test": "Tom/Fabio cross-guidance matrix (Q33)",
+      "result": "336 trigger x context cells on BTC with fees: 0 survive; best +0.039 %, q 0.62",
+      "verdict": "fail",
+      "src": "tom_fabio_guidance_2026-10-12/MATRIX_REPORT.md"
+    },
+    {
+      "test": "RSI divergence, every timeframe (recount 12 Oct)",
+      "result": "92 cells: 36 with enough events (35 negative after fees), 56 too few events, 0 candidates. Gross is about zero before fees",
+      "verdict": "fail",
+      "src": "non_core_layer_audit_2026-10-12/REVIEW.md"
     }
   ],
   "health_notes": [
@@ -202,6 +214,14 @@
     {
       "date": "2026-10-12",
       "what": "New Layer Board section under the road: one line per layer being worked on (stage, indicators, setups, open rows, next step, source file). 'not recorded' means no committed file states it. Layout waits for your approval (B177)."
+    },
+    {
+      "date": "2026-10-12",
+      "what": "Claude-GPT cycle section: shared relay notes, task lanes for Claude and GPT, claims, relay runs, Codex reports. Inbox gets a Note for the relay kind."
+    },
+    {
+      "date": "2026-10-13",
+      "what": "New section 'Sessions: what each one did': results shipped in the last 48 hours, newest first, then every session with its machine and whether it shipped anything. Decisions for you now holds the nine open questions from the 13 Oct alignment review; each says what was done under your go and waits for your answer. Verdict and Layer Board refreshed."
     }
   ],
   "finding_closed": {
@@ -214,13 +234,13 @@
       "name": "Tom (v2 redefinition)",
       "stage": "spec",
       "indicators": "profile shape P/b, inside bar, ledge of old highs, liquidity above (his reasons, not yet in the code)",
-      "setups": "7 chart-verified DAX trades; coded Tom fired on 0 of 7; families not recorded",
+      "setups": "37 ledger rows in 12 trade groups (repaired 12 Oct); coded Tom fired on 0 of 7 chart-verified DAX trades; spec A: 10 groups = imbalance fade (short at an unsupported high), T4 = gap-close pullback (parked), T8 unassignable",
       "rows": [
         "B146",
         "B147",
         "T052"
       ],
-      "next": "tom-holdout-clean-split, then tom-layer-v2-spec (Opus)",
+      "next": "spec part A done 13 Oct (one family: imbalance fade, 10 of 12 trade groups; fee-net test and design/check split frozen). Now rv-fix-tom-ledger-date-column, then tom-holdout-clean-split, then spec part B (Opus)",
       "src": "MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md:9"
     },
     {
@@ -228,13 +248,13 @@
       "name": "Fabio (v2 redefinition)",
       "stage": "spec",
       "indicators": "not recorded",
-      "setups": "not recorded",
+      "setups": "8 usable ledger entries against a goal of 20; ledger audit says fix first (3 high, 4 medium)",
       "rows": [
         "T084",
         "B123"
       ],
-      "next": "fabio-ledger-minute-timestamps, then fabio-layer-v2-spec (Opus)",
-      "src": "MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md:44"
+      "next": "fabio-ledger fixes and minute timestamps (frames need JIS-NB), then the spec (on hold, question Q4)",
+      "src": "MyTradingSys/research/ALIGNMENT_2026-10-13.md"
     },
     {
       "id": "turn-of-candle",

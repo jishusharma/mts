@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-16T05:14:26Z",
   "commands": [],
   "created": "2026-10-11T06:50:57Z",
   "depends_on": [],
@@ -9,18 +10,21 @@
   "goal": "",
   "id": "fabio-ledger-scan-dys79eb92ug-is1hvdfqm5",
   "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
   "live_path": false,
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "Is1HvdfQm5c: done from ASR audio transcript, 0 live fills with stated entry+stop, no ledger rows added (see FABIO_TRADE_LEDGER.md update 2026-10-16). DyS79Eb92Ug t>1100 stays covered by its canonical captions transcript. xUyqIjCfZzg: ASR transcription running, extraction still to do (fabio-xuyq-asr-extract card).",
   "scope_in": [],
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "done",
   "steps": [],
   "tests": "",
   "title": "Fabio ledger: scan DyS79Eb92Ug, Is1HvdfQm5c, xUyqIjCfZzg (downloaded on F:, 2.4-3.8 h live sessions) for trades; sample sheets at 300 s steps, then read 30 s sheets around each entry; add rows to FABIO_TRADE_LEDGER.csv"

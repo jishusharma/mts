@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-16T21:00:46Z",
+  "commands": [],
+  "created": "2026-10-16T19:53:45Z",
+  "depends_on": [],
+  "done_when": "Report states MATCH/MISMATCH for FAB4 run>=4, divergence window b-60..b-5, intraday timestamp fence, plus causality probe 11/11.",
+  "from_inbox": "",
+  "goal": "Rerun the GPT g3_pack audit on the fixed g3_pack.py: confirm the three code HIGH findings are closed and no new causality/fence break; blindness findings stay with their own cards.",
+  "id": "g3-pack-audit-rerun",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "note": "Do not open the key. Run AFTER g3-remove-visible-chart-cues-that-disclo (blindness fix, done 2026-10-17): also confirm the chart cues are gone and decide if the draw rebuild is safe.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-16_gpt-g3-pack-audit.md"
+  ],
+  "result": "MATCH 11/11 causality; report MyTradingSys/research/layer_lab/reports/2026-10-16_g3-pack-audit-rerun.md",
+  "scope_in": [
+    "MyTradingSys/research/g3_marks_2026-10-16/g3_pack.py",
+    "MyTradingSys/research/g3_marks_2026-10-16/test_g3_pack.py"
+  ],
+  "scope_out": [
+    "the answer key and KEY.csv",
+    "any VALIDATION or HOLDOUT read",
+    "draw rebuild"
+  ],
+  "size": "S",
+  "sources": [
+    "g3-pack-code-fixes 2026-10-16"
+  ],
+  "state": "done",
+  "steps": [
+    "Re-run the poison probe and test_g3_pack.py (11 tests) on current g3_pack.py",
+    "Compare the three fixed functions with READER_PROTOCOL sec.1 and list verdicts",
+    "State whether a draw rebuild is safe (blindness cards open: default no)",
+    "Confirm blindness fix: TOM-15 range always drawn, no clock labels, selection rules only in ANSWER_KEY_CLOSED"
+  ],
+  "tests": "Audit report with the three verdicts and probe counts.",
+  "title": "G3 pack audit rerun after the three code fixes (fab4 min run, mal divergence window, intraday fence); blindness cards still open"
+}

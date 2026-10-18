@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/sync.py claim \"dsa-audit-05-placebo-nulls\"",
+    "python scripts/dev/tasks.py take dsa-audit-05-placebo-nulls",
+    "Get-ChildItem MyTradingSys/research -Recurse -Include trials.csv,TRIAL_REGISTRY.csv | Select-Object FullName,Length",
+    "Get-Content MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py",
+    "python scripts/dev/tasks.py done dsa-audit-05-placebo-nulls --result \"<Tnn>: k findings (S1 a, S2 b, S3 c); <headline>\"",
+    "# AIRUN task=mts-ship repo=<WORKTREE> timeout=1800  (then git cherry origin/fast-track HEAD is empty)"
+  ],
+  "created": "2026-10-15T23:28:58Z",
+  "depends_on": [],
+  "done_when": "T05_placebo_nulls.md shipped: per-arm empirical p, SD ratio, overlap and bootstrap t; best-of-N bar per study; half-year signs; fair LC1 rerun; leads L7/L8 resolved; S1/S2 carded.",
+  "est_turns": 36,
+  "from_inbox": "",
+  "goal": "Measure the real null for each recent screen with matched placebo events, correct for overlapping holds and the number of arms tried, check half-year stability, and rebuild the LC1 level-hold control as a fair null.",
+  "id": "dsa-audit-05-placebo-nulls",
+  "lane": "DSA-NB",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:results CLASS:C2 REVIEWER:GPT medium + Haiku re-derive Audit/re-check, exempt from HOLD A-20261018-5 (reads lab-era data/results, no new consumer). DECISION (OURS): no pre-dispatch reviewer Agent in this pass; the card's own reviewer slot reviews the T0x report.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "coordinator MTS super-session 2026-10-16",
+  "refreshed": "2026-10-17T07:16:28Z",
+  "refs": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T05_placebo_nulls.md and MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T05/ (new files only)",
+    "read-only: repo code, result files, data under F:/MTS/data and Dumps (windows per brief section 5)"
+  ],
+  "scope_out": [
+    "fixing what you find (cards instead)",
+    "VALIDATION or HOLDOUT returns",
+    "writes to the live tree, F:/MTS/data or Dumps",
+    "F:/AIBridge and scripts/aibridge",
+    "changing any verdict, ledger or pre-registered bar"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T05' (full method).",
+    "For each arm of the gross screen, mal_bb, opr_bb_mtf_center, opr_weekly_low_round_sweep, opr_preopen_tops and candle_close: 1,000 seeded placebo sets matched on 15-min slot, weekday and cooldown, scored by the study's own return function.",
+    "Per arm: empirical p, placebo SD / published SE, placebo mean vs published control.",
+    "Overlap share, effective n and week-block bootstrap t; best-of-N null from the true count of arms x horizons x variants (lead L7).",
+    "Half-year stability on DEV for arms with n >= 100.",
+    "LC1 (lead L8): fair touched-only control on the footprint window (exposure row); recompute the 12 hold rates and which KEEPs survive."
+  ],
+  "tests": "",
+  "title": "DSA audit T05: matched placebo distributions, overlap, best-of-N and a fair LC1 control",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

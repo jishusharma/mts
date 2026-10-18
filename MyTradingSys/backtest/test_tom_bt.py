@@ -26,10 +26,33 @@ def sim(bars, fees=T.FEES_DERIBIT, **kw):
     a = dict(LONG)
     a.update({k: kw.pop(k) for k in list(kw) if k in a})
     return T.sim_limit_trade(mk(bars), 0, a["side"], a["entry"], a["stop"], a["target"],
-                             kw.get("fill_window", 5), kw.get("hold", 5), fees, kw.get("stop_first", True), kw.get("slip", 0.0))
+                             kw.get("fill_window", 5), kw.get("hold", 5), fees, kw.get("stop_first", True),
+                             kw.get("slip", 0.0), through_ticks=kw.get("through_ticks", 0.0))
 
 
 class TestSim(unittest.TestCase):
+    def test_through_ticks_entry_and_target(self):
+        # EXPECT: entry and target require the requested excursion beyond the limit.
+        touch_entry = [(100.2, 100.5, 100.0, 100.3)]
+        self.assertTrue(sim(touch_entry, through_ticks=0)["filled"])
+        self.assertFalse(sim(touch_entry, through_ticks=1)["filled"])
+
+        through_entry = [(100.2, 100.5, 99.0, 100.3), (100.3, 103.5, 100.1, 103.0)]
+        self.assertTrue(sim(through_entry, stop=90.0, target=110.0, through_ticks=0)["filled"])
+        self.assertTrue(sim(through_entry, stop=90.0, target=110.0, through_ticks=1)["filled"])
+
+        # Entry trades through at 99; target touches 103 on bar 1, then trades through at 104 on bar 2.
+        touch_target = [(99.9, 100.5, 99.0, 100.1), (100.1, 103.0, 100.0, 102.5),
+                        (102.5, 104.0, 102.0, 103.5)]
+        r = sim(touch_target, stop=90.0, through_ticks=1)
+        self.assertEqual(r["reason"], "target")
+        self.assertEqual(r["exit_i"], 2)
+
+    def test_default_through_ticks_preserves_golden_result(self):
+        bars = [(100.2, 100.5, 99.9, 100.3), (100.3, 103.5, 100.1, 103.0)]
+        self.assertEqual(sim(bars), dict(filled=True, reason="target", gross_r=3.0, net_r=3.0,
+                                          fee_r=0.0, fill_i=0, exit_i=1, bars_held=1, ambiguous=0))
+
     def test_long_target_fees(self):
         bars = [(100.2, 100.5, 99.9, 100.3), (100.3, 103.5, 100.1, 103.0)]
         r = sim(bars)

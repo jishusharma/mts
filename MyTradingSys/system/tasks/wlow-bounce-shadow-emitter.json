@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-15T22:10:53Z",
+  "commands": [
+    "python -m unittest MyTradingSys.backtest.layers.wlow_bounce.test_detector",
+    "python -m MyTradingSys.backtest.layers.wlow_bounce.status",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-15T20:36:26Z",
+  "depends_on": [],
+  "done_when": "live_runner_cli has a wlow_bounce 1h layer in build_default_registry that returns an event only when status_now is ACTIVE on a NEW trigger bar, each event tagged collection_only=True with shadow_side='long' (the PRE_REG primary direction, observation only) and NO 'side'; tests fail on old code and pass on new; run_all_tests --quick green; MTS-AutoDeploy ships it (builder never deploys).",
+  "from_inbox": "",
+  "goal": "Emit the weekly-low bounce detector (MyTradingSys/backtest/layers/wlow_bounce/detector.py) as a collection-only shadow layer in live_runner_cli so every ARMED/ACTIVE event is logged with CVD / net delta / OI readings and a forward sample builds. No side, no order path.",
+  "id": "wlow-bounce-shadow-emitter",
+  "kind": "build",
+  "lane": "JIS-NB",
+  "layers": [
+    "live_engine"
+  ],
+  "live_path": true,
+  "note": "Created by W16 overnight 2026-10-16 from the operator request 'Move it to right channels for live tracking'. Unvalidated setup: observation only.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "W16 wlow-bounce-bbrsi60 2026-10-16",
+  "refs": [
+    "MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/PRE_REG.md",
+    "MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/RESULT.md",
+    "MyTradingSys/system/PROMOTION_PIPELINE.md"
+  ],
+  "result": "d2be783f: collection-only shadow emitter in live_runner_cli; forward rows with OI/CVD/net delta; 13/14 new tests fail on old code; live after next deploy",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/alerts/live_runner_cli.py: add a layer factory next to the Fabio v3 emitter and register it in build_default_registry on tf 1h",
+    "MyTradingSys/backtest/layers/alerts/test_live_runner_cli.py: tests",
+    "MyTradingSys/backtest/layers/wlow_bounce/ (read-only import of detector.status_now / delta_sum)"
+  ],
+  "scope_out": [
+    "auto_trader.py, execution/, promotion/registry.py, promote.py, auto_deploy.py",
+    "registering the setup in promoted_setups.json (needs PASS + VALIDATION + holdout reads first)",
+    "any 'side' key, layer_rules entry or size_overrides for wlow_bounce",
+    "restarting processes, HALT/AUTO_PAUSE files (the supervisor deploys)"
+  ],
+  "size": "S",
+  "sources": [
+    "live_runner_cli.py: Fabio v3 SHADOW cells already emit {'collection_only': True, 'shadow_side': side} with no 'side' (the pattern to copy); poll_once passes alerts through apply_promotion_gate (line ~337)",
+    "RESULT.md: DEV verdict INCONCLUSIVE n=8; promote.py check REJECT; the setup is UNVALIDATED so collection-only is the only allowed mode"
+  ],
+  "state": "done",
+  "steps": [
+    "Wait until fable-h1-promotion-default-deny is on origin/fast-track (git cherry), then re-read live_runner_cli.py poll_once and the Fabio v3 emitter.",
+    "Add make_wlow_bounce_layer(): from the closed 1h bars build candles {t,o,h,l,c,v,tbv} (tbv = taker-buy volume; if the bars lack it, return [] and log wlow_no_tbv once), call detector.status_now(candles). Return one event only when state == ACTIVE and the trigger bar is the LAST bar (dedupe through the runner's state dict keyed by trigger bar t).",
+    "Event shape: {'t': bar t, 'event': 'wlow_bounce_bbrsi60_active', 'collection_only': True, 'shadow_side': 'long', 'prior_weekly_low': W, 'rsi14': .., 'gap_to_upper_pct': .., 'net_delta_hold': delta_sum(K bars), 'episode_cvd': delta_sum(break..trigger)}; NO 'side' key. OI: see status.fetch_oi, None if no network.",
+    "Register it in build_default_registry as layer 'wlow_bounce', sub 'bbrsi60', tf '1h' (alert source layer:wlow_bounce:bbrsi60:1h). Do NOT add a promoted_setups entry.",
+    "Tests (red first): synthetic candles from wlow_bounce/test_detector.py shape() -> exactly one collection_only event with no 'side'; a second poll on the same bar -> none; a fresh state dict re-emits at most once per trigger bar (restart/reset state); fetch error, missing tbv or too few bars -> [] and no exception (fail closed); auto_trader.layer_signal rejects the alert.",
+    "Run python scripts/dev/run_all_tests.py --quick, sync.py ship --release <slug>. Tell the operator it is observation only: logs, no trades."
+  ],
+  "tests": "test_live_runner_cli.py: the new tests in step 5; they fail on the current file (no wlow layer registered).",
+  "title": "wire wlow-bounce detector as collection-only shadow emitter in live_runner_cli after fable-h1 ships"
+}

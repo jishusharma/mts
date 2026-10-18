@@ -335,8 +335,41 @@ class ShotTest(unittest.TestCase):
             shot.done(self.store, [c], "finding:F-BT-9999")
         with self.assertRaises(shot.ShotError):
             shot.done(self.store, [c], "closed")
+        with self.assertRaises(shot.ShotError):  # a task card that does not exist
+            shot.done(self.store, [c], "finding:card:no-such-card-for-this-test")
         shot.done(self.store, [c], "finding:B001")  # B001 is a real BUGS.md row
+        d = self.chart("d", "15m")
+        shot.read_extract(self.store, [d], self.extract("Shots: %s\nPrior: none\n| C1-01 | MISMATCH | a | b |\n" % d))
+        shot.done(self.store, [d], "finding:card:tom-trade-ledger")  # a real task card file files the finding too
+        self.assertEqual(self.state()[d]["status"], "done")
         self.assertEqual(self.state()[c]["status"], "done")
+
+    def test_done_note_on_mismatch_shot_refused(self):
+        """RV07: a MISMATCH is a B-item or an explained noaction (screenshot_intake.md); note:/feature: must not close it."""
+        c = self.chart("c", "5m")
+        shot.read_extract(self.store, [c], self.extract("Shots: %s\nPrior: none\n| C1-01 | MISMATCH | a | b |\n" % c))
+        with mock.patch.object(shot, "outcome_exists", return_value=True):
+            with self.assertRaises(shot.ShotError):
+                shot.done(self.store, [c], "note:looked at it, fine")
+            with self.assertRaises(shot.ShotError):
+                shot.done(self.store, [c], "feature:FEAT-11")
+            self.assertEqual(self.state()[c]["status"], "read")
+            d = self.chart("d", "15m")
+            shot.read_extract(self.store, [d], self.extract("Shots: %s\nPrior: none\n| C1-01 | NOT_IN_DATA | a | b |\n" % d))
+            shot.done(self.store, [d], "feature:FEAT-11")  # NOT_IN_DATA becomes a feature hypothesis
+            self.assertEqual(self.state()[d]["status"], "done")
+
+    def test_outcome_exists_whole_token(self):
+        """RV07: FEAT-1 must not count as filed because FEAT-11 is in a doc (git grep -F was a substring match)."""
+        repo = self.tmp / "repo"
+        repo.mkdir()
+        shot.git("init", "-q", cwd=repo)
+        (repo / "doc.md").write_text("FEAT-11 and F-BT-23 are filed here\n", encoding="utf-8", newline="\n")
+        with mock.patch.object(shot, "REPO", repo), mock.patch.dict(os.environ, {"MTS_SHOT_SKIP_REPO_CHECK": ""}):
+            self.assertTrue(shot.outcome_exists("FEAT-11"))
+            self.assertTrue(shot.outcome_exists("F-BT-23"))
+            self.assertFalse(shot.outcome_exists("FEAT-1"))
+            self.assertFalse(shot.outcome_exists("F-BT-2"))
 
     def test_non_chart_can_close_without_a_read(self):
         a = self.landed("a")
@@ -411,6 +444,65 @@ class ShotTest(unittest.TestCase):
             self.write_transcript(paste_rec(png("a"), "x"))
             rc, _, _ = self.run_main("hook", stdin=self.payload())
         self.assertEqual(rc, 0)
+
+    # ------------------------------------------------------------ carried falsifiers (T092)
+    def test_falsifier_status_price_level_held(self):
+        # SOURCED line: "Falsify: acceptance under 82630" (test_shot.py:211, B157_screenshot_read_starts_cold.md:7)
+        # OURS fixture: low touches/dips to 82600 (tested), but close 82650 holds above 82630
+        line = "Falsify: acceptance under 82630"
+        klines = [{"o": 82700.0, "h": 82750.0, "l": 82600.0, "c": 82650.0}]
+        self.assertEqual(shot.falsifier_status(line, klines), "HELD")
+
+    def test_falsifier_status_price_level_broken_by_close(self):
+        # SOURCED line: "Falsify: acceptance under 82630" (test_shot.py:211, B157_screenshot_read_starts_cold.md:7)
+        # OURS fixture: close 82550 is below 82630
+        line = "Falsify: acceptance under 82630"
+        klines = [{"o": 82700.0, "h": 82750.0, "l": 82500.0, "c": 82550.0}]
+        self.assertEqual(shot.falsifier_status(line, klines), "BROKEN")
+
+    def test_falsifier_status_price_level_not_yet_reached(self):
+        # SOURCED line: "Falsify: acceptance under 82630" (test_shot.py:211, B157_screenshot_read_starts_cold.md:7)
+        # OURS fixture: low 82680 never reaches 82630
+        line = "Falsify: acceptance under 82630"
+        klines = [{"o": 82700.0, "h": 82800.0, "l": 82680.0, "c": 82750.0}]
+        self.assertEqual(shot.falsifier_status(line, klines), "UNTESTED")
+
+    def test_falsifier_status_range_and_non_price_lines(self):
+        # SOURCED line: "Invalidation: acceptance outside 82450-83470" (test_shot.py:211)
+        line = "Invalidation: acceptance outside 82450-83470"
+        # Level held: low probes 82400 but close is 82460 (inside range)
+        self.assertEqual(shot.falsifier_status(line, [{"o": 82500, "h": 82600, "l": 82400, "c": 82460}]), "HELD")
+        # Broken: close 82400 (outside range)
+        self.assertEqual(shot.falsifier_status(line, [{"o": 82500, "h": 82600, "l": 82350, "c": 82400}]), "BROKEN")
+        # Unreached: all bars inside [82450, 83470] without touching bounds
+        self.assertEqual(shot.falsifier_status(line, [{"o": 82500, "h": 83000, "l": 82500, "c": 82900}]), "UNTESTED")
+        # SOURCED line: "- falsify if CVD flips" (test_shot.py:212) -> non-price line -> UNTESTED
+        self.assertEqual(shot.falsifier_status("- falsify if CVD flips", [{"o": 82500, "h": 82600, "l": 82400, "c": 82460}]), "UNTESTED")
+
+    def test_read_prints_status_for_each_carried_falsifier(self):
+        c = self.chart("c", "5m")
+        rows = "| C1-01 | MATCH | a | b |\n"
+        old = self.tmp / "prior_read.md"
+        old.write_text("Shots: x\n- Invalidation: acceptance outside 82450-83470\nFalsify: acceptance under 82630\n- falsify if CVD flips\n",
+                       encoding="utf-8", newline="\n")
+        ext = self.extract("Shots: %s\nPrior: %s\n%s" % (c, old, rows))
+        # Provide klines where 82630 and 82450 are broken by close (close 82400 < 82450 < 82630)
+        kpath = self.tmp / "klines.json"
+        kpath.write_text(json.dumps([{"o": 82700, "h": 82750, "l": 82350, "c": 82400}]), encoding="utf-8", newline="\n")
+        rc, out, _ = self.run_main("read", c, "--extract", str(ext), "--klines", str(kpath))
+        self.assertEqual(rc, 0)
+        self.assertIn("[BROKEN] Falsify: acceptance under 82630", out)
+        self.assertIn("[BROKEN] Invalidation: acceptance outside 82450-83470", out)
+        self.assertIn("[UNTESTED] falsify if CVD flips", out)
+
+
+class MainRootOldGit(unittest.TestCase):
+    def test_git_224_flag_echo_is_not_a_path(self):
+        """git 2.24 prints the unsupported flag as line 1 then the dir; the store path must be the dir."""
+        def fake(*a, cwd=None):
+            return "--path-format=absolute\nC:/x/MTS/.git\n" if "--path-format=absolute" in a else ""
+        with mock.patch.object(shot, "git", fake):
+            self.assertEqual(shot.main_root(), Path("C:/x/MTS"))
 
 
 if __name__ == "__main__":

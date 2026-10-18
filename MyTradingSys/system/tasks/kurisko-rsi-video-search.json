@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/rsi_kurisko_2026-10-09/RSI_VIDEO_SEARCH.md"
+  ],
+  "created": "2026-10-18T15:48:30Z",
+  "depends_on": [],
+  "done_when": "RSI_VIDEO_SEARCH.md in rsi_kurisko_2026-10-09/ lists videos checked, exact RSI quotes with url, timestamp, indicator and platform (or says none found), and passes verify_extract_quotes.py.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Find what RSI settings Kurisko actually states (his Quad Rotation uses four stochastics (9,3),(14,3),(40,4),(60,10); the RSI arm in kurisko_2026-10-18 used unsourced Wilder RSI 9/14/40/60 at 20/80 and froze nothing). Operator recalls the TradingView RSI differed from the plain one and had to be dug out. Find his own words, label every number SOURCED with quote and url, never guess settings.",
+  "id": "kurisko-rsi-video-search",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini Flash queue job (agy, throwaway worktree). Output is a research file only: no counting, no backtest, no change to the RSI arm. Claude reviews before ship.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T15:49:04Z",
+  "refs": [
+    "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md",
+    "MyTradingSys/research/kurisko_2026-10-18/PRE_REG.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rsi_kurisko_2026-10-09/RSI_VIDEO_SEARCH.md"
+  ],
+  "scope_out": [
+    "MyTradingSys/backtest",
+    "MyTradingSys/research/kurisko_2026-10-18/counts",
+    "scripts/dev/prereg_gate.py"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "active",
+  "steps": [
+    "Read KURISKO_SPEC.md and the transcript extract folder to list the Kurisko videos already known.",
+    "Search his channel/captions (free public YouTube captions are pre-approved) for 'RSI', 'relative strength', 'divergence', indicator settings and platform names.",
+    "Write RSI_VIDEO_SEARCH.md with exact quotes, url, timestamp, platform, plus a list of videos checked with no RSI numbers.",
+    "Run verify_extract_quotes.py on the file and fix failing quotes."
+  ],
+  "taken": "2026-10-18T16:17:13Z",
+  "tests": "No code change. verify_extract_quotes.py on RSI_VIDEO_SEARCH.md must pass; it fails before the file exists.",
+  "title": "Kurisko: find videos where he states RSI periods, levels, smoothing and platform (TradingView or other) for the four-indicator setup",
+  "weight": "",
+  "worker": "session"
+}
