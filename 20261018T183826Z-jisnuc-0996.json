@@ -1,0 +1,1 @@
+{"t": "20261018T183826Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start gem-review-tandem2 2>&1 | grep -E \"WORKTREE|branch=\"; for c in [cut] positioning-c1-prereg-no-source malkan-universe-data-power; do echo \"=== $c\"; python scripts/dev/tasks.py brief $c 2>&1 | hea"}
