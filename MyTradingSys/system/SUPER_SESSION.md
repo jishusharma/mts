@@ -14,8 +14,8 @@ Fixed cost of every turn ~70-80 k tokens (tools 39 k, MCP 26 k, prompt 9 k, skil
 only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); at ~120 k on a 1 M window it gains little. Rules: WORKERS.md rule 5.
 
 ## Rules (from the audit)
-1. **Compaction and workers: see WORKERS.md** (canonical; measured numbers there). Short form: never compact by hand a session that will
-   ship soon; compact only with 15+ turns left and above ~150k, else hand off (NEXT_SESSION.md or a `start_session` brief) and archive.
+1. **Turn budget and workers: see WORKERS.md rule 5** (canonical). No compaction: reuse a session while its budget has room, else hand off
+   (NEXT_SESSION.md or a `start_session` brief) and archive.
 2. **The coordinator works little itself.** It reads results, decides, spot-checks one claim per worker (`git cherry` empty =
    shipped), and archives. Model: the one the operator started it on (WORKERS.md rule 6); workers Sonnet, Haiku for mechanical status.
    Fable only when the operator starts it.
@@ -24,7 +24,7 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); at ~1
    go to the coordinator, which decides toward the goal and logs the decision in the worker's deliverable.
 4. **Parallel tool calls in one message**: one turn re-reads the whole context, so batching is the cheapest saving there is.
 5. **Second coordinator for the tail.** When the coordinator passes ~300 turns or the operator is about to restart, it hands the
-   drain (ship queue, archive, hand-over note) to a fresh Sonnet coordinator instead of compacting again.
+   drain (ship queue, archive, hand-over note) to a fresh Sonnet coordinator.
 6. **No disk or process scans in loops** (Defender finding 2026-10-15): size a folder once with a timeout; never kill processes.
 7. **Learning loop (operator 2026-10-16).** Each super session reads Boot facts below INSTEAD of looking them up, and before it
    ends: (a) adds every fact it had to look up and corrects any that were wrong, (b) adds one line to the Session log, (c) prunes.
@@ -33,10 +33,10 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); at ~1
 8. **Agent workers (2026-10-16).** Briefs ask for: ship once then stop (a second `sync.py ship` only re-wakes the coordinator),
    the proof that new tests fail on the old code (run them against `git show <sha>^:<file>` copies), a final reply of at most
    N lines, long notes in the shared notes folder. Tasks touching the same file run one after the other; others run in parallel.
-9. **Compaction by context share (operator 2026-10-16).** `.claude/settings.json` sets `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=12` (~120k of 1M, 2026-10-18): a backstop, not a
-   plan (WORKERS.md rule 5). A model cannot run `/compact` itself. Working bands: under ~18 % keep going; 18-20 % finish the current task,
-   then end it (ship, release, hand off); 20-25 % finish only if crucial and nearly done, else commit and let it run. Keep working state in
-   files (NEXT_SESSION.md, notes folder, task card), not in the context.
+9. **Turn budget by context size (operator 2026-10-18, replaces the 10-16 compaction-by-share rule).** The hook `turn_meter.py` allows 4M / context
+   tool turns to Sonnet/Haiku, no turn cap to Opus (hand over at 500k), and to Fable one operator message (hard). The coordinator's own
+   sweep on every wake: `get_usage` per running worker, reuse or `mark_completed` + `archive_session`. Keep working state in files
+   (NEXT_SESSION.md, notes folder, task card), not in the context.
 10. **Signals between logins and machines (operator 2026-10-16).** The app cannot message across logins, so `scripts/dev/mts_signal.py`
    (hook in `.claude/settings.json`, automatic) sends a line on the git branch `mts-signals` when a session starts or runs
    `sync.py claim|release|ship|start`, and every 5 minutes shows the signals other host/account pairs sent. Sessions do nothing for
@@ -153,7 +153,7 @@ Goal today: <one line, e.g. "rebuild layers setups-first: catalogue -> PRE_REG -
 First turn: get_usage (THROTTLE -> tell me and stop), relay.py stop "super-session", read STATUS.md and NEXT_SESSION.md, pick the tasks that serve the goal.
 Spawn workers per WORKERS.md (session by default, Agent only for size S; Sonnet; Haiku for mechanical status), at most 4 running, each with a full brief: goal, files, DONE when, defaults for open questions, hard limits from CLAUDE.md. Workers never ask me; you decide toward the goal and log it.
 Rule 11: any diff touching the live path, gates, promote.py, prereg_gate.py or decision numbers gets an independent Sonnet review Agent (diff only, 5-line reply, 30k token cap) before ship.
-Verify every ship with git cherry, mark finished workers completed, compact only per WORKERS.md rule 5, hand the tail to a second coordinator per rule 5 above.
+Verify every ship with git cherry, mark finished workers completed, budget turns per WORKERS.md rule 5, hand the tail to a second coordinator per rule 5 above.
 End: drain, hand-over note with get_usage, relay.py resume, one line to me.
 ```
 

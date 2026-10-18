@@ -35,5 +35,5 @@ Not roles: one-off task threads (compaction report, Fable backtesting, coordinat
 ## Rules for every role
 - Work in the worktree `sync.py start <slug>` prints; never the live tree. Share only through `sync.py ship`. Cross-machine messages only through `mts_signal.py send` (one line); long requests are a desk task, the signal points to it.
 - Opus only as in WORKERS.md rule 6. Scoped sub-work goes to Haiku Agents (rule 3a, at most 5 at a time).
-- Compact a role session at 220-280k context and only with 15+ turns of work left (MyTradingSys/research/COMPACTION_REPORT_2026-10-16.md); otherwise hand over.
+- No compaction (operator 2026-10-18): a role session runs under the turn budget in WORKERS.md rule 5 and is replaced by its one-line start prompt when it is over it.
 - Roles report; they do not trade, deploy, restart, touch HALT files or read `.secrets/`.
