@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T19:30:00Z",
+  "depends_on": [],
+  "done_when": "tests pass, review APPROVE, GATE_SPEED.md 'Not done' updated, shipped",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Separate clones and prechecks bypass the 2-slot cap (sync.py gate_slot uses the git common dir); six ships queued 2-3 h on 2026-10-18. One host-wide budget plus timing data.",
+  "id": "sv7-host-gate-budget",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/dsa-nuc-rows-2",
+      "ref": "15b83a947571",
+      "utc": "2026-10-18T18:31:30Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b1c928e5be23 GATE_SPEED.md: after-numbers of the first ship",
+      "ref": "MyTradingSys/system/GATE_SPEED.md",
+      "utc": "2026-10-18T16:38:52Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: gpt-6-astra 2026-10-18 - cross-vendor read-only review of the SUPERVISOR.md design this card implements (12 findings, folded or rejected with reasons there): ACCEPT.",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "supervisor-design (Opus, operator-named)",
+  "refreshed": "2026-10-18T18:47:01Z",
+  "refs": [
+    "MyTradingSys/system/SUPERVISOR.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py (gate_slot dir)",
+    "scripts/dev/run_all_tests.py (precheck slot)",
+    "scripts/dev/test_sync.py",
+    "MyTradingSys/system/GATE_SPEED.md"
+  ],
+  "scope_out": [
+    "live tree, processes, deploys, HALT files",
+    "ROUTING.md (Pipeliner owns it)",
+    "unrelated cleanups"
+  ],
+  "scope_sha": "15b83a947571",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/SUPERVISOR.md (design 2026-10-18)"
+  ],
+  "state": "ready",
+  "steps": [
+    "slot dir under a host path (env override for tests)",
+    "precheck takes a light slot or counts against the budget",
+    "log wait, run and retry seconds per ship",
+    "diff-only review Agent (gate change)"
+  ],
+  "tests": "two fake clones share one slot set; precheck counted; dead-PID reclaim still works; fail first",
+  "title": "Supervisor SV7: machine-wide gate slots (not per git dir), prechecks counted, queue/service/retry times logged",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

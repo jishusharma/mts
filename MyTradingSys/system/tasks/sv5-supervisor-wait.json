@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T19:30:00Z",
+  "depends_on": [],
+  "done_when": "tests pass; stop at 20 turns and report",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Replace the 113 watch turns (sleep loops, list_sessions) with one background shell per wave that cannot loop on restart.",
+  "id": "sv5-supervisor-wait",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "supervisor-design (Opus, operator-named)",
+  "refreshed": "2026-10-18T18:46:36Z",
+  "refs": [
+    "MyTradingSys/system/SUPERVISOR.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/supervisor.py (wait)",
+    "scripts/dev/test_supervisor.py"
+  ],
+  "scope_out": [
+    "live tree, processes, deploys, HALT files",
+    "ROUTING.md (Pipeliner owns it)",
+    "unrelated cleanups"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/SUPERVISOR.md (design 2026-10-18)"
+  ],
+  "state": "ready",
+  "steps": [
+    "baseline at start: which --shas are on trunk, CI state, slots busy",
+    "git fetch every 300 s; exit 0 with a one-line reason on the first transition, exit 3 at --timeout",
+    "no exit on a state that held at start"
+  ],
+  "tests": "fake fetch sequence: sha already on trunk at start -> no exit; sha lands -> exit; CI flips -> exit; timeout -> 3; fail first",
+  "title": "Supervisor SV5: supervisor.py wait (one watcher, exits on transitions only)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -5,6 +5,9 @@ A **super session** is one coordinator session in the Claude Code Win App that s
 meter has headroom (Pacing below). First one: 2026-10-15, coordinator local_62faa820 (Opus), about 20 linked workers, an Opus
 observer, and a second coordinator (coord-2) that drained the ship queue at the end.
 
+**Operating design: SUPERVISOR.md** (wake loop, role workers, verification, ship order; role file `roles/supervisor.md`,
+start a coordinator with `You are Supervisor.`). This file keeps the audit, rules history, boot facts and the session log.
+
 While a super session runs, the relay is paused: the coordinator IS the dispatcher. When none runs, nothing moves on its own: no relay, dispatcher or routine (MTS-DispatchGate and `mts-dispatcher` RETIRED 2026-10-17, see SCHEDULING_POLICY.md).
 For "schedule the next 5h/10h" the coordinator writes the card order into a plan file and works it.
 
@@ -118,7 +121,6 @@ only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); histo
 - SUPER-NB-1017 (2026-10-17, Sonnet coordinator, 6 Agent workers because start_session is refused for a session started by another session): 14 cards shipped, weekly 66 -> 67%; Agents fit the 100k rule; compound `cd && git`/merge commands were denied, use git -C.
 - DOCTOR-NB-1017 (2026-10-17, Sonnet): post-B1/B4 `traffic_report.py 24` = 631 commits, overhead 60% (merge 34, claim 13, release 13), was 68% pre-B1; doctor findings 3 -> 2 (remaining: relay skill 'Output caps' line is intentionally per-skill).
 - 2026-10-17 super-nuc-1017b (JIS-NUC, Opus coordinator, 3 Agents, 03:20Z-03:50Z): boot 12 tool turns (prior session's NEXT_SESSION on origin, not the stale shared checkout); Q85 BLOCKED e5988045, fire CSVs relabelled + 3 DEV reruns (no verdict change) 450636f4, 7 luna cards + g3-blindness-audit-rerun 1d2c875f; T07/T08 still absent. Learned: two of three workers exceeded 100k (should have been sessions); the operator could not see Agents in the sidebar.
-- 2026-10-17 super-nuc-1017 (JIS-NUC, Sonnet coordinator + 3 Agents + 1 triage session, ~8 h): context-compare-close shipped; CI green x3, 163 tests pass; traffic 24 h = 849 commits, overhead 64% (was 68%; re-measure on a window after 2026-10-16 12:00Z); lab BLOCKED cause = no data path in the briefs (fixed, 6a9d63d3); bigtrade DEV leak (DEV_END_MS) fixed 5b1bdc27; fires_kline SPLITS aligned to the repo split 23fb3c7d (old TRAIN fires contaminated, F: CSVs still carry the old split column); lab unstuck (wiring-gate STALE rule 984dbe74, prompt lint line 7eb5b5c8). Weekly 29% at stop. T07/T08 verdicts never landed, so Q87/Q88/confluence-read-encode/prob-dist were NOT started.
 
 
 ## Start (operator: open a new session, model Sonnet unless you name Opus (WORKERS.md rule 6), paste the prompt below)
