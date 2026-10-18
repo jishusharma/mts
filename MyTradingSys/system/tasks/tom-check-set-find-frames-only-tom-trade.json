@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [],
   "created": "2026-10-12T19:43:09Z",
   "depends_on": [],
@@ -30,7 +31,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C0 REVIEWER:machine checks + Flash low pass WEIGHT:ROUTINE. UNBLOCKED 2026-10-18 (A-20261018-5 lifted; no-FDAX-purchase rule stays; free YouTube pre-approved). DECISION OURS: zero new candidates is a valid result.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
+  "note": "DROPPED 2026-10-19 per GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md s6.1 (halt further Tom video ingestion; saturated at 84 videos; DAX chain dropped bf5dba20)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -54,7 +55,7 @@
   "scope_sha": "927515b62091",
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "dropped",
   "steps": [
     "list videos in F:/MTS/data/tom_videos with an .mp4 and no .vtt/.txt (liEJMfE_PXg and ZZeET7ng1nk are S7/S8, already CHECK); from the DE channel playlist use yt-dlp metadata only (no captions) to add recap candidates; STOP on HTTP 429 and log it",
     "download video-only, cut frames with grab.py (host with cv2/ffmpeg: JIS-NB), blind-read each order panel crop per A-20261018-7: required unreadable option, no claim shown, null for a hidden field",
@@ -65,6 +66,5 @@
   "title": "Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set is 2 trades)",
   "updated": "2026-10-18T10:00:00Z",
   "weight": "IMPORTANT",
-  "worker": "session",
-  "class": "C1"
+  "worker": "session"
 }

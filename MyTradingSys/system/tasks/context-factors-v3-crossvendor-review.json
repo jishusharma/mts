@@ -1,37 +1,60 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/prereg_gate.py --n 448 --sd 1.5 --cost 0 --m 89"
+  ],
   "created": "2026-10-18T16:17:45Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Audit report MyTradingSys/research/layer_lab/reports/2026-10-19_context-factors-v3-crossvendor-review.md is shipped with findings table (or 'no findings') and verdict line SOUND / FIX-FIRST / BLOCKED; card note updated with REVIEWED stamp.",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Independent review (not Gemini: GPT) of research/context_factors_pit_2026-10-16/PRE_REG_V3.md vs AUDIT_BEFORE_RUN.md sections 1-2: Holm-z n=437/319, FAIL/INCONCLUSIVE clauses, stop-gap rule, frozen sha256. Result: REVIEWED stamp or defect list.",
+  "goal": "Independent review (not Gemini: GPT) of research/context_factors_pit_2026-10-16/PRE_REG_V3.md vs AUDIT_BEFORE_RUN.md sections 1-2 and REGATE_AUDIT.md: Holm-z n=437/319 vs ledger m=89 (F3 flip), FAIL/INCONCLUSIVE clauses, stop-gap rule, frozen sha256. Result: REVIEWED stamp or defect list.",
   "id": "context-factors-v3-crossvendor-review",
   "kind": "audit",
   "lane": "CODEX",
-  "layers": [],
+  "layers": [
+    "fabio"
+  ],
   "live_path": false,
   "mutation_check": "",
-  "note": "From desk row 20261018-130525 (DSA) via Pipeliner 2026-10-18. Producer Gemini, so the reviewer is GPT (codex_run.py). Note: branch gemini-q/context-factors-pre-reg-v3 holds 2 unshipped Gemini commits; review what is on trunk.",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C2 REVIEWER:none WEIGHT:CRUCIAL. Refined by gemini-yt-pipeliner from desk row 20261018-130525; producer was Gemini, so reviewer is GPT (codex_run.py). T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C2/CRUCIAL promotion.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-yt-pipeliner",
+  "refreshed": "2026-10-18T21:03:00Z",
   "refs": [
-    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md"
+    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md",
+    "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md",
+    "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md"
+  ],
+  "scope_out": [
+    "code edits",
+    "running the one-run study",
+    "VALIDATION and HOLDOUT reads"
+  ],
+  "scope_sha": "60c1b88e5269",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read PRE_REG_V3.md, AUDIT_BEFORE_RUN.md sections 1-2, and REGATE_AUDIT.md (pit V3 row).",
+    "Verify the Holm-z power numbers (n=437/319 at m=59 vs n=460/335 at ledger m=89 where F3 flips at sd=1.5 R), FAIL/INCONCLUSIVE clauses, stop-gap rule, and frozen sha256.",
+    "Write MyTradingSys/research/layer_lab/reports/2026-10-19_context-factors-v3-crossvendor-review.md with findings table and one verdict line: SOUND / FIX-FIRST / BLOCKED."
+  ],
+  "tests": "python MyTradingSys/backtest/test_pre_reg_template.py",
   "title": "Cross-vendor review: context-factors PRE_REG_V3.md (Gemini-written, CRUCIAL)",
-  "weight": "",
-  "worker": ""
+  "weight": "CRUCIAL",
+  "worker": "agent",
+  "class": "C2"
 }

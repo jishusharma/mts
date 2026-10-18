@@ -1,11 +1,13 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/backtest/layers/kurisko/test_quad_rotation.py"
+  ],
   "created": "2026-10-18T16:17:43Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Audit report MyTradingSys/research/layer_lab/reports/2026-10-19_kurisko-module-crossvendor-review.md is shipped with findings table and verdict line SOUND / FIX-FIRST / BLOCKED; Reply ACCEPT or FIX lines in the card result.",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -13,25 +15,47 @@
   "id": "kurisko-module-crossvendor-review",
   "kind": "audit",
   "lane": "CODEX",
-  "layers": [],
+  "layers": [
+    "rsi"
+  ],
   "live_path": false,
   "mutation_check": "",
-  "note": "From desk row 20261018-065548 (DSA-NUC) via Pipeliner 2026-10-18: cross-vendor review is a CODEX card (GPT via codex_run.py or Gemini via gemini_queue.py), ROUTING.md.",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-yt-pipeliner from desk row 20261018-065548; T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-yt-pipeliner",
+  "refreshed": "2026-10-18T21:03:00Z",
   "refs": [
-    "MyTradingSys/backtest/layers/FORMULAS.md"
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/kurisko/stoch_core.py",
+    "MyTradingSys/backtest/layers/kurisko/quad_rotation.py",
+    "MyTradingSys/backtest/layers/kurisko/test_quad_rotation.py",
+    "MyTradingSys/backtest/layers/kurisko/make_golden.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md"
+  ],
+  "scope_out": [
+    "live tree",
+    "VALIDATION and HOLDOUT reads"
+  ],
+  "scope_sha": "60c1b88e5269",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/backtest/layers/FORMULAS.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read stoch_core.py, quad_rotation.py, test_quad_rotation.py, make_golden.py alongside FORMULAS.md s24 and KURISKO_SPEC.md s5.",
+    "Verify event rule, D-line smoothing, NaN handling, causal bar indexing (no look-ahead), and whether test fixtures were computed independently from FORMULAS.md s24.",
+    "Write MyTradingSys/research/layer_lab/reports/2026-10-19_kurisko-module-crossvendor-review.md with findings table and verdict line SOUND / FIX-FIRST / BLOCKED."
+  ],
+  "tests": "python MyTradingSys/backtest/layers/kurisko/test_quad_rotation.py",
   "title": "Cross-vendor review: kurisko module code+tests vs FORMULAS s24",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent",
+  "class": "C1"
 }
