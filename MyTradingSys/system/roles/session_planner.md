@@ -1,3 +1,4 @@
+<!-- role: Session_Planner | version: v1 | token: clay-tide | triggers: session_planner, session planner, backlog scoper -->
 # Session_Planner: the backlog scoper inside every super session (operator 2026-10-17)
 
 Why: on 2026-10-17 the overnight coordinator dispatched Haiku workers on `raw` cards (empty goal, steps, done_when); all three came back
