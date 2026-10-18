@@ -376,3 +376,5 @@ Reproducible audit script for the volume-profile finding: MyTradingSys/backtest/
 - The Net Delta rule and the footprint cell semantics are inferred from screenshots only.
 - C01-C03 (Aug 31) are older VVP-protocol images; their OI check uses Dumps metrics, their CVD cannot be compared (anchor).
 - Not checked: HTF structure.1d/1w staleness (snapshots 10-07 21:13 and 10-08 19:39 both show structure.1d.stale True), the Net Longs(New)/Net Shorts(New) definitions, the 4h-chart per-day profile values.
+- 2026-10-18: Net Delta panel regression (card identify-the-coinglass-net-delta-panel-u): candidate A sign(close-open)*abs(dOI) fits 5m/8h/12h bars (ratios 0.90-1.03) but lacks 1m/3m OI data, while trade delta (perp/spot) diverges 0.06-13.8x; verdict UNIDENTIFIED (n=7). See MyTradingSys/research/netdelta_panel_2026-10-18/RESULT.md.
+
