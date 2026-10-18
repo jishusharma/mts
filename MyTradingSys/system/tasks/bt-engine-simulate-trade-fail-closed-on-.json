@@ -1,36 +1,52 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [],
   "created": "2026-10-18T18:38:00Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Canaries e1-e4 pass in test_bt_engine.py; missing funding raises ValueError unless funding=[]; test_bt_engine.py passes.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Fix bt_engine.simulate_trade funding defects T03-F1 and T03-F2: raise when funding is None or incomplete for the hold window unless funding=[] is explicitly passed; correct settlement window boundary to (t_in, t_out]; update rsi/run_rsi_backtest.py to pass funding explicitly.",
   "id": "bt-engine-simulate-trade-fail-closed-on-",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-19 T0-ONLY CLASS:C1 WEIGHT:IMPORTANT. Refined from T03 findings F1/F2 in T03_planted_edges.md; awaiting Lab_Guy real review stamp for ready promotion.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-session-planner",
+  "refreshed": "2026-10-19T02:00:00Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T03_planted_edges.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/backtest/bt/bt_engine.py",
+    "MyTradingSys/backtest/bt/test_bt_engine.py",
+    "MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py"
+  ],
+  "scope_out": [
+    "live path",
+    "tom_bt.py"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T03_planted_edges.md:49-50"
+  ],
+  "state": "refined",
+  "steps": [
+    "In test_bt_engine.py add fail-first canaries e1/e4 (missing funding raises) and e2/e3 (boundary t_in not charged, t_out charged).",
+    "In bt_engine.py, require funding is not None or raise ValueError; enforce coverage for hold window unless funding==[]; change settlement bisect window to (t_in, t_out].",
+    "In run_rsi_backtest.py, pass explicit funding or empty list if no funding model; run test_bt_engine.py."
+  ],
+  "tests": "python scripts/dev/run_staged_tests.py MyTradingSys/backtest/bt -- test_bt_engine",
   "title": "bt_engine.simulate_trade: fail closed on missing funding, (t_in,t_out] boundary, RSI runner passes no funding",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }
