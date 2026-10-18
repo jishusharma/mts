@@ -556,43 +556,60 @@
     },
     {
       "id": "callers",
-      "name": "Callers (posted trade calls: Qriptal)",
+      "name": "Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman)",
       "tracks": "Claude, Codex lab (scoring)",
-      "status": "Score the posted calls on Binance klines before anything else (B162). Self-reported 67.1 % wins, avg win 3.99 %, avg loss 0.63 %: unverified.",
+      "status": "Score the posted calls on Binance klines before anything else (B162 + multi-analyst ingestion). Self-reported 67.1 % wins, avg win 3.99 %, avg loss 0.63 %: unverified. Multi-provider parser + kline scorecard built (2026-10-18); 4 ingestion cards ready.",
       "plain": "Traders who post entries, stops and targets: score their record first, then trade their calls on a testnet account.",
       "spec": [
-        "MyTradingSys/items/B162_qriptal_signal_layer.md"
+        "MyTradingSys/items/B162_qriptal_signal_layer.md",
+        "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
+        "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md"
       ],
-      "code": [],
-      "ledger": [],
-      "results": [],
-      "roadmap": [],
+      "code": [
+        "MyTradingSys/research/analysts/schema.py",
+        "MyTradingSys/research/analysts/ingest_analysts.py",
+        "MyTradingSys/research/analysts/score_analysts.py",
+        "MyTradingSys/research/analysts/run_scorecard.py"
+      ],
+      "ledger": [
+        "MyTradingSys/research/analysts/SAMPLE_CALL_LEDGER.csv"
+      ],
+      "results": [
+        "MyTradingSys/research/analysts/SCORECARD.md"
+      ],
+      "roadmap": [
+        "MyTradingSys/research/analysts/ROADMAP.md"
+      ],
       "cards": [
-        "qriptal-*"
+        "qriptal-*",
+        "analyst-ingest-*"
       ],
       "layers": [],
       "path": {
         "idea": {
           "s": "done",
-          "note": "B162: calls carry entry, stop and targets"
+          "note": "B162 + 11-analyst imbalance survey (2026-10-18): calls carry entry, stop and targets"
         },
         "inputs": {
-          "s": "done",
-          "note": "Binance klines; 22 staged transcripts"
+          "s": "now",
+          "note": "Binance klines; 22 staged Qriptal transcripts; 4 ingestion cards ready",
+          "cards": [
+            "analyst-ingest-rlinda-tv",
+            "analyst-ingest-bennett-dpa",
+            "analyst-ingest-cryptochase-x",
+            "analyst-ingest-roman-x"
+          ]
         },
         "fees": {
           "s": "done",
-          "note": "average loss 0.63 % means fees cost about 0.16 R"
+          "note": "0.05 % per side (10 bps RT); average loss 0.63 % means fees cost about 0.16 R"
         },
         "charts": {
           "s": "skip"
         },
         "built": {
-          "s": "planned",
-          "note": "scoring script",
-          "cards": [
-            "qriptal-score-binance"
-          ]
+          "s": "done",
+          "note": "schema.py, ingest_analysts.py, score_analysts.py, run_scorecard.py (9 unit tests)"
         },
         "dev": {
           "s": "planned",

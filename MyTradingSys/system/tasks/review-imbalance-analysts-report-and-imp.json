@@ -1,6 +1,8 @@
 {
   "approved_by": "operator",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T16:30:51Z",
   "commands": [],
   "created": "2026-10-18T05:28:02Z",
   "depends_on": [],
@@ -13,6 +15,12 @@
   "id": "review-imbalance-analysts-report-and-imp",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "1e405a57 MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md; MyT",
+      "ref": "77a29735",
+      "utc": "2026-10-18T16:30:51Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +49,7 @@
     "MyTradingSys/items/B162_qriptal_signal_layer.md",
     "MyTradingSys/research/imbalance_qriptal_2026-10-16/README.md"
   ],
-  "result": "",
+  "result": "1e405a57 MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md; MyTradingSys/research/analysts/ROADMAP.md; 4 analyst-ingest-* cards ready",
   "scope_in": [
     "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
     "MyTradingSys/items/B162_qriptal_signal_layer.md",
@@ -57,12 +65,13 @@
   "sources": [
     "MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md section 5, 6, 7 and 8.",
     "Evaluate the four candidate ingestion routes (TradingView play-button ideas vs DailyPriceAction RSS vs YouTube Whisper captions vs Twitter text stream).",
     "Select the top candidate(s) (e.g. Crypto Chase, Roman Trading, RLinda, or Justin Bennett) and implement the initial ingestion/scorecard module."
   ],
+  "taken": "2026-10-18T16:30:49Z",
   "tests": "python -c \"import os; assert os.path.exists('MyTradingSys/research/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md')\"",
   "title": "Review imbalance analysts report and implement setup ingestion",
   "weight": "",

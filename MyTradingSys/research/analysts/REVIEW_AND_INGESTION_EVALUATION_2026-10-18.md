@@ -97,9 +97,11 @@ In `MyTradingSys/research/analysts/`, we implemented the full modular pipeline:
 
 ---
 
-## 6. Drafted Ingestion Task Cards
+## 6. Drafted Ingestion Task Cards & Roadmap
 
-Three downstream task cards have been drafted in `MyTradingSys/system/tasks/`:
+Four downstream task cards have been drafted in `MyTradingSys/system/tasks/` under family `callers` (`ROADMAP.md` in `MyTradingSys/research/analysts/ROADMAP.md`):
 1. `analyst-ingest-rlinda-tv.json`: Automated RSS/scraper for RLinda TradingView publications.
 2. `analyst-ingest-bennett-dpa.json`: DailyPriceAction RSS market plan ingestion.
 3. `analyst-ingest-cryptochase-x.json`: Crypto Chase FVG social call listener.
+4. `analyst-ingest-roman-x.json`: Roman Trading volume-absorption social call listener (Construct 1 direct peer to Habib).
+
