@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T14:58:36Z",
+  "depends_on": [],
+  "done_when": "Rule written as a table (inputs per TF, output bias + 'no bias' case); DEV event study fee-net vs single-TF baselines (1h only, 1D only); trial ledger row; report in research/ with Result line.",
+  "est_turns": 30,
+  "from_inbox": "",
+  "goal": "Operator 2026-10-18 (6 shots 1h..1D at 14:53-14:57Z): the read flips by timeframe (1D/12h balance with net taker selling, 8h compression, 6h/4h failed rotation, 1h impulsive down into -2s). Write ONE bias rule as a fixed stack and test it: per TF record state (balance/imbalance), location in that TF's range (edge/middle), flow (CVD step sign, OI direction); the rule: highest TF sets location, lowest TF sets timing, a lower-TF move toward a higher-TF edge is 'continuation' only until the edge, at the edge it is a failed-auction watch (Tom TOM-2/TOM-7 wording, SOURCED rows only from SETUP_CATALOG). All thresholds OURS, chosen on DEV.",
+  "id": "multi-tf-bias-stack-one-written-rule-tha",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live-market-1017: engine vs catalogue Tom setups",
+      "ref": "4573395b5dd2",
+      "utc": "2026-10-17T10:31:39Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "4573395b5dd2 live-market-1017: engine vs catalogue Tom setups",
+      "ref": "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md",
+      "utc": "2026-10-17T10:31:39Z"
+    }
+  ],
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "note": "Artifact to remove first: TradingView VWAP is built from the chart's own bars, so 'price vs VWAP' changes with TF alone (10-18 14:56Z: 1D 81,431 / 8h 81,533 / 4h 81,661 / 1h 81,674 / 12h 81,694; engine 1m 81,676). The stack must use one VWAP (1m-built) for every TF.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T14:58:52Z",
+  "refs": [
+    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SHOT_2da0ed270ed8.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md (10-18 multi-TF table)",
+    "Binance fapi klines 1h/4h/8h/12h/1d DEV split",
+    "SETUP_CATALOG.md TOM-2, TOM-7"
+  ],
+  "scope_out": [
+    "live code",
+    "VALIDATION/HOLDOUT reads",
+    "trade advice"
+  ],
+  "scope_sha": "4573395b5dd2",
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Multi-TF bias stack: one written rule that forms bias from HTF location + LTF flow, tested on DEV (operator 10-18: bias changes with each TF)",
+  "worker": ""
+}
