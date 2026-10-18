@@ -1,6 +1,8 @@
 {
  "approved_by": "operator 2026-10-15",
  "asks": "",
+ "claim": "malkan-captions-fetch-noauth",
+ "closed": "2026-10-18T04:14:50Z",
  "commands": [],
  "created": "2026-10-15T09:05:38Z",
  "depends_on": [],
@@ -11,6 +13,12 @@
  "id": "malkan-captions-fetch-noauth",
  "lane": "HAIKU",
  "latest": [
+  {
+   "kind": "ship",
+   "line": "0 of 12 OK; -2uZSqKKrFQ RATELIMIT (4 spaced 429s); 11 NOT TRIED (stop for the day); next a",
+   "ref": "5d285685",
+   "utc": "2026-10-18T04:14:50Z"
+  },
   {
    "auto": true,
    "kind": "ship",
@@ -30,7 +38,7 @@
   "rsi"
  ],
  "live_path": false,
- "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. operator 2026-10-15: \"Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.\" NO cookies, browser cookies, tokens, impersonation or third-party caption sites (LESSONS_DIGEST s6); this supersedes the cookie plan in desk_queue/20261012-085022-d11b-follow-up-claude-malkan-captions-42.json. Never open YouTube watch pa",
+ "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. operator 2026-10-15: \"Queue the Krown/Malkan caption fetch and the Malkan extraction of the two on-disk transcripts.\" NO cookies, browser cookies, tokens, impersonation or third-party caption sites (LESSONS_DIGEST s6); this supersedes the cookie plan in desk_queue/20261012-085022-d11b-follow-up-claude-malkan-captions-42.json. Never open YouTube watch pa REOPENED 2026-10-18 (planner): the worker marked it done with 0 of 12 captions; goal not met. Retry 2026-10-19 (the last allowed try); spaced retries, stop on the first 429.",
  "prio": 2,
  "refine_tries": 0,
  "refined_by": "",
@@ -41,7 +49,7 @@
   "MyTradingSys/research/video_priority_2026-10-15/RANKED_MALKAN.csv",
   "MyTradingSys/system/desk_queue/20261012-085022-d11b-follow-up-claude-malkan-captions-42.json"
  ],
- "result": "",
+ "result": "0 of 12 OK; -2uZSqKKrFQ RATELIMIT (4 spaced 429s); 11 NOT TRIED (stop for the day); next allowed try 2026-10-19 (last)",
  "scope_in": [
   "MyTradingSys/research/transcript_inventory_2026-10-09.md",
   "MyTradingSys/research/video_priority_2026-10-15/",
@@ -62,6 +70,7 @@
   "fetch ONLY include=Y ids; never the NOT SELECTED ones, even if a fetch is working (re-rank with video_priority_2026-10-15/score.py first if a new video appears)",
   "update the Malkan selected-ids row in MyTradingSys/research/transcript_inventory_2026-10-09.md for each id (fetched / NOT AVAILABLE + reason)"
  ],
+ "taken": "2026-10-18T04:14:38Z",
  "tests": "docs lane, no code: files present or NOT AVAILABLE line per id",
  "title": "Malkan: fetch captions for the 12 ranked-top videos only (video_priority_2026-10-15), no cookies, spaced retries; DONE when each is in raw_transcripts_canonical or has a NOT AVAILABLE line",
  "weight": "ROUTINE",

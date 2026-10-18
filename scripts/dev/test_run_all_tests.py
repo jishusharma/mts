@@ -428,4 +428,3 @@ class TestGateTimingLog(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-{"step": "1", "name": "x", "secs": 1.0, "ok": true, "mode": null, "utc": "2026-10-16T18:14:55Z", "sha": "53981671"}
