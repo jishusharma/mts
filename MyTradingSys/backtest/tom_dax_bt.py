@@ -199,6 +199,46 @@ def require_proof_schema(obj, path):
                          "and rerun rows --force" % path)
 
 
+def exact_net_rr(top, fee_per_side=FEES_FDAX["entry"]):
+    """Unrounded net RR (FORMULAS.md section 17) from the decision geometry Java serialized: zone.price, math.stop, math.target.
+
+    Java rounds net_rr (and these prices) to 2 decimals in the snapshot JSON, so a value just under the floor
+    reads as exactly the floor. This recomputes it; None when the geometry is absent or unusable.
+    """
+    try:
+        entry = float((top.get("zone") or {})["price"])
+        m = top.get("math") or {}
+        stop, target = float(m["stop"]), float(m["target"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    risk = abs(entry - stop)
+    if not all(math.isfinite(x) for x in (entry, stop, target)) or risk == 0:
+        return None
+    cost = 2.0 * fee_per_side * entry
+    return (abs(target - entry) - cost) / (risk + cost)
+
+
+def exact_rr_verdict(snapshot, proof_dir, floor, compute_verdict):
+    """compute_verdict with the top candidate's rounded net_rr tightened to its exact value when that is below the floor.
+
+    Only ever lowers net_rr (min of Java's and the recomputed value), so a candidate the producer already rejects stays
+    rejected and display rounding never lifts a below-floor candidate over the floor. The input snapshot is not modified.
+    """
+    top = next((c for c in (snapshot.get("setup_candidates") or [])
+                if c is not None and int(c.get("rank") or 999) <= 3), None)
+    exact = exact_net_rr(top) if top is not None else None
+    if exact is not None and exact < floor:
+        snapshot = copy.deepcopy(snapshot)
+        top = next(c for c in snapshot["setup_candidates"] if c is not None and int(c.get("rank") or 999) <= 3)
+        m = top.setdefault("math", {})
+        try:
+            java = float(m.get("net_rr"))
+        except (TypeError, ValueError):
+            java = exact
+        m["net_rr"] = min(java, exact)
+    return compute_verdict(snapshot, proof_dir, floor=floor)
+
+
 def rows_for_snapshot(s0, parse_ts, proof_dir_of, compute_verdict=None, mask=MASK_OF, kinds=("coded",),
                       shifts=(0,), stats=None):
     """{'<kind>/<shift>': row} for one snapshot (s0 is not modified)."""
@@ -840,7 +880,10 @@ def _rows_month(job):
             if market == "dax" and not is_open(_BARS, t):
                 stats["closed_dropped"] += 1
                 continue
-            frozen_verdict = lambda snap, pd: compute_verdict(snap, pd, floor=floor)
+            if market == "dax":
+                frozen_verdict = lambda snap, pd: exact_rr_verdict(snap, pd, floor, compute_verdict)
+            else:
+                frozen_verdict = lambda snap, pd: compute_verdict(snap, pd, floor=floor)
             keys = rows_for_snapshot(s, parse_ts, proof_dir_of, frozen_verdict, mask, KINDS, shifts, stats)
             fo.write(json.dumps({"proof_count_schema": PROOF_COUNT_SCHEMA, "input_id": input_id, "t": t, "k": keys}) + "\n")
             stats["rows"] += 1
@@ -849,7 +892,7 @@ def _rows_month(job):
     tmp.replace(out)
     meta.write_text(json.dumps(dict(stats, proof_count_schema=PROOF_COUNT_SCHEMA, inputs=inputs,
                                    input_id=input_id, rows_sha256=file_hash(out), net_rr_floor=floor,
-                                   rr_selection="Java per-instrument net_rr", fdax_fee_per_side=FEES_FDAX["entry"],
+                                   rr_selection="Java per-instrument net_rr, tightened to the exact unrounded value recomputed from serialized geometry (dax)", fdax_fee_per_side=FEES_FDAX["entry"],
                                    execution_math_sha=sha(ROOT / "src/main/java/datafeed/ExecutionMathConstants.java")))
                     + "\n", encoding="utf-8", newline="\n")
     return name, dict(stats)

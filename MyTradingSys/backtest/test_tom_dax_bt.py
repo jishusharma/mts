@@ -1343,5 +1343,62 @@ class TestCutoffBoundary(unittest.TestCase):
             self.assertLess(kept[0], cut)
 
 
+class TestExactNetRrGate(unittest.TestCase):
+    """RV02 R2. Hand arithmetic (FORMULAS.md section 17, FDAX fee 0.000005/side, entry 100 so cost = 2*0.000005*100 = 0.001):
+    target 101.25 -> (1.25-0.001)/(1+0.001) = 1249/1001 = 1.24775... (< 1.25, serialized as 1.25);
+    target 101.26 -> (1.26-0.001)/1.001 = 1259/1001 = 1.25774... (>= 1.25)."""
+
+    @staticmethod
+    def boundary_row(direction, move, shift=4):
+        from verdict import compute_verdict
+        target = round(100.0 + move if direction == "long" else 100.0 - move, 2)
+        stop = 99.0 if direction == "long" else 101.0
+        exact = (move - 0.001) / 1.001
+        c = cand(1, direction, "vwap", "vwap_band", proof_node("MODERATE"), 1, gross=move, net=round(exact, 2))
+        c["math"]["target"] = target
+        c["math"]["stop"] = stop
+        c["math"]["net_rr_sanity"] = round(exact, 2) >= 1.25
+        wire = json.loads(json.dumps(snap([c])))      # the real JSON producer/consumer boundary
+        exact_v = D.rows_for_snapshot(wire, parse_ts, aligned,
+            lambda s, pd: D.exact_rr_verdict(s, pd, 1.25, compute_verdict), shifts=(shift,))["coded/%d" % shift]["verdict"]
+        old_v = D.rows_for_snapshot(wire, parse_ts, aligned,
+            lambda s, pd: compute_verdict(s, pd, floor=1.25), shifts=(shift,))["coded/%d" % shift]["verdict"]
+        return exact, round(exact, 2), exact_v, old_v
+
+    def test_exact_value_matches_hand_arithmetic(self):
+        c = cand(1, "long", "vwap", "vwap_band", proof_node("MODERATE"), 1)
+        c["math"]["target"] = 101.25
+        self.assertAlmostEqual(D.exact_net_rr(c), 1249 / 1001, places=12)
+        c["math"]["target"] = 101.26
+        self.assertAlmostEqual(D.exact_net_rr(c), 1259 / 1001, places=12)
+
+    def test_below_floor_serialized_as_floor_stays_wait_rr_both_directions(self):
+        for direction in ("long", "short"):
+            exact, shown, exact_v, old_v = self.boundary_row(direction, 1.25)
+            self.assertLess(exact, 1.25)
+            self.assertEqual(shown, 1.25)                  # display rounding hides the shortfall
+            self.assertEqual(exact_v, "WAIT_RR", direction)
+            self.assertNotEqual(old_v, "WAIT_RR", direction)   # the pre-fix consumer let it through
+
+    def test_at_or_above_floor_stays_eligible_both_directions(self):
+        for direction in ("long", "short"):
+            exact, shown, exact_v, old_v = self.boundary_row(direction, 1.26)
+            self.assertGreater(exact, 1.25)
+            self.assertEqual(exact_v, old_v, direction)
+            self.assertNotEqual(exact_v, "WAIT_RR", direction)
+
+    def test_input_snapshot_is_not_modified_and_bad_geometry_changes_nothing(self):
+        from verdict import compute_verdict
+        c = cand(1, "long", "vwap", "vwap_band", proof_node("MODERATE"), 1, gross=1.25, net=1.25)
+        c["math"]["target"] = 101.25
+        s = snap([c])
+        before = json.dumps(s, sort_keys=True)
+        D.exact_rr_verdict(s, "aligned", 1.25, compute_verdict)
+        self.assertEqual(json.dumps(s, sort_keys=True), before)
+        del c["math"]["stop"]
+        self.assertIsNone(D.exact_net_rr(c))
+        self.assertEqual(D.exact_rr_verdict(s, "aligned", 1.25, compute_verdict)["net_rr"], 1.25)
+
+
 if __name__ == "__main__":
     unittest.main()
