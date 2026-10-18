@@ -48,6 +48,9 @@ class ModelGuardTest(unittest.TestCase):
         base = {"initiation": "own_initiative", "title": "x", "prompt": "p", "background": "b"}
         self.assertEqual(fire(START, {**base, "model": "claude-opus-5-5"}), "deny")
         self.assertEqual(fire(START, {**base, "model": "claude-fable-5-1"}), "deny")
+        # operator 2026-10-18: an explicit Opus passes only when the operator asked in words (user_asked)
+        self.assertEqual(fire(START, {**base, "initiation": "user_asked", "model": "claude-opus-5-5"}), "allow")
+        self.assertEqual(fire(START, {**base, "initiation": "user_asked", "model": "claude-fable-5-1"}), "deny")
         self.assertEqual(fire(START, {**base, "model": "claude-sonnet-5-5"}), "allow")
         self.assertEqual(fire(START, {**base, "model": "claude-haiku-5-5"}), "allow")
 
