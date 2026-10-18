@@ -1,0 +1,1 @@
+{"t": "20261018T160040Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "start gemini-perm-rule 2>&1 | grep WORKTREE"}
