@@ -49,3 +49,6 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 - When a thread or project message says "Note this for InterviewPrep", append one entry to `/mnt/project-files/interview_prep/NOTES.md` with date, source link, and status "not yet exported".
 - Jis manually decides when to push entries to F:\Interview Prep project.
 - This captures lightweight insights from MTS and CBP work without automation overhead.
+
+## Ask Gemini or GPT directly (no desk row)
+`python scripts/dev/ask_model.py gemini|gpt "<prompt>" [--model flash|argon|sonnet|opus] [--effort low|medium|high] [--file PATH ...]` sends the prompt to the model and prints the answer (read-only, runs in a scratch folder under F:/MTS/ask, never a work tree). Gemini = Antigravity `agy` on the Google Pro login; GPT = Codex CLI on the lab login. Use it for questions, second opinions, frame reads. Work that must change the repo stays on cards (`gemini_queue.py`, `codex_run.py`). Quota error (429) means wait for the reset it prints; do not fall back to a desk row for a question.
