@@ -40,6 +40,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-probe-prereg` refined p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
   - `tom-probe-runner` refined p2 SONNET: Run pre-registered Tom management arms on DAX and BTC
   - `tom-short-coverage-above-vah` raw p2 SONNET: Tom short coverage on trend-down days: no candidate above VAH, ct_short at VAH killed by POC-only target (2026
+  - `multi-tf-bias-stack-one-written-rule-tha` raw p3 SONNET: Multi-TF bias stack: one written rule that forms bias from HTF location + LTF flow, tested on DEV (operator 10
   - `tom-btc-other-setups` ready p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
   - `tom-v2-btc-min-stop-width` ready p3 CODEX: Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)
 
