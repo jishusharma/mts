@@ -135,7 +135,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/positioning`
 - Other results: `MyTradingSys/research/OI_DIVERGENCE_V2_2026-10-10.md`; `MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `positioning-home-fit-audit` ready p4 SONNET: Home-fit audit of the FlowHorse / whale positioning layer against the readiness checklist
+  - `positioning-c1-longwindow-count-power` ready p4 SONNET: Positioning C1 (NO-SOURCE): count-only events on the DEV window, fire rate, power, null spec (items 3/9/10/12)
+  - `positioning-c1-prereg-no-source` raw p4 SONNET: Positioning C1: pre-registration labelled NO-SOURCE (items 1/6/8/9/11/12, gates 0a/0f)
+  - `positioning-flowhorse-ledger-feasibility` ready p4 SONNET: FlowHorse positioning: is there any dated trade or call to score (items 1/2/3/5, gates 0c/0d)
 
 ## Session / timing (session levels, turn of candle, session momentum) (`session_timing`)
 - Status: T055 C2/C3 closed; T087 failed prior-day-high fade FAIL.
@@ -225,6 +227,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `krown-data-cme-btc-volume` ready p2 DSA: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` ready p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
+  - `krown-foundations-ep08-follow-through` ready p3 SONNET: Krown Foundations EP08 follow-through: fold the order-book extract into the ledger, re-check the 17 private pl
   - `krown-other-sources-event-study-videos` refined p3 SONNET: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
   - `krown-ta101-extract-remaining-10` ready p3 SONNET: Krown TA 101: get captions and extract the remaining 4 videos (ids in STATE.md); DONE when: 4 extracts pass bo
 
