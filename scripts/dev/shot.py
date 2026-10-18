@@ -490,6 +490,114 @@ def carried_context(text, path):
     return found, lines
 
 
+def parse_falsifier_spec(line):
+    """Parse a falsifier line into a price-level spec or None.
+    Supported:
+      - range: outside <lo>-<hi> -> ('range', lo, hi)
+      - under/below: acceptance under/below <lvl> -> ('under', lvl)
+      - above/over: acceptance above/over <lvl> -> ('above', lvl)
+    """
+    text = re.sub(r"^[\s\-*>]*", "", line).strip()
+    text = re.sub(r"^(?:invalidation|falsify)\s*:\s*", "", text, flags=re.I).strip()
+    m_range = re.search(r"outside\s+(?:[^\d]+)?(\d+(?:,\d+)*(?:\.\d+)?)\s*(?:-|–|\.\.|to)\s*(\d+(?:,\d+)*(?:\.\d+)?)", text, re.I)
+    if m_range:
+        lo = float(m_range.group(1).replace(",", ""))
+        hi = float(m_range.group(2).replace(",", ""))
+        if lo > hi:
+            lo, hi = hi, lo
+        return ("range", lo, hi)
+    m_under = re.search(r"(?:under|below)\s+(?:[^\d~]*~?\s*)?(\d+(?:,\d+)*(?:\.\d+)?)", text, re.I)
+    if m_under:
+        return ("under", float(m_under.group(1).replace(",", "")))
+    m_above = re.search(r"(?:above|over)\s+(?:[^\d~]*~?\s*)?(\d+(?:,\d+)*(?:\.\d+)?)", text, re.I)
+    if m_above:
+        return ("above", float(m_above.group(1).replace(",", "")))
+    return None
+
+
+def bar_ohlc(b):
+    if isinstance(b, dict):
+        h = b.get("h", b.get("high"))
+        l = b.get("l", b.get("low"))
+        c = b.get("c", b.get("close"))
+        o = b.get("o", b.get("open", c))
+        return float(o), float(h), float(l), float(c)
+    elif isinstance(b, (list, tuple)):
+        if len(b) >= 5:
+            return float(b[1]), float(b[2]), float(b[3]), float(b[4])
+        elif len(b) == 4:
+            return float(b[0]), float(b[1]), float(b[2]), float(b[3])
+    raise ValueError(f"Unrecognized kline format: {b}")
+
+
+def falsifier_status(line, klines_since):
+    """B157 / T092 gap: compute carried falsifier lines (HELD/BROKEN/UNTESTED) from klines.
+    Step 2: function falsifier_status(line, klines_since) returns HELD|BROKEN|UNTESTED for price-level lines.
+    - BROKEN: level broken by a bar close
+    - HELD: level tested/reached by high/low but all closes held
+    - UNTESTED: level not yet reached, or non-price line, or no klines
+    """
+    spec = parse_falsifier_spec(line)
+    if spec is None or not klines_since:
+        return "UNTESTED"
+    kind = spec[0]
+    if kind == "range":
+        lo, hi = spec[1], spec[2]
+        reached = False
+        for b in klines_since:
+            _, h, l, c = bar_ohlc(b)
+            if c < lo or c > hi:
+                return "BROKEN"
+            if l <= lo or h >= hi:
+                reached = True
+        return "HELD" if reached else "UNTESTED"
+    elif kind == "under":
+        lvl = spec[1]
+        reached = False
+        for b in klines_since:
+            _, h, l, c = bar_ohlc(b)
+            if c < lvl:
+                return "BROKEN"
+            if l <= lvl:
+                reached = True
+        return "HELD" if reached else "UNTESTED"
+    elif kind == "above":
+        lvl = spec[1]
+        reached = False
+        for b in klines_since:
+            _, h, l, c = bar_ohlc(b)
+            if c > lvl:
+                return "BROKEN"
+            if h >= lvl:
+                reached = True
+        return "HELD" if reached else "UNTESTED"
+    return "UNTESTED"
+
+
+def load_klines_since(store, ids, prior, klines_path=None):
+    """Load klines between prior extract and current read instant for falsifier evaluation."""
+    if klines_path:
+        kp = Path(klines_path)
+        if kp.is_file():
+            try:
+                data = json.loads(kp.read_text(encoding="utf-8"))
+                if isinstance(data, list):
+                    return data
+            except (OSError, ValueError):
+                pass
+        return []
+    for env_key in ("MTS_KLINES_PATH", "MTS_KLINES_DIR"):
+        p = os.environ.get(env_key)
+        if p and Path(p).is_file():
+            try:
+                data = json.loads(Path(p).read_text(encoding="utf-8"))
+                if isinstance(data, list):
+                    return data
+            except (OSError, ValueError):
+                pass
+    return []
+
+
 def outcome_exists(token):
     """A filed outcome must really be filed: B/T ids are rows of the registry, card:<id> is a task card file
     (MyTradingSys/system/tasks/<id>.json, the live channel; it shows under its layer in LAYERS.md), F-BT / FEAT ids appear
@@ -747,6 +855,7 @@ def main(argv=None):
     a.add_argument("--why", required=True); a.add_argument("--symbol"); a.add_argument("--tf"); a.add_argument("--at")
     a.add_argument("--tz"); a.add_argument("--source"); a.add_argument("--zones-marked", action="store_true")
     a = sub.add_parser("read"); a.add_argument("ids", nargs="+"); a.add_argument("--extract", required=True)
+    a.add_argument("--klines", help="klines json file to score carried falsifiers against")
     a = sub.add_parser("done"); a.add_argument("ids", nargs="+"); a.add_argument("--outcome", required=True)
     sub.add_parser("sets")
     a = sub.add_parser("engine"); a.add_argument("id"); a.add_argument("--raw", help="1m archive root (default <main>/Dumps/backtest/raw)")
@@ -778,9 +887,14 @@ def main(argv=None):
             ids, counts, (prior, falsifiers) = read_extract(store, args.ids, args.extract)
             print(f"OK {len(ids)} read, claims {counts}")
             if prior:
+                klines_since = load_klines_since(store, args.ids, prior, getattr(args, "klines", None))
                 print(f"Carried context from {repo_rel(prior)}: score each HELD / BROKEN / UNTESTED in this extract")
                 for line in falsifiers or ["(the prior read has no Invalidation/Falsify lines)"]:
-                    print("  " + line)
+                    if falsifiers:
+                        st = falsifier_status(line, klines_since)
+                        print(f"  [{st}] {line}")
+                    else:
+                        print("  " + line)
         elif args.cmd == "done":
             ids = done(store, args.ids, args.outcome)
             print(f"OK {len(ids)} done: {args.outcome}")

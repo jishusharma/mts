@@ -27,6 +27,11 @@ _sig = inspect.signature(malkan_40_60.malkan_regime)
 MALKAN_LO = _sig.parameters["lo"].default
 MALKAN_HI = _sig.parameters["hi"].default
 
+_dev_dir = os.path.dirname(os.path.abspath(__file__))
+if _dev_dir not in sys.path:
+    sys.path.insert(0, _dev_dir)
+from shot import falsifier_status  # noqa: E402, F401
+
 TF_MS = {"5m": 300000, "15m": 900000, "1h": 3600000, "4h": 14400000}
 TFS = ["5m", "15m", "1h", "4h"]
 ALERT_TFS = ["1m", "5m", "15m", "1h", "4h"]
