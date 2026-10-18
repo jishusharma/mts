@@ -104,5 +104,36 @@ class RealRegistry(unittest.TestCase):
         self.assertTrue(names)
 
 
+class PowerLine(unittest.TestCase):
+    def test_power_line_g1_low_power(self):
+        # SOURCED gap-g1-prereg-power.json:50
+        # n=400, se_pct=0.10, gross 0.20, cost 0.05
+        # expected MDE80 0.28016, net 0.15 below it so LOW-POWER,
+        # n for 80 percent = 400*(0.28016/0.15)^2 = 1395
+        row = {"n": "400", "se_pct": "0.10", "gross_mean_pct": "0.20", "cost_pct": "0.05"}
+        line = V.power_line(row)
+        self.assertIsNotNone(line)
+        self.assertIn("0.28016", line)
+        self.assertIn("0.15", line)
+        self.assertIn("LOW-POWER", line)
+        self.assertIn("1395", line)
+
+    def test_power_line_adequate_power(self):
+        # OURS: gross 0.40, cost 0.05 -> net 0.35 >= MDE80 0.28016 -> no LOW-POWER flag
+        # trades for 80%: round(400 * (0.28016 / 0.35)**2) = 256
+        row = {"n": "400", "se_pct": "0.10", "gross_mean_pct": "0.40", "cost_pct": "0.05"}
+        line = V.power_line(row)
+        self.assertIsNotNone(line)
+        self.assertIn("0.28016", line)
+        self.assertNotIn("LOW-POWER", line)
+        self.assertIn("256", line)
+
+    def test_power_line_unparsed(self):
+        # When se_pct is UNPARSED, power_line cannot compute MDE and returns None
+        row = {"n": "400", "se_pct": "UNPARSED", "gross_mean_pct": "0.20", "cost_pct": "0.05"}
+        self.assertIsNone(V.power_line(row))
+
+
 if __name__ == "__main__":
     unittest.main()
+
