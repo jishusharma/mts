@@ -1,68 +1,77 @@
 {
- "approved_by": "",
- "asks": "",
- "commands": [],
- "created": "2026-10-18T03:28:57Z",
- "depends_on": [],
- "done_when": "PRE_REG_V3.md committed before any episodes.csv or outcome file, with the corrected power table (437 / 319 days) and the FAIL/INCONCLUSIVE clauses; no other file changed. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
- "est_turns": 14,
- "formula_id": "",
- "formula_ids": [],
- "from_inbox": "",
- "goal": "Write PRE_REG_V3.md (a committed addendum to PRE_REG_V2, outcome-free) that applies AUDIT_BEFORE_RUN.md fixes 1 and 2 verbatim, so context-factors-one-run can run.",
- "id": "context-factors-pre-reg-v3",
- "lane": "SONNET",
- "latest": [
-  {
-   "auto": true,
-   "kind": "ship",
-   "line": "context-factors-pit: AUDIT_BEFORE_RUN of PRE_REG_V2 = FIX-FIRST (items 1, 2)",
-   "ref": "664cf00ab7a0",
-   "utc": "2026-10-17T07:29:29Z"
-  },
-  {
-   "auto": true,
-   "kind": "audit",
-   "line": "664cf00ab7a0 context-factors-pit: AUDIT_BEFORE_RUN of PRE_REG_V2 = FIX-FIRST (items 1, 2)",
-   "ref": "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md",
-   "utc": "2026-10-17T07:29:29Z"
-  }
- ],
- "layers": [],
- "live_path": false,
- "mutation_check": "",
- "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C1 REVIEWER:Sonnet medium reviewer batch WEIGHT:CRUCIAL. Created 2026-10-18 by refine-finish as the cheapest unblock of context-factors-one-run (FIX-FIRST items 1-2). Zero operator input: the audit states the exact fix. | Reviewer optional tidy taken: V3 carries the sentence FAIL means stop (audit item 5, verdicts.py kill scope).",
- "prio": 2,
- "refine_tries": 0,
- "refined_by": "",
- "refreshed": "2026-10-18T03:32:33Z",
- "refs": [],
- "result": "",
- "scope_in": [
-  "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md",
-  "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md (read only)"
- ],
- "scope_out": [
-  "PRE_REG.md and PRE_REG_V2.md (frozen)",
-  "context_asof.py",
-  "any outcome file or run",
-  "VALIDATION/HOLDOUT"
- ],
- "scope_sha": "664cf00ab7a0",
- "size": "S",
- "sources": [
-  "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md sections 1-2"
- ],
- "state": "ready",
- "steps": [
-  "read AUDIT_BEFORE_RUN.md sections 1 and 2 (exact fix a-c / a-d)",
-  "write PRE_REG_V3.md: s.2 power table with the Holm-z formula n=((3.337+0.8416)*sd/(effect-cost))^2 and 0.30 R beside it (OURS, set after counts); FAIL iff E<=0 and 2.8*SE_day<=0.30 R, E>0 below z is INCONCLUSIVE; PASS unchanged",
-  "add the stop-width step: per cell median and p90 stop_pct vs control pool and ladder_rung shares; median gap >25 % gives INCONCLUSIVE (R units not comparable) and no kill scope; E also within ladder_rung strata, PASS needs stratified E>0 on strata holding >=80 % of events",
-  "recompute 437 and 319 days and the powered-cell list by hand and print them in the file; list the OURS labels",
-  "state in PRE_REG_V3.md the sentence: FAIL means stop (verdicts.py parses it for the kill scope, audit item 5)"
- ],
- "tests": "python one-liner in the commit recomputes n=437 (sd 1.5, effect 0.30, z 3.337) and 319 (sd 1.281); fails if the table in PRE_REG_V3.md differs",
- "title": "Context factors: write PRE_REG_V3.md (audit fixes 1-2) before the one-run",
- "weight": "CRUCIAL",
- "worker": "agent"
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T13:05:09Z",
+  "commands": [],
+  "created": "2026-10-18T03:28:57Z",
+  "depends_on": [],
+  "done_when": "PRE_REG_V3.md committed before any episodes.csv or outcome file, with the corrected power table (437 / 319 days) and the FAIL/INCONCLUSIVE clauses; no other file changed. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write PRE_REG_V3.md (a committed addendum to PRE_REG_V2, outcome-free) that applies AUDIT_BEFORE_RUN.md fixes 1 and 2 verbatim, so context-factors-one-run can run.",
+  "id": "context-factors-pre-reg-v3",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "PRE_REG_V3.md: 437/319 days, FAIL/INCONCLUSIVE clauses",
+      "ref": "e5067cb8",
+      "utc": "2026-10-18T13:05:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "context-factors-pit: AUDIT_BEFORE_RUN of PRE_REG_V2 = FIX-FIRST (items 1, 2)",
+      "ref": "664cf00ab7a0",
+      "utc": "2026-10-17T07:29:29Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "664cf00ab7a0 context-factors-pit: AUDIT_BEFORE_RUN of PRE_REG_V2 = FIX-FIRST (items 1, 2)",
+      "ref": "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md",
+      "utc": "2026-10-17T07:29:29Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:none CLASS:C1 REVIEWER:Sonnet medium reviewer batch WEIGHT:CRUCIAL. Created 2026-10-18 by refine-finish as the cheapest unblock of context-factors-one-run (FIX-FIRST items 1-2). Zero operator input: the audit states the exact fix. | Reviewer optional tidy taken: V3 carries the sentence FAIL means stop (audit item 5, verdicts.py kill scope).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T03:32:33Z",
+  "refs": [],
+  "result": "PRE_REG_V3.md: 437/319 days, FAIL/INCONCLUSIVE clauses",
+  "scope_in": [
+    "MyTradingSys/research/context_factors_pit_2026-10-16/PRE_REG_V3.md",
+    "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md (read only)"
+  ],
+  "scope_out": [
+    "PRE_REG.md and PRE_REG_V2.md (frozen)",
+    "context_asof.py",
+    "any outcome file or run",
+    "VALIDATION/HOLDOUT"
+  ],
+  "scope_sha": "664cf00ab7a0",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/context_factors_pit_2026-10-16/AUDIT_BEFORE_RUN.md sections 1-2"
+  ],
+  "state": "done",
+  "steps": [
+    "read AUDIT_BEFORE_RUN.md sections 1 and 2 (exact fix a-c / a-d)",
+    "write PRE_REG_V3.md: s.2 power table with the Holm-z formula n=((3.337+0.8416)*sd/(effect-cost))^2 and 0.30 R beside it (OURS, set after counts); FAIL iff E<=0 and 2.8*SE_day<=0.30 R, E>0 below z is INCONCLUSIVE; PASS unchanged",
+    "add the stop-width step: per cell median and p90 stop_pct vs control pool and ladder_rung shares; median gap >25 % gives INCONCLUSIVE (R units not comparable) and no kill scope; E also within ladder_rung strata, PASS needs stratified E>0 on strata holding >=80 % of events",
+    "recompute 437 and 319 days and the powered-cell list by hand and print them in the file; list the OURS labels",
+    "state in PRE_REG_V3.md the sentence: FAIL means stop (verdicts.py parses it for the kill scope, audit item 5)"
+  ],
+  "taken": "2026-10-18T13:05:06Z",
+  "tests": "python one-liner in the commit recomputes n=437 (sd 1.5, effect 0.30, z 3.337) and 319 (sd 1.281); fails if the table in PRE_REG_V3.md differs",
+  "title": "Context factors: write PRE_REG_V3.md (audit fixes 1-2) before the one-run",
+  "weight": "CRUCIAL",
+  "worker": "agent"
 }
