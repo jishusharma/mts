@@ -98,7 +98,11 @@ def summarise(rows, side):
     stops = [x["stop_bp"] for x in r]
     return {"events": len(r), "event_days": len(days),
             "median_stop_bp": statistics.median(stops) if stops else float("nan"),
-            "share_stop_ge_fee": (sum(s >= FEE_BP for s in stops) / len(stops)) if stops else float("nan")}
+            "share_stop_ge_fee": (sum(s >= FEE_BP for s in stops) / len(stops)) if stops else float("nan"),
+            # per-event risk sizing (stop = 1 R): the mean fee cost is mean(FEE_BP / stop_i), not FEE_BP / median stop
+            # (1/x is convex; GATE_AUDIT Q2). No outcome is read in a count pass, so there is no daily-mean R sd.
+            "mean_cost_R": statistics.fmean(FEE_BP / s for s in stops) if stops else float("nan"),
+            "sd_daily_mean_R": "n/a: no outcome"}
 
 
 def main(argv=None):
@@ -121,7 +125,8 @@ def main(argv=None):
                 rows.append({"tf": tf, "arm": arm, "side": side, "bars": len(bars), **s})
                 print(rows[-1], flush=True)
     with open(out / "counts.csv", "w", newline="\n", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, ["tf", "arm", "side", "bars", "events", "event_days", "median_stop_bp", "share_stop_ge_fee"],
+        w = csv.DictWriter(fh, ["tf", "arm", "side", "bars", "events", "event_days", "median_stop_bp", "share_stop_ge_fee", "mean_cost_R",
+                           "sd_daily_mean_R"],
                            lineterminator="\n")
         w.writeheader()
         for r in rows:

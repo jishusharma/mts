@@ -4,6 +4,8 @@
   verdicts.py backfill                parse every study folder, rewrite VERDICTS.csv, list UNPARSED fields
   verdicts.py check "<family words>"  print prior rows; exit 1 if a matching row is one_run=yes or a FAIL
                                       whose kill_scope is not "none" (run BEFORE freezing a PRE_REG)
+  verdicts.py count --split DEV [--ledger]  with --ledger also the count-only rows of TRIAL_LEDGER.csv (per study the larger
+                                      of the two counts, no double count)
   verdicts.py count --split DEV       distinct (study, arm) variants already read on that split = m for Holm
   verdicts.py add key=value ...       append/replace one row by hand (after RESULT, for studies backfill cannot parse)
 
@@ -12,7 +14,9 @@ Study folders are those holding RESULT.md (or RESULTS.md) and/or PRE_REG.md unde
 Sources of each field:
   family       title line of PRE_REG.md (else RESULT.md), prefix and "(frozen..)" / ", BTCUSDT" tail cut
   arm/n/mean/se  first table under a header "Verdict arms" or "Primary ..." (columns arm|group, n, mean*, SE*, verdict)
-  verdict      the arm's verdict column; else the study word (first line, "Verdict:" line, "## Verdict"/"## Answer"
+  verdict      BLOCKED = study folder with BLOCKED.md and no RESULT.md (count-only gate stop; check never treats it as a
+               family-wide FAIL, its kill_scope sentence is read from BLOCKED.md too);
+               the arm's verdict column; else the study word (first line, "Verdict:" line, "## Verdict"/"## Answer"
                first line). NEGATIVE / "no edge" / "nothing survives" read as FAIL. Control row "C" of a primary
                table without a verdict column: derived from the PRE_REG rule (n >= 200 and t_cost < 2 => FAIL),
                and marked "(derived)" in kill_scope.
@@ -41,7 +45,7 @@ OVERRIDE_COLS = ["study_dir", "arm", "column", "value", "source"]
 COLS = ["study_dir", "family", "arm", "split_read", "n", "gross_mean_pct", "se_pct", "cost_pct",
         "verdict", "kill_scope", "one_run", "commit", "date"]
 UNP = "UNPARSED"
-VERDICTS = ("PASS", "FAIL", "INCONCLUSIVE")
+VERDICTS = ("PASS", "FAIL", "INCONCLUSIVE", "BLOCKED")
 N_MIN = 200       # PRE_REG template section 4 (gross_effect_screen_2026-10-15)
 STOP = {"the", "and", "with", "for", "from", "after", "then", "that", "this", "into", "than", "are", "not",
         "screen", "dev", "btc", "btcusdt", "study", "test", "rule", "work", "family"}
@@ -181,6 +185,7 @@ def git_info(path):
 def parse_study(d):
     res_file = next((d / n for n in ("RESULT.md", "RESULTS.md") if n in {x.name for x in d.iterdir()}), None)
     pre_file = d / "PRE_REG.md" if "PRE_REG.md" in {x.name for x in d.iterdir()} else None
+    blk = read(d / "BLOCKED.md") if "BLOCKED.md" in {x.name for x in d.iterdir()} else None
     res = read(res_file) if res_file else None
     pre = read(pre_file) if pre_file else None
     base = {c: UNP for c in COLS}
@@ -190,12 +195,14 @@ def parse_study(d):
     base["split_read"] = split_of(*(x for x in (res, pre) if x))
     base["cost_pct"] = cost_of(*(x for x in (res, pre) if x))
     base["one_run"] = one_run_of(pre)
-    scope = kill_scope_of(pre, res)
+    scope = kill_scope_of(pre, res, blk)
     if res_file:
         base["commit"], base["date"] = git_info(res_file)
     else:
-        base["commit"], base["date"] = git_info(pre_file)
+        base["commit"], base["date"] = git_info(pre_file or d / "BLOCKED.md")
     sv = study_verdict(res) if res else None
+    if sv is None and res is None and blk is not None:
+        sv = "BLOCKED"   # count-only study stopped by a gate: never a FAIL, never family-wide (GATE_AUDIT Q4)
     base["arm"] = "(study)"
     rows = []
     tbl = first_table(res, r"verdict arms|primary") if res else None
@@ -233,7 +240,7 @@ def parse_study(d):
         if v == "PASS":
             s = "none"
         elif s is None:
-            s = "none" if v == "INCONCLUSIVE" else UNP
+            s = "none" if v in ("INCONCLUSIVE", "BLOCKED") else UNP
         if row.pop("_derived", False):
             s = (s + " (derived)") if s not in (UNP, "none") else "derived from PRE_REG s4 rule"
         row["kill_scope"] = s
@@ -398,13 +405,47 @@ def cmd_check(a):
     return 0
 
 
-def cmd_count(a):
+def count_variants(csv_path, split):
+    """({(study, arm)} read on `split`, rows skipped as split_read UNPARSED): the lower bound for Holm m."""
     seen, skipped = set(), 0
-    for r in load(a.csv):
+    for r in load(csv_path):
         if r["split_read"] == UNP:
             skipped += 1
-        elif a.split.upper() in r["split_read"].upper().split("+"):
+        elif split.upper() in r["split_read"].upper().split("+"):
             seen.add((r["study_dir"], r["arm"]))
+    return seen, skipped
+
+
+def ledger_per_study(ledger_path, split):
+    """{study: distinct variants} read on `split` in the hand-kept TRIAL_LEDGER.csv (study,variant,run_utc,split,...)."""
+    out = {}
+    for r in load(ledger_path):
+        if split.upper() in (r.get("split") or "").upper().split("+"):
+            out.setdefault(r["study"], set()).add(r["variant"])
+    return out
+
+
+def count_with_ledger(csv_path, ledger_path, split):
+    """Holm m with count-only rows (GATE_AUDIT Q6): per study the larger of the VERDICTS arm count and the ledger variant
+    count, so a study listed in both (names differ: arm W01 vs variant WT-A01_W01) is never counted twice."""
+    seen, skipped = count_variants(csv_path, split)
+    per = {}
+    for s, _ in seen:
+        per[s] = per.get(s, 0) + 1
+    for s, v in ledger_per_study(ledger_path, split).items():
+        per[s] = max(per.get(s, 0), len(v))
+    return sum(per.values()), len(per), skipped
+
+
+def cmd_count(a):
+    if getattr(a, "ledger", False):
+        total, studies, skipped = count_with_ledger(a.csv, a.ledger_csv, a.split)
+        print(f"{total}")
+        print(f"# distinct variants read on {a.split.upper()} = per study max(VERDICTS arms, TRIAL_LEDGER variants): {total} from "
+              f"{studies} studies; {skipped} VERDICTS rows have split_read UNPARSED and are not counted (lower bound for Holm m).",
+              file=sys.stderr)
+        return 0
+    seen, skipped = count_variants(a.csv, a.split)
     studies = len({s for s, _ in seen})
     print(f"{len(seen)}")
     print(f"# distinct variants (study, arm) read on {a.split.upper()}: {len(seen)} from {studies} studies; "
@@ -439,6 +480,8 @@ def main(argv=None):
     c.add_argument("words")
     n = sub.add_parser("count")
     n.add_argument("--split", required=True)
+    n.add_argument("--ledger", action="store_true", help="also count TRIAL_LEDGER.csv rows (count-only trials)")
+    n.add_argument("--ledger-csv", default=str(RESEARCH / "TRIAL_LEDGER.csv"))
     ad = sub.add_parser("add")
     ad.add_argument("pairs", nargs="+")
     a = p.parse_args(argv)
