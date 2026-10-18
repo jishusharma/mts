@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.0';
+  L.VERSION = '0.7.1';
 
   L.fnv = function (s) {
     var h = 2166136261;
@@ -152,6 +152,14 @@
   L.linkLabel = function (ls, hidden) {
     var a = function (x) { return isFinite(x) ? (x / 1000).toFixed(1) + 's' : 'never'; };
     return 'link ' + ls.state + (hidden ? ' (tab hidden)' : '') + ' port ' + a(ls.portAge) + ' worker ' + a(ls.workerAge);
+  };
+
+  // after Enter, did the message leave the chat input? before: {node, attached, text} of the input the message was typed
+  // into; now: {node, text} of the chat's current input, or null. DeepSeek can replace the input node after a send, so a
+  // detached node that still holds our text says nothing: a different, empty input means the send went through.
+  L.postLanded = function (before, now) {
+    if (!now || now.text !== '') return false;
+    return !before || !before.attached || before.node !== now.node || before.text === '';
   };
 
   root.AIBridgeLoop = L;

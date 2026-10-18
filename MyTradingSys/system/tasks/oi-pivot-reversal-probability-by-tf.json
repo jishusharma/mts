@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T17:26:34Z",
+  "depends_on": [
+    "context-conditioned-session-flow-states"
+  ],
+  "done_when": "PRE_REG frozen (candidate + label + outcome rules, N/k/H OURS on DEV); 30-day 5m/15m DEV pilot event table with day-clustered SE per candidate x location x context; long-OI path stated for 1h/4h; trial ledger row; Result line.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator 2026-10-18 (shot 163af24365f3): are the marked divergences and circled candles pivot signals, and what is the probability of reversal per timeframe? Candidate at bar close (no lookahead): OI slope flip after an N-bar decline/rise, price-vs-OI divergence state, taker-delta sign, volume spike, location vs levels known at that time (daily/weekly VA, prior-session extremes, confirmed delayed pivots). Swing label = outcome only, five-bar rule from CYCLE_DESIGN.md (usable at j+2 close). Outcome per TF (5m,15m,1h,4h): reversal of k x ATR before continuation of k x ATR within H bars; hits/misses/timeouts/censored separate; confirmation delay and entry-to-extreme distance reported. Compare against the base rate at the same location and against the unconditioned 1h divergence baseline (OI_EVENT_STUDY_2026-10-10: no edge). Context columns from context-conditioned-session-flow-states.",
+  "id": "oi-pivot-reversal-probability-by-tf",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Binance openInterestHist = 30 days: enough for a 5m/15m DEV pilot only; 1h/4h and context splits need the archive (desk fetch 20261013-143640-gap-g5). Live example: 07:15 OI turn at flat price was a continuation pivot (+557 to 82,268.7); the reversal came at the 09:30 high (OI up, CVD flat).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T17:26:37Z",
+  "refs": [
+    "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SHOT_163af24365f3.md",
+    "MyTradingSys/research/layer_lab/candle_close_2026-10-14/CYCLE_DESIGN.md",
+    "MyTradingSys/research/OI_EVENT_STUDY_2026-10-10.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Causal pivot-candidate study: P(reversal) per TF from OI slope flip + price/OI divergence + delta + location, conditioned on context",
+  "weight": "",
+  "worker": ""
+}

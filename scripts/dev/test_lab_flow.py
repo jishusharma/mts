@@ -28,9 +28,9 @@ def repo(tmp_path, monkeypatch):
     return tmp_path
 
 
-def complete(repo, card, verdict="PASS"):
+def complete(repo, card, verdict="PASS", state="active"):
     card = tasks.get(repo, card["id"])
-    card["state"] = "active"
+    card["state"] = state
     tasks.save(repo, card)
     p = repo / tasks.LAB_REPORTS / (card["id"] + ".md")
     p.parent.mkdir(parents=True, exist_ok=True)
@@ -382,3 +382,15 @@ def test_seconds_epoch_after_cutoff_is_refused(repo, monkeypatch, tmp_path):
     with pytest.raises(ValueError, match="post-cutoff"):
         F.safe_file(repo, str(seconds))
 
+
+
+def test_flow_card_finishes_from_ready_without_take(repo):
+    cards = F.launch(repo, spec())
+    done = complete(repo, cards[0], state="ready")
+    assert done["state"] == "done" and done["taken"]
+
+
+def test_flow_card_finish_refuses_other_states(repo):
+    cards = F.launch(repo, spec())
+    with pytest.raises(ValueError, match="ready or active"):
+        complete(repo, cards[0], state="blocked")

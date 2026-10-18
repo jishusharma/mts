@@ -1,17 +1,41 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-18T17:08:18Z",
   "commands": [],
   "created": "2026-10-18T16:34:41Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "5 V2 extracts exist in extracts/v2/fabio, each passes verify_extract_quotes.py, SETUP_CATALOG.md cites them (FAB-6, FAB-8, new FAB-9/10, section 4.2) and also passes",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Merge the 5 recovered Fabio transcripts and the V2 CATALOG_DELTA into SETUP_CATALOG.md with verbatim SOURCED quotes",
   "id": "fabio-catalogue-merge-5-recovered-canoni",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "5 recovered Fabio transcripts verified (Fabio, no duplicates); 5 V2 extracts PASS; merged ",
+      "ref": "33cce64f",
+      "utc": "2026-10-18T17:08:18Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "33cce64f6f0f claim fabio-catalogue-merge-5-recovered-canoni",
+      "ref": "MyTradingSys/system/claims/fabio-catalogue-merge-5-recovered-canoni.md",
+      "utc": "2026-10-18T17:06:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fabio ledger H6: gLHd settings are a secondary presenter, cite Fabio's own 30 contracts",
+      "ref": "3d8645f3d391",
+      "utc": "2026-10-16T22:21:39Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,18 +43,29 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T17:08:00Z",
   "refs": [
     "MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md"
   ],
-  "result": "",
-  "scope_in": [],
+  "result": "5 recovered Fabio transcripts verified (Fabio, no duplicates); 5 V2 extracts PASS; merged into SETUP_CATALOG s4.2 (FAB-6/FAB-8 sourced, FAB-9/FAB-10 added, FR-13 min 1:3 not confirmed)",
+  "scope_in": [
+    "extracts/v2/fabio/",
+    "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "3d8645f3d391",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "verify each transcript is Fabio and not a duplicate",
+    "write 5 V2 extracts",
+    "merge into SETUP_CATALOG section 4.2 and stale rows",
+    "run verify_extract_quotes.py on all"
+  ],
+  "taken": "2026-10-18T17:08:10Z",
+  "tests": "python scripts/dev/verify_extract_quotes.py on the 5 extracts and SETUP_CATALOG.md (the old catalogue declared FAB-8 source missing)",
   "title": "Fabio catalogue merge: 5 recovered canonical transcripts (o-w5Gxss6T0, cUTsoU-15Tc, Pz8f0wWW12M, Khgj5q1-ln8, 06R-ebyOhDI) + V2 CATALOG_DELTA",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }
