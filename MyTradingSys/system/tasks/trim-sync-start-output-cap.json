@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T09:59:05Z",
+  "depends_on": [],
+  "done_when": "sync.py start suppresses full claims table and mirror dump by default or supports --quiet, reducing stdout bytes from ~1.5KB to <200B.",
+  "est_turns": 5,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "B183 trim 3: Add --quiet flag or concise default to sync.py start to cap verbose stdout output.",
+  "id": "trim-sync-start-output-cap",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "artifacts: staleness check for published pages (published_sha, artifacts.py stale, publish",
+      "ref": "ad26324bc6ec",
+      "utc": "2026-10-17T22:14:56Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-18T10:00:13Z",
+  "refs": [
+    "B183"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py"
+  ],
+  "scope_out": [
+    "live tree",
+    ".secrets"
+  ],
+  "scope_sha": "ad26324bc6ec",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Modify sync.py start to suppress unneeded claims table or truncate to active worktree info only when run by builder workers.",
+    "Verify test_sync.py passes with new output options."
+  ],
+  "tests": "scripts/dev/test_sync.py",
+  "title": "trim-sync-start-output-cap",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
