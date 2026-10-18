@@ -145,7 +145,7 @@ During extraction, the AI produces NONE of the following:
 
 **Session start:** CLAUDE.md (code) or DSA_SESSION_PROMPT.md (chat), then research/STATUS.md; lessons in LESSONS_DIGEST.md.
 
-**Session end:** commit with a `Result:` line, `sync.py ship`, then hand over per RELAY.md (NEXT_SESSION.md, `relay.py handoff`). STATUS.md is regenerated (`make_status.py`), never hand-edited.
+**Session end:** commit with a `Result:` line, `sync.py ship`, then hand over per CLAUDE.md boot step 4 (overwrite NEXT_SESSION.md, ship; the coordinator starts the next session). STATUS.md is regenerated (`make_status.py`), never hand-edited.
 
 ---
 
@@ -188,7 +188,7 @@ Classify input BEFORE loading files. Every action must have a Protocol ID.
 | I-02 | Transcript Upload | Raw transcript .txt uploaded | 01_AI_BEHAVIOR.md | methodology/playbook.md Part J + grounded_theory_protocol.md | Verify SINGLE transcript -> extract with tiers -> write extract_[ID]_fresh.md |
 | I-03 | Research Request | "search for..." or "research..." | 01_AI_BEHAVIOR.md | methodology/playbook.md Part I | State question + methodology + tier -> search -> tag results -> report |
 | I-04 | File Modification | Edit/create file requested | 01_AI_BEHAVIOR.md Section 10 | target file(s) | Evaluate goal -> edit -> validate -> commit with a Result: line |
-| I-05 | Session End | "end session" or token limit | 01_AI_BEHAVIOR.md | RELAY.md | Commit + sync.py ship -> hand over (NEXT_SESSION.md, relay.py handoff) |
+| I-05 | Session End | "end session" or token limit | 01_AI_BEHAVIOR.md | CLAUDE.md step 4 | Commit + sync.py ship -> hand over (overwrite NEXT_SESSION.md, ship) |
 | I-06 | Error / Bug | Something is wrong | 01_AI_BEHAVIOR.md | — | Acknowledge facts -> identify violated rule -> propose correction |
 | I-00 | Casual | "hi", "hello", simple chat | 01_AI_BEHAVIOR.md | — | Respond directly. No file loading needed. |
 
@@ -232,7 +232,7 @@ Read these BEFORE any file modification.
 25. NEVER use emoji characters in any system file. Use ASCII-only status markers: [OK], [WARN], [BLOCKED], [COMPLETE], [PENDING].
 26. Before using `edit_file`, check if the target file has CRLF line endings (`\r\n`). If yes, use `sed` or Python instead of `edit_file`. CRLF causes exact-string matches to fail silently.
 27. EVERY session start: boot per CLAUDE.md (code) or DSA_SESSION_PROMPT.md (chat), then research/STATUS.md. No exceptions.
-28. EVERY session end: hand over per RELAY.md (NEXT_SESSION.md, `relay.py handoff`). Stale handoff = lost context.
+28. EVERY session end: hand over per CLAUDE.md boot step 4 (overwrite NEXT_SESSION.md, ship). Stale handoff = lost context.
 29. When writing multi-line files with `write_file`, ALWAYS verify line count after write (use `wc -l` or Python). If line count is 0 or 1, the tool stripped newlines. Use `shell` with heredoc (`cat << 'EOF'`) instead.
 30. **HARD BAN — `write_file` and `append` for .md files:** These tools are PROHIBITED for markdown files. They silently strip newlines (M-028), producing unreadable 0-line or 1-line blobs. For ALL .md file writes, use ONLY the `ipython` Python tool with `open(path, 'w', encoding='utf-8')`. No exceptions. This rule overrides all other file-writing instructions.
 31. **VALIDATE BEFORE YOU FIX:** Before requesting any DSA field change or engine patch, test the CURRENT system against at least 1 live snapshot. If the current system produces the correct verdict, the "fix" is bloat, not a fix. Document the test result before proposing changes.

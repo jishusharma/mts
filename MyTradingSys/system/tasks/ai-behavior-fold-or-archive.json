@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/tests/docs"
+  ],
+  "created": "2026-10-18T21:57:00Z",
+  "depends_on": [],
+  "done_when": "Each of its rules is mapped to a canonical home or marked obsolete in a table in the ship body; doc tests pass.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "01_AI_BEHAVIOR.md (8.8k tokens, one inbound reader: DSA_SESSION_PROMPT) is either archived or cut to rules not stated elsewhere.",
+  "id": "ai-behavior-fold-or-archive",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tasks done/lab_flow finish accept ready cards that pass every gate (G1)",
+      "ref": "e2166cc3edcb",
+      "utc": "2026-10-18T17:07:05Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "e2166cc3edcb tasks done/lab_flow finish accept ready cards that pass every gate (G1)",
+      "ref": "DSA_SESSION_PROMPT.md",
+      "utc": "2026-10-18T17:07:05Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "MTS_Doctor arch-cleanup 2026-10-19",
+  "refreshed": "2026-10-18T21:57:41Z",
+  "refs": [
+    "MyTradingSys/system/ARCHITECTURE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/01_AI_BEHAVIOR.md",
+    "DSA_SESSION_PROMPT.md"
+  ],
+  "scope_out": [
+    "CLAUDE.md growth past its cap"
+  ],
+  "scope_sha": "e2166cc3edcb",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Map every numbered rule to CLAUDE.md, a role or nothing.",
+    "Archive or cut; update DSA_SESSION_PROMPT reference.",
+    "Doc tests, test_dsa_direct_mode; ship."
+  ],
+  "tests": "MyTradingSys/tests/test_dsa_direct_mode.py",
+  "title": "01_AI_BEHAVIOR: fold live rules into CLAUDE.md or roles, archive the rest",
+  "weight": "",
+  "worker": "agent"
+}

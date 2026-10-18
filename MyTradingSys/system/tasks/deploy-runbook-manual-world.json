@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/tests/docs"
+  ],
+  "created": "2026-10-18T21:56:56Z",
+  "depends_on": [],
+  "done_when": "No present-tense AutoDeploy sentence in DEPLOY_RUNBOOK.md; Network_Admin_Guy role boot still finds its steps; doc tests pass.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "DEPLOY_RUNBOOK.md describes the manual deploy as THE procedure (not a fallback) and moves AutoDeploy internals to archive/.",
+  "id": "deploy-runbook-manual-world",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "docs: SCHEDULING_POLICY.md - no scheduled tasks or routines on any device",
+      "ref": "312d69da7728",
+      "utc": "2026-10-17T10:05:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "312d69da7728 docs: SCHEDULING_POLICY.md - no scheduled tasks or routines on any device",
+      "ref": "MyTradingSys/system/DEPLOY_RUNBOOK.md",
+      "utc": "2026-10-17T10:05:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "MTS_Doctor arch-cleanup 2026-10-19",
+  "refreshed": "2026-10-18T21:57:37Z",
+  "refs": [
+    "MyTradingSys/system/ARCHITECTURE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/DEPLOY_RUNBOOK.md"
+  ],
+  "scope_out": [
+    "auto_deploy.py code",
+    "the live tree"
+  ],
+  "scope_sha": "312d69da7728",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Split the runbook: procedure, restart map, history.",
+    "Move history to MyTradingSys/archive/deploy_2026-10-19/.",
+    "Ask Network_Admin_Guy review; ship."
+  ],
+  "tests": "MyTradingSys/tests/docs/test_integrity.py",
+  "title": "DEPLOY_RUNBOOK: the hand deploy becomes the procedure, AutoDeploy text becomes history",
+  "weight": "",
+  "worker": "session"
+}

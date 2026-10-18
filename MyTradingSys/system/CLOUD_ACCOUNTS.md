@@ -53,8 +53,8 @@ Used from JIS-NB and JIS-NUC (Claude Code Win App), same queue and ritual as A a
   3. Cloud sessions only: in the Claude app on login C, Connectors -> GitHub, install the Claude GitHub App for that user, scoped to jishusharma/mts.
 - Pages: login C has its own pins (artifacts/registry.json key `jishusharma1985`). Its Control Room copy is a read-only mirror
   (published without capabilities); the one Inbox is on jishu.sharma (q21).
-- Claude routines (scheduled tasks) are per login: A's paused routines do not show on C. To run the relay on C's budget,
-  recreate mts-dispatcher on that host from scripts/sched/relay_prompts/INSTALL.md, signed in as C.
+- Claude routines (scheduled tasks) are per login, and none may run on any login (SCHEDULING_POLICY.md). To use C's
+  budget, the coordinator starts sessions signed in as C; never recreate mts-dispatcher.
 - How a session knows it is on C: `Artifact read` of a jishu.sharma or jishu.awgp page url says "not found".
 
 ## Which login is on which machine (checked 2026-10-15, decision q21)
