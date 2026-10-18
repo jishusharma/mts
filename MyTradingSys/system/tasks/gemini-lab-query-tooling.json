@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-18T04:11:25Z",
+  "depends_on": [],
+  "done_when": "CLI/script interface or structured index generator exists so Gemini UI can run on-demand queries for Tom/Fabio fixes, backtest audits, and layer-by-layer critical changes without re-inventing ad-hoc grep commands.",
+  "est_turns": 4,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "Operator note 2026-10-18: Make the LAB see all critical updates that matter. I should be able to ask Gemini from the UI on Antigravity to do things like 'List all latest happenings and fixes on Tom and Fabio and find critical gaps only' - 'What are latest backtesting results and can you do an audit for the critical ones?' - 'Can you list all layers and find the latest work in each and do an audit on only the critical changes'.",
+  "goal": "Expose canonical query commands/manifests in scripts/dev/ so the Gemini Antigravity UI can directly retrieve and audit Tom/Fabio updates, backtest outcomes, and per-layer critical changes.",
+  "id": "gemini-lab-query-tooling",
+  "lane": "SONNET",
+  "layers": [
+    "tom",
+    "fabio"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator requirement for Gemini Antigravity interface.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "gemini-builder",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/lab_query.py",
+    "MyTradingSys/system/GEMINI_START.md"
+  ],
+  "scope_out": [
+    "live tree",
+    "trading execution"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "refined",
+  "steps": [
+    "Provide a dedicated CLI/manifest helper (e.g. scripts/dev/lab_query.py or make_status integration) that outputs structured JSON/markdown for: (1) Tom/Fabio recent diffs and bug rulings, (2) latest backtest outcomes and trial audit status, (3) layer map status and latest commit per layer.",
+    "Document entry points in GEMINI_START.md so Gemini sessions can run them directly on user query.",
+    "Verify with tests."
+  ],
+  "tests": "scripts/dev/test_lab_query.py verifying query commands return accurate recent findings",
+  "title": "Lab/Gemini UI queries for Tom/Fabio fixes, backtests and layer audit",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
