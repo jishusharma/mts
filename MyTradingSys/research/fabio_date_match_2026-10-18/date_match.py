@@ -21,7 +21,8 @@ INST = "USATECHIDXUSD"
 TP_PT = 86.7            # SOURCED 25001.00 - 24914.33
 STOP_PT = 30.8          # SOURCED 24914.33 - 24883.50
 RANGE_LO, RANGE_HI = 181.0, 196.0   # SOURCED 25095-24914 .. 25110-24914 (md:95)
-TP_WINDOW_MIN = 40      # OURS
+TP_WINDOW_MIN = 20      # OURS: ledger F6 entry ~15:45 chart, flat ~15:55; 40 min matched too many ordinary NQ days
+MID_PT, MID_WINDOW_MIN = 155.0, 35   # F10 TP 25074.25 (+160) at ~16:07 chart, ~22 min after F6 entry (md ledger F10-m1); 155/35 are OURS
 RANGE_WINDOW_MIN = 120  # OURS
 RANGE_TOL = 50.0        # OURS: pts outside the band that decay the score to 0
 WIN_LO, WIN_HI = 13 * 60, 15 * 60 + 15  # entry minute window UTC (chart 15:45 CET/CEST = 13:45/14:45 UTC, +- slack)
@@ -49,7 +50,9 @@ def best_match(bars, lo=WIN_LO, hi=WIN_HI):
         top = max((x[2] - e for x in w120), default=0.0)
         dist = 0.0 if RANGE_LO <= top <= RANGE_HI else min(abs(top - RANGE_LO), abs(top - RANGE_HI))
         c3 = max(0.0, 1.0 - dist / RANGE_TOL) if top >= TP_PT else 0.0
-        s = (c1 + c2 + c3) / 3 if c1 else 0.0
+        mid = any(x[2] - e >= MID_PT for x in bars[i + 1:] if x[0] <= b[0] + MID_WINDOW_MIN * 60000)
+        c4 = 1.0 if mid else 0.0
+        s = (c1 + c2 + c3 + c4) / 4 if c1 else 0.0
         if s > best[0] + 1e-12:
             best = (s, b[0], e)
     return best

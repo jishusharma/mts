@@ -1,6 +1,4 @@
 # NEXT_SESSION
 
-Task: finish card fabio-session-date-price-match (claimed by the fabio-dating-1018 session; test passes 4/4).
-State: script + test shipped in research/fabio_date_match_2026-10-18/. Spoken day 2025-10-15 already scores 1.0 (F6 entry 13:47 UTC, CFD price 24752.033 = futures basis about -162). Full scan 2025-09-15..2025-12-19 is rate-limited (~1 day/min); raw bi5 cache at F:/MTS/data/nq_raw resumes.
-Steps (zero operator input): 1) `python -I MyTradingSys/research/fabio_date_match_2026-10-18/date_match.py > run.log` until it prints `verdict` (cached days are instant). 2) Write DATE_MATCH.md: top-5 table (score, day, entry minute, price), verdict MATCH/AMBIGUOUS, CFD-vs-futures caveat, thresholds labelled SOURCED/OURS (see script header). 3) `sync.py ship --release fabio-session-date-price-match`, git cherry empty, `tasks.py done fabio-session-date-price-match --result "..."`.
-Do not edit the ledger. Card tom-ctlong-below-zone-cvd-aligned-audit is done (shipped); new cards tom-cvd-aligned-direction-blind, tom-ctlong-zone-lost-state need `tasks.py check` + refinement.
+Fabio date-match card is done (DATE_MATCH.md verdict AMBIGUOUS; spoken day 2025-10-15 13:47 UTC scores 1.0, >=8 days tie). Next on this thread: a card that adds path constraints (F11-F14 range, 1m highs/lows ordering) or a video-frame date read to break the tie; ledger entry_time_utc stays empty until then.
+Open: refine + `tasks.py check` new cards tom-cvd-aligned-direction-blind and tom-ctlong-zone-lost-state (cvdAligned counted for any direction, SetupCandidatesBuilder.java:600).
