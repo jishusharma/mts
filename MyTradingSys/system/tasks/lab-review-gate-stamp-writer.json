@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "class": "C2",
+  "closed": "2026-10-18T22:00:45Z",
   "commands": [],
   "created": "2026-10-18T21:27:37Z",
   "depends_on": [],
@@ -15,6 +17,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "research/layer_lab/reports/2026-10-18_lab-review-gate-stamp-writer.md: SOUND, trust models",
+      "ref": "c733e582",
+      "utc": "2026-10-18T22:00:45Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +47,7 @@
   "refined_by": "refine-stamp-authority",
   "refreshed": "2026-10-18T21:34:00Z",
   "refs": [],
-  "result": "",
+  "result": "research/layer_lab/reports/2026-10-18_lab-review-gate-stamp-writer.md: SOUND, trust models compared, Model A recommended, operator keystore decision pending",
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py",
@@ -56,7 +64,7 @@
   "sources": [
     "MyTradingSys/research/lab_guy/findings/2026-10-19_review_harden_pair.md:R1,R6 and follow-up 1"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Trace the existing stamp grammar, producer checks, hard review gate, close receipt, and provenance values; distinguish what each validates from human identity.",
     "Compare two implementable trust models: externally held signing key over a canonical review payload, and protected CI identity backed by a server-side review event. For each state trust root, key/identity lifecycle, replay protection, checkout/repo-writer threat boundary, and operational dependency.",
@@ -64,6 +72,7 @@
     "Write research/layer_lab/reports/<date>_lab-review-gate-stamp-writer.md with SOUND/FIX-FIRST/BLOCKED, evidence lines, threat boundary, option comparison, recommendation or missing decision, and exact follow-up implementation contract. No identity guarantees beyond cited evidence.",
     "Executor final reply records content commit SHA, empty git cherry origin/fast-track <sha>, and upstream git ls-tree report existence; sandbox runner handles git. Do not put a report hash or commit SHA inside the report itself."
   ],
+  "taken": "2026-10-18T21:58:27Z",
   "tests": "Read-only audit: source evidence and a bounded report; delivery verification belongs in executor final reply. No test/code modifications.",
   "title": "Review gate R1: trusted stamp writer and reviewer authority",
   "weight": "CRUCIAL",
