@@ -1565,6 +1565,289 @@ Status 2026-10-16 (Fable audit section 3): `G0CiJcuXCRs` -> TOM-17; `3o1VVsfBmmU
 | Is1HvdfQm5c | ASR transcript (faster-whisper small.en, 2026-10-16, raw_transcripts_canonical) read in full, V2 extract extracts/v2/fabio/Is1HvdfQm5c_v2.md (333 rows, 9 blocks: 0 confirmed live fills with stated entry and stop; mostly illustration and viewer Q&A) | done; numbers are ASR numbers, frames are the arbiter |
 | xUyqIjCfZzg | 3.8 h; unread (FL:57); ASR transcription started 2026-10-16 (resumable job, see research/fabio_asr_2026-10-16/ASR_RUN.md); two speakers (Fabio and Carmine Rosato) | live session: more FAB-2/FAB-5 trades |
 
+### 6.4 Tom: merge of unmerged extracts (2026-10-18, task tom-catalogue-merge-8-unmerged-v2-extrac)
+
+Premise check (Gemini report EXTRACTION_CRITICAL_GAPS_2026-10-18.md, G-TOM-1): confirmed by grep of this file on 2026-10-18. None of the 8 V2 ids below, and none of `7BQPMJ39WpI`, `HySZZSjMxF8`, `WQ_OAdz-PJ8`, `aursfDVYzUk`, `zAwEX_tRUfE`, was cited here before this section; `gWjHq5UMisY` and `pgdmKLJ0hhA` were named only as "V1-only candidates" (section 6.2). All 15 extracts pass `verify_extract_quotes.py`. Correction to the report: in `5Ljfwvtktek` the fair-value-gap short is the contestant Hines's setup (Tom restates and judges it), not Tom's own entry.
+Labels: SOURCED = Tom's words, quote with its GPS anchor; source `extracts/v2/tom/<id>_v2.md` (V2) or `extracts/processed/tom/new_selected_10/extract_<id>.md` (V1); raw transcript `raw_transcripts_canonical/<id>_raw.txt`. OURS = our reading or mapping. NO-SOURCE = Tom gives no value; do not tune.
+
+#### 6.4.1 V2 extracts (8, gate PASS)
+
+**5Ljfwvtktek** (Episode 4, contestants present, Tom judges; no trade taken). Maps to TOM-2 (counter long at a balance low) and 2.1 (stop, sizing).
+- SOURCED stop: at the invalidation level; for the counter long below the previous day's low.
+> "a stop-loss order always belongs exactly where I would expect the complete opposite of my intended market movement to occur."
+**Source GPS: 5Ljfwvtktek | BEGIN**
+
+> "is suddenly in a price range where the market goes below the previous day's low and most likely continues its downtrend. So, it's a much more logical level."
+**Source GPS: 5Ljfwvtktek | MIDDLE**
+
+- SOURCED counter-trend location and targets (POC first, then value area high):
+> "If you want to enter markets against the trend, it makes sense to do that in price areas where an equilibrium was left and then finds acceptance again and not already at the equilibrium boundary"
+**Source GPS: 5Ljfwvtktek | MIDDLE**
+
+> "Next level first the point of control, please."
+**Source GPS: 5Ljfwvtktek | MIDDLE**
+
+> "For this trade in a sideways phase, I would definitely say it has to go up to the value high."
+**Source GPS: 5Ljfwvtktek | MIDDLE**
+
+- SOURCED footprint trigger (needs trade-side data, not OHLCV):
+> "You see a finished auction down here. You see that the cumulative delta is rising down here."
+**Source GPS: 5Ljfwvtktek | MIDDLE**
+
+- SOURCED reject: trend-line breaks traded alone.
+> "That's because the market is running into a previous sideways range. Therefore, please never take trend lines in isolation."
+**Source GPS: 5Ljfwvtktek | END**
+
+- CONTEXT (contestant Hines, judged "functional" by Tom): FVG short after two structure breaks, entry on the run back into the gap; the anchor is in the V2 file. Not Tom's rule.
+- NO-SOURCE: swing length, which FVG, stop buffer, "left and accepted" in bars.
+
+**Of_wlv3xaZo** (Episode 3). NY cash-open filter and day-type read. Maps to 2.1 and the session anchors of TOM-8/9/10.
+- SOURCED: 30-minute filter and opening-range size.
+> "stop trading in the first 30 minutes of the New York session, and secondly, look at how big the open range is"
+**Source GPS: Of_wlv3xaZo | MIDDLE**
+
+> "If you see at the open after 30 minutes, thereby negating this problem here that the open is relatively narrow, then you can assume the market will likely trend after that."
+**Source GPS: Of_wlv3xaZo | BEGIN**
+
+> "If the market starts explosively right away like here, you often get a counter up here because the market will try to find fair prices, which are usually found back near the opening range since many large participants couldn't even do their business yet."
+**Source GPS: Of_wlv3xaZo | BEGIN**
+
+- SOURCED: opening-range breakout to the previous-day high with a fair value gap is a long idea (no entry, stop or target given); FVGs are not fixed support.
+> "But if you see, for example, the market broke out of a range at 4:15 p.m. and is now coming to the previous day's high and leaves you a fair value gap here, then you suddenly have a great idea to make a long trade."
+**Source GPS: Of_wlv3xaZo | BEGIN**
+
+> "However, in market phases of immediate rapid acceleration, you must be cautious as fair value gaps are very often closed again shortly after"
+**Source GPS: Of_wlv3xaZo | BEGIN**
+
+- SOURCED: cash hours use the cash-session profile; trend profile uses the POC, balance profile the equilibrium levels.
+> "And that's why if you only trade during cash hours, please only refer to the cash session."
+**Source GPS: Of_wlv3xaZo | END**
+
+> "And if you were to use a trend profile, the point of control suddenly becomes a very important reference point if the market opens elsewhere."
+**Source GPS: Of_wlv3xaZo | END**
+
+- SOURCED sample size "well over 300 trades" (anchor in the V2 file). Contestants' rules (Walter 1:3, Florian SMC, Maxi, Dominic) are not Tom's.
+- NO-SOURCE: numeric "narrow" or "explosive" opening-range thresholds; any BTC session anchor (OURS if chosen).
+
+**QClPWDJ-BrU** (pre-session day trade vs swing trade, worked numbers). Maps to TOM-4/TOM-6 stop and target logic.
+- SOURCED day plan: profile read (VPOC at the top), stop under the last swing low, target where liquidity fades.
+> "That shows me that the probability is higher for now that the market has upward pressure, especially since the VPOC has established itself at the top."
+**Source GPS: QClPWDJ-BrU | BEGIN**
+
+> "Until the point where liquidity starts to fade again. And that's roughly in this area of 7,480."
+**Source GPS: QClPWDJ-BrU | BEGIN**
+
+> "place it below the last swing low where the market would then be below these price areas."
+**Source GPS: QClPWDJ-BrU | BEGIN**
+
+> "Entry 62, stop loss, I'll just make it 52 now and so we have a $10 stop loss."
+**Source GPS: QClPWDJ-BrU | BEGIN**
+
+- SOURCED swing plan: limit buy at acceptance of the sideways phase, stop below the last high-liquidity station, target just below the next volume level. R:R 3.04 is the outcome of his drawn levels, not a minimum.
+> "So it's within this whole structure and says, yes, I'll take this sideways phase as acceptance."
+**Source GPS: QClPWDJ-BrU | MIDDLE**
+
+> "Entry 7443 via limit buy."
+**Source GPS: QClPWDJ-BrU | MIDDLE**
+
+> "Where was the last time there was high liquidity?"
+**Source GPS: QClPWDJ-BrU | MIDDLE**
+
+> "The trade has an entry at 7,443, stop loss 7,420, take profit 7,513."
+**Source GPS: QClPWDJ-BrU | MIDDLE**
+
+> "This results in a reward that is 3.04 times as large as the risk."
+**Source GPS: QClPWDJ-BrU | MIDDLE**
+
+- SOURCED calculation (backtest check): break-even win rate and expected value.
+> "A theoretical win rate of 35.71% would be enough to break even."
+**Source GPS: QClPWDJ-BrU | END**
+
+> "the expected value per trade, which many don't calculate because they mix things up, is 0.414R per trade."
+**Source GPS: QClPWDJ-BrU | END**
+
+- NO-SOURCE: buffer under the stop, swing-low pivot length, "slightly below" distance, size, management after entry.
+
+**etg6j0JybfE** (swing, DAX). A swing setup the catalogue lacked. OURS mapping: variant of TOM-4 on daily bars, not yet a numbered setup.
+- SOURCED horizon:
+> "In swing trading, we want to locate trades with holding periods of three, four, at most seven or eight days where there's current momentum or where it's expected that momentum could arise."
+**Source GPS: etg6j0JybfE | BEGIN**
+
+- SOURCED proof: liquidity entering (volume low, then rising) and corrections shrinking.
+> "I can already see that liquidity is decreasing, but it's starting to increase again in this area."
+**Source GPS: etg6j0JybfE | MIDDLE**
+
+> "I can see right away from the intervals, yeah, they're relatively small, or rather, they're getting smaller and smaller."
+**Source GPS: etg6j0JybfE | MIDDLE**
+
+- SOURCED entry: do not buy at the high; wait for a reaction.
+> "I need to observe if the market eventually gives me a clear reaction that in turn truly confirms and supports my original idea."
+**Source GPS: etg6j0JybfE | MIDDLE**
+
+- SOURCED stop = entry minus the largest past correction; target = prior up-swing distances. The 2:1 is what his picture shows, not a minimum.
+> "this is the absolute maximum it has gone down in the past."
+**Source GPS: etg6j0JybfE | END**
+
+> "this level right here is now my defined risk. That's where I put my stop loss."
+**Source GPS: etg6j0JybfE | END**
+
+> "I can then say, these distances here are my minimum profit target that I want to expect for myself."
+**Source GPS: etg6j0JybfE | END**
+
+> "And then I already see my profit is about twice as large as my risk."
+**Source GPS: etg6j0JybfE | END**
+
+- NO-SOURCE: lookback window for the largest correction, which up-swing, "clear reaction", number of shrinking swings.
+
+**oPyUif2Zrtk** (S&P 5-minute, profile and footprint). Maps to the TOM-1 exhaustion read and 2.3 (return to the greatest liquidity).
+- SOURCED: price returns to the high-volume range; in a range only after it goes below the range low.
+> "the market likes to head back exactly to where it picks up this information, namely where the greatest liquidity was."
+**Source GPS: oPyUif2Zrtk | MIDDLE**
+
+> "Yes, but only if the market also goes below this point."
+**Source GPS: oPyUif2Zrtk | END**
+
+- SOURCED: exhaustion needs footprint (not on OHLCV); no long inside a range with a selling surplus; 30-minute chart for longer swings.
+> "And if no more liquidity is being played, that's a sign that a reversal could be coming."
+**Source GPS: oPyUif2Zrtk | BEGIN**
+
+> "Because of that, I won't be looking for a long position in this price range."
+**Source GPS: oPyUif2Zrtk | END**
+
+> "you just use the 30 minute chart, which by the way is always very smart because it's based on market profiling."
+**Source GPS: oPyUif2Zrtk | END**
+
+- NO-SOURCE: any stop, target, size or numeric imbalance threshold.
+
+**ShYS_pD5cxQ, UrZ4vpHJ97g, WSCIURybK3U** (risk and sizing, not setups). They belong with 2.1, not in a TOM row.
+- SOURCED (ShYS_pD5cxQ): 20% account drawdown cap; statistics before real money; test in sideways, bull and bear.
+> "set everything up for a maximum 20% drawdown if everything goes wrong, no matter how many consecutive losses occur"
+**Source GPS: ShYS_pD5cxQ | END**
+
+> "For that, you need at least two, three, or 400 trades."
+**Source GPS: ShYS_pD5cxQ | END**
+
+> "Does it work in sideways markets? Does it work in bull markets? Does it work in bear markets?"
+**Source GPS: ShYS_pD5cxQ | END**
+
+- SOURCED (UrZ4vpHJ97g): no flat 1% risk per trade; a predefined target is not deleted (exception: other maths).
+> "think they can always enter the market with 1% risk per trade or even more. No, that's absolutely wrong."
+**Source GPS: UrZ4vpHJ97g | BEGIN**
+
+> "which is why you must never ever delete this predefined target unless in the meantime you've used other mathematical approaches for yourself"
+**Source GPS: UrZ4vpHJ97g | MIDDLE**
+
+- SOURCED (WSCIURybK3U): taking profit at a tiny twitch is a common failure. Its "stop above the last supposed high" is an illustration he disowns and contradicts yRvMW6lgN1o (V2 flag F5), so it is not a rule.
+> "This is where many fail because they take profits as soon as there's a tiny twitch."
+**Source GPS: WSCIURybK3U | MIDDLE**
+
+- The 0.5% to 0.7% per-trade risk in UrZ4vpHJ97g comes from his example statistics, not a universal; OURS if used.
+
+#### 6.4.2 V1 extracts passing the gate (7; rules are the V1 extractor's wording, the quote is Tom's)
+
+**zAwEX_tRUfE** (1-minute scalp around the prior-day equilibrium). Fills TOM-7 target and exit; no numeric stop.
+> "if I now book this trade here, as I just showed, I can plan it up to the upper edge of the equilibrium"
+**Source GPS: zAwEX_tRUfE | BEGIN**
+
+> "most traders on the 1-minute chart take the risk below the last low. That is the risk"
+**Source GPS: zAwEX_tRUfE | MIDDLE**
+
+> "you're out relatively quickly down here if the market accepts the old equilibrium again"
+**Source GPS: zAwEX_tRUfE | END**
+
+NO-SOURCE: a numeric stop (his warning says the last-1m-low stop gives a poor R:R, so it is not his rule). Example prices are one session.
+
+**7BQPMJ39WpI** (gold, impulse duplication). TOM-6 breakout target.
+> "Whenever a market has had an impulse followed by a sideways phase and the next impulse arises within such a phase and breaks out of it, which is the case here, then the trend continuation follows with a relatively high probability."
+**Source GPS: 7BQPMJ39WpI | MIDDLE**
+
+> "You can see how large the first impulse stretch was and simply duplicate that onto the second one. As simply as I'm explaining it right now and as simple as it sounds, that's how simple it's allowed to be."
+**Source GPS: 7BQPMJ39WpI | MIDDLE**
+
+NO-SOURCE: entry order, stop, impulse size threshold. Testing the duplication target on BTC is OURS.
+
+**HySZZSjMxF8** (multi-timeframe). One stop location.
+> "I can confidently say that my next stop loss is positioned just above this level. Right here, where the market previously set that swing high."
+**Source GPS: HySZZSjMxF8 | END**
+
+NO-SOURCE: stop buffer. The V1 extractor lists its volume-exhaustion lines under Unclear, so they are not carried.
+
+**WQ_OAdz-PJ8** (volume nodes, P/B mirror). Zone logic for TOM-2/4/6.
+> "Where there is low volume, there's a higher probability that the market will hit a snag. So, it's suitable for counter trades, for trading against the trend"
+**Source GPS: WQ_OAdz-PJ8 | MIDDLE**
+
+> "the probability, if it runs up here again, is initially high that it will continue long"
+**Source GPS: WQ_OAdz-PJ8 | MIDDLE**
+
+> "you should transfer those blue price ranges from the larger time frame over to the smaller timeframe. It is a key step for your analysis"
+**Source GPS: WQ_OAdz-PJ8 | END**
+
+NO-SOURCE: "acceptance" and "fast move" thresholds.
+
+**aursfDVYzUk** (definitions: VPOC, value area 68.2 or 70%, fair and unfair prices). Definitions behind section 3; no entry, stop or target.
+> "Then there is the value area high and the value area low. These are the boundaries. As a rule, you use 68.2 or 70% of all trades of the day and say that where 70% of the highest trading volume occurred is the so-called value area."
+**Source GPS: aursfDVYzUk | MIDDLE**
+
+> "if the market moves into unfair price areas, there is a high probability that it will eventually return to a fair price level, because it wants to do business at fair prices."
+**Source GPS: aursfDVYzUk | MIDDLE**
+
+
+**gWjHq5UMisY** and **pgdmKLJ0hhA** (swing; named "V1-only candidates" in 6.2). TOM-1b/4 swing evidence.
+> "naturally, relatively small stop losses that I set based on the setups and depending on the structure"
+**Source GPS: gWjHq5UMisY | MIDDLE**
+
+> "I have a risk reward ratio of 2.2"
+**Source GPS: gWjHq5UMisY | END**
+
+> "So, I'd have a stop loss at 394 and my entry at 406. That's okay for now."
+**Source GPS: pgdmKLJ0hhA | MIDDLE**
+
+> "I have a the proof that the market is accepting my large zone again. Check. So, there's a high probability that we can trade through it."
+**Source GPS: pgdmKLJ0hhA | END**
+
+pgdmKLJ0hhA is a stock illustration (R:R 2.41 is the outcome of his levels); gWjHq5UMisY gives no stop distance. NO-SOURCE: any number as a parameter.
+
+#### 6.4.3 V2 batch 1 delta (`extracts/v2/tom/CATALOG_DELTA_v1batch1.md`, 12 videos)
+
+Premise check: only the n7ZSkjb7JXs "above the bell" and the TOM-1 management quotes were in this file; the delta was not merged. Merged here:
+- TOM-1 gains a stop distance (k0zm5NYn0IQ trade 1, SOURCED):
+> "I'm setting a stop-loss of 20 points in the DAX"
+**Source GPS: k0zm5NYn0IQ | BEGIN**
+
+- TOM-1 trade 2 (k0zm5NYn0IQ, SOURCED): stop location and moved stop.
+> "my stop loss is now set exactly above the last volume levels"
+**Source GPS: k0zm5NYn0IQ | MIDDLE**
+
+> "my stop loss for the remaining position, I've now adjusted it to the 310 area"
+**Source GPS: k0zm5NYn0IQ | END**
+
+- TOM-2 worked example (BVpYGKz9PBU, hypothetical; mapping is the delta worker's reading): stop and target in points.
+> "my stop loss is suddenly only 20 points wide"
+**Source GPS: BVpYGKz9PBU | END**
+
+> "My next target is 140"
+**Source GPS: BVpYGKz9PBU | END**
+
+> "I get exactly 2.66"
+**Source GPS: BVpYGKz9PBU | END**
+
+- N-1 candidate (3o1VVsfBmmU). OURS decision: treat as a variant of TOM-1/TOM-4 with the stop at the last liquidity until a trade video shows otherwise; section 2.1 T-2 already covers its stop.
+> "Then I immediately know all right my stop loss belongs below the last liquidity."
+**Source GPS: 3o1VVsfBmmU | MIDDLE**
+
+> "My takerit goes to the predefined price area from this intelligent support resistance element that I analyzed and I just let it run."
+**Source GPS: 3o1VVsfBmmU | MIDDLE**
+
+- TOM-7 stays without a stop: 43JaKHRvxHk asks and does not answer.
+> "where do I have to set my stop loss? So, where do I give up on my trade?"
+**Source GPS: 43JaKHRvxHk | END**
+
+- The videos flagged in 6.2 as "gate FAILS with NO-GPS" (BVpYGKz9PBU, 43JaKHRvxHk, qLnQan0KGmQ, Ld1dhjGdTCA, NkQeOVDTAec, YmygDgtoxO8, k0zm5NYn0IQ, n7ZSkjb7JXs, ujedEcmvBMk, YVUcLTsCOZI) now have V2 extracts that PASS the gate; `YmygDgtoxO8` and `YVUcLTsCOZI` are in the delta list, the rest per `ls extracts/v2/tom`. Move the TOM-2/4/6/7 anchors to the V2 files when those rows are next edited; this section does not rewrite the old rows.
+
+#### 6.4.4 Tom videos with a transcript but no anchored extract (15): backlog, not merged
+
+No gate-passing extract exists, and unverified wording is not merged. Needs V2 extraction: `vk0mkNPuhDc` (5-minute scalp, best TOM-7 candidate), `vl01TiVTuoQ`, `usho6UVLqkE`, `3JqMyzE8jIQ`, `Fj4FDZQxw0I` (fair value gaps), `VumVuGnCcFM` (VWAP), `y67l86cSqb8` (CVD), `C9n_d91Uitc`, `sQ_biBKhPVU`; lower priority: `-dMWA_bbm3o`, `9eHZMVXilgc`, `KEe_CWHyuSg`, `e6Gm1n2h05M`, `rrHj24GSR6M`, `v5EuDl9c0iI`.
+
 ## 7. What this catalog does not settle (for the next steps)
 1. Initial stop in words (a location, never a distance as a rule): Tom 5 of 16 rows (TOM-1a, 1b, 2, 3, 4), Fabio 1 of 6 (FAB-5, below the protection level). Every other stop is a chart point ("here") or a frame value. The blind eye-read marking should record where each reader would put the stop and the next extraction should search for it.
 2. Session anchors on BTC (cash open, pre-market, US open, closing auction) are needed by TOM-1, TOM-8/9/10, FAB-6. Any choice is OURS.
