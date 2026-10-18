@@ -1,36 +1,76 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T03/t03_canaries.py",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
   "created": "2026-10-18T18:38:00Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_bt_engine.py new cases pass and failed before the fix; t03_canaries.py prints PASS for bt_engine rows e1-e4; run_all_tests.py --quick green; no caller change moves an existing test number.",
+  "est_turns": 22,
   "formula_id": "",
-  "formula_ids": [],
+  "formula_ids": [
+    "13"
+  ],
   "from_inbox": "",
-  "goal": "",
+  "goal": "T03-F1/F2: simulate_trade treats funding=None as 0 and charges the wrong side of a settlement. Make None (or records not covering the hold) raise ValueError as trade_costs.funding_paid does (B103), charge only t_in < s <= t_out; funding=[] stays the explicit no-funding model. Callers keep today's numbers by passing [].",
   "id": "bt-engine-simulate-trade-fail-closed-on-",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "T03 planted-edge audit: simulators return planted +0.30%, bt_engine funding fails open",
+      "ref": "3ddd0b0ffbe3",
+      "utc": "2026-10-18T18:41:00Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-19 ACCEPT (reviewer FIX applied: [] exempt from coverage stated, caller test files added to scope_in). Verify: report content sha, `git cherry origin/fast-track <sha>` empty AND `git ls-tree -r origin/fast-track --name-only` lists the delivered files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T21:12:47Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T03_planted_edges.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "bt_engine.simulate_trade: fail closed on missing funding, (t_in,t_out] boundary, RSI runner passes no funding",
-  "weight": "",
-  "worker": ""
+  "scope_in": [
+    "MyTradingSys/backtest/bt/bt_engine.py",
+    "MyTradingSys/backtest/bt/test_bt_engine.py",
+    "MyTradingSys/backtest/layers/cryptocred/cc_bt_adapter.py",
+    "MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py",
+    "MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T03/t03_canaries.py",
+    "MyTradingSys/backtest/layers/cryptocred/test_cc_bt_adapter.py",
+    "MyTradingSys/backtest/layers/cryptocred/test_run_cc_setups.py",
+    "MyTradingSys/backtest/layers/rsi/test_run_rsi_backtest.py"
+  ],
+  "scope_out": [
+    "real funding file loading and DEV reruns (card bt-engine-wire-real-funding-rsi-cc-rerun)",
+    "tom_bt, orderflow_views, screens (T03-F3/F4)",
+    "live path"
+  ],
+  "scope_sha": "3ddd0b0ffbe3",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T03_planted_edges.md:49-50 (T03-F1, T03-F2)",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T03_planted_edges.md:120 (DECISION: window t_in < s <= t_out, FORMULAS 13)",
+    "MyTradingSys/backtest/layers/positioning/trade_costs.py:12-30 (B103 pattern)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read bt_engine.py:39-67 and canary rows e1-e4 in t03_canaries.py; run it first and note the 4 FAIL rows (bt_engine column)",
+    "Add tests to test_bt_engine.py (fail on current code): funding=None raises; records not covering [entry, exit] raise; entry instant on a settlement not charged; exit instant on a settlement charged; funding=[] charges 0 and never raises",
+    "Fix simulate_trade: raise on None, and on a non-empty list that does not cover [entry, exit]; funding=[] is exempt from the coverage check (explicit no model, charges 0); window (entry instant, exit instant]; existing tests 01-07 pass funding=[]",
+    "Callers: cc_bt_adapter default, run_cc_setups `funding or None` (2 sites), run_rsi_backtest.py:109 pass [] when no funding (numbers unchanged); keep their tests green",
+    "Rerun t03_canaries.py: bt_engine e1-e4 PASS; run bt, cryptocred and rsi test dirs"
+  ],
+  "tests": "New cases in MyTradingSys/backtest/bt/test_bt_engine.py (None raises, uncovered raises, entry-boundary not charged, exit-boundary charged); they fail on the pre-change code; canary rows e1-e4 flip FAIL to PASS.",
+  "title": "bt_engine.simulate_trade: fail closed on missing funding, (t_in,t_out] boundary, callers pass funding=[] explicitly",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
