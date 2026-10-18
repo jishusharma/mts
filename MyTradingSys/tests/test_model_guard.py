@@ -12,18 +12,29 @@ REPO = Path(__file__).resolve().parents[2]
 SCRIPT = REPO / "scripts" / "dev" / "model_guard.py"
 START = "mcp__ccd_session__start_session"
 SET_MODEL = "mcp__ccd_session_mgmt__set_session_model"
+SEND = "SendMessage"
+SEND_MGMT = "mcp__ccd_session_mgmt__send_message"
 
 
-def fire(tool, inp, transcript=None, tasks_dir=None):
+def fire_full(tool, inp, transcript=None, tasks_dir=None, claude_home=None):
     payload = {"session_id": "s1", "hook_event_name": "PreToolUse", "tool_name": tool, "tool_input": inp,
                "transcript_path": str(transcript) if transcript else ""}
     env = {k: v for k, v in os.environ.items() if k != "MTS_ALLOW_OPUS"}
     if tasks_dir:
         env["MTS_TASKS_DIR"] = str(tasks_dir)
+    if claude_home:
+        env["MTS_CLAUDE_HOME"] = str(claude_home)
     r = subprocess.run([sys.executable, str(SCRIPT), "hook"], input=json.dumps(payload), capture_output=True, text=True, env=env)
     assert r.returncode == 0, r.stderr
     out = r.stdout.strip()
-    return json.loads(out)["hookSpecificOutput"]["permissionDecision"] if out else "allow"
+    if not out:
+        return "allow", ""
+    h = json.loads(out)["hookSpecificOutput"]
+    return h["permissionDecision"], h.get("permissionDecisionReason", "")
+
+
+def fire(tool, inp, transcript=None, tasks_dir=None, claude_home=None):
+    return fire_full(tool, inp, transcript, tasks_dir, claude_home)[0]
 
 
 class ModelGuardTest(unittest.TestCase):
@@ -132,8 +143,95 @@ class ModelGuardTest(unittest.TestCase):
         entries = [e for e in d["hooks"].get("PreToolUse", []) if "model_guard.py" in json.dumps(e)]
         self.assertEqual(len(entries), 1)
         matcher = entries[0]["matcher"].split("|")
-        for tool in ("Agent", "Task", START, SET_MODEL):
+        for tool in ("Agent", "Task", START, SET_MODEL, SEND, SEND_MGMT):
             self.assertIn(tool, matcher)
+
+    def _sv8_env(self):
+        ch = Path(self.tmp.name) / "claude"
+        proj = ch / "projects" / "proj"
+        sess_dir = ch / "sessions"
+        proj.mkdir(parents=True)
+        sess_dir.mkdir(parents=True)
+
+        # Parent transcript with two started sessions: local_sonnet and local_fable
+        parent_t = proj / "parent-uuid.jsonl"
+        parent_lines = [
+            {"type": "assistant", "message": {"model": "claude-sonnet-5-5", "content": [
+                {"type": "tool_use", "id": "tu_1", "name": START, "input": {"title": "w1", "model": "claude-sonnet-5-5"}},
+                {"type": "tool_use", "id": "tu_2", "name": START, "input": {"title": "w2", "model": "claude-sonnet-5-5"}},
+                {"type": "tool_use", "id": "tu_3", "name": START, "input": {"title": "w3", "model": "claude-sonnet-5-5"}},
+                {"type": "tool_use", "id": "tu_other", "name": "Bash", "input": {"command": "echo session_id: local_fake-999"}},
+            ]}},
+            {"type": "user", "message": {"content": [
+                {"type": "tool_result", "tool_use_id": "tu_1", "content": [
+                    {"type": "text", "text": 'Started session "w1" (session_id: local_11111111-1111-1111-1111-111111111111, name: w1).'}
+                ]},
+                {"type": "tool_result", "tool_use_id": "tu_2", "content": [
+                    {"type": "text", "text": 'Started session "w2" (session_id: local_22222222-2222-2222-2222-222222222222, name: w2).'}
+                ]},
+                {"type": "tool_result", "tool_use_id": "tu_3", "content": [
+                    {"type": "text", "text": 'Started session "w3" (session_id: local_33333333-3333-3333-3333-333333333333, name: w3).'}
+                ]},
+                {"type": "tool_result", "tool_use_id": "tu_other", "content": "Started session (session_id: local_fake-999)"},
+            ]}},
+        ]
+        parent_t.write_text("\n".join(json.dumps(x) for x in parent_lines) + "\n", encoding="utf-8", newline="\n")
+
+        # Worker 1: Sonnet worker mapped via ~/.claude/sessions/101.json
+        (sess_dir / "101.json").write_text(json.dumps({
+            "pid": 101, "sessionId": "cli-sonnet-uuid",
+            "hostSessionId": "local_11111111-1111-1111-1111-111111111111"
+        }), encoding="utf-8", newline="\n")
+        (proj / "cli-sonnet-uuid.jsonl").write_text(
+            json.dumps({"type": "assistant", "message": {"model": "claude-sonnet-5-5", "content": []}}) + "\n",
+            encoding="utf-8", newline="\n"
+        )
+
+        # Worker 2: Fable session mapped via ~/.claude/sessions/102.json
+        (sess_dir / "102.json").write_text(json.dumps({
+            "pid": 102, "sessionId": "cli-fable-uuid",
+            "hostSessionId": "local_22222222-2222-2222-2222-222222222222"
+        }), encoding="utf-8", newline="\n")
+        (proj / "cli-fable-uuid.jsonl").write_text(
+            json.dumps({"type": "assistant", "message": {"model": "claude-fable-5-1", "content": []}}) + "\n",
+            encoding="utf-8", newline="\n"
+        )
+        # Worker 3 (local_33333333...): started by parent, but has no transcript on disk (unresolvable)
+        return ch, parent_t
+
+    def test_send_message_allows_own_sonnet_worker(self):
+        ch, parent_t = self._sv8_env()
+        sid = "local_11111111-1111-1111-1111-111111111111"
+        self.assertEqual(fire(SEND, {"to": sid, "message": "status?"}, parent_t, claude_home=ch), "allow")
+        self.assertEqual(fire(SEND_MGMT, {"session_id": sid, "message": "status?"}, parent_t, claude_home=ch), "allow")
+
+    def test_send_message_denies_fable_target(self):
+        ch, parent_t = self._sv8_env()
+        sid = "local_22222222-2222-2222-2222-222222222222"
+        dec, reason = fire_full(SEND, {"to": sid, "message": "hi"}, parent_t, claude_home=ch)
+        self.assertEqual(dec, "deny")
+        self.assertIn("fable", reason.lower())
+        dec2, reason2 = fire_full(SEND_MGMT, {"session_id": sid, "message": "hi"}, parent_t, claude_home=ch)
+        self.assertEqual(dec2, "deny")
+        self.assertIn("fable", reason2.lower())
+
+    def test_send_message_denies_unknown_target_session_id(self):
+        ch, parent_t = self._sv8_env()
+        for bad_sid in ("local_99999999-9999-9999-9999-999999999999", "local_fake-999", ""):
+            dec, reason = fire_full(SEND, {"to": bad_sid, "message": "hi"}, parent_t, claude_home=ch)
+            self.assertEqual(dec, "deny", bad_sid)
+            self.assertTrue(reason, bad_sid)
+
+    def test_send_message_fails_closed_when_target_transcript_unresolvable(self):
+        ch, parent_t = self._sv8_env()
+        sid = "local_33333333-3333-3333-3333-333333333333"
+        dec, reason = fire_full(SEND, {"to": sid, "message": "hi"}, parent_t, claude_home=ch)
+        self.assertEqual(dec, "deny")
+        self.assertTrue(reason)
+        # Missing parent transcript also fails closed
+        dec_no_parent, reason_no_parent = fire_full(SEND, {"to": "local_11111111-1111-1111-1111-111111111111", "message": "hi"}, None, claude_home=ch)
+        self.assertEqual(dec_no_parent, "deny")
+        self.assertTrue(reason_no_parent)
 
 
 if __name__ == "__main__":
