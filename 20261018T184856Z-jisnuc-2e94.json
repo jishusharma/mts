@@ -1,0 +1,1 @@
+{"t": "20261018T184856Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship --release supervisor-design > ship2.log 2>&1; echo exit $?; tail -6 ship2.log; rm -f ship2.log"}
