@@ -75,5 +75,12 @@ need the 544 s full gate; docs ships already take ~10 s.
   run time, nor the budget-deferred ones; CI (both OSes, whole suite, green-only deploy) runs them minutes later and a red CI now blocks the next code ship.
   Live-path, unknown paths and the gate scripts themselves keep the full gate.
 
+### Measured (fast path, 2026-10-19, JIS-NB with other sessions running)
+Two clean ships of docstring-only changes outside the live path, wall time of `sync.py ship` end to end (fetch, merge, CI check, gate, push, stale pages):
+`nowin.py` (28 test files reached, 13 steps deferred to CI by the budget) **51.3 s**, gate phase 42 s, set by one pytest chunk (36 s); `make_home.py`
+(1 test file, 0 deferred) **23.8 s**, gate phase 13 s. Fixed overhead outside the gate: about 9 s. The feature ship itself (gate scripts are on the live
+list) took the full 65-step gate, about 9 minutes per attempt, and was repeated twice because other sessions' commits had broken trunk steps 4c and 4d.
+Floor on this box: python start 0.2 s + one pytest chunk of the longest direct test + about 9 s of git/CI/page overhead; hub modules push it to the budget (30 s).
+
 ## Not done (next)
 Machine-wide process budget across concurrent gates; FIFO slot queue; Windows CI on selected steps only.
