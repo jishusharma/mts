@@ -172,3 +172,41 @@ def test_candle_info_last_three_bars():
     bars.append({"t": 8, "o": 10, "h": 12, "l": 8, "c": 10, "v": 1})
     found = dict(mg.candle_info(bars, mod))
     assert found.get("doji") == 0
+
+
+def test_volume_info_synthetic_slot_history():
+    # Synthetic slot history with stride=6 (4h bars, 6 bars/day)
+    # Slot 0 in cycles 0..4 have volumes: 100, 150, 120, 180, 140 (OURS: synthetic volumes)
+    # Sorted: [100.0, 120.0, 140.0, 150.0, 180.0] -> median is 140.0 (OURS: hand-computed median)
+    # Current bar (cycle 5, slot 0): volume = 280.0 (OURS: synthetic volume)
+    # Hand-computed ratio: 280.0 / 140.0 = 2.0 (OURS: 280 / 140 = 2.0 exactly)
+    # SOURCED: MyTradingSys/research/volume_2026-10-09/vfeat.py:13 (STRIDE={"4h": 6})
+    # SOURCED: MyTradingSys/research/volume_2026-10-09/vfeat.py:14 (KBASE={"4h": 20})
+    slot0_vols = [100.0, 150.0, 120.0, 180.0, 140.0, 280.0]  # 5 prior + current
+    bars = []
+    # 5 full cycles of 6 bars each (indices 0..29), then cycle 5 bar 0 (index 30)
+    for c_idx in range(5):
+        for s_idx in range(6):
+            v = slot0_vols[c_idx] if s_idx == 0 else 50.0
+            bars.append({"t": (c_idx * 6 + s_idx) * 14400000, "o": 10, "h": 11, "l": 9, "c": 10, "v": v})
+    # current bar: cycle 5, slot 0
+    bars.append({"t": 30 * 14400000, "o": 10, "h": 11, "l": 9, "c": 10, "v": slot0_vols[5]})
+
+    info = mg.volume_info(bars)
+    assert info["n"] == 5  # OURS: 5 prior same-slot bars
+    assert info["baseline"] == 140.0  # OURS: hand-computed median
+    assert info["relative_volume"] == 2.0  # OURS: hand-computed ratio 280.0 / 140.0 = 2.0
+    assert info["label"] == "descriptive only"
+
+
+def test_market_guide_build_prints_volume_line(tmp_path):
+    mod = mg._load_candles()
+    kd, ad = _make_dirs(tmp_path, NOW - 300000)
+    verdicts = {"volume": {"tag": "NO-EDGE", "source": "test"}}
+    text = mg.build(NOW, kd, ad, verdicts, mod)
+    assert "## Volume [NO-EDGE]" in text
+    assert "time-adjusted relative volume:" in text
+    assert "slot baseline n=" in text
+    assert "effort vs result, match OI scope" in text
+    assert "descriptive only" in text
+
