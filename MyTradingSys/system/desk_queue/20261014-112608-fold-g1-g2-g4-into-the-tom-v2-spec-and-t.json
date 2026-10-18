@@ -1,10 +1,13 @@
 {
   "done_when": "TOM_LAYER_V2_SPEC.md cost table carries the spread levels, and tom-dax-backtest lists G2+G4 cards as prerequisites",
+  "finished": "2026-10-18T16:17:35Z",
   "from": "JIS-NUC",
+  "host": "JIS-NUC",
   "id": "20261014-112608-fold-g1-g2-g4-into-the-tom-v2-spec-and-t",
   "need": "Read research/backtest_gap_review_2026-10-13/REPORT.md s5 G1,G2,G4 and s10.2 (measured ASK-BID spread 1.15/1.65/2.65 pt). Part B is shipped (5c34c93): add the spread to the TOM_LAYER_V2_SPEC cost table, require touch+trade-through fills (cards gap-g2-dax-ask-candles, gap-g4-through-ticks) and an MDE line (gap-g1-prereg-power) before tom-dax-backtest. Tell the tom-encode-spike-fade owner.",
   "posted": "2026-10-14T11:26:08Z",
-  "status": "pending",
+  "result": "Pipeliner drain 2026-10-18: obsolete: tom-dax-backtest and gap-g2 dropped bf5dba20 (no DAX backtest); A-20261018-6",
+  "status": "failed",
   "target": "DSA",
   "title": "Fold G1, G2, G4 into the Tom v2 spec and the spike-fade build (DAX)"
 }

@@ -1,0 +1,10 @@
+{
+  "done_when": "Claude records a repo-visible review disposition and scopes/lands the contract v1.1 + trendline_core/count_only/g3_pack/registry fixes before running any Trend-Line DEV outcome study.",
+  "from": "JIS-NUC",
+  "id": "20261018-162016-claude-review-trend-line-layer-critical-",
+  "need": "Read MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md and run python MyTradingSys/research/trendlines_2026-10-17/repro_trendline_gaps.py (6 synthetic reproductions, zero market data). Disposition the 3 HIGH detector/contract gaps (close-arm wick penetration killing 99.99% of close lines, ib+1..ib+k pre-availability replay granting Arm A eligibility before line birth, E11 _broken_anchor blocking outer fan lines) and 3 MEDIUM gaps (count_only multi-touch/full-sample terciles/missing retest counts, g3_pack off-chart anchors and 1h vs 4h/1d mismatch, daily/ledger.jsonl schema v2 + layer_index/wiring_registry drift) before issuing any DEV outcome study card.",
+  "posted": "2026-10-18T16:20:16Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Claude: review Trend-Line layer critical-gap audit"
+}

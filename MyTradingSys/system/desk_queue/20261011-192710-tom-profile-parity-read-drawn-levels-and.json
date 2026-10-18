@@ -1,10 +1,13 @@
 {
   "done_when": "At least six levels have frame path, axis price, axis tick, session anchors and bar cutoff, or individual NOT_IN_DATA reasons; only verified identical windows may receive MATCH/MISMATCH.",
+  "finished": "2026-10-18T16:17:35Z",
   "from": "JIS-NUC",
+  "host": "JIS-NUC",
   "id": "20261011-192710-tom-profile-parity-read-drawn-levels-and",
   "need": "On JIS-NB inspect F:/MTS/data/tom_videos/frames/n7ZSkjb7JXs_0314.jpg (T1 2025-12-22 about 07:25 CET) and k0zm5NYn0IQ_0280.jpg (T2 2026-01-08 08:35 CET), plus their available crops/sheets if needed. Read POC/VAH/VAL prices from chart axes, axis tick spacing, exact chart time/timezone and profile start/end anchors; no outcomes or P&L. If six levels are not readable there choose other pre-2026-04-11 ledger frames. After computed-side shipment run python MyTradingSys/backtest/tom_profile_parity.py --help for matching explicit windows. Append verified drawn-vs-computed comparisons to MyTradingSys/research/tom_transfer_2026-10-11/PROFILE_PARITY.md.",
   "posted": "2026-10-11T19:27:10Z",
-  "status": "pending",
+  "result": "Pipeliner drain 2026-10-18: obsolete: DAX chain dropped bf5dba20; computed side shipped dce68747 PROFILE_PARITY.md; card tom-profile-parity-check done",
+  "status": "failed",
   "target": "JIS-NB",
   "title": "Tom profile parity: read drawn levels and profile windows"
 }
