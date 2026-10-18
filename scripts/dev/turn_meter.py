@@ -144,7 +144,7 @@ def model_and_context(payload):
                     except ValueError:
                         continue
                     u = msg.get("usage") or {}
-                    if msg.get("model") and u:
+                    if msg.get("model") and u and not str(msg["model"]).startswith("<"):   # skip <synthetic> error lines
                         ctx = sum(int(u.get(k) or 0) for k in ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens"))
                         return str(msg["model"]).lower(), ctx
                 if start == 0 or window >= TAIL_MAX:
@@ -181,6 +181,10 @@ def handle(payload):
         state["user"] = state.get("user", 0) + 1
         model, ctx = model_and_context(payload)
         kind = tier(model)
+        if kind == "fable":
+            state["tier"] = "fable"      # sticky: a later failed detection must not lift the hard block
+        elif state.get("tier") == "fable" and not model:
+            kind = "fable"
         if kind == "fable" and state["user"] > FABLE_MESSAGES:     # the hard rule: no switch turns it off
             state["user"] -= 1
             save(path, state)

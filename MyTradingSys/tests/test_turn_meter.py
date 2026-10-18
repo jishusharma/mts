@@ -170,6 +170,17 @@ class TurnMeterTest(unittest.TestCase):
             self.assertEqual(out["decision"], "block")
             self.assertIn("new Fable session", out["reason"])
 
+    def test_fable_block_survives_synthetic_lines_and_lost_transcript(self):
+        f = self.model_transcript("fable", 300_000)
+        fire(self.home, "UserPromptSubmit", sid="g")
+        fire(self.home, "PostToolUse", sid="g", extra=f)
+        with open(f["transcript_path"], "a", encoding="utf-8") as fh:      # an API-error line: <synthetic>, zero usage
+            fh.write(json.dumps({"type": "assistant", "message": {"id": "m2", "model": "<synthetic>", "content": [], "usage": {"input_tokens": 1}}}) + chr(10))
+        self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="g", extra=f))
+        fire(self.home, "UserPromptSubmit", sid="h", extra=f)
+        self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="h", extra=f))   # tier now remembered
+        self.assertIn("block", fire(self.home, "UserPromptSubmit", sid="h"))            # transcript unreadable: still blocked
+
     def test_resume_keeps_counts(self):
         for _ in range(40):
             fire(self.home, "PostToolUse")

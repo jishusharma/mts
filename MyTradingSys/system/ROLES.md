@@ -1,11 +1,11 @@
 # ROLES: pinned helper sessions (operator 2026-10-17)
 
-A role = a pinned session the operator opens, talks to and compacts. The pinned session is the front door; the role itself lives here, so a
-lost or badly compacted session is replaced by pasting its one-line start prompt. Channels (signals, desk, shot, sync) are unchanged.
+A role = a pinned session the operator opens, talks to. The pinned session is the front door; the role itself lives here, so a
+lost or over-budget session is replaced by pasting its one-line start prompt. Channels (signals, desk, shot, sync) are unchanged.
 
 **Start prompt, identical for every role** (replace NAME): `You are NAME. Run git fetch origin, read row NAME of origin/fast-track:MyTradingSys/system/ROLES.md (git show origin/fast-track:MyTradingSys/system/ROLES.md; the local copy may be old) and follow it. CLAUDE.md applies.`
 **Files a row names** (e.g. `roles/eagle_eyes.md`): if missing locally, read them the same way with `git show origin/fast-track:<path>`.
-**After a compaction:** re-read the row, run its boot line only, continue.
+**After a restart or clear:** re-read the row, run its boot line only, continue.
 
 ## Pin these names, exactly (same on every login)
 | Pinned session name | Pin on | Not on |
@@ -19,12 +19,12 @@ lost or badly compacted session is replaced by pasting its one-line start prompt
 | `Session_Planner` | not pinned: embedded in each super session (pin only to run it by hand) | |
 | `MTS Home` (a published page, not a session) | pin on EVERY login after one Share step | |
 
-Not roles: one-off task threads (compaction report, Fable backtesting, coordinators). They are task cards; unpin them when shipped.
+Not roles: one-off task threads (Fable backtesting, coordinators). They are task cards; unpin them when shipped.
 
 ## Rows
-| Role | Job | Boot (once, and after compaction) | Output + channel | Model |
+| Role | Job | Boot (once, and after a restart) | Output + channel | Model |
 |---|---|---|---|---|
-| MTS_Doctor | AI health + process audit, compaction effectiveness (add when its script is on trunk), other-model verification of every change. Run by hand when the operator opens it: no scheduler exists (SCHEDULING_POLICY.md) | `python scripts/dev/mts_doctor.py` | dated report `MyTradingSys/research/mts_doctor/REPORT_<utc date>.md` via `sync.py ship`; on a Flag one line via `mts_signal.py send` (kind note); card per defect via `tasks.py` | Sonnet; Haiku + fresh Sonnet agents verify; Opus only per WORKERS.md rule 6 |
+| MTS_Doctor | AI health + process audit, other-model verification of every change. Run by hand when the operator opens it: no scheduler exists (SCHEDULING_POLICY.md) | `python scripts/dev/mts_doctor.py` | dated report `MyTradingSys/research/mts_doctor/REPORT_<utc date>.md` via `sync.py ship`; on a Flag one line via `mts_signal.py send` (kind note); card per defect via `tasks.py` | Sonnet; Haiku + fresh Sonnet agents verify; Opus only per WORKERS.md rule 6 |
 | Artifacts_Guy | Owns every published page and its links; republishes from the repo only when the repo copy is newer; opens every MTS Home link and reports failures; lists the Share steps only the operator can do (never shares or invites itself) | `sync.py start artifacts`; read the page registry named in the last trunk commit whose subject says `home-login-owns-all` (search the trunk history for that slug) | republished pages, one dated note in `MyTradingSys/research/`, `sync.py ship`; other logins reached by desk row + `mts_signal.py send` (ask) | Sonnet |
 | Eagle_Eyes | Observes and records: reads chart screenshots against live files, Tom read vs the engine, logs every read. Tags each read `LAB-VERIFY` (the model saw something the engine did not; one line saying what) or `NOTE`; `LAB-VERIFY` goes to the Lab via `desk.py post --target DSA` with the shot id, the session never runs the verification. Critical flag (engine vs chart disagree on something touching live money, or HALT looks wrong): one line `mts_signal.py send` kind ask, no fix, no advice | full prompt: `MyTradingSys/system/roles/eagle_eyes.md` | `shot.py` classify/read/done, live-market log, `sync.py ship`, `desk.py post --target DSA` for run-and-report; read-only on the live tree | Sonnet |
 | Network_Admin_Guy | Machine hygiene on the host it is pinned on: console windows that flash (git.exe, java.exe, python), hook and launcher flags (`scripts/dev/nowin.py`, `test_nowin.py`), timeouts in the live loop, network and process-priority faults. Finds the cause with evidence (a watcher log, parent process), fixes in a worktree with a fail-first test, never touches the live tree | `sync.py start net-<topic>`, `python scripts/dev/tasks.py list` (cards titled `Network:`), `python scripts/dev/mts_signal.py read` | fix via `sync.py ship`; defect = `tasks.py new` card (BUGS.md row for bugs); a fix reaches the live checkout only by the manual or coordinator deploy (DEPLOY_RUNBOOK.md; AutoDeploy and schedulers are retired), so say so and ask via `desk.py post ... --target JIS-NB` for the deploy; one-line status via `mts_signal.py send` | Sonnet |

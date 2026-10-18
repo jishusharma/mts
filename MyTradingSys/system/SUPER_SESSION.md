@@ -11,7 +11,7 @@ For "schedule the next 5h/10h" the coordinator writes the card order into a plan
 ## Audit of the first one (2026-10-15, 139 transcripts)
 4,077 turns / 8,252 tool calls / 3.2 M output tokens in ~24 h; coordinator alone 319 turns and 10 compactions (the costliest session).
 Fixed cost of every turn ~70-80 k tokens (tools 39 k, MCP 26 k, prompt 9 k, skills 6 k, memory 3 k). 68 compactions: 39 lost; one pays back
-only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); at ~120 k on a 1 M window it gains little. Rules: WORKERS.md rule 5.
+only after ~15 more turns (saves ~10 k per later turn, costs ~145 k once); history, replaced by the turn budget (WORKERS.md rule 5).
 
 ## Rules (from the audit)
 1. **Turn budget and workers: see WORKERS.md rule 5** (canonical). No compaction: reuse a session while its budget has room, else hand off
