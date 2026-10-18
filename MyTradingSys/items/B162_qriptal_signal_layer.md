@@ -40,3 +40,14 @@ Applied: DSA desk task 20261009-231508 (captions + scorecard). Bot: operator ste
 ## 2026-10-16 imbalance definition from his transcripts
 His imbalance construct is now written down with quotes and tested on Binance (MyTradingSys/research/imbalance_qriptal_2026-10-16/README.md): volume-anomaly family confirmed above chance on 22 named candles, exact indicator not reproducible from public material, mechanical fade NO EDGE after fees. More labelled candles (Discord feed / Sunday streams, D21) are what would pin his threshold.
 
+## 2026-10-18 operator screenshots from the Discord channel (#trading-thoughts)
+Operator sent three captures of Habib's posts, classified in the screenshot store as shots f696f41d2511, e2e6ed1ad05b and aeeb13f7118b
+(the store is not in git). What he posted, in his words, unverified:
+- 2026-10-13 16:30 (UTC+? the Discord clock): "got stopped once again just before the reversal". Image: a Bitunix BTCUSDT long at 75x, entry 81,944.4, average close 81,472.8, shown as -51.17%; the image carries a Qriptal referral code.
+- 2026-10-14 20:34: "84.1k was an absolute brick wall this week ... now we're retesting the support outlined on Sunday" (chart).
+- 2026-10-16 17:27: "good plan once again yesterday ... trap into NY open with 2 1h imbalances"; expects a continuation to 85.5k ("the weekly target"), liquidity at 84.1k; "personally caught the long".
+- 2026-10-16 later: a short test of 85.5k needs price to hold; "if we lose this area, 73k could get offered a bit earlier"; "Sunday plan remains in play" on a bounce; "no imbalance so volume isn't great".
+- 2026-10-18 23:52 (@everyone): apology for three weeks of livestream trouble; Sunday plan chart; "I'll try to figure out what's wrong even though I thought I fixed it last week".
+Use: these are his calls with entry, stop and target in the chart text, which the card below transcribes into the ledger. Levels that are
+not legible in the capture stay blank: no reading from the image alone. Provenance for every call: his post, time and channel.
+Card: qriptal-discord-calls-2026-10-18 (lane SONNET).
