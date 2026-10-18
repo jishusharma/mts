@@ -30,7 +30,8 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "HELD 2026-10-18: STOP A-20261018-6 (dates after DEV cutoff, sandbox blocks Dukascopy). Re-scope to DEV-only dates and route the fetch as a JIS-NB desk task before it is ready.\n[REVIEW 2026-10-18 by Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C1 weight=IMPORTANT]: REVIEWED:2026-10-18 ACCEPT — Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.\nREVIEWED:2026-10-18 ACCEPT — Lab_Guy(GEM-NUC) model=gemini-4-argon-low class=C1 weight=IMPORTANT: Spec, scope_in, steps, and done_when verified against live repo state and Lab_Guy v3.1 E1-E7 checklist.",
+  "note": "Operator 2026-10-18: no DAX data purchase/backtest; DAX proves nothing for BTC. Replaced by naked-chart cross-check card.",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -57,7 +58,7 @@
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md section 10.2 (G2 RESULT, measured 1.15/1.65/2.65 pt)",
     "MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md:25 (dev window 2024-11-04..2026-04-10)"
   ],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Tests first (red): ask URL has ASK_candles_min_1; parse of an ASK blob; spread = ask_close - bid_close joined on open_ms with no forward fill; closed-market filler minutes dropped.",
     "dax_data.py: add a side arg (default BID, existing callers unchanged) to day_url/fetch, a spreads(bid_raw, ask_raw) function and a `spread` CLI subcommand.",

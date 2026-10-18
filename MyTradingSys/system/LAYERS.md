@@ -36,15 +36,14 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-btc-encode` blocked p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` refined p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
   - `tom-check-set-find-frames-only-tom-trade` ready p2 SONNET: Tom check set: find frames-only Tom trade recaps and log entry/stop/target without reading captions (check set
-  - `tom-dax-backtest` ready p2 SONNET: Untuned Tom backtest on DAX vs matched-proof BTC rerun
   - `tom-encode-fade-entry-paths` ready p2 SONNET: Tom v2: encode fade entry paths A2 (pullback) and A3 (range break) with one re-entry per session
   - `tom-encode-fade-profile-proofs` ready p2 SONNET: Tom v2: encode the PROFILE arm of the fade (thin top, failed P breakout, lower b-shape)
   - `tom-ledger-add-the-losing-first-attempts` ready p2 SONNET: Tom ledger: add the losing first attempts Tom states but the ledger lacks (S1, S6 pre-session stops)
   - `tom-probe-prereg` refined p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
   - `tom-short-coverage-above-vah` raw p2 SONNET: Tom short coverage on trend-down days: no candidate above VAH, ct_short at VAH killed by POC-only target (2026
   - `tom-btc-other-setups` ready p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
+  - `tom-dax-naked-chart-crosscheck` raw p3 SONNET: Tom DAX naked-chart cross-check: compare his drawn levels and concepts on DAX frames with our BTC extraction (
   - `tom-v2-btc-min-stop-width` ready p3 CODEX: Tom v2: minimum stop width gate for BTC replays (noise unit N5 and fee floor)
-  - `tom-v2-dax-dev-backtest` blocked p5 SONNET: Tom v2: DAX dev backtest of the fade under the part B protocol (both fills, session null)
 
 ## Fabio (order-flow layer) (`fabio`)
 - Status: v3 tried 2026-10-04: OOS FAIL (only model C evaluable, 79 trades, mean -0.1038R); holdout 2026-06-26.. NOT read for Fabio (P2_FABIO_V3_HOLDOUT_STATUS.md, B147); ledger audit FIX-FIRST; being redefined as Fabio v2 (waits on ledger repairs).
