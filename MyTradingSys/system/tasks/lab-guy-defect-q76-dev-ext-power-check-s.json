@@ -4,31 +4,62 @@
   "commands": [],
   "created": "2026-10-17T21:33:44Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "q76 card stamped REVIEWED-RETRO with TRUST:UNCHECKED; report section with the 1,207 vs 1,215 numbers and the two event deltas. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "q76-dev-ext-power-check (done) has weight B-SHARED (set by tasks.py) but no class or stamp yet b187-prereg-v2-correction and A-20261018-2 cite it. Add the retro stamp, trust tag UNCHECKED (then MACHINE-OK once a machine check re-counts it), and the Haiku blind re-derivation record into its report.",
   "id": "lab-guy-defect-q76-dev-ext-power-check-s",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab_guy: findings ledger 2026-10-18, 2 defect cards, Haiku re-derivation of power_mde",
+      "ref": "ae143428070e",
+      "utc": "2026-10-17T21:35:03Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "ae143428070e lab_guy: findings ledger 2026-10-18, 2 defect cards, Haiku re-derivation of p",
+      "ref": "MyTradingSys/research/lab_guy/FLOW_2026-10-18.md",
+      "utc": "2026-10-17T21:35:03Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
-  "prio": 3,
+  "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C1 REVIEWER:review Agent WEIGHT:IMPORTANT. Numbers are copied from FLOW_2026-10-18.md:7, not recomputed (read that line first). b187-prereg-v2-correction also reads this report; run this one first if both are open (not enforced, DECISION OURS: no edit to that card). Reviewed by a separate Sonnet Agent (FIX round 1 applied).",
+  "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-18T03:35:16Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/system/tasks/q76-dev-ext-power-check.json",
+    "MyTradingSys/research/layer_lab/reports/2026-10-18_q76-dev-ext-power-check.md",
+    "MyTradingSys/research/lab_guy/FLOW_2026-10-18.md (read, line 7)"
+  ],
+  "scope_out": [
+    "PRE_REG_V2.md",
+    "bug_b187_evidence.txt",
+    "recomputing the count (b187-prereg-v2-correction does that)"
+  ],
+  "scope_sha": "ae143428070e",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "q76 card: keep weight B-SHARED (tasks.py resets it while b187 cites the report), prepend REVIEWED-RETRO:2026-10-18 T0-ONLY LAB:results CLASS:C1 REVIEWER:Claude Haiku blind-then-reveal TRUST:UNCHECKED",
+    "append a section \"Haiku blind re-derivation (from FLOW_2026-10-18.md:7)\" to the report: lab 545+662=1,207 days, Haiku 549+666=1,215 (0.7 percent apart), events +3.3 and +2.1 percent (outside the 1 percent freeze bar, stop-basis cause untested), headline holds (about 1,210 of 2,427)",
+    "in the same section state that MACHINE-OK needs a machine re-count, which b187-prereg-v2-correction supplies; until then the tag stays UNCHECKED",
+    "tasks.py check and lint stay green"
+  ],
+  "tests": "assertion script in the commit body: before the edit the q76 note lacks REVIEWED-RETRO and the report has no section \"Haiku blind re-derivation\"; after, both exist and the section contains 1,215 and 0.7 percent",
   "title": "Lab_Guy defect: q76-dev-ext-power-check shipped with no weight, class or REVIEWED stamp, yet b187-prereg-v2-correction and A-20261018-2 cite it (B-shared); add a retro stamp and trust tag UNCHECKED then MACHINE-OK, record the Haiku blind re-derivation (549+666 days, events +3.3 and +2.1 percent)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }
