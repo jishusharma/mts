@@ -41,6 +41,11 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 - What: (1) blind reader only, never show the model our claim and ask if it is right (it agreed with the claim given, 'unreadable' used 0 times in 7 calls); (2) every schema has a required null/'unreadable' option, a number for a hidden field is an invented value; (3) crop two-panel images into panels first; (4) compare model output to our records in code; (5) contested values (25200 vs 25206) get a larger crop and a human/Argon read.
 - Detail: `MyTradingSys/system/roles/lab_guy.md` ("Using Gemini ... to read images"); pilot data `research/lab_guy/pilots/2026-10-18_gemini_frame_read/`. One pilot, not a catch rate.
 
+### A-20261018-8 INFO One routing table: ROUTING.md; Pipeliner owns it
+- Applies to: every session that posts a desk row, creates a card or picks a lane.
+- What: `MyTradingSys/system/ROUTING.md` is the one table kind of work -> machine -> channel -> model -> checker. Build/code/review work is a card, never a desk row; DeepSeek rows go by where the data lives (DSA-NB / DSA-NUC); cross-vendor reviews are CODEX cards (GPT or `gemini_queue.py`); LAB-VERIFY items become lab cards. Pipeliner (pinned on JIS-NUC, ROLES.md) drains the desk queue: 2026-10-18 drain closed 32 of 45 rows (`research/pipeliner/DRAIN_2026-10-18.md`).
+- Operator answers wanted: ROUTING.md conflicts C1-C7 (bottom of that file).
+
 ## EXPIRED
 ### A-20261018-5 HOLD No new consumers of unchecked lab bases (operator OK 2026-10-18)
 - Applies to: every session creating or starting a card that reads a lab event table, the Q76 / B187 chain or another lab result as its base.
